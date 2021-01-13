@@ -2,156 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 39C142F345D
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Jan 2021 16:43:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 69EA72F403C
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Jan 2021 01:47:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390426AbhALPnF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 12 Jan 2021 10:43:05 -0500
-Received: from gloria.sntech.de ([185.11.138.130]:34764 "EHLO gloria.sntech.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728108AbhALPnF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 12 Jan 2021 10:43:05 -0500
-Received: from ip5f5aa64a.dynamic.kabel-deutschland.de ([95.90.166.74] helo=diego.localnet)
-        by gloria.sntech.de with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <heiko@sntech.de>)
-        id 1kzLnL-00089O-PO; Tue, 12 Jan 2021 16:41:19 +0100
-From:   Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
-To:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        UNGLinuxDriver@microchip.com,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Yangbo Lu <yangbo.lu@nxp.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        linux-iio <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v1 1/1] time64.h: Consolidated PSEC_PER_SEC definition
-Date:   Tue, 12 Jan 2021 16:41:18 +0100
-Message-ID: <2525970.q0ZmV6gNhb@diego>
-In-Reply-To: <20210112153709.1074-1-andriy.shevchenko@linux.intel.com>
-References: <20210112153709.1074-1-andriy.shevchenko@linux.intel.com>
+        id S2392416AbhAMAnP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 12 Jan 2021 19:43:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51182 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2392292AbhAMAQI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Jan 2021 19:16:08 -0500
+Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2F23C061575
+        for <linux-iio@vger.kernel.org>; Tue, 12 Jan 2021 16:15:27 -0800 (PST)
+Received: by mail-io1-xd2e.google.com with SMTP id y19so625831iov.2
+        for <linux-iio@vger.kernel.org>; Tue, 12 Jan 2021 16:15:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=dS4I0Vmta6QahyszLm60tagdPq0B9cCR9FF+/LK5920=;
+        b=fZBiSUD6P0LlhEPoP/Y5/GVldq67mfJgZh0eW9r0KdtvBbsEnVvfmRQ+r7aiw9l03a
+         r4bUXdADrvZzJdwCAJJlPk+kTbJm+632VSg/OKQrEWSTVhu8gm4Wj88+BnGXUgKoUhBz
+         Ns+hylr+C/FphYJTM50PA8Zvh/HQhSGkZj9TE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=dS4I0Vmta6QahyszLm60tagdPq0B9cCR9FF+/LK5920=;
+        b=sJ4Tquk0N2ya6LU9v1oG7A/ZEo2AF4Wce/83STD4HvfmKbzqLonoE+k7zAJFq4K4Gi
+         QqJ+epY+jAFVJFG/XBhjPv2PyIU+9om+j6OWJrXpvFrVayLqXruS07vbHh+RjmEEP3rS
+         +5Tj8DnfD/wsxt/rkT9939ruSN97FB+kzu+f3n05ksY/WpDF2k7dxFe9Qn6nBiBG/fqL
+         UF1SiX+1mVXQChP8bPpa1w+ivObYPv8hAfU93/U/SZJM9ZUUSJMP/Z/qNAkP9O59rduM
+         Fk41rDexqtw1tyrHd1DBVa60LWApaOCkdP396o2bW3iku75faACe8ZRtJdwiTBYnnuRy
+         aP0Q==
+X-Gm-Message-State: AOAM530n5P4YqMC4bFPccFCCZTfJNHInrdRLHVtJLGJ4MoiLA5Ur9wC1
+        7DRF7dvaBDSMJLgl/cqj4XbilJWoVKKcWGBCQzxpGpPSGAA=
+X-Google-Smtp-Source: ABdhPJxbBmSKGXFXBAkU01Ejd/kvCcuZk1UE8iTyYKj97xPFOZH+rEofmsZgCMlianst7NkmXJj40FY7YVR8qrzX/7A=
+X-Received: by 2002:a6b:7501:: with SMTP id l1mr1366061ioh.92.1610496927312;
+ Tue, 12 Jan 2021 16:15:27 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+References: <20210112040923.2613711-1-gwendal@chromium.org> <CAHp75Vda3htVLApWwqoKb8uyoJaQWdOL2JK4kzMn_OH4OHa4Lg@mail.gmail.com>
+In-Reply-To: <CAHp75Vda3htVLApWwqoKb8uyoJaQWdOL2JK4kzMn_OH4OHa4Lg@mail.gmail.com>
+From:   Gwendal Grignou <gwendal@chromium.org>
+Date:   Tue, 12 Jan 2021 16:15:15 -0800
+Message-ID: <CAPUE2usVJU98D50enyf5+L3OdXcjzFnLdYt82g=AHCfeqgOyCA@mail.gmail.com>
+Subject: Re: [PATCH v5] iio: hrtimer: Allow sub Hz granularity
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Am Dienstag, 12. Januar 2021, 16:37:09 CET schrieb Andy Shevchenko:
-> We have currently three users of the PSEC_PER_SEC each of them defining it
-> individually. Instead, move it to time64.h to be available for everyone.
-> 
-> There is a new user coming with the same constant in use. It will also
-> make its life easier.
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  drivers/net/ethernet/mscc/ocelot_ptp.c           | 2 ++
->  drivers/phy/phy-core-mipi-dphy.c                 | 2 --
->  drivers/phy/rockchip/phy-rockchip-inno-dsidphy.c | 8 ++++----
+On Tue, Jan 12, 2021 at 6:22 AM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Tue, Jan 12, 2021 at 6:09 AM Gwendal Grignou <gwendal@chromium.org> wrote:
+> >
+> > Allow setting frequency below 1Hz or sub 1Hz precision.
+> > Useful for slow sensors like ALS.
+> >
+> > Test frequency is set properly:
+> > modprobe iio-trig-hrtimer && \
+> > mkdir /sys/kernel/config/iio/triggers/hrtimer/t1 && \
+>
+> This && seems strange...
+>
+> > cd /sys/bus/iio/devices/triggerX ;
+This is just for testing. X in triggerX should be replaced with the
+newly created trigger.
+>
+> ...because if the above fails, the below becomes a total train wreck.
+>
+> > for i in 1 .1 .01 .001 ; do
+> >   echo $i > sampling_frequency
+> >   cat sampling_frequency
+> > done
+>
+> Something like this perhaps (note {} and also I dropped unneeded ; and
+> whitespace)
+>   modprobe iio-trig-hrtimer && \
+>   mkdir /sys/kernel/config/iio/triggers/hrtimer/t1 && { \
+>     cd /sys/bus/iio/devices/triggerX
+>     for i in 1 .1 .01 .001; do
+>       echo $i > sampling_frequency
+>       cat sampling_frequency
+>     done
+>   }
+>
+> ...
+>
+> > +       if (!val || val > NSEC_PER_SEC * 1000)
+> >                 return -EINVAL;
+>
+> > +       info->period = NSEC_PER_SEC * 1000;
+>
+> I didn't get these * 1000 parts, why not define and use PSEC_PER_SEC?
+Indeed only Nano and Femto SEC_PER_SEC are defined.
 
-for the Rockchip-part:
-Acked-by: Heiko Stuebner <heiko@sntech.de>
+>
+> I'll send a patch soon. You may include it in your series as prerequisite.
+Thanks,
 
-though not sure if that reordering of other includes should be in there
-or separate. Don't have a hard opinion, and will let others decide ;-)
-
-
-Heiko
-
->  include/soc/mscc/ocelot_ptp.h                    | 2 --
->  include/vdso/time64.h                            | 1 +
->  5 files changed, 7 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/mscc/ocelot_ptp.c b/drivers/net/ethernet/mscc/ocelot_ptp.c
-> index a33ab315cc6b..87ad2137ba06 100644
-> --- a/drivers/net/ethernet/mscc/ocelot_ptp.c
-> +++ b/drivers/net/ethernet/mscc/ocelot_ptp.c
-> @@ -4,6 +4,8 @@
->   * Copyright (c) 2017 Microsemi Corporation
->   * Copyright 2020 NXP
->   */
-> +#include <linux/time64.h>
-> +
->  #include <soc/mscc/ocelot_ptp.h>
->  #include <soc/mscc/ocelot_sys.h>
->  #include <soc/mscc/ocelot.h>
-> diff --git a/drivers/phy/phy-core-mipi-dphy.c b/drivers/phy/phy-core-mipi-dphy.c
-> index 14e0551cd319..77fe65367ce5 100644
-> --- a/drivers/phy/phy-core-mipi-dphy.c
-> +++ b/drivers/phy/phy-core-mipi-dphy.c
-> @@ -12,8 +12,6 @@
->  #include <linux/phy/phy.h>
->  #include <linux/phy/phy-mipi-dphy.h>
->  
-> -#define PSEC_PER_SEC	1000000000000LL
-> -
->  /*
->   * Minimum D-PHY timings based on MIPI D-PHY specification. Derived
->   * from the valid ranges specified in Section 6.9, Table 14, Page 41
-> diff --git a/drivers/phy/rockchip/phy-rockchip-inno-dsidphy.c b/drivers/phy/rockchip/phy-rockchip-inno-dsidphy.c
-> index 8af8c6c5cc02..347dc79a18c1 100644
-> --- a/drivers/phy/rockchip/phy-rockchip-inno-dsidphy.c
-> +++ b/drivers/phy/rockchip/phy-rockchip-inno-dsidphy.c
-> @@ -11,16 +11,16 @@
->  #include <linux/clk-provider.h>
->  #include <linux/delay.h>
->  #include <linux/init.h>
-> +#include <linux/mfd/syscon.h>
->  #include <linux/module.h>
->  #include <linux/of_device.h>
->  #include <linux/platform_device.h>
-> +#include <linux/pm_runtime.h>
->  #include <linux/reset.h>
-> +#include <linux/time64.h>
-> +
->  #include <linux/phy/phy.h>
->  #include <linux/phy/phy-mipi-dphy.h>
-> -#include <linux/pm_runtime.h>
-> -#include <linux/mfd/syscon.h>
-> -
-> -#define PSEC_PER_SEC	1000000000000LL
->  
->  #define UPDATE(x, h, l)	(((x) << (l)) & GENMASK((h), (l)))
->  
-> diff --git a/include/soc/mscc/ocelot_ptp.h b/include/soc/mscc/ocelot_ptp.h
-> index 6a7388fa7cc5..ded497d72bdb 100644
-> --- a/include/soc/mscc/ocelot_ptp.h
-> +++ b/include/soc/mscc/ocelot_ptp.h
-> @@ -37,8 +37,6 @@ enum {
->  
->  #define PTP_CFG_MISC_PTP_EN		BIT(2)
->  
-> -#define PSEC_PER_SEC			1000000000000LL
-> -
->  #define PTP_CFG_CLK_ADJ_CFG_ENA		BIT(0)
->  #define PTP_CFG_CLK_ADJ_CFG_DIR		BIT(1)
->  
-> diff --git a/include/vdso/time64.h b/include/vdso/time64.h
-> index 9d43c3f5e89d..b40cfa2aa33c 100644
-> --- a/include/vdso/time64.h
-> +++ b/include/vdso/time64.h
-> @@ -9,6 +9,7 @@
->  #define NSEC_PER_MSEC	1000000L
->  #define USEC_PER_SEC	1000000L
->  #define NSEC_PER_SEC	1000000000L
-> +#define PSEC_PER_SEC	1000000000000LL
->  #define FSEC_PER_SEC	1000000000000000LL
->  
->  #endif /* __VDSO_TIME64_H */
-> 
-
-
-
-
+Gwendal.
+>
+> --
+> With Best Regards,
+> Andy Shevchenko

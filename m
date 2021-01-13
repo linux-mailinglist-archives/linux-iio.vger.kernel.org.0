@@ -2,55 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 462F32F4974
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Jan 2021 12:10:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 72B4B2F4970
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Jan 2021 12:10:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727841AbhAMLCK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 13 Jan 2021 06:02:10 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38838 "EHLO mail.kernel.org"
+        id S1727729AbhAMLBw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 13 Jan 2021 06:01:52 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39134 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727442AbhAMLAw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 13 Jan 2021 06:00:52 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 96C0123383;
-        Wed, 13 Jan 2021 10:59:29 +0000 (UTC)
+        id S1727735AbhAMLBd (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 13 Jan 2021 06:01:33 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3E5D3235F8;
+        Wed, 13 Jan 2021 10:59:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1610535569;
-        bh=UsiaJ5TeFRIuOKIuSBE3ueTDIjqdP8/ojUP8xNThLiU=;
-        h=From:To:Cc:Subject:Date:From;
-        b=JwQBO8e3swkxbw4v0qYoQuzfOutZcHgnI0MSHLSa7aQYUqKKz9xGmdslvbE+6X+pl
-         iQOsreIaYUaopfrnoALMeRcoV8b2ewED6qoB6VZAohTV2XoiM/Ugq8CdhsTDpkpFSC
-         sHsApbyrBjWJlSbUXBv7tLCy1UNX3cGrSSAD7j++4HLesIzeEjFZVPQJn2J5oLmjON
-         LO6JcKkXMZsrXk8YpCGzlX782pac1zAqJFB7uHTlnn9sXRcGD3zlcwAV7Mf5VR7pFG
-         iH9Nqr9o9EuUz7C11onQCo1Sg/vfJIRxblyM1+yeUPdfpo0R+ivUmKOYdf8WcgHtgm
-         MAEc9cWWKa5YQ==
+        s=k20201202; t=1610535570;
+        bh=9tvX+bdF7vZzRjfdf3aTmCuShY92K6sxOhnK8P3hfg0=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=PelSfOIloBflwGZOzbGZJw7GytSQMejH3SDd848JDzPvc5lJk5ZGELvfUJOeEhP4h
+         R7bNJjp7XbWHPU8tpLf4nQFVfC2rPCUKYxovs4JB/oU3wyxOjzNwt0kTh3HiEoqZM7
+         P9ttfCIZ8sLxksdULp8GK8PecYzf1U8TwByBXOSQeW8T4eExGDO6VcCUMYzfVNNojr
+         YPJdXpQe31lpvI9DhgK6WwM2DAgw/7SXLfI+PoPrL3YoPj0u3tSjZ/KM6qBApgPw6w
+         whUruFW+xs/oaJegXdTVfzizr3ECB76gtv1k0IuwWe+1ZrYP0Ry86tF2Hd3QUhlYRm
+         mBSR8oOmImwqg==
 Received: by mail.kernel.org with local (Exim 4.94)
         (envelope-from <mchehab@kernel.org>)
-        id 1kzds7-00DpFo-1W; Wed, 13 Jan 2021 11:59:27 +0100
+        id 1kzds7-00DpGf-NZ; Wed, 13 Jan 2021 11:59:27 +0100
 From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
+To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Akira Yokosawa <akiyks@gmail.com>,
-        Daniel Lustig <dlustig@nvidia.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jean Delvare <jdelvare@suse.com>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+        "Jonathan Corbet" <corbet@lwn.net>,
+        "Linux Doc Mailing List" <linux-doc@vger.kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-mediatek@lists.infradead.org
-Subject: [PATCH 00/24] Fix broken file docs cross-references
-Date:   Wed, 13 Jan 2021 11:59:01 +0100
-Message-Id: <cover.1610535349.git.mchehab+huawei@kernel.org>
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 18/24] include/linux/iio/dac/mcp4725.h: update a microchip,mcp4725.yaml ref
+Date:   Wed, 13 Jan 2021 11:59:19 +0100
+Message-Id: <ae1bc39a6c064bbce186a720a84a4f325bc2438c.1610535350.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.29.2
+In-Reply-To: <cover.1610535349.git.mchehab+huawei@kernel.org>
+References: <cover.1610535349.git.mchehab+huawei@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab@kernel.org>
@@ -58,62 +47,30 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-File renames and yaml conversions broke file references for several files,
-as reported by:
+Changeset 6ced946a4bba ("dt-bindings:iio:dac:microchip,mcp4725 yaml conversion")
+renamed: Documentation/devicetree/bindings/iio/dac/mcp4725.txt
+to: Documentation/devicetree/bindings/iio/dac/microchip,mcp4725.yaml.
 
-	./scripts/documentation-file-ref-check
+Update its cross-reference accordingly.
 
-Fix most of them.
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+---
+ include/linux/iio/dac/mcp4725.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Please notice that this series was generated against  linux-next
-(next-20210113).  So, it is better if the fixup patch could be added
-at the same tree that received the patch renaming the filename.
-
-Regards,
-Mauro
-
-Mauro Carvalho Chehab (24):
-  MAINTAINERS: update adi,ad5758.yaml reference
-  MAINTAINERS: update fsl,dpaa2-console.yaml reference
-  MAINTAINERS: update st,hts221.yaml reference
-  MAINTAINERS: update dpot-dac.yaml reference
-  MAINTAINERS: update envelope-detector.yaml reference
-  MAINTAINERS: update current-sense-amplifier.yaml reference
-  MAINTAINERS: update current-sense-shunt.yaml reference
-  MAINTAINERS: update voltage-divider.yaml reference
-  MAINTAINERS: update mtk-sd.yaml reference
-  MAINTAINERS: update atmel,sama5d2-adc.yaml reference
-  MAINTAINERS: update pni,rm3100.yaml reference
-  MAINTAINERS: update renesas,rcar-gyroadc.yaml reference
-  MAINTAINERS: update st,lsm6dsx.yaml reference
-  MAINTAINERS: update st,vl53l0x.yaml reference
-  MAINTAINERS: update ti,dac7612.yaml reference
-  Documentation/hwmon/ina2xx.rst: update ti,ina2xx.yaml reference
-  arch/Kconfig: update unaligned-memory-access.rst reference
-  include/linux/iio/dac/mcp4725.h: update a microchip,mcp4725.yaml ref
-  doc: update rcu_dereference.rst reference
-  ASoC: audio-graph-card: update audio-graph-card.yaml reference
-  dt-bindings: display: mediatek: update mediatek,dpi.yaml reference
-  dt-bindings: memory: mediatek: update mediatek,smi-larb.yaml
-    references
-  dt-bindings:iio:adc: update adc.yaml reference
-  dt-bindings: phy: update phy-cadence-sierra.yaml reference
-
- .../bindings/display/bridge/sii902x.txt       |  2 +-
- .../display/mediatek/mediatek,disp.txt        |  4 +--
- .../bindings/iio/adc/adi,ad7192.yaml          |  2 +-
- .../bindings/media/mediatek-jpeg-decoder.txt  |  2 +-
- .../bindings/media/mediatek-jpeg-encoder.txt  |  2 +-
- .../bindings/media/mediatek-mdp.txt           |  2 +-
- .../bindings/phy/ti,phy-j721e-wiz.yaml        |  2 +-
- Documentation/hwmon/ina2xx.rst                |  2 +-
- MAINTAINERS                                   | 30 +++++++++----------
- arch/Kconfig                                  |  2 +-
- include/linux/iio/dac/mcp4725.h               |  2 +-
- tools/memory-model/Documentation/glossary.txt |  2 +-
- 12 files changed, 27 insertions(+), 27 deletions(-)
-
+diff --git a/include/linux/iio/dac/mcp4725.h b/include/linux/iio/dac/mcp4725.h
+index e9801c8d49c0..1f7e53c506b6 100644
+--- a/include/linux/iio/dac/mcp4725.h
++++ b/include/linux/iio/dac/mcp4725.h
+@@ -15,7 +15,7 @@
+  * @vref_buffered: Controls buffering of the external reference voltage.
+  *
+  * Vref related settings are available only on MCP4756. See
+- * Documentation/devicetree/bindings/iio/dac/mcp4725.txt for more information.
++ * Documentation/devicetree/bindings/iio/dac/microchip,mcp4725.yaml for more information.
+  */
+ struct mcp4725_platform_data {
+ 	bool use_vref;
 -- 
 2.29.2
-
 

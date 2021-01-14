@@ -2,35 +2,25 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CBC9F2F6CCB
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Jan 2021 22:03:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A44D2F6DF8
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Jan 2021 23:16:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728610AbhANVAU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 14 Jan 2021 16:00:20 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44622 "EHLO mail.kernel.org"
+        id S1728014AbhANWPJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 14 Jan 2021 17:15:09 -0500
+Received: from mail.kernel.org ([198.145.29.99]:54600 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725988AbhANVAT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 14 Jan 2021 16:00:19 -0500
+        id S1726880AbhANWPI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 14 Jan 2021 17:15:08 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EC8B7238EC;
-        Thu, 14 Jan 2021 20:59:37 +0000 (UTC)
-Date:   Thu, 14 Jan 2021 20:59:37 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 8371B21D42;
+        Thu, 14 Jan 2021 22:14:27 +0000 (UTC)
+Date:   Thu, 14 Jan 2021 22:14:24 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Stephan Gerhold <stephan@gerhold.net>, linux-iio@vger.kernel.org,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH] dt-bindings: iio: accel: bma255: Fix bmc150/bmi055
- compatible
-Message-ID: <20210114205937.11e650d0@archlinux>
-In-Reply-To: <20201213132514.00d7ffff@archlinux>
-References: <20201202083551.7753-1-stephan@gerhold.net>
-        <20201209181739.GA708144@robh.at.kernel.org>
-        <20201213132514.00d7ffff@archlinux>
+To:     gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
+Subject: [PULL] 1st set of IIO and counter fixes for the 5.11 cycle.
+Message-ID: <20210114221424.72c7e5f5@archlinux>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -39,48 +29,72 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 13 Dec 2020 13:25:14 +0000
-Jonathan Cameron <jic23@kernel.org> wrote:
+The following changes since commit 7c53f6b671f4aba70ff15e1b05148b10d58c2837:
 
-> On Wed, 9 Dec 2020 12:17:39 -0600
-> Rob Herring <robh@kernel.org> wrote:
-> 
-> > On Wed, 02 Dec 2020 09:35:51 +0100, Stephan Gerhold wrote:  
-> > > The bmc150-accel-i2c.c driver has an "_accel" suffix for the
-> > > compatibles of BMC150 and BMI055. This is necessary because BMC150
-> > > contains both accelerometer (bosch,bmc150_accel) and magnetometer
-> > > (bosch,bmc150_magn) and therefore "bosch,bmc150" would be ambiguous.
-> > > 
-> > > However, the binding documentation suggests using "bosch,bmc150".
-> > > Add the "_accel" suffix for BMC150 and BMI055 so the binding docs
-> > > match what is expected by the driver.
-> > > 
-> > > Cc: Linus Walleij <linus.walleij@linaro.org>
-> > > Fixes: 496a39526fce8 ("iio: accel: bmc150-accel: Add DT bindings")
-> > > Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
-> > > ---
-> > >  Documentation/devicetree/bindings/iio/accel/bosch,bma255.yaml | 4 ++--
-> > >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > >     
-> > 
-> > Reviewed-by: Rob Herring <robh@kernel.org>  
-> Applied to the fixes-togreg branch of iio.git which is now based on stuff
-> queued up for the merge window. I'll send a pull not long after rc1.
-> 
+  Linux 5.11-rc3 (2021-01-10 14:34:50 -0800)
 
-Not sure why, but the Fixes tag above is invalid. 
+are available in the Git repository at:
 
-As a result I need to rebase this branch anyway so I've also brought it forward
-to staging/staging-linus as of today.
+  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fixes-for-5.11a
 
-Hopefully I'll get pull request out tomorrow.  Sorry for the delay!
+for you to fetch changes up to b8653aff1c8876142f965fc69e12ba217da13182:
 
-Jonathan
+  iio: sx9310: Fix semtech,avg-pos-strength setting when > 16 (2021-01-14 21:01:22 +0000)
 
+----------------------------------------------------------------
+First set of IIO and counter fixes for the 5.11 cycle.
 
-> Thanks,
-> 
-> Jonathan
-> 
-> 
+Counter fixes
 
+ti,eqep
+- Remove floor interface as the device always wraps to 0.
+
+IIO
+
+adi,ad5504
+- Fix inverted power state control.
+bosch,bma255
+- Fix a difference in part naming between dt-binding doc and the driver.
+melexis,mlx90632
+- Add a delay after reset command.
+semtech,sx9310
+- Off by one error.
+- Fix an issue due to need to skip a value in a power of 2 series.
+st,st_sensors
+- Fix a possible infinite loop if data read is not define or reading it fails.
+ti,am335x
+- Remove a left over iio_kfifo_free after managed allocation conversion.
+
+----------------------------------------------------------------
+Alexandru Ardelean (1):
+      iio: adc: ti_am335x_adc: remove omitted iio_kfifo_free()
+
+Dan Carpenter (1):
+      iio: sx9310: Off by one in sx9310_read_thresh()
+
+David Lechner (1):
+      counter:ti-eqep: remove floor
+
+Lars-Peter Clausen (1):
+      iio: ad5504: Fix setting power-down state
+
+Lorenzo Bianconi (1):
+      iio: common: st_sensors: fix possible infinite loop in st_sensors_irq_thread
+
+Slaveyko Slaveykov (1):
+      drivers: iio: temperature: Add delay after the addressed reset command in mlx90632.c
+
+Stephan Gerhold (1):
+      dt-bindings: iio: accel: bma255: Fix bmc150/bmi055 compatible
+
+Stephen Boyd (1):
+      iio: sx9310: Fix semtech,avg-pos-strength setting when > 16
+
+ .../bindings/iio/accel/bosch,bma255.yaml           |  4 +--
+ drivers/counter/ti-eqep.c                          | 35 ----------------------
+ drivers/iio/adc/ti_am335x_adc.c                    |  6 +---
+ drivers/iio/common/st_sensors/st_sensors_trigger.c | 31 ++++++++++---------
+ drivers/iio/dac/ad5504.c                           |  4 +--
+ drivers/iio/proximity/sx9310.c                     |  5 ++--
+ drivers/iio/temperature/mlx90632.c                 |  6 ++++
+ 7 files changed, 31 insertions(+), 60 deletions(-)

@@ -2,94 +2,138 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F8BA2F7481
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Jan 2021 09:41:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B8D5E2F7770
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Jan 2021 12:18:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729845AbhAOIk5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 15 Jan 2021 03:40:57 -0500
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.54]:11316 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727349AbhAOIk4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Jan 2021 03:40:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1610699882;
-        s=strato-dkim-0002; d=gerhold.net;
-        h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:From:
-        Subject:Sender;
-        bh=/ES9AWFZgX/EjpanHclUGFBICYc1TRJYxOhIwf3/NGY=;
-        b=qPdMbi5vCh3JClgG7+W19z9NqpWwkLUD7U7eV3iXZhVl5OdyngiCsenNze4Tp9EVwM
-        DSJukjvp5V6WGN8XQbwfbtKXLdmu+w7riU/SNaZEoVPZrwkUtXO/u924FOU+ptkhk4Z1
-        bvDZ5aICa1ZDuGtrrqGeBzH6oE9YDB46Abl0lamgVRKwoZ7c8XscoQBhc+MYXsac1dch
-        EhpvHGTl+zrSq4lg3HmCB3leccNtiJmDZEb7M5isOBplOYbvZDgSaLrf4GdAUNopYDtT
-        2bxJLXv8o3cTbAswDdW4tSC50+n80x+n2MRBRNQ9mdl6Y/+Ic5PM3gsE6v4PPVZXh1k8
-        aWFg==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u26zEodhPgRDZ8j6IczBboo="
-X-RZG-CLASS-ID: mo00
-Received: from gerhold.net
-        by smtp.strato.de (RZmta 47.12.1 DYNA|AUTH)
-        with ESMTPSA id R0a218x0F8bloto
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-        Fri, 15 Jan 2021 09:37:47 +0100 (CET)
-Date:   Fri, 15 Jan 2021 09:37:42 +0100
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Rob Herring <robh@kernel.org>, linux-iio@vger.kernel.org,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH] dt-bindings: iio: accel: bma255: Fix bmc150/bmi055
- compatible
-Message-ID: <YAFUVuq6upzuH0VF@gerhold.net>
-References: <20201202083551.7753-1-stephan@gerhold.net>
- <20201209181739.GA708144@robh.at.kernel.org>
- <20201213132514.00d7ffff@archlinux>
- <20210114205937.11e650d0@archlinux>
+        id S1726116AbhAOLSc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 15 Jan 2021 06:18:32 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:7778 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726091AbhAOLSb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Jan 2021 06:18:31 -0500
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 10FBFGG1011912;
+        Fri, 15 Jan 2021 06:17:49 -0500
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 35ya984aax-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 15 Jan 2021 06:17:49 -0500
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 10FBHm2H030490
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 15 Jan 2021 06:17:48 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.721.2; Fri, 15 Jan 2021
+ 06:17:47 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.721.2 via Frontend Transport;
+ Fri, 15 Jan 2021 06:17:47 -0500
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 10FBHhWK004415;
+        Fri, 15 Jan 2021 06:17:44 -0500
+From:   Cristian Pop <cristian.pop@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>, <devicetree@vger.kernel.org>,
+        Cristian Pop <cristian.pop@analog.com>
+Subject: [PATCH v6 1/3] dt-bindings: iio: dac: AD5766 yaml documentation
+Date:   Fri, 15 Jan 2021 13:21:03 +0200
+Message-ID: <20210115112105.58652-1-cristian.pop@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210114205937.11e650d0@archlinux>
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343,18.0.737
+ definitions=2021-01-15_06:2021-01-15,2021-01-15 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 bulkscore=0
+ mlxscore=0 phishscore=0 spamscore=0 mlxlogscore=999 impostorscore=0
+ lowpriorityscore=0 clxscore=1015 adultscore=0 priorityscore=1501
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101150069
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Jan 14, 2021 at 08:59:37PM +0000, Jonathan Cameron wrote:
-> On Sun, 13 Dec 2020 13:25:14 +0000
-> Jonathan Cameron <jic23@kernel.org> wrote:
-> 
-> > On Wed, 9 Dec 2020 12:17:39 -0600
-> > Rob Herring <robh@kernel.org> wrote:
-> > 
-> > > On Wed, 02 Dec 2020 09:35:51 +0100, Stephan Gerhold wrote:  
-> > > > The bmc150-accel-i2c.c driver has an "_accel" suffix for the
-> > > > compatibles of BMC150 and BMI055. This is necessary because BMC150
-> > > > contains both accelerometer (bosch,bmc150_accel) and magnetometer
-> > > > (bosch,bmc150_magn) and therefore "bosch,bmc150" would be ambiguous.
-> > > > 
-> > > > However, the binding documentation suggests using "bosch,bmc150".
-> > > > Add the "_accel" suffix for BMC150 and BMI055 so the binding docs
-> > > > match what is expected by the driver.
-> > > > 
-> > > > Cc: Linus Walleij <linus.walleij@linaro.org>
-> > > > Fixes: 496a39526fce8 ("iio: accel: bmc150-accel: Add DT bindings")
-> > > > Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
-> > > > ---
-> > > >  Documentation/devicetree/bindings/iio/accel/bosch,bma255.yaml | 4 ++--
-> > > >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > > >     
-> > > 
-> > > Reviewed-by: Rob Herring <robh@kernel.org>  
-> > Applied to the fixes-togreg branch of iio.git which is now based on stuff
-> > queued up for the merge window. I'll send a pull not long after rc1.
-> > 
-> 
-> Not sure why, but the Fixes tag above is invalid. 
-> 
+This adds device tree bindings for the AD5766 DAC.
 
-I think we can call this a "race condition" :)
+Signed-off-by: Cristian Pop <cristian.pop@analog.com>
+---
+Changelog v6:
+	- Use microvolt unit
+	- Remove unrelevant to the binding comment
+ .../bindings/iio/dac/adi,ad5766.yaml          | 63 +++++++++++++++++++
+ 1 file changed, 63 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad5766.yaml
 
-I sent the patch on Dec 02 and you rebased the patch on Dec 03 for
-"iio-for-5.11b-take2" (because some sign offs were missing there).
-My patch simply refers to the old commit hash.
+diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5766.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5766.yaml
+new file mode 100644
+index 000000000000..7fdd2c42441d
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5766.yaml
+@@ -0,0 +1,63 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++# Copyright 2020 Analog Devices Inc.
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/dac/adi,ad5766.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Analog Devices AD5766 DAC device driver
++
++maintainers:
++  - Cristian Pop <cristian.pop@analog.com>
++
++description: |
++  Bindings for the Analog Devices AD5766 current DAC device. Datasheet can be
++  found here:
++    https://www.analog.com/media/en/technical-documentation/data-sheets/ad5766-5767.pdf
++
++properties:
++  compatible:
++    enum:
++      - adi,ad5766
++      - adi,ad5767
++
++  output-range-microvolts:
++    description: Select converter output range.
++
++  reg:
++    maxItems: 1
++
++  spi-max-frequency:
++    maximum: 1000000
++
++  spi-cpol: true
++
++  reset-gpios:
++    description: GPIO spec for the RESET pin. As the line is active low, it
++      should be marked GPIO_ACTIVE_LOW.
++    maxItems: 1
++
++required:
++  - compatible
++  - output-range-microvolts
++  - reg
++  - spi-max-frequency
++  - spi-cpol
++
++additionalProperties: false
++
++examples:
++  - |
++    spi {
++          #address-cells = <1>;
++          #size-cells = <0>;
++          
++          ad5766@0 {
++              compatible = "adi,ad5766";
++              output-range-microvolts = <(-5000) 5000>;
++              reg = <0>;
++              spi-cpol;
++              spi-max-frequency = <1000000>;
++              reset-gpios = <&gpio 22 0>;
++            };
++      };
+-- 
+2.17.1
 
-Stephan

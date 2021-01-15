@@ -2,44 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8D5E2F7770
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Jan 2021 12:18:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30AF12F7771
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Jan 2021 12:18:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726116AbhAOLSc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 15 Jan 2021 06:18:32 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:7778 "EHLO
+        id S1726900AbhAOLSe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 15 Jan 2021 06:18:34 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:9592 "EHLO
         mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726091AbhAOLSb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Jan 2021 06:18:31 -0500
+        by vger.kernel.org with ESMTP id S1726091AbhAOLSd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Jan 2021 06:18:33 -0500
 Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 10FBFGG1011912;
-        Fri, 15 Jan 2021 06:17:49 -0500
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 35ya984aax-1
+        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 10FBEp75010772;
+        Fri, 15 Jan 2021 06:17:52 -0500
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 35ya984ab0-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 15 Jan 2021 06:17:49 -0500
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 10FBHm2H030490
+        Fri, 15 Jan 2021 06:17:52 -0500
+Received: from SCSQMBX10.ad.analog.com (SCSQMBX10.ad.analog.com [10.77.17.5])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 10FBHoTI025214
         (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 15 Jan 2021 06:17:48 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.721.2; Fri, 15 Jan 2021
- 06:17:47 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.721.2 via Frontend Transport;
- Fri, 15 Jan 2021 06:17:47 -0500
+        Fri, 15 Jan 2021 06:17:50 -0500
+Received: from SCSQCASHYB7.ad.analog.com (10.77.17.133) by
+ SCSQMBX10.ad.analog.com (10.77.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.721.2;
+ Fri, 15 Jan 2021 03:17:49 -0800
+Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
+ SCSQCASHYB7.ad.analog.com (10.77.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.721.2;
+ Fri, 15 Jan 2021 03:17:49 -0800
+Received: from zeus.spd.analog.com (10.66.68.11) by SCSQMBX11.ad.analog.com
+ (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Fri, 15 Jan 2021 03:17:48 -0800
 Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 10FBHhWK004415;
-        Fri, 15 Jan 2021 06:17:44 -0500
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 10FBHhWL004415;
+        Fri, 15 Jan 2021 06:17:45 -0500
 From:   Cristian Pop <cristian.pop@analog.com>
 To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC:     <jic23@kernel.org>, <devicetree@vger.kernel.org>,
         Cristian Pop <cristian.pop@analog.com>
-Subject: [PATCH v6 1/3] dt-bindings: iio: dac: AD5766 yaml documentation
-Date:   Fri, 15 Jan 2021 13:21:03 +0200
-Message-ID: <20210115112105.58652-1-cristian.pop@analog.com>
+Subject: [PATCH v6 2/3] Documentation/ABI/testing: Add documentation for AD5766 new ABI
+Date:   Fri, 15 Jan 2021 13:21:04 +0200
+Message-ID: <20210115112105.58652-2-cristian.pop@analog.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20210115112105.58652-1-cristian.pop@analog.com>
+References: <20210115112105.58652-1-cristian.pop@analog.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-ADIRuleOP-NewSCL: Rule Triggered
@@ -54,86 +60,56 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This adds device tree bindings for the AD5766 DAC.
+New interface is proposed for dither functionality. This future allows
+composing  an external signals to the selected output channel.
+The dither signal can be turned on/off, scaled, inverted, or it can be
+selected from different sources.
 
 Signed-off-by: Cristian Pop <cristian.pop@analog.com>
 ---
 Changelog v6:
-	- Use microvolt unit
-	- Remove unrelevant to the binding comment
- .../bindings/iio/dac/adi,ad5766.yaml          | 63 +++++++++++++++++++
- 1 file changed, 63 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad5766.yaml
+	- Fix type; enable
+ .../ABI/testing/sysfs-bus-iio-dac-ad5766      | 31 +++++++++++++++++++
+ 1 file changed, 31 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-dac-ad5766
 
-diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5766.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5766.yaml
+diff --git a/Documentation/ABI/testing/sysfs-bus-iio-dac-ad5766 b/Documentation/ABI/testing/sysfs-bus-iio-dac-ad5766
 new file mode 100644
-index 000000000000..7fdd2c42441d
+index 000000000000..7fbcba15bf1e
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5766.yaml
-@@ -0,0 +1,63 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+# Copyright 2020 Analog Devices Inc.
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/dac/adi,ad5766.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++++ b/Documentation/ABI/testing/sysfs-bus-iio-dac-ad5766
+@@ -0,0 +1,31 @@
++What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_dither_enable
++KernelVersion:	5.12
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Dither enable. Write 1 to enable dither or 0 to disable it.
 +
-+title: Analog Devices AD5766 DAC device driver
++What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_dither_invert
++KernelVersion:	5.12
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Inverts the dither applied to the selected DAC channel. Dither is not
++		inverted by default. Write "1" to invert dither.
 +
-+maintainers:
-+  - Cristian Pop <cristian.pop@analog.com>
++What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_dither_scale_available
++KernelVersion:	5.12
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Returns possible scalings available for the current channel.
 +
-+description: |
-+  Bindings for the Analog Devices AD5766 current DAC device. Datasheet can be
-+  found here:
-+    https://www.analog.com/media/en/technical-documentation/data-sheets/ad5766-5767.pdf
++What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_dither_scale
++KernelVersion:	5.12
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Scales the dither before it is applied to the selected channel.
 +
-+properties:
-+  compatible:
-+    enum:
-+      - adi,ad5766
-+      - adi,ad5767
-+
-+  output-range-microvolts:
-+    description: Select converter output range.
-+
-+  reg:
-+    maxItems: 1
-+
-+  spi-max-frequency:
-+    maximum: 1000000
-+
-+  spi-cpol: true
-+
-+  reset-gpios:
-+    description: GPIO spec for the RESET pin. As the line is active low, it
-+      should be marked GPIO_ACTIVE_LOW.
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - output-range-microvolts
-+  - reg
-+  - spi-max-frequency
-+  - spi-cpol
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    spi {
-+          #address-cells = <1>;
-+          #size-cells = <0>;
-+          
-+          ad5766@0 {
-+              compatible = "adi,ad5766";
-+              output-range-microvolts = <(-5000) 5000>;
-+              reg = <0>;
-+              spi-cpol;
-+              spi-max-frequency = <1000000>;
-+              reset-gpios = <&gpio 22 0>;
-+            };
-+      };
++What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_dither_source
++KernelVersion:	5.12
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Selects dither source applied to the selected channel. Write "0" to
++		select N0 source, write "1" to select N1 source.
 -- 
 2.17.1
 

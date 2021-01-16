@@ -2,37 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FA8D2F8E6F
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Jan 2021 18:48:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97F292F8E78
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Jan 2021 18:54:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727383AbhAPRsU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 16 Jan 2021 12:48:20 -0500
-Received: from mail.kernel.org ([198.145.29.99]:36772 "EHLO mail.kernel.org"
+        id S1727089AbhAPRyT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 16 Jan 2021 12:54:19 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38902 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726114AbhAPRsT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 16 Jan 2021 12:48:19 -0500
+        id S1726114AbhAPRyT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 16 Jan 2021 12:54:19 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8D666223E8;
-        Sat, 16 Jan 2021 17:47:38 +0000 (UTC)
-Date:   Sat, 16 Jan 2021 17:47:35 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id ED47A2246B;
+        Sat, 16 Jan 2021 17:53:36 +0000 (UTC)
+Date:   Sat, 16 Jan 2021 17:53:33 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     Jonathan Albrieux <jonathan.albrieux@gmail.com>,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Andy Gross <agross@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+To:     Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 1/2] iio:adc:qcom-spmi-vadc: add default scale to
- LR_MUX2_BAT_ID channel
-Message-ID: <20210116174735.05d0fc75@archlinux>
-In-Reply-To: <YAHDOaZoSSGZexFa@builder.lan>
-References: <20210113151808.4628-1-jonathan.albrieux@gmail.com>
-        <20210113151808.4628-2-jonathan.albrieux@gmail.com>
-        <YAHDOaZoSSGZexFa@builder.lan>
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Fabrice Gasnier <fabrice.gasnier@st.com>,
+        Olivier Moysan <olivier.moysan@st.com>, kernel@pengutronix.de,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        Holger Assmann <has@pengutronix.de>, linux-iio@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: stm32-adc: fix erroneous handling of spurious
+ IRQs
+Message-ID: <20210116175333.4d8684c5@archlinux>
+In-Reply-To: <20210112152441.20665-1-a.fatoum@pengutronix.de>
+References: <20210112152441.20665-1-a.fatoum@pengutronix.de>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -41,77 +43,68 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 15 Jan 2021 10:30:49 -0600
-Bjorn Andersson <bjorn.andersson@linaro.org> wrote:
+On Tue, 12 Jan 2021 16:24:42 +0100
+Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
 
-> On Wed 13 Jan 09:18 CST 2021, Jonathan Albrieux wrote:
+> 1c6c69525b40 ("genirq: Reject bogus threaded irq requests") makes sure
+> that threaded IRQs either
+>   - have IRQF_ONESHOT set
+>   - don't have the default just return IRQ_WAKE_THREAD primary handler
 > 
-> > Checking at both msm8909-pm8916.dtsi and msm8916.dtsi from downstream
-> > it is indicated that "batt_id" channel has to be scaled with the default
-> > function:
-> > 
-> > 	chan@31 {
-> > 		label = "batt_id";
-> > 		reg = <0x31>;
-> > 		qcom,decimation = <0>;
-> > 		qcom,pre-div-channel-scaling = <0>;
-> > 		qcom,calibration-type = "ratiometric";
-> > 		qcom,scale-function = <0>;
-> > 		qcom,hw-settle-time = <0xb>;
-> > 		qcom,fast-avg-setup = <0>;
-> > 	};
-> > 
-> > Change LR_MUX2_BAT_ID scaling accordingly.
-> >   
+> This is necessary because level-triggered interrupts need to be masked,
+> either at device or irqchip, to avoid an interrupt storm.
 > 
-> Acked-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-> 
-> Not entirely sure, but looking at the history I think this used to work
-> - but it's obvious that no one has read this channel for a while...
-> 
-> But I think below is a regression and should be mentioned:
-> 
-> Fixes: 7c271eea7b8a ("iio: adc: spmi-vadc: Changes to support different scaling")
-> 
+> For spurious interrupts, the STM32 ADC driver still does this bogus
+> request though:
+>   - It doesn't set IRQF_ONESHOT
+>   - Its primary handler just returns IRQ_WAKE_THREAD if the interrupt
+>     is unexpected, i.e. !(status & enabled_mask)
 
-Yikes that was a while ago :)
+This seems 'unusual'.  If this is a spurious interrupt we should be
+returning IRQ_NONE and letting the spurious interrupt protection
+stuff kick in.
 
-> > Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>  
+The only reason I can see that it does this is print an error message.
+I'm not sure why we need to go into the thread to do that given
+it's not supposed to happen. If we need that message at all, I'd
+suggest doing it in the interrupt handler then return IRQ_NONE;
+
+>   - stm32mp151.dtsi describes the ADC interrupt as level-triggered
 > 
-> Jonathan Cameron, if you merge this through your tree I can take the dts
-> addition through the Qualcomm tree.
-
-Applied to the fixes-togreg branch of iio.git and marked for stable.
-
-I'm not going to rush this one given age of the bug, but if I happen to
-have anything else going it'll make it before the end of this cycle.
-
-Thanks,
-
-Jonathan
-
+> Fix this by setting IRQF_ONESHOT to have the irqchip mask the IRQ
+> until the IRQ thread has finished.
 > 
-> Regards,
-> Bjorn
+> IRQF_ONESHOT also has the effect that the primary handler is no longer
+> forced into a thread. This makes the issue with spurious interrupts
+> interrupts disappear when reading the ADC on a threadirqs=1 kernel.
+> This used to result in following kernel error message:
 > 
-> > ---
-> >  drivers/iio/adc/qcom-spmi-vadc.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/iio/adc/qcom-spmi-vadc.c b/drivers/iio/adc/qcom-spmi-vadc.c
-> > index b0388f8a69f4..7e7d408452ec 100644
-> > --- a/drivers/iio/adc/qcom-spmi-vadc.c
-> > +++ b/drivers/iio/adc/qcom-spmi-vadc.c
-> > @@ -598,7 +598,7 @@ static const struct vadc_channels vadc_chans[] = {
-> >  	VADC_CHAN_NO_SCALE(P_MUX16_1_3, 1)
-> >  
-> >  	VADC_CHAN_NO_SCALE(LR_MUX1_BAT_THERM, 0)
-> > -	VADC_CHAN_NO_SCALE(LR_MUX2_BAT_ID, 0)
-> > +	VADC_CHAN_VOLT(LR_MUX2_BAT_ID, 0, SCALE_DEFAULT)
-> >  	VADC_CHAN_NO_SCALE(LR_MUX3_XO_THERM, 0)
-> >  	VADC_CHAN_NO_SCALE(LR_MUX4_AMUX_THM1, 0)
-> >  	VADC_CHAN_NO_SCALE(LR_MUX5_AMUX_THM2, 0)
-> > -- 
-> > 2.17.1
-> >   
+> 	iio iio:device1: Unexpected IRQ: IER=0x00000000, ISR=0x0000100e
+> or
+> 	iio iio:device1: Unexpected IRQ: IER=0x00000004, ISR=0x0000100a
+> 
+> But with this patch applied (or threaded IRQs disabled), this no longer
+> occurs.
+> 
+> Cc: Lucas Stach <l.stach@pengutronix.de>
+> Reported-by: Holger Assmann <has@pengutronix.de>
+> Fixes: 695e2f5c289b ("iio: adc: stm32-adc: fix a regression when using dma and irq")
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  drivers/iio/adc/stm32-adc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+> index c067c994dae2..7e0e21c79ac8 100644
+> --- a/drivers/iio/adc/stm32-adc.c
+> +++ b/drivers/iio/adc/stm32-adc.c
+> @@ -1910,7 +1910,7 @@ static int stm32_adc_probe(struct platform_device *pdev)
+>  
+>  	ret = devm_request_threaded_irq(&pdev->dev, adc->irq, stm32_adc_isr,
+>  					stm32_adc_threaded_isr,
+> -					0, pdev->name, indio_dev);
+> +					IRQF_ONESHOT, pdev->name, indio_dev);
+>  	if (ret) {
+>  		dev_err(&pdev->dev, "failed to request IRQ\n");
+>  		return ret;
 

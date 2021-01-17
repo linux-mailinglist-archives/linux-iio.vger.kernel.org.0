@@ -2,37 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 242A62F93A2
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Jan 2021 16:42:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A1CA32F93A0
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Jan 2021 16:42:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728708AbhAQPmJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 17 Jan 2021 10:42:09 -0500
-Received: from mail.kernel.org ([198.145.29.99]:49028 "EHLO mail.kernel.org"
+        id S1726574AbhAQPmK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 17 Jan 2021 10:42:10 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49030 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726574AbhAQPmH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        id S1728549AbhAQPmH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
         Sun, 17 Jan 2021 10:42:07 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C534E2253A;
-        Sun, 17 Jan 2021 15:40:41 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7C22D2256F;
+        Sun, 17 Jan 2021 15:40:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1610898043;
-        bh=9AX5rf6EYSn7JDBBzPcWzczYLdWEL2zW6dyRs5ubigI=;
+        s=k20201202; t=1610898044;
+        bh=nLroq6lXD74xciguW29RFGRm/iC3bKK63GvLxq4IASM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TLEbJ6AbMUV6KTauzw6zu5dOJgvn3I41GrrcnzK3sYkVHMju2N9t0LdpmFTZ/8oqg
-         ToH6HfJyTgavO4fir9p6WZq35J9qBAotM/2XFTvFftuQ3bVXAw+Hdj5F/JlhdwBeoa
-         +T+ge2Tuum2hEbVAGCDkSEFLm79bMXH6eUO0fbAu9lSL7ffyE2wv8DE+wKofzdc76Q
-         PgbYAiyPGMzfWdWqUe/UxKYhWzLS7/LTn6raZ0t7dLe2RMl0OMH2VDRedfoE05CAq6
-         DDHQIJwVXjnb/SXsIuYHRh48g2lmNH3dmj8O+oD9hwdIASmiLUjP+OB+IxYHtlRbZi
-         7AepbphI+ZTFQ==
+        b=uMqcjRx+PcdrqFLlZ2lI4M+hLwA4uoGUY1GzNPbt0X4yB7dHWToyl4l6cYloZzjiK
+         nfZLvPqHE47wGP6cQbitFb+qiEjYLcyO7WuMhlcJuUtY+cdRPrzHGZTNsiKUwx9eNT
+         t8Ex5weQrO02SVkOvbUkB1PYeNQMfTeMT5cCjdwwOnwCkbhrrpZfSvKktge3MZDGik
+         eHC8eQJCflp89lmBTNVSf+FgIjAWl/dZ0uJGmEHXqOseiMT6wRwxyvx47inw+E4pJE
+         fQ+Iv8rQ3vrxc6BJnjgXtaoaChoQN2NPEYP2GY3M3K1TQuOo4YulLG/H214xF1cfQS
+         UkiIA14kqZ3Ow==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, linux-doc@vger.kernel.org,
         Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
         Lukas Bulwahn <lukas.bulwahn@gmail.com>
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Eugene Zaikonnikov <ez@norphonic.com>,
         Matt Ranostay <matt.ranostay@konsulko.com>
-Subject: [RFC PATCH 5/7] iio:ABI docs: Combine sysfs-bus-iio-humidity-hdc2010/hdc100x into one file
-Date:   Sun, 17 Jan 2021 15:38:14 +0000
-Message-Id: <20210117153816.696693-6-jic23@kernel.org>
+Subject: [RFC PATCH 6/7] iio:ABI docs: Combine the two instances of docs for sensor_sensitivity
+Date:   Sun, 17 Jan 2021 15:38:15 +0000
+Message-Id: <20210117153816.696693-7-jic23@kernel.org>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20210117153816.696693-1-jic23@kernel.org>
 References: <20210117153816.696693-1-jic23@kernel.org>
@@ -44,53 +43,83 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-These contain only one entry for out_current_heater_raw (_available).
-Document this in a new sysfs-bus-iio-humidity file, and make it a little
-more generic by allowing for non 0/1 values.
+This control on the gain of a measurement used for time of flight sensing
+is standard but the expected values for different enviroments may not be.
+As we cannot have the same ABI element documented in two files, add a
+generic version to sysfs-bus-iio-proximity and a note on the expected
+value vs measuring environment for the as3935.
 
 Fixes:
 $ scripts/get_abi.pl validate
-Warning: /sys/bus/iio/devices/iio:deviceX/out_current_heater_raw is defined 2 times:  ./Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc2010:0  ./Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc100x:0
-Warning: /sys/bus/iio/devices/iio:deviceX/out_current_heater_raw_available is defined 2 times:  ./Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc2010:1  ./Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc100x:1
+Warning: /sys/bus/iio/devices/iio:deviceX/sensor_sensitivity is defined 2 times:  ./Documentation/ABI/testing/sysfs-bus-iio-distance-srf08:0  ./Documentation/ABI/testing/sysfs-bus-iio-proximity-as3935:8
 
-Cc: Eugene Zaikonnikov <ez@norphonic.com>
 Cc: Matt Ranostay <matt.ranostay@konsulko.com>
 Reported-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- ...s-bus-iio-humidity-hdc2010 => sysfs-bus-iio-humidity} | 3 ++-
- Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc100x | 9 ---------
- 2 files changed, 2 insertions(+), 10 deletions(-)
+ .../ABI/testing/sysfs-bus-iio-distance-srf08       |  8 --------
+ Documentation/ABI/testing/sysfs-bus-iio-proximity  | 14 ++++++++++++++
+ .../ABI/testing/sysfs-bus-iio-proximity-as3935     |  9 ---------
+ 3 files changed, 14 insertions(+), 17 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc2010 b/Documentation/ABI/testing/sysfs-bus-iio-humidity
-similarity index 79%
-rename from Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc2010
-rename to Documentation/ABI/testing/sysfs-bus-iio-humidity
-index 5b78af5f341d..cb0d7e75d297 100644
---- a/Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc2010
-+++ b/Documentation/ABI/testing/sysfs-bus-iio-humidity
-@@ -6,4 +6,5 @@ Description:
- 		Controls the heater device within the humidity sensor to get
- 		rid of excess condensation.
- 
--		Valid control values are 0 = OFF, and 1 = ON.
-+		In some devices, this is just a switch in which case 0 = OFF,
-+		and 1 = ON.
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc100x b/Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc100x
-deleted file mode 100644
-index b72bb62552cf..000000000000
---- a/Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc100x
-+++ /dev/null
-@@ -1,9 +0,0 @@
--What:		/sys/bus/iio/devices/iio:deviceX/out_current_heater_raw
--What:		/sys/bus/iio/devices/iio:deviceX/out_current_heater_raw_available
--KernelVersion:	4.3
+diff --git a/Documentation/ABI/testing/sysfs-bus-iio-distance-srf08 b/Documentation/ABI/testing/sysfs-bus-iio-distance-srf08
+index 40df5c9fef99..9dae94aa880b 100644
+--- a/Documentation/ABI/testing/sysfs-bus-iio-distance-srf08
++++ b/Documentation/ABI/testing/sysfs-bus-iio-distance-srf08
+@@ -1,11 +1,3 @@
+-What:		/sys/bus/iio/devices/iio:deviceX/sensor_sensitivity
+-Date:		January 2017
+-KernelVersion:	4.11
 -Contact:	linux-iio@vger.kernel.org
 -Description:
--		Controls the heater device within the humidity sensor to get
--		rid of excess condensation.
+-		Show or set the gain boost of the amp, from 0-31 range.
+-		default 31
 -
--		Valid control values are 0 = OFF, and 1 = ON.
+ What:		/sys/bus/iio/devices/iio:deviceX/sensor_max_range
+ Date:		January 2017
+ KernelVersion:	4.11
+diff --git a/Documentation/ABI/testing/sysfs-bus-iio-proximity b/Documentation/ABI/testing/sysfs-bus-iio-proximity
+index 2172f3bb9c64..3aac6dab8775 100644
+--- a/Documentation/ABI/testing/sysfs-bus-iio-proximity
++++ b/Documentation/ABI/testing/sysfs-bus-iio-proximity
+@@ -8,3 +8,17 @@ Description:
+ 		considered close to the device. If the value read from the
+ 		sensor is above or equal to the value in this file an object
+ 		should typically be considered near.
++
++What:		/sys/bus/iio/devices/iio:deviceX/sensor_sensitivity
++Date:		March 2014
++KernelVersion:	3.15
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Proximity sensors sometimes have a controllable amplifier
++		on the signal from which time of flight measurements are
++		taken.
++		The appropriate values to take is dependent on both the
++		sensor and it's operating environment:
++		* as3935 (0-31 range)
++		18 = indoors (default)
++		14 = outdoors
+diff --git a/Documentation/ABI/testing/sysfs-bus-iio-proximity-as3935 b/Documentation/ABI/testing/sysfs-bus-iio-proximity-as3935
+index c59d95346341..1e5c40775a6c 100644
+--- a/Documentation/ABI/testing/sysfs-bus-iio-proximity-as3935
++++ b/Documentation/ABI/testing/sysfs-bus-iio-proximity-as3935
+@@ -6,15 +6,6 @@ Description:
+ 		Get the current distance in meters of storm (1km steps)
+ 		1000-40000 = distance in meters
+ 
+-What:		/sys/bus/iio/devices/iio:deviceX/sensor_sensitivity
+-Date:		March 2014
+-KernelVersion:	3.15
+-Contact:	Matt Ranostay <matt.ranostay@konsulko.com>
+-Description:
+-		Show or set the gain boost of the amp, from 0-31 range.
+-		18 = indoors (default)
+-		14 = outdoors
+-
+ What		/sys/bus/iio/devices/iio:deviceX/noise_level_tripped
+ Date:		May 2017
+ KernelVersion:	4.13
 -- 
 2.30.0
 

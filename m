@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B2CC02FB13F
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Jan 2021 07:25:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4735D2FB1A4
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Jan 2021 07:41:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727343AbhASGXB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 19 Jan 2021 01:23:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54250 "EHLO
+        id S1726356AbhASGW1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 19 Jan 2021 01:22:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387605AbhASFv2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 Jan 2021 00:51:28 -0500
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BEF0C06179F
-        for <linux-iio@vger.kernel.org>; Mon, 18 Jan 2021 21:49:03 -0800 (PST)
-Received: by mail-lj1-x236.google.com with SMTP id u21so20616084lja.0
-        for <linux-iio@vger.kernel.org>; Mon, 18 Jan 2021 21:49:03 -0800 (PST)
+        with ESMTP id S2403882AbhASFuc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 Jan 2021 00:50:32 -0500
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 959C0C0613CF
+        for <linux-iio@vger.kernel.org>; Mon, 18 Jan 2021 21:48:56 -0800 (PST)
+Received: by mail-lj1-x232.google.com with SMTP id f11so20568042ljm.8
+        for <linux-iio@vger.kernel.org>; Mon, 18 Jan 2021 21:48:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=PiP8LcJ6dWMmCi/kSyfEeDH6QqluhGAB6bpen9IBBv8=;
-        b=xRQldMVRWQ7AJJjPzrWYHY77UE66DaNYr0PpVKIKsgGzhFBDg+aBFZWLObZwzA69Uu
-         z83XOdzfpdyggnIcB67fiJlwavAybz3PUmev1TptwvExOMba2TYc9Ze+0vvcFDmrfhbQ
-         Mnlad+iKpYj33omHR9KrWFBoYdS+6hV/prewM5lJ4rbb77DjciJ76HDdFul1skjukeLI
-         amVsvCOVP7QbsCwVFqlBC/go2SbH1Z3BUrmaJr2xdnmsOoO6fji68Vf3UeNynMAqh/Gj
-         JVooLMDSlgUZ08vgGkPuoFc9SVMGy8ErHVzFUVAhOgjF6CMDVfCjxDXWJStV3LOSa2jL
-         BDWQ==
+        bh=c6jITeAQsweg+hEb7KjyODoZa852s4oIvjjf4EuuYDM=;
+        b=R+jLep6zm2Hfh/NUDz9yAHVvg3pBOWNSWOG6oCg3j0vIECH284uKpjA1szYLVt5YLD
+         nMscayV8SOT6KMYd0M8OyVIDNrtp4o1K+HHg3Z0i0ZcxcCZz0LHeUqRmQ3E+s/60nJ+B
+         mSRe9RGYPInPQSI9d4HOSGUnXLkVn36ws0n5fXljB+28XlrHvHdJgGRRzeDIFYHcMydX
+         I/AQdA59FnpMRJ4iNWk6RSODfAPFYSqekYgYbFhufQtFMiexZE+Gd87suEBDJuOQd++q
+         daridGB25KMUqGKGQMNsEhiZTUL1DtBt/jwII6lSCxd1bjt7ax7VC27I9dycuweHMqAK
+         3rRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=PiP8LcJ6dWMmCi/kSyfEeDH6QqluhGAB6bpen9IBBv8=;
-        b=U4+GgljsIolwcdKiZrf66zxkYnTOuFiz4+A8C0Th4C+Zn0hq3eTX3lfnT4PaaPxnt9
-         0v3depEyUws7dl532m2xHGPPZ33mqMrwp15cYevQ106Nr8RgLVpeMUX2CMU8toVmolLJ
-         kxyyOOQna9Y/ISbaykVv2MqHRFdFWvnM1qv4XcT4YYDcBh4wvoZfc5QMXsZhs5ZWWuLr
-         XohK7Nekz88Oph604PPbQkdrgZrIXgKi8+Vw7l4wwe2mlfoFCMtTGf76hoDbDHPlOBde
-         pWxXOyQjczLE0S1BcvWy7grrZ7coFmogD4mA7+79s2/zrMEcWfJ1XkL4vZ8D1Zbg4tx+
-         wT5Q==
-X-Gm-Message-State: AOAM533f1vzjoylo86K1GvmW60qs5Dilg7HE3ZFY83exyNbMYudq0oKq
-        0WWbTSg79qTX+Oqg8hMKQyJM5A==
-X-Google-Smtp-Source: ABdhPJySi6T5xQKzuNTB6aMl2Ecz4Fu+ZJR7MbXAR8BdpXBjRVp0sz2JDIXvfbTyYQfc9d/Y94NLUg==
-X-Received: by 2002:a2e:874d:: with SMTP id q13mr1136838ljj.323.1611035341976;
-        Mon, 18 Jan 2021 21:49:01 -0800 (PST)
+        bh=c6jITeAQsweg+hEb7KjyODoZa852s4oIvjjf4EuuYDM=;
+        b=t70pI6xip8e+/6u76rB0C6nVXFjhuXJ97evo5GR+Zt7t9vsJZ9VHNZNnAjDcO9XdVX
+         55Omy/ghDxxcDu0GoRegj9AUt1VZcAmrdZEGSgF6cReBEPjAbtuXYtk7EyKkXQX2Pimm
+         htIUi0i/54Wo5TQPGJ0+gavoU3vu44AVOnsqSEZ6Xz2K/iRcQDmH4AVVGbEvmJUK8UY3
+         6blLo+hYuIl143MIKbJdF+lt5oap9Y5wSkVyXsDle/NY4w9AQlNxtPmSGEezSmENAV7h
+         vgaqbITT280hY06TwUp8vk7o7tFueQ0QLIgxp7L5QSj+HxgPN+bbewcf8sfnvInYqK0H
+         AHHg==
+X-Gm-Message-State: AOAM533pTRlGAMVcYsBbh7RF5AumE1CwUB5mMPNfJZ4h/0ntxwiz1rpP
+        c5cSgp6oD2Z1iyqVgNyY8BSsMQ==
+X-Google-Smtp-Source: ABdhPJw6f6kgqF3FjzXDtpECgxdqlro1NM/wkjP7gfHv2x+xWbQdeSjAOUngNQ+2rYSWTzeFNYZ51A==
+X-Received: by 2002:a2e:9f13:: with SMTP id u19mr1201181ljk.69.1611035335117;
+        Mon, 18 Jan 2021 21:48:55 -0800 (PST)
 Received: from eriador.lumag.spb.ru ([188.162.65.64])
-        by smtp.gmail.com with ESMTPSA id j3sm2168207lfb.29.2021.01.18.21.48.59
+        by smtp.gmail.com with ESMTPSA id j3sm2168207lfb.29.2021.01.18.21.48.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Jan 2021 21:49:01 -0800 (PST)
+        Mon, 18 Jan 2021 21:48:54 -0800 (PST)
 From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
@@ -61,10 +61,11 @@ To:     Andy Gross <agross@kernel.org>,
 Cc:     linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
         devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
         Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Jishnu Prakash <jprakash@qti.qualcomm.com>
-Subject: [PATCH v12 4/5] arm64: dts: sm8250-mtp: add thermal zones using pmic's adc-tm5
-Date:   Tue, 19 Jan 2021 08:48:47 +0300
-Message-Id: <20210119054848.592329-5-dmitry.baryshkov@linaro.org>
+        Jishnu Prakash <jprakash@qti.qualcomm.com>,
+        Rob Herring <robh@kernel.org>
+Subject: [PATCH v12 1/5] dt-bindings: thermal: qcom: add adc-thermal monitor bindings
+Date:   Tue, 19 Jan 2021 08:48:44 +0300
+Message-Id: <20210119054848.592329-2-dmitry.baryshkov@linaro.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210119054848.592329-1-dmitry.baryshkov@linaro.org>
 References: <20210119054848.592329-1-dmitry.baryshkov@linaro.org>
@@ -74,242 +75,175 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Port thermal zones definitions from msm-4.19 tree. Enable and add
-channel configuration to PMIC's ADC-TM definitions. Declare thermal
-zones and respective trip points.
+Add bindings for thermal monitor, part of Qualcomm PMIC5 chips. It is a
+close counterpart of VADC part of those PMICs.
 
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Rob Herring <robh@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8250-mtp.dts | 209 ++++++++++++++++++++++++
- 1 file changed, 209 insertions(+)
+ .../bindings/thermal/qcom-spmi-adc-tm5.yaml   | 153 ++++++++++++++++++
+ 1 file changed, 153 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8250-mtp.dts b/arch/arm64/boot/dts/qcom/sm8250-mtp.dts
-index dea00f19711d..092ec5da82e7 100644
---- a/arch/arm64/boot/dts/qcom/sm8250-mtp.dts
-+++ b/arch/arm64/boot/dts/qcom/sm8250-mtp.dts
-@@ -24,6 +24,106 @@ chosen {
- 		stdout-path = "serial0:115200n8";
- 	};
- 
-+	thermal-zones {
-+		camera-thermal {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm8150l_adc_tm 0>;
+diff --git a/Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml b/Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml
+new file mode 100644
+index 000000000000..7cd364430573
+--- /dev/null
++++ b/Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml
+@@ -0,0 +1,153 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/thermal/qcom-spmi-adc-tm5.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "passive";
-+				};
-+			};
-+		};
++title: Qualcomm's SPMI PMIC ADC Thermal Monitoring
++maintainers:
++  - Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 +
-+		conn-thermal {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm8150b_adc_tm 0>;
++properties:
++  compatible:
++    const: qcom,spmi-adc-tm5
 +
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "passive";
-+				};
-+			};
-+		};
++  reg:
++    maxItems: 1
 +
-+		mmw-pa1-thermal {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm8150_adc_tm 2>;
++  interrupts:
++    maxItems: 1
 +
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "passive";
-+				};
-+			};
-+		};
++  "#thermal-sensor-cells":
++    const: 1
++    description:
++      Number of cells required to uniquely identify the thermal sensors. Since
++      we have multiple sensors this is set to 1
 +
-+		mmw-pa2-thermal {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm8150l_adc_tm 2>;
++  "#address-cells":
++    const: 1
 +
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "passive";
-+				};
-+			};
-+		};
++  "#size-cells":
++    const: 0
 +
-+		skin-msm-thermal {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm8150l_adc_tm 1>;
++  qcom,avg-samples:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: Number of samples to be used for measurement.
++    enum:
++      - 1
++      - 2
++      - 4
++      - 8
++      - 16
++    default: 1
 +
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "passive";
-+				};
-+			};
-+		};
++  qcom,decimation:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: This parameter is used to decrease ADC sampling rate.
++            Quicker measurements can be made by reducing decimation ratio.
++    enum:
++      - 250
++      - 420
++      - 840
++    default: 840
 +
-+		skin-thermal {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm8150_adc_tm 1>;
++patternProperties:
++  "^([-a-z0-9]*)@[0-7]$":
++    type: object
++    description:
++      Represent one thermal sensor.
 +
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "passive";
-+				};
-+			};
-+		};
++    properties:
++      reg:
++        $ref: /schemas/types.yaml#/definitions/uint32
++        description: Specify the sensor channel. There are 8 channels in PMIC5's ADC TM
++        minimum: 0
++        maximum: 7
 +
-+		xo-thermal {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm8150_adc_tm 0>;
++      io-channels:
++        description:
++          From common IIO binding. Used to pipe PMIC ADC channel to thermal monitor
 +
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "passive";
-+				};
-+			};
-+		};
-+	};
++      qcom,ratiometric:
++        $ref: /schemas/types.yaml#/definitions/flag
++        description:
++          Channel calibration type.
++          If this property is specified VADC will use the VDD reference
++          (1.875V) and GND for channel calibration. If property is not found,
++          channel will be calibrated with 0V and 1.25V reference channels,
++          also known as absolute calibration.
 +
- 	vph_pwr: vph-pwr-regulator {
- 		compatible = "regulator-fixed";
- 		regulator-name = "vph_pwr";
-@@ -378,6 +478,115 @@ &i2c15 {
- 	/* rtc6226 @ 64 */
- };
- 
-+&pm8150_adc {
-+	xo-therm@4c {
-+		reg = <ADC5_XO_THERM_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
++      qcom,hw-settle-time-us:
++        $ref: /schemas/types.yaml#/definitions/uint32
++        description: Time between AMUX getting configured and the ADC starting conversion.
++        enum: [15, 100, 200, 300, 400, 500, 600, 700, 1000, 2000, 4000, 8000, 16000, 32000, 64000, 128000]
 +
-+	skin-therm@4d {
-+		reg = <ADC5_AMUX_THM1_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
++      qcom,pre-scaling:
++        $ref: /schemas/types.yaml#/definitions/uint32-array
++        description: Used for scaling the channel input signal before the
++          signal is fed to VADC. The configuration for this node is to know the
++          pre-determined ratio and use it for post scaling. It is a pair of
++          integers, denoting the numerator and denominator of the fraction by
++          which input signal is multiplied. For example, <1 3> indicates the
++          signal is scaled down to 1/3 of its value before ADC measurement.  If
++          property is not found default value depending on chip will be used.
++        items:
++          - const: 1
++          - enum: [ 1, 3, 4, 6, 20, 8, 10 ]
 +
-+	pa-therm1@4e {
-+		reg = <ADC5_AMUX_THM2_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+};
++    required:
++      - reg
++      - io-channels
 +
-+&pm8150_adc_tm {
-+	status = "okay";
++    additionalProperties:
++      false
 +
-+	xo-therm@0 {
-+		reg = <0>;
-+		io-channels = <&pm8150_adc ADC5_XO_THERM_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time-us = <200>;
-+	};
++required:
++  - compatible
++  - reg
++  - interrupts
++  - "#address-cells"
++  - "#size-cells"
++  - "#thermal-sensor-cells"
 +
-+	skin-therm@1 {
-+		reg = <1>;
-+		io-channels = <&pm8150_adc ADC5_AMUX_THM1_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time-us = <200>;
-+	};
++additionalProperties: false
 +
-+	pa-therm1@2 {
-+		reg = <2>;
-+		io-channels = <&pm8150_adc ADC5_AMUX_THM2_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time-us = <200>;
-+	};
-+};
++examples:
++  - |
++    #include <dt-bindings/iio/qcom,spmi-vadc.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++    spmi_bus {
++        #address-cells = <1>;
++        #size-cells = <0>;
++        pm8150b_adc: adc@3100 {
++            reg = <0x3100>;
++            compatible = "qcom,spmi-adc5";
++            #address-cells = <1>;
++            #size-cells = <0>;
++            #io-channel-cells = <1>;
 +
-+&pm8150b_adc {
-+	conn-therm@4f {
-+		reg = <ADC5_AMUX_THM3_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+};
++            /* Other propreties are omitted */
++            conn-therm@4f {
++                reg = <ADC5_AMUX_THM3_100K_PU>;
++                qcom,ratiometric;
++                qcom,hw-settle-time = <200>;
++            };
++        };
 +
-+&pm8150b_adc_tm {
-+	status = "okay";
++        pm8150b_adc_tm: adc-tm@3500 {
++            compatible = "qcom,spmi-adc-tm5";
++            reg = <0x3500>;
++            interrupts = <0x2 0x35 0x0 IRQ_TYPE_EDGE_RISING>;
++            #thermal-sensor-cells = <1>;
++            #address-cells = <1>;
++            #size-cells = <0>;
 +
-+	conn-therm@0 {
-+		reg = <0>;
-+		io-channels = <&pm8150b_adc ADC5_AMUX_THM3_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time-us = <200>;
-+	};
-+};
-+
-+&pm8150l_adc_tm {
-+	status = "okay";
-+
-+	camera-flash-therm@0 {
-+		reg = <0>;
-+		io-channels = <&pm8150l_adc ADC5_AMUX_THM1_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time-us = <200>;
-+	};
-+
-+	skin-msm-therm@1 {
-+		reg = <1>;
-+		io-channels = <&pm8150l_adc ADC5_AMUX_THM2_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time-us = <200>;
-+	};
-+
-+	pa-therm2@2 {
-+		reg = <2>;
-+		io-channels = <&pm8150l_adc ADC5_AMUX_THM3_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time-us = <200>;
-+	};
-+};
-+
-+&pm8150l_adc {
-+	camera-flash-therm@4d {
-+		reg = <ADC5_AMUX_THM1_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+
-+	skin-msm-therm@4e {
-+		reg = <ADC5_AMUX_THM2_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+
-+	pa-therm2@4f {
-+		reg = <ADC5_AMUX_THM3_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+};
-+
- &pm8150_rtc {
- 	status = "okay";
- };
++            conn-therm@0 {
++                reg = <0>;
++                io-channels = <&pm8150b_adc ADC5_AMUX_THM3_100K_PU>;
++                qcom,ratiometric;
++                qcom,hw-settle-time-us = <200>;
++            };
++        };
++    };
++...
 -- 
 2.29.2
 

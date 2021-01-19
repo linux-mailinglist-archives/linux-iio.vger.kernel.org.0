@@ -2,272 +2,140 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E2BD2FB184
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Jan 2021 07:37:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8248C2FB3E9
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Jan 2021 09:22:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727788AbhASGXD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 19 Jan 2021 01:23:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54276 "EHLO
+        id S1727131AbhASIUy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 19 Jan 2021 03:20:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388151AbhASFvi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 Jan 2021 00:51:38 -0500
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEE26C0617A1
-        for <linux-iio@vger.kernel.org>; Mon, 18 Jan 2021 21:49:05 -0800 (PST)
-Received: by mail-lf1-x132.google.com with SMTP id o17so27422269lfg.4
-        for <linux-iio@vger.kernel.org>; Mon, 18 Jan 2021 21:49:05 -0800 (PST)
+        with ESMTP id S1729385AbhASIUB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 Jan 2021 03:20:01 -0500
+Received: from mail-io1-xd2a.google.com (mail-io1-xd2a.google.com [IPv6:2607:f8b0:4864:20::d2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3450C061573;
+        Tue, 19 Jan 2021 00:19:02 -0800 (PST)
+Received: by mail-io1-xd2a.google.com with SMTP id d81so22751210iof.3;
+        Tue, 19 Jan 2021 00:19:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=xYwmrtz/QU6RpO5QbrehkEFuAsa7SlsbStjo8EQedtw=;
-        b=K5nRtS2YbYv2AHTcD6IiyY0LEV8YCv3+rrTBZQwGfrHwDV/775v+Ib+KN125PbV1Jh
-         GgmzTQ6VsRsHqvkyXXLX8I5u667Utq9muwl680eBcSHJ+Tx9ZhkqmWY/27q446SJj0mK
-         OitGxB0lyj7j0VFIESPZj+wWVStV8rqxVk1du8WqXdrtehxOCR2ri8M3/N5Yti3xr0/a
-         PupKf6En4VUyTGpysIHa7aFrU8tXiZVuuNr0oiVjWFAdqnTsLDVZigYnng5g7ppGGfEb
-         42bCuLBhNm4vG3bQZUvjDJmCWqtieefeVyS0S7YC0ED9BJaFYZVvEEqNYVV8JZsdKCM1
-         h6Jw==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=7Ep6XAHClFQb77kqS1Nifo4aUTiAKOUGwzILPlIr1hA=;
+        b=Rn7uo4cSY3JpCIEMoejHXTtIjakE7pfu4I7upjctGZz9EXgmHwiFpr96D4oJ2olA+4
+         U50wsb1sW0pXP9tdBNOdpy3BHNXNGdBQOBHeVyGLJsci5ZGVBkWwUvUlYDhnp1Us71vQ
+         7rPEq0rs1F9CYmWMhOThTgeVLIu3FmxDfV0Y9/1PVFtQKpLsWr2quGFswwIoITDtwADA
+         75o0FPk4Vd5uYDDy+Ufa8WJp4luO2p6jKX+Ki1LTqkY4dXylTOHlQ3DjJNdJcpZC6SBx
+         UWtbcgs1GgzTFavl18L3/48whMddlwFFmCp67f7qRk4uCF0gE9FixAf5cZJQAvaEtDSy
+         YZRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=xYwmrtz/QU6RpO5QbrehkEFuAsa7SlsbStjo8EQedtw=;
-        b=m/Cw5SyYWlfdBuHXiRJgjRvYxrehSRzTesbx1ex+rBXKNRW3WYjDnYisKnHb8+UgH/
-         45LxThxvJ69EMpRXYzdG66A7Y/phLX7JCGYFacZh1951mzUKDXEpyglAxrQjFB6WHVHo
-         QQDM44/d9lB2HFGUPaXm9RZgh0qqvfnjJ8ig/hHaMDbRyN0L5cHenSPlJ/+Iso6z5vuI
-         EYL/wjhtdkKbpkUjqFEA3CFrZtVVzElHfO81+RmDHEH1g3l+GU/9i+sbtaEhIcl9RQJr
-         xVq4wxpRYXCqYCj9WEomlJiVT7h9KRx9MPZnFrbaCOzro1zQhOCbsZcxa8IBVYdJU+5I
-         uJmA==
-X-Gm-Message-State: AOAM531TGD0WXHdzqCMapP3M6U0yrB4bG6zPLYij5MAxuikt9Pf0CnLU
-        SQA2htEjFi7nZXpgiNoVj8QoyEJB/hYmpYuI
-X-Google-Smtp-Source: ABdhPJxOUFWuJjxtgA4RJkI+3nAnyCJTdLUlY2O13hgBpHgnNAwnxnjiEeq84nhmbs0BH/FArtoWTQ==
-X-Received: by 2002:a19:e34a:: with SMTP id c10mr1221052lfk.476.1611035344263;
-        Mon, 18 Jan 2021 21:49:04 -0800 (PST)
-Received: from eriador.lumag.spb.ru ([188.162.65.64])
-        by smtp.gmail.com with ESMTPSA id j3sm2168207lfb.29.2021.01.18.21.49.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Jan 2021 21:49:03 -0800 (PST)
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Cc:     linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Jishnu Prakash <jprakash@qti.qualcomm.com>
-Subject: [PATCH v12 5/5] arm64: dts: qrb5165-rb5: port thermal zone definitions
-Date:   Tue, 19 Jan 2021 08:48:48 +0300
-Message-Id: <20210119054848.592329-6-dmitry.baryshkov@linaro.org>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210119054848.592329-1-dmitry.baryshkov@linaro.org>
-References: <20210119054848.592329-1-dmitry.baryshkov@linaro.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=7Ep6XAHClFQb77kqS1Nifo4aUTiAKOUGwzILPlIr1hA=;
+        b=JnILsFI/mbxNIyo1OigjvvfDX15f/cyGOPUYeWRVFdiq0V9UuIxCiEXT8p0WlkSBU3
+         PTal6P5gUixGbVWe4Min+vwWGtBNJpQx+ZD16L8ULPMC98UQGZduyvHWbSyWTX7ooYQr
+         7lZyYO/4Y2ZJS26Robe9YysLPZIZ2jsiqA8KPQrQ5uax4MHE9FjWKhCB1Z5sDAEZs8BA
+         otSJmhzCdmkskrmWKTdDIbG9j/KP3KS2x//NzUmd/nHAwMNc5H2B8DSokeFy8YiQbird
+         g2j49YsctTxE9KMEVYZXgxFUvv+dciaJIXA34ag1e93qtE7BxBXIWI8syQrTyMeaxI1B
+         o+kQ==
+X-Gm-Message-State: AOAM533WWHuoD+zEltbn9DamFM5OIVTUpKcrBp8IjKl417pTrH76QUcH
+        ExBTu6s+kIV1AM2CzDtMwKqP550e4HE6kjjz7oI=
+X-Google-Smtp-Source: ABdhPJyIMMKKNy7bzSz/uP19d5A0u0p/zkwkPfdazyf1maW4tylmjwMcqy6KkwET7wCxA2uTUGBlkbJwWRZaOmKWrSc=
+X-Received: by 2002:a92:5e04:: with SMTP id s4mr2500931ilb.100.1611044342303;
+ Tue, 19 Jan 2021 00:19:02 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20201203095342.73591-1-alexandru.ardelean@analog.com>
+ <CAHp75VffjpFyh0G3F6v0j5tXrURA2pCtWsSztC7KejhBFuLTvw@mail.gmail.com>
+ <CA+U=DsoNHebsuGDhGnJOwFbkYtGY+1Gs_mhCssH+FYk3Y05eZA@mail.gmail.com>
+ <CAHp75VcxZd1xW+ayi_km3zCYKV3aC1VRJ5bwyVpevZkvgg_ipw@mail.gmail.com>
+ <CA+U=DspEg=XpOUKqtammKqOoLXoXEDKWQHqSauM1xna_Y+eqjA@mail.gmail.com> <20201213143140.58af94a0@archlinux>
+In-Reply-To: <20201213143140.58af94a0@archlinux>
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+Date:   Tue, 19 Jan 2021 10:18:50 +0200
+Message-ID: <CA+U=Dsr6zT3fQES4V+p_u2fFy5J4uRH1k6Zss6aJebfC=Aa2WA@mail.gmail.com>
+Subject: Re: [PATCH v2] iio: core: register chardev only if needed
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Bastien Nocera <hadess@hadess.net>,
+        Hans de Goede <hdegoede@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add thermal zones definitions basing on the downstream kernel.
+On Sun, Dec 13, 2020 at 4:31 PM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> On Wed, 9 Dec 2020 17:55:22 +0200
+> Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
+>
+> > On Wed, Dec 9, 2020 at 5:53 PM Andy Shevchenko
+> > <andy.shevchenko@gmail.com> wrote:
+> > >
+> > > On Wed, Dec 9, 2020 at 5:45 PM Alexandru Ardelean
+> > > <ardeleanalex@gmail.com> wrote:
+> > > > On Wed, Dec 9, 2020 at 5:37 PM Andy Shevchenko
+> > > > <andy.shevchenko@gmail.com> wrote:
+> > > > > On Thu, Dec 3, 2020 at 11:55 AM Alexandru Ardelean
+> > > > > <alexandru.ardelean@analog.com> wrote:
+> > >
+> > > ...
+> > >
+> > > > > Are you sure there is no user space application that doesn't rely on
+> > > > > character device to be always present?
+> > > >
+> > > > Nope.
+> > > > I'm not sure.
+> > > > I'm also not completely sure how Jonathan feels about this patch being
+> > > > added now [so late].
+> > > >
+> > > > Though, technically if the chardev was already there, without all the
+> > > > control in place [to enable IIO buffers and other stuff through the
+> > > > chardev] then it's technically just a "marker" file.
+> > > > Which arguably is a lot to have (i.e. chardev that should be unusable).
+> > > >
+> > > > If it is usable with no control in place for buffers or other stuff
+> > > > (i.e. I missed something), then I also don't know.
+> > > >
+> > > > So, this patch on it's own can still be interpreted as an RFC.
+> > > > See:
+> > > > https://lore.kernel.org/linux-iio/20201121180246.772ad299@archlinux/
+> > >
+> > > Don't take me wrong, I'm not against a good change (I doesn't like
+> > > dangling files), but it might break some use cases.
+> >
+> > Yeah I know.
+> > But how else do you know if a dangling file might break some use cases?
+> >
+> > The worst that would happen is that we get a report and create a Fixes
+> > tag and we know.
+> > But if we don't try it, we're stuck with it, and will never know.
+> >
+> It's definitely a high risk change.  I'd 'hope' it's not a problem
+> but we should do a bit more due diligence.
+>
+> I hope we can assume the ADI software is all fine with dropping this.
+> Bastien can you see any issues with dropping chrdev for IIO devices
+> that don't actually support using it for anything (sysfs interface only).
+>
+> What other stacks are people aware of that we should enquire about?
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
----
- arch/arm64/boot/dts/qcom/qrb5165-rb5.dts | 155 +++++++++++++++++++++++
- 1 file changed, 155 insertions(+)
+Hey,
 
-diff --git a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts b/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
-index ce22d4fa383e..ef9452f0c6b2 100644
---- a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
-+++ b/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
-@@ -66,6 +66,78 @@ bt {
- 
- 	};
- 
-+	thermal-zones {
-+		conn-thermal {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm8150b_adc_tm 0>;
-+
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "critical";
-+				};
-+			};
-+		};
-+
-+		pm8150l-thermal {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm8150l_adc_tm 1>;
-+
-+			trips {
-+				active-config0 {
-+					temperature = <50000>;
-+					hysteresis = <4000>;
-+					type = "passive";
-+				};
-+			};
-+		};
-+
-+		skin-msm-thermal {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm8150l_adc_tm 0>;
-+
-+			trips {
-+				active-config0 {
-+					temperature = <50000>;
-+					hysteresis = <4000>;
-+					type = "passive";
-+				};
-+			};
-+		};
-+
-+		wifi-thermal {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm8150_adc_tm 1>;
-+
-+			trips {
-+				active-config0 {
-+					temperature = <52000>;
-+					hysteresis = <4000>;
-+					type = "passive";
-+				};
-+			};
-+		};
-+
-+		xo-thermal {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm8150_adc_tm 0>;
-+
-+			trips {
-+				active-config0 {
-+					temperature = <50000>;
-+					hysteresis = <4000>;
-+					type = "passive";
-+				};
-+			};
-+		};
-+	};
-+
- 	vbat: vbat-regulator {
- 		compatible = "regulator-fixed";
- 		regulator-name = "VBAT";
-@@ -420,6 +492,38 @@ &i2c15 {
- 	status = "okay";
- };
- 
-+&pm8150_adc {
-+	xo-therm@4c {
-+		reg = <ADC5_XO_THERM_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+
-+	wifi-therm@4e {
-+		reg = <ADC5_AMUX_THM2_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+};
-+
-+&pm8150_adc_tm {
-+	status = "okay";
-+
-+	xo-therm@0 {
-+		reg = <0>;
-+		io-channels = <&pm8150_adc ADC5_XO_THERM_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time-us = <200>;
-+	};
-+
-+	wifi-therm@1 {
-+		reg = <1>;
-+		io-channels = <&pm8150_adc ADC5_AMUX_THM2_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time-us = <200>;
-+	};
-+};
-+
- &pm8150_gpios {
- 	gpio-reserved-ranges = <1 1>, <3 2>, <7 1>;
- 	gpio-line-names =
-@@ -435,6 +539,25 @@ &pm8150_gpios {
- 		"GPIO_10_P"; /* Green LED */
- };
- 
-+&pm8150b_adc {
-+	conn-therm@4f {
-+		reg = <ADC5_AMUX_THM3_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+};
-+
-+&pm8150b_adc_tm {
-+	status = "okay";
-+
-+	conn-therm@0 {
-+		reg = <0>;
-+		io-channels = <&pm8150b_adc ADC5_AMUX_THM3_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time-us = <200>;
-+	};
-+};
-+
- &pm8150b_gpios {
- 	gpio-line-names =
- 		"NC",
-@@ -451,6 +574,38 @@ &pm8150b_gpios {
- 		"NC";
- };
- 
-+&pm8150l_adc {
-+	skin-msm-therm@4e {
-+		reg = <ADC5_AMUX_THM2_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+
-+	pm8150l-therm@4f {
-+		reg = <ADC5_AMUX_THM3_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+};
-+
-+&pm8150l_adc_tm {
-+	status = "okay";
-+
-+	skin-msm-therm@0 {
-+		reg = <0>;
-+		io-channels = <&pm8150l_adc ADC5_AMUX_THM2_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time-us = <200>;
-+	};
-+
-+	pm8150l-therm@1 {
-+		reg = <1>;
-+		io-channels = <&pm8150l_adc ADC5_AMUX_THM3_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time-us = <200>;
-+	};
-+};
-+
- &pm8150l_gpios {
- 	gpio-line-names =
- 		"NC",
--- 
-2.29.2
+Any more thoughts on this?
 
+Thanks
+Alex
+
+>
+> Thanks,
+>
+> Jonathan
+> > >
+> > > --
+> > > With Best Regards,
+> > > Andy Shevchenko
+>

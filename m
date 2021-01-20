@@ -2,218 +2,150 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E54B52FD3E8
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Jan 2021 16:28:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E8582FD948
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Jan 2021 20:18:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390740AbhATPXe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 20 Jan 2021 10:23:34 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:42426 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2390198AbhATPH7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 Jan 2021 10:07:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1611155192;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=4rW85cNgEC6z5VdRtA3F8rGf8KcNV4FVgsl19ZtJYRI=;
-        b=Kwy5YxoMCfXwyu3HTTnP3J6Jv2XuEWHlua93HZpioSMwNPj3NFnIVNdg5LYde2hWNxtQXM
-        9zraJojIdG6g1vKRXB8tKomlI4ClmQzvl5qRn3N1GdfpQNRdog+xxDr39PI4fRg+c95UaX
-        7l5YFImlNt+MtuZ/W/39SAgcH2CIZxI=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-473-bQULZmLwOXSEDfsSHB9-OA-1; Wed, 20 Jan 2021 10:06:26 -0500
-X-MC-Unique: bQULZmLwOXSEDfsSHB9-OA-1
-Received: by mail-qt1-f197.google.com with SMTP id g9so21524129qtv.12
-        for <linux-iio@vger.kernel.org>; Wed, 20 Jan 2021 07:06:26 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=4rW85cNgEC6z5VdRtA3F8rGf8KcNV4FVgsl19ZtJYRI=;
-        b=F+x2u4tRSmgYjippOSHIHgGGXagVTtPdjvP3vRCHEnw0aECSwDf/d+5eWKTeL+GX/P
-         yeJ0ue7cb7V6KhJLt4WgOMzUE+pOgwu0NYByFIOFb8iAVjnaam7V1a0rt1UPL/acWytH
-         bfNGWS0MEl6ZjR0nXh71RqR5q+K3goDIn8Hvr9WIm1tmeoDb3NeRLRSE0WByB7ik0zD6
-         /dELj8s/EQ3/KEfvzxX1Nndc0VVoi5gn4ckKDpuQiuJQurHWri2AhnYUWsPOB70u2yRp
-         zjUr/+8v+HQg8ioizNhTKb5UHjRoKv9fub9YhfIYIhupO58tPNLovbza77v7XtmV/MdV
-         N2qw==
-X-Gm-Message-State: AOAM533AcuXhulUA+JAp1rMSZ+uUaT67vap2OAuN3EoTQccwZJiKK9lB
-        pPyiz/kR7yhwRUl36MKyyon2ZkCW3JDWDoG8gA3EyBYOPB/q24L65JpOKI4vil6Pe/YwxSTV8wO
-        3Lb5WguXBJQySEXMVtffKJ1tFL0sP304ZgHZ1BMNNxAsRIQOYJK3YiEVzpHUhjapDjs8=
-X-Received: by 2002:ac8:1482:: with SMTP id l2mr1667017qtj.301.1611155185832;
-        Wed, 20 Jan 2021 07:06:25 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJx0F11ZG3j3o/ErvgkXt5eGAC3cLBUGGfXGcudIpshzAxgoNmHaMTe0wu33Uy3MEwtsgcpvCw==
-X-Received: by 2002:ac8:1482:: with SMTP id l2mr1666990qtj.301.1611155185562;
-        Wed, 20 Jan 2021 07:06:25 -0800 (PST)
-Received: from trix.remote.csb (075-142-250-213.res.spectrum.com. [75.142.250.213])
-        by smtp.gmail.com with ESMTPSA id a3sm1275319qtp.63.2021.01.20.07.06.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 Jan 2021 07:06:25 -0800 (PST)
-Subject: Re: [PATCH v2] iio: imu: bmi160: add mutex_lock for avoiding race
-To:     Guoqing Chi <chi962464zy@163.com>
-Cc:     martin.blumenstingl@googlemail.com, linux-kernel@vger.kernel.org,
-        chiguoqing@yulong.com, huyue2@yulong.com, zhangwen@yulong.com,
-        linux-iio@vger.kernel.org
-References: <20210119112211.26404-1-chi962464zy@163.com>
- <c93224b5-008c-fc80-f466-88c387d5b08f@redhat.com>
- <20210120094802.00001fee@163.com>
-From:   Tom Rix <trix@redhat.com>
-Message-ID: <9c9333cb-bd6c-0f29-f35b-7592f457c746@redhat.com>
-Date:   Wed, 20 Jan 2021 07:06:23 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+        id S1728517AbhATTQk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 20 Jan 2021 14:16:40 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2386 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389703AbhATSwT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 Jan 2021 13:52:19 -0500
+Received: from fraeml710-chm.china.huawei.com (unknown [172.18.147.207])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DLZJW6Yxgz67XQp;
+        Thu, 21 Jan 2021 02:47:23 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml710-chm.china.huawei.com (10.206.15.59) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Wed, 20 Jan 2021 19:51:33 +0100
+Received: from localhost (10.47.67.172) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Wed, 20 Jan
+ 2021 18:51:32 +0000
+Date:   Wed, 20 Jan 2021 18:50:52 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Mike Looijmans <mike.looijmans@topic.nl>
+CC:     <linux-iio@vger.kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v6 1/2] dt-bindings: iio: accel: Add bmi088
+ accelerometer bindings
+Message-ID: <20210120185052.000064df@Huawei.com>
+In-Reply-To: <20210119124622.9490-1-mike.looijmans@topic.nl>
+References: <20210119124622.9490-1-mike.looijmans@topic.nl>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-In-Reply-To: <20210120094802.00001fee@163.com>
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+X-Originating-IP: [10.47.67.172]
+X-ClientProxiedBy: lhreml717-chm.china.huawei.com (10.201.108.68) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Tue, 19 Jan 2021 13:46:21 +0100
+Mike Looijmans <mike.looijmans@topic.nl> wrote:
 
-On 1/19/21 5:48 PM, Guoqing Chi wrote:
-> On Tue, 19 Jan 2021 06:54:45 -0800
-> Tom Rix <trix@redhat.com> wrote:
->
->> On 1/19/21 3:22 AM, Guoqing Chi wrote:
->>> From: chiguoqing <chi962464zy@163.com>
->>>
->>> Adding mutex_lock, when read and write reg need to use this lock to
->>> avoid race.
->>>
->>> Signed-off-by: Guoqing Chi <chiguoqing@yulong.com>
->>> ---
->>> v2:Follow write function to fix read function.
->>> Adding mutex init in core probe function.
->>> Adding break in switch case at read and write function.
->>>
->>>  drivers/iio/imu/bmi160/bmi160.h      |  2 ++
->>>  drivers/iio/imu/bmi160/bmi160_core.c | 34
->>> +++++++++++++++++++--------- 2 files changed, 25 insertions(+), 11
->>> deletions(-)
->>>
->>> diff --git a/drivers/iio/imu/bmi160/bmi160.h
->>> b/drivers/iio/imu/bmi160/bmi160.h index 32c2ea2d7112..0c189a8b5b53
->>> 100644 --- a/drivers/iio/imu/bmi160/bmi160.h
->>> +++ b/drivers/iio/imu/bmi160/bmi160.h
->>> @@ -3,9 +3,11 @@
->>>  #define BMI160_H_
->>>  
->>>  #include <linux/iio/iio.h>
->>> +#include <linux/mutex.h>
->>>  #include <linux/regulator/consumer.h>
->>>  
->>>  struct bmi160_data {
->>> +	struct mutex lock;
->>>  	struct regmap *regmap;
->>>  	struct iio_trigger *trig;
->>>  	struct regulator_bulk_data supplies[2];
->>> diff --git a/drivers/iio/imu/bmi160/bmi160_core.c
->>> b/drivers/iio/imu/bmi160/bmi160_core.c index
->>> 290b5ef83f77..e303378f4841 100644 ---
->>> a/drivers/iio/imu/bmi160/bmi160_core.c +++
->>> b/drivers/iio/imu/bmi160/bmi160_core.c @@ -452,26 +452,32 @@ static
->>> int bmi160_read_raw(struct iio_dev *indio_dev, int ret;
->>>  	struct bmi160_data *data = iio_priv(indio_dev);
->>>  
->>> +	mutex_lock(&data->lock);
->>>  	switch (mask) {
->>>  	case IIO_CHAN_INFO_RAW:
->>>  		ret = bmi160_get_data(data, chan->type,
->>> chan->channel2, val);
->>> -		if (ret)
->>> -			return ret;
->>> -		return IIO_VAL_INT;
->>> +		if (!ret)
->>> +			ret = IIO_VAL_INT;
->>> +		break;
->>>  	case IIO_CHAN_INFO_SCALE:
->>>  		*val = 0;
->>>  		ret = bmi160_get_scale(data,
->>>  				       bmi160_to_sensor(chan->type),
->>> val2);
->>> -		return ret ? ret : IIO_VAL_INT_PLUS_MICRO;
->>> +		if (!ret)
->>> +			ret = IIO_VAL_INT_PLUS_MICRO;  
->> Looking better, another question..
->>
->> Why does the write() function return the results directly while the
->> read() function
->>
->> translates them to other values ?
->>
->> Tom
-> It is original design in this driver. In order to
-> differentiate raw to scale and SAMP_FREQ, while the scale and SAMP_FREQ
-> are needless. I think log information can be added for this purpose,
-> and return results directly.
-> It is not change the return values for my modify.It's best to keep the
-> original design.Is that all right?
+> This adds the device-tree bindings for the Bosch Sensortec BMI088 IMU,
+> the accelerometer part.
+> 
+> Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
+> 
+> ---
+> 
+> Changes in v6:
+> I't been almost a year since the last commit, sorry...
+No problem. Happens to us all sometimes!
 
-Ok.
+One thing inline below.
 
-Reviewed-by: Tom Rix <trix@redhat.com>
+Thanks,
 
-> Guoqing Chi
->>> +		break;
->>>  	case IIO_CHAN_INFO_SAMP_FREQ:
->>>  		ret = bmi160_get_odr(data,
->>> bmi160_to_sensor(chan->type), val, val2);
->>> -		return ret ? ret : IIO_VAL_INT_PLUS_MICRO;
->>> +		if (!ret)
->>> +			ret = IIO_VAL_INT_PLUS_MICRO;
->>> +		break;
->>>  	default:
->>> -		return -EINVAL;
->>> +		ret = -EINVAL;
->>>  	}
->>> +	mutex_unlock(&data->lock);
->>>  
->>> -	return 0;
->>> +	return ret;
->>>  }
->>>  
->>>  static int bmi160_write_raw(struct iio_dev *indio_dev,
->>> @@ -479,19 +485,24 @@ static int bmi160_write_raw(struct iio_dev
->>> *indio_dev, int val, int val2, long mask)
->>>  {
->>>  	struct bmi160_data *data = iio_priv(indio_dev);
->>> +	int result;
->>>  
->>> +	mutex_lock(&data->lock);
->>>  	switch (mask) {
->>>  	case IIO_CHAN_INFO_SCALE:
->>> -		return bmi160_set_scale(data,
->>> +		result = bmi160_set_scale(data,
->>>  					bmi160_to_sensor(chan->type),
->>> val2);
->>> +		break;
->>>  	case IIO_CHAN_INFO_SAMP_FREQ:
->>> -		return bmi160_set_odr(data,
->>> bmi160_to_sensor(chan->type),
->>> +		result = bmi160_set_odr(data,
->>> bmi160_to_sensor(chan->type), val, val2);
->>> +		break;
->>>  	default:
->>> -		return -EINVAL;
->>> +		result = -EINVAL;
->>>  	}
->>> +	mutex_unlock(&data->lock);
->>>  
->>> -	return 0;
->>> +	return result;
->>>  }
->>>  
->>>  static
->>> @@ -838,6 +849,7 @@ int bmi160_core_probe(struct device *dev,
->>> struct regmap *regmap, return -ENOMEM;
->>>  
->>>  	data = iio_priv(indio_dev);
->>> +	mutex_init(&data->lock);
->>>  	dev_set_drvdata(dev, indio_dev);
->>>  	data->regmap = regmap;
->>>    
+Jonathan
+
+> Fixed the yaml errors
+> Add interrupt, vdd and vddio properties
+> 
+> Changes in v5:
+> submit together with driver code as patch series
+> 
+> Changes in v2:
+> convert to yaml format
+> 
+>  .../bindings/iio/accel/bosch,bmi088.yaml      | 55 +++++++++++++++++++
+>  1 file changed, 55 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/accel/bosch,bmi088.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/accel/bosch,bmi088.yaml b/Documentation/devicetree/bindings/iio/accel/bosch,bmi088.yaml
+> new file mode 100644
+> index 000000000000..459b9969fd12
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/accel/bosch,bmi088.yaml
+> @@ -0,0 +1,55 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/accel/bosch,bmi088.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Bosch BMI088 IMU accelerometer part
+> +
+> +maintainers:
+> +  - Mike Looijmans <mike.looijmans@topic.nl>
+> +
+> +description: |
+> +  Acceleration part of the IMU sensor with an SPI interface
+> +  Specifications about the sensor can be found at:
+> +    https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmi088-ds001.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - bosch,bmi088_accel
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  vdd-supply: true
+> +
+> +  vddio-supply: true
+> +
+> +  interrupts:
+> +    minItems: 1
+> +    maxItems: 2
+> +    description: |
+> +      Type should be either IRQ_TYPE_LEVEL_HIGH or IRQ_TYPE_LEVEL_LOW.
+> +      The first interrupt listed must be the one connected to the INT1 pin, the
+> +      second must be the one connected to the INT2 pin.
+
+What if the board only has the INT2 pin connected?
+That's looks to be a valid hardware configuration.
+
+I'd suggest using interrupt-names to cover this.
+
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    spi {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +      bmi088_accel@1 {
+> +        compatible = "bosch,bmi088_accel";
+> +        reg = <1>;
+> +        spi-max-frequency = <10000000>;
+> +        interrupt-parent = <&gpio6>;
+> +        interrupts = <19 IRQ_TYPE_LEVEL_LOW>;
+> +      };
+> +    };
+> +...
 

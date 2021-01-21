@@ -2,192 +2,87 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4141E2FF345
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Jan 2021 19:38:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7ADF02FF415
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Jan 2021 20:18:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725922AbhAUSeC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 21 Jan 2021 13:34:02 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2394 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728826AbhAUS23 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 21 Jan 2021 13:28:29 -0500
-Received: from fraeml701-chm.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DM9ht26mvz67cZB;
-        Fri, 22 Jan 2021 02:22:06 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml701-chm.china.huawei.com (10.206.15.50) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2106.2; Thu, 21 Jan 2021 19:27:40 +0100
-Received: from localhost (10.47.68.198) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Thu, 21 Jan
- 2021 18:27:39 +0000
-Date:   Thu, 21 Jan 2021 18:26:58 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-CC:     Oleksij Rempel <o.rempel@pengutronix.de>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <kamel.bouhara@bootlin.com>, <gwendal@chromium.org>,
-        <a.fatoum@pengutronix.de>, <david@lechnology.com>,
-        <linux-iio@vger.kernel.org>, <patrick.havelange@essensium.com>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <alexandre.belloni@bootlin.com>, <linux-kernel@vger.kernel.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        <mcoquelin.stm32@gmail.com>, David Jander <david@protonic.nl>,
-        <fabrice.gasnier@st.com>, <syednwaris@gmail.com>,
-        <kernel@pengutronix.de>, <jic23@kernel.org>,
-        <alexandre.torgue@st.com>
-Subject: Re: [PATCH v6 3/5] counter: Add character device interface
-Message-ID: <20210121182658.00000d95@Huawei.com>
-In-Reply-To: <YAk1PzXYQaJvhGSj@shinobu>
-References: <cover.1606075915.git.vilhelm.gray@gmail.com>
-        <b52a62196399d33221f78a1689276ac193c10229.1606075915.git.vilhelm.gray@gmail.com>
-        <20210119092022.GA14502@pengutronix.de>
-        <YAk1PzXYQaJvhGSj@shinobu>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1726925AbhAUTQm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 21 Jan 2021 14:16:42 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:58244 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727001AbhAUTQ0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 21 Jan 2021 14:16:26 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 10LJEWfN073438;
+        Thu, 21 Jan 2021 13:14:32 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1611256472;
+        bh=cKP+KafvdKMdHwP7uKPhFADhSJd5TNUUdhxLiZpDyNA=;
+        h=From:To:CC:Subject:Date;
+        b=jHG4aGE6Cn9Mr5fLuNa7FzdxrTtdQQnmC+aXYWZVyXLpwcQIgbGvQ6azxfBVjcNCx
+         pvtwxuMKHC4M+BBUbL1g0ns0oBpsy7TXC5MSqB0BzPQYkfpt6pvMO8NIq3Oxfmlmtm
+         9KhAwmugAQ5o1XvMc3ddrFOHiqM29sklGtMFxu2s=
+Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 10LJEWRS094760
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 21 Jan 2021 13:14:32 -0600
+Received: from DLEE115.ent.ti.com (157.170.170.26) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 21
+ Jan 2021 13:14:32 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Thu, 21 Jan 2021 13:14:32 -0600
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 10LJEVck004174;
+        Thu, 21 Jan 2021 13:14:32 -0600
+From:   Dan Murphy <dmurphy@ti.com>
+To:     <linux-iio@vger.kernel.org>
+CC:     <jic23@kernel.org>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
+        <linux-kernel@vger.kernel.org>, Dan Murphy <dmurphy@ti.com>
+Subject: [PATCH 1/2] iio:adc:ti-ads124s08: Fix start stop conversion command
+Date:   Thu, 21 Jan 2021 13:14:30 -0600
+Message-ID: <20210121191431.12057-1-dmurphy@ti.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.68.198]
-X-ClientProxiedBy: lhreml719-chm.china.huawei.com (10.201.108.70) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 21 Jan 2021 17:03:11 +0900
-William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
+Fix start and stop conversion commands.  The proper command is not be
+sent.
 
-> On Tue, Jan 19, 2021 at 10:20:22AM +0100, Oleksij Rempel wrote:
-> > On Sun, Nov 22, 2020 at 03:29:54PM -0500, William Breathitt Gray wrote:  
-> > > This patch introduces a character device interface for the Counter
-> > > subsystem. Device data is exposed through standard character device read
-> > > operations. Device data is gathered when a Counter event is pushed by
-> > > the respective Counter device driver. Configuration is handled via ioctl
-> > > operations on the respective Counter character device node.
-> > > 
-> > > Cc: David Lechner <david@lechnology.com>
-> > > Cc: Gwendal Grignou <gwendal@chromium.org>
-> > > Cc: Dan Carpenter <dan.carpenter@oracle.com>
-> > > Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-> > > ---  
-> > 
-> > Hello William,
-> > 
-> > the series looks quite interesting, we have some thoughts... see below:
-> > 
-> > [...]  
-> > > +/**
-> > > + * counter_push_event - queue event for userspace reading
-> > > + * @counter:	pointer to Counter structure
-> > > + * @event:	triggered event
-> > > + * @channel:	event channel
-> > > + *
-> > > + * Note: If no one is watching for the respective event, it is silently
-> > > + * discarded.
-> > > + *
-> > > + * RETURNS:
-> > > + * 0 on success, negative error number on failure.
-> > > + */
-> > > +int counter_push_event(struct counter_device *const counter, const u8 event,
-> > > +		       const u8 channel)
-> > > +{
-> > > +	struct counter_event ev = {0};
-> > > +	unsigned int copied = 0;
-> > > +	unsigned long flags;
-> > > +	struct counter_event_node *event_node;
-> > > +	struct counter_comp_node *comp_node;
-> > > +	int err = 0;
-> > > +
-> > > +	ev.timestamp = ktime_get_ns();
-> > > +	ev.watch.event = event;
-> > > +	ev.watch.channel = channel;
-> > > +
-> > > +	raw_spin_lock_irqsave(&counter->events_lock, flags);
-> > > +
-> > > +	/* Search for event in the list */
-> > > +	list_for_each_entry(event_node, &counter->events_list, l)
-> > > +		if (event_node->event == event &&
-> > > +		    event_node->channel == channel)
-> > > +			break;
-> > > +
-> > > +	/* If event is not in the list */
-> > > +	if (&event_node->l == &counter->events_list)
-> > > +		goto exit_early;
-> > > +
-> > > +	/* Read and queue relevant comp for userspace */
-> > > +	list_for_each_entry(comp_node, &event_node->comp_list, l) {
-> > > +		err = counter_get_data(counter, comp_node, &ev.value);
-> > > +		if (err)
-> > > +			goto exit_early;
-> > > +
-> > > +		ev.watch.component = comp_node->component;
-> > > +
-> > > +		copied += kfifo_put(&counter->events, ev);  
-> > 
-> > We want to calculate the frequency of some IRQ pulses in user space and
-> > counter values with time stamps really fits well here. As the pulses are
-> > from a physical system (rotating wheel), they will only change at a
-> > certain rate. We want to have the possibility to read from the counter
-> > device less often, we intentionally want to skip (meaning miss)
-> > events.
-> > 
-> > When reading we're interested in the newest events. The kfifo implements
-> > a "tail" drop FIFO, which means new values are added at the end, and if
-> > the FIFO is full, they are dropped. We need a "head" drop FIFO which
-> > discards the oldest events, keeping only the recent ones.
-> > 
-> > As far as we know, kfifo doesn't offer a head drop mode, but I think
-> > this can be added.  
-> 
-> I'm not sure if kfifo has this kind of mode, but it seems like something
-> that should be there if it is not already -- I imagine this kind of
-> operation mode would be pretty common. Perhaps someone knows how to
-> achieve this and will share here.
-> 
+Fixes: ("e717f8c6dfec iio: adc: Add the TI ads124s08 ADC code")
+Signed-off-by: Dan Murphy <dmurphy@ti.com>
+---
+ drivers/iio/adc/ti-ads124s08.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-I don't think it does.  In IIO we started with a ring (effectively this)
-- hopefully no one else remembers the horrible mess I made of it ;),
-but eventually decided that there were very few usecases that
-actually demanded it so just switched over to kfifo.
-
-It's actually pretty rare that you aren't better off draining to
-a backing store of some type.
-
-Not had any demand to bring a ring back to IIO since we dropped it.
-
-
-> > 
-> > [...]
-> >   
-> > >  struct counter_device {
-> > >  	const char *name;
-> > > @@ -270,12 +270,20 @@ struct counter_device {
-> > >  
-> > >  	int id;
-> > >  	struct device dev;
-> > > +	struct cdev chrdev;
-> > > +	raw_spinlock_t events_lock;
-> > > +	struct list_head events_list;
-> > > +	struct list_head next_events_list;
-> > > +	DECLARE_KFIFO(events, struct counter_event, 64);  
-> > 
-> > Do you plan to make the size of the FIFO configurable?
-> > 
-> > regards,
-> > Oleksij & Marc  
-> 
-> I suppose it wouldn't be a problem to make this a configurable setting;
-> I think I can implement this via kfifo_alloc() and kfifo_free(). How
-> would users control this -- maybe using a sysfs attribute?
-
-Would make sense to do it from sysfs.
-
-Jonathan
-
-> 
-> William Breathitt Gray
-> 
+diff --git a/drivers/iio/adc/ti-ads124s08.c b/drivers/iio/adc/ti-ads124s08.c
+index b4a128b19188..f05d4e0e1c9d 100644
+--- a/drivers/iio/adc/ti-ads124s08.c
++++ b/drivers/iio/adc/ti-ads124s08.c
+@@ -237,7 +237,7 @@ static int ads124s_read_raw(struct iio_dev *indio_dev,
+ 			goto out;
+ 		}
+ 
+-		ret = ads124s_write_cmd(indio_dev, ADS124S08_START_CONV);
++		ret = ads124s_write_cmd(indio_dev, ADS124S08_CMD_START);
+ 		if (ret) {
+ 			dev_err(&priv->spi->dev, "Start conversions failed\n");
+ 			goto out;
+@@ -251,7 +251,7 @@ static int ads124s_read_raw(struct iio_dev *indio_dev,
+ 
+ 		*val = ret;
+ 
+-		ret = ads124s_write_cmd(indio_dev, ADS124S08_STOP_CONV);
++		ret = ads124s_write_cmd(indio_dev, ADS124S08_CMD_STOP);
+ 		if (ret) {
+ 			dev_err(&priv->spi->dev, "Stop conversions failed\n");
+ 			goto out;
+-- 
+2.29.2
 

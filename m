@@ -2,190 +2,294 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 55A4D30003A
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Jan 2021 11:28:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 708003000DD
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Jan 2021 11:57:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727632AbhAVK05 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 22 Jan 2021 05:26:57 -0500
-Received: from mx07-00178001.pphosted.com ([185.132.182.106]:32504 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727986AbhAVKZC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 Jan 2021 05:25:02 -0500
-Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 10MAGnhf017656;
-        Fri, 22 Jan 2021 11:23:46 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=selector1;
- bh=F3UYlhBVC/4pASDg25u1A1PdjtKhaE7ztzNCp+C1SLo=;
- b=8KCo4S4sWNkUsEBwP+3U7lcU73U/aDulJM7dKmb/CL+XRj7yASBkLG85vB5zww3eOIUm
- b2tYlQIiAbAvYrTtwBzw92V0Gz6qXLIiaM90jEx+mIL6Y4BAmnklU6TfbAFOakx60S30
- wqIP4TiRkz08UuAEQH5cpnxCV40UH3u37Nk6BJ4YY+0ty/tEoHKPk8gBQVF9fSNwtcOt
- yddy+eY9qWY1YSNtH7eX4VeNgRQFi6I8nS6KTWLFv7wT76f9YFwk2oUMBMdkbkxuK+lA
- Iva+m7oFmwGl0VBMThw8Vln95vBfWuOr9blFY5FAqPzSKi9xAtaVsC+GT6BWkHAKEFfL Wg== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 3668q08u2s-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 22 Jan 2021 11:23:46 +0100
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 51BC110002A;
-        Fri, 22 Jan 2021 11:23:45 +0100 (CET)
-Received: from Webmail-eu.st.com (sfhdag2node3.st.com [10.75.127.6])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 34C9D20D085;
-        Fri, 22 Jan 2021 11:23:45 +0100 (CET)
-Received: from [10.211.13.44] (10.75.127.50) by SFHDAG2NODE3.st.com
- (10.75.127.6) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 22 Jan
- 2021 11:23:43 +0100
-Subject: Re: [Linux-stm32] [PATCH] iio: adc: stm32-adc: enable timestamping
- for non-DMA usage
-To:     Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>
-CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel@pengutronix.de>, Holger Assmann <has@pengutronix.de>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>
-References: <20210121180228.30621-1-a.fatoum@pengutronix.de>
-From:   Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Message-ID: <52a8a7db-72ee-a00f-7ef5-ada85cfe4774@foss.st.com>
-Date:   Fri, 22 Jan 2021 11:23:42 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1727195AbhAVJ1K (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 22 Jan 2021 04:27:10 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57048 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727314AbhAVJKN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 22 Jan 2021 04:10:13 -0500
+Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E850D239EE;
+        Fri, 22 Jan 2021 09:09:29 +0000 (UTC)
+Date:   Fri, 22 Jan 2021 09:09:27 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
+Subject: [PULL] 1st set of new IIO device support, features and cleanups for
+ the 5.12 cycle
+Message-ID: <20210122090927.2fd2e3c1@archlinux>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20210121180228.30621-1-a.fatoum@pengutronix.de>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Originating-IP: [10.75.127.50]
-X-ClientProxiedBy: SFHDAG2NODE3.st.com (10.75.127.6) To SFHDAG2NODE3.st.com
- (10.75.127.6)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343,18.0.737
- definitions=2021-01-22_06:2021-01-21,2021-01-22 signatures=0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 1/21/21 7:02 PM, Ahmad Fatoum wrote:
-> For non-DMA usage, we have an easy way to associate a timestamp with a
-> sample: iio_pollfunc_store_time stores a timestamp in the primary
-> trigger IRQ handler and stm32_adc_trigger_handler runs in the IRQ thread
-> to push out the buffer along with the timestamp.
->
-> For this to work, the driver needs to register an IIO_TIMESTAMP channel.
-> Do this.
->
-> For DMA, it's not as easy, because we don't push the buffers out of
-> stm32_adc_trigger, but out of stm32_adc_dma_buffer_done, which runs in
-> a tasklet scheduled after a DMA completion.
->
-> Preferably, the DMA controller would copy us the timestamp into that buffer
-> as well. Until this is implemented, restrict timestamping support to
-> only PIO. For low-frequency sampling, PIO is probably good enough.
->
-> Cc: Holger Assmann <has@pengutronix.de>
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/iio/adc/stm32-adc.c | 31 +++++++++++++++++++++++++------
->  1 file changed, 25 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-> index c067c994dae2..91d9483e1f5f 100644
-> --- a/drivers/iio/adc/stm32-adc.c
-> +++ b/drivers/iio/adc/stm32-adc.c
-> @@ -1718,7 +1718,7 @@ static void stm32_adc_chan_init_one(struct iio_dev *indio_dev,
->  	}
->  }
->  
-> -static int stm32_adc_chan_of_init(struct iio_dev *indio_dev)
-> +static int stm32_adc_chan_of_init(struct iio_dev *indio_dev, bool timestamping)
->  {
->  	struct device_node *node = indio_dev->dev.of_node;
->  	struct stm32_adc *adc = iio_priv(indio_dev);
-> @@ -1766,6 +1766,9 @@ static int stm32_adc_chan_of_init(struct iio_dev *indio_dev)
->  		return -EINVAL;
->  	}
->  
-> +	if (timestamping)
-> +		num_channels++;
-> +
->  	channels = devm_kcalloc(&indio_dev->dev, num_channels,
->  				sizeof(struct iio_chan_spec), GFP_KERNEL);
->  	if (!channels)
-> @@ -1816,6 +1819,19 @@ static int stm32_adc_chan_of_init(struct iio_dev *indio_dev)
->  		stm32_adc_smpr_init(adc, channels[i].channel, smp);
->  	}
->  
-> +	if (timestamping) {
-> +		struct iio_chan_spec *timestamp = &channels[scan_index];
-> +
-> +		timestamp->type = IIO_TIMESTAMP;
-> +		timestamp->channel = -1;
-> +		timestamp->scan_index = scan_index;
-> +		timestamp->scan_type.sign = 's';
-> +		timestamp->scan_type.realbits = 64;
-> +		timestamp->scan_type.storagebits = 64;
-> +
-> +		scan_index++;
-> +	}
-> +
->  	indio_dev->num_channels = scan_index;
->  	indio_dev->channels = channels;
->  
-> @@ -1875,6 +1891,7 @@ static int stm32_adc_probe(struct platform_device *pdev)
->  	struct device *dev = &pdev->dev;
->  	irqreturn_t (*handler)(int irq, void *p) = NULL;
->  	struct stm32_adc *adc;
-> +	bool timestamping = false;
->  	int ret;
->  
->  	if (!pdev->dev.of_node)
-> @@ -1931,16 +1948,18 @@ static int stm32_adc_probe(struct platform_device *pdev)
->  	if (ret < 0)
->  		return ret;
->  
-> -	ret = stm32_adc_chan_of_init(indio_dev);
-> -	if (ret < 0)
-> -		return ret;
-> -
->  	ret = stm32_adc_dma_request(dev, indio_dev);
->  	if (ret < 0)
->  		return ret;
->  
-> -	if (!adc->dma_chan)
-> +	if (!adc->dma_chan) {
->  		handler = &stm32_adc_trigger_handler;
+The following changes since commit d61adf609c48b9e91a84e9a943f0b3bcd84c3cad:
 
-Hi Ahmad,
+  staging: unisys: visorhba: enhance visorhba to use channel_interrupt (2021-01-07 16:57:50 +0100)
 
-Just suggesting: maybe add a quick comment to indicate that timestamping
-is supported in PIO mode (only), as DMA doesn't fill it into the buffer
-(well described in the commit message).
+are available in the Git repository at:
 
-> +		timestamping = true;
-> +	}
-> +
-> +	ret = stm32_adc_chan_of_init(indio_dev, timestamping);
-> +	if (ret < 0)
-> +		return ret;
+  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-5.12a
 
+for you to fetch changes up to 1994a922eb6a7fc577b9c9b909e0fe1fefd961fa:
 
-DMA resources need to be freed, instead of returning directly here, in
-case of error:
+  Merge branch 'ib-iio-thermal-5.11-rc1' into togreg (2021-01-22 08:52:26 +0000)
 
-     goto err_dma_disable;
+----------------------------------------------------------------
+First set of IIO new device support, cleanups etc for 5.12
 
-With that fixed, you can add my :
+Includes one immutable branch, to support some qcom-vadc patches
+going through IIO and thermal.
 
-Acked-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Late rebase to drop a patch that should go through the hid tree.
 
-Thanks,
+New device support:
+* adi,ad5766
+  - New driver supporting AD5766 and AD5767 16 channel DACs.
+* adi,ad7476
+  - Support for LTC2314-14 14 bit ADC (trivial to add)
+* hid-sensors-hinge
+  - New driver including HID custom sensor support.
+* invensense,mpu6050
+  - Add support for the MPU-6880 (chip info all that is needed)
+* memsic,ms5637
+  - Add support for ms5803 device after a bunch of rework.
+* xilinx-xadc
+  - Add support for Ultrascale System Monitor.
+* yamaha,yas530
+  - New driver for this magnetometer supporting YAS530, YAS532 adn YAS 533.
 
-Fabrice
+Dt-binding conversions to yaml
+* invensense,mpu3050
+* invensense,mpu6050
 
+Cleanups and minor features
+* core
+  - Copy iio_info.attrs->is_visible along with the attrs themselves.
+  - Handle enumerate properties with gaps (i.e. reserved values in
+    the middle of otherwise used values).
+  - Add an of_iio_channel_get_by_name() function.
+* adi,adf4350
+  - Drop an unnecessary NULL check.
+* amstaos,tsl2583
+  - Use DIV_ROUND_CLOSEST in place of open coding.
+* avago,apds9960
+  - Add MSHW0184 ACPI id seen in the Microsoft Surface Book 3 and Surface
+    Pro 7.
+* bosch,bmc150_magn
+  - Basic regulator support.
+* bosch,bme680
+  - Use DIV_ROUND_CLOSEST in place of opencoding.
+* bosch,bmg160
+  - Basic regulator support.
+* hid-sensors
+  - Add timestamp channels to all sensors types.
+* kionix,kxcjk1013
+  - Basic regulator support.
+* memsic
+  - Fix ordering in trivial-device.yaml
+* microchip,mcp4725
+  - More flexible restrictions in DT binding.
+* plantower,pms7003
+  - Fix comma that should be semicolon.
+* qcom-vadc
+  - Refactors to support addition of ADC-TM5 driver
+  - Addition of a fixp_linear_interpolate function to support this common
+    operation.
+* sprd,sc27xx_adc
+  - Use DIV_ROUND_CLOSEST in place of opencoding.
+* st,ab8500-adc
+  - Enable non-hw-conversion as AB505 doesn't support it.
+* st,stm32-adc
+  - Drop unneeded NULL check.
+* st,stm32-dfsdm
+  - Drop unneeded NULL check.
+* st,vl6180
+  - Use DIV_ROUND_CLOSEST in place of opencoding.
+* xilinx-xadc
+  - Local var for &pdev->dev to avoid excessive repetition.
+  - devm_ throughout and drop remove()
 
->  
->  	ret = iio_triggered_buffer_setup(indio_dev,
->  					 &iio_pollfunc_store_time, handler,
+----------------------------------------------------------------
+Alexandre Belloni (6):
+      dt-bindings: trivial-devices: reorder memsic devices
+      iio:pressure:ms5637: introduce hardware differentiation
+      iio:pressure:ms5637: limit available sample frequencies
+      iio:common:ms_sensors:ms_sensors_i2c: rework CRC calculation helper
+      iio:common:ms_sensors:ms_sensors_i2c: add support for alternative PROM layout
+      iio:pressure:ms5637: add ms5803 support
+
+Bartosz Golaszewski (3):
+      iio: adc: xilinx: use helper variable for &pdev->dev
+      iio: adc: xilinx: use devm_krealloc() instead of kfree() + kcalloc()
+      iio: adc: xilinx: use more devres helpers and remove remove()
+
+Craig Tatlor (1):
+      fixp-arith: add a linear interpolation function
+
+Cristian Pop (3):
+      dt-bindings: iio: dac: AD5766 yaml documentation
+      Documentation/ABI/testing: Add documentation for AD5766 new ABI
+      iio: dac: ad5766: add driver support for AD5766
+
+Devajith V S (2):
+      dt-bindings: iio: accel: kxcjk1013: Document regulator supplies
+      iio: accel: kxcjk1013: Add rudimentary regulator support
+
+Dmitry Baryshkov (9):
+      iio: adc: qcom-vadc: move several adc5 functions to common file
+      iio: adc: qcom-vadc-common: use fixp_linear_interpolate
+      iio: adc: move qcom-vadc-common.h to include dir
+      iio: adc: qcom-spmi-adc5: use of_device_get_match_data
+      iio: provide of_iio_channel_get_by_name() and devm_ version it
+      iio: adc: move vadc_map_pt from header to the source file
+      iio: adc: qcom-vadc-common: rewrite vadc7 die temp calculation
+      iio: adc: qcom-vadc-common: simplify qcom_vadc_map_voltage_temp
+      iio: adc: qcom-vadc-common: scale adcmap_100k_104ef_104fb
+
+Dragos Bogdan (1):
+      iio: adc: ad7476: Add LTC2314-14 support
+
+Hans de Goede (1):
+      iio: core: Copy iio_info.attrs->is_visible into iio_dev_opaque.chan_attr_group.is_visible
+
+Jonathan Cameron (3):
+      dt-bindings:iio:imu:invensense,mpu6050: txt to yaml conversion
+      dt-bindings:iio:gyro:invensense,mpu3050: txt to yaml format conversion.
+      Merge branch 'ib-iio-thermal-5.11-rc1' into togreg
+
+Lars-Peter Clausen (7):
+      dt-bindings:iio:xilinx-xadc: Add Xilinx System Management Wizard binding docs
+      iio: xilinx-xadc: Add basic support for Ultrascale System Monitor
+      iio: vl6180: Use DIV_ROUND_CLOSEST() instead of open-coding it
+      iio: bme680: Use DIV_ROUND_CLOSEST() instead of open-coding it
+      iio: tsl2583: Use DIV_ROUND_CLOSEST() instead of open-coding it
+      iio: sc27xx_adc: Use DIV_ROUND_CLOSEST() instead of open-coding it
+      iio: Handle enumerated properties with gaps
+
+Linus Walleij (3):
+      iio: accel: yamaha-yas530: Add DT bindings
+      iio: magnetometer: Add driver for Yamaha YAS530
+      iio: adc: ab8500-gpadc: Support non-hw-conversion
+
+Max Leiter (1):
+      iio:light:apds9960 add detection for MSHW0184 ACPI device in apds9960 driver
+
+Stephan Gerhold (6):
+      dt-bindings: iio: imu: mpu6050: Document invensense,mpu6880
+      iio: imu: inv_mpu6050: Add support for MPU-6880
+      dt-bindings: iio: gyroscope: bmg160: Document regulator supplies
+      iio: gyro: bmg160: Add rudimentary regulator support
+      dt-bindings: iio: magnetometer: bmc150: Document regulator supplies
+      iio: magnetometer: bmc150: Add rudimentary regulator support
+
+Tomas Novotny (1):
+      dt-bindings:iio:dac:microchip,mcp4725: fix properties for mcp4726
+
+Xu Wang (3):
+      iio: frequency: adf4350: Remove redundant null check before clk_disable_unprepare
+      iio: adc: stm32-adc: Remove redundant null check before clk_prepare_enable/clk_disable_unprepare
+      iio: adc: stm32-dfsdm: Remove redundant null check before clk_disable_unprepare
+
+Ye Xiang (9):
+      HID: hid-sensor-custom: Add custom sensor iio support
+      iio: hid-sensors: Add hinge sensor driver
+      iio:Documentation: Add documentation for hinge sensor channels
+      iio: hid-sensor-accel-3d: Add timestamp channel for gravity sensor
+      iio: hid-sensor-gyro-3d: Add timestamp channel
+      iio: hid-sensor-als: Add timestamp channel
+      iio: hid-sensor-magn-3d: Add timestamp channel
+      iio: hid-sensor-incl-3d: Add timestamp channel
+      iio: hid-sensor-rotation: Add timestamp channel
+
+Zheng Yongjun (1):
+      iio: chemical: pms7003: convert comma to semicolon
+
+ Documentation/ABI/testing/sysfs-bus-iio            |   11 +
+ Documentation/ABI/testing/sysfs-bus-iio-dac-ad5766 |   31 +
+ .../bindings/iio/accel/kionix,kxcjk1013.yaml       |    3 +
+ .../devicetree/bindings/iio/adc/xilinx-xadc.txt    |   49 +-
+ .../devicetree/bindings/iio/dac/adi,ad5766.yaml    |   63 ++
+ .../bindings/iio/dac/microchip,mcp4725.yaml        |   31 +-
+ .../bindings/iio/gyroscope/bosch,bmg160.yaml       |    3 +
+ .../bindings/iio/gyroscope/invensense,mpu3050.txt  |   45 -
+ .../bindings/iio/gyroscope/invensense,mpu3050.yaml |   70 ++
+ .../devicetree/bindings/iio/imu/inv_mpu6050.txt    |   67 --
+ .../bindings/iio/imu/invensense,mpu6050.yaml       |  104 ++
+ .../iio/magnetometer/bosch,bmc150_magn.yaml        |    3 +
+ .../bindings/iio/magnetometer/yamaha,yas530.yaml   |  112 +++
+ .../devicetree/bindings/trivial-devices.yaml       |   10 +-
+ .../devicetree/bindings/vendor-prefixes.yaml       |    2 +
+ drivers/hid/hid-sensor-custom.c                    |  143 +++
+ drivers/iio/accel/hid-sensor-accel-3d.c            |    6 +-
+ drivers/iio/accel/kxcjk-1013.c                     |   32 +
+ drivers/iio/adc/Kconfig                            |   11 +-
+ drivers/iio/adc/ab8500-gpadc.c                     |   30 +-
+ drivers/iio/adc/ad7476.c                           |    6 +
+ drivers/iio/adc/qcom-pm8xxx-xoadc.c                |    3 +-
+ drivers/iio/adc/qcom-spmi-adc5.c                   |   95 +-
+ drivers/iio/adc/qcom-spmi-vadc.c                   |    3 +-
+ drivers/iio/adc/qcom-vadc-common.c                 |  229 +++--
+ drivers/iio/adc/sc27xx_adc.c                       |    2 +-
+ drivers/iio/adc/stm32-adc-core.c                   |   29 +-
+ drivers/iio/adc/stm32-adc.c                        |   14 +-
+ drivers/iio/adc/stm32-dfsdm-core.c                 |    3 +-
+ drivers/iio/adc/xilinx-xadc-core.c                 |  364 ++++---
+ drivers/iio/adc/xilinx-xadc-events.c               |    9 +-
+ drivers/iio/adc/xilinx-xadc.h                      |    6 +
+ drivers/iio/chemical/bme680_core.c                 |    2 +-
+ drivers/iio/chemical/pms7003.c                     |    2 +-
+ .../iio/common/hid-sensors/hid-sensor-attributes.c |    2 +
+ drivers/iio/common/ms_sensors/ms_sensors_i2c.c     |   76 +-
+ drivers/iio/common/ms_sensors/ms_sensors_i2c.h     |   15 +-
+ drivers/iio/dac/Kconfig                            |   10 +
+ drivers/iio/dac/Makefile                           |    1 +
+ drivers/iio/dac/ad5766.c                           |  643 ++++++++++++
+ drivers/iio/frequency/adf4350.c                    |    6 +-
+ drivers/iio/gyro/bmg160_core.c                     |   25 +
+ drivers/iio/gyro/hid-sensor-gyro-3d.c              |   40 +-
+ drivers/iio/imu/inv_mpu6050/Kconfig                |    8 +-
+ drivers/iio/imu/inv_mpu6050/inv_mpu_core.c         |    9 +
+ drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c          |    5 +
+ drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h          |    2 +
+ drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c          |    5 +
+ drivers/iio/industrialio-core.c                    |   44 +-
+ drivers/iio/inkern.c                               |   34 +-
+ drivers/iio/light/apds9960.c                       |    8 +
+ drivers/iio/light/hid-sensor-als.c                 |   39 +-
+ drivers/iio/light/tsl2583.c                        |    8 +-
+ drivers/iio/light/vl6180.c                         |    2 +-
+ drivers/iio/magnetometer/Kconfig                   |   15 +
+ drivers/iio/magnetometer/Makefile                  |    2 +
+ drivers/iio/magnetometer/bmc150_magn.c             |   26 +-
+ drivers/iio/magnetometer/hid-sensor-magn-3d.c      |   48 +-
+ drivers/iio/magnetometer/yamaha-yas530.c           | 1049 ++++++++++++++++++++
+ drivers/iio/orientation/hid-sensor-incl-3d.c       |   43 +-
+ drivers/iio/orientation/hid-sensor-rotation.c      |   46 +-
+ drivers/iio/position/Kconfig                       |   16 +
+ drivers/iio/position/Makefile                      |    1 +
+ .../iio/position/hid-sensor-custom-intel-hinge.c   |  385 +++++++
+ drivers/iio/pressure/ms5637.c                      |   77 +-
+ include/linux/fixp-arith.h                         |   19 +
+ include/linux/hid-sensor-ids.h                     |   14 +
+ .../linux}/iio/adc/qcom-vadc-common.h              |   28 +-
+ include/linux/iio/consumer.h                       |   36 +
+ 69 files changed, 3714 insertions(+), 666 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-dac-ad5766
+ create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad5766.yaml
+ delete mode 100644 Documentation/devicetree/bindings/iio/gyroscope/invensense,mpu3050.txt
+ create mode 100644 Documentation/devicetree/bindings/iio/gyroscope/invensense,mpu3050.yaml
+ delete mode 100644 Documentation/devicetree/bindings/iio/imu/inv_mpu6050.txt
+ create mode 100644 Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
+ create mode 100644 Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas530.yaml
+ create mode 100644 drivers/iio/dac/ad5766.c
+ create mode 100644 drivers/iio/magnetometer/yamaha-yas530.c
+ create mode 100644 drivers/iio/position/hid-sensor-custom-intel-hinge.c
+ rename {drivers => include/linux}/iio/adc/qcom-vadc-common.h (92%)

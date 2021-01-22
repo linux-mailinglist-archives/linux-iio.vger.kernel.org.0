@@ -2,43 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C1EE93001FF
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Jan 2021 12:53:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EF1A3002F4
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Jan 2021 13:31:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727933AbhAVLvu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 22 Jan 2021 06:51:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46366 "EHLO
+        id S1726363AbhAVM3r (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 22 Jan 2021 07:29:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727867AbhAVLvp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 Jan 2021 06:51:45 -0500
+        with ESMTP id S1727368AbhAVMTs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 Jan 2021 07:19:48 -0500
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27D52C0613D6
-        for <linux-iio@vger.kernel.org>; Fri, 22 Jan 2021 03:51:05 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE292C061786
+        for <linux-iio@vger.kernel.org>; Fri, 22 Jan 2021 04:19:07 -0800 (PST)
 Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
         by metis.ext.pengutronix.de with esmtp (Exim 4.92)
         (envelope-from <a.fatoum@pengutronix.de>)
-        id 1l2uxv-0003eZ-Eu; Fri, 22 Jan 2021 12:50:59 +0100
-Subject: Re: [PATCH v3 2/2] counter: add GPIO based pulse counters
-To:     Oleksij Rempel <o.rempel@pengutronix.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        Robin van der Gracht <robin@protonic.nl>,
-        linux-kernel@vger.kernel.org,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        David Jander <david@protonic.nl>
-References: <20210122112434.27886-1-o.rempel@pengutronix.de>
- <20210122112434.27886-3-o.rempel@pengutronix.de>
+        id 1l2vP2-00087l-Ob; Fri, 22 Jan 2021 13:19:00 +0100
+Subject: Re: [Linux-stm32] [PATCH] iio: adc: stm32-adc: fix erroneous handling
+ of spurious IRQs
+To:     Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Olivier Moysan <olivier.moysan@st.com>,
+        Fabrice Gasnier <fabrice.gasnier@st.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Holger Assmann <has@pengutronix.de>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        linux-iio@vger.kernel.org,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-kernel@vger.kernel.org, kernel@pengutronix.de,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        Alexandre Torgue <alexandre.torgue@st.com>
+References: <20210112152441.20665-1-a.fatoum@pengutronix.de>
+ <20210116175333.4d8684c5@archlinux>
+ <47b0905a-4496-2f21-3b17-91988aa88e91@pengutronix.de>
+ <7668b126-d77c-7339-029f-50333d03fbd9@foss.st.com>
 From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <0105e99c-f6f7-2e2d-94e6-b67395808670@pengutronix.de>
-Date:   Fri, 22 Jan 2021 12:50:58 +0100
+Message-ID: <e542035e-d5fe-0680-4780-4554ed165e0e@pengutronix.de>
+Date:   Fri, 22 Jan 2021 13:18:57 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.6.0
 MIME-Version: 1.0
-In-Reply-To: <20210122112434.27886-3-o.rempel@pengutronix.de>
+In-Reply-To: <7668b126-d77c-7339-029f-50333d03fbd9@foss.st.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
 X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
@@ -47,322 +57,168 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello,
+Hello Fabrice,
 
-On 22.01.21 12:24, Oleksij Rempel wrote:
-> Add simple GPIO base pulse counter. This device is used to measure
-> rotation speed of some agricultural devices, so no high frequency on the
-> counter pin is expected.
+On 19.01.21 18:56, Fabrice Gasnier wrote:
+> On 1/18/21 12:42 PM, Ahmad Fatoum wrote:
+>> Hello Jonathan,
+>>
+>> On 16.01.21 18:53, Jonathan Cameron wrote:
+>>> On Tue, 12 Jan 2021 16:24:42 +0100
+>>> Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+>>>
+>>>> 1c6c69525b40 ("genirq: Reject bogus threaded irq requests") makes sure
+>>>> that threaded IRQs either
+>>>>   - have IRQF_ONESHOT set
+>>>>   - don't have the default just return IRQ_WAKE_THREAD primary handler
+>>>>
+>>>> This is necessary because level-triggered interrupts need to be masked,
+>>>> either at device or irqchip, to avoid an interrupt storm.
+>>>>
+>>>> For spurious interrupts, the STM32 ADC driver still does this bogus
+>>>> request though:
+>>>>   - It doesn't set IRQF_ONESHOT
+>>>>   - Its primary handler just returns IRQ_WAKE_THREAD if the interrupt
+>>>>     is unexpected, i.e. !(status & enabled_mask)
+>>> This seems 'unusual'.  If this is a spurious interrupt we should be
+>>> returning IRQ_NONE and letting the spurious interrupt protection
+>>> stuff kick in.
+>>>
+>>> The only reason I can see that it does this is print an error message.
+>>> I'm not sure why we need to go into the thread to do that given
+>>> it's not supposed to happen. If we need that message at all, I'd
+>>> suggest doing it in the interrupt handler then return IRQ_NONE;
+>> As described, I run into the spurious IRQ case, so I think the message is
+>> still useful (until that's properly fixed), but yes, it should've returned
+>> IRQ_NONE in that case.
+>>
+>> With these changes, IRQF_ONESHOT shouldn't be necessary, but in practice
+>> the driver doesn't function correctly with the primary IRQ handler threaded.
+>>
+>> Olivier, Fabrice: Are you aware of this problem?
 > 
-> The maximal measurement frequency depends on the CPU and system load. On
-> the idle iMX6S I was able to measure up to 20kHz without count drops.
 > 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  drivers/counter/Kconfig          |   9 ++
->  drivers/counter/Makefile         |   1 +
->  drivers/counter/gpio-pulse-cnt.c | 244 +++++++++++++++++++++++++++++++
->  3 files changed, 254 insertions(+)
->  create mode 100644 drivers/counter/gpio-pulse-cnt.c
+> Hi Ahmad, Jonathan,
 > 
-> diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
-> index 2de53ab0dd25..9ad1d9d49dd1 100644
-> --- a/drivers/counter/Kconfig
-> +++ b/drivers/counter/Kconfig
-> @@ -29,6 +29,15 @@ config 104_QUAD_8
->  	  The base port addresses for the devices may be configured via the base
->  	  array module parameter.
->  
-> +config GPIO_PULSE_CNT
-> +	tristate "GPIO pulse counter driver"
-> +	depends on GPIOLIB
-> +	help
-> +	  Select this option to enable GPIO pulse counter driver.
-> +
-> +	  To compile this driver as a module, choose M here: the
-> +	  module will be called gpio-pulse-cnt.
-> +
->  config STM32_TIMER_CNT
->  	tristate "STM32 Timer encoder counter driver"
->  	depends on MFD_STM32_TIMERS || COMPILE_TEST
-> diff --git a/drivers/counter/Makefile b/drivers/counter/Makefile
-> index 0a393f71e481..6a5c3fc6f2a0 100644
-> --- a/drivers/counter/Makefile
-> +++ b/drivers/counter/Makefile
-> @@ -6,6 +6,7 @@
->  obj-$(CONFIG_COUNTER) += counter.o
->  
->  obj-$(CONFIG_104_QUAD_8)	+= 104-quad-8.o
-> +obj-$(CONFIG_GPIO_PULSE_CNT)	+= gpio-pulse-cnt.o
->  obj-$(CONFIG_STM32_TIMER_CNT)	+= stm32-timer-cnt.o
->  obj-$(CONFIG_STM32_LPTIMER_CNT)	+= stm32-lptimer-cnt.o
->  obj-$(CONFIG_TI_EQEP)		+= ti-eqep.o
-> diff --git a/drivers/counter/gpio-pulse-cnt.c b/drivers/counter/gpio-pulse-cnt.c
-> new file mode 100644
-> index 000000000000..9454345c77ad
-> --- /dev/null
-> +++ b/drivers/counter/gpio-pulse-cnt.c
-> @@ -0,0 +1,244 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (c) 2021 Pengutronix, Oleksij Rempel <kernel@pengutronix.de>
-> + */
-> +
-> +#include <linux/counter.h>
-> +#include <linux/gpio/consumer.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/module.h>
-> +#include <linux/of_device.h>
-> +#include <linux/platform_device.h>
-> +
-> +#define GPIO_PULSE_NAME		"gpio-pulse-counter"
-> +
-> +struct gpio_pulse_priv {
-> +	struct counter_device counter;
-> +	struct gpio_desc *gpio;
-> +	int irq;
-> +	bool enabled;
-> +	atomic_t count;
-> +};
-> +
-> +static irqreturn_t gpio_pulse_irq_isr(int irq, void *dev_id)
-> +{
-> +	struct gpio_pulse_priv *priv = dev_id;
-> +
-> +	if (!priv->enabled)
+> I wasn't aware of this up to now. I confirm we've the same behavior at
+> our end with threadirqs=1.
+> 
+> Olivier and I started to look at this. Indeed, the IRQF_ONESHOT makes
+> the issue to disappear.
+> I'm not sure 100% that's for the above reasons. Please let me share some
+> piece of logs, analysis and thoughts.
 
-Sorry, didn't look too closely first time.
+Thanks for looking at this.
 
-- User sets ->enable = 0
-- IRQ raised before disabling
-- you return IRQ_NONE, kernel logs a spurious IRQ
+> I may miss it but, the patch "genirq: Reject bogus threaded irq
+> requests" seems to handle the case where no HW handler is provided, but
+> only the threaded part?
 
-I'd say that's a bug. Instead:
+There is still a primary handler, but that one does only do IRQ_WAKE_THREAD,
+so I assumed that would be equivalent to what the driver is doing in the
+spurious IRQ case.
 
- - Can we ask whether an irq is enabled? If so, you can drop ->enabled
- - Otherwise, you should set ->enabled while irqs are off. So after disable
-   and before enable. You also need READ_ONCE/WRITE_ONCE.
+> In the stm32-adc both are provided. Also the IRQ domain in
+> stm32-adc-core maybe a key here ?
 
-With this addressed, for the non-counter-framework-specific parts:
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Oh, missed completely that the stm32-adc-core does the interrupt routing.
 
-> +		return IRQ_NONE;
-> +
-> +	atomic_inc(&priv->count);
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static ssize_t gpio_pulse_count_enable_read(struct counter_device *counter,
-> +					    struct counter_count *count,
-> +					    void *private, char *buf)
-> +{
-> +	struct gpio_pulse_priv *priv = counter->priv;
-> +
-> +	return sysfs_emit(buf, "%d\n", priv->enabled);
-> +}
-> +
-> +static ssize_t gpio_pulse_count_enable_write(struct counter_device *counter,
-> +					     struct counter_count *count,
-> +					     void *private,
-> +					     const char *buf, size_t len)
-> +{
-> +	struct gpio_pulse_priv *priv = counter->priv;
-> +	bool enable;
-> +	ssize_t ret;
-> +
-> +	ret = kstrtobool(buf, &enable);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (priv->enabled == enable)
-> +		return len;
-> +
-> +	priv->enabled = enable;
-> +
-> +	if (enable)
-> +		enable_irq(priv->irq);
-> +	else
-> +		disable_irq(priv->irq);
-> +
-> +	return len;
-> +}
-> +
-> +static const struct counter_count_ext gpio_pulse_count_ext[] = {
-> +	{
-> +		.name = "enable",
-> +		.read = gpio_pulse_count_enable_read,
-> +		.write = gpio_pulse_count_enable_write,
-> +	},
-> +};
-> +
-> +static enum counter_synapse_action gpio_pulse_synapse_actions[] = {
-> +	COUNTER_SYNAPSE_ACTION_RISING_EDGE,
-> +};
-> +
-> +static int gpio_pulse_action_get(struct counter_device *counter,
-> +			    struct counter_count *count,
-> +			    struct counter_synapse *synapse,
-> +			    size_t *action)
-> +{
-> +	*action = COUNTER_SYNAPSE_ACTION_RISING_EDGE;
-> +
-> +	return 0;
-> +}
-> +
-> +static int gpio_pulse_count_read(struct counter_device *counter,
-> +				 struct counter_count *count,
-> +				 unsigned long *val)
-> +{
-> +	struct gpio_pulse_priv *priv = counter->priv;
-> +
-> +	*val = atomic_read(&priv->count);
-> +
-> +	return 0;
-> +}
-> +
-> +static int gpio_pulse_count_write(struct counter_device *counter,
-> +				  struct counter_count *count,
-> +				  const unsigned long val)
-> +{
-> +	struct gpio_pulse_priv *priv = counter->priv;
-> +
-> +	atomic_set(&priv->count, val);
-> +
-> +	return 0;
-> +}
-> +
-> +static int gpio_pulse_count_function_get(struct counter_device *counter,
-> +					 struct counter_count *count,
-> +					 size_t *function)
-> +{
-> +	*function = COUNTER_COUNT_FUNCTION_INCREASE;
-> +
-> +	return 0;
-> +}
-> +
-> +static int gpio_pulse_count_signal_read(struct counter_device *counter,
-> +					struct counter_signal *signal,
-> +					enum counter_signal_value *val)
-> +{
-> +	struct gpio_pulse_priv *priv = counter->priv;
-> +	int ret;
-> +
-> +	ret = gpiod_get_value(priv->gpio);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	*val = ret ? COUNTER_SIGNAL_HIGH : COUNTER_SIGNAL_LOW;
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct counter_ops gpio_pulse_cnt_ops = {
-> +	.action_get = gpio_pulse_action_get,
-> +	.count_read = gpio_pulse_count_read,
-> +	.count_write = gpio_pulse_count_write,
-> +	.function_get = gpio_pulse_count_function_get,
-> +	.signal_read  = gpio_pulse_count_signal_read,
-> +};
-> +
-> +static struct counter_signal gpio_pulse_signals[] = {
-> +	{
-> +		.id = 0,
-> +		.name = "Channel 0 signal",
-> +	},
-> +};
-> +
-> +static struct counter_synapse gpio_pulse_count_synapses[] = {
-> +	{
-> +		.actions_list = gpio_pulse_synapse_actions,
-> +		.num_actions = ARRAY_SIZE(gpio_pulse_synapse_actions),
-> +		.signal = &gpio_pulse_signals[0]
-> +	},
-> +};
-> +
-> +static enum counter_count_function gpio_pulse_count_functions[] = {
-> +	COUNTER_COUNT_FUNCTION_INCREASE,
-> +};
-> +
-> +static struct counter_count gpio_pulse_counts[] = {
-> +	{
-> +		.id = 0,
-> +		.name = "Channel 1 Count",
-> +		.functions_list = gpio_pulse_count_functions,
-> +		.num_functions = ARRAY_SIZE(gpio_pulse_count_functions),
-> +		.synapses = gpio_pulse_count_synapses,
-> +		.num_synapses = ARRAY_SIZE(gpio_pulse_count_synapses),
-> +		.ext = gpio_pulse_count_ext,
-> +		.num_ext = ARRAY_SIZE(gpio_pulse_count_ext),
-> +	},
-> +};
-> +
-> +static int gpio_pulse_cnt_probe(struct platform_device *pdev)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	struct gpio_pulse_priv *priv;
-> +	int ret;
-> +
-> +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-> +	if (!priv)
-> +		return -ENOMEM;
-> +
-> +	if (gpiod_count(dev, NULL) != 1) {
-> +		dev_err(dev, "Error, need exactly 1 gpio for device\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	priv->gpio = devm_gpiod_get(dev, NULL, GPIOD_IN);
-> +	if (IS_ERR(priv->gpio))
-> +		return dev_err_probe(dev, PTR_ERR(priv->gpio), "failed to get gpio\n");
-> +
-> +	priv->irq = gpiod_to_irq(priv->gpio);
-> +	if (priv->irq < 0) {
-> +		dev_err(dev, "failed to map GPIO to IRQ: %d\n", priv->irq);
-> +		return priv->irq;
-> +	}
-> +
-> +	priv->counter.name = dev_name(dev);
-> +	priv->counter.parent = dev;
-> +	priv->counter.ops = &gpio_pulse_cnt_ops;
-> +	priv->counter.counts = gpio_pulse_counts;
-> +	priv->counter.num_counts = ARRAY_SIZE(gpio_pulse_counts);
-> +	priv->counter.signals = gpio_pulse_signals;
-> +	priv->counter.num_signals = ARRAY_SIZE(gpio_pulse_signals);
-> +	priv->counter.priv = priv;
-> +
-> +	ret = devm_request_irq(dev, priv->irq, gpio_pulse_irq_isr,
-> +			       IRQF_TRIGGER_RISING | IRQF_NO_THREAD,
-> +			       GPIO_PULSE_NAME, priv);
-> +	if (ret)
-> +		return ret;
-> +
-> +	disable_irq(priv->irq);
-> +
-> +	platform_set_drvdata(pdev, priv);
-> +
-> +	return devm_counter_register(dev, &priv->counter);
-> +}
-> +
-> +static const struct of_device_id gpio_pulse_cnt_of_match[] = {
-> +	{ .compatible = "virtual,gpio-pulse-counter", },
-> +	{}
-> +};
-> +MODULE_DEVICE_TABLE(of, gpio_pulse_cnt_of_match);
-> +
-> +static struct platform_driver gpio_pulse_cnt_driver = {
-> +	.probe = gpio_pulse_cnt_probe,
-> +	.driver = {
-> +		.name = GPIO_PULSE_NAME,
-> +		.of_match_table = gpio_pulse_cnt_of_match,
-> +	},
-> +};
-> +module_platform_driver(gpio_pulse_cnt_driver);
-> +
-> +MODULE_ALIAS("platform:gpio-pulse-counter");
-> +MODULE_AUTHOR("Oleksij Rempel <o.rempel@pengutronix.de>");
-> +MODULE_DESCRIPTION("GPIO pulse counter driver");
-> +MODULE_LICENSE("GPL v2");
+> We did some testing, ftrace and observed following behavior for one
+> capture (a single cat in_voltage..._raw) :
+> 
+> in stm32-adc-core, as IRQ source is still active until the IRQ thread
+> can execute:
+> - stm32_adc_irq_handler <-- generic_handle_irq
+> - stm32_adc_irq_handler <-- generic_handle_irq
+> - stm32_adc_irq_handler <-- generic_handle_irq
+> ...
+> 
+> - sched_switch to the 1st IRQ thread
+> - stm32_adc_irq_handler <-- generic_handle_irq (again until DR get read)
+> 
+> - stm32_adc_isr <-- irq_forced_thread_fn (from stm32-adc)
+>   DR read, clears the active flag
+> - stm32_adc_isr <-- irq_forced_thread_fn
+>   wakes the 2nd IRQ thread to print an error (unexpected...)
+> 
+> sched_switch to the 2nd IRQ thread that prints the message.
+> 
+> - stm32_adc_threaded_isr <-- irq_thread_fn
+> 
+> 
+> So my understanding is: the cause seems to be the concurrency between
+> 
+> - stm32_adc_irq_handler() storm calls in stm32-adc-core
+> - stm32_adc_isr() call to clear the cause (forced into a thread with
+> threadirqs=1).
+
+I can't follow here. Where does stm32_adc_isr() clear the IRQ cause?
+I assumed it can't be isr_ovr.mask, because that's checked in the
+primary handler.
+
+> To properly work, the stm32_adc_irq_handler() should be masked in between.
+> 
+> As you explain, this works in this case: the call to stm32_adc_isr (in
+> stm32-adc) isn't longer forced threaded with IRQF_ONESHOT.
+> 
+> It looks like IRQF_NO_THREAD for forced threading would have similar
+> effect? Maybe the same would be applicable here ? (I haven't tested...)
+
+I guess IRQF_NO_THREAD is meant for use with request_irq and
+IRQF_ONESHOT for request_threaded_irq?
+ 
+> Hopefully this helps and is similar to what you observed.
+
+Cheers,
+Ahmad
+
+> 
+> Thanks and best regards,
+> Fabrice
+> 
+>>
+>> Cheers,
+>> Ahmad
+>>
+>>>>   - stm32mp151.dtsi describes the ADC interrupt as level-triggered
+>>>>
+>>>> Fix this by setting IRQF_ONESHOT to have the irqchip mask the IRQ
+>>>> until the IRQ thread has finished.
+>>>>
+>>>> IRQF_ONESHOT also has the effect that the primary handler is no longer
+>>>> forced into a thread. This makes the issue with spurious interrupts
+>>>> interrupts disappear when reading the ADC on a threadirqs=1 kernel.
+>>>> This used to result in following kernel error message:
+>>>>
+>>>> 	iio iio:device1: Unexpected IRQ: IER=0x00000000, ISR=0x0000100e
+>>>> or
+>>>> 	iio iio:device1: Unexpected IRQ: IER=0x00000004, ISR=0x0000100a
+>>>>
+>>>> But with this patch applied (or threaded IRQs disabled), this no longer
+>>>> occurs.
+>>>>
+>>>> Cc: Lucas Stach <l.stach@pengutronix.de>
+>>>> Reported-by: Holger Assmann <has@pengutronix.de>
+>>>> Fixes: 695e2f5c289b ("iio: adc: stm32-adc: fix a regression when using dma and irq")
+>>>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>>>> ---
+>>>>  drivers/iio/adc/stm32-adc.c | 2 +-
+>>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+>>>> index c067c994dae2..7e0e21c79ac8 100644
+>>>> --- a/drivers/iio/adc/stm32-adc.c
+>>>> +++ b/drivers/iio/adc/stm32-adc.c
+>>>> @@ -1910,7 +1910,7 @@ static int stm32_adc_probe(struct platform_device *pdev)
+>>>>  
+>>>>  	ret = devm_request_threaded_irq(&pdev->dev, adc->irq, stm32_adc_isr,
+>>>>  					stm32_adc_threaded_isr,
+>>>> -					0, pdev->name, indio_dev);
+>>>> +					IRQF_ONESHOT, pdev->name, indio_dev);
+>>>>  	if (ret) {
+>>>>  		dev_err(&pdev->dev, "failed to request IRQ\n");
+>>>>  		return ret;
+>>>
 > 
 
 -- 

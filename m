@@ -2,517 +2,413 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD2EC3006A8
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Jan 2021 16:07:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 953103007F1
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Jan 2021 16:57:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728902AbhAVPGy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 22 Jan 2021 10:06:54 -0500
-Received: from mx07-00178001.pphosted.com ([185.132.182.106]:52908 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729102AbhAVPGk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 Jan 2021 10:06:40 -0500
-Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 10MEvCjp024039;
-        Fri, 22 Jan 2021 16:05:23 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-type; s=selector1;
- bh=DfGK4MbGjF89NcTEveRx/yqC3sgoowMDyokoNkQWT2I=;
- b=1Uv+MfS/ClVZjrvuXrJZKC8YFt5m42zrpk7SiH0ybjv7OND61xx8iT9hRcdgIh0ljf+n
- pcdrtYoLv43pP34uR8XC15JRQ4levYFX7/Sa/AGs53pfPHFuj/Je73ANWOYj+Y8NrNTF
- e+s4I78YbR1Vp4hhfikF9qLf9BPT3TffnhJq7bhF1ouf6WPvbR7AAOqhY67I0VIlyH04
- Jfpq5UxK7IKOobR1UpQXlVcB6OZrjVmI/q6MJdidQrKxohbAMsM4OgQFRWIbY9OnDehD
- eAKzT5mlnhpJGj7j+kcesBntcOoROWm7exVgwj7y/kMwe+3LdXJ3Irrl0ZRmPFjl5UHE EQ== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 3668p5afgt-1
+        id S1729218AbhAVP4d (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 22 Jan 2021 10:56:33 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:25406 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729181AbhAVP4X (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 Jan 2021 10:56:23 -0500
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 10MFUthn019148;
+        Fri, 22 Jan 2021 10:55:30 -0500
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 3668rbtjq3-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 22 Jan 2021 16:05:23 +0100
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 212B210002A;
-        Fri, 22 Jan 2021 16:05:21 +0100 (CET)
-Received: from Webmail-eu.st.com (sfhdag2node3.st.com [10.75.127.6])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 03FA225D032;
-        Fri, 22 Jan 2021 16:05:21 +0100 (CET)
-Received: from localhost (10.75.127.48) by SFHDAG2NODE3.st.com (10.75.127.6)
- with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 22 Jan 2021 16:05:19
- +0100
-From:   Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-To:     <jic23@kernel.org>, <vilhelm.gray@gmail.com>
-CC:     <mchehab+huawei@kernel.org>, <lukas.bulwahn@gmail.com>,
-        <linux-doc@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <alexandre.torgue@st.com>,
-        <fabrice.gasnier@st.com>, <olivier.moysan@st.com>,
-        <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>
-Subject: [PATCH] counter: stm32-lptimer-cnt: remove iio counter abi
-Date:   Fri, 22 Jan 2021 16:03:23 +0100
-Message-ID: <1611327803-882-1-git-send-email-fabrice.gasnier@foss.st.com>
-X-Mailer: git-send-email 2.7.4
+        Fri, 22 Jan 2021 10:55:30 -0500
+Received: from SCSQMBX10.ad.analog.com (SCSQMBX10.ad.analog.com [10.77.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 10MFtScF002562
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 22 Jan 2021 10:55:28 -0500
+Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
+ SCSQMBX10.ad.analog.com (10.77.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.721.2;
+ Fri, 22 Jan 2021 07:55:27 -0800
+Received: from zeus.spd.analog.com (10.66.68.11) by SCSQMBX11.ad.analog.com
+ (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Fri, 22 Jan 2021 07:55:26 -0800
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 10MFtF59014933;
+        Fri, 22 Jan 2021 10:55:24 -0500
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
+CC:     <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+        <jic23@kernel.org>, <nuno.sa@analog.com>,
+        <dragos.bogdan@analog.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH v2 06/12] iio: buffer: re-route scan_elements via it's kobj_type
+Date:   Fri, 22 Jan 2021 17:57:59 +0200
+Message-ID: <20210122155805.83012-7-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20210122155805.83012-1-alexandru.ardelean@analog.com>
+References: <20210122155805.83012-1-alexandru.ardelean@analog.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [10.75.127.48]
-X-ClientProxiedBy: SFHDAG1NODE2.st.com (10.75.127.2) To SFHDAG2NODE3.st.com
- (10.75.127.6)
+X-ADIRuleOP-NewSCL: Rule Triggered
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343,18.0.737
  definitions=2021-01-22_11:2021-01-22,2021-01-22 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ phishscore=0 malwarescore=0 impostorscore=0 spamscore=0 mlxscore=0
+ lowpriorityscore=0 suspectscore=0 bulkscore=0 adultscore=0 mlxlogscore=999
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101220087
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Currently, the STM32 LP Timer counter driver registers into both IIO and
-counter subsystems, which is redundant.
+The scan_elements attributes are solely located inside
+'industrialio-buffer-sysfs.c'. In order to support more than one buffer per
+IIO device, we need to expand scan_elements attributes directly to IIO
+buffer object, and not the IIO device.
 
-Remove the IIO counter ABI and IIO registration from the STM32 LP Timer
-counter driver since it's been superseded by the Counter subsystem
-as discussed in [1].
+This also requires that a new 'iio_buffer_attr' type be added which is
+mostly a copy of 'iio_dev_attr', but this expands to an IIO buffer object.
 
-Keep only the counter subsystem related part.
-Move a part of the ABI documentation into a driver comment.
+The 'iio_dev_attr' type could have been re-used here, but managing 'device'
+objects is a bit more tricky (than it looks at first). A 'device' object
+needs to be initialized & managed and we only need to the 'kobj' to expand
+from the 'bufferX' directory back to an IIO buffer.
+kobjects are simpler to manage.
 
-This also removes a duplicate ABI warning
-$ scripts/get_abi.pl validate
-...
-/sys/bus/iio/devices/iio:deviceX/in_count0_preset is defined 2 times:
-  ./Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:100
-  ./Documentation/ABI/testing/sysfs-bus-iio-lptimer-stm32:0
-
-[1] https://lkml.org/lkml/2021/1/19/347
-
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
- .../ABI/testing/sysfs-bus-iio-lptimer-stm32        |  62 -----
- drivers/counter/stm32-lptimer-cnt.c                | 297 +++------------------
- 2 files changed, 36 insertions(+), 323 deletions(-)
- delete mode 100644 Documentation/ABI/testing/sysfs-bus-iio-lptimer-stm32
+ drivers/iio/iio_core.h            |   5 +
+ drivers/iio/industrialio-buffer.c | 160 +++++++++++++++++++++++-------
+ drivers/iio/industrialio-core.c   |   1 -
+ 3 files changed, 128 insertions(+), 38 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio-lptimer-stm32 b/Documentation/ABI/testing/sysfs-bus-iio-lptimer-stm32
-deleted file mode 100644
-index 73498ff..00000000
---- a/Documentation/ABI/testing/sysfs-bus-iio-lptimer-stm32
-+++ /dev/null
-@@ -1,62 +0,0 @@
--What:		/sys/bus/iio/devices/iio:deviceX/in_count0_preset
--KernelVersion:	4.13
--Contact:	fabrice.gasnier@st.com
--Description:
--		Reading returns the current preset value. Writing sets the
--		preset value. Encoder counts continuously from 0 to preset
--		value, depending on direction (up/down).
--
--What:		/sys/bus/iio/devices/iio:deviceX/in_count_quadrature_mode_available
--KernelVersion:	4.13
--Contact:	fabrice.gasnier@st.com
--Description:
--		Reading returns the list possible quadrature modes.
--
--What:		/sys/bus/iio/devices/iio:deviceX/in_count0_quadrature_mode
--KernelVersion:	4.13
--Contact:	fabrice.gasnier@st.com
--Description:
--		Configure the device counter quadrature modes:
--
--		- non-quadrature:
--			Encoder IN1 input servers as the count input (up
--			direction).
--
--		- quadrature:
--			Encoder IN1 and IN2 inputs are mixed to get direction
--			and count.
--
--What:		/sys/bus/iio/devices/iio:deviceX/in_count_polarity_available
--KernelVersion:	4.13
--Contact:	fabrice.gasnier@st.com
--Description:
--		Reading returns the list possible active edges.
--
--What:		/sys/bus/iio/devices/iio:deviceX/in_count0_polarity
--KernelVersion:	4.13
--Contact:	fabrice.gasnier@st.com
--Description:
--		Configure the device encoder/counter active edge:
--
--		- rising-edge
--		- falling-edge
--		- both-edges
--
--		In non-quadrature mode, device counts up on active edge.
--
--		In quadrature mode, encoder counting scenarios are as follows:
--
--		+---------+----------+--------------------+--------------------+
--		| Active  | Level on |      IN1 signal    |     IN2 signal     |
--		| edge    | opposite +----------+---------+----------+---------+
--		|         | signal   |  Rising  | Falling |  Rising  | Falling |
--		+---------+----------+----------+---------+----------+---------+
--		| Rising  | High ->  |   Down   |    -    |   Up     |    -    |
--		| edge    | Low  ->  |   Up     |    -    |   Down   |    -    |
--		+---------+----------+----------+---------+----------+---------+
--		| Falling | High ->  |    -     |   Up    |    -     |   Down  |
--		| edge    | Low  ->  |    -     |   Down  |    -     |   Up    |
--		+---------+----------+----------+---------+----------+---------+
--		| Both    | High ->  |   Down   |   Up    |   Up     |   Down  |
--		| edges   | Low  ->  |   Up     |   Down  |   Down   |   Up    |
--		+---------+----------+----------+---------+----------+---------+
-diff --git a/drivers/counter/stm32-lptimer-cnt.c b/drivers/counter/stm32-lptimer-cnt.c
-index fd6828e..9374396 100644
---- a/drivers/counter/stm32-lptimer-cnt.c
-+++ b/drivers/counter/stm32-lptimer-cnt.c
-@@ -12,8 +12,8 @@
+diff --git a/drivers/iio/iio_core.h b/drivers/iio/iio_core.h
+index fced02cadcc3..43d44ec92781 100644
+--- a/drivers/iio/iio_core.h
++++ b/drivers/iio/iio_core.h
+@@ -31,6 +31,11 @@ void iio_device_ioctl_handler_register(struct iio_dev *indio_dev,
+ 				       struct iio_ioctl_handler *h);
+ void iio_device_ioctl_handler_unregister(struct iio_ioctl_handler *h);
  
- #include <linux/bitfield.h>
- #include <linux/counter.h>
--#include <linux/iio/iio.h>
- #include <linux/mfd/stm32-lptimer.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/pinctrl/consumer.h>
- #include <linux/platform_device.h>
-@@ -107,249 +107,27 @@ static int stm32_lptim_setup(struct stm32_lptim_cnt *priv, int enable)
- 	return regmap_update_bits(priv->regmap, STM32_LPTIM_CFGR, mask, val);
++int iio_attr_init(struct attribute *attr,
++		  const char *postfix,
++		  struct iio_chan_spec const *chan,
++		  enum iio_shared_by shared_by);
++
+ int __iio_add_chan_devattr(const char *postfix,
+ 			   struct iio_chan_spec const *chan,
+ 			   ssize_t (*func)(struct device *dev,
+diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+index 628d78125126..524b897a1877 100644
+--- a/drivers/iio/industrialio-buffer.c
++++ b/drivers/iio/industrialio-buffer.c
+@@ -26,6 +26,26 @@
+ #include <linux/iio/buffer.h>
+ #include <linux/iio/buffer_impl.h>
+ 
++/**
++ * struct iio_buf_attr - iio buffer specific attribute
++ * @attr:	underlying attribute
++ * @address:	associated register address
++ * @l:		list head for maintaining list of dynamically created attrs
++ * @c:		specification for the underlying channel
++ * @show:	sysfs show hook for this attribute
++ * @store:	sysfs store hook for this attribute
++ */
++struct iio_buf_attr {
++	struct attribute attr;
++	u64 address;
++	struct list_head l;
++	struct iio_chan_spec const *c;
++	ssize_t (*show)(struct iio_buffer *buffer, struct iio_buf_attr *attr,
++			char *buf);
++	ssize_t (*store)(struct iio_buffer *buffer, struct iio_buf_attr *attr,
++			 const char *buf, size_t count);
++};
++
+ static const char * const iio_endian_prefix[] = {
+ 	[IIO_BE] = "be",
+ 	[IIO_LE] = "le",
+@@ -210,18 +230,17 @@ void iio_buffer_init(struct iio_buffer *buffer)
+ }
+ EXPORT_SYMBOL(iio_buffer_init);
+ 
+-static ssize_t iio_show_scan_index(struct device *dev,
+-				   struct device_attribute *attr,
++static ssize_t iio_show_scan_index(struct iio_buffer *buffer,
++				   struct iio_buf_attr *attr,
+ 				   char *buf)
+ {
+-	return sprintf(buf, "%u\n", to_iio_dev_attr(attr)->c->scan_index);
++	return sprintf(buf, "%u\n", attr->c->scan_index);
  }
  
--static int stm32_lptim_write_raw(struct iio_dev *indio_dev,
--				 struct iio_chan_spec const *chan,
--				 int val, int val2, long mask)
--{
--	struct stm32_lptim_cnt *priv = iio_priv(indio_dev);
--	int ret;
--
--	switch (mask) {
--	case IIO_CHAN_INFO_ENABLE:
--		if (val < 0 || val > 1)
--			return -EINVAL;
--
--		/* Check nobody uses the timer, or already disabled/enabled */
--		ret = stm32_lptim_is_enabled(priv);
--		if ((ret < 0) || (!ret && !val))
--			return ret;
--		if (val && ret)
--			return -EBUSY;
--
--		ret = stm32_lptim_setup(priv, val);
--		if (ret)
--			return ret;
--		return stm32_lptim_set_enable_state(priv, val);
--
--	default:
--		return -EINVAL;
--	}
--}
--
--static int stm32_lptim_read_raw(struct iio_dev *indio_dev,
--				struct iio_chan_spec const *chan,
--				int *val, int *val2, long mask)
--{
--	struct stm32_lptim_cnt *priv = iio_priv(indio_dev);
--	u32 dat;
--	int ret;
--
--	switch (mask) {
--	case IIO_CHAN_INFO_RAW:
--		ret = regmap_read(priv->regmap, STM32_LPTIM_CNT, &dat);
--		if (ret)
--			return ret;
--		*val = dat;
--		return IIO_VAL_INT;
--
--	case IIO_CHAN_INFO_ENABLE:
--		ret = stm32_lptim_is_enabled(priv);
--		if (ret < 0)
--			return ret;
--		*val = ret;
--		return IIO_VAL_INT;
--
--	case IIO_CHAN_INFO_SCALE:
--		/* Non-quadrature mode: scale = 1 */
--		*val = 1;
--		*val2 = 0;
--		if (priv->quadrature_mode) {
--			/*
--			 * Quadrature encoder mode:
--			 * - both edges, quarter cycle, scale is 0.25
--			 * - either rising/falling edge scale is 0.5
--			 */
--			if (priv->polarity > 1)
--				*val2 = 2;
--			else
--				*val2 = 1;
--		}
--		return IIO_VAL_FRACTIONAL_LOG2;
--
--	default:
--		return -EINVAL;
--	}
--}
--
--static const struct iio_info stm32_lptim_cnt_iio_info = {
--	.read_raw = stm32_lptim_read_raw,
--	.write_raw = stm32_lptim_write_raw,
--};
--
--static const char *const stm32_lptim_quadrature_modes[] = {
--	"non-quadrature",
--	"quadrature",
--};
--
--static int stm32_lptim_get_quadrature_mode(struct iio_dev *indio_dev,
--					   const struct iio_chan_spec *chan)
--{
--	struct stm32_lptim_cnt *priv = iio_priv(indio_dev);
--
--	return priv->quadrature_mode;
--}
--
--static int stm32_lptim_set_quadrature_mode(struct iio_dev *indio_dev,
--					   const struct iio_chan_spec *chan,
--					   unsigned int type)
--{
--	struct stm32_lptim_cnt *priv = iio_priv(indio_dev);
--
--	if (stm32_lptim_is_enabled(priv))
--		return -EBUSY;
--
--	priv->quadrature_mode = type;
--
--	return 0;
--}
--
--static const struct iio_enum stm32_lptim_quadrature_mode_en = {
--	.items = stm32_lptim_quadrature_modes,
--	.num_items = ARRAY_SIZE(stm32_lptim_quadrature_modes),
--	.get = stm32_lptim_get_quadrature_mode,
--	.set = stm32_lptim_set_quadrature_mode,
--};
--
--static const char * const stm32_lptim_cnt_polarity[] = {
--	"rising-edge", "falling-edge", "both-edges",
--};
--
--static int stm32_lptim_cnt_get_polarity(struct iio_dev *indio_dev,
--					const struct iio_chan_spec *chan)
--{
--	struct stm32_lptim_cnt *priv = iio_priv(indio_dev);
--
--	return priv->polarity;
--}
--
--static int stm32_lptim_cnt_set_polarity(struct iio_dev *indio_dev,
--					const struct iio_chan_spec *chan,
--					unsigned int type)
--{
--	struct stm32_lptim_cnt *priv = iio_priv(indio_dev);
--
--	if (stm32_lptim_is_enabled(priv))
--		return -EBUSY;
--
--	priv->polarity = type;
--
--	return 0;
--}
--
--static const struct iio_enum stm32_lptim_cnt_polarity_en = {
--	.items = stm32_lptim_cnt_polarity,
--	.num_items = ARRAY_SIZE(stm32_lptim_cnt_polarity),
--	.get = stm32_lptim_cnt_get_polarity,
--	.set = stm32_lptim_cnt_set_polarity,
--};
--
--static ssize_t stm32_lptim_cnt_get_ceiling(struct stm32_lptim_cnt *priv,
--					   char *buf)
--{
--	return snprintf(buf, PAGE_SIZE, "%u\n", priv->ceiling);
--}
--
--static ssize_t stm32_lptim_cnt_set_ceiling(struct stm32_lptim_cnt *priv,
--					   const char *buf, size_t len)
--{
--	int ret;
--
--	if (stm32_lptim_is_enabled(priv))
--		return -EBUSY;
--
--	ret = kstrtouint(buf, 0, &priv->ceiling);
--	if (ret)
--		return ret;
--
--	if (priv->ceiling > STM32_LPTIM_MAX_ARR)
--		return -EINVAL;
--
--	return len;
--}
--
--static ssize_t stm32_lptim_cnt_get_preset_iio(struct iio_dev *indio_dev,
--					      uintptr_t private,
--					      const struct iio_chan_spec *chan,
--					      char *buf)
--{
--	struct stm32_lptim_cnt *priv = iio_priv(indio_dev);
--
--	return stm32_lptim_cnt_get_ceiling(priv, buf);
--}
--
--static ssize_t stm32_lptim_cnt_set_preset_iio(struct iio_dev *indio_dev,
--					      uintptr_t private,
--					      const struct iio_chan_spec *chan,
--					      const char *buf, size_t len)
--{
--	struct stm32_lptim_cnt *priv = iio_priv(indio_dev);
--
--	return stm32_lptim_cnt_set_ceiling(priv, buf, len);
--}
--
--/* LP timer with encoder */
--static const struct iio_chan_spec_ext_info stm32_lptim_enc_ext_info[] = {
--	{
--		.name = "preset",
--		.shared = IIO_SEPARATE,
--		.read = stm32_lptim_cnt_get_preset_iio,
--		.write = stm32_lptim_cnt_set_preset_iio,
--	},
--	IIO_ENUM("polarity", IIO_SEPARATE, &stm32_lptim_cnt_polarity_en),
--	IIO_ENUM_AVAILABLE("polarity", &stm32_lptim_cnt_polarity_en),
--	IIO_ENUM("quadrature_mode", IIO_SEPARATE,
--		 &stm32_lptim_quadrature_mode_en),
--	IIO_ENUM_AVAILABLE("quadrature_mode", &stm32_lptim_quadrature_mode_en),
--	{}
--};
--
--static const struct iio_chan_spec stm32_lptim_enc_channels = {
--	.type = IIO_COUNT,
--	.channel = 0,
--	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
--			      BIT(IIO_CHAN_INFO_ENABLE) |
--			      BIT(IIO_CHAN_INFO_SCALE),
--	.ext_info = stm32_lptim_enc_ext_info,
--	.indexed = 1,
--};
--
--/* LP timer without encoder (counter only) */
--static const struct iio_chan_spec_ext_info stm32_lptim_cnt_ext_info[] = {
--	{
--		.name = "preset",
--		.shared = IIO_SEPARATE,
--		.read = stm32_lptim_cnt_get_preset_iio,
--		.write = stm32_lptim_cnt_set_preset_iio,
--	},
--	IIO_ENUM("polarity", IIO_SEPARATE, &stm32_lptim_cnt_polarity_en),
--	IIO_ENUM_AVAILABLE("polarity", &stm32_lptim_cnt_polarity_en),
--	{}
--};
--
--static const struct iio_chan_spec stm32_lptim_cnt_channels = {
--	.type = IIO_COUNT,
--	.channel = 0,
--	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
--			      BIT(IIO_CHAN_INFO_ENABLE) |
--			      BIT(IIO_CHAN_INFO_SCALE),
--	.ext_info = stm32_lptim_cnt_ext_info,
--	.indexed = 1,
--};
--
- /**
-  * enum stm32_lptim_cnt_function - enumerates LPTimer counter & encoder modes
-  * @STM32_LPTIM_COUNTER_INCREASE: up count on IN1 rising, falling or both edges
-  * @STM32_LPTIM_ENCODER_BOTH_EDGE: count on both edges (IN1 & IN2 quadrature)
-+ *
-+ * In non-quadrature mode, device counts up on active edge.
-+ * In quadrature mode, encoder counting scenarios are as follows:
-+ * +---------+----------+--------------------+--------------------+
-+ * | Active  | Level on |      IN1 signal    |     IN2 signal     |
-+ * | edge    | opposite +----------+---------+----------+---------+
-+ * |         | signal   |  Rising  | Falling |  Rising  | Falling |
-+ * +---------+----------+----------+---------+----------+---------+
-+ * | Rising  | High ->  |   Down   |    -    |   Up     |    -    |
-+ * | edge    | Low  ->  |   Up     |    -    |   Down   |    -    |
-+ * +---------+----------+----------+---------+----------+---------+
-+ * | Falling | High ->  |    -     |   Up    |    -     |   Down  |
-+ * | edge    | Low  ->  |    -     |   Down  |    -     |   Up    |
-+ * +---------+----------+----------+---------+----------+---------+
-+ * | Both    | High ->  |   Down   |   Up    |   Up     |   Down  |
-+ * | edges   | Low  ->  |   Up     |   Down  |   Down   |   Up    |
-+ * +---------+----------+----------+---------+----------+---------+
-  */
- enum stm32_lptim_cnt_function {
- 	STM32_LPTIM_COUNTER_INCREASE,
-@@ -484,7 +262,7 @@ static ssize_t stm32_lptim_cnt_ceiling_read(struct counter_device *counter,
+-static ssize_t iio_show_fixed_type(struct device *dev,
+-				   struct device_attribute *attr,
++static ssize_t iio_show_fixed_type(struct iio_buffer *buffer,
++				   struct iio_buf_attr *this_attr,
+ 				   char *buf)
  {
- 	struct stm32_lptim_cnt *const priv = counter->priv;
+-	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
+ 	u8 type = this_attr->c->scan_type.endianness;
  
--	return stm32_lptim_cnt_get_ceiling(priv, buf);
-+	return snprintf(buf, PAGE_SIZE, "%u\n", priv->ceiling);
+ 	if (type == IIO_CPU) {
+@@ -248,17 +267,14 @@ static ssize_t iio_show_fixed_type(struct device *dev,
+ 		       this_attr->c->scan_type.shift);
  }
  
- static ssize_t stm32_lptim_cnt_ceiling_write(struct counter_device *counter,
-@@ -493,8 +271,22 @@ static ssize_t stm32_lptim_cnt_ceiling_write(struct counter_device *counter,
- 					     const char *buf, size_t len)
+-static ssize_t iio_scan_el_show(struct device *dev,
+-				struct device_attribute *attr,
++static ssize_t iio_scan_el_show(struct iio_buffer *buffer,
++				struct iio_buf_attr *attr,
+ 				char *buf)
  {
- 	struct stm32_lptim_cnt *const priv = counter->priv;
-+	unsigned int ceiling;
+ 	int ret;
+-	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+-	struct iio_buffer *buffer = indio_dev->buffer;
+ 
+ 	/* Ensure ret is 0 or 1. */
+-	ret = !!test_bit(to_iio_dev_attr(attr)->address,
+-		       buffer->scan_mask);
++	ret = !!test_bit(attr->address, buffer->scan_mask);
+ 
+ 	return sprintf(buf, "%d\n", ret);
+ }
+@@ -359,16 +375,14 @@ static int iio_scan_mask_query(struct iio_dev *indio_dev,
+ 	return !!test_bit(bit, buffer->scan_mask);
+ };
+ 
+-static ssize_t iio_scan_el_store(struct device *dev,
+-				 struct device_attribute *attr,
++static ssize_t iio_scan_el_store(struct iio_buffer *buffer,
++				 struct iio_buf_attr *this_attr,
+ 				 const char *buf,
+ 				 size_t len)
+ {
++	struct iio_dev *indio_dev = buffer->indio_dev;
+ 	int ret;
+ 	bool state;
+-	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+-	struct iio_buffer *buffer = indio_dev->buffer;
+-	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
+ 
+ 	ret = strtobool(buf, &state);
+ 	if (ret < 0)
+@@ -398,24 +412,20 @@ static ssize_t iio_scan_el_store(struct device *dev,
+ 
+ }
+ 
+-static ssize_t iio_scan_el_ts_show(struct device *dev,
+-				   struct device_attribute *attr,
++static ssize_t iio_scan_el_ts_show(struct iio_buffer *buffer,
++				   struct iio_buf_attr *attr,
+ 				   char *buf)
+ {
+-	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+-	struct iio_buffer *buffer = indio_dev->buffer;
+-
+ 	return sprintf(buf, "%d\n", buffer->scan_timestamp);
+ }
+ 
+-static ssize_t iio_scan_el_ts_store(struct device *dev,
+-				    struct device_attribute *attr,
++static ssize_t iio_scan_el_ts_store(struct iio_buffer *buffer,
++				    struct iio_buf_attr *attr,
+ 				    const char *buf,
+ 				    size_t len)
+ {
++	struct iio_dev *indio_dev = buffer->indio_dev;
+ 	int ret;
+-	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+-	struct iio_buffer *buffer = indio_dev->buffer;
+ 	bool state;
+ 
+ 	ret = strtobool(buf, &state);
+@@ -434,13 +444,88 @@ static ssize_t iio_scan_el_ts_store(struct device *dev,
+ 	return ret ? ret : len;
+ }
+ 
++static int __iio_add_chan_bufattr(const char *postfix,
++				  struct iio_chan_spec const *chan,
++				  ssize_t (*readfunc)(struct iio_buffer *buffer,
++						      struct iio_buf_attr *attr,
++						      char *buf),
++				  ssize_t (*writefunc)(struct iio_buffer *buffer,
++						       struct iio_buf_attr *attr,
++						       const char *buf,
++						       size_t len),
++				  u64 mask,
++				  enum iio_shared_by shared_by,
++				  struct device *dev,
++				  struct list_head *attr_list)
++{
++	struct iio_buf_attr *iio_attr, *t;
 +	int ret;
 +
-+	if (stm32_lptim_is_enabled(priv))
-+		return -EBUSY;
++	iio_attr = kzalloc(sizeof(*iio_attr), GFP_KERNEL);
++	if (iio_attr == NULL)
++		return -ENOMEM;
 +
-+	ret = kstrtouint(buf, 0, &ceiling);
++	ret = iio_attr_init(&iio_attr->attr, postfix, chan, shared_by);
 +	if (ret)
-+		return ret;
++		goto error_iio_buf_attr_free;
 +
-+	if (ceiling > STM32_LPTIM_MAX_ARR)
-+		return -EINVAL;
++	iio_attr->c = chan;
++	iio_attr->address = mask;
++	list_for_each_entry(t, attr_list, l) {
++		if (strcmp(t->attr.name, iio_attr->attr.name) == 0) {
++			if (shared_by == IIO_SEPARATE)
++				dev_err(dev, "tried to double register : %s\n",
++					t->attr.name);
++			ret = -EBUSY;
++			goto error_iio_buf_attr_deinit;
++		}
++	}
++	list_add(&iio_attr->l, attr_list);
 +
-+	priv->ceiling = ceiling;
- 
--	return stm32_lptim_cnt_set_ceiling(priv, buf, len);
-+	return len;
- }
- 
- static const struct counter_count_ext stm32_lptim_cnt_ext[] = {
-@@ -630,32 +422,19 @@ static int stm32_lptim_cnt_probe(struct platform_device *pdev)
++	if (readfunc) {
++		iio_attr->attr.mode |= S_IRUGO;
++		iio_attr->show = readfunc;
++	}
++
++	if (writefunc) {
++		iio_attr->attr.mode |= S_IWUSR;
++		iio_attr->store = writefunc;
++	}
++
++	return 0;
++
++error_iio_buf_attr_deinit:
++	kfree(iio_attr->attr.name);
++error_iio_buf_attr_free:
++	kfree(iio_attr);
++	return ret;
++}
++
++/**
++ * iio_free_chan_bufattr_list() - Free a list of IIO buffer attributes
++ * @attr_list: List of IIO buffer attributes
++ *
++ * This function frees the memory allocated for each of the IIO buffer
++ * attributes in the list.
++ */
++static void iio_free_chan_bufattr_list(struct list_head *attr_list)
++{
++	struct iio_buf_attr *p, *n;
++
++	list_for_each_entry_safe(p, n, attr_list, l) {
++		list_del(&p->l);
++		kfree(p->attr.name);
++		kfree(p);
++	}
++}
++
+ static int iio_buffer_add_channel_sysfs(struct iio_dev *indio_dev,
+ 					struct iio_buffer *buffer,
+ 					const struct iio_chan_spec *chan)
  {
- 	struct stm32_lptimer *ddata = dev_get_drvdata(pdev->dev.parent);
- 	struct stm32_lptim_cnt *priv;
--	struct iio_dev *indio_dev;
--	int ret;
+ 	int ret, attrcount = 0;
  
- 	if (IS_ERR_OR_NULL(ddata))
- 		return -EINVAL;
+-	ret = __iio_add_chan_devattr("index",
++	ret = __iio_add_chan_bufattr("index",
+ 				     chan,
+ 				     &iio_show_scan_index,
+ 				     NULL,
+@@ -451,7 +536,7 @@ static int iio_buffer_add_channel_sysfs(struct iio_dev *indio_dev,
+ 	if (ret)
+ 		return ret;
+ 	attrcount++;
+-	ret = __iio_add_chan_devattr("type",
++	ret = __iio_add_chan_bufattr("type",
+ 				     chan,
+ 				     &iio_show_fixed_type,
+ 				     NULL,
+@@ -463,7 +548,7 @@ static int iio_buffer_add_channel_sysfs(struct iio_dev *indio_dev,
+ 		return ret;
+ 	attrcount++;
+ 	if (chan->type != IIO_TIMESTAMP)
+-		ret = __iio_add_chan_devattr("en",
++		ret = __iio_add_chan_bufattr("en",
+ 					     chan,
+ 					     &iio_scan_el_show,
+ 					     &iio_scan_el_store,
+@@ -472,7 +557,7 @@ static int iio_buffer_add_channel_sysfs(struct iio_dev *indio_dev,
+ 					     &indio_dev->dev,
+ 					     &buffer->scan_el_dev_attr_list);
+ 	else
+-		ret = __iio_add_chan_devattr("en",
++		ret = __iio_add_chan_bufattr("en",
+ 					     chan,
+ 					     &iio_scan_el_ts_show,
+ 					     &iio_scan_el_ts_store,
+@@ -1251,6 +1336,7 @@ static struct attribute *iio_buffer_attrs[] = {
+ };
  
--	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*priv));
--	if (!indio_dev)
-+	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
- 		return -ENOMEM;
+ #define to_dev_attr(_attr) container_of(_attr, struct device_attribute, attr)
++#define to_iio_buf_attr(_attr) container_of(_attr, struct iio_buf_attr, attr)
  
--	priv = iio_priv(indio_dev);
- 	priv->dev = &pdev->dev;
- 	priv->regmap = ddata->regmap;
- 	priv->clk = ddata->clk;
- 	priv->ceiling = STM32_LPTIM_MAX_ARR;
+ static ssize_t iio_buffer_dir_attr_show(struct kobject *kobj,
+ 					struct attribute *attr,
+@@ -1291,9 +1377,9 @@ static ssize_t iio_scan_el_dir_attr_show(struct kobject *kobj,
+ 					 char *buf)
+ {
+ 	struct iio_buffer *buffer = container_of(kobj, struct iio_buffer, scan_el_dir);
+-	struct device_attribute *dattr = to_dev_attr(attr);
++	struct iio_buf_attr *battr = to_iio_buf_attr(attr);
  
--	/* Initialize IIO device */
--	indio_dev->name = dev_name(&pdev->dev);
--	indio_dev->dev.of_node = pdev->dev.of_node;
--	indio_dev->info = &stm32_lptim_cnt_iio_info;
--	if (ddata->has_encoder)
--		indio_dev->channels = &stm32_lptim_enc_channels;
--	else
--		indio_dev->channels = &stm32_lptim_cnt_channels;
--	indio_dev->num_channels = 1;
--
- 	/* Initialize Counter device */
- 	priv->counter.name = dev_name(&pdev->dev);
- 	priv->counter.parent = &pdev->dev;
-@@ -673,10 +452,6 @@ static int stm32_lptim_cnt_probe(struct platform_device *pdev)
- 
- 	platform_set_drvdata(pdev, priv);
- 
--	ret = devm_iio_device_register(&pdev->dev, indio_dev);
--	if (ret)
--		return ret;
--
- 	return devm_counter_register(&pdev->dev, &priv->counter);
+-	return dattr->show(&buffer->indio_dev->dev, dattr, buf);
++	return battr->show(buffer, battr, buf);
  }
  
+ static ssize_t iio_scan_el_dir_attr_store(struct kobject *kobj,
+@@ -1302,9 +1388,9 @@ static ssize_t iio_scan_el_dir_attr_store(struct kobject *kobj,
+ 					  size_t len)
+ {
+ 	struct iio_buffer *buffer = container_of(kobj, struct iio_buffer, scan_el_dir);
+-	struct device_attribute *dattr = to_dev_attr(attr);
++	struct iio_buf_attr *battr = to_iio_buf_attr(attr);
+ 
+-	return dattr->store(&buffer->indio_dev->dev, dattr, buf, len);
++	return battr->store(buffer, battr, buf, len);
+ }
+ 
+ static const struct sysfs_ops iio_scan_el_dir_sysfs_ops = {
+@@ -1372,7 +1458,7 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
+ 					     struct iio_dev *indio_dev,
+ 					     unsigned int idx)
+ {
+-	struct iio_dev_attr *p;
++	struct iio_buf_attr *p;
+ 	struct attribute **attr;
+ 	int ret, i, attrn, attrcount;
+ 	const struct iio_chan_spec *channels;
+@@ -1453,7 +1539,7 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
+ 
+ 	attrn = 0;
+ 	list_for_each_entry(p, &buffer->scan_el_dev_attr_list, l)
+-		buffer->scan_el_attrs[attrn++] = &p->dev_attr.attr;
++		buffer->scan_el_attrs[attrn++] = &p->attr;
+ 
+ 	ret = iio_sysfs_add_attrs(&buffer->scan_el_dir, buffer->scan_el_attrs);
+ 	if (ret)
+@@ -1469,7 +1555,7 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
+ 	bitmap_free(buffer->scan_mask);
+ error_cleanup_dynamic:
+ 	iio_sysfs_del_attrs(&buffer->buffer_dir, buffer->buffer_attrs);
+-	iio_free_chan_devattr_list(&buffer->scan_el_dev_attr_list);
++	iio_free_chan_bufattr_list(&buffer->scan_el_dev_attr_list);
+ error_buffer_kobject_put:
+ 	kobject_put(&buffer->buffer_dir);
+ error_buffer_free_attrs:
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index b8f7261945f5..088e59042226 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -967,7 +967,6 @@ static ssize_t iio_write_channel_info(struct device *dev,
+ 	return len;
+ }
+ 
+-static
+ int iio_attr_init(struct attribute *attr,
+ 		  const char *postfix,
+ 		  struct iio_chan_spec const *chan,
 -- 
-2.7.4
+2.17.1
 

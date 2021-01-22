@@ -2,103 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5779B2FFECB
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Jan 2021 09:57:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D88D4300037
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Jan 2021 11:28:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727263AbhAVIzL convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Fri, 22 Jan 2021 03:55:11 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55050 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727089AbhAVIy6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 22 Jan 2021 03:54:58 -0500
-Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F0423236F9;
-        Fri, 22 Jan 2021 08:54:14 +0000 (UTC)
-Date:   Fri, 22 Jan 2021 08:54:08 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc:     Zheng Yongjun <zhengyongjun3@huawei.com>, jikos@kernel.org,
-        benjamin.tissoires@redhat.com, linux-input@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH -next] hid/hid-sensor-custom: convert comma to semicolon
-Message-ID: <20210122085408.4fcc8a10@archlinux>
-In-Reply-To: <20210120204824.0d52a2d2@archlinux>
-References: <20201214133212.3569-1-zhengyongjun3@huawei.com>
-        <df1481e15c591106ba75ed85289b12507cbc8c49.camel@linux.intel.com>
-        <20201229181841.6d63213a@archlinux>
-        <20210120204824.0d52a2d2@archlinux>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S1727485AbhAVK0l (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 22 Jan 2021 05:26:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45050 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727649AbhAVJer (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 Jan 2021 04:34:47 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB2AEC061793
+        for <linux-iio@vger.kernel.org>; Fri, 22 Jan 2021 01:34:06 -0800 (PST)
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1l2spM-0003Hp-IG; Fri, 22 Jan 2021 10:34:00 +0100
+Received: from ore by dude.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1l2spL-00046z-Of; Fri, 22 Jan 2021 10:33:59 +0100
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
+To:     Rob Herring <robh+dt@kernel.org>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        David Jander <david@protonic.nl>,
+        Robin van der Gracht <robin@protonic.nl>,
+        linux-iio@vger.kernel.org
+Subject: [PATCH v2 0/2] add support for GPIO based counter 
+Date:   Fri, 22 Jan 2021 10:33:55 +0100
+Message-Id: <20210122093357.15750-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 20 Jan 2021 20:49:57 +0000
-Jonathan Cameron <jic23@kernel.org> wrote:
+changes v2:
+- add commas
+- avoid possible unhandled interrupts in the enable path
+- do not use of_ specific gpio functions
 
-> On Tue, 29 Dec 2020 18:18:41 +0000
-> Jonathan Cameron <jic23@kernel.org> wrote:
-> 
-> > On Mon, 14 Dec 2020 06:13:58 -0800
-> > Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com> wrote:
-> >   
-> > > On Mon, 2020-12-14 at 21:32 +0800, Zheng Yongjun wrote:    
-> > > > Replace a comma between expression statements by a semicolon.
-> > > > 
-> > > > Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>      
-> > > Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>    
-> > Applied to the togreg branch of iio.git and pushed out as testing for
-> > the autobuilders to see if they can break it.  
-> Hi Jiri,
-> 
-> Just realised this is in HID rather than IIO. I hope you don't mind as
-> it's now deep in a tree I'd rather not rebase.
+Add support for GPIO based pulse counter. For now it can only count
+pulses. With counter char device support, we will be able to attach
+timestamps and measure actual pulse frequency.
 
-On basis it wasn't actually that bad, (only one merge after it) I did
-the rebase and dropped this patch.  Jiri, guess you probably
-want to pick this up through HID.
+Never the less, it is better to mainline this driver now (before chardev
+patches go mainline), to provide developers additional use case for the counter
+framework with chardev support.
 
-Thanks,
+Oleksij Rempel (2):
+  dt-bindings: counter: add gpio-pulse-counter binding
+  counter: add GPIO based pulse counters
 
-Jonathan
+ .../bindings/counter/gpio-pulse-counter.yaml  |  39 +++
+ drivers/counter/Kconfig                       |   9 +
+ drivers/counter/Makefile                      |   1 +
+ drivers/counter/gpio-pulse-cnt.c              | 244 ++++++++++++++++++
+ 4 files changed, 293 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/counter/gpio-pulse-counter.yaml
+ create mode 100644 drivers/counter/gpio-pulse-cnt.c
 
-> 
-> Sorry about that.
-> 
-> Jonathan
-> 
-> > 
-> > Thanks,
-> > 
-> > Jonathan
-> >   
-> > >     
-> > > > ---
-> > > >  drivers/hid/hid-sensor-custom.c | 2 +-
-> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/drivers/hid/hid-sensor-custom.c b/drivers/hid/hid-
-> > > > sensor-custom.c
-> > > > index 4d25577a8573..6c47a2e7623d 100644
-> > > > --- a/drivers/hid/hid-sensor-custom.c
-> > > > +++ b/drivers/hid/hid-sensor-custom.c
-> > > > @@ -728,7 +728,7 @@ static int hid_sensor_custom_dev_if_add(struct
-> > > > hid_sensor_custom *sensor_inst)
-> > > >  
-> > > >         sensor_inst->custom_dev.minor = MISC_DYNAMIC_MINOR;
-> > > >         sensor_inst->custom_dev.name = dev_name(&sensor_inst->pdev-      
-> > > > >dev);      
-> > > > -       sensor_inst->custom_dev.fops = &hid_sensor_custom_fops,
-> > > > +       sensor_inst->custom_dev.fops = &hid_sensor_custom_fops;
-> > > >         ret = misc_register(&sensor_inst->custom_dev);
-> > > >         if (ret) {
-> > > >                 kfifo_free(&sensor_inst->data_fifo);      
-> > > 
-> > >     
-> >   
-> 
+-- 
+2.30.0
 

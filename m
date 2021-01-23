@@ -2,381 +2,123 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 547EE301072
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Jan 2021 23:58:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 90FA830140C
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Jan 2021 09:57:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728589AbhAVW6h (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 22 Jan 2021 17:58:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48412 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728890AbhAVWzh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 Jan 2021 17:55:37 -0500
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C9CBC061351
-        for <linux-iio@vger.kernel.org>; Fri, 22 Jan 2021 14:54:49 -0800 (PST)
-Received: by mail-pl1-x632.google.com with SMTP id q2so1361592plk.4
-        for <linux-iio@vger.kernel.org>; Fri, 22 Jan 2021 14:54:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=D07SbYCkX+nByYGTP0KozFWQwLAWHL3EtIDwaUC8U5A=;
-        b=LSqQSfxbGnKdWnwGl1+InZkNBt/UOdC5g4ofQoocjA70CQGviaaGY9PYeghSExsx9j
-         RW57SuGcThkTzXoVtF1x9aPe1TD3e0BY5dnTzYEQbSGzz8+l8Xlg3efRQIIpAPvj/oOv
-         LBPDdbmiKykscFMKoFq7LnAEKU+qoLfyzuq34=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=D07SbYCkX+nByYGTP0KozFWQwLAWHL3EtIDwaUC8U5A=;
-        b=UqgrfUpbKw8SCFK3exRMIJLpoN8pL/950mH2k7bIe0j1CxU2tURMd17EEzx/1DqCH/
-         HCnQHtFlbNN53pCCVSLXzUeqxHBuQHRg/re9GgtMsY8Jr5MWsLh0jqUMFL9caw2647T0
-         CioCCTbOCsnbFkuJNzJWna4j9ZihTGbKTNd7Lp+VqXKbak9BvesI9VfTnIjUicJkyrIY
-         ULGgg7uRt0y8tqlqa/ht+4e21uVlliAKCpPfpUq/hIJmaqaPI9ImykBdMw8tFxhAokC/
-         OhZbGQuK8O4SgCqh1LEDRrQXsqij0PblArUjRtFpCmo4Oqsjs9hUyKtgVsotD19/EGp7
-         TPcg==
-X-Gm-Message-State: AOAM533pX3nR55KXl97rV1nqXxMNCWudnBqI0MnSlmnYPk4F/kOU4dSm
-        mTqlFBMwIfvZ98abcnMIxue8Nw==
-X-Google-Smtp-Source: ABdhPJxHjCz0hIfI0yhxVFitXdmL0GmRdnMvWgjwijXJTIYgEXPZ0BI1Pqr2chHxV5MBjG5Y+kYnTA==
-X-Received: by 2002:a17:90b:d92:: with SMTP id bg18mr2323014pjb.66.1611356089031;
-        Fri, 22 Jan 2021 14:54:49 -0800 (PST)
-Received: from smtp.gmail.com ([2620:15c:202:201:3e52:82ff:fe6c:83ab])
-        by smtp.gmail.com with ESMTPSA id i62sm6433509pfe.84.2021.01.22.14.54.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Jan 2021 14:54:48 -0800 (PST)
-From:   Stephen Boyd <swboyd@chromium.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH 3/3] iio: proximity: Add a ChromeOS EC MKBP proximity driver
-Date:   Fri, 22 Jan 2021 14:54:43 -0800
-Message-Id: <20210122225443.186184-4-swboyd@chromium.org>
-X-Mailer: git-send-email 2.30.0.280.ga3ce27912f-goog
-In-Reply-To: <20210122225443.186184-1-swboyd@chromium.org>
-References: <20210122225443.186184-1-swboyd@chromium.org>
+        id S1726032AbhAWI5A (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 23 Jan 2021 03:57:00 -0500
+Received: from mx07-002cda01.pphosted.com ([185.132.180.122]:22554 "EHLO
+        mx07-002cda01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725940AbhAWI46 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 23 Jan 2021 03:56:58 -0500
+X-Greylist: delayed 1646 seconds by postgrey-1.27 at vger.kernel.org; Sat, 23 Jan 2021 03:56:57 EST
+Received: from pps.filterd (m0135534.ppops.net [127.0.0.1])
+        by mx07-002cda01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 10N8Rhev006243;
+        Sat, 23 Jan 2021 08:28:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=avl.com; h=from : to : cc : subject
+ : date : message-id : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=28082020;
+ bh=DZ8KioJUOVnVLtXrYrjAS4tslBp0x8bz6f7YrGxdj4c=;
+ b=NzyZ9ieA/wtfBMH6LAs61kPEOBj0cQKT4I7eULsu8ojp2aE2D4HKoBgEnLWmkPB4KEO+
+ DgbsccVDsCh+SP05FoygMMcA8I+4UYfBV0zBSjigM3ufTLQrzPthHM+rn+8DLio9EX/j
+ oNZ4OD/fKFyMgVyu1PlSNNMwg+8yPgaWWvRw4v51OAsKlWslupLHtOb4ik+R1d51W4ki
+ 36gq3hUIpMhga40POZA9+fPfmpC/0utb3hRXKpDDUI7WUE6yUMLwgHLsfv+eXYrNO/T7
+ Wqmszwjp1SiQ9pK/vzamZlrahL96plmdzMf+FdcJwSjnKtqL4zmqmGmhumD28jMOsq6n zA== 
+Received: from atgrzso8133.avl01.avlcorp.lan ([192.102.17.76])
+        by mx07-002cda01.pphosted.com with ESMTP id 368a1c8b0x-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sat, 23 Jan 2021 08:28:44 +0000
+Received: from pps.filterd (atgrzso8133.avl01.avlcorp.lan [127.0.0.1])
+        by atgrzso8133.avl01.avlcorp.lan (8.16.0.42/8.16.0.42) with SMTP id 10N8ShcP021802;
+        Sat, 23 Jan 2021 09:28:43 +0100
+Received: from atgrzsw3762.avl01.avlcorp.lan ([10.13.100.86])
+        by atgrzso8133.avl01.avlcorp.lan with ESMTP id 368b8pr1cc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sat, 23 Jan 2021 09:28:43 +0100
+Received: from atgrzsw3758.avl01.avlcorp.lan (10.37.149.11) by
+ atgrzsw3762.avl01.avlcorp.lan (10.37.149.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2044.4; Sat, 23 Jan 2021 09:28:43 +0100
+Received: from atgrzsw3758.avl01.avlcorp.lan ([fe80::14f0:7a25:9759:e330]) by
+ atgrzsw3758.avl01.avlcorp.lan ([fe80::14f0:7a25:9759:e330%6]) with mapi id
+ 15.01.2044.012; Sat, 23 Jan 2021 09:28:43 +0100
+From:   "Denis, Tomislav AVL DiTEST" <Tomislav.Denis@avl.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>
+Subject: RE: [PATCH v3 1/2] iio: adc: Add driver for Texas Instruments
+ ADS131E0x ADC family
+Thread-Topic: [PATCH v3 1/2] iio: adc: Add driver for Texas Instruments
+ ADS131E0x ADC family
+Thread-Index: AQHW6MiBIvJeN/5N9Em2fnxAURj3QaoyRmaAgAG9XlA=
+Date:   Sat, 23 Jan 2021 08:28:42 +0000
+Message-ID: <7474dd07191545b0bb9ae091e54c2013@avl.com>
+References: <20210112095128.7112-1-tomislav.denis@avl.com>
+ <20210112095128.7112-2-tomislav.denis@avl.com>
+ <CAHp75VfNweJyXgzCcvZUWj=3mCVkP=+HaFmG2XaKmKP1cATa=Q@mail.gmail.com>
+In-Reply-To: <CAHp75VfNweJyXgzCcvZUWj=3mCVkP=+HaFmG2XaKmKP1cATa=Q@mail.gmail.com>
+Accept-Language: en-US, de-AT
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.12.100.12]
+x-exclaimer-md-config: f9e74532-fb7d-4806-8539-2b9574eafa9a
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343,18.0.737
+ definitions=2021-01-23_04:2021-01-22,2021-01-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
+ mlxlogscore=999 bulkscore=0 mlxscore=0 spamscore=0 malwarescore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101230046
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343,18.0.737
+ definitions=2021-01-23_04:2021-01-22,2021-01-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
+ suspectscore=0 bulkscore=0 mlxlogscore=999 adultscore=0 lowpriorityscore=0
+ spamscore=0 impostorscore=0 clxscore=1011 priorityscore=1501 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2101230046
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add support for a ChromeOS EC proximity driver that exposes a "front"
-proximity sensor via the IIO subsystem. The EC decides when front
-proximity is near and sets an MKBP switch 'EC_MKBP_FRONT_PROXIMITY' to
-notify the kernel of proximity. Similarly, when proximity detects
-something far away it sets the switch bit to 0. For now this driver
-exposes a single sensor, but it could be expanded in the future via more
-MKBP bits if desired.
-
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: Benson Leung <bleung@chromium.org>
-Cc: Guenter Roeck <groeck@chromium.org>
-Cc: Douglas Anderson <dianders@chromium.org>
-Cc: Gwendal Grignou <gwendal@chromium.org>
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
----
- drivers/iio/proximity/Kconfig             |  11 +
- drivers/iio/proximity/Makefile            |   1 +
- drivers/iio/proximity/cros_ec_proximity.c | 252 ++++++++++++++++++++++
- 3 files changed, 264 insertions(+)
- create mode 100644 drivers/iio/proximity/cros_ec_proximity.c
-
-diff --git a/drivers/iio/proximity/Kconfig b/drivers/iio/proximity/Kconfig
-index 12672a0e89ed..35a04e9ede7d 100644
---- a/drivers/iio/proximity/Kconfig
-+++ b/drivers/iio/proximity/Kconfig
-@@ -21,6 +21,17 @@ endmenu
- 
- menu "Proximity and distance sensors"
- 
-+config CROS_EC_PROXIMITY
-+	tristate "ChromeOS EC MKBP Proximity sensor"
-+	depends on CROS_EC
-+	help
-+	  Say Y here to enable the proximity sensor implemented via the ChromeOS EC MKBP
-+	  switches protocol. You must enable one bus option (CROS_EC_I2C or CROS_EC_SPI)
-+	  to use this.
-+
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called cros_ec_prox.
-+
- config ISL29501
- 	tristate "Intersil ISL29501 Time Of Flight sensor"
- 	depends on I2C
-diff --git a/drivers/iio/proximity/Makefile b/drivers/iio/proximity/Makefile
-index 9c1aca1a8b79..b1330dd8e212 100644
---- a/drivers/iio/proximity/Makefile
-+++ b/drivers/iio/proximity/Makefile
-@@ -5,6 +5,7 @@
- 
- # When adding new entries keep the list in alphabetical order
- obj-$(CONFIG_AS3935)		+= as3935.o
-+obj-$(CONFIG_CROS_EC_PROXIMITY)	+= cros_ec_proximity.o
- obj-$(CONFIG_ISL29501)		+= isl29501.o
- obj-$(CONFIG_LIDAR_LITE_V2)	+= pulsedlight-lidar-lite-v2.o
- obj-$(CONFIG_MB1232)		+= mb1232.o
-diff --git a/drivers/iio/proximity/cros_ec_proximity.c b/drivers/iio/proximity/cros_ec_proximity.c
-new file mode 100644
-index 000000000000..a3aef911e3cc
---- /dev/null
-+++ b/drivers/iio/proximity/cros_ec_proximity.c
-@@ -0,0 +1,252 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Driver for cros-ec proximity sensor exposed through MKBP switch
-+ *
-+ * Copyright 2021 Google LLC.
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/mutex.h>
-+#include <linux/kernel.h>
-+#include <linux/notifier.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
-+#include <linux/slab.h>
-+#include <linux/types.h>
-+
-+#include <linux/platform_data/cros_ec_commands.h>
-+#include <linux/platform_data/cros_ec_proto.h>
-+
-+#include <linux/iio/events.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/sysfs.h>
-+
-+#include <asm/unaligned.h>
-+
-+struct cros_ec_proximity_data {
-+	struct cros_ec_device *ec;
-+	struct iio_dev *indio_dev;
-+	struct mutex lock;
-+	struct notifier_block notifier;
-+	bool enabled;
-+};
-+
-+static const struct iio_event_spec cros_ec_prox_events[] = {
-+	{
-+		.type = IIO_EV_TYPE_THRESH,
-+		.dir = IIO_EV_DIR_EITHER,
-+		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
-+	},
-+};
-+
-+static const struct iio_chan_spec cros_ec_prox_chan_spec[] = {
-+	{
-+		.type = IIO_PROXIMITY,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-+		.event_spec = cros_ec_prox_events,
-+		.num_event_specs = ARRAY_SIZE(cros_ec_prox_events),
-+	},
-+};
-+
-+static int cros_ec_proximity_parse_state(const void *data)
-+{
-+	u32 switches = get_unaligned_le32(data);
-+
-+	return !!(switches & BIT(EC_MKBP_FRONT_PROXIMITY));
-+}
-+
-+static int cros_ec_proximity_query(struct cros_ec_device *ec_dev, int *state)
-+{
-+	struct ec_params_mkbp_info *params;
-+	struct cros_ec_command *msg;
-+	int ret;
-+
-+	msg = kzalloc(sizeof(*msg) + max(sizeof(u32), sizeof(*params)),
-+		      GFP_KERNEL);
-+	if (!msg)
-+		return -ENOMEM;
-+
-+	msg->command = EC_CMD_MKBP_INFO;
-+	msg->version = 1;
-+	msg->outsize = sizeof(*params);
-+	msg->insize = sizeof(u32);
-+	params = (struct ec_params_mkbp_info *)msg->data;
-+	params->info_type = EC_MKBP_INFO_CURRENT;
-+	params->event_type = EC_MKBP_EVENT_SWITCH;
-+
-+	ret = cros_ec_cmd_xfer_status(ec_dev, msg);
-+	if (ret >= 0) {
-+		if (ret != sizeof(u32)) {
-+			dev_warn(ec_dev->dev, "wrong result size: %d != %zu\n",
-+				 ret, sizeof(u32));
-+			ret = -EPROTO;
-+		} else {
-+			*state = cros_ec_proximity_parse_state(msg->data);
-+			ret = 0;
-+		}
-+	}
-+
-+	kfree(msg);
-+
-+	return ret;
-+}
-+
-+static int cros_ec_proximity_notify(struct notifier_block *nb,
-+			     unsigned long queued_during_suspend, void *_ec)
-+{
-+	struct cros_ec_proximity_data *data;
-+	struct cros_ec_device *ec = _ec;
-+	u8 event_type = ec->event_data.event_type & EC_MKBP_EVENT_TYPE_MASK;
-+	void *switches = &ec->event_data.data.switches;
-+	struct iio_dev *indio_dev;
-+	s64 timestamp;
-+	int state, dir;
-+	u64 ev;
-+
-+	if (event_type == EC_MKBP_EVENT_SWITCH) {
-+		data = container_of(nb, struct cros_ec_proximity_data, notifier);
-+		indio_dev = data->indio_dev;
-+
-+		mutex_lock(&data->lock);
-+		if (data->enabled) {
-+			timestamp = iio_get_time_ns(indio_dev);
-+			state = cros_ec_proximity_parse_state(switches);
-+			dir = state ? IIO_EV_DIR_FALLING : IIO_EV_DIR_RISING;
-+
-+			ev = IIO_UNMOD_EVENT_CODE(IIO_PROXIMITY, 0,
-+						  IIO_EV_TYPE_THRESH, dir);
-+			iio_push_event(indio_dev, ev, timestamp);
-+		}
-+		mutex_unlock(&data->lock);
-+	}
-+
-+	return NOTIFY_OK;
-+}
-+
-+static int cros_ec_proximity_read_raw(struct iio_dev *indio_dev,
-+			   const struct iio_chan_spec *chan, int *val,
-+			   int *val2, long mask)
-+{
-+	struct cros_ec_proximity_data *data = iio_priv(indio_dev);
-+	struct cros_ec_device *ec = data->ec;
-+	int ret;
-+
-+	if (chan->type != IIO_PROXIMITY)
-+		return -EINVAL;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		ret = iio_device_claim_direct_mode(indio_dev);
-+		if (ret)
-+			return ret;
-+
-+		ret = cros_ec_proximity_query(ec, val);
-+		iio_device_release_direct_mode(indio_dev);
-+		if (ret)
-+			return ret;
-+
-+		return IIO_VAL_INT;
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+static int cros_ec_proximity_read_event_config(struct iio_dev *indio_dev,
-+				    const struct iio_chan_spec *chan,
-+				    enum iio_event_type type,
-+				    enum iio_event_direction dir)
-+{
-+	struct cros_ec_proximity_data *data = iio_priv(indio_dev);
-+
-+	return data->enabled;
-+}
-+
-+static int cros_ec_proximity_write_event_config(struct iio_dev *indio_dev,
-+				     const struct iio_chan_spec *chan,
-+				     enum iio_event_type type,
-+				     enum iio_event_direction dir, int state)
-+{
-+	struct cros_ec_proximity_data *data = iio_priv(indio_dev);
-+
-+	mutex_lock(&data->lock);
-+	data->enabled = state;
-+	mutex_unlock(&data->lock);
-+
-+	return 0;
-+}
-+
-+static const struct iio_info cros_ec_proximity_info = {
-+	.read_raw = cros_ec_proximity_read_raw,
-+	.read_event_config = cros_ec_proximity_read_event_config,
-+	.write_event_config = cros_ec_proximity_write_event_config,
-+};
-+
-+static int cros_ec_proximity_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct cros_ec_device *ec = dev_get_drvdata(dev->parent);
-+	struct iio_dev *indio_dev;
-+	struct cros_ec_proximity_data *data;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	data = iio_priv(indio_dev);
-+	data->ec = ec;
-+	data->indio_dev = indio_dev;
-+	mutex_init(&data->lock);
-+	platform_set_drvdata(pdev, data);
-+
-+	indio_dev->name = "cros_ec_proximity";
-+	indio_dev->dev.parent = dev;
-+	indio_dev->info = &cros_ec_proximity_info;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->channels = cros_ec_prox_chan_spec;
-+	indio_dev->num_channels = ARRAY_SIZE(cros_ec_prox_chan_spec);
-+
-+	ret = devm_iio_device_register(dev, indio_dev);
-+	if (ret)
-+		return ret;
-+
-+	data->notifier.notifier_call = cros_ec_proximity_notify;
-+	ret = blocking_notifier_chain_register(&ec->event_notifier,
-+					       &data->notifier);
-+	if (ret)
-+		dev_err(dev, "cannot register notifier: %d\n", ret);
-+
-+	return ret;
-+}
-+
-+static int cros_ec_proximity_remove(struct platform_device *pdev)
-+{
-+	struct cros_ec_proximity_data *data = platform_get_drvdata(pdev);
-+	struct cros_ec_device *ec = data->ec;
-+
-+	blocking_notifier_chain_unregister(&ec->event_notifier,
-+					   &data->notifier);
-+
-+	return 0;
-+}
-+
-+#ifdef CONFIG_OF
-+static const struct of_device_id cros_ec_proximity_of_match[] = {
-+	{ .compatible = "google,cros-ec-proximity" },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, cros_ec_proximity_of_match);
-+#endif
-+
-+static struct platform_driver cros_ec_proximity_driver = {
-+	.driver = {
-+		.name = "cros-ec-proximity",
-+		.of_match_table = of_match_ptr(cros_ec_proximity_of_match),
-+	},
-+	.probe = cros_ec_proximity_probe,
-+	.remove = cros_ec_proximity_remove,
-+};
-+module_platform_driver(cros_ec_proximity_driver);
-+
-+MODULE_LICENSE("GPL v2");
-+MODULE_DESCRIPTION("ChromeOS EC MKBP proximity sensor driver");
--- 
-https://chromeos.dev
-
+SGkgQW5keSwNCg0KRmlyc3QsIHRoYW5rcyBmb3IgdGhlIGdyZWF0IHJldmlldy4gSSBhZ3JlZSB3
+aXRoIGFsbCBvZiB5b3VyIGNvbW1lbnRzLCBqdXN0IG9uZSBxdWVzdGlvbi9jb21tZW50IGlubGlu
+ZS4NCg0KQmVzdCBSZWdhcmRzLA0KVG9taXNsYXYNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2Ut
+LS0tLQ0KPiBGcm9tOiBBbmR5IFNoZXZjaGVua28gPGFuZHkuc2hldmNoZW5rb0BnbWFpbC5jb20+
+DQo+IFNlbnQ6IDIxIEphbnVhcnkgMjAyMSAxNzo0Mg0KPiBUbzogRGVuaXMsIFRvbWlzbGF2IEFW
+TCBEaVRFU1QgPFRvbWlzbGF2LkRlbmlzQGF2bC5jb20+DQo+IENjOiBKb25hdGhhbiBDYW1lcm9u
+IDxqaWMyM0BrZXJuZWwub3JnPjsgbGludXgtaWlvIDxsaW51eC1paW9Admdlci5rZXJuZWwub3Jn
+PjsNCj4gZGV2aWNldHJlZSA8ZGV2aWNldHJlZUB2Z2VyLmtlcm5lbC5vcmc+DQo+IFN1YmplY3Q6
+IFJlOiBbUEFUQ0ggdjMgMS8yXSBpaW86IGFkYzogQWRkIGRyaXZlciBmb3IgVGV4YXMgSW5zdHJ1
+bWVudHMNCj4gQURTMTMxRTB4IEFEQyBmYW1pbHkNCj4gDQo+IE9uIFR1ZSwgSmFuIDEyLCAyMDIx
+IGF0IDI6MzcgUE0gPHRvbWlzbGF2LmRlbmlzQGF2bC5jb20+IHdyb3RlOg0KPiA+DQo+ID4gRnJv
+bTogVG9taXNsYXYgRGVuaXMgPHRvbWlzbGF2LmRlbmlzQGF2bC5jb20+DQo+ID4NCj4gPiBUaGUg
+QURTMTMxRTB4IGFyZSBhIGZhbWlseSBvZiBtdWx0aWNoYW5uZWwsIHNpbXVsdGFuZW91cyBzYW1w
+bGluZywNCj4gPiAyNC1iaXQsIGRlbHRhLXNpZ21hLCBhbmFsb2ctdG8tZGlnaXRhbCBjb252ZXJ0
+ZXJzIChBRENzKSB3aXRoIGENCj4gPiBidWlsdC1pbiBwcm9ncmFtbWFibGUgZ2FpbiBhbXBsaWZp
+ZXIgKFBHQSksIGludGVybmFsIHJlZmVyZW5jZSBhbmQgYW4NCj4gPiBvbmJvYXJkIG9zY2lsbGF0
+b3IuDQo+IA0KDQouLi4NCg0KPiANCj4gPiArc3RhdGljIGNvbnN0IHN0cnVjdCBhZHMxMzFlMDhf
+ZGF0YV9yYXRlX2Rlc2MgYWRzMTMxZTA4X2RhdGFfcmF0ZV90YmxbXSA9IHsNCj4gPiArICAgICAg
+IHsgLnJhdGUgPSA2NCwgICAucmVnID0gMHgwMCB9LA0KPiA+ICsgICAgICAgeyAucmF0ZSA9IDMy
+LCAgIC5yZWcgPSAweDAxIH0sDQo+ID4gKyAgICAgICB7IC5yYXRlID0gMTYsICAgLnJlZyA9IDB4
+MDIgfSwNCj4gPiArICAgICAgIHsgLnJhdGUgPSA4LCAgICAucmVnID0gMHgwMyB9LA0KPiA+ICsg
+ICAgICAgeyAucmF0ZSA9IDQsICAgIC5yZWcgPSAweDA0IH0sDQo+ID4gKyAgICAgICB7IC5yYXRl
+ID0gMiwgICAgLnJlZyA9IDB4MDUgfSwNCj4gPiArICAgICAgIHsgLnJhdGUgPSAxLCAgICAucmVn
+ID0gMHgwNiB9LA0KPiA+ICt9Ow0KPiANCj4gQ2FuJ3QgeW91IHVzZSBzaW1wbGUgYml0IG9wZXJh
+dGlvbnMgb24gdGhpcz8NCj4gDQo+IHJhdGUgPSBCSVQoNiAtIGluZGV4KQ0KPiByZWcgPSBpbmRl
+eA0KPiANCj4gLi4uDQo+IA0KPiA+ICtzdGF0aWMgY29uc3Qgc3RydWN0IGFkczEzMWUwOF9wZ2Ff
+Z2Fpbl9kZXNjIGFkczEzMWUwOF9wZ2FfZ2Fpbl90YmxbXSA9IHsNCj4gPiArICAgICAgIHsgLmdh
+aW4gPSAxLCAgIC5yZWcgPSAweDAxIH0sDQo+ID4gKyAgICAgICB7IC5nYWluID0gMiwgICAucmVn
+ID0gMHgwMiB9LA0KPiANCj4gcmVnID09IDMgdmFsaWQ/DQo+IA0KPiA+ICsgICAgICAgeyAuZ2Fp
+biA9IDQsICAgLnJlZyA9IDB4MDQgfSwNCj4gPiArICAgICAgIHsgLmdhaW4gPSA4LCAgIC5yZWcg
+PSAweDA1IH0sDQo+ID4gKyAgICAgICB7IC5nYWluID0gMTIsICAucmVnID0gMHgwNiB9LA0KPiA+
+ICt9Ow0KPiANCj4gQWxzbyBjYW4gYmUgY2hhbmdlZCBieSBmb3JtdWxhLCBidXQgSSByZW1lbWJl
+ciB0aGF0IGluIHNvbWUgY2FzZXMgdGFibGVzIGFyZQ0KPiBwcmVmZXJhYmxlLg0KPiANCj4NCg0K
+SSB3b3VsZCBsaWtlIHRvIGtlZXAgdGhvc2UgdGFibGVzIGFzIHRoZXkgYXJlLCBiZWNhdXNlIEkg
+ZmluZCB0aGVtIG1vcmUgaW50dWl0aXZlIGFuZCBlYXN5IHVuZGVyc3RhbmRhYmxlIT8NCg0KPg0K
+PiA+ICtzdGF0aWMgaW50IGFkczEzMWUwOF9leGVjX2NtZChzdHJ1Y3QgYWRzMTMxZTA4X3N0YXRl
+ICpzdCwgdTggY21kKSB7DQo+ID4gKyAgICAgICBpbnQgcmV0Ow0KPiA+ICsNCg0KLi4uLg0KDQo+
+IA0KPiAtLQ0KPiBXaXRoIEJlc3QgUmVnYXJkcywNCj4gQW5keSBTaGV2Y2hlbmtvDQo=

@@ -2,103 +2,125 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B1643018DD
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Jan 2021 00:22:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 66CF1301A44
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Jan 2021 07:53:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726278AbhAWXWI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 23 Jan 2021 18:22:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51644 "EHLO
+        id S1726501AbhAXGxW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 24 Jan 2021 01:53:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726223AbhAWXWG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 23 Jan 2021 18:22:06 -0500
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28409C061786
-        for <linux-iio@vger.kernel.org>; Sat, 23 Jan 2021 15:21:26 -0800 (PST)
-Received: by mail-lf1-x133.google.com with SMTP id p21so7592142lfu.11
-        for <linux-iio@vger.kernel.org>; Sat, 23 Jan 2021 15:21:25 -0800 (PST)
+        with ESMTP id S1725808AbhAXGxV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Jan 2021 01:53:21 -0500
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC95BC061573;
+        Sat, 23 Jan 2021 22:52:40 -0800 (PST)
+Received: by mail-pj1-x1033.google.com with SMTP id j12so6375402pjy.5;
+        Sat, 23 Jan 2021 22:52:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=qagM0m0Ne7exzQc7D+nxb7xrSis3ioyasnLHWjTOwEI=;
-        b=aNCoUPOtfcenk0mjU7bVGiHXANroTF3BoeOZ9uWUGlcT3BjbQV/0btCzBpPtHMiyry
-         zkul8ohQy08JT2n/bLJw5HpSVrp3YZHc6GYSqjImAO/y0PC22QRap2SGG9f1Ztnk8HUT
-         bmkalV0qPWaj9/tCGpUxxHGB9H4/tzkJjK4ze+xlkqUobayE3ekw3+BvReawNUAfsbIE
-         KMkwcjGFWh+1PybLkfHmSdhcuwNUpqdMKgeTxBVoJz8C5DKlBlDd4bdeIIGAIyG6QkQ0
-         hZFg1jTubjg6sCLCETYy9wP9GzVnA4CIa6WKfAFXWT5zWRM9UazSjkIccehSDlF8BgPN
-         uzhQ==
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=pyjJjIjAwqBAqBYpe34f4z3YvzgZOMNZpkQlTpZrZjo=;
+        b=amjcQpwaeLj47+mpTvIPl2m2jIFuGy2mpjtYqeJrGqQj8Ms03hkUPOtOoOfoX94uCo
+         o9lG2QGUhsCoHTTzhy3saZ+Y2ItPWGttLcWUq6D2FAWOapo0XcOHulC3OOWhYlpSNwZv
+         6dCb3cHbtos8Z735z0/lnqrn5MMSmqzBpCs+KvZZ2et7Okh+wbCkhNFe+eXGAiykVTDw
+         4X1Gfm1vpa0icO0kdJNHo2TJpDRAhsTgQhwv/zAKi0AGVg5zb/m0gnWY0XuL/68ZXa+a
+         HulmH4xJbHb6Ozj+Pq02UEczJVwcVI1F8/U7Q6wByfbjnd5oCx4okTlWw15qLlWGpN86
+         wRkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=qagM0m0Ne7exzQc7D+nxb7xrSis3ioyasnLHWjTOwEI=;
-        b=M9ySLhob3QyuA4en7VM8E1DT0L5jpyLbu7hpU8uMSJFXRimOXRngdXgkseRqXUVD0K
-         hRKGU9q8iopvN42JuLkn5OAYcsG5ldQDP9BeJLGPJjEXnDzQpMxk6WNtJjbiKEsCFlSn
-         MROX8rycP//yiK55EAE/JXJahEYzz5ROVmlhTTKqcFzNeluGSKVvw55bAhLVF4dYERBb
-         uCHbKluUdCSiw0WatxBdHGzj95eGWLgWks0tJ0/AWKVF6vtbJM6dkN56khjmQYSn1LTP
-         df+5UMnVl0yFlGuYJ7GTYLK7eExvNPC5V0LikIiMmVC5Woz44S459OlmL8/X/nDjxnXS
-         BOgw==
-X-Gm-Message-State: AOAM533P35eJb2UMAPHAvmslHaPL4BlL7gpbZX+l/dQO1ppnUxEadg/m
-        +HUZD7DQrP2DebukNqocwPPGzWub9ViafynI3GhXZw==
-X-Google-Smtp-Source: ABdhPJzxdSjDvwqayFyUDH3wXFFC6QI7cOiEKiMhgJgzYqRLFq9Q7Fi5AJIcFuHywIu0M6AdkwPanKezurMEY1x3NlM=
-X-Received: by 2002:a19:8bc6:: with SMTP id n189mr1073086lfd.291.1611444084447;
- Sat, 23 Jan 2021 15:21:24 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=pyjJjIjAwqBAqBYpe34f4z3YvzgZOMNZpkQlTpZrZjo=;
+        b=r37ln5IPfVTy4/3c7PkcdBeRV7XZCUCtX9gGeVqbJi7w7jsbg6nhr++p1+98b7DOLY
+         S0Ojc3MQ3yYPuiu4gQmZffPLBb9/5FF0wsHQ+o7Cb0/QDyBXe0Ah2E57o1DqW2E2p5k6
+         5vfwl+kfbt8s3rfbAzmXZrBcGQzDLGX6vMLabD1MLKlpPfBrU5fY8QJuBKz11B+fX71U
+         0cEj9KUMEd47MyH+m5Z9HhcK2qBNNkWyVUjrXhG566zB+K95Zlgb+DOGs+6yYIq654Cs
+         QC6xcWEufqreff+jzGLuvTNSK5+U3lnw/ACV80jHiH5MuDaEjc4uDJe4VbDvQ+KZU8mx
+         ZT0Q==
+X-Gm-Message-State: AOAM5303ZK3KnMbRkGQ0KHQ+btcLQfB/nOR2AWuaIVOUpMRUkX03aM2r
+        aloxxvJ8MlfgeqiXgXDExGI=
+X-Google-Smtp-Source: ABdhPJyxkV+O/+aWYQ10BwEq4a29+MEs/T0dQE+y09aAvRy0RqIED6p/FYfCfJQKuynTReotktv6Og==
+X-Received: by 2002:a17:90a:5a03:: with SMTP id b3mr2385204pjd.1.1611471160359;
+        Sat, 23 Jan 2021 22:52:40 -0800 (PST)
+Received: from shinobu (113x33x126x33.ap113.ftth.ucom.ne.jp. [113.33.126.33])
+        by smtp.gmail.com with ESMTPSA id f15sm14172870pja.24.2021.01.23.22.52.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 23 Jan 2021 22:52:39 -0800 (PST)
+Date:   Sun, 24 Jan 2021 15:52:31 +0900
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Cc:     jic23@kernel.org, mchehab+huawei@kernel.org,
+        lukas.bulwahn@gmail.com, linux-doc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        alexandre.torgue@st.com, fabrice.gasnier@st.com,
+        olivier.moysan@st.com, linux-iio@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH] counter: stm32-lptimer-cnt: remove iio counter abi
+Message-ID: <YA0ZL2g/qX7tigJa@shinobu>
+References: <1611327803-882-1-git-send-email-fabrice.gasnier@foss.st.com>
 MIME-Version: 1.0
-References: <20210119124622.9490-1-mike.looijmans@topic.nl>
- <20210119124622.9490-2-mike.looijmans@topic.nl> <CACRpkdbFgskpPUoVK7bU1EyChEvD4e9WHhvcUJh4e1UUO2WFdA@mail.gmail.com>
- <20210123153511.1802a15a@archlinux>
-In-Reply-To: <20210123153511.1802a15a@archlinux>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sun, 24 Jan 2021 00:21:13 +0100
-Message-ID: <CACRpkdZTJbAFK0j8U84pyW6za-SGJqGWnvertj8sXxc8Ou8VeA@mail.gmail.com>
-Subject: Re: [PATCH v6 2/2] iio: accel: Add support for the Bosch-Sensortec BMI088
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Mike Looijmans <mike.looijmans@topic.nl>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Dan Robertson <dan@dlrobertson.com>,
-        =?UTF-8?B?R2HDq3RhbiBBbmRyw6k=?= <rvlander@gaetanandre.eu>,
-        Jonathan Bakker <xc-racer2@live.ca>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="Ifstk+I27HDRTTHT"
+Content-Disposition: inline
+In-Reply-To: <1611327803-882-1-git-send-email-fabrice.gasnier@foss.st.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Jan 23, 2021 at 4:35 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> [Me]
-> > Next, I think it is better to let suspend/resume, i.e. system PM
-> > reuse runtime PM since you're implementing that. This is why
-> > we invented PM runtime force resume and force suspend.
->
-> Here the driver is turning more off for full suspend than in the
-> runtime path.  If that results in significant extra delay then
-> it's not appropriate to have that in the runtime suspend path.
 
-I see the point.
+--Ifstk+I27HDRTTHT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The resume path calls bmi088_accel_enable() which incurs
-a 5ms delay.
+On Fri, Jan 22, 2021 at 04:03:23PM +0100, Fabrice Gasnier wrote:
+> Currently, the STM32 LP Timer counter driver registers into both IIO and
+> counter subsystems, which is redundant.
+>=20
+> Remove the IIO counter ABI and IIO registration from the STM32 LP Timer
+> counter driver since it's been superseded by the Counter subsystem
+> as discussed in [1].
+>=20
+> Keep only the counter subsystem related part.
+> Move a part of the ABI documentation into a driver comment.
+>=20
+> This also removes a duplicate ABI warning
+> $ scripts/get_abi.pl validate
+> ...
+> /sys/bus/iio/devices/iio:deviceX/in_count0_preset is defined 2 times:
+>   ./Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:100
+>   ./Documentation/ABI/testing/sysfs-bus-iio-lptimer-stm32:0
+>=20
+> [1] https://lkml.org/lkml/2021/1/19/347
+>=20
+> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 
-The runtime resume path incurs a 1 ms delay.
+Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 
-The runtime autosuspend kicks in after 2 ms.
+I'll also submit a patchset removing the IIO code from the 104-quad-8
+driver and the rest of the IIO counter ABI documentation.
 
-> Maybe the simplification of not doing the deeper power saving
-> mode is worth the extra power cost or extra delay, but
-> I'm not yet convinced.
+William Breathitt Gray
 
-I would personally set the autosuspend to ~20ms and just use
-one path and take a hit of 5 ms whenever we go down between
-measures if it is a system that is for human interaction, but for
-control systems this more complex set-up may be better for
-response latencies.
+--Ifstk+I27HDRTTHT
+Content-Type: application/pgp-signature; name="signature.asc"
 
-The current approach may be better tuned to perfection and
-we are all perfectionists :D
+-----BEGIN PGP SIGNATURE-----
 
-I'm just worrying a little about bugs and maintainability.
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmANGRkACgkQhvpINdm7
+VJJ4Iw//fPBOTOQrrg//Y+6Qf3vPDPUfv4B2MY4bu5RIja9Hw6jqw1OWFxsYLFeX
+TYm4Hl3K7RSsPfeWFcCgFdp/IvSK0CMH+nHuIPcwKxsE+E0cm4ExztexpmZUR5kD
+znjePAQzo9H2kYJEmQ26Vb718AzdkaWVWOVX736TT7ecZOMKngyJg2tZ6qK+9uI2
+KMRoJPzqfl1O3lVAWiCMI91fNggTxinxZyKKTMq15GTirPn2ZRbX8i9Nxxepskf0
+QHdze2Gz+lgwDJxOLfzohpF64DG7NcMSYvMbg9EsXTBc5gL72Fmfk2wgHhx/aeUP
+5byMCFTXfAZOQWaQN4CugKhcLy8Bxv/JAXH+BEqFeIt0PoJhPvJ0X62zTBmzswXS
+8jvGq8OTGwvFisJxyx4vZk8ODxWkVNwch7ItXc8/oj6NdgDfYaYUQpEKHYEvggvn
+73jVfSPFxAfouk5p8Lo2aFVokJ9lRn/rl/mW6Bwq0DS3nJ8vawX/PQfGx1y3MV/o
+cKE7kdq8ZPjXnijG8heeehweI6eRFuV/bcnFvN3GxlIv/hkCWdhZ0b67ZEiUz4uE
+yCp/WjCBBoQbkAwvf5Q+VWuycmFHVBRJ48I+PLOGKykeJO4C2Z5eQwEAnhaGcD9O
+VJ85gCrUdvzODq0fhpFWY3fXT4Xm1b0FMWtY8w2rshsQ6GToxzY=
+=WMsJ
+-----END PGP SIGNATURE-----
 
-Yours,
-Linus Walleij
+--Ifstk+I27HDRTTHT--

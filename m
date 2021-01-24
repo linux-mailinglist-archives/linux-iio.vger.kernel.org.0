@@ -2,31 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 404C8301CAE
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Jan 2021 15:26:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 55C3C301CC1
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Jan 2021 15:36:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725776AbhAXOZk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 24 Jan 2021 09:25:40 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55052 "EHLO mail.kernel.org"
+        id S1726026AbhAXOfF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 24 Jan 2021 09:35:05 -0500
+Received: from mail.kernel.org ([198.145.29.99]:56446 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725775AbhAXOZj (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 24 Jan 2021 09:25:39 -0500
+        id S1725948AbhAXOew (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 24 Jan 2021 09:34:52 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C3CE822DBF;
-        Sun, 24 Jan 2021 14:24:57 +0000 (UTC)
-Date:   Sun, 24 Jan 2021 14:24:52 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id C028622CF6;
+        Sun, 24 Jan 2021 14:34:09 +0000 (UTC)
+Date:   Sun, 24 Jan 2021 14:34:04 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc:     linux-kernel@vger.kernel.org, trivial@kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+To:     Oleksij Rempel <o.rempel@pengutronix.de>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        David Jander <david@protonic.nl>,
+        Robin van der Gracht <robin@protonic.nl>,
         linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: st_sensors: fix typo in comment
-Message-ID: <20210124142452.4739795b@archlinux>
-In-Reply-To: <20210121153945.5499-1-a.fatoum@pengutronix.de>
-References: <20210121153945.5499-1-a.fatoum@pengutronix.de>
+Subject: Re: [PATCH v3 1/2] dt-bindings: counter: add gpio-pulse-counter
+ binding
+Message-ID: <20210124143404.4a029d62@archlinux>
+In-Reply-To: <20210122112434.27886-2-o.rempel@pengutronix.de>
+References: <20210122112434.27886-1-o.rempel@pengutronix.de>
+        <20210122112434.27886-2-o.rempel@pengutronix.de>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -35,34 +40,83 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 21 Jan 2021 16:39:44 +0100
-Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+On Fri, 22 Jan 2021 12:24:33 +0100
+Oleksij Rempel <o.rempel@pengutronix.de> wrote:
 
-> s/timetamping/timestamping/
+> Add binding for GPIO based pulse counter node
 > 
-> Cc: trivial@kernel.org
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Applied,
+This does make me wonder a bit on whether we are going to soon need
+a  provider / consumer interface for the counter subsystem.
 
-Thanks,
+Afterall, this pulse is coming from something and I doubt it will
+be long before we want to describe that 'something' plus it may
+have additional controls etc.
+
+Anyhow, that's a question for another day.  A few minor things inline.
 
 Jonathan
 
+
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > ---
->  drivers/iio/common/st_sensors/st_sensors_buffer.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  .../bindings/counter/gpio-pulse-counter.yaml  | 39 +++++++++++++++++++
+>  1 file changed, 39 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/counter/gpio-pulse-counter.yaml
 > 
-> diff --git a/drivers/iio/common/st_sensors/st_sensors_buffer.c b/drivers/iio/common/st_sensors/st_sensors_buffer.c
-> index eee30130ae23..802f9ae04cf4 100644
-> --- a/drivers/iio/common/st_sensors/st_sensors_buffer.c
-> +++ b/drivers/iio/common/st_sensors/st_sensors_buffer.c
-> @@ -57,7 +57,7 @@ irqreturn_t st_sensors_trigger_handler(int irq, void *p)
->  	s64 timestamp;
->  
->  	/*
-> -	 * If we do timetamping here, do it before reading the values, because
-> +	 * If we do timestamping here, do it before reading the values, because
->  	 * once we've read the values, new interrupts can occur (when using
->  	 * the hardware trigger) and the hw_timestamp may get updated.
->  	 * By storing it in a local variable first, we are safe.
+> diff --git a/Documentation/devicetree/bindings/counter/gpio-pulse-counter.yaml b/Documentation/devicetree/bindings/counter/gpio-pulse-counter.yaml
+> new file mode 100644
+> index 000000000000..dfa93956f15c
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/counter/gpio-pulse-counter.yaml
+> @@ -0,0 +1,39 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/counter/gpio-pulse-counter.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: GPIO base pulse counter
+
+Whilst it's moderately obvious I think a short description here
+would be useful. 
+
+
+> +
+> +maintainers:
+> +  - Oleksij Rempel <o.rempel@pengutronix.de>
+> +
+> +properties:
+> +  compatible:
+> +    const: virtual,gpio-pulse-counter
+> +
+> +  gpios:
+> +    maxItems: 1
+> +
+> +required:
+> +  - gpios
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +
+> +    #include <dt-bindings/gpio/gpio.h>
+> +
+> +    counter-0 {
+> +        compatible = "virtual,gpio-pulse-counter";
+> +        gpios = <&gpio 0 GPIO_ACTIVE_HIGH>;
+> +    };
+> +
+> +    counter-1 {
+> +        compatible = "virtual,gpio-pulse-counter";
+> +        gpios = <&gpio 1 GPIO_ACTIVE_HIGH>;
+> +    };
+
+The second example doesn't tell us anything new, so I'd drop
+it and just have counter-0
+
+
+
+> +
+> +...
 

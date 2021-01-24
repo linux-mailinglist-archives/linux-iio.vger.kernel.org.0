@@ -2,170 +2,147 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 658DE301D21
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Jan 2021 16:23:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 25D88301D75
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Jan 2021 17:22:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725948AbhAXPXB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 24 Jan 2021 10:23:01 -0500
-Received: from mail.kernel.org ([198.145.29.99]:36426 "EHLO mail.kernel.org"
+        id S1726463AbhAXQV7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 24 Jan 2021 11:21:59 -0500
+Received: from mga11.intel.com ([192.55.52.93]:35494 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725880AbhAXPXA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 24 Jan 2021 10:23:00 -0500
-Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E953B22DFA;
-        Sun, 24 Jan 2021 15:22:16 +0000 (UTC)
-Date:   Sun, 24 Jan 2021 15:22:12 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        kernel@pengutronix.de, Holger Assmann <has@pengutronix.de>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        linux-iio@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: adc: stm32-adc: enable timestamping for non-DMA
- usage
-Message-ID: <20210124152212.5bc39e57@archlinux>
-In-Reply-To: <20210122113355.32384-1-a.fatoum@pengutronix.de>
-References: <20210122113355.32384-1-a.fatoum@pengutronix.de>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S1726202AbhAXQV7 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 24 Jan 2021 11:21:59 -0500
+IronPort-SDR: 79VYAaieHYj/tZ2DEWVb9EG0zcz+tSN0tVhs4joTyE1Qtyvr1/92OKrsSAr5TLIGFqXwNSdbCS
+ nrBEY8333eMQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9874"; a="176113157"
+X-IronPort-AV: E=Sophos;i="5.79,371,1602572400"; 
+   d="scan'208";a="176113157"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2021 08:20:13 -0800
+IronPort-SDR: tY/Y8C2BotmsCPjIOAK3po8IS3tkIYksifeGgDc53H21I0VQ4GHvzgulRKaK8l0foEtRd2k9sL
+ P7lbJofDp/IQ==
+X-IronPort-AV: E=Sophos;i="5.79,371,1602572400"; 
+   d="scan'208";a="405754353"
+Received: from skalidos-mobl.amr.corp.intel.com ([10.212.110.45])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2021 08:20:13 -0800
+Message-ID: <7e136ebb914f71da3fcb90b8048f9f7dd8cdf0bf.camel@linux.intel.com>
+Subject: Re: [PATCH 2/3] hid-sensor-common: Add relative sensitivity check
+From:   Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+To:     Jonathan Cameron <jic23@kernel.org>, Ye Xiang <xiang.ye@intel.com>
+Cc:     jikos@kernel.org, linux-input@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Sun, 24 Jan 2021 08:20:12 -0800
+In-Reply-To: <20210124131442.0fc2577e@archlinux>
+References: <20210120074706.23199-1-xiang.ye@intel.com>
+         <20210120074706.23199-3-xiang.ye@intel.com>
+         <20210124131442.0fc2577e@archlinux>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 22 Jan 2021 12:33:55 +0100
-Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
-
-> For non-DMA usage, we have an easy way to associate a timestamp with a
-> sample: iio_pollfunc_store_time stores a timestamp in the primary
-> trigger IRQ handler and stm32_adc_trigger_handler runs in the IRQ thread
-> to push out the buffer along with the timestamp.
+On Sun, 2021-01-24 at 13:14 +0000, Jonathan Cameron wrote:
+> On Wed, 20 Jan 2021 15:47:05 +0800
+> Ye Xiang <xiang.ye@intel.com> wrote:
 > 
-> For this to work, the driver needs to register an IIO_TIMESTAMP channel.
-> Do this.
+> > Some hid sensors may use relative sensitivity such as als sensor.
+> > This patch add relative sensitivity check for all hid-sensors.
+> > 
+> > Signed-off-by: Ye Xiang <xiang.ye@intel.com>
+> > ---
+> >  .../iio/common/hid-sensors/hid-sensor-attributes.c    | 11
+> > ++++++++++-
+> >  include/linux/hid-sensor-ids.h                        |  1 +
+> >  2 files changed, 11 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c 
+> > b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+> > index d349ace2e33f..b685c292a179 100644
+> > --- a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+> > +++ b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+> > @@ -480,7 +480,7 @@ int hid_sensor_parse_common_attributes(struct
+> > hid_sensor_hub_device *hsdev,
+> >  
+> >  	/*
+> >  	 * Set Sensitivity field ids, when there is no individual
+> > modifier, will
+> > -	 * check absolute sensitivity of data field
+> > +	 * check absolute sensitivity and relative sensitivity of data
+> > field
+> >  	 */
+> >  	for (i = 0; i < sensitivity_addresses_len && st-
+> > >sensitivity.index < 0; i++) {
+> >  		sensor_hub_input_get_attribute_info(hsdev,
+> > @@ -488,6 +488,15 @@ int hid_sensor_parse_common_attributes(struct
+> > hid_sensor_hub_device *hsdev,
+> >  				HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSIT
+> > IVITY_ABS |
+> >  					sensitivity_addresses[i],
+> >  				&st->sensitivity);
+> > +
+> > +		if (st->sensitivity.index >= 0)
+> > +			break;
+> > +
+> > +		sensor_hub_input_get_attribute_info(hsdev,
+> > +				HID_FEATURE_REPORT, usage_id,
+> > +				HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSIT
+> > IVITY_REL_PCT |
+> > +					sensitivity_addresses[i],
+> > +				&st->sensitivity);
 > 
-> For DMA, it's not as easy, because we don't push the buffers out of
-> stm32_adc_trigger, but out of stm32_adc_dma_buffer_done, which runs in
-> a tasklet scheduled after a DMA completion.
+> We can't provide the value to userspace without reflecting the
+> difference between
+> the two ways of expressing it.
 > 
-> Preferably, the DMA controller would copy us the timestamp into that buffer
-> as well. Until this is implemented, restrict timestamping support to
-> only PIO. For low-frequency sampling, PIO is probably good enough.
-> 
-> Cc: Holger Assmann <has@pengutronix.de>
-> Acked-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> It seems there are 3 ways sensitivity is expressed.
+> 1. Raw value in same units as the measurement (easy one and what is
+> currently reported)
+> 2. Percentage of range - also relatively easy to transform into the
+> same as 1.
+> 3. Percentage of prior reading..  This one doesn't fit in any
+> existing ABI, so
+>    unfortunately we'll have to invent something new along the lines
+> of
+>    *_hysteresis_relative 
 
-This patch itself is fine, but it will expose a potential bug.
+This is why it was not added before when I developed.  But later few
+years back there was a patch to add this by one of our developer. There
+was some discussion, I thought it was decided it is OK to add.
 
-The buffer passed to iio_push_to_buffers_with_timestamp needs to be suitably
-aligned to take an 8 byte timestamp and large enough to do so.
- Currently, in this driver it isn't.
-	u16			buffer[STM32_ADC_MAX_SQ];
-Appears to be the same length as the channel count, and isn't 8 byte
-aligned. (add __aligned(8) to fix that)
-
-Could you add that fix to this patch as well?
+But I agree, we should add new ABI as you suggested. Now almost every
+laptop has HID sensors, better to address this. 
 
 Thanks,
+Srinivas
 
-Jonathan
+ 
 
 
-> ---
-> v1 -> v2:
->   - Added comment about timestamping being PIO only (Fabrice)
->   - Added missing DMA resource clean up in error path (Fabrice)
->   - Added Fabrice's Acked-by
-> ---
->  drivers/iio/adc/stm32-adc.c | 35 +++++++++++++++++++++++++++++------
->  1 file changed, 29 insertions(+), 6 deletions(-)
+> Jonathan
 > 
-> diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-> index c067c994dae2..885bb514503c 100644
-> --- a/drivers/iio/adc/stm32-adc.c
-> +++ b/drivers/iio/adc/stm32-adc.c
-> @@ -1718,7 +1718,7 @@ static void stm32_adc_chan_init_one(struct iio_dev *indio_dev,
->  	}
->  }
->  
-> -static int stm32_adc_chan_of_init(struct iio_dev *indio_dev)
-> +static int stm32_adc_chan_of_init(struct iio_dev *indio_dev, bool timestamping)
->  {
->  	struct device_node *node = indio_dev->dev.of_node;
->  	struct stm32_adc *adc = iio_priv(indio_dev);
-> @@ -1766,6 +1766,9 @@ static int stm32_adc_chan_of_init(struct iio_dev *indio_dev)
->  		return -EINVAL;
->  	}
->  
-> +	if (timestamping)
-> +		num_channels++;
-> +
->  	channels = devm_kcalloc(&indio_dev->dev, num_channels,
->  				sizeof(struct iio_chan_spec), GFP_KERNEL);
->  	if (!channels)
-> @@ -1816,6 +1819,19 @@ static int stm32_adc_chan_of_init(struct iio_dev *indio_dev)
->  		stm32_adc_smpr_init(adc, channels[i].channel, smp);
->  	}
->  
-> +	if (timestamping) {
-> +		struct iio_chan_spec *timestamp = &channels[scan_index];
-> +
-> +		timestamp->type = IIO_TIMESTAMP;
-> +		timestamp->channel = -1;
-> +		timestamp->scan_index = scan_index;
-> +		timestamp->scan_type.sign = 's';
-> +		timestamp->scan_type.realbits = 64;
-> +		timestamp->scan_type.storagebits = 64;
-> +
-> +		scan_index++;
-> +	}
-> +
->  	indio_dev->num_channels = scan_index;
->  	indio_dev->channels = channels;
->  
-> @@ -1875,6 +1891,7 @@ static int stm32_adc_probe(struct platform_device *pdev)
->  	struct device *dev = &pdev->dev;
->  	irqreturn_t (*handler)(int irq, void *p) = NULL;
->  	struct stm32_adc *adc;
-> +	bool timestamping = false;
->  	int ret;
->  
->  	if (!pdev->dev.of_node)
-> @@ -1931,16 +1948,22 @@ static int stm32_adc_probe(struct platform_device *pdev)
->  	if (ret < 0)
->  		return ret;
->  
-> -	ret = stm32_adc_chan_of_init(indio_dev);
-> -	if (ret < 0)
-> -		return ret;
-> -
->  	ret = stm32_adc_dma_request(dev, indio_dev);
->  	if (ret < 0)
->  		return ret;
->  
-> -	if (!adc->dma_chan)
-> +	if (!adc->dma_chan) {
-> +		/* For PIO mode only, iio_pollfunc_store_time stores a timestamp
-> +		 * in the primary trigger IRQ handler and stm32_adc_trigger_handler
-> +		 * runs in the IRQ thread to push out buffer along with timestamp.
-> +		 */
->  		handler = &stm32_adc_trigger_handler;
-> +		timestamping = true;
-> +	}
-> +
-> +	ret = stm32_adc_chan_of_init(indio_dev, timestamping);
-> +	if (ret < 0)
-> +		goto err_dma_disable;
->  
->  	ret = iio_triggered_buffer_setup(indio_dev,
->  					 &iio_pollfunc_store_time, handler,
+> 
+> 
+> >  	}
+> >  
+> >  	st->raw_hystersis = -1;
+> > diff --git a/include/linux/hid-sensor-ids.h b/include/linux/hid-
+> > sensor-ids.h
+> > index 3bbdbccc5805..ac631159403a 100644
+> > --- a/include/linux/hid-sensor-ids.h
+> > +++ b/include/linux/hid-sensor-ids.h
+> > @@ -149,6 +149,7 @@
+> >  /* Per data field properties */
+> >  #define HID_USAGE_SENSOR_DATA_MOD_NONE				
+> > 	0x00
+> >  #define HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSITIVITY_ABS		
+> > 0x1000
+> > +#define
+> > HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSITIVITY_REL_PCT            0xE
+> > 000
+> >  
+> >  /* Power state enumerations */
+> >  #define HID_USAGE_SENSOR_PROP_POWER_STATE_UNDEFINED_ENUM	0x20085
+> > 0
 

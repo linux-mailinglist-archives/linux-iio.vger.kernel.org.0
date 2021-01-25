@@ -2,83 +2,155 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B1F37302A5D
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Jan 2021 19:36:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 054A2302B9F
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Jan 2021 20:31:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727050AbhAYSf4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 Jan 2021 13:35:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41618 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727212AbhAYSeH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jan 2021 13:34:07 -0500
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C3A1C0613D6
-        for <linux-iio@vger.kernel.org>; Mon, 25 Jan 2021 10:33:27 -0800 (PST)
-Received: by mail-pf1-x435.google.com with SMTP id u67so8910331pfb.3
-        for <linux-iio@vger.kernel.org>; Mon, 25 Jan 2021 10:33:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:content-transfer-encoding:in-reply-to:references
-         :subject:from:cc:to:date:message-id:user-agent;
-        bh=TvxPdQjKCI9ZmZLVkYWALn/rUfjRsqwIOFEkOnlLvAs=;
-        b=h9Y+HLhkNiDLbU77fvFncPIEguJ6e6m1erCgYBIBJfiuHVhuHTSX+oO5cGH0hfxcN9
-         UcniZDt+ZRxHXhjXn6xobzm6nT6QPOmP0DV11gpz2BxB5EzvbGWklI+iqSzZ4Ym1RyXH
-         GHk7A4gT2nddOvCwU6QBBKurFC6NYLfWUVWOM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:content-transfer-encoding
-         :in-reply-to:references:subject:from:cc:to:date:message-id
-         :user-agent;
-        bh=TvxPdQjKCI9ZmZLVkYWALn/rUfjRsqwIOFEkOnlLvAs=;
-        b=n7cqi2c0rXKecT5HeCEQdw8Tx8ztfvOHaHPjWitxAN9mreipzcwngtJhJrirscKyZM
-         R/s0cg4LOfzNzRje2OGcfTmiflcc1fD3alEiXxr8n10Oas2842WmSYevySiC961XVqeH
-         dC9RRHw1MC/iOgJ0NkybKqb+fDKt5P3PHPUP3wP3thddOHyr7b6wREyKXWUxzLQArD2w
-         1fOVK7nR6B6gIzRH85Vu9HX0JDDcSPJaX3tLWgYo+zmUPiWCg/YVSJCbRNsNb9LEIIef
-         PD6JU6/jA7YzqKh1KVeUI5CCX1ZU75hH+WAEmuvJcVN3jYigrStJp58WXJ4LLjyfBjtP
-         Nd/Q==
-X-Gm-Message-State: AOAM530uzrPGdSdZz2wJu0AzVzCa2z6W/ipVCh8P2taSqpnlthS82o0t
-        TpL9ANacr3HrFVVvw+6u2X2g5Q==
-X-Google-Smtp-Source: ABdhPJzoh/Cf5IXFpG6Oj3aBrXrIVCuqZqvLXHjyjI17esDA4GM7rda1RGFKlLlR64P3CLeZgDpURA==
-X-Received: by 2002:a63:d84c:: with SMTP id k12mr1823571pgj.58.1611599606728;
-        Mon, 25 Jan 2021 10:33:26 -0800 (PST)
-Received: from chromium.org ([2620:15c:202:201:1066:b437:97cd:2278])
-        by smtp.gmail.com with ESMTPSA id 83sm10584758pfb.68.2021.01.25.10.33.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Jan 2021 10:33:25 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+        id S1726698AbhAYT31 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 Jan 2021 14:29:27 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50994 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731914AbhAYT3A (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 25 Jan 2021 14:29:00 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 804EC21D79;
+        Mon, 25 Jan 2021 19:28:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1611602900;
+        bh=6On6sfkiGo0BjdpSyslylTwlmNwbsH/AgnljyDfO1uU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=hK8doc1xMi+SLHQlsjEplwak91eoXAIZPbh8xVQS310QxdI2GjVdOw0WrCERovOM1
+         OmS9IJFJbJEfzZWpPU/67naO0kOWsiqxfiUz9GNW5KHaM8uMyOYjL/f+RqTQubHUz+
+         Mb/eg31FW1VdrfLlc+F9Jftb3O/GV/OWQF+fXpdY=
+Date:   Mon, 25 Jan 2021 20:28:17 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        lars@metafoo.de, Michael.Hennerich@analog.com, nuno.sa@analog.com,
+        dragos.bogdan@analog.com, "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: Re: [PATCH v2 03/12][RESEND] iio: buffer: rework buffer &
+ scan_elements dir creation
+Message-ID: <YA8b0az9c0Hha405@kroah.com>
+References: <20210122162529.84978-1-alexandru.ardelean@analog.com>
+ <20210122162529.84978-4-alexandru.ardelean@analog.com>
+ <20210124181126.07c100a5@archlinux>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <CAPUE2uvd+zyWQZm=LWM6sH7tCU8MUeZVo-zJrsWzLArXA1tROg@mail.gmail.com>
-References: <20210122225443.186184-1-swboyd@chromium.org> <20210122225443.186184-3-swboyd@chromium.org> <20210124172756.69ef7c5a@archlinux> <CAPUE2uvd+zyWQZm=LWM6sH7tCU8MUeZVo-zJrsWzLArXA1tROg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] dt-bindings: iio: Add cros ec proximity yaml doc
-From:   Stephen Boyd <swboyd@chromium.org>
-Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>
-To:     Gwendal Grignou <gwendal@chromium.org>,
-        Jonathan Cameron <jic23@kernel.org>
-Date:   Mon, 25 Jan 2021 10:33:24 -0800
-Message-ID: <161159960419.76967.7662401883849710311@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.9.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210124181126.07c100a5@archlinux>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Quoting Gwendal Grignou (2021-01-24 12:42:56)
-> On Sun, Jan 24, 2021 at 9:28 AM Jonathan Cameron <jic23@kernel.org> wrote:
-> > On Fri, 22 Jan 2021 14:54:42 -0800
-> > Stephen Boyd <swboyd@chromium.org> wrote:
-> > > +
-> > > +properties:
-> > > +  compatible:
-> > > +    const: google,cros-ec-proximity
-> Given we have proximity detection in cros_ec via specific sensor (si
-> 1141) or algorithm (on-body/off-body via
-> MOTIONSENSE_ACTIVITY_BODY_DETECTION), can we name the property
-> cros-ec-mkbp-proximity?
+On Sun, Jan 24, 2021 at 06:11:26PM +0000, Jonathan Cameron wrote:
+> On Fri, 22 Jan 2021 18:25:20 +0200
+> Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+> 
+> > When adding more than one IIO buffer per IIO device, we will need to create
+> > a buffer & scan_elements directory for each buffer.
+> > We also want to move the 'scan_elements' to be a sub-directory of the
+> > 'buffer' folder.
+> > 
+> > The format we want to reach is, for a iio:device0 folder, for 2 buffers
+> > [for example], we have a 'buffer0' and a 'buffer1' subfolder, and each with
+> > it's own 'scan_elements' subfolder.
+> > 
+> > So, for example:
+> >    iio:device0/buffer0
+> >       scan_elements/
+> > 
+> >    iio:device0/buffer1
+> >       scan_elements/
+> > 
+> > The other attributes under 'bufferX' would remain unchanged.
+> > 
+> > However, we would also need to symlink back to the old 'buffer' &
+> > 'scan_elements' folders, to keep backwards compatibility.
+> > 
+> > Doing all these, require that we maintain the kobjects for each 'bufferX'
+> > and 'scan_elements' so that we can symlink them back. We also need to
+> > implement the sysfs_ops for these folders.
+> > 
+> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> 
+> +CC GregKH and Rafael W for feedback on various things inline.
+> 
+> It might be that this is the neatest solution that we can come up with but
+> more eyes would be good!
 
-Sure that works for me.
+In short, please do NOT do this.
+
+At all.
+
+no.
+
+{sigh}
+
+> 
+> Whilst I think this looks fine, I'm less confident than I'd like to be.
+> 
+> Jonathan
+> 
+> > ---
+> >  drivers/iio/industrialio-buffer.c | 195 +++++++++++++++++++++++++++---
+> >  drivers/iio/industrialio-core.c   |  24 ++--
+> >  include/linux/iio/buffer_impl.h   |  14 ++-
+> >  include/linux/iio/iio.h           |   2 +-
+> >  4 files changed, 200 insertions(+), 35 deletions(-)
+> > 
+> > diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+> > index 0412c4fda4c1..0f470d902790 100644
+> > --- a/drivers/iio/industrialio-buffer.c
+> > +++ b/drivers/iio/industrialio-buffer.c
+> > @@ -1175,8 +1175,6 @@ static ssize_t iio_buffer_store_enable(struct device *dev,
+> >  	return (ret < 0) ? ret : len;
+> >  }
+> >  
+> > -static const char * const iio_scan_elements_group_name = "scan_elements";
+> > -
+> >  static ssize_t iio_buffer_show_watermark(struct device *dev,
+> >  					 struct device_attribute *attr,
+> >  					 char *buf)
+> > @@ -1252,6 +1250,124 @@ static struct attribute *iio_buffer_attrs[] = {
+> >  	&dev_attr_data_available.attr,
+> >  };
+> >  
+> > +#define to_dev_attr(_attr) container_of(_attr, struct device_attribute, attr)
+> > +
+> > +static ssize_t iio_buffer_dir_attr_show(struct kobject *kobj,
+> > +					struct attribute *attr,
+> > +					char *buf)
+> > +{
+> > +	struct iio_buffer *buffer = container_of(kobj, struct iio_buffer, buffer_dir);
+> > +	struct device_attribute *dattr;
+> > +
+> > +	dattr = to_dev_attr(attr);
+> > +
+> > +	return dattr->show(&buffer->indio_dev->dev, dattr, buf);
+> > +}
+
+
+First off, you are dealing with "raw" kobjects here, below a 'struct
+device' in the device tree, which means that suddenly userspace does not
+know what in the world is going on, and you lost events and lots of
+other stuff.
+
+Never do this.  It should not be needed, and you are just trying to
+paper over one odd decision of an api with another one you will be stuck
+with for forever.
+
+Remember the driver core can create subdirectories for your attributes
+automatically if you want them to be in a subdir, but that's it, no
+further than that.  Just name the attribute group.
+
+But yes, you can not create a symlink to there, because (surprise), you
+don't want to!
+
+So please, just rethink your naming, create a totally new naming scheme
+for multiple entities, and just drop the old one (or keep a single
+value if you really want to.)  Don't make it harder than it has to be
+please, you can never remove the "compatible symlinks", just make a new
+api and move on.
+
+thanks,
+
+greg k-h

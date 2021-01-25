@@ -2,31 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 40591302297
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Jan 2021 08:56:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B4703022A7
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Jan 2021 09:07:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727252AbhAYHz6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 Jan 2021 02:55:58 -0500
-Received: from mail-am6eur05on2080.outbound.protection.outlook.com ([40.107.22.80]:26081
-        "EHLO EUR05-AM6-obe.outbound.protection.outlook.com"
+        id S1727166AbhAYIGJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 Jan 2021 03:06:09 -0500
+Received: from mail-eopbgr50083.outbound.protection.outlook.com ([40.107.5.83]:34580
+        "EHLO EUR03-VE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727168AbhAYHzG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 25 Jan 2021 02:55:06 -0500
+        id S1727311AbhAYIBV (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 25 Jan 2021 03:01:21 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=topicbv.onmicrosoft.com; s=selector2-topicbv-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KXdXwd8XelYUneh99oPMLB1/gUceM+m56Spnq9CEznE=;
- b=HlkBGnIr/lNfEcuNkBwYhrxv/WJi6XArCmPbZ1GqfHhRWxGtlBSbJ1WPAFtq9+gchKHFdQYA/1SCdF+6cEmYjS+a1d9MBcy55//PFYRScFzcgVCjm42fcIFN1elxNWU+HvpTbQh3wNnvlqbPii+J7XjQU9V3gXSkg7cJdvn5AiQ=
-Received: from AM5PR0201CA0012.eurprd02.prod.outlook.com
- (2603:10a6:203:3d::22) by DB8PR04MB6731.eurprd04.prod.outlook.com
- (2603:10a6:10:104::27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3784.11; Mon, 25 Jan
- 2021 07:53:40 +0000
-Received: from HE1EUR01FT058.eop-EUR01.prod.protection.outlook.com
- (2603:10a6:203:3d:cafe::2e) by AM5PR0201CA0012.outlook.office365.com
- (2603:10a6:203:3d::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3784.11 via Frontend
- Transport; Mon, 25 Jan 2021 07:53:40 +0000
+ bh=MEpNoEl0fPFTqlXdN0yOOvS9GSh/SOutISzx3X57I5U=;
+ b=IoGS6LGfy0h70dKt7mBBR76jd/htAKvM+/f/a4OSMihKc/WzdOo/YY0C2HugYJK55oV2NvssPI2y6o7QvsJt6QPWNXogVxS1XpVp62Ej+tr+b7WjE0SNNLONk8M9CkC9exx2sSXU+WwCfds/gazuYOEr0F4uZsZE9Z+UILUOIm8=
+Received: from AM5PR0601CA0028.eurprd06.prod.outlook.com
+ (2603:10a6:203:68::14) by HE1PR0402MB3499.eurprd04.prod.outlook.com
+ (2603:10a6:7:7f::17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3763.10; Mon, 25 Jan
+ 2021 07:59:49 +0000
+Received: from VE1EUR01FT056.eop-EUR01.prod.protection.outlook.com
+ (2603:10a6:203:68:cafe::3e) by AM5PR0601CA0028.outlook.office365.com
+ (2603:10a6:203:68::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3784.12 via Frontend
+ Transport; Mon, 25 Jan 2021 07:59:48 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 40.68.112.65)
  smtp.mailfrom=topicproducts.com; vger.kernel.org; dkim=none (message not
  signed) header.d=none;vger.kernel.org; dmarc=none action=none
@@ -35,17 +35,17 @@ Received-SPF: Pass (protection.outlook.com: domain of topicproducts.com
  designates 40.68.112.65 as permitted sender) receiver=protection.outlook.com;
  client-ip=40.68.112.65; helo=westeu12-emailsignatures-cloud.codetwo.com;
 Received: from westeu12-emailsignatures-cloud.codetwo.com (40.68.112.65) by
- HE1EUR01FT058.mail.protection.outlook.com (10.152.0.218) with Microsoft SMTP
+ VE1EUR01FT056.mail.protection.outlook.com (10.152.3.115) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3784.11 via Frontend Transport; Mon, 25 Jan 2021 07:53:40 +0000
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (104.47.14.59) by westeu12-emailsignatures-cloud.codetwo.com with CodeTwo SMTP Server (TLS12) via SMTP; Mon, 25 Jan 2021 07:53:38 +0000
+ 15.20.3784.11 via Frontend Transport; Mon, 25 Jan 2021 07:59:48 +0000
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (104.47.17.175) by westeu12-emailsignatures-cloud.codetwo.com with CodeTwo SMTP Server (TLS12) via SMTP; Mon, 25 Jan 2021 07:59:47 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Hz2z1L4zUZK+IPlUvzFYxB6OLacdu7vUiiovEVo6ACmysw9ABIrbdPfdI3eTYtBjGQ2x6gqcnTYnFP2vOtmP7VMPzeRDv/6Cb3Jn7lyuKgbFU/7oWbCdP3ZDIVf8Fuzd3yWxeNkl8Yp4clxbAUBWabXiOJN590RBmx6aVefjVnww5/7xLqV+5rZLz+sPJF2oMNk9tZWbPnwX+ThdXVAZnsk+NDVOxR0dFdpBEEFyW6/blTE9e4ZmTmogPb3eh7abjD7d/Dl07CcJHmeFZpqpcx7UWZbYyUXAXeU/nJQIdW3v2BIlQDvmvrSV+erIiW741Y5Cz36BR8cSrQi/uct2wA==
+ b=dFOSP8sE7XGiJTSQ4hwfvg+Jkc7vDjYzGnocgnSAj+CfkiVkGHjFAuPxkMOD8zXMkGtcdBa+FKPQrP5tNj63RONtavYomqwBYcEFBNRw3TBCvselBBF3nFrigHBECucMv2ovBl2u0YwEvFgGsxNCH0E3+CRKG4DeYBNQ2mQpF8TplnJeHeiwTpDPkSqBh7DJ4Hw7Ub9FW7VkwtA8OeZM8793W8weYINvkCruPA4sfP9eWGDxOVZsATVNS4+8rZ4wvCQxFL7OUsnwYAS6iVdGGkGSbpOI+AQuGeS0TeLTJq1BlA4ppBee1v84VmN1MWoS0/3hbst79XXtgPxSY/qG/Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Aipw3lreJVgY37FXzefh9P4XJxUOOxgWfpmLMgYTyS0=;
- b=jXam4Zz5+Bo8OiDSrzAfnJ2d4MCizuci2wdB8S+eIcYbCHDS+cBf9HfTiEoEXDxZ0Ii2gIrfEmzDmHx8jtYA224EDWQx8d8pHXelG5WFWKE/m+DMhkGctkDmzdn80KbMTO/Czn1mXZVNutEAUPs/69lXbgZoeRVSO3y2ELSk+hlBtXJysys2LBx+PEqkQ0QdbToO3gTAAsIw4Nv4zk+38lO2ttGi4gy5td5ltxRVVV2l/URZDdNBDn7du06UlFyD6gMFooup8vwECXvSWv5mcTN14i3dXxzw/IHOUXOrfTWPPJQiqXfzXhmlH9UY8nW62O9DUaNTjHGH2LLEALGnjQ==
+ bh=ZB/EUfiSBKf+H5eYOWLyhijZpFJrVbxoSUSIVYkcv4c=;
+ b=fu8tucty5i2S5sr8Q09dVOCN5kH57kacBACmgE488191ak6iRV/p7qheKjqBEW/DOeMKXNPeQ8jtmIV48L9V16uB0d5tP5g5m90BF7sVcteYs9hqTnQlhOUEWezRhrfYEV2WETQocr8xug0lY24x9+rrvbodxMGobum1E1sAMcrPXD2eR0SSmm4N6rpsC28UHRc1BZoiJ7d0mmyHn1jRRhgLe1nozqel9QI/gcix1ItnMZR353MOB3LpywyLoCUmRoM33ZV0qRjmNLO8aIKCw8ReTc08lRoODDWkD7PRmvrausRy/HCqMf8r07GaLHs0+UeGkV2zsRRtQlpUo24BMg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=topicproducts.com; dmarc=pass action=none header.from=topic.nl;
  dkim=pass header.d=topic.nl; arc=none
@@ -53,93 +53,101 @@ Authentication-Results-Original: vger.kernel.org; dkim=none (message not
  signed) header.d=none;vger.kernel.org; dmarc=none action=none
  header.from=topic.nl;
 Received: from DB8PR04MB6523.eurprd04.prod.outlook.com (2603:10a6:10:10f::26)
- by DB7PR04MB4249.eurprd04.prod.outlook.com (2603:10a6:5:19::25) with
+ by DBBPR04MB7708.eurprd04.prod.outlook.com (2603:10a6:10:20d::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3784.16; Mon, 25 Jan
- 2021 07:53:35 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3784.13; Mon, 25 Jan
+ 2021 07:59:44 +0000
 Received: from DB8PR04MB6523.eurprd04.prod.outlook.com
  ([fe80::792a:b2ef:ed50:a1a2]) by DB8PR04MB6523.eurprd04.prod.outlook.com
  ([fe80::792a:b2ef:ed50:a1a2%4]) with mapi id 15.20.3784.017; Mon, 25 Jan 2021
- 07:53:34 +0000
-Subject: Re: [PATCH v7 1/2] dt-bindings: iio: accel: Add bmi088 accelerometer
- bindings
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+ 07:59:44 +0000
+Subject: Re: [PATCH v6 2/2] iio: accel: Add support for the Bosch-Sensortec
+ BMI088
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>
+CC:     linux-iio <linux-iio@vger.kernel.org>,
+        Dan Robertson <dan@dlrobertson.com>,
+        =?UTF-8?B?R2HDq3RhbiBBbmRyw6k=?= <rvlander@gaetanandre.eu>,
+        Jonathan Bakker <xc-racer2@live.ca>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20210121155700.9267-1-mike.looijmans@topic.nl>
- <20210123153826.0368bf61@archlinux>
- <1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.31062d28-ea32-4cba-9e19-a7434c115d8e@emailsignatures365.codetwo.com>
- <1b153bce-a66a-45ee-a5c6-963ea6fb1c82.0d2bd5fa-15cc-4b27-b94e-83614f9e5b38.19976ff0-2a49-43f4-afd2-1dfd0965f697@emailsignatures365.codetwo.com>
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20210119124622.9490-1-mike.looijmans@topic.nl>
+ <20210119124622.9490-2-mike.looijmans@topic.nl>
+ <CACRpkdbFgskpPUoVK7bU1EyChEvD4e9WHhvcUJh4e1UUO2WFdA@mail.gmail.com>
+ <20210123153511.1802a15a@archlinux>
+ <CACRpkdZTJbAFK0j8U84pyW6za-SGJqGWnvertj8sXxc8Ou8VeA@mail.gmail.com>
+ <20210124132344.7181bd06@archlinux>
+ <1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.e23f1b65-3084-4bd7-abd5-c186f8c4c35c@emailsignatures365.codetwo.com>
+ <1b153bce-a66a-45ee-a5c6-963ea6fb1c82.0d2bd5fa-15cc-4b27-b94e-83614f9e5b38.4d211e5c-af1f-4f0a-9714-ec208ef9be8d@emailsignatures365.codetwo.com>
 From:   Mike Looijmans <mike.looijmans@topic.nl>
 Organization: Topic
-Message-ID: <f5de24be-57d8-afa0-3361-1f9f11b118f8@topic.nl>
-Date:   Mon, 25 Jan 2021 08:53:33 +0100
+Message-ID: <5fcf1954-f257-79d2-970b-de188fca4613@topic.nl>
+Date:   Mon, 25 Jan 2021 08:59:43 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
-In-Reply-To: <20210123153826.0368bf61@archlinux>
+In-Reply-To: <20210124132344.7181bd06@archlinux>
 Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Transfer-Encoding: quoted-printable
 Content-Language: en-US
 X-Originating-IP: [83.128.90.119]
-X-ClientProxiedBy: AM3PR07CA0063.eurprd07.prod.outlook.com
- (2603:10a6:207:4::21) To DB8PR04MB6523.eurprd04.prod.outlook.com
+X-ClientProxiedBy: AM9P191CA0012.EURP191.PROD.OUTLOOK.COM
+ (2603:10a6:20b:21c::17) To DB8PR04MB6523.eurprd04.prod.outlook.com
  (2603:10a6:10:10f::26)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.1.130] (83.128.90.119) by AM3PR07CA0063.eurprd07.prod.outlook.com (2603:10a6:207:4::21) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3805.7 via Frontend Transport; Mon, 25 Jan 2021 07:53:34 +0000
+Received: from [192.168.1.130] (83.128.90.119) by AM9P191CA0012.EURP191.PROD.OUTLOOK.COM (2603:10a6:20b:21c::17) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3784.14 via Frontend Transport; Mon, 25 Jan 2021 07:59:43 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 287b4879-2e84-4e7a-3c47-08d8c1065481
-X-MS-TrafficTypeDiagnostic: DB7PR04MB4249:|DB8PR04MB6731:
-X-Microsoft-Antispam-PRVS: <DB8PR04MB6731F6DAADF0342022229D8096BD0@DB8PR04MB6731.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2201;OLM:2201;
+X-MS-Office365-Filtering-Correlation-Id: adaef805-f10a-4bc7-6db5-08d8c1072fed
+X-MS-TrafficTypeDiagnostic: DBBPR04MB7708:|HE1PR0402MB3499:
+X-Microsoft-Antispam-PRVS: <HE1PR0402MB3499FB01BEFB8CE0D7E30B9996BD0@HE1PR0402MB3499.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;OLM:9508;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam-Untrusted: BCL:0;
-X-Microsoft-Antispam-Message-Info-Original: TUEjABX7CzyVdC4Swjn4ivq8c2Hpvh3tGK6RaMbna9+VJZunzKqcob5ODapTv9vEmUrlfbNXLu8Rp4JQInl6a83LX1SGxxum3SHO8nT3ccCxIta5nrxFJb5GsPWSAVJfH9kttJqKQg7MRRySNE3xX7YMlRz4PjZU4kWA0ahwJJi8wH9c02ANFXdyXwaIDxyTGBtzIXWSwLI+62ZiJeQdFV3LGLxIXcDB4WBe7dDi9GuustUYYbahTqo4hTDglb4SfjPKrrgug90lG3TFLGQmTysDUDnK+6/S0krnZSYt7BxPsStE/6hYsQk9PG7EE8ZKy6iIpU/24tb+zHnrU5PHzo8hqfWHeLytqBRuajoOPeed7Tnm4+IBD9WITrncXQf5Q/gWD2HuToj0Ky/NBSlHlM1/f1f4rLODDSxy1A7b2+flV76zGFH31ECQSR0y64PmoZ9VvaSbDHWdtdprclLUMkp9c1QRXHi3m83WCjb6hk7/dfB0L8bEA+6xdBkmcJfd1gFNoXry8A1GkHKV6GtxW2SA4hH0vsIZPNCZ7GTemZ6eflnduOV/kDIv3UYag/6vKkvmQGbA7w8rgJqWyxDtunKxSV0kYk+GOJy7CogVLIR5o6JL8+JvJffH97xvyPXAQhaOyjpauxU8ImUe20aCU1GGBlj2yRhrTGRl+qcfNS8LaJMnJyJO9/FjEmkogk4G
-X-Forefront-Antispam-Report-Untrusted: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR04MB6523.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(136003)(39830400003)(376002)(366004)(396003)(346002)(2906002)(83170400001)(66556008)(16576012)(44832011)(36756003)(316002)(31696002)(52116002)(8676002)(31686004)(478600001)(4326008)(66476007)(36916002)(956004)(8936002)(53546011)(42882007)(54906003)(5660300002)(966005)(83380400001)(2616005)(6916009)(26005)(16526019)(6486002)(186003)(66946007)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?TlgxQndyOW5RWnp4QTYwSVFHcm5lalE4Mzdkd1BYTEEvQ2lGQ3dKQ3lFOWtu?=
- =?utf-8?B?WDF1dGRXWmUzdFF2LzNKRW43U1FOSDlkaWVTaFhTVHRxbktyaW9UL214RVBD?=
- =?utf-8?B?aisvQjVWajZ5UWVhWTJyWXlyTzZCSSt0dmZsUCtiZURSQmhhbkQ4QXd0U3NX?=
- =?utf-8?B?YmdMSE96azBzaDN4dHV5L1hYTUFyRmczbUtJWGFuQWZWM09URHcrYmllci8x?=
- =?utf-8?B?T0RJV25ZTHQwaEo4c0tEM0Urck4wck4yalR3ZEJibkRZV3lIMUZGZ3dUaVZM?=
- =?utf-8?B?c21IRzQzeklqbXgyVmdVNmNqSHRSelorT1RVam5raENJQkhzbHBTcHNWeFNY?=
- =?utf-8?B?Tm1hR2ZwWlJFUlFQeDZIZ3VWUjlQNWZVT0t5dkd2NUJ4OHJRV0sxS2tJcWg5?=
- =?utf-8?B?WUQrL3B0NzRCK2d2STVCdkFqRW1Xc1FjeXQyRzRjVGZ3ZEg4aWFHWjlPd2Fw?=
- =?utf-8?B?SEhhT2xPWHVZSXl4clZHcTVRdHBhMFQwbEVSZXRrOUpCUENLOFFsVjc3UDFx?=
- =?utf-8?B?cW9hSHdFcFBzeldSQUJVamx6eU9jcFUvd0YrdFlxM1plQml0dzlmQWxsdXVu?=
- =?utf-8?B?aXNQdmdUajgvRFdmS1gwc01iMVNQYk44NytVTTdUR25wZllhVVFjYWdzeVlQ?=
- =?utf-8?B?Ly92VUlrZ0JjMFN0ZGJ4bktLRWdHVmNPQ0JUOXJ4Ukl6NEFKQ09Oc3RZWktm?=
- =?utf-8?B?Q0dDbnRRM0JuakZOK2xEMGk4Tk5kTi8xUEp0ZGNFbGRwSFhaL3h2eVdLaHJK?=
- =?utf-8?B?emNtV0htM2I1UkFMbGpFdmoxbDBybVhRNEdXRU0vVDBPd2N1bGMwdnNmWmYz?=
- =?utf-8?B?SlhvaGFwdy8reU53NmZYb2psd21OdE9lZUVWSGxLZDZQbkJiRVJ5ZGZoUUwv?=
- =?utf-8?B?YjkxVGNrUzdtTUZXUFNCL1FHaFlCQnlnZmphNmR6dW14dVMrM3JJNmNqM3Vp?=
- =?utf-8?B?WTBQQ2FUZkhvT1oyYXk0dU1mdTNQWVEyNDJYeDB3SFVPVXJsV3lVY3BLNThx?=
- =?utf-8?B?N1kwVERCMHdGN1J6ZDhZRzZQWDVVblgvRW5vRzlJZXpTaW1RTnlUdDlReGIv?=
- =?utf-8?B?NzMzSWpWeU85N3EwczNqbDJjUTlPcWZIcW9rQnZLZEJ6WmhkdmhualJDQmhV?=
- =?utf-8?B?WVJOQ2t6aGd3Y0lLNVVKSjEzT3kxekZwaytZUUJOMVhqZXNoUGFpOHc5QkhP?=
- =?utf-8?B?cmxNZGJzNnVicVFVVUFUOFk0MFFIcDhtU1VqeS9ubmpGNUM0aWZsUFoxeHRJ?=
- =?utf-8?B?MkQ1R1BPZ2Yxb3p2aTBwZ3B5NTh1amFtdFUydGwvOG9QN2xKZDU0RHFEVTAz?=
- =?utf-8?Q?yF8qIU52ft9hbMiwPr+0XYptI+rmW0oyqT?=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR04MB4249
-X-CodeTwo-MessageID: 3d71826d-d95d-4f19-916d-0481a67d792d.20210125075338@westeu12-emailsignatures-cloud.codetwo.com
+X-Microsoft-Antispam-Message-Info-Original: cVRf8gVoSA9vjBXR6OWRJ8ZRRfUhR+A4Ooj2kIQeBGFnx3KIlyEww/TJNSedDyD6GpoJvSpMZaIzV4mOm8Bn73mDHBpaB5a7twlY5wqzI5tBs72ndyoRJQkH/Z29nlVj6FBAHnbTFqJn9eRmWeOCf4DuAlTKx7uZv/4vQr0wNI/9CpEqW4EZPP1vNMXtzJs3LXKgwcSlFt/UI1Ww8eABwNghvR0eYGQo/Ze01rNO7EEMRktXoMc+tPz2KEbo2Z9cpLkjm3ocB4adTV/ufGknj2dxK7eY1ml5mcaHH6JN7QZzgIr+2QOpvPoGtxVWTbml3dr7cRHKr1gOEFVIwBvTbOimQADY8sAZYgdAOTRxk78sMu2UD/jQVdIcmrNKQetdMqT78rz1zd0WTE/l6rGxe79PtNlUFaWsUqiWWLOQRAlM7z9XOB0brcLmFz1XEbds76ZdHNCZr4ZJCJ1BUJigc9U8y6sztW5hPV1zGpMZChug/QPdgwq2rLqa+6GdbszDEb+bHhPGcPlDrxBon/VycmbQdqojN2aFGoi0Ka22136VEqSe6ct2stLCsgz/VQF5T3+qXzn+OS+4ywp6ORgKnYrXkGbyTzTMCstjNliNRXo=
+X-Forefront-Antispam-Report-Untrusted: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR04MB6523.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(346002)(376002)(136003)(396003)(39830400003)(366004)(26005)(53546011)(66946007)(316002)(83380400001)(4326008)(5660300002)(66556008)(110136005)(478600001)(8936002)(31686004)(83170400001)(2616005)(956004)(8676002)(54906003)(36916002)(52116002)(186003)(6486002)(2906002)(31696002)(44832011)(16576012)(66476007)(36756003)(16526019)(42882007)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?K2pHa0hvMzlRZmtZQjhZNm4ySVNla1NOTmFiUWhHdjlYWnl2TkJMa3dUTXNj?=
+ =?utf-8?B?RGUwTXZHakhvbk1NYWMyR0tjWlpLekowdTFtN1MvN3ZSbFQrRVRzS2RMVkhw?=
+ =?utf-8?B?ZVZKVFZ3MFluZitHaTlHZ1NyU0EwVFNjM09QT3dRdmg3aWYrN1QzV0g1eUN1?=
+ =?utf-8?B?bkZLSWc0aFpCVDd4YUpaVEQ0d25CZ1phSWl4Tk5jZU15Yy84Qmt3NkF6V1d5?=
+ =?utf-8?B?S1A2aFBGeUhHb1ZtN01qaThGU25GTzk0MkNHbXVqR2E3MjB1TlRHcUxHS25S?=
+ =?utf-8?B?cjkzNW9PQzZDZ0pUYnNleG0xUzNhZW96UGNGaXV1L3BFbzRWdlk5dG5jSkIr?=
+ =?utf-8?B?aWdWOTZnd2d1OXhqdGVmOEpiUW9vSDFSdjZxYzNlVFZCM2IxUnJocU1vdGNl?=
+ =?utf-8?B?WFNLczNGbXBvam5EelkvVHZpYmVmamFHV09LTnpPVjkrak9VVWdmclJkNmty?=
+ =?utf-8?B?SXgyZHpJZlBqc293THJMakoxOVZBY3czMWo0cDlvbDdPSGt0RWt6Z1BEbm5E?=
+ =?utf-8?B?c09INGZ2Q2lVbHd5ck91bmQxT3BlYTg4K1JKU0wwY2pQd1ljY25oZkNuUnBu?=
+ =?utf-8?B?WEViZWFleG1UUll4TlJ6VlNoK1IrY0lEcm50QkZRYUxnZXh1N0NTamdQQXRn?=
+ =?utf-8?B?N29NcStDZ2dXc0dBRmgybDdITEttVytoNE5NU1Aza0JHdGFoMWpoRitOL2tO?=
+ =?utf-8?B?ZHJ0U2FZazlFWkFHVzd3b25hWHM1djZpQm93THJ6eFpGZFpvWmxrL01MQVdv?=
+ =?utf-8?B?UTZhSklnclowV3h2aWVUaHlWSENzTzROanlIdTJjS2pCaXZJSmdqUWhyWTRh?=
+ =?utf-8?B?b2pSQ2xlUkYxbWs0Ym5nTC91VkdXMkNXUk90YjByQWg5a1VJL1pyN2pJY29P?=
+ =?utf-8?B?citFSlJUZWRYSTJUblNmdG10dm5ZMUVwT2ZMdmZURzZUN2tEYTM5cDA3Wkxi?=
+ =?utf-8?B?cGU2TWdScWZwZlUzOVpXNnJTQTBzbzNuejZ6MjBYUXRBRmo2aDhxUGovWGE3?=
+ =?utf-8?B?ZEVvNFFQd0pZWnQrcnZXY3NtL1pJYlVHd2xVbjJBSXRzbG1STUtHVVFuUEFo?=
+ =?utf-8?B?YlNwVlhqQ1FUcGZYR1dReVl2V1hIV3JIdFFwTW5ENC9NUERYbFAydDJvWWJl?=
+ =?utf-8?B?NE9GM3Z6aUdGMEltTEQ2RDdRK01QOUhoQUVxOVduV2FUeG1POGNDSE5tUjR5?=
+ =?utf-8?B?d25jQ0JYTS9lcTVFeFpTeTVGSWs3emFpamFYQ2NoWCtCVmk0RTZXQWJWWDIz?=
+ =?utf-8?B?cWpUUlduUU9JKytJSEN4L2dEMWwyZjdpcEhWc2Nhc3NzeGd3OU5yRTA0c3FW?=
+ =?utf-8?Q?Zt7eZfsu/VC3g7j6n7N5Zg0+DXdw+dVtgO?=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7708
+X-CodeTwo-MessageID: 1995e7e9-5703-4723-98d3-0621aed0a50d.20210125075946@westeu12-emailsignatures-cloud.codetwo.com
 X-CodeTwoProcessed: true
 X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped: HE1EUR01FT058.eop-EUR01.prod.protection.outlook.com
-X-MS-Office365-Filtering-Correlation-Id-Prvs: 45df2851-0905-49c2-25e2-08d8c10650f6
+X-MS-Exchange-Transport-CrossTenantHeadersStripped: VE1EUR01FT056.eop-EUR01.prod.protection.outlook.com
+X-MS-Office365-Filtering-Correlation-Id-Prvs: efab7817-f1c0-4a44-258f-08d8c1072d19
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: OTYsqGaqyTOzexvgHJhCFLdpW1Ap2MeCGcyoASYT6nZzEzbtP4j8GV1c4CX10vwlFr707rCoNChlgUYElPXwT+VRylv5Wg6N7S1BE3N4GiT3wLmU8nZ6KmamOXKtkf1EB/jcg90XfMAoBbgDk/Zq44ZUusJsvFCE0v1KpuO2A+g+2NG8LLf1pMJ34+5dP/DH8CMoCLTKV+lWz7DGafnao4OqvSZ2dffjGqwRYc0xnbzKdcJXy791foT8pvPfhmyhJ/Lf7QLAPzodk+g+n0UMO5+sElN04jXCfOKfIP5skrqWTVFRjbuHYIh21VOp60Cn+MCSwf2TgqBIOoygnC0Uh5KbLGuZJLIxqVaKehDnMMGQSbLojq2NgpyBMNMJ06ZykNX19sm/D2ByerxryUkGO+U6LQaIMmBYCgnuakPiYhAESWVGhrbTxBVOY4kkp5uvegCodPMFQby1NdhRCN4+geebbS1EUKQIrEUjRIrKUkt1smHoXlUy4E67f9wrrGQSsNjoLvQ1Wp3ecJ13k4lV8c7x2fPo9YtxHXdIUTtYPpFin+sqJdiIcEHcorWNB5UV
-X-Forefront-Antispam-Report: CIP:40.68.112.65;CTRY:NL;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:westeu12-emailsignatures-cloud.codetwo.com;PTR:westeu12-emailsignatures-cloud.codetwo.com;CAT:NONE;SFS:(396003)(376002)(136003)(39830400003)(346002)(46966006)(31686004)(956004)(54906003)(356005)(31696002)(83170400001)(44832011)(7596003)(16526019)(7636003)(478600001)(186003)(82310400003)(26005)(16576012)(4326008)(36916002)(83380400001)(966005)(53546011)(316002)(2616005)(36756003)(47076005)(6916009)(15974865002)(336012)(6486002)(5660300002)(42882007)(8676002)(70586007)(70206006)(2906002)(8936002)(43740500002);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: zwS3TF7EvJYP8/iKaqjhQJu7/+OBBhmYv0Ou+OuTYiUq3Z31qeK8gfZ7zjMvJ/IpoeUMEXt1ZopBrQoALeM5yfw8Am2cbA4MTtu7/sLxXwAw9sJtpW8bNRO9ORe+jVd52IdfBzHvGzJBO1e6LZMWDwglfPJj6ORGq+HfzNm0suvs4U4vSt8dH7PEAbeANDqUL/MDrIMrjIjvi8D01TxVnPe2yA4pXrzg9ppL2mRqfCIvMdsNQrV9R9TrP4u/TXu4wIhCqlt0uNvH56ctvwUBUtHTLpoH9r66RPcsCdH7D25sQ5rtVdkHM1dLHdYc7InyToyiVJC+lFN7Me6MQPmVFu46Odha6p52gURA5vlctnoxIbKRVHg+581k4L8ndjMsW8IG/1lHLYPN4yuu9Vr2hrILR5J6oiBxvBQsMw75DqOvYcS1ZidTP9ZYjAZtV9XzzP/8P42V4XMORQz2FGNop9ahrPaxVq9fzqaYlTvTyVFLgOww8tA2WkO8EFFtqK6x2qduSBp9i8zzeAyxVtoNBIaurROK9KAN+nF2ZtpCD7nh4vuPz2TDNsIgepr7E9T6
+X-Forefront-Antispam-Report: CIP:40.68.112.65;CTRY:NL;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:westeu12-emailsignatures-cloud.codetwo.com;PTR:westeu12-emailsignatures-cloud.codetwo.com;CAT:NONE;SFS:(376002)(39830400003)(136003)(346002)(396003)(316002)(82310400003)(32650700002)(6486002)(7596003)(26005)(15974865002)(5660300002)(4326008)(2616005)(42882007)(83380400001)(356005)(44832011)(31686004)(36916002)(16576012)(956004)(110136005)(478600001)(186003)(336012)(16526019)(54906003)(7636003)(31696002)(8936002)(2906002)(70206006)(70586007)(53546011)(8676002)(36756003)(83170400001)(43740500002);DIR:OUT;SFP:1101;
 X-OriginatorOrg: topic.nl
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jan 2021 07:53:40.2436
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jan 2021 07:59:48.2997
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 287b4879-2e84-4e7a-3c47-08d8c1065481
+X-MS-Exchange-CrossTenant-Network-Message-Id: adaef805-f10a-4bc7-6db5-08d8c1072fed
 X-MS-Exchange-CrossTenant-Id: 449607a5-3517-482d-8d16-41dd868cbda3
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=449607a5-3517-482d-8d16-41dd868cbda3;Ip=[40.68.112.65];Helo=[westeu12-emailsignatures-cloud.codetwo.com]
-X-MS-Exchange-CrossTenant-AuthSource: HE1EUR01FT058.eop-EUR01.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: VE1EUR01FT056.eop-EUR01.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6731
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: HE1PR0402MB3499
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -162,129 +170,58 @@ E: mike.looijmans@topicproducts.com=0A=
 W: www.topicproducts.com=0A=
 =0A=
 Please consider the environment before printing this e-mail=0A=
-On 23-01-2021 16:38, Jonathan Cameron wrote:
-> On Thu, 21 Jan 2021 16:56:58 +0100
-> Mike Looijmans <mike.looijmans@topic.nl> wrote:
+On 24-01-2021 14:23, Jonathan Cameron wrote:
+> On Sun, 24 Jan 2021 00:21:13 +0100
+> Linus Walleij <linus.walleij@linaro.org> wrote:
 >
->> This adds the device-tree bindings for the Bosch Sensortec BMI088 IMU,
->> the accelerometer part.
+>> On Sat, Jan 23, 2021 at 4:35 PM Jonathan Cameron <jic23@kernel.org> wrot=
+e:
+>>> [Me]
+>>>> Next, I think it is better to let suspend/resume, i.e. system PM
+>>>> reuse runtime PM since you're implementing that. This is why
+>>>> we invented PM runtime force resume and force suspend.
+>>> Here the driver is turning more off for full suspend than in the
+>>> runtime path.  If that results in significant extra delay then
+>>> it's not appropriate to have that in the runtime suspend path.
+>> I see the point.
 >>
->> Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
-> Just the issue the build bot found.  Otherwise looks good to me.
->
-> Jonathan
->
->> ---
+>> The resume path calls bmi088_accel_enable() which incurs
+>> a 5ms delay.
 >>
->> Changes in v7:
->> Add additionalProperties
->> Change bmi088_accel to bmi088-accel
->> Add interrupt-names and adjust description
+>> The runtime resume path incurs a 1 ms delay.
 >>
->> Changes in v6:
->> I't been almost a year since the last commit, sorry...
->> Fixed the yaml errors
->> Add interrupt, vdd and vddio properties
->>
->> Changes in v5:
->> submit together with driver code as patch series
->>
->> Changes in v2:
->> convert to yaml format
->>
->>   .../bindings/iio/accel/bosch,bmi088.yaml      | 66 +++++++++++++++++++
->>   1 file changed, 66 insertions(+)
->>   create mode 100644 Documentation/devicetree/bindings/iio/accel/bosch,b=
-mi088.yaml
->>
->> diff --git a/Documentation/devicetree/bindings/iio/accel/bosch,bmi088.ya=
-ml b/Documentation/devicetree/bindings/iio/accel/bosch,bmi088.yaml
->> new file mode 100644
->> index 000000000000..db5dbaf80fa2
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/iio/accel/bosch,bmi088.yaml
->> @@ -0,0 +1,66 @@
->> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/iio/accel/bosch,bmi088.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title: Bosch BMI088 IMU accelerometer part
->> +
->> +maintainers:
->> +  - Mike Looijmans <mike.looijmans@topic.nl>
->> +
->> +description: |
->> +  Acceleration part of the IMU sensor with an SPI interface
->> +  Specifications about the sensor can be found at:
->> +    https://www.bosch-sensortec.com/media/boschsensortec/downloads/data=
-sheets/bst-bmi088-ds001.pdf
->> +
->> +properties:
->> +  compatible:
->> +    enum:
->> +      - bosch,bmi088-accel
->> +
->> +  reg:
->> +    maxItems: 1
->> +
->> +  vdd-supply: true
->> +
->> +  vddio-supply: true
->> +
->> +  interrupts:
->> +    minItems: 1
->> +    maxItems: 2
->> +    description: |
->> +      Type should be either IRQ_TYPE_LEVEL_HIGH or IRQ_TYPE_LEVEL_LOW.
->> +      Two configurable interrupt lines exist.
->> +
->> +  interrupt-names:
->> +    description: Specify which interrupt line is in use.
->> +    items:
->> +      enum:
->> +        - INT1
->> +        - INT2
->> +    minItems: 1
->> +    maxItems: 2
-> As per Rob's build bot you need.
->
-> spi-max-frequency: true
->
-> If that's all that comes up and Rob is happy with this I can fix that up =
-whilst
-> applying.  Please try to run the checks suggested in Rob's build bot mess=
-age
-> before submitting binding patches though.
+>> The runtime autosuspend kicks in after 2 ms.
 
-There'll be a v8 it seems, so I've already added it. Seems that I need=20
-to upgrade those definition files every day...
+It's set to 2 seconds as I understand it. This to support reading a=20
+single value every second or so.
 
->> +
->> +required:
->> +  - compatible
->> +  - reg
->> +
->> +additionalProperties: false
->> +
->> +examples:
->> +  - |
->> +    #include <dt-bindings/interrupt-controller/irq.h>
->> +    spi {
->> +      #address-cells =3D <1>;
->> +      #size-cells =3D <0>;
->> +      bmi088-accel@1 {
->> +        compatible =3D "bosch,bmi088-accel";
->> +        reg =3D <1>;
->> +        spi-max-frequency =3D <10000000>;
->> +        interrupt-parent =3D <&gpio6>;
->> +        interrupts =3D <19 IRQ_TYPE_LEVEL_LOW>;
->> +        interrupt-names =3D "INT2";
->> +      };
->> +    };
->> +...
+>>
+>>> Maybe the simplification of not doing the deeper power saving
+>>> mode is worth the extra power cost or extra delay, but
+>>> I'm not yet convinced.
+>> I would personally set the autosuspend to ~20ms and just use
+>> one path and take a hit of 5 ms whenever we go down between
+>> measures if it is a system that is for human interaction, but for
+>> control systems this more complex set-up may be better for
+>> response latencies.
+>>
+>> The current approach may be better tuned to perfection and
+>> we are all perfectionists :D
+>>
+>> I'm just worrying a little about bugs and maintainability.
+> Fully understood.  Though for things like this I like to leave
+> it at the discretion of the driver author as fairly safe they
+> are a user of the device.
+>
+> May well make sense to go with the longer times as you
+> suggest though!  Over to you Mike :)
 
+I've been digging in the datasheet and it's really unclear how you're=20
+supposed to control the two power registers.
+
+I think it's best to just put both control values into on/off state at=20
+the same time. I also prefer the simplicity of Linus' suggestion. I'll=20
+do some testing to see if the device behaves properly.
 
 --=20
 Mike Looijmans

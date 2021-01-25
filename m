@@ -2,155 +2,182 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 054A2302B9F
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Jan 2021 20:31:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE8AE302C5C
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Jan 2021 21:18:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726698AbhAYT31 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 Jan 2021 14:29:27 -0500
-Received: from mail.kernel.org ([198.145.29.99]:50994 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731914AbhAYT3A (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 25 Jan 2021 14:29:00 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 804EC21D79;
-        Mon, 25 Jan 2021 19:28:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1611602900;
-        bh=6On6sfkiGo0BjdpSyslylTwlmNwbsH/AgnljyDfO1uU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=hK8doc1xMi+SLHQlsjEplwak91eoXAIZPbh8xVQS310QxdI2GjVdOw0WrCERovOM1
-         OmS9IJFJbJEfzZWpPU/67naO0kOWsiqxfiUz9GNW5KHaM8uMyOYjL/f+RqTQubHUz+
-         Mb/eg31FW1VdrfLlc+F9Jftb3O/GV/OWQF+fXpdY=
-Date:   Mon, 25 Jan 2021 20:28:17 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        lars@metafoo.de, Michael.Hennerich@analog.com, nuno.sa@analog.com,
-        dragos.bogdan@analog.com, "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH v2 03/12][RESEND] iio: buffer: rework buffer &
- scan_elements dir creation
-Message-ID: <YA8b0az9c0Hha405@kroah.com>
-References: <20210122162529.84978-1-alexandru.ardelean@analog.com>
- <20210122162529.84978-4-alexandru.ardelean@analog.com>
- <20210124181126.07c100a5@archlinux>
+        id S1726763AbhAYURS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 Jan 2021 15:17:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58532 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732201AbhAYTvW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jan 2021 14:51:22 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE192C061A29
+        for <linux-iio@vger.kernel.org>; Mon, 25 Jan 2021 11:48:40 -0800 (PST)
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <afa@pengutronix.de>)
+        id 1l47qf-0006N0-C0; Mon, 25 Jan 2021 20:48:29 +0100
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <afa@pengutronix.de>)
+        id 1l47qb-0007yC-C9; Mon, 25 Jan 2021 20:48:25 +0100
+From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>
+Cc:     kernel@pengutronix.de, Holger Assmann <has@pengutronix.de>,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        linux-iio@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v4] iio: adc: stm32-adc: enable timestamping for non-DMA usage
+Date:   Mon, 25 Jan 2021 20:48:23 +0100
+Message-Id: <20210125194824.30549-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210124181126.07c100a5@archlinux>
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
+X-SA-Exim-Mail-From: afa@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jan 24, 2021 at 06:11:26PM +0000, Jonathan Cameron wrote:
-> On Fri, 22 Jan 2021 18:25:20 +0200
-> Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
-> 
-> > When adding more than one IIO buffer per IIO device, we will need to create
-> > a buffer & scan_elements directory for each buffer.
-> > We also want to move the 'scan_elements' to be a sub-directory of the
-> > 'buffer' folder.
-> > 
-> > The format we want to reach is, for a iio:device0 folder, for 2 buffers
-> > [for example], we have a 'buffer0' and a 'buffer1' subfolder, and each with
-> > it's own 'scan_elements' subfolder.
-> > 
-> > So, for example:
-> >    iio:device0/buffer0
-> >       scan_elements/
-> > 
-> >    iio:device0/buffer1
-> >       scan_elements/
-> > 
-> > The other attributes under 'bufferX' would remain unchanged.
-> > 
-> > However, we would also need to symlink back to the old 'buffer' &
-> > 'scan_elements' folders, to keep backwards compatibility.
-> > 
-> > Doing all these, require that we maintain the kobjects for each 'bufferX'
-> > and 'scan_elements' so that we can symlink them back. We also need to
-> > implement the sysfs_ops for these folders.
-> > 
-> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> 
-> +CC GregKH and Rafael W for feedback on various things inline.
-> 
-> It might be that this is the neatest solution that we can come up with but
-> more eyes would be good!
+For non-DMA usage, we have an easy way to associate a timestamp with a
+sample: iio_pollfunc_store_time stores a timestamp in the primary
+trigger IRQ handler and stm32_adc_trigger_handler runs in the IRQ thread
+to push out the buffer along with the timestamp.
 
-In short, please do NOT do this.
+For this to work, the driver needs to register an IIO_TIMESTAMP channel.
+Do this.
 
-At all.
+For DMA, it's not as easy, because we don't push the buffers out of
+stm32_adc_trigger, but out of stm32_adc_dma_buffer_done, which runs in
+a tasklet scheduled after a DMA completion.
 
-no.
+Preferably, the DMA controller would copy us the timestamp into that buffer
+as well. Until this is implemented, restrict timestamping support to
+only PIO. For low-frequency sampling, PIO is probably good enough.
 
-{sigh}
+Cc: Holger Assmann <has@pengutronix.de>
+Acked-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+v3 -> v4:
+  - descrease buffer size to correct size (Marc)
+v2 -> v3:
+  - explicitly specify alignment (Jonathan)
+  - increase buffer size to hold additional timestamp
+v1 -> v2:
+  - Added comment about timestamping being PIO only (Fabrice)
+  - Added missing DMA resource clean up in error path (Fabrice)
+  - Added Fabrice's Acked-by
+---
+ drivers/iio/adc/stm32-adc.c | 39 +++++++++++++++++++++++++++++--------
+ 1 file changed, 31 insertions(+), 8 deletions(-)
 
-> 
-> Whilst I think this looks fine, I'm less confident than I'd like to be.
-> 
-> Jonathan
-> 
-> > ---
-> >  drivers/iio/industrialio-buffer.c | 195 +++++++++++++++++++++++++++---
-> >  drivers/iio/industrialio-core.c   |  24 ++--
-> >  include/linux/iio/buffer_impl.h   |  14 ++-
-> >  include/linux/iio/iio.h           |   2 +-
-> >  4 files changed, 200 insertions(+), 35 deletions(-)
-> > 
-> > diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-> > index 0412c4fda4c1..0f470d902790 100644
-> > --- a/drivers/iio/industrialio-buffer.c
-> > +++ b/drivers/iio/industrialio-buffer.c
-> > @@ -1175,8 +1175,6 @@ static ssize_t iio_buffer_store_enable(struct device *dev,
-> >  	return (ret < 0) ? ret : len;
-> >  }
-> >  
-> > -static const char * const iio_scan_elements_group_name = "scan_elements";
-> > -
-> >  static ssize_t iio_buffer_show_watermark(struct device *dev,
-> >  					 struct device_attribute *attr,
-> >  					 char *buf)
-> > @@ -1252,6 +1250,124 @@ static struct attribute *iio_buffer_attrs[] = {
-> >  	&dev_attr_data_available.attr,
-> >  };
-> >  
-> > +#define to_dev_attr(_attr) container_of(_attr, struct device_attribute, attr)
-> > +
-> > +static ssize_t iio_buffer_dir_attr_show(struct kobject *kobj,
-> > +					struct attribute *attr,
-> > +					char *buf)
-> > +{
-> > +	struct iio_buffer *buffer = container_of(kobj, struct iio_buffer, buffer_dir);
-> > +	struct device_attribute *dattr;
-> > +
-> > +	dattr = to_dev_attr(attr);
-> > +
-> > +	return dattr->show(&buffer->indio_dev->dev, dattr, buf);
-> > +}
+diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+index c067c994dae2..5ebbd28e45ca 100644
+--- a/drivers/iio/adc/stm32-adc.c
++++ b/drivers/iio/adc/stm32-adc.c
+@@ -177,7 +177,7 @@ struct stm32_adc_cfg {
+  * @offset:		ADC instance register offset in ADC block
+  * @cfg:		compatible configuration data
+  * @completion:		end of single conversion completion
+- * @buffer:		data buffer
++ * @buffer:		data buffer + 8 bytes for timestamp if enabled
+  * @clk:		clock for this adc instance
+  * @irq:		interrupt for this adc instance
+  * @lock:		spinlock
+@@ -200,7 +200,7 @@ struct stm32_adc {
+ 	u32			offset;
+ 	const struct stm32_adc_cfg	*cfg;
+ 	struct completion	completion;
+-	u16			buffer[STM32_ADC_MAX_SQ];
++	u16			buffer[STM32_ADC_MAX_SQ + 4] __aligned(8);
+ 	struct clk		*clk;
+ 	int			irq;
+ 	spinlock_t		lock;		/* interrupt lock */
+@@ -1718,7 +1718,7 @@ static void stm32_adc_chan_init_one(struct iio_dev *indio_dev,
+ 	}
+ }
+ 
+-static int stm32_adc_chan_of_init(struct iio_dev *indio_dev)
++static int stm32_adc_chan_of_init(struct iio_dev *indio_dev, bool timestamping)
+ {
+ 	struct device_node *node = indio_dev->dev.of_node;
+ 	struct stm32_adc *adc = iio_priv(indio_dev);
+@@ -1766,6 +1766,9 @@ static int stm32_adc_chan_of_init(struct iio_dev *indio_dev)
+ 		return -EINVAL;
+ 	}
+ 
++	if (timestamping)
++		num_channels++;
++
+ 	channels = devm_kcalloc(&indio_dev->dev, num_channels,
+ 				sizeof(struct iio_chan_spec), GFP_KERNEL);
+ 	if (!channels)
+@@ -1816,6 +1819,19 @@ static int stm32_adc_chan_of_init(struct iio_dev *indio_dev)
+ 		stm32_adc_smpr_init(adc, channels[i].channel, smp);
+ 	}
+ 
++	if (timestamping) {
++		struct iio_chan_spec *timestamp = &channels[scan_index];
++
++		timestamp->type = IIO_TIMESTAMP;
++		timestamp->channel = -1;
++		timestamp->scan_index = scan_index;
++		timestamp->scan_type.sign = 's';
++		timestamp->scan_type.realbits = 64;
++		timestamp->scan_type.storagebits = 64;
++
++		scan_index++;
++	}
++
+ 	indio_dev->num_channels = scan_index;
+ 	indio_dev->channels = channels;
+ 
+@@ -1875,6 +1891,7 @@ static int stm32_adc_probe(struct platform_device *pdev)
+ 	struct device *dev = &pdev->dev;
+ 	irqreturn_t (*handler)(int irq, void *p) = NULL;
+ 	struct stm32_adc *adc;
++	bool timestamping = false;
+ 	int ret;
+ 
+ 	if (!pdev->dev.of_node)
+@@ -1931,16 +1948,22 @@ static int stm32_adc_probe(struct platform_device *pdev)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = stm32_adc_chan_of_init(indio_dev);
+-	if (ret < 0)
+-		return ret;
+-
+ 	ret = stm32_adc_dma_request(dev, indio_dev);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	if (!adc->dma_chan)
++	if (!adc->dma_chan) {
++		/* For PIO mode only, iio_pollfunc_store_time stores a timestamp
++		 * in the primary trigger IRQ handler and stm32_adc_trigger_handler
++		 * runs in the IRQ thread to push out buffer along with timestamp.
++		 */
+ 		handler = &stm32_adc_trigger_handler;
++		timestamping = true;
++	}
++
++	ret = stm32_adc_chan_of_init(indio_dev, timestamping);
++	if (ret < 0)
++		goto err_dma_disable;
+ 
+ 	ret = iio_triggered_buffer_setup(indio_dev,
+ 					 &iio_pollfunc_store_time, handler,
+-- 
+2.30.0
 
-
-First off, you are dealing with "raw" kobjects here, below a 'struct
-device' in the device tree, which means that suddenly userspace does not
-know what in the world is going on, and you lost events and lots of
-other stuff.
-
-Never do this.  It should not be needed, and you are just trying to
-paper over one odd decision of an api with another one you will be stuck
-with for forever.
-
-Remember the driver core can create subdirectories for your attributes
-automatically if you want them to be in a subdir, but that's it, no
-further than that.  Just name the attribute group.
-
-But yes, you can not create a symlink to there, because (surprise), you
-don't want to!
-
-So please, just rethink your naming, create a totally new naming scheme
-for multiple entities, and just drop the old one (or keep a single
-value if you really want to.)  Don't make it harder than it has to be
-please, you can never remove the "compatible symlinks", just make a new
-api and move on.
-
-thanks,
-
-greg k-h

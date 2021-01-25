@@ -2,850 +2,361 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B0923304834
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Jan 2021 20:23:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2CEA304832
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Jan 2021 20:23:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728354AbhAZFsl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 26 Jan 2021 00:48:41 -0500
-Received: from atl4mhfb01.myregisteredsite.com ([209.17.115.55]:48394 "EHLO
-        atl4mhfb01.myregisteredsite.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730027AbhAYPgx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jan 2021 10:36:53 -0500
-Received: from jax4mhob17.registeredsite.com (jax4mhob17.registeredsite.com [64.69.218.105])
-        by atl4mhfb01.myregisteredsite.com (8.14.4/8.14.4) with ESMTP id 10PF9RZT013005
-        for <linux-iio@vger.kernel.org>; Mon, 25 Jan 2021 10:09:27 -0500
-Received: from mailpod.hostingplatform.com ([10.30.71.205])
-        by jax4mhob17.registeredsite.com (8.14.4/8.14.4) with ESMTP id 10PF7dob082425
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL)
-        for <linux-iio@vger.kernel.org>; Mon, 25 Jan 2021 10:07:40 -0500
-Received: (qmail 3355 invoked by uid 0); 25 Jan 2021 15:07:39 -0000
-X-TCPREMOTEIP: 83.128.90.119
-X-Authenticated-UID: mike@milosoftware.com
-Received: from unknown (HELO phenom.domain?not?set.invalid) (mike@milosoftware.com@83.128.90.119)
-  by 0 with ESMTPA; 25 Jan 2021 15:07:39 -0000
-From:   Mike Looijmans <mike.looijmans@topic.nl>
-To:     linux-iio@vger.kernel.org
-Cc:     Mike Looijmans <mike.looijmans@topic.nl>,
-        Dan Robertson <dan@dlrobertson.com>,
-        =?UTF-8?q?Ga=C3=ABtan=20Andr=C3=A9?= <rvlander@gaetanandre.eu>,
-        Jonathan Bakker <xc-racer2@live.ca>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v8 2/2] iio: accel: Add support for the Bosch-Sensortec BMI088
-Date:   Mon, 25 Jan 2021 16:07:32 +0100
-Message-Id: <20210125150732.23873-2-mike.looijmans@topic.nl>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210125150732.23873-1-mike.looijmans@topic.nl>
-References: <20210125150732.23873-1-mike.looijmans@topic.nl>
+        id S1730331AbhAZFs6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 26 Jan 2021 00:48:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43016 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727074AbhAYSkc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jan 2021 13:40:32 -0500
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32383C061573
+        for <linux-iio@vger.kernel.org>; Mon, 25 Jan 2021 10:39:52 -0800 (PST)
+Received: by mail-pl1-x62e.google.com with SMTP id b17so1670729plz.6
+        for <linux-iio@vger.kernel.org>; Mon, 25 Jan 2021 10:39:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:content-transfer-encoding:in-reply-to:references
+         :subject:from:cc:to:date:message-id:user-agent;
+        bh=HUlXmhLxfFL0uFjwqnaYUzkmMX5jHNTTDGv5mrAagns=;
+        b=VDd+kTVIuDmtmmzrmR2idk0dEsQSoBV+Wvd0o1RUrWFyKmvG9iTjca49MKwbg+9W+y
+         1W6UA6nUqEcRMyQpcJexChxujhcdlgsaHf+4u8wTZRRpZ0CIQHNBFrDyBkqsSDhQZMcp
+         PJbjpiJjNYnNFdL6l16WgMzSaHNW6oxxjN5ks=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:content-transfer-encoding
+         :in-reply-to:references:subject:from:cc:to:date:message-id
+         :user-agent;
+        bh=HUlXmhLxfFL0uFjwqnaYUzkmMX5jHNTTDGv5mrAagns=;
+        b=gYF6VpfQsrdSpTFnkA4Yd7Uq93fFjaaD3+kdhu3h2Vfo/QkX+JjbJvTwUIzgjR1AyU
+         wuiZzn0EqCqNB3Q6Cc15i+20+w8rj1/pe+HicF80GG6bDZu5AQU2KlHXazocgttzQnmP
+         QBBaNFKUIbrEZtI22Ffs9dUBjUP0t8OqEh63YBDV6SI0o6/axB+QTp+GzqmjGSUEw/x4
+         +Cldp8/DwrSPdYvv1sCndQhCSLX7p6szSYQWQeEx+Jd9ODClhlPA/bHDrgyt3Id1JvA5
+         nGDDwreCjn8fQKSQx2B6QiNWbiWUrld4KCY3KW3jjMaDx51xkdRQIkTs0tul2jKtEW3y
+         H6bw==
+X-Gm-Message-State: AOAM531YFYubxuLJM8iN+qkriajU1TLQaZ0J3ujmbUqsffXLdV1fTCaF
+        Ew92Coq283tONA2JaonGNmyPrA==
+X-Google-Smtp-Source: ABdhPJy4wGvq0eaFs5eQTf+pY1PrJ+/m12dTr7V0NP3w2jPDL6TmSkYaRRVmDiKREMpNPDNXdYmnRA==
+X-Received: by 2002:a17:90a:4504:: with SMTP id u4mr1610012pjg.218.1611599991735;
+        Mon, 25 Jan 2021 10:39:51 -0800 (PST)
+Received: from chromium.org ([2620:15c:202:201:1066:b437:97cd:2278])
+        by smtp.gmail.com with ESMTPSA id ga4sm78946pjb.53.2021.01.25.10.39.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Jan 2021 10:39:51 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20210124173820.4528b9c9@archlinux>
+References: <20210122225443.186184-1-swboyd@chromium.org> <20210122225443.186184-4-swboyd@chromium.org> <20210124173820.4528b9c9@archlinux>
+Subject: Re: [PATCH 3/3] iio: proximity: Add a ChromeOS EC MKBP proximity driver
+From:   Stephen Boyd <swboyd@chromium.org>
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Gwendal Grignou <gwendal@chromium.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Date:   Mon, 25 Jan 2021 10:39:49 -0800
+Message-ID: <161159998973.76967.1213998704222248070@swboyd.mtv.corp.google.com>
+User-Agent: alot/0.9.1
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The BMI088 is a combined module with both accelerometer and gyroscope.
-This adds the accelerometer driver support for the SPI interface.
-The gyroscope part is already supported by the BMG160 driver.
+Quoting Jonathan Cameron (2021-01-24 09:38:20)
+> On Fri, 22 Jan 2021 14:54:43 -0800
+> Stephen Boyd <swboyd@chromium.org> wrote:
+>=20
+> > Add support for a ChromeOS EC proximity driver that exposes a "front"
+> > proximity sensor via the IIO subsystem. The EC decides when front
+> > proximity is near and sets an MKBP switch 'EC_MKBP_FRONT_PROXIMITY' to
+> > notify the kernel of proximity. Similarly, when proximity detects
+> > something far away it sets the switch bit to 0. For now this driver
+> > exposes a single sensor, but it could be expanded in the future via more
+> > MKBP bits if desired.
+> >=20
+> > Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> > Cc: Benson Leung <bleung@chromium.org>
+> > Cc: Guenter Roeck <groeck@chromium.org>
+> > Cc: Douglas Anderson <dianders@chromium.org>
+> > Cc: Gwendal Grignou <gwendal@chromium.org>
+> > Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+>=20
+> Hi Stephen,
+>=20
+> Looks more or less fine to me.  My main concern is potential confusion
+> in naming with the cros_ec_prox_light driver that we already have.
+>=20
+> A few other minor bits and bobs inline.
+>=20
 
-Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
+Cool thanks.
 
----
+> > diff --git a/drivers/iio/proximity/Makefile b/drivers/iio/proximity/Mak=
+efile
+> > index 9c1aca1a8b79..b1330dd8e212 100644
+> > --- a/drivers/iio/proximity/Makefile
+> > +++ b/drivers/iio/proximity/Makefile
+> > @@ -5,6 +5,7 @@
+> > =20
+> >  # When adding new entries keep the list in alphabetical order
+> >  obj-$(CONFIG_AS3935)         +=3D as3935.o
+> > +obj-$(CONFIG_CROS_EC_PROXIMITY)      +=3D cros_ec_proximity.o
+> >  obj-$(CONFIG_ISL29501)               +=3D isl29501.o
+> >  obj-$(CONFIG_LIDAR_LITE_V2)  +=3D pulsedlight-lidar-lite-v2.o
+> >  obj-$(CONFIG_MB1232)         +=3D mb1232.o
+> > diff --git a/drivers/iio/proximity/cros_ec_proximity.c b/drivers/iio/pr=
+oximity/cros_ec_proximity.c
+> > new file mode 100644
+> > index 000000000000..a3aef911e3cc
+> > --- /dev/null
+> > +++ b/drivers/iio/proximity/cros_ec_proximity.c
+> > @@ -0,0 +1,252 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/*
+> > + * Driver for cros-ec proximity sensor exposed through MKBP switch
+> > + *
+> > + * Copyright 2021 Google LLC.
+> > + */
+> > +
+> > +#include <linux/module.h>
+> > +#include <linux/mutex.h>
+> > +#include <linux/kernel.h>
+>=20
+> Slight preference for alphabetical order though keeping specific
+> sections separate as done here is fine.
 
-Changes in v8:
-include order asm/ after linux/
-Suspend/resume redesigned, use runtime PM for both cases. Removed the
-pm wrappers and let runtime PM handle power up/down. This also removed
-the need for an internal mutex, thus reducing code further.
+Will fix.
 
-Changes in v7:
-Change bmi088_accel to bmi088-accel
-Order includes alphabetically
-Suspend and disable on remove
-Make bmi088_regmap_spi_{read|write} static
+>=20
+> > +#include <linux/notifier.h>
+> > +#include <linux/of.h>
+> > +#include <linux/platform_device.h>
+> > +#include <linux/slab.h>
+> > +#include <linux/types.h>
+> > +
+> > +#include <linux/platform_data/cros_ec_commands.h>
+> > +#include <linux/platform_data/cros_ec_proto.h>
+> > +
+> > +#include <linux/iio/events.h>
+> > +#include <linux/iio/iio.h>
+> > +#include <linux/iio/sysfs.h>
+> > +
+> > +#include <asm/unaligned.h>
+> > +
+> > +struct cros_ec_proximity_data {
+> > +     struct cros_ec_device *ec;
+> > +     struct iio_dev *indio_dev;
+> > +     struct mutex lock;
+> > +     struct notifier_block notifier;
+> > +     bool enabled;
+> > +};
+> > +
+> > +static const struct iio_event_spec cros_ec_prox_events[] =3D {
+> > +     {
+> > +             .type =3D IIO_EV_TYPE_THRESH,
+> > +             .dir =3D IIO_EV_DIR_EITHER,
+> > +             .mask_separate =3D BIT(IIO_EV_INFO_ENABLE),
+> > +     },
+> > +};
+> > +
+> > +static const struct iio_chan_spec cros_ec_prox_chan_spec[] =3D {
+> > +     {
+> > +             .type =3D IIO_PROXIMITY,
+> > +             .info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW),
+> > +             .event_spec =3D cros_ec_prox_events,
+> > +             .num_event_specs =3D ARRAY_SIZE(cros_ec_prox_events),
+> > +     },
+> > +};
+> > +
+> > +static int cros_ec_proximity_parse_state(const void *data)
+> > +{
+> > +     u32 switches =3D get_unaligned_le32(data);
+> > +
+> > +     return !!(switches & BIT(EC_MKBP_FRONT_PROXIMITY));
+> > +}
+> > +
+> > +static int cros_ec_proximity_query(struct cros_ec_device *ec_dev, int =
+*state)
+> > +{
+> > +     struct ec_params_mkbp_info *params;
+> > +     struct cros_ec_command *msg;
+> > +     int ret;
+> > +
+> > +     msg =3D kzalloc(sizeof(*msg) + max(sizeof(u32), sizeof(*params)),
+> > +                   GFP_KERNEL);
+>=20
+> Given this is known at build time, perhaps better to add it to the=20
+> iio_priv() accessed structure and avoid having to handle allocations
+> separately.
 
-Changes in v6:
-Hope you have good memory - v5 was almost a year ago now
-Remove superfluous *val=0
-Make sample_frequency selection into read_avail list
+Ok.
 
-Changes in v5:
-Add includes and forward defines in header
-BIT(7) instead of 0x80
-Reset already sets defaults, do not set them again
-Remove now unused bmi088_accel_set_bw
-Remove unused AXIS_MAX
-Use MASK define for ODR setting
-Explain buffer use and alignment
-Split bmi088_accel_set_power_state into "on" and "off" parts
-Cosmetic changes to improve readability
+>=20
+> > +     if (!msg)
+> > +             return -ENOMEM;
+[...]
+> > +static int cros_ec_proximity_read_raw(struct iio_dev *indio_dev,
+> > +                        const struct iio_chan_spec *chan, int *val,
+> > +                        int *val2, long mask)
+> > +{
+> > +     struct cros_ec_proximity_data *data =3D iio_priv(indio_dev);
+> > +     struct cros_ec_device *ec =3D data->ec;
+> > +     int ret;
+> > +
+> > +     if (chan->type !=3D IIO_PROXIMITY)
+> > +             return -EINVAL;
+> > +
+> > +     switch (mask) {
+> > +     case IIO_CHAN_INFO_RAW:
+> > +             ret =3D iio_device_claim_direct_mode(indio_dev);
+>=20
+> Normally we only introduce these protections when adding the ability
+> to change the state from direct to buffered (which these prevent).
+> This driver doesn't yet support any other modes so I don't think
+> there is any benefit in having these.
+>=20
+> If the aim is more local protection then should use a local lock
+> as the semantics fo these functions might change in future.
 
-Changes in v4:
-Remove unused #include directives
-Remove unused #defines for event and irq
-Replace (ret < 0) with (ret) for all regmap calls
-Consistent checking of IO errors in probe and init
-Removed #ifdef CONFIG_PM guard
-Use bitops for set_frequency instead of loop with shift
-s/__s16/s16/g
-Remove excess blank lines
-Don't return -EAGAIN in pm_runtime
+Alright I'll drop it.
 
-Changes in v3:
-Processed comments from Jonathan Cameron and Lars-Peter Clausen
-implement runtime PM (tested by code tracing) and sleep
-fix scale and offset factors for accel and temperature and
-return raw values instead of pre-scaled ones
-Use iio_device_{claim,release}_direct_mode
-Remove unused code and structs
-Use a cache-aligned buffer for bulk read
-Configure and enable caching register values
+>=20
+>=20
+> > +             if (ret)
+> > +                     return ret;
+> > +
+> > +             ret =3D cros_ec_proximity_query(ec, val);
+> > +             iio_device_release_direct_mode(indio_dev);
+> > +             if (ret)
+> > +                     return ret;
+> > +
+> > +             return IIO_VAL_INT;
+> > +     }
+> > +
+> > +     return -EINVAL;
+> > +}
+> > +
+> > +static int cros_ec_proximity_read_event_config(struct iio_dev *indio_d=
+ev,
+> > +                                 const struct iio_chan_spec *chan,
+> > +                                 enum iio_event_type type,
+> > +                                 enum iio_event_direction dir)
+> > +{
+> > +     struct cros_ec_proximity_data *data =3D iio_priv(indio_dev);
+> > +
+> > +     return data->enabled;
+> > +}
+> > +
+> > +static int cros_ec_proximity_write_event_config(struct iio_dev *indio_=
+dev,
+> > +                                  const struct iio_chan_spec *chan,
+> > +                                  enum iio_event_type type,
+> > +                                  enum iio_event_direction dir, int st=
+ate)
+> > +{
+> > +     struct cros_ec_proximity_data *data =3D iio_priv(indio_dev);
+> > +
+> > +     mutex_lock(&data->lock);
+> > +     data->enabled =3D state;
+> > +     mutex_unlock(&data->lock);
+> > +
+> > +     return 0;
+> > +}
+> > +
+> > +static const struct iio_info cros_ec_proximity_info =3D {
+> > +     .read_raw =3D cros_ec_proximity_read_raw,
+> > +     .read_event_config =3D cros_ec_proximity_read_event_config,
+> > +     .write_event_config =3D cros_ec_proximity_write_event_config,
+> > +};
+> > +
+> > +static int cros_ec_proximity_probe(struct platform_device *pdev)
+> > +{
+> > +     struct device *dev =3D &pdev->dev;
+> > +     struct cros_ec_device *ec =3D dev_get_drvdata(dev->parent);
+> > +     struct iio_dev *indio_dev;
+> > +     struct cros_ec_proximity_data *data;
+> > +     int ret;
+> > +
+> > +     indio_dev =3D devm_iio_device_alloc(dev, sizeof(*data));
+> > +     if (!indio_dev)
+> > +             return -ENOMEM;
+> > +
+> > +     data =3D iio_priv(indio_dev);
+> > +     data->ec =3D ec;
+> > +     data->indio_dev =3D indio_dev;
+> > +     mutex_init(&data->lock);
+> > +     platform_set_drvdata(pdev, data);
+> > +
+> > +     indio_dev->name =3D "cros_ec_proximity";
+> > +     indio_dev->dev.parent =3D dev;
+> > +     indio_dev->info =3D &cros_ec_proximity_info;
+> > +     indio_dev->modes =3D INDIO_DIRECT_MODE;
+> > +     indio_dev->channels =3D cros_ec_prox_chan_spec;
+> > +     indio_dev->num_channels =3D ARRAY_SIZE(cros_ec_prox_chan_spec);
+> > +
+> > +     ret =3D devm_iio_device_register(dev, indio_dev);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     data->notifier.notifier_call =3D cros_ec_proximity_notify;
+> > +     ret =3D blocking_notifier_chain_register(&ec->event_notifier,
+> > +                                            &data->notifier);
+> > +     if (ret)
+> > +             dev_err(dev, "cannot register notifier: %d\n", ret);
+> > +
+> > +     return ret;
+> > +}
+> > +
+> > +static int cros_ec_proximity_remove(struct platform_device *pdev)
+> > +{
+> > +     struct cros_ec_proximity_data *data =3D platform_get_drvdata(pdev=
+);
+> > +     struct cros_ec_device *ec =3D data->ec;
+> > +
+> > +     blocking_notifier_chain_unregister(&ec->event_notifier,
+> > +                                        &data->notifier);
+> > +
+> > +     return 0;
+> > +}
+> > +
+> > +#ifdef CONFIG_OF
+>=20
+> As a general rule, we are trying to clear out protections on CONFIG_OF etc
+> and use of of_match_ptr() on the basis they don't really gain us anything
+> and prevent use of some other firmware types.  Here I guess you know what
+> your firmware looks like, but I'm still keen to drop it in the interests
+> of there being fewer places to copy it from.
+>=20
+> It may be a good idea to give this a more specific name as well given
+> we already have cros-ec-prox as a platform device id from
+> the cros_ec_light_prox driver.
 
-Changes in v2:
-Remove unused typedefs and variables
-Fix error return when iio_device_register fails
+Alright. I renamed it to cros_ec_mkbp_proximity throughout this driver.
+I'm concerned about dropping CONFIG_OF because of_match_ptr() and
+CONFIG_OF=3Dn makes it unused but I suppose that will be OK as long as
+compilation passes.
 
- drivers/iio/accel/Kconfig             |  18 +
- drivers/iio/accel/Makefile            |   2 +
- drivers/iio/accel/bmi088-accel-core.c | 570 ++++++++++++++++++++++++++
- drivers/iio/accel/bmi088-accel-spi.c  |  83 ++++
- drivers/iio/accel/bmi088-accel.h      |  18 +
- 5 files changed, 691 insertions(+)
- create mode 100644 drivers/iio/accel/bmi088-accel-core.c
- create mode 100644 drivers/iio/accel/bmi088-accel-spi.c
- create mode 100644 drivers/iio/accel/bmi088-accel.h
-
-diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
-index 2e0c62c39155..cceda3cecbcf 100644
---- a/drivers/iio/accel/Kconfig
-+++ b/drivers/iio/accel/Kconfig
-@@ -157,6 +157,24 @@ config BMC150_ACCEL_SPI
- 	tristate
- 	select REGMAP_SPI
- 
-+config BMI088_ACCEL
-+	tristate "Bosch BMI088 Accelerometer Driver"
-+	depends on SPI
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
-+	select REGMAP
-+	select BMI088_ACCEL_SPI
-+	help
-+	  Say yes here to build support for the Bosch BMI088 accelerometer.
-+
-+	  This is a combo module with both accelerometer and gyroscope. This
-+	  driver only implements the accelerometer part, which has its own
-+	  address and register map. BMG160 provides the gyroscope driver.
-+
-+config BMI088_ACCEL_SPI
-+	tristate
-+	select REGMAP_SPI
-+
- config DA280
- 	tristate "MiraMEMS DA280 3-axis 14-bit digital accelerometer driver"
- 	depends on I2C
-diff --git a/drivers/iio/accel/Makefile b/drivers/iio/accel/Makefile
-index 4f6c1ebe13b0..32cd1342a31a 100644
---- a/drivers/iio/accel/Makefile
-+++ b/drivers/iio/accel/Makefile
-@@ -20,6 +20,8 @@ obj-$(CONFIG_BMA400_SPI) += bma400_spi.o
- obj-$(CONFIG_BMC150_ACCEL) += bmc150-accel-core.o
- obj-$(CONFIG_BMC150_ACCEL_I2C) += bmc150-accel-i2c.o
- obj-$(CONFIG_BMC150_ACCEL_SPI) += bmc150-accel-spi.o
-+obj-$(CONFIG_BMI088_ACCEL) += bmi088-accel-core.o
-+obj-$(CONFIG_BMI088_ACCEL_SPI) += bmi088-accel-spi.o
- obj-$(CONFIG_DA280)	+= da280.o
- obj-$(CONFIG_DA311)	+= da311.o
- obj-$(CONFIG_DMARD06)	+= dmard06.o
-diff --git a/drivers/iio/accel/bmi088-accel-core.c b/drivers/iio/accel/bmi088-accel-core.c
-new file mode 100644
-index 000000000000..f86010a3cda3
---- /dev/null
-+++ b/drivers/iio/accel/bmi088-accel-core.c
-@@ -0,0 +1,570 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * 3-axis accelerometer driver supporting following Bosch-Sensortec chips:
-+ *  - BMI088
-+ *
-+ * Copyright (c) 2018-2021, Topic Embedded Products
-+ */
-+
-+#include <linux/acpi.h>
-+#include <linux/delay.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/sysfs.h>
-+#include <linux/interrupt.h>
-+#include <linux/module.h>
-+#include <linux/pm.h>
-+#include <linux/pm_runtime.h>
-+#include <linux/regmap.h>
-+#include <linux/slab.h>
-+#include <asm/unaligned.h>
-+
-+#include "bmi088-accel.h"
-+
-+#define BMI088_ACCEL_REG_CHIP_ID			0x00
-+#define BMI088_ACCEL_REG_ERROR				0x02
-+
-+#define BMI088_ACCEL_REG_INT_STATUS			0x1D
-+#define BMI088_ACCEL_INT_STATUS_BIT_DRDY		BIT(7)
-+
-+#define BMI088_ACCEL_REG_RESET				0x7E
-+#define BMI088_ACCEL_RESET_VAL				0xB6
-+
-+#define BMI088_ACCEL_REG_PWR_CTRL			0x7D
-+#define BMI088_ACCEL_REG_PWR_CONF			0x7C
-+
-+#define BMI088_ACCEL_REG_INT_MAP_DATA			0x58
-+#define BMI088_ACCEL_INT_MAP_DATA_BIT_INT1_DRDY		BIT(2)
-+#define BMI088_ACCEL_INT_MAP_DATA_BIT_INT2_FWM		BIT(5)
-+
-+#define BMI088_ACCEL_REG_INT1_IO_CONF			0x53
-+#define BMI088_ACCEL_INT1_IO_CONF_BIT_ENABLE_OUT	BIT(3)
-+#define BMI088_ACCEL_INT1_IO_CONF_BIT_LVL		BIT(1)
-+
-+#define BMI088_ACCEL_REG_INT2_IO_CONF			0x54
-+#define BMI088_ACCEL_INT2_IO_CONF_BIT_ENABLE_OUT	BIT(3)
-+#define BMI088_ACCEL_INT2_IO_CONF_BIT_LVL		BIT(1)
-+
-+#define BMI088_ACCEL_REG_ACC_CONF			0x40
-+#define BMI088_ACCEL_MODE_ODR_MASK			0x0f
-+
-+#define BMI088_ACCEL_REG_ACC_RANGE			0x41
-+#define BMI088_ACCEL_RANGE_3G				0x00
-+#define BMI088_ACCEL_RANGE_6G				0x01
-+#define BMI088_ACCEL_RANGE_12G				0x02
-+#define BMI088_ACCEL_RANGE_24G				0x03
-+
-+#define BMI088_ACCEL_REG_TEMP				0x22
-+#define BMI088_ACCEL_REG_TEMP_SHIFT			5
-+#define BMI088_ACCEL_TEMP_UNIT				125
-+#define BMI088_ACCEL_TEMP_OFFSET			23000
-+
-+#define BMI088_ACCEL_REG_XOUT_L				0x12
-+#define BMI088_ACCEL_AXIS_TO_REG(axis) \
-+	(BMI088_ACCEL_REG_XOUT_L + (axis * 2))
-+
-+#define BMI088_ACCEL_MAX_STARTUP_TIME_US		1000
-+#define BMI088_AUTO_SUSPEND_DELAY_MS			2000
-+
-+#define BMI088_ACCEL_REG_FIFO_STATUS			0x0E
-+#define BMI088_ACCEL_REG_FIFO_CONFIG0			0x48
-+#define BMI088_ACCEL_REG_FIFO_CONFIG1			0x49
-+#define BMI088_ACCEL_REG_FIFO_DATA			0x3F
-+#define BMI088_ACCEL_FIFO_LENGTH			100
-+
-+#define BMI088_ACCEL_FIFO_MODE_FIFO			0x40
-+#define BMI088_ACCEL_FIFO_MODE_STREAM			0x80
-+
-+enum bmi088_accel_axis {
-+	AXIS_X,
-+	AXIS_Y,
-+	AXIS_Z,
-+};
-+
-+static const int bmi088_sample_freqs[] = {
-+	12, 500000,
-+	25, 0,
-+	50, 0,
-+	100, 0,
-+	200, 0,
-+	400, 0,
-+	800, 0,
-+	1600, 0,
-+};
-+
-+/* Available OSR (over sampling rate) sets the 3dB cut-off frequency */
-+enum bmi088_osr_modes {
-+	BMI088_ACCEL_MODE_OSR_NORMAL = 0xA,
-+	BMI088_ACCEL_MODE_OSR_2 = 0x9,
-+	BMI088_ACCEL_MODE_OSR_4 = 0x8,
-+};
-+
-+/* Available ODR (output data rates) in Hz */
-+enum bmi088_odr_modes {
-+	BMI088_ACCEL_MODE_ODR_12_5 = 0x5,
-+	BMI088_ACCEL_MODE_ODR_25 = 0x6,
-+	BMI088_ACCEL_MODE_ODR_50 = 0x7,
-+	BMI088_ACCEL_MODE_ODR_100 = 0x8,
-+	BMI088_ACCEL_MODE_ODR_200 = 0x9,
-+	BMI088_ACCEL_MODE_ODR_400 = 0xa,
-+	BMI088_ACCEL_MODE_ODR_800 = 0xb,
-+	BMI088_ACCEL_MODE_ODR_1600 = 0xc,
-+};
-+
-+struct bmi088_scale_info {
-+	int scale;
-+	u8 reg_range;
-+};
-+
-+struct bmi088_accel_chip_info {
-+	const char *name;
-+	u8 chip_id;
-+	const struct iio_chan_spec *channels;
-+	int num_channels;
-+};
-+
-+struct bmi088_accel_data {
-+	struct regmap *regmap;
-+	const struct bmi088_accel_chip_info *chip_info;
-+	u8 buffer[2] ____cacheline_aligned; /* shared DMA safe buffer */
-+};
-+
-+static const struct regmap_range bmi088_volatile_ranges[] = {
-+	/* All registers below 0x40 are volatile, except the CHIP ID. */
-+	regmap_reg_range(BMI088_ACCEL_REG_ERROR, 0x3f),
-+	/* Mark the RESET as volatile too, it is self-clearing */
-+	regmap_reg_range(BMI088_ACCEL_REG_RESET, BMI088_ACCEL_REG_RESET),
-+};
-+
-+static const struct regmap_access_table bmi088_volatile_table = {
-+	.yes_ranges	= bmi088_volatile_ranges,
-+	.n_yes_ranges	= ARRAY_SIZE(bmi088_volatile_ranges),
-+};
-+
-+const struct regmap_config bmi088_regmap_conf = {
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+	.max_register = 0x7E,
-+	.volatile_table = &bmi088_volatile_table,
-+	.cache_type = REGCACHE_RBTREE,
-+};
-+EXPORT_SYMBOL_GPL(bmi088_regmap_conf);
-+
-+static int bmi088_accel_power_up(struct bmi088_accel_data *data)
-+{
-+	struct device *dev = regmap_get_device(data->regmap);
-+	int ret;
-+
-+	/* Enable accelerometer and temperature sensor */
-+	ret = regmap_write(data->regmap, BMI088_ACCEL_REG_PWR_CTRL, 0x4);
-+	if (ret)
-+		return ret;
-+
-+	/* Datasheet recommends to wait at least 5ms before communication */
-+	usleep_range(5000, 6000);
-+
-+	/* Disable suspend mode */
-+	ret = regmap_write(data->regmap, BMI088_ACCEL_REG_PWR_CONF, 0x0);
-+	if (ret)
-+		return ret;
-+
-+	/* Recommended at least 1ms before further communication */
-+	usleep_range(1000, 1200);
-+
-+	return 0;
-+}
-+
-+static int bmi088_accel_power_down(struct bmi088_accel_data *data)
-+{
-+	struct device *dev = regmap_get_device(data->regmap);
-+	int ret;
-+
-+	/* Enable suspend mode */
-+	ret = regmap_write(data->regmap, BMI088_ACCEL_REG_PWR_CONF, 0x3);
-+	if (ret)
-+		return ret;
-+
-+	/* Recommended at least 1ms before further communication */
-+	usleep_range(1000, 1200);
-+
-+	/* Disable accelerometer and temperature sensor */
-+	ret = regmap_write(data->regmap, BMI088_ACCEL_REG_PWR_CTRL, 0x0);
-+	if (ret)
-+		return ret;
-+
-+	/* Datasheet recommends to wait at least 5ms before communication */
-+	usleep_range(5000, 6000);
-+
-+	return 0;
-+}
-+
-+static int bmi088_accel_get_sample_freq(struct bmi088_accel_data *data,
-+					int *val, int *val2)
-+{
-+	unsigned int value;
-+	int ret;
-+
-+	ret = regmap_read(data->regmap, BMI088_ACCEL_REG_ACC_CONF,
-+			  &value);
-+	if (ret)
-+		return ret;
-+
-+	value &= BMI088_ACCEL_MODE_ODR_MASK;
-+	value -= BMI088_ACCEL_MODE_ODR_12_5;
-+	value <<= 1;
-+
-+	if (value >= ARRAY_SIZE(bmi088_sample_freqs) - 1)
-+		return -EINVAL;
-+
-+	*val = bmi088_sample_freqs[value];
-+	*val2 = bmi088_sample_freqs[value + 1];
-+
-+	return IIO_VAL_INT_PLUS_MICRO;
-+}
-+
-+static int bmi088_accel_set_sample_freq(struct bmi088_accel_data *data, int val)
-+{
-+	unsigned int regval;
-+	int index = 0;
-+
-+	while (index < ARRAY_SIZE(bmi088_sample_freqs) &&
-+	       bmi088_sample_freqs[index] != val)
-+		index += 2;
-+
-+	if (index >= ARRAY_SIZE(bmi088_sample_freqs))
-+		return -EINVAL;
-+
-+	regval = (index >> 1) + BMI088_ACCEL_MODE_ODR_12_5;
-+
-+	return regmap_update_bits(data->regmap, BMI088_ACCEL_REG_ACC_CONF,
-+				  BMI088_ACCEL_MODE_ODR_MASK, regval);
-+}
-+
-+static int bmi088_accel_get_temp(struct bmi088_accel_data *data, int *val)
-+{
-+	int ret;
-+	s16 temp;
-+
-+	ret = regmap_bulk_read(data->regmap, BMI088_ACCEL_REG_TEMP,
-+			       &data->buffer, sizeof(__be16));
-+	if (ret)
-+		return ret;
-+
-+	/* data->buffer is cacheline aligned */
-+	temp = be16_to_cpu(*(__be16 *)data->buffer);
-+
-+	*val = temp >> BMI088_ACCEL_REG_TEMP_SHIFT;
-+
-+	return IIO_VAL_INT;
-+}
-+
-+static int bmi088_accel_get_axis(struct bmi088_accel_data *data,
-+				 struct iio_chan_spec const *chan,
-+				 int *val)
-+{
-+	int ret;
-+	s16 raw_val;
-+
-+	ret = regmap_bulk_read(data->regmap,
-+			       BMI088_ACCEL_AXIS_TO_REG(chan->scan_index),
-+			       data->buffer, sizeof(__le16));
-+	if (ret)
-+		return ret;
-+
-+	raw_val = le16_to_cpu(*(__le16 *)data->buffer);
-+	*val = raw_val;
-+
-+	return IIO_VAL_INT;
-+}
-+
-+static int bmi088_accel_read_raw(struct iio_dev *indio_dev,
-+				 struct iio_chan_spec const *chan,
-+				 int *val, int *val2, long mask)
-+{
-+	struct bmi088_accel_data *data = iio_priv(indio_dev);
-+	struct device *dev = regmap_get_device(data->regmap);
-+	int ret;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		switch (chan->type) {
-+		case IIO_TEMP:
-+			pm_runtime_get_sync(dev);
-+			ret = bmi088_accel_get_temp(data, val);
-+			goto out_read_raw_pm_put;
-+		case IIO_ACCEL:
-+			pm_runtime_get_sync(dev);
-+			ret = iio_device_claim_direct_mode(indio_dev);
-+			if (ret)
-+				goto out_read_raw_pm_put;
-+
-+			ret = bmi088_accel_get_axis(data, chan, val);
-+			iio_device_release_direct_mode(indio_dev);
-+			if (!ret)
-+				ret = IIO_VAL_INT;
-+
-+			goto out_read_raw_pm_put;
-+		default:
-+			return -EINVAL;
-+		}
-+	case IIO_CHAN_INFO_OFFSET:
-+		switch (chan->type) {
-+		case IIO_TEMP:
-+			/* Offset applies before scale */
-+			*val = BMI088_ACCEL_TEMP_OFFSET/BMI088_ACCEL_TEMP_UNIT;
-+			return IIO_VAL_INT;
-+		default:
-+			return -EINVAL;
-+		}
-+	case IIO_CHAN_INFO_SCALE:
-+		switch (chan->type) {
-+		case IIO_TEMP:
-+			/* 0.125 degrees per LSB */
-+			*val = BMI088_ACCEL_TEMP_UNIT;
-+			return IIO_VAL_INT;
-+		case IIO_ACCEL:
-+			pm_runtime_get_sync(dev);
-+			ret = regmap_read(data->regmap,
-+					  BMI088_ACCEL_REG_ACC_RANGE, val);
-+			if (ret)
-+				goto out_read_raw_pm_put;
-+
-+			*val2 = 15 - (*val & 0x3);
-+			*val = 3 * 980;
-+			ret = IIO_VAL_FRACTIONAL_LOG2;
-+
-+			goto out_read_raw_pm_put;
-+		default:
-+			return -EINVAL;
-+		}
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		pm_runtime_get_sync(dev);
-+		ret = bmi088_accel_get_sample_freq(data, val, val2);
-+		goto out_read_raw_pm_put;
-+	default:
-+		break;
-+	}
-+
-+	return -EINVAL;
-+
-+out_read_raw_pm_put:
-+	pm_runtime_mark_last_busy(dev);
-+	pm_runtime_put_autosuspend(dev);
-+
-+	return ret;
-+}
-+
-+static int bmi088_accel_read_avail(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan,
-+			     const int **vals, int *type, int *length,
-+			     long mask)
-+{
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		*type = IIO_VAL_INT_PLUS_MICRO;
-+		*vals = bmi088_sample_freqs;
-+		*length = ARRAY_SIZE(bmi088_sample_freqs);
-+		return IIO_AVAIL_LIST;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int bmi088_accel_write_raw(struct iio_dev *indio_dev,
-+				  struct iio_chan_spec const *chan,
-+				  int val, int val2, long mask)
-+{
-+	struct bmi088_accel_data *data = iio_priv(indio_dev);
-+	struct device *dev = regmap_get_device(data->regmap);
-+	int ret;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		pm_runtime_get_sync(dev);
-+		ret = bmi088_accel_set_sample_freq(data, val);
-+		pm_runtime_mark_last_busy(dev);
-+		pm_runtime_put_autosuspend(dev);
-+		return ret;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+#define BMI088_ACCEL_CHANNEL(_axis) { \
-+	.type = IIO_ACCEL, \
-+	.modified = 1, \
-+	.channel2 = IIO_MOD_##_axis, \
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
-+	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) | \
-+				BIT(IIO_CHAN_INFO_SAMP_FREQ), \
-+	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SAMP_FREQ), \
-+	.scan_index = AXIS_##_axis, \
-+}
-+
-+static const struct iio_chan_spec bmi088_accel_channels[] = {
-+	{
-+		.type = IIO_TEMP,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+				      BIT(IIO_CHAN_INFO_SCALE) |
-+				      BIT(IIO_CHAN_INFO_OFFSET),
-+		.scan_index = -1,
-+	},
-+	BMI088_ACCEL_CHANNEL(X),
-+	BMI088_ACCEL_CHANNEL(Y),
-+	BMI088_ACCEL_CHANNEL(Z),
-+	IIO_CHAN_SOFT_TIMESTAMP(3),
-+};
-+
-+static const struct bmi088_accel_chip_info bmi088_accel_chip_info_tbl[] = {
-+	[0] = {
-+		.name = "bmi088a",
-+		.chip_id = 0x1E,
-+		.channels = bmi088_accel_channels,
-+		.num_channels = ARRAY_SIZE(bmi088_accel_channels),
-+	},
-+};
-+
-+static const struct iio_info bmi088_accel_info = {
-+	.read_raw	= bmi088_accel_read_raw,
-+	.write_raw	= bmi088_accel_write_raw,
-+	.read_avail	= bmi088_accel_read_avail,
-+};
-+
-+static const unsigned long bmi088_accel_scan_masks[] = {
-+	BIT(AXIS_X) | BIT(AXIS_Y) | BIT(AXIS_Z),
-+	0
-+};
-+
-+static int bmi088_accel_chip_init(struct bmi088_accel_data *data)
-+{
-+	struct device *dev = regmap_get_device(data->regmap);
-+	int ret, i;
-+	unsigned int val;
-+
-+	/* Do a dummy read to enable SPI interface, won't harm I2C */
-+	regmap_read(data->regmap, BMI088_ACCEL_REG_INT_STATUS, &val);
-+
-+	/*
-+	 * Reset chip to get it in a known good state. A delay of 1ms after
-+	 * reset is required according to the data sheet
-+	 */
-+	ret = regmap_write(data->regmap, BMI088_ACCEL_REG_RESET,
-+			   BMI088_ACCEL_RESET_VAL);
-+	if (ret)
-+		return ret;
-+
-+	usleep_range(1000, 2000);
-+
-+	/* Do a dummy read again after a reset to enable the SPI interface */
-+	regmap_read(data->regmap, BMI088_ACCEL_REG_INT_STATUS, &val);
-+
-+	/* Read chip ID */
-+	ret = regmap_read(data->regmap, BMI088_ACCEL_REG_CHIP_ID, &val);
-+	if (ret) {
-+		dev_err(dev, "Error: Reading chip id\n");
-+		return ret;
-+	}
-+
-+	/* Validate chip ID */
-+	for (i = 0; i < ARRAY_SIZE(bmi088_accel_chip_info_tbl); i++) {
-+		if (bmi088_accel_chip_info_tbl[i].chip_id == val) {
-+			data->chip_info = &bmi088_accel_chip_info_tbl[i];
-+			break;
-+		}
-+	}
-+	if (i == ARRAY_SIZE(bmi088_accel_chip_info_tbl)) {
-+		dev_err(dev, "Invalid chip %x\n", val);
-+		return -ENODEV;
-+	}
-+
-+	return 0;
-+}
-+
-+int bmi088_accel_core_probe(struct device *dev, struct regmap *regmap,
-+	int irq, const char *name, bool block_supported)
-+{
-+	struct bmi088_accel_data *data;
-+	struct iio_dev *indio_dev;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	data = iio_priv(indio_dev);
-+	dev_set_drvdata(dev, indio_dev);
-+
-+	data->regmap = regmap;
-+
-+	ret = bmi088_accel_chip_init(data);
-+	if (ret)
-+		return ret;
-+
-+	indio_dev->dev.parent = dev;
-+	indio_dev->channels = data->chip_info->channels;
-+	indio_dev->num_channels = data->chip_info->num_channels;
-+	indio_dev->name = name ? name : data->chip_info->name;
-+	indio_dev->available_scan_masks = bmi088_accel_scan_masks;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->info = &bmi088_accel_info;
-+
-+	/* Enable runtime PM */
-+	pm_runtime_get_noresume(dev);
-+	pm_runtime_set_suspended(dev);
-+	pm_runtime_enable(dev);
-+	/* We need ~6ms to startup, so set the delay to 6 seconds */
-+	pm_runtime_set_autosuspend_delay(dev, 6000);
-+	pm_runtime_use_autosuspend(dev);
-+	pm_runtime_put(dev);
-+
-+	ret = iio_device_register(indio_dev);
-+	if (ret)
-+		dev_err(dev, "Unable to register iio device\n");
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(bmi088_accel_core_probe);
-+
-+
-+int bmi088_accel_core_remove(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct bmi088_accel_data *data = iio_priv(indio_dev);
-+
-+	iio_device_unregister(indio_dev);
-+
-+	pm_runtime_disable(dev);
-+	pm_runtime_set_suspended(dev);
-+	pm_runtime_put_noidle(dev);
-+	bmi088_accel_power_down(data);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(bmi088_accel_core_remove);
-+
-+static int __maybe_unused bmi088_accel_runtime_suspend(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct bmi088_accel_data *data = iio_priv(indio_dev);
-+
-+	return bmi088_accel_power_down(data);
-+}
-+
-+static int __maybe_unused bmi088_accel_runtime_resume(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct bmi088_accel_data *data = iio_priv(indio_dev);
-+
-+	return bmi088_accel_power_up(data);
-+}
-+
-+const struct dev_pm_ops bmi088_accel_pm_ops = {
-+	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
-+				pm_runtime_force_resume)
-+	SET_RUNTIME_PM_OPS(bmi088_accel_runtime_suspend,
-+			   bmi088_accel_runtime_resume, NULL)
-+};
-+EXPORT_SYMBOL_GPL(bmi088_accel_pm_ops);
-+
-+MODULE_AUTHOR("Niek van Agt <niek.van.agt@topicproducts.com>");
-+MODULE_LICENSE("GPL v2");
-+MODULE_DESCRIPTION("BMI088 accelerometer driver (core)");
-diff --git a/drivers/iio/accel/bmi088-accel-spi.c b/drivers/iio/accel/bmi088-accel-spi.c
-new file mode 100644
-index 000000000000..dd1e3f6cf211
---- /dev/null
-+++ b/drivers/iio/accel/bmi088-accel-spi.c
-@@ -0,0 +1,83 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * 3-axis accelerometer driver supporting following Bosch-Sensortec chips:
-+ *  - BMI088
-+ *
-+ * Copyright (c) 2018-2020, Topic Embedded Products
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/regmap.h>
-+#include <linux/slab.h>
-+#include <linux/spi/spi.h>
-+
-+#include "bmi088-accel.h"
-+
-+static int bmi088_regmap_spi_write(void *context, const void *data, size_t count)
-+{
-+	struct spi_device *spi = context;
-+
-+	/* Write register is same as generic SPI */
-+	return spi_write(spi, data, count);
-+}
-+
-+static int bmi088_regmap_spi_read(void *context, const void *reg,
-+				size_t reg_size, void *val, size_t val_size)
-+{
-+	struct spi_device *spi = context;
-+	u8 addr[2];
-+
-+	addr[0] = *(u8 *)reg;
-+	addr[0] |= BIT(7); /* Set RW = '1' */
-+	addr[1] = 0; /* Read requires a dummy byte transfer */
-+
-+	return spi_write_then_read(spi, addr, sizeof(addr), val, val_size);
-+}
-+
-+static struct regmap_bus bmi088_regmap_bus = {
-+	.write = bmi088_regmap_spi_write,
-+	.read = bmi088_regmap_spi_read,
-+};
-+
-+static int bmi088_accel_probe(struct spi_device *spi)
-+{
-+	struct regmap *regmap;
-+	const struct spi_device_id *id = spi_get_device_id(spi);
-+
-+	regmap = devm_regmap_init(&spi->dev, &bmi088_regmap_bus,
-+			spi, &bmi088_regmap_conf);
-+
-+	if (IS_ERR(regmap)) {
-+		dev_err(&spi->dev, "Failed to initialize spi regmap\n");
-+		return PTR_ERR(regmap);
-+	}
-+
-+	return bmi088_accel_core_probe(&spi->dev, regmap, spi->irq, id->name,
-+				       true);
-+}
-+
-+static int bmi088_accel_remove(struct spi_device *spi)
-+{
-+	return bmi088_accel_core_remove(&spi->dev);
-+}
-+
-+static const struct spi_device_id bmi088_accel_id[] = {
-+	{"bmi088-accel", },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(spi, bmi088_accel_id);
-+
-+static struct spi_driver bmi088_accel_driver = {
-+	.driver = {
-+		.name	= "bmi088_accel_spi",
-+		.pm	= &bmi088_accel_pm_ops,
-+	},
-+	.probe		= bmi088_accel_probe,
-+	.remove		= bmi088_accel_remove,
-+	.id_table	= bmi088_accel_id,
-+};
-+module_spi_driver(bmi088_accel_driver);
-+
-+MODULE_AUTHOR("Niek van Agt <niek.van.agt@topicproducts.com>");
-+MODULE_LICENSE("GPL v2");
-+MODULE_DESCRIPTION("BMI088 accelerometer driver (SPI)");
-diff --git a/drivers/iio/accel/bmi088-accel.h b/drivers/iio/accel/bmi088-accel.h
-new file mode 100644
-index 000000000000..5c25f16b672c
---- /dev/null
-+++ b/drivers/iio/accel/bmi088-accel.h
-@@ -0,0 +1,18 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef BMI088_ACCEL_H
-+#define BMI088_ACCEL_H
-+
-+#include <linux/pm.h>
-+#include <linux/regmap.h>
-+#include <linux/types.h>
-+
-+struct device;
-+
-+extern const struct regmap_config bmi088_regmap_conf;
-+extern const struct dev_pm_ops bmi088_accel_pm_ops;
-+
-+int bmi088_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
-+			    const char *name, bool block_supported);
-+int bmi088_accel_core_remove(struct device *dev);
-+
-+#endif /* BMI088_ACCEL_H */
--- 
-2.17.1
-
+>=20
+>=20
+> > +static const struct of_device_id cros_ec_proximity_of_match[] =3D {
+> > +     { .compatible =3D "google,cros-ec-proximity" },
+> > +     {}
+> > +};
+> > +MODULE_DEVICE_TABLE(of, cros_ec_proximity_of_match);
+> > +#endif
+> > +
+> > +static struct platform_driver cros_ec_proximity_driver =3D {
+> > +     .driver =3D {
+> > +             .name =3D "cros-ec-proximity",
+> > +             .of_match_table =3D of_match_ptr(cros_ec_proximity_of_mat=
+ch),
+> > +     },
+> > +     .probe =3D cros_ec_proximity_probe,
+> > +     .remove =3D cros_ec_proximity_remove,
+> > +};
+> > +module_platform_driver(cros_ec_proximity_driver);
+> > +

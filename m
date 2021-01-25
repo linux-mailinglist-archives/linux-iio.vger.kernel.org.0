@@ -2,124 +2,137 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E136930359D
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Jan 2021 06:48:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B082E3035A0
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Jan 2021 06:48:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727526AbhAZFr5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 26 Jan 2021 00:47:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45412 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727950AbhAYMVm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jan 2021 07:21:42 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FE00C061A30
-        for <linux-iio@vger.kernel.org>; Mon, 25 Jan 2021 03:57:33 -0800 (PST)
-Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <a.fatoum@pengutronix.de>)
-        id 1l40Uq-0006VJ-Rx; Mon, 25 Jan 2021 12:57:28 +0100
-Subject: Re: [PATCH v3] iio: adc: stm32-adc: enable timestamping for non-DMA
- usage
-To:     Marc Kleine-Budde <mkl@pengutronix.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        kernel@pengutronix.de, Holger Assmann <has@pengutronix.de>,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org
-References: <20210125112127.1583-1-a.fatoum@pengutronix.de>
- <b649a0fd-b229-8a54-b374-72ecedca9e64@pengutronix.de>
-From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <b6413a27-9cdf-9f60-be49-03398ee3f1f6@pengutronix.de>
-Date:   Mon, 25 Jan 2021 12:57:27 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+        id S1730911AbhAZFs3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 26 Jan 2021 00:48:29 -0500
+Received: from mail-ot1-f54.google.com ([209.85.210.54]:37124 "EHLO
+        mail-ot1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730011AbhAYPgu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jan 2021 10:36:50 -0500
+Received: by mail-ot1-f54.google.com with SMTP id h14so13093919otr.4;
+        Mon, 25 Jan 2021 07:35:00 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=FEBt/SrotSicnDDRXYm3hYtm6m7tZEPXr+a4FOUO12I=;
+        b=MZ0joswGtIyDAKN/6NpvWDFO5f8uG5Q4YenpX6wcCJaNaIuaUDf8uUq/XvluQLSF5r
+         YhanqmirJE21H+ZFtBY6xLFK+a+Wy0M10t/X0vLjwPXWmbp+VpyksuxfYn9rQBfX6ySN
+         xG2CgiolbmoCQmyck0HEahTBUTYvDTBdvk5+0P2sSdqHZqCCtuUvbTjAkqHfWXXryPgs
+         7mO8GPD6Bw8RshbsdIrPWt4xqeL8BTNky9bq9VWsmKPC6YLxVQQqV9KSOqKtblBJ+GGW
+         /BR55YkB/y0+LctaYEKdCjXxonavXbAvj5jlkJ6+mVkvZMOb4wdfcljCLYzb1gxNmIqm
+         7vHA==
+X-Gm-Message-State: AOAM5329wyAQapUTAOlJ20x6Wv/hc5iekOnPjArbhGLFF2SVqTndGinn
+        GFjkYeQvXeyEX/Yi4jqmza0aclPi6A==
+X-Google-Smtp-Source: ABdhPJwe95zDlCb2mWAtJRJWQg7ZdYrrnzSkvMRjto0OGYewjVAM12bcKOjBpLRmiaW8A2ktwQyI/g==
+X-Received: by 2002:a9d:748a:: with SMTP id t10mr722094otk.336.1611586925207;
+        Mon, 25 Jan 2021 07:02:05 -0800 (PST)
+Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id k15sm3519063otp.10.2021.01.25.07.02.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Jan 2021 07:02:04 -0800 (PST)
+Received: (nullmailer pid 346850 invoked by uid 1000);
+        Mon, 25 Jan 2021 15:02:03 -0000
+Date:   Mon, 25 Jan 2021 09:02:03 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Stephen Boyd <swboyd@chromium.org>, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH 2/3] dt-bindings: iio: Add cros ec proximity yaml doc
+Message-ID: <20210125150203.GA341275@robh.at.kernel.org>
+References: <20210122225443.186184-1-swboyd@chromium.org>
+ <20210122225443.186184-3-swboyd@chromium.org>
+ <20210124172756.69ef7c5a@archlinux>
 MIME-Version: 1.0
-In-Reply-To: <b649a0fd-b229-8a54-b374-72ecedca9e64@pengutronix.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210124172756.69ef7c5a@archlinux>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
-
-On 25.01.21 12:49, Marc Kleine-Budde wrote:
-> On 1/25/21 12:21 PM, Ahmad Fatoum wrote:
->> For non-DMA usage, we have an easy way to associate a timestamp with a
->> sample: iio_pollfunc_store_time stores a timestamp in the primary
->> trigger IRQ handler and stm32_adc_trigger_handler runs in the IRQ thread
->> to push out the buffer along with the timestamp.
->>
->> For this to work, the driver needs to register an IIO_TIMESTAMP channel.
->> Do this.
->>
->> For DMA, it's not as easy, because we don't push the buffers out of
->> stm32_adc_trigger, but out of stm32_adc_dma_buffer_done, which runs in
->> a tasklet scheduled after a DMA completion.
->>
->> Preferably, the DMA controller would copy us the timestamp into that buffer
->> as well. Until this is implemented, restrict timestamping support to
->> only PIO. For low-frequency sampling, PIO is probably good enough.
->>
->> Cc: Holger Assmann <has@pengutronix.de>
->> Acked-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->> v2 -> v3:
->>   - explicitly specify alignment (Jonathan)
->>   - increase buffer size to hold additional timestamp
->> v1 -> v2:
->>   - Added comment about timestamping being PIO only (Fabrice)
->>   - Added missing DMA resource clean up in error path (Fabrice)
->>   - Added Fabrice's Acked-by
->> ---
->>  drivers/iio/adc/stm32-adc.c | 39 +++++++++++++++++++++++++++++--------
->>  1 file changed, 31 insertions(+), 8 deletions(-)
->>
->> diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
->> index c067c994dae2..ab2f440d7afb 100644
->> --- a/drivers/iio/adc/stm32-adc.c
->> +++ b/drivers/iio/adc/stm32-adc.c
->> @@ -177,7 +177,7 @@ struct stm32_adc_cfg {
->>   * @offset:		ADC instance register offset in ADC block
->>   * @cfg:		compatible configuration data
->>   * @completion:		end of single conversion completion
->> - * @buffer:		data buffer
->> + * @buffer:		data buffer + 8 bytes for timestamp if enabled
->                                       ^
->>   * @clk:		clock for this adc instance
->>   * @irq:		interrupt for this adc instance
->>   * @lock:		spinlock
->> @@ -200,7 +200,7 @@ struct stm32_adc {
->>  	u32			offset;
->>  	const struct stm32_adc_cfg	*cfg;
->>  	struct completion	completion;
->> -	u16			buffer[STM32_ADC_MAX_SQ];
->> +	u16			buffer[STM32_ADC_MAX_SQ + 8] __aligned(8);
->          ^^                                               ^
+On Sun, Jan 24, 2021 at 05:27:56PM +0000, Jonathan Cameron wrote:
+> On Fri, 22 Jan 2021 14:54:42 -0800
+> Stephen Boyd <swboyd@chromium.org> wrote:
 > 
-> How does that fit together?
+> > Some cros ECs support a front proximity MKBP event via
+> > 'EC_MKBP_FRONT_PROXIMITY'. Add a DT binding to document this feature via
+> > a node that is a child of the main cros_ec device node. Devices that
+> > have this ability will describe this in firmware.
+> > 
+> > Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> > Cc: Benson Leung <bleung@chromium.org>
+> > Cc: Guenter Roeck <groeck@chromium.org>
+> > Cc: Douglas Anderson <dianders@chromium.org>
+> > Cc: Gwendal Grignou <gwendal@chromium.org>
+> > Cc: <devicetree@vger.kernel.org>
+> > Cc: Rob Herring <robh+dt@kernel.org>
+> > Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+> > ---
+> >  .../proximity/google,cros-ec-proximity.yaml   | 37 +++++++++++++++++++
+> >  1 file changed, 37 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/iio/proximity/google,cros-ec-proximity.yaml
+> > 
+> > diff --git a/Documentation/devicetree/bindings/iio/proximity/google,cros-ec-proximity.yaml b/Documentation/devicetree/bindings/iio/proximity/google,cros-ec-proximity.yaml
+> > new file mode 100644
+> > index 000000000000..c0a34bdfe4fd
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/proximity/google,cros-ec-proximity.yaml
+> > @@ -0,0 +1,37 @@
+> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +
+> > +$id: http://devicetree.org/schemas/iio/proximity/google,cros-ec-proximity.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: ChromeOS EC MKBP Proximity Sensor
+> > +
+> > +maintainers:
+> > +  - Stephen Boyd <swboyd@chromium.org>
+> > +  - Benson Leung <bleung@chromium.org>
+> > +  - Enric Balletbo i Serra <enric.balletbo@collabora.com>
+> > +
+> > +description: |
+> > +  Google's ChromeOS EC sometimes has the ability to detect user proximity.
+> > +  This is implemented on the EC as near/far logic and exposed to the OS
+> > +  via an MKBP switch bit.
+> > +
+> > +properties:
+> > +  compatible:
+> > +    const: google,cros-ec-proximity
+> > +
+> > +  label:
+> > +    description: Name for proximity sensor
+> > +
+> > +required:
+> > +  - compatible
+> > +
+> > +unevaluatedProperties: false
 
-Ah indeed, that's a little longer than needed.
-Thanks for catching.
+additionalProperties: false
+
+> > +
+> > +examples:
+> > +  - |
+> > +    proximity {
+> 
+> Can we at least have the example making it clear this is a child of the
+> cros_ec device?
+
+Move this to the core Cros EC binding. The core binding needs to define 
+'proximity' and reference this binding ($ref).
 
 > 
-> Marc
+> > +        compatible = "google,cros-ec-proximity";
+> > +        label = "proximity-wifi-lte";
+> > +    };
 > 
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |

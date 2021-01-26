@@ -2,221 +2,224 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1257E303958
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Jan 2021 10:47:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 27BFB303CD0
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Jan 2021 13:21:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390562AbhAZJqw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 26 Jan 2021 04:46:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40024 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731145AbhAZJp4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 Jan 2021 04:45:56 -0500
-Received: from mail-io1-xd2a.google.com (mail-io1-xd2a.google.com [IPv6:2607:f8b0:4864:20::d2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70359C061573;
-        Tue, 26 Jan 2021 01:45:16 -0800 (PST)
-Received: by mail-io1-xd2a.google.com with SMTP id q129so32352057iod.0;
-        Tue, 26 Jan 2021 01:45:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ZIW7mnwPUf6YWlYV9Dc8rQUYYrNuTxch5ZKKzYw0AFE=;
-        b=ByfMfrJVJCKfp9k9KLuY9+zPDSK/oFPLxitqpAXbJiff4391iSWe8bKaYpGBbCmmvE
-         FIyrmxZBTVaD2k5CbmUL7zZ898btlbJNEgMoRgegkdChxpRG0wHsfu+P1j+Xvk9nnHyD
-         x/5TkGYudvDAChZjGnJXtjw1q2R5CB8MhAJtJUoaU2DvDlmWgqbJ3Hdn//kyJbj3JTrU
-         eoaAyB08XmQ+F9wGYcs+tDXIbHAV95o7rM+y7DAztaGQ0U83UmbjTSn+AWLbCEI2CUOn
-         fL21yhJXU7mRf8+Npa6Fd/e0B0JcBAWP1EetClFEvo5H0/nbc91eHMYHCXE0g3OjS1WV
-         y3bA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ZIW7mnwPUf6YWlYV9Dc8rQUYYrNuTxch5ZKKzYw0AFE=;
-        b=fi4Gsd1X1UnHzLEH4LduDZbTwYZwXnHrZh8luRFKorFaUFgP0kMHeeChC4OFZdFDyk
-         6lUIwXfggD+3QfKSLpFJ56KLlULSc4RCDi/eNGwjTxJ1OrWA+L/RwP2Nl8Y9X4pahwTk
-         HnvJcuZyoLHDipQJYo9Jw7CtUivPcNO2y1mZNL0c0w4jR/pAJHSZdPKGgMEuZb3VgdKG
-         8X9mpgP4JfSCsdN6lCWoXrRsp4TkZstHeWpgKeiXgb3PDeAQKRloDIJ1vQkSHBNYrzlB
-         ABMKwV6T1hQIpNL5sADfqN3fh8ukHAChy6+X9pjzfdLJLmZYDFb5liZxGeWIAdBCSBWO
-         rZhA==
-X-Gm-Message-State: AOAM5314U4v/PnUdnfueKPkmCtx0kXlKWXRLZ7PbVlnRLs9ZjEFDDHW5
-        NnxRLQwaDX13zmcYhze2RHlDUZApD756AhkdPkw=
-X-Google-Smtp-Source: ABdhPJyuTTVkkTksmE/DzwuiRARXE9iUtKPzZJoMvirmHVYMYFMkCjf7EuwR1M8S0b8H68CNmqnHUn+oa+2RK/ndoqk=
-X-Received: by 2002:a02:7fc5:: with SMTP id r188mr4063015jac.69.1611654315745;
- Tue, 26 Jan 2021 01:45:15 -0800 (PST)
+        id S2392174AbhAZMU1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 26 Jan 2021 07:20:27 -0500
+Received: from mail-m975.mail.163.com ([123.126.97.5]:33350 "EHLO
+        mail-m975.mail.163.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404754AbhAZLDv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 Jan 2021 06:03:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=Date:From:Subject:Message-ID:MIME-Version; bh=L7wRq
+        yZN9bDScq/SPTZt1MjJWDbCm2B0pcGx9u9lRGI=; b=dmyeiKzOI7Nvf6paZ6/tw
+        9fDG9OYaGQViJwXfuMvMU1PJWi2XFUSsVO58D6tqpo9hW9++0jE25RGpnI8ZnF/l
+        IZCefNfValnakMVQnzapXqmZfuqmxbi5axa4YqdQR4rUfC49inEtMXw+iTsRbbvU
+        foNUX3ciPkyuWnJ/0eBwM8=
+Received: from localhost (unknown [218.94.48.178])
+        by smtp5 (Coremail) with SMTP id HdxpCgA3mAxuhQ9gjgSTAA--.28S2;
+        Tue, 26 Jan 2021 10:58:58 +0800 (CST)
+Date:   Tue, 26 Jan 2021 10:58:54 +0800
+From:   Guoqing Chi <chi962464zy@163.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Tom Rix <trix@redhat.com>, martin.blumenstingl@googlemail.com,
+        linux-kernel@vger.kernel.org, chiguoqing@yulong.com,
+        huyue2@yulong.com, zhangwen@yulong.com, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2] iio: imu: bmi160: add mutex_lock for avoiding race
+Message-ID: <20210126105854.0000192d@163.com>
+In-Reply-To: <20210123152659.563cddeb@archlinux>
+References: <20210119112211.26404-1-chi962464zy@163.com>
+        <c93224b5-008c-fc80-f466-88c387d5b08f@redhat.com>
+        <20210120094802.00001fee@163.com>
+        <9c9333cb-bd6c-0f29-f35b-7592f457c746@redhat.com>
+        <20210123152659.563cddeb@archlinux>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-w64-mingw32)
 MIME-Version: 1.0
-References: <20210122162529.84978-1-alexandru.ardelean@analog.com>
- <20210122162529.84978-4-alexandru.ardelean@analog.com> <20210124181126.07c100a5@archlinux>
- <YA8b0az9c0Hha405@kroah.com>
-In-Reply-To: <YA8b0az9c0Hha405@kroah.com>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Tue, 26 Jan 2021 11:45:04 +0200
-Message-ID: <CA+U=DsoogP2Bj5zsE-1BwOhZy20jjvEhgh780FSiQU4M9AwoxA@mail.gmail.com>
-Subject: Re: [PATCH v2 03/12][RESEND] iio: buffer: rework buffer &
- scan_elements dir creation
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        nuno.sa@analog.com, "Bogdan, Dragos" <dragos.bogdan@analog.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID: HdxpCgA3mAxuhQ9gjgSTAA--.28S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxtFWrZFy3tr4UWF1kCFyDJrb_yoW7Ww4rpa
+        4UGF45CrW8XF1xCr12qrn8CF98t34Iqr18W3s7Ja45ZrZ0yFnIyr1UJ3409rnYyr1UGr42
+        qrWUArZxuF1kZr7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07USdgAUUUUU=
+X-Originating-IP: [218.94.48.178]
+X-CM-SenderInfo: pfklmlasuwk6r16rljoofrz/xtbBSRImRFaD9d-jRAAAsh
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jan 25, 2021 at 9:32 PM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Sun, Jan 24, 2021 at 06:11:26PM +0000, Jonathan Cameron wrote:
-> > On Fri, 22 Jan 2021 18:25:20 +0200
-> > Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
-> >
-> > > When adding more than one IIO buffer per IIO device, we will need to create
-> > > a buffer & scan_elements directory for each buffer.
-> > > We also want to move the 'scan_elements' to be a sub-directory of the
-> > > 'buffer' folder.
-> > >
-> > > The format we want to reach is, for a iio:device0 folder, for 2 buffers
-> > > [for example], we have a 'buffer0' and a 'buffer1' subfolder, and each with
-> > > it's own 'scan_elements' subfolder.
-> > >
-> > > So, for example:
-> > >    iio:device0/buffer0
-> > >       scan_elements/
-> > >
-> > >    iio:device0/buffer1
-> > >       scan_elements/
-> > >
-> > > The other attributes under 'bufferX' would remain unchanged.
-> > >
-> > > However, we would also need to symlink back to the old 'buffer' &
-> > > 'scan_elements' folders, to keep backwards compatibility.
-> > >
-> > > Doing all these, require that we maintain the kobjects for each 'bufferX'
-> > > and 'scan_elements' so that we can symlink them back. We also need to
-> > > implement the sysfs_ops for these folders.
-> > >
-> > > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> >
-> > +CC GregKH and Rafael W for feedback on various things inline.
-> >
-> > It might be that this is the neatest solution that we can come up with but
-> > more eyes would be good!
->
-> In short, please do NOT do this.
->
-> At all.
->
-> no.
->
-> {sigh}
->
-> >
-> > Whilst I think this looks fine, I'm less confident than I'd like to be.
-> >
-> > Jonathan
-> >
-> > > ---
-> > >  drivers/iio/industrialio-buffer.c | 195 +++++++++++++++++++++++++++---
-> > >  drivers/iio/industrialio-core.c   |  24 ++--
-> > >  include/linux/iio/buffer_impl.h   |  14 ++-
-> > >  include/linux/iio/iio.h           |   2 +-
-> > >  4 files changed, 200 insertions(+), 35 deletions(-)
-> > >
-> > > diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-> > > index 0412c4fda4c1..0f470d902790 100644
-> > > --- a/drivers/iio/industrialio-buffer.c
-> > > +++ b/drivers/iio/industrialio-buffer.c
-> > > @@ -1175,8 +1175,6 @@ static ssize_t iio_buffer_store_enable(struct device *dev,
-> > >     return (ret < 0) ? ret : len;
-> > >  }
-> > >
-> > > -static const char * const iio_scan_elements_group_name = "scan_elements";
-> > > -
-> > >  static ssize_t iio_buffer_show_watermark(struct device *dev,
-> > >                                      struct device_attribute *attr,
-> > >                                      char *buf)
-> > > @@ -1252,6 +1250,124 @@ static struct attribute *iio_buffer_attrs[] = {
-> > >     &dev_attr_data_available.attr,
-> > >  };
-> > >
-> > > +#define to_dev_attr(_attr) container_of(_attr, struct device_attribute, attr)
-> > > +
-> > > +static ssize_t iio_buffer_dir_attr_show(struct kobject *kobj,
-> > > +                                   struct attribute *attr,
-> > > +                                   char *buf)
-> > > +{
-> > > +   struct iio_buffer *buffer = container_of(kobj, struct iio_buffer, buffer_dir);
-> > > +   struct device_attribute *dattr;
-> > > +
-> > > +   dattr = to_dev_attr(attr);
-> > > +
-> > > +   return dattr->show(&buffer->indio_dev->dev, dattr, buf);
-> > > +}
->
->
-> First off, you are dealing with "raw" kobjects here, below a 'struct
-> device' in the device tree, which means that suddenly userspace does not
-> know what in the world is going on, and you lost events and lots of
-> other stuff.
->
-> Never do this.  It should not be needed, and you are just trying to
-> paper over one odd decision of an api with another one you will be stuck
-> with for forever.
->
-> Remember the driver core can create subdirectories for your attributes
-> automatically if you want them to be in a subdir, but that's it, no
-> further than that.  Just name the attribute group.
->
-> But yes, you can not create a symlink to there, because (surprise), you
-> don't want to!
->
-> So please, just rethink your naming, create a totally new naming scheme
-> for multiple entities, and just drop the old one (or keep a single
-> value if you really want to.)  Don't make it harder than it has to be
-> please, you can never remove the "compatible symlinks", just make a new
-> api and move on.
+On Sat, 23 Jan 2021 15:26:59 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
+> On Wed, 20 Jan 2021 07:06:23 -0800
+> Tom Rix <trix@redhat.com> wrote:
+> 
+> > On 1/19/21 5:48 PM, Guoqing Chi wrote:  
+> > > On Tue, 19 Jan 2021 06:54:45 -0800
+> > > Tom Rix <trix@redhat.com> wrote:
+> > >    
+> > >> On 1/19/21 3:22 AM, Guoqing Chi wrote:    
+> > >>> From: chiguoqing <chi962464zy@163.com>
+> > >>>
+> > >>> Adding mutex_lock, when read and write reg need to use this
+> > >>> lock to avoid race.
+> > >>>
+> > >>> Signed-off-by: Guoqing Chi <chiguoqing@yulong.com>
+> > >>> ---
+> > >>> v2:Follow write function to fix read function.
+> > >>> Adding mutex init in core probe function.
+> > >>> Adding break in switch case at read and write function.
+> > >>>
+> > >>>  drivers/iio/imu/bmi160/bmi160.h      |  2 ++
+> > >>>  drivers/iio/imu/bmi160/bmi160_core.c | 34
+> > >>> +++++++++++++++++++--------- 2 files changed, 25 insertions(+),
+> > >>> 11 deletions(-)
+> > >>>
+> > >>> diff --git a/drivers/iio/imu/bmi160/bmi160.h
+> > >>> b/drivers/iio/imu/bmi160/bmi160.h index
+> > >>> 32c2ea2d7112..0c189a8b5b53 100644 ---
+> > >>> a/drivers/iio/imu/bmi160/bmi160.h +++
+> > >>> b/drivers/iio/imu/bmi160/bmi160.h @@ -3,9 +3,11 @@
+> > >>>  #define BMI160_H_
+> > >>>  
+> > >>>  #include <linux/iio/iio.h>
+> > >>> +#include <linux/mutex.h>
+> > >>>  #include <linux/regulator/consumer.h>
+> > >>>  
+> > >>>  struct bmi160_data {
+> > >>> +	struct mutex lock;
+> > >>>  	struct regmap *regmap;
+> > >>>  	struct iio_trigger *trig;
+> > >>>  	struct regulator_bulk_data supplies[2];
+> > >>> diff --git a/drivers/iio/imu/bmi160/bmi160_core.c
+> > >>> b/drivers/iio/imu/bmi160/bmi160_core.c index
+> > >>> 290b5ef83f77..e303378f4841 100644 ---
+> > >>> a/drivers/iio/imu/bmi160/bmi160_core.c +++
+> > >>> b/drivers/iio/imu/bmi160/bmi160_core.c @@ -452,26 +452,32 @@
+> > >>> static int bmi160_read_raw(struct iio_dev *indio_dev, int ret;
+> > >>>  	struct bmi160_data *data = iio_priv(indio_dev);
+> > >>>  
+> > >>> +	mutex_lock(&data->lock);
+> > >>>  	switch (mask) {
+> > >>>  	case IIO_CHAN_INFO_RAW:
+> > >>>  		ret = bmi160_get_data(data, chan->type,
+> > >>> chan->channel2, val);
+> > >>> -		if (ret)
+> > >>> -			return ret;
+> > >>> -		return IIO_VAL_INT;
+> > >>> +		if (!ret)
+> > >>> +			ret = IIO_VAL_INT;
+> > >>> +		break;
+> > >>>  	case IIO_CHAN_INFO_SCALE:
+> > >>>  		*val = 0;
+> > >>>  		ret = bmi160_get_scale(data,
+> > >>>  				       bmi160_to_sensor(chan->type),
+> > >>> val2);
+> > >>> -		return ret ? ret : IIO_VAL_INT_PLUS_MICRO;
+> > >>> +		if (!ret)
+> > >>> +			ret = IIO_VAL_INT_PLUS_MICRO;      
+> > >> Looking better, another question..
+> > >>
+> > >> Why does the write() function return the results directly while
+> > >> the read() function
+> > >>
+> > >> translates them to other values ?
+> > >>
+> > >> Tom    
+> > > It is original design in this driver. In order to
+> > > differentiate raw to scale and SAMP_FREQ, while the scale and
+> > > SAMP_FREQ are needless. I think log information can be added for
+> > > this purpose, and return results directly.
+> > > It is not change the return values for my modify.It's best to
+> > > keep the original design.Is that all right?    
+> > 
+> > Ok.
+> > 
+> > Reviewed-by: Tom Rix <trix@redhat.com>  
+> 
+> Hi Guoqing Chi,
+> 
+> For some reason the original patch email (start of this thread) never
+> made it to my inbox or indeed the archive at lore.kernel.org.
+> 
+> Please resend (picking up Tom's reviewed by) and make sure to cc
+> linux-iio@vger.kernel.org + jic23@kernel.org
+> 
+> Then check if they make it to lore.kernel.org as that should highlight
+> any issues where it is getting blocked etc.
+> 
+> Thanks,
+> 
+> Jonathan
 
-So, coming back to Jonathan.
-Any thoughts on how to proceed?
+Hi Jonathan,
 
-We could merge the files 'buffer & scan_elements' [from in the
-/sys/bus/iio/devices/iio:deviceX/{buffer,scan_elements}
+I have resend patch V2(picking up Tom's reviewed by) for add
+linux-iio@vger.kernel.org + jic23@kernel.org.
 
-So, essentially:
-# ls /sys/bus/iio/devices/iio:deviceX/bufferY
-data_available       length              watermark
-enable                   length_align_bytes
-in_voltage0_en      in_voltage0_type   in_voltage1_index
-in_voltage0_index  in_voltage1_en     in_voltage1_type
+Thanks.
 
-Where:
-# ls  /sys/bus/iio/devices/iio:deviceX/scan_elements
-in_voltage0_en     in_voltage0_type   in_voltage1_index
-in_voltage0_index  in_voltage1_en     in_voltage1_typ
+> 
+> >   
+> > > Guoqing Chi    
+> > >>> +		break;
+> > >>>  	case IIO_CHAN_INFO_SAMP_FREQ:
+> > >>>  		ret = bmi160_get_odr(data,
+> > >>> bmi160_to_sensor(chan->type), val, val2);
+> > >>> -		return ret ? ret : IIO_VAL_INT_PLUS_MICRO;
+> > >>> +		if (!ret)
+> > >>> +			ret = IIO_VAL_INT_PLUS_MICRO;
+> > >>> +		break;
+> > >>>  	default:
+> > >>> -		return -EINVAL;
+> > >>> +		ret = -EINVAL;
+> > >>>  	}
+> > >>> +	mutex_unlock(&data->lock);
+> > >>>  
+> > >>> -	return 0;
+> > >>> +	return ret;
+> > >>>  }
+> > >>>  
+> > >>>  static int bmi160_write_raw(struct iio_dev *indio_dev,
+> > >>> @@ -479,19 +485,24 @@ static int bmi160_write_raw(struct iio_dev
+> > >>> *indio_dev, int val, int val2, long mask)
+> > >>>  {
+> > >>>  	struct bmi160_data *data = iio_priv(indio_dev);
+> > >>> +	int result;
+> > >>>  
+> > >>> +	mutex_lock(&data->lock);
+> > >>>  	switch (mask) {
+> > >>>  	case IIO_CHAN_INFO_SCALE:
+> > >>> -		return bmi160_set_scale(data,
+> > >>> +		result = bmi160_set_scale(data,
+> > >>>  					bmi160_to_sensor(chan->type),
+> > >>> val2);
+> > >>> +		break;
+> > >>>  	case IIO_CHAN_INFO_SAMP_FREQ:
+> > >>> -		return bmi160_set_odr(data,
+> > >>> bmi160_to_sensor(chan->type),
+> > >>> +		result = bmi160_set_odr(data,
+> > >>> bmi160_to_sensor(chan->type), val, val2);
+> > >>> +		break;
+> > >>>  	default:
+> > >>> -		return -EINVAL;
+> > >>> +		result = -EINVAL;
+> > >>>  	}
+> > >>> +	mutex_unlock(&data->lock);
+> > >>>  
+> > >>> -	return 0;
+> > >>> +	return result;
+> > >>>  }
+> > >>>  
+> > >>>  static
+> > >>> @@ -838,6 +849,7 @@ int bmi160_core_probe(struct device *dev,
+> > >>> struct regmap *regmap, return -ENOMEM;
+> > >>>  
+> > >>>  	data = iio_priv(indio_dev);
+> > >>> +	mutex_init(&data->lock);
+> > >>>  	dev_set_drvdata(dev, indio_dev);
+> > >>>  	data->regmap = regmap;
+> > >>>        
+> >   
 
-# ls  /sys/bus/iio/devices/iio:deviceX/buffer
-data_available      length              watermark
-enable              length_align_bytes
-
-I don't think we need to add any prefixes for the scan_elements/buffer
-files, or?
-
-Do we still do this new ioctl() for buffer0, 1, 2, N being accessed
-via anon inodes?
-Or do we go [back] via the route of each buffer with it's own chardev?
-i.e.  introduce a "/dev/iio/deviceX/bufferY" structure
-
-I'm fine either way.
-
-Thanks
-Alex
-
->
-> thanks,
->
-> greg k-h

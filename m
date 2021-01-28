@@ -2,109 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BF1F30778D
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Jan 2021 15:00:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 771893077B3
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Jan 2021 15:10:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231220AbhA1N7N (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 28 Jan 2021 08:59:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36328 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231215AbhA1N7C (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Jan 2021 08:59:02 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C3CEC061756
-        for <linux-iio@vger.kernel.org>; Thu, 28 Jan 2021 05:58:21 -0800 (PST)
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1l57oR-0006i7-4l; Thu, 28 Jan 2021 14:58:19 +0100
-Received: from ore by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ore@pengutronix.de>)
-        id 1l57oG-0006AS-9M; Thu, 28 Jan 2021 14:58:08 +0100
-Date:   Thu, 28 Jan 2021 14:58:08 +0100
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Robin van der Gracht <robin@protonic.nl>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        David Jander <david@protonic.nl>
-Subject: Re: [PATCH v4 2/2] counter: add IRQ or GPIO based pulse counter
-Message-ID: <20210128135808.ttvd2xxjkmsqanr7@pengutronix.de>
-References: <20210126131239.8335-1-o.rempel@pengutronix.de>
- <20210126131239.8335-3-o.rempel@pengutronix.de>
- <CACRpkdYSdtwSZxicJ1Rxp_XkK1BstpnzMcV0JqXg+cac_+gSSw@mail.gmail.com>
+        id S231217AbhA1OJf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 28 Jan 2021 09:09:35 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:38574 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229677AbhA1OJd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Jan 2021 09:09:33 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 10SE7dmn036400;
+        Thu, 28 Jan 2021 08:07:39 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1611842859;
+        bh=Joh8wbXrLWIP1Hy17P32/2vZurrK6zODo5//hE9WZCw=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=jeoHl9/r12fK9X7G8YmvcGysHWVV5KWqnfSebw6YbB73I2de8kW9RX3YAvJlT3c95
+         Q2xWDnDch6nJ8REwEDwjj15sdF8KSEKoBG6BwQqcbVnOHeK6Tg/OsMF56HEjkM79aV
+         Z9rPQlexPOzjsXH5YX1bf25fYNdJJ70r+N+VNf/o=
+Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 10SE7dl7075177
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 28 Jan 2021 08:07:39 -0600
+Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 28
+ Jan 2021 08:07:39 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Thu, 28 Jan 2021 08:07:39 -0600
+Received: from [10.250.39.117] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 10SE7c12064116;
+        Thu, 28 Jan 2021 08:07:38 -0600
+Subject: Re: [PATCH 2/2] iio:adc:ti-ads124s08: Fix packet read from the ADC
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     <linux-iio@vger.kernel.org>, <lars@metafoo.de>,
+        <pmeerw@pmeerw.net>, <linux-kernel@vger.kernel.org>
+References: <20210121191431.12057-1-dmurphy@ti.com>
+ <20210121191431.12057-2-dmurphy@ti.com> <20210124151242.285ce9c6@archlinux>
+From:   Dan Murphy <dmurphy@ti.com>
+Message-ID: <2678d74d-5357-73fc-a152-f493e0e4f80e@ti.com>
+Date:   Thu, 28 Jan 2021 08:07:38 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CACRpkdYSdtwSZxicJ1Rxp_XkK1BstpnzMcV0JqXg+cac_+gSSw@mail.gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-IRC:  #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 14:57:01 up 57 days,  4:03, 33 users,  load average: 0.08, 0.05,
- 0.00
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+In-Reply-To: <20210124151242.285ce9c6@archlinux>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Jan 28, 2021 at 09:24:08AM +0100, Linus Walleij wrote:
-> Hi Oleksij,
-> 
-> thanks for your patch!
-> 
-> On Tue, Jan 26, 2021 at 2:15 PM Oleksij Rempel <o.rempel@pengutronix.de> wrote:
-> 
-> > +       priv->irq = platform_get_irq(pdev,  0);
-> > +       if (priv->irq < 0) {
-> > +               dev_err(dev, "failed to map GPIO to IRQ: %d\n", priv->irq);
-> > +               return priv->irq;
-> > +       }
-> > +
-> > +       priv->gpio = devm_gpiod_get_optional(dev, NULL, GPIOD_IN);
-> > +       if (IS_ERR(priv->gpio))
-> > +               return dev_err_probe(dev, PTR_ERR(priv->gpio), "failed to get gpio\n");
-> 
-> I would attempt to get the IRQ from the GPIO if not defined explicitly
-> in the device tree.
-> 
-> priv->gpio = devm_gpiod_get_optional(...)
-> if (priv->gpio) {
->     /* Attempt to look up IRQ */
->     irq = gpiod_to_irq(priv->irq);
-> }
-> priv->irq = platfform_get_irq(...)
-> if (priv->irq < 0 && irq > 0) {
->     /* Use the GPIO-related IRQ */
->     priv->irq = irq;
-> } else if (priv->irq < 0) {
->    /* Error */
-> }
-> 
-> This way the example in the device tree binding which only defines
-> a GPIO and no interrupt will work if the GPIO chip provides an
-> IRQ mapping.
-> 
+Jonathan
 
-Ok, thx!
-I'll send updated version after dt-binding discussion
+On 1/24/21 9:12 AM, Jonathan Cameron wrote:
+> On Thu, 21 Jan 2021 13:14:31 -0600
+> Dan Murphy <dmurphy@ti.com> wrote:
+>
+>> Fix the spi_transfer array in the reading of the data from the ADC.
+>>
+>> Fixes: ("e717f8c6dfec iio: adc: Add the TI ads124s08 ADC code")
+>> Signed-off-by: Dan Murphy <dmurphy@ti.com>
+> I'm not really following the changes below..
 
-Regards,
-Oleksij
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+I will have to dig into it deeper our HW team reported this.
+
+Patch 1/2 is relevant and is not dependent on this patch
+
+Dan
+

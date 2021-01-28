@@ -2,88 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 20F92307191
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Jan 2021 09:35:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D7A2F3071CD
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Jan 2021 09:43:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231779AbhA1Ic6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 28 Jan 2021 03:32:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51202 "EHLO
+        id S231666AbhA1IlA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 28 Jan 2021 03:41:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231768AbhA1Icw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Jan 2021 03:32:52 -0500
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 526E7C061573
-        for <linux-iio@vger.kernel.org>; Thu, 28 Jan 2021 00:32:12 -0800 (PST)
-Received: by mail-pj1-x102a.google.com with SMTP id u4so3850874pjn.4
-        for <linux-iio@vger.kernel.org>; Thu, 28 Jan 2021 00:32:12 -0800 (PST)
+        with ESMTP id S231158AbhA1Ikz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Jan 2021 03:40:55 -0500
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B638C061574
+        for <linux-iio@vger.kernel.org>; Thu, 28 Jan 2021 00:40:14 -0800 (PST)
+Received: by mail-pf1-x431.google.com with SMTP id q20so3546031pfu.8
+        for <linux-iio@vger.kernel.org>; Thu, 28 Jan 2021 00:40:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=mime-version:content-transfer-encoding:in-reply-to:references
-         :subject:from:cc:to:date:message-id:user-agent;
-        bh=eSzw6mIxV1anumYEd5uTi6KNUqQBP7nI7s0j+BuQJKM=;
-        b=Xk/UPOnjeUnDhjv4/G9R96IxcGex62ZM0aCmu6+KBcioI0KyRor9FkSLKehNdI1fhD
-         MPvKBo8uIUHfnD3cMUyTC1CexCpIB1qD9nMns3IAip6axI7anNm0AISMaZRtu4byPS7n
-         9MPo01d6pUjclwZOZ4Gzrntxl2HSWvkPMAIic=
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=cJIAwStqssO4qlrJsU+DZexmUlk16AIgSgJEzjOLeeM=;
+        b=dhqfKN/9w8VsgNPrc1AXQXAmZwOdSjzVEaYFJ8O1aFkPq3+yVdEn2hzOaOmaJWa4AB
+         dykJLKZqrjHP9erkYh5RmFmxjAWrNe9ED1y1n8OH+8/iLZJkzURf4IEbru3xADFMN+2n
+         cq8CbP6KSQSRCAgLl4qZkcOhE0F75C8nHEBXU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:content-transfer-encoding
-         :in-reply-to:references:subject:from:cc:to:date:message-id
-         :user-agent;
-        bh=eSzw6mIxV1anumYEd5uTi6KNUqQBP7nI7s0j+BuQJKM=;
-        b=EuDWzGamJGxAcGBe/liremsBbdupqQU3WRxBdAZVKupsvVrpddFomt37vxGu0lPivD
-         RVf7O4uzoBrbmJP0Q2w07iCwWj76/ANpoKPCVs94P3b0NFNp4rNwdlqq4y1tPoACcwJW
-         1Lai6lF2xYguOSUGM8Y1Mb/H0SAvJ1Skv805q87DbNM75cN+y8esUoqPC3IcsJ7Y7ArM
-         UW+N/uRJ9FsX+SgcfAhA826Ti9PgVRYL5HLUokSMdX2YAX5zt/znr8joKSuZtWRbj5pY
-         lvv7CyO5VFzTJrT5gwTplxPcKUHahe2bR/x5G2qWe6kth8YMmriE88/2iAPt8pXPyg4Z
-         PfqA==
-X-Gm-Message-State: AOAM5333IP+EXn6V/91ymyDFVF7CV40zVtqBCx9JAr0Jj15HoRwW7v46
-        M4wrukIqloPcNdR94prt7fAQgw==
-X-Google-Smtp-Source: ABdhPJwH9nc456YfHiJi2fnjqoiqcknCnXg4pOIY/9aaJ3LiJMef/3JDr9YjePbZZ+V+EStvxdYQUg==
-X-Received: by 2002:a17:90a:ba02:: with SMTP id s2mr10330216pjr.53.1611822731937;
-        Thu, 28 Jan 2021 00:32:11 -0800 (PST)
-Received: from chromium.org ([2620:15c:202:201:304c:5453:303a:8268])
-        by smtp.gmail.com with ESMTPSA id w14sm4263307pjl.38.2021.01.28.00.32.11
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=cJIAwStqssO4qlrJsU+DZexmUlk16AIgSgJEzjOLeeM=;
+        b=YW7vJZQsNuWSdluyd+cihOHWmA3O91j08A2H7w3B+yPDmh3f0fcPERgDkUacMpIwzb
+         cnH5/KcOfscF6N9k9yVZkR4FDjbvA9CtQDPP17gPAHgXMvl3HYa/79UJ0ee29JRSEOWN
+         HJyxsQfDS1AgeY5Y8wbzpv3wpi8aU9qSUdSGXObSCteAFhTtIc9iPKDvSZMLA9wZurOr
+         8hqKzo5vac/NbfAgEMmNAAwHao29oSw5Dfu6tSD/Jyh3IG7pGCMt/OdkTOdy+ZVWhrd0
+         sakEff044hGZU78lqJPfHjXxupnsI4dMivhQpzAj3vhhyrm0QI3ZGSnZcOO9DKMGSaDA
+         h4vA==
+X-Gm-Message-State: AOAM531KM8VS6K0pZNKbx87Qjp2IpibIvGZ0rP9BsxluwAJWi/9Rf9eT
+        PpaLk9SBjdioJvZNKdpxaRcaew==
+X-Google-Smtp-Source: ABdhPJwdTxInMeMQs7wJ0rshDGS+Vl3qWenVzQEcjNEcW2sCGquJ2dqyyBLsunFSKhTq0+2R1e+D2w==
+X-Received: by 2002:a63:7051:: with SMTP id a17mr15299011pgn.26.1611823213816;
+        Thu, 28 Jan 2021 00:40:13 -0800 (PST)
+Received: from smtp.gmail.com ([2620:15c:202:201:304c:5453:303a:8268])
+        by smtp.gmail.com with ESMTPSA id y22sm4951757pfr.163.2021.01.28.00.40.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Jan 2021 00:32:11 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <CAPUE2uuf-7h2Zjvb7bVqPb+=KSMKfAV-vopey1XwP0U+AGRZAA@mail.gmail.com>
-References: <20210122225443.186184-1-swboyd@chromium.org> <20210122225443.186184-4-swboyd@chromium.org> <20210124173820.4528b9c9@archlinux> <CAPUE2uuQsa7=pjw+D=r0QtLGTd1kQa7X6VBVa73=gx47Vf7KDA@mail.gmail.com> <161160076017.76967.4467861058817044169@swboyd.mtv.corp.google.com> <CAPUE2uu555NT1=u=1Nb8WExT7RvK8mj5kBiDfGymHiAmoj2WCg@mail.gmail.com> <161161826068.76967.15170332425672601158@swboyd.mtv.corp.google.com> <CAPUE2uuf-7h2Zjvb7bVqPb+=KSMKfAV-vopey1XwP0U+AGRZAA@mail.gmail.com>
-Subject: Re: [PATCH 3/3] iio: proximity: Add a ChromeOS EC MKBP proximity driver
+        Thu, 28 Jan 2021 00:40:13 -0800 (PST)
 From:   Stephen Boyd <swboyd@chromium.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Benson Leung <bleung@chromium.org>,
         Guenter Roeck <groeck@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>
-To:     Gwendal Grignou <gwendal@chromium.org>
-Date:   Thu, 28 Jan 2021 00:32:09 -0800
-Message-ID: <161182272981.76967.6597234301739813412@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.9.1
+        Douglas Anderson <dianders@chromium.org>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>
+Subject: [PATCHv3 0/3] iio: Add a ChromeOS EC MKBP proximity driver
+Date:   Thu, 28 Jan 2021 00:40:08 -0800
+Message-Id: <20210128084011.3270281-1-swboyd@chromium.org>
+X-Mailer: git-send-email 2.30.0.280.ga3ce27912f-goog
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Quoting Gwendal Grignou (2021-01-26 12:59:50)
-> On Mon, Jan 25, 2021 at 3:44 PM Stephen Boyd <swboyd@chromium.org> wrote:
-> >
-> > instead of having to do
-> > an offset after the fact. For now I'll use ec_dev->last_event_time
-> > because this is only used on chromeos and that should work until
-> > userspace is changed, but in the future I think we'll need to have a way
-> > for this IIO device to be notified when the clock base changes in
-> > iio_device_set_clock() and then have this driver call into cros_ec to
-> > request that such a timestamp be made when this event is seen. Or even
-> > better have a way to request that cros_ec timestamp the event itself on
-> > the EC side, but I don't know if that's possible.
-> One way would be use the EC sensor stack that collect such timestamp,
-> but that would be more firmware changes.
->=20
-> On second thought, to keep it simple and consistent with other IIO
-> drivers, I suggest to keep using iio_get_time_ns() when the sensor
-> clock is not CLOCK_BOOTTIME, ec_dev->last_event_time when it is.
+This is a different approach to [1] where I tried to add this proximity
+sensor logic to the input subsystem. Instead, we'll take the approach of
+making a small IIO proximity driver that parses the EC switch bitmap to
+find out if the front proximity sensor is detecting something or not.
+This allows us to treat proximity sensors as IIO devices all the time in
+userspace instead of handling this switch on the EC via the input
+subsystem and then other proximity sensors via IIO.
 
-Ok I will make that change and send v3.
+I propose this is all merged through IIO subsystem. Please ack
+the first patch so it can be merged that way.
+
+Changes from v2:
+ * Check iio clock and use IIO time if not boottime
+
+Changes from v1:
+ * Driver moved location
+ * Put mkbp everywhere
+ * Fixed up DT binding to not fail and make sure is a child of cros-ec
+ * Simplified logic for sending a message
+ * Dropped CONFIG_OF usage
+ * Sorted includes
+
+[1] https://lore.kernel.org/r/20201205004709.3126266-1-swboyd@chromium.org
+
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Benson Leung <bleung@chromium.org>
+Cc: Guenter Roeck <groeck@chromium.org>
+Cc: Douglas Anderson <dianders@chromium.org>
+Cc: Gwendal Grignou <gwendal@chromium.org>
+Cc: <devicetree@vger.kernel.org>
+Cc: Rob Herring <robh+dt@kernel.org>
+
+Stephen Boyd (3):
+  platform/chrome: cros_ec: Add SW_FRONT_PROXIMITY MKBP define
+  dt-bindings: iio: Add cros ec proximity yaml doc
+  iio: proximity: Add a ChromeOS EC MKBP proximity driver
+
+ .../google,cros-ec-mkbp-proximity.yaml        |  38 +++
+ .../bindings/mfd/google,cros-ec.yaml          |   3 +
+ drivers/iio/proximity/Kconfig                 |  11 +
+ drivers/iio/proximity/Makefile                |   1 +
+ .../iio/proximity/cros_ec_mkbp_proximity.c    | 245 ++++++++++++++++++
+ .../linux/platform_data/cros_ec_commands.h    |   1 +
+ 6 files changed, 299 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/proximity/google,cros-ec-mkbp-proximity.yaml
+ create mode 100644 drivers/iio/proximity/cros_ec_mkbp_proximity.c
+
+
+base-commit: 19c329f6808995b142b3966301f217c831e7cf31
+-- 
+https://chromeos.dev
+

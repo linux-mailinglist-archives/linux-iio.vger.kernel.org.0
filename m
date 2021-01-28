@@ -2,105 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 41987307166
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Jan 2021 09:27:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 20F92307191
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Jan 2021 09:35:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231583AbhA1IZP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 28 Jan 2021 03:25:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49524 "EHLO
+        id S231779AbhA1Ic6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 28 Jan 2021 03:32:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231846AbhA1IZH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Jan 2021 03:25:07 -0500
-Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F532C06174A
-        for <linux-iio@vger.kernel.org>; Thu, 28 Jan 2021 00:24:21 -0800 (PST)
-Received: by mail-lj1-x22b.google.com with SMTP id v15so2293723ljk.13
-        for <linux-iio@vger.kernel.org>; Thu, 28 Jan 2021 00:24:21 -0800 (PST)
+        with ESMTP id S231768AbhA1Icw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Jan 2021 03:32:52 -0500
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 526E7C061573
+        for <linux-iio@vger.kernel.org>; Thu, 28 Jan 2021 00:32:12 -0800 (PST)
+Received: by mail-pj1-x102a.google.com with SMTP id u4so3850874pjn.4
+        for <linux-iio@vger.kernel.org>; Thu, 28 Jan 2021 00:32:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ULE4+q7ZKmkGfyu8JC5m51bVDpO57/QqEwGtSZ6HkKY=;
-        b=rtL9q5B0KQOwsaH+TV5aQqslftG8dM7kBPsVzpjblYGDYx7vqAAaxwtcziduV5tjMM
-         BvoYSpyEEik9g0MbadHzDWsWTSXaSZAvuZliatTyTfAVbDRMfLrfWVQNwtIbVG8flSnk
-         12jKtvOW66KOy4kF9anxD/fO0DSZD7VOKHIX7YLgHtV6aXbBhhm6PdB7BZG11iyqq5sI
-         ikv61ZCYhz8pfynURGij7CnsR/Wgg+rqya6iqMmnXqFq7tY5JWoZVzADrStLtiER2BKY
-         oHEoD3WtYpuCHoNJKMIjXB3Q5OW+iVC/Q1mQfpZHWOnUR1enAe5gYgm0ljkFjj0+PcVc
-         P7oA==
+        d=chromium.org; s=google;
+        h=mime-version:content-transfer-encoding:in-reply-to:references
+         :subject:from:cc:to:date:message-id:user-agent;
+        bh=eSzw6mIxV1anumYEd5uTi6KNUqQBP7nI7s0j+BuQJKM=;
+        b=Xk/UPOnjeUnDhjv4/G9R96IxcGex62ZM0aCmu6+KBcioI0KyRor9FkSLKehNdI1fhD
+         MPvKBo8uIUHfnD3cMUyTC1CexCpIB1qD9nMns3IAip6axI7anNm0AISMaZRtu4byPS7n
+         9MPo01d6pUjclwZOZ4Gzrntxl2HSWvkPMAIic=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ULE4+q7ZKmkGfyu8JC5m51bVDpO57/QqEwGtSZ6HkKY=;
-        b=PfvdQ5oTgWcJO5gsyBWF8P/7WJuy+On1VbRKUU0X2Fqep892PZMn9xqlovwBs5MZZt
-         8r+P8CdedKoY1UVxFT7m36gZIV2bSSZQbPyGmlKpPWX4VREaLdOetEoNRYshdOdEjYz7
-         J0ohuS/CzV5pJVJYdCQoUZJ/FX7lYRTYP7/5kHVXPEdg+3RT7REEgs87KzyZa8RuhkrN
-         8meGqynXXIabOfR1zmmvi+4vx1tpqlqLkH9Vj4r/HpNQTFQ9UplEi5tM1rlxN8qKHh+x
-         c+66XxgjFsh/GGhpFEoyqi3saEgZGFw41hNZzWyayWlSswxaox4zUhSs5W4LVIq0b6Hc
-         UBdA==
-X-Gm-Message-State: AOAM531jkOwKzU/iU6RWUuSmUEoW90JRDtkSjtpdxSIPmO+B2p3NWLTK
-        F8czM32ZLfLUVdyfVkBm5I+p/DvTlL60bKwLAm7u1apmeZuGJg==
-X-Google-Smtp-Source: ABdhPJyys3EbAeJalI9BEq3UYfuRIoJnwLqvWqCoBn0U3X0Up2cu3YQVgCqCcSkXBWZSbhKc4+8kNevH2EGGbivK/kk=
-X-Received: by 2002:a2e:8746:: with SMTP id q6mr7797139ljj.326.1611822259811;
- Thu, 28 Jan 2021 00:24:19 -0800 (PST)
+        h=x-gm-message-state:mime-version:content-transfer-encoding
+         :in-reply-to:references:subject:from:cc:to:date:message-id
+         :user-agent;
+        bh=eSzw6mIxV1anumYEd5uTi6KNUqQBP7nI7s0j+BuQJKM=;
+        b=EuDWzGamJGxAcGBe/liremsBbdupqQU3WRxBdAZVKupsvVrpddFomt37vxGu0lPivD
+         RVf7O4uzoBrbmJP0Q2w07iCwWj76/ANpoKPCVs94P3b0NFNp4rNwdlqq4y1tPoACcwJW
+         1Lai6lF2xYguOSUGM8Y1Mb/H0SAvJ1Skv805q87DbNM75cN+y8esUoqPC3IcsJ7Y7ArM
+         UW+N/uRJ9FsX+SgcfAhA826Ti9PgVRYL5HLUokSMdX2YAX5zt/znr8joKSuZtWRbj5pY
+         lvv7CyO5VFzTJrT5gwTplxPcKUHahe2bR/x5G2qWe6kth8YMmriE88/2iAPt8pXPyg4Z
+         PfqA==
+X-Gm-Message-State: AOAM5333IP+EXn6V/91ymyDFVF7CV40zVtqBCx9JAr0Jj15HoRwW7v46
+        M4wrukIqloPcNdR94prt7fAQgw==
+X-Google-Smtp-Source: ABdhPJwH9nc456YfHiJi2fnjqoiqcknCnXg4pOIY/9aaJ3LiJMef/3JDr9YjePbZZ+V+EStvxdYQUg==
+X-Received: by 2002:a17:90a:ba02:: with SMTP id s2mr10330216pjr.53.1611822731937;
+        Thu, 28 Jan 2021 00:32:11 -0800 (PST)
+Received: from chromium.org ([2620:15c:202:201:304c:5453:303a:8268])
+        by smtp.gmail.com with ESMTPSA id w14sm4263307pjl.38.2021.01.28.00.32.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Jan 2021 00:32:11 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20210126131239.8335-1-o.rempel@pengutronix.de> <20210126131239.8335-3-o.rempel@pengutronix.de>
-In-Reply-To: <20210126131239.8335-3-o.rempel@pengutronix.de>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 28 Jan 2021 09:24:08 +0100
-Message-ID: <CACRpkdYSdtwSZxicJ1Rxp_XkK1BstpnzMcV0JqXg+cac_+gSSw@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] counter: add IRQ or GPIO based pulse counter
-To:     Oleksij Rempel <o.rempel@pengutronix.de>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        David Jander <david@protonic.nl>,
-        Robin van der Gracht <robin@protonic.nl>,
-        linux-iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAPUE2uuf-7h2Zjvb7bVqPb+=KSMKfAV-vopey1XwP0U+AGRZAA@mail.gmail.com>
+References: <20210122225443.186184-1-swboyd@chromium.org> <20210122225443.186184-4-swboyd@chromium.org> <20210124173820.4528b9c9@archlinux> <CAPUE2uuQsa7=pjw+D=r0QtLGTd1kQa7X6VBVa73=gx47Vf7KDA@mail.gmail.com> <161160076017.76967.4467861058817044169@swboyd.mtv.corp.google.com> <CAPUE2uu555NT1=u=1Nb8WExT7RvK8mj5kBiDfGymHiAmoj2WCg@mail.gmail.com> <161161826068.76967.15170332425672601158@swboyd.mtv.corp.google.com> <CAPUE2uuf-7h2Zjvb7bVqPb+=KSMKfAV-vopey1XwP0U+AGRZAA@mail.gmail.com>
+Subject: Re: [PATCH 3/3] iio: proximity: Add a ChromeOS EC MKBP proximity driver
+From:   Stephen Boyd <swboyd@chromium.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>
+To:     Gwendal Grignou <gwendal@chromium.org>
+Date:   Thu, 28 Jan 2021 00:32:09 -0800
+Message-ID: <161182272981.76967.6597234301739813412@swboyd.mtv.corp.google.com>
+User-Agent: alot/0.9.1
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Oleksij,
+Quoting Gwendal Grignou (2021-01-26 12:59:50)
+> On Mon, Jan 25, 2021 at 3:44 PM Stephen Boyd <swboyd@chromium.org> wrote:
+> >
+> > instead of having to do
+> > an offset after the fact. For now I'll use ec_dev->last_event_time
+> > because this is only used on chromeos and that should work until
+> > userspace is changed, but in the future I think we'll need to have a way
+> > for this IIO device to be notified when the clock base changes in
+> > iio_device_set_clock() and then have this driver call into cros_ec to
+> > request that such a timestamp be made when this event is seen. Or even
+> > better have a way to request that cros_ec timestamp the event itself on
+> > the EC side, but I don't know if that's possible.
+> One way would be use the EC sensor stack that collect such timestamp,
+> but that would be more firmware changes.
+>=20
+> On second thought, to keep it simple and consistent with other IIO
+> drivers, I suggest to keep using iio_get_time_ns() when the sensor
+> clock is not CLOCK_BOOTTIME, ec_dev->last_event_time when it is.
 
-thanks for your patch!
-
-On Tue, Jan 26, 2021 at 2:15 PM Oleksij Rempel <o.rempel@pengutronix.de> wrote:
-
-> +       priv->irq = platform_get_irq(pdev,  0);
-> +       if (priv->irq < 0) {
-> +               dev_err(dev, "failed to map GPIO to IRQ: %d\n", priv->irq);
-> +               return priv->irq;
-> +       }
-> +
-> +       priv->gpio = devm_gpiod_get_optional(dev, NULL, GPIOD_IN);
-> +       if (IS_ERR(priv->gpio))
-> +               return dev_err_probe(dev, PTR_ERR(priv->gpio), "failed to get gpio\n");
-
-I would attempt to get the IRQ from the GPIO if not defined explicitly
-in the device tree.
-
-priv->gpio = devm_gpiod_get_optional(...)
-if (priv->gpio) {
-    /* Attempt to look up IRQ */
-    irq = gpiod_to_irq(priv->irq);
-}
-priv->irq = platfform_get_irq(...)
-if (priv->irq < 0 && irq > 0) {
-    /* Use the GPIO-related IRQ */
-    priv->irq = irq;
-} else if (priv->irq < 0) {
-   /* Error */
-}
-
-This way the example in the device tree binding which only defines
-a GPIO and no interrupt will work if the GPIO chip provides an
-IRQ mapping.
-
-Yours.
-Linus Walleij
+Ok I will make that change and send v3.

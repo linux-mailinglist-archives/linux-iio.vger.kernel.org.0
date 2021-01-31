@@ -2,31 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6616E309C3D
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Jan 2021 14:00:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EE24309C42
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Jan 2021 14:00:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231516AbhAaM7R (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 31 Jan 2021 07:59:17 -0500
-Received: from mail.kernel.org ([198.145.29.99]:53228 "EHLO mail.kernel.org"
+        id S230346AbhAaM7A (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 31 Jan 2021 07:59:00 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52820 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231514AbhAaLd5 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 31 Jan 2021 06:33:57 -0500
+        id S231406AbhAaLaP (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 31 Jan 2021 06:30:15 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D005F64E28;
-        Sun, 31 Jan 2021 11:21:46 +0000 (UTC)
-Date:   Sun, 31 Jan 2021 11:21:43 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 2772E64E2A;
+        Sun, 31 Jan 2021 11:26:51 +0000 (UTC)
+Date:   Sun, 31 Jan 2021 11:26:48 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Guoqing Chi <chi962464zy@163.com>
-Cc:     trix@redhat.com, linux-iio@vger.kernel.org, huyue2@yulong.com,
-        linux-kernel@vger.kernel.org, zhangwen@yulong.com,
-        chiguoqing@yulong.com
-Subject: Re: [PATCH v2 resend] iio: imu: bmi160: add mutex_lock for avoiding
- race
-Message-ID: <20210131112143.200cf70a@archlinux>
-In-Reply-To: <20210125015344.106-1-chi962464zy@163.com>
-References: <20210125015344.106-1-chi962464zy@163.com>
+To:     "Ye, Xiang" <xiang.ye@intel.com>
+Cc:     Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        jikos@kernel.org, linux-input@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] hid-sensor-common: Add relative sensitivity check
+Message-ID: <20210131112648.3299b2a0@archlinux>
+In-Reply-To: <20210128163549.GA12432@host>
+References: <20210120074706.23199-1-xiang.ye@intel.com>
+        <20210120074706.23199-3-xiang.ye@intel.com>
+        <20210124131442.0fc2577e@archlinux>
+        <7e136ebb914f71da3fcb90b8048f9f7dd8cdf0bf.camel@linux.intel.com>
+        <20210128163549.GA12432@host>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -35,145 +38,138 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 25 Jan 2021 09:53:44 +0800
-Guoqing Chi <chi962464zy@163.com> wrote:
+On Fri, 29 Jan 2021 00:35:49 +0800
+"Ye, Xiang" <xiang.ye@intel.com> wrote:
 
-> From: chiguoqing <chi962464zy@163.com>
+> Hi Srinivas andd Jonathan
 > 
-> Adding mutex_lock, when read and write reg need to use this lock to
-> avoid race.
+> Thanks for the review.
 > 
-> Signed-off-by: Guoqing Chi <chiguoqing@yulong.com>
-> Reviewed-by: Tom Rix <trix@redhat.com>
+> On Sun, Jan 24, 2021 at 08:20:12AM -0800, Srinivas Pandruvada wrote:
+> > On Sun, 2021-01-24 at 13:14 +0000, Jonathan Cameron wrote:  
+> > > On Wed, 20 Jan 2021 15:47:05 +0800
+> > > Ye Xiang <xiang.ye@intel.com> wrote:
+> > >   
+> > > > Some hid sensors may use relative sensitivity such as als sensor.
+> > > > This patch add relative sensitivity check for all hid-sensors.
+> > > > 
+> > > > Signed-off-by: Ye Xiang <xiang.ye@intel.com>
+> > > > ---
+> > > >  .../iio/common/hid-sensors/hid-sensor-attributes.c    | 11
+> > > > ++++++++++-
+> > > >  include/linux/hid-sensor-ids.h                        |  1 +
+> > > >  2 files changed, 11 insertions(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c 
+> > > > b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+> > > > index d349ace2e33f..b685c292a179 100644
+> > > > --- a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+> > > > +++ b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+> > > > @@ -480,7 +480,7 @@ int hid_sensor_parse_common_attributes(struct
+> > > > hid_sensor_hub_device *hsdev,
+> > > >  
+> > > >  	/*
+> > > >  	 * Set Sensitivity field ids, when there is no individual
+> > > > modifier, will
+> > > > -	 * check absolute sensitivity of data field
+> > > > +	 * check absolute sensitivity and relative sensitivity of data
+> > > > field
+> > > >  	 */
+> > > >  	for (i = 0; i < sensitivity_addresses_len && st-  
+> > > > >sensitivity.index < 0; i++) {  
+> > > >  		sensor_hub_input_get_attribute_info(hsdev,
+> > > > @@ -488,6 +488,15 @@ int hid_sensor_parse_common_attributes(struct
+> > > > hid_sensor_hub_device *hsdev,
+> > > >  				HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSIT
+> > > > IVITY_ABS |
+> > > >  					sensitivity_addresses[i],
+> > > >  				&st->sensitivity);
+> > > > +
+> > > > +		if (st->sensitivity.index >= 0)
+> > > > +			break;
+> > > > +
+> > > > +		sensor_hub_input_get_attribute_info(hsdev,
+> > > > +				HID_FEATURE_REPORT, usage_id,
+> > > > +				HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSIT
+> > > > IVITY_REL_PCT |
+> > > > +					sensitivity_addresses[i],
+> > > > +				&st->sensitivity);  
+> > > 
+> > > We can't provide the value to userspace without reflecting the
+> > > difference between
+> > > the two ways of expressing it.
+> > > 
+> > > It seems there are 3 ways sensitivity is expressed.
+> > > 1. Raw value in same units as the measurement (easy one and what is
+> > > currently reported)
+> > > 2. Percentage of range - also relatively easy to transform into the
+> > > same as 1.
+> > > 3. Percentage of prior reading..  This one doesn't fit in any
+> > > existing ABI, so
+> > >    unfortunately we'll have to invent something new along the lines
+> > > of
+> > >    *_hysteresis_relative   
+> 
+> yes, the 3th version sensitivity (Percentage of prior reading) is what we 
+> are using for als sensor now. the 1th version sensitivity is common used 
+> by other hid sensors. Do you have suggestion or reference about 
+> how to add *_hysteresis_relative field to iio model?
 
-Hi.  Looking at this again, I'm not entirely sure I understand what the
-race is.  Could you give any example?
+Follow through how elements of iio_chan_info_enum in
+include/linux/iio/types.h are used and you should see how to add a new
+one (basically add an entry to that and also the string to the
+right array in industrialio-core.c + document it in
+Documentation/ABI/testing/sysfs-bus-iio.
 
-Individual regmap accesses have their own internal protections
-against races.  We don't have an read modify write cycles that
-I can see here, so I don't think there are any races.
+The issue with putting this in is we are going to be 'fixing' the ABI for
+that ALS sensor which is going to cause problems for any userspace users
+of that interface... I have no idea how commonly this is used, but it is
+possible we'll have to leave that one as incorrect :(
 
-On another note however, there is a regmap_bulk_read into
-a variable on the stack which is a problem for spi.  Unlike i2c
-the spi patch in regmap for bulk_reads can be zero copy which
-means that the variable on the stack can be dma'd into.  That's
-a potential issue for some systems in which you can end up wiping
-out whatever else gets changed in the same cacheline.
+> 
+> > 
+> > This is why it was not added before when I developed.  But later few
+> > years back there was a patch to add this by one of our developer. There
+> > was some discussion, I thought it was decided it is OK to add.
+> > 
+> > But I agree, we should add new ABI as you suggested. Now almost every
+> > laptop has HID sensors, better to address this. 
+> >   
+> 
+> I think the add relative hystersis patch should be separated into a independent
+> patch series, for it's a independent function and need more effort for coding and 
+> testing. And I can submit the other two patch in this patch series first.
 
-To fix that, the variable should be in it's own cacheline. Either
-do that by using kmalloc etc to put it on the stack, or add a
-suitable buffer to priv, marked ___cacheline_aligned.  Though once
-you do that you will need locks to protect it as you've done
-here.
+Sure, if they are independent that should be fine.
+
+Thanks,
 
 Jonathan
 
-
-
-> ---
-> v2:Follow write function to fix read function.
-> Adding mutex init in core probe function.
-> Adding break in switch case at read and write function.
 > 
->  drivers/iio/imu/bmi160/bmi160.h      |  2 ++
->  drivers/iio/imu/bmi160/bmi160_core.c | 34 +++++++++++++++++++---------
->  2 files changed, 25 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/iio/imu/bmi160/bmi160.h b/drivers/iio/imu/bmi160/bmi160.h
-> index 32c2ea2d7112..0c189a8b5b53 100644
-> --- a/drivers/iio/imu/bmi160/bmi160.h
-> +++ b/drivers/iio/imu/bmi160/bmi160.h
-> @@ -3,9 +3,11 @@
->  #define BMI160_H_
->  
->  #include <linux/iio/iio.h>
-> +#include <linux/mutex.h>
->  #include <linux/regulator/consumer.h>
->  
->  struct bmi160_data {
-> +	struct mutex lock;
->  	struct regmap *regmap;
->  	struct iio_trigger *trig;
->  	struct regulator_bulk_data supplies[2];
-> diff --git a/drivers/iio/imu/bmi160/bmi160_core.c b/drivers/iio/imu/bmi160/bmi160_core.c
-> index 290b5ef83f77..e303378f4841 100644
-> --- a/drivers/iio/imu/bmi160/bmi160_core.c
-> +++ b/drivers/iio/imu/bmi160/bmi160_core.c
-> @@ -452,26 +452,32 @@ static int bmi160_read_raw(struct iio_dev *indio_dev,
->  	int ret;
->  	struct bmi160_data *data = iio_priv(indio_dev);
->  
-> +	mutex_lock(&data->lock);
->  	switch (mask) {
->  	case IIO_CHAN_INFO_RAW:
->  		ret = bmi160_get_data(data, chan->type, chan->channel2, val);
-> -		if (ret)
-> -			return ret;
-> -		return IIO_VAL_INT;
-> +		if (!ret)
-> +			ret = IIO_VAL_INT;
-> +		break;
->  	case IIO_CHAN_INFO_SCALE:
->  		*val = 0;
->  		ret = bmi160_get_scale(data,
->  				       bmi160_to_sensor(chan->type), val2);
-> -		return ret ? ret : IIO_VAL_INT_PLUS_MICRO;
-> +		if (!ret)
-> +			ret = IIO_VAL_INT_PLUS_MICRO;
-> +		break;
->  	case IIO_CHAN_INFO_SAMP_FREQ:
->  		ret = bmi160_get_odr(data, bmi160_to_sensor(chan->type),
->  				     val, val2);
-> -		return ret ? ret : IIO_VAL_INT_PLUS_MICRO;
-> +		if (!ret)
-> +			ret = IIO_VAL_INT_PLUS_MICRO;
-> +		break;
->  	default:
-> -		return -EINVAL;
-> +		ret = -EINVAL;
->  	}
-> +	mutex_unlock(&data->lock);
->  
-> -	return 0;
-> +	return ret;
->  }
->  
->  static int bmi160_write_raw(struct iio_dev *indio_dev,
-> @@ -479,19 +485,24 @@ static int bmi160_write_raw(struct iio_dev *indio_dev,
->  			    int val, int val2, long mask)
->  {
->  	struct bmi160_data *data = iio_priv(indio_dev);
-> +	int result;
->  
-> +	mutex_lock(&data->lock);
->  	switch (mask) {
->  	case IIO_CHAN_INFO_SCALE:
-> -		return bmi160_set_scale(data,
-> +		result = bmi160_set_scale(data,
->  					bmi160_to_sensor(chan->type), val2);
-> +		break;
->  	case IIO_CHAN_INFO_SAMP_FREQ:
-> -		return bmi160_set_odr(data, bmi160_to_sensor(chan->type),
-> +		result = bmi160_set_odr(data, bmi160_to_sensor(chan->type),
->  				      val, val2);
-> +		break;
->  	default:
-> -		return -EINVAL;
-> +		result = -EINVAL;
->  	}
-> +	mutex_unlock(&data->lock);
->  
-> -	return 0;
-> +	return result;
->  }
->  
->  static
-> @@ -838,6 +849,7 @@ int bmi160_core_probe(struct device *dev, struct regmap *regmap,
->  		return -ENOMEM;
->  
->  	data = iio_priv(indio_dev);
-> +	mutex_init(&data->lock);
->  	dev_set_drvdata(dev, indio_dev);
->  	data->regmap = regmap;
->  
+> > > 
+> > > 
+> > >   
+> > > >  	}
+> > > >  
+> > > >  	st->raw_hystersis = -1;
+> > > > diff --git a/include/linux/hid-sensor-ids.h b/include/linux/hid-
+> > > > sensor-ids.h
+> > > > index 3bbdbccc5805..ac631159403a 100644
+> > > > --- a/include/linux/hid-sensor-ids.h
+> > > > +++ b/include/linux/hid-sensor-ids.h
+> > > > @@ -149,6 +149,7 @@
+> > > >  /* Per data field properties */
+> > > >  #define HID_USAGE_SENSOR_DATA_MOD_NONE				
+> > > > 	0x00
+> > > >  #define HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSITIVITY_ABS		
+> > > > 0x1000
+> > > > +#define
+> > > > HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSITIVITY_REL_PCT            0xE
+> > > > 000
+> > > >  
+> > > >  /* Power state enumerations */
+> > > >  #define HID_USAGE_SENSOR_PROP_POWER_STATE_UNDEFINED_ENUM	0x20085
+> > > > 0  
+> >   
 

@@ -2,37 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CE40309AEB
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Jan 2021 08:17:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 59813309AF7
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Jan 2021 08:36:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229495AbhAaHQ3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 31 Jan 2021 02:16:29 -0500
-Received: from mga07.intel.com ([134.134.136.100]:38227 "EHLO mga07.intel.com"
+        id S229502AbhAaHg3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 31 Jan 2021 02:36:29 -0500
+Received: from mga01.intel.com ([192.55.52.88]:19103 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229474AbhAaHQR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 31 Jan 2021 02:16:17 -0500
-IronPort-SDR: BF/LEgrwbadlMWT3aud0yWHwKhWC0QaV2U6ChpI7TSYauLCNFg6uxpZKQlhaoiPkCU6En98Dji
- hfJxb1huwcPQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9880"; a="244656125"
+        id S229471AbhAaHgB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 31 Jan 2021 02:36:01 -0500
+IronPort-SDR: 4ZCABrrSHiC7qEBakMDnusBCgRw7EAE10ew/xVUivWWQAw/Ir3HtPXMAAM+i9a8of5GCm4lfCd
+ sGOqw8PB1jyg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9880"; a="199447121"
 X-IronPort-AV: E=Sophos;i="5.79,389,1602572400"; 
-   d="scan'208";a="244656125"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2021 23:15:12 -0800
-IronPort-SDR: uyC68IBMhV091J7f298dVt/JK7jy4ZpyAB0FAHffdPonCjTDQ5AQ/k2px0CEZfyPD/2cKeSYDP
- 6MhKn8LyhIVA==
+   d="scan'208";a="199447121"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2021 23:34:13 -0800
+IronPort-SDR: GqTSwjFIpJ/K+Lt8X27D3FV7tcvmIs2g1tB/l22/4wyfxMD3ND6RQwQj//6DihZvYjnnDEsdYW
+ KdRRnd4GhZQQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.79,389,1602572400"; 
-   d="scan'208";a="411339949"
+   d="scan'208";a="371148858"
 Received: from host.sh.intel.com (HELO host) ([10.239.154.115])
-  by fmsmga002.fm.intel.com with ESMTP; 30 Jan 2021 23:15:10 -0800
-Date:   Sun, 31 Jan 2021 15:16:12 +0800
+  by orsmga002.jf.intel.com with ESMTP; 30 Jan 2021 23:34:11 -0800
+Date:   Sun, 31 Jan 2021 15:35:14 +0800
 From:   "Ye, Xiang" <xiang.ye@intel.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     jikos@kernel.org, srinivas.pandruvada@linux.intel.com,
         linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v2] iio: hid-sensor-prox: Fix scale not correct issue
-Message-ID: <20210131071612.GA14631@host>
+Message-ID: <20210131073514.GA16368@host>
 References: <20210130102530.31064-1-xiang.ye@intel.com>
  <20210130191429.2c485212@archlinux>
 MIME-Version: 1.0
@@ -60,10 +60,11 @@ On Sat, Jan 30, 2021 at 07:14:29PM +0000, Jonathan Cameron wrote:
 > 
 > There was a bit of fuzz on this so please take a look at
 > my fixes-togreg branch and check it went in cleanly.
-Have checked, it's correct.
+Have checked fixes-toreg branch, the patch it's correct.
 
 Thanks
 Ye Xiang
+
 > 
 > 
 > > ---

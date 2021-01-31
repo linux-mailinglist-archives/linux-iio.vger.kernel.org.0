@@ -2,24 +2,26 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C6F06309D9A
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Jan 2021 16:36:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE7C6309EF0
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Jan 2021 21:33:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232452AbhAaPgF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 31 Jan 2021 10:36:05 -0500
-Received: from mail.kernel.org ([198.145.29.99]:47950 "EHLO mail.kernel.org"
+        id S229987AbhAaUdU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 31 Jan 2021 15:33:20 -0500
+Received: from foss.arm.com ([217.140.110.172]:37290 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232548AbhAaNs6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 31 Jan 2021 08:48:58 -0500
-Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BCF0F64E09;
-        Sun, 31 Jan 2021 13:11:47 +0000 (UTC)
-Date:   Sun, 31 Jan 2021 13:11:41 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
+        id S229728AbhAaUcu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 31 Jan 2021 15:32:50 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 867EF1042;
+        Sun, 31 Jan 2021 12:32:01 -0800 (PST)
+Received: from e120937-lin (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 354463F71A;
+        Sun, 31 Jan 2021 12:31:58 -0800 (PST)
+Date:   Sun, 31 Jan 2021 20:31:47 +0000
+From:   Cristian Marussi <cristian.marussi@arm.com>
 To:     Jyoti Bhayana <jbhayana@google.com>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
@@ -27,44 +29,65 @@ Cc:     Hartmut Knaack <knaack.h@gmx.de>,
         Rob Herring <robh@kernel.org>,
         Lukas Bulwahn <lukas.bulwahn@gmail.com>,
         linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        cristian.marussi@arm.com, sudeep.holla@arm.com,
-        egranata@google.com, mikhail.golubev@opensynergy.com,
-        Igor.Skalkin@opensynergy.com, Peter.hilber@opensynergy.com,
-        ankitarora@google.com
+        sudeep.holla@arm.com, egranata@google.com,
+        mikhail.golubev@opensynergy.com, Igor.Skalkin@opensynergy.com,
+        Peter.hilber@opensynergy.com, ankitarora@google.com
 Subject: Re: [RFC PATCH v4 1/1] iio/scmi: Adding support for IIO SCMI Based
  Sensors
-Message-ID: <20210131131141.468f1cc2@archlinux>
-In-Reply-To: <20210129221818.3540620-2-jbhayana@google.com>
+Message-ID: <20210131203147.GA8355@e120937-lin>
 References: <20210129221818.3540620-1-jbhayana@google.com>
-        <20210129221818.3540620-2-jbhayana@google.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+ <20210129221818.3540620-2-jbhayana@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210129221818.3540620-2-jbhayana@google.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 29 Jan 2021 22:18:18 +0000
-Jyoti Bhayana <jbhayana@google.com> wrote:
+Hi Jyoti
 
+a few remarks down below, but beside those, while testing this series on
+a JUNO board (so lacking any GYRO/ACCEL sensor, a limited test case for
+now) I spotted that you missed in this series to add a matching device
+to the SCMI core. (as spotted by Jonathan too in his v4 review)
+
+In other words in your actual codebase you should have something like
+this, somewhere:
+
+diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
+index 3f5e8a42373e..cd6e38a8d8d2 100644
+--- a/drivers/firmware/arm_scmi/driver.c
++++ b/drivers/firmware/arm_scmi/driver.c
+@@ -743,7 +743,7 @@ static struct scmi_prot_devnames devnames[] = {
+        { SCMI_PROTOCOL_SYSTEM, { "syspower" },},
+        { SCMI_PROTOCOL_PERF,   { "cpufreq" },},
+        { SCMI_PROTOCOL_CLOCK,  { "clocks" },},
+-       { SCMI_PROTOCOL_SENSOR, { "hwmon" },},
++       { SCMI_PROTOCOL_SENSOR, { "hwmon", "iiodev" },},
+        { SCMI_PROTOCOL_RESET,  { "reset" },},
+        { SCMI_PROTOCOL_VOLTAGE,  { "regulator" },},
+ };
+
+given that without this there's no chance the SCMI driver could be
+ever matched and probed by the SCMI core at first.
+
+So please commmit the above as a separate patch in this series, to have
+it working too in the upstream.
+
+Other comments below
+
+Thanks
+
+Cristian
+
+On Fri, Jan 29, 2021 at 10:18:18PM +0000, Jyoti Bhayana wrote:
 > This change provides ARM SCMI Protocol based IIO device.
 > This driver provides support for Accelerometer and Gyroscope using
 > SCMI Sensor Protocol extensions added in the SCMIv3.0 ARM specification
 > 
 > Signed-off-by: Jyoti Bhayana <jbhayana@google.com>
-
-A few minor things noticed on a fresh read through, but mostly I think
-we are down to figuring out how to deal with the range (as discussed
-in the thread continuing on v3).
-
-On another note, probably time to drop the RFC or give a bit more detail
-on why you think this isn't ready to be applied.
-
-Thanks,
-
-Jonathan
-
 > ---
 >  MAINTAINERS                                |   6 +
 >  drivers/iio/common/Kconfig                 |   1 +
@@ -163,8 +186,6 @@ Jonathan
 > + * System Control and Management Interface(SCMI) based IIO sensor driver
 > + *
 > + * Copyright (C) 2020 Google LLC
-Probably want to include 2021 given you are still making substantial changes ;)
-
 > + */
 > +
 > +#include <linux/delay.h>
@@ -181,23 +202,11 @@ Probably want to include 2021 given you are still making substantial changes ;)
 > +#include <linux/types.h>
 > +
 > +#define ilog10(x) (ilog2(x) / const_ilog2(10))
-
-That feels like it's probably not great for precision.
-
 > +#define UHZ_PER_HZ 1000000UL
 > +#define ODR_EXPAND(odr, uodr) (((odr) * 1000000ULL) + (uodr))
-
-Prefix these if driver specific.
-For those that aren't perhaps we can think about putting them in
-generic headers.
-
-
 > +#define MAX_NUM_OF_CHANNELS 4
 > +#define H32(x) (FIELD_GET(GENMASK_ULL(63, 32), (x)))
 > +#define L32(x) (FIELD_GET(GENMASK_ULL(31, 0), (x)))
-
-Can we use upper_32_bits() etc in stead of these?
-
 > +
 > +struct scmi_iio_priv {
 > +	struct scmi_handle *handle;
@@ -234,13 +243,16 @@ Can we use upper_32_bits() etc in stead of these?
 > +
 > +	if (!sensor->sensor_info->timestamped) {
 > +		time_ns = sensor_update->timestamp;
+
+If you decided to use the timestamp provided in the notification report,
+it is a ktime_t though, so it should be grabbed with something like:
+
+		time_ns = ktime_to_ns(sensor_update->timestamp);
+
 > +	} else {
 > +		/*
 > +		 * All the axes are supposed to have the same value for timestamp.
 > +		 *  We are just using the values from the Axis 0 here.
-
-Slightly odd indenting of comment here.
-
 > +		 */
 > +		time = sensor_update->readings[0].timestamp;
 > +
@@ -274,6 +286,9 @@ Slightly odd indenting of comment here.
 > +	if (sensor->sensor_info->timestamped)
 > +		sensor_config |= FIELD_PREP(SCMI_SENS_CFG_TSTAMP_ENABLED_MASK,
 > +					    SCMI_SENS_CFG_TSTAMP_ENABLE);
+
+Here sensor_config is not zeroed at definition time so still not initialized when ORed.
+
 > +
 > +	sensor_config |= FIELD_PREP(SCMI_SENS_CFG_SENSOR_ENABLED_MASK,
 > +				    SCMI_SENS_CFG_SENSOR_ENABLE);
@@ -685,13 +700,6 @@ Slightly odd indenting of comment here.
 > +		 * this driver only supports sensors whose minimum range
 > +		 * reported by SCMI Platform fits within lower 32 bits
 > +		 */
-
-As discussed in previous thread (after you sent this!) perhaps we just
-need to do the maths in here rather than rely on core handling of IIO_VAL_FRACTIONAL.
-That would give us a greater potential range.  There may still be values
-we can't represent, but it should be less restrictive that this
-assumption. (pity as this was neater!)
-
 > +		if (min_range_high != 0xFFFFFFFF)
 > +			return -EINVAL;
 > +
@@ -728,10 +736,6 @@ assumption. (pity as this was neater!)
 > +
 > +	sensor->freq_avail = devm_kzalloc(&iio_dev->dev,
 > +					  sizeof(u32) * (sensor->sensor_info->intervals.count * 2),
-
-Slight preference for sizeof(*sensor->freq_avail) *...
-as saves reviewer having to go check types match up.
-
 > +					  GFP_KERNEL);
 > +	if (!sensor->freq_avail)
 > +		return -ENOMEM;
@@ -787,10 +791,6 @@ as saves reviewer having to go check types match up.
 > +static int scmi_alloc_iiodev(struct device *dev, struct scmi_handle *handle,
 > +			     const struct scmi_sensor_info *sensor_info,
 > +			     struct iio_dev **scmi_iio_dev)
-
-Perhaps it would be nice to use PTR_ERR etc and have this function just return
-the struct iio_dev.   That would fit with more common form for allocation functions.
-
 > +{
 > +	struct iio_chan_spec *iio_channels;
 > +	struct scmi_iio_priv *sensor;
@@ -863,28 +863,16 @@ the struct iio_dev.   That would fit with more common form for allocation functi
 > +
 > +	if (!handle || !handle->sensor_ops) {
 > +		dev_err(dev, "SCMI device has no sensor interface\n");
-I'm going to guess we can't actually get here because the registration
-would't have happened if either of those are true?
-If so perhaps drop the error message.
-
 > +		return -EINVAL;
 > +	}
 > +
 > +	nr_sensors = handle->sensor_ops->count_get(handle);
 > +	if (!nr_sensors) {
 > +		dev_dbg(dev, "0 sensors found via SCMI bus\n");
--ENODEV maybe?
 > +		return -EINVAL;
 > +	}
 > +
 > +	dev_dbg(dev, "%d sensors found via SCMI bus\n", nr_sensors);
-
-Clear out any debug prints out that don't provide info that can't be obtained
-farily easily from elsewhere.  In this case they will either be registered
-or not and we'll get error messages.
-These sort of prints bitrot over time so we want to limit them to the truely
-useful.
-
 > +
 > +	for (i = 0; i < nr_sensors; i++) {
 > +		sensor_info = handle->sensor_ops->info_get(handle, i);
@@ -896,11 +884,26 @@ useful.
 > +		/* Skipping scalar sensor,as this driver only supports accel and gyro */
 > +		if (sensor_info->num_axis == 0)
 > +			continue;
-
-So there is a situation where this driver never creates anything?  In that path I'd
-like to see an -ENODEV error return.
-
 > +
+
+Given that this driver only handles multi-axes sensors of GYRO/ACCEL type,
+maybe here it would make sense to explicitly check also sensor_info->type to be
+of compatible type, similar to what you do already later against axes[0].type in
+scmi_alloc_iiodev()->scmi_iio_get_chan_type(): this way you can just skip a
+non-compatible (NON gyro or accel) multi-axes sensor here, without going further
+into scmi_alloc_iiodev().
+
+Moreover, as it now,  if you'd happen to receive from the SCMI core enumeration
+a list of sensors which includes some non-compatible multi-axes sensor you'd
+fail scmi_iio_get_chan_type() with -EINVAL and so insead of skipping such an
+unsupported sensor you'll end up failing the whole probe even though maybe some
+other supported sensors were indeed present in the list.
+
+(not sure this reasoning is consistent with what Jonathan said about
+returning a -ENODEV here when sensor is not handled..I'll add a comment
+on that other thread too)
+
+
 > +		err = scmi_alloc_iiodev(dev, handle, sensor_info,
 > +					&scmi_iio_dev);
 > +		if (err < 0) {
@@ -931,14 +934,6 @@ like to see an -ENODEV error return.
 > +
 > +static const struct scmi_device_id scmi_id_table[] = {
 > +	{ SCMI_PROTOCOL_SENSOR, "iiodev" },
-
-I'm curious on this.  What actually causes a match on that
-iiodev?  From digging around the scmi core am I right in thinking
-that this iiodev id needs to be explicitly listed?
-
-It would be good to include any changes needed there in this
-series.
-
 > +	{},
 > +};
 > +
@@ -955,4 +950,6 @@ series.
 > +MODULE_AUTHOR("Jyoti Bhayana <jbhayana@google.com>");
 > +MODULE_DESCRIPTION("SCMI IIO Driver");
 > +MODULE_LICENSE("GPL v2");
-
+> -- 
+> 2.30.0.365.g02bc693789-goog
+> 

@@ -2,174 +2,181 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EE24309C42
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Jan 2021 14:00:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D6CC0309C3E
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Jan 2021 14:00:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230346AbhAaM7A (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 31 Jan 2021 07:59:00 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52820 "EHLO mail.kernel.org"
+        id S231514AbhAaM7S convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Sun, 31 Jan 2021 07:59:18 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53322 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231406AbhAaLaP (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 31 Jan 2021 06:30:15 -0500
+        id S231463AbhAaLgs (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 31 Jan 2021 06:36:48 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2772E64E2A;
-        Sun, 31 Jan 2021 11:26:51 +0000 (UTC)
-Date:   Sun, 31 Jan 2021 11:26:48 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 6BD1264E10;
+        Sun, 31 Jan 2021 11:36:01 +0000 (UTC)
+Date:   Sun, 31 Jan 2021 11:35:57 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Ye, Xiang" <xiang.ye@intel.com>
-Cc:     Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        jikos@kernel.org, linux-input@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] hid-sensor-common: Add relative sensitivity check
-Message-ID: <20210131112648.3299b2a0@archlinux>
-In-Reply-To: <20210128163549.GA12432@host>
-References: <20210120074706.23199-1-xiang.ye@intel.com>
-        <20210120074706.23199-3-xiang.ye@intel.com>
-        <20210124131442.0fc2577e@archlinux>
-        <7e136ebb914f71da3fcb90b8048f9f7dd8cdf0bf.camel@linux.intel.com>
-        <20210128163549.GA12432@host>
+To:     "Sa, Nuno" <Nuno.Sa@analog.com>
+Cc:     "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+Subject: Re: [PATCH 0/4] Fix/Improve sync clock mode handling
+Message-ID: <20210131113557.0cba0496@archlinux>
+In-Reply-To: <CY4PR03MB2631C3338B5930546C5EB6C399BD9@CY4PR03MB2631.namprd03.prod.outlook.com>
+References: <20210121114954.64156-1-nuno.sa@analog.com>
+        <20210124142036.44f7d58f@archlinux>
+        <CY4PR03MB2631C3338B5930546C5EB6C399BD9@CY4PR03MB2631.namprd03.prod.outlook.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 29 Jan 2021 00:35:49 +0800
-"Ye, Xiang" <xiang.ye@intel.com> wrote:
+On Mon, 25 Jan 2021 09:16:19 +0000
+"Sa, Nuno" <Nuno.Sa@analog.com> wrote:
 
-> Hi Srinivas andd Jonathan
-> 
-> Thanks for the review.
-> 
-> On Sun, Jan 24, 2021 at 08:20:12AM -0800, Srinivas Pandruvada wrote:
-> > On Sun, 2021-01-24 at 13:14 +0000, Jonathan Cameron wrote:  
-> > > On Wed, 20 Jan 2021 15:47:05 +0800
-> > > Ye Xiang <xiang.ye@intel.com> wrote:
-> > >   
-> > > > Some hid sensors may use relative sensitivity such as als sensor.
-> > > > This patch add relative sensitivity check for all hid-sensors.
-> > > > 
-> > > > Signed-off-by: Ye Xiang <xiang.ye@intel.com>
-> > > > ---
-> > > >  .../iio/common/hid-sensors/hid-sensor-attributes.c    | 11
-> > > > ++++++++++-
-> > > >  include/linux/hid-sensor-ids.h                        |  1 +
-> > > >  2 files changed, 11 insertions(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c 
-> > > > b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
-> > > > index d349ace2e33f..b685c292a179 100644
-> > > > --- a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
-> > > > +++ b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
-> > > > @@ -480,7 +480,7 @@ int hid_sensor_parse_common_attributes(struct
-> > > > hid_sensor_hub_device *hsdev,
-> > > >  
-> > > >  	/*
-> > > >  	 * Set Sensitivity field ids, when there is no individual
-> > > > modifier, will
-> > > > -	 * check absolute sensitivity of data field
-> > > > +	 * check absolute sensitivity and relative sensitivity of data
-> > > > field
-> > > >  	 */
-> > > >  	for (i = 0; i < sensitivity_addresses_len && st-  
-> > > > >sensitivity.index < 0; i++) {  
-> > > >  		sensor_hub_input_get_attribute_info(hsdev,
-> > > > @@ -488,6 +488,15 @@ int hid_sensor_parse_common_attributes(struct
-> > > > hid_sensor_hub_device *hsdev,
-> > > >  				HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSIT
-> > > > IVITY_ABS |
-> > > >  					sensitivity_addresses[i],
-> > > >  				&st->sensitivity);
-> > > > +
-> > > > +		if (st->sensitivity.index >= 0)
-> > > > +			break;
-> > > > +
-> > > > +		sensor_hub_input_get_attribute_info(hsdev,
-> > > > +				HID_FEATURE_REPORT, usage_id,
-> > > > +				HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSIT
-> > > > IVITY_REL_PCT |
-> > > > +					sensitivity_addresses[i],
-> > > > +				&st->sensitivity);  
-> > > 
-> > > We can't provide the value to userspace without reflecting the
-> > > difference between
-> > > the two ways of expressing it.
-> > > 
-> > > It seems there are 3 ways sensitivity is expressed.
-> > > 1. Raw value in same units as the measurement (easy one and what is
-> > > currently reported)
-> > > 2. Percentage of range - also relatively easy to transform into the
-> > > same as 1.
-> > > 3. Percentage of prior reading..  This one doesn't fit in any
-> > > existing ABI, so
-> > >    unfortunately we'll have to invent something new along the lines
-> > > of
-> > >    *_hysteresis_relative   
-> 
-> yes, the 3th version sensitivity (Percentage of prior reading) is what we 
-> are using for als sensor now. the 1th version sensitivity is common used 
-> by other hid sensors. Do you have suggestion or reference about 
-> how to add *_hysteresis_relative field to iio model?
-
-Follow through how elements of iio_chan_info_enum in
-include/linux/iio/types.h are used and you should see how to add a new
-one (basically add an entry to that and also the string to the
-right array in industrialio-core.c + document it in
-Documentation/ABI/testing/sysfs-bus-iio.
-
-The issue with putting this in is we are going to be 'fixing' the ABI for
-that ALS sensor which is going to cause problems for any userspace users
-of that interface... I have no idea how commonly this is used, but it is
-possible we'll have to leave that one as incorrect :(
-
-> 
+> > -----Original Message-----
+> > From: Jonathan Cameron <jic23@kernel.org>
+> > Sent: Sunday, January 24, 2021 3:21 PM
+> > To: Sa, Nuno <Nuno.Sa@analog.com>
+> > Cc: devicetree@vger.kernel.org; linux-iio@vger.kernel.org; Rob
+> > Herring <robh+dt@kernel.org>; Peter Meerwald-Stadler
+> > <pmeerw@pmeerw.net>; Lars-Peter Clausen <lars@metafoo.de>;
+> > Hennerich, Michael <Michael.Hennerich@analog.com>; Ardelean,
+> > Alexandru <alexandru.Ardelean@analog.com>
+> > Subject: Re: [PATCH 0/4] Fix/Improve sync clock mode handling
 > > 
-> > This is why it was not added before when I developed.  But later few
-> > years back there was a patch to add this by one of our developer. There
-> > was some discussion, I thought it was decided it is OK to add.
 > > 
-> > But I agree, we should add new ABI as you suggested. Now almost every
-> > laptop has HID sensors, better to address this. 
+> > On Thu, 21 Jan 2021 12:49:50 +0100
+> > Nuno Sá <nuno.sa@analog.com> wrote:
 > >   
+> > > The first patch in this series is just a simple helper to lock/unlock
+> > > the device. Having these helpers make the code slightly neater  
+> > (IMHO).  
+> > >
+> > > The following patches introduces changes in the sampling frequency
+> > > calculation when sync scale/pps modes are used. First, it's important
+> > > to understand the purpose of this mode and how it should be used.  
+> > Let's  
+> > > say our part has an internal rate of 4250 (e.g adis1649x family) and  
+> > the  
+> > > user wants an output rate of 200SPS. Obviously, we can't use this
+> > > sampling rate and divide back down to get 200 SPS with decimation  
+> > on.  
+> > > Hence, we can use this mode to give an input clock of 1HZ, scale it to
+> > > something like 4200 or 4000 SPS and then use the decimation filter to  
+> > get  
+> > > the exact desired 200SPS. There are also some limits that should be
+> > > taken into account when scaling:
+> > >
+> > >  * For the devices in the adis16475 driver:
+> > >      - Input sync frequency range is 1 to 128 Hz
+> > >      - Native sample rate: 2 kSPS.  Optimal range: 1900-2100 sps
+> > >
+> > >  * For the adis1649x family (adis16480 driver):
+> > >     - Input sync frequency range is 1 to 128 Hz
+> > >     - Native sample rate: 4.25 kSPS.  Optimal range: 4000-4250 sps
+> > >
+> > > I'm not 100% convinced on how to handle the optimal minimum. For  
+> > now,  
+> > > I'm just throwing a warning saying we might get into trouble if we get  
+> > a  
+> > > value lower than that. I was also tempted to just return -EINVAL or
+> > > clamp the value. However, I know that there are ADI customers that
+> > > (for some reason) are using a sampling rate lower than the minimum
+> > > advised.  
+> > 
+> > So the opening question I'd have here is how critical is the actual
+> > userspace sampling rate to your users?   Often they don't mind
+> > getting a little more data than they asked for (say 200.5Hz when asking
+> > for 200) and can always read back the attribute after writing it to
+> > discover this has happened.  
 > 
-> I think the add relative hystersis patch should be separated into a independent
-> patch series, for it's a independent function and need more effort for coding and 
-> testing. And I can submit the other two patch in this patch series first.
+> Well, honestly I'm not really sure here. I can just say (from the info I got internally) that some
+> users are really using these parts with a data rate lower than the advised. However, I'd say
+> that this would depend on the use case. For some critical cases, I would expect that users really
+> want to have an exact sample rate. Though I'd argue that in those cases, they should know what
+> they are doing and provide an output rate that fits nicely (multiple of both the input clock and IMU
+> internal sample rate). And as you said, they can always readback the value to check if they are
+> getting something that is not really what they expect...
+> 
+> > As such, once you've discovered that value doesn't have an exact
+> > match, perhaps tweak the output data rate until it fits nicely?  
+> 
+> I did thought about this. The reason why I didn't went for it in this first version is because of those
+> who seems to really want to run the part at lower rates. Let's assume we have an input clock of
+> 1HZ and someone writes an output rate of 3000SPS. The only way to accomplish this is to set
+> sync_scale at 3000 and let the IMU run at 3000SPS with decimation off (DEC_RATE=0). If we are
+> going to tweak the output rate to fit nicely, we would have to force it to 4000SPS which is
+> significantly different from the desired 3000SPS.
 
-Sure, if they are independent that should be fine.
+Good point. If someone wants to do that there isn't much we can do
+to make it work nicely.  I'd argue they are wrong and move it to
+the nearest within the constraints, but that might be rather unexpected
+for them... 
 
-Thanks,
+I wonder if we do something ugly like have an extra control to
+say 'really do what I say even if it's horrible'.
+That would mean we'd get what 'most' users expect (I hope) in that
+it's within the documented range, but provide the control to those
+who want to do something horrible..  Not nice, what do you think?
+
+> 
+> > A bit of quick investigation suggests (by my wife who happened
+> > to be sat across the room) suggests that you have a hideous set
+> > of local minima so your best bet is to brute force search
+> > (not that bad and we don't expect to change this a lot!)  
+> 
+> Hmm, not sure what do you have in mind here :)?
+
+You have two controllable parameters both of which are integers.  As such
+there isn't a nice easy 'right' answer for what combination to use.
+For example, if we have a case where there is no right answer, you
+will have to search for every possible multiplier, find the best divisor
+and check how far that is above the desired frequency.  Of those
+find the smallest one (best option given constraints).
 
 Jonathan
 
 > 
-> > > 
-> > > 
-> > >   
-> > > >  	}
-> > > >  
-> > > >  	st->raw_hystersis = -1;
-> > > > diff --git a/include/linux/hid-sensor-ids.h b/include/linux/hid-
-> > > > sensor-ids.h
-> > > > index 3bbdbccc5805..ac631159403a 100644
-> > > > --- a/include/linux/hid-sensor-ids.h
-> > > > +++ b/include/linux/hid-sensor-ids.h
-> > > > @@ -149,6 +149,7 @@
-> > > >  /* Per data field properties */
-> > > >  #define HID_USAGE_SENSOR_DATA_MOD_NONE				
-> > > > 	0x00
-> > > >  #define HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSITIVITY_ABS		
-> > > > 0x1000
-> > > > +#define
-> > > > HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSITIVITY_REL_PCT            0xE
-> > > > 000
-> > > >  
-> > > >  /* Power state enumerations */
-> > > >  #define HID_USAGE_SENSOR_PROP_POWER_STATE_UNDEFINED_ENUM	0x20085
-> > > > 0  
-> >   
+> - Nuno Sá
+> 
+> > >
+> > > That said, the patch for the adis16480 driver is a fix as this mode was
+> > > being wrongly handled. There should not be a "separation" between  
+> > using  
+> > > the sync_scale and the dec_rate registers. The way things were  
+> > being done,  
+> > > we could easily get into a situation where the part could be running  
+> > with  
+> > > an internal rate way lower than the optimal minimum.
+> > >
+> > > For the adis16475 drivers, things were not really wrong. They were  
+> > just  
+> > > not optimal as we were forcing users to specify the IMU scaled  
+> > internal  
+> > > rate once in the devicetree. Calculating things at runtime gives much
+> > > more flexibility to choose the output rate.
+> > >
+> > > Nuno Sá (4):
+> > >   iio: adis: add helpers for locking
+> > >   iio: adis16480: fix pps mode sampling frequency math
+> > >   iio: adis16475: improve sync scale mode handling
+> > >   dt-bindings: adis16475: remove property
+> > >
+> > >  .../bindings/iio/imu/adi,adis16475.yaml       |   9 --
+> > >  drivers/iio/imu/adis16475.c                   | 110 ++++++++++++----
+> > >  drivers/iio/imu/adis16480.c                   | 120 +++++++++++++-----
+> > >  include/linux/iio/imu/adis.h                  |  10 ++
+> > >  4 files changed, 178 insertions(+), 71 deletions(-)
+> > >  
+> 
 

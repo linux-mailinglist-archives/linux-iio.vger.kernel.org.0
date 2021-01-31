@@ -2,107 +2,70 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A4C23309C4B
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Jan 2021 14:01:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D57C9309D1D
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Jan 2021 15:45:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231991AbhAaNBN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 31 Jan 2021 08:01:13 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56066 "EHLO mail.kernel.org"
+        id S231991AbhAaOmu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 31 Jan 2021 09:42:50 -0500
+Received: from mga07.intel.com ([134.134.136.100]:11388 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230094AbhAaMm2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 31 Jan 2021 07:42:28 -0500
-Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 246C464DDF;
-        Sun, 31 Jan 2021 12:41:42 +0000 (UTC)
-Date:   Sun, 31 Jan 2021 12:41:38 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Stephen Boyd <swboyd@chromium.org>
-Cc:     Enric Balletbo Serra <eballetbo@gmail.com>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH v3 2/3] dt-bindings: iio: Add cros ec proximity yaml doc
-Message-ID: <20210131124138.740d4f7f@archlinux>
-In-Reply-To: <161185389256.76967.5895202960837001560@swboyd.mtv.corp.google.com>
-References: <20210128084011.3270281-1-swboyd@chromium.org>
-        <20210128084011.3270281-3-swboyd@chromium.org>
-        <CAFqH_53aRCVfRqHCgPoqUvmydybCiVeQdw5bHOAQ6pZr03irwg@mail.gmail.com>
-        <161185389256.76967.5895202960837001560@swboyd.mtv.corp.google.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        id S232760AbhAaOkp (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 31 Jan 2021 09:40:45 -0500
+IronPort-SDR: rZFKGz5Ln4nS9Xh2bhd65NaFq2pLRj0IfXQcNoiOK/tzXRhcTt6TZVT5dx8BmBXY42MSLZ7gbp
+ ihhdYqVGaFJA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9880"; a="244675632"
+X-IronPort-AV: E=Sophos;i="5.79,390,1602572400"; 
+   d="scan'208";a="244675632"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2021 06:40:01 -0800
+IronPort-SDR: yhYXlkRaILyNxEsopabfeqhVxeONcGSSqfU0oQo4jvtZ1VrXnC3mD7OJAMwwRqWSfAbITfW1+/
+ 5UyMiI5ytwJw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.79,390,1602572400"; 
+   d="scan'208";a="431805540"
+Received: from host.sh.intel.com ([10.239.154.115])
+  by orsmga001.jf.intel.com with ESMTP; 31 Jan 2021 06:39:58 -0800
+From:   Ye Xiang <xiang.ye@intel.com>
+To:     jikos@kernel.org, jic23@kernel.org,
+        srinivas.pandruvada@linux.intel.com
+Cc:     linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Ye Xiang <xiang.ye@intel.com>
+Subject: [PATCH v2 0/2] resolve read hystersis return invalid argument issue for hid sensors
+Date:   Sun, 31 Jan 2021 22:40:56 +0800
+Message-Id: <20210131144058.11834-1-xiang.ye@intel.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 28 Jan 2021 09:11:32 -0800
-Stephen Boyd <swboyd@chromium.org> wrote:
+This patch series move get sensitivity attribute to common layer and
+resolve read hystersis return invalid argument issue for hid sensors als,
+incli-3d, rotation, and press on intel ISH Platform.
 
-> Quoting Enric Balletbo Serra (2021-01-28 01:44:23)
-> > Missatge de Stephen Boyd <swboyd@chromium.org> del dia dj., 28 de gen.
-> > 2021 a les 9:45:  
-> > > +
-> > > +  label:
-> > > +    description: Name for proximity sensor
-> > > +
-> > > +required:
-> > > +  - compatible
-> > > +
-> > > +unevaluatedProperties: false
-> > > +additionalProperties: false
-> > > +
-> > > +examples:
-> > > +  - |  
-> > 
-> > For this kind of devices it is preferred to see a complete example
-> > rather than pieces spread around different yaml. This helps proper
-> > binding parsing.
-> > 
-> >     spi0 {
-> >       #address-cells = <1>;
-> >       #size-cells = <0>;
-> > 
-> >       cros_ec: ec@0 {
-> >         compatible = "google,cros-ec-spi";
-> >         reg = <0>;  
-> 
-> What if it isn't on spi bus though? I'd rather leave it as is and let
-> the google,cros-ec.yaml binding indicate that it is a child of the EC
-> node.
-It's an example. So definitely doesn't rule out other options than spi.
+---
+v2:
+  - separate the add relative sensitivity patch to the next patch series.
 
-I think I'd also prefer to see the full example here to exercise more
-of the relevant bindings when doing tests.
+Ye Xiang (2):
+  iio: hid-sensors: Move get sensitivity attribute to hid-sensor-common
+  hid-sensors: Add more data fields for sensitivity checking
 
-Mind you this is Rob's area, so I'll defer to Rob for preference.
-@Rob?
-> 
-> >   
-> > > +    proximity {
-> > > +        compatible = "google,cros-ec-mkbp-proximity";
-> > > +        label = "proximity-wifi-lte";
-> > > +    };
-> > > diff --git a/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml b/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
-> > > index 76bf16ee27ec..479a9f15de32 100644
-> > > --- a/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
-> > > +++ b/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
-> > > @@ -94,6 +94,9 @@ properties:
-> > >    keyboard-controller:
-> > >      $ref: "/schemas/input/google,cros-ec-keyb.yaml#"
-> > >
-> > > +  proximity:
-> > > +    $ref: "/schemas/iio/proximity/google,cros-ec-mkbp-proximity.yaml#"
-> > > +
-> > >    codecs:
-> > >      type: object
-> > >      additionalProperties: false  
+ drivers/iio/accel/hid-sensor-accel-3d.c       | 23 ++++++-------
+ .../hid-sensors/hid-sensor-attributes.c       | 17 +++++++++-
+ drivers/iio/gyro/hid-sensor-gyro-3d.c         | 19 ++++-------
+ drivers/iio/humidity/hid-sensor-humidity.c    | 16 ++++------
+ drivers/iio/light/hid-sensor-als.c            | 20 +++++-------
+ drivers/iio/light/hid-sensor-prox.c           | 27 +++++-----------
+ drivers/iio/magnetometer/hid-sensor-magn-3d.c | 32 ++++++-------------
+ drivers/iio/orientation/hid-sensor-incl-3d.c  | 20 +++++-------
+ drivers/iio/orientation/hid-sensor-rotation.c | 24 ++++++--------
+ .../position/hid-sensor-custom-intel-hinge.c  | 20 ++++--------
+ drivers/iio/pressure/hid-sensor-press.c       | 20 +++++-------
+ .../iio/temperature/hid-sensor-temperature.c  | 16 ++++------
+ drivers/rtc/rtc-hid-sensor-time.c             |  4 ++-
+ include/linux/hid-sensor-hub.h                |  4 ++-
+ 14 files changed, 111 insertions(+), 151 deletions(-)
+
+-- 
+2.17.1
 

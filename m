@@ -2,107 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2053930A1AA
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Feb 2021 06:53:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EDE230A2CA
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Feb 2021 08:44:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231560AbhBAFwH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 1 Feb 2021 00:52:07 -0500
-Received: from mga11.intel.com ([192.55.52.93]:19171 "EHLO mga11.intel.com"
+        id S230174AbhBAHnp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 1 Feb 2021 02:43:45 -0500
+Received: from mga12.intel.com ([192.55.52.136]:46032 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231695AbhBAFtT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 1 Feb 2021 00:49:19 -0500
-IronPort-SDR: ojb9jcuTeRFRC3xNV45FtKwFZAnd85uFJ/PiktNUEmWY8h8yOBy0tBDdZOxitB94ZpwalOFVCv
- P6ZI3WXnUoPQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9881"; a="177129617"
+        id S229736AbhBAHnp (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 1 Feb 2021 02:43:45 -0500
+IronPort-SDR: MHrAxa9h54kj45sYnG6kWiQGlPXy2CN2hcXK27NwJ+sIZfkabFTVHVQymr4AxmveHJqY3EUGWq
+ VP8b3nQ+pcVQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9881"; a="159813871"
 X-IronPort-AV: E=Sophos;i="5.79,391,1602572400"; 
-   d="scan'208";a="177129617"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2021 21:48:37 -0800
-IronPort-SDR: DzMQod02KVOP5s3p8IHkdZuP5cknefoZYSy/zT9dRLdsY7kpUjLRrGsbaaAgJTEjXKY6KqubKa
- scc3v22Mq3Pg==
+   d="scan'208";a="159813871"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2021 23:43:04 -0800
+IronPort-SDR: jyN6eaTycdkE6MwnOjJbiLa4rneI1rBfuQtlTE2acndDbQeImO1+4QIaO43nsyszutESCRvbxo
+ vdTvXV3ZFPtQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.79,391,1602572400"; 
-   d="scan'208";a="506706387"
+   d="scan'208";a="432235766"
 Received: from host.sh.intel.com ([10.239.154.115])
-  by orsmga004.jf.intel.com with ESMTP; 31 Jan 2021 21:48:36 -0800
+  by orsmga001.jf.intel.com with ESMTP; 31 Jan 2021 23:43:01 -0800
 From:   Ye Xiang <xiang.ye@intel.com>
 To:     jikos@kernel.org, jic23@kernel.org,
         srinivas.pandruvada@linux.intel.com
 Cc:     linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org, Ye Xiang <xiang.ye@intel.com>
-Subject: [PATCH v2 2/2] hid-sensors: Add more data fields for sensitivity checking
-Date:   Mon,  1 Feb 2021 13:49:21 +0800
-Message-Id: <20210201054921.18214-3-xiang.ye@intel.com>
+Subject: [PATCH 0/3] Add relative hysteresis support for hid sensors
+Date:   Mon,  1 Feb 2021 15:43:55 +0800
+Message-Id: <20210201074358.18435-1-xiang.ye@intel.com>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210201054921.18214-1-xiang.ye@intel.com>
-References: <20210201054921.18214-1-xiang.ye@intel.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Before, when reading/writing the hysteresis of als, incli-3d, press, and
-rotation sensor, we will get invalid argument error.
+Currently, hid sensor als are using the relative hysteresis.
+This patch series add the relative hysteresis for hid sensors.
 
-This patch add more sensitivity data fields for these sensors, so that
-these sensors can get sensitivity index and return correct hysteresis
-value.
+Ye Xiang (3):
+  iio: Add relative sensitivity support
+  iio: hid-sensor-als: Add relative hysteresis support
+  iio: Add relative hysteresis in ABI documentation
 
-Signed-off-by: Ye Xiang <xiang.ye@intel.com>
----
- drivers/iio/light/hid-sensor-als.c            | 1 +
- drivers/iio/orientation/hid-sensor-incl-3d.c  | 1 +
- drivers/iio/orientation/hid-sensor-rotation.c | 1 +
- drivers/iio/pressure/hid-sensor-press.c       | 1 +
- 4 files changed, 4 insertions(+)
+ Documentation/ABI/testing/sysfs-bus-iio       |  8 ++
+ .../hid-sensors/hid-sensor-attributes.c       | 75 ++++++++++++++++++-
+ drivers/iio/industrialio-core.c               |  1 +
+ drivers/iio/light/hid-sensor-als.c            | 14 +++-
+ include/linux/hid-sensor-hub.h                |  5 ++
+ include/linux/hid-sensor-ids.h                |  1 +
+ include/linux/iio/types.h                     |  1 +
+ 7 files changed, 99 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iio/light/hid-sensor-als.c b/drivers/iio/light/hid-sensor-als.c
-index 8bf6e9e0a0e0..afcdb424bfb8 100644
---- a/drivers/iio/light/hid-sensor-als.c
-+++ b/drivers/iio/light/hid-sensor-als.c
-@@ -41,6 +41,7 @@ struct als_state {
- 
- static const u32 als_sensitivity_addresses[] = {
- 	HID_USAGE_SENSOR_DATA_LIGHT,
-+	HID_USAGE_SENSOR_LIGHT_ILLUM,
- };
- 
- /* Channel definitions */
-diff --git a/drivers/iio/orientation/hid-sensor-incl-3d.c b/drivers/iio/orientation/hid-sensor-incl-3d.c
-index 6e69f6e673cc..7af48d336285 100644
---- a/drivers/iio/orientation/hid-sensor-incl-3d.c
-+++ b/drivers/iio/orientation/hid-sensor-incl-3d.c
-@@ -49,6 +49,7 @@ static const u32 incl_3d_addresses[INCLI_3D_CHANNEL_MAX] = {
- 
- static const u32 incl_3d_sensitivity_addresses[] = {
- 	HID_USAGE_SENSOR_DATA_ORIENTATION,
-+	HID_USAGE_SENSOR_ORIENT_TILT,
- };
- 
- /* Channel definitions */
-diff --git a/drivers/iio/orientation/hid-sensor-rotation.c b/drivers/iio/orientation/hid-sensor-rotation.c
-index 03d2845a7b2c..b0245b3b7ffc 100644
---- a/drivers/iio/orientation/hid-sensor-rotation.c
-+++ b/drivers/iio/orientation/hid-sensor-rotation.c
-@@ -33,6 +33,7 @@ struct dev_rot_state {
- 
- static const u32 rotation_sensitivity_addresses[] = {
- 	HID_USAGE_SENSOR_DATA_ORIENTATION,
-+	HID_USAGE_SENSOR_ORIENT_QUATERNION,
- };
- 
- /* Channel definitions */
-diff --git a/drivers/iio/pressure/hid-sensor-press.c b/drivers/iio/pressure/hid-sensor-press.c
-index 8cac2c94e75a..c416d261e3e3 100644
---- a/drivers/iio/pressure/hid-sensor-press.c
-+++ b/drivers/iio/pressure/hid-sensor-press.c
-@@ -31,6 +31,7 @@ struct press_state {
- 
- static const u32 press_sensitivity_addresses[] = {
- 	HID_USAGE_SENSOR_DATA_ATMOSPHERIC_PRESSURE,
-+	HID_USAGE_SENSOR_ATMOSPHERIC_PRESSURE
- };
- 
- /* Channel definitions */
 -- 
 2.17.1
 

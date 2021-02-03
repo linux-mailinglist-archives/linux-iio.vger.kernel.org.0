@@ -2,170 +2,147 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD01F30D538
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Feb 2021 09:31:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EAAC30D6F9
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Feb 2021 11:04:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232563AbhBCIae (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 3 Feb 2021 03:30:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34082 "EHLO
+        id S233753AbhBCKC7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 3 Feb 2021 05:02:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232512AbhBCIad (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 Feb 2021 03:30:33 -0500
-Received: from mail-oi1-x22d.google.com (mail-oi1-x22d.google.com [IPv6:2607:f8b0:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE90FC061573;
-        Wed,  3 Feb 2021 00:29:52 -0800 (PST)
-Received: by mail-oi1-x22d.google.com with SMTP id k25so25914707oik.13;
-        Wed, 03 Feb 2021 00:29:52 -0800 (PST)
+        with ESMTP id S233622AbhBCKC5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 Feb 2021 05:02:57 -0500
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B06D1C061573;
+        Wed,  3 Feb 2021 02:02:17 -0800 (PST)
+Received: by mail-pg1-x52b.google.com with SMTP id s23so15712772pgh.11;
+        Wed, 03 Feb 2021 02:02:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Fw7mhJ/ALXeJZR+44OFAC0sbpDziXpuDZAubERRVzFg=;
-        b=Gf4D99yyAGOZ90xVmedTlmHqUPxdM+6hM26isYs20UlmBRFXHcIHNUMpo72aolFpcP
-         8D/v/2G6lKq9u/93G2AcMlmE9SPD2mgCAKX7NbV4qrJ3YRlFmvD4BPVXeWq301FClRsM
-         y9jxMdbOdkQXEwmh70WVeWxMH3kFRroAyUf3Jh893QymPpT2Jn95lQ1XNn5YDNnXFRSX
-         4VDvaQfBcQGtB32mHEEPokjc0knJ37BSW2fajRDHzxR6MQna/o9SMl4902qbGe10iHY7
-         zisckfJj2pnkG+quwEg6t03KcL2TVS0yN98jEoVji33sE7MCDp+zhKLLQtyqKRZnrgRT
-         pCXw==
+        bh=J2oISiYeGVu9ZpGUGgNNH2LGtwu+nmXL1dEBI84TFMM=;
+        b=W+1GldZsRoSu3m/0ipd3CCiVm4f8is+x3pSwGQwqTXOG0nRj0cLxX2xW4EbF6qJrfd
+         CAZdVXqimcETYd0G5B1J3IqfqENiCQsxGU/NdovEJX2rr5881ffBLMRy3grwkLnjMlwg
+         1SZnp4oC/GGmhU4KDvA8sYzapKZPC4XeBTzRbq5C9CVzeuyaeMRYPkXdKaN19pEIzAz0
+         Oax4tmJ9475sK1JLvaCcgyTu70CuExP7CP1IT1L+2BSQeaYxZ9QvrUwSwgY6WB6N6g58
+         Pe0er4Jbdv08inotyKuuUXJf0XclpttapQvN0GdUqdkrPAmihgRw4VqQl4K8MiatyepO
+         cXnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Fw7mhJ/ALXeJZR+44OFAC0sbpDziXpuDZAubERRVzFg=;
-        b=g6yU4I4Bf1U/1cKCm8sEbUKoGFmplAaFr+vX7XZS43G2cDh4AF6by5orsoWLvcXFLf
-         C/nMit/0MX5H9qF1Uwj7duwEMl1mR39Ch353bfVFlMlNXbpBj5vMeT/uoRXsTzk/gbYr
-         4zkQQNpxKsGwd0SgNCbTM0TLMaOj0ln+vgV2q+FGPELnQHKtc4RONKQ0Cj6k2t5CLtR7
-         1uMPwN0f8ei+6pIJS/MEQENRKIUF18ggioc/SMKDNGVxHdUzL4HEVdAeHH2X28lOShB+
-         0ouQsE2M4QL9rhHowlL1XGdQ/FM2NROCKthytLsZQKN0jeSvtK51c2jSXIGlWQNY0oZW
-         CIoQ==
-X-Gm-Message-State: AOAM533ceS+bjga10ETmI+hU1yRe1L3ULIHSF56LFt/ZPsTIY04k0f6p
-        xFdk3wNuGTn2giiXoRUvO1jtH90s4T576Ruj3nU=
-X-Google-Smtp-Source: ABdhPJyoWWtBttqrhsG53CwbEqSmRLh1H8YTHimPEVkBZhFUCZ+sKisqTESaxWyAlhg6iF9K81LGmeIyGJN5AGQfyK0=
-X-Received: by 2002:aca:4454:: with SMTP id r81mr1268682oia.129.1612340992276;
- Wed, 03 Feb 2021 00:29:52 -0800 (PST)
+        bh=J2oISiYeGVu9ZpGUGgNNH2LGtwu+nmXL1dEBI84TFMM=;
+        b=pbvyFTI0WxqX3zAmZm/GDSBMTsalg4pcS9gFeW0eWqLuBv0+QYjcQao/0UqOOfT9Ul
+         X1VnPmSP7O+/CvmRgfeUWqKM5goOsnsuQaaph4ZVaKqbzCg7x1J7W+frv5phxjbUXAVt
+         OTKXyukht6f6liFIiiXAENLA7ag0P7zjoTUXQwKO1lfVdWBwC8i4BnCSz/LPuXsW8L3q
+         6QcUhqrHWHhfX7ZfrSdHBuz+TjLiHN6ZBlET7HeGlkZoaeyrtRmkRlThnuDLwXTVtkIk
+         KjzGcLbDJeGQsasN5EY6P2XxzX+KwyWOCYoD2OElKxza4f7WcATDQbiKVSdhRPaFE+VY
+         UKOw==
+X-Gm-Message-State: AOAM531E7V5I65rFEoJle2t+pV+MGZI3DNHDipInMgQ3z3tJiNy6vHZD
+        Xgx3tvE75jB/5JwcuJlJjcJZrqRE/Uheu0iUDlw0Q1N600FAYw==
+X-Google-Smtp-Source: ABdhPJwC/eP0avRMXCOsyF4LK/8HSFs7KIop3/ije5w4NAmsjniRFoSe6/SVwmUgDLLqkwGBR1Tn/MbEb6Qn2X1rmjg=
+X-Received: by 2002:a65:644b:: with SMTP id s11mr2839544pgv.4.1612346537161;
+ Wed, 03 Feb 2021 02:02:17 -0800 (PST)
 MIME-Version: 1.0
-References: <20210202184434.42644-1-swboyd@chromium.org> <20210202184434.42644-3-swboyd@chromium.org>
-In-Reply-To: <20210202184434.42644-3-swboyd@chromium.org>
-From:   Enric Balletbo Serra <eballetbo@gmail.com>
-Date:   Wed, 3 Feb 2021 09:29:40 +0100
-Message-ID: <CAFqH_52xjAmjWu3DFuFyqQBDYFccZXYp=8wcXVOr4H5deRa2bw@mail.gmail.com>
-Subject: Re: [PATCH v4 2/3] dt-bindings: iio: Add cros ec proximity yaml doc
-To:     Stephen Boyd <swboyd@chromium.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
+References: <20210201145105.20459-1-alexandru.ardelean@analog.com> <20210201145105.20459-7-alexandru.ardelean@analog.com>
+In-Reply-To: <20210201145105.20459-7-alexandru.ardelean@analog.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 3 Feb 2021 12:02:00 +0200
+Message-ID: <CAHp75VcTk-Lv_Hr0VHnd-r2XoVeRHEocwVyg6kKdWYrkHnf0gg@mail.gmail.com>
+Subject: Re: [PATCH v3 06/11] iio: core: merge buffer/ & scan_elements/ attributes
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         linux-iio <linux-iio@vger.kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
+        "Bogdan, Dragos" <dragos.bogdan@analog.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Stephen,
+On Mon, Feb 1, 2021 at 5:28 PM Alexandru Ardelean
+<alexandru.ardelean@analog.com> wrote:
+>
+> With this change, we create a new directory for the IIO device called
+> buffer0, under which both the old buffer/ and scan_elements/ are stored.
+>
+> This is done to simplify the addition of multiple IIO buffers per IIO
+> device. Otherwise we would need to add a bufferX/ and scan_elementsX/
+> directory for each IIO buffer.
+> With the current way of storing attribute groups, we can't have directories
+> stored under each other (i.e. scan_elements/ under buffer/), so the best
+> approach moving forward is to merge their attributes.
+>
+> The old/legacy buffer/ & scan_elements/ groups are not stored on the opaque
+> IIO device object. This way the IIO buffer can have just a single
+> attribute_group object, saving a bit of memory when adding multiple IIO
+> buffers.
 
-Missatge de Stephen Boyd <swboyd@chromium.org> del dia dt., 2 de febr.
-2021 a les 19:53:
->
-> Some cros ECs support a front proximity MKBP event via
-> 'EC_MKBP_FRONT_PROXIMITY'. Add a DT binding to document this feature via
-> a node that is a child of the main cros_ec device node. Devices that
-> have this ability will describe this in firmware.
->
-> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> Cc: Benson Leung <bleung@chromium.org>
-> Cc: Guenter Roeck <groeck@chromium.org>
-> Cc: Douglas Anderson <dianders@chromium.org>
-> Cc: Gwendal Grignou <gwendal@chromium.org>
-> Cc: <devicetree@vger.kernel.org>
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Cc: Enric Balletbo i Serra <enric.balletbo@collabora.com>
-> Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+...
 
-Thanks for adding a full example, IIRC this is preferred by Rob and we
-are also trying to apply this rule on all the cros-ec related
-bindings, so the dt_bindings_check really checks a full example. From
-my side looks good to me.
+> +static int iio_buffer_register_legacy_sysfs_groups(struct iio_dev *indio_dev,
+> +                                                  struct attribute **buffer_attrs,
+> +                                                  int buffer_attrcount,
+> +                                                  int scan_el_attrcount)
+> +{
+> +       struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+> +       struct attribute_group *group;
+> +       int ret;
+> +
+> +       group = &iio_dev_opaque->legacy_buffer_group;
 
-Reviewed-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+> +       group->attrs = kcalloc(buffer_attrcount + 1,
+> +                              sizeof(struct attribute *), GFP_KERNEL);
+> +       if (!group->attrs)
+> +               return -ENOMEM;
+> +
+> +       memcpy(group->attrs, buffer_attrs,
+> +              buffer_attrcount * sizeof(struct attribute *));
 
-> ---
->  .../google,cros-ec-mkbp-proximity.yaml        | 46 +++++++++++++++++++
->  .../bindings/mfd/google,cros-ec.yaml          |  3 ++
->  2 files changed, 49 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/proximity/google,cros-ec-mkbp-proximity.yaml
->
-> diff --git a/Documentation/devicetree/bindings/iio/proximity/google,cros-ec-mkbp-proximity.yaml b/Documentation/devicetree/bindings/iio/proximity/google,cros-ec-mkbp-proximity.yaml
-> new file mode 100644
-> index 000000000000..d82b929af445
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/proximity/google,cros-ec-mkbp-proximity.yaml
-> @@ -0,0 +1,46 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
+kmemdup() ?
+Perhaps introduce kmemdup_array().
+
+> +       group->name = "buffer";
 > +
-> +$id: http://devicetree.org/schemas/iio/proximity/google,cros-ec-mkbp-proximity.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +       ret = iio_device_register_sysfs_group(indio_dev, group);
+> +       if (ret)
+> +               goto error_free_buffer_attrs;
 > +
-> +title: ChromeOS EC MKBP Proximity Sensor
+> +       group = &iio_dev_opaque->legacy_scan_el_group;
+
+> +       group->attrs = kcalloc(scan_el_attrcount + 1,
+> +                              sizeof(struct attribute *), GFP_KERNEL);
+> +       if (!group->attrs) {
+> +               ret = -ENOMEM;
+> +               goto error_free_buffer_attrs;
+> +       }
 > +
-> +maintainers:
-> +  - Stephen Boyd <swboyd@chromium.org>
-> +  - Benson Leung <bleung@chromium.org>
-> +  - Enric Balletbo i Serra <enric.balletbo@collabora.com>
+> +       memcpy(group->attrs, &buffer_attrs[buffer_attrcount],
+> +              scan_el_attrcount * sizeof(struct attribute *));
+
+Ditto.
+
+> +       group->name = "scan_elements";
 > +
-> +description: |
-> +  Google's ChromeOS EC sometimes has the ability to detect user proximity.
-> +  This is implemented on the EC as near/far logic and exposed to the OS
-> +  via an MKBP switch bit.
+> +       ret = iio_device_register_sysfs_group(indio_dev, group);
+> +       if (ret)
+> +               goto error_free_scan_el_attrs;
 > +
-> +properties:
-> +  compatible:
-> +    const: google,cros-ec-mkbp-proximity
+> +       return 0;
 > +
-> +  label:
-> +    description: Name for proximity sensor
+> +error_free_buffer_attrs:
+> +       kfree(iio_dev_opaque->legacy_buffer_group.attrs);
+> +error_free_scan_el_attrs:
+> +       kfree(iio_dev_opaque->legacy_scan_el_group.attrs);
 > +
-> +required:
-> +  - compatible
-> +
-> +unevaluatedProperties: false
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    spi {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +      ec@0 {
-> +        compatible = "google,cros-ec-spi";
-> +        reg = <0>;
-> +        proximity {
-> +          compatible = "google,cros-ec-mkbp-proximity";
-> +          label = "proximity-wifi-lte";
-> +        };
-> +      };
-> +    };
-> diff --git a/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml b/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
-> index 76bf16ee27ec..479a9f15de32 100644
-> --- a/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
-> +++ b/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
-> @@ -94,6 +94,9 @@ properties:
->    keyboard-controller:
->      $ref: "/schemas/input/google,cros-ec-keyb.yaml#"
->
-> +  proximity:
-> +    $ref: "/schemas/iio/proximity/google,cros-ec-mkbp-proximity.yaml#"
-> +
->    codecs:
->      type: object
->      additionalProperties: false
-> --
-> https://chromeos.dev
->
+> +       return ret;
+> +}
+
+-- 
+With Best Regards,
+Andy Shevchenko

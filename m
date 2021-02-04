@@ -2,164 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B7CC30F413
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Feb 2021 14:45:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A5EC630F667
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Feb 2021 16:34:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236419AbhBDNn0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 4 Feb 2021 08:43:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43994 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236324AbhBDNma (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Feb 2021 08:42:30 -0500
-Received: from mail-il1-x135.google.com (mail-il1-x135.google.com [IPv6:2607:f8b0:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB39CC061573;
-        Thu,  4 Feb 2021 05:41:49 -0800 (PST)
-Received: by mail-il1-x135.google.com with SMTP id q5so2560860ilc.10;
-        Thu, 04 Feb 2021 05:41:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=FcwGwCNpcpd+qkLWuVWx4j+sB84HP58bIF6W3jSzKOw=;
-        b=OwCcrEz34nwaoYgHVhYEuXLUxN8RsVj2AxTD/T++bzASAocHN6OCmydkROHqxhktJ5
-         sz3z7SuApibMd7eQmd4xure6C8lCmXKZ/eEzi70plH7RHOgHYxE6vvNbOWnQ6iNcWoVj
-         +2F13KRS4/cf/3nPwnGNBEkdSpQEWBDbfVwVgNnLneIlb5+nz59xHpy3lv/sWEco+xzz
-         7xJgRhcKcL+Ojf42FcjoXILfFKdKzKZ8b69nuXb8OjhLBljz72vYnyhVv92PJ17p4M8Z
-         jofF6+KxapcXk7914r4cxtm5dCA7165gGVYZqe8vh19cSri8alc71d/nyciiqMxE1BtE
-         v+Rw==
+        id S237342AbhBDPdL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 4 Feb 2021 10:33:11 -0500
+Received: from mail-ot1-f42.google.com ([209.85.210.42]:38097 "EHLO
+        mail-ot1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237252AbhBDPVs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Feb 2021 10:21:48 -0500
+Received: by mail-ot1-f42.google.com with SMTP id t25so3737707otc.5;
+        Thu, 04 Feb 2021 07:21:29 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=FcwGwCNpcpd+qkLWuVWx4j+sB84HP58bIF6W3jSzKOw=;
-        b=mxbKEbEnWWsWnsFt/3UOYnq05wfuWFbMpds5eZ2FlPX6Qrzw1tpcxpdbAqYbzuvGC4
-         lj4bXh/gYzsum5Gyz6IfWPAU/VgbMG2M8IEmia2a+dg3jb5rZjt5y0MbfBB6at9xNMPQ
-         Gxfywune01ywGqf8VKEzikFHqaTj7wjWyRCfRCcl1Y+uxszKhcXl2ynpvF2bV0h+X6k0
-         FPxlAZWZa1ZOnFff3WCF6OU5RtHjdCnfFVHVdb3BwYbIwuP2+M9am7LdfdmKYs+4zkAM
-         UGe9v1H/mlE6zleE3ddSfyrMZmrJDKmjoN3H2oRHl/XBQsW6CZhZ54IRzQN5wnok7BIN
-         6tHg==
-X-Gm-Message-State: AOAM531jlW9wwL2xMhl/QixjyuFMDkyYLNMOLk1bDFS+7ZNhaPYCqfD8
-        0lEYro180xbdCx+xJJr6TZELfmu7jh/LzBcAa027mKCpEQY=
-X-Google-Smtp-Source: ABdhPJxX3tx631C9/WljgQULwuwYchT/xtMMxnMCZXMpmx6EZW8w6PdFEfGKQbSsOeASSpuPvY/REB6IUOez0hVWFeI=
-X-Received: by 2002:a05:6e02:138f:: with SMTP id d15mr6968376ilo.303.1612446109179;
- Thu, 04 Feb 2021 05:41:49 -0800 (PST)
-MIME-Version: 1.0
-References: <20210201145105.20459-1-alexandru.ardelean@analog.com>
- <20210201145105.20459-7-alexandru.ardelean@analog.com> <CAHp75VcTk-Lv_Hr0VHnd-r2XoVeRHEocwVyg6kKdWYrkHnf0gg@mail.gmail.com>
-In-Reply-To: <CAHp75VcTk-Lv_Hr0VHnd-r2XoVeRHEocwVyg6kKdWYrkHnf0gg@mail.gmail.com>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Thu, 4 Feb 2021 15:41:37 +0200
-Message-ID: <CA+U=Dso4zosunKgqb64+EwepUwcrpJN0ANwvFXnsz5KxVhOG-w@mail.gmail.com>
-Subject: Re: [PATCH v3 06/11] iio: core: merge buffer/ & scan_elements/ attributes
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
-        "Bogdan, Dragos" <dragos.bogdan@analog.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=kUMjkPK/McmTxR+3enIboqlHKyis7paShiElKBa3hkg=;
+        b=KoeXOa4rQV6zL9LyjIF7Y3UmXJHkBdahbiPo/YGQBXe/NztnprG3eLpgqTFvWMyxDO
+         a+zWRavz6hv/riH3KEocrmAm+PAybw17eRaE0Y07l+tGPinVzL9/u2m63f+rfBUcT0Zn
+         2LcVOWkIY9EftRAhd6wcy+xqe2OmQS0IAnFUA3p36ER3AFrvpMhePs4bvcASUjCyscas
+         k0KJSKg3M0SRT0ood61HimmX0VrDP2HHx8oqUG4LHMxfCZ5jlhBKAGA2xBdesGaDGqlC
+         De8YwIgN8mqEUcAW1N3utpjMwn4m1Zke1NeM5r+YTncT8mmOI5ks3qWqCahtu1NWx9Q6
+         fN1A==
+X-Gm-Message-State: AOAM5310lugIFXedHP037lGlK6b65LCG7WRZihp0v8hewX4Wuz6YgWmv
+        isewiKy5LRIoFjgajMC1gA==
+X-Google-Smtp-Source: ABdhPJzfp/QJEiThkrI+7dYQouB2O9bFRGwN8XxWckzXwf+CTGWl9wr9QQI0AK32fVQu+4zjUJOwSQ==
+X-Received: by 2002:a9d:7e87:: with SMTP id m7mr6323728otp.128.1612452064479;
+        Thu, 04 Feb 2021 07:21:04 -0800 (PST)
+Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id a71sm1120804oob.48.2021.02.04.07.21.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Feb 2021 07:21:03 -0800 (PST)
+Received: (nullmailer pid 452042 invoked by uid 1000);
+        Thu, 04 Feb 2021 15:20:57 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     alexandru.tachici@analog.com
+Cc:     linux-kernel@vger.kernel.org, robh+dt@kernel.org,
+        devicetree@vger.kernel.org, jic23@kernel.org,
+        linux-iio@vger.kernel.org
+In-Reply-To: <20210204113551.68744-3-alexandru.tachici@analog.com>
+References: <20210204113551.68744-1-alexandru.tachici@analog.com> <20210204113551.68744-3-alexandru.tachici@analog.com>
+Subject: Re: [PATCH v2 2/2] dt-bindings: iio: adc: ad7124: add config nodes
+Date:   Thu, 04 Feb 2021 09:20:57 -0600
+Message-Id: <1612452057.726074.452041.nullmailer@robh.at.kernel.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Feb 3, 2021 at 12:04 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> On Mon, Feb 1, 2021 at 5:28 PM Alexandru Ardelean
-> <alexandru.ardelean@analog.com> wrote:
-> >
-> > With this change, we create a new directory for the IIO device called
-> > buffer0, under which both the old buffer/ and scan_elements/ are stored.
-> >
-> > This is done to simplify the addition of multiple IIO buffers per IIO
-> > device. Otherwise we would need to add a bufferX/ and scan_elementsX/
-> > directory for each IIO buffer.
-> > With the current way of storing attribute groups, we can't have directories
-> > stored under each other (i.e. scan_elements/ under buffer/), so the best
-> > approach moving forward is to merge their attributes.
-> >
-> > The old/legacy buffer/ & scan_elements/ groups are not stored on the opaque
-> > IIO device object. This way the IIO buffer can have just a single
-> > attribute_group object, saving a bit of memory when adding multiple IIO
-> > buffers.
->
-> ...
->
-> > +static int iio_buffer_register_legacy_sysfs_groups(struct iio_dev *indio_dev,
-> > +                                                  struct attribute **buffer_attrs,
-> > +                                                  int buffer_attrcount,
-> > +                                                  int scan_el_attrcount)
-> > +{
-> > +       struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
-> > +       struct attribute_group *group;
-> > +       int ret;
-> > +
-> > +       group = &iio_dev_opaque->legacy_buffer_group;
->
-> > +       group->attrs = kcalloc(buffer_attrcount + 1,
-> > +                              sizeof(struct attribute *), GFP_KERNEL);
-> > +       if (!group->attrs)
-> > +               return -ENOMEM;
-> > +
-> > +       memcpy(group->attrs, buffer_attrs,
-> > +              buffer_attrcount * sizeof(struct attribute *));
->
-> kmemdup() ?
-> Perhaps introduce kmemdup_array().
+On Thu, 04 Feb 2021 13:35:51 +0200, alexandru.tachici@analog.com wrote:
+> From: Alexandru Tachici <alexandru.tachici@analog.com>
+> 
+> Document use of configurations in device-tree bindings.
+> 
+> Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
+> ---
+>  .../bindings/iio/adc/adi,ad7124.yaml          | 72 +++++++++++++++----
+>  1 file changed, 57 insertions(+), 15 deletions(-)
+> 
 
-doesn't add much benefit from what i can tell;
-and it complicates things with the fact that we need to add the extra
-null terminator element;
-[1] if we kmemdup(buffer_attrcount + 1) , the copy an extra element we
-don't need, which needs to be null-ed
+My bot found errors running 'make dt_binding_check' on your patch:
 
->
-> > +       group->name = "buffer";
-> > +
-> > +       ret = iio_device_register_sysfs_group(indio_dev, group);
-> > +       if (ret)
-> > +               goto error_free_buffer_attrs;
-> > +
-> > +       group = &iio_dev_opaque->legacy_scan_el_group;
->
-> > +       group->attrs = kcalloc(scan_el_attrcount + 1,
-> > +                              sizeof(struct attribute *), GFP_KERNEL);
-> > +       if (!group->attrs) {
-> > +               ret = -ENOMEM;
-> > +               goto error_free_buffer_attrs;
-> > +       }
-> > +
-> > +       memcpy(group->attrs, &buffer_attrs[buffer_attrcount],
-> > +              scan_el_attrcount * sizeof(struct attribute *));
->
-> Ditto.
+yamllint warnings/errors:
+./Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml:76:10: [warning] wrong indentation: expected 10 but found 9 (indentation)
+./Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml:114:10: [warning] wrong indentation: expected 10 but found 9 (indentation)
 
-continuing from [1]
-here it may be worse, because kmemdup() would copy 1 element from
-undefined memory;
+dtschema/dtc warnings/errors:
 
->
-> > +       group->name = "scan_elements";
-> > +
-> > +       ret = iio_device_register_sysfs_group(indio_dev, group);
-> > +       if (ret)
-> > +               goto error_free_scan_el_attrs;
-> > +
-> > +       return 0;
-> > +
-> > +error_free_buffer_attrs:
-> > +       kfree(iio_dev_opaque->legacy_buffer_group.attrs);
-> > +error_free_scan_el_attrs:
-> > +       kfree(iio_dev_opaque->legacy_scan_el_group.attrs);
-> > +
-> > +       return ret;
-> > +}
->
-> --
-> With Best Regards,
-> Andy Shevchenko
+See https://patchwork.ozlabs.org/patch/1435965
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
+

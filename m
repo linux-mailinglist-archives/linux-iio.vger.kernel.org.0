@@ -2,198 +2,164 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26F7F30F25F
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Feb 2021 12:39:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B7CC30F413
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Feb 2021 14:45:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235887AbhBDLfq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 4 Feb 2021 06:35:46 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:36800 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235751AbhBDLd6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Feb 2021 06:33:58 -0500
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 114BTVe4001624;
-        Thu, 4 Feb 2021 06:33:15 -0500
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 36d26aen7x-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 04 Feb 2021 06:33:14 -0500
-Received: from SCSQMBX10.ad.analog.com (SCSQMBX10.ad.analog.com [10.77.17.5])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 114BXCNx054309
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 4 Feb 2021 06:33:13 -0500
-Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
- SCSQMBX10.ad.analog.com (10.77.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.721.2;
- Thu, 4 Feb 2021 03:33:11 -0800
-Received: from zeus.spd.analog.com (10.66.68.11) by SCSQMBX11.ad.analog.com
- (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Thu, 4 Feb 2021 03:33:11 -0800
-Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 114BX7Yp009001;
-        Thu, 4 Feb 2021 06:33:10 -0500
-From:   <alexandru.tachici@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>
-CC:     <jic23@kernel.org>, <robh+dt@kernel.org>
-Subject: [PATCH v2 2/2] dt-bindings: iio: adc: ad7124: add config nodes
-Date:   Thu, 4 Feb 2021 13:35:51 +0200
-Message-ID: <20210204113551.68744-3-alexandru.tachici@analog.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210204113551.68744-1-alexandru.tachici@analog.com>
-References: <20210204113551.68744-1-alexandru.tachici@analog.com>
+        id S236419AbhBDNn0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 4 Feb 2021 08:43:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43994 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236324AbhBDNma (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Feb 2021 08:42:30 -0500
+Received: from mail-il1-x135.google.com (mail-il1-x135.google.com [IPv6:2607:f8b0:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB39CC061573;
+        Thu,  4 Feb 2021 05:41:49 -0800 (PST)
+Received: by mail-il1-x135.google.com with SMTP id q5so2560860ilc.10;
+        Thu, 04 Feb 2021 05:41:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=FcwGwCNpcpd+qkLWuVWx4j+sB84HP58bIF6W3jSzKOw=;
+        b=OwCcrEz34nwaoYgHVhYEuXLUxN8RsVj2AxTD/T++bzASAocHN6OCmydkROHqxhktJ5
+         sz3z7SuApibMd7eQmd4xure6C8lCmXKZ/eEzi70plH7RHOgHYxE6vvNbOWnQ6iNcWoVj
+         +2F13KRS4/cf/3nPwnGNBEkdSpQEWBDbfVwVgNnLneIlb5+nz59xHpy3lv/sWEco+xzz
+         7xJgRhcKcL+Ojf42FcjoXILfFKdKzKZ8b69nuXb8OjhLBljz72vYnyhVv92PJ17p4M8Z
+         jofF6+KxapcXk7914r4cxtm5dCA7165gGVYZqe8vh19cSri8alc71d/nyciiqMxE1BtE
+         v+Rw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=FcwGwCNpcpd+qkLWuVWx4j+sB84HP58bIF6W3jSzKOw=;
+        b=mxbKEbEnWWsWnsFt/3UOYnq05wfuWFbMpds5eZ2FlPX6Qrzw1tpcxpdbAqYbzuvGC4
+         lj4bXh/gYzsum5Gyz6IfWPAU/VgbMG2M8IEmia2a+dg3jb5rZjt5y0MbfBB6at9xNMPQ
+         Gxfywune01ywGqf8VKEzikFHqaTj7wjWyRCfRCcl1Y+uxszKhcXl2ynpvF2bV0h+X6k0
+         FPxlAZWZa1ZOnFff3WCF6OU5RtHjdCnfFVHVdb3BwYbIwuP2+M9am7LdfdmKYs+4zkAM
+         UGe9v1H/mlE6zleE3ddSfyrMZmrJDKmjoN3H2oRHl/XBQsW6CZhZ54IRzQN5wnok7BIN
+         6tHg==
+X-Gm-Message-State: AOAM531jlW9wwL2xMhl/QixjyuFMDkyYLNMOLk1bDFS+7ZNhaPYCqfD8
+        0lEYro180xbdCx+xJJr6TZELfmu7jh/LzBcAa027mKCpEQY=
+X-Google-Smtp-Source: ABdhPJxX3tx631C9/WljgQULwuwYchT/xtMMxnMCZXMpmx6EZW8w6PdFEfGKQbSsOeASSpuPvY/REB6IUOez0hVWFeI=
+X-Received: by 2002:a05:6e02:138f:: with SMTP id d15mr6968376ilo.303.1612446109179;
+ Thu, 04 Feb 2021 05:41:49 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.737
- definitions=2021-02-04_06:2021-02-04,2021-02-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- lowpriorityscore=0 impostorscore=0 clxscore=1015 suspectscore=0
- priorityscore=1501 malwarescore=0 bulkscore=0 adultscore=0 mlxscore=0
- mlxlogscore=999 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2009150000 definitions=main-2102040072
+References: <20210201145105.20459-1-alexandru.ardelean@analog.com>
+ <20210201145105.20459-7-alexandru.ardelean@analog.com> <CAHp75VcTk-Lv_Hr0VHnd-r2XoVeRHEocwVyg6kKdWYrkHnf0gg@mail.gmail.com>
+In-Reply-To: <CAHp75VcTk-Lv_Hr0VHnd-r2XoVeRHEocwVyg6kKdWYrkHnf0gg@mail.gmail.com>
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+Date:   Thu, 4 Feb 2021 15:41:37 +0200
+Message-ID: <CA+U=Dso4zosunKgqb64+EwepUwcrpJN0ANwvFXnsz5KxVhOG-w@mail.gmail.com>
+Subject: Re: [PATCH v3 06/11] iio: core: merge buffer/ & scan_elements/ attributes
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
+        "Bogdan, Dragos" <dragos.bogdan@analog.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Alexandru Tachici <alexandru.tachici@analog.com>
+On Wed, Feb 3, 2021 at 12:04 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Mon, Feb 1, 2021 at 5:28 PM Alexandru Ardelean
+> <alexandru.ardelean@analog.com> wrote:
+> >
+> > With this change, we create a new directory for the IIO device called
+> > buffer0, under which both the old buffer/ and scan_elements/ are stored.
+> >
+> > This is done to simplify the addition of multiple IIO buffers per IIO
+> > device. Otherwise we would need to add a bufferX/ and scan_elementsX/
+> > directory for each IIO buffer.
+> > With the current way of storing attribute groups, we can't have directories
+> > stored under each other (i.e. scan_elements/ under buffer/), so the best
+> > approach moving forward is to merge their attributes.
+> >
+> > The old/legacy buffer/ & scan_elements/ groups are not stored on the opaque
+> > IIO device object. This way the IIO buffer can have just a single
+> > attribute_group object, saving a bit of memory when adding multiple IIO
+> > buffers.
+>
+> ...
+>
+> > +static int iio_buffer_register_legacy_sysfs_groups(struct iio_dev *indio_dev,
+> > +                                                  struct attribute **buffer_attrs,
+> > +                                                  int buffer_attrcount,
+> > +                                                  int scan_el_attrcount)
+> > +{
+> > +       struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+> > +       struct attribute_group *group;
+> > +       int ret;
+> > +
+> > +       group = &iio_dev_opaque->legacy_buffer_group;
+>
+> > +       group->attrs = kcalloc(buffer_attrcount + 1,
+> > +                              sizeof(struct attribute *), GFP_KERNEL);
+> > +       if (!group->attrs)
+> > +               return -ENOMEM;
+> > +
+> > +       memcpy(group->attrs, buffer_attrs,
+> > +              buffer_attrcount * sizeof(struct attribute *));
+>
+> kmemdup() ?
+> Perhaps introduce kmemdup_array().
 
-Document use of configurations in device-tree bindings.
+doesn't add much benefit from what i can tell;
+and it complicates things with the fact that we need to add the extra
+null terminator element;
+[1] if we kmemdup(buffer_attrcount + 1) , the copy an extra element we
+don't need, which needs to be null-ed
 
-Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
----
- .../bindings/iio/adc/adi,ad7124.yaml          | 72 +++++++++++++++----
- 1 file changed, 57 insertions(+), 15 deletions(-)
+>
+> > +       group->name = "buffer";
+> > +
+> > +       ret = iio_device_register_sysfs_group(indio_dev, group);
+> > +       if (ret)
+> > +               goto error_free_buffer_attrs;
+> > +
+> > +       group = &iio_dev_opaque->legacy_scan_el_group;
+>
+> > +       group->attrs = kcalloc(scan_el_attrcount + 1,
+> > +                              sizeof(struct attribute *), GFP_KERNEL);
+> > +       if (!group->attrs) {
+> > +               ret = -ENOMEM;
+> > +               goto error_free_buffer_attrs;
+> > +       }
+> > +
+> > +       memcpy(group->attrs, &buffer_attrs[buffer_attrcount],
+> > +              scan_el_attrcount * sizeof(struct attribute *));
+>
+> Ditto.
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
-index fb3d0dae9bae..330064461d0a 100644
---- a/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
-@@ -62,20 +62,19 @@ required:
-   - interrupts
- 
- patternProperties:
--  "^channel@([0-9]|1[0-5])$":
--    $ref: "adc.yaml"
-+  "^config@(2[0-7])$":
-     type: object
-     description: |
--      Represents the external channels which are connected to the ADC.
-+      Represents a channel configuration.
-+      See Documentation/devicetree/bindings/iio/adc/adc.txt.
- 
-     properties:
-       reg:
-         description: |
--          The channel number. It can have up to 8 channels on ad7124-4
--          and 16 channels on ad7124-8, numbered from 0 to 15.
-+          The config number. It can have up to 8 configuration.
-         items:
--          minimum: 0
--          maximum: 15
-+         minimum: 20
-+         maximum: 27
- 
-       adi,reference-select:
-         description: |
-@@ -88,8 +87,6 @@ patternProperties:
-         $ref: /schemas/types.yaml#/definitions/uint32
-         enum: [0, 1, 3]
- 
--      diff-channels: true
--
-       bipolar: true
- 
-       adi,buffered-positive:
-@@ -100,6 +97,35 @@ patternProperties:
-         description: Enable buffered mode for negative input.
-         type: boolean
- 
-+    additionalProperties: false
-+
-+  "^channel@([0-9]|1[0-5])$":
-+    type: object
-+    description: |
-+      Represents the external channels which are connected to the ADC.
-+      See Documentation/devicetree/bindings/iio/adc/adc.txt.
-+
-+    properties:
-+      reg:
-+        description: |
-+          The channel number. It can have up to 8 channels on ad7124-4
-+          and 16 channels on ad7124-8, numbered from 0 to 15.
-+        items:
-+         minimum: 0
-+         maximum: 15
-+
-+      diff-channels: true
-+
-+      adi,configuration:
-+        description: |
-+          The devices has 8 configuration and ad7124-8 support up to 16 unipolar channels.
-+          Each channel can be assigned one configuration. Some channels will be sharing the
-+          same configuration.
-+        allOf:
-+          - $ref: /schemas/types.yaml#/definitions/uint32
-+        minimum: 20
-+        maximum: 27
-+
-     required:
-       - reg
-       - diff-channels
-@@ -127,30 +153,46 @@ examples:
-         #address-cells = <1>;
-         #size-cells = <0>;
- 
--        channel@0 {
--          reg = <0>;
--          diff-channels = <0 1>;
-+        config@20 {
-+          reg = <20>;
-           adi,reference-select = <0>;
-           adi,buffered-positive;
-         };
- 
--        channel@1 {
--          reg = <1>;
-+        config@21 {
-+          reg = <21>;
-           bipolar;
--          diff-channels = <2 3>;
-           adi,reference-select = <0>;
-           adi,buffered-positive;
-           adi,buffered-negative;
-         };
- 
-+        config@22 {
-+          reg = <22>;
-+        };
-+
-+        channel@0 {
-+          reg = <0>;
-+          diff-channels = <0 1>;
-+          adi,configuration = <20>;
-+        };
-+
-+        channel@1 {
-+          reg = <1>;
-+          diff-channels = <2 3>;
-+          adi,configuration = <21>;
-+        };
-+
-         channel@2 {
-           reg = <2>;
-           diff-channels = <4 5>;
-+          adi,configuration = <22>;
-         };
- 
-         channel@3 {
-           reg = <3>;
-           diff-channels = <6 7>;
-+          adi,configuration = <22>;
-         };
-       };
-     };
--- 
-2.20.1
+continuing from [1]
+here it may be worse, because kmemdup() would copy 1 element from
+undefined memory;
 
+>
+> > +       group->name = "scan_elements";
+> > +
+> > +       ret = iio_device_register_sysfs_group(indio_dev, group);
+> > +       if (ret)
+> > +               goto error_free_scan_el_attrs;
+> > +
+> > +       return 0;
+> > +
+> > +error_free_buffer_attrs:
+> > +       kfree(iio_dev_opaque->legacy_buffer_group.attrs);
+> > +error_free_scan_el_attrs:
+> > +       kfree(iio_dev_opaque->legacy_scan_el_group.attrs);
+> > +
+> > +       return ret;
+> > +}
+>
+> --
+> With Best Regards,
+> Andy Shevchenko

@@ -2,147 +2,86 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EAAC30D6F9
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Feb 2021 11:04:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A24B30EF48
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Feb 2021 10:12:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233753AbhBCKC7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 3 Feb 2021 05:02:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54018 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233622AbhBCKC5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 Feb 2021 05:02:57 -0500
-Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B06D1C061573;
-        Wed,  3 Feb 2021 02:02:17 -0800 (PST)
-Received: by mail-pg1-x52b.google.com with SMTP id s23so15712772pgh.11;
-        Wed, 03 Feb 2021 02:02:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=J2oISiYeGVu9ZpGUGgNNH2LGtwu+nmXL1dEBI84TFMM=;
-        b=W+1GldZsRoSu3m/0ipd3CCiVm4f8is+x3pSwGQwqTXOG0nRj0cLxX2xW4EbF6qJrfd
-         CAZdVXqimcETYd0G5B1J3IqfqENiCQsxGU/NdovEJX2rr5881ffBLMRy3grwkLnjMlwg
-         1SZnp4oC/GGmhU4KDvA8sYzapKZPC4XeBTzRbq5C9CVzeuyaeMRYPkXdKaN19pEIzAz0
-         Oax4tmJ9475sK1JLvaCcgyTu70CuExP7CP1IT1L+2BSQeaYxZ9QvrUwSwgY6WB6N6g58
-         Pe0er4Jbdv08inotyKuuUXJf0XclpttapQvN0GdUqdkrPAmihgRw4VqQl4K8MiatyepO
-         cXnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=J2oISiYeGVu9ZpGUGgNNH2LGtwu+nmXL1dEBI84TFMM=;
-        b=pbvyFTI0WxqX3zAmZm/GDSBMTsalg4pcS9gFeW0eWqLuBv0+QYjcQao/0UqOOfT9Ul
-         X1VnPmSP7O+/CvmRgfeUWqKM5goOsnsuQaaph4ZVaKqbzCg7x1J7W+frv5phxjbUXAVt
-         OTKXyukht6f6liFIiiXAENLA7ag0P7zjoTUXQwKO1lfVdWBwC8i4BnCSz/LPuXsW8L3q
-         6QcUhqrHWHhfX7ZfrSdHBuz+TjLiHN6ZBlET7HeGlkZoaeyrtRmkRlThnuDLwXTVtkIk
-         KjzGcLbDJeGQsasN5EY6P2XxzX+KwyWOCYoD2OElKxza4f7WcATDQbiKVSdhRPaFE+VY
-         UKOw==
-X-Gm-Message-State: AOAM531E7V5I65rFEoJle2t+pV+MGZI3DNHDipInMgQ3z3tJiNy6vHZD
-        Xgx3tvE75jB/5JwcuJlJjcJZrqRE/Uheu0iUDlw0Q1N600FAYw==
-X-Google-Smtp-Source: ABdhPJwC/eP0avRMXCOsyF4LK/8HSFs7KIop3/ije5w4NAmsjniRFoSe6/SVwmUgDLLqkwGBR1Tn/MbEb6Qn2X1rmjg=
-X-Received: by 2002:a65:644b:: with SMTP id s11mr2839544pgv.4.1612346537161;
- Wed, 03 Feb 2021 02:02:17 -0800 (PST)
+        id S234797AbhBDJKi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 4 Feb 2021 04:10:38 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:1066 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S235010AbhBDJIr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Feb 2021 04:08:47 -0500
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 11496o5L023295;
+        Thu, 4 Feb 2021 04:08:06 -0500
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 36dbud5gw0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 04 Feb 2021 04:08:05 -0500
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 114984qw013140
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Thu, 4 Feb 2021 04:08:04 -0500
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Thu, 4 Feb 2021 04:08:03 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.721.2;
+ Thu, 4 Feb 2021 04:08:03 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Thu, 4 Feb 2021 04:08:03 -0500
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 114982l3001727;
+        Thu, 4 Feb 2021 04:08:02 -0500
+From:   <alexandru.tachici@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+CC:     <jic23@kernel.org>, <robh+dt@kernel.org>
+Subject: [PATCH 0/2] iio: adc: ad7124: allow 16 channels
+Date:   Thu, 4 Feb 2021 11:10:43 +0200
+Message-ID: <20210204091045.4175-1-alexandru.tachici@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <20210201145105.20459-1-alexandru.ardelean@analog.com> <20210201145105.20459-7-alexandru.ardelean@analog.com>
-In-Reply-To: <20210201145105.20459-7-alexandru.ardelean@analog.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 3 Feb 2021 12:02:00 +0200
-Message-ID: <CAHp75VcTk-Lv_Hr0VHnd-r2XoVeRHEocwVyg6kKdWYrkHnf0gg@mail.gmail.com>
-Subject: Re: [PATCH v3 06/11] iio: core: merge buffer/ & scan_elements/ attributes
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
-        "Bogdan, Dragos" <dragos.bogdan@analog.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.737
+ definitions=2021-02-04_05:2021-02-04,2021-02-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ adultscore=0 clxscore=1011 suspectscore=0 malwarescore=0 mlxscore=0
+ priorityscore=1501 bulkscore=0 mlxlogscore=999 spamscore=0 phishscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2102040057
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Feb 1, 2021 at 5:28 PM Alexandru Ardelean
-<alexandru.ardelean@analog.com> wrote:
->
-> With this change, we create a new directory for the IIO device called
-> buffer0, under which both the old buffer/ and scan_elements/ are stored.
->
-> This is done to simplify the addition of multiple IIO buffers per IIO
-> device. Otherwise we would need to add a bufferX/ and scan_elementsX/
-> directory for each IIO buffer.
-> With the current way of storing attribute groups, we can't have directories
-> stored under each other (i.e. scan_elements/ under buffer/), so the best
-> approach moving forward is to merge their attributes.
->
-> The old/legacy buffer/ & scan_elements/ groups are not stored on the opaque
-> IIO device object. This way the IIO buffer can have just a single
-> attribute_group object, saving a bit of memory when adding multiple IIO
-> buffers.
+From: Alexandru Tachici <alexandru.tachici@analog.com>
 
-...
+AD7124-8 can have up to 16 pseudo-differential channels
+enabled simultaneously and only 8 configurations. In this
+scenario we cannot assign one configuration per channel,
+some channels will have to share configurations like, ODR,
+gain and filter parameters.
 
-> +static int iio_buffer_register_legacy_sysfs_groups(struct iio_dev *indio_dev,
-> +                                                  struct attribute **buffer_attrs,
-> +                                                  int buffer_attrcount,
-> +                                                  int scan_el_attrcount)
-> +{
-> +       struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
-> +       struct attribute_group *group;
-> +       int ret;
-> +
-> +       group = &iio_dev_opaque->legacy_buffer_group;
+Allow the user to specify channels and configurations
+separately in device-tree and assign, if needed, the same
+configuration to multiple channels.
 
-> +       group->attrs = kcalloc(buffer_attrcount + 1,
-> +                              sizeof(struct attribute *), GFP_KERNEL);
-> +       if (!group->attrs)
-> +               return -ENOMEM;
-> +
-> +       memcpy(group->attrs, buffer_attrs,
-> +              buffer_attrcount * sizeof(struct attribute *));
+If two channels share the configuration changing the
+sampling rate of one will change the sampling rate of the
+other too.
 
-kmemdup() ?
-Perhaps introduce kmemdup_array().
+Alexandru Tachici (2):
+  iio: adc: ad7124: allow 16 channels
+  dt-bindings: iio: adc: ad7124: add config nodes
 
-> +       group->name = "buffer";
-> +
-> +       ret = iio_device_register_sysfs_group(indio_dev, group);
-> +       if (ret)
-> +               goto error_free_buffer_attrs;
-> +
-> +       group = &iio_dev_opaque->legacy_scan_el_group;
-
-> +       group->attrs = kcalloc(scan_el_attrcount + 1,
-> +                              sizeof(struct attribute *), GFP_KERNEL);
-> +       if (!group->attrs) {
-> +               ret = -ENOMEM;
-> +               goto error_free_buffer_attrs;
-> +       }
-> +
-> +       memcpy(group->attrs, &buffer_attrs[buffer_attrcount],
-> +              scan_el_attrcount * sizeof(struct attribute *));
-
-Ditto.
-
-> +       group->name = "scan_elements";
-> +
-> +       ret = iio_device_register_sysfs_group(indio_dev, group);
-> +       if (ret)
-> +               goto error_free_scan_el_attrs;
-> +
-> +       return 0;
-> +
-> +error_free_buffer_attrs:
-> +       kfree(iio_dev_opaque->legacy_buffer_group.attrs);
-> +error_free_scan_el_attrs:
-> +       kfree(iio_dev_opaque->legacy_scan_el_group.attrs);
-> +
-> +       return ret;
-> +}
+ .../bindings/iio/adc/adi,ad7124.yaml          |  72 +++++--
+ drivers/iio/adc/ad7124.c                      | 196 +++++++++++-------
+ 2 files changed, 179 insertions(+), 89 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.20.1
+

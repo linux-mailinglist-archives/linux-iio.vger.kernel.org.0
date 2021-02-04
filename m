@@ -2,439 +2,155 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A52030FC2B
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Feb 2021 20:06:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 895B33100AB
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Feb 2021 00:29:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239576AbhBDTDs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 4 Feb 2021 14:03:48 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2504 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239536AbhBDTCK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Feb 2021 14:02:10 -0500
-Received: from fraeml710-chm.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DWnpP1tMYz67kg6;
-        Fri,  5 Feb 2021 02:56:45 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml710-chm.china.huawei.com (10.206.15.59) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Thu, 4 Feb 2021 20:01:28 +0100
-Received: from localhost (10.47.65.115) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2106.2; Thu, 4 Feb 2021
- 19:01:27 +0000
-Date:   Thu, 4 Feb 2021 19:00:41 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-CC:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
-        <jic23@kernel.org>, <nuno.sa@analog.com>,
-        <dragos.bogdan@analog.com>, <rafael@kernel.org>,
-        <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH v3 11/11] iio: buffer: add ioctl() to support opening
- extra buffers for IIO device
-Message-ID: <20210204190041.0000623a@Huawei.com>
-In-Reply-To: <20210201145105.20459-12-alexandru.ardelean@analog.com>
-References: <20210201145105.20459-1-alexandru.ardelean@analog.com>
-        <20210201145105.20459-12-alexandru.ardelean@analog.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S230127AbhBDX3G (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 4 Feb 2021 18:29:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57666 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230075AbhBDX3E (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Feb 2021 18:29:04 -0500
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 700CDC061786
+        for <linux-iio@vger.kernel.org>; Thu,  4 Feb 2021 15:28:23 -0800 (PST)
+Received: by mail-lf1-x12a.google.com with SMTP id v24so7177266lfr.7
+        for <linux-iio@vger.kernel.org>; Thu, 04 Feb 2021 15:28:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Wrnz6l1Kc/IHahayxg6JcFhU1NyXvIp7/tC0nvwYbY8=;
+        b=IIHALYqnetpnKRgTpAh13O6zD5lMJsFclZYluHf7Y4H7Y0rG2lKSNOXOoLoKbqv0RR
+         omZIi0iYUeTfesxYInX6G1GBDLSAvyrT708zTyQA8qIxb3P5hApb2IAySU//iKmzNXDV
+         KuCOZvlHyqjaiT9AhuJphQ6B2vOMUbV9m6whhE7JjLDVPeCPG8UlJXoTHfXMDYI7SISo
+         7sv7Bg+Anj99JL23va5jsAmpBcOsqBXPMKfGyJZkr2htGauTVNmqMf8V2vAZHkDjegyF
+         Qi6fubWamfhh1q1BkCucfAfuVYtexj7pOMnDe/eAY21fQC1l9ehIpq8bWQMT9OfKGkO4
+         3qKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Wrnz6l1Kc/IHahayxg6JcFhU1NyXvIp7/tC0nvwYbY8=;
+        b=egVi0AzZG6JoqbNylqRU+OtlvvE6Qfz0scLiwBGA9VR4GT+nASqa5zCdKvyvW2U/K0
+         uL0+cMy00fP4t/3zIFydTupJHSbi7KOdfrVgOsgR3HdbWK7xPFH7XZf38NwwtXgZTdec
+         ngzmHxBQaKLJ0wlYNzxBNciwD4RkcfZvjCGIPM6IAihZtayqYelnWsGuPDjmkZVbHHQv
+         tvGO2vmW+XdnshkbWE1ieIBSXG1mv4gGQp+5Tzui3xFt4EGKmL0TTwdBJCXmqWzi5Ovr
+         cCdmzSCM6ezb4qqUraNO1NyvL4ndicAYk2V2qUureWD/ErhEsU1QFl2M/LgPm+ugC/Aa
+         +tXg==
+X-Gm-Message-State: AOAM5332ggPOLLUKGy4C211XLkm/K2JGJwPb9VpDSu7xNZyOw+GIOiGe
+        YcZvLpdVHDo/PTGWyJLuzlo23g==
+X-Google-Smtp-Source: ABdhPJyPcrSjtwNtcsr/OAnEPKURpvfJ87fi1O5MdTpqiONZtt1PtXszDX9oR73Kmg35m9rXYi0e9Q==
+X-Received: by 2002:a05:6512:110a:: with SMTP id l10mr966579lfg.140.1612481301784;
+        Thu, 04 Feb 2021 15:28:21 -0800 (PST)
+Received: from eriador.lan ([188.162.64.67])
+        by smtp.gmail.com with ESMTPSA id x20sm769906lfe.256.2021.02.04.15.28.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Feb 2021 15:28:21 -0800 (PST)
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Cc:     linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Jishnu Prakash <jprakash@qti.qualcomm.com>
+Subject: [PATCH v13 0/2]
+Date:   Fri,  5 Feb 2021 02:28:07 +0300
+Message-Id: <20210204232809.474733-1-dmitry.baryshkov@linaro.org>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.65.115]
-X-ClientProxiedBy: lhreml703-chm.china.huawei.com (10.201.108.52) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 1 Feb 2021 16:51:05 +0200
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+This patch serie adds support for thermal monitoring block on Qualcomm's
+PMIC5 chips. PM8150{,b,l}, qrb5165-rb5 board and sm8250-mtp board device
+trees are extended to support thermal zones provided by this thermal
+monitoring block.  Unlike the rest of PMIC thermal senses, these thermal
+zones describe particular thermistors, which differ between from board
+to board.
 
-> With this change, an ioctl() call is added to open a character device for a
-> buffer. The ioctl() number is 'i' 0x91, which follows the
-> IIO_GET_EVENT_FD_IOCTL ioctl.
-> 
-> The ioctl() will return a 0 FD for the first buffer, as that FD for buffer0
-> is the same FD as the one used for this ioctl().
+Dependencies: https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/log/?h=ib-iio-thermal-5.11-rc1
 
-That sounds dangerous as code might just use it without checking properly.
-Perhaps take a leaf out of open() and return negative?
+Changes since v12:
+ - Drop patches taken into linux-next.
+ - Fix adc_tm5_get_temp to handle IIO_VAL_INT properly (removed in v9).
 
-What would happen if we just returned an error in this path?
+Changes since v11:
+ - Drop io-channel-ranges from dts example.
 
-> 
-> For any other extra buffer, this ioctl() will return an anon inode FD that
-> would access any extra buffer.
-> 
-> Right now, there doesn't seem to be (or I couldn't find) a way for this
-> ioctl() to return the FD for buffer0 (i.e. to return the same FD as used
-> for the ioctl()).
-> So, usespace would need to know that  ioctl(fd,
-> IIO_GET_EVENT_FD_IOCTL, 0) will return FD 0.
-> We could also return another FD for buffer 0, but duplicating FDs for the
-> same IIO buffer sounds problematic.
-> 
-> Also, there is no IIO_BUFFER_GET_BUFFER_COUNT ioctl() implemented, as the
-> index for each buffer (and the count) can be deduced from the
-> '/sys/bus/iio/devices/iio:deviceX/bufferY' folders (i.e the number of
-> bufferY folders).
-> 
-> Used following C code to test this:
-> -------------------------------------------------------------------
-> 
->  #include <stdio.h>
->  #include <stdlib.h>
->  #include <unistd.h>
->  #include <sys/ioctl.h>
->  #include <fcntl.h"
->  #include <errno.h>
-> 
->  #define IIO_BUFFER_GET_FD_IOCTL      _IOWR('i', 0x91, int)
-> 
-> int main(int argc, char *argv[])
-> {
->         int fd;
->         int fd1;
->         int ret;
-> 
->         if ((fd = open("/dev/iio:device0", O_RDWR))<0) {
->                 fprintf(stderr, "Error open() %d errno %d\n",fd, errno);
->                 return -1;
->         }
-> 
->         fprintf(stderr, "Using FD %d\n", fd);
-> 
->         fd1 = atoi(argv[1]);
-> 
->         ret = ioctl(fd, IIO_BUFFER_GET_FD_IOCTL, &fd1);
->         if (ret < 0) {
->                 fprintf(stderr, "Error for buffer %d ioctl() %d errno %d\n", fd1, ret, errno);
->                 close(fd);
->                 return -1;
->         }
-> 
->         fprintf(stderr, "Got FD %d\n", fd1);
-> 
->         close(fd1);
->         close(fd);
-> 
->         return 0;
-> }
-> -------------------------------------------------------------------
-> 
-> Results are:
-> -------------------------------------------------------------------
->  # ./test 0
->  Using FD 3
->  Got FD 0
-> 
->  # ./test 1
->  Using FD 3
->  Got FD 4
-> 
->  # ./test 2
->  Using FD 3
->  Got FD 4
-> 
->  # ./test 3
->  Using FD 3
->  Got FD 4
-> 
->  # ls /sys/bus/iio/devices/iio\:device0
->  buffer  buffer0  buffer1  buffer2  buffer3  dev
->  in_voltage_sampling_frequency  in_voltage_scale
->  in_voltage_scale_available
->  name  of_node  power  scan_elements  subsystem  uevent
-> -------------------------------------------------------------------
-> 
-> iio:device0 has some fake kfifo buffers attached to an IIO device.
-If you get a chance to add a parameter to the tools/iio/ buffer
-program that does much the same as above that would be great.
+Changes since v10:
+ - Rebased on top of ib-iio-thermal-5.11-rc1 immutable branch, with
+   IIO-related patches picked up by Jonathan.
+ - Changed thermal zone device tree nodes to use -thermal suffix
+   following the schema.
+ - Reordered device tree nodes to keep the alphanumeric sorting order.
 
-> 
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Changes since v9:
+ - In patch 12 add comments to the code as requested by Daniel Lezcano.
+ - Change copyright comment in qcom-spmi-adc-tm5.c to clearly note
+   driver history.
 
-Otherwise a few trivials inline.
+Changes since v8:
+ - Simplified qcom_vadc_map_voltage_temp() code by removing ascending
+   tables support
+ - Simplified qcom-vadc-common volt/temp mapping code
+ - Implement suggestions by Matthias Kaehlcke: message formatting,
+   rewrite comments, remove unused variable initialization.
 
-Good work on bringing this new approach together so quickly.
+Changes since v7:
+ - Move qcom-vadc-common.h header to include/linux/iio/adc/ dir.
+ - Use explicit sizeof(var) instead of hand-coding 1 when accessing
+   adc-tm registers.
+ - Remove buffer read from adc_tm5_init().
+ - Remove extra on-stack var from adc_tm5_get_temp().
+ - Minor formatting changes as suggested Daniel.
 
-It's a lot simpler which is good and still gives us a reasonable interface.
+Changes since v6:
+ - Added include <linux/bitfield.h> as noted by Jishnu Prakash.
 
-If you can update the example code in tree and perhaps add something to
-the main IIO docs that would be great.
-Documentation/driver-api/iio/buffers.rst I think.
+Changes since v5:
+ - Reworked DT bindings:
+   * Removed qcom,adc-channel, instead it is parsed from io-channels
+   * Renamed qcom,hw-settle-time to include -us suffix
+ - Re-added monitor enabling which got lost during refactored. Noted by
+   Jishnu Prakash.
+ - Use threaded IRQ handler as susggested by Jishnu.
 
-We'll also  (at somepoint) want to do a scrub of the ABI docs to 
-either include the new paths or make them less specific to incorporate
-both.
+Changes since v4:
+ - Added kernel-doc comments to ADC-TM structures
+ - Used several sizeof(buf) instead of hand-conding register size
 
-Thanks,
+Changes since v3:
+ - Fix DT description to spell "thermal monitoring" instead of just TM
+ - Fix warnings in DT example
+ - Add EXPORT_SYMBOL_GPL(of_iio_channel_get_by_name)
+ - Fixed whitespace chanes in qcom-vadc-common.c
+ - Removed error message if IIO chanel get returns -EPROBE_DEFER
 
-Jonathan
+Changes since v2:
+ - IIO: export of_iio_channel_get_by_name() function
+ - dt-bindings: move individual io-channels to each thermal monitoring
+   channel rather than listing them all in device node
+ - added fallback defaults to of_device_get_match_data calls in
+   qcom-spmi-adc5 and qcom-spmi-adc-tm5 drivers
+ - minor typo fixes
 
-> ---
->  drivers/iio/industrialio-buffer.c | 118 ++++++++++++++++++++++++++++++
->  drivers/iio/industrialio-core.c   |   8 ++
->  include/linux/iio/buffer_impl.h   |   5 ++
->  include/linux/iio/iio-opaque.h    |   2 +
->  include/uapi/linux/iio/buffer.h   |  10 +++
->  5 files changed, 143 insertions(+)
->  create mode 100644 include/uapi/linux/iio/buffer.h
-> 
-> diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-> index a69bb705d173..119c2b5aa863 100644
-> --- a/drivers/iio/industrialio-buffer.c
-> +++ b/drivers/iio/industrialio-buffer.c
-> @@ -9,6 +9,7 @@
->   * - Better memory allocation techniques?
->   * - Alternative access techniques?
->   */
-> +#include <linux/anon_inodes.h>
->  #include <linux/kernel.h>
->  #include <linux/export.h>
->  #include <linux/device.h>
-> @@ -1333,6 +1334,106 @@ void iio_buffer_unregister_legacy_sysfs_groups(struct iio_dev *indio_dev)
->  	kfree(iio_dev_opaque->legacy_scan_el_group.attrs);
->  }
->  
-> +static int iio_buffer_chrdev_release(struct inode *inode, struct file *filep)
-> +{
-> +	struct iio_dev_buffer_pair *ib = filep->private_data;
-> +	struct iio_dev *indio_dev = ib->indio_dev;
-> +	struct iio_buffer *buffer = ib->buffer;
-> +
-> +	clear_bit(IIO_BUSY_BIT_POS, &buffer->flags);
-> +	iio_device_put(indio_dev);
-> +	kfree(ib);
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct file_operations iio_buffer_chrdev_fileops = {
-> +	.owner = THIS_MODULE,
-> +	.llseek = noop_llseek,
-> +	.read = iio_buffer_read_outer_addr,
-> +	.poll = iio_buffer_poll_addr,
-> +	.compat_ioctl = compat_ptr_ioctl,
-> +	.release = iio_buffer_chrdev_release,
-> +};
-> +
-> +static long iio_device_buffer_getfd(struct iio_dev *indio_dev, unsigned long arg)
-> +{
-> +	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
-> +	int __user *ival = (int __user *)arg;
-> +	char buf_name[sizeof("iio:buffer:xxx")];
-> +	struct iio_dev_buffer_pair *ib;
-> +	struct iio_buffer *buffer;
-> +	int fd, idx;
-> +
-> +	if (copy_from_user(&idx, ival, sizeof(idx)))
-> +		return -EFAULT;
-> +
-> +	if (idx == 0) {
-> +		fd = 0;
-> +		if (copy_to_user(ival, &fd, sizeof(fd)))
-> +			return -EFAULT;
-> +		return 0;
-> +	}
-> +
-> +	if (idx >= iio_dev_opaque->attached_buffers_cnt)
-> +		return -ENOENT;
-> +
-> +	fd = mutex_lock_interruptible(&indio_dev->mlock);
+Changes since v1:
+ - Introduce fixp_linear_interpolate() by Craig Tatlor
+ - Lots of syntax/whitespace changes
+ - Cleaned up register definitions per Jonathan's suggestion
+ - Implemented most of the suggestions from Bjorn's and Jonathan's
+   review
 
-Why mlock?  Might be fine, but this doesn't feel like it is in the normal scope
-of that lock.  So perhaps a comment on why it makes sense here.
 
-> +	if (fd)
-> +		return fd;
-> +
-> +	buffer = iio_dev_opaque->attached_buffers[idx];
-> +
-> +	if (test_and_set_bit(IIO_BUSY_BIT_POS, &buffer->flags)) {
-> +		fd = -EBUSY;
-> +		goto error_unlock;
-> +	}
-> +
-> +	iio_device_get(indio_dev);
-> +
-> +	ib = kzalloc(sizeof(*ib), GFP_KERNEL);
-> +	if (!ib) {
-> +		fd = -ENOMEM;
-> +		goto error_iio_dev_put;
-> +	}
-> +
-> +	ib->indio_dev = indio_dev;
-> +	ib->buffer = buffer;
-> +
-> +	fd = anon_inode_getfd(buf_name, &iio_buffer_chrdev_fileops,
-> +			      ib, O_RDWR | O_CLOEXEC);
-> +	if (fd < 0)
-> +		goto error_free_ib;
-> +
-> +	if (copy_to_user(ival, &fd, sizeof(fd))) {
-> +		fd = -EFAULT;
-> +		goto error_free_ib;
-> +	}
-> +
-> +	mutex_unlock(&indio_dev->mlock);
-> +	return fd;
-> +
-> +error_free_ib:
-> +	kfree(ib);
-> +error_iio_dev_put:
-> +	iio_device_put(indio_dev);
-> +	clear_bit(IIO_BUSY_BIT_POS, &buffer->flags);
-> +error_unlock:
-> +	mutex_unlock(&indio_dev->mlock);
-> +	return fd;
-> +}
-> +
-> +static long iio_device_buffer_ioctl(struct iio_dev *indio_dev, struct file *filp,
-> +				    unsigned int cmd, unsigned long arg)
-> +{
-> +	switch (cmd) {
-> +	case IIO_BUFFER_GET_FD_IOCTL:
-> +		return iio_device_buffer_getfd(indio_dev, arg);
-> +	default:
-> +		return IIO_IOCTL_UNHANDLED;
-> +	}
-> +}
-> +
->  static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
->  					     struct iio_dev *indio_dev,
->  					     int index)
-> @@ -1460,6 +1561,7 @@ int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
->  	const struct iio_chan_spec *channels;
->  	int unwind_idx;
->  	int ret, i;
-> +	size_t sz;
->  
->  	channels = indio_dev->channels;
->  	if (channels) {
-> @@ -1481,6 +1583,18 @@ int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
->  			goto error_unwind_sysfs_and_mask;
->  		}
->  	}
-> +	unwind_idx = iio_dev_opaque->attached_buffers_cnt - 1;
-> +
-> +	sz = sizeof(*(iio_dev_opaque->buffer_ioctl_handler));
-> +	iio_dev_opaque->buffer_ioctl_handler = kzalloc(sz, GFP_KERNEL);
-
-> +	if (!iio_dev_opaque->buffer_ioctl_handler) {
-> +		ret = -ENOMEM;
-> +		goto error_unwind_sysfs_and_mask;
-> +	}
-> +
-> +	iio_dev_opaque->buffer_ioctl_handler->ioctl = iio_device_buffer_ioctl;
-> +	iio_device_ioctl_handler_register(indio_dev,
-> +					  iio_dev_opaque->buffer_ioctl_handler);
->  
->  	return 0;
->  
-> @@ -1503,6 +1617,10 @@ void iio_buffer_free_sysfs_and_mask(struct iio_dev *indio_dev)
->  	if (!buffer)
->  		return;
->  
-> +	iio_device_ioctl_handler_unregister(iio_dev_opaque->buffer_ioctl_handler);
-> +	kfree(iio_dev_opaque->buffer_ioctl_handler);
-> +	iio_dev_opaque->buffer_ioctl_handler = NULL;
-> +
->  	iio_buffer_unregister_legacy_sysfs_groups(indio_dev);
->  
->  	for (i = iio_dev_opaque->attached_buffers_cnt - 1; i >= 0; i--) {
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> index 8af85838d1c2..78807b62ff52 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -1722,6 +1722,9 @@ static int iio_chrdev_open(struct inode *inode, struct file *filp)
->  	ib->indio_dev = indio_dev;
->  	ib->buffer = indio_dev->buffer;
->  
-> +	if (indio_dev->buffer)
-> +		test_and_set_bit(IIO_BUSY_BIT_POS, &indio_dev->buffer->flags);
-> +
-
-What is this test preventing?  I guess it's keeping the flag for the first
-buffer in sync with what other buffers will look at, but does anything check those?
-We'll not be able to open this one twice anyway due to the check above.
-
-Perhaps a comment on why this is here?
-
->  	filp->private_data = ib;
->  
->  	return 0;
-> @@ -1739,6 +1742,11 @@ static int iio_chrdev_release(struct inode *inode, struct file *filp)
->  	struct iio_dev_buffer_pair *ib = filp->private_data;
->  	struct iio_dev *indio_dev = container_of(inode->i_cdev,
->  						struct iio_dev, chrdev);
-> +	struct iio_buffer *buffer = ib->buffer;
-> +
-> +	if (buffer)
-> +		clear_bit(IIO_BUSY_BIT_POS, &buffer->flags);
-> +
->  	clear_bit(IIO_BUSY_BIT_POS, &indio_dev->flags);
->  	iio_device_put(indio_dev);
->  	kfree(ib);
-> diff --git a/include/linux/iio/buffer_impl.h b/include/linux/iio/buffer_impl.h
-> index 768b90c64412..245b32918ae1 100644
-> --- a/include/linux/iio/buffer_impl.h
-> +++ b/include/linux/iio/buffer_impl.h
-> @@ -6,6 +6,8 @@
->  
->  #ifdef CONFIG_IIO_BUFFER
->  
-> +#include <uapi/linux/iio/buffer.h>
-> +
->  struct iio_dev;
->  struct iio_buffer;
->  
-> @@ -72,6 +74,9 @@ struct iio_buffer {
->  	/** @length: Number of datums in buffer. */
->  	unsigned int length;
->  
-> +	/** @flags: File ops flags including busy flag. */
-> +	unsigned long flags;
-> +
->  	/**  @bytes_per_datum: Size of individual datum including timestamp. */
->  	size_t bytes_per_datum;
->  
-> diff --git a/include/linux/iio/iio-opaque.h b/include/linux/iio/iio-opaque.h
-> index c909835b6247..2c3374d465da 100644
-> --- a/include/linux/iio/iio-opaque.h
-> +++ b/include/linux/iio/iio-opaque.h
-> @@ -9,6 +9,7 @@
->   * @event_interface:		event chrdevs associated with interrupt lines
->   * @attached_buffers:		array of buffers statically attached by the driver
->   * @attached_buffers_cnt:	number of buffers in the array of statically attached buffers
-> + * @buffer_ioctl_handler:	ioctl() handler for this IIO device's buffer interface
->   * @buffer_list:		list of all buffers currently attached
->   * @channel_attr_list:		keep track of automatically created channel
->   *				attributes
-> @@ -28,6 +29,7 @@ struct iio_dev_opaque {
->  	struct iio_event_interface	*event_interface;
->  	struct iio_buffer		**attached_buffers;
->  	unsigned int			attached_buffers_cnt;
-> +	struct iio_ioctl_handler	*buffer_ioctl_handler;
->  	struct list_head		buffer_list;
->  	struct list_head		channel_attr_list;
->  	struct attribute_group		chan_attr_group;
-> diff --git a/include/uapi/linux/iio/buffer.h b/include/uapi/linux/iio/buffer.h
-> new file mode 100644
-> index 000000000000..de571c83c9f2
-> --- /dev/null
-> +++ b/include/uapi/linux/iio/buffer.h
-> @@ -0,0 +1,10 @@
-> +/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-> +/* industrial I/O buffer definitions needed both in and out of kernel
-> + */
-> +
-> +#ifndef _UAPI_IIO_BUFFER_H_
-> +#define _UAPI_IIO_BUFFER_H_
-> +
-> +#define IIO_BUFFER_GET_FD_IOCTL		_IOWR('i', 0x91, int)
-> +
-> +#endif /* _UAPI_IIO_BUFFER_H_ */
 

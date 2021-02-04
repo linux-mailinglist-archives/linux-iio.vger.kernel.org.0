@@ -2,43 +2,43 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF5E630F25C
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Feb 2021 12:39:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 26F7F30F25F
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Feb 2021 12:39:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235835AbhBDLfn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 4 Feb 2021 06:35:43 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:35416 "EHLO
+        id S235887AbhBDLfq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 4 Feb 2021 06:35:46 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:36800 "EHLO
         mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235960AbhBDLd7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Feb 2021 06:33:59 -0500
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 114BUxhI016103;
-        Thu, 4 Feb 2021 06:33:13 -0500
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 36dbud5vee-1
+        by vger.kernel.org with ESMTP id S235751AbhBDLd6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Feb 2021 06:33:58 -0500
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 114BTVe4001624;
+        Thu, 4 Feb 2021 06:33:15 -0500
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 36d26aen7x-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 04 Feb 2021 06:33:13 -0500
-Received: from SCSQMBX11.ad.analog.com (SCSQMBX11.ad.analog.com [10.77.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 114BXB9o016251
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Thu, 4 Feb 2021 06:33:12 -0500
-Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by SCSQMBX11.ad.analog.com
- (10.77.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Thu, 4 Feb 2021
- 03:33:10 -0800
-Received: from zeus.spd.analog.com (10.66.68.11) by scsqmbx10.ad.analog.com
- (10.77.17.5) with Microsoft SMTP Server id 15.2.721.2 via Frontend Transport;
- Thu, 4 Feb 2021 03:33:10 -0800
+        Thu, 04 Feb 2021 06:33:14 -0500
+Received: from SCSQMBX10.ad.analog.com (SCSQMBX10.ad.analog.com [10.77.17.5])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 114BXCNx054309
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 4 Feb 2021 06:33:13 -0500
+Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
+ SCSQMBX10.ad.analog.com (10.77.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.721.2;
+ Thu, 4 Feb 2021 03:33:11 -0800
+Received: from zeus.spd.analog.com (10.66.68.11) by SCSQMBX11.ad.analog.com
+ (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Thu, 4 Feb 2021 03:33:11 -0800
 Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 114BX7Yo009001;
-        Thu, 4 Feb 2021 06:33:09 -0500
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 114BX7Yp009001;
+        Thu, 4 Feb 2021 06:33:10 -0500
 From:   <alexandru.tachici@analog.com>
 To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <devicetree@vger.kernel.org>
 CC:     <jic23@kernel.org>, <robh+dt@kernel.org>
-Subject: [PATCH v2 1/2] iio: adc: ad7124: allow 16 channels
-Date:   Thu, 4 Feb 2021 13:35:50 +0200
-Message-ID: <20210204113551.68744-2-alexandru.tachici@analog.com>
+Subject: [PATCH v2 2/2] dt-bindings: iio: adc: ad7124: add config nodes
+Date:   Thu, 4 Feb 2021 13:35:51 +0200
+Message-ID: <20210204113551.68744-3-alexandru.tachici@analog.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210204113551.68744-1-alexandru.tachici@analog.com>
 References: <20210204113551.68744-1-alexandru.tachici@analog.com>
@@ -47,384 +47,153 @@ Content-Type: text/plain
 X-ADIRuleOP-NewSCL: Rule Triggered
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.737
  definitions=2021-02-04_06:2021-02-04,2021-02-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- adultscore=0 clxscore=1015 suspectscore=0 malwarescore=0 mlxscore=0
- priorityscore=1501 bulkscore=0 mlxlogscore=999 spamscore=0 phishscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102040072
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ lowpriorityscore=0 impostorscore=0 clxscore=1015 suspectscore=0
+ priorityscore=1501 malwarescore=0 bulkscore=0 adultscore=0 mlxscore=0
+ mlxlogscore=999 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2009150000 definitions=main-2102040072
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Alexandru Tachici <alexandru.tachici@analog.com>
 
-AD7124-8 can have up to 16 pseudo-differential channels
-enabled simultaneously and only 8 configurations. In this
-scenario we cannot assign one configuration per channel,
-some channels will have to share configurations like, ODR,
-gain and filter parameters.
-
-This patch allows the user to specify channels and configurations
-separately in device-tree and assign, if needed, the same
-configuration to multiple channels.
+Document use of configurations in device-tree bindings.
 
 Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
 ---
- drivers/iio/adc/ad7124.c | 183 +++++++++++++++++++++++----------------
- 1 file changed, 109 insertions(+), 74 deletions(-)
+ .../bindings/iio/adc/adi,ad7124.yaml          | 72 +++++++++++++++----
+ 1 file changed, 57 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index 766c73333604..0df88bea336f 100644
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -86,6 +86,12 @@
- #define AD7124_SINC3_FILTER 2
- #define AD7124_SINC4_FILTER 0
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
+index fb3d0dae9bae..330064461d0a 100644
+--- a/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
+@@ -62,20 +62,19 @@ required:
+   - interrupts
  
-+#define AD7124_CONF_ADDR_OFFSET	20
-+#define AD7124_MAX_CONFIGS	8
-+#define AD7124_MAX_CHANNELS	16
-+
-+#define AD7124_REG_NO 57
-+
- enum ad7124_ids {
- 	ID_AD7124_4,
- 	ID_AD7124_8,
-@@ -136,21 +142,28 @@ struct ad7124_chip_info {
- };
+ patternProperties:
+-  "^channel@([0-9]|1[0-5])$":
+-    $ref: "adc.yaml"
++  "^config@(2[0-7])$":
+     type: object
+     description: |
+-      Represents the external channels which are connected to the ADC.
++      Represents a channel configuration.
++      See Documentation/devicetree/bindings/iio/adc/adc.txt.
  
- struct ad7124_channel_config {
-+	bool enable;
-+	unsigned int nr;
- 	enum ad7124_ref_sel refsel;
- 	bool bipolar;
- 	bool buf_positive;
- 	bool buf_negative;
--	unsigned int ain;
- 	unsigned int vref_mv;
- 	unsigned int pga_bits;
- 	unsigned int odr;
- 	unsigned int filter_type;
- };
+     properties:
+       reg:
+         description: |
+-          The channel number. It can have up to 8 channels on ad7124-4
+-          and 16 channels on ad7124-8, numbered from 0 to 15.
++          The config number. It can have up to 8 configuration.
+         items:
+-          minimum: 0
+-          maximum: 15
++         minimum: 20
++         maximum: 27
  
-+struct ad7124_channel {
-+	struct ad7124_channel_config *cfg;
-+	unsigned int ain;
-+};
-+
- struct ad7124_state {
- 	const struct ad7124_chip_info *chip_info;
- 	struct ad_sigma_delta sd;
--	struct ad7124_channel_config *channel_config;
-+	struct ad7124_channel channels[AD7124_MAX_CHANNELS];
-+	struct ad7124_channel_config configs[AD7124_MAX_CONFIGS];
- 	struct regulator *vref[4];
- 	struct clk *mclk;
- 	unsigned int adc_control;
-@@ -243,8 +256,8 @@ static int ad7124_set_channel(struct ad_sigma_delta *sd, unsigned int channel)
- 	struct ad7124_state *st = container_of(sd, struct ad7124_state, sd);
- 	unsigned int val;
+       adi,reference-select:
+         description: |
+@@ -88,8 +87,6 @@ patternProperties:
+         $ref: /schemas/types.yaml#/definitions/uint32
+         enum: [0, 1, 3]
  
--	val = st->channel_config[channel].ain | AD7124_CHANNEL_EN(1) |
--	      AD7124_CHANNEL_SETUP(channel);
-+	val = st->channels[channel].ain | AD7124_CHANNEL_EN(1) |
-+	      AD7124_CHANNEL_SETUP(st->channels[channel].cfg->nr);
- 
- 	return ad_sd_write_reg(&st->sd, AD7124_CHANNEL(channel), 2, val);
- }
-@@ -280,14 +293,13 @@ static int ad7124_set_channel_odr(struct ad7124_state *st,
- 	else if (odr_sel_bits > 2047)
- 		odr_sel_bits = 2047;
- 
--	ret = ad7124_spi_write_mask(st, AD7124_FILTER(channel),
-+	ret = ad7124_spi_write_mask(st, AD7124_FILTER(st->channels[channel].cfg->nr),
- 				    AD7124_FILTER_FS_MSK,
- 				    AD7124_FILTER_FS(odr_sel_bits), 3);
- 	if (ret < 0)
- 		return ret;
- 	/* fADC = fCLK / (FS[10:0] x 32) */
--	st->channel_config[channel].odr =
--		DIV_ROUND_CLOSEST(fclk, odr_sel_bits * 32);
-+	st->channels[channel].cfg->odr = DIV_ROUND_CLOSEST(fclk, odr_sel_bits * 32);
- 
- 	return 0;
- }
-@@ -301,13 +313,13 @@ static int ad7124_set_channel_gain(struct ad7124_state *st,
- 
- 	res = ad7124_find_closest_match(ad7124_gain,
- 					ARRAY_SIZE(ad7124_gain), gain);
--	ret = ad7124_spi_write_mask(st, AD7124_CONFIG(channel),
-+	ret = ad7124_spi_write_mask(st, AD7124_CONFIG(st->channels[channel].cfg->nr),
- 				    AD7124_CONFIG_PGA_MSK,
- 				    AD7124_CONFIG_PGA(res), 2);
- 	if (ret < 0)
- 		return ret;
- 
--	st->channel_config[channel].pga_bits = res;
-+	st->channels[channel].cfg->pga_bits = res;
- 
- 	return 0;
- }
-@@ -317,9 +329,9 @@ static int ad7124_get_3db_filter_freq(struct ad7124_state *st,
- {
- 	unsigned int fadc;
- 
--	fadc = st->channel_config[channel].odr;
-+	fadc = st->channels[channel].cfg->odr;
- 
--	switch (st->channel_config[channel].filter_type) {
-+	switch (st->channels[channel].cfg->filter_type) {
- 	case AD7124_SINC3_FILTER:
- 		return DIV_ROUND_CLOSEST(fadc * 230, 1000);
- 	case AD7124_SINC4_FILTER:
-@@ -349,11 +361,11 @@ static int ad7124_set_3db_filter_freq(struct ad7124_state *st,
- 		new_odr = sinc3_3db_odr;
- 	}
- 
--	if (st->channel_config[channel].filter_type != new_filter) {
-+	if (st->channels[channel].cfg->filter_type != new_filter) {
- 		int ret;
- 
--		st->channel_config[channel].filter_type = new_filter;
--		ret = ad7124_spi_write_mask(st, AD7124_FILTER(channel),
-+		st->channels[channel].cfg->filter_type = new_filter;
-+		ret = ad7124_spi_write_mask(st, AD7124_FILTER(st->channels[channel].cfg->nr),
- 					    AD7124_FILTER_TYPE_MSK,
- 					    AD7124_FILTER_TYPE_SEL(new_filter),
- 					    3);
-@@ -380,30 +392,30 @@ static int ad7124_read_raw(struct iio_dev *indio_dev,
- 		/* After the conversion is performed, disable the channel */
- 		ret = ad_sd_write_reg(&st->sd,
- 				      AD7124_CHANNEL(chan->address), 2,
--				      st->channel_config[chan->address].ain |
-+				      st->channels[chan->address].ain |
- 				      AD7124_CHANNEL_EN(0));
- 		if (ret < 0)
- 			return ret;
- 
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SCALE:
--		idx = st->channel_config[chan->address].pga_bits;
--		*val = st->channel_config[chan->address].vref_mv;
--		if (st->channel_config[chan->address].bipolar)
-+		idx = st->channels[chan->address].cfg->pga_bits;
-+		*val = st->channels[chan->address].cfg->vref_mv;
-+		if (st->channels[chan->address].cfg->bipolar)
- 			*val2 = chan->scan_type.realbits - 1 + idx;
- 		else
- 			*val2 = chan->scan_type.realbits + idx;
- 
- 		return IIO_VAL_FRACTIONAL_LOG2;
- 	case IIO_CHAN_INFO_OFFSET:
--		if (st->channel_config[chan->address].bipolar)
-+		if (st->channels[chan->address].cfg->bipolar)
- 			*val = -(1 << (chan->scan_type.realbits - 1));
- 		else
- 			*val = 0;
- 
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SAMP_FREQ:
--		*val = st->channel_config[chan->address].odr;
-+		*val = st->channels[chan->address].cfg->odr;
- 
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-@@ -431,12 +443,12 @@ static int ad7124_write_raw(struct iio_dev *indio_dev,
- 		if (val != 0)
- 			return -EINVAL;
- 
--		if (st->channel_config[chan->address].bipolar)
-+		if (st->channels[chan->address].cfg->bipolar)
- 			full_scale = 1 << (chan->scan_type.realbits - 1);
- 		else
- 			full_scale = 1 << chan->scan_type.realbits;
- 
--		vref = st->channel_config[chan->address].vref_mv * 1000000LL;
-+		vref = st->channels[chan->address].cfg->vref_mv * 1000000LL;
- 		res = DIV_ROUND_CLOSEST(vref, full_scale);
- 		gain = DIV_ROUND_CLOSEST(res, val2);
- 
-@@ -550,7 +562,7 @@ static int ad7124_check_chip_id(struct ad7124_state *st)
- static int ad7124_init_channel_vref(struct ad7124_state *st,
- 				    unsigned int channel_number)
- {
--	unsigned int refsel = st->channel_config[channel_number].refsel;
-+	unsigned int refsel = st->channels[channel_number].cfg->refsel;
- 
- 	switch (refsel) {
- 	case AD7124_REFIN1:
-@@ -562,13 +574,13 @@ static int ad7124_init_channel_vref(struct ad7124_state *st,
- 				ad7124_ref_names[refsel]);
- 			return PTR_ERR(st->vref[refsel]);
- 		}
--		st->channel_config[channel_number].vref_mv =
-+		st->channels[channel_number].cfg->vref_mv =
- 			regulator_get_voltage(st->vref[refsel]);
- 		/* Conversion from uV to mV */
--		st->channel_config[channel_number].vref_mv /= 1000;
-+		st->channels[channel_number].cfg->vref_mv /= 1000;
- 		break;
- 	case AD7124_INT_REF:
--		st->channel_config[channel_number].vref_mv = 2500;
-+		st->channels[channel_number].cfg->vref_mv = 2500;
- 		st->adc_control &= ~AD7124_ADC_CTRL_REF_EN_MSK;
- 		st->adc_control |= AD7124_ADC_CTRL_REF_EN(1);
- 		return ad_sd_write_reg(&st->sd, AD7124_ADC_CONTROL,
-@@ -587,14 +599,40 @@ static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
- 	struct ad7124_state *st = iio_priv(indio_dev);
- 	struct device_node *child;
- 	struct iio_chan_spec *chan;
--	struct ad7124_channel_config *chan_config;
--	unsigned int ain[2], channel = 0, tmp;
-+	unsigned int ain[2], config_nr = 0, channel = 0, tmp;
- 	int ret;
- 
--	st->num_channels = of_get_available_child_count(np);
--	if (!st->num_channels) {
--		dev_err(indio_dev->dev.parent, "no channel children\n");
--		return -ENODEV;
-+	/* parse configuration nodes */
-+	for_each_available_child_of_node(np, child) {
-+		ret = of_property_read_u32_array(child, "diff-channels", ain, 2);
-+		if (!ret) {
-+			st->num_channels++;
-+			continue;
-+		}
-+
-+		if (ret == -EINVAL) {
-+			ret = of_property_read_u32(child, "reg", &config_nr);
-+			if (ret)
-+				goto err;
-+
-+			config_nr -= AD7124_CONF_ADDR_OFFSET;
-+			st->configs[config_nr].enable = true;
-+			st->configs[config_nr].nr = config_nr;
-+			st->configs[config_nr].bipolar = of_property_read_bool(child, "bipolar");
-+
-+			ret = of_property_read_u32(child, "adi,reference-select", &tmp);
-+			if (ret)
-+				st->configs[config_nr].refsel = AD7124_INT_REF;
-+			else
-+				st->configs[config_nr].refsel = tmp;
-+
-+			st->configs[config_nr].buf_positive =
-+				of_property_read_bool(child, "adi,buffered-positive");
-+			st->configs[config_nr].buf_negative =
-+				of_property_read_bool(child, "adi,buffered-negative");
-+		} else {
-+			goto err;
-+		}
- 	}
- 
- 	chan = devm_kcalloc(indio_dev->dev.parent, st->num_channels,
-@@ -602,46 +640,43 @@ static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
- 	if (!chan)
- 		return -ENOMEM;
- 
--	chan_config = devm_kcalloc(indio_dev->dev.parent, st->num_channels,
--				   sizeof(*chan_config), GFP_KERNEL);
--	if (!chan_config)
--		return -ENOMEM;
+-      diff-channels: true
 -
- 	indio_dev->channels = chan;
- 	indio_dev->num_channels = st->num_channels;
--	st->channel_config = chan_config;
+       bipolar: true
  
-+	/* parse channel nodes */
- 	for_each_available_child_of_node(np, child) {
--		ret = of_property_read_u32(child, "reg", &channel);
--		if (ret)
--			goto err;
--
--		ret = of_property_read_u32_array(child, "diff-channels",
--						 ain, 2);
--		if (ret)
--			goto err;
--
--		st->channel_config[channel].ain = AD7124_CHANNEL_AINP(ain[0]) |
--						  AD7124_CHANNEL_AINM(ain[1]);
--		st->channel_config[channel].bipolar =
--			of_property_read_bool(child, "bipolar");
--
--		ret = of_property_read_u32(child, "adi,reference-select", &tmp);
--		if (ret)
--			st->channel_config[channel].refsel = AD7124_INT_REF;
--		else
--			st->channel_config[channel].refsel = tmp;
--
--		st->channel_config[channel].buf_positive =
--			of_property_read_bool(child, "adi,buffered-positive");
--		st->channel_config[channel].buf_negative =
--			of_property_read_bool(child, "adi,buffered-negative");
--
--		chan[channel] = ad7124_channel_template;
--		chan[channel].address = channel;
--		chan[channel].scan_index = channel;
--		chan[channel].channel = ain[0];
--		chan[channel].channel2 = ain[1];
-+		ret = of_property_read_u32_array(child, "diff-channels", ain, 2);
-+		if (!ret) {
-+			ret = of_property_read_u32(child, "reg", &channel);
-+			if (ret)
-+				goto err;
-+
-+			ret = of_property_read_u32_array(child, "diff-channels", ain, 2);
-+			if (ret)
-+				goto err;
-+
-+			st->channels[channel].ain = AD7124_CHANNEL_AINP(ain[0]) |
-+						    AD7124_CHANNEL_AINM(ain[1]);
-+
-+			ret = of_property_read_u32(child, "adi,configuration", &config_nr);
-+			if (ret)
-+				goto err;
-+
-+			config_nr -= AD7124_CONF_ADDR_OFFSET;
-+			if (!st->configs[config_nr].enable) {
-+				dev_err(&st->sd.spi->dev, "Configuration %u not specified in DT.\n",
-+					config_nr);
-+				return -EINVAL;
-+			}
-+
-+			st->channels[channel].cfg = &st->configs[config_nr];
-+
-+			chan[channel] = ad7124_channel_template;
-+			chan[channel].address = channel;
-+			chan[channel].scan_index = channel;
-+			chan[channel].channel = ain[0];
-+			chan[channel].channel2 = ain[1];
-+		}
- 	}
+       adi,buffered-positive:
+@@ -100,6 +97,35 @@ patternProperties:
+         description: Enable buffered mode for negative input.
+         type: boolean
  
- 	return 0;
-@@ -678,7 +713,7 @@ static int ad7124_setup(struct ad7124_state *st)
- 		return ret;
++    additionalProperties: false
++
++  "^channel@([0-9]|1[0-5])$":
++    type: object
++    description: |
++      Represents the external channels which are connected to the ADC.
++      See Documentation/devicetree/bindings/iio/adc/adc.txt.
++
++    properties:
++      reg:
++        description: |
++          The channel number. It can have up to 8 channels on ad7124-4
++          and 16 channels on ad7124-8, numbered from 0 to 15.
++        items:
++         minimum: 0
++         maximum: 15
++
++      diff-channels: true
++
++      adi,configuration:
++        description: |
++          The devices has 8 configuration and ad7124-8 support up to 16 unipolar channels.
++          Each channel can be assigned one configuration. Some channels will be sharing the
++          same configuration.
++        allOf:
++          - $ref: /schemas/types.yaml#/definitions/uint32
++        minimum: 20
++        maximum: 27
++
+     required:
+       - reg
+       - diff-channels
+@@ -127,30 +153,46 @@ examples:
+         #address-cells = <1>;
+         #size-cells = <0>;
  
- 	for (i = 0; i < st->num_channels; i++) {
--		val = st->channel_config[i].ain | AD7124_CHANNEL_SETUP(i);
-+		val = st->channels[i].ain | AD7124_CHANNEL_SETUP(i);
- 		ret = ad_sd_write_reg(&st->sd, AD7124_CHANNEL(i), 2, val);
- 		if (ret < 0)
- 			return ret;
-@@ -687,13 +722,13 @@ static int ad7124_setup(struct ad7124_state *st)
- 		if (ret < 0)
- 			return ret;
+-        channel@0 {
+-          reg = <0>;
+-          diff-channels = <0 1>;
++        config@20 {
++          reg = <20>;
+           adi,reference-select = <0>;
+           adi,buffered-positive;
+         };
  
--		tmp = (st->channel_config[i].buf_positive << 1)  +
--			st->channel_config[i].buf_negative;
-+		tmp = (st->channels[i].cfg->buf_positive << 1)  +
-+			st->channels[i].cfg->buf_negative;
+-        channel@1 {
+-          reg = <1>;
++        config@21 {
++          reg = <21>;
+           bipolar;
+-          diff-channels = <2 3>;
+           adi,reference-select = <0>;
+           adi,buffered-positive;
+           adi,buffered-negative;
+         };
  
--		val = AD7124_CONFIG_BIPOLAR(st->channel_config[i].bipolar) |
--		      AD7124_CONFIG_REF_SEL(st->channel_config[i].refsel) |
-+		val = AD7124_CONFIG_BIPOLAR(st->channels[i].cfg->bipolar) |
-+		      AD7124_CONFIG_REF_SEL(st->channels[i].cfg->refsel) |
- 		      AD7124_CONFIG_IN_BUFF(tmp);
--		ret = ad_sd_write_reg(&st->sd, AD7124_CONFIG(i), 2, val);
-+		ret = ad_sd_write_reg(&st->sd, AD7124_CONFIG(st->channels[i].cfg->nr), 2, val);
- 		if (ret < 0)
- 			return ret;
- 		/*
++        config@22 {
++          reg = <22>;
++        };
++
++        channel@0 {
++          reg = <0>;
++          diff-channels = <0 1>;
++          adi,configuration = <20>;
++        };
++
++        channel@1 {
++          reg = <1>;
++          diff-channels = <2 3>;
++          adi,configuration = <21>;
++        };
++
+         channel@2 {
+           reg = <2>;
+           diff-channels = <4 5>;
++          adi,configuration = <22>;
+         };
+ 
+         channel@3 {
+           reg = <3>;
+           diff-channels = <6 7>;
++          adi,configuration = <22>;
+         };
+       };
+     };
 -- 
 2.20.1
 

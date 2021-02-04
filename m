@@ -2,82 +2,85 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A5EC630F667
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Feb 2021 16:34:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7723330F6F1
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Feb 2021 17:00:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237342AbhBDPdL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 4 Feb 2021 10:33:11 -0500
-Received: from mail-ot1-f42.google.com ([209.85.210.42]:38097 "EHLO
-        mail-ot1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237252AbhBDPVs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Feb 2021 10:21:48 -0500
-Received: by mail-ot1-f42.google.com with SMTP id t25so3737707otc.5;
-        Thu, 04 Feb 2021 07:21:29 -0800 (PST)
+        id S237579AbhBDP4H (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 4 Feb 2021 10:56:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44284 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237501AbhBDPzP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Feb 2021 10:55:15 -0500
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6B48C061786
+        for <linux-iio@vger.kernel.org>; Thu,  4 Feb 2021 07:54:32 -0800 (PST)
+Received: by mail-ej1-x636.google.com with SMTP id sa23so6235977ejb.0
+        for <linux-iio@vger.kernel.org>; Thu, 04 Feb 2021 07:54:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=++R/1fsILOGF4vJb7pQXNieXWAnye6tFnRAXCu0Ng6A=;
+        b=Jn8ds1c0pb3BkuQhBIMgh7F1nlwWKPxXNlyQAiNxYvdiYbXdhVmv31oH5z9L/kZaU3
+         McTILJgGnpopg6T/Dn8Ie0W9AFw8YEDkfJTxQ6VVUcoN8aGID66pL2SxRTlraqqscGms
+         E27Weo/XVHSyjSf9U0J7BxASWE/J4S/aqMKbKZZPVYwzLpQa1ZRi+kPfNgXKmtuQRxkg
+         jm49FzCUW5zBpPyQyf8ieNrJfvevvfI6ap179uWg8YkmnAQcMSknnVDcuz6+9PAqD4fh
+         eGaG1mKsSLE9nTYUnPWHXm0iJwspU4zyHq/KO3z4jyEprA4mPEtdg3/eqQ+9xIqCXzb2
+         G0vQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=kUMjkPK/McmTxR+3enIboqlHKyis7paShiElKBa3hkg=;
-        b=KoeXOa4rQV6zL9LyjIF7Y3UmXJHkBdahbiPo/YGQBXe/NztnprG3eLpgqTFvWMyxDO
-         a+zWRavz6hv/riH3KEocrmAm+PAybw17eRaE0Y07l+tGPinVzL9/u2m63f+rfBUcT0Zn
-         2LcVOWkIY9EftRAhd6wcy+xqe2OmQS0IAnFUA3p36ER3AFrvpMhePs4bvcASUjCyscas
-         k0KJSKg3M0SRT0ood61HimmX0VrDP2HHx8oqUG4LHMxfCZ5jlhBKAGA2xBdesGaDGqlC
-         De8YwIgN8mqEUcAW1N3utpjMwn4m1Zke1NeM5r+YTncT8mmOI5ks3qWqCahtu1NWx9Q6
-         fN1A==
-X-Gm-Message-State: AOAM5310lugIFXedHP037lGlK6b65LCG7WRZihp0v8hewX4Wuz6YgWmv
-        isewiKy5LRIoFjgajMC1gA==
-X-Google-Smtp-Source: ABdhPJzfp/QJEiThkrI+7dYQouB2O9bFRGwN8XxWckzXwf+CTGWl9wr9QQI0AK32fVQu+4zjUJOwSQ==
-X-Received: by 2002:a9d:7e87:: with SMTP id m7mr6323728otp.128.1612452064479;
-        Thu, 04 Feb 2021 07:21:04 -0800 (PST)
-Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id a71sm1120804oob.48.2021.02.04.07.21.03
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=++R/1fsILOGF4vJb7pQXNieXWAnye6tFnRAXCu0Ng6A=;
+        b=f0iUzr/5/S5klgCN2jA3HpTu2HkB7kFFJJb/xLmhzxKIF73YvgfYIKiBpV7VglQpjF
+         DqRVBUh67rXSGnuGatYm7wVa/aZX2398xZ6BgqYwuJXATs8fr+TiRl4DYJ2CjZjZzDml
+         9DhILGbqUHNaJbHKfvmo0W+q/aeWrqXVJ+eW09OcQN5zZ+dVL1vaBl57fUHlbHsUk+Nu
+         ooN36DydgXLem8pkDW2Firxv42IpqMplfK1b8tdcO+upaISDaDVmT5o3YcEGlx94Sbsx
+         mg8ZunW0pugmCKWIyzuTVOKlBd6Gnf7FP3lbJPzUCztx08unv+swWg61Nkq4wtINlBtN
+         7bOw==
+X-Gm-Message-State: AOAM531ofei8Y+B4lroNB+5kRwCARDdl5/YSStpntPaJ6YiIZCXC6jxL
+        0QX5TWZp5WfJTG5mBNRhk1o=
+X-Google-Smtp-Source: ABdhPJzj+cNdWUvMhcMfMi7LnJSed7gKFoW+OgX71W7+hRyWsoPL7J+vmIThYRHm3jQdrRF8PiQkxQ==
+X-Received: by 2002:a17:906:1712:: with SMTP id c18mr8665506eje.417.1612454071532;
+        Thu, 04 Feb 2021 07:54:31 -0800 (PST)
+Received: from ubuntu (62-46-102-85.adsl.highway.telekom.at. [62.46.102.85])
+        by smtp.gmail.com with ESMTPSA id f20sm2640781edd.47.2021.02.04.07.54.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Feb 2021 07:21:03 -0800 (PST)
-Received: (nullmailer pid 452042 invoked by uid 1000);
-        Thu, 04 Feb 2021 15:20:57 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     alexandru.tachici@analog.com
-Cc:     linux-kernel@vger.kernel.org, robh+dt@kernel.org,
-        devicetree@vger.kernel.org, jic23@kernel.org,
-        linux-iio@vger.kernel.org
-In-Reply-To: <20210204113551.68744-3-alexandru.tachici@analog.com>
-References: <20210204113551.68744-1-alexandru.tachici@analog.com> <20210204113551.68744-3-alexandru.tachici@analog.com>
-Subject: Re: [PATCH v2 2/2] dt-bindings: iio: adc: ad7124: add config nodes
-Date:   Thu, 04 Feb 2021 09:20:57 -0600
-Message-Id: <1612452057.726074.452041.nullmailer@robh.at.kernel.org>
+        Thu, 04 Feb 2021 07:54:31 -0800 (PST)
+Date:   Thu, 4 Feb 2021 16:54:30 +0100
+From:   Wilfried Wessner <wilfried.wessner@gmail.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Cc:     linux-iio@vger.kernel.org, gregkh@linuxfoundation.org
+Subject: [PATCH] Correct bit mask for ADC result according to ADC's
+ resolution.
+Message-ID: <20210204155430.GA557111@ubuntu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 04 Feb 2021 13:35:51 +0200, alexandru.tachici@analog.com wrote:
-> From: Alexandru Tachici <alexandru.tachici@analog.com>
-> 
-> Document use of configurations in device-tree bindings.
-> 
-> Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
-> ---
->  .../bindings/iio/adc/adi,ad7124.yaml          | 72 +++++++++++++++----
->  1 file changed, 57 insertions(+), 15 deletions(-)
-> 
+Signed-off-by: Wilfried Wessner <wilfried.wessner@gmail.com>
+---
+ drivers/iio/adc/ad7949.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-My bot found errors running 'make dt_binding_check' on your patch:
-
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml:76:10: [warning] wrong indentation: expected 10 but found 9 (indentation)
-./Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml:114:10: [warning] wrong indentation: expected 10 but found 9 (indentation)
-
-dtschema/dtc warnings/errors:
-
-See https://patchwork.ozlabs.org/patch/1435965
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
+diff --git a/drivers/iio/adc/ad7949.c b/drivers/iio/adc/ad7949.c
+index 5d597e5050f6..a5b4858cb6dc 100644
+--- a/drivers/iio/adc/ad7949.c
++++ b/drivers/iio/adc/ad7949.c
+@@ -91,7 +91,7 @@ static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
+ 	int ret;
+ 	int i;
+ 	int bits_per_word = ad7949_adc->resolution;
+-	int mask = GENMASK(ad7949_adc->resolution, 0);
++	int mask = GENMASK((ad7949_adc->resolution-1), 0);
+ 	struct spi_message msg;
+ 	struct spi_transfer tx[] = {
+ 		{
+-- 
+2.25.1
 

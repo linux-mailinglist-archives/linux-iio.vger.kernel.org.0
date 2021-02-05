@@ -2,385 +2,180 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 99A38311629
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Feb 2021 23:59:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 870DF311931
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Feb 2021 03:58:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232200AbhBEWyG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 5 Feb 2021 17:54:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33596 "EHLO
+        id S231794AbhBFC5k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 5 Feb 2021 21:57:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231961AbhBEM6Z (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 Feb 2021 07:58:25 -0500
-Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA1FAC0613D6;
-        Fri,  5 Feb 2021 04:57:40 -0800 (PST)
-Received: by mail-io1-xd36.google.com with SMTP id n2so6928299iom.7;
-        Fri, 05 Feb 2021 04:57:40 -0800 (PST)
+        with ESMTP id S231453AbhBFCwi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 Feb 2021 21:52:38 -0500
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 191BAC061756
+        for <linux-iio@vger.kernel.org>; Fri,  5 Feb 2021 13:58:17 -0800 (PST)
+Received: by mail-pj1-x1034.google.com with SMTP id z9so4576944pjl.5
+        for <linux-iio@vger.kernel.org>; Fri, 05 Feb 2021 13:58:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0RR05Z4k0vMYvmm56rl/V1Apo3w8il/yUemMvO7gxfs=;
-        b=amutLEJ/aHnZm5IyuhCrWYred06eWi9DVCNqmxDnQgrEI7m5A4DpAFNZNeMJhL919Z
-         Aopz3XX/enaZZ1DcYbl7PA3GrjU30tpODnpGrrgekG3euuDP9TfRPSxLppSdGnv7uV1g
-         HuRbUDvFp2z22zMErHw//6D9zOblCvGEGjGzJEYiMiHaaAeU74hxwCn5EUNZdqein87g
-         RN+mt8j2+b39MQpF7U+jsGUL6Y5lMXdfrF+M3JYfbOzgDInMMRQIKhfMs0n/Riqw/mjT
-         g31UivF3CAH3urGpQyOUOifF8oYDQvJoEcOBBu82OInpcg6bs3RJstCTOVwotaiuHOmo
-         EtAw==
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=rwGnDkAwLPNFNg3dbClr9Apyxhw0sa9sADlIfBPGl84=;
+        b=e3vOfoclLsO/A7ts9jMJQiKJ2DoT3ZGGYFMYPidsrc4+xaSs3wRxbJKgXTxsiszjzU
+         +7+o3uUgAlvAonbolehMDUA6fzCvanJXJ9pJLuYJlsfNpnNJRcJs3LuLsQ3T526ps1rk
+         221kDHhrcovViFSPzOdHWqKVrefqTfPHETKfM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0RR05Z4k0vMYvmm56rl/V1Apo3w8il/yUemMvO7gxfs=;
-        b=spu76jUSyef3Qs7k9aeE9YByUzs3i/61N+XQPM4UnkUzgCjrkgEFMLWH/KPDHANnB4
-         wS0jit41kEgsI6rB4COKz5Km5ZjYsON/XgUaYnxhNzulXO8ov9DBg2bHysbOZvzeakGw
-         1WC5ZTOxNWQCyx9xHotw34s0L0PjGrAgSkUY+aPesCb1nzMof0YSrdU+6UZg2MJhXfBA
-         kVc5xV15I5PERaTIgkZ725xmNtjrLroXDHoIavSJNvkHb/1fBHrB+Q01CY+ZSO6Bwxyf
-         LF42kJJCzJxzSG05kkRmf7KdlqoE9GzLEOkeuppL90CxXbNmMQr+MfA33Dp8pAPymJdT
-         yqGA==
-X-Gm-Message-State: AOAM531hKip4f4iujlzAHmBC+yabrZMwZSIY72QkCyGmgWFuru0/WBcS
-        HvpBhBogpimunM/IGg37A0WYBLQ8CC0Oe78sL6s=
-X-Google-Smtp-Source: ABdhPJy74p92XgT8ySDtdx0i06ToVsYK8qt63gJ64u62/uz+CzEcBOiS8V8aXhMbRlslM8GSgr6kn/XUl2YfyEUveUQ=
-X-Received: by 2002:a5d:9143:: with SMTP id y3mr4090624ioq.98.1612529860066;
- Fri, 05 Feb 2021 04:57:40 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=rwGnDkAwLPNFNg3dbClr9Apyxhw0sa9sADlIfBPGl84=;
+        b=PeWCQvT9anYx4iubyOTkTszR2MLcRkIfNPQaHctxf7NGjjdSxuFk0fkIBz97BOxQy6
+         1VTS8pIYDHNf/OS8UHWS7mlH1R1ul2WVmMhKqJwrn7Y81M8XdovoBc6MwbyZTy8bbGgw
+         q0ShG/X7SI6XJLpncbtOr/sTwUkIkXKr/rOk0howNyTzycbQcyjagz05Ch7d0pQhSTL9
+         wfR7ZHpJngkLGV34SOO7xkcxoSumIhuNplnWQMnqCJky+hawmilcMep4rU+8Q4wI74H2
+         llqMP1y5mMSHo5tM/6ddQU/cnmUesPJK11hPhwNoP3USh8dJSl/islOYYCrv9vS8dV1z
+         AKKA==
+X-Gm-Message-State: AOAM530KSlL9zdhJ6L0MtBQzHQyEWQQ4IPj0EJPaDdAJfKK6kCLb1df5
+        KQBQevjSQwBeZiRA0n8u4a0ZwQ==
+X-Google-Smtp-Source: ABdhPJzUEkkWlurX5b5kkN5EQMoFWb73ErhTzOULYKGavUVTKY4Tl910aC4SfioeJ43vjjwtOhXYeQ==
+X-Received: by 2002:a17:902:d2c9:b029:e1:8692:aa7c with SMTP id n9-20020a170902d2c9b02900e18692aa7cmr5685001plc.21.1612562296549;
+        Fri, 05 Feb 2021 13:58:16 -0800 (PST)
+Received: from localhost ([2620:15c:202:201:ac48:d1a2:431e:ab86])
+        by smtp.gmail.com with ESMTPSA id b23sm9202364pjh.53.2021.02.05.13.58.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 05 Feb 2021 13:58:15 -0800 (PST)
+From:   Gwendal Grignou <gwendal@chromium.org>
+To:     jic23@kernel.org, lars@metafoo.de, swboyd@chromium.org,
+        campello@chromium.org
+Cc:     linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>
+Subject: [PATCH v2] iio: sx9310: Support ACPI property
+Date:   Fri,  5 Feb 2021 13:58:11 -0800
+Message-Id: <20210205215811.2033425-1-gwendal@chromium.org>
+X-Mailer: git-send-email 2.30.0.478.g8a0d178c01-goog
 MIME-Version: 1.0
-References: <20210201145105.20459-1-alexandru.ardelean@analog.com>
- <20210201145105.20459-9-alexandru.ardelean@analog.com> <20210204182340.00005170@Huawei.com>
- <CA+U=DsrBMd6LmdO_gq3MT21eO2HoO0mbkZjbig600EJ=d4Q3kg@mail.gmail.com> <20210205123915.000012dc@Huawei.com>
-In-Reply-To: <20210205123915.000012dc@Huawei.com>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Fri, 5 Feb 2021 14:57:29 +0200
-Message-ID: <CA+U=Dsqez7LW6vKycagZanQNcB6+3efzJChDAhaaNX1C5F7Seg@mail.gmail.com>
-Subject: Re: [PATCH v3 08/11] iio: buffer: wrap all buffer attributes into iio_dev_attr
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
-        "Bogdan, Dragos" <dragos.bogdan@analog.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Feb 5, 2021 at 2:40 PM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
->
-> On Fri, 5 Feb 2021 11:17:04 +0200
-> Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
->
-> > On Thu, Feb 4, 2021 at 8:26 PM Jonathan Cameron
-> > <Jonathan.Cameron@huawei.com> wrote:
-> > >
-> > > On Mon, 1 Feb 2021 16:51:02 +0200
-> > > Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
-> > >
-> > > > This change wraps all buffer attributes into iio_dev_attr objects, and
-> > > > assigns a reference to the IIO buffer they belong to.
-> > > >
-> > > > With the addition of multiple IIO buffers per one IIO device, we need a way
-> > > > to know which IIO buffer is being enabled/disabled/controlled.
-> > > >
-> > > > We know that all buffer attributes are device_attributes. So we can wrap
-> > > > them with a iio_dev_attr types. In the iio_dev_attr type, we can also hold
-> > > > a reference to an IIO buffer.
-> > > > So, we end up being able to allocate wrapped attributes for all buffer
-> > > > attributes (even the one from other drivers).
-> > > >
-> > > > The neat part with this mechanism, is that we don't need to add any extra
-> > > > cleanup, because these attributes are being added to a dynamic list that
-> > > > will get cleaned up via iio_free_chan_devattr_list().
-> > >
-> > >
-> > > >
-> > > > With this change, the 'buffer->scan_el_dev_attr_list' list is being renamed
-> > > > to 'buffer->buffer_attr_list', effectively merging (or finalizing the
-> > > > merge) of the buffer/ & scan_elements/ attributes internally.
-> > > >
-> > > > Accessing these new buffer attributes can now be done via
-> > > > 'to_iio_dev_attr(attr)->buffer' inside the show/store handlers.
-> > >
-> > > That is going to look a bit odd in any drivers that use it given they
-> > > will appear to not be embedded.
-> > >
-> > > There seem to be very few such attributes from a quick grep, so maybe
-> > > we may want to unwind this and change all the types.   Might still need
-> > > to set .buffer for some of them though (only applying to new drivers as
-> > > clearly current ones don't care!)
-> > >
-> > > Looking at what they actually are, some perhaps shouldn't have been in the buffer
-> > > directory in the first place (with hindsight!).
-> > >
-> > > Anyhow, aside from that oddity this looks good to me.
-> >
-> > I'm a little vague here.
-> > If there is a suggestion for a change, I may have missed it.
->
-> It was vague because I wasn't sure if it it made sense :)
-> >
-> > I'm a bit vague on the part of "we may want to unwind this and change
-> > all the types"
-> > Is it referring to something like this patch?
-> >       https://lore.kernel.org/linux-iio/20210122162529.84978-10-alexandru.ardelean@analog.com/
->
-> Exactly, that was what I was wondering about.
+Use device_property_read_... to support both device tree and ACPI
+bindings.
 
-So, from a perspective of API for drivers, it would probably make
-sense to have those sort of store/show hook types.
-But I am leaning towards maybe moving the HW fifo stuff into IIO core somehow.
-Which would make these [new] store/show hooks unneeded [for now at least].
+Add support for variable array per documentation
+("iio/proximity/semtech,sx9310.yaml").
 
->
-> > We could do a show/store version that takes an iio_buf_attr or
-> > iio_dev_attr parameter.
-> > But maybe at a later point?
-> > I don't feel it adds much benefit over the current usage of
-> > buffer->attrs, because we need to kmalloc these iio_dev_attr anyways
-> > to store the reference to the iio_buffer.
-> >
-> > I would have liked to get rid of these user/external buffer->attrs.
-> > That would have made things easier.
-> >
-> > But, it looks like there are several drivers using them.
-> > I usually find them by grepping for iio_triggered_buffer_setup_ext
-> > It's only 5 drivers that provide these attributes.
-> > It used to be a bit easier to find them by grepping
-> > iio_buffer_set_attrs(), but I removed that.
->
-> We could look at whether some can be brought into the core.  They tend
-> to be around hwfifo parameters. Those could be specific to individual
-> buffers rather than device wide so at least some of them are correctly
-> placed in the buffer directory (I think - I've argued with myself about
-> this a few times in the past).
+Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+---
+ Changes since v1:
+   Use device_property_count_u32(...) instead of device_property_read_u32_array(..., NULL, 0)
 
-I think they could be brought into core.
-But they would take some time (because of testing)
-These HW Fifo attributes were copied around between drivers and ended
-being the same.
-So, some IIO core logic would make sense. It's 5 drivers now.
+ drivers/iio/proximity/sx9310.c | 35 +++++++++++++++++++---------------
+ 1 file changed, 20 insertions(+), 15 deletions(-)
 
->
-> The only oddity we'll get from current approach is callbacks appearing
-> to access a container structure that they aren't associated with in the
-> driver.  Its the sort of interface that no one would ever realize was
-> possible.
->
-> Jonathan
->
-> >
-> >
-> > >
-> > > Jonathan
-> > >
-> > > >
-> > > > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> > > > ---
-> > > >  drivers/iio/industrialio-buffer.c | 66 +++++++++++++++++++++----------
-> > > >  include/linux/iio/buffer_impl.h   |  4 +-
-> > > >  2 files changed, 48 insertions(+), 22 deletions(-)
-> > > >
-> > > > diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-> > > > index a525e88b302f..49996bed5f4c 100644
-> > > > --- a/drivers/iio/industrialio-buffer.c
-> > > > +++ b/drivers/iio/industrialio-buffer.c
-> > > > @@ -448,7 +448,7 @@ static int iio_buffer_add_channel_sysfs(struct iio_dev *indio_dev,
-> > > >                                    IIO_SEPARATE,
-> > > >                                    &indio_dev->dev,
-> > > >                                    buffer,
-> > > > -                                  &buffer->scan_el_dev_attr_list);
-> > > > +                                  &buffer->buffer_attr_list);
-> > > >       if (ret)
-> > > >               return ret;
-> > > >       attrcount++;
-> > > > @@ -460,7 +460,7 @@ static int iio_buffer_add_channel_sysfs(struct iio_dev *indio_dev,
-> > > >                                    0,
-> > > >                                    &indio_dev->dev,
-> > > >                                    buffer,
-> > > > -                                  &buffer->scan_el_dev_attr_list);
-> > > > +                                  &buffer->buffer_attr_list);
-> > > >       if (ret)
-> > > >               return ret;
-> > > >       attrcount++;
-> > > > @@ -473,7 +473,7 @@ static int iio_buffer_add_channel_sysfs(struct iio_dev *indio_dev,
-> > > >                                            0,
-> > > >                                            &indio_dev->dev,
-> > > >                                            buffer,
-> > > > -                                          &buffer->scan_el_dev_attr_list);
-> > > > +                                          &buffer->buffer_attr_list);
-> > > >       else
-> > > >               ret = __iio_add_chan_devattr("en",
-> > > >                                            chan,
-> > > > @@ -483,7 +483,7 @@ static int iio_buffer_add_channel_sysfs(struct iio_dev *indio_dev,
-> > > >                                            0,
-> > > >                                            &indio_dev->dev,
-> > > >                                            buffer,
-> > > > -                                          &buffer->scan_el_dev_attr_list);
-> > > > +                                          &buffer->buffer_attr_list);
-> > > >       if (ret)
-> > > >               return ret;
-> > > >       attrcount++;
-> > > > @@ -495,8 +495,7 @@ static ssize_t iio_buffer_read_length(struct device *dev,
-> > > >                                     struct device_attribute *attr,
-> > > >                                     char *buf)
-> > > >  {
-> > > > -     struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> > > > -     struct iio_buffer *buffer = indio_dev->buffer;
-> > > > +     struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
-> > > >
-> > > >       return sprintf(buf, "%d\n", buffer->length);
-> > > >  }
-> > > > @@ -506,7 +505,7 @@ static ssize_t iio_buffer_write_length(struct device *dev,
-> > > >                                      const char *buf, size_t len)
-> > > >  {
-> > > >       struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> > > > -     struct iio_buffer *buffer = indio_dev->buffer;
-> > > > +     struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
-> > > >       unsigned int val;
-> > > >       int ret;
-> > > >
-> > > > @@ -538,8 +537,7 @@ static ssize_t iio_buffer_show_enable(struct device *dev,
-> > > >                                     struct device_attribute *attr,
-> > > >                                     char *buf)
-> > > >  {
-> > > > -     struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> > > > -     struct iio_buffer *buffer = indio_dev->buffer;
-> > > > +     struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
-> > > >
-> > > >       return sprintf(buf, "%d\n", iio_buffer_is_active(buffer));
-> > > >  }
-> > > > @@ -1154,7 +1152,7 @@ static ssize_t iio_buffer_store_enable(struct device *dev,
-> > > >       int ret;
-> > > >       bool requested_state;
-> > > >       struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> > > > -     struct iio_buffer *buffer = indio_dev->buffer;
-> > > > +     struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
-> > > >       bool inlist;
-> > > >
-> > > >       ret = strtobool(buf, &requested_state);
-> > > > @@ -1185,8 +1183,7 @@ static ssize_t iio_buffer_show_watermark(struct device *dev,
-> > > >                                        struct device_attribute *attr,
-> > > >                                        char *buf)
-> > > >  {
-> > > > -     struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> > > > -     struct iio_buffer *buffer = indio_dev->buffer;
-> > > > +     struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
-> > > >
-> > > >       return sprintf(buf, "%u\n", buffer->watermark);
-> > > >  }
-> > > > @@ -1197,7 +1194,7 @@ static ssize_t iio_buffer_store_watermark(struct device *dev,
-> > > >                                         size_t len)
-> > > >  {
-> > > >       struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> > > > -     struct iio_buffer *buffer = indio_dev->buffer;
-> > > > +     struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
-> > > >       unsigned int val;
-> > > >       int ret;
-> > > >
-> > > > @@ -1230,8 +1227,7 @@ static ssize_t iio_dma_show_data_available(struct device *dev,
-> > > >                                               struct device_attribute *attr,
-> > > >                                               char *buf)
-> > > >  {
-> > > > -     struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> > > > -     struct iio_buffer *buffer = indio_dev->buffer;
-> > > > +     struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
-> > > >
-> > > >       return sprintf(buf, "%zu\n", iio_buffer_data_available(buffer));
-> > > >  }
-> > > > @@ -1256,6 +1252,26 @@ static struct attribute *iio_buffer_attrs[] = {
-> > > >       &dev_attr_data_available.attr,
-> > > >  };
-> > > >
-> > > > +#define to_dev_attr(_attr) container_of(_attr, struct device_attribute, attr)
-> > > > +
-> > > > +static struct attribute *iio_buffer_wrap_attr(struct iio_buffer *buffer,
-> > > > +                                           struct attribute *attr)
-> > > > +{
-> > > > +     struct device_attribute *dattr = to_dev_attr(attr);
-> > > > +     struct iio_dev_attr *iio_attr;
-> > > > +
-> > > > +     iio_attr = kzalloc(sizeof(*iio_attr), GFP_KERNEL);
-> > > > +     if (!iio_attr)
-> > > > +             return NULL;
-> > > > +
-> > > > +     iio_attr->buffer = buffer;
-> > > > +     memcpy(&iio_attr->dev_attr, dattr, sizeof(iio_attr->dev_attr));
-> > > > +
-> > > > +     list_add(&iio_attr->l, &buffer->buffer_attr_list);
-> > > > +
-> > > > +     return &iio_attr->dev_attr.attr;
-> > > > +}
-> > > > +
-> > > >  static int iio_buffer_register_legacy_sysfs_groups(struct iio_dev *indio_dev,
-> > > >                                                  struct attribute **buffer_attrs,
-> > > >                                                  int buffer_attrcount,
-> > > > @@ -1331,7 +1347,7 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
-> > > >       }
-> > > >
-> > > >       scan_el_attrcount = 0;
-> > > > -     INIT_LIST_HEAD(&buffer->scan_el_dev_attr_list);
-> > > > +     INIT_LIST_HEAD(&buffer->buffer_attr_list);
-> > > >       channels = indio_dev->channels;
-> > > >       if (channels) {
-> > > >               /* new magic */
-> > > > @@ -1378,9 +1394,19 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
-> > > >
-> > > >       buffer_attrcount += ARRAY_SIZE(iio_buffer_attrs);
-> > > >
-> > > > -     attrn = buffer_attrcount;
-> > > > +     for (i = 0; i < buffer_attrcount; i++) {
-> > > > +             struct attribute *wrapped;
-> > > > +
-> > > > +             wrapped = iio_buffer_wrap_attr(buffer, attr[i]);
-> > > > +             if (!wrapped) {
-> > > > +                     ret = -ENOMEM;
-> > > > +                     goto error_free_scan_mask;
-> > > > +             }
-> > > > +             attr[i] = wrapped;
-> > > > +     }
-> > > >
-> > > > -     list_for_each_entry(p, &buffer->scan_el_dev_attr_list, l)
-> > > > +     attrn = 0;
-> > > > +     list_for_each_entry(p, &buffer->buffer_attr_list, l)
-> > > >               attr[attrn++] = &p->dev_attr.attr;
-> > > >
-> > > >       buffer->buffer_group.name = kasprintf(GFP_KERNEL, "buffer%d", index);
-> > > > @@ -1412,7 +1438,7 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
-> > > >  error_free_scan_mask:
-> > > >       bitmap_free(buffer->scan_mask);
-> > > >  error_cleanup_dynamic:
-> > > > -     iio_free_chan_devattr_list(&buffer->scan_el_dev_attr_list);
-> > > > +     iio_free_chan_devattr_list(&buffer->buffer_attr_list);
-> > > >
-> > > >       return ret;
-> > > >  }
-> > > > @@ -1443,7 +1469,7 @@ static void __iio_buffer_free_sysfs_and_mask(struct iio_buffer *buffer)
-> > > >       bitmap_free(buffer->scan_mask);
-> > > >       kfree(buffer->buffer_group.name);
-> > > >       kfree(buffer->buffer_group.attrs);
-> > > > -     iio_free_chan_devattr_list(&buffer->scan_el_dev_attr_list);
-> > > > +     iio_free_chan_devattr_list(&buffer->buffer_attr_list);
-> > > >  }
-> > > >
-> > > >  void iio_buffer_free_sysfs_and_mask(struct iio_dev *indio_dev)
-> > > > diff --git a/include/linux/iio/buffer_impl.h b/include/linux/iio/buffer_impl.h
-> > > > index 3e555e58475b..41044320e581 100644
-> > > > --- a/include/linux/iio/buffer_impl.h
-> > > > +++ b/include/linux/iio/buffer_impl.h
-> > > > @@ -97,8 +97,8 @@ struct iio_buffer {
-> > > >       /* @scan_timestamp: Does the scan mode include a timestamp. */
-> > > >       bool scan_timestamp;
-> > > >
-> > > > -     /* @scan_el_dev_attr_list: List of scan element related attributes. */
-> > > > -     struct list_head scan_el_dev_attr_list;
-> > > > +     /* @buffer_attr_list: List of buffer attributes. */
-> > > > +     struct list_head buffer_attr_list;
-> > > >
-> > > >       /*
-> > > >        * @buffer_group: Attributes of the new buffer group.
-> > >
->
+diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
+index 6a04959df35e5..bba9dc6ac844d 100644
+--- a/drivers/iio/proximity/sx9310.c
++++ b/drivers/iio/proximity/sx9310.c
+@@ -20,6 +20,7 @@
+ #include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+ #include <linux/pm.h>
++#include <linux/property.h>
+ #include <linux/regmap.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/slab.h>
+@@ -1215,31 +1216,35 @@ static int sx9310_init_compensation(struct iio_dev *indio_dev)
+ }
+ 
+ static const struct sx9310_reg_default *
+-sx9310_get_default_reg(struct sx9310_data *data, int i,
++sx9310_get_default_reg(struct device *dev, int i,
+ 		       struct sx9310_reg_default *reg_def)
+ {
+-	int ret;
+-	const struct device_node *np = data->client->dev.of_node;
++	int ret, count;
+ 	u32 combined[SX9310_NUM_CHANNELS] = { 4, 4, 4, 4 };
+ 	unsigned long comb_mask = 0;
+ 	const char *res;
+ 	u32 start = 0, raw = 0, pos = 0;
+ 
+ 	memcpy(reg_def, &sx9310_default_regs[i], sizeof(*reg_def));
+-	if (!np)
+-		return reg_def;
+-
+ 	switch (reg_def->reg) {
+ 	case SX9310_REG_PROX_CTRL2:
+-		if (of_property_read_bool(np, "semtech,cs0-ground")) {
++		if (device_property_read_bool(dev, "semtech,cs0-ground")) {
+ 			reg_def->def &= ~SX9310_REG_PROX_CTRL2_SHIELDEN_MASK;
+ 			reg_def->def |= SX9310_REG_PROX_CTRL2_SHIELDEN_GROUND;
+ 		}
+ 
+ 		reg_def->def &= ~SX9310_REG_PROX_CTRL2_COMBMODE_MASK;
+-		of_property_read_u32_array(np, "semtech,combined-sensors",
+-					   combined, ARRAY_SIZE(combined));
+-		for (i = 0; i < ARRAY_SIZE(combined); i++) {
++		count = device_property_count_u32(dev, "semtech,combined-sensors");
++		if (count > 0 && count <= ARRAY_SIZE(combined))
++			ret = device_property_read_u32_array(dev,
++					"semtech,combined-sensors", combined,
++					count);
++		else
++			ret = -EINVAL;
++		if (ret)
++			count = ARRAY_SIZE(combined);
++
++		for (i = 0; i < count; i++) {
+ 			if (combined[i] <= SX9310_NUM_CHANNELS)
+ 				comb_mask |= BIT(combined[i]);
+ 		}
+@@ -1256,7 +1261,7 @@ sx9310_get_default_reg(struct sx9310_data *data, int i,
+ 
+ 		break;
+ 	case SX9310_REG_PROX_CTRL4:
+-		ret = of_property_read_string(np, "semtech,resolution", &res);
++		ret = device_property_read_string(dev, "semtech,resolution", &res);
+ 		if (ret)
+ 			break;
+ 
+@@ -1280,7 +1285,7 @@ sx9310_get_default_reg(struct sx9310_data *data, int i,
+ 
+ 		break;
+ 	case SX9310_REG_PROX_CTRL5:
+-		ret = of_property_read_u32(np, "semtech,startup-sensor", &start);
++		ret = device_property_read_u32(dev, "semtech,startup-sensor", &start);
+ 		if (ret) {
+ 			start = FIELD_GET(SX9310_REG_PROX_CTRL5_STARTUPSENS_MASK,
+ 					  reg_def->def);
+@@ -1290,7 +1295,7 @@ sx9310_get_default_reg(struct sx9310_data *data, int i,
+ 		reg_def->def |= FIELD_PREP(SX9310_REG_PROX_CTRL5_STARTUPSENS_MASK,
+ 					   start);
+ 
+-		ret = of_property_read_u32(np, "semtech,proxraw-strength", &raw);
++		ret = device_property_read_u32(dev, "semtech,proxraw-strength", &raw);
+ 		if (ret) {
+ 			raw = FIELD_GET(SX9310_REG_PROX_CTRL5_RAWFILT_MASK,
+ 					reg_def->def);
+@@ -1303,7 +1308,7 @@ sx9310_get_default_reg(struct sx9310_data *data, int i,
+ 					   raw);
+ 		break;
+ 	case SX9310_REG_PROX_CTRL7:
+-		ret = of_property_read_u32(np, "semtech,avg-pos-strength", &pos);
++		ret = device_property_read_u32(dev, "semtech,avg-pos-strength", &pos);
+ 		if (ret)
+ 			break;
+ 
+@@ -1339,7 +1344,7 @@ static int sx9310_init_device(struct iio_dev *indio_dev)
+ 
+ 	/* Program some sane defaults. */
+ 	for (i = 0; i < ARRAY_SIZE(sx9310_default_regs); i++) {
+-		initval = sx9310_get_default_reg(data, i, &tmp);
++		initval = sx9310_get_default_reg(&indio_dev->dev, i, &tmp);
+ 		ret = regmap_write(data->regmap, initval->reg, initval->def);
+ 		if (ret)
+ 			return ret;
+-- 
+2.30.0.478.g8a0d178c01-goog
+

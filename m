@@ -2,89 +2,151 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 484D2311352
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Feb 2021 22:20:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 32D773113E6
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Feb 2021 22:51:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233192AbhBES7q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 5 Feb 2021 13:59:46 -0500
-Received: from mail-ot1-f53.google.com ([209.85.210.53]:45463 "EHLO
-        mail-ot1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233075AbhBES7F (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 Feb 2021 13:59:05 -0500
-Received: by mail-ot1-f53.google.com with SMTP id o12so8117934ote.12;
-        Fri, 05 Feb 2021 12:41:15 -0800 (PST)
+        id S229463AbhBEVvG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 5 Feb 2021 16:51:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60432 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233003AbhBEVuI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 Feb 2021 16:50:08 -0500
+Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34318C0613D6
+        for <linux-iio@vger.kernel.org>; Fri,  5 Feb 2021 13:49:26 -0800 (PST)
+Received: by mail-io1-xd29.google.com with SMTP id e133so8684419iof.8
+        for <linux-iio@vger.kernel.org>; Fri, 05 Feb 2021 13:49:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=AaUQ2wNwyNcFCL3TJkJvczWWZz4w9iYO7FZEvDtwCU0=;
+        b=g9huoabcoG48d5NJ4zbwn2EqG3Ve+vM81lTN2Mvhfm2jlvjxlo26zCEbPFIRhKW68A
+         JjT8pZLU6iPyhPeL0CXvZCV9AyOWS7mLLwiL68PV/WhXdde8O+zVX+A8nwjQyF9lbZ3b
+         C/XIwqa+jNWDVfoc6r8huQaf+4taKEcn1Gv2s=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=E/BK7ustIanoJNUJSQwM8o9ooyu4BgVSwj4bIicyTic=;
-        b=S7fJSUFXvOIWWkK4akgRg28xjqYWInDb8vufn1DfnYV1uFt821jzBIdeyxh0NmTpSe
-         pCZovB/QB1BMJ4l8IafkIsJHEYXspgjEe9FqiDG80PS+hzAlfEJqWzV0urpf/UbD5OjR
-         LZON8//R9FiEnhYX3pdbs87H044MXLSJytbKwaJSzAguTx/APe9A8TSEIYI+z9lv7dlB
-         Wvu0BheeKUph8mUgRCCY8TZPxUffR+9edOtHR21PTJkhK4y9FRBXCK4an3SY7OGMZXjb
-         W75HwfK2yyQZlwXLh6HIeq1bugaATHa4U0FgNdwkCm+ZCwTvKnLpwJjPTuGylAPNqYEO
-         i3Cw==
-X-Gm-Message-State: AOAM533XhnwJoznb0KJi3+83XpdD2syehj/R8TSFT3pGFESGkUdxW7eV
-        sHFbVYfUj3iy8OmXkVydyw==
-X-Google-Smtp-Source: ABdhPJwU9TZ9VboIT/rxqywVBtj4ZrBVcJcUtNQ0dwYRAbHmJFXgjD/5F+v+to3u3RkkSwyUuCGYDQ==
-X-Received: by 2002:a9d:7f89:: with SMTP id t9mr522752otp.9.1612557650111;
-        Fri, 05 Feb 2021 12:40:50 -0800 (PST)
-Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id k207sm379560oih.32.2021.02.05.12.40.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Feb 2021 12:40:49 -0800 (PST)
-Received: (nullmailer pid 3692690 invoked by uid 1000);
-        Fri, 05 Feb 2021 20:40:48 -0000
-Date:   Fri, 5 Feb 2021 14:40:48 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Mike Looijmans <mike.looijmans@topic.nl>
-Cc:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH v8 1/2] dt-bindings: iio: accel: Add bmi088 accelerometer
- bindings
-Message-ID: <20210205204048.GA3692656@robh.at.kernel.org>
-References: <20210125150732.23873-1-mike.looijmans@topic.nl>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=AaUQ2wNwyNcFCL3TJkJvczWWZz4w9iYO7FZEvDtwCU0=;
+        b=WdIu2W8IOp6fG2TydZtZgN7cfGYQO20jkXfImAwdXBSd8ScQ11z44BS4orqOQm8E/W
+         sjbPTx7SAKEPZJ01sOUoPLV/DsFkYps9dKdLfrLlXjNCYtL+wBa56ylp4t7xMF9ysNKm
+         l+RNsmX6p+z3WQfHTKguPw9zsLnxaHXi8q9WpPBb4bZ3zSrsvN5XaN2IHOPy0MbwnXXR
+         3Iw9Ut+GU+98lAStQNQwScc9gulYYkkWyoJF9wTDf1+3VtWN6eKWOJUw/rSPmmhNUAJw
+         xe7TgsP9YYEJnaB+YRV0NDzsgaMcffYuMD4LhJTBzN3mSvj5oqref6pdb/P1YnrApdMK
+         OugA==
+X-Gm-Message-State: AOAM532fhVdhOBFtcpKurbYVVBLgCtlUbqXofH2K2YsoSy6yjQjPIq5d
+        vw4KBJg1RqoDuxcGDhcwnI1RnAphAjwhdgmmuCTORg==
+X-Google-Smtp-Source: ABdhPJxsk3M09u4zn0p7F9nEuDYA7zP5vNk/cQSgOdaURDagpPRT/0e1iLUQkrM1x/qYTrtAIdj1tuqBdz2YRYOYdE4=
+X-Received: by 2002:a02:ce33:: with SMTP id v19mr7053302jar.52.1612561765600;
+ Fri, 05 Feb 2021 13:49:25 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210125150732.23873-1-mike.looijmans@topic.nl>
+References: <20210202064541.2335915-1-gwendal@chromium.org> <161229346726.76967.648868878998146729@swboyd.mtv.corp.google.com>
+In-Reply-To: <161229346726.76967.648868878998146729@swboyd.mtv.corp.google.com>
+From:   Gwendal Grignou <gwendal@chromium.org>
+Date:   Fri, 5 Feb 2021 13:49:12 -0800
+Message-ID: <CAPUE2uu0y8pRmCHxhLQ3Ca2oAMJ0ihwAHfUdHNBOUNS-hZhmdA@mail.gmail.com>
+Subject: Re: [PATCH] iio: sx9310: Support ACPI property
+To:     Stephen Boyd <swboyd@chromium.org>
+Cc:     Daniel Campello <campello@chromium.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 25 Jan 2021 16:07:31 +0100, Mike Looijmans wrote:
-> This adds the device-tree bindings for the Bosch Sensortec BMI088 IMU,
-> the accelerometer part.
-> 
-> Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
-> 
-> ---
-> 
-> Changes in v8:
-> Add spi-max-frequency: true
-> 
-> Changes in v7:
-> Add additionalProperties
-> Change bmi088_accel to bmi088-accel
-> Add interrupt-names and adjust description
-> 
-> Changes in v6:
-> I't been almost a year since the last commit, sorry...
-> Fixed the yaml errors
-> Add interrupt, vdd and vddio properties
-> 
-> Changes in v5:
-> submit together with driver code as patch series
-> 
-> Changes in v2:
-> convert to yaml format
-> 
->  .../bindings/iio/accel/bosch,bmi088.yaml      | 68 +++++++++++++++++++
->  1 file changed, 68 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/accel/bosch,bmi088.yaml
-> 
+On Tue, Feb 2, 2021 at 11:17 AM Stephen Boyd <swboyd@chromium.org> wrote:
+>
+> Quoting Gwendal Grignou (2021-02-01 22:45:41)
+> > Use device_property_read_... to support both device tree and ACPI
+> > bindings.
+> >
+> > Add support for variable array per documentation
+> > ("iio/proximity/semtech,sx9310.yaml").
+> >
+> > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> > ---
+> >  drivers/iio/proximity/sx9310.c | 36 ++++++++++++++++++++--------------
+> >  1 file changed, 21 insertions(+), 15 deletions(-)
+> >
+> > diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
+> > index 37fd0b65a0140..1a8a441c9774d 100644
+> > --- a/drivers/iio/proximity/sx9310.c
+> > +++ b/drivers/iio/proximity/sx9310.c
+> > @@ -1213,31 +1214,36 @@ static int sx9310_init_compensation(struct iio_dev *indio_dev)
+> >  }
+> >
+> >  static const struct sx9310_reg_default *
+> > -sx9310_get_default_reg(struct sx9310_data *data, int i,
+> > +sx9310_get_default_reg(struct device *dev, int i,
+> >                        struct sx9310_reg_default *reg_def)
+> >  {
+> > -       int ret;
+> > -       const struct device_node *np = data->client->dev.of_node;
+> > +       int ret, count;
+> >         u32 combined[SX9310_NUM_CHANNELS] = { 4, 4, 4, 4 };
+> >         unsigned long comb_mask = 0;
+> >         const char *res;
+> >         u32 start = 0, raw = 0, pos = 0;
+> >
+> >         memcpy(reg_def, &sx9310_default_regs[i], sizeof(*reg_def));
+> > -       if (!np)
+> > -               return reg_def;
+> > -
+> >         switch (reg_def->reg) {
+> >         case SX9310_REG_PROX_CTRL2:
+> > -               if (of_property_read_bool(np, "semtech,cs0-ground")) {
+> > +               if (device_property_read_bool(dev, "semtech,cs0-ground")) {
+> >                         reg_def->def &= ~SX9310_REG_PROX_CTRL2_SHIELDEN_MASK;
+> >                         reg_def->def |= SX9310_REG_PROX_CTRL2_SHIELDEN_GROUND;
+> >                 }
+> >
+> >                 reg_def->def &= ~SX9310_REG_PROX_CTRL2_COMBMODE_MASK;
+> > -               of_property_read_u32_array(np, "semtech,combined-sensors",
+> > -                                          combined, ARRAY_SIZE(combined));
+> > -               for (i = 0; i < ARRAY_SIZE(combined); i++) {
+> > +               count = device_property_read_u32_array(dev,
+> > +                               "semtech,combined-sensors", NULL, 0);
+> > +               if (count > 0 && count <= ARRAY_SIZE(combined))
+> > +                       ret = device_property_read_u32_array(dev,
+> > +                                       "semtech,combined-sensors", combined,
+> > +                                       count);
+> > +               else
+> > +                       ret = -EINVAL;
+> > +               if (ret)
+> > +                       count = ARRAY_SIZE(combined);
+>
+> I wish this could be written simpler. Unfortunately there isn't any sort
+> of for_each_device_property() iterator macro like we have with
+> of_property_for_each_u32(). Or device_property_read_u32_array() can be
+> OK if the length of the property doesn't exceed the size of the
+> 'combined' array?
+device_property_read_u32_array(...,nval) calls
+acpi_data_get_property(..., nval) in ACPI case.
+If nval > obj->package.count, then -EOVERFLOW is returned.
+Therefore count can not be to SX9310_NUM_CHANNELS, in case
+combined-sensors is only 3 entries or less.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+This method of asking first for the number of element and a second
+time for the values is already used at different places in the kernel:
+drivers/power/supply/gpio-charger.c : see init_charge_current_limit()
+or  madera_get_variable_u32_array insound/soc/codecs/madera.c.
+
+However, it could use device_property_count_u32(...), which is more
+readable than device_property_count_u32(..., NULL,0).
+
+Gwendal.
+
+
+>
+> > +
+> > +               for (i = 0; i < count; i++) {
+> >                         if (combined[i] <= SX9310_NUM_CHANNELS)
+> >                                 comb_mask |= BIT(combined[i]);
+> >                 }
+>
+> Otherwise
+>
+> Reviewed-by: Stephen Boyd <swboyd@chromium.org>

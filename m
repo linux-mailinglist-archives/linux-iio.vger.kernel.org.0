@@ -2,27 +2,27 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0832C311626
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Feb 2021 23:59:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02FD6311628
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Feb 2021 23:59:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231286AbhBEWxw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 5 Feb 2021 17:53:52 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2508 "EHLO
+        id S231950AbhBEWyB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 5 Feb 2021 17:54:01 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2509 "EHLO
         frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232173AbhBEMko (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 Feb 2021 07:40:44 -0500
-Received: from fraeml745-chm.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DXFFy4w5Hz67kKq;
-        Fri,  5 Feb 2021 20:33:42 +0800 (CST)
+        with ESMTP id S232248AbhBEMpb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 Feb 2021 07:45:31 -0500
+Received: from fraeml736-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DXFQf3XbGz67kY9;
+        Fri,  5 Feb 2021 20:41:14 +0800 (CST)
 Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml745-chm.china.huawei.com (10.206.15.226) with Microsoft SMTP Server
+ fraeml736-chm.china.huawei.com (10.206.15.217) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Fri, 5 Feb 2021 13:40:02 +0100
+ 15.1.2106.2; Fri, 5 Feb 2021 13:44:47 +0100
 Received: from localhost (10.47.29.206) by lhreml710-chm.china.huawei.com
  (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Fri, 5 Feb 2021
- 12:40:01 +0000
-Date:   Fri, 5 Feb 2021 12:39:15 +0000
+ 12:44:46 +0000
+Date:   Fri, 5 Feb 2021 12:44:01 +0000
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To:     Alexandru Ardelean <ardeleanalex@gmail.com>
 CC:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
@@ -35,14 +35,14 @@ CC:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
         "Bogdan, Dragos" <dragos.bogdan@analog.com>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH v3 08/11] iio: buffer: wrap all buffer attributes into
- iio_dev_attr
-Message-ID: <20210205123915.000012dc@Huawei.com>
-In-Reply-To: <CA+U=DsrBMd6LmdO_gq3MT21eO2HoO0mbkZjbig600EJ=d4Q3kg@mail.gmail.com>
+Subject: Re: [PATCH v3 11/11] iio: buffer: add ioctl() to support opening
+ extra buffers for IIO device
+Message-ID: <20210205124401.00003dd0@Huawei.com>
+In-Reply-To: <CA+U=Dsp7ivJk7vhnW6xB=6JSTNThny-2J7iOmTTxJ7PXM4SSqA@mail.gmail.com>
 References: <20210201145105.20459-1-alexandru.ardelean@analog.com>
-        <20210201145105.20459-9-alexandru.ardelean@analog.com>
-        <20210204182340.00005170@Huawei.com>
-        <CA+U=DsrBMd6LmdO_gq3MT21eO2HoO0mbkZjbig600EJ=d4Q3kg@mail.gmail.com>
+        <20210201145105.20459-12-alexandru.ardelean@analog.com>
+        <20210204190041.0000623a@Huawei.com>
+        <CA+U=Dsp7ivJk7vhnW6xB=6JSTNThny-2J7iOmTTxJ7PXM4SSqA@mail.gmail.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
@@ -56,303 +56,445 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 5 Feb 2021 11:17:04 +0200
+On Fri, 5 Feb 2021 11:51:13 +0200
 Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
 
-> On Thu, Feb 4, 2021 at 8:26 PM Jonathan Cameron
+> On Thu, Feb 4, 2021 at 9:06 PM Jonathan Cameron
 > <Jonathan.Cameron@huawei.com> wrote:
 > >
-> > On Mon, 1 Feb 2021 16:51:02 +0200
+> > On Mon, 1 Feb 2021 16:51:05 +0200
 > > Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 > >  
-> > > This change wraps all buffer attributes into iio_dev_attr objects, and
-> > > assigns a reference to the IIO buffer they belong to.
+> > > With this change, an ioctl() call is added to open a character device for a
+> > > buffer. The ioctl() number is 'i' 0x91, which follows the
+> > > IIO_GET_EVENT_FD_IOCTL ioctl.
 > > >
-> > > With the addition of multiple IIO buffers per one IIO device, we need a way
-> > > to know which IIO buffer is being enabled/disabled/controlled.
-> > >
-> > > We know that all buffer attributes are device_attributes. So we can wrap
-> > > them with a iio_dev_attr types. In the iio_dev_attr type, we can also hold
-> > > a reference to an IIO buffer.
-> > > So, we end up being able to allocate wrapped attributes for all buffer
-> > > attributes (even the one from other drivers).
-> > >
-> > > The neat part with this mechanism, is that we don't need to add any extra
-> > > cleanup, because these attributes are being added to a dynamic list that
-> > > will get cleaned up via iio_free_chan_devattr_list().  
+> > > The ioctl() will return a 0 FD for the first buffer, as that FD for buffer0
+> > > is the same FD as the one used for this ioctl().  
 > >
-> >  
-> > >
-> > > With this change, the 'buffer->scan_el_dev_attr_list' list is being renamed
-> > > to 'buffer->buffer_attr_list', effectively merging (or finalizing the
-> > > merge) of the buffer/ & scan_elements/ attributes internally.
-> > >
-> > > Accessing these new buffer attributes can now be done via
-> > > 'to_iio_dev_attr(attr)->buffer' inside the show/store handlers.  
-> >
-> > That is going to look a bit odd in any drivers that use it given they
-> > will appear to not be embedded.
-> >
-> > There seem to be very few such attributes from a quick grep, so maybe
-> > we may want to unwind this and change all the types.   Might still need
-> > to set .buffer for some of them though (only applying to new drivers as
-> > clearly current ones don't care!)
-> >
-> > Looking at what they actually are, some perhaps shouldn't have been in the buffer
-> > directory in the first place (with hindsight!).
-> >
-> > Anyhow, aside from that oddity this looks good to me.  
+> > That sounds dangerous as code might just use it without checking properly.
+> > Perhaps take a leaf out of open() and return negative?  
 > 
-> I'm a little vague here.
-> If there is a suggestion for a change, I may have missed it.
-
-It was vague because I wasn't sure if it it made sense :)
+> So, initially this returned -EBUSY.
+> But that is also confusing.
+> And returning 0 isn't great either.
 > 
-> I'm a bit vague on the part of "we may want to unwind this and change
-> all the types"
-> Is it referring to something like this patch?
->       https://lore.kernel.org/linux-iio/20210122162529.84978-10-alexandru.ardelean@analog.com/
+> I've been thinking about this for the last few days.
+> Would it be too bad if return another FD for the same buffer0 ?
+> Admittedly, you'd be able to access the same buffer0 via 2 FDs, but
+> coming back to the idea of creating a new API and having to live with
+> the old one as well, it feels like these 2 FDs for buffer0 are falling
+> under the same principle.
 
-Exactly, that was what I was wondering about.
+It would be in the crazy category if anyone actually tried to read from
+both, unless we did something to spin up a clone of the data and that's
+getting complex.  I guess we could do something like return errors on
+all the original FD activities related to the new one (i.e. poll, read)
+That might work. What do you think?
 
-> We could do a show/store version that takes an iio_buf_attr or
-> iio_dev_attr parameter.
-> But maybe at a later point?
-> I don't feel it adds much benefit over the current usage of
-> buffer->attrs, because we need to kmalloc these iio_dev_attr anyways
-> to store the reference to the iio_buffer.
 > 
-> I would have liked to get rid of these user/external buffer->attrs.
-> That would have made things easier.
+> >
+> > What would happen if we just returned an error in this path?  
 > 
-> But, it looks like there are several drivers using them.
-> I usually find them by grepping for iio_triggered_buffer_setup_ext
-> It's only 5 drivers that provide these attributes.
-> It used to be a bit easier to find them by grepping
-> iio_buffer_set_attrs(), but I removed that.
-
-We could look at whether some can be brought into the core.  They tend
-to be around hwfifo parameters. Those could be specific to individual
-buffers rather than device wide so at least some of them are correctly
-placed in the buffer directory (I think - I've argued with myself about
-this a few times in the past).
-
-The only oddity we'll get from current approach is callbacks appearing
-to access a container structure that they aren't associated with in the
-driver.  Its the sort of interface that no one would ever realize was
-possible.
+> We need to find a good error code [if we return an error].
+> -EBUSY would sound the closest to something correct.
+range error maybe?  or just -EINVAL if we do go this way.
 
 Jonathan
 
 > 
+> >  
+> > >
+> > > For any other extra buffer, this ioctl() will return an anon inode FD that
+> > > would access any extra buffer.
+> > >
+> > > Right now, there doesn't seem to be (or I couldn't find) a way for this
+> > > ioctl() to return the FD for buffer0 (i.e. to return the same FD as used
+> > > for the ioctl()).
+> > > So, usespace would need to know that  ioctl(fd,
+> > > IIO_GET_EVENT_FD_IOCTL, 0) will return FD 0.
+> > > We could also return another FD for buffer 0, but duplicating FDs for the
+> > > same IIO buffer sounds problematic.
+> > >
+> > > Also, there is no IIO_BUFFER_GET_BUFFER_COUNT ioctl() implemented, as the
+> > > index for each buffer (and the count) can be deduced from the
+> > > '/sys/bus/iio/devices/iio:deviceX/bufferY' folders (i.e the number of
+> > > bufferY folders).
+> > >
+> > > Used following C code to test this:
+> > > -------------------------------------------------------------------
+> > >
+> > >  #include <stdio.h>
+> > >  #include <stdlib.h>
+> > >  #include <unistd.h>
+> > >  #include <sys/ioctl.h>
+> > >  #include <fcntl.h"
+> > >  #include <errno.h>
+> > >
+> > >  #define IIO_BUFFER_GET_FD_IOCTL      _IOWR('i', 0x91, int)
+> > >
+> > > int main(int argc, char *argv[])
+> > > {
+> > >         int fd;
+> > >         int fd1;
+> > >         int ret;
+> > >
+> > >         if ((fd = open("/dev/iio:device0", O_RDWR))<0) {
+> > >                 fprintf(stderr, "Error open() %d errno %d\n",fd, errno);
+> > >                 return -1;
+> > >         }
+> > >
+> > >         fprintf(stderr, "Using FD %d\n", fd);
+> > >
+> > >         fd1 = atoi(argv[1]);
+> > >
+> > >         ret = ioctl(fd, IIO_BUFFER_GET_FD_IOCTL, &fd1);
+> > >         if (ret < 0) {
+> > >                 fprintf(stderr, "Error for buffer %d ioctl() %d errno %d\n", fd1, ret, errno);
+> > >                 close(fd);
+> > >                 return -1;
+> > >         }
+> > >
+> > >         fprintf(stderr, "Got FD %d\n", fd1);
+> > >
+> > >         close(fd1);
+> > >         close(fd);
+> > >
+> > >         return 0;
+> > > }
+> > > -------------------------------------------------------------------
+> > >
+> > > Results are:
+> > > -------------------------------------------------------------------
+> > >  # ./test 0
+> > >  Using FD 3
+> > >  Got FD 0
+> > >
+> > >  # ./test 1
+> > >  Using FD 3
+> > >  Got FD 4
+> > >
+> > >  # ./test 2
+> > >  Using FD 3
+> > >  Got FD 4
+> > >
+> > >  # ./test 3
+> > >  Using FD 3
+> > >  Got FD 4
+> > >
+> > >  # ls /sys/bus/iio/devices/iio\:device0
+> > >  buffer  buffer0  buffer1  buffer2  buffer3  dev
+> > >  in_voltage_sampling_frequency  in_voltage_scale
+> > >  in_voltage_scale_available
+> > >  name  of_node  power  scan_elements  subsystem  uevent
+> > > -------------------------------------------------------------------
+> > >
+> > > iio:device0 has some fake kfifo buffers attached to an IIO device.  
+> > If you get a chance to add a parameter to the tools/iio/ buffer
+> > program that does much the same as above that would be great.  
 > 
+> will take a look
+> 
+> >  
+> > >
+> > > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>  
+> >
+> > Otherwise a few trivials inline.
+> >
+> > Good work on bringing this new approach together so quickly.
+> >
+> > It's a lot simpler which is good and still gives us a reasonable interface.
+> >
+> > If you can update the example code in tree and perhaps add something to
+> > the main IIO docs that would be great.
+> > Documentation/driver-api/iio/buffers.rst I think.
+> >
+> > We'll also  (at somepoint) want to do a scrub of the ABI docs to
+> > either include the new paths or make them less specific to incorporate
+> > both.
+> >
+> > Thanks,
 > >
 > > Jonathan
 > >  
-> > >
-> > > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 > > > ---
-> > >  drivers/iio/industrialio-buffer.c | 66 +++++++++++++++++++++----------
-> > >  include/linux/iio/buffer_impl.h   |  4 +-
-> > >  2 files changed, 48 insertions(+), 22 deletions(-)
+> > >  drivers/iio/industrialio-buffer.c | 118 ++++++++++++++++++++++++++++++
+> > >  drivers/iio/industrialio-core.c   |   8 ++
+> > >  include/linux/iio/buffer_impl.h   |   5 ++
+> > >  include/linux/iio/iio-opaque.h    |   2 +
+> > >  include/uapi/linux/iio/buffer.h   |  10 +++
+> > >  5 files changed, 143 insertions(+)
+> > >  create mode 100644 include/uapi/linux/iio/buffer.h
 > > >
 > > > diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-> > > index a525e88b302f..49996bed5f4c 100644
+> > > index a69bb705d173..119c2b5aa863 100644
 > > > --- a/drivers/iio/industrialio-buffer.c
 > > > +++ b/drivers/iio/industrialio-buffer.c
-> > > @@ -448,7 +448,7 @@ static int iio_buffer_add_channel_sysfs(struct iio_dev *indio_dev,
-> > >                                    IIO_SEPARATE,
-> > >                                    &indio_dev->dev,
-> > >                                    buffer,
-> > > -                                  &buffer->scan_el_dev_attr_list);
-> > > +                                  &buffer->buffer_attr_list);
-> > >       if (ret)
-> > >               return ret;
-> > >       attrcount++;
-> > > @@ -460,7 +460,7 @@ static int iio_buffer_add_channel_sysfs(struct iio_dev *indio_dev,
-> > >                                    0,
-> > >                                    &indio_dev->dev,
-> > >                                    buffer,
-> > > -                                  &buffer->scan_el_dev_attr_list);
-> > > +                                  &buffer->buffer_attr_list);
-> > >       if (ret)
-> > >               return ret;
-> > >       attrcount++;
-> > > @@ -473,7 +473,7 @@ static int iio_buffer_add_channel_sysfs(struct iio_dev *indio_dev,
-> > >                                            0,
-> > >                                            &indio_dev->dev,
-> > >                                            buffer,
-> > > -                                          &buffer->scan_el_dev_attr_list);
-> > > +                                          &buffer->buffer_attr_list);
-> > >       else
-> > >               ret = __iio_add_chan_devattr("en",
-> > >                                            chan,
-> > > @@ -483,7 +483,7 @@ static int iio_buffer_add_channel_sysfs(struct iio_dev *indio_dev,
-> > >                                            0,
-> > >                                            &indio_dev->dev,
-> > >                                            buffer,
-> > > -                                          &buffer->scan_el_dev_attr_list);
-> > > +                                          &buffer->buffer_attr_list);
-> > >       if (ret)
-> > >               return ret;
-> > >       attrcount++;
-> > > @@ -495,8 +495,7 @@ static ssize_t iio_buffer_read_length(struct device *dev,
-> > >                                     struct device_attribute *attr,
-> > >                                     char *buf)
-> > >  {
-> > > -     struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> > > -     struct iio_buffer *buffer = indio_dev->buffer;
-> > > +     struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
-> > >
-> > >       return sprintf(buf, "%d\n", buffer->length);
+> > > @@ -9,6 +9,7 @@
+> > >   * - Better memory allocation techniques?
+> > >   * - Alternative access techniques?
+> > >   */
+> > > +#include <linux/anon_inodes.h>
+> > >  #include <linux/kernel.h>
+> > >  #include <linux/export.h>
+> > >  #include <linux/device.h>
+> > > @@ -1333,6 +1334,106 @@ void iio_buffer_unregister_legacy_sysfs_groups(struct iio_dev *indio_dev)
+> > >       kfree(iio_dev_opaque->legacy_scan_el_group.attrs);
 > > >  }
-> > > @@ -506,7 +505,7 @@ static ssize_t iio_buffer_write_length(struct device *dev,
-> > >                                      const char *buf, size_t len)
-> > >  {
-> > >       struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> > > -     struct iio_buffer *buffer = indio_dev->buffer;
-> > > +     struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
-> > >       unsigned int val;
-> > >       int ret;
 > > >
-> > > @@ -538,8 +537,7 @@ static ssize_t iio_buffer_show_enable(struct device *dev,
-> > >                                     struct device_attribute *attr,
-> > >                                     char *buf)
-> > >  {
-> > > -     struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> > > -     struct iio_buffer *buffer = indio_dev->buffer;
-> > > +     struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
-> > >
-> > >       return sprintf(buf, "%d\n", iio_buffer_is_active(buffer));
-> > >  }
-> > > @@ -1154,7 +1152,7 @@ static ssize_t iio_buffer_store_enable(struct device *dev,
-> > >       int ret;
-> > >       bool requested_state;
-> > >       struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> > > -     struct iio_buffer *buffer = indio_dev->buffer;
-> > > +     struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
-> > >       bool inlist;
-> > >
-> > >       ret = strtobool(buf, &requested_state);
-> > > @@ -1185,8 +1183,7 @@ static ssize_t iio_buffer_show_watermark(struct device *dev,
-> > >                                        struct device_attribute *attr,
-> > >                                        char *buf)
-> > >  {
-> > > -     struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> > > -     struct iio_buffer *buffer = indio_dev->buffer;
-> > > +     struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
-> > >
-> > >       return sprintf(buf, "%u\n", buffer->watermark);
-> > >  }
-> > > @@ -1197,7 +1194,7 @@ static ssize_t iio_buffer_store_watermark(struct device *dev,
-> > >                                         size_t len)
-> > >  {
-> > >       struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> > > -     struct iio_buffer *buffer = indio_dev->buffer;
-> > > +     struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
-> > >       unsigned int val;
-> > >       int ret;
-> > >
-> > > @@ -1230,8 +1227,7 @@ static ssize_t iio_dma_show_data_available(struct device *dev,
-> > >                                               struct device_attribute *attr,
-> > >                                               char *buf)
-> > >  {
-> > > -     struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> > > -     struct iio_buffer *buffer = indio_dev->buffer;
-> > > +     struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
-> > >
-> > >       return sprintf(buf, "%zu\n", iio_buffer_data_available(buffer));
-> > >  }
-> > > @@ -1256,6 +1252,26 @@ static struct attribute *iio_buffer_attrs[] = {
-> > >       &dev_attr_data_available.attr,
-> > >  };
-> > >
-> > > +#define to_dev_attr(_attr) container_of(_attr, struct device_attribute, attr)
-> > > +
-> > > +static struct attribute *iio_buffer_wrap_attr(struct iio_buffer *buffer,
-> > > +                                           struct attribute *attr)
+> > > +static int iio_buffer_chrdev_release(struct inode *inode, struct file *filep)
 > > > +{
-> > > +     struct device_attribute *dattr = to_dev_attr(attr);
-> > > +     struct iio_dev_attr *iio_attr;
+> > > +     struct iio_dev_buffer_pair *ib = filep->private_data;
+> > > +     struct iio_dev *indio_dev = ib->indio_dev;
+> > > +     struct iio_buffer *buffer = ib->buffer;
 > > > +
-> > > +     iio_attr = kzalloc(sizeof(*iio_attr), GFP_KERNEL);
-> > > +     if (!iio_attr)
-> > > +             return NULL;
+> > > +     clear_bit(IIO_BUSY_BIT_POS, &buffer->flags);
+> > > +     iio_device_put(indio_dev);
+> > > +     kfree(ib);
 > > > +
-> > > +     iio_attr->buffer = buffer;
-> > > +     memcpy(&iio_attr->dev_attr, dattr, sizeof(iio_attr->dev_attr));
-> > > +
-> > > +     list_add(&iio_attr->l, &buffer->buffer_attr_list);
-> > > +
-> > > +     return &iio_attr->dev_attr.attr;
+> > > +     return 0;
 > > > +}
 > > > +
-> > >  static int iio_buffer_register_legacy_sysfs_groups(struct iio_dev *indio_dev,
-> > >                                                  struct attribute **buffer_attrs,
-> > >                                                  int buffer_attrcount,
-> > > @@ -1331,7 +1347,7 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
-> > >       }
+> > > +static const struct file_operations iio_buffer_chrdev_fileops = {
+> > > +     .owner = THIS_MODULE,
+> > > +     .llseek = noop_llseek,
+> > > +     .read = iio_buffer_read_outer_addr,
+> > > +     .poll = iio_buffer_poll_addr,
+> > > +     .compat_ioctl = compat_ptr_ioctl,
+> > > +     .release = iio_buffer_chrdev_release,
+> > > +};
+> > > +
+> > > +static long iio_device_buffer_getfd(struct iio_dev *indio_dev, unsigned long arg)
+> > > +{
+> > > +     struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+> > > +     int __user *ival = (int __user *)arg;
+> > > +     char buf_name[sizeof("iio:buffer:xxx")];
+> > > +     struct iio_dev_buffer_pair *ib;
+> > > +     struct iio_buffer *buffer;
+> > > +     int fd, idx;
+> > > +
+> > > +     if (copy_from_user(&idx, ival, sizeof(idx)))
+> > > +             return -EFAULT;
+> > > +
+> > > +     if (idx == 0) {
+> > > +             fd = 0;
+> > > +             if (copy_to_user(ival, &fd, sizeof(fd)))
+> > > +                     return -EFAULT;
+> > > +             return 0;
+> > > +     }
+> > > +
+> > > +     if (idx >= iio_dev_opaque->attached_buffers_cnt)
+> > > +             return -ENOENT;
+> > > +
+> > > +     fd = mutex_lock_interruptible(&indio_dev->mlock);  
+> >
+> > Why mlock?  Might be fine, but this doesn't feel like it is in the normal scope
+> > of that lock.  So perhaps a comment on why it makes sense here.  
+> 
+> Copy+paste from iio_event_getfd()
+> It does the same thing.
+> So, I'm a bit vague on this mlock being used here.
+> Will take a look.
+
+The Event one could well be wrong as well :)
+
+> 
+> >  
+> > > +     if (fd)
+> > > +             return fd;
+> > > +
+> > > +     buffer = iio_dev_opaque->attached_buffers[idx];
+> > > +
+> > > +     if (test_and_set_bit(IIO_BUSY_BIT_POS, &buffer->flags)) {
+> > > +             fd = -EBUSY;
+> > > +             goto error_unlock;
+> > > +     }
+> > > +
+> > > +     iio_device_get(indio_dev);
+> > > +
+> > > +     ib = kzalloc(sizeof(*ib), GFP_KERNEL);
+> > > +     if (!ib) {
+> > > +             fd = -ENOMEM;
+> > > +             goto error_iio_dev_put;
+> > > +     }
+> > > +
+> > > +     ib->indio_dev = indio_dev;
+> > > +     ib->buffer = buffer;
+> > > +
+> > > +     fd = anon_inode_getfd(buf_name, &iio_buffer_chrdev_fileops,
+> > > +                           ib, O_RDWR | O_CLOEXEC);
+> > > +     if (fd < 0)
+> > > +             goto error_free_ib;
+> > > +
+> > > +     if (copy_to_user(ival, &fd, sizeof(fd))) {
+> > > +             fd = -EFAULT;
+> > > +             goto error_free_ib;
+> > > +     }
+> > > +
+> > > +     mutex_unlock(&indio_dev->mlock);
+> > > +     return fd;
+> > > +
+> > > +error_free_ib:
+> > > +     kfree(ib);
+> > > +error_iio_dev_put:
+> > > +     iio_device_put(indio_dev);
+> > > +     clear_bit(IIO_BUSY_BIT_POS, &buffer->flags);
+> > > +error_unlock:
+> > > +     mutex_unlock(&indio_dev->mlock);
+> > > +     return fd;
+> > > +}
+> > > +
+> > > +static long iio_device_buffer_ioctl(struct iio_dev *indio_dev, struct file *filp,
+> > > +                                 unsigned int cmd, unsigned long arg)
+> > > +{
+> > > +     switch (cmd) {
+> > > +     case IIO_BUFFER_GET_FD_IOCTL:
+> > > +             return iio_device_buffer_getfd(indio_dev, arg);
+> > > +     default:
+> > > +             return IIO_IOCTL_UNHANDLED;
+> > > +     }
+> > > +}
+> > > +
+> > >  static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
+> > >                                            struct iio_dev *indio_dev,
+> > >                                            int index)
+> > > @@ -1460,6 +1561,7 @@ int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
+> > >       const struct iio_chan_spec *channels;
+> > >       int unwind_idx;
+> > >       int ret, i;
+> > > +     size_t sz;
 > > >
-> > >       scan_el_attrcount = 0;
-> > > -     INIT_LIST_HEAD(&buffer->scan_el_dev_attr_list);
-> > > +     INIT_LIST_HEAD(&buffer->buffer_attr_list);
 > > >       channels = indio_dev->channels;
 > > >       if (channels) {
-> > >               /* new magic */
-> > > @@ -1378,9 +1394,19 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
-> > >
-> > >       buffer_attrcount += ARRAY_SIZE(iio_buffer_attrs);
-> > >
-> > > -     attrn = buffer_attrcount;
-> > > +     for (i = 0; i < buffer_attrcount; i++) {
-> > > +             struct attribute *wrapped;
+> > > @@ -1481,6 +1583,18 @@ int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
+> > >                       goto error_unwind_sysfs_and_mask;
+> > >               }
+> > >       }
+> > > +     unwind_idx = iio_dev_opaque->attached_buffers_cnt - 1;
 > > > +
-> > > +             wrapped = iio_buffer_wrap_attr(buffer, attr[i]);
-> > > +             if (!wrapped) {
-> > > +                     ret = -ENOMEM;
-> > > +                     goto error_free_scan_mask;
-> > > +             }
-> > > +             attr[i] = wrapped;
+> > > +     sz = sizeof(*(iio_dev_opaque->buffer_ioctl_handler));
+> > > +     iio_dev_opaque->buffer_ioctl_handler = kzalloc(sz, GFP_KERNEL);  
+> >  
+> > > +     if (!iio_dev_opaque->buffer_ioctl_handler) {
+> > > +             ret = -ENOMEM;
+> > > +             goto error_unwind_sysfs_and_mask;
 > > > +     }
+> > > +
+> > > +     iio_dev_opaque->buffer_ioctl_handler->ioctl = iio_device_buffer_ioctl;
+> > > +     iio_device_ioctl_handler_register(indio_dev,
+> > > +                                       iio_dev_opaque->buffer_ioctl_handler);
 > > >
-> > > -     list_for_each_entry(p, &buffer->scan_el_dev_attr_list, l)
-> > > +     attrn = 0;
-> > > +     list_for_each_entry(p, &buffer->buffer_attr_list, l)
-> > >               attr[attrn++] = &p->dev_attr.attr;
+> > >       return 0;
 > > >
-> > >       buffer->buffer_group.name = kasprintf(GFP_KERNEL, "buffer%d", index);
-> > > @@ -1412,7 +1438,7 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
-> > >  error_free_scan_mask:
-> > >       bitmap_free(buffer->scan_mask);
-> > >  error_cleanup_dynamic:
-> > > -     iio_free_chan_devattr_list(&buffer->scan_el_dev_attr_list);
-> > > +     iio_free_chan_devattr_list(&buffer->buffer_attr_list);
+> > > @@ -1503,6 +1617,10 @@ void iio_buffer_free_sysfs_and_mask(struct iio_dev *indio_dev)
+> > >       if (!buffer)
+> > >               return;
 > > >
-> > >       return ret;
-> > >  }
-> > > @@ -1443,7 +1469,7 @@ static void __iio_buffer_free_sysfs_and_mask(struct iio_buffer *buffer)
-> > >       bitmap_free(buffer->scan_mask);
-> > >       kfree(buffer->buffer_group.name);
-> > >       kfree(buffer->buffer_group.attrs);
-> > > -     iio_free_chan_devattr_list(&buffer->scan_el_dev_attr_list);
-> > > +     iio_free_chan_devattr_list(&buffer->buffer_attr_list);
-> > >  }
+> > > +     iio_device_ioctl_handler_unregister(iio_dev_opaque->buffer_ioctl_handler);
+> > > +     kfree(iio_dev_opaque->buffer_ioctl_handler);
+> > > +     iio_dev_opaque->buffer_ioctl_handler = NULL;
+> > > +
+> > >       iio_buffer_unregister_legacy_sysfs_groups(indio_dev);
 > > >
-> > >  void iio_buffer_free_sysfs_and_mask(struct iio_dev *indio_dev)
+> > >       for (i = iio_dev_opaque->attached_buffers_cnt - 1; i >= 0; i--) {
+> > > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> > > index 8af85838d1c2..78807b62ff52 100644
+> > > --- a/drivers/iio/industrialio-core.c
+> > > +++ b/drivers/iio/industrialio-core.c
+> > > @@ -1722,6 +1722,9 @@ static int iio_chrdev_open(struct inode *inode, struct file *filp)
+> > >       ib->indio_dev = indio_dev;
+> > >       ib->buffer = indio_dev->buffer;
+> > >
+> > > +     if (indio_dev->buffer)
+> > > +             test_and_set_bit(IIO_BUSY_BIT_POS, &indio_dev->buffer->flags);
+> > > +  
+> >
+> > What is this test preventing?  I guess it's keeping the flag for the first
+> > buffer in sync with what other buffers will look at, but does anything check those?
+> > We'll not be able to open this one twice anyway due to the check above.
+> >
+> > Perhaps a comment on why this is here?  
+> 
+> Hmm, I admit this is a bit sloppy.
+> This should technically be an impossible condition, so maybe just
+> set_bit() would have been enough.
+> It's making sure that the ioctl() on buffer 0 would have return
+> -EBUSY; but that was on an older version.
+> 
+> >  
+> > >       filp->private_data = ib;
+> > >
+> > >       return 0;
+> > > @@ -1739,6 +1742,11 @@ static int iio_chrdev_release(struct inode *inode, struct file *filp)
+> > >       struct iio_dev_buffer_pair *ib = filp->private_data;
+> > >       struct iio_dev *indio_dev = container_of(inode->i_cdev,
+> > >                                               struct iio_dev, chrdev);
+> > > +     struct iio_buffer *buffer = ib->buffer;
+> > > +
+> > > +     if (buffer)
+> > > +             clear_bit(IIO_BUSY_BIT_POS, &buffer->flags);
+> > > +
+> > >       clear_bit(IIO_BUSY_BIT_POS, &indio_dev->flags);
+> > >       iio_device_put(indio_dev);
+> > >       kfree(ib);
 > > > diff --git a/include/linux/iio/buffer_impl.h b/include/linux/iio/buffer_impl.h
-> > > index 3e555e58475b..41044320e581 100644
+> > > index 768b90c64412..245b32918ae1 100644
 > > > --- a/include/linux/iio/buffer_impl.h
 > > > +++ b/include/linux/iio/buffer_impl.h
-> > > @@ -97,8 +97,8 @@ struct iio_buffer {
-> > >       /* @scan_timestamp: Does the scan mode include a timestamp. */
-> > >       bool scan_timestamp;
+> > > @@ -6,6 +6,8 @@
 > > >
-> > > -     /* @scan_el_dev_attr_list: List of scan element related attributes. */
-> > > -     struct list_head scan_el_dev_attr_list;
-> > > +     /* @buffer_attr_list: List of buffer attributes. */
-> > > +     struct list_head buffer_attr_list;
+> > >  #ifdef CONFIG_IIO_BUFFER
 > > >
-> > >       /*
-> > >        * @buffer_group: Attributes of the new buffer group.  
+> > > +#include <uapi/linux/iio/buffer.h>
+> > > +
+> > >  struct iio_dev;
+> > >  struct iio_buffer;
+> > >
+> > > @@ -72,6 +74,9 @@ struct iio_buffer {
+> > >       /** @length: Number of datums in buffer. */
+> > >       unsigned int length;
+> > >
+> > > +     /** @flags: File ops flags including busy flag. */
+> > > +     unsigned long flags;
+> > > +
+> > >       /**  @bytes_per_datum: Size of individual datum including timestamp. */
+> > >       size_t bytes_per_datum;
+> > >
+> > > diff --git a/include/linux/iio/iio-opaque.h b/include/linux/iio/iio-opaque.h
+> > > index c909835b6247..2c3374d465da 100644
+> > > --- a/include/linux/iio/iio-opaque.h
+> > > +++ b/include/linux/iio/iio-opaque.h
+> > > @@ -9,6 +9,7 @@
+> > >   * @event_interface:         event chrdevs associated with interrupt lines
+> > >   * @attached_buffers:                array of buffers statically attached by the driver
+> > >   * @attached_buffers_cnt:    number of buffers in the array of statically attached buffers
+> > > + * @buffer_ioctl_handler:    ioctl() handler for this IIO device's buffer interface
+> > >   * @buffer_list:             list of all buffers currently attached
+> > >   * @channel_attr_list:               keep track of automatically created channel
+> > >   *                           attributes
+> > > @@ -28,6 +29,7 @@ struct iio_dev_opaque {
+> > >       struct iio_event_interface      *event_interface;
+> > >       struct iio_buffer               **attached_buffers;
+> > >       unsigned int                    attached_buffers_cnt;
+> > > +     struct iio_ioctl_handler        *buffer_ioctl_handler;
+> > >       struct list_head                buffer_list;
+> > >       struct list_head                channel_attr_list;
+> > >       struct attribute_group          chan_attr_group;
+> > > diff --git a/include/uapi/linux/iio/buffer.h b/include/uapi/linux/iio/buffer.h
+> > > new file mode 100644
+> > > index 000000000000..de571c83c9f2
+> > > --- /dev/null
+> > > +++ b/include/uapi/linux/iio/buffer.h
+> > > @@ -0,0 +1,10 @@
+> > > +/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+> > > +/* industrial I/O buffer definitions needed both in and out of kernel
+> > > + */
+> > > +
+> > > +#ifndef _UAPI_IIO_BUFFER_H_
+> > > +#define _UAPI_IIO_BUFFER_H_
+> > > +
+> > > +#define IIO_BUFFER_GET_FD_IOCTL              _IOWR('i', 0x91, int)
+> > > +
+> > > +#endif /* _UAPI_IIO_BUFFER_H_ */  
 > >  
 

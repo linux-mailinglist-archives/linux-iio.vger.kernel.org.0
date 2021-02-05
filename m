@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 49C19310667
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Feb 2021 09:16:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EA153106A2
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Feb 2021 09:28:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231489AbhBEINE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 5 Feb 2021 03:13:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56830 "EHLO
+        id S229698AbhBEI1c (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 5 Feb 2021 03:27:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231709AbhBEIMz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 Feb 2021 03:12:55 -0500
-Received: from mail-io1-xd2d.google.com (mail-io1-xd2d.google.com [IPv6:2607:f8b0:4864:20::d2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC5A5C0613D6;
-        Fri,  5 Feb 2021 00:12:15 -0800 (PST)
-Received: by mail-io1-xd2d.google.com with SMTP id f67so4369670ioa.1;
-        Fri, 05 Feb 2021 00:12:15 -0800 (PST)
+        with ESMTP id S229691AbhBEI1a (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 Feb 2021 03:27:30 -0500
+Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com [IPv6:2607:f8b0:4864:20::d34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1328C0613D6;
+        Fri,  5 Feb 2021 00:26:50 -0800 (PST)
+Received: by mail-io1-xd34.google.com with SMTP id n14so6228166iog.3;
+        Fri, 05 Feb 2021 00:26:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=ZB1j7ExK4A7ZTcSGpsFbDsbAtl+Rf3XIZReIJAzrP/E=;
-        b=XXtOOo8b9F7DbnLhdt7eNZyb8z9yhPFsCDrLpHphzl4vaB23xFgJ3GZmf7ZEHhEvgS
-         1jd9OKJ2Fe4xkMM3CRxzb2yiKwG9MJO6vgSThmqNI0ih7o5nV5TXJ+DdQWpXD1HeTSVm
-         XJLRWems/uI5ZtWtNoogLkbkJXt5xxTRb/Vi/BYfe9H+bChyZ7evfs4uTtC3eJhA6fvv
-         ustbNwKcHotkvk82Dm+Irb+8ut84W/Ey7IU07rjuw3T9OgCDnlex+wwnL4tFBx4qwXBP
-         XIB4IsV1CW7tA1jmUkQ5pv0ko0GjbNF5Pplte7OJhTbmmqkUTveewySRDjS7VLs7tov+
-         1Ydw==
+        bh=Z0Gm8u2TMhBz/YCAe+pp9wro9BJ8jYFwFo8FlNQSJoI=;
+        b=oMNVSNOZyGvv07CcK+taZmULiang1+bklyyyewwT198brr7qyEZbmo24VeU7rC0LfY
+         oo1t2KP3oKiXaAOKPttUlo+Qh0uiZ1JOoRyZuAgwFJYIX9jaKnb/f/FhqhNwhZ3NO+KI
+         nlsLpqfSWHmad4vHGGsgNWGV1MQngDWvri4yjWNOtCd+ZOn20zldzc27fOfPFr6LJTPZ
+         XssBMf7mHvFmCml0MF3YgcKdL8IucT9BAJj6A6sVFkvaBksjNTR2lIi110yruPesd1by
+         U+vXTcPV5gAZEjgWcZ4AdkG8q03QGAJiAwgcZY7qm31AciDMAOUi228tGbC+vTSnwchB
+         W1fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ZB1j7ExK4A7ZTcSGpsFbDsbAtl+Rf3XIZReIJAzrP/E=;
-        b=eFoWk5nMcGQj88nCPNNOXvFC3mxNtcls8Uf24ieIiXfAVrzSQr7y32bDYLLPBID0Hq
-         MTcxaF/k9Sdg879nbYnVAH1MaAXeSaqryhG3U5UODJ6x8CxqKXvV9dqm9T0TtORprqKE
-         P8sIEGntYoHtEXC/r5mDIBDqMSCZ3K5+O2KkaHlHoPUFh2ja7RUr9yzVKc7ZMWDu9SmY
-         XnJ+XzGxNN33SgNSgxSg2lJWLmW2Kz9GRtdhmWiOn4ohtbkIDiDz9rXaGkOFwwr8tDvl
-         P0FY6uhVc61MnH5GIqkNyRC4Wou406YBc6yZnOLY6DoZ7fa+cPkPvCk9OHSOO0S9XBqj
-         3uAQ==
-X-Gm-Message-State: AOAM530a1sPsxTFH9+83Uan4dG4q0bgS8XfmjZQlEdTeWAe8WYLQdh/k
-        NpC+FtboCrjkgSjZpKRmz6eifIXAKeszDko6SvA=
-X-Google-Smtp-Source: ABdhPJyHrvMyfOaJbsmql5Jla41bhRts2VhleUawSB3WvJ0q9gvCQh4kjJCdC/CI8Ab9+JXIkXlRhOP46V/vbsFfMJo=
-X-Received: by 2002:a02:3f62:: with SMTP id c34mr3836497jaf.16.1612512735120;
- Fri, 05 Feb 2021 00:12:15 -0800 (PST)
+        bh=Z0Gm8u2TMhBz/YCAe+pp9wro9BJ8jYFwFo8FlNQSJoI=;
+        b=X+4x3WW8c6Lrb72+9tiMYlLsjRGStvZPF/y8T6dhKtOugLMH2n3b/rD/V7cfJPFrMB
+         UXPXFvyaICQSK/h7kguiO4YyFWjdiei9PQkWUaKng9gC37QSasUfF1HRtKedcla9vWTo
+         jBaIJ97STTWF+8T7Ubq6nZuAoViXjfyAalN4TQfCJlPGOnaeB2heH/WKhUJHETLTu5pY
+         Mv6wXVTZLpgMUvmn1EW6HPnYtrt31RjXwd7yBvWY3smIlWQnvWUFHeyEQs6j+7AXaa+a
+         aX4lGfNsmGc5L8g1e6lSfQ/NUsVDBWqq/LrvYZlDcyPYQTUayTmWZzQXc8nV14ksMfa4
+         Xapg==
+X-Gm-Message-State: AOAM532P2LROdeMYH6lGk1RbBhbHQW79lyuU+XTC5ejjq9ZuLmDLG2Fy
+        bQ6aJ6DjjjUdSaKW5nSkOY6Z9QSiJADyUb7lQeM=
+X-Google-Smtp-Source: ABdhPJx/7S6ngUSZt+lhev2lxyfban1H04P3gyM5ctHEpKB7iEd1QnjQwA/cAK/IAK5dVcXtBF6hW5yVJkAuXRZ3y5U=
+X-Received: by 2002:a02:3f62:: with SMTP id c34mr3877574jaf.16.1612513608749;
+ Fri, 05 Feb 2021 00:26:48 -0800 (PST)
 MIME-Version: 1.0
 References: <20210201145105.20459-1-alexandru.ardelean@analog.com>
- <20210201145105.20459-6-alexandru.ardelean@analog.com> <20210204174942.000013b3@Huawei.com>
-In-Reply-To: <20210204174942.000013b3@Huawei.com>
+ <20210201145105.20459-8-alexandru.ardelean@analog.com> <20210204180926.00005e4c@Huawei.com>
+In-Reply-To: <20210204180926.00005e4c@Huawei.com>
 From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Fri, 5 Feb 2021 10:12:03 +0200
-Message-ID: <CA+U=DsotfJ5A44CWtdXW=QYzz3ApvLaUK2PqH=Cs3FdqFJVLEQ@mail.gmail.com>
-Subject: Re: [PATCH v3 05/11] iio: buffer: group attr count and attr alloc
+Date:   Fri, 5 Feb 2021 10:26:32 +0200
+Message-ID: <CA+U=Dsq34ixRT71qD8ZTR7MQ7NDgDZV2EJ+3gT=QQ8wBz4GiGA@mail.gmail.com>
+Subject: Re: [PATCH v3 07/11] iio: add reference to iio buffer on iio_dev_attr
 To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
         LKML <linux-kernel@vger.kernel.org>,
@@ -67,160 +67,193 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Feb 4, 2021 at 7:57 PM Jonathan Cameron
+On Thu, Feb 4, 2021 at 8:16 PM Jonathan Cameron
 <Jonathan.Cameron@huawei.com> wrote:
 >
-> On Mon, 1 Feb 2021 16:50:59 +0200
+> On Mon, 1 Feb 2021 16:51:01 +0200
 > Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 >
-> > If we want to merge the attributes of the buffer/ and scan_elements/
-> > directories, we'll need to count all attributes first, then (depending on
-> > the attribute group) either allocate 2 attribute groups, or a single one.
->
-> Probably want to note why we might want to do 2 or 1 group here as it
-> sounds weird without knowing where this is going.
-
-ack
-
->
+> > This change adds a reference to a 'struct iio_buffer' object on the
+> > iio_dev_attr object. This way, we can use the created iio_dev_attr objects
+> > on per-buffer basis (since they're allocated anyway).
 > >
-> > This change moves the allocation of the buffer/ attributes closer to the
-> > allocation of the scan_elements/ attributes to make grouping easier.
+> > A minor downside of this change is that the number of parameters on
+> > __iio_add_chan_devattr() grows by 1. This looks like it could do with a bit
+> > of a re-think.
+>
+> Could use a bit of macro magic or static inline to keep the old
+> version set of parameter and have __iio_add_chan_devattr_with_buf
+> or similar.  I'm not sure I'd bother given we don't have that many callers.
+
+If there isn't a strong opinion to add the
+__iio_add_chan_devattr_with_buf() version + macro/inline magic, I'd
+probably not do it.
+In terms of patch-noise, it's not considerably better, and not
+necessarily worse.
+
+When I was thinking about the re-think of __iio_add_chan_devattr, I
+was thinking of a way to maybe re-architect this.
+Maybe, add some {device_}attribute that act as template [at least for
+the R/W functions].
+This definitely needs some thinking to make it clean and nice.
+
+>
 > >
 > > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> This is fine, but one comment on a possible tidy up for another day inline.
->
-> Jonathan
->
 > > ---
-> >  drivers/iio/industrialio-buffer.c | 71 ++++++++++++++++---------------
-> >  1 file changed, 37 insertions(+), 34 deletions(-)
+> >  drivers/iio/iio_core.h            | 2 ++
+> >  drivers/iio/industrialio-buffer.c | 4 ++++
+> >  drivers/iio/industrialio-core.c   | 6 ++++++
+> >  drivers/iio/industrialio-event.c  | 1 +
+> >  include/linux/iio/sysfs.h         | 3 +++
+> >  5 files changed, 16 insertions(+)
+> >
+> > diff --git a/drivers/iio/iio_core.h b/drivers/iio/iio_core.h
+> > index 7d5b179c1fe7..731f5170d5b9 100644
+> > --- a/drivers/iio/iio_core.h
+> > +++ b/drivers/iio/iio_core.h
+> > @@ -12,6 +12,7 @@
+> >  #include <linux/kernel.h>
+> >  #include <linux/device.h>
+> >
+> > +struct iio_buffer;
+> >  struct iio_chan_spec;
+> >  struct iio_dev;
+> >
+> > @@ -43,6 +44,7 @@ int __iio_add_chan_devattr(const char *postfix,
+> >                          u64 mask,
+> >                          enum iio_shared_by shared_by,
+> >                          struct device *dev,
+> > +                        struct iio_buffer *buffer,
+> >                          struct list_head *attr_list);
+> >  void iio_free_chan_devattr_list(struct list_head *attr_list);
 > >
 > > diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-> > index cc846988fdb9..23f22be62cc7 100644
+> > index f82decf92b7c..a525e88b302f 100644
 > > --- a/drivers/iio/industrialio-buffer.c
 > > +++ b/drivers/iio/industrialio-buffer.c
-> > @@ -1257,41 +1257,16 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
+>
+> > @@ -447,6 +447,7 @@ static int iio_buffer_add_channel_sysfs(struct iio_dev *indio_dev,
+> >                                    0,
+> >                                    IIO_SEPARATE,
+> >                                    &indio_dev->dev,
+> > +                                  buffer,
+> >                                    &buffer->scan_el_dev_attr_list);
+> >       if (ret)
+> >               return ret;
+> > @@ -458,6 +459,7 @@ static int iio_buffer_add_channel_sysfs(struct iio_dev *indio_dev,
+> >                                    0,
+> >                                    0,
+> >                                    &indio_dev->dev,
+> > +                                  buffer,
+> >                                    &buffer->scan_el_dev_attr_list);
+> >       if (ret)
+> >               return ret;
+> > @@ -470,6 +472,7 @@ static int iio_buffer_add_channel_sysfs(struct iio_dev *indio_dev,
+> >                                            chan->scan_index,
+> >                                            0,
+> >                                            &indio_dev->dev,
+> > +                                          buffer,
+> >                                            &buffer->scan_el_dev_attr_list);
+> >       else
+> >               ret = __iio_add_chan_devattr("en",
+> > @@ -479,6 +482,7 @@ static int iio_buffer_add_channel_sysfs(struct iio_dev *indio_dev,
+> >                                            chan->scan_index,
+> >                                            0,
+> >                                            &indio_dev->dev,
+> > +                                          buffer,
+> >                                            &buffer->scan_el_dev_attr_list);
+> >       if (ret)
+> >               return ret;
+> > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> > index ccd7aaff6d13..c68130885d83 100644
+> > --- a/drivers/iio/industrialio-core.c
+> > +++ b/drivers/iio/industrialio-core.c
+> > @@ -1114,6 +1114,7 @@ int __iio_add_chan_devattr(const char *postfix,
+> >                          u64 mask,
+> >                          enum iio_shared_by shared_by,
+> >                          struct device *dev,
+> > +                        struct iio_buffer *buffer,
+> >                          struct list_head *attr_list)
 > >  {
-> >       struct iio_dev_attr *p;
-> >       struct attribute **attr;
-> > -     int ret, i, attrn, attrcount;
-> > +     int ret, i, attrn, scan_el_attrcount, buffer_attrcount;
-> >       const struct iio_chan_spec *channels;
+> >       int ret;
+> > @@ -1129,6 +1130,7 @@ int __iio_add_chan_devattr(const char *postfix,
+> >               goto error_iio_dev_attr_free;
+> >       iio_attr->c = chan;
+> >       iio_attr->address = mask;
+> > +     iio_attr->buffer = buffer;
+> >       list_for_each_entry(t, attr_list, l)
+> >               if (strcmp(t->dev_attr.attr.name,
+> >                          iio_attr->dev_attr.attr.name) == 0) {
+> > @@ -1165,6 +1167,7 @@ static int iio_device_add_channel_label(struct iio_dev *indio_dev,
+> >                                    0,
+> >                                    IIO_SEPARATE,
+> >                                    &indio_dev->dev,
+> > +                                  NULL,
+> >                                    &iio_dev_opaque->channel_attr_list);
+> >       if (ret < 0)
+> >               return ret;
+> > @@ -1190,6 +1193,7 @@ static int iio_device_add_info_mask_type(struct iio_dev *indio_dev,
+> >                                            i,
+> >                                            shared_by,
+> >                                            &indio_dev->dev,
+> > +                                          NULL,
+> >                                            &iio_dev_opaque->channel_attr_list);
+> >               if ((ret == -EBUSY) && (shared_by != IIO_SEPARATE))
+> >                       continue;
+> > @@ -1226,6 +1230,7 @@ static int iio_device_add_info_mask_type_avail(struct iio_dev *indio_dev,
+> >                                            i,
+> >                                            shared_by,
+> >                                            &indio_dev->dev,
+> > +                                          NULL,
+> >                                            &iio_dev_opaque->channel_attr_list);
+> >               kfree(avail_postfix);
+> >               if ((ret == -EBUSY) && (shared_by != IIO_SEPARATE))
+> > @@ -1322,6 +1327,7 @@ static int iio_device_add_channel_sysfs(struct iio_dev *indio_dev,
+> >                                       i,
+> >                                       ext_info->shared,
+> >                                       &indio_dev->dev,
+> > +                                     NULL,
+> >                                       &iio_dev_opaque->channel_attr_list);
+> >                       i++;
+> >                       if (ret == -EBUSY && ext_info->shared)
+> > diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industrialio-event.c
+> > index ea8947cc21e4..a30e289fc362 100644
+> > --- a/drivers/iio/industrialio-event.c
+> > +++ b/drivers/iio/industrialio-event.c
+> > @@ -385,6 +385,7 @@ static int iio_device_add_event(struct iio_dev *indio_dev,
 > >
-> > -     attrcount = 0;
-> > +     buffer_attrcount = 0;
-> >       if (buffer->attrs) {
-> > -             while (buffer->attrs[attrcount] != NULL)
-> > -                     attrcount++;
-> > +             while (buffer->attrs[buffer_attrcount] != NULL)
-> > +                     buffer_attrcount++;
-> >       }
+> >               ret = __iio_add_chan_devattr(postfix, chan, show, store,
+> >                        (i << 16) | spec_index, shared_by, &indio_dev->dev,
+> > +                      NULL,
+> >                       &iio_dev_opaque->event_interface->dev_attr_list);
+> >               kfree(postfix);
 > >
-> > -     attr = kcalloc(attrcount + ARRAY_SIZE(iio_buffer_attrs) + 1,
-> > -                    sizeof(struct attribute *), GFP_KERNEL);
-> > -     if (!attr)
-> > -             return -ENOMEM;
-> > -
-> > -     memcpy(attr, iio_buffer_attrs, sizeof(iio_buffer_attrs));
-> > -     if (!buffer->access->set_length)
-> > -             attr[0] = &dev_attr_length_ro.attr;
-> > -
-> > -     if (buffer->access->flags & INDIO_BUFFER_FLAG_FIXED_WATERMARK)
-> > -             attr[2] = &dev_attr_watermark_ro.attr;
-> > -
-> > -     if (buffer->attrs)
-> > -             memcpy(&attr[ARRAY_SIZE(iio_buffer_attrs)], buffer->attrs,
-> > -                    sizeof(struct attribute *) * attrcount);
-> > -
-> > -     attr[attrcount + ARRAY_SIZE(iio_buffer_attrs)] = NULL;
-> > -
-> > -     buffer->buffer_group.name = "buffer";
-> > -     buffer->buffer_group.attrs = attr;
-> > -
-> > -     ret = iio_device_register_sysfs_group(indio_dev, &buffer->buffer_group);
-> > -     if (ret)
-> > -             goto error_free_buffer_attrs;
-> > -
-> > -     attrcount = 0;
-> > +     scan_el_attrcount = 0;
-> >       INIT_LIST_HEAD(&buffer->scan_el_dev_attr_list);
-> >       channels = indio_dev->channels;
-> >       if (channels) {
-> > @@ -1304,7 +1279,7 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
-> >                                                        &channels[i]);
-> >                       if (ret < 0)
-> >                               goto error_cleanup_dynamic;
-> > -                     attrcount += ret;
-> > +                     scan_el_attrcount += ret;
-> >                       if (channels[i].type == IIO_TIMESTAMP)
-> >                               indio_dev->scan_index_timestamp =
-> >                                       channels[i].scan_index;
-> > @@ -1319,9 +1294,37 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
-> >               }
-> >       }
+> > diff --git a/include/linux/iio/sysfs.h b/include/linux/iio/sysfs.h
+> > index b532c875bc24..e51fba66de4b 100644
+> > --- a/include/linux/iio/sysfs.h
+> > +++ b/include/linux/iio/sysfs.h
+> > @@ -9,6 +9,7 @@
+> >  #ifndef _INDUSTRIAL_IO_SYSFS_H_
+> >  #define _INDUSTRIAL_IO_SYSFS_H_
 > >
-> > +     attr = kcalloc(buffer_attrcount + ARRAY_SIZE(iio_buffer_attrs) + 1,
-> > +                    sizeof(struct attribute *), GFP_KERNEL);
-> > +     if (!attr) {
-> > +             ret = -ENOMEM;
-> > +             goto error_free_scan_mask;
-> > +     }
-> > +
-> > +     memcpy(attr, iio_buffer_attrs, sizeof(iio_buffer_attrs));
-> > +     if (!buffer->access->set_length)
-> > +             attr[0] = &dev_attr_length_ro.attr;
-> > +
-> > +     if (buffer->access->flags & INDIO_BUFFER_FLAG_FIXED_WATERMARK)
-> > +             attr[2] = &dev_attr_watermark_ro.attr;
->
-> Again a comment for the future  rather than now, but when we are copying
-> 4 items and then looking at whether to change 2 of them it might be cleaner
-> to just set them directly!  Touch of bit rot here :)
-
-So, I've been on-and-off about how to deal with this one.
-I wanted to clean it in various ways using new kernel sysfs APIs.
-Maybe, also remove the readonly variants and use the is_visible()
-property to set RO/RW modes.
-But I also came to the conclusion that this is an idea to address later.
-Trying to address this early-on confused me with other overlapping changes.
-
->
-> > +
-> > +     if (buffer->attrs)
-> > +             memcpy(&attr[ARRAY_SIZE(iio_buffer_attrs)], buffer->attrs,
-> > +                    sizeof(struct attribute *) * buffer_attrcount);
-> > +
-> > +     buffer_attrcount += ARRAY_SIZE(iio_buffer_attrs);
-> > +     attr[buffer_attrcount] = NULL;
-> > +
-> > +     buffer->buffer_group.name = "buffer";
-> > +     buffer->buffer_group.attrs = attr;
-> > +
-> > +     ret = iio_device_register_sysfs_group(indio_dev, &buffer->buffer_group);
-> > +     if (ret)
-> > +             goto error_free_buffer_attrs;
-> > +
-> >       buffer->scan_el_group.name = iio_scan_elements_group_name;
+> > +struct iio_buffer;
+> >  struct iio_chan_spec;
 > >
-> > -     buffer->scan_el_group.attrs = kcalloc(attrcount + 1,
-> > +     buffer->scan_el_group.attrs = kcalloc(scan_el_attrcount + 1,
-> >                                             sizeof(buffer->scan_el_group.attrs[0]),
-> >                                             GFP_KERNEL);
-> >       if (buffer->scan_el_group.attrs == NULL) {
-> > @@ -1341,12 +1344,12 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
+> >  /**
+> > @@ -17,12 +18,14 @@ struct iio_chan_spec;
+> >   * @address: associated register address
+> >   * @l:               list head for maintaining list of dynamically created attrs
+> >   * @c:               specification for the underlying channel
+> > + * @buffer:  the IIO buffer to which this attribute belongs to (if any)
+> >   */
+> >  struct iio_dev_attr {
+> >       struct device_attribute dev_attr;
+> >       u64 address;
+> >       struct list_head l;
+> >       struct iio_chan_spec const *c;
+> > +     struct iio_buffer *buffer;
+> >  };
 > >
-> >  error_free_scan_el_attrs:
-> >       kfree(buffer->scan_el_group.attrs);
-> > +error_free_buffer_attrs:
-> > +     kfree(buffer->buffer_group.attrs);
-> >  error_free_scan_mask:
-> >       bitmap_free(buffer->scan_mask);
-> >  error_cleanup_dynamic:
-> >       iio_free_chan_devattr_list(&buffer->scan_el_dev_attr_list);
-> > -error_free_buffer_attrs:
-> > -     kfree(buffer->buffer_group.attrs);
-> >
-> >       return ret;
-> >  }
+> >  #define to_iio_dev_attr(_dev_attr)                           \
 >

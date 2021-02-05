@@ -2,64 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F1AC311238
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Feb 2021 21:21:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 484D2311352
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Feb 2021 22:20:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233718AbhBEShr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 5 Feb 2021 13:37:47 -0500
-Received: from [20.39.40.203] ([20.39.40.203]:54986 "EHLO optinix.in"
-        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
-        id S233003AbhBEPJb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 5 Feb 2021 10:09:31 -0500
-dkim-signature: v=1; a=rsa-sha256; d=digitalsol.in; s=dkim;
-        c=relaxed/relaxed; q=dns/txt; h=From:Reply-To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
-        bh=wK2neTcOXNiSQ+RBxrnFed+mRrGUU/ndLGEgvo8IMCc=;
-        b=UQEHlnVg5XQbvsB12U1Ol3bhaQI9w8E6XPoWFxWLZmrTEAjZvoQaEbrphRRSyBGIIWdRriBN1NgjJnIHHuwrDk7Jiepk7hcecgKlubZ8Cbf+eyLm3How+vKdkYfuxbESucRjBUGhM3uNAIEl+djc5YuHgus55Al0uLGG/w84VCgbq4C5haAYakmS1vYlSgFchzN2F++luNM29v8DFhI75uaDxJSrLZjsc+U9sEzNpAaOCR9pw2OgdpmsaX
-        RpEWSooLH5k7s+lJH9RwsRzupCIBYaSMrEgafQL+30fpkHM9MFjkLmthx4Z1XqGeg54bjdS4mLhUgJrpa/zvXopT6v+g==
-Received: from User (Unknown [52.231.31.5])
-        by optinix.in with ESMTP
-        ; Mon, 1 Feb 2021 08:49:51 +0000
-Message-ID: <7494048F-E4B5-4167-8C98-9021CA321467@optinix.in>
-Reply-To: <ms.reem@yandex.com>
-From:   "Ms. Reem" <support@digitalsol.in>
-Subject: Re:read
-Date:   Mon, 1 Feb 2021 08:49:50 -0000
+        id S233192AbhBES7q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 5 Feb 2021 13:59:46 -0500
+Received: from mail-ot1-f53.google.com ([209.85.210.53]:45463 "EHLO
+        mail-ot1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233075AbhBES7F (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 Feb 2021 13:59:05 -0500
+Received: by mail-ot1-f53.google.com with SMTP id o12so8117934ote.12;
+        Fri, 05 Feb 2021 12:41:15 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=E/BK7ustIanoJNUJSQwM8o9ooyu4BgVSwj4bIicyTic=;
+        b=S7fJSUFXvOIWWkK4akgRg28xjqYWInDb8vufn1DfnYV1uFt821jzBIdeyxh0NmTpSe
+         pCZovB/QB1BMJ4l8IafkIsJHEYXspgjEe9FqiDG80PS+hzAlfEJqWzV0urpf/UbD5OjR
+         LZON8//R9FiEnhYX3pdbs87H044MXLSJytbKwaJSzAguTx/APe9A8TSEIYI+z9lv7dlB
+         Wvu0BheeKUph8mUgRCCY8TZPxUffR+9edOtHR21PTJkhK4y9FRBXCK4an3SY7OGMZXjb
+         W75HwfK2yyQZlwXLh6HIeq1bugaATHa4U0FgNdwkCm+ZCwTvKnLpwJjPTuGylAPNqYEO
+         i3Cw==
+X-Gm-Message-State: AOAM533XhnwJoznb0KJi3+83XpdD2syehj/R8TSFT3pGFESGkUdxW7eV
+        sHFbVYfUj3iy8OmXkVydyw==
+X-Google-Smtp-Source: ABdhPJwU9TZ9VboIT/rxqywVBtj4ZrBVcJcUtNQ0dwYRAbHmJFXgjD/5F+v+to3u3RkkSwyUuCGYDQ==
+X-Received: by 2002:a9d:7f89:: with SMTP id t9mr522752otp.9.1612557650111;
+        Fri, 05 Feb 2021 12:40:50 -0800 (PST)
+Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id k207sm379560oih.32.2021.02.05.12.40.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Feb 2021 12:40:49 -0800 (PST)
+Received: (nullmailer pid 3692690 invoked by uid 1000);
+        Fri, 05 Feb 2021 20:40:48 -0000
+Date:   Fri, 5 Feb 2021 14:40:48 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Mike Looijmans <mike.looijmans@topic.nl>
+Cc:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH v8 1/2] dt-bindings: iio: accel: Add bmi088 accelerometer
+ bindings
+Message-ID: <20210205204048.GA3692656@robh.at.kernel.org>
+References: <20210125150732.23873-1-mike.looijmans@topic.nl>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210125150732.23873-1-mike.looijmans@topic.nl>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello,
+On Mon, 25 Jan 2021 16:07:31 +0100, Mike Looijmans wrote:
+> This adds the device-tree bindings for the Bosch Sensortec BMI088 IMU,
+> the accelerometer part.
+> 
+> Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
+> 
+> ---
+> 
+> Changes in v8:
+> Add spi-max-frequency: true
+> 
+> Changes in v7:
+> Add additionalProperties
+> Change bmi088_accel to bmi088-accel
+> Add interrupt-names and adjust description
+> 
+> Changes in v6:
+> I't been almost a year since the last commit, sorry...
+> Fixed the yaml errors
+> Add interrupt, vdd and vddio properties
+> 
+> Changes in v5:
+> submit together with driver code as patch series
+> 
+> Changes in v2:
+> convert to yaml format
+> 
+>  .../bindings/iio/accel/bosch,bmi088.yaml      | 68 +++++++++++++++++++
+>  1 file changed, 68 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/accel/bosch,bmi088.yaml
+> 
 
-My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
-and Petroleum" also "Minister of State for International Cooperation"
-in UAE. I write to you on behalf of my other "three (3) colleagues"
-who has approved me to solicit for your "partnership in claiming of
-{us$47=Million}" from a Financial Home in Cambodia on their behalf and
-for our "Mutual Benefits".
-
-The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
-deal with Cambodian/Vietnam Government within 2013/2014, however, we
-don't want our government to know about the fund. If this proposal
-interests you, let me know, by sending me an email and I will send to
-you detailed information on how this business would be successfully
-transacted. Be informed that nobody knows about the secret of this
-fund except us, and we know how to carry out the entire transaction.
-So I am compelled to ask, that you will stand on our behalf and
-receive this fund into any account that is solely controlled by you.
-
-We will compensate you with 15% of the total amount involved as
-gratification for being our partner in this transaction. Reply to:
-ms.reem@yandex.com
-
-Regards,
-Ms. Reem.
-
+Reviewed-by: Rob Herring <robh@kernel.org>

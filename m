@@ -2,1073 +2,650 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3112F311EEA
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Feb 2021 17:56:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 741CC311EF3
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Feb 2021 17:56:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229522AbhBFQzs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 6 Feb 2021 11:55:48 -0500
-Received: from mail.kernel.org ([198.145.29.99]:57562 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230414AbhBFQzF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 6 Feb 2021 11:55:05 -0500
-Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0DF7364F08;
-        Sat,  6 Feb 2021 16:54:21 +0000 (UTC)
-Date:   Sat, 6 Feb 2021 16:54:18 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     <tomislav.denis@avl.com>
-Cc:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v4 1/2] iio: adc: Add driver for Texas Instruments
- ADS131E0x ADC family
-Message-ID: <20210206165418.2ad7f146@archlinux>
-In-Reply-To: <20210202084107.3260-2-tomislav.denis@avl.com>
-References: <20210202084107.3260-1-tomislav.denis@avl.com>
-        <20210202084107.3260-2-tomislav.denis@avl.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S229508AbhBFQ4l (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 6 Feb 2021 11:56:41 -0500
+Received: from relay7-d.mail.gandi.net ([217.70.183.200]:57313 "EHLO
+        relay7-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229618AbhBFQ4A (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 Feb 2021 11:56:00 -0500
+X-Originating-IP: 86.202.109.140
+Received: from localhost (lfbn-lyo-1-13-140.w86-202.abo.wanadoo.fr [86.202.109.140])
+        (Authenticated sender: alexandre.belloni@bootlin.com)
+        by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 21A4420002;
+        Sat,  6 Feb 2021 16:55:08 +0000 (UTC)
+Date:   Sat, 6 Feb 2021 17:55:08 +0100
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     Ye Xiang <xiang.ye@intel.com>
+Cc:     jikos@kernel.org, jic23@kernel.org,
+        srinivas.pandruvada@linux.intel.com, linux-input@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] iio: hid-sensors: Move get sensitivity attribute
+ to hid-sensor-common
+Message-ID: <YB7J7F6QxjQkW9/r@piout.net>
+References: <20210201054921.18214-1-xiang.ye@intel.com>
+ <20210201054921.18214-2-xiang.ye@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210201054921.18214-2-xiang.ye@intel.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 2 Feb 2021 09:41:06 +0100
-<tomislav.denis@avl.com> wrote:
-
-> From: Tomislav Denis <tomislav.denis@avl.com>
+On 01/02/2021 13:49:20+0800, Ye Xiang wrote:
+> No functional change has been made with this patch. The main intent here
+> is to reduce code repetition of getting sensitivity attribute.
 > 
-> The ADS131E0x are a family of multichannel, simultaneous sampling,
-> 24-bit, delta-sigma, analog-to-digital converters (ADCs) with a
-> built-in programmable gain amplifier (PGA), internal reference
-> and an onboard oscillator.
+> In the current implementation, sensor_hub_input_get_attribute_info() is
+> called from multiple drivers to get attribute info for sensitivity
+> field. Moving this to common place will avoid code repetition.
 > 
-> Datasheet: https://www.ti.com/lit/ds/symlink/ads131e08.pdf
-> Signed-off-by: Tomislav Denis <tomislav.denis@avl.com>
-Hi Tomislav,
-
-Looks good to me.
-
-Series applied to the togreg branch of iio.git and pushed out as testing
-for the autobuilders to see if they can find anything we missed.
-
-Thanks,
-
-Jonathan
+> Signed-off-by: Ye Xiang <xiang.ye@intel.com>
+Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 
 > ---
->  MAINTAINERS                    |   6 +
->  drivers/iio/adc/Kconfig        |  12 +
->  drivers/iio/adc/Makefile       |   1 +
->  drivers/iio/adc/ti-ads131e08.c | 948 +++++++++++++++++++++++++++++++++++++++++
->  4 files changed, 967 insertions(+)
->  create mode 100644 drivers/iio/adc/ti-ads131e08.c
+>  drivers/iio/accel/hid-sensor-accel-3d.c       | 23 ++++++-------
+>  .../hid-sensors/hid-sensor-attributes.c       | 17 +++++++++-
+>  drivers/iio/gyro/hid-sensor-gyro-3d.c         | 19 ++++-------
+>  drivers/iio/humidity/hid-sensor-humidity.c    | 16 ++++------
+>  drivers/iio/light/hid-sensor-als.c            | 19 ++++-------
+>  drivers/iio/light/hid-sensor-prox.c           | 27 +++++-----------
+>  drivers/iio/magnetometer/hid-sensor-magn-3d.c | 32 ++++++-------------
+>  drivers/iio/orientation/hid-sensor-incl-3d.c  | 19 ++++-------
+>  drivers/iio/orientation/hid-sensor-rotation.c | 23 ++++++-------
+>  .../position/hid-sensor-custom-intel-hinge.c  | 20 ++++--------
+>  drivers/iio/pressure/hid-sensor-press.c       | 19 ++++-------
+>  .../iio/temperature/hid-sensor-temperature.c  | 16 ++++------
+>  drivers/rtc/rtc-hid-sensor-time.c             |  4 ++-
+>  include/linux/hid-sensor-hub.h                |  4 ++-
+>  14 files changed, 107 insertions(+), 151 deletions(-)
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 2ac5688..167aabf 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -17367,6 +17367,12 @@ M:	Robert Richter <rric@kernel.org>
->  S:	Odd Fixes
->  F:	drivers/gpio/gpio-thunderx.c
+> diff --git a/drivers/iio/accel/hid-sensor-accel-3d.c b/drivers/iio/accel/hid-sensor-accel-3d.c
+> index 5d63ed19e6e2..2f9465cb382f 100644
+> --- a/drivers/iio/accel/hid-sensor-accel-3d.c
+> +++ b/drivers/iio/accel/hid-sensor-accel-3d.c
+> @@ -43,6 +43,10 @@ static const u32 accel_3d_addresses[ACCEL_3D_CHANNEL_MAX] = {
+>  	HID_USAGE_SENSOR_ACCEL_Z_AXIS
+>  };
 >  
-> +TI ADS131E0X ADC SERIES DRIVER
-> +M:	Tomislav Denis <tomislav.denis@avl.com>
-> +L:	linux-iio@vger.kernel.org
-> +S:	Maintained
-> +F:	drivers/iio/adc/ti-ads131e08.c
+> +static const u32 accel_3d_sensitivity_addresses[] = {
+> +	HID_USAGE_SENSOR_DATA_ACCELERATION,
+> +};
 > +
->  TI AM437X VPFE DRIVER
->  M:	"Lad, Prabhakar" <prabhakar.csengg@gmail.com>
->  L:	linux-media@vger.kernel.org
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 15587a1..df6f890 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -1151,6 +1151,18 @@ config TI_ADS124S08
->  	  This driver can also be built as a module. If so, the module will be
->  	  called ti-ads124s08.
+>  /* Channel definitions */
+>  static const struct iio_chan_spec accel_3d_channels[] = {
+>  	{
+> @@ -317,18 +321,6 @@ static int accel_3d_parse_report(struct platform_device *pdev,
+>  				&st->accel[CHANNEL_SCAN_INDEX_X],
+>  				&st->scale_pre_decml, &st->scale_post_decml);
 >  
-> +config TI_ADS131E08
-> +	tristate "Texas Instruments ADS131E08"
-> +	depends on SPI
-> +	select IIO_BUFFER
-> +	select IIO_TRIGGERED_BUFFER
-> +	help
-> +	  Say yes here to get support for Texas Instruments ADS131E04, ADS131E06
-> +	  and ADS131E08 chips.
-> +
-> +	  This driver can also be built as a module. If so, the module will be
-> +	  called ti-ads131e08.
-> +
->  config TI_AM335X_ADC
->  	tristate "TI's AM335X ADC driver"
->  	depends on MFD_TI_AM335X_TSCADC && HAS_DMA
-> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-> index 5fca90a..a226657 100644
-> --- a/drivers/iio/adc/Makefile
-> +++ b/drivers/iio/adc/Makefile
-> @@ -103,6 +103,7 @@ obj-$(CONFIG_TI_ADS7950) += ti-ads7950.o
->  obj-$(CONFIG_TI_ADS8344) += ti-ads8344.o
->  obj-$(CONFIG_TI_ADS8688) += ti-ads8688.o
->  obj-$(CONFIG_TI_ADS124S08) += ti-ads124s08.o
-> +obj-$(CONFIG_TI_ADS131E08) += ti-ads131e08.o
->  obj-$(CONFIG_TI_AM335X_ADC) += ti_am335x_adc.o
->  obj-$(CONFIG_TI_TLC4541) += ti-tlc4541.o
->  obj-$(CONFIG_TWL4030_MADC) += twl4030-madc.o
-> diff --git a/drivers/iio/adc/ti-ads131e08.c b/drivers/iio/adc/ti-ads131e08.c
-> new file mode 100644
-> index 0000000..0060d5f
-> --- /dev/null
-> +++ b/drivers/iio/adc/ti-ads131e08.c
-> @@ -0,0 +1,948 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Texas Instruments ADS131E0x 4-, 6- and 8-Channel ADCs
-> + *
-> + * Copyright (c) 2020 AVL DiTEST GmbH
-> + *   Tomislav Denis <tomislav.denis@avl.com>
-> + *
-> + * Datasheet: https://www.ti.com/lit/ds/symlink/ads131e08.pdf
-> + */
-> +
-> +#include <linux/bitfield.h>
-> +#include <linux/clk.h>
-> +#include <linux/delay.h>
-> +#include <linux/module.h>
-> +
-> +#include <linux/iio/buffer.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/sysfs.h>
-> +#include <linux/iio/trigger.h>
-> +#include <linux/iio/trigger_consumer.h>
-> +#include <linux/iio/triggered_buffer.h>
-> +
-> +#include <linux/regulator/consumer.h>
-> +#include <linux/spi/spi.h>
-> +
-> +#include <asm/unaligned.h>
-> +
-> +/* Commands */
-> +#define ADS131E08_CMD_RESET		0x06
-> +#define ADS131E08_CMD_START		0x08
-> +#define ADS131E08_CMD_STOP		0x0A
-> +#define ADS131E08_CMD_OFFSETCAL		0x1A
-> +#define ADS131E08_CMD_SDATAC		0x11
-> +#define ADS131E08_CMD_RDATA		0x12
-> +#define ADS131E08_CMD_RREG(r)		(BIT(5) | (r & GENMASK(4, 0)))
-> +#define ADS131E08_CMD_WREG(r)		(BIT(6) | (r & GENMASK(4, 0)))
-> +
-> +/* Registers */
-> +#define ADS131E08_ADR_CFG1R		0x01
-> +#define ADS131E08_ADR_CFG3R		0x03
-> +#define ADS131E08_ADR_CH0R		0x05
-> +
-> +/* Configuration register 1 */
-> +#define ADS131E08_CFG1R_DR_MASK		GENMASK(2, 0)
-> +
-> +/* Configuration register 3 */
-> +#define ADS131E08_CFG3R_PDB_REFBUF_MASK	BIT(7)
-> +#define ADS131E08_CFG3R_VREF_4V_MASK	BIT(5)
-> +
-> +/* Channel settings register */
-> +#define ADS131E08_CHR_GAIN_MASK		GENMASK(6, 4)
-> +#define ADS131E08_CHR_MUX_MASK		GENMASK(2, 0)
-> +#define ADS131E08_CHR_PWD_MASK		BIT(7)
-> +
-> +/* ADC  misc */
-> +#define ADS131E08_DEFAULT_DATA_RATE	1
-> +#define ADS131E08_DEFAULT_PGA_GAIN	1
-> +#define ADS131E08_DEFAULT_MUX		0
-> +
-> +#define ADS131E08_VREF_2V4_mV		2400
-> +#define ADS131E08_VREF_4V_mV		4000
-> +
-> +#define ADS131E08_WAIT_RESET_CYCLES	18
-> +#define ADS131E08_WAIT_SDECODE_CYCLES	4
-> +#define ADS131E08_WAIT_OFFSETCAL_MS	153
-> +#define ADS131E08_MAX_SETTLING_TIME_MS	6
-> +
-> +#define ADS131E08_NUM_STATUS_BYTES	3
-> +#define ADS131E08_NUM_DATA_BYTES_MAX	24
-> +#define ADS131E08_NUM_DATA_BYTES(dr)	(((dr) >= 32) ? 2 : 3)
-> +#define ADS131E08_NUM_DATA_BITS(dr)	(ADS131E08_NUM_DATA_BYTES(dr) * 8)
-> +#define ADS131E08_NUM_STORAGE_BYTES	4
-> +
-> +enum ads131e08_ids {
-> +	ads131e04,
-> +	ads131e06,
-> +	ads131e08,
-> +};
-> +
-> +struct ads131e08_info {
-> +	unsigned int max_channels;
-> +	const char *name;
-> +};
-> +
-> +struct ads131e08_channel_config {
-> +	unsigned int pga_gain;
-> +	unsigned int mux;
-> +};
-> +
-> +struct ads131e08_state {
-> +	const struct ads131e08_info *info;
-> +	struct spi_device *spi;
-> +	struct iio_trigger *trig;
-> +	struct clk *adc_clk;
-> +	struct regulator *vref_reg;
-> +	struct ads131e08_channel_config *channel_config;
-> +	unsigned int data_rate;
-> +	unsigned int vref_mv;
-> +	unsigned int sdecode_delay_us;
-> +	unsigned int reset_delay_us;
-> +	unsigned int readback_len;
-> +	struct completion completion;
-> +	struct {
-> +		u8 data[ADS131E08_NUM_DATA_BYTES_MAX];
-> +		s64 ts __aligned(8);
-> +	} tmp_buf;
-> +
-> +	u8 tx_buf[3] ____cacheline_aligned;
-> +	/*
-> +	 * Add extra one padding byte to be able to access the last channel
-> +	 * value using u32 pointer
-> +	 */
-> +	u8 rx_buf[ADS131E08_NUM_STATUS_BYTES +
-> +		ADS131E08_NUM_DATA_BYTES_MAX + 1];
-> +};
-> +
-> +static const struct ads131e08_info ads131e08_info_tbl[] = {
-> +	[ads131e04] = {
-> +		.max_channels = 4,
-> +		.name = "ads131e04",
-> +	},
-> +	[ads131e06] = {
-> +		.max_channels = 6,
-> +		.name = "ads131e06",
-> +	},
-> +	[ads131e08] = {
-> +		.max_channels = 8,
-> +		.name = "ads131e08",
-> +	},
-> +};
-> +
-> +struct ads131e08_data_rate_desc {
-> +	unsigned int rate;  /* data rate in kSPS */
-> +	u8 reg;             /* reg value */
-> +};
-> +
-> +static const struct ads131e08_data_rate_desc ads131e08_data_rate_tbl[] = {
-> +	{ .rate = 64,   .reg = 0x00 },
-> +	{ .rate = 32,   .reg = 0x01 },
-> +	{ .rate = 16,   .reg = 0x02 },
-> +	{ .rate = 8,    .reg = 0x03 },
-> +	{ .rate = 4,    .reg = 0x04 },
-> +	{ .rate = 2,    .reg = 0x05 },
-> +	{ .rate = 1,    .reg = 0x06 },
-> +};
-> +
-> +struct ads131e08_pga_gain_desc {
-> +	unsigned int gain;  /* PGA gain value */
-> +	u8 reg;             /* field value */
-> +};
-> +
-> +static const struct ads131e08_pga_gain_desc ads131e08_pga_gain_tbl[] = {
-> +	{ .gain = 1,   .reg = 0x01 },
-> +	{ .gain = 2,   .reg = 0x02 },
-> +	{ .gain = 4,   .reg = 0x04 },
-> +	{ .gain = 8,   .reg = 0x05 },
-> +	{ .gain = 12,  .reg = 0x06 },
-> +};
-> +
-> +static const u8 ads131e08_valid_channel_mux_values[] = { 0, 1, 3, 4 };
-> +
-> +static int ads131e08_exec_cmd(struct ads131e08_state *st, u8 cmd)
-> +{
-> +	int ret;
-> +
-> +	ret = spi_write_then_read(st->spi, &cmd, 1, NULL, 0);
-> +	if (ret)
-> +		dev_err(&st->spi->dev, "Exec cmd(%02x) failed\n", cmd);
-> +
-> +	return ret;
-> +}
-> +
-> +static int ads131e08_read_reg(struct ads131e08_state *st, u8 reg)
-> +{
-> +	int ret;
-> +	struct spi_transfer transfer[] = {
-> +		{
-> +			.tx_buf = &st->tx_buf,
-> +			.len = 2,
-> +			.delay_usecs = st->sdecode_delay_us,
-> +		}, {
-> +			.rx_buf = &st->rx_buf,
-> +			.len = 1,
-> +		},
-> +	};
-> +
-> +	st->tx_buf[0] = ADS131E08_CMD_RREG(reg);
-> +	st->tx_buf[1] = 0;
-> +
-> +	ret = spi_sync_transfer(st->spi, transfer, ARRAY_SIZE(transfer));
-> +	if (ret) {
-> +		dev_err(&st->spi->dev, "Read register failed\n");
-> +		return ret;
-> +	}
-> +
-> +	return st->rx_buf[0];
-> +}
-> +
-> +static int ads131e08_write_reg(struct ads131e08_state *st, u8 reg, u8 value)
-> +{
-> +	int ret;
-> +	struct spi_transfer transfer[] = {
-> +		{
-> +			.tx_buf = &st->tx_buf,
-> +			.len = 3,
-> +			.delay_usecs = st->sdecode_delay_us,
-> +		}
-> +	};
-> +
-> +	st->tx_buf[0] = ADS131E08_CMD_WREG(reg);
-> +	st->tx_buf[1] = 0;
-> +	st->tx_buf[2] = value;
-> +
-> +	ret = spi_sync_transfer(st->spi, transfer, ARRAY_SIZE(transfer));
-> +	if (ret)
-> +		dev_err(&st->spi->dev, "Write register failed\n");
-> +
-> +	return ret;
-> +}
-> +
-> +static int ads131e08_read_data(struct ads131e08_state *st, int rx_len)
-> +{
-> +	int ret;
-> +	struct spi_transfer transfer[] = {
-> +		{
-> +			.tx_buf = &st->tx_buf,
-> +			.len = 1,
-> +		}, {
-> +			.rx_buf = &st->rx_buf,
-> +			.len = rx_len,
-> +		},
-> +	};
-> +
-> +	st->tx_buf[0] = ADS131E08_CMD_RDATA;
-> +
-> +	ret = spi_sync_transfer(st->spi, transfer, ARRAY_SIZE(transfer));
-> +	if (ret)
-> +		dev_err(&st->spi->dev, "Read data failed\n");
-> +
-> +	return ret;
-> +}
-> +
-> +static int ads131e08_set_data_rate(struct ads131e08_state *st, int data_rate)
-> +{
-> +	int i, reg, ret;
-> +
-> +	for (i = 0; i < ARRAY_SIZE(ads131e08_data_rate_tbl); i++) {
-> +		if (ads131e08_data_rate_tbl[i].rate == data_rate)
-> +			break;
-> +	}
-> +
-> +	if (i == ARRAY_SIZE(ads131e08_data_rate_tbl)) {
-> +		dev_err(&st->spi->dev, "invalid data rate value\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	reg = ads131e08_read_reg(st, ADS131E08_ADR_CFG1R);
-> +	if (reg < 0)
-> +		return reg;
-> +
-> +	reg &= ~ADS131E08_CFG1R_DR_MASK;
-> +	reg |= FIELD_PREP(ADS131E08_CFG1R_DR_MASK,
-> +		ads131e08_data_rate_tbl[i].reg);
-> +
-> +	ret = ads131e08_write_reg(st, ADS131E08_ADR_CFG1R, reg);
-> +	if (ret)
-> +		return ret;
-> +
-> +	st->data_rate = data_rate;
-> +	st->readback_len = ADS131E08_NUM_STATUS_BYTES +
-> +		ADS131E08_NUM_DATA_BYTES(st->data_rate) *
-> +		st->info->max_channels;
-> +
-> +	return 0;
-> +}
-> +
-> +static int ads131e08_pga_gain_to_field_value(struct ads131e08_state *st,
-> +	unsigned int pga_gain)
-> +{
+> -	/* Set Sensitivity field ids, when there is no individual modifier */
+> -	if (st->common_attributes.sensitivity.index < 0) {
+> -		sensor_hub_input_get_attribute_info(hsdev,
+> -			HID_FEATURE_REPORT, usage_id,
+> -			HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSITIVITY_ABS |
+> -			HID_USAGE_SENSOR_DATA_ACCELERATION,
+> -			&st->common_attributes.sensitivity);
+> -		dev_dbg(&pdev->dev, "Sensitivity index:report %d:%d\n",
+> -			st->common_attributes.sensitivity.index,
+> -			st->common_attributes.sensitivity.report_id);
+> -	}
+> -
+>  	return ret;
+>  }
+>  
+> @@ -366,8 +358,11 @@ static int hid_accel_3d_probe(struct platform_device *pdev)
+>  		channel_size = sizeof(gravity_channels);
+>  		indio_dev->num_channels = ARRAY_SIZE(gravity_channels);
+>  	}
+> -	ret = hid_sensor_parse_common_attributes(hsdev, hsdev->usage,
+> -					&accel_state->common_attributes);
+> +	ret = hid_sensor_parse_common_attributes(hsdev,
+> +						 hsdev->usage,
+> +						 &accel_state->common_attributes,
+> +						 accel_3d_sensitivity_addresses,
+> +						 ARRAY_SIZE(accel_3d_sensitivity_addresses));
+>  	if (ret) {
+>  		dev_err(&pdev->dev, "failed to setup common attributes\n");
+>  		return ret;
+> diff --git a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+> index 5b822a4298a0..d349ace2e33f 100644
+> --- a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+> +++ b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+> @@ -448,12 +448,15 @@ EXPORT_SYMBOL(hid_sensor_batch_mode_supported);
+>  
+>  int hid_sensor_parse_common_attributes(struct hid_sensor_hub_device *hsdev,
+>  					u32 usage_id,
+> -					struct hid_sensor_common *st)
+> +					struct hid_sensor_common *st,
+> +					const u32 *sensitivity_addresses,
+> +					u32 sensitivity_addresses_len)
+>  {
+>  
+>  	struct hid_sensor_hub_attribute_info timestamp;
+>  	s32 value;
+>  	int ret;
 > +	int i;
-> +
-> +	for (i = 0; i < ARRAY_SIZE(ads131e08_pga_gain_tbl); i++) {
-> +		if (ads131e08_pga_gain_tbl[i].gain == pga_gain)
-> +			break;
-> +	}
-> +
-> +	if (i == ARRAY_SIZE(ads131e08_pga_gain_tbl)) {
-> +		dev_err(&st->spi->dev, "invalid PGA gain value\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	return ads131e08_pga_gain_tbl[i].reg;
-> +}
-> +
-> +static int ads131e08_set_pga_gain(struct ads131e08_state *st,
-> +	unsigned int channel, unsigned int pga_gain)
-> +{
-> +	int field_value, reg;
-> +
-> +	field_value = ads131e08_pga_gain_to_field_value(st, pga_gain);
-> +	if (field_value < 0)
-> +		return field_value;
-> +
-> +	reg = ads131e08_read_reg(st, ADS131E08_ADR_CH0R + channel);
-> +	if (reg < 0)
-> +		return reg;
-> +
-> +	reg &= ~ADS131E08_CHR_GAIN_MASK;
-> +	reg |= FIELD_PREP(ADS131E08_CHR_GAIN_MASK, field_value);
-> +
-> +	return ads131e08_write_reg(st, ADS131E08_ADR_CH0R + channel, reg);
-> +}
-> +
-> +static int ads131e08_validate_channel_mux(struct ads131e08_state *st,
-> +	unsigned int mux)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < ARRAY_SIZE(ads131e08_valid_channel_mux_values); i++) {
-> +		if (ads131e08_valid_channel_mux_values[i] == mux)
-> +			break;
-> +	}
-> +
-> +	if (i == ARRAY_SIZE(ads131e08_valid_channel_mux_values)) {
-> +		dev_err(&st->spi->dev, "invalid channel mux value\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int ads131e08_set_channel_mux(struct ads131e08_state *st,
-> +	unsigned int channel, unsigned int mux)
-> +{
-> +	int reg;
-> +
-> +	reg = ads131e08_read_reg(st, ADS131E08_ADR_CH0R + channel);
-> +	if (reg < 0)
-> +		return reg;
-> +
-> +	reg &= ~ADS131E08_CHR_MUX_MASK;
-> +	reg |= FIELD_PREP(ADS131E08_CHR_MUX_MASK, mux);
-> +
-> +	return ads131e08_write_reg(st, ADS131E08_ADR_CH0R + channel, reg);
-> +}
-> +
-> +static int ads131e08_power_down_channel(struct ads131e08_state *st,
-> +	unsigned int channel, bool value)
-> +{
-> +	int reg;
-> +
-> +	reg = ads131e08_read_reg(st, ADS131E08_ADR_CH0R + channel);
-> +	if (reg < 0)
-> +		return reg;
-> +
-> +	reg &= ~ADS131E08_CHR_PWD_MASK;
-> +	reg |= FIELD_PREP(ADS131E08_CHR_PWD_MASK, value);
-> +
-> +	return ads131e08_write_reg(st, ADS131E08_ADR_CH0R + channel, reg);
-> +}
-> +
-> +static int ads131e08_config_reference_voltage(struct ads131e08_state *st)
-> +{
-> +	int reg;
-> +
-> +	reg = ads131e08_read_reg(st, ADS131E08_ADR_CFG3R);
-> +	if (reg < 0)
-> +		return reg;
-> +
-> +	reg &= ~ADS131E08_CFG3R_PDB_REFBUF_MASK;
-> +	if (!st->vref_reg) {
-> +		reg |= FIELD_PREP(ADS131E08_CFG3R_PDB_REFBUF_MASK, 1);
-> +		reg &= ~ADS131E08_CFG3R_VREF_4V_MASK;
-> +		reg |= FIELD_PREP(ADS131E08_CFG3R_VREF_4V_MASK,
-> +			st->vref_mv == ADS131E08_VREF_4V_mV);
-> +	}
-> +
-> +	return ads131e08_write_reg(st, ADS131E08_ADR_CFG3R, reg);
-> +}
-> +
-> +static int ads131e08_initial_config(struct iio_dev *indio_dev)
-> +{
-> +	const struct iio_chan_spec *channel = indio_dev->channels;
-> +	struct ads131e08_state *st = iio_priv(indio_dev);
-> +	unsigned long active_channels = 0;
-> +	int ret, i;
-> +
-> +	ret = ads131e08_exec_cmd(st, ADS131E08_CMD_RESET);
-> +	if (ret)
-> +		return ret;
-> +
-> +	udelay(st->reset_delay_us);
-> +
-> +	/* Disable read data in continuous mode (enabled by default) */
-> +	ret = ads131e08_exec_cmd(st, ADS131E08_CMD_SDATAC);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = ads131e08_set_data_rate(st, ADS131E08_DEFAULT_DATA_RATE);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = ads131e08_config_reference_voltage(st);
-> +	if (ret)
-> +		return ret;
-> +
-> +	for (i = 0;  i < indio_dev->num_channels; i++) {
-> +		ret = ads131e08_set_pga_gain(st, channel->channel,
-> +			st->channel_config[i].pga_gain);
-> +		if (ret)
-> +			return ret;
-> +
-> +		ret = ads131e08_set_channel_mux(st, channel->channel,
-> +			st->channel_config[i].mux);
-> +		if (ret)
-> +			return ret;
-> +
-> +		active_channels |= BIT(channel->channel);
-> +		channel++;
-> +	}
-> +
-> +	/* Power down unused channels */
-> +	for_each_clear_bit(i, &active_channels, st->info->max_channels) {
-> +		ret = ads131e08_power_down_channel(st, i, true);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	/* Request channel offset calibration */
-> +	ret = ads131e08_exec_cmd(st, ADS131E08_CMD_OFFSETCAL);
-> +	if (ret)
-> +		return ret;
-> +
+>  
+>  	hid_sensor_get_reporting_interval(hsdev, usage_id, st);
+>  
+> @@ -475,6 +478,18 @@ int hid_sensor_parse_common_attributes(struct hid_sensor_hub_device *hsdev,
+>  			HID_USAGE_SENSOR_PROP_SENSITIVITY_ABS,
+>  			 &st->sensitivity);
+>  
 > +	/*
-> +	 * Channel offset calibration is triggered with the first START
-> +	 * command. Since calibration takes more time than settling operation,
-> +	 * this causes timeout error when command START is sent first
-> +	 * time (e.g. first call of the ads131e08_read_direct method).
-> +	 * To avoid this problem offset calibration is triggered here.
+> +	 * Set Sensitivity field ids, when there is no individual modifier, will
+> +	 * check absolute sensitivity of data field
 > +	 */
-> +	ret = ads131e08_exec_cmd(st, ADS131E08_CMD_START);
-> +	if (ret)
-> +		return ret;
-> +
-> +	msleep(ADS131E08_WAIT_OFFSETCAL_MS);
-> +
-> +	return ads131e08_exec_cmd(st, ADS131E08_CMD_STOP);
-> +}
-> +
-> +static int ads131e08_pool_data(struct ads131e08_state *st)
-> +{
-> +	unsigned long timeout;
-> +	int ret;
-> +
-> +	reinit_completion(&st->completion);
-> +
-> +	ret = ads131e08_exec_cmd(st, ADS131E08_CMD_START);
-> +	if (ret)
-> +		return ret;
-> +
-> +	timeout = msecs_to_jiffies(ADS131E08_MAX_SETTLING_TIME_MS);
-> +	ret = wait_for_completion_timeout(&st->completion, timeout);
-> +	if (!ret)
-> +		return -ETIMEDOUT;
-> +
-> +	ret = ads131e08_read_data(st, st->readback_len);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return ads131e08_exec_cmd(st, ADS131E08_CMD_STOP);
-> +}
-> +
-> +static int ads131e08_read_direct(struct iio_dev *indio_dev,
-> +	struct iio_chan_spec const *channel, int *value)
-> +{
-> +	struct ads131e08_state *st = iio_priv(indio_dev);
-> +	u8 num_bits, *src;
-> +	int ret;
-> +
-> +	ret = ads131e08_pool_data(st);
-> +	if (ret)
-> +		return ret;
-> +
-> +	src = st->rx_buf + ADS131E08_NUM_STATUS_BYTES +
-> +		channel->channel * ADS131E08_NUM_DATA_BYTES(st->data_rate);
-> +
-> +	num_bits = ADS131E08_NUM_DATA_BITS(st->data_rate);
-> +	*value = sign_extend32(get_unaligned_be32(src) >> (32 - num_bits), num_bits - 1);
-> +
-> +	return 0;
-> +}
-> +
-> +static int ads131e08_read_raw(struct iio_dev *indio_dev,
-> +	struct iio_chan_spec const *channel, int *value,
-> +	int *value2, long mask)
-> +{
-> +	struct ads131e08_state *st = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		ret = iio_device_claim_direct_mode(indio_dev);
-> +		if (ret)
-> +			return ret;
-> +
-> +		ret = ads131e08_read_direct(indio_dev, channel, value);
-> +		iio_device_release_direct_mode(indio_dev);
-> +		if (ret)
-> +			return ret;
-> +
-> +		return IIO_VAL_INT;
-> +
-> +	case IIO_CHAN_INFO_SCALE:
-> +		if (st->vref_reg) {
-> +			ret = regulator_get_voltage(st->vref_reg);
-> +			if (ret < 0)
-> +				return ret;
-> +
-> +			*value = ret / 1000;
-> +		} else {
-> +			*value = st->vref_mv;
-> +		}
-> +
-> +		*value /= st->channel_config[channel->address].pga_gain;
-> +		*value2 = ADS131E08_NUM_DATA_BITS(st->data_rate) - 1;
-> +
-> +		return IIO_VAL_FRACTIONAL_LOG2;
-> +
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		*value = st->data_rate;
-> +
-> +		return IIO_VAL_INT;
-> +
-> +	default:
-> +		return -EINVAL;
+> +	for (i = 0; i < sensitivity_addresses_len && st->sensitivity.index < 0; i++) {
+> +		sensor_hub_input_get_attribute_info(hsdev,
+> +				HID_FEATURE_REPORT, usage_id,
+> +				HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSITIVITY_ABS |
+> +					sensitivity_addresses[i],
+> +				&st->sensitivity);
 > +	}
-> +}
 > +
-> +static int ads131e08_write_raw(struct iio_dev *indio_dev,
-> +	struct iio_chan_spec const *channel, int value,
-> +	int value2, long mask)
-> +{
-> +	struct ads131e08_state *st = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		ret = iio_device_claim_direct_mode(indio_dev);
-> +		if (ret)
-> +			return ret;
-> +
-> +		ret = ads131e08_set_data_rate(st, value);
-> +		iio_device_release_direct_mode(indio_dev);
-> +		return ret;
-> +
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static IIO_CONST_ATTR_SAMP_FREQ_AVAIL("1 2 4 8 16 32 64");
-> +
-> +static struct attribute *ads131e08_attributes[] = {
-> +	&iio_const_attr_sampling_frequency_available.dev_attr.attr,
-> +	NULL
+>  	st->raw_hystersis = -1;
+>  
+>  	sensor_hub_input_get_attribute_info(hsdev,
+> diff --git a/drivers/iio/gyro/hid-sensor-gyro-3d.c b/drivers/iio/gyro/hid-sensor-gyro-3d.c
+> index fb0d678ece1a..dad26ee4fd1f 100644
+> --- a/drivers/iio/gyro/hid-sensor-gyro-3d.c
+> +++ b/drivers/iio/gyro/hid-sensor-gyro-3d.c
+> @@ -45,6 +45,10 @@ static const u32 gyro_3d_addresses[GYRO_3D_CHANNEL_MAX] = {
+>  	HID_USAGE_SENSOR_ANGL_VELOCITY_Z_AXIS
+>  };
+>  
+> +static const u32 gryo_3d_sensitivity_addresses[] = {
+> +	HID_USAGE_SENSOR_DATA_ANGL_VELOCITY,
 > +};
 > +
-> +static const struct attribute_group ads131e08_attribute_group = {
-> +	.attrs = ads131e08_attributes,
+>  /* Channel definitions */
+>  static const struct iio_chan_spec gyro_3d_channels[] = {
+>  	{
+> @@ -271,17 +275,6 @@ static int gyro_3d_parse_report(struct platform_device *pdev,
+>  				&st->gyro[CHANNEL_SCAN_INDEX_X],
+>  				&st->scale_pre_decml, &st->scale_post_decml);
+>  
+> -	/* Set Sensitivity field ids, when there is no individual modifier */
+> -	if (st->common_attributes.sensitivity.index < 0) {
+> -		sensor_hub_input_get_attribute_info(hsdev,
+> -			HID_FEATURE_REPORT, usage_id,
+> -			HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSITIVITY_ABS |
+> -			HID_USAGE_SENSOR_DATA_ANGL_VELOCITY,
+> -			&st->common_attributes.sensitivity);
+> -		dev_dbg(&pdev->dev, "Sensitivity index:report %d:%d\n",
+> -			st->common_attributes.sensitivity.index,
+> -			st->common_attributes.sensitivity.report_id);
+> -	}
+>  	return ret;
+>  }
+>  
+> @@ -305,7 +298,9 @@ static int hid_gyro_3d_probe(struct platform_device *pdev)
+>  
+>  	ret = hid_sensor_parse_common_attributes(hsdev,
+>  						HID_USAGE_SENSOR_GYRO_3D,
+> -						&gyro_state->common_attributes);
+> +						&gyro_state->common_attributes,
+> +						gryo_3d_sensitivity_addresses,
+> +						ARRAY_SIZE(gryo_3d_sensitivity_addresses));
+>  	if (ret) {
+>  		dev_err(&pdev->dev, "failed to setup common attributes\n");
+>  		return ret;
+> diff --git a/drivers/iio/humidity/hid-sensor-humidity.c b/drivers/iio/humidity/hid-sensor-humidity.c
+> index 52f605114ef7..ec88ae3f233d 100644
+> --- a/drivers/iio/humidity/hid-sensor-humidity.c
+> +++ b/drivers/iio/humidity/hid-sensor-humidity.c
+> @@ -22,6 +22,10 @@ struct hid_humidity_state {
+>  	int value_offset;
+>  };
+>  
+> +static const u32 humidity_sensitivity_addresses[] = {
+> +	HID_USAGE_SENSOR_ATMOSPHERIC_HUMIDITY,
 > +};
 > +
-> +static int ads131e08_debugfs_reg_access(struct iio_dev *indio_dev,
-> +	unsigned int reg, unsigned int writeval, unsigned int *readval)
-> +{
-> +	struct ads131e08_state *st = iio_priv(indio_dev);
-> +
-> +	if (readval) {
-> +		int ret = ads131e08_read_reg(st, reg);
-> +		*readval = ret;
-> +		return ret;
-> +	}
-> +
-> +	return ads131e08_write_reg(st, reg, writeval);
-> +}
-> +
-> +static const struct iio_info ads131e08_iio_info = {
-> +	.read_raw = ads131e08_read_raw,
-> +	.write_raw = ads131e08_write_raw,
-> +	.attrs = &ads131e08_attribute_group,
-> +	.debugfs_reg_access = &ads131e08_debugfs_reg_access,
+>  /* Channel definitions */
+>  static const struct iio_chan_spec humidity_channels[] = {
+>  	{
+> @@ -174,14 +178,6 @@ static int humidity_parse_report(struct platform_device *pdev,
+>  						&st->scale_pre_decml,
+>  						&st->scale_post_decml);
+>  
+> -	/* Set Sensitivity field ids, when there is no individual modifier */
+> -	if (st->common_attributes.sensitivity.index < 0)
+> -		sensor_hub_input_get_attribute_info(hsdev,
+> -			HID_FEATURE_REPORT, usage_id,
+> -			HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSITIVITY_ABS |
+> -			HID_USAGE_SENSOR_ATMOSPHERIC_HUMIDITY,
+> -			&st->common_attributes.sensitivity);
+> -
+>  	return ret;
+>  }
+>  
+> @@ -210,7 +206,9 @@ static int hid_humidity_probe(struct platform_device *pdev)
+>  
+>  	ret = hid_sensor_parse_common_attributes(hsdev,
+>  					HID_USAGE_SENSOR_HUMIDITY,
+> -					&humid_st->common_attributes);
+> +					&humid_st->common_attributes,
+> +					humidity_sensitivity_addresses,
+> +					ARRAY_SIZE(humidity_sensitivity_addresses));
+>  	if (ret)
+>  		return ret;
+>  
+> diff --git a/drivers/iio/light/hid-sensor-als.c b/drivers/iio/light/hid-sensor-als.c
+> index 4093f2353d95..8bf6e9e0a0e0 100644
+> --- a/drivers/iio/light/hid-sensor-als.c
+> +++ b/drivers/iio/light/hid-sensor-als.c
+> @@ -39,6 +39,10 @@ struct als_state {
+>  	s64 timestamp;
+>  };
+>  
+> +static const u32 als_sensitivity_addresses[] = {
+> +	HID_USAGE_SENSOR_DATA_LIGHT,
 > +};
 > +
-> +static int ads131e08_set_trigger_state(struct iio_trigger *trig, bool state)
-> +{
-> +	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
-> +	struct ads131e08_state *st = iio_priv(indio_dev);
-> +	u8 cmd = state ? ADS131E08_CMD_START : ADS131E08_CMD_STOP;
-> +
-> +	return ads131e08_exec_cmd(st, cmd);
-> +}
-> +
-> +static const struct iio_trigger_ops ads131e08_trigger_ops = {
-> +	.set_trigger_state = &ads131e08_set_trigger_state,
-> +	.validate_device = &iio_trigger_validate_own_device,
+>  /* Channel definitions */
+>  static const struct iio_chan_spec als_channels[] = {
+>  	{
+> @@ -252,17 +256,6 @@ static int als_parse_report(struct platform_device *pdev,
+>  				&st->als_illum,
+>  				&st->scale_pre_decml, &st->scale_post_decml);
+>  
+> -	/* Set Sensitivity field ids, when there is no individual modifier */
+> -	if (st->common_attributes.sensitivity.index < 0) {
+> -		sensor_hub_input_get_attribute_info(hsdev,
+> -			HID_FEATURE_REPORT, usage_id,
+> -			HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSITIVITY_ABS |
+> -			HID_USAGE_SENSOR_DATA_LIGHT,
+> -			&st->common_attributes.sensitivity);
+> -		dev_dbg(&pdev->dev, "Sensitivity index:report %d:%d\n",
+> -			st->common_attributes.sensitivity.index,
+> -			st->common_attributes.sensitivity.report_id);
+> -	}
+>  	return ret;
+>  }
+>  
+> @@ -285,7 +278,9 @@ static int hid_als_probe(struct platform_device *pdev)
+>  	als_state->common_attributes.pdev = pdev;
+>  
+>  	ret = hid_sensor_parse_common_attributes(hsdev, HID_USAGE_SENSOR_ALS,
+> -					&als_state->common_attributes);
+> +					&als_state->common_attributes,
+> +					als_sensitivity_addresses,
+> +					ARRAY_SIZE(als_sensitivity_addresses));
+>  	if (ret) {
+>  		dev_err(&pdev->dev, "failed to setup common attributes\n");
+>  		return ret;
+> diff --git a/drivers/iio/light/hid-sensor-prox.c b/drivers/iio/light/hid-sensor-prox.c
+> index 330cf359e0b8..4ab285a418d5 100644
+> --- a/drivers/iio/light/hid-sensor-prox.c
+> +++ b/drivers/iio/light/hid-sensor-prox.c
+> @@ -25,6 +25,11 @@ struct prox_state {
+>  	u32 human_presence;
+>  };
+>  
+> +static const u32 prox_sensitivity_addresses[] = {
+> +	HID_USAGE_SENSOR_HUMAN_PRESENCE,
+> +	HID_USAGE_SENSOR_DATA_PRESENCE,
 > +};
 > +
-> +static irqreturn_t ads131e08_trigger_handler(int irq, void *private)
-> +{
-> +	struct iio_poll_func *pf = private;
-> +	struct iio_dev *indio_dev = pf->indio_dev;
-> +	struct ads131e08_state *st = iio_priv(indio_dev);
-> +	unsigned int chn, i = 0;
-> +	u8 *src, *dest;
-> +	int ret;
-> +
-> +	/*
-> +	 * The number of data bits per channel depends on the data rate.
-> +	 * For 32 and 64 ksps data rates, number of data bits per channel
-> +	 * is 16. This case is not compliant with used (fixed) scan element
-> +	 * type (be:s24/32>>8). So we use a little tweak to pack properly
-> +	 * 16 bits of data into the buffer.
-> +	 */
-> +	unsigned int num_bytes = ADS131E08_NUM_DATA_BYTES(st->data_rate);
-> +	u8 tweek_offset = num_bytes == 2 ? 1 : 0;
-> +
-> +	if (iio_trigger_using_own(indio_dev))
-> +		ret = ads131e08_read_data(st, st->readback_len);
-> +	else
-> +		ret = ads131e08_pool_data(st);
-> +
-> +	if (ret)
-> +		goto out;
-> +
-> +	for_each_set_bit(chn, indio_dev->active_scan_mask, indio_dev->masklength) {
-> +		src = st->rx_buf + ADS131E08_NUM_STATUS_BYTES + chn * num_bytes;
-> +		dest = st->tmp_buf.data + i * ADS131E08_NUM_STORAGE_BYTES;
-> +
-> +		/*
-> +		 * Tweek offset is 0:
-> +		 * +---+---+---+---+
-> +		 * |D0 |D1 |D2 | X | (3 data bytes)
-> +		 * +---+---+---+---+
-> +		 *  a+0 a+1 a+2 a+3
-> +		 *
-> +		 * Tweek offset is 1:
-> +		 * +---+---+---+---+
-> +		 * |P0 |D0 |D1 | X | (one padding byte and 2 data bytes)
-> +		 * +---+---+---+---+
-> +		 *  a+0 a+1 a+2 a+3
-> +		 */
-> +		memcpy(dest + tweek_offset, src, num_bytes);
-> +
-> +		/*
-> +		 * Data conversion from 16 bits of data to 24 bits of data
-> +		 * is done by sign extension (properly filling padding byte).
-> +		 */
-> +		if (tweek_offset)
-> +			*dest = *src & BIT(7) ? 0xff : 0x00;
-> +
-> +		i++;
-> +	}
-> +
-> +	iio_push_to_buffers_with_timestamp(indio_dev, st->tmp_buf.data,
-> +		iio_get_time_ns(indio_dev));
-> +
-> +out:
-> +	iio_trigger_notify_done(indio_dev->trig);
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static irqreturn_t ads131e08_interrupt(int irq, void *private)
-> +{
-> +	struct iio_dev *indio_dev = private;
-> +	struct ads131e08_state *st = iio_priv(indio_dev);
-> +
-> +	if (iio_buffer_enabled(indio_dev) && iio_trigger_using_own(indio_dev))
-> +		iio_trigger_poll(st->trig);
-> +	else
-> +		complete(&st->completion);
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static int ads131e08_alloc_channels(struct iio_dev *indio_dev)
-> +{
-> +	struct ads131e08_state *st = iio_priv(indio_dev);
-> +	struct ads131e08_channel_config *channel_config;
-> +	struct device *dev = &st->spi->dev;
-> +	struct iio_chan_spec *channels;
-> +	struct fwnode_handle *node;
-> +	unsigned int channel, tmp;
-> +	int num_channels, i, ret;
-> +
-> +	ret = device_property_read_u32(dev, "ti,vref-internal", &tmp);
-> +	if (ret)
-> +		tmp = 0;
-> +
-> +	switch (tmp) {
-> +	case 0:
-> +		st->vref_mv = ADS131E08_VREF_2V4_mV;
-> +		break;
-> +	case 1:
-> +		st->vref_mv = ADS131E08_VREF_4V_mV;
-> +		break;
-> +	default:
-> +		dev_err(&st->spi->dev, "invalid internal voltage reference\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	num_channels = device_get_child_node_count(dev);
-> +	if (num_channels == 0) {
-> +		dev_err(&st->spi->dev, "no channel children\n");
-> +		return -ENODEV;
-> +	}
-> +
-> +	if (num_channels > st->info->max_channels) {
-> +		dev_err(&st->spi->dev, "num of channel children out of range\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	channels = devm_kcalloc(&st->spi->dev, num_channels,
-> +		sizeof(*channels), GFP_KERNEL);
-> +	if (!channels)
-> +		return -ENOMEM;
-> +
-> +	channel_config = devm_kcalloc(&st->spi->dev, num_channels,
-> +		sizeof(*channel_config), GFP_KERNEL);
-> +	if (!channel_config)
-> +		return -ENOMEM;
-> +
-> +	i = 0;
-> +	device_for_each_child_node(dev, node) {
-> +		ret = fwnode_property_read_u32(node, "reg", &channel);
-> +		if (ret)
-> +			return ret;
-> +
-> +		ret = fwnode_property_read_u32(node, "ti,gain", &tmp);
-> +		if (ret) {
-> +			channel_config[i].pga_gain = ADS131E08_DEFAULT_PGA_GAIN;
-> +		} else {
-> +			ret = ads131e08_pga_gain_to_field_value(st, tmp);
-> +			if (ret < 0)
-> +				return ret;
-> +
-> +			channel_config[i].pga_gain = tmp;
-> +		}
-> +
-> +		ret = fwnode_property_read_u32(node, "ti,mux", &tmp);
-> +		if (ret) {
-> +			channel_config[i].mux = ADS131E08_DEFAULT_MUX;
-> +		} else {
-> +			ret = ads131e08_validate_channel_mux(st, tmp);
-> +			if (ret)
-> +				return ret;
-> +
-> +			channel_config[i].mux = tmp;
-> +		}
-> +
-> +		channels[i].type = IIO_VOLTAGE;
-> +		channels[i].indexed = 1;
-> +		channels[i].channel = channel;
-> +		channels[i].address = i;
-> +		channels[i].info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> +						BIT(IIO_CHAN_INFO_SCALE);
-> +		channels[i].info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SAMP_FREQ);
-> +		channels[i].scan_index = channel;
-> +		channels[i].scan_type.sign = 's';
-> +		channels[i].scan_type.realbits = 24;
-> +		channels[i].scan_type.storagebits = 32;
-> +		channels[i].scan_type.shift = 8;
-> +		channels[i].scan_type.endianness = IIO_BE;
-> +		i++;
-> +	}
-> +
-> +	indio_dev->channels = channels;
-> +	indio_dev->num_channels = num_channels;
-> +	st->channel_config = channel_config;
-> +
-> +	return 0;
-> +}
-> +
-> +static void ads131e08_regulator_disable(void *data)
-> +{
-> +	struct ads131e08_state *st = data;
-> +
-> +	regulator_disable(st->vref_reg);
-> +}
-> +
-> +static void ads131e08_clk_disable(void *data)
-> +{
-> +	struct ads131e08_state *st = data;
-> +
-> +	clk_disable_unprepare(st->adc_clk);
-> +}
-> +
-> +static int ads131e08_probe(struct spi_device *spi)
-> +{
-> +	const struct ads131e08_info *info;
-> +	struct ads131e08_state *st;
-> +	struct iio_dev *indio_dev;
-> +	unsigned long adc_clk_hz;
-> +	unsigned long adc_clk_ns;
-> +	int ret;
-> +
-> +	info = device_get_match_data(&spi->dev);
-> +	if (!info) {
-> +		dev_err(&spi->dev, "failed to get match data\n");
-> +		return -ENODEV;
-> +	}
-> +
-> +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
-> +	if (!indio_dev) {
-> +		dev_err(&spi->dev, "failed to allocate IIO device\n");
-> +		return -ENOMEM;
-> +	}
-> +
-> +	st = iio_priv(indio_dev);
-> +	st->info = info;
-> +	st->spi = spi;
-> +
-> +	ret = ads131e08_alloc_channels(indio_dev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	indio_dev->name = st->info->name;
-> +	indio_dev->dev.parent = &spi->dev;
-> +	indio_dev->info = &ads131e08_iio_info;
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +
-> +	init_completion(&st->completion);
-> +
-> +	if (spi->irq) {
-> +		ret = devm_request_irq(&spi->dev, spi->irq,
-> +			ads131e08_interrupt,
-> +			IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
-> +			spi->dev.driver->name, indio_dev);
-> +		if (ret)
-> +			return dev_err_probe(&spi->dev, ret,
-> +					     "request irq failed\n");
-> +	} else {
-> +		dev_err(&spi->dev, "data ready IRQ missing\n");
-> +		return -ENODEV;
-> +	}
-> +
-> +	st->trig = devm_iio_trigger_alloc(&spi->dev, "%s-dev%d",
-> +		indio_dev->name, indio_dev->id);
-> +	if (!st->trig) {
-> +		dev_err(&spi->dev, "failed to allocate IIO trigger\n");
-> +		return -ENOMEM;
-> +	}
-> +
-> +	st->trig->ops = &ads131e08_trigger_ops;
-> +	st->trig->dev.parent = &spi->dev;
-> +	iio_trigger_set_drvdata(st->trig, indio_dev);
-> +	ret = devm_iio_trigger_register(&spi->dev, st->trig);
-> +	if (ret) {
-> +		dev_err(&spi->dev, "failed to register IIO trigger\n");
-> +		return -ENOMEM;
-> +	}
-> +
-> +	indio_dev->trig = iio_trigger_get(st->trig);
-> +
-> +	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
-> +		NULL, &ads131e08_trigger_handler, NULL);
-> +	if (ret) {
-> +		dev_err(&spi->dev, "failed to setup IIO buffer\n");
-> +		return ret;
-> +	}
-> +
-> +	st->vref_reg = devm_regulator_get_optional(&spi->dev, "vref");
-> +	if (!IS_ERR(st->vref_reg)) {
-> +		ret = regulator_enable(st->vref_reg);
-> +		if (ret) {
-> +			dev_err(&spi->dev,
-> +				"failed to enable external vref supply\n");
-> +			return ret;
-> +		}
-> +
-> +		ret = devm_add_action_or_reset(&spi->dev, ads131e08_regulator_disable, st);
-> +		if (ret)
-> +			return ret;
-> +	} else {
-> +		if (PTR_ERR(st->vref_reg) != -ENODEV)
-> +			return PTR_ERR(st->vref_reg);
-> +
-> +		st->vref_reg = NULL;
-> +	}
-> +
-> +	st->adc_clk = devm_clk_get(&spi->dev, "adc-clk");
-> +	if (IS_ERR(st->adc_clk))
-> +		return dev_err_probe(&spi->dev, PTR_ERR(st->adc_clk),
-> +				     "failed to get the ADC clock\n");
-> +
-> +	ret = clk_prepare_enable(st->adc_clk);
-> +	if (ret) {
-> +		dev_err(&spi->dev, "failed to prepare/enable the ADC clock\n");
-> +		return ret;
-> +	}
-> +
-> +	ret = devm_add_action_or_reset(&spi->dev, ads131e08_clk_disable, st);
-> +	if (ret)
-> +		return ret;
-> +
-> +	adc_clk_hz = clk_get_rate(st->adc_clk);
-> +	if (!adc_clk_hz) {
-> +		dev_err(&spi->dev, "failed to get the ADC clock rate\n");
-> +		return  -EINVAL;
-> +	}
-> +
-> +	adc_clk_ns = NSEC_PER_SEC / adc_clk_hz;
-> +	st->sdecode_delay_us = DIV_ROUND_UP(
-> +		ADS131E08_WAIT_SDECODE_CYCLES * adc_clk_ns, NSEC_PER_USEC);
-> +	st->reset_delay_us = DIV_ROUND_UP(
-> +		ADS131E08_WAIT_RESET_CYCLES * adc_clk_ns, NSEC_PER_USEC);
-> +
-> +	ret = ads131e08_initial_config(indio_dev);
-> +	if (ret) {
-> +		dev_err(&spi->dev, "initial configuration failed\n");
-> +		return ret;
-> +	}
-> +
-> +	return devm_iio_device_register(&spi->dev, indio_dev);
-> +}
-> +
-> +static const struct of_device_id ads131e08_of_match[] = {
-> +	{ .compatible = "ti,ads131e04",
-> +	  .data = &ads131e08_info_tbl[ads131e04], },
-> +	{ .compatible = "ti,ads131e06",
-> +	  .data = &ads131e08_info_tbl[ads131e06], },
-> +	{ .compatible = "ti,ads131e08",
-> +	  .data = &ads131e08_info_tbl[ads131e08], },
-> +	{}
+>  /* Channel definitions */
+>  static const struct iio_chan_spec prox_channels[] = {
+>  	{
+> @@ -216,24 +221,6 @@ static int prox_parse_report(struct platform_device *pdev,
+>  	dev_dbg(&pdev->dev, "prox %x:%x\n", st->prox_attr.index,
+>  			st->prox_attr.report_id);
+>  
+> -	/* Set Sensitivity field ids, when there is no individual modifier */
+> -	if (st->common_attributes.sensitivity.index < 0) {
+> -		sensor_hub_input_get_attribute_info(hsdev,
+> -			HID_FEATURE_REPORT, usage_id,
+> -			HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSITIVITY_ABS |
+> -			HID_USAGE_SENSOR_DATA_PRESENCE,
+> -			&st->common_attributes.sensitivity);
+> -		dev_dbg(&pdev->dev, "Sensitivity index:report %d:%d\n",
+> -			st->common_attributes.sensitivity.index,
+> -			st->common_attributes.sensitivity.report_id);
+> -	}
+> -	if (st->common_attributes.sensitivity.index < 0)
+> -		sensor_hub_input_get_attribute_info(hsdev,
+> -			HID_FEATURE_REPORT, usage_id,
+> -			HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSITIVITY_ABS |
+> -			HID_USAGE_SENSOR_HUMAN_PRESENCE,
+> -			&st->common_attributes.sensitivity);
+> -
+>  	return ret;
+>  }
+>  
+> @@ -257,7 +244,9 @@ static int hid_prox_probe(struct platform_device *pdev)
+>  	prox_state->common_attributes.pdev = pdev;
+>  
+>  	ret = hid_sensor_parse_common_attributes(hsdev, HID_USAGE_SENSOR_PROX,
+> -					&prox_state->common_attributes);
+> +					&prox_state->common_attributes,
+> +					prox_sensitivity_addresses,
+> +					ARRAY_SIZE(prox_sensitivity_addresses));
+>  	if (ret) {
+>  		dev_err(&pdev->dev, "failed to setup common attributes\n");
+>  		return ret;
+> diff --git a/drivers/iio/magnetometer/hid-sensor-magn-3d.c b/drivers/iio/magnetometer/hid-sensor-magn-3d.c
+> index fa48044b7f5b..b78691523dd4 100644
+> --- a/drivers/iio/magnetometer/hid-sensor-magn-3d.c
+> +++ b/drivers/iio/magnetometer/hid-sensor-magn-3d.c
+> @@ -62,6 +62,11 @@ static const u32 magn_3d_addresses[MAGN_3D_CHANNEL_MAX] = {
+>  	HID_USAGE_SENSOR_TIME_TIMESTAMP,
+>  };
+>  
+> +static const u32 magn_3d_sensitivity_addresses[] = {
+> +	HID_USAGE_SENSOR_DATA_ORIENTATION,
+> +	HID_USAGE_SENSOR_ORIENT_MAGN_FLUX,
 > +};
-> +MODULE_DEVICE_TABLE(of, ads131e08_of_match);
 > +
-> +static struct spi_driver ads131e08_driver = {
-> +	.driver = {
-> +		.name = "ads131e08",
-> +		.of_match_table = ads131e08_of_match,
-> +	},
-> +	.probe = ads131e08_probe,
+>  /* Channel definitions */
+>  static const struct iio_chan_spec magn_3d_channels[] = {
+>  	{
+> @@ -448,27 +453,6 @@ static int magn_3d_parse_report(struct platform_device *pdev,
+>  			&st->rot_attr.scale_pre_decml,
+>  			&st->rot_attr.scale_post_decml);
+>  
+> -	/* Set Sensitivity field ids, when there is no individual modifier */
+> -	if (st->magn_flux_attributes.sensitivity.index < 0) {
+> -		sensor_hub_input_get_attribute_info(hsdev,
+> -			HID_FEATURE_REPORT, usage_id,
+> -			HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSITIVITY_ABS |
+> -			HID_USAGE_SENSOR_DATA_ORIENTATION,
+> -			&st->magn_flux_attributes.sensitivity);
+> -		dev_dbg(&pdev->dev, "Sensitivity index:report %d:%d\n",
+> -			st->magn_flux_attributes.sensitivity.index,
+> -			st->magn_flux_attributes.sensitivity.report_id);
+> -	}
+> -	if (st->magn_flux_attributes.sensitivity.index < 0) {
+> -		sensor_hub_input_get_attribute_info(hsdev,
+> -			HID_FEATURE_REPORT, usage_id,
+> -			HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSITIVITY_ABS |
+> -			HID_USAGE_SENSOR_ORIENT_MAGN_FLUX,
+> -			&st->magn_flux_attributes.sensitivity);
+> -		dev_dbg(&pdev->dev, "Sensitivity index:report %d:%d\n",
+> -			st->magn_flux_attributes.sensitivity.index,
+> -			st->magn_flux_attributes.sensitivity.report_id);
+> -	}
+>  	if (st->rot_attributes.sensitivity.index < 0) {
+>  		sensor_hub_input_get_attribute_info(hsdev,
+>  			HID_FEATURE_REPORT, usage_id,
+> @@ -507,12 +491,16 @@ static int hid_magn_3d_probe(struct platform_device *pdev)
+>  
+>  	ret = hid_sensor_parse_common_attributes(hsdev,
+>  				HID_USAGE_SENSOR_COMPASS_3D,
+> -				&magn_state->magn_flux_attributes);
+> +				&magn_state->magn_flux_attributes,
+> +				magn_3d_sensitivity_addresses,
+> +				ARRAY_SIZE(magn_3d_sensitivity_addresses));
+>  	if (ret) {
+>  		dev_err(&pdev->dev, "failed to setup common attributes\n");
+>  		return ret;
+>  	}
+>  	magn_state->rot_attributes = magn_state->magn_flux_attributes;
+> +	/* sensitivity of rot_attribute is not the same as magn_flux_attributes */
+> +	magn_state->rot_attributes.sensitivity.index = -1;
+>  
+>  	ret = magn_3d_parse_report(pdev, hsdev,
+>  				&channels, &chan_count,
+> diff --git a/drivers/iio/orientation/hid-sensor-incl-3d.c b/drivers/iio/orientation/hid-sensor-incl-3d.c
+> index 52ebef30f9be..6e69f6e673cc 100644
+> --- a/drivers/iio/orientation/hid-sensor-incl-3d.c
+> +++ b/drivers/iio/orientation/hid-sensor-incl-3d.c
+> @@ -47,6 +47,10 @@ static const u32 incl_3d_addresses[INCLI_3D_CHANNEL_MAX] = {
+>  	HID_USAGE_SENSOR_ORIENT_TILT_Z
+>  };
+>  
+> +static const u32 incl_3d_sensitivity_addresses[] = {
+> +	HID_USAGE_SENSOR_DATA_ORIENTATION,
 > +};
-> +module_spi_driver(ads131e08_driver);
 > +
-> +MODULE_AUTHOR("Tomislav Denis <tomislav.denis@avl.com>");
-> +MODULE_DESCRIPTION("Driver for ADS131E0x ADC family");
-> +MODULE_LICENSE("GPL v2");
-
+>  /* Channel definitions */
+>  static const struct iio_chan_spec incl_3d_channels[] = {
+>  	{
+> @@ -291,17 +295,6 @@ static int incl_3d_parse_report(struct platform_device *pdev,
+>  				&st->incl[CHANNEL_SCAN_INDEX_X],
+>  				&st->scale_pre_decml, &st->scale_post_decml);
+>  
+> -	/* Set Sensitivity field ids, when there is no individual modifier */
+> -	if (st->common_attributes.sensitivity.index < 0) {
+> -		sensor_hub_input_get_attribute_info(hsdev,
+> -			HID_FEATURE_REPORT, usage_id,
+> -			HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSITIVITY_ABS |
+> -			HID_USAGE_SENSOR_DATA_ORIENTATION,
+> -			&st->common_attributes.sensitivity);
+> -		dev_dbg(&pdev->dev, "Sensitivity index:report %d:%d\n",
+> -			st->common_attributes.sensitivity.index,
+> -			st->common_attributes.sensitivity.report_id);
+> -	}
+>  	return ret;
+>  }
+>  
+> @@ -327,7 +320,9 @@ static int hid_incl_3d_probe(struct platform_device *pdev)
+>  
+>  	ret = hid_sensor_parse_common_attributes(hsdev,
+>  				HID_USAGE_SENSOR_INCLINOMETER_3D,
+> -				&incl_state->common_attributes);
+> +				&incl_state->common_attributes,
+> +				incl_3d_sensitivity_addresses,
+> +				ARRAY_SIZE(incl_3d_sensitivity_addresses));
+>  	if (ret) {
+>  		dev_err(&pdev->dev, "failed to setup common attributes\n");
+>  		return ret;
+> diff --git a/drivers/iio/orientation/hid-sensor-rotation.c b/drivers/iio/orientation/hid-sensor-rotation.c
+> index 18e4ef060096..03d2845a7b2c 100644
+> --- a/drivers/iio/orientation/hid-sensor-rotation.c
+> +++ b/drivers/iio/orientation/hid-sensor-rotation.c
+> @@ -31,6 +31,10 @@ struct dev_rot_state {
+>  	s64 timestamp;
+>  };
+>  
+> +static const u32 rotation_sensitivity_addresses[] = {
+> +	HID_USAGE_SENSOR_DATA_ORIENTATION,
+> +};
+> +
+>  /* Channel definitions */
+>  static const struct iio_chan_spec dev_rot_channels[] = {
+>  	{
+> @@ -214,18 +218,6 @@ static int dev_rot_parse_report(struct platform_device *pdev,
+>  				&st->quaternion,
+>  				&st->scale_pre_decml, &st->scale_post_decml);
+>  
+> -	/* Set Sensitivity field ids, when there is no individual modifier */
+> -	if (st->common_attributes.sensitivity.index < 0) {
+> -		sensor_hub_input_get_attribute_info(hsdev,
+> -			HID_FEATURE_REPORT, usage_id,
+> -			HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSITIVITY_ABS |
+> -			HID_USAGE_SENSOR_DATA_ORIENTATION,
+> -			&st->common_attributes.sensitivity);
+> -		dev_dbg(&pdev->dev, "Sensitivity index:report %d:%d\n",
+> -			st->common_attributes.sensitivity.index,
+> -			st->common_attributes.sensitivity.report_id);
+> -	}
+> -
+>  	return 0;
+>  }
+>  
+> @@ -263,8 +255,11 @@ static int hid_dev_rot_probe(struct platform_device *pdev)
+>  		return -EINVAL;
+>  	}
+>  
+> -	ret = hid_sensor_parse_common_attributes(hsdev, hsdev->usage,
+> -				&rot_state->common_attributes);
+> +	ret = hid_sensor_parse_common_attributes(hsdev,
+> +						 hsdev->usage,
+> +						 &rot_state->common_attributes,
+> +						 rotation_sensitivity_addresses,
+> +						 ARRAY_SIZE(rotation_sensitivity_addresses));
+>  	if (ret) {
+>  		dev_err(&pdev->dev, "failed to setup common attributes\n");
+>  		return ret;
+> diff --git a/drivers/iio/position/hid-sensor-custom-intel-hinge.c b/drivers/iio/position/hid-sensor-custom-intel-hinge.c
+> index 64a7fa7db6af..fd77e7ee87f3 100644
+> --- a/drivers/iio/position/hid-sensor-custom-intel-hinge.c
+> +++ b/drivers/iio/position/hid-sensor-custom-intel-hinge.c
+> @@ -47,6 +47,10 @@ struct hinge_state {
+>  	u64 timestamp;
+>  };
+>  
+> +static const u32 hinge_sensitivity_addresses[] = {
+> +	HID_USAGE_SENSOR_DATA_FIELD_CUSTOM_VALUE(1),
+> +};
+> +
+>  /* Channel definitions */
+>  static const struct iio_chan_spec hinge_channels[] = {
+>  	{
+> @@ -251,18 +255,6 @@ static int hinge_parse_report(struct platform_device *pdev,
+>  			&st->hinge[CHANNEL_SCAN_INDEX_HINGE_ANGLE],
+>  			&st->scale_pre_decml, &st->scale_post_decml);
+>  
+> -	/* Set Sensitivity field ids, when there is no individual modifier */
+> -	if (st->common_attributes.sensitivity.index < 0) {
+> -		sensor_hub_input_get_attribute_info(hsdev,
+> -				HID_FEATURE_REPORT, usage_id,
+> -				HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSITIVITY_ABS |
+> -					HID_USAGE_SENSOR_DATA_FIELD_CUSTOM_VALUE(1),
+> -				&st->common_attributes.sensitivity);
+> -		dev_dbg(&pdev->dev, "Sensitivity index:report %d:%d\n",
+> -			st->common_attributes.sensitivity.index,
+> -			st->common_attributes.sensitivity.report_id);
+> -	}
+> -
+>  	return ret;
+>  }
+>  
+> @@ -289,7 +281,9 @@ static int hid_hinge_probe(struct platform_device *pdev)
+>  		st->labels[i] = hinge_labels[i];
+>  
+>  	ret = hid_sensor_parse_common_attributes(hsdev, hsdev->usage,
+> -						 &st->common_attributes);
+> +						 &st->common_attributes,
+> +						 hinge_sensitivity_addresses,
+> +						 ARRAY_SIZE(hinge_sensitivity_addresses));
+>  	if (ret) {
+>  		dev_err(&pdev->dev, "failed to setup common attributes\n");
+>  		return ret;
+> diff --git a/drivers/iio/pressure/hid-sensor-press.c b/drivers/iio/pressure/hid-sensor-press.c
+> index 5c458788f346..8cac2c94e75a 100644
+> --- a/drivers/iio/pressure/hid-sensor-press.c
+> +++ b/drivers/iio/pressure/hid-sensor-press.c
+> @@ -29,6 +29,10 @@ struct press_state {
+>  	int value_offset;
+>  };
+>  
+> +static const u32 press_sensitivity_addresses[] = {
+> +	HID_USAGE_SENSOR_DATA_ATMOSPHERIC_PRESSURE,
+> +};
+> +
+>  /* Channel definitions */
+>  static const struct iio_chan_spec press_channels[] = {
+>  	{
+> @@ -225,17 +229,6 @@ static int press_parse_report(struct platform_device *pdev,
+>  				&st->press_attr,
+>  				&st->scale_pre_decml, &st->scale_post_decml);
+>  
+> -	/* Set Sensitivity field ids, when there is no individual modifier */
+> -	if (st->common_attributes.sensitivity.index < 0) {
+> -		sensor_hub_input_get_attribute_info(hsdev,
+> -			HID_FEATURE_REPORT, usage_id,
+> -			HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSITIVITY_ABS |
+> -			HID_USAGE_SENSOR_DATA_ATMOSPHERIC_PRESSURE,
+> -			&st->common_attributes.sensitivity);
+> -		dev_dbg(&pdev->dev, "Sensitivity index:report %d:%d\n",
+> -			st->common_attributes.sensitivity.index,
+> -			st->common_attributes.sensitivity.report_id);
+> -	}
+>  	return ret;
+>  }
+>  
+> @@ -260,7 +253,9 @@ static int hid_press_probe(struct platform_device *pdev)
+>  
+>  	ret = hid_sensor_parse_common_attributes(hsdev,
+>  					HID_USAGE_SENSOR_PRESSURE,
+> -					&press_state->common_attributes);
+> +					&press_state->common_attributes,
+> +					press_sensitivity_addresses,
+> +					ARRAY_SIZE(press_sensitivity_addresses));
+>  	if (ret) {
+>  		dev_err(&pdev->dev, "failed to setup common attributes\n");
+>  		return ret;
+> diff --git a/drivers/iio/temperature/hid-sensor-temperature.c b/drivers/iio/temperature/hid-sensor-temperature.c
+> index 81688f1b932f..e3d38cbcf354 100644
+> --- a/drivers/iio/temperature/hid-sensor-temperature.c
+> +++ b/drivers/iio/temperature/hid-sensor-temperature.c
+> @@ -22,6 +22,10 @@ struct temperature_state {
+>  	int value_offset;
+>  };
+>  
+> +static const u32 temperature_sensitivity_addresses[] = {
+> +	HID_USAGE_SENSOR_DATA_ENVIRONMENTAL_TEMPERATURE,
+> +};
+> +
+>  /* Channel definitions */
+>  static const struct iio_chan_spec temperature_channels[] = {
+>  	{
+> @@ -171,14 +175,6 @@ static int temperature_parse_report(struct platform_device *pdev,
+>  				&st->temperature_attr,
+>  				&st->scale_pre_decml, &st->scale_post_decml);
+>  
+> -	/* Set Sensitivity field ids, when there is no individual modifier */
+> -	if (st->common_attributes.sensitivity.index < 0)
+> -		sensor_hub_input_get_attribute_info(hsdev,
+> -			HID_FEATURE_REPORT, usage_id,
+> -			HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSITIVITY_ABS |
+> -			HID_USAGE_SENSOR_DATA_ENVIRONMENTAL_TEMPERATURE,
+> -			&st->common_attributes.sensitivity);
+> -
+>  	return ret;
+>  }
+>  
+> @@ -207,7 +203,9 @@ static int hid_temperature_probe(struct platform_device *pdev)
+>  
+>  	ret = hid_sensor_parse_common_attributes(hsdev,
+>  					HID_USAGE_SENSOR_TEMPERATURE,
+> -					&temp_st->common_attributes);
+> +					&temp_st->common_attributes,
+> +					temperature_sensitivity_addresses,
+> +					ARRAY_SIZE(temperature_sensitivity_addresses));
+>  	if (ret)
+>  		return ret;
+>  
+> diff --git a/drivers/rtc/rtc-hid-sensor-time.c b/drivers/rtc/rtc-hid-sensor-time.c
+> index 1b42ee0758d2..47cd12db2356 100644
+> --- a/drivers/rtc/rtc-hid-sensor-time.c
+> +++ b/drivers/rtc/rtc-hid-sensor-time.c
+> @@ -238,7 +238,9 @@ static int hid_time_probe(struct platform_device *pdev)
+>  
+>  	ret = hid_sensor_parse_common_attributes(hsdev,
+>  				HID_USAGE_SENSOR_TIME,
+> -				&time_state->common_attributes);
+> +				&time_state->common_attributes,
+> +				NULL,
+> +				0);
+>  	if (ret) {
+>  		dev_err(&pdev->dev, "failed to setup common attributes!\n");
+>  		return ret;
+> diff --git a/include/linux/hid-sensor-hub.h b/include/linux/hid-sensor-hub.h
+> index 46bcef380446..8b2599348554 100644
+> --- a/include/linux/hid-sensor-hub.h
+> +++ b/include/linux/hid-sensor-hub.h
+> @@ -247,7 +247,9 @@ static inline int hid_sensor_convert_exponent(int unit_expo)
+>  
+>  int hid_sensor_parse_common_attributes(struct hid_sensor_hub_device *hsdev,
+>  					u32 usage_id,
+> -					struct hid_sensor_common *st);
+> +					struct hid_sensor_common *st,
+> +					const u32 *sensitivity_addresses,
+> +					u32 sensitivity_addresses_len);
+>  int hid_sensor_write_raw_hyst_value(struct hid_sensor_common *st,
+>  					int val1, int val2);
+>  int hid_sensor_read_raw_hyst_value(struct hid_sensor_common *st,
+> -- 
+> 2.17.1
+> 

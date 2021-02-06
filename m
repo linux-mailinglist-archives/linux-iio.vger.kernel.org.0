@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B4926311E83
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Feb 2021 16:56:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 32B04311E98
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Feb 2021 17:18:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229978AbhBFP4H (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 6 Feb 2021 10:56:07 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51416 "EHLO mail.kernel.org"
+        id S229626AbhBFQR6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 6 Feb 2021 11:17:58 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52878 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229785AbhBFP4G (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 6 Feb 2021 10:56:06 -0500
+        id S229522AbhBFQR5 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 6 Feb 2021 11:17:57 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9E4C764E9D;
-        Sat,  6 Feb 2021 15:55:24 +0000 (UTC)
-Date:   Sat, 6 Feb 2021 15:55:20 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 4B7C564EAC;
+        Sat,  6 Feb 2021 16:17:15 +0000 (UTC)
+Date:   Sat, 6 Feb 2021 16:17:11 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Michael Auchter <michael.auchter@ni.com>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: dac: Add missing ad5686 compatible
- strings
-Message-ID: <20210206155520.68f971e9@archlinux>
-In-Reply-To: <20210202211022.GB3706951@robh.at.kernel.org>
-References: <20210202181427.3934218-1-robh@kernel.org>
-        <efbfbb94-bf61-5503-9833-df23709f56a2@metafoo.de>
-        <20210202211022.GB3706951@robh.at.kernel.org>
+To:     Stephen Boyd <swboyd@chromium.org>
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>
+Subject: Re: [PATCH v4 3/3] iio: proximity: Add a ChromeOS EC MKBP proximity
+ driver
+Message-ID: <20210206161711.6f555434@archlinux>
+In-Reply-To: <20210202184434.42644-4-swboyd@chromium.org>
+References: <20210202184434.42644-1-swboyd@chromium.org>
+        <20210202184434.42644-4-swboyd@chromium.org>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -40,70 +40,65 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 2 Feb 2021 15:10:22 -0600
-Rob Herring <robh@kernel.org> wrote:
+On Tue,  2 Feb 2021 10:44:34 -0800
+Stephen Boyd <swboyd@chromium.org> wrote:
 
-> On Tue, Feb 02, 2021 at 09:55:56PM +0100, Lars-Peter Clausen wrote:
-> > On 2/2/21 7:14 PM, Rob Herring wrote:  
-> > > The example uses 'adi,ad5686', but the schema fails to document it. Given
-> > > the filename and there is a similar part AD5686, let's just add the
-> > > compatible strings including the 'r' variant.  
-> > 
-> > There are two variants of this chip. One with a SPI interface and one with a
-> > I2C interface. This binding document only describes the I2C variants. But
-> > the ad5686 is a SPI variant.  
+> Add support for a ChromeOS EC proximity driver that exposes a "front"
+> proximity sensor via the IIO subsystem. The EC decides when front
+> proximity is near and sets an MKBP switch 'EC_MKBP_FRONT_PROXIMITY' to
+> notify the kernel of proximity. Similarly, when proximity detects
+> something far away it sets the switch bit to 0. For now this driver
+> exposes a single sensor, but it could be expanded in the future via more
+> MKBP bits if desired.
 > 
-> Right, I should have noticed that.
-> 
-> > I think this is a typo and we should replace ad5686 with ad5696, including
-> > the document name.  
-> 
-> Though we do frequently document both I2C and SPI variants in the same 
-> binding, given there's no existing SPI support and the example is wrong 
-> I agree.
+> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> Cc: Benson Leung <bleung@chromium.org>
+> Cc: Guenter Roeck <groeck@chromium.org>
+> Cc: Douglas Anderson <dianders@chromium.org>
+> Cc: Gwendal Grignou <gwendal@chromium.org>
+> Reviewed-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+> Signed-off-by: Stephen Boyd <swboyd@chromium.org>
 
-Ah, this is what I get for reading my emails out of order.
-
-There is existing SPI driver support if that's what you mean
-we just haven't documented the binding for it.
-
-Should work via the fallbacks in SPI that drop the vendor id off then match
-on the rest.  As I mentioned in reply to v2. It's an old driver so
-kind of got DT support by accident.
-
-I'll play catch up at some stage soon on missing binding docs,
-(I suspect there are quite a few for older IIO drivers)
-
-Thanks,
+Just one thing noticed on a final read through.  I'm happy to fix up
+whilst applying.  Otherwise all I'm waiting for now is to give
+Rob time to look at the device tree binding if he wants to do so.
 
 Jonathan
 
-> 
-> > > 
-> > > Cc: Lars-Peter Clausen <lars@metafoo.de>
-> > > Cc: Michael Hennerich <Michael.Hennerich@analog.com>
-> > > Cc: Jonathan Cameron <jic23@kernel.org>
-> > > Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-> > > Cc: Michael Auchter <michael.auchter@ni.com>
-> > > Cc: linux-iio@vger.kernel.org
-> > > Signed-off-by: Rob Herring <robh@kernel.org>
-> > > ---
-> > >   Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml | 2 ++
-> > >   1 file changed, 2 insertions(+)
-> > > 
-> > > diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml
-> > > index 8065228e5df8..190919291828 100644
-> > > --- a/Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml
-> > > +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml
-> > > @@ -19,6 +19,8 @@ properties:
-> > >         - adi,ad5338r
-> > >         - adi,ad5671r
-> > >         - adi,ad5675r
-> > > +      - adi,ad5686
-> > > +      - adi,ad5686r
-> > >         - adi,ad5691r
-> > >         - adi,ad5692r
-> > >         - adi,ad5693  
-> > 
-> >   
+> diff --git a/drivers/iio/proximity/cros_ec_mkbp_proximity.c b/drivers/iio/proximity/cros_ec_mkbp_proximity.c
+> new file mode 100644
+> index 000000000000..23bed4562b34
+> --- /dev/null
+> +++ b/drivers/iio/proximity/cros_ec_mkbp_proximity.c
+> @@ -0,0 +1,242 @@
+...
+
+> +static struct platform_driver cros_ec_mkbp_proximity_driver = {
+> +	.driver = {
+> +		.name = "cros-ec-mkbp-proximity",
+> +		.of_match_table = of_match_ptr(cros_ec_mkbp_proximity_of_match),
+I'm going to assume we know no one is going to use this with
+ACPI via PRP0001 given presumably the firmware on these devices
+is tightly controlled.
+
+However, we should should still drop the of_match_ptr
+as it will lead to an unused warning for cros_ec_mkbp_proximity_of_match
+if anyone builds this without CONFIG_OF + it sets a general bad
+precedence that I'd rather wasn't around for people to copy.
+Note that in general we are slowly ripping these out of IIO but
+probably lots still there.
+
+If this is all that is needed in this version I'll just do it
+whilst applying unless anyone shouts.
+
+Jonathan
+
+> +	},
+> +	.probe = cros_ec_mkbp_proximity_probe,
+> +	.remove = cros_ec_mkbp_proximity_remove,
+> +};
+> +module_platform_driver(cros_ec_mkbp_proximity_driver);
+> +
+> +MODULE_LICENSE("GPL v2");
+> +MODULE_DESCRIPTION("ChromeOS EC MKBP proximity sensor driver");
 

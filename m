@@ -2,34 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E260F311E7E
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Feb 2021 16:52:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B4926311E83
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Feb 2021 16:56:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229963AbhBFPvr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 6 Feb 2021 10:51:47 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51192 "EHLO mail.kernel.org"
+        id S229978AbhBFP4H (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 6 Feb 2021 10:56:07 -0500
+Received: from mail.kernel.org ([198.145.29.99]:51416 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229788AbhBFPvq (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 6 Feb 2021 10:51:46 -0500
+        id S229785AbhBFP4G (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 6 Feb 2021 10:56:06 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DAF3F64E9C;
-        Sat,  6 Feb 2021 15:51:03 +0000 (UTC)
-Date:   Sat, 6 Feb 2021 15:50:59 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 9E4C764E9D;
+        Sat,  6 Feb 2021 15:55:24 +0000 (UTC)
+Date:   Sat, 6 Feb 2021 15:55:20 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+To:     Rob Herring <robh@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         Michael Auchter <michael.auchter@ni.com>,
         linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2] dt-bindings: iio: dac: Fix AD5686 references
-Message-ID: <20210206155059.2473c149@archlinux>
-In-Reply-To: <755532c1-2c28-3796-367a-baec09f2dada@metafoo.de>
-References: <20210202215503.114113-1-robh@kernel.org>
-        <755532c1-2c28-3796-367a-baec09f2dada@metafoo.de>
+Subject: Re: [PATCH] dt-bindings: iio: dac: Add missing ad5686 compatible
+ strings
+Message-ID: <20210206155520.68f971e9@archlinux>
+In-Reply-To: <20210202211022.GB3706951@robh.at.kernel.org>
+References: <20210202181427.3934218-1-robh@kernel.org>
+        <efbfbb94-bf61-5503-9833-df23709f56a2@metafoo.de>
+        <20210202211022.GB3706951@robh.at.kernel.org>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -38,94 +40,70 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 2 Feb 2021 22:56:21 +0100
-Lars-Peter Clausen <lars@metafoo.de> wrote:
+On Tue, 2 Feb 2021 15:10:22 -0600
+Rob Herring <robh@kernel.org> wrote:
 
-> On 2/2/21 10:55 PM, Rob Herring wrote:
-> > The example and filename use 'adi,ad5686', but the schema doesn't
-> > document it. The AD5686 is also a SPI interface variant while all the
-> > documented variants have an I2C interface. So let's update all the
-> > references to AD5686 to AD5696.
-> >
-> > Cc: Lars-Peter Clausen <lars@metafoo.de>
-> > Cc: Michael Hennerich <Michael.Hennerich@analog.com>
-> > Cc: Jonathan Cameron <jic23@kernel.org>
-> > Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-> > Cc: Michael Auchter <michael.auchter@ni.com>
-> > Cc: linux-iio@vger.kernel.org
-> > Signed-off-by: Rob Herring <robh@kernel.org>  
+> On Tue, Feb 02, 2021 at 09:55:56PM +0100, Lars-Peter Clausen wrote:
+> > On 2/2/21 7:14 PM, Rob Herring wrote:  
+> > > The example uses 'adi,ad5686', but the schema fails to document it. Given
+> > > the filename and there is a similar part AD5686, let's just add the
+> > > compatible strings including the 'r' variant.  
+> > 
+> > There are two variants of this chip. One with a SPI interface and one with a
+> > I2C interface. This binding document only describes the I2C variants. But
+> > the ad5686 is a SPI variant.  
 > 
-> Acked-by: Lars-Peter Clausen <lars@metafoo.de>
+> Right, I should have noticed that.
 > 
-> Thanks Rob.
+> > I think this is a typo and we should replace ad5686 with ad5696, including
+> > the document name.  
 > 
-Hi Rob,
+> Though we do frequently document both I2C and SPI variants in the same 
+> binding, given there's no existing SPI support and the example is wrong 
+> I agree.
 
-So what seems to have happened here is only the i2c parts
-of a dual bus driver got documented.  That happened as part
-of a series adding a new part to the driver a while back.
-(it's an old driver so probably only picked up dt support by accident)
+Ah, this is what I get for reading my emails out of order.
 
-An alternative would be to add the docs for the rest of the
-parts supported by the driver - so have a unified doc for
-the i2c and SPI parts.
+There is existing SPI driver support if that's what you mean
+we just haven't documented the binding for it.
 
-Meh, it's probably simpler to just put that in as a separate
-doc though rather than merge it with this one.  So we'll probably
-have an adi,ad5686.yaml file again doing that once I get
-round to writing one.
+Should work via the fallbacks in SPI that drop the vendor id off then match
+on the rest.  As I mentioned in reply to v2. It's an old driver so
+kind of got DT support by accident.
 
-I'm assuming you'll pick this up?
+I'll play catch up at some stage soon on missing binding docs,
+(I suspect there are quite a few for older IIO drivers)
 
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Thanks,
 
+Jonathan
 
-> > ---
-> > v2:
-> > - Rename instead of adding AD5686
-> >
-> >   .../iio/dac/{adi,ad5686.yaml => adi,ad5696.yaml}       | 10 +++++-----
-> >   1 file changed, 5 insertions(+), 5 deletions(-)
-> >   rename Documentation/devicetree/bindings/iio/dac/{adi,ad5686.yaml => adi,ad5696.yaml} (77%)
-> >
-> > diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5696.yaml
-> > similarity index 77%
-> > rename from Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml
-> > rename to Documentation/devicetree/bindings/iio/dac/adi,ad5696.yaml
-> > index 8065228e5df8..56b0cda0f30a 100644
-> > --- a/Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5696.yaml
-> > @@ -1,16 +1,16 @@
-> >   # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> >   %YAML 1.2
-> >   ---
-> > -$id: http://devicetree.org/schemas/iio/dac/adi,ad5686.yaml#
-> > +$id: http://devicetree.org/schemas/iio/dac/adi,ad5696.yaml#
-> >   $schema: http://devicetree.org/meta-schemas/core.yaml#
-> >   
-> > -title: Analog Devices AD5686 and similar multi-channel DACs
-> > +title: Analog Devices AD5696 and similar multi-channel DACs
-> >   
-> >   maintainers:
-> >     - Michael Auchter <michael.auchter@ni.com>
-> >   
-> >   description: |
-> > -  Binding for Analog Devices AD5686 and similar multi-channel DACs
-> > +  Binding for Analog Devices AD5696 and similar multi-channel DACs
-> >   
-> >   properties:
-> >     compatible:
-> > @@ -48,8 +48,8 @@ examples:
-> >         #address-cells = <1>;
-> >         #size-cells = <0>;
-> >   
-> > -      ad5686: dac@0 {
-> > -        compatible = "adi,ad5686";
-> > +      ad5696: dac@0 {
-> > +        compatible = "adi,ad5696";
-> >           reg = <0>;
-> >           vcc-supply = <&dac_vref>;
-> >         };  
 > 
-> 
+> > > 
+> > > Cc: Lars-Peter Clausen <lars@metafoo.de>
+> > > Cc: Michael Hennerich <Michael.Hennerich@analog.com>
+> > > Cc: Jonathan Cameron <jic23@kernel.org>
+> > > Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+> > > Cc: Michael Auchter <michael.auchter@ni.com>
+> > > Cc: linux-iio@vger.kernel.org
+> > > Signed-off-by: Rob Herring <robh@kernel.org>
+> > > ---
+> > >   Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml | 2 ++
+> > >   1 file changed, 2 insertions(+)
+> > > 
+> > > diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml
+> > > index 8065228e5df8..190919291828 100644
+> > > --- a/Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml
+> > > +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml
+> > > @@ -19,6 +19,8 @@ properties:
+> > >         - adi,ad5338r
+> > >         - adi,ad5671r
+> > >         - adi,ad5675r
+> > > +      - adi,ad5686
+> > > +      - adi,ad5686r
+> > >         - adi,ad5691r
+> > >         - adi,ad5692r
+> > >         - adi,ad5693  
+> > 
+> >   
 

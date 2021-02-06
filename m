@@ -2,886 +2,379 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ADE7311DDE
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Feb 2021 15:43:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FD34311DE9
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Feb 2021 15:47:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229541AbhBFOnK convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sat, 6 Feb 2021 09:43:10 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44636 "EHLO mail.kernel.org"
+        id S229626AbhBFOrU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 6 Feb 2021 09:47:20 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45252 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229539AbhBFOnF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 6 Feb 2021 09:43:05 -0500
+        id S229529AbhBFOrS (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 6 Feb 2021 09:47:18 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 604AC64E4D;
-        Sat,  6 Feb 2021 14:42:21 +0000 (UTC)
-Date:   Sat, 6 Feb 2021 14:42:18 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 615BA64E40;
+        Sat,  6 Feb 2021 14:46:34 +0000 (UTC)
+Date:   Sat, 6 Feb 2021 14:46:32 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Mike Looijmans <mike.looijmans@topic.nl>
-Cc:     linux-iio@vger.kernel.org, Dan Robertson <dan@dlrobertson.com>,
-        =?UTF-8?B?R2HDq3RhbiBBbmRyw6k=?= <rvlander@gaetanandre.eu>,
-        Jonathan Bakker <xc-racer2@live.ca>,
+To:     Alexandru Ardelean <ardeleanalex@gmail.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 2/2] iio: accel: Add support for the Bosch-Sensortec
- BMI088
-Message-ID: <20210206144218.0f6dc919@archlinux>
-In-Reply-To: <20210131121645.305bf768@archlinux>
-References: <20210125150732.23873-1-mike.looijmans@topic.nl>
-        <20210125150732.23873-2-mike.looijmans@topic.nl>
-        <20210131121645.305bf768@archlinux>
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+        "Bogdan, Dragos" <dragos.bogdan@analog.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH v3 08/11] iio: buffer: wrap all buffer attributes into
+ iio_dev_attr
+Message-ID: <20210206144632.4d55a55b@archlinux>
+In-Reply-To: <CA+U=Dsqez7LW6vKycagZanQNcB6+3efzJChDAhaaNX1C5F7Seg@mail.gmail.com>
+References: <20210201145105.20459-1-alexandru.ardelean@analog.com>
+        <20210201145105.20459-9-alexandru.ardelean@analog.com>
+        <20210204182340.00005170@Huawei.com>
+        <CA+U=DsrBMd6LmdO_gq3MT21eO2HoO0mbkZjbig600EJ=d4Q3kg@mail.gmail.com>
+        <20210205123915.000012dc@Huawei.com>
+        <CA+U=Dsqez7LW6vKycagZanQNcB6+3efzJChDAhaaNX1C5F7Seg@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 31 Jan 2021 12:16:45 +0000
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Fri, 5 Feb 2021 14:57:29 +0200
+Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
 
-> On Mon, 25 Jan 2021 16:07:32 +0100
-> Mike Looijmans <mike.looijmans@topic.nl> wrote:
-> 
-> > The BMI088 is a combined module with both accelerometer and gyroscope.
-> > This adds the accelerometer driver support for the SPI interface.
-> > The gyroscope part is already supported by the BMG160 driver.
-> > 
-> > Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>  
-> Hi Mike,
-> 
-> I'll drop the include <linux/acpi.h> as no acpi stuff in
-> here that I can see.
-> 
-> Otherwise, looks good to me.  Will give a bit of time for Rob or
-> anyone else to take another look at this and the binding patch.
-> 
-I couple of warnings popped up during my local build tests with W=1 C=1
-
-drivers/iio/accel/bmi088-accel-core.c: In function ‘bmi088_accel_power_up’:
-drivers/iio/accel/bmi088-accel-core.c:153:17: warning: unused variable ‘dev’ [-Wunused-variable]
-  153 |  struct device *dev = regmap_get_device(data->regmap);
-      |                 ^~~
-drivers/iio/accel/bmi088-accel-core.c: In function ‘bmi088_accel_power_down’:
-drivers/iio/accel/bmi088-accel-core.c:177:17: warning: unused variable ‘dev’ [-Wunused-variable]
-  177 |  struct device *dev = regmap_get_device(data->regmap);
-
-As they are both obvious, I fixed them by dropping both those lines.
-
-Applied to the togreg branch of iio.git and pushed out as testing
-for the autobuilders to poke at it.
-
-Thanks for persisting with this Mike!
-
-Jonathan
-
-> Thanks,
-> 
-> Jonathan
-> 
-> > 
-> > ---
-> > 
-> > Changes in v8:
-> > include order asm/ after linux/
-> > Suspend/resume redesigned, use runtime PM for both cases. Removed the
-> > pm wrappers and let runtime PM handle power up/down. This also removed
-> > the need for an internal mutex, thus reducing code further.
-> > 
-> > Changes in v7:
-> > Change bmi088_accel to bmi088-accel
-> > Order includes alphabetically
-> > Suspend and disable on remove
-> > Make bmi088_regmap_spi_{read|write} static
-> > 
-> > Changes in v6:
-> > Hope you have good memory - v5 was almost a year ago now
-> > Remove superfluous *val=0
-> > Make sample_frequency selection into read_avail list
-> > 
-> > Changes in v5:
-> > Add includes and forward defines in header
-> > BIT(7) instead of 0x80
-> > Reset already sets defaults, do not set them again
-> > Remove now unused bmi088_accel_set_bw
-> > Remove unused AXIS_MAX
-> > Use MASK define for ODR setting
-> > Explain buffer use and alignment
-> > Split bmi088_accel_set_power_state into "on" and "off" parts
-> > Cosmetic changes to improve readability
-> > 
-> > Changes in v4:
-> > Remove unused #include directives
-> > Remove unused #defines for event and irq
-> > Replace (ret < 0) with (ret) for all regmap calls
-> > Consistent checking of IO errors in probe and init
-> > Removed #ifdef CONFIG_PM guard
-> > Use bitops for set_frequency instead of loop with shift
-> > s/__s16/s16/g
-> > Remove excess blank lines
-> > Don't return -EAGAIN in pm_runtime
-> > 
-> > Changes in v3:
-> > Processed comments from Jonathan Cameron and Lars-Peter Clausen
-> > implement runtime PM (tested by code tracing) and sleep
-> > fix scale and offset factors for accel and temperature and
-> > return raw values instead of pre-scaled ones
-> > Use iio_device_{claim,release}_direct_mode
-> > Remove unused code and structs
-> > Use a cache-aligned buffer for bulk read
-> > Configure and enable caching register values
-> > 
-> > Changes in v2:
-> > Remove unused typedefs and variables
-> > Fix error return when iio_device_register fails
-> > 
-> >  drivers/iio/accel/Kconfig             |  18 +
-> >  drivers/iio/accel/Makefile            |   2 +
-> >  drivers/iio/accel/bmi088-accel-core.c | 570 ++++++++++++++++++++++++++
-> >  drivers/iio/accel/bmi088-accel-spi.c  |  83 ++++
-> >  drivers/iio/accel/bmi088-accel.h      |  18 +
-> >  5 files changed, 691 insertions(+)
-> >  create mode 100644 drivers/iio/accel/bmi088-accel-core.c
-> >  create mode 100644 drivers/iio/accel/bmi088-accel-spi.c
-> >  create mode 100644 drivers/iio/accel/bmi088-accel.h
-> > 
-> > diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
-> > index 2e0c62c39155..cceda3cecbcf 100644
-> > --- a/drivers/iio/accel/Kconfig
-> > +++ b/drivers/iio/accel/Kconfig
-> > @@ -157,6 +157,24 @@ config BMC150_ACCEL_SPI
-> >  	tristate
-> >  	select REGMAP_SPI
+> On Fri, Feb 5, 2021 at 2:40 PM Jonathan Cameron
+> <Jonathan.Cameron@huawei.com> wrote:
+> >
+> > On Fri, 5 Feb 2021 11:17:04 +0200
+> > Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
 > >  
-> > +config BMI088_ACCEL
-> > +	tristate "Bosch BMI088 Accelerometer Driver"
-> > +	depends on SPI
-> > +	select IIO_BUFFER
-> > +	select IIO_TRIGGERED_BUFFER
-> > +	select REGMAP
-> > +	select BMI088_ACCEL_SPI
-> > +	help
-> > +	  Say yes here to build support for the Bosch BMI088 accelerometer.
-> > +
-> > +	  This is a combo module with both accelerometer and gyroscope. This
-> > +	  driver only implements the accelerometer part, which has its own
-> > +	  address and register map. BMG160 provides the gyroscope driver.
-> > +
-> > +config BMI088_ACCEL_SPI
-> > +	tristate
-> > +	select REGMAP_SPI
-> > +
-> >  config DA280
-> >  	tristate "MiraMEMS DA280 3-axis 14-bit digital accelerometer driver"
-> >  	depends on I2C
-> > diff --git a/drivers/iio/accel/Makefile b/drivers/iio/accel/Makefile
-> > index 4f6c1ebe13b0..32cd1342a31a 100644
-> > --- a/drivers/iio/accel/Makefile
-> > +++ b/drivers/iio/accel/Makefile
-> > @@ -20,6 +20,8 @@ obj-$(CONFIG_BMA400_SPI) += bma400_spi.o
-> >  obj-$(CONFIG_BMC150_ACCEL) += bmc150-accel-core.o
-> >  obj-$(CONFIG_BMC150_ACCEL_I2C) += bmc150-accel-i2c.o
-> >  obj-$(CONFIG_BMC150_ACCEL_SPI) += bmc150-accel-spi.o
-> > +obj-$(CONFIG_BMI088_ACCEL) += bmi088-accel-core.o
-> > +obj-$(CONFIG_BMI088_ACCEL_SPI) += bmi088-accel-spi.o
-> >  obj-$(CONFIG_DA280)	+= da280.o
-> >  obj-$(CONFIG_DA311)	+= da311.o
-> >  obj-$(CONFIG_DMARD06)	+= dmard06.o
-> > diff --git a/drivers/iio/accel/bmi088-accel-core.c b/drivers/iio/accel/bmi088-accel-core.c
-> > new file mode 100644
-> > index 000000000000..f86010a3cda3
-> > --- /dev/null
-> > +++ b/drivers/iio/accel/bmi088-accel-core.c
-> > @@ -0,0 +1,570 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * 3-axis accelerometer driver supporting following Bosch-Sensortec chips:
-> > + *  - BMI088
-> > + *
-> > + * Copyright (c) 2018-2021, Topic Embedded Products
-> > + */
-> > +
-> > +#include <linux/acpi.h>  
+> > > On Thu, Feb 4, 2021 at 8:26 PM Jonathan Cameron
+> > > <Jonathan.Cameron@huawei.com> wrote:  
+> > > >
+> > > > On Mon, 1 Feb 2021 16:51:02 +0200
+> > > > Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+> > > >  
+> > > > > This change wraps all buffer attributes into iio_dev_attr objects, and
+> > > > > assigns a reference to the IIO buffer they belong to.
+> > > > >
+> > > > > With the addition of multiple IIO buffers per one IIO device, we need a way
+> > > > > to know which IIO buffer is being enabled/disabled/controlled.
+> > > > >
+> > > > > We know that all buffer attributes are device_attributes. So we can wrap
+> > > > > them with a iio_dev_attr types. In the iio_dev_attr type, we can also hold
+> > > > > a reference to an IIO buffer.
+> > > > > So, we end up being able to allocate wrapped attributes for all buffer
+> > > > > attributes (even the one from other drivers).
+> > > > >
+> > > > > The neat part with this mechanism, is that we don't need to add any extra
+> > > > > cleanup, because these attributes are being added to a dynamic list that
+> > > > > will get cleaned up via iio_free_chan_devattr_list().  
+> > > >
+> > > >  
+> > > > >
+> > > > > With this change, the 'buffer->scan_el_dev_attr_list' list is being renamed
+> > > > > to 'buffer->buffer_attr_list', effectively merging (or finalizing the
+> > > > > merge) of the buffer/ & scan_elements/ attributes internally.
+> > > > >
+> > > > > Accessing these new buffer attributes can now be done via
+> > > > > 'to_iio_dev_attr(attr)->buffer' inside the show/store handlers.  
+> > > >
+> > > > That is going to look a bit odd in any drivers that use it given they
+> > > > will appear to not be embedded.
+> > > >
+> > > > There seem to be very few such attributes from a quick grep, so maybe
+> > > > we may want to unwind this and change all the types.   Might still need
+> > > > to set .buffer for some of them though (only applying to new drivers as
+> > > > clearly current ones don't care!)
+> > > >
+> > > > Looking at what they actually are, some perhaps shouldn't have been in the buffer
+> > > > directory in the first place (with hindsight!).
+> > > >
+> > > > Anyhow, aside from that oddity this looks good to me.  
+> > >
+> > > I'm a little vague here.
+> > > If there is a suggestion for a change, I may have missed it.  
+> >
+> > It was vague because I wasn't sure if it it made sense :)  
+> > >
+> > > I'm a bit vague on the part of "we may want to unwind this and change
+> > > all the types"
+> > > Is it referring to something like this patch?
+> > >       https://lore.kernel.org/linux-iio/20210122162529.84978-10-alexandru.ardelean@analog.com/  
+> >
+> > Exactly, that was what I was wondering about.  
 > 
-> Why?  I'll tidy this up whilst applying if there isn't a v9.
+> So, from a perspective of API for drivers, it would probably make
+> sense to have those sort of store/show hook types.
+> But I am leaning towards maybe moving the HW fifo stuff into IIO core somehow.
+> Which would make these [new] store/show hooks unneeded [for now at least].
+
+Agreed. It probably makes sense to look at pulling these into the core.
+When we first did this I was a little unsure how common these would be
+but now it's been a while we know they do occur on multiple devices
+(even if not that many of them!)
+
 > 
-> > +#include <linux/delay.h>
-> > +#include <linux/iio/iio.h>
-> > +#include <linux/iio/sysfs.h>
-> > +#include <linux/interrupt.h>
-> > +#include <linux/module.h>
-> > +#include <linux/pm.h>
-> > +#include <linux/pm_runtime.h>
-> > +#include <linux/regmap.h>
-> > +#include <linux/slab.h>
-> > +#include <asm/unaligned.h>
-> > +
-> > +#include "bmi088-accel.h"
-> > +
-> > +#define BMI088_ACCEL_REG_CHIP_ID			0x00
-> > +#define BMI088_ACCEL_REG_ERROR				0x02
-> > +
-> > +#define BMI088_ACCEL_REG_INT_STATUS			0x1D
-> > +#define BMI088_ACCEL_INT_STATUS_BIT_DRDY		BIT(7)
-> > +
-> > +#define BMI088_ACCEL_REG_RESET				0x7E
-> > +#define BMI088_ACCEL_RESET_VAL				0xB6
-> > +
-> > +#define BMI088_ACCEL_REG_PWR_CTRL			0x7D
-> > +#define BMI088_ACCEL_REG_PWR_CONF			0x7C
-> > +
-> > +#define BMI088_ACCEL_REG_INT_MAP_DATA			0x58
-> > +#define BMI088_ACCEL_INT_MAP_DATA_BIT_INT1_DRDY		BIT(2)
-> > +#define BMI088_ACCEL_INT_MAP_DATA_BIT_INT2_FWM		BIT(5)
-> > +
-> > +#define BMI088_ACCEL_REG_INT1_IO_CONF			0x53
-> > +#define BMI088_ACCEL_INT1_IO_CONF_BIT_ENABLE_OUT	BIT(3)
-> > +#define BMI088_ACCEL_INT1_IO_CONF_BIT_LVL		BIT(1)
-> > +
-> > +#define BMI088_ACCEL_REG_INT2_IO_CONF			0x54
-> > +#define BMI088_ACCEL_INT2_IO_CONF_BIT_ENABLE_OUT	BIT(3)
-> > +#define BMI088_ACCEL_INT2_IO_CONF_BIT_LVL		BIT(1)
-> > +
-> > +#define BMI088_ACCEL_REG_ACC_CONF			0x40
-> > +#define BMI088_ACCEL_MODE_ODR_MASK			0x0f
-> > +
-> > +#define BMI088_ACCEL_REG_ACC_RANGE			0x41
-> > +#define BMI088_ACCEL_RANGE_3G				0x00
-> > +#define BMI088_ACCEL_RANGE_6G				0x01
-> > +#define BMI088_ACCEL_RANGE_12G				0x02
-> > +#define BMI088_ACCEL_RANGE_24G				0x03
-> > +
-> > +#define BMI088_ACCEL_REG_TEMP				0x22
-> > +#define BMI088_ACCEL_REG_TEMP_SHIFT			5
-> > +#define BMI088_ACCEL_TEMP_UNIT				125
-> > +#define BMI088_ACCEL_TEMP_OFFSET			23000
-> > +
-> > +#define BMI088_ACCEL_REG_XOUT_L				0x12
-> > +#define BMI088_ACCEL_AXIS_TO_REG(axis) \
-> > +	(BMI088_ACCEL_REG_XOUT_L + (axis * 2))
-> > +
-> > +#define BMI088_ACCEL_MAX_STARTUP_TIME_US		1000
-> > +#define BMI088_AUTO_SUSPEND_DELAY_MS			2000
-> > +
-> > +#define BMI088_ACCEL_REG_FIFO_STATUS			0x0E
-> > +#define BMI088_ACCEL_REG_FIFO_CONFIG0			0x48
-> > +#define BMI088_ACCEL_REG_FIFO_CONFIG1			0x49
-> > +#define BMI088_ACCEL_REG_FIFO_DATA			0x3F
-> > +#define BMI088_ACCEL_FIFO_LENGTH			100
-> > +
-> > +#define BMI088_ACCEL_FIFO_MODE_FIFO			0x40
-> > +#define BMI088_ACCEL_FIFO_MODE_STREAM			0x80
-> > +
-> > +enum bmi088_accel_axis {
-> > +	AXIS_X,
-> > +	AXIS_Y,
-> > +	AXIS_Z,
-> > +};
-> > +
-> > +static const int bmi088_sample_freqs[] = {
-> > +	12, 500000,
-> > +	25, 0,
-> > +	50, 0,
-> > +	100, 0,
-> > +	200, 0,
-> > +	400, 0,
-> > +	800, 0,
-> > +	1600, 0,
-> > +};
-> > +
-> > +/* Available OSR (over sampling rate) sets the 3dB cut-off frequency */
-> > +enum bmi088_osr_modes {
-> > +	BMI088_ACCEL_MODE_OSR_NORMAL = 0xA,
-> > +	BMI088_ACCEL_MODE_OSR_2 = 0x9,
-> > +	BMI088_ACCEL_MODE_OSR_4 = 0x8,
-> > +};
-> > +
-> > +/* Available ODR (output data rates) in Hz */
-> > +enum bmi088_odr_modes {
-> > +	BMI088_ACCEL_MODE_ODR_12_5 = 0x5,
-> > +	BMI088_ACCEL_MODE_ODR_25 = 0x6,
-> > +	BMI088_ACCEL_MODE_ODR_50 = 0x7,
-> > +	BMI088_ACCEL_MODE_ODR_100 = 0x8,
-> > +	BMI088_ACCEL_MODE_ODR_200 = 0x9,
-> > +	BMI088_ACCEL_MODE_ODR_400 = 0xa,
-> > +	BMI088_ACCEL_MODE_ODR_800 = 0xb,
-> > +	BMI088_ACCEL_MODE_ODR_1600 = 0xc,
-> > +};
-> > +
-> > +struct bmi088_scale_info {
-> > +	int scale;
-> > +	u8 reg_range;
-> > +};
-> > +
-> > +struct bmi088_accel_chip_info {
-> > +	const char *name;
-> > +	u8 chip_id;
-> > +	const struct iio_chan_spec *channels;
-> > +	int num_channels;
-> > +};
-> > +
-> > +struct bmi088_accel_data {
-> > +	struct regmap *regmap;
-> > +	const struct bmi088_accel_chip_info *chip_info;
-> > +	u8 buffer[2] ____cacheline_aligned; /* shared DMA safe buffer */
-> > +};
-> > +
-> > +static const struct regmap_range bmi088_volatile_ranges[] = {
-> > +	/* All registers below 0x40 are volatile, except the CHIP ID. */
-> > +	regmap_reg_range(BMI088_ACCEL_REG_ERROR, 0x3f),
-> > +	/* Mark the RESET as volatile too, it is self-clearing */
-> > +	regmap_reg_range(BMI088_ACCEL_REG_RESET, BMI088_ACCEL_REG_RESET),
-> > +};
-> > +
-> > +static const struct regmap_access_table bmi088_volatile_table = {
-> > +	.yes_ranges	= bmi088_volatile_ranges,
-> > +	.n_yes_ranges	= ARRAY_SIZE(bmi088_volatile_ranges),
-> > +};
-> > +
-> > +const struct regmap_config bmi088_regmap_conf = {
-> > +	.reg_bits = 8,
-> > +	.val_bits = 8,
-> > +	.max_register = 0x7E,
-> > +	.volatile_table = &bmi088_volatile_table,
-> > +	.cache_type = REGCACHE_RBTREE,
-> > +};
-> > +EXPORT_SYMBOL_GPL(bmi088_regmap_conf);
-> > +
-> > +static int bmi088_accel_power_up(struct bmi088_accel_data *data)
-> > +{
-> > +	struct device *dev = regmap_get_device(data->regmap);
-> > +	int ret;
-> > +
-> > +	/* Enable accelerometer and temperature sensor */
-> > +	ret = regmap_write(data->regmap, BMI088_ACCEL_REG_PWR_CTRL, 0x4);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	/* Datasheet recommends to wait at least 5ms before communication */
-> > +	usleep_range(5000, 6000);
-> > +
-> > +	/* Disable suspend mode */
-> > +	ret = regmap_write(data->regmap, BMI088_ACCEL_REG_PWR_CONF, 0x0);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	/* Recommended at least 1ms before further communication */
-> > +	usleep_range(1000, 1200);
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int bmi088_accel_power_down(struct bmi088_accel_data *data)
-> > +{
-> > +	struct device *dev = regmap_get_device(data->regmap);
-> > +	int ret;
-> > +
-> > +	/* Enable suspend mode */
-> > +	ret = regmap_write(data->regmap, BMI088_ACCEL_REG_PWR_CONF, 0x3);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	/* Recommended at least 1ms before further communication */
-> > +	usleep_range(1000, 1200);
-> > +
-> > +	/* Disable accelerometer and temperature sensor */
-> > +	ret = regmap_write(data->regmap, BMI088_ACCEL_REG_PWR_CTRL, 0x0);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	/* Datasheet recommends to wait at least 5ms before communication */
-> > +	usleep_range(5000, 6000);
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int bmi088_accel_get_sample_freq(struct bmi088_accel_data *data,
-> > +					int *val, int *val2)
-> > +{
-> > +	unsigned int value;
-> > +	int ret;
-> > +
-> > +	ret = regmap_read(data->regmap, BMI088_ACCEL_REG_ACC_CONF,
-> > +			  &value);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	value &= BMI088_ACCEL_MODE_ODR_MASK;
-> > +	value -= BMI088_ACCEL_MODE_ODR_12_5;
-> > +	value <<= 1;
-> > +
-> > +	if (value >= ARRAY_SIZE(bmi088_sample_freqs) - 1)
-> > +		return -EINVAL;
-> > +
-> > +	*val = bmi088_sample_freqs[value];
-> > +	*val2 = bmi088_sample_freqs[value + 1];
-> > +
-> > +	return IIO_VAL_INT_PLUS_MICRO;
-> > +}
-> > +
-> > +static int bmi088_accel_set_sample_freq(struct bmi088_accel_data *data, int val)
-> > +{
-> > +	unsigned int regval;
-> > +	int index = 0;
-> > +
-> > +	while (index < ARRAY_SIZE(bmi088_sample_freqs) &&
-> > +	       bmi088_sample_freqs[index] != val)
-> > +		index += 2;
-> > +
-> > +	if (index >= ARRAY_SIZE(bmi088_sample_freqs))
-> > +		return -EINVAL;
-> > +
-> > +	regval = (index >> 1) + BMI088_ACCEL_MODE_ODR_12_5;
-> > +
-> > +	return regmap_update_bits(data->regmap, BMI088_ACCEL_REG_ACC_CONF,
-> > +				  BMI088_ACCEL_MODE_ODR_MASK, regval);
-> > +}
-> > +
-> > +static int bmi088_accel_get_temp(struct bmi088_accel_data *data, int *val)
-> > +{
-> > +	int ret;
-> > +	s16 temp;
-> > +
-> > +	ret = regmap_bulk_read(data->regmap, BMI088_ACCEL_REG_TEMP,
-> > +			       &data->buffer, sizeof(__be16));
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	/* data->buffer is cacheline aligned */
-> > +	temp = be16_to_cpu(*(__be16 *)data->buffer);
-> > +
-> > +	*val = temp >> BMI088_ACCEL_REG_TEMP_SHIFT;
-> > +
-> > +	return IIO_VAL_INT;
-> > +}
-> > +
-> > +static int bmi088_accel_get_axis(struct bmi088_accel_data *data,
-> > +				 struct iio_chan_spec const *chan,
-> > +				 int *val)
-> > +{
-> > +	int ret;
-> > +	s16 raw_val;
-> > +
-> > +	ret = regmap_bulk_read(data->regmap,
-> > +			       BMI088_ACCEL_AXIS_TO_REG(chan->scan_index),
-> > +			       data->buffer, sizeof(__le16));
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	raw_val = le16_to_cpu(*(__le16 *)data->buffer);
-> > +	*val = raw_val;
-> > +
-> > +	return IIO_VAL_INT;
-> > +}
-> > +
-> > +static int bmi088_accel_read_raw(struct iio_dev *indio_dev,
-> > +				 struct iio_chan_spec const *chan,
-> > +				 int *val, int *val2, long mask)
-> > +{
-> > +	struct bmi088_accel_data *data = iio_priv(indio_dev);
-> > +	struct device *dev = regmap_get_device(data->regmap);
-> > +	int ret;
-> > +
-> > +	switch (mask) {
-> > +	case IIO_CHAN_INFO_RAW:
-> > +		switch (chan->type) {
-> > +		case IIO_TEMP:
-> > +			pm_runtime_get_sync(dev);
-> > +			ret = bmi088_accel_get_temp(data, val);
-> > +			goto out_read_raw_pm_put;
-> > +		case IIO_ACCEL:
-> > +			pm_runtime_get_sync(dev);
-> > +			ret = iio_device_claim_direct_mode(indio_dev);
-> > +			if (ret)
-> > +				goto out_read_raw_pm_put;
-> > +
-> > +			ret = bmi088_accel_get_axis(data, chan, val);
-> > +			iio_device_release_direct_mode(indio_dev);
-> > +			if (!ret)
-> > +				ret = IIO_VAL_INT;
-> > +
-> > +			goto out_read_raw_pm_put;
-> > +		default:
-> > +			return -EINVAL;
-> > +		}
-> > +	case IIO_CHAN_INFO_OFFSET:
-> > +		switch (chan->type) {
-> > +		case IIO_TEMP:
-> > +			/* Offset applies before scale */
-> > +			*val = BMI088_ACCEL_TEMP_OFFSET/BMI088_ACCEL_TEMP_UNIT;
-> > +			return IIO_VAL_INT;
-> > +		default:
-> > +			return -EINVAL;
-> > +		}
-> > +	case IIO_CHAN_INFO_SCALE:
-> > +		switch (chan->type) {
-> > +		case IIO_TEMP:
-> > +			/* 0.125 degrees per LSB */
-> > +			*val = BMI088_ACCEL_TEMP_UNIT;
-> > +			return IIO_VAL_INT;
-> > +		case IIO_ACCEL:
-> > +			pm_runtime_get_sync(dev);
-> > +			ret = regmap_read(data->regmap,
-> > +					  BMI088_ACCEL_REG_ACC_RANGE, val);
-> > +			if (ret)
-> > +				goto out_read_raw_pm_put;
-> > +
-> > +			*val2 = 15 - (*val & 0x3);
-> > +			*val = 3 * 980;
-> > +			ret = IIO_VAL_FRACTIONAL_LOG2;
-> > +
-> > +			goto out_read_raw_pm_put;
-> > +		default:
-> > +			return -EINVAL;
-> > +		}
-> > +	case IIO_CHAN_INFO_SAMP_FREQ:
-> > +		pm_runtime_get_sync(dev);
-> > +		ret = bmi088_accel_get_sample_freq(data, val, val2);
-> > +		goto out_read_raw_pm_put;
-> > +	default:
-> > +		break;
-> > +	}
-> > +
-> > +	return -EINVAL;
-> > +
-> > +out_read_raw_pm_put:
-> > +	pm_runtime_mark_last_busy(dev);
-> > +	pm_runtime_put_autosuspend(dev);
-> > +
-> > +	return ret;
-> > +}
-> > +
-> > +static int bmi088_accel_read_avail(struct iio_dev *indio_dev,
-> > +			     struct iio_chan_spec const *chan,
-> > +			     const int **vals, int *type, int *length,
-> > +			     long mask)
-> > +{
-> > +	switch (mask) {
-> > +	case IIO_CHAN_INFO_SAMP_FREQ:
-> > +		*type = IIO_VAL_INT_PLUS_MICRO;
-> > +		*vals = bmi088_sample_freqs;
-> > +		*length = ARRAY_SIZE(bmi088_sample_freqs);
-> > +		return IIO_AVAIL_LIST;
-> > +	default:
-> > +		return -EINVAL;
-> > +	}
-> > +}
-> > +
-> > +static int bmi088_accel_write_raw(struct iio_dev *indio_dev,
-> > +				  struct iio_chan_spec const *chan,
-> > +				  int val, int val2, long mask)
-> > +{
-> > +	struct bmi088_accel_data *data = iio_priv(indio_dev);
-> > +	struct device *dev = regmap_get_device(data->regmap);
-> > +	int ret;
-> > +
-> > +	switch (mask) {
-> > +	case IIO_CHAN_INFO_SAMP_FREQ:
-> > +		pm_runtime_get_sync(dev);
-> > +		ret = bmi088_accel_set_sample_freq(data, val);
-> > +		pm_runtime_mark_last_busy(dev);
-> > +		pm_runtime_put_autosuspend(dev);
-> > +		return ret;
-> > +	default:
-> > +		return -EINVAL;
-> > +	}
-> > +}
-> > +
-> > +#define BMI088_ACCEL_CHANNEL(_axis) { \
-> > +	.type = IIO_ACCEL, \
-> > +	.modified = 1, \
-> > +	.channel2 = IIO_MOD_##_axis, \
-> > +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
-> > +	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) | \
-> > +				BIT(IIO_CHAN_INFO_SAMP_FREQ), \
-> > +	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SAMP_FREQ), \
-> > +	.scan_index = AXIS_##_axis, \
-> > +}
-> > +
-> > +static const struct iio_chan_spec bmi088_accel_channels[] = {
-> > +	{
-> > +		.type = IIO_TEMP,
-> > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> > +				      BIT(IIO_CHAN_INFO_SCALE) |
-> > +				      BIT(IIO_CHAN_INFO_OFFSET),
-> > +		.scan_index = -1,
-> > +	},
-> > +	BMI088_ACCEL_CHANNEL(X),
-> > +	BMI088_ACCEL_CHANNEL(Y),
-> > +	BMI088_ACCEL_CHANNEL(Z),
-> > +	IIO_CHAN_SOFT_TIMESTAMP(3),
-> > +};
-> > +
-> > +static const struct bmi088_accel_chip_info bmi088_accel_chip_info_tbl[] = {
-> > +	[0] = {
-> > +		.name = "bmi088a",
-> > +		.chip_id = 0x1E,
-> > +		.channels = bmi088_accel_channels,
-> > +		.num_channels = ARRAY_SIZE(bmi088_accel_channels),
-> > +	},
-> > +};
-> > +
-> > +static const struct iio_info bmi088_accel_info = {
-> > +	.read_raw	= bmi088_accel_read_raw,
-> > +	.write_raw	= bmi088_accel_write_raw,
-> > +	.read_avail	= bmi088_accel_read_avail,
-> > +};
-> > +
-> > +static const unsigned long bmi088_accel_scan_masks[] = {
-> > +	BIT(AXIS_X) | BIT(AXIS_Y) | BIT(AXIS_Z),
-> > +	0
-> > +};
-> > +
-> > +static int bmi088_accel_chip_init(struct bmi088_accel_data *data)
-> > +{
-> > +	struct device *dev = regmap_get_device(data->regmap);
-> > +	int ret, i;
-> > +	unsigned int val;
-> > +
-> > +	/* Do a dummy read to enable SPI interface, won't harm I2C */
-> > +	regmap_read(data->regmap, BMI088_ACCEL_REG_INT_STATUS, &val);
-> > +
-> > +	/*
-> > +	 * Reset chip to get it in a known good state. A delay of 1ms after
-> > +	 * reset is required according to the data sheet
-> > +	 */
-> > +	ret = regmap_write(data->regmap, BMI088_ACCEL_REG_RESET,
-> > +			   BMI088_ACCEL_RESET_VAL);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	usleep_range(1000, 2000);
-> > +
-> > +	/* Do a dummy read again after a reset to enable the SPI interface */
-> > +	regmap_read(data->regmap, BMI088_ACCEL_REG_INT_STATUS, &val);
-> > +
-> > +	/* Read chip ID */
-> > +	ret = regmap_read(data->regmap, BMI088_ACCEL_REG_CHIP_ID, &val);
-> > +	if (ret) {
-> > +		dev_err(dev, "Error: Reading chip id\n");
-> > +		return ret;
-> > +	}
-> > +
-> > +	/* Validate chip ID */
-> > +	for (i = 0; i < ARRAY_SIZE(bmi088_accel_chip_info_tbl); i++) {
-> > +		if (bmi088_accel_chip_info_tbl[i].chip_id == val) {
-> > +			data->chip_info = &bmi088_accel_chip_info_tbl[i];
-> > +			break;
-> > +		}
-> > +	}
-> > +	if (i == ARRAY_SIZE(bmi088_accel_chip_info_tbl)) {
-> > +		dev_err(dev, "Invalid chip %x\n", val);
-> > +		return -ENODEV;
-> > +	}
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +int bmi088_accel_core_probe(struct device *dev, struct regmap *regmap,
-> > +	int irq, const char *name, bool block_supported)
-> > +{
-> > +	struct bmi088_accel_data *data;
-> > +	struct iio_dev *indio_dev;
-> > +	int ret;
-> > +
-> > +	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-> > +	if (!indio_dev)
-> > +		return -ENOMEM;
-> > +
-> > +	data = iio_priv(indio_dev);
-> > +	dev_set_drvdata(dev, indio_dev);
-> > +
-> > +	data->regmap = regmap;
-> > +
-> > +	ret = bmi088_accel_chip_init(data);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	indio_dev->dev.parent = dev;
-> > +	indio_dev->channels = data->chip_info->channels;
-> > +	indio_dev->num_channels = data->chip_info->num_channels;
-> > +	indio_dev->name = name ? name : data->chip_info->name;
-> > +	indio_dev->available_scan_masks = bmi088_accel_scan_masks;
-> > +	indio_dev->modes = INDIO_DIRECT_MODE;
-> > +	indio_dev->info = &bmi088_accel_info;
-> > +
-> > +	/* Enable runtime PM */
-> > +	pm_runtime_get_noresume(dev);
-> > +	pm_runtime_set_suspended(dev);
-> > +	pm_runtime_enable(dev);
-> > +	/* We need ~6ms to startup, so set the delay to 6 seconds */
-> > +	pm_runtime_set_autosuspend_delay(dev, 6000);
-> > +	pm_runtime_use_autosuspend(dev);
-> > +	pm_runtime_put(dev);
-> > +
-> > +	ret = iio_device_register(indio_dev);
-> > +	if (ret)
-> > +		dev_err(dev, "Unable to register iio device\n");
-> > +
-> > +	return ret;
-> > +}
-> > +EXPORT_SYMBOL_GPL(bmi088_accel_core_probe);
-> > +
-> > +
-> > +int bmi088_accel_core_remove(struct device *dev)
-> > +{
-> > +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> > +	struct bmi088_accel_data *data = iio_priv(indio_dev);
-> > +
-> > +	iio_device_unregister(indio_dev);
-> > +
-> > +	pm_runtime_disable(dev);
-> > +	pm_runtime_set_suspended(dev);
-> > +	pm_runtime_put_noidle(dev);
-> > +	bmi088_accel_power_down(data);
-> > +
-> > +	return 0;
-> > +}
-> > +EXPORT_SYMBOL_GPL(bmi088_accel_core_remove);
-> > +
-> > +static int __maybe_unused bmi088_accel_runtime_suspend(struct device *dev)
-> > +{
-> > +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> > +	struct bmi088_accel_data *data = iio_priv(indio_dev);
-> > +
-> > +	return bmi088_accel_power_down(data);
-> > +}
-> > +
-> > +static int __maybe_unused bmi088_accel_runtime_resume(struct device *dev)
-> > +{
-> > +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> > +	struct bmi088_accel_data *data = iio_priv(indio_dev);
-> > +
-> > +	return bmi088_accel_power_up(data);
-> > +}
-> > +
-> > +const struct dev_pm_ops bmi088_accel_pm_ops = {
-> > +	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
-> > +				pm_runtime_force_resume)
-> > +	SET_RUNTIME_PM_OPS(bmi088_accel_runtime_suspend,
-> > +			   bmi088_accel_runtime_resume, NULL)
-> > +};
-> > +EXPORT_SYMBOL_GPL(bmi088_accel_pm_ops);
-> > +
-> > +MODULE_AUTHOR("Niek van Agt <niek.van.agt@topicproducts.com>");
-> > +MODULE_LICENSE("GPL v2");
-> > +MODULE_DESCRIPTION("BMI088 accelerometer driver (core)");
-> > diff --git a/drivers/iio/accel/bmi088-accel-spi.c b/drivers/iio/accel/bmi088-accel-spi.c
-> > new file mode 100644
-> > index 000000000000..dd1e3f6cf211
-> > --- /dev/null
-> > +++ b/drivers/iio/accel/bmi088-accel-spi.c
-> > @@ -0,0 +1,83 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * 3-axis accelerometer driver supporting following Bosch-Sensortec chips:
-> > + *  - BMI088
-> > + *
-> > + * Copyright (c) 2018-2020, Topic Embedded Products
-> > + */
-> > +
-> > +#include <linux/module.h>
-> > +#include <linux/regmap.h>
-> > +#include <linux/slab.h>
-> > +#include <linux/spi/spi.h>
-> > +
-> > +#include "bmi088-accel.h"
-> > +
-> > +static int bmi088_regmap_spi_write(void *context, const void *data, size_t count)
-> > +{
-> > +	struct spi_device *spi = context;
-> > +
-> > +	/* Write register is same as generic SPI */
-> > +	return spi_write(spi, data, count);
-> > +}
-> > +
-> > +static int bmi088_regmap_spi_read(void *context, const void *reg,
-> > +				size_t reg_size, void *val, size_t val_size)
-> > +{
-> > +	struct spi_device *spi = context;
-> > +	u8 addr[2];
-> > +
-> > +	addr[0] = *(u8 *)reg;
-> > +	addr[0] |= BIT(7); /* Set RW = '1' */
-> > +	addr[1] = 0; /* Read requires a dummy byte transfer */
-> > +
-> > +	return spi_write_then_read(spi, addr, sizeof(addr), val, val_size);
-> > +}
-> > +
-> > +static struct regmap_bus bmi088_regmap_bus = {
-> > +	.write = bmi088_regmap_spi_write,
-> > +	.read = bmi088_regmap_spi_read,
-> > +};
-> > +
-> > +static int bmi088_accel_probe(struct spi_device *spi)
-> > +{
-> > +	struct regmap *regmap;
-> > +	const struct spi_device_id *id = spi_get_device_id(spi);
-> > +
-> > +	regmap = devm_regmap_init(&spi->dev, &bmi088_regmap_bus,
-> > +			spi, &bmi088_regmap_conf);
-> > +
-> > +	if (IS_ERR(regmap)) {
-> > +		dev_err(&spi->dev, "Failed to initialize spi regmap\n");
-> > +		return PTR_ERR(regmap);
-> > +	}
-> > +
-> > +	return bmi088_accel_core_probe(&spi->dev, regmap, spi->irq, id->name,
-> > +				       true);
-> > +}
-> > +
-> > +static int bmi088_accel_remove(struct spi_device *spi)
-> > +{
-> > +	return bmi088_accel_core_remove(&spi->dev);
-> > +}
-> > +
-> > +static const struct spi_device_id bmi088_accel_id[] = {
-> > +	{"bmi088-accel", },
-> > +	{}
-> > +};
-> > +MODULE_DEVICE_TABLE(spi, bmi088_accel_id);
-> > +
-> > +static struct spi_driver bmi088_accel_driver = {
-> > +	.driver = {
-> > +		.name	= "bmi088_accel_spi",
-> > +		.pm	= &bmi088_accel_pm_ops,
-> > +	},
-> > +	.probe		= bmi088_accel_probe,
-> > +	.remove		= bmi088_accel_remove,
-> > +	.id_table	= bmi088_accel_id,
-> > +};
-> > +module_spi_driver(bmi088_accel_driver);
-> > +
-> > +MODULE_AUTHOR("Niek van Agt <niek.van.agt@topicproducts.com>");
-> > +MODULE_LICENSE("GPL v2");
-> > +MODULE_DESCRIPTION("BMI088 accelerometer driver (SPI)");
-> > diff --git a/drivers/iio/accel/bmi088-accel.h b/drivers/iio/accel/bmi088-accel.h
-> > new file mode 100644
-> > index 000000000000..5c25f16b672c
-> > --- /dev/null
-> > +++ b/drivers/iio/accel/bmi088-accel.h
-> > @@ -0,0 +1,18 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +#ifndef BMI088_ACCEL_H
-> > +#define BMI088_ACCEL_H
-> > +
-> > +#include <linux/pm.h>
-> > +#include <linux/regmap.h>
-> > +#include <linux/types.h>
-> > +
-> > +struct device;
-> > +
-> > +extern const struct regmap_config bmi088_regmap_conf;
-> > +extern const struct dev_pm_ops bmi088_accel_pm_ops;
-> > +
-> > +int bmi088_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
-> > +			    const char *name, bool block_supported);
-> > +int bmi088_accel_core_remove(struct device *dev);
-> > +
-> > +#endif /* BMI088_ACCEL_H */  
+> >  
+> > > We could do a show/store version that takes an iio_buf_attr or
+> > > iio_dev_attr parameter.
+> > > But maybe at a later point?
+> > > I don't feel it adds much benefit over the current usage of
+> > > buffer->attrs, because we need to kmalloc these iio_dev_attr anyways
+> > > to store the reference to the iio_buffer.
+> > >
+> > > I would have liked to get rid of these user/external buffer->attrs.
+> > > That would have made things easier.
+> > >
+> > > But, it looks like there are several drivers using them.
+> > > I usually find them by grepping for iio_triggered_buffer_setup_ext
+> > > It's only 5 drivers that provide these attributes.
+> > > It used to be a bit easier to find them by grepping
+> > > iio_buffer_set_attrs(), but I removed that.  
+> >
+> > We could look at whether some can be brought into the core.  They tend
+> > to be around hwfifo parameters. Those could be specific to individual
+> > buffers rather than device wide so at least some of them are correctly
+> > placed in the buffer directory (I think - I've argued with myself about
+> > this a few times in the past).  
 > 
+> I think they could be brought into core.
+> But they would take some time (because of testing)
+> These HW Fifo attributes were copied around between drivers and ended
+> being the same.
+> So, some IIO core logic would make sense. It's 5 drivers now.
+
+Agree entirely.  This is ready for some tidying up, but not a quick job
+as you say because of testing so let us leave it for now.  (better
+things to be doing :)
+
+> 
+> >
+> > The only oddity we'll get from current approach is callbacks appearing
+> > to access a container structure that they aren't associated with in the
+> > driver.  Its the sort of interface that no one would ever realize was
+> > possible.
+> >
+> > Jonathan
+> >  
+> > >
+> > >  
+> > > >
+> > > > Jonathan
+> > > >  
+> > > > >
+> > > > > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> > > > > ---
+> > > > >  drivers/iio/industrialio-buffer.c | 66 +++++++++++++++++++++----------
+> > > > >  include/linux/iio/buffer_impl.h   |  4 +-
+> > > > >  2 files changed, 48 insertions(+), 22 deletions(-)
+> > > > >
+> > > > > diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+> > > > > index a525e88b302f..49996bed5f4c 100644
+> > > > > --- a/drivers/iio/industrialio-buffer.c
+> > > > > +++ b/drivers/iio/industrialio-buffer.c
+> > > > > @@ -448,7 +448,7 @@ static int iio_buffer_add_channel_sysfs(struct iio_dev *indio_dev,
+> > > > >                                    IIO_SEPARATE,
+> > > > >                                    &indio_dev->dev,
+> > > > >                                    buffer,
+> > > > > -                                  &buffer->scan_el_dev_attr_list);
+> > > > > +                                  &buffer->buffer_attr_list);
+> > > > >       if (ret)
+> > > > >               return ret;
+> > > > >       attrcount++;
+> > > > > @@ -460,7 +460,7 @@ static int iio_buffer_add_channel_sysfs(struct iio_dev *indio_dev,
+> > > > >                                    0,
+> > > > >                                    &indio_dev->dev,
+> > > > >                                    buffer,
+> > > > > -                                  &buffer->scan_el_dev_attr_list);
+> > > > > +                                  &buffer->buffer_attr_list);
+> > > > >       if (ret)
+> > > > >               return ret;
+> > > > >       attrcount++;
+> > > > > @@ -473,7 +473,7 @@ static int iio_buffer_add_channel_sysfs(struct iio_dev *indio_dev,
+> > > > >                                            0,
+> > > > >                                            &indio_dev->dev,
+> > > > >                                            buffer,
+> > > > > -                                          &buffer->scan_el_dev_attr_list);
+> > > > > +                                          &buffer->buffer_attr_list);
+> > > > >       else
+> > > > >               ret = __iio_add_chan_devattr("en",
+> > > > >                                            chan,
+> > > > > @@ -483,7 +483,7 @@ static int iio_buffer_add_channel_sysfs(struct iio_dev *indio_dev,
+> > > > >                                            0,
+> > > > >                                            &indio_dev->dev,
+> > > > >                                            buffer,
+> > > > > -                                          &buffer->scan_el_dev_attr_list);
+> > > > > +                                          &buffer->buffer_attr_list);
+> > > > >       if (ret)
+> > > > >               return ret;
+> > > > >       attrcount++;
+> > > > > @@ -495,8 +495,7 @@ static ssize_t iio_buffer_read_length(struct device *dev,
+> > > > >                                     struct device_attribute *attr,
+> > > > >                                     char *buf)
+> > > > >  {
+> > > > > -     struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> > > > > -     struct iio_buffer *buffer = indio_dev->buffer;
+> > > > > +     struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
+> > > > >
+> > > > >       return sprintf(buf, "%d\n", buffer->length);
+> > > > >  }
+> > > > > @@ -506,7 +505,7 @@ static ssize_t iio_buffer_write_length(struct device *dev,
+> > > > >                                      const char *buf, size_t len)
+> > > > >  {
+> > > > >       struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> > > > > -     struct iio_buffer *buffer = indio_dev->buffer;
+> > > > > +     struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
+> > > > >       unsigned int val;
+> > > > >       int ret;
+> > > > >
+> > > > > @@ -538,8 +537,7 @@ static ssize_t iio_buffer_show_enable(struct device *dev,
+> > > > >                                     struct device_attribute *attr,
+> > > > >                                     char *buf)
+> > > > >  {
+> > > > > -     struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> > > > > -     struct iio_buffer *buffer = indio_dev->buffer;
+> > > > > +     struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
+> > > > >
+> > > > >       return sprintf(buf, "%d\n", iio_buffer_is_active(buffer));
+> > > > >  }
+> > > > > @@ -1154,7 +1152,7 @@ static ssize_t iio_buffer_store_enable(struct device *dev,
+> > > > >       int ret;
+> > > > >       bool requested_state;
+> > > > >       struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> > > > > -     struct iio_buffer *buffer = indio_dev->buffer;
+> > > > > +     struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
+> > > > >       bool inlist;
+> > > > >
+> > > > >       ret = strtobool(buf, &requested_state);
+> > > > > @@ -1185,8 +1183,7 @@ static ssize_t iio_buffer_show_watermark(struct device *dev,
+> > > > >                                        struct device_attribute *attr,
+> > > > >                                        char *buf)
+> > > > >  {
+> > > > > -     struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> > > > > -     struct iio_buffer *buffer = indio_dev->buffer;
+> > > > > +     struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
+> > > > >
+> > > > >       return sprintf(buf, "%u\n", buffer->watermark);
+> > > > >  }
+> > > > > @@ -1197,7 +1194,7 @@ static ssize_t iio_buffer_store_watermark(struct device *dev,
+> > > > >                                         size_t len)
+> > > > >  {
+> > > > >       struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> > > > > -     struct iio_buffer *buffer = indio_dev->buffer;
+> > > > > +     struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
+> > > > >       unsigned int val;
+> > > > >       int ret;
+> > > > >
+> > > > > @@ -1230,8 +1227,7 @@ static ssize_t iio_dma_show_data_available(struct device *dev,
+> > > > >                                               struct device_attribute *attr,
+> > > > >                                               char *buf)
+> > > > >  {
+> > > > > -     struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> > > > > -     struct iio_buffer *buffer = indio_dev->buffer;
+> > > > > +     struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
+> > > > >
+> > > > >       return sprintf(buf, "%zu\n", iio_buffer_data_available(buffer));
+> > > > >  }
+> > > > > @@ -1256,6 +1252,26 @@ static struct attribute *iio_buffer_attrs[] = {
+> > > > >       &dev_attr_data_available.attr,
+> > > > >  };
+> > > > >
+> > > > > +#define to_dev_attr(_attr) container_of(_attr, struct device_attribute, attr)
+> > > > > +
+> > > > > +static struct attribute *iio_buffer_wrap_attr(struct iio_buffer *buffer,
+> > > > > +                                           struct attribute *attr)
+> > > > > +{
+> > > > > +     struct device_attribute *dattr = to_dev_attr(attr);
+> > > > > +     struct iio_dev_attr *iio_attr;
+> > > > > +
+> > > > > +     iio_attr = kzalloc(sizeof(*iio_attr), GFP_KERNEL);
+> > > > > +     if (!iio_attr)
+> > > > > +             return NULL;
+> > > > > +
+> > > > > +     iio_attr->buffer = buffer;
+> > > > > +     memcpy(&iio_attr->dev_attr, dattr, sizeof(iio_attr->dev_attr));
+> > > > > +
+> > > > > +     list_add(&iio_attr->l, &buffer->buffer_attr_list);
+> > > > > +
+> > > > > +     return &iio_attr->dev_attr.attr;
+> > > > > +}
+> > > > > +
+> > > > >  static int iio_buffer_register_legacy_sysfs_groups(struct iio_dev *indio_dev,
+> > > > >                                                  struct attribute **buffer_attrs,
+> > > > >                                                  int buffer_attrcount,
+> > > > > @@ -1331,7 +1347,7 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
+> > > > >       }
+> > > > >
+> > > > >       scan_el_attrcount = 0;
+> > > > > -     INIT_LIST_HEAD(&buffer->scan_el_dev_attr_list);
+> > > > > +     INIT_LIST_HEAD(&buffer->buffer_attr_list);
+> > > > >       channels = indio_dev->channels;
+> > > > >       if (channels) {
+> > > > >               /* new magic */
+> > > > > @@ -1378,9 +1394,19 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
+> > > > >
+> > > > >       buffer_attrcount += ARRAY_SIZE(iio_buffer_attrs);
+> > > > >
+> > > > > -     attrn = buffer_attrcount;
+> > > > > +     for (i = 0; i < buffer_attrcount; i++) {
+> > > > > +             struct attribute *wrapped;
+> > > > > +
+> > > > > +             wrapped = iio_buffer_wrap_attr(buffer, attr[i]);
+> > > > > +             if (!wrapped) {
+> > > > > +                     ret = -ENOMEM;
+> > > > > +                     goto error_free_scan_mask;
+> > > > > +             }
+> > > > > +             attr[i] = wrapped;
+> > > > > +     }
+> > > > >
+> > > > > -     list_for_each_entry(p, &buffer->scan_el_dev_attr_list, l)
+> > > > > +     attrn = 0;
+> > > > > +     list_for_each_entry(p, &buffer->buffer_attr_list, l)
+> > > > >               attr[attrn++] = &p->dev_attr.attr;
+> > > > >
+> > > > >       buffer->buffer_group.name = kasprintf(GFP_KERNEL, "buffer%d", index);
+> > > > > @@ -1412,7 +1438,7 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
+> > > > >  error_free_scan_mask:
+> > > > >       bitmap_free(buffer->scan_mask);
+> > > > >  error_cleanup_dynamic:
+> > > > > -     iio_free_chan_devattr_list(&buffer->scan_el_dev_attr_list);
+> > > > > +     iio_free_chan_devattr_list(&buffer->buffer_attr_list);
+> > > > >
+> > > > >       return ret;
+> > > > >  }
+> > > > > @@ -1443,7 +1469,7 @@ static void __iio_buffer_free_sysfs_and_mask(struct iio_buffer *buffer)
+> > > > >       bitmap_free(buffer->scan_mask);
+> > > > >       kfree(buffer->buffer_group.name);
+> > > > >       kfree(buffer->buffer_group.attrs);
+> > > > > -     iio_free_chan_devattr_list(&buffer->scan_el_dev_attr_list);
+> > > > > +     iio_free_chan_devattr_list(&buffer->buffer_attr_list);
+> > > > >  }
+> > > > >
+> > > > >  void iio_buffer_free_sysfs_and_mask(struct iio_dev *indio_dev)
+> > > > > diff --git a/include/linux/iio/buffer_impl.h b/include/linux/iio/buffer_impl.h
+> > > > > index 3e555e58475b..41044320e581 100644
+> > > > > --- a/include/linux/iio/buffer_impl.h
+> > > > > +++ b/include/linux/iio/buffer_impl.h
+> > > > > @@ -97,8 +97,8 @@ struct iio_buffer {
+> > > > >       /* @scan_timestamp: Does the scan mode include a timestamp. */
+> > > > >       bool scan_timestamp;
+> > > > >
+> > > > > -     /* @scan_el_dev_attr_list: List of scan element related attributes. */
+> > > > > -     struct list_head scan_el_dev_attr_list;
+> > > > > +     /* @buffer_attr_list: List of buffer attributes. */
+> > > > > +     struct list_head buffer_attr_list;
+> > > > >
+> > > > >       /*
+> > > > >        * @buffer_group: Attributes of the new buffer group.  
+> > > >  
+> >  
 

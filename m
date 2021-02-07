@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D60D0312596
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Feb 2021 16:51:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D994E312590
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Feb 2021 16:50:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229721AbhBGPuw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Feb 2021 10:50:52 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34074 "EHLO mail.kernel.org"
+        id S229650AbhBGPu3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 Feb 2021 10:50:29 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34026 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229690AbhBGPuu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 7 Feb 2021 10:50:50 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 2499864E5E;
-        Sun,  7 Feb 2021 15:49:06 +0000 (UTC)
+        id S229681AbhBGPu0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 7 Feb 2021 10:50:26 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A9A8C64E60;
+        Sun,  7 Feb 2021 15:49:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612712947;
-        bh=aP/uFwsUiSKAzlWUyB9aSxCC8q0vGN79UHRvZmWsRJg=;
+        s=k20201202; t=1612712948;
+        bh=Jp1GDzXZcYQ/pOlj6E9N5al14Xc2+FKEaMLpmh2SWpU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ukIPSuNpBG57ioSDB4QJnbImCR/Kc6XgDuIUGrIzJkPAhEj6y3nRPHkdh41FGZDVz
-         FjIpnglxahdRtc0Xo0Y4/rUSlC13PMwWii9MKcHsjlkIVwv8yDdSVLR0nqMDBZX8LU
-         r5FrLd4Z6TTRaLfq2ODQUWHwXdW47rotC5IzAmagJAyFizcgTWU71v2CfJvuGnW2EM
-         x68wfhW7HHti9kHnVyYrV3u+LkxZAagBu+CKE4hSAaip3UcID8DyXmb8Z37Kd+Frph
-         UO0m7xOTxTZ62nPHqblZSBEZMYUHKGV7Nad6JSJJkTna4q5iVkhSyFzuq+b1vcS/Ug
-         2f7oX8mBP7Z3A==
+        b=LfZCXzVsdtJ6gHXisjXkTqvXjVdiEYtxsffkVBZeZ1CppDC6Fey3CASrbdyEk/zPl
+         SfL+peDRIznMCnIoBrK/KwMujY0gH1ehd+kkt3gKMwCOuX48NxcdRr1UtyIEL3NnoQ
+         96lnliLzaVd6bk+SEWaYxDJBf5HF/7V4f9/SeUv78+saoR6/hSHlEsfX/1xMMYmOuJ
+         O6+tsFbMVAKvfglFtFSJcYJ2NFnU5YugM4e+krpYiEQXl5KRakpQE/o4jQ3fx21fM+
+         LQtuDe8I58CCgWZXfPxv6MHV5On/FIuIw02rQqep+qmjqVXOk+wuTAdA4UU4yQ53To
+         AkTL39pWjkECg==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         song.bao.hua@hisilicon.com, robh+dt@kernel.org,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 16/24] staging:iio:cdc:ad7150: Drop unnecessary block comments.
-Date:   Sun,  7 Feb 2021 15:46:15 +0000
-Message-Id: <20210207154623.433442-17-jic23@kernel.org>
+Subject: [PATCH 17/24] staging:iio:cdc:ad7150: Shift the _raw readings by 4 bits.
+Date:   Sun,  7 Feb 2021 15:46:16 +0000
+Message-Id: <20210207154623.433442-18-jic23@kernel.org>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20210207154623.433442-1-jic23@kernel.org>
 References: <20210207154623.433442-1-jic23@kernel.org>
@@ -43,51 +43,31 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-These have a habit of not getting updated with driver reorganizations
-and don't add much info so drop them.
-
-Also fix a minor comment syntax issue.
+Every other register related to raw value on the datasheet is
+described as correpsonding to the 12MSB of the actual
+data registers + the bottom 4 bits are 0.  So lets treat this
+as what it actually is, which is a 12 bit value.
+Note that we will have to be a little careful to compensate for
+the offset and scale values.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/staging/iio/cdc/ad7150.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ drivers/staging/iio/cdc/ad7150.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/staging/iio/cdc/ad7150.c b/drivers/staging/iio/cdc/ad7150.c
-index d530b467d1b2..4c83e6e37c5a 100644
+index 4c83e6e37c5a..97689625f26c 100644
 --- a/drivers/staging/iio/cdc/ad7150.c
 +++ b/drivers/staging/iio/cdc/ad7150.c
-@@ -17,9 +17,6 @@
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
- #include <linux/iio/events.h>
--/*
-- * AD7150 registers definition
-- */
+@@ -111,7 +111,7 @@ static int ad7150_read_raw(struct iio_dev *indio_dev,
+ 						  ad7150_addresses[channel][0]);
+ 		if (ret < 0)
+ 			return ret;
+-		*val = ret;
++		*val = ret >> 4;
  
- #define AD7150_STATUS_REG		0
- #define   AD7150_STATUS_OUT1		BIT(3)
-@@ -89,10 +86,6 @@ struct ad7150_chip_info {
- 	enum iio_event_direction dir;
- };
- 
--/*
-- * sysfs nodes
-- */
--
- static const u8 ad7150_addresses[][6] = {
- 	{ AD7150_CH1_DATA_HIGH_REG, AD7150_CH1_AVG_HIGH_REG,
- 	  AD7150_CH1_SETUP_REG, AD7150_CH1_THR_HOLD_H_REG,
-@@ -172,8 +165,7 @@ static int ad7150_read_event_config(struct iio_dev *indio_dev,
- 	return -EINVAL;
- }
- 
--/* state_lock should be held to ensure consistent state*/
--
-+/* state_lock should be held to ensure consistent state */
- static int ad7150_write_event_params(struct iio_dev *indio_dev,
- 				     unsigned int chan,
- 				     enum iio_event_type type,
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_AVERAGE_RAW:
 -- 
 2.30.0
 

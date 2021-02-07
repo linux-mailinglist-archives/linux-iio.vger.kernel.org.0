@@ -2,110 +2,132 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DDCF9312459
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Feb 2021 13:46:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5833331257F
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Feb 2021 16:49:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229536AbhBGMps (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Feb 2021 07:45:48 -0500
-Received: from www381.your-server.de ([78.46.137.84]:39570 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229510AbhBGMpr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Feb 2021 07:45:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:References:Cc:To:From:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=uZtjBowzu9Xg2WkrzgOFz+YcliJRAWL+U/mfXNDKPPg=; b=HhhlFvmiOisAmd1z2XTc/YvvPg
-        n1nyNU4ZHcvwJiXMHRlIcJRHBEpRjIN8x4Rl1o/PB0I4F4yooUH2Xa+MMNaoZALx0p24sGsi0PjtJ
-        VmEIsUzHQJm3w06glpqIH6+dM521geFvs1AtZHRv/e2FJT0DedfDCuJbtVmEICrY9N7uRsfvvRTLT
-        9ohYFPV2XFvJMhNVx21KtY+KnLzBJ3zA6K0mutgWG6DQE/zYyedDTlGaJg7L5ah9BtsuTbZ0SKHeM
-        l2wnXc01DhyRkr2LyZaP2vNk+MO9dUndlRwuGu9Eyr/+ZNAuaEnKHPfOo6Aq0/x5CoxFEkxXvaJc0
-        Heab6bkw==;
-Received: from sslproxy01.your-server.de ([78.46.139.224])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1l8jR1-000DmY-Mr; Sun, 07 Feb 2021 13:45:03 +0100
-Received: from [62.216.202.92] (helo=[192.168.178.20])
-        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1l8jR1-000DSl-JU; Sun, 07 Feb 2021 13:45:03 +0100
-Subject: Re: [PATCH 3/3] iio: Add basic unit test for iio_format_value()
-From:   Lars-Peter Clausen <lars@metafoo.de>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Brendan Higgins <brendanhiggins@google.com>
-Cc:     Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org
-References: <20201215191743.2725-1-lars@metafoo.de>
- <20201215191743.2725-3-lars@metafoo.de> <20201229181658.5aa5e8d4@archlinux>
- <a856bbff-a292-b988-84e2-cfd3223f220e@metafoo.de>
-Message-ID: <8ae67298-5365-6549-1ccd-7de577ca3939@metafoo.de>
-Date:   Sun, 7 Feb 2021 13:45:02 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+        id S229587AbhBGPt3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 Feb 2021 10:49:29 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33684 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229510AbhBGPtY (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 7 Feb 2021 10:49:24 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 371C664E3E;
+        Sun,  7 Feb 2021 15:48:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1612712922;
+        bh=K7HuLpN83szPzAYEW+nANRWQey/sXv3jPb7/kdp2w+o=;
+        h=From:To:Cc:Subject:Date:From;
+        b=GkYm13jVW8uAcpmtSo7xLbxCGDCouohia4KFLCbv4ErkmN+cvBOxw7vjNSF7AeBaH
+         A+T8v3g0uHR4ZA/DGjkv1rLkDcRDwEVp5wNVwGjirVPTGAXCFsF3xh4Yw7Qo8r78+7
+         61Cww1GiMojZjp79k/aPnAvrSoAgwmy2sss7DGeIt2oIH99xAp5CGkdxoT7voftPq2
+         SvG28mi9o1GMUWny33/DpIf7vM/+aehF9zYyIvka4nSFIGkrLj6BzmiMxneCaXbVUs
+         udNTNrvItxMXovet4Pwoj4iK9Vmx8OUczOQY/ej3Jv8b+K5t+tfpwV2Rg9bqWBIbJ3
+         +VmH7aGhe8IqA==
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     linux-iio@vger.kernel.org
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        song.bao.hua@hisilicon.com, robh+dt@kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 00/24] staging:iio:cdc:ad7150: cleanup / fixup / graduate
+Date:   Sun,  7 Feb 2021 15:45:59 +0000
+Message-Id: <20210207154623.433442-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-In-Reply-To: <a856bbff-a292-b988-84e2-cfd3223f220e@metafoo.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.102.4/26073/Sun Feb  7 13:23:32 2021)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 1/2/21 3:59 PM, Lars-Peter Clausen wrote:
-> On 12/29/20 7:16 PM, Jonathan Cameron wrote:
->> On Tue, 15 Dec 2020 20:17:43 +0100
->> Lars-Peter Clausen <lars@metafoo.de> wrote:
->>
->>> The IIO core provides a function to do formatting of fixedpoint 
->>> numbers.
->>>
->>> In the past there have been some issues with the implementation of the
->>> function where for example negative numbers were not handled correctly.
->>>
->>> Introduce a basic unit test based on kunit that tests the function and
->>> ensures that the generated output matches the expected output.
->>>
->>> This gives us some confidence that future modifications to the function
->>> implementation will not break ABI compatibility.
->>>
->>> To run the unit tests follow the kunit documentation and add
->>>
->>>    CONFIG_IIO=y
->>>    CONFIG_IIO_TEST_FORMAT=y
->>>
->>> to the .kunitconfig and run
->>>
->>>    > ./tools/testing/kunit/kunit.py run
->>>    Configuring KUnit Kernel ...
->>>    Building KUnit Kernel ...
->>>    Starting KUnit Kernel ...
->>> ============================================================
->>>    ======== [PASSED] iio-format ========
->>>    [PASSED] iio_test_iio_format_value_integer
->>>    [PASSED] iio_test_iio_format_value_fixedpoint
->>>    [PASSED] iio_test_iio_format_value_fractional
->>>    [PASSED] iio_test_iio_format_value_fractional_log2
->>>    [PASSED] iio_test_iio_format_value_multiple
->>> ============================================================
->>>    Testing complete. 21 tests run. 0 failed. 0 crashed.
->>>    Elapsed time: 8.242s total, 0.001s configuring, 3.865s building, 
->>> 0.000s running
->>>
->>> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
->> Series looks good to me, but I wonder.  What is convention wrt to
->> MAINTAINERS / Acks etc for self tests?
->
-> Let's ask Brendan.
->
-Jonathan, since there hasn't been any additional feedback should we just 
-apply this series?
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Thanks,
+This is an 'old' driver in IIO that has been in staging a while.
+First submitted in October 2010.
 
-- Lars
+I wanted to try and experiment and picked this driver to try it with.
+
+The cleanup etc here was all tested against some basic emulation
+added to QEMU rather than real hardware.  Once I've cleaned that up
+a tiny bit I'll push it up to https://github.com/jic23/qemu
+Note that for now I'm not proposing to upstream this to QEMU but
+would be interested in hearing if people thing it is a good idea to
+do so.
+
+Whilst it's obviously hard to be absolutely sure that the emulation is
+correct, the fact that the original driver worked as expected and the
+cleaned up version still does is certainly encouraging.
+
+Note however, that there were a few more significant changes in here than
+basic cleanup.
+1. Interrupts / events were handled in a rather esoteric fashion.
+   (Always on, window modes represented as magnitudes).
+   Note that for two channel devices there are separate lines. The original
+   driver was not supporting this at all.
+   They now look more like a standard IIO driver and reflect experience
+   that we've gained over the years in dealing with devices where these
+   aren't interrupt lines as such, but rather reporters of current status.
+2. Timeouts were handled in a fashion that clearly wouldn't work.
+
+Note that this moving out of staging makes a few bits of ABI 'official'
+and so those are added to the main IIO ABI Docs.
+
+Thanks in advance to anyone who has time to take a look.
+
+Jonathan
+
+
+Jonathan Cameron (24):
+  staging:iio:cdc:ad7150: use swapped reads for i2c rather than open
+    coding.
+  staging:iio:cdc:ad7150: Remove magnitude adaptive events
+  staging:iio:cdc:ad7150: Refactor event parameter update
+  staging:iio:cdc:ad7150: Timeout register covers both directions so
+    both need updating
+  staging:iio:cdc:ad7150: Drop platform data support
+  staging:iio:cdc:ad7150: Handle variation in chan_spec across device
+    and irq present or not
+  staging:iio:cdc:ad7150: Simplify event handling by only using rising
+    direction.
+  staging:iio:cdc:ad7150: Drop noisy print in probe
+  staging:iio:cdc:ad7150: Add sampling_frequency support
+  iio:event: Add timeout event info type
+  staging:iio:cdc:ad7150: Change timeout units to seconds and use core
+    support
+  staging:iio:cdc:ad7150: Rework interrupt handling.
+  staging:iio:cdc:ad7150: More consistent register and field naming
+  staging:iio:cdc:ad7150: Reorganize headers.
+  staging:iio:cdc:ad7150: Tidy up local variable positioning.
+  staging:iio:cdc:ad7150: Drop unnecessary block comments.
+  staging:iio:cdc:ad7150: Shift the _raw readings by 4 bits.
+  staging:iio:cdc:ad7150: Add scale and offset to
+    info_mask_shared_by_type
+  staging:iio:cdc:ad7150: Really basic regulator support.
+  staging:iio:cdc:ad7150: Add of_match_table
+  dt-bindings:iio:cdc:adi,ad7150 binding doc
+  iio:Documentation:ABI Add missing elements as used by the adi,ad7150
+  staging:iio:cdc:ad7150: Add copyright notice given substantial
+    changes.
+  iio:cdc:ad7150: Move driver out of staging.
+
+ Documentation/ABI/testing/sysfs-bus-iio       |  33 +
+ .../bindings/iio/cdc/adi,ad7150.yaml          |  69 ++
+ drivers/iio/Kconfig                           |   1 +
+ drivers/iio/Makefile                          |   1 +
+ drivers/iio/cdc/Kconfig                       |  17 +
+ drivers/iio/cdc/Makefile                      |   6 +
+ drivers/iio/cdc/ad7150.c                      | 678 ++++++++++++++++++
+ drivers/iio/industrialio-event.c              |   1 +
+ drivers/staging/iio/cdc/Kconfig               |  10 -
+ drivers/staging/iio/cdc/Makefile              |   3 +-
+ drivers/staging/iio/cdc/ad7150.c              | 655 -----------------
+ include/linux/iio/types.h                     |   1 +
+ 12 files changed, 808 insertions(+), 667 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/cdc/adi,ad7150.yaml
+ create mode 100644 drivers/iio/cdc/Kconfig
+ create mode 100644 drivers/iio/cdc/Makefile
+ create mode 100644 drivers/iio/cdc/ad7150.c
+ delete mode 100644 drivers/staging/iio/cdc/ad7150.c
+
+-- 
+2.30.0
 

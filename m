@@ -2,148 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A3BB311F6B
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Feb 2021 19:49:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D2DFF312127
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Feb 2021 04:23:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230106AbhBFStU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 6 Feb 2021 13:49:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48746 "EHLO
+        id S229734AbhBGDWa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 6 Feb 2021 22:22:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230124AbhBFStS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 Feb 2021 13:49:18 -0500
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99569C06174A
-        for <linux-iio@vger.kernel.org>; Sat,  6 Feb 2021 10:48:37 -0800 (PST)
-Received: by mail-lf1-x12f.google.com with SMTP id h12so15521158lfp.9
-        for <linux-iio@vger.kernel.org>; Sat, 06 Feb 2021 10:48:37 -0800 (PST)
+        with ESMTP id S229506AbhBGDW2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 Feb 2021 22:22:28 -0500
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12680C061756
+        for <linux-iio@vger.kernel.org>; Sat,  6 Feb 2021 19:21:43 -0800 (PST)
+Received: by mail-pf1-x42b.google.com with SMTP id k13so1011718pfh.13
+        for <linux-iio@vger.kernel.org>; Sat, 06 Feb 2021 19:21:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ApsRbO7WUbGWGjo4B0tsUvS5l8cS+gS1MCAwG42UOqU=;
-        b=EQfrzYYyvZG+Vh0P8umlzxjtyQDFte4uVnT5BF9yBNrNae5jciSZlD0mvmTcQuL6Nr
-         rNW9zr0PyFmvSsKrgG7/6OmluJGKmkLPegW88S4CeXkyhtyNI1tuBdCMnzgNDfnptQFb
-         Qp3AN6Nv5b9EEd+vFD/1w00BYyXkc4TNSla+O5Bo6QZnDSntSOMbROQz1EGHx6+1zyvL
-         /LnAGih3UnIXm3MnYIQKOreqcMOnokCJhhaPFyiyK53Sdc0dIJtnhAvn8WmxJtb2mV0k
-         uC0N/tAOO/CUk4Tss4ExnQIUUeJtORHBwkW4HNcJpDpwtNhybn2RMTbsseQ/xB+5+TRU
-         JB7g==
+        d=chromium.org; s=google;
+        h=mime-version:content-transfer-encoding:in-reply-to:references
+         :subject:from:cc:to:date:message-id:user-agent;
+        bh=J8aByEx4plaMl5Ii2PzH3W/CgTfnQKhyYr110Lcchrs=;
+        b=mFu/sUbRMlghzahoygXzzYY0xBX6vQfrZgIuts7d7SdErQg69aS0OHiShJVbR8ocxB
+         zYLQnliOyY08jeKFPrYgg+wLxR3OH3PWfOofT0BqTxr+ho9ndgRCrbIWB0KrKgi9T5iQ
+         sk5Ya4/FeuiO891lUp4m0ZF/1PP69cJ4umVzk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ApsRbO7WUbGWGjo4B0tsUvS5l8cS+gS1MCAwG42UOqU=;
-        b=TT/bBL9GcLZOUS1SC9j5o+DtRix3rRoITxKqdZUL4eCrB2tZT16Vch9lwGtZJ3HgWL
-         GkgNoVuO/Kz5ekbeDyr1JBeiyF/SPxVR8Dnf94sncf3kiS9S8C4AEb49SS8eL41DXMY7
-         5QJedPK2lTL91kisgmTAelLWVvMfPPuE7XFKr48jTLLn5fwH+gZBv7Ejud2awwFhrrvq
-         Ye7SRY8hn5Qzt/j+bpK8E+qDClf7QSyi+SO3j58dERlBjab5Z6n0l22x4cnI3Cdi6jKh
-         rXF2h6vEBw1tW6Xr4xOOrAUf/p8hxUo1AJYYu5JxcK9lty11UlIsgK1OpBqA+bK30w3M
-         pDAg==
-X-Gm-Message-State: AOAM530LECg42E+KKntGPLS9JSUiC8slrRDOp2QK0ShAdlG+8YGwOsh6
-        EcpeUTdB76vSqlpwhcWIzijuU1YRexnK5dlKArI=
-X-Google-Smtp-Source: ABdhPJzM0mo2IXOQ98OaCAX1Y7r9aUJm8RpNoeI3M/iId/UfjNGPI1cypzxHm5VQSLxGh5YIR6G45rXh3luuKwCrb1I=
-X-Received: by 2002:a19:6d07:: with SMTP id i7mr6113052lfc.75.1612637316097;
- Sat, 06 Feb 2021 10:48:36 -0800 (PST)
+        h=x-gm-message-state:mime-version:content-transfer-encoding
+         :in-reply-to:references:subject:from:cc:to:date:message-id
+         :user-agent;
+        bh=J8aByEx4plaMl5Ii2PzH3W/CgTfnQKhyYr110Lcchrs=;
+        b=TGz33czuYXqEBuMJEn4siMdtqp2SmM4OY9G2XgPttG7borI548WzPUWoHUO4WMfXUY
+         8rVcTDDZ72ILPviqrUvc3pyi3tsq/81pxdXs9+lrQCQKe4yl13k0HdGpYylG4f9FcVmw
+         9tX1VWZT9S0mUmNmqQCTTsNS/eSJpV+BRf/xMHRIH749X3h2MIllYu3O+vEeaLEqFllq
+         IAqYf9Au1P3XTb3cjZIZ9I4Hn9nTtFFA8A0xnvIjdrhq9YT8n5sZ4j9FFYSLpfrCarui
+         iKi3FtRxKjnp0J+qfnZslP8upBJJ3ikjVLYiWsFdf4N3dIHxbWSWRhai01SVVThIORWT
+         butQ==
+X-Gm-Message-State: AOAM533Xc/q1WDkrMwI8Wy6WRrH6o6pcBeUjgpBV9z89D436dl0toLde
+        haGc2KRN0jZjTH0GGWMYISFHmQ==
+X-Google-Smtp-Source: ABdhPJwhwyicDF4yN4qXAJMR6YjwkSPDz3Q+Vn402tMQ9b4zaNH0rTvNy2HQr6IlbfuqrdidvmE2iA==
+X-Received: by 2002:a63:551f:: with SMTP id j31mr11668546pgb.432.1612668102161;
+        Sat, 06 Feb 2021 19:21:42 -0800 (PST)
+Received: from chromium.org ([2620:15c:202:201:2c64:7ee8:fefb:fab2])
+        by smtp.gmail.com with ESMTPSA id u19sm1499571pjy.20.2021.02.06.19.21.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 06 Feb 2021 19:21:41 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20210206145258.GA603024@ubuntu> <20210206170107.7db71f53@archlinux>
-In-Reply-To: <20210206170107.7db71f53@archlinux>
-From:   Wilfried Wessner <wilfried.wessner@gmail.com>
-Date:   Sat, 6 Feb 2021 19:48:26 +0100
-Message-ID: <CAMwq6HikxYvTPHsyQmWBtQRUgLnPpVeaGjy0mvF_ZQjeAOMkyg@mail.gmail.com>
-Subject: Re: [PATCH v2] iio: ad7949: fix wrong ADC result due to incorrect bit mask
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20210206161711.6f555434@archlinux>
+References: <20210202184434.42644-1-swboyd@chromium.org> <20210202184434.42644-4-swboyd@chromium.org> <20210206161711.6f555434@archlinux>
+Subject: Re: [PATCH v4 3/3] iio: proximity: Add a ChromeOS EC MKBP proximity driver
+From:   Stephen Boyd <swboyd@chromium.org>
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Charles-Antoine Couret <charles-antoine.couret@essensium.com>
-Content-Type: text/plain; charset="UTF-8"
+Date:   Sat, 06 Feb 2021 19:21:39 -0800
+Message-ID: <161266809977.76967.12637197400196121672@swboyd.mtv.corp.google.com>
+User-Agent: alot/0.9.1
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Feb 6, 2021 at 6:01 PM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Sat, 6 Feb 2021 15:52:58 +0100
-> Wilfried Wessner <wilfried.wessner@gmail.com> wrote:
->
-> > Fixes a wrong bit mask used for the ADC's result, which was caused by an
-> > improper usage of the GENMASK() macro. The bits higher than ADC's
-> > resolution are undefined and if not masked out correctly, a wrong result
-> > can be given. The GENMASK() macro indexing is zero based, so the mask has
-> > to go from [resolution - 1 , 0].
->
-> Hi Wilfried,
->
-> Welcome to IIO and kernel in general!
->
-> It's useful to add to the description if the error was found by inspection / script
-> or by observing an actual error on hardware?
+Quoting Jonathan Cameron (2021-02-06 08:17:11)
+> On Tue,  2 Feb 2021 10:44:34 -0800
+> Stephen Boyd <swboyd@chromium.org> wrote:
+>=20
+> > +static struct platform_driver cros_ec_mkbp_proximity_driver =3D {
+> > +     .driver =3D {
+> > +             .name =3D "cros-ec-mkbp-proximity",
+> > +             .of_match_table =3D of_match_ptr(cros_ec_mkbp_proximity_o=
+f_match),
+> I'm going to assume we know no one is going to use this with
+> ACPI via PRP0001 given presumably the firmware on these devices
+> is tightly controlled.
 
-The issue was found in combination of an AD7682 ADC with an ARM based iMX7-CPU.
-The SPI line was analyzed with a logic analyzer and a discrepancy
-between applied
-voltage level and the ADC reported value in user space was observed.
-Digging into
-the driver code revealed the error.
+Correct.
 
->
-> Also, needs a fixes tag so we can work out what kernels to back port it to.
+>=20
+> However, we should should still drop the of_match_ptr
+> as it will lead to an unused warning for cros_ec_mkbp_proximity_of_match
+> if anyone builds this without CONFIG_OF + it sets a general bad
+> precedence that I'd rather wasn't around for people to copy.
+> Note that in general we are slowly ripping these out of IIO but
+> probably lots still there.
+>=20
+> If this is all that is needed in this version I'll just do it
+> whilst applying unless anyone shouts.
+>=20
 
-Not sure about that, but I found the issue in:
-
-commit 61556703b610a104de324e4f061dc6cf7b218b46 (HEAD -> master,
-origin/master, origin/HEAD)
-Merge: 3afe9076a7c1 7f3414226b58
-Author: Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Wed Feb 3 11:56:58 2021 -0800
-
-    Merge tag 'for-linus-5.11-rc7' of
-git://git.kernel.org/pub/scm/linux/kernel/git/rw/uml
-
->
-> +CC Charle-Antoine Couret as the original driver author.
-
-done.
-I wrote also an email to Charles-Antoine with the proposed fix, his comment was:
-------
-[Wilfried:]
->> since the GENMASK macro uses zero-based indexing?
->>
-[Charles-Antoine:]
->You're right, it's a mistake.
->It wouldn't be a problem in many cases but it's better to be compliant.
-[Wilfried:]
->> Could you pls. comment on that?
->>
-[Charles-Antoine:]
->Good for me.
-------
-
-
->
-> Thanks,
->
-> Jonathan
->
-> >
-> > Signed-off-by: Wilfried Wessner <wilfried.wessner@gmail.com>
-> >
-> > ---
-> >  drivers/iio/adc/ad7949.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/iio/adc/ad7949.c b/drivers/iio/adc/ad7949.c
-> > index 5d597e5050f6..1b4b3203e428 100644
-> > --- a/drivers/iio/adc/ad7949.c
-> > +++ b/drivers/iio/adc/ad7949.c
-> > @@ -91,7 +91,7 @@ static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
-> >       int ret;
-> >       int i;
-> >       int bits_per_word = ad7949_adc->resolution;
-> > -     int mask = GENMASK(ad7949_adc->resolution, 0);
-> > +     int mask = GENMASK(ad7949_adc->resolution - 1, 0);
-> >       struct spi_message msg;
-> >       struct spi_transfer tx[] = {
-> >               {
->
+Agreed. Thanks for fixing that last little bit.

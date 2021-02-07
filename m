@@ -2,36 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C938D312597
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Feb 2021 16:51:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7FC4312595
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Feb 2021 16:50:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229690AbhBGPuw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Feb 2021 10:50:52 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34078 "EHLO mail.kernel.org"
+        id S229684AbhBGPub (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 Feb 2021 10:50:31 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34030 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229715AbhBGPuv (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 7 Feb 2021 10:50:51 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 528CE64E63;
-        Sun,  7 Feb 2021 15:49:12 +0000 (UTC)
+        id S229690AbhBGPu0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 7 Feb 2021 10:50:26 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D8A2A64E64;
+        Sun,  7 Feb 2021 15:49:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612712953;
-        bh=M5ZQhHXDEgSCXSYU6eECpPK9SlfIUauk4xahlr/bo5Q=;
+        s=k20201202; t=1612712955;
+        bh=BNvWERF7kZIB0Y4RCSxZOcMeDmUk3d5+ItEOYMBWmnw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qbpqzf5aSsVP60VNJYdAl/wewARGbpthqTSzUATUBTzhhj+asUtLv0WltsvWrDD5s
-         RYD3MWcHEyvxPeTfLzZt1TF/JfFcAvq2h9hnkpSxuCaRbp/SvN6jOlwF4C1+bWumRJ
-         W2ZOM80qTXWODIMHMvcmGoK7UVU5IPmi+VWzgWzVf8lqy/RvlbBiA5s8wqXmyqpn/q
-         SWN34KwgIO8od8+ePO+L1qaTyBgAqcU5ECqBe0eQ95t9FqoWr7Ahb9xKKu9g/gDYOo
-         KFZb9CoaPtnT2Oogp6Htm4qmvlHiXkfY4060PasLo4meNqc++AoIhkqzo5RZcnxw6A
-         AWw0edNjzuE5w==
+        b=X/7FzrvrgHwobvr6KC+eQtFYdns4a4VNMsE67SK304yOWKPOmLwnZTBFPLdV86Wbk
+         GlDXQQn4n4Ul9+Hdj4QBfBuF1Yz+9ufUIMU/4wtX4/9agW6DdmUgnzg422CvyIbq6Q
+         9RDiE9SnyHEeHMdhc7Tt4b0VmvhfQylLpu65SjuqSoNAjeUTY0mNXycRnq6t4gwjdu
+         oJQQERc5h3WfpR8WXrv4lVQMBgXYJPSTC6/8MOA8Tp3kkNLFHhlWIx4uPWObCouJns
+         bBVLGgpp8dPXPSFLzYmZ5rSoZS9Qa0T9ZD6MxkiJCALRTMhijWv5X+DLslwSzqZUqp
+         XlWL9ssYUR3xw==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         song.bao.hua@hisilicon.com, robh+dt@kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 20/24] staging:iio:cdc:ad7150: Add of_match_table
-Date:   Sun,  7 Feb 2021 15:46:19 +0000
-Message-Id: <20210207154623.433442-21-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Robh+dt@kernel.org, devicetree@vger.kernel.org
+Subject: [PATCH 21/24] dt-bindings:iio:cdc:adi,ad7150 binding doc
+Date:   Sun,  7 Feb 2021 15:46:20 +0000
+Message-Id: <20210207154623.433442-22-jic23@kernel.org>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20210207154623.433442-1-jic23@kernel.org>
 References: <20210207154623.433442-1-jic23@kernel.org>
@@ -43,44 +44,92 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Rather than using the fallback path in the i2c subsystem and hoping
-for no clashes across vendors, lets put in an explicit table for
-matching.
+Binding covering the ad7150, ad7151 and ad7156 capacitance to digital
+convertors.  The only difference between these is how many channels they
+have (1 or 2)
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Robh+dt@kernel.org
+Cc: devicetree@vger.kernel.org
 ---
- drivers/staging/iio/cdc/ad7150.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ .../bindings/iio/cdc/adi,ad7150.yaml          | 69 +++++++++++++++++++
+ 1 file changed, 69 insertions(+)
 
-diff --git a/drivers/staging/iio/cdc/ad7150.c b/drivers/staging/iio/cdc/ad7150.c
-index 0bc8c7a99883..33c8a78c076f 100644
---- a/drivers/staging/iio/cdc/ad7150.c
-+++ b/drivers/staging/iio/cdc/ad7150.c
-@@ -12,6 +12,7 @@
- #include <linux/i2c.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/regulator/consumer.h>
- #include <linux/slab.h>
- 
-@@ -655,9 +656,16 @@ static const struct i2c_device_id ad7150_id[] = {
- 
- MODULE_DEVICE_TABLE(i2c, ad7150_id);
- 
-+static const struct of_device_id ad7150_of_match[] = {
-+	{ "adi,ad7150" },
-+	{ "adi,ad7151" },
-+	{ "adi,ad7156" },
-+	{}
-+};
- static struct i2c_driver ad7150_driver = {
- 	.driver = {
- 		.name = "ad7150",
-+		.of_match_table = ad7150_of_match,
- 	},
- 	.probe = ad7150_probe,
- 	.id_table = ad7150_id,
+diff --git a/Documentation/devicetree/bindings/iio/cdc/adi,ad7150.yaml b/Documentation/devicetree/bindings/iio/cdc/adi,ad7150.yaml
+new file mode 100644
+index 000000000000..2155d3f5666c
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/cdc/adi,ad7150.yaml
+@@ -0,0 +1,69 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/cdc/adi,ad7150.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Analog device AD7150 and similar capacitance to digital convertors.
++
++maintainers:
++  - Jonathan Cameron <jic23@kernel.org>
++
++properties:
++  compatible:
++    enum:
++      - adi,ad7150
++      - adi,ad7151
++      - adi,ad7156
++
++  reg:
++    maxItems: 1
++
++  vdd-supply: true
++
++  interrupts: true
++
++allOf:
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - adi,ad7150
++              - adi,ad7156
++    then:
++      properties:
++        interrupts:
++          minItems: 2
++          maxItems: 2
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: adi,ad7151
++    then:
++      properties:
++        interrupts:
++          minItems: 1
++          maxItems: 1
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        cdc@48 {
++            compatible = "adi,ad7150";
++            reg = <0x48>;
++            interrupts = <25 2>, <26 2>;
++            interrupt-parent = <&gpio>;
++        };
++    };
++...
 -- 
 2.30.0
 

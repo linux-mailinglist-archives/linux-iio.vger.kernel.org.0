@@ -2,37 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1432F3125DE
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Feb 2021 17:10:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 86AAA3125E0
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Feb 2021 17:10:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229587AbhBGQKg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Feb 2021 11:10:36 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:31738 "EHLO
+        id S229601AbhBGQKl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 Feb 2021 11:10:41 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:43736 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229548AbhBGQKf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Feb 2021 11:10:35 -0500
+        by vger.kernel.org with ESMTP id S229565AbhBGQKk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Feb 2021 11:10:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1612714149;
+        s=mimecast20190719; t=1612714153;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=HZQXVkMqxp7XBFbeCA9Aa6LBCxZeB/3DymTyc75y28c=;
-        b=ASkDx02l49o95YnIzF8lARFyEC7ZFX54Bg+MDlFi5UGy/sZVfhXtvjVHxzeV0TouxOOp0A
-        Fe07tQnaJ9mfQ0cCWj1kS6/lZcwcUiLcs4iRYZr75krJWawFYVNIJ59Dw9WlCfBxi+2In2
-        CZTRAX0s0cuoTq5TVAg8DT6zMg0TWNE=
+        bh=MBboiUZbc91zVzy6Nb09GeB6C3V6W4cRZI7KJVW1XK8=;
+        b=dTyZAkNcAXswklo3fCxBKcCuxLv6t6+wE0DrNqLor34hmyJh9jHZYt0HOZ1CjO7QOtUKo+
+        xPZuF1x4jo56eYwD7bmdz6mg4cC1olp/2FvFqx5oVp+8TtcB+re4Cpx4QnxaNXC7glI1Xu
+        ZOz4yhwt3713GXp0FK9HjNS51mIMTqs=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-159-VOgOg6P3Mb2k_UvKGgPvhQ-1; Sun, 07 Feb 2021 11:09:08 -0500
-X-MC-Unique: VOgOg6P3Mb2k_UvKGgPvhQ-1
+ us-mta-432-B7rm4nzfPyu1byIDcDAB5g-1; Sun, 07 Feb 2021 11:09:11 -0500
+X-MC-Unique: B7rm4nzfPyu1byIDcDAB5g-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id EDCB58030CC;
-        Sun,  7 Feb 2021 16:09:06 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9E88310066F1;
+        Sun,  7 Feb 2021 16:09:10 +0000 (UTC)
 Received: from x1.localdomain (ovpn-112-86.ams2.redhat.com [10.36.112.86])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id B45E36F7E6;
-        Sun,  7 Feb 2021 16:09:05 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 405481346F;
+        Sun,  7 Feb 2021 16:09:07 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Hans de Goede <hdegoede@redhat.com>,
@@ -40,9 +40,9 @@ Cc:     Hans de Goede <hdegoede@redhat.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         linux-iio@vger.kernel.org
-Subject: [PATCH 2/3] iio: accel: bmc150: Set label based on accel-location on 2-accel yoga-style 2-in-1s
-Date:   Sun,  7 Feb 2021 17:09:00 +0100
-Message-Id: <20210207160901.110643-3-hdegoede@redhat.com>
+Subject: [PATCH 3/3] iio: accel: kxcjk-1013: Set label based on accel-location on 2-accel yoga-style 2-in-1s
+Date:   Sun,  7 Feb 2021 17:09:01 +0100
+Message-Id: <20210207160901.110643-4-hdegoede@redhat.com>
 In-Reply-To: <20210207160901.110643-1-hdegoede@redhat.com>
 References: <20210207160901.110643-1-hdegoede@redhat.com>
 MIME-Version: 1.0
@@ -54,64 +54,63 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 Some 2-in-1 laptops / convertibles with 360° (yoga-style) hinges,
-use 2 bmc150 accelerometers, defined by a single BOSC0200 ACPI
-device node (1 in their base and 1 in their display).
+use 2 KXCJ91008 accelerometers:
+1 in their display using an ACPI HID of "KIOX010A"; and
+1 in their base    using an ACPI HID of "KIOX020A"
 
 Since in this case we know the location of each accelerometer,
 set the label for the accelerometers to the standardized
 "accel-display" resp. "accel-base" labels. This way userspace
 can use the labels to get the location.
 
-This was tested on a Lenovo ThinkPad Yoga 11e 4th gen (N3450 CPU).
+This was tested on a Medion Akoya E2228T MD60250.
 
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/iio/accel/bmc150-accel-core.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ drivers/iio/accel/kxcjk-1013.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
-index 7e425ebcd7ea..b0dbd12cbf42 100644
---- a/drivers/iio/accel/bmc150-accel-core.c
-+++ b/drivers/iio/accel/bmc150-accel-core.c
-@@ -443,26 +443,32 @@ static bool bmc150_apply_acpi_orientation(struct device *dev,
- 					  struct iio_mount_matrix *orientation)
+diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxcjk-1013.c
+index 849eb79fc537..1e7ca666c77a 100644
+--- a/drivers/iio/accel/kxcjk-1013.c
++++ b/drivers/iio/accel/kxcjk-1013.c
+@@ -1331,7 +1331,8 @@ static irqreturn_t kxcjk1013_data_rdy_trig_poll(int irq, void *private)
+ 
+ static const char *kxcjk1013_match_acpi_device(struct device *dev,
+ 					       enum kx_chipset *chipset,
+-					       enum kx_acpi_type *acpi_type)
++					       enum kx_acpi_type *acpi_type,
++					       const char **label)
  {
- 	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
- 	struct acpi_device *adev = ACPI_COMPANION(dev);
-+	char *name, *alt_name, *label, *str;
- 	union acpi_object *obj, *elements;
--	char *name, *alt_name, *str;
- 	acpi_status status;
- 	int i, j, val[3];
+ 	const struct acpi_device_id *id;
  
- 	if (!adev || !acpi_dev_hid_uid_match(adev, "BOSC0200", NULL))
- 		return false;
+@@ -1339,10 +1340,14 @@ static const char *kxcjk1013_match_acpi_device(struct device *dev,
+ 	if (!id)
+ 		return NULL;
  
--	if (strcmp(dev_name(dev), "i2c-BOSC0200:base") == 0)
-+	if (strcmp(dev_name(dev), "i2c-BOSC0200:base") == 0) {
- 		alt_name = "ROMK";
--	else
-+		label = "accel-base";
-+	} else {
- 		alt_name = "ROMS";
-+		label = "accel-display";
+-	if (strcmp(id->id, "SMO8500") == 0)
++	if (strcmp(id->id, "SMO8500") == 0) {
+ 		*acpi_type = ACPI_SMO8500;
+-	else if (strcmp(id->id, "KIOX010A") == 0)
++	} else if (strcmp(id->id, "KIOX010A") == 0) {
+ 		*acpi_type = ACPI_KIOX010A;
++		*label = "accel-display";
++	} else if (strcmp(id->id, "KIOX020A") == 0) {
++		*label = "accel-base";
 +	}
  
--	if (acpi_has_method(adev->handle, "ROTM"))
-+	if (acpi_has_method(adev->handle, "ROTM")) {
- 		name = "ROTM";
--	else if (acpi_has_method(adev->handle, alt_name))
-+	} else if (acpi_has_method(adev->handle, alt_name)) {
- 		name = alt_name;
--	else
-+		indio_dev->label = label;
-+	} else {
- 		return false;
-+	}
+ 	*chipset = (enum kx_chipset)id->driver_data;
  
- 	status = acpi_evaluate_object(adev->handle, name, NULL, &buffer);
- 	if (ACPI_FAILURE(status)) {
+@@ -1385,7 +1390,8 @@ static int kxcjk1013_probe(struct i2c_client *client,
+ 	} else if (ACPI_HANDLE(&client->dev)) {
+ 		name = kxcjk1013_match_acpi_device(&client->dev,
+ 						   &data->chipset,
+-						   &data->acpi_type);
++						   &data->acpi_type,
++						   &indio_dev->label);
+ 	} else
+ 		return -ENODEV;
+ 
 -- 
 2.30.0
 

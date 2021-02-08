@@ -2,108 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE858312B15
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Feb 2021 08:28:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AE2E312B3D
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Feb 2021 08:52:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229759AbhBHH2b (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Feb 2021 02:28:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36834 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229751AbhBHH2b (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Feb 2021 02:28:31 -0500
-Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1745C061756
-        for <linux-iio@vger.kernel.org>; Sun,  7 Feb 2021 23:27:50 -0800 (PST)
-Received: by mail-io1-xd30.google.com with SMTP id n2so13938957iom.7
-        for <linux-iio@vger.kernel.org>; Sun, 07 Feb 2021 23:27:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=hU3cmz681hcEYIYHHUEkknX5BOs8loQLHjQEL4TAQy0=;
-        b=PWhOSpKxZX3iuJOmMyT5VXVJ07MlWdUSB3+7wihmtBqqii/u3d4mioySnM/Nrjy+4O
-         XC0TjMCvT8Ge4I6ZQ0J0nyO0Nd8SZ2VM0m8J3EZB5M/Mj0YbeVUKTMti73tx1kcyFmub
-         ClTAqYMWywLusK2klBOWJiB7t4l7qcWFkHYAndeIUc0DGAFMbA5ywA4pdNV00g0aL7or
-         4SQyX13wWQdW3YGt3MsRBkoxoefQoy7pwUJDEAB08EieuJ2jBODbvsodspRthAEaTNI5
-         +BWhrZ7y8ftEaZJ1LQWEbyPH8aYoUogy2gzZV3Ijmu0JpBZ1rxRC79rwIqZWLxPeOAmh
-         5Wxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=hU3cmz681hcEYIYHHUEkknX5BOs8loQLHjQEL4TAQy0=;
-        b=OXjYIbLlsTPNiRHELj2qxA+gcs5LmBWaGsfCDMFNIpEn150W8Va2ic82So9/uuID8U
-         57iamm6XTAxB+b6Ld3+5uXABJzc+NwxqnZF0/yoAprRcKI3nYcivKaDeG02olkYZrZsV
-         llexqgtAeOrb6QbbLf7nF9qbVjfGPoK3qmllUN9SGXA0YPWeK8s1gfARAC3FePSY0ln4
-         VxbNJKdlV+QNuricBwP9FDc4LAg7VoE5F5ZLbrWPatjJzwi3dLR/JjMuvaO8HrO+nEyK
-         qvkcPhwHFP04ZJlvS+dtQfpE1XbtNUk/0p4txHKvK7U1Mi1RxyK/et7tiSaiI/yY2l0V
-         X1Zg==
-X-Gm-Message-State: AOAM530l7qE7IV4vBFmtTkroaXDDHX0fwq4PsGkOzYy4277C00x0b6DM
-        8j0kmKQ7CqnmDkyYln93WFXetzzojB34EgKVkCXxjwFP
-X-Google-Smtp-Source: ABdhPJzL9bzu4RoK0CJkuwLIa2dda5HJJ54jwpl7mg9+MNYezTli4bE/eY3GLcNNXItI4YsgTn7m2cDbZYPE7eZevOk=
-X-Received: by 2002:a02:3b6c:: with SMTP id i44mr16102460jaf.91.1612769269912;
- Sun, 07 Feb 2021 23:27:49 -0800 (PST)
+        id S229707AbhBHHvo convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 8 Feb 2021 02:51:44 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2513 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229608AbhBHHvo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Feb 2021 02:51:44 -0500
+Received: from fraeml736-chm.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DYymD3b6dz67m3R;
+        Mon,  8 Feb 2021 15:47:24 +0800 (CST)
+Received: from lhreml718-chm.china.huawei.com (10.201.108.69) by
+ fraeml736-chm.china.huawei.com (10.206.15.217) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Mon, 8 Feb 2021 08:50:59 +0100
+Received: from dggemi761-chm.china.huawei.com (10.1.198.147) by
+ lhreml718-chm.china.huawei.com (10.201.108.69) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2106.2; Mon, 8 Feb 2021 07:50:57 +0000
+Received: from dggemi761-chm.china.huawei.com ([10.9.49.202]) by
+ dggemi761-chm.china.huawei.com ([10.9.49.202]) with mapi id 15.01.2106.006;
+ Mon, 8 Feb 2021 15:50:56 +0800
+From:   "Song Bao Hua (Barry Song)" <song.bao.hua@hisilicon.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+CC:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>
+Subject: RE: [PATCH 20/24] staging:iio:cdc:ad7150: Add of_match_table
+Thread-Topic: [PATCH 20/24] staging:iio:cdc:ad7150: Add of_match_table
+Thread-Index: AQHW/WjOz1HcIZ4+F0WGI66byv11FKpN4Rlg
+Date:   Mon, 8 Feb 2021 07:50:56 +0000
+Message-ID: <ad342dd10155419097b852761aa21038@hisilicon.com>
+References: <20210207154623.433442-1-jic23@kernel.org>
+ <20210207154623.433442-21-jic23@kernel.org>
+In-Reply-To: <20210207154623.433442-21-jic23@kernel.org>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.126.200.200]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-References: <20210207160901.110643-1-hdegoede@redhat.com> <20210207160901.110643-2-hdegoede@redhat.com>
-In-Reply-To: <20210207160901.110643-2-hdegoede@redhat.com>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Mon, 8 Feb 2021 09:27:38 +0200
-Message-ID: <CA+U=DsriyMvU5=iRrh73UJxHxT7FuA_P_pCHVaY9JskmLSffNA@mail.gmail.com>
-Subject: Re: [PATCH 1/3] iio: core: Allow drivers to specify a label without
- it coming from of
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Bastien Nocera <hadess@hadess.net>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Feb 7, 2021 at 6:11 PM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> Only set indio_dev->label from of/dt if there actually is a label
-> specified in of.
->
-> This allows drivers to set a label without this being overwritten with
-> NULL when there is no label specified in of. This is esp. useful on
-> devices where of is not used at all, such as your typical x86/ACPI device.
-
-Reviewed-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 
 
->
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> -----Original Message-----
+> From: Jonathan Cameron [mailto:jic23@kernel.org]
+> Sent: Monday, February 8, 2021 4:46 AM
+> To: linux-iio@vger.kernel.org
+> Cc: Lars-Peter Clausen <lars@metafoo.de>; Michael Hennerich
+> <Michael.Hennerich@analog.com>; Song Bao Hua (Barry Song)
+> <song.bao.hua@hisilicon.com>; robh+dt@kernel.org; Jonathan Cameron
+> <jonathan.cameron@huawei.com>
+> Subject: [PATCH 20/24] staging:iio:cdc:ad7150: Add of_match_table
+> 
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> Rather than using the fallback path in the i2c subsystem and hoping
+> for no clashes across vendors, lets put in an explicit table for
+> matching.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > ---
->  drivers/iio/industrialio-core.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> index e9ee9363fed0..b409e076818b 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -1755,6 +1755,7 @@ static const struct iio_buffer_setup_ops noop_ring_setup_ops;
->
->  int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
->  {
-> +       const char *label;
->         int ret;
->
->         if (!indio_dev->info)
-> @@ -1765,8 +1766,9 @@ int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
->         if (!indio_dev->dev.of_node && indio_dev->dev.parent)
->                 indio_dev->dev.of_node = indio_dev->dev.parent->of_node;
->
-> -       indio_dev->label = of_get_property(indio_dev->dev.of_node, "label",
-> -                                          NULL);
-> +       label = of_get_property(indio_dev->dev.of_node, "label", NULL);
-> +       if (label)
-> +               indio_dev->label = label;
->
->         ret = iio_check_unique_scan_index(indio_dev);
->         if (ret < 0)
+>  drivers/staging/iio/cdc/ad7150.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/drivers/staging/iio/cdc/ad7150.c
+> b/drivers/staging/iio/cdc/ad7150.c
+> index 0bc8c7a99883..33c8a78c076f 100644
+> --- a/drivers/staging/iio/cdc/ad7150.c
+> +++ b/drivers/staging/iio/cdc/ad7150.c
+> @@ -12,6 +12,7 @@
+>  #include <linux/i2c.h>
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+> +#include <linux/mod_devicetable.h>
+>  #include <linux/regulator/consumer.h>
+>  #include <linux/slab.h>
+> 
+> @@ -655,9 +656,16 @@ static const struct i2c_device_id ad7150_id[] = {
+> 
+>  MODULE_DEVICE_TABLE(i2c, ad7150_id);
+> 
+> +static const struct of_device_id ad7150_of_match[] = {
+> +	{ "adi,ad7150" },
+> +	{ "adi,ad7151" },
+> +	{ "adi,ad7156" },
+> +	{}
+> +};
+
+Does it compile if CONFIG_OF is not enabled?
+
+>  static struct i2c_driver ad7150_driver = {
+>  	.driver = {
+>  		.name = "ad7150",
+> +		.of_match_table = ad7150_of_match,
+
+of_match_ptr(ad7150_of_match)?
+
+Do we need dt-binding doc?
+
+
+>  	},
+>  	.probe = ad7150_probe,
+>  	.id_table = ad7150_id,
 > --
 > 2.30.0
->
+
+Thanks
+Barry
+

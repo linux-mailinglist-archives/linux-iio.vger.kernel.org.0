@@ -2,115 +2,126 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 72F673138E3
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Feb 2021 17:07:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02EA831418D
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Feb 2021 22:20:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233828AbhBHQHy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Feb 2021 11:07:54 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46686 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233959AbhBHQHc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 8 Feb 2021 11:07:32 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 703C364DF0;
-        Mon,  8 Feb 2021 16:06:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612800411;
-        bh=fTuhJ5RT5eLAOUQrf/tdirgkNlz+VEc+4HXnU0SEBNY=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=CE+UBgTcDUlapJhqmFejcia3qaw0B8VrsoRrETcKyAGabydxD4GrGLxeuQh4z2WIV
-         fEZUTK3eyBYKhdKsVYF1E09qTHQFS9rpK+bfnU5WcTgMyQTcStYiBjA8Or50Bygx3i
-         P+1YFg3c1WmM/GRPnWKHhQEIJrWWfa+f4JEK5X+p4uJC7vvyk//cyBqLY++9h2ZgWh
-         ZmphXs+BzmLpUhXwZE2rmbfUSSbU0Hgr8R8TFT1Ec1Ks31652+73b0yy3R61zX3+V4
-         RDb1bq8r+a9PvwCpd7w5rnK2D4g6ob+0j7PXUc/F625iJ3HNs2ZUOXcWIz6lsnxOGI
-         ytIzgvJv58S6w==
-Received: by mail-qt1-f182.google.com with SMTP id w20so10669510qta.0;
-        Mon, 08 Feb 2021 08:06:51 -0800 (PST)
-X-Gm-Message-State: AOAM531PbvIWNh1HoTpcl2TbMEO9/WPrtJDz5V86miULqnODZj7Xkuwu
-        BGddixzu6B17Ek55cks6W8S8D+0ZGQ5S6YWGBw==
-X-Google-Smtp-Source: ABdhPJzQqyDVjzf3UbUtZdEJmP0vjWtaTKE5/EstbBlrylclBdwLqosH30kf0R50qJ8YnbDKvk1GGSZilez2wJPVCUk=
-X-Received: by 2002:ac8:5c41:: with SMTP id j1mr15757118qtj.306.1612800410564;
- Mon, 08 Feb 2021 08:06:50 -0800 (PST)
-MIME-Version: 1.0
-References: <20210204113551.68744-1-alexandru.tachici@analog.com>
- <20210204113551.68744-3-alexandru.tachici@analog.com> <20210206152643.53b0e01b@archlinux>
-In-Reply-To: <20210206152643.53b0e01b@archlinux>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Mon, 8 Feb 2021 10:06:39 -0600
-X-Gmail-Original-Message-ID: <CAL_Jsq+zXzqkMbq5x6GCdE_175MpTGHw3kfOKaPpuaWuAtMF-Q@mail.gmail.com>
-Message-ID: <CAL_Jsq+zXzqkMbq5x6GCdE_175MpTGHw3kfOKaPpuaWuAtMF-Q@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] dt-bindings: iio: adc: ad7124: add config nodes
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Alexandru Tachici <alexandru.tachici@analog.com>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        devicetree@vger.kernel.org
+        id S235646AbhBHVUR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Feb 2021 16:20:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46480 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236308AbhBHVUE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Feb 2021 16:20:04 -0500
+Received: from mail-pj1-x1049.google.com (mail-pj1-x1049.google.com [IPv6:2607:f8b0:4864:20::1049])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDD48C061788
+        for <linux-iio@vger.kernel.org>; Mon,  8 Feb 2021 13:19:22 -0800 (PST)
+Received: by mail-pj1-x1049.google.com with SMTP id m5so336292pjg.0
+        for <linux-iio@vger.kernel.org>; Mon, 08 Feb 2021 13:19:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=sender:date:message-id:mime-version:subject:from:to:cc;
+        bh=mj2tFALi24MejDUAyOIZC6XcOuZLAwzBMp1DQ6QF7c4=;
+        b=R4kz3oxWh27Oa6yQGz5VU3uqmz22vN2b3nKeesahabCfAT7e9yqTnNciJeT2xfk5ou
+         IWNsYRcd58dNHirK6ZQQezlr81Zhw6QZIoaGkGWyVgHTyo+4jkg1HdNt3KuGvgqbi/+3
+         7uyVABrUZF0Knpi/7O/BdUmgOaToVrambu3GLsjcAEZoPPdP72xMaXyfDIOreA4YqhlA
+         +nB8h7pPZ0m1nUaeoqAMTAO+gMtIw/GZe7Li6nltqNfsFeRmPCE95gv/61bASA61YrW9
+         BIacRXmVAmPErl9C7oejKaSPaJF8edAKFWl979P6587nVdK2OrqlsgkpqksTH1Y2Y3wo
+         7OWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:message-id:mime-version:subject:from
+         :to:cc;
+        bh=mj2tFALi24MejDUAyOIZC6XcOuZLAwzBMp1DQ6QF7c4=;
+        b=ke8L50LZ6L1BYUzv+t+e9wdAWvOlLxTqogys3phQ4oZ8rbBXqfPpDzZJTY5V8ASaW/
+         +nQMgoqP4E3aZD3QoQcXBWkVed5D/Mv2pLM4WzviLFrp1VFhijGx3zwwRHViltRmWmHc
+         tur70e90cMGOFW/S07O+7If8zewjJiZBhWTB8xv1Uvt5qRMQ5fM81nDptAraAlLTm3KV
+         2agXgy3/4eana+1JcgsaZggJMjIaOKxcZmG5RkrcYVAEt4HWwL1wvDsVE1LzSzNa1bK6
+         eNwCPGzAKOSosGhOFpuS081H5ADfYWTL/fYHAhtqSyYv9RMBZ0YWCJHm/wYOOiIqC3cl
+         NFBw==
+X-Gm-Message-State: AOAM5324m8CQinAmrdPuYdt9fioynC2ioWr7RnB/i5hnsOzOBxp016Rb
+        DkH1TYldx5V9ulLMgXjyiFMxKw7nTzOjAQ==
+X-Google-Smtp-Source: ABdhPJyvWdjxDxa2oDucvOMapD4bizkkq8JMxC+/bmdPT4s/BwMGoHRPjIom3HD+ILKxl8qH9PapC3lGyhggoA==
+Sender: "jbhayana via sendgmr" <jbhayana@jbhayana.c.googlers.com>
+X-Received: from jbhayana.c.googlers.com ([fda3:e722:ac3:10:24:72f4:c0a8:42b2])
+ (user=jbhayana job=sendgmr) by 2002:a62:3503:0:b029:1aa:6f15:b9fe with SMTP
+ id c3-20020a6235030000b02901aa6f15b9femr19274370pfa.65.1612819162178; Mon, 08
+ Feb 2021 13:19:22 -0800 (PST)
+Date:   Mon,  8 Feb 2021 21:19:17 +0000
+Message-Id: <20210208211918.1280588-1-jbhayana@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.30.0.478.g8a0d178c01-goog
+Subject: [PATCH v5 0/1] Adding support for IIO SCMI based sensors
+From:   Jyoti Bhayana <jbhayana@google.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Jyoti Bhayana <jbhayana@google.com>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Rob Herring <robh@kernel.org>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        cristian.marussi@arm.com, sudeep.holla@arm.com,
+        egranata@google.com, mikhail.golubev@opensynergy.com,
+        Igor.Skalkin@opensynergy.com, Peter.hilber@opensynergy.com,
+        ankitarora@google.com
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Feb 6, 2021 at 9:26 AM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Thu, 4 Feb 2021 13:35:51 +0200
-> <alexandru.tachici@analog.com> wrote:
->
-> > From: Alexandru Tachici <alexandru.tachici@analog.com>
-> >
-> > Document use of configurations in device-tree bindings.
-> >
-> > Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
->
-> Ignoring discussing in my reply to the cover letter...
->
-> This is a breaking change as described.  We can't move properties
-> around without some sort of fullback for them being in the old
-> location.
->
-> > ---
-> >  .../bindings/iio/adc/adi,ad7124.yaml          | 72 +++++++++++++++----
-> >  1 file changed, 57 insertions(+), 15 deletions(-)
-> >
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
-> > index fb3d0dae9bae..330064461d0a 100644
-> > --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
-> > @@ -62,20 +62,19 @@ required:
-> >    - interrupts
-> >
-> >  patternProperties:
-> > -  "^channel@([0-9]|1[0-5])$":
-> > -    $ref: "adc.yaml"
-> > +  "^config@(2[0-7])$":
-> >      type: object
-> >      description: |
-> > -      Represents the external channels which are connected to the ADC.
-> > +      Represents a channel configuration.
-> > +      See Documentation/devicetree/bindings/iio/adc/adc.txt.
->
-> adc.yaml now.
->
->
-> >
-> >      properties:
-> >        reg:
-> >          description: |
-> > -          The channel number. It can have up to 8 channels on ad7124-4
-> > -          and 16 channels on ad7124-8, numbered from 0 to 15.
-> > +          The config number. It can have up to 8 configuration.
-> >          items:
-> > -          minimum: 0
-> > -          maximum: 15
-> > +         minimum: 20
-> > +         maximum: 27
->
-> Number then 0-7 please rather than 20-27.
+Hi,
 
-That doesn't work. It would be creating 2 address spaces at one level
-with channel@0 and config@0. The way to address this is add a
-'configs' node with config@N children.
+This series adds support for ARM SCMI Protocol based IIO Device.
 
-My question here though is where does 20-27 come from. I suspect it's
-made up which isn't good either. Addresses should also be rooted in
-something in the h/w.
+This driver provides support for Accelerometer and Gyroscope sensor using
+SCMI Sensor Protocol extensions added in the SCMIv3.0 ARM specification,
+which is available at 
 
-Rob
+https://developer.arm.com/documentation/den0056/c/
+
+This version of the patch series has been tested using 
+version 5.4.21 branch of Android common kernel.
+
+Any feedback welcome,
+
+Thanks,
+
+Jyoti Bhayana
+
+v4 --> v5
+- Dropped the RFC tag
+- Added channel ext_info for raw_available
+- Incorporated the feedback comments from v4 review of the patch
+
+v3 --> v4
+- Incorporated the feedback comments from v3 review of the patch
+
+v2 --> v3
+- Incorporated the feedback comments from v2 review of the patch
+
+v1 --> v2
+- Incorporated the feedback comments from v1 review of the patch
+- Regarding the new ABI for sensor_power,sensor_max_range,
+and sensor_resolution, these are some of the sensor attributes
+which Android passes to the apps. If there is any other way of getting
+those values, please let us know
+
+Jyoti Bhayana (1):
+  iio/scmi: Adding support for IIO SCMI Based Sensors
+
+ MAINTAINERS                                |   6 +
+ drivers/firmware/arm_scmi/driver.c         |   2 +-
+ drivers/iio/common/Kconfig                 |   1 +
+ drivers/iio/common/Makefile                |   1 +
+ drivers/iio/common/scmi_sensors/Kconfig    |  18 +
+ drivers/iio/common/scmi_sensors/Makefile   |   5 +
+ drivers/iio/common/scmi_sensors/scmi_iio.c | 673 +++++++++++++++++++++
+ 7 files changed, 705 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/iio/common/scmi_sensors/Kconfig
+ create mode 100644 drivers/iio/common/scmi_sensors/Makefile
+ create mode 100644 drivers/iio/common/scmi_sensors/scmi_iio.c
+
+-- 
+2.30.0.478.g8a0d178c01-goog
+

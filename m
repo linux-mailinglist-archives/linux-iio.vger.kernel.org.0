@@ -2,82 +2,65 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 101B3312B80
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Feb 2021 09:13:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 20187312BD4
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Feb 2021 09:34:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229611AbhBHINV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Feb 2021 03:13:21 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2519 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229698AbhBHINQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Feb 2021 03:13:16 -0500
-Received: from fraeml713-chm.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DYzCV2qd1z67lRm;
-        Mon,  8 Feb 2021 16:07:34 +0800 (CST)
-Received: from lhreml713-chm.china.huawei.com (10.201.108.64) by
- fraeml713-chm.china.huawei.com (10.206.15.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 8 Feb 2021 09:12:25 +0100
-Received: from dggemi761-chm.china.huawei.com (10.1.198.147) by
- lhreml713-chm.china.huawei.com (10.201.108.64) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2106.2; Mon, 8 Feb 2021 08:12:23 +0000
-Received: from dggemi761-chm.china.huawei.com ([10.9.49.202]) by
- dggemi761-chm.china.huawei.com ([10.9.49.202]) with mapi id 15.01.2106.006;
- Mon, 8 Feb 2021 16:12:21 +0800
-From:   "Song Bao Hua (Barry Song)" <song.bao.hua@hisilicon.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-CC:     Michael Hennerich <Michael.Hennerich@analog.com>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Subject: RE: [PATCH 21/24] dt-bindings:iio:cdc:adi,ad7150 binding doc
-Thread-Topic: [PATCH 21/24] dt-bindings:iio:cdc:adi,ad7150 binding doc
-Thread-Index: AQHW/WjR86DKZNfgyEaoAH5ZJEi/1apMU8IAgAGTsaA=
-Date:   Mon, 8 Feb 2021 08:12:21 +0000
-Message-ID: <8967afd32123482482af599b199e347b@hisilicon.com>
-References: <20210207154623.433442-1-jic23@kernel.org>
- <20210207154623.433442-22-jic23@kernel.org>
- <1840bd30-be94-761e-403d-59b13eeef774@metafoo.de>
-In-Reply-To: <1840bd30-be94-761e-403d-59b13eeef774@metafoo.de>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.126.200.200]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S230196AbhBHIad (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Feb 2021 03:30:33 -0500
+Received: from smtp-18d.idc2.mandic.com.br ([177.70.124.135]:21031 "EHLO
+        smtp-18.idc2.mandic.com.br" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S229564AbhBHIaK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Feb 2021 03:30:10 -0500
+Received: by smtp-18.smtp.mandic.prv (Postfix, from userid 491)
+        id 5BC52607E9FB; Mon,  8 Feb 2021 05:29:22 -0300 (-03)
+Received: from smtp-18.idc2.mandic.com.br (ifsmtp2 [192.168.1.38])
+        by smtp-18.smtp.mandic.prv (Postfix) with ESMTPS id C1044607AAA4;
+        Mon,  8 Feb 2021 05:29:16 -0300 (-03)
+Received: from User (unknown [52.235.38.23])
+        by smtp-18.smtp.mandic.prv (Postfix) with ESMTPA id 78375465E268;
+        Mon,  8 Feb 2021 05:26:42 -0300 (-03)
+Reply-To: <ms.reem@yandex.com>
+From:   "Ms. Reem" <stefy@macrometrica.com.br>
+Subject: Re:reply
+Date:   Mon, 8 Feb 2021 08:29:15 -0000
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-Mandic-Auth: DYB6x5JcyVot9snxiAasWC73cfc93V+pC3vUrorm87+eXbqAUeEHL0ZNPgpM50IYQeUbiYx0PkMIK2oavHcOOA==
+X-Mandic-Sender: stefy@macrometrica.com.br
+Message-Id: <20210208082916.C1044607AAA4@smtp-18.smtp.mandic.prv>
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTGFycy1QZXRlciBDbGF1
-c2VuIFttYWlsdG86bGFyc0BtZXRhZm9vLmRlXQ0KPiBTZW50OiBNb25kYXksIEZlYnJ1YXJ5IDgs
-IDIwMjEgNTowMCBBTQ0KPiBUbzogSm9uYXRoYW4gQ2FtZXJvbiA8amljMjNAa2VybmVsLm9yZz47
-IGxpbnV4LWlpb0B2Z2VyLmtlcm5lbC5vcmcNCj4gQ2M6IE1pY2hhZWwgSGVubmVyaWNoIDxNaWNo
-YWVsLkhlbm5lcmljaEBhbmFsb2cuY29tPjsgU29uZyBCYW8gSHVhIChCYXJyeSBTb25nKQ0KPiA8
-c29uZy5iYW8uaHVhQGhpc2lsaWNvbi5jb20+OyByb2JoK2R0QGtlcm5lbC5vcmc7IEpvbmF0aGFu
-IENhbWVyb24NCj4gPGpvbmF0aGFuLmNhbWVyb25AaHVhd2VpLmNvbT47IGRldmljZXRyZWVAdmdl
-ci5rZXJuZWwub3JnDQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggMjEvMjRdIGR0LWJpbmRpbmdzOmlp
-bzpjZGM6YWRpLGFkNzE1MCBiaW5kaW5nIGRvYw0KPiANCj4gT24gMi83LzIxIDQ6NDYgUE0sIEpv
-bmF0aGFuIENhbWVyb24gd3JvdGU6DQo+ID4gK3JlcXVpcmVkOg0KPiA+ICsgIC0gY29tcGF0aWJs
-ZQ0KPiA+ICsgIC0gcmVnDQo+IA0KPiBJcyB2ZGQtc3VwcGx5IHJlYWxseSBvcHRpb25hbCB0aGUg
-d2F5IGl0IGlzIGltcGxlbWVudGVkIGluIHRoZSBkcml2ZXI/DQo+IA0KPiA+ICsNCj4gPiArYWRk
-aXRpb25hbFByb3BlcnRpZXM6IGZhbHNlDQo+ID4gKw0KPiA+ICtleGFtcGxlczoNCj4gPiArICAt
-IHwNCj4gPiArICAgIGkyYyB7DQo+ID4gKyAgICAgICAgI2FkZHJlc3MtY2VsbHMgPSA8MT47DQo+
-ID4gKyAgICAgICAgI3NpemUtY2VsbHMgPSA8MD47DQo+ID4gKw0KPiA+ICsgICAgICAgIGNkY0A0
-OCB7DQo+ID4gKyAgICAgICAgICAgIGNvbXBhdGlibGUgPSAiYWRpLGFkNzE1MCI7DQo+ID4gKyAg
-ICAgICAgICAgIHJlZyA9IDwweDQ4PjsNCj4gPiArICAgICAgICAgICAgaW50ZXJydXB0cyA9IDwy
-NSAyPiwgPDI2IDI+Ow0KDQpPbmUgcXVlc3Rpb24sIGhlcmUgd2UgaGF2ZSB0d28gaW50ZXJydXB0
-cywgYnV0IHRoZSBkcml2ZXIgaXMgcmVhZGluZw0Kb25lIGludGVycnVwdCBvbmx5LCBkbyB3ZSBu
-ZWVkIHRvIGNhbGwNCm9mX2lycV9nZXQoZGV2LCBpbmRleCkNCm9yDQpvZl9pcnFfZ2V0X2J5bmFt
-ZSgpPw0KDQoNCj4gDQo+IEkgd29uZGVyIGlmIHdlIHNob3VsZCB1c2UgdGhlIHN5bWJvbGljIGNv
-bnN0YW50cyBmb3IgdGhlIElSUSB0eXBlIHRvDQo+IG1ha2UgdGhlIGV4YW1wbGUgbW9yZSBjbGVh
-ci4gRS5nLg0KPiANCj4gaW50ZXJydXB0cyA9IDwyNSBJUlFfVFlQRV9FREdFX0ZBTExJTkc+LCAu
-Li4NCj4gDQo+ID4gKyAgICAgICAgICAgIGludGVycnVwdC1wYXJlbnQgPSA8JmdwaW8+Ow0KPiA+
-ICsgICAgICAgIH07DQo+ID4gKyAgICB9Ow0KPiA+ICsuLi4NCj4gDQpUaGFua3MNCkJhcnJ5DQoN
-Cg==
+Hello,
+
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
+
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
+
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
+
+Regards,
+Ms. Reem.

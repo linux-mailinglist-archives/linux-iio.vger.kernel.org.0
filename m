@@ -2,128 +2,157 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E2333158FC
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Feb 2021 22:54:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A6853158FD
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Feb 2021 22:54:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233433AbhBIVvv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 9 Feb 2021 16:51:51 -0500
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:48656 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234326AbhBIVOh (ORCPT
+        id S234177AbhBIVwR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 9 Feb 2021 16:52:17 -0500
+Received: from mail-oi1-f182.google.com ([209.85.167.182]:41050 "EHLO
+        mail-oi1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233761AbhBIVOh (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Feb 2021 16:14:37 -0500
-X-IronPort-AV: E=Sophos;i="5.81,166,1610406000"; 
-   d="scan'208";a="492125962"
-Received: from palace.lip6.fr ([132.227.105.202])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-SHA; 09 Feb 2021 22:13:19 +0100
-From:   Julia Lawall <Julia.Lawall@inria.fr>
-To:     Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Tomasz Duszynski <tomasz.duszynski@octakon.com>
-Subject: [PATCH] iio: use getter/setter functions
-Date:   Tue,  9 Feb 2021 22:13:15 +0100
-Message-Id: <20210209211315.1261791-1-Julia.Lawall@inria.fr>
-X-Mailer: git-send-email 2.25.1
+Received: by mail-oi1-f182.google.com with SMTP id v193so15533241oie.8;
+        Tue, 09 Feb 2021 13:14:15 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Y21BGXF/rTK0RY5HUqN7he2nqNs3jANAETLtHL2mgms=;
+        b=UGRrTjzAGDsHSUqihj1r476Q+Hdtuul1xh5oA3jxWCzPvPoJw3+bT1IaZq6aAW0+qA
+         LV+EBZNf0TQPAdR/s2wPhZM3IvGzXEaPj/dXOK32PxeH4zkrz8t553X/QmD3iVfPmPwF
+         4cj8rb7dESHnpAikRYei71C7d6AB17UaGN4yzOtKv35aDPRyd6Jm5i9fu98PTqnF34zr
+         UUrIHwdbMPbR2yCh8lxs2XfcH3WNoAHmyeLRmTRsFja2jotna1aad4aIkY+YfTsfR3WO
+         f5Rx9OMJ+uAQeocsKu0UQoxSrdVBogfHSQtmQpu4mrNf6SW7QzjlI9+I6hx2ZXFQRZuq
+         UPqQ==
+X-Gm-Message-State: AOAM532FbWnDKvOOrGeeHqCiwKwjQu7EZcN8pimHx1O7rVPDg6kcqUIp
+        QzKBRKoFGBTb5O4nMb9lgQ==
+X-Google-Smtp-Source: ABdhPJzW1L/htZimMn1IPJG0SH9yT33KVK4LUAmwRUK4AYWsnh5Q4++AwWfU6W3pQYX85woXUTyUMQ==
+X-Received: by 2002:aca:4085:: with SMTP id n127mr3755717oia.8.1612905230094;
+        Tue, 09 Feb 2021 13:13:50 -0800 (PST)
+Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id k67sm3175110oia.7.2021.02.09.13.13.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Feb 2021 13:13:48 -0800 (PST)
+Received: (nullmailer pid 197152 invoked by uid 1000);
+        Tue, 09 Feb 2021 21:13:47 -0000
+Date:   Tue, 9 Feb 2021 15:13:47 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Stephen Boyd <swboyd@chromium.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        devicetree@vger.kernel.org,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>
+Subject: Re: [PATCH v4 2/3] dt-bindings: iio: Add cros ec proximity yaml doc
+Message-ID: <20210209211347.GA183847@robh.at.kernel.org>
+References: <20210202184434.42644-1-swboyd@chromium.org>
+ <20210202184434.42644-3-swboyd@chromium.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210202184434.42644-3-swboyd@chromium.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Use getter and setter functions, for a variety of data types.
+On Tue, Feb 02, 2021 at 10:44:33AM -0800, Stephen Boyd wrote:
+> Some cros ECs support a front proximity MKBP event via
+> 'EC_MKBP_FRONT_PROXIMITY'. Add a DT binding to document this feature via
+> a node that is a child of the main cros_ec device node. Devices that
+> have this ability will describe this in firmware.
+> 
+> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> Cc: Benson Leung <bleung@chromium.org>
+> Cc: Guenter Roeck <groeck@chromium.org>
+> Cc: Douglas Anderson <dianders@chromium.org>
+> Cc: Gwendal Grignou <gwendal@chromium.org>
+> Cc: <devicetree@vger.kernel.org>
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Cc: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+> Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+> ---
+>  .../google,cros-ec-mkbp-proximity.yaml        | 46 +++++++++++++++++++
+>  .../bindings/mfd/google,cros-ec.yaml          |  3 ++
+>  2 files changed, 49 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/proximity/google,cros-ec-mkbp-proximity.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/proximity/google,cros-ec-mkbp-proximity.yaml b/Documentation/devicetree/bindings/iio/proximity/google,cros-ec-mkbp-proximity.yaml
+> new file mode 100644
+> index 000000000000..d82b929af445
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/proximity/google,cros-ec-mkbp-proximity.yaml
+> @@ -0,0 +1,46 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +
+> +$id: http://devicetree.org/schemas/iio/proximity/google,cros-ec-mkbp-proximity.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: ChromeOS EC MKBP Proximity Sensor
+> +
+> +maintainers:
+> +  - Stephen Boyd <swboyd@chromium.org>
+> +  - Benson Leung <bleung@chromium.org>
+> +  - Enric Balletbo i Serra <enric.balletbo@collabora.com>
+> +
+> +description: |
+> +  Google's ChromeOS EC sometimes has the ability to detect user proximity.
+> +  This is implemented on the EC as near/far logic and exposed to the OS
+> +  via an MKBP switch bit.
+> +
+> +properties:
+> +  compatible:
+> +    const: google,cros-ec-mkbp-proximity
+> +
+> +  label:
+> +    description: Name for proximity sensor
+> +
+> +required:
+> +  - compatible
+> +
+> +unevaluatedProperties: false
+> +additionalProperties: false
 
-Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+Only need one. In this case 'additionalProperties'.
 
----
- drivers/iio/adc/palmas_gpadc.c      |    2 +-
- drivers/iio/chemical/scd30_serial.c |    2 +-
- drivers/iio/industrialio-core.c     |    2 +-
- drivers/iio/potentiometer/max5481.c |    4 ++--
- drivers/iio/potentiometer/max5487.c |    4 ++--
- 5 files changed, 7 insertions(+), 7 deletions(-)
+> +
+> +examples:
+> +  - |
+> +    spi {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +      ec@0 {
+> +        compatible = "google,cros-ec-spi";
+> +        reg = <0>;
+> +        proximity {
+> +          compatible = "google,cros-ec-mkbp-proximity";
+> +          label = "proximity-wifi-lte";
+> +        };
 
-diff --git a/drivers/iio/potentiometer/max5487.c b/drivers/iio/potentiometer/max5487.c
-index 7ec51976ec99..1c0d46a96200 100644
---- a/drivers/iio/potentiometer/max5487.c
-+++ b/drivers/iio/potentiometer/max5487.c
-@@ -92,7 +92,7 @@ static int max5487_spi_probe(struct spi_device *spi)
- 	if (!indio_dev)
- 		return -ENOMEM;
- 
--	dev_set_drvdata(&spi->dev, indio_dev);
-+	spi_set_drvdata(spi, indio_dev);
- 	data = iio_priv(indio_dev);
- 
- 	data->spi = spi;
-@@ -114,7 +114,7 @@ static int max5487_spi_probe(struct spi_device *spi)
- 
- static int max5487_spi_remove(struct spi_device *spi)
- {
--	struct iio_dev *indio_dev = dev_get_drvdata(&spi->dev);
-+	struct iio_dev *indio_dev = spi_get_drvdata(spi);
- 
- 	iio_device_unregister(indio_dev);
- 
-diff --git a/drivers/iio/potentiometer/max5481.c b/drivers/iio/potentiometer/max5481.c
-index a88ed0eb3adc..6e22b538091f 100644
---- a/drivers/iio/potentiometer/max5481.c
-+++ b/drivers/iio/potentiometer/max5481.c
-@@ -136,7 +136,7 @@ static int max5481_probe(struct spi_device *spi)
- 	if (!indio_dev)
- 		return -ENOMEM;
- 
--	dev_set_drvdata(&spi->dev, indio_dev);
-+	spi_set_drvdata(spi, indio_dev);
- 	data = iio_priv(indio_dev);
- 
- 	data->spi = spi;
-@@ -163,7 +163,7 @@ static int max5481_probe(struct spi_device *spi)
- 
- static int max5481_remove(struct spi_device *spi)
- {
--	struct iio_dev *indio_dev = dev_get_drvdata(&spi->dev);
-+	struct iio_dev *indio_dev = spi_get_drvdata(spi);
- 	struct max5481_data *data = iio_priv(indio_dev);
- 
- 	iio_device_unregister(indio_dev);
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index 7db761afa578..4ef7a39cfb1c 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -1596,7 +1596,7 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
- 	dev->dev.type = &iio_device_type;
- 	dev->dev.bus = &iio_bus_type;
- 	device_initialize(&dev->dev);
--	dev_set_drvdata(&dev->dev, (void *)dev);
-+	iio_device_set_drvdata(dev, (void *)dev);
- 	mutex_init(&dev->mlock);
- 	mutex_init(&dev->info_exist_lock);
- 	INIT_LIST_HEAD(&iio_dev_opaque->channel_attr_list);
-diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_gpadc.c
-index 889b88768b63..9ae0d7f73155 100644
---- a/drivers/iio/adc/palmas_gpadc.c
-+++ b/drivers/iio/adc/palmas_gpadc.c
-@@ -517,7 +517,7 @@ static int palmas_gpadc_probe(struct platform_device *pdev)
- 	adc->palmas = dev_get_drvdata(pdev->dev.parent);
- 	adc->adc_info = palmas_gpadc_info;
- 	init_completion(&adc->conv_completion);
--	dev_set_drvdata(&pdev->dev, indio_dev);
-+	platform_set_drvdata(pdev, indio_dev);
- 
- 	adc->auto_conversion_period = gpadc_pdata->auto_conversion_period_ms;
- 	adc->irq = palmas_irq_get_virq(adc->palmas, PALMAS_GPADC_EOC_SW_IRQ);
-diff --git a/drivers/iio/chemical/scd30_serial.c b/drivers/iio/chemical/scd30_serial.c
-index 06f85eb1a4dd..568b34486c44 100644
---- a/drivers/iio/chemical/scd30_serial.c
-+++ b/drivers/iio/chemical/scd30_serial.c
-@@ -177,7 +177,7 @@ static int scd30_serdev_command(struct scd30_state *state, enum scd30_cmd cmd, u
- static int scd30_serdev_receive_buf(struct serdev_device *serdev,
- 				    const unsigned char *buf, size_t size)
- {
--	struct iio_dev *indio_dev = dev_get_drvdata(&serdev->dev);
-+	struct iio_dev *indio_dev = serdev_device_get_drvdata(serdev);
- 	struct scd30_serdev_priv *priv;
- 	struct scd30_state *state;
- 	int num;
+The complete examples I prefer is 1 example for the whole MFD in the MFD 
+schema and no example here.
 
+> +      };
+> +    };
+> diff --git a/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml b/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
+> index 76bf16ee27ec..479a9f15de32 100644
+> --- a/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
+> +++ b/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
+> @@ -94,6 +94,9 @@ properties:
+>    keyboard-controller:
+>      $ref: "/schemas/input/google,cros-ec-keyb.yaml#"
+>  
+> +  proximity:
+> +    $ref: "/schemas/iio/proximity/google,cros-ec-mkbp-proximity.yaml#"
+> +
+>    codecs:
+>      type: object
+>      additionalProperties: false
+> -- 
+> https://chromeos.dev
+> 

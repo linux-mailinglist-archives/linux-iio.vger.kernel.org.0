@@ -2,133 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B6616314929
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Feb 2021 07:57:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CEED314AA3
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Feb 2021 09:47:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229683AbhBIG46 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 9 Feb 2021 01:56:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56934 "EHLO
+        id S230087AbhBIIpq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 9 Feb 2021 03:45:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229745AbhBIG4x (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Feb 2021 01:56:53 -0500
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27B34C061788
-        for <linux-iio@vger.kernel.org>; Mon,  8 Feb 2021 22:56:12 -0800 (PST)
-Received: by mail-pj1-x1036.google.com with SMTP id lw17so1039191pjb.0
-        for <linux-iio@vger.kernel.org>; Mon, 08 Feb 2021 22:56:12 -0800 (PST)
+        with ESMTP id S230010AbhBIIpG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Feb 2021 03:45:06 -0500
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7770C061788
+        for <linux-iio@vger.kernel.org>; Tue,  9 Feb 2021 00:44:25 -0800 (PST)
+Received: by mail-ej1-x634.google.com with SMTP id i8so29939449ejc.7
+        for <linux-iio@vger.kernel.org>; Tue, 09 Feb 2021 00:44:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:content-transfer-encoding:in-reply-to:references
-         :subject:from:cc:to:date:message-id:user-agent;
-        bh=1VQlx/2/YkuOYTWGDUV7OgUbtuznsUJ7Xrjo6N4F/gc=;
-        b=k+KHbQzReCQtbgzkjuX+ZSe6xLBxlh1M9pOc/UykVT+9aCT3ZQMNKNKSAyG8TA7ygO
-         srRUyqCAA3+6ViRczqo1WCHKpP0h5DOhpLuQ3KqzyEEfSy6DXO4IMcAlkjEKyxpzmZpG
-         wj0QiSXlj5ib5o8dHrWvlvddqYQg1B3Ooozd8=
+        d=essensium.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=LFiJFSMqDML6i34Le0xeGBj3MQlh5EPlWd1NXHji1Hg=;
+        b=FRjINoJSc57/iT3BSNXK35G4cyQ8cmtBIoXNUGaKBtukVFLkV2RCD9qv+IpnQ56yMW
+         lfEcOwxRDBiz39+vuqVZq65ad3hvPU3rfYfqsALqoblheiN6hFwOPBtxMyfyBCXXaTnU
+         dzgS7jVxmQoIvwecUdev51Xy5iwnHiki2y47MBIucQ7yvmdf2Z3IH0Tvqty2l19AJLsL
+         IJwVv49AYDDyfcd9zL9V7ZUJRqOmm2je5pAKZ+byK1k4FMG4gsCv53J/cy/iYggweRrK
+         BoIp5weIseL4C7Gsn+WLOoMMLxZMiUCq7fOlJEO7MiLTbaKa/yg5SM2a5+fKRlS8nRg3
+         MiAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:content-transfer-encoding
-         :in-reply-to:references:subject:from:cc:to:date:message-id
-         :user-agent;
-        bh=1VQlx/2/YkuOYTWGDUV7OgUbtuznsUJ7Xrjo6N4F/gc=;
-        b=gsdHU+RU9QD+n8/Eq9C7IqjNK8k8kQH7sxtH7SYw1fWhpu9ONirdwPWFN8FOrjFQs2
-         VS5RY5fAkQ/1JylKl/6O33rU1iYwSKKEYQZ0HCfgAq22dQBpNEscy96AFNNuRQnLlef1
-         5mGPUuKfX2tIQWHhqJsbwuLIHSB/yYzWoIayf87ULLWcFjUd2qVmT1pfiVA1rnxKX89G
-         d3DtOiP5NwhAX7WiAX8k+aXribGNOIfYNsR0gtPjXbuzkYHEuoUlAe+Fe8UVTU8C5Tpo
-         m6lb3DPnCpiqWjMCXowvFYzjMQ4diESgtISiOMeviW8Ihu4EXQpiMbPZTe1FE05CfVXO
-         RcgA==
-X-Gm-Message-State: AOAM532DWEAp/faYNx/TDrx4fgjx3aAbMVQ0PKwO+r75Pq9pOdXevi27
-        WtZSK+PC4TK7phNNYONz9YY8uA==
-X-Google-Smtp-Source: ABdhPJxZshnqvvt9y7aiV4MD3X1K+XyzlaBrcOJ/DR0QrTOUVrKHwncJ8LZtR7Ot1yysnQqEtEwKPg==
-X-Received: by 2002:a17:90a:3e01:: with SMTP id j1mr2663906pjc.138.1612853771728;
-        Mon, 08 Feb 2021 22:56:11 -0800 (PST)
-Received: from chromium.org ([2620:15c:202:201:751a:ba0b:8918:c305])
-        by smtp.gmail.com with ESMTPSA id u14sm11467257pfc.39.2021.02.08.22.56.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Feb 2021 22:56:10 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <CAPUE2usY4GZhGkjmibMfVUTzK3c_Lz5HqNFo_fVRa_gqkmk8OQ@mail.gmail.com>
-References: <20210202064541.2335915-1-gwendal@chromium.org> <161229346726.76967.648868878998146729@swboyd.mtv.corp.google.com> <CAPUE2uu0y8pRmCHxhLQ3Ca2oAMJ0ihwAHfUdHNBOUNS-hZhmdA@mail.gmail.com> <161257570963.76967.16707158676326253606@swboyd.mtv.corp.google.com> <CAPUE2uu3eyBbD4KDjE2-AgrAgFm0+NEaPgXX8EBP9HKqyrLsGA@mail.gmail.com> <161283830033.76967.8675893870348279849@swboyd.mtv.corp.google.com> <161283922598.76967.9707750025474688009@swboyd.mtv.corp.google.com> <CAPUE2usY4GZhGkjmibMfVUTzK3c_Lz5HqNFo_fVRa_gqkmk8OQ@mail.gmail.com>
-Subject: Re: [PATCH] iio: sx9310: Support ACPI property
-From:   Stephen Boyd <swboyd@chromium.org>
-Cc:     Daniel Campello <campello@chromium.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=LFiJFSMqDML6i34Le0xeGBj3MQlh5EPlWd1NXHji1Hg=;
+        b=knqmfFCoMoYVwei8+eO8J29bYoNoP5p8Sc/S1gIJvtr4QZmoBVkS4d4ebmkYkzZ9Er
+         sl3/NWj28dcd8l5AlzgSuQwXteKaGCkqueCAkjYGU6ZfJ5j/UXnvm2Ji5hoxkQPFtlD6
+         DZiEiU6qQwHSHxX+m9ri0z0T/jVDQNvkenM46jCL+eJ4/PklITfBma0r7xETDP3ABe7E
+         YP/hlrAUdSYgbf/92BQwxe7Nt4tgmKWxFEdtxJI1NBeD3rYxNkZaZeowSShTdEKulnNZ
+         1VMnGN+b41+pQWrVngD8eX5xz8SBTLtM5iTMr9X9mD2J3+Sk8zbHN/tQOkjlHLyQASWB
+         PETQ==
+X-Gm-Message-State: AOAM5329ov8vV+433Ajmbrjyv06oz7JADAd5wP4J6XRygrf6QJQu6iTc
+        0rc1i5ylFzrXlJQoJO+P5Ovd9w==
+X-Google-Smtp-Source: ABdhPJwF7haTbrg7WCY5VMnHd59iLnaihdheiYE33A2dbeRbdB+Md/U7/KpEhuiIvMWobBOpNUnpGQ==
+X-Received: by 2002:a17:906:cf86:: with SMTP id um6mr21906822ejb.426.1612860264649;
+        Tue, 09 Feb 2021 00:44:24 -0800 (PST)
+Received: from ?IPv6:2a02:a03f:c936:a500:2016:2032:5a6c:22d3? ([2a02:a03f:c936:a500:2016:2032:5a6c:22d3])
+        by smtp.gmail.com with ESMTPSA id y8sm10852865edd.97.2021.02.09.00.44.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Feb 2021 00:44:24 -0800 (PST)
+Subject: Re: [PATCH v3] iio: ad7949: fix wrong ADC result due to incorrect bit
+ mask
+To:     Wilfried Wessner <wilfried.wessner@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio <linux-iio@vger.kernel.org>
-To:     Gwendal Grignou <gwendal@chromium.org>
-Date:   Mon, 08 Feb 2021 22:56:09 -0800
-Message-ID: <161285376928.76967.17468133318196687432@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.9.1
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Cc:     linux-iio@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+References: <20210208142705.GA51260@ubuntu>
+From:   Couret Charles-Antoine <charles-antoine.couret@essensium.com>
+Message-ID: <b856fe85-2187-88ed-81c8-740a79e4546a@essensium.com>
+Date:   Tue, 9 Feb 2021 09:44:23 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
+MIME-Version: 1.0
+In-Reply-To: <20210208142705.GA51260@ubuntu>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Content-Language: fr-FR
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Quoting Gwendal Grignou (2021-02-08 20:07:19)
-> On Mon, Feb 8, 2021 at 6:53 PM Stephen Boyd <swboyd@chromium.org> wrote:
-> >
-> > Quoting Stephen Boyd (2021-02-08 18:38:20)
-> > >
-> > > Isn't that a bug in the ACPI property reading code? 3 doesn't overflo=
-w 4
-> > > so I'm lost why it would return an error code to indicate it can't fit
-> > > the whole property into an array that is one size larger.
-> >
-> > Or it's a bug in the driver because it's assuming that it can read the
-> > DT property out even when it is only length 1 when the property read
-> > should be variable length. Can you split this into two and fix the
-> > underlying problem with the read of the array not matching the length of
-> > the property? I think it needs to be
-> > of_property_read_variable_u32_array() with 1 and 4 for min and max.
-> Splitting the patch in 2 does not make sense given
-> of_property_read_variable_u32_array has no equivalent in the
-> device_property_read_ realm.
-> That function introduced in the first patch would be removed in the
-> second patch.
-> I will update the commit message to indicate this patch takes care of
-> the "semtech,combined-sensors" variable array for both DT and ACPI.
->=20
+Le 08/02/2021 à 15:27, Wilfried Wessner a écrit :
+> Fixes a wrong bit mask used for the ADC's result, which was caused by an
+> improper usage of the GENMASK() macro. The bits higher than ADC's 
+> resolution are undefined and if not masked out correctly, a wrong result 
+> can be given. The GENMASK() macro indexing is zero based, so the mask has 
+> to go from [resolution - 1 , 0].
+>
+> Fixes: 7f40e0614317f ("iio:adc:ad7949: Add AD7949 ADC driver family")
+>
+> Signed-off-by: Wilfried Wessner <wilfried.wessner@gmail.com>
+>
+> ---
+>
+> The issue was found in combination of an AD7682 ADC with an ARM based 
+> iMX7-CPU. The SPI line was analyzed with a logic analyzer and a 
+> discrepancy between applied voltage level and the ADC reported value 
+> in user space was observed. Digging into the driver code revealed an 
+> improper mask used for the ADC-result.
+>
+>
+>  drivers/iio/adc/ad7949.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/iio/adc/ad7949.c b/drivers/iio/adc/ad7949.c
+> index 5d597e5050f6..1b4b3203e428 100644
+> --- a/drivers/iio/adc/ad7949.c
+> +++ b/drivers/iio/adc/ad7949.c
+> @@ -91,7 +91,7 @@ static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
+>  	int ret;
+>  	int i;
+>  	int bits_per_word = ad7949_adc->resolution;
+> -	int mask = GENMASK(ad7949_adc->resolution, 0);
+> +	int mask = GENMASK(ad7949_adc->resolution - 1, 0);
+>  	struct spi_message msg;
+>  	struct spi_transfer tx[] = {
+>  		{
 
-I suggest we apply this patch and send it back to stable trees. I didn't
-notice because I was setting combined-sensors to 3, and that is the
-default value and it was getting removed from the default register
-values all the time, even though the read of the DT property was
-failing. With this change we'll always read the array and if the length
-is less than zero or more than the size of the array we'll break early
-and get out of there. Otherwise we'll continue on and build a bitmap out
-of the values in the array to compare and set the reg_def->def bits to.
-Importantly we don't mask out the settings from the default register
-values until we successfully read the property.
+Hi,
 
-After this change you can introduce the device_property_read_*() APIs to
-add the new feature. But this is a fix that needs to be backported.
+Thank you for the fix. :)
 
-----8<-----
-diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
-index 6a04959df35e..6ba063e51af5 100644
---- a/drivers/iio/proximity/sx9310.c
-+++ b/drivers/iio/proximity/sx9310.c
-@@ -1236,15 +1236,17 @@ sx9310_get_default_reg(struct sx9310_data *data, in=
-t i,
- 			reg_def->def |=3D SX9310_REG_PROX_CTRL2_SHIELDEN_GROUND;
- 		}
-=20
-+		ret =3D of_property_read_variable_u32_array(np, "semtech,combined-sensor=
-s",
-+					   combined, 0, ARRAY_SIZE(combined));
-+		if (ret < 0)
-+			break;
-+
- 		reg_def->def &=3D ~SX9310_REG_PROX_CTRL2_COMBMODE_MASK;
--		of_property_read_u32_array(np, "semtech,combined-sensors",
--					   combined, ARRAY_SIZE(combined));
- 		for (i =3D 0; i < ARRAY_SIZE(combined); i++) {
--			if (combined[i] <=3D SX9310_NUM_CHANNELS)
-+			if (combined[i] < SX9310_NUM_CHANNELS)
- 				comb_mask |=3D BIT(combined[i]);
- 		}
-=20
--		comb_mask &=3D 0xf;
- 		if (comb_mask =3D=3D (BIT(3) | BIT(2) | BIT(1) | BIT(0)))
- 			reg_def->def |=3D SX9310_REG_PROX_CTRL2_COMBMODE_CS0_CS1_CS2_CS3;
- 		else if (comb_mask =3D=3D (BIT(1) | BIT(2)))
+Reviewed-by: Charles-Antoine Couret <charles-antoine.couret@essensium.com>
+
+Regards,
+
+Charles-Antoine Couret
+

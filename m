@@ -2,134 +2,146 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CEB05316D22
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Feb 2021 18:46:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A2C1316F06
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Feb 2021 19:45:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233059AbhBJRqP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 10 Feb 2021 12:46:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55662 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232996AbhBJRqK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 10 Feb 2021 12:46:10 -0500
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B20D6C0613D6
-        for <linux-iio@vger.kernel.org>; Wed, 10 Feb 2021 09:45:29 -0800 (PST)
-Received: by mail-pj1-x1031.google.com with SMTP id t2so1570559pjq.2
-        for <linux-iio@vger.kernel.org>; Wed, 10 Feb 2021 09:45:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:content-transfer-encoding:in-reply-to:references
-         :subject:from:cc:to:date:message-id:user-agent;
-        bh=s4db3FRFo7X4YqxZjmvCCj3kJmcqGswyfAjEtyKKTcM=;
-        b=d/yxt0YF7Spef0pYWLcNzTCagPindemCuIlhwf5UCBCZj26bF+6X17K2dn8M+CqXQ4
-         /zHlOXfQJAwlwJlUvhoL+KjJvQ7kpHJ6/mEU4i//0H885VsH35aJY2IK9Ow49wWvVeZF
-         Z35qIWRm5HEMJMl2RViUhCmygcN+Pu17CD+Ho=
+        id S232715AbhBJSom (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 10 Feb 2021 13:44:42 -0500
+Received: from mail-oi1-f179.google.com ([209.85.167.179]:43861 "EHLO
+        mail-oi1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234193AbhBJSmj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 10 Feb 2021 13:42:39 -0500
+Received: by mail-oi1-f179.google.com with SMTP id d20so3131668oiw.10;
+        Wed, 10 Feb 2021 10:42:06 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:content-transfer-encoding
-         :in-reply-to:references:subject:from:cc:to:date:message-id
-         :user-agent;
-        bh=s4db3FRFo7X4YqxZjmvCCj3kJmcqGswyfAjEtyKKTcM=;
-        b=DrZZVvxhtqW/Car9ZWbyIEsQdJsYGIJnpalqoWzYMPg+DJwm6f/9GRR75dZLiZf9wM
-         c8+AHUzy8fsSweOm8doCVctayhSutWIuPHpXnRyYJiyNATQo2E8VA/x7Y+b+IUR24TQ3
-         EX0AhtvJCBce7OHCkZTB/IJMFAxkSg/seORhb8MXHiJJTT2Ou0pegUZxI7sDfszT2x4R
-         7XGS4QkZBNMTP5HZZxRKhCP0JdJ4BSOFJymw0NWFxJu1S7DmjHK9Oy0Ki/KIzgdg8S4M
-         xJuBxsN+Oi/CzVzJG5PjoylUw2cggrYoAgQnUfhoLtfe3v4DjlA6gowFR2VGPcsT3hLQ
-         Wjag==
-X-Gm-Message-State: AOAM531lKpd5UfewZPp2Zay2SezmMXPl8SSzjII/3og109Q6c9D2nJq5
-        IJ1k6TgxkBcak8McMUyTgN6N7A==
-X-Google-Smtp-Source: ABdhPJwEeMPlzTPD+9Z7iAFpSugf02Wwi01Nji6DCsWB/yHqXoE/eEFXv04Fh0uXGGgv16yIpJjaQQ==
-X-Received: by 2002:a17:90a:7525:: with SMTP id q34mr58078pjk.88.1612979129245;
-        Wed, 10 Feb 2021 09:45:29 -0800 (PST)
-Received: from chromium.org ([2620:15c:202:201:5533:1106:2710:3ce])
-        by smtp.gmail.com with ESMTPSA id a37sm2980467pgm.79.2021.02.10.09.45.28
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=JvRsBEYZg1OGL2h8YrNGcRIKhfQwRTmU700nenwBJCU=;
+        b=uf7i3Eshy9nmmEOyIefUjfxJYoRUBAEefN6uMpB0kSP7Ynv+21cKgwt9C4n45x03nT
+         JcBjd83wOVNyRGMthLbL7v96CmTEXQlYqold9hagjp/MYW9jmf8X4e3ioj8ruXLAvLx3
+         RUE86ymRjE0QjpIlXoeLkPTx47a4qAOtpUGS/I94CZDsCG85/jifaVnF9DKh1RIKfRH7
+         /Urd7B9U6Js3OKM/K/x3pOV9lL6qj5FKT5GMFu7CoW9YEQKDD6yALqpnz/kyieGuRZir
+         VR5rMIK2awT85A2EBe8Pr/oqx8fBhYyMwSR/C6M8Tv078DqOeD4hawVgfubrNZ7Ex07P
+         xnpQ==
+X-Gm-Message-State: AOAM530J+3Z1kkkXwmEcdtCwAyd/IewB8NqKv/RD0lh6ABo6InGd9z2c
+        Omr6cMEByHk/jiR2SznKqg==
+X-Google-Smtp-Source: ABdhPJy0dg2yL5pxwbejadofc57qJPksnh692O5UxdLMRiQVAsyc9qhhuYg0uPu28Ga8QsPWujeKTA==
+X-Received: by 2002:aca:c704:: with SMTP id x4mr270547oif.24.1612982501184;
+        Wed, 10 Feb 2021 10:41:41 -0800 (PST)
+Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id t19sm537508otr.64.2021.02.10.10.41.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Feb 2021 09:45:28 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+        Wed, 10 Feb 2021 10:41:40 -0800 (PST)
+Received: (nullmailer pid 2516555 invoked by uid 1000);
+        Wed, 10 Feb 2021 18:41:38 -0000
+Date:   Wed, 10 Feb 2021 12:41:38 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Oleksij Rempel <o.rempel@pengutronix.de>
+Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        David Jander <david@protonic.nl>,
+        Robin van der Gracht <robin@protonic.nl>,
+        linux-iio@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH v5 1/2] dt-bindings: counter: add event-counter binding
+Message-ID: <20210210184138.GA2504266@robh.at.kernel.org>
+References: <20210208135347.18494-1-o.rempel@pengutronix.de>
+ <20210208135347.18494-2-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <CAPUE2utey1os_CmYxHdmObCSPZWFGrLCVfP24wuZj_iQDNqQ5Q@mail.gmail.com>
-References: <20210210025142.3609708-1-swboyd@chromium.org> <20210210025142.3609708-4-swboyd@chromium.org> <CAPUE2utey1os_CmYxHdmObCSPZWFGrLCVfP24wuZj_iQDNqQ5Q@mail.gmail.com>
-Subject: Re: [PATCH v5 3/3] iio: proximity: Add a ChromeOS EC MKBP proximity driver
-From:   Stephen Boyd <swboyd@chromium.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>
-To:     Gwendal Grignou <gwendal@chromium.org>
-Date:   Wed, 10 Feb 2021 09:45:27 -0800
-Message-ID: <161297912701.418021.12174983952645253802@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.9.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210208135347.18494-2-o.rempel@pengutronix.de>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Quoting Gwendal Grignou (2021-02-10 00:29:45)
-> On Tue, Feb 9, 2021 at 6:51 PM Stephen Boyd <swboyd@chromium.org> wrote:
-> > +       if (event_type =3D=3D EC_MKBP_EVENT_SWITCH) {
-> > +               data =3D container_of(nb, struct cros_ec_mkbp_proximity=
-_data,
-> > +                                   notifier);
-> > +               indio_dev =3D data->indio_dev;
-> > +
-> > +               mutex_lock(&data->lock);
-> > +               if (data->enabled) {
-> > +                       timestamp =3D ktime_to_ns(ec->last_event_time);
-> Note to self, ktime_to_ns is a noop, but make code cleaner: need to
-> change other access to ec->last_event_time.
->
-> > +                       if (iio_device_get_clock(indio_dev) !=3D CLOCK_=
-BOOTTIME)
-> > +                               timestamp =3D iio_get_time_ns(indio_dev=
-);
-> > +                       state =3D cros_ec_mkbp_proximity_parse_state(sw=
-itches);
->
-> There can be several switches in the EC (lid open, tablet mode, ...),
-> so you can get a switch event even when the proximity switch did not
-> trigger.
-> You can keep the current state and push an iio event only when there
-> is a change. See cbas_ec_notify().
->
+On Mon, Feb 08, 2021 at 02:53:46PM +0100, Oleksij Rempel wrote:
+> Add binding for the event counter node
+> 
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>  .../bindings/counter/event-counter.yaml       | 56 +++++++++++++++++++
+>  1 file changed, 56 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/counter/event-counter.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/counter/event-counter.yaml b/Documentation/devicetree/bindings/counter/event-counter.yaml
+> new file mode 100644
+> index 000000000000..bd05c1b38f20
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/counter/event-counter.yaml
+> @@ -0,0 +1,56 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/counter/event-counter.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Event counter
+> +
+> +maintainers:
+> +  - Oleksij Rempel <o.rempel@pengutronix.de>
+> +
+> +description: |
+> +  A generic event counter to measure event frequency. It was developed and used
+> +  for agricultural devices to measure rotation speed of wheels or other tools.
+> +  Since the direction of rotation is not important, only one signal line is
+> +  needed.
+> +
+> +properties:
+> +  compatible:
+> +    const: event-counter
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  gpios:
+> +    description: Optional diagnostic interface to measure signal level
 
-Ah ok. So we'll have to save a state tracking variable and poll the bit
-once at boot and then at resume time? What happens to events that happen
-across suspend/resume? We drop them? Or we need to inject the last state
-if it's different into IIO with the time of resume?
+This description seems wrong in the case of only having a GPIO.
 
-> > +                       dir =3D state ? IIO_EV_DIR_FALLING : IIO_EV_DIR=
-_RISING;
-> > +
-> > +                       ev =3D IIO_UNMOD_EVENT_CODE(IIO_PROXIMITY, 0,
-> > +                                                 IIO_EV_TYPE_THRESH, d=
-ir);
-> > +                       iio_push_event(indio_dev, ev, timestamp);
-> > +               }
-> > +               mutex_unlock(&data->lock);
-> > +       }
-> > +
-> > +       return NOTIFY_OK;
-> > +}
-> > +
-> > +static int cros_ec_mkbp_proximity_read_raw(struct iio_dev *indio_dev,
-> > +                          const struct iio_chan_spec *chan, int *val,
-> > +                          int *val2, long mask)
-> > +{
-> > +       struct cros_ec_mkbp_proximity_data *data =3D iio_priv(indio_dev=
-);
-> > +       struct cros_ec_device *ec =3D data->ec;
-> > +
-> > +       if (chan->type !=3D IIO_PROXIMITY)
-> > +               return -EINVAL;
-> > +
-> > +       switch (mask) {
->
-> A switch is not necessary here.
+Also, a GPIO only implies polled mode because if the GPIO is interrupt 
+capable, 'interrupts' should be required. For gpio-keys, we split the 
+compatible strings in this case. I leave it to you if you want to make 
+it more explicit.
 
-Ok.
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
 
-> > +       case IIO_CHAN_INFO_RAW:
+anyOf:
+  - required: [ interrupts ]
+  - required: [ gpios ]
+
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    #include <dt-bindings/gpio/gpio.h>
+> +
+> +    counter-0 {
+> +        compatible = "event-counter";
+> +        interrupts-extended = <&gpio 0 IRQ_TYPE_EDGE_RISING>;
+> +    };
+> +
+> +    counter-1 {
+> +        compatible = "event-counter";
+> +        gpios = <&gpio 2 GPIO_ACTIVE_HIGH>;
+> +    };
+> +
+> +    counter-2 {
+> +        compatible = "event-counter";
+> +        interrupts-extended = <&gpio 2 IRQ_TYPE_EDGE_RISING>;
+> +        gpios = <&gpio 2 GPIO_ACTIVE_HIGH>;
+> +    };
+> +
+> +...
+> -- 
+> 2.30.0
+> 

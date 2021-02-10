@@ -2,48 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AC1A315D8F
+	by mail.lfdr.de (Postfix) with ESMTP id ED211315D90
 	for <lists+linux-iio@lfdr.de>; Wed, 10 Feb 2021 03:54:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233627AbhBJCwu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 9 Feb 2021 21:52:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33198 "EHLO
+        id S233665AbhBJCww (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 9 Feb 2021 21:52:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233530AbhBJCws (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Feb 2021 21:52:48 -0500
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31A7AC06178A
-        for <linux-iio@vger.kernel.org>; Tue,  9 Feb 2021 18:51:46 -0800 (PST)
-Received: by mail-pj1-x1034.google.com with SMTP id my11so2228812pjb.1
-        for <linux-iio@vger.kernel.org>; Tue, 09 Feb 2021 18:51:46 -0800 (PST)
+        with ESMTP id S233554AbhBJCwt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Feb 2021 21:52:49 -0500
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F712C06178C
+        for <linux-iio@vger.kernel.org>; Tue,  9 Feb 2021 18:51:47 -0800 (PST)
+Received: by mail-pf1-x431.google.com with SMTP id x136so340452pfc.2
+        for <linux-iio@vger.kernel.org>; Tue, 09 Feb 2021 18:51:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=rVS/BuBivcXTuFCgiwVRy4BRsx2EGMVlYR8Dmva3m30=;
-        b=fm5FAe8uJoHztb8gNI5xr1OQmn/oIp7NRDMA/CQacI07FmE4FpQO/oMxTC63wybBOO
-         BEQ0NnMv3/UUkZ13JYq6kc0B/F85cPqDOLQeqfue2jS2rFFQdlLnDPhf79jCKSoBjRUi
-         Du0l9+uMx8INR3qMbUCpCWjSdKnp8ZLct4QJU=
+        bh=mKEUl/8BfdEmVEI/D43kxjMasV/xJ4YnCz8a7+JpFhc=;
+        b=IBIh8xct6WRtScFuZLWzPcHM+PoI1PpgUCgwUTBvQvEqhAZoFWkqIxcFJJPVevvxEh
+         PrXiuDjPNYndkjzIAZsR+gzH7fOvREb+b8MkxBFZg/cm7WS2FSwtXD+2s6JnYKMGaX86
+         KDyxRPYLhOPjcy9qR2bZP/dvdyY1h5Re2TXtI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=rVS/BuBivcXTuFCgiwVRy4BRsx2EGMVlYR8Dmva3m30=;
-        b=BEplVU0SOTC3IckFZrx/+hDS8vt6NuVC0t1LUhJfjAZNbf6ixFXGyM1I/RBtbaj80A
-         PkYm8xHziw9wWlofArfZpXx0PB5d+oYM6WVRpBboCdIILTkQnkSQez62vLlmBl/+W3Qc
-         K26RwbueA+5pRzBK0Av5vDSztdYro5v6WRnsDLi079BhULTAxJ7thz9P5KWZsbBOvoDo
-         9KpdryNGK3s3Ydk18789ItjXgBJHu0S1a5kQhos6QglRh90sKrrdm6oEkLMtsWNmSYWv
-         SfAWbl7XLOBy07hxVOMPcVb/9YQ44eFSJn9HC7NMQCA1pdrpRh9mDRyUU0XyZ5Uzxy1B
-         g4yg==
-X-Gm-Message-State: AOAM532RxE7arqHQzLpSDP0wyFUtRZeivjcJ96qIHCsuFcwPf3+gEDx3
-        cAqDwydSq0Xpzf58/DIrpuedqA==
-X-Google-Smtp-Source: ABdhPJyQFz4+7shcJJFR7v7rKe8qerhkJpK3m228ziCU/kv+qW80wQcvqyEg6YSsTSpfhyUwZ6XNkw==
-X-Received: by 2002:a17:90b:1108:: with SMTP id gi8mr958284pjb.129.1612925505805;
-        Tue, 09 Feb 2021 18:51:45 -0800 (PST)
+        bh=mKEUl/8BfdEmVEI/D43kxjMasV/xJ4YnCz8a7+JpFhc=;
+        b=uUMJLY+SjFPc7b493BxB5FvpOleK/btZuny2E+nfp9h6sFmENTPY8mOreJbgFtwBrA
+         LBXXJchkqyVJsr8nQ1zKTmU5ceKkHN3ltNUkBIr6Fy/88k1GeLfFx9ceqmIx4zeJ9asB
+         Sg5YyjpqUJLfFOWoUv3wZsWx9z/SDwoxjQJDuACGHM8F48cL1lWeVHdw+KtHZhfgfYGm
+         p3SPhYP1nglwbx+NIsVomwj3QtV/7WBC/a+g+LCiYemwWtTiidNwpBPOMaaum8DEV+WU
+         PBiJAoYpgpc25eg3Jt9eTlyNJsY48JLybBC1eeSJ5LWCKBJKuTs89DT1xv2+x6ulh62Q
+         Hxww==
+X-Gm-Message-State: AOAM532E6CB8dW+NaVxlUz1MDh/qc2ettn0JIgP29wTGymLwkkNvwx6M
+        ufBNVagkY6R6tFIPTCpLi9zFfA==
+X-Google-Smtp-Source: ABdhPJywq/KHYRUMJS5Zqj5wsuxUsCZ0TCxuxb69ieXMemxFr/Zq3R2wB91+m3pbu/9HEYDi8nqG2g==
+X-Received: by 2002:a62:3247:0:b029:1dc:5a62:c367 with SMTP id y68-20020a6232470000b02901dc5a62c367mr1095093pfy.3.1612925507153;
+        Tue, 09 Feb 2021 18:51:47 -0800 (PST)
 Received: from smtp.gmail.com ([2620:15c:202:201:58e2:748e:a316:9823])
-        by smtp.gmail.com with ESMTPSA id r13sm139420pfc.198.2021.02.09.18.51.44
+        by smtp.gmail.com with ESMTPSA id r13sm139420pfc.198.2021.02.09.18.51.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Feb 2021 18:51:45 -0800 (PST)
+        Tue, 09 Feb 2021 18:51:46 -0800 (PST)
 From:   Stephen Boyd <swboyd@chromium.org>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
@@ -52,10 +52,11 @@ Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         Guenter Roeck <groeck@chromium.org>,
         Douglas Anderson <dianders@chromium.org>,
         Gwendal Grignou <gwendal@chromium.org>,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Subject: [PATCH v5 1/3] platform/chrome: cros_ec: Add SW_FRONT_PROXIMITY MKBP define
-Date:   Tue,  9 Feb 2021 18:51:40 -0800
-Message-Id: <20210210025142.3609708-2-swboyd@chromium.org>
+Subject: [PATCH v5 2/3] dt-bindings: iio: Add cros ec proximity yaml doc
+Date:   Tue,  9 Feb 2021 18:51:41 -0800
+Message-Id: <20210210025142.3609708-3-swboyd@chromium.org>
 X-Mailer: git-send-email 2.30.0.478.g8a0d178c01-goog
 In-Reply-To: <20210210025142.3609708-1-swboyd@chromium.org>
 References: <20210210025142.3609708-1-swboyd@chromium.org>
@@ -66,35 +67,98 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 Some cros ECs support a front proximity MKBP event via
-'EC_MKBP_FRONT_PROXIMITY'. Add this define so it can be used in a
-future patch.
+'EC_MKBP_FRONT_PROXIMITY'. Add a DT binding to document this feature via
+a node that is a child of the main cros_ec device node. Devices that
+have this ability will describe this in firmware.
 
 Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Cc: Benson Leung <bleung@chromium.org>
 Cc: Guenter Roeck <groeck@chromium.org>
 Cc: Douglas Anderson <dianders@chromium.org>
 Cc: Gwendal Grignou <gwendal@chromium.org>
-Acked-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+Cc: <devicetree@vger.kernel.org>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Enric Balletbo i Serra <enric.balletbo@collabora.com>
 Signed-off-by: Stephen Boyd <swboyd@chromium.org>
 ---
 
-No changes from last time.
+Changes from v4:
+ * Reduced example in iio binding and moved to mfd
+ * Dropped unevaluatedProperties
 
- include/linux/platform_data/cros_ec_commands.h | 1 +
- 1 file changed, 1 insertion(+)
+ .../google,cros-ec-mkbp-proximity.yaml        | 37 +++++++++++++++++++
+ .../bindings/mfd/google,cros-ec.yaml          |  7 ++++
+ 2 files changed, 44 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/proximity/google,cros-ec-mkbp-proximity.yaml
 
-diff --git a/include/linux/platform_data/cros_ec_commands.h b/include/linux/platform_data/cros_ec_commands.h
-index 86376779ab31..776e0b2be0e9 100644
---- a/include/linux/platform_data/cros_ec_commands.h
-+++ b/include/linux/platform_data/cros_ec_commands.h
-@@ -3457,6 +3457,7 @@ struct ec_response_get_next_event_v1 {
- #define EC_MKBP_LID_OPEN	0
- #define EC_MKBP_TABLET_MODE	1
- #define EC_MKBP_BASE_ATTACHED	2
-+#define EC_MKBP_FRONT_PROXIMITY	3
+diff --git a/Documentation/devicetree/bindings/iio/proximity/google,cros-ec-mkbp-proximity.yaml b/Documentation/devicetree/bindings/iio/proximity/google,cros-ec-mkbp-proximity.yaml
+new file mode 100644
+index 000000000000..099b4be927d4
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/proximity/google,cros-ec-mkbp-proximity.yaml
+@@ -0,0 +1,37 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++
++$id: http://devicetree.org/schemas/iio/proximity/google,cros-ec-mkbp-proximity.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: ChromeOS EC MKBP Proximity Sensor
++
++maintainers:
++  - Stephen Boyd <swboyd@chromium.org>
++  - Benson Leung <bleung@chromium.org>
++  - Enric Balletbo i Serra <enric.balletbo@collabora.com>
++
++description: |
++  Google's ChromeOS EC sometimes has the ability to detect user proximity.
++  This is implemented on the EC as near/far logic and exposed to the OS
++  via an MKBP switch bit.
++
++properties:
++  compatible:
++    const: google,cros-ec-mkbp-proximity
++
++  label:
++    description: Name for proximity sensor
++
++required:
++  - compatible
++
++additionalProperties: false
++
++examples:
++  - |
++    proximity {
++      compatible = "google,cros-ec-mkbp-proximity";
++      label = "proximity-wifi-lte";
++    };
+diff --git a/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml b/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
+index 76bf16ee27ec..4dfa70a013ae 100644
+--- a/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
++++ b/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
+@@ -94,6 +94,9 @@ properties:
+   keyboard-controller:
+     $ref: "/schemas/input/google,cros-ec-keyb.yaml#"
  
- /* Run keyboard factory test scanning */
- #define EC_CMD_KEYBOARD_FACTORY_TEST 0x0068
++  proximity:
++    $ref: "/schemas/iio/proximity/google,cros-ec-mkbp-proximity.yaml#"
++
+   codecs:
+     type: object
+     additionalProperties: false
+@@ -180,6 +183,10 @@ examples:
+             interrupts = <99 0>;
+             interrupt-parent = <&gpio7>;
+             spi-max-frequency = <5000000>;
++
++            proximity {
++                    compatible = "google,cros-ec-mkbp-proximity";
++            };
+         };
+     };
+ 
 -- 
 https://chromeos.dev
 

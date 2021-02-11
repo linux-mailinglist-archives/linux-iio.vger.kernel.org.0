@@ -2,49 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 94A73318ADC
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Feb 2021 13:40:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AA57318AE0
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Feb 2021 13:40:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231366AbhBKMhA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 11 Feb 2021 07:37:00 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:52262 "EHLO
+        id S231592AbhBKMhI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 11 Feb 2021 07:37:08 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:51980 "EHLO
         mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231561AbhBKMc2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 11 Feb 2021 07:32:28 -0500
+        by vger.kernel.org with ESMTP id S231576AbhBKMc3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 11 Feb 2021 07:32:29 -0500
 Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 11BCQg5c006990;
-        Thu, 11 Feb 2021 07:31:36 -0500
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 36hr7qg9g1-1
+        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 11BCQYaL006751;
+        Thu, 11 Feb 2021 07:31:35 -0500
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 36hr7qg9fy-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
         Thu, 11 Feb 2021 07:31:35 -0500
-Received: from SCSQMBX10.ad.analog.com (SCSQMBX10.ad.analog.com [10.77.17.5])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 11BCVYMV004858
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 11BCVYI0004812
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
         Thu, 11 Feb 2021 07:31:34 -0500
-Received: from SCSQCASHYB7.ad.analog.com (10.77.17.133) by
- SCSQMBX10.ad.analog.com (10.77.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.721.2;
- Thu, 11 Feb 2021 04:31:33 -0800
-Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by
- SCSQCASHYB7.ad.analog.com (10.77.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.721.2;
- Thu, 11 Feb 2021 04:31:32 -0800
-Received: from zeus.spd.analog.com (10.66.68.11) by scsqmbx10.ad.analog.com
- (10.77.17.5) with Microsoft SMTP Server id 15.2.721.2 via Frontend Transport;
- Thu, 11 Feb 2021 04:31:32 -0800
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Thu, 11 Feb
+ 2021 07:31:33 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Thu, 11 Feb 2021 07:31:33 -0500
 Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 11BCVRdm011921;
-        Thu, 11 Feb 2021 07:31:29 -0500
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 11BCVRdn011921;
+        Thu, 11 Feb 2021 07:31:30 -0500
 From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
 To:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
 CC:     <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
         <jic23@kernel.org>, <nuno.sa@analog.com>,
         <dragos.bogdan@analog.com>,
         Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH 1/3] iio: core: Add mmap interface infrastructure
-Date:   Thu, 11 Feb 2021 14:33:51 +0200
-Message-ID: <20210211123353.78963-2-alexandru.ardelean@analog.com>
+Subject: [PATCH 2/3] iio: buffer-dma: Add mmap support
+Date:   Thu, 11 Feb 2021 14:33:52 +0200
+Message-ID: <20210211123353.78963-3-alexandru.ardelean@analog.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210211123353.78963-1-alexandru.ardelean@analog.com>
 References: <20210211123353.78963-1-alexandru.ardelean@analog.com>
@@ -64,384 +60,582 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Lars-Peter Clausen <lars@metafoo.de>
 
-Add the necessary infrastructure to the IIO core to support an mmap based
-interface to access the capture data.
+Add support for the new mmap interface to IIO DMA buffer. This interface
+allows to directly map the backing memory of a block to userspace. This is
+especially advantageous for high-speed devices where the extra copy from
+kernel space to userspace of the data incurs a significant overhead.
 
-The advantage of the mmap based interface compared to the read() based
-interface is that it avoids an extra copy of the data between kernel and
-userspace. This is particular useful for high-speed devices which produce
-several megabytes or even gigabytes of data per second.
-
-The data for the mmap interface is managed at the granularity of so called
-blocks. A block is a contiguous region of memory (at the moment both
-physically and virtually contiguous). Reducing the granularity from byte
-level to block level is done to reduce the userspace-kernelspace
-synchronization overhead since performing syscalls for each byte at a
-data-rate of a few megabytes is not feasible.
-
-This of course leads to a slightly increased latency. For this reason an
-application can choose the size of the blocks as well as how many blocks it
-allocates. E.g. two blocks would be a traditional double buffering scheme.
-But using a higher number might be necessary to avoid underflow/overflow
-situations in the presence of scheduling latencies.
-
-A block can either be owned by kernel space or userspace. When owned by
-userspace it save to access the data in the block and process it. When
-owned by kernel space the block can be in one of 3 states.
-
-It can be in the incoming queue where all blocks submitted from userspace
-are placed and are waiting to be processed by the kernel driver.
-
-It can be currently being processed by the kernel driver, this means it is
-actively placing capturing data in it (usually using DMA).
-
-Or it can be in the outgoing queue where all blocks that have been
-processed by the kernel are placed. Userspace can dequeue the blocks as
-necessary.
-
-As part of the interface 5 new IOCTLs to manage the blocks and exchange
-them between userspace and kernelspace. The IOCTLs can be accessed through
-a open file descriptor to a IIO device.
-
-IIO_BUFFER_BLOCK_ALLOC_IOCTL(struct iio_buffer_block_alloc_req *):
- Allocates new blocks. Can be called multiple times if necessary. A newly
- allocated block is initially owned by userspace.
-
-IIO_BUFFER_BLOCK_FREE_IOCTL(void):
- Frees all previously allocated blocks. If the backing memory of a block is
- still in use by a kernel driver (i.e. active DMA transfer) it will be
- freed once the kernel driver has released it.
-
-IIO_BUFFER_BLOCK_QUERY_IOCTL(struct iio_buffer_block *):
- Queries information about a block. The id of the block about which
- information is to be queried needs to be set by userspace.
-
-IIO_BUFFER_BLOCK_ENQUEUE_IOCTL(struct iio_buffer_block *):
- Places a block on the incoming queue. This transfers ownership of the
- block from userspace to kernelspace. Userspace must populate the id field
- of the block to indicate which block to enqueue.
-
-IIO_BUFFER_BLOCK_DEQUEUE_IOCTL(struct iio_buffer_block *):
- Removes the first block from the outgoing queue. This transfers ownership
- of the block from kernelspace to userspace. Kernelspace will populate all
- fields of the block. If the queue is empty and the file descriptor is set
- to blocking the IOCTL will block until a new block is available on the
- outgoing queue.
-
-To access the data stored in a block by userspace the block must be mapped
-to the process's memory. This is done by calling mmap() on the IIO device
-file descriptor. Each block has a unique offset assigned to it which should
-be passed to the mmap interface. E.g.
-
-  mmap(0, block.size, PROT_READ | PROT_WRITE, MAP_SHARED, fd,
-       block.offset);
-
-A typical workflow for the new interface is:
-
-  BLOCK_ALLOC
-
-  foreach block
-     BLOCK_QUERY block
-	 mmap block.data.offset
-	 BLOCK_ENQUEUE block
-
-  enable buffer
-
-  while !done
-	BLOCK_DEQUEUE block
-	process data
-	BLOCK_ENQUEUE block
-
-  disable buffer
-
-  BLOCK_FREE
+In addition this interface allows more fine grained control over how many
+blocks are allocated and their size.
 
 Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
 Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
- drivers/iio/industrialio-buffer.c | 157 ++++++++++++++++++++++++++++++
- include/linux/iio/buffer-dma.h    |   5 -
- include/linux/iio/buffer_impl.h   |  11 +++
- include/uapi/linux/iio/buffer.h   |  27 +++++
- 4 files changed, 195 insertions(+), 5 deletions(-)
+ drivers/iio/buffer/industrialio-buffer-dma.c  | 314 ++++++++++++++++--
+ .../buffer/industrialio-buffer-dmaengine.c    |  22 +-
+ drivers/iio/industrialio-buffer.c             |   1 +
+ include/linux/iio/buffer-dma.h                |  20 +-
+ 4 files changed, 321 insertions(+), 36 deletions(-)
 
+diff --git a/drivers/iio/buffer/industrialio-buffer-dma.c b/drivers/iio/buffer/industrialio-buffer-dma.c
+index d348af8b9705..befb0a3d2def 100644
+--- a/drivers/iio/buffer/industrialio-buffer-dma.c
++++ b/drivers/iio/buffer/industrialio-buffer-dma.c
+@@ -90,6 +90,9 @@
+  * callback is called from within the custom callback.
+  */
+ 
++static unsigned int iio_dma_buffer_max_block_size = SZ_16M;
++module_param_named(max_block_size, iio_dma_buffer_max_block_size, uint, 0644);
++
+ static void iio_buffer_block_release(struct kref *kref)
+ {
+ 	struct iio_dma_buffer_block *block = container_of(kref,
+@@ -97,7 +100,7 @@ static void iio_buffer_block_release(struct kref *kref)
+ 
+ 	WARN_ON(block->state != IIO_BLOCK_STATE_DEAD);
+ 
+-	dma_free_coherent(block->queue->dev, PAGE_ALIGN(block->size),
++	dma_free_coherent(block->queue->dev, PAGE_ALIGN(block->block.size),
+ 					block->vaddr, block->phys_addr);
+ 
+ 	iio_buffer_put(&block->queue->buffer);
+@@ -178,7 +181,7 @@ static struct iio_dma_buffer_block *iio_dma_buffer_alloc_block(
+ 		return NULL;
+ 	}
+ 
+-	block->size = size;
++	block->block.size = size;
+ 	block->state = IIO_BLOCK_STATE_DEQUEUED;
+ 	block->queue = queue;
+ 	INIT_LIST_HEAD(&block->head);
+@@ -243,7 +246,7 @@ void iio_dma_buffer_block_list_abort(struct iio_dma_buffer_queue *queue,
+ 	spin_lock_irqsave(&queue->list_lock, flags);
+ 	list_for_each_entry_safe(block, _block, list, head) {
+ 		list_del(&block->head);
+-		block->bytes_used = 0;
++		block->block.bytes_used = 0;
+ 		_iio_dma_buffer_block_done(block);
+ 		iio_buffer_block_put_atomic(block);
+ 	}
+@@ -296,6 +299,10 @@ int iio_dma_buffer_request_update(struct iio_buffer *buffer)
+ 
+ 	mutex_lock(&queue->lock);
+ 
++	/* If in mmap mode dont do anything */
++	if (queue->num_blocks)
++		goto out_unlock;
++
+ 	/* Allocations are page aligned */
+ 	if (PAGE_ALIGN(queue->fileio.block_size) == PAGE_ALIGN(size))
+ 		try_reuse = true;
+@@ -330,7 +337,7 @@ int iio_dma_buffer_request_update(struct iio_buffer *buffer)
+ 				iio_buffer_block_put(block);
+ 				block = NULL;
+ 			} else {
+-				block->size = size;
++				block->block.size = size;
+ 			}
+ 		} else {
+ 			block = NULL;
+@@ -345,6 +352,8 @@ int iio_dma_buffer_request_update(struct iio_buffer *buffer)
+ 			queue->fileio.blocks[i] = block;
+ 		}
+ 
++		block->block.id = i;
++
+ 		block->state = IIO_BLOCK_STATE_QUEUED;
+ 		list_add_tail(&block->head, &queue->incoming);
+ 	}
+@@ -356,6 +365,30 @@ int iio_dma_buffer_request_update(struct iio_buffer *buffer)
+ }
+ EXPORT_SYMBOL_GPL(iio_dma_buffer_request_update);
+ 
++static void iio_dma_buffer_fileio_free(struct iio_dma_buffer_queue *queue)
++{
++	unsigned int i;
++
++	spin_lock_irq(&queue->list_lock);
++	for (i = 0; i < ARRAY_SIZE(queue->fileio.blocks); i++) {
++		if (!queue->fileio.blocks[i])
++			continue;
++		queue->fileio.blocks[i]->state = IIO_BLOCK_STATE_DEAD;
++	}
++	INIT_LIST_HEAD(&queue->outgoing);
++	spin_unlock_irq(&queue->list_lock);
++
++	INIT_LIST_HEAD(&queue->incoming);
++
++	for (i = 0; i < ARRAY_SIZE(queue->fileio.blocks); i++) {
++		if (!queue->fileio.blocks[i])
++			continue;
++		iio_buffer_block_put(queue->fileio.blocks[i]);
++		queue->fileio.blocks[i] = NULL;
++	}
++	queue->fileio.active_block = NULL;
++}
++
+ static void iio_dma_buffer_submit_block(struct iio_dma_buffer_queue *queue,
+ 	struct iio_dma_buffer_block *block)
+ {
+@@ -404,6 +437,7 @@ int iio_dma_buffer_enable(struct iio_buffer *buffer,
+ 	struct iio_dma_buffer_block *block, *_block;
+ 
+ 	mutex_lock(&queue->lock);
++	queue->fileio.enabled = !queue->num_blocks;
+ 	queue->active = true;
+ 	list_for_each_entry_safe(block, _block, &queue->incoming, head) {
+ 		list_del(&block->head);
+@@ -429,6 +463,7 @@ int iio_dma_buffer_disable(struct iio_buffer *buffer,
+ 	struct iio_dma_buffer_queue *queue = iio_buffer_to_queue(buffer);
+ 
+ 	mutex_lock(&queue->lock);
++	queue->fileio.enabled = false;
+ 	queue->active = false;
+ 
+ 	if (queue->ops && queue->ops->abort)
+@@ -490,6 +525,11 @@ int iio_dma_buffer_read(struct iio_buffer *buffer, size_t n,
+ 
+ 	mutex_lock(&queue->lock);
+ 
++	if (!queue->fileio.enabled) {
++		ret = -EBUSY;
++		goto out_unlock;
++	}
++
+ 	if (!queue->fileio.active_block) {
+ 		block = iio_dma_buffer_dequeue(queue);
+ 		if (block == NULL) {
+@@ -503,8 +543,8 @@ int iio_dma_buffer_read(struct iio_buffer *buffer, size_t n,
+ 	}
+ 
+ 	n = rounddown(n, buffer->bytes_per_datum);
+-	if (n > block->bytes_used - queue->fileio.pos)
+-		n = block->bytes_used - queue->fileio.pos;
++	if (n > block->block.bytes_used - queue->fileio.pos)
++		n = block->block.bytes_used - queue->fileio.pos;
+ 
+ 	if (copy_to_user(user_buffer, block->vaddr + queue->fileio.pos, n)) {
+ 		ret = -EFAULT;
+@@ -513,7 +553,7 @@ int iio_dma_buffer_read(struct iio_buffer *buffer, size_t n,
+ 
+ 	queue->fileio.pos += n;
+ 
+-	if (queue->fileio.pos == block->bytes_used) {
++	if (queue->fileio.pos == block->block.bytes_used) {
+ 		queue->fileio.active_block = NULL;
+ 		iio_dma_buffer_enqueue(queue, block);
+ 	}
+@@ -549,11 +589,11 @@ size_t iio_dma_buffer_data_available(struct iio_buffer *buf)
+ 
+ 	mutex_lock(&queue->lock);
+ 	if (queue->fileio.active_block)
+-		data_available += queue->fileio.active_block->size;
++		data_available += queue->fileio.active_block->block.size;
+ 
+ 	spin_lock_irq(&queue->list_lock);
+ 	list_for_each_entry(block, &queue->outgoing, head)
+-		data_available += block->size;
++		data_available += block->block.size;
+ 	spin_unlock_irq(&queue->list_lock);
+ 	mutex_unlock(&queue->lock);
+ 
+@@ -561,6 +601,241 @@ size_t iio_dma_buffer_data_available(struct iio_buffer *buf)
+ }
+ EXPORT_SYMBOL_GPL(iio_dma_buffer_data_available);
+ 
++int iio_dma_buffer_alloc_blocks(struct iio_buffer *buffer,
++				struct iio_buffer_block_alloc_req *req)
++{
++	struct iio_dma_buffer_queue *queue = iio_buffer_to_queue(buffer);
++	struct iio_dma_buffer_block **blocks;
++	unsigned int num_blocks;
++	unsigned int i;
++	int ret = 0;
++
++	mutex_lock(&queue->lock);
++
++	/*
++	 * If the buffer is enabled and in fileio mode new blocks can't be
++	 * allocated.
++	 */
++	if (queue->fileio.enabled) {
++		ret = -EBUSY;
++		goto err_unlock;
++	}
++
++	/* Free memory that might be in use for fileio mode */
++	iio_dma_buffer_fileio_free(queue);
++
++	/* 64 blocks ought to be enough for anybody ;) */
++	if (req->count > 64 - queue->num_blocks)
++		req->count = 64 - queue->num_blocks;
++	if (req->size > iio_dma_buffer_max_block_size)
++		req->size = iio_dma_buffer_max_block_size;
++
++	req->id = queue->num_blocks;
++
++	if (req->count == 0 || req->size == 0) {
++		ret = 0;
++		goto err_unlock;
++	}
++
++	num_blocks = req->count + queue->num_blocks;
++
++	blocks = krealloc(queue->blocks, sizeof(*blocks) * num_blocks,
++		GFP_KERNEL);
++	if (!blocks) {
++		ret = -ENOMEM;
++		goto err_unlock;
++	}
++
++	for (i = queue->num_blocks; i < num_blocks; i++) {
++		blocks[i] = iio_dma_buffer_alloc_block(queue, req->size);
++		if (!blocks[i])
++			break;
++		blocks[i]->block.id = i;
++		blocks[i]->block.data.offset = queue->max_offset;
++		queue->max_offset += PAGE_ALIGN(req->size);
++	}
++
++	req->count = i - queue->num_blocks;
++	queue->num_blocks = i;
++	queue->blocks = blocks;
++
++err_unlock:
++	mutex_unlock(&queue->lock);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(iio_dma_buffer_alloc_blocks);
++
++int iio_dma_buffer_free_blocks(struct iio_buffer *buffer)
++{
++	struct iio_dma_buffer_queue *queue = iio_buffer_to_queue(buffer);
++	unsigned int i;
++
++	mutex_lock(&queue->lock);
++
++	spin_lock_irq(&queue->list_lock);
++	INIT_LIST_HEAD(&queue->incoming);
++	INIT_LIST_HEAD(&queue->outgoing);
++
++	for (i = 0; i < queue->num_blocks; i++)
++		queue->blocks[i]->state = IIO_BLOCK_STATE_DEAD;
++	spin_unlock_irq(&queue->list_lock);
++
++	for (i = 0; i < queue->num_blocks; i++)
++		iio_buffer_block_put(queue->blocks[i]);
++
++	kfree(queue->blocks);
++	queue->blocks = NULL;
++	queue->num_blocks = 0;
++	queue->max_offset = 0;
++
++	mutex_unlock(&queue->lock);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(iio_dma_buffer_free_blocks);
++
++int iio_dma_buffer_query_block(struct iio_buffer *buffer,
++			       struct iio_buffer_block *block)
++{
++	struct iio_dma_buffer_queue *queue = iio_buffer_to_queue(buffer);
++	int ret = 0;
++
++	mutex_lock(&queue->lock);
++
++	if (block->id >= queue->num_blocks) {
++		ret = -EINVAL;
++		goto out_unlock;
++	}
++
++	*block = queue->blocks[block->id]->block;
++
++out_unlock:
++	mutex_unlock(&queue->lock);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(iio_dma_buffer_query_block);
++
++int iio_dma_buffer_enqueue_block(struct iio_buffer *buffer,
++				 struct iio_buffer_block *block)
++{
++	struct iio_dma_buffer_queue *queue = iio_buffer_to_queue(buffer);
++	struct iio_dma_buffer_block *dma_block;
++	int ret = 0;
++
++	mutex_lock(&queue->lock);
++
++	if (block->id >= queue->num_blocks) {
++		ret = -EINVAL;
++		goto out_unlock;
++	}
++
++	dma_block = queue->blocks[block->id];
++	dma_block->block.bytes_used = block->bytes_used;
++	dma_block->block.flags = block->flags;
++
++	switch (dma_block->state) {
++	case IIO_BLOCK_STATE_DONE:
++		list_del_init(&dma_block->head);
++		break;
++	case IIO_BLOCK_STATE_QUEUED:
++		/* Nothing to do */
++		goto out_unlock;
++	case IIO_BLOCK_STATE_DEQUEUED:
++		break;
++	default:
++		ret = -EBUSY;
++		goto out_unlock;
++	}
++
++	iio_dma_buffer_enqueue(queue, dma_block);
++
++out_unlock:
++	mutex_unlock(&queue->lock);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(iio_dma_buffer_enqueue_block);
++
++int iio_dma_buffer_dequeue_block(struct iio_buffer *buffer,
++				 struct iio_buffer_block *block)
++{
++	struct iio_dma_buffer_queue *queue = iio_buffer_to_queue(buffer);
++	struct iio_dma_buffer_block *dma_block;
++	int ret = 0;
++
++	mutex_lock(&queue->lock);
++
++	dma_block = iio_dma_buffer_dequeue(queue);
++	if (!dma_block) {
++		ret = -EAGAIN;
++		goto out_unlock;
++	}
++
++	*block = dma_block->block;
++
++out_unlock:
++	mutex_unlock(&queue->lock);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(iio_dma_buffer_dequeue_block);
++
++static void iio_dma_buffer_mmap_open(struct vm_area_struct *area)
++{
++	struct iio_dma_buffer_block *block = area->vm_private_data;
++
++	iio_buffer_block_get(block);
++}
++
++static void iio_dma_buffer_mmap_close(struct vm_area_struct *area)
++{
++	struct iio_dma_buffer_block *block = area->vm_private_data;
++
++	iio_buffer_block_put(block);
++}
++
++static const struct vm_operations_struct iio_dma_buffer_vm_ops = {
++	.open = iio_dma_buffer_mmap_open,
++	.close = iio_dma_buffer_mmap_close,
++};
++
++int iio_dma_buffer_mmap(struct iio_buffer *buffer, struct vm_area_struct *vma)
++{
++	struct iio_dma_buffer_queue *queue = iio_buffer_to_queue(buffer);
++	struct iio_dma_buffer_block *block = NULL;
++	size_t vm_offset;
++	unsigned int i;
++
++	vm_offset = vma->vm_pgoff << PAGE_SHIFT;
++
++	for (i = 0; i < queue->num_blocks; i++) {
++		if (queue->blocks[i]->block.data.offset == vm_offset) {
++			block = queue->blocks[i];
++			break;
++		}
++	}
++
++	if (block == NULL)
++		return -EINVAL;
++
++	if (PAGE_ALIGN(block->block.size) < vma->vm_end - vma->vm_start)
++		return -EINVAL;
++
++	vma->vm_pgoff = 0;
++
++	vma->vm_flags |= VM_DONTEXPAND | VM_DONTDUMP;
++	vma->vm_ops = &iio_dma_buffer_vm_ops;
++	vma->vm_private_data = block;
++
++	vma->vm_ops->open(vma);
++
++	return dma_mmap_coherent(queue->dev, vma, block->vaddr,
++		block->phys_addr, vma->vm_end - vma->vm_start);
++}
++EXPORT_SYMBOL_GPL(iio_dma_buffer_mmap);
++
+ /**
+  * iio_dma_buffer_set_bytes_per_datum() - DMA buffer set_bytes_per_datum callback
+  * @buffer: Buffer to set the bytes-per-datum for
+@@ -635,28 +910,9 @@ EXPORT_SYMBOL_GPL(iio_dma_buffer_init);
+  */
+ void iio_dma_buffer_exit(struct iio_dma_buffer_queue *queue)
+ {
+-	unsigned int i;
+-
+ 	mutex_lock(&queue->lock);
+ 
+-	spin_lock_irq(&queue->list_lock);
+-	for (i = 0; i < ARRAY_SIZE(queue->fileio.blocks); i++) {
+-		if (!queue->fileio.blocks[i])
+-			continue;
+-		queue->fileio.blocks[i]->state = IIO_BLOCK_STATE_DEAD;
+-	}
+-	INIT_LIST_HEAD(&queue->outgoing);
+-	spin_unlock_irq(&queue->list_lock);
+-
+-	INIT_LIST_HEAD(&queue->incoming);
+-
+-	for (i = 0; i < ARRAY_SIZE(queue->fileio.blocks); i++) {
+-		if (!queue->fileio.blocks[i])
+-			continue;
+-		iio_buffer_block_put(queue->fileio.blocks[i]);
+-		queue->fileio.blocks[i] = NULL;
+-	}
+-	queue->fileio.active_block = NULL;
++	iio_dma_buffer_fileio_free(queue);
+ 	queue->ops = NULL;
+ 
+ 	mutex_unlock(&queue->lock);
+diff --git a/drivers/iio/buffer/industrialio-buffer-dmaengine.c b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
+index 8ecdbae83414..bb022922ec23 100644
+--- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
++++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
+@@ -54,7 +54,7 @@ static void iio_dmaengine_buffer_block_done(void *data,
+ 	spin_lock_irqsave(&block->queue->list_lock, flags);
+ 	list_del(&block->head);
+ 	spin_unlock_irqrestore(&block->queue->list_lock, flags);
+-	block->bytes_used -= result->residue;
++	block->block.bytes_used -= result->residue;
+ 	iio_dma_buffer_block_done(block);
+ }
+ 
+@@ -66,12 +66,17 @@ static int iio_dmaengine_buffer_submit_block(struct iio_dma_buffer_queue *queue,
+ 	struct dma_async_tx_descriptor *desc;
+ 	dma_cookie_t cookie;
+ 
+-	block->bytes_used = min(block->size, dmaengine_buffer->max_size);
+-	block->bytes_used = rounddown(block->bytes_used,
+-			dmaengine_buffer->align);
++	block->block.bytes_used = min(block->block.size,
++		dmaengine_buffer->max_size);
++	block->block.bytes_used = rounddown(block->block.bytes_used,
++		dmaengine_buffer->align);
++	if (block->block.bytes_used == 0) {
++		iio_dma_buffer_block_done(block);
++		return 0;
++	}
+ 
+ 	desc = dmaengine_prep_slave_single(dmaengine_buffer->chan,
+-		block->phys_addr, block->bytes_used, DMA_DEV_TO_MEM,
++		block->phys_addr, block->block.bytes_used, DMA_DEV_TO_MEM,
+ 		DMA_PREP_INTERRUPT);
+ 	if (!desc)
+ 		return -ENOMEM;
+@@ -120,6 +125,13 @@ static const struct iio_buffer_access_funcs iio_dmaengine_buffer_ops = {
+ 	.data_available = iio_dma_buffer_data_available,
+ 	.release = iio_dmaengine_buffer_release,
+ 
++	.alloc_blocks = iio_dma_buffer_alloc_blocks,
++	.free_blocks = iio_dma_buffer_free_blocks,
++	.query_block = iio_dma_buffer_query_block,
++	.enqueue_block = iio_dma_buffer_enqueue_block,
++	.dequeue_block = iio_dma_buffer_dequeue_block,
++	.mmap = iio_dma_buffer_mmap,
++
+ 	.modes = INDIO_BUFFER_HARDWARE,
+ 	.flags = INDIO_BUFFER_FLAG_FIXED_WATERMARK,
+ };
 diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-index 3aa6702a5811..50228df0b09f 100644
+index 50228df0b09f..a0d1ad86022f 100644
 --- a/drivers/iio/industrialio-buffer.c
 +++ b/drivers/iio/industrialio-buffer.c
-@@ -16,6 +16,7 @@
- #include <linux/fs.h>
- #include <linux/cdev.h>
- #include <linux/slab.h>
-+#include <linux/mm.h>
+@@ -19,6 +19,7 @@
+ #include <linux/mm.h>
  #include <linux/poll.h>
  #include <linux/sched/signal.h>
++#include <linux/mm.h>
  
-@@ -1370,6 +1371,12 @@ static void iio_buffer_unregister_legacy_sysfs_groups(struct iio_dev *indio_dev)
- 	kfree(iio_dev_opaque->legacy_scan_el_group.attrs);
- }
- 
-+static void iio_buffer_free_blocks(struct iio_buffer *buffer)
-+{
-+	if (buffer->access->free_blocks)
-+		buffer->access->free_blocks(buffer);
-+}
-+
- static int iio_buffer_chrdev_release(struct inode *inode, struct file *filep)
- {
- 	struct iio_dev_buffer_pair *ib = filep->private_data;
-@@ -1378,18 +1385,24 @@ static int iio_buffer_chrdev_release(struct inode *inode, struct file *filep)
- 
- 	wake_up(&buffer->pollq);
- 	clear_bit(IIO_BUSY_BIT_POS, &buffer->flags);
-+	iio_buffer_free_blocks(buffer);
- 	iio_device_put(indio_dev);
- 	kfree(ib);
- 
- 	return 0;
- }
- 
-+static long iio_buffer_ioctl(struct file *filep, unsigned int cmd, unsigned long arg);
-+static int iio_buffer_mmap(struct file *filep, struct vm_area_struct *vma);
-+
- static const struct file_operations iio_buffer_chrdev_fileops = {
- 	.owner = THIS_MODULE,
- 	.llseek = noop_llseek,
- 	.read = iio_buffer_read,
- 	.poll = iio_buffer_poll,
-+	.unlocked_ioctl = iio_buffer_ioctl,
- 	.compat_ioctl = compat_ptr_ioctl,
-+	.mmap = iio_buffer_mmap,
- 	.release = iio_buffer_chrdev_release,
- };
- 
-@@ -1762,6 +1775,150 @@ void iio_buffer_put(struct iio_buffer *buffer)
- }
- EXPORT_SYMBOL_GPL(iio_buffer_put);
- 
-+static int iio_buffer_query_block(struct iio_buffer *buffer,
-+				  struct iio_buffer_block __user *user_block)
-+{
-+	struct iio_buffer_block block;
-+	int ret;
-+
-+	if (!buffer->access->query_block)
-+		return -ENOSYS;
-+
-+	if (copy_from_user(&block, user_block, sizeof(block)))
-+		return -EFAULT;
-+
-+	ret = buffer->access->query_block(buffer, &block);
-+	if (ret)
-+		return ret;
-+
-+	if (copy_to_user(user_block, &block, sizeof(block)))
-+		return -EFAULT;
-+
-+	return 0;
-+}
-+
-+static int iio_buffer_dequeue_block(struct iio_dev *indio_dev,
-+				    struct iio_buffer *buffer,
-+				    struct iio_buffer_block __user *user_block,
-+				    bool non_blocking)
-+{
-+	struct iio_buffer_block block;
-+	int ret;
-+
-+	if (!buffer->access->dequeue_block)
-+		return -ENOSYS;
-+
-+	do {
-+		if (!iio_buffer_data_available(buffer)) {
-+			if (non_blocking)
-+				return -EAGAIN;
-+
-+			ret = wait_event_interruptible(buffer->pollq,
-+					iio_buffer_data_available(buffer) ||
-+					indio_dev->info == NULL);
-+			if (ret)
-+				return ret;
-+			if (indio_dev->info == NULL)
-+				return -ENODEV;
-+		}
-+
-+		ret = buffer->access->dequeue_block(buffer, &block);
-+		if (ret == -EAGAIN && non_blocking)
-+			ret = 0;
-+	} while (ret);
-+
-+	if (ret)
-+		return ret;
-+
-+	if (copy_to_user(user_block, &block, sizeof(block)))
-+		return -EFAULT;
-+
-+	return 0;
-+}
-+
-+static int iio_buffer_enqueue_block(struct iio_buffer *buffer,
-+				   struct iio_buffer_block __user *user_block)
-+{
-+	struct iio_buffer_block block;
-+
-+	if (!buffer->access->enqueue_block)
-+		return -ENOSYS;
-+
-+	if (copy_from_user(&block, user_block, sizeof(block)))
-+		return -EFAULT;
-+
-+	return buffer->access->enqueue_block(buffer, &block);
-+}
-+
-+static int iio_buffer_alloc_blocks(struct iio_buffer *buffer,
-+				   struct iio_buffer_block_alloc_req __user *user_req)
-+{
-+	struct iio_buffer_block_alloc_req req;
-+	int ret;
-+
-+	if (!buffer->access->alloc_blocks)
-+		return -ENOSYS;
-+
-+	if (copy_from_user(&req, user_req, sizeof(req)))
-+		return -EFAULT;
-+
-+	ret = buffer->access->alloc_blocks(buffer, &req);
-+	if (ret)
-+		return ret;
-+
-+	if (copy_to_user(user_req, &req, sizeof(req)))
-+		return -EFAULT;
-+
-+	return 0;
-+}
-+
-+static long iio_buffer_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
-+{
-+	bool non_blocking = filep->f_flags & O_NONBLOCK;
-+	struct iio_dev_buffer_pair *ib = filep->private_data;
-+	struct iio_dev *indio_dev = ib->indio_dev;
-+	struct iio_buffer *buffer = ib->buffer;
-+
-+	if (!buffer || !buffer->access)
-+		return -ENODEV;
-+
-+	switch (cmd) {
-+	case IIO_BUFFER_BLOCK_ALLOC_IOCTL:
-+		return iio_buffer_alloc_blocks(buffer,
-+			(struct iio_buffer_block_alloc_req __user *)arg);
-+	case IIO_BUFFER_BLOCK_FREE_IOCTL:
-+		iio_buffer_free_blocks(buffer);
-+		return 0;
-+	case IIO_BUFFER_BLOCK_QUERY_IOCTL:
-+		return iio_buffer_query_block(buffer,
-+			(struct iio_buffer_block __user *)arg);
-+	case IIO_BUFFER_BLOCK_ENQUEUE_IOCTL:
-+		return iio_buffer_enqueue_block(buffer,
-+			(struct iio_buffer_block __user *)arg);
-+	case IIO_BUFFER_BLOCK_DEQUEUE_IOCTL:
-+		return iio_buffer_dequeue_block(indio_dev, buffer,
-+			(struct iio_buffer_block __user *)arg, non_blocking);
-+	}
-+	return -EINVAL;
-+}
-+
-+static int iio_buffer_mmap(struct file *filep, struct vm_area_struct *vma)
-+{
-+	struct iio_dev_buffer_pair *ib = filep->private_data;
-+	struct iio_buffer *buffer = ib->buffer;
-+
-+	if (!buffer->access || !buffer->access->mmap)
-+		return -ENODEV;
-+
-+	if (!(vma->vm_flags & VM_SHARED))
-+		return -EINVAL;
-+
-+	if (!(vma->vm_flags & VM_READ))
-+		return -EINVAL;
-+
-+	return buffer->access->mmap(buffer, vma);
-+}
-+
- /**
-  * iio_device_attach_buffer - Attach a buffer to a IIO device
-  * @indio_dev: The device the buffer should be attached to
+ #include <linux/iio/iio.h>
+ #include <linux/iio/iio-opaque.h>
 diff --git a/include/linux/iio/buffer-dma.h b/include/linux/iio/buffer-dma.h
-index ff15c61bf319..6564bdcdac66 100644
+index 6564bdcdac66..315a8d750986 100644
 --- a/include/linux/iio/buffer-dma.h
 +++ b/include/linux/iio/buffer-dma.h
-@@ -17,11 +17,6 @@ struct iio_dma_buffer_queue;
- struct iio_dma_buffer_ops;
- struct device;
+@@ -47,7 +47,7 @@ enum iio_block_state {
+ struct iio_dma_buffer_block {
+ 	/* May only be accessed by the owner of the block */
+ 	struct list_head head;
+-	size_t bytes_used;
++	struct iio_buffer_block block;
  
--struct iio_buffer_block {
--	u32 size;
--	u32 bytes_used;
--};
--
- /**
-  * enum iio_block_state - State of a struct iio_dma_buffer_block
-  * @IIO_BLOCK_STATE_DEQUEUED: Block is not queued
-diff --git a/include/linux/iio/buffer_impl.h b/include/linux/iio/buffer_impl.h
-index 245b32918ae1..0ac809171bb1 100644
---- a/include/linux/iio/buffer_impl.h
-+++ b/include/linux/iio/buffer_impl.h
-@@ -60,6 +60,17 @@ struct iio_buffer_access_funcs {
+ 	/*
+ 	 * Set during allocation, constant thereafter. May be accessed read-only
+@@ -55,7 +55,6 @@ struct iio_dma_buffer_block {
+ 	 */
+ 	void *vaddr;
+ 	dma_addr_t phys_addr;
+-	size_t size;
+ 	struct iio_dma_buffer_queue *queue;
  
- 	void (*release)(struct iio_buffer *buffer);
- 
-+	int (*alloc_blocks)(struct iio_buffer *buffer,
-+			    struct iio_buffer_block_alloc_req *req);
-+	int (*free_blocks)(struct iio_buffer *buffer);
-+	int (*enqueue_block)(struct iio_buffer *buffer,
-+			     struct iio_buffer_block *block);
-+	int (*dequeue_block)(struct iio_buffer *buffer,
-+			     struct iio_buffer_block *block);
-+	int (*query_block)(struct iio_buffer *buffer,
-+			   struct iio_buffer_block *block);
-+	int (*mmap)(struct iio_buffer *buffer,	struct vm_area_struct *vma);
-+
- 	unsigned int modes;
- 	unsigned int flags;
+ 	/* Must not be accessed outside the core. */
+@@ -73,12 +72,14 @@ struct iio_dma_buffer_block {
+  * @active_block: Block being used in read()
+  * @pos: Read offset in the active block
+  * @block_size: Size of each block
++ * @enabled: Whether the buffer is operating in fileio mode
+  */
+ struct iio_dma_buffer_queue_fileio {
+ 	struct iio_dma_buffer_block *blocks[2];
+ 	struct iio_dma_buffer_block *active_block;
+ 	size_t pos;
+ 	size_t block_size;
++	bool enabled;
  };
-diff --git a/include/uapi/linux/iio/buffer.h b/include/uapi/linux/iio/buffer.h
-index 13939032b3f6..0e0c95f1c38b 100644
---- a/include/uapi/linux/iio/buffer.h
-+++ b/include/uapi/linux/iio/buffer.h
-@@ -5,6 +5,33 @@
- #ifndef _UAPI_IIO_BUFFER_H_
- #define _UAPI_IIO_BUFFER_H_
  
-+struct iio_buffer_block_alloc_req {
-+	__u32 type;
-+	__u32 size;
-+	__u32 count;
-+	__u32 id;
-+};
-+
-+#define IIO_BUFFER_BLOCK_FLAG_TIMESTAMP_VALID	(1 << 0)
-+#define IIO_BUFFER_BLOCK_FLAG_CYCLIC		(1 << 1)
-+
-+struct iio_buffer_block {
-+	__u32 id;
-+	__u32 size;
-+	__u32 bytes_used;
-+	__u32 type;
-+	__u32 flags;
-+	union {
-+		__u32 offset;
-+	} data;
-+	__u64 timestamp;
-+};
-+
- #define IIO_BUFFER_GET_FD_IOCTL			_IOWR('i', 0x91, int)
-+#define IIO_BUFFER_BLOCK_ALLOC_IOCTL		_IOWR('i', 0x92, struct iio_buffer_block_alloc_req)
-+#define IIO_BUFFER_BLOCK_FREE_IOCTL		_IO('i',   0x93)
-+#define IIO_BUFFER_BLOCK_QUERY_IOCTL		_IOWR('i', 0x93, struct iio_buffer_block)
-+#define IIO_BUFFER_BLOCK_ENQUEUE_IOCTL		_IOWR('i', 0x94, struct iio_buffer_block)
-+#define IIO_BUFFER_BLOCK_DEQUEUE_IOCTL		_IOWR('i', 0x95, struct iio_buffer_block)
+ /**
+@@ -109,6 +110,10 @@ struct iio_dma_buffer_queue {
  
- #endif /* _UAPI_IIO_BUFFER_H_ */
+ 	bool active;
+ 
++	unsigned int num_blocks;
++	struct iio_dma_buffer_block **blocks;
++	unsigned int max_offset;
++
+ 	struct iio_dma_buffer_queue_fileio fileio;
+ };
+ 
+@@ -143,4 +148,15 @@ int iio_dma_buffer_init(struct iio_dma_buffer_queue *queue,
+ void iio_dma_buffer_exit(struct iio_dma_buffer_queue *queue);
+ void iio_dma_buffer_release(struct iio_dma_buffer_queue *queue);
+ 
++int iio_dma_buffer_alloc_blocks(struct iio_buffer *buffer,
++				struct iio_buffer_block_alloc_req *req);
++int iio_dma_buffer_free_blocks(struct iio_buffer *buffer);
++int iio_dma_buffer_query_block(struct iio_buffer *buffer,
++			       struct iio_buffer_block *block);
++int iio_dma_buffer_enqueue_block(struct iio_buffer *buffer,
++				 struct iio_buffer_block *block);
++int iio_dma_buffer_dequeue_block(struct iio_buffer *buffer,
++				 struct iio_buffer_block *block);
++int iio_dma_buffer_mmap(struct iio_buffer *buffer, struct vm_area_struct *vma);
++
+ #endif
 -- 
 2.17.1
 

@@ -2,407 +2,194 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E6583183B6
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Feb 2021 03:48:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 99752318A66
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Feb 2021 13:26:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229771AbhBKCre (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 10 Feb 2021 21:47:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59616 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229789AbhBKCrb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 10 Feb 2021 21:47:31 -0500
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59522C06178C
-        for <linux-iio@vger.kernel.org>; Wed, 10 Feb 2021 18:46:08 -0800 (PST)
-Received: by mail-pg1-x532.google.com with SMTP id o38so2729578pgm.9
-        for <linux-iio@vger.kernel.org>; Wed, 10 Feb 2021 18:46:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=r+fLXRgv65de/i9AQtBfT+zufY+YZq4cm78vDBPPvSw=;
-        b=dZgT5rJCOpWIh45xzzb0CT/35jAv+3Ks282G45sL06PFAuQCXaLKdkGHrQEAGdTaFt
-         leF8dvoyRgzqkBLjzRGuBmWtZX8u+AJkbHARspOd5M6pgxKLTAbL+tfmBgvDsTryW/D1
-         xpqriR19mcAONUjw/iyn22lp9Ic9HnWXzy1mI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=r+fLXRgv65de/i9AQtBfT+zufY+YZq4cm78vDBPPvSw=;
-        b=RYvSThoBe3qJJP8Pmv12wLQVA5qK8w/gjfEGrpUSHFTRf1xYbWXgnrLbfc+dhdq33Y
-         wapH8os/am9ag2kUY0vNFCPDmRyFAU5CKAjHlqR8clNbMEuktLdaneTGQYso6b39xCch
-         tJhdcxdoiM23YhYX9OAoTYE+FUPaftpn9muvmY7SZ+JnlDvkrFhViZpEr4IhjBF9gqpm
-         6YDVJApsHwaXQUMvy7mr2YEX+iZ4NEuN1qD3jMAvGWyCTt9aD2vEiwrNFl9U/FuXuMX6
-         6BnaRdJ2K2yaC8nodSkFZDc2nrGcFFgvRCh0HOHxRjLQ97EMFfloczyRUYlZZB159KZz
-         P4wQ==
-X-Gm-Message-State: AOAM531iFWyQmKj4GqAJy4BEd8UpsTa+gu8c7qmXXjWxxjuVhvInL58b
-        oIYyc/9MzTmGEW1sfY8Yrugffw==
-X-Google-Smtp-Source: ABdhPJzj3GFhkb/+GKiP4MLgdZ1+lcfAG6NqHukOLTswQXThtjo22riTO3HafTjN6NDU70hvYD2LCA==
-X-Received: by 2002:a63:c4a:: with SMTP id 10mr6026831pgm.397.1613011567891;
-        Wed, 10 Feb 2021 18:46:07 -0800 (PST)
-Received: from smtp.gmail.com ([2620:15c:202:201:5533:1106:2710:3ce])
-        by smtp.gmail.com with ESMTPSA id o185sm2615920pfb.196.2021.02.10.18.46.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Feb 2021 18:46:07 -0800 (PST)
-From:   Stephen Boyd <swboyd@chromium.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Subject: [PATCH v6 3/3] iio: proximity: Add a ChromeOS EC MKBP proximity driver
-Date:   Wed, 10 Feb 2021 18:46:01 -0800
-Message-Id: <20210211024601.1963379-4-swboyd@chromium.org>
-X-Mailer: git-send-email 2.30.0.478.g8a0d178c01-goog
-In-Reply-To: <20210211024601.1963379-1-swboyd@chromium.org>
-References: <20210211024601.1963379-1-swboyd@chromium.org>
+        id S230405AbhBKMZp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 11 Feb 2021 07:25:45 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:11292 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231934AbhBKMXg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 11 Feb 2021 07:23:36 -0500
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 11BCMfr5016212;
+        Thu, 11 Feb 2021 07:22:41 -0500
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 36hr7qg8v7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 11 Feb 2021 07:22:38 -0500
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 11BCMb1T004514
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Thu, 11 Feb 2021 07:22:37 -0500
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Thu, 11 Feb 2021 07:22:36 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.721.2;
+ Thu, 11 Feb 2021 07:22:36 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Thu, 11 Feb 2021 07:22:36 -0500
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 11BCMYWY011557;
+        Thu, 11 Feb 2021 07:22:34 -0500
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
+CC:     <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+        <jic23@kernel.org>, <nuno.sa@analog.com>,
+        <dragos.bogdan@analog.com>, <rafael@kernel.org>,
+        <gregkh@linuxfoundation.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH v5 00/17] iio: core,buffer: add support for multiple IIO buffers per IIO device
+Date:   Thu, 11 Feb 2021 14:24:35 +0200
+Message-ID: <20210211122452.78106-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.737
+ definitions=2021-02-11_05:2021-02-10,2021-02-11 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ lowpriorityscore=0 malwarescore=0 clxscore=1015 spamscore=0 phishscore=0
+ suspectscore=0 mlxscore=0 bulkscore=0 priorityscore=1501 impostorscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2102110110
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add support for a ChromeOS EC proximity driver that exposes a "front"
-proximity sensor via the IIO subsystem. The EC decides when front
-proximity is near and sets an MKBP switch 'EC_MKBP_FRONT_PROXIMITY' to
-notify the kernel of proximity. Similarly, when proximity detects
-something far away it sets the switch bit to 0. For now this driver
-exposes a single sensor, but it could be expanded in the future via more
-MKBP bits if desired.
+Some tweaks in v5, and this time I merged all the changelog histories into
+this final one. 
 
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: Benson Leung <bleung@chromium.org>
-Cc: Guenter Roeck <groeck@chromium.org>
-Cc: Douglas Anderson <dianders@chromium.org>
-Cc: Gwendal Grignou <gwendal@chromium.org>
-Reviewed-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
----
+Changelog v4 -> v5:
+* https://lore.kernel.org/linux-iio/20210210100823.46780-1-alexandru.ardelean@analog.com/T/#t
+* patch 'iio: buffer: add ioctl() to support opening extra buffers for IIO device'
+  don't return -EBUSY in iio_buffer_poll_wrapper(); return 0
+  __poll_t is unsigned, so returning 0 is the best we can do
+  Reported-by: kernel test robot <lkp@intel.com>
+* patch 'iio: buffer: dmaengine: obtain buffer object from attribute'
+  removed unused 'indio_dev' variable; seems i missed this initially
+* patch 'iio: buffer: add ioctl() to support opening extra buffers for IIO device'
+  call 'wake_up(buffer->pollq)' in iio_buffer_chrdev_release()
 
-Changes from v5:
- * Only push event if it's different
- * Check switch on resume
+Changelog v3 -> v4:
+* https://lore.kernel.org/linux-iio/20210201145105.20459-1-alexandru.ardelean@analog.com/
+* patch 'docs: ioctl-number.rst: reserve IIO subsystem ioctl() space'
+   remove 'uapi/' from `uapi/linux/iio/*.h`
+* patch 'iio: core: register chardev only if needed'
+   add commit comment about potentially breaking userspace ABI with chardev removal
+* patch 'iio: core: rework iio device group creation'
+   remove NULL re-init in iio_device_unregister_sysfs() ; memory is being free'd
+* patch 'iio: buffer: group attr count and attr alloc'
+  extend commit comment about the 2 or 1 buffer directores
+* patch 'iio: core: merge buffer/ & scan_elements/ attributes'
+   fixed static checker complaints
+    - removed unused global
+    - initialize omitted 'ret = -ENOMEM' on error path
+    - made iio_buffer_unregister_legacy_sysfs_groups() static
+* patch 'iio: buffer: wrap all buffer attributes into iio_dev_attr'
+   - update some omitted unwindings; seems i forgot a few originally
+     this was showing up when trying to read from buffer1
+* add patch 'iio: buffer: move __iio_buffer_free_sysfs_and_mask() before alloc func'
+* patch 'iio: buffer: introduce support for attaching more IIO buffers'
+   - removed 'iio_dev_opaque->attached_buffers = NULL' after kfree()
+   - using 'iio_dev_opaque->attached_buffers_cnt' to check that we have buffers
+      instead of checking 'indio_dev->buffer'
+* patch 'iio: buffer: add ioctl() to support opening extra buffers for IIO device'
+   - replaced -ENOENT with -ENODEV when buffer index is out of range
+* add 'iio: core: rename 'dev' -> 'indio_dev' in iio_device_alloc()'
+* add 'iio: buffer: dmaengine: obtain buffer object from attribute'
+* add tools/iio patches for new multibuffer logic
+   tools: iio: make iioutils_get_type() private in iio_utils
+   tools: iio: privatize globals and functions in iio_generic_buffer.c file
+   tools: iio: convert iio_generic_buffer to use new IIO buffer API 
 
- drivers/iio/proximity/Kconfig                 |  11 +
- drivers/iio/proximity/Makefile                |   1 +
- .../iio/proximity/cros_ec_mkbp_proximity.c    | 271 ++++++++++++++++++
- 3 files changed, 283 insertions(+)
- create mode 100644 drivers/iio/proximity/cros_ec_mkbp_proximity.c
+Changelog v2 -> v3:
+* https://lore.kernel.org/linux-iio/20210122155805.83012-1-alexandru.ardelean@analog.com/
+* added commit 'docs: ioctl-number.rst: reserve IIO subsystem ioctl() space'
+  reserving 'i' 0x90-0x9F ioctls for IIO
+  I did not see any conflicts with others (in the doc)
+  - related to this, the new IIO_BUFFER_GET_FD_IOCTL is now at 'i' 0x91
+* changed approach for creating sysfs buffer directories;
+  - they are now created as groups on the IIO device; that also means
+    that the groups array needs to be krealloc-ed and assign later in
+    the registration
+  - merged bufferX/ and scan_elementsX/ directories into a single
+    bufferX/ directory
+  - for legacy the buffer/ & scan_elements/ directories are kept; but
+    they're groups objects have been moved on the iio_dev_opaque object
+  - internally, the iio_dev_attr type is being extended to hold a
+    reference for an IIO buffer;
+    = this is great for scan_elements attributes
+    = and for the rest of the iio_buffer attributes, it means we need to
+      wrap them into iio_dev_attr
 
-diff --git a/drivers/iio/proximity/Kconfig b/drivers/iio/proximity/Kconfig
-index 12672a0e89ed..7c7203ca3ac6 100644
---- a/drivers/iio/proximity/Kconfig
-+++ b/drivers/iio/proximity/Kconfig
-@@ -21,6 +21,17 @@ endmenu
- 
- menu "Proximity and distance sensors"
- 
-+config CROS_EC_MKBP_PROXIMITY
-+	tristate "ChromeOS EC MKBP Proximity sensor"
-+	depends on CROS_EC
-+	help
-+	  Say Y here to enable the proximity sensor implemented via the ChromeOS EC MKBP
-+	  switches protocol. You must enable one bus option (CROS_EC_I2C or CROS_EC_SPI)
-+	  to use this.
-+
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called cros_ec_mkbp_proximity.
-+
- config ISL29501
- 	tristate "Intersil ISL29501 Time Of Flight sensor"
- 	depends on I2C
-diff --git a/drivers/iio/proximity/Makefile b/drivers/iio/proximity/Makefile
-index 9c1aca1a8b79..cbdac09433eb 100644
---- a/drivers/iio/proximity/Makefile
-+++ b/drivers/iio/proximity/Makefile
-@@ -5,6 +5,7 @@
- 
- # When adding new entries keep the list in alphabetical order
- obj-$(CONFIG_AS3935)		+= as3935.o
-+obj-$(CONFIG_CROS_EC_MKBP_PROXIMITY) += cros_ec_mkbp_proximity.o
- obj-$(CONFIG_ISL29501)		+= isl29501.o
- obj-$(CONFIG_LIDAR_LITE_V2)	+= pulsedlight-lidar-lite-v2.o
- obj-$(CONFIG_MB1232)		+= mb1232.o
-diff --git a/drivers/iio/proximity/cros_ec_mkbp_proximity.c b/drivers/iio/proximity/cros_ec_mkbp_proximity.c
-new file mode 100644
-index 000000000000..8213b0081713
---- /dev/null
-+++ b/drivers/iio/proximity/cros_ec_mkbp_proximity.c
-@@ -0,0 +1,271 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Driver for cros-ec proximity sensor exposed through MKBP switch
-+ *
-+ * Copyright 2021 Google LLC.
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/mutex.h>
-+#include <linux/notifier.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
-+#include <linux/slab.h>
-+#include <linux/types.h>
-+
-+#include <linux/platform_data/cros_ec_commands.h>
-+#include <linux/platform_data/cros_ec_proto.h>
-+
-+#include <linux/iio/events.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/sysfs.h>
-+
-+#include <asm/unaligned.h>
-+
-+struct cros_ec_mkbp_proximity_data {
-+	struct cros_ec_device *ec;
-+	struct iio_dev *indio_dev;
-+	struct mutex lock;
-+	struct notifier_block notifier;
-+	int last_proximity;
-+	bool enabled;
-+};
-+
-+static const struct iio_event_spec cros_ec_mkbp_proximity_events[] = {
-+	{
-+		.type = IIO_EV_TYPE_THRESH,
-+		.dir = IIO_EV_DIR_EITHER,
-+		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
-+	},
-+};
-+
-+static const struct iio_chan_spec cros_ec_mkbp_proximity_chan_spec[] = {
-+	{
-+		.type = IIO_PROXIMITY,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-+		.event_spec = cros_ec_mkbp_proximity_events,
-+		.num_event_specs = ARRAY_SIZE(cros_ec_mkbp_proximity_events),
-+	},
-+};
-+
-+static int cros_ec_mkbp_proximity_parse_state(const void *data)
-+{
-+	u32 switches = get_unaligned_le32(data);
-+
-+	return !!(switches & BIT(EC_MKBP_FRONT_PROXIMITY));
-+}
-+
-+static int cros_ec_mkbp_proximity_query(struct cros_ec_device *ec_dev,
-+					int *state)
-+{
-+	struct {
-+		struct cros_ec_command msg;
-+		union {
-+			struct ec_params_mkbp_info params;
-+			u32 switches;
-+		};
-+	} __packed buf = { };
-+	struct ec_params_mkbp_info *params = &buf.params;
-+	struct cros_ec_command *msg = &buf.msg;
-+	u32 *switches = &buf.switches;
-+	size_t insize = sizeof(*switches);
-+	int ret;
-+
-+	msg->command = EC_CMD_MKBP_INFO;
-+	msg->version = 1;
-+	msg->outsize = sizeof(*params);
-+	msg->insize = insize;
-+
-+	params->info_type = EC_MKBP_INFO_CURRENT;
-+	params->event_type = EC_MKBP_EVENT_SWITCH;
-+
-+	ret = cros_ec_cmd_xfer_status(ec_dev, msg);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (ret != insize) {
-+		dev_warn(ec_dev->dev, "wrong result size: %d != %zu\n", ret,
-+			 insize);
-+		return -EPROTO;
-+	}
-+
-+	*state = cros_ec_mkbp_proximity_parse_state(switches);
-+	return IIO_VAL_INT;
-+}
-+
-+static void cros_ec_mkbp_proximity_push_event(struct cros_ec_mkbp_proximity_data *data, int state)
-+{
-+	s64 timestamp;
-+	u64 ev;
-+	int dir;
-+	struct iio_dev *indio_dev = data->indio_dev;
-+	struct cros_ec_device *ec = data->ec;
-+
-+	mutex_lock(&data->lock);
-+	if (state != data->last_proximity) {
-+		if (data->enabled) {
-+			timestamp = ktime_to_ns(ec->last_event_time);
-+			if (iio_device_get_clock(indio_dev) != CLOCK_BOOTTIME)
-+				timestamp = iio_get_time_ns(indio_dev);
-+
-+			dir = state ? IIO_EV_DIR_FALLING : IIO_EV_DIR_RISING;
-+			ev = IIO_UNMOD_EVENT_CODE(IIO_PROXIMITY, 0,
-+						  IIO_EV_TYPE_THRESH, dir);
-+			iio_push_event(indio_dev, ev, timestamp);
-+		}
-+		data->last_proximity = state;
-+	}
-+	mutex_unlock(&data->lock);
-+}
-+
-+static int cros_ec_mkbp_proximity_notify(struct notifier_block *nb,
-+					 unsigned long queued_during_suspend,
-+					 void *_ec)
-+{
-+	struct cros_ec_mkbp_proximity_data *data;
-+	struct cros_ec_device *ec = _ec;
-+	u8 event_type = ec->event_data.event_type & EC_MKBP_EVENT_TYPE_MASK;
-+	void *switches;
-+	int state;
-+
-+	if (event_type == EC_MKBP_EVENT_SWITCH) {
-+		data = container_of(nb, struct cros_ec_mkbp_proximity_data,
-+				    notifier);
-+
-+		switches = &ec->event_data.data.switches;
-+		state = cros_ec_mkbp_proximity_parse_state(switches);
-+		cros_ec_mkbp_proximity_push_event(data, state);
-+	}
-+
-+	return NOTIFY_OK;
-+}
-+
-+static int cros_ec_mkbp_proximity_read_raw(struct iio_dev *indio_dev,
-+			   const struct iio_chan_spec *chan, int *val,
-+			   int *val2, long mask)
-+{
-+	struct cros_ec_mkbp_proximity_data *data = iio_priv(indio_dev);
-+	struct cros_ec_device *ec = data->ec;
-+
-+	if (chan->type == IIO_PROXIMITY && mask == IIO_CHAN_INFO_RAW)
-+		return cros_ec_mkbp_proximity_query(ec, val);
-+
-+	return -EINVAL;
-+}
-+
-+static int cros_ec_mkbp_proximity_read_event_config(struct iio_dev *indio_dev,
-+				    const struct iio_chan_spec *chan,
-+				    enum iio_event_type type,
-+				    enum iio_event_direction dir)
-+{
-+	struct cros_ec_mkbp_proximity_data *data = iio_priv(indio_dev);
-+
-+	return data->enabled;
-+}
-+
-+static int cros_ec_mkbp_proximity_write_event_config(struct iio_dev *indio_dev,
-+				     const struct iio_chan_spec *chan,
-+				     enum iio_event_type type,
-+				     enum iio_event_direction dir, int state)
-+{
-+	struct cros_ec_mkbp_proximity_data *data = iio_priv(indio_dev);
-+
-+	mutex_lock(&data->lock);
-+	data->enabled = state;
-+	mutex_unlock(&data->lock);
-+
-+	return 0;
-+}
-+
-+static const struct iio_info cros_ec_mkbp_proximity_info = {
-+	.read_raw = cros_ec_mkbp_proximity_read_raw,
-+	.read_event_config = cros_ec_mkbp_proximity_read_event_config,
-+	.write_event_config = cros_ec_mkbp_proximity_write_event_config,
-+};
-+
-+static __maybe_unused int cros_ec_mkbp_proximity_resume(struct device *dev)
-+{
-+	struct cros_ec_mkbp_proximity_data *data = dev_get_drvdata(dev);
-+	struct cros_ec_device *ec = data->ec;
-+	int ret, state;
-+
-+	ret = cros_ec_mkbp_proximity_query(ec, &state);
-+	if (ret < 0) {
-+		dev_warn(dev, "failed to fetch proximity state on resume: %d\n",
-+			 ret);
-+	} else {
-+		cros_ec_mkbp_proximity_push_event(data, state);
-+	}
-+
-+	return 0;
-+}
-+
-+static SIMPLE_DEV_PM_OPS(cros_ec_mkbp_proximity_pm_ops, NULL,
-+			 cros_ec_mkbp_proximity_resume);
-+
-+static int cros_ec_mkbp_proximity_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct cros_ec_device *ec = dev_get_drvdata(dev->parent);
-+	struct iio_dev *indio_dev;
-+	struct cros_ec_mkbp_proximity_data *data;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	data = iio_priv(indio_dev);
-+	data->ec = ec;
-+	data->indio_dev = indio_dev;
-+	data->last_proximity = -1; /* Unknown to start */
-+	mutex_init(&data->lock);
-+	platform_set_drvdata(pdev, data);
-+
-+	indio_dev->name = dev->driver->name;
-+	indio_dev->info = &cros_ec_mkbp_proximity_info;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->channels = cros_ec_mkbp_proximity_chan_spec;
-+	indio_dev->num_channels = ARRAY_SIZE(cros_ec_mkbp_proximity_chan_spec);
-+
-+	ret = devm_iio_device_register(dev, indio_dev);
-+	if (ret)
-+		return ret;
-+
-+	data->notifier.notifier_call = cros_ec_mkbp_proximity_notify;
-+	blocking_notifier_chain_register(&ec->event_notifier, &data->notifier);
-+
-+	return 0;
-+}
-+
-+static int cros_ec_mkbp_proximity_remove(struct platform_device *pdev)
-+{
-+	struct cros_ec_mkbp_proximity_data *data = platform_get_drvdata(pdev);
-+	struct cros_ec_device *ec = data->ec;
-+
-+	blocking_notifier_chain_unregister(&ec->event_notifier,
-+					   &data->notifier);
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id cros_ec_mkbp_proximity_of_match[] = {
-+	{ .compatible = "google,cros-ec-mkbp-proximity" },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, cros_ec_mkbp_proximity_of_match);
-+
-+static struct platform_driver cros_ec_mkbp_proximity_driver = {
-+	.driver = {
-+		.name = "cros-ec-mkbp-proximity",
-+		.of_match_table = cros_ec_mkbp_proximity_of_match,
-+		.pm = &cros_ec_mkbp_proximity_pm_ops,
-+	},
-+	.probe = cros_ec_mkbp_proximity_probe,
-+	.remove = cros_ec_mkbp_proximity_remove,
-+};
-+module_platform_driver(cros_ec_mkbp_proximity_driver);
-+
-+MODULE_LICENSE("GPL v2");
-+MODULE_DESCRIPTION("ChromeOS EC MKBP proximity sensor driver");
+Changelog v1 -> v2:
+* https://lore.kernel.org/linux-iio/20201117162340.43924-1-alexandru.ardelean@analog.com/
+* 'iio: buffer: rework buffer & scan_elements dir creation'
+  add more doc-strings detailing the reasoning for this change
+* 'iio: buffer: re-route scan_elements via it's kobj_type'
+  move list_del() before the kfree()'s in the list destruction
+* 'iio: buffer: introduce support for attaching more IIO buffers'
+  - changed to 'cnt' variable vs re-using the 'i' for unwinding in
+    iio_buffer_alloc_sysfs_and_mask()
+  - removed kfree(old) in iio_device_attach_buffer()
+  - made iio_device_attach_buffer() an int return; this means that some
+    follow up patches are needed to make this return value be used;
+* 'iio: buffer: add ioctl() to support opening extra buffers for IIO device'
+  - tested ioctl() with a simple C program; attached to comment;
+  - changed 'i' variable usage to 'sz' for alloc
+  - changed logic for buffer0; returning FD 0; userspace should know
+    that the IIO_BUFFER_GET_FD_IOCTL call returns 0 for buffer0;
+    this is because I can't find a way to determine the FD of the
+    ioctl() in the kernel; duplicating an ioctl() for buffer0 is also bad;
+
+Alexandru Ardelean (17):
+  docs: ioctl-number.rst: reserve IIO subsystem ioctl() space
+  iio: core: register chardev only if needed
+  iio: core-trigger: make iio_device_register_trigger_consumer() an int
+    return
+  iio: core: rework iio device group creation
+  iio: buffer: group attr count and attr alloc
+  iio: core: merge buffer/ & scan_elements/ attributes
+  iio: add reference to iio buffer on iio_dev_attr
+  iio: buffer: wrap all buffer attributes into iio_dev_attr
+  iio: buffer: dmaengine: obtain buffer object from attribute
+  iio: core: wrap iio device & buffer into struct for character devices
+  iio: buffer: move __iio_buffer_free_sysfs_and_mask() before alloc
+  iio: buffer: introduce support for attaching more IIO buffers
+  iio: buffer: add ioctl() to support opening extra buffers for IIO
+    device
+  iio: core: rename 'dev' -> 'indio_dev' in iio_device_alloc()
+  tools: iio: make iioutils_get_type() private in iio_utils
+  tools: iio: privatize globals and functions in iio_generic_buffer.c
+    file
+  tools: iio: convert iio_generic_buffer to use new IIO buffer API
+
+ .../userspace-api/ioctl/ioctl-number.rst      |   1 +
+ .../buffer/industrialio-buffer-dmaengine.c    |   4 +-
+ drivers/iio/iio_core.h                        |  24 +-
+ drivers/iio/iio_core_trigger.h                |   4 +-
+ drivers/iio/industrialio-buffer.c             | 484 ++++++++++++++----
+ drivers/iio/industrialio-core.c               | 108 +++-
+ drivers/iio/industrialio-event.c              |   6 +-
+ drivers/iio/industrialio-trigger.c            |   6 +-
+ include/linux/iio/buffer.h                    |   4 +-
+ include/linux/iio/buffer_impl.h               |  21 +-
+ include/linux/iio/iio-opaque.h                |  14 +
+ include/linux/iio/iio.h                       |   5 -
+ include/linux/iio/sysfs.h                     |   3 +
+ include/uapi/linux/iio/buffer.h               |  10 +
+ tools/iio/Makefile                            |   1 +
+ tools/iio/iio_generic_buffer.c                | 151 ++++--
+ tools/iio/iio_utils.c                         |  18 +-
+ tools/iio/iio_utils.h                         |   8 +-
+ 18 files changed, 668 insertions(+), 204 deletions(-)
+ create mode 100644 include/uapi/linux/iio/buffer.h
+
 -- 
-https://chromeos.dev
+2.17.1
 

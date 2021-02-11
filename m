@@ -2,96 +2,154 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 30F8631930E
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Feb 2021 20:26:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 22468319738
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Feb 2021 00:57:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230264AbhBKTZH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 11 Feb 2021 14:25:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46984 "EHLO
+        id S229895AbhBKX46 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 11 Feb 2021 18:56:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230093AbhBKTZB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 11 Feb 2021 14:25:01 -0500
-Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BB47C061574
-        for <linux-iio@vger.kernel.org>; Thu, 11 Feb 2021 11:24:21 -0800 (PST)
-Received: by mail-pg1-x535.google.com with SMTP id t11so4593704pgu.8
-        for <linux-iio@vger.kernel.org>; Thu, 11 Feb 2021 11:24:21 -0800 (PST)
+        with ESMTP id S229743AbhBKX44 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 11 Feb 2021 18:56:56 -0500
+Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34F5BC061574;
+        Thu, 11 Feb 2021 15:56:16 -0800 (PST)
+Received: by mail-qt1-x830.google.com with SMTP id b24so5525206qtp.13;
+        Thu, 11 Feb 2021 15:56:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6n1xfvgXUG9Tu0pQ42zngbG5JP/dIN/VE8WElqLZMLs=;
-        b=B7w9ErNyYV1vNP6Z0GlRg2Y99qDFpofJpISdbcJJWdf1GA0Fn3ZK9q1E1rlY+awwri
-         WZVSwp0gEu7uBCTxM4MZqs7HYZhZ98deYwb9K3d3++UcAYgHd52K/4sJ2o+xSR/ASfFN
-         BRa3mUezxvaOBFY1+8iBGhZ3Chvlm8/QhQ0gg9OUcCrXixsAuGSQEyTW2pLqf5TqiuXz
-         xkVyNHMlvWI9JWMhfj7pax1HbCcRSF2+3EfZrvZh5AWfn96bLy/hsgm6YsoIfrig5vOf
-         0kSq4Mz5RWecI1GzjS17FW7IWt8gMOjdyJZfNYtG5oY4iRK6VCT23/xRZXRcUt33TMpQ
-         YAng==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=Fn9ECLUi2tPSHi7X9/WE7UqWMZvrqWVcR0Z02vtxJFM=;
+        b=REJNTNOWdXeu6f7LaWhf4cwIC55Mp0Qq8gBt7jCVoL6KCO1/EAgCoGXxCqBOqz0R7n
+         ZGIOkeZwLsQiEcXJN2Mjl9w/ExaghyhnqMXFeteGj0ofoZc9cl0dBp/HPLIuA0aITzZp
+         NhR175zCa86KTLhRczWqtxri9/wYrpL7n8PRcor6nF2/BlN7BPqG1ifNJnDSNEWI/NKw
+         AWIfMLGk9ZbaEFUXj6jhTCoHD8zQ/Q+VyM53pYwVRHTpYUUOj72MMNQluSvV8JIif/HR
+         FpWiVfomx1VKHmtNFqAOoClRumweAZLsUn4VsRl4Gt+VQkhkKM+F3FGHuexGnjTrdSGh
+         PhaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6n1xfvgXUG9Tu0pQ42zngbG5JP/dIN/VE8WElqLZMLs=;
-        b=A9n0YC3A0PQ29/kndUmjb2tlcgiMLpWjo+vJWZIrsMaVna6EpQ3GeH1xd4mJaG32f1
-         BDX83efoPFJZxH0NDaNx0NQj1ljqdhAMWyqPDsFCkfGBRVfw+pmFUFeKA+WRqBH/34fa
-         tJHwfluHESrGmg5rowrXNQ3IEA+WTCQPHiIAq6DR0Wz/1Y1XeiG7zQGHWGaRGeRwlo1K
-         O6W7z6iRmCo3lWpat2PaLOh60z/Kw169d5X2F4Sbdapn4vdNEIab8ZGDXE/zIyKCyJEZ
-         qu6dapZ0WIUuExJnawf7O0Y5amQbQ6+mcusg64UjKAL0CwAyRumcOJ5CE1fhGoHbEDqK
-         NRAA==
-X-Gm-Message-State: AOAM531t4jSaWtQpamo0F9M+DMSrXD0fuO0FKsZyDf2JHvzKwcF5bzr1
-        DUVZxRfV1Hb8Fh49cX3ZIQj1lrFY8W92BWYsh5o=
-X-Google-Smtp-Source: ABdhPJy7QqfNStCUofm/+nx+rfLVZmpQa9uODyt0rskezNSBF0kxN8797GTL9kysqkQlv3FZ+eSz6fgXPt1ZHKSfcoQ=
-X-Received: by 2002:a62:384c:0:b029:1e3:8bca:5701 with SMTP id
- f73-20020a62384c0000b02901e38bca5701mr9026006pfa.7.1613071460809; Thu, 11 Feb
- 2021 11:24:20 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Fn9ECLUi2tPSHi7X9/WE7UqWMZvrqWVcR0Z02vtxJFM=;
+        b=GYIoy6v3bSIKFspHUmxWRK8cDzYk8hOE57I6xbVZzrIwftVQ49lJYE7la1VkPE0ss8
+         MbUnV6/K+mdvpoC/p1JNWd+OQ/amdjdgYE2wKrPo70nBZO0JXRf4blwNnd4pONMkvNc0
+         iw9IyriA2dmtbSdW1mWJ2z86b6MCb67NdVUlnJKCteOytZLhfJazS0t2ehUhWJbc2UL9
+         sbwpGec0eLdVO5vnCDntp/6ELGtWXniyFvNyELGw3P2wXbNcuZdt+rDYF9F0DHkiUnOC
+         SJhXLc+Ubz/wOBqZaEJnupdKScgPxsDQMhr4vmc/n2RtlUTLX3Dyz1nyT9MoWR96OW0q
+         b61g==
+X-Gm-Message-State: AOAM532wSxXBdtzkcdpWYCihelz1EfAGYcGxNfbXtIzoi8njS7CAGLcK
+        H1ndlgNztXeME+KXbPWqlaI=
+X-Google-Smtp-Source: ABdhPJyuiD3jKQsR4lp7R1jCbPxoM1hsEvSszFs2HWKuwJSZ2Og5Sp0UmJRyNNsX1qJjFZf+0wYnTg==
+X-Received: by 2002:ac8:498e:: with SMTP id f14mr215580qtq.286.1613087775410;
+        Thu, 11 Feb 2021 15:56:15 -0800 (PST)
+Received: from shinobu ([193.27.12.132])
+        by smtp.gmail.com with ESMTPSA id l66sm5143121qkd.21.2021.02.11.15.56.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Feb 2021 15:56:14 -0800 (PST)
+Date:   Fri, 12 Feb 2021 08:56:04 +0900
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     David Lechner <david@lechnology.com>
+Cc:     jic23@kernel.org, kernel@pengutronix.de,
+        linux-stm32@st-md-mailman.stormreply.com, a.fatoum@pengutronix.de,
+        kamel.bouhara@bootlin.com, gwendal@chromium.org,
+        alexandre.belloni@bootlin.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        syednwaris@gmail.com, patrick.havelange@essensium.com,
+        fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@st.com
+Subject: Re: [PATCH v7 5/5] counter: 104-quad-8: Add IRQ support for the
+ ACCES 104-QUAD-8
+Message-ID: <YCXEFMJOoOhyhfBu@shinobu>
+References: <cover.1608935587.git.vilhelm.gray@gmail.com>
+ <bb2db54669ef27515da4d5f235c52e0b484b5820.1608935587.git.vilhelm.gray@gmail.com>
+ <7a78ad95-9eba-277d-25da-ddf68357b969@lechnology.com>
 MIME-Version: 1.0
-References: <20210208142705.GA51260@ubuntu> <CAHp75Vc1VWYLO1rF-NNnW3qkgiGycgpTHvr5Q2Yn91aZcFuyJg@mail.gmail.com>
- <CAMwq6HiAufEjLPn2hSnQ7iBvrrCZUzwE_hdFE8s51ewbuJOMYA@mail.gmail.com>
-In-Reply-To: <CAMwq6HiAufEjLPn2hSnQ7iBvrrCZUzwE_hdFE8s51ewbuJOMYA@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 11 Feb 2021 21:24:04 +0200
-Message-ID: <CAHp75VcT_7=MKErF0oVn5PFT1_7OeD4cZaw5WAANvhHouB7V6g@mail.gmail.com>
-Subject: Re: [PATCH v3] iio: ad7949: fix wrong ADC result due to incorrect bit mask
-To:     Wilfried Wessner <wilfried.wessner@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Charles-Antoine Couret <charles-antoine.couret@essensium.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="p7kKPpmXtdPwRZVn"
+Content-Disposition: inline
+In-Reply-To: <7a78ad95-9eba-277d-25da-ddf68357b969@lechnology.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Feb 11, 2021 at 8:42 PM Wilfried Wessner
-<wilfried.wessner@gmail.com> wrote:
-> On Mon, Feb 8, 2021 at 5:06 PM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
-> > On Mon, Feb 8, 2021 at 4:27 PM Wilfried Wessner
-> > <wilfried.wessner@gmail.com> wrote:
 
-...
+--p7kKPpmXtdPwRZVn
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> > Shouldn't be blank like here, but I think Jonathan can fix when applying.
-> > Jonathan, can you also amend the subject (I totally forgot about
-> > subsubsystem prefix)?
-> > Should be like:
-> > "iio: adc: ad7949: fix wrong results due to incorrect bit mask"
->
-> Should I send a v4 with the changes proposed by Andy?
-> It would change the subject.
+On Wed, Dec 30, 2020 at 11:36:45AM -0600, David Lechner wrote:
+> On 12/25/20 6:15 PM, William Breathitt Gray wrote:
+>=20
+> > diff --git a/Documentation/ABI/testing/sysfs-bus-counter-104-quad-8 b/D=
+ocumentation/ABI/testing/sysfs-bus-counter-104-quad-8
+> > index eac32180c40d..0ecba24d43aa 100644
+> > --- a/Documentation/ABI/testing/sysfs-bus-counter-104-quad-8
+> > +++ b/Documentation/ABI/testing/sysfs-bus-counter-104-quad-8
+> > @@ -1,3 +1,28 @@
+> > +What:		/sys/bus/counter/devices/counterX/countY/irq_trigger
+>=20
+> Do we really need this sysfs attribute? Shouldn't interrupts be configured
+> _only_ by the chrdev interface?
 
-Depends on you. Jonothan usually processes the queue during weekends,
-so no hurry.
+I think this attribute can go away because we can implicitly figure out
+the correct IRQ configuration from the struct counter_watch data when a
+user executes a COUNTER_ADD_WATCH_IOCTL ioctl command.
 
-> And if so, should I add the tags:
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> Reviewed-by: Charles-Antoine Couret <charles-antoine.couret@essensium.com>
+However, I need some help deciding on an appropriate behavior for
+conflicting counter_watch configurations. Let me give some context
+first.
 
-If resend, yes, you need to add them.
+The 104-QUAD-8 features 8 channels (essentially 8 independent physical
+counters on the device). Each channel can independently issue an event,
+but any particular channel can only be set to a single kind of event
+(COUNTER_EVENT_INDEX, COUNTER_EVENT_OVERFLOW, etc.).
 
--- 
-With Best Regards,
-Andy Shevchenko
+The purpose of the irq_trigger sysfs attribute I introduced in this
+patch is to allow the user to select the event configuration they want
+for a particular channel. We can theoretically figure this out
+implicitly from the struct counter_watch request, so this sysfs
+attribute may not be necessary.
+
+However, how do we handle the case where a user executes two
+COUNTER_ADD_WATCH_IOCTL ioctl commands for the same channel but with
+different event selections? I'm considering three possible behaviors:
+
+* Fail the second ioctl call; event selection of the first struct
+  counter_watch takes precedence and thus second is incompatible.
+* Issue a dev_warn() indicating that the second struct counter_watch
+  event selection will now be the event configuration for that channel.
+* Don't notify the user, just silently reconfigure for the second struct
+  counter_watch event selection.
+
+I'm suspecting the first behavior I listed here (ioctl returning failed)
+is the most appropriate as a user is explicitly made known of this
+particular device's inability to support more than one type of event per
+channel.
+
+What do you think?
+
+William Breathitt Gray
+
+--p7kKPpmXtdPwRZVn
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmAlxAMACgkQhvpINdm7
+VJJejBAAzJHKhvvQx5+lsNzKsvoLOZi+R4kk9Amkh2HH90O+UyagdXEHac++XOto
+K9fWenvVvr9x4XVCxB62Z65YkRnQDNdWdrZ7WLNkk1L5a/RL7ePJiozsjuaWAXVQ
+j6/uKv7ho45A5d5vQsdhdwBxfwNIRDQDqYqrLo8NYsl9ScBGQ1Wq1cYDWKG1HGuJ
+Is72OgyL3Mf2U5JSHIv/jk5Ox9YMLnJwr8XSQCZKldS42ieddRxd7vyxYJ4ePr9m
+Z/jhjczp0TVuXw7Ika0G1IreRwEfxWHqNJ9mtqFRbRzxLblcHqmMLcrNG4AUIMWN
+doEozsnwAIldaAxDljw2f6ZPQ7b8hd0PK8bieb901oNvEFf7kv8G1cOwfsuHvzYs
+GH/08NBtwvAk0RFiNQhrm6OowZmgUO2KAjWr9PQdXXOjit+1mgsvW1BdBEjO0i3D
+DPDkb+I+ZrnB5VeRxqudTGakFmuE6YXGM2ubxtSx1otNi7TdZKJhsEUU9JzUkf1J
+/BmOikFg/8yv/YoodDqCzymjOgxqUWSriQSIretaHz+rQR3/PD5xbqVnTe3pMUiR
+LRUVcwil/5DIZV0NdHqzbip3DK2OIzoQjHp2sIH+evT5Z0XtWiSgiZAs1lX9vuT3
+5KpsAcytNu5TUzaXnMZ9tAzAWZ3X0TQk4zc9KD+U3XdymZz97ys=
+=O8ar
+-----END PGP SIGNATURE-----
+
+--p7kKPpmXtdPwRZVn--

@@ -2,21 +2,21 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 51D3331A54C
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Feb 2021 20:25:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 449B731A54D
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Feb 2021 20:25:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231828AbhBLTXI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 12 Feb 2021 14:23:08 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41056 "EHLO mail.kernel.org"
+        id S231981AbhBLTXO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 12 Feb 2021 14:23:14 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41080 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232164AbhBLTW7 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 12 Feb 2021 14:22:59 -0500
+        id S231946AbhBLTXL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 12 Feb 2021 14:23:11 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7572464DEC;
-        Fri, 12 Feb 2021 19:22:14 +0000 (UTC)
-Date:   Fri, 12 Feb 2021 19:22:09 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 5B58564DF0;
+        Fri, 12 Feb 2021 19:22:26 +0000 (UTC)
+Date:   Fri, 12 Feb 2021 19:22:22 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Joe Sandom <joe.sandom@outlook.com>
 Cc:     Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
@@ -48,7 +48,7 @@ Hi Joe,
 
 You sent an html reply, so it probably didn't reach anyone via the list.
 
-Well all do it from time to time so don't worry about it :)
+We all do it from time to time so don't worry about it :)
 
 Thanks
 

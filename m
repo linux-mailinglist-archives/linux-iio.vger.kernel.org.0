@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7143E319E1C
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Feb 2021 13:16:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CDF5A319E1F
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Feb 2021 13:16:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231292AbhBLMP1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 12 Feb 2021 07:15:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37390 "EHLO
+        id S231311AbhBLMPi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 12 Feb 2021 07:15:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231233AbhBLMPW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Feb 2021 07:15:22 -0500
-Received: from mail-qv1-xf2f.google.com (mail-qv1-xf2f.google.com [IPv6:2607:f8b0:4864:20::f2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07E1EC06178B;
-        Fri, 12 Feb 2021 04:14:35 -0800 (PST)
-Received: by mail-qv1-xf2f.google.com with SMTP id dr7so2268951qvb.1;
-        Fri, 12 Feb 2021 04:14:34 -0800 (PST)
+        with ESMTP id S231289AbhBLMP1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Feb 2021 07:15:27 -0500
+Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com [IPv6:2607:f8b0:4864:20::734])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8321C06178C;
+        Fri, 12 Feb 2021 04:14:40 -0800 (PST)
+Received: by mail-qk1-x734.google.com with SMTP id 81so65819qkf.4;
+        Fri, 12 Feb 2021 04:14:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=ZF5NYOTPzb69Gy7SXzsmlFc2ufq8pLJB8ZkxKUF4FAI=;
-        b=Ga3mew42ijkMgzZTymuZhgziBa7GfGyxP/sUENT/oaQm4Ks/rw54Vb/MEAgxCVIAuP
-         xpd06dY2jnPYYUE9RETNoYnHuHFp3e+0+/POzIweMNWkSW0MjoHwIWUnMVLLGZaxxTh8
-         cEk0G1RBGM5U/z6HNt1wy94+gmYRo7tvaMzAy2rv6WMUa1hFaiFidBMa1zxWfi9U0Ewp
-         QQ6KaHAWRisgavcUS02nf8wCLHBQsVlJaAmM5soKtI3Bu4VERuX9slcHYfAgeH0MwiZV
-         odm6K0SR1fDGBQEXYQrdgpuGgvUccmvBmZsvK/S+NKjyrJd60a+sj4f5rYcWmSWYQFCN
-         tnDA==
+        bh=4RVacsqoYzmylNKCath3c3Ne8oWPnlwk8NYh3tn8zeA=;
+        b=SKctp4vDgTsV14fVKI7dhcglVl2L1UAIHQ/X/m4dhyJAABbwmQIbaHLQCJV0LfpTNg
+         9QGhruNMC84onXhOn1rLtQD4JFNzmReZndfh6wDUcHzvjmDxvfMpOz5M9Vsph/RE5cad
+         BmB90edCp+b5pgdhWxp08y1zSRWSZRrhLlKg26/XsPy6H580e23NRioA9rG25ER/fHUq
+         6aCc9iN9h6RQcgwtuGrvn1kBXuhLfDfLbNt4eNqduF+6iHhx5zcYWsE12yuwhoeOEiDu
+         rQ/8qWqSVjmUFqiMoTx2jJ5R5upBh+b1dXfxZkPcSMVF/u4QwuxQ/DdEnDFQGcPhbJVd
+         Wzpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=ZF5NYOTPzb69Gy7SXzsmlFc2ufq8pLJB8ZkxKUF4FAI=;
-        b=IOWdsG+NvdgjRPVX+D0BwBtqyT4/RRMjYEHIUCqF0etMfghxvnLBVgrf7GheOYua0+
-         A5UPoDTdbfMciw5XQbQVUsJcsezJmBEkeRLzrKPPJLw+U8sDEhMUnTr1SJWsJuvL6+cF
-         A86ApZFyKrpTgh/DRVkQhUWgHF95Nn9/b1AUYLOpZW4rWQmNHmkqYkZC4vV6vAMdld2D
-         U+4PpaKljQTvFWWghHQ+NB1spcCE+qgjg+vjn9Kovq58AtBEqu8PCMqE/gsZjnU1pE1y
-         tb9Q3cgt7hJ8Oq+oKpPYhPNSPdzHD48wTIJfHBop9ZTZZa2AFtEbtQsPbWOgp/aZCuSq
-         BIag==
-X-Gm-Message-State: AOAM530qiHbldIt0VpuIerDrkZdk/UC8XboU9S0jah9PQ12mfCUS4577
-        RNvfVA+z/N3LqF9SXYL9ltg=
-X-Google-Smtp-Source: ABdhPJxXtUVkYuMwGjYX4LL7Bmxk+a7OIIF7oZBwaewzQOS89EHeFy3G5Es/jtwqWQBlAOihBPa9aQ==
-X-Received: by 2002:a0c:fcc4:: with SMTP id i4mr2247752qvq.57.1613132074308;
-        Fri, 12 Feb 2021 04:14:34 -0800 (PST)
+        bh=4RVacsqoYzmylNKCath3c3Ne8oWPnlwk8NYh3tn8zeA=;
+        b=iNFJ0vqgGLxOi7o+PU2HudrkS+j2QBqgL5KVkej5oeQC998qUbYdwRj6bqiQbD5VJo
+         4CD5kFVfUZVFEBls0SRax0BFH6ut1guRIfdMbmcg+lLAobALpL4xGCAq5h/aYjNdOVnq
+         M+u4TOq/hdbAYM3PczYXzTSMkk7NyuhqB4qMVkrzLKVWGIecS/AQ8keCDEsAzK2J9uAS
+         4XZZeo7ho/LSXhosavoDwcSHoNUkf+xXrxTCQpTDdh38LkfBs8tCsYYXG6b8fQjSEYt2
+         HF2FA8jeA/8W9E8/K0VDR3AcOVxBYjrpMzrYk6IHsXfamkfESSQj0AagSS2btSf3L1Bc
+         K1Fw==
+X-Gm-Message-State: AOAM530HlclXg7qpbQfocIz8Y2vaqC0yMs+dUwm9MZO1k+XNddoWXAiM
+        P/8nma+qKHFRy3aFaZ+2Wnw=
+X-Google-Smtp-Source: ABdhPJyAo21v5popAcAZAA/3yEpMI6qCZtg0s/4jH5oGtDgCZb40rgb3q4w+8k/AySBSxaYjvVEV0w==
+X-Received: by 2002:a37:6484:: with SMTP id y126mr2179765qkb.430.1613132080125;
+        Fri, 12 Feb 2021 04:14:40 -0800 (PST)
 Received: from localhost.localdomain ([193.27.12.132])
-        by smtp.gmail.com with ESMTPSA id y135sm6278534qkb.14.2021.02.12.04.14.28
+        by smtp.gmail.com with ESMTPSA id y135sm6278534qkb.14.2021.02.12.04.14.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Feb 2021 04:14:33 -0800 (PST)
+        Fri, 12 Feb 2021 04:14:39 -0800 (PST)
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     jic23@kernel.org
 Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
@@ -58,9 +58,9 @@ Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
         fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
         alexandre.torgue@st.com, o.rempel@pengutronix.de,
         William Breathitt Gray <vilhelm.gray@gmail.com>
-Subject: [PATCH v8 06/22] counter: 104-quad-8: Add const qualifier for functions_list array
-Date:   Fri, 12 Feb 2021 21:13:30 +0900
-Message-Id: <74ca1dd85fde4356fe403a524b502282abf4467b.1613131238.git.vilhelm.gray@gmail.com>
+Subject: [PATCH v8 07/22] counter: 104-quad-8: Add const qualifier for actions_list array
+Date:   Fri, 12 Feb 2021 21:13:31 +0900
+Message-Id: <0ae8373f4e587981a409a36cfea70328b5153ed3.1613131238.git.vilhelm.gray@gmail.com>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <cover.1613131238.git.vilhelm.gray@gmail.com>
 References: <cover.1613131238.git.vilhelm.gray@gmail.com>
@@ -70,29 +70,36 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The struct counter_count functions_list member expects a const enum
-counter_count_function array. This patch adds the const qualifier to the
-quad8_functions_list to match functions_list.
+The struct counter_synapse actions_list member expects a const enum
+counter_synapse_action array. This patch adds the const qualifier to the
+quad8_index_actions_list and quad8_synapse_actions_list to match
+actions_list.
 
 Cc: Syed Nayyar Waris <syednwaris@gmail.com>
 Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 ---
- drivers/counter/104-quad-8.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/counter/104-quad-8.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
-index 70383b792ec6..af4e0503b074 100644
+index af4e0503b074..9a96296b0625 100644
 --- a/drivers/counter/104-quad-8.c
 +++ b/drivers/counter/104-quad-8.c
-@@ -193,7 +193,7 @@ enum quad8_count_function {
- 	QUAD8_COUNT_FUNCTION_QUADRATURE_X4
+@@ -305,12 +305,12 @@ enum quad8_synapse_action {
+ 	QUAD8_SYNAPSE_ACTION_BOTH_EDGES
  };
  
--static enum counter_count_function quad8_count_functions_list[] = {
-+static const enum counter_count_function quad8_functions_list[] = {
- 	[QUAD8_COUNT_FUNCTION_PULSE_DIRECTION] = COUNTER_COUNT_FUNCTION_PULSE_DIRECTION,
- 	[QUAD8_COUNT_FUNCTION_QUADRATURE_X1] = COUNTER_COUNT_FUNCTION_QUADRATURE_X1_A,
- 	[QUAD8_COUNT_FUNCTION_QUADRATURE_X2] = COUNTER_COUNT_FUNCTION_QUADRATURE_X2_A,
+-static enum counter_synapse_action quad8_index_actions_list[] = {
++static const enum counter_synapse_action quad8_index_actions_list[] = {
+ 	[QUAD8_SYNAPSE_ACTION_NONE] = COUNTER_SYNAPSE_ACTION_NONE,
+ 	[QUAD8_SYNAPSE_ACTION_RISING_EDGE] = COUNTER_SYNAPSE_ACTION_RISING_EDGE
+ };
+ 
+-static enum counter_synapse_action quad8_synapse_actions_list[] = {
++static const enum counter_synapse_action quad8_synapse_actions_list[] = {
+ 	[QUAD8_SYNAPSE_ACTION_NONE] = COUNTER_SYNAPSE_ACTION_NONE,
+ 	[QUAD8_SYNAPSE_ACTION_RISING_EDGE] = COUNTER_SYNAPSE_ACTION_RISING_EDGE,
+ 	[QUAD8_SYNAPSE_ACTION_FALLING_EDGE] = COUNTER_SYNAPSE_ACTION_FALLING_EDGE,
 -- 
 2.30.0
 

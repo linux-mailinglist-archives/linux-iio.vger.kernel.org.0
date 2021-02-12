@@ -2,88 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D5E8319BE3
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Feb 2021 10:30:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CDB65319C60
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Feb 2021 11:12:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230063AbhBLJaF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 12 Feb 2021 04:30:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58462 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229906AbhBLJaD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Feb 2021 04:30:03 -0500
-Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78A8AC061574
-        for <linux-iio@vger.kernel.org>; Fri, 12 Feb 2021 01:29:17 -0800 (PST)
-Received: by mail-lj1-x22b.google.com with SMTP id g21so4219430ljl.3
-        for <linux-iio@vger.kernel.org>; Fri, 12 Feb 2021 01:29:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=gQdfOeAQ7lpFeaVg0peNbPSNJaBEcknECYCS0PLjCVc=;
-        b=h3EbwiWkSrjuE1APlCgTujpVh5LKOkzicShqpts5zAylZcH9uX8BmWPdY+DVQtGGPh
-         EkN/7gx+3p99tk9J0Cx+Qp+HkpO9mSsLWXeVwn/mlPRfmOdKhWoWxX4bT6/40YfpA4tr
-         W74eZZYC8zzN/CgWplga4RCQD2hWAcL8+GG/RlrI0PkGibBU94c39IAl10ciGdKX20hd
-         kIZ/nHitbyxyKUXSpS4jtkErx4bLPBHtQ5U5G3bxmzhtKHlFwPVLbJBcpcIGw+nCjo30
-         /q2BnNQbi/MWrqqB+0gTbpcW06KrFkYkTtiwOi5+Kgt/3MfCfwK+SjUdu4lsoosLOAnk
-         f6HQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=gQdfOeAQ7lpFeaVg0peNbPSNJaBEcknECYCS0PLjCVc=;
-        b=YViXVzdI2b9nBF/wU7ZpGYk0ZcsATj4XDS8eDcJ7yMTCbq22j76g2S9FvzcV4/W2x4
-         0olPH+JjIPT1PGBnalFO52fBDns6ir868dIaIVFbTFhV/0YqFy92WD1DRqnSnW6b/b01
-         c6hvQVohexHSLkwD0jJFEIz+YUgATOK0OBO7iDWRMCJPt1tBsRYrwsmYeCJYTPzuY4L+
-         aU+lUYvwwMPT8Twu4koubbSJm3TyFvyZdEhRriwIPbp1u0UGFFP6ATht101X8ZY9G2Ce
-         6m2HjMS3zxMjQASQ16l3qOSverr2/zYaEpHt2+0V3Xngk90PQbFDau8rEYV0GAiPKw56
-         KI5Q==
-X-Gm-Message-State: AOAM530AAeaMY6ZuEuK2QTzd/Ty2oPQdPIpFZLLqVctdU57Kn0fpu4So
-        dK+g+/Xvf+W3l++B0CrgfY7u4mrJoO/bANk5Cg4xMQ==
-X-Google-Smtp-Source: ABdhPJzFecvZy6+ocBqloea+lkJRPr2kKX82BS8AdTUqtM6sJ1Yd4dbi0ddZTznSRUsOxm6+2H4qMFH/hTOQ9PLqxPg=
-X-Received: by 2002:a2e:8e84:: with SMTP id z4mr1130022ljk.467.1613122156038;
- Fri, 12 Feb 2021 01:29:16 -0800 (PST)
+        id S230039AbhBLKKY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 12 Feb 2021 05:10:24 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:27530 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229904AbhBLKKX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Feb 2021 05:10:23 -0500
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 11CA5P6p032392;
+        Fri, 12 Feb 2021 05:09:25 -0500
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 36hrw93br3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 12 Feb 2021 05:09:24 -0500
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 11CA9NGo022844
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 12 Feb 2021 05:09:23 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.721.2; Fri, 12 Feb 2021
+ 05:09:22 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Fri, 12 Feb 2021 05:09:22 -0500
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 11CA9K63029095;
+        Fri, 12 Feb 2021 05:09:20 -0500
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
+CC:     <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+        <jic23@kernel.org>, <nuno.sa@analog.com>,
+        <dragos.bogdan@analog.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH v2 0/3] iio: core,buffer-dma: add mmap support
+Date:   Fri, 12 Feb 2021 12:11:40 +0200
+Message-ID: <20210212101143.18993-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <20210208135347.18494-1-o.rempel@pengutronix.de> <20210208135347.18494-2-o.rempel@pengutronix.de>
-In-Reply-To: <20210208135347.18494-2-o.rempel@pengutronix.de>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Fri, 12 Feb 2021 10:29:04 +0100
-Message-ID: <CACRpkda54NjkU=yedgOmghhx0pRN2k352c3AKVETG-_PcpxcUw@mail.gmail.com>
-Subject: Re: [PATCH v5 1/2] dt-bindings: counter: add event-counter binding
-To:     Oleksij Rempel <o.rempel@pengutronix.de>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        David Jander <david@protonic.nl>,
-        Robin van der Gracht <robin@protonic.nl>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.737
+ definitions=2021-02-12_03:2021-02-12,2021-02-12 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ malwarescore=0 spamscore=0 mlxlogscore=999 clxscore=1015 adultscore=0
+ priorityscore=1501 bulkscore=0 mlxscore=0 phishscore=0 suspectscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2102120076
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Feb 8, 2021 at 2:53 PM Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+Changelog v1 -> v2:
+* https://lore.kernel.org/linux-iio/20210211123353.78963-1-alexandru.ardelean@analog.com/T/#t
+* removed IIO_BUFFER_BLOCK_FLAG_CYCLIC flag; will be added in a later
+  patch
+* removed extra line in tools/iio/iio_generic_buffer.c
+* patch 'iio: core: Add mmap interface infrastructure'
+  added docstrings for new hooks (alloc_blocks, mmap, etc)
 
-> Add binding for the event counter node
->
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+This is basically Lars' work adapted from branch:
+  https://github.com/larsclausen/linux/commits/iio-high-speed-5.10
+[hopefully i got the stuff correctly from that branch]
 
-Works for me:
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+What is different, is that this one is adapted on top of the multibuffer
+support (currently at v5) discussed here:
+  https://lore.kernel.org/linux-iio/20210211122452.78106-1-alexandru.ardelean@analog.com/T/#t
 
-> +required:
-> +  - compatible
+Also, adapted an example for high-speed/mmap support in
+'tools/iio/iio_generic_buffer.c'
 
-Ideally it should be "interrupts OR gpios required"
-(at least one of them must be present) but I don't know if
-we can express that.
+The example is adapted from libiio:
+  https://github.com/analogdevicesinc/libiio/blob/master/local.c#L51
+but will all the ioctl()s organized after the one that are reserved
+(hopefully) for IIO
 
-Perhaps also write that if both are defined, the interrupt will
-take precedence for counting events.
+Tested that mmap() works.
+Moved (artifically) valid buffer0 as buffer2 and the operation still
+works.
 
-Yours,
-Linus Walleij
+Alexandru Ardelean (1):
+  tools: iio: add example for high-speed buffer support
+
+Lars-Peter Clausen (2):
+  iio: core: Add mmap interface infrastructure
+  iio: buffer-dma: Add mmap support
+
+ drivers/iio/buffer/industrialio-buffer-dma.c  | 314 ++++++++++++++++--
+ .../buffer/industrialio-buffer-dmaengine.c    |  22 +-
+ drivers/iio/industrialio-buffer.c             | 158 +++++++++
+ include/linux/iio/buffer-dma.h                |  25 +-
+ include/linux/iio/buffer_impl.h               |  23 ++
+ include/uapi/linux/iio/buffer.h               |  26 ++
+ tools/iio/iio_generic_buffer.c                | 183 +++++++++-
+ 7 files changed, 704 insertions(+), 47 deletions(-)
+
+-- 
+2.17.1
+

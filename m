@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB7ED319E10
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Feb 2021 13:16:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CDC60319E12
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Feb 2021 13:16:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230362AbhBLMOn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 12 Feb 2021 07:14:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37234 "EHLO
+        id S230486AbhBLMOr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 12 Feb 2021 07:14:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230323AbhBLMOl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Feb 2021 07:14:41 -0500
-Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 645CEC061574;
-        Fri, 12 Feb 2021 04:14:00 -0800 (PST)
-Received: by mail-qk1-x732.google.com with SMTP id x14so8432363qkm.2;
-        Fri, 12 Feb 2021 04:14:00 -0800 (PST)
+        with ESMTP id S230323AbhBLMOr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Feb 2021 07:14:47 -0500
+Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45489C061756;
+        Fri, 12 Feb 2021 04:14:06 -0800 (PST)
+Received: by mail-qk1-x72b.google.com with SMTP id o193so8399941qke.11;
+        Fri, 12 Feb 2021 04:14:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=y4yEGF4AjXqnem5hKAuSPNf/U7YlqelstXtmTJWlhNI=;
-        b=qeeJfbvFVl0h81JpFKFxtmMRQ10eHisgwd45W2GG7TM5yHTLOyZPV9gOdv7Mv2l2yg
-         pnERECp342fv8J1aHQyL4PhoC9KoGNxukiqQR0YhWdjel+xmI8dPmMKImwLQywj1XEkv
-         vW6lPFhEJl9q2mrvbwdJEiEajB1D6Tj47Jz2BMeEeJtpvK/y8fSYGYBuXBd6GlaN2mWa
-         2FMS2PQ+RSVavlXbBe+3QoPnzo7LGbyUGlf+u/9CSg/hY+ahHf2K5dD7q/+UBCDu/0kY
-         N28fGB8xikKFjZWZfLxL7UnZKHDQ8X0ms9BM1JByMIxCgFIbDSvxhX3osq70Y/+XRhg4
-         7IYg==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=/HIvsBK/oc4MlyDkN1rV+yPLGbvejpCaMHFfLvFpOso=;
+        b=teqgFNoyZseqXH7xem42yT13V9jTcCwik3MFHaHNFe8LET3zEzGZ+hnmU1RdKgydGe
+         H38CoBVnTVbYQ6LfsUdwYfFLcMgn8lLwg5remy9f44WuoG1xwkeNw8orHaictbEkZUo2
+         uLooHIV3LfBnSenouNrYzr6FtxERkcn0LZ3djAqSpb4O4h+3XE3ATzsqr3xHomCrm8qo
+         JBKq7N2+vxcpkltqD6DqEIGvMmsn5DIz4PDRCmKu8E9u1D/ZHxp8kGdSJ9qU8i9GNmDs
+         MsuvEPtoyA2mapGHnYUikTw/6Hts1L1payZJSAU7AeYPfTobeWCEHFumE9c9E4puY+HP
+         BALg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=y4yEGF4AjXqnem5hKAuSPNf/U7YlqelstXtmTJWlhNI=;
-        b=KoDj9Sl5x/NrZzAFWzwVvuJPxOGYWSTBtMdLuHDfUjfr7eTask7D09XWK7tMqqqhUz
-         d+4v/9X8WAbrHVHVayeR5YufF3Z/gV9AE0wTtm5X4f7ysHQnBv7xyR5OeLUMFfdthO4j
-         fLzS24z4Xp+7kylAGfwqppuUT0CnCYzq8hpmm8dPdVWd3H7eqYCmX2erIwNO6pBKDBkY
-         opKKLHissbDMzjNYe4IcSfZqvHFUWHFtoLVS6nIm6v5UZwCQB1TmqM6alqphRRNyBQpJ
-         wz1xSygm01k3RRqD301vsMo2ltFAae1Yg+PY2V7pkNgSDSa17Fq+6BZ9jcoDPJIv1bP5
-         qByw==
-X-Gm-Message-State: AOAM530xoRC5MJUxhWlRJamv59n+bjrgSOdKk/x3heBpggJBxNxhnr2t
-        Uc0w8A6AzgwVIh8QF34DLLU=
-X-Google-Smtp-Source: ABdhPJxFsiQwibCIY/jzrkMEOjGRvL/Umh2DVWmeMRwmBlG0UpNjfOXTGn7C2OIHJu2eh2qGMrCXXA==
-X-Received: by 2002:a37:992:: with SMTP id 140mr2317435qkj.349.1613132039638;
-        Fri, 12 Feb 2021 04:13:59 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=/HIvsBK/oc4MlyDkN1rV+yPLGbvejpCaMHFfLvFpOso=;
+        b=lqtVpPttyakapAh9y3YffmjM1dHKnfKzXz/0L91G7suMkFiWUnwI6et7v8YFjn0dce
+         Xe+REWy6Ah9pD5DRhSYxApU4WKhuVBNHnIS9fqHp5OonCfiit32NCdO/XZXJNfO/DwLM
+         SY49Cu9s1v2DJ4U4iIXE4SrLofusM8rLv+oEt2MJJniHg6qgUjKsbPmdSa3DQu05Vuxh
+         0+0bqxXIdXe6n5aA5GemJTy1EtbjzUmva71AuGQbdKVTlISJC0QjUm56ibQ2X5JXsaG0
+         XRuIjYryCwM6+1rBuNWQasa9Rn0mHFXGAvYzjm6TEx+uRIU+msryIWj/Ux+TH0rL5YN0
+         29UA==
+X-Gm-Message-State: AOAM532xm7gEXk1vBlPwP6cxy1dUUCP1hPjHoLD2Uu76S2ZPY+Kin2uH
+        hz+rOWPK0Q26Knmaz3hDUtfiVeUbM1M=
+X-Google-Smtp-Source: ABdhPJx7a3LAbwMEGu8J69E1bji8Gb6H3Ac/H4iPgV6pmaV0zInIFGbFDX0JEgJuDk6PAyV2naU9yw==
+X-Received: by 2002:a37:6494:: with SMTP id y142mr2325340qkb.57.1613132045451;
+        Fri, 12 Feb 2021 04:14:05 -0800 (PST)
 Received: from localhost.localdomain ([193.27.12.132])
-        by smtp.gmail.com with ESMTPSA id y135sm6278534qkb.14.2021.02.12.04.13.53
+        by smtp.gmail.com with ESMTPSA id y135sm6278534qkb.14.2021.02.12.04.13.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Feb 2021 04:13:59 -0800 (PST)
+        Fri, 12 Feb 2021 04:14:04 -0800 (PST)
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     jic23@kernel.org
 Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
@@ -58,127 +58,258 @@ Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
         fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
         alexandre.torgue@st.com, o.rempel@pengutronix.de,
         William Breathitt Gray <vilhelm.gray@gmail.com>
-Subject: [PATCH v8 00/22] Introduce the Counter character device interface
-Date:   Fri, 12 Feb 2021 21:13:24 +0900
-Message-Id: <cover.1613131238.git.vilhelm.gray@gmail.com>
+Subject: [PATCH v8 01/22] docs: counter: Consolidate Counter sysfs attributes documentation
+Date:   Fri, 12 Feb 2021 21:13:25 +0900
+Message-Id: <362a71a1eba98108d009db8c929170a6ed8cf110.1613131238.git.vilhelm.gray@gmail.com>
 X-Mailer: git-send-email 2.30.0
+In-Reply-To: <cover.1613131238.git.vilhelm.gray@gmail.com>
+References: <cover.1613131238.git.vilhelm.gray@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Changes in v8:
- - Consolidated Counter sysfs ABI documentation to single file
- - Added events_queue_size sysfs attribute to allow users to dynamically
-   resize the events queue
- - Fixed markup syntax and typos in generic-counter.rst
- - Improved documentation in include/uapi/linux/counter.h and friends
- - Renamed COUNTER_LOAD_WATCHES_IOCTL to COUNTER_ENABLE_EVENTS_IOCTL;
-   Renamed COUNTER_CLEAR_WATCHES_IOCTL to COUNTER_DISABLE_EVENTS_IOCTL
- - Renamed the struct counter_event "errno" member to "status"
- - Dropped the "irq_trigger" 104-QUAD-8 sysfs attribute; this
-   functionality now occurs implicitly via the Counter chrdev interface
- - Return -ERANGE where appropriate instead of -EINVAL
- - Simplified switch exit paths; return early when possible
- - Call devm_request_irq() before devm_counter_register() for 104-quad-8
- - Renamed devm_counter_unregister() to more apt devm_counter_release()
- - Use enum counter_scope for scope values in counter-sysfs.c
- - Use sysfs_emit() instead of sprintf() where appropriate
- - Renamed find_in_string_array() to more apt counter_find_enum()
- - Renamed *_action_get() and *_action_write() to *_action_read() and
-   *_action_write() to match new naming convention of Counter callbacks
- - Use "Counter function" naming convention instead of "Counter count
-   function" to avoid confusion about scope
+Duplicate ABIs are not valid, so let's consolidate these sysfs
+attributes into the main sysfs-bus-counter documentation file.
 
-I pulled out a lot of bits and pieces to their own patches; hopefully
-that makes reviewing this patchset much simpler than before. This
-patchset is also available on my personal public git repo for anyone who
-wants a quick way to clone:
-https://gitlab.com/vilhelmgray/iio/-/tree/counter_chrdev_v8
-
-The patches preceding "counter: Internalize sysfs interface code" are
-primarily cleanup and fixes that can be picked up and applied now to the
-IIO tree if so desired. The "counter: Internalize sysfs interface code"
-patch as well may be considered for pickup because it is relatively safe
-and makes no changes to the userspace interface.
-
-To summarize the main points of this patchset: there are no changes to
-the existing Counter sysfs userspace interface; a Counter character
-device interface is introduced that allows Counter events and associated
-data to be read() by userspace; the events_configure() and
-watch_validate() driver callbacks are introduced to support Counter
-events; and IRQ support is added to the 104-QUAD-8 driver, serving as an
-example of how to support the new Counter events functionality.
-
-Something that should still be discussed: should the struct
-counter_event "status" member be 8 bits or 32 bits wide? This member
-will provide the return status (system error number) of an event
-operation.
-
-William Breathitt Gray (22):
-  docs: counter: Consolidate Counter sysfs attributes documentation
-  docs: counter: Fix spelling
-  counter: 104-quad-8: Return error when invalid mode during
-    ceiling_write
-  counter: 104-quad-8: Annotate hardware config module parameter
-  counter: 104-quad-8: Add const qualifiers for
-    quad8_preset_register_set
-  counter: 104-quad-8: Add const qualifier for functions_list array
-  counter: 104-quad-8: Add const qualifier for actions_list array
-  counter: ftm-quaddec: Add const qualifier for actions_list array
-  counter: Return error code on invalid modes
-  counter: Standardize to ERANGE for limit exceeded errors
-  counter: Rename counter_signal_value to counter_signal_level
-  counter: Rename counter_count_function to counter_function
-  counter: Internalize sysfs interface code
-  counter: Update counter.h comments to reflect sysfs internalization
-  docs: counter: Update to reflect sysfs internalization
-  counter: Move counter enums to uapi header
-  counter: Add character device interface
-  docs: counter: Document character device interface
-  counter: Implement extension*_name sysfs attributes
-  counter: Implement events_queue_size sysfs attribute
-  counter: 104-quad-8: Replace mutex with spinlock
-  counter: 104-quad-8: Add IRQ support for the ACCES 104-QUAD-8
-
- Documentation/ABI/testing/sysfs-bus-counter   |  100 +-
- .../ABI/testing/sysfs-bus-counter-104-quad-8  |   61 -
- .../ABI/testing/sysfs-bus-counter-ftm-quaddec |   16 -
- Documentation/driver-api/generic-counter.rst  |  426 ++++-
- .../userspace-api/ioctl/ioctl-number.rst      |    1 +
- MAINTAINERS                                   |    6 +-
- drivers/counter/104-quad-8.c                  |  751 +++++----
- drivers/counter/Kconfig                       |    6 +-
- drivers/counter/Makefile                      |    1 +
- drivers/counter/counter-chrdev.c              |  519 ++++++
- drivers/counter/counter-chrdev.h              |   18 +
- drivers/counter/counter-core.c                |  185 ++
- drivers/counter/counter-sysfs.c               |  889 ++++++++++
- drivers/counter/counter-sysfs.h               |   13 +
- drivers/counter/counter.c                     | 1496 -----------------
- drivers/counter/ftm-quaddec.c                 |   69 +-
- drivers/counter/microchip-tcb-capture.c       |  105 +-
- drivers/counter/stm32-lptimer-cnt.c           |  186 +-
- drivers/counter/stm32-timer-cnt.c             |  187 +--
- drivers/counter/ti-eqep.c                     |  226 ++-
- include/linux/counter.h                       |  716 ++++----
- include/linux/counter_enum.h                  |   45 -
- include/uapi/linux/counter.h                  |  126 ++
- 23 files changed, 3363 insertions(+), 2785 deletions(-)
+Cc: Patrick Havelange <patrick.havelange@essensium.com>
+Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+---
+ Documentation/ABI/testing/sysfs-bus-counter   | 76 ++++++++++++++++++-
+ .../ABI/testing/sysfs-bus-counter-104-quad-8  | 61 ---------------
+ .../ABI/testing/sysfs-bus-counter-ftm-quaddec | 16 ----
+ MAINTAINERS                                   |  4 +-
+ 4 files changed, 75 insertions(+), 82 deletions(-)
  delete mode 100644 Documentation/ABI/testing/sysfs-bus-counter-104-quad-8
  delete mode 100644 Documentation/ABI/testing/sysfs-bus-counter-ftm-quaddec
- create mode 100644 drivers/counter/counter-chrdev.c
- create mode 100644 drivers/counter/counter-chrdev.h
- create mode 100644 drivers/counter/counter-core.c
- create mode 100644 drivers/counter/counter-sysfs.c
- create mode 100644 drivers/counter/counter-sysfs.h
- delete mode 100644 drivers/counter/counter.c
- delete mode 100644 include/linux/counter_enum.h
- create mode 100644 include/uapi/linux/counter.h
 
-
-base-commit: b72d4f6a5122a78941ce5a3147685d6a44939a75
+diff --git a/Documentation/ABI/testing/sysfs-bus-counter b/Documentation/ABI/testing/sysfs-bus-counter
+index 566bd99fe0a5..29f54484183f 100644
+--- a/Documentation/ABI/testing/sysfs-bus-counter
++++ b/Documentation/ABI/testing/sysfs-bus-counter
+@@ -57,6 +57,7 @@ Description:
+ What:		/sys/bus/counter/devices/counterX/countY/count_mode_available
+ What:		/sys/bus/counter/devices/counterX/countY/error_noise_available
+ What:		/sys/bus/counter/devices/counterX/countY/function_available
++What:		/sys/bus/counter/devices/counterX/countY/prescaler_available
+ What:		/sys/bus/counter/devices/counterX/countY/signalZ_action_available
+ KernelVersion:	5.2
+ Contact:	linux-iio@vger.kernel.org
+@@ -154,6 +155,15 @@ Description:
+ 		Count Y. If possible, this should match the name of the
+ 		respective channel as it appears in the device datasheet.
+ 
++What:		/sys/bus/counter/devices/counterX/countY/prescaler
++KernelVersion:	5.2
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Configure the prescaler value associated with Count Y.
++		On the FlexTimer, the counter clock source passes through a
++		prescaler (i.e. a counter). This acts like a clock
++		divider.
++
+ What:		/sys/bus/counter/devices/counterX/countY/preset
+ KernelVersion:	5.2
+ Contact:	linux-iio@vger.kernel.org
+@@ -215,11 +225,45 @@ Description:
+ 		Read-only attribute that indicates the total number of Signals
+ 		belonging to the Counter.
+ 
+-What:		/sys/bus/counter/devices/counterX/signalY/signal
++What:		/sys/bus/counter/devices/counterX/signalY/cable_fault
++KernelVersion:	5.7
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Read-only attribute that indicates whether a differential
++		encoder cable fault (not connected or loose wires) is detected
++		for the respective channel of Signal Y. Valid attribute values
++		are boolean. Detection must first be enabled via the
++		corresponding cable_fault_enable attribute.
++
++What:		/sys/bus/counter/devices/counterX/signalY/cable_fault_enable
++KernelVersion:	5.7
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Whether detection of differential encoder cable faults for the
++		respective channel of Signal Y is enabled. Valid attribute
++		values are boolean.
++
++What:		/sys/bus/counter/devices/counterX/signalY/filter_clock_prescaler
++KernelVersion:	5.7
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Filter clock factor for input Signal Y. This prescaler value
++		affects the inputs of both quadrature pair signals.
++
++What:		/sys/bus/counter/devices/counterX/signalY/index_polarity
+ KernelVersion:	5.2
+ Contact:	linux-iio@vger.kernel.org
+ Description:
+-		Signal data of Signal Y represented as a string.
++		Active level of index input Signal Y; irrelevant in
++		non-synchronous load mode.
++
++What:		/sys/bus/counter/devices/counterX/signalY/index_polarity_available
++What:		/sys/bus/counter/devices/counterX/signalY/synchronous_mode_available
++KernelVersion:	5.2
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Discrete set of available values for the respective Signal Y
++		configuration are listed in this file.
+ 
+ What:		/sys/bus/counter/devices/counterX/signalY/name
+ KernelVersion:	5.2
+@@ -228,3 +272,31 @@ Description:
+ 		Read-only attribute that indicates the device-specific name of
+ 		Signal Y. If possible, this should match the name of the
+ 		respective signal as it appears in the device datasheet.
++
++What:		/sys/bus/counter/devices/counterX/signalY/signal
++KernelVersion:	5.2
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Signal data of Signal Y represented as a string.
++
++What:		/sys/bus/counter/devices/counterX/signalY/synchronous_mode
++KernelVersion:	5.2
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Configure the counter associated with Signal Y for
++		non-synchronous or synchronous load mode. Synchronous load mode
++		cannot be selected in non-quadrature (Pulse-Direction) clock
++		mode.
++
++		non-synchronous:
++			A logic low level is the active level at this index
++			input. The index function (as enabled via preset_enable)
++			is performed directly on the active level of the index
++			input.
++
++		synchronous:
++			Intended for interfacing with encoder Index output in
++			quadrature clock mode. The active level is configured
++			via index_polarity. The index function (as enabled via
++			preset_enable) is performed synchronously with the
++			quadrature clock on the active level of the index input.
+diff --git a/Documentation/ABI/testing/sysfs-bus-counter-104-quad-8 b/Documentation/ABI/testing/sysfs-bus-counter-104-quad-8
+deleted file mode 100644
+index eac32180c40d..000000000000
+--- a/Documentation/ABI/testing/sysfs-bus-counter-104-quad-8
++++ /dev/null
+@@ -1,61 +0,0 @@
+-What:		/sys/bus/counter/devices/counterX/signalY/cable_fault
+-KernelVersion:	5.7
+-Contact:	linux-iio@vger.kernel.org
+-Description:
+-		Read-only attribute that indicates whether a differential
+-		encoder cable fault (not connected or loose wires) is detected
+-		for the respective channel of Signal Y. Valid attribute values
+-		are boolean. Detection must first be enabled via the
+-		corresponding cable_fault_enable attribute.
+-
+-What:		/sys/bus/counter/devices/counterX/signalY/cable_fault_enable
+-KernelVersion:	5.7
+-Contact:	linux-iio@vger.kernel.org
+-Description:
+-		Whether detection of differential encoder cable faults for the
+-		respective channel of Signal Y is enabled. Valid attribute
+-		values are boolean.
+-
+-What:		/sys/bus/counter/devices/counterX/signalY/filter_clock_prescaler
+-KernelVersion:	5.7
+-Contact:	linux-iio@vger.kernel.org
+-Description:
+-		Filter clock factor for input Signal Y. This prescaler value
+-		affects the inputs of both quadrature pair signals.
+-
+-What:		/sys/bus/counter/devices/counterX/signalY/index_polarity
+-KernelVersion:	5.2
+-Contact:	linux-iio@vger.kernel.org
+-Description:
+-		Active level of index input Signal Y; irrelevant in
+-		non-synchronous load mode.
+-
+-What:		/sys/bus/counter/devices/counterX/signalY/index_polarity_available
+-What:		/sys/bus/counter/devices/counterX/signalY/synchronous_mode_available
+-KernelVersion:	5.2
+-Contact:	linux-iio@vger.kernel.org
+-Description:
+-		Discrete set of available values for the respective Signal Y
+-		configuration are listed in this file.
+-
+-What:		/sys/bus/counter/devices/counterX/signalY/synchronous_mode
+-KernelVersion:	5.2
+-Contact:	linux-iio@vger.kernel.org
+-Description:
+-		Configure the counter associated with Signal Y for
+-		non-synchronous or synchronous load mode. Synchronous load mode
+-		cannot be selected in non-quadrature (Pulse-Direction) clock
+-		mode.
+-
+-		non-synchronous:
+-			A logic low level is the active level at this index
+-			input. The index function (as enabled via preset_enable)
+-			is performed directly on the active level of the index
+-			input.
+-
+-		synchronous:
+-			Intended for interfacing with encoder Index output in
+-			quadrature clock mode. The active level is configured
+-			via index_polarity. The index function (as enabled via
+-			preset_enable) is performed synchronously with the
+-			quadrature clock on the active level of the index input.
+diff --git a/Documentation/ABI/testing/sysfs-bus-counter-ftm-quaddec b/Documentation/ABI/testing/sysfs-bus-counter-ftm-quaddec
+deleted file mode 100644
+index 7d2e7b363467..000000000000
+--- a/Documentation/ABI/testing/sysfs-bus-counter-ftm-quaddec
++++ /dev/null
+@@ -1,16 +0,0 @@
+-What:		/sys/bus/counter/devices/counterX/countY/prescaler_available
+-KernelVersion:	5.2
+-Contact:	linux-iio@vger.kernel.org
+-Description:
+-		Discrete set of available values for the respective Count Y
+-		configuration are listed in this file. Values are delimited by
+-		newline characters.
+-
+-What:		/sys/bus/counter/devices/counterX/countY/prescaler
+-KernelVersion:	5.2
+-Contact:	linux-iio@vger.kernel.org
+-Description:
+-		Configure the prescaler value associated with Count Y.
+-		On the FlexTimer, the counter clock source passes through a
+-		prescaler (i.e. a counter). This acts like a clock
+-		divider.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e697044d34d6..d858582c917b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -297,7 +297,6 @@ M:	William Breathitt Gray <vilhelm.gray@gmail.com>
+ M:	Syed Nayyar Waris <syednwaris@gmail.com>
+ L:	linux-iio@vger.kernel.org
+ S:	Maintained
+-F:	Documentation/ABI/testing/sysfs-bus-counter-104-quad-8
+ F:	drivers/counter/104-quad-8.c
+ 
+ ACCES PCI-IDIO-16 GPIO DRIVER
+@@ -4540,7 +4539,7 @@ COUNTER SUBSYSTEM
+ M:	William Breathitt Gray <vilhelm.gray@gmail.com>
+ L:	linux-iio@vger.kernel.org
+ S:	Maintained
+-F:	Documentation/ABI/testing/sysfs-bus-counter*
++F:	Documentation/ABI/testing/sysfs-bus-counter
+ F:	Documentation/driver-api/generic-counter.rst
+ F:	drivers/counter/
+ F:	include/linux/counter.h
+@@ -6925,7 +6924,6 @@ FLEXTIMER FTM-QUADDEC DRIVER
+ M:	Patrick Havelange <patrick.havelange@essensium.com>
+ L:	linux-iio@vger.kernel.org
+ S:	Maintained
+-F:	Documentation/ABI/testing/sysfs-bus-counter-ftm-quaddec
+ F:	Documentation/devicetree/bindings/counter/ftm-quaddec.txt
+ F:	drivers/counter/ftm-quaddec.c
+ 
 -- 
 2.30.0
 

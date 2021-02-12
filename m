@@ -2,150 +2,183 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79DA0319D7D
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Feb 2021 12:43:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB7ED319E10
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Feb 2021 13:16:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229960AbhBLLkf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 12 Feb 2021 06:40:35 -0500
-Received: from mail-dm6nam12on2061.outbound.protection.outlook.com ([40.107.243.61]:60513
-        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229940AbhBLLkM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 12 Feb 2021 06:40:12 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=D0xMLejjDCzvSUCfnUNBTlAXxsQM9vW/I9WB4twgWA/910/XGH1YlqXaLbvnvVOlPiBksyPB7zNPvDOUBpdZnvawWaDsW/Zgsv63tEiKD467cotniTuZP2JKx7GpK/FaYEXpEmnKQ9jVE4yZ/FF7eh5rLVv3eWgOo2X8TnuFwV7/BpUiovfB9kkwofxPZREIFwHYCkgdYEZMzwzOlsVkG11LeTNmygjD2P7bh40dVcCW6xoWK0XlUe3vi8DvPI8dL4lfV9qLSx1Dy3OXcZe/9lkNf7iQRLoOP7AzRhrjoMnxLkFSPMjheB9vZ4mjimZHeQvpu1WTn1fHkv30+L6JPg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jwumvtbWuutkXsdRWtdS1srplF8QEr46TCTO6mKkP8Q=;
- b=BErnR22cty56+CIFvJXwGYsGN2Pq23R7c9SRE8Bh4u/Ew/UCe5N0yhiJgunAYrPbqxb+nLR8LBA8T42ay7QNEalqZUTFHVVtzQCPtwEckObkCxdH+ttMNazTZjjxZrOiiYvvDA22tKKf5EXoBoxKboA5TR6NrwMluk8E/8P2omgxZ/rkELxKtC9AUBXTx65qr0cp4Ty2+luank1f+YCpoQUz6PSr7m5Cru728T15+pe500H/Snq4OkwUwNq0AS0kpBHVq2mxfQJvf6eSQ3eElafIrJ73brB93z1qCMBfL6F1Kn98J/q754hghGetsabZooXeis/t8PzIzPTl+uhxIg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=xilinx.com; dmarc=pass action=none header.from=xilinx.com;
- dkim=pass header.d=xilinx.com; arc=none
+        id S230362AbhBLMOn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 12 Feb 2021 07:14:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37234 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230323AbhBLMOl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Feb 2021 07:14:41 -0500
+Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 645CEC061574;
+        Fri, 12 Feb 2021 04:14:00 -0800 (PST)
+Received: by mail-qk1-x732.google.com with SMTP id x14so8432363qkm.2;
+        Fri, 12 Feb 2021 04:14:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jwumvtbWuutkXsdRWtdS1srplF8QEr46TCTO6mKkP8Q=;
- b=DiXWqUiLeJ1xb/KHdW7o7yrlbY/V8TkfDjHFQZRs3Jhnib3hXbA5Q9hx37kJjrco3br6XTTU2DbF/2AlPevp9srFJl+Ti+vZN9CWi/gDYIN7ucnZDnmIV10lOqQjLhEkOU8IPtkg8HV5U3MzcCJYwshlS/hzYL9gaHaT/611OdE=
-Received: from BY5PR02MB6916.namprd02.prod.outlook.com (2603:10b6:a03:234::18)
- by BYAPR02MB4807.namprd02.prod.outlook.com (2603:10b6:a03:4e::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3825.30; Fri, 12 Feb
- 2021 11:39:16 +0000
-Received: from BY5PR02MB6916.namprd02.prod.outlook.com
- ([fe80::a0ca:5138:c5fd:8435]) by BY5PR02MB6916.namprd02.prod.outlook.com
- ([fe80::a0ca:5138:c5fd:8435%4]) with mapi id 15.20.3846.034; Fri, 12 Feb 2021
- 11:39:16 +0000
-From:   Anand Ashok Dumbre <ANANDASH@xilinx.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Michal Simek <michals@xilinx.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: Adding custom functional callbacks to IIO driver
-Thread-Topic: Adding custom functional callbacks to IIO driver
-Thread-Index: AdcBCXp52GXeQBuaTayGtRoeCC1D4wAKbMWAAAAfUyA=
-Date:   Fri, 12 Feb 2021 11:39:16 +0000
-Message-ID: <BY5PR02MB6916FC7B87BAF6C433380068A98B9@BY5PR02MB6916.namprd02.prod.outlook.com>
-References: <BY5PR02MB69164C83B7BA664AF350D712A98B9@BY5PR02MB6916.namprd02.prod.outlook.com>
- <b8cc5128-da41-2620-c44b-c7af28cf6980@metafoo.de>
-In-Reply-To: <b8cc5128-da41-2620-c44b-c7af28cf6980@metafoo.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-TNEF-Correlator: 
-authentication-results: metafoo.de; dkim=none (message not signed)
- header.d=none;metafoo.de; dmarc=none action=none header.from=xilinx.com;
-x-originating-ip: [149.199.80.133]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 6b9f25c5-9d9c-41b8-86ae-08d8cf4ad3e0
-x-ms-traffictypediagnostic: BYAPR02MB4807:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <BYAPR02MB4807C42BD4D09F8CF09D6FE6A98B9@BYAPR02MB4807.namprd02.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: dTOkxqA3DDFMV9rMlSRFM/a+jHQGW83Y4Rch2D7ugLlJTfSZ0CRq3BbVVnvlRWz3Y33hP756lKevI3hXtLBHIibPWSo3W/jm+yGh5sDVZSc85jKFXcKhr7gNr2PYvTSk1dbiQ8MMNqEOvP8P41YD6hgIDy0XsPLJdO0LDcHAej2kWR1RLyT0NHOjVxrZbw92zGlzQoL1LfV7Z1kAQAeeISWx00KEjB63hvcjQWh3qk9wSy/2Hk300rK5a8hOEJDtT5n9fxw+MM+/W8gGvdoL/aUbKLAEKwzR8ZVhfOZUgYLwqdA42aobUcPmU03Ws6cWyHK9a2mzlegC0TnpqQFGXn5rlG1RBUsWWZo/EPP2pbOto5nqjses5d6BBRK82myrXaLstrzM1HorSxGPKXNztk5WMMn3W+BFd1B8umHHoeqDQk1VDx4OAVieAeqiNz67TsTN/WC306/uKuNquJ9UELrI/jptk7p8O6xkpjaWUBxfZckOiXMt1w7uCnDjB67UD9QcryCWhbLzoPaQNUOMYVps5sLrVPm4VHCBee5V3py9H1g0vuCsYKw0l+3qZBDyyf5RJI9joA8wSMXpWZSAQUJb2s59N2Yz3c/NEAit5WY=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR02MB6916.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(136003)(396003)(346002)(39860400002)(366004)(26005)(186003)(52536014)(110136005)(966005)(6506007)(53546011)(5660300002)(8936002)(478600001)(83380400001)(316002)(8676002)(7696005)(66946007)(2906002)(71200400001)(33656002)(76116006)(64756008)(86362001)(66446008)(66556008)(66476007)(9686003)(55016002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: =?us-ascii?Q?CH0/dzy+sGAzpVsMG1dg2NX4+ljPaSWuI6FA8ty593OA6RZX6AL/dzknQjaX?=
- =?us-ascii?Q?4AEnXXihdFhub72FF54S69tFCpNE9pBz0mayUvE9oqmxm/h8BqA2ZW6YL99C?=
- =?us-ascii?Q?pND5wovmhWpg2srcjwmb4MS7C6sTJo2N7GBhScuKOnTBUefZaDNVOvJ9PmkZ?=
- =?us-ascii?Q?aNca7xfWv9LWKwQuTJnRuclGBhqU1lGPaFagycgITYrY09H46OljJw7za/+v?=
- =?us-ascii?Q?6SofpNA6xExa4YHu5THfwozm6liaLaKynMaY7HDRSJcbycxJRvUgpEIvCZ4m?=
- =?us-ascii?Q?0Z30t7eD+qZFkSDEuTj8UkoIiGagAF8qlZjCYIFNAb7JZIDZwJeU5mxVlj/a?=
- =?us-ascii?Q?iXdRGaeDuWeYiHA9LsnmRG9PDlKxMASL/OpISIdAs9veoY/Yq6Pa1qdR6n8G?=
- =?us-ascii?Q?ZMAXbX76zFdnlmAVEq5GTioBi+5swGuqi0e/y1GP4LK0aBBL16//BMvyri8v?=
- =?us-ascii?Q?R/TjqPkQir2d3oM/DbmzO4jXGo+HbPbOYA/ZdyMwq0x2nxF82nejocAluKS5?=
- =?us-ascii?Q?rLvov39ZYbB2zkJQu9cyVdEnCnf9wsRVysUxFuF9Bc4XGlmQ9k2V6nhzChrv?=
- =?us-ascii?Q?36DJbfr/j2OIJ/rAzybAL498c7fMZi4w4AZREe15NKfiwMRD4iwUSphz01mK?=
- =?us-ascii?Q?jAh7vNvu/35n6LkxH9LT4GP70s/PG4stuySDolBYoAaaFwv1Xls7GslE8sti?=
- =?us-ascii?Q?hmUqJCTt3P4Tp58LqVKrP1fzY2bVwlzaN5fHHuAJCih29uN+wnmyfdPls27B?=
- =?us-ascii?Q?oaE+NLdpopyM/ybEnQzCcLZRO1no+eQDDPCnNjLcqwwWGJJK9wrk4dYI2Yle?=
- =?us-ascii?Q?FoAgpSEfKClZjqJ9TtZ9bqIWQMy3lqg28WG36cfObZfNQTcDSLVl3W6Hcanr?=
- =?us-ascii?Q?0vdtyAW4NNBUrXZ3GlG9XURAvOC3lPDZe+SMhCytv8HPNji43AwF18bg9yVC?=
- =?us-ascii?Q?HPCC9FlK5Vb0gZwl0/ltQ51a0KhQlWwMGIPo1sapLkVkK3YjpneUOesZlINh?=
- =?us-ascii?Q?Nxz6/B2uymvEWL1MsJRSqY6LPnxu+uZAgOp0uAaYWsudTyF/1ypvmId+eVlk?=
- =?us-ascii?Q?y2HtQLv9sXt4KmhcAbdcR1U5T7N4sVCr7MeGRg49xu822Gf0JSr8npepq6el?=
- =?us-ascii?Q?99eZ780UqFZqzr/APNrY89RscFZK0SZ+RGNGp2xLKHRYcVUtlSFMEsPtaDOP?=
- =?us-ascii?Q?rbdGRqMM6gg90uPvWStAwOgERuje5oQCCYKxBVvkQXMPH1tDqUWm+vjKH6fR?=
- =?us-ascii?Q?fW6JltjH1z8KqxrcDhgeUU+62pNZRvWOhXgU2KCGRnAB4Wy1FoMt1Tf/rYfu?=
- =?us-ascii?Q?ztDyWSSFY9cHBLasaLblEmgH?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=y4yEGF4AjXqnem5hKAuSPNf/U7YlqelstXtmTJWlhNI=;
+        b=qeeJfbvFVl0h81JpFKFxtmMRQ10eHisgwd45W2GG7TM5yHTLOyZPV9gOdv7Mv2l2yg
+         pnERECp342fv8J1aHQyL4PhoC9KoGNxukiqQR0YhWdjel+xmI8dPmMKImwLQywj1XEkv
+         vW6lPFhEJl9q2mrvbwdJEiEajB1D6Tj47Jz2BMeEeJtpvK/y8fSYGYBuXBd6GlaN2mWa
+         2FMS2PQ+RSVavlXbBe+3QoPnzo7LGbyUGlf+u/9CSg/hY+ahHf2K5dD7q/+UBCDu/0kY
+         N28fGB8xikKFjZWZfLxL7UnZKHDQ8X0ms9BM1JByMIxCgFIbDSvxhX3osq70Y/+XRhg4
+         7IYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=y4yEGF4AjXqnem5hKAuSPNf/U7YlqelstXtmTJWlhNI=;
+        b=KoDj9Sl5x/NrZzAFWzwVvuJPxOGYWSTBtMdLuHDfUjfr7eTask7D09XWK7tMqqqhUz
+         d+4v/9X8WAbrHVHVayeR5YufF3Z/gV9AE0wTtm5X4f7ysHQnBv7xyR5OeLUMFfdthO4j
+         fLzS24z4Xp+7kylAGfwqppuUT0CnCYzq8hpmm8dPdVWd3H7eqYCmX2erIwNO6pBKDBkY
+         opKKLHissbDMzjNYe4IcSfZqvHFUWHFtoLVS6nIm6v5UZwCQB1TmqM6alqphRRNyBQpJ
+         wz1xSygm01k3RRqD301vsMo2ltFAae1Yg+PY2V7pkNgSDSa17Fq+6BZ9jcoDPJIv1bP5
+         qByw==
+X-Gm-Message-State: AOAM530xoRC5MJUxhWlRJamv59n+bjrgSOdKk/x3heBpggJBxNxhnr2t
+        Uc0w8A6AzgwVIh8QF34DLLU=
+X-Google-Smtp-Source: ABdhPJxFsiQwibCIY/jzrkMEOjGRvL/Umh2DVWmeMRwmBlG0UpNjfOXTGn7C2OIHJu2eh2qGMrCXXA==
+X-Received: by 2002:a37:992:: with SMTP id 140mr2317435qkj.349.1613132039638;
+        Fri, 12 Feb 2021 04:13:59 -0800 (PST)
+Received: from localhost.localdomain ([193.27.12.132])
+        by smtp.gmail.com with ESMTPSA id y135sm6278534qkb.14.2021.02.12.04.13.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Feb 2021 04:13:59 -0800 (PST)
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     jic23@kernel.org
+Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
+        a.fatoum@pengutronix.de, kamel.bouhara@bootlin.com,
+        gwendal@chromium.org, alexandre.belloni@bootlin.com,
+        david@lechnology.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        syednwaris@gmail.com, patrick.havelange@essensium.com,
+        fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@st.com, o.rempel@pengutronix.de,
+        William Breathitt Gray <vilhelm.gray@gmail.com>
+Subject: [PATCH v8 00/22] Introduce the Counter character device interface
+Date:   Fri, 12 Feb 2021 21:13:24 +0900
+Message-Id: <cover.1613131238.git.vilhelm.gray@gmail.com>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR02MB6916.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6b9f25c5-9d9c-41b8-86ae-08d8cf4ad3e0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Feb 2021 11:39:16.1235
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: LJBJ3+iurUyntJCqr6FbJ8sW9AJPy1Bk63qO12zEK/Ayp2pv34PKxBSk80McRC43P9tcEgJhXEx9qY1xQZDWDg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR02MB4807
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Thanks a lot I will go through it.=20
+Changes in v8:
+ - Consolidated Counter sysfs ABI documentation to single file
+ - Added events_queue_size sysfs attribute to allow users to dynamically
+   resize the events queue
+ - Fixed markup syntax and typos in generic-counter.rst
+ - Improved documentation in include/uapi/linux/counter.h and friends
+ - Renamed COUNTER_LOAD_WATCHES_IOCTL to COUNTER_ENABLE_EVENTS_IOCTL;
+   Renamed COUNTER_CLEAR_WATCHES_IOCTL to COUNTER_DISABLE_EVENTS_IOCTL
+ - Renamed the struct counter_event "errno" member to "status"
+ - Dropped the "irq_trigger" 104-QUAD-8 sysfs attribute; this
+   functionality now occurs implicitly via the Counter chrdev interface
+ - Return -ERANGE where appropriate instead of -EINVAL
+ - Simplified switch exit paths; return early when possible
+ - Call devm_request_irq() before devm_counter_register() for 104-quad-8
+ - Renamed devm_counter_unregister() to more apt devm_counter_release()
+ - Use enum counter_scope for scope values in counter-sysfs.c
+ - Use sysfs_emit() instead of sprintf() where appropriate
+ - Renamed find_in_string_array() to more apt counter_find_enum()
+ - Renamed *_action_get() and *_action_write() to *_action_read() and
+   *_action_write() to match new naming convention of Counter callbacks
+ - Use "Counter function" naming convention instead of "Counter count
+   function" to avoid confusion about scope
 
-> -----Original Message-----
-> From: Lars-Peter Clausen <lars@metafoo.de>
-> Sent: Friday 12 February 2021 5:06 PM
-> To: Anand Ashok Dumbre <ANANDASH@xilinx.com>; Jonathan Cameron
-> <jic23@kernel.org>; knaack.h@gmx.de; Peter Meerwald-Stadler
-> <pmeerw@pmeerw.net>; Michal Simek <michals@xilinx.com>; linux-
-> iio@vger.kernel.org; linux-arm-kernel@lists.infradead.org; linux-
-> kernel@vger.kernel.org
-> Subject: Re: Adding custom functional callbacks to IIO driver
->=20
-> On 2/12/21 12:07 PM, Anand Ashok Dumbre wrote:
-> > Hello,
-> >
-> > I have an IIO adc driver that measures temperatures and voltages on the
-> SOC.
-> > There are other kernel modules interested in the temperature and voltag=
-e
-> event information.
-> >
-> > Would using a custom callback registration mechanism be advisable?
-> > Is there something similar done already in IIO that can be leveraged?
->=20
-> Hi,
->=20
-> Have a look at the IIO consumer API that allows other kernel modules to
-> subscribe to the output of an IIO device.
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/i=
-nclu
-> de/linux/iio/consumer.h
->=20
->=20
-> - Lars
+I pulled out a lot of bits and pieces to their own patches; hopefully
+that makes reviewing this patchset much simpler than before. This
+patchset is also available on my personal public git repo for anyone who
+wants a quick way to clone:
+https://gitlab.com/vilhelmgray/iio/-/tree/counter_chrdev_v8
+
+The patches preceding "counter: Internalize sysfs interface code" are
+primarily cleanup and fixes that can be picked up and applied now to the
+IIO tree if so desired. The "counter: Internalize sysfs interface code"
+patch as well may be considered for pickup because it is relatively safe
+and makes no changes to the userspace interface.
+
+To summarize the main points of this patchset: there are no changes to
+the existing Counter sysfs userspace interface; a Counter character
+device interface is introduced that allows Counter events and associated
+data to be read() by userspace; the events_configure() and
+watch_validate() driver callbacks are introduced to support Counter
+events; and IRQ support is added to the 104-QUAD-8 driver, serving as an
+example of how to support the new Counter events functionality.
+
+Something that should still be discussed: should the struct
+counter_event "status" member be 8 bits or 32 bits wide? This member
+will provide the return status (system error number) of an event
+operation.
+
+William Breathitt Gray (22):
+  docs: counter: Consolidate Counter sysfs attributes documentation
+  docs: counter: Fix spelling
+  counter: 104-quad-8: Return error when invalid mode during
+    ceiling_write
+  counter: 104-quad-8: Annotate hardware config module parameter
+  counter: 104-quad-8: Add const qualifiers for
+    quad8_preset_register_set
+  counter: 104-quad-8: Add const qualifier for functions_list array
+  counter: 104-quad-8: Add const qualifier for actions_list array
+  counter: ftm-quaddec: Add const qualifier for actions_list array
+  counter: Return error code on invalid modes
+  counter: Standardize to ERANGE for limit exceeded errors
+  counter: Rename counter_signal_value to counter_signal_level
+  counter: Rename counter_count_function to counter_function
+  counter: Internalize sysfs interface code
+  counter: Update counter.h comments to reflect sysfs internalization
+  docs: counter: Update to reflect sysfs internalization
+  counter: Move counter enums to uapi header
+  counter: Add character device interface
+  docs: counter: Document character device interface
+  counter: Implement extension*_name sysfs attributes
+  counter: Implement events_queue_size sysfs attribute
+  counter: 104-quad-8: Replace mutex with spinlock
+  counter: 104-quad-8: Add IRQ support for the ACCES 104-QUAD-8
+
+ Documentation/ABI/testing/sysfs-bus-counter   |  100 +-
+ .../ABI/testing/sysfs-bus-counter-104-quad-8  |   61 -
+ .../ABI/testing/sysfs-bus-counter-ftm-quaddec |   16 -
+ Documentation/driver-api/generic-counter.rst  |  426 ++++-
+ .../userspace-api/ioctl/ioctl-number.rst      |    1 +
+ MAINTAINERS                                   |    6 +-
+ drivers/counter/104-quad-8.c                  |  751 +++++----
+ drivers/counter/Kconfig                       |    6 +-
+ drivers/counter/Makefile                      |    1 +
+ drivers/counter/counter-chrdev.c              |  519 ++++++
+ drivers/counter/counter-chrdev.h              |   18 +
+ drivers/counter/counter-core.c                |  185 ++
+ drivers/counter/counter-sysfs.c               |  889 ++++++++++
+ drivers/counter/counter-sysfs.h               |   13 +
+ drivers/counter/counter.c                     | 1496 -----------------
+ drivers/counter/ftm-quaddec.c                 |   69 +-
+ drivers/counter/microchip-tcb-capture.c       |  105 +-
+ drivers/counter/stm32-lptimer-cnt.c           |  186 +-
+ drivers/counter/stm32-timer-cnt.c             |  187 +--
+ drivers/counter/ti-eqep.c                     |  226 ++-
+ include/linux/counter.h                       |  716 ++++----
+ include/linux/counter_enum.h                  |   45 -
+ include/uapi/linux/counter.h                  |  126 ++
+ 23 files changed, 3363 insertions(+), 2785 deletions(-)
+ delete mode 100644 Documentation/ABI/testing/sysfs-bus-counter-104-quad-8
+ delete mode 100644 Documentation/ABI/testing/sysfs-bus-counter-ftm-quaddec
+ create mode 100644 drivers/counter/counter-chrdev.c
+ create mode 100644 drivers/counter/counter-chrdev.h
+ create mode 100644 drivers/counter/counter-core.c
+ create mode 100644 drivers/counter/counter-sysfs.c
+ create mode 100644 drivers/counter/counter-sysfs.h
+ delete mode 100644 drivers/counter/counter.c
+ delete mode 100644 include/linux/counter_enum.h
+ create mode 100644 include/uapi/linux/counter.h
+
+
+base-commit: b72d4f6a5122a78941ce5a3147685d6a44939a75
+-- 
+2.30.0
 

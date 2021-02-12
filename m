@@ -2,84 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E2AC31A4FA
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Feb 2021 20:06:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A6EF31A51F
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Feb 2021 20:14:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230390AbhBLTGF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 12 Feb 2021 14:06:05 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59296 "EHLO mail.kernel.org"
+        id S231430AbhBLTNI convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Fri, 12 Feb 2021 14:13:08 -0500
+Received: from mail.kernel.org ([198.145.29.99]:36264 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230249AbhBLTFo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 12 Feb 2021 14:05:44 -0500
+        id S231978AbhBLTNG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 12 Feb 2021 14:13:06 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E4F6C64EA6;
-        Fri, 12 Feb 2021 19:05:00 +0000 (UTC)
-Date:   Fri, 12 Feb 2021 19:04:55 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 57BF360241;
+        Fri, 12 Feb 2021 19:12:23 +0000 (UTC)
+Date:   Fri, 12 Feb 2021 19:12:19 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Wilfried Wessner <wilfried.wessner@gmail.com>,
+To:     Petr =?UTF-8?B?xaB0ZXRpYXI=?= <ynezz@true.cz>
+Cc:     Tomasz Duszynski <tomasz.duszynski@octakon.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Charles-Antoine Couret <charles-antoine.couret@essensium.com>
-Subject: Re: [PATCH v3] iio: ad7949: fix wrong ADC result due to incorrect
- bit mask
-Message-ID: <20210212190455.76b38d94@archlinux>
-In-Reply-To: <CAHp75VcT_7=MKErF0oVn5PFT1_7OeD4cZaw5WAANvhHouB7V6g@mail.gmail.com>
-References: <20210208142705.GA51260@ubuntu>
-        <CAHp75Vc1VWYLO1rF-NNnW3qkgiGycgpTHvr5Q2Yn91aZcFuyJg@mail.gmail.com>
-        <CAMwq6HiAufEjLPn2hSnQ7iBvrrCZUzwE_hdFE8s51ewbuJOMYA@mail.gmail.com>
-        <CAHp75VcT_7=MKErF0oVn5PFT1_7OeD4cZaw5WAANvhHouB7V6g@mail.gmail.com>
+        stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: chemical: scd30: fix Oops due to missing parent
+ device
+Message-ID: <20210212191219.7b16abbb@archlinux>
+In-Reply-To: <20210208223947.32344-1-ynezz@true.cz>
+References: <20210208223947.32344-1-ynezz@true.cz>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 11 Feb 2021 21:24:04 +0200
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Mon,  8 Feb 2021 23:39:47 +0100
+Petr Štetiar <ynezz@true.cz> wrote:
 
-> On Thu, Feb 11, 2021 at 8:42 PM Wilfried Wessner
-> <wilfried.wessner@gmail.com> wrote:
-> > On Mon, Feb 8, 2021 at 5:06 PM Andy Shevchenko
-> > <andy.shevchenko@gmail.com> wrote:  
-> > > On Mon, Feb 8, 2021 at 4:27 PM Wilfried Wessner
-> > > <wilfried.wessner@gmail.com> wrote:  
+> My machine Oopsed while testing SCD30 sensor in interrupt driven mode:
 > 
-> ...
+>  Unable to handle kernel NULL pointer dereference at virtual address 00000188
+>  pgd = (ptrval)
+>  [00000188] *pgd=00000000
+>  Internal error: Oops: 5 [#1] SMP ARM
+>  Modules linked in:
+>  CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.4.96+ #473
+>  Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
+>  PC is at _raw_spin_lock_irqsave+0x10/0x4c
+>  LR is at devres_add+0x18/0x38
+>  ...
+>  [<8070ecac>] (_raw_spin_lock_irqsave) from [<804916a8>] (devres_add+0x18/0x38)
+>  [<804916a8>] (devres_add) from [<805ef708>] (devm_iio_trigger_alloc+0x5c/0x7c)
+>  [<805ef708>] (devm_iio_trigger_alloc) from [<805f0a90>] (scd30_probe+0x1d4/0x3f0)
+>  [<805f0a90>] (scd30_probe) from [<805f10fc>] (scd30_i2c_probe+0x54/0x64)
+>  [<805f10fc>] (scd30_i2c_probe) from [<80583390>] (i2c_device_probe+0x150/0x278)
+>  [<80583390>] (i2c_device_probe) from [<8048e6c0>] (really_probe+0x1f8/0x360)
 > 
-> > > Shouldn't be blank like here, but I think Jonathan can fix when applying.
-> > > Jonathan, can you also amend the subject (I totally forgot about
-> > > subsubsystem prefix)?
-> > > Should be like:
-> > > "iio: adc: ad7949: fix wrong results due to incorrect bit mask"  
-> >
-> > Should I send a v4 with the changes proposed by Andy?
-> > It would change the subject.  
+> I've found out, that it's due to missing parent/owner device in iio_dev struct
+> which then leads to NULL pointer dereference during spinlock while registering
+> the device resource via devres_add().
 > 
-> Depends on you. Jonothan usually processes the queue during weekends,
-> so no hurry.
-> 
-> > And if so, should I add the tags:
-> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > Reviewed-by: Charles-Antoine Couret <charles-antoine.couret@essensium.com>  
-> 
-> If resend, yes, you need to add them.
-> 
-Applied with the minor spacing and title tweak Andy suggested
+> Cc: <stable@vger.kernel.org> # v5.9+
+> Fixes: 64b3d8b1b0f5 ("iio: chemical: scd30: add core driver")
+> Signed-off-by: Petr Štetiar <ynezz@true.cz>
 
-Applied to the fixes-togreg branch of iio.git. Given this has been
-there a while, I'm going to wait until after the merge window to
-send this upstream.  So it will be a few weeks.
+Hi Petr,
 
-Thanks,
+So, we moved this into the core a while back (to avoid exactly this sort of issue).
+That change predates this introduction of this driver as it went in
+in v5.8
+
+So I think you've hit an issue with a backport here to an earlier kernel?
 
 Jonathan
 
+
+> ---
+>  drivers/iio/chemical/scd30_core.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/iio/chemical/scd30_core.c b/drivers/iio/chemical/scd30_core.c
+> index 4d0d798c7cd3..33aa6eb1963d 100644
+> --- a/drivers/iio/chemical/scd30_core.c
+> +++ b/drivers/iio/chemical/scd30_core.c
+> @@ -697,6 +697,7 @@ int scd30_probe(struct device *dev, int irq, const char *name, void *priv,
+>  
+>  	dev_set_drvdata(dev, indio_dev);
+>  
+> +	indio_dev->dev.parent = dev;
+>  	indio_dev->info = &scd30_info;
+>  	indio_dev->name = name;
+>  	indio_dev->channels = scd30_channels;
 

@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BAC70319E14
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Feb 2021 13:16:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB1ED319E16
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Feb 2021 13:16:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230489AbhBLMOx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 12 Feb 2021 07:14:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37280 "EHLO
+        id S230132AbhBLMPR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 12 Feb 2021 07:15:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230323AbhBLMOw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Feb 2021 07:14:52 -0500
+        with ESMTP id S229992AbhBLMO6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Feb 2021 07:14:58 -0500
 Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53996C0613D6;
-        Fri, 12 Feb 2021 04:14:12 -0800 (PST)
-Received: by mail-qt1-x831.google.com with SMTP id v3so6493581qtw.4;
-        Fri, 12 Feb 2021 04:14:12 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C6D4C061786;
+        Fri, 12 Feb 2021 04:14:17 -0800 (PST)
+Received: by mail-qt1-x831.google.com with SMTP id v10so4118457qtq.7;
+        Fri, 12 Feb 2021 04:14:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=l9MVM1xcNi7V1HTtwx+BbT8RtO64EAjisI3WqrvzlhM=;
-        b=QcUZkZomdc1mBWtdJCbI8UkHhb0aAtHBnqRDKPasQ4dnD76ls/uIzGfxJtzRk2UN5w
-         inQFS+mJjFkLeHMuho3EMLTTixJp4Qh2qlLAvIQwgwaTDf/+cmjKWgYflveVEYH71q2j
-         WAgblfQ8eqCROJSBU6h6V4bhq33sUCJjqZ8I+yr80am7twLzHNORpuWb1zQ6ezmZErtr
-         cdnfMPP7rRLeCftiz67UsB/NzkJDY5faMfFiZ49YYlz/FLYxjSO5RQZ3UM83SHZeKeJP
-         021WR/8enqbdXwBKGxkLgptdSlCHDUJwE/8of3dzc/iZxMZT/ZsNjfvD8pVV+7m0LqI9
-         tUBg==
+        bh=zYNQDVBttWuol9Nr7vZ9TZ0pD01e0D8AxvqzWcKy2yQ=;
+        b=aM0sxgfW7EgiObp2+TZrx7/lpr8sKMXQGE4XaF94+aL5T5kix2W8sOsAr8u0jENXVE
+         7ifeOIOq16yrovXrbb8oiyDkt+ArzI+PtEZez5zjEvlJFN3ZFsbl6RvIAoza1oNUOCX1
+         olEGary8VS5UP6uiSlIR5HLqcnjrgFztryrCUkJeSMUKk70QmoHERtWMIrvjqQqulxX0
+         xMyTRO5H7Say1S18oBN+GhBXNe6kuL1byvWTOHo9i5zCEEshHdM0dxUrf0Ud9pvL7rOj
+         OxFXDTRj2LBOa+80VR1/rN5SRZ27oq6IRHXOM8rvgNHGumKKjlrG3dNbN0m3JfnPzCSa
+         zSRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=l9MVM1xcNi7V1HTtwx+BbT8RtO64EAjisI3WqrvzlhM=;
-        b=GNgRPw8Pg8u4FplNn9u7z/DKuNgX0ziu2++O9Iad0w5z7dbB+RzIwTIqpLEzKFvoGY
-         ZvzF+Qi8b8tu3Ed4mQUbHan99znGUhcrURLTpHZpUz16XTeB9TVJtDdYUN2aQUVBZBP5
-         P2zlA/XMwgwFG2MZrc2qoHhnr2L12NDyyq2ZBVi+rWhQq0ipSeGil8oXkUHGjXOzfrYq
-         hzPAa6c0IKeBVWtVatPfpaaq36ZVdJCHraws61STSwXdC01kRE9yEPMEByfrniM1driu
-         eyy6Wx+ng6LLWI+pvXxqEv0oN+0d2jrPP4wvG1bunAQJIX/9TBqqzj61FI9C1wkU3BLZ
-         pyGw==
-X-Gm-Message-State: AOAM532P4ZxaCNg0n7c4NbwQvGDiOpGclYSvOfOa/0BTIJJTU7Jb0nln
-        ARBcFYdAGdlhewbBmmhF5xydacyAn/0=
-X-Google-Smtp-Source: ABdhPJwihv1BKw1Q0mvejQLLioSu6ygUVQZgDYd/xvUVbf7c7bZduNPZmX5WR9aK4EZVYHRVtVRI8w==
-X-Received: by 2002:ac8:149a:: with SMTP id l26mr2030634qtj.210.1613132051207;
-        Fri, 12 Feb 2021 04:14:11 -0800 (PST)
+        bh=zYNQDVBttWuol9Nr7vZ9TZ0pD01e0D8AxvqzWcKy2yQ=;
+        b=ZMM02OgBYWyS9jaArKVcbEeeXDVBfdszjNI+sT8Bgw5NOPeLD+Zi2pjxUVDpSEzyo4
+         DOyqRm34mnWgwl9fr2QgdwQz76kA8xjtfP83VbY6fvVge6wHoZMsu5ystHqm1wnylVfd
+         fxr9+iA0yYBmRN/eqIZW2i+/emu8E5Qn0ABRGcAqIOvWyG66RHayoDBRB9hQJObGaILZ
+         9nBlufo7gcy6n2wc/jl1pCu9D1hfWgY1HTcCn8FIHLCnNyb9un4xR3PSEubcObqk9+E8
+         TfpIH6+vRmxNrLYpaSliPiRLtJ/qcB9iPSIDy7Nm6H9tdte8MorLvbZquYR81H+mU17/
+         Zq0g==
+X-Gm-Message-State: AOAM530B4mzQt/ocKm3pwmsyV/m6X5VllBBCCFT98GyROA3IqXxBwxqz
+        p/LdjXgGLaNME5GRF6zquik=
+X-Google-Smtp-Source: ABdhPJwnyJ+R/neIAfUAIjSjngmjsVTVRQEo+iuZDMXLDZrsRJ6K4GTnnYIMjHvxF2iySoUNHUa4Gg==
+X-Received: by 2002:ac8:5894:: with SMTP id t20mr2078682qta.194.1613132056934;
+        Fri, 12 Feb 2021 04:14:16 -0800 (PST)
 Received: from localhost.localdomain ([193.27.12.132])
-        by smtp.gmail.com with ESMTPSA id y135sm6278534qkb.14.2021.02.12.04.14.05
+        by smtp.gmail.com with ESMTPSA id y135sm6278534qkb.14.2021.02.12.04.14.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Feb 2021 04:14:10 -0800 (PST)
+        Fri, 12 Feb 2021 04:14:16 -0800 (PST)
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     jic23@kernel.org
 Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
@@ -58,9 +58,9 @@ Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
         fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
         alexandre.torgue@st.com, o.rempel@pengutronix.de,
         William Breathitt Gray <vilhelm.gray@gmail.com>
-Subject: [PATCH v8 02/22] docs: counter: Fix spelling
-Date:   Fri, 12 Feb 2021 21:13:26 +0900
-Message-Id: <0f90d3ae0305224abd6350059bcb00ac44bd858b.1613131238.git.vilhelm.gray@gmail.com>
+Subject: [PATCH v8 03/22] counter: 104-quad-8: Return error when invalid mode during ceiling_write
+Date:   Fri, 12 Feb 2021 21:13:27 +0900
+Message-Id: <2be0c071e7730ea16b8faa1efcd3d0d908e7f9db.1613131238.git.vilhelm.gray@gmail.com>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <cover.1613131238.git.vilhelm.gray@gmail.com>
 References: <cover.1613131238.git.vilhelm.gray@gmail.com>
@@ -70,26 +70,39 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-"Miscellaneous" is the correct spelling.
+The 104-QUAD-8 only has two count modes where a ceiling value makes
+sense: Range Limit and Modulo-N. Outside of these two modes, setting a
+ceiling value is an invalid operation -- so let's report it as such by
+returning -EINVAL.
 
+Fixes: fc069262261c ("counter: 104-quad-8: Add lock guards - generic interface")
+Cc: Syed Nayyar Waris <syednwaris@gmail.com>
 Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 ---
- Documentation/driver-api/generic-counter.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/counter/104-quad-8.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/driver-api/generic-counter.rst b/Documentation/driver-api/generic-counter.rst
-index b02c52cd69d6..64fe7db080e5 100644
---- a/Documentation/driver-api/generic-counter.rst
-+++ b/Documentation/driver-api/generic-counter.rst
-@@ -307,7 +307,7 @@ Determining the type of extension to create is a matter of scope.
+diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
+index 9691f8612be8..f0608b21196a 100644
+--- a/drivers/counter/104-quad-8.c
++++ b/drivers/counter/104-quad-8.c
+@@ -714,13 +714,14 @@ static ssize_t quad8_count_ceiling_write(struct counter_device *counter,
+ 	switch (priv->count_mode[count->id]) {
+ 	case 1:
+ 	case 3:
++		mutex_unlock(&priv->lock);
+ 		quad8_preset_register_set(priv, count->id, ceiling);
+-		break;
++		return len;
+ 	}
  
- * Device extensions are attributes that expose information/control
-   non-specific to a particular Count or Signal. This is where you would
--  put your global features or other miscellanous functionality.
-+  put your global features or other miscellaneous functionality.
+ 	mutex_unlock(&priv->lock);
  
-   For example, if your device has an overtemp sensor, you can report the
-   chip overheated via a device extension called "error_overtemp":
+-	return len;
++	return -EINVAL;
+ }
+ 
+ static ssize_t quad8_count_preset_enable_read(struct counter_device *counter,
 -- 
 2.30.0
 

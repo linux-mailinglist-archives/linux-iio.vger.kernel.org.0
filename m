@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 009AB319E1B
+	by mail.lfdr.de (Postfix) with ESMTP id 7143E319E1C
 	for <lists+linux-iio@lfdr.de>; Fri, 12 Feb 2021 13:16:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231288AbhBLMP0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 12 Feb 2021 07:15:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37388 "EHLO
+        id S231292AbhBLMP1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 12 Feb 2021 07:15:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230332AbhBLMPW (ORCPT
+        with ESMTP id S231233AbhBLMPW (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Feb 2021 07:15:22 -0500
-Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com [IPv6:2607:f8b0:4864:20::734])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26923C06178A;
-        Fri, 12 Feb 2021 04:14:29 -0800 (PST)
-Received: by mail-qk1-x734.google.com with SMTP id w19so7958100qki.13;
-        Fri, 12 Feb 2021 04:14:29 -0800 (PST)
+Received: from mail-qv1-xf2f.google.com (mail-qv1-xf2f.google.com [IPv6:2607:f8b0:4864:20::f2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07E1EC06178B;
+        Fri, 12 Feb 2021 04:14:35 -0800 (PST)
+Received: by mail-qv1-xf2f.google.com with SMTP id dr7so2268951qvb.1;
+        Fri, 12 Feb 2021 04:14:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=BjJkilAOMGiWiSD9J4QR2aEeHu+r/1qYrSNyG3boNpc=;
-        b=BLt4sjlCky7CbAc9/dLfGcwAvsWUzPTf4qP6jWbY9HDc4vxvHbqwfw2gO5Yb8HOjf6
-         rkst6aD34iVSCEHlOGhRA3Yn8niNgmuNNuu6RoICNh9W+VjiTpdSd+SB+i32v3pHjPZr
-         HAg1MwfATZpc6EcnxaUdfEZHfs4ZSE8O0oZtiZOvC3dIzl4es1cUiFXTc60qjE6tn7/V
-         /LwRKPjXtzfhMbSyMkJuDNEY+/JMupnGIj0Y5XmcpZvDcH9EkjMSsJkYM3zlwjfJwQsk
-         r8ZQuH9ohwU6xO6YH41XKAn41CX5Viei5boWdFpNW43QCp0+cYQkxzM6eTkcpqZZGI4c
-         dmKA==
+        bh=ZF5NYOTPzb69Gy7SXzsmlFc2ufq8pLJB8ZkxKUF4FAI=;
+        b=Ga3mew42ijkMgzZTymuZhgziBa7GfGyxP/sUENT/oaQm4Ks/rw54Vb/MEAgxCVIAuP
+         xpd06dY2jnPYYUE9RETNoYnHuHFp3e+0+/POzIweMNWkSW0MjoHwIWUnMVLLGZaxxTh8
+         cEk0G1RBGM5U/z6HNt1wy94+gmYRo7tvaMzAy2rv6WMUa1hFaiFidBMa1zxWfi9U0Ewp
+         QQ6KaHAWRisgavcUS02nf8wCLHBQsVlJaAmM5soKtI3Bu4VERuX9slcHYfAgeH0MwiZV
+         odm6K0SR1fDGBQEXYQrdgpuGgvUccmvBmZsvK/S+NKjyrJd60a+sj4f5rYcWmSWYQFCN
+         tnDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=BjJkilAOMGiWiSD9J4QR2aEeHu+r/1qYrSNyG3boNpc=;
-        b=iYo1h5ogoBlWkPg1Ry1rth1AQOFbyQZV7dNesFObd4H5Debw5ftCpDbxGml2IYyfnb
-         fV8dnAvhXwNtlofIE4dvc4wtjvVHFl1akg+7JH12Jk/W56pcrgE/V1PMsHQZi/F30JRR
-         /dJ46XrKMZmV7XtRDR85EBDJu2nx7bR5Le6OqNwyC/Fq+zzJNhoytXoX/VzB2U2Vf7jH
-         9XptQnnggJs1PpoNkRhqPgpTuxknjQgkbA5bkYh+2LTTfsUgcS3p6tXekKU3F3FJOwfk
-         K3ABLbPxy6d/b60jabiiW2vOJmSwb//v52jQUjuruc8Z/heVeww1l3Bzk7uEuD7BjMC1
-         FjQg==
-X-Gm-Message-State: AOAM5325T61/hCuMwA33eyZWQz+AOhyaH8gn5QZukinDXFxvSupQ4iqX
-        3f7OtvUSexeHJm5FcA5ahQY=
-X-Google-Smtp-Source: ABdhPJzGvQvyQZE7dX5RO3K9tktCugN52yaK4b68hwIqb2DyJmUOu4SVpRBxm3I5s1tE3VfsUB2Hig==
-X-Received: by 2002:a05:620a:38e:: with SMTP id q14mr2251979qkm.239.1613132068379;
-        Fri, 12 Feb 2021 04:14:28 -0800 (PST)
+        bh=ZF5NYOTPzb69Gy7SXzsmlFc2ufq8pLJB8ZkxKUF4FAI=;
+        b=IOWdsG+NvdgjRPVX+D0BwBtqyT4/RRMjYEHIUCqF0etMfghxvnLBVgrf7GheOYua0+
+         A5UPoDTdbfMciw5XQbQVUsJcsezJmBEkeRLzrKPPJLw+U8sDEhMUnTr1SJWsJuvL6+cF
+         A86ApZFyKrpTgh/DRVkQhUWgHF95Nn9/b1AUYLOpZW4rWQmNHmkqYkZC4vV6vAMdld2D
+         U+4PpaKljQTvFWWghHQ+NB1spcCE+qgjg+vjn9Kovq58AtBEqu8PCMqE/gsZjnU1pE1y
+         tb9Q3cgt7hJ8Oq+oKpPYhPNSPdzHD48wTIJfHBop9ZTZZa2AFtEbtQsPbWOgp/aZCuSq
+         BIag==
+X-Gm-Message-State: AOAM530qiHbldIt0VpuIerDrkZdk/UC8XboU9S0jah9PQ12mfCUS4577
+        RNvfVA+z/N3LqF9SXYL9ltg=
+X-Google-Smtp-Source: ABdhPJxXtUVkYuMwGjYX4LL7Bmxk+a7OIIF7oZBwaewzQOS89EHeFy3G5Es/jtwqWQBlAOihBPa9aQ==
+X-Received: by 2002:a0c:fcc4:: with SMTP id i4mr2247752qvq.57.1613132074308;
+        Fri, 12 Feb 2021 04:14:34 -0800 (PST)
 Received: from localhost.localdomain ([193.27.12.132])
-        by smtp.gmail.com with ESMTPSA id y135sm6278534qkb.14.2021.02.12.04.14.22
+        by smtp.gmail.com with ESMTPSA id y135sm6278534qkb.14.2021.02.12.04.14.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Feb 2021 04:14:28 -0800 (PST)
+        Fri, 12 Feb 2021 04:14:33 -0800 (PST)
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     jic23@kernel.org
 Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
@@ -58,9 +58,9 @@ Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
         fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
         alexandre.torgue@st.com, o.rempel@pengutronix.de,
         William Breathitt Gray <vilhelm.gray@gmail.com>
-Subject: [PATCH v8 05/22] counter: 104-quad-8: Add const qualifiers for quad8_preset_register_set
-Date:   Fri, 12 Feb 2021 21:13:29 +0900
-Message-Id: <92f7ef2bc516c1f9d54b3904bf78b908497a1978.1613131238.git.vilhelm.gray@gmail.com>
+Subject: [PATCH v8 06/22] counter: 104-quad-8: Add const qualifier for functions_list array
+Date:   Fri, 12 Feb 2021 21:13:30 +0900
+Message-Id: <74ca1dd85fde4356fe403a524b502282abf4467b.1613131238.git.vilhelm.gray@gmail.com>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <cover.1613131238.git.vilhelm.gray@gmail.com>
 References: <cover.1613131238.git.vilhelm.gray@gmail.com>
@@ -70,30 +70,29 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add some safety by qualifying the quad8_preset_register_set() function
-parameters as const.
+The struct counter_count functions_list member expects a const enum
+counter_count_function array. This patch adds the const qualifier to the
+quad8_functions_list to match functions_list.
 
 Cc: Syed Nayyar Waris <syednwaris@gmail.com>
 Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 ---
- drivers/counter/104-quad-8.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/counter/104-quad-8.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
-index 37551d3016de..70383b792ec6 100644
+index 70383b792ec6..af4e0503b074 100644
 --- a/drivers/counter/104-quad-8.c
 +++ b/drivers/counter/104-quad-8.c
-@@ -632,8 +632,8 @@ static ssize_t quad8_count_preset_read(struct counter_device *counter,
- 	return sprintf(buf, "%u\n", priv->preset[count->id]);
- }
+@@ -193,7 +193,7 @@ enum quad8_count_function {
+ 	QUAD8_COUNT_FUNCTION_QUADRATURE_X4
+ };
  
--static void quad8_preset_register_set(struct quad8 *priv, int id,
--				      unsigned int preset)
-+static void quad8_preset_register_set(struct quad8 *const priv, const int id,
-+				      const unsigned int preset)
- {
- 	const unsigned int base_offset = priv->base + 2 * id;
- 	int i;
+-static enum counter_count_function quad8_count_functions_list[] = {
++static const enum counter_count_function quad8_functions_list[] = {
+ 	[QUAD8_COUNT_FUNCTION_PULSE_DIRECTION] = COUNTER_COUNT_FUNCTION_PULSE_DIRECTION,
+ 	[QUAD8_COUNT_FUNCTION_QUADRATURE_X1] = COUNTER_COUNT_FUNCTION_QUADRATURE_X1_A,
+ 	[QUAD8_COUNT_FUNCTION_QUADRATURE_X2] = COUNTER_COUNT_FUNCTION_QUADRATURE_X2_A,
 -- 
 2.30.0
 

@@ -2,131 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BA4C31BAEB
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Feb 2021 15:23:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CF3631BB15
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Feb 2021 15:33:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229802AbhBOOXB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 15 Feb 2021 09:23:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52238 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229895AbhBOOXA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 Feb 2021 09:23:00 -0500
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7A7FC061574
-        for <linux-iio@vger.kernel.org>; Mon, 15 Feb 2021 06:22:19 -0800 (PST)
-Received: by mail-wr1-x42d.google.com with SMTP id g6so9078656wrs.11
-        for <linux-iio@vger.kernel.org>; Mon, 15 Feb 2021 06:22:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=cNvVdIdxlGj+Sfuamem72Qeix0oXAhgklbIFT61Vzrw=;
-        b=bmcYji8KmCDbksc8hp2MPVH5eDhkXRgtiRRfCRq6DoX2SEzAHyOlzQ8MimKicYZ9xC
-         7T87ysTFuAlWQw/+jY0Gid3ydZ+2hT460y3G8h1X2uC2a78MZckm5G4Noz+gW+rkep05
-         lVKA9dNP2HfcTsfjRTtZvbrLf5wmJAOZE4k+2Dh5baeQhavOwAiNWxaC6o6QaM9+8zP/
-         54JW0GJMfUMwO2nQg8Py25NO45SApbJ8njSeJ1SDZgXnhEmwi6VtSn2qwARAwFplSZgV
-         KZrsU//AhVGco7TlybPeYe9+BZSj0rvHalZIUlQ4kyX3keUE81D19FNWvFN39+PVh+bZ
-         YcFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=cNvVdIdxlGj+Sfuamem72Qeix0oXAhgklbIFT61Vzrw=;
-        b=kVvEmOF7cu+4BOnK/zSDLO8YsXAAe1qaKGrVP50+rzXiEnUEenx2nJWJlPnq826o1D
-         f43Q3ZHMyS6E2b8Lrm3aSlw2IbBKonSfZmyxlLtqziaFA98c5lHGAOVeVub6wL0ggc5l
-         h75S930SIliuKau/ejtObmFcvofZpoDf1JdHbFzCWa+v9mCvEtGF3gccu1tU8P4zTNa4
-         PqPu1JZfk3caMETwFt6kGftQvheUTAhL2EARwrwCZYo1wmFcEWUspaIPNRS0HjPE1ajk
-         tJFT09sU0EgEpRq9Or855P/PMWj4mILf6t7Cxn4KVegVujJHx+qVMJ2Rp3w2M/RVsc8o
-         9Lbg==
-X-Gm-Message-State: AOAM5323789lHWIfsF1TeOLeFA04Xma9rYidA/cimrC87gZ20foej0nL
-        laOIbpvr5amaRHZ1jiocZbCERA==
-X-Google-Smtp-Source: ABdhPJyvLoPzpqgceTkmdirn2jBoo7kyNUoI9xyniMGSW3yxHYUlh/mGG05y681DGTzNHzaIx7MD9w==
-X-Received: by 2002:adf:fc4c:: with SMTP id e12mr19808318wrs.106.1613398938553;
-        Mon, 15 Feb 2021 06:22:18 -0800 (PST)
-Received: from dell ([91.110.221.146])
-        by smtp.gmail.com with ESMTPSA id f14sm17218090wmg.28.2021.02.15.06.22.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Feb 2021 06:22:18 -0800 (PST)
-Date:   Mon, 15 Feb 2021 14:22:16 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Emil Velikov <emil.l.velikov@gmail.com>
-Cc:     Krzysztof Kozlowski <krzk@kernel.org>, linux-pwm@vger.kernel.org,
-        linux-fbdev <linux-fbdev@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Linux PM <linux-pm@vger.kernel.org>, linux-iio@vger.kernel.org,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        "Linux-Kernel@Vger. Kernel. Org" <linux-kernel@vger.kernel.org>,
-        ML dri-devel <dri-devel@lists.freedesktop.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Dan Murphy <dmurphy@ti.com>, Pavel Machek <pavel@ucw.cz>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        linux-leds@vger.kernel.org
-Subject: Re: [PATCH v4] MAINTAINERS: move Milo Kim to credits
-Message-ID: <20210215142216.GA4770@dell>
-References: <20210212163229.68270-1-krzk@kernel.org>
- <20210215085241.GG179940@dell>
- <CACvgo53wn84G8wuyF++=bwtjnVzVB31BA2_JBWnihnwinSFD7A@mail.gmail.com>
+        id S229866AbhBOObQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 15 Feb 2021 09:31:16 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:34148 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229779AbhBOObO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 Feb 2021 09:31:14 -0500
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 11FEU6H4025770;
+        Mon, 15 Feb 2021 09:30:21 -0500
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 36p9gaw29u-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 15 Feb 2021 09:30:21 -0500
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 11FEUJYG011821
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Mon, 15 Feb 2021 09:30:19 -0500
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Mon, 15 Feb 2021 09:30:19 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.721.2;
+ Mon, 15 Feb 2021 09:30:18 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Mon, 15 Feb 2021 09:30:18 -0500
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 11FEUGbh027532;
+        Mon, 15 Feb 2021 09:30:17 -0500
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
+CC:     <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+        <jic23@kernel.org>, <nuno.sa@analog.com>,
+        <dragos.bogdan@analog.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH v3 0/5] iio: core: Add mmap interface infrastructure
+Date:   Mon, 15 Feb 2021 16:32:29 +0200
+Message-ID: <20210215143234.3248-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACvgo53wn84G8wuyF++=bwtjnVzVB31BA2_JBWnihnwinSFD7A@mail.gmail.com>
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
+ definitions=2021-02-15_08:2021-02-12,2021-02-15 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ bulkscore=0 malwarescore=0 mlxlogscore=999 phishscore=0 clxscore=1015
+ mlxscore=0 priorityscore=1501 impostorscore=0 adultscore=0 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2102150117
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 15 Feb 2021, Emil Velikov wrote:
+Changelog v2 -> v3:
+* https://lore.kernel.org/linux-iio/20210212101143.18993-1-alexandru.ardelean@analog.com/T/#u
+* added 'Documentation: iio: add doc for high-speed buffer API'
+* add 'iio: buffer-dma: split iio_dma_buffer_fileio_free() function'
+* patch 'iio: buffer-dma: Add mmap support'
+   - unwind free on error path in iio_dma_buffer_alloc_blocks()
+   - removed double mm.h include
+* patch 'tools: iio: add example for high-speed buffer support'
+   - call IIO_BUFFER_BLOCK_FREE_IOCTL on the error path of the
+     enable_high_speed() function
 
-> Greetings everyone,
-> 
-> On Mon, 15 Feb 2021 at 08:52, Lee Jones <lee.jones@linaro.org> wrote:
-> >
-> > On Fri, 12 Feb 2021, Krzysztof Kozlowski wrote:
-> >
-> > > Milo Kim's email in TI bounces with permanent error (550: Invalid
-> > > recipient).  Last email from him on LKML was in 2017.  Move Milo Kim to
-> > > credits and remove the separate driver entries for:
-> > >  - TI LP855x backlight driver,
-> > >  - TI LP8727 charger driver,
-> > >  - TI LP8788 MFD (ADC, LEDs, charger and regulator) drivers.
-> > >
-> > > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> > > Cc: Mark Brown <broonie@kernel.org>
-> > > Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > Cc: Jingoo Han <jingoohan1@gmail.com>
-> > > Cc: Lee Jones <lee.jones@linaro.org>
-> > > Cc: Pavel Machek <pavel@ucw.cz>
-> > > Cc: Thierry Reding <thierry.reding@gmail.com>
-> > > Cc: Sebastian Reichel <sre@kernel.org>
-> > > Cc: Daniel Thompson <daniel.thompson@linaro.org>
-> > >
-> > > ---
-> > >
-> > > Dear Lee,
-> > >
-> > > Could you take care about this patch?
-> >
-> > Yes, but I'll be sending out my pull-request for v5.12 in the next
-> > couple of days (maybe even today if I can find some time), so this
-> > will have to wait until v5.13.
-> >
-> Would it make sense to keep the MAINTAINERS entries as "orphan"?
-> Checking with linux-next, the drivers are still present in-tree.
+Changelog v1 -> v2:
+* https://lore.kernel.org/linux-iio/20210211123353.78963-1-alexandru.ardelean@analog.com/T/#t
+* removed IIO_BUFFER_BLOCK_FLAG_CYCLIC flag; will be added in a later
+  patch
+* removed extra line in tools/iio/iio_generic_buffer.c
+* patch 'iio: core: Add mmap interface infrastructure'
+  added docstrings for new hooks (alloc_blocks, mmap, etc)
 
-Please see:
+This is basically Lars' work adapted from branch:
+  https://github.com/larsclausen/linux/commits/iio-high-speed-5.10
+[hopefully i got the stuff correctly from that branch]
 
- https://lore.kernel.org/patchwork/patch/1379016/
+What is different, is that this one is adapted on top of the multibuffer
+support (currently at v5) discussed here:
+  https://lore.kernel.org/linux-iio/20210211122452.78106-1-alexandru.ardelean@analog.com/T/#t
+
+Also, adapted an example for high-speed/mmap support in
+'tools/iio/iio_generic_buffer.c'
+
+The example is adapted from libiio:
+  https://github.com/analogdevicesinc/libiio/blob/master/local.c#L51
+but will all the ioctl()s organized after the one that are reserved
+(hopefully) for IIO
+
+Tested that mmap() works.
+Moved (artifically) valid buffer0 as buffer2 and the operation still
+works.
+
+Alexandru Ardelean (3):
+  Documentation: iio: add doc for high-speed buffer API
+  iio: buffer-dma: split iio_dma_buffer_fileio_free() function
+  tools: iio: add example for high-speed buffer support
+
+Lars-Peter Clausen (2):
+  iio: core: Add mmap interface infrastructure
+  iio: buffer-dma: Add mmap support
+
+ Documentation/iio/iio_high_speed_buffers.rst  | 100 ++++++
+ Documentation/iio/index.rst                   |   2 +
+ drivers/iio/buffer/industrialio-buffer-dma.c  | 324 ++++++++++++++++--
+ .../buffer/industrialio-buffer-dmaengine.c    |  22 +-
+ drivers/iio/industrialio-buffer.c             | 158 +++++++++
+ include/linux/iio/buffer-dma.h                |  27 +-
+ include/linux/iio/buffer_impl.h               |  23 ++
+ include/uapi/linux/iio/buffer.h               |  49 +++
+ tools/iio/iio_generic_buffer.c                | 184 +++++++++-
+ 9 files changed, 841 insertions(+), 48 deletions(-)
+ create mode 100644 Documentation/iio/iio_high_speed_buffers.rst
 
 -- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.17.1
+

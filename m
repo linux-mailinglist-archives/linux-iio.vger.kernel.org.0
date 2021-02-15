@@ -2,272 +2,451 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3039B31B9DE
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Feb 2021 13:56:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15F1731BA99
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Feb 2021 14:54:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230026AbhBOM4m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 15 Feb 2021 07:56:42 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:36752 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229983AbhBOM4l (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 Feb 2021 07:56:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1613393714;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=1mcHEPH3AvdjpgLnD0goAWb1FfD97zjyzyWdwBbwavY=;
-        b=QIt3i/ORVSqMdpJCPKJnIFmA+H/XPWsjG7UFRVn1y3pfpcpIi2KXTC6CgiAJnWsvRYfh5h
-        yU/LxntlzIQbgvvDAUnWrrXT4HgeZL3bJ6HR5AkisLcqN2/Olgkim1ygm8P9BNT0A1nFXc
-        IXGscbpdXl4FMtQi9XpINjnzqKE/BLw=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-114-g9W08o5nNeqNMi-_3dNLtw-1; Mon, 15 Feb 2021 07:55:12 -0500
-X-MC-Unique: g9W08o5nNeqNMi-_3dNLtw-1
-Received: by mail-ed1-f71.google.com with SMTP id i4so4887440edt.11
-        for <linux-iio@vger.kernel.org>; Mon, 15 Feb 2021 04:55:12 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=1mcHEPH3AvdjpgLnD0goAWb1FfD97zjyzyWdwBbwavY=;
-        b=q8ZHDtnxgv7K+TcpGO/heKKq6R/YwntIEFkaOPQ25DSwF95abdO730UPzmQL44ly5s
-         ZQZcHEspfA0c9fJkF88iSkRzZNqBCnJ6AkbLKIwKiw4ifre4NUXZXQ14ZewNZ0nZEcgR
-         Q/HOcGmQ1R43zXHMmqIluRPP0jpqEHdtPacwrsqq2lXVYnVHFiiehWKxbgbet3bM2d4k
-         p8kWfEFGRBPD5DlPkhT6sja7bpufinjbH/fDskWqSdSNrGhACd+MjzDArXbqqLrIYEQ/
-         GRA2P4RpwQQxUrSHzgB5mTT+GiHdkWnnbwynoIEpyA3reVsWoHI1ZoWYOdppPF23Htmg
-         RMLg==
-X-Gm-Message-State: AOAM531vOVCTkt2NKU0o+VaQVz5rwdjac3knovw50HOHNWO3/8yE8EYB
-        5Q8I+qE8Cw+mnShVeZgV191gdwCrrBe8VSw01Zw3CFqvkS6Y126uhBS81PHQD+cbuQTCmUKN4gm
-        vFUQQ72/yD1Whtat8Y5S4
-X-Received: by 2002:a17:906:b252:: with SMTP id ce18mr1661531ejb.336.1613393711367;
-        Mon, 15 Feb 2021 04:55:11 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJw/IOhcaJU/fqv8fa/XNTLvoj3n6VgZFXHTu6d4WyyqvczH3U/yF8MECP8qTaxL9FSc6R1BIA==
-X-Received: by 2002:a17:906:b252:: with SMTP id ce18mr1661508ejb.336.1613393711159;
-        Mon, 15 Feb 2021 04:55:11 -0800 (PST)
-Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id u9sm10325160ejc.57.2021.02.15.04.55.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Feb 2021 04:55:10 -0800 (PST)
-Subject: Re: [PATCH 1/2] iio: documentation: Document proximity sensor label
- use
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-input@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Mark Pearson <mpearson@lenovo.com>,
-        Bastien Nocera <hadess@hadess.net>
-References: <20210207123720.8357-1-hdegoede@redhat.com>
- <20210212184617.5bad8172@archlinux>
- <10c7f469-9bb4-3e1d-88f8-6b25071a5ea9@redhat.com>
- <20210215123921.73428bea@archlinux>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <d4970d36-a132-571f-6666-4cd4307c6073@redhat.com>
-Date:   Mon, 15 Feb 2021 13:55:09 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+        id S229968AbhBONxu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 15 Feb 2021 08:53:50 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49248 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230397AbhBONxH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 15 Feb 2021 08:53:07 -0500
+Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 22B32600CF;
+        Mon, 15 Feb 2021 13:52:22 +0000 (UTC)
+Date:   Mon, 15 Feb 2021 13:52:19 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+        <nuno.sa@analog.com>, <dragos.bogdan@analog.com>
+Subject: Re: [PATCH v6 24/24] tools: iio: convert iio_generic_buffer to use
+ new IIO buffer API
+Message-ID: <20210215135219.2cfeb840@archlinux>
+In-Reply-To: <20210215104043.91251-25-alexandru.ardelean@analog.com>
+References: <20210215104043.91251-1-alexandru.ardelean@analog.com>
+        <20210215104043.91251-25-alexandru.ardelean@analog.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20210215123921.73428bea@archlinux>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+On Mon, 15 Feb 2021 12:40:43 +0200
+Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
-On 2/15/21 1:39 PM, Jonathan Cameron wrote:
-> On Fri, 12 Feb 2021 19:58:47 +0100
-> Hans de Goede <hdegoede@redhat.com> wrote:
+> This change makes use of the new IIO buffer API to read data from an IIO
+> buffer.
+> It doesn't read the /sys/bus/iio/devices/iio:deviceX/scan_elements dir
+> anymore, it reads /sys/bus/iio/devices/iio:deviceX/bufferY, where all the
+> scan_elements have been merged together with the old/classical buffer
+> attributes.
 > 
->> Hi,
->>
->> On 2/12/21 7:46 PM, Jonathan Cameron wrote:
->>> On Sun,  7 Feb 2021 13:37:19 +0100
->>> Hans de Goede <hdegoede@redhat.com> wrote:
->>>   
->>>> Add an entry to Documentation/ABI/testing/sysfs-bus-iio for
->>>> the new device and channel label sysfs-attribute support.
->>>>
->>>> And document the standardized labels which may be used with proximity
->>>> sensors to hint userspace about the intended use of the sensor.
->>>>
->>>> Using labels to differentiate between the multiple proximity sensors
->>>> which a modern laptop/tablet may have was discussed in this thread:
->>>> https://lore.kernel.org/linux-iio/9f9b0ff6-3bf1-63c4-eb36-901cecd7c4d9@redhat.com/
->>>>
->>>> As mentioned the "proximity-wifi*" labels are already being used in
->>>> this manner on some chromebooks, see e.g.:
->>>> arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi
->>>> arch/arm64/boot/dts/qcom/sc7180-trogdor-lte-sku.dtsi
->>>>
->>>> And the "proximity-palmrest" and "proximity-lap" labels are intended
->>>> to be used with the lap and palmrest sensors found in recent Lenovo
->>>> ThinkPad models.
->>>>
->>>> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
->>>> Cc: Mark Pearson <mpearson@lenovo.com>
->>>> Cc: Bastien Nocera <hadess@hadess.net>
->>>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->>>> ---
->>>>  Documentation/ABI/testing/sysfs-bus-iio | 41 +++++++++++++++++++++++++
->>>>  1 file changed, 41 insertions(+)
->>>>
->>>> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
->>>> index 35289d47d6cb..f2f090f8bd2f 100644
->>>> --- a/Documentation/ABI/testing/sysfs-bus-iio
->>>> +++ b/Documentation/ABI/testing/sysfs-bus-iio
->>>> @@ -33,6 +33,47 @@ Description:
->>>>  		Description of the physical chip / device for device X.
->>>>  		Typically a part number.
->>>>  
->>>> +What:		/sys/bus/iio/devices/iio:deviceX/label
->>>> +What:		/sys/bus/iio/devices/iio:deviceX/in_*_label
->>>> +What:		/sys/bus/iio/devices/iio:deviceX/out_*_label  
->>>
->>> I was a bit in two minds about this from an organizational point of view.
->>> 1) Whether to separate the general label where position tends to make sense
->>>    from the channel labels.  May be something we want to do in future but we can probably
->>>    let that go for now.
->>> 2) Whether to allow such broad wild cards for the channels.
->>>    Whilst in theory any channel can have a label we normally only document ABI
->>>    that actually exists (mostly to know what we might break if we change anything :)
->>>    Still I can't see any way we can change this without breakage so in this
->>>    one case let's let the broad wild card go in.
->>>
->>> This comes unstuck on the fact it overlaps with existing more specific Docs.
->>>
->>> So can you pull the channel part out of here for v2.
->>> /sys/bus/iio/devices/iio:deviceX/in_voltageY_label
->>> /sys/bus/iio/devices/iio:deviceX/in_anglY_label  
->>
->> The problem is that these labels may either be used on a whole device,
->> which is certainly the case with the accelerometers in patch 2/2 where
->> the x y and z channels obviously all are either "accel-base" or
->> "accel-display".
->>
->> Where as for proximity sensors the labels could be either applied at the
->> device level, or at a channel level.
->>
->> The existing chromebook proximity usage is applying a label for this
->> at the device level.
->>
->> This does mean that atm all users of this are using device-level labels;
+> And it makes use of the new IIO_BUFFER_GET_FD_IOCTL ioctl to get an FD for
+> the IIO buffer for which to read data from.
+> It also does a quick sanity check to see that -EBUSY is returned if reading
+> the chardev after the ioctl() has succeeded.
 > 
-> Not at all, but some (possibly all?) are separately documented in two
-> existing entries. The generic version you propose overlaps with them
-> and that is what I'd like to avoid.
+> This was tested with the following cases:
+>  1. Tested buffer0 works with ioctl()
+>  2. Tested that buffer0 can't be opened via /dev/iio:deviceX after ioctl()
+>     This check should be omitted under normal operation; it's being done
+>     here to check that the driver change is sane
+>  3. Moved valid buffer0 to be buffer1, and tested that data comes from it
 > 
-> We could group these into the same 'catch all' element, but I suspect
-> the text will just grow too large over time, so I'd like to keep them
-> as broken up as possible.
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+
+Whole series applied to the togreg branch of iio.git and pushed out as testing
+to see what we missed in review.
+
+There is that one patch doing rework of a load of drivers early on in the
+series that may get a few more reviews.
+
+Otherwise, reviews on any of this from others still definitely welcome.
+I'm not going to push out as a non rebasing tree for at least a couple of
+weeks (given merge window is open).
+
+Thanks,
+
+Jonathan
+
+> ---
+>  tools/iio/Makefile             |   1 +
+>  tools/iio/iio_generic_buffer.c | 122 ++++++++++++++++++++++++++-------
+>  tools/iio/iio_utils.c          |  13 ++--
+>  tools/iio/iio_utils.h          |   4 +-
+>  4 files changed, 107 insertions(+), 33 deletions(-)
 > 
-> What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_label
-> What:		/sys/bus/iio/devices/iio:deviceX/out_voltageY_label
-> 
-> What:		/sys/bus/iio/devices/iio:deviceX/in_anglY_label
-> 
->> and maybe I'm reading too much in your request. I guess that for now
->> I can just drop these lines for v2 :
->>
->> What:		/sys/bus/iio/devices/iio:deviceX/in_*_label
->> What:		/sys/bus/iio/devices/iio:deviceX/out_*_label
->>
->> Is that what you have in mind ?
->>
->> Or do you want me to split this up in a proximity sensor case and an
->> accel case, and group both cases together with other proximity / accel
->> sensor attributes ?
-> 
-> Yes, that would be ideal for the cases where we have separate
-> channel labels, but if we aren't using them today, lets introduce them
-> when they are needed.
-
-Right, so atm we do not have any channel labels only device labels,
-which means there is only 1 "What:".
-
-What:		/sys/bus/iio/devices/iio:deviceX/label
-
-For which v1 (this version) of this series adds a single large
-text block which covers both proximity and accelerometers.
-
-So just to be clear, you want me to split this, resulting in 2
-entries with identical "What:" labels:
-
-What:		/sys/bus/iio/devices/iio:deviceX/label
-
-And then group the 2 text blocks together with other proximity
-sensor attributes, resp. other accelerometer attributes ?
-
-Regards,
-
-Hans
-
-
-
-
-
-
-
-> 
-> Jonathan
-> 
-> 
->>
->> Regards,
->>
->> Hans
->>
->>
->>
->>
->>> Jonathan  
->>>> +KernelVersion:	5.8
->>>> +Contact:	linux-iio@vger.kernel.org
->>>> +Description:
->>>> +		Optional symbolic label for a device or a channel.
->>>> +		This is useful for userspace to be able to better identify an
->>>> +		individual device or channel.
->>>> +
->>>> +		The contents of the label are free-form, but there are some
->>>> +		standardized uses:
->>>> +
->>>> +		For proximity sensors which give the proximity (of a person) to
->>>> +		a certain wlan or wwan antenna the following standardized labels
->>>> +		are used:
->>>> +
->>>> +		* "proximity-wifi"
->>>> +		* "proximity-lte"
->>>> +		* "proximity-wifi-lte"
->>>> +		* "proximity-wifi-left"
->>>> +		* "proximity-wifi-right"
->>>> +
->>>> +		These are used to indicate to userspace that these proximity
->>>> +		sensors may be used to tune transmit power to ensure that
->>>> +		Specific Absorption Rate (SAR) limits are honored.
->>>> +		The "-left" and "-right" labels are for devices with multiple
->>>> +		antennas.
->>>> +
->>>> +		In some laptops/tablets the standardized proximity sensor labels
->>>> +		instead	indicate proximity to a specific part of the device:
->>>> +
->>>> +		* "proximity-palmrest" indicates proximity to the keyboard's palmrest
->>>> +		* "proximity-palmrest-left" indicates proximity to the left part of the palmrest
->>>> +		* "proximity-palmrest-right" indicates proximity to the right part of the palmrest
->>>> +		* "proximity-lap" indicates the device is being used on someone's lap
->>>> +
->>>> +		Note "proximity-lap" is special in that its value may be
->>>> +		calculated by firmware from other sensor readings, rather then
->>>> +		being a raw sensor reading.
->>>> +
->>>>  What:		/sys/bus/iio/devices/iio:deviceX/current_timestamp_clock
->>>>  KernelVersion:	4.5
->>>>  Contact:	linux-iio@vger.kernel.org  
->>>   
->>
-> 
+> diff --git a/tools/iio/Makefile b/tools/iio/Makefile
+> index 3de763d9ab70..5d12ac4e7f8f 100644
+> --- a/tools/iio/Makefile
+> +++ b/tools/iio/Makefile
+> @@ -27,6 +27,7 @@ include $(srctree)/tools/build/Makefile.include
+>  #
+>  $(OUTPUT)include/linux/iio: ../../include/uapi/linux/iio
+>  	mkdir -p $(OUTPUT)include/linux/iio 2>&1 || true
+> +	ln -sf $(CURDIR)/../../include/uapi/linux/iio/buffer.h $@
+>  	ln -sf $(CURDIR)/../../include/uapi/linux/iio/events.h $@
+>  	ln -sf $(CURDIR)/../../include/uapi/linux/iio/types.h $@
+>  
+> diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
+> index 7c7240553777..2491c54a5e4f 100644
+> --- a/tools/iio/iio_generic_buffer.c
+> +++ b/tools/iio/iio_generic_buffer.c
+> @@ -30,6 +30,8 @@
+>  #include <inttypes.h>
+>  #include <stdbool.h>
+>  #include <signal.h>
+> +#include <sys/ioctl.h>
+> +#include <linux/iio/buffer.h>
+>  #include "iio_utils.h"
+>  
+>  /**
+> @@ -197,7 +199,7 @@ static void process_scan(char *data, struct iio_channel_info *channels,
+>  	printf("\n");
+>  }
+>  
+> -static int enable_disable_all_channels(char *dev_dir_name, int enable)
+> +static int enable_disable_all_channels(char *dev_dir_name, int buffer_idx, int enable)
+>  {
+>  	const struct dirent *ent;
+>  	char scanelemdir[256];
+> @@ -205,7 +207,7 @@ static int enable_disable_all_channels(char *dev_dir_name, int enable)
+>  	int ret;
+>  
+>  	snprintf(scanelemdir, sizeof(scanelemdir),
+> -		 FORMAT_SCAN_ELEMENTS_DIR, dev_dir_name);
+> +		 FORMAT_SCAN_ELEMENTS_DIR, dev_dir_name, buffer_idx);
+>  	scanelemdir[sizeof(scanelemdir)-1] = '\0';
+>  
+>  	dp = opendir(scanelemdir);
+> @@ -243,6 +245,7 @@ static void print_usage(void)
+>  		"Capture, convert and output data from IIO device buffer\n"
+>  		"  -a         Auto-activate all available channels\n"
+>  		"  -A         Force-activate ALL channels\n"
+> +		"  -b <n>     The buffer which to open (by index), default 0\n"
+>  		"  -c <n>     Do n conversions, or loop forever if n < 0\n"
+>  		"  -e         Disable wait for event (new data)\n"
+>  		"  -g         Use trigger-less mode\n"
+> @@ -259,6 +262,7 @@ static void print_usage(void)
+>  static enum autochan autochannels = AUTOCHANNELS_DISABLED;
+>  static char *dev_dir_name = NULL;
+>  static char *buf_dir_name = NULL;
+> +static int buffer_idx = 0;
+>  static bool current_trigger_set = false;
+>  
+>  static void cleanup(void)
+> @@ -286,7 +290,7 @@ static void cleanup(void)
+>  
+>  	/* Disable channels if auto-enabled */
+>  	if (dev_dir_name && autochannels == AUTOCHANNELS_ACTIVE) {
+> -		ret = enable_disable_all_channels(dev_dir_name, 0);
+> +		ret = enable_disable_all_channels(dev_dir_name, buffer_idx, 0);
+>  		if (ret)
+>  			fprintf(stderr, "Failed to disable all channels\n");
+>  		autochannels = AUTOCHANNELS_DISABLED;
+> @@ -333,7 +337,9 @@ int main(int argc, char **argv)
+>  	unsigned long long j;
+>  	unsigned long toread;
+>  	int ret, c;
+> -	int fp = -1;
+> +	struct stat st;
+> +	int fd = -1;
+> +	int buf_fd = -1;
+>  
+>  	int num_channels = 0;
+>  	char *trigger_name = NULL, *device_name = NULL;
+> @@ -352,7 +358,7 @@ int main(int argc, char **argv)
+>  
+>  	register_cleanup();
+>  
+> -	while ((c = getopt_long(argc, argv, "aAc:egl:n:N:t:T:w:?", longopts,
+> +	while ((c = getopt_long(argc, argv, "aAb:c:egl:n:N:t:T:w:?", longopts,
+>  				NULL)) != -1) {
+>  		switch (c) {
+>  		case 'a':
+> @@ -361,7 +367,20 @@ int main(int argc, char **argv)
+>  		case 'A':
+>  			autochannels = AUTOCHANNELS_ENABLED;
+>  			force_autochannels = true;
+> -			break;	
+> +			break;
+> +		case 'b':
+> +			errno = 0;
+> +			buffer_idx = strtoll(optarg, &dummy, 10);
+> +			if (errno) {
+> +				ret = -errno;
+> +				goto error;
+> +			}
+> +			if (buffer_idx < 0) {
+> +				ret = -ERANGE;
+> +				goto error;
+> +			}
+> +
+> +			break;
+>  		case 'c':
+>  			errno = 0;
+>  			num_loops = strtoll(optarg, &dummy, 10);
+> @@ -518,7 +537,7 @@ int main(int argc, char **argv)
+>  	 * Parse the files in scan_elements to identify what channels are
+>  	 * present
+>  	 */
+> -	ret = build_channel_array(dev_dir_name, &channels, &num_channels);
+> +	ret = build_channel_array(dev_dir_name, buffer_idx, &channels, &num_channels);
+>  	if (ret) {
+>  		fprintf(stderr, "Problem reading scan element information\n"
+>  			"diag %s\n", dev_dir_name);
+> @@ -535,7 +554,7 @@ int main(int argc, char **argv)
+>  	    (autochannels == AUTOCHANNELS_ENABLED && force_autochannels)) {
+>  		fprintf(stderr, "Enabling all channels\n");
+>  
+> -		ret = enable_disable_all_channels(dev_dir_name, 1);
+> +		ret = enable_disable_all_channels(dev_dir_name, buffer_idx, 1);
+>  		if (ret) {
+>  			fprintf(stderr, "Failed to enable all channels\n");
+>  			goto error;
+> @@ -544,7 +563,7 @@ int main(int argc, char **argv)
+>  		/* This flags that we need to disable the channels again */
+>  		autochannels = AUTOCHANNELS_ACTIVE;
+>  
+> -		ret = build_channel_array(dev_dir_name, &channels,
+> +		ret = build_channel_array(dev_dir_name, buffer_idx, &channels,
+>  					  &num_channels);
+>  		if (ret) {
+>  			fprintf(stderr, "Problem reading scan element "
+> @@ -565,7 +584,7 @@ int main(int argc, char **argv)
+>  		fprintf(stderr, "Enable channels manually in "
+>  			FORMAT_SCAN_ELEMENTS_DIR
+>  			"/*_en or pass -a to autoenable channels and "
+> -			"try again.\n", dev_dir_name);
+> +			"try again.\n", dev_dir_name, buffer_idx);
+>  		ret = -ENOENT;
+>  		goto error;
+>  	}
+> @@ -576,12 +595,25 @@ int main(int argc, char **argv)
+>  	 * be built rather than found.
+>  	 */
+>  	ret = asprintf(&buf_dir_name,
+> -		       "%siio:device%d/buffer", iio_dir, dev_num);
+> +		       "%siio:device%d/buffer%d", iio_dir, dev_num, buffer_idx);
+>  	if (ret < 0) {
+>  		ret = -ENOMEM;
+>  		goto error;
+>  	}
+>  
+> +	if (stat(buf_dir_name, &st)) {
+> +		fprintf(stderr, "Could not stat() '%s', got error %d: %s\n",
+> +			buf_dir_name, errno, strerror(errno));
+> +		ret = -errno;
+> +		goto error;
+> +	}
+> +
+> +	if (!S_ISDIR(st.st_mode)) {
+> +		fprintf(stderr, "File '%s' is not a directory\n", buf_dir_name);
+> +		ret = -EFAULT;
+> +		goto error;
+> +	}
+> +
+>  	if (!notrigger) {
+>  		printf("%s %s\n", dev_dir_name, trigger_name);
+>  		/*
+> @@ -598,6 +630,35 @@ int main(int argc, char **argv)
+>  		}
+>  	}
+>  
+> +	ret = asprintf(&buffer_access, "/dev/iio:device%d", dev_num);
+> +	if (ret < 0) {
+> +		ret = -ENOMEM;
+> +		goto error;
+> +	}
+> +
+> +	/* Attempt to open non blocking the access dev */
+> +	fd = open(buffer_access, O_RDONLY | O_NONBLOCK);
+> +	if (fd == -1) { /* TODO: If it isn't there make the node */
+> +		ret = -errno;
+> +		fprintf(stderr, "Failed to open %s\n", buffer_access);
+> +		goto error;
+> +	}
+> +
+> +	/* specify for which buffer index we want an FD */
+> +	buf_fd = buffer_idx;
+> +
+> +	ret = ioctl(fd, IIO_BUFFER_GET_FD_IOCTL, &buf_fd);
+> +	if (ret == -1 || buf_fd == -1) {
+> +		ret = -errno;
+> +		if (ret == -ENODEV || ret == -EINVAL)
+> +			fprintf(stderr,
+> +				"Device does not have this many buffers\n");
+> +		else
+> +			fprintf(stderr, "Failed to retrieve buffer fd\n");
+> +
+> +		goto error;
+> +	}
+> +
+>  	/* Setup ring buffer parameters */
+>  	ret = write_sysfs_int("length", buf_dir_name, buf_len);
+>  	if (ret < 0)
+> @@ -607,7 +668,8 @@ int main(int argc, char **argv)
+>  	ret = write_sysfs_int("enable", buf_dir_name, 1);
+>  	if (ret < 0) {
+>  		fprintf(stderr,
+> -			"Failed to enable buffer: %s\n", strerror(-ret));
+> +			"Failed to enable buffer '%s': %s\n",
+> +			buf_dir_name, strerror(-ret));
+>  		goto error;
+>  	}
+>  
+> @@ -618,24 +680,30 @@ int main(int argc, char **argv)
+>  		goto error;
+>  	}
+>  
+> -	ret = asprintf(&buffer_access, "/dev/iio:device%d", dev_num);
+> -	if (ret < 0) {
+> -		ret = -ENOMEM;
+> -		goto error;
+> +	/**
+> +	 * This check is being done here for sanity reasons, however it
+> +	 * should be omitted under normal operation.
+> +	 * If this is buffer0, we check that we get EBUSY after this point.
+> +	 */
+> +	if (buffer_idx == 0) {
+> +		errno = 0;
+> +		read_size = read(fd, data, 1);
+> +		if (read_size > -1 || errno != EBUSY) {
+> +			ret = -EFAULT;
+> +			perror("Reading from '%s' should not be possible after ioctl()");
+> +			goto error;
+> +		}
+>  	}
+>  
+> -	/* Attempt to open non blocking the access dev */
+> -	fp = open(buffer_access, O_RDONLY | O_NONBLOCK);
+> -	if (fp == -1) { /* TODO: If it isn't there make the node */
+> -		ret = -errno;
+> -		fprintf(stderr, "Failed to open %s\n", buffer_access);
+> -		goto error;
+> -	}
+> +	/* close now the main chardev FD and let the buffer FD work */
+> +	if (close(fd) == -1)
+> +		perror("Failed to close character device file");
+> +	fd = -1;
+>  
+>  	for (j = 0; j < num_loops || num_loops < 0; j++) {
+>  		if (!noevents) {
+>  			struct pollfd pfd = {
+> -				.fd = fp,
+> +				.fd = buf_fd,
+>  				.events = POLLIN,
+>  			};
+>  
+> @@ -653,7 +721,7 @@ int main(int argc, char **argv)
+>  			toread = 64;
+>  		}
+>  
+> -		read_size = read(fp, data, toread * scan_size);
+> +		read_size = read(buf_fd, data, toread * scan_size);
+>  		if (read_size < 0) {
+>  			if (errno == EAGAIN) {
+>  				fprintf(stderr, "nothing available\n");
+> @@ -670,7 +738,9 @@ int main(int argc, char **argv)
+>  error:
+>  	cleanup();
+>  
+> -	if (fp >= 0 && close(fp) == -1)
+> +	if (fd >= 0 && close(fd) == -1)
+> +		perror("Failed to close character device");
+> +	if (buf_fd >= 0 && close(buf_fd) == -1)
+>  		perror("Failed to close buffer");
+>  	free(buffer_access);
+>  	free(data);
+> diff --git a/tools/iio/iio_utils.c b/tools/iio/iio_utils.c
+> index a96002f2c2d5..aadee6d34c74 100644
+> --- a/tools/iio/iio_utils.c
+> +++ b/tools/iio/iio_utils.c
+> @@ -77,6 +77,7 @@ int iioutils_break_up_name(const char *full_name, char **generic_name)
+>   * @mask: output a bit mask for the raw data
+>   * @be: output if data in big endian
+>   * @device_dir: the IIO device directory
+> + * @buffer_idx: the IIO buffer index
+>   * @name: the channel name
+>   * @generic_name: the channel type name
+>   *
+> @@ -85,8 +86,8 @@ int iioutils_break_up_name(const char *full_name, char **generic_name)
+>  static int iioutils_get_type(unsigned int *is_signed, unsigned int *bytes,
+>  			     unsigned int *bits_used, unsigned int *shift,
+>  			     uint64_t *mask, unsigned int *be,
+> -			     const char *device_dir, const char *name,
+> -			     const char *generic_name)
+> +			     const char *device_dir, int buffer_idx,
+> +			     const char *name, const char *generic_name)
+>  {
+>  	FILE *sysfsfp;
+>  	int ret;
+> @@ -96,7 +97,7 @@ static int iioutils_get_type(unsigned int *is_signed, unsigned int *bytes,
+>  	unsigned padint;
+>  	const struct dirent *ent;
+>  
+> -	ret = asprintf(&scan_el_dir, FORMAT_SCAN_ELEMENTS_DIR, device_dir);
+> +	ret = asprintf(&scan_el_dir, FORMAT_SCAN_ELEMENTS_DIR, device_dir, buffer_idx);
+>  	if (ret < 0)
+>  		return -ENOMEM;
+>  
+> @@ -304,12 +305,13 @@ void bsort_channel_array_by_index(struct iio_channel_info *ci_array, int cnt)
+>  /**
+>   * build_channel_array() - function to figure out what channels are present
+>   * @device_dir: the IIO device directory in sysfs
+> + * @buffer_idx: the IIO buffer for this channel array
+>   * @ci_array: output the resulting array of iio_channel_info
+>   * @counter: output the amount of array elements
+>   *
+>   * Returns 0 on success, otherwise a negative error code.
+>   **/
+> -int build_channel_array(const char *device_dir,
+> +int build_channel_array(const char *device_dir, int buffer_idx,
+>  			struct iio_channel_info **ci_array, int *counter)
+>  {
+>  	DIR *dp;
+> @@ -322,7 +324,7 @@ int build_channel_array(const char *device_dir,
+>  	char *filename;
+>  
+>  	*counter = 0;
+> -	ret = asprintf(&scan_el_dir, FORMAT_SCAN_ELEMENTS_DIR, device_dir);
+> +	ret = asprintf(&scan_el_dir, FORMAT_SCAN_ELEMENTS_DIR, device_dir, buffer_idx);
+>  	if (ret < 0)
+>  		return -ENOMEM;
+>  
+> @@ -503,6 +505,7 @@ int build_channel_array(const char *device_dir,
+>  						&current->mask,
+>  						&current->be,
+>  						device_dir,
+> +						buffer_idx,
+>  						current->name,
+>  						current->generic_name);
+>  			if (ret < 0)
+> diff --git a/tools/iio/iio_utils.h b/tools/iio/iio_utils.h
+> index a5d0aa8a57d3..336752cade4f 100644
+> --- a/tools/iio/iio_utils.h
+> +++ b/tools/iio/iio_utils.h
+> @@ -12,7 +12,7 @@
+>  /* Made up value to limit allocation sizes */
+>  #define IIO_MAX_NAME_LENGTH 64
+>  
+> -#define FORMAT_SCAN_ELEMENTS_DIR "%s/scan_elements"
+> +#define FORMAT_SCAN_ELEMENTS_DIR "%s/buffer%d"
+>  #define FORMAT_TYPE_FILE "%s_type"
+>  
+>  #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
+> @@ -61,7 +61,7 @@ int iioutils_get_param_float(float *output, const char *param_name,
+>  			     const char *device_dir, const char *name,
+>  			     const char *generic_name);
+>  void bsort_channel_array_by_index(struct iio_channel_info *ci_array, int cnt);
+> -int build_channel_array(const char *device_dir,
+> +int build_channel_array(const char *device_dir, int buffer_idx,
+>  			struct iio_channel_info **ci_array, int *counter);
+>  int find_type_by_name(const char *name, const char *type);
+>  int write_sysfs_int(const char *filename, const char *basedir, int val);
 

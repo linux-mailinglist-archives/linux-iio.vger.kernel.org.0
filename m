@@ -2,114 +2,160 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D4CD931B605
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Feb 2021 09:53:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E118D31B621
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Feb 2021 10:04:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230013AbhBOIxa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 15 Feb 2021 03:53:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38186 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229597AbhBOIxZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 Feb 2021 03:53:25 -0500
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C9AFC061574
-        for <linux-iio@vger.kernel.org>; Mon, 15 Feb 2021 00:52:44 -0800 (PST)
-Received: by mail-wm1-x32c.google.com with SMTP id h7so329151wmq.0
-        for <linux-iio@vger.kernel.org>; Mon, 15 Feb 2021 00:52:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=uKS+Djquue+LfyedBxvXt9cVVOP7cKVsEq1hWOM8/vw=;
-        b=jYg060gKSWt358ST2fmYuHV8DpNAJXRWYerutXv0eEjyiL0Ka3jDeQN/sNUhvqs48Q
-         SQEoWnwFYESI3wDaZz0v6kdy0uPVCiVl82s3GL9DzLanLKcsVP73Wh/8F2ElY3WoViot
-         4aeCUbwU0W+2oVJvubEalXgmO/cHQClK1LMvwWj3no/Qi3NsH7bpbENxklgVWyURjdP+
-         Ro2Ev5GbeRvvTi6B1Hadu80eZtbsfJROWzReZCUPa+Qd84TzKgbdK1n5DqxWC2/TUMYt
-         2SHUgMcJKUSSq941TgCzCLepCZ7eP9UGBKuW8rJrYDh0c1kbNyPn/CYmofg6R70jAPEY
-         BKpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=uKS+Djquue+LfyedBxvXt9cVVOP7cKVsEq1hWOM8/vw=;
-        b=EO1BfwQ0aK50WM/2BEMbD1hH4uWI6ck+Df7GPwESpum0GHFg7n8tAxoqeg2Vv4rFfh
-         xJVtb5yMpyKBzU4fZuavYCXBdySKMybbW3AGtcGzN3hZeEehRRlxwjRYcmI0hY9CX7BT
-         mWrJti/EMvsFN8AIQhxumOfKnWo1LmhYbySxzxZArlBNl3k1/uK08dkO3rkbyG/Uisf3
-         cG/Mi6ql6lzqvCUOcBo9wNqD0JFlFzLlNyrgWYwCcqC11JyFNRktZYcICWWsIqmYlKsL
-         ZbA+gDDIp8+biAi3GUqajJCkxksTMOIyDmdq3Iosf7uX9G2zS5Xm0kxdz5JSpMzgdVZv
-         e3FQ==
-X-Gm-Message-State: AOAM530fG4PDhg4M9yIXhdI4xFE7kESE5TdpCChHklPWSAb1SD4dWZiC
-        8wKrdynfYhzjSIGPdgywHfXL5A==
-X-Google-Smtp-Source: ABdhPJyBhnjYaHKKbEfnlUU0rpoWpGgWVScJOAenfp2X7EhRm7SH+e1L0eehd3cBdyFbEZGBA2K05w==
-X-Received: by 2002:a05:600c:1991:: with SMTP id t17mr8399158wmq.118.1613379163409;
-        Mon, 15 Feb 2021 00:52:43 -0800 (PST)
-Received: from dell ([91.110.221.146])
-        by smtp.gmail.com with ESMTPSA id a84sm24586107wme.12.2021.02.15.00.52.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Feb 2021 00:52:43 -0800 (PST)
-Date:   Mon, 15 Feb 2021 08:52:41 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-leds@vger.kernel.org, linux-iio@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-pwm@vger.kernel.org, Sebastian Reichel <sre@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Dan Murphy <dmurphy@ti.com>,
+        id S229693AbhBOJEm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 15 Feb 2021 04:04:42 -0500
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:33496 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229976AbhBOJCe (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 Feb 2021 04:02:34 -0500
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20210215090150euoutp029f37c75ab0061a18cf51aef955869698~j4Ex8Ad8a0733007330euoutp02B
+        for <linux-iio@vger.kernel.org>; Mon, 15 Feb 2021 09:01:50 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20210215090150euoutp029f37c75ab0061a18cf51aef955869698~j4Ex8Ad8a0733007330euoutp02B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1613379710;
+        bh=jiP+nJSjo6L1xm7XfWgPLSvKoUJiuAel4CFXvAa2woc=;
+        h=Subject:To:From:Date:In-Reply-To:References:From;
+        b=dzEasE+1eWy/VdThwFLq8zPEP5Sz7VVF21r7VSLf+9+28nZHtREpwjRns0L32W9Zg
+         fTRICx1QKdMUQ5FWSJODE90BqilY3qTYQpfedHlQkLzlQWgpkWnoAApyMqXNTqPIYk
+         PzSScgpL3dw0G/z4pkf5ZHumoykIuWDR8Iqo6YUM=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20210215090150eucas1p2da724076e50193ec84892f00ef9d05e7~j4ExdTZ171652416524eucas1p2j;
+        Mon, 15 Feb 2021 09:01:50 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id 80.11.44805.D783A206; Mon, 15
+        Feb 2021 09:01:50 +0000 (GMT)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20210215090149eucas1p1eddfe8bce0f247b4a5bac74fd2878ab4~j4ExDo66B0431904319eucas1p1z;
+        Mon, 15 Feb 2021 09:01:49 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20210215090149eusmtrp1583b42eaadcfd89eff5b3f8f571a3985~j4ExC3AaS1787517875eusmtrp1M;
+        Mon, 15 Feb 2021 09:01:49 +0000 (GMT)
+X-AuditID: cbfec7f4-b4fff7000000af05-5c-602a387d45ee
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id 9A.A3.21957.D783A206; Mon, 15
+        Feb 2021 09:01:49 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20210215090148eusmtip1f8de62d6d3a9b2533d3510e628949509~j4EwV_jPE0885608856eusmtip1a;
+        Mon, 15 Feb 2021 09:01:48 +0000 (GMT)
+Subject: Re: [PATCH] dt-bindings: iio: samsung,exynos-adc: add common clock
+ properties
+To:     Krzysztof Kozlowski <krzk@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v4] MAINTAINERS: move Milo Kim to credits
-Message-ID: <20210215085241.GG179940@dell>
-References: <20210212163229.68270-1-krzk@kernel.org>
+        Rob Herring <robh+dt@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org
+From:   Marek Szyprowski <m.szyprowski@samsung.com>
+Message-ID: <85ed4a70-5cd8-3bce-100f-33a1fba7f3fa@samsung.com>
+Date:   Mon, 15 Feb 2021 10:01:48 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0)
+        Gecko/20100101 Thunderbird/78.7.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210212163229.68270-1-krzk@kernel.org>
+In-Reply-To: <20210212163816.70058-1-krzk@kernel.org>
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrJKsWRmVeSWpSXmKPExsWy7djPc7p1FloJBgfXMllMffiEzWL+kXOs
+        Fg+aVjFZnD+/gd1iyeT5rBb3vx5ltNj0+Bqrxbwj71gsLu+aw2Yx4/w+Jovfu46xW7TuPcLu
+        wOOxaVUnm8eda3vYPDYvqfdY8uYQq8f55iOMHp83yQWwRXHZpKTmZJalFunbJXBlvPl6nK3g
+        Pk/F6jdd7A2Ms7m6GDk5JARMJC5teM7YxcjFISSwglFi97nfLBDOF0aJ4/9ns4NUCQl8ZpT4
+        M1cEpqPrZz9Ux3JGiQvrT0M5H4E6unazgVQJC0RIXPvVzQSSEBFYzyxx8tNiFpAEm4ChRNfb
+        LqAiDg5eATuJw8vtQMIsAqoSh18sZQKxRQWSJP7+vglm8woISpyc+YQFpJxTwFTi+hFLkDCz
+        gLzE9rdzmCFscYlbT+aDrZIQ+MEhsabzOhPEpS4Sj2Z+ZYawhSVeHd/CDmHLSJye3MMC0dDM
+        KPHw3Fp2CKeHUeJy0wxGiCpriTvnfoEdyiygKbF+lz5E2FFiVed2sIMkBPgkbrwVhDiCT2LS
+        tunMEGFeiY42IYhqNYlZx9fBrT144RJUiYfEq97gCYyKs5A8OQvJZ7OQfDYL4YQFjCyrGMVT
+        S4tz01OLjfJSy/WKE3OLS/PS9ZLzczcxAlPX6X/Hv+xgXP7qo94hRiYOxkOMEhzMSiK8VyU0
+        EoR4UxIrq1KL8uOLSnNSiw8xSnOwKInzJm1ZEy8kkJ5YkpqdmlqQWgSTZeLglGpg4rDU/SD1
+        3WV6usDxty5v5Fem/3h4U23z5mdTkgvkpDfkeG97JnVQ/PAEq/jVCvLXT8jbWbQ5bOySvnY2
+        /OjKmSf+fC+84W+Y1/9eXzvlUkHB7kqPRzZmwTncm33rjdmcNfsPLzzHcWzXlMLzNqyJ6mL3
+        DlWuMXDIfiWT+3RZVqi5T0T6J7vXhSkrqguFek8y8fDcmqeeIq28yYv7j1lAxdfo3qkfJIQm
+        TNz2YkaT2XRpw5mcfxq8JvyTuG23fGN4ljjLomL34ASPgLcuW2K5/ER150pu5IzPmtUbVrio
+        b0owX1yW9M9Ak6mpyzYcveAa87Pp7YOP5fc+nQh87n3oh/I//eKFqo+7ZN4EznBXYinOSDTU
+        Yi4qTgQAa4Cul8wDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrIIsWRmVeSWpSXmKPExsVy+t/xu7q1FloJBi0n5S2mPnzCZjH/yDlW
+        iwdNq5gszp/fwG6xZPJ8Vov7X48yWmx6fI3VYt6RdywWl3fNYbOYcX4fk8XvXcfYLVr3HmF3
+        4PHYtKqTzePOtT1sHpuX1HsseXOI1eN88xFGj8+b5ALYovRsivJLS1IVMvKLS2yVog0tjPQM
+        LS30jEws9QyNzWOtjEyV9O1sUlJzMstSi/TtEvQy3nw9zlZwn6di9Zsu9gbG2VxdjJwcEgIm
+        El0/+xm7GLk4hASWMkqc/3CZFSIhI3FyWgOULSzx51oXG0TRe0aJXyePsYAkhAUiJK796mYC
+        SYgIrGeWWH9nExNEVQejxJ/XJ5hAqtgEDCW63oK0c3DwCthJHF5uBxJmEVCVOPxiKViJqECS
+        xPrpN8FsXgFBiZMzn7CAlHMKmEpcP2IJEmYWMJOYt/khM4QtL7H97RwoW1zi1pP5TBMYBWch
+        6Z6FpGUWkpZZSFoWMLKsYhRJLS3OTc8tNtQrTswtLs1L10vOz93ECIzLbcd+bt7BOO/VR71D
+        jEwcjIcYJTiYlUR4r0poJAjxpiRWVqUW5ccXleakFh9iNAV6ZyKzlGhyPjAx5JXEG5oZmBqa
+        mFkamFqaGSuJ826duyZeSCA9sSQ1OzW1ILUIpo+Jg1Oqgak1doe4wd/zMk2PK/cqqyRuNlpd
+        3FmzT337ZZWjGz/8NplTW7czmE+O4QTf1wXTLc7eOhE2MSW7ae/Tw7JNq/oZNhRvz2tu6Vo/
+        WfCD88xkEce70n6zbPxKeufnseiYFnO1zq7KvJtTu7OLJ6HS7c3Mp91Z2lbnVx+Yn6zyQi+m
+        lP2jX8Xumc91/vvfP3/OaZfYp/Rr+znnOWziYb+9cnpieDfTldsbQo9rTLCIOeZy7g7PP76+
+        MNPK4G/TZGa75woFiJ6uTX/LtYMzqvOxUbbDng5xdxezeT2eJVUh/aFbpfW33gySrH0cfKH4
+        bv689BZZn8yWZu0t65cWndxQ5v/ETdc3+v6FrL8mNpaTlViKMxINtZiLihMBLHHbElQDAAA=
+X-CMS-MailID: 20210215090149eucas1p1eddfe8bce0f247b4a5bac74fd2878ab4
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20210212164148eucas1p2ab09436a82d50161ff1a9fc1a169f7d7
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20210212164148eucas1p2ab09436a82d50161ff1a9fc1a169f7d7
+References: <CGME20210212164148eucas1p2ab09436a82d50161ff1a9fc1a169f7d7@eucas1p2.samsung.com>
+        <20210212163816.70058-1-krzk@kernel.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 12 Feb 2021, Krzysztof Kozlowski wrote:
+Hi Krzysztof,
 
-> Milo Kim's email in TI bounces with permanent error (550: Invalid
-> recipient).  Last email from him on LKML was in 2017.  Move Milo Kim to
-> credits and remove the separate driver entries for:
->  - TI LP855x backlight driver,
->  - TI LP8727 charger driver,
->  - TI LP8788 MFD (ADC, LEDs, charger and regulator) drivers.
-> 
+On 12.02.2021 17:38, Krzysztof Kozlowski wrote:
+> Add common properties appearing in DTSes (assigned-clocks and similar)
+> to fix dtbs_check warnings like:
+>
+>    arch/arm/boot/dts/exynos3250-artik5-eval.dt.yaml:
+>      adc@126c0000: assigned-clock-rates: [[6000000]] is not of type 'object'
+>    arch/arm/boot/dts/exynos3250-artik5-eval.dt.yaml:
+>      adc@126c0000: assigned-clocks: [[7, 238]] is not of type 'object'
+
+Does it mean that assigned-clocks related properties have to be added to 
+almost all bindings? IMHO this is an over-engineering and this has to be 
+handled somewhere else...
+
 > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Jingoo Han <jingoohan1@gmail.com>
-> Cc: Lee Jones <lee.jones@linaro.org>
-> Cc: Pavel Machek <pavel@ucw.cz>
-> Cc: Thierry Reding <thierry.reding@gmail.com>
-> Cc: Sebastian Reichel <sre@kernel.org>
-> Cc: Daniel Thompson <daniel.thompson@linaro.org>
-> 
 > ---
-> 
-> Dear Lee,
-> 
-> Could you take care about this patch?
+>   .../bindings/iio/adc/samsung,exynos-adc.yaml         | 12 ++++++++++++
+>   1 file changed, 12 insertions(+)
+>
+> diff --git a/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml b/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
+> index c65921e66dc1..ce03132f8ebc 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
+> @@ -27,6 +27,18 @@ properties:
+>     reg:
+>       maxItems: 1
+>   
+> +  assigned-clocks:
+> +    minItems: 1
+> +    maxItems: 3
+> +
+> +  assigned-clock-parents:
+> +    minItems: 1
+> +    maxItems: 3
+> +
+> +  assigned-clock-rates:
+> +    minItems: 1
+> +    maxItems: 3
+> +
+>     clocks:
+>       description:
+>         Phandle to ADC bus clock. For Exynos3250 additional clock is needed.
 
-Yes, but I'll be sending out my pull-request for v5.12 in the next
-couple of days (maybe even today if I can find some time), so this
-will have to wait until v5.13.
-
+Best regards
 -- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
+

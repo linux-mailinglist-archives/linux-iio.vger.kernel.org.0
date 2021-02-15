@@ -2,52 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 089B531B7E2
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Feb 2021 12:20:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 118A231B7F2
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Feb 2021 12:25:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229652AbhBOLTw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 15 Feb 2021 06:19:52 -0500
-Received: from mail.kernel.org ([198.145.29.99]:48470 "EHLO mail.kernel.org"
+        id S229916AbhBOLXh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 15 Feb 2021 06:23:37 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50048 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229627AbhBOLTq (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 15 Feb 2021 06:19:46 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPS id 1C1AD64E5E
-        for <linux-iio@vger.kernel.org>; Mon, 15 Feb 2021 11:19:06 +0000 (UTC)
+        id S230044AbhBOLXc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 15 Feb 2021 06:23:32 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPS id A22A964E73
+        for <linux-iio@vger.kernel.org>; Mon, 15 Feb 2021 11:22:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1613387946;
-        bh=TkDeaejjy1pjlPa1Rm9lKIO0+o9MuycQSgETacNQ7rI=;
+        s=k20201202; t=1613388172;
+        bh=+/XzwVMxHYObBMFrDksQD3l3pgf+iF/Dxm26F3YwTkM=;
         h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=ItcKg2vbRkyeSVaoI9opmVRzIbnpq2R2oUwM//9tsM0Z1DG6fxXQmH8WNRf81Qyxc
-         sbS+yi28U6SuVJTwW31yaEOY6zZF7esCq7TRhNDyMpu21AJUhNtKHKZ9sIT+UktxzP
-         k4p0DCpU8pj+sgbbeCFphDCcTzRB6rn0G9nVTlatCMGYEfUj2wlVr7veYjIUGk6LPD
-         QtpAmvuZDqXa9FvOk/kf/WrQOmdWh3yzP6HSBKNXfomp5F4+cG2qk5PMl0UNP9lj0s
-         aGnhlgzl0yVtdNeBQ1gVwJ8hI1Vk0an5njXIBmyhltgg+WQ+B7MDJ7rkPprFdf12UC
-         dHez2CIKhk06w==
+        b=mtgcBXA9MlKM11Jq/qB+57SwCBDkMaRmiG75CzD2xLmLyOuP3dlJo6so6laN4j8sR
+         uS5Z3Hp8hlsYvywomCoJ0WZfHsFrrdBGpytXzb3N2t441lxwwDwQg4wPxyML2HIxig
+         RUoCESniiXcoxBcOeXir1rXKDRcf8gFBXIsYMz1ciSzWxd+USo9K8rWU4iX4dRdNXg
+         JRXImBPsez4Pc70IQep67sizn5wpW+C+NVI3IXY4Ws6/tOjhB9y3Xir6F5E2Fw4YID
+         Y9lLaE1foOim4v9uckQHTj9EYTQ4fVuwxb2inIsY8AX/mCK3lxw5TGtNOTTlJLTO/a
+         5keBIvTGGobSQ==
 Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
-        id 135F96017D; Mon, 15 Feb 2021 11:19:06 +0000 (UTC)
+        id 9E8B860180; Mon, 15 Feb 2021 11:22:52 +0000 (UTC)
 From:   bugzilla-daemon@bugzilla.kernel.org
 To:     linux-iio@vger.kernel.org
-Subject: [Bug 200555] Missing check of the return value of
- devm_regmap_init_i2c() in drivers/iio/magnetometer/hmc5843_i2c.c
-Date:   Mon, 15 Feb 2021 11:19:05 +0000
+Subject: [Bug 211741] amd-hid: add support for SW_TABLET_MODE
+Date:   Mon, 15 Feb 2021 11:22:52 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
 X-Bugzilla-Product: Drivers
-X-Bugzilla-Component: IIO
+X-Bugzilla-Component: Platform_x86
 X-Bugzilla-Version: 2.5
 X-Bugzilla-Keywords: 
 X-Bugzilla-Severity: normal
 X-Bugzilla-Who: andy.shevchenko@gmail.com
-X-Bugzilla-Status: RESOLVED
-X-Bugzilla-Resolution: PATCH_ALREADY_AVAILABLE
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
 X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Assigned-To: drivers_platform_x86@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
 X-Bugzilla-Changed-Fields: cc component assigned_to
-Message-ID: <bug-200555-217253-czEG1PtAnW@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-200555-217253@https.bugzilla.kernel.org/>
-References: <bug-200555-217253@https.bugzilla.kernel.org/>
+Message-ID: <bug-211741-217253-NT99iclmgo@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-211741-217253@https.bugzilla.kernel.org/>
+References: <bug-211741-217253@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Bugzilla-URL: https://bugzilla.kernel.org/
@@ -57,16 +56,16 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D200555
+https://bugzilla.kernel.org/show_bug.cgi?id=3D211741
 
 Andy Shevchenko (andy.shevchenko@gmail.com) changed:
 
            What    |Removed                     |Added
 ----------------------------------------------------------------------------
                  CC|                            |andy.shevchenko@gmail.com
-          Component|I2C                         |IIO
-           Assignee|drivers-i2c@kernel-bugs.osd |drivers_iio@kernel-bugs.ker
-                   |l.org                       |nel.org
+          Component|IIO                         |Platform_x86
+           Assignee|drivers_iio@kernel-bugs.ker |drivers_platform_x86@kernel
+                   |nel.org                     |-bugs.osdl.org
 
 --=20
 You may reply to this email to add a comment.

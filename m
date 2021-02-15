@@ -2,88 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AEC331B7E0
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Feb 2021 12:20:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 089B531B7E2
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Feb 2021 12:20:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229870AbhBOLTl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 15 Feb 2021 06:19:41 -0500
-Received: from mail.kernel.org ([198.145.29.99]:48432 "EHLO mail.kernel.org"
+        id S229652AbhBOLTw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 15 Feb 2021 06:19:52 -0500
+Received: from mail.kernel.org ([198.145.29.99]:48470 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229811AbhBOLTk (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 15 Feb 2021 06:19:40 -0500
-Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CDF3764E52;
-        Mon, 15 Feb 2021 11:18:58 +0000 (UTC)
-Date:   Mon, 15 Feb 2021 11:18:48 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
-        <nuno.sa@analog.com>, <dragos.bogdan@analog.com>
-Subject: Re: [PATCH v6 01/24] iio: adc: ti_am335x_adc: remove omitted
- iio_kfifo_free()
-Message-ID: <20210215111848.6312b026@archlinux>
-In-Reply-To: <20210215104043.91251-2-alexandru.ardelean@analog.com>
-References: <20210215104043.91251-1-alexandru.ardelean@analog.com>
-        <20210215104043.91251-2-alexandru.ardelean@analog.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S229627AbhBOLTq (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 15 Feb 2021 06:19:46 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPS id 1C1AD64E5E
+        for <linux-iio@vger.kernel.org>; Mon, 15 Feb 2021 11:19:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1613387946;
+        bh=TkDeaejjy1pjlPa1Rm9lKIO0+o9MuycQSgETacNQ7rI=;
+        h=From:To:Subject:Date:In-Reply-To:References:From;
+        b=ItcKg2vbRkyeSVaoI9opmVRzIbnpq2R2oUwM//9tsM0Z1DG6fxXQmH8WNRf81Qyxc
+         sbS+yi28U6SuVJTwW31yaEOY6zZF7esCq7TRhNDyMpu21AJUhNtKHKZ9sIT+UktxzP
+         k4p0DCpU8pj+sgbbeCFphDCcTzRB6rn0G9nVTlatCMGYEfUj2wlVr7veYjIUGk6LPD
+         QtpAmvuZDqXa9FvOk/kf/WrQOmdWh3yzP6HSBKNXfomp5F4+cG2qk5PMl0UNP9lj0s
+         aGnhlgzl0yVtdNeBQ1gVwJ8hI1Vk0an5njXIBmyhltgg+WQ+B7MDJ7rkPprFdf12UC
+         dHez2CIKhk06w==
+Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
+        id 135F96017D; Mon, 15 Feb 2021 11:19:06 +0000 (UTC)
+From:   bugzilla-daemon@bugzilla.kernel.org
+To:     linux-iio@vger.kernel.org
+Subject: [Bug 200555] Missing check of the return value of
+ devm_regmap_init_i2c() in drivers/iio/magnetometer/hmc5843_i2c.c
+Date:   Mon, 15 Feb 2021 11:19:05 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Product: Drivers
+X-Bugzilla-Component: IIO
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: andy.shevchenko@gmail.com
+X-Bugzilla-Status: RESOLVED
+X-Bugzilla-Resolution: PATCH_ALREADY_AVAILABLE
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: cc component assigned_to
+Message-ID: <bug-200555-217253-czEG1PtAnW@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-200555-217253@https.bugzilla.kernel.org/>
+References: <bug-200555-217253@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 15 Feb 2021 12:40:20 +0200
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+https://bugzilla.kernel.org/show_bug.cgi?id=3D200555
 
-> When the conversion was done to use devm_iio_kfifo_allocate(), a call to
-> iio_kfifo_free() was omitted (to be removed).
-> This change removes it.
-> 
-> Fixes: 3c5308058899 ("iio: adc: ti_am335x_adc: alloc kfifo & IRQ via devm_ functions")
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Andy Shevchenko (andy.shevchenko@gmail.com) changed:
 
-Hi Alex,
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+                 CC|                            |andy.shevchenko@gmail.com
+          Component|I2C                         |IIO
+           Assignee|drivers-i2c@kernel-bugs.osd |drivers_iio@kernel-bugs.ker
+                   |l.org                       |nel.org
 
-I'm going to work my way through the series - may get to the end, but if
-not hopefully we can at least reduce the number of outstanding patches. 
+--=20
+You may reply to this email to add a comment.
 
-To enable that I've rebased my togreg branch of staging/staging-next
-(I hadn't pushed it out as a non rebasing tree so this shouldn't impact anyone too
-badly).
-
-Therefore, dropping this patch as it's already there.
-
-Jonathan
-
-
-> ---
->  drivers/iio/adc/ti_am335x_adc.c | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ti_am335x_adc.c b/drivers/iio/adc/ti_am335x_adc.c
-> index b11c8c47ba2a..e946903b0993 100644
-> --- a/drivers/iio/adc/ti_am335x_adc.c
-> +++ b/drivers/iio/adc/ti_am335x_adc.c
-> @@ -397,16 +397,12 @@ static int tiadc_iio_buffered_hardware_setup(struct device *dev,
->  	ret = devm_request_threaded_irq(dev, irq, pollfunc_th, pollfunc_bh,
->  				flags, indio_dev->name, indio_dev);
->  	if (ret)
-> -		goto error_kfifo_free;
-> +		return ret;
->  
->  	indio_dev->setup_ops = setup_ops;
->  	indio_dev->modes |= INDIO_BUFFER_SOFTWARE;
->  
->  	return 0;
-> -
-> -error_kfifo_free:
-> -	iio_kfifo_free(indio_dev->buffer);
-> -	return ret;
->  }
->  
->  static const char * const chan_name_ain[] = {
-
+You are receiving this mail because:
+You are watching the assignee of the bug.=

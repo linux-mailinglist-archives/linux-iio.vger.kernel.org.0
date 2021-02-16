@@ -2,87 +2,85 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D30C31CC5E
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Feb 2021 15:49:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C12AC31D0F2
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Feb 2021 20:28:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230407AbhBPOr5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 16 Feb 2021 09:47:57 -0500
-Received: from mta-02.yadro.com ([89.207.88.252]:36566 "EHLO mta-01.yadro.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S230364AbhBPOrx (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 16 Feb 2021 09:47:53 -0500
-Received: from localhost (unknown [127.0.0.1])
-        by mta-01.yadro.com (Postfix) with ESMTP id 8C66441203;
-        Tue, 16 Feb 2021 14:47:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
-        content-type:content-type:content-transfer-encoding:mime-version
-        :references:in-reply-to:x-mailer:message-id:date:date:subject
-        :subject:from:from:received:received:received; s=mta-01; t=
-        1613486829; x=1615301230; bh=GFQD4WNDs7Ml/44CSx878qcQ5bEC1vFEtyW
-        z0Zks8Gc=; b=G27qyYRL9vMrxU5VbZEiRb3FtJQ9G28HwqK2DM1l/z8uZCNeGbX
-        HlUucwi+dwmHXkURJiMERzqawPFxF9S0EslfJTfzXjabkvrDsXFtin/eHuH61Fqe
-        Z0JZnpewZVakcvqNvB/IMl2VCKDvzRl2FVcZ2ygjR7Zb9q/nNmK+DMto=
-X-Virus-Scanned: amavisd-new at yadro.com
-Received: from mta-01.yadro.com ([127.0.0.1])
-        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 0K7pSKg-Yg8q; Tue, 16 Feb 2021 17:47:09 +0300 (MSK)
-Received: from T-EXCH-03.corp.yadro.com (t-exch-03.corp.yadro.com [172.17.100.103])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        id S230079AbhBPT2H (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 16 Feb 2021 14:28:07 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53742 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230049AbhBPT2H (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 16 Feb 2021 14:28:07 -0500
+Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mta-01.yadro.com (Postfix) with ESMTPS id 97F5541280;
-        Tue, 16 Feb 2021 17:47:09 +0300 (MSK)
-Received: from localhost.dev.yadro.com (10.199.0.29) by
- T-EXCH-03.corp.yadro.com (172.17.100.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
- 15.1.669.32; Tue, 16 Feb 2021 17:47:09 +0300
-From:   Ivan Mikhaylov <i.mikhaylov@yadro.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>
-CC:     Ivan Mikhaylov <i.mikhaylov@yadro.com>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>
-Subject: [PATCH 2/2] dt-bindings: vcnl3020: add proximity rate in hz
-Date:   Tue, 16 Feb 2021 17:53:46 +0300
-Message-ID: <20210216145346.18304-3-i.mikhaylov@yadro.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20210216145346.18304-1-i.mikhaylov@yadro.com>
-References: <20210216145346.18304-1-i.mikhaylov@yadro.com>
+        by mail.kernel.org (Postfix) with ESMTPSA id A079F64ED0;
+        Tue, 16 Feb 2021 19:27:23 +0000 (UTC)
+Date:   Tue, 16 Feb 2021 19:27:20 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
+        a.fatoum@pengutronix.de, kamel.bouhara@bootlin.com,
+        gwendal@chromium.org, alexandre.belloni@bootlin.com,
+        david@lechnology.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        syednwaris@gmail.com, patrick.havelange@essensium.com,
+        fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@st.com, o.rempel@pengutronix.de
+Subject: Re: [PATCH v8 21/22] counter: 104-quad-8: Replace mutex with
+ spinlock
+Message-ID: <20210216192720.75082d22@archlinux>
+In-Reply-To: <YCsq42hXqdRWrSEd@shinobu>
+References: <cover.1613131238.git.vilhelm.gray@gmail.com>
+        <d2e72eac404ca5b7c99d8a642f2c07ebb2eb240a.1613131238.git.vilhelm.gray@gmail.com>
+        <20210214181946.1d2f7e78@archlinux>
+        <YCsq42hXqdRWrSEd@shinobu>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.199.0.29]
-X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
- T-EXCH-03.corp.yadro.com (172.17.100.103)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Describe the possible proximity values in herzes for vcnl3020.
+On Tue, 16 Feb 2021 11:16:03 +0900
+William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
 
-Signed-off-by: Ivan Mikhaylov <i.mikhaylov@yadro.com>
----
- .../devicetree/bindings/iio/proximity/vishay,vcnl3020.yaml  | 6 ++++++
- 1 file changed, 6 insertions(+)
+> On Sun, Feb 14, 2021 at 06:19:46PM +0000, Jonathan Cameron wrote:
+> > On Fri, 12 Feb 2021 21:13:45 +0900
+> > William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
+> >   
+> > > This patch replaces the mutex I/O lock with a spinlock. This is in
+> > > preparation for a subsequent patch adding IRQ support for 104-QUAD-8
+> > > devices; we can't sleep in an interrupt context, so we'll need to use a
+> > > spinlock instead.
+> > > 
+> > > Cc: Syed Nayyar Waris <syednwaris@gmail.com>
+> > > Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>  
+> > 
+> > Why do these need to be raw_spin_locks?
+> > Normally only need to do that if in code related to interrupt chips etc,
+> > not their use.
+> > 
+> > Jonathan  
+> 
+> This lock can be taken in an interrupt context in a subsequent patch:
+> counter_push_event() called by quad8_irq_handler() can end up calling
+> the Counter component callbacks which take this lock. We can't use a
+> mutex nor a regular spinlock because those can sleep on RT setups [1]
 
-diff --git a/Documentation/devicetree/bindings/iio/proximity/vishay,vcnl3020.yaml b/Documentation/devicetree/bindings/iio/proximity/vishay,vcnl3020.yaml
-index fbd3a2e32280..1bb6ca1770f3 100644
---- a/Documentation/devicetree/bindings/iio/proximity/vishay,vcnl3020.yaml
-+++ b/Documentation/devicetree/bindings/iio/proximity/vishay,vcnl3020.yaml
-@@ -43,6 +43,12 @@ properties:
-            180000, 190000, 200000]
-     default: 20000
- 
-+  vishay,proximity-rate-hz:
-+    description:
-+      The rate of proximity measurement.
-+    enum: [1, 3, 7, 16, 31, 62, 125, 500]
-+    default: 1
-+
- required:
-   - compatible
-   - reg
--- 
-2.26.2
+But on RT setups the interrupts become threads and are preemptable etc,
+so that shouldn't matter.  There are a few corner cases that cause
+trouble, but in most normal drivers you should be fine with a
+spin_lock.
+
+Jonathan
+
+
+> which would result in a deadlock due to the interrupt context here -- so
+> therefore we're left with using raw_spin_lock.
+> 
+> [1] https://lwn.net/Articles/367219/
+> 
+> William Breathitt Gray
 

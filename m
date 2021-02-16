@@ -2,816 +2,332 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E008F31C8AF
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Feb 2021 11:23:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F2C5031C993
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Feb 2021 12:21:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230100AbhBPKWh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 16 Feb 2021 05:22:37 -0500
-Received: from foss.arm.com ([217.140.110.172]:59872 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230106AbhBPKV7 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 16 Feb 2021 05:21:59 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 915D81FB;
-        Tue, 16 Feb 2021 02:21:08 -0800 (PST)
-Received: from e120937-lin (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 86EC43F73B;
-        Tue, 16 Feb 2021 02:21:05 -0800 (PST)
-Date:   Tue, 16 Feb 2021 10:20:59 +0000
-From:   Cristian Marussi <cristian.marussi@arm.com>
-To:     Jyoti Bhayana <jbhayana@google.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
+        id S229889AbhBPLVj convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Tue, 16 Feb 2021 06:21:39 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2568 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229662AbhBPLVf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Feb 2021 06:21:35 -0500
+Received: from fraeml704-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Dfz2R1ZTyz67pQ0;
+        Tue, 16 Feb 2021 19:17:03 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml704-chm.china.huawei.com (10.206.15.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2106.2; Tue, 16 Feb 2021 12:20:52 +0100
+Received: from localhost (10.47.75.223) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Tue, 16 Feb
+ 2021 11:20:51 +0000
+Date:   Tue, 16 Feb 2021 11:19:46 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Alexandru Ardelean <ardeleanalex@gmail.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Rob Herring <robh@kernel.org>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Enrico Granata <egranata@google.com>,
-        Mikhail Golubev <mikhail.golubev@opensynergy.com>,
-        Igor Skalkin <Igor.Skalkin@opensynergy.com>,
-        Peter Hilber <Peter.hilber@opensynergy.com>,
-        Ankit Arora <ankitarora@google.com>
-Subject: Re: [PATCH v5 1/1] iio/scmi: Adding support for IIO SCMI Based
- Sensors
-Message-ID: <20210216102045.GC29356@e120937-lin>
-References: <20210208211918.1280588-1-jbhayana@google.com>
- <20210208211918.1280588-2-jbhayana@google.com>
- <20210209115639.GC6873@e120937-lin>
- <CA+=V6c12nRxLCxM2DPst8RV=i+1WatPyHcQQZp4xAzuoN0vKaw@mail.gmail.com>
- <20210210214619.GD6873@e120937-lin>
- <20210212191850.0748ccdb@archlinux>
- <20210215092526.GA29356@e120937-lin>
- <20210215110756.28567df8@archlinux>
- <20210215144737.GB29356@e120937-lin>
- <CA+=V6c3xmidg9BCZuEoigwcbDwW-sTCZWnVCkPhj4KMCzYCehg@mail.gmail.com>
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+        "Bogdan, Dragos" <dragos.bogdan@analog.com>
+Subject: Re: [PATCH v6 00/24] iio: core,buffer: add support for multiple IIO
+ buffers per IIO device
+Message-ID: <20210216111946.00001ea3@Huawei.com>
+In-Reply-To: <CA+U=DsryDk+91F3bfL-vXhqwEqw7yF-po2A4BXwkzKYy2352WQ@mail.gmail.com>
+References: <20210215104043.91251-1-alexandru.ardelean@analog.com>
+        <20210215135712.79aae785@archlinux>
+        <CA+U=DsryDk+91F3bfL-vXhqwEqw7yF-po2A4BXwkzKYy2352WQ@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+=V6c3xmidg9BCZuEoigwcbDwW-sTCZWnVCkPhj4KMCzYCehg@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.47.75.223]
+X-ClientProxiedBy: lhreml717-chm.china.huawei.com (10.201.108.68) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jyoti,
+On Mon, 15 Feb 2021 16:10:45 +0200
+Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
 
-On Mon, Feb 15, 2021 at 04:14:57PM -0800, Jyoti Bhayana wrote:
-> Hi Jonathan/Cristian,
-> 
-> I have uploaded v6 of the IIO SCMI patch. Not sure if you got a chance to
-> review that version and if any further changes are needed.
-
-Seen that, for the SCMI part seemed fine to me, I'll just have still to
-reply.
-
-> My IIO SCMI patch is independent of Cristian series mentioned at
-> https://lore.kernel.org/linux-arm-kernel/20210202221555.41167-1-cristian.marussi@arm.com/
-> right?
-
-Yes, that's true, your patch is independent and goes in as it is now, and I'll
-rebase my series on yours on a dedicated branch and make all the needed
-(small) interface changes.
-
-> and it can be merged without the Cristian Series right? Are there plans to
-> merge my v6 of the IIO SCMI patch and Cristian latest series in the same
-> linux tree version?
-
-Yes absolutely, your driver can be merged as it is without my series, but due
-to the timing they ended up targeting the same Linux version 5.13 at the
-end, so they will be merged both in v5.13, yours first as it is now, mine
-immediately rebased on top of it aftewards: the end result will be both
-series in the same v5.13 but as distinct patches. (so you can still backport
-yours on v5.4 as you're doing now.)
-
-Thanks
-
-Cristian
-
-> 
-> Thanks,
-> Jyoti
-> 
-> On Mon, Feb 15, 2021 at 6:48 AM Cristian Marussi <cristian.marussi@arm.com>
-> wrote:
-> 
-> > On Mon, Feb 15, 2021 at 11:07:56AM +0000, Jonathan Cameron wrote:
-> > > On Mon, 15 Feb 2021 09:25:26 +0000
-> > > Cristian Marussi <cristian.marussi@arm.com> wrote:
-> > >
-> > > > On Fri, Feb 12, 2021 at 07:18:58PM +0000, Jonathan Cameron wrote:
-> > > > > On Wed, 10 Feb 2021 21:46:19 +0000
-> > > > > Cristian Marussi <cristian.marussi@arm.com> wrote:
-> > > > >
-> > > > > > Hi Jyoti,
-> > > > > >
-> > > > > > On Wed, Feb 10, 2021 at 11:19:35AM -0800, Jyoti Bhayana wrote:
-> > > > > > > Hi Cristian,
-> > > > > > >
-> > > > > > > Thanks for the feedback. Regarding registering callbacks at the
-> > probe time
-> > > > > > > instead of .preenable, I have tried it before but I think due to
-> > some
-> > > > > > > issues(don't remember it now maybe on the platform side)  I kept
-> > it at the
-> > > > > > > .preenable level.
-> > > > > > >
-> > > > > > > But you are right, that it will be nice to move it at the probe
-> > level
-> > > > > > > instead. I will try again and test if it works and would move it
-> > at the
-> > > > > > > probe level. Regarding the unregistering of the notifier, is it
-> > required at
-> > > > > > > the remove of iio driver or scmi driver will take care of it?
-> > > > > > > Because if I add unregister at the iio driver remove level, I
-> > would have to
-> > > > > > > iterate all the sensors again and unregister them.
-> > > > > >
-> > > > > > Yes you are right if you move callbacks registration once for all
-> > to the
-> > > > > > .probe step you'll have to unregister them all in a .remove.
-> > > > > >
-> > > > > > BUT I think instead you should stick with your current solution
-> > given
-> > > > > > it's working fine anyway and it's supported by the notification
-> > > > > > framework and also for another reason I'm going to explain down
-> > below
-> > > > > > (which is also the reason why I asked you this at first :D)
-> > > > > >
-> > > > > > As you may remember I'm refactoring all the SCMI internals in a
-> > separate
-> > > > > > series to ease modularization and vendor protocols support, and
-> > that will
-> > > > > > lead also to some changes in the SCMI driver interface that you
-> > use:
-> > > > > > amongst other things one interesting addition will be a new devres
-> > managed
-> > > > > > notification registration method, something like:
-> > > > > >
-> > > > > > handle->notify_ops->devm_register_notifier(sdev, ...);
-> > > > > >
-> > > > > > With such method you could just move your registration to the
-> > .probe
-> > > > > > step and just forget about it, without the need to add any
-> > unregistration
-> > > > > > in the .remove step, since the core will take care to remove all
-> > the
-> > > > > > callbacks at driver unloading time.
-> > > > > >
-> > > > > > Now, this series, which is here if you want to have a look:
-> > > > > >
-> > > > > >
-> > https://lore.kernel.org/linux-arm-kernel/20210202221555.41167-1-cristian.marussi@arm.com/
-> > > > > >
-> > > > > > is already taking care to port any existent SCMI driver to the new
-> > interface,
-> > > > > > so when your IIODEV SCMI driver will be finally queued somewhere
-> > for merge, I
-> > > > > > can in turn rebase my series on yours and take care to port your
-> > driver too to
-> > > > > > the new interface applying the changes above in the context of my
-> > series.
-> > > > > > (and ask you to review of course :D)
-> > > > >
-> > > > > I'm guessing you probably want this driver in an immutable branch
-> > then
-> > > > > rather than having to wait another cycle for it to tick through to a
-> > > > > a sensible upstream?
-> > > > >
-> > > >
-> > > > Hi Jonathan
-> > > >
-> > > > the above series (still pending a final review from Sudeep) is targeted
-> > > > at 5.13 at this point and usually it'd be queued via Sudeep
-> > for-next/scmi
-> > > > which in turn goes via the ARM soc branch.
-> > > >
-> > > > Having said that, I'm not really familiar enough with this sort of
-> > clashes
-> > > > to know how they should be properly handled, so I'll stick to what you
-> > > > and Sudeep would think it's better :D (..and I'm pinging him to have a
-> > say)
-> > > >
-> > > > Thanks
-> > > >
-> > > > Cristian
-> > > Hi Cristian,
-> > >
-> > > So this driver will also be 5.13 material now (merge window for IIO
-> > effectively
-> > > closes 1-2 weeks before Linus opens the main one).
-> > >
-> > > The way we normally handle cases like this where we likely to have
-> > dependencies
-> > > on a patch set from two separate directions is to do what is known as an
-> > > immutable branch.  This is a branch that would probably be based on
-> > 5.12-rc1
-> > > containing just this driver.
-> > >
-> > > Then both trees, in this case IIO and scmi merge that branch.  The magic
-> > > of git then means that when Linus gets the eventual pull requests for
-> > > the two trees, the git IDs and content will be the same and the history
-> > > of that particular set of files will be cleanly maintained.
-> > >
-> > > This happens quite a lot for certain parts of the kernel because there
-> > are
-> > > a lot of cross dependencies.
-> > >
-> > Hi Jonathan
+> On Mon, Feb 15, 2021 at 3:59 PM Jonathan Cameron <jic23@kernel.org> wrote:
 > >
-> > thanks for clarifying.
+> > On Mon, 15 Feb 2021 12:40:19 +0200
+> > Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 > >
-> > Cristian
+> > Hi Alex,
 > >
-> > > @Sudeep, that work for you?  Have to wait for 5.12-rc1 though to give
-> > > us a sensible base.
-> > >
-> > > Jonathan
-> > >
-> > > >
-> > > > > Jonathan
-> > > > >
-> > > > > >
-> > > > > > I'm saying that is better if you keep your series as it is for now
-> > > > > > (old interface + .preenable/.postdisable regs/unregs) because, as
-> > said,
-> > > > > > with the new interface the devm_ methods will ease the registration
-> > > > > > @probe time, and also especially because the new interface is not
-> > (and
-> > > > > > most probably won't) be part of the v5.4 backport that you are
-> > testing
-> > > > > > against: so if you stick with your current solution you'll have a
-> > > > > > working patch easily backportable now, and once queued I'll port
-> > it to
-> > > > > > the interface using devm_ (so simplifying it)
-> > > > > >
-> > > > > > In this context, it would be indeed important to know if in
-> > general moving
-> > > > > > registration to the probe phase (which should be fine by the spec)
-> > poses
-> > > > > > any kind of problem. (and that's reason why asked it)
-> > > > > >
-> > > > > > Hope to have been clear despite the flood of words :D
-> > > > > >
-> > > > > > Thanks
-> > > > > >
-> > > > > > Cristian
-> > > > > >
-> > > > > > >
-> > > > > > > Thanks,
-> > > > > > > Jyoti
-> > > > > > >
-> > > > > > > On Tue, Feb 9, 2021 at 3:56 AM Cristian Marussi <
-> > cristian.marussi@arm.com>
-> > > > > > > wrote:
-> > > > > > >
-> > > > > > > > Hi Jyoti
-> > > > > > > >
-> > > > > > > > some minor things down below.
-> > > > > > > >
-> > > > > > > > Other than that, FWIW about the SCMI side of this:
-> > > > > > > >
-> > > > > > > > Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
-> > > > > > > >
-> > > > > > > > Thanks
-> > > > > > > >
-> > > > > > > > Cristian
-> > > > > > > >
-> > > > > > > > On Mon, Feb 08, 2021 at 09:19:18PM +0000, Jyoti Bhayana
-> > wrote:
-> > > > > > > > > This change provides ARM SCMI Protocol based IIO device.
-> > > > > > > > > This driver provides support for Accelerometer and Gyroscope
-> > using
-> > > > > > > > > SCMI Sensor Protocol extensions added in the SCMIv3.0 ARM
-> > specification
-> > > > > > > > >
-> > > > > > > > > Signed-off-by: Jyoti Bhayana <jbhayana@google.com>
-> > > > > > > > > ---
-> > > > > > > > >  MAINTAINERS                                |   6 +
-> > > > > > > > >  drivers/firmware/arm_scmi/driver.c         |   2 +-
-> > > > > > > > >  drivers/iio/common/Kconfig                 |   1 +
-> > > > > > > > >  drivers/iio/common/Makefile                |   1 +
-> > > > > > > > >  drivers/iio/common/scmi_sensors/Kconfig    |  18 +
-> > > > > > > > >  drivers/iio/common/scmi_sensors/Makefile   |   5 +
-> > > > > > > > >  drivers/iio/common/scmi_sensors/scmi_iio.c | 673
-> > +++++++++++++++++++++
-> > > > > > > > >  7 files changed, 705 insertions(+), 1 deletion(-)
-> > > > > > > > >  create mode 100644 drivers/iio/common/scmi_sensors/Kconfig
-> > > > > > > > >  create mode 100644 drivers/iio/common/scmi_sensors/Makefile
-> > > > > > > > >  create mode 100644
-> > drivers/iio/common/scmi_sensors/scmi_iio.c
-> > > > > > > > >
-> > > > > > > > > diff --git a/MAINTAINERS b/MAINTAINERS
-> > > > > > > > > index b516bb34a8d5..ccf37d43ab41 100644
-> > > > > > > > > --- a/MAINTAINERS
-> > > > > > > > > +++ b/MAINTAINERS
-> > > > > > > > > @@ -8567,6 +8567,12 @@ S:     Maintained
-> > > > > > > > >  F:
-> > > > > > > >
-> > Documentation/devicetree/bindings/iio/multiplexer/io-channel-mux.txt
-> > > > > > > > >  F:   drivers/iio/multiplexer/iio-mux.c
-> > > > > > > > >
-> > > > > > > > > +IIO SCMI BASED DRIVER
-> > > > > > > > > +M:   Jyoti Bhayana <jbhayana@google.com>
-> > > > > > > > > +L:   linux-iio@vger.kernel.org
-> > > > > > > > > +S:   Maintained
-> > > > > > > > > +F:   drivers/iio/common/scmi_sensors/scmi_iio.c
-> > > > > > > > > +
-> > > > > > > > >  IIO SUBSYSTEM AND DRIVERS
-> > > > > > > > >  M:   Jonathan Cameron <jic23@kernel.org>
-> > > > > > > > >  R:   Lars-Peter Clausen <lars@metafoo.de>
-> > > > > > > > > diff --git a/drivers/firmware/arm_scmi/driver.c
-> > > > > > > > b/drivers/firmware/arm_scmi/driver.c
-> > > > > > > > > index 5392e1fc6b4e..248313bbd473 100644
-> > > > > > > > > --- a/drivers/firmware/arm_scmi/driver.c
-> > > > > > > > > +++ b/drivers/firmware/arm_scmi/driver.c
-> > > > > > > > > @@ -741,7 +741,7 @@ static struct scmi_prot_devnames
-> > devnames[] = {
-> > > > > > > > >       { SCMI_PROTOCOL_SYSTEM, { "syspower" },},
-> > > > > > > > >       { SCMI_PROTOCOL_PERF,   { "cpufreq" },},
-> > > > > > > > >       { SCMI_PROTOCOL_CLOCK,  { "clocks" },},
-> > > > > > > > > -     { SCMI_PROTOCOL_SENSOR, { "hwmon" },},
-> > > > > > > > > +     { SCMI_PROTOCOL_SENSOR, { "hwmon", "iiodev" },},
-> > > > > > > > >       { SCMI_PROTOCOL_RESET,  { "reset" },},
-> > > > > > > > >       { SCMI_PROTOCOL_VOLTAGE,  { "regulator" },},
-> > > > > > > > >  };
-> > > > > > > > > diff --git a/drivers/iio/common/Kconfig
-> > b/drivers/iio/common/Kconfig
-> > > > > > > > > index 2b9ee9161abd..0334b4954773 100644
-> > > > > > > > > --- a/drivers/iio/common/Kconfig
-> > > > > > > > > +++ b/drivers/iio/common/Kconfig
-> > > > > > > > > @@ -6,5 +6,6 @@
-> > > > > > > > >  source "drivers/iio/common/cros_ec_sensors/Kconfig"
-> > > > > > > > >  source "drivers/iio/common/hid-sensors/Kconfig"
-> > > > > > > > >  source "drivers/iio/common/ms_sensors/Kconfig"
-> > > > > > > > > +source "drivers/iio/common/scmi_sensors/Kconfig"
-> > > > > > > > >  source "drivers/iio/common/ssp_sensors/Kconfig"
-> > > > > > > > >  source "drivers/iio/common/st_sensors/Kconfig"
-> > > > > > > > > diff --git a/drivers/iio/common/Makefile
-> > b/drivers/iio/common/Makefile
-> > > > > > > > > index 4bc30bb548e2..fad40e1e1718 100644
-> > > > > > > > > --- a/drivers/iio/common/Makefile
-> > > > > > > > > +++ b/drivers/iio/common/Makefile
-> > > > > > > > > @@ -11,5 +11,6 @@
-> > > > > > > > >  obj-y += cros_ec_sensors/
-> > > > > > > > >  obj-y += hid-sensors/
-> > > > > > > > >  obj-y += ms_sensors/
-> > > > > > > > > +obj-y += scmi_sensors/
-> > > > > > > > >  obj-y += ssp_sensors/
-> > > > > > > > >  obj-y += st_sensors/
-> > > > > > > > > diff --git a/drivers/iio/common/scmi_sensors/Kconfig
-> > > > > > > > b/drivers/iio/common/scmi_sensors/Kconfig
-> > > > > > > > > new file mode 100644
-> > > > > > > > > index 000000000000..67e084cbb1ab
-> > > > > > > > > --- /dev/null
-> > > > > > > > > +++ b/drivers/iio/common/scmi_sensors/Kconfig
-> > > > > > > > > @@ -0,0 +1,18 @@
-> > > > > > > > > +#
-> > > > > > > > > +# IIO over SCMI
-> > > > > > > > > +#
-> > > > > > > > > +# When adding new entries keep the list in alphabetical
-> > order
-> > > > > > > > > +
-> > > > > > > > > +menu "IIO SCMI Sensors"
-> > > > > > > > > +
-> > > > > > > > > +config IIO_SCMI
-> > > > > > > > > +     tristate "IIO SCMI"
-> > > > > > > > > +        depends on ARM_SCMI_PROTOCOL
-> > > > > > > > > +        select IIO_BUFFER
-> > > > > > > > > +        select IIO_KFIFO_BUF
-> > > > > > > > > +     help
-> > > > > > > > > +          Say yes here to build support for IIO SCMI Driver.
-> > > > > > > > > +          This provides ARM SCMI Protocol based IIO device.
-> > > > > > > > > +          This driver provides support for accelerometer
-> > and gyroscope
-> > > > > > > > > +          sensors available on SCMI based platforms.
-> > > > > > > > > +endmenu
-> > > > > > > > > diff --git a/drivers/iio/common/scmi_sensors/Makefile
-> > > > > > > > b/drivers/iio/common/scmi_sensors/Makefile
-> > > > > > > > > new file mode 100644
-> > > > > > > > > index 000000000000..f13140a2575a
-> > > > > > > > > --- /dev/null
-> > > > > > > > > +++ b/drivers/iio/common/scmi_sensors/Makefile
-> > > > > > > > > @@ -0,0 +1,5 @@
-> > > > > > > > > +# SPDX - License - Identifier : GPL - 2.0 - only
-> > > > > > > > > +#
-> > > > > > > > > +# Makefile for the IIO over SCMI
-> > > > > > > > > +#
-> > > > > > > > > +obj-$(CONFIG_IIO_SCMI) += scmi_iio.o
-> > > > > > > > > diff --git a/drivers/iio/common/scmi_sensors/scmi_iio.c
-> > > > > > > > b/drivers/iio/common/scmi_sensors/scmi_iio.c
-> > > > > > > > > new file mode 100644
-> > > > > > > > > index 000000000000..093b1fc24e27
-> > > > > > > > > --- /dev/null
-> > > > > > > > > +++ b/drivers/iio/common/scmi_sensors/scmi_iio.c
-> > > > > > > > > @@ -0,0 +1,673 @@
-> > > > > > > > > +// SPDX-License-Identifier: GPL-2.0
-> > > > > > > > > +
-> > > > > > > > > +/*
-> > > > > > > > > + * System Control and Management Interface(SCMI) based IIO
-> > sensor driver
-> > > > > > > > > + *
-> > > > > > > > > + * Copyright (C) 2021 Google LLC
-> > > > > > > > > + */
-> > > > > > > > > +
-> > > > > > > > > +#include <linux/delay.h>
-> > > > > > > > > +#include <linux/err.h>
-> > > > > > > > > +#include <linux/iio/buffer.h>
-> > > > > > > > > +#include <linux/iio/iio.h>
-> > > > > > > > > +#include <linux/iio/kfifo_buf.h>
-> > > > > > > > > +#include <linux/iio/sysfs.h>
-> > > > > > > > > +#include <linux/kernel.h>
-> > > > > > > > > +#include <linux/kthread.h>
-> > > > > > > > > +#include <linux/module.h>
-> > > > > > > > > +#include <linux/scmi_protocol.h>
-> > > > > > > > > +#include <linux/time.h>
-> > > > > > > > > +#include <linux/types.h>
-> > > > > > > > > +
-> > > > > > > > > +#define SCMI_IIO_NUM_OF_AXIS 3
-> > > > > > > > > +
-> > > > > > > > > +struct scmi_iio_priv {
-> > > > > > > > > +     struct scmi_handle *handle;
-> > > > > > > > > +     const struct scmi_sensor_info *sensor_info;
-> > > > > > > > > +     struct iio_dev *indio_dev;
-> > > > > > > > > +     /* adding one additional channel for timestamp */
-> > > > > > > > > +     long long iio_buf[SCMI_IIO_NUM_OF_AXIS + 1];
-> > > > > > > > > +     struct notifier_block sensor_update_nb;
-> > > > > > > > > +     u32 *freq_avail;
-> > > > > > > > > +};
-> > > > > > > > > +
-> > > > > > > > > +static int scmi_iio_sensor_update_cb(struct notifier_block
-> > *nb,
-> > > > > > > > > +                                  unsigned long event, void
-> > *data)
-> > > > > > > > > +{
-> > > > > > > > > +     struct scmi_sensor_update_report *sensor_update = data;
-> > > > > > > > > +     struct iio_dev *scmi_iio_dev;
-> > > > > > > > > +     struct scmi_iio_priv *sensor;
-> > > > > > > > > +     s8 tstamp_scale;
-> > > > > > > > > +     u64 time, time_ns;
-> > > > > > > > > +     int i;
-> > > > > > > > > +
-> > > > > > > > > +     if (sensor_update->readings_count == 0)
-> > > > > > > > > +             return NOTIFY_DONE;
-> > > > > > > > > +
-> > > > > > > > > +     sensor = container_of(nb, struct scmi_iio_priv,
-> > sensor_update_nb);
-> > > > > > > > > +
-> > > > > > > > > +     for (i = 0; i < sensor_update->readings_count; i++)
-> > > > > > > > > +             sensor->iio_buf[i] =
-> > sensor_update->readings[i].value;
-> > > > > > > > > +
-> > > > > > > > > +     if (!sensor->sensor_info->timestamped) {
-> > > > > > > > > +             time_ns =
-> > ktime_to_ns(sensor_update->timestamp);
-> > > > > > > > > +     } else {
-> > > > > > > > > +             /*
-> > > > > > > > > +              *  All the axes are supposed to have the same
-> > value for
-> > > > > > > > timestamp.
-> > > > > > > > > +              *  We are just using the values from the Axis
-> > 0 here.
-> > > > > > > > > +              */
-> > > > > > > > > +             time = sensor_update->readings[0].timestamp;
-> > > > > > > > > +
-> > > > > > > > > +             /*
-> > > > > > > > > +              *  Timestamp returned by SCMI is in seconds
-> > and is equal
-> > > > > > > > to
-> > > > > > > > > +              *  time * power-of-10
-> > multiplier(tstamp_scale) seconds.
-> > > > > > > > > +              *  Converting the timestamp to nanoseconds
-> > below.
-> > > > > > > > > +              */
-> > > > > > > > > +             tstamp_scale =
-> > sensor->sensor_info->tstamp_scale +
-> > > > > > > > > +                            const_ilog2(NSEC_PER_SEC) /
-> > const_ilog2(10);
-> > > > > > > > > +             if (tstamp_scale < 0)
-> > > > > > > > > +                     time_ns =
-> > > > > > > > > +                             div64_u64(time, int_pow(10,
-> > > > > > > > abs(tstamp_scale)));
-> > > > > > > > > +             else
-> > > > > > > > > +                     time_ns = time * int_pow(10,
-> > tstamp_scale);
-> > > > > > > > > +     }
-> > > > > > > > > +
-> > > > > > > > > +     scmi_iio_dev = sensor->indio_dev;
-> > > > > > > > > +     iio_push_to_buffers_with_timestamp(scmi_iio_dev,
-> > sensor->iio_buf,
-> > > > > > > > > +                                        time_ns);
-> > > > > > > > > +     return NOTIFY_OK;
-> > > > > > > > > +}
-> > > > > > > > > +
-> > > > > > > > > +static int scmi_iio_buffer_preenable(struct iio_dev
-> > *iio_dev)
-> > > > > > > > > +{
-> > > > > > > > > +     struct scmi_iio_priv *sensor = iio_priv(iio_dev);
-> > > > > > > > > +     u32 sensor_id = sensor->sensor_info->id;
-> > > > > > > > > +     u32 sensor_config = 0;
-> > > > > > > > > +     int err;
-> > > > > > > > > +
-> > > > > > > > > +     if (sensor->sensor_info->timestamped)
-> > > > > > > > > +             sensor_config |=
-> > > > > > > > FIELD_PREP(SCMI_SENS_CFG_TSTAMP_ENABLED_MASK,
-> > > > > > > > > +
-> >  SCMI_SENS_CFG_TSTAMP_ENABLE);
-> > > > > > > > > +
-> > > > > > > > > +     sensor_config |=
-> > FIELD_PREP(SCMI_SENS_CFG_SENSOR_ENABLED_MASK,
-> > > > > > > > > +
-> >  SCMI_SENS_CFG_SENSOR_ENABLE);
-> > > > > > > > > +
-> > > > > > > > > +     err =
-> > > > > > > >
-> > sensor->handle->notify_ops->register_event_notifier(sensor->handle,
-> > > > > > > > > +                     SCMI_PROTOCOL_SENSOR,
-> > SCMI_EVENT_SENSOR_UPDATE,
-> > > > > > > > > +                     &sensor_id, &sensor->sensor_update_nb);
-> > > > > > > > > +     if (err) {
-> > > > > > > > > +             dev_err(&iio_dev->dev,
-> > > > > > > > > +                     "Error in registering sensor update
-> > notifier for
-> > > > > > > > sensor %s err %d",
-> > > > > > > > > +                     sensor->sensor_info->name, err);
-> > > > > > > > > +             return err;
-> > > > > > > > > +     }
-> > > > > > > > > +
-> > > > > > > > > +     err =
-> > sensor->handle->sensor_ops->config_set(sensor->handle,
-> > > > > > > > > +                     sensor->sensor_info->id,
-> > sensor_config);
-> > > > > > > > > +     if (err) {
-> > > > > > > > > +
-> > > > > > > >
-> > sensor->handle->notify_ops->unregister_event_notifier(sensor->handle,
-> > > > > > > > > +                             SCMI_PROTOCOL_SENSOR,
-> > > > > > > > > +                             SCMI_EVENT_SENSOR_UPDATE,
-> > &sensor_id,
-> > > > > > > > > +                             &sensor->sensor_update_nb);
-> > > > > > > > > +             dev_err(&iio_dev->dev, "Error in enabling
-> > sensor %s err
-> > > > > > > > %d",
-> > > > > > > > > +                     sensor->sensor_info->name, err);
-> > > > > > > > > +     }
-> > > > > > > > > +
-> > > > > > > > > +     return err;
-> > > > > > > > > +}
-> > > > > > > > > +
-> > > > > > > > > +static int scmi_iio_buffer_postdisable(struct iio_dev
-> > *iio_dev)
-> > > > > > > > > +{
-> > > > > > > > > +     struct scmi_iio_priv *sensor = iio_priv(iio_dev);
-> > > > > > > > > +     u32 sensor_id = sensor->sensor_info->id;
-> > > > > > > > > +     u32 sensor_config = 0;
-> > > > > > > > > +     int err;
-> > > > > > > > > +
-> > > > > > > > > +     sensor_config |=
-> > FIELD_PREP(SCMI_SENS_CFG_SENSOR_ENABLED_MASK,
-> > > > > > > > > +
-> >  SCMI_SENS_CFG_SENSOR_DISABLE);
-> > > > > > > > > +
-> > > > > > > > > +     err =
-> > > > > > > >
-> > sensor->handle->notify_ops->unregister_event_notifier(sensor->handle,
-> > > > > > > > > +                     SCMI_PROTOCOL_SENSOR,
-> > SCMI_EVENT_SENSOR_UPDATE,
-> > > > > > > > > +                     &sensor_id, &sensor->sensor_update_nb);
-> > > > > > > > > +     if (err) {
-> > > > > > > > > +             dev_err(&iio_dev->dev,
-> > > > > > > > > +                     "Error in unregistering sensor update
-> > notifier for
-> > > > > > > > sensor %s err %d",
-> > > > > > > > > +                     sensor->sensor_info->name, err);
-> > > > > > > > > +             return err;
-> > > > > > > > > +     }
-> > > > > > > > > +
-> > > > > > > > > +     err =
-> > sensor->handle->sensor_ops->config_set(sensor->handle,
-> > > > > > > > sensor_id,
-> > > > > > > > > +
-> > sensor_config);
-> > > > > > > > > +     if (err) {
-> > > > > > > > > +             dev_err(&iio_dev->dev,
-> > > > > > > > > +                     "Error in disabling sensor %s with err
-> > %d",
-> > > > > > > > > +                     sensor->sensor_info->name, err);
-> > > > > > > > > +     }
-> > > > > > > > > +
-> > > > > > > > > +     return err;
-> > > > > > > > > +}
-> > > > > > > > > +
-> > > > > > > > > +static const struct iio_buffer_setup_ops
-> > scmi_iio_buffer_ops = {
-> > > > > > > > > +     .preenable = scmi_iio_buffer_preenable,
-> > > > > > > > > +     .postdisable = scmi_iio_buffer_postdisable,
-> > > > > > > > > +};
-> > > > > > > >
-> > > > > > > > This is just a question, I'm not suggesting to change anything
-> > here at
-> > > > > > > > this point to be clear, since it works just fine as it is.
-> > > > > > > >
-> > > > > > > > Following up a previous email, given these are called on
-> > enable/disable
-> > > > > > > > by sysfs, is there a specific reason why you configure here,
-> > inside
-> > > > > > > > these ops, also timestamping and callbacks  i.e. each time the
-> > sensor is
-> > > > > > > > turned on/off by sysfs ? ... instead of just, as an example,
-> > enabling
-> > > > > > > > in _preenable the sensor while registering callbacks and
-> > enabling
-> > > > > > > > timestamping once for all earlier during probe phase ?
-> > > > > > > > (likewise for _postdisable -> remove)
-> > > > > > > >
-> > > > > > > > AFAIU the spec says notifications are emitted for sensors
-> > which has
-> > > > > > > > requested them (via SENSOR_CONTINUOUS_UPDATE_NOTIFY) BUT only
-> > if the
-> > > > > > > > sensor is enabled as a whole (via proper CONFIG_SET as you
-> > do), so
-> > > > > > > > that enabling/disabling the sensor as a whole should result in
-> > starting/
-> > > > > > > > stopping the notification flow without the need of
-> > unregistering the
-> > > > > > > > callbacks everytime. (same goes with the timestamping)
-> > > > > > > >
-> > > > > > > > In other words, I would expect the sensor to maintain its
-> > state (on the
-> > > > > > > > platform side) even when going through enable/disable cycles,
-> > so that
-> > > > > > > > it 'remembers' that timestamping/notifications were enabled
-> > across an
-> > > > > > > > on/off.
-> > > > > > > >
-> > > > > > > > This would reduce the number of SCMI messages exchanges
-> > between the
-> > > > > > > > kernel and the platform and should be supported by both, but
-> > as said,
-> > > > > > > > it's more of a question for the future, not necessarily for
-> > this series.
-> > > > > > > >
-> > > > > > > > > +
-> > > > > > > >
-> > > > > > > > [snip]
-> > > > > > > >
-> > > > > > > > > +static int scmi_iio_set_sampling_freq_avail(struct iio_dev
-> > *iio_dev)
-> > > > > > > > > +{
-> > > > > > > > > +     u64 cur_interval_ns, low_interval_ns,
-> > high_interval_ns,
-> > > > > > > > step_size_ns,
-> > > > > > > > > +             hz, uhz;
-> > > > > > > > > +     unsigned int cur_interval, low_interval,
-> > high_interval, step_size;
-> > > > > > > > > +     struct scmi_iio_priv *sensor = iio_priv(iio_dev);
-> > > > > > > > > +     int i;
-> > > > > > > > > +
-> > > > > > > > > +     sensor->freq_avail =
-> > > > > > > > > +             devm_kzalloc(&iio_dev->dev,
-> > > > > > > > > +                          sizeof(*sensor->freq_avail) *
-> > > > > > > > > +
-> > (sensor->sensor_info->intervals.count
-> > > > > > > > * 2),
-> > > > > > > > > +                          GFP_KERNEL);
-> > > > > > > > > +     if (!sensor->freq_avail)
-> > > > > > > > > +             return -ENOMEM;
-> > > > > > > > > +
-> > > > > > > > > +     if (sensor->sensor_info->intervals.segmented) {
-> > > > > > > > > +             low_interval = sensor->sensor_info->intervals
-> > > > > > > > > +
-> > .desc[SCMI_SENS_INTVL_SEGMENT_LOW];
-> > > > > > > > > +             low_interval_ns =
-> > > > > > > > scmi_iio_convert_interval_to_ns(low_interval);
-> > > > > > > > > +             convert_ns_to_freq(low_interval_ns, &hz, &uhz);
-> > > > > > > > > +             sensor->freq_avail[0] = hz;
-> > > > > > > > > +             sensor->freq_avail[1] = uhz;
-> > > > > > > > > +
-> > > > > > > > > +             step_size = sensor->sensor_info->intervals
-> > > > > > > > > +
-> >  .desc[SCMI_SENS_INTVL_SEGMENT_STEP];
-> > > > > > > > > +             step_size_ns =
-> > scmi_iio_convert_interval_to_ns(step_size);
-> > > > > > > > > +             convert_ns_to_freq(step_size_ns, &hz, &uhz);
-> > > > > > > > > +             sensor->freq_avail[2] = hz;
-> > > > > > > > > +             sensor->freq_avail[3] = uhz;
-> > > > > > > > > +
-> > > > > > > > > +             high_interval = sensor->sensor_info->intervals
-> > > > > > > > > +
-> > > > > > > >  .desc[SCMI_SENS_INTVL_SEGMENT_HIGH];
-> > > > > > > > > +             high_interval_ns =
-> > > > > > > > > +
-> >  scmi_iio_convert_interval_to_ns(high_interval);
-> > > > > > > > > +             convert_ns_to_freq(high_interval_ns, &hz,
-> > &uhz);
-> > > > > > > > > +             sensor->freq_avail[4] = hz;
-> > > > > > > > > +             sensor->freq_avail[5] = uhz;
-> > > > > > > > > +     } else {
-> > > > > > > > > +             for (i = 0; i <
-> > sensor->sensor_info->intervals.count; i++)
-> > > > > > > > {
-> > > > > > > > > +                     cur_interval =
-> > > > > > > > sensor->sensor_info->intervals.desc[i];
-> > > > > > > > > +                     cur_interval_ns =
-> > > > > > > > > +
-> > > > > > > >  scmi_iio_convert_interval_to_ns(cur_interval);
-> > > > > > > > > +                     convert_ns_to_freq(cur_interval_ns,
-> > &hz, &uhz);
-> > > > > > > > > +                     sensor->freq_avail[i * 2] = hz;
-> > > > > > > > > +                     sensor->freq_avail[i * 2 + 1] = uhz;
-> > > > > > > > > +             }
-> > > > > > > > > +     }
-> > > > > > > > > +     return 0;
-> > > > > > > > > +}
-> > > > > > > > > +
-> > > > > > > > > +static int scmi_iio_buffers_setup(struct iio_dev
-> > *scmi_iiodev)
-> > > > > > > > > +{
-> > > > > > > > > +     struct iio_buffer *buffer;
-> > > > > > > > > +
-> > > > > > > > > +     buffer = devm_iio_kfifo_allocate(&scmi_iiodev->dev);
-> > > > > > > > > +     if (!buffer)
-> > > > > > > > > +             return -ENOMEM;
-> > > > > > > > > +
-> > > > > > > > > +     iio_device_attach_buffer(scmi_iiodev, buffer);
-> > > > > > > > > +     scmi_iiodev->modes |= INDIO_BUFFER_SOFTWARE;
-> > > > > > > > > +     scmi_iiodev->setup_ops = &scmi_iio_buffer_ops;
-> > > > > > > > > +     return 0;
-> > > > > > > > > +}
-> > > > > > > > > +
-> > > > > > > > > +struct iio_dev *scmi_alloc_iiodev(struct device *dev,
-> > > > > > > > > +                               struct scmi_handle *handle,
-> > > > > > > > > +                               const struct
-> > scmi_sensor_info
-> > > > > > > > *sensor_info)
-> > > > > > > > > +{
-> > > > > > > > > +     struct iio_chan_spec *iio_channels;
-> > > > > > > > > +     struct scmi_iio_priv *sensor;
-> > > > > > > > > +     enum iio_modifier modifier;
-> > > > > > > > > +     enum iio_chan_type type;
-> > > > > > > > > +     struct iio_dev *iiodev;
-> > > > > > > > > +     int i, ret;
-> > > > > > > > > +
-> > > > > > > > > +     iiodev = devm_iio_device_alloc(dev, sizeof(*sensor));
-> > > > > > > > > +     if (!iiodev)
-> > > > > > > > > +             return ERR_PTR(-ENOMEM);
-> > > > > > > > > +
-> > > > > > > > > +     iiodev->modes = INDIO_DIRECT_MODE;
-> > > > > > > > > +     iiodev->dev.parent = dev;
-> > > > > > > > > +     sensor = iio_priv(iiodev);
-> > > > > > > > > +     sensor->handle = handle;
-> > > > > > > > > +     sensor->sensor_info = sensor_info;
-> > > > > > > > > +     sensor->sensor_update_nb.notifier_call =
-> > scmi_iio_sensor_update_cb;
-> > > > > > > > > +     sensor->indio_dev = iiodev;
-> > > > > > > > > +
-> > > > > > > > > +     /* adding one additional channel for timestamp */
-> > > > > > > > > +     iiodev->num_channels = sensor_info->num_axis + 1;
-> > > > > > > > > +     iiodev->name = sensor_info->name;
-> > > > > > > > > +     iiodev->info = &scmi_iio_info;
-> > > > > > > > > +
-> > > > > > > > > +     iio_channels =
-> > > > > > > > > +             devm_kzalloc(dev,
-> > > > > > > > > +                          sizeof(*iio_channels) *
-> > > > > > > > (iiodev->num_channels),
-> > > > > > > > > +                          GFP_KERNEL);
-> > > > > > > > > +     if (!iio_channels)
-> > > > > > > > > +             return ERR_PTR(-ENOMEM);
-> > > > > > > > > +
-> > > > > > > > > +     scmi_iio_set_sampling_freq_avail(iiodev);
-> > > > > > > >
-> > > > > > > > You don't check this for retval, and it could fail with
-> > -ENOMEM.
-> > > > > > > >
-> > > > > > > > > +
-> > > > > > > > > +     for (i = 0; i < sensor_info->num_axis; i++) {
-> > > > > > > > > +             ret =
-> > scmi_iio_get_chan_type(sensor_info->axis[i].type,
-> > > > > > > > &type);
-> > > > > > > > > +             if (ret < 0)
-> > > > > > > > > +                     return ERR_PTR(ret);
-> > > > > > > > > +
-> > > > > > > > > +             ret =
-> > scmi_iio_get_chan_modifier(sensor_info->axis[i].name,
-> > > > > > > > > +                                              &modifier);
-> > > > > > > > > +             if (ret < 0)
-> > > > > > > > > +                     return ERR_PTR(ret);
-> > > > > > > > > +
-> > > > > > > > > +             scmi_iio_set_data_channel(&iio_channels[i],
-> > type, modifier,
-> > > > > > > > > +
-> >  sensor_info->axis[i].id);
-> > > > > > > > > +     }
-> > > > > > > > > +
-> > > > > > > > > +     scmi_iio_set_timestamp_channel(&iio_channels[i], i);
-> > > > > > > > > +     iiodev->channels = iio_channels;
-> > > > > > > > > +     return iiodev;
-> > > > > > > > > +}
-> > > > > > > > > +
-> > > > > > > >
-> > > > >
-> > >
+> > One thought on this that came up whilst reading through it again.
+> > There are several uses for multiple buffers.
+> > 1) input vs output buffers
+> > 2) A device with separately clocked sampling of different channels.  
+> 
+> So, ADI typically has use-cases for 1).
+> Mostly RF transceivers.
+> Traditionally, these were written (inside the ADI tree) as 2-3 IIO
+> devices (1 IIO device for each path,1 for TX and 1-2 for RX).
+> With multi-buffer, they can be a single IIO device with 2-3 IIO buffers.
+> 
+> There are some ADI devices that have channels that can run at different speeds.
+> But this hasn't been an important use-cases to deal with.
+> Typically, a common-rate would be picked [for all channels] and that's that.
+> I think some people find this per-channel rates interesting; but let's see.
+
+The nasty ones for multiple speeds tend to be sensor hubs and similar
+units where there is heavy processing going on.
+
+Often they are taking in a bunch of physical sensors and
+1) Shoving the data straight out unprocessed whenever it shows up.
+   The raw sensors aren't running in sync, so they drift across each other and
+   other fun things like that.
+2) Doing sensor fusion in batches and kicking out an quaternion every now
+   and then.
+
+They work on the basis of tagging the samples in a fifo with what they actually
+are.   Often there is very little control of the flow so we've previously ended
+up with the same multi IIO device solution, with a common core redirecting the 
+flows to the right devices (basically acting as an MFD).
+
+Thankfully those cases don't play well with triggers anyway so we mostly
+don't expose them.
+
+From memory, cros_ec and st_lsm6dsx are like this.  I think there are a few more.
+
+
+> 
 > >
+> > For case 2, there is at least sometimes a trigger involved
+> > (often data ready) so we probably also need to think long term about how
+> > to support multiple current_triggers in one driver.
+> >
+> > I guess that's something for us to figure out when we need it however.
+> >
+> > Thanks for you hard work on finally getting this upstream.
+> > + Lars (and maybe others) for earlier work on this.  
+> 
+> Thank you as well.
+> 
+> >
+> > Whilst I've applied all these, they are only exposed in the testing branch
+> > of iio.git on kernel.org so far and as such any additional review anyone
+> > else wants to give would be welcome!  
+> 
+> I feel there may be other users stumbling over this multibuffer
+> support, and try it out.
+> Often people don't seem to care about multibuffer, until they really need it.
+> A bit of chicken-n-egg problem.
+> But after being added, people may see it and start to use it.
+
+Agreed.  I'm fairly confident that the ABI is fine, so I'm not particularly
+worried if we need to make further adjustments as other users show up.
+
+Jonathan
+
+> 
+> >
+> > Jonathan
+> >  
+> > > Changelog v5 -> v6:
+> > > * https://lore.kernel.org/linux-iio/20210211122452.78106-1-alexandru.ardelean@analog.com/T/#t
+> > > * merged series 'iio: kfifo: define a devm_iio_kfifo_buffer_setup helper' into this
+> > >    https://lore.kernel.org/linux-iio/20210214143313.67202-4-alexandru.ardelean@analog.com/T/#u
+> > > * merged patch 'iio: buffer-dma,adi-axi-adc: introduce devm_iio_dmaengine_buffer_setup()' into this
+> > >    https://lore.kernel.org/linux-iio/20210214155817.68678-1-alexandru.ardelean@analog.com/T/#u
+> > > * patch 'iio: core: wrap iio device & buffer into struct for character devices'
+> > >    - moved kfree(ib) to be first in iio_chrdev_release() to make the cleanup
+> > >      order be reversed as the open() order
+> > > * patch 'iio: buffer: group attr count and attr alloc'
+> > >    - sizeof(struct attribute *)  ->   sizeof(*attr)  in kcalloc()
+> > > * patch 'iio: core: merge buffer/ & scan_elements/ attributes'
+> > >    - minor rework in iio_buffer_register_legacy_sysfs_groups() to
+> > >      use more 'sizeof(*attrs)' in allocations
+> > >    - fixed typo 'legacy_buffer_el_group' -> 'legacy_buffer_group'
+> > >    - updated comment about
+> > >      '/* we only need to link the legacy buffer groups for the first buffer */'
+> > >      to
+> > >      '/* we only need to register the legacy groups for the first buffer */'
+> > > * patch 'iio: buffer: add ioctl() to support opening extra buffers for IIO device'
+> > >    - removed 'buf_name' from iio_device_buffer_getfd();
+> > >       passing "iio:buffer" name; since it should be a class-name
+> > >    - removed extra-line in drivers/iio/industrial-core.c
+> > >    -  changed init order in iio_device_buffer_getfd() and matched it with reverse in
+> > >       iio_buffer_chrdev_release()
+> > >    - calling put_unused_fd() in iio_device_buffer_getfd() if copy_to_user() fails
+> > > * added 'iio: dummy: iio_simple_dummy_buffer: use triggered buffer core calls'
+> > > * patch ' iio: buffer: introduce support for attaching more IIO buffers'
+> > >    - now handling iio_device_attach_buffer() error returns
+> > >    - rename iio_buffer_free_sysfs_and_mask() -> iio_buffers_free_sysfs_and_mask()
+> > >    - rename iio_buffer_alloc_sysfs_and_mask() -> iio_buffer_alloc_sysfs_and_mask()
+> > > * patch 'tools: iio: convert iio_generic_buffer to use new IIO buffer API'
+> > >   - removed extra close() if getfd() ioctl() errors out
+> > >   - added comment that the sanity check for buffer0 should not be done
+> > >     under normal operation
+> > >   - update message from
+> > >    "This device does not support buffers"
+> > >    to
+> > >    "Device does not have this many buffers"
+> > >
+> > > Changelog v4 -> v5:
+> > > * https://lore.kernel.org/linux-iio/20210210100823.46780-1-alexandru.ardelean@analog.com/T/#t
+> > > * patch 'iio: buffer: add ioctl() to support opening extra buffers for IIO device'
+> > >   don't return -EBUSY in iio_buffer_poll_wrapper(); return 0
+> > >   __poll_t is unsigned, so returning 0 is the best we can do
+> > >   Reported-by: kernel test robot <lkp@intel.com>
+> > > * patch 'iio: buffer: dmaengine: obtain buffer object from attribute'
+> > >   removed unused 'indio_dev' variable; seems i missed this initially
+> > > * patch 'iio: buffer: add ioctl() to support opening extra buffers for IIO device'
+> > >   call 'wake_up(buffer->pollq)' in iio_buffer_chrdev_release()
+> > >
+> > > Changelog v3 -> v4:
+> > > * https://lore.kernel.org/linux-iio/20210201145105.20459-1-alexandru.ardelean@analog.com/
+> > > * patch 'docs: ioctl-number.rst: reserve IIO subsystem ioctl() space'
+> > >    remove 'uapi/' from `uapi/linux/iio/*.h`
+> > > * patch 'iio: core: register chardev only if needed'
+> > >    add commit comment about potentially breaking userspace ABI with chardev removal
+> > > * patch 'iio: core: rework iio device group creation'
+> > >    remove NULL re-init in iio_device_unregister_sysfs() ; memory is being free'd
+> > > * patch 'iio: buffer: group attr count and attr alloc'
+> > >   extend commit comment about the 2 or 1 buffer directores
+> > > * patch 'iio: core: merge buffer/ & scan_elements/ attributes'
+> > >    fixed static checker complaints
+> > >     - removed unused global
+> > >     - initialize omitted 'ret = -ENOMEM' on error path
+> > >     - made iio_buffer_unregister_legacy_sysfs_groups() static
+> > > * patch 'iio: buffer: wrap all buffer attributes into iio_dev_attr'
+> > >    - update some omitted unwindings; seems i forgot a few originally
+> > >      this was showing up when trying to read from buffer1
+> > > * add patch 'iio: buffer: move __iio_buffer_free_sysfs_and_mask() before alloc func'
+> > > * patch 'iio: buffer: introduce support for attaching more IIO buffers'
+> > >    - removed 'iio_dev_opaque->attached_buffers = NULL' after kfree()
+> > >    - using 'iio_dev_opaque->attached_buffers_cnt' to check that we have buffers
+> > >       instead of checking 'indio_dev->buffer'
+> > > * patch 'iio: buffer: add ioctl() to support opening extra buffers for IIO device'
+> > >    - replaced -ENOENT with -ENODEV when buffer index is out of range
+> > > * add 'iio: core: rename 'dev' -> 'indio_dev' in iio_device_alloc()'
+> > > * add 'iio: buffer: dmaengine: obtain buffer object from attribute'
+> > > * add tools/iio patches for new multibuffer logic
+> > >    tools: iio: make iioutils_get_type() private in iio_utils
+> > >    tools: iio: privatize globals and functions in iio_generic_buffer.c file
+> > >    tools: iio: convert iio_generic_buffer to use new IIO buffer API
+> > >
+> > > Changelog v2 -> v3:
+> > > * https://lore.kernel.org/linux-iio/20210122155805.83012-1-alexandru.ardelean@analog.com/
+> > > * added commit 'docs: ioctl-number.rst: reserve IIO subsystem ioctl() space'
+> > >   reserving 'i' 0x90-0x9F ioctls for IIO
+> > >   I did not see any conflicts with others (in the doc)
+> > >   - related to this, the new IIO_BUFFER_GET_FD_IOCTL is now at 'i' 0x91
+> > > * changed approach for creating sysfs buffer directories;
+> > >   - they are now created as groups on the IIO device; that also means
+> > >     that the groups array needs to be krealloc-ed and assign later in
+> > >     the registration
+> > >   - merged bufferX/ and scan_elementsX/ directories into a single
+> > >     bufferX/ directory
+> > >   - for legacy the buffer/ & scan_elements/ directories are kept; but
+> > >     they're groups objects have been moved on the iio_dev_opaque object
+> > >   - internally, the iio_dev_attr type is being extended to hold a
+> > >     reference for an IIO buffer;
+> > >     = this is great for scan_elements attributes
+> > >     = and for the rest of the iio_buffer attributes, it means we need to
+> > >       wrap them into iio_dev_attr
+> > >
+> > > Changelog v1 -> v2:
+> > > * https://lore.kernel.org/linux-iio/20201117162340.43924-1-alexandru.ardelean@analog.com/
+> > > * 'iio: buffer: rework buffer & scan_elements dir creation'
+> > >   add more doc-strings detailing the reasoning for this change
+> > > * 'iio: buffer: re-route scan_elements via it's kobj_type'
+> > >   move list_del() before the kfree()'s in the list destruction
+> > > * 'iio: buffer: introduce support for attaching more IIO buffers'
+> > >   - changed to 'cnt' variable vs re-using the 'i' for unwinding in
+> > >     iio_buffer_alloc_sysfs_and_mask()
+> > >   - removed kfree(old) in iio_device_attach_buffer()
+> > >   - made iio_device_attach_buffer() an int return; this means that some
+> > >     follow up patches are needed to make this return value be used;
+> > > * 'iio: buffer: add ioctl() to support opening extra buffers for IIO device'
+> > >   - tested ioctl() with a simple C program; attached to comment;
+> > >   - changed 'i' variable usage to 'sz' for alloc
+> > >   - changed logic for buffer0; returning FD 0; userspace should know
+> > >     that the IIO_BUFFER_GET_FD_IOCTL call returns 0 for buffer0;
+> > >     this is because I can't find a way to determine the FD of the
+> > >     ioctl() in the kernel; duplicating an ioctl() for buffer0 is also bad;
+> > >
+> > >
+> > > Alexandru Ardelean (24):
+> > >   iio: adc: ti_am335x_adc: remove omitted iio_kfifo_free()
+> > >   iio: kfifo: add devm_iio_kfifo_buffer_setup() helper
+> > >   iio: make use of devm_iio_kfifo_buffer_setup() helper
+> > >   iio: accel: sca3000: use devm_iio_kfifo_buffer_setup() helper
+> > >   iio: kfifo: un-export devm_iio_kfifo_allocate() function
+> > >   iio: buffer-dma,adi-axi-adc: introduce
+> > >     devm_iio_dmaengine_buffer_setup()
+> > >   docs: ioctl-number.rst: reserve IIO subsystem ioctl() space
+> > >   iio: core: register chardev only if needed
+> > >   iio: core-trigger: make iio_device_register_trigger_consumer() an int
+> > >     return
+> > >   iio: core: rework iio device group creation
+> > >   iio: buffer: group attr count and attr alloc
+> > >   iio: core: merge buffer/ & scan_elements/ attributes
+> > >   iio: add reference to iio buffer on iio_dev_attr
+> > >   iio: buffer: wrap all buffer attributes into iio_dev_attr
+> > >   iio: buffer: dmaengine: obtain buffer object from attribute
+> > >   iio: core: wrap iio device & buffer into struct for character devices
+> > >   iio: buffer: move __iio_buffer_free_sysfs_and_mask() before alloc
+> > >   iio: dummy: iio_simple_dummy_buffer: use triggered buffer core calls
+> > >   iio: buffer: introduce support for attaching more IIO buffers
+> > >   iio: buffer: add ioctl() to support opening extra buffers for IIO
+> > >     device
+> > >   iio: core: rename 'dev' -> 'indio_dev' in iio_device_alloc()
+> > >   tools: iio: make iioutils_get_type() private in iio_utils
+> > >   tools: iio: privatize globals and functions in iio_generic_buffer.c
+> > >     file
+> > >   tools: iio: convert iio_generic_buffer to use new IIO buffer API
+> > >
+> > >  .../driver-api/driver-model/devres.rst        |   3 +-
+> > >  .../userspace-api/ioctl/ioctl-number.rst      |   1 +
+> > >  drivers/iio/accel/sca3000.c                   |  19 +-
+> > >  drivers/iio/accel/ssp_accel_sensor.c          |  14 +-
+> > >  drivers/iio/adc/adi-axi-adc.c                 |  12 +-
+> > >  drivers/iio/adc/ina2xx-adc.c                  |  14 +-
+> > >  drivers/iio/adc/ti_am335x_adc.c               |  24 +-
+> > >  .../buffer/industrialio-buffer-dmaengine.c    |  35 +-
+> > >  .../buffer/industrialio-triggered-buffer.c    |  10 +-
+> > >  drivers/iio/buffer/kfifo_buf.c                |  40 +-
+> > >  .../cros_ec_sensors/cros_ec_sensors_core.c    |  13 +-
+> > >  drivers/iio/dummy/iio_simple_dummy_buffer.c   |  68 +--
+> > >  drivers/iio/gyro/ssp_gyro_sensor.c            |  14 +-
+> > >  drivers/iio/health/max30100.c                 |  16 +-
+> > >  drivers/iio/health/max30102.c                 |  16 +-
+> > >  drivers/iio/iio_core.h                        |  32 +-
+> > >  drivers/iio/iio_core_trigger.h                |   4 +-
+> > >  .../iio/imu/inv_icm42600/inv_icm42600_accel.c |  14 +-
+> > >  .../iio/imu/inv_icm42600/inv_icm42600_gyro.c  |  13 +-
+> > >  .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    |  15 +-
+> > >  drivers/iio/industrialio-buffer.c             | 494 ++++++++++++++----
+> > >  drivers/iio/industrialio-core.c               | 113 +++-
+> > >  drivers/iio/industrialio-event.c              |   6 +-
+> > >  drivers/iio/industrialio-trigger.c            |   6 +-
+> > >  drivers/iio/light/acpi-als.c                  |  12 +-
+> > >  drivers/iio/light/apds9960.c                  |  16 +-
+> > >  .../staging/iio/impedance-analyzer/ad5933.c   |  23 +-
+> > >  include/linux/iio/buffer-dmaengine.h          |   7 +-
+> > >  include/linux/iio/buffer.h                    |   4 +-
+> > >  include/linux/iio/buffer_impl.h               |  21 +-
+> > >  include/linux/iio/iio-opaque.h                |  14 +
+> > >  include/linux/iio/iio.h                       |   5 -
+> > >  include/linux/iio/kfifo_buf.h                 |   7 +-
+> > >  include/linux/iio/sysfs.h                     |   3 +
+> > >  include/uapi/linux/iio/buffer.h               |  10 +
+> > >  tools/iio/Makefile                            |   1 +
+> > >  tools/iio/iio_generic_buffer.c                | 153 ++++--
+> > >  tools/iio/iio_utils.c                         |  18 +-
+> > >  tools/iio/iio_utils.h                         |   8 +-
+> > >  39 files changed, 856 insertions(+), 442 deletions(-)
+> > >  create mode 100644 include/uapi/linux/iio/buffer.h
+> > >  
+> >  
+

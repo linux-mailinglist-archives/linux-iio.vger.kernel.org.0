@@ -2,46 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 94FB731D69C
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Feb 2021 09:33:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6922431D69D
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Feb 2021 09:33:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231842AbhBQIdj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 17 Feb 2021 03:33:39 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:40520 "EHLO
+        id S231856AbhBQIdm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 17 Feb 2021 03:33:42 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:45028 "EHLO
         mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231666AbhBQIdg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 17 Feb 2021 03:33:36 -0500
+        by vger.kernel.org with ESMTP id S231846AbhBQIdk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 17 Feb 2021 03:33:40 -0500
 Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 11H8UKC5026100;
-        Wed, 17 Feb 2021 03:32:43 -0500
+        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 11H8UMtA026130;
+        Wed, 17 Feb 2021 03:32:48 -0500
 Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 36p9gb2hu8-1
+        by mx0a-00128a01.pphosted.com with ESMTP id 36p9gb2hua-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 17 Feb 2021 03:32:43 -0500
-Received: from SCSQMBX10.ad.analog.com (SCSQMBX10.ad.analog.com [10.77.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 11H8WfGx055857
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 17 Feb 2021 03:32:42 -0500
-Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by SCSQMBX10.ad.analog.com
- (10.77.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.721.2; Wed, 17 Feb 2021
- 00:32:40 -0800
-Received: from zeus.spd.analog.com (10.66.68.11) by scsqmbx10.ad.analog.com
- (10.77.17.5) with Microsoft SMTP Server id 15.2.721.2 via Frontend Transport;
- Wed, 17 Feb 2021 00:32:40 -0800
+        Wed, 17 Feb 2021 03:32:47 -0500
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 11H8WkP3055863
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Wed, 17 Feb 2021 03:32:46 -0500
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Wed, 17 Feb 2021 03:32:45 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.721.2;
+ Wed, 17 Feb 2021 03:32:45 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Wed, 17 Feb 2021 03:32:45 -0500
 Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 11H8WWlE007757;
-        Wed, 17 Feb 2021 03:32:34 -0500
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 11H8WWlF007757;
+        Wed, 17 Feb 2021 03:32:39 -0500
 From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
 To:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
 CC:     <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
         <jic23@kernel.org>, <nuno.sa@analog.com>,
         <dragos.bogdan@analog.com>,
         Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v2 0/5] iio: Add output buffer support
-Date:   Wed, 17 Feb 2021 10:34:33 +0200
-Message-ID: <20210217083438.37865-1-alexandru.ardelean@analog.com>
+Subject: [PATCH v2 1/5] iio: Documentation: update definitions for bufferY and scan_elements
+Date:   Wed, 17 Feb 2021 10:34:34 +0200
+Message-ID: <20210217083438.37865-2-alexandru.ardelean@analog.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20210217083438.37865-1-alexandru.ardelean@analog.com>
+References: <20210217083438.37865-1-alexandru.ardelean@analog.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-ADIRuleOP-NewSCL: Rule Triggered
@@ -56,57 +62,169 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patchset is based on the new multibuffer set.
-It doesn't require the high-speed/mmap interface.
-That will come later on a v2.
+Since the new change to the IIO buffer infrastructure, the buffer/ and
+scan_elements/ directories have been merged into bufferY/ to have some
+attributes available per-buffer.
 
-Changelog v1 -> v2:
-* https://lore.kernel.org/linux-iio/20210212102021.47276-4-alexandru.ardelean@analog.com/T/#u
-* removed DMA patches for now
-* in patch 'iio: Add output buffer support'
-  - added /sys/bus/iio/devices/iio:deviceX/bufferY/direction attribute
-  - thinking about this, an update to the new buffer infrastructure is
-    required when adding ADDAC/MxFE/transceivers; right now there is no
-    problem, because we have only ADCs and DACs; but when we get
-    transceivers, a bufferY/ directory needs to filter in/out
-    scan_elements/ ; this only occured to me recently (it's one of those
-    things that pops up later in mind)
-* added 'iio: Documentation: update definitions for bufferY and scan_elements'
-  - seems I forgot this on the original multibuffer patchset
-* added 'iio: triggered-buffer: extend support to configure output buffers'
-  - basically output triggered buffer support
-* added 'iio: dac: ad5686: Add PWM as a trigger source'
-  - this is a first user of this infrastructure
+This change updates the ABI docs to reflect this change.
 
-Alexandru Ardelean (2):
-  iio: Documentation: update definitions for bufferY and scan_elements
-  iio: triggered-buffer: extend support to configure output buffers
+The hwfifo attributes are not updated, as for now these should be used
+via the legacy buffer/ directory until they are moved into core.
 
-Lars-Peter Clausen (2):
-  iio: Add output buffer support
-  iio: kfifo-buffer: Add output buffer support
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
+ Documentation/ABI/testing/sysfs-bus-iio | 85 +++++++++++++++++++++++++
+ 1 file changed, 85 insertions(+)
 
-Mircea Caprioru (1):
-  iio: dac: ad5686: Add PWM as a trigger source
-
- Documentation/ABI/testing/sysfs-bus-iio       |  92 +++++++++++
- drivers/iio/accel/adxl372.c                   |   1 +
- drivers/iio/accel/bmc150-accel-core.c         |   1 +
- drivers/iio/adc/at91-sama5d2_adc.c            |   4 +-
- .../buffer/industrialio-triggered-buffer.c    |   8 +-
- drivers/iio/buffer/kfifo_buf.c                |  50 ++++++
- .../cros_ec_sensors/cros_ec_sensors_core.c    |   1 +
- .../common/hid-sensors/hid-sensor-trigger.c   |   5 +-
- drivers/iio/dac/ad5686-spi.c                  |   2 +-
- drivers/iio/dac/ad5686.c                      | 146 +++++++++++++++++-
- drivers/iio/dac/ad5686.h                      |   7 +-
- drivers/iio/dac/ad5696-i2c.c                  |   2 +-
- drivers/iio/industrialio-buffer.c             | 128 ++++++++++++++-
- include/linux/iio/buffer.h                    |   7 +
- include/linux/iio/buffer_impl.h               |  11 ++
- include/linux/iio/triggered_buffer.h          |  11 +-
- 16 files changed, 459 insertions(+), 17 deletions(-)
-
+diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+index d957f5da5c04..f2a72d7fbacb 100644
+--- a/Documentation/ABI/testing/sysfs-bus-iio
++++ b/Documentation/ABI/testing/sysfs-bus-iio
+@@ -1118,12 +1118,16 @@ Description:
+ 
+ What:		/sys/bus/iio/devices/iio:deviceX/buffer/length
+ KernelVersion:	2.6.35
++What:		/sys/bus/iio/devices/iio:deviceX/bufferY/length
++KernelVersion:	5.11
+ Contact:	linux-iio@vger.kernel.org
+ Description:
+ 		Number of scans contained by the buffer.
+ 
+ What:		/sys/bus/iio/devices/iio:deviceX/buffer/enable
+ KernelVersion:	2.6.35
++What:		/sys/bus/iio/devices/iio:deviceX/bufferY/enable
++KernelVersion:	5.11
+ Contact:	linux-iio@vger.kernel.org
+ Description:
+ 		Actually start the buffer capture up.  Will start trigger
+@@ -1131,11 +1135,16 @@ Description:
+ 
+ What:		/sys/bus/iio/devices/iio:deviceX/scan_elements
+ KernelVersion:	2.6.37
++What:		/sys/bus/iio/devices/iio:deviceX/buffeY
++KernelVersion:	5.11
+ Contact:	linux-iio@vger.kernel.org
+ Description:
+ 		Directory containing interfaces for elements that will be
+ 		captured for a single triggered sample set in the buffer.
+ 
++		Since kernel 5.11 the scan_elements attributes are merged into
++		the bufferY directory, to be configurable per buffer.
++
+ What:		/sys/.../iio:deviceX/scan_elements/in_accel_x_en
+ What:		/sys/.../iio:deviceX/scan_elements/in_accel_y_en
+ What:		/sys/.../iio:deviceX/scan_elements/in_accel_z_en
+@@ -1164,6 +1173,34 @@ What:		/sys/.../iio:deviceX/scan_elements/in_pressure_en
+ What:		/sys/.../iio:deviceX/scan_elements/in_rot_quaternion_en
+ What:		/sys/.../iio:deviceX/scan_elements/in_proximity_en
+ KernelVersion:	2.6.37
++What:		/sys/.../iio:deviceX/bufferY/in_accel_x_en
++What:		/sys/.../iio:deviceX/bufferY/in_accel_y_en
++What:		/sys/.../iio:deviceX/bufferY/in_accel_z_en
++What:		/sys/.../iio:deviceX/bufferY/in_anglvel_x_en
++What:		/sys/.../iio:deviceX/bufferY/in_anglvel_y_en
++What:		/sys/.../iio:deviceX/bufferY/in_anglvel_z_en
++What:		/sys/.../iio:deviceX/bufferY/in_magn_x_en
++What:		/sys/.../iio:deviceX/bufferY/in_magn_y_en
++What:		/sys/.../iio:deviceX/bufferY/in_magn_z_en
++What:		/sys/.../iio:deviceX/bufferY/in_rot_from_north_magnetic_en
++What:		/sys/.../iio:deviceX/bufferY/in_rot_from_north_true_en
++What:		/sys/.../iio:deviceX/bufferY/in_rot_from_north_magnetic_tilt_comp_en
++What:		/sys/.../iio:deviceX/bufferY/in_rot_from_north_true_tilt_comp_en
++What:		/sys/.../iio:deviceX/bufferY/in_timestamp_en
++What:		/sys/.../iio:deviceX/bufferY/in_voltageY_supply_en
++What:		/sys/.../iio:deviceX/bufferY/in_voltageY_en
++What:		/sys/.../iio:deviceX/bufferY/in_voltageY-voltageZ_en
++What:		/sys/.../iio:deviceX/bufferY/in_voltageY_i_en
++What:		/sys/.../iio:deviceX/bufferY/in_voltageY_q_en
++What:		/sys/.../iio:deviceX/bufferY/in_voltage_i_en
++What:		/sys/.../iio:deviceX/bufferY/in_voltage_q_en
++What:		/sys/.../iio:deviceX/bufferY/in_incli_x_en
++What:		/sys/.../iio:deviceX/bufferY/in_incli_y_en
++What:		/sys/.../iio:deviceX/bufferY/in_pressureY_en
++What:		/sys/.../iio:deviceX/bufferY/in_pressure_en
++What:		/sys/.../iio:deviceX/bufferY/in_rot_quaternion_en
++What:		/sys/.../iio:deviceX/bufferY/in_proximity_en
++KernelVersion:	5.11
+ Contact:	linux-iio@vger.kernel.org
+ Description:
+ 		Scan element control for triggered data capture.
+@@ -1185,6 +1222,23 @@ What:		/sys/.../iio:deviceX/scan_elements/in_pressure_type
+ What:		/sys/.../iio:deviceX/scan_elements/in_rot_quaternion_type
+ What:		/sys/.../iio:deviceX/scan_elements/in_proximity_type
+ KernelVersion:	2.6.37
++What:		/sys/.../iio:deviceX/bufferY/in_accel_type
++What:		/sys/.../iio:deviceX/bufferY/in_anglvel_type
++What:		/sys/.../iio:deviceX/bufferY/in_magn_type
++What:		/sys/.../iio:deviceX/bufferY/in_incli_type
++What:		/sys/.../iio:deviceX/bufferY/in_voltageY_type
++What:		/sys/.../iio:deviceX/bufferY/in_voltage_type
++What:		/sys/.../iio:deviceX/bufferY/in_voltageY_supply_type
++What:		/sys/.../iio:deviceX/bufferY/in_voltageY_i_type
++What:		/sys/.../iio:deviceX/bufferY/in_voltageY_q_type
++What:		/sys/.../iio:deviceX/bufferY/in_voltage_i_type
++What:		/sys/.../iio:deviceX/bufferY/in_voltage_q_type
++What:		/sys/.../iio:deviceX/bufferY/in_timestamp_type
++What:		/sys/.../iio:deviceX/bufferY/in_pressureY_type
++What:		/sys/.../iio:deviceX/bufferY/in_pressure_type
++What:		/sys/.../iio:deviceX/bufferY/in_rot_quaternion_type
++What:		/sys/.../iio:deviceX/bufferY/in_proximity_type
++KernelVersion:	5.11
+ Contact:	linux-iio@vger.kernel.org
+ Description:
+ 		Description of the scan element data storage within the buffer
+@@ -1241,6 +1295,33 @@ What:		/sys/.../iio:deviceX/scan_elements/in_pressure_index
+ What:		/sys/.../iio:deviceX/scan_elements/in_rot_quaternion_index
+ What:		/sys/.../iio:deviceX/scan_elements/in_proximity_index
+ KernelVersion:	2.6.37
++What:		/sys/.../iio:deviceX/bufferY/in_voltageY_index
++What:		/sys/.../iio:deviceX/bufferY/in_voltageY_supply_index
++What:		/sys/.../iio:deviceX/bufferY/in_voltageY_i_index
++What:		/sys/.../iio:deviceX/bufferY/in_voltageY_q_index
++What:		/sys/.../iio:deviceX/bufferY/in_voltage_i_index
++What:		/sys/.../iio:deviceX/bufferY/in_voltage_q_index
++What:		/sys/.../iio:deviceX/bufferY/in_accel_x_index
++What:		/sys/.../iio:deviceX/bufferY/in_accel_y_index
++What:		/sys/.../iio:deviceX/bufferY/in_accel_z_index
++What:		/sys/.../iio:deviceX/bufferY/in_anglvel_x_index
++What:		/sys/.../iio:deviceX/bufferY/in_anglvel_y_index
++What:		/sys/.../iio:deviceX/bufferY/in_anglvel_z_index
++What:		/sys/.../iio:deviceX/bufferY/in_magn_x_index
++What:		/sys/.../iio:deviceX/bufferY/in_magn_y_index
++What:		/sys/.../iio:deviceX/bufferY/in_magn_z_index
++What:		/sys/.../iio:deviceX/bufferY/in_rot_from_north_magnetic_index
++What:		/sys/.../iio:deviceX/bufferY/in_rot_from_north_true_index
++What:		/sys/.../iio:deviceX/bufferY/in_rot_from_north_magnetic_tilt_comp_index
++What:		/sys/.../iio:deviceX/bufferY/in_rot_from_north_true_tilt_comp_index
++What:		/sys/.../iio:deviceX/bufferY/in_incli_x_index
++What:		/sys/.../iio:deviceX/bufferY/in_incli_y_index
++What:		/sys/.../iio:deviceX/bufferY/in_timestamp_index
++What:		/sys/.../iio:deviceX/bufferY/in_pressureY_index
++What:		/sys/.../iio:deviceX/bufferY/in_pressure_index
++What:		/sys/.../iio:deviceX/bufferY/in_rot_quaternion_index
++What:		/sys/.../iio:deviceX/bufferY/in_proximity_index
++KernelVersion:	5.11
+ Contact:	linux-iio@vger.kernel.org
+ Description:
+ 		A single positive integer specifying the position of this
+@@ -1455,6 +1536,8 @@ Description:
+ 
+ What:		/sys/bus/iio/devices/iio:deviceX/buffer/watermark
+ KernelVersion:	4.2
++What:		/sys/bus/iio/devices/iio:deviceX/bufferY/watermark
++KernelVersion:	5.11
+ Contact:	linux-iio@vger.kernel.org
+ Description:
+ 		A single positive integer specifying the maximum number of scan
+@@ -1473,6 +1556,8 @@ Description:
+ 
+ What:		/sys/bus/iio/devices/iio:deviceX/buffer/data_available
+ KernelVersion: 4.16
++What:		/sys/bus/iio/devices/iio:deviceX/bufferY/data_available
++KernelVersion:	5.11
+ Contact:	linux-iio@vger.kernel.org
+ Description:
+ 		A read-only value indicating the bytes of data available in the
 -- 
 2.17.1
 

@@ -2,43 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B776A31D5D3
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Feb 2021 08:43:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 94FB731D69C
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Feb 2021 09:33:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230303AbhBQHlS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 17 Feb 2021 02:41:18 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:41302 "EHLO
+        id S231842AbhBQIdj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 17 Feb 2021 03:33:39 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:40520 "EHLO
         mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231565AbhBQHjp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 17 Feb 2021 02:39:45 -0500
+        by vger.kernel.org with ESMTP id S231666AbhBQIdg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 17 Feb 2021 03:33:36 -0500
 Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 11H7LVcr015796;
-        Wed, 17 Feb 2021 02:38:58 -0500
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 36p9gb2dhc-1
+        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 11H8UKC5026100;
+        Wed, 17 Feb 2021 03:32:43 -0500
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 36p9gb2hu8-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 17 Feb 2021 02:38:58 -0500
-Received: from SCSQMBX11.ad.analog.com (SCSQMBX11.ad.analog.com [10.77.17.10])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 11H7cuaB004093
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Wed, 17 Feb 2021 02:38:57 -0500
-Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by SCSQMBX11.ad.analog.com
- (10.77.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Tue, 16 Feb
- 2021 23:38:54 -0800
+        Wed, 17 Feb 2021 03:32:43 -0500
+Received: from SCSQMBX10.ad.analog.com (SCSQMBX10.ad.analog.com [10.77.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 11H8WfGx055857
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 17 Feb 2021 03:32:42 -0500
+Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by SCSQMBX10.ad.analog.com
+ (10.77.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.721.2; Wed, 17 Feb 2021
+ 00:32:40 -0800
 Received: from zeus.spd.analog.com (10.66.68.11) by scsqmbx10.ad.analog.com
  (10.77.17.5) with Microsoft SMTP Server id 15.2.721.2 via Frontend Transport;
- Tue, 16 Feb 2021 23:38:54 -0800
+ Wed, 17 Feb 2021 00:32:40 -0800
 Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 11H7coEE031401;
-        Wed, 17 Feb 2021 02:38:51 -0500
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 11H8WWlE007757;
+        Wed, 17 Feb 2021 03:32:34 -0500
 From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
 To:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
-CC:     <jic23@kernel.org>, <mircea.caprioru@analog.com>,
+CC:     <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+        <jic23@kernel.org>, <nuno.sa@analog.com>,
+        <dragos.bogdan@analog.com>,
         Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH][RESEND] iio: dac: ad5686: Add support for AD5673R/AD5677R
-Date:   Wed, 17 Feb 2021 09:41:02 +0200
-Message-ID: <20210217074102.23148-1-alexandru.ardelean@analog.com>
+Subject: [PATCH v2 0/5] iio: Add output buffer support
+Date:   Wed, 17 Feb 2021 10:34:33 +0200
+Message-ID: <20210217083438.37865-1-alexandru.ardelean@analog.com>
 X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -49,119 +51,62 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowprio
  bulkscore=0 malwarescore=0 mlxlogscore=999 phishscore=0 clxscore=1015
  mlxscore=0 priorityscore=1501 impostorscore=0 adultscore=0 spamscore=0
  suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102170054
+ engine=8.12.0-2009150000 definitions=main-2102170064
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Mircea Caprioru <mircea.caprioru@analog.com>
+This patchset is based on the new multibuffer set.
+It doesn't require the high-speed/mmap interface.
+That will come later on a v2.
 
-The AD5673R/AD5677R are low power, 16-channel, 12-/16-bit buffered voltage
-output digital-to-analog converters (DACs). They include a 2.5 V internal
-reference (enabled by default).
+Changelog v1 -> v2:
+* https://lore.kernel.org/linux-iio/20210212102021.47276-4-alexandru.ardelean@analog.com/T/#u
+* removed DMA patches for now
+* in patch 'iio: Add output buffer support'
+  - added /sys/bus/iio/devices/iio:deviceX/bufferY/direction attribute
+  - thinking about this, an update to the new buffer infrastructure is
+    required when adding ADDAC/MxFE/transceivers; right now there is no
+    problem, because we have only ADCs and DACs; but when we get
+    transceivers, a bufferY/ directory needs to filter in/out
+    scan_elements/ ; this only occured to me recently (it's one of those
+    things that pops up later in mind)
+* added 'iio: Documentation: update definitions for bufferY and scan_elements'
+  - seems I forgot this on the original multibuffer patchset
+* added 'iio: triggered-buffer: extend support to configure output buffers'
+  - basically output triggered buffer support
+* added 'iio: dac: ad5686: Add PWM as a trigger source'
+  - this is a first user of this infrastructure
 
-These devices are very similar to AD5674R/AD5679R, except that they
-have an i2c interface.
+Alexandru Ardelean (2):
+  iio: Documentation: update definitions for bufferY and scan_elements
+  iio: triggered-buffer: extend support to configure output buffers
 
-Signed-off-by: Mircea Caprioru <mircea.caprioru@analog.com>
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
+Lars-Peter Clausen (2):
+  iio: Add output buffer support
+  iio: kfifo-buffer: Add output buffer support
 
-Forgot to include the linux-iio list in the first send.
+Mircea Caprioru (1):
+  iio: dac: ad5686: Add PWM as a trigger source
 
- drivers/iio/dac/Kconfig      |  5 +++--
- drivers/iio/dac/ad5686.c     | 12 ++++++++++++
- drivers/iio/dac/ad5686.h     |  2 ++
- drivers/iio/dac/ad5696-i2c.c |  6 ++++--
- 4 files changed, 21 insertions(+), 4 deletions(-)
+ Documentation/ABI/testing/sysfs-bus-iio       |  92 +++++++++++
+ drivers/iio/accel/adxl372.c                   |   1 +
+ drivers/iio/accel/bmc150-accel-core.c         |   1 +
+ drivers/iio/adc/at91-sama5d2_adc.c            |   4 +-
+ .../buffer/industrialio-triggered-buffer.c    |   8 +-
+ drivers/iio/buffer/kfifo_buf.c                |  50 ++++++
+ .../cros_ec_sensors/cros_ec_sensors_core.c    |   1 +
+ .../common/hid-sensors/hid-sensor-trigger.c   |   5 +-
+ drivers/iio/dac/ad5686-spi.c                  |   2 +-
+ drivers/iio/dac/ad5686.c                      | 146 +++++++++++++++++-
+ drivers/iio/dac/ad5686.h                      |   7 +-
+ drivers/iio/dac/ad5696-i2c.c                  |   2 +-
+ drivers/iio/industrialio-buffer.c             | 128 ++++++++++++++-
+ include/linux/iio/buffer.h                    |   7 +
+ include/linux/iio/buffer_impl.h               |  11 ++
+ include/linux/iio/triggered_buffer.h          |  11 +-
+ 16 files changed, 459 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
-index cea07b4cced1..75e1f2b48638 100644
---- a/drivers/iio/dac/Kconfig
-+++ b/drivers/iio/dac/Kconfig
-@@ -142,8 +142,9 @@ config AD5696_I2C
- 	select AD5686
- 	help
- 	  Say yes here to build support for Analog Devices AD5311R, AD5338R,
--	  AD5671R, AD5675R, AD5691R, AD5692R, AD5693, AD5693R, AD5694, AD5694R,
--	  AD5695R, AD5696, and AD5696R Digital to Analog converters.
-+	  AD5671R, AD5673R, AD5675R, AD5677R, AD5691R, AD5692R, AD5693, AD5693R,
-+	  AD5694, AD5694R, AD5695R, AD5696, and AD5696R Digital to Analog
-+	  converters.
- 
- 	  To compile this driver as a module, choose M here: the module will be
- 	  called ad5696.
-diff --git a/drivers/iio/dac/ad5686.c b/drivers/iio/dac/ad5686.c
-index 7d6792ac1020..99a95282ac57 100644
---- a/drivers/iio/dac/ad5686.c
-+++ b/drivers/iio/dac/ad5686.c
-@@ -301,6 +301,12 @@ static const struct ad5686_chip_info ad5686_chip_info_tbl[] = {
- 		.num_channels = 8,
- 		.regmap_type = AD5686_REGMAP,
- 	},
-+	[ID_AD5673R] = {
-+		.channels = ad5674r_channels,
-+		.int_vref_mv = 2500,
-+		.num_channels = 16,
-+		.regmap_type = AD5686_REGMAP,
-+	},
- 	[ID_AD5674R] = {
- 		.channels = ad5674r_channels,
- 		.int_vref_mv = 2500,
-@@ -324,6 +330,12 @@ static const struct ad5686_chip_info ad5686_chip_info_tbl[] = {
- 		.num_channels = 8,
- 		.regmap_type = AD5686_REGMAP,
- 	},
-+	[ID_AD5677R] = {
-+		.channels = ad5679r_channels,
-+		.int_vref_mv = 2500,
-+		.num_channels = 16,
-+		.regmap_type = AD5686_REGMAP,
-+	},
- 	[ID_AD5679R] = {
- 		.channels = ad5679r_channels,
- 		.int_vref_mv = 2500,
-diff --git a/drivers/iio/dac/ad5686.h b/drivers/iio/dac/ad5686.h
-index d9c8ba413fe9..f89a6f92b427 100644
---- a/drivers/iio/dac/ad5686.h
-+++ b/drivers/iio/dac/ad5686.h
-@@ -55,10 +55,12 @@ enum ad5686_supported_device_ids {
- 	ID_AD5338R,
- 	ID_AD5671R,
- 	ID_AD5672R,
-+	ID_AD5673R,
- 	ID_AD5674R,
- 	ID_AD5675R,
- 	ID_AD5676,
- 	ID_AD5676R,
-+	ID_AD5677R,
- 	ID_AD5679R,
- 	ID_AD5681R,
- 	ID_AD5682R,
-diff --git a/drivers/iio/dac/ad5696-i2c.c b/drivers/iio/dac/ad5696-i2c.c
-index a39eda7c02d2..24a6a4a5a2e0 100644
---- a/drivers/iio/dac/ad5696-i2c.c
-+++ b/drivers/iio/dac/ad5696-i2c.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- /*
-- * AD5671R, AD5675R, AD5691R, AD5692R, AD5693, AD5693R,
-- * AD5694, AD5694R, AD5695R, AD5696, AD5696R
-+ * AD5338R, AD5671R, AD5673R, AD5675R, AD5677R, AD5691R, AD5692R, AD5693,
-+ * AD5693R, AD5694, AD5694R, AD5695R, AD5696, AD5696R
-  * Digital to analog converters driver
-  *
-  * Copyright 2018 Analog Devices Inc.
-@@ -74,7 +74,9 @@ static const struct i2c_device_id ad5686_i2c_id[] = {
- 	{"ad5311r", ID_AD5311R},
- 	{"ad5338r", ID_AD5338R},
- 	{"ad5671r", ID_AD5671R},
-+	{"ad5673r", ID_AD5673R},
- 	{"ad5675r", ID_AD5675R},
-+	{"ad5677r", ID_AD5677R},
- 	{"ad5691r", ID_AD5691R},
- 	{"ad5692r", ID_AD5692R},
- 	{"ad5693", ID_AD5693},
 -- 
 2.17.1
 

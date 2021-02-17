@@ -2,49 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E4B4B31D6A3
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Feb 2021 09:36:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6259131D6A4
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Feb 2021 09:36:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231960AbhBQIeV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 17 Feb 2021 03:34:21 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:54712 "EHLO
+        id S231971AbhBQIeY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 17 Feb 2021 03:34:24 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:60400 "EHLO
         mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231616AbhBQIds (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 17 Feb 2021 03:33:48 -0500
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 11H8V3NP009015;
-        Wed, 17 Feb 2021 03:32:56 -0500
+        by vger.kernel.org with ESMTP id S231878AbhBQIdx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 17 Feb 2021 03:33:53 -0500
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 11H8UL2t026118;
+        Wed, 17 Feb 2021 03:33:01 -0500
 Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 36pcjata11-1
+        by mx0a-00128a01.pphosted.com with ESMTP id 36p9gb2hux-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 17 Feb 2021 03:32:56 -0500
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 11H8WtPe007685
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 17 Feb 2021 03:32:55 -0500
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.721.2;
- Wed, 17 Feb 2021 03:32:53 -0500
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+        Wed, 17 Feb 2021 03:33:01 -0500
+Received: from SCSQMBX11.ad.analog.com (SCSQMBX11.ad.analog.com [10.77.17.10])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 11H8Wxtx007692
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Wed, 17 Feb 2021 03:33:00 -0500
+Received: from SCSQCASHYB7.ad.analog.com (10.77.17.133) by
+ SCSQMBX11.ad.analog.com (10.77.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Wed, 17 Feb 2021 00:32:57 -0800
+Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
+ SCSQCASHYB7.ad.analog.com (10.77.17.133) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.721.2;
- Wed, 17 Feb 2021 03:32:53 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Wed, 17 Feb 2021 03:32:53 -0500
+ Wed, 17 Feb 2021 00:32:57 -0800
+Received: from zeus.spd.analog.com (10.66.68.11) by SCSQMBX11.ad.analog.com
+ (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Wed, 17 Feb 2021 00:32:57 -0800
 Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 11H8WWlI007757;
-        Wed, 17 Feb 2021 03:32:50 -0500
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 11H8WWlJ007757;
+        Wed, 17 Feb 2021 03:32:53 -0500
 From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
 To:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
 CC:     <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
         <jic23@kernel.org>, <nuno.sa@analog.com>,
         <dragos.bogdan@analog.com>,
+        Mircea Caprioru <mircea.caprioru@analog.com>,
+        Mihail Chindris <Mihail.Chindris@analog.com>,
         Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v2 4/5] iio: triggered-buffer: extend support to configure output buffers
-Date:   Wed, 17 Feb 2021 10:34:37 +0200
-Message-ID: <20210217083438.37865-5-alexandru.ardelean@analog.com>
+Subject: [PATCH v2 5/5] iio: dac: ad5686: Add PWM as a trigger source
+Date:   Wed, 17 Feb 2021 10:34:38 +0200
+Message-ID: <20210217083438.37865-6-alexandru.ardelean@analog.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210217083438.37865-1-alexandru.ardelean@analog.com>
 References: <20210217083438.37865-1-alexandru.ardelean@analog.com>
@@ -54,191 +56,340 @@ X-ADIRuleOP-NewSCL: Rule Triggered
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
  definitions=2021-02-17_06:2021-02-16,2021-02-17 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- priorityscore=1501 impostorscore=0 spamscore=0 bulkscore=0 mlxscore=0
- malwarescore=0 suspectscore=0 adultscore=0 clxscore=1015 phishscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ bulkscore=0 malwarescore=0 mlxlogscore=999 phishscore=0 clxscore=1015
+ mlxscore=0 priorityscore=1501 impostorscore=0 adultscore=0 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2009150000 definitions=main-2102170064
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Now that output (kfifo) buffers are supported, we need to extend the
-{devm_}iio_triggered_buffer_setup_ext() parameter list to take a direction
-parameter.
+From: Mircea Caprioru <mircea.caprioru@analog.com>
 
-This allows us to attach an output triggered buffer to a DAC device.
-Unfortunately it's a bit difficult to add another macro to avoid changing 5
-drivers where {devm_}iio_triggered_buffer_setup_ext() is used.
-Well, it's doable, but may not be worth the trouble vs just updating all
-these 5 drivers.
+A PWM signal will be used as a trigger source to have a deterministic
+sampling frequency since this family of DAC has no hardware interrupt
+source.
 
+This feature is made optional however, as there are some board setups where
+this isn't used.
+
+Signed-off-by: Mircea Caprioru <mircea.caprioru@analog.com>
+Signed-off-by: Mihail Chindris <Mihail.Chindris@analog.com>
 Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
- drivers/iio/accel/adxl372.c                           |  1 +
- drivers/iio/accel/bmc150-accel-core.c                 |  1 +
- drivers/iio/adc/at91-sama5d2_adc.c                    |  4 ++--
- drivers/iio/buffer/industrialio-triggered-buffer.c    |  8 ++++++--
- .../iio/common/cros_ec_sensors/cros_ec_sensors_core.c |  1 +
- drivers/iio/common/hid-sensors/hid-sensor-trigger.c   |  5 +++--
- include/linux/iio/triggered_buffer.h                  | 11 +++++++++--
- 7 files changed, 23 insertions(+), 8 deletions(-)
+ drivers/iio/dac/ad5686-spi.c |   2 +-
+ drivers/iio/dac/ad5686.c     | 146 ++++++++++++++++++++++++++++++++++-
+ drivers/iio/dac/ad5686.h     |   7 +-
+ drivers/iio/dac/ad5696-i2c.c |   2 +-
+ 4 files changed, 152 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/accel/adxl372.c b/drivers/iio/accel/adxl372.c
-index 8ba1453b8dbf..f2e077f72531 100644
---- a/drivers/iio/accel/adxl372.c
-+++ b/drivers/iio/accel/adxl372.c
-@@ -1214,6 +1214,7 @@ int adxl372_probe(struct device *dev, struct regmap *regmap,
- 	ret = devm_iio_triggered_buffer_setup_ext(dev,
- 						  indio_dev, NULL,
- 						  adxl372_trigger_handler,
-+						  IIO_BUFFER_DIRECTION_IN,
- 						  &adxl372_buffer_ops,
- 						  adxl372_fifo_attributes);
- 	if (ret < 0)
-diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
-index b0dbd12cbf42..3e0305b0065b 100644
---- a/drivers/iio/accel/bmc150-accel-core.c
-+++ b/drivers/iio/accel/bmc150-accel-core.c
-@@ -1743,6 +1743,7 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
- 	ret = iio_triggered_buffer_setup_ext(indio_dev,
- 					     &iio_pollfunc_store_time,
- 					     bmc150_accel_trigger_handler,
-+					     IIO_BUFFER_DIRECTION_IN,
- 					     &bmc150_accel_buffer_ops,
- 					     fifo_attrs);
- 	if (ret < 0) {
-diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-index a7826f097b95..fc134f9c0200 100644
---- a/drivers/iio/adc/at91-sama5d2_adc.c
-+++ b/drivers/iio/adc/at91-sama5d2_adc.c
-@@ -1680,8 +1680,8 @@ static int at91_adc_buffer_and_trigger_init(struct device *dev,
- 		fifo_attrs = NULL;
+diff --git a/drivers/iio/dac/ad5686-spi.c b/drivers/iio/dac/ad5686-spi.c
+index 0188ded5137c..07fadcf8e1e3 100644
+--- a/drivers/iio/dac/ad5686-spi.c
++++ b/drivers/iio/dac/ad5686-spi.c
+@@ -92,7 +92,7 @@ static int ad5686_spi_probe(struct spi_device *spi)
+ 	const struct spi_device_id *id = spi_get_device_id(spi);
  
- 	ret = devm_iio_triggered_buffer_setup_ext(&indio->dev, indio,
--		&iio_pollfunc_store_time,
--		&at91_adc_trigger_handler, &at91_buffer_setup_ops, fifo_attrs);
-+		&iio_pollfunc_store_time, &at91_adc_trigger_handler,
-+		IIO_BUFFER_DIRECTION_IN, &at91_buffer_setup_ops, fifo_attrs);
- 	if (ret < 0) {
- 		dev_err(dev, "couldn't initialize the buffer.\n");
- 		return ret;
-diff --git a/drivers/iio/buffer/industrialio-triggered-buffer.c b/drivers/iio/buffer/industrialio-triggered-buffer.c
-index b2b1b7d27af4..f400e978cd1e 100644
---- a/drivers/iio/buffer/industrialio-triggered-buffer.c
-+++ b/drivers/iio/buffer/industrialio-triggered-buffer.c
-@@ -19,6 +19,7 @@
-  * @indio_dev:		IIO device structure
-  * @h:			Function which will be used as pollfunc top half
-  * @thread:		Function which will be used as pollfunc bottom half
-+ * @direction:		Direction of the data stream (in/out).
-  * @setup_ops:		Buffer setup functions to use for this device.
-  *			If NULL the default setup functions for triggered
-  *			buffers will be used.
-@@ -38,6 +39,7 @@
- int iio_triggered_buffer_setup_ext(struct iio_dev *indio_dev,
- 	irqreturn_t (*h)(int irq, void *p),
- 	irqreturn_t (*thread)(int irq, void *p),
-+	enum iio_buffer_direction direction,
- 	const struct iio_buffer_setup_ops *setup_ops,
- 	const struct attribute **buffer_attrs)
- {
-@@ -68,6 +70,7 @@ int iio_triggered_buffer_setup_ext(struct iio_dev *indio_dev,
- 	/* Flag that polled ring buffering is possible */
- 	indio_dev->modes |= INDIO_BUFFER_TRIGGERED;
+ 	return ad5686_probe(&spi->dev, id->driver_data, id->name,
+-			    ad5686_spi_write, ad5686_spi_read);
++			    ad5686_spi_write, ad5686_spi_read, spi->irq);
+ }
  
-+	buffer->direction = direction;
- 	buffer->attrs = buffer_attrs;
+ static int ad5686_spi_remove(struct spi_device *spi)
+diff --git a/drivers/iio/dac/ad5686.c b/drivers/iio/dac/ad5686.c
+index 7d6792ac1020..9e48559ec566 100644
+--- a/drivers/iio/dac/ad5686.c
++++ b/drivers/iio/dac/ad5686.c
+@@ -16,6 +16,10 @@
  
- 	ret = iio_device_attach_buffer(indio_dev, buffer);
-@@ -105,6 +108,7 @@ int devm_iio_triggered_buffer_setup_ext(struct device *dev,
- 					struct iio_dev *indio_dev,
- 					irqreturn_t (*h)(int irq, void *p),
- 					irqreturn_t (*thread)(int irq, void *p),
-+					enum iio_buffer_direction direction,
- 					const struct iio_buffer_setup_ops *ops,
- 					const struct attribute **buffer_attrs)
- {
-@@ -118,8 +122,8 @@ int devm_iio_triggered_buffer_setup_ext(struct device *dev,
- 
- 	*ptr = indio_dev;
- 
--	ret = iio_triggered_buffer_setup_ext(indio_dev, h, thread, ops,
--					     buffer_attrs);
-+	ret = iio_triggered_buffer_setup_ext(indio_dev, h, thread, direction,
-+					     ops, buffer_attrs);
- 	if (!ret)
- 		devres_add(dev, ptr);
- 	else
-diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-index f8824afe595e..afe8917f8c49 100644
---- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-@@ -369,6 +369,7 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
- 			 */
- 			ret = devm_iio_triggered_buffer_setup_ext(
- 					dev, indio_dev, NULL, trigger_capture,
-+					IIO_BUFFER_DIRECTION_IN,
- 					NULL, fifo_attrs);
- 			if (ret)
- 				return ret;
-diff --git a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
-index 064c32bec9c7..dfaadbcac08a 100644
---- a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
-+++ b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
-@@ -248,8 +248,9 @@ int hid_sensor_setup_trigger(struct iio_dev *indio_dev, const char *name,
- 		fifo_attrs = NULL;
- 
- 	ret = iio_triggered_buffer_setup_ext(indio_dev,
--					     &iio_pollfunc_store_time,
--					     NULL, NULL, fifo_attrs);
-+					     &iio_pollfunc_store_time, NULL,
-+					     IIO_BUFFER_DIRECTION_IN,
-+					     NULL, fifo_attrs);
- 	if (ret) {
- 		dev_err(&indio_dev->dev, "Triggered Buffer Setup Failed\n");
- 		return ret;
-diff --git a/include/linux/iio/triggered_buffer.h b/include/linux/iio/triggered_buffer.h
-index 7f154d1f8739..7490b05fc5b2 100644
---- a/include/linux/iio/triggered_buffer.h
-+++ b/include/linux/iio/triggered_buffer.h
-@@ -2,6 +2,7 @@
- #ifndef _LINUX_IIO_TRIGGERED_BUFFER_H_
- #define _LINUX_IIO_TRIGGERED_BUFFER_H_
- 
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
 +#include <linux/iio/buffer.h>
- #include <linux/interrupt.h>
++#include <linux/iio/trigger.h>
++#include <linux/iio/trigger_consumer.h>
++#include <linux/iio/triggered_buffer.h>
  
- struct attribute;
-@@ -11,21 +12,27 @@ struct iio_buffer_setup_ops;
- int iio_triggered_buffer_setup_ext(struct iio_dev *indio_dev,
- 	irqreturn_t (*h)(int irq, void *p),
- 	irqreturn_t (*thread)(int irq, void *p),
-+	enum iio_buffer_direction direction,
- 	const struct iio_buffer_setup_ops *setup_ops,
- 	const struct attribute **buffer_attrs);
- void iio_triggered_buffer_cleanup(struct iio_dev *indio_dev);
+ #include "ad5686.h"
  
- #define iio_triggered_buffer_setup(indio_dev, h, thread, setup_ops)		\
--	iio_triggered_buffer_setup_ext((indio_dev), (h), (thread), (setup_ops), NULL)
-+	iio_triggered_buffer_setup_ext((indio_dev), (h), (thread),		\
-+					IIO_BUFFER_DIRECTION_IN, (setup_ops),	\
-+					NULL)
+@@ -123,6 +127,7 @@ static int ad5686_read_raw(struct iio_dev *indio_dev,
+ 			   long m)
+ {
+ 	struct ad5686_state *st = iio_priv(indio_dev);
++	struct pwm_state state;
+ 	int ret;
  
- int devm_iio_triggered_buffer_setup_ext(struct device *dev,
- 					struct iio_dev *indio_dev,
- 					irqreturn_t (*h)(int irq, void *p),
- 					irqreturn_t (*thread)(int irq, void *p),
-+					enum iio_buffer_direction direction,
- 					const struct iio_buffer_setup_ops *ops,
- 					const struct attribute **buffer_attrs);
+ 	switch (m) {
+@@ -139,6 +144,10 @@ static int ad5686_read_raw(struct iio_dev *indio_dev,
+ 		*val = st->vref_mv;
+ 		*val2 = chan->scan_type.realbits;
+ 		return IIO_VAL_FRACTIONAL_LOG2;
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		pwm_get_state(st->pwm, &state);
++		*val = DIV_ROUND_CLOSEST_ULL(1000000000ULL, state.period);
++		return IIO_VAL_INT;
+ 	}
+ 	return -EINVAL;
+ }
+@@ -150,6 +159,7 @@ static int ad5686_write_raw(struct iio_dev *indio_dev,
+ 			    long mask)
+ {
+ 	struct ad5686_state *st = iio_priv(indio_dev);
++	struct pwm_state state;
+ 	int ret;
  
- #define devm_iio_triggered_buffer_setup(dev, indio_dev, h, thread, setup_ops)	\
--	devm_iio_triggered_buffer_setup_ext((dev), (indio_dev), (h), (thread), (setup_ops), NULL)
-+	devm_iio_triggered_buffer_setup_ext((dev), (indio_dev), (h), (thread),	\
-+					    IIO_BUFFER_DIRECTION_IN,		\
-+					    (setup_ops), NULL)
+ 	switch (mask) {
+@@ -164,6 +174,14 @@ static int ad5686_write_raw(struct iio_dev *indio_dev,
+ 				val << chan->scan_type.shift);
+ 		mutex_unlock(&st->lock);
+ 		break;
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		pwm_get_state(st->pwm, &state);
++
++		state.period = DIV_ROUND_CLOSEST_ULL(1000000000ULL, val);
++		pwm_set_relative_duty_cycle(&state, 50, 100);
++
++		ret = pwm_apply_state(st->pwm, &state);
++		break;
+ 	default:
+ 		ret = -EINVAL;
+ 	}
+@@ -171,7 +189,37 @@ static int ad5686_write_raw(struct iio_dev *indio_dev,
+ 	return ret;
+ }
  
- #endif
++static int ad5686_trig_set_state(struct iio_trigger *trig,
++				 bool state)
++{
++	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
++	struct ad5686_state *st = iio_priv(indio_dev);
++	struct pwm_state pwm_st;
++
++	pwm_get_state(st->pwm, &pwm_st);
++	pwm_st.enabled = state;
++
++	return pwm_apply_state(st->pwm, &pwm_st);
++}
++
++static int ad5686_validate_trigger(struct iio_dev *indio_dev,
++				    struct iio_trigger *trig)
++{
++	struct ad5686_state *st = iio_priv(indio_dev);
++
++	if (st->trig != trig)
++		return -EINVAL;
++
++	return 0;
++}
++
++static const struct iio_trigger_ops ad5686_trigger_ops = {
++	.validate_device = &iio_trigger_validate_own_device,
++	.set_trigger_state = &ad5686_trig_set_state,
++};
++
+ static const struct iio_info ad5686_info = {
++	.validate_trigger = &ad5686_validate_trigger,
+ 	.read_raw = ad5686_read_raw,
+ 	.write_raw = ad5686_write_raw,
+ };
+@@ -194,8 +242,10 @@ static const struct iio_chan_spec_ext_info ad5686_ext_info[] = {
+ 		.output = 1,					\
+ 		.channel = chan,				\
+ 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),	\
+-		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),\
++		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) | \
++					    BIT(IIO_CHAN_INFO_SAMP_FREQ),\
+ 		.address = addr,				\
++		.scan_index = chan,				\
+ 		.scan_type = {					\
+ 			.sign = 'u',				\
+ 			.realbits = (bits),			\
+@@ -428,13 +478,57 @@ static const struct ad5686_chip_info ad5686_chip_info_tbl[] = {
+ 	},
+ };
+ 
++static irqreturn_t ad5686_trigger_handler(int irq, void *p)
++{
++	struct iio_poll_func *pf = p;
++	struct iio_dev *indio_dev = pf->indio_dev;
++	const struct iio_chan_spec *chan;
++	struct iio_buffer *buffer = indio_dev->buffer;
++	struct ad5686_state *st = iio_priv(indio_dev);
++	u8 sample[2];
++	unsigned int i;
++	u16 val;
++	int ret;
++
++	ret = iio_buffer_remove_sample(buffer, sample);
++	if (ret < 0)
++		goto out;
++
++	mutex_lock(&st->lock);
++	for_each_set_bit(i, indio_dev->active_scan_mask, indio_dev->masklength) {
++		val = (sample[1] << 8) + sample[0];
++
++		chan = iio_find_channel_from_si(indio_dev, i);
++		ret = st->write(st, AD5686_CMD_WRITE_INPUT_N_UPDATE_N,
++				chan->address, val << chan->scan_type.shift);
++	}
++	mutex_unlock(&st->lock);
++
++out:
++	iio_trigger_notify_done(indio_dev->trig);
++
++	return IRQ_HANDLED;
++}
++
++static irqreturn_t ad5686_irq_handler(int irq, void *data)
++{
++	struct iio_dev *indio_dev = data;
++	struct ad5686_state *st = iio_priv(indio_dev);
++
++	if (iio_buffer_enabled(indio_dev))
++		iio_trigger_poll(st->trig);
++
++	return IRQ_HANDLED;
++}
++
+ int ad5686_probe(struct device *dev,
+ 		 enum ad5686_supported_device_ids chip_type,
+ 		 const char *name, ad5686_write_func write,
+-		 ad5686_read_func read)
++		 ad5686_read_func read, int irq)
+ {
+ 	struct ad5686_state *st;
+ 	struct iio_dev *indio_dev;
++	struct pwm_state state;
+ 	unsigned int val, ref_bit_msk;
+ 	u8 cmd;
+ 	int ret, i, voltage_uv = 0;
+@@ -450,6 +544,23 @@ int ad5686_probe(struct device *dev,
+ 	st->write = write;
+ 	st->read = read;
+ 
++	mutex_init(&st->lock);
++
++	st->trig = devm_iio_trigger_alloc(dev, "%s-dev%d", name, indio_dev->id);
++	if (st->trig == NULL)
++		ret = -ENOMEM;
++
++	st->trig->ops = &ad5686_trigger_ops;
++	st->trig->dev.parent = dev;
++	iio_trigger_set_drvdata(st->trig, indio_dev);
++
++	ret = devm_iio_trigger_register(dev, st->trig);
++	if (ret)
++		return ret;
++
++	/* select default trigger */
++	indio_dev->trig = iio_trigger_get(st->trig);
++
+ 	st->reg = devm_regulator_get_optional(dev, "vcc");
+ 	if (!IS_ERR(st->reg)) {
+ 		ret = regulator_enable(st->reg);
+@@ -463,6 +574,30 @@ int ad5686_probe(struct device *dev,
+ 		voltage_uv = ret;
+ 	}
+ 
++	/* PWM configuration */
++	st->pwm = devm_pwm_get(dev, "pwm-trigger");
++	if (!IS_ERR(st->pwm)) {
++		/* Set a default pwm frequency of 1kHz and 50% duty cycle */
++		pwm_init_state(st->pwm, &state);
++		state.enabled = false;
++		state.period = 1000000;
++		pwm_set_relative_duty_cycle(&state, 50, 100);
++		ret = pwm_apply_state(st->pwm, &state);
++		if (ret < 0)
++			return ret;
++	}
++
++	/* Configure IRQ */
++	if (irq) {
++		ret = devm_request_threaded_irq(dev, irq, NULL, ad5686_irq_handler,
++						IRQF_TRIGGER_RISING | IRQF_ONESHOT,
++						"ad5686 irq", indio_dev);
++		if (ret)
++			return ret;
++
++		st->irq = irq;
++	}
++
+ 	st->chip_info = &ad5686_chip_info_tbl[chip_type];
+ 
+ 	if (voltage_uv)
+@@ -513,6 +648,13 @@ int ad5686_probe(struct device *dev,
+ 	if (ret)
+ 		goto error_disable_reg;
+ 
++	ret = devm_iio_triggered_buffer_setup_ext(dev, indio_dev, NULL,
++						  &ad5686_trigger_handler,
++						  IIO_BUFFER_DIRECTION_OUT,
++						  NULL, NULL);
++	if (ret)
++		goto error_disable_reg;
++
+ 	ret = iio_device_register(indio_dev);
+ 	if (ret)
+ 		goto error_disable_reg;
+diff --git a/drivers/iio/dac/ad5686.h b/drivers/iio/dac/ad5686.h
+index d9c8ba413fe9..b287873553a1 100644
+--- a/drivers/iio/dac/ad5686.h
++++ b/drivers/iio/dac/ad5686.h
+@@ -12,6 +12,7 @@
+ #include <linux/cache.h>
+ #include <linux/mutex.h>
+ #include <linux/kernel.h>
++#include <linux/pwm.h>
+ 
+ #define AD5310_CMD(x)				((x) << 12)
+ 
+@@ -112,6 +113,7 @@ struct ad5686_chip_info {
+ /**
+  * struct ad5446_state - driver instance specific data
+  * @spi:		spi_device
++ * @pwm:		pwm used for buffer trigger
+  * @chip_info:		chip model specific constants, available modes etc
+  * @reg:		supply regulator
+  * @vref_mv:		actual reference voltage used
+@@ -124,6 +126,8 @@ struct ad5686_chip_info {
+ 
+ struct ad5686_state {
+ 	struct device			*dev;
++	struct pwm_device		*pwm;
++	struct iio_trigger		*trig;
+ 	const struct ad5686_chip_info	*chip_info;
+ 	struct regulator		*reg;
+ 	unsigned short			vref_mv;
+@@ -133,6 +137,7 @@ struct ad5686_state {
+ 	ad5686_read_func		read;
+ 	bool				use_internal_vref;
+ 	struct mutex			lock;
++	int				irq;
+ 
+ 	/*
+ 	 * DMA (thus cache coherency maintenance) requires the
+@@ -150,7 +155,7 @@ struct ad5686_state {
+ int ad5686_probe(struct device *dev,
+ 		 enum ad5686_supported_device_ids chip_type,
+ 		 const char *name, ad5686_write_func write,
+-		 ad5686_read_func read);
++		 ad5686_read_func read, int irq);
+ 
+ int ad5686_remove(struct device *dev);
+ 
+diff --git a/drivers/iio/dac/ad5696-i2c.c b/drivers/iio/dac/ad5696-i2c.c
+index a39eda7c02d2..f80acc0972ea 100644
+--- a/drivers/iio/dac/ad5696-i2c.c
++++ b/drivers/iio/dac/ad5696-i2c.c
+@@ -62,7 +62,7 @@ static int ad5686_i2c_probe(struct i2c_client *i2c,
+ 			    const struct i2c_device_id *id)
+ {
+ 	return ad5686_probe(&i2c->dev, id->driver_data, id->name,
+-			    ad5686_i2c_write, ad5686_i2c_read);
++			    ad5686_i2c_write, ad5686_i2c_read, i2c->irq);
+ }
+ 
+ static int ad5686_i2c_remove(struct i2c_client *i2c)
 -- 
 2.17.1
 

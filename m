@@ -2,50 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 52ABB31E785
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Feb 2021 09:40:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BBDC631E7D5
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Feb 2021 10:23:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230468AbhBRIfV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 18 Feb 2021 03:35:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54374 "EHLO
+        id S230290AbhBRJBs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 18 Feb 2021 04:01:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231248AbhBRIcS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 18 Feb 2021 03:32:18 -0500
-Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2AA0C061756
-        for <linux-iio@vger.kernel.org>; Thu, 18 Feb 2021 00:31:36 -0800 (PST)
-Received: by mail-il1-x12d.google.com with SMTP id z18so764858ile.9
-        for <linux-iio@vger.kernel.org>; Thu, 18 Feb 2021 00:31:36 -0800 (PST)
+        with ESMTP id S231403AbhBRI7V (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 18 Feb 2021 03:59:21 -0500
+Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79764C061574
+        for <linux-iio@vger.kernel.org>; Thu, 18 Feb 2021 00:35:39 -0800 (PST)
+Received: by mail-io1-xd30.google.com with SMTP id e133so1175680iof.8
+        for <linux-iio@vger.kernel.org>; Thu, 18 Feb 2021 00:35:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
+        d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=FnFnVnaRXrT40XcK7ypp9vNkYsCDr6Wn8f1eLQ+uols=;
-        b=uM50+NioPVvCdWMRfHvD0wSrIxdhjoTw0SY8GRtrbEeoNZUr3ybB2GbVc5iWmlTJUV
-         3D5G1tTFJzAwzRQY6HKCITQX5TcXLRgxMe3WyqpdLys6DjJYyIQt+QvjkTU+D4ICgJET
-         PaFc/9k0J4pCTUU7athTlKgVTr0Jv4nudiZow=
+        bh=XH8qEPOCz5iurGiFNxv2Z+nbu2iPCZkMEvafRPHdCwU=;
+        b=CvHCgiQBZB496Pn+qfIaRIeEmE26iQwxsld6qIBXkVGnxAwJmBhV1XSwwHY/G31Dv6
+         Hqi+EZY+o/3HJwaghgaNY4uUJTWSvLJMCbPqiCp30O8K+JWgpWt7+SbCR88E6NhyDqJM
+         GF7P3NGPt8TK0uL6m+eFFJSYnvLDkwmgI6EC9zs8m7Bb+vuwWawbE096vHWbnM+kjTLv
+         APx2ngbL/SYyovXBfrzp0kKOgbdCuSxyT0RBzdyjEMFwDw6P0+mAPf8KIQm2VCqHpXKw
+         tOf46QpC47h3dyXRfjJ/qfE/lj+b4rOIssRWjc5godoaZZtYyHH4LAJXn93R3q6kVFf1
+         hREw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=FnFnVnaRXrT40XcK7ypp9vNkYsCDr6Wn8f1eLQ+uols=;
-        b=k5xeQt65nm37b0bKTVvJ8lJlNgR/5YGR5scElH03i/HQ0/giFQXtT02jHfN0OLgLZ4
-         b1gACXlIn9OrsixRAZTiLJLyU9LFZoxqI696dpONT1Fq5caX5ZiyQ6UiBbzWKgnn7llG
-         Y53NlnwZdhxgtRF2HuvEQocoG9MD1aRgaJk2qDquoGj/pUkZJ0lLon1NvfRAG/y4vDsp
-         aEBPdCPQPovOzx64/Ibi8uhcm7riFa3cDG83xp9MIr9HvI2iEGiGLsMajIZjKGl7VcXU
-         qlB8QadW079iacLuRl4KkA6F/L4gFf77IiaeQ5oSsWY3oYuM49Den5BTEuk11xe9ph9l
-         ZCfQ==
-X-Gm-Message-State: AOAM533vkUvbEQlK1QEIDmWb1/J0EOcIK7z/kFqFplT9SWlr1BcUMlYK
-        mJwsO5g1pzGp5+HUu6m0yfadsGNr3HCnjb39iQQPMOEI/puAa8o5
-X-Google-Smtp-Source: ABdhPJxJclJaYxiYQQxxB3evx7zwOfO0qXC2GpmC6xa1Z8YdOtteTvzh7HXwnbsuYS/OGGXGvU2WcNm6O3l3Py/0Trs=
-X-Received: by 2002:a05:6e02:eb4:: with SMTP id u20mr2827217ilj.142.1613637096277;
- Thu, 18 Feb 2021 00:31:36 -0800 (PST)
+        bh=XH8qEPOCz5iurGiFNxv2Z+nbu2iPCZkMEvafRPHdCwU=;
+        b=GF10SKb9tcdvHVcNy5pxSyfkxU7t8iv8IjhnRGt5oPaIfTeGhb9Gjcn5VTdc6IuCf/
+         o5MQnYTRV4kUlhF8TKZ6Se+PmI7bO+l2Da65ihkSd7+xMbvA/T3Qvi1q9ozVaa4AL++h
+         SRKe+IYkp85fy02ADdNBKK4XQ1Lg1e2R54/8KiZ0GlW18cMQO3keOobvn6PsWUufWdEq
+         vd6+7E6k+UPhWMePLTTuloEmZHxmF1+npzLUzl+Jm1sx0c10iyfQxBGD5KniCaP67NrB
+         X93wVzGMNTnbPsXiIlfuPKzYjtqKukWmZtS5cDBDMBgzzb+t5hCVU4fUbr6YwzWLKf72
+         sT5w==
+X-Gm-Message-State: AOAM533AUN/gF09K0Xd7m8Kes+v4H0Dz6bfp/yag7fPCoCMDoRp2cNoJ
+        HW8+lX0h+nKFwQePimpk0J++yecZ5E5yFK11gDY=
+X-Google-Smtp-Source: ABdhPJwGEHw2Bej9XmyMP5CwxaQo/tL/bX5qk2ozF/u+mJJQ9HxDMWPqv4xqF+sX23TGGw91PQl8Aza2Lt4Vytl1lFU=
+X-Received: by 2002:a5d:8e01:: with SMTP id e1mr2708909iod.170.1613637338760;
+ Thu, 18 Feb 2021 00:35:38 -0800 (PST)
 MIME-Version: 1.0
 References: <AM9PR08MB6083269425D1057113B212709B859@AM9PR08MB6083.eurprd08.prod.outlook.com>
 In-Reply-To: <AM9PR08MB6083269425D1057113B212709B859@AM9PR08MB6083.eurprd08.prod.outlook.com>
-From:   Matt Ranostay <matt.ranostay@konsulko.com>
-Date:   Thu, 18 Feb 2021 00:31:24 -0800
-Message-ID: <CAJCx=g=kJz21ZwH5yYoRjZUbDhP0ZEoGe9+mBB2uB+=h9sAQRw@mail.gmail.com>
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+Date:   Thu, 18 Feb 2021 10:35:27 +0200
+Message-ID: <CA+U=DspfyuxyhPfPrGDaU5nDQVaO5p3ha-5hwpzVX69p1P60WA@mail.gmail.com>
 Subject: Re: Control Register device tree binding request for Opt3001
 To:     =?UTF-8?Q?Ekin_B=C3=B6ke?= <ekin_boke@arcelik.com>
 Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
@@ -56,7 +59,7 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Feb 17, 2021 at 9:20 PM Ekin B=C3=B6ke <ekin_boke@arcelik.com> wrot=
+On Thu, Feb 18, 2021 at 7:27 AM Ekin B=C3=B6ke <ekin_boke@arcelik.com> wrot=
 e:
 >
 > Hi,
@@ -70,16 +73,19 @@ ce_integration_time sysfs node at the runtime.
 >
 > Should we add a parameter to the device tree bindings or is there another=
  way to set the CT parameter at the initialization?
+
+It's usually a good idea to use the sysfs attribute, if it's already availa=
+ble.
+Maybe during system boot-up, you can add some service init call to
+initialize to 100 ms or right before starting to read data from the
+sensor.
+
+For kernel people, these initialization device-tree attributes seem conveni=
+ent.
+But in this case, CT is a parameter of the chip and not a hard-wired
+configuration of the board [which needs to be described in DT].
+
 >
-
-Yes, it would make sense to have that in the device tree if it isn't
-going to be switched on runtime. However if it is supposed to be
-configured at runtime you could have a) devicetree + sysfs
-configuration b) or just sysfs if timing isn't important.
-
-Although devicetree configuration if *optional* probably wouldn't
-hurt. I'm sure Jonathan will have a comment either way :)
-
 >
 > Best Regards
 >
@@ -87,13 +93,6 @@ hurt. I'm sure Jonathan will have a comment either way :)
 >
 >
 >
-
-Just a slight pedantic note that some people won't respond to some
-emails on kernel mailing lists due to the following message (corporate
-legal departments and such).
-
-- Matt
-
 > Bu e-posta mesaji kisiye ozel olup, gizli bilgiler iceriyor olabilir. Ege=
 r bu e-posta mesaji size yanlislikla ulasmissa, icerigini hic bir sekilde k=
 ullanmayiniz ve ekli dosyalari acmayiniz. Bu durumda lutfen e-posta mesajin=

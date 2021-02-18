@@ -2,114 +2,153 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BBDC631E7D5
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Feb 2021 10:23:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB02231E95B
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Feb 2021 12:55:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230290AbhBRJBs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 18 Feb 2021 04:01:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60022 "EHLO
+        id S230426AbhBRLye (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 18 Feb 2021 06:54:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231403AbhBRI7V (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 18 Feb 2021 03:59:21 -0500
-Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79764C061574
-        for <linux-iio@vger.kernel.org>; Thu, 18 Feb 2021 00:35:39 -0800 (PST)
-Received: by mail-io1-xd30.google.com with SMTP id e133so1175680iof.8
-        for <linux-iio@vger.kernel.org>; Thu, 18 Feb 2021 00:35:39 -0800 (PST)
+        with ESMTP id S232662AbhBRKRC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 18 Feb 2021 05:17:02 -0500
+Received: from mail-qk1-x72f.google.com (mail-qk1-x72f.google.com [IPv6:2607:f8b0:4864:20::72f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0C9FC06178C;
+        Thu, 18 Feb 2021 02:16:17 -0800 (PST)
+Received: by mail-qk1-x72f.google.com with SMTP id w19so1488424qki.13;
+        Thu, 18 Feb 2021 02:16:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=XH8qEPOCz5iurGiFNxv2Z+nbu2iPCZkMEvafRPHdCwU=;
-        b=CvHCgiQBZB496Pn+qfIaRIeEmE26iQwxsld6qIBXkVGnxAwJmBhV1XSwwHY/G31Dv6
-         Hqi+EZY+o/3HJwaghgaNY4uUJTWSvLJMCbPqiCp30O8K+JWgpWt7+SbCR88E6NhyDqJM
-         GF7P3NGPt8TK0uL6m+eFFJSYnvLDkwmgI6EC9zs8m7Bb+vuwWawbE096vHWbnM+kjTLv
-         APx2ngbL/SYyovXBfrzp0kKOgbdCuSxyT0RBzdyjEMFwDw6P0+mAPf8KIQm2VCqHpXKw
-         tOf46QpC47h3dyXRfjJ/qfE/lj+b4rOIssRWjc5godoaZZtYyHH4LAJXn93R3q6kVFf1
-         hREw==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=HqYkgCpjSPW+7F/Sy105/jMqMoKMqyjH6uBkL+9+REE=;
+        b=bjHLCgEvzSj1u5NBEHNFSvRURMSBA4NFzeJ0zvH7t4X/PKfX7qN1JrT6++1lT0JoWJ
+         LmEcbURYbtwaqEE4L2B7KodzoBozVMmIpnDfLqFdaQcr+31EeeryX2MK/SJixTVmnsIN
+         4i2LYzoQNoIzJZpEHmbGcpkw4xJcAPSWy2Wg/KDKP/LYgDrP20fk3GNMOdmEBaUaRUTW
+         bjWNVnO3HUAaNZzZJXPn9miGyjJswC7r8OWuzBweHmqOgGjSuiyjU164ExByIH7agxLh
+         HbwZ0wpm28/Iyn67JrpBVzb2bIEeEiGpraeSIvW0EK+CZMg8gjIsUjboZh6eYIFdcoP7
+         9eTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=XH8qEPOCz5iurGiFNxv2Z+nbu2iPCZkMEvafRPHdCwU=;
-        b=GF10SKb9tcdvHVcNy5pxSyfkxU7t8iv8IjhnRGt5oPaIfTeGhb9Gjcn5VTdc6IuCf/
-         o5MQnYTRV4kUlhF8TKZ6Se+PmI7bO+l2Da65ihkSd7+xMbvA/T3Qvi1q9ozVaa4AL++h
-         SRKe+IYkp85fy02ADdNBKK4XQ1Lg1e2R54/8KiZ0GlW18cMQO3keOobvn6PsWUufWdEq
-         vd6+7E6k+UPhWMePLTTuloEmZHxmF1+npzLUzl+Jm1sx0c10iyfQxBGD5KniCaP67NrB
-         X93wVzGMNTnbPsXiIlfuPKzYjtqKukWmZtS5cDBDMBgzzb+t5hCVU4fUbr6YwzWLKf72
-         sT5w==
-X-Gm-Message-State: AOAM533AUN/gF09K0Xd7m8Kes+v4H0Dz6bfp/yag7fPCoCMDoRp2cNoJ
-        HW8+lX0h+nKFwQePimpk0J++yecZ5E5yFK11gDY=
-X-Google-Smtp-Source: ABdhPJwGEHw2Bej9XmyMP5CwxaQo/tL/bX5qk2ozF/u+mJJQ9HxDMWPqv4xqF+sX23TGGw91PQl8Aza2Lt4Vytl1lFU=
-X-Received: by 2002:a5d:8e01:: with SMTP id e1mr2708909iod.170.1613637338760;
- Thu, 18 Feb 2021 00:35:38 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=HqYkgCpjSPW+7F/Sy105/jMqMoKMqyjH6uBkL+9+REE=;
+        b=ZkYxkHvISGfnLttdkrcthVqz4uXdtrYE4op78uFByOAo5xC4D5xjJQ4USEnUnPui2y
+         wckuAaYHj1ePq26aKKB5LJ8mCMXuoxdsSobwOXfTyhP96PYWESZdTdPQUzIg46TrGGGK
+         X4x8ddaTm/kRTTLrpzgZNHDs2TCTFomqy7SsTI+u8xigjziL/ElMxF24yCPbQxMmmNrI
+         bMP49MFpQiouHQNUfIqQV4iAqPjzhqvlOcChT30gYQQLxoU3ZwjqaWYfTuqdZJ+xPHxd
+         Fu1dsFKVo/O/tgX1pcbcHXa5Pana13LFCiv93L8vuPt2ojOcndPQCGlBGmy7/YqQsjlh
+         MkxA==
+X-Gm-Message-State: AOAM531gWxpm0oiIyrMsrnbsCqrYqnVWw82XxOufsVVRGXlcE4BtWKu2
+        sdZSoFG4/kgdTzHgxwkJ180=
+X-Google-Smtp-Source: ABdhPJzwf7tAcl8J6SrMTdWQ+bTkREFQjQqdIE9c2m4MIc3VhuWvChczJlBaGH4qxdL06pPohfbyHQ==
+X-Received: by 2002:a37:4fd2:: with SMTP id d201mr3494806qkb.232.1613643376916;
+        Thu, 18 Feb 2021 02:16:16 -0800 (PST)
+Received: from shinobu ([193.27.12.132])
+        by smtp.gmail.com with ESMTPSA id v1sm3757790qki.49.2021.02.18.02.16.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Feb 2021 02:16:15 -0800 (PST)
+Date:   Thu, 18 Feb 2021 19:16:08 +0900
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
+        a.fatoum@pengutronix.de, kamel.bouhara@bootlin.com,
+        gwendal@chromium.org, alexandre.belloni@bootlin.com,
+        david@lechnology.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        syednwaris@gmail.com, patrick.havelange@essensium.com,
+        fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@st.com, o.rempel@pengutronix.de
+Subject: Re: [PATCH v8 21/22] counter: 104-quad-8: Replace mutex with spinlock
+Message-ID: <YC4+aMA6fom7pd4F@shinobu>
+References: <cover.1613131238.git.vilhelm.gray@gmail.com>
+ <d2e72eac404ca5b7c99d8a642f2c07ebb2eb240a.1613131238.git.vilhelm.gray@gmail.com>
+ <20210214181946.1d2f7e78@archlinux>
+ <YCsq42hXqdRWrSEd@shinobu>
+ <20210216192720.75082d22@archlinux>
 MIME-Version: 1.0
-References: <AM9PR08MB6083269425D1057113B212709B859@AM9PR08MB6083.eurprd08.prod.outlook.com>
-In-Reply-To: <AM9PR08MB6083269425D1057113B212709B859@AM9PR08MB6083.eurprd08.prod.outlook.com>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Thu, 18 Feb 2021 10:35:27 +0200
-Message-ID: <CA+U=DspfyuxyhPfPrGDaU5nDQVaO5p3ha-5hwpzVX69p1P60WA@mail.gmail.com>
-Subject: Re: Control Register device tree binding request for Opt3001
-To:     =?UTF-8?Q?Ekin_B=C3=B6ke?= <ekin_boke@arcelik.com>
-Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "cengiz@kernel.wtf" <cengiz@kernel.wtf>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="+eKruDaQgZ0deyTo"
+Content-Disposition: inline
+In-Reply-To: <20210216192720.75082d22@archlinux>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Feb 18, 2021 at 7:27 AM Ekin B=C3=B6ke <ekin_boke@arcelik.com> wrot=
-e:
->
-> Hi,
->
-> We are using Opt3001 for a day light control system and according to the =
-data sheet it has 2 conversion time modes
-> that are 100 ms(CT=3D0) and 800 ms(CT=3D1) . Configuration register field=
- CT controls the conversion time and we want to set the CT parameter at the=
- initialization to 0 at all times. We could do it by using the in_illuminan=
-ce_integration_time sysfs node at the runtime.
->
-> Should we add a parameter to the device tree bindings or is there another=
- way to set the CT parameter at the initialization?
 
-It's usually a good idea to use the sysfs attribute, if it's already availa=
-ble.
-Maybe during system boot-up, you can add some service init call to
-initialize to 100 ms or right before starting to read data from the
-sensor.
+--+eKruDaQgZ0deyTo
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-For kernel people, these initialization device-tree attributes seem conveni=
-ent.
-But in this case, CT is a parameter of the chip and not a hard-wired
-configuration of the board [which needs to be described in DT].
+On Tue, Feb 16, 2021 at 07:27:20PM +0000, Jonathan Cameron wrote:
+> On Tue, 16 Feb 2021 11:16:03 +0900
+> William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
+>=20
+> > On Sun, Feb 14, 2021 at 06:19:46PM +0000, Jonathan Cameron wrote:
+> > > On Fri, 12 Feb 2021 21:13:45 +0900
+> > > William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
+> > >  =20
+> > > > This patch replaces the mutex I/O lock with a spinlock. This is in
+> > > > preparation for a subsequent patch adding IRQ support for 104-QUAD-8
+> > > > devices; we can't sleep in an interrupt context, so we'll need to u=
+se a
+> > > > spinlock instead.
+> > > >=20
+> > > > Cc: Syed Nayyar Waris <syednwaris@gmail.com>
+> > > > Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com> =20
+> > >=20
+> > > Why do these need to be raw_spin_locks?
+> > > Normally only need to do that if in code related to interrupt chips e=
+tc,
+> > > not their use.
+> > >=20
+> > > Jonathan =20
+> >=20
+> > This lock can be taken in an interrupt context in a subsequent patch:
+> > counter_push_event() called by quad8_irq_handler() can end up calling
+> > the Counter component callbacks which take this lock. We can't use a
+> > mutex nor a regular spinlock because those can sleep on RT setups [1]
+>=20
+> But on RT setups the interrupts become threads and are preemptable etc,
+> so that shouldn't matter.  There are a few corner cases that cause
+> trouble, but in most normal drivers you should be fine with a
+> spin_lock.
+>=20
+> Jonathan
 
->
->
-> Best Regards
->
-> Ekin
->
->
->
-> Bu e-posta mesaji kisiye ozel olup, gizli bilgiler iceriyor olabilir. Ege=
-r bu e-posta mesaji size yanlislikla ulasmissa, icerigini hic bir sekilde k=
-ullanmayiniz ve ekli dosyalari acmayiniz. Bu durumda lutfen e-posta mesajin=
-i kullaniciya hemen geri gonderiniz ve tum kopyalarini mesaj kutunuzdan sil=
-iniz. Bu e-posta mesaji, hic bir sekilde, herhangi bir amac icin cogaltilam=
-az, yayinlanamaz ve para karsiligi satilamaz. Bu e-posta mesaji viruslere k=
-arsi anti-virus sistemleri tarafindan taranmistir. Ancak yollayici, bu e-po=
-sta mesajinin - virus koruma sistemleri ile kontrol ediliyor olsa bile - vi=
-rus icermedigini garanti etmez ve meydana gelebilecek zararlardan dogacak h=
-icbir sorumlulugu kabul etmez. This message is intended solely for the use =
-of the individual or entity to whom it is addressed , and may contain confi=
-dential information. If you are not the intended recipient of this message =
-or you receive this mail in error, you should refrain from making any use o=
-f the contents and from opening any attachment. In that case, please notify=
- the sender immediately and return the message to the sender, then, delete =
-and destroy all copies. This e-mail message, can not be copied, published o=
-r sold for any reason. This e-mail message has been swept by anti-virus sys=
-tems for the presence of computer viruses. In doing so, however, sender can=
-not warrant that virus or other forms of data corruption may not be present=
- and do not take any responsibility in any occurrence.
+Thinking this over again I realize you're probably right. A simple
+spin_lock should be fine for these drivers, so I'll switch over to that
+instead of the raw_spin_lock for this driver and the Counter interface
+code.
+
+William Breathitt Gray
+
+> > which would result in a deadlock due to the interrupt context here -- so
+> > therefore we're left with using raw_spin_lock.
+> >=20
+> > [1] https://lwn.net/Articles/367219/
+> >=20
+> > William Breathitt Gray
+>=20
+
+--+eKruDaQgZ0deyTo
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmAuPmcACgkQhvpINdm7
+VJJlQQ//TGIj8Nm+JA1eSMPG5CK4MXy5g1jHCLnb9hf2L7kuuE6Szwnsth3IQ6Ds
+QHYkyzTiZt1SIAZ/x1cJPyg7sI09H5KUo9mkh+pPqqDodvOynZVDrvCqp/nhIkKx
+ued5CyWx9illXCF/Myj9ARoknDxK/k0MEEFHBhdbRaTavauIWrEN4W+tKpw0JMom
+OXlssOmPeJ51evjd9YwwUUZgoVhrYneaOqx8NCC6Hv4CXIT9wQLnQsXrg6T8zKb7
+FbrITR46MkXZyh5iibbDe7am8rIMYindyEjRQiMitYsOgNFYwdsnHfeNGDvKLmYB
+l5bPIfyIzjnfANGKvPfXTaS3umavlkdjbOmpD0dgXoW1XqU8Jk2tsul3Ou3ooqSG
+DkxRfRxVk5aRgjoONGJgZPP4kOLGZ4/BV/GABasSXmyXpZ26h/+J39kDg9AHKVH+
+CHEf+RVbx3QbXO7UgBC0jK1BdpclRpwJWWgJOUWdn1SNYiTN7mEZUAQMj3AU8PGQ
+q3UyIkM/Zd5te/XsfuxVa2GucgRizIRs4WYw/Njmz32gJyVMTiCrskEkFywlA4ZY
+HntEfYNJop/zzyCblaLp8/0qEfqDfUg/MpUILqZEobE9+oI2gTJ8HVCLvwUVWN8g
+/RgD9t6Gl8LvUZCMAOwswLcZGreYIjO7h0m8jfbUYakB3Y5bYCs=
+=enNp
+-----END PGP SIGNATURE-----
+
+--+eKruDaQgZ0deyTo--

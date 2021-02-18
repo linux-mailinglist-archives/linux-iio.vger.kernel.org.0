@@ -2,30 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 392CE31EB92
+	by mail.lfdr.de (Postfix) with ESMTP id ABB0931EB93
 	for <lists+linux-iio@lfdr.de>; Thu, 18 Feb 2021 16:32:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232387AbhBRP2z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 18 Feb 2021 10:28:55 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58120 "EHLO mail.kernel.org"
+        id S232396AbhBRP3Y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 18 Feb 2021 10:29:24 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58374 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231347AbhBRNkA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 18 Feb 2021 08:40:00 -0500
+        id S231497AbhBRNn2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 18 Feb 2021 08:43:28 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 837EB64E6F;
-        Thu, 18 Feb 2021 13:38:08 +0000 (UTC)
-Date:   Thu, 18 Feb 2021 13:38:04 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id B314F64E33;
+        Thu, 18 Feb 2021 13:42:43 +0000 (UTC)
+Date:   Thu, 18 Feb 2021 13:42:40 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
 Cc:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
         <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
         <nuno.sa@analog.com>, <dragos.bogdan@analog.com>
-Subject: Re: [PATCH v2 0/5] iio: Add output buffer support
-Message-ID: <20210218133804.60d7eca7@archlinux>
-In-Reply-To: <20210217083438.37865-1-alexandru.ardelean@analog.com>
+Subject: Re: [PATCH v2 2/5] iio: Add output buffer support
+Message-ID: <20210218134240.2dd1feb2@archlinux>
+In-Reply-To: <20210217083438.37865-3-alexandru.ardelean@analog.com>
 References: <20210217083438.37865-1-alexandru.ardelean@analog.com>
+        <20210217083438.37865-3-alexandru.ardelean@analog.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -34,65 +35,79 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 17 Feb 2021 10:34:33 +0200
+On Wed, 17 Feb 2021 10:34:35 +0200
 Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
-> This patchset is based on the new multibuffer set.
-> It doesn't require the high-speed/mmap interface.
-> That will come later on a v2.
+> From: Lars-Peter Clausen <lars@metafoo.de>
 > 
-> Changelog v1 -> v2:
-> * https://lore.kernel.org/linux-iio/20210212102021.47276-4-alexandru.ardelean@analog.com/T/#u
-> * removed DMA patches for now
-> * in patch 'iio: Add output buffer support'
->   - added /sys/bus/iio/devices/iio:deviceX/bufferY/direction attribute
->   - thinking about this, an update to the new buffer infrastructure is
->     required when adding ADDAC/MxFE/transceivers; right now there is no
->     problem, because we have only ADCs and DACs; but when we get
->     transceivers, a bufferY/ directory needs to filter in/out
->     scan_elements/ ; this only occured to me recently (it's one of those
->     things that pops up later in mind)
+> Currently IIO only supports buffer mode for capture devices like ADCs. Add
+> support for buffered mode for output devices like DACs.
+> 
+> The output buffer implementation is analogous to the input buffer
+> implementation. Instead of using read() to get data from the buffer write()
+> is used to copy data into the buffer.
+> 
+> poll() with POLLOUT will wakeup if there is space available for more or
+> equal to the configured watermark of samples.
+> 
+> Drivers can remove data from a buffer using iio_buffer_remove_sample(), the
+> function can e.g. called from a trigger handler to write the data to
+> hardware.
+> 
+> A buffer can only be either a output buffer or an input, but not both. So,
+> for a device that has an ADC and DAC path, this will mean 2 IIO buffers
+> (one for each direction).
+> 
+> The direction of the buffer is decided by the new direction field of the
+> iio_buffer struct and should be set after allocating and before registering
+> it.
+> 
+> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 
-For that we can rely on review in the short term, but agreed a sanity
-check that everything matches would make sense.
+Just one question on this, otherwise looks good to me.
 
-> * added 'iio: Documentation: update definitions for bufferY and scan_elements'
->   - seems I forgot this on the original multibuffer patchset
+Jonathan
 
-Likewise. :)  Who needs docs?
+> diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+> index 5d641f8adfbd..b9970c68005d 100644
+> --- a/drivers/iio/industrialio-buffer.c
+> +++ b/drivers/iio/industrialio-buffer.c
+> @@ -162,6 +162,69 @@ static ssize_t iio_buffer_read(struct file *filp, char __user *buf,
+>  	return ret;
+>  }
+>  
+...
 
-> * added 'iio: triggered-buffer: extend support to configure output buffers'
->   - basically output triggered buffer support
-> * added 'iio: dac: ad5686: Add PWM as a trigger source'
->   - this is a first user of this infrastructure
-> 
-> Alexandru Ardelean (2):
->   iio: Documentation: update definitions for bufferY and scan_elements
->   iio: triggered-buffer: extend support to configure output buffers
-> 
-> Lars-Peter Clausen (2):
->   iio: Add output buffer support
->   iio: kfifo-buffer: Add output buffer support
-> 
-> Mircea Caprioru (1):
->   iio: dac: ad5686: Add PWM as a trigger source
-> 
->  Documentation/ABI/testing/sysfs-bus-iio       |  92 +++++++++++
->  drivers/iio/accel/adxl372.c                   |   1 +
->  drivers/iio/accel/bmc150-accel-core.c         |   1 +
->  drivers/iio/adc/at91-sama5d2_adc.c            |   4 +-
->  .../buffer/industrialio-triggered-buffer.c    |   8 +-
->  drivers/iio/buffer/kfifo_buf.c                |  50 ++++++
->  .../cros_ec_sensors/cros_ec_sensors_core.c    |   1 +
->  .../common/hid-sensors/hid-sensor-trigger.c   |   5 +-
->  drivers/iio/dac/ad5686-spi.c                  |   2 +-
->  drivers/iio/dac/ad5686.c                      | 146 +++++++++++++++++-
->  drivers/iio/dac/ad5686.h                      |   7 +-
->  drivers/iio/dac/ad5696-i2c.c                  |   2 +-
->  drivers/iio/industrialio-buffer.c             | 128 ++++++++++++++-
->  include/linux/iio/buffer.h                    |   7 +
->  include/linux/iio/buffer_impl.h               |  11 ++
->  include/linux/iio/triggered_buffer.h          |  11 +-
->  16 files changed, 459 insertions(+), 17 deletions(-)
-> 
+>  /**
+>   * iio_buffer_poll() - poll the buffer to find out if it has data
+>   * @filp:	File structure pointer for device access
+> @@ -182,8 +245,19 @@ static __poll_t iio_buffer_poll(struct file *filp,
+>  		return 0;
+>  
+>  	poll_wait(filp, &rb->pollq, wait);
+> -	if (iio_buffer_ready(indio_dev, rb, rb->watermark, 0))
+> -		return EPOLLIN | EPOLLRDNORM;
+> +
+> +	switch (rb->direction) {
+> +	case IIO_BUFFER_DIRECTION_IN:
+> +		if (iio_buffer_ready(indio_dev, rb, rb->watermark, 0))
+> +			return EPOLLIN | EPOLLRDNORM;
+> +		break;
+> +	case IIO_BUFFER_DIRECTION_OUT:
+> +		if (iio_buffer_space_available(rb) >= rb->watermark)
+> +			return EPOLLOUT | EPOLLWRNORM;
+> +		break;
+> +	}
+> +
+> +	/* need a way of knowing if there may be enough data... */
 
+Curious on what this comment is referring to?
+
+>  	return 0;
+>  }
+>  
+> @@ -232,6 +306,16 @@ void iio_buffer_wakeup_poll(struct iio_dev *indio_dev)
+>  	}
+>  }
+...

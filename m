@@ -2,30 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 486CC31EB90
+	by mail.lfdr.de (Postfix) with ESMTP id BB12831EB91
 	for <lists+linux-iio@lfdr.de>; Thu, 18 Feb 2021 16:32:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230142AbhBRP1i (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 18 Feb 2021 10:27:38 -0500
-Received: from mail.kernel.org ([198.145.29.99]:57620 "EHLO mail.kernel.org"
+        id S232323AbhBRP1y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 18 Feb 2021 10:27:54 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57988 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230182AbhBRNfW (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 18 Feb 2021 08:35:22 -0500
+        id S230434AbhBRNgz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 18 Feb 2021 08:36:55 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 66ED864E6F;
-        Thu, 18 Feb 2021 13:34:13 +0000 (UTC)
-Date:   Thu, 18 Feb 2021 13:34:07 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id C1AEE64E5F;
+        Thu, 18 Feb 2021 13:36:06 +0000 (UTC)
+Date:   Thu, 18 Feb 2021 13:36:03 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <mircea.caprioru@analog.com>
-Subject: Re: [PATCH][RESEND] iio: dac: ad5686: Add support for
- AD5673R/AD5677R
-Message-ID: <20210218133351.32fcaead@archlinux>
-In-Reply-To: <20210217074102.23148-1-alexandru.ardelean@analog.com>
-References: <20210217074102.23148-1-alexandru.ardelean@analog.com>
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+        <nuno.sa@analog.com>, <dragos.bogdan@analog.com>
+Subject: Re: [PATCH v2 1/5] iio: Documentation: update definitions for
+ bufferY and scan_elements
+Message-ID: <20210218133603.2ca79632@archlinux>
+In-Reply-To: <20210218121948.000017cd@Huawei.com>
+References: <20210217083438.37865-1-alexandru.ardelean@analog.com>
+        <20210217083438.37865-2-alexandru.ardelean@analog.com>
+        <20210218121948.000017cd@Huawei.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -34,120 +38,188 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 17 Feb 2021 09:41:02 +0200
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+On Thu, 18 Feb 2021 12:19:48 +0000
+Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
 
-> From: Mircea Caprioru <mircea.caprioru@analog.com>
+> On Wed, 17 Feb 2021 10:34:34 +0200
+> Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 > 
-> The AD5673R/AD5677R are low power, 16-channel, 12-/16-bit buffered voltage
-> output digital-to-analog converters (DACs). They include a 2.5 V internal
-> reference (enabled by default).
+> > Since the new change to the IIO buffer infrastructure, the buffer/ and
+> > scan_elements/ directories have been merged into bufferY/ to have some
+> > attributes available per-buffer.
+> > 
+> > This change updates the ABI docs to reflect this change.
+> > 
+> > The hwfifo attributes are not updated, as for now these should be used
+> > via the legacy buffer/ directory until they are moved into core.
+> > 
+> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>  
 > 
-> These devices are very similar to AD5674R/AD5679R, except that they
-> have an i2c interface.
+> This doesn't really have anything to do with the rest of the set - so ideally
+> you'd have sent it separately.
 > 
-> Signed-off-by: Mircea Caprioru <mircea.caprioru@analog.com>
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-
-Applied, thanks
+> One trivial typo below, that I can fix whilst applying.
+Applied with that fix.
 
 Jonathan
 
-> ---
 > 
-> Forgot to include the linux-iio list in the first send.
+> > ---
+> >  Documentation/ABI/testing/sysfs-bus-iio | 85 +++++++++++++++++++++++++
+> >  1 file changed, 85 insertions(+)
+> > 
+> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+> > index d957f5da5c04..f2a72d7fbacb 100644
+> > --- a/Documentation/ABI/testing/sysfs-bus-iio
+> > +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> > @@ -1118,12 +1118,16 @@ Description:
+> >  
+> >  What:		/sys/bus/iio/devices/iio:deviceX/buffer/length
+> >  KernelVersion:	2.6.35
+> > +What:		/sys/bus/iio/devices/iio:deviceX/bufferY/length
+> > +KernelVersion:	5.11
+> >  Contact:	linux-iio@vger.kernel.org
+> >  Description:
+> >  		Number of scans contained by the buffer.
+> >  
+> >  What:		/sys/bus/iio/devices/iio:deviceX/buffer/enable
+> >  KernelVersion:	2.6.35
+> > +What:		/sys/bus/iio/devices/iio:deviceX/bufferY/enable
+> > +KernelVersion:	5.11
+> >  Contact:	linux-iio@vger.kernel.org
+> >  Description:
+> >  		Actually start the buffer capture up.  Will start trigger
+> > @@ -1131,11 +1135,16 @@ Description:
+> >  
+> >  What:		/sys/bus/iio/devices/iio:deviceX/scan_elements
+> >  KernelVersion:	2.6.37
+> > +What:		/sys/bus/iio/devices/iio:deviceX/buffeY  
+> bufferY
 > 
->  drivers/iio/dac/Kconfig      |  5 +++--
->  drivers/iio/dac/ad5686.c     | 12 ++++++++++++
->  drivers/iio/dac/ad5686.h     |  2 ++
->  drivers/iio/dac/ad5696-i2c.c |  6 ++++--
->  4 files changed, 21 insertions(+), 4 deletions(-)
+> I'll fix whilst applying.
 > 
-> diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
-> index cea07b4cced1..75e1f2b48638 100644
-> --- a/drivers/iio/dac/Kconfig
-> +++ b/drivers/iio/dac/Kconfig
-> @@ -142,8 +142,9 @@ config AD5696_I2C
->  	select AD5686
->  	help
->  	  Say yes here to build support for Analog Devices AD5311R, AD5338R,
-> -	  AD5671R, AD5675R, AD5691R, AD5692R, AD5693, AD5693R, AD5694, AD5694R,
-> -	  AD5695R, AD5696, and AD5696R Digital to Analog converters.
-> +	  AD5671R, AD5673R, AD5675R, AD5677R, AD5691R, AD5692R, AD5693, AD5693R,
-> +	  AD5694, AD5694R, AD5695R, AD5696, and AD5696R Digital to Analog
-> +	  converters.
->  
->  	  To compile this driver as a module, choose M here: the module will be
->  	  called ad5696.
-> diff --git a/drivers/iio/dac/ad5686.c b/drivers/iio/dac/ad5686.c
-> index 7d6792ac1020..99a95282ac57 100644
-> --- a/drivers/iio/dac/ad5686.c
-> +++ b/drivers/iio/dac/ad5686.c
-> @@ -301,6 +301,12 @@ static const struct ad5686_chip_info ad5686_chip_info_tbl[] = {
->  		.num_channels = 8,
->  		.regmap_type = AD5686_REGMAP,
->  	},
-> +	[ID_AD5673R] = {
-> +		.channels = ad5674r_channels,
-> +		.int_vref_mv = 2500,
-> +		.num_channels = 16,
-> +		.regmap_type = AD5686_REGMAP,
-> +	},
->  	[ID_AD5674R] = {
->  		.channels = ad5674r_channels,
->  		.int_vref_mv = 2500,
-> @@ -324,6 +330,12 @@ static const struct ad5686_chip_info ad5686_chip_info_tbl[] = {
->  		.num_channels = 8,
->  		.regmap_type = AD5686_REGMAP,
->  	},
-> +	[ID_AD5677R] = {
-> +		.channels = ad5679r_channels,
-> +		.int_vref_mv = 2500,
-> +		.num_channels = 16,
-> +		.regmap_type = AD5686_REGMAP,
-> +	},
->  	[ID_AD5679R] = {
->  		.channels = ad5679r_channels,
->  		.int_vref_mv = 2500,
-> diff --git a/drivers/iio/dac/ad5686.h b/drivers/iio/dac/ad5686.h
-> index d9c8ba413fe9..f89a6f92b427 100644
-> --- a/drivers/iio/dac/ad5686.h
-> +++ b/drivers/iio/dac/ad5686.h
-> @@ -55,10 +55,12 @@ enum ad5686_supported_device_ids {
->  	ID_AD5338R,
->  	ID_AD5671R,
->  	ID_AD5672R,
-> +	ID_AD5673R,
->  	ID_AD5674R,
->  	ID_AD5675R,
->  	ID_AD5676,
->  	ID_AD5676R,
-> +	ID_AD5677R,
->  	ID_AD5679R,
->  	ID_AD5681R,
->  	ID_AD5682R,
-> diff --git a/drivers/iio/dac/ad5696-i2c.c b/drivers/iio/dac/ad5696-i2c.c
-> index a39eda7c02d2..24a6a4a5a2e0 100644
-> --- a/drivers/iio/dac/ad5696-i2c.c
-> +++ b/drivers/iio/dac/ad5696-i2c.c
-> @@ -1,7 +1,7 @@
->  // SPDX-License-Identifier: GPL-2.0
->  /*
-> - * AD5671R, AD5675R, AD5691R, AD5692R, AD5693, AD5693R,
-> - * AD5694, AD5694R, AD5695R, AD5696, AD5696R
-> + * AD5338R, AD5671R, AD5673R, AD5675R, AD5677R, AD5691R, AD5692R, AD5693,
-> + * AD5693R, AD5694, AD5694R, AD5695R, AD5696, AD5696R
->   * Digital to analog converters driver
->   *
->   * Copyright 2018 Analog Devices Inc.
-> @@ -74,7 +74,9 @@ static const struct i2c_device_id ad5686_i2c_id[] = {
->  	{"ad5311r", ID_AD5311R},
->  	{"ad5338r", ID_AD5338R},
->  	{"ad5671r", ID_AD5671R},
-> +	{"ad5673r", ID_AD5673R},
->  	{"ad5675r", ID_AD5675R},
-> +	{"ad5677r", ID_AD5677R},
->  	{"ad5691r", ID_AD5691R},
->  	{"ad5692r", ID_AD5692R},
->  	{"ad5693", ID_AD5693},
+> > +KernelVersion:	5.11
+> >  Contact:	linux-iio@vger.kernel.org
+> >  Description:
+> >  		Directory containing interfaces for elements that will be
+> >  		captured for a single triggered sample set in the buffer.
+> >  
+> > +		Since kernel 5.11 the scan_elements attributes are merged into
+> > +		the bufferY directory, to be configurable per buffer.
+> > +
+> >  What:		/sys/.../iio:deviceX/scan_elements/in_accel_x_en
+> >  What:		/sys/.../iio:deviceX/scan_elements/in_accel_y_en
+> >  What:		/sys/.../iio:deviceX/scan_elements/in_accel_z_en
+> > @@ -1164,6 +1173,34 @@ What:		/sys/.../iio:deviceX/scan_elements/in_pressure_en
+> >  What:		/sys/.../iio:deviceX/scan_elements/in_rot_quaternion_en
+> >  What:		/sys/.../iio:deviceX/scan_elements/in_proximity_en
+> >  KernelVersion:	2.6.37
+> > +What:		/sys/.../iio:deviceX/bufferY/in_accel_x_en
+> > +What:		/sys/.../iio:deviceX/bufferY/in_accel_y_en
+> > +What:		/sys/.../iio:deviceX/bufferY/in_accel_z_en
+> > +What:		/sys/.../iio:deviceX/bufferY/in_anglvel_x_en
+> > +What:		/sys/.../iio:deviceX/bufferY/in_anglvel_y_en
+> > +What:		/sys/.../iio:deviceX/bufferY/in_anglvel_z_en
+> > +What:		/sys/.../iio:deviceX/bufferY/in_magn_x_en
+> > +What:		/sys/.../iio:deviceX/bufferY/in_magn_y_en
+> > +What:		/sys/.../iio:deviceX/bufferY/in_magn_z_en
+> > +What:		/sys/.../iio:deviceX/bufferY/in_rot_from_north_magnetic_en
+> > +What:		/sys/.../iio:deviceX/bufferY/in_rot_from_north_true_en
+> > +What:		/sys/.../iio:deviceX/bufferY/in_rot_from_north_magnetic_tilt_comp_en
+> > +What:		/sys/.../iio:deviceX/bufferY/in_rot_from_north_true_tilt_comp_en
+> > +What:		/sys/.../iio:deviceX/bufferY/in_timestamp_en
+> > +What:		/sys/.../iio:deviceX/bufferY/in_voltageY_supply_en
+> > +What:		/sys/.../iio:deviceX/bufferY/in_voltageY_en
+> > +What:		/sys/.../iio:deviceX/bufferY/in_voltageY-voltageZ_en
+> > +What:		/sys/.../iio:deviceX/bufferY/in_voltageY_i_en
+> > +What:		/sys/.../iio:deviceX/bufferY/in_voltageY_q_en
+> > +What:		/sys/.../iio:deviceX/bufferY/in_voltage_i_en
+> > +What:		/sys/.../iio:deviceX/bufferY/in_voltage_q_en
+> > +What:		/sys/.../iio:deviceX/bufferY/in_incli_x_en
+> > +What:		/sys/.../iio:deviceX/bufferY/in_incli_y_en
+> > +What:		/sys/.../iio:deviceX/bufferY/in_pressureY_en
+> > +What:		/sys/.../iio:deviceX/bufferY/in_pressure_en
+> > +What:		/sys/.../iio:deviceX/bufferY/in_rot_quaternion_en
+> > +What:		/sys/.../iio:deviceX/bufferY/in_proximity_en
+> > +KernelVersion:	5.11
+> >  Contact:	linux-iio@vger.kernel.org
+> >  Description:
+> >  		Scan element control for triggered data capture.
+> > @@ -1185,6 +1222,23 @@ What:		/sys/.../iio:deviceX/scan_elements/in_pressure_type
+> >  What:		/sys/.../iio:deviceX/scan_elements/in_rot_quaternion_type
+> >  What:		/sys/.../iio:deviceX/scan_elements/in_proximity_type
+> >  KernelVersion:	2.6.37
+> > +What:		/sys/.../iio:deviceX/bufferY/in_accel_type
+> > +What:		/sys/.../iio:deviceX/bufferY/in_anglvel_type
+> > +What:		/sys/.../iio:deviceX/bufferY/in_magn_type
+> > +What:		/sys/.../iio:deviceX/bufferY/in_incli_type
+> > +What:		/sys/.../iio:deviceX/bufferY/in_voltageY_type
+> > +What:		/sys/.../iio:deviceX/bufferY/in_voltage_type
+> > +What:		/sys/.../iio:deviceX/bufferY/in_voltageY_supply_type
+> > +What:		/sys/.../iio:deviceX/bufferY/in_voltageY_i_type
+> > +What:		/sys/.../iio:deviceX/bufferY/in_voltageY_q_type
+> > +What:		/sys/.../iio:deviceX/bufferY/in_voltage_i_type
+> > +What:		/sys/.../iio:deviceX/bufferY/in_voltage_q_type
+> > +What:		/sys/.../iio:deviceX/bufferY/in_timestamp_type
+> > +What:		/sys/.../iio:deviceX/bufferY/in_pressureY_type
+> > +What:		/sys/.../iio:deviceX/bufferY/in_pressure_type
+> > +What:		/sys/.../iio:deviceX/bufferY/in_rot_quaternion_type
+> > +What:		/sys/.../iio:deviceX/bufferY/in_proximity_type
+> > +KernelVersion:	5.11
+> >  Contact:	linux-iio@vger.kernel.org
+> >  Description:
+> >  		Description of the scan element data storage within the buffer
+> > @@ -1241,6 +1295,33 @@ What:		/sys/.../iio:deviceX/scan_elements/in_pressure_index
+> >  What:		/sys/.../iio:deviceX/scan_elements/in_rot_quaternion_index
+> >  What:		/sys/.../iio:deviceX/scan_elements/in_proximity_index
+> >  KernelVersion:	2.6.37
+> > +What:		/sys/.../iio:deviceX/bufferY/in_voltageY_index
+> > +What:		/sys/.../iio:deviceX/bufferY/in_voltageY_supply_index
+> > +What:		/sys/.../iio:deviceX/bufferY/in_voltageY_i_index
+> > +What:		/sys/.../iio:deviceX/bufferY/in_voltageY_q_index
+> > +What:		/sys/.../iio:deviceX/bufferY/in_voltage_i_index
+> > +What:		/sys/.../iio:deviceX/bufferY/in_voltage_q_index
+> > +What:		/sys/.../iio:deviceX/bufferY/in_accel_x_index
+> > +What:		/sys/.../iio:deviceX/bufferY/in_accel_y_index
+> > +What:		/sys/.../iio:deviceX/bufferY/in_accel_z_index
+> > +What:		/sys/.../iio:deviceX/bufferY/in_anglvel_x_index
+> > +What:		/sys/.../iio:deviceX/bufferY/in_anglvel_y_index
+> > +What:		/sys/.../iio:deviceX/bufferY/in_anglvel_z_index
+> > +What:		/sys/.../iio:deviceX/bufferY/in_magn_x_index
+> > +What:		/sys/.../iio:deviceX/bufferY/in_magn_y_index
+> > +What:		/sys/.../iio:deviceX/bufferY/in_magn_z_index
+> > +What:		/sys/.../iio:deviceX/bufferY/in_rot_from_north_magnetic_index
+> > +What:		/sys/.../iio:deviceX/bufferY/in_rot_from_north_true_index
+> > +What:		/sys/.../iio:deviceX/bufferY/in_rot_from_north_magnetic_tilt_comp_index
+> > +What:		/sys/.../iio:deviceX/bufferY/in_rot_from_north_true_tilt_comp_index
+> > +What:		/sys/.../iio:deviceX/bufferY/in_incli_x_index
+> > +What:		/sys/.../iio:deviceX/bufferY/in_incli_y_index
+> > +What:		/sys/.../iio:deviceX/bufferY/in_timestamp_index
+> > +What:		/sys/.../iio:deviceX/bufferY/in_pressureY_index
+> > +What:		/sys/.../iio:deviceX/bufferY/in_pressure_index
+> > +What:		/sys/.../iio:deviceX/bufferY/in_rot_quaternion_index
+> > +What:		/sys/.../iio:deviceX/bufferY/in_proximity_index
+> > +KernelVersion:	5.11
+> >  Contact:	linux-iio@vger.kernel.org
+> >  Description:
+> >  		A single positive integer specifying the position of this
+> > @@ -1455,6 +1536,8 @@ Description:
+> >  
+> >  What:		/sys/bus/iio/devices/iio:deviceX/buffer/watermark
+> >  KernelVersion:	4.2
+> > +What:		/sys/bus/iio/devices/iio:deviceX/bufferY/watermark
+> > +KernelVersion:	5.11
+> >  Contact:	linux-iio@vger.kernel.org
+> >  Description:
+> >  		A single positive integer specifying the maximum number of scan
+> > @@ -1473,6 +1556,8 @@ Description:
+> >  
+> >  What:		/sys/bus/iio/devices/iio:deviceX/buffer/data_available
+> >  KernelVersion: 4.16
+> > +What:		/sys/bus/iio/devices/iio:deviceX/bufferY/data_available
+> > +KernelVersion:	5.11
+> >  Contact:	linux-iio@vger.kernel.org
+> >  Description:
+> >  		A read-only value indicating the bytes of data available in the  
+> 
 

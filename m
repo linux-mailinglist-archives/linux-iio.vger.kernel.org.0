@@ -2,31 +2,33 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 810B731EB85
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Feb 2021 16:31:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DDB531EB8B
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Feb 2021 16:32:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231173AbhBRP0M (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 18 Feb 2021 10:26:12 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55836 "EHLO mail.kernel.org"
+        id S232270AbhBRP0o (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 18 Feb 2021 10:26:44 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55986 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232743AbhBRNSS (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 18 Feb 2021 08:18:18 -0500
+        id S231805AbhBRNVC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 18 Feb 2021 08:21:02 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E533E64EAD;
-        Thu, 18 Feb 2021 13:17:35 +0000 (UTC)
-Date:   Thu, 18 Feb 2021 13:17:32 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id BD6B46023C;
+        Thu, 18 Feb 2021 13:19:45 +0000 (UTC)
+Date:   Thu, 18 Feb 2021 13:19:41 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Ye Xiang <xiang.ye@intel.com>
-Cc:     jikos@kernel.org, srinivas.pandruvada@linux.intel.com,
+To:     Jiri Kosina <jikos@kernel.org>
+Cc:     Ye Xiang <xiang.ye@intel.com>, srinivas.pandruvada@linux.intel.com,
         linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] resolve read hystersis return invalid argument
- issue for hid sensors
-Message-ID: <20210218131732.56f9f4bf@archlinux>
-In-Reply-To: <20210201054921.18214-1-xiang.ye@intel.com>
-References: <20210201054921.18214-1-xiang.ye@intel.com>
+Subject: Re: [PATCH v2 1/3] iio: Add relative sensitivity support
+Message-ID: <20210218131941.0ac3b1f5@archlinux>
+In-Reply-To: <nycvar.YFH.7.76.2102171255250.28696@cbobk.fhfr.pm>
+References: <20210207070048.23935-1-xiang.ye@intel.com>
+        <20210207070048.23935-2-xiang.ye@intel.com>
+        <20210212182809.2cc90cfd@archlinux>
+        <nycvar.YFH.7.76.2102171255250.28696@cbobk.fhfr.pm>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -35,46 +37,34 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon,  1 Feb 2021 13:49:19 +0800
-Ye Xiang <xiang.ye@intel.com> wrote:
+On Wed, 17 Feb 2021 12:55:41 +0100 (CET)
+Jiri Kosina <jikos@kernel.org> wrote:
 
-> This patch series move get sensitivity attribute to common layer and
-> resolve read hystersis return invalid argument issue for hid sensors als,
-> incli-3d, rotation, and press on intel ISH Platform.
+> On Fri, 12 Feb 2021, Jonathan Cameron wrote:
+> 
+> > > Some hid sensors may use relative sensitivity such as als sensor.
+> > > This patch adds relative sensitivity checking for all hid sensors.
+> > > 
+> > > Signed-off-by: Ye Xiang <xiang.ye@intel.com>  
+> > Hi,
+> > 
+> > One totally trivial extra line below.  I'll fix that whilst applying
+> > unless you need to respin for some reason.
+> > 
+> > I'm fine with the series, but looking for an Ack from Jiri
+> > for the HID header changes.  
+> 
+> Acked-by: Jiri Kosina <jkosina@suse.cz>
+> 
+> Thanks,
+>
+Thanks, series (and precursor series that also had a tiny addition
+to those headers) applied to the togreg branch of iio.git and pushed out
+as testing for the autobuilders to poke at it and see if they can find
+anything we missed.
 
-Given Jiri was fine with the follow up series, I'm going to guess he
-just missed this one and apply it with out his explicit ack.
-
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to see if they can find anything we missed.
-
-Thanks,
+THanks,
 
 Jonathan
-
-> 
-> ---
-> v2:
->   - separate the add relative sensitivity patch to the next patch series.
-> 
-> Ye Xiang (2):
->   iio: hid-sensors: Move get sensitivity attribute to hid-sensor-common
->   hid-sensors: Add more data fields for sensitivity checking
-> 
->  drivers/iio/accel/hid-sensor-accel-3d.c       | 23 ++++++-------
->  .../hid-sensors/hid-sensor-attributes.c       | 17 +++++++++-
->  drivers/iio/gyro/hid-sensor-gyro-3d.c         | 19 ++++-------
->  drivers/iio/humidity/hid-sensor-humidity.c    | 16 ++++------
->  drivers/iio/light/hid-sensor-als.c            | 20 +++++-------
->  drivers/iio/light/hid-sensor-prox.c           | 27 +++++-----------
->  drivers/iio/magnetometer/hid-sensor-magn-3d.c | 32 ++++++-------------
->  drivers/iio/orientation/hid-sensor-incl-3d.c  | 20 +++++-------
->  drivers/iio/orientation/hid-sensor-rotation.c | 24 ++++++--------
->  .../position/hid-sensor-custom-intel-hinge.c  | 20 ++++--------
->  drivers/iio/pressure/hid-sensor-press.c       | 20 +++++-------
->  .../iio/temperature/hid-sensor-temperature.c  | 16 ++++------
->  drivers/rtc/rtc-hid-sensor-time.c             |  4 ++-
->  include/linux/hid-sensor-hub.h                |  4 ++-
->  14 files changed, 111 insertions(+), 151 deletions(-)
-> 
+ 
 

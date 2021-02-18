@@ -2,82 +2,117 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EA2F31EB83
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Feb 2021 16:31:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF18231EB8A
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Feb 2021 16:32:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231634AbhBRPZu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 18 Feb 2021 10:25:50 -0500
-Received: from relay1-d.mail.gandi.net ([217.70.183.193]:29943 "EHLO
-        relay1-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232849AbhBRMjq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 18 Feb 2021 07:39:46 -0500
-X-Originating-IP: 10.200.201.23
-Received: from webmail.gandi.net (webmail23.sd4.0x35.net [10.200.201.23])
-        (Authenticated sender: cengiz@kernel.wtf)
-        by relay1-d.mail.gandi.net (Postfix) with ESMTPA id D2F33240002;
-        Thu, 18 Feb 2021 12:38:15 +0000 (UTC)
+        id S232224AbhBRP0T (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 18 Feb 2021 10:26:19 -0500
+Received: from mail.kernel.org ([198.145.29.99]:56104 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231490AbhBRNVC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 18 Feb 2021 08:21:02 -0500
+Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0552764E76;
+        Thu, 18 Feb 2021 13:10:48 +0000 (UTC)
+Date:   Thu, 18 Feb 2021 13:10:45 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+        <nuno.sa@analog.com>, <dragos.bogdan@analog.com>
+Subject: Re: [PATCH v4 0/6] iio: core: Add mmap interface infrastructure
+Message-ID: <20210218131045.1a34d0a1@archlinux>
+In-Reply-To: <20210217073638.21681-1-alexandru.ardelean@analog.com>
+References: <20210217073638.21681-1-alexandru.ardelean@analog.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Date:   Thu, 18 Feb 2021 15:38:15 +0300
-From:   Cengiz Can <cengiz@kernel.wtf>
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     Alexandru Ardelean <ardeleanalex@gmail.com>,
-        =?UTF-8?Q?Ekin_B=C3=B6ke?= <ekin_boke@arcelik.com>,
-        linux-iio@vger.kernel.org
-Subject: Re: Control Register device tree binding request for Opt3001
-In-Reply-To: <20210218121502.00002014@Huawei.com>
-References: <AM9PR08MB6083269425D1057113B212709B859@AM9PR08MB6083.eurprd08.prod.outlook.com>
- <CA+U=DspfyuxyhPfPrGDaU5nDQVaO5p3ha-5hwpzVX69p1P60WA@mail.gmail.com>
- <20210218121502.00002014@Huawei.com>
-User-Agent: Roundcube Webmail/1.4.11
-Message-ID: <4e0b8e47a2644d304b2d1e6b2e087136@kernel.wtf>
-X-Sender: cengiz@kernel.wtf
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Jonathan, Alexandru and Ekin
+On Wed, 17 Feb 2021 09:36:32 +0200
+Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
-On 2021-02-18 15:15, Jonathan Cameron wrote:
+Dropped v3 and applied v4 to the togreg branch of iio.git and pushed
+it out as testing for the autobuilders to poke at it and see what
+else they can find :)
+
+Jonathan
+
+
+> Changelog v3 -> v4:
+> * https://lore.kernel.org/linux-iio/20210215143234.3248-5-alexandru.ardelean@analog.com/T/
+> * added patch 'iio: buffer-dma: reduce the type of block.size to u32'
+>   - resolves error on 64 bit archs; 32 bit block size should be enough
+> * in patch 'iio: buffer-dma: Add mmap support'
+>   - added 'linux/types.h' include in uapi buffer.h header; an error
+>     shows up when building with 'make allmodconfig'
+> * in patch 'tools: iio: add example for high-speed buffer support'
+>   - calling ioctl(BOCK_FREE) only if use_high_speed is true
 > 
-> As described, what you want to control here is policy, not a 
-> characteristic
-> of the hardware.   Normally we don't use DT to make such decisions, as 
-> it should
-> be controlled at runtime.
-
-I'm by no means an expert on sensors and I don't fully understand the 
-distinction
-of policy vs characteristic in this context.
-
-Can you clarify a bit?
-
-For example, many TFT drivers allow maximum-minimum brightness values in 
-devicetree
-and even set a default brightness value. Totally within the specs of 
-vendor of course.
-
-Since this is just a hardware register that can be changed, and possibly 
-never to be
-modified (depending on the use case of course) during runtime, I would 
-like to be able
-to set it once during initialization and forget about it.
-
-Currently I have a oneshot systemd unit that echo's my desired 
-integration value and
-I think that's a bit late for my application. (even with all the 
-priority and orderings set).
-
+> Changelog v2 -> v3:
+> * https://lore.kernel.org/linux-iio/20210212101143.18993-1-alexandru.ardelean@analog.com/T/#u
+> * added 'Documentation: iio: add doc for high-speed buffer API'
+> * add 'iio: buffer-dma: split iio_dma_buffer_fileio_free() function'
+> * patch 'iio: buffer-dma: Add mmap support'
+>    - unwind free on error path in iio_dma_buffer_alloc_blocks()
+>    - removed double mm.h include
+> * patch 'tools: iio: add example for high-speed buffer support'
+>    - call IIO_BUFFER_BLOCK_FREE_IOCTL on the error path of the
+>      enable_high_speed() function
 > 
-> So basically what Alex said :)
+> Changelog v1 -> v2:
+> * https://lore.kernel.org/linux-iio/20210211123353.78963-1-alexandru.ardelean@analog.com/T/#t
+> * removed IIO_BUFFER_BLOCK_FLAG_CYCLIC flag; will be added in a later
+>   patch
+> * removed extra line in tools/iio/iio_generic_buffer.c
+> * patch 'iio: core: Add mmap interface infrastructure'
+>   added docstrings for new hooks (alloc_blocks, mmap, etc)
 > 
-> Jonathan
+> This is basically Lars' work adapted from branch:
+>   https://github.com/larsclausen/linux/commits/iio-high-speed-5.10
+> [hopefully i got the stuff correctly from that branch]
+> 
+> What is different, is that this one is adapted on top of the multibuffer
+> support (currently at v5) discussed here:
+>   https://lore.kernel.org/linux-iio/20210211122452.78106-1-alexandru.ardelean@analog.com/T/#t
+> 
+> Also, adapted an example for high-speed/mmap support in
+> 'tools/iio/iio_generic_buffer.c'
+> 
+> The example is adapted from libiio:
+>   https://github.com/analogdevicesinc/libiio/blob/master/local.c#L51
+> but will all the ioctl()s organized after the one that are reserved
+> (hopefully) for IIO
+> 
+> Tested that mmap() works.
+> Moved (artifically) valid buffer0 as buffer2 and the operation still
+> works.
+> 
+> Alexandru Ardelean (4):
+>   Documentation: iio: add doc for high-speed buffer API
+>   iio: buffer-dma: split iio_dma_buffer_fileio_free() function
+>   iio: buffer-dma: reduce the type of block.size to u32
+>   tools: iio: add example for high-speed buffer support
+> 
+> Lars-Peter Clausen (2):
+>   iio: core: Add mmap interface infrastructure
+>   iio: buffer-dma: Add mmap support
+> 
+>  Documentation/iio/iio_high_speed_buffers.rst  | 100 ++++++
+>  Documentation/iio/index.rst                   |   2 +
+>  drivers/iio/buffer/industrialio-buffer-dma.c  | 324 ++++++++++++++++--
+>  .../buffer/industrialio-buffer-dmaengine.c    |  28 +-
+>  drivers/iio/industrialio-buffer.c             | 158 +++++++++
+>  include/linux/iio/buffer-dma.h                |  27 +-
+>  include/linux/iio/buffer_impl.h               |  23 ++
+>  include/uapi/linux/iio/buffer.h               |  51 +++
+>  tools/iio/iio_generic_buffer.c                | 185 +++++++++-
+>  9 files changed, 847 insertions(+), 51 deletions(-)
+>  create mode 100644 Documentation/iio/iio_high_speed_buffers.rst
 > 
 
-Thank you
-
--- 
-Cengiz Can
-@cengiz_io

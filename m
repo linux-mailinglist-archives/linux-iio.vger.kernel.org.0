@@ -2,42 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D95131EB81
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Feb 2021 16:31:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0372D31EB84
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Feb 2021 16:31:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231604AbhBRPZj convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Thu, 18 Feb 2021 10:25:39 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2583 "EHLO
+        id S232200AbhBRPZ7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 18 Feb 2021 10:25:59 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2585 "EHLO
         frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231634AbhBRMRE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 18 Feb 2021 07:17:04 -0500
-Received: from fraeml734-chm.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DhD7d6sR5z67pfY;
-        Thu, 18 Feb 2021 20:10:53 +0800 (CST)
+        with ESMTP id S232864AbhBRMmS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 18 Feb 2021 07:42:18 -0500
+Received: from fraeml711-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DhDC62qbhz67q3w;
+        Thu, 18 Feb 2021 20:13:54 +0800 (CST)
 Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml734-chm.china.huawei.com (10.206.15.215) with Microsoft SMTP Server
+ fraeml711-chm.china.huawei.com (10.206.15.60) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Thu, 18 Feb 2021 13:16:06 +0100
+ 15.1.2106.2; Thu, 18 Feb 2021 13:20:52 +0100
 Received: from localhost (10.47.67.19) by lhreml710-chm.china.huawei.com
  (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Thu, 18 Feb
- 2021 12:16:06 +0000
-Date:   Thu, 18 Feb 2021 12:15:02 +0000
+ 2021 12:20:51 +0000
+Date:   Thu, 18 Feb 2021 12:19:48 +0000
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Alexandru Ardelean <ardeleanalex@gmail.com>
-CC:     Ekin =?ISO-8859-1?Q?B=F6ke?= <ekin_boke@arcelik.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "cengiz@kernel.wtf" <cengiz@kernel.wtf>
-Subject: Re: Control Register device tree binding request for Opt3001
-Message-ID: <20210218121502.00002014@Huawei.com>
-In-Reply-To: <CA+U=DspfyuxyhPfPrGDaU5nDQVaO5p3ha-5hwpzVX69p1P60WA@mail.gmail.com>
-References: <AM9PR08MB6083269425D1057113B212709B859@AM9PR08MB6083.eurprd08.prod.outlook.com>
-        <CA+U=DspfyuxyhPfPrGDaU5nDQVaO5p3ha-5hwpzVX69p1P60WA@mail.gmail.com>
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+CC:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+        <jic23@kernel.org>, <nuno.sa@analog.com>,
+        <dragos.bogdan@analog.com>
+Subject: Re: [PATCH v2 1/5] iio: Documentation: update definitions for
+ bufferY and scan_elements
+Message-ID: <20210218121948.000017cd@Huawei.com>
+In-Reply-To: <20210217083438.37865-2-alexandru.ardelean@analog.com>
+References: <20210217083438.37865-1-alexandru.ardelean@analog.com>
+        <20210217083438.37865-2-alexandru.ardelean@analog.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.47.67.19]
 X-ClientProxiedBy: lhreml732-chm.china.huawei.com (10.201.108.83) To
  lhreml710-chm.china.huawei.com (10.201.108.61)
@@ -46,43 +48,180 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 18 Feb 2021 10:35:27 +0200
-Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
+On Wed, 17 Feb 2021 10:34:34 +0200
+Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
-> On Thu, Feb 18, 2021 at 7:27 AM Ekin Böke <ekin_boke@arcelik.com> wrote:
-> >
-> > Hi,
-> >
-> > We are using Opt3001 for a day light control system and according to the data sheet it has 2 conversion time modes
-> > that are 100 ms(CT=0) and 800 ms(CT=1) . Configuration register field CT controls the conversion time and we want to set the CT parameter at the initialization to 0 at all times. We could do it by using the in_illuminance_integration_time sysfs node at the runtime.
-> >
-> > Should we add a parameter to the device tree bindings or is there another way to set the CT parameter at the initialization?  
+> Since the new change to the IIO buffer infrastructure, the buffer/ and
+> scan_elements/ directories have been merged into bufferY/ to have some
+> attributes available per-buffer.
 > 
-> It's usually a good idea to use the sysfs attribute, if it's already available.
-> Maybe during system boot-up, you can add some service init call to
-> initialize to 100 ms or right before starting to read data from the
-> sensor.
+> This change updates the ABI docs to reflect this change.
 > 
-> For kernel people, these initialization device-tree attributes seem convenient.
-> But in this case, CT is a parameter of the chip and not a hard-wired
-> configuration of the board [which needs to be described in DT].
-
-As described, what you want to control here is policy, not a characteristic
-of the hardware.   Normally we don't use DT to make such decisions, as it should
-be controlled at runtime.
-
-So basically what Alex said :)
-
-Jonathan
-
+> The hwfifo attributes are not updated, as for now these should be used
+> via the legacy buffer/ directory until they are moved into core.
 > 
-> >
-> >
-> > Best Regards
-> >
-> > Ekin
-> >
-> >
-> >
-> > Bu e-posta mesaji kisiye ozel olup, gizli bilgiler iceriyor olabilir. Eger bu e-posta mesaji size yanlislikla ulasmissa, icerigini hic bir sekilde kullanmayiniz ve ekli dosyalari acmayiniz. Bu durumda lutfen e-posta mesajini kullaniciya hemen geri gonderiniz ve tum kopyalarini mesaj kutunuzdan siliniz. Bu e-posta mesaji, hic bir sekilde, herhangi bir amac icin cogaltilamaz, yayinlanamaz ve para karsiligi satilamaz. Bu e-posta mesaji viruslere karsi anti-virus sistemleri tarafindan taranmistir. Ancak yollayici, bu e-posta mesajinin - virus koruma sistemleri ile kontrol ediliyor olsa bile - virus icermedigini garanti etmez ve meydana gelebilecek zararlardan dogacak hicbir sorumlulugu kabul etmez. This message is intended solely for the use of the individual or entity to whom it is addressed , and may contain confidential information. If you are not the intended recipient of this message or you receive this mail in error, you should refrain from making any use of the contents and from opening any attachment. In that case, please notify the sender immediately and return the message to the sender, then, delete and destroy all copies. This e-mail message, can not be copied, published or sold for any reason. This e-mail message has been swept by anti-virus systems for the presence of computer viruses. In doing so, however, sender cannot warrant that virus or other forms of data corruption may not be present and do not take any responsibility in any occurrence.  
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+
+This doesn't really have anything to do with the rest of the set - so ideally
+you'd have sent it separately.
+
+One trivial typo below, that I can fix whilst applying.
+
+> ---
+>  Documentation/ABI/testing/sysfs-bus-iio | 85 +++++++++++++++++++++++++
+>  1 file changed, 85 insertions(+)
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+> index d957f5da5c04..f2a72d7fbacb 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-iio
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> @@ -1118,12 +1118,16 @@ Description:
+>  
+>  What:		/sys/bus/iio/devices/iio:deviceX/buffer/length
+>  KernelVersion:	2.6.35
+> +What:		/sys/bus/iio/devices/iio:deviceX/bufferY/length
+> +KernelVersion:	5.11
+>  Contact:	linux-iio@vger.kernel.org
+>  Description:
+>  		Number of scans contained by the buffer.
+>  
+>  What:		/sys/bus/iio/devices/iio:deviceX/buffer/enable
+>  KernelVersion:	2.6.35
+> +What:		/sys/bus/iio/devices/iio:deviceX/bufferY/enable
+> +KernelVersion:	5.11
+>  Contact:	linux-iio@vger.kernel.org
+>  Description:
+>  		Actually start the buffer capture up.  Will start trigger
+> @@ -1131,11 +1135,16 @@ Description:
+>  
+>  What:		/sys/bus/iio/devices/iio:deviceX/scan_elements
+>  KernelVersion:	2.6.37
+> +What:		/sys/bus/iio/devices/iio:deviceX/buffeY
+bufferY
+
+I'll fix whilst applying.
+
+> +KernelVersion:	5.11
+>  Contact:	linux-iio@vger.kernel.org
+>  Description:
+>  		Directory containing interfaces for elements that will be
+>  		captured for a single triggered sample set in the buffer.
+>  
+> +		Since kernel 5.11 the scan_elements attributes are merged into
+> +		the bufferY directory, to be configurable per buffer.
+> +
+>  What:		/sys/.../iio:deviceX/scan_elements/in_accel_x_en
+>  What:		/sys/.../iio:deviceX/scan_elements/in_accel_y_en
+>  What:		/sys/.../iio:deviceX/scan_elements/in_accel_z_en
+> @@ -1164,6 +1173,34 @@ What:		/sys/.../iio:deviceX/scan_elements/in_pressure_en
+>  What:		/sys/.../iio:deviceX/scan_elements/in_rot_quaternion_en
+>  What:		/sys/.../iio:deviceX/scan_elements/in_proximity_en
+>  KernelVersion:	2.6.37
+> +What:		/sys/.../iio:deviceX/bufferY/in_accel_x_en
+> +What:		/sys/.../iio:deviceX/bufferY/in_accel_y_en
+> +What:		/sys/.../iio:deviceX/bufferY/in_accel_z_en
+> +What:		/sys/.../iio:deviceX/bufferY/in_anglvel_x_en
+> +What:		/sys/.../iio:deviceX/bufferY/in_anglvel_y_en
+> +What:		/sys/.../iio:deviceX/bufferY/in_anglvel_z_en
+> +What:		/sys/.../iio:deviceX/bufferY/in_magn_x_en
+> +What:		/sys/.../iio:deviceX/bufferY/in_magn_y_en
+> +What:		/sys/.../iio:deviceX/bufferY/in_magn_z_en
+> +What:		/sys/.../iio:deviceX/bufferY/in_rot_from_north_magnetic_en
+> +What:		/sys/.../iio:deviceX/bufferY/in_rot_from_north_true_en
+> +What:		/sys/.../iio:deviceX/bufferY/in_rot_from_north_magnetic_tilt_comp_en
+> +What:		/sys/.../iio:deviceX/bufferY/in_rot_from_north_true_tilt_comp_en
+> +What:		/sys/.../iio:deviceX/bufferY/in_timestamp_en
+> +What:		/sys/.../iio:deviceX/bufferY/in_voltageY_supply_en
+> +What:		/sys/.../iio:deviceX/bufferY/in_voltageY_en
+> +What:		/sys/.../iio:deviceX/bufferY/in_voltageY-voltageZ_en
+> +What:		/sys/.../iio:deviceX/bufferY/in_voltageY_i_en
+> +What:		/sys/.../iio:deviceX/bufferY/in_voltageY_q_en
+> +What:		/sys/.../iio:deviceX/bufferY/in_voltage_i_en
+> +What:		/sys/.../iio:deviceX/bufferY/in_voltage_q_en
+> +What:		/sys/.../iio:deviceX/bufferY/in_incli_x_en
+> +What:		/sys/.../iio:deviceX/bufferY/in_incli_y_en
+> +What:		/sys/.../iio:deviceX/bufferY/in_pressureY_en
+> +What:		/sys/.../iio:deviceX/bufferY/in_pressure_en
+> +What:		/sys/.../iio:deviceX/bufferY/in_rot_quaternion_en
+> +What:		/sys/.../iio:deviceX/bufferY/in_proximity_en
+> +KernelVersion:	5.11
+>  Contact:	linux-iio@vger.kernel.org
+>  Description:
+>  		Scan element control for triggered data capture.
+> @@ -1185,6 +1222,23 @@ What:		/sys/.../iio:deviceX/scan_elements/in_pressure_type
+>  What:		/sys/.../iio:deviceX/scan_elements/in_rot_quaternion_type
+>  What:		/sys/.../iio:deviceX/scan_elements/in_proximity_type
+>  KernelVersion:	2.6.37
+> +What:		/sys/.../iio:deviceX/bufferY/in_accel_type
+> +What:		/sys/.../iio:deviceX/bufferY/in_anglvel_type
+> +What:		/sys/.../iio:deviceX/bufferY/in_magn_type
+> +What:		/sys/.../iio:deviceX/bufferY/in_incli_type
+> +What:		/sys/.../iio:deviceX/bufferY/in_voltageY_type
+> +What:		/sys/.../iio:deviceX/bufferY/in_voltage_type
+> +What:		/sys/.../iio:deviceX/bufferY/in_voltageY_supply_type
+> +What:		/sys/.../iio:deviceX/bufferY/in_voltageY_i_type
+> +What:		/sys/.../iio:deviceX/bufferY/in_voltageY_q_type
+> +What:		/sys/.../iio:deviceX/bufferY/in_voltage_i_type
+> +What:		/sys/.../iio:deviceX/bufferY/in_voltage_q_type
+> +What:		/sys/.../iio:deviceX/bufferY/in_timestamp_type
+> +What:		/sys/.../iio:deviceX/bufferY/in_pressureY_type
+> +What:		/sys/.../iio:deviceX/bufferY/in_pressure_type
+> +What:		/sys/.../iio:deviceX/bufferY/in_rot_quaternion_type
+> +What:		/sys/.../iio:deviceX/bufferY/in_proximity_type
+> +KernelVersion:	5.11
+>  Contact:	linux-iio@vger.kernel.org
+>  Description:
+>  		Description of the scan element data storage within the buffer
+> @@ -1241,6 +1295,33 @@ What:		/sys/.../iio:deviceX/scan_elements/in_pressure_index
+>  What:		/sys/.../iio:deviceX/scan_elements/in_rot_quaternion_index
+>  What:		/sys/.../iio:deviceX/scan_elements/in_proximity_index
+>  KernelVersion:	2.6.37
+> +What:		/sys/.../iio:deviceX/bufferY/in_voltageY_index
+> +What:		/sys/.../iio:deviceX/bufferY/in_voltageY_supply_index
+> +What:		/sys/.../iio:deviceX/bufferY/in_voltageY_i_index
+> +What:		/sys/.../iio:deviceX/bufferY/in_voltageY_q_index
+> +What:		/sys/.../iio:deviceX/bufferY/in_voltage_i_index
+> +What:		/sys/.../iio:deviceX/bufferY/in_voltage_q_index
+> +What:		/sys/.../iio:deviceX/bufferY/in_accel_x_index
+> +What:		/sys/.../iio:deviceX/bufferY/in_accel_y_index
+> +What:		/sys/.../iio:deviceX/bufferY/in_accel_z_index
+> +What:		/sys/.../iio:deviceX/bufferY/in_anglvel_x_index
+> +What:		/sys/.../iio:deviceX/bufferY/in_anglvel_y_index
+> +What:		/sys/.../iio:deviceX/bufferY/in_anglvel_z_index
+> +What:		/sys/.../iio:deviceX/bufferY/in_magn_x_index
+> +What:		/sys/.../iio:deviceX/bufferY/in_magn_y_index
+> +What:		/sys/.../iio:deviceX/bufferY/in_magn_z_index
+> +What:		/sys/.../iio:deviceX/bufferY/in_rot_from_north_magnetic_index
+> +What:		/sys/.../iio:deviceX/bufferY/in_rot_from_north_true_index
+> +What:		/sys/.../iio:deviceX/bufferY/in_rot_from_north_magnetic_tilt_comp_index
+> +What:		/sys/.../iio:deviceX/bufferY/in_rot_from_north_true_tilt_comp_index
+> +What:		/sys/.../iio:deviceX/bufferY/in_incli_x_index
+> +What:		/sys/.../iio:deviceX/bufferY/in_incli_y_index
+> +What:		/sys/.../iio:deviceX/bufferY/in_timestamp_index
+> +What:		/sys/.../iio:deviceX/bufferY/in_pressureY_index
+> +What:		/sys/.../iio:deviceX/bufferY/in_pressure_index
+> +What:		/sys/.../iio:deviceX/bufferY/in_rot_quaternion_index
+> +What:		/sys/.../iio:deviceX/bufferY/in_proximity_index
+> +KernelVersion:	5.11
+>  Contact:	linux-iio@vger.kernel.org
+>  Description:
+>  		A single positive integer specifying the position of this
+> @@ -1455,6 +1536,8 @@ Description:
+>  
+>  What:		/sys/bus/iio/devices/iio:deviceX/buffer/watermark
+>  KernelVersion:	4.2
+> +What:		/sys/bus/iio/devices/iio:deviceX/bufferY/watermark
+> +KernelVersion:	5.11
+>  Contact:	linux-iio@vger.kernel.org
+>  Description:
+>  		A single positive integer specifying the maximum number of scan
+> @@ -1473,6 +1556,8 @@ Description:
+>  
+>  What:		/sys/bus/iio/devices/iio:deviceX/buffer/data_available
+>  KernelVersion: 4.16
+> +What:		/sys/bus/iio/devices/iio:deviceX/bufferY/data_available
+> +KernelVersion:	5.11
+>  Contact:	linux-iio@vger.kernel.org
+>  Description:
+>  		A read-only value indicating the bytes of data available in the
 

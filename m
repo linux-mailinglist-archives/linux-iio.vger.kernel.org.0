@@ -2,63 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A46F131FB4A
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Feb 2021 15:50:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EEC531FD45
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Feb 2021 17:40:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229937AbhBSOu2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Feb 2021 09:50:28 -0500
-Received: from smtp-out.xnet.cz ([178.217.244.18]:31330 "EHLO smtp-out.xnet.cz"
+        id S229952AbhBSQjN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Feb 2021 11:39:13 -0500
+Received: from mail.jvpinto.com ([65.49.11.60]:54450 "EHLO mail.JVPinto.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229925AbhBSOt5 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 19 Feb 2021 09:49:57 -0500
-Received: from meh.true.cz (meh.true.cz [108.61.167.218])
-        (Authenticated sender: petr@true.cz)
-        by smtp-out.xnet.cz (Postfix) with ESMTPSA id 7F09A18404;
-        Fri, 19 Feb 2021 15:49:08 +0100 (CET)
-Received: by meh.true.cz (OpenSMTPD) with ESMTP id 3ba7593b;
-        Fri, 19 Feb 2021 15:48:50 +0100 (CET)
-Date:   Fri, 19 Feb 2021 15:49:06 +0100
-From:   Petr =?utf-8?Q?=C5=A0tetiar?= <ynezz@true.cz>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Tomasz Duszynski <tomasz.duszynski@octakon.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: chemical: scd30: fix Oops due to missing parent
- device
-Message-ID: <20210219144906.GA28573@meh.true.cz>
-Reply-To: Petr =?utf-8?Q?=C5=A0tetiar?= <ynezz@true.cz>
-References: <20210208223947.32344-1-ynezz@true.cz>
- <20210212191219.7b16abbb@archlinux>
+        id S230102AbhBSQjF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 19 Feb 2021 11:39:05 -0500
+Received: from RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) by
+ RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.2; Fri, 19 Feb 2021 08:37:51 -0800
+Received: from User (137.116.168.210) by RW-EXC1.JVPinto.com (172.32.1.13)
+ with Microsoft SMTP Server id 15.0.1497.2 via Frontend Transport; Fri, 19 Feb
+ 2021 08:37:34 -0800
+Reply-To: <ms.reem@yandex.com>
+From:   "Ms. Reem" <johnpinto@jvpinto.com>
+Subject: Re:reply
+Date:   Fri, 19 Feb 2021 16:37:49 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210212191219.7b16abbb@archlinux>
-X-PGP-Key: https://gist.githubusercontent.com/ynezz/477f6d7a1623a591b0806699f9fc8a27/raw/a0878b8ed17e56f36ebf9e06a6b888a2cd66281b/pgp-key.pub
+Content-Type: text/plain; charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <77446e5d472f43ce948687c2d1d43b67@RW-EXC1.JVPinto.com>
+To:     Undisclosed recipients:;
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Jonathan Cameron <jic23@kernel.org> [2021-02-12 19:12:19]:
+Hello,
 
-Hi Jonathan,
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
 
-> >  CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.4.96+ #473
-> 
-> So, we moved this into the core a while back (to avoid exactly this sort of issue).
-> That change predates this introduction of this driver as it went in
-> in v5.8
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
 
-sorry for the noise, I've missed that commit 8525df47b3d1 ("iio: core:
-fix/re-introduce back parent assignment"), thank you for the hint.
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
 
-> So I think you've hit an issue with a backport here to an earlier kernel?
-
-Indeed, I've backported it to 5.4.96 as you can see in the dmesg output above.
-I'll try to reproduce it again on 5.10 in the upcoming days.
-
-Cheers,
-
-Petr
+Regards,
+Ms. Reem.

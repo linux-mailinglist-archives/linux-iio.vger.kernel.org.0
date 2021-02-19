@@ -2,147 +2,86 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CFDA31F615
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Feb 2021 09:53:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F05431F622
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Feb 2021 10:00:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229652AbhBSIwa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Feb 2021 03:52:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55732 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229546AbhBSIw1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Feb 2021 03:52:27 -0500
-Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4FEAC061756;
-        Fri, 19 Feb 2021 00:51:46 -0800 (PST)
-Received: by mail-pg1-x52c.google.com with SMTP id z68so3439821pgz.0;
-        Fri, 19 Feb 2021 00:51:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=ZX/0vn+4d0GadCfE6C+zcMHKBe8kMLF0TT0FFLEZWko=;
-        b=gp4UIalZOAkD+9D6/YZrYAsj+BWkWdjYpymhbfYsJdSc12qD46kAFL5uvCxfrFjTbW
-         NcDYnMQx1ZWnR3ySqHQa3vtiWKgIcZVF3XZJd9w4bkUwiOdkKPZoLlLMmOW2vIDLKfzb
-         7zjfoWmNZG7CeLrWRX09+llAZjfJqGUvPME8IT+n631hYDJmWqsMDAvgJSUKgioqBMOT
-         /tI+Jdo3RCp3jQ4QioB0NrgHMFA9A8XPPgvDv9Ey+E4FLGUribU3P8NorDCvTXkE9wyx
-         1Je/Gw/CDt2XdROS6IEmxswI4ITvAXcHy9uCGGxcdokOtjn7yP4hUSA9rOFvAZFnsTgp
-         I22A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=ZX/0vn+4d0GadCfE6C+zcMHKBe8kMLF0TT0FFLEZWko=;
-        b=UREsU149zeudQUZay8akY0MNFnp/TgpZNYhTdIcRKaHs4P3jWsf1C3BSfzoFU3iJ7K
-         uSYvLAakIMWGDYhijckqxf0RuU1kb42O/MQuXgBt5KRL+jRfsXlaN6RAVJVECpX6CFCW
-         XP+BMEDlwvfmk60ZaHGY5A1TMfAApqLXvrxH16pvuTjpImIvMoiTpm//j4sjamVPrXM2
-         hN1Bzf3clDHPtq4201AXQUf+Y1aeJYMsyn/dBvxk0dPVMB7ILl44/EuB3QJfNPsQze3h
-         QawF/0sR+OIvAbAiLOwqhyQSDC/XrzsUyjb4HvHRiqRWDOecelOJJWcpgXaRAWukBDDy
-         20Gw==
-X-Gm-Message-State: AOAM531lvrPIfC3M8Sgu0uaPefKf4/77aB+97xONpiFIQTWi4zc9IpUO
-        pPi50GaJpo+LN7liBaOVqg4=
-X-Google-Smtp-Source: ABdhPJz1tkjQ5wEB6PWfTQeIvZWmVYTed76QBMR8Bc1Hd5itPLBAQDEmnH8GyFqWxdto3uAN+Stk0g==
-X-Received: by 2002:a63:ca45:: with SMTP id o5mr7730598pgi.48.1613724706449;
-        Fri, 19 Feb 2021 00:51:46 -0800 (PST)
-Received: from shinobu (113x37x72x20.ap113.ftth.ucom.ne.jp. [113.37.72.20])
-        by smtp.gmail.com with ESMTPSA id u20sm8301896pjy.36.2021.02.19.00.51.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Feb 2021 00:51:45 -0800 (PST)
-Date:   Fri, 19 Feb 2021 17:51:37 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
-        a.fatoum@pengutronix.de, kamel.bouhara@bootlin.com,
-        gwendal@chromium.org, alexandre.belloni@bootlin.com,
-        david@lechnology.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        syednwaris@gmail.com, patrick.havelange@essensium.com,
-        fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@st.com, o.rempel@pengutronix.de,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Subject: Re: [PATCH v8 19/22] counter: Implement extension*_name sysfs
- attributes
-Message-ID: <YC98GTwzwt+pkzMO@shinobu>
-References: <cover.1613131238.git.vilhelm.gray@gmail.com>
- <c9b55d1cff6acac692a7853b0a25777ecf017b12.1613131238.git.vilhelm.gray@gmail.com>
- <20210214180913.05bd3498@archlinux>
+        id S229546AbhBSI77 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Feb 2021 03:59:59 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:19442 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229535AbhBSI76 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Feb 2021 03:59:58 -0500
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 11J8scOx028670;
+        Fri, 19 Feb 2021 03:59:05 -0500
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 36p9gb9wam-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 19 Feb 2021 03:59:04 -0500
+Received: from SCSQMBX10.ad.analog.com (SCSQMBX10.ad.analog.com [10.77.17.5])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 11J8x376010902
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 19 Feb 2021 03:59:03 -0500
+Received: from SCSQCASHYB6.ad.analog.com (10.77.17.132) by
+ SCSQMBX10.ad.analog.com (10.77.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.721.2;
+ Fri, 19 Feb 2021 00:59:01 -0800
+Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by
+ SCSQCASHYB6.ad.analog.com (10.77.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.721.2;
+ Fri, 19 Feb 2021 00:59:01 -0800
+Received: from zeus.spd.analog.com (10.66.68.11) by scsqmbx10.ad.analog.com
+ (10.77.17.5) with Microsoft SMTP Server id 15.2.721.2 via Frontend Transport;
+ Fri, 19 Feb 2021 00:59:01 -0800
+Received: from saturn.ad.analog.com ([10.48.65.120])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 11J8wx48029584;
+        Fri, 19 Feb 2021 03:58:59 -0500
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
+CC:     <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+        <jic23@kernel.org>, <nuno.sa@analog.com>,
+        <dragos.bogdan@analog.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH 0/2] iio: core,buffer-dma: 2 fixes for the recent IIO buffer series
+Date:   Fri, 19 Feb 2021 10:58:24 +0200
+Message-ID: <20210219085826.46622-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Z+ATVKzf56OJTET9"
-Content-Disposition: inline
-In-Reply-To: <20210214180913.05bd3498@archlinux>
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
+ definitions=2021-02-19_02:2021-02-18,2021-02-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ bulkscore=0 malwarescore=0 mlxlogscore=999 phishscore=0 clxscore=1015
+ mlxscore=0 priorityscore=1501 impostorscore=0 adultscore=0 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2102190070
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Patchset contains 2 fixes for some patches that are present in the
+iio/testing branch.
 
---Z+ATVKzf56OJTET9
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+No idea what's best now, either to re-send the series or to just send these
+fixes on their own.
+For now I chose to send the fixes on their (due to lack of time).
 
-On Sun, Feb 14, 2021 at 06:09:13PM +0000, Jonathan Cameron wrote:
-> On Fri, 12 Feb 2021 21:13:43 +0900
-> William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
->=20
-> > The Generic Counter chrdev interface expects users to supply extension
-> > IDs in order to select extensions for requests. In order for users to
-> > know what extension ID belongs to which extension this information must
-> > be exposed. The extension*_name attribute provides a way for users to
-> > discover what extension ID belongs to which extension by reading the
-> > respective extension name for an extension ID.
-> >=20
-> > Cc: David Lechner <david@lechnology.com>
-> > Cc: Gwendal Grignou <gwendal@chromium.org>
-> > Cc: Dan Carpenter <dan.carpenter@oracle.com>
-> > Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-> > ---
-> >  Documentation/ABI/testing/sysfs-bus-counter |  9 ++++
-> >  drivers/counter/counter-sysfs.c             | 51 +++++++++++++++++----
-> >  2 files changed, 50 insertions(+), 10 deletions(-)
-> >=20
-> > diff --git a/Documentation/ABI/testing/sysfs-bus-counter b/Documentatio=
-n/ABI/testing/sysfs-bus-counter
-> > index 6353f0a2f8f8..847e96f19d19 100644
-> > --- a/Documentation/ABI/testing/sysfs-bus-counter
-> > +++ b/Documentation/ABI/testing/sysfs-bus-counter
-> > @@ -100,6 +100,15 @@ Description:
-> >  		Read-only attribute that indicates whether excessive noise is
-> >  		present at the channel Y counter inputs.
-> > =20
-> > +What:		/sys/bus/counter/devices/counterX/countY/extensionZ_name
-> > +What:		/sys/bus/counter/devices/counterX/extensionZ_name
-> > +What:		/sys/bus/counter/devices/counterX/signalY/extensionZ_name
-> > +KernelVersion:	5.13
-> > +Contact:	linux-iio@vger.kernel.org
-> > +Description:
-> > +		Read-only attribute that indicates the component name of
-> > +		Extension Z.
->=20
-> Good to say what form this takes.
+These could be squashed into the original.
 
-Do you mean a description like this: "Read-only string attribute that
-indicates the component name of Extension Z"?
+I can also re-send the series, but not from an Analog email; since I will
+not have access to it.
 
-William Breathitt Gray
+Alexandru Ardelean (2):
+  iio: core: use kfree_const in iio_free_chan_devattr_list() to free
+    names
+  iio: buffer-dma: fix type of 'i' in iio_dma_buffer_alloc_blocks()
 
---Z+ATVKzf56OJTET9
-Content-Type: application/pgp-signature; name="signature.asc"
+ drivers/iio/buffer/industrialio-buffer-dma.c | 3 +--
+ drivers/iio/industrialio-core.c              | 2 +-
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
------BEGIN PGP SIGNATURE-----
+-- 
+2.27.0
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmAvfBkACgkQhvpINdm7
-VJIzrRAAiZ+eMLbJ0vaW9ezjJpkSnHfiyB5JKIbYfzn7RticBncbdaXLrFHbq9y/
-cWxBrgijMQ9h2SwX8gW+ovh6u7cfCW+FFvLtS9UAb9jiM/jTangdAASyMmjLTFDb
-04zodzHmS88tT+Wd5AQICiAR3MRAglHfyED3Utq2DSDvSkgB6vMo3JfuVrdQaKaS
-haOt0+djMIYtjoqk6HuvokA3Fwq4SBh2Ey8miBy9TXedsiMpeEMv7BO/rOoMIyJH
-OsKqnvQVR0OncdCYzWL1ENnu8NQo/4GIgDrwHTQXMTYXune1u8oM8vAkLXeJ8tlU
-TLUBRTjQaHt5E5Qz+vyxYsahSyZ6G/qDJ4oDRApSpfHhXuZmF4a1yqzzWOoFviuh
-kqubzCcDzYb5svEbp1T5N9Wqi1Q4By8r2Y3JQA6kt4Y0YGqlRZP5uMbwS0kvplYS
-AMqnslpxOWbEBQgxpjEHhAP3iB1yHmopGBvBWJX4X2oTOslVK9tv3BpRXIHDOCz4
-1+cxy4DNAS0KdskIv0jOhEfbyPzEYi7n424aA+Mhgs0LSgkDjCXw4WqPmJX2CS+Q
-pCgwMJfgqW61pZBeMfv6HaqKw1DKzESf1DUrqgWry1zvdO43xozbqdvat8iAJO/N
-UIm9sFwsQDTAym3cvbPuNCePtvb0rqN7Wo4QnZfOBHBa+9Oifgc=
-=Rifk
------END PGP SIGNATURE-----
-
---Z+ATVKzf56OJTET9--

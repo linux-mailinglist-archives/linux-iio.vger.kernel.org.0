@@ -2,161 +2,149 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B83531F568
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Feb 2021 08:44:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 41F0F31F603
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Feb 2021 09:46:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229656AbhBSHnv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Feb 2021 02:43:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41100 "EHLO
+        id S229746AbhBSIqc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Feb 2021 03:46:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229498AbhBSHnt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Feb 2021 02:43:49 -0500
-Received: from mail-io1-xd2a.google.com (mail-io1-xd2a.google.com [IPv6:2607:f8b0:4864:20::d2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73A17C061788
-        for <linux-iio@vger.kernel.org>; Thu, 18 Feb 2021 23:43:08 -0800 (PST)
-Received: by mail-io1-xd2a.google.com with SMTP id u8so4687682ior.13
-        for <linux-iio@vger.kernel.org>; Thu, 18 Feb 2021 23:43:08 -0800 (PST)
+        with ESMTP id S229625AbhBSIqb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Feb 2021 03:46:31 -0500
+Received: from mail-io1-xd2b.google.com (mail-io1-xd2b.google.com [IPv6:2607:f8b0:4864:20::d2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10197C061574;
+        Fri, 19 Feb 2021 00:45:51 -0800 (PST)
+Received: by mail-io1-xd2b.google.com with SMTP id u20so4827306iot.9;
+        Fri, 19 Feb 2021 00:45:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=3R+dhzpYGkmgjeok4oqGNlL7AiI2NJ/NrT/AIhJYy2M=;
-        b=V8XKtNzTbR4ZiO9QNqgtG87qFhCsCLhiBy7bZNk7xXMox3FeBLsUZXmbUlPtCRR5bB
-         V36R2dfZoCvRFaRBRJcVDx9+XjWYGiLF0H0Nbg7TGH/59E0gCjQrOFtnyMwGZ4KzqiAN
-         cLKZdLTVfpCd2aTlGw86X550ZFEOWYRGWGtM8cTTB57XDoTVxsnDjgQO0YeSAfWYcu1x
-         f40s90H/GhgyjADbX21bZXLXDJ6SD0ZKAj0wT6Q3OI3jLUYY1yNEs2ZVf/wRwRIXvdbJ
-         qApGZW7KD8/VsyHliJUI/cItpFghtgNjzSc0JDcyO2Ztct8JQjWlbKYnU243n3BdlgBW
-         5OEg==
+        bh=7dkoFvnkhD7Gw0bj/FIIwq2SMclEKsgMhUhYHtvCM/Q=;
+        b=VacweNxitgPmKnxB9yB2yqDAdBsx3QBI0tQEUPZe58fVV1tmTpXQSql3oN23oymdyh
+         B0a7dX1vVboQQveAxnj/0V7ekajUoWjzHFJxlu63ZF+hA0f6Pv+zkm7aRNRi58hjXNvr
+         undltDAO+VyDNjeOxVTfFKImVCkMfB/RpKbgWvG9W+XOMNQfPhdHgZkZuNKa3IuLqYu8
+         p374kcwrajQXpbbBE8yT1k+yQpkCyG+twC9FduAI7VxEV6D0/HFj8Q588EL0FaVYBoeh
+         iKk1kBc7j5QKQir7WRCeeVOVGpLXwTj8rl61S2CaOXGZFEizLa4wjNxF6hi9iQi7ZZC0
+         KQuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=3R+dhzpYGkmgjeok4oqGNlL7AiI2NJ/NrT/AIhJYy2M=;
-        b=a9H4L46lvR5ubUQlfALIe4tS+ztVpyAaYM1xaDdU/dPvUNpWFJYrer8fX+3OpqcywR
-         RFs8fkP3iOQdjBVSE0QmQwyOcPiYyHJ2bBErTC2S9TozBFW8fvfj3TwGsIBl9kH5diDs
-         j4uE0LCb68LEKjO5Vd8zzE4OwwfmXHSLDyjohp2xn5gCLcg3TqePFfOx6Hi7QB1diTiP
-         hKRdx0qDhEVqrm3kkdwKV44UCBwvLEwYCfp2PdCVitQR4jREFv3r687sF82vOPpXOg46
-         f1iH3JyF7TLBS+gG8PvHi8VMP5mIOHurNJyq1wQWOohHCzP6vk33Vv/RPtsDgHQQEpu8
-         1IBA==
-X-Gm-Message-State: AOAM531HGVC1fT7kVnlu8MTm0uoFenPmWBtmqKn4Kp63UAr7IZBO/DGD
-        b+vsDDglvVVbLaSh+xycHc6Okg2GjT2wdJ6paZU=
-X-Google-Smtp-Source: ABdhPJzi8FpSD0ln3IVKhnq0P7ddic56St+QHfiD9u2O4P8KX65PMEiM2yVqzGvd392MqGS6EuD22tO0BgQB6+m/VaQ=
-X-Received: by 2002:a02:9425:: with SMTP id a34mr8402794jai.79.1613720587853;
- Thu, 18 Feb 2021 23:43:07 -0800 (PST)
+        bh=7dkoFvnkhD7Gw0bj/FIIwq2SMclEKsgMhUhYHtvCM/Q=;
+        b=cQmzCUwKc4GBe7Smiderm5GxOuEQ18piPghrjiOrkFS3TsrhQb3L4Gmo4yd6esAD4e
+         4/158Bgf2Lc9/NrRlA5ZvG647NdCDUpuEbk0Ked6Q5XiiGleOmv35gzStA4Pnq8P/6Gl
+         vsfZnzDk6RtNC+Dof47b8GnL3OWTxxeft2WOpJNkmXMaF/P+23oz2YVgyVmp+PvQ121/
+         nKyiZ0RyLBIPxX37hONyzFTUoKu8nQWpU++ZGfPLOvErM+Tu2PC2XWAl+y5hy0O+caUw
+         tGO8Mj8wxRoFqUtvazboGPhZJStoJR/OUzVEEFsyoAGaIB2w0jInpgG4UZ/bfabB+o0W
+         lTEQ==
+X-Gm-Message-State: AOAM530NWCBvRXuBrWaRkNTkXouLY1qgQn4cHdQ09lNKT2h6wLTJwoyS
+        h8OfbzRN4viijHulo2W9xDVxBQNEpJQFU7JNtUvrftUxlLI=
+X-Google-Smtp-Source: ABdhPJw4EoSfLE5dXgeUqA+Vkizt4huaf6PanjvfWkJdJyhnpymweh5gM8VGZ4uEDMQLaAZ2MLmx7dADYb77Af8Urf4=
+X-Received: by 2002:a02:cce6:: with SMTP id l6mr8664351jaq.69.1613724350416;
+ Fri, 19 Feb 2021 00:45:50 -0800 (PST)
 MIME-Version: 1.0
-References: <202102172355.IQoU3jH8-lkp@intel.com> <MN2PR03MB51995BFEE1DA0E625D33D40BF9849@MN2PR03MB5199.namprd03.prod.outlook.com>
-In-Reply-To: <MN2PR03MB51995BFEE1DA0E625D33D40BF9849@MN2PR03MB5199.namprd03.prod.outlook.com>
+References: <20210217083438.37865-1-alexandru.ardelean@analog.com>
+ <20210217083438.37865-3-alexandru.ardelean@analog.com> <20210218134240.2dd1feb2@archlinux>
+In-Reply-To: <20210218134240.2dd1feb2@archlinux>
 From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Fri, 19 Feb 2021 09:42:56 +0200
-Message-ID: <CA+U=Dsoo=oggDiNgFxU-_RffekHhEa3Amu6SpPLtPqjbyu1ATA@mail.gmail.com>
-Subject: Re: [iio:testing 44/53] ./usr/include/linux/iio/buffer.h:16:2: error:
- unknown type name '__u32'
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-Cc:     kernel test robot <lkp@intel.com>,
+Date:   Fri, 19 Feb 2021 10:45:39 +0200
+Message-ID: <CA+U=DsqhDYgs-HYnC3-T0d0ubvkG8eZQifx1XLzvUa5K-Ru+bg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/5] iio: Add output buffer support
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        "kbuild-all@lists.01.org" <kbuild-all@lists.01.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio <linux-iio@vger.kernel.org>
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
+        "Bogdan, Dragos" <dragos.bogdan@analog.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Feb 19, 2021 at 9:39 AM Ardelean, Alexandru
-<alexandru.Ardelean@analog.com> wrote:
+On Thu, Feb 18, 2021 at 5:30 PM Jonathan Cameron <jic23@kernel.org> wrote:
 >
+> On Wed, 17 Feb 2021 10:34:35 +0200
+> Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 >
->
-> > -----Original Message-----
-> > From: kernel test robot <lkp@intel.com>
-> > Sent: Wednesday, February 17, 2021 5:31 PM
-> > To: Lars-Peter Clausen <lars@metafoo.de>
-> > Cc: kbuild-all@lists.01.org; Jonathan Cameron
-> > <Jonathan.Cameron@huawei.com>; Ardelean, Alexandru
-> > <alexandru.Ardelean@analog.com>
-> > Subject: [iio:testing 44/53] ./usr/include/linux/iio/buffer.h:16:2: error: unknown
-> > type name '__u32'
+> > From: Lars-Peter Clausen <lars@metafoo.de>
 > >
-> > [External]
+> > Currently IIO only supports buffer mode for capture devices like ADCs. Add
+> > support for buffered mode for output devices like DACs.
 > >
+> > The output buffer implementation is analogous to the input buffer
+> > implementation. Instead of using read() to get data from the buffer write()
+> > is used to copy data into the buffer.
+> >
+> > poll() with POLLOUT will wakeup if there is space available for more or
+> > equal to the configured watermark of samples.
+> >
+> > Drivers can remove data from a buffer using iio_buffer_remove_sample(), the
+> > function can e.g. called from a trigger handler to write the data to
+> > hardware.
+> >
+> > A buffer can only be either a output buffer or an input, but not both. So,
+> > for a device that has an ADC and DAC path, this will mean 2 IIO buffers
+> > (one for each direction).
+> >
+> > The direction of the buffer is decided by the new direction field of the
+> > iio_buffer struct and should be set after allocating and before registering
+> > it.
+> >
+> > Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 >
-> I already fixed this before the lkp bot.
+> Just one question on this, otherwise looks good to me.
+>
+> Jonathan
+>
+> > diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+> > index 5d641f8adfbd..b9970c68005d 100644
+> > --- a/drivers/iio/industrialio-buffer.c
+> > +++ b/drivers/iio/industrialio-buffer.c
+> > @@ -162,6 +162,69 @@ static ssize_t iio_buffer_read(struct file *filp, char __user *buf,
+> >       return ret;
+> >  }
+> >
+> ...
+>
+> >  /**
+> >   * iio_buffer_poll() - poll the buffer to find out if it has data
+> >   * @filp:    File structure pointer for device access
+> > @@ -182,8 +245,19 @@ static __poll_t iio_buffer_poll(struct file *filp,
+> >               return 0;
+> >
+> >       poll_wait(filp, &rb->pollq, wait);
+> > -     if (iio_buffer_ready(indio_dev, rb, rb->watermark, 0))
+> > -             return EPOLLIN | EPOLLRDNORM;
+> > +
+> > +     switch (rb->direction) {
+> > +     case IIO_BUFFER_DIRECTION_IN:
+> > +             if (iio_buffer_ready(indio_dev, rb, rb->watermark, 0))
+> > +                     return EPOLLIN | EPOLLRDNORM;
+> > +             break;
+> > +     case IIO_BUFFER_DIRECTION_OUT:
+> > +             if (iio_buffer_space_available(rb) >= rb->watermark)
+> > +                     return EPOLLOUT | EPOLLWRNORM;
+> > +             break;
+> > +     }
+> > +
+> > +     /* need a way of knowing if there may be enough data... */
+>
+> Curious on what this comment is referring to?
 
-I forgot to mention.
-Fix was:
-https://patchwork.kernel.org/project/linux-iio/patch/20210217073638.21681-2-alexandru.ardelean@analog.com/
+I'm also a bit curious about what this comment is referring to.
+I can remove it.
 
-to include <linux/types.h>
-
-It's funny, because this only showed up when I tried a make allmodconfig.
+Maybe Lars can give some insight.
 
 >
-> > tree:
-> > https://urldefense.com/v3/__https://git.kernel.org/pub/scm/linux/kernel/git/jic
-> > 23/iio.git__;!!A3Ni8CS0y2Y!pWBrksmMpFBwc7SW9x0b7o7PB9Ca8mTm7KOLcO
-> > J5ELyL-IHFus7OaIGGn4pRWiSFk665kw$  testing
-> > head:   0fd146b288591a8139220fec417dfc5652820480
-> > commit: 861a03649026b4c4ace807af241ba719976b90e4 [44/53] iio: core: Add
-> > mmap interface infrastructure
-> > config: x86_64-randconfig-c002-20210216 (attached as .config)
-> > compiler: gcc-9 (Debian 9.3.0-15) 9.3.0
-> > reproduce (this is a W=1 build):
-> >         #
-> > https://urldefense.com/v3/__https://git.kernel.org/pub/scm/linux/kernel/git/jic
-> > 23/iio.git/commit/?id=861a03649026b4c4ace807af241ba719976b90e4__;!!A3N
-> > i8CS0y2Y!pWBrksmMpFBwc7SW9x0b7o7PB9Ca8mTm7KOLcOJ5ELyL-
-> > IHFus7OaIGGn4pRWiS371BwdQ$
-> >         git remote add iio
-> > https://urldefense.com/v3/__https://git.kernel.org/pub/scm/linux/kernel/git/jic
-> > 23/iio.git__;!!A3Ni8CS0y2Y!pWBrksmMpFBwc7SW9x0b7o7PB9Ca8mTm7KOLcO
-> > J5ELyL-IHFus7OaIGGn4pRWiSFk665kw$
-> >         git fetch --no-tags iio testing
-> >         git checkout 861a03649026b4c4ace807af241ba719976b90e4
-> >         # save the attached .config to linux build tree
-> >         make W=1 ARCH=x86_64
+> >       return 0;
+> >  }
 > >
-> > If you fix the issue, kindly add following tag as appropriate
-> > Reported-by: kernel test robot <lkp@intel.com>
-> >
-> > All errors (new ones prefixed by >>):
-> >
-> >    In file included from <command-line>:32:
-> > >> ./usr/include/linux/iio/buffer.h:16:2: error: unknown type name '__u32'
-> >       16 |  __u32 type;
-> >          |  ^~~~~
-> >    ./usr/include/linux/iio/buffer.h:17:2: error: unknown type name '__u32'
-> >       17 |  __u32 size;
-> >          |  ^~~~~
-> >    ./usr/include/linux/iio/buffer.h:18:2: error: unknown type name '__u32'
-> >       18 |  __u32 count;
-> >          |  ^~~~~
-> >    ./usr/include/linux/iio/buffer.h:19:2: error: unknown type name '__u32'
-> >       19 |  __u32 id;
-> >          |  ^~~~~
-> >    ./usr/include/linux/iio/buffer.h:36:2: error: unknown type name '__u32'
-> >       36 |  __u32 id;
-> >          |  ^~~~~
-> >    ./usr/include/linux/iio/buffer.h:37:2: error: unknown type name '__u32'
-> >       37 |  __u32 size;
-> >          |  ^~~~~
-> >    ./usr/include/linux/iio/buffer.h:38:2: error: unknown type name '__u32'
-> >       38 |  __u32 bytes_used;
-> >          |  ^~~~~
-> >    ./usr/include/linux/iio/buffer.h:39:2: error: unknown type name '__u32'
-> >       39 |  __u32 type;
-> >          |  ^~~~~
-> >    ./usr/include/linux/iio/buffer.h:40:2: error: unknown type name '__u32'
-> >       40 |  __u32 flags;
-> >          |  ^~~~~
-> >    ./usr/include/linux/iio/buffer.h:42:3: error: unknown type name '__u32'
-> >       42 |   __u32 offset;
-> >          |   ^~~~~
-> > >> ./usr/include/linux/iio/buffer.h:44:2: error: unknown type name '__u64'
-> >       44 |  __u64 timestamp;
-> >          |  ^~~~~
-> >
-> > ---
-> > 0-DAY CI Kernel Test Service, Intel Corporation
-> > https://urldefense.com/v3/__https://lists.01.org/hyperkitty/list/kbuild-
-> > all@lists.01.org__;!!A3Ni8CS0y2Y!pWBrksmMpFBwc7SW9x0b7o7PB9Ca8mTm7
-> > KOLcOJ5ELyL-IHFus7OaIGGn4pRWiQdYNMyhA$
+> > @@ -232,6 +306,16 @@ void iio_buffer_wakeup_poll(struct iio_dev *indio_dev)
+> >       }
+> >  }
+> ...

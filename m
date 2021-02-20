@@ -2,49 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD27F32034A
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Feb 2021 03:49:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0869E320623
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Feb 2021 17:26:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229802AbhBTCsi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Feb 2021 21:48:38 -0500
-Received: from mail.mpcb.gov.in ([125.17.249.59]:50116 "EHLO
-        fortimail.email.mpcb.gov.in" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S229796AbhBTCsi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Feb 2021 21:48:38 -0500
-X-Greylist: delayed 69771 seconds by postgrey-1.27 at vger.kernel.org; Fri, 19 Feb 2021 21:48:31 EST
-Received: from User (rain-197-185-102-182.rain.network [197.185.102.182])
-        (user=feedback.consent@mpcb.gov.in mech=LOGIN bits=0)
-        by fortimail.email.mpcb.gov.in  with ESMTP id 11J7IVmK031284-11J7IVmM031284;
-        Fri, 19 Feb 2021 12:48:34 +0530
-Message-Id: <202102190718.11J7IVmK031284-11J7IVmM031284@fortimail.email.mpcb.gov.in>
-Reply-To: <brightwayfinanceloan01@protonmail.com>
-From:   "Brightway Finance Loan" <brightwayfinanceloan@gmail.com>
-Subject: Apply for loan at 5% interest rate per year
-Date:   Fri, 19 Feb 2021 09:18:30 +0200
+        id S229774AbhBTQ0d (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 20 Feb 2021 11:26:33 -0500
+Received: from vern.gendns.com ([98.142.107.122]:59204 "EHLO vern.gendns.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229784AbhBTQ03 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 20 Feb 2021 11:26:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=d+oiySUdTw6kjAIxeQUPAaWlTWZ7c9j+H2jNv6v/cDc=; b=eUB3/yQ7F/4qZ5vniJWQ6ToNH7
+        5/hd333+ZRnlYykM476FGC75X6/xI9UtIj7kt+Zs74lF/OIkVu7WfNg4Cl7XXG8s7ctPSq60ntD4K
+        l+cWa2DyyXsOUG1o25Yq6U4sOpv6CRVm9lSVNwkk8CecyGzy5cKuP/Y2qXufMSCQsxZXabtW/N10c
+        gA0n2NCHNUL+HRICcSVSqj9Qy8Ot6FZfLYqQvlYnZtlo43ohHCPmKguNfjpdc+sZtyf9Khge7VUFO
+        VtrXBA/hpChfXPq4PXPy80vaifg9LrvxmR25s9tt/zbQWg56WjETLjHe3HvnTlYC6os69bjNTMsZK
+        /7ovMFfQ==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:57342 helo=[192.168.0.134])
+        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <david@lechnology.com>)
+        id 1lDV4i-00063f-Gl; Sat, 20 Feb 2021 11:25:44 -0500
+Subject: Re: [PATCH v8 01/22] docs: counter: Consolidate Counter sysfs
+ attributes documentation
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>, jic23@kernel.org
+Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
+        a.fatoum@pengutronix.de, kamel.bouhara@bootlin.com,
+        gwendal@chromium.org, alexandre.belloni@bootlin.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
+        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com,
+        o.rempel@pengutronix.de
+References: <cover.1613131238.git.vilhelm.gray@gmail.com>
+ <362a71a1eba98108d009db8c929170a6ed8cf110.1613131238.git.vilhelm.gray@gmail.com>
+From:   David Lechner <david@lechnology.com>
+Message-ID: <2d35b608-b13b-3dbf-e895-a65da1f4bf68@lechnology.com>
+Date:   Sat, 20 Feb 2021 10:25:42 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
+In-Reply-To: <362a71a1eba98108d009db8c929170a6ed8cf110.1613131238.git.vilhelm.gray@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-X-FEAS-Auth-User: feedback.consent@mpcb.gov.in
-X-FE-Policy-ID: 0:1:2:SYSTEM
-To:     unlisted-recipients:; (no To-header on input)
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-BrightWay Finance offers Loans ranging from (R10, 000.00 - R60, 000,000.00). Loan duration is from 1 to 20 years (Maximum) No collateral,
-No ITC CHECK and Blacklisted are welcome. If you wish to apply kindly send your full names, ID number, 
-email address and cellphone number to brightwayfinanceloan01@protonmail.com
+On 2/12/21 6:13 AM, William Breathitt Gray wrote:
+> Duplicate ABIs are not valid, so let's consolidate these sysfs
+> attributes into the main sysfs-bus-counter documentation file.
+> 
+> Cc: Patrick Havelange <patrick.havelange@essensium.com>
+> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+> ---
 
+Reviewed-by: David Lechner <david@lechnology.com>
 
-Yours in Service,
-
-Jane Cooper
-MARKETING TEAM
-Tel No: +27(0)622541582
-BrightWay Finance Loan(PTY) LTD.
-brightwayfinanceloan01@protonmail.com

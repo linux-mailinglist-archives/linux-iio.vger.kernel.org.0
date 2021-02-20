@@ -2,35 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7377532064D
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Feb 2021 17:54:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49A66320651
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Feb 2021 17:57:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229784AbhBTQxn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 20 Feb 2021 11:53:43 -0500
-Received: from vern.gendns.com ([98.142.107.122]:33824 "EHLO vern.gendns.com"
+        id S229817AbhBTQ46 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 20 Feb 2021 11:56:58 -0500
+Received: from vern.gendns.com ([98.142.107.122]:34166 "EHLO vern.gendns.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229774AbhBTQxn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 20 Feb 2021 11:53:43 -0500
+        id S229766AbhBTQ46 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 20 Feb 2021 11:56:58 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
         In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
         Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
         List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=gI9i43bA74+KIvpHnez9regT5UCWQr8nQrFICFaEcwI=; b=Gsv7ssHzORq4nVf8gz8YRYYNKE
-        /xh6LcvyKROxq1IEIoq8oIYCIi7uqKeGjkqpiG4YFSYSmlxwjiSgNECXCmK6XTeWJyfRzv1oB8j5g
-        QaBQFrSd6GWIbR5juJTD+3NA/9LYRA5xp2S0+IeJI9gPpF49v6NwNRWYqJJVoMpqg9vYg6mgyAK2K
-        dWkO3lVDCR5cTE26aSSXajbp047xgAY2ydi9P98URv5c2w2pJjSLZ5AGzaPQv/nREDZBmMA6X+xOY
-        V9QBqpZqGtbEPRZd+R81PLdA+PYmMYJTaVPBmuBFijxTSFQKvC1AtrJ2O9VTGoKwEHl3O1n5jAtAF
-        hteci1Tw==;
-Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:57782 helo=[192.168.0.134])
+        bh=rtReqm6BD8NSkzJ0Wi5T2+JHymMgDP+iJZyHo3wdEQ8=; b=N/oMDpnItwRnMQX8p1llCL4Lb5
+        06fFrczrCxCE0UVxM67Cpgzfm9bDaxCs/PeleokcZqpp/AJbQd9UcecaK+k4FSk1ueB/Kv2/pZ+M5
+        YjP3TiteYL8vMp0T0ACnOcQZwVlRX532BRWG4AGis9yIJj6n2QCuYKSzF5f9cZwP3TvVVIF7kz57S
+        5qwMOfBCnZj1ZcQVTl11zWp7H7lUKXojAKJ0YdzrBaC4nkogK5ofzR3A4o7/39CqPuNagNnPweLYQ
+        3mSmIcP80Psuxe7AuKTzSL7JwtQx2AneZr+s0sj98qFvTJw2MwqisFZ40Ee+3HwIrK9mhzwNGyazD
+        ODr55F3A==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:57830 helo=[192.168.0.134])
         by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
         (Exim 4.93)
         (envelope-from <david@lechnology.com>)
-        id 1lDVV6-0004bI-4C; Sat, 20 Feb 2021 11:53:00 -0500
-Subject: Re: [PATCH v8 11/22] counter: Rename counter_signal_value to
- counter_signal_level
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>, jic23@kernel.org
+        id 1lDVYE-0005DO-Qy; Sat, 20 Feb 2021 11:56:14 -0500
+Subject: Re: [PATCH v8 12/22] counter: Rename counter_count_function to
+ counter_function
+To:     Jonathan Cameron <jic23@kernel.org>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>
 Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
         a.fatoum@pengutronix.de, kamel.bouhara@bootlin.com,
         gwendal@chromium.org, alexandre.belloni@bootlin.com,
@@ -40,14 +41,15 @@ Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
         mcoquelin.stm32@gmail.com, alexandre.torgue@st.com,
         o.rempel@pengutronix.de
 References: <cover.1613131238.git.vilhelm.gray@gmail.com>
- <c07454c388991d7e2432c1ef838405c9df9dd02f.1613131238.git.vilhelm.gray@gmail.com>
+ <355aaaaf44b36c5de1704e4074a4671abcb9699d.1613131238.git.vilhelm.gray@gmail.com>
+ <20210214171340.3cc7b686@archlinux>
 From:   David Lechner <david@lechnology.com>
-Message-ID: <43f8004c-54cf-fe26-bc00-723d6f8ad557@lechnology.com>
-Date:   Sat, 20 Feb 2021 10:52:58 -0600
+Message-ID: <2b6913ac-0802-f83e-06ba-e89d5318dbd7@lechnology.com>
+Date:   Sat, 20 Feb 2021 10:56:13 -0600
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <c07454c388991d7e2432c1ef838405c9df9dd02f.1613131238.git.vilhelm.gray@gmail.com>
+In-Reply-To: <20210214171340.3cc7b686@archlinux>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -65,15 +67,34 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2/12/21 6:13 AM, William Breathitt Gray wrote:
-> Signal values will always be levels so let's be explicit it about it to
-> make the intent of the code clear.
+On 2/14/21 11:13 AM, Jonathan Cameron wrote:
+> On Fri, 12 Feb 2021 21:13:36 +0900
+> William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
 > 
-> Cc: Syed Nayyar Waris <syednwaris@gmail.com>
-> Cc: Kamel Bouhara <kamel.bouhara@bootlin.com>
-> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-> ---
+>> The phrase "Counter Count function" is verbose and unintentionally
+>> implies that function is a Count extension. This patch adjusts the
+>> Counter subsystem code to use the more direct "Counter function" phrase
+>> to make the intent of this code clearer. The phrase "Count action" is
+>> adjusted herein as well for the same reason.
+>>
+>> Cc: Syed Nayyar Waris <syednwaris@gmail.com>
+>> Cc: Patrick Havelange <patrick.havelange@essensium.com>
+>> Cc: Kamel Bouhara <kamel.bouhara@bootlin.com>
+>> Cc: Fabrice Gasnier <fabrice.gasnier@st.com>
+>> Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+>> Cc: Alexandre Torgue <alexandre.torgue@st.com>
+>> Cc: David Lechner <david@lechnology.com>
+>> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+> 
+> I agree this makes sense in the counter core code, but in the drivers
+> it may not be quite so obvious we are talking about a counter function
+> given some of the bits of hardware do a number of other things.
+> 
+> I guess up to the various driver maintainers on whether they
+> think the new meaning is clear enough!
+> 
+> Jonathan
+> 
 
-Reviewed-by: David Lechner <david@lechnology.com>
-
+TBH, I think "counter count function" makes more sense to me.
 

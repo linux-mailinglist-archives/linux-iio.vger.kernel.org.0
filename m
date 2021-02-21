@@ -2,107 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0AD2320AD0
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Feb 2021 15:01:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16947320ADB
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Feb 2021 15:04:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229913AbhBUOAl convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sun, 21 Feb 2021 09:00:41 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52340 "EHLO mail.kernel.org"
+        id S229867AbhBUOD7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 21 Feb 2021 09:03:59 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52736 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229884AbhBUOAf (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 21 Feb 2021 09:00:35 -0500
+        id S229663AbhBUOD7 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 21 Feb 2021 09:03:59 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AF38264EEF;
-        Sun, 21 Feb 2021 13:59:53 +0000 (UTC)
-Date:   Sun, 21 Feb 2021 13:59:49 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 8E86E64EE0;
+        Sun, 21 Feb 2021 14:03:15 +0000 (UTC)
+Date:   Sun, 21 Feb 2021 14:03:12 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nuno Sa <nuno.sa@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH v2 0/4] Fix/Improve sync clock mode handling
-Message-ID: <20210221135949.42a42ad4@archlinux>
-In-Reply-To: <20210218114039.216091-1-nuno.sa@analog.com>
-References: <20210218114039.216091-1-nuno.sa@analog.com>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
+        a.fatoum@pengutronix.de, kamel.bouhara@bootlin.com,
+        gwendal@chromium.org, alexandre.belloni@bootlin.com,
+        david@lechnology.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        syednwaris@gmail.com, patrick.havelange@essensium.com,
+        fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@st.com, o.rempel@pengutronix.de
+Subject: Re: [PATCH v8 10/22] counter: Standardize to ERANGE for limit
+ exceeded errors
+Message-ID: <20210221140312.299b0e5a@archlinux>
+In-Reply-To: <YCsfXGzfEgRAD9p9@shinobu>
+References: <cover.1613131238.git.vilhelm.gray@gmail.com>
+        <7fa80c10fcd10d1d47d1bddced2b2cca3ff59ba9.1613131238.git.vilhelm.gray@gmail.com>
+        <20210214171021.41b3e4e3@archlinux>
+        <YCsfXGzfEgRAD9p9@shinobu>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 18 Feb 2021 12:40:35 +0100
-Nuno Sa <nuno.sa@analog.com> wrote:
+On Tue, 16 Feb 2021 10:26:52 +0900
+William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
 
-> The first patch in this series is just a simple helper to lock/unlock
-> the device. Having these helpers make the code slightly neater (IMHO).
+> On Sun, Feb 14, 2021 at 05:10:21PM +0000, Jonathan Cameron wrote:
+> > On Fri, 12 Feb 2021 21:13:34 +0900
+> > William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
+> >   
+> > > ERANGE is a semantically better error code to return when an argument
+> > > value falls outside the supported limit range of a device.  
+> > 
+> > #define	ERANGE		34	/* Math result not representable */
+> > 
+> > Not generally applicable to a parameter being out of range
+> > despite the name.
+> > #define	EINVAL		22	/* Invalid argument */
+> > Is probably closer to what we want to describe here.
+> > 
+> > Jonathan  
 > 
-> The following patches introduces changes in the sampling frequency
-> calculation when sync scale/pps modes are used. First, it's important
-> to understand the purpose of this mode and how it should be used. Let's
-> say our part has an internal rate of 4250 (e.g adis1649x family) and the
-> user wants an output rate of 200SPS. Obviously, we can't use this
-> sampling rate and divide back down to get 200 SPS with decimation on.
-> Hence, we can use this mode to give an input clock of 1HZ, scale it to
-> something like 4200 or 4000 SPS and then use the decimation filter to get
-> the exact desired 200SPS. There are also some limits that should be
-> taken into account when scaling:
+> The comment for ERANGE in error-base.h may be terse to a fault. I
+> believe there's a connotation here provided by ERANGE that is absent
+> from EINVAL: primarily that the device buffer is incapable of supporting
+> the desired value (i.e. there is a hardware limitation).
 > 
->  * For the devices in the adis16475 driver:
->      - Input sync frequency range is 1 to 128 Hz
->      - Native sample rate: 2 kSPS.  Optimal range: 1900-2100 sps
+> This is why strtoul() returns ERANGE if the correct value is outside the
+> range of representable values: the result of the operation is valid in
+> theory (it would be an unsigned integer), but it cannot be returned to
+> the user due to a limitation of the hardware to support that value (e.g.
+> 32-bit registers) [1].
 > 
->  * For the adis1649x family (adis16480 driver):
->     - Input sync frequency range is 1 to 128 Hz
->     - Native sample rate: 4.25 kSPS.  Optimal range: 4000-4250 sps 
+> The changes in this patch follow the same logic: these are arguments
+> that are valid in theory (e.g. they are unsigned integers), but the
+> underlying devices are incapable of processing such a value (e.g. the
+> 104-QUAD-8 can only handle 24-bit values).
 > 
-> I'm not 100% convinced on how to handle the optimal minimum. For now,
-> I'm just throwing a warning saying we might get into trouble if we get a
-> value lower than that. I was also tempted to just return -EINVAL or
-> clamp the value. However, I know that there are ADI customers that
-> (for some reason) are using a sampling rate lower than the minimum
-> advised.
-> 
-> That said, the patch for the adis16480 driver is a fix as this mode was
-> being wrongly handled. There should not be a "separation" between using
-> the sync_scale and the dec_rate registers. The way things were being done,
-> we could easily get into a situation where the part could be running with
-> an internal rate way lower than the optimal minimum.
-> 
-> For the adis16475 drivers, things were not really wrong. They were just
-> not optimal as we were forcing users to specify the IMU scaled internal
-> rate once in the devicetree. Calculating things at runtime gives much
-> more flexibility to choose the output rate.
+> [1] https://stackoverflow.com/a/34981398/1806289
 
-Series applied.   We may want to revisit this sometime in the future
-but for now, lets get things working reasonably well.
+Its a bit of a stretch, but I can't claim to feel that strongly about
+this.
 
 Jonathan
 
 > 
-> Changes in v2:
->  * Moved the lock helper patch to the end of the series. 
->  * Changed all the users of the lock to use the helper functions.
->  * Added a module parameter to allow users to run the IMUs at lower
->    rates than the advisable.
-> 
-> Nuno Sa (3):
->   iio: adis16480: fix pps mode sampling frequency math
->   iio: adis16475: improve sync scale mode handling
->   iio: adis: add helpers for locking
-> 
-> Nuno Sá (1):
->   dt-bindings: adis16475: remove property
-> 
->  .../bindings/iio/imu/adi,adis16475.yaml       |   9 --
->  drivers/iio/imu/adis16400.c                   |  22 ++-
->  drivers/iio/imu/adis16475.c                   | 118 ++++++++++++----
->  drivers/iio/imu/adis16480.c                   | 133 +++++++++++++-----
->  include/linux/iio/imu/adis.h                  |  10 ++
->  5 files changed, 206 insertions(+), 86 deletions(-)
-> 
+> William Breathitt Gray
 

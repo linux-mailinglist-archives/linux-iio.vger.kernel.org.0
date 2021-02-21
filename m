@@ -2,33 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AC4C320BCD
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Feb 2021 17:40:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 83B8B320BD0
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Feb 2021 17:41:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230113AbhBUQju (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 21 Feb 2021 11:39:50 -0500
-Received: from mail.kernel.org ([198.145.29.99]:57658 "EHLO mail.kernel.org"
+        id S229926AbhBUQlT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 21 Feb 2021 11:41:19 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58204 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230060AbhBUQjt (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 21 Feb 2021 11:39:49 -0500
+        id S229884AbhBUQlT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 21 Feb 2021 11:41:19 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C727664DA5;
-        Sun, 21 Feb 2021 16:39:06 +0000 (UTC)
-Date:   Sun, 21 Feb 2021 16:39:02 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 7736661493;
+        Sun, 21 Feb 2021 16:40:36 +0000 (UTC)
+Date:   Sun, 21 Feb 2021 16:40:32 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Mircea Caprioru <mircea.caprioru@analog.com>
-Cc:     <Michael.Hennerich@analog.com>, <alexandru.ardelean@analog.com>,
-        <lars@metafoo.de>, <gregkh@linuxfoundation.org>,
-        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-Subject: Re: [PATCH 3/5] iio: adc: npcm_adc: Replace indio_dev->mlock with
- own device lock
-Message-ID: <20210221163902.617ee71d@archlinux>
-In-Reply-To: <20200928131333.36646-3-mircea.caprioru@analog.com>
-References: <20200928131333.36646-1-mircea.caprioru@analog.com>
-        <20200928131333.36646-3-mircea.caprioru@analog.com>
+To:     kholk11@gmail.com
+Cc:     agross@kernel.org, bjorn.andersson@linaro.org, robh+dt@kernel.org,
+        marijns95@gmail.com, konradybcio@gmail.com,
+        martin.botka1@gmail.com, linux-arm-msm@vger.kernel.org,
+        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org
+Subject: Re: [RESEND] [PATCH 1/2] iio: adc: qcom-spmi-vadc: Use right
+ ratiometric range for 8998,660,845
+Message-ID: <20210221164032.0271952a@archlinux>
+In-Reply-To: <20201129131233.4a8f7119@archlinux>
+References: <20200926171835.27154-1-kholk11@gmail.com>
+        <20201129131233.4a8f7119@archlinux>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -37,68 +38,104 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 28 Sep 2020 16:13:31 +0300
-Mircea Caprioru <mircea.caprioru@analog.com> wrote:
+On Sun, 29 Nov 2020 13:12:33 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+> On Sat, 26 Sep 2020 19:18:34 +0200
+> kholk11@gmail.com wrote:
 > 
-> As part of the general cleanup of indio_dev->mlock, this change replaces
-> it with a local lock on the device's state structure.
+> > From: AngeloGioacchino Del Regno <kholk11@gmail.com>
+> > 
+> > The ratiometric range for MSM8998, SDM630/636/660 and SDM845 is 1875mV
+> > instead of the standard 1800mV: address this by adding a new compatible
+> > "qcom,spmi-vadc-8998" and assigning the different range to the machines
+> > declaring this one.
+> > 
+> > Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>  
 > 
-> This is part of a bigger cleanup.
-> Link: https://lore.kernel.org/linux-iio/CA+U=Dsoo6YABe5ODLp+eFNPGFDjk5ZeQEceGkqjxXcVEhLWubw@mail.gmail.com/
+> @Bjorn
 > 
-> Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-> Signed-off-by: Mircea Caprioru <mircea.caprioru@analog.com>
-Applied,
+> Could you take a quick look at this pair of patches.  It's been sat in
+> my queue waiting for appropriate review for rather too long!
+> (mainly because I've been rather lax in checking on status of older
+> series really - sorry about that :(
 
-thanks,
+I still have these marked as outstanding.  Please take a look.
+
+Thanks,
 
 Jonathan
 
-> ---
->  drivers/iio/adc/npcm_adc.c | 15 +++++++++++++--
->  1 file changed, 13 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/iio/adc/npcm_adc.c b/drivers/iio/adc/npcm_adc.c
-> index d9d105920001..f7bc0bb7f112 100644
-> --- a/drivers/iio/adc/npcm_adc.c
-> +++ b/drivers/iio/adc/npcm_adc.c
-> @@ -25,6 +25,15 @@ struct npcm_adc {
->  	wait_queue_head_t wq;
->  	struct regulator *vref;
->  	struct reset_control *reset;
-> +	/*
-> +	 * Lock to protect the device state during a potential concurrent
-> +	 * read access from userspace. Reading a raw value requires a sequence
-> +	 * of register writes, then a wait for a event and finally a register
-> +	 * read, during which userspace could issue another read request.
-> +	 * This lock protects a read access from ocurring before another one
-> +	 * has finished.
-> +	 */
-> +	struct mutex lock;
->  };
->  
->  /* ADC registers */
-> @@ -135,9 +144,9 @@ static int npcm_adc_read_raw(struct iio_dev *indio_dev,
->  
->  	switch (mask) {
->  	case IIO_CHAN_INFO_RAW:
-> -		mutex_lock(&indio_dev->mlock);
-> +		mutex_lock(&info->lock);
->  		ret = npcm_adc_read(info, val, chan->channel);
-> -		mutex_unlock(&indio_dev->mlock);
-> +		mutex_unlock(&info->lock);
->  		if (ret) {
->  			dev_err(info->dev, "NPCM ADC read failed\n");
->  			return ret;
-> @@ -187,6 +196,8 @@ static int npcm_adc_probe(struct platform_device *pdev)
->  		return -ENOMEM;
->  	info = iio_priv(indio_dev);
->  
-> +	mutex_init(&info->lock);
-> +
->  	info->dev = &pdev->dev;
->  
->  	info->regs = devm_platform_ioremap_resource(pdev, 0);
+> Thanks
+> 
+> Jonathan
+> 
+> > ---
+> >  drivers/iio/adc/qcom-spmi-vadc.c   | 10 +++++++++-
+> >  drivers/iio/adc/qcom-vadc-common.h |  1 +
+> >  2 files changed, 10 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/iio/adc/qcom-spmi-vadc.c b/drivers/iio/adc/qcom-spmi-vadc.c
+> > index b0388f8a69f4..59a94ea7bf78 100644
+> > --- a/drivers/iio/adc/qcom-spmi-vadc.c
+> > +++ b/drivers/iio/adc/qcom-spmi-vadc.c
+> > @@ -101,6 +101,7 @@ struct vadc_channel_prop {
+> >   * @dev: pointer to struct device.
+> >   * @base: base address for the ADC peripheral.
+> >   * @nchannels: number of VADC channels.
+> > + * @ratio_range: ratiometric range for ref points.
+> >   * @chan_props: array of VADC channel properties.
+> >   * @iio_chans: array of IIO channels specification.
+> >   * @are_ref_measured: are reference points measured.
+> > @@ -114,6 +115,7 @@ struct vadc_priv {
+> >  	struct device		 *dev;
+> >  	u16			 base;
+> >  	unsigned int		 nchannels;
+> > +	unsigned int		 ratio_range;
+> >  	struct vadc_channel_prop *chan_props;
+> >  	struct iio_chan_spec	 *iio_chans;
+> >  	bool			 are_ref_measured;
+> > @@ -355,7 +357,7 @@ static int vadc_measure_ref_points(struct vadc_priv *vadc)
+> >  	u16 read_1, read_2;
+> >  	int ret;
+> >  
+> > -	vadc->graph[VADC_CALIB_RATIOMETRIC].dx = VADC_RATIOMETRIC_RANGE;
+> > +	vadc->graph[VADC_CALIB_RATIOMETRIC].dx = vadc->ratio_range;
+> >  	vadc->graph[VADC_CALIB_ABSOLUTE].dx = VADC_ABSOLUTE_RANGE_UV;
+> >  
+> >  	prop = vadc_get_channel(vadc, VADC_REF_1250MV);
+> > @@ -885,6 +887,11 @@ static int vadc_probe(struct platform_device *pdev)
+> >  	if (ret)
+> >  		return ret;
+> >  
+> > +	if (of_device_is_compatible(node, "qcom,spmi-vadc-8998"))
+> > +		vadc->ratio_range = VADC_RATIOMETRIC_RANGE_8998;
+> > +	else
+> > +		vadc->ratio_range = VADC_RATIOMETRIC_RANGE;
+> > +
+> >  	irq_eoc = platform_get_irq(pdev, 0);
+> >  	if (irq_eoc < 0) {
+> >  		if (irq_eoc == -EPROBE_DEFER || irq_eoc == -EINVAL)
+> > @@ -918,6 +925,7 @@ static int vadc_probe(struct platform_device *pdev)
+> >  
+> >  static const struct of_device_id vadc_match_table[] = {
+> >  	{ .compatible = "qcom,spmi-vadc" },
+> > +	{ .compatible = "qcom-spmi-vadc-8998" },
+> >  	{ }
+> >  };
+> >  MODULE_DEVICE_TABLE(of, vadc_match_table);
+> > diff --git a/drivers/iio/adc/qcom-vadc-common.h b/drivers/iio/adc/qcom-vadc-common.h
+> > index 17b2fc4d8bf2..b10d5fd59034 100644
+> > --- a/drivers/iio/adc/qcom-vadc-common.h
+> > +++ b/drivers/iio/adc/qcom-vadc-common.h
+> > @@ -16,6 +16,7 @@
+> >  
+> >  #define VADC_ABSOLUTE_RANGE_UV			625000
+> >  #define VADC_RATIOMETRIC_RANGE			1800
+> > +#define VADC_RATIOMETRIC_RANGE_8998		1875
+> >  
+> >  #define VADC_DEF_PRESCALING			0 /* 1:1 */
+> >  #define VADC_DEF_DECIMATION			0 /* 512 */  
+> 
 

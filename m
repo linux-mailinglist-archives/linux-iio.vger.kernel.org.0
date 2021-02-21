@@ -2,30 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7031E320BAB
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Feb 2021 17:16:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DCA60320BAD
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Feb 2021 17:19:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229685AbhBUQQo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 21 Feb 2021 11:16:44 -0500
-Received: from mail.kernel.org ([198.145.29.99]:50902 "EHLO mail.kernel.org"
+        id S229826AbhBUQSs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 21 Feb 2021 11:18:48 -0500
+Received: from mail.kernel.org ([198.145.29.99]:51476 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229585AbhBUQQo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 21 Feb 2021 11:16:44 -0500
+        id S229585AbhBUQSr (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 21 Feb 2021 11:18:47 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6478464EF1;
-        Sun, 21 Feb 2021 16:16:01 +0000 (UTC)
-Date:   Sun, 21 Feb 2021 16:15:57 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 22DEE64EF1;
+        Sun, 21 Feb 2021 16:18:04 +0000 (UTC)
+Date:   Sun, 21 Feb 2021 16:18:01 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Gwendal Grignou <gwendal@chromium.org>
-Cc:     gabriele.mzt@gmail.com, lars@metafoo.de, andy.shevchenko@gmail.com,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH v5 0/3] iio: acpi_als: Add sotfware trigger support
-Message-ID: <20210221161557.6515ca90@archlinux>
-In-Reply-To: <20201229173910.378e559f@archlinux>
-References: <20201229015300.3037816-1-gwendal@chromium.org>
-        <20201229173910.378e559f@archlinux>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: ab8500-gpadc: Fix off by 10 to 3
+Message-ID: <20210221161801.42532e87@archlinux>
+In-Reply-To: <20201224011700.1059659-1-linus.walleij@linaro.org>
+References: <20201224011700.1059659-1-linus.walleij@linaro.org>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -34,47 +35,42 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 29 Dec 2020 17:39:10 +0000
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Thu, 24 Dec 2020 02:17:00 +0100
+Linus Walleij <linus.walleij@linaro.org> wrote:
 
-> On Mon, 28 Dec 2020 17:52:57 -0800
-> Gwendal Grignou <gwendal@chromium.org> wrote:
+> Fix an off by three orders of magnitude error in the AB8500
+> GPADC driver. Luckily it showed up quite quickly when trying
+> to make use of it. The processed reads were returning
+> microvolts, microamperes and microcelsius instead of millivolts,
+> milliamperes and millicelsius as advertised.
 > 
-> > Some devices (chromebooks) present the ACPI ALS device but do not have
-> > ability to notify when a new sample is present.
-> > Add support for software trigger (hrtimer/sysfs-trigger) to allow
-> > retrieving samples using iio buffers.
-> > 
-> > The first path fully adds timestamp channel, the second adds a local
-> > variable in probe routine and the last one adds trigger support.
-> > 
-> > This patch assumes the patch "iio: set default trig->dev.parent" is
-> > applied.  
-> I'm asking for a rebase of that series.  Otherwise this looks good to me
+> Cc: stable@vger.kernel.org
+> Fixes: 07063bbfa98e ("iio: adc: New driver for the AB8500 GPADC")
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+No idea why I didn't pick this up before now.  I guess I forgot it
+over xmas.
 
-Hi Gwendal,
-
-Given the dependency isn't ready yet, please resend this series once it
-is in place. 
+Anyhow, now applied to the fixes-togreg branch of iio.git.
 
 Thanks,
 
 Jonathan
 
+> ---
+>  drivers/iio/adc/ab8500-gpadc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> Thanks,
-> 
-> Jonathan
-> 
-> > 
-> > 
-> > Gwendal Grignou (3):
-> >   iio: acpi_als: Add timestamp channel
-> >   iio: acpi_als: Add local variable dev in probe
-> >   iio: acpi_als: Add trigger support
-> > 
-> >  drivers/iio/light/acpi-als.c | 121 +++++++++++++++++++++++------------
-> >  1 file changed, 81 insertions(+), 40 deletions(-)
-> >   
-> 
+> diff --git a/drivers/iio/adc/ab8500-gpadc.c b/drivers/iio/adc/ab8500-gpadc.c
+> index 6f9a3e2d5533..7b5212ba5501 100644
+> --- a/drivers/iio/adc/ab8500-gpadc.c
+> +++ b/drivers/iio/adc/ab8500-gpadc.c
+> @@ -918,7 +918,7 @@ static int ab8500_gpadc_read_raw(struct iio_dev *indio_dev,
+>  			return processed;
+>  
+>  		/* Return millivolt or milliamps or millicentigrades */
+> -		*val = processed * 1000;
+> +		*val = processed;
+>  		return IIO_VAL_INT;
+>  	}
+>  
 

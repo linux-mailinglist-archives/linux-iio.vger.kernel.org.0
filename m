@@ -2,32 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E4752320A2C
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Feb 2021 13:11:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D5AA320A3F
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Feb 2021 13:27:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229817AbhBUMKr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 21 Feb 2021 07:10:47 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56886 "EHLO mail.kernel.org"
+        id S229884AbhBUM1e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 21 Feb 2021 07:27:34 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57630 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229663AbhBUMKo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 21 Feb 2021 07:10:44 -0500
+        id S229663AbhBUM1e (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 21 Feb 2021 07:27:34 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D8F996186A;
-        Sun, 21 Feb 2021 12:10:01 +0000 (UTC)
-Date:   Sun, 21 Feb 2021 12:09:58 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id C5BB264EB2;
+        Sun, 21 Feb 2021 12:26:51 +0000 (UTC)
+Date:   Sun, 21 Feb 2021 12:26:47 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
-        <nuno.sa@analog.com>, <dragos.bogdan@analog.com>
-Subject: Re: [PATCH v3 6/6] iio: buffer-dma: add support for cyclic DMA
- transfers
-Message-ID: <20210221120958.7623e02c@archlinux>
-In-Reply-To: <20210219124012.92897-7-alexandru.ardelean@analog.com>
-References: <20210219124012.92897-1-alexandru.ardelean@analog.com>
-        <20210219124012.92897-7-alexandru.ardelean@analog.com>
+To:     Cengiz Can <cengiz@kernel.wtf>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        Ekin =?UTF-8?B?QsO2a2U=?= <ekin_boke@arcelik.com>,
+        linux-iio@vger.kernel.org
+Subject: Re: Control Register device tree binding request for Opt3001
+Message-ID: <20210221122647.5bbbe19c@archlinux>
+In-Reply-To: <4e0b8e47a2644d304b2d1e6b2e087136@kernel.wtf>
+References: <AM9PR08MB6083269425D1057113B212709B859@AM9PR08MB6083.eurprd08.prod.outlook.com>
+        <CA+U=DspfyuxyhPfPrGDaU5nDQVaO5p3ha-5hwpzVX69p1P60WA@mail.gmail.com>
+        <20210218121502.00002014@Huawei.com>
+        <4e0b8e47a2644d304b2d1e6b2e087136@kernel.wtf>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -36,86 +38,93 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 19 Feb 2021 14:40:12 +0200
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+On Thu, 18 Feb 2021 15:38:15 +0300
+Cengiz Can <cengiz@kernel.wtf> wrote:
 
-> From: Lars-Peter Clausen <lars@metafoo.de>
+> Hello Jonathan, Alexandru and Ekin
 > 
-> This change adds support for cyclic DMA transfers using the IIO buffer DMA
-> infrastructure.
-> To do this, userspace must set the IIO_BUFFER_BLOCK_FLAG_CYCLIC flag on the
-> block when enqueueing them via the ENQUEUE_BLOCK ioctl().
+> On 2021-02-18 15:15, Jonathan Cameron wrote:
+> > 
+> > As described, what you want to control here is policy, not a 
+> > characteristic
+> > of the hardware.   Normally we don't use DT to make such decisions, as 
+> > it should
+> > be controlled at runtime.  
 > 
-> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Series in general looks good to me, but this change needs a little more
-detail + probably some level of example userspace flow.
+> I'm by no means an expert on sensors and I don't fully understand the 
+> distinction
+> of policy vs characteristic in this context.
+> 
+> Can you clarify a bit?
 
-I don't really understand how this is used!
+It's a slightly blurred boundary, but to give some examples:
 
-Also, it's easy to test output buffers with the kfifo support so we
-should be able to move forward quickly with that part (1-3, 4 is probably
-fine as well as clearly harmless).
+Characterstics - dependent on device, not where the device is
+being used and mostly even what it is being used for.
+- Wiring things - power supplies etc.
+- Voltage limits etc (stuff that can damage hardware).
+- Calibration parameter reflecting thing like plastic on top of a sensor.
+- Proximity limits on devices intended to detect if a person is
+  near enough to a wifi antenna that we should reduce the power output.
+  (this one is an edge condition as it is assuming a 'usecase' but it
+   the value is based on the physical device).
 
-The dma stuff worries me more, at least partly based on the experience
-of the original dma buffers which basically sat their unused (in upstream)
-for a very long time.   So to move these forward, they need to come
-with users...
+Policy - stuff dependent on what sensor is being used for at a particular
+point in time.
+* Sensitivity levels / integration times etc - if you are in a dark environment
+  then these would ideally be set different to an outdoor usecase. Same device
+  may well move between these places.
+* Thresholds that aren't a 'physical thing'.  So stuff you'd expect to have
+  a userspace control for.
 
-Thanks,
+> 
+> For example, many TFT drivers allow maximum-minimum brightness values in 
+> devicetree
+> and even set a default brightness value. Totally within the specs of 
+> vendor of course.
+
+I'd guess they would have some connection to what actually makes sense
+for a given physical device incorporating the TFT?  Perhaps above the
+max brightness screen always unreadable under all lighting conditions.
+
+Also note that for DT bindings a lot of stuff was added back before there
+was particularly good review or tight control of what was acceptable and
+what was not.  As we have to support bindings that are already in
+the field, we can't rip that stuff out.  We can avoid adding more though.
+
+> 
+> Since this is just a hardware register that can be changed, and possibly 
+> never to be
+> modified (depending on the use case of course) during runtime, I would 
+> like to be able
+> to set it once during initialization and forget about it.
+
+It's that question of usecase.  There may well be devices that are only
+ever used outside for example and hence need only one of the settings, but
+it definitely isn't a common situation.
+
+Whilst the amount of code needed to support this is small, there is
+still a maintenance burden and a userspace script should be sufficient.
+
+> 
+> Currently I have a oneshot systemd unit that echo's my desired 
+> integration value and
+> I think that's a bit late for my application. (even with all the 
+> priority and orderings set).
+
+I'm not sure I understand how doing it in systemd is too late?
+It should be possible to ensure that it happens early enough
+to support any userspace application.
 
 Jonathan
 
-> ---
->  .../buffer/industrialio-buffer-dmaengine.c    | 24 ++++++++++++-------
->  include/uapi/linux/iio/buffer.h               |  1 +
->  2 files changed, 17 insertions(+), 8 deletions(-)
 > 
-> diff --git a/drivers/iio/buffer/industrialio-buffer-dmaengine.c b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-> index 65458a6cc81a..39cc230c7991 100644
-> --- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-> +++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-> @@ -82,14 +82,22 @@ static int iio_dmaengine_buffer_submit_block(struct iio_dma_buffer_queue *queue,
->  
->  	direction = dmaengine_buffer->is_tx ? DMA_MEM_TO_DEV : DMA_DEV_TO_MEM;
->  
-> -	desc = dmaengine_prep_slave_single(dmaengine_buffer->chan,
-> -		block->phys_addr, block->block.bytes_used, direction,
-> -		DMA_PREP_INTERRUPT);
-> -	if (!desc)
-> -		return -ENOMEM;
-> -
-> -	desc->callback_result = iio_dmaengine_buffer_block_done;
-> -	desc->callback_param = block;
-> +	if (block->block.flags & IIO_BUFFER_BLOCK_FLAG_CYCLIC) {
-> +		desc = dmaengine_prep_dma_cyclic(dmaengine_buffer->chan,
-> +			block->phys_addr, block->block.bytes_used,
-> +			block->block.bytes_used, direction, 0);
-> +		if (!desc)
-> +			return -ENOMEM;
-> +	} else {
-> +		desc = dmaengine_prep_slave_single(dmaengine_buffer->chan,
-> +			block->phys_addr, block->block.bytes_used, direction,
-> +			DMA_PREP_INTERRUPT);
-> +		if (!desc)
-> +			return -ENOMEM;
-> +
-> +		desc->callback_result = iio_dmaengine_buffer_block_done;
-> +		desc->callback_param = block;
-> +	}
->  
->  	cookie = dmaengine_submit(desc);
->  	if (dma_submit_error(cookie))
-> diff --git a/include/uapi/linux/iio/buffer.h b/include/uapi/linux/iio/buffer.h
-> index 4e4ee9befea1..1bde508fe1b9 100644
-> --- a/include/uapi/linux/iio/buffer.h
-> +++ b/include/uapi/linux/iio/buffer.h
-> @@ -33,6 +33,7 @@ struct iio_buffer_block_alloc_req {
->  
->  /* A function will be assigned later for BIT(0) */
->  #define IIO_BUFFER_BLOCK_FLAG_RESERVED		(1 << 0)
-> +#define IIO_BUFFER_BLOCK_FLAG_CYCLIC		(1 << 1)
->  
->  /**
->   * struct iio_buffer_block - Descriptor for a single IIO block
+> > 
+> > So basically what Alex said :)
+> > 
+> > Jonathan
+> >   
+> 
+> Thank you
+> 
 

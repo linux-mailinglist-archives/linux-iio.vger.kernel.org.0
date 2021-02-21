@@ -2,129 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D5AA320A3F
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Feb 2021 13:27:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0AD2320AD0
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Feb 2021 15:01:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229884AbhBUM1e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 21 Feb 2021 07:27:34 -0500
-Received: from mail.kernel.org ([198.145.29.99]:57630 "EHLO mail.kernel.org"
+        id S229913AbhBUOAl convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Sun, 21 Feb 2021 09:00:41 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52340 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229663AbhBUM1e (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 21 Feb 2021 07:27:34 -0500
+        id S229884AbhBUOAf (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 21 Feb 2021 09:00:35 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C5BB264EB2;
-        Sun, 21 Feb 2021 12:26:51 +0000 (UTC)
-Date:   Sun, 21 Feb 2021 12:26:47 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id AF38264EEF;
+        Sun, 21 Feb 2021 13:59:53 +0000 (UTC)
+Date:   Sun, 21 Feb 2021 13:59:49 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Cengiz Can <cengiz@kernel.wtf>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Ekin =?UTF-8?B?QsO2a2U=?= <ekin_boke@arcelik.com>,
-        linux-iio@vger.kernel.org
-Subject: Re: Control Register device tree binding request for Opt3001
-Message-ID: <20210221122647.5bbbe19c@archlinux>
-In-Reply-To: <4e0b8e47a2644d304b2d1e6b2e087136@kernel.wtf>
-References: <AM9PR08MB6083269425D1057113B212709B859@AM9PR08MB6083.eurprd08.prod.outlook.com>
-        <CA+U=DspfyuxyhPfPrGDaU5nDQVaO5p3ha-5hwpzVX69p1P60WA@mail.gmail.com>
-        <20210218121502.00002014@Huawei.com>
-        <4e0b8e47a2644d304b2d1e6b2e087136@kernel.wtf>
+To:     Nuno Sa <nuno.sa@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>
+Subject: Re: [PATCH v2 0/4] Fix/Improve sync clock mode handling
+Message-ID: <20210221135949.42a42ad4@archlinux>
+In-Reply-To: <20210218114039.216091-1-nuno.sa@analog.com>
+References: <20210218114039.216091-1-nuno.sa@analog.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 18 Feb 2021 15:38:15 +0300
-Cengiz Can <cengiz@kernel.wtf> wrote:
+On Thu, 18 Feb 2021 12:40:35 +0100
+Nuno Sa <nuno.sa@analog.com> wrote:
 
-> Hello Jonathan, Alexandru and Ekin
+> The first patch in this series is just a simple helper to lock/unlock
+> the device. Having these helpers make the code slightly neater (IMHO).
 > 
-> On 2021-02-18 15:15, Jonathan Cameron wrote:
-> > 
-> > As described, what you want to control here is policy, not a 
-> > characteristic
-> > of the hardware.   Normally we don't use DT to make such decisions, as 
-> > it should
-> > be controlled at runtime.  
+> The following patches introduces changes in the sampling frequency
+> calculation when sync scale/pps modes are used. First, it's important
+> to understand the purpose of this mode and how it should be used. Let's
+> say our part has an internal rate of 4250 (e.g adis1649x family) and the
+> user wants an output rate of 200SPS. Obviously, we can't use this
+> sampling rate and divide back down to get 200 SPS with decimation on.
+> Hence, we can use this mode to give an input clock of 1HZ, scale it to
+> something like 4200 or 4000 SPS and then use the decimation filter to get
+> the exact desired 200SPS. There are also some limits that should be
+> taken into account when scaling:
 > 
-> I'm by no means an expert on sensors and I don't fully understand the 
-> distinction
-> of policy vs characteristic in this context.
+>  * For the devices in the adis16475 driver:
+>      - Input sync frequency range is 1 to 128 Hz
+>      - Native sample rate: 2 kSPS.  Optimal range: 1900-2100 sps
 > 
-> Can you clarify a bit?
-
-It's a slightly blurred boundary, but to give some examples:
-
-Characterstics - dependent on device, not where the device is
-being used and mostly even what it is being used for.
-- Wiring things - power supplies etc.
-- Voltage limits etc (stuff that can damage hardware).
-- Calibration parameter reflecting thing like plastic on top of a sensor.
-- Proximity limits on devices intended to detect if a person is
-  near enough to a wifi antenna that we should reduce the power output.
-  (this one is an edge condition as it is assuming a 'usecase' but it
-   the value is based on the physical device).
-
-Policy - stuff dependent on what sensor is being used for at a particular
-point in time.
-* Sensitivity levels / integration times etc - if you are in a dark environment
-  then these would ideally be set different to an outdoor usecase. Same device
-  may well move between these places.
-* Thresholds that aren't a 'physical thing'.  So stuff you'd expect to have
-  a userspace control for.
-
+>  * For the adis1649x family (adis16480 driver):
+>     - Input sync frequency range is 1 to 128 Hz
+>     - Native sample rate: 4.25 kSPS.  Optimal range: 4000-4250 sps 
 > 
-> For example, many TFT drivers allow maximum-minimum brightness values in 
-> devicetree
-> and even set a default brightness value. Totally within the specs of 
-> vendor of course.
-
-I'd guess they would have some connection to what actually makes sense
-for a given physical device incorporating the TFT?  Perhaps above the
-max brightness screen always unreadable under all lighting conditions.
-
-Also note that for DT bindings a lot of stuff was added back before there
-was particularly good review or tight control of what was acceptable and
-what was not.  As we have to support bindings that are already in
-the field, we can't rip that stuff out.  We can avoid adding more though.
-
+> I'm not 100% convinced on how to handle the optimal minimum. For now,
+> I'm just throwing a warning saying we might get into trouble if we get a
+> value lower than that. I was also tempted to just return -EINVAL or
+> clamp the value. However, I know that there are ADI customers that
+> (for some reason) are using a sampling rate lower than the minimum
+> advised.
 > 
-> Since this is just a hardware register that can be changed, and possibly 
-> never to be
-> modified (depending on the use case of course) during runtime, I would 
-> like to be able
-> to set it once during initialization and forget about it.
-
-It's that question of usecase.  There may well be devices that are only
-ever used outside for example and hence need only one of the settings, but
-it definitely isn't a common situation.
-
-Whilst the amount of code needed to support this is small, there is
-still a maintenance burden and a userspace script should be sufficient.
-
+> That said, the patch for the adis16480 driver is a fix as this mode was
+> being wrongly handled. There should not be a "separation" between using
+> the sync_scale and the dec_rate registers. The way things were being done,
+> we could easily get into a situation where the part could be running with
+> an internal rate way lower than the optimal minimum.
 > 
-> Currently I have a oneshot systemd unit that echo's my desired 
-> integration value and
-> I think that's a bit late for my application. (even with all the 
-> priority and orderings set).
+> For the adis16475 drivers, things were not really wrong. They were just
+> not optimal as we were forcing users to specify the IMU scaled internal
+> rate once in the devicetree. Calculating things at runtime gives much
+> more flexibility to choose the output rate.
 
-I'm not sure I understand how doing it in systemd is too late?
-It should be possible to ensure that it happens early enough
-to support any userspace application.
+Series applied.   We may want to revisit this sometime in the future
+but for now, lets get things working reasonably well.
 
 Jonathan
 
 > 
-> > 
-> > So basically what Alex said :)
-> > 
-> > Jonathan
-> >   
+> Changes in v2:
+>  * Moved the lock helper patch to the end of the series. 
+>  * Changed all the users of the lock to use the helper functions.
+>  * Added a module parameter to allow users to run the IMUs at lower
+>    rates than the advisable.
 > 
-> Thank you
+> Nuno Sa (3):
+>   iio: adis16480: fix pps mode sampling frequency math
+>   iio: adis16475: improve sync scale mode handling
+>   iio: adis: add helpers for locking
+> 
+> Nuno Sá (1):
+>   dt-bindings: adis16475: remove property
+> 
+>  .../bindings/iio/imu/adi,adis16475.yaml       |   9 --
+>  drivers/iio/imu/adis16400.c                   |  22 ++-
+>  drivers/iio/imu/adis16475.c                   | 118 ++++++++++++----
+>  drivers/iio/imu/adis16480.c                   | 133 +++++++++++++-----
+>  include/linux/iio/imu/adis.h                  |  10 ++
+>  5 files changed, 206 insertions(+), 86 deletions(-)
 > 
 

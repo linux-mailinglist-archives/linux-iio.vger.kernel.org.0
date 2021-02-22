@@ -2,52 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0718320F4D
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Feb 2021 03:07:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D278F32100D
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Feb 2021 05:43:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230060AbhBVCHk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 21 Feb 2021 21:07:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41614 "EHLO
+        id S230133AbhBVEnm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 21 Feb 2021 23:43:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231510AbhBVCHg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 21 Feb 2021 21:07:36 -0500
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A363EC061574;
-        Sun, 21 Feb 2021 18:06:56 -0800 (PST)
-Received: by mail-pg1-x530.google.com with SMTP id p21so9289129pgl.12;
-        Sun, 21 Feb 2021 18:06:56 -0800 (PST)
+        with ESMTP id S230044AbhBVEnj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 21 Feb 2021 23:43:39 -0500
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C484C061574;
+        Sun, 21 Feb 2021 20:42:59 -0800 (PST)
+Received: by mail-pl1-x62c.google.com with SMTP id p5so2100511plo.4;
+        Sun, 21 Feb 2021 20:42:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=xhNLe44uyMs5LsbL1fgroHtE+9CupcOCuWpPW2Az258=;
-        b=KynMqR0wo5FgwY+V9XdF2O+8jfUZgqyYNukNNB1c+p9SUIFRkLGKZsTbGh4IPPWkhL
-         b5VntJ6Uhc0omSr64yZaUVhPPX/3wEnLu5/CavIeuPXM6JZS9vx7XLPx8OEdMy1o81EZ
-         YeoF4hUH9vAmRWxy0b22RGH3jnfZ7AgIfv+fnYSexdB621syQKOKCiY/FD84oeJN4w7O
-         rySwOIQHqT2a1lnqi9un8lfJG4RqOfhE6KvWLPUDgAIiIaVg6tYZ3t/hFi2/5gvYcyYA
-         0p3qs6k8iG8+j4gsy6WMdnchkPrFt0Yzdo4jBIflH+bVbFvEZB/PQlf2gIexkPmRz6cy
-         Dd3Q==
+        bh=nKtPFB1xyx73OQfeVTdioOSSM0I1Aror0iPkO5KBpc0=;
+        b=Re2HcRKTF4oDMZmpesnJOT49BwGsqOQ5KGgusmwalLvCB7TfEYfXSeo69BzwRE689o
+         z58SuWtj9UWQPTrO8Z6Ukn520ek2bdjIgYtTZh+TbOboMuZSsw+36lHU8Ya/QD29l5ki
+         0giww37q0kTVuFy3iMPRR99RUBLWtg0PPIl+y96/9d0yXJHhCPfjRnXiJXZjBQw36mkp
+         Ok8D7aZp4iitcIBZLJhf+1dLyovaqdm9lQK0Y0yd5hn7JHKWdg4t6aqvUrG3zoic/fqL
+         ZQ4UHyytn1+2ls0uNt/rARQjCI9kM74p5UWoxT7ro7xyVwBBaqNf6JyfIprf7vHvg0K1
+         YWmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=xhNLe44uyMs5LsbL1fgroHtE+9CupcOCuWpPW2Az258=;
-        b=SKWab0oS7lfHRIErU4mxyj86v1zB03VC+564Xn/Dg7ACCHHZ8T0hywvaV6iISd2HM/
-         vYrop5/a2S3J1ui6U2J/HR8+P/m+xCkoHq7Yk/RIkxippsoj3TytFrW0RZeEvckaKM7i
-         Xu4fIakzZo2W2/MDGVt5gWWl6A2hy64Dw//vkV9gftNyPvWYMQ1ZXbZQjwTMgDswHTm9
-         VvTw95mUubymaDy+ZNkxrY7hgle8FNXtcLpHH6SuLSzpYE5Vjuyh4Oxr4RY2Co9mYPY9
-         RX5ov6ej2+CeZ74k4/0qKlcPRlGkmuHn+etAN/P7IrTURxubAO5T7U422A0bPjj8joD3
-         udhw==
-X-Gm-Message-State: AOAM533SvWdsi+Z0pWXnWaysq0VnEUXz/aKBpE42snrfVW+K438sHAjZ
-        0l5FlKU6Q3oVpPkGiHC7U5w=
-X-Google-Smtp-Source: ABdhPJxpMtqDfZcoaUP4OMF63Yuj9xoqMlPgDRHHMencsT4VGb5ipoLyD9samLQ2h1eZjqZlhH/0pQ==
-X-Received: by 2002:a62:1c0a:0:b029:1ed:3472:36c0 with SMTP id c10-20020a621c0a0000b02901ed347236c0mr13700373pfc.64.1613959616130;
-        Sun, 21 Feb 2021 18:06:56 -0800 (PST)
+        bh=nKtPFB1xyx73OQfeVTdioOSSM0I1Aror0iPkO5KBpc0=;
+        b=nB/PzMQnvoaAiGT/4WawLQj+/EGbyeQLs8gpfCugHTaL0waZjMqwtzcLYqqLZVnsYL
+         GELGX3xYfN4gj+/hL3DpRIWrljxfunnRPqLlScGsybh5hBinyQ802E0YqlMOJ5C5pxA4
+         9AVCVV7THtLOotDufKPOi/urQKTRLtVcsgctlKEfSmlOiTpx/Gx7ra0/qhbHzpCTk3ER
+         ZcShhxw6MvJCSiqmyVNmhQQfrGaSCCBHKwuxiHWrok7sdPWOCuCemBu/bVlhWh1DNIY7
+         0utGg/Oe9ZmSUhDkTARSWWPVCR8K65Jd2GajpT3hS+yFMUQRoY1A0qsPj9KWbyBLH2+W
+         sjrA==
+X-Gm-Message-State: AOAM531m2aFY8knn25llX7cBeQn93ygECXySnxZVyASZV2kCThYm1CmI
+        XA2Ybz42+jTN5enHta8CZvk=
+X-Google-Smtp-Source: ABdhPJx4YWkwy4GkpN7j67wTtgRujttnGXkdr8fmpug5JI4lVDWB4gqo8OpDW5W+tWoXKI3txVZKjw==
+X-Received: by 2002:a17:90a:6589:: with SMTP id k9mr21210384pjj.100.1613968978881;
+        Sun, 21 Feb 2021 20:42:58 -0800 (PST)
 Received: from shinobu ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id c22sm15165633pfl.169.2021.02.21.18.06.51
+        by smtp.gmail.com with ESMTPSA id js15sm8400296pjb.37.2021.02.21.20.42.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Feb 2021 18:06:55 -0800 (PST)
-Date:   Mon, 22 Feb 2021 11:06:49 +0900
+        Sun, 21 Feb 2021 20:42:58 -0800 (PST)
+Date:   Mon, 22 Feb 2021 13:42:51 +0900
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     David Lechner <david@lechnology.com>
 Cc:     jic23@kernel.org, kernel@pengutronix.de,
@@ -58,103 +58,75 @@ Cc:     jic23@kernel.org, kernel@pengutronix.de,
         syednwaris@gmail.com, patrick.havelange@essensium.com,
         fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
         alexandre.torgue@st.com, o.rempel@pengutronix.de
-Subject: Re: [PATCH v8 03/22] counter: 104-quad-8: Return error when invalid
- mode during ceiling_write
-Message-ID: <YDMRuTfazBev7fon@shinobu>
+Subject: Re: [PATCH v8 09/22] counter: Return error code on invalid modes
+Message-ID: <YDM2SzQgL+GAHhUV@shinobu>
 References: <cover.1613131238.git.vilhelm.gray@gmail.com>
- <2be0c071e7730ea16b8faa1efcd3d0d908e7f9db.1613131238.git.vilhelm.gray@gmail.com>
- <8e7daaad-e824-a823-1465-327cbc90ab23@lechnology.com>
+ <58e7c59bb7c7bb94c8655903308842d9d9e9907a.1613131238.git.vilhelm.gray@gmail.com>
+ <d5b53db8-395a-b77e-77fb-49f7fd0da231@lechnology.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="/YbOQ52TSX5QvpA5"
+        protocol="application/pgp-signature"; boundary="H+2x3VvQXXETcoRB"
 Content-Disposition: inline
-In-Reply-To: <8e7daaad-e824-a823-1465-327cbc90ab23@lechnology.com>
+In-Reply-To: <d5b53db8-395a-b77e-77fb-49f7fd0da231@lechnology.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---/YbOQ52TSX5QvpA5
+--H+2x3VvQXXETcoRB
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Feb 20, 2021 at 10:30:03AM -0600, David Lechner wrote:
+On Sat, Feb 20, 2021 at 10:43:06AM -0600, David Lechner wrote:
 > On 2/12/21 6:13 AM, William Breathitt Gray wrote:
-> > The 104-QUAD-8 only has two count modes where a ceiling value makes
-> > sense: Range Limit and Modulo-N. Outside of these two modes, setting a
-> > ceiling value is an invalid operation -- so let's report it as such by
-> > returning -EINVAL.
+> > Only a select set of modes (function, action, etc.) are valid for a
+> > given device configuration. This patch ensures that invalid modes result
+> > in a return -EINVAL. Such a situation should never occur in reality, but
+> > it's good to define a default switch cases for the sake of making the
+> > intent of the code clear.
 > >=20
-> > Fixes: fc069262261c ("counter: 104-quad-8: Add lock guards - generic in=
-terface")
 > > Cc: Syed Nayyar Waris <syednwaris@gmail.com>
+> > Cc: Kamel Bouhara <kamel.bouhara@bootlin.com>
+> > Cc: Fabrice Gasnier <fabrice.gasnier@st.com>
+> > Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+> > Cc: Alexandre Torgue <alexandre.torgue@st.com>
+> > Cc: David Lechner <david@lechnology.com>
 > > Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 > > ---
-> >   drivers/counter/104-quad-8.c | 5 +++--
-> >   1 file changed, 3 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
-> > index 9691f8612be8..f0608b21196a 100644
-> > --- a/drivers/counter/104-quad-8.c
-> > +++ b/drivers/counter/104-quad-8.c
-> > @@ -714,13 +714,14 @@ static ssize_t quad8_count_ceiling_write(struct c=
-ounter_device *counter,
-> >   	switch (priv->count_mode[count->id]) {
-> >   	case 1:
-> >   	case 3:
-> > +		mutex_unlock(&priv->lock);
-> >   		quad8_preset_register_set(priv, count->id, ceiling);
-> > -		break;
-> > +		return len;
-> >   	}
-> >  =20
-> >   	mutex_unlock(&priv->lock);
-> >  =20
-> > -	return len;
-> > +	return -EINVAL;
-> >   }
-> >  =20
-> >   static ssize_t quad8_count_preset_enable_read(struct counter_device *=
-counter,
-> >=20
 >=20
-> What happens if the register is written to when in the wrong mode?
+> Reviewed-by: David Lechner <david@lechnology.com>
 >=20
-> If it doesn't hurt anything, I would suggest always writing the register
-> instead so that users don't have to know worry about the fact that the mo=
-de
-> has to be set first.
+> (In response to Jonathan's comment, I think this is fine rather than
+> adding more churn to change all of the breaks to returns - but will
+> keep that in mind for future changes.)
 
-Unfortunately this register is used for two different functions: as a
-ceiling limit and as a preset value. When we're in the preset mode, the
-value of this register will be used to set the counter value when an
-interrupt occurs; whereas in ceiling mode, this value is used as the
-upper counting limit for the counter. We should only set this value when
-in the correct mode, lest we end clobbering the value for the other mode
-(e.g. user sets ceiling value, but driver unexpectantly changes the
-preset value).
+Due to some other updates I'm making to this patchset, I went ahead
+already and updated the breaks to returns in the few places where
+applicable. The changes to this patch are minor, but being pedantic I'll
+hold off on adding your Reviewed-by line until the next revision so you
+have the opportunity to formally approve it.
 
 William Breathitt Gray
 
---/YbOQ52TSX5QvpA5
+--H+2x3VvQXXETcoRB
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmAzEbkACgkQhvpINdm7
-VJL1CxAA42q+QCnTGNHPlJqhKTHAXIJHaKfmrLkcN2wDB/ceG4KPrs0Gr+Cpuw5B
-wF9WlOmZCM8IAS1oC/flSZ0Uaziurx573EsBHCOYeHn1Tu0ITD2UyaqOYdFAmRKJ
-PR5p6BdZqiZUeBa21fdMNg30vvkRyS94JcML889YF7KkDcsOHAld8virOD3dabhB
-S5Kw/8eXSR05ajgnlLnlgy6BzjzgKWXVNqRWZBQHbDN0JeI6m7vxRMhcIWe4V5QQ
-EK0pt1Hl6AsyxRqShZxKcknVRJ1Q2rbhnDIc8N7cxn+HolEBtEtxibh8GDMr4Vyq
-xfCtZCnX6fUrp99L/boKOnnXTyPeJBhzpSXsD8+L0vWlHoPM7fxXxJrlj+X4JB0/
-VpX/Uc4ub+EGQmidRim6znDBRiHWHcbk8Mirn2fU53ZYf5fwnGb9gxw+5z6WzEFA
-RxrQCW8OySzNReQQNUELfxqKFpK2QIl+ox/R0yasDgAry3d55wcMD9kziKIiyi+W
-QIbQfSLgI8IjteB8lIRmESQmBVs/FybUCULwElDI5/cta1gYRVBRm506b4Adwcx0
-abgc8VK2A/0EySUKYpme61aQikIwyFJxBl7I1zpeY+ZleHqVTQhxsDWFieCMHvvH
-GY0CUSAR58XdUskJjxj/N0PqmLHHbaxALhuCsL1nZET2to+WSQ8=
-=3uyq
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmAzNkIACgkQhvpINdm7
+VJK9rRAAyu8elp03L+LXeHNMXyjon3ijwzzn9y1RotPVZbIO3A1Ikd8HPRaFB1a2
+mveObCiWyOmduF/wqTfzTD0yJ1PlfzyHmqynlw4rqAx5WIc1Tq3vezkl4EoVQCz4
+kgaAZrcDNVcRXT2nrmGp7g4LP6hjTlTBD6hYWibN3II8b4iyFO/8VWCJO4U/ipJs
+wjPNtbh9Zn6Eak6yIbGRGsaZ3g//Bk4I5AQGzCk2fKnh8i8W9FHgNzVvZ5nf2VFf
+VuAplEmvItTnc4Ua1Qc0YzffEzasDbef0/lVaRyq95DsdJCLLoIxfYXiuvx8P25f
+O0dR1GkfiFsviq0syAydVjOWvtyEeQZAJbwsuZCVu19ENhNNrk9BGh9WE94vG+Xi
+2hFhG1Q6bCDnEQvoqUbBswvdQLtzHRUvfpoo8ZNfwRpjFqsp1bBBebdOO6TKWnH6
++7QvSQF2nEgCT2yxdnv9iu8mrp1wgg8fho+X4uQ+Iqil5lnPu2iG3aud6ooMwWOa
+YfMwFdHhEotekumCwqXexOkCWOu8wJHrAPcbm+ojv5NBCsFhHvJ7aq5On9+zF+8g
+BDhWcoRhQhfR6v6u2E52S8KdrQyr1x+mq2rbEy6URexMGlbJL7bPuaYNUHI43hfy
+pPTwE5lV+R17oNpB0TSDABOVo7Y//VFE3DpwKlsSNx3QYOAhxEE=
+=oo0o
 -----END PGP SIGNATURE-----
 
---/YbOQ52TSX5QvpA5--
+--H+2x3VvQXXETcoRB--

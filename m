@@ -2,155 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3020B32214A
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Feb 2021 22:25:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 165B23222D5
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Feb 2021 00:58:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231393AbhBVVYP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 22 Feb 2021 16:24:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35478 "EHLO
+        id S231706AbhBVX5m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 22 Feb 2021 18:57:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231489AbhBVVYE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 22 Feb 2021 16:24:04 -0500
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1CA9C06174A;
-        Mon, 22 Feb 2021 13:23:23 -0800 (PST)
-Received: by mail-wr1-x42c.google.com with SMTP id n8so20518850wrm.10;
-        Mon, 22 Feb 2021 13:23:23 -0800 (PST)
+        with ESMTP id S231656AbhBVX5m (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 22 Feb 2021 18:57:42 -0500
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B57F2C061574
+        for <linux-iio@vger.kernel.org>; Mon, 22 Feb 2021 15:57:01 -0800 (PST)
+Received: by mail-lf1-x133.google.com with SMTP id v5so8456778lft.13
+        for <linux-iio@vger.kernel.org>; Mon, 22 Feb 2021 15:57:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=lLar19iHaupqecmjA2VUfAzq75h6j1/XaNyh9pqVsXg=;
-        b=Rqhj5LG9qxxNPPbOjd3QVlwThOXlC/eQuWmDnUnTaRquQwsIlgkPjCm5BzGnNaroIO
-         +NB1WF/KwKx73L4D0iWpWYsHG3uY8cYuZFL0uE+OlZ4tHbEIFYstRQ9Ch/yunJbGVU37
-         T2H68HpE0O0+REbA6v4PiAR9VA5+u/wvFPP5bzpNqhQH5ejrvdDrmvmjsiuCMKr6gR6F
-         s17LWzDCH7SNzs7KSQ0rNlnebeatznSTZ76l+vQekhzEUYLS4rpNKPCZAA4QaRmZ97rn
-         Mnf90hnGNiaBs89vQhVTZaqUS+oe7OJ8XgjyRtQS79RAr2Cyagr17a+Mpi07zTpsumRo
-         /8fQ==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=o8XmHJuqm6GAV6sy5fGrRX2i8hInLVNmSeVAA8voUfg=;
+        b=Uzw7upNZN+BpJQNDmmZzOnUKnDgEe4xc7wVlr0LtTa8xk2i7gk+05vXSmAoHrGk1mv
+         8XalADmL/1RNX9Xwa0sDZZn/ZH6B9sdQsbPOCnm07Q1de3UbuuBeioMX0a3P5CWLZbgy
+         hT7i8HuGM2LyOtIk8707rDLSkEcVOAliXjlpniepqxMdbZ2qPcFUqkJCxa4CwBq83X5S
+         MPXAsERJ6XdU7SeGNNea8S+1qT0LD+DXRv1OUP1Hv4FXZRHOaT/zUj96UBEYyvTQShXp
+         ykGyLxz4MbCtYxI3k9DU8eb0BkSKvkDBczi6jod6+kPqWlQTWvJdXWQWDIo8oZdD10TX
+         4gPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=lLar19iHaupqecmjA2VUfAzq75h6j1/XaNyh9pqVsXg=;
-        b=WBpreW+kvWokyd8Ga2EjW5z6kW6zbiNmk1lIcnKSs3iZ5nqp38ILGXl3UFLwxyVjB4
-         hFnw2KL+zTJeMbSx8jKYV8WbbBCqElatcEOe6jg1M0VgftxKI0iuCAnVq74DxdSNEBCC
-         ajOUCzqsfiOFm52icFakosRb8hr43LafmZPaFXF6MIqNbFFO1UFnziRABbbp0tmL481H
-         rgEdi9yOyfFfYDEDD4VlDqFgX9X11UYsYjO4l4Wkwd86jAGkJS5tJ6ByktmKPuoRcxhG
-         P8waKBQ/sCZBVI1GvEe/4AF+caS9NDXBY9deBBApgvWrQDlUJRpT6i5ZS1VXwJ1HPfB/
-         kMVA==
-X-Gm-Message-State: AOAM532Qr61Zp1LT+C+7Bo3U7/fid/c1rtTTEhkfA6H8lesrbwfrCHrK
-        KrZfztrwfIeNfhelDSn6aurBx+w+4ZY=
-X-Google-Smtp-Source: ABdhPJwKAUQl3cl7EGfjOjaveWQdinhw338rdBKtU3x/hvuPKJaMnuX+YfbWFH6PW07t1RvC++QQSA==
-X-Received: by 2002:a5d:4c82:: with SMTP id z2mr23109270wrs.220.1614029002505;
-        Mon, 22 Feb 2021 13:23:22 -0800 (PST)
-Received: from pop-os.localdomain (cpc126866-lewi25-2-0-cust31.2-4.cable.virginm.net. [82.7.143.32])
-        by smtp.gmail.com with ESMTPSA id w4sm506164wmc.13.2021.02.22.13.23.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Feb 2021 13:23:22 -0800 (PST)
-From:   Joe Sandom <joe.g.sandom@gmail.com>
-To:     jic23@kernel.org
-Cc:     Joe Sandom <joe.g.sandom@gmail.com>,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=o8XmHJuqm6GAV6sy5fGrRX2i8hInLVNmSeVAA8voUfg=;
+        b=Aie+QX4ybgfkUGk+hNATdkkiW4L8jnRRSAGn2Bgcf0OCzWF7Jdi39VS/LU1xM4bJf+
+         5LSP6KGS/a7Bqj5ujYjUvaE+ZD4gQYkOB6FHWE6rMh9CHYop9pYWRDXzDjgvrZDQKTVF
+         jEadZ1ofS47AfJE1nipHZ0wC2td2O2H/2vpfECZ6f8GJebukEQwVJtERaeI9+KGEVMpm
+         ouMvP8cK3sGWNyLJfgMOMAOLzmuIq5r6IiXWmTnD5MIyBvnDfSvljMk0EOaPBo1EGCHi
+         +n3tw2My5FbRFyrXKoYRZ4CZFxA1jNl9xW4U5WDpz4HUtrr9z+YYJJpWrxwhEpx+270g
+         a4+A==
+X-Gm-Message-State: AOAM533UuP3DHJi0DCDJfFqRsqwEJHCTe1IWPLZFy5xMRZICiM3mt40W
+        ZBWTP6WcMIuxG3xMAaYianti7RMr1iuaFf10uTMyaQ==
+X-Google-Smtp-Source: ABdhPJwHZgSXOLoV890kcnE4t5AaOd59afNXytrz7BeSEFotFpTE+yH/0SMRPGldtr/Rip5yblXwpJYSnVfdBxvZ8Cs=
+X-Received: by 2002:a19:70e:: with SMTP id 14mr14444457lfh.157.1614038220290;
+ Mon, 22 Feb 2021 15:57:00 -0800 (PST)
+MIME-Version: 1.0
+References: <20201224011700.1059659-1-linus.walleij@linaro.org> <20210221161801.42532e87@archlinux>
+In-Reply-To: <20210221161801.42532e87@archlinux>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Tue, 23 Feb 2021 00:56:49 +0100
+Message-ID: <CACRpkdYyUWpxm3SbSL13gD5jtxabvV4UAo5fGk_BzvObRfviGw@mail.gmail.com>
+Subject: Re: [PATCH] iio: adc: ab8500-gpadc: Fix off by 10 to 3
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Joe Sandom <joe.sandom@outlook.com>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [RESEND][PATCH v4 2/2] Added AMS tsl2591 device tree binding
-Date:   Mon, 22 Feb 2021 21:23:13 +0000
-Message-Id: <20210222212313.29319-2-joe.g.sandom@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210222212313.29319-1-joe.g.sandom@gmail.com>
-References: <20210222212313.29319-1-joe.g.sandom@gmail.com>
+        stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Device tree binding for AMS/TAOS tsl2591 ambient light sensor.
+On Sun, Feb 21, 2021 at 5:18 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> On Thu, 24 Dec 2020 02:17:00 +0100
+> Linus Walleij <linus.walleij@linaro.org> wrote:
 
-This driver supports configuration via device tree and sysfs.
-Supported channels for raw infrared light intensity,
-raw combined light intensity and illuminance in lux.
-The driver additionally supports iio events on lower and
-upper thresholds.
+> No idea why I didn't pick this up before now.  I guess I forgot it
+> over xmas.
+>
+> Anyhow, now applied to the fixes-togreg branch of iio.git.
 
-This is a very-high sensitivity light-to-digital converter that
-transforms light intensity into a digital signal.
+Such things happen, was just gonna poke you about it,
+thanks a lot!
 
-Datasheet Available at: https://ams.com/tsl25911
-
-Signed-off-by: Joe Sandom <joe.g.sandom@gmail.com>
----
-Changes in v4:
-- Corrected id field to include vendor name in prefix
-
-Notes:
-- Previously incorrectly included binding in same patch as driver.
-  This was pointed out by the maintainer and has now been changed to
-  a patch series. Sorry for the confusion!
-
-Reason for re-send;
-- Maintainer email was outlook address, changed to gmail address as this
-  is the email the patch is being sent from.
- 
- .../bindings/iio/light/amstaos,tsl2591.yaml   | 50 +++++++++++++++++++
- 1 file changed, 50 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/light/amstaos,tsl2591.yaml
-
-diff --git a/Documentation/devicetree/bindings/iio/light/amstaos,tsl2591.yaml b/Documentation/devicetree/bindings/iio/light/amstaos,tsl2591.yaml
-new file mode 100644
-index 000000000000..596a3bc770f4
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/light/amstaos,tsl2591.yaml
-@@ -0,0 +1,50 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/light/amstaos,tsl2591.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: AMS/TAOS TSL2591 Ambient Light Sensor (ALS)
-+
-+maintainers:
-+  - Joe Sandom <joe.g.sandom@gmail.com>
-+
-+description: |
-+  AMS/TAOS TSL2591 is a very-high sensitivity
-+  light-to-digital converter that transforms light intensity into a digital
-+  signal.
-+
-+properties:
-+  compatible:
-+    const: amstaos,tsl2591
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+    description:
-+      Interrupt (INT:Pin 2) Active low. Should be set to IRQ_TYPE_EDGE_FALLING.
-+      interrupt is used to detect if the light intensity has fallen below
-+      or reached above the configured threshold values.
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        tsl2591@29 {
-+            compatible = "amstaos,tsl2591";
-+            reg = <0x29>;
-+            interrupts = <20 IRQ_TYPE_EDGE_FALLING>;
-+       };
-+    };
-+...
--- 
-2.17.1
-
+Yours,
+Linus Walleij

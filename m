@@ -2,60 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D31F23229F4
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Feb 2021 13:01:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 395F0322A59
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Feb 2021 13:16:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232705AbhBWL4v (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 Feb 2021 06:56:51 -0500
-Received: from mail.jvpinto.com ([65.49.11.60]:54491 "EHLO mail.JVPinto.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232501AbhBWLyb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 23 Feb 2021 06:54:31 -0500
-Received: from RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) by
- RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) with Microsoft SMTP Server
- (TLS) id 15.0.1497.2; Tue, 23 Feb 2021 03:52:35 -0800
-Received: from User (52.231.198.195) by RW-EXC1.JVPinto.com (172.32.1.13) with
- Microsoft SMTP Server id 15.0.1497.2 via Frontend Transport; Tue, 23 Feb 2021
- 03:52:20 -0800
-Reply-To: <ms.reem@yandex.com>
-From:   "Ms. Reem" <johnpinto@jvpinto.com>
-Subject: Hello okay
-Date:   Tue, 23 Feb 2021 11:52:34 +0000
+        id S232377AbhBWMNR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 23 Feb 2021 07:13:17 -0500
+Received: from guitar.tcltek.co.il ([192.115.133.116]:38399 "EHLO
+        mx.tkos.co.il" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232300AbhBWMNR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 23 Feb 2021 07:13:17 -0500
+Received: from tarshish.tkos.co.il (unknown [10.0.8.2])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mx.tkos.co.il (Postfix) with ESMTPS id B29874402B1;
+        Tue, 23 Feb 2021 14:12:29 +0200 (IST)
+From:   Baruch Siach <baruch@tkos.co.il>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Cc:     linux-iio@vger.kernel.org,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Baruch Siach <baruch@tkos.co.il>,
+        Mike Frysinger <vapier@gentoo.org>
+Subject: [PATCH] staging: iio: remove mention of defunct list
+Date:   Tue, 23 Feb 2021 14:12:23 +0200
+Message-Id: <69b3e45e7666a1dd74a83df0b84ef8a63bf090ea.1614082343.git.baruch@tkos.co.il>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <933f089f49b04946b97b7d0f2a305064@RW-EXC1.JVPinto.com>
-To:     Undisclosed recipients:;
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello,
+The ADI device-drivers-devel list no longer exists.
 
-My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
-and Petroleum" also "Minister of State for International Cooperation"
-in UAE. I write to you on behalf of my other "three (3) colleagues"
-who has approved me to solicit for your "partnership in claiming of
-{us$47=Million}" from a Financial Home in Cambodia on their behalf and
-for our "Mutual Benefits".
+Cc: Mike Frysinger <vapier@gentoo.org>
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+ drivers/staging/iio/TODO | 4 ----
+ 1 file changed, 4 deletions(-)
 
-The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
-deal with Cambodian/Vietnam Government within 2013/2014, however, we
-don't want our government to know about the fund. If this proposal
-interests you, let me know, by sending me an email and I will send to
-you detailed information on how this business would be successfully
-transacted. Be informed that nobody knows about the secret of this
-fund except us, and we know how to carry out the entire transaction.
-So I am compelled to ask, that you will stand on our behalf and
-receive this fund into any account that is solely controlled by you.
+diff --git a/drivers/staging/iio/TODO b/drivers/staging/iio/TODO
+index 4d469016a13a..0fa6a5500bdb 100644
+--- a/drivers/staging/iio/TODO
++++ b/drivers/staging/iio/TODO
+@@ -1,9 +1,5 @@
+ 2020-02-25
+ 
+ 
+-ADI Drivers:
+-CC the device-drivers-devel@blackfin.uclinux.org mailing list when
+-e-mailing the normal IIO list (see below).
+-
+ Contact: Jonathan Cameron <jic23@kernel.org>.
+ Mailing list: linux-iio@vger.kernel.org
+-- 
+2.30.0
 
-We will compensate you with 15% of the total amount involved as
-gratification for being our partner in this transaction. Reply to:
-ms.reem@yandex.com
-
-Regards,
-Ms. Reem.

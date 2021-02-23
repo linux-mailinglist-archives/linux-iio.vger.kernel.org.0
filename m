@@ -2,61 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 851383225F7
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Feb 2021 07:35:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 79D8B3225FB
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Feb 2021 07:38:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230174AbhBWGfm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 Feb 2021 01:35:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40482 "EHLO
+        id S231296AbhBWGh6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 23 Feb 2021 01:37:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229823AbhBWGfk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 Feb 2021 01:35:40 -0500
-Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB6C7C061574;
-        Mon, 22 Feb 2021 22:35:00 -0800 (PST)
-Received: by mail-io1-xd29.google.com with SMTP id s24so15971163iob.6;
-        Mon, 22 Feb 2021 22:35:00 -0800 (PST)
+        with ESMTP id S230105AbhBWGhH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 Feb 2021 01:37:07 -0500
+Received: from mail-il1-x135.google.com (mail-il1-x135.google.com [IPv6:2607:f8b0:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB65BC061574;
+        Mon, 22 Feb 2021 22:36:27 -0800 (PST)
+Received: by mail-il1-x135.google.com with SMTP id a16so13143741ilq.5;
+        Mon, 22 Feb 2021 22:36:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=FBq/fDzJJZK8J6HmNcmzMw7q0LORfsgo8PXuQM6yZUs=;
-        b=e6PwqemdISkuwn9ya9rgdpLdsO9YhOPBMVAL99GFNpw1x2EQgzBZJ5DVeJNkcRI3kC
-         iGyTUt6cYcsDBYBb8X6O+EZHaO3gQ1Ma4UPdyZ6VSx46K3c/zBGMDJq/rhO6bnPPL6kK
-         cP54CTDyxexzoL2/jynLqO6ORMChillnpgFl38a8G/6QbCdYA4kOEb0TF0BUnvTM6Pn+
-         4HvDFjE9loe7Fk1yMwCvcYpD90v8tkjf0c4CmK0cslkPoJq/aSC3Br4E1K1U2dhaMEEh
-         ywcjAO4C8/qIzxgnmbECmRIa+PNow2vGhuw/ukFQE+22Rhff2tW43LlkDSiG6+QWMJGn
-         R4Gw==
+        bh=r0hzFkkogd1ohgH5b2AdgPYEAmEMk6gxZMJuXty76/Y=;
+        b=LlDJW1KHDVOi0+NUvxKBSkRBrBBfPRBXiJKnPwXYEj1pgeQ0clmTd3d4IY9xVJSuXf
+         ehBIYbOG+WXbHAPE8qDf8CmTQ/12BYLHUeC8kcGn3LZ7Q0Big7E8SYc4ciZ8Wsxr8wCQ
+         3goZXl46RIH5JuhVG0KVzr/OqXNXlS7QuOUDPJPNM6572JgX89MrzvbS3k31TWBMW+Kd
+         vBDJ0Sf5Zjv1S0XihjmrRBJcc6ue19qCMCVoELQUJBjg8kezIdO1UEoibiDEi2A+w4rU
+         AtpQbKbGnwhYksmBanxB0SApX7OnfxtqFgv8rFfpbNjfE0980U916i7CPg6ESYwZfaML
+         yPfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=FBq/fDzJJZK8J6HmNcmzMw7q0LORfsgo8PXuQM6yZUs=;
-        b=XagTnv6A0olyyZkMToOZp0Y4S4k17Ayi87pkd79SUK+NWrjFeU2x72hzFgkGXKyHBG
-         ifsAsNO7Ru75DZ419mVuNqtWxGEW3DtwX46fJ82wpHkvjnVLdsSfmNTNVCuYq7pPOwJ8
-         2USqJ9abJQZrGjMU/EevJsPzXZN/Tzn8JG9+9Fodi7BaWTiVVio9Cw9W9n55PrXTOWB+
-         E44fC2M871ytletc+ccbucQArLygbdzoZlfe4FLhePqa5gKfKKzr78SPX+eYwMS6qEx7
-         JCdwFFhwaR7S4862eEhwhVHlDMTFY1nQK6w5qBTCejxB2PZzt9wvTKl67XQth1q1tLOq
-         Febw==
-X-Gm-Message-State: AOAM5316l51vVSoQl6zEmjwO+kFp5g9HRYp0ze0Gjs42FtD9RA3G4nF7
-        V3P50Oj93QV3MSO+BGi+Ood5Ot4WrAS30JXR8a8hkwgplqmG3g==
-X-Google-Smtp-Source: ABdhPJyyqJZQ4YOQaU0HPvzUth+6UK0lbwQ/B9VhlOAfdCBV9cWm2iMFpK1yEV5kNi7UbOYIUgPq4k7Vp/0wWOtnXZs=
-X-Received: by 2002:a02:390a:: with SMTP id l10mr25595005jaa.88.1614062100095;
- Mon, 22 Feb 2021 22:35:00 -0800 (PST)
+        bh=r0hzFkkogd1ohgH5b2AdgPYEAmEMk6gxZMJuXty76/Y=;
+        b=aDoFWgkDRdLYY0mlhWfcyRUB0fDpCE9uBez5WOup/n8dVmyfYxQwSAGZr0LOE0QMUs
+         sfT42kWiHnGgwRCO7kanEa0XZFSaftzWfcZIaLIf6iYRUd6ZxVe/UoDE10R+meM5Jh2P
+         uVy+3oW4eK06npZBWXcP846M+IJmFxeTS/0xld5+8fjHSCCjR/Ug5wBneNtl8Vvi+7Vk
+         8NGIGauvaMeicsz3h7+3aiPp8zytANXsdCYwERfImDsBxgBca2lgYXtvYPj/M/YgsI9s
+         FLESI/tnNmPxrtjxfhE++P+RLFIfv9Dh/S0fo/tbULpEOxAYastOu9iZ37U3cIoLka/l
+         rxvA==
+X-Gm-Message-State: AOAM533SpLwSNZMxv6+ACTfnoFCEq3Bzwr1m8rQkxW6/BdO5vJhxvfi0
+        tT2S+661HE+NYQ+vI9GOhrLaT9ZKCXuEStOky8GsG6vzbKnznA==
+X-Google-Smtp-Source: ABdhPJxHAEkr+UYvsr6QaZF7FwWyBe4zLx0GeVFjbvtAI/B9Tt8N2+X07QSYhfzvHAijAlWywP8uGcv8Q3NobvLhj6I=
+X-Received: by 2002:a92:d30d:: with SMTP id x13mr18327296ila.217.1614062187233;
+ Mon, 22 Feb 2021 22:36:27 -0800 (PST)
 MIME-Version: 1.0
-References: <20210219124012.92897-1-alexandru.ardelean@analog.com>
- <20210219124012.92897-7-alexandru.ardelean@analog.com> <20210221120958.7623e02c@archlinux>
-In-Reply-To: <20210221120958.7623e02c@archlinux>
+References: <20210219085826.46622-1-alexandru.ardelean@analog.com>
+ <20210219085826.46622-2-alexandru.ardelean@analog.com> <20210222160157.0000391e@Huawei.com>
+In-Reply-To: <20210222160157.0000391e@Huawei.com>
 From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Tue, 23 Feb 2021 08:34:46 +0200
-Message-ID: <CA+U=Dsouj+P0AfWU2r9B4pcp_jGUCZgaOOwq1zHYHxOxShCCcQ@mail.gmail.com>
-Subject: Re: [PATCH v3 6/6] iio: buffer-dma: add support for cyclic DMA transfers
-To:     Jonathan Cameron <jic23@kernel.org>
+Date:   Tue, 23 Feb 2021 08:36:15 +0200
+Message-ID: <CA+U=DsppzH8si6Jd3PryeN=EingGcsRAibE_7ayGA+V-d7e-0g@mail.gmail.com>
+Subject: Re: [PATCH 1/2] iio: core: use kfree_const in iio_free_chan_devattr_list()
+ to free names
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
         LKML <linux-kernel@vger.kernel.org>,
         linux-iio <linux-iio@vger.kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
         "Bogdan, Dragos" <dragos.bogdan@analog.com>
 Content-Type: text/plain; charset="UTF-8"
@@ -64,96 +66,51 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Feb 21, 2021 at 2:11 PM Jonathan Cameron <jic23@kernel.org> wrote:
+On Mon, Feb 22, 2021 at 6:06 PM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
 >
-> On Fri, 19 Feb 2021 14:40:12 +0200
+> On Fri, 19 Feb 2021 10:58:25 +0200
 > Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 >
-> > From: Lars-Peter Clausen <lars@metafoo.de>
+> > When the buffer attributes were wrapped in iio_dev_attr types, I forgot to
+> > duplicate the names, so that when iio_free_chan_devattr_list() gets called
+> > on cleanup, these get free'd.
+> > I stumbled over this while accidentally breaking a driver doing
+> > iio_device_register(), and then the issue appeared.
 > >
-> > This change adds support for cyclic DMA transfers using the IIO buffer DMA
-> > infrastructure.
-> > To do this, userspace must set the IIO_BUFFER_BLOCK_FLAG_CYCLIC flag on the
-> > block when enqueueing them via the ENQUEUE_BLOCK ioctl().
+> > The fix can be just
+> > 1. Just use kstrdup() during iio_buffer_wrap_attr()
+> > 2. Just use kfree_const() during iio_free_chan_devattr_list
+> > 3. Use both kstrdup_const() & kfree_const() (in the places mentioned above)
 > >
-> > Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+> > Using kfree_const() should be sufficient, as the attribute names will
+> > either be allocated or be stored in rodata.
+> >
+> > Fixes: a1a11142f66c ("iio: buffer: wrap all buffer attributes into iio_dev_attr")
 > > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> Series in general looks good to me, but this change needs a little more
-> detail + probably some level of example userspace flow.
 >
-> I don't really understand how this is used!
->
-> Also, it's easy to test output buffers with the kfifo support so we
-> should be able to move forward quickly with that part (1-3, 4 is probably
-> fine as well as clearly harmless).
->
-> The dma stuff worries me more, at least partly based on the experience
-> of the original dma buffers which basically sat their unused (in upstream)
-> for a very long time.   So to move these forward, they need to come
-> with users...
+> Thinking more on this...  It's fine for the users today, but there is
+> nothing stopping a driver passing in names it allocated on the heap.  So
+> I think we should revisit this.  Perhaps we need 1 or 3.
 
-So, this series will need to be re-sent/re-tested by someone else.
-I'm on my last week at ADI and I'm on vacation.
+Ok.
+Will re-send this as 3; that sounds like it gives the best of both worlds.
 
-Maybe I can manage to setup something to test as well, but it will take a while.
-
-
-
->
-> Thanks,
->
-> Jonathan
->
 > > ---
-> >  .../buffer/industrialio-buffer-dmaengine.c    | 24 ++++++++++++-------
-> >  include/uapi/linux/iio/buffer.h               |  1 +
-> >  2 files changed, 17 insertions(+), 8 deletions(-)
+> >  drivers/iio/industrialio-core.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
 > >
-> > diff --git a/drivers/iio/buffer/industrialio-buffer-dmaengine.c b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-> > index 65458a6cc81a..39cc230c7991 100644
-> > --- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-> > +++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-> > @@ -82,14 +82,22 @@ static int iio_dmaengine_buffer_submit_block(struct iio_dma_buffer_queue *queue,
+> > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> > index 0d8c6e88d993..cb2735d2ae4b 100644
+> > --- a/drivers/iio/industrialio-core.c
+> > +++ b/drivers/iio/industrialio-core.c
+> > @@ -1358,7 +1358,7 @@ void iio_free_chan_devattr_list(struct list_head *attr_list)
+> >       struct iio_dev_attr *p, *n;
 > >
-> >       direction = dmaengine_buffer->is_tx ? DMA_MEM_TO_DEV : DMA_DEV_TO_MEM;
-> >
-> > -     desc = dmaengine_prep_slave_single(dmaengine_buffer->chan,
-> > -             block->phys_addr, block->block.bytes_used, direction,
-> > -             DMA_PREP_INTERRUPT);
-> > -     if (!desc)
-> > -             return -ENOMEM;
-> > -
-> > -     desc->callback_result = iio_dmaengine_buffer_block_done;
-> > -     desc->callback_param = block;
-> > +     if (block->block.flags & IIO_BUFFER_BLOCK_FLAG_CYCLIC) {
-> > +             desc = dmaengine_prep_dma_cyclic(dmaengine_buffer->chan,
-> > +                     block->phys_addr, block->block.bytes_used,
-> > +                     block->block.bytes_used, direction, 0);
-> > +             if (!desc)
-> > +                     return -ENOMEM;
-> > +     } else {
-> > +             desc = dmaengine_prep_slave_single(dmaengine_buffer->chan,
-> > +                     block->phys_addr, block->block.bytes_used, direction,
-> > +                     DMA_PREP_INTERRUPT);
-> > +             if (!desc)
-> > +                     return -ENOMEM;
-> > +
-> > +             desc->callback_result = iio_dmaengine_buffer_block_done;
-> > +             desc->callback_param = block;
-> > +     }
-> >
-> >       cookie = dmaengine_submit(desc);
-> >       if (dma_submit_error(cookie))
-> > diff --git a/include/uapi/linux/iio/buffer.h b/include/uapi/linux/iio/buffer.h
-> > index 4e4ee9befea1..1bde508fe1b9 100644
-> > --- a/include/uapi/linux/iio/buffer.h
-> > +++ b/include/uapi/linux/iio/buffer.h
-> > @@ -33,6 +33,7 @@ struct iio_buffer_block_alloc_req {
-> >
-> >  /* A function will be assigned later for BIT(0) */
-> >  #define IIO_BUFFER_BLOCK_FLAG_RESERVED               (1 << 0)
-> > +#define IIO_BUFFER_BLOCK_FLAG_CYCLIC         (1 << 1)
-> >
-> >  /**
-> >   * struct iio_buffer_block - Descriptor for a single IIO block
+> >       list_for_each_entry_safe(p, n, attr_list, l) {
+> > -             kfree(p->dev_attr.attr.name);
+> > +             kfree_const(p->dev_attr.attr.name);
+> >               list_del(&p->l);
+> >               kfree(p);
+> >       }
 >

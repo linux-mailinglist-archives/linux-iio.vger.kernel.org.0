@@ -2,141 +2,158 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 031C232251A
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Feb 2021 06:15:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 851383225F7
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Feb 2021 07:35:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230291AbhBWFPg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 Feb 2021 00:15:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51598 "EHLO
+        id S230174AbhBWGfm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 23 Feb 2021 01:35:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230105AbhBWFP2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 Feb 2021 00:15:28 -0500
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79B98C061574;
-        Mon, 22 Feb 2021 21:14:48 -0800 (PST)
-Received: by mail-pf1-x434.google.com with SMTP id z5so4863352pfe.3;
-        Mon, 22 Feb 2021 21:14:48 -0800 (PST)
+        with ESMTP id S229823AbhBWGfk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 Feb 2021 01:35:40 -0500
+Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB6C7C061574;
+        Mon, 22 Feb 2021 22:35:00 -0800 (PST)
+Received: by mail-io1-xd29.google.com with SMTP id s24so15971163iob.6;
+        Mon, 22 Feb 2021 22:35:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Sv+2xHnuMxoZYHZzlSKqDTkD28ImMvhuxWF1qu/hw2M=;
-        b=oF1hpcgZsgJA6Wz5ZkZHxTnYjw2yq4knr7L8Dr3qfv5V27hA1y1dFyuRPyBl9Ccb51
-         Z0Zed4wnMmPLgjnjNfJTHiyWagan3uwpw4DxXtvv2huyGbqYU8eCt1WgOs4CgGlpGfDj
-         PZclBXyUm5Cd6VWrcS0yrJlfB26onKqMJTIkyNOLBuP56+YGQwCGA62q93J8GAWGt6ll
-         v4HQAGFTAT+f8K0jNfrp6110o0A7Wn1Pfi46UoDlD3CXobjF1DHA3lGsq5YXwKYFMuXi
-         HTCTuK+CDmHoocyGsC4leG3Ot+cP+y//Pv60VgrfydmzlRFzZsuXWsx3gFpOcCB/6ie6
-         wmEw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=FBq/fDzJJZK8J6HmNcmzMw7q0LORfsgo8PXuQM6yZUs=;
+        b=e6PwqemdISkuwn9ya9rgdpLdsO9YhOPBMVAL99GFNpw1x2EQgzBZJ5DVeJNkcRI3kC
+         iGyTUt6cYcsDBYBb8X6O+EZHaO3gQ1Ma4UPdyZ6VSx46K3c/zBGMDJq/rhO6bnPPL6kK
+         cP54CTDyxexzoL2/jynLqO6ORMChillnpgFl38a8G/6QbCdYA4kOEb0TF0BUnvTM6Pn+
+         4HvDFjE9loe7Fk1yMwCvcYpD90v8tkjf0c4CmK0cslkPoJq/aSC3Br4E1K1U2dhaMEEh
+         ywcjAO4C8/qIzxgnmbECmRIa+PNow2vGhuw/ukFQE+22Rhff2tW43LlkDSiG6+QWMJGn
+         R4Gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Sv+2xHnuMxoZYHZzlSKqDTkD28ImMvhuxWF1qu/hw2M=;
-        b=ADtGMgrIZeus+xvDITF1SwgGVHhX7Pp96vFpy39XyovFAejlF/9bU69azeiYD/hYxX
-         lz1ezM9sGJ01bIkj8mHTKoKN1LGNjQNCQmNMVSjfJPuHsiovRqreNIm+an/G29Zhls7i
-         IAnHKGLAKeZ5XbqQG6auNvml3FUqd8jgDr2R0jKfWkcZV+SOHDxItBBVGuRCtxVgxUjb
-         tXwfnVvJZSGXPX84HCEDbAxlj3Uc0zzNx9YrIcsPJzwCoixE4UpgirTkKWP2tQDf/I6R
-         rO27OOdVZSTjTSd/8+Hi+nl84ysuKgzUxt4CQiwj9tQlCh94Ni4xHllnCh+8IrD66ImZ
-         9A6g==
-X-Gm-Message-State: AOAM532ZigoEmJ+r+GbpnYiRf+3RvhXWG+82btLL1TbZC6cNhIkVJf2j
-        zmUs6E6bKNebt6e48b7Whn8=
-X-Google-Smtp-Source: ABdhPJyyTbQX1xY/5LRGeepQyY86TC3qofoANb1P6IBA6o/d/HQnaXFWhWzu47ogWesSYM3SPOECmQ==
-X-Received: by 2002:aa7:8b48:0:b029:1ec:a315:bdbd with SMTP id i8-20020aa78b480000b02901eca315bdbdmr708936pfd.51.1614057287907;
-        Mon, 22 Feb 2021 21:14:47 -0800 (PST)
-Received: from shinobu ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id i2sm1233145pjj.35.2021.02.22.21.14.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Feb 2021 21:14:46 -0800 (PST)
-Date:   Tue, 23 Feb 2021 14:14:40 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     David Lechner <david@lechnology.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>, kernel@pengutronix.de,
-        linux-stm32@st-md-mailman.stormreply.com, a.fatoum@pengutronix.de,
-        kamel.bouhara@bootlin.com, gwendal@chromium.org,
-        alexandre.belloni@bootlin.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        syednwaris@gmail.com, patrick.havelange@essensium.com,
-        fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@st.com, o.rempel@pengutronix.de
-Subject: Re: [PATCH v8 12/22] counter: Rename counter_count_function to
- counter_function
-Message-ID: <YDSPQFMd0sqUBUaq@shinobu>
-References: <cover.1613131238.git.vilhelm.gray@gmail.com>
- <355aaaaf44b36c5de1704e4074a4671abcb9699d.1613131238.git.vilhelm.gray@gmail.com>
- <20210214171340.3cc7b686@archlinux>
- <2b6913ac-0802-f83e-06ba-e89d5318dbd7@lechnology.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=FBq/fDzJJZK8J6HmNcmzMw7q0LORfsgo8PXuQM6yZUs=;
+        b=XagTnv6A0olyyZkMToOZp0Y4S4k17Ayi87pkd79SUK+NWrjFeU2x72hzFgkGXKyHBG
+         ifsAsNO7Ru75DZ419mVuNqtWxGEW3DtwX46fJ82wpHkvjnVLdsSfmNTNVCuYq7pPOwJ8
+         2USqJ9abJQZrGjMU/EevJsPzXZN/Tzn8JG9+9Fodi7BaWTiVVio9Cw9W9n55PrXTOWB+
+         E44fC2M871ytletc+ccbucQArLygbdzoZlfe4FLhePqa5gKfKKzr78SPX+eYwMS6qEx7
+         JCdwFFhwaR7S4862eEhwhVHlDMTFY1nQK6w5qBTCejxB2PZzt9wvTKl67XQth1q1tLOq
+         Febw==
+X-Gm-Message-State: AOAM5316l51vVSoQl6zEmjwO+kFp5g9HRYp0ze0Gjs42FtD9RA3G4nF7
+        V3P50Oj93QV3MSO+BGi+Ood5Ot4WrAS30JXR8a8hkwgplqmG3g==
+X-Google-Smtp-Source: ABdhPJyyqJZQ4YOQaU0HPvzUth+6UK0lbwQ/B9VhlOAfdCBV9cWm2iMFpK1yEV5kNi7UbOYIUgPq4k7Vp/0wWOtnXZs=
+X-Received: by 2002:a02:390a:: with SMTP id l10mr25595005jaa.88.1614062100095;
+ Mon, 22 Feb 2021 22:35:00 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="CvbW7fZyFWvbVNT8"
-Content-Disposition: inline
-In-Reply-To: <2b6913ac-0802-f83e-06ba-e89d5318dbd7@lechnology.com>
+References: <20210219124012.92897-1-alexandru.ardelean@analog.com>
+ <20210219124012.92897-7-alexandru.ardelean@analog.com> <20210221120958.7623e02c@archlinux>
+In-Reply-To: <20210221120958.7623e02c@archlinux>
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+Date:   Tue, 23 Feb 2021 08:34:46 +0200
+Message-ID: <CA+U=Dsouj+P0AfWU2r9B4pcp_jGUCZgaOOwq1zHYHxOxShCCcQ@mail.gmail.com>
+Subject: Re: [PATCH v3 6/6] iio: buffer-dma: add support for cyclic DMA transfers
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
+        "Bogdan, Dragos" <dragos.bogdan@analog.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Sun, Feb 21, 2021 at 2:11 PM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> On Fri, 19 Feb 2021 14:40:12 +0200
+> Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+>
+> > From: Lars-Peter Clausen <lars@metafoo.de>
+> >
+> > This change adds support for cyclic DMA transfers using the IIO buffer DMA
+> > infrastructure.
+> > To do this, userspace must set the IIO_BUFFER_BLOCK_FLAG_CYCLIC flag on the
+> > block when enqueueing them via the ENQUEUE_BLOCK ioctl().
+> >
+> > Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> Series in general looks good to me, but this change needs a little more
+> detail + probably some level of example userspace flow.
+>
+> I don't really understand how this is used!
+>
+> Also, it's easy to test output buffers with the kfifo support so we
+> should be able to move forward quickly with that part (1-3, 4 is probably
+> fine as well as clearly harmless).
+>
+> The dma stuff worries me more, at least partly based on the experience
+> of the original dma buffers which basically sat their unused (in upstream)
+> for a very long time.   So to move these forward, they need to come
+> with users...
 
---CvbW7fZyFWvbVNT8
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+So, this series will need to be re-sent/re-tested by someone else.
+I'm on my last week at ADI and I'm on vacation.
 
-On Sat, Feb 20, 2021 at 10:56:13AM -0600, David Lechner wrote:
-> On 2/14/21 11:13 AM, Jonathan Cameron wrote:
-> > On Fri, 12 Feb 2021 21:13:36 +0900
-> > William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
-> >=20
-> >> The phrase "Counter Count function" is verbose and unintentionally
-> >> implies that function is a Count extension. This patch adjusts the
-> >> Counter subsystem code to use the more direct "Counter function" phrase
-> >> to make the intent of this code clearer. The phrase "Count action" is
-> >> adjusted herein as well for the same reason.
-> >>
-> >> Cc: Syed Nayyar Waris <syednwaris@gmail.com>
-> >> Cc: Patrick Havelange <patrick.havelange@essensium.com>
-> >> Cc: Kamel Bouhara <kamel.bouhara@bootlin.com>
-> >> Cc: Fabrice Gasnier <fabrice.gasnier@st.com>
-> >> Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-> >> Cc: Alexandre Torgue <alexandre.torgue@st.com>
-> >> Cc: David Lechner <david@lechnology.com>
-> >> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-> >=20
-> > I agree this makes sense in the counter core code, but in the drivers
-> > it may not be quite so obvious we are talking about a counter function
-> > given some of the bits of hardware do a number of other things.
-> >=20
-> > I guess up to the various driver maintainers on whether they
-> > think the new meaning is clear enough!
-> >=20
-> > Jonathan
-> >=20
->=20
-> TBH, I think "counter count function" makes more sense to me.
-
-That's a fair point. I'll revert this for the individual drivers and
-leave it up to the maintainers if they want to adjust their namings.
-Instead, I'll limit the name changes to the counter core code.
-
-William Breathitt Gray
+Maybe I can manage to setup something to test as well, but it will take a while.
 
 
---CvbW7fZyFWvbVNT8
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmA0jzYACgkQhvpINdm7
-VJLBQg/9GFXoFuC1SgrhZBOf3aVmvp31oECQ/jZrZRo78seSdAy7lyxzby6V8asO
-adikRiaumev/b4NJStCUMH9qZ7P+nGRI74Yhd0HFaowh3vHm4DKBZfxcwOuh9sL7
-8AUUpqaWFYXPnTn7G/JJv2nVGGlFH8FecIqOjYroMHhI6b8PiueMgqhHnL4bxlyX
-AP1zJYt+EztFOCiLB4hglEbc/qS8lTzqE0qcBwAF8RaUC+bqeiFNb3HrrnT7j1dw
-j+4o9KyuJ8crppn81jlvU54MM457MMh01sAW6KnvFWxFaUXE7LI/jAV0v3vuX4yi
-Ag9kSHRT8zTkPtcQSFApcjwaWRVC7bkvmOLuNl3X4JDJtqb5soVvf5vULzBiUcrf
-DtwK3Xiw7LXV8stKJsz8Ot9xASj47e+R6tmJZFmCDvb/M4zK3CZOAmZvYGuxv81t
-Mi3SM1MyIBZScC+5Pjydxf5kxpTKfcTYoKYaZ/szQtO3bQMP5iyuiKlInnvj0JSv
-ZP89E8JBuihK3C0HGLx4vx3L8n8qaXzoBfkPijnZh+RD2FmTGHuws7YSVkbdApao
-jhSh+GnWr6kc+sH/Jo3QhU7I/rwtscxPmtKuhrptLt1D6C9zR6AKgmNWgd8jb9pX
-OfT2odtPtlnQZZONRO/UgPnQYk2rWTGvOaaz+gerWbsAzIHiEvM=
-=tRzo
------END PGP SIGNATURE-----
-
---CvbW7fZyFWvbVNT8--
+>
+> Thanks,
+>
+> Jonathan
+>
+> > ---
+> >  .../buffer/industrialio-buffer-dmaengine.c    | 24 ++++++++++++-------
+> >  include/uapi/linux/iio/buffer.h               |  1 +
+> >  2 files changed, 17 insertions(+), 8 deletions(-)
+> >
+> > diff --git a/drivers/iio/buffer/industrialio-buffer-dmaengine.c b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
+> > index 65458a6cc81a..39cc230c7991 100644
+> > --- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
+> > +++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
+> > @@ -82,14 +82,22 @@ static int iio_dmaengine_buffer_submit_block(struct iio_dma_buffer_queue *queue,
+> >
+> >       direction = dmaengine_buffer->is_tx ? DMA_MEM_TO_DEV : DMA_DEV_TO_MEM;
+> >
+> > -     desc = dmaengine_prep_slave_single(dmaengine_buffer->chan,
+> > -             block->phys_addr, block->block.bytes_used, direction,
+> > -             DMA_PREP_INTERRUPT);
+> > -     if (!desc)
+> > -             return -ENOMEM;
+> > -
+> > -     desc->callback_result = iio_dmaengine_buffer_block_done;
+> > -     desc->callback_param = block;
+> > +     if (block->block.flags & IIO_BUFFER_BLOCK_FLAG_CYCLIC) {
+> > +             desc = dmaengine_prep_dma_cyclic(dmaengine_buffer->chan,
+> > +                     block->phys_addr, block->block.bytes_used,
+> > +                     block->block.bytes_used, direction, 0);
+> > +             if (!desc)
+> > +                     return -ENOMEM;
+> > +     } else {
+> > +             desc = dmaengine_prep_slave_single(dmaengine_buffer->chan,
+> > +                     block->phys_addr, block->block.bytes_used, direction,
+> > +                     DMA_PREP_INTERRUPT);
+> > +             if (!desc)
+> > +                     return -ENOMEM;
+> > +
+> > +             desc->callback_result = iio_dmaengine_buffer_block_done;
+> > +             desc->callback_param = block;
+> > +     }
+> >
+> >       cookie = dmaengine_submit(desc);
+> >       if (dma_submit_error(cookie))
+> > diff --git a/include/uapi/linux/iio/buffer.h b/include/uapi/linux/iio/buffer.h
+> > index 4e4ee9befea1..1bde508fe1b9 100644
+> > --- a/include/uapi/linux/iio/buffer.h
+> > +++ b/include/uapi/linux/iio/buffer.h
+> > @@ -33,6 +33,7 @@ struct iio_buffer_block_alloc_req {
+> >
+> >  /* A function will be assigned later for BIT(0) */
+> >  #define IIO_BUFFER_BLOCK_FLAG_RESERVED               (1 << 0)
+> > +#define IIO_BUFFER_BLOCK_FLAG_CYCLIC         (1 << 1)
+> >
+> >  /**
+> >   * struct iio_buffer_block - Descriptor for a single IIO block
+>

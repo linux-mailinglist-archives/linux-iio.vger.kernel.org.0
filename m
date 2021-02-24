@@ -2,357 +2,298 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D0673235C7
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Feb 2021 03:36:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E93753236E9
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Feb 2021 06:35:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232561AbhBXCez (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 Feb 2021 21:34:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43760 "EHLO
+        id S233919AbhBXFew (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 24 Feb 2021 00:34:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232529AbhBXCey (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 Feb 2021 21:34:54 -0500
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10BECC061574;
-        Tue, 23 Feb 2021 18:34:14 -0800 (PST)
-Received: by mail-pf1-x42c.google.com with SMTP id j24so339703pfi.2;
-        Tue, 23 Feb 2021 18:34:14 -0800 (PST)
+        with ESMTP id S232746AbhBXFeu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 24 Feb 2021 00:34:50 -0500
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DC58C061574;
+        Tue, 23 Feb 2021 21:34:10 -0800 (PST)
+Received: by mail-pg1-x52f.google.com with SMTP id o38so732885pgm.9;
+        Tue, 23 Feb 2021 21:34:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=OrsbIjlAeW34o/rlLGDTPIp7SUgU63NXF2+m5n1jw40=;
-        b=dDXGO/bmqQ1gvvdkZzfAxHnfOY6qOOVXSkHFAJoPqM4PLDql/pflkq4ufqQ/siGVnh
-         v50twmdw39Xf/I2moCMN//3LhNMWYXiV0z+rGigTW7NtyoDlrbAOFencurn9J9VdaUQ3
-         nLdgNZkoljTlzYpDcNvgCxdTzlgQcLAKy+xd/tYFC2Gz0TuW/VQlVDtWedw6hGI/KyWo
-         xGfj9CMuN7F43gu8C5i3enKIAhj7SzviNvZUuvmOAnHvaOS1WftP4m3zIfiBEAOWT69W
-         Jn/55ek3TKtgpwSbZy8goot4WrYBDxNtoaWuN0o67BPjmA3jmG3iIIiwZQWKpYgtjeWm
-         AnVw==
+        bh=Pj/gRe7DjMAiHHqo7PKgieIIARyk/XtT4ao2chhVlV4=;
+        b=adL5LWdoCRHwOwWFfK2dH7fCyY2kQvh9gQRSmfUORfCnRh1tWktztEt0SxlIqo5ksW
+         OrXbr8GATZ3yf+Ssbn2PzDVPClKfGqP1luLWvRIPdgtnnfjqxJVyNUzu9zEYjnlrtyQe
+         CRTXPsac8U4VnVfP4zrTWGDrFHZ+r68WmASfLdOXVE7G9EP6XLX5cpiEN1acanxhFMWQ
+         /0mmgazmGF+x1+ytiRVXPNCuAQ8Zfo2WQ81BNw0NYoX3QRhcN3jnz7B5rwR1NCpMDU3+
+         rlg7vvLPqBRokg0H0sF+DfawRfBAMur8yOEVyFp3yZOilXvqNAeSikHyk0Af8lNwqv7F
+         Xhlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=OrsbIjlAeW34o/rlLGDTPIp7SUgU63NXF2+m5n1jw40=;
-        b=eaM+fN0WdN4q/kOKUZIePMyDLvcc/lIono1Xe6JxyjN5TqB2DwhJv1RGjGalNhdPgv
-         kdzcmkhUVcAGjwH/VCLwYft517sqP4VPJqtDj66nGSWmPhZaaEDhOvij1aYyK3+f2Zwz
-         L+7rlWuXmlF8copvBzOcRNyuKe+Ac6Wvj2vPUylpQT8hbviQP2GAn7t5QUS/zlA9TKdK
-         j2mHN9OH6FgWW6bcHd7ADgPosJnL9Kz3ZbKrmTpYSRb3freDxoMZOg/VE7OTJ44JQmC3
-         8fps5fO+9Eek40EgEl9CCd0aRjhfbVpTBGrZ7pyzsz2g28MDBd+KP7Hz46HAnFlNSMOY
-         rMKw==
-X-Gm-Message-State: AOAM532OyeOWnLrlNc0ibtB7PMW1A+/c6M2sbhwEdsrfacGVfGevPwKp
-        LGZzSL6MWvJlUDaCiAm+l7s=
-X-Google-Smtp-Source: ABdhPJwj5ZNV1qNeGIY8GWAY5NoxW+MIIoJDEkAWjzNkUIObqaTvY1bjKonRWyrR4bR+Av/oxlXKGQ==
-X-Received: by 2002:a05:6a00:15cc:b029:1ba:5282:3ab8 with SMTP id o12-20020a056a0015ccb02901ba52823ab8mr29230142pfu.77.1614134053378;
-        Tue, 23 Feb 2021 18:34:13 -0800 (PST)
+        bh=Pj/gRe7DjMAiHHqo7PKgieIIARyk/XtT4ao2chhVlV4=;
+        b=gGXp20yRcYrpJ86iYbxP/FS3+rMujKPy++yaxkGbWm2UFpYwrYYdif3V6rEM6lU2Fk
+         UHD9W665DrxlLRkNkZ5KAacL9gMUBI/erAXlXnC0WQfjp62i/cZTKLetWyC9GpIi5WPh
+         s8zbc9DWiOCQcpAzZ+Mad0e9IuOVyBav/5OfsJRxjVXHULrL4K6suif5iDU9gek4iXvS
+         zpDHwCZ81iCxMDEGU8J9N3R2VinCy9MV8nN/EkLheh4fIkIG5SKFCPQUpL2dQHFZa3S3
+         CoHKkfDMfsgcDiOiU1f7GWuYXyC0BteagBNfdBKDfGGJwjE4isdnwqHetUcUje88TpMg
+         6xDw==
+X-Gm-Message-State: AOAM533kaib4OiPaeIv96NT54uCMbREgRSv1/X5tCR630bA8/ZFetz22
+        oLMwKzEmXrt9jdF6NKLufFs=
+X-Google-Smtp-Source: ABdhPJzHrQ+FheaWWND3bTe6ZSUITLRg4gVCKAQu1q8Fzw/cH1RsC8Xv0+g5c2kAkCOaZMkMD30JMg==
+X-Received: by 2002:a05:6a00:16c7:b029:1bc:6eb9:ee47 with SMTP id l7-20020a056a0016c7b02901bc6eb9ee47mr30958904pfc.0.1614144849581;
+        Tue, 23 Feb 2021 21:34:09 -0800 (PST)
 Received: from shinobu ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id y12sm410616pjc.56.2021.02.23.18.34.09
+        by smtp.gmail.com with ESMTPSA id a9sm912855pjq.17.2021.02.23.21.34.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Feb 2021 18:34:12 -0800 (PST)
-Date:   Wed, 24 Feb 2021 11:34:06 +0900
+        Tue, 23 Feb 2021 21:34:08 -0800 (PST)
+Date:   Wed, 24 Feb 2021 14:34:02 +0900
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Oleksij Rempel <o.rempel@pengutronix.de>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        David Jander <david@protonic.nl>,
-        Robin van der Gracht <robin@protonic.nl>,
-        linux-iio@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH v5 2/2] counter: add IRQ or GPIO based event counter
-Message-ID: <YDW7Hihg0gGQh8UR@shinobu>
-References: <20210208135347.18494-1-o.rempel@pengutronix.de>
- <20210208135347.18494-3-o.rempel@pengutronix.de>
- <YCjlPhEtyH+vfSi4@shinobu>
- <20210215091737.fx6dwiz7tt56wbkr@pengutronix.de>
- <YDMMJJ985Zq9oEOv@shinobu>
- <20210223100656.efbshsh5bz66uhj5@pengutronix.de>
- <20210223174516.wjlh7hnrd5qe5s6w@pengutronix.de>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
+        a.fatoum@pengutronix.de, kamel.bouhara@bootlin.com,
+        gwendal@chromium.org, alexandre.belloni@bootlin.com,
+        david@lechnology.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        syednwaris@gmail.com, patrick.havelange@essensium.com,
+        fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@st.com, o.rempel@pengutronix.de,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Subject: Re: [PATCH v8 17/22] counter: Add character device interface
+Message-ID: <YDXlSoNCA3lMieru@shinobu>
+References: <cover.1613131238.git.vilhelm.gray@gmail.com>
+ <720278e3aaf3f249657ec18d158eca3f962baf8e.1613131238.git.vilhelm.gray@gmail.com>
+ <20210214180612.03af6f0d@archlinux>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="gVaQzNXj3LJq+Vai"
+        protocol="application/pgp-signature"; boundary="OqkcL2+1hoG/vkFg"
 Content-Disposition: inline
-In-Reply-To: <20210223174516.wjlh7hnrd5qe5s6w@pengutronix.de>
+In-Reply-To: <20210214180612.03af6f0d@archlinux>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---gVaQzNXj3LJq+Vai
+--OqkcL2+1hoG/vkFg
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 23, 2021 at 06:45:16PM +0100, Oleksij Rempel wrote:
-> Hello William,
+On Sun, Feb 14, 2021 at 06:06:12PM +0000, Jonathan Cameron wrote:
+> On Fri, 12 Feb 2021 21:13:41 +0900
+> William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
 >=20
-> Here is cooled down technical answer. Excuse me for over reacting.
-
-Hello Oleksij,
-
-Let me apologize too if I offended you in some way in with previous
-response, I assure you that was not my intention. I truly do believe
-this is a useful driver to have in the kernel and I want to make that
-happen; my concerns with your patch are purely technical in nature and=20
-I'm certain we can find a solution working together.
-
-> On Tue, Feb 23, 2021 at 11:06:56AM +0100, Oleksij Rempel wrote:
-> > On Mon, Feb 22, 2021 at 10:43:00AM +0900, William Breathitt Gray wrote:
-> > > On Mon, Feb 15, 2021 at 10:17:37AM +0100, Oleksij Rempel wrote:
-> > > > > > +static irqreturn_t event_cnt_isr(int irq, void *dev_id)
-> > > > > > +{
-> > > > > > +	struct event_cnt_priv *priv =3D dev_id;
-> > > > > > +
-> > > > > > +	atomic_inc(&priv->count);
-> > > > >=20
-> > > > > This is just used to count the number of interrupts right? I wond=
-er if
-> > > > > we can do this smarter. For example, the kernel already keeps tra=
-ck of
-> > > > > number of interrupts that has occurred for any particular IRQ lin=
-e on a
-> > > > > CPU (see the 'kstat_irqs' member of struct irq_desc, and the
-> > > > > show_interrupts() function in kernel/irq/proc.c). Would it make s=
-ense to
-> > > > > simply store the initial interrupt count on driver load or enable=
-ment,
-> > > > > and then return the difference during a count_read() callback?
-> > > >=20
-> > > > This driver do not makes a lot of sense without your chardev patche=
-s. As
-> > > > soon as this patches go mainline, this driver will be able to send
-> > > > event with a timestamp and counter state to the user space.
-> > > >=20
-> > > > With other words, we will need an irq handler anyway. In this case =
-we
-> > > > can't save more RAM or CPU cycles by using system irq counters.
-> > >=20
-> > > It's true that this driver will need an IRQ handler when the timestamp
-> > > functionality is added, but deriving the count value is different mat=
-ter
-> > > regardless. There's already code in the kernel to retrieve the number=
- of
-> > > interrupts, so it makes sense that we use that rather than rolling our
-> > > own -- at the very least to ensure the value we provide to users is
-> > > consistent with the ones already provided by other areas of the kerne=
-l.
->=20
-> The value provided by the driver is consistent only if it is not
-> overwritten by user. The driver provides an interface to reset/overwrite =
-it.
-> At least after this step the value is not consistent.
-
-I wasn't clear here so I apologize. What I would like is for this driver
-to maintain its own local count value derived from kstat_irqs_usr(). So
-for example, you can use the "count" member of your struct
-interrupt_cnt_priv to maintain this value (it can be unsigned int
-instead of atomic_t):
-
-static int interrupt_cnt_read(struct counter_device *counter,
-			      struct counter_count *count, unsigned long *val)
-{
-	struct interrupt_cnt_priv *priv =3D counter->priv;
-
-	*val =3D kstat_irqs_usr(priv->irq) - priv->count;
-
-	return 0;
-}
-
-static int interrupt_cnt_write(struct counter_device *counter,
-			       struct counter_count *count,
-			       const unsigned long val)
-{
-	struct interrupt_cnt_priv *priv =3D counter->priv;
-
-	/* kstat_irqs_usr() returns unsigned int */
-	if (val !=3D (unsigned int)val)
-		return -ERANGE;
-
-	priv->count =3D val;
-
-	return 0;
-}
-
-> > We are talking about one or two code lines. If we will take some
-> > duplication search engine, it will find that major part of the kernel
-> > is matching against it.
+> > This patch introduces a character device interface for the Counter
+> > subsystem. Device data is exposed through standard character device read
+> > operations. Device data is gathered when a Counter event is pushed by
+> > the respective Counter device driver. Configuration is handled via ioctl
+> > operations on the respective Counter character device node.
 > >=20
-> > Newer the less, this driver provides a way to reset the counter. Why
-> > should we drop this functionality no advantage?
-> >=20
-> > > To that end, I'd like to see your cnt_isr() function removed for this
-> > > patchset (you can bring it back once timestamp support is added).
+> > Cc: David Lechner <david@lechnology.com>
+> > Cc: Gwendal Grignou <gwendal@chromium.org>
+> > Cc: Dan Carpenter <dan.carpenter@oracle.com>
+> > Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+> > Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 >=20
-> It make no sense to request an interrupt without interrupt service
-> routine.
+> Hi William,
 >=20
-> https://elixir.bootlin.com/linux/latest/source/kernel/irq/manage.c#L2072if
-> 	if (!handler) {
-> 		if (!thread_fn)
-> 			return -EINVAL;
+> A few minor comments.  Mostly seems to have come together well and
+> makes sense to me.
 >=20
-> As you can see, requesting an irq need at least handler or thread_fn.
+> Jonathan
 >=20
-> enable_irq: this will explode at least here:
-> https://elixir.bootlin.com/linux/latest/source/kernel/irq/manage.c#L778
->=20
-> If he have no IRQ handler and some how was able to enable it, at
-> some point this IRQ will be disabled by this code:
-> https://elixir.bootlin.com/linux/latest/source/kernel/irq/spurious.c#L410
-> 	if (unlikely(desc->irqs_unhandled > 99900)) {
-> 		/*
-> 		 * The interrupt is stuck
-> 		 */
-> 		__report_bad_irq(desc, action_ret);
-> 		/*
-> 		 * Now kill the IRQ
-> 		 */
-> 		printk(KERN_EMERG "Disabling IRQ #%d\n", irq);
-> 		desc->istate |=3D IRQS_SPURIOUS_DISABLED;
-> 		desc->depth++;
-> 		irq_disable(desc);
->=20
-> With current code, we can't request or enable IRQ without cnt_isr(). Not
-> that it is not possible, but it make no sense to me.
-
-What I'm requesting is to remove the interrupt code from this driver for
-now including the cnt_enable_write() callback. Yes, we will need it when
-timestamp functionality is added, but currently the Counter subsystem
-does not have that functionality yet. Once the Counter character device
-interface is merged, then it makes sense to add the interrupt service
-routine to push timestamps to the user.
-
-It is still useful to have this driver mainlined even without the
-interrupt code: getting the body of this driver merged means a much
-easier review of the timestamp code in the future, and users can start
-using current Counter sysfs interface to track their GPIO interrupts.
-
-> > Are you suggesting to enable IRQ without interrupt handler? May be i'm
-> > missing some thing.. I do not understand it.
-> >=20
-> > > Reimplement your cnt_read/cnt_write() functions to instead use
-> > > kstat_irqs_usr() from <linux/kernel_stat.h> to get the current number=
- of
-> > > interrupts the IRQ line and use it to derive your count value for this
-> > > driver.
->=20
-> irq descriptor has 3 counters:
-> - irq_count: this value can be reset any time by the kernel at least by
->   the note_interrupt()
-> - irqs_unhandled: this value is increased in case of missing irq
->   handler. Or if handler has returns IRQ_NONE.
-> - tot_count: this value should not be reset.
->=20
-> Non of this values is suitable for cnt_read() and cnt_write(). Only
-> tot_count would be suitable if cnt_write() is removed. I do not see it
-> as acceptable option.
->=20
-> For this driver, we still need extra counter, where only this driver is
-> responsible for writing to it.
-
-Yes, I'm sorry for not being clear before. Please use priv->count for
-this; there's no need to adjust directly the system irq count.
-
-> > I can follow the counter read way, but overwriting system wide counter
-> > for local use is bad idea.
-> >=20
-> > > > > > +static struct counter_signal event_cnt_signals[] =3D {
-> > > > > > +	{
-> > > > > > +		.id =3D 0,
-> > > > > > +		.name =3D "Channel 0 signal",
-> > > > >=20
-> > > > > You should choose a more description name for this Signal;
-> > > > > "Channel 0 signal" isn't very useful information for the user. Is=
- this
-> > > > > signal the respective GPIO line state?
-> > > >=20
-> > > > Sounds plausible. How about "Channel 0, GPIO line state"?
-> > >=20
-> > > Ideally, this would match the GPIO name (or I suppose the IRQ number =
-if
-> > > not a GPIO line). So in your probe() function you can do something li=
-ke
-> > > this I believe:
-> > >=20
-> > > 	cnt_signals[0].name =3D priv->gpio->name;
+> > ---
+> >  drivers/counter/Makefile         |   2 +-
+> >  drivers/counter/counter-chrdev.c | 496 +++++++++++++++++++++++++++++++
+> >  drivers/counter/counter-chrdev.h |  16 +
+> >  drivers/counter/counter-core.c   |  37 ++-
+> >  include/linux/counter.h          |  45 +++
+> >  include/uapi/linux/counter.h     |  70 +++++
+> >  6 files changed, 661 insertions(+), 5 deletions(-)
+> >  create mode 100644 drivers/counter/counter-chrdev.c
+> >  create mode 100644 drivers/counter/counter-chrdev.h
 > >=20
 >=20
-> > to make this possible, i would need hack gpiolib framework and add
-> > name/label exporter. But after endless rounds of pingponging me for
-> > renaming the driver and removing interrupt handler, i feel like we are
-> > not having serious discussion for mainlining this driver.
+> ...
 >=20
-> Probably for good reason, struct gpio_desc was made local and is located
-> in the drivers/gpio/gpiolib.h. It feels like additional hack to include
-> it. I assume, it should be done properly so there is a function to
-> provide gpio name or label.
+> > diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-c=
+ore.c
+> > index bcf672e1fc0d..c137fcb97d9c 100644
+> > --- a/drivers/counter/counter-core.c
+> > +++ b/drivers/counter/counter-core.c
+> > @@ -5,12 +5,16 @@
+> >   */
+> >  #include <linux/counter.h>
+> >  #include <linux/device.h>
+> > +#include <linux/device/bus.h>
+> >  #include <linux/export.h>
+> > +#include <linux/fs.h>
+> >  #include <linux/gfp.h>
+> >  #include <linux/idr.h>
+> >  #include <linux/init.h>
+> >  #include <linux/module.h>
+> > +#include <linux/types.h>
+> > =20
+> > +#include "counter-chrdev.h"
+> >  #include "counter-sysfs.h"
+> > =20
+> >  /* Provides a unique ID for each counter device */
+> > @@ -33,6 +37,8 @@ static struct bus_type counter_bus_type =3D {
+> >  	.name =3D "counter"
+> >  };
+> > =20
+> > +static dev_t counter_devt;
+> > +
+> >  /**
+> >   * counter_register - register Counter to the system
+> >   * @counter:	pointer to Counter to register
+> > @@ -54,7 +60,6 @@ int counter_register(struct counter_device *const cou=
+nter)
+> >  	if (counter->id < 0)
+> >  		return counter->id;
+> > =20
+> > -	/* Configure device structure for Counter */
 >=20
-> @Linus Walleij are there any good way to get the GPIO name? And which
-> name will be actually used? A label provided over devicetree?
+> Not sure why this comment gets removed here.
 
-Perhaps one of the GPIO subsystem maintainers can provide more guidance
-here, but I was under the impression that this name was provided
-statically by the respective GPIO driver via their struct gpio_chip. I
-think you can see the array of names via priv->gpio->gdev->chip->names.
+This comment wasn't suppose to be removed. I'll revert this.
 
-Alternatively, we can take a more generic approach: ignore the GPIO
-names and focus solely on the IRQ lines; because the GPIO lines will
-always be tied to respective IRQ lines here, using the IRQ as the basis
-of the name should always be valid. The "name" member of the struct
-irq_chip can work for this. I haven't tested this, but I think something
-like this would work:
+> >  	dev->type =3D &counter_device_type;
+> >  	dev->bus =3D &counter_bus_type;
+> >  	if (counter->parent) {
+> > @@ -65,18 +70,25 @@ int counter_register(struct counter_device *const c=
+ounter)
+> >  	device_initialize(dev);
+> >  	dev_set_drvdata(dev, counter);
+> > =20
+> > +	/* Add Counter character device */
+> > +	err =3D counter_chrdev_add(counter, counter_devt);
+> > +	if (err < 0)
+> > +		goto err_free_id;
+> > +
+> >  	/* Add Counter sysfs attributes */
+> >  	err =3D counter_sysfs_add(counter);
+> >  	if (err < 0)
+> > -		goto err_free_id;
+> > +		goto err_remove_chrdev;
+> > =20
+> >  	/* Add device to system */
+> >  	err =3D device_add(dev);
+> >  	if (err < 0)
+> > -		goto err_free_id;
+> > +		goto err_remove_chrdev;
+>=20
+> It might be worth thinking about using cdev_device_add()
+> though will require a slightly different order of adding.
 
-	cnt_signals[0].name =3D irq_get_chip(priv->irq)->name;
+I think using cdev_device_add() should be possible. I'll adjust
+counter_chrdev_add() accordingly to account for this.
+=20
+> > =20
+> >  	return 0;
+> > =20
+> > +err_remove_chrdev:
+> > +	counter_chrdev_remove(counter);
+> >  err_free_id:
+> >  	put_device(dev);
+> >  	return err;
+> > @@ -138,13 +150,30 @@ int devm_counter_register(struct device *dev,
+> >  }
+> >  EXPORT_SYMBOL_GPL(devm_counter_register);
+> > =20
+> > +#define COUNTER_DEV_MAX 256
+> > +
+> >  static int __init counter_init(void)
+> >  {
+> > -	return bus_register(&counter_bus_type);
+> > +	int err;
+> > +
+> > +	err =3D bus_register(&counter_bus_type);
+> > +	if (err < 0)
+> > +		return err;
+> > +
+> > +	err =3D alloc_chrdev_region(&counter_devt, 0, COUNTER_DEV_MAX, "count=
+er");
+> > +	if (err < 0)
+> > +		goto err_unregister_bus;
+> > +
+> > +	return 0;
+> > +
+> > +err_unregister_bus:
+> > +	bus_unregister(&counter_bus_type);
+> > +	return err;
+> >  }
+> > =20
+> >  static void __exit counter_exit(void)
+> >  {
+> > +	unregister_chrdev_region(counter_devt, COUNTER_DEV_MAX);
+> >  	bus_unregister(&counter_bus_type);
+> >  }
+> > =20
+>=20
+> ...
+>=20
+> > diff --git a/include/uapi/linux/counter.h b/include/uapi/linux/counter.h
+> > index 6113938a6044..3d647a5383b8 100644
+> > --- a/include/uapi/linux/counter.h
+> > +++ b/include/uapi/linux/counter.h
+> > @@ -6,6 +6,19 @@
+> >  #ifndef _UAPI_COUNTER_H_
+> >  #define _UAPI_COUNTER_H_
+> > =20
+> > +#include <linux/ioctl.h>
+> > +#include <linux/types.h>
+> > +
+> > +/* Component type definitions */
+> > +enum counter_component_type {
+> > +	COUNTER_COMPONENT_NONE,
+> > +	COUNTER_COMPONENT_SIGNAL,
+> > +	COUNTER_COMPONENT_COUNT,
+> > +	COUNTER_COMPONENT_FUNCTION,
+> > +	COUNTER_COMPONENT_SYNAPSE_ACTION,
+> > +	COUNTER_COMPONENT_EXTENSION,
+> > +};
+> > +
+> >  /* Component scope definitions */
+> >  enum counter_scope {
+> >  	COUNTER_SCOPE_DEVICE,
+> > @@ -13,6 +26,63 @@ enum counter_scope {
+> >  	COUNTER_SCOPE_COUNT,
+> >  };
+> > =20
+> > +/**
+> > + * struct counter_component - Counter component identification
+> > + * @type: component type (one of enum counter_component_type)
+> > + * @scope: component scope (one of enum counter_scope)
+> > + * @parent: parent component ID (matching the Y/Z suffix of the respec=
+tive sysfs
+> > + *	    path as described in Documentation/ABI/testing/sysfs-bus-counte=
+r)
+>=20
+> Probably good to give an example here as well as the cross reference.
 
-> If I see it correctly, it would need more work to make the kernel infrast=
-ructure
-> suitable for this suggestions. Some of them are only needed before
-> chardev support will go mainline and , in long term, not worth to
-> spend time on it.
-
-I disagree, I think there is benefit in getting this driver merged
-even if we don't have the interrupt service routine. Although I
-recommend we keep this initial patch simple to introduce the driver,
-later on you can for example add support for other Counter sysfs
-attributes such as "ceiling" and "floor" if users want to specify count
-limits, or perhaps alternative count functions (maybe a user wants to
-the count to decrease instead of increase with every interrupt).
-
-These other functionalities are tangental to the your timestamp interest
-for this driver, but I believe they will be useful to users at large as
-a convenient way to evaluate, track, and express the interrupt counts on
-their system.
+Ack.
 
 William Breathitt Gray
 
-> Probably I do not understand you and i missing some thing?
->=20
-> Regards,
-> Oleksij
-> --=20
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
---gVaQzNXj3LJq+Vai
+--OqkcL2+1hoG/vkFg
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmA1uxQACgkQhvpINdm7
-VJI2mw//XtOjv5wcKRiuDVh3AFm/iZ8y4WOVSsLNtJYFxhLPFIhxPcKbjb4yd0gr
-y3Iti9BWlG7XNUy7o+A1xyGx71SlFfyEKFx9QiB9WAuUG/MKl2kqr78diHWrMKe3
-hFlIUuqCNAMcHihsym1xqt46anFOHN7sWX2AQ5Qc4g0CCNQAU3h1ZgHGCPzrnSjn
-03y7Sf7lwvHx2V8/m4RVf5A8hSrZ4ycUUwxL2URZItj+P7jcILmkc7+JyiLZaj+T
-xSl8woCeGHVyd3AMkwfooBFDYnnqAxVBXSPs25eDtugcGJG256WVG6kjF5xTYJGz
-KdgQrqxhSgVeVHyRiiEbpEB3JSL32TTeoXXTJi0ZJ33m5v55mrYKqC6u1GvuZOQ3
-YA8AG8h5GsjbqJdY8HhqKmz9GBUBFqOTNSobmMub+3tqudMRDUnSAFRUKiKSGHQu
-+t91kstAwgd+Ml6MWjKT8afAGJVYGxrrj3cc9RrTDarGzToT8NeM2nCjcYO7tVf1
-Kd1NEdR9ey8IiePbI5PlKyIQqekqwykln9vnbG5OesoAF3K9m+nRR0A9S+YVg+rW
-Q0WUKDWmVHH9hw4hqZto6EaI4kfZNOr9qo0T/ee6NdIUGteXIlcIHPSB4rBhIT3m
-xpHxV10KHm7bzBMmCFmePhnawLVytXwsYm4kEnlfiHIDYPM00aI=
-=VPWh
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmA15UoACgkQhvpINdm7
+VJKF9BAAhN/ttlp4nisjDvTa8Xbitarr8qwdHsQVA4DPvGgGWL3fCzBPB9OwBsA7
+TEnR9XtWKsjsnzXoiERkihwZ9kVAjJMjvuoXp6D975A+6iOE1NfMr9iILt2aCsQ/
+y4i/92+TOJ3LB9oVTVkEUHrcpNjLqFfg0G4Aua8ywlvSWe5oLad1hy9iMuHfL4oZ
+cAV54mT9r4UCI6zosdrPEAYc79abGB3i8vXWOw0gpZJCROx+OZY1f8ya1kSOXxO9
+4/SbVjAVQeS30Hztyeq/q1/+nRnazMJqJHLpfv48xltMsWRjxcedU7rXTry4E1Zb
+TOfcW6pm2myoGq37rSYE7lFb+Ye4IhXRElmvbKC22CRa0kRiMDKpRSivIEJwC9EX
+u5nMRtzZgCcDwjy+VUwBxKh77xr30amFzwGuON0x4I1tznac4ZdgX5CJAbVHJuP+
+XCTim4hsbJOfhg567d8sApCgiHM2yisS+Kr+4jIYbG5X7VA9PiiROSZoUHBk8qSk
+Nly08M1PAjzjC+3yikqlUgevqXmrKyPGGAWpKIQRLbpBmrAVC6kqsojgdq9XB3Mh
+FcErcr5Mm2zZ/AinPKBZ/f/EMsIoE2pWfIVGC9dsZsjrlMc1/DDOp0iQ/mYxaILO
+NCrbN5oERZVwyORAZSe1P7zksp4HKBso/h1x9vENOwmzdS3Cs+8=
+=AoYC
 -----END PGP SIGNATURE-----
 
---gVaQzNXj3LJq+Vai--
+--OqkcL2+1hoG/vkFg--

@@ -2,193 +2,326 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A6C73323727
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Feb 2021 07:10:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D31F43237FD
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Feb 2021 08:36:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234061AbhBXGKF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 24 Feb 2021 01:10:05 -0500
-Received: from mailout4.samsung.com ([203.254.224.34]:40472 "EHLO
-        mailout4.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233152AbhBXGKE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 24 Feb 2021 01:10:04 -0500
-Received: from epcas1p1.samsung.com (unknown [182.195.41.45])
-        by mailout4.samsung.com (KnoxPortal) with ESMTP id 20210224060921epoutp04a0e061cd9fa2f9171a50533e6642706a~mmhv6BZPb0144301443epoutp04y
-        for <linux-iio@vger.kernel.org>; Wed, 24 Feb 2021 06:09:21 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20210224060921epoutp04a0e061cd9fa2f9171a50533e6642706a~mmhv6BZPb0144301443epoutp04y
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1614146961;
-        bh=lUNO9sPSxE5o4aS0CTnJy7QerwMb/kkedf/3C7YNiho=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=BoGKshoVS/Ou04W1hxhJxjtQxvetfyPOZ0nsr3BMWUVKMeGkVkjXI7Rww91t10PSx
-         M3sjPO2KreSI2a9TCKZYc62ZaN2quA+paMhx+W6+VpNum8CTnPrLEtX8oDpOHkHfT5
-         6BJLu3xXYuKvpcYPp2F/4P0J2RJ427e4RLDaSSug=
-Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
-        epcas1p4.samsung.com (KnoxPortal) with ESMTP id
-        20210224060920epcas1p4118ef997ff38056275752b3276c00882~mmhvUNqYt0337803378epcas1p47;
-        Wed, 24 Feb 2021 06:09:20 +0000 (GMT)
-Received: from epsmges1p5.samsung.com (unknown [182.195.40.158]) by
-        epsnrtp3.localdomain (Postfix) with ESMTP id 4Dllqd6SsHz4x9QB; Wed, 24 Feb
-        2021 06:09:17 +0000 (GMT)
-Received: from epcas1p4.samsung.com ( [182.195.41.48]) by
-        epsmges1p5.samsung.com (Symantec Messaging Gateway) with SMTP id
-        22.4C.09577.D8DE5306; Wed, 24 Feb 2021 15:09:17 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-        epcas1p3.samsung.com (KnoxPortal) with ESMTPA id
-        20210224060917epcas1p37c2d49fee6ee8c7f4e799bc80147cfec~mmhr7v2PQ0758407584epcas1p39;
-        Wed, 24 Feb 2021 06:09:17 +0000 (GMT)
-Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
-        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20210224060917epsmtrp2f288292bb3a138f14c55bf7b7ee96f10~mmhr62ip92303623036epsmtrp2W;
-        Wed, 24 Feb 2021 06:09:17 +0000 (GMT)
-X-AuditID: b6c32a39-c13ff70000002569-cb-6035ed8db579
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
-        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        34.8C.13470.C8DE5306; Wed, 24 Feb 2021 15:09:17 +0900 (KST)
-Received: from [10.113.221.102] (unknown [10.113.221.102]) by
-        epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20210224060916epsmtip2774f357f869ce792c8ff0af9f60e8740~mmhrrDAVf2155221552epsmtip2h;
-        Wed, 24 Feb 2021 06:09:16 +0000 (GMT)
-Subject: Re: [PATCH 2/2] units: Use the HZ_PER_KHZ macro
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>, rafael@kernel.org
-Cc:     MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Christian Eggers <ceggers@arri.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        "open list:DEVICE FREQUENCY (DEVFREQ)" <linux-pm@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:AMS AS73211 DRIVER" <linux-iio@vger.kernel.org>
-From:   Chanwoo Choi <cw00.choi@samsung.com>
-Organization: Samsung Electronics
-Message-ID: <c493dac9-9199-12c9-365a-8c96cb73d91e@samsung.com>
-Date:   Wed, 24 Feb 2021 15:25:52 +0900
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:59.0) Gecko/20100101
-        Thunderbird/59.0
+        id S233221AbhBXHgD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 24 Feb 2021 02:36:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51444 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231154AbhBXHfx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 24 Feb 2021 02:35:53 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AA16C06178A
+        for <linux-iio@vger.kernel.org>; Tue, 23 Feb 2021 23:35:12 -0800 (PST)
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1lEohP-00085o-3R; Wed, 24 Feb 2021 08:35:07 +0100
+Received: from ore by dude.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1lEohO-0000fu-9u; Wed, 24 Feb 2021 08:35:06 +0100
+Date:   Wed, 24 Feb 2021 08:35:06 +0100
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     devicetree@vger.kernel.org, Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        linux-iio@vger.kernel.org,
+        Robin van der Gracht <robin@protonic.nl>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        David Jander <david@protonic.nl>,
+        Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH v5 2/2] counter: add IRQ or GPIO based event counter
+Message-ID: <20210224073506.GA24260@pengutronix.de>
+References: <20210208135347.18494-1-o.rempel@pengutronix.de>
+ <20210208135347.18494-3-o.rempel@pengutronix.de>
+ <YCjlPhEtyH+vfSi4@shinobu>
+ <20210215091737.fx6dwiz7tt56wbkr@pengutronix.de>
+ <YDMMJJ985Zq9oEOv@shinobu>
+ <20210223100656.efbshsh5bz66uhj5@pengutronix.de>
+ <20210223174516.wjlh7hnrd5qe5s6w@pengutronix.de>
+ <YDW7Hihg0gGQh8UR@shinobu>
 MIME-Version: 1.0
-In-Reply-To: <20210223203004.7219-2-daniel.lezcano@linaro.org>
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrPJsWRmVeSWpSXmKPExsWy7bCmgW7vW9MEg89TjCwOz6+waOy9zmgx
-        77OsxYOmVUwWZ5vesFssmTyf1WLekXcsFpd3zWGz+Nx7hNHiduMKNovfu46xW8z9MpXZ4snD
-        PjYHXo9jazazeize85LJY9OqTjaPO9f2sHkseXOI1eN88xFGj74tqxg9Pm+SC+CIyrbJSE1M
-        SS1SSM1Lzk/JzEu3VfIOjneONzUzMNQ1tLQwV1LIS8xNtVVy8QnQdcvMAbpYSaEsMacUKBSQ
-        WFyspG9nU5RfWpKqkJFfXGKrlFqQklNgWaBXnJhbXJqXrpecn2tlaGBgZApUmJCdsemcVsEB
-        wYqV17axNzDu5Oti5OSQEDCReHFmFksXIxeHkMAORom5C44xgiSEBD4xSqyeXg5hf2OU+Dgz
-        uYuRA6xh2wpxiPq9jBJbd55mg3DeM0rsuXwWrFlYwELi+/4PTCC2iICjxJe/i9hBipgFXjJL
-        XJjbywKSYBPQktj/4gYbiM0voChx9cdjsGZeATuJmyufMIJsYxFQleidaQESFhUIkzi5rQWq
-        RFDi5MwnLCAlnEDl7e0xIGFmAXGJW0/mM0HY8hLb385hBlkrIXCHQ+LX/mlsEB+7SDxdeJcR
-        whaWeHV8CzuELSXx+d1eqJpqiZUnj7BBNHcwSmzZf4EVImEssX/pZCaQxcwCmhLrd+lDhBUl
-        dv6eywixmE/i3dceVkhg8Up0tAlBlChLXH5wlwnClpRY3N7JNoFRaRaSb2YheWEWkhdmISxb
-        wMiyilEstaA4Nz212LDAFDmmNzGCU7KW5Q7G6W8/6B1iZOJgPMQowcGsJMLLdtcoQYg3JbGy
-        KrUoP76oNCe1+BCjKTB4JzJLiSbnA7NCXkm8oamRsbGxhYmhmamhoZI4b5LBg3ghgfTEktTs
-        1NSC1CKYPiYOTqkGJr3/Ns2PWlJ+bv1QcSFcoMah00ekUtwn/uel2uXdiv9/pHN2tD9INWR6
-        ncMQtLhbyOna45rLq3aFn6zIvnNGn/HPBb0HLaLTF8V29TN8W3BqR8Bl5j+zrGsf+tz/dPxg
-        +IRkHbbwDTvj1ZqEbatqeG9pz2JduK1gziuP2GO52x06hE4c/8DMFaUfYO/3d7Up/6vfJaFL
-        MsTd1s0pdX7Stvpb/+S6L6Y8rs46/vN/iv0vnSpuuL6l3yMgstrpejzP/ugSlV+hCgbrX6Xs
-        e2g4UWBe/JNqwawrqmllGpySm1ccNNj+L/7BOeNzU2acnKVqvn731bVxfNcso+bXRr6L9bu6
-        XNxefYHeB3aLs/zXlFiKMxINtZiLihMBpDq6tVIEAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrNIsWRmVeSWpSXmKPExsWy7bCSvG7vW9MEg6bdjBaH51dYNPZeZ7SY
-        91nW4kHTKiaLs01v2C2WTJ7PajHvyDsWi8u75rBZfO49wmhxu3EFm8XvXcfYLeZ+mcps8eRh
-        H5sDr8exNZtZPRbvecnksWlVJ5vHnWt72DyWvDnE6nG++QijR9+WVYwenzfJBXBEcdmkpOZk
-        lqUW6dslcGVsOqdVcECwYuW1bewNjDv5uhg5OCQETCS2rRDvYuTiEBLYzSixbeU5pi5GTqC4
-        pMS0i0eZIWqEJQ4fLoaoecsoMWXhTxaQGmEBC4nv+z+A1YsIOEp8+buIHaSIWeAts8Snjh8s
-        EB1HGSU2fV3HDlLFJqAlsf/FDTYQm19AUeLqj8eMIDavgJ3EzZVPGEG2sQioSvTOtAAJiwqE
-        Sexc8pgJokRQ4uTMJywgJZxA5e3tMSBhZgF1iT/zLjFD2OISt57MZ4Kw5SW2v53DPIFReBaS
-        7llIWmYhaZmFpGUBI8sqRsnUguLc9NxiwwLDvNRyveLE3OLSvHS95PzcTYzg+NTS3MG4fdUH
-        vUOMTByMhxglOJiVRHjZ7holCPGmJFZWpRblxxeV5qQWH2KU5mBREue90HUyXkggPbEkNTs1
-        tSC1CCbLxMEp1cB0dMGvWrvp/9eary5vv2s+Ta5+P6cQw9KEHQcDe3qyc9OnJDYsl6/jWlC8
-        Ifjm459M4ekz498fT567x3WR2R6rp9+W8XW+U723/v+GzKpmnh1dliX797V4/ZdZ9XFpwu7L
-        ckaP1xeY26w5/rnMJzht6YPqFwyO1hKPa103px0QCrqfbOcn+HflF468q4sW8F0Km7rgakm8
-        6w8exUiGuxHtOx1s5XMOnD4Sot+n8mfL5jfztglNvr2R0byPq2e1050bcTwRZzWvXNxzQ+KI
-        0OX06DeJTNNsd7ttuvY612fbpcDOyXxxmZG3mFhd1T/Pzm2w4pafpOp8rTJWYj/jHqnEZQEz
-        etVMnBdPNE4rtTVXYinOSDTUYi4qTgQA5pXmpz4DAAA=
-X-CMS-MailID: 20210224060917epcas1p37c2d49fee6ee8c7f4e799bc80147cfec
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: SVC_REQ_APPROVE
-CMS-TYPE: 101P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20210223203223epcas1p43d6a797026eb0d36d4f5b77bd5d79d6d
-References: <20210223203004.7219-1-daniel.lezcano@linaro.org>
-        <CGME20210223203223epcas1p43d6a797026eb0d36d4f5b77bd5d79d6d@epcas1p4.samsung.com>
-        <20210223203004.7219-2-daniel.lezcano@linaro.org>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <YDW7Hihg0gGQh8UR@shinobu>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-IRC:  #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 08:12:53 up 19:50, 18 users,  load average: 0.13, 0.12, 0.11
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2/24/21 5:30 AM, Daniel Lezcano wrote:
-> The HZ_PER_KHZ macro definition is duplicated in different subsystems.
-> 
-> The macro now exists in include/linux/units.h, make use of it and
-> remove all the duplicated ones.
-> 
-> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-> ---
->  drivers/devfreq/devfreq.c         | 2 +-
->  drivers/iio/light/as73211.c       | 3 +--
->  drivers/thermal/devfreq_cooling.c | 2 +-
->  3 files changed, 3 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/devfreq/devfreq.c b/drivers/devfreq/devfreq.c
-> index 6aa10de792b3..4c636c336ace 100644
-> --- a/drivers/devfreq/devfreq.c
-> +++ b/drivers/devfreq/devfreq.c
-> @@ -26,6 +26,7 @@
->  #include <linux/hrtimer.h>
->  #include <linux/of.h>
->  #include <linux/pm_qos.h>
-> +#include <linux/units.h>
->  #include "governor.h"
->  
->  #define CREATE_TRACE_POINTS
-> @@ -33,7 +34,6 @@
->  
->  #define IS_SUPPORTED_FLAG(f, name) ((f & DEVFREQ_GOV_FLAG_##name) ? true : false)
->  #define IS_SUPPORTED_ATTR(f, name) ((f & DEVFREQ_GOV_ATTR_##name) ? true : false)
-> -#define HZ_PER_KHZ	1000
->  
->  static struct class *devfreq_class;
->  static struct dentry *devfreq_debugfs;
-> diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
-> index 7b32dfaee9b3..3ba2378df3dd 100644
-> --- a/drivers/iio/light/as73211.c
-> +++ b/drivers/iio/light/as73211.c
-> @@ -24,8 +24,7 @@
->  #include <linux/module.h>
->  #include <linux/mutex.h>
->  #include <linux/pm.h>
-> -
-> -#define HZ_PER_KHZ 1000
-> +#include <linux/units.h>
->  
->  #define AS73211_DRV_NAME "as73211"
->  
-> diff --git a/drivers/thermal/devfreq_cooling.c b/drivers/thermal/devfreq_cooling.c
-> index fed3121ff2a1..fa5b8b0c7604 100644
-> --- a/drivers/thermal/devfreq_cooling.c
-> +++ b/drivers/thermal/devfreq_cooling.c
-> @@ -19,10 +19,10 @@
->  #include <linux/pm_opp.h>
->  #include <linux/pm_qos.h>
->  #include <linux/thermal.h>
-> +#include <linux/units.h>
->  
->  #include <trace/events/thermal.h>
->  
-> -#define HZ_PER_KHZ		1000
->  #define SCALE_ERROR_MITIGATION	100
->  
->  static DEFINE_IDA(devfreq_ida);
-> 
+Hello William,
 
-For devfreq part,
-Acked-by: Chanwoo Choi <cw00.choi@samsung.com>
+On Wed, Feb 24, 2021 at 11:34:06AM +0900, William Breathitt Gray wrote:
+> On Tue, Feb 23, 2021 at 06:45:16PM +0100, Oleksij Rempel wrote:
+> > Hello William,
+> > 
+> > Here is cooled down technical answer. Excuse me for over reacting.
+> 
+> Hello Oleksij,
+> 
+> Let me apologize too if I offended you in some way in with previous
+> response, I assure you that was not my intention. I truly do believe
+> this is a useful driver to have in the kernel and I want to make that
+> happen; my concerns with your patch are purely technical in nature and 
+> I'm certain we can find a solution working together.
 
+No problem :)
+
+> > On Tue, Feb 23, 2021 at 11:06:56AM +0100, Oleksij Rempel wrote:
+> > > On Mon, Feb 22, 2021 at 10:43:00AM +0900, William Breathitt Gray wrote:
+> > > > On Mon, Feb 15, 2021 at 10:17:37AM +0100, Oleksij Rempel wrote:
+> > > > > > > +static irqreturn_t event_cnt_isr(int irq, void *dev_id)
+> > > > > > > +{
+> > > > > > > +	struct event_cnt_priv *priv = dev_id;
+> > > > > > > +
+> > > > > > > +	atomic_inc(&priv->count);
+> > > > > > 
+> > > > > > This is just used to count the number of interrupts right? I wonder if
+> > > > > > we can do this smarter. For example, the kernel already keeps track of
+> > > > > > number of interrupts that has occurred for any particular IRQ line on a
+> > > > > > CPU (see the 'kstat_irqs' member of struct irq_desc, and the
+> > > > > > show_interrupts() function in kernel/irq/proc.c). Would it make sense to
+> > > > > > simply store the initial interrupt count on driver load or enablement,
+> > > > > > and then return the difference during a count_read() callback?
+> > > > > 
+> > > > > This driver do not makes a lot of sense without your chardev patches. As
+> > > > > soon as this patches go mainline, this driver will be able to send
+> > > > > event with a timestamp and counter state to the user space.
+> > > > > 
+> > > > > With other words, we will need an irq handler anyway. In this case we
+> > > > > can't save more RAM or CPU cycles by using system irq counters.
+> > > > 
+> > > > It's true that this driver will need an IRQ handler when the timestamp
+> > > > functionality is added, but deriving the count value is different matter
+> > > > regardless. There's already code in the kernel to retrieve the number of
+> > > > interrupts, so it makes sense that we use that rather than rolling our
+> > > > own -- at the very least to ensure the value we provide to users is
+> > > > consistent with the ones already provided by other areas of the kernel.
+> > 
+> > The value provided by the driver is consistent only if it is not
+> > overwritten by user. The driver provides an interface to reset/overwrite it.
+> > At least after this step the value is not consistent.
+> 
+> I wasn't clear here so I apologize. What I would like is for this driver
+> to maintain its own local count value derived from kstat_irqs_usr(). So
+> for example, you can use the "count" member of your struct
+> interrupt_cnt_priv to maintain this value (it can be unsigned int
+> instead of atomic_t):
+> 
+> static int interrupt_cnt_read(struct counter_device *counter,
+> 			      struct counter_count *count, unsigned long *val)
+> {
+> 	struct interrupt_cnt_priv *priv = counter->priv;
+> 
+> 	*val = kstat_irqs_usr(priv->irq) - priv->count;
+> 
+> 	return 0;
+> }
+> 
+> static int interrupt_cnt_write(struct counter_device *counter,
+> 			       struct counter_count *count,
+> 			       const unsigned long val)
+> {
+> 	struct interrupt_cnt_priv *priv = counter->priv;
+> 
+> 	/* kstat_irqs_usr() returns unsigned int */
+> 	if (val != (unsigned int)val)
+> 		return -ERANGE;
+> 
+> 	priv->count = val;
+> 
+> 	return 0;
+> }
+
+I understand this part. There is no need to spend extra CPU cycles if
+the interrupt was already counted. Just read it on user request and
+calculate the offset if needed.
+
+As soon as timestamp support is available, I will need to go back to
+local counter, because the kstat_irqs_usr() will take a lot more CPU
+cycles compared to private counter (it sums over all CPU local
+counters). So it's better to increment a single variable, then to call
+kstat_irqs_usr() from interrupt handler at IRQ rate several 10 thousands
+interrupts per second.
+
+> > > We are talking about one or two code lines. If we will take some
+> > > duplication search engine, it will find that major part of the kernel
+> > > is matching against it.
+> > > 
+> > > Newer the less, this driver provides a way to reset the counter. Why
+> > > should we drop this functionality no advantage?
+> > > 
+> > > > To that end, I'd like to see your cnt_isr() function removed for this
+> > > > patchset (you can bring it back once timestamp support is added).
+> > 
+> > It make no sense to request an interrupt without interrupt service
+> > routine.
+> > 
+> > https://elixir.bootlin.com/linux/latest/source/kernel/irq/manage.c#L2072if
+> > 	if (!handler) {
+> > 		if (!thread_fn)
+> > 			return -EINVAL;
+> > 
+> > As you can see, requesting an irq need at least handler or thread_fn.
+> > 
+> > enable_irq: this will explode at least here:
+> > https://elixir.bootlin.com/linux/latest/source/kernel/irq/manage.c#L778
+> > 
+> > If he have no IRQ handler and some how was able to enable it, at
+> > some point this IRQ will be disabled by this code:
+> > https://elixir.bootlin.com/linux/latest/source/kernel/irq/spurious.c#L410
+> > 	if (unlikely(desc->irqs_unhandled > 99900)) {
+> > 		/*
+> > 		 * The interrupt is stuck
+> > 		 */
+> > 		__report_bad_irq(desc, action_ret);
+> > 		/*
+> > 		 * Now kill the IRQ
+> > 		 */
+> > 		printk(KERN_EMERG "Disabling IRQ #%d\n", irq);
+> > 		desc->istate |= IRQS_SPURIOUS_DISABLED;
+> > 		desc->depth++;
+> > 		irq_disable(desc);
+> > 
+> > With current code, we can't request or enable IRQ without cnt_isr(). Not
+> > that it is not possible, but it make no sense to me.
+> 
+> What I'm requesting is to remove the interrupt code from this driver for
+> now including the cnt_enable_write() callback. Yes, we will need it when
+> timestamp functionality is added, but currently the Counter subsystem
+> does not have that functionality yet. Once the Counter character device
+> interface is merged, then it makes sense to add the interrupt service
+> routine to push timestamps to the user.
+> 
+> It is still useful to have this driver mainlined even without the
+> interrupt code: getting the body of this driver merged means a much
+> easier review of the timestamp code in the future, and users can start
+> using current Counter sysfs interface to track their GPIO interrupts.
+
+This driver, even without timestamping support, can't work without
+interrupt code. request_irq is the core functionality of it. The kernel
+interrupt infrastructure will not enable a IRQ and it will not provide
+stats without request_irq().
+
+The minimal requirement to make it work is to call request_irq() with
+a handler which will return IRQ_HANDLED value.
+
+It makes no sense to mainline this driver without IRQ code, because it
+will not work. And if we need an IRQ handler anyway, and will need local
+count anyway, why should we go extra way around? :)
+
+> > > Are you suggesting to enable IRQ without interrupt handler? May be i'm
+> > > missing some thing.. I do not understand it.
+> > > 
+> > > > Reimplement your cnt_read/cnt_write() functions to instead use
+> > > > kstat_irqs_usr() from <linux/kernel_stat.h> to get the current number of
+> > > > interrupts the IRQ line and use it to derive your count value for this
+> > > > driver.
+> > 
+> > irq descriptor has 3 counters:
+> > - irq_count: this value can be reset any time by the kernel at least by
+> >   the note_interrupt()
+> > - irqs_unhandled: this value is increased in case of missing irq
+> >   handler. Or if handler has returns IRQ_NONE.
+> > - tot_count: this value should not be reset.
+> > 
+> > Non of this values is suitable for cnt_read() and cnt_write(). Only
+> > tot_count would be suitable if cnt_write() is removed. I do not see it
+> > as acceptable option.
+> > 
+> > For this driver, we still need extra counter, where only this driver is
+> > responsible for writing to it.
+> 
+> Yes, I'm sorry for not being clear before. Please use priv->count for
+> this; there's no need to adjust directly the system irq count.
+> 
+> > > I can follow the counter read way, but overwriting system wide counter
+> > > for local use is bad idea.
+> > > 
+> > > > > > > +static struct counter_signal event_cnt_signals[] = {
+> > > > > > > +	{
+> > > > > > > +		.id = 0,
+> > > > > > > +		.name = "Channel 0 signal",
+> > > > > > 
+> > > > > > You should choose a more description name for this Signal;
+> > > > > > "Channel 0 signal" isn't very useful information for the user. Is this
+> > > > > > signal the respective GPIO line state?
+> > > > > 
+> > > > > Sounds plausible. How about "Channel 0, GPIO line state"?
+> > > > 
+> > > > Ideally, this would match the GPIO name (or I suppose the IRQ number if
+> > > > not a GPIO line). So in your probe() function you can do something like
+> > > > this I believe:
+> > > > 
+> > > > 	cnt_signals[0].name = priv->gpio->name;
+> > > 
+> > 
+> > > to make this possible, i would need hack gpiolib framework and add
+> > > name/label exporter. But after endless rounds of pingponging me for
+> > > renaming the driver and removing interrupt handler, i feel like we are
+> > > not having serious discussion for mainlining this driver.
+> > 
+> > Probably for good reason, struct gpio_desc was made local and is located
+> > in the drivers/gpio/gpiolib.h. It feels like additional hack to include
+> > it. I assume, it should be done properly so there is a function to
+> > provide gpio name or label.
+> > 
+> > @Linus Walleij are there any good way to get the GPIO name? And which
+> > name will be actually used? A label provided over devicetree?
+> 
+> Perhaps one of the GPIO subsystem maintainers can provide more guidance
+> here, but I was under the impression that this name was provided
+> statically by the respective GPIO driver via their struct gpio_chip. I
+> think you can see the array of names via priv->gpio->gdev->chip->names.
+> 
+> Alternatively, we can take a more generic approach: ignore the GPIO
+> names and focus solely on the IRQ lines; because the GPIO lines will
+> always be tied to respective IRQ lines here, using the IRQ as the basis
+> of the name should always be valid. The "name" member of the struct
+> irq_chip can work for this. I haven't tested this, but I think something
+> like this would work:
+> 
+> 	cnt_signals[0].name = irq_get_chip(priv->irq)->name;
+
+ok, i'll take a look at it.
+
+> > If I see it correctly, it would need more work to make the kernel infrastructure
+> > suitable for this suggestions. Some of them are only needed before
+> > chardev support will go mainline and , in long term, not worth to
+> > spend time on it.
+> 
+> I disagree, I think there is benefit in getting this driver merged
+> even if we don't have the interrupt service routine. Although I
+> recommend we keep this initial patch simple to introduce the driver,
+> later on you can for example add support for other Counter sysfs
+> attributes such as "ceiling" and "floor" if users want to specify count
+> limits, or perhaps alternative count functions (maybe a user wants to
+> the count to decrease instead of increase with every interrupt).
+> 
+> These other functionalities are tangental to the your timestamp interest
+> for this driver, but I believe they will be useful to users at large as
+> a convenient way to evaluate, track, and express the interrupt counts on
+> their system.
+> 
+> William Breathitt Gray
+
+Regards,
+Oleksij
 -- 
-Best Regards,
-Chanwoo Choi
-Samsung Electronics
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |

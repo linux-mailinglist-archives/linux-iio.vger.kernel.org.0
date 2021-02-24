@@ -2,298 +2,193 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E93753236E9
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Feb 2021 06:35:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A6C73323727
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Feb 2021 07:10:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233919AbhBXFew (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 24 Feb 2021 00:34:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53866 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232746AbhBXFeu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 24 Feb 2021 00:34:50 -0500
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DC58C061574;
-        Tue, 23 Feb 2021 21:34:10 -0800 (PST)
-Received: by mail-pg1-x52f.google.com with SMTP id o38so732885pgm.9;
-        Tue, 23 Feb 2021 21:34:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Pj/gRe7DjMAiHHqo7PKgieIIARyk/XtT4ao2chhVlV4=;
-        b=adL5LWdoCRHwOwWFfK2dH7fCyY2kQvh9gQRSmfUORfCnRh1tWktztEt0SxlIqo5ksW
-         OrXbr8GATZ3yf+Ssbn2PzDVPClKfGqP1luLWvRIPdgtnnfjqxJVyNUzu9zEYjnlrtyQe
-         CRTXPsac8U4VnVfP4zrTWGDrFHZ+r68WmASfLdOXVE7G9EP6XLX5cpiEN1acanxhFMWQ
-         /0mmgazmGF+x1+ytiRVXPNCuAQ8Zfo2WQ81BNw0NYoX3QRhcN3jnz7B5rwR1NCpMDU3+
-         rlg7vvLPqBRokg0H0sF+DfawRfBAMur8yOEVyFp3yZOilXvqNAeSikHyk0Af8lNwqv7F
-         Xhlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Pj/gRe7DjMAiHHqo7PKgieIIARyk/XtT4ao2chhVlV4=;
-        b=gGXp20yRcYrpJ86iYbxP/FS3+rMujKPy++yaxkGbWm2UFpYwrYYdif3V6rEM6lU2Fk
-         UHD9W665DrxlLRkNkZ5KAacL9gMUBI/erAXlXnC0WQfjp62i/cZTKLetWyC9GpIi5WPh
-         s8zbc9DWiOCQcpAzZ+Mad0e9IuOVyBav/5OfsJRxjVXHULrL4K6suif5iDU9gek4iXvS
-         zpDHwCZ81iCxMDEGU8J9N3R2VinCy9MV8nN/EkLheh4fIkIG5SKFCPQUpL2dQHFZa3S3
-         CoHKkfDMfsgcDiOiU1f7GWuYXyC0BteagBNfdBKDfGGJwjE4isdnwqHetUcUje88TpMg
-         6xDw==
-X-Gm-Message-State: AOAM533kaib4OiPaeIv96NT54uCMbREgRSv1/X5tCR630bA8/ZFetz22
-        oLMwKzEmXrt9jdF6NKLufFs=
-X-Google-Smtp-Source: ABdhPJzHrQ+FheaWWND3bTe6ZSUITLRg4gVCKAQu1q8Fzw/cH1RsC8Xv0+g5c2kAkCOaZMkMD30JMg==
-X-Received: by 2002:a05:6a00:16c7:b029:1bc:6eb9:ee47 with SMTP id l7-20020a056a0016c7b02901bc6eb9ee47mr30958904pfc.0.1614144849581;
-        Tue, 23 Feb 2021 21:34:09 -0800 (PST)
-Received: from shinobu ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id a9sm912855pjq.17.2021.02.23.21.34.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Feb 2021 21:34:08 -0800 (PST)
-Date:   Wed, 24 Feb 2021 14:34:02 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
-        a.fatoum@pengutronix.de, kamel.bouhara@bootlin.com,
-        gwendal@chromium.org, alexandre.belloni@bootlin.com,
-        david@lechnology.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        syednwaris@gmail.com, patrick.havelange@essensium.com,
-        fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@st.com, o.rempel@pengutronix.de,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Subject: Re: [PATCH v8 17/22] counter: Add character device interface
-Message-ID: <YDXlSoNCA3lMieru@shinobu>
-References: <cover.1613131238.git.vilhelm.gray@gmail.com>
- <720278e3aaf3f249657ec18d158eca3f962baf8e.1613131238.git.vilhelm.gray@gmail.com>
- <20210214180612.03af6f0d@archlinux>
+        id S234061AbhBXGKF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 24 Feb 2021 01:10:05 -0500
+Received: from mailout4.samsung.com ([203.254.224.34]:40472 "EHLO
+        mailout4.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233152AbhBXGKE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 24 Feb 2021 01:10:04 -0500
+Received: from epcas1p1.samsung.com (unknown [182.195.41.45])
+        by mailout4.samsung.com (KnoxPortal) with ESMTP id 20210224060921epoutp04a0e061cd9fa2f9171a50533e6642706a~mmhv6BZPb0144301443epoutp04y
+        for <linux-iio@vger.kernel.org>; Wed, 24 Feb 2021 06:09:21 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20210224060921epoutp04a0e061cd9fa2f9171a50533e6642706a~mmhv6BZPb0144301443epoutp04y
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1614146961;
+        bh=lUNO9sPSxE5o4aS0CTnJy7QerwMb/kkedf/3C7YNiho=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=BoGKshoVS/Ou04W1hxhJxjtQxvetfyPOZ0nsr3BMWUVKMeGkVkjXI7Rww91t10PSx
+         M3sjPO2KreSI2a9TCKZYc62ZaN2quA+paMhx+W6+VpNum8CTnPrLEtX8oDpOHkHfT5
+         6BJLu3xXYuKvpcYPp2F/4P0J2RJ427e4RLDaSSug=
+Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
+        epcas1p4.samsung.com (KnoxPortal) with ESMTP id
+        20210224060920epcas1p4118ef997ff38056275752b3276c00882~mmhvUNqYt0337803378epcas1p47;
+        Wed, 24 Feb 2021 06:09:20 +0000 (GMT)
+Received: from epsmges1p5.samsung.com (unknown [182.195.40.158]) by
+        epsnrtp3.localdomain (Postfix) with ESMTP id 4Dllqd6SsHz4x9QB; Wed, 24 Feb
+        2021 06:09:17 +0000 (GMT)
+Received: from epcas1p4.samsung.com ( [182.195.41.48]) by
+        epsmges1p5.samsung.com (Symantec Messaging Gateway) with SMTP id
+        22.4C.09577.D8DE5306; Wed, 24 Feb 2021 15:09:17 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+        epcas1p3.samsung.com (KnoxPortal) with ESMTPA id
+        20210224060917epcas1p37c2d49fee6ee8c7f4e799bc80147cfec~mmhr7v2PQ0758407584epcas1p39;
+        Wed, 24 Feb 2021 06:09:17 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20210224060917epsmtrp2f288292bb3a138f14c55bf7b7ee96f10~mmhr62ip92303623036epsmtrp2W;
+        Wed, 24 Feb 2021 06:09:17 +0000 (GMT)
+X-AuditID: b6c32a39-c13ff70000002569-cb-6035ed8db579
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        34.8C.13470.C8DE5306; Wed, 24 Feb 2021 15:09:17 +0900 (KST)
+Received: from [10.113.221.102] (unknown [10.113.221.102]) by
+        epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20210224060916epsmtip2774f357f869ce792c8ff0af9f60e8740~mmhrrDAVf2155221552epsmtip2h;
+        Wed, 24 Feb 2021 06:09:16 +0000 (GMT)
+Subject: Re: [PATCH 2/2] units: Use the HZ_PER_KHZ macro
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>, rafael@kernel.org
+Cc:     MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Christian Eggers <ceggers@arri.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Amit Kucheria <amitk@kernel.org>,
+        "open list:DEVICE FREQUENCY (DEVFREQ)" <linux-pm@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list:AMS AS73211 DRIVER" <linux-iio@vger.kernel.org>
+From:   Chanwoo Choi <cw00.choi@samsung.com>
+Organization: Samsung Electronics
+Message-ID: <c493dac9-9199-12c9-365a-8c96cb73d91e@samsung.com>
+Date:   Wed, 24 Feb 2021 15:25:52 +0900
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:59.0) Gecko/20100101
+        Thunderbird/59.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="OqkcL2+1hoG/vkFg"
-Content-Disposition: inline
-In-Reply-To: <20210214180612.03af6f0d@archlinux>
+In-Reply-To: <20210223203004.7219-2-daniel.lezcano@linaro.org>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrPJsWRmVeSWpSXmKPExsWy7bCmgW7vW9MEg89TjCwOz6+waOy9zmgx
+        77OsxYOmVUwWZ5vesFssmTyf1WLekXcsFpd3zWGz+Nx7hNHiduMKNovfu46xW8z9MpXZ4snD
+        PjYHXo9jazazeize85LJY9OqTjaPO9f2sHkseXOI1eN88xFGj74tqxg9Pm+SC+CIyrbJSE1M
+        SS1SSM1Lzk/JzEu3VfIOjneONzUzMNQ1tLQwV1LIS8xNtVVy8QnQdcvMAbpYSaEsMacUKBSQ
+        WFyspG9nU5RfWpKqkJFfXGKrlFqQklNgWaBXnJhbXJqXrpecn2tlaGBgZApUmJCdsemcVsEB
+        wYqV17axNzDu5Oti5OSQEDCReHFmFksXIxeHkMAORom5C44xgiSEBD4xSqyeXg5hf2OU+Dgz
+        uYuRA6xh2wpxiPq9jBJbd55mg3DeM0rsuXwWrFlYwELi+/4PTCC2iICjxJe/i9hBipgFXjJL
+        XJjbywKSYBPQktj/4gYbiM0voChx9cdjsGZeATuJmyufMIJsYxFQleidaQESFhUIkzi5rQWq
+        RFDi5MwnLCAlnEDl7e0xIGFmAXGJW0/mM0HY8hLb385hBlkrIXCHQ+LX/mlsEB+7SDxdeJcR
+        whaWeHV8CzuELSXx+d1eqJpqiZUnj7BBNHcwSmzZf4EVImEssX/pZCaQxcwCmhLrd+lDhBUl
+        dv6eywixmE/i3dceVkhg8Up0tAlBlChLXH5wlwnClpRY3N7JNoFRaRaSb2YheWEWkhdmISxb
+        wMiyilEstaA4Nz212LDAFDmmNzGCU7KW5Q7G6W8/6B1iZOJgPMQowcGsJMLLdtcoQYg3JbGy
+        KrUoP76oNCe1+BCjKTB4JzJLiSbnA7NCXkm8oamRsbGxhYmhmamhoZI4b5LBg3ghgfTEktTs
+        1NSC1CKYPiYOTqkGJr3/Ns2PWlJ+bv1QcSFcoMah00ekUtwn/uel2uXdiv9/pHN2tD9INWR6
+        ncMQtLhbyOna45rLq3aFn6zIvnNGn/HPBb0HLaLTF8V29TN8W3BqR8Bl5j+zrGsf+tz/dPxg
+        +IRkHbbwDTvj1ZqEbatqeG9pz2JduK1gziuP2GO52x06hE4c/8DMFaUfYO/3d7Up/6vfJaFL
+        MsTd1s0pdX7Stvpb/+S6L6Y8rs46/vN/iv0vnSpuuL6l3yMgstrpejzP/ugSlV+hCgbrX6Xs
+        e2g4UWBe/JNqwawrqmllGpySm1ccNNj+L/7BOeNzU2acnKVqvn731bVxfNcso+bXRr6L9bu6
+        XNxefYHeB3aLs/zXlFiKMxINtZiLihMBpDq6tVIEAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrNIsWRmVeSWpSXmKPExsWy7bCSvG7vW9MEg6bdjBaH51dYNPZeZ7SY
+        91nW4kHTKiaLs01v2C2WTJ7PajHvyDsWi8u75rBZfO49wmhxu3EFm8XvXcfYLeZ+mcps8eRh
+        H5sDr8exNZtZPRbvecnksWlVJ5vHnWt72DyWvDnE6nG++QijR9+WVYwenzfJBXBEcdmkpOZk
+        lqUW6dslcGVsOqdVcECwYuW1bewNjDv5uhg5OCQETCS2rRDvYuTiEBLYzSixbeU5pi5GTqC4
+        pMS0i0eZIWqEJQ4fLoaoecsoMWXhTxaQGmEBC4nv+z+A1YsIOEp8+buIHaSIWeAts8Snjh8s
+        EB1HGSU2fV3HDlLFJqAlsf/FDTYQm19AUeLqj8eMIDavgJ3EzZVPGEG2sQioSvTOtAAJiwqE
+        Sexc8pgJokRQ4uTMJywgJZxA5e3tMSBhZgF1iT/zLjFD2OISt57MZ4Kw5SW2v53DPIFReBaS
+        7llIWmYhaZmFpGUBI8sqRsnUguLc9NxiwwLDvNRyveLE3OLSvHS95PzcTYzg+NTS3MG4fdUH
+        vUOMTByMhxglOJiVRHjZ7holCPGmJFZWpRblxxeV5qQWH2KU5mBREue90HUyXkggPbEkNTs1
+        tSC1CCbLxMEp1cB0dMGvWrvp/9eary5vv2s+Ta5+P6cQw9KEHQcDe3qyc9OnJDYsl6/jWlC8
+        Ifjm459M4ekz498fT567x3WR2R6rp9+W8XW+U723/v+GzKpmnh1dliX797V4/ZdZ9XFpwu7L
+        ckaP1xeY26w5/rnMJzht6YPqFwyO1hKPa103px0QCrqfbOcn+HflF468q4sW8F0Km7rgakm8
+        6w8exUiGuxHtOx1s5XMOnD4Sot+n8mfL5jfztglNvr2R0byPq2e1050bcTwRZzWvXNxzQ+KI
+        0OX06DeJTNNsd7ttuvY612fbpcDOyXxxmZG3mFhd1T/Pzm2w4pafpOp8rTJWYj/jHqnEZQEz
+        etVMnBdPNE4rtTVXYinOSDTUYi4qTgQA5pXmpz4DAAA=
+X-CMS-MailID: 20210224060917epcas1p37c2d49fee6ee8c7f4e799bc80147cfec
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: SVC_REQ_APPROVE
+CMS-TYPE: 101P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20210223203223epcas1p43d6a797026eb0d36d4f5b77bd5d79d6d
+References: <20210223203004.7219-1-daniel.lezcano@linaro.org>
+        <CGME20210223203223epcas1p43d6a797026eb0d36d4f5b77bd5d79d6d@epcas1p4.samsung.com>
+        <20210223203004.7219-2-daniel.lezcano@linaro.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On 2/24/21 5:30 AM, Daniel Lezcano wrote:
+> The HZ_PER_KHZ macro definition is duplicated in different subsystems.
+> 
+> The macro now exists in include/linux/units.h, make use of it and
+> remove all the duplicated ones.
+> 
+> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+> ---
+>  drivers/devfreq/devfreq.c         | 2 +-
+>  drivers/iio/light/as73211.c       | 3 +--
+>  drivers/thermal/devfreq_cooling.c | 2 +-
+>  3 files changed, 3 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/devfreq/devfreq.c b/drivers/devfreq/devfreq.c
+> index 6aa10de792b3..4c636c336ace 100644
+> --- a/drivers/devfreq/devfreq.c
+> +++ b/drivers/devfreq/devfreq.c
+> @@ -26,6 +26,7 @@
+>  #include <linux/hrtimer.h>
+>  #include <linux/of.h>
+>  #include <linux/pm_qos.h>
+> +#include <linux/units.h>
+>  #include "governor.h"
+>  
+>  #define CREATE_TRACE_POINTS
+> @@ -33,7 +34,6 @@
+>  
+>  #define IS_SUPPORTED_FLAG(f, name) ((f & DEVFREQ_GOV_FLAG_##name) ? true : false)
+>  #define IS_SUPPORTED_ATTR(f, name) ((f & DEVFREQ_GOV_ATTR_##name) ? true : false)
+> -#define HZ_PER_KHZ	1000
+>  
+>  static struct class *devfreq_class;
+>  static struct dentry *devfreq_debugfs;
+> diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
+> index 7b32dfaee9b3..3ba2378df3dd 100644
+> --- a/drivers/iio/light/as73211.c
+> +++ b/drivers/iio/light/as73211.c
+> @@ -24,8 +24,7 @@
+>  #include <linux/module.h>
+>  #include <linux/mutex.h>
+>  #include <linux/pm.h>
+> -
+> -#define HZ_PER_KHZ 1000
+> +#include <linux/units.h>
+>  
+>  #define AS73211_DRV_NAME "as73211"
+>  
+> diff --git a/drivers/thermal/devfreq_cooling.c b/drivers/thermal/devfreq_cooling.c
+> index fed3121ff2a1..fa5b8b0c7604 100644
+> --- a/drivers/thermal/devfreq_cooling.c
+> +++ b/drivers/thermal/devfreq_cooling.c
+> @@ -19,10 +19,10 @@
+>  #include <linux/pm_opp.h>
+>  #include <linux/pm_qos.h>
+>  #include <linux/thermal.h>
+> +#include <linux/units.h>
+>  
+>  #include <trace/events/thermal.h>
+>  
+> -#define HZ_PER_KHZ		1000
+>  #define SCALE_ERROR_MITIGATION	100
+>  
+>  static DEFINE_IDA(devfreq_ida);
+> 
 
---OqkcL2+1hoG/vkFg
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+For devfreq part,
+Acked-by: Chanwoo Choi <cw00.choi@samsung.com>
 
-On Sun, Feb 14, 2021 at 06:06:12PM +0000, Jonathan Cameron wrote:
-> On Fri, 12 Feb 2021 21:13:41 +0900
-> William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
->=20
-> > This patch introduces a character device interface for the Counter
-> > subsystem. Device data is exposed through standard character device read
-> > operations. Device data is gathered when a Counter event is pushed by
-> > the respective Counter device driver. Configuration is handled via ioctl
-> > operations on the respective Counter character device node.
-> >=20
-> > Cc: David Lechner <david@lechnology.com>
-> > Cc: Gwendal Grignou <gwendal@chromium.org>
-> > Cc: Dan Carpenter <dan.carpenter@oracle.com>
-> > Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-> > Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
->=20
-> Hi William,
->=20
-> A few minor comments.  Mostly seems to have come together well and
-> makes sense to me.
->=20
-> Jonathan
->=20
-> > ---
-> >  drivers/counter/Makefile         |   2 +-
-> >  drivers/counter/counter-chrdev.c | 496 +++++++++++++++++++++++++++++++
-> >  drivers/counter/counter-chrdev.h |  16 +
-> >  drivers/counter/counter-core.c   |  37 ++-
-> >  include/linux/counter.h          |  45 +++
-> >  include/uapi/linux/counter.h     |  70 +++++
-> >  6 files changed, 661 insertions(+), 5 deletions(-)
-> >  create mode 100644 drivers/counter/counter-chrdev.c
-> >  create mode 100644 drivers/counter/counter-chrdev.h
-> >=20
->=20
-> ...
->=20
-> > diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-c=
-ore.c
-> > index bcf672e1fc0d..c137fcb97d9c 100644
-> > --- a/drivers/counter/counter-core.c
-> > +++ b/drivers/counter/counter-core.c
-> > @@ -5,12 +5,16 @@
-> >   */
-> >  #include <linux/counter.h>
-> >  #include <linux/device.h>
-> > +#include <linux/device/bus.h>
-> >  #include <linux/export.h>
-> > +#include <linux/fs.h>
-> >  #include <linux/gfp.h>
-> >  #include <linux/idr.h>
-> >  #include <linux/init.h>
-> >  #include <linux/module.h>
-> > +#include <linux/types.h>
-> > =20
-> > +#include "counter-chrdev.h"
-> >  #include "counter-sysfs.h"
-> > =20
-> >  /* Provides a unique ID for each counter device */
-> > @@ -33,6 +37,8 @@ static struct bus_type counter_bus_type =3D {
-> >  	.name =3D "counter"
-> >  };
-> > =20
-> > +static dev_t counter_devt;
-> > +
-> >  /**
-> >   * counter_register - register Counter to the system
-> >   * @counter:	pointer to Counter to register
-> > @@ -54,7 +60,6 @@ int counter_register(struct counter_device *const cou=
-nter)
-> >  	if (counter->id < 0)
-> >  		return counter->id;
-> > =20
-> > -	/* Configure device structure for Counter */
->=20
-> Not sure why this comment gets removed here.
-
-This comment wasn't suppose to be removed. I'll revert this.
-
-> >  	dev->type =3D &counter_device_type;
-> >  	dev->bus =3D &counter_bus_type;
-> >  	if (counter->parent) {
-> > @@ -65,18 +70,25 @@ int counter_register(struct counter_device *const c=
-ounter)
-> >  	device_initialize(dev);
-> >  	dev_set_drvdata(dev, counter);
-> > =20
-> > +	/* Add Counter character device */
-> > +	err =3D counter_chrdev_add(counter, counter_devt);
-> > +	if (err < 0)
-> > +		goto err_free_id;
-> > +
-> >  	/* Add Counter sysfs attributes */
-> >  	err =3D counter_sysfs_add(counter);
-> >  	if (err < 0)
-> > -		goto err_free_id;
-> > +		goto err_remove_chrdev;
-> > =20
-> >  	/* Add device to system */
-> >  	err =3D device_add(dev);
-> >  	if (err < 0)
-> > -		goto err_free_id;
-> > +		goto err_remove_chrdev;
->=20
-> It might be worth thinking about using cdev_device_add()
-> though will require a slightly different order of adding.
-
-I think using cdev_device_add() should be possible. I'll adjust
-counter_chrdev_add() accordingly to account for this.
-=20
-> > =20
-> >  	return 0;
-> > =20
-> > +err_remove_chrdev:
-> > +	counter_chrdev_remove(counter);
-> >  err_free_id:
-> >  	put_device(dev);
-> >  	return err;
-> > @@ -138,13 +150,30 @@ int devm_counter_register(struct device *dev,
-> >  }
-> >  EXPORT_SYMBOL_GPL(devm_counter_register);
-> > =20
-> > +#define COUNTER_DEV_MAX 256
-> > +
-> >  static int __init counter_init(void)
-> >  {
-> > -	return bus_register(&counter_bus_type);
-> > +	int err;
-> > +
-> > +	err =3D bus_register(&counter_bus_type);
-> > +	if (err < 0)
-> > +		return err;
-> > +
-> > +	err =3D alloc_chrdev_region(&counter_devt, 0, COUNTER_DEV_MAX, "count=
-er");
-> > +	if (err < 0)
-> > +		goto err_unregister_bus;
-> > +
-> > +	return 0;
-> > +
-> > +err_unregister_bus:
-> > +	bus_unregister(&counter_bus_type);
-> > +	return err;
-> >  }
-> > =20
-> >  static void __exit counter_exit(void)
-> >  {
-> > +	unregister_chrdev_region(counter_devt, COUNTER_DEV_MAX);
-> >  	bus_unregister(&counter_bus_type);
-> >  }
-> > =20
->=20
-> ...
->=20
-> > diff --git a/include/uapi/linux/counter.h b/include/uapi/linux/counter.h
-> > index 6113938a6044..3d647a5383b8 100644
-> > --- a/include/uapi/linux/counter.h
-> > +++ b/include/uapi/linux/counter.h
-> > @@ -6,6 +6,19 @@
-> >  #ifndef _UAPI_COUNTER_H_
-> >  #define _UAPI_COUNTER_H_
-> > =20
-> > +#include <linux/ioctl.h>
-> > +#include <linux/types.h>
-> > +
-> > +/* Component type definitions */
-> > +enum counter_component_type {
-> > +	COUNTER_COMPONENT_NONE,
-> > +	COUNTER_COMPONENT_SIGNAL,
-> > +	COUNTER_COMPONENT_COUNT,
-> > +	COUNTER_COMPONENT_FUNCTION,
-> > +	COUNTER_COMPONENT_SYNAPSE_ACTION,
-> > +	COUNTER_COMPONENT_EXTENSION,
-> > +};
-> > +
-> >  /* Component scope definitions */
-> >  enum counter_scope {
-> >  	COUNTER_SCOPE_DEVICE,
-> > @@ -13,6 +26,63 @@ enum counter_scope {
-> >  	COUNTER_SCOPE_COUNT,
-> >  };
-> > =20
-> > +/**
-> > + * struct counter_component - Counter component identification
-> > + * @type: component type (one of enum counter_component_type)
-> > + * @scope: component scope (one of enum counter_scope)
-> > + * @parent: parent component ID (matching the Y/Z suffix of the respec=
-tive sysfs
-> > + *	    path as described in Documentation/ABI/testing/sysfs-bus-counte=
-r)
->=20
-> Probably good to give an example here as well as the cross reference.
-
-Ack.
-
-William Breathitt Gray
-
---OqkcL2+1hoG/vkFg
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmA15UoACgkQhvpINdm7
-VJKF9BAAhN/ttlp4nisjDvTa8Xbitarr8qwdHsQVA4DPvGgGWL3fCzBPB9OwBsA7
-TEnR9XtWKsjsnzXoiERkihwZ9kVAjJMjvuoXp6D975A+6iOE1NfMr9iILt2aCsQ/
-y4i/92+TOJ3LB9oVTVkEUHrcpNjLqFfg0G4Aua8ywlvSWe5oLad1hy9iMuHfL4oZ
-cAV54mT9r4UCI6zosdrPEAYc79abGB3i8vXWOw0gpZJCROx+OZY1f8ya1kSOXxO9
-4/SbVjAVQeS30Hztyeq/q1/+nRnazMJqJHLpfv48xltMsWRjxcedU7rXTry4E1Zb
-TOfcW6pm2myoGq37rSYE7lFb+Ye4IhXRElmvbKC22CRa0kRiMDKpRSivIEJwC9EX
-u5nMRtzZgCcDwjy+VUwBxKh77xr30amFzwGuON0x4I1tznac4ZdgX5CJAbVHJuP+
-XCTim4hsbJOfhg567d8sApCgiHM2yisS+Kr+4jIYbG5X7VA9PiiROSZoUHBk8qSk
-Nly08M1PAjzjC+3yikqlUgevqXmrKyPGGAWpKIQRLbpBmrAVC6kqsojgdq9XB3Mh
-FcErcr5Mm2zZ/AinPKBZ/f/EMsIoE2pWfIVGC9dsZsjrlMc1/DDOp0iQ/mYxaILO
-NCrbN5oERZVwyORAZSe1P7zksp4HKBso/h1x9vENOwmzdS3Cs+8=
-=AoYC
------END PGP SIGNATURE-----
-
---OqkcL2+1hoG/vkFg--
+-- 
+Best Regards,
+Chanwoo Choi
+Samsung Electronics

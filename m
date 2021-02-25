@@ -2,317 +2,211 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 00A3F325052
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Feb 2021 14:23:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 00CF2325732
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Feb 2021 21:00:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230315AbhBYNWt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 25 Feb 2021 08:22:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39154 "EHLO
+        id S232403AbhBYT7n (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 25 Feb 2021 14:59:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229571AbhBYNWs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 25 Feb 2021 08:22:48 -0500
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45773C061574;
-        Thu, 25 Feb 2021 05:22:08 -0800 (PST)
-Received: by mail-pf1-x42f.google.com with SMTP id j12so3575884pfj.12;
-        Thu, 25 Feb 2021 05:22:08 -0800 (PST)
+        with ESMTP id S232761AbhBYT6f (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 25 Feb 2021 14:58:35 -0500
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 689E9C06174A
+        for <linux-iio@vger.kernel.org>; Thu, 25 Feb 2021 11:57:53 -0800 (PST)
+Received: by mail-pf1-x429.google.com with SMTP id q20so4324637pfu.8
+        for <linux-iio@vger.kernel.org>; Thu, 25 Feb 2021 11:57:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=dbkQpNd5Wc1Bh81qcstyrrHXrqv5XpRWDvj0O1psJbw=;
-        b=QXwYFJOhkT8yELYTe4PluG9O0HQW6nlLuRYLCjSRfqgEOnYGTpRJ8WeIR8HmVytLly
-         uYwbFi7yoRwLFrZ9O2Fs0sWMPlm9DWu8pIo1HB0TAgsSvIm5gaCurN2T3nKvKCO9pbXN
-         U5114B7otySof1hdMyh24EBAnoRcn/GADeIC/0bTN8cY26tyfsu42X0DFEAzlChD1Exf
-         vZl0y4Lv44GXNxkhpDVeefrA2fVUMk/jNLCCGTeO1tn9yYk6EjORqeg53bwa6GzjlEyr
-         iNIcqq5Oo5FxiuZ16dDR8cv0IMlPaPg0snZKKwEbKMPv3dw72m6Uh7/KBhjbpzVCuL9l
-         2+7Q==
+        d=chromium.org; s=google;
+        h=mime-version:content-transfer-encoding:in-reply-to:references
+         :subject:from:cc:to:date:message-id:user-agent;
+        bh=QFMdutzLSFz9pH4bdJbbu6ejYPbhrD5Zo32SFND9l2I=;
+        b=TCDT/w6GjzyiLablryErRtrUWy+M9CBaYqE2VsnGy95c/ucnen8NLTIftmC44edutZ
+         34MZRL/t2NuJ1ZFVeSpyCTFVuxLJSAURSZdze4IhC/jy3eFQCtQsrIuAbtaJ/M51dko/
+         9MJgnKfGBr4x+k4cSCoJ9m8PeCf6dVhs505x4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=dbkQpNd5Wc1Bh81qcstyrrHXrqv5XpRWDvj0O1psJbw=;
-        b=FcIonQGsDkp/tpdai9WwS471oI380fIFvSv9Lhw+3xntEqcrobOxQ2nhl2+/ZPqDYn
-         ncL128OBngnvL73xsssT1G2MgbE1xokxoWjxKcGr3T8qdOcP1/6IMl5mqb0Mw4+ZHdTz
-         Txu/teubDb6ASWgqPeKuk6y91BYzSDJ/nL9AHXkv8Y4YDtXYFF4mZsah0p3Oc362qaSZ
-         G7mQ7+iBdCiN1knx07i4j4ltmR2IavmIU9vEq2bbK8Ob0Fkv2i7xlcC4C/KDORNpz5YR
-         rG1OBA56rpiYksVCpwg1Muwk6N7V5pMmDKP4RL0d/hoS9LrzhcM91a9UNipJ2PU/8v9i
-         wROA==
-X-Gm-Message-State: AOAM533O2yO3X3zkfAIfDTmm7JiJdhpDJgVCWNYGcqlF38qShNX5ajxu
-        FQuDmvBebnd/uqeZa1VrSD8=
-X-Google-Smtp-Source: ABdhPJx5B2zDz1NmyernrPD2VdZbdhb3KcHlWxb8WvzeAKI+vSi5tRZbFee/JCtsAEfn4B7UccP5Hw==
-X-Received: by 2002:a63:2164:: with SMTP id s36mr3017110pgm.268.1614259327859;
-        Thu, 25 Feb 2021 05:22:07 -0800 (PST)
-Received: from shinobu (113x37x72x20.ap113.ftth.ucom.ne.jp. [113.37.72.20])
-        by smtp.gmail.com with ESMTPSA id a2sm6424041pfi.64.2021.02.25.05.22.03
+        h=x-gm-message-state:mime-version:content-transfer-encoding
+         :in-reply-to:references:subject:from:cc:to:date:message-id
+         :user-agent;
+        bh=QFMdutzLSFz9pH4bdJbbu6ejYPbhrD5Zo32SFND9l2I=;
+        b=YQvfi0/8sh/gZlHjwkImJaKSVwmrFKgRfsxSrTVah+knZ5sGU5wJWzuhKdtzB1HU+G
+         1oHTZ0UzpHz5SKQbXJIaFmEtXb4z3QN8E3akgyHDl+CJtgbI9HSAG8uv7T2cVUP6xyGI
+         x6Jsm7pxS0FdOr49t/JExjWJtsJN4MqIaDB0gLR20mhQfUuSMN/BQ4rltW7BuuUaeM10
+         ruq8fFUOpUb+NxlK7P7Du12pXTyI7pp3r1S+ICDLIJK23mYY9EPjswc/Eu9fn/BC5i28
+         Nzd8/6ORvDxec7B3Cc6Sj7hTPmtyRvJicwaYiGYloHOCYuPj1fiW+kmqkVQCDFs4fV89
+         5ftA==
+X-Gm-Message-State: AOAM531sWzw4mTOF8pkHs3Q7IfKklH8goTypkW2pHBlWUPX3h13DKOjk
+        n5vnX6EOVa0hZeP/Xj5CZJJyBZrATVcLYg==
+X-Google-Smtp-Source: ABdhPJx4mvYCDXcVyNpct4FoBoVGmCDU6eGDqu3nG7rRPJsepbCdyi+orgG7FSIhmGGaIJ97hY1zYA==
+X-Received: by 2002:a62:1791:0:b029:1ed:161e:9083 with SMTP id 139-20020a6217910000b02901ed161e9083mr4788876pfx.68.1614283072547;
+        Thu, 25 Feb 2021 11:57:52 -0800 (PST)
+Received: from chromium.org ([2620:15c:202:201:b942:93a8:e68d:5a90])
+        by smtp.gmail.com with ESMTPSA id h123sm4976742pfe.115.2021.02.25.11.57.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Feb 2021 05:22:06 -0800 (PST)
-Date:   Thu, 25 Feb 2021 22:22:00 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Cc:     jic23@kernel.org, Alexandre Torgue <alexandre.torgue@st.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] counter: stm32-timer-cnt: Report count function when
- SLAVE_MODE_DISABLED
-Message-ID: <YDekeKfygdUht3HL@shinobu>
-References: <20210219095906.220382-1-vilhelm.gray@gmail.com>
- <288929fc-6984-072b-359a-10e163056bad@foss.st.com>
+        Thu, 25 Feb 2021 11:57:52 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="4fpeKnoH9IErCEuJ"
-Content-Disposition: inline
-In-Reply-To: <288929fc-6984-072b-359a-10e163056bad@foss.st.com>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20210217061829.1199408-1-gwendal@chromium.org>
+References: <20210217061829.1199408-1-gwendal@chromium.org>
+Subject: Re: [PATCH v4] iio: sx9310: Support ACPI property
+From:   Stephen Boyd <swboyd@chromium.org>
+Cc:     linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>
+To:     Gwendal Grignou <gwendal@chromium.org>, campello@chromium.org,
+        jic23@kernel.org, lars@metafoo.de
+Date:   Thu, 25 Feb 2021 11:57:50 -0800
+Message-ID: <161428307047.1254594.14666702652501631212@swboyd.mtv.corp.google.com>
+User-Agent: alot/0.9.1
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
---4fpeKnoH9IErCEuJ
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Feb 25, 2021 at 12:19:18PM +0100, Fabrice Gasnier wrote:
-> On 2/19/21 10:59 AM, William Breathitt Gray wrote:
-> > When in SLAVE_MODE_DISABLED mode, the count still increases if the
-> > counter is enabled because an internal clock is used. This patch fixes
-> > the stm32_count_function_get() function to properly report this
-> > behavior.
+Quoting Gwendal Grignou (2021-02-16 22:18:29)
+> Use device_property_read_... to support both device tree and ACPI
+> bindings.
+> Given |semtech,combined-sensors| is a variable array, use
+> device_property_count to get the length of the array first before
+> reading it to avoid underflow errors.
 >=20
-> Hi William,
+> Add support for variable array per documentation
+> ("iio/proximity/semtech,sx9310.yaml").
 >=20
-> Thanks for the patch, that's something I also noticed earlier.
-> Please find few comment below.
+> Fixes: 5b19ca2c78a0 ("iio: sx9310: Set various settings from DT")
 >=20
-> >=20
-> > Fixes: ad29937e206f ("counter: Add STM32 Timer quadrature encoder")
-> > Cc: Fabrice Gasnier <fabrice.gasnier@st.com>
-> > Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-> > Cc: Alexandre Torgue <alexandre.torgue@st.com>
-> > Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-> > ---
-> >  drivers/counter/stm32-timer-cnt.c | 31 +++++++++++++++++++------------
-> >  1 file changed, 19 insertions(+), 12 deletions(-)
-> >=20
-> > diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-=
-timer-cnt.c
-> > index ef2a974a2f10..ec6d9e89c028 100644
-> > --- a/drivers/counter/stm32-timer-cnt.c
-> > +++ b/drivers/counter/stm32-timer-cnt.c
-> > @@ -44,13 +44,14 @@ struct stm32_timer_cnt {
-> >   * @STM32_COUNT_ENCODER_MODE_3: counts on both TI1FP1 and TI2FP2 edges
-> >   */
-> >  enum stm32_count_function {
-> > -	STM32_COUNT_SLAVE_MODE_DISABLED =3D -1,
-> > +	STM32_COUNT_SLAVE_MODE_DISABLED,
-> >  	STM32_COUNT_ENCODER_MODE_1,
-> >  	STM32_COUNT_ENCODER_MODE_2,
-> >  	STM32_COUNT_ENCODER_MODE_3,
-> >  };
-> > =20
-> >  static enum counter_count_function stm32_count_functions[] =3D {
-> > +	[STM32_COUNT_SLAVE_MODE_DISABLED] =3D COUNTER_COUNT_FUNCTION_INCREASE,
-> >  	[STM32_COUNT_ENCODER_MODE_1] =3D COUNTER_COUNT_FUNCTION_QUADRATURE_X2=
-_A,
-> >  	[STM32_COUNT_ENCODER_MODE_2] =3D COUNTER_COUNT_FUNCTION_QUADRATURE_X2=
-_B,
-> >  	[STM32_COUNT_ENCODER_MODE_3] =3D COUNTER_COUNT_FUNCTION_QUADRATURE_X4,
-> > @@ -99,9 +100,10 @@ static int stm32_count_function_get(struct counter_=
-device *counter,
-> >  	case 3:
-> >  		*function =3D STM32_COUNT_ENCODER_MODE_3;
-> >  		return 0;
-> > +	default:
+
+Usually there isn't a newline here and Fixes is attached to the SoB.
+
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> ---
+>  Changes since v3:
+>    Add "Fixes" comment in commit message
+>    Fix the logic set COMBMODE register: when we know the DT property is
+>    missing or incorrect, exit as soon as possible.
+
+I'd still prefer it to be two patches, one for the fix of array property
+parsing to send back to stable trees and one to add the ACPI parsing
+support, but I'm not the maintainer here so this isn't really up to me.
+
+>  Changes since v2:
+>    Add comment how the default array is used.
+>    Add comment in commit message to indicate this CL fix an issue with
+>      existing use of of_property_read_u32_array() when reading a variale
+>      length array.
+>  Changes since v1:
+>    Use device_property_count_u32(...) instead of device_property_read_u32=
+_array(..., NULL, 0)
 >=20
-> I'd rather add a 'case 0', as that's the real value for slave mode
-> disabled. For reference, here's what the STM32 timer spec says on slave
-> mode selection:
-> 0000: Slave mode disabled - if CEN =3D =E2=80=981=E2=80=99 then the presc=
-aler is clocked
-> directly by the internal clock.
-
-Ack.
-
-> > +		*function =3D STM32_COUNT_SLAVE_MODE_DISABLED;
-> > +		return 0;
-> >  	}
-> > -
-> > -	return -EINVAL;
+>  drivers/iio/proximity/sx9310.c | 54 +++++++++++++++++++++-------------
+>  1 file changed, 34 insertions(+), 20 deletions(-)
 >=20
-> Other slave modes could be added later (like counting on external
-> signals: channel A, B, ETR or other signals). But this isn't supported
-> right now in the driver.
-> Then I suggest to keep the returning -EINVAL for the default case here.
-> Do you agree with this approach ?
+> diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx931=
+0.c
+> index 6a04959df35e5..77d2c9e102842 100644
+> --- a/drivers/iio/proximity/sx9310.c
+> +++ b/drivers/iio/proximity/sx9310.c
+> @@ -20,6 +20,7 @@
+>  #include <linux/mod_devicetable.h>
+>  #include <linux/module.h>
+>  #include <linux/pm.h>
+> +#include <linux/property.h>
+>  #include <linux/regmap.h>
+>  #include <linux/regulator/consumer.h>
+>  #include <linux/slab.h>
+> @@ -1215,36 +1216,49 @@ static int sx9310_init_compensation(struct iio_de=
+v *indio_dev)
+>  }
+> =20
+>  static const struct sx9310_reg_default *
+> -sx9310_get_default_reg(struct sx9310_data *data, int i,
+> +sx9310_get_default_reg(struct device *dev, int i,
+>                        struct sx9310_reg_default *reg_def)
+>  {
+> -       int ret;
+> -       const struct device_node *np =3D data->client->dev.of_node;
+> -       u32 combined[SX9310_NUM_CHANNELS] =3D { 4, 4, 4, 4 };
+> +       int ret, count;
+> +       u32 combined[SX9310_NUM_CHANNELS];
+>         unsigned long comb_mask =3D 0;
+>         const char *res;
+>         u32 start =3D 0, raw =3D 0, pos =3D 0;
+> =20
+>         memcpy(reg_def, &sx9310_default_regs[i], sizeof(*reg_def));
+> -       if (!np)
+> -               return reg_def;
+> -
+>         switch (reg_def->reg) {
+>         case SX9310_REG_PROX_CTRL2:
+> -               if (of_property_read_bool(np, "semtech,cs0-ground")) {
+> +               if (device_property_read_bool(dev, "semtech,cs0-ground"))=
+ {
+>                         reg_def->def &=3D ~SX9310_REG_PROX_CTRL2_SHIELDEN=
+_MASK;
+>                         reg_def->def |=3D SX9310_REG_PROX_CTRL2_SHIELDEN_=
+GROUND;
+>                 }
+> =20
+> -               reg_def->def &=3D ~SX9310_REG_PROX_CTRL2_COMBMODE_MASK;
+> -               of_property_read_u32_array(np, "semtech,combined-sensors",
+> -                                          combined, ARRAY_SIZE(combined)=
+);
+> -               for (i =3D 0; i < ARRAY_SIZE(combined); i++) {
+> -                       if (combined[i] <=3D SX9310_NUM_CHANNELS)
+> -                               comb_mask |=3D BIT(combined[i]);
+> +               count =3D device_property_count_u32(dev, "semtech,combine=
+d-sensors");
+> +               if (count > 0 && count <=3D ARRAY_SIZE(combined)) {
+> +                       ret =3D device_property_read_u32_array(dev,
+> +                                       "semtech,combined-sensors", combi=
+ned,
+> +                                       count);
+> +               } else {
+> +                       /*
+> +                        * Either the property does not exist in the DT, =
+the
+> +                        * number of entries is incorrect.
+> +                        */
+> +                       break;
+> +               }
+> +               if (ret) {
+> +                       /* We could not read the array (invalid DT). */
+> +                       break;
+>                 }
 
-That should be fine; we'll fill in the additional cases as the
-functionalities are introduced to this driver in the future.
+Wouldn't this be shorter?
 
-> >  }
-> > =20
-> >  static int stm32_count_function_set(struct counter_device *counter,
-> > @@ -274,31 +276,36 @@ static int stm32_action_get(struct counter_device=
- *counter,
-> >  	size_t function;
-> >  	int err;
-> > =20
-> > -	/* Default action mode (e.g. STM32_COUNT_SLAVE_MODE_DISABLED) */
-> > -	*action =3D STM32_SYNAPSE_ACTION_NONE;
-> > -
-> >  	err =3D stm32_count_function_get(counter, count, &function);
-> >  	if (err)
-> > -		return 0;
-> > +		return err;
->=20
-> This makes sense, in case the error reporting is kept above. Otherwise,
-> it always returns 0.
+		count =3D device_property_count_u32(dev, "semtech,combined-sensors");
+		if (count < 0 || count > ARRAY_SIZE(combined))
+			break;
+	=09
+		ret =3D device_property_read_u32_array(dev,
+						     "semtech,combined-sensors",
+						     combined, count);
+		if (ret)
+			break;
 
-Conceptually, a nonzero value from the function_get() callback should
-indicate an invalid function mode for a Counter driver. The changes in
-this patch should bring us to that behavior so fortunately we won't have
-to worry about remembering whether the stm32_count_function_get() return
-value is valid or not.
 
-> > =20
-> >  	switch (function) {
-> >  	case STM32_COUNT_ENCODER_MODE_1:
-> >  		/* counts up/down on TI1FP1 edge depending on TI2FP2 level */
-> >  		if (synapse->signal->id =3D=3D count->synapses[0].signal->id)
-> >  			*action =3D STM32_SYNAPSE_ACTION_BOTH_EDGES;
-> > -		break;
-> > +		else
-> > +			*action =3D STM32_SYNAPSE_ACTION_NONE;
->=20
-> More a question here...
->=20
-> > +		return 0;
-> >  	case STM32_COUNT_ENCODER_MODE_2:
-> >  		/* counts up/down on TI2FP2 edge depending on TI1FP1 level */
-> >  		if (synapse->signal->id =3D=3D count->synapses[1].signal->id)
-> >  			*action =3D STM32_SYNAPSE_ACTION_BOTH_EDGES;
-> > -		break;
-> > +		else
-> > +			*action =3D STM32_SYNAPSE_ACTION_NONE;
->=20
-> ..., not related to your fix: In "quadrature x2 a" or "quadrature x2 b",
-> the other signal determines the counting direction.
-> I feel like this isn't really represented with the "none" action.
+If the 'break' logic is off-putting then I suggest moving it to another
+function and using 'return' to indicate early returns from the code
+flow.
 
-Be careful not to confuse the Generic Counter paradigm with the hardware
-description of your device. Within the context of the Generic Counter
-paradigm, Synapse actions are the trigger conditions of a hypothetical
-counting function evaluating Signals for an idealized Counter. In other
-words, a Synapse action indicates whether a Signal triggers a change in
-the Count value, not whether the Signal value is evaluated by the
-counting function.
+> =20
+> -               comb_mask &=3D 0xf;
+> +               for (i =3D 0; i < count; i++) {
+> +                       if (combined[i] >=3D SX9310_NUM_CHANNELS) {
+> +                               /* Invalid sensor (invalid DT). */
+> +                               break;
 
-"Quadrature x2 A" and "Quadrature x2 B" are two different counting
-functions. Both happen to evaluate two Signals, but only one of those
-Signals is ever triggering the counting function evaluation to update
-the Count value. In other words, the Signal serving as a direction can
-change value as much as you like but it will never trigger a change in
-the respective Count's value; i.e. that Signal's Synapse action is
-"none" because it does not trigger the count function evaluation.
+Don't think we need to do this. We have DT validation for this instead
+so that we don't have to carry code in the kernel to validate something
+that can be checked at build time. Hopefully ACPI has something similar?
 
-> I just realized if we want to extend this driver to add new signals
-> (e.g. like counting on chA, chB or even by adding other signals like ETR
-> on STM32 with the increase function), this may start to be confusing.
-> Currently only the two signal names could give some hint (so it's rather
-> obvious currently).
->=20
-> Maybe there could be some change later to indicate the other signal
-> (channel A or channel B) participates in quadrature encoding ?
->=20
->=20
-> Thanks and best regards,
-> Fabrice
-
-Well, one thing could try is to introduce new count functions in the
-future if there is some configuration you want to support with a count
-function evaluation that doesn't really fit one of the ones currently
-available; we can create a new enum counter_count_function constant to
-represent it.
-
-Remember that in the Generic Counter paradigm we are not necessarily
-matching hardware layout of your device, but rather abstracting its
-functionality. Because of that, you can associate multiple Signals to
-your Count component, even if your hardware device has only two physical
-lines.
-
-For example, let's say a counter device has 3 modes: quadrature lines,
-external pulses, clock source. In quadrature lines mode, a "QUADA" and
-"QUADB" signal are evaluate as a quadrature x4 encoding; in external
-pulses mode, a "PULSE" signal is evaluated for both falling and rising
-edges; and in clock source mode, a "CLOCK" signal is evaluated for
-rising edges.
-
-Using the Generic Counter paradigm, we would construct a Count with 4
-Synapes associating the four Signals: QUADA, QUADB, PULSE, CLOCK. There
-would be 2 count functions: COUNTER_COUNT_FUNCTION_QUADRATURE_X4,
-COUNTER_COUNT_FUNCTION_INCREASE. The following 3 configurations would be
-possible:
-
-* Count Function: COUNTER_COUNT_FUNCTION_QUADRATURE_X4
-  Synapse Actions: QUADA =3D> COUNTER_SYNAPSE_ACTION_BOTH_EDGES
-                   QUADB =3D> COUNTER_SYNAPSE_ACTION_BOTH_EDGES
-		   PULSE =3D> COUNTER_SYNAPSE_ACTION_NONE
-		   CLOCK =3D> COUNTER_SYNAPSE_ACTION_NONE
-
-* Count Function: COUNTER_COUNT_FUNCTION_INCREASE
-  Synapse Actions: QUADA =3D> COUNTER_SYNAPSE_ACTION_NONE
-                   QUADB =3D> COUNTER_SYNAPSE_ACTION_NONE
-		   PULSE =3D> COUNTER_SYNAPSE_ACTION_BOTH_EDGES
-		   CLOCK =3D> COUNTER_SYNAPSE_ACTION_NONE
-
-* Count Function: COUNTER_COUNT_FUNCTION_INCREASE
-  Synapse Actions: QUADA =3D> COUNTER_SYNAPSE_ACTION_NONE
-                   QUADB =3D> COUNTER_SYNAPSE_ACTION_NONE
-		   PULSE =3D> COUNTER_SYNAPSE_ACTION_NONE
-		   CLOCK =3D> COUNTER_SYNAPSE_ACTION_RISING_EDGE
-
-So a Synapse action isn't where the differentiation occurs between which
-Signals are evaluated by a particular count function; the Synapse
-actions only indicate whether a change in the respective Signal value
-will trigger an update of the associated Count value.
-
-However, I see what you mean that this does leave some ambiguity when we
-have multiple Signals associated to the same Count, yet various possible
-count functions that only evaluate a subsection of those Signals.
-
-Perhaps one solution is to create a second Count component dedicated to
-just those Signals: so we impose a requirement that the only Signals
-associated with a particular Count component are Signals that are
-evaluated by all the specified count functions. Alternatively, perhaps
-we can expose a new attribute to communicate which Signals are
-evaluated.
-
-We're starting to go off on a tangent here though, so lets postpone
-this discussion to a later time, perhaps when support for the ETR signal
-is proposed for this driver.
-
-William Breathitt Gray
-
---4fpeKnoH9IErCEuJ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmA3pFwACgkQhvpINdm7
-VJIz8xAAkNBJ9CbKbEINNZHmehMRuz8Jh0VyG8CB8730GBAcPVHiRvgt/GAO1okb
-NiDnZrTpThAnA6Wq2FJqDmeMIOqgxzgogeS/XD8zSLaXxnDELC72zbZA2adyBUX1
-9E7gtWPXDLiuXyt371sWSCmJFV2AnMVyNrmoY6qT7Gm5iODQvkFpiqS47r4mRSFs
-cdGbBf3t1vvB15wMvs2fGT48Tf6Cxc85nx/Qfcmp1D5DPsUb1MKJwBw3EvlkExpw
-qpqgacIjmIqAUitqJRS8g/8qo4BRZ/pyqP74QIMgovOfnzAffdhuD9BJ7rotHMjo
-axVmrrBxZuwinvbhfmRwq4RntKpXW+oLrgcKJe/cpnKqh9IvEUyXvUNZb2szbsZD
-9tbtMwMMHzVQjNnRLyLuaZG8H2LcdVtHeZtkkJL635xSLMirPv+pnpa7d4wbNtNu
-BCLbGnXq17S7jAE8DeiaGATrIevkA+njaQnlxoo8Vxvtw/33mJZB1ha0S2/N1r2d
-klYM/88HSgMBywGiDF6lZSbKlavX/56OfMjWyjzHy+0ZukMXySYqIatfT29koIYh
-Z85TrkWz9QjdHzHt/ngq8EjkEIwdl/mjq/ZVbg5FDs2NhiLYUywOrrbjSzmgAmk6
-rE3/TYDLdO1zZ9j4h9v7XfLgHkZV3Fkeq4kigsVoZa0GuSfScMw=
-=Hwqs
------END PGP SIGNATURE-----
-
---4fpeKnoH9IErCEuJ--
+> +                       }
+> +                       comb_mask |=3D BIT(combined[i]);
+> +               }
+> +
+> +               reg_def->def &=3D ~SX9310_REG_PROX_CTRL2_COMBMODE_MASK;
+>                 if (comb_mask =3D=3D (BIT(3) | BIT(2) | BIT(1) | BIT(0)))
+>                         reg_def->def |=3D SX9310_REG_PROX_CTRL2_COMBMODE_=
+CS0_CS1_CS2_CS3;
+>                 else if (comb_mask =3D=3D (BIT(1) | BIT(2)))

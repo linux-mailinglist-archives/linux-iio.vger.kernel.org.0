@@ -2,201 +2,185 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29B2632574C
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Feb 2021 21:08:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D6776325A38
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Feb 2021 00:34:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233491AbhBYUIe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 25 Feb 2021 15:08:34 -0500
-Received: from mta-02.yadro.com ([89.207.88.252]:44334 "EHLO mta-01.yadro.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233452AbhBYUIc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 25 Feb 2021 15:08:32 -0500
-Received: from localhost (unknown [127.0.0.1])
-        by mta-01.yadro.com (Postfix) with ESMTP id 26F7341292;
-        Thu, 25 Feb 2021 20:07:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
-        content-type:content-type:content-transfer-encoding:mime-version
-        :references:in-reply-to:x-mailer:message-id:date:date:subject
-        :subject:from:from:received:received:received; s=mta-01; t=
-        1614283666; x=1616098067; bh=jfou+jGrfCGrJnW/hkwUwz5auJu9gH7RX/i
-        t7GFlyvQ=; b=NzBao1LUlOy+ZJ/eEUpn5GghUGKAIXLi9qHcNheTICiS44ZJGmz
-        9WSZsXkgZ0J4uzxfJiAFrceESlkNhlE0amJuevQP3dg2SxV1jBcczt4j5Mq3Cqzu
-        8NnFLxQmiuYgcY0LVOVXBXdcMktArSEkycyoP4irNQ/D0pVEnMiThKs8=
-X-Virus-Scanned: amavisd-new at yadro.com
-Received: from mta-01.yadro.com ([127.0.0.1])
-        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id dhqJQrh2aL1Y; Thu, 25 Feb 2021 23:07:46 +0300 (MSK)
-Received: from T-EXCH-03.corp.yadro.com (t-exch-03.corp.yadro.com [172.17.100.103])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mta-01.yadro.com (Postfix) with ESMTPS id EC50841380;
-        Thu, 25 Feb 2021 23:07:46 +0300 (MSK)
-Received: from localhost.dev.yadro.com (10.199.0.34) by
- T-EXCH-03.corp.yadro.com (172.17.100.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
- 15.1.669.32; Thu, 25 Feb 2021 23:07:46 +0300
-From:   Ivan Mikhaylov <i.mikhaylov@yadro.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-CC:     Ivan Mikhaylov <i.mikhaylov@yadro.com>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2] iio: proximity: vcnl3020: add proximity rate
-Date:   Thu, 25 Feb 2021 23:14:44 +0300
-Message-ID: <20210225201444.12983-2-i.mikhaylov@yadro.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20210225201444.12983-1-i.mikhaylov@yadro.com>
-References: <20210225201444.12983-1-i.mikhaylov@yadro.com>
+        id S229966AbhBYXdu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 25 Feb 2021 18:33:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57638 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229596AbhBYXds (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 25 Feb 2021 18:33:48 -0500
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB02CC06174A;
+        Thu, 25 Feb 2021 15:33:08 -0800 (PST)
+Received: by mail-pl1-x629.google.com with SMTP id ba1so4112987plb.1;
+        Thu, 25 Feb 2021 15:33:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=bryi5nIeAqPN6gv7PQEAJOmSmh8foFZDgMCzK44/Hyg=;
+        b=iqG/f6sZQa2houoo+VxHHF5MXsX3q6ya/wwhRKCc0jn/JbAnFB2nwn6AcRC+SMb8by
+         TtrQtNyfQLBdLC/7ipEnKQMfykNO7XppSRejPMrIAI42mzlddkR4Va38kmWC/dOZB9Q3
+         yQW81DF+qMabSjoY3OIDOsEtdv9q8R5ISUZ9OWeos27i6/ounQu/uOVvTXEUVN5hmqY6
+         d7ndpm/Mvctmq5r6ewk5IAPWvqhsrbrcnnwAI4QZ2AVAD6mAjTOtd1//QPmJGUZkOJ+N
+         a5X290eJgasRN/rkCxp055Hbb+DIQOTEEP2DFwWZomTMZQIT6OT5ZWNwn0wLIwQHwHVL
+         oT6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=bryi5nIeAqPN6gv7PQEAJOmSmh8foFZDgMCzK44/Hyg=;
+        b=J087Ub/HpD7cPBBLovCtld2t0eORHAAStXqEN5VTgqMIbcwZQIpWr4AvXUmArEJmLh
+         rZtlx3iC3zehRm3asbgef1i2oUN0rbnwI4bmLCMC+KBdi8d8WpK2b7LuA6gWqd6qG4Ug
+         5WCu7SbFAg1NwHpq607Ny8JPBQTtcyaFDe4YcB8T6g3+5hgl67ywcFWERNZiLznNoJ8a
+         HnIywQxQdhsjGLMHPESihNZ1hf1sCglJmYJ8IRnJo28hzFsyfY9j4eh098CmBk13wQFQ
+         3D5N2dU2aiBXtJ+Rz/zlkbSJgWWbQzyYiAAkk7C+AU1Eutr1fx+3G4WMc9IlLRoPt6Uf
+         a02g==
+X-Gm-Message-State: AOAM532Lvcg3ftEKAHLJ+wv9UrAkBUboTltUZcSW9I8f54MK3c7rvxlk
+        fpkxkyseffJmeX5539CuDGI=
+X-Google-Smtp-Source: ABdhPJxMEOKq3iRqEYUSu0q+taLEkz0dkFYCzdzEkJXmSR/VAt/A+73uvo8HhMqtFBoeA3pTOYRZhQ==
+X-Received: by 2002:a17:902:c407:b029:e3:cfa7:e300 with SMTP id k7-20020a170902c407b02900e3cfa7e300mr203101plk.49.1614295988431;
+        Thu, 25 Feb 2021 15:33:08 -0800 (PST)
+Received: from shinobu (113x37x72x20.ap113.ftth.ucom.ne.jp. [113.37.72.20])
+        by smtp.gmail.com with ESMTPSA id 8sm7577762pfp.171.2021.02.25.15.33.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Feb 2021 15:33:07 -0800 (PST)
+Date:   Fri, 26 Feb 2021 08:32:59 +0900
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
+        a.fatoum@pengutronix.de, kamel.bouhara@bootlin.com,
+        gwendal@chromium.org, alexandre.belloni@bootlin.com,
+        david@lechnology.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        syednwaris@gmail.com, patrick.havelange@essensium.com,
+        fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@st.com, o.rempel@pengutronix.de,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Subject: Re: [PATCH v8 19/22] counter: Implement extension*_name sysfs
+ attributes
+Message-ID: <YDgzq6t5YRm6cFvO@shinobu>
+References: <cover.1613131238.git.vilhelm.gray@gmail.com>
+ <c9b55d1cff6acac692a7853b0a25777ecf017b12.1613131238.git.vilhelm.gray@gmail.com>
+ <20210214180913.05bd3498@archlinux>
+ <YC98GTwzwt+pkzMO@shinobu>
+ <20210221140507.0a5ef57f@archlinux>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.199.0.34]
-X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
- T-EXCH-03.corp.yadro.com (172.17.100.103)
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="g5C8206GHyZn93ao"
+Content-Disposition: inline
+In-Reply-To: <20210221140507.0a5ef57f@archlinux>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add the proximity rate optional option and handling of it for
-vishay vcnl3020.
 
-Signed-off-by: Ivan Mikhaylov <i.mikhaylov@yadro.com>
----
- drivers/iio/proximity/vcnl3020.c | 97 +++++++++++++++++++++++++++++++-
- 1 file changed, 96 insertions(+), 1 deletion(-)
+--g5C8206GHyZn93ao
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/iio/proximity/vcnl3020.c b/drivers/iio/proximity/vcnl3020.c
-index 37264f801ad0..43817f6b3086 100644
---- a/drivers/iio/proximity/vcnl3020.c
-+++ b/drivers/iio/proximity/vcnl3020.c
-@@ -40,6 +40,17 @@
- #define VCNL_ON_DEMAND_TIMEOUT_US	100000
- #define VCNL_POLL_US			20000
- 
-+static const int vcnl3020_prox_sampling_frequency[][2] = {
-+	{1, 950000},
-+	{3, 906250},
-+	{7, 812500},
-+	{16, 625000},
-+	{31, 250000},
-+	{62, 500000},
-+	{125, 0},
-+	{250, 0},
-+};
-+
- /**
-  * struct vcnl3020_data - vcnl3020 specific data.
-  * @regmap:	device register map.
-@@ -165,10 +176,51 @@ static int vcnl3020_measure_proximity(struct vcnl3020_data *data, int *val)
- 	return rc;
- }
- 
-+static int vcnl3020_read_proxy_samp_freq(struct vcnl3020_data *data, int *val,
-+					 int *val2)
-+{
-+	int rc;
-+	unsigned int prox_rate;
-+
-+	rc = regmap_read(data->regmap, VCNL_PROXIMITY_RATE, &prox_rate);
-+	if (rc)
-+		return rc;
-+
-+	if (prox_rate >= ARRAY_SIZE(vcnl3020_prox_sampling_frequency))
-+		return -EINVAL;
-+
-+	*val = vcnl3020_prox_sampling_frequency[prox_rate][0];
-+	*val2 = vcnl3020_prox_sampling_frequency[prox_rate][1];
-+
-+	return 0;
-+}
-+
-+static int vcnl3020_write_proxy_samp_freq(struct vcnl3020_data *data, int val,
-+					  int val2)
-+{
-+	unsigned int i;
-+	int index = -1;
-+
-+	for (i = 0; i < ARRAY_SIZE(vcnl3020_prox_sampling_frequency); i++) {
-+		if (val == vcnl3020_prox_sampling_frequency[i][0] &&
-+		    val2 == vcnl3020_prox_sampling_frequency[i][1]) {
-+			index = i;
-+			break;
-+		}
-+	}
-+
-+	if (index < 0)
-+		return -EINVAL;
-+
-+	return regmap_write(data->regmap, VCNL_PROXIMITY_RATE, index);
-+}
-+
- static const struct iio_chan_spec vcnl3020_channels[] = {
- 	{
- 		.type = IIO_PROXIMITY,
--		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+				      BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+		.info_mask_separate_available = BIT(IIO_CHAN_INFO_SAMP_FREQ),
- 	},
- };
- 
-@@ -185,6 +237,47 @@ static int vcnl3020_read_raw(struct iio_dev *indio_dev,
- 		if (rc)
- 			return rc;
- 		return IIO_VAL_INT;
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		rc = vcnl3020_read_proxy_samp_freq(data, val, val2);
-+		if (rc < 0)
-+			return rc;
-+		return IIO_VAL_INT_PLUS_MICRO;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int vcnl3020_write_raw(struct iio_dev *indio_dev,
-+			      struct iio_chan_spec const *chan,
-+			      int val, int val2, long mask)
-+{
-+	int rc;
-+	struct vcnl3020_data *data = iio_priv(indio_dev);
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		rc = iio_device_claim_direct_mode(indio_dev);
-+		if (rc)
-+			return rc;
-+		rc = vcnl3020_write_proxy_samp_freq(data, val, val2);
-+		iio_device_release_direct_mode(indio_dev);
-+		return rc;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int vcnl3020_read_avail(struct iio_dev *indio_dev,
-+			       struct iio_chan_spec const *chan,
-+			       const int **vals, int *type, int *length,
-+			       long mask)
-+{
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		*vals = (int *)vcnl3020_prox_sampling_frequency;
-+		*type = IIO_VAL_INT_PLUS_MICRO;
-+		*length = 2 * ARRAY_SIZE(vcnl3020_prox_sampling_frequency);
-+		return IIO_AVAIL_LIST;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -192,6 +285,8 @@ static int vcnl3020_read_raw(struct iio_dev *indio_dev,
- 
- static const struct iio_info vcnl3020_info = {
- 	.read_raw = vcnl3020_read_raw,
-+	.write_raw = vcnl3020_write_raw,
-+	.read_avail = vcnl3020_read_avail,
- };
- 
- static const struct regmap_config vcnl3020_regmap_config = {
--- 
-2.26.2
+On Sun, Feb 21, 2021 at 02:05:07PM +0000, Jonathan Cameron wrote:
+> On Fri, 19 Feb 2021 17:51:37 +0900
+> William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
+>=20
+> > On Sun, Feb 14, 2021 at 06:09:13PM +0000, Jonathan Cameron wrote:
+> > > On Fri, 12 Feb 2021 21:13:43 +0900
+> > > William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
+> > >  =20
+> > > > The Generic Counter chrdev interface expects users to supply extens=
+ion
+> > > > IDs in order to select extensions for requests. In order for users =
+to
+> > > > know what extension ID belongs to which extension this information =
+must
+> > > > be exposed. The extension*_name attribute provides a way for users =
+to
+> > > > discover what extension ID belongs to which extension by reading the
+> > > > respective extension name for an extension ID.
+> > > >=20
+> > > > Cc: David Lechner <david@lechnology.com>
+> > > > Cc: Gwendal Grignou <gwendal@chromium.org>
+> > > > Cc: Dan Carpenter <dan.carpenter@oracle.com>
+> > > > Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+> > > > ---
+> > > >  Documentation/ABI/testing/sysfs-bus-counter |  9 ++++
+> > > >  drivers/counter/counter-sysfs.c             | 51 +++++++++++++++++=
+----
+> > > >  2 files changed, 50 insertions(+), 10 deletions(-)
+> > > >=20
+> > > > diff --git a/Documentation/ABI/testing/sysfs-bus-counter b/Document=
+ation/ABI/testing/sysfs-bus-counter
+> > > > index 6353f0a2f8f8..847e96f19d19 100644
+> > > > --- a/Documentation/ABI/testing/sysfs-bus-counter
+> > > > +++ b/Documentation/ABI/testing/sysfs-bus-counter
+> > > > @@ -100,6 +100,15 @@ Description:
+> > > >  		Read-only attribute that indicates whether excessive noise is
+> > > >  		present at the channel Y counter inputs.
+> > > > =20
+> > > > +What:		/sys/bus/counter/devices/counterX/countY/extensionZ_name
+> > > > +What:		/sys/bus/counter/devices/counterX/extensionZ_name
+> > > > +What:		/sys/bus/counter/devices/counterX/signalY/extensionZ_name
+> > > > +KernelVersion:	5.13
+> > > > +Contact:	linux-iio@vger.kernel.org
+> > > > +Description:
+> > > > +		Read-only attribute that indicates the component name of
+> > > > +		Extension Z. =20
+> > >=20
+> > > Good to say what form this takes. =20
+> >=20
+> > Do you mean a description like this: "Read-only string attribute that
+> > indicates the component name of Extension Z"?
+>=20
+> My expectation would be that the possible strings are tightly constrained
+> (perhaps via review). So I'd like to see what they are and a brief descri=
+ption
+> of what each one means.
+>=20
+> Jonathan
 
+Okay I see what you mean now. These names will match the sysfs attribute
+filenames. So for example, if Extension 9 of Count 2 of Counter device
+is /sys/bus/counter/devices/counter4/count2/ceiling, then the attribute
+/sys/bus/counter/devices/counter4/count2/extension9_name will hold a
+value of "ceiling".
+
+The idea is that the user walks down through each extension*_name to
+find sysfs attribute name for the Extension that they want. When they
+find the desired Extension name in say sysfs attribute extension9_name,
+then they know 9 is the ID number for that Extension.
+
+There is an alternative design I was considering: instead of
+extension*_name attributes, we could have each Extension sysfs attribute
+have a matching *_extension_id attribute which provides the respective
+Extension ID. So for example, using the same Extension as before:
+/sys/bus/counter/devices/counter4/count2/ceiling_extension_id will hold
+a value of 9.
+
+Do you think this alternative design would be more intuitive to users?
+
+William Breathitt Gray
+
+--g5C8206GHyZn93ao
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmA4M6EACgkQhvpINdm7
+VJIBCg/+JWYA6xMb2Q9RpprWLkpN2p4IE7zL9kEZE+WzE6aHG1+usGMbF3AQMIO9
+LqssPDGtbchunSQk7RHkT8OMuUXIRaiIl1tE1Lefh+Tylaf4+VLbJo1t+I21MmLr
+LZDV8vnQnwFjhZhPgfOJo+dnOY1SldnRcZzfER607uWOb3xtVpHsdpWaS+IMwt6e
+Yn0Qe8URcv05YGrw4N2re9HtNU01hwlMTyKst7pNyY15MRwmPI7c9sBWC8nWKaCZ
+butQTV3VGDUA3VZ/DVwo0aOZ8HFbWsOpZKGII2IGNIvVgXBCKrkIw1W9wX9mHi4t
+s5uuIW0XBys3SzaxqV/zzV2jtQy/TexhjLMBELX+4M4WMeAbAGoHUA337QoI3EP1
+Z0b28249Cax2iddXR90cisXqYMd8F/9fCaMzgR3lQF/pC3wB9LCk9JhCPaogtRRC
+ZleiZZA3/cgnYFiUlOcb4mfQGlxOSk2fs/EoXdfKVbmuxaHddiqFZJxImv0TnrWg
+Gag0WcYipOglgAQyJUwP36FBerkcqUc463KF7BtSp3in5YMPhR5xgOxS3nlK2rKO
+ySKzH/JjLsIQ1vaKb/Z42sPNJ+7XANxp+Wuoz2kKwHWevljJybwJG+AAIwMlyrqc
+osUnIPljV010+LeG2LU9AS7tdrN3l49nDY6XS4ITC3HXeTHIzuo=
+=IeB7
+-----END PGP SIGNATURE-----
+
+--g5C8206GHyZn93ao--

@@ -2,371 +2,207 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2821325FB6
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Feb 2021 10:12:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BAA56326015
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Feb 2021 10:32:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230144AbhBZJLR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 26 Feb 2021 04:11:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39404 "EHLO
+        id S230316AbhBZJbQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 26 Feb 2021 04:31:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229953AbhBZJKL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 Feb 2021 04:10:11 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C602C06178B
-        for <linux-iio@vger.kernel.org>; Fri, 26 Feb 2021 01:08:39 -0800 (PST)
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1lFZ6u-00032l-Ew; Fri, 26 Feb 2021 10:08:32 +0100
-Received: from ore by dude.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1lFZ6t-0002rR-SR; Fri, 26 Feb 2021 10:08:31 +0100
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
-To:     Rob Herring <robh+dt@kernel.org>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        David Jander <david@protonic.nl>,
-        Robin van der Gracht <robin@protonic.nl>,
-        linux-iio@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH v7 2/2] counter: add IRQ or GPIO based counter
-Date:   Fri, 26 Feb 2021 10:08:30 +0100
-Message-Id: <20210226090830.10927-3-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210226090830.10927-1-o.rempel@pengutronix.de>
-References: <20210226090830.10927-1-o.rempel@pengutronix.de>
+        with ESMTP id S231134AbhBZJ3P (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 Feb 2021 04:29:15 -0500
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E100AC061788
+        for <linux-iio@vger.kernel.org>; Fri, 26 Feb 2021 01:28:34 -0800 (PST)
+Received: by mail-pl1-x630.google.com with SMTP id p5so5005916plo.4
+        for <linux-iio@vger.kernel.org>; Fri, 26 Feb 2021 01:28:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=5u4YKPBAMtwMYHsw3slqbdyQwDDpDL+s5kZkqX7YhP0=;
+        b=hi/+ytI6KV7i4dTdDjvTL+ml0iJBLK0a/JVc73dzTpymfVJPgR78m1zlnYK0vpwYNk
+         CxkybW0VrvzQVmkiDBIfiOvALgDl5uQpRUtSRsjrQNFfSRgpHXRxBHxGj6uPvnV8DNYG
+         m3OoenFXsWtaRU/IiRmW6zbwEOAXjU7lsX8hbKtKjiTMCNc49/USBJ2D2ZhJ91jvp9ai
+         5lWLHZNI3k2/Iy63MTJV18NP/rLqPM5UNYxmvrXbPBFXyIMn8cY8C5PBsdVjJD+voWaM
+         OHlKbDPWZr9L/kuVm7kL9Nioa+9ddm0mfKn8/0ovY6UhGwgGoa0kXhR2IHvSeMPiWcVF
+         bUrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=5u4YKPBAMtwMYHsw3slqbdyQwDDpDL+s5kZkqX7YhP0=;
+        b=PMylINuL3aUVTHMe2M5OEIrcmvj2w/dycKzkac0WZwBy+8DDMwtXpob7b203LxHt6f
+         XRKs9CGm8Z33JxM9Z/KOawIPftxA0+2Xl2EkMOteut2jdE3aV7B+MHxHCb7JQCNQC2vG
+         ymO9/+FPjMIEwMESFD5gaMfKbaBj5r1LYIoYHcn44qZsd9dVyuvsJ8CkX6yLyvRirUy4
+         Txg2kAgTYJJFAfcHeKR+Oz7kC+oKAUD9XpMpWYLiBHK3HVe2KFIirePRLSVrfF7R2G50
+         fIuJ8+GX3hApRmWR3DSQhVq09Mmvj+G+kJiAk0bWmshEJQqQoi0raxlNwRWYQyTOf+pO
+         f8uQ==
+X-Gm-Message-State: AOAM532mMn8FAwUFLnwEMEnA4YV997+iQ8gSdFbKddIFjq6er1YLF4kh
+        /PiLrX1y2hTqkeeg4A+RiUfcMzNFTz8ndf+bep7CqytUihd+YQ==
+X-Google-Smtp-Source: ABdhPJyxNvsa2gTVJHWmmvcqRZGAq/fnAhqZt7xslfVfMGCBVKdqNStRB3tEmF/GVcRThLCKCWKmMq4PCu6lPzS/wic=
+X-Received: by 2002:a17:902:7b96:b029:de:7ae6:b8db with SMTP id
+ w22-20020a1709027b96b02900de7ae6b8dbmr2287242pll.0.1614331712737; Fri, 26 Feb
+ 2021 01:28:32 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+References: <20210226014733.2108544-1-gwendal@chromium.org>
+In-Reply-To: <20210226014733.2108544-1-gwendal@chromium.org>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 26 Feb 2021 11:28:16 +0200
+Message-ID: <CAHp75Ve+AAoxLhXUKL95PX1-ZuVphUWO6Xjr4bYe4TSNEhdNyQ@mail.gmail.com>
+Subject: Re: [PATCH v9] iio: hrtimer: Allow sub Hz granularity
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>, groeck@chromium.org,
+        linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add simple IRQ or GPIO base counter. This device is used to measure
-rotation speed of some agricultural devices, so no high frequency on the
-counter pin is expected.
+On Fri, Feb 26, 2021 at 3:47 AM Gwendal Grignou <gwendal@chromium.org> wrote:
+>
+> Allow setting frequency below 1Hz or sub 1Hz precision.
+> Useful for slow sensors like ALS.
+>
+> Test frequency is set properly:
+> modprobe iio-trig-hrtimer && \
+> mkdir /sys/kernel/config/iio/triggers/hrtimer/t1 && \
+> cd /sys/bus/iio/devices/triggerX ;
+> for i in 1 .1 .01 .001 ; do
+>   echo $i > sampling_frequency
+>   cat sampling_frequency
+> done
 
-The maximal measurement frequency depends on the CPU and system load. On
-the idle iMX6S I was able to measure up to 20kHz without count drops.
+Thanks!
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- MAINTAINERS                     |   7 +
- drivers/counter/Kconfig         |  10 ++
- drivers/counter/Makefile        |   1 +
- drivers/counter/interrupt-cnt.c | 243 ++++++++++++++++++++++++++++++++
- 4 files changed, 261 insertions(+)
- create mode 100644 drivers/counter/interrupt-cnt.c
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> ---
+> Changes since v8:
+> - Define PSEC_PER_SEC locally to avoid dependency
+> - Add units of expressions in comment.
+>
+> Changes since v7:
+> - Check for sign properly, only allow positive frequencies.
+> - Return proper error code when input frequency is negative.
+>
+> Changes since v6:
+> - Check for sign, only allow positive frequencies.
+>
+> Changes since v5:
+> - Properly support do_div on 32bit architecture: quotient must be u64, dividend
+>   u32.
+> - Use PSEC_PER_SEC from
+>   https://patchwork.kernel.org/project/linux-iio/patch/20210112153709.1074-1-andriy.shevchenko@linux.intel.com/
+>
+> Changes since v4:
+> - Use do_div() properly.
+>
+> Changes since v3:
+> - Fix rebasing issue.
+>
+> Changes since v2:
+> - Add do_div to allow divide by a u64 on 32bit machines.
+>
+> Changes since v1:
+> - Added documentation.
+>
+>  Documentation/iio/iio_configfs.rst     |  1 +
+>  drivers/iio/trigger/iio-trig-hrtimer.c | 33 ++++++++++++++++++--------
+>  2 files changed, 24 insertions(+), 10 deletions(-)
+>
+> diff --git a/Documentation/iio/iio_configfs.rst b/Documentation/iio/iio_configfs.rst
+> index 3a5d76f9e2b97..09845fe525e84 100644
+> --- a/Documentation/iio/iio_configfs.rst
+> +++ b/Documentation/iio/iio_configfs.rst
+> @@ -99,3 +99,4 @@ Each trigger can have one or more attributes specific to the trigger type.
+>
+>  "hrtimer" trigger type doesn't have any configurable attribute from /config dir.
+>  It does introduce the sampling_frequency attribute to trigger directory.
+> +That attribute sets the polling frequency in Hz, with mHz precision.
+> diff --git a/drivers/iio/trigger/iio-trig-hrtimer.c b/drivers/iio/trigger/iio-trig-hrtimer.c
+> index 410de837d0417..aa8cc7391a60d 100644
+> --- a/drivers/iio/trigger/iio-trig-hrtimer.c
+> +++ b/drivers/iio/trigger/iio-trig-hrtimer.c
+> @@ -16,13 +16,16 @@
+>  #include <linux/iio/trigger.h>
+>  #include <linux/iio/sw_trigger.h>
+>
+> +/* Defined locally, not in time64.h yet. */
+> +#define PSEC_PER_SEC   1000000000000LL
+> +
+>  /* default sampling frequency - 100Hz */
+>  #define HRTIMER_DEFAULT_SAMPLING_FREQUENCY 100
+>
+>  struct iio_hrtimer_info {
+>         struct iio_sw_trigger swt;
+>         struct hrtimer timer;
+> -       unsigned long sampling_frequency;
+> +       int sampling_frequency[2];
+>         ktime_t period;
+>  };
+>
+> @@ -38,7 +41,9 @@ ssize_t iio_hrtimer_show_sampling_frequency(struct device *dev,
+>         struct iio_trigger *trig = to_iio_trigger(dev);
+>         struct iio_hrtimer_info *info = iio_trigger_get_drvdata(trig);
+>
+> -       return snprintf(buf, PAGE_SIZE, "%lu\n", info->sampling_frequency);
+> +       return iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO,
+> +                       ARRAY_SIZE(info->sampling_frequency),
+> +                       info->sampling_frequency);
+>  }
+>
+>  static
+> @@ -48,18 +53,26 @@ ssize_t iio_hrtimer_store_sampling_frequency(struct device *dev,
+>  {
+>         struct iio_trigger *trig = to_iio_trigger(dev);
+>         struct iio_hrtimer_info *info = iio_trigger_get_drvdata(trig);
+> -       unsigned long val;
+> -       int ret;
+> +       unsigned long long val;
+> +       u64 period;
+> +       int integer, fract, ret;
+>
+> -       ret = kstrtoul(buf, 10, &val);
+> +       ret = iio_str_to_fixpoint(buf, 100, &integer, &fract);
+>         if (ret)
+>                 return ret;
+> +       if (integer < 0 || fract < 0)
+> +               return -ERANGE;
+> +
+> +       val = fract + 1000 * integer;  /* mHz */
+>
+> -       if (!val || val > NSEC_PER_SEC)
+> +       if (!val || val > UINT_MAX)
+>                 return -EINVAL;
+>
+> -       info->sampling_frequency = val;
+> -       info->period = NSEC_PER_SEC / val;
+> +       info->sampling_frequency[0] = integer;  /* Hz */
+> +       info->sampling_frequency[1] = fract * 1000;  /* uHz */
+> +       period = PSEC_PER_SEC;
+> +       do_div(period, val);
+> +       info->period = period;  /* nS */
+>
+>         return len;
+>  }
+> @@ -135,8 +148,8 @@ static struct iio_sw_trigger *iio_trig_hrtimer_probe(const char *name)
+>         hrtimer_init(&trig_info->timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL_HARD);
+>         trig_info->timer.function = iio_hrtimer_trig_handler;
+>
+> -       trig_info->sampling_frequency = HRTIMER_DEFAULT_SAMPLING_FREQUENCY;
+> -       trig_info->period = NSEC_PER_SEC / trig_info->sampling_frequency;
+> +       trig_info->sampling_frequency[0] = HRTIMER_DEFAULT_SAMPLING_FREQUENCY;
+> +       trig_info->period = NSEC_PER_SEC / trig_info->sampling_frequency[0];
+>
+>         ret = iio_trigger_register(trig_info->swt.trigger);
+>         if (ret)
+> --
+> 2.30.1.766.gb4fecdf3b7-goog
+>
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a50a543e3c81..ad0a4455afec 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -9217,6 +9217,13 @@ F:	include/dt-bindings/interconnect/
- F:	include/linux/interconnect-provider.h
- F:	include/linux/interconnect.h
- 
-+INTERRUPT COUNTER DRIVER
-+M:	Oleksij Rempel <o.rempel@pengutronix.de>
-+R:	Pengutronix Kernel Team <kernel@pengutronix.de>
-+L:	linux-iio@vger.kernel.org
-+F:	Documentation/devicetree/bindings/counter/interrupt-counter.yaml
-+F:	drivers/counter/interrupt-cnt.c
-+
- INVENSENSE ICM-426xx IMU DRIVER
- M:	Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
- L:	linux-iio@vger.kernel.org
-diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
-index 2de53ab0dd25..dcad13229134 100644
---- a/drivers/counter/Kconfig
-+++ b/drivers/counter/Kconfig
-@@ -29,6 +29,16 @@ config 104_QUAD_8
- 	  The base port addresses for the devices may be configured via the base
- 	  array module parameter.
- 
-+config INTERRUPT_CNT
-+	tristate "Interrupt counter driver"
-+	depends on GPIOLIB
-+	help
-+	  Select this option to enable interrupt counter driver. Any interrupt
-+	  source can be used by this driver as the event source.
-+
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called interrupt-cnt.
-+
- config STM32_TIMER_CNT
- 	tristate "STM32 Timer encoder counter driver"
- 	depends on MFD_STM32_TIMERS || COMPILE_TEST
-diff --git a/drivers/counter/Makefile b/drivers/counter/Makefile
-index 0a393f71e481..cb646ed2f039 100644
---- a/drivers/counter/Makefile
-+++ b/drivers/counter/Makefile
-@@ -6,6 +6,7 @@
- obj-$(CONFIG_COUNTER) += counter.o
- 
- obj-$(CONFIG_104_QUAD_8)	+= 104-quad-8.o
-+obj-$(CONFIG_INTERRUPT_CNT)		+= interrupt-cnt.o
- obj-$(CONFIG_STM32_TIMER_CNT)	+= stm32-timer-cnt.o
- obj-$(CONFIG_STM32_LPTIMER_CNT)	+= stm32-lptimer-cnt.o
- obj-$(CONFIG_TI_EQEP)		+= ti-eqep.o
-diff --git a/drivers/counter/interrupt-cnt.c b/drivers/counter/interrupt-cnt.c
-new file mode 100644
-index 000000000000..550383b6b591
---- /dev/null
-+++ b/drivers/counter/interrupt-cnt.c
-@@ -0,0 +1,243 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (c) 2021 Pengutronix, Oleksij Rempel <kernel@pengutronix.de>
-+ */
-+
-+#include <linux/counter.h>
-+#include <linux/gpio/consumer.h>
-+#include <linux/interrupt.h>
-+#include <linux/irq.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+
-+#define INTERRUPT_CNT_NAME "interrupt-cnt"
-+
-+struct interrupt_cnt_priv {
-+	atomic_t count;
-+	struct counter_device counter;
-+	struct gpio_desc *gpio;
-+	int irq;
-+	bool enabled;
-+	struct counter_signal signals;
-+	struct counter_synapse synapses;
-+	struct counter_count cnts;
-+};
-+
-+static irqreturn_t interrupt_cnt_isr(int irq, void *dev_id)
-+{
-+	struct interrupt_cnt_priv *priv = dev_id;
-+
-+	atomic_inc(&priv->count);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static ssize_t interrupt_cnt_enable_read(struct counter_device *counter,
-+					 struct counter_count *count,
-+					 void *private, char *buf)
-+{
-+	struct interrupt_cnt_priv *priv = counter->priv;
-+
-+	return sysfs_emit(buf, "%d\n", priv->enabled);
-+}
-+
-+static ssize_t interrupt_cnt_enable_write(struct counter_device *counter,
-+					  struct counter_count *count,
-+					  void *private, const char *buf,
-+					  size_t len)
-+{
-+	struct interrupt_cnt_priv *priv = counter->priv;
-+	bool enable;
-+	ssize_t ret;
-+
-+	ret = kstrtobool(buf, &enable);
-+	if (ret)
-+		return ret;
-+
-+	if (priv->enabled == enable)
-+		return len;
-+
-+	if (enable) {
-+		priv->enabled = true;
-+		enable_irq(priv->irq);
-+	} else {
-+		disable_irq(priv->irq);
-+		priv->enabled = false;
-+	}
-+
-+	return len;
-+}
-+
-+static const struct counter_count_ext interrupt_cnt_ext[] = {
-+	{
-+		.name = "enable",
-+		.read = interrupt_cnt_enable_read,
-+		.write = interrupt_cnt_enable_write,
-+	},
-+};
-+
-+static enum counter_synapse_action interrupt_cnt_synapse_actionss[] = {
-+	COUNTER_SYNAPSE_ACTION_RISING_EDGE,
-+};
-+
-+static int interrupt_cnt_action_get(struct counter_device *counter,
-+				    struct counter_count *count,
-+				    struct counter_synapse *synapse,
-+				    size_t *action)
-+{
-+	*action = interrupt_cnt_synapse_actionss[0];
-+
-+	return 0;
-+}
-+
-+static int interrupt_cnt_read(struct counter_device *counter,
-+			      struct counter_count *count, unsigned long *val)
-+{
-+	struct interrupt_cnt_priv *priv = counter->priv;
-+
-+	*val = atomic_read(&priv->count);
-+
-+	return 0;
-+}
-+
-+static int interrupt_cnt_write(struct counter_device *counter,
-+			       struct counter_count *count,
-+			       const unsigned long val)
-+{
-+	struct interrupt_cnt_priv *priv = counter->priv;
-+
-+	atomic_set(&priv->count, val);
-+
-+	return 0;
-+}
-+
-+static enum counter_count_function interrupt_cnt_functions[] = {
-+	COUNTER_COUNT_FUNCTION_INCREASE,
-+};
-+
-+static int interrupt_cnt_function_get(struct counter_device *counter,
-+				      struct counter_count *count,
-+				      size_t *function)
-+{
-+	*function = interrupt_cnt_functions[0];
-+
-+	return 0;
-+}
-+
-+static int interrupt_cnt_signal_read(struct counter_device *counter,
-+				     struct counter_signal *signal,
-+				     enum counter_signal_value *val)
-+{
-+	struct interrupt_cnt_priv *priv = counter->priv;
-+	int ret;
-+
-+	ret = gpiod_get_value(priv->gpio);
-+	if (ret < 0)
-+		return ret;
-+
-+	*val = ret ? COUNTER_SIGNAL_HIGH : COUNTER_SIGNAL_LOW;
-+
-+	return 0;
-+}
-+
-+static const struct counter_ops interrupt_cnt_ops = {
-+	.action_get = interrupt_cnt_action_get,
-+	.count_read = interrupt_cnt_read,
-+	.count_write = interrupt_cnt_write,
-+	.function_get = interrupt_cnt_function_get,
-+	.signal_read  = interrupt_cnt_signal_read,
-+};
-+
-+static int interrupt_cnt_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct interrupt_cnt_priv *priv;
-+	int ret;
-+
-+	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	priv->irq = platform_get_irq_optional(pdev,  0);
-+	if (priv->irq == -ENXIO)
-+		priv->irq = 0;
-+	else if (priv->irq < 0)
-+		return dev_err_probe(dev, priv->irq, "failed to get IRQ\n");
-+
-+	priv->gpio = devm_gpiod_get_optional(dev, NULL, GPIOD_IN);
-+	if (IS_ERR(priv->gpio))
-+		return dev_err_probe(dev, PTR_ERR(priv->gpio), "failed to get GPIO\n");
-+
-+	if (!priv->irq && !priv->gpio) {
-+		dev_err(dev, "IRQ and GPIO are not found. At least one source should be provided\n");
-+		return -ENODEV;
-+	}
-+
-+	if (!priv->irq) {
-+		int irq = gpiod_to_irq(priv->gpio);
-+
-+		if (irq < 0)
-+			return dev_err_probe(dev, irq, "failed to get IRQ from GPIO\n");
-+
-+		priv->irq = irq;
-+	}
-+
-+	if (priv->gpio) {
-+		priv->signals.name = devm_kasprintf(dev, GFP_KERNEL, "IRQ %d",
-+					    priv->irq);
-+		if (!priv->signals.name)
-+			return -ENOMEM;
-+
-+		priv->counter.signals = &priv->signals;
-+		priv->counter.num_signals = 1;
-+	}
-+
-+	priv->synapses.actions_list = interrupt_cnt_synapse_actionss;
-+	priv->synapses.num_actions = ARRAY_SIZE(interrupt_cnt_synapse_actionss);
-+	priv->synapses.signal = &priv->signals;
-+
-+	priv->cnts.name = "Channel 0 Count";
-+	priv->cnts.functions_list = interrupt_cnt_functions;
-+	priv->cnts.num_functions = ARRAY_SIZE(interrupt_cnt_functions);
-+	priv->cnts.synapses = &priv->synapses;
-+	priv->cnts.num_synapses = 1;
-+	priv->cnts.ext = interrupt_cnt_ext;
-+	priv->cnts.num_ext = ARRAY_SIZE(interrupt_cnt_ext);
-+
-+	priv->counter.priv = priv;
-+	priv->counter.name = dev_name(dev);
-+	priv->counter.parent = dev;
-+	priv->counter.ops = &interrupt_cnt_ops;
-+	priv->counter.counts = &priv->cnts;
-+	priv->counter.num_counts = 1;
-+
-+	irq_set_status_flags(priv->irq, IRQ_NOAUTOEN);
-+	ret = devm_request_irq(dev, priv->irq, interrupt_cnt_isr,
-+			       IRQF_TRIGGER_RISING | IRQF_NO_THREAD,
-+			       dev_name(dev), priv);
-+	if (ret)
-+		return ret;
-+
-+	return devm_counter_register(dev, &priv->counter);
-+}
-+
-+static const struct of_device_id interrupt_cnt_of_match[] = {
-+	{ .compatible = "interrupt-counter", },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, interrupt_cnt_of_match);
-+
-+static struct platform_driver interrupt_cnt_driver = {
-+	.probe = interrupt_cnt_probe,
-+	.driver = {
-+		.name = INTERRUPT_CNT_NAME,
-+		.of_match_table = interrupt_cnt_of_match,
-+	},
-+};
-+module_platform_driver(interrupt_cnt_driver);
-+
-+MODULE_ALIAS("platform:interrupt-counter");
-+MODULE_AUTHOR("Oleksij Rempel <o.rempel@pengutronix.de>");
-+MODULE_DESCRIPTION("Interrupt counter driver");
-+MODULE_LICENSE("GPL v2");
+
 -- 
-2.29.2
-
+With Best Regards,
+Andy Shevchenko

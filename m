@@ -2,195 +2,195 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 57BBB325B4F
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Feb 2021 02:32:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BBA4F325B60
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Feb 2021 02:48:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229498AbhBZBa1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 25 Feb 2021 20:30:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54304 "EHLO
+        id S229508AbhBZBsV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 25 Feb 2021 20:48:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229492AbhBZBa0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 25 Feb 2021 20:30:26 -0500
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 239E9C061574;
-        Thu, 25 Feb 2021 17:29:46 -0800 (PST)
-Received: by mail-pl1-x62a.google.com with SMTP id d11so4408307plo.8;
-        Thu, 25 Feb 2021 17:29:46 -0800 (PST)
+        with ESMTP id S229492AbhBZBsV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 25 Feb 2021 20:48:21 -0500
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0400EC061574
+        for <linux-iio@vger.kernel.org>; Thu, 25 Feb 2021 17:47:40 -0800 (PST)
+Received: by mail-pj1-x1035.google.com with SMTP id e9so5162232pjj.0
+        for <linux-iio@vger.kernel.org>; Thu, 25 Feb 2021 17:47:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=XmwUKf+hUjG27sz2bJqruSzlU36nwLMx6Yr1Y6X8O/s=;
-        b=MUdlHZntR8igfGXzxHRYarSsJ1VNGC47LvAonEOY8JSg3/voXJcOe3iDjmLmjdWvLD
-         KMQxxUFn4AJKArwdElca1UiZ4WmORYgbm4q+yfMsgHRSIO/XwZ6smKLQ+zbl2qx/x19k
-         tYcVIoLCSGkXu9Qn9ocH+OsddRAXQ3WYhrfkyCfjTpuXv8iAo1cJyB/vJd+Xl8PR4car
-         gL7ieHzLY58KcoC3VYLAyBHw2rL+aRQ8W1z2YFBTExa1mEZSpZIgZF8o4uKKFHVT/l2o
-         JpDztCwRXGCdtsE0AbIfVd6QVjZlomLGclNvkjnxs5FAvR4eowQO5epx2bYWE5rywPnL
-         D1tw==
+        bh=uIcD1B1LxoaKsY+eEVtZxACUjmvKqFVGILl0I8NPioY=;
+        b=nYTxe1s99y9kSsg7kQ8zOZEEmHbfNwsbe/NLgLp0t6X5UiSFiHy945RArMCQUxu2KJ
+         het+YPPrsLB9bCYS/RiosfH81I/bD3CNhWgeY94XG7JLSUNzrx9bHWJYaIRcF+TbnKlj
+         gBZ43eCNKE2L7sBHUns0g7y3brRWRz6ANwt34=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=XmwUKf+hUjG27sz2bJqruSzlU36nwLMx6Yr1Y6X8O/s=;
-        b=ujJCK5Q6pcQAehLBMFmEg2FXgZ3rYeLpYuXdPfBZxnZ+AM6J4sGuUJ9zDbtlzBCfiw
-         DJcpfke0+hmme0VxMKA3DFPVH8KOmxItBCg+7MpMveI44YA2Oww0AOdKxNp/8jOiuw8v
-         fUS3ww6Hh/O7oSf0XbTIIiARIBL1JCAZE7NxSQA6tgFcV5wP4XaA7vo+BAVN71/bXxX8
-         qytDUUUvKnV6vPAOMLefTkzB9lhC/T7TUZQvwbIQnofz2LpAgOBMBY2Kse6tGcBtR62J
-         efXsVGQ7f+uqyBEHAcIP/i6lnXMV8ani6scmWa2leDfFeV3Eg+WcEvMk9QOUZnTNP1cH
-         52CA==
-X-Gm-Message-State: AOAM533ZwMiTyVEOf7Nfi51ocizO9RwtMSpVJHH7z8V8fHAXqmCEXOgr
-        uNcKwx4+2vISTmHKcEkY3U+eHIgJy9MnOw==
-X-Google-Smtp-Source: ABdhPJzDOcY0htBukhNsAGlPVzopVjSgvQVb9Vo/MdNoJwT2X1CB9g6ODBTdELCMsls/NK6rrrmQ3w==
-X-Received: by 2002:a17:902:e54f:b029:e2:8f59:6fe0 with SMTP id n15-20020a170902e54fb02900e28f596fe0mr618450plf.76.1614302985633;
-        Thu, 25 Feb 2021 17:29:45 -0800 (PST)
-Received: from localhost.localdomain ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id c6sm7773242pfc.94.2021.02.25.17.29.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Feb 2021 17:29:44 -0800 (PST)
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     jic23@kernel.org
-Cc:     linux-iio@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@st.com, benjamin.gaignard@st.com,
-        fabrice.gasnier@foss.st.com,
-        William Breathitt Gray <vilhelm.gray@gmail.com>
-Subject: [PATCH v2] counter: stm32-timer-cnt: Report count function when SLAVE_MODE_DISABLED
-Date:   Fri, 26 Feb 2021 10:29:31 +0900
-Message-Id: <20210226012931.161429-1-vilhelm.gray@gmail.com>
-X-Mailer: git-send-email 2.30.1
+        bh=uIcD1B1LxoaKsY+eEVtZxACUjmvKqFVGILl0I8NPioY=;
+        b=OwNcDATXi7Fm8N4uI19cHsA1pjr3RWgGGu8qW/nXpSFf1evVEdYpaOvjczh71F9xNn
+         1WRL/Km0blVclANSBTf9KzBDdkpprhgOhKjEgVQCQuP6kJIoFLuiBuXbh4Jz9iuJTSK1
+         7b3Ea40YKB1LGYufYu727NIm9RWN3b4aAM8+gWLany8+hZGOso8VUDcE3BFYrfgqmjGF
+         S1t9gXpW2BXtEHODmU6jMXv9cRjzcV98CmUfPoZE9Ky2fqliWWTP49+0jt4oKtVPreGO
+         yP0qmAcBNscZ5hQVEPQ3mz28p9yZio0xXwU6wzs05upi6s6WqHZd61mXqNb8xSXBB19Z
+         KQnQ==
+X-Gm-Message-State: AOAM530aa1tNUn8zISrlI1ZbNCxBrTzs01xkAPXBR1HTNfJRjLoAC6et
+        VymPAqi8igFjdqS73c960QJPAA==
+X-Google-Smtp-Source: ABdhPJy0XhSakYhXjoiWMzrZaaaTpTj0loSqQ4odW5ktpLpVF7YN+u8P8Tai8zu7VIwrkoce4wkVag==
+X-Received: by 2002:a17:90a:e603:: with SMTP id j3mr820614pjy.161.1614304060359;
+        Thu, 25 Feb 2021 17:47:40 -0800 (PST)
+Received: from localhost ([2620:15c:202:201:b0a4:446e:a265:bffe])
+        by smtp.gmail.com with UTF8SMTPSA id d124sm7394503pfa.149.2021.02.25.17.47.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Feb 2021 17:47:39 -0800 (PST)
+From:   Gwendal Grignou <gwendal@chromium.org>
+To:     jic23@kernel.org, lars@metafoo.de, andy.shevchenko@gmail.com,
+        groeck@chromium.org
+Cc:     linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>
+Subject: [PATCH v9] iio: hrtimer: Allow sub Hz granularity
+Date:   Thu, 25 Feb 2021 17:47:33 -0800
+Message-Id: <20210226014733.2108544-1-gwendal@chromium.org>
+X-Mailer: git-send-email 2.30.1.766.gb4fecdf3b7-goog
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-When in SLAVE_MODE_DISABLED mode, the count still increases if the
-counter is enabled because an internal clock is used. This patch fixes
-the stm32_count_function_get() and stm32_count_function_set() functions
-to properly handle this behavior.
+Allow setting frequency below 1Hz or sub 1Hz precision.
+Useful for slow sensors like ALS.
 
-Fixes: ad29937e206f ("counter: Add STM32 Timer quadrature encoder")
-Cc: Fabrice Gasnier <fabrice.gasnier@st.com>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@st.com>
-Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+Test frequency is set properly:
+modprobe iio-trig-hrtimer && \
+mkdir /sys/kernel/config/iio/triggers/hrtimer/t1 && \
+cd /sys/bus/iio/devices/triggerX ;
+for i in 1 .1 .01 .001 ; do
+  echo $i > sampling_frequency
+  cat sampling_frequency
+done
+
+Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 ---
-Changes in v2:
- - Support an explicit 0 case for function_get()/function_set()
+Changes since v8:
+- Define PSEC_PER_SEC locally to avoid dependency
+- Add units of expressions in comment.
 
- drivers/counter/stm32-timer-cnt.c | 39 ++++++++++++++++++++-----------
- 1 file changed, 25 insertions(+), 14 deletions(-)
+Changes since v7:
+- Check for sign properly, only allow positive frequencies.
+- Return proper error code when input frequency is negative.
 
-diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
-index ef2a974a2f10..cd50dc12bd02 100644
---- a/drivers/counter/stm32-timer-cnt.c
-+++ b/drivers/counter/stm32-timer-cnt.c
-@@ -44,13 +44,14 @@ struct stm32_timer_cnt {
-  * @STM32_COUNT_ENCODER_MODE_3: counts on both TI1FP1 and TI2FP2 edges
-  */
- enum stm32_count_function {
--	STM32_COUNT_SLAVE_MODE_DISABLED = -1,
-+	STM32_COUNT_SLAVE_MODE_DISABLED,
- 	STM32_COUNT_ENCODER_MODE_1,
- 	STM32_COUNT_ENCODER_MODE_2,
- 	STM32_COUNT_ENCODER_MODE_3,
+Changes since v6:
+- Check for sign, only allow positive frequencies.
+
+Changes since v5:
+- Properly support do_div on 32bit architecture: quotient must be u64, dividend
+  u32.
+- Use PSEC_PER_SEC from
+  https://patchwork.kernel.org/project/linux-iio/patch/20210112153709.1074-1-andriy.shevchenko@linux.intel.com/
+
+Changes since v4:
+- Use do_div() properly.
+
+Changes since v3:
+- Fix rebasing issue.
+
+Changes since v2:
+- Add do_div to allow divide by a u64 on 32bit machines.
+
+Changes since v1:
+- Added documentation.
+
+ Documentation/iio/iio_configfs.rst     |  1 +
+ drivers/iio/trigger/iio-trig-hrtimer.c | 33 ++++++++++++++++++--------
+ 2 files changed, 24 insertions(+), 10 deletions(-)
+
+diff --git a/Documentation/iio/iio_configfs.rst b/Documentation/iio/iio_configfs.rst
+index 3a5d76f9e2b97..09845fe525e84 100644
+--- a/Documentation/iio/iio_configfs.rst
++++ b/Documentation/iio/iio_configfs.rst
+@@ -99,3 +99,4 @@ Each trigger can have one or more attributes specific to the trigger type.
+ 
+ "hrtimer" trigger type doesn't have any configurable attribute from /config dir.
+ It does introduce the sampling_frequency attribute to trigger directory.
++That attribute sets the polling frequency in Hz, with mHz precision.
+diff --git a/drivers/iio/trigger/iio-trig-hrtimer.c b/drivers/iio/trigger/iio-trig-hrtimer.c
+index 410de837d0417..aa8cc7391a60d 100644
+--- a/drivers/iio/trigger/iio-trig-hrtimer.c
++++ b/drivers/iio/trigger/iio-trig-hrtimer.c
+@@ -16,13 +16,16 @@
+ #include <linux/iio/trigger.h>
+ #include <linux/iio/sw_trigger.h>
+ 
++/* Defined locally, not in time64.h yet. */
++#define PSEC_PER_SEC   1000000000000LL
++
+ /* default sampling frequency - 100Hz */
+ #define HRTIMER_DEFAULT_SAMPLING_FREQUENCY 100
+ 
+ struct iio_hrtimer_info {
+ 	struct iio_sw_trigger swt;
+ 	struct hrtimer timer;
+-	unsigned long sampling_frequency;
++	int sampling_frequency[2];
+ 	ktime_t period;
  };
  
- static enum counter_count_function stm32_count_functions[] = {
-+	[STM32_COUNT_SLAVE_MODE_DISABLED] = COUNTER_COUNT_FUNCTION_INCREASE,
- 	[STM32_COUNT_ENCODER_MODE_1] = COUNTER_COUNT_FUNCTION_QUADRATURE_X2_A,
- 	[STM32_COUNT_ENCODER_MODE_2] = COUNTER_COUNT_FUNCTION_QUADRATURE_X2_B,
- 	[STM32_COUNT_ENCODER_MODE_3] = COUNTER_COUNT_FUNCTION_QUADRATURE_X4,
-@@ -90,6 +91,9 @@ static int stm32_count_function_get(struct counter_device *counter,
- 	regmap_read(priv->regmap, TIM_SMCR, &smcr);
+@@ -38,7 +41,9 @@ ssize_t iio_hrtimer_show_sampling_frequency(struct device *dev,
+ 	struct iio_trigger *trig = to_iio_trigger(dev);
+ 	struct iio_hrtimer_info *info = iio_trigger_get_drvdata(trig);
  
- 	switch (smcr & TIM_SMCR_SMS) {
-+	case 0:
-+		*function = STM32_COUNT_SLAVE_MODE_DISABLED;
-+		return 0;
- 	case 1:
- 		*function = STM32_COUNT_ENCODER_MODE_1;
- 		return 0;
-@@ -99,9 +103,9 @@ static int stm32_count_function_get(struct counter_device *counter,
- 	case 3:
- 		*function = STM32_COUNT_ENCODER_MODE_3;
- 		return 0;
-+	default:
-+		return -EINVAL;
- 	}
--
--	return -EINVAL;
+-	return snprintf(buf, PAGE_SIZE, "%lu\n", info->sampling_frequency);
++	return iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO,
++			ARRAY_SIZE(info->sampling_frequency),
++			info->sampling_frequency);
  }
  
- static int stm32_count_function_set(struct counter_device *counter,
-@@ -112,6 +116,9 @@ static int stm32_count_function_set(struct counter_device *counter,
- 	u32 cr1, sms;
+ static
+@@ -48,18 +53,26 @@ ssize_t iio_hrtimer_store_sampling_frequency(struct device *dev,
+ {
+ 	struct iio_trigger *trig = to_iio_trigger(dev);
+ 	struct iio_hrtimer_info *info = iio_trigger_get_drvdata(trig);
+-	unsigned long val;
+-	int ret;
++	unsigned long long val;
++	u64 period;
++	int integer, fract, ret;
  
- 	switch (function) {
-+	case STM32_COUNT_SLAVE_MODE_DISABLED:
-+		sms = 0;
-+		break;
- 	case STM32_COUNT_ENCODER_MODE_1:
- 		sms = 1;
- 		break;
-@@ -122,8 +129,7 @@ static int stm32_count_function_set(struct counter_device *counter,
- 		sms = 3;
- 		break;
- 	default:
--		sms = 0;
--		break;
-+		return -EINVAL;
- 	}
+-	ret = kstrtoul(buf, 10, &val);
++	ret = iio_str_to_fixpoint(buf, 100, &integer, &fract);
+ 	if (ret)
+ 		return ret;
++	if (integer < 0 || fract < 0)
++		return -ERANGE;
++
++	val = fract + 1000 * integer;  /* mHz */
  
- 	/* Store enable status */
-@@ -274,31 +280,36 @@ static int stm32_action_get(struct counter_device *counter,
- 	size_t function;
- 	int err;
+-	if (!val || val > NSEC_PER_SEC)
++	if (!val || val > UINT_MAX)
+ 		return -EINVAL;
  
--	/* Default action mode (e.g. STM32_COUNT_SLAVE_MODE_DISABLED) */
--	*action = STM32_SYNAPSE_ACTION_NONE;
--
- 	err = stm32_count_function_get(counter, count, &function);
- 	if (err)
--		return 0;
-+		return err;
+-	info->sampling_frequency = val;
+-	info->period = NSEC_PER_SEC / val;
++	info->sampling_frequency[0] = integer;  /* Hz */
++	info->sampling_frequency[1] = fract * 1000;  /* uHz */
++	period = PSEC_PER_SEC;
++	do_div(period, val);
++	info->period = period;  /* nS */
  
- 	switch (function) {
-+	case STM32_COUNT_SLAVE_MODE_DISABLED:
-+		/* counts on internal clock when CEN=1 */
-+		*action = STM32_SYNAPSE_ACTION_NONE;
-+		return 0;
- 	case STM32_COUNT_ENCODER_MODE_1:
- 		/* counts up/down on TI1FP1 edge depending on TI2FP2 level */
- 		if (synapse->signal->id == count->synapses[0].signal->id)
- 			*action = STM32_SYNAPSE_ACTION_BOTH_EDGES;
--		break;
-+		else
-+			*action = STM32_SYNAPSE_ACTION_NONE;
-+		return 0;
- 	case STM32_COUNT_ENCODER_MODE_2:
- 		/* counts up/down on TI2FP2 edge depending on TI1FP1 level */
- 		if (synapse->signal->id == count->synapses[1].signal->id)
- 			*action = STM32_SYNAPSE_ACTION_BOTH_EDGES;
--		break;
-+		else
-+			*action = STM32_SYNAPSE_ACTION_NONE;
-+		return 0;
- 	case STM32_COUNT_ENCODER_MODE_3:
- 		/* counts up/down on both TI1FP1 and TI2FP2 edges */
- 		*action = STM32_SYNAPSE_ACTION_BOTH_EDGES;
--		break;
-+		return 0;
-+	default:
-+		return -EINVAL;
- 	}
--
--	return 0;
+ 	return len;
  }
+@@ -135,8 +148,8 @@ static struct iio_sw_trigger *iio_trig_hrtimer_probe(const char *name)
+ 	hrtimer_init(&trig_info->timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL_HARD);
+ 	trig_info->timer.function = iio_hrtimer_trig_handler;
  
- static const struct counter_ops stm32_timer_cnt_ops = {
+-	trig_info->sampling_frequency = HRTIMER_DEFAULT_SAMPLING_FREQUENCY;
+-	trig_info->period = NSEC_PER_SEC / trig_info->sampling_frequency;
++	trig_info->sampling_frequency[0] = HRTIMER_DEFAULT_SAMPLING_FREQUENCY;
++	trig_info->period = NSEC_PER_SEC / trig_info->sampling_frequency[0];
+ 
+ 	ret = iio_trigger_register(trig_info->swt.trigger);
+ 	if (ret)
 -- 
-2.30.1
+2.30.1.766.gb4fecdf3b7-goog
 

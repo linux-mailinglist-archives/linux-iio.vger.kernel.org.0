@@ -2,229 +2,203 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F0AA73262D2
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Feb 2021 13:42:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 080C43264B1
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Feb 2021 16:26:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229823AbhBZMmB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 26 Feb 2021 07:42:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56708 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229618AbhBZMmB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 Feb 2021 07:42:01 -0500
-Received: from mail-ua1-x936.google.com (mail-ua1-x936.google.com [IPv6:2607:f8b0:4864:20::936])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47ABBC061574;
-        Fri, 26 Feb 2021 04:41:20 -0800 (PST)
-Received: by mail-ua1-x936.google.com with SMTP id o31so3020152uae.2;
-        Fri, 26 Feb 2021 04:41:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=GwcTLQq3H5c2UK+OWGZKD2GMY78k6FaSogjGLTzQit8=;
-        b=M9p/Cwg3Hk2dvA+4WL3gl2+aEcE0ue3aBk9SU7aQbc2qmuL+BX36vV0xKLLTJh9tJa
-         Fh/WU8GsgK8dL6w8baYWFT9ZeSmeFOTWpjdVZ86huewZfkSyqnR4RwJjnVJwK3kfN4PN
-         Sxnhv9Eh8vIkdIqcrD7ub5yRDWZcioX3dtXpRrX/jO74RH/yzV3SccMxIpQVDlf1jetu
-         RudRuCpW+8QISOsEu8ydsbrq46FpZIE0vTtthLsoBIU2oH3TDYNsqtHgYZJoe1aHFjQb
-         UyQMkIpRyUTTwGaghKdb/6vmqmECC8xainPpgSLLjRWDUPOCO/PJZg4WAKzt+VXriyew
-         Nf4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=GwcTLQq3H5c2UK+OWGZKD2GMY78k6FaSogjGLTzQit8=;
-        b=PoL+5vcGGMX5ftaeL6Z8Qx2vd7e3NW6MLm5RGtPIiUNe9HuD8iKPYrS6SaY3cCwKpb
-         ZUPJRcGXh2Or0QS+MgMQ1JPjMU1hRAxMDRPwgBFiCsG0sEFmw7nzszmCYvSsLWFfIq7Z
-         3TjKG9m11ue4WnBz0kganmzLxB5CWMDXr4eV7AoQkLKZ4T6gikT4YDk0FT7wtUFgQJxW
-         CrcgOBZhTi+5vsWkBfUfF1Q9NUyQFKySdgWYR6LD/rUOPTThZx7OBdjYomy98+pUu4Rk
-         uErPJVk6/rfFDqxVZROpyFf2px4PWsvxyhaKnFqpOmLaPVmbjbDCDLFolJddyF8ENiyY
-         dkpg==
-X-Gm-Message-State: AOAM531MYrz5LYvYm3oTWmHBqugCJPOXu6k2T4tw1hXW1YUGHxpxeSXW
-        5LGQOt4HWleyvB+fc58ZRok=
-X-Google-Smtp-Source: ABdhPJzMFEgfXaU6K+NKWQQKLNJlmLF00kHu1fORscS0i96AsC2HhFP+MQfxEHsi96P69E1a6IMneA==
-X-Received: by 2002:ab0:1c1b:: with SMTP id a27mr1457614uaj.62.1614343279413;
-        Fri, 26 Feb 2021 04:41:19 -0800 (PST)
-Received: from shinobu ([193.27.12.132])
-        by smtp.gmail.com with ESMTPSA id e128sm1062680vkg.1.2021.02.26.04.41.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Feb 2021 04:41:18 -0800 (PST)
-Date:   Fri, 26 Feb 2021 21:41:11 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Oleksij Rempel <o.rempel@pengutronix.de>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        David Jander <david@protonic.nl>,
-        Robin van der Gracht <robin@protonic.nl>,
-        linux-iio@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH v7 2/2] counter: add IRQ or GPIO based counter
-Message-ID: <YDjsZ8hyETN0VpCM@shinobu>
-References: <20210226090830.10927-1-o.rempel@pengutronix.de>
- <20210226090830.10927-3-o.rempel@pengutronix.de>
- <YDjDMBfWwdImiZxY@shinobu>
- <20210226121455.t7kz4cxtganzt2xz@pengutronix.de>
+        id S230018AbhBZPZ2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 26 Feb 2021 10:25:28 -0500
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:48068 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S229745AbhBZPZ0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 Feb 2021 10:25:26 -0500
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 11QFMuTb029488;
+        Fri, 26 Feb 2021 16:24:35 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=selector1;
+ bh=enMfC+PWGoNkoTGsyvHg5qpNwFuwchf5UpLej42yuI4=;
+ b=iuI1YDxdQ5L5AWX9ZzptPh6xYtZ+Lr9X6+B1p0cGGIQKVfuk8ajUV9kJjDJ/2HR/CiMd
+ 4TK6E1cOpWDsrgQRkdliLuft43Yf0lczUm+NE5Yv9FSJ1bov6/+N57u/HwHvN2B+5EB1
+ C/IrWCM+9vpLooIx8+sODbh2Y74Cc58civ9xu1M2aISqIf6+sKoBfGDox+0UXP7sWLKp
+ jeDglU9SNBz7u3XSf41RzmNz8f1/ssE5omdXOJLZ0jQ+TfaH8+aKxu9ozmcBjgyxc1Ay
+ 3ddcfTtMZpoHN3McsyQAMgB3rm0apz+y8rYhYlSd6U+frPM2eQyr0YApv2QWKUYi6wt2 yA== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 36w66vxdrq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 26 Feb 2021 16:24:35 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 5B7F010002A;
+        Fri, 26 Feb 2021 16:24:34 +0100 (CET)
+Received: from Webmail-eu.st.com (sfhdag2node3.st.com [10.75.127.6])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 4983724ABBE;
+        Fri, 26 Feb 2021 16:24:34 +0100 (CET)
+Received: from [10.211.2.127] (10.75.127.44) by SFHDAG2NODE3.st.com
+ (10.75.127.6) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 26 Feb
+ 2021 16:24:33 +0100
+Subject: Re: [PATCH v2] counter: stm32-timer-cnt: Report count function when
+ SLAVE_MODE_DISABLED
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>, <jic23@kernel.org>
+CC:     <linux-iio@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <fabrice.gasnier@st.com>,
+        <mcoquelin.stm32@gmail.com>, <alexandre.torgue@st.com>,
+        <benjamin.gaignard@st.com>
+References: <20210226012931.161429-1-vilhelm.gray@gmail.com>
+From:   Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Message-ID: <d6ae294d-5d49-bb3f-6456-a485a247323c@foss.st.com>
+Date:   Fri, 26 Feb 2021 16:24:32 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="zDZZKf6/pb+UPY5C"
-Content-Disposition: inline
-In-Reply-To: <20210226121455.t7kz4cxtganzt2xz@pengutronix.de>
+In-Reply-To: <20210226012931.161429-1-vilhelm.gray@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.75.127.44]
+X-ClientProxiedBy: SFHDAG1NODE1.st.com (10.75.127.1) To SFHDAG2NODE3.st.com
+ (10.75.127.6)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
+ definitions=2021-02-26_03:2021-02-24,2021-02-26 signatures=0
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On 2/26/21 2:29 AM, William Breathitt Gray wrote:
+> When in SLAVE_MODE_DISABLED mode, the count still increases if the
+> counter is enabled because an internal clock is used. This patch fixes
+> the stm32_count_function_get() and stm32_count_function_set() functions
+> to properly handle this behavior.
+> 
+> Fixes: ad29937e206f ("counter: Add STM32 Timer quadrature encoder")
+> Cc: Fabrice Gasnier <fabrice.gasnier@st.com>
+> Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+> Cc: Alexandre Torgue <alexandre.torgue@st.com>
+> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+> ---
+> Changes in v2:
+>  - Support an explicit 0 case for function_get()/function_set()
+> 
+>  drivers/counter/stm32-timer-cnt.c | 39 ++++++++++++++++++++-----------
+>  1 file changed, 25 insertions(+), 14 deletions(-)
 
---zDZZKf6/pb+UPY5C
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi William,
 
-On Fri, Feb 26, 2021 at 01:14:55PM +0100, Oleksij Rempel wrote:
-> On Fri, Feb 26, 2021 at 06:45:20PM +0900, William Breathitt Gray wrote:
-> > On Fri, Feb 26, 2021 at 10:08:30AM +0100, Oleksij Rempel wrote:
-> > > +static int interrupt_cnt_signal_read(struct counter_device *counter,
-> > > +				     struct counter_signal *signal,
-> > > +				     enum counter_signal_value *val)
-> > > +{
-> > > +	struct interrupt_cnt_priv *priv =3D counter->priv;
-> > > +	int ret;
+Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 
-I forgot about this function. Add a check here to return -EINVAL if
-we're not dealing with a GPIO:
+Many thanks for this fix.
+Best Regards,
+Fabrice
 
-	if (!priv->gpio)
-		return -EINVAL;
 
-> > > +
-> > > +	ret =3D gpiod_get_value(priv->gpio);
-> > > +	if (ret < 0)
-> > > +		return ret;
-> > > +
-> > > +	*val =3D ret ? COUNTER_SIGNAL_HIGH : COUNTER_SIGNAL_LOW;
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +
-> > > +static const struct counter_ops interrupt_cnt_ops =3D {
-> > > +	.action_get =3D interrupt_cnt_action_get,
-> > > +	.count_read =3D interrupt_cnt_read,
-> > > +	.count_write =3D interrupt_cnt_write,
-> > > +	.function_get =3D interrupt_cnt_function_get,
-> > > +	.signal_read  =3D interrupt_cnt_signal_read,
-> > > +};
-> > > +
-> > > +static int interrupt_cnt_probe(struct platform_device *pdev)
-> > > +{
-> > > +	struct device *dev =3D &pdev->dev;
-> > > +	struct interrupt_cnt_priv *priv;
-> > > +	int ret;
-> > > +
-> > > +	priv =3D devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-> > > +	if (!priv)
-> > > +		return -ENOMEM;
-> > > +
-> > > +	priv->irq =3D platform_get_irq_optional(pdev,  0);
-> > > +	if (priv->irq =3D=3D -ENXIO)
-> > > +		priv->irq =3D 0;
-> > > +	else if (priv->irq < 0)
-> > > +		return dev_err_probe(dev, priv->irq, "failed to get IRQ\n");
-> > > +
-> > > +	priv->gpio =3D devm_gpiod_get_optional(dev, NULL, GPIOD_IN);
-> > > +	if (IS_ERR(priv->gpio))
-> > > +		return dev_err_probe(dev, PTR_ERR(priv->gpio), "failed to get GPIO=
-\n");
-> > > +
-> > > +	if (!priv->irq && !priv->gpio) {
-> > > +		dev_err(dev, "IRQ and GPIO are not found. At least one source shou=
-ld be provided\n");
-> > > +		return -ENODEV;
-> > > +	}
-> > > +
-> > > +	if (!priv->irq) {
-> > > +		int irq =3D gpiod_to_irq(priv->gpio);
-> > > +
-> > > +		if (irq < 0)
-> > > +			return dev_err_probe(dev, irq, "failed to get IRQ from GPIO\n");
-> > > +
-> > > +		priv->irq =3D irq;
-> > > +	}
-> > > +
-> > > +	if (priv->gpio) {
-> >=20
-> > This if statement can be removed. There's no need to restrict this to
-> > just GPIO because we're always dealing with an IRQ, so allocate the
-> > "IRQ #" name unconditionally and set signals/num_signals.
->=20
-> Your previous suggestion was to no assign signals if there is no gpios.
-> What should I do?
->=20
-> Regards,
-> Oleksij
-> --=20
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-I'm sorry for not being clear. I'm saying there is no need to
-differentiate here because there will always be a respective IRQ line
-whether there is a GPIO line or not. So removing the if statement is all
-you need to do.
-
-Instead of:
-
-	if (priv->gpio) {
-		priv->signals.name =3D devm_kasprintf(dev, GFP_KERNEL, "IRQ %d",
-					    priv->irq);
-		if (!priv->signals.name)
-			return -ENOMEM;
-
-		priv->counter.signals =3D &priv->signals;
-		priv->counter.num_signals =3D 1;
-	}
-=09
-	priv->synapses.actions_list =3D interrupt_cnt_synapse_actionss;
-	priv->synapses.num_actions =3D ARRAY_SIZE(interrupt_cnt_synapse_actionss);
-	priv->synapses.signal =3D &priv->signals;
-	...
-
-You can just have those lines execute unconditionally even if there are
-no gpios:
-
-	priv->signals.name =3D devm_kasprintf(dev, GFP_KERNEL, "IRQ %d",
-				    priv->irq);
-	if (!priv->signals.name)
-		return -ENOMEM;
-
-	priv->counter.signals =3D &priv->signals;
-	priv->counter.num_signals =3D 1;
-=09
-	priv->synapses.actions_list =3D interrupt_cnt_synapse_actionss;
-	priv->synapses.num_actions =3D ARRAY_SIZE(interrupt_cnt_synapse_actionss);
-	priv->synapses.signal =3D &priv->signals;
-	...
-
-William Breathitt Gray
-
---zDZZKf6/pb+UPY5C
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmA47EQACgkQhvpINdm7
-VJL2OxAAw+LYMNXAWMCpkG64pnB+bM+4rXT547BrG7UkDPr7qvDHgVHY5cx+jTwR
-Uaisl3EGDMLID45fIiDXkZ74WYJB16xrVGTi8/4msfoJFINgKR7AzQ90wUqSx1VF
-3GOTy/kKTokzJQ41Hv1sJtGX5rh+5+bzt62nTpEuY4lc3lQAlgZk3/03IoR33zoX
-eAQ0eQFxyjIdakF3HYlGodS8Vz5dSviBNmmtElvaGRgEdBFiz6fxaKMGHV15nWO/
-BfhIf78TyPCq+KqhQLJb+L7Hvz4cv2bqLHxPOCkmXODBrylYd7TbmVA0JEl8prGM
-OlwPazjT+5a8/yNh/CM09G2xiUUzwunB61Hiny64MWPeWRNM3M4W0ErxQqmp3sgz
-k8QJJ+swppHzC/pLeZTJAEySwQk/eGGu9x3TL2r+GVpegsDkbeaiXqmFRy2+EiIx
-royJZVa6/7HJ0xTrCO8gUHSMFIK4dwAUpQaPeyXaJ/zEdlgdYxy5a9TugNVyVaez
-Zs2UtajmVUNHvqIVkbZUt8oQ6ZghMaHwZ2ffDMqG2249umcC7/RkmvpMH97XEDIj
-MqKCer2gVLqkLAGOV++7MiWLNgjBtCvDkH8atWPCNPny6mcUHE9bfWF1h8/Ckhn3
-5jU/aboI6HYWBfEwnmmMM7KE4J12jZeWZ/gzcFulV3j/JesOY2c=
-=lFTA
------END PGP SIGNATURE-----
-
---zDZZKf6/pb+UPY5C--
+> 
+> diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
+> index ef2a974a2f10..cd50dc12bd02 100644
+> --- a/drivers/counter/stm32-timer-cnt.c
+> +++ b/drivers/counter/stm32-timer-cnt.c
+> @@ -44,13 +44,14 @@ struct stm32_timer_cnt {
+>   * @STM32_COUNT_ENCODER_MODE_3: counts on both TI1FP1 and TI2FP2 edges
+>   */
+>  enum stm32_count_function {
+> -	STM32_COUNT_SLAVE_MODE_DISABLED = -1,
+> +	STM32_COUNT_SLAVE_MODE_DISABLED,
+>  	STM32_COUNT_ENCODER_MODE_1,
+>  	STM32_COUNT_ENCODER_MODE_2,
+>  	STM32_COUNT_ENCODER_MODE_3,
+>  };
+>  
+>  static enum counter_count_function stm32_count_functions[] = {
+> +	[STM32_COUNT_SLAVE_MODE_DISABLED] = COUNTER_COUNT_FUNCTION_INCREASE,
+>  	[STM32_COUNT_ENCODER_MODE_1] = COUNTER_COUNT_FUNCTION_QUADRATURE_X2_A,
+>  	[STM32_COUNT_ENCODER_MODE_2] = COUNTER_COUNT_FUNCTION_QUADRATURE_X2_B,
+>  	[STM32_COUNT_ENCODER_MODE_3] = COUNTER_COUNT_FUNCTION_QUADRATURE_X4,
+> @@ -90,6 +91,9 @@ static int stm32_count_function_get(struct counter_device *counter,
+>  	regmap_read(priv->regmap, TIM_SMCR, &smcr);
+>  
+>  	switch (smcr & TIM_SMCR_SMS) {
+> +	case 0:
+> +		*function = STM32_COUNT_SLAVE_MODE_DISABLED;
+> +		return 0;
+>  	case 1:
+>  		*function = STM32_COUNT_ENCODER_MODE_1;
+>  		return 0;
+> @@ -99,9 +103,9 @@ static int stm32_count_function_get(struct counter_device *counter,
+>  	case 3:
+>  		*function = STM32_COUNT_ENCODER_MODE_3;
+>  		return 0;
+> +	default:
+> +		return -EINVAL;
+>  	}
+> -
+> -	return -EINVAL;
+>  }
+>  
+>  static int stm32_count_function_set(struct counter_device *counter,
+> @@ -112,6 +116,9 @@ static int stm32_count_function_set(struct counter_device *counter,
+>  	u32 cr1, sms;
+>  
+>  	switch (function) {
+> +	case STM32_COUNT_SLAVE_MODE_DISABLED:
+> +		sms = 0;
+> +		break;
+>  	case STM32_COUNT_ENCODER_MODE_1:
+>  		sms = 1;
+>  		break;
+> @@ -122,8 +129,7 @@ static int stm32_count_function_set(struct counter_device *counter,
+>  		sms = 3;
+>  		break;
+>  	default:
+> -		sms = 0;
+> -		break;
+> +		return -EINVAL;
+>  	}
+>  
+>  	/* Store enable status */
+> @@ -274,31 +280,36 @@ static int stm32_action_get(struct counter_device *counter,
+>  	size_t function;
+>  	int err;
+>  
+> -	/* Default action mode (e.g. STM32_COUNT_SLAVE_MODE_DISABLED) */
+> -	*action = STM32_SYNAPSE_ACTION_NONE;
+> -
+>  	err = stm32_count_function_get(counter, count, &function);
+>  	if (err)
+> -		return 0;
+> +		return err;
+>  
+>  	switch (function) {
+> +	case STM32_COUNT_SLAVE_MODE_DISABLED:
+> +		/* counts on internal clock when CEN=1 */
+> +		*action = STM32_SYNAPSE_ACTION_NONE;
+> +		return 0;
+>  	case STM32_COUNT_ENCODER_MODE_1:
+>  		/* counts up/down on TI1FP1 edge depending on TI2FP2 level */
+>  		if (synapse->signal->id == count->synapses[0].signal->id)
+>  			*action = STM32_SYNAPSE_ACTION_BOTH_EDGES;
+> -		break;
+> +		else
+> +			*action = STM32_SYNAPSE_ACTION_NONE;
+> +		return 0;
+>  	case STM32_COUNT_ENCODER_MODE_2:
+>  		/* counts up/down on TI2FP2 edge depending on TI1FP1 level */
+>  		if (synapse->signal->id == count->synapses[1].signal->id)
+>  			*action = STM32_SYNAPSE_ACTION_BOTH_EDGES;
+> -		break;
+> +		else
+> +			*action = STM32_SYNAPSE_ACTION_NONE;
+> +		return 0;
+>  	case STM32_COUNT_ENCODER_MODE_3:
+>  		/* counts up/down on both TI1FP1 and TI2FP2 edges */
+>  		*action = STM32_SYNAPSE_ACTION_BOTH_EDGES;
+> -		break;
+> +		return 0;
+> +	default:
+> +		return -EINVAL;
+>  	}
+> -
+> -	return 0;
+>  }
+>  
+>  static const struct counter_ops stm32_timer_cnt_ops = {
+> 

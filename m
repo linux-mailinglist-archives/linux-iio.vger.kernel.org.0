@@ -2,52 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6776325A38
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Feb 2021 00:34:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C63DA325A83
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Feb 2021 01:05:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229966AbhBYXdu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 25 Feb 2021 18:33:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57638 "EHLO
+        id S232139AbhBZAEk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 25 Feb 2021 19:04:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229596AbhBYXds (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 25 Feb 2021 18:33:48 -0500
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB02CC06174A;
-        Thu, 25 Feb 2021 15:33:08 -0800 (PST)
-Received: by mail-pl1-x629.google.com with SMTP id ba1so4112987plb.1;
-        Thu, 25 Feb 2021 15:33:08 -0800 (PST)
+        with ESMTP id S230040AbhBZAEh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 25 Feb 2021 19:04:37 -0500
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF950C06174A;
+        Thu, 25 Feb 2021 16:03:57 -0800 (PST)
+Received: by mail-pg1-x52c.google.com with SMTP id g4so4980883pgj.0;
+        Thu, 25 Feb 2021 16:03:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=bryi5nIeAqPN6gv7PQEAJOmSmh8foFZDgMCzK44/Hyg=;
-        b=iqG/f6sZQa2houoo+VxHHF5MXsX3q6ya/wwhRKCc0jn/JbAnFB2nwn6AcRC+SMb8by
-         TtrQtNyfQLBdLC/7ipEnKQMfykNO7XppSRejPMrIAI42mzlddkR4Va38kmWC/dOZB9Q3
-         yQW81DF+qMabSjoY3OIDOsEtdv9q8R5ISUZ9OWeos27i6/ounQu/uOVvTXEUVN5hmqY6
-         d7ndpm/Mvctmq5r6ewk5IAPWvqhsrbrcnnwAI4QZ2AVAD6mAjTOtd1//QPmJGUZkOJ+N
-         a5X290eJgasRN/rkCxp055Hbb+DIQOTEEP2DFwWZomTMZQIT6OT5ZWNwn0wLIwQHwHVL
-         oT6Q==
+        bh=6xnb86RhPkQovrbj87oZceQLnvq33XU1nv/cjwf3XRI=;
+        b=DrisM3vA7nmsgSAqf45LxyW9UBp3YtQu+vV1WkifsIIv2wfd27mahTLSXUhGQqV8+K
+         5RV9E9FIopEmwr1/v7ECuDr94o02uI+7bfAbnxjrgDE/nFvGiamir5Cqv3+ElwV8AHRM
+         N1m58ZzinCQ9L5faX9r+B4X0vkG8IzMOt2KJSxK2u5b7vb+EeS3blgIePawlve4ok82B
+         cz5rkhtvRUmMMUxiKjtus32eUZjnvUOaPN0m45XrNDZ7A8tli04CPo4RjT9dK+dFt2Iz
+         9hlhiaiMmYx1nc51OCVmegDB0dGGAZMqxaw60qoY87nqWqfWZHQzEL0JX7MYS6z7dQBt
+         lpSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=bryi5nIeAqPN6gv7PQEAJOmSmh8foFZDgMCzK44/Hyg=;
-        b=J087Ub/HpD7cPBBLovCtld2t0eORHAAStXqEN5VTgqMIbcwZQIpWr4AvXUmArEJmLh
-         rZtlx3iC3zehRm3asbgef1i2oUN0rbnwI4bmLCMC+KBdi8d8WpK2b7LuA6gWqd6qG4Ug
-         5WCu7SbFAg1NwHpq607Ny8JPBQTtcyaFDe4YcB8T6g3+5hgl67ywcFWERNZiLznNoJ8a
-         HnIywQxQdhsjGLMHPESihNZ1hf1sCglJmYJ8IRnJo28hzFsyfY9j4eh098CmBk13wQFQ
-         3D5N2dU2aiBXtJ+Rz/zlkbSJgWWbQzyYiAAkk7C+AU1Eutr1fx+3G4WMc9IlLRoPt6Uf
-         a02g==
-X-Gm-Message-State: AOAM532Lvcg3ftEKAHLJ+wv9UrAkBUboTltUZcSW9I8f54MK3c7rvxlk
-        fpkxkyseffJmeX5539CuDGI=
-X-Google-Smtp-Source: ABdhPJxMEOKq3iRqEYUSu0q+taLEkz0dkFYCzdzEkJXmSR/VAt/A+73uvo8HhMqtFBoeA3pTOYRZhQ==
-X-Received: by 2002:a17:902:c407:b029:e3:cfa7:e300 with SMTP id k7-20020a170902c407b02900e3cfa7e300mr203101plk.49.1614295988431;
-        Thu, 25 Feb 2021 15:33:08 -0800 (PST)
+        bh=6xnb86RhPkQovrbj87oZceQLnvq33XU1nv/cjwf3XRI=;
+        b=Kg8cH/R0FJLwPaM6MNokV6mX1EeJiap7JKQ6ACUdmyEXPKK/PEBUCRsTySvyGtpsSu
+         zevr+yfngdGQVYIYmgzU2VRVGWwHWAw4q19ZM2setSlYsPVG7v2Jf6Dkxopxb3Lww2RD
+         BPD4aXzgbhJsG39Sx0Nh7x/xcyWGDeMrJl/ntZrDLk4/zkv4JVrG6Z9S8HzpCXfg1YHF
+         4isGMnZxXqxlYu8VFNR4xkoyegUXEatjFGN612LDS9tQalHDx2km1uNVfMhItOHeseSI
+         DXmXlbUycmZYwBZHomRRzx+qazqFaZ5R0Q47MUQ0dln+5zKvDRiHJ7zcHQFL6Gpp+egA
+         j1nw==
+X-Gm-Message-State: AOAM531rpdxYuhEQvKlkJGzE/0GBYCZxIQK5EIzULiUv24GoHJjBiYqp
+        DLLq3IfgCaDWe963VF2Oz7o=
+X-Google-Smtp-Source: ABdhPJyZR4ptosE9/NEaiXfthCao0Ri2ZmlqXid10F65SCpm3hmdwAM1dqRgjqlvxTmVJyK0f7qWJQ==
+X-Received: by 2002:aa7:9595:0:b029:1ee:8:2b76 with SMTP id z21-20020aa795950000b02901ee00082b76mr224566pfj.57.1614297837209;
+        Thu, 25 Feb 2021 16:03:57 -0800 (PST)
 Received: from shinobu (113x37x72x20.ap113.ftth.ucom.ne.jp. [113.37.72.20])
-        by smtp.gmail.com with ESMTPSA id 8sm7577762pfp.171.2021.02.25.15.33.02
+        by smtp.gmail.com with ESMTPSA id a19sm6965305pff.186.2021.02.25.16.03.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Feb 2021 15:33:07 -0800 (PST)
-Date:   Fri, 26 Feb 2021 08:32:59 +0900
+        Thu, 25 Feb 2021 16:03:56 -0800 (PST)
+Date:   Fri, 26 Feb 2021 09:03:48 +0900
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
@@ -57,130 +57,153 @@ Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
         linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         syednwaris@gmail.com, patrick.havelange@essensium.com,
         fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@st.com, o.rempel@pengutronix.de,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Subject: Re: [PATCH v8 19/22] counter: Implement extension*_name sysfs
- attributes
-Message-ID: <YDgzq6t5YRm6cFvO@shinobu>
+        alexandre.torgue@st.com, o.rempel@pengutronix.de
+Subject: Re: [PATCH v8 20/22] counter: Implement events_queue_size sysfs
+ attribute
+Message-ID: <YDg65OmLa05g53qc@shinobu>
 References: <cover.1613131238.git.vilhelm.gray@gmail.com>
- <c9b55d1cff6acac692a7853b0a25777ecf017b12.1613131238.git.vilhelm.gray@gmail.com>
- <20210214180913.05bd3498@archlinux>
- <YC98GTwzwt+pkzMO@shinobu>
- <20210221140507.0a5ef57f@archlinux>
+ <013b2b8682ddc3c85038083e6d5567696b6254b3.1613131238.git.vilhelm.gray@gmail.com>
+ <20210214181146.66d43da7@archlinux>
+ <YC5CMLuKnXbkZond@shinobu>
+ <20210221155140.3e1ef13c@archlinux>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="g5C8206GHyZn93ao"
+        protocol="application/pgp-signature"; boundary="76Dn/TuCDFUTSoIf"
 Content-Disposition: inline
-In-Reply-To: <20210221140507.0a5ef57f@archlinux>
+In-Reply-To: <20210221155140.3e1ef13c@archlinux>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---g5C8206GHyZn93ao
+--76Dn/TuCDFUTSoIf
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Feb 21, 2021 at 02:05:07PM +0000, Jonathan Cameron wrote:
-> On Fri, 19 Feb 2021 17:51:37 +0900
+On Sun, Feb 21, 2021 at 03:51:40PM +0000, Jonathan Cameron wrote:
+> On Thu, 18 Feb 2021 19:32:16 +0900
 > William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
 >=20
-> > On Sun, Feb 14, 2021 at 06:09:13PM +0000, Jonathan Cameron wrote:
-> > > On Fri, 12 Feb 2021 21:13:43 +0900
+> > On Sun, Feb 14, 2021 at 06:11:46PM +0000, Jonathan Cameron wrote:
+> > > On Fri, 12 Feb 2021 21:13:44 +0900
 > > > William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
 > > >  =20
-> > > > The Generic Counter chrdev interface expects users to supply extens=
-ion
-> > > > IDs in order to select extensions for requests. In order for users =
-to
-> > > > know what extension ID belongs to which extension this information =
-must
-> > > > be exposed. The extension*_name attribute provides a way for users =
-to
-> > > > discover what extension ID belongs to which extension by reading the
-> > > > respective extension name for an extension ID.
+> > > > The events_queue_size sysfs attribute provides a way for users to
+> > > > dynamically configure the Counter events queue size for the Counter
+> > > > character device interface. The size is in number of struct
+> > > > counter_event data structures. The number of elements will be round=
+ed-up
+> > > > to a power of 2 due to a requirement of the kfifo_alloc function ca=
+lled
+> > > > during reallocation of the queue.
 > > > >=20
-> > > > Cc: David Lechner <david@lechnology.com>
-> > > > Cc: Gwendal Grignou <gwendal@chromium.org>
-> > > > Cc: Dan Carpenter <dan.carpenter@oracle.com>
+> > > > Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 > > > > Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 > > > > ---
-> > > >  Documentation/ABI/testing/sysfs-bus-counter |  9 ++++
-> > > >  drivers/counter/counter-sysfs.c             | 51 +++++++++++++++++=
-----
-> > > >  2 files changed, 50 insertions(+), 10 deletions(-)
+> > > >  Documentation/ABI/testing/sysfs-bus-counter |  8 +++++++
+> > > >  drivers/counter/counter-chrdev.c            | 23 +++++++++++++++++=
+++
+> > > >  drivers/counter/counter-chrdev.h            |  2 ++
+> > > >  drivers/counter/counter-sysfs.c             | 25 +++++++++++++++++=
+++++
+> > > >  4 files changed, 58 insertions(+)
 > > > >=20
 > > > > diff --git a/Documentation/ABI/testing/sysfs-bus-counter b/Document=
 ation/ABI/testing/sysfs-bus-counter
-> > > > index 6353f0a2f8f8..847e96f19d19 100644
+> > > > index 847e96f19d19..f6cb2a8b08a7 100644
 > > > > --- a/Documentation/ABI/testing/sysfs-bus-counter
 > > > > +++ b/Documentation/ABI/testing/sysfs-bus-counter
-> > > > @@ -100,6 +100,15 @@ Description:
-> > > >  		Read-only attribute that indicates whether excessive noise is
-> > > >  		present at the channel Y counter inputs.
+> > > > @@ -212,6 +212,14 @@ Description:
+> > > >  		both edges:
+> > > >  			Any state transition.
 > > > > =20
-> > > > +What:		/sys/bus/counter/devices/counterX/countY/extensionZ_name
-> > > > +What:		/sys/bus/counter/devices/counterX/extensionZ_name
-> > > > +What:		/sys/bus/counter/devices/counterX/signalY/extensionZ_name
+> > > > +What:		/sys/bus/counter/devices/counterX/events_queue_size
 > > > > +KernelVersion:	5.13
 > > > > +Contact:	linux-iio@vger.kernel.org
 > > > > +Description:
-> > > > +		Read-only attribute that indicates the component name of
-> > > > +		Extension Z. =20
+> > > > +		Size of the Counter events queue in number of struct
+> > > > +		counter_event data structures. The number of elements will be
+> > > > +		rounded-up to a power of 2.
+> > > > +
+> > > >  What:		/sys/bus/counter/devices/counterX/name
+> > > >  KernelVersion:	5.2
+> > > >  Contact:	linux-iio@vger.kernel.org
+> > > > diff --git a/drivers/counter/counter-chrdev.c b/drivers/counter/cou=
+nter-chrdev.c
+> > > > index 16f02df7f73d..53eea894e13f 100644
+> > > > --- a/drivers/counter/counter-chrdev.c
+> > > > +++ b/drivers/counter/counter-chrdev.c
+> > > > @@ -375,6 +375,29 @@ void counter_chrdev_remove(struct counter_devi=
+ce *const counter)
+> > > >  	cdev_del(&counter->chrdev);
+> > > >  }
+> > > > =20
+> > > > +int counter_chrdev_realloc_queue(struct counter_device *const coun=
+ter,
+> > > > +				 size_t queue_size)
+> > > > +{
+> > > > +	int err;
+> > > > +	DECLARE_KFIFO_PTR(events, struct counter_event);
+> > > > +	unsigned long flags;
+> > > > +
+> > > > +	/* Allocate new events queue */
+> > > > +	err =3D kfifo_alloc(&events, queue_size, GFP_ATOMIC); =20
 > > >=20
-> > > Good to say what form this takes. =20
+> > > Is there any potential for losing events? =20
 > >=20
-> > Do you mean a description like this: "Read-only string attribute that
-> > indicates the component name of Extension Z"?
+> > We take the events_list_lock down below so we're safe against missing an
+> > event, but past events currently unread in the queue will be lost.
+> >=20
+> > Shortening the size of the queue is inherently a destructive process if
+> > we have more events in the current queue than can fit in the new queue.
+> > Because we a liable to lose some events in such a case, I think it's
+> > best to keep the behavior of this reallocation consistent and have it
+> > provide a fresh empty queue every time, as opposed to sometimes dropping
+> > events and sometimes not.
+> >=20
+> > I also suspect an actual user would be setting the size of their queue
+> > to the required amount before they begin watching events, rather than
+> > adjusting it sporadically during a live operation.
+> >
 >=20
-> My expectation would be that the possible strings are tightly constrained
-> (perhaps via review). So I'd like to see what they are and a brief descri=
-ption
-> of what each one means.
+> Absolutely agree.   As such I wonder if you are better off enforcing this
+> behaviour?  If the cdev is open for reading, don't allow the fifo to be
+> resized.=20
 >=20
 > Jonathan
 
-Okay I see what you mean now. These names will match the sysfs attribute
-filenames. So for example, if Extension 9 of Count 2 of Counter device
-is /sys/bus/counter/devices/counter4/count2/ceiling, then the attribute
-/sys/bus/counter/devices/counter4/count2/extension9_name will hold a
-value of "ceiling".
+I can't really think of a good reason not to, so let's enforce it: if
+the cdev is open, then we'll return an EINVAL if the user attempts to
+resize the queue.
 
-The idea is that the user walks down through each extension*_name to
-find sysfs attribute name for the Extension that they want. When they
-find the desired Extension name in say sysfs attribute extension9_name,
-then they know 9 is the ID number for that Extension.
+What is a good way to check for this condition? Should I just call
+kref_read() and see if it's greater than 1? For example, in
+counter_chrdev_realloc_queue():
 
-There is an alternative design I was considering: instead of
-extension*_name attributes, we could have each Extension sysfs attribute
-have a matching *_extension_id attribute which provides the respective
-Extension ID. So for example, using the same Extension as before:
-/sys/bus/counter/devices/counter4/count2/ceiling_extension_id will hold
-a value of 9.
-
-Do you think this alternative design would be more intuitive to users?
+	if (kref_read(&counter->dev.kobj.kref) > 1)
+		return -EINVAL;
 
 William Breathitt Gray
 
---g5C8206GHyZn93ao
+--76Dn/TuCDFUTSoIf
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmA4M6EACgkQhvpINdm7
-VJIBCg/+JWYA6xMb2Q9RpprWLkpN2p4IE7zL9kEZE+WzE6aHG1+usGMbF3AQMIO9
-LqssPDGtbchunSQk7RHkT8OMuUXIRaiIl1tE1Lefh+Tylaf4+VLbJo1t+I21MmLr
-LZDV8vnQnwFjhZhPgfOJo+dnOY1SldnRcZzfER607uWOb3xtVpHsdpWaS+IMwt6e
-Yn0Qe8URcv05YGrw4N2re9HtNU01hwlMTyKst7pNyY15MRwmPI7c9sBWC8nWKaCZ
-butQTV3VGDUA3VZ/DVwo0aOZ8HFbWsOpZKGII2IGNIvVgXBCKrkIw1W9wX9mHi4t
-s5uuIW0XBys3SzaxqV/zzV2jtQy/TexhjLMBELX+4M4WMeAbAGoHUA337QoI3EP1
-Z0b28249Cax2iddXR90cisXqYMd8F/9fCaMzgR3lQF/pC3wB9LCk9JhCPaogtRRC
-ZleiZZA3/cgnYFiUlOcb4mfQGlxOSk2fs/EoXdfKVbmuxaHddiqFZJxImv0TnrWg
-Gag0WcYipOglgAQyJUwP36FBerkcqUc463KF7BtSp3in5YMPhR5xgOxS3nlK2rKO
-ySKzH/JjLsIQ1vaKb/Z42sPNJ+7XANxp+Wuoz2kKwHWevljJybwJG+AAIwMlyrqc
-osUnIPljV010+LeG2LU9AS7tdrN3l49nDY6XS4ITC3HXeTHIzuo=
-=IeB7
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmA4OswACgkQhvpINdm7
+VJI4LBAApcdc9OT2tNICqKgjdL9fnN1UvMR4Mymto4r9OKzes/KKt7jFjbmqsaPU
+IpFVtpG2apdrK7LcCnvxnSAxCwOIkM1r0TOUQjiiWKggpibCOJCXcI1UWu6FTxtX
+3FcYUZZMmjFWvijm0LG3I/7UEo+wf3BcatoYSEERpok3IiPhzag+bG1WQhoirpbK
+3UdOHyRkYN8kyU4pfFK+T6A2pHO09fFmSJJB2oQ9d90avrJikMkBGQp6/qpIvhPM
+gMxbYwDxuSG7zCqkIU/GW22VvwhehfGQaoc5u/WlCks271YWPNcMyq94479EM7q7
+SP5STZczS/Jxc5Wq5HHuFsCQaSGTJ6uFIqjey88gjlkyvJ+Vzznj6OfBBRFFPPPe
+KL8UUXk7E9AM17u+Zoj8xV3NnBKixWTKcUnazPsM7QZSPH3fvLmdUbODFhU20gkf
+yYLSMZgxvkZSe3jHwaQn92MRCMPgqK2vDUIGVnvAYi+nmPQ/ly4VHwcpRi0iS2Pd
+p95tFoo2gD8vCwoUm4qm/h+n3WYbQZ44D53fUSAR4yQfdntmCueSFKQ1Cty/03uL
+BVDbwQs+GfKzPttZoChC2I4oNAyjnqrS861Q0Uz5Go1aqFE5GvfJluSrmsIYNf0u
+XiuOzzN/i9NOBe4GaeCeaaVQAznfbfat6Ym4nuXMOu4sV5twIJg=
+=vTG+
 -----END PGP SIGNATURE-----
 
---g5C8206GHyZn93ao--
+--76Dn/TuCDFUTSoIf--

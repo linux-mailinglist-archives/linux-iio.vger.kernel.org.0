@@ -2,31 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E0421326E7F
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Feb 2021 18:55:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 82B8E326E82
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Feb 2021 18:59:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230270AbhB0Rxe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 27 Feb 2021 12:53:34 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56960 "EHLO mail.kernel.org"
+        id S230010AbhB0Rzx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 27 Feb 2021 12:55:53 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57144 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230261AbhB0Rui (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 27 Feb 2021 12:50:38 -0500
+        id S230235AbhB0Rxm (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 27 Feb 2021 12:53:42 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2FF8F64E46;
-        Sat, 27 Feb 2021 17:49:55 +0000 (UTC)
-Date:   Sat, 27 Feb 2021 17:49:52 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 5226964E46;
+        Sat, 27 Feb 2021 17:53:00 +0000 (UTC)
+Date:   Sat, 27 Feb 2021 17:52:56 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <ardeleanalex@gmail.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: Re: [PATCH v2] iio: core: use kstrdup_const/kfree_const for buffer
- attributes
-Message-ID: <20210227174952.06f45503@archlinux>
-In-Reply-To: <20210223072926.79590-1-alexandru.ardelean@analog.com>
-References: <20210219085826.46622-2-alexandru.ardelean@analog.com>
-        <20210223072926.79590-1-alexandru.ardelean@analog.com>
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+        <nuno.sa@analog.com>, <dragos.bogdan@analog.com>
+Subject: Re: [PATCH v4 0/6] iio: core: Add mmap interface infrastructure
+Message-ID: <20210227175256.021b8542@archlinux>
+In-Reply-To: <20210218131045.1a34d0a1@archlinux>
+References: <20210217073638.21681-1-alexandru.ardelean@analog.com>
+        <20210218131045.1a34d0a1@archlinux>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -35,62 +35,95 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 23 Feb 2021 09:29:26 +0200
-Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
+On Thu, 18 Feb 2021 13:10:45 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> When the buffer attributes were wrapped in iio_dev_attr types, I forgot to
-> duplicate the names, so that when iio_free_chan_devattr_list() gets called
-> on cleanup, these get free'd.
-> I stumbled over this while accidentally breaking a driver doing
-> iio_device_register(), and then the issue appeared.
+> On Wed, 17 Feb 2021 09:36:32 +0200
+> Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 > 
-> Some ways to fix this are:
-> 1. Just use kstrdup() during iio_buffer_wrap_attr()
-> 2. Just use kfree_const() during iio_free_chan_devattr_list
-> 3. Use both kstrdup_const() & kfree_const() (in the places mentioned above)
+> Dropped v3 and applied v4 to the togreg branch of iio.git and pushed
+> it out as testing for the autobuilders to poke at it and see what
+> else they can find :)
 > 
-> This implements the third option, as it allows some users/drivers to
-> specify some attributes allocated on the heap.
-> 
-> Fixes: a1a11142f66c ("iio: buffer: wrap all buffer attributes into iio_dev_attr")
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> ---
->  drivers/iio/industrialio-buffer.c | 1 +
->  drivers/iio/industrialio-core.c   | 2 +-
->  2 files changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-> index 5d641f8adfbd..ac882e60c419 100644
-> --- a/drivers/iio/industrialio-buffer.c
-> +++ b/drivers/iio/industrialio-buffer.c
-> @@ -1306,6 +1306,7 @@ static struct attribute *iio_buffer_wrap_attr(struct iio_buffer *buffer,
->  		return NULL;
->  
->  	iio_attr->buffer = buffer;
-> +	iio_attr->dev_attr.attr.name = kstrdup_const(attr->name, GFP_KERNEL);
->  	memcpy(&iio_attr->dev_attr, dattr, sizeof(iio_attr->dev_attr));
+> Jonathan
 
-Doesn't this wipe out the duplicated string?  I swapped the two lines above
-which I think should avoid that.
-
-Merged into original patch
+Following an off list discussion, I've dropped this series for now as more
+time is needed to consider if the approach is the right way to go.
 
 Jonathan
 
-
->  
->  	list_add(&iio_attr->l, &buffer->buffer_attr_list);
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> index 0d8c6e88d993..cb2735d2ae4b 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -1358,7 +1358,7 @@ void iio_free_chan_devattr_list(struct list_head *attr_list)
->  	struct iio_dev_attr *p, *n;
->  
->  	list_for_each_entry_safe(p, n, attr_list, l) {
-> -		kfree(p->dev_attr.attr.name);
-> +		kfree_const(p->dev_attr.attr.name);
->  		list_del(&p->l);
->  		kfree(p);
->  	}
+> 
+> 
+> > Changelog v3 -> v4:
+> > * https://lore.kernel.org/linux-iio/20210215143234.3248-5-alexandru.ardelean@analog.com/T/
+> > * added patch 'iio: buffer-dma: reduce the type of block.size to u32'
+> >   - resolves error on 64 bit archs; 32 bit block size should be enough
+> > * in patch 'iio: buffer-dma: Add mmap support'
+> >   - added 'linux/types.h' include in uapi buffer.h header; an error
+> >     shows up when building with 'make allmodconfig'
+> > * in patch 'tools: iio: add example for high-speed buffer support'
+> >   - calling ioctl(BOCK_FREE) only if use_high_speed is true
+> > 
+> > Changelog v2 -> v3:
+> > * https://lore.kernel.org/linux-iio/20210212101143.18993-1-alexandru.ardelean@analog.com/T/#u
+> > * added 'Documentation: iio: add doc for high-speed buffer API'
+> > * add 'iio: buffer-dma: split iio_dma_buffer_fileio_free() function'
+> > * patch 'iio: buffer-dma: Add mmap support'
+> >    - unwind free on error path in iio_dma_buffer_alloc_blocks()
+> >    - removed double mm.h include
+> > * patch 'tools: iio: add example for high-speed buffer support'
+> >    - call IIO_BUFFER_BLOCK_FREE_IOCTL on the error path of the
+> >      enable_high_speed() function
+> > 
+> > Changelog v1 -> v2:
+> > * https://lore.kernel.org/linux-iio/20210211123353.78963-1-alexandru.ardelean@analog.com/T/#t
+> > * removed IIO_BUFFER_BLOCK_FLAG_CYCLIC flag; will be added in a later
+> >   patch
+> > * removed extra line in tools/iio/iio_generic_buffer.c
+> > * patch 'iio: core: Add mmap interface infrastructure'
+> >   added docstrings for new hooks (alloc_blocks, mmap, etc)
+> > 
+> > This is basically Lars' work adapted from branch:
+> >   https://github.com/larsclausen/linux/commits/iio-high-speed-5.10
+> > [hopefully i got the stuff correctly from that branch]
+> > 
+> > What is different, is that this one is adapted on top of the multibuffer
+> > support (currently at v5) discussed here:
+> >   https://lore.kernel.org/linux-iio/20210211122452.78106-1-alexandru.ardelean@analog.com/T/#t
+> > 
+> > Also, adapted an example for high-speed/mmap support in
+> > 'tools/iio/iio_generic_buffer.c'
+> > 
+> > The example is adapted from libiio:
+> >   https://github.com/analogdevicesinc/libiio/blob/master/local.c#L51
+> > but will all the ioctl()s organized after the one that are reserved
+> > (hopefully) for IIO
+> > 
+> > Tested that mmap() works.
+> > Moved (artifically) valid buffer0 as buffer2 and the operation still
+> > works.
+> > 
+> > Alexandru Ardelean (4):
+> >   Documentation: iio: add doc for high-speed buffer API
+> >   iio: buffer-dma: split iio_dma_buffer_fileio_free() function
+> >   iio: buffer-dma: reduce the type of block.size to u32
+> >   tools: iio: add example for high-speed buffer support
+> > 
+> > Lars-Peter Clausen (2):
+> >   iio: core: Add mmap interface infrastructure
+> >   iio: buffer-dma: Add mmap support
+> > 
+> >  Documentation/iio/iio_high_speed_buffers.rst  | 100 ++++++
+> >  Documentation/iio/index.rst                   |   2 +
+> >  drivers/iio/buffer/industrialio-buffer-dma.c  | 324 ++++++++++++++++--
+> >  .../buffer/industrialio-buffer-dmaengine.c    |  28 +-
+> >  drivers/iio/industrialio-buffer.c             | 158 +++++++++
+> >  include/linux/iio/buffer-dma.h                |  27 +-
+> >  include/linux/iio/buffer_impl.h               |  23 ++
+> >  include/uapi/linux/iio/buffer.h               |  51 +++
+> >  tools/iio/iio_generic_buffer.c                | 185 +++++++++-
+> >  9 files changed, 847 insertions(+), 51 deletions(-)
+> >  create mode 100644 Documentation/iio/iio_high_speed_buffers.rst
+> >   
+> 
 

@@ -2,32 +2,29 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C410C326E03
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Feb 2021 17:56:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19AA7326E75
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Feb 2021 18:45:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230063AbhB0Q4T (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 27 Feb 2021 11:56:19 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40994 "EHLO mail.kernel.org"
+        id S230081AbhB0Rol (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 27 Feb 2021 12:44:41 -0500
+Received: from mail.kernel.org ([198.145.29.99]:56522 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230001AbhB0Q4N (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 27 Feb 2021 11:56:13 -0500
+        id S230209AbhB0Rmc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 27 Feb 2021 12:42:32 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DB69E61606;
-        Sat, 27 Feb 2021 16:55:29 +0000 (UTC)
-Date:   Sat, 27 Feb 2021 16:55:26 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 0142664E45;
+        Sat, 27 Feb 2021 17:41:49 +0000 (UTC)
+Date:   Sat, 27 Feb 2021 17:41:46 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Joe Sandom <joe.g.sandom@gmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Joe Sandom <joe.sandom@outlook.com>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RESEND][PATCH v4 1/2] Added AMS tsl2591 driver implementation
-Message-ID: <20210227165526.0f8917c8@archlinux>
-In-Reply-To: <20210222212313.29319-1-joe.g.sandom@gmail.com>
-References: <20210222212313.29319-1-joe.g.sandom@gmail.com>
+To:     <alexandru.tachici@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 1/1] iio: adc: ad7124: allow more than 8 channels
+Message-ID: <20210227174146.441fb665@archlinux>
+In-Reply-To: <20210223164404.93540-2-alexandru.tachici@analog.com>
+References: <20210223164404.93540-1-alexandru.tachici@analog.com>
+        <20210223164404.93540-2-alexandru.tachici@analog.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -36,1384 +33,742 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 22 Feb 2021 21:23:12 +0000
-Joe Sandom <joe.g.sandom@gmail.com> wrote:
+On Tue, 23 Feb 2021 18:44:04 +0200
+<alexandru.tachici@analog.com> wrote:
 
-> Driver implementation for AMS/TAOS tsl2591 ambient light sensor.
+> From: Alexandru Tachici <alexandru.tachici@analog.com>
 > 
-> This driver supports configuration via device tree and sysfs.
-> Supported channels for raw infrared light intensity,
-> raw combined light intensity and illuminance in lux.
-> The driver additionally supports iio events on lower and
-> upper thresholds.
+> Currently AD7124-8 driver cannot use more than 8 IIO channels
+> because it was assigning the channel configurations bijectively
+> to channels specified in the device-tree. This is not possible
+> to do when using more than 8 channels as AD7124-8 has only 8
+> configuration registers.
 > 
-> This is a very-high sensitivity light-to-digital converter that
-> transforms light intensity into a digital signal.
+> To allow the user to use all channels at once the driver
+> will keep in memory configurations for all channels but
+> will program only 8 of them at a time on the device.
+> If multiple channels have the same configuration, only
+> one configuration register will be used. If there
+> are more configurations than available registers only
+> the last 8 used configurations will be allowed to exist
+> on the device in a LRU fashion.
 > 
-> Datasheet Available at: https://ams.com/tsl25911
-> 
-> Signed-off-by: Joe Sandom <joe.g.sandom@gmail.com>
+> Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
 
-Hi Joe,
+Hi Alexandru,
 
-A few minor things left that I've comment on inline. Very nearly
-ready to merge I think.  We have lots of time until next merge
-window anyway so it is good to take the opportunity to clean these
-little things up.
+I like the solution you've gone with here. Its fairly intuitive
+solution to a fiddly problem :)
+
+All comments inline are fairly minor tweaks.
+
+Thanks,
 
 Jonathan
 
 > ---
+>  drivers/iio/adc/ad7124.c | 461 ++++++++++++++++++++++++++-------------
+>  1 file changed, 308 insertions(+), 153 deletions(-)
 > 
-> Changes in v4:
-> - Moved binding document to a separate patch and is now formed as a patch series
-> - Ensure vendor prefix is included in macros and that macros have appropriate naming
-> - Made use of BIT, GENMASK and FIELD_GET where appropriate for improved readability
-> - Corrected data channels terminology to more appropriate data register naming
-> - Removed tsl2591_als_readings and return data directly depending on the channel being read. See tsl2591_read_channel_data.
-> - Add more detailed comment on mutex definition
-> - Read als data as a block read instead of 4 separate byte reads
-> - Reserve *_compatible functions for checking compatibility, not for assigning the setting value
-> - Enforce setting corresponding upper/lower threshold to avoid issues in ordering when modifying thresholds
-> - Remove tsl2591_sysfs_attrs_ctrl and use info_mask to handle sysfs configuration where applicable
-> - Use .read_avail callback for *_available functions
-> - In .write_event_value, clean up period calculation handling. Removed some redundant code.
-> - Cleaned up some debug prints
-> - Cleaned up mutex handling for improved readability
-> - Ensured not to swallow return code in if statements in function calls
-> 
-> Reason for re-send;
-> - Maintainer email was outlook address, changed to gmail address as this
->   is the email the patch is being sent from.
-> 
->  drivers/iio/light/Kconfig   |   11 +
->  drivers/iio/light/Makefile  |    1 +
->  drivers/iio/light/tsl2591.c | 1217 +++++++++++++++++++++++++++++++++++
->  3 files changed, 1229 insertions(+)
->  create mode 100644 drivers/iio/light/tsl2591.c
-> 
-> diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
-> index 33ad4dd0b5c7..07550f1a1783 100644
-> --- a/drivers/iio/light/Kconfig
-> +++ b/drivers/iio/light/Kconfig
-> @@ -501,6 +501,17 @@ config TSL2583
->  	  Provides support for the TAOS tsl2580, tsl2581 and tsl2583 devices.
->  	  Access ALS data via iio, sysfs.
+> diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+> index 766c73333604..d5d0596eb6ed 100644
+> --- a/drivers/iio/adc/ad7124.c
+> +++ b/drivers/iio/adc/ad7124.c
+> @@ -11,6 +11,7 @@
+>  #include <linux/err.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/kernel.h>
+> +#include <linux/kfifo.h>
+>  #include <linux/module.h>
+>  #include <linux/of_device.h>
+>  #include <linux/regulator/consumer.h>
+> @@ -86,6 +87,10 @@
+>  #define AD7124_SINC3_FILTER 2
+>  #define AD7124_SINC4_FILTER 0
 >  
-> +config TSL2591
-> +        tristate "TAOS TSL2591 ambient light sensor"
-> +        depends on I2C
-> +        help
-> +          Select Y here for support of the AMS/TAOS TSL2591 ambient light sensor,
-> +          featuring channels for combined visible + IR intensity and lux illuminance.
-> +          Access als data via iio and sysfs. Supports iio_events.
+> +#define AD7124_CONF_ADDR_OFFSET	20
+> +#define AD7124_MAX_CONFIGS	8
+> +#define AD7124_MAX_CHANNELS	16
 > +
-> +          To compile this driver as a module, select M: the
-> +          module will be called tsl2591.
-> +
->  config TSL2772
->  	tristate "TAOS TSL/TMD2x71 and TSL/TMD2x72 Family of light and proximity sensors"
->  	depends on I2C
-> diff --git a/drivers/iio/light/Makefile b/drivers/iio/light/Makefile
-> index ea376deaca54..d10912faf964 100644
-> --- a/drivers/iio/light/Makefile
-> +++ b/drivers/iio/light/Makefile
-> @@ -48,6 +48,7 @@ obj-$(CONFIG_ST_UVIS25_SPI)	+= st_uvis25_spi.o
->  obj-$(CONFIG_TCS3414)		+= tcs3414.o
->  obj-$(CONFIG_TCS3472)		+= tcs3472.o
->  obj-$(CONFIG_TSL2583)		+= tsl2583.o
-> +obj-$(CONFIG_TSL2591)		+= tsl2591.o
->  obj-$(CONFIG_TSL2772)		+= tsl2772.o
->  obj-$(CONFIG_TSL4531)		+= tsl4531.o
->  obj-$(CONFIG_US5182D)		+= us5182d.o
-> diff --git a/drivers/iio/light/tsl2591.c b/drivers/iio/light/tsl2591.c
-> new file mode 100644
-> index 000000000000..1124e9da5106
-> --- /dev/null
-> +++ b/drivers/iio/light/tsl2591.c
-> @@ -0,0 +1,1217 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Copyright (C) 2020 Joe Sandom <joe.g.sandom@gmail.com>
-> + *
-> + * Datasheet available at: https://ams.com/tsl25911
-> + *
-> + * Device driver for the TAOS TSL2591. This is a very-high sensitivity
-> + * light-to-digital converter that transforms light intensity into a digital
-> + * signal.
-> + */
-> +
-> +#include <linux/bitfield.h>
-> +#include <linux/debugfs.h>
-> +#include <linux/delay.h>
-> +#include <linux/i2c.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-> +#include <linux/mutex.h>
-> +#include <linux/pm_runtime.h>
-> +
-> +#include <linux/iio/events.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/sysfs.h>
-> +
-> +/* ALS integration time field value to als time*/
-> +#define TSL2591_FVAL_TO_ATIME(x) (((x) + 1) * 100)
-> +
-> +/* TSL2591 register set */
-> +#define TSL2591_ENABLE      0x00
-> +#define TSL2591_CONTROL     0x01
-> +#define TSL2591_AILTL       0x04
-> +#define TSL2591_AILTH       0x05
-> +#define TSL2591_AIHTL       0x06
-> +#define TSL2591_AIHTH       0x07
-> +#define TSL2591_NP_AILTL    0x08
-> +#define TSL2591_NP_AILTH    0x09
-> +#define TSL2591_NP_AIHTL    0x0A
-> +#define TSL2591_NP_AIHTH    0x0B
-> +#define TSL2591_PERSIST     0x0C
-> +#define TSL2591_PACKAGE_ID  0x11
-> +#define TSL2591_DEVICE_ID   0x12
-> +#define TSL2591_STATUS      0x13
-> +#define TSL2591_C0_DATAL    0x14
-> +#define TSL2591_C0_DATAH    0x15
-> +#define TSL2591_C1_DATAL    0x16
-> +#define TSL2591_C1_DATAH    0x17
-> +
-> +/* TSL2591 command register definitions */
-> +#define TSL2591_CMD_NOP             (BIT(5) | BIT(7))
-> +#define TSL2591_CMD_SF_INTSET       (BIT(2) | GENMASK(7, 5))
-> +#define TSL2591_CMD_SF_CALS_I       (BIT(0) | BIT(2) | GENMASK(7, 5))
-> +#define TSL2591_CMD_SF_CALS_NPI     (GENMASK(2, 0) | GENMASK(7, 5))
-> +#define TSL2591_CMD_SF_CNP_ALSI     (BIT(1) | BIT(3) | GENMASK(7, 5))
-> +
-> +/* TSL2591 enable register definitions */
-> +#define TSL2591_PWR_ON              BIT(0)
-> +#define TSL2591_PWR_OFF             0x00
-> +#define TSL2591_ENABLE_ALS          BIT(1)
-> +#define TSL2591_ENABLE_ALS_INT      BIT(4)
-> +#define TSL2591_ENABLE_SLEEP_INT    BIT(6)
-> +#define TSL2591_ENABLE_NP_INT       BIT(7)
-> +
-> +/* TSL2591 control register definitions */
-> +#define TSL2591_CTRL_ALS_INTEGRATION_100MS  0x00
-> +#define TSL2591_CTRL_ALS_INTEGRATION_200MS  BIT(0)
-> +#define TSL2591_CTRL_ALS_INTEGRATION_300MS  BIT(1)
-> +#define TSL2591_CTRL_ALS_INTEGRATION_400MS  GENMASK(1, 0)
-> +#define TSL2591_CTRL_ALS_INTEGRATION_500MS  BIT(2)
-> +#define TSL2591_CTRL_ALS_INTEGRATION_600MS  (BIT(0) | BIT(2))
-> +#define TSL2591_CTRL_ALS_LOW_GAIN           0x00
-> +#define TSL2591_CTRL_ALS_MED_GAIN           BIT(4)
-> +#define TSL2591_CTRL_ALS_HIGH_GAIN          BIT(5)
-> +#define TSL2591_CTRL_ALS_MAX_GAIN           GENMASK(5, 4)
-> +#define TSL2591_CTRL_SYS_RESET              BIT(7)
-> +
-> +/* TSL2591 persist register definitions */
-> +#define TSL2591_PRST_ALS_INT_CYCLE_0        0x00
-> +#define TSL2591_PRST_ALS_INT_CYCLE_ANY      BIT(0)
-> +#define TSL2591_PRST_ALS_INT_CYCLE_2        BIT(1)
-> +#define TSL2591_PRST_ALS_INT_CYCLE_3        GENMASK(1, 0)
-> +#define TSL2591_PRST_ALS_INT_CYCLE_5        BIT(2)
-> +#define TSL2591_PRST_ALS_INT_CYCLE_10       (BIT(0) | BIT(2))
-> +#define TSL2591_PRST_ALS_INT_CYCLE_15       GENMASK(2, 1)
-> +#define TSL2591_PRST_ALS_INT_CYCLE_20       GENMASK(2, 0)
-> +#define TSL2591_PRST_ALS_INT_CYCLE_25       BIT(3)
-> +#define TSL2591_PRST_ALS_INT_CYCLE_30       (BIT(0) | BIT(3))
-> +#define TSL2591_PRST_ALS_INT_CYCLE_35       (BIT(1) | BIT(3))
-> +#define TSL2591_PRST_ALS_INT_CYCLE_40       (GENMASK(1, 0) | BIT(3))
-> +#define TSL2591_PRST_ALS_INT_CYCLE_45       GENMASK(3, 2)
-> +#define TSL2591_PRST_ALS_INT_CYCLE_50       (BIT(0) | GENMASK(3, 2))
-> +#define TSL2591_PRST_ALS_INT_CYCLE_55       GENMASK(3, 1)
-> +#define TSL2591_PRST_ALS_INT_CYCLE_60       GENMASK(3, 0)
-> +#define TSL2591_PRST_ALS_INT_CYCLE_MAX      TSL2591_PRST_ALS_INT_CYCLE_60
-> +
-> +/* TSL2591 persist interrupt cycle literals */
-> +#define TSL2591_PRST_ALS_INT_CYCLE_1_LIT      1
-
-Why?  These just map a define with the number in it to the number.
-Hence not magic numbers, just put the values inline instead of the defines.
-
-> +#define TSL2591_PRST_ALS_INT_CYCLE_2_LIT      2
-> +#define TSL2591_PRST_ALS_INT_CYCLE_3_LIT      3
-> +#define TSL2591_PRST_ALS_INT_CYCLE_5_LIT      5
-> +#define TSL2591_PRST_ALS_INT_CYCLE_10_LIT     10
-> +#define TSL2591_PRST_ALS_INT_CYCLE_15_LIT     15
-> +#define TSL2591_PRST_ALS_INT_CYCLE_20_LIT     20
-> +#define TSL2591_PRST_ALS_INT_CYCLE_25_LIT     25
-> +#define TSL2591_PRST_ALS_INT_CYCLE_30_LIT     30
-> +#define TSL2591_PRST_ALS_INT_CYCLE_35_LIT     35
-> +#define TSL2591_PRST_ALS_INT_CYCLE_40_LIT     40
-> +#define TSL2591_PRST_ALS_INT_CYCLE_45_LIT     45
-> +#define TSL2591_PRST_ALS_INT_CYCLE_50_LIT     50
-> +#define TSL2591_PRST_ALS_INT_CYCLE_55_LIT     55
-> +#define TSL2591_PRST_ALS_INT_CYCLE_60_LIT     60
-> +
-> +/* TSL2591 PID register mask */
-> +#define TSL2591_PACKAGE_ID_MASK    GENMASK(5, 4)
-> +
-> +/* TSL2591 ID register mask */
-> +#define TSL2591_DEVICE_ID_MASK     GENMASK(7, 0)
-> +
-> +/* TSL2591 status register masks */
-> +#define TSL2591_STS_ALS_VALID_MASK   BIT(0)
-> +#define TSL2591_STS_ALS_INT_MASK     BIT(4)
-> +#define TSL2591_STS_NPERS_INT_MASK   BIT(5)
-> +#define TSL2591_STS_VAL_HIGH_MASK    BIT(0)
-> +
-> +/* TSL2591 constant values */
-> +#define TSL2591_PACKAGE_ID_VAL  0x00
-> +#define TSL2591_DEVICE_ID_VAL   0x50
-> +
-> +/* Power off suspend delay time MS */
-> +#define TSL2591_POWER_OFF_DELAY_MS   2000
-> +
-> +/* TSL2591 default values */
-> +#define TSL2591_DEFAULT_ALS_INT_TIME          TSL2591_CTRL_ALS_INTEGRATION_300MS
-> +#define TSL2591_DEFAULT_ALS_GAIN              TSL2591_CTRL_ALS_MED_GAIN
-> +#define TSL2591_DEFAULT_ALS_PERSIST           TSL2591_PRST_ALS_INT_CYCLE_ANY
-> +#define TSL2591_DEFAULT_ALS_LOWER_THRESH      100
-> +#define TSL2591_DEFAULT_ALS_UPPER_THRESH      1500
-> +
-> +/* TSL2591 number of data registers */
-> +#define TSL2591_NUM_DATA_REGISTERS     4
-> +
-> +/* TSL2591 number of valid status reads on ADC complete */
-> +#define TSL2591_ALS_STS_VALID_COUNT    10
-> +
-> +/* TSL2591 maximum values */
-> +#define TSL2591_MAX_ALS_INT_TIME_MS    600
-> +#define TSL2591_ALS_MAX_VALUE	       65535
-> +
-> +/*
-> + * LUX calculations;
-> + * AGAIN values from Adafruits TSL2591 Arduino library
-> + * https://github.com/adafruit/Adafruit_TSL2591_Library
-> + */
-> +#define TSL2591_CTRL_ALS_LOW_GAIN_MULTIPLIER   1
-> +#define TSL2591_CTRL_ALS_MED_GAIN_MULTIPLIER   25
-> +#define TSL2591_CTRL_ALS_HIGH_GAIN_MULTIPLIER  428
-> +#define TSL2591_CTRL_ALS_MAX_GAIN_MULTIPLIER   9876
-> +#define TSL2591_LUX_COEFFICIENT                408
-> +
-> +struct tsl2591_als_settings {
-> +	u8 als_int_time;
-> +	u8 als_gain;
-> +	u8 als_persist;
-> +	u16 als_lower_thresh;
-> +	u16 als_upper_thresh;
+>  enum ad7124_ids {
+>  	ID_AD7124_4,
+>  	ID_AD7124_8,
+> @@ -136,25 +141,36 @@ struct ad7124_chip_info {
+>  };
+>  
+>  struct ad7124_channel_config {
+> +	bool live;
+> +	unsigned int cfg_slot;
+>  	enum ad7124_ref_sel refsel;
+>  	bool bipolar;
+>  	bool buf_positive;
+>  	bool buf_negative;
+> -	unsigned int ain;
+>  	unsigned int vref_mv;
+>  	unsigned int pga_bits;
+>  	unsigned int odr;
+> +	unsigned int odr_sel_bits;
+>  	unsigned int filter_type;
+>  };
+>  
+> +struct ad7124_channel {
+> +	unsigned int nr;
+> +	struct ad7124_channel_config cfg;
+> +	unsigned int ain;
+> +	unsigned int slot;
 > +};
 > +
-> +struct tsl2591_chip {
-> +	/*
-> +	 * Keep als_settings in sync with hardware state
-> +	 * and ensure multiple readers are serialized.
-> +	 */
-> +	struct mutex als_mutex;
-> +	struct i2c_client *client;
-> +	struct tsl2591_als_settings als_settings;
-> +
-> +	bool events_enabled;
-> +};
-> +
-> +/*
-> + * Period table is ALS persist cycle x integration time setting
-> + * Integration times: 100ms, 200ms, 300ms, 400ms, 500ms, 600ms
-> + * ALS cycles: 1, 2, 3, 5, 10, 20, 25, 30, 35, 40, 45, 50, 55, 60
-> + */
-> +static const char * const tsl2591_als_period_list[] = {
-> +	"0.1 0.2 0.3 0.5 1.0 2.0 2.5 3.0 3.5 4.0 4.5 5.0 5.5 6.0",
-> +	"0.2 0.4 0.6 1.0 2.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0 11.0 12.0",
-> +	"0.3 0.6 0.9 1.5 3.0 6.0 7.5 9.0 10.5 12.0 13.5 15.0 16.5 18.0",
-> +	"0.4 0.8 1.2 2.0 4.0 8.0 10.0 12.0 14.0 16.0 18.0 20.0 22.0 24.0",
-> +	"0.5 1.0 1.5 2.5 5.0 10.0 12.5 15.0 17.5 20.0 22.5 25.0 27.5 30.0",
-> +	"0.6 1.2 1.8 3.0 6.0 12.0 15.0 18.0 21.0 24.0 27.0 30.0 33.0 36.0",
-> +};
-> +
-> +static const int tsl2591_int_time_available[] = {
-> +	100, 200, 300, 400, 500, 600,
-> +};
-> +
-> +static const int tsl2591_calibscale_available[] = {
-> +	1, 25, 428, 9876,
-> +};
-> +
-> +static int tsl2591_gain_to_multiplier(const u8 als_gain)
+>  struct ad7124_state {
+>  	const struct ad7124_chip_info *chip_info;
+>  	struct ad_sigma_delta sd;
+> -	struct ad7124_channel_config *channel_config;
+> +	struct ad7124_channel *channels;
+>  	struct regulator *vref[4];
+>  	struct clk *mclk;
+>  	unsigned int adc_control;
+>  	unsigned int num_channels;
+> +	struct mutex cfgs_lock; /* lock for configs access */
+> +	DECLARE_KFIFO(live_cfgs_fifo, struct ad7124_channel_config *, AD7124_MAX_CONFIGS);
+>  };
+>  
+>  static const struct iio_chan_spec ad7124_channel_template = {
+> @@ -238,33 +254,9 @@ static int ad7124_set_mode(struct ad_sigma_delta *sd,
+>  	return ad_sd_write_reg(&st->sd, AD7124_ADC_CONTROL, 2, st->adc_control);
+>  }
+>  
+> -static int ad7124_set_channel(struct ad_sigma_delta *sd, unsigned int channel)
+> -{
+> -	struct ad7124_state *st = container_of(sd, struct ad7124_state, sd);
+> -	unsigned int val;
+> -
+> -	val = st->channel_config[channel].ain | AD7124_CHANNEL_EN(1) |
+> -	      AD7124_CHANNEL_SETUP(channel);
+> -
+> -	return ad_sd_write_reg(&st->sd, AD7124_CHANNEL(channel), 2, val);
+> -}
+> -
+> -static const struct ad_sigma_delta_info ad7124_sigma_delta_info = {
+> -	.set_channel = ad7124_set_channel,
+> -	.set_mode = ad7124_set_mode,
+> -	.has_registers = true,
+> -	.addr_shift = 0,
+> -	.read_mask = BIT(6),
+> -	.data_reg = AD7124_DATA,
+> -	.irq_flags = IRQF_TRIGGER_FALLING,
+> -};
+> -
+> -static int ad7124_set_channel_odr(struct ad7124_state *st,
+> -				  unsigned int channel,
+> -				  unsigned int odr)
+> +static void ad7124_set_channel_odr(struct ad7124_state *st, unsigned int channel, unsigned int odr)
+>  {
+>  	unsigned int fclk, odr_sel_bits;
+> -	int ret;
+>  
+>  	fclk = clk_get_rate(st->mclk);
+>  	/*
+> @@ -280,36 +272,10 @@ static int ad7124_set_channel_odr(struct ad7124_state *st,
+>  	else if (odr_sel_bits > 2047)
+>  		odr_sel_bits = 2047;
+>  
+> -	ret = ad7124_spi_write_mask(st, AD7124_FILTER(channel),
+> -				    AD7124_FILTER_FS_MSK,
+> -				    AD7124_FILTER_FS(odr_sel_bits), 3);
+> -	if (ret < 0)
+> -		return ret;
+> -	/* fADC = fCLK / (FS[10:0] x 32) */
+> -	st->channel_config[channel].odr =
+> -		DIV_ROUND_CLOSEST(fclk, odr_sel_bits * 32);
+> -
+> -	return 0;
+> -}
+> -
+> -static int ad7124_set_channel_gain(struct ad7124_state *st,
+> -				   unsigned int channel,
+> -				   unsigned int gain)
+> -{
+> -	unsigned int res;
+> -	int ret;
+> -
+> -	res = ad7124_find_closest_match(ad7124_gain,
+> -					ARRAY_SIZE(ad7124_gain), gain);
+> -	ret = ad7124_spi_write_mask(st, AD7124_CONFIG(channel),
+> -				    AD7124_CONFIG_PGA_MSK,
+> -				    AD7124_CONFIG_PGA(res), 2);
+> -	if (ret < 0)
+> -		return ret;
+> -
+> -	st->channel_config[channel].pga_bits = res;
+>  
+> -	return 0;
+> +	/* fADC = fCLK / (FS[10:0] x 32) */
+> +	st->channels[channel].cfg.odr = DIV_ROUND_CLOSEST(fclk, odr_sel_bits * 32);
+> +	st->channels[channel].cfg.odr_sel_bits = odr_sel_bits;
+>  }
+>  
+>  static int ad7124_get_3db_filter_freq(struct ad7124_state *st,
+> @@ -317,9 +283,9 @@ static int ad7124_get_3db_filter_freq(struct ad7124_state *st,
+>  {
+>  	unsigned int fadc;
+>  
+> -	fadc = st->channel_config[channel].odr;
+> +	fadc = st->channels[channel].cfg.odr;
+>  
+> -	switch (st->channel_config[channel].filter_type) {
+> +	switch (st->channels[channel].cfg.filter_type) {
+>  	case AD7124_SINC3_FILTER:
+>  		return DIV_ROUND_CLOSEST(fadc * 230, 1000);
+>  	case AD7124_SINC4_FILTER:
+> @@ -329,9 +295,8 @@ static int ad7124_get_3db_filter_freq(struct ad7124_state *st,
+>  	}
+>  }
+>  
+> -static int ad7124_set_3db_filter_freq(struct ad7124_state *st,
+> -				      unsigned int channel,
+> -				      unsigned int freq)
+> +static void ad7124_set_3db_filter_freq(struct ad7124_state *st, unsigned int channel,
+> +				       unsigned int freq)
+>  {
+>  	unsigned int sinc4_3db_odr;
+>  	unsigned int sinc3_3db_odr;
+> @@ -349,21 +314,224 @@ static int ad7124_set_3db_filter_freq(struct ad7124_state *st,
+>  		new_odr = sinc3_3db_odr;
+>  	}
+>  
+> -	if (st->channel_config[channel].filter_type != new_filter) {
+> -		int ret;
+> +	st->channels[channel].cfg.filter_type = new_filter;
+> +	st->channels[channel].cfg.odr = new_odr;
+> +}
+>  
+> -		st->channel_config[channel].filter_type = new_filter;
+> -		ret = ad7124_spi_write_mask(st, AD7124_FILTER(channel),
+> -					    AD7124_FILTER_TYPE_MSK,
+> -					    AD7124_FILTER_TYPE_SEL(new_filter),
+> -					    3);
+> -		if (ret < 0)
+> -			return ret;
+> +static bool ad7124_configs_equal(struct ad7124_channel_config *cfg1,
+> +				 struct ad7124_channel_config *cfg2)
 > +{
-> +	switch (als_gain) {
-> +	case TSL2591_CTRL_ALS_LOW_GAIN:
-> +		return TSL2591_CTRL_ALS_LOW_GAIN_MULTIPLIER;
-> +	case TSL2591_CTRL_ALS_MED_GAIN:
-> +		return TSL2591_CTRL_ALS_MED_GAIN_MULTIPLIER;
-> +	case TSL2591_CTRL_ALS_HIGH_GAIN:
-> +		return TSL2591_CTRL_ALS_HIGH_GAIN_MULTIPLIER;
-> +	case TSL2591_CTRL_ALS_MAX_GAIN:
-> +		return TSL2591_CTRL_ALS_MAX_GAIN_MULTIPLIER;
-> +	default:
-> +		return -EINVAL;
-> +	}
+> +	return ((cfg1->refsel == cfg2->refsel) &&
+> +		(cfg1->bipolar == cfg2->bipolar) &&
+> +		(cfg1->buf_positive == cfg2->buf_positive) &&
+> +		(cfg1->buf_negative == cfg2->buf_negative) &&
+> +		(cfg1->vref_mv == cfg2->vref_mv) &&
+> +		(cfg1->pga_bits == cfg2->pga_bits) &&
+> +		(cfg1->odr == cfg2->odr) &&
+> +		(cfg1->odr_sel_bits == cfg2->odr_sel_bits) &&
+> +		(cfg1->filter_type == cfg2->filter_type));
 > +}
 > +
-> +static u8 tsl2591_multiplier_to_gain(const u32 multiplier)
+> +static struct ad7124_channel_config *ad7124_find_similar_live_cfg(struct ad7124_state *st,
+> +								  struct ad7124_channel_config *cfg)
 > +{
-> +	switch (multiplier) {
-> +	case TSL2591_CTRL_ALS_LOW_GAIN_MULTIPLIER:
-> +		return TSL2591_CTRL_ALS_LOW_GAIN;
-> +	case TSL2591_CTRL_ALS_MED_GAIN_MULTIPLIER:
-> +		return TSL2591_CTRL_ALS_MED_GAIN;
-> +	case TSL2591_CTRL_ALS_HIGH_GAIN_MULTIPLIER:
-> +		return TSL2591_CTRL_ALS_HIGH_GAIN;
-> +	case TSL2591_CTRL_ALS_MAX_GAIN_MULTIPLIER:
-> +		return TSL2591_CTRL_ALS_MAX_GAIN;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int tsl2591_persist_cycle_to_lit(const u8 als_persist)
-> +{
-> +	switch (als_persist) {
-> +	case TSL2591_PRST_ALS_INT_CYCLE_ANY:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_1_LIT;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_2:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_2_LIT;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_3:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_3_LIT;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_5:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_5_LIT;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_10:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_10_LIT;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_15:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_15_LIT;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_20:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_20_LIT;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_25:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_25_LIT;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_30:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_30_LIT;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_35:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_35_LIT;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_40:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_40_LIT;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_45:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_45_LIT;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_50:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_50_LIT;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_55:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_55_LIT;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_60:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_60_LIT;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int tsl2591_persist_lit_to_cycle(const u8 als_persist)
-> +{
-> +	switch (als_persist) {
-> +	case TSL2591_PRST_ALS_INT_CYCLE_1_LIT:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_ANY;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_2_LIT:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_2;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_3_LIT:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_3;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_5_LIT:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_5;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_10_LIT:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_10;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_15_LIT:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_15;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_20_LIT:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_20;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_25_LIT:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_25;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_30_LIT:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_30;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_35_LIT:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_35;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_40_LIT:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_40;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_45_LIT:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_45;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_50_LIT:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_50;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_55_LIT:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_55;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_60_LIT:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_60;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int tsl2591_compatible_int_time(struct tsl2591_chip *chip,
-> +				       const u32 als_integration_time)
-> +{
-> +	switch (als_integration_time) {
-> +	case TSL2591_CTRL_ALS_INTEGRATION_100MS:
-> +	case TSL2591_CTRL_ALS_INTEGRATION_200MS:
-> +	case TSL2591_CTRL_ALS_INTEGRATION_300MS:
-> +	case TSL2591_CTRL_ALS_INTEGRATION_400MS:
-> +	case TSL2591_CTRL_ALS_INTEGRATION_500MS:
-> +	case TSL2591_CTRL_ALS_INTEGRATION_600MS:
-> +		return 0;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int tsl2591_als_time_to_fval(const u32 als_integration_time)
-> +{
+> +	struct ad7124_channel_config *cfg_aux;
 > +	int i;
 > +
-> +	for (i = 0; i < ARRAY_SIZE(tsl2591_int_time_available); ++i) {
-> +		if (als_integration_time == tsl2591_int_time_available[i])
-> +			return ((als_integration_time / 100) - 1);
-> +		if (i == (ARRAY_SIZE(tsl2591_int_time_available) - 1))
-> +			break;
+> +	for (i = 0; i < st->num_channels; i++) {
+> +		cfg_aux = &st->channels[i].cfg;
+> +
+> +		if (cfg_aux->live && ad7124_configs_equal(cfg, cfg_aux))
+> +			return cfg_aux;
 > +	}
 > +
-> +	return -EINVAL;
+> +	return NULL;
 > +}
 > +
-> +static int tsl2591_compatible_gain(struct tsl2591_chip *chip, const u8 als_gain)
+> +static int ad7124_find_free_config_slot(struct ad7124_state *st)
 > +{
-> +	switch (als_gain) {
-> +	case TSL2591_CTRL_ALS_LOW_GAIN:
-> +	case TSL2591_CTRL_ALS_MED_GAIN:
-> +	case TSL2591_CTRL_ALS_HIGH_GAIN:
-> +	case TSL2591_CTRL_ALS_MAX_GAIN:
-> +		return 0;
+> +	int slots[AD7124_MAX_CONFIGS] = {0};
+> +	struct ad7124_channel_config *cfg;
+> +	int i = 0;
+> +
+> +	/* mark all currently used configuration slots */
+> +	for (i = 0; i < st->num_channels; i++) {
+> +		cfg = &st->channels[i].cfg;
+> +
+> +		if (cfg->live)
+> +			slots[cfg->cfg_slot] = 1;
+
+Worth maintaining a bitmap as we make use of configs
+rather than computing this here?
+Defintiely use a bitmap here if not and find_next_zero_bit() to
+find an empty hole. 
+
+> +	}
+> +
+> +	/* find a free one */
+> +	for (i = 0; i < AD7124_MAX_CONFIGS; i++) {
+> +		if (slots[i] == 0)
+> +			return i;
+> +	}
+> +
+> +	return -1;
+> +}
+> +
+> +static int ad7124_init_config_vref(struct ad7124_state *st, struct ad7124_channel_config *cfg)
+> +{
+> +	unsigned int refsel = cfg->refsel;
+> +
+> +	switch (refsel) {
+> +	case AD7124_REFIN1:
+> +	case AD7124_REFIN2:
+> +	case AD7124_AVDD_REF:
+> +		if (IS_ERR(st->vref[refsel])) {
+> +			dev_err(&st->sd.spi->dev,
+> +				"Error, trying to use external voltage reference without a %s regulator.\n",
+> +				ad7124_ref_names[refsel]);
+> +				return PTR_ERR(st->vref[refsel]);
+> +		}
+> +		cfg->vref_mv = regulator_get_voltage(st->vref[refsel]);
+> +		/* Conversion from uV to mV */
+> +		cfg->vref_mv /= 1000;
+> +		break;
+> +	case AD7124_INT_REF:
+> +		cfg->vref_mv = 2500;
+> +		st->adc_control &= ~AD7124_ADC_CTRL_REF_EN_MSK;
+> +		st->adc_control |= AD7124_ADC_CTRL_REF_EN(1);
+> +		return ad_sd_write_reg(&st->sd, AD7124_ADC_CONTROL,
+> +				      2, st->adc_control);
 > +	default:
+> +		dev_err(&st->sd.spi->dev, "Invalid reference %d\n", refsel);
 > +		return -EINVAL;
 > +	}
+> +
+> +	return 0;
+Move this up to the the one break path above?  (trivial!)
 > +}
 > +
-> +static int tsl2591_compatible_als_persist_cycle(struct tsl2591_chip *chip,
-> +						const u32 als_persist)
+> +static int ad7124_write_config(struct ad7124_state *st, struct ad7124_channel_config *cfg,
+> +			       unsigned int cfg_slot)
 > +{
-> +	switch (als_persist) {
-> +	case TSL2591_PRST_ALS_INT_CYCLE_ANY:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_2:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_3:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_5:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_10:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_15:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_20:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_25:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_30:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_35:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_40:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_45:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_50:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_55:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_60:
-> +		return 0;
-> +	default:
-> +		return -EINVAL;
-> +	}
+> +	unsigned int tmp;
+> +	unsigned int val;
+> +	int ret;
+> +
+> +	cfg->cfg_slot = cfg_slot;
+> +
+> +	tmp = (cfg->buf_positive << 1) + cfg->buf_negative;
+> +	val = AD7124_CONFIG_BIPOLAR(cfg->bipolar) | AD7124_CONFIG_REF_SEL(cfg->refsel) |
+> +	      AD7124_CONFIG_IN_BUFF(tmp);
+> +	ret = ad_sd_write_reg(&st->sd, AD7124_CONFIG(cfg->cfg_slot), 2, val);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	tmp = AD7124_FILTER_TYPE_SEL(cfg->filter_type);
+> +	ret = ad7124_spi_write_mask(st, AD7124_FILTER(cfg->cfg_slot), AD7124_FILTER_TYPE_MSK,
+> +				    tmp, 3);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = ad7124_spi_write_mask(st, AD7124_FILTER(cfg->cfg_slot), AD7124_FILTER_FS_MSK,
+> +				    AD7124_FILTER_FS(cfg->odr_sel_bits), 3);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return ad7124_spi_write_mask(st, AD7124_CONFIG(cfg->cfg_slot), AD7124_CONFIG_PGA_MSK,
+> +				     AD7124_CONFIG_PGA(cfg->pga_bits), 2);
 > +}
 > +
-> +static int tsl2591_wait_adc_complete(struct tsl2591_chip *chip)
+> +static struct ad7124_channel_config *ad7124_pop_config(struct ad7124_state *st)
 > +{
-> +	struct i2c_client *client = chip->client;
-> +	struct tsl2591_als_settings settings = chip->als_settings;
-> +	int delay = TSL2591_FVAL_TO_ATIME(settings.als_int_time);
+> +	struct ad7124_channel_config *lru_cfg;
+> +	struct ad7124_channel_config *cfg;
 > +	int ret;
 > +	int i;
 > +
-> +	if (!delay)
-> +		return -EINVAL;
-> +
-> +	/*
-> +	 * Sleep for ALS integration time to allow enough time
-> +	 * for an ADC read cycle to complete. Check status after
-> +	 * delay for ALS valid
+> +	/* pop least recently used config from the fifo
+
+/*
+ * Pop
+
+> +	 * in order to make room for the new one
 > +	 */
-> +	msleep(delay);
+> +	ret = kfifo_get(&st->live_cfgs_fifo, &lru_cfg);
+> +	if (ret <= 0)
+> +		return NULL;
 > +
-> +	/* Check for status ALS valid flag for up to 100ms */
-> +	for (i = 0; i < TSL2591_ALS_STS_VALID_COUNT; ++i) {
-> +		ret = i2c_smbus_read_byte_data(client,
-> +					       TSL2591_CMD_NOP | TSL2591_STATUS);
-> +		if (ret < 0) {
-> +			dev_err(&client->dev, "Failed to read register\n");
-> +			return -EINVAL;
-> +		}
-> +		ret = FIELD_GET(TSL2591_STS_ALS_VALID_MASK, ret);
-> +		if (ret == TSL2591_STS_VAL_HIGH_MASK)
-> +			break;
+> +	lru_cfg->live = false;
 > +
-> +		if (i == (TSL2591_ALS_STS_VALID_COUNT - 1))
-> +			return -ENODATA;
+> +	/* invalidate all other configs that pointed to this one */
+> +	for (i = 0; i < st->num_channels; i++) {
+> +		cfg = &st->channels[i].cfg;
 > +
-> +		usleep_range(9000, 10000);
-> +	}
-> +
-> +	return 0;
+> +		if (cfg->cfg_slot == lru_cfg->cfg_slot)
+> +			cfg->live = false;
+>  	}
+>  
+> -	return ad7124_set_channel_odr(st, channel, new_odr);
+> +	return lru_cfg;
 > +}
 > +
-> +/*
-> + * tsl2591_read_channel_data - Reads raw channel data and calculates lux
-> + *
-> + * Formula for lux calculation;
-> + * Derived from Adafruit's TSL2591 library
-> + * Link: https://github.com/adafruit/Adafruit_TSL2591_Library
-> + * Counts Per Lux (CPL) = (ATIME_ms * AGAIN) / LUX DF
-> + * lux = ((C0DATA - C1DATA) * (1 - (C1DATA / C0DATA))) / CPL
-> + *
-> + * Scale values to get more representative value of lux i.e.
-> + * lux = ((C0DATA - C1DATA) * (1000 - ((C1DATA * 1000) / C0DATA))) / CPL
-> + *
-> + * Channel 0 = IR + Visible
-> + * Channel 1 = IR only
-> + *
-
-Blank line here doesn't add anything, so good to drop it.
-
-> + */
-> +static int tsl2591_read_channel_data(struct iio_dev *indio_dev,
-> +				     struct iio_chan_spec const *chan,
-> +				     int *val, int *val2)
+> +static int ad7124_enable_channel(struct ad7124_state *st, struct ad7124_channel *ch)
 > +{
-> +	struct tsl2591_chip *chip = iio_priv(indio_dev);
-> +	struct tsl2591_als_settings *settings = &chip->als_settings;
-> +	struct i2c_client *client = chip->client;
-> +	int ret;
-> +	u8 als_data[TSL2591_NUM_DATA_REGISTERS];
-> +
-> +	int counts_per_lux;
-> +	int lux;
-> +	int gain_multi;
-> +	int int_time_fval;
-> +
-> +	u16 als_ch0;
-> +	u16 als_ch1;
-> +
-> +	ret = tsl2591_wait_adc_complete(chip);
-> +	if (ret < 0) {
-> +		dev_err(&client->dev, "No data available. Err: %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	ret = i2c_smbus_read_i2c_block_data(client,
-> +					    TSL2591_CMD_NOP | TSL2591_C0_DATAL,
-> +					    sizeof(als_data), als_data);
-> +	if (ret < 0) {
-> +		dev_err(&client->dev, "Failed to read data bytes");
-> +			return ret;
-For comment below if (ret), that won't work on these calls because IIRC they
-return the number of bytes transferred.  However, you can move the check locally
-that this is the right length and ensure 0 is returned for the good path.
-> +	}
-> +
-> +	als_ch0 = le16_to_cpup((const __le16 *)&als_data[0]);
-> +	als_ch1 = le16_to_cpup((const __le16 *)&als_data[2]);
-> +
-> +	switch (chan->type) {
-> +	case IIO_INTENSITY:
-> +		if (chan->channel2 == IIO_MOD_LIGHT_BOTH)
-> +			*val = als_ch0;
-> +		else if (chan->channel2 == IIO_MOD_LIGHT_IR)
-> +			*val = als_ch1;
-> +		else
-> +			return -EINVAL;
-> +		break;
-> +	case IIO_LIGHT:
-> +		gain_multi = tsl2591_gain_to_multiplier(settings->als_gain);
-> +		if (gain_multi < 0) {
-> +			dev_err(&client->dev, "Invalid multiplier");
-> +			return gain_multi;
-> +		}
-> +
-> +		int_time_fval = TSL2591_FVAL_TO_ATIME(settings->als_int_time);
-> +		/* Calculate counts per lux value */
-> +		counts_per_lux =
-> +			(int_time_fval * gain_multi) / TSL2591_LUX_COEFFICIENT;
-> +
-> +		dev_dbg(&client->dev, "Counts Per Lux: %d\n", counts_per_lux);
-> +
-> +		/* Calculate lux value */
-> +		lux = ((als_ch0 - als_ch1) *
-> +		       (1000 - ((als_ch1 * 1000) / als_ch0))) / counts_per_lux;
-> +
-> +		dev_dbg(&client->dev, "Raw lux calculation: %d\n", lux);
-> +
-> +		/* Divide by 1000 to get real lux value before scaling */
-> +		*val = lux / 1000;
-> +
-> +		/* Get the decimal part of lux reading */
-> +		*val2 = ((lux - (*val * 1000)) * 1000);
-> +
-> +		break;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +
-> +	return ret;
-
-See above for why: I'd return 0 here
-
-> +}
-> +
-> +static int tsl2591_set_als_gain_int_time(struct tsl2591_chip *chip)
+> +	ch->cfg.live = true;
+> +	return ad_sd_write_reg(&st->sd, AD7124_CHANNEL(ch->nr), 2, ch->ain |
+> +			      AD7124_CHANNEL_SETUP(ch->cfg.cfg_slot) | AD7124_CHANNEL_EN(1));
+>  }
+>  
+> +static int ad7124_prepare_read(struct ad7124_state *st, int address)
 > +{
-> +	struct i2c_client *client = chip->client;
-> +	struct tsl2591_als_settings als_settings = chip->als_settings;
+> +	struct ad7124_channel_config *cfg = &st->channels[address].cfg;
+> +	struct ad7124_channel_config *live_cfg;
+> +	struct ad7124_channel_config *lru_cfg;
+> +	int free_cfg_slot;
 > +	int ret;
 > +
-> +	ret = i2c_smbus_write_byte_data(client,
-> +					TSL2591_CMD_NOP | TSL2591_CONTROL,
-> +					als_settings.als_int_time | als_settings.als_gain);
-> +	if (ret < 0)
-> +		dev_err(&client->dev, "Failed to set als gain & int time\n");
-> +
-> +	return ret;
-> +}
-> +
-> +static int tsl2591_set_als_thresholds(struct tsl2591_chip *chip)
-> +{
-> +	struct i2c_client *client = chip->client;
-> +	struct tsl2591_als_settings als_settings = chip->als_settings;
-> +	int ret;
-> +
-> +	u8 als_lower_l;
-> +	u8 als_lower_h;
-> +	u8 als_upper_l;
-> +	u8 als_upper_h;
-> +
-> +	if (als_settings.als_lower_thresh >= als_settings.als_upper_thresh)
-> +		return -EINVAL;
-> +
-> +	if (als_settings.als_upper_thresh > TSL2591_ALS_MAX_VALUE)
-> +		return -EINVAL;
-> +
-> +	if (als_settings.als_upper_thresh < als_settings.als_lower_thresh)
-> +		return -EINVAL;
-> +
-> +	als_lower_l = (als_settings.als_lower_thresh & 0x00FF);
+> +	/* Before doing any reads assign the channel a configuration.
 
-Given you are writing these into a byte field, probably better to express those
-masks as 0xFF.
+/*
+ * Before
 
-> +	als_lower_h = ((als_settings.als_lower_thresh >> 8) & 0x00FF);
-> +	als_upper_l = (als_settings.als_upper_thresh & 0x00FF);
-> +	als_upper_h = ((als_settings.als_upper_thresh >> 8) & 0x00FF);
-> +
-> +	ret = i2c_smbus_write_byte_data(client,
-> +					TSL2591_CMD_NOP | TSL2591_AILTL,
-> +					als_lower_l);
-> +	if (ret < 0) {
-> +		dev_err(&client->dev, "Failed to set als lower threshold\n");
-> +		return ret;
-> +	}
-> +
-> +	ret = i2c_smbus_write_byte_data(client,
-> +					TSL2591_CMD_NOP | TSL2591_AILTH,
-> +					als_lower_h);
-> +	if (ret < 0) {
-> +		dev_err(&client->dev, "Failed to set als lower threshold\n");
-> +		return ret;
-> +	}
-> +
-> +	ret = i2c_smbus_write_byte_data(client,
-> +					TSL2591_CMD_NOP | TSL2591_AIHTL,
-> +					als_upper_l);
-> +	if (ret < 0) {
-> +		dev_err(&client->dev, "Failed to set als upper threshold\n");
-> +		return ret;
-> +	}
-> +
-> +	ret = i2c_smbus_write_byte_data(client,
-> +					TSL2591_CMD_NOP | TSL2591_AIHTH,
-> +					als_upper_h);
-> +	if (ret < 0) {
-> +		dev_err(&client->dev, "Failed to set als upper threshold\n");
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int tsl2591_set_als_persist_cycle(struct tsl2591_chip *chip)
-> +{
-> +	struct i2c_client *client = chip->client;
-> +	struct tsl2591_als_settings als_settings = chip->als_settings;
-> +	int ret;
-> +
-> +	ret = i2c_smbus_write_byte_data(client,
-> +					TSL2591_CMD_NOP | TSL2591_PERSIST,
-> +					als_settings.als_persist);
-> +	if (ret < 0)
-> +		dev_err(&client->dev, "Failed to set als persist cycle\n");
-
-All of these can only return ret < 0 || ret == 0 so if you instead just check
-if (ret) 
-
-then that logic is clear to any callers.  The advantage is some of the control
-flow below becomes simpler because you can rely on ret never being greater than
-0 (which could be a non error value)
-
-> +
-> +	return ret;
-> +}
-> +
-> +static int tsl2591_set_power_state(struct tsl2591_chip *chip, u8 state)
-> +{
-> +	struct i2c_client *client = chip->client;
-> +	int ret;
-> +
-> +	ret = i2c_smbus_write_byte_data(client,
-> +					TSL2591_CMD_NOP | TSL2591_ENABLE,
-> +					state);
-> +	if (ret < 0)
-> +		dev_err(&client->dev,
-> +			"Failed to set the power state to %#04x\n", state);
-> +
-> +	return ret;
-> +}
-> +
-> +static ssize_t tsl2591_in_illuminance_period_available_show(struct device *dev,
-> +							    struct device_attribute *attr,
-> +							    char *buf)
-> +{
-> +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> +	struct tsl2591_chip *chip = iio_priv(indio_dev);
-> +
-> +	return snprintf(buf, PAGE_SIZE, "%s\n",
-> +		       tsl2591_als_period_list[chip->als_settings.als_int_time]);
-> +}
-> +
-> +static IIO_DEVICE_ATTR_RO(tsl2591_in_illuminance_period_available, 0);
-> +
-> +static struct attribute *tsl2591_event_attrs_ctrl[] = {
-> +	&iio_dev_attr_tsl2591_in_illuminance_period_available.dev_attr.attr,
-> +	NULL
-> +};
-> +
-> +static const struct attribute_group tsl2591_event_attribute_group = {
-> +	.attrs = tsl2591_event_attrs_ctrl,
-> +};
-> +
-> +static const struct iio_event_spec tsl2591_events[] = {
-> +	{
-> +		.type = IIO_EV_TYPE_THRESH,
-> +		.dir = IIO_EV_DIR_RISING,
-> +		.mask_separate = BIT(IIO_EV_INFO_VALUE),
-> +	}, {
-> +		.type = IIO_EV_TYPE_THRESH,
-> +		.dir = IIO_EV_DIR_FALLING,
-> +		.mask_separate = BIT(IIO_EV_INFO_VALUE),
-> +	}, {
-> +		.type = IIO_EV_TYPE_THRESH,
-> +		.dir = IIO_EV_DIR_EITHER,
-> +		.mask_separate = BIT(IIO_EV_INFO_PERIOD) |
-> +				BIT(IIO_EV_INFO_ENABLE),
-> +	},
-> +};
-> +
-> +static const struct iio_chan_spec tsl2591_channels[] = {
-> +	{
-> +		.type = IIO_INTENSITY,
-> +		.modified = 1,
-> +		.channel2 = IIO_MOD_LIGHT_IR,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-> +		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) |
-> +						     BIT(IIO_CHAN_INFO_CALIBSCALE),
-> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME) |
-> +					   BIT(IIO_CHAN_INFO_CALIBSCALE)
-> +	},
-> +	{
-> +		.type = IIO_INTENSITY,
-> +		.modified = 1,
-> +		.channel2 = IIO_MOD_LIGHT_BOTH,
-> +		.event_spec = tsl2591_events,
-> +		.num_event_specs = ARRAY_SIZE(tsl2591_events),
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-> +		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) |
-> +						     BIT(IIO_CHAN_INFO_CALIBSCALE),
-> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME) |
-> +					   BIT(IIO_CHAN_INFO_CALIBSCALE)
-> +	},
-> +	{
-> +		.type = IIO_LIGHT,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
-> +		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) |
-> +						     BIT(IIO_CHAN_INFO_CALIBSCALE),
-> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME) |
-> +					   BIT(IIO_CHAN_INFO_CALIBSCALE)
-> +	},
-> +};
-> +
-> +static int tsl2591_read_raw(struct iio_dev *indio_dev,
-> +			    struct iio_chan_spec const *chan,
-> +			    int *val, int *val2, long mask)
-> +{
-> +	struct tsl2591_chip *chip = iio_priv(indio_dev);
-> +	struct i2c_client *client = chip->client;
-> +	int ret;
-> +
-> +	pm_runtime_get_sync(&client->dev);
-> +
-> +	mutex_lock(&chip->als_mutex);
-> +
-> +	ret = -EINVAL;
-
-As below, better to move this into the places where the error occurs
-even if you need to repeat it a few times.
-
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		if (chan->type != IIO_INTENSITY)
-> +			break;
-> +
-> +		ret = tsl2591_read_channel_data(indio_dev, chan, val, val2);
-> +		if (ret < 0)
-> +			break;
-> +
-> +		ret = IIO_VAL_INT;
-> +		break;
-> +	case IIO_CHAN_INFO_PROCESSED:
-> +		if (chan->type != IIO_LIGHT)
-> +			break;
-> +
-> +		ret = tsl2591_read_channel_data(indio_dev, chan, val, val2);
-> +		if (ret < 0)
-> +			break;
-> +
-> +		ret = IIO_VAL_INT_PLUS_MICRO;
-> +		break;
-> +	case IIO_CHAN_INFO_INT_TIME:
-> +		if (chan->type != IIO_INTENSITY)
-> +			break;
-> +
-> +		*val = TSL2591_FVAL_TO_ATIME(chip->als_settings.als_int_time);
-> +		ret = IIO_VAL_INT;
-> +		break;
-> +	case IIO_CHAN_INFO_CALIBSCALE:
-> +		if (chan->type != IIO_INTENSITY)
-> +			break;
-> +
-> +		*val = tsl2591_gain_to_multiplier(chip->als_settings.als_gain);
-> +		ret = IIO_VAL_INT;
-> +		break;
-> +	}
-> +
-> +	mutex_unlock(&chip->als_mutex);
-> +
-> +	pm_runtime_mark_last_busy(&client->dev);
-> +	pm_runtime_put_autosuspend(&client->dev);
-> +
-> +	return ret;
-> +}
-> +
-> +static int tsl2591_write_raw(struct iio_dev *indio_dev,
-> +			     struct iio_chan_spec const *chan,
-> +			     int val, int val2, long mask)
-> +{
-> +	struct tsl2591_chip *chip = iio_priv(indio_dev);
-> +
-> +	u8 gain;
-> +	u32 int_time;
-> +	int ret;
-> +
-> +	mutex_lock(&chip->als_mutex);
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_INT_TIME:
-> +		int_time = tsl2591_als_time_to_fval(val);
-> +		if (int_time < 0) {
-> +			ret = int_time;
-> +			goto err;
-> +		}
-> +		ret = tsl2591_compatible_int_time(chip, int_time);
-> +		if (ret < 0)
-> +			goto err;
-> +
-> +		chip->als_settings.als_int_time = int_time;
-> +		break;
-> +	case IIO_CHAN_INFO_CALIBSCALE:
-> +		gain = tsl2591_multiplier_to_gain(val);
-> +		if (gain < 0) {
-> +			ret = gain;
-> +			goto err;
-> +		}
-> +		ret = tsl2591_compatible_gain(chip, gain);
-> +		if (ret < 0)
-> +			goto err;
-> +
-> +		chip->als_settings.als_gain = gain;
-> +		break;
-> +	default:
-> +		ret = -EINVAL;
-> +		goto err;
-> +	}
-> +
-> +	ret = tsl2591_set_als_gain_int_time(chip);
-> +	if (ret < 0)
-> +		goto err;
-> +
-> +	mutex_unlock(&chip->als_mutex);
-> +
-> +	return 0;
-> +err:
-
-Same as below.
-
-> +	mutex_unlock(&chip->als_mutex);
-> +	return ret;
-> +}
-> +
-> +static int tsl2591_read_available(struct iio_dev *indio_dev,
-> +				  struct iio_chan_spec const *chan,
-> +				  const int **vals, int *type, int *length,
-> +				  long mask)
-> +{
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_INT_TIME:
-> +		*length = ARRAY_SIZE(tsl2591_int_time_available);
-> +		*vals = tsl2591_int_time_available;
-> +		*type = IIO_VAL_INT;
-> +		return IIO_AVAIL_LIST;
-> +
-> +	case IIO_CHAN_INFO_CALIBSCALE:
-> +		*length = ARRAY_SIZE(tsl2591_calibscale_available);
-> +		*vals = tsl2591_calibscale_available;
-> +		*type = IIO_VAL_INT;
-> +		return IIO_AVAIL_LIST;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int tsl2591_read_event_value(struct iio_dev *indio_dev,
-> +				    const struct iio_chan_spec *chan,
-> +				    enum iio_event_type type,
-> +				    enum iio_event_direction dir,
-> +				    enum iio_event_info info, int *val,
-> +				    int *val2)
-> +{
-> +	struct tsl2591_chip *chip = iio_priv(indio_dev);
-> +	struct i2c_client *client = chip->client;
-> +	int als_persist;
-> +	int period;
-> +	int ret;
-> +	int int_time;
-> +
-> +	mutex_lock(&chip->als_mutex);
-> +
-> +	switch (info) {
-> +	case IIO_EV_INFO_VALUE:
-> +		switch (dir) {
-> +		case IIO_EV_DIR_RISING:
-> +			*val = chip->als_settings.als_upper_thresh;
-> +			break;
-> +		case IIO_EV_DIR_FALLING:
-> +			*val = chip->als_settings.als_lower_thresh;
-> +			break;
-> +		default:
-> +			ret = -EINVAL;
-> +			goto err;
-> +		}
-> +		ret = IIO_VAL_INT;
-> +		break;
-> +	case IIO_EV_INFO_PERIOD:
-> +		ret = i2c_smbus_read_byte_data(client,
-> +					       TSL2591_CMD_NOP | TSL2591_PERSIST);
-> +		if (ret <= 0 || ret > TSL2591_PRST_ALS_INT_CYCLE_MAX)
-> +			goto err;
-> +
-> +		als_persist = tsl2591_persist_cycle_to_lit(ret);
-> +		int_time = TSL2591_FVAL_TO_ATIME(chip->als_settings.als_int_time);
-> +		period = als_persist * (int_time * MSEC_PER_SEC);
-> +
-> +		*val = period / USEC_PER_SEC;
-> +		*val2 = period % USEC_PER_SEC;
-> +
-> +		ret = IIO_VAL_INT_PLUS_MICRO;
-> +		break;
-> +	default:
-> +		ret = -EINVAL;
-> +		goto err;
-> +	}
-> +
-> +	mutex_unlock(&chip->als_mutex);
-> +
-> +	return ret;
-> +
-> +err:
-> +	mutex_unlock(&chip->als_mutex);
-
-As below, combine this and the good path by moving the label
-to before the unlock above.
-
-> +	return ret;
-> +}
-> +
-> +static int tsl2591_write_event_value(struct iio_dev *indio_dev,
-> +				     const struct iio_chan_spec *chan,
-> +				     enum iio_event_type type,
-> +				     enum iio_event_direction dir,
-> +				     enum iio_event_info info, int val,
-> +				     int val2)
-> +{
-> +	struct tsl2591_chip *chip = iio_priv(indio_dev);
-> +	int period, int_time, als_persist;
-> +	int ret;
-> +
-> +	if (val < 0 || val2 < 0)
-> +		return -EINVAL;
-> +
-> +	mutex_lock(&chip->als_mutex);
-> +
-> +	ret = -EINVAL;
-
-Better to make this flow clearer by moving that to the default: element of
-the switch.  Obviously you'll have to repeat it a few times, but at least
-a reviewer doesn't need to look all the way up here to see it was set to
-the right thing.
-
-
-> +	switch (info) {
-> +	case IIO_EV_INFO_VALUE:
-> +		if (val > TSL2591_ALS_MAX_VALUE)
-> +			return -EINVAL;
-
-Lock is still held so you can't return directly here.
-
-> +
-> +		/*
-> +		 * Lower threshold should not be greater than upper. If this
-> +		 * is the case, then assert upper threshold to new lower
-> +		 * threshold + 1 to avoid ordering issues when setting
-> +		 * thresholds.
-> +		 */
-> +		if (dir == IIO_EV_DIR_FALLING)
-> +			if (val > chip->als_settings.als_upper_thresh)
-> +				chip->als_settings.als_upper_thresh = val + 1;
-> +
-> +		/*
-> +		 * Upper threshold should not be less than lower. If this
-> +		 * is the case, then assert lower threshold to new upper
-> +		 * threshold - 1 to avoid ordering issues when setting
-> +		 * thresholds.
-> +		 */
-> +		if (dir == IIO_EV_DIR_RISING)
-> +			if (val < chip->als_settings.als_lower_thresh)
-> +				chip->als_settings.als_lower_thresh = val - 1;
-> +
-> +		switch (dir) {
-> +		case IIO_EV_DIR_RISING:
-> +			chip->als_settings.als_upper_thresh = val;
-> +			ret = tsl2591_set_als_thresholds(chip);
-> +			if (ret < 0)
-> +				goto err;
-> +			break;
-> +		case IIO_EV_DIR_FALLING:
-> +			chip->als_settings.als_lower_thresh = val;
-> +			ret = tsl2591_set_als_thresholds(chip);
-> +			if (ret < 0)
-> +				goto err;
-> +			break;
-> +		default:
-> +			goto err;
-> +		}
-> +		break;
-> +	case IIO_EV_INFO_PERIOD:
-> +		int_time = TSL2591_FVAL_TO_ATIME(chip->als_settings.als_int_time);
-> +
-> +		period = ((val * MSEC_PER_SEC) +
-> +			 (val2 / MSEC_PER_SEC)) / int_time;
-> +
-> +		als_persist = tsl2591_persist_lit_to_cycle(period);
-> +		if (als_persist < 0)
-> +			goto err;
-> +
-> +		ret = tsl2591_compatible_als_persist_cycle(chip, als_persist);
-> +		if (ret < 0)
-> +			goto err;
-> +		chip->als_settings.als_persist = als_persist;
-> +		ret = tsl2591_set_als_persist_cycle(chip);
-> +		if (ret < 0)
-> +			goto err;
-> +		break;
-> +	default:
-> +		goto err;
-> +	}
-> +
-> +	mutex_unlock(&chip->als_mutex);
-> +
-> +	return 0;
-> +err:
-> +	mutex_unlock(&chip->als_mutex);
-> +	return ret;
-
-Normal kernel idiom for this would be to combine the two exit paths.
-That is move there err label to just after the switch and then return ret
-on all occasions.  It will be 0 anyway I think if no errors have occurred.
-
-> +}
-> +
-> +static int tsl2591_read_event_config(struct iio_dev *indio_dev,
-> +				     const struct iio_chan_spec *chan,
-> +				     enum iio_event_type type,
-> +				     enum iio_event_direction dir)
-> +{
-> +	struct tsl2591_chip *chip = iio_priv(indio_dev);
-> +
-> +	return chip->events_enabled;
-> +}
-> +
-> +static int tsl2591_write_event_config(struct iio_dev *indio_dev,
-> +				      const struct iio_chan_spec *chan,
-> +				      enum iio_event_type type,
-> +				      enum iio_event_direction dir,
-> +				      int state)
-> +{
-> +	struct tsl2591_chip *chip = iio_priv(indio_dev);
-> +	struct i2c_client *client = chip->client;
-> +
-> +	if (state && !chip->events_enabled) {
-> +		chip->events_enabled = true;
-> +		pm_runtime_get_sync(&client->dev);
-> +	} else if (!state && chip->events_enabled) {
-> +		chip->events_enabled = false;
-> +		pm_runtime_mark_last_busy(&client->dev);
-> +		pm_runtime_put_autosuspend(&client->dev);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct iio_info tsl2591_info = {
-> +	.event_attrs = &tsl2591_event_attribute_group,
-> +	.read_raw = tsl2591_read_raw,
-> +	.write_raw = tsl2591_write_raw,
-> +	.read_avail = tsl2591_read_available,
-> +	.read_event_value = tsl2591_read_event_value,
-> +	.write_event_value = tsl2591_write_event_value,
-> +	.read_event_config = tsl2591_read_event_config,
-> +	.write_event_config = tsl2591_write_event_config,
-> +};
-> +
-> +static int __maybe_unused tsl2591_suspend(struct device *dev)
-> +{
-> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> +	struct tsl2591_chip *chip = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	mutex_lock(&chip->als_mutex);
-> +	ret = tsl2591_set_power_state(chip, TSL2591_PWR_OFF);
-> +	mutex_unlock(&chip->als_mutex);
-> +
-> +	return ret;
-> +}
-> +
-> +static int __maybe_unused tsl2591_resume(struct device *dev)
-> +{
-> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> +	struct tsl2591_chip *chip = iio_priv(indio_dev);
-> +	int ret;
-> +	int power_state;
-> +
-> +	if (chip->events_enabled)
-> +		power_state = TSL2591_PWR_ON |
-> +			      TSL2591_ENABLE_ALS_INT |
-> +			      TSL2591_ENABLE_ALS;
-> +	else
-> +		power_state = TSL2591_PWR_ON | TSL2591_ENABLE_ALS;
-> +
-> +	mutex_lock(&chip->als_mutex);
-> +	ret = tsl2591_set_power_state(chip, power_state);
-> +	mutex_unlock(&chip->als_mutex);
-> +
-> +	return ret;
-> +}
-> +
-> +static const struct dev_pm_ops tsl2591_pm_ops = {
-> +	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
-> +				pm_runtime_force_resume)
-> +	SET_RUNTIME_PM_OPS(tsl2591_suspend, tsl2591_resume, NULL)
-> +};
-> +
-> +static irqreturn_t tsl2591_event_handler(int irq, void *private)
-> +{
-> +	struct iio_dev *dev_info = private;
-> +	struct tsl2591_chip *chip = iio_priv(dev_info);
-> +	struct i2c_client *client = chip->client;
-> +	int ret;
-> +
-> +	if (!chip->events_enabled)
-> +		return IRQ_HANDLED;
-> +
-> +	iio_push_event(dev_info,
-> +		       IIO_UNMOD_EVENT_CODE(IIO_LIGHT, 0,
-> +					    IIO_EV_TYPE_THRESH,
-> +					    IIO_EV_DIR_EITHER),
-> +					    iio_get_time_ns(dev_info));
-> +
-> +	/* Clear ALS irq */
-> +	ret = i2c_smbus_write_byte(client, TSL2591_CMD_SF_CALS_NPI);
-> +	if (ret < 0)
-> +		dev_err(&client->dev, "Failed to clear als irq\n");
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static int tsl2591_load_defaults(struct tsl2591_chip *chip)
-> +{
-> +	int ret;
-> +
-> +	chip->als_settings.als_int_time = TSL2591_DEFAULT_ALS_INT_TIME;
-> +	chip->als_settings.als_gain = TSL2591_DEFAULT_ALS_GAIN;
-> +	chip->als_settings.als_persist = TSL2591_DEFAULT_ALS_PERSIST;
-> +	chip->als_settings.als_lower_thresh = TSL2591_DEFAULT_ALS_LOWER_THRESH;
-> +	chip->als_settings.als_upper_thresh = TSL2591_DEFAULT_ALS_UPPER_THRESH;
-> +
-> +	ret = tsl2591_set_als_gain_int_time(chip);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = tsl2591_set_als_persist_cycle(chip);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = tsl2591_set_als_thresholds(chip);
-Trivial point, but these functions never return positive values, so you could
-do the cleaner
-
-return tsl2591_set_als_thresholds(chip);
-
-Doesn't really matter though if you prefer this form.
-
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return 0;
-> +}
-> +
-> +static void tsl2591_chip_off(void *data)
-> +{
-> +	struct iio_dev *indio_dev = data;
-> +	struct tsl2591_chip *chip = iio_priv(indio_dev);
-> +	struct i2c_client *client = chip->client;
-> +
-> +	pm_runtime_disable(&client->dev);
-> +	pm_runtime_set_suspended(&client->dev);
-> +	pm_runtime_put_noidle(&client->dev);
-> +
-> +	tsl2591_set_power_state(chip, TSL2591_PWR_OFF);
-> +}
-> +
-> +static int tsl2591_probe(struct i2c_client *client)
-> +{
-> +	struct tsl2591_chip *chip;
-> +	struct iio_dev *indio_dev;
-> +	int ret;
-> +
-> +	if (!i2c_check_functionality(client->adapter,
-> +				     I2C_FUNC_SMBUS_BYTE_DATA)) {
-> +		dev_err(&client->dev,
-> +			"I2C smbus byte data functionality is not supported\n");
-> +		return -EOPNOTSUPP;
-> +	}
-> +
-> +	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*chip));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	chip = iio_priv(indio_dev);
-> +	chip->client = client;
-> +	i2c_set_clientdata(client, indio_dev);
-> +
-> +	if (client->irq) {
-> +		ret = devm_request_threaded_irq(&client->dev, client->irq,
-> +						NULL, tsl2591_event_handler,
-> +						IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
-> +						"tsl2591_irq", indio_dev);
-> +		if (ret) {
-> +			dev_err(&client->dev, "IRQ request error %d\n", -ret);
-> +			return -EINVAL;
-> +		}
-> +	}
-> +
-> +	mutex_init(&chip->als_mutex);
-> +
-> +	ret = i2c_smbus_read_byte_data(client,
-> +				       TSL2591_CMD_NOP | TSL2591_DEVICE_ID);
-> +	if (ret < 0) {
-> +		dev_err(&client->dev,
-> +			"Failed to read the device ID register\n");
-> +		return ret;
-> +	}
-> +	ret = FIELD_GET(TSL2591_DEVICE_ID_MASK, ret);
-> +	if (ret != TSL2591_DEVICE_ID_VAL) {
-> +		dev_err(&client->dev, "Device ID: %#04x unknown\n", ret);
-> +		return -EINVAL;
-> +	}
-> +
-> +	indio_dev->info = &tsl2591_info;
-> +	indio_dev->channels = tsl2591_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(tsl2591_channels);
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->name = chip->client->name;
-> +	chip->events_enabled = false;
-> +
-> +	pm_runtime_enable(&client->dev);
-> +	pm_runtime_set_autosuspend_delay(&client->dev,
-> +					 TSL2591_POWER_OFF_DELAY_MS);
-> +	pm_runtime_use_autosuspend(&client->dev);
-> +
-> +	ret = tsl2591_load_defaults(chip);
-> +	if (ret < 0) {
-> +		dev_err(&client->dev, "Failed to load sensor defaults\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	ret = i2c_smbus_write_byte(client, TSL2591_CMD_SF_CALS_NPI);
-> +	if (ret < 0) {
-> +		dev_err(&client->dev, "Failed to clear als irq\n");
-
-If we get a failure here or in the error path above, runtime pm is still enabeld
-because we won't be able to rely on the managed disable of it above.
-
-So you need to reorganise things a little.  Any runtime pm that is enabled
-in these two error handling paths should be provided via devm_add_action_or_reset()
-before these, and then register a second one to deal with what these functions
-have enabled (i.e disabling that).
-
-> +		return -EINVAL;
-> +	}
-> +
-> +	/*
-> +	 * Add chip off to automatically managed path and disable runtime
-> +	 * power management. This ensures that the chip power management
-> +	 * is handled correctly on driver remove.
+> +	 * Check if channel's config is on the device
 > +	 */
-> +	ret = devm_add_action_or_reset(&client->dev, tsl2591_chip_off,
-> +				       indio_dev);
-> +	if (ret < 0)
-> +		return -EINVAL;
+> +	if (!cfg->live) {
+> +		/* check if config matches another one */
+> +		live_cfg = ad7124_find_similar_live_cfg(st, cfg);
+> +		if (!live_cfg) {
+> +			free_cfg_slot = ad7124_find_free_config_slot(st);
+> +			if (free_cfg_slot >= 0) {
+> +				ret = ad7124_write_config(st, cfg, free_cfg_slot);
+> +				if (ret < 0)
+> +					return ret;
 > +
-> +	return devm_iio_device_register(&client->dev, indio_dev);
+> +				/* push the new config in configs queue */
+> +				cfg->cfg_slot = free_cfg_slot;
+> +				kfifo_put(&st->live_cfgs_fifo, cfg);
+> +			} else {
+> +				lru_cfg = ad7124_pop_config(st);
+> +				if (!lru_cfg)
+> +					return -EINVAL;
+> +
+> +				/* push the new config in configs queue */
+> +				cfg->cfg_slot = lru_cfg->cfg_slot;
+> +				kfifo_put(&st->live_cfgs_fifo, cfg);
+> +			}
+> +		} else {
+> +			cfg->cfg_slot = live_cfg->cfg_slot;
+> +		}
+> +	}
+> +
+> +	/* point channel to the config slot and enable */
+> +	return ad7124_enable_channel(st, &st->channels[address]);
 > +}
 > +
-> +static const struct of_device_id tsl2591_of_match[] = {
-> +	{ .compatible = "amstaos,tsl2591"},
-> +	{},
-> +};
-> +MODULE_DEVICE_TABLE(of, tsl2591_of_match);
+> +static int ad7124_set_channel(struct ad_sigma_delta *sd, unsigned int channel)
+> +{
+> +	struct ad7124_state *st = container_of(sd, struct ad7124_state, sd);
+> +	int ret;
 > +
-> +static struct i2c_driver tsl2591_driver = {
-> +	.driver = {
-> +		.name = "tsl2591",
-> +		.pm = &tsl2591_pm_ops,
-> +		.of_match_table = tsl2591_of_match,
-> +	},
-> +	.probe_new = tsl2591_probe,
-> +};
-> +module_i2c_driver(tsl2591_driver);
+> +	mutex_lock(&st->cfgs_lock);
+> +	ret = ad7124_prepare_read(st, channel);
+> +	mutex_unlock(&st->cfgs_lock);
 > +
-> +MODULE_AUTHOR("Joe Sandom <joe.g.sandom@gmail.com>");
-> +MODULE_DESCRIPTION("TAOS tsl2591 ambient light sensor driver");
-> +MODULE_LICENSE("GPL");
+> +	return ret;
+> +}
+> +
+> +static const struct ad_sigma_delta_info ad7124_sigma_delta_info = {
+> +	.set_channel = ad7124_set_channel,
+> +	.set_mode = ad7124_set_mode,
+> +	.has_registers = true,
+> +	.addr_shift = 0,
+> +	.read_mask = BIT(6),
+> +	.data_reg = AD7124_DATA,
+> +	.irq_flags = IRQF_TRIGGER_FALLING
+> +};
+> +
+>  static int ad7124_read_raw(struct iio_dev *indio_dev,
+>  			   struct iio_chan_spec const *chan,
+>  			   int *val, int *val2, long info)
+> @@ -378,36 +546,44 @@ static int ad7124_read_raw(struct iio_dev *indio_dev,
+>  			return ret;
+>  
+>  		/* After the conversion is performed, disable the channel */
+> -		ret = ad_sd_write_reg(&st->sd,
+> -				      AD7124_CHANNEL(chan->address), 2,
+> -				      st->channel_config[chan->address].ain |
+> -				      AD7124_CHANNEL_EN(0));
+> +		ret = ad_sd_write_reg(&st->sd, AD7124_CHANNEL(chan->address), 2,
+> +				      st->channels[chan->address].ain | AD7124_CHANNEL_EN(0));
+>  		if (ret < 0)
+>  			return ret;
+>  
+>  		return IIO_VAL_INT;
+>  	case IIO_CHAN_INFO_SCALE:
+> -		idx = st->channel_config[chan->address].pga_bits;
+> -		*val = st->channel_config[chan->address].vref_mv;
+> -		if (st->channel_config[chan->address].bipolar)
+> +		mutex_lock(&st->cfgs_lock);
+> +
+> +		idx = st->channels[chan->address].cfg.pga_bits;
+> +		*val = st->channels[chan->address].cfg.vref_mv;
+> +		if (st->channels[chan->address].cfg.bipolar)
+>  			*val2 = chan->scan_type.realbits - 1 + idx;
+>  		else
+>  			*val2 = chan->scan_type.realbits + idx;
+>  
+> +		mutex_unlock(&st->cfgs_lock);
+>  		return IIO_VAL_FRACTIONAL_LOG2;
+>  	case IIO_CHAN_INFO_OFFSET:
+> -		if (st->channel_config[chan->address].bipolar)
+> +		mutex_lock(&st->cfgs_lock);
+> +		if (st->channels[chan->address].cfg.bipolar)
+>  			*val = -(1 << (chan->scan_type.realbits - 1));
+>  		else
+>  			*val = 0;
+>  
+> +		mutex_unlock(&st->cfgs_lock);
+>  		return IIO_VAL_INT;
+>  	case IIO_CHAN_INFO_SAMP_FREQ:
+> -		*val = st->channel_config[chan->address].odr;
+> +		mutex_lock(&st->cfgs_lock);
+> +		*val = st->channels[chan->address].cfg.odr;
+> +		mutex_unlock(&st->cfgs_lock);
+>  
+>  		return IIO_VAL_INT;
+>  	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+> +		mutex_lock(&st->cfgs_lock);
+>  		*val = ad7124_get_3db_filter_freq(st, chan->scan_index);
+> +		mutex_unlock(&st->cfgs_lock);
+> +
+>  		return IIO_VAL_INT;
+>  	default:
+>  		return -EINVAL;
+> @@ -421,32 +597,53 @@ static int ad7124_write_raw(struct iio_dev *indio_dev,
+>  	struct ad7124_state *st = iio_priv(indio_dev);
+>  	unsigned int res, gain, full_scale, vref;
+>  
+> +	mutex_lock(&st->cfgs_lock);
+
+Taking a lock outside of a switch but then always unlocking it
+in the case statements is a little unintuitive.
+Can we move a 
+	goto err;
+	or
+	break; as appropriate.
+
+
+err:
+	mutex_unlock() path and move the unlock out of the switch
+as well?
+
+
+
+> +	/* any change to the configs will make them different to
+
+/*
+ * Any change...
+
+> +	 * the ones written on the device
+> +	 */
+
+Technically we don't yet know it is a change. - Could be a rewrite
+of the existing config.  It might be worth identifying that there
+is an actual change before we do this.
+
+> +	st->channels[chan->address].cfg.live = false;
+> +
+>  	switch (info) {
+>  	case IIO_CHAN_INFO_SAMP_FREQ:
+> -		if (val2 != 0)
+> +		if (val2 != 0) {
+> +			mutex_unlock(&st->cfgs_lock);
+>  			return -EINVAL;
+> +		}
+>  
+> -		return ad7124_set_channel_odr(st, chan->address, val);
+> +		ad7124_set_channel_odr(st, chan->address, val);
+> +
+> +		mutex_unlock(&st->cfgs_lock);
+> +		return 0;
+>  	case IIO_CHAN_INFO_SCALE:
+> -		if (val != 0)
+> +		if (val != 0) {
+> +			mutex_unlock(&st->cfgs_lock);
+>  			return -EINVAL;
+> +		}
+>  
+> -		if (st->channel_config[chan->address].bipolar)
+> +		if (st->channels[chan->address].cfg.bipolar)
+>  			full_scale = 1 << (chan->scan_type.realbits - 1);
+>  		else
+>  			full_scale = 1 << chan->scan_type.realbits;
+>  
+> -		vref = st->channel_config[chan->address].vref_mv * 1000000LL;
+> +		vref = st->channels[chan->address].cfg.vref_mv * 1000000LL;
+>  		res = DIV_ROUND_CLOSEST(vref, full_scale);
+>  		gain = DIV_ROUND_CLOSEST(res, val2);
+> +		res = ad7124_find_closest_match(ad7124_gain, ARRAY_SIZE(ad7124_gain), gain);
+> +		st->channels[chan->address].cfg.pga_bits = res;
+>  
+> -		return ad7124_set_channel_gain(st, chan->address, gain);
+> +		mutex_unlock(&st->cfgs_lock);
+> +		return 0;
+>  	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+> -		if (val2 != 0)
+> +		if (val2 != 0) {
+> +			mutex_unlock(&st->cfgs_lock);
+>  			return -EINVAL;
+> +		}
+>  
+> -		return ad7124_set_3db_filter_freq(st, chan->address, val);
+> +		ad7124_set_3db_filter_freq(st, chan->address, val);
+> +		mutex_unlock(&st->cfgs_lock);
+> +		return 0;
+>  	default:
+> +		mutex_unlock(&st->cfgs_lock);
+>  		return -EINVAL;
+>  	}
+>  }
+> @@ -547,47 +744,14 @@ static int ad7124_check_chip_id(struct ad7124_state *st)
+>  	return 0;
+>  }
+>  
+> -static int ad7124_init_channel_vref(struct ad7124_state *st,
+> -				    unsigned int channel_number)
+> -{
+> -	unsigned int refsel = st->channel_config[channel_number].refsel;
+> -
+> -	switch (refsel) {
+> -	case AD7124_REFIN1:
+> -	case AD7124_REFIN2:
+> -	case AD7124_AVDD_REF:
+> -		if (IS_ERR(st->vref[refsel])) {
+> -			dev_err(&st->sd.spi->dev,
+> -				"Error, trying to use external voltage reference without a %s regulator.\n",
+> -				ad7124_ref_names[refsel]);
+> -			return PTR_ERR(st->vref[refsel]);
+> -		}
+> -		st->channel_config[channel_number].vref_mv =
+> -			regulator_get_voltage(st->vref[refsel]);
+> -		/* Conversion from uV to mV */
+> -		st->channel_config[channel_number].vref_mv /= 1000;
+> -		break;
+> -	case AD7124_INT_REF:
+> -		st->channel_config[channel_number].vref_mv = 2500;
+> -		st->adc_control &= ~AD7124_ADC_CTRL_REF_EN_MSK;
+> -		st->adc_control |= AD7124_ADC_CTRL_REF_EN(1);
+> -		return ad_sd_write_reg(&st->sd, AD7124_ADC_CONTROL,
+> -				      2, st->adc_control);
+> -	default:
+> -		dev_err(&st->sd.spi->dev, "Invalid reference %d\n", refsel);
+> -		return -EINVAL;
+> -	}
+> -
+> -	return 0;
+> -}
+> -
+>  static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
+>  					  struct device_node *np)
+>  {
+>  	struct ad7124_state *st = iio_priv(indio_dev);
+> +	struct ad7124_channel_config *cfg;
+> +	struct ad7124_channel *channels;
+>  	struct device_node *child;
+>  	struct iio_chan_spec *chan;
+> -	struct ad7124_channel_config *chan_config;
+>  	unsigned int ain[2], channel = 0, tmp;
+>  	int ret;
+>  
+> @@ -602,16 +766,18 @@ static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
+>  	if (!chan)
+>  		return -ENOMEM;
+>  
+> -	chan_config = devm_kcalloc(indio_dev->dev.parent, st->num_channels,
+> -				   sizeof(*chan_config), GFP_KERNEL);
+> -	if (!chan_config)
+> +	channels = devm_kcalloc(indio_dev->dev.parent, st->num_channels, sizeof(*channels),
+> +				GFP_KERNEL);
+> +	if (!channels)
+>  		return -ENOMEM;
+>  
+>  	indio_dev->channels = chan;
+>  	indio_dev->num_channels = st->num_channels;
+> -	st->channel_config = chan_config;
+> +	st->channels = channels;
+>  
+>  	for_each_available_child_of_node(np, child) {
+> +		cfg = &st->channels[channel].cfg;
+> +
+>  		ret = of_property_read_u32(child, "reg", &channel);
+>  		if (ret)
+>  			goto err;
+> @@ -621,21 +787,20 @@ static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
+>  		if (ret)
+>  			goto err;
+>  
+> -		st->channel_config[channel].ain = AD7124_CHANNEL_AINP(ain[0]) |
+> +		st->channels[channel].nr = channel;
+> +		st->channels[channel].ain = AD7124_CHANNEL_AINP(ain[0]) |
+>  						  AD7124_CHANNEL_AINM(ain[1]);
+> -		st->channel_config[channel].bipolar =
+> -			of_property_read_bool(child, "bipolar");
+> +
+> +		cfg->bipolar = of_property_read_bool(child, "bipolar");
+>  
+>  		ret = of_property_read_u32(child, "adi,reference-select", &tmp);
+>  		if (ret)
+> -			st->channel_config[channel].refsel = AD7124_INT_REF;
+> +			cfg->refsel = AD7124_INT_REF;
+>  		else
+> -			st->channel_config[channel].refsel = tmp;
+> +			cfg->refsel = tmp;
+>  
+> -		st->channel_config[channel].buf_positive =
+> -			of_property_read_bool(child, "adi,buffered-positive");
+> -		st->channel_config[channel].buf_negative =
+> -			of_property_read_bool(child, "adi,buffered-negative");
+> +		cfg->buf_positive = of_property_read_bool(child, "adi,buffered-positive");
+> +		cfg->buf_negative = of_property_read_bool(child, "adi,buffered-negative");
+>  
+>  		chan[channel] = ad7124_channel_template;
+>  		chan[channel].address = channel;
+> @@ -654,7 +819,7 @@ static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
+>  static int ad7124_setup(struct ad7124_state *st)
+>  {
+>  	unsigned int val, fclk, power_mode;
+> -	int i, ret, tmp;
+> +	int i, ret;
+>  
+>  	fclk = clk_get_rate(st->mclk);
+>  	if (!fclk)
+> @@ -677,31 +842,21 @@ static int ad7124_setup(struct ad7124_state *st)
+>  	if (ret < 0)
+>  		return ret;
+>  
+> +	mutex_init(&st->cfgs_lock);
+> +	INIT_KFIFO(st->live_cfgs_fifo);
+>  	for (i = 0; i < st->num_channels; i++) {
+> -		val = st->channel_config[i].ain | AD7124_CHANNEL_SETUP(i);
+> -		ret = ad_sd_write_reg(&st->sd, AD7124_CHANNEL(i), 2, val);
+> -		if (ret < 0)
+> -			return ret;
+> +		val = st->channels[i].ain;
+>  
+> -		ret = ad7124_init_channel_vref(st, i);
+> +		ret = ad7124_init_config_vref(st, &st->channels[i].cfg);
+>  		if (ret < 0)
+>  			return ret;
+>  
+> -		tmp = (st->channel_config[i].buf_positive << 1)  +
+> -			st->channel_config[i].buf_negative;
+> -
+> -		val = AD7124_CONFIG_BIPOLAR(st->channel_config[i].bipolar) |
+> -		      AD7124_CONFIG_REF_SEL(st->channel_config[i].refsel) |
+> -		      AD7124_CONFIG_IN_BUFF(tmp);
+> -		ret = ad_sd_write_reg(&st->sd, AD7124_CONFIG(i), 2, val);
+> -		if (ret < 0)
+> -			return ret;
+>  		/*
+>  		 * 9.38 SPS is the minimum output data rate supported
+>  		 * regardless of the selected power mode. Round it up to 10 and
+> -		 * set all the enabled channels to this default value.
+> +		 * set all channels to this default value.
+>  		 */
+> -		ret = ad7124_set_channel_odr(st, i, 10);
+> +		ad7124_set_channel_odr(st, i, 10);
+>  	}
+>  
+>  	return ret;
 

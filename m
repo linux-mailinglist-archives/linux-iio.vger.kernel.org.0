@@ -2,45 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 267F132729C
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Feb 2021 15:36:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F35232729E
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Feb 2021 15:40:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230139AbhB1OgV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 28 Feb 2021 09:36:21 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2610 "EHLO
+        id S229834AbhB1OkK convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Sun, 28 Feb 2021 09:40:10 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2611 "EHLO
         frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229715AbhB1OgU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 Feb 2021 09:36:20 -0500
-Received: from fraeml741-chm.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DpQlZ07Z5z67tHs;
-        Sun, 28 Feb 2021 22:30:02 +0800 (CST)
+        with ESMTP id S229715AbhB1OkJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 Feb 2021 09:40:09 -0500
+Received: from fraeml737-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DpQqz6BDPz67XZl;
+        Sun, 28 Feb 2021 22:33:51 +0800 (CST)
 Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml741-chm.china.huawei.com (10.206.15.222) with Microsoft SMTP Server
+ fraeml737-chm.china.huawei.com (10.206.15.218) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Sun, 28 Feb 2021 15:35:38 +0100
+ 15.1.2106.2; Sun, 28 Feb 2021 15:39:28 +0100
 Received: from localhost (10.47.88.221) by lhreml710-chm.china.huawei.com
  (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Sun, 28 Feb
- 2021 14:35:37 +0000
-Date:   Sun, 28 Feb 2021 14:34:29 +0000
+ 2021 14:39:27 +0000
+Date:   Sun, 28 Feb 2021 14:38:19 +0000
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-CC:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <Michael.Hennerich@analog.com>, <jic23@kernel.org>,
-        <nuno.sa@analog.com>, <dragos.bogdan@analog.com>
-Subject: Re: [PATCH v6 20/24] iio: buffer: add ioctl() to support opening
- extra buffers for IIO device
-Message-ID: <20210228143429.00001f01@Huawei.com>
-In-Reply-To: <877ca331-1a56-1bd3-6637-482bbf060ba9@metafoo.de>
-References: <20210215104043.91251-1-alexandru.ardelean@analog.com>
-        <20210215104043.91251-21-alexandru.ardelean@analog.com>
-        <877ca331-1a56-1bd3-6637-482bbf060ba9@metafoo.de>
+To:     Ronald =?ISO-8859-1?Q?Tschal=E4r?= <ronald@innovation.ch>
+CC:     Jiri Kosina <jikos@kernel.org>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        "Lars-Peter Clausen" <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        <linux-kernel@vger.kernel.org>, <linux-input@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH 0/5] Touch Bar and ALS support for MacBook Pro's
+Message-ID: <20210228143819.00003f10@Huawei.com>
+In-Reply-To: <20210228012643.69944-1-ronald@innovation.ch>
+References: <20210228012643.69944-1-ronald@innovation.ch>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
 X-Originating-IP: [10.47.88.221]
 X-ClientProxiedBy: lhreml718-chm.china.huawei.com (10.201.108.69) To
  lhreml710-chm.china.huawei.com (10.201.108.61)
@@ -49,142 +50,51 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 28 Feb 2021 09:51:38 +0100
-Lars-Peter Clausen <lars@metafoo.de> wrote:
+On Sat, 27 Feb 2021 17:26:38 -0800
+Ronald Tschalär <ronald@innovation.ch> wrote:
 
-> On 2/15/21 11:40 AM, Alexandru Ardelean wrote:
-> > With this change, an ioctl() call is added to open a character device for a
-> > buffer. The ioctl() number is 'i' 0x91, which follows the
-> > IIO_GET_EVENT_FD_IOCTL ioctl.
-> >
-> > The ioctl() will return an FD for the requested buffer index. The indexes
-> > are the same from the /sys/iio/devices/iio:deviceX/bufferY (i.e. the Y
-> > variable).
-> >
-> > Since there doesn't seem to be a sane way to return the FD for buffer0 to
-> > be the same FD for the /dev/iio:deviceX, this ioctl() will return another
-> > FD for buffer0 (or the first buffer). This duplicate FD will be able to
-> > access the same buffer object (for buffer0) as accessing directly the
-> > /dev/iio:deviceX chardev.
-> >
-> > Also, there is no IIO_BUFFER_GET_BUFFER_COUNT ioctl() implemented, as the
-> > index for each buffer (and the count) can be deduced from the
-> > '/sys/bus/iio/devices/iio:deviceX/bufferY' folders (i.e the number of
-> > bufferY folders).
-> >
-> > Used following C code to test this:
-> > -------------------------------------------------------------------
-> >
-> >   #include <stdio.h>
-> >   #include <stdlib.h>
-> >   #include <unistd.h>
-> >   #include <sys/ioctl.h>
-> >   #include <fcntl.h"
-> >   #include <errno.h>
-> >
-> >   #define IIO_BUFFER_GET_FD_IOCTL      _IOWR('i', 0x91, int)
-> >
-> > int main(int argc, char *argv[])
-> > {
-> >          int fd;
-> >          int fd1;
-> >          int ret;
-> >
-> >          if ((fd = open("/dev/iio:device0", O_RDWR))<0) {
-> >                  fprintf(stderr, "Error open() %d errno %d\n",fd, errno);
-> >                  return -1;
-> >          }
-> >
-> >          fprintf(stderr, "Using FD %d\n", fd);
-> >
-> >          fd1 = atoi(argv[1]);
-> >
-> >          ret = ioctl(fd, IIO_BUFFER_GET_FD_IOCTL, &fd1);
-> >          if (ret < 0) {
-> >                  fprintf(stderr, "Error for buffer %d ioctl() %d errno %d\n", fd1, ret, errno);
-> >                  close(fd);
-> >                  return -1;
-> >          }
-> >
-> >          fprintf(stderr, "Got FD %d\n", fd1);
-> >
-> >          close(fd1);
-> >          close(fd);
-> >
-> >          return 0;
-> > }
-> > -------------------------------------------------------------------
-> >
-> > Results are:
-> > -------------------------------------------------------------------
-> >   # ./test 0
-> >   Using FD 3
-> >   Got FD 4
-> >
-> >   # ./test 1
-> >   Using FD 3
-> >   Got FD 4
-> >
-> >   # ./test 2
-> >   Using FD 3
-> >   Got FD 4
-> >
-> >   # ./test 3
-> >   Using FD 3
-> >   Got FD 4
-> >
-> >   # ls /sys/bus/iio/devices/iio\:device0
-> >   buffer  buffer0  buffer1  buffer2  buffer3  dev
-> >   in_voltage_sampling_frequency  in_voltage_scale
-> >   in_voltage_scale_available
-> >   name  of_node  power  scan_elements  subsystem  uevent
-> > -------------------------------------------------------------------
-> >
-> > iio:device0 has some fake kfifo buffers attached to an IIO device.  
+> This patch set provides Touch Bar and ALS support on MacBook Pro's
+> 13,*, 14,*, and 15,*.
 > 
-> For me there is one major problem with this approach. We only allow one 
-> application to open /dev/iio:deviceX at a time. This means we can't have 
-> different applications access different buffers of the same device. I 
-> believe this is a circuital feature.
+> Some time a go an earlier version of these were posted to the list;
+> all code comments from there have been incorporated. In addition the
+> approach has been cleaned up, especially given that we now know how
+> the 15,* models are implemented, so that the ibridge driver is only
+> needed for the pre-15,* models and the ALS and Touch Bar drivers work
+> unchanged for all models.
 
-Thats not quite true (I think - though I've not tested it).  What we don't
-allow is for multiple processes to access them in an unaware fashion.
-My assumption is we can rely on fork + fd passing via appropriate sockets.
+Please keep the version numbering increasing (even if the series has been
+restructured like here) or at very least include a link to the archive
+on lore.kernel.org (I think this is the latest earlier version)
 
-> 
-> It is possible to open the chardev, get the annonfd, close the chardev 
-> and keep the annonfd open. Then the next application can do the same and 
-> get access to a different buffer. But this has room for race conditions 
-> when two applications try this at the very same time.
-> 
-> We need to somehow address this.
+https://lore.kernel.org/linux-iio/20190612083400.1015-1-ronald@innovation.ch/
 
-I'd count this as a bug :).  It could be safely done in a particular custom
-system but in general it opens a can of worm.
-
-> 
-> I'm also not much of a fan of using ioctls to create annon fds. In part 
-> because all the standard mechanisms for access control no longer work.
-
-The inability to trivially have multiple processes open the anon fds
-without care is one of the things I like most about them.
-
-IIO drivers and interfaces really aren't designed for multiple unaware
-processes to access them.  We don't have per process controls for device
-wide sysfs attributes etc.  In general, it would be hard to
-do due to the complexity of modeling all the interactions between the
-different interfaces (events / buffers / sysfs access) in a generic fashion.
-
-As such, the model, in my head at least, is that we only want a single
-process to ever be responsible for access control.  That process can then
-assign access to children or via a deliberate action (I think passing the
-anon fd over a unix socket should work for example).  The intent being
-that it is also responsible for mediating access to infrastructure that
-multiple child processes all want to access.
-
-As such, having one chrdev isn't a disadvantage because only one process
-should ever open it at a time.  This same process also handles the
-resource / control mediation.  Therefore we should only have one file
-exposed for all the standard access control mechanisms.
+Thanks,
 
 Jonathan
+
+> 
+> Ronald Tschalär (5):
+>   HID: Recognize sensors with application collections too.
+>   iio: hid-sensor-als: Support change sensitivity in illuminance too.
+>   HID: core: Export some report item parsing functions.
+>   HID: apple-ibridge: Add Apple iBridge HID driver for T1 chip.
+>   HID: apple-touchbar - Add driver for the Touch Bar on MacBook Pro's.
+> 
+>  drivers/hid/Kconfig                |   26 +
+>  drivers/hid/Makefile               |    2 +
+>  drivers/hid/apple-ibridge.c        |  682 +++++++++++++
+>  drivers/hid/apple-ibridge.h        |   15 +
+>  drivers/hid/apple-touchbar.c       | 1523 ++++++++++++++++++++++++++++
+>  drivers/hid/hid-core.c             |   57 +-
+>  drivers/hid/hid-ids.h              |    1 +
+>  drivers/hid/hid-quirks.c           |    3 +
+>  drivers/hid/hid-sensor-hub.c       |    6 +-
+>  drivers/iio/light/hid-sensor-als.c |    8 +
+>  include/linux/hid.h                |    4 +
+>  11 files changed, 2302 insertions(+), 25 deletions(-)
+>  create mode 100644 drivers/hid/apple-ibridge.c
+>  create mode 100644 drivers/hid/apple-ibridge.h
+>  create mode 100644 drivers/hid/apple-touchbar.c
+> 
+

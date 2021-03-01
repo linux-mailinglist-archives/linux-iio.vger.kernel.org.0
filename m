@@ -2,76 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D488B327908
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Mar 2021 09:18:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EE19327A5D
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Mar 2021 10:06:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232810AbhCAIRX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 1 Mar 2021 03:17:23 -0500
-Received: from spam.zju.edu.cn ([61.164.42.155]:30190 "EHLO zju.edu.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S232764AbhCAIRX (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 1 Mar 2021 03:17:23 -0500
-Received: from localhost.localdomain (unknown [10.192.85.18])
-        by mail-app3 (Coremail) with SMTP id cC_KCgBnbyfWojxg8PvgAQ--.63815S4;
-        Mon, 01 Mar 2021 16:16:25 +0800 (CST)
-From:   Dinghao Liu <dinghao.liu@zju.edu.cn>
-To:     dinghao.liu@zju.edu.cn, kjlu@umn.edu
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+        id S233399AbhCAJFZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 1 Mar 2021 04:05:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53586 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233766AbhCAJCS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 Mar 2021 04:02:18 -0500
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3D6DC06178C
+        for <linux-iio@vger.kernel.org>; Mon,  1 Mar 2021 01:00:47 -0800 (PST)
+Received: by mail-lf1-x12c.google.com with SMTP id q25so3986081lfc.8
+        for <linux-iio@vger.kernel.org>; Mon, 01 Mar 2021 01:00:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=uE9borHEMrgJCyjxz/gfKybHkysn1/lLyQwFQLLHbe8=;
+        b=gLH1D7j96qeX/iG1elrzyIyLXIAeAGbmTVJlphU2J0zhEnizlGrGgVSsIQhnkAOlOI
+         ks+emsczsFq4yIhBJwrGuNg1RVE1IIkWTA8FjT1YV5NeS1fcYzRRdxbazJ93k3stpWhs
+         36iEtlJwGR0cs8Bg1SpZN94rehP8f/oxAKndE4ZnVnAxqr7jolJ8ZOpL4nV58hJ/jdH4
+         PpBQvEyDIQ/3GYcA8Vzdz55UuFZdBiNpboRX0VgRZJlufrxkjNsc0FYOvviXtwqttZNM
+         oZYZ9EnTqRrYfgEUcXfOqRP26TT80wn7RSExLspOEf6xr6+9hx1oJosaglLPUtO04tq2
+         yToA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=uE9borHEMrgJCyjxz/gfKybHkysn1/lLyQwFQLLHbe8=;
+        b=qsGiFkl3v7PHfSC36M8qfffVFERPG2zDDHjc4DubABee9TgYoN283Z9a60EyP1M1r2
+         9idAxqHKUwHEGZqM5Oik7cEuBiZ8PvJ8stwSeIrSi0OU2uWTCl5Zr8+wyaQ7Z+Nkkmg/
+         GfhnRkYRFMEijW/iQHUbjAByCUoPZX/7YuVwgxKARA7JBgqtzbWd9FwCtzzjXjTZeBvZ
+         e3QhWjACZKWy4343WI54TMKtk1uF93Me/q7z20goJuxC53Tj+Yjcp4c5BK3nexJ53plY
+         qoVl5r6LxZt+w3CI7yhzO1cWjZa7doxiyVFneAmZwmF0zZrnv7NLEx7eRSFdjBq7ub7J
+         1EKQ==
+X-Gm-Message-State: AOAM533DA+zUQNQCo9oDdoHx/Y8dOMktHgpABHC/J0K+NsncunEGBdmi
+        zsWyqK4QdsEiUOsMpTQ7m3Rk699Na+fNxG9r0tRHfQ==
+X-Google-Smtp-Source: ABdhPJxPhUuUvUn2jjwJ7deZwi3S/u6UODvUFceSW2ZXsfXoWlAMQh/BaKQMZYjWOCvrDgupDkU3KTHR52W9qCVpOEU=
+X-Received: by 2002:a19:548:: with SMTP id 69mr6653750lff.465.1614589246540;
+ Mon, 01 Mar 2021 01:00:46 -0800 (PST)
+MIME-Version: 1.0
+References: <20210215153023.47899-1-linus.walleij@linaro.org> <20210221154511.75b3d8a6@archlinux>
+In-Reply-To: <20210221154511.75b3d8a6@archlinux>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Mon, 1 Mar 2021 10:00:35 +0100
+Message-ID: <CACRpkdbk80cK34vDNjfLkpeso4dC8ZXOe5WGgi2PP8KHSLxuxg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] iio: magnetometer: yas530: Fix return value on errorpath
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: adc: Fix error handling in vadc_do_conversion
-Date:   Mon,  1 Mar 2021 16:16:22 +0800
-Message-Id: <20210301081622.15696-1-dinghao.liu@zju.edu.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: cC_KCgBnbyfWojxg8PvgAQ--.63815S4
-X-Coremail-Antispam: 1UD129KBjvdXoWrZFy5ArWDJFWrWw4rWw4UJwb_yoWfGFgEkw
-        n2qw18GasayrWDAF1UGr4xXr90kF90qrn3WF1v9FyfGa43CFykCF1qvr4UAF17Ca18XF13
-        urs8G34rtF93CjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUbV8Fc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AK
-        wVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20x
-        vE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26rxl6s0DM28EF7xvwVC2z280
-        aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07
-        x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15
-        McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr4
-        1lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxAIw28IcxkI
-        7VAKI48JMxAIw28IcVCjz48v1sIEY20_GFWkJr1UJwCFx2IqxVCFs4IE7xkEbVWUJVW8Jw
-        C20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAF
-        wI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjx
-        v20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6rWUJVWrZr1UMIIF0xvE
-        x4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvj
-        DU0xZFpf9x0JUZa9-UUUUU=
-X-CM-SenderInfo: qrrzjiaqtzq6lmxovvfxof0/1tbiAgcLBlZdtSjMQAADsR
+        kernel test robot <lkp@intel.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-There is one vadc_poll_wait_eoc() call in vadc_do_conversion
-that we have caught its return value but lack further handling.
-Check and jump to err_disable label just like the other
-vadc_poll_wait_eoc() in this function.
+On Sun, Feb 21, 2021 at 4:45 PM Jonathan Cameron <jic23@kernel.org> wrote:
 
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
----
- drivers/iio/adc/qcom-spmi-vadc.c | 2 ++
- 1 file changed, 2 insertions(+)
+> A bit of bad timing on these.  I'm running behind on pull requests for
+> my fixes-togreg branch so it doesn't yet have the driver.
+>
+> Hence I'll pick these up in a couple of weeks once that's rebased after
+> I send Greg a pull request.
+>
+> Give me a poke if I seem to have forgotten them.
 
-diff --git a/drivers/iio/adc/qcom-spmi-vadc.c b/drivers/iio/adc/qcom-spmi-vadc.c
-index 05ff948372b3..fe36b0ba8273 100644
---- a/drivers/iio/adc/qcom-spmi-vadc.c
-+++ b/drivers/iio/adc/qcom-spmi-vadc.c
-@@ -324,6 +324,8 @@ static int vadc_do_conversion(struct vadc_priv *vadc,
- 
- 	if (vadc->poll_eoc) {
- 		ret = vadc_poll_wait_eoc(vadc, timeout);
-+		if (ret)
-+			goto err_disable;
- 	} else {
- 		ret = wait_for_completion_timeout(&vadc->complete, timeout);
- 		if (!ret) {
--- 
-2.17.1
+No problem, the fixes are not critical in any way.
+I'll track them!
 
+Yours,
+Linus Walleij

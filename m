@@ -2,758 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D122F328327
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Mar 2021 17:11:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 59E7F3288D3
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Mar 2021 18:46:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237550AbhCAQK7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 1 Mar 2021 11:10:59 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:29582 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S237544AbhCAQIy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 Mar 2021 11:08:54 -0500
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 121G1TMH017011;
-        Mon, 1 Mar 2021 11:08:08 -0500
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 36ykv8rh1f-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 01 Mar 2021 11:08:07 -0500
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 121G86KM057578
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 1 Mar 2021 11:08:06 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.721.2; Mon, 1 Mar 2021
- 11:08:05 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.721.2 via Frontend Transport;
- Mon, 1 Mar 2021 11:08:05 -0500
-Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 121G82lt012423;
-        Mon, 1 Mar 2021 11:08:04 -0500
-From:   <alexandru.tachici@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>
-CC:     <jic23@kernel.org>, <robh+dt@kernel.org>
-Subject: [PATCH v4 1/1] iio: adc: ad7124: allow more than 8 channels
-Date:   Mon, 1 Mar 2021 18:15:26 +0200
-Message-ID: <20210301161526.72884-2-alexandru.tachici@analog.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210301161526.72884-1-alexandru.tachici@analog.com>
-References: <20210301161526.72884-1-alexandru.tachici@analog.com>
+        id S234729AbhCARpO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 1 Mar 2021 12:45:14 -0500
+Received: from mga12.intel.com ([192.55.52.136]:11250 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S238307AbhCARll (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 1 Mar 2021 12:41:41 -0500
+IronPort-SDR: m027y/G/cmgD9jA5mJ8R16FE3c5vPJuZJEnS/ZCTZ72Tct3kkgtQdhb2PO4zHKnthN2wJzZz+x
+ NU8HuCFcglIA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9910"; a="165779912"
+X-IronPort-AV: E=Sophos;i="5.81,215,1610438400"; 
+   d="scan'208";a="165779912"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2021 09:39:55 -0800
+IronPort-SDR: WfJVKBudAbHcrsop2n5GL3NKGOXTewLJFqebUR4scZmcCp4/xUu/RPlzFBtFKVtPdnakDbqtok
+ nEdrZ8uYag9Q==
+X-IronPort-AV: E=Sophos;i="5.81,215,1610438400"; 
+   d="scan'208";a="444374574"
+Received: from jvarg12x-mobl.amr.corp.intel.com ([10.212.213.38])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2021 09:39:54 -0800
+Message-ID: <c6e98531b4f209aad6b655091ff5e9ddd305515f.camel@linux.intel.com>
+Subject: Re: [PATCH 2/5] iio: hid-sensor-als: Support change sensitivity in
+ illuminance too.
+From:   Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        Ronald =?ISO-8859-1?Q?Tschal=E4r?= <ronald@innovation.ch>
+Cc:     Jiri Kosina <jikos@kernel.org>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-iio@vger.kernel.org
+Date:   Mon, 01 Mar 2021 09:39:54 -0800
+In-Reply-To: <20210228144525.00000730@Huawei.com>
+References: <20210228012643.69944-1-ronald@innovation.ch>
+         <20210228012643.69944-3-ronald@innovation.ch>
+         <20210228144525.00000730@Huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
- definitions=2021-03-01_11:2021-03-01,2021-03-01 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 adultscore=0
- mlxlogscore=999 clxscore=1015 mlxscore=0 suspectscore=0 phishscore=0
- impostorscore=0 lowpriorityscore=0 malwarescore=0 priorityscore=1501
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103010132
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Alexandru Tachici <alexandru.tachici@analog.com>
+On Sun, 2021-02-28 at 14:45 +0000, Jonathan Cameron wrote:
+> On Sat, 27 Feb 2021 17:26:40 -0800
+> Ronald Tschalär <ronald@innovation.ch> wrote:
+> 
+> > Recent MacBook Pro's specify the usage of the change sensitivity
+> > field
+> > as illuminance (with a change sensitivity modifier) rather than as
+> > light.
+> > 
+> > Signed-off-by: Ronald Tschalär <ronald@innovation.ch>
+> This looks fine to me though it the hid sensors spec never fails to
+> surprise
+> me in the different slight variants of the same thing that come up.
+> 
+> Illuminance is at least fairly well defined, but who knows what for
+> the DATA_LIGHT
+> version takes?
 
-Currently AD7124-8 driver cannot use more than 8 IIO channels
-because it was assigning the channel configurations bijectively
-to channels specified in the device-tree. This is not possible
-to do when using more than 8 channels as AD7124-8 has only 8
-configuration registers.
+The current implementations are deploying using
+"HID_USAGE_SENSOR_LIGHT_ILLUM" usage id 0xD1 for input. So this is
+natural to use the same usage id for sensitivity. So patch looks good
+to me.
 
-To allow the user to use all channels at once the driver
-will keep in memory configurations for all channels but
-will program only 8 of them at a time on the device.
-If multiple channels have the same configuration, only
-one configuration register will be used. If there
-are more configurations than available registers only
-the last 8 used configurations will be allowed to exist
-on the device in a LRU fashion.
+But most implementation choose to use DATA_LIGHT for the sensitivity.
+probably referring to change in quantity of light without referring to
+area. There are no obvious units specified for DATA_LIGHT in the spec.
 
-Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
----
- drivers/iio/adc/ad7124.c | 470 ++++++++++++++++++++++++++-------------
- 1 file changed, 313 insertions(+), 157 deletions(-)
+Thanks,
+Srinivas
 
-diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index 766c73333604..9588df981e4e 100644
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -5,12 +5,14 @@
-  * Copyright 2018 Analog Devices Inc.
-  */
- #include <linux/bitfield.h>
-+#include <linux/bitops.h>
- #include <linux/clk.h>
- #include <linux/delay.h>
- #include <linux/device.h>
- #include <linux/err.h>
- #include <linux/interrupt.h>
- #include <linux/kernel.h>
-+#include <linux/kfifo.h>
- #include <linux/module.h>
- #include <linux/of_device.h>
- #include <linux/regulator/consumer.h>
-@@ -86,6 +88,10 @@
- #define AD7124_SINC3_FILTER 2
- #define AD7124_SINC4_FILTER 0
- 
-+#define AD7124_CONF_ADDR_OFFSET	20
-+#define AD7124_MAX_CONFIGS	8
-+#define AD7124_MAX_CHANNELS	16
-+
- enum ad7124_ids {
- 	ID_AD7124_4,
- 	ID_AD7124_8,
-@@ -136,25 +142,37 @@ struct ad7124_chip_info {
- };
- 
- struct ad7124_channel_config {
-+	bool live;
-+	unsigned int cfg_slot;
- 	enum ad7124_ref_sel refsel;
- 	bool bipolar;
- 	bool buf_positive;
- 	bool buf_negative;
--	unsigned int ain;
- 	unsigned int vref_mv;
- 	unsigned int pga_bits;
- 	unsigned int odr;
-+	unsigned int odr_sel_bits;
- 	unsigned int filter_type;
- };
- 
-+struct ad7124_channel {
-+	unsigned int nr;
-+	struct ad7124_channel_config cfg;
-+	unsigned int ain;
-+	unsigned int slot;
-+};
-+
- struct ad7124_state {
- 	const struct ad7124_chip_info *chip_info;
- 	struct ad_sigma_delta sd;
--	struct ad7124_channel_config *channel_config;
-+	struct ad7124_channel *channels;
- 	struct regulator *vref[4];
- 	struct clk *mclk;
- 	unsigned int adc_control;
- 	unsigned int num_channels;
-+	struct mutex cfgs_lock; /* lock for configs access */
-+	unsigned long cfg_slots_status; /* bitmap with slot status (1 means it is used) */
-+	DECLARE_KFIFO(live_cfgs_fifo, struct ad7124_channel_config *, AD7124_MAX_CONFIGS);
- };
- 
- static const struct iio_chan_spec ad7124_channel_template = {
-@@ -238,33 +256,9 @@ static int ad7124_set_mode(struct ad_sigma_delta *sd,
- 	return ad_sd_write_reg(&st->sd, AD7124_ADC_CONTROL, 2, st->adc_control);
- }
- 
--static int ad7124_set_channel(struct ad_sigma_delta *sd, unsigned int channel)
--{
--	struct ad7124_state *st = container_of(sd, struct ad7124_state, sd);
--	unsigned int val;
--
--	val = st->channel_config[channel].ain | AD7124_CHANNEL_EN(1) |
--	      AD7124_CHANNEL_SETUP(channel);
--
--	return ad_sd_write_reg(&st->sd, AD7124_CHANNEL(channel), 2, val);
--}
--
--static const struct ad_sigma_delta_info ad7124_sigma_delta_info = {
--	.set_channel = ad7124_set_channel,
--	.set_mode = ad7124_set_mode,
--	.has_registers = true,
--	.addr_shift = 0,
--	.read_mask = BIT(6),
--	.data_reg = AD7124_DATA,
--	.irq_flags = IRQF_TRIGGER_FALLING,
--};
--
--static int ad7124_set_channel_odr(struct ad7124_state *st,
--				  unsigned int channel,
--				  unsigned int odr)
-+static void ad7124_set_channel_odr(struct ad7124_state *st, unsigned int channel, unsigned int odr)
- {
- 	unsigned int fclk, odr_sel_bits;
--	int ret;
- 
- 	fclk = clk_get_rate(st->mclk);
- 	/*
-@@ -280,36 +274,12 @@ static int ad7124_set_channel_odr(struct ad7124_state *st,
- 	else if (odr_sel_bits > 2047)
- 		odr_sel_bits = 2047;
- 
--	ret = ad7124_spi_write_mask(st, AD7124_FILTER(channel),
--				    AD7124_FILTER_FS_MSK,
--				    AD7124_FILTER_FS(odr_sel_bits), 3);
--	if (ret < 0)
--		return ret;
--	/* fADC = fCLK / (FS[10:0] x 32) */
--	st->channel_config[channel].odr =
--		DIV_ROUND_CLOSEST(fclk, odr_sel_bits * 32);
--
--	return 0;
--}
--
--static int ad7124_set_channel_gain(struct ad7124_state *st,
--				   unsigned int channel,
--				   unsigned int gain)
--{
--	unsigned int res;
--	int ret;
-+	if (odr_sel_bits != st->channels[channel].cfg.odr_sel_bits)
-+		st->channels[channel].cfg.live = false;
- 
--	res = ad7124_find_closest_match(ad7124_gain,
--					ARRAY_SIZE(ad7124_gain), gain);
--	ret = ad7124_spi_write_mask(st, AD7124_CONFIG(channel),
--				    AD7124_CONFIG_PGA_MSK,
--				    AD7124_CONFIG_PGA(res), 2);
--	if (ret < 0)
--		return ret;
--
--	st->channel_config[channel].pga_bits = res;
--
--	return 0;
-+	/* fADC = fCLK / (FS[10:0] x 32) */
-+	st->channels[channel].cfg.odr = DIV_ROUND_CLOSEST(fclk, odr_sel_bits * 32);
-+	st->channels[channel].cfg.odr_sel_bits = odr_sel_bits;
- }
- 
- static int ad7124_get_3db_filter_freq(struct ad7124_state *st,
-@@ -317,9 +287,9 @@ static int ad7124_get_3db_filter_freq(struct ad7124_state *st,
- {
- 	unsigned int fadc;
- 
--	fadc = st->channel_config[channel].odr;
-+	fadc = st->channels[channel].cfg.odr;
- 
--	switch (st->channel_config[channel].filter_type) {
-+	switch (st->channels[channel].cfg.filter_type) {
- 	case AD7124_SINC3_FILTER:
- 		return DIV_ROUND_CLOSEST(fadc * 230, 1000);
- 	case AD7124_SINC4_FILTER:
-@@ -329,9 +299,8 @@ static int ad7124_get_3db_filter_freq(struct ad7124_state *st,
- 	}
- }
- 
--static int ad7124_set_3db_filter_freq(struct ad7124_state *st,
--				      unsigned int channel,
--				      unsigned int freq)
-+static void ad7124_set_3db_filter_freq(struct ad7124_state *st, unsigned int channel,
-+				       unsigned int freq)
- {
- 	unsigned int sinc4_3db_odr;
- 	unsigned int sinc3_3db_odr;
-@@ -349,21 +318,223 @@ static int ad7124_set_3db_filter_freq(struct ad7124_state *st,
- 		new_odr = sinc3_3db_odr;
- 	}
- 
--	if (st->channel_config[channel].filter_type != new_filter) {
--		int ret;
-+	if (new_odr != st->channels[channel].cfg.odr)
-+		st->channels[channel].cfg.live = false;
- 
--		st->channel_config[channel].filter_type = new_filter;
--		ret = ad7124_spi_write_mask(st, AD7124_FILTER(channel),
--					    AD7124_FILTER_TYPE_MSK,
--					    AD7124_FILTER_TYPE_SEL(new_filter),
--					    3);
--		if (ret < 0)
--			return ret;
-+	st->channels[channel].cfg.filter_type = new_filter;
-+	st->channels[channel].cfg.odr = new_odr;
-+}
-+
-+static bool ad7124_configs_equal(struct ad7124_channel_config *cfg1,
-+				 struct ad7124_channel_config *cfg2)
-+{
-+	return ((cfg1->refsel == cfg2->refsel) &&
-+		(cfg1->bipolar == cfg2->bipolar) &&
-+		(cfg1->buf_positive == cfg2->buf_positive) &&
-+		(cfg1->buf_negative == cfg2->buf_negative) &&
-+		(cfg1->vref_mv == cfg2->vref_mv) &&
-+		(cfg1->pga_bits == cfg2->pga_bits) &&
-+		(cfg1->odr == cfg2->odr) &&
-+		(cfg1->odr_sel_bits == cfg2->odr_sel_bits) &&
-+		(cfg1->filter_type == cfg2->filter_type));
-+}
-+
-+static struct ad7124_channel_config *ad7124_find_similar_live_cfg(struct ad7124_state *st,
-+								  struct ad7124_channel_config *cfg)
-+{
-+	struct ad7124_channel_config *cfg_aux;
-+	int i;
-+
-+	for (i = 0; i < st->num_channels; i++) {
-+		cfg_aux = &st->channels[i].cfg;
-+
-+		if (cfg_aux->live && ad7124_configs_equal(cfg, cfg_aux))
-+			return cfg_aux;
- 	}
- 
--	return ad7124_set_channel_odr(st, channel, new_odr);
-+	return NULL;
- }
- 
-+static int ad7124_find_free_config_slot(struct ad7124_state *st)
-+{
-+	unsigned int free_cfg_slot;
-+
-+	free_cfg_slot = find_next_zero_bit(&st->cfg_slots_status, AD7124_MAX_CONFIGS, 0);
-+	if (free_cfg_slot == AD7124_MAX_CONFIGS)
-+		return -1;
-+
-+	return free_cfg_slot;
-+}
-+
-+static int ad7124_init_config_vref(struct ad7124_state *st, struct ad7124_channel_config *cfg)
-+{
-+	unsigned int refsel = cfg->refsel;
-+
-+	switch (refsel) {
-+	case AD7124_REFIN1:
-+	case AD7124_REFIN2:
-+	case AD7124_AVDD_REF:
-+		if (IS_ERR(st->vref[refsel])) {
-+			dev_err(&st->sd.spi->dev,
-+				"Error, trying to use external voltage reference without a %s regulator.\n",
-+				ad7124_ref_names[refsel]);
-+				return PTR_ERR(st->vref[refsel]);
-+		}
-+		cfg->vref_mv = regulator_get_voltage(st->vref[refsel]);
-+		/* Conversion from uV to mV */
-+		cfg->vref_mv /= 1000;
-+		return 0;
-+	case AD7124_INT_REF:
-+		cfg->vref_mv = 2500;
-+		st->adc_control &= ~AD7124_ADC_CTRL_REF_EN_MSK;
-+		st->adc_control |= AD7124_ADC_CTRL_REF_EN(1);
-+		return ad_sd_write_reg(&st->sd, AD7124_ADC_CONTROL,
-+				      2, st->adc_control);
-+	default:
-+		dev_err(&st->sd.spi->dev, "Invalid reference %d\n", refsel);
-+		return -EINVAL;
-+	}
-+}
-+
-+static int ad7124_write_config(struct ad7124_state *st, struct ad7124_channel_config *cfg,
-+			       unsigned int cfg_slot)
-+{
-+	unsigned int tmp;
-+	unsigned int val;
-+	int ret;
-+
-+	cfg->cfg_slot = cfg_slot;
-+
-+	tmp = (cfg->buf_positive << 1) + cfg->buf_negative;
-+	val = AD7124_CONFIG_BIPOLAR(cfg->bipolar) | AD7124_CONFIG_REF_SEL(cfg->refsel) |
-+	      AD7124_CONFIG_IN_BUFF(tmp);
-+	ret = ad_sd_write_reg(&st->sd, AD7124_CONFIG(cfg->cfg_slot), 2, val);
-+	if (ret < 0)
-+		return ret;
-+
-+	tmp = AD7124_FILTER_TYPE_SEL(cfg->filter_type);
-+	ret = ad7124_spi_write_mask(st, AD7124_FILTER(cfg->cfg_slot), AD7124_FILTER_TYPE_MSK,
-+				    tmp, 3);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = ad7124_spi_write_mask(st, AD7124_FILTER(cfg->cfg_slot), AD7124_FILTER_FS_MSK,
-+				    AD7124_FILTER_FS(cfg->odr_sel_bits), 3);
-+	if (ret < 0)
-+		return ret;
-+
-+	return ad7124_spi_write_mask(st, AD7124_CONFIG(cfg->cfg_slot), AD7124_CONFIG_PGA_MSK,
-+				     AD7124_CONFIG_PGA(cfg->pga_bits), 2);
-+}
-+
-+static struct ad7124_channel_config *ad7124_pop_config(struct ad7124_state *st)
-+{
-+	struct ad7124_channel_config *lru_cfg;
-+	struct ad7124_channel_config *cfg;
-+	int ret;
-+	int i;
-+
-+	/*
-+	 * Pop least recently used config from the fifo
-+	 * in order to make room for the new one
-+	 */
-+	ret = kfifo_get(&st->live_cfgs_fifo, &lru_cfg);
-+	if (ret <= 0)
-+		return NULL;
-+
-+	lru_cfg->live = false;
-+
-+	/* mark slot as free */
-+	assign_bit(lru_cfg->cfg_slot, &st->cfg_slots_status, 0);
-+
-+	/* invalidate all other configs that pointed to this one */
-+	for (i = 0; i < st->num_channels; i++) {
-+		cfg = &st->channels[i].cfg;
-+
-+		if (cfg->cfg_slot == lru_cfg->cfg_slot)
-+			cfg->live = false;
-+	}
-+
-+	return lru_cfg;
-+}
-+
-+static int ad7124_push_config(struct ad7124_state *st, struct ad7124_channel_config *cfg)
-+{
-+	struct ad7124_channel_config *lru_cfg;
-+	int free_cfg_slot;
-+
-+	free_cfg_slot = ad7124_find_free_config_slot(st);
-+	if (free_cfg_slot >= 0) {
-+		/* push the new config in configs queue */
-+		kfifo_put(&st->live_cfgs_fifo, cfg);
-+	} else {
-+		/* pop one config to make room for the new one */
-+		lru_cfg = ad7124_pop_config(st);
-+		if (!lru_cfg)
-+			return -EINVAL;
-+
-+		/* push the new config in configs queue */
-+		free_cfg_slot = lru_cfg->cfg_slot;
-+		kfifo_put(&st->live_cfgs_fifo, cfg);
-+	}
-+
-+	/* mark slot as used */
-+	assign_bit(free_cfg_slot, &st->cfg_slots_status, 1);
-+
-+	return ad7124_write_config(st, cfg, free_cfg_slot);
-+}
-+
-+static int ad7124_enable_channel(struct ad7124_state *st, struct ad7124_channel *ch)
-+{
-+	ch->cfg.live = true;
-+	return ad_sd_write_reg(&st->sd, AD7124_CHANNEL(ch->nr), 2, ch->ain |
-+			      AD7124_CHANNEL_SETUP(ch->cfg.cfg_slot) | AD7124_CHANNEL_EN(1));
-+}
-+
-+static int ad7124_prepare_read(struct ad7124_state *st, int address)
-+{
-+	struct ad7124_channel_config *cfg = &st->channels[address].cfg;
-+	struct ad7124_channel_config *live_cfg;
-+
-+	/*
-+	 * Before doing any reads assign the channel a configuration.
-+	 * Check if channel's config is on the device
-+	 */
-+	if (!cfg->live) {
-+		/* check if config matches another one */
-+		live_cfg = ad7124_find_similar_live_cfg(st, cfg);
-+		if (!live_cfg)
-+			ad7124_push_config(st, cfg);
-+		else
-+			cfg->cfg_slot = live_cfg->cfg_slot;
-+	}
-+
-+	/* point channel to the config slot and enable */
-+	return ad7124_enable_channel(st, &st->channels[address]);
-+}
-+
-+static int ad7124_set_channel(struct ad_sigma_delta *sd, unsigned int channel)
-+{
-+	struct ad7124_state *st = container_of(sd, struct ad7124_state, sd);
-+	int ret;
-+
-+	mutex_lock(&st->cfgs_lock);
-+	ret = ad7124_prepare_read(st, channel);
-+	mutex_unlock(&st->cfgs_lock);
-+
-+	return ret;
-+}
-+
-+static const struct ad_sigma_delta_info ad7124_sigma_delta_info = {
-+	.set_channel = ad7124_set_channel,
-+	.set_mode = ad7124_set_mode,
-+	.has_registers = true,
-+	.addr_shift = 0,
-+	.read_mask = BIT(6),
-+	.data_reg = AD7124_DATA,
-+	.irq_flags = IRQF_TRIGGER_FALLING
-+};
-+
- static int ad7124_read_raw(struct iio_dev *indio_dev,
- 			   struct iio_chan_spec const *chan,
- 			   int *val, int *val2, long info)
-@@ -378,36 +549,44 @@ static int ad7124_read_raw(struct iio_dev *indio_dev,
- 			return ret;
- 
- 		/* After the conversion is performed, disable the channel */
--		ret = ad_sd_write_reg(&st->sd,
--				      AD7124_CHANNEL(chan->address), 2,
--				      st->channel_config[chan->address].ain |
--				      AD7124_CHANNEL_EN(0));
-+		ret = ad_sd_write_reg(&st->sd, AD7124_CHANNEL(chan->address), 2,
-+				      st->channels[chan->address].ain | AD7124_CHANNEL_EN(0));
- 		if (ret < 0)
- 			return ret;
- 
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SCALE:
--		idx = st->channel_config[chan->address].pga_bits;
--		*val = st->channel_config[chan->address].vref_mv;
--		if (st->channel_config[chan->address].bipolar)
-+		mutex_lock(&st->cfgs_lock);
-+
-+		idx = st->channels[chan->address].cfg.pga_bits;
-+		*val = st->channels[chan->address].cfg.vref_mv;
-+		if (st->channels[chan->address].cfg.bipolar)
- 			*val2 = chan->scan_type.realbits - 1 + idx;
- 		else
- 			*val2 = chan->scan_type.realbits + idx;
- 
-+		mutex_unlock(&st->cfgs_lock);
- 		return IIO_VAL_FRACTIONAL_LOG2;
- 	case IIO_CHAN_INFO_OFFSET:
--		if (st->channel_config[chan->address].bipolar)
-+		mutex_lock(&st->cfgs_lock);
-+		if (st->channels[chan->address].cfg.bipolar)
- 			*val = -(1 << (chan->scan_type.realbits - 1));
- 		else
- 			*val = 0;
- 
-+		mutex_unlock(&st->cfgs_lock);
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SAMP_FREQ:
--		*val = st->channel_config[chan->address].odr;
-+		mutex_lock(&st->cfgs_lock);
-+		*val = st->channels[chan->address].cfg.odr;
-+		mutex_unlock(&st->cfgs_lock);
- 
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-+		mutex_lock(&st->cfgs_lock);
- 		*val = ad7124_get_3db_filter_freq(st, chan->scan_index);
-+		mutex_unlock(&st->cfgs_lock);
-+
- 		return IIO_VAL_INT;
- 	default:
- 		return -EINVAL;
-@@ -420,35 +599,54 @@ static int ad7124_write_raw(struct iio_dev *indio_dev,
- {
- 	struct ad7124_state *st = iio_priv(indio_dev);
- 	unsigned int res, gain, full_scale, vref;
-+	int ret = 0;
-+
-+	mutex_lock(&st->cfgs_lock);
- 
- 	switch (info) {
- 	case IIO_CHAN_INFO_SAMP_FREQ:
--		if (val2 != 0)
--			return -EINVAL;
-+		if (val2 != 0) {
-+			ret = -EINVAL;
-+			break;
-+		}
- 
--		return ad7124_set_channel_odr(st, chan->address, val);
-+		ad7124_set_channel_odr(st, chan->address, val);
-+		break;
- 	case IIO_CHAN_INFO_SCALE:
--		if (val != 0)
--			return -EINVAL;
-+		if (val != 0) {
-+			ret = -EINVAL;
-+			break;
-+		}
- 
--		if (st->channel_config[chan->address].bipolar)
-+		if (st->channels[chan->address].cfg.bipolar)
- 			full_scale = 1 << (chan->scan_type.realbits - 1);
- 		else
- 			full_scale = 1 << chan->scan_type.realbits;
- 
--		vref = st->channel_config[chan->address].vref_mv * 1000000LL;
-+		vref = st->channels[chan->address].cfg.vref_mv * 1000000LL;
- 		res = DIV_ROUND_CLOSEST(vref, full_scale);
- 		gain = DIV_ROUND_CLOSEST(res, val2);
-+		res = ad7124_find_closest_match(ad7124_gain, ARRAY_SIZE(ad7124_gain), gain);
- 
--		return ad7124_set_channel_gain(st, chan->address, gain);
-+		if (st->channels[chan->address].cfg.pga_bits != res)
-+			st->channels[chan->address].cfg.live = false;
-+
-+		st->channels[chan->address].cfg.pga_bits = res;
-+		break;
- 	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
--		if (val2 != 0)
--			return -EINVAL;
-+		if (val2 != 0) {
-+			ret = -EINVAL;
-+			break;
-+		}
- 
--		return ad7124_set_3db_filter_freq(st, chan->address, val);
-+		ad7124_set_3db_filter_freq(st, chan->address, val);
-+		break;
- 	default:
--		return -EINVAL;
-+		ret =  -EINVAL;
- 	}
-+
-+	mutex_unlock(&st->cfgs_lock);
-+	return ret;
- }
- 
- static int ad7124_reg_access(struct iio_dev *indio_dev,
-@@ -547,47 +745,14 @@ static int ad7124_check_chip_id(struct ad7124_state *st)
- 	return 0;
- }
- 
--static int ad7124_init_channel_vref(struct ad7124_state *st,
--				    unsigned int channel_number)
--{
--	unsigned int refsel = st->channel_config[channel_number].refsel;
--
--	switch (refsel) {
--	case AD7124_REFIN1:
--	case AD7124_REFIN2:
--	case AD7124_AVDD_REF:
--		if (IS_ERR(st->vref[refsel])) {
--			dev_err(&st->sd.spi->dev,
--				"Error, trying to use external voltage reference without a %s regulator.\n",
--				ad7124_ref_names[refsel]);
--			return PTR_ERR(st->vref[refsel]);
--		}
--		st->channel_config[channel_number].vref_mv =
--			regulator_get_voltage(st->vref[refsel]);
--		/* Conversion from uV to mV */
--		st->channel_config[channel_number].vref_mv /= 1000;
--		break;
--	case AD7124_INT_REF:
--		st->channel_config[channel_number].vref_mv = 2500;
--		st->adc_control &= ~AD7124_ADC_CTRL_REF_EN_MSK;
--		st->adc_control |= AD7124_ADC_CTRL_REF_EN(1);
--		return ad_sd_write_reg(&st->sd, AD7124_ADC_CONTROL,
--				      2, st->adc_control);
--	default:
--		dev_err(&st->sd.spi->dev, "Invalid reference %d\n", refsel);
--		return -EINVAL;
--	}
--
--	return 0;
--}
--
- static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
- 					  struct device_node *np)
- {
- 	struct ad7124_state *st = iio_priv(indio_dev);
-+	struct ad7124_channel_config *cfg;
-+	struct ad7124_channel *channels;
- 	struct device_node *child;
- 	struct iio_chan_spec *chan;
--	struct ad7124_channel_config *chan_config;
- 	unsigned int ain[2], channel = 0, tmp;
- 	int ret;
- 
-@@ -602,16 +767,18 @@ static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
- 	if (!chan)
- 		return -ENOMEM;
- 
--	chan_config = devm_kcalloc(indio_dev->dev.parent, st->num_channels,
--				   sizeof(*chan_config), GFP_KERNEL);
--	if (!chan_config)
-+	channels = devm_kcalloc(indio_dev->dev.parent, st->num_channels, sizeof(*channels),
-+				GFP_KERNEL);
-+	if (!channels)
- 		return -ENOMEM;
- 
- 	indio_dev->channels = chan;
- 	indio_dev->num_channels = st->num_channels;
--	st->channel_config = chan_config;
-+	st->channels = channels;
- 
- 	for_each_available_child_of_node(np, child) {
-+		cfg = &st->channels[channel].cfg;
-+
- 		ret = of_property_read_u32(child, "reg", &channel);
- 		if (ret)
- 			goto err;
-@@ -621,21 +788,20 @@ static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
- 		if (ret)
- 			goto err;
- 
--		st->channel_config[channel].ain = AD7124_CHANNEL_AINP(ain[0]) |
-+		st->channels[channel].nr = channel;
-+		st->channels[channel].ain = AD7124_CHANNEL_AINP(ain[0]) |
- 						  AD7124_CHANNEL_AINM(ain[1]);
--		st->channel_config[channel].bipolar =
--			of_property_read_bool(child, "bipolar");
-+
-+		cfg->bipolar = of_property_read_bool(child, "bipolar");
- 
- 		ret = of_property_read_u32(child, "adi,reference-select", &tmp);
- 		if (ret)
--			st->channel_config[channel].refsel = AD7124_INT_REF;
-+			cfg->refsel = AD7124_INT_REF;
- 		else
--			st->channel_config[channel].refsel = tmp;
-+			cfg->refsel = tmp;
- 
--		st->channel_config[channel].buf_positive =
--			of_property_read_bool(child, "adi,buffered-positive");
--		st->channel_config[channel].buf_negative =
--			of_property_read_bool(child, "adi,buffered-negative");
-+		cfg->buf_positive = of_property_read_bool(child, "adi,buffered-positive");
-+		cfg->buf_negative = of_property_read_bool(child, "adi,buffered-negative");
- 
- 		chan[channel] = ad7124_channel_template;
- 		chan[channel].address = channel;
-@@ -654,7 +820,7 @@ static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
- static int ad7124_setup(struct ad7124_state *st)
- {
- 	unsigned int val, fclk, power_mode;
--	int i, ret, tmp;
-+	int i, ret;
- 
- 	fclk = clk_get_rate(st->mclk);
- 	if (!fclk)
-@@ -677,31 +843,21 @@ static int ad7124_setup(struct ad7124_state *st)
- 	if (ret < 0)
- 		return ret;
- 
-+	mutex_init(&st->cfgs_lock);
-+	INIT_KFIFO(st->live_cfgs_fifo);
- 	for (i = 0; i < st->num_channels; i++) {
--		val = st->channel_config[i].ain | AD7124_CHANNEL_SETUP(i);
--		ret = ad_sd_write_reg(&st->sd, AD7124_CHANNEL(i), 2, val);
--		if (ret < 0)
--			return ret;
-+		val = st->channels[i].ain;
- 
--		ret = ad7124_init_channel_vref(st, i);
-+		ret = ad7124_init_config_vref(st, &st->channels[i].cfg);
- 		if (ret < 0)
- 			return ret;
- 
--		tmp = (st->channel_config[i].buf_positive << 1)  +
--			st->channel_config[i].buf_negative;
--
--		val = AD7124_CONFIG_BIPOLAR(st->channel_config[i].bipolar) |
--		      AD7124_CONFIG_REF_SEL(st->channel_config[i].refsel) |
--		      AD7124_CONFIG_IN_BUFF(tmp);
--		ret = ad_sd_write_reg(&st->sd, AD7124_CONFIG(i), 2, val);
--		if (ret < 0)
--			return ret;
- 		/*
- 		 * 9.38 SPS is the minimum output data rate supported
- 		 * regardless of the selected power mode. Round it up to 10 and
--		 * set all the enabled channels to this default value.
-+		 * set all channels to this default value.
- 		 */
--		ret = ad7124_set_channel_odr(st, i, 10);
-+		ad7124_set_channel_odr(st, i, 10);
- 	}
- 
- 	return ret;
--- 
-2.20.1
+> 
+> Anyhow, lets give time for Srinivas to sanity check this as he's much
+> more familiar
+> with that spec than I am.
+> 
+> Jonathan
+> 
+> > ---
+> >  drivers/iio/light/hid-sensor-als.c | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
+> > 
+> > diff --git a/drivers/iio/light/hid-sensor-als.c
+> > b/drivers/iio/light/hid-sensor-als.c
+> > index a21c827e4953d..849ee37dcd866 100644
+> > --- a/drivers/iio/light/hid-sensor-als.c
+> > +++ b/drivers/iio/light/hid-sensor-als.c
+> > @@ -252,6 +252,14 @@ static int als_parse_report(struct
+> > platform_device *pdev,
+> >  			HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSITIVITY_AB
+> > S |
+> >  			HID_USAGE_SENSOR_DATA_LIGHT,
+> >  			&st->common_attributes.sensitivity);
+> > +
+> > +		if (st->common_attributes.sensitivity.index < 0)
+> > +			sensor_hub_input_get_attribute_info(hsdev,
+> > +				HID_FEATURE_REPORT, usage_id,
+> > +				HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSIT
+> > IVITY_ABS |
+> > +				HID_USAGE_SENSOR_LIGHT_ILLUM,
+> > +				&st->common_attributes.sensitivity);
+> > +
+> >  		dev_dbg(&pdev->dev, "Sensitivity index:report %d:%d\n",
+> >  			st->common_attributes.sensitivity.index,
+> >  			st->common_attributes.sensitivity.report_id);
 

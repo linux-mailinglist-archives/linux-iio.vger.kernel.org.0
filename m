@@ -2,155 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BADB32B3F9
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Mar 2021 05:33:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 94AB832B3FD
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Mar 2021 05:34:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241088AbhCCEKR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 2 Mar 2021 23:10:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50496 "EHLO
+        id S236208AbhCCELg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 2 Mar 2021 23:11:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344087AbhCBP2W (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 2 Mar 2021 10:28:22 -0500
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68A69C061A2B;
-        Tue,  2 Mar 2021 06:56:54 -0800 (PST)
-Received: by mail-pf1-x42e.google.com with SMTP id i10so4825393pfk.4;
-        Tue, 02 Mar 2021 06:56:54 -0800 (PST)
+        with ESMTP id S1350743AbhCBPq1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 2 Mar 2021 10:46:27 -0500
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03C66C061794
+        for <linux-iio@vger.kernel.org>; Tue,  2 Mar 2021 07:37:17 -0800 (PST)
+Received: by mail-lf1-x12f.google.com with SMTP id u4so31965324lfs.0
+        for <linux-iio@vger.kernel.org>; Tue, 02 Mar 2021 07:37:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=U6T9PbU/F4qKp+N/YQtkVMfFVe3qnYSRW1k8rGsnvnk=;
-        b=BBmSnXXr+94I6o1ekJr9V+ADvzDVATCFa7BccMr9FAJhc0gsyNi5pLeemmgdQhFhfL
-         G9Mso1M/4bzUIVzexYT4ggJhMej38VIoGil1Z4SnggW/LKRm3OKV88h9RKKOh5p5XA5O
-         15quSskjfkQTAlyI23i8U7rTHirlIoRTfyHu7ICnbuk7HM83LI1wZX/A7EB0E2imd2iz
-         xF1BKS8jaXgWQyxjgf6YgnoiNuZP93gDZhF0xpDURqMZulbVP9RkSeV+hYme0zfuYbLo
-         qAF5kB1a3JMgNlJyYknLMlLknaZZX9TduHtqiGBBNyn8KNgdpoQ/dmniWSptZtW5/VNM
-         am6w==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=4MgbZOgNW8uixaX7A/+b9oSIGLPsBpXoCjq0KvgA0Vs=;
+        b=Sh8OBszE7R3d8uy7nbh6mGISl/xCEmQuyh4gsiTAsNoq0BctI45bGAlwpUnecy1kA2
+         7IyIPkl7uPlD9RIGSpEwCItMHd4J1HSMUVEOIfFGWOb1iSQlyd8JBsrwTPeRYNYEwWIL
+         4F0Oiifpjpe4z0u4pT36uIJse9yGuU21a4gqFsTthZKHpVuqyyNxzCku3CVqOvhEgXoE
+         SEIoh2gDqqJBZHlPiZQgS3vgDgHjUakA1AcpsijE7EI52oMQTvx+0qKk0ZdjmFSwKnmk
+         APLEgSd+JFLMwGBh4Pbg5ePTydmtKuUTzi/U75LRZvA8luBff0oR7xz5+PzrwnIK3UAJ
+         Z6zQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=U6T9PbU/F4qKp+N/YQtkVMfFVe3qnYSRW1k8rGsnvnk=;
-        b=W3YWnCH501pDu4+z9L8NDRWe0j3Z3tjOU1mZMpTL5KvV3j8Wh+LJkg1GgT/2M1yQ9m
-         SX31WuKf1dsXlsVDPdgMKRf3RI8+KadD3sw5pTHuE/wu9U7soz2J7N3N9Gh8kBjGs40f
-         YLhLrMrCikD7GRY/dUUCQ0+fTrAH2itLKo5sHnmF0rTk5Oy6h/jdACxJC3Db3pLkPsZs
-         97c9oVuv2MIvms5qKQ+NwYZhbwyK9xvcKku0xpUOH5+urJoDjNyYa4ajjffssGEYGRcy
-         t15szaBQPNV8iWwzhKdDoo5GcHQBj9CMh2HxIF3h9vx8cMvD9KC4kHWJdFm3TClPUaiT
-         j2rQ==
-X-Gm-Message-State: AOAM530/w6S7DIdMb8n+7za6OBcteWEw0ltQZQ+pndhYLUBqA4ZQzVvR
-        YZ6C8xmYP8OmI95j6w7YmgqlqRlUnJQ2kA==
-X-Google-Smtp-Source: ABdhPJzkOHuxJPX9u8w6hzM1eTHou32whD5fTEDPdbRDsHCAUdvnl3kj6FbvUtuDUvEvuW3HZpIemQ==
-X-Received: by 2002:a63:e747:: with SMTP id j7mr18301486pgk.235.1614697013985;
-        Tue, 02 Mar 2021 06:56:53 -0800 (PST)
-Received: from shinobu ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id s138sm22917284pfc.135.2021.03.02.06.56.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Mar 2021 06:56:53 -0800 (PST)
-Date:   Tue, 2 Mar 2021 23:56:46 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Cc:     jic23@kernel.org, david@lechnology.com,
-        alexandre.torgue@foss.st.com, mcoquelin.stm32@gmail.com,
-        olivier.moysan@foss.st.com, linux-iio@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] counter: stm32-timer-cnt: fix ceiling write max value
-Message-ID: <YD5SLrdttn+95M7N@shinobu>
-References: <1614696235-24088-1-git-send-email-fabrice.gasnier@foss.st.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=4MgbZOgNW8uixaX7A/+b9oSIGLPsBpXoCjq0KvgA0Vs=;
+        b=NE7HXjGlQyO66wqBTIUFIDMQAf8wCOkVlbXqoHuAbyvoDgK4mLIphTv/g0NOcTp4J1
+         icgcY16oQAPJEYbz/3+Ce04nQCCIISSbjHOZKYlCyeIQc6910tabj8NvotIrbPqlrA4h
+         Zhg0Lm7S4LbM3txggwSaNFUoT7Kh6h0xh923f9lHHhiWIDIqSvWaLJvpXGBe2hCvYSlu
+         nDbyupQA/48OsSkKPo9eCnSnBKFBIn653E9BQPBobQjgBsP7q60Pqq4U+Dskh0t0vWak
+         yNo8gPGUscpdB2hr/A7MFkoi0mx1o0hpQAW8c4cJpiLBs+kVkjwV19r1SKCQxwLeokwl
+         JjHg==
+X-Gm-Message-State: AOAM530zWjVFOqBebeTdSZ6fhGp+87T+FFAI00m/R/VObN2mNST2swvr
+        dLAl3+OEqvMWnXpskQoD+4a6vFyJflircG6Awf3YQw==
+X-Google-Smtp-Source: ABdhPJw4x/G20E257/e052t5Gg9ElQhvDjsYdCfPJESaXuqZZBAOAPdVPZrOW8Pyw0S1XLAm4uKTuwetVf8NZN0spvM=
+X-Received: by 2002:ac2:5d21:: with SMTP id i1mr12099756lfb.649.1614699436419;
+ Tue, 02 Mar 2021 07:37:16 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="wvX72FUvr+D6FcPx"
-Content-Disposition: inline
-In-Reply-To: <1614696235-24088-1-git-send-email-fabrice.gasnier@foss.st.com>
+References: <20210208135347.18494-1-o.rempel@pengutronix.de>
+ <20210208135347.18494-3-o.rempel@pengutronix.de> <YCjlPhEtyH+vfSi4@shinobu>
+ <20210215091737.fx6dwiz7tt56wbkr@pengutronix.de> <YDMMJJ985Zq9oEOv@shinobu>
+ <20210223100656.efbshsh5bz66uhj5@pengutronix.de> <20210223174516.wjlh7hnrd5qe5s6w@pengutronix.de>
+ <YDW7Hihg0gGQh8UR@shinobu>
+In-Reply-To: <YDW7Hihg0gGQh8UR@shinobu>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Tue, 2 Mar 2021 16:37:05 +0100
+Message-ID: <CACRpkdY7GSPiadVORECLcdK91AORY6LgtWi8BBLNK_Sj0Jc3LA@mail.gmail.com>
+Subject: Re: [PATCH v5 2/2] counter: add IRQ or GPIO based event counter
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        David Jander <david@protonic.nl>,
+        Robin van der Gracht <robin@protonic.nl>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Wed, Feb 24, 2021 at 3:34 AM William Breathitt Gray
+<vilhelm.gray@gmail.com> wrote:
+> On Tue, Feb 23, 2021 at 06:45:16PM +0100, Oleksij Rempel wrote:
 
---wvX72FUvr+D6FcPx
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> > > to make this possible, i would need hack gpiolib framework and add
+> > > name/label exporter. But after endless rounds of pingponging me for
+> > > renaming the driver and removing interrupt handler, i feel like we are
+> > > not having serious discussion for mainlining this driver.
+> >
+> > Probably for good reason, struct gpio_desc was made local and is located
+> > in the drivers/gpio/gpiolib.h. It feels like additional hack to include
+> > it. I assume, it should be done properly so there is a function to
+> > provide gpio name or label.
+> >
+> > @Linus Walleij are there any good way to get the GPIO name? And which
+> > name will be actually used? A label provided over devicetree?
+>
+> Perhaps one of the GPIO subsystem maintainers can provide more guidance
+> here, but I was under the impression that this name was provided
+> statically by the respective GPIO driver via their struct gpio_chip. I
+> think you can see the array of names via priv->gpio->gdev->chip->names.
 
-On Tue, Mar 02, 2021 at 03:43:55PM +0100, Fabrice Gasnier wrote:
-> The ceiling value isn't checked before writing it into registers. The user
-> could write a value higher than the counter resolution (e.g. 16 or 32 bits
-> indicated by max_arr). This makes most significant bits to be truncated.
-> Fix it by checking the max_arr to report a range error [1] to the user.
->=20
-> Fixes: ad29937e206f ("counter: Add STM32 Timer quadrature encoder")
->=20
-> [1] https://lkml.org/lkml/2021/2/12/358
->=20
-> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+These names can be set either through device properties on the
+GPIO chip "line-names" such as through device tree, or as static
+names in the .names array on struct gpio_chip for chips that
+are e.g. hot-pluggable and does not have a hardware
+description associated. These names should be something
+like what the signal is called on the circuit board rail.
 
-Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+gpiolib further has a function:
+gpiod_set_consumer_name() that can be used by consumers to
+set their use case for the line, which makes it appear in debugfs
+etc. The consumer name does not need to be unique.
 
-Side question: if priv->ceiling is tracking the current ceiling
-configuration, would it make sense to change stm32_count_ceiling_read()
-to print the value of priv->ceiling instead of doing a regmap_read()
-call?
+These names have no practical use other than debugging or
+userspace representation.
 
-> ---
->  drivers/counter/stm32-timer-cnt.c | 5 +++++
->  1 file changed, 5 insertions(+)
->=20
-> diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-ti=
-mer-cnt.c
-> index ef2a974..2cf0c05 100644
-> --- a/drivers/counter/stm32-timer-cnt.c
-> +++ b/drivers/counter/stm32-timer-cnt.c
-> @@ -32,6 +32,7 @@ struct stm32_timer_cnt {
->  	struct regmap *regmap;
->  	struct clk *clk;
->  	u32 ceiling;
-> +	u32 max_arr;
->  	bool enabled;
->  	struct stm32_timer_regs bak;
->  };
-> @@ -185,6 +186,9 @@ static ssize_t stm32_count_ceiling_write(struct count=
-er_device *counter,
->  	if (ret)
->  		return ret;
-> =20
-> +	if (ceiling > priv->max_arr)
-> +		return -ERANGE;
-> +
->  	/* TIMx_ARR register shouldn't be buffered (ARPE=3D0) */
->  	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_ARPE, 0);
->  	regmap_write(priv->regmap, TIM_ARR, ceiling);
-> @@ -360,6 +364,7 @@ static int stm32_timer_cnt_probe(struct platform_devi=
-ce *pdev)
->  	priv->regmap =3D ddata->regmap;
->  	priv->clk =3D ddata->clk;
->  	priv->ceiling =3D ddata->max_arr;
-> +	priv->max_arr =3D ddata->max_arr;
-> =20
->  	priv->counter.name =3D dev_name(dev);
->  	priv->counter.parent =3D dev;
-> --=20
-> 2.7.4
->=20
+I hope this helps.
 
---wvX72FUvr+D6FcPx
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmA+UggACgkQhvpINdm7
-VJJt3g/+OVZcvByeL/DXkUu5tzYQxQ5xzzfViSO16w54567c2tGJuB8gBEFaK9eG
-Q5EzOeM9YaL982A/9OtqQup3CAJVkLizpy65aH1jDlPasA8JKKoelTfd+mAo58Vu
-hiwG3DXxwOCZNB7b2/+RaKcYyayviVsKgrl8mHUQ1SY81kM3/cdzSLSnAoxkfD8o
-7w1CdXnOxDvvTD6rwcbc4izhSSxgHzvaGHFpKwwYa3gDpmCY44rDKsgXc0CL6F2B
-1JRDgvIePdqIStdC8VXcGkUwmlrEVwfSqFgbAtadWuwMSR293AR1PCayvsA4yWyo
-49fMudR81RlG5aFyYoOWbAvoKpiq81LlGQspGWFcND4mdbDR7qvEeuZO//0wbTxk
-5bNTj/VrQeSyNb7HmDFzOaKwF3waAnYpwZyOcUKVwzVNyAJkRq4nCPn29OKHE3mC
-/Pbun8nAcbF0BP5R6QzX++aELtXzuArqJHOCDudTDQas0i7BNH0/+1KNKvisLTbk
-6ftDbo0p3M90RUks08LLVpDzrAUGpyWeq7+VmWj1jHj22759PtbkEd/dxXKMkcQk
-OwD4+2zRN4yq4J2U8oiofAprHHgidhAXPB+Qvy4GXP1SewZl3q+cXCNn20Se39Xw
-uEDiJrNEX2zfbyRHx1V1zjqBlXFvCKIt62uqb8FBMmexuC5fmbc=
-=M2Bd
------END PGP SIGNATURE-----
-
---wvX72FUvr+D6FcPx--
+Yours,
+Linus Walleij

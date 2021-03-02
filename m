@@ -2,113 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 94AB832B3FD
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Mar 2021 05:34:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8702D32B3FB
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Mar 2021 05:34:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236208AbhCCELg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 2 Mar 2021 23:11:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54470 "EHLO
+        id S236173AbhCCEK5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 2 Mar 2021 23:10:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350743AbhCBPq1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 2 Mar 2021 10:46:27 -0500
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03C66C061794
-        for <linux-iio@vger.kernel.org>; Tue,  2 Mar 2021 07:37:17 -0800 (PST)
-Received: by mail-lf1-x12f.google.com with SMTP id u4so31965324lfs.0
-        for <linux-iio@vger.kernel.org>; Tue, 02 Mar 2021 07:37:17 -0800 (PST)
+        with ESMTP id S1347949AbhCBPpr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 2 Mar 2021 10:45:47 -0500
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 432C6C0611C0
+        for <linux-iio@vger.kernel.org>; Tue,  2 Mar 2021 07:45:23 -0800 (PST)
+Received: by mail-lf1-x12c.google.com with SMTP id v5so31945597lft.13
+        for <linux-iio@vger.kernel.org>; Tue, 02 Mar 2021 07:45:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=4MgbZOgNW8uixaX7A/+b9oSIGLPsBpXoCjq0KvgA0Vs=;
-        b=Sh8OBszE7R3d8uy7nbh6mGISl/xCEmQuyh4gsiTAsNoq0BctI45bGAlwpUnecy1kA2
-         7IyIPkl7uPlD9RIGSpEwCItMHd4J1HSMUVEOIfFGWOb1iSQlyd8JBsrwTPeRYNYEwWIL
-         4F0Oiifpjpe4z0u4pT36uIJse9yGuU21a4gqFsTthZKHpVuqyyNxzCku3CVqOvhEgXoE
-         SEIoh2gDqqJBZHlPiZQgS3vgDgHjUakA1AcpsijE7EI52oMQTvx+0qKk0ZdjmFSwKnmk
-         APLEgSd+JFLMwGBh4Pbg5ePTydmtKuUTzi/U75LRZvA8luBff0oR7xz5+PzrwnIK3UAJ
-         Z6zQ==
+        bh=AGJOP12tupXeQzv6wdlSO3ZQYDh1j4tIYt4tuTAcn/U=;
+        b=MkX36FfrOg4u+MTeophtlKAX8UbmwTTdKjjFTorOoqGJtS+RrsUp/xOsSbzYKfT6J0
+         lpd/tM1pY1pKQ4ADeALiVtm7GQvcWENljUipa1UUjgYKEWe72q33io2NKiwFF4yd/G4A
+         0MUdf7of7eXnBDcf0W1ABzX6XzTtFruFrjKUOUTnjv0VfRuGE8HYt7lrXqEZ5dLtXthh
+         TJunfeoVzeMHsaucK6DSGgwsCKunaF6prF7AjoMXnCQ4ciuSfedXkFdRfJFHTaMVLFwn
+         5Y/Q5j3yVdjbA+PaSIXQVlhBYeEBkqNw80IBz80d06KoulG79yzyIDIKLsqIKsybU/ZK
+         j7WA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=4MgbZOgNW8uixaX7A/+b9oSIGLPsBpXoCjq0KvgA0Vs=;
-        b=NE7HXjGlQyO66wqBTIUFIDMQAf8wCOkVlbXqoHuAbyvoDgK4mLIphTv/g0NOcTp4J1
-         icgcY16oQAPJEYbz/3+Ce04nQCCIISSbjHOZKYlCyeIQc6910tabj8NvotIrbPqlrA4h
-         Zhg0Lm7S4LbM3txggwSaNFUoT7Kh6h0xh923f9lHHhiWIDIqSvWaLJvpXGBe2hCvYSlu
-         nDbyupQA/48OsSkKPo9eCnSnBKFBIn653E9BQPBobQjgBsP7q60Pqq4U+Dskh0t0vWak
-         yNo8gPGUscpdB2hr/A7MFkoi0mx1o0hpQAW8c4cJpiLBs+kVkjwV19r1SKCQxwLeokwl
-         JjHg==
-X-Gm-Message-State: AOAM530zWjVFOqBebeTdSZ6fhGp+87T+FFAI00m/R/VObN2mNST2swvr
-        dLAl3+OEqvMWnXpskQoD+4a6vFyJflircG6Awf3YQw==
-X-Google-Smtp-Source: ABdhPJw4x/G20E257/e052t5Gg9ElQhvDjsYdCfPJESaXuqZZBAOAPdVPZrOW8Pyw0S1XLAm4uKTuwetVf8NZN0spvM=
-X-Received: by 2002:ac2:5d21:: with SMTP id i1mr12099756lfb.649.1614699436419;
- Tue, 02 Mar 2021 07:37:16 -0800 (PST)
+        bh=AGJOP12tupXeQzv6wdlSO3ZQYDh1j4tIYt4tuTAcn/U=;
+        b=oN8p+znqsnfYuz3VB2+g8XnwMlk5jyVejGi6QnpdcpiqbjmRGmV3kaWcRMoQ2k6brE
+         D5XEW5xjMGYRL0WILU7CGGb/1lyCorIq2A2X/2NrzXIVJrh46KOI7lplkQ/zzOH3bRYn
+         8y+eHU9SMYWHuUFTBjuHhnyuG4GxMp+nd6a2DYMNn4AWmOxmSQaCkUw3kv3jepMhJm+f
+         o3b1sxdOw95qvITr22DqvFdLoMdVEOOUezUknlfTyB+hG6BRNejYVQOd/QctLn2/mWGf
+         In84zv0WY9FwlKU7OvcMq8Z7lHwXMplQ3sQJdEAdzOsgcghdA2F7pG69U/M24NUBICo6
+         p0mA==
+X-Gm-Message-State: AOAM533eh/pb0p3c28gWdmlacri4HBTDHBgEgYaTDouFvhTI3c1OtCZL
+        ofsH38+/cFMxoaHG5x5rAFrW11upgXFrRIIU6SoWLA==
+X-Google-Smtp-Source: ABdhPJx0RIrrlnkScevwvrpR+lstf82IYBP88jWB85tZXFlSItGYjVwG0JvQMBSn2ESQm6rxTUsuMcPPhqwAobDtBok=
+X-Received: by 2002:a19:6b13:: with SMTP id d19mr12421144lfa.291.1614699921790;
+ Tue, 02 Mar 2021 07:45:21 -0800 (PST)
 MIME-Version: 1.0
-References: <20210208135347.18494-1-o.rempel@pengutronix.de>
- <20210208135347.18494-3-o.rempel@pengutronix.de> <YCjlPhEtyH+vfSi4@shinobu>
- <20210215091737.fx6dwiz7tt56wbkr@pengutronix.de> <YDMMJJ985Zq9oEOv@shinobu>
- <20210223100656.efbshsh5bz66uhj5@pengutronix.de> <20210223174516.wjlh7hnrd5qe5s6w@pengutronix.de>
- <YDW7Hihg0gGQh8UR@shinobu>
-In-Reply-To: <YDW7Hihg0gGQh8UR@shinobu>
+References: <20210301080421.13436-1-dinghao.liu@zju.edu.cn>
+In-Reply-To: <20210301080421.13436-1-dinghao.liu@zju.edu.cn>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 2 Mar 2021 16:37:05 +0100
-Message-ID: <CACRpkdY7GSPiadVORECLcdK91AORY6LgtWi8BBLNK_Sj0Jc3LA@mail.gmail.com>
-Subject: Re: [PATCH v5 2/2] counter: add IRQ or GPIO based event counter
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        David Jander <david@protonic.nl>,
-        Robin van der Gracht <robin@protonic.nl>,
+Date:   Tue, 2 Mar 2021 16:45:10 +0100
+Message-ID: <CACRpkdZMrQNncocSdqQXbFCdTB9N=PuoNSvW5sU_DLZ8Es0feg@mail.gmail.com>
+Subject: Re: [PATCH] iio: gyro: mpu3050: Fix error handling in mpu3050_trigger_handler
+To:     Dinghao Liu <dinghao.liu@zju.edu.cn>
+Cc:     Kangjie Lu <kjlu@umn.edu>, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Feb 24, 2021 at 3:34 AM William Breathitt Gray
-<vilhelm.gray@gmail.com> wrote:
-> On Tue, Feb 23, 2021 at 06:45:16PM +0100, Oleksij Rempel wrote:
+On Mon, Mar 1, 2021 at 9:04 AM Dinghao Liu <dinghao.liu@zju.edu.cn> wrote:
 
-> > > to make this possible, i would need hack gpiolib framework and add
-> > > name/label exporter. But after endless rounds of pingponging me for
-> > > renaming the driver and removing interrupt handler, i feel like we are
-> > > not having serious discussion for mainlining this driver.
-> >
-> > Probably for good reason, struct gpio_desc was made local and is located
-> > in the drivers/gpio/gpiolib.h. It feels like additional hack to include
-> > it. I assume, it should be done properly so there is a function to
-> > provide gpio name or label.
-> >
-> > @Linus Walleij are there any good way to get the GPIO name? And which
-> > name will be actually used? A label provided over devicetree?
+> There is one regmap_bulk_read() call in mpu3050_trigger_handler
+> that we have caught its return value bug lack further handling.
+> Check and terminate the execution flow just like the other three
+> regmap_bulk_read() calls in this function.
 >
-> Perhaps one of the GPIO subsystem maintainers can provide more guidance
-> here, but I was under the impression that this name was provided
-> statically by the respective GPIO driver via their struct gpio_chip. I
-> think you can see the array of names via priv->gpio->gdev->chip->names.
+> Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
 
-These names can be set either through device properties on the
-GPIO chip "line-names" such as through device tree, or as static
-names in the .names array on struct gpio_chip for chips that
-are e.g. hot-pluggable and does not have a hardware
-description associated. These names should be something
-like what the signal is called on the circuit board rail.
-
-gpiolib further has a function:
-gpiod_set_consumer_name() that can be used by consumers to
-set their use case for the line, which makes it appear in debugfs
-etc. The consumer name does not need to be unique.
-
-These names have no practical use other than debugging or
-userspace representation.
-
-I hope this helps.
+OK that makes sense.
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
 Yours,
 Linus Walleij

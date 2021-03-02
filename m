@@ -2,246 +2,106 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E44CB32B3B1
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Mar 2021 05:21:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE7FC32B3B6
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Mar 2021 05:21:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238084AbhCCEJm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 2 Mar 2021 23:09:42 -0500
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:45132 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1383146AbhCBKqv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 2 Mar 2021 05:46:51 -0500
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: eballetbo)
-        with ESMTPSA id 752251F454D8
-Subject: Re: [PATCH 1/2] iio: cros_ec: do an early exit if not physical_device
- case
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        bleung@chromium.org, groeck@chromium.org, gwendal@chromium.org
-References: <20201123144017.18311-1-alexandru.ardelean@analog.com>
- <20210221162905.65be88d0@archlinux>
-From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Message-ID: <408e9b87-0528-141a-1fa6-ca8c2a0b1c69@collabora.com>
-Date:   Tue, 2 Mar 2021 11:46:06 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+        id S238849AbhCCEJv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 2 Mar 2021 23:09:51 -0500
+Received: from mx07-00178001.pphosted.com ([185.132.182.106]:37218 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1448618AbhCBPIL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 2 Mar 2021 10:08:11 -0500
+Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 122EeoRO025076;
+        Tue, 2 Mar 2021 15:44:08 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=selector1;
+ bh=oONoIdGfPczi+ljXGpeeDFb41fuDUkn+9QagP/RsyGM=;
+ b=kXUKxlCIjBQEJDbjy2/4thPlsCHLtv3WeDbjy4ZG3XxQk4fzIc9BdI14IaDqgyMxdOpb
+ cZIvUK3r6lXkw+EAFZQMqbEaM2y3KOeCWKp4c15j/tepr5Czm9VCzuY8aCVV5FKk8wnG
+ nFqbbPNQdhm3xFefaMppMoi756E31vd/gSInXRLlcr03IcuunhU5UTFnS9TCaFNb+U8w
+ wXy9j0PSRR5EYcODGRMBO7vSj6QWN9+RwL7fB2xDxJtHC4s/ejHCLWjD7JGZ6m+yH4Bb
+ UMu07ks/vLmFJnwum3MZoy25smObFj2tVSKnVKIne120CWbrdnEnaEQXTWhCf9ulj+l7 LA== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 370xehqk1t-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 02 Mar 2021 15:44:08 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 3174E10002A;
+        Tue,  2 Mar 2021 15:44:07 +0100 (CET)
+Received: from Webmail-eu.st.com (sfhdag2node3.st.com [10.75.127.6])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 21D32241615;
+        Tue,  2 Mar 2021 15:44:07 +0100 (CET)
+Received: from localhost (10.75.127.51) by SFHDAG2NODE3.st.com (10.75.127.6)
+ with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 2 Mar 2021 15:44:06
+ +0100
+From:   Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+To:     <vilhelm.gray@gmail.com>, <jic23@kernel.org>
+CC:     <david@lechnology.com>, <alexandre.torgue@foss.st.com>,
+        <mcoquelin.stm32@gmail.com>, <olivier.moysan@foss.st.com>,
+        <fabrice.gasnier@foss.st.com>, <linux-iio@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH] counter: stm32-timer-cnt: fix ceiling write max value
+Date:   Tue, 2 Mar 2021 15:43:55 +0100
+Message-ID: <1614696235-24088-1-git-send-email-fabrice.gasnier@foss.st.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-In-Reply-To: <20210221162905.65be88d0@archlinux>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Originating-IP: [10.75.127.51]
+X-ClientProxiedBy: SFHDAG2NODE1.st.com (10.75.127.4) To SFHDAG2NODE3.st.com
+ (10.75.127.6)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
+ definitions=2021-03-02_06:2021-03-01,2021-03-02 signatures=0
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi all,
+The ceiling value isn't checked before writing it into registers. The user
+could write a value higher than the counter resolution (e.g. 16 or 32 bits
+indicated by max_arr). This makes most significant bits to be truncated.
+Fix it by checking the max_arr to report a range error [1] to the user.
 
-On 21/2/21 17:29, Jonathan Cameron wrote:
-> On Mon, 23 Nov 2020 16:40:16 +0200
-> Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
-> 
->> This whole code-block was put under one big if() condition/block.
->> This change does an early return if the 'physical_device' boolean is false,
->> thus unindenting the block by one level.
->>
->> No other functional change has been done.
->>
->> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> @Gwendal, others  This series from Alex has been outstanding for a while
-> but may well still apply.
-> Ideally looking for an ack.
-> 
+Fixes: ad29937e206f ("counter: Add STM32 Timer quadrature encoder")
 
-This looks good to me.
+[1] https://lkml.org/lkml/2021/2/12/358
 
-Acked-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+---
+ drivers/counter/stm32-timer-cnt.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Thanks,
- Enric
+diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
+index ef2a974..2cf0c05 100644
+--- a/drivers/counter/stm32-timer-cnt.c
++++ b/drivers/counter/stm32-timer-cnt.c
+@@ -32,6 +32,7 @@ struct stm32_timer_cnt {
+ 	struct regmap *regmap;
+ 	struct clk *clk;
+ 	u32 ceiling;
++	u32 max_arr;
+ 	bool enabled;
+ 	struct stm32_timer_regs bak;
+ };
+@@ -185,6 +186,9 @@ static ssize_t stm32_count_ceiling_write(struct counter_device *counter,
+ 	if (ret)
+ 		return ret;
+ 
++	if (ceiling > priv->max_arr)
++		return -ERANGE;
++
+ 	/* TIMx_ARR register shouldn't be buffered (ARPE=0) */
+ 	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_ARPE, 0);
+ 	regmap_write(priv->regmap, TIM_ARR, ceiling);
+@@ -360,6 +364,7 @@ static int stm32_timer_cnt_probe(struct platform_device *pdev)
+ 	priv->regmap = ddata->regmap;
+ 	priv->clk = ddata->clk;
+ 	priv->ceiling = ddata->max_arr;
++	priv->max_arr = ddata->max_arr;
+ 
+ 	priv->counter.name = dev_name(dev);
+ 	priv->counter.parent = dev;
+-- 
+2.7.4
 
-> Thanks,
-> 
-> Jonathan
->  
->> ---
->>  .../cros_ec_sensors/cros_ec_sensors_core.c    | 161 +++++++++---------
->>  1 file changed, 81 insertions(+), 80 deletions(-)
->>
->> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
->> index 5c6c4e6fec9b..9470014936f2 100644
->> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
->> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
->> @@ -287,89 +287,90 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
->>  
->>  	indio_dev->name = pdev->name;
->>  
->> -	if (physical_device) {
->> -		state->param.cmd = MOTIONSENSE_CMD_INFO;
->> -		state->param.info.sensor_num = sensor_platform->sensor_num;
->> -		ret = cros_ec_motion_send_host_cmd(state, 0);
->> -		if (ret) {
->> -			dev_warn(dev, "Can not access sensor info\n");
->> +	if (!physical_device)
->> +		return 0;
->> +
->> +	state->param.cmd = MOTIONSENSE_CMD_INFO;
->> +	state->param.info.sensor_num = sensor_platform->sensor_num;
->> +	ret = cros_ec_motion_send_host_cmd(state, 0);
->> +	if (ret) {
->> +		dev_warn(dev, "Can not access sensor info\n");
->> +		return ret;
->> +	}
->> +	state->type = state->resp->info.type;
->> +	state->loc = state->resp->info.location;
->> +
->> +	/* Set sign vector, only used for backward compatibility. */
->> +	memset(state->sign, 1, CROS_EC_SENSOR_MAX_AXIS);
->> +
->> +	for (i = CROS_EC_SENSOR_X; i < CROS_EC_SENSOR_MAX_AXIS; i++)
->> +		state->calib[i].scale = MOTION_SENSE_DEFAULT_SCALE;
->> +
->> +	/* 0 is a correct value used to stop the device */
->> +	if (state->msg->version < 3) {
->> +		get_default_min_max_freq(state->resp->info.type,
->> +					 &frequencies[1],
->> +					 &frequencies[2],
->> +					 &state->fifo_max_event_count);
->> +	} else {
->> +		frequencies[1] = state->resp->info_3.min_frequency;
->> +		frequencies[2] = state->resp->info_3.max_frequency;
->> +		state->fifo_max_event_count =
->> +		    state->resp->info_3.fifo_max_event_count;
->> +	}
->> +	for (i = 0; i < ARRAY_SIZE(frequencies); i++) {
->> +		state->frequencies[2 * i] = frequencies[i] / 1000;
->> +		state->frequencies[2 * i + 1] =
->> +			(frequencies[i] % 1000) * 1000;
->> +	}
->> +
->> +	if (cros_ec_check_features(ec, EC_FEATURE_MOTION_SENSE_FIFO)) {
->> +		/*
->> +		 * Create a software buffer, feed by the EC FIFO.
->> +		 * We can not use trigger here, as events are generated
->> +		 * as soon as sample_frequency is set.
->> +		 */
->> +		struct iio_buffer *buffer;
->> +
->> +		buffer = devm_iio_kfifo_allocate(dev);
->> +		if (!buffer)
->> +			return -ENOMEM;
->> +
->> +		iio_device_attach_buffer(indio_dev, buffer);
->> +		indio_dev->modes = INDIO_BUFFER_SOFTWARE;
->> +
->> +		ret = cros_ec_sensorhub_register_push_data(
->> +				sensor_hub, sensor_platform->sensor_num,
->> +				indio_dev, push_data);
->> +		if (ret)
->>  			return ret;
->> -		}
->> -		state->type = state->resp->info.type;
->> -		state->loc = state->resp->info.location;
->>  
->> -		/* Set sign vector, only used for backward compatibility. */
->> -		memset(state->sign, 1, CROS_EC_SENSOR_MAX_AXIS);
->> +		ret = devm_add_action_or_reset(
->> +				dev, cros_ec_sensors_core_clean, pdev);
->> +		if (ret)
->> +			return ret;
->>  
->> -		for (i = CROS_EC_SENSOR_X; i < CROS_EC_SENSOR_MAX_AXIS; i++)
->> -			state->calib[i].scale = MOTION_SENSE_DEFAULT_SCALE;
->> -
->> -		/* 0 is a correct value used to stop the device */
->> -		if (state->msg->version < 3) {
->> -			get_default_min_max_freq(state->resp->info.type,
->> -						 &frequencies[1],
->> -						 &frequencies[2],
->> -						 &state->fifo_max_event_count);
->> -		} else {
->> -			frequencies[1] = state->resp->info_3.min_frequency;
->> -			frequencies[2] = state->resp->info_3.max_frequency;
->> -			state->fifo_max_event_count =
->> -			    state->resp->info_3.fifo_max_event_count;
->> -		}
->> -		for (i = 0; i < ARRAY_SIZE(frequencies); i++) {
->> -			state->frequencies[2 * i] = frequencies[i] / 1000;
->> -			state->frequencies[2 * i + 1] =
->> -				(frequencies[i] % 1000) * 1000;
->> -		}
->> -
->> -		if (cros_ec_check_features(ec, EC_FEATURE_MOTION_SENSE_FIFO)) {
->> -			/*
->> -			 * Create a software buffer, feed by the EC FIFO.
->> -			 * We can not use trigger here, as events are generated
->> -			 * as soon as sample_frequency is set.
->> -			 */
->> -			struct iio_buffer *buffer;
->> -
->> -			buffer = devm_iio_kfifo_allocate(dev);
->> -			if (!buffer)
->> -				return -ENOMEM;
->> -
->> -			iio_device_attach_buffer(indio_dev, buffer);
->> -			indio_dev->modes = INDIO_BUFFER_SOFTWARE;
->> -
->> -			ret = cros_ec_sensorhub_register_push_data(
->> -					sensor_hub, sensor_platform->sensor_num,
->> -					indio_dev, push_data);
->> -			if (ret)
->> -				return ret;
->> -
->> -			ret = devm_add_action_or_reset(
->> -					dev, cros_ec_sensors_core_clean, pdev);
->> -			if (ret)
->> -				return ret;
->> -
->> -			/* Timestamp coming from FIFO are in ns since boot. */
->> -			ret = iio_device_set_clock(indio_dev, CLOCK_BOOTTIME);
->> -			if (ret)
->> -				return ret;
->> -		} else {
->> -			const struct attribute **fifo_attrs;
->> -
->> -			if (has_hw_fifo)
->> -				fifo_attrs = cros_ec_sensor_fifo_attributes;
->> -			else
->> -				fifo_attrs = NULL;
->> -
->> -			/*
->> -			 * The only way to get samples in buffer is to set a
->> -			 * software trigger (systrig, hrtimer).
->> -			 */
->> -			ret = devm_iio_triggered_buffer_setup_ext(
->> -					dev, indio_dev, NULL, trigger_capture,
->> -					NULL, fifo_attrs);
->> -			if (ret)
->> -				return ret;
->> -		}
->> +		/* Timestamp coming from FIFO are in ns since boot. */
->> +		ret = iio_device_set_clock(indio_dev, CLOCK_BOOTTIME);
->> +		if (ret)
->> +			return ret;
->> +	} else {
->> +		const struct attribute **fifo_attrs;
->> +
->> +		if (has_hw_fifo)
->> +			fifo_attrs = cros_ec_sensor_fifo_attributes;
->> +		else
->> +			fifo_attrs = NULL;
->> +
->> +		/*
->> +		 * The only way to get samples in buffer is to set a
->> +		 * software trigger (systrig, hrtimer).
->> +		 */
->> +		ret = devm_iio_triggered_buffer_setup_ext(
->> +				dev, indio_dev, NULL, trigger_capture,
->> +				NULL, fifo_attrs);
->> +		if (ret)
->> +			return ret;
->>  	}
->>  
->>  	return 0;
-> 

@@ -2,196 +2,196 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58E1932C6D4
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Mar 2021 02:09:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DB3532CFEC
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Mar 2021 10:44:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344405AbhCDAaI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 3 Mar 2021 19:30:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44780 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353097AbhCDADM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 Mar 2021 19:03:12 -0500
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D203C0613EF;
-        Wed,  3 Mar 2021 15:42:09 -0800 (PST)
-Received: by mail-pj1-x1030.google.com with SMTP id d13-20020a17090abf8db02900c0590648b1so3602946pjs.1;
-        Wed, 03 Mar 2021 15:42:09 -0800 (PST)
+        id S237812AbhCDJn1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 4 Mar 2021 04:43:27 -0500
+Received: from mx0b-00328301.pphosted.com ([148.163.141.47]:24048 "EHLO
+        mx0b-00328301.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S237807AbhCDJnI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Mar 2021 04:43:08 -0500
+X-Greylist: delayed 1734 seconds by postgrey-1.27 at vger.kernel.org; Thu, 04 Mar 2021 04:43:08 EST
+Received: from pps.filterd (m0156136.ppops.net [127.0.0.1])
+        by mx0b-00328301.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 12493AYZ018629;
+        Thu, 4 Mar 2021 01:12:49 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=invensense.com; h=from : to :
+ subject : date : message-id : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pfpt1;
+ bh=zsskD8QqAHzOk9AhZukzaeLe954vG/HNeBtBm36YL9Q=;
+ b=fiDm7hdi326R/LXwEu53iSgVOT9cnDc5hxPl+XWetM/rn/LVEREocz+jWOJKXP1PdxnH
+ rpqFXu836hIAY98a3StGvJiEFTCvmBUlt2IY7iexCHdn4xBbez5oYGesLKdgRuJ0Or+d
+ SUkA7MeRWvyBPsjlFdOdFZ7BdcTm7cUxsaEz6ZN7gqJyiX/asfZdAftngrRKyTaoRe91
+ pnMLr9rPvFBmqauwufQApTx6qu6wtFHMtv3wWz36PHbSi+zunxEqnVwAdssI9I2N5pH8
+ ZbD9+B9NCeVYcYMTqNVo7ReM4hgxqsaQNvLaLn4NhMAdiBPeFO619euWXD2g/t7qC1l0 yg== 
+Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2103.outbound.protection.outlook.com [104.47.70.103])
+        by mx0b-00328301.pphosted.com with ESMTP id 3721d4rx4h-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 04 Mar 2021 01:12:49 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=bIt9Z28y68lmTc05ReJBrHYZpD+WVsF1piTc7XiivZMz3NXQhjUFiddBFNwKORr4/iRq1PUnR9DJQcUco7OCQB3hnQfjub/FVFlEYM6U9v6I81yVy0qkfmojkEEoKhU/h7dDZX2NcIRubwZXtsZgqP/11d4rjtUhWjLGjTcsyJafp/ig43xOEYboVw8NBejjJl37JeUCji3aWUMlZfCEY5juzis8t6WhgplhaLr0IudcGxsgaDdPXKtRaK3GeGZ6fogJAFQ06FOtEYtYO0nXpDQ8HxfM/KibHN9BzdG6BuS972A95COWjtZBSxJN78uMjqv0n0e+ejZshs0M5y2aXg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zsskD8QqAHzOk9AhZukzaeLe954vG/HNeBtBm36YL9Q=;
+ b=c3yZiWuUdMose6YNKp43mYFyM2nVHcJ/J6Q2zVy97TIk6ngy5nuuLtxGi5/Imy8egGvdd2L7W3c8EHYy/zHd9bu1A+Rb1Hp3tgHMGt3dTP6VBVcgqZhSLTdVv5wcGrt32VtaTle0TPnO//dBSYY5P24N1pg31CNSAXj3fOWJZpE6MAWE7aV6unUOZxuwAKPqPLIdR2F39RfxBBwNkz1/x02+82hIe+Npkjx9pKw5qJj0R6HGHbM6wcWgTuc9kv1DCqA5llfhpnH2NKRAEvs+FPPZsLa5xBKXUBeNyxkuEa9PVSe+k3xIkNeHlavyHrMEwhB26GX2yjSma3SXnCfYdw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=invensense.com; dmarc=pass action=none
+ header.from=invensense.com; dkim=pass header.d=invensense.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=hjgPPmywlf1QSYNfKJW5SMSSqegjS9TRhykusa53eQA=;
-        b=dN8ygrrTTwV4ktjEHcHhP03Z9wjYOZjF/ycGhN3zk86kSOtDSrEdVSNc41fhWog3nl
-         Akf+Jf7wsMpO711LTcYpfssJjZSkJlYLFoQYRoDG4R7pIZLNveQL3dyhYi1De2wcyqAr
-         HbO+Ar1A2au11Fv4Ge8mvwaTOEmv9cmu81fpuFcmGFITNIHUhLzSSTF8Gkmp8L6vC+4s
-         faHJMm2eP/PSRQzvOHWMQ2T1cYqR8N+isV3kWv4ZT1kzbpKJRXNjj/DQb1PokclVp0OU
-         hG7LQ5lnc81fZfncULV5+aLf8jP8dI4RcvItz6GEsNDXWr2BxW6fo80bNMzxTRAYY97+
-         d9/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=hjgPPmywlf1QSYNfKJW5SMSSqegjS9TRhykusa53eQA=;
-        b=M/ALvLt7a0ya9+wE1mXkjlhd6syER5+qhwzmROZleqooJ5rJ5R/z0G41AnPAlE+rg5
-         olouRe9lcsraiU7VpATiDbx6zuBc97ILw+VyCyZKCM/k6piAVr9Gb9cgcPNzt5YT3vca
-         uzjb3xk0CoXpad5DvjsvMYOPNMBp8a2Bduwe6UszVgPYpOsPSaB5MPLYGo9+a9YLaqqD
-         IBRXXkx7w1qJHSRuLx+11/daV6kuFGUU1zsmLkgTy4vIgE6043sOyvVHuWIAwhcPpvDf
-         RSBcEJnKIALh3wreKeZUaj4ira6mHFQFkKJr6OeZLHXlwQsZ+g7/LsfbPQah8VLOd+fJ
-         eUsQ==
-X-Gm-Message-State: AOAM533lgH7jfW0d5oEzXlw0szpf4W7Z0yBAgn8ZoMVX1y9r+bcjAtYv
-        bxXg7z8/pUcWhSjvp51kdeY=
-X-Google-Smtp-Source: ABdhPJxaFhX6y72z2rrx4+W3Hx9RpBqhn1GmJBKZd55ZtXtJoGXyOZDcokuYHn2nQp54M8CAl6d5Qg==
-X-Received: by 2002:a17:903:2082:b029:e3:df7c:f30 with SMTP id d2-20020a1709032082b02900e3df7c0f30mr1396147plc.71.1614814928804;
-        Wed, 03 Mar 2021 15:42:08 -0800 (PST)
-Received: from shinobu ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id h8sm24219343pfv.154.2021.03.03.15.42.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Mar 2021 15:42:08 -0800 (PST)
-Date:   Thu, 4 Mar 2021 08:42:03 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Cc:     jic23@kernel.org, alexandre.torgue@foss.st.com,
-        mcoquelin.stm32@gmail.com, olivier.moysan@foss.st.com,
-        linux-iio@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] counter: stm32-timer-cnt: fix ceiling miss-alignment
- with reload register
-Message-ID: <YEAeyyJ+GH10ep7S@shinobu>
-References: <1614793789-10346-1-git-send-email-fabrice.gasnier@foss.st.com>
+ d=invensense.onmicrosoft.com; s=selector2-invensense-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zsskD8QqAHzOk9AhZukzaeLe954vG/HNeBtBm36YL9Q=;
+ b=WWylNTC5VeMdoJlo8BgDdwAmcCYtE9rtkkcPfrf6DqxXvzHLES5VQTyFg3MvCP7k/BVke303H/djm0KEqBnHsq0sNP7sLai1A5P3jogA/l6LY1QxzMXeAZFVxTjtvAq4VKKj+PElUeixqzP5MMMhxDb5VCV18FeVVXyuvSQYpVc=
+Received: from BL0PR12MB5011.namprd12.prod.outlook.com (2603:10b6:208:1c9::17)
+ by MN2PR12MB4063.namprd12.prod.outlook.com (2603:10b6:208:1dc::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3890.19; Thu, 4 Mar
+ 2021 09:12:47 +0000
+Received: from BL0PR12MB5011.namprd12.prod.outlook.com
+ ([fe80::c15a:6633:c47d:eea9]) by BL0PR12MB5011.namprd12.prod.outlook.com
+ ([fe80::c15a:6633:c47d:eea9%8]) with mapi id 15.20.3890.028; Thu, 4 Mar 2021
+ 09:12:47 +0000
+From:   Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
+To:     Philippe De Muyter <phdm@macq.eu>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: invensense mpu9250 ak8963 and devicetree
+Thread-Topic: invensense mpu9250 ak8963 and devicetree
+Thread-Index: AQHXEI3j2JzeTFPnA0iWWrSRCS5fRKpzig3C
+Date:   Thu, 4 Mar 2021 09:12:47 +0000
+Message-ID: <BL0PR12MB50118E81AC1B92F530C4A7B0C4979@BL0PR12MB5011.namprd12.prod.outlook.com>
+References: <20210303153145.GA30260@frolo.macqel>
+In-Reply-To: <20210303153145.GA30260@frolo.macqel>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: macq.eu; dkim=none (message not signed)
+ header.d=none;macq.eu; dmarc=none action=none header.from=invensense.com;
+x-originating-ip: [91.174.78.156]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 01c31c54-04f8-4798-569e-08d8deedadc2
+x-ms-traffictypediagnostic: MN2PR12MB4063:
+x-microsoft-antispam-prvs: <MN2PR12MB4063EED2A470C8223C867523C4979@MN2PR12MB4063.namprd12.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8882;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: mfgn6TwVF51CuPjr3cH7s6U/sEw2vIBEv+QXWy6PibD7wkIur1SAIgRc4SS7ZEHqORF4TUqQ3HwCkvvHNEPnI9gd0jRMLIDkrx4MlGbxdQJ8S24iBbd5D+BzFjtM8ravpznZRiarNPL3oLRuN1tx/+evt2OTjBriuXC0hNwrFm1Yj14Oj0WawBKKrTydlRv4cXRMuPFNVLBiJTOs/A+5ONBcz2qpSgSO9tMm8tbbuK+16+4vDjH20LBRzkh/gnkE4HkqEquxpK43XgdOSkL6Q4HZrieEMhnOz4JjwiYirpx92GBqPlXsVsf39zDU+HsyybramjJ/7F0XObwcB2ib2XOJcIEXNL43oRXeguXxGmIq4+x6Wkb258txXoh5RajMBbO3IJU4Wp4pcx2G4m0eiTytZRtrJIcWYWbxhwGmId/HFZuRIa/TBRvj0z8B6rD5n+uQ82Pm3DernWyZHNaJSxY4Lvyy6RpsEgHhCTUzNtDe0QvVclUNRXGj5OT8FXAiwmFNeT3AOAMdVZtS7+Mh0w==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB5011.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(376002)(366004)(396003)(346002)(39850400004)(136003)(7696005)(316002)(6506007)(26005)(53546011)(55016002)(86362001)(91956017)(83380400001)(76116006)(478600001)(186003)(52536014)(2906002)(5660300002)(71200400001)(8676002)(9686003)(64756008)(66476007)(8936002)(66556008)(66946007)(33656002)(66446008)(110136005);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: =?iso-8859-1?Q?GT8o0NH0cf4lRcOvgmTW9EP1IQrmIKgV/k+a5QtFpDL573jOlbymloNdlg?=
+ =?iso-8859-1?Q?tXy4KICQYRGDfn4/x9kY+Wpl7KTiG0aiOisz+1fYk1lzYLJw+NNQm708+6?=
+ =?iso-8859-1?Q?TzAaDhWujaalhM1M3Xnh9G/Ns+OA9UMjc15uKbUsVUjI8xM7x6P1r1z36e?=
+ =?iso-8859-1?Q?DdqPMxLjuhxRpKJ2ChsvGTGyjVTh+hX1PcgpWSzZVY5vQdveOn9XQ4Xj6n?=
+ =?iso-8859-1?Q?B2mlMgYdQg37KI2tIVzQ09LQwcW2QzRp4I4flAbJYZzbFv04Fy2hn/JhwI?=
+ =?iso-8859-1?Q?2MbuOGvCMN2ikPTqXyfKqOxY60K1VqgITBdCJxXXfhcdO1v0BkpGxrXwYf?=
+ =?iso-8859-1?Q?yd/7FeNlJzFUT0UWPX1tx1U/SeFjwjPOqphSek4OWVO5CXaCa5HId3zPXU?=
+ =?iso-8859-1?Q?mD6rHyzyhq2DcrMzCP4hn2PvVUd2V8HQUgXoIxkvwyj9DP00y39mChQ7Dg?=
+ =?iso-8859-1?Q?n8s8krlLDJ8jmRB3BA5v/beJQDW6JDEbE/CcJvIeGz/r5YnZMqLhISCeLs?=
+ =?iso-8859-1?Q?KvZn3kBE+DVL69V+9TpJUBGj50HHD4+5CwcEd/yf+L54s+Tfv1xinMMZb6?=
+ =?iso-8859-1?Q?9ikc5PiDs3KU3oa5TlhRL2AMEx7JVItx3meGYVm+4xGSIEWsvUV5B2jpI+?=
+ =?iso-8859-1?Q?ywfN4eICXGdrs3jpf/Mgwux8jvadd5lFWx6f0eu/xaS8bm9cZZm2MxO5jt?=
+ =?iso-8859-1?Q?QhqamvrdYcA3gYx9DJl/j8OTw9piJJIClDUMe3rNHnc94H2fU6ERVQSMfb?=
+ =?iso-8859-1?Q?qd8RaNJeKkaW7k0uRn+Uxpg1fii85ZIk2JVmBw27L69LeLXVi5+cUMN/aZ?=
+ =?iso-8859-1?Q?KCP2MG52RsXoPu4Lkh7aLSQFvVN5zEa8fP8oegzoqvVrOO3I44lFtIxdeK?=
+ =?iso-8859-1?Q?b4Rf10xy/CftOq/tXKaUvIcNPl+HuDumB+xU+wiMh0CzE0fe1y90IYixcm?=
+ =?iso-8859-1?Q?gnDtexrUekt/TiS+sgnoV4sYv44IhT+S13KbiEu1UI0ru03J9dZmW8Z4uy?=
+ =?iso-8859-1?Q?fAw3bEoDptxlZjv90/DwsYIYk2obvXPYe8GrY4kTBUO9VklEOR6A6O+od4?=
+ =?iso-8859-1?Q?R657ZQtmwVgCyb+3f/aZkAZanbozIMnjCdd2Y3TeA3jahKHhOf0yyUw0rW?=
+ =?iso-8859-1?Q?F/fuZ0WXMnxkGv/y6pIcl7SMzkgR7mw3AuVxFxiZRu6VmetnXTeXiO+hAm?=
+ =?iso-8859-1?Q?pPaYouE+RCD+SdGMkZx5N+D+GuMdJbJbq64Wm6caKchlFXXL6IurVHITsO?=
+ =?iso-8859-1?Q?vuuSszvlTNOdSbAl5BiopR3vbesCDriHh3zJObQBQuIM7yZEFQHHuNrmgy?=
+ =?iso-8859-1?Q?1UsH0QEiCdi0kW+eg1Ml40ue9eqtrFyVwYHxgnKQCiMtUTg=3D?=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="raztPjiYvdctBTkF"
-Content-Disposition: inline
-In-Reply-To: <1614793789-10346-1-git-send-email-fabrice.gasnier@foss.st.com>
+X-OriginatorOrg: invensense.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB5011.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 01c31c54-04f8-4798-569e-08d8deedadc2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Mar 2021 09:12:47.6008
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 462b3b3b-e42b-47ea-801a-f1581aac892d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 9Z7TTRxICHRRnzWj9BuR1pW2BduYcqeEisEU7ICv5BDpOPG5/KtAmFAJioh2b2W3CrhFvx7cdKhf1gTq9iv9KoehuFRV23olZVt6ngHsHkI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4063
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
+ definitions=2021-03-04_03:2021-03-03,2021-03-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ bulkscore=0 impostorscore=0 mlxscore=0 malwarescore=0 spamscore=0
+ phishscore=0 suspectscore=0 adultscore=0 clxscore=1011 priorityscore=1501
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2103040040
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
---raztPjiYvdctBTkF
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Mar 03, 2021 at 06:49:49PM +0100, Fabrice Gasnier wrote:
-> Ceiling value may be miss-aligned with what's actually configured into the
-> ARR register. This is seen after probe as currently the ARR value is zero,
-> whereas ceiling value is set to the maximum. So:
-> - reading ceiling reports zero
-> - in case the counter gets enabled without any prior configuration,
->   it won't count.
-> - in case the function gets set by the user 1st, (priv->ceiling) is used.
->=20
-> Fix it by getting rid of the cached "priv->ceiling" variable. Rather use
-> the ARR register value directly by using regmap read or write when needed.
-> There should be no drawback on performance as priv->ceiling isn't used in
-> performance critical path.
-> There's also no point in writing ARR while setting function (sms), so
-> it can be safely removed.
->=20
-> Fixes: ad29937e206f ("counter: Add STM32 Timer quadrature encoder")
->=20
-> Suggested-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-
-Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-
-> ---
-> Note: this applies on top of:
-> - "counter: stm32-timer-cnt: fix ceiling write max value"
-
-Note, if your patch requires prerequisite patches, please provide the
-`git patch-id --stable` patch ID for it; this helps make sure the
-patches are applied in the correct order. You can have `git
-format-patch` generate this automatically for you by using the `--base`
-option:
-https://git-scm.com/docs/git-format-patch#_base_tree_information
-
-William Breathitt Gray
-
-> ---
->  drivers/counter/stm32-timer-cnt.c | 11 +++--------
->  1 file changed, 3 insertions(+), 8 deletions(-)
->=20
-> diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-ti=
-mer-cnt.c
-> index 2295be3..75bc401 100644
-> --- a/drivers/counter/stm32-timer-cnt.c
-> +++ b/drivers/counter/stm32-timer-cnt.c
-> @@ -31,7 +31,6 @@ struct stm32_timer_cnt {
->  	struct counter_device counter;
->  	struct regmap *regmap;
->  	struct clk *clk;
-> -	u32 ceiling;
->  	u32 max_arr;
->  	bool enabled;
->  	struct stm32_timer_regs bak;
-> @@ -75,8 +74,10 @@ static int stm32_count_write(struct counter_device *co=
-unter,
->  			     const unsigned long val)
->  {
->  	struct stm32_timer_cnt *const priv =3D counter->priv;
-> +	u32 ceiling;
-> =20
-> -	if (val > priv->ceiling)
-> +	regmap_read(priv->regmap, TIM_ARR, &ceiling);
-> +	if (val > ceiling)
->  		return -EINVAL;
-> =20
->  	return regmap_write(priv->regmap, TIM_CNT, val);
-> @@ -138,10 +139,6 @@ static int stm32_count_function_set(struct counter_d=
-evice *counter,
-> =20
->  	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN, 0);
-> =20
-> -	/* TIMx_ARR register shouldn't be buffered (ARPE=3D0) */
-> -	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_ARPE, 0);
-> -	regmap_write(priv->regmap, TIM_ARR, priv->ceiling);
-> -
->  	regmap_update_bits(priv->regmap, TIM_SMCR, TIM_SMCR_SMS, sms);
-> =20
->  	/* Make sure that registers are updated */
-> @@ -199,7 +196,6 @@ static ssize_t stm32_count_ceiling_write(struct count=
-er_device *counter,
->  	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_ARPE, 0);
->  	regmap_write(priv->regmap, TIM_ARR, ceiling);
-> =20
-> -	priv->ceiling =3D ceiling;
->  	return len;
->  }
-> =20
-> @@ -374,7 +370,6 @@ static int stm32_timer_cnt_probe(struct platform_devi=
-ce *pdev)
-> =20
->  	priv->regmap =3D ddata->regmap;
->  	priv->clk =3D ddata->clk;
-> -	priv->ceiling =3D ddata->max_arr;
->  	priv->max_arr =3D ddata->max_arr;
-> =20
->  	priv->counter.name =3D dev_name(dev);
-> --=20
-> 2.7.4
->=20
-
---raztPjiYvdctBTkF
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmBAHsEACgkQhvpINdm7
-VJI4JRAAg2Y+kgxmuZE/9tSHqFDyqpU5z9TnfxJDAHoWYVt8MfIys2u8zR3ZkbXj
-ipa30R9WdJYB4btIdhNKKalhJGO47qYhPE7jw0f4WhRgyVkSIfuYRaXFHbQ7a4+P
-OwqKTLDsrSDz6RL17JKkLb7Ks5ROrVHnl9OYAjhRupTY2WMAEza2gcPhcKOwsSo6
-9eL6p0rB9/NMUhBi+DRLe/tkwxZH33nm0Re8wI27Ujx59R3rP3ZPzk0vgBpX1upd
-JXRKbnsIjxj47waBbDAQx2DQp14NgHNEdPxNgJlzmQMB6bRdSw1xVhR93Z0w9rVK
-TGLFiMe2RBvwHB0MuOm75dsOwvlSbg/eLiK3LUS7DDzg8GPmpkPOX387ONmj6EOw
-QiI0JaMTLYodBXiD2gwQf0h8m1k3/tlXcnL8/4+8nMNt8TDvxuP1XdGajhEOhMOE
-mNeb+SHFZ3D5NPh9/Ce3coLWJrNYcE+UwIhp/BGyfm+gQPuUbDG1lh3a7voQsa9I
-jGgzo5tBFWSrUfLzGrV+kqTNMM987H9/ykMkydimcqFTWcj0z7Xy3XEEEarPOg5r
-Cu0UvU4+CbIvccsXtLYWs6kjJQuaemL5eX7Oqh9qQunN07o5xbVFLCwH7+g/0AcH
-BgC31bYF6EdEBeknuEtMugdRXnKvQYfJVfX8xmNdtDv2+dDVKWo=
-=IqtO
------END PGP SIGNATURE-----
-
---raztPjiYvdctBTkF--
+Hello Philippe,=0A=
+=0A=
+I would recommend letting mpu9250 chip drives the magnetometer instead of u=
+sing the ak8963 driver.=0A=
+=0A=
+This is simpler to use and guarantees a good synchronization between all se=
+nsors and no possible latency coming from kernel scheduling when polling th=
+e magnetometer. And it enables the use of spi bus for connecting the device=
+.=0A=
+=0A=
+You just need to define mpu9250 dts without an i2c-gate, and delete all def=
+inition of ak8963 chip.=0A=
+=0A=
+Best regards,=0A=
+JB=0A=
+=0A=
+=0A=
+From: Philippe De Muyter <phdm@macq.eu>=0A=
+Sent: Wednesday, March 3, 2021 16:31=0A=
+To: linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>=0A=
+Subject: invensense mpu9250 ak8963 and devicetree =0A=
+=A0=0A=
+=A0CAUTION: This email originated from outside of the organization. Please =
+make sure the sender is who they say they are and do not click links or ope=
+n attachments unless you recognize the sender and know the content is safe.=
+=0A=
+=0A=
+Hello,=0A=
+=0A=
+I am trying to use a mpu9250 imu, but I have trouble with the ak8963 part.=
+=0A=
+=0A=
+Currently, ak8975_probe fails in this code :=0A=
+=0A=
+=A0=A0=A0=A0=A0=A0=A0 /* Fetch the regulators */=0A=
+=A0=A0=A0=A0=A0=A0=A0 data->vdd =3D devm_regulator_get(&client->dev, "vdd")=
+;=0A=
+=A0=A0=A0=A0=A0=A0=A0 if (IS_ERR(data->vdd))=0A=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 return PTR_ERR(data->vdd);=0A=
+=A0=A0=A0=A0=A0=A0=A0 data->vid =3D devm_regulator_get(&client->dev, "vid")=
+;=0A=
+=A0=A0=A0=A0=A0=A0=A0 if (IS_ERR(data->vid))=0A=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 return PTR_ERR(data->vid);=0A=
+=0A=
+but Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.y=
+aml=0A=
+says :=0A=
+=0A=
+=A0 vdd-supply:=0A=
+=A0=A0=A0 description: |=0A=
+=A0=A0=A0=A0=A0 an optional regulator that needs to be on to provide VDD po=
+wer to=0A=
+=A0=A0=A0=A0=A0 the sensor.=0A=
+=0A=
+I have no vdd or vdd-supply property in my ak8963 description.=0A=
+=0A=
+Is that unrelated ?=0A=
+=0A=
+What should I write in my dts file for this ak8963 embedded in a mpu9250 ?=
+=0A=
+=0A=
+Thanks in advance=0A=
+=0A=
+Philippe=0A=
+=0A=
+-- =0A=
+Philippe De Muyter +32 2 6101532 Macq SA rue de l'Aeronef 2 B-1140 Bruxelle=
+s=

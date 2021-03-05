@@ -2,201 +2,531 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ABC6E32E408
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Mar 2021 09:58:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E8E9832E6DF
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Mar 2021 11:57:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229505AbhCEI5e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 5 Mar 2021 03:57:34 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:50224 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229500AbhCEI5Y (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 Mar 2021 03:57:24 -0500
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 1258tnAk026525;
-        Fri, 5 Mar 2021 03:57:11 -0500
-Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2103.outbound.protection.outlook.com [104.47.58.103])
-        by mx0a-00128a01.pphosted.com with ESMTP id 36ykv96uu0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 05 Mar 2021 03:57:11 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CjpoUOVKaXWmdYcwfzxpjHUE5lvJkraxKIKbBrvq/IvQuqIt9hdwhZB1sVZmCBMx07/BQa9VlzSZrxcobkuyVdUaDUkxAIbIgkAiy+2NGmDpyieHhzD6Rl23gkC/RcxgzHXPvAUMEzA9exmKTpSUC975iSWBHc/mKketDqoOLl4VfVJdK3z9n8MiHJ0xn7NIBK0nQlpadr6FiYsmElVtR7OVzCpkkDSVNojfwmUDDPnM1pq2ytjKFjf8VQ4kf0vHUF6CYNQi3wJMl07QruvR5dnduoXXf9mQSivaOWQ/p50ZVGndh+yiWKrtT7xQkiu8JMTj7YicO0wm6J/2vzE3Qg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6Z2FI8Tx4MjiMdZFReDoTAIC/hObBhRhn05+cq7+ocs=;
- b=EglwA9DLYikFgr0RoPeSR+kWHO6R6CYeTc6CnsOuHshWkwttBQR22ir1Njdq3u8y3FuInaOemciVAirQx2Bdr6t2j1P/kxeAL+0Hn+jM28G3H0JYzjQVLpqjLw1SzeBQqKscneEXmI6rMEkbgGKQ4t3cjO1NMKVYsQaQz8oSVHUouo1zX8V8qOJPd7aofI4yjPjlH/L71YlxXivKbI2AyUx4GWVuenz8nXHhtMXvis+18eG70xGIBNXbcmUvmFuuS+ehvitLd0ygiAHsVlCp6cNk/9rDfZBtMYyyYh2USfwzUYtCcEH86NxWB+E4Le54C5/j6ISeDHYrPCQOXjyW6A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
+        id S229520AbhCEK5S (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 5 Mar 2021 05:57:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45318 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229631AbhCEK47 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 Mar 2021 05:56:59 -0500
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8A0AC061574
+        for <linux-iio@vger.kernel.org>; Fri,  5 Mar 2021 02:56:58 -0800 (PST)
+Received: by mail-wm1-x32b.google.com with SMTP id n22so1048178wmc.2
+        for <linux-iio@vger.kernel.org>; Fri, 05 Mar 2021 02:56:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6Z2FI8Tx4MjiMdZFReDoTAIC/hObBhRhn05+cq7+ocs=;
- b=wPli7lgPdv3jN6fzn34eBYJGBRQ0A8iqwexvusoLkHF+v0ofksvEJYH4kznzBzV5lxqtbg6GstrlP2QBLGzOTr/vGV/9ACc8AbCAGjg8YOzMNTlfaeOHLMfVibcMhOaz6ZmSKl/azJd3sz+RIHyXrTgU1DKUfqEoOCZpTyg7Sbg=
-Received: from BN8PR03MB4977.namprd03.prod.outlook.com (2603:10b6:408:de::11)
- by BN7PR03MB3668.namprd03.prod.outlook.com (2603:10b6:406:cd::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3890.25; Fri, 5 Mar
- 2021 08:57:09 +0000
-Received: from BN8PR03MB4977.namprd03.prod.outlook.com
- ([fe80::f173:1b63:12cd:58d0]) by BN8PR03MB4977.namprd03.prod.outlook.com
- ([fe80::f173:1b63:12cd:58d0%6]) with mapi id 15.20.3912.022; Fri, 5 Mar 2021
- 08:57:09 +0000
-From:   "Hennerich, Michael" <Michael.Hennerich@analog.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        "zzzzArdelean, zzzzAlexandru" <alexandru.Ardelean@analog.com>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "Sa, Nuno" <Nuno.Sa@analog.com>,
-        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>
-Subject: RE: [PATCH v3 0/6] iio: Add output buffer support
-Thread-Topic: [PATCH v3 0/6] iio: Add output buffer support
-Thread-Index: AQHXBrxjYGT6Yhi/UU6po2kwD27epKpihP4AgBKjMjA=
-Date:   Fri, 5 Mar 2021 08:57:08 +0000
-Message-ID: <BN8PR03MB497724AAAFA43E6555554DC98E969@BN8PR03MB4977.namprd03.prod.outlook.com>
-References: <20210219124012.92897-1-alexandru.ardelean@analog.com>
- <20210221120106.00ae1078@archlinux>
-In-Reply-To: <20210221120106.00ae1078@archlinux>
-Accept-Language: de-DE, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: =?iso-8859-1?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcbWhlbm5lcm?=
- =?iso-8859-1?Q?lcYXBwZGF0YVxyb2FtaW5nXDA5ZDg0OWI2LTMyZDMtNGE0MC04NWVlLTZi?=
- =?iso-8859-1?Q?ODRiYTI5ZTM1Ylxtc2dzXG1zZy1jMThjOTFlYS03ZDkwLTExZWItOTEwOC?=
- =?iso-8859-1?Q?00ODg5ZTc3Y2RkZWZcYW1lLXRlc3RcYzE4YzkxZWItN2Q5MC0xMWViLTkx?=
- =?iso-8859-1?Q?MDgtNDg4OWU3N2NkZGVmYm9keS50eHQiIHN6PSIxMDY1IiB0PSIxMzI1OT?=
- =?iso-8859-1?Q?QwODIyNjUzNDcwNTQiIGg9Ik5sVGJ4cXNlMVprM0dYdVNLMk12Q2Njd1Ni?=
- =?iso-8859-1?Q?UT0iIGlkPSIiIGJsPSIwIiBibz0iMSIgY2k9ImNBQUFBRVJIVTFSU1JVRk?=
- =?iso-8859-1?Q?5DZ1VBQUlZREFBRHVzNzZFblJIWEFkZDFTUjZuU1lzUzEzVkpIcWRKaXhJ?=
- =?iso-8859-1?Q?RkFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFIQUFBQUFXQXdBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFFQUFRQUJBQUFBbXcvdm9BQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBSjRBQUFCaEFHUUFhUUJmQUhNQVpRQmpBSFVBY2dCbEFGOEFjQUJ5QU?=
- =?iso-8859-1?Q?c4QWFnQmxBR01BZEFCekFGOEFaZ0JoQUd3QWN3QmxBRjhBWmdCdkFITUFh?=
- =?iso-8859-1?Q?UUIwQUdrQWRnQmxBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUVBQUFBQUFBQUFBZ0FBQUFBQW5nQU?=
- =?iso-8859-1?Q?FBR0VBWkFCcEFGOEFjd0JsQUdNQWRRQnlBR1VBWHdCd0FISUFid0JxQUdV?=
- =?iso-8859-1?Q?QVl3QjBBSE1BWHdCMEFHa0FaUUJ5QURFQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFRQUFBQUFBQUFBQ0FBQUFBQUNlQUFBQVlRQmtB?=
- =?iso-8859-1?Q?R2tBWHdCekFHVUFZd0IxQUhJQVpRQmZBSEFBY2dCdkFHb0FaUUJqQUhRQW?=
- =?iso-8859-1?Q?N3QmZBSFFBYVFCbEFISUFNZ0FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFCQUFBQUFBQUFBQUlBQUFBQUFKNEFBQUJoQUhJQWFRQmhBRj?=
- =?iso-8859-1?Q?hBWkFCcEFHTUFkQUJwQUc4QWJnQmhBSElBZVFCZkFIUUFhUUJsQUhJQU1R?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBRUFBQUFBQUFBQUFnQUFBQUFBbmdBQUFHRUFjZ0JwQUdFQVh3QmtBR2tB?=
- =?iso-8859-1?Q?WXdCMEFHa0Fid0J1QUdFQWNnQjVBRjhBZEFCcEFHVUFjZ0F5QUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQVFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFDQUFBQUFBQT0iLz48L21ldGE+?=
-x-dg-rorf: true
-authentication-results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=analog.com;
-x-originating-ip: [137.71.226.54]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 539005b5-bfa9-4208-0171-08d8dfb4a8b2
-x-ms-traffictypediagnostic: BN7PR03MB3668:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <BN7PR03MB366832D63CAAE8B08BC8A4178E969@BN7PR03MB3668.namprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6790;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: QkNVYEImSe6EMLD7y37+V7wrz3FOVdUu/onsD4FBT4udMd8GiZuz9s1Z9YkFum07G+N2qepxZp8PhO7mj6LHIUWkxBdwB9Pnb3btuu7mpSeB69L8N/SjWnD3mD0g2baRhDPYXhk0AjxPg8xa5q7CTKMMFEEMu5lAKWfjjfrw2+BElNmLHSj9Raas/aDUC8Qp5W1M//SJgyFbiH7mXopnqrDkfijDLbkyuV4Gd7KAPRaPtOQzvcut3yHoYZPYawSodAmce/zlKR6vYoJjlw/LpJEFsQl8mwUrOHZK8m3Lq8T/UIFrRasiIZdzcGYyvYOj/ercUkSRg8qdYzefQ43MoGpurqbUnBJrCr5wdPow+Zp1NQxODMdibMzaO75sqYcSm7LtXxVm7Hi5OJzcFVGpp1B7vY/KoWFZlseFekMiz35MAxOogIFfb0IPnQAMviFi/XydnSmERsI924DfUq3ERfoF7ilU58Xid5rq43FBab/2q3rQ5071/rbKCXPfHztR5LHupZqr+U/kjRsABvRghQ==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN8PR03MB4977.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(396003)(366004)(39860400002)(136003)(376002)(71200400001)(66946007)(66556008)(66476007)(64756008)(5660300002)(52536014)(4744005)(107886003)(66446008)(26005)(76116006)(4326008)(8676002)(8936002)(186003)(478600001)(33656002)(6636002)(2906002)(7696005)(86362001)(6506007)(316002)(110136005)(54906003)(9686003)(55016002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: =?iso-8859-1?Q?S6BPoZE/A6B6gOhTPMSPXjJeQC3FSnd+zYfEFfkxJ1UmPAYWNaICkqLcs1?=
- =?iso-8859-1?Q?pRoKKSIB1vQyMKFxDtNKM8v3TArwAZjk287rWeOqThzcj19pPa2QjhGP7+?=
- =?iso-8859-1?Q?g6o05ddBigMWPtwqE4BxGyd1o7S88rv2TNVR+TP+60HEFLu6b4sL4Acrs4?=
- =?iso-8859-1?Q?rcVuQsHPU5OXPzq4pBtHezxPKDsABDSTzKbsULjn8ltAkqrXvAC3DTJzNi?=
- =?iso-8859-1?Q?nHdrhff+f11Ip7UJGIdgn71ZgzQThrJBpLzLscgIm1z20YUVwSkQxD3LEm?=
- =?iso-8859-1?Q?GaIrdZlIi1f/MLnSkoLqJBfe83KtvabbRh9qOIkHZG4XD7BwU0soqYW1Mg?=
- =?iso-8859-1?Q?JNr5BJ99wjhII8YBtJgVGiCgBYU3R8veGbkM9sHLCvtxjEaY5eeM4mfJzV?=
- =?iso-8859-1?Q?KwOzjJKK7ukTMcYuxwNNNX3ZC/5vY3O8rcmbUqbzfnQf/o1RwLS6eP8rRd?=
- =?iso-8859-1?Q?B/RgD0m4ZkIyh6p7sTksA2FeqmjYQXTWIKatXF3Wq0AUIqV0zyPW/kJdGn?=
- =?iso-8859-1?Q?c+bhjQ3nuV6hmy877n3q6KWphvESlysc8xLV4ZYAgZLBM1HJzAR2g4nDbD?=
- =?iso-8859-1?Q?ivlQD9cXDTFgqDaaHIBcYzXp3sEcZ+pKAiNsRkFcxzvlLMFBEV4M1CXppl?=
- =?iso-8859-1?Q?JxExAFVpbBWFGalLsEidPAOy1HuHeDqp/lJrjzmLCYSP6iK3un36BxhhLK?=
- =?iso-8859-1?Q?jUuUXpLkQSupQHmHaXQQwPygBE9AI9pVB1Wt9WYYsJ9qYWry7MEonkbtKD?=
- =?iso-8859-1?Q?RB4XNymQz57m+uKcfxddNSUxX38A8FaH6XUYfqgN6qahf1BmK6af0wr32A?=
- =?iso-8859-1?Q?BimAyKaEKiPE6h9AWoCLz8pjkAA+nCJ/tPMd5irOXavk49tdfmkdO8z0wv?=
- =?iso-8859-1?Q?ywBgZIWkxUDC4Z/I6kcOXcAylzruuHp9XgGShRwvgn6w9FTm+tKRxDZz4F?=
- =?iso-8859-1?Q?RvjPNHbZAr6r90dSN0tp0yzHfFhG/4A78QXhP17odyInxWYhaDu3CbAeon?=
- =?iso-8859-1?Q?rYkY/Tk7+I90d+wbmHy315hATPKWMgRpXF3sd1drAMDCrAUfnqT2CXIjPr?=
- =?iso-8859-1?Q?rwVrlPwTXAlk776lZJTUgDzXKDEdjpoWotu2s1gFq27ERp+GQt6uJDxd2X?=
- =?iso-8859-1?Q?yYxrVwH6JJY+PpcraI+LXzya547kVPoUi+uCwQFVogg0R1yOBlXOE5JXa3?=
- =?iso-8859-1?Q?leBpDDy7NkmzGyxNSxVLRxo7gbW2WYrMtE+AXC7Hun+W0QbRpSyp1JRT/f?=
- =?iso-8859-1?Q?nt7nLzpU2Ml5Mmnt/H4m/KMY18902lwLtrRfGYU5N2go55T0KLSpLmqULb?=
- =?iso-8859-1?Q?Ctpw0fKw4pGw0PHCmeddNeSJUOU81iUGVDii4swcMOAElvs/bXyGBLRb3b?=
- =?iso-8859-1?Q?3vW3wl7OXJ?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=KMWJXWxU5+GWEHndoqMfhviZhHjkkexMFkVbghBqiVM=;
+        b=a/OiaR1D5yk2/BEH4qLZ6/MTE9MdDB9J77JGk/CgcBszW0QyB0FiQf2YNauzrxlbYY
+         zlbv5kJCB6oPjCdKlxGb6epmLDSq+wzy+gYjU4w7FCp7oOaJ83t/Cx7OL/S1mhpRcTkC
+         0/P4DgPuRnkMEo0vPqLjHa+jubsP0l1L/0dIjdzzJ9QPec/QRDtT/QAHAxvEE+Wk620Q
+         A4urG3LPrc4bzFxb2i16Jw2R5VMlU8RKlhJCp/fmNHNdGok6InCubjz9d1D39bi+PrgB
+         9sj/JDVonbQMwE6yalJqCmV+YSEszlUlenqjNFrWO+Zw8eyoYa/d/NBRl5y+VW1cKoSe
+         LjTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=KMWJXWxU5+GWEHndoqMfhviZhHjkkexMFkVbghBqiVM=;
+        b=ozXCp7/C99FqEE2XjnLVz8AuuQLJk2S/EXloL1n3LswU9RET6VSlxKHds0UIQsNMIT
+         T+4v5p6alrnOb+WLv+rKEgypDOtmZ1hShDM+vILBq2z0PTeXDG4zEhrN0PRBhMrenTyz
+         nbDYWve32pbdxigb+FavOE4W5LUjCAggQTaACbdKAPymOJRBiIgJtYRmQdP0FPR+gu+x
+         OBhsVFEdctK7Py8YwDbk7pnUsKJTsgqFZCa+1wvzn5REobSAUUcuDiTrjnagqqrGMkZL
+         ywob9VQtL5NZ+gcLRqpMjQtf/Lir/MOGMssFrAwDiWeDqCYGLKDwrRDylYALiDjYanyJ
+         LU+Q==
+X-Gm-Message-State: AOAM5315/m5xMh78EafH2K9JpKCtEI0Wq9gBoqmcioI1sZzcrxphnnrQ
+        CVPn+pyGP4TSjvyhWggP9Bw10uVf/A4wNlRa
+X-Google-Smtp-Source: ABdhPJyoB12ETdOvs021Dipd0LZAHoZPcAxJBGm4Iyhx9LeqVnYR6giymT8sHCUBvCxiCOYEOBMX7Q==
+X-Received: by 2002:a05:600c:409:: with SMTP id q9mr8416266wmb.105.1614941817189;
+        Fri, 05 Mar 2021 02:56:57 -0800 (PST)
+Received: from localhost.localdomain (176-173-212-228.abo.bbox.fr. [176.173.212.228])
+        by smtp.gmail.com with ESMTPSA id v7sm3842647wme.47.2021.03.05.02.56.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Mar 2021 02:56:56 -0800 (PST)
+From:   Milan Stevanovic <milan.o.stevanovic@gmail.com>
+X-Google-Original-From: Milan Stevanovic <milan.stevanovic@se.com>
+To:     linux-iio@vger.kernel.org
+Cc:     Tomasz Kazimierz Motyl <tomasz.motyl@se.com>,
+        Frederic Loreaud <frederic.loreaud@se.com>,
+        Pierre Castellan <pierre.castellan@non.se.com>
+Subject: [PATCH] iio:adc: Add RZ/N1D ADC driver
+Date:   Fri,  5 Mar 2021 11:56:52 +0100
+Message-Id: <20210305105652.107087-1-milan.stevanovic@se.com>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BN8PR03MB4977.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 539005b5-bfa9-4208-0171-08d8dfb4a8b2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Mar 2021 08:57:08.9563
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: FahSl3zMGrP/rlJr0qpvcXHSHrQtGQW5TNwX5JPNJ8ni4J3UuDYa8ilConQjeecjA8btL0hXd9LxGCNh5rUfUyZtIpzR5qgAZiq1co9Jdts=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PR03MB3668
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
- definitions=2021-03-05_04:2021-03-03,2021-03-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 adultscore=0
- mlxlogscore=999 clxscore=1011 mlxscore=0 suspectscore=0 phishscore=0
- impostorscore=0 lowpriorityscore=0 malwarescore=0 priorityscore=1501
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103050043
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan and others,
+From: Tomasz Kazimierz Motyl <tomasz.motyl@se.com>
 
-With output/dac buffer support the semantics of the scan_element type may c=
-hange.
+  This is ADC driver that can be found in the Renesas  RZ/N1D SoC
+  https://www.renesas.com/us/en/document/man/rzn1d-group-rzn1s-group-rzn1l-group-users-manual-peripherals-0?language=en&r=1054561
 
-Today the Format is [be|le]:[s|u]bits/storagebitsXrepeat[>>shift].
+  ADC Core Features
+  - Up to 2 units
+  - Resolution 12-bit
+  - Sampling rate from 0.0625 MSPS to 1 MSPS
+  - Successive approximation
+  - Maximal conversion time 21 ADC_CLK
+  - Analog inputs 8 channels per core
+  (5 standard channels + 3 channels with sample/hold)
+  - Each channel has his own input trigger to start the conversion,
+  the triggers are managed by the ADC Controller
+  - Power down mode
+  - ADC clock frequency from 4 MHz to 20 MHz
 
-While shift (if specified) is the shift that needs to be applied prior to m=
-asking out unused bits.
+Signed-off-by: Tomasz Kazimierz Motyl <tomasz.motyl@se.com>
+Signed-off-by: Frederic Loreaud <frederic.loreaud@se.com>
+Signed-off-by: Pierre Castellan <pierre.castellan@non.se.com>
+---
+ .../devicetree/bindings/iio/adc/rzn1-adc.txt  |  64 ++++
+ drivers/iio/adc/Kconfig                       |   9 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/rzn1-adc.c                    | 325 ++++++++++++++++++
+ 4 files changed, 399 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/rzn1-adc.txt
+ create mode 100644 drivers/iio/adc/rzn1-adc.c
 
-So far so good and it sounds universal.=20
-
-However, we use the right shift (operator) for that, which makes sense for =
-capture devices.
-For output devices the more logical operator would be the left shift.
-
-I'm not proposing a new Format here. I just want to get some agreement that=
- for an output device
-
-le:s12/16>>4
-
-is understood as a left shift of 4, since the unused bits are then on the L=
-SB.
-
-Thoughts?
-
-Best Regards,
-Michael
-
-Analog Devices GmbH
-Michael Hennerich=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=20
-Otl-Aicher Strasse 60-64
-D-80807 Muenchen; Germany
-
-Sitz der Gesellschaft M=FCnchen, Registergericht M=FCnchen HRB 40368,
-Gesch=E4ftsf=FChrer: Stefan Steyerl, Michael Paul Sondel, Yoon Ah Oh
-
+diff --git a/Documentation/devicetree/bindings/iio/adc/rzn1-adc.txt b/Documentation/devicetree/bindings/iio/adc/rzn1-adc.txt
+new file mode 100644
+index 000000000000..ff5b277fb470
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/rzn1-adc.txt
+@@ -0,0 +1,64 @@
++ADC for the Renesas RZ/N1D (R9A06G032).
++Specifications on the converters can be found at:
++https://www.renesas.com/us/en/document/man/rzn1d-group-rzn1s-group-rzn1l-group-users-manual-peripherals-0?language=en&r=1054561
++
++Required properties:
++
++- compatible: Must be "iio,rzn1-adc", "rzn1-adc"
++- reg: Offset and length of the register set for the device
++- clocks: phandle to the master clock (all_adc)
++	see: Documentation/devicetree/bindings/clock/clock-bindings.txt
++- clock-names: Must be "rzn1_adc_clk".
++
++Optional properties:
++channels:
++label: A channel label that is used as channel's extended name part i.e.:
++       A label = "temp1"  for channel1@1 results in a following entry in the sysfs:
++       /sys/bus/iio/devices/iio:device0/in_voltage1_temp1_raw .
++       If the label would not be specified the resulting sysfs entry would be as follows:
++       /sys/bus/iio/devices/iio:device0/in_voltage1_raw .
++
++
++Whenever specified incorrectly or unspecified an entry gets skipped and driver falls back to hard-coded defaults.
++
++Example:
++
++  rzn1_adc: rzn1-adc@0x40065000 {
++    #address-cells = <1>;
++    #size-cells = <1>;
++    compatible = "renesas,r9a06g032-adc", "iio,rzn1-adc", "rzn1-adc";
++    reg =  <0x40065000 0x1000>;
++    clocks = <&sysctrl R9A06G032_CLK_ADC>;
++    clock-names = "rzn1_adc_clk";
++    status = "okay";
++
++       channels {
++         #address-cells = <1>;
++         #size-cells    = <0>;
++
++         chan0@0 { /* Channel 0 placeholder */
++           reg = <0>;
++           label = "adc1_in0";
++         };
++
++         chan1@1 { /* Channel 1 placeholder */
++           reg   = <1>;
++           label = "adc1_in1";
++         };
++
++         chan2@2 { /* Channel 2 placeholder */
++           reg = <2>;
++           label = "adc1_in2";
++         };
++
++         chan3@3 { /* Channel 3 placeholder */
++           reg   = <3>;
++           label = "adc1_in3";
++         };
++
++         chan4@4 { /* Channel 4 placeholder */
++           reg = <4>;
++           label = "adc1_in4";
++         };
++      }; /* channels */
++    }; /* rzn1-adc */
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index f0af3a42f53c..d4d1af3e6ba2 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -746,6 +746,15 @@ config ROCKCHIP_SARADC
+ 	  To compile this driver as a module, choose M here: the
+ 	  module will be called rockchip_saradc.
+ 
++config RZN1_ADC
++	tristate "Renesas ADC driver"
++	help
++	  Say yes here to build support for the ADCs found in SoCs from
++	  Renesas.
++
++	  To compile this driver as a module, choose M here: the
++	  module will be called rzn1_adc.
++
+ config SC27XX_ADC
+ 	tristate "Spreadtrum SC27xx series PMICs ADC"
+ 	depends on MFD_SC27XX_PMIC || COMPILE_TEST
+diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+index ef9cc485fb67..562d3ac3c7be 100644
+--- a/drivers/iio/adc/Makefile
++++ b/drivers/iio/adc/Makefile
+@@ -70,6 +70,7 @@ obj-$(CONFIG_QCOM_SPMI_VADC) += qcom-spmi-vadc.o
+ obj-$(CONFIG_QCOM_PM8XXX_XOADC) += qcom-pm8xxx-xoadc.o
+ obj-$(CONFIG_RCAR_GYRO_ADC) += rcar-gyroadc.o
+ obj-$(CONFIG_ROCKCHIP_SARADC) += rockchip_saradc.o
++obj-$(CONFIG_RZN1_ADC) += rzn1-adc.o
+ obj-$(CONFIG_SC27XX_ADC) += sc27xx_adc.o
+ obj-$(CONFIG_SPEAR_ADC) += spear_adc.o
+ obj-$(CONFIG_STX104) += stx104.o
+diff --git a/drivers/iio/adc/rzn1-adc.c b/drivers/iio/adc/rzn1-adc.c
+new file mode 100644
+index 000000000000..3f5fbb1fd9aa
+--- /dev/null
++++ b/drivers/iio/adc/rzn1-adc.c
+@@ -0,0 +1,325 @@
++// SPDX-License-Identifier: GPL-2.0+
++/* Driver for Renesas RZN1 SoC built-in ADC
++ *
++ * Authors:
++ *  Tomasz Kazimierz Motyl
++ *  Frédéric Loreaud
++ *  Pierre Castellan
++ *
++ * Copyright (C) 2021 Schneider-Electric
++ */
++
++#include <linux/kernel.h>
++#include <linux/slab.h>
++#include <linux/module.h>
++#include <linux/platform_device.h>
++#include <linux/interrupt.h>
++#include <linux/mutex.h>
++#include <linux/completion.h>
++#include <linux/iio/iio.h>
++#include <linux/iio/machine.h>
++#include <linux/iio/driver.h>
++#include <linux/io.h>
++#include <linux/clk.h>
++#include <linux/firmware/lces_monitor.h>
++#include <linux/delay.h>
++#include <linux/bits.h>
++
++static const uint32_t RZN1_ADC_SET_FORCE_REG_OFFSET = 13 * sizeof(uint32_t);	// force conversion register
++
++static const uint32_t RZN1_ADC_CONFIG_REG_OFFSET = 16 * sizeof(uint32_t);	// configuration register
++static const uint32_t RZN1_ADC_CONFIG_POWER_DOWN_BIT = BIT(3);	// configuration register's power down bit
++
++static const uint32_t RZN1_ADC_VIRTUAL_CHANNNELS_REGS_OFFSET = 48 * sizeof(uint32_t);	// virtual channels 0..15 control registers
++static const uint32_t RZN1_ADC_VIRTUAL_CHANNEL_ADC1_SELECTION_MASK = GENMASK(2, 0);	// control registers' virtual channels' bits
++static const uint32_t RZN1_ADC_VIRTUAL_CHANNEL_ADC1_ENABLE_BIT = BIT(15);	// control registers' enable bit
++
++static const uint32_t RZN1_ADC_VIRTUAL_CHANNEL_ADC1_CONVERSION_DATA_REGS_OFFSET = 64 * sizeof(uint32_t);	// ADC 1 virtual channels conversion data register
++
++static const uint32_t RZN1_ADC_READ_DATA_VALUE_MASK = GENMASK(11, 0);	// read data register's bits
++static const uint32_t RZN1_ADC_READ_DATA_UPDATE_BIT = BIT(31);	// read data register's update bit
++
++#define RZN1_ADC_CHANNEL(index, bits, _shift, _info_mask_sep, name) {  \
++	.type = IIO_VOLTAGE,                                  \
++	.indexed = 1,                                         \
++	.channel = index,                                     \
++	.info_mask_separate = _info_mask_sep,                 \
++	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE), \
++	.scan_type = {          \
++		.sign = 'u',          \
++		.realbits = (bits),   \
++		.storagebits = 16,    \
++		.shift = (_shift),    \
++		.endianness = IIO_BE, \
++	},                      \
++	.extend_name = name,    \
++}
++
++#define RZN1_ADC_NUM_CHANNELS 8	// RZN1 ADC has 8 channels
++
++static struct iio_chan_spec rzn1_adc_channels[RZN1_ADC_NUM_CHANNELS] = {
++	RZN1_ADC_CHANNEL(0, 12, 0, BIT(IIO_CHAN_INFO_RAW), NULL),
++	RZN1_ADC_CHANNEL(1, 12, 0, BIT(IIO_CHAN_INFO_RAW), NULL),
++	RZN1_ADC_CHANNEL(2, 12, 0, BIT(IIO_CHAN_INFO_RAW), NULL),
++	RZN1_ADC_CHANNEL(3, 12, 0, BIT(IIO_CHAN_INFO_RAW), NULL),
++	RZN1_ADC_CHANNEL(4, 12, 0, BIT(IIO_CHAN_INFO_RAW), NULL),
++	RZN1_ADC_CHANNEL(5, 12, 0, BIT(IIO_CHAN_INFO_RAW), NULL),
++	RZN1_ADC_CHANNEL(6, 12, 0, BIT(IIO_CHAN_INFO_RAW), NULL),
++	RZN1_ADC_CHANNEL(7, 12, 0, BIT(IIO_CHAN_INFO_RAW), NULL)
++};
++
++// Device's private data
++struct rzn1_adc {
++	struct device *dev;
++
++	struct mutex lock;
++	struct completion complete;
++	void __iomem *registers;
++	resource_size_t phys_base;
++	struct clk *clk;
++};
++
++static inline uint32_t rzn1_adc_read32(struct rzn1_adc *const adc, const uint32_t reg_off)
++{
++#if defined(CONFIG_LCES_SECURE_MONITOR)
++	return __monitor_readl(adc->phys_base + reg_off);
++#else
++	void __iomem *addr = adc->registers + reg_off;
++
++	return ioread32(addr);
++#endif
++}
++
++static inline void rzn1_adc_write32(struct rzn1_adc *const adc, const uint32_t reg_off, const uint32_t val)
++{
++#if defined(CONFIG_LCES_SECURE_MONITOR)
++	__monitor_masked_writel(val, adc->phys_base + reg_off, ~0UL);
++#else
++	iowrite32(val, adc->registers + reg_off);
++#endif
++}
++
++static bool interrupt_status(struct rzn1_adc *const adc, const int virtual_channel)
++{
++	bool ret = false;
++
++	if ((virtual_channel >= 0) && (virtual_channel < RZN1_ADC_NUM_CHANNELS)) {
++		// interrupt 0 status register has a 0 offset in register table
++		uint32_t status = rzn1_adc_read32(adc, 0);
++
++		if (status & BIT(virtual_channel))
++			ret = true;
++	}
++
++	return ret;
++}
++
++static int rzn1_adc_read_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *chan, int *val, int *val2, long mask)
++{
++	int ret = IIO_VAL_INT;
++
++	struct rzn1_adc *adc = iio_priv(indio_dev);
++	int virtual_channel = chan->channel;
++	uint32_t virtual_channel_control_offset = RZN1_ADC_VIRTUAL_CHANNNELS_REGS_OFFSET + 4 * virtual_channel;
++	uint32_t virtual_channel_control = RZN1_ADC_VIRTUAL_CHANNEL_ADC1_ENABLE_BIT | (RZN1_ADC_VIRTUAL_CHANNEL_ADC1_SELECTION_MASK & virtual_channel);
++	uint32_t read_data = 0;
++
++	(void)mask;
++	(void)val2;
++
++	if ((virtual_channel >= 0) && (virtual_channel < RZN1_ADC_NUM_CHANNELS)) {
++		mutex_lock(&adc->lock);
++
++		// disable power down mode, disable DMA and Sample & Hold mode
++		rzn1_adc_write32(adc, RZN1_ADC_CONFIG_REG_OFFSET, 0x00000000);
++
++		// map virtual to physical channels 1:1
++		rzn1_adc_write32(adc, virtual_channel_control_offset, virtual_channel_control);
++
++		// force conversion on vc[chan_idx] channel
++		rzn1_adc_write32(adc, RZN1_ADC_SET_FORCE_REG_OFFSET, BIT(virtual_channel));
++
++		//  Wait for maximum conversion duration of 21 ADC clock periods
++		//  ADC clock frequency is 20 MHz hence period is 50 ns
++		//  Add one more period for safety
++		ndelay(22 * 50);
++
++		read_data = rzn1_adc_read32(adc, RZN1_ADC_VIRTUAL_CHANNEL_ADC1_CONVERSION_DATA_REGS_OFFSET + 4 * virtual_channel);
++
++		if ((read_data & RZN1_ADC_READ_DATA_UPDATE_BIT)
++		    && (interrupt_status(adc, virtual_channel) == true))
++			*val = read_data & RZN1_ADC_READ_DATA_VALUE_MASK;
++		else
++			ret = -EINVAL;	// error reading input value
++
++		// enable power down mode, keep DMA and Sample & Hold mode disabled
++		rzn1_adc_write32(adc, RZN1_ADC_CONFIG_REG_OFFSET, RZN1_ADC_CONFIG_POWER_DOWN_BIT);
++
++		mutex_unlock(&adc->lock);
++	} else {
++		dev_err(adc->dev, "virtual channel index (%i) is greater than 16\n", virtual_channel);
++	}
++
++	return ret;
++}
++
++static const struct iio_info rzn1_adc_info = {
++	.read_raw = &rzn1_adc_read_raw
++};
++
++static int rzn1_adc_parse_channels_of(struct rzn1_adc *adc, struct device_node *dn, const int num_channels)
++{
++	int ret = 0;
++
++	struct device_node *channels = NULL;
++	struct device_node *channel = NULL;
++
++	channels = of_get_child_by_name(dn, "channels");
++	if (channels == NULL) {
++		dev_err(adc->dev, "no channels child node found\n");
++		ret = -EINVAL;
++	} else {
++		for_each_available_child_of_node(channels, channel) {
++			// Stop parsing channels if any error occured
++			if (!ret) {
++				uint32_t reg = 0;
++
++				ret = of_property_read_u32(channel, "reg", &reg);
++				if (ret) {
++					dev_err(adc->dev, "no reg child node found\n");
++				} else {
++					if (reg >= num_channels) {
++						dev_err(adc->dev, "wrong reg child node value %i\n", reg);
++						ret = -EINVAL;
++					} else {
++						struct iio_chan_spec *chanp = &rzn1_adc_channels[reg];
++						chanp->extend_name = of_get_property(channel, "label", NULL);
++					}
++				}
++			}
++		}
++	}
++
++	return ret;
++}
++
++static int setup_channel_names(struct rzn1_adc *adc, struct iio_dev *const indio_dev)
++{
++	//struct iio_chan_spec rzn1_adc_channels
++	struct device_node *dn = indio_dev->dev.of_node;
++	int err = rzn1_adc_parse_channels_of(adc, dn, indio_dev->num_channels);
++
++	if (err < 0)
++		dev_warn(adc->dev, "unable to parse channels!\n");
++
++	return err;
++}
++
++static int rzn1_adc_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct iio_dev *indio_dev = NULL;
++	struct rzn1_adc *adc = NULL;
++	struct resource *res = NULL;
++	int ret = 0;
++
++	indio_dev = devm_iio_device_alloc(dev, sizeof(*adc));
++
++	if (indio_dev == NULL) {
++		dev_err(&pdev->dev, "Failed to allocate memory for an IIO device!\n");
++		ret = -ENOMEM;
++	} else {
++		platform_set_drvdata(pdev, indio_dev);
++
++		adc = iio_priv(indio_dev);
++
++		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++		// initilize private physical address for RZN1 secure monitor calls
++		adc->phys_base = res->start;
++		adc->registers = devm_ioremap_resource(dev, res);
++
++		if (IS_ERR(adc->registers)) {
++			dev_err(dev, "Unable to acquire memory mapping for the registers!\n");
++			ret = PTR_ERR(adc->registers);
++		} else {
++			platform_set_drvdata(pdev, indio_dev);
++			adc->dev = dev;
++
++			// Enabling clock for the ADC
++			adc->clk = devm_clk_get(&pdev->dev, "rzn1_adc_clk");
++
++			if (IS_ERR(adc->clk)) {
++				dev_err(dev, "Failed to get the clock!\n");
++				ret = PTR_ERR(adc->clk);
++			} else {
++				ret = clk_prepare_enable(adc->clk);
++				if (ret) {
++					dev_err(dev, "Could not prepare or enable the clock!\n");
++				} else {
++					dev_info(dev, "ADC clock rate: %lu Hz\n", clk_get_rate(adc->clk));
++
++					mutex_init(&adc->lock);
++					init_completion(&adc->complete);
++
++					indio_dev->name = dev_name(dev);
++					indio_dev->dev.parent = dev;
++					indio_dev->dev.of_node = pdev->dev.of_node;
++					indio_dev->info = &rzn1_adc_info;
++					indio_dev->modes = INDIO_DIRECT_MODE;
++					indio_dev->channels = rzn1_adc_channels;
++					indio_dev->num_channels = ARRAY_SIZE(rzn1_adc_channels);
++
++					if (setup_channel_names(adc, indio_dev) < 0)
++						dev_warn(dev, "Invalid channels information - using defaults.\n");
++
++					ret = iio_device_register(indio_dev);
++					if (ret) {
++						dev_err(dev, "Failed to register IIO device %s': %d\n", indio_dev->name, ret);
++					}
++				}
++			}
++		}
++	}
++
++	return ret;
++}
++
++static int rzn1_adc_remove(struct platform_device *pdev)
++{
++	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
++
++	iio_device_unregister(indio_dev);
++	iio_map_array_unregister(indio_dev);
++
++	return 0;
++}
++
++static const struct platform_device_id rzn1_adc_ids[] = {
++	{ .name = "rzn1-adc", },
++	{ },
++};
++
++MODULE_DEVICE_TABLE(platform, rzn1_adc_ids);
++
++static const struct of_device_id rzn1_adc_dt_ids[] = {
++	{ .compatible = "rzn1-adc", },
++	{ },
++};
++
++MODULE_DEVICE_TABLE(of, rzn1_adc_dt_ids);
++
++static struct platform_driver rzn1_adc_driver = {
++	.driver = {
++		   .name = "rzn1-adc",
++		   .of_match_table = of_match_ptr(rzn1_adc_dt_ids),
++		    },
++	.probe = rzn1_adc_probe,
++	.remove = rzn1_adc_remove,
++	.id_table = rzn1_adc_ids,
++};
++
++module_platform_driver(rzn1_adc_driver);
++
++MODULE_DESCRIPTION("RZN1 ADC Driver for LCES2");
++MODULE_AUTHOR("Tomasz Kazimierz Motyl <Tomasz.Motyl@schneider-electric.com>");
++MODULE_LICENSE("GPL");
+-- 
+2.30.1
 

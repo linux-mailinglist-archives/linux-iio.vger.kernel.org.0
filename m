@@ -2,90 +2,86 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B395632FCF7
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Mar 2021 21:00:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B7D732FD80
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Mar 2021 22:30:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230521AbhCFUA0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 6 Mar 2021 15:00:26 -0500
-Received: from mail-pg1-f181.google.com ([209.85.215.181]:46523 "EHLO
-        mail-pg1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230390AbhCFT77 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 Mar 2021 14:59:59 -0500
-Received: by mail-pg1-f181.google.com with SMTP id h4so3709432pgf.13;
-        Sat, 06 Mar 2021 11:59:59 -0800 (PST)
+        id S229676AbhCFV34 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 6 Mar 2021 16:29:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37802 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229642AbhCFV3y (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 Mar 2021 16:29:54 -0500
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20AC7C06174A
+        for <linux-iio@vger.kernel.org>; Sat,  6 Mar 2021 13:29:54 -0800 (PST)
+Received: by mail-lj1-x233.google.com with SMTP id 2so9629472ljr.5
+        for <linux-iio@vger.kernel.org>; Sat, 06 Mar 2021 13:29:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=qqRjPwSQTP2yhNeDNx97cgEwWURSgS0yiS1hxYEJQwU=;
+        b=c613E73yYq8EsIgLruob3OZwW+fD3Aup1oG8IXJqpWC3PjYjanuqGSsLJ4Pf2pcN5k
+         CMyzm2q7C0M/UaDcIxT3H5DrKWt6PdsHG8BxPD5BibKY5xCPHoZNuOUPGleOuGvAQx9h
+         1GyPV+RuLvMB3ygtZQq776iScniRdTLuYZxxJbMmuaCap8+dV+B7ahHlH0Z1imTfBarT
+         0xpLxZKvkFKJJfl7KoJHJkTweIhD/FJz9LaHVr8jvlqGa/681Y1GimQmDRulco9YZ40J
+         g/HOxn6Hvkc/ogjGY5AAF45DZsUgZzdm342zAsuRAJDQlBhXhTTGZgry/lULPsv0QuhP
+         tZzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=erxLaPpHTstlUNHepYANnRLE/oN1GTdnKJPQlCNXi4o=;
-        b=H00oDUlbNL2Kip5Yz9LPHrqqv/fhbr+3GNLrd3uL2ilIeVt1WNJbiuaNYrSAqPdduH
-         ZVvu+JDPuMPuB287VU7MAww9QUsIZrVcVy9tXUHdLItEXtkLo5u/QRBDJ1wiAly7kKse
-         iIWrJ9dvVuvQe1xNsD4EvZm/WFuAPaHpbOpTR9eVYVdgxoX44XWJukdneObD1oBgdcu5
-         ICENOO8ZX3NlChYol6wqq4BlKx3FOwFF52wk0UZC/eMrQBvZ8iah3upckSdfVAT4VA3T
-         ZPA2hHqkssnwpZZ/VBK/n49UW5VWAv+ovDDKb3nHo76blUD9ZrkSuWWC8hsBdz7eVGK0
-         gRXA==
-X-Gm-Message-State: AOAM530bqNjjhJCahiSv5D6zB1O0olYz/LS6jfJbUZUcccgv7r7OyLtT
-        ZnnJTkLHIXhQ3Wr4zM+3MA==
-X-Google-Smtp-Source: ABdhPJz3tgjVJfWmKgbca9UKRH91w/uITuWlBZmCUxlAapxTJ2vbbhF42rvUio4LeFbH5FQ87AzDoQ==
-X-Received: by 2002:a63:531e:: with SMTP id h30mr14203467pgb.158.1615060798907;
-        Sat, 06 Mar 2021 11:59:58 -0800 (PST)
-Received: from robh.at.kernel.org ([172.58.27.98])
-        by smtp.gmail.com with ESMTPSA id c12sm5944246pjq.48.2021.03.06.11.59.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 06 Mar 2021 11:59:58 -0800 (PST)
-Received: (nullmailer pid 1124050 invoked by uid 1000);
-        Sat, 06 Mar 2021 19:59:53 -0000
-Date:   Sat, 6 Mar 2021 11:59:53 -0800
-From:   Rob Herring <robh@kernel.org>
-To:     Joe Sandom <joe.g.sandom@gmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        Joe Sandom <joe.sandom@outlook.com>, jic23@kernel.org
-Subject: Re: [RESEND][PATCH v4 2/2] Added AMS tsl2591 device tree binding
-Message-ID: <20210306195953.GA1123991@robh.at.kernel.org>
-References: <20210222212313.29319-1-joe.g.sandom@gmail.com>
- <20210222212313.29319-2-joe.g.sandom@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=qqRjPwSQTP2yhNeDNx97cgEwWURSgS0yiS1hxYEJQwU=;
+        b=J2ttaJwX6hhCFsGzXM8gGl6T6FTVJnR/LGkSEFLJlWo64lC8jy3gQLMEtqJHR5aGO8
+         35li0obzzkyjVwZrrHyySgB1P6RAQjfEGM54Fk/HhFRDbYf8HANw862wFUzY8ZTK9Hyq
+         KRYrFlIfyumzHwR2a/rhjF7nYrdOx8ipTT25fjiVSjvX/Nh4B1yU8HE2cW8g6ucjJI6O
+         X+ZrxW/XuxwLDV3U8L5qQ+jGdspqWd/hbWn9j1YrdkK1O16tt9j+pkWchXIqoa21AcVn
+         5ei5+3dJJ8qGEeeSoL2l6Zk5DrA662Wbw+h8T5jJBxgNPYZVnich+Po+uCXr3EfKYAtC
+         T88w==
+X-Gm-Message-State: AOAM533wnoRpDCez5cPzmZsTstiRKnAR7/QkhS1M0YwNvJNBXk5Y6t7x
+        z3Xl+qu3762tukV7RPvab96HwRYfn4Jf3lPuRCuikA==
+X-Google-Smtp-Source: ABdhPJzuUAgjVVjNPbLRmLAi6GU+gbjyA6ERjiccGyMgUaQRKs3fG6W2zD6XV53bHbgjJB9ghyj/ZD0G1bYIaINnZAc=
+X-Received: by 2002:a2e:1649:: with SMTP id 9mr9699131ljw.74.1615066192504;
+ Sat, 06 Mar 2021 13:29:52 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210222212313.29319-2-joe.g.sandom@gmail.com>
+References: <20210304154205.1918124-1-linus.walleij@linaro.org>
+ <969d00d5ea1e2d575a8464bebef4a8f16285ed98.camel@hadess.net>
+ <CACRpkdZcyWPUtJbjYMS=mWZW48ZkKe=arAydJbXK6E8jyQT=hA@mail.gmail.com> <20210306153929.51b053bc@archlinux>
+In-Reply-To: <20210306153929.51b053bc@archlinux>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Sat, 6 Mar 2021 22:29:41 +0100
+Message-ID: <CACRpkdaNWyQhdCDOHmRA6yWyeSXfi1WBBUauR73wdVTtFOjfUA@mail.gmail.com>
+Subject: Re: [PATCH] iio: event_monitor: Enable events before monitoring
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Bastien Nocera <hadess@hadess.net>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 22 Feb 2021 21:23:13 +0000, Joe Sandom wrote:
-> Device tree binding for AMS/TAOS tsl2591 ambient light sensor.
-> 
-> This driver supports configuration via device tree and sysfs.
-> Supported channels for raw infrared light intensity,
-> raw combined light intensity and illuminance in lux.
-> The driver additionally supports iio events on lower and
-> upper thresholds.
-> 
-> This is a very-high sensitivity light-to-digital converter that
-> transforms light intensity into a digital signal.
-> 
-> Datasheet Available at: https://ams.com/tsl25911
-> 
-> Signed-off-by: Joe Sandom <joe.g.sandom@gmail.com>
-> ---
-> Changes in v4:
-> - Corrected id field to include vendor name in prefix
-> 
-> Notes:
-> - Previously incorrectly included binding in same patch as driver.
->   This was pointed out by the maintainer and has now been changed to
->   a patch series. Sorry for the confusion!
-> 
-> Reason for re-send;
-> - Maintainer email was outlook address, changed to gmail address as this
->   is the email the patch is being sent from.
-> 
->  .../bindings/iio/light/amstaos,tsl2591.yaml   | 50 +++++++++++++++++++
->  1 file changed, 50 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/light/amstaos,tsl2591.yaml
-> 
+On Sat, Mar 6, 2021 at 4:39 PM Jonathan Cameron <jic23@kernel.org> wrote:
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+> Sadly this doesn't work for many devices.
+> It is a common thing for hardware to only support a much smaller
+> set of event monitoring registers / threshold detectors than the
+> number of channels.  In many cases we handle that by working on
+> a fifo basis.  So what this will do is enable a bunch of events
+> which will then be replaced by later events - end result some
+> random event will be enabled (or maybe 2 of them across N channels)
+
+I understand.
+
+What about augmenting the heuristics like this:
+
+1. Count the available events.
+2. If they are just one, then enable that event and disable after use.
+
+This will make all proximity sensors and other things that just
+provide a single event work out of the box.
+
+Yours,
+Linus Walleij

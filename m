@@ -2,30 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B7F2132FAEC
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Mar 2021 14:43:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E290D32FB39
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Mar 2021 15:39:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230238AbhCFNmt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 6 Mar 2021 08:42:49 -0500
-Received: from mail.kernel.org ([198.145.29.99]:53120 "EHLO mail.kernel.org"
+        id S230191AbhCFOin (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 6 Mar 2021 09:38:43 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35086 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229888AbhCFNmY (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 6 Mar 2021 08:42:24 -0500
+        id S230477AbhCFOiR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 6 Mar 2021 09:38:17 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0CB5265018;
-        Sat,  6 Mar 2021 13:42:22 +0000 (UTC)
-Date:   Thu, 18 Feb 2021 13:33:51 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 9909F64EBD;
+        Sat,  6 Mar 2021 14:38:15 +0000 (UTC)
+Date:   Sat, 6 Mar 2021 14:38:12 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <mircea.caprioru@analog.com>
-Subject: Re: [PATCH][RESEND] iio: dac: ad5686: Add support for
- AD5673R/AD5677R
-Message-ID: <20210218133351.32fcaead@archlinux>
-In-Reply-To: <20210217074102.23148-1-alexandru.ardelean@analog.com>
-References: <20210217074102.23148-1-alexandru.ardelean@analog.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org
+Subject: Re: [PATCH v1 3/4] IIO: acpi-als: Get rid of ACPICA message
+ printing
+Message-ID: <20210306143812.4da7b32e@archlinux>
+In-Reply-To: <6250192.e2TqKytQZN@kreacher>
+References: <2775419.haJ69vZeI0@kreacher>
+        <6250192.e2TqKytQZN@kreacher>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -34,120 +41,48 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 17 Feb 2021 09:41:02 +0200
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+On Fri, 05 Mar 2021 19:42:29 +0100
+"Rafael J. Wysocki" <rjw@rjwysocki.net> wrote:
 
-> From: Mircea Caprioru <mircea.caprioru@analog.com>
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > 
-> The AD5673R/AD5677R are low power, 16-channel, 12-/16-bit buffered voltage
-> output digital-to-analog converters (DACs). They include a 2.5 V internal
-> reference (enabled by default).
+> Use acpi_evaluation_failure_warn() introduced previously instead of
+> the ACPICA-specific ACPI_EXCEPTION() macro to log warning messages
+> regarding ACPI object evaluation failures and drop the
+> ACPI_MODULE_NAME() definition only used by the ACPICA message
+> printing macro.
 > 
-> These devices are very similar to AD5674R/AD5679R, except that they
-> have an i2c interface.
-> 
-> Signed-off-by: Mircea Caprioru <mircea.caprioru@analog.com>
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Applied, thanks
-
-Jonathan
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
 > ---
+>  drivers/iio/light/acpi-als.c |    4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
 > 
-> Forgot to include the linux-iio list in the first send.
-> 
->  drivers/iio/dac/Kconfig      |  5 +++--
->  drivers/iio/dac/ad5686.c     | 12 ++++++++++++
->  drivers/iio/dac/ad5686.h     |  2 ++
->  drivers/iio/dac/ad5696-i2c.c |  6 ++++--
->  4 files changed, 21 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
-> index cea07b4cced1..75e1f2b48638 100644
-> --- a/drivers/iio/dac/Kconfig
-> +++ b/drivers/iio/dac/Kconfig
-> @@ -142,8 +142,9 @@ config AD5696_I2C
->  	select AD5686
->  	help
->  	  Say yes here to build support for Analog Devices AD5311R, AD5338R,
-> -	  AD5671R, AD5675R, AD5691R, AD5692R, AD5693, AD5693R, AD5694, AD5694R,
-> -	  AD5695R, AD5696, and AD5696R Digital to Analog converters.
-> +	  AD5671R, AD5673R, AD5675R, AD5677R, AD5691R, AD5692R, AD5693, AD5693R,
-> +	  AD5694, AD5694R, AD5695R, AD5696, and AD5696R Digital to Analog
-> +	  converters.
+> Index: linux-pm/drivers/iio/light/acpi-als.c
+> ===================================================================
+> --- linux-pm.orig/drivers/iio/light/acpi-als.c
+> +++ linux-pm/drivers/iio/light/acpi-als.c
+> @@ -26,8 +26,6 @@
+>  #define ACPI_ALS_DEVICE_NAME		"acpi-als"
+>  #define ACPI_ALS_NOTIFY_ILLUMINANCE	0x80
 >  
->  	  To compile this driver as a module, choose M here: the module will be
->  	  called ad5696.
-> diff --git a/drivers/iio/dac/ad5686.c b/drivers/iio/dac/ad5686.c
-> index 7d6792ac1020..99a95282ac57 100644
-> --- a/drivers/iio/dac/ad5686.c
-> +++ b/drivers/iio/dac/ad5686.c
-> @@ -301,6 +301,12 @@ static const struct ad5686_chip_info ad5686_chip_info_tbl[] = {
->  		.num_channels = 8,
->  		.regmap_type = AD5686_REGMAP,
->  	},
-> +	[ID_AD5673R] = {
-> +		.channels = ad5674r_channels,
-> +		.int_vref_mv = 2500,
-> +		.num_channels = 16,
-> +		.regmap_type = AD5686_REGMAP,
-> +	},
->  	[ID_AD5674R] = {
->  		.channels = ad5674r_channels,
->  		.int_vref_mv = 2500,
-> @@ -324,6 +330,12 @@ static const struct ad5686_chip_info ad5686_chip_info_tbl[] = {
->  		.num_channels = 8,
->  		.regmap_type = AD5686_REGMAP,
->  	},
-> +	[ID_AD5677R] = {
-> +		.channels = ad5679r_channels,
-> +		.int_vref_mv = 2500,
-> +		.num_channels = 16,
-> +		.regmap_type = AD5686_REGMAP,
-> +	},
->  	[ID_AD5679R] = {
->  		.channels = ad5679r_channels,
->  		.int_vref_mv = 2500,
-> diff --git a/drivers/iio/dac/ad5686.h b/drivers/iio/dac/ad5686.h
-> index d9c8ba413fe9..f89a6f92b427 100644
-> --- a/drivers/iio/dac/ad5686.h
-> +++ b/drivers/iio/dac/ad5686.h
-> @@ -55,10 +55,12 @@ enum ad5686_supported_device_ids {
->  	ID_AD5338R,
->  	ID_AD5671R,
->  	ID_AD5672R,
-> +	ID_AD5673R,
->  	ID_AD5674R,
->  	ID_AD5675R,
->  	ID_AD5676,
->  	ID_AD5676R,
-> +	ID_AD5677R,
->  	ID_AD5679R,
->  	ID_AD5681R,
->  	ID_AD5682R,
-> diff --git a/drivers/iio/dac/ad5696-i2c.c b/drivers/iio/dac/ad5696-i2c.c
-> index a39eda7c02d2..24a6a4a5a2e0 100644
-> --- a/drivers/iio/dac/ad5696-i2c.c
-> +++ b/drivers/iio/dac/ad5696-i2c.c
-> @@ -1,7 +1,7 @@
->  // SPDX-License-Identifier: GPL-2.0
+> -ACPI_MODULE_NAME("acpi-als");
+> -
 >  /*
-> - * AD5671R, AD5675R, AD5691R, AD5692R, AD5693, AD5693R,
-> - * AD5694, AD5694R, AD5695R, AD5696, AD5696R
-> + * AD5338R, AD5671R, AD5673R, AD5675R, AD5677R, AD5691R, AD5692R, AD5693,
-> + * AD5693R, AD5694, AD5694R, AD5695R, AD5696, AD5696R
->   * Digital to analog converters driver
->   *
->   * Copyright 2018 Analog Devices Inc.
-> @@ -74,7 +74,9 @@ static const struct i2c_device_id ad5686_i2c_id[] = {
->  	{"ad5311r", ID_AD5311R},
->  	{"ad5338r", ID_AD5338R},
->  	{"ad5671r", ID_AD5671R},
-> +	{"ad5673r", ID_AD5673R},
->  	{"ad5675r", ID_AD5675R},
-> +	{"ad5677r", ID_AD5677R},
->  	{"ad5691r", ID_AD5691R},
->  	{"ad5692r", ID_AD5692R},
->  	{"ad5693", ID_AD5693},
+>   * So far, there's only one channel in here, but the specification for
+>   * ACPI0008 says there can be more to what the block can report. Like
+> @@ -91,7 +89,7 @@ static int acpi_als_read_value(struct ac
+>  				       &temp_val);
+>  
+>  	if (ACPI_FAILURE(status)) {
+> -		ACPI_EXCEPTION((AE_INFO, status, "Error reading ALS %s", prop));
+> +		acpi_evaluation_failure_warn(als->device->handle, prop, status);
+>  		return -EIO;
+>  	}
+>  
+> 
+> 
+> 
 

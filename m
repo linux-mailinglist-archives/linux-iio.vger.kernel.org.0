@@ -2,83 +2,109 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C071032FB68
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Mar 2021 16:40:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B5C4932FBE8
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Mar 2021 17:30:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230417AbhCFPjo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 6 Mar 2021 10:39:44 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41306 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230415AbhCFPje (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 6 Mar 2021 10:39:34 -0500
-Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AC97164FF0;
-        Sat,  6 Mar 2021 15:39:32 +0000 (UTC)
-Date:   Sat, 6 Mar 2021 15:39:29 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Bastien Nocera <hadess@hadess.net>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: Re: [PATCH] iio: event_monitor: Enable events before monitoring
-Message-ID: <20210306153929.51b053bc@archlinux>
-In-Reply-To: <CACRpkdZcyWPUtJbjYMS=mWZW48ZkKe=arAydJbXK6E8jyQT=hA@mail.gmail.com>
-References: <20210304154205.1918124-1-linus.walleij@linaro.org>
-        <969d00d5ea1e2d575a8464bebef4a8f16285ed98.camel@hadess.net>
-        <CACRpkdZcyWPUtJbjYMS=mWZW48ZkKe=arAydJbXK6E8jyQT=hA@mail.gmail.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S230213AbhCFQ3Z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 6 Mar 2021 11:29:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57788 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229779AbhCFQ3S (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 Mar 2021 11:29:18 -0500
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FA8EC06174A;
+        Sat,  6 Mar 2021 08:29:17 -0800 (PST)
+Received: by mail-ej1-x62d.google.com with SMTP id w17so10359328ejc.6;
+        Sat, 06 Mar 2021 08:29:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Ey8Iam28nWwFN4fqDqHWXz4/dWKH/12t99L89RsheoI=;
+        b=tvdyAvS58OLLGgC+WvrF3dui6xqtzqAfCkutRS7zWByztDn0Bmu9Kqh26vV+L7KBJY
+         8VIw2C1H0FbIpy/WSD+zmR4E42AS7Wg4KcGgI9qh/BwCEaRQeM7IObKy4K+mL1vcqD2B
+         Yo85WIim7R4xEsIkuwJYkCPVa1FbP5ab+39orFE56a4QR3E5eAAZxWQc+JmsGH0yabBU
+         ojF0Mav+tFph/UadgkVGpuAhW7meQZtvIH/z4DiMp0cDwnwoWVwW7e1LStlE7ByTU4sM
+         gTOjz/0ZMm+KEHplkVoRqw+BoysL0uF2beOOxuNAFUdIGoKXP9nYWNq14eqF78rI7D59
+         9KOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Ey8Iam28nWwFN4fqDqHWXz4/dWKH/12t99L89RsheoI=;
+        b=cQBuG+H8zBnRHQ15MosYAk68EZBz8CsDmWEmf2/Ow9267zaEAsjZUrjxZmldveEaeq
+         xD1gCA+CCfJQHdta9cdX8Rn+yWIdN0lh2mxPRJvYILHTDeyxs2LqMvGrJko5e10DVxbp
+         NvKKU2pULfdvhhjSpwLknMnAwMwPTjfvCFDosHm3pORkPo3ROqTAYI5KQjd0GYU2i4al
+         BJR+kPXPQSRXRZL1rfFfpM5k3bFKWs6scffAYYGkVK9GwpaE3GNzOwCEKQvWZdF93Ti+
+         0z1abIdffS6P5ejfv/E8TRDYMoAgnpVg9TwWmmiQd0MvNctquKQ7ZZvz9Qnl0J2c3IbK
+         BjzQ==
+X-Gm-Message-State: AOAM533kZs1BtfrD2gUrCdZnoIaNSB0BDrU2x8SxYOSPOHjQp85FGJhy
+        O+SgV+KH+gscurik0u2EhTUC8q19vYy0mw==
+X-Google-Smtp-Source: ABdhPJwA+ARDP33bRighyeE1YXRk/HIoXy4caD6XU0gZC5nO0dsYGgdE8VjloFPOsmUx5HHowcO2NA==
+X-Received: by 2002:a17:906:f02:: with SMTP id z2mr7554520eji.469.1615048154849;
+        Sat, 06 Mar 2021 08:29:14 -0800 (PST)
+Received: from saturn.lan ([188.27.130.90])
+        by smtp.googlemail.com with ESMTPSA id q1sm3493349ejt.65.2021.03.06.08.29.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 06 Mar 2021 08:29:14 -0800 (PST)
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     jic23@kernel.org, Alexandru Ardelean <ardeleanalex@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH] iio: kfifo: mask flags without zero-check in devm_iio_kfifo_buffer_setup()
+Date:   Sat,  6 Mar 2021 18:28:34 +0200
+Message-Id: <20210306162834.7339-1-ardeleanalex@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 4 Mar 2021 21:48:25 +0100
-Linus Walleij <linus.walleij@linaro.org> wrote:
+As pointed by Lars, this doesn't require a zero-check. Also, while looking
+at this a little closer at it (again), the masking can be done later, as
+there is a zero-check for 'mode_flags' anyway, which returns -EINVAL. And
+we only need the 'mode_flags' later in the logic.
 
-> On Thu, Mar 4, 2021 at 5:00 PM Bastien Nocera <hadess@hadess.net> wrote:
-> 
-> > If I'm not mistaken, "-a" does that for the iio_generic_buffer tool.  
-> 
-> Yeah I implemented that, and I thought about doing the same here
-> but ... the name of the tool sort of announce that one want to
-> listen to all events so I thought it should just default-enable
-> all of them in this case.
-> 
-> > Maybe moving enable_disable_all_channels() to a common location and
-> > using that would cut down on the duplicated code?  
-> 
-> The event enablement is slightly different, the generic buffer
-> turns on various channels, which is conceptually different
-> from various events, but let's see what Jonathan says.
-> 
-> We are sharing most of the code already in the iio-utils.c
-> but I can try to break out more if it doesn't get to abstract.
+This change is more of a tweak.
 
-Sadly this doesn't work for many devices.
-It is a common thing for hardware to only support a much smaller
-set of event monitoring registers / threshold detectors than the
-number of channels.  In many cases we handle that by working on
-a fifo basis.  So what this will do is enable a bunch of events
-which will then be replaced by later events - end result some
-random event will be enabled (or maybe 2 of them across N channels)
+Fixes: ae9886d6aa29 ("iio: kfifo: add devm_iio_kfifo_buffer_setup() helper")
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Signed-off-by: Alexandru Ardelean <ardeleanalex@gmail.com>
+---
 
-Not intuitive at all :(
+Apologies for the late-ness of this.
+I don't know if this makes sense to squash in the original, or to have
+as a fix commit.
+It is a bit messy now that the original is committed into the tree,
+and now we're fixing/tweaking it.
 
-I'm fine with it being controlled by a parameter though if
-that works for you.  Docs should explain it doesn't always
-result in all events being enabled however if the hardware
-is not capable of doing that.
+ drivers/iio/buffer/kfifo_buf.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-Jonathan
-
-
-> 
-> Thanks Bastien,
-> Linus Walleij
+diff --git a/drivers/iio/buffer/kfifo_buf.c b/drivers/iio/buffer/kfifo_buf.c
+index e8a434f84778..8e3a1a9e495c 100644
+--- a/drivers/iio/buffer/kfifo_buf.c
++++ b/drivers/iio/buffer/kfifo_buf.c
+@@ -275,9 +275,6 @@ int devm_iio_kfifo_buffer_setup(struct device *dev,
+ {
+ 	struct iio_buffer *buffer;
+ 
+-	if (mode_flags)
+-		mode_flags &= kfifo_access_funcs.modes;
+-
+ 	if (!mode_flags)
+ 		return -EINVAL;
+ 
+@@ -285,6 +282,8 @@ int devm_iio_kfifo_buffer_setup(struct device *dev,
+ 	if (!buffer)
+ 		return -ENOMEM;
+ 
++	mode_flags &= kfifo_access_funcs.modes;
++
+ 	indio_dev->modes |= mode_flags;
+ 	indio_dev->setup_ops = setup_ops;
+ 
+-- 
+2.25.1
 

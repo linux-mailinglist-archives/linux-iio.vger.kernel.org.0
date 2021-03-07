@@ -2,35 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9439C3300AC
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Mar 2021 13:05:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 71ABC3300B5
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Mar 2021 13:14:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229740AbhCGMFO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Mar 2021 07:05:14 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37802 "EHLO mail.kernel.org"
+        id S229955AbhCGMNp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 Mar 2021 07:13:45 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38394 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229662AbhCGMFB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 7 Mar 2021 07:05:01 -0500
+        id S229928AbhCGMNP (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 7 Mar 2021 07:13:15 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6C7646501E;
-        Sun,  7 Mar 2021 12:04:59 +0000 (UTC)
-Date:   Sun, 7 Mar 2021 12:04:51 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 0D78165020;
+        Sun,  7 Mar 2021 12:13:12 +0000 (UTC)
+Date:   Sun, 7 Mar 2021 12:13:08 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     linux-iio@vger.kernel.org, linux-doc@vger.kernel.org,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Fabrice Gasnier <fabrice.gasnier@st.com>
-Subject: Re: [RFC PATCH 2/7] iio:ABI docs: Avoid repitition of
- triggerX/sampling_frequency
-Message-ID: <20210307120451.79e538fc@archlinux>
-In-Reply-To: <c6fb25c0-1292-f5fa-c5c9-8e47d1061874@metafoo.de>
-References: <20210117153816.696693-1-jic23@kernel.org>
-        <20210117153816.696693-3-jic23@kernel.org>
-        <c6fb25c0-1292-f5fa-c5c9-8e47d1061874@metafoo.de>
+To:     Alexandru Ardelean <ardeleanalex@gmail.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+        "Bogdan, Dragos" <dragos.bogdan@analog.com>
+Subject: Re: [PATCH v6 20/24] iio: buffer: add ioctl() to support opening
+ extra buffers for IIO device
+Message-ID: <20210307121308.4702dcce@archlinux>
+In-Reply-To: <CA+U=Dsqs_B3=6FSS0dmGsRUKwD826Qy250OXzyp5mBFHt4t6MQ@mail.gmail.com>
+References: <20210215104043.91251-1-alexandru.ardelean@analog.com>
+        <20210215104043.91251-21-alexandru.ardelean@analog.com>
+        <877ca331-1a56-1bd3-6637-482bbf060ba9@metafoo.de>
+        <20210228143429.00001f01@Huawei.com>
+        <5f9070a5-2c3d-f185-1981-10ec768dbb4a@metafoo.de>
+        <20210228172753.0000568c@Huawei.com>
+        <CA+U=Dsqs_B3=6FSS0dmGsRUKwD826Qy250OXzyp5mBFHt4t6MQ@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -39,58 +46,219 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 7 Mar 2021 10:40:18 +0100
-Lars-Peter Clausen <lars@metafoo.de> wrote:
+On Sat, 6 Mar 2021 19:00:52 +0200
+Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
 
-> On 1/17/21 4:38 PM, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> On Sun, Feb 28, 2021 at 9:00 PM Jonathan Cameron
+> <Jonathan.Cameron@huawei.com> wrote:
 > >
-> > The timer-stm32 provided a little more specific information than the main
-> > docs about the value of 0 corresponding to stopping sampling.  Given that
-> > this makes sense in general, move that statement over to the main docs
-> > and drop the version in sysfs-bus-iio-timer-stm32
+> > On Sun, 28 Feb 2021 16:51:51 +0100
+> > Lars-Peter Clausen <lars@metafoo.de> wrote:
+> >  
+> > > On 2/28/21 3:34 PM, Jonathan Cameron wrote:  
+> > > > On Sun, 28 Feb 2021 09:51:38 +0100
+> > > > Lars-Peter Clausen <lars@metafoo.de> wrote:
+> > > >  
+> > > >> On 2/15/21 11:40 AM, Alexandru Ardelean wrote:  
+> > > >>> With this change, an ioctl() call is added to open a character device for a
+> > > >>> buffer. The ioctl() number is 'i' 0x91, which follows the
+> > > >>> IIO_GET_EVENT_FD_IOCTL ioctl.
+> > > >>>
+> > > >>> The ioctl() will return an FD for the requested buffer index. The indexes
+> > > >>> are the same from the /sys/iio/devices/iio:deviceX/bufferY (i.e. the Y
+> > > >>> variable).
+> > > >>>
+> > > >>> Since there doesn't seem to be a sane way to return the FD for buffer0 to
+> > > >>> be the same FD for the /dev/iio:deviceX, this ioctl() will return another
+> > > >>> FD for buffer0 (or the first buffer). This duplicate FD will be able to
+> > > >>> access the same buffer object (for buffer0) as accessing directly the
+> > > >>> /dev/iio:deviceX chardev.
+> > > >>>
+> > > >>> Also, there is no IIO_BUFFER_GET_BUFFER_COUNT ioctl() implemented, as the
+> > > >>> index for each buffer (and the count) can be deduced from the
+> > > >>> '/sys/bus/iio/devices/iio:deviceX/bufferY' folders (i.e the number of
+> > > >>> bufferY folders).
+> > > >>>
+> > > >>> Used following C code to test this:
+> > > >>> -------------------------------------------------------------------
+> > > >>>
+> > > >>>    #include <stdio.h>
+> > > >>>    #include <stdlib.h>
+> > > >>>    #include <unistd.h>
+> > > >>>    #include <sys/ioctl.h>
+> > > >>>    #include <fcntl.h"
+> > > >>>    #include <errno.h>
+> > > >>>
+> > > >>>    #define IIO_BUFFER_GET_FD_IOCTL      _IOWR('i', 0x91, int)
+> > > >>>
+> > > >>> int main(int argc, char *argv[])
+> > > >>> {
+> > > >>>           int fd;
+> > > >>>           int fd1;
+> > > >>>           int ret;
+> > > >>>
+> > > >>>           if ((fd = open("/dev/iio:device0", O_RDWR))<0) {
+> > > >>>                   fprintf(stderr, "Error open() %d errno %d\n",fd, errno);
+> > > >>>                   return -1;
+> > > >>>           }
+> > > >>>
+> > > >>>           fprintf(stderr, "Using FD %d\n", fd);
+> > > >>>
+> > > >>>           fd1 = atoi(argv[1]);
+> > > >>>
+> > > >>>           ret = ioctl(fd, IIO_BUFFER_GET_FD_IOCTL, &fd1);
+> > > >>>           if (ret < 0) {
+> > > >>>                   fprintf(stderr, "Error for buffer %d ioctl() %d errno %d\n", fd1, ret, errno);
+> > > >>>                   close(fd);
+> > > >>>                   return -1;
+> > > >>>           }
+> > > >>>
+> > > >>>           fprintf(stderr, "Got FD %d\n", fd1);
+> > > >>>
+> > > >>>           close(fd1);
+> > > >>>           close(fd);
+> > > >>>
+> > > >>>           return 0;
+> > > >>> }
+> > > >>> -------------------------------------------------------------------
+> > > >>>
+> > > >>> Results are:
+> > > >>> -------------------------------------------------------------------
+> > > >>>    # ./test 0
+> > > >>>    Using FD 3
+> > > >>>    Got FD 4
+> > > >>>
+> > > >>>    # ./test 1
+> > > >>>    Using FD 3
+> > > >>>    Got FD 4
+> > > >>>
+> > > >>>    # ./test 2
+> > > >>>    Using FD 3
+> > > >>>    Got FD 4
+> > > >>>
+> > > >>>    # ./test 3
+> > > >>>    Using FD 3
+> > > >>>    Got FD 4
+> > > >>>
+> > > >>>    # ls /sys/bus/iio/devices/iio\:device0
+> > > >>>    buffer  buffer0  buffer1  buffer2  buffer3  dev
+> > > >>>    in_voltage_sampling_frequency  in_voltage_scale
+> > > >>>    in_voltage_scale_available
+> > > >>>    name  of_node  power  scan_elements  subsystem  uevent
+> > > >>> -------------------------------------------------------------------
+> > > >>>
+> > > >>> iio:device0 has some fake kfifo buffers attached to an IIO device.  
+> > > >> For me there is one major problem with this approach. We only allow one
+> > > >> application to open /dev/iio:deviceX at a time. This means we can't have
+> > > >> different applications access different buffers of the same device. I
+> > > >> believe this is a circuital feature.  
+> > > > Thats not quite true (I think - though I've not tested it).  What we don't
+> > > > allow is for multiple processes to access them in an unaware fashion.
+> > > > My assumption is we can rely on fork + fd passing via appropriate sockets.
+> > > >  
+> > > >> It is possible to open the chardev, get the annonfd, close the chardev
+> > > >> and keep the annonfd open. Then the next application can do the same and
+> > > >> get access to a different buffer. But this has room for race conditions
+> > > >> when two applications try this at the very same time.
+> > > >>
+> > > >> We need to somehow address this.  
+> > > > I'd count this as a bug :).  It could be safely done in a particular custom
+> > > > system but in general it opens a can of worm.
+> > > >  
+> > > >> I'm also not much of a fan of using ioctls to create annon fds. In part
+> > > >> because all the standard mechanisms for access control no longer work.  
+> > > > The inability to trivially have multiple processes open the anon fds
+> > > > without care is one of the things I like most about them.
+> > > >
+> > > > IIO drivers and interfaces really aren't designed for multiple unaware
+> > > > processes to access them.  We don't have per process controls for device
+> > > > wide sysfs attributes etc.  In general, it would be hard to
+> > > > do due to the complexity of modeling all the interactions between the
+> > > > different interfaces (events / buffers / sysfs access) in a generic fashion.
+> > > >
+> > > > As such, the model, in my head at least, is that we only want a single
+> > > > process to ever be responsible for access control.  That process can then
+> > > > assign access to children or via a deliberate action (I think passing the
+> > > > anon fd over a unix socket should work for example).  The intent being
+> > > > that it is also responsible for mediating access to infrastructure that
+> > > > multiple child processes all want to access.
+> > > >
+> > > > As such, having one chrdev isn't a disadvantage because only one process
+> > > > should ever open it at a time.  This same process also handles the
+> > > > resource / control mediation.  Therefore we should only have one file
+> > > > exposed for all the standard access control mechanisms.
+> > > >  
+> > > Hm, I see your point, but I'm not convinced.
+> > >
+> > > Having to have explicit synchronization makes it difficult to mix and
+> > > match. E.g. at ADI a popular use case for testing was to run some signal
+> > > generator application on the TX buffer and some signal analyzer
+> > > application on the RX buffer.
+> > >
+> > > Both can be launched independently and there can be different types of
+> > > generator and analyzer applications. Having to have a 3rd application to
+> > > arbitrate access makes this quite cumbersome. And I'm afraid that in
+> > > reality people might just stick with the two devices model just to avoid
+> > > this restriction.  
 > >
-> > Fixes
-> > $ scripts/get_abi.pl validate
-> > /sys/bus/iio/devices/triggerX/sampling_frequency is defined 2 times:  ./Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:92  ./Documentation/ABI/testing/sysfs-bus-iio:45
+> > I'd argue that's a problem best tackled in a library - though it's a bit
+> > fiddly.  It ought to be possible to make it invisible that this level
+> > of sharing is going on.   The management process you describe would probably
+> > be a thread running inside the first process to try and access a given device.
+> > A second process failing to open the file with -EBUSY then connects to
+> > appropriate socket (via path in /tmp or similar) and asks for the FD.
+> > There are race conditions that might make it fail, but a retry loop should
+> > deal with those.
 > >
-> > Cc: Fabrice Gasnier <fabrice.gasnier@st.com>
-> > Reported-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > ---
-> >   Documentation/ABI/testing/sysfs-bus-iio             | 2 ++
-> >   Documentation/ABI/testing/sysfs-bus-iio-timer-stm32 | 8 --------
-> >   2 files changed, 2 insertions(+), 8 deletions(-)
-> >
-> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-> > index d2dd9cc280f9..9b5ceb22363d 100644
-> > --- a/Documentation/ABI/testing/sysfs-bus-iio
-> > +++ b/Documentation/ABI/testing/sysfs-bus-iio
-> > @@ -55,6 +55,8 @@ Description:
-> >   		direct access interfaces, it may be found in any of the
-> >   		relevant directories.  If it affects all of the above
-> >   		then it is to be found in the base device directory.
-> > +		Note a value 0 where supported, will correspond to sampling
-> > +		stopping.  
+> > I agree people might just stick to a two device model and if the devices
+> > are independent enough I'm not sure that is the wrong way to approach the
+> > problem.  It represents the independence and that the driver is being careful
+> > that it both can and is safely handle independent simultaneous accessors.
+> > We are always going to have some drivers doing that anyway because they've
+> > already been doing that for years.
+> >  
 > 
-> Hm, I don't like this. 0 should be an invalid value for the standard 
-> ABI. Enabling/disabling of the trigger should be controlled by whether 
-> there are any active trigger consumers.
+> This is the last of the 3 patches that I need to re-spin after Lars' review.
+> I have a good handle on the small stuff.
 > 
-> The stm32-timer-trigger implements a non-standard ABI and I think we 
-> need to document this explicitly. The driver does not have a set_state 
-> callback. So the frequency property is used to enable/disable the 
-> trigger, but as said above, for standard compliant triggers that should 
-> not be the case.
+> I'm not sure about the race-condition about which Lars was talking about.
+> I mean, I get the problem, but is it a problem that we should fix in the kernel?
 > 
-Good point.  Ideally we'd also fix the stm32-timer-trigger to have
-an explicit enable / disable (even if that works by setting the frequency
-to 0 under the hook)
+> I'm sensing that Jonathan's preference is to keep things mostly as the
+> current implementation.
+> I'll probably leave this alone for a few days.
 
-For now I've dropped the patch until this is resolved.
+Wise move :)  Whilst I'm currently falling on the side of leaving the
+current situation fo the ioctl, I'm not sure the discussion has completely
+finished. 
 
-Thanks,
+I'm not keen to delay this series too much because other stuff will back
+up behind it.  For now I'm in two minds on whether to back out the series
+(on basis it's easy enough to bring back until churn gets us) or rely
+on us being able to make any tweaks in a safe fashion.
+
+Note we will have a little time to tweak the interface either way
+as there aren't any mainline drivers using it yet.  As a result
+I'm open to other proposals until this becomes ABI that we have to
+support for ever.
+
+Ideally I'd have lots of time and mock up the userspace library handling
+that I think would hid most of the magic needed, but who knows when I'll
+get time for that...
+
+> And I'll prepare some patches for the tweaks Lars suggested (adding
+> O_NONBLOCK and doing things a bit differently with the FD).
+> I'll send those in the next few days.
+
+Great.
 
 Jonathan
 
+> 
+> > J
+> >  
+> > >
+> > > - Lars
+> > >  
+> >  
 

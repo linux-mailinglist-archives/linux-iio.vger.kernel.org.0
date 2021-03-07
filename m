@@ -2,104 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56809330100
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Mar 2021 13:47:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B1C133010E
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Mar 2021 13:55:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229757AbhCGMrA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Mar 2021 07:47:00 -0500
-Received: from mail.kernel.org ([198.145.29.99]:48488 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230260AbhCGMqa (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 7 Mar 2021 07:46:30 -0500
-Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C2949650FA;
-        Sun,  7 Mar 2021 12:46:28 +0000 (UTC)
-Date:   Sun, 7 Mar 2021 12:46:25 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Evgeny Boger <boger@wirenboard.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Quentin Schulz <quentin.schulz@free-electrons.com>,
-        Quentin Schulz <quentin.schulz@bootlin.com>
-Subject: Re: [PATCH] iio: adc: axp20x_adc: fix charging current reporting on
- AXP22x
-Message-ID: <20210307124625.08109dea@archlinux>
-In-Reply-To: <20210306235238.30379-1-boger@wirenboard.com>
-References: <20210306235238.30379-1-boger@wirenboard.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S230002AbhCGMyu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 Mar 2021 07:54:50 -0500
+Received: from www381.your-server.de ([78.46.137.84]:48318 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229904AbhCGMyb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Mar 2021 07:54:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=t2IT8969XHmUqRaazwfib8rQbdSxedTrGWGhUS4AiOM=; b=a21Nsi0GLih6NIIjw6S5nFusJk
+        DKpNPpHK+IcKtrA8eWUDY1+72BMahDvZyyqvoCY+Lxu0yLiG6F8qHmspp7OCT5rDHykn0ZdsYuHvf
+        Z/TgNNrMHTlHq6H2LxFQjQGh9VBTh8DNhifCmlm7Blvg9yjsRSOnxHmgFQ30SJkn/YEVtpg+CQmyS
+        KXV7RAyEGFI1jMkCxyaTADBxmqNnLFF/uUg27rq0P8gkNpWqgEZNPWBj3pnDvB4vZQ0xaZwB1k79n
+        seueybamjPllrZbr6/nzpXDq4iGQVEJh7NbWPpuwRjC4JMOQ0MBv6IZUDK8g25VGzuOkLoI//V+Zo
+        ZZjv963g==;
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <lars@metafoo.de>)
+        id 1lIsvU-000ANi-Oo; Sun, 07 Mar 2021 13:54:28 +0100
+Received: from [62.216.202.180] (helo=[192.168.178.20])
+        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1lIsvU-000Puc-K7; Sun, 07 Mar 2021 13:54:28 +0100
+Subject: Re: [PATCH] iio: buffer: fix use-after-free for attached_buffers
+ array
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20210306164710.9944-1-ardeleanalex@gmail.com>
+ <20210307123658.3bdc0016@archlinux>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <a1ffef80-2f43-68bc-cb46-4f3bac326671@metafoo.de>
+Date:   Sun, 7 Mar 2021 13:54:28 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20210307123658.3bdc0016@archlinux>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.102.4/26101/Sun Mar  7 13:10:08 2021)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun,  7 Mar 2021 02:52:38 +0300
-Evgeny Boger <boger@wirenboard.com> wrote:
+On 3/7/21 1:36 PM, Jonathan Cameron wrote:
+> On Sat,  6 Mar 2021 18:47:10 +0200
+> Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
+>
+>> Thanks to Lars for finding this.
+>> The free of the 'attached_buffers' array should be done as late as
+>> possible. This change moves it to iio_buffers_put(), which looks like
+>> the best place for it, since it takes place right before the IIO device
+>> data is free'd.
+> It feels a bit wrong to do direct freeing of stuff in a _put() call
+> given that kind of implies nothing will happen without some reference
+> count dropping to 0.  We could think about renaming the function to
+> something like
+>
+> iio_buffers_put_and_free_array() but is a bit long winded.
+>
+> Otherwise, I'm fine with this but want to let it sit on list a tiny bit
+> longer before I take it as it's not totally trivial unlike the previous
+> one.
 
-> Both the charging and discharging currents on AXP22x are stored as
-> 12-bit integers, in accordance with the datasheet.
-> It's also confirmed by vendor BSP (axp20x_adc.c:axp22_icharge_to_mA).
-> 
-> The scale factor of 0.5 is never mentioned in datasheet, nor in the
-> vendor source code. I think it was here to compensate for
-> erroneous additional bit in register width.
-> 
-> Tested on custom A40i+AXP221s board with external ammeter as
-> a reference.
-> 
-> Signed-off-by: Evgeny Boger <boger@wirenboard.com>
+Maybe to go with naming schema of iio_device_attach_buffer() call this 
+function iio_device_detach_buffers(). We grab the reference in attach, 
+and drop it in detach.
 
-+CC Quentin's bootlin address.
-
-One comment inline,
-
-Jonathan
-
-> ---
->  drivers/iio/adc/axp20x_adc.c | 14 ++------------
->  1 file changed, 2 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/axp20x_adc.c b/drivers/iio/adc/axp20x_adc.c
-> index 3e0c0233b431..8db6699c20c3 100644
-> --- a/drivers/iio/adc/axp20x_adc.c
-> +++ b/drivers/iio/adc/axp20x_adc.c
-> @@ -253,17 +253,7 @@ static int axp22x_adc_raw(struct iio_dev *indio_dev,
->  	struct axp20x_adc_iio *info = iio_priv(indio_dev);
->  	int size;
->  
-> -	/*
-> -	 * N.B.: Unlike the Chinese datasheets tell, the charging current is
-> -	 * stored on 12 bits, not 13 bits. Only discharging current is on 13
-> -	 * bits.
-> -	 */
-> -	if (chan->type == IIO_CURRENT && chan->channel == AXP22X_BATT_DISCHRG_I)
-> -		size = 13;
-> -	else
-> -		size = 12;
-> -
-> -	*val = axp20x_read_variable_width(info->regmap, chan->address, size);
-> +	*val = axp20x_read_variable_width(info->regmap, chan->address, 12);
->  	if (*val < 0)
->  		return *val;
->  
-> @@ -387,7 +377,7 @@ static int axp22x_adc_scale(struct iio_chan_spec const *chan, int *val,
->  
->  	case IIO_CURRENT:
->  		*val = 0;
-> -		*val2 = 500000;
-> +		*val2 = 1000000;
->  		return IIO_VAL_INT_PLUS_MICRO;
-		*val = 1;
-		return IIO_VAL_INT;
-
-Should work if the scale factor is 1.
-Note that we could just have reported the channel as _processed in the first place, but
-given we didn't better to keep the ABI the same and just have a noop scale factor.
-
->  
->  	case IIO_TEMP:
+- Lars
 

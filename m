@@ -2,299 +2,176 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 433CF3303FC
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Mar 2021 19:47:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE16C330417
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Mar 2021 20:04:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230344AbhCGSq1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Mar 2021 13:46:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57510 "EHLO
+        id S232001AbhCGS4Y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 Mar 2021 13:56:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230323AbhCGSp6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Mar 2021 13:45:58 -0500
-Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 654D5C06174A;
-        Sun,  7 Mar 2021 10:45:58 -0800 (PST)
-Received: by mail-io1-xd31.google.com with SMTP id n132so7654856iod.0;
-        Sun, 07 Mar 2021 10:45:58 -0800 (PST)
+        with ESMTP id S231927AbhCGSzy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Mar 2021 13:55:54 -0500
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90101C06174A;
+        Sun,  7 Mar 2021 10:55:54 -0800 (PST)
+Received: by mail-ej1-x632.google.com with SMTP id mm21so15715261ejb.12;
+        Sun, 07 Mar 2021 10:55:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=hki0Hl2tbnajpF3gwCuqdLTb9AKHzRLxw38xL8ZoUXw=;
-        b=Sb/khIF9MfxVP6p4cPQczN/OI7N1MNMAuG5XUyqSXrrpri2fNBztyxP76LfdxvLbFY
-         VTSFG5DJipyJ7E2KRm5IYmApFqXIHDNZlPHLvsbyUMazms59dUB+x1r6/8q0Lre7bhzp
-         bYT2uxiAStzG7yETo2yyxZVDJ1mPAOhI/NGZ1QNsPgBo9nAB6Ahe5+vazJuMZaqC5QBj
-         9ltkp8FcVc+Q/qWLiLxUx+qkQqSPlUvVCs1sPGSGpOi4C/iKbdIbfELqUXPTOSib1OGX
-         tFIGhlL07pn6XrLcoW9Hh3M/gbYKhxpIljPQBBPHIzph2aCoSyd36+K9D5akPU9XWe8Q
-         nqFw==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=pks+SrZ4znCBShGaFDbraYaxx/WgoLb7ivk6yT2CVXY=;
+        b=RtBh84WWcNNnvJc7FEOLo2pkSzlGIEFCW1k2mog0UuBkYQZvCyPo2pml/XQ+JpzkxG
+         Ea2IS7GJfU5pncqESMR1fGHHoFvOLSPTdSBMdlVXhHCnKF3qDMldXdWW7YpUol5O6lN7
+         Afdtxy4KdE4j1V2R8i1buP/UxRh0h3sH6545wii0o+U1OysWmdSrFlrtomaQbnlHK1nP
+         lxlLpiRPXWggcXM5xar5worxyAcLp6C9shnwfnWeJHF7LSawnPah9vFu9xxEcObJCjsR
+         ilzyyVBjLoSjZwc98Ww/dy9BhgIJvE9y5t7cLqq804cyBuxLsYEf0wibKHki7AXsv2oI
+         RTgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=hki0Hl2tbnajpF3gwCuqdLTb9AKHzRLxw38xL8ZoUXw=;
-        b=blzLPwNoj6gE+CrhrN8PXTOan3UzzVWwvQ6XCQjc54LyPBT6+/CNbtANsaRQJKJGBg
-         fz0NZBbPUa01GiQ5UAcgt+foyQlYTJ5ZTE7IIC4vd1vxLE7fLyyHZhqeaMskWH9wI0nD
-         13gQVSFZHhE3izSAvc+laJoFgOMJxsKenGFpJwOrJDsHb3G7Ny2Tqo56EBV/pz3PAcih
-         +v7ffH8nvEWGQq/WEhcWBNM19C3olR59vEXlYDWc+s9dwwnpDNxVCpbUfyI/Drt5ihN7
-         JUK3SMp40mpzNdDE8/SCIPUNA/i5LSiEt3nHgjBTPHLQJcUVkcbSkxFdgofnu7NtnwZE
-         6WPw==
-X-Gm-Message-State: AOAM532lRYhCP5ssWx3Axw6FrCSvQPrfeDTqLhC6Qt1w/qM5+/cWHXXP
-        v+D3JpGWkGLQ8KgQ60FOlqTT8o9hfMRwP0T0OuM=
-X-Google-Smtp-Source: ABdhPJwVvVV/1Z3jl/xAzB/0UAqCQ1OUSJzdqdTxTjtQD0CO0ZXsppwaV1aTMv2pihP4s6xd/iy3hHlva27p0JCH0q8=
-X-Received: by 2002:a5d:8416:: with SMTP id i22mr15237919ion.32.1615142757584;
- Sun, 07 Mar 2021 10:45:57 -0800 (PST)
-MIME-Version: 1.0
-References: <20201123144017.18311-1-alexandru.ardelean@analog.com>
- <20210221162905.65be88d0@archlinux> <408e9b87-0528-141a-1fa6-ca8c2a0b1c69@collabora.com>
- <20210307115941.18badb2e@archlinux>
-In-Reply-To: <20210307115941.18badb2e@archlinux>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=pks+SrZ4znCBShGaFDbraYaxx/WgoLb7ivk6yT2CVXY=;
+        b=q+EBXHy+zKnIq6b+Wtf2pyUBuc24Tcm0Vrota0fr+XIA1aHBFfMhpn9dwJ3u4epQNT
+         h+BBcFT2sRCdbfEUDzFwQ7Mu5HM5P+WF/QWYXtCX9meZGnEj5I4N3ENAqTsit9bpYQsR
+         bhN21QX/1p9fZQc02njmbfEkO34sKu0136MhrOHqFGuCZAe7qM+av2aNeMZOZA0+ikJ+
+         mVkKYD/AQix/MIyd4xyBFZNvQII6Jl3AEPrxSDYlaynkcCg6udrQ7Ak7CE89E/QLutCO
+         ga7juQFSDSW4nJPTbKXm4M60bC42vbr67u50XKIuIXLqd2V7wGo8jB1d6juFZSS5izWT
+         wmwA==
+X-Gm-Message-State: AOAM530DObcktO4ISLgOBNo3THXAJk+Lsg1ioOQa+mZJlakjU4LviY7d
+        hy9z5KA0cHtyWQZKTTbK5YlT1xoA06vp1Q==
+X-Google-Smtp-Source: ABdhPJxv/HnUHsX+0WflxtJwZncZ7VD+zLgQiHjGaj74bItsw1iyBcfOJSjfopc6ZqXKCYPEvPiD4g==
+X-Received: by 2002:a17:906:4993:: with SMTP id p19mr11807991eju.421.1615143353046;
+        Sun, 07 Mar 2021 10:55:53 -0800 (PST)
+Received: from saturn.lan ([188.27.130.90])
+        by smtp.googlemail.com with ESMTPSA id r19sm1046074ejr.55.2021.03.07.10.55.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 07 Mar 2021 10:55:52 -0800 (PST)
 From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Sun, 7 Mar 2021 20:45:46 +0200
-Message-ID: <CA+U=DsoLuj0bVAG92iDxTcg=aLGAnzaSiT-+_n=HkFzedGzS6Q@mail.gmail.com>
-Subject: Re: [PATCH 1/2] iio: cros_ec: do an early exit if not physical_device case
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Benson Leung <bleung@chromium.org>, groeck@chromium.org,
-        Gwendal Grignou <gwendal@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     jic23@kernel.org, Alexandru Ardelean <ardeleanalex@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH v2] iio: buffer: fix use-after-free for attached_buffers array
+Date:   Sun,  7 Mar 2021 20:54:44 +0200
+Message-Id: <20210307185444.32924-1-ardeleanalex@gmail.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20210306164710.9944-1-ardeleanalex@gmail.com>
+References: <20210306164710.9944-1-ardeleanalex@gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Mar 7, 2021 at 1:59 PM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Tue, 2 Mar 2021 11:46:06 +0100
-> Enric Balletbo i Serra <enric.balletbo@collabora.com> wrote:
->
-> > Hi all,
-> >
-> > On 21/2/21 17:29, Jonathan Cameron wrote:
-> > > On Mon, 23 Nov 2020 16:40:16 +0200
-> > > Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
-> > >
-> > >> This whole code-block was put under one big if() condition/block.
-> > >> This change does an early return if the 'physical_device' boolean is false,
-> > >> thus unindenting the block by one level.
-> > >>
-> > >> No other functional change has been done.
-> > >>
-> > >> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> > > @Gwendal, others  This series from Alex has been outstanding for a while
-> > > but may well still apply.
-> > > Ideally looking for an ack.
-> > >
-> >
-> > This looks good to me.
-> >
-> > Acked-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
->
-> Hi Enric, Ack or both patches or just this one?
->
-> @Alex, series needs a rebase.  I'm not totally sure what's changed.
-> If you don't get to it I'll do it at somepoint but unlikely to
-> be terribly soon!
+Thanks to Lars for finding this.
+The free of the 'attached_buffers' array should be done as late as
+possible. This change moves it to iio_buffers_put(), which looks like
+the best place for it, since it takes place right before the IIO device
+data is free'd.
+The free of this array will be handled by calling iio_device_free().
+The iio_buffers_put() function is renamed to iio_device_detach_buffers()
+since the role of this function changes a bit.
 
-It's likely that it's that iio_device_attach_buffer() went away and
-the block got replaced by devm_iio_kfifo_buffer_setup().
-I'll re-spin it.
-I dropped this set from my main work branch because I didn't know if
-it was forgotten, and rebasing it with every change on
-devm_iio_kfifo_buffer_setup() and
-devm_iio_triggered_buffer_setup_ext() became annoying.
-But it shouldn't be hard to re-spin.
+It looks like this issue was ocurring on the error path of
+iio_buffers_alloc_sysfs_and_mask() and in
+iio_buffers_free_sysfs_and_mask()
 
->
-> Jonathan
->
-> >
-> > Thanks,
-> >  Enric
-> >
-> > > Thanks,
-> > >
-> > > Jonathan
-> > >
-> > >> ---
-> > >>  .../cros_ec_sensors/cros_ec_sensors_core.c    | 161 +++++++++---------
-> > >>  1 file changed, 81 insertions(+), 80 deletions(-)
-> > >>
-> > >> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> > >> index 5c6c4e6fec9b..9470014936f2 100644
-> > >> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> > >> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> > >> @@ -287,89 +287,90 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
-> > >>
-> > >>    indio_dev->name = pdev->name;
-> > >>
-> > >> -  if (physical_device) {
-> > >> -          state->param.cmd = MOTIONSENSE_CMD_INFO;
-> > >> -          state->param.info.sensor_num = sensor_platform->sensor_num;
-> > >> -          ret = cros_ec_motion_send_host_cmd(state, 0);
-> > >> -          if (ret) {
-> > >> -                  dev_warn(dev, "Can not access sensor info\n");
-> > >> +  if (!physical_device)
-> > >> +          return 0;
-> > >> +
-> > >> +  state->param.cmd = MOTIONSENSE_CMD_INFO;
-> > >> +  state->param.info.sensor_num = sensor_platform->sensor_num;
-> > >> +  ret = cros_ec_motion_send_host_cmd(state, 0);
-> > >> +  if (ret) {
-> > >> +          dev_warn(dev, "Can not access sensor info\n");
-> > >> +          return ret;
-> > >> +  }
-> > >> +  state->type = state->resp->info.type;
-> > >> +  state->loc = state->resp->info.location;
-> > >> +
-> > >> +  /* Set sign vector, only used for backward compatibility. */
-> > >> +  memset(state->sign, 1, CROS_EC_SENSOR_MAX_AXIS);
-> > >> +
-> > >> +  for (i = CROS_EC_SENSOR_X; i < CROS_EC_SENSOR_MAX_AXIS; i++)
-> > >> +          state->calib[i].scale = MOTION_SENSE_DEFAULT_SCALE;
-> > >> +
-> > >> +  /* 0 is a correct value used to stop the device */
-> > >> +  if (state->msg->version < 3) {
-> > >> +          get_default_min_max_freq(state->resp->info.type,
-> > >> +                                   &frequencies[1],
-> > >> +                                   &frequencies[2],
-> > >> +                                   &state->fifo_max_event_count);
-> > >> +  } else {
-> > >> +          frequencies[1] = state->resp->info_3.min_frequency;
-> > >> +          frequencies[2] = state->resp->info_3.max_frequency;
-> > >> +          state->fifo_max_event_count =
-> > >> +              state->resp->info_3.fifo_max_event_count;
-> > >> +  }
-> > >> +  for (i = 0; i < ARRAY_SIZE(frequencies); i++) {
-> > >> +          state->frequencies[2 * i] = frequencies[i] / 1000;
-> > >> +          state->frequencies[2 * i + 1] =
-> > >> +                  (frequencies[i] % 1000) * 1000;
-> > >> +  }
-> > >> +
-> > >> +  if (cros_ec_check_features(ec, EC_FEATURE_MOTION_SENSE_FIFO)) {
-> > >> +          /*
-> > >> +           * Create a software buffer, feed by the EC FIFO.
-> > >> +           * We can not use trigger here, as events are generated
-> > >> +           * as soon as sample_frequency is set.
-> > >> +           */
-> > >> +          struct iio_buffer *buffer;
-> > >> +
-> > >> +          buffer = devm_iio_kfifo_allocate(dev);
-> > >> +          if (!buffer)
-> > >> +                  return -ENOMEM;
-> > >> +
-> > >> +          iio_device_attach_buffer(indio_dev, buffer);
-> > >> +          indio_dev->modes = INDIO_BUFFER_SOFTWARE;
-> > >> +
-> > >> +          ret = cros_ec_sensorhub_register_push_data(
-> > >> +                          sensor_hub, sensor_platform->sensor_num,
-> > >> +                          indio_dev, push_data);
-> > >> +          if (ret)
-> > >>                    return ret;
-> > >> -          }
-> > >> -          state->type = state->resp->info.type;
-> > >> -          state->loc = state->resp->info.location;
-> > >>
-> > >> -          /* Set sign vector, only used for backward compatibility. */
-> > >> -          memset(state->sign, 1, CROS_EC_SENSOR_MAX_AXIS);
-> > >> +          ret = devm_add_action_or_reset(
-> > >> +                          dev, cros_ec_sensors_core_clean, pdev);
-> > >> +          if (ret)
-> > >> +                  return ret;
-> > >>
-> > >> -          for (i = CROS_EC_SENSOR_X; i < CROS_EC_SENSOR_MAX_AXIS; i++)
-> > >> -                  state->calib[i].scale = MOTION_SENSE_DEFAULT_SCALE;
-> > >> -
-> > >> -          /* 0 is a correct value used to stop the device */
-> > >> -          if (state->msg->version < 3) {
-> > >> -                  get_default_min_max_freq(state->resp->info.type,
-> > >> -                                           &frequencies[1],
-> > >> -                                           &frequencies[2],
-> > >> -                                           &state->fifo_max_event_count);
-> > >> -          } else {
-> > >> -                  frequencies[1] = state->resp->info_3.min_frequency;
-> > >> -                  frequencies[2] = state->resp->info_3.max_frequency;
-> > >> -                  state->fifo_max_event_count =
-> > >> -                      state->resp->info_3.fifo_max_event_count;
-> > >> -          }
-> > >> -          for (i = 0; i < ARRAY_SIZE(frequencies); i++) {
-> > >> -                  state->frequencies[2 * i] = frequencies[i] / 1000;
-> > >> -                  state->frequencies[2 * i + 1] =
-> > >> -                          (frequencies[i] % 1000) * 1000;
-> > >> -          }
-> > >> -
-> > >> -          if (cros_ec_check_features(ec, EC_FEATURE_MOTION_SENSE_FIFO)) {
-> > >> -                  /*
-> > >> -                   * Create a software buffer, feed by the EC FIFO.
-> > >> -                   * We can not use trigger here, as events are generated
-> > >> -                   * as soon as sample_frequency is set.
-> > >> -                   */
-> > >> -                  struct iio_buffer *buffer;
-> > >> -
-> > >> -                  buffer = devm_iio_kfifo_allocate(dev);
-> > >> -                  if (!buffer)
-> > >> -                          return -ENOMEM;
-> > >> -
-> > >> -                  iio_device_attach_buffer(indio_dev, buffer);
-> > >> -                  indio_dev->modes = INDIO_BUFFER_SOFTWARE;
-> > >> -
-> > >> -                  ret = cros_ec_sensorhub_register_push_data(
-> > >> -                                  sensor_hub, sensor_platform->sensor_num,
-> > >> -                                  indio_dev, push_data);
-> > >> -                  if (ret)
-> > >> -                          return ret;
-> > >> -
-> > >> -                  ret = devm_add_action_or_reset(
-> > >> -                                  dev, cros_ec_sensors_core_clean, pdev);
-> > >> -                  if (ret)
-> > >> -                          return ret;
-> > >> -
-> > >> -                  /* Timestamp coming from FIFO are in ns since boot. */
-> > >> -                  ret = iio_device_set_clock(indio_dev, CLOCK_BOOTTIME);
-> > >> -                  if (ret)
-> > >> -                          return ret;
-> > >> -          } else {
-> > >> -                  const struct attribute **fifo_attrs;
-> > >> -
-> > >> -                  if (has_hw_fifo)
-> > >> -                          fifo_attrs = cros_ec_sensor_fifo_attributes;
-> > >> -                  else
-> > >> -                          fifo_attrs = NULL;
-> > >> -
-> > >> -                  /*
-> > >> -                   * The only way to get samples in buffer is to set a
-> > >> -                   * software trigger (systrig, hrtimer).
-> > >> -                   */
-> > >> -                  ret = devm_iio_triggered_buffer_setup_ext(
-> > >> -                                  dev, indio_dev, NULL, trigger_capture,
-> > >> -                                  NULL, fifo_attrs);
-> > >> -                  if (ret)
-> > >> -                          return ret;
-> > >> -          }
-> > >> +          /* Timestamp coming from FIFO are in ns since boot. */
-> > >> +          ret = iio_device_set_clock(indio_dev, CLOCK_BOOTTIME);
-> > >> +          if (ret)
-> > >> +                  return ret;
-> > >> +  } else {
-> > >> +          const struct attribute **fifo_attrs;
-> > >> +
-> > >> +          if (has_hw_fifo)
-> > >> +                  fifo_attrs = cros_ec_sensor_fifo_attributes;
-> > >> +          else
-> > >> +                  fifo_attrs = NULL;
-> > >> +
-> > >> +          /*
-> > >> +           * The only way to get samples in buffer is to set a
-> > >> +           * software trigger (systrig, hrtimer).
-> > >> +           */
-> > >> +          ret = devm_iio_triggered_buffer_setup_ext(
-> > >> +                          dev, indio_dev, NULL, trigger_capture,
-> > >> +                          NULL, fifo_attrs);
-> > >> +          if (ret)
-> > >> +                  return ret;
-> > >>    }
-> > >>
-> > >>    return 0;
-> > >
->
+Added a comment in the doc-header of iio_device_attach_buffer() to
+mention how this will be free'd in case anyone is reading the code
+and becoming confused about it.
+
+Fixes: 36f3118c414d ("iio: buffer: introduce support for attaching more IIO buffers")
+Reported-by: Lars-Peter Clausen <lars@metafoo.de>
+Signed-off-by: Alexandru Ardelean <ardeleanalex@gmail.com>
+---
+ drivers/iio/iio_core.h            | 4 ++--
+ drivers/iio/industrialio-buffer.c | 9 +++++----
+ drivers/iio/industrialio-core.c   | 2 +-
+ 3 files changed, 8 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/iio/iio_core.h b/drivers/iio/iio_core.h
+index 062fe16c6c49..8f4a9b264962 100644
+--- a/drivers/iio/iio_core.h
++++ b/drivers/iio/iio_core.h
+@@ -77,7 +77,7 @@ void iio_buffers_free_sysfs_and_mask(struct iio_dev *indio_dev);
+ 
+ void iio_disable_all_buffers(struct iio_dev *indio_dev);
+ void iio_buffer_wakeup_poll(struct iio_dev *indio_dev);
+-void iio_buffers_put(struct iio_dev *indio_dev);
++void iio_device_detach_buffers(struct iio_dev *indio_dev);
+ 
+ #else
+ 
+@@ -93,7 +93,7 @@ static inline void iio_buffers_free_sysfs_and_mask(struct iio_dev *indio_dev) {}
+ 
+ static inline void iio_disable_all_buffers(struct iio_dev *indio_dev) {}
+ static inline void iio_buffer_wakeup_poll(struct iio_dev *indio_dev) {}
+-static inline void iio_buffers_put(struct iio_dev *indio_dev) {}
++static inline void iio_device_detach_buffers(struct iio_dev *indio_dev) {}
+ 
+ #endif
+ 
+diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+index 1a415e97174e..1ff7f731b044 100644
+--- a/drivers/iio/industrialio-buffer.c
++++ b/drivers/iio/industrialio-buffer.c
+@@ -326,7 +326,7 @@ void iio_buffer_init(struct iio_buffer *buffer)
+ }
+ EXPORT_SYMBOL(iio_buffer_init);
+ 
+-void iio_buffers_put(struct iio_dev *indio_dev)
++void iio_device_detach_buffers(struct iio_dev *indio_dev)
+ {
+ 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+ 	struct iio_buffer *buffer;
+@@ -336,6 +336,8 @@ void iio_buffers_put(struct iio_dev *indio_dev)
+ 		buffer = iio_dev_opaque->attached_buffers[i];
+ 		iio_buffer_put(buffer);
+ 	}
++
++	kfree(iio_dev_opaque->attached_buffers);
+ }
+ 
+ static ssize_t iio_show_scan_index(struct device *dev,
+@@ -1764,7 +1766,6 @@ int iio_buffers_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
+ 		buffer = iio_dev_opaque->attached_buffers[unwind_idx];
+ 		__iio_buffer_free_sysfs_and_mask(buffer);
+ 	}
+-	kfree(iio_dev_opaque->attached_buffers);
+ 	return ret;
+ }
+ 
+@@ -1786,8 +1787,6 @@ void iio_buffers_free_sysfs_and_mask(struct iio_dev *indio_dev)
+ 		buffer = iio_dev_opaque->attached_buffers[i];
+ 		__iio_buffer_free_sysfs_and_mask(buffer);
+ 	}
+-
+-	kfree(iio_dev_opaque->attached_buffers);
+ }
+ 
+ /**
+@@ -2062,6 +2061,8 @@ static int iio_buffer_mmap(struct file *filep, struct vm_area_struct *vma)
+  * This function attaches a buffer to a IIO device. The buffer stays attached to
+  * the device until the device is freed. For legacy reasons, the first attached
+  * buffer will also be assigned to 'indio_dev->buffer'.
++ * The array allocated here, will be free'd via the iio_device_detach_buffers()
++ * call which is handled by the iio_device_free().
+  */
+ int iio_device_attach_buffer(struct iio_dev *indio_dev,
+ 			     struct iio_buffer *buffer)
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index d74fbac908df..3be5f75c2846 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -1587,7 +1587,7 @@ static void iio_dev_release(struct device *device)
+ 	iio_device_unregister_eventset(indio_dev);
+ 	iio_device_unregister_sysfs(indio_dev);
+ 
+-	iio_buffers_put(indio_dev);
++	iio_device_detach_buffers(indio_dev);
+ 
+ 	ida_simple_remove(&iio_ida, indio_dev->id);
+ 	kfree(iio_dev_opaque);
+-- 
+2.25.1
+

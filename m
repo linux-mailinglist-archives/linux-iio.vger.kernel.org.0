@@ -2,248 +2,167 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C307C330A2E
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Mar 2021 10:20:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F0F3B330AC5
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Mar 2021 11:03:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229904AbhCHJTj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Mar 2021 04:19:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46038 "EHLO
+        id S231464AbhCHKCa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Mar 2021 05:02:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229711AbhCHJTa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Mar 2021 04:19:30 -0500
-Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEAF5C06174A
-        for <linux-iio@vger.kernel.org>; Mon,  8 Mar 2021 01:19:29 -0800 (PST)
-Received: by mail-il1-x12e.google.com with SMTP id z9so8216610iln.1
-        for <linux-iio@vger.kernel.org>; Mon, 08 Mar 2021 01:19:29 -0800 (PST)
+        with ESMTP id S231643AbhCHKCa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Mar 2021 05:02:30 -0500
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6022C06174A
+        for <linux-iio@vger.kernel.org>; Mon,  8 Mar 2021 02:02:29 -0800 (PST)
+Received: by mail-lf1-x12f.google.com with SMTP id r3so11903710lfc.13
+        for <linux-iio@vger.kernel.org>; Mon, 08 Mar 2021 02:02:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=L3N/z8r8EZ+PufPqex2PjYb/j8LA5xEA5YHXQc7ueSY=;
-        b=KtVY67/mYtQmnBb2dYoksaQ4XRkaGws1zmlTJgJ/mPSV/JuDHvi81vt1o+0b4xQH85
-         0IYgHBNFTCRl8cX1YnglLO3VVB35nj/ClHfjWrgsOWE/oYZD1/f/llUNGeMTWsGvAD6G
-         gWMStV6LGzi4Hm+2u9GaFg84qYsiFSdPVEOgJGBSNDFFumT3kwPjIyYcx2Ln8b4ngNbn
-         OuZ7BdqtTSxprbnHXtoQwPvKubqbzwi4VIHQmsB7Q1scybK17Vmsc5DlwaEGDWMHoWq1
-         ktpVmYaqCWTZEXB7OEMtAQX5XhvJ95Ekxm8+CpQTceM+Ua+LXf9Zjjzqo9iBMZe/FGVD
-         CW6g==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ywGXmbO4ZKXPKOBwo/VXhEMMza2MItTJHpVMCLgWzHA=;
+        b=uvse9CuNLuA4stytN0lktycADnkVRupsZWHElb/Fv1IUS7wn2l02KhqV4ziMKnyP/P
+         icxN/oYf/DjHn1xYpzNJWtUrCiuvsl647yM7SwDIcDGBXHTaoZnfppvovckTaYQ71OBr
+         eXjRW/juaeUAR74xKdINk6djQsykuyTwnI8qlWHDxnLHweuLLok/YrM103uqat1E0OPD
+         hIQLEMGzQ1d4mr8TJjVi8uj0sS/TJmuI9aOb9mMpdSkhmNJxKoCUQ1H5a4bmAMOZdQOF
+         Kntqmm2jyEUhqseFDuEEyPcaZLa4guU7yGY3BoxqhzbLDVpcm1ZnSS6PEQ9e+Maub6vc
+         fzVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=L3N/z8r8EZ+PufPqex2PjYb/j8LA5xEA5YHXQc7ueSY=;
-        b=DyWMIQkPxkUVIoUSNhXBdqhyh9dLhVcICykg3bVpMMCnKdFbAQgeoEJWjzaszveGzQ
-         c/EOP5A1QJ0vu865wm1TuJY75NUzQzbiQqMfh6Tg5s+aW5PKiBw9UEDHfcSzjo3qRdSe
-         QbEAeIxUje3zjygmX5pisaSNndT+fo0/O2m2ZfDo6lfdYausQLSxwNv3gYW2UWAh+ttZ
-         7qS++tIpKAwSAsyPoXYwAhVDpzHfXpyX70QvXURhP9WgZlXq9aSADE2+1N4OMC2Haca2
-         yqFI1gU6JvyZo6eRAjdtg+o+cmtnR4qorX1EToD+1D+9CZh9SdErTRai+xXNG4m08z/8
-         zM2A==
-X-Gm-Message-State: AOAM532twMJzRhaXqjWHj+jMFa6chYsvWwtWm9tKSaDsya7WxOsMn52w
-        0be3/d/b2Z9ezCIh/ImxyVUv3ZwN8nWwGb/xrnI=
-X-Google-Smtp-Source: ABdhPJxFW7XEGYAKBOzBgPrZk/17zcH+o3CVMQV4c2Kb/HMAClNP1/whUBn/+Qa3H2NxUhXV4YvYwUPCvkYCtXgS/C4=
-X-Received: by 2002:a92:194c:: with SMTP id e12mr19344800ilm.292.1615195169379;
- Mon, 08 Mar 2021 01:19:29 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ywGXmbO4ZKXPKOBwo/VXhEMMza2MItTJHpVMCLgWzHA=;
+        b=QTuJs7GppxOynIEm/Woo8qcIfhIax49IZgQ+MeJN/f3hlMaY5FbkAiD5Of4KUfMJlK
+         B0iK0+V3htqnXhN1oZu2nr0XBopF79Xig2PNbQWkxhTQXuUEE8/rR0bqo8qD9XP2t7j4
+         NzzdEh6O2T51RZfN/6IR2ZfyLmyYfGK8PPhL9cxqp9dmihZQUIGRb8BFTHx/tqEZekc9
+         hEVix/4F8QDn/8Wma2Z95mCC3QOTYm8BjpSpjQDaThy54QKNDaB+OF77jF+yqia6FJEP
+         oR4eo2xn8USFy0QGwmisaeDmYlOkd2L03kho/Abn3K1FEDZmFIEoAp7z18koBNZ66ULO
+         PrRg==
+X-Gm-Message-State: AOAM532bKBQC1QVRxdHN8vGaqkTmToq3mXkIX9p++l2vGZeJp6pmPm6U
+        29XnLwJL+Dbs9Sofd4L2N3s+JQ==
+X-Google-Smtp-Source: ABdhPJxpcQ1cJ+xMZWapyn3H6YQ4+LSsev0FuM4ni8mrS+/uh51GnhMg/z/YgRGsUdxxP9ub+hdDLg==
+X-Received: by 2002:a19:48ca:: with SMTP id v193mr14601914lfa.323.1615197748405;
+        Mon, 08 Mar 2021 02:02:28 -0800 (PST)
+Received: from localhost.localdomain (c-d7cb225c.014-348-6c756e10.bbcust.telenor.se. [92.34.203.215])
+        by smtp.gmail.com with ESMTPSA id v2sm1425734ljg.89.2021.03.08.02.02.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Mar 2021 02:02:28 -0800 (PST)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-hwmon@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Peter Rosin <peda@axentia.se>,
+        Chris Lesiak <chris.lesiak@licor.com>,
+        linux-iio@vger.kernel.org
+Subject: [PATCH 1/2 v4] iio: Provide iio_read_channel_processed_scale() API
+Date:   Mon,  8 Mar 2021 11:02:18 +0100
+Message-Id: <20210308100219.2732156-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-References: <20210308010922.765394-1-gwendal@chromium.org>
-In-Reply-To: <20210308010922.765394-1-gwendal@chromium.org>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Mon, 8 Mar 2021 11:19:18 +0200
-Message-ID: <CA+U=DsoVs630_jAyBJqtWYDZ+nPSSX1oVzMgxMQgtbViA9Cnog@mail.gmail.com>
-Subject: Re: [PATCH] iio: cros: unify hw fifo attributes without API changes
-To:     Gwendal Grignou <gwendal@chromium.org>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        groeck@chromium.org, linux-iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Mar 8, 2021 at 10:34 AM Gwendal Grignou <gwendal@chromium.org> wrote:
->
-> fixes commit 2e2366c2d141 ("iio: cros_ec: unify hw fifo attributes into the core file")
-> fixes commit 165aea80e2e2 ("iio: cros_ec: use devm_iio_triggered_buffer_setup_ext()")
->
-> 1. Instead of adding has_fw_fifo, deduct it from the configuration:
-> - EC must support FIFO (EC_FEATURE_MOTION_SENSE_FIFO) set.
-> - sensors send data a regular interval (accelerometer, gyro,
->   magnetomer, barometer, light sensor).
-> - "Legacy accelerometer" is only present on EC without FIFO, so we don't
-> need to set buffer attributes.
->
-> 2. devm_iio_triggered_buffer_setup_ext() does not need to be called.
-> Only when the EC support FIFO we set the buffer attributes directly to set
-> timeout and watermark.
->
-> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-> ---
->  drivers/iio/accel/cros_ec_accel_legacy.c      |  2 +-
->  .../cros_ec_sensors/cros_ec_lid_angle.c       |  3 +--
->  .../common/cros_ec_sensors/cros_ec_sensors.c  |  3 +--
->  .../cros_ec_sensors/cros_ec_sensors_core.c    | 19 +++++++------------
->  drivers/iio/light/cros_ec_light_prox.c        |  3 +--
->  drivers/iio/pressure/cros_ec_baro.c           |  3 +--
->  .../linux/iio/common/cros_ec_sensors_core.h   |  3 +--
->  7 files changed, 13 insertions(+), 23 deletions(-)
->
-> diff --git a/drivers/iio/accel/cros_ec_accel_legacy.c b/drivers/iio/accel/cros_ec_accel_legacy.c
-> index 8f1232c38e0d7..b6f3471b62dcf 100644
-> --- a/drivers/iio/accel/cros_ec_accel_legacy.c
-> +++ b/drivers/iio/accel/cros_ec_accel_legacy.c
-> @@ -215,7 +215,7 @@ static int cros_ec_accel_legacy_probe(struct platform_device *pdev)
->                 return -ENOMEM;
->
->         ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
-> -                                       cros_ec_sensors_capture, NULL, false);
-> +                                       cros_ec_sensors_capture, NULL);
->         if (ret)
->                 return ret;
->
-> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
-> index 752f59037715b..af801e203623e 100644
-> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
-> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
-> @@ -97,8 +97,7 @@ static int cros_ec_lid_angle_probe(struct platform_device *pdev)
->         if (!indio_dev)
->                 return -ENOMEM;
->
-> -       ret = cros_ec_sensors_core_init(pdev, indio_dev, false, NULL,
-> -                                       NULL, false);
-> +       ret = cros_ec_sensors_core_init(pdev, indio_dev, false, NULL, NULL);
->         if (ret)
->                 return ret;
->
-> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-> index dee1191de7528..376a5b30010ae 100644
-> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-> @@ -236,8 +236,7 @@ static int cros_ec_sensors_probe(struct platform_device *pdev)
->
->         ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
->                                         cros_ec_sensors_capture,
-> -                                       cros_ec_sensors_push_data,
-> -                                       true);
-> +                                       cros_ec_sensors_push_data);
->         if (ret)
->                 return ret;
->
-> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> index c833ec0ef2147..1926f5719b2d4 100644
-> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> @@ -8,6 +8,7 @@
->  #include <linux/delay.h>
->  #include <linux/device.h>
->  #include <linux/iio/buffer.h>
-> +#include <linux/iio/buffer_impl.h>
+Since the old iio_read_channel_processed() would
+lose precision if we fall back to reading raw and
+scaling, we introduce a new API that will pass in
+a scale factor when reading a processed channel:
+iio_read_channel_processed_scale().
 
-buffer_impl.h should not need to be included in drivers;
-in should be included in buffer implementations like kfifo,
-dma-buffer, and others
+Refactor iio_read_channel_processed() as a special
+case with scale factor 1.
 
->  #include <linux/iio/common/cros_ec_sensors_core.h>
->  #include <linux/iio/iio.h>
->  #include <linux/iio/kfifo_buf.h>
-> @@ -240,7 +241,6 @@ static void cros_ec_sensors_core_clean(void *arg)
->   *    for backward compatibility.
->   * @push_data:          function to call when cros_ec_sensorhub receives
->   *    a sample for that sensor.
-> - * @has_hw_fifo:       Set true if this device has/uses a HW FIFO
->   *
->   * Return: 0 on success, -errno on failure.
->   */
-> @@ -248,8 +248,7 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
->                               struct iio_dev *indio_dev,
->                               bool physical_device,
->                               cros_ec_sensors_capture_t trigger_capture,
-> -                             cros_ec_sensorhub_push_data_cb_t push_data,
-> -                             bool has_hw_fifo)
-> +                             cros_ec_sensorhub_push_data_cb_t push_data)
->  {
->         struct device *dev = &pdev->dev;
->         struct cros_ec_sensors_core_state *state = iio_priv(indio_dev);
-> @@ -358,21 +357,17 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
->                         ret = iio_device_set_clock(indio_dev, CLOCK_BOOTTIME);
->                         if (ret)
->                                 return ret;
-> -               } else {
-> -                       const struct attribute **fifo_attrs;
-> -
-> -                       if (has_hw_fifo)
-> -                               fifo_attrs = cros_ec_sensor_fifo_attributes;
-> -                       else
-> -                               fifo_attrs = NULL;
->
-> +                       /* Set attributes to control EC FIFO directly. */
-> +                       indio_dev->buffer->attrs = cros_ec_sensor_fifo_attributes;
+Cc: Peter Rosin <peda@axentia.se>
+Cc: Chris Lesiak <chris.lesiak@licor.com>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org
+Link: https://lore.kernel.org/linux-iio/20201224011607.1059534-1-linus.walleij@linaro.org/
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ChangeLog v3->v4:
+- Split off as separate API-introducing patch.
+- Fix a goto err when scaling.
+- My suggestion is to apply this patch with Jonathan's ACK
+  to the hwmon tree.
+---
+ drivers/iio/inkern.c         | 16 ++++++++++++++--
+ include/linux/iio/consumer.h | 15 +++++++++++++++
+ 2 files changed, 29 insertions(+), 2 deletions(-)
 
-accessing 'indio_dev->buffer' directly will be discouraged, because
-the idea [moving forward] is to support more than one IIO buffer per
-IIO device;
-the idea of devm_iio_triggered_buffer_setup_ext() is to pass the
-'cros_ec_sensor_fifo_attributes' to the IIO buffer, without needing to
-dig it from the IIO device;
+diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+index db77a2d4a56b..c61fc06f98b8 100644
+--- a/drivers/iio/inkern.c
++++ b/drivers/iio/inkern.c
+@@ -688,7 +688,8 @@ int iio_read_channel_offset(struct iio_channel *chan, int *val, int *val2)
+ }
+ EXPORT_SYMBOL_GPL(iio_read_channel_offset);
+ 
+-int iio_read_channel_processed(struct iio_channel *chan, int *val)
++int iio_read_channel_processed_scale(struct iio_channel *chan, int *val,
++				     unsigned int scale)
+ {
+ 	int ret;
+ 
+@@ -701,11 +702,15 @@ int iio_read_channel_processed(struct iio_channel *chan, int *val)
+ 	if (iio_channel_has_info(chan->channel, IIO_CHAN_INFO_PROCESSED)) {
+ 		ret = iio_channel_read(chan, val, NULL,
+ 				       IIO_CHAN_INFO_PROCESSED);
++		if (ret)
++			goto err_unlock;
++		*val *= scale;
+ 	} else {
+ 		ret = iio_channel_read(chan, val, NULL, IIO_CHAN_INFO_RAW);
+ 		if (ret < 0)
+ 			goto err_unlock;
+-		ret = iio_convert_raw_to_processed_unlocked(chan, *val, val, 1);
++		ret = iio_convert_raw_to_processed_unlocked(chan, *val, val,
++							    scale);
+ 	}
+ 
+ err_unlock:
+@@ -713,6 +718,13 @@ int iio_read_channel_processed(struct iio_channel *chan, int *val)
+ 
+ 	return ret;
+ }
++EXPORT_SYMBOL_GPL(iio_read_channel_processed_scale);
++
++int iio_read_channel_processed(struct iio_channel *chan, int *val)
++{
++	/* This is just a special case with scale factor 1 */
++	return iio_read_channel_processed_scale(chan, val, 1);
++}
+ EXPORT_SYMBOL_GPL(iio_read_channel_processed);
+ 
+ int iio_read_channel_scale(struct iio_channel *chan, int *val, int *val2)
+diff --git a/include/linux/iio/consumer.h b/include/linux/iio/consumer.h
+index 0a90ba8fa1bb..5fa5957586cf 100644
+--- a/include/linux/iio/consumer.h
++++ b/include/linux/iio/consumer.h
+@@ -241,6 +241,21 @@ int iio_read_channel_average_raw(struct iio_channel *chan, int *val);
+  */
+ int iio_read_channel_processed(struct iio_channel *chan, int *val);
+ 
++/**
++ * iio_read_channel_processed_scale() - read and scale a processed value
++ * @chan:		The channel being queried.
++ * @val:		Value read back.
++ * @scale:		Scale factor to apply during the conversion
++ *
++ * Returns an error code or 0.
++ *
++ * This function will read a processed value from a channel. This will work
++ * like @iio_read_channel_processed() but also scale with an additional
++ * scale factor while attempting to minimize any precision loss.
++ */
++int iio_read_channel_processed_scale(struct iio_channel *chan, int *val,
++				     unsigned int scale);
++
+ /**
+  * iio_write_channel_attribute() - Write values to the device attribute.
+  * @chan:	The channel being queried.
+-- 
+2.29.2
 
-maybe a new method will be needed to access each IIO buffer of the IIO device;
-but when that happens, accessing a buffer with  'indio_dev->buffer'
-and iio_device_get_buffer(indio_dev, 0 [or 1]) will look a bit
-confusing (or at least duplicate)
-
-> +               } else {
->                         /*
->                          * The only way to get samples in buffer is to set a
->                          * software trigger (systrig, hrtimer).
->                          */
-> -                       ret = devm_iio_triggered_buffer_setup_ext(
-> +                       ret = devm_iio_triggered_buffer_setup(
->                                         dev, indio_dev, NULL, trigger_capture,
-> -                                       NULL, fifo_attrs);
-> +                                       NULL);
->                         if (ret)
->                                 return ret;
->                 }
-> diff --git a/drivers/iio/light/cros_ec_light_prox.c b/drivers/iio/light/cros_ec_light_prox.c
-> index 75d6b5fcf2cc4..de472f23d1cba 100644
-> --- a/drivers/iio/light/cros_ec_light_prox.c
-> +++ b/drivers/iio/light/cros_ec_light_prox.c
-> @@ -182,8 +182,7 @@ static int cros_ec_light_prox_probe(struct platform_device *pdev)
->
->         ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
->                                         cros_ec_sensors_capture,
-> -                                       cros_ec_sensors_push_data,
-> -                                       true);
-> +                                       cros_ec_sensors_push_data);
->         if (ret)
->                 return ret;
->
-> diff --git a/drivers/iio/pressure/cros_ec_baro.c b/drivers/iio/pressure/cros_ec_baro.c
-> index aa043cb9ac426..2f882e1094232 100644
-> --- a/drivers/iio/pressure/cros_ec_baro.c
-> +++ b/drivers/iio/pressure/cros_ec_baro.c
-> @@ -139,8 +139,7 @@ static int cros_ec_baro_probe(struct platform_device *pdev)
->
->         ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
->                                         cros_ec_sensors_capture,
-> -                                       cros_ec_sensors_push_data,
-> -                                       true);
-> +                                       cros_ec_sensors_push_data);
->         if (ret)
->                 return ret;
->
-> diff --git a/include/linux/iio/common/cros_ec_sensors_core.h b/include/linux/iio/common/cros_ec_sensors_core.h
-> index c9b80be82440f..7ce8a8adad587 100644
-> --- a/include/linux/iio/common/cros_ec_sensors_core.h
-> +++ b/include/linux/iio/common/cros_ec_sensors_core.h
-> @@ -96,8 +96,7 @@ struct platform_device;
->  int cros_ec_sensors_core_init(struct platform_device *pdev,
->                               struct iio_dev *indio_dev, bool physical_device,
->                               cros_ec_sensors_capture_t trigger_capture,
-> -                             cros_ec_sensorhub_push_data_cb_t push_data,
-> -                             bool has_hw_fifo);
-> +                             cros_ec_sensorhub_push_data_cb_t push_data);
->
->  irqreturn_t cros_ec_sensors_capture(int irq, void *p);
->  int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
-> --
-> 2.30.1.766.gb4fecdf3b7-goog
->

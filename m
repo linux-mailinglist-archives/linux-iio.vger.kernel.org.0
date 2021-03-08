@@ -2,123 +2,178 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A6CA2331353
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Mar 2021 17:25:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E5203314C7
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Mar 2021 18:26:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229972AbhCHQZO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Mar 2021 11:25:14 -0500
-Received: from mail-dm6nam11on2109.outbound.protection.outlook.com ([40.107.223.109]:62592
-        "EHLO NAM11-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S230078AbhCHQZE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 8 Mar 2021 11:25:04 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gu4vKf1V4gftVcybzAjvOtA/avUya/YorCqrgT6ZCKeZUuVJeRUeOcbj72MsNWjDazFtOGOQjzV3CicsIWWZ8zyFVLOGyKrMIA5liBvWxgkQzVOcdSEeU/nLJzyBP4fe1dLcr0CfEDmhKvRcG0KJZ/sy/Wq6xyrtL3daQvfu1gRmoW1VyatTiJ/idpw6RpBh4MTgOkttjB0rZdbOXnfGZQtzQSWpIthtFcVBzh+WhSD0XV2yi7xYj5jHFAoK5Z/Gc9F/UFwTd+5ZO9X6vvsFIet/Z/93trDTSxeqtB82/lEpNNvHtpdKKICdNSFyjSAxp8kDU3Qr87a3dqkXG4IXFQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rT8zuoKXIt381uP9PD5fAJvX7JEune8YkxN9nDf+z9g=;
- b=dbWtiQ2xUm+ktw9UKUUC73JzBsqSPLGTCnvHAAPsUWWgwL0TonYxeEaruzgGgERzp6hirGWE2ieIYDmIaXXAROd8qxYA1+RpAqQVYyiNoz89EUqYmkmPgUrd83dyz8rf/64Qpx3SsHKd2ZMQrDyFdew1bw4kVsDrJSCQFvE0xbJA/rjlMJlsPyU8x/K+r0OWLzFo4JoZww0Mq05aC1JAwqb5TxvMBtpQujfo35njRewYM1+UBQonrKyVclTSMgX29s5Fxx4KyP8WCdlWIneLuaX9oxxsrfski/APzBwFAXCOVkAcLRBhfIrXTz2g9VlKrfz23asMkfmQFr9QOIN+gg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=licor.com; dmarc=pass action=none header.from=licor.com;
- dkim=pass header.d=licor.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=licor.onmicrosoft.com;
- s=selector2-licor-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rT8zuoKXIt381uP9PD5fAJvX7JEune8YkxN9nDf+z9g=;
- b=LAiV78Yg4zlBdzW65Xw6hEX8SmCwSra2XLNZIE3+EkmHnSC1e9Gl84dWT3cjAVfRWILZMjmv1DEN4q9b/iD1qTSv9l6npVx2EL8u/ltQA7jjzFhpzfBKrZLn+lfEX/HLRWtsggsLQHRak/U86kI5jCLo0wPYh+36VkyZ24XBIig=
-Authentication-Results: roeck-us.net; dkim=none (message not signed)
- header.d=none;roeck-us.net; dmarc=none action=none header.from=licor.com;
-Received: from SN2PR0801MB2223.namprd08.prod.outlook.com
- (2603:10b6:804:11::21) by SA2PR08MB6571.namprd08.prod.outlook.com
- (2603:10b6:806:119::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3912.17; Mon, 8 Mar
- 2021 16:25:02 +0000
-Received: from SN2PR0801MB2223.namprd08.prod.outlook.com
- ([fe80::6db1:be5f:79f4:17a2]) by SN2PR0801MB2223.namprd08.prod.outlook.com
- ([fe80::6db1:be5f:79f4:17a2%9]) with mapi id 15.20.3890.038; Mon, 8 Mar 2021
- 16:25:02 +0000
-Subject: Re: [PATCH 2/2 v4] hwmon: (ntc_thermistor): try reading processed
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-hwmon@vger.kernel.org, Peter Rosin <peda@axentia.se>,
-        linux-iio@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>
-References: <20210308100219.2732156-1-linus.walleij@linaro.org>
- <20210308100219.2732156-2-linus.walleij@linaro.org>
-From:   Chris Lesiak <chris.lesiak@licor.com>
-Message-ID: <c324e064-2795-a3ef-0dc4-0977bba1b219@licor.com>
-Date:   Mon, 8 Mar 2021 10:24:58 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
-In-Reply-To: <20210308100219.2732156-2-linus.walleij@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Originating-IP: [2607:da00:300:7::2]
-X-ClientProxiedBy: CH0PR04CA0019.namprd04.prod.outlook.com
- (2603:10b6:610:76::24) To SN2PR0801MB2223.namprd08.prod.outlook.com
- (2603:10b6:804:11::21)
+        id S230184AbhCHR0E (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Mar 2021 12:26:04 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2665 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230511AbhCHRZl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Mar 2021 12:25:41 -0500
+Received: from fraeml735-chm.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DvQ5K5bPKz67wjT;
+        Tue,  9 Mar 2021 01:17:41 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml735-chm.china.huawei.com (10.206.15.216) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Mon, 8 Mar 2021 18:25:39 +0100
+Received: from localhost (10.47.81.42) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Mon, 8 Mar 2021
+ 17:25:38 +0000
+Date:   Mon, 8 Mar 2021 17:24:27 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Philippe De Muyter <phdm@macq.eu>
+CC:     Jean-Baptiste Maneyrol <JManeyrol@invensense.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: invensense mpu9250 ak8963 and devicetree
+Message-ID: <20210308172427.000032d2@Huawei.com>
+In-Reply-To: <20210308130630.GA3363@frolo.macqel>
+References: <20210303153145.GA30260@frolo.macqel>
+        <BL0PR12MB501190F3812AA541BDBEF625C4979@BL0PR12MB5011.namprd12.prod.outlook.com>
+        <20210308130630.GA3363@frolo.macqel>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from bee.licor.com (2607:da00:300:7::2) by CH0PR04CA0019.namprd04.prod.outlook.com (2603:10b6:610:76::24) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3912.17 via Frontend Transport; Mon, 8 Mar 2021 16:25:01 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: d4836e3d-9fd5-48be-25d7-08d8e24eb945
-X-MS-TrafficTypeDiagnostic: SA2PR08MB6571:
-X-Microsoft-Antispam-PRVS: <SA2PR08MB65718033B9070037E4B8DEAC9A939@SA2PR08MB6571.namprd08.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:5236;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ygZf+dhf9v8GEbPIZ9z6ZfiwwG6nX7EL5fpSc3hBr1Og2UXylsnlQbPFRUW7NqHVvK/2hWqr9GRfEnGpJ/N37GGdh2TrXeO31jrcH4PmrVheQEiALpeKfJ7Kd3oiPAxh8K79YC3gKs8hKWzg+VtlfSTfQuNhCm9/raBjOgkCA7UIQuxYZp5D5Dc7j9Ix1tRWWNlBpKHuENbtbkgsUbSBeMa1N/v92FbcRaIIr7SQqR/Gjcg6bVlN6E/fHwVFf8iw9eljqXB98Bc2pdLjBJk7I2RD1DxyUSHH00AuUA/fhPwN8cxIjJBYjNPOlQ17d+B2QmnDAa4EqyQpcPP9q9y9pbJO6T650pVKioZCiSwQFzr+odlnEow0wtu3RSE9PgEAYa3m8iSk1ceoH52P7pa2e12+3wqekAk8icSa3M+7qdiyIHHl7wMdZxggmq0a1PY3gmSFJWqg1xHg/D737dmoWDBXNFapIal37xTWE9ERkSQnggDg4KF+NKx/YxIkYC0D5i8nOZLe2tDaMZQsykFUFRP3CVIQngayIyxjEa5FeJqH5YVgFzC484t7WdfqevRNfzIGTL8YYlLSU//56scoQIYup0UZZr+/AlKGCn5tIVo=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN2PR0801MB2223.namprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(39850400004)(136003)(346002)(376002)(366004)(6666004)(8936002)(36756003)(86362001)(8676002)(186003)(7696005)(6486002)(16526019)(52116002)(66476007)(66946007)(66556008)(316002)(6916009)(54906003)(31696002)(2906002)(478600001)(5660300002)(558084003)(4326008)(44832011)(31686004)(2616005)(45980500001)(43740500002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?MjlxYkZDWEV6TjZvS2JYcGZaMWIyaHgyeUVXOFc3Wm1IM0lDVjM5RVZUN3lo?=
- =?utf-8?B?b0NQY0RjenFDSEptZUttNkxhbTRDckc5UTFiNG5aWEtOM1pPTnZnREYreTRq?=
- =?utf-8?B?T3RzRk1IK05lRHlTVjFlb0JUc0R5RXJTOVRMekRCTGFzRTZBUGFDWEdHUzMr?=
- =?utf-8?B?Z0wvVDliYzVqMUd2NFBZWmk2RTJGNGNEYTJPbFFycTl1U2N2YjJyNDJQL09h?=
- =?utf-8?B?S2dEVG80Q1Q2RlJHVC9TUFlwUEUzUnUxVUcxV1NnRENuMlA1cXRnVDZUNTcx?=
- =?utf-8?B?SUdhVXd1RXVjek04cmM2YXZDd0g5RllPOVh2c3J5UklaOWFnNXlTNnJxQWJK?=
- =?utf-8?B?VmFmeU96TTJCQWUvdnlEQjdRZFhYVXNvbFpKclJxeFJoRnA0SjFORm5pb0VN?=
- =?utf-8?B?NUNKVlJEaENOSEk3eVdWYWp3YUJ1bkxiT0EweVpSUk01WlJkSUREanl5R2NY?=
- =?utf-8?B?NUczOEFraVFTSFpNMnRPTFlCRmdxWVVhQXhXMEV0WHpnYVlQNWhoTEErUzJv?=
- =?utf-8?B?R0h5aXVIa3ZXeGFVU0taT3hRcEZJcXl6RTg5TDhMdm9CeWZRY3U3OEZzMmoz?=
- =?utf-8?B?d1dQSGxRVTRUYkFzQUV3VVhPdXhXUk5aSFRESW9qTVFwQytCYmJNRWY5THBw?=
- =?utf-8?B?dTZidjBXWGptTHRRVVJOKzBaWnF1blc2bXRTd0dNZHB4NHdZeHdaSVpOVk1L?=
- =?utf-8?B?NlhQTmFJelBnajNESXhBTFFWMkk1M2dzdlRLbWVTOGlCRzZhWGp2YmFFdDRk?=
- =?utf-8?B?M0ttQ1RERndPOGtBUmFhYUdYbGw0aU1wUzMrYjhSajc3ZkJCbGtOUk93Rk8z?=
- =?utf-8?B?NCtBQnAxSEwxQmRRNTJsbWlueVhXbFpLbW1sL3RmWTl4VDBNWWRQZHVMaS9N?=
- =?utf-8?B?SnFESHdIV3NCWFZTby80R0pSeWE2TG9sbnd0N082S1hiaGVGSlVRRUVZMUE2?=
- =?utf-8?B?QmdEMisvUE9EbGVBalVmRFEvaXFZdTRtSkVST0JFZ1ZRTjgxaFc3QVJZT2VO?=
- =?utf-8?B?Wkd4c1VKN3d5LzdLc2dQeWdLY3hYTHVPcGtXZkZhU1UwdGd2N2UwMGxpWjlj?=
- =?utf-8?B?TmYwdkkwRFJ3K3pyVlRmMGxjQVJ0WHpoQ0dGMGtDTjA2UGR1YUxZc3BxaHU1?=
- =?utf-8?B?Nk10RGU4bC9wYnZqcGJhWjhZaGRjS2JQditubURWWWJQM29kMEFsRVZPU1FE?=
- =?utf-8?B?NDNFY0JobitvQ2EwTENGM29kTm9wM1lwaUlPUTBpQ2M2bVl0bmh4VVJ0dlNu?=
- =?utf-8?B?aXpRUGJWNWJQb1VnLzJsS0xzRXJFS1I5Yk1VV0JIeUp0Q2crem5ZbVZDZmJC?=
- =?utf-8?B?eTdGYitiWVZHcGU1ckFTSGhSRlpXL3gwU0ppRlYrRDFVbW50TmVNYjEzcEJ3?=
- =?utf-8?B?UEo0emg3WitUREoxR0RZNjdZWnQrdjR3dHlvSTN3M3czNEdKVnVZMzZlZ1lS?=
- =?utf-8?B?U3ZlaFZ5ZlRCOGt2MHNVRkFvMmVEdVRNaWVZMDJWeWJ5UC9FVjRpc2tFWVVy?=
- =?utf-8?B?VEM2cUJ6akhpWEJ1OUtRSkpBcDFoNTlVRjI3OVJ5UjFJWkJpYjRDRUlxSnpn?=
- =?utf-8?B?QWNrR0ZLcTB4WGFCWFBjMXZDaVdCZ0V4Q2s1NjVJLzYwaTlNaHp3aWtUWU1U?=
- =?utf-8?B?bEwxd215cHhacURaZDBJYUpsSWgwVjB0ZG9GWG5RQmFqSGNrZmllckM2MkQ4?=
- =?utf-8?B?Z1RqbFZDNG0wN0VZTHd4WldJaEZ0M0plK2pqdXAwOG1nQXJENWVOVEtpWEtS?=
- =?utf-8?B?SXpVSlhHemNqa2c2M2MxMmZJeTJ1TTJKVThsNVlaeHIzWW44bjQvRVRvWC9z?=
- =?utf-8?B?TllWMDQ4UVR5OGdzelpmQT09?=
-X-OriginatorOrg: licor.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d4836e3d-9fd5-48be-25d7-08d8e24eb945
-X-MS-Exchange-CrossTenant-AuthSource: SN2PR0801MB2223.namprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Mar 2021 16:25:02.0966
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 48c70abd-da5a-4c6c-86cb-5e003ca01574
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4fFLdbvbNTTW4PRyxKYqutjm8IBjdkQoyoRsmkM+T3zLE3zTwquXddZqBJ+xsyFfO7oIw4sVKFMjvSAYY63ZFw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR08MB6571
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.81.42]
+X-ClientProxiedBy: lhreml720-chm.china.huawei.com (10.201.108.71) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-I've tested this in a 4.14 based kernel with two different out-of-tree 
-iio adcs, neither of which supports IIO_CHAN_INFO_PROCESSED.
+On Mon, 8 Mar 2021 14:06:30 +0100
+Philippe De Muyter <phdm@macq.eu> wrote:
 
-Tested-by: Chris Lesiak <chris.lesiak@licor.com>
+> Hello Jean-Baptiste,
+> 
+> On Thu, Mar 04, 2021 at 10:08:10AM +0000, Jean-Baptiste Maneyrol wrote:
+> > You can try to cherry-pick the corresponding commits inside Linux 5.10.
+> > 
+> > Or just copy the driver files and made the change to have them working properly.
+> >   
+> 
+> I have integrated in my kernel the patches up to v5.11.
+> 
+> My DT entry now is :
+> 
+>                 mpu9250@68 {
+>                         compatible = "invensense,mpu9250";
+>                         reg = <0x68>;
+>                         interrupt-parent = <&tegra_main_gpio>;
+>                         interrupts = <TEGRA_MAIN_GPIO(P, 3) GPIO_ACTIVE_HIGH>;
+>                 };
+> 
+> But probing fails with :
+> 
+> [    6.989291] inv-mpu6050-i2c 0-0068: mounting matrix not found: using identity...
+> [    6.989312] inv-mpu6050-i2c 0-0068: Failed to get vdd regulator -19
+> 
+> The "Failed to get vdd regulator" seems to come from those lines in
+> drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> 
+>         st->vdd_supply = devm_regulator_get(dev, "vdd");
+>         if (IS_ERR(st->vdd_supply)) {
+>                 if (PTR_ERR(st->vdd_supply) != -EPROBE_DEFER)
+>                         dev_err(dev, "Failed to get vdd regulator %d\n",
+>                                 (int)PTR_ERR(st->vdd_supply));
+> 
+>                 return PTR_ERR(st->vdd_supply);
+>         }
+
+That's odd because you should get a stub regulator... For simple cases
+where the regulator is always on, there is no need to specify a regulator,
+you can just rely on the regulator framework giving you one that basically
+does nothing.
+
+Could you have a look at why you aren't getting a dummy_regulator from the code
+just below here?
+
+https://elixir.bootlin.com/linux/latest/source/drivers/regulator/core.c#L1948
+
+Jonathan
+
+> 
+> Should I turn off those lines ?
+> 
+> Philippe
+> 
+> > Best regards,
+> > JB
+> > ________________________________
+> > From: Philippe De Muyter <phdm@macq.eu>
+> > Sent: Thursday, March 4, 2021 10:31
+> > To: Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
+> > Cc: linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>
+> > Subject: Re: invensense mpu9250 ak8963 and devicetree
+> > 
+> >  CAUTION: This email originated from outside of the organization. Please make sure the sender is who they say they are and do not click links or open attachments unless you recognize the sender and know the content is safe.
+> > 
+> > Hello Jean-Baptiste,
+> > 
+> > thank you for your answer
+> > 
+> > I work actually with a nvidia-provided 4.9 kernel that I cannot change.
+> > Up to now I have incorporated the mpu9250 related patches up to v4.12.
+> > 
+> > Do you think I should simply replace the inv_mpu6050 driver files of v4.9
+> > by their v5.11 (or newer) counterparts ?
+> > 
+> > Thanks
+> > 
+> > Philippe
+> > 
+> > On Thu, Mar 04, 2021 at 09:12:47AM +0000, Jean-Baptiste Maneyrol wrote:  
+> > > Hello Philippe,
+> > >
+> > > I would recommend letting mpu9250 chip drives the magnetometer instead of using the ak8963 driver.
+> > >
+> > > This is simpler to use and guarantees a good synchronization between all sensors and no possible latency coming from kernel scheduling when polling the magnetometer. And it enables the use of spi bus for connecting the device.
+> > >
+> > > You just need to define mpu9250 dts without an i2c-gate, and delete all definition of ak8963 chip.
+> > >
+> > > Best regards,
+> > > JB
+> > >
+> > >
+> > > From: Philippe De Muyter <phdm@macq.eu>
+> > > Sent: Wednesday, March 3, 2021 16:31
+> > > To: linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>
+> > > Subject: invensense mpu9250 ak8963 and devicetree
+> > >
+> > > Hello,
+> > >
+> > > I am trying to use a mpu9250 imu, but I have trouble with the ak8963 part.
+> > >
+> > > Currently, ak8975_probe fails in this code :
+> > >
+> > >         /* Fetch the regulators */
+> > >         data->vdd = devm_regulator_get(&client->dev, "vdd");
+> > >         if (IS_ERR(data->vdd))
+> > >                 return PTR_ERR(data->vdd);
+> > >         data->vid = devm_regulator_get(&client->dev, "vid");
+> > >         if (IS_ERR(data->vid))
+> > >                 return PTR_ERR(data->vid);
+> > >
+> > > but Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml
+> > > says :
+> > >
+> > >   vdd-supply:
+> > >     description: |
+> > >       an optional regulator that needs to be on to provide VDD power to
+> > >       the sensor.
+> > >
+> > > I have no vdd or vdd-supply property in my ak8963 description.
+> > >
+> > > Is that unrelated ?
+> > >
+> > > What should I write in my dts file for this ak8963 embedded in a mpu9250 ?
+> > >
+> > > Thanks in advance
+> > >
+> > > Philippe  
 

@@ -2,93 +2,121 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D889330528
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Mar 2021 00:06:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 32A2333055D
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Mar 2021 01:33:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233240AbhCGXGA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Mar 2021 18:06:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56336 "EHLO
+        id S233358AbhCHAc1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 Mar 2021 19:32:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233244AbhCGXFj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Mar 2021 18:05:39 -0500
-Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AE84C06175F;
-        Sun,  7 Mar 2021 15:05:36 -0800 (PST)
-Received: by mail-pg1-x535.google.com with SMTP id l2so5229137pgb.1;
-        Sun, 07 Mar 2021 15:05:36 -0800 (PST)
+        with ESMTP id S233394AbhCHAcO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Mar 2021 19:32:14 -0500
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24EA8C061762
+        for <linux-iio@vger.kernel.org>; Sun,  7 Mar 2021 16:32:14 -0800 (PST)
+Received: by mail-pl1-x636.google.com with SMTP id ba1so4058890plb.1
+        for <linux-iio@vger.kernel.org>; Sun, 07 Mar 2021 16:32:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=XtRSM0w13Qb1yabD0yvOGJiUG6gT2e1c0aSLnOFytzc=;
-        b=qqpw7VXyGhTyjQDiNWQvy+fZqojgqjErZm6pCLbKaMo8BltCZW6n83L/4NHkQIyw1l
-         OG7wEU7XsaVivWPrzL6iXfy9zkcKDb1+0O+TLlwapo13/SWW/t5DgpIFrhNf7lHlL9gY
-         TG5rism1NvCMTSY8XFbDRtnbJMge7ptt+7CxawGKg83tKY94uZFnxAWYnSy4TQ2jORsS
-         k5jBXiFjEijqKa+VstXfHUP+VdQzUn7z3TzHpP75lyhJdYPSG0yNbRcZ3efCB9KkN7L5
-         qR0pM0qSQauu9u/WlgIoiJVlwAzexoZzczYVRGOJTCKIzPL+yQX8JTVuUQRjYo95a/mV
-         BlUw==
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=6AB1N2CEv1uO/OWrbLkb4xKVAC6/jBjIAgWr7ep8KF8=;
+        b=VWCy9+1/e5XxIB5MV5Fe6l/NkVtBF4cfC/CBa/LEuWFw3r6BLsS/aDIpIm63a8hPKl
+         aPuvyhRk8mXB8MaILrw+/ZAjQLybx0l6eCHkmT90dUtnX24x26H8L1CZZdILX669T4T8
+         Dm4pnYOeBos6qSeXIKfODtYT24qVqR1LqjwPqhgooxgl8aXGoouPAxklz3y6LtDgIHkr
+         ZkF84qXR7xxR3LphlVxFjGCHnfsppio2JBBHezbkuaQfUNB/02MdAi8nDzNjhAwX0eln
+         tJH/EWF8w+8NYBUjGc0c8peNae4mnpFjUU2EQ85dxcdeRn+NHgID5oneV621X2iII52z
+         9Nbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=XtRSM0w13Qb1yabD0yvOGJiUG6gT2e1c0aSLnOFytzc=;
-        b=X9w1qUzNk7+zrIormjQmOrYc2RzmsCHMPwE2Iwxv2+uhSpPry7vCCGv/XO+zFCZ6sF
-         RuyH7qQRrqqZSb5IfUZuLHV/8XlJ63F+2fj9ImNBGcEOss4kMKnSOWrd25bC3HhLZl1J
-         7/caq/90dy0nmLQ7FPs1TvaBYahSMyQ2BeXXC2Vzw9zV415x2XDo3M5oIAXM3tlMVvwM
-         lpDiIBhVcGPbJ7KKjwQKvOIEqSDHQpo3QMMAzlgI/jgOdzax6iH584eJu8Vx2Evoxws9
-         1ddDf2TTkWkyAKbn7oeQnC04IaUxIIcK1HK7roTacJWRM9NDX+38oJ1wn6QwKRiO/+Ej
-         7N1Q==
-X-Gm-Message-State: AOAM531ZDoeWkLXKRGxIojOQlX6LWeuURJlWYrpJpEswWAiq+qCAWo7s
-        ZpYPwjyMC3PucGSE/3GiZLE=
-X-Google-Smtp-Source: ABdhPJynFdhgChyPxLEfnQ6VKIMDURJUnkeggRhI6GHFju/IlzJvlb/bAyyPTr80X2b7bq4l9ZresA==
-X-Received: by 2002:a63:ec50:: with SMTP id r16mr17631072pgj.451.1615158335573;
-        Sun, 07 Mar 2021 15:05:35 -0800 (PST)
-Received: from google.com ([2620:15c:202:201:bc9b:5ab2:d763:15bc])
-        by smtp.gmail.com with ESMTPSA id x1sm8369251pje.40.2021.03.07.15.05.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 07 Mar 2021 15:05:34 -0800 (PST)
-Date:   Sun, 7 Mar 2021 15:05:31 -0800
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Oleksij Rempel <o.rempel@pengutronix.de>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        David Jander <david@protonic.nl>,
-        Robin van der Gracht <robin@protonic.nl>,
-        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: Re: [PATCH v1 2/2] iio: adc: add ADC driver for the TI TSC2046
- controller
-Message-ID: <YEVcO/NeKzBsFEdL@google.com>
-References: <20210305133813.27967-1-o.rempel@pengutronix.de>
- <20210305133813.27967-3-o.rempel@pengutronix.de>
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=6AB1N2CEv1uO/OWrbLkb4xKVAC6/jBjIAgWr7ep8KF8=;
+        b=iGhChl/MKE21uc552E3xTSXDZw/er3m8noTjuAYPd3EjafDDmyXtMErxbfi/PS4Ij+
+         gsyzV4qQfZceECBXdCtLxfyam6/DC5s2W0Yxu9ZrHYjAerdmdYk+gMquAh25w/s3g/fE
+         nuhSjzLO6jJ2FWS/hzUhXTbg3/OnVgVqtxVgt/BtUtiCLhDNleoXc5fdp7NukTjJSUyR
+         +UZv8fFZ4W2pR/ZQpcUx2QOcB+B6V79mPdpsrfz1V40Yxi8AuifV7Mosy0zgK8CZMjLw
+         r7ZGUveXaoL7g99lBIm4EqElRZ+QbRw53s0dGu995ZrDCE5jGmb9M/z2y/UkxGZniMao
+         PLhg==
+X-Gm-Message-State: AOAM530psan2zuMuOzsBPUQABSZ4rYG7bmUgAGQXaR/Yol30p+N8vQ4q
+        T4iaYRyZhfWwwnpu0CG225maYLMDZ0bnuYdfj/0=
+X-Google-Smtp-Source: ABdhPJzfHsNxLA0ripzLurNnF1DJTwCR3kO75BM4+RaQZg28pSu1AfWDDMA3U6njWVx8/porMrW+mmqltwJR85t5QHU=
+X-Received: by 2002:a17:902:7401:b029:e4:5992:e64a with SMTP id
+ g1-20020a1709027401b02900e45992e64amr18449001pll.75.1615163533483; Sun, 07
+ Mar 2021 16:32:13 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210305133813.27967-3-o.rempel@pengutronix.de>
+Sender: mrsnadiaemaan5@gmail.com
+Received: by 2002:a17:90a:1182:0:0:0:0 with HTTP; Sun, 7 Mar 2021 16:32:13
+ -0800 (PST)
+From:   Mrs Nadia Emaan <mrsnadiaemaan50@gmail.com>
+Date:   Mon, 8 Mar 2021 00:32:13 +0000
+X-Google-Sender-Auth: JeiXtIsroKRF3y0orwM9kIW__5s
+Message-ID: <CAOg3cV2YyHY=-mumg8bq5owAptO=8grRnQi0hv6Lf+khYHSLGQ@mail.gmail.com>
+Subject: May the peace of Almighty God be with You.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Oleksij,
+May God Bless you,
 
-On Fri, Mar 05, 2021 at 02:38:13PM +0100, Oleksij Rempel wrote:
-> +
-> +	/* TODO: remove IRQ_NOAUTOEN after needed patches are mainline */
-> +	irq_set_status_flags(spi->irq, IRQ_NOAUTOEN);
-> +	ret = devm_request_threaded_irq(dev, spi->irq,
-> +					NULL,
-> +					&tsc2046_adc_irq,
-> +					IRQF_TRIGGER_LOW | IRQF_ONESHOT,
-> +					name, indio_dev);
+I am contacting you through this means because I need your urgent
+assistance and also help me to carry a charity project in your
+country. I found your email address as a true child of God for past
+few days now that I have been praying to know if you are really the
+chosen one for this great charity project, according to God's
+direction, after all prayers I am convinced, and I have decided to
+contact you. Please, i want you use the funds for the Lord's work,
+with confidence, read and respond now.
 
-I'd recommend dropping IRQF_TRIGGER_LOW and only using IRQF_ONESHOT and
-rely on the platform (ACPI, DT) to specify trigger polarity according to
-how device is wired in a given system. In general I believe newer
-drivers should not specify interrupt triggers themselves.
 
-Thanks.
+My name is Ms. Nadia Emaan Faroul , a widow, but currently based in West
+Africa since my life with my late husband, who was a businessman in
+this country before dying some years ago. We were married to many
+years without a child. He died after a brief illness that lasted only
+six days and I myself have been suffering from an ovarian cancer
+disease. At this moment I am about to finish the race in this way
+because the disease has reached a very bad stage, without any family
+member and without children. I hope you do not expose or betray this
+trust and I am sure that I am about to trust you for the mutual
+benefit of orphans and the less privileged. I have some funds that I
+inherited from my late husband, the total sum of ($ 12,500,000.00)
+deposited at a bank here in Burkina Faso. After knowing my current
+state of health, I decided to trust you with this fund, believing that
+you will use it in the way I will instruct here.
 
--- 
-Dmitry
+
+you will use this $12.5 Million for public benefit as follows;
+
+1. Establish An Orphanage Home To Help The Orphanages Children.
+2. Build A Hospital To Help The Poor.
+3. Build A Nursing Home For Elderly People Need Care & Meal.
+
+You will named them after my late husband.Therefore, I need you to
+help me and claim this money and use it for charities, for orphanages
+and provide justice and help to the poor, needy and to promote the
+words of God and the effort to maintain the house of God, according to
+the bible in the book of. Jeremiah 22: 15-16, without minding our
+different religions.
+
+It will be a pleasure to compensate with 40% percent of the total
+money for your effort in handling the transaction, while 60% of the
+money will go to charity project.
+
+All I need from you is sincerity and ability to complete the task of
+God without any failure. It will be my pleasure to see that the bank
+has finally released and transferred the fund to your bank account in
+the country, even before I die here in the hospital, due to my current
+state of health, everything must be processed as soon as possible.
+
+I am waiting for your immediate response, if you are only interested
+in obtaining more details about the transaction and execution of this
+humanitarian project for the glory and honor of God.
+
+Sorry if you received this letter in your spam, is due to recent
+connection/network error here in the country.
+
+Please I am waiting for your urgent reply now.
+
+May God Bless you,
+Mrs. Nadia Emaan Faroul .

@@ -2,97 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56DAF333149
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Mar 2021 22:52:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD5263331DE
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Mar 2021 00:13:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230173AbhCIVvb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 9 Mar 2021 16:51:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41930 "EHLO
+        id S232091AbhCIXNT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 9 Mar 2021 18:13:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230431AbhCIVvI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Mar 2021 16:51:08 -0500
-Received: from mail-il1-x132.google.com (mail-il1-x132.google.com [IPv6:2607:f8b0:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EED6C06174A
-        for <linux-iio@vger.kernel.org>; Tue,  9 Mar 2021 13:51:08 -0800 (PST)
-Received: by mail-il1-x132.google.com with SMTP id s1so13566066ilh.12
-        for <linux-iio@vger.kernel.org>; Tue, 09 Mar 2021 13:51:08 -0800 (PST)
+        with ESMTP id S231904AbhCIXNE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Mar 2021 18:13:04 -0500
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7D58C06175F
+        for <linux-iio@vger.kernel.org>; Tue,  9 Mar 2021 15:13:04 -0800 (PST)
+Received: by mail-yb1-xb4a.google.com with SMTP id s187so19136039ybs.22
+        for <linux-iio@vger.kernel.org>; Tue, 09 Mar 2021 15:13:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=hzfFvBfh23xH5Nszua//FuwPMAjrRLub85MIlCmec0c=;
-        b=Vn+71foxJkhw+gTRxV7MaccRI5peYl1VtJYu+1nx2o9MPZ+8lH3RS1XANtL7zF7hSP
-         gZALQIho2/umY2zpR81zrIUCSJMGIRNHOVQnNeSRKpxoU6tWeMzvUCtSmp/GDmC+oju0
-         M4WYQN96owcx2YzLtLKhlt+IC3VhjUnUuq9v0=
+        d=google.com; s=20161025;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=CQRMAIOvqBs8kZZqo+ZLWXcUVnOj5R3ECqdWM5F4gPE=;
+        b=UYNyZvVncul7Pst5XhlG8JZRtQZq7IMynBgZ+sQoPXaZmfjWQMLRwKLmDaeCYZFaoT
+         QkzRGaBVXGCoW4vl8vdDADcS+LbZjxg6ANCU0g/REbx2s5NFQg/ZocI886W3ojQXjl/9
+         6fzla7DZuo9OaetwEGm/lxQ/RjrOnAx+9NcLFORHzy+rR616uUk4Gu0HYNswZjx6SOqg
+         TnNK6tfeg19t9QgKaIqLA7l0mGjdxCyfAovzUlsjJAhfpT+xQ8cc9i+0UqsDd8vQuMZE
+         6HRxeTOROeqz3BEnEahU5/hJxbZ5S5OFJBwoleCw0qY1t4TxFWGQdWnlhw9eoMvKpbRW
+         EveQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=hzfFvBfh23xH5Nszua//FuwPMAjrRLub85MIlCmec0c=;
-        b=Tyk+4MK0cEbCfhSlmhBuLL8VUBQhUslkNAqg3VY0w7saAfUf0vkSSkyA0j1mQzLzcg
-         el+0EXHsNARoZVyZjY4wDkkJCZcHLLRiuFxt8nioBkdhfg1RLTfSfyZJNcFBbGxSfqSl
-         zR+0/J0ZIIBKC+50P3OQfzAZZKl9ZLI1lvZcFUpAtZKswIw0c2kXWkjXJF32vdlkCpI4
-         6Jv/5QmnokjB96Y9hK85S8OGx5OPLTz++eKFZEhE3lIx7xUTC0DSVq5CpKmttH7MMzi3
-         nfBZrYmWCPmru4chH0WX45nYQcvltgox6mkaQ2yGOtcKCkRLNQdDrj4WQXnIDgF4dVzJ
-         gg0g==
-X-Gm-Message-State: AOAM533wfpYflL/PR99LfsS0tzFjsnN6Xeo0Hgz7+y3Vz16/+5ArkPL5
-        ie1k0x7F9jpjcsfl+R3Mdwa6yRnbYFD/EJgpTSnHdw==
-X-Google-Smtp-Source: ABdhPJyKXdcMNdr2guFrjn3x+lzhn1TO1TplXDjbuB8H69znrc5PlCgV+TJiLtZhHu4cTCBNb0Gu1v6xA9pfesMKlBs=
-X-Received: by 2002:a05:6e02:18ca:: with SMTP id s10mr212732ilu.286.1615326667879;
- Tue, 09 Mar 2021 13:51:07 -0800 (PST)
-MIME-Version: 1.0
-References: <20210309193620.2176163-1-gwendal@chromium.org> <20210309193620.2176163-7-gwendal@chromium.org>
-In-Reply-To: <20210309193620.2176163-7-gwendal@chromium.org>
-From:   Matt Ranostay <matt.ranostay@konsulko.com>
-Date:   Tue, 9 Mar 2021 13:50:56 -0800
-Message-ID: <CAJCx=gkwZHOriMozVmk7GZYN8x4qvgOq2b16Pu_p9fNx8cT2Nw@mail.gmail.com>
-Subject: Re: [PATCH v4 6/8] iio: chemical: atlas: Remove code to set trigger parent
-To:     Gwendal Grignou <gwendal@chromium.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=CQRMAIOvqBs8kZZqo+ZLWXcUVnOj5R3ECqdWM5F4gPE=;
+        b=kwbc3xR3wUWRBg73AHtkIjcJmAAmtmufjCeHsqE73DkmapZgdCd+YsW2bDQXWufB7r
+         N0eK067Z81CFWScDDmEXekFu90y1v1dvTbB2VSG+bSRHcBT9PXxQtgLYLO0GRhfiv8ef
+         dlyyduGjXjMHs+02Cv6O7mrsvBpvSi37OCZB7BeOm/dPydeSdRSMJUxjNZZnWKj316Eq
+         FCRa25f58yflGaj1+apr4R4fdYV58D1NBBOAsbVLDGIFc8oe3taBC9Bz1Ukj6FGCl6M3
+         GZfi/qkKhYTbooU+Zphbrxkb2j8McZvooxhp+uvSCfz2Gv/CTZDiEn9mGRDyX8n1IUxl
+         VnQg==
+X-Gm-Message-State: AOAM531wztJvdS0avfEaucp/hL3IeFCJWVFlVUiyeJKBDuXzqDCtyV1W
+        nBVvT7aKPuDSOuk1YKQL12rF91InBDSFvA==
+X-Google-Smtp-Source: ABdhPJyom18/0zK9WNwCYjHt1hZhXoYjht7+1+zYLO36Lcf+Pp+g0TDWQB6G7imCWLO1HjcUlqIyldrEDNyepg==
+X-Received: from jbhayana.c.googlers.com ([fda3:e722:ac3:10:24:72f4:c0a8:42b2])
+ (user=jbhayana job=sendgmr) by 2002:a25:ace7:: with SMTP id
+ x39mr271843ybd.400.1615331583814; Tue, 09 Mar 2021 15:13:03 -0800 (PST)
+Date:   Tue,  9 Mar 2021 23:12:58 +0000
+Message-Id: <20210309231259.78050-1-jbhayana@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.30.1.766.gb4fecdf3b7-goog
+Subject: [PATCH v7 0/1] Adding support for IIO SCMI based sensors
+From:   Jyoti Bhayana <jbhayana@google.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        ardeleanalex@gmail.com,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Jyoti Bhayana <jbhayana@google.com>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Rob Herring <robh@kernel.org>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        cristian.marussi@arm.com, sudeep.holla@arm.com,
+        egranata@google.com, mikhail.golubev@opensynergy.com,
+        Igor.Skalkin@opensynergy.com, Peter.hilber@opensynergy.com,
+        ankitarora@google.com, gurunagarajan@google.com
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Mar 9, 2021 at 11:37 AM Gwendal Grignou <gwendal@chromium.org> wrote:
->
-> iio_trigger_set_drvdata() sets the trigger device parent to first
-> argument of viio_trigger_alloc(), no need to do it again in the driver
-> code.
->
-> Given we call devm_iio_trigger_alloc() and devm_iio_device_alloc() with
-> &client->dev as parent, we do not have to set data->trig->dev.parent to
-> indio_dev->dev.parent anymore.
->
-> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+Hi,
 
-Reviewed-by: Matt Ranostay <matt.ranostay@konsulko.com>
+This series adds support for ARM SCMI Protocol based IIO Device.
 
-> ---
-> Changes in v4:
-> Improve commit message.
->
-> No changes in v3.
->
->  drivers/iio/chemical/atlas-sensor.c | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/drivers/iio/chemical/atlas-sensor.c b/drivers/iio/chemical/atlas-sensor.c
-> index cdab9d04dedd0..56ba6c82b501f 100644
-> --- a/drivers/iio/chemical/atlas-sensor.c
-> +++ b/drivers/iio/chemical/atlas-sensor.c
-> @@ -649,7 +649,6 @@ static int atlas_probe(struct i2c_client *client,
->         data->client = client;
->         data->trig = trig;
->         data->chip = chip;
-> -       trig->dev.parent = indio_dev->dev.parent;
->         trig->ops = &atlas_interrupt_trigger_ops;
->         iio_trigger_set_drvdata(trig, indio_dev);
->
-> --
-> 2.30.1.766.gb4fecdf3b7-goog
->
+This driver provides support for Accelerometer and Gyroscope sensor using
+SCMI Sensor Protocol extensions added in the SCMIv3.0 ARM specification,
+which is available at 
+
+https://developer.arm.com/documentation/den0056/c/
+
+This version of the patch series has been tested using 
+version 5.4.21 branch of Android common kernel.
+
+Any feedback welcome,
+
+Thanks,
+
+Jyoti Bhayana
+
+v6 --> v7
+- Fixed the error reported by kernel test robot
+
+v5 --> v6
+- Fixed the warning by kernel test robot
+- Incorporated the feedback comments from v5
+- Fixed the bug found in scmi_iio_set_odr_val
+  for calculating the multiplier
+
+v4 --> v5
+- Dropped the RFC tag
+- Added channel ext_info for raw_available
+- Incorporated the feedback comments from v4 review of the patch
+
+v3 --> v4
+- Incorporated the feedback comments from v3 review of the patch
+
+v2 --> v3
+- Incorporated the feedback comments from v2 review of the patch
+
+v1 --> v2
+- Incorporated the feedback comments from v1 review of the patch
+- Regarding the new ABI for sensor_power,sensor_max_range,
+and sensor_resolution, these are some of the sensor attributes
+which Android passes to the apps. If there is any other way of getting
+those values, please let us know
+
+
+Jyoti Bhayana (1):
+  iio/scmi: Adding support for IIO SCMI Based Sensors
+
+ MAINTAINERS                                |   6 +
+ drivers/firmware/arm_scmi/driver.c         |   2 +-
+ drivers/iio/common/Kconfig                 |   1 +
+ drivers/iio/common/Makefile                |   1 +
+ drivers/iio/common/scmi_sensors/Kconfig    |  18 +
+ drivers/iio/common/scmi_sensors/Makefile   |   5 +
+ drivers/iio/common/scmi_sensors/scmi_iio.c | 683 +++++++++++++++++++++
+ 7 files changed, 715 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/iio/common/scmi_sensors/Kconfig
+ create mode 100644 drivers/iio/common/scmi_sensors/Makefile
+ create mode 100644 drivers/iio/common/scmi_sensors/scmi_iio.c
+
+-- 
+2.30.1.766.gb4fecdf3b7-goog
+

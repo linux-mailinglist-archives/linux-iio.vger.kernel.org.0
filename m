@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF563333147
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Mar 2021 22:51:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56DAF333149
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Mar 2021 22:52:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232067AbhCIVu7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 9 Mar 2021 16:50:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41852 "EHLO
+        id S230173AbhCIVvb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 9 Mar 2021 16:51:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231907AbhCIVur (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Mar 2021 16:50:47 -0500
-Received: from mail-il1-x135.google.com (mail-il1-x135.google.com [IPv6:2607:f8b0:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3035AC06174A
-        for <linux-iio@vger.kernel.org>; Tue,  9 Mar 2021 13:50:47 -0800 (PST)
-Received: by mail-il1-x135.google.com with SMTP id f10so13581000ilq.5
-        for <linux-iio@vger.kernel.org>; Tue, 09 Mar 2021 13:50:47 -0800 (PST)
+        with ESMTP id S230431AbhCIVvI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Mar 2021 16:51:08 -0500
+Received: from mail-il1-x132.google.com (mail-il1-x132.google.com [IPv6:2607:f8b0:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EED6C06174A
+        for <linux-iio@vger.kernel.org>; Tue,  9 Mar 2021 13:51:08 -0800 (PST)
+Received: by mail-il1-x132.google.com with SMTP id s1so13566066ilh.12
+        for <linux-iio@vger.kernel.org>; Tue, 09 Mar 2021 13:51:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=konsulko.com; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=l2FCuOuvzMif7mLgvauVp71ltb9Cj1kvrxurwIVD7+U=;
-        b=OHLs7iPGeMAxIk6bGveW20uIlRlyEyk8lL1PbWb5cBDZRlPSqwdiYTjySIUFtiFY5T
-         9gqgsZa+AqYeW148EE0cW2qPgfnOS9dXSFgd8Ad+djiCQOHT1C+VIyIsMmY8UjPqy3Hu
-         muYnVrS30nmgozQoC/qx3qm21HcWkVg/9lw6s=
+        bh=hzfFvBfh23xH5Nszua//FuwPMAjrRLub85MIlCmec0c=;
+        b=Vn+71foxJkhw+gTRxV7MaccRI5peYl1VtJYu+1nx2o9MPZ+8lH3RS1XANtL7zF7hSP
+         gZALQIho2/umY2zpR81zrIUCSJMGIRNHOVQnNeSRKpxoU6tWeMzvUCtSmp/GDmC+oju0
+         M4WYQN96owcx2YzLtLKhlt+IC3VhjUnUuq9v0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=l2FCuOuvzMif7mLgvauVp71ltb9Cj1kvrxurwIVD7+U=;
-        b=SfW6X9gAkKisYJUo2XH253sJWCBspRTLaXFax6TIEArU1pNd+oxOJ0Nnfm1l27Qgx9
-         q1JeyVqArlrp/DgwTKXJLQBDakp5fePP5i12Ea8V6183U7YSFOejxfiOAYglTMxGx0PF
-         0drjS8XGf4IY3pWdOcL9A145U26f8NM0X/iPv7nN/iMvy/+a4mHlvE45XLgUp+AzhEfC
-         2n1VOTiPhKCB4tIRGGdYlIUfeVj3F8kLtQ6rj7yMsW0gtkNEntzL2vawZIwp3ZU25Jku
-         NbrjrMJBe0BKL5lvDzwJjRyzgaHjoN2YXVk+N2gTkphEV/yAxSBt8c9ScW/dWNpX5C8M
-         i9WQ==
-X-Gm-Message-State: AOAM533mZ+QlVx9tyTbgIvnUS+1ASgHU5y3YX6kkv8xKllrnZaRabxyh
-        GjqSPyIDaXGDt2GwoWU5J2VCf8rsy3htnCVQL1X8WA==
-X-Google-Smtp-Source: ABdhPJw04zXW/a3AbA09/X90W77lFDvENf9BQAhe2eX7FRD0FFKg03PE3x2H4tDZQ9zg0A9nCTGgfY7ogYee42LDjqk=
-X-Received: by 2002:a92:c567:: with SMTP id b7mr210945ilj.25.1615326646694;
- Tue, 09 Mar 2021 13:50:46 -0800 (PST)
+        bh=hzfFvBfh23xH5Nszua//FuwPMAjrRLub85MIlCmec0c=;
+        b=Tyk+4MK0cEbCfhSlmhBuLL8VUBQhUslkNAqg3VY0w7saAfUf0vkSSkyA0j1mQzLzcg
+         el+0EXHsNARoZVyZjY4wDkkJCZcHLLRiuFxt8nioBkdhfg1RLTfSfyZJNcFBbGxSfqSl
+         zR+0/J0ZIIBKC+50P3OQfzAZZKl9ZLI1lvZcFUpAtZKswIw0c2kXWkjXJF32vdlkCpI4
+         6Jv/5QmnokjB96Y9hK85S8OGx5OPLTz++eKFZEhE3lIx7xUTC0DSVq5CpKmttH7MMzi3
+         nfBZrYmWCPmru4chH0WX45nYQcvltgox6mkaQ2yGOtcKCkRLNQdDrj4WQXnIDgF4dVzJ
+         gg0g==
+X-Gm-Message-State: AOAM533wfpYflL/PR99LfsS0tzFjsnN6Xeo0Hgz7+y3Vz16/+5ArkPL5
+        ie1k0x7F9jpjcsfl+R3Mdwa6yRnbYFD/EJgpTSnHdw==
+X-Google-Smtp-Source: ABdhPJyKXdcMNdr2guFrjn3x+lzhn1TO1TplXDjbuB8H69znrc5PlCgV+TJiLtZhHu4cTCBNb0Gu1v6xA9pfesMKlBs=
+X-Received: by 2002:a05:6e02:18ca:: with SMTP id s10mr212732ilu.286.1615326667879;
+ Tue, 09 Mar 2021 13:51:07 -0800 (PST)
 MIME-Version: 1.0
-References: <20210309193620.2176163-1-gwendal@chromium.org> <20210309193620.2176163-6-gwendal@chromium.org>
-In-Reply-To: <20210309193620.2176163-6-gwendal@chromium.org>
+References: <20210309193620.2176163-1-gwendal@chromium.org> <20210309193620.2176163-7-gwendal@chromium.org>
+In-Reply-To: <20210309193620.2176163-7-gwendal@chromium.org>
 From:   Matt Ranostay <matt.ranostay@konsulko.com>
-Date:   Tue, 9 Mar 2021 13:50:35 -0800
-Message-ID: <CAJCx=gm5KYx6iZOBbPDc1qiivJyC=NV4nanBqP9=3tS-22LJKg@mail.gmail.com>
-Subject: Re: [PATCH v4 5/8] iio: lmp91000: Remove code to set trigger parent
+Date:   Tue, 9 Mar 2021 13:50:56 -0800
+Message-ID: <CAJCx=gkwZHOriMozVmk7GZYN8x4qvgOq2b16Pu_p9fNx8cT2Nw@mail.gmail.com>
+Subject: Re: [PATCH v4 6/8] iio: chemical: atlas: Remove code to set trigger parent
 To:     Gwendal Grignou <gwendal@chromium.org>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -64,9 +64,9 @@ On Tue, Mar 9, 2021 at 11:37 AM Gwendal Grignou <gwendal@chromium.org> wrote:
 > argument of viio_trigger_alloc(), no need to do it again in the driver
 > code.
 >
-> Given data->dev is dev, and we call devm_iio_trigger_alloc with
-> dev instead of data->dev, we do not have to set data->trig->dev.parent to
-> dev anymore.
+> Given we call devm_iio_trigger_alloc() and devm_iio_device_alloc() with
+> &client->dev as parent, we do not have to set data->trig->dev.parent to
+> indio_dev->dev.parent anymore.
 >
 > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 
@@ -78,30 +78,21 @@ Reviewed-by: Matt Ranostay <matt.ranostay@konsulko.com>
 >
 > No changes in v3.
 >
->  drivers/iio/potentiostat/lmp91000.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+>  drivers/iio/chemical/atlas-sensor.c | 1 -
+>  1 file changed, 1 deletion(-)
 >
-> diff --git a/drivers/iio/potentiostat/lmp91000.c b/drivers/iio/potentiostat/lmp91000.c
-> index f34ca769dc20d..8a9c576616ee5 100644
-> --- a/drivers/iio/potentiostat/lmp91000.c
-> +++ b/drivers/iio/potentiostat/lmp91000.c
-> @@ -322,7 +322,7 @@ static int lmp91000_probe(struct i2c_client *client,
->                 return PTR_ERR(data->regmap);
->         }
+> diff --git a/drivers/iio/chemical/atlas-sensor.c b/drivers/iio/chemical/atlas-sensor.c
+> index cdab9d04dedd0..56ba6c82b501f 100644
+> --- a/drivers/iio/chemical/atlas-sensor.c
+> +++ b/drivers/iio/chemical/atlas-sensor.c
+> @@ -649,7 +649,6 @@ static int atlas_probe(struct i2c_client *client,
+>         data->client = client;
+>         data->trig = trig;
+>         data->chip = chip;
+> -       trig->dev.parent = indio_dev->dev.parent;
+>         trig->ops = &atlas_interrupt_trigger_ops;
+>         iio_trigger_set_drvdata(trig, indio_dev);
 >
-> -       data->trig = devm_iio_trigger_alloc(data->dev, "%s-mux%d",
-> +       data->trig = devm_iio_trigger_alloc(dev, "%s-mux%d",
->                                             indio_dev->name, indio_dev->id);
->         if (!data->trig) {
->                 dev_err(dev, "cannot allocate iio trigger.\n");
-> @@ -330,7 +330,6 @@ static int lmp91000_probe(struct i2c_client *client,
->         }
->
->         data->trig->ops = &lmp91000_trigger_ops;
-> -       data->trig->dev.parent = dev;
->         init_completion(&data->completion);
->
->         ret = lmp91000_read_config(data);
 > --
 > 2.30.1.766.gb4fecdf3b7-goog
 >

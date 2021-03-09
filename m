@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 52C1A3326AE
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Mar 2021 14:22:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB02A3326AB
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Mar 2021 14:22:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231386AbhCINVb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 9 Mar 2021 08:21:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43570 "EHLO
+        id S231394AbhCINVd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 9 Mar 2021 08:21:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230086AbhCINVT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Mar 2021 08:21:19 -0500
-Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FD39C06174A;
-        Tue,  9 Mar 2021 05:21:19 -0800 (PST)
-Received: by mail-pg1-x529.google.com with SMTP id w34so7691000pga.8;
-        Tue, 09 Mar 2021 05:21:19 -0800 (PST)
+        with ESMTP id S231366AbhCINVY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Mar 2021 08:21:24 -0500
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC2CDC06174A;
+        Tue,  9 Mar 2021 05:21:24 -0800 (PST)
+Received: by mail-pj1-x102b.google.com with SMTP id t9so880170pjl.5;
+        Tue, 09 Mar 2021 05:21:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=t3RYDFFjHkpdIJ04TsWBr8TmaLo8cU+WLWiTJPwxr6A=;
-        b=cPm80utEO4gK7NjFC0zhB5gCOPQtq5RrNUNd9cA58RKV54Pyfn5Ple+ImuNJKzBvpt
-         n8wndmxhEJq8BsaC+on7Q07Q9RHLFCNoxNaPe97INCetElIrmTqsj+Bwb9lPnVIRGw1g
-         Un727QcUYB5HiVK+udGrEKeO9EX8vCZYnIbjKJWtph48VCX2XFggT0wmSwc3TO0ybB5z
-         CBXoOaDrVfuxpGeV99w8q8QegdY1RsYgGuSbz9gBE4n6XusXJbjRBb1RvX4eDWh0EO4l
-         K58k5bv/48LTWLNqywOg69rT+vHYe/T9mxJJjOsyCGOR24wHn0wqcfvJkzzq0n+h9zZ5
-         wnlw==
+        bh=hMXw7mJLvmbOCLGtZkacbJfdNcshHDOykbRbagCdG6s=;
+        b=dS5t11yTimmAgWJ/VyICyJwpRHriakfanzUCa8NwNNgvjVV+OGrPXIiYtW0Ce4opoj
+         rYPFyJDZvTANqOGxcWde7x9EbxGjgYr0F4jX5zctNvALNAqyNnOMOM0QLHzURiv0A0YZ
+         T5710qgW8E/37FOATqErMkbQdmEqgjmUQfVHaTEwtExaO4o/oSs3f+Qh2j2MU0hQnBLX
+         Rb1i2KdWdYNFjby3VInHJSZvRbjDMr6ghHAw18IbicCLbq+MQ1m97oQzgjKucim0ZBXE
+         YRcJGy1mmKRRtRGnf+2HPZr70tPqUd9+tIReg3e0KnviRS2tRAyDCLZlgmV78FIT0EM6
+         VWbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=t3RYDFFjHkpdIJ04TsWBr8TmaLo8cU+WLWiTJPwxr6A=;
-        b=nHx1J2jp7uUmz3YSy/zap8/+7HjrZ6AOg7BN9+piOF0qlEaBMeAJSI4MEa2hz5y1SC
-         uIP7G5blD5Aw/RDifzfMQHnTYVaFgOVcM3UR66Bi9+y72W28orHVjOkg1nP7/EvVOE+W
-         w7LxNuFry7c2wtu5NZqPs1yXis7OfgLRXIWWix5gYKO2lH1Ks2t8bblcjd0fFe/+Bs6T
-         DHT2UoecmyWnK6AqJIffrZkm7WGXGh3IgNBCJKf+96qGGs+AvsqgiHLv2yHBqfvyk6f0
-         rYmElM+/7f1I4Xg4h+kNzx3/4AE2Jq5EBiN++7BFvhm1v+VV55h8CccrlwlQb8/bfnoG
-         hDGQ==
-X-Gm-Message-State: AOAM532ZEO8hhM/QmSPY2l5f3f7ZwZ+cB9hFw4z4pBW6AUkkRre9NXqJ
-        /WbDd2PGyTabC8T1CNZFfbNhNOG9frDaXA==
-X-Google-Smtp-Source: ABdhPJzuf+IfHPoOevXWiR5Tex/ci8k9Iu42/LT75i/JLS8DvEf89M7PROm+OH0amxUz5yHaHNf9Eg==
-X-Received: by 2002:a63:d242:: with SMTP id t2mr24853367pgi.431.1615296079245;
-        Tue, 09 Mar 2021 05:21:19 -0800 (PST)
+        bh=hMXw7mJLvmbOCLGtZkacbJfdNcshHDOykbRbagCdG6s=;
+        b=EwYVu6UszulHaBIJr0TiBXM6WGobReJd6oA+U04ooPyLRHOkQMQCcHeYUzs1scsQSP
+         ZW0e+0pvw0+vv+RvR1jazR8LyvwXyrykxMMsAbYvbeBWesbKuWZNIfzeCUGS5z0DBltl
+         yY56voJng4c67HkFdMKIQIvphIQL2tStvSQjO0bRWfb5r/h+6Zwjcm/Q7ttaIkO+3yDP
+         Ztt+DV/3FjOyCNXee5exOEKHrR3xlWLYrqPQLMp0JAOWxmY2px2c1eFSt4/oHNTe6mD4
+         cbBDigyStDwA/lpYr/Y4hFaN26NZ/zLOPjtZ6YZtITneN+VT5ngGwJ/BRjKOd2Eg35QS
+         Ehng==
+X-Gm-Message-State: AOAM531lAyzu7iZetKRi1oIeGPTOjpuxY8ebG4RblScmZDJAFFhSbTXH
+        dgO1SZsK5XAknhq33Gl1LO0=
+X-Google-Smtp-Source: ABdhPJxoxzQivWDNyZ9YM3b54AMuzlgre0Fcfw0AmJmmILw6QJPteZGZXZjWn8Dhf1/XZN5tsVsGDg==
+X-Received: by 2002:a17:90a:ea91:: with SMTP id h17mr4726826pjz.66.1615296084435;
+        Tue, 09 Mar 2021 05:21:24 -0800 (PST)
 Received: from localhost.localdomain ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id y9sm7647421pfl.201.2021.03.09.05.21.14
+        by smtp.gmail.com with ESMTPSA id y9sm7647421pfl.201.2021.03.09.05.21.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Mar 2021 05:21:18 -0800 (PST)
+        Tue, 09 Mar 2021 05:21:24 -0800 (PST)
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     jic23@kernel.org
 Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
@@ -58,9 +58,9 @@ Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
         fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
         alexandre.torgue@st.com, o.rempel@pengutronix.de,
         William Breathitt Gray <vilhelm.gray@gmail.com>
-Subject: [PATCH v9 13/33] counter: ftm-quaddec: Add const qualifier for actions_list array
-Date:   Tue,  9 Mar 2021 22:19:26 +0900
-Message-Id: <e9656724c31451a736d623920317b2e40524fa54.1615293276.git.vilhelm.gray@gmail.com>
+Subject: [PATCH v9 14/33] counter: interrupt-cnt: Add const qualifier for actions_list array
+Date:   Tue,  9 Mar 2021 22:19:27 +0900
+Message-Id: <0cad0b85e28f558e4774f02ca267c32a6ac03b6d.1615293276.git.vilhelm.gray@gmail.com>
 X-Mailer: git-send-email 2.30.1
 In-Reply-To: <cover.1615293276.git.vilhelm.gray@gmail.com>
 References: <cover.1615293276.git.vilhelm.gray@gmail.com>
@@ -72,27 +72,27 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 The struct counter_synapse actions_list member expects a const enum
 counter_synapse_action array. This patch adds the const qualifier to the
-ftm_quaddec_synapse_actions to match actions_list.
+interrupt_cnt_synapse_actionss to match actions_list.
 
-Cc: Patrick Havelange <patrick.havelange@essensium.com>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 ---
- drivers/counter/ftm-quaddec.c | 2 +-
+ drivers/counter/interrupt-cnt.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/counter/ftm-quaddec.c b/drivers/counter/ftm-quaddec.c
-index c2b3fdfd8b77..9371532406ca 100644
---- a/drivers/counter/ftm-quaddec.c
-+++ b/drivers/counter/ftm-quaddec.c
-@@ -162,7 +162,7 @@ enum ftm_quaddec_synapse_action {
- 	FTM_QUADDEC_SYNAPSE_ACTION_BOTH_EDGES,
+diff --git a/drivers/counter/interrupt-cnt.c b/drivers/counter/interrupt-cnt.c
+index 827d785e19b4..0e07607f2cd3 100644
+--- a/drivers/counter/interrupt-cnt.c
++++ b/drivers/counter/interrupt-cnt.c
+@@ -77,7 +77,7 @@ static const struct counter_count_ext interrupt_cnt_ext[] = {
+ 	},
  };
  
--static enum counter_synapse_action ftm_quaddec_synapse_actions[] = {
-+static const enum counter_synapse_action ftm_quaddec_synapse_actions[] = {
- 	[FTM_QUADDEC_SYNAPSE_ACTION_BOTH_EDGES] =
- 	COUNTER_SYNAPSE_ACTION_BOTH_EDGES
+-static enum counter_synapse_action interrupt_cnt_synapse_actionss[] = {
++static const enum counter_synapse_action interrupt_cnt_synapse_actionss[] = {
+ 	COUNTER_SYNAPSE_ACTION_RISING_EDGE,
  };
+ 
 -- 
 2.30.1
 

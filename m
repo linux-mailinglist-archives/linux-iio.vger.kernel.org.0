@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CA8B331C39
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Mar 2021 02:19:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21F87331C3C
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Mar 2021 02:19:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230224AbhCIBSt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Mar 2021 20:18:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56732 "EHLO
+        id S230147AbhCIBSx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Mar 2021 20:18:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230134AbhCIBS1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Mar 2021 20:18:27 -0500
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43214C06174A
-        for <linux-iio@vger.kernel.org>; Mon,  8 Mar 2021 17:18:27 -0800 (PST)
-Received: by mail-pf1-x42c.google.com with SMTP id 18so8360454pfo.6
-        for <linux-iio@vger.kernel.org>; Mon, 08 Mar 2021 17:18:27 -0800 (PST)
+        with ESMTP id S230159AbhCIBSm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Mar 2021 20:18:42 -0500
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC9CBC06174A
+        for <linux-iio@vger.kernel.org>; Mon,  8 Mar 2021 17:18:28 -0800 (PST)
+Received: by mail-pf1-x436.google.com with SMTP id a188so8385206pfb.4
+        for <linux-iio@vger.kernel.org>; Mon, 08 Mar 2021 17:18:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=ryixBaZ24up9iNWsKHTuKTkS0yrVXcBIFF88uerV3uM=;
-        b=jxickTY6uW9cl3yW6DawrXpmjaA3H8HBlSBgf5L+G7wzXQCawAnWHwoijzAryjd9BU
-         A+9H3rN5XS4SLSMdAA7UXx/EhWIgs4bSIcOKzrl5LqCjm2vyplUGOZyAZIJpkBpNi4d/
-         jwbHjJuHifzBuphX7wjrSd1dVulEYTG16M+1s=
+        bh=Kp/7JF1Uk+74eXJ/kyv2bx3HHM2Tvywmx9HJKsxAm9Q=;
+        b=nLFJYlo4GbXV5JbSQjsuAVhCl5FMcsw+pEyPHXOgsbzgh077208q7BumLDmv31GN77
+         Pb0e6EOIzw7gE32bEYy5MtBscKobkSD4JL5Q6+MST7OKa9qE9XYnXguLzmiPxFulh0ke
+         DwTmXlgKXlAU1+MNape+obE5j2GbWpWEY8aC0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=ryixBaZ24up9iNWsKHTuKTkS0yrVXcBIFF88uerV3uM=;
-        b=j4GdzVa+Meg3Zam3cBA7IuyoLA9y9x0UC8uZVvrl0ul9hcH1qkspynvWQm8K8C6JCo
-         9HfOE3pYc/jT5Nohc8o5AmUrHj0FhRSoVqugVkBSe7y+nxPXfv1/gFAqAwiEQZvPaWW/
-         vw3zsUpRa7ugDKg2RSOB6vvrhqHK31sACPMMm4oTC5tPGagG/s6PoqJVetCyiJu6TQSO
-         6pZQw++pnsUL4fwLr458QN+L9WBYbg1bn2l0jtUIYHpru7dot6M4DGO91dg4MdU2IzUF
-         CZnL0xIbTMgjDUAfJtN2bJXivBOS9xRTyT4oQ4ornkew0TYPJCIERXG6ZvFbDPzO5QFx
-         yKnA==
-X-Gm-Message-State: AOAM532JuGRg3XIozgLnlgjAxBNqjmx6Z9GlYt85mIUSHLtyTxgMmMD9
-        aCq70j8F/PlfsPyFr/5RBMw0GA==
-X-Google-Smtp-Source: ABdhPJySbJ3yfehwacklH77OM7vMhzvATtUTavH9WznQCwwkv8vHBSvC/NA1JLLDMDGJUzIPZ/6jtw==
-X-Received: by 2002:a05:6a00:1a46:b029:1d5:9acd:798c with SMTP id h6-20020a056a001a46b02901d59acd798cmr1361134pfv.25.1615252706705;
-        Mon, 08 Mar 2021 17:18:26 -0800 (PST)
+        bh=Kp/7JF1Uk+74eXJ/kyv2bx3HHM2Tvywmx9HJKsxAm9Q=;
+        b=Dei3qiy//tDdSyMrpirTEnDGMGNBrySKJ3PL6l0OUXh+nfnDv2uxV+lUbWRPyEaLZY
+         qcMi8R2mbsmKMuOQ/0KCDCiYsPYGdiGwPilwVS7M++AvaPfXyItg36vPO/Sy8f34zqDf
+         wLiiIZZnQj3EwyQZRscTPsnSTdbV+LdtSOez3AKDCODpYpU5AnYTaLIab8RRbcN1V02R
+         FJFwvDCuNbDNsqO63W+K+VI4/vdyUOae0ALeT1BC26X+wV9/O0988mwHKtPL6fJSARnF
+         fWSzpuV4ym9QXmC05Bc65M3C3lrfizH0LiUlVbgsbY4+p9KpJkm6OKyCjd1PoMRckAIR
+         dojQ==
+X-Gm-Message-State: AOAM530ag0hJchQVhGqNzLwnB3PPCrltkTGGDTHLDkSodbG3uqdcbpQ8
+        4lolloE9FNS+CM5rZd4S78Ah+w==
+X-Google-Smtp-Source: ABdhPJwBLGi4bdYksGxG6AAG76lcE2EPlDjrg8ngyw0/Yk/leVUCC3FQ91Vgni2qhrDa3OvqIPePlw==
+X-Received: by 2002:a63:205c:: with SMTP id r28mr23546675pgm.183.1615252708248;
+        Mon, 08 Mar 2021 17:18:28 -0800 (PST)
 Received: from localhost ([2620:15c:202:201:3cb0:414a:7f1c:ca43])
-        by smtp.gmail.com with UTF8SMTPSA id o123sm4015847pfb.16.2021.03.08.17.18.25
+        by smtp.gmail.com with UTF8SMTPSA id u20sm11518497pfm.146.2021.03.08.17.18.27
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Mar 2021 17:18:25 -0800 (PST)
+        Mon, 08 Mar 2021 17:18:27 -0800 (PST)
 From:   Gwendal Grignou <gwendal@chromium.org>
 To:     jic23@kernel.org, lars@metafoo.de, andy.shevchenko@gmail.com,
         ardeleanalex@gmail.com
 Cc:     linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH v3 1/8] iio: set default trig->dev.parent
-Date:   Mon,  8 Mar 2021 17:18:09 -0800
-Message-Id: <20210309011816.2024099-2-gwendal@chromium.org>
+Subject: [PATCH v3 2/8] iio: fix devm_iio_trigger_alloc with parent.cocci
+Date:   Mon,  8 Mar 2021 17:18:10 -0800
+Message-Id: <20210309011816.2024099-3-gwendal@chromium.org>
 X-Mailer: git-send-email 2.30.1.766.gb4fecdf3b7-goog
 In-Reply-To: <20210309011816.2024099-1-gwendal@chromium.org>
 References: <20210309011816.2024099-1-gwendal@chromium.org>
@@ -60,339 +60,429 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-When allocated with [devm_]iio_trigger_alloc(), set trig device parent to
-the device the trigger is allocated for by default.
+Use cocci semantic patch:
+@@
+expression trigger, P;
+@@
+   trigger = devm_iio_trigger_alloc(P, ...);
+   ...
+-  trigger->dev.parent = P;
 
-It can always be reassigned in the probe routine.
-
-Change iio_trigger_alloc() API to add the device pointer to be coherent
-with devm_iio_trigger_alloc, using similar interface to
-iio_device_alloc().
+To remove trigger->dev.parent, since it is set by default.
 
 Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 ---
-Changes from v2:
-- xilinx-xadc-core.c is not using iio_trigger_alloc anymore.
-- use parent as argumnet to be consistent with iio_device_alloc().
+Changes since v2:
+Added a private driver (sx932x) by mistake
 
- drivers/iio/accel/bma180.c                    |  3 +-
- drivers/iio/adc/ad_sigma_delta.c              |  6 ++--
- drivers/iio/adc/at91_adc.c                    |  3 +-
- .../common/hid-sensors/hid-sensor-trigger.c   |  4 +--
- .../common/st_sensors/st_sensors_trigger.c    |  4 +--
- drivers/iio/gyro/itg3200_buffer.c             |  3 +-
- drivers/iio/industrialio-trigger.c            | 36 +++++++++++--------
- drivers/iio/trigger/iio-trig-hrtimer.c        |  2 +-
- drivers/iio/trigger/iio-trig-interrupt.c      |  2 +-
- drivers/iio/trigger/iio-trig-loop.c           |  2 +-
- drivers/iio/trigger/iio-trig-sysfs.c          |  3 +-
- include/linux/iio/iio.h                       |  2 +-
- include/linux/iio/trigger.h                   |  3 +-
- 13 files changed, 39 insertions(+), 34 deletions(-)
+ drivers/iio/accel/adxl372.c            | 2 --
+ drivers/iio/accel/bmc150-accel-core.c  | 1 -
+ drivers/iio/accel/kxcjk-1013.c         | 2 --
+ drivers/iio/accel/mma8452.c            | 1 -
+ drivers/iio/accel/mxc4005.c            | 1 -
+ drivers/iio/accel/stk8312.c            | 1 -
+ drivers/iio/accel/stk8ba50.c           | 1 -
+ drivers/iio/adc/ad7606.c               | 1 -
+ drivers/iio/adc/ad7766.c               | 1 -
+ drivers/iio/adc/ad7768-1.c             | 1 -
+ drivers/iio/adc/max1027.c              | 1 -
+ drivers/iio/chemical/ccs811.c          | 1 -
+ drivers/iio/chemical/scd30_core.c      | 1 -
+ drivers/iio/gyro/adxrs290.c            | 1 -
+ drivers/iio/gyro/bmg160_core.c         | 2 --
+ drivers/iio/gyro/fxas21002c_core.c     | 1 -
+ drivers/iio/health/afe4403.c           | 1 -
+ drivers/iio/health/afe4404.c           | 1 -
+ drivers/iio/humidity/hts221_buffer.c   | 1 -
+ drivers/iio/imu/kmx61.c                | 1 -
+ drivers/iio/light/rpr0521.c            | 1 -
+ drivers/iio/light/si1145.c             | 1 -
+ drivers/iio/light/st_uvis25_core.c     | 1 -
+ drivers/iio/light/vcnl4000.c           | 1 -
+ drivers/iio/light/vcnl4035.c           | 1 -
+ drivers/iio/magnetometer/bmc150_magn.c | 1 -
+ drivers/iio/magnetometer/rm3100-core.c | 1 -
+ drivers/iio/pressure/zpa2326.c         | 1 -
+ drivers/iio/proximity/sx9310.c         | 1 -
+ drivers/iio/proximity/sx9500.c         | 1 -
+ 30 files changed, 33 deletions(-)
 
-diff --git a/drivers/iio/accel/bma180.c b/drivers/iio/accel/bma180.c
-index 71f85a3e525b2..b8a7469cdae41 100644
---- a/drivers/iio/accel/bma180.c
-+++ b/drivers/iio/accel/bma180.c
-@@ -1044,7 +1044,7 @@ static int bma180_probe(struct i2c_client *client,
- 	indio_dev->info = &bma180_info;
+diff --git a/drivers/iio/accel/adxl372.c b/drivers/iio/accel/adxl372.c
+index 8ba1453b8dbf4..9c9a896a872a0 100644
+--- a/drivers/iio/accel/adxl372.c
++++ b/drivers/iio/accel/adxl372.c
+@@ -1236,8 +1236,6 @@ int adxl372_probe(struct device *dev, struct regmap *regmap,
  
- 	if (client->irq > 0) {
--		data->trig = iio_trigger_alloc("%s-dev%d", indio_dev->name,
-+		data->trig = iio_trigger_alloc(dev, "%s-dev%d", indio_dev->name,
- 			indio_dev->id);
- 		if (!data->trig) {
- 			ret = -ENOMEM;
-@@ -1059,7 +1059,6 @@ static int bma180_probe(struct i2c_client *client,
- 			goto err_trigger_free;
+ 		st->dready_trig->ops = &adxl372_trigger_ops;
+ 		st->peak_datardy_trig->ops = &adxl372_peak_data_trigger_ops;
+-		st->dready_trig->dev.parent = dev;
+-		st->peak_datardy_trig->dev.parent = dev;
+ 		iio_trigger_set_drvdata(st->dready_trig, indio_dev);
+ 		iio_trigger_set_drvdata(st->peak_datardy_trig, indio_dev);
+ 		ret = devm_iio_trigger_register(dev, st->dready_trig);
+diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
+index 7e425ebcd7ea8..2d1b46746db77 100644
+--- a/drivers/iio/accel/bmc150-accel-core.c
++++ b/drivers/iio/accel/bmc150-accel-core.c
+@@ -1472,7 +1472,6 @@ static int bmc150_accel_triggers_setup(struct iio_dev *indio_dev,
+ 			break;
  		}
  
--		data->trig->dev.parent = dev;
- 		data->trig->ops = &bma180_trigger_ops;
- 		iio_trigger_set_drvdata(data->trig, indio_dev);
- 		indio_dev->trig = iio_trigger_get(data->trig);
-diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
-index 3a6f239d4acca..9289812c0a946 100644
---- a/drivers/iio/adc/ad_sigma_delta.c
-+++ b/drivers/iio/adc/ad_sigma_delta.c
-@@ -475,8 +475,9 @@ static int ad_sd_probe_trigger(struct iio_dev *indio_dev)
- 	struct ad_sigma_delta *sigma_delta = iio_device_get_drvdata(indio_dev);
- 	int ret;
+-		t->indio_trig->dev.parent = dev;
+ 		t->indio_trig->ops = &bmc150_accel_trigger_ops;
+ 		t->intr = bmc150_accel_triggers[i].intr;
+ 		t->data = data;
+diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxcjk-1013.c
+index 2fadafc860fd6..45c1faa6ea9d4 100644
+--- a/drivers/iio/accel/kxcjk-1013.c
++++ b/drivers/iio/accel/kxcjk-1013.c
+@@ -1413,7 +1413,6 @@ static int kxcjk1013_probe(struct i2c_client *client,
+ 			goto err_poweroff;
+ 		}
  
--	sigma_delta->trig = iio_trigger_alloc("%s-dev%d", indio_dev->name,
--						indio_dev->id);
-+	sigma_delta->trig = iio_trigger_alloc(&sigma_delta->spi->dev,
-+					      "%s-dev%d", indio_dev->name,
-+					      indio_dev->id);
- 	if (sigma_delta->trig == NULL) {
- 		ret = -ENOMEM;
- 		goto error_ret;
-@@ -496,7 +497,6 @@ static int ad_sd_probe_trigger(struct iio_dev *indio_dev)
- 		sigma_delta->irq_dis = true;
- 		disable_irq_nosync(sigma_delta->spi->irq);
- 	}
--	sigma_delta->trig->dev.parent = &sigma_delta->spi->dev;
- 	iio_trigger_set_drvdata(sigma_delta->trig, sigma_delta);
+-		data->dready_trig->dev.parent = &client->dev;
+ 		data->dready_trig->ops = &kxcjk1013_trigger_ops;
+ 		iio_trigger_set_drvdata(data->dready_trig, indio_dev);
+ 		indio_dev->trig = data->dready_trig;
+@@ -1422,7 +1421,6 @@ static int kxcjk1013_probe(struct i2c_client *client,
+ 		if (ret)
+ 			goto err_poweroff;
  
- 	ret = iio_trigger_register(sigma_delta->trig);
-diff --git a/drivers/iio/adc/at91_adc.c b/drivers/iio/adc/at91_adc.c
-index 70750abb5dead..0b5f0c91d0d73 100644
---- a/drivers/iio/adc/at91_adc.c
-+++ b/drivers/iio/adc/at91_adc.c
-@@ -625,12 +625,11 @@ static struct iio_trigger *at91_adc_allocate_trigger(struct iio_dev *idev,
- 	struct iio_trigger *trig;
- 	int ret;
- 
--	trig = iio_trigger_alloc("%s-dev%d-%s", idev->name,
-+	trig = iio_trigger_alloc(idev->dev.parent, "%s-dev%d-%s", idev->name,
- 				 idev->id, trigger->name);
- 	if (trig == NULL)
- 		return NULL;
- 
--	trig->dev.parent = idev->dev.parent;
- 	iio_trigger_set_drvdata(trig, idev);
- 	trig->ops = &at91_adc_trigger_ops;
- 
-diff --git a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
-index 064c32bec9c7b..95ddccb44f1c8 100644
---- a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
-+++ b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
-@@ -255,14 +255,14 @@ int hid_sensor_setup_trigger(struct iio_dev *indio_dev, const char *name,
- 		return ret;
- 	}
- 
--	trig = iio_trigger_alloc("%s-dev%d", name, indio_dev->id);
-+	trig = iio_trigger_alloc(indio_dev->dev.parent,
-+				 "%s-dev%d", name, indio_dev->id);
- 	if (trig == NULL) {
- 		dev_err(&indio_dev->dev, "Trigger Allocate Failed\n");
- 		ret = -ENOMEM;
- 		goto error_triggered_buffer_cleanup;
- 	}
- 
--	trig->dev.parent = indio_dev->dev.parent;
- 	iio_trigger_set_drvdata(trig, attrb);
- 	trig->ops = &hid_sensor_trigger_ops;
- 	ret = iio_trigger_register(trig);
-diff --git a/drivers/iio/common/st_sensors/st_sensors_trigger.c b/drivers/iio/common/st_sensors/st_sensors_trigger.c
-index 2dbd2646e44e9..0b511665dee5f 100644
---- a/drivers/iio/common/st_sensors/st_sensors_trigger.c
-+++ b/drivers/iio/common/st_sensors/st_sensors_trigger.c
-@@ -123,7 +123,8 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
- 	unsigned long irq_trig;
- 	int err;
- 
--	sdata->trig = iio_trigger_alloc("%s-trigger", indio_dev->name);
-+	sdata->trig = iio_trigger_alloc(sdata->dev, "%s-trigger",
-+					indio_dev->name);
- 	if (sdata->trig == NULL) {
- 		dev_err(&indio_dev->dev, "failed to allocate iio trigger.\n");
- 		return -ENOMEM;
-@@ -131,7 +132,6 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
- 
- 	iio_trigger_set_drvdata(sdata->trig, indio_dev);
- 	sdata->trig->ops = trigger_ops;
--	sdata->trig->dev.parent = sdata->dev;
- 
- 	irq_trig = irqd_get_trigger_type(irq_get_irq_data(sdata->irq));
- 	/*
-diff --git a/drivers/iio/gyro/itg3200_buffer.c b/drivers/iio/gyro/itg3200_buffer.c
-index 1c3c1bd53374a..af0aaa146f0ce 100644
---- a/drivers/iio/gyro/itg3200_buffer.c
-+++ b/drivers/iio/gyro/itg3200_buffer.c
-@@ -113,7 +113,7 @@ int itg3200_probe_trigger(struct iio_dev *indio_dev)
- 	int ret;
- 	struct itg3200 *st = iio_priv(indio_dev);
- 
--	st->trig = iio_trigger_alloc("%s-dev%d", indio_dev->name,
-+	st->trig = iio_trigger_alloc(&st->i2c->dev, "%s-dev%d", indio_dev->name,
- 				     indio_dev->id);
- 	if (!st->trig)
- 		return -ENOMEM;
-@@ -127,7 +127,6 @@ int itg3200_probe_trigger(struct iio_dev *indio_dev)
- 		goto error_free_trig;
- 
- 
--	st->trig->dev.parent = &st->i2c->dev;
- 	st->trig->ops = &itg3200_trigger_ops;
- 	iio_trigger_set_drvdata(st->trig, indio_dev);
- 	ret = iio_trigger_register(st->trig);
-diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
-index ea3c9859b2589..71e2dd9b946ee 100644
---- a/drivers/iio/industrialio-trigger.c
-+++ b/drivers/iio/industrialio-trigger.c
-@@ -514,8 +514,10 @@ static void iio_trig_subirqunmask(struct irq_data *d)
- 	trig->subirqs[d->irq - trig->subirq_base].enabled = true;
- }
- 
--static __printf(1, 0)
--struct iio_trigger *viio_trigger_alloc(const char *fmt, va_list vargs)
-+static __printf(2, 0)
-+struct iio_trigger *viio_trigger_alloc(struct device *parent,
-+				       const char *fmt,
-+				       va_list vargs)
- {
- 	struct iio_trigger *trig;
- 	int i;
-@@ -524,6 +526,7 @@ struct iio_trigger *viio_trigger_alloc(const char *fmt, va_list vargs)
+-		data->motion_trig->dev.parent = &client->dev;
+ 		data->motion_trig->ops = &kxcjk1013_trigger_ops;
+ 		iio_trigger_set_drvdata(data->motion_trig, indio_dev);
+ 		ret = iio_trigger_register(data->motion_trig);
+diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
+index b0176d936423d..12dd7c292504a 100644
+--- a/drivers/iio/accel/mma8452.c
++++ b/drivers/iio/accel/mma8452.c
+@@ -1465,7 +1465,6 @@ static int mma8452_trigger_setup(struct iio_dev *indio_dev)
  	if (!trig)
- 		return NULL;
+ 		return -ENOMEM;
  
-+	trig->dev.parent = parent;
- 	trig->dev.type = &iio_trig_type;
- 	trig->dev.bus = &iio_bus_type;
- 	device_initialize(&trig->dev);
-@@ -559,13 +562,24 @@ struct iio_trigger *viio_trigger_alloc(const char *fmt, va_list vargs)
- 	return NULL;
+-	trig->dev.parent = &data->client->dev;
+ 	trig->ops = &mma8452_trigger_ops;
+ 	iio_trigger_set_drvdata(trig, indio_dev);
+ 
+diff --git a/drivers/iio/accel/mxc4005.c b/drivers/iio/accel/mxc4005.c
+index 0f8fd687866d4..fb3cbaa62bd87 100644
+--- a/drivers/iio/accel/mxc4005.c
++++ b/drivers/iio/accel/mxc4005.c
+@@ -450,7 +450,6 @@ static int mxc4005_probe(struct i2c_client *client,
+ 			return ret;
+ 		}
+ 
+-		data->dready_trig->dev.parent = &client->dev;
+ 		data->dready_trig->ops = &mxc4005_trigger_ops;
+ 		iio_trigger_set_drvdata(data->dready_trig, indio_dev);
+ 		indio_dev->trig = data->dready_trig;
+diff --git a/drivers/iio/accel/stk8312.c b/drivers/iio/accel/stk8312.c
+index 3b59887a8581b..7c3b70eb3f2db 100644
+--- a/drivers/iio/accel/stk8312.c
++++ b/drivers/iio/accel/stk8312.c
+@@ -558,7 +558,6 @@ static int stk8312_probe(struct i2c_client *client,
+ 			goto err_power_off;
+ 		}
+ 
+-		data->dready_trig->dev.parent = &client->dev;
+ 		data->dready_trig->ops = &stk8312_trigger_ops;
+ 		iio_trigger_set_drvdata(data->dready_trig, indio_dev);
+ 		ret = iio_trigger_register(data->dready_trig);
+diff --git a/drivers/iio/accel/stk8ba50.c b/drivers/iio/accel/stk8ba50.c
+index 3ead378b02c9b..bf0368ce46e18 100644
+--- a/drivers/iio/accel/stk8ba50.c
++++ b/drivers/iio/accel/stk8ba50.c
+@@ -454,7 +454,6 @@ static int stk8ba50_probe(struct i2c_client *client,
+ 			goto err_power_off;
+ 		}
+ 
+-		data->dready_trig->dev.parent = &client->dev;
+ 		data->dready_trig->ops = &stk8ba50_trigger_ops;
+ 		iio_trigger_set_drvdata(data->dready_trig, indio_dev);
+ 		ret = iio_trigger_register(data->dready_trig);
+diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+index ee7b108688b33..0af0bb4d5a7fe 100644
+--- a/drivers/iio/adc/ad7606.c
++++ b/drivers/iio/adc/ad7606.c
+@@ -668,7 +668,6 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
+ 		return -ENOMEM;
+ 
+ 	st->trig->ops = &ad7606_trigger_ops;
+-	st->trig->dev.parent = dev;
+ 	iio_trigger_set_drvdata(st->trig, indio_dev);
+ 	ret = devm_iio_trigger_register(dev, st->trig);
+ 	if (ret)
+diff --git a/drivers/iio/adc/ad7766.c b/drivers/iio/adc/ad7766.c
+index b6b6765be7b49..829a3426f2351 100644
+--- a/drivers/iio/adc/ad7766.c
++++ b/drivers/iio/adc/ad7766.c
+@@ -253,7 +253,6 @@ static int ad7766_probe(struct spi_device *spi)
+ 			return -ENOMEM;
+ 
+ 		ad7766->trig->ops = &ad7766_trigger_ops;
+-		ad7766->trig->dev.parent = &spi->dev;
+ 		iio_trigger_set_drvdata(ad7766->trig, ad7766);
+ 
+ 		ret = devm_request_irq(&spi->dev, spi->irq, ad7766_irq,
+diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
+index 5c0cbee032308..c945f1349623f 100644
+--- a/drivers/iio/adc/ad7768-1.c
++++ b/drivers/iio/adc/ad7768-1.c
+@@ -631,7 +631,6 @@ static int ad7768_probe(struct spi_device *spi)
+ 		return -ENOMEM;
+ 
+ 	st->trig->ops = &ad7768_trigger_ops;
+-	st->trig->dev.parent = &spi->dev;
+ 	iio_trigger_set_drvdata(st->trig, indio_dev);
+ 	ret = devm_iio_trigger_register(&spi->dev, st->trig);
+ 	if (ret)
+diff --git a/drivers/iio/adc/max1027.c b/drivers/iio/adc/max1027.c
+index ca1dff3924ff9..e3c8ec107722d 100644
+--- a/drivers/iio/adc/max1027.c
++++ b/drivers/iio/adc/max1027.c
+@@ -473,7 +473,6 @@ static int max1027_probe(struct spi_device *spi)
+ 		}
+ 
+ 		st->trig->ops = &max1027_trigger_ops;
+-		st->trig->dev.parent = &spi->dev;
+ 		iio_trigger_set_drvdata(st->trig, indio_dev);
+ 		ret = devm_iio_trigger_register(&indio_dev->dev,
+ 						st->trig);
+diff --git a/drivers/iio/chemical/ccs811.c b/drivers/iio/chemical/ccs811.c
+index 60dd87e96f5f8..886e96496dbf7 100644
+--- a/drivers/iio/chemical/ccs811.c
++++ b/drivers/iio/chemical/ccs811.c
+@@ -497,7 +497,6 @@ static int ccs811_probe(struct i2c_client *client,
+ 			goto err_poweroff;
+ 		}
+ 
+-		data->drdy_trig->dev.parent = &client->dev;
+ 		data->drdy_trig->ops = &ccs811_trigger_ops;
+ 		iio_trigger_set_drvdata(data->drdy_trig, indio_dev);
+ 		indio_dev->trig = data->drdy_trig;
+diff --git a/drivers/iio/chemical/scd30_core.c b/drivers/iio/chemical/scd30_core.c
+index 4d0d798c7cd34..261c277ac4a59 100644
+--- a/drivers/iio/chemical/scd30_core.c
++++ b/drivers/iio/chemical/scd30_core.c
+@@ -646,7 +646,6 @@ static int scd30_setup_trigger(struct iio_dev *indio_dev)
+ 		return -ENOMEM;
+ 	}
+ 
+-	trig->dev.parent = dev;
+ 	trig->ops = &scd30_trigger_ops;
+ 	iio_trigger_set_drvdata(trig, indio_dev);
+ 
+diff --git a/drivers/iio/gyro/adxrs290.c b/drivers/iio/gyro/adxrs290.c
+index c45d8226cc2b1..cec5e1f17c22a 100644
+--- a/drivers/iio/gyro/adxrs290.c
++++ b/drivers/iio/gyro/adxrs290.c
+@@ -593,7 +593,6 @@ static int adxrs290_probe_trigger(struct iio_dev *indio_dev)
+ 	if (!st->dready_trig)
+ 		return -ENOMEM;
+ 
+-	st->dready_trig->dev.parent = &st->spi->dev;
+ 	st->dready_trig->ops = &adxrs290_trigger_ops;
+ 	iio_trigger_set_drvdata(st->dready_trig, indio_dev);
+ 
+diff --git a/drivers/iio/gyro/bmg160_core.c b/drivers/iio/gyro/bmg160_core.c
+index 029ef4c346046..b11ebd9bb7a41 100644
+--- a/drivers/iio/gyro/bmg160_core.c
++++ b/drivers/iio/gyro/bmg160_core.c
+@@ -1148,14 +1148,12 @@ int bmg160_core_probe(struct device *dev, struct regmap *regmap, int irq,
+ 		if (!data->motion_trig)
+ 			return -ENOMEM;
+ 
+-		data->dready_trig->dev.parent = dev;
+ 		data->dready_trig->ops = &bmg160_trigger_ops;
+ 		iio_trigger_set_drvdata(data->dready_trig, indio_dev);
+ 		ret = iio_trigger_register(data->dready_trig);
+ 		if (ret)
+ 			return ret;
+ 
+-		data->motion_trig->dev.parent = dev;
+ 		data->motion_trig->ops = &bmg160_trigger_ops;
+ 		iio_trigger_set_drvdata(data->motion_trig, indio_dev);
+ 		ret = iio_trigger_register(data->motion_trig);
+diff --git a/drivers/iio/gyro/fxas21002c_core.c b/drivers/iio/gyro/fxas21002c_core.c
+index 129eead8febc0..1a20c6b88e7db 100644
+--- a/drivers/iio/gyro/fxas21002c_core.c
++++ b/drivers/iio/gyro/fxas21002c_core.c
+@@ -875,7 +875,6 @@ static int fxas21002c_trigger_probe(struct fxas21002c_data *data)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	data->dready_trig->dev.parent = dev;
+ 	data->dready_trig->ops = &fxas21002c_trigger_ops;
+ 	iio_trigger_set_drvdata(data->dready_trig, indio_dev);
+ 
+diff --git a/drivers/iio/health/afe4403.c b/drivers/iio/health/afe4403.c
+index 38734e4ce3605..1fa8d51d50806 100644
+--- a/drivers/iio/health/afe4403.c
++++ b/drivers/iio/health/afe4403.c
+@@ -531,7 +531,6 @@ static int afe4403_probe(struct spi_device *spi)
+ 		iio_trigger_set_drvdata(afe->trig, indio_dev);
+ 
+ 		afe->trig->ops = &afe4403_trigger_ops;
+-		afe->trig->dev.parent = afe->dev;
+ 
+ 		ret = iio_trigger_register(afe->trig);
+ 		if (ret) {
+diff --git a/drivers/iio/health/afe4404.c b/drivers/iio/health/afe4404.c
+index 61fe4932d81d0..e1476bf79fe2a 100644
+--- a/drivers/iio/health/afe4404.c
++++ b/drivers/iio/health/afe4404.c
+@@ -538,7 +538,6 @@ static int afe4404_probe(struct i2c_client *client,
+ 		iio_trigger_set_drvdata(afe->trig, indio_dev);
+ 
+ 		afe->trig->ops = &afe4404_trigger_ops;
+-		afe->trig->dev.parent = afe->dev;
+ 
+ 		ret = iio_trigger_register(afe->trig);
+ 		if (ret) {
+diff --git a/drivers/iio/humidity/hts221_buffer.c b/drivers/iio/humidity/hts221_buffer.c
+index 95e56917677fa..f29692b9d2db0 100644
+--- a/drivers/iio/humidity/hts221_buffer.c
++++ b/drivers/iio/humidity/hts221_buffer.c
+@@ -135,7 +135,6 @@ int hts221_allocate_trigger(struct iio_dev *iio_dev)
+ 
+ 	iio_trigger_set_drvdata(hw->trig, iio_dev);
+ 	hw->trig->ops = &hts221_trigger_ops;
+-	hw->trig->dev.parent = hw->dev;
+ 	iio_dev->trig = iio_trigger_get(hw->trig);
+ 
+ 	return devm_iio_trigger_register(hw->dev, hw->trig);
+diff --git a/drivers/iio/imu/kmx61.c b/drivers/iio/imu/kmx61.c
+index 4377047d503ab..fc5a60fcfec05 100644
+--- a/drivers/iio/imu/kmx61.c
++++ b/drivers/iio/imu/kmx61.c
+@@ -1268,7 +1268,6 @@ static struct iio_trigger *kmx61_trigger_setup(struct kmx61_data *data,
+ 	if (!trig)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	trig->dev.parent = &data->client->dev;
+ 	trig->ops = &kmx61_trigger_ops;
+ 	iio_trigger_set_drvdata(trig, indio_dev);
+ 
+diff --git a/drivers/iio/light/rpr0521.c b/drivers/iio/light/rpr0521.c
+index 31224a33bade3..033578f444e4a 100644
+--- a/drivers/iio/light/rpr0521.c
++++ b/drivers/iio/light/rpr0521.c
+@@ -990,7 +990,6 @@ static int rpr0521_probe(struct i2c_client *client,
+ 			ret = -ENOMEM;
+ 			goto err_pm_disable;
+ 		}
+-		data->drdy_trigger0->dev.parent = indio_dev->dev.parent;
+ 		data->drdy_trigger0->ops = &rpr0521_trigger_ops;
+ 		indio_dev->available_scan_masks = rpr0521_available_scan_masks;
+ 		iio_trigger_set_drvdata(data->drdy_trigger0, indio_dev);
+diff --git a/drivers/iio/light/si1145.c b/drivers/iio/light/si1145.c
+index b304801c79163..9b5c99823943a 100644
+--- a/drivers/iio/light/si1145.c
++++ b/drivers/iio/light/si1145.c
+@@ -1247,7 +1247,6 @@ static int si1145_probe_trigger(struct iio_dev *indio_dev)
+ 	if (!trig)
+ 		return -ENOMEM;
+ 
+-	trig->dev.parent = &client->dev;
+ 	trig->ops = &si1145_trigger_ops;
+ 	iio_trigger_set_drvdata(trig, indio_dev);
+ 
+diff --git a/drivers/iio/light/st_uvis25_core.c b/drivers/iio/light/st_uvis25_core.c
+index 1055594b22764..41a2ce5a2d538 100644
+--- a/drivers/iio/light/st_uvis25_core.c
++++ b/drivers/iio/light/st_uvis25_core.c
+@@ -210,7 +210,6 @@ static int st_uvis25_allocate_trigger(struct iio_dev *iio_dev)
+ 		return -ENOMEM;
+ 
+ 	iio_trigger_set_drvdata(hw->trig, iio_dev);
+-	hw->trig->dev.parent = dev;
+ 
+ 	return devm_iio_trigger_register(dev, hw->trig);
  }
+diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+index fff4b36b8b58d..2f7916f95689e 100644
+--- a/drivers/iio/light/vcnl4000.c
++++ b/drivers/iio/light/vcnl4000.c
+@@ -1002,7 +1002,6 @@ static int vcnl4010_probe_trigger(struct iio_dev *indio_dev)
+ 	if (!trigger)
+ 		return -ENOMEM;
  
--struct iio_trigger *iio_trigger_alloc(const char *fmt, ...)
-+/**
-+ * iio_trigger_alloc - Allocate a trigger
-+ * @parent:		Device to allocate iio_trigger for
-+ * @fmt:		trigger name format. If it includes format
-+ *			specifiers, the additional arguments following
-+ *			format are formatted and inserted in the resulting
-+ *			string replacing their respective specifiers.
-+ * RETURNS:
-+ * Pointer to allocated iio_trigger on success, NULL on failure.
-+ */
-+struct iio_trigger *iio_trigger_alloc(struct device *parent,
-+				      const char *fmt, ...)
- {
- 	struct iio_trigger *trig;
- 	va_list vargs;
+-	trigger->dev.parent = &client->dev;
+ 	trigger->ops = &vcnl4010_trigger_ops;
+ 	iio_trigger_set_drvdata(trigger, indio_dev);
  
- 	va_start(vargs, fmt);
--	trig = viio_trigger_alloc(fmt, vargs);
-+	trig = viio_trigger_alloc(parent, fmt, vargs);
- 	va_end(vargs);
+diff --git a/drivers/iio/light/vcnl4035.c b/drivers/iio/light/vcnl4035.c
+index 73a28e30dddcc..ae87740d9cef2 100644
+--- a/drivers/iio/light/vcnl4035.c
++++ b/drivers/iio/light/vcnl4035.c
+@@ -511,7 +511,6 @@ static int vcnl4035_probe_trigger(struct iio_dev *indio_dev)
+ 	if (!data->drdy_trigger0)
+ 		return -ENOMEM;
  
- 	return trig;
-@@ -586,20 +600,14 @@ static void devm_iio_trigger_release(struct device *dev, void *res)
+-	data->drdy_trigger0->dev.parent = indio_dev->dev.parent;
+ 	data->drdy_trigger0->ops = &vcnl4035_trigger_ops;
+ 	iio_trigger_set_drvdata(data->drdy_trigger0, indio_dev);
+ 	ret = devm_iio_trigger_register(indio_dev->dev.parent,
+diff --git a/drivers/iio/magnetometer/bmc150_magn.c b/drivers/iio/magnetometer/bmc150_magn.c
+index b2f3129e1b4f3..00f9766bad5c5 100644
+--- a/drivers/iio/magnetometer/bmc150_magn.c
++++ b/drivers/iio/magnetometer/bmc150_magn.c
+@@ -922,7 +922,6 @@ int bmc150_magn_probe(struct device *dev, struct regmap *regmap,
+ 			goto err_poweroff;
+ 		}
  
- /**
-  * devm_iio_trigger_alloc - Resource-managed iio_trigger_alloc()
-- * @dev:		Device to allocate iio_trigger for
-- * @fmt:		trigger name format. If it includes format
-- *			specifiers, the additional arguments following
-- *			format are formatted and inserted in the resulting
-- *			string replacing their respective specifiers.
-- *
-  * Managed iio_trigger_alloc.  iio_trigger allocated with this function is
-  * automatically freed on driver detach.
-  *
-  * RETURNS:
-  * Pointer to allocated iio_trigger on success, NULL on failure.
-  */
--struct iio_trigger *devm_iio_trigger_alloc(struct device *dev,
--						const char *fmt, ...)
-+struct iio_trigger *devm_iio_trigger_alloc(struct device *parent,
-+					   const char *fmt, ...)
- {
- 	struct iio_trigger **ptr, *trig;
- 	va_list vargs;
-@@ -611,11 +619,11 @@ struct iio_trigger *devm_iio_trigger_alloc(struct device *dev,
+-		data->dready_trig->dev.parent = dev;
+ 		data->dready_trig->ops = &bmc150_magn_trigger_ops;
+ 		iio_trigger_set_drvdata(data->dready_trig, indio_dev);
+ 		ret = iio_trigger_register(data->dready_trig);
+diff --git a/drivers/iio/magnetometer/rm3100-core.c b/drivers/iio/magnetometer/rm3100-core.c
+index 7242897a05e95..dd811da9cb6db 100644
+--- a/drivers/iio/magnetometer/rm3100-core.c
++++ b/drivers/iio/magnetometer/rm3100-core.c
+@@ -579,7 +579,6 @@ int rm3100_common_probe(struct device *dev, struct regmap *regmap, int irq)
+ 		if (!data->drdy_trig)
+ 			return -ENOMEM;
  
- 	/* use raw alloc_dr for kmalloc caller tracing */
- 	va_start(vargs, fmt);
--	trig = viio_trigger_alloc(fmt, vargs);
-+	trig = viio_trigger_alloc(parent, fmt, vargs);
- 	va_end(vargs);
- 	if (trig) {
- 		*ptr = trig;
--		devres_add(dev, ptr);
-+		devres_add(parent, ptr);
- 	} else {
- 		devres_free(ptr);
- 	}
-diff --git a/drivers/iio/trigger/iio-trig-hrtimer.c b/drivers/iio/trigger/iio-trig-hrtimer.c
-index 410de837d0417..22940f86003fc 100644
---- a/drivers/iio/trigger/iio-trig-hrtimer.c
-+++ b/drivers/iio/trigger/iio-trig-hrtimer.c
-@@ -122,7 +122,7 @@ static struct iio_sw_trigger *iio_trig_hrtimer_probe(const char *name)
- 	if (!trig_info)
- 		return ERR_PTR(-ENOMEM);
+-		data->drdy_trig->dev.parent = dev;
+ 		ret = devm_iio_trigger_register(dev, data->drdy_trig);
+ 		if (ret < 0)
+ 			return ret;
+diff --git a/drivers/iio/pressure/zpa2326.c b/drivers/iio/pressure/zpa2326.c
+index 2cecbe0adb3f3..70adff62cd209 100644
+--- a/drivers/iio/pressure/zpa2326.c
++++ b/drivers/iio/pressure/zpa2326.c
+@@ -1413,7 +1413,6 @@ static int zpa2326_init_managed_trigger(struct device          *parent,
+ 		return -ENOMEM;
  
--	trig_info->swt.trigger = iio_trigger_alloc("%s", name);
-+	trig_info->swt.trigger = iio_trigger_alloc(NULL, "%s", name);
- 	if (!trig_info->swt.trigger) {
- 		ret = -ENOMEM;
- 		goto err_free_trig_info;
-diff --git a/drivers/iio/trigger/iio-trig-interrupt.c b/drivers/iio/trigger/iio-trig-interrupt.c
-index 94a487caf4214..f746c460bf2a5 100644
---- a/drivers/iio/trigger/iio-trig-interrupt.c
-+++ b/drivers/iio/trigger/iio-trig-interrupt.c
-@@ -45,7 +45,7 @@ static int iio_interrupt_trigger_probe(struct platform_device *pdev)
+ 	/* Basic setup. */
+-	trigger->dev.parent = parent;
+ 	trigger->ops = &zpa2326_trigger_ops;
  
- 	irq = irq_res->start;
+ 	private->trigger = trigger;
+diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
+index 37fd0b65a0140..394c2afe0f233 100644
+--- a/drivers/iio/proximity/sx9310.c
++++ b/drivers/iio/proximity/sx9310.c
+@@ -1453,7 +1453,6 @@ static int sx9310_probe(struct i2c_client *client)
+ 		if (!data->trig)
+ 			return -ENOMEM;
  
--	trig = iio_trigger_alloc("irqtrig%d", irq);
-+	trig = iio_trigger_alloc(NULL, "irqtrig%d", irq);
- 	if (!trig) {
- 		ret = -ENOMEM;
- 		goto error_ret;
-diff --git a/drivers/iio/trigger/iio-trig-loop.c b/drivers/iio/trigger/iio-trig-loop.c
-index 4a00668e32583..96ec06bbe546a 100644
---- a/drivers/iio/trigger/iio-trig-loop.c
-+++ b/drivers/iio/trigger/iio-trig-loop.c
-@@ -84,7 +84,7 @@ static struct iio_sw_trigger *iio_trig_loop_probe(const char *name)
- 	if (!trig_info)
- 		return ERR_PTR(-ENOMEM);
+-		data->trig->dev.parent = dev;
+ 		data->trig->ops = &sx9310_trigger_ops;
+ 		iio_trigger_set_drvdata(data->trig, indio_dev);
  
--	trig_info->swt.trigger = iio_trigger_alloc("%s", name);
-+	trig_info->swt.trigger = iio_trigger_alloc(NULL, "%s", name);
- 	if (!trig_info->swt.trigger) {
- 		ret = -ENOMEM;
- 		goto err_free_trig_info;
-diff --git a/drivers/iio/trigger/iio-trig-sysfs.c b/drivers/iio/trigger/iio-trig-sysfs.c
-index 0f6b512a5c37b..e9adfff45b39b 100644
---- a/drivers/iio/trigger/iio-trig-sysfs.c
-+++ b/drivers/iio/trigger/iio-trig-sysfs.c
-@@ -149,7 +149,7 @@ static int iio_sysfs_trigger_probe(int id)
- 		goto out1;
- 	}
- 	t->id = id;
--	t->trig = iio_trigger_alloc("sysfstrig%d", id);
-+	t->trig = iio_trigger_alloc(&iio_sysfs_trig_dev, "sysfstrig%d", id);
- 	if (!t->trig) {
- 		ret = -ENOMEM;
- 		goto free_t;
-@@ -157,7 +157,6 @@ static int iio_sysfs_trigger_probe(int id)
+diff --git a/drivers/iio/proximity/sx9500.c b/drivers/iio/proximity/sx9500.c
+index acb821cbad46f..bb42aa5d596ef 100644
+--- a/drivers/iio/proximity/sx9500.c
++++ b/drivers/iio/proximity/sx9500.c
+@@ -950,7 +950,6 @@ static int sx9500_probe(struct i2c_client *client,
+ 		if (!data->trig)
+ 			return -ENOMEM;
  
- 	t->trig->dev.groups = iio_sysfs_trigger_attr_groups;
- 	t->trig->ops = &iio_sysfs_trigger_ops;
--	t->trig->dev.parent = &iio_sysfs_trig_dev;
- 	iio_trigger_set_drvdata(t->trig, t);
+-		data->trig->dev.parent = &client->dev;
+ 		data->trig->ops = &sx9500_trigger_ops;
+ 		iio_trigger_set_drvdata(data->trig, indio_dev);
  
- 	t->work = IRQ_WORK_INIT_HARD(iio_sysfs_trigger_work);
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index e4a9822e64950..5ca4b1d33e153 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -698,7 +698,7 @@ static inline void *iio_priv(const struct iio_dev *indio_dev)
- void iio_device_free(struct iio_dev *indio_dev);
- struct iio_dev *devm_iio_device_alloc(struct device *parent, int sizeof_priv);
- __printf(2, 3)
--struct iio_trigger *devm_iio_trigger_alloc(struct device *dev,
-+struct iio_trigger *devm_iio_trigger_alloc(struct device *parent,
- 					   const char *fmt, ...);
- /**
-  * iio_buffer_enabled() - helper function to test if the buffer is enabled
-diff --git a/include/linux/iio/trigger.h b/include/linux/iio/trigger.h
-index 055890b6ffcf0..87c1a14dc1662 100644
---- a/include/linux/iio/trigger.h
-+++ b/include/linux/iio/trigger.h
-@@ -161,7 +161,8 @@ void iio_trigger_poll_chained(struct iio_trigger *trig);
- 
- irqreturn_t iio_trigger_generic_data_rdy_poll(int irq, void *private);
- 
--__printf(1, 2) struct iio_trigger *iio_trigger_alloc(const char *fmt, ...);
-+__printf(2, 3) struct iio_trigger *iio_trigger_alloc(struct device *parent,
-+						     const char *fmt, ...);
- void iio_trigger_free(struct iio_trigger *trig);
- 
- /**
 -- 
 2.30.1.766.gb4fecdf3b7-goog
 

@@ -2,406 +2,378 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 764AF3326F0
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Mar 2021 14:24:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C1D8B3326C1
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Mar 2021 14:22:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231235AbhCINXe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 9 Mar 2021 08:23:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43998 "EHLO
+        id S230156AbhCINV7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 9 Mar 2021 08:21:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231479AbhCINXF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Mar 2021 08:23:05 -0500
-Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9FA9C06174A;
-        Tue,  9 Mar 2021 05:23:04 -0800 (PST)
-Received: by mail-pg1-x52d.google.com with SMTP id n9so7798620pgi.7;
-        Tue, 09 Mar 2021 05:23:04 -0800 (PST)
+        with ESMTP id S231393AbhCINVd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Mar 2021 08:21:33 -0500
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4168C06174A;
+        Tue,  9 Mar 2021 05:21:32 -0800 (PST)
+Received: by mail-pl1-x633.google.com with SMTP id e2so1288180pld.9;
+        Tue, 09 Mar 2021 05:21:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=oWakiYpT0xXwfQsuTaJUoNlRwTEXD7Xbq7I9eeif91U=;
-        b=p3/lhCup3JrB82x9/r4b91kWwLaLM+bP6/fUMzJzikNQO2K+Krcp1ogH4iRF9BD1wr
-         KFNHjvax37//Jv8yzcRgTe9M1VWJA9RyIp1KlczKp8Wd4vzb+OlIeUMDPoiuZvvcDGiP
-         PG34qtcb2dvTLlN6UHj0W5H8J/gU4M+i3plTn/949Rg88HWtIToQ4P6nv2xkG7KB9tWm
-         PdJXrxYJdnGl8cI5qaUZEznl8+ypVD2zO5fjxCGcG3hrNlZmCjv+Rzr+wUSMcloEQpNu
-         Qh7cyX0tj5dF8NN+VQ5jqrp0mkNU7VrBamLO9uClVHtRdePj1chkyL2XDaPa8UxRJPcb
-         gczg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=943qSIAAGbzfZ1Mli8l1IMkssOCUKnzaCo1jCEsYE1Q=;
+        b=Ep2pKTBjeC4vo44sneiCLLWX9Z4z0Op9qhMq4HidRZnQnOlwLCbj4NRBCTnNfUqMr0
+         MGbXIrrMgTys/HwIBn/i8szntUuDbmxcA12LlBgubBt8jOkHkKSGLozVcXKBQrfQSL+9
+         HO1T4wT49O/5EVJleJCDi2NObZEYN2XoUTaBMt/Iux9eKTGlzPKieezfRmuUYVVbxt4E
+         q0IhAaz4RPvS6UIOCJZL1QVS6mocmGXDUIIbAbfA7SQco42UAv4eh68x1XphVM9KJOGQ
+         729TaBWuj9gdoD5gYz4/CrVyF4nMnax6b/By4gvDiPT0HKM92pch5lhkosi7GKgVI5Nr
+         KUlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=oWakiYpT0xXwfQsuTaJUoNlRwTEXD7Xbq7I9eeif91U=;
-        b=tO1rbtOb240JxPTZoF0Ju8nFmEcNbhA3xlbZU49ib4x0xR8AmZhblZc+3cEaq7I39Q
-         eFk6S9VML2vUbhrmBQULe8HEh1VxZsL2LxD7qbEGp8+ArqapuW5xtJDOOr8Pm0kp5x/U
-         jAnfdyCCI0bhASKSIBuQX8TH8RcEadUJZ39Y0CaG2YrjfvpIGigZMocs38T+UCyjVo3Q
-         m8a6e0GOAAHWUwzaqlRPQ7WrBhCIeT/JNFZU26ZHLD+/20NodLMiSrHxRnbkIhjl+6la
-         pnHBwLePcZZljjU+r1f2LLBHjAUQxoYIDtUvZGJ/K2Apn5NJZbvoxwccToVzBmV/4C72
-         /C3A==
-X-Gm-Message-State: AOAM53031p9VNcATbol9jTgPrvYdrTOkOxp2SO5OlXpODZPBV7VHCT6Z
-        0qLDUU9/+rHeS3cJvQ5MY9c=
-X-Google-Smtp-Source: ABdhPJzw5PB3n1upDXlO100EBSOSc4gH/Xl+cMUBNjlNOtjplbVGNWtl8FRYVugkBvoEfbNx3jg32A==
-X-Received: by 2002:a62:7708:0:b029:1ee:f656:51d5 with SMTP id s8-20020a6277080000b02901eef65651d5mr26195025pfc.59.1615296184322;
-        Tue, 09 Mar 2021 05:23:04 -0800 (PST)
-Received: from localhost.localdomain ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id y9sm7647421pfl.201.2021.03.09.05.22.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Mar 2021 05:23:03 -0800 (PST)
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     jic23@kernel.org
-Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
-        a.fatoum@pengutronix.de, kamel.bouhara@bootlin.com,
-        gwendal@chromium.org, alexandre.belloni@bootlin.com,
-        david@lechnology.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        syednwaris@gmail.com, patrick.havelange@essensium.com,
-        fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@st.com, o.rempel@pengutronix.de,
-        William Breathitt Gray <vilhelm.gray@gmail.com>
-Subject: [PATCH v9 33/33] counter: 104-quad-8: Add IRQ support for the ACCES 104-QUAD-8
-Date:   Tue,  9 Mar 2021 22:19:46 +0900
-Message-Id: <2368417d253917b7a2c3e0e952dd6e4fa3815e8e.1615293276.git.vilhelm.gray@gmail.com>
-X-Mailer: git-send-email 2.30.1
-In-Reply-To: <cover.1615293276.git.vilhelm.gray@gmail.com>
-References: <cover.1615293276.git.vilhelm.gray@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=943qSIAAGbzfZ1Mli8l1IMkssOCUKnzaCo1jCEsYE1Q=;
+        b=rpAKODoW0HMJgJYOR+vbT5bXIam5808tdj6ZBsinDOdFtG7v11fLckDRpP2on9mFgP
+         WpMEyF4UK2HMe6JFCE50ZwEdD+QQTEGMFLBdWMCwNsUkd1ItGL3/HvLsXXt+0Z9A7xIq
+         t6jpJgxKLJlbQldZzeRlHWviuQGlADtRq4GRCLq9FbwXkSb1NBYlukrLA6VBQSbaeyuC
+         hDfeHoFb0SJyN1TT2uVQLUTDWWK5ZZt0nHtcdiiqbF7WriQZZEW3KQ1ZJXMNUp0OYc6s
+         a0TSx4BlwPUadU+6IV3IjlLBpcq2vHkLCb5c9vPhzAfPc/mgmAJGkmtYNmy+nNFS2jdq
+         PSeQ==
+X-Gm-Message-State: AOAM532StBcqRgldJy98eLydWA0Mv3+vEVwyKIZ9WIuK3op/BgxddLUz
+        HPKnJcpdi4EcyFYtUB0BMCxo0t4t+J1B3DMFyVA=
+X-Google-Smtp-Source: ABdhPJxXNJoXrfaJKa/Io08GgjAWjAFK3EP4VnL0bJf0fm5BvCuPuusd0kfYfzAnWr0P1yEE+0S1qW2bebnrh/TwEeg=
+X-Received: by 2002:a17:90a:e454:: with SMTP id jp20mr1348560pjb.129.1615296092301;
+ Tue, 09 Mar 2021 05:21:32 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210305133813.27967-1-o.rempel@pengutronix.de> <20210305133813.27967-3-o.rempel@pengutronix.de>
+In-Reply-To: <20210305133813.27967-3-o.rempel@pengutronix.de>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 9 Mar 2021 15:21:15 +0200
+Message-ID: <CAHp75VepMJKuePOgqhgfJzpvLXAizoKsPyJ99wtzHod_xxYLYA@mail.gmail.com>
+Subject: Re: [PATCH v1 2/2] iio: adc: add ADC driver for the TI TSC2046 controller
+To:     Oleksij Rempel <o.rempel@pengutronix.de>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        David Jander <david@protonic.nl>,
+        Robin van der Gracht <robin@protonic.nl>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The LSI/CSI LS7266R1 chip provides programmable output via the FLG pins.
-When interrupts are enabled on the ACCES 104-QUAD-8, they occur whenever
-FLG1 is active. Four functions are available for the FLG1 signal: Carry,
-Compare, Carry-Borrow, and Index.
+On Fri, Mar 5, 2021 at 3:40 PM Oleksij Rempel <o.rempel@pengutronix.de> wrote:
 
-	Carry:
-		Interrupt generated on active low Carry signal. Carry
-		signal toggles every time the respective channel's
-		counter overflows.
+I have heard it will be a new version, so below a lot of nit-picks.
 
-	Compare:
-		Interrupt generated on active low Compare signal.
-		Compare signal toggles every time respective channel's
-		preset register is equal to the respective channel's
-		counter.
+> Basically the TI TSC2046 touchscreen controller is 8 channel ADC optimized for
+> the touchscreen use case. By implementing it as IIO ADC device, we can
 
-	Carry-Borrow:
-		Interrupt generated on active low Carry signal and
-		active low Borrow signal. Carry signal toggles every
-		time the respective channel's counter overflows. Borrow
-		signal toggles every time the respective channel's
-		counter underflows.
+an IIO
 
-	Index:
-		Interrupt generated on active high Index signal.
+> make use of resistive-adc-touch and iio-hwmon drivers.
+>
+> So far, this driver was tested with custom version of resistive-adc-touch driver,
+> since it need to be extended to make use of Z1 and Z2 channels. The X/Y
 
-These four functions correspond respectivefly to the following four
-Counter event types: COUNTER_EVENT_OVERFLOW, COUNTER_EVENT_THRESHOLD,
-COUNTER_EVENT_OVERFLOW_UNDERFLOW, and COUNTER_EVENT_INDEX. Interrupts
-push Counter events to event channel X, where 'X' is the respective
-channel whose FLG1 activated.
+needs
 
-This patch adds IRQ support for the ACCES 104-QUAD-8. The interrupt line
-numbers for the devices may be configured via the irq array module
-parameter.
+> are working without additional changes.
 
-Cc: Syed Nayyar Waris <syednwaris@gmail.com>
-Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
----
- drivers/counter/104-quad-8.c | 167 +++++++++++++++++++++++++++++++++--
- drivers/counter/Kconfig      |   6 +-
- 2 files changed, 164 insertions(+), 9 deletions(-)
+...
 
-diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
-index d46b8101f207..09b0b0ba8fe7 100644
---- a/drivers/counter/104-quad-8.c
-+++ b/drivers/counter/104-quad-8.c
-@@ -11,6 +11,7 @@
- #include <linux/errno.h>
- #include <linux/io.h>
- #include <linux/ioport.h>
-+#include <linux/interrupt.h>
- #include <linux/isa.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-@@ -25,6 +26,10 @@ static unsigned int num_quad8;
- module_param_hw_array(base, uint, ioport, &num_quad8, 0);
- MODULE_PARM_DESC(base, "ACCES 104-QUAD-8 base addresses");
- 
-+static unsigned int irq[max_num_isa_dev(QUAD8_EXTENT)];
-+module_param_hw_array(irq, uint, irq, NULL, 0);
-+MODULE_PARM_DESC(irq, "ACCES 104-QUAD-8 interrupt line numbers");
-+
- #define QUAD8_NUM_COUNTERS 8
- 
- /**
-@@ -38,6 +43,8 @@ MODULE_PARM_DESC(base, "ACCES 104-QUAD-8 base addresses");
-  * @quadrature_scale:	array of quadrature mode scale configurations
-  * @ab_enable:		array of A and B inputs enable configurations
-  * @preset_enable:	array of set_to_preset_on_index attribute configurations
-+ * @irq_trigger:	array of current IRQ trigger function configurations
-+ * @next_irq_trigger:	array of next IRQ trigger function configurations
-  * @synchronous_mode:	array of index function synchronous mode configurations
-  * @index_polarity:	array of index function polarity configurations
-  * @cable_fault_enable:	differential encoder cable status enable configurations
-@@ -53,13 +60,17 @@ struct quad8 {
- 	unsigned int quadrature_scale[QUAD8_NUM_COUNTERS];
- 	unsigned int ab_enable[QUAD8_NUM_COUNTERS];
- 	unsigned int preset_enable[QUAD8_NUM_COUNTERS];
-+	unsigned int irq_trigger[QUAD8_NUM_COUNTERS];
-+	unsigned int next_irq_trigger[QUAD8_NUM_COUNTERS];
- 	unsigned int synchronous_mode[QUAD8_NUM_COUNTERS];
- 	unsigned int index_polarity[QUAD8_NUM_COUNTERS];
- 	unsigned int cable_fault_enable;
- 	unsigned int base;
- };
- 
-+#define QUAD8_REG_INTERRUPT_STATUS 0x10
- #define QUAD8_REG_CHAN_OP 0x11
-+#define QUAD8_REG_INDEX_INTERRUPT 0x12
- #define QUAD8_REG_INDEX_INPUT_LEVELS 0x16
- #define QUAD8_DIFF_ENCODER_CABLE_STATUS 0x17
- /* Borrow Toggle flip-flop */
-@@ -92,8 +103,8 @@ struct quad8 {
- #define QUAD8_RLD_CNTR_OUT 0x10
- /* Transfer Preset Register LSB to FCK Prescaler */
- #define QUAD8_RLD_PRESET_PSC 0x18
--#define QUAD8_CHAN_OP_ENABLE_COUNTERS 0x00
- #define QUAD8_CHAN_OP_RESET_COUNTERS 0x01
-+#define QUAD8_CHAN_OP_ENABLE_INTERRUPT_FUNC 0x04
- #define QUAD8_CMR_QUADRATURE_X1 0x08
- #define QUAD8_CMR_QUADRATURE_X2 0x10
- #define QUAD8_CMR_QUADRATURE_X4 0x18
-@@ -378,13 +389,103 @@ static int quad8_action_read(struct counter_device *counter,
- 	}
- }
- 
-+enum {
-+	QUAD8_EVENT_NONE = -1,
-+	QUAD8_EVENT_CARRY = 0,
-+	QUAD8_EVENT_COMPARE = 1,
-+	QUAD8_EVENT_CARRY_BORROW = 2,
-+	QUAD8_EVENT_INDEX = 3,
-+};
-+
-+static int quad8_events_configure(struct counter_device *counter)
-+{
-+	struct quad8 *const priv = counter->priv;
-+	unsigned long irq_enabled = 0;
-+	unsigned long irqflags;
-+	size_t channel;
-+	unsigned long ior_cfg;
-+	unsigned long base_offset;
-+
-+	spin_lock_irqsave(&priv->lock, irqflags);
-+
-+	/* Enable interrupts for the requested channels, disable for the rest */
-+	for (channel = 0; channel < QUAD8_NUM_COUNTERS; channel++) {
-+		if (priv->next_irq_trigger[channel] == QUAD8_EVENT_NONE)
-+			continue;
-+
-+		if (priv->irq_trigger[channel] != priv->next_irq_trigger[channel]) {
-+			/* Save new IRQ function configuration */
-+			priv->irq_trigger[channel] = priv->next_irq_trigger[channel];
-+
-+			/* Load configuration to I/O Control Register */
-+			ior_cfg = priv->ab_enable[channel] |
-+				  priv->preset_enable[channel] << 1 |
-+				  priv->irq_trigger[channel] << 3;
-+			base_offset = priv->base + 2 * channel + 1;
-+			outb(QUAD8_CTR_IOR | ior_cfg, base_offset);
-+		}
-+
-+		/* Reset next IRQ trigger function configuration */
-+		priv->next_irq_trigger[channel] = QUAD8_EVENT_NONE;
-+
-+		/* Enable IRQ line */
-+		irq_enabled |= BIT(channel);
-+	}
-+
-+	outb(irq_enabled, priv->base + QUAD8_REG_INDEX_INTERRUPT);
-+
-+	spin_unlock_irqrestore(&priv->lock, irqflags);
-+
-+	return 0;
-+}
-+
-+static int quad8_watch_validate(struct counter_device *counter,
-+				const struct counter_watch *watch)
-+{
-+	struct quad8 *const priv = counter->priv;
-+
-+	if (watch->channel > QUAD8_NUM_COUNTERS - 1)
-+		return -EINVAL;
-+
-+	switch (watch->event) {
-+	case COUNTER_EVENT_OVERFLOW:
-+		if (priv->next_irq_trigger[watch->channel] == QUAD8_EVENT_NONE)
-+			priv->next_irq_trigger[watch->channel] = QUAD8_EVENT_CARRY;
-+		else if (priv->next_irq_trigger[watch->channel] != QUAD8_EVENT_CARRY)
-+			return -EINVAL;
-+		return 0;
-+	case COUNTER_EVENT_THRESHOLD:
-+		if (priv->next_irq_trigger[watch->channel] == QUAD8_EVENT_NONE)
-+			priv->next_irq_trigger[watch->channel] = QUAD8_EVENT_COMPARE;
-+		else if (priv->next_irq_trigger[watch->channel] != QUAD8_EVENT_COMPARE)
-+			return -EINVAL;
-+		return 0;
-+	case COUNTER_EVENT_OVERFLOW_UNDERFLOW:
-+		if (priv->next_irq_trigger[watch->channel] == QUAD8_EVENT_NONE)
-+			priv->next_irq_trigger[watch->channel] = QUAD8_EVENT_CARRY_BORROW;
-+		else if (priv->next_irq_trigger[watch->channel] != QUAD8_EVENT_CARRY_BORROW)
-+			return -EINVAL;
-+		return 0;
-+	case COUNTER_EVENT_INDEX:
-+		if (priv->next_irq_trigger[watch->channel] == QUAD8_EVENT_NONE)
-+			priv->next_irq_trigger[watch->channel] = QUAD8_EVENT_INDEX;
-+		else if (priv->next_irq_trigger[watch->channel] != QUAD8_EVENT_INDEX)
-+			return -EINVAL;
-+		return 0;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
- static const struct counter_ops quad8_ops = {
- 	.signal_read = quad8_signal_read,
- 	.count_read = quad8_count_read,
- 	.count_write = quad8_count_write,
- 	.function_read = quad8_function_read,
- 	.function_write = quad8_function_write,
--	.action_read = quad8_action_read
-+	.action_read = quad8_action_read,
-+	.events_configure = quad8_events_configure,
-+	.watch_validate = quad8_watch_validate,
- };
- 
- static const char *const quad8_index_polarity_modes[] = {
-@@ -579,7 +680,8 @@ static int quad8_count_enable_write(struct counter_device *counter,
- 
- 	priv->ab_enable[count->id] = enable;
- 
--	ior_cfg = enable | priv->preset_enable[count->id] << 1;
-+	ior_cfg = enable | priv->preset_enable[count->id] << 1 |
-+		  priv->irq_trigger[count->id] << 3;
- 
- 	/* Load I/O control configuration */
- 	outb(QUAD8_CTR_IOR | ior_cfg, base_offset + 1);
-@@ -728,7 +830,8 @@ static int quad8_count_preset_enable_write(struct counter_device *counter,
- 
- 	priv->preset_enable[count->id] = preset_enable;
- 
--	ior_cfg = priv->ab_enable[count->id] | preset_enable << 1;
-+	ior_cfg = priv->ab_enable[count->id] | preset_enable << 1 |
-+		  priv->irq_trigger[count->id] << 3;
- 
- 	/* Load I/O control configuration to Input / Output Control Register */
- 	outb(QUAD8_CTR_IOR | ior_cfg, base_offset);
-@@ -980,11 +1083,54 @@ static struct counter_count quad8_counts[] = {
- 	QUAD8_COUNT(7, "Channel 8 Count")
- };
- 
-+static irqreturn_t quad8_irq_handler(int irq, void *private)
-+{
-+	struct quad8 *const priv = private;
-+	const unsigned long base = priv->base;
-+	unsigned long irq_status;
-+	unsigned long channel;
-+	u8 event;
-+
-+	irq_status = inb(base + QUAD8_REG_INTERRUPT_STATUS);
-+	if (!irq_status)
-+		return IRQ_NONE;
-+
-+	for_each_set_bit(channel, &irq_status, QUAD8_NUM_COUNTERS) {
-+		switch (priv->irq_trigger[channel]) {
-+		case QUAD8_EVENT_CARRY:
-+			event = COUNTER_EVENT_OVERFLOW;
-+				break;
-+		case QUAD8_EVENT_COMPARE:
-+			event = COUNTER_EVENT_THRESHOLD;
-+				break;
-+		case QUAD8_EVENT_CARRY_BORROW:
-+			event = COUNTER_EVENT_OVERFLOW_UNDERFLOW;
-+				break;
-+		case QUAD8_EVENT_INDEX:
-+			event = COUNTER_EVENT_INDEX;
-+				break;
-+		default:
-+			/* should never reach this path */
-+			WARN_ONCE(true, "invalid interrupt trigger function %u configured for channel %lu\n",
-+				  priv->irq_trigger[channel], channel);
-+			continue;
-+		}
-+
-+		counter_push_event(&priv->counter, event, channel);
-+	}
-+
-+	/* Clear pending interrupts on device */
-+	outb(QUAD8_CHAN_OP_ENABLE_INTERRUPT_FUNC, base + QUAD8_REG_CHAN_OP);
-+
-+	return IRQ_HANDLED;
-+}
-+
- static int quad8_probe(struct device *dev, unsigned int id)
- {
- 	struct quad8 *priv;
- 	int i, j;
- 	unsigned int base_offset;
-+	int err;
- 
- 	if (!devm_request_region(dev, base[id], QUAD8_EXTENT, dev_name(dev))) {
- 		dev_err(dev, "Unable to lock port addresses (0x%X-0x%X)\n",
-@@ -1009,6 +1155,8 @@ static int quad8_probe(struct device *dev, unsigned int id)
- 
- 	spin_lock_init(&priv->lock);
- 
-+	/* Reset Index/Interrupt Register */
-+	outb(0x00, base[id] + QUAD8_REG_INDEX_INTERRUPT);
- 	/* Reset all counters and disable interrupt function */
- 	outb(QUAD8_CHAN_OP_RESET_COUNTERS, base[id] + QUAD8_REG_CHAN_OP);
- 	/* Set initial configuration for all counters */
-@@ -1035,11 +1183,18 @@ static int quad8_probe(struct device *dev, unsigned int id)
- 		outb(QUAD8_CTR_IOR, base_offset + 1);
- 		/* Disable index function; negative index polarity */
- 		outb(QUAD8_CTR_IDR, base_offset + 1);
-+		/* Initialize next IRQ trigger function configuration */
-+		priv->next_irq_trigger[i] = QUAD8_EVENT_NONE;
- 	}
- 	/* Disable Differential Encoder Cable Status for all channels */
- 	outb(0xFF, base[id] + QUAD8_DIFF_ENCODER_CABLE_STATUS);
--	/* Enable all counters */
--	outb(QUAD8_CHAN_OP_ENABLE_COUNTERS, base[id] + QUAD8_REG_CHAN_OP);
-+	/* Enable all counters and enable interrupt function */
-+	outb(QUAD8_CHAN_OP_ENABLE_INTERRUPT_FUNC, base[id] + QUAD8_REG_CHAN_OP);
-+
-+	err = devm_request_irq(dev, irq[id], quad8_irq_handler, IRQF_SHARED,
-+			       priv->counter.name, priv);
-+	if (err)
-+		return err;
- 
- 	return devm_counter_register(dev, &priv->counter);
- }
-diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
-index 5328705aa09c..2c2862dd46a5 100644
---- a/drivers/counter/Kconfig
-+++ b/drivers/counter/Kconfig
-@@ -23,11 +23,11 @@ config 104_QUAD_8
- 	  A counter's respective error flag may be cleared by performing a write
- 	  operation on the respective count value attribute. Although the
- 	  104-QUAD-8 counters have a 25-bit range, only the lower 24 bits may be
--	  set, either directly or via the counter's preset attribute. Interrupts
--	  are not supported by this driver.
-+	  set, either directly or via the counter's preset attribute.
- 
- 	  The base port addresses for the devices may be configured via the base
--	  array module parameter.
-+	  array module parameter. The interrupt line numbers for the devices may
-+	  be configured via the irq array module parameter.
- 
- config INTERRUPT_CNT
- 	tristate "Interrupt counter driver"
+> +#include <asm/unaligned.h>
+
+Usually asm/* goes after linux/*
+
+> +#include <linux/bitfield.h>
+> +#include <linux/delay.h>
+
+> +#include <linux/iio/buffer.h>
+> +#include <linux/iio/trigger_consumer.h>
+> +#include <linux/iio/triggered_buffer.h>
+> +#include <linux/iio/trigger.h>
+
+Can we move this group separately after all other includes?
+
+> +#include <linux/module.h>
+> +#include <linux/spi/spi.h>
+
+...
+
+> +/* this driver doesn't aim at the peak continuous sample rate */
+
+This
+
+> +/*
+> + * Default settling time. This time depends on the:
+> + * - PCB design
+> + * - touch plates size, temperature, etc
+> + * - initial power state of the ADC
+> + *
+> + * Since most values higher than 100us seems to be good, it make sense to
+
+seem
+makes
+
+> + * have some default value. These values were measuring get by testing on a
+
+were measured on a
+
+> + * PLYM2M board at 2MHz SPI CLK rate.
+> + *
+> + * Sometimes there are extra signal filter capacitors on the touchscreen
+> + * signals, which make it 10 or 100 times worse.
+> + */
+
+...
+
+> +#define TI_TSC2046_TIMESTAMP_SIZE              (sizeof(int64_t) / sizeof(int16_t))
+
+Hmm... shouldn't we use a struct approach below?
+
+...
+
+> +/* represents a HW sample */
+
+Represents
+
+Kernel doc with explanation on the fields?
+
+...
+
+> +/* layout of atomic buffers within big buffer */
+
+Ditto.
+
+...
+
+> +       u16 scan_buf[TI_TSC2046_MAX_CHAN + 2 + TI_TSC2046_TIMESTAMP_SIZE];
+
+Shouldn't we use a struct approach here?
+
+...
+
+> +       /*
+> +        * Lock to protect the layout and the spi transfer buffer.
+
+SPI
+
+> +        * tsc2046_adc_group_layout can be changed within update_scan_mode(),
+> +        * in this case the l[] and tx/rx buffer will be out of sync to each
+> +        * other.
+> +        */
+
+...
+
+> +       dev_dbg(&priv->spi->dev, "%s effective speed %u, time per bit: %u, count bits: %u, count samples: %u\n",
+> +               __func__, priv->effective_speed_hz, priv->time_per_bit_ns,
+> +               bit_count, sample_count);
+
+Drop all these __func__ from everywhere. For debug they may be enabled
+via Dynamic Debug interface.
+
+...
+
+> +       switch (ch_idx) {
+> +       case TI_TSC2046_ADDR_X:
+> +       case TI_TSC2046_ADDR_Y:
+> +       case TI_TSC2046_ADDR_Z1:
+> +       case TI_TSC2046_ADDR_Z2:
+> +               settle_time = TI_TSC2046_SETTLING_TIME_XYZ_DEF_US;
+> +               break;
+> +       default:
+> +               settle_time = 0;
+
+break;
+
+> +       }
+
+...
+
+> +static u8 tsc2046_adc_get_cmd(struct tsc2046_adc_priv *priv, int ch_idx,
+> +                             bool keep_power)
+> +{
+> +       u32 pd = 0; /* power down (pd) bits */
+> +
+> +       /*
+> +        * if PD bits are 0, controller will automatically disable ADC, VREF and
+> +        * enable IRQ.
+> +        */
+
+> +       if (keep_power)
+> +               pd = TI_TSC2046_PD0_ADC_ON;
+
+else
+  pd = 0;
+
+?
+
+Otherwise comments are kinda not fully clear.
+
+> +       return TI_TSC2046_START | FIELD_PREP(TI_TSC2046_ADDR, ch_idx) | pd;
+> +}
+
+...
+
+> +       /* last 3 bits on the wire are empty */
+
+Last
+
+> +       return get_unaligned_be16(&buf->data) >> 3;
+
+Doesn't mean we will lose precision when the driver will be used as AD/C?
+
+...
+
+> +static size_t tsc2046_adc_group_set_layout(struct tsc2046_adc_priv *priv,
+> +                                          unsigned int group,
+> +                                          unsigned int ch_idx)
+> +{
+> +       struct tsc2046_adc_group_layout *l = &priv->l[group];
+
+Hmm...
+
+> +       unsigned int max_count, count_skip;
+> +       unsigned int offset = 0;
+> +
+> +       count_skip = tsc2046_adc_get_settle_count(priv, ch_idx);
+
+> +       if (group != 0) {
+> +               l = &priv->l[group - 1];
+> +               offset = l->offset + l->count;
+> +       }
+> +
+> +       l = &priv->l[group];
+
+Why do you need to reassign this?
+
+Wouldn't be simpler to rewrite it as
+
+if (group)
+  offset = ...;
+
+?
+
+> +       max_count = count_skip + TI_TSC2046_SAMPLES_XYZ_DEF;
+> +
+> +       l->offset = offset;
+> +       l->count = max_count;
+> +       l->skip = count_skip;
+> +
+> +       return sizeof(*priv->tx) * max_count;
+> +}
+
+...
+
+> +               switch (ch_idx) {
+> +               case TI_TSC2046_ADDR_Y:
+> +                       if (val == 0xfff)
+> +                               return -EAGAIN;
+> +                       break;
+> +               case TI_TSC2046_ADDR_X:
+> +                       if (!val)
+> +                               return -EAGAIN;
+> +                       break;
+
+default?
+
+> +               }
+
+...
+
+> +               if (valid) {
+> +                       /*
+> +                        * Validate data to stop sampling and reduce power
+> +                        * consumption.
+> +                        */
+> +                       ret = tsc2046_adc_get_valide_val(priv, group);
+> +                       if (ret < 0) {
+> +                               /* go back and invalidate all channels */
+> +                               group = 0;
+> +                               valid = false;
+> +                       }
+> +               } else {
+
+> +                       ret = 0xffff;
+
+GENMASK() if it's a bitfield or U16_MAX if it's plain number?
+
+> +               }
+> +
+> +               priv->scan_buf[group] = ret;
+> +       }
+
+...
+
+> +       unsigned int retry = 3;
+
+Why this number? Comment?
+
+...
+
+> +               /*
+> +                * We can sample it as fast as we can, but usually we do not
+> +                * need so many samples. Reduce the sample rate for default
+> +                * (touchscreen) use case.
+> +                * Currently we do not need highly precise sample rate. It
+
+a highly
+
+> +                * is enough to have calculated numbers.
+> +                */
+
+...
+
+> +       priv->time_per_scan_us = size * 8 *
+> +               priv->time_per_bit_ns / NSEC_PER_USEC;
+
+One line?
+
+...
+
+> +       /*
+> +        * calculate and allocate maximal size buffer if all channels are
+> +        * enabled
+
+Calculate
+enabled.
+
+> +        */
+
+...
+
+> +       name = devm_kasprintf(dev, GFP_KERNEL, "%s-%s",
+> +                             TI_TSC2046_NAME, dev_name(dev));
+
+NULL check?
+
+...
+
+> +       trig = devm_iio_trigger_alloc(dev, "%s-dev%d",
+> +                                     indio_dev->name, indio_dev->id);
+
+One line?
+
+> +       if (!trig)
+> +               return -ENOMEM;
+
+...
+
+> +static const struct of_device_id ads7950_of_table[] = {
+> +       { .compatible = "ti,tsc2046e-adc", .data = &tsc2046_adc_dcfg_tsc2046e },
+
+> +       { },
+
+No comma needed for a terminator line.
+
+> +};
+
 -- 
-2.30.1
-
+With Best Regards,
+Andy Shevchenko

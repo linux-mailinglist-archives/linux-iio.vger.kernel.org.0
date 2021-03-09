@@ -2,98 +2,100 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D067A332384
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Mar 2021 12:01:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F6DB332399
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Mar 2021 12:06:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229691AbhCILB0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 9 Mar 2021 06:01:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41590 "EHLO
+        id S230116AbhCILFu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 9 Mar 2021 06:05:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229656AbhCILBU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Mar 2021 06:01:20 -0500
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F27BEC06174A;
-        Tue,  9 Mar 2021 03:01:19 -0800 (PST)
-Received: by mail-pj1-x102c.google.com with SMTP id kx1so701398pjb.3;
-        Tue, 09 Mar 2021 03:01:19 -0800 (PST)
+        with ESMTP id S230035AbhCILFo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Mar 2021 06:05:44 -0500
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCB11C06174A;
+        Tue,  9 Mar 2021 03:05:43 -0800 (PST)
+Received: by mail-pj1-x1030.google.com with SMTP id lr10-20020a17090b4b8ab02900dd61b95c5eso2550450pjb.4;
+        Tue, 09 Mar 2021 03:05:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=q1cLJCT+U4+pmf7tfi6eJGOEwZrcQQZX5hIWWq7++uA=;
-        b=k+HJmElhMJV/XRqoJY3jQqvnlUoBmTyEUqJXNhPKkIyPNJaApNjG6B+mj9ass5IxVC
-         bISVrvzPm5uJx6aLaGE2XYfOf6d6t4d7w1pYZ4SqqMKrdWWLFd2YPo0MoLfBkcvl04fn
-         hQbZsfjJ6rQqnmXnnRiNfdxuAiX1293/3C6usLZmtwYfdg6lNIJ6TwSeeGj0ygWGtdXe
-         E4Z6YcXRRt8WHXk3slPIUeAh/EdAnW9b/jSbH7J6z8JYYgGUCU2mMrBGQ9Fg1Sq28Kr2
-         0jTsM6iOVwDRboR6MjCecPl8RFxZoxWajTASnrkd8wNRGpAl5nH3NB54nBIgi0BEUQak
-         y3og==
+        bh=3T4W4xV4Tf3QOElTCSezyQGIMFwB4ft/YIBh6UXVS8s=;
+        b=RIY35qb6rf0fzFHNnG54ojrKJX9RKNfRAtFmlwJlQouu+k/mgFGYylDSGNJ2/e3OsH
+         zUTAhWc3w4FMtnnANd/1aZT7deE7RjOkc134fnm5q26+a63FG1pdJwrm+lmYw5IbTTSC
+         xQ+b8AdQcyKU57HJOaMOqDZJc4rDQOH1XDz9ogRgPh5cXPb3pNhaDkx/GG9q28zU6ygd
+         cbKepLPv/pnTcxw+ESAKe3n8wWny4gu+00fpTEEdZMwEFAY+x4rUECMgfslfTw1jdpvx
+         lAXkbcSkHjfc1A/lzVfeywPrqGAqjm5aXOsXCWSYNwqGdzMppa0YlTRnrv1yvq/nzTot
+         T5dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=q1cLJCT+U4+pmf7tfi6eJGOEwZrcQQZX5hIWWq7++uA=;
-        b=BVFUiQcUy9DCfI3tH34xg4dVR+YH14zRdvPuzk3xVtjrmtVojJdOXrf2AozMagjofS
-         sVR2UV9Ox9pSnh7v557/VaEAF6IRtyUAFvVwQqicslzaI4xsdPvPU+AbzIjPUrJi6dmc
-         BEg811z/rhgy++I/xAW3hKqfiGiY/A8WMyCDiDDd0gYlX38UxckdaGiFGry2UjwLZoYP
-         N08jsxHwIzSrNjz3ecKyPNHAm9KPIEoRGnxnJLctIGUcBwiptRRv5+MMxqzgWSoW23Sd
-         ElV2WRnE1xcKECaHoYP6pB0tcJL2goUTgmIqpb/DUAzmUD1R+zzc8LPtx/lJYUhAkb8N
-         F5kw==
-X-Gm-Message-State: AOAM530M5XRoZLlPI/79KsvSyG3FW6Py9f85049LbiWVQ+HWrS5zXOpK
-        bOd/QBTNBXt/w4F03VyJcOTnWiPUu+J5SqN7nvw=
-X-Google-Smtp-Source: ABdhPJwqWZ5xIN184n8KYzSep418TYpT83oYXGRwwuQerm4R1zEoo6fDbtEPXFlVtaKa0OH38qRUjuZwJgW3HJ+n0+o=
-X-Received: by 2002:a17:90a:e454:: with SMTP id jp20mr742370pjb.129.1615287679414;
- Tue, 09 Mar 2021 03:01:19 -0800 (PST)
+        bh=3T4W4xV4Tf3QOElTCSezyQGIMFwB4ft/YIBh6UXVS8s=;
+        b=EqQ7CxduprRdmBpmEGMg/P4RdZJBROC4peWfRsjH3mwpkw9ijv/FdPJql2jE6J7xEt
+         WY+MEvjlh5o7W9S9nox35oaN+emm02ToWEgDJm8T74TtjDwboawTXEsj2z8cba92YEZs
+         +jnU7Td1ZC0s8fNtzKUF32PRDYg2rxXCKHR5PvBX5vJn8lHo5lrl5XsHwevhJ4CaVM7c
+         pHz9tgISTWgfpqG0vIgBNLYhvkBbMoA70hdpBcdNOhPaTE1/i9IWIoMps7v2FW+3njvX
+         wZt3kxV9wNqrjDvl5ev7jRsJMHFlzeE6Gg9zlHyUc2drPdlswqBWhc6igPICFEAQPcr1
+         kxWg==
+X-Gm-Message-State: AOAM533/IefIXL+I8uAPcfhQfHVOBHTSLhrytETpQn8IbR/4OKei890q
+        MygIwUKNp1hDwMOqCyKCIB//iI9colkOoMD3XxTOVZh8C++nuQ==
+X-Google-Smtp-Source: ABdhPJzIuJ6hLAK8fFWlrH+mxFgPVgYC2CvPYakI0dg/jy1WNPvCByyQjHV+7I3A5z7rd2DWJLua2Kz7/HyVVcRGDMc=
+X-Received: by 2002:a17:90a:db49:: with SMTP id u9mr4261198pjx.181.1615287943267;
+ Tue, 09 Mar 2021 03:05:43 -0800 (PST)
 MIME-Version: 1.0
-References: <20210305070536.2880-1-Qing-wu.Li@leica-geosystems.com.cn>
- <20210305070536.2880-2-Qing-wu.Li@leica-geosystems.com.cn> <20210306164217.2d8166da@archlinux>
-In-Reply-To: <20210306164217.2d8166da@archlinux>
+References: <20210305133813.27967-1-o.rempel@pengutronix.de>
+ <20210305133813.27967-3-o.rempel@pengutronix.de> <20210305190239.000075fe@Huawei.com>
+In-Reply-To: <20210305190239.000075fe@Huawei.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 9 Mar 2021 13:01:03 +0200
-Message-ID: <CAHp75VdBRtpkA5zmpEZ+gdP=RwYaoTsyDBqvvO2w67T6-6kqMw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] iio:magnetometer: Support for ST magnetic sensors
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
+Date:   Tue, 9 Mar 2021 13:05:27 +0200
+Message-ID: <CAHp75Veu-G41mDUZubCgHD_V+_znd0HJoO03ZL7JpgwtjMYLCQ@mail.gmail.com>
+Subject: Re: [PATCH v1 2/2] iio: adc: add ADC driver for the TI TSC2046 controller
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
         Rob Herring <robh+dt@kernel.org>,
-        Denis Ciocca <denis.ciocca@st.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
         devicetree <devicetree@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        grygorii.tertychnyi@leica-geosystems.com,
-        andrey.zhizhikin@leica-geosystems.com,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        David Jander <david@protonic.nl>,
+        Robin van der Gracht <robin@protonic.nl>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Mar 6, 2021 at 6:44 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> On Fri,  5 Mar 2021 07:05:36 +0000
-> LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn> wrote:
+On Fri, Mar 5, 2021 at 9:05 PM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
 >
-> > Add support for STMicroelectronics digital magnetic sensors,
-> > LSM303AH,LSM303AGR,LIS2MDL,ISM303DAC,IIS2MDC.
+> On Fri, 5 Mar 2021 14:38:13 +0100
+> Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+>
+> > Basically the TI TSC2046 touchscreen controller is 8 channel ADC optimized for
+> > the touchscreen use case. By implementing it as IIO ADC device, we can
+> > make use of resistive-adc-touch and iio-hwmon drivers.
 > >
-> > The patch tested with IIS2MDC instrument.
+> > So far, this driver was tested with custom version of resistive-adc-touch driver,
+> > since it need to be extended to make use of Z1 and Z2 channels. The X/Y
+> > are working without additional changes.
 > >
-> > Signed-off-by: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
+> > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 >
-> Hi,
+> Hi Oleksij,
 >
-> Given that at least two parts in here is supported by the existing
-> driver in
-> iio/magnetometers/st_magn_*.c (lsm303agr) can you confirm that it
-> doesn't make sense to simply extend that driver to support the
-> other parts?  This is particularly true when the WHO AM I register
-> reads 0x40 for all these parts.
+> To consider this as a possible long term route instead of just making this
+> a touchscreen driver, we'll want to see those mods to the resistive-adc-touch.
+> Of course that doesn't stop review of this in the meantime.
 >
-> I've done a fairly superficial review whilst here, but please check
-> you can't just add the relevant entries to the existing driver.
+> There are quite a few things in here that feel pretty specific to the touchscreen
+> usecase. That makes me wonder if this is a sensible approach or not.
 
-I even hadn't looked into the code because this one needs a very good
-justification why it's a new driver rather than extension of the
-existing one.
+I'm wondering if this has any similarities with existing drivers under
+drivers/input/touchscreen.
 
 -- 
 With Best Regards,

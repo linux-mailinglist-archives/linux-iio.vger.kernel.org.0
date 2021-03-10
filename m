@@ -2,130 +2,138 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B462333F44
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Mar 2021 14:37:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0736333F59
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Mar 2021 14:38:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233072AbhCJNbd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 10 Mar 2021 08:31:33 -0500
-Received: from mail-eopbgr10083.outbound.protection.outlook.com ([40.107.1.83]:57054
-        "EHLO EUR02-HE1-obe.outbound.protection.outlook.com"
+        id S232215AbhCJNeg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 10 Mar 2021 08:34:36 -0500
+Received: from mail-eopbgr50052.outbound.protection.outlook.com ([40.107.5.52]:2881
+        "EHLO EUR03-VE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S232727AbhCJNba (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 10 Mar 2021 08:31:30 -0500
+        id S232845AbhCJNeT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 10 Mar 2021 08:34:19 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hebhu92r5F9U00l/lHQS1tMASXpc09B00gWTA3qEmiGb7O6ZZdAsJSbOBdFIMe5TwpkxF88I6RwIKWKDOTPOb9yW0NsUVgMjEBtmboaDAYKojOEO7+WChjkKmisTrzo74AoJ/IWaqSlQdES7pLqw2W3eMpx7xbPNZaUORphlpzN425CDdqm6n2ndCc1m9xXmwnEN5gkFP9hw+Ob9wQ+lAfRcw8uMRmhf+H/xOIPVWCXMQtBQqj+j3ZTja6CWHcID+sTUdmDA5o+yOpCVAiZjRXmmVfxzvxkLJS9JswRcvIYpIWmntWpaXtAMOzmRQd/JrUINJNXfXWcNyo32hoN82Q==
+ b=dxF2frHPIukNoMDGiSagXLV7OJhUpmx5GFvn1DFYOdivllbiJyIpz3ya1X+gUvp5YLEqtitGzM7SsT3GiyND4rvcXJafxF9hWO5RqKVq0HFgvWpbiMv2IqKAQzVCPqEEIgmQPrQJD6SqF08rUppFCNwGFUHmJZBO2yUW05KY0qz/5YVqGJDdmuEIU6JsxgowsVQl6BCtNHYzeWiF0b95fF249txUzgzFUEXppzF2nFyPD/3S32jWSq8cUpH/k21l2D1EK9E4NZcQ9qtnTmH0S1Gqb1mDzE15+IcUeUI26UOAVscumyEHBzIlSVNMJ1rpy4PUqaeP5kSGGDS4qRbxfg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WgHTKHc9LfunL4YoMQVRahtl8os9OMadTOsjabm6+PI=;
- b=lyFbsM7SNCOYJAXh/8dWF0uhQezUW9uR+Vh2UxmexbTmHFsq1y6In0eA+jC2yZXZywz+vyfZihe67wPiN+j6xfZ8O8jXUfRvNfmnSSmB8nwcz6GsmC/lACRGoIY2ZympxC/U+I0BamJQACzG6+pwxhIcnmkctYN+OSA4ne8eNLBppKbNFS3rwMbB1yem+leJoDdCOVKPngoRP40Y5aogGadSRhOVIRlMZBmpQD2xTEzKSdcCfMCYO7lCprm7wGMUBBWPDmLjdd7jvy2QjcBQXXH4BoTbD0iP0ABAmjBOvzrhNUNO9PbxJCihJ9KUFCO9NVba/j/rovkCCiUDL/OaEw==
+ bh=BwjeOxKAgroAFTl+5DIj8vUm2WX3mVcDcjhjodJI3n0=;
+ b=THzRNeOCemodmPtjqgRL0hohThq82YPXAlWtjZheFV7bdd4DjLs6WdPNxBdDUY83QrEleiW0RvnZ1/T45inGCvkFcPy3MCUYEzbP3tbEE4D+2u2IvOF+s+j+bMzMOLUFfni7CE9O2Z+j8WZaNi/3cO+MlfBqZ6DBPYPIqgwNA8YofYnNohUagVZOP6POwuDPIePOJGzaV682nqtlf4A36WF+JmSIpBLvAMql83+D07nUVwRhVC4z+6ZJJEF7dAoTa47ehIfbdEigxEGwT7A7z3GPw7isbNyEZubuZeo2kZjCXV52c91or+CXJDHIgtBi5meWxlFI7kekPD7PrJ/AWQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=vaisala.com; dmarc=pass action=none header.from=vaisala.com;
  dkim=pass header.d=vaisala.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vaisala.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WgHTKHc9LfunL4YoMQVRahtl8os9OMadTOsjabm6+PI=;
- b=PK8iVm54YoOuZwUp9EedCzLGhms65N8g1bvfUQ8YRLZ9DEYAqa6a46GodfmdIzhdw1c0b+VJr62E4Fm9bXE00eENTYkWVld0NNJU4kHRUVLozsERBi2EcR4OsZzvd5F0tLahH0G251N26QzmDcQw9Z42ybA3jTZzEjF2xDRH+BQBz9BY29QehE8umcXvFN7ZE5D7Oe6IwIkk/Xnf6Bn8NxDJEBEo/SLCkXw6DUKeGzX7KDuBCugoEUBhnzv0n5KZ2bTF5nt8vcwFDZRQUxDwES2Lutn0mk/czNpui1TqUV3zr0okcbtGYzt0eKPnzWKo3Id0w0y/l79WriBW6dI8CA==
+ bh=BwjeOxKAgroAFTl+5DIj8vUm2WX3mVcDcjhjodJI3n0=;
+ b=3R0TzpRkBH3TjrFSgSZ6/vMunq+eBPNfmXv0LVFiMkiA8ybVf1A+xlJMJib/q4dD2C9i1p7gpbcFuHJmBIAIVB3bhwzP6aoAqD89K0NXnNhHfvSKQDoZYink5XYeLMOmiTmM9nX5hykRtz+ktj/C9x7YBhc/Ym0IbhiKEA9LtHy7Wf0RNMR0v/N1GFw22dAwahtXnobUqkCK17J+hfEI9TRM0ArzQtk60JuT1S0jS8Jbg8gB/qI4rM1oenK7lTDPpLUGm/JblAyWQFuKkyFx7C4Osz9HkJozOkZb5nQPaQMfq01lAI0rFtn4bcSoQZF/kgl1/q5+Ez9/OuYjTPFbZQ==
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none
  header.from=vaisala.com;
 Received: from VI1PR0602MB3568.eurprd06.prod.outlook.com
- (2603:10a6:803:10::31) by VI1PR0601MB2110.eurprd06.prod.outlook.com
- (2603:10a6:800:2f::26) with Microsoft SMTP Server (version=TLS1_2,
+ (2603:10a6:803:10::31) by VE1PR06MB6270.eurprd06.prod.outlook.com
+ (2603:10a6:803:121::11) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3912.17; Wed, 10 Mar
- 2021 13:31:28 +0000
+ 2021 13:34:16 +0000
 Received: from VI1PR0602MB3568.eurprd06.prod.outlook.com
  ([fe80::c471:1848:5f45:95a4]) by VI1PR0602MB3568.eurprd06.prod.outlook.com
  ([fe80::c471:1848:5f45:95a4%7]) with mapi id 15.20.3912.027; Wed, 10 Mar 2021
- 13:31:28 +0000
-To:     linux-iio@vger.kernel.org
+ 13:34:16 +0000
+Subject: Re: shared access to gpio pin
 From:   Tomas Melin <tomas.melin@vaisala.com>
-Subject: shared access to gpio pin
-Message-ID: <d1de620f-b2f5-11ab-5451-962150518f3a@vaisala.com>
-Date:   Wed, 10 Mar 2021 15:31:25 +0200
+To:     linux-iio@vger.kernel.org
+References: <d1de620f-b2f5-11ab-5451-962150518f3a@vaisala.com>
+Message-ID: <ab4c5bb9-6060-7f2f-b1da-cd7e1f17d453@vaisala.com>
+Date:   Wed, 10 Mar 2021 15:34:14 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
+In-Reply-To: <d1de620f-b2f5-11ab-5451-962150518f3a@vaisala.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Content-Language: en-US
 X-Originating-IP: [85.156.166.133]
-X-ClientProxiedBy: FRYP281CA0015.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10::25)
- To VI1PR0602MB3568.eurprd06.prod.outlook.com (2603:10a6:803:10::31)
+X-ClientProxiedBy: AM0P190CA0028.EURP190.PROD.OUTLOOK.COM
+ (2603:10a6:208:190::38) To VI1PR0602MB3568.eurprd06.prod.outlook.com
+ (2603:10a6:803:10::31)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [85.156.166.133] (85.156.166.133) by FRYP281CA0015.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10::25) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3933.14 via Frontend Transport; Wed, 10 Mar 2021 13:31:27 +0000
+Received: from [85.156.166.133] (85.156.166.133) by AM0P190CA0028.EURP190.PROD.OUTLOOK.COM (2603:10a6:208:190::38) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3912.17 via Frontend Transport; Wed, 10 Mar 2021 13:34:15 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 356abbdc-9626-43c2-f8f3-08d8e3c8cefc
-X-MS-TrafficTypeDiagnostic: VI1PR0601MB2110:
-X-Microsoft-Antispam-PRVS: <VI1PR0601MB2110FF10CAF8E331FD9169EEFD919@VI1PR0601MB2110.eurprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
+X-MS-Office365-Filtering-Correlation-Id: cdcad999-750e-41c2-d25e-08d8e3c9332b
+X-MS-TrafficTypeDiagnostic: VE1PR06MB6270:
+X-Microsoft-Antispam-PRVS: <VE1PR06MB6270AF971EB6656DD7D998D6FD919@VE1PR06MB6270.eurprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: gWdD7fxK1uxq7VnhxL5qwu/uEeaek/zSWHakwZ8UFJ4Hd1wxoCQ1P7X/EWDjYReeCyWi7BMGoK48g/zsNzLTOQlB39yB+FzEr3uHIcut3H0pvS4UIRfNCOdx5BHw5chvemBOueACMiNmKsLhr6LF2i5Hw+cCAqxwvCnqmV81AKLuwnMs3ohYs/j1ggJv1evn/jTVvDdMQbCr/NK9T3m+trz7sglVOhurR8s3JXMTkjISCB9mprl7wz5tPqMwsHH3etGYu6VVjIBkkLVw83Ve1Hxgpc0QMRD8Xw41ccjKrFlqzi9I/dwhvc6ivKsMPRAhHuHJynzBeEwU9aFc137iHUOfp7AmpIYEfwCuqGeBvYhyngplDDujX0TvGNkh7TZF7yYhTKnx7mCO/CziYqSIBlxOOP0rWV8g/p6MQlnLhw6cRRSPbneQdUNd79Ob4vsxGA7B28wRHN7Xk4HCIfuoy8ZknWsQMp7Qj5Lbv4DHNt7t4dSf07A8mRTQ9ikf2DuUghwuUGykS7O2SXcTK3nCGsI2lWPUfd99plZ22EQYYHkLlIss0OXHgbPZHdfojhkOkw3SlUWKtSEYB5y1TLdK6ZaWyCdyh6+UB0Cdc0f24wMW3BpbLf5skm82/ik4m9ghmsfV7x/W0AyKI+GXmwDV7g==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR0602MB3568.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(396003)(39850400004)(346002)(376002)(136003)(16526019)(186003)(66476007)(2906002)(26005)(2616005)(956004)(44832011)(8676002)(31686004)(8936002)(86362001)(316002)(16576012)(36756003)(6706004)(6916009)(52116002)(6486002)(4744005)(478600001)(66946007)(5660300002)(83380400001)(66556008)(31696002)(3940600001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?b0hkaElOQVB0VWxibDFWalZrK1ZkT0U2US9WeGFZaDJiOVlzMnZnQzVBMGJZ?=
- =?utf-8?B?MTU4RHJ6ZFJ6WS9DWHFvUno4NGxrMWxzemlZTW9abFpRSjZVblRldzlDVU5O?=
- =?utf-8?B?aHRaRVlFWkd3NWlXb0tFVlZMZU1td2ZwUndaUDE3UjVXbmM2am8xaWZXZ2x3?=
- =?utf-8?B?NStUSDJ5dVV1aEQyYzZQRFAwK1BGSEFTN1Q3QWdZQUFxeHpuZ20yQ0FLK3ZB?=
- =?utf-8?B?ZDZkdFBHVHhNWkdDM0k0Q2NqallYZGlJVHA4c3BHTWE2K3p3elBNZkQ3eGk4?=
- =?utf-8?B?bkhLcEswOG5TMkVyQ0cybDFLbE9IUkVJOUpLL2t1VFo2a1RhTElRQVdkS05o?=
- =?utf-8?B?bC9yOVdaaFBwa2J1UWNWRC83OGVCNm1teTBpVTlhSWk5QnpuWnh3RjQvK0FL?=
- =?utf-8?B?R3pub0xveW1uSUY2bFBxdmlWUk1Na3F4WEVyanpYOXUvcGlSSVhjMjIvb1RV?=
- =?utf-8?B?VE0xOEtFclYyaUs0OVBuRXM3REI3RWRvYVI3R0UwOG9RU0srZHd3UTlQSmt2?=
- =?utf-8?B?YUxDNHc0RVRJbTJsUFVPbTFHVHAySnRPa3VYbmV3aWc4OTNST1VWWDFKOFg2?=
- =?utf-8?B?WDQ4TjM2ZXprekpNUHAzS1ltZUJnZmpuV0s4TlBKY0hZcnIrbGJsMmsxOFZr?=
- =?utf-8?B?SmRZUTlHRnNxZVFsWGVDMWlnKy94YzhMak53dmp0dktvVXJvejZUSTJkV3RN?=
- =?utf-8?B?b0R4c1JvYWJzaXpPaC9mdjA3b1J5eGl5QVJwYXZGREhqN1U2cFBJclFmdjZt?=
- =?utf-8?B?anIwc0wwbGhPLzBlRmFWMGh1VlZGalZTQnAzQ3NYUk1DR0Y5OXRoV1lhc29F?=
- =?utf-8?B?eDg5U08yUVZEU2lJeTc5SlkzMlA5SEZnQ0ZHYzFuY2JWT2YrWXNFMjR5VlV6?=
- =?utf-8?B?bkdwSVBoY3pyZ3M0cmNDZ1psNDErNFlyQnBXdy9nWVpLa1M5NnN0TkVoVkho?=
- =?utf-8?B?UUhwMkR4QitDOHhjL0Q0Y2RBcVVrSzRxM3hVcVN6dFJXOUJxYzRDeTBhaXRa?=
- =?utf-8?B?Q29ncjMzZHkvMVI5TDNsM3dOTm9relFaaGVQVGU2L1l4ZUR1cXArQUJZNGxI?=
- =?utf-8?B?NGlJTi9OUU03WDRvZGVHeEp3ZEQyYkRuakFmaHdxY29LT3htQ0g1akRZOWh3?=
- =?utf-8?B?ZHFDK1dzUHNlNFpTYzRxUXZtekRWZ293V2N2c21FVnREWHM3QndFZlpKYkg1?=
- =?utf-8?B?cllENWxHSnA4SVBMSnJLbVg4cGMxTjZqSVJXQnkwbVR5RkRlS1pKN1RjMTdD?=
- =?utf-8?B?TmtRWmEraFVjL1MvSW85aDhMc2tDOTZ2WTQxdmJJOEpBYnVOT2FmMk1zbmhX?=
- =?utf-8?B?YlJjNHpIbUs3aDlCNk9pT2kyME5mOHlGYXRUS2pDeFJ0ZW9FVHpTTTZkbzkw?=
- =?utf-8?B?M2xiMFlpODY4MHFUT3Y3VG9DeVdlMVFVbEZTalJyU3E2T1IzTnUzT3ZhK0JP?=
- =?utf-8?B?TVhkYW1iZ2hiTTcxMHRFU1dzVlg2eW8zK1piUlhxRHU2K1F5VlZ5Z0ZVQUV1?=
- =?utf-8?B?OWlYNnRpcnRWc3J0NXlIditOWlVjSFkxNGJST3VLbWtaamxNa0c2TUdydHRt?=
- =?utf-8?B?T2pRaDNFUzZZd2RLaW5kUW5ORGZvSUVBZnduc05DYTgySC9xckMwR2FQKzZU?=
- =?utf-8?B?aWE1cmZndGdDWmRNSjVwOENlTktEblExUTBRZVcvR0U5NGFKb0J4aTBsMDY0?=
- =?utf-8?B?VE9ETkxZaXlkVnFJaW5aUlE3L1Q1bjRGODRhblltTGJCY0pjMmd0YTB3b2RP?=
- =?utf-8?Q?0ldSDICejR3GahEcfwOuJL8EG8Uvg64QGkYvYSt?=
+X-Microsoft-Antispam-Message-Info: 8w0CbU7lu1hB0sgL8FZ3SN3cT3cbzBXZMXxt0jfx0cPVvd0xs/bBCnSAjJ7q7uW9I/xDzskjEMlgrbXXY1D+hpvn08wxphRb+314XnV7ZvZShaDvchAPv3UMJ0ada1ideOrL0sgMKkssLAyHMMFJqLVQLTB5HF/yf+SOrMT8j0HTm6MLilYVXD3W7Cu0tdJvJH68ajqogBTCszU8jQXEtzbgg6vk/B2I076mA7JOj/9XXOtHQ+ylD7eLtkORg/qeeQTSqcoZgaeMy9P0PDxBXDmuEAf3Tn4iyC5WAQHF1si9XSxqwdpCjGxvcgMKz473PwvlRzn4skUPTPZ6qygIXu5ZCuleJBmwZN9U3paFYuLM7yWlKTX18KfIjIgoBYM+g9dQWhi8dQTvFw+N3iBtBuC+5rgO3GuD9MJO/xywk7hvkZb/uPeehzByJTamvG5ecLcJfYsuTRez9dHLDHyrnFFFmbnohrde9wYPtIC9LKaWbj2Mjw4Al+UiRnFY7cveBugJqYjkEA72fr4A3/R4nfyeUvqyDl7H1l9oV1DKXOq/IBaZg/RA8MEjjb9THon3YmS4sQekHm4A+5Sgy4dYcbD/+y4XzJFMKIZt1gE26FoGtclYp47GIQ8N30pkkzM1P4gx1bvqED1Tk53JiOeL0Q==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR0602MB3568.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(376002)(366004)(396003)(346002)(39850400004)(66476007)(4744005)(16576012)(186003)(316002)(52116002)(8936002)(6486002)(36756003)(44832011)(31696002)(16526019)(5660300002)(66556008)(83380400001)(26005)(53546011)(86362001)(6706004)(31686004)(8676002)(6916009)(956004)(2616005)(2906002)(66946007)(478600001)(3940600001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?ZUowR3dUR01JK3VUK0I0UnRXRW5Zb2hVSjV5VWd1aHdDR05OdHVoaHpDaXZH?=
+ =?utf-8?B?Y3N2MHFETzBFWFdSNXFnemdtL3lDN1hQTEZIN24yb3ZvNjQ1ZTNjZmpOUnZt?=
+ =?utf-8?B?MXE4MWJ2K0NXU290K1lQVFJuRkYzeDVLalZKejNzYmVPdEcyUDMxWGUyS2g0?=
+ =?utf-8?B?TCtXSGZtS0RWVldyODdCc21JR1M5UmpYV1k0WTNXcjdVcTRoZHRQYVB0aW85?=
+ =?utf-8?B?a0xQNEVSYm02VmRTNVRKWEZZN29KTWcrMys5bGR6RncweE9tMVQzTXRCdG96?=
+ =?utf-8?B?WFhSRHVJRWdJUG4yci9WeG1BN1BVVG8xMGtISlovNFhmMVpncER3TnpHOFB5?=
+ =?utf-8?B?UEUxUGlCc25zdFEzZm84ZW9OL1NvMXc2d2ZhRnlUVmFxc2R2VlR1SlZUS0J1?=
+ =?utf-8?B?bS9aVTJ2ZjVQV08zQXEyZ0JzZzByQ1pJNUxxaDVjQXlyc0pUZWFxZ0JEK3Ez?=
+ =?utf-8?B?QkZVbGdMUUQxL3RBdE9IbFU4VHhwTFRTbklLR1BMR0V1Uk45YmpvKzIvVkZk?=
+ =?utf-8?B?bmRSN0xMK05xWWgzM3ZFSC9BWXZsVmFteG11eFNEZXdLK3pSRnZPY3c3M25m?=
+ =?utf-8?B?TkZmMDJnTy9pQWdoN2VRNU1XOGM1THowbi9zQ1hVQUtyR2xSSzR4M3ZJQUVG?=
+ =?utf-8?B?M2JNd3RmcFgxdHU2alpPUTFxVGg3YkE3R04zZ1dyUy9TVDE4YXlzSkx5T0xp?=
+ =?utf-8?B?V0lsdmNOQWF3RThFQjNHYkZvSnBUendNY09KR2NVY0VWYXlLV2dMRFNsSTFl?=
+ =?utf-8?B?SFFIVzhnbWRSQVE0cDMrSHVSRjU2V1lQN2swTVA3UkNhc2NxRTlHcjF4YnI0?=
+ =?utf-8?B?ZkU2clRUVVFlblBtZElzQWZqeksvWmJlMlRHTC9sakpvejczNkt6eU1PVDEr?=
+ =?utf-8?B?QUVodmZNYVRrbllCZXhXVW50R2pVbDlNK1F3ODhOUWkyS3NZeklBeFJZTE9t?=
+ =?utf-8?B?dExnWDhiSi9aaWpZWmx0a2NUbCtvNExSYWdweWRzUklGQktLa0hPSmUzRGxr?=
+ =?utf-8?B?Mk5jMkRYNFJRdVdKNWRSYURVQlJJYVRQU1dvU2k1b0syZGdvMzN0dFVEVmVp?=
+ =?utf-8?B?YXg3WER0WVpCM1p4dkNSNjVsN1NnV0tQdndXN0JENnpVeEtKSk8rQlUxQmhO?=
+ =?utf-8?B?dzdtY01MdWlGUmd3dS9RbE5sKzZnMnZ4cTVRTUVBZVhyZmZDVDRTQnNwMEdT?=
+ =?utf-8?B?bXNDWERUeVF2RVljQms4SzlYZGw2Tlo4WkNzZmZIbzM5MjIwR2VZNTYreFBE?=
+ =?utf-8?B?TGhIUnI0Kyt6dnN4a1BXMk9XZE9rMzREQVpFeEFPOVFIWG1LajJFUko0TXBJ?=
+ =?utf-8?B?c1NMVDFLUUg4WWYvZHJJc2tXb3YwbFpIWHhjYnFmSmtOU0hOZnJXeTYxTmw4?=
+ =?utf-8?B?VkRYeGdPOWR6K3FXUEFlUGZEL2tmM2U3bEF5OXhha0xaRGI3R3pncEkvYnp5?=
+ =?utf-8?B?eEl0SEF2TWlkaFpxSlhkRXpTUWRKNGZzUGxlUjFlL2E0WlBLYmQ4MGt0S2s4?=
+ =?utf-8?B?NURKeE1NamdFa09qMUFNUzZmVEd6OW80UUdIRDFMMnZjS1o4T3BqSzFyU0Zz?=
+ =?utf-8?B?a29XZ1NkamdUMG5mYjMvVjQ1a0h3QjhVNDRRTHFYaXRJaC9qMUNwS2FhVTlu?=
+ =?utf-8?B?K1Y4WnJySmNlT1pzcW5KQlhFLzB6amdEL0xWYU5YTERST2pGdFdhYy9ldmxF?=
+ =?utf-8?B?Qjl2WmlYK2pNWUV3Umk1MXVFOWczZDVpU3dVMEgvVUxnSXpMVFJ4Rjl2L3FS?=
+ =?utf-8?Q?bUF/0jyYW1lh4rhhyO1yTjMzYsGxZSqObCWxWh5?=
 X-OriginatorOrg: vaisala.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 356abbdc-9626-43c2-f8f3-08d8e3c8cefc
+X-MS-Exchange-CrossTenant-Network-Message-Id: cdcad999-750e-41c2-d25e-08d8e3c9332b
 X-MS-Exchange-CrossTenant-AuthSource: VI1PR0602MB3568.eurprd06.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2021 13:31:28.0213
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2021 13:34:16.0915
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 6d7393e0-41f5-4c2e-9b12-4c2be5da5c57
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RM6Fkq8Wxmk4/mNt+L8XNbH1qOhfja7jukHAZWQr69DhMxZ37dFZ+B8/hHsQASplUZMvirHv4fZmsE9rEvSkkw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0601MB2110
+X-MS-Exchange-CrossTenant-UserPrincipalName: xC6/rNEBi3O0ACMZwhBKJonrM3krBMpP2Wc0eB9STMm1blDpMWr0+gXCp5aWcWNLivgfZoVMwpTWn5ZIrYhnCg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR06MB6270
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello,
-
-Is there a preferred way of providing shared access to a gpio pin?
-
-Use case is such that there is one application which only monitors the 
-state of gpio pins, while another
-
-actually controls those pins. It would be enough if the monitoring 
-application could read the state of those pins regularly.
-
-With the old sysfs approach, it was rather easy to share read/writes to 
-a certain pin, but is there a
-
-way to provide similar functionality with gpio character devices?
-
+Sorry for noise, meant for linux-gpio
 
 Tomas
 
-
-
+On 3/10/21 3:31 PM, Tomas Melin wrote:
+> Hello,
+>
+> Is there a preferred way of providing shared access to a gpio pin?
+>
+> Use case is such that there is one application which only monitors the 
+> state of gpio pins, while another
+>
+> actually controls those pins. It would be enough if the monitoring 
+> application could read the state of those pins regularly.
+>
+> With the old sysfs approach, it was rather easy to share read/writes 
+> to a certain pin, but is there a
+>
+> way to provide similar functionality with gpio character devices?
+>
+>
+> Tomas
+>
+>
+>

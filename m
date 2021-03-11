@@ -2,291 +2,111 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 324683369D8
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Mar 2021 02:42:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A261D336A5F
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Mar 2021 04:07:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229544AbhCKBle (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 10 Mar 2021 20:41:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35810 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229542AbhCKBlS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 10 Mar 2021 20:41:18 -0500
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E5BDC061574
-        for <linux-iio@vger.kernel.org>; Wed, 10 Mar 2021 17:41:18 -0800 (PST)
-Received: by mail-pl1-x62c.google.com with SMTP id a8so2917096plp.13
-        for <linux-iio@vger.kernel.org>; Wed, 10 Mar 2021 17:41:18 -0800 (PST)
+        id S229874AbhCKDGg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 10 Mar 2021 22:06:36 -0500
+Received: from mail-eopbgr60114.outbound.protection.outlook.com ([40.107.6.114]:33497
+        "EHLO EUR04-DB3-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S229803AbhCKDGI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 10 Mar 2021 22:06:08 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=QlfK5xo1V7BWpdrXEAXFNDmdCY1mUzFj34kJQLbmUMN9z+P7JeGBh+lZj2LJ6MCgAmmH67hzcr3aYvKEqpxaWbzqZv9DW2s8vi6FPpRgoIZyJV+lNny7E4yNDDIvGPldR/Qvadqomd3CRD2EBd/4Ij2J4yTHgb3Dbrvtb/OTAapPubdejEGsSdhSbW1xU+7QuV9GSWMHn6D7YBrCdFAEvVEndkgMu9diXk/lt+9DUoklPERg9MYtbxGXIksrYyi+zv/FGdekACjVzdoLpYRG4Es0COJiRQ6MB8k990/ZFYI7kIkC+TsdobI+tfZfhKpc6zqQiaJzVUT4CkZL1vn0aA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=k2ZtaVVrHEls8fv3W65kFdm0Vl8liSTqkMEOhY6f14M=;
+ b=USw6SHSRpS9X/8s2gTd66m36GvYjZkwDzFAMcn7HsmbPAReO9XMR53KOq/woM+lxV6agobkxJH8vL5RWuJAi1S79Kzz+vxu+BmHO54EM+xg1tBwz4KZUzBCjVzWtQw7eU1Ew0I4bTEt6BtpGVaqLA0yoeL7qnoI2MVpUWEdCkWX6AqQjrmlI0KoyHQEn/XimAfHWgsngD0/CF23hANrNv4So9KzcrjFDW310TDsshNq6NQIHtvbaYO1yPcIhiRPenoVTNmh5VqQCg4VM2S1Qz4xFpB2HTJXTZJJohXh3IXjIt/1Fy5mw1l1lRZk3BAzKvKBsjHl9xROd8ljjm/58BQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 193.8.40.99) smtp.rcpttodomain=kernel.org
+ smtp.mailfrom=leica-geosystems.com.cn; dmarc=pass (p=quarantine sp=quarantine
+ pct=100) action=none header.from=leica-geosystems.com.cn; dkim=none (message
+ not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=rAeqIViL2QGs0ClIaIeiCbE8XiY6ys2aSvkYru6WUjU=;
-        b=h63RPTeHUznosF1abZ0xzzFlYGhI7vsUU3/EEoI3ymoqkyWdC5G+xmn7bu9iBP59He
-         s04hY037MIA/7we/DkEPJ4k/pmyhvz/13UVzsAih7rPrrjpxQNdA/7NaLVb1ItHJ9gX5
-         2IOgHukq9a5F2lqPBu8UlwF41AX1CmX0X71XY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=rAeqIViL2QGs0ClIaIeiCbE8XiY6ys2aSvkYru6WUjU=;
-        b=j3wHAY7NAyc5E/WNYQ/jnlucirt1nAXo+WPX1eyU72WAmkjTE8tOyKjZ3r+GN61o6Q
-         JXurC9WQh9ILVQ/1pP4vnqKBoPSYGlwWtQOrezIsx2musyd2sWBE/Qj4yLZCf7g4/sec
-         WurryuppWQSnmzm/8+x82eOXXMX9ro1NSuyagI1Gh8zH2LI0OhrZKIVZXaK4uA6o6Pp0
-         ih6u7UOr449i9s8yv1Zgyd6mvU7go7JZSepQ6U3ZUB625Q6R+/YbyDvTWvzTnzo1geKr
-         3MJA8oGMmmD8DYc1l0cJNNaEQQShS5M4dnnGQ+E/3Ofi3GWAo5TlgK3cSnrXUYMjjorL
-         vCwQ==
-X-Gm-Message-State: AOAM532p0QR9I9eF/7E5BSddPlBIIO7BTjIf/XEgxLN24mzqpBnis5Ea
-        T1sDCP3jPle1uDs+YNcCL/fFiw==
-X-Google-Smtp-Source: ABdhPJyw39yIaP7SWUHOOz1PbMD2WJlaSlxZsQOhhAeytWVDqBXHLo2PeKyV/iCE7JJtlx1yQgGYYQ==
-X-Received: by 2002:a17:90b:515:: with SMTP id r21mr6330706pjz.42.1615426878018;
-        Wed, 10 Mar 2021 17:41:18 -0800 (PST)
-Received: from localhost ([2620:15c:202:201:78f3:5b8f:34c5:43c6])
-        by smtp.gmail.com with UTF8SMTPSA id q34sm619994pgl.92.2021.03.10.17.41.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 Mar 2021 17:41:17 -0800 (PST)
-From:   Gwendal Grignou <gwendal@chromium.org>
-To:     Jonathan.Cameron@huawei.com, alexandru.ardelean@analog.com,
-        groeck@chromium.org
-Cc:     linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH v4] iio: cros: unify hw fifo attributes without API changes
-Date:   Wed, 10 Mar 2021 17:41:14 -0800
-Message-Id: <20210311014114.3917453-1-gwendal@chromium.org>
-X-Mailer: git-send-email 2.31.0.rc2.261.g7f71774620-goog
+ d=leica-geosystems.com.cn; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=k2ZtaVVrHEls8fv3W65kFdm0Vl8liSTqkMEOhY6f14M=;
+ b=sxS3c6GsOVOLNZs+Yq32k6a0ZkrUm4AgwT8Z/wwsSjDnjNfxlFCiHN1INC2Zxoet8ZURdrlPCNvgsPFSiMQowrI5DDbzXJKtwIkIGY/zuXvP1CcprqBAi4QtG3RbuJz2SdNqjIrltVCneDWZeggPfR7+evD7+XNgkrjCNHiC3dg=
+Received: from AM7PR03CA0020.eurprd03.prod.outlook.com (2603:10a6:20b:130::30)
+ by AM5PR0601MB2657.eurprd06.prod.outlook.com (2603:10a6:203:4a::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3912.19; Thu, 11 Mar
+ 2021 03:06:03 +0000
+Received: from AM5EUR02FT056.eop-EUR02.prod.protection.outlook.com
+ (2603:10a6:20b:130:cafe::60) by AM7PR03CA0020.outlook.office365.com
+ (2603:10a6:20b:130::30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3912.17 via Frontend
+ Transport; Thu, 11 Mar 2021 03:06:03 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 193.8.40.99)
+ smtp.mailfrom=leica-geosystems.com.cn; kernel.org; dkim=none (message not
+ signed) header.d=none;kernel.org; dmarc=pass action=none
+ header.from=leica-geosystems.com.cn;
+Received-SPF: Pass (protection.outlook.com: domain of leica-geosystems.com.cn
+ designates 193.8.40.99 as permitted sender) receiver=protection.outlook.com;
+ client-ip=193.8.40.99; helo=aherlnxbspsrv01.lgs-net.com;
+Received: from aherlnxbspsrv01.lgs-net.com (193.8.40.99) by
+ AM5EUR02FT056.mail.protection.outlook.com (10.152.9.107) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3933.31 via Frontend Transport; Thu, 11 Mar 2021 03:06:02 +0000
+From:   LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
+To:     jic23@kernel.org, lars@metafoo.de, pmeerw@pmeerw.net,
+        robh+dt@kernel.org, andriy.shevchenko@linux.intel.com,
+        denis.ciocca@st.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     grygorii.tertychnyi@leica-geosystems.com,
+        andrey.zhizhikin@leica-geosystems.com,
+        LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
+Subject: [PATCH V2 0/2] Add support for ST magnetometer IIS2MDC
+Date:   Thu, 11 Mar 2021 03:05:52 +0000
+Message-Id: <20210311030554.6428-1-Qing-wu.Li@leica-geosystems.com.cn>
+X-Mailer: git-send-email 2.17.1
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-PublicTrafficType: Email
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: 6460603a-0522-463f-6c23-08d8e43a9aa7
+X-MS-TrafficTypeDiagnostic: AM5PR0601MB2657:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <AM5PR0601MB2657DED946063935648F3E90D7909@AM5PR0601MB2657.eurprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4303;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: G1WAFfPx27ayjB9W6NkRxZBsqvEu2Kw2/NwMOQbqImeCPaZG3MkIUeMrbNPc5UGQn4kig14fbwz2ujcDMxPQ0Wr5iEjps8+I653E/BRyXU5hZuD9SEj3k0h/sZgjvUVi1mNj+MHwaVEV5I6nHI6NjiMC+6kRee8+jayMN2p41/dRzynnMGFDebl31tnmNMS/ZAxyRUbSh/fETYn7KnodWekqQ0KcimXOxZbLbm3TtKhEhGQL8E1BodXBawo1fszZ3Mr/ZKEc9HK7yd/VtsXie6O+lOUYFT4eZfkeGGXuAhAWRD43mGaDxa7Yqh1XzVIjRn4mUrQzmXoAOmZTmg+tKxesE72uzrkJfRf7KGM1zJhEmuCwTAgj0yHb1xp/rMcevh9EcGMkQJJqnO2KWSUfVHaCuy9VvVdXcj9fD0cZdXXOREuqEYi7yKlR1qY6IuZ8IdcVy+RKsgcEWDVsv21qPY9hsQBbfWDNZ4hNclvey1hETuJWnbQusYK5FsPEF634rTa/JetVhWvvMqUoDPZACL03hRJyFJ48elAEU+d9fgupHeZzpYp4ZUqk62yXcaEt6Ao2Gbq+qA2l45vH6Nz9b71MpmZLIeAH9av/J9vuk5Y9RQBZgyRxI5UDkwcQtPeFlc/ErTo9l48u6mQGY1t6rBu0uV4jXHxl9CUEUbvjEZn9HaTFXjHLvp++PyviO7gE
+X-Forefront-Antispam-Report: CIP:193.8.40.99;CTRY:CH;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:aherlnxbspsrv01.lgs-net.com;PTR:ahersrvdom51.leica-geosystems.com;CAT:NONE;SFS:(4636009)(396003)(346002)(376002)(136003)(39860400002)(36840700001)(46966006)(26005)(86362001)(186003)(118246002)(70586007)(70206006)(47076005)(6512007)(6666004)(478600001)(6486002)(4744005)(5660300002)(4326008)(1076003)(107886003)(8676002)(34020700004)(36860700001)(356005)(82740400003)(82310400003)(81166007)(2616005)(956004)(336012)(2906002)(6506007)(36756003)(316002)(36736006)(8936002);DIR:OUT;SFP:1102;
+X-OriginatorOrg: leica-geosystems.com.cn
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2021 03:06:02.4435
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6460603a-0522-463f-6c23-08d8e43a9aa7
+X-MS-Exchange-CrossTenant-Id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a;Ip=[193.8.40.99];Helo=[aherlnxbspsrv01.lgs-net.com]
+X-MS-Exchange-CrossTenant-AuthSource: AM5EUR02FT056.eop-EUR02.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM5PR0601MB2657
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-fixes commit 2e2366c2d141 ("iio: cros_ec: unify hw fifo attributes into the core file")
-fixes commit 165aea80e2e2 ("iio: cros_ec: use devm_iio_triggered_buffer_setup_ext()")
+Changes in V2:
 
-1. Instead of adding has_fw_fifo, deduct it from the configuration:
-- EC must support FIFO (EC_FEATURE_MOTION_SENSE_FIFO) set.
-- sensors send data a regular interval (accelerometer, gyro,
-  magnetomer, barometer, light sensor).
-- "Legacy accelerometer" is only present on EC without FIFO, so we don't
-need to set buffer attributes.
+Extend the exist st_magn* to support IIS2MDC, instead of adding a new
+driver.
 
-2. devm_iio_triggered_buffer_setup_ext() does not need to be called when
-EC does not support FIFO, as there is no FIFO to manage.
 
-3. Create a triggered buffer with devm_iio_triggered_buffer_setup_ext() when
-the EC support FIFO as it is the only clean way to set the
-buffer extended attributes.
-Add a slim trigger to be sure the samples can flow via callback from the
-EC FIFO to the IIO buffer.
+LI Qingwu (2):
+  dt-bindings: iio: st,st-sensors add IIS2MDC.
+  iio:magnetometer: Add Support for ST IIS2MDC
 
-Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
----
-Changes since v3:
-Remove Change-Id.
+ Documentation/devicetree/bindings/iio/st,st-sensors.yaml | 1 +
+ drivers/iio/magnetometer/st_magn.h                       | 2 ++
+ drivers/iio/magnetometer/st_magn_core.c                  | 1 +
+ drivers/iio/magnetometer/st_magn_i2c.c                   | 5 +++++
+ drivers/iio/magnetometer/st_magn_spi.c                   | 5 +++++
+ 5 files changed, 14 insertions(+)
 
-Changes since v2:
-Remove include of buffer_impl.
-Rebase on top of kernel/git/jic23/iio.git testing branch.
-
-Changes since v1:
-Use a slim trigger when EC supports FIFO, to use
-devm_iio_triggered_buffer_setup_ext().
-
- drivers/iio/accel/cros_ec_accel_legacy.c      |  2 +-
- .../cros_ec_sensors/cros_ec_lid_angle.c       |  3 +-
- .../common/cros_ec_sensors/cros_ec_sensors.c  |  3 +-
- .../cros_ec_sensors/cros_ec_sensors_core.c    | 56 ++++++++++++-------
- drivers/iio/light/cros_ec_light_prox.c        |  3 +-
- drivers/iio/pressure/cros_ec_baro.c           |  3 +-
- .../linux/iio/common/cros_ec_sensors_core.h   |  3 +-
- 7 files changed, 41 insertions(+), 32 deletions(-)
-
-diff --git a/drivers/iio/accel/cros_ec_accel_legacy.c b/drivers/iio/accel/cros_ec_accel_legacy.c
-index 8f1232c38e0d7..b6f3471b62dcf 100644
---- a/drivers/iio/accel/cros_ec_accel_legacy.c
-+++ b/drivers/iio/accel/cros_ec_accel_legacy.c
-@@ -215,7 +215,7 @@ static int cros_ec_accel_legacy_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
--					cros_ec_sensors_capture, NULL, false);
-+					cros_ec_sensors_capture, NULL);
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
-index 752f59037715b..af801e203623e 100644
---- a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
-@@ -97,8 +97,7 @@ static int cros_ec_lid_angle_probe(struct platform_device *pdev)
- 	if (!indio_dev)
- 		return -ENOMEM;
- 
--	ret = cros_ec_sensors_core_init(pdev, indio_dev, false, NULL,
--					NULL, false);
-+	ret = cros_ec_sensors_core_init(pdev, indio_dev, false, NULL, NULL);
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-index dee1191de7528..376a5b30010ae 100644
---- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-@@ -236,8 +236,7 @@ static int cros_ec_sensors_probe(struct platform_device *pdev)
- 
- 	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
- 					cros_ec_sensors_capture,
--					cros_ec_sensors_push_data,
--					true);
-+					cros_ec_sensors_push_data);
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-index f8824afe595e4..7b7a98922892d 100644
---- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-@@ -12,6 +12,7 @@
- #include <linux/iio/iio.h>
- #include <linux/iio/kfifo_buf.h>
- #include <linux/iio/sysfs.h>
-+#include <linux/iio/trigger.h>
- #include <linux/iio/trigger_consumer.h>
- #include <linux/iio/triggered_buffer.h>
- #include <linux/kernel.h>
-@@ -240,7 +241,6 @@ static void cros_ec_sensors_core_clean(void *arg)
-  *    for backward compatibility.
-  * @push_data:          function to call when cros_ec_sensorhub receives
-  *    a sample for that sensor.
-- * @has_hw_fifo:	Set true if this device has/uses a HW FIFO
-  *
-  * Return: 0 on success, -errno on failure.
-  */
-@@ -248,8 +248,7 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
- 			      struct iio_dev *indio_dev,
- 			      bool physical_device,
- 			      cros_ec_sensors_capture_t trigger_capture,
--			      cros_ec_sensorhub_push_data_cb_t push_data,
--			      bool has_hw_fifo)
-+			      cros_ec_sensorhub_push_data_cb_t push_data)
- {
- 	struct device *dev = &pdev->dev;
- 	struct cros_ec_sensors_core_state *state = iio_priv(indio_dev);
-@@ -329,19 +328,41 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
- 		}
- 
- 		if (cros_ec_check_features(ec, EC_FEATURE_MOTION_SENSE_FIFO)) {
-+			struct iio_trigger *trig;
-+
- 			/*
--			 * Create a software buffer, feed by the EC FIFO.
--			 * We can not use trigger here, as events are generated
--			 * as soon as sample_frequency is set.
-+			 * Create a triggered buffer to be able to trigger data
-+			 * gathering manually, but by default, samples come from
-+			 * the EC FIFO.
- 			 */
--			ret = devm_iio_kfifo_buffer_setup(dev, indio_dev,
--							  INDIO_BUFFER_SOFTWARE,
--							  NULL);
-+			ret = devm_iio_triggered_buffer_setup_ext(dev, indio_dev,
-+					NULL, trigger_capture, NULL,
-+					cros_ec_sensor_fifo_attributes);
- 			if (ret)
- 				return ret;
- 
--			ret = cros_ec_sensorhub_register_push_data(
--					sensor_hub, sensor_platform->sensor_num,
-+			/*
-+			 * Register a trigger as plug to allow samples from the
-+			 * FIFO to flow.
-+			 * When cros-ec-sensor-ring is present, samples produced
-+			 * by the EC FIFO are directed to that ring only.
-+			 */
-+			trig = devm_iio_trigger_alloc(dev, "cros_ec%d-dev%d",
-+					sensor_platform->sensor_num, indio_dev->id);
-+			if (!trig)
-+				return -ENOMEM;
-+
-+			ret = devm_iio_trigger_register(dev, trig);
-+			if (ret < 0)
-+				return ret;
-+			indio_dev->trig = iio_trigger_get(trig);
-+
-+			/*
-+			 * Register the callback to use when a sensor sample is
-+			 * coming from the EC FIFO.
-+			 */
-+			ret = cros_ec_sensorhub_register_push_data(sensor_hub,
-+					sensor_platform->sensor_num,
- 					indio_dev, push_data);
- 			if (ret)
- 				return ret;
-@@ -355,21 +376,14 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
- 			ret = iio_device_set_clock(indio_dev, CLOCK_BOOTTIME);
- 			if (ret)
- 				return ret;
--		} else {
--			const struct attribute **fifo_attrs;
--
--			if (has_hw_fifo)
--				fifo_attrs = cros_ec_sensor_fifo_attributes;
--			else
--				fifo_attrs = NULL;
- 
-+		} else {
- 			/*
- 			 * The only way to get samples in buffer is to set a
- 			 * software trigger (systrig, hrtimer).
- 			 */
--			ret = devm_iio_triggered_buffer_setup_ext(
--					dev, indio_dev, NULL, trigger_capture,
--					NULL, fifo_attrs);
-+			ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
-+					NULL, trigger_capture, NULL);
- 			if (ret)
- 				return ret;
- 		}
-diff --git a/drivers/iio/light/cros_ec_light_prox.c b/drivers/iio/light/cros_ec_light_prox.c
-index 75d6b5fcf2cc4..de472f23d1cba 100644
---- a/drivers/iio/light/cros_ec_light_prox.c
-+++ b/drivers/iio/light/cros_ec_light_prox.c
-@@ -182,8 +182,7 @@ static int cros_ec_light_prox_probe(struct platform_device *pdev)
- 
- 	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
- 					cros_ec_sensors_capture,
--					cros_ec_sensors_push_data,
--					true);
-+					cros_ec_sensors_push_data);
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/iio/pressure/cros_ec_baro.c b/drivers/iio/pressure/cros_ec_baro.c
-index aa043cb9ac426..2f882e1094232 100644
---- a/drivers/iio/pressure/cros_ec_baro.c
-+++ b/drivers/iio/pressure/cros_ec_baro.c
-@@ -139,8 +139,7 @@ static int cros_ec_baro_probe(struct platform_device *pdev)
- 
- 	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
- 					cros_ec_sensors_capture,
--					cros_ec_sensors_push_data,
--					true);
-+					cros_ec_sensors_push_data);
- 	if (ret)
- 		return ret;
- 
-diff --git a/include/linux/iio/common/cros_ec_sensors_core.h b/include/linux/iio/common/cros_ec_sensors_core.h
-index c9b80be82440f..7ce8a8adad587 100644
---- a/include/linux/iio/common/cros_ec_sensors_core.h
-+++ b/include/linux/iio/common/cros_ec_sensors_core.h
-@@ -96,8 +96,7 @@ struct platform_device;
- int cros_ec_sensors_core_init(struct platform_device *pdev,
- 			      struct iio_dev *indio_dev, bool physical_device,
- 			      cros_ec_sensors_capture_t trigger_capture,
--			      cros_ec_sensorhub_push_data_cb_t push_data,
--			      bool has_hw_fifo);
-+			      cros_ec_sensorhub_push_data_cb_t push_data);
- 
- irqreturn_t cros_ec_sensors_capture(int irq, void *p);
- int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
 -- 
-2.31.0.rc2.261.g7f71774620-goog
+2.17.1
 

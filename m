@@ -2,843 +2,889 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DFAE4338AA3
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Mar 2021 11:56:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 169F9338C86
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Mar 2021 13:18:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233703AbhCLKz5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 12 Mar 2021 05:55:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40898 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233641AbhCLKz0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Mar 2021 05:55:26 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30D94C061574
-        for <linux-iio@vger.kernel.org>; Fri, 12 Mar 2021 02:55:26 -0800 (PST)
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1lKfRt-0006gL-CH; Fri, 12 Mar 2021 11:55:17 +0100
-Received: from ore by dude.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1lKfRs-0008MT-FS; Fri, 12 Mar 2021 11:55:16 +0100
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
-To:     Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        David Jander <david@protonic.nl>,
-        Robin van der Gracht <robin@protonic.nl>,
-        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        id S229902AbhCLMSC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 12 Mar 2021 07:18:02 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2690 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229505AbhCLMR5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Mar 2021 07:17:57 -0500
+Received: from fraeml745-chm.china.huawei.com (unknown [172.18.147.207])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Dxl4914rFz67xxD;
+        Fri, 12 Mar 2021 20:09:45 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml745-chm.china.huawei.com (10.206.15.226) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Fri, 12 Mar 2021 13:17:54 +0100
+Received: from localhost (10.47.81.238) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Fri, 12 Mar
+ 2021 12:17:53 +0000
+Date:   Fri, 12 Mar 2021 12:16:39 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     Jyoti Bhayana <jbhayana@google.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH v2 3/3] iio: adc: add ADC driver for the TI TSC2046 controller
-Date:   Fri, 12 Mar 2021 11:55:15 +0100
-Message-Id: <20210312105515.32055-4-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210312105515.32055-1-o.rempel@pengutronix.de>
-References: <20210312105515.32055-1-o.rempel@pengutronix.de>
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Rob Herring <robh@kernel.org>,
+        "Lukas Bulwahn" <lukas.bulwahn@gmail.com>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <cristian.marussi@arm.com>, <sudeep.holla@arm.com>,
+        <egranata@google.com>, <mikhail.golubev@opensynergy.com>,
+        <Igor.Skalkin@opensynergy.com>, <Peter.hilber@opensynergy.com>,
+        <ankitarora@google.com>, <gurunagarajan@google.com>,
+        kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v7 1/1] iio/scmi: Adding support for IIO SCMI Based
+ Sensors
+Message-ID: <20210312121639.00001c31@Huawei.com>
+In-Reply-To: <20210311210844.34371d8d@archlinux>
+References: <20210309231259.78050-1-jbhayana@google.com>
+        <20210309231259.78050-2-jbhayana@google.com>
+        <20210311210844.34371d8d@archlinux>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.81.238]
+X-ClientProxiedBy: lhreml754-chm.china.huawei.com (10.201.108.204) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Basically the TI TSC2046 touchscreen controller is 8 channel ADC optimized for
-the touchscreen use case. By implementing it as IIO ADC device, we can
-make use of resistive-adc-touch and iio-hwmon drivers.
+On Thu, 11 Mar 2021 21:08:44 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-So far, this driver was tested with custom version of resistive-adc-touch driver,
-since it need to be extended to make use of Z1 and Z2 channels. The X/Y
-are working without additional changes.
+> On Tue,  9 Mar 2021 23:12:59 +0000
+> Jyoti Bhayana <jbhayana@google.com> wrote:
+> 
+> > This change provides ARM SCMI Protocol based IIO device.
+> > This driver provides support for Accelerometer and Gyroscope using
+> > SCMI Sensor Protocol extensions added in the SCMIv3.0 ARM specification
+> > 
+> > Reported-by: kernel test robot <lkp@intel.com>
+> > Signed-off-by: Jyoti Bhayana <jbhayana@google.com>
+> > Link: https://lore.kernel.org/r/20210212172235.507028-2-jbhayana@google.com
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/log/?h=ib-iio-scmi-5.12-rc2
+> 
+> New immutable branch.  I move to rc2 as the base as the rc1 tag
+> has been removed for well publicized reasons.
+> 
+> Should have the 0-day results in tomorrow morning. I'll shout
+> if anything else shows up.
+0-day is happy, so this is now immutable and suitable for pulling in through
+whatever trees need it.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- MAINTAINERS                  |   8 +
- drivers/iio/adc/Kconfig      |  12 +
- drivers/iio/adc/Makefile     |   1 +
- drivers/iio/adc/ti-tsc2046.c | 713 +++++++++++++++++++++++++++++++++++
- 4 files changed, 734 insertions(+)
- create mode 100644 drivers/iio/adc/ti-tsc2046.c
+Thanks,
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 3fea1a934b32..2d33c6442a55 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17852,6 +17852,14 @@ S:	Supported
- F:	Documentation/devicetree/bindings/net/nfc/trf7970a.txt
- F:	drivers/nfc/trf7970a.c
- 
-+TI TSC2046 ADC DRIVER
-+M:	Oleksij Rempel <o.rempel@pengutronix.de>
-+R:	kernel@pengutronix.de
-+L:	linux-iio@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/adc/ti,tsc2046.yaml
-+F:	drivers/iio/adc/ti-tsc2046.c
-+
- TI TWL4030 SERIES SOC CODEC DRIVER
- M:	Peter Ujfalusi <peter.ujfalusi@gmail.com>
- L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 15587a1bc80d..6ad6f04dfd20 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -1175,6 +1175,18 @@ config TI_TLC4541
- 	  This driver can also be built as a module. If so, the module will be
- 	  called ti-tlc4541.
- 
-+config TI_TSC2046
-+	tristate "Texas Instruments TSC2046 ADC driver"
-+	depends on SPI
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
-+	help
-+	  Say yes here to build support for ADC functionality of Texas
-+	  Instruments TSC2046 touch screen controller.
-+
-+	  This driver can also be built as a module. If so, the module will be
-+	  called ti-tsc2046.
-+
- config TWL4030_MADC
- 	tristate "TWL4030 MADC (Monitoring A/D Converter)"
- 	depends on TWL4030_CORE
-diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-index 5fca90ada0ec..440e18ac6780 100644
---- a/drivers/iio/adc/Makefile
-+++ b/drivers/iio/adc/Makefile
-@@ -105,6 +105,7 @@ obj-$(CONFIG_TI_ADS8688) += ti-ads8688.o
- obj-$(CONFIG_TI_ADS124S08) += ti-ads124s08.o
- obj-$(CONFIG_TI_AM335X_ADC) += ti_am335x_adc.o
- obj-$(CONFIG_TI_TLC4541) += ti-tlc4541.o
-+obj-$(CONFIG_TI_TSC2046) += ti-tsc2046.o
- obj-$(CONFIG_TWL4030_MADC) += twl4030-madc.o
- obj-$(CONFIG_TWL6030_GPADC) += twl6030-gpadc.o
- obj-$(CONFIG_VF610_ADC) += vf610_adc.o
-diff --git a/drivers/iio/adc/ti-tsc2046.c b/drivers/iio/adc/ti-tsc2046.c
-new file mode 100644
-index 000000000000..7c3ae9181164
---- /dev/null
-+++ b/drivers/iio/adc/ti-tsc2046.c
-@@ -0,0 +1,713 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Texas Instruments TSC2046 SPI ADC driver
-+ *
-+ * Copyright (c) 2021 Oleksij Rempel <kernel@pengutronix.de>, Pengutronix
-+ */
-+
-+#include <linux/bitfield.h>
-+#include <linux/delay.h>
-+#include <linux/module.h>
-+#include <linux/spi/spi.h>
-+
-+#include <asm/unaligned.h>
-+
-+#include <linux/iio/buffer.h>
-+#include <linux/iio/trigger_consumer.h>
-+#include <linux/iio/triggered_buffer.h>
-+#include <linux/iio/trigger.h>
-+
-+#define TI_TSC2046_NAME				"tsc2046"
-+
-+/* This driver doesn't aim at the peak continuous sample rate */
-+#define	TI_TSC2046_MAX_SAMPLE_RATE		125000
-+#define	TI_TSC2046_SAMPLE_BITS			(8 /*cmd*/ + 16 /*sample*/)
-+#define	TI_TSC2046_MAX_CLK_FREQ \
-+	(TI_TSC2046_MAX_SAMPLE_RATE * TI_TSC2046_SAMPLE_BITS)
-+
-+#define TI_TSC2046_SAMPLE_INTERVAL_US		10000
-+
-+#define TI_TSC2046_START			BIT(7)
-+#define TI_TSC2046_ADDR				GENMASK(6, 4)
-+#define TI_TSC2046_ADDR_TEMP1			7
-+#define TI_TSC2046_ADDR_AUX			6
-+#define TI_TSC2046_ADDR_X			5
-+#define TI_TSC2046_ADDR_Z2			4
-+#define TI_TSC2046_ADDR_Z1			3
-+#define TI_TSC2046_ADDR_VBAT			2
-+#define TI_TSC2046_ADDR_Y			1
-+#define TI_TSC2046_ADDR_TEMP0			0
-+
-+/*
-+ * The mode bit sets the resolution of the ADC. With this bit low, the next
-+ * conversion has 12-bit resolution, whereas with this bit high, the next
-+ * conversion has 8-bit resolution. This driver is optimized for 12-bit mode.
-+ * So, for this driver, this bit should stay zero.
-+ */
-+#define TI_TSC2046_8BIT_MODE			BIT(3)
-+
-+/*
-+ * SER/DFR - The SER/DFR bit controls the reference mode, either single-ended
-+ * (high) or differential (low).
-+ */
-+#define TI_TSC2046_SER				BIT(2)
-+
-+/*
-+ * If VREF_ON and ADC_ON are both zero, then the chip operates in
-+ * auto-wake/suspend mode. In most case this bits should stay zero.
-+ */
-+#define TI_TSC2046_PD1_VREF_ON			BIT(1)
-+#define TI_TSC2046_PD0_ADC_ON			BIT(0)
-+
-+#define TI_TSC2046_MAX_CHAN			8
-+
-+/* Represents a HW sample */
-+struct tsc2046_adc_atom {
-+	/*
-+	 * Command transmitted to the controller. This filed is empty on the RX
-+	 * buffer.
-+	 */
-+	u8 cmd;
-+	/*
-+	 * Data received from the controller. This filed is empty for the TX
-+	 * buffer
-+	 */
-+	__be16 data;
-+} __packed;
-+
-+struct tsc2046_adc_scan_buf {
-+	/* Scan data for each channel */
-+	u16 data[TI_TSC2046_MAX_CHAN];
-+	/* Timestamp */
-+	s64 ts __aligned(8);
-+};
-+
-+/* Layout of atomic buffers within big buffer */
-+struct tsc2046_adc_group_layout {
-+	/* Group offset within the SPI RX buffer */
-+	unsigned int offset;
-+	/*
-+	 * Amount of tsc2046_adc_atom structs within the same command gathered
-+	 * within same group.
-+	 */
-+	unsigned int count;
-+	/*
-+	 * Settling samples (tsc2046_adc_atom structs) which should be skipped
-+	 * before good samples will start.
-+	 */
-+	unsigned int skip;
-+};
-+
-+struct tsc2046_adc_dcfg {
-+	const struct iio_chan_spec *channels;
-+	unsigned int num_channels;
-+};
-+
-+struct tsc2046_adc_ch_cfg {
-+	unsigned int settling_time_us;
-+	unsigned int average_samples;
-+};
-+
-+struct tsc2046_adc_priv {
-+	struct spi_device *spi;
-+	const struct tsc2046_adc_dcfg *dcfg;
-+
-+	struct iio_trigger *trig;
-+	struct hrtimer trig_timer;
-+	spinlock_t trig_lock;
-+	atomic_t trig_more_count;
-+
-+	struct spi_transfer xfer;
-+	struct spi_message msg;
-+
-+	struct tsc2046_adc_scan_buf scan_buf;
-+	/*
-+	 * Lock to protect the layout and the spi transfer buffer.
-+	 * tsc2046_adc_group_layout can be changed within update_scan_mode(),
-+	 * in this case the l[] and tx/rx buffer will be out of sync to each
-+	 * other.
-+	 */
-+	struct mutex slock;
-+	struct tsc2046_adc_group_layout l[TI_TSC2046_MAX_CHAN];
-+	struct tsc2046_adc_atom *rx;
-+	struct tsc2046_adc_atom *tx;
-+
-+	struct tsc2046_adc_atom *rx_one;
-+	struct tsc2046_adc_atom *tx_one;
-+
-+	unsigned int count;
-+	unsigned int groups;
-+	u32 effective_speed_hz;
-+	u32 scan_interval_us;
-+	u32 time_per_scan_us;
-+	u32 time_per_bit_ns;
-+
-+	struct tsc2046_adc_ch_cfg ch_cfg[TI_TSC2046_MAX_CHAN];
-+};
-+
-+#define TI_TSC2046_V_CHAN(index, bits, name)			\
-+{								\
-+	.type = IIO_VOLTAGE,					\
-+	.indexed = 1,						\
-+	.channel = index,					\
-+	.address = index,					\
-+	.datasheet_name = "#name",				\
-+	.scan_index = index,					\
-+	.scan_type = {						\
-+		.sign = 'u',					\
-+		.realbits = bits,				\
-+		.storagebits = 16,				\
-+		.shift = 0,					\
-+		.endianness = IIO_CPU,				\
-+	},							\
-+}
-+
-+#define DECLARE_TI_TSC2046_8_CHANNELS(name, bits) \
-+const struct iio_chan_spec name ## _channels[] = { \
-+	TI_TSC2046_V_CHAN(0, bits, TEMP0), \
-+	TI_TSC2046_V_CHAN(1, bits, Y), \
-+	TI_TSC2046_V_CHAN(2, bits, VBAT), \
-+	TI_TSC2046_V_CHAN(3, bits, Z1), \
-+	TI_TSC2046_V_CHAN(4, bits, Z2), \
-+	TI_TSC2046_V_CHAN(5, bits, X), \
-+	TI_TSC2046_V_CHAN(6, bits, AUX), \
-+	TI_TSC2046_V_CHAN(7, bits, TEMP1), \
-+	IIO_CHAN_SOFT_TIMESTAMP(8), \
-+}
-+
-+static DECLARE_TI_TSC2046_8_CHANNELS(tsc2046_adc, 12);
-+
-+static const struct tsc2046_adc_dcfg tsc2046_adc_dcfg_tsc2046e = {
-+	.channels = tsc2046_adc_channels,
-+	.num_channels = ARRAY_SIZE(tsc2046_adc_channels),
-+};
-+
-+/*
-+ * Convert time to a number of samples which can be transferred within this
-+ * time.
-+ */
-+static unsigned int tsc2046_adc_time_to_count(struct tsc2046_adc_priv *priv,
-+					      unsigned long time)
-+{
-+	unsigned int bit_count, sample_count;
-+
-+	bit_count = DIV_ROUND_UP(time * NSEC_PER_USEC, priv->time_per_bit_ns);
-+	sample_count = DIV_ROUND_UP(bit_count, TI_TSC2046_SAMPLE_BITS);
-+
-+	dev_dbg(&priv->spi->dev, "Effective speed %u, time per bit: %u, count bits: %u, count samples: %u\n",
-+		priv->effective_speed_hz, priv->time_per_bit_ns,
-+		bit_count, sample_count);
-+
-+	return sample_count;
-+}
-+
-+static u8 tsc2046_adc_get_cmd(struct tsc2046_adc_priv *priv, int ch_idx,
-+			      bool keep_power)
-+{
-+	u32 pd;
-+
-+	/*
-+	 * if PD bits are 0, controller will automatically disable ADC, VREF and
-+	 * enable IRQ.
-+	 */
-+	if (keep_power)
-+		pd = TI_TSC2046_PD0_ADC_ON;
-+	else
-+		pd = 0;
-+
-+	return TI_TSC2046_START | FIELD_PREP(TI_TSC2046_ADDR, ch_idx) | pd;
-+}
-+
-+static u16 tsc2046_adc_get_value(struct tsc2046_adc_atom *buf)
-+{
-+	/* Last 3 bits on the wire are empty */
-+	return get_unaligned_be16(&buf->data) >> 3;
-+}
-+
-+static int tsc2046_adc_read_one(struct tsc2046_adc_priv *priv, int ch_idx,
-+				u32 *effective_speed_hz)
-+{
-+	struct spi_transfer xfer;
-+	struct spi_message msg;
-+	int ret;
-+
-+	memset(&xfer, 0, sizeof(xfer));
-+	priv->tx_one->cmd = tsc2046_adc_get_cmd(priv, ch_idx, false);
-+	priv->tx_one->data = 0;
-+	xfer.tx_buf = priv->tx_one;
-+	xfer.rx_buf = priv->rx_one;
-+	xfer.len = sizeof(*priv->tx_one);
-+	spi_message_init(&msg);
-+	spi_message_add_tail(&xfer, &msg);
-+
-+	ret = spi_sync(priv->spi, &msg);
-+	if (ret) {
-+		dev_err_ratelimited(&priv->spi->dev, "SPI transfer filed %pe\n",
-+				    ERR_PTR(ret));
-+		return ret;
-+	}
-+
-+	if (effective_speed_hz)
-+		*effective_speed_hz = xfer.effective_speed_hz;
-+
-+	return tsc2046_adc_get_value(priv->rx_one);
-+}
-+
-+static size_t tsc2046_adc_group_set_layout(struct tsc2046_adc_priv *priv,
-+					   unsigned int group,
-+					   unsigned int ch_idx)
-+{
-+	struct tsc2046_adc_ch_cfg *ch = &priv->ch_cfg[ch_idx];
-+	struct tsc2046_adc_group_layout *prev, *cur;
-+	unsigned int max_count, count_skip;
-+	unsigned int offset = 0;
-+
-+
-+	if (group) {
-+		prev = &priv->l[group - 1];
-+		offset = prev->offset + prev->count;
-+	}
-+
-+	cur = &priv->l[group];
-+
-+	count_skip = tsc2046_adc_time_to_count(priv, ch->settling_time_us);
-+	max_count = count_skip + ch->average_samples;
-+
-+	cur->offset = offset;
-+	cur->count = max_count;
-+	cur->skip = count_skip;
-+
-+	return sizeof(*priv->tx) * max_count;
-+}
-+
-+static void tsc2046_adc_group_set_cmd(struct tsc2046_adc_priv *priv,
-+				      unsigned int group, int ch_idx)
-+{
-+	struct tsc2046_adc_group_layout *l = &priv->l[group];
-+	unsigned int i;
-+	u8 cmd;
-+
-+	/*
-+	 * Do not enable automatic power down on working samples. Otherwise the
-+	 * plates will never be completely charged.
-+	 */
-+	cmd = tsc2046_adc_get_cmd(priv, ch_idx, true);
-+
-+	for (i = 0; i < l->count - 1; i++)
-+		priv->tx[l->offset + i].cmd = cmd;
-+
-+	/* automatically power down on last sample */
-+	priv->tx[l->offset + i].cmd = tsc2046_adc_get_cmd(priv, ch_idx, false);
-+}
-+
-+static u16 tsc2046_adc_get_val(struct tsc2046_adc_priv *priv, int group)
-+{
-+	struct tsc2046_adc_group_layout *l;
-+	unsigned int val, val_normalized = 0;
-+	int valid_count, i;
-+
-+	l = &priv->l[group];
-+	valid_count = l->count - l->skip;
-+
-+	for (i = 0; i < valid_count; i++) {
-+		val = tsc2046_adc_get_value(&priv->rx[l->offset + l->skip + i]);
-+		val_normalized += val;
-+	}
-+
-+	return DIV_ROUND_UP(val_normalized, valid_count);
-+}
-+
-+static int tsc2046_adc_scan(struct iio_dev *indio_dev)
-+{
-+	struct tsc2046_adc_priv *priv = iio_priv(indio_dev);
-+	struct device *dev = &priv->spi->dev;
-+	int group;
-+	int ret;
-+
-+	ret = spi_sync(priv->spi, &priv->msg);
-+	if (ret < 0) {
-+		dev_err_ratelimited(dev, "SPI transfer filed: %pe\n",
-+				    ERR_PTR(ret));
-+		return ret;
-+	}
-+
-+	for (group = 0; group < priv->groups; group++) {
-+		u16 val = tsc2046_adc_get_val(priv, group);
-+
-+		priv->scan_buf.data[group] = val;
-+	}
-+
-+	ret = iio_push_to_buffers_with_timestamp(indio_dev, &priv->scan_buf,
-+						 iio_get_time_ns(indio_dev));
-+	/*
-+	 * If there's no consumer (or consumer is kfifo), may get a EBUSY here
-+	 * - ignore it.
-+	 */
-+	if (ret < 0 && ret != -EBUSY) {
-+		dev_err_ratelimited(dev, "Filed to push scan buffer %pe\n",
-+				    ERR_PTR(ret));
-+
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static irqreturn_t tsc2046_adc_trigger_handler(int irq, void *p)
-+{
-+	struct iio_poll_func *pf = p;
-+	struct iio_dev *indio_dev = pf->indio_dev;
-+	struct tsc2046_adc_priv *priv = iio_priv(indio_dev);
-+
-+	mutex_lock(&priv->slock);
-+	tsc2046_adc_scan(indio_dev);
-+	mutex_unlock(&priv->slock);
-+
-+	iio_trigger_notify_done(indio_dev->trig);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static int tsc2046_adc_update_scan_mode(struct iio_dev *indio_dev,
-+					const unsigned long *active_scan_mask)
-+{
-+	struct tsc2046_adc_priv *priv = iio_priv(indio_dev);
-+	unsigned int ch_idx, group = 0;
-+	size_t size = 0;
-+
-+	mutex_lock(&priv->slock);
-+
-+	for_each_set_bit(ch_idx, active_scan_mask, indio_dev->num_channels) {
-+		size += tsc2046_adc_group_set_layout(priv, group, ch_idx);
-+		tsc2046_adc_group_set_cmd(priv, group, ch_idx);
-+		group++;
-+	}
-+
-+	priv->groups = group;
-+	priv->xfer.len = size;
-+	priv->time_per_scan_us = size * 8 * priv->time_per_bit_ns / NSEC_PER_USEC;
-+
-+	if ((priv->scan_interval_us - priv->time_per_scan_us) < 0)
-+		dev_warn(&priv->spi->dev, "The scan interval (%d) is less then calculated scan time (%d)\n",
-+			 priv->scan_interval_us, priv->time_per_scan_us);
-+
-+	mutex_unlock(&priv->slock);
-+
-+	return 0;
-+}
-+
-+static const struct iio_info tsc2046_adc_info = {
-+	.update_scan_mode = tsc2046_adc_update_scan_mode,
-+};
-+
-+static enum hrtimer_restart tsc2046_adc_trig_more(struct hrtimer *hrtimer)
-+{
-+	struct tsc2046_adc_priv *priv = container_of(hrtimer,
-+						     struct tsc2046_adc_priv,
-+						     trig_timer);
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&priv->trig_lock, flags);
-+
-+	disable_irq_nosync(priv->spi->irq);
-+
-+	atomic_inc(&priv->trig_more_count);
-+	iio_trigger_poll(priv->trig);
-+
-+	spin_unlock_irqrestore(&priv->trig_lock, flags);
-+
-+	return HRTIMER_NORESTART;
-+}
-+
-+static irqreturn_t tsc2046_adc_irq(int irq, void *dev_id)
-+{
-+	struct iio_dev *indio_dev = dev_id;
-+	struct tsc2046_adc_priv *priv = iio_priv(indio_dev);
-+
-+
-+	spin_lock(&priv->trig_lock);
-+
-+	hrtimer_try_to_cancel(&priv->trig_timer);
-+
-+	atomic_set(&priv->trig_more_count, 0);
-+	disable_irq_nosync(priv->spi->irq);
-+	iio_trigger_poll(priv->trig);
-+
-+	spin_unlock(&priv->trig_lock);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static void tsc2046_adc_reenable_trigger(struct iio_trigger *trig)
-+{
-+	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
-+	struct tsc2046_adc_priv *priv = iio_priv(indio_dev);
-+	unsigned long flags;
-+	int delta;
-+
-+	/*
-+	 * We can sample it as fast as we can, but usually we do not need so
-+	 * many samples. Reduce the sample rate for default (touchscreen) use
-+	 * case.
-+	 * Currently we do not need a highly precise sample rate. It is enough
-+	 * to have calculated numbers.
-+	 */
-+	delta = priv->scan_interval_us - priv->time_per_scan_us;
-+	if (delta > 0)
-+		fsleep(delta);
-+
-+	spin_lock_irqsave(&priv->trig_lock, flags);
-+
-+	/*
-+	 * We need to trigger at least one extra sample to detect state
-+	 * difference on ADC side.
-+	 */
-+	if (atomic_read(&priv->trig_more_count) == 0) {
-+		int timeout_ms = DIV_ROUND_UP(priv->scan_interval_us,
-+					      USEC_PER_MSEC);
-+
-+		hrtimer_start(&priv->trig_timer, ms_to_ktime(timeout_ms),
-+			      HRTIMER_MODE_REL_SOFT);
-+	}
-+
-+	enable_irq(priv->spi->irq);
-+
-+	spin_unlock_irqrestore(&priv->trig_lock, flags);
-+}
-+
-+static int tsc2046_adc_set_trigger_state(struct iio_trigger *trig, bool enable)
-+{
-+	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
-+	struct tsc2046_adc_priv *priv = iio_priv(indio_dev);
-+
-+	if (enable) {
-+		enable_irq(priv->spi->irq);
-+	} else {
-+		disable_irq(priv->spi->irq);
-+		hrtimer_try_to_cancel(&priv->trig_timer);
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct iio_trigger_ops tsc2046_adc_trigger_ops = {
-+	.set_trigger_state = tsc2046_adc_set_trigger_state,
-+	.reenable = tsc2046_adc_reenable_trigger,
-+};
-+
-+static int tsc2046_adc_setup_spi_msg(struct tsc2046_adc_priv *priv)
-+{
-+	unsigned int ch_idx;
-+	size_t size = 0;
-+	int ret;
-+
-+	priv->tx_one = devm_kzalloc(&priv->spi->dev, sizeof(*priv->tx_one),
-+				    GFP_KERNEL);
-+	if (!priv->tx_one)
-+		return -ENOMEM;
-+
-+	priv->rx_one = devm_kzalloc(&priv->spi->dev, sizeof(*priv->rx_one),
-+				    GFP_KERNEL);
-+	if (!priv->rx_one)
-+		return -ENOMEM;
-+
-+	/*
-+	 * Make dummy read to set initial power state and get real SPI clock
-+	 * freq. It seems to be not important which channel is used for this
-+	 * case.
-+	 */
-+	ret = tsc2046_adc_read_one(priv, TI_TSC2046_ADDR_TEMP0,
-+				   &priv->effective_speed_hz);
-+	if (ret < 0)
-+		return ret;
-+
-+	/*
-+	 * In case SPI controller do not report effective_speed_hz, use
-+	 * configure value and hope it will match
-+	 */
-+	if (!priv->effective_speed_hz)
-+		priv->effective_speed_hz = priv->spi->max_speed_hz;
-+
-+
-+	priv->scan_interval_us = TI_TSC2046_SAMPLE_INTERVAL_US;
-+	priv->time_per_bit_ns = DIV_ROUND_UP(NSEC_PER_SEC,
-+					     priv->effective_speed_hz);
-+
-+	/*
-+	 * Calculate and allocate maximal size buffer if all channels are
-+	 * enabled.
-+	 */
-+	for (ch_idx = 0; ch_idx < priv->dcfg->num_channels; ch_idx++)
-+		size += tsc2046_adc_group_set_layout(priv, ch_idx, ch_idx);
-+
-+	priv->tx = devm_kzalloc(&priv->spi->dev, size, GFP_KERNEL);
-+	if (!priv->tx)
-+		return -ENOMEM;
-+
-+	priv->rx = devm_kzalloc(&priv->spi->dev, size, GFP_KERNEL);
-+	if (!priv->rx)
-+		return -ENOMEM;
-+
-+	spi_message_init(&priv->msg);
-+	priv->msg.context = priv;
-+
-+	priv->xfer.tx_buf = priv->tx;
-+	priv->xfer.rx_buf = priv->rx;
-+	priv->xfer.len = size;
-+	spi_message_add_tail(&priv->xfer, &priv->msg);
-+
-+	return 0;
-+}
-+
-+static void tsc2046_adc_parse_fwnode(struct tsc2046_adc_priv *priv)
-+{
-+	struct fwnode_handle *child;
-+	struct device *dev = &priv->spi->dev;
-+
-+	device_for_each_child_node(dev, child) {
-+		u32 stl, aver, reg;
-+		int ret;
-+
-+		ret = fwnode_property_read_u32(child, "reg", &reg);
-+		if (ret) {
-+			dev_err(dev, "invalid reg on %pfw, err: %pe\n", child,
-+				ERR_PTR(ret));
-+			continue;
-+		}
-+
-+		if (reg >= ARRAY_SIZE(priv->ch_cfg)) {
-+			dev_err(dev, "%pfw: Unsupported reg value: %i, max supported is: %i.\n",
-+				child, reg, ARRAY_SIZE(priv->ch_cfg));
-+			continue;
-+		}
-+
-+		ret = fwnode_property_read_u32(child, "settling-time-us", &stl);
-+		if (!ret)
-+			priv->ch_cfg[reg].settling_time_us = stl;
-+
-+		ret = fwnode_property_read_u32(child, "average-samples", &aver);
-+		if (!ret)
-+			priv->ch_cfg[reg].average_samples = aver;
-+	}
-+}
-+
-+static int tsc2046_adc_probe(struct spi_device *spi)
-+{
-+	const struct tsc2046_adc_dcfg *dcfg;
-+	struct device *dev = &spi->dev;
-+	struct tsc2046_adc_priv *priv;
-+	struct iio_dev *indio_dev;
-+	struct iio_trigger *trig;
-+	const char *name;
-+	int ret;
-+
-+	if (spi->max_speed_hz > TI_TSC2046_MAX_CLK_FREQ) {
-+		dev_err(dev, "SPI max_speed_hz is too high: %d Hz. Max supported freq is %d Hz\n",
-+			spi->max_speed_hz, TI_TSC2046_MAX_CLK_FREQ);
-+		return -EINVAL;
-+	}
-+
-+	dcfg = device_get_match_data(dev);
-+	if (!dcfg)
-+		return -EINVAL;
-+
-+	spi->bits_per_word = 8;
-+	spi->mode &= ~SPI_MODE_X_MASK;
-+	spi->mode |= SPI_MODE_0;
-+	ret = spi_setup(spi);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "Error in spi setup\n");
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*priv));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	priv = iio_priv(indio_dev);
-+	priv->dcfg = dcfg;
-+
-+	spi_set_drvdata(spi, indio_dev);
-+
-+	priv->spi = spi;
-+
-+	name = devm_kasprintf(dev, GFP_KERNEL, "%s-%s",
-+			      TI_TSC2046_NAME, dev_name(dev));
-+
-+	indio_dev->name = name;
-+	indio_dev->modes = INDIO_DIRECT_MODE | INDIO_BUFFER_TRIGGERED;
-+	indio_dev->channels = dcfg->channels;
-+	indio_dev->num_channels = dcfg->num_channels;
-+	indio_dev->info = &tsc2046_adc_info;
-+
-+	tsc2046_adc_parse_fwnode(priv);
-+
-+	ret = tsc2046_adc_setup_spi_msg(priv);
-+	if (ret)
-+		return ret;
-+
-+	mutex_init(&priv->slock);
-+
-+	/* TODO: remove IRQ_NOAUTOEN after needed patches are mainline */
-+	irq_set_status_flags(spi->irq, IRQ_NOAUTOEN);
-+	ret = devm_request_irq(dev, spi->irq, &tsc2046_adc_irq,
-+			       0, name, indio_dev);
-+	if (ret)
-+		return ret;
-+
-+	trig = devm_iio_trigger_alloc(dev, "%s-dev%d", indio_dev->name,
-+				      indio_dev->id);
-+	if (!trig)
-+		return -ENOMEM;
-+
-+	priv->trig = trig;
-+	trig->dev.parent = indio_dev->dev.parent;
-+	iio_trigger_set_drvdata(trig, indio_dev);
-+	trig->ops = &tsc2046_adc_trigger_ops;
-+
-+	spin_lock_init(&priv->trig_lock);
-+	hrtimer_init(&priv->trig_timer, CLOCK_MONOTONIC,
-+		     HRTIMER_MODE_REL_SOFT);
-+	priv->trig_timer.function = tsc2046_adc_trig_more;
-+
-+	ret = devm_iio_trigger_register(dev, trig);
-+	if (ret) {
-+		dev_err(dev, "failed to register trigger\n");
-+		return ret;
-+	}
-+
-+	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
-+					      &tsc2046_adc_trigger_handler, NULL);
-+	if (ret) {
-+		dev_err(dev, "Failed to setup triggered buffer\n");
-+		return ret;
-+	}
-+
-+	/* set default trigger */
-+	indio_dev->trig = iio_trigger_get(priv->trig);
-+
-+	ret = devm_iio_device_register(dev, indio_dev);
-+	if (ret) {
-+		dev_err(dev, "Failed to register iio device\n");
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id ads7950_of_table[] = {
-+	{ .compatible = "ti,tsc2046e-adc", .data = &tsc2046_adc_dcfg_tsc2046e },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, ads7950_of_table);
-+
-+static struct spi_driver tsc2046_adc_driver = {
-+	.driver = {
-+		.name	= "tsc2046",
-+		.of_match_table = ads7950_of_table,
-+	},
-+	.probe		= tsc2046_adc_probe,
-+};
-+module_spi_driver(tsc2046_adc_driver);
-+
-+MODULE_AUTHOR("Oleksij Rempel <kernel@pengutronix.de>");
-+MODULE_DESCRIPTION("TI TSC2046 ADC");
-+MODULE_LICENSE("GPL v2");
--- 
-2.29.2
+Jonathan
+
+> 
+> Also rebased the togreg branch for the same reason (hadn't pushed it
+> out as anything other than testing, so hopefully no one was basing
+> anything significant on top)
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+> > ---
+> >  MAINTAINERS                                |   6 +
+> >  drivers/firmware/arm_scmi/driver.c         |   2 +-
+> >  drivers/iio/common/Kconfig                 |   1 +
+> >  drivers/iio/common/Makefile                |   1 +
+> >  drivers/iio/common/scmi_sensors/Kconfig    |  18 +
+> >  drivers/iio/common/scmi_sensors/Makefile   |   5 +
+> >  drivers/iio/common/scmi_sensors/scmi_iio.c | 683 +++++++++++++++++++++
+> >  7 files changed, 715 insertions(+), 1 deletion(-)
+> >  create mode 100644 drivers/iio/common/scmi_sensors/Kconfig
+> >  create mode 100644 drivers/iio/common/scmi_sensors/Makefile
+> >  create mode 100644 drivers/iio/common/scmi_sensors/scmi_iio.c
+> > 
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index d92f85ca831d..14227980f3d2 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -8692,6 +8692,12 @@ S:	Maintained
+> >  F:	Documentation/devicetree/bindings/iio/multiplexer/io-channel-mux.txt
+> >  F:	drivers/iio/multiplexer/iio-mux.c
+> >  
+> > +IIO SCMI BASED DRIVER
+> > +M:	Jyoti Bhayana <jbhayana@google.com>
+> > +L:	linux-iio@vger.kernel.org
+> > +S:	Maintained
+> > +F:	drivers/iio/common/scmi_sensors/scmi_iio.c
+> > +
+> >  IIO SUBSYSTEM AND DRIVERS
+> >  M:	Jonathan Cameron <jic23@kernel.org>
+> >  R:	Lars-Peter Clausen <lars@metafoo.de>
+> > diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
+> > index cacdf1589b10..3e748e57deab 100644
+> > --- a/drivers/firmware/arm_scmi/driver.c
+> > +++ b/drivers/firmware/arm_scmi/driver.c
+> > @@ -741,7 +741,7 @@ static struct scmi_prot_devnames devnames[] = {
+> >  	{ SCMI_PROTOCOL_SYSTEM, { "syspower" },},
+> >  	{ SCMI_PROTOCOL_PERF,   { "cpufreq" },},
+> >  	{ SCMI_PROTOCOL_CLOCK,  { "clocks" },},
+> > -	{ SCMI_PROTOCOL_SENSOR, { "hwmon" },},
+> > +	{ SCMI_PROTOCOL_SENSOR, { "hwmon", "iiodev" },},
+> >  	{ SCMI_PROTOCOL_RESET,  { "reset" },},
+> >  	{ SCMI_PROTOCOL_VOLTAGE,  { "regulator" },},
+> >  };
+> > diff --git a/drivers/iio/common/Kconfig b/drivers/iio/common/Kconfig
+> > index 2b9ee9161abd..0334b4954773 100644
+> > --- a/drivers/iio/common/Kconfig
+> > +++ b/drivers/iio/common/Kconfig
+> > @@ -6,5 +6,6 @@
+> >  source "drivers/iio/common/cros_ec_sensors/Kconfig"
+> >  source "drivers/iio/common/hid-sensors/Kconfig"
+> >  source "drivers/iio/common/ms_sensors/Kconfig"
+> > +source "drivers/iio/common/scmi_sensors/Kconfig"
+> >  source "drivers/iio/common/ssp_sensors/Kconfig"
+> >  source "drivers/iio/common/st_sensors/Kconfig"
+> > diff --git a/drivers/iio/common/Makefile b/drivers/iio/common/Makefile
+> > index 4bc30bb548e2..fad40e1e1718 100644
+> > --- a/drivers/iio/common/Makefile
+> > +++ b/drivers/iio/common/Makefile
+> > @@ -11,5 +11,6 @@
+> >  obj-y += cros_ec_sensors/
+> >  obj-y += hid-sensors/
+> >  obj-y += ms_sensors/
+> > +obj-y += scmi_sensors/
+> >  obj-y += ssp_sensors/
+> >  obj-y += st_sensors/
+> > diff --git a/drivers/iio/common/scmi_sensors/Kconfig b/drivers/iio/common/scmi_sensors/Kconfig
+> > new file mode 100644
+> > index 000000000000..67e084cbb1ab
+> > --- /dev/null
+> > +++ b/drivers/iio/common/scmi_sensors/Kconfig
+> > @@ -0,0 +1,18 @@
+> > +#
+> > +# IIO over SCMI
+> > +#
+> > +# When adding new entries keep the list in alphabetical order
+> > +
+> > +menu "IIO SCMI Sensors"
+> > +
+> > +config IIO_SCMI
+> > +	tristate "IIO SCMI"
+> > +        depends on ARM_SCMI_PROTOCOL
+> > +        select IIO_BUFFER
+> > +        select IIO_KFIFO_BUF
+> > +	help
+> > +          Say yes here to build support for IIO SCMI Driver.
+> > +          This provides ARM SCMI Protocol based IIO device.
+> > +          This driver provides support for accelerometer and gyroscope
+> > +          sensors available on SCMI based platforms.
+> > +endmenu
+> > diff --git a/drivers/iio/common/scmi_sensors/Makefile b/drivers/iio/common/scmi_sensors/Makefile
+> > new file mode 100644
+> > index 000000000000..f13140a2575a
+> > --- /dev/null
+> > +++ b/drivers/iio/common/scmi_sensors/Makefile
+> > @@ -0,0 +1,5 @@
+> > +# SPDX - License - Identifier : GPL - 2.0 - only
+> > +#
+> > +# Makefile for the IIO over SCMI
+> > +#
+> > +obj-$(CONFIG_IIO_SCMI) += scmi_iio.o
+> > diff --git a/drivers/iio/common/scmi_sensors/scmi_iio.c b/drivers/iio/common/scmi_sensors/scmi_iio.c
+> > new file mode 100644
+> > index 000000000000..872d87ca6256
+> > --- /dev/null
+> > +++ b/drivers/iio/common/scmi_sensors/scmi_iio.c
+> > @@ -0,0 +1,683 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +/*
+> > + * System Control and Management Interface(SCMI) based IIO sensor driver
+> > + *
+> > + * Copyright (C) 2021 Google LLC
+> > + */
+> > +
+> > +#include <linux/delay.h>
+> > +#include <linux/err.h>
+> > +#include <linux/iio/buffer.h>
+> > +#include <linux/iio/iio.h>
+> > +#include <linux/iio/kfifo_buf.h>
+> > +#include <linux/iio/sysfs.h>
+> > +#include <linux/kernel.h>
+> > +#include <linux/kthread.h>
+> > +#include <linux/module.h>
+> > +#include <linux/scmi_protocol.h>
+> > +#include <linux/time.h>
+> > +#include <linux/types.h>
+> > +
+> > +#define SCMI_IIO_NUM_OF_AXIS 3
+> > +
+> > +struct scmi_iio_priv {
+> > +	struct scmi_handle *handle;
+> > +	const struct scmi_sensor_info *sensor_info;
+> > +	struct iio_dev *indio_dev;
+> > +	/* adding one additional channel for timestamp */
+> > +	s64 iio_buf[SCMI_IIO_NUM_OF_AXIS + 1];
+> > +	struct notifier_block sensor_update_nb;
+> > +	u32 *freq_avail;
+> > +};
+> > +
+> > +static int scmi_iio_sensor_update_cb(struct notifier_block *nb,
+> > +				     unsigned long event, void *data)
+> > +{
+> > +	struct scmi_sensor_update_report *sensor_update = data;
+> > +	struct iio_dev *scmi_iio_dev;
+> > +	struct scmi_iio_priv *sensor;
+> > +	s8 tstamp_scale;
+> > +	u64 time, time_ns;
+> > +	int i;
+> > +
+> > +	if (sensor_update->readings_count == 0)
+> > +		return NOTIFY_DONE;
+> > +
+> > +	sensor = container_of(nb, struct scmi_iio_priv, sensor_update_nb);
+> > +
+> > +	for (i = 0; i < sensor_update->readings_count; i++)
+> > +		sensor->iio_buf[i] = sensor_update->readings[i].value;
+> > +
+> > +	if (!sensor->sensor_info->timestamped) {
+> > +		time_ns = ktime_to_ns(sensor_update->timestamp);
+> > +	} else {
+> > +		/*
+> > +		 *  All the axes are supposed to have the same value for timestamp.
+> > +		 *  We are just using the values from the Axis 0 here.
+> > +		 */
+> > +		time = sensor_update->readings[0].timestamp;
+> > +
+> > +		/*
+> > +		 *  Timestamp returned by SCMI is in seconds and is equal to
+> > +		 *  time * power-of-10 multiplier(tstamp_scale) seconds.
+> > +		 *  Converting the timestamp to nanoseconds below.
+> > +		 */
+> > +		tstamp_scale = sensor->sensor_info->tstamp_scale +
+> > +			       const_ilog2(NSEC_PER_SEC) / const_ilog2(10);
+> > +		if (tstamp_scale < 0) {
+> > +			do_div(time, int_pow(10, abs(tstamp_scale)));
+> > +			time_ns = time;
+> > +		} else {
+> > +			time_ns = time * int_pow(10, tstamp_scale);
+> > +		}
+> > +	}
+> > +
+> > +	scmi_iio_dev = sensor->indio_dev;
+> > +	iio_push_to_buffers_with_timestamp(scmi_iio_dev, sensor->iio_buf,
+> > +					   time_ns);
+> > +	return NOTIFY_OK;
+> > +}
+> > +
+> > +static int scmi_iio_buffer_preenable(struct iio_dev *iio_dev)
+> > +{
+> > +	struct scmi_iio_priv *sensor = iio_priv(iio_dev);
+> > +	u32 sensor_id = sensor->sensor_info->id;
+> > +	u32 sensor_config = 0;
+> > +	int err;
+> > +
+> > +	if (sensor->sensor_info->timestamped)
+> > +		sensor_config |= FIELD_PREP(SCMI_SENS_CFG_TSTAMP_ENABLED_MASK,
+> > +					    SCMI_SENS_CFG_TSTAMP_ENABLE);
+> > +
+> > +	sensor_config |= FIELD_PREP(SCMI_SENS_CFG_SENSOR_ENABLED_MASK,
+> > +				    SCMI_SENS_CFG_SENSOR_ENABLE);
+> > +
+> > +	err = sensor->handle->notify_ops->register_event_notifier(sensor->handle,
+> > +			SCMI_PROTOCOL_SENSOR, SCMI_EVENT_SENSOR_UPDATE,
+> > +			&sensor_id, &sensor->sensor_update_nb);
+> > +	if (err) {
+> > +		dev_err(&iio_dev->dev,
+> > +			"Error in registering sensor update notifier for sensor %s err %d",
+> > +			sensor->sensor_info->name, err);
+> > +		return err;
+> > +	}
+> > +
+> > +	err = sensor->handle->sensor_ops->config_set(sensor->handle,
+> > +			sensor->sensor_info->id, sensor_config);
+> > +	if (err) {
+> > +		sensor->handle->notify_ops->unregister_event_notifier(sensor->handle,
+> > +				SCMI_PROTOCOL_SENSOR,
+> > +				SCMI_EVENT_SENSOR_UPDATE, &sensor_id,
+> > +				&sensor->sensor_update_nb);
+> > +		dev_err(&iio_dev->dev, "Error in enabling sensor %s err %d",
+> > +			sensor->sensor_info->name, err);
+> > +	}
+> > +
+> > +	return err;
+> > +}
+> > +
+> > +static int scmi_iio_buffer_postdisable(struct iio_dev *iio_dev)
+> > +{
+> > +	struct scmi_iio_priv *sensor = iio_priv(iio_dev);
+> > +	u32 sensor_id = sensor->sensor_info->id;
+> > +	u32 sensor_config = 0;
+> > +	int err;
+> > +
+> > +	sensor_config |= FIELD_PREP(SCMI_SENS_CFG_SENSOR_ENABLED_MASK,
+> > +				    SCMI_SENS_CFG_SENSOR_DISABLE);
+> > +
+> > +	err = sensor->handle->notify_ops->unregister_event_notifier(sensor->handle,
+> > +			SCMI_PROTOCOL_SENSOR, SCMI_EVENT_SENSOR_UPDATE,
+> > +			&sensor_id, &sensor->sensor_update_nb);
+> > +	if (err) {
+> > +		dev_err(&iio_dev->dev,
+> > +			"Error in unregistering sensor update notifier for sensor %s err %d",
+> > +			sensor->sensor_info->name, err);
+> > +		return err;
+> > +	}
+> > +
+> > +	err = sensor->handle->sensor_ops->config_set(sensor->handle, sensor_id,
+> > +						     sensor_config);
+> > +	if (err) {
+> > +		dev_err(&iio_dev->dev,
+> > +			"Error in disabling sensor %s with err %d",
+> > +			sensor->sensor_info->name, err);
+> > +	}
+> > +
+> > +	return err;
+> > +}
+> > +
+> > +static const struct iio_buffer_setup_ops scmi_iio_buffer_ops = {
+> > +	.preenable = scmi_iio_buffer_preenable,
+> > +	.postdisable = scmi_iio_buffer_postdisable,
+> > +};
+> > +
+> > +static int scmi_iio_set_odr_val(struct iio_dev *iio_dev, int val, int val2)
+> > +{
+> > +	struct scmi_iio_priv *sensor = iio_priv(iio_dev);
+> > +	const unsigned long UHZ_PER_HZ = 1000000UL;
+> > +	u64 sec, mult, uHz, sf;
+> > +	u32 sensor_config;
+> > +	char buf[32];
+> > +
+> > +	int err = sensor->handle->sensor_ops->config_get(sensor->handle,
+> > +			sensor->sensor_info->id, &sensor_config);
+> > +	if (err) {
+> > +		dev_err(&iio_dev->dev,
+> > +			"Error in getting sensor config for sensor %s err %d",
+> > +			sensor->sensor_info->name, err);
+> > +		return err;
+> > +	}
+> > +
+> > +	uHz = val * UHZ_PER_HZ + val2;
+> > +
+> > +	/*
+> > +	 * The seconds field in the sensor interval in SCMI is 16 bits long
+> > +	 * Therefore seconds  = 1/Hz <= 0xFFFF. As floating point calculations are
+> > +	 * discouraged in the kernel driver code, to calculate the scale factor (sf)
+> > +	 * (1* 1000000 * sf)/uHz <= 0xFFFF. Therefore, sf <= (uHz * 0xFFFF)/1000000
+> > +	 * To calculate the multiplier,we convert the sf into char string  and
+> > +	 * count the number of characters
+> > +	 */
+> > +	sf = (u64)uHz * 0xFFFF;
+> > +	do_div(sf,  UHZ_PER_HZ);
+> > +	mult = scnprintf(buf, sizeof(buf), "%llu", sf) - 1;
+> > +
+> > +	sec = int_pow(10, mult) * UHZ_PER_HZ;
+> > +	do_div(sec, uHz);
+> > +	if (sec == 0) {
+> > +		dev_err(&iio_dev->dev,
+> > +			"Trying to set invalid sensor update value for sensor %s",
+> > +			sensor->sensor_info->name);
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +	sensor_config &= ~SCMI_SENS_CFG_UPDATE_SECS_MASK;
+> > +	sensor_config |= FIELD_PREP(SCMI_SENS_CFG_UPDATE_SECS_MASK, sec);
+> > +	sensor_config &= ~SCMI_SENS_CFG_UPDATE_EXP_MASK;
+> > +	sensor_config |= FIELD_PREP(SCMI_SENS_CFG_UPDATE_EXP_MASK, -mult);
+> > +
+> > +	if (sensor->sensor_info->timestamped) {
+> > +		sensor_config &= ~SCMI_SENS_CFG_TSTAMP_ENABLED_MASK;
+> > +		sensor_config |= FIELD_PREP(SCMI_SENS_CFG_TSTAMP_ENABLED_MASK,
+> > +					    SCMI_SENS_CFG_TSTAMP_ENABLE);
+> > +	}
+> > +
+> > +	sensor_config &= ~SCMI_SENS_CFG_ROUND_MASK;
+> > +	sensor_config |=
+> > +		FIELD_PREP(SCMI_SENS_CFG_ROUND_MASK, SCMI_SENS_CFG_ROUND_AUTO);
+> > +
+> > +	err = sensor->handle->sensor_ops->config_set(sensor->handle,
+> > +			sensor->sensor_info->id, sensor_config);
+> > +	if (err)
+> > +		dev_err(&iio_dev->dev,
+> > +			"Error in setting sensor update interval for sensor %s value %u err %d",
+> > +			sensor->sensor_info->name, sensor_config, err);
+> > +
+> > +	return err;
+> > +}
+> > +
+> > +static int scmi_iio_write_raw(struct iio_dev *iio_dev,
+> > +			      struct iio_chan_spec const *chan, int val,
+> > +			      int val2, long mask)
+> > +{
+> > +	int err;
+> > +
+> > +	switch (mask) {
+> > +	case IIO_CHAN_INFO_SAMP_FREQ:
+> > +		mutex_lock(&iio_dev->mlock);
+> > +		err = scmi_iio_set_odr_val(iio_dev, val, val2);
+> > +		mutex_unlock(&iio_dev->mlock);
+> > +		return err;
+> > +	default:
+> > +		return -EINVAL;
+> > +	}
+> > +}
+> > +
+> > +static int scmi_iio_read_avail(struct iio_dev *iio_dev,
+> > +			       struct iio_chan_spec const *chan,
+> > +			       const int **vals, int *type, int *length,
+> > +			       long mask)
+> > +{
+> > +	struct scmi_iio_priv *sensor = iio_priv(iio_dev);
+> > +
+> > +	switch (mask) {
+> > +	case IIO_CHAN_INFO_SAMP_FREQ:
+> > +		*vals = sensor->freq_avail;
+> > +		*type = IIO_VAL_INT_PLUS_MICRO;
+> > +		*length = sensor->sensor_info->intervals.count * 2;
+> > +		if (sensor->sensor_info->intervals.segmented)
+> > +			return IIO_AVAIL_RANGE;
+> > +		else
+> > +			return IIO_AVAIL_LIST;
+> > +	default:
+> > +		return -EINVAL;
+> > +	}
+> > +}
+> > +
+> > +static void convert_ns_to_freq(u64 interval_ns, u64 *hz, u64 *uhz)
+> > +{
+> > +	u64 rem, freq;
+> > +
+> > +	freq = NSEC_PER_SEC;
+> > +	rem = do_div(freq, interval_ns);
+> > +	*hz = freq;
+> > +	*uhz = rem * 1000000UL;
+> > +	do_div(*uhz, interval_ns);
+> > +}
+> > +
+> > +static int scmi_iio_get_odr_val(struct iio_dev *iio_dev, int *val, int *val2)
+> > +{
+> > +	u64 sensor_update_interval, sensor_interval_mult, hz, uhz;
+> > +	struct scmi_iio_priv *sensor = iio_priv(iio_dev);
+> > +	u32 sensor_config;
+> > +	int mult;
+> > +
+> > +	int err = sensor->handle->sensor_ops->config_get(sensor->handle,
+> > +			sensor->sensor_info->id, &sensor_config);
+> > +	if (err) {
+> > +		dev_err(&iio_dev->dev,
+> > +			"Error in getting sensor config for sensor %s err %d",
+> > +			sensor->sensor_info->name, err);
+> > +		return err;
+> > +	}
+> > +
+> > +	sensor_update_interval =
+> > +		SCMI_SENS_CFG_GET_UPDATE_SECS(sensor_config) * NSEC_PER_SEC;
+> > +
+> > +	mult = SCMI_SENS_CFG_GET_UPDATE_EXP(sensor_config);
+> > +	if (mult < 0) {
+> > +		sensor_interval_mult = int_pow(10, abs(mult));
+> > +		do_div(sensor_update_interval, sensor_interval_mult);
+> > +	} else {
+> > +		sensor_interval_mult = int_pow(10, mult);
+> > +		sensor_update_interval =
+> > +			sensor_update_interval * sensor_interval_mult;
+> > +	}
+> > +
+> > +	convert_ns_to_freq(sensor_update_interval, &hz, &uhz);
+> > +	*val = hz;
+> > +	*val2 = uhz;
+> > +	return 0;
+> > +}
+> > +
+> > +static int scmi_iio_read_raw(struct iio_dev *iio_dev,
+> > +			     struct iio_chan_spec const *ch, int *val,
+> > +			     int *val2, long mask)
+> > +{
+> > +	struct scmi_iio_priv *sensor = iio_priv(iio_dev);
+> > +	s8 scale;
+> > +	int ret;
+> > +
+> > +	switch (mask) {
+> > +	case IIO_CHAN_INFO_SCALE:
+> > +		scale = sensor->sensor_info->axis[ch->scan_index].scale;
+> > +		if (scale < 0) {
+> > +			*val = 1;
+> > +			*val2 = int_pow(10, abs(scale));
+> > +			return IIO_VAL_FRACTIONAL;
+> > +		}
+> > +		*val = int_pow(10, scale);
+> > +		return IIO_VAL_INT;
+> > +	case IIO_CHAN_INFO_SAMP_FREQ:
+> > +		ret = scmi_iio_get_odr_val(iio_dev, val, val2);
+> > +		return ret ? ret : IIO_VAL_INT_PLUS_MICRO;
+> > +	default:
+> > +		return -EINVAL;
+> > +	}
+> > +}
+> > +
+> > +static const struct iio_info scmi_iio_info = {
+> > +	.read_raw = scmi_iio_read_raw,
+> > +	.read_avail = scmi_iio_read_avail,
+> > +	.write_raw = scmi_iio_write_raw,
+> > +};
+> > +
+> > +static ssize_t scmi_iio_get_raw_available(struct iio_dev *iio_dev,
+> > +					  uintptr_t private,
+> > +					  const struct iio_chan_spec *chan,
+> > +					  char *buf)
+> > +{
+> > +	struct scmi_iio_priv *sensor = iio_priv(iio_dev);
+> > +	u64 resolution, rem;
+> > +	s64 min_range, max_range;
+> > +	s8 exponent, scale;
+> > +	int len = 0;
+> > +
+> > +	/*
+> > +	 * All the axes are supposed to have the same value for range and resolution.
+> > +	 * We are just using the values from the Axis 0 here.
+> > +	 */
+> > +	if (sensor->sensor_info->axis[0].extended_attrs) {
+> > +		min_range = sensor->sensor_info->axis[0].attrs.min_range;
+> > +		max_range = sensor->sensor_info->axis[0].attrs.max_range;
+> > +		resolution = sensor->sensor_info->axis[0].resolution;
+> > +		exponent = sensor->sensor_info->axis[0].exponent;
+> > +		scale = sensor->sensor_info->axis[0].scale;
+> > +
+> > +		/*
+> > +		 * To provide the raw value for the resolution to the userspace,
+> > +		 * need to divide the resolution exponent by the sensor scale
+> > +		 */
+> > +		exponent = exponent - scale;
+> > +		if (exponent < 0) {
+> > +			rem = do_div(resolution,
+> > +				     int_pow(10, abs(exponent))
+> > +				     );
+> > +			len = scnprintf(buf, PAGE_SIZE,
+> > +					"[%lld %llu.%llu %lld]\n", min_range,
+> > +					resolution, rem, max_range);
+> > +		} else {
+> > +			resolution = resolution * int_pow(10, exponent);
+> > +			len = scnprintf(buf, PAGE_SIZE, "[%lld %llu %lld]\n",
+> > +					min_range, resolution, max_range);
+> > +		}
+> > +	}
+> > +	return len;
+> > +}
+> > +
+> > +static const struct iio_chan_spec_ext_info scmi_iio_ext_info[] = {
+> > +	{
+> > +		.name = "raw_available",
+> > +		.read = scmi_iio_get_raw_available,
+> > +		.shared = IIO_SHARED_BY_TYPE,
+> > +	},
+> > +	{},
+> > +};
+> > +
+> > +static void scmi_iio_set_timestamp_channel(struct iio_chan_spec *iio_chan,
+> > +					   int scan_index)
+> > +{
+> > +	iio_chan->type = IIO_TIMESTAMP;
+> > +	iio_chan->channel = -1;
+> > +	iio_chan->scan_index = scan_index;
+> > +	iio_chan->scan_type.sign = 'u';
+> > +	iio_chan->scan_type.realbits = 64;
+> > +	iio_chan->scan_type.storagebits = 64;
+> > +}
+> > +
+> > +static void scmi_iio_set_data_channel(struct iio_chan_spec *iio_chan,
+> > +				      enum iio_chan_type type,
+> > +				      enum iio_modifier mod, int scan_index)
+> > +{
+> > +	iio_chan->type = type;
+> > +	iio_chan->modified = 1;
+> > +	iio_chan->channel2 = mod;
+> > +	iio_chan->info_mask_separate = BIT(IIO_CHAN_INFO_SCALE);
+> > +	iio_chan->info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SAMP_FREQ);
+> > +	iio_chan->info_mask_shared_by_type_available =
+> > +		BIT(IIO_CHAN_INFO_SAMP_FREQ);
+> > +	iio_chan->scan_index = scan_index;
+> > +	iio_chan->scan_type.sign = 's';
+> > +	iio_chan->scan_type.realbits = 64;
+> > +	iio_chan->scan_type.storagebits = 64;
+> > +	iio_chan->scan_type.endianness = IIO_LE;
+> > +	iio_chan->ext_info = scmi_iio_ext_info;
+> > +}
+> > +
+> > +static int scmi_iio_get_chan_modifier(const char *name,
+> > +				      enum iio_modifier *modifier)
+> > +{
+> > +	char *pch, mod;
+> > +
+> > +	if (!name)
+> > +		return -EINVAL;
+> > +
+> > +	pch = strrchr(name, '_');
+> > +	if (!pch)
+> > +		return -EINVAL;
+> > +
+> > +	mod = *(pch + 1);
+> > +	switch (mod) {
+> > +	case 'X':
+> > +		*modifier = IIO_MOD_X;
+> > +		return 0;
+> > +	case 'Y':
+> > +		*modifier = IIO_MOD_Y;
+> > +		return 0;
+> > +	case 'Z':
+> > +		*modifier = IIO_MOD_Z;
+> > +		return 0;
+> > +	default:
+> > +		return -EINVAL;
+> > +	}
+> > +}
+> > +
+> > +static int scmi_iio_get_chan_type(u8 scmi_type, enum iio_chan_type *iio_type)
+> > +{
+> > +	switch (scmi_type) {
+> > +	case METERS_SEC_SQUARED:
+> > +		*iio_type = IIO_ACCEL;
+> > +		return 0;
+> > +	case RADIANS_SEC:
+> > +		*iio_type = IIO_ANGL_VEL;
+> > +		return 0;
+> > +	default:
+> > +		return -EINVAL;
+> > +	}
+> > +}
+> > +
+> > +static u64 scmi_iio_convert_interval_to_ns(u32 val)
+> > +{
+> > +	u64 sensor_update_interval =
+> > +		SCMI_SENS_INTVL_GET_SECS(val) * NSEC_PER_SEC;
+> > +	u64 sensor_interval_mult;
+> > +	int mult;
+> > +
+> > +	mult = SCMI_SENS_INTVL_GET_EXP(val);
+> > +	if (mult < 0) {
+> > +		sensor_interval_mult = int_pow(10, abs(mult));
+> > +		do_div(sensor_update_interval, sensor_interval_mult);
+> > +	} else {
+> > +		sensor_interval_mult = int_pow(10, mult);
+> > +		sensor_update_interval =
+> > +			sensor_update_interval * sensor_interval_mult;
+> > +	}
+> > +	return sensor_update_interval;
+> > +}
+> > +
+> > +static int scmi_iio_set_sampling_freq_avail(struct iio_dev *iio_dev)
+> > +{
+> > +	u64 cur_interval_ns, low_interval_ns, high_interval_ns, step_size_ns,
+> > +		hz, uhz;
+> > +	unsigned int cur_interval, low_interval, high_interval, step_size;
+> > +	struct scmi_iio_priv *sensor = iio_priv(iio_dev);
+> > +	int i;
+> > +
+> > +	sensor->freq_avail =
+> > +		devm_kzalloc(&iio_dev->dev,
+> > +			     sizeof(*sensor->freq_avail) *
+> > +				     (sensor->sensor_info->intervals.count * 2),
+> > +			     GFP_KERNEL);
+> > +	if (!sensor->freq_avail)
+> > +		return -ENOMEM;
+> > +
+> > +	if (sensor->sensor_info->intervals.segmented) {
+> > +		low_interval = sensor->sensor_info->intervals
+> > +				       .desc[SCMI_SENS_INTVL_SEGMENT_LOW];
+> > +		low_interval_ns = scmi_iio_convert_interval_to_ns(low_interval);
+> > +		convert_ns_to_freq(low_interval_ns, &hz, &uhz);
+> > +		sensor->freq_avail[0] = hz;
+> > +		sensor->freq_avail[1] = uhz;
+> > +
+> > +		step_size = sensor->sensor_info->intervals
+> > +				    .desc[SCMI_SENS_INTVL_SEGMENT_STEP];
+> > +		step_size_ns = scmi_iio_convert_interval_to_ns(step_size);
+> > +		convert_ns_to_freq(step_size_ns, &hz, &uhz);
+> > +		sensor->freq_avail[2] = hz;
+> > +		sensor->freq_avail[3] = uhz;
+> > +
+> > +		high_interval = sensor->sensor_info->intervals
+> > +					.desc[SCMI_SENS_INTVL_SEGMENT_HIGH];
+> > +		high_interval_ns =
+> > +			scmi_iio_convert_interval_to_ns(high_interval);
+> > +		convert_ns_to_freq(high_interval_ns, &hz, &uhz);
+> > +		sensor->freq_avail[4] = hz;
+> > +		sensor->freq_avail[5] = uhz;
+> > +	} else {
+> > +		for (i = 0; i < sensor->sensor_info->intervals.count; i++) {
+> > +			cur_interval = sensor->sensor_info->intervals.desc[i];
+> > +			cur_interval_ns =
+> > +				scmi_iio_convert_interval_to_ns(cur_interval);
+> > +			convert_ns_to_freq(cur_interval_ns, &hz, &uhz);
+> > +			sensor->freq_avail[i * 2] = hz;
+> > +			sensor->freq_avail[i * 2 + 1] = uhz;
+> > +		}
+> > +	}
+> > +	return 0;
+> > +}
+> > +
+> > +static int scmi_iio_buffers_setup(struct iio_dev *scmi_iiodev)
+> > +{
+> > +	struct iio_buffer *buffer;
+> > +
+> > +	buffer = devm_iio_kfifo_allocate(&scmi_iiodev->dev);
+> > +	if (!buffer)
+> > +		return -ENOMEM;
+> > +
+> > +	iio_device_attach_buffer(scmi_iiodev, buffer);
+> > +	scmi_iiodev->modes |= INDIO_BUFFER_SOFTWARE;
+> > +	scmi_iiodev->setup_ops = &scmi_iio_buffer_ops;
+> > +	return 0;
+> > +}
+> > +
+> > +static struct iio_dev *scmi_alloc_iiodev(struct device *dev,
+> > +					 struct scmi_handle *handle,
+> > +					 const struct scmi_sensor_info *sensor_info)
+> > +{
+> > +	struct iio_chan_spec *iio_channels;
+> > +	struct scmi_iio_priv *sensor;
+> > +	enum iio_modifier modifier;
+> > +	enum iio_chan_type type;
+> > +	struct iio_dev *iiodev;
+> > +	int i, ret;
+> > +
+> > +	iiodev = devm_iio_device_alloc(dev, sizeof(*sensor));
+> > +	if (!iiodev)
+> > +		return ERR_PTR(-ENOMEM);
+> > +
+> > +	iiodev->modes = INDIO_DIRECT_MODE;
+> > +	iiodev->dev.parent = dev;
+> > +	sensor = iio_priv(iiodev);
+> > +	sensor->handle = handle;
+> > +	sensor->sensor_info = sensor_info;
+> > +	sensor->sensor_update_nb.notifier_call = scmi_iio_sensor_update_cb;
+> > +	sensor->indio_dev = iiodev;
+> > +
+> > +	/* adding one additional channel for timestamp */
+> > +	iiodev->num_channels = sensor_info->num_axis + 1;
+> > +	iiodev->name = sensor_info->name;
+> > +	iiodev->info = &scmi_iio_info;
+> > +
+> > +	iio_channels =
+> > +		devm_kzalloc(dev,
+> > +			     sizeof(*iio_channels) * (iiodev->num_channels),
+> > +			     GFP_KERNEL);
+> > +	if (!iio_channels)
+> > +		return ERR_PTR(-ENOMEM);
+> > +
+> > +	ret = scmi_iio_set_sampling_freq_avail(iiodev);
+> > +	if (ret < 0)
+> > +		return ERR_PTR(ret);
+> > +
+> > +	for (i = 0; i < sensor_info->num_axis; i++) {
+> > +		ret = scmi_iio_get_chan_type(sensor_info->axis[i].type, &type);
+> > +		if (ret < 0)
+> > +			return ERR_PTR(ret);
+> > +
+> > +		ret = scmi_iio_get_chan_modifier(sensor_info->axis[i].name,
+> > +						 &modifier);
+> > +		if (ret < 0)
+> > +			return ERR_PTR(ret);
+> > +
+> > +		scmi_iio_set_data_channel(&iio_channels[i], type, modifier,
+> > +					  sensor_info->axis[i].id);
+> > +	}
+> > +
+> > +	scmi_iio_set_timestamp_channel(&iio_channels[i], i);
+> > +	iiodev->channels = iio_channels;
+> > +	return iiodev;
+> > +}
+> > +
+> > +static int scmi_iio_dev_probe(struct scmi_device *sdev)
+> > +{
+> > +	const struct scmi_sensor_info *sensor_info;
+> > +	struct scmi_handle *handle = sdev->handle;
+> > +	struct device *dev = &sdev->dev;
+> > +	struct iio_dev *scmi_iio_dev;
+> > +	u16 nr_sensors;
+> > +	int err = -ENODEV, i;
+> > +
+> > +	if (!handle || !handle->sensor_ops) {
+> > +		dev_err(dev, "SCMI device has no sensor interface\n");
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +	nr_sensors = handle->sensor_ops->count_get(handle);
+> > +	if (!nr_sensors) {
+> > +		dev_dbg(dev, "0 sensors found via SCMI bus\n");
+> > +		return -ENODEV;
+> > +	}
+> > +
+> > +	for (i = 0; i < nr_sensors; i++) {
+> > +		sensor_info = handle->sensor_ops->info_get(handle, i);
+> > +		if (!sensor_info) {
+> > +			dev_err(dev, "SCMI sensor %d has missing info\n", i);
+> > +			return -EINVAL;
+> > +		}
+> > +
+> > +		/* This driver only supports 3-axis accel and gyro, skipping other sensors */
+> > +		if (sensor_info->num_axis != SCMI_IIO_NUM_OF_AXIS)
+> > +			continue;
+> > +
+> > +		/* This driver only supports 3-axis accel and gyro, skipping other sensors */
+> > +		if (sensor_info->axis[0].type != METERS_SEC_SQUARED &&
+> > +		    sensor_info->axis[0].type != RADIANS_SEC)
+> > +			continue;
+> > +
+> > +		scmi_iio_dev = scmi_alloc_iiodev(dev, handle, sensor_info);
+> > +		if (IS_ERR(scmi_iio_dev)) {
+> > +			dev_err(dev,
+> > +				"failed to allocate IIO device for sensor %s: %ld\n",
+> > +				sensor_info->name, PTR_ERR(scmi_iio_dev));
+> > +			return PTR_ERR(scmi_iio_dev);
+> > +		}
+> > +
+> > +		err = scmi_iio_buffers_setup(scmi_iio_dev);
+> > +		if (err < 0) {
+> > +			dev_err(dev,
+> > +				"IIO buffer setup error at sensor %s: %d\n",
+> > +				sensor_info->name, err);
+> > +			return err;
+> > +		}
+> > +
+> > +		err = devm_iio_device_register(dev, scmi_iio_dev);
+> > +		if (err) {
+> > +			dev_err(dev,
+> > +				"IIO device registration failed at sensor %s: %d\n",
+> > +				sensor_info->name, err);
+> > +			return err;
+> > +		}
+> > +	}
+> > +	return err;
+> > +}
+> > +
+> > +static const struct scmi_device_id scmi_id_table[] = {
+> > +	{ SCMI_PROTOCOL_SENSOR, "iiodev" },
+> > +	{},
+> > +};
+> > +
+> > +MODULE_DEVICE_TABLE(scmi, scmi_id_table);
+> > +
+> > +static struct scmi_driver scmi_iiodev_driver = {
+> > +	.name = "scmi-sensor-iiodev",
+> > +	.probe = scmi_iio_dev_probe,
+> > +	.id_table = scmi_id_table,
+> > +};
+> > +
+> > +module_scmi_driver(scmi_iiodev_driver);
+> > +
+> > +MODULE_AUTHOR("Jyoti Bhayana <jbhayana@google.com>");
+> > +MODULE_DESCRIPTION("SCMI IIO Driver");
+> > +MODULE_LICENSE("GPL v2");  
+> 
 

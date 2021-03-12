@@ -2,221 +2,337 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 01C09337F7B
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Mar 2021 22:15:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD024338285
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Mar 2021 01:45:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230454AbhCKVPY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 11 Mar 2021 16:15:24 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40520 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231303AbhCKVPI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 11 Mar 2021 16:15:08 -0500
-Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7FAB364F79;
-        Thu, 11 Mar 2021 21:15:07 +0000 (UTC)
-Date:   Thu, 11 Mar 2021 21:15:03 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Gwendal Grignou <gwendal@chromium.org>
-Cc:     lars@metafoo.de, andy.shevchenko@gmail.com,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: Remove kernel-doc keyword in file header comment
-Message-ID: <20210311211503.2900df1b@archlinux>
-In-Reply-To: <20210309234314.2208256-1-gwendal@chromium.org>
-References: <20210309234314.2208256-1-gwendal@chromium.org>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S229574AbhCLApO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 11 Mar 2021 19:45:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50946 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229505AbhCLAoo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 11 Mar 2021 19:44:44 -0500
+Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C37AC061574
+        for <linux-iio@vger.kernel.org>; Thu, 11 Mar 2021 16:44:44 -0800 (PST)
+Received: by mail-il1-x134.google.com with SMTP id s1so1032898ilh.12
+        for <linux-iio@vger.kernel.org>; Thu, 11 Mar 2021 16:44:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=s3cDbyMq+QdDt19B1IyOzO4nlRZ8Ag6YJA2pNVDpLos=;
+        b=K3s6evQajKdT504lZ5Ovc/m/XqMINIy+6n17tUI0PYMYw2OjQGNjCl8pOw5qloIVqe
+         eX/7lU2C1uzPVwf2szYx6I8Jm3RDO4Cjy0ozOGBWQok+D3HKq5crUGCtwoz3G1ZktV1h
+         utk/aFvmGvSbks4LZjBbHBEfZUWHLuJHNoKjU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=s3cDbyMq+QdDt19B1IyOzO4nlRZ8Ag6YJA2pNVDpLos=;
+        b=aKOMG9bTInil2AJL5KtdNiRvo1A4N/W6L6vcJWg3X0c8mCovLwXa5o8p9MHB6l7TGd
+         6SxXq0bgDlwx5GDiMHHZQUX6/C5/hwEjhwKBI8tRbgBUBim3sNLesscK7ai7sZuDDgpc
+         gxriuLJxLdDv4bavPb01ZZGtDGs/tuqG6WHtEMvILsUdWiyksyI99hvKwJFDlYsIzM3P
+         U0slHmyYTnwihRI8TXW+OtRxFDSlyDW/1GM8l0xmLThiNlmnFHpkPeiGLyv876EWj/e8
+         n8K0nifH2moX781AW2wfIy6uGEgkdBTqcMA5p33m03iNF2PRkejhtZGS4lmOlriX4PDR
+         7qyg==
+X-Gm-Message-State: AOAM532RtCwP7f27b4BNNdLAKH9DNiIdrOcsnQEc7AqlwZVQGjD0/qmc
+        KCJCJKpjAhB9ioOfZknC2831Lcr+TQanOyj+mdRfVA==
+X-Google-Smtp-Source: ABdhPJz1rPh36hWgsqlDUgS4XPkWxoasI3NWGUQdVmMP2gyMlCZ66BlDUNHHABdnuOxuHv252Z1ndQ9aSAupZtgySL4=
+X-Received: by 2002:a92:c644:: with SMTP id 4mr878876ill.237.1615509882833;
+ Thu, 11 Mar 2021 16:44:42 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20210310071334.3204344-1-gwendal@chromium.org>
+ <CA+U=DsqJGFeEiaAXJ=sY=QmaPjESpJ4WmWAqEEHO-TW8-tQjEw@mail.gmail.com>
+ <CAPUE2ut3b2-LfwKQhB47Fq5URAGTMNvmYU-DjWQMEwXx0yOAEA@mail.gmail.com> <CA+U=Dspk3cWjiiRmDrgfHAY6houjr-KtSD3u4BssUcb=c2ujpQ@mail.gmail.com>
+In-Reply-To: <CA+U=Dspk3cWjiiRmDrgfHAY6houjr-KtSD3u4BssUcb=c2ujpQ@mail.gmail.com>
+From:   Gwendal Grignou <gwendal@chromium.org>
+Date:   Thu, 11 Mar 2021 16:44:29 -0800
+Message-ID: <CAPUE2ut5FqVc3uYcKvTUMkUpganPdHXxzikoRxAh6WLx+UAkfQ@mail.gmail.com>
+Subject: Re: [PATCH v2] iio: cros: unify hw fifo attributes without API changes
+To:     Alexandru Ardelean <ardeleanalex@gmail.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-tiOn Tue,  9 Mar 2021 15:43:14 -0800
-Gwendal Grignou <gwendal@chromium.org> wrote:
-
-> Remove kernel-doc keyword from function header comment.
-> It fixes issues spotted by scripts/kernel-doc like:
-> drivers/iio/<driver>.c:3: info: Scanning doc for function <component name>
-> drivers/iio/<driver>.c:X: warning: expecting prototype for <component name>.
->   Prototype was for <function>() instead
-> 
-> To reproduce the errors:
-> scripts/kernel-doc -v -none $(find drivers/iio/ -name \*.c \
-> -exec head -2 {} \+ | grep -B2 -e '\*\*' | grep '==' | cut -d ' ' -f 2)
-> 
-> After, confirm these errors are gone with:
-> scripts/kernel-doc -v -none $(git show --name-only  | grep -e "^driver")
-> 
-> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-
-Looks like there are more issues related to kernel doc in ti-adc084s021
-but as they don't fall in this particular form lets fix those separately.
-
-Applied to the togreg branch of iio.git and pushed out as testing.
-
-Thanks,
-
-Jonathan
-
-> ---
->  drivers/iio/accel/bma220_spi.c         | 2 +-
->  drivers/iio/accel/da280.c              | 2 +-
->  drivers/iio/accel/da311.c              | 2 +-
->  drivers/iio/accel/dmard10.c            | 2 +-
->  drivers/iio/accel/mc3230.c             | 2 +-
->  drivers/iio/accel/mma7660.c            | 2 +-
->  drivers/iio/accel/stk8312.c            | 2 +-
->  drivers/iio/accel/stk8ba50.c           | 2 +-
->  drivers/iio/adc/ti-adc084s021.c        | 2 +-
->  drivers/iio/humidity/am2315.c          | 2 +-
->  drivers/iio/light/opt3001.c            | 2 +-
->  drivers/iio/light/stk3310.c            | 2 +-
->  drivers/iio/trigger/iio-trig-hrtimer.c | 2 +-
->  13 files changed, 13 insertions(+), 13 deletions(-)
-> 
-> diff --git a/drivers/iio/accel/bma220_spi.c b/drivers/iio/accel/bma220_spi.c
-> index 3c9b0c6954e60..36fc9876dbcaf 100644
-> --- a/drivers/iio/accel/bma220_spi.c
-> +++ b/drivers/iio/accel/bma220_spi.c
-> @@ -1,5 +1,5 @@
->  // SPDX-License-Identifier: GPL-2.0-only
-> -/**
-> +/*
->   * BMA220 Digital triaxial acceleration sensor driver
->   *
->   * Copyright (c) 2016,2020 Intel Corporation.
-> diff --git a/drivers/iio/accel/da280.c b/drivers/iio/accel/da280.c
-> index 4472dde6899ec..5edff9ba72da7 100644
-> --- a/drivers/iio/accel/da280.c
-> +++ b/drivers/iio/accel/da280.c
-> @@ -1,5 +1,5 @@
->  // SPDX-License-Identifier: GPL-2.0-only
-> -/**
-> +/*
->   * IIO driver for the MiraMEMS DA280 3-axis accelerometer and
->   * IIO driver for the MiraMEMS DA226 2-axis accelerometer
->   *
-> diff --git a/drivers/iio/accel/da311.c b/drivers/iio/accel/da311.c
-> index 3b3df620ba272..92593a1cd1aa6 100644
-> --- a/drivers/iio/accel/da311.c
-> +++ b/drivers/iio/accel/da311.c
-> @@ -1,5 +1,5 @@
->  // SPDX-License-Identifier: GPL-2.0-only
-> -/**
-> +/*
->   * IIO driver for the MiraMEMS DA311 3-axis accelerometer
->   *
->   * Copyright (c) 2016 Hans de Goede <hdegoede@redhat.com>
-> diff --git a/drivers/iio/accel/dmard10.c b/drivers/iio/accel/dmard10.c
-> index 90206f015857d..e84bf8db1e895 100644
-> --- a/drivers/iio/accel/dmard10.c
-> +++ b/drivers/iio/accel/dmard10.c
-> @@ -1,5 +1,5 @@
->  // SPDX-License-Identifier: GPL-2.0-only
-> -/**
-> +/*
->   * IIO driver for the 3-axis accelerometer Domintech ARD10.
->   *
->   * Copyright (c) 2016 Hans de Goede <hdegoede@redhat.com>
-> diff --git a/drivers/iio/accel/mc3230.c b/drivers/iio/accel/mc3230.c
-> index 46e4283fc0375..735002b716f32 100644
-> --- a/drivers/iio/accel/mc3230.c
-> +++ b/drivers/iio/accel/mc3230.c
-> @@ -1,5 +1,5 @@
->  // SPDX-License-Identifier: GPL-2.0-or-later
-> -/**
-> +/*
->   * mCube MC3230 3-Axis Accelerometer
->   *
->   * Copyright (c) 2016 Hans de Goede <hdegoede@redhat.com>
-> diff --git a/drivers/iio/accel/mma7660.c b/drivers/iio/accel/mma7660.c
-> index b3c9136d51ec7..47f5cd66e996e 100644
-> --- a/drivers/iio/accel/mma7660.c
-> +++ b/drivers/iio/accel/mma7660.c
-> @@ -1,5 +1,5 @@
->  // SPDX-License-Identifier: GPL-2.0-only
-> -/**
-> +/*
->   * Freescale MMA7660FC 3-Axis Accelerometer
->   *
->   * Copyright (c) 2016, Intel Corporation.
-> diff --git a/drivers/iio/accel/stk8312.c b/drivers/iio/accel/stk8312.c
-> index 3b59887a8581b..1a8a1a0c3ffb4 100644
-> --- a/drivers/iio/accel/stk8312.c
-> +++ b/drivers/iio/accel/stk8312.c
-> @@ -1,5 +1,5 @@
->  // SPDX-License-Identifier: GPL-2.0-only
-> -/**
-> +/*
->   * Sensortek STK8312 3-Axis Accelerometer
->   *
->   * Copyright (c) 2015, Intel Corporation.
-> diff --git a/drivers/iio/accel/stk8ba50.c b/drivers/iio/accel/stk8ba50.c
-> index 3ead378b02c9b..7a06904455eb2 100644
-> --- a/drivers/iio/accel/stk8ba50.c
-> +++ b/drivers/iio/accel/stk8ba50.c
-> @@ -1,5 +1,5 @@
->  // SPDX-License-Identifier: GPL-2.0-only
-> -/**
-> +/*
->   * Sensortek STK8BA50 3-Axis Accelerometer
->   *
->   * Copyright (c) 2015, Intel Corporation.
-> diff --git a/drivers/iio/adc/ti-adc084s021.c b/drivers/iio/adc/ti-adc084s021.c
-> index fb14b92fa6e71..d6e1bf3de755c 100644
-> --- a/drivers/iio/adc/ti-adc084s021.c
-> +++ b/drivers/iio/adc/ti-adc084s021.c
-> @@ -1,5 +1,5 @@
->  // SPDX-License-Identifier: GPL-2.0-only
-> -/**
-> +/*
->   * Copyright (C) 2017 Axis Communications AB
->   *
->   * Driver for Texas Instruments' ADC084S021 ADC chip.
-> diff --git a/drivers/iio/humidity/am2315.c b/drivers/iio/humidity/am2315.c
-> index 02ad1767c845e..23bc9c784ef4b 100644
-> --- a/drivers/iio/humidity/am2315.c
-> +++ b/drivers/iio/humidity/am2315.c
-> @@ -1,5 +1,5 @@
->  // SPDX-License-Identifier: GPL-2.0-only
-> -/**
-> +/*
->   * Aosong AM2315 relative humidity and temperature
->   *
->   * Copyright (c) 2016, Intel Corporation.
-> diff --git a/drivers/iio/light/opt3001.c b/drivers/iio/light/opt3001.c
-> index 2d48d61909a4d..52963da401a78 100644
-> --- a/drivers/iio/light/opt3001.c
-> +++ b/drivers/iio/light/opt3001.c
-> @@ -1,5 +1,5 @@
->  // SPDX-License-Identifier: GPL-2.0-only
-> -/**
-> +/*
->   * opt3001.c - Texas Instruments OPT3001 Light Sensor
->   *
->   * Copyright (C) 2014 Texas Instruments Incorporated - https://www.ti.com
-> diff --git a/drivers/iio/light/stk3310.c b/drivers/iio/light/stk3310.c
-> index a2827d03ab0fb..07e91846307c7 100644
-> --- a/drivers/iio/light/stk3310.c
-> +++ b/drivers/iio/light/stk3310.c
-> @@ -1,5 +1,5 @@
->  // SPDX-License-Identifier: GPL-2.0-only
-> -/**
-> +/*
->   * Sensortek STK3310/STK3311 Ambient Light and Proximity Sensor
->   *
->   * Copyright (c) 2015, Intel Corporation.
-> diff --git a/drivers/iio/trigger/iio-trig-hrtimer.c b/drivers/iio/trigger/iio-trig-hrtimer.c
-> index 410de837d0417..9fbf878ad2d18 100644
-> --- a/drivers/iio/trigger/iio-trig-hrtimer.c
-> +++ b/drivers/iio/trigger/iio-trig-hrtimer.c
-> @@ -1,5 +1,5 @@
->  // SPDX-License-Identifier: GPL-2.0-only
-> -/**
-> +/*
->   * The industrial I/O periodic hrtimer trigger driver
->   *
->   * Copyright (C) Intuitive Aerial AB
-
+On Thu, Mar 11, 2021 at 12:14 AM Alexandru Ardelean
+<ardeleanalex@gmail.com> wrote:
+>
+> On Thu, Mar 11, 2021 at 1:09 AM Gwendal Grignou <gwendal@chromium.org> wrote:
+> >
+> > Uploading a V3. I would not need to use a trigger, if there was a
+> > function devm_iio_kfifo_buffer_setup_ext() that like
+> > iio_triggered_buffer_setup_ext would set buffer->attrs.
+>
+> Btw: my @analog.com email will become inactive in a few weeks.
+>
+> If you need a devm_iio_kfifo_buffer_setup_ext(), I don't see a reason
+> not to add one.
+> Similar to {devm_}iio_triggered_buffer_setup_ext().
+> Unless someone else objects.
+>
+> These HW FIFO via buffer->attrs are common to other drivers [I
+> remember around 5] and they look like they could be implemented as
+> some generic mechanism inside IIO.
+> The iio_triggered_buffer_setup_ext()/devm_iio_kfifo_buffer_setup_ext()
+> functions [which are used to pass these attributes] are a bit of a
+> temporary mechanism until this somehow moves into some IIO core logic.
+>
+> I can spin-up a patch to create a devm_iio_kfifo_buffer_setup_ext() if
+> that helps.
+The v4 patch does not need that new function and if you plan to
+continue refactoring anyway that does not make sense to add a new
+function.
+>
+> >
+> > Gwendal.
+> >
+> > On Tue, Mar 9, 2021 at 11:49 PM Alexandru Ardelean
+> > <ardeleanalex@gmail.com> wrote:
+> > >
+> > > On Wed, Mar 10, 2021 at 9:15 AM Gwendal Grignou <gwendal@chromium.org> wrote:
+> > > >
+> > > > fixes commit 2e2366c2d141 ("iio: cros_ec: unify hw fifo attributes into the core file")
+> > > > fixes commit 165aea80e2e2 ("iio: cros_ec: use devm_iio_triggered_buffer_setup_ext()")
+> > > >
+> > >
+> > > Apologies for not noticing this earlier.
+> > > But could you rework this patch on top of this commit?
+> > > https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/?id=c3f59df11a01dcdcd0c5a60563b7b5d4d8fceca2
+> > >
+> > > It's only in Jonathan's tree, in the iio/testing branch.
+> > >
+> > > There's that new devm_iio_kfifo_buffer_setup() function that got
+> > > introduced recently, mostly to get rid of the
+> > > iio_device_attach_buffer() call.
+> > > Also, the `linux/iio/buffer_impl.h` include can now be removed now.
+> > >
+> > > > 1. Instead of adding has_fw_fifo, deduct it from the configuration:
+> > > > - EC must support FIFO (EC_FEATURE_MOTION_SENSE_FIFO) set.
+> > > > - sensors send data a regular interval (accelerometer, gyro,
+> > > >   magnetomer, barometer, light sensor).
+> > > > - "Legacy accelerometer" is only present on EC without FIFO, so we don't
+> > > > need to set buffer attributes.
+> > > >
+> > > > 2. devm_iio_triggered_buffer_setup_ext() does not need to be called when
+> > > > EC does not support FIFO, as there is no FIFO to manage.
+> > > >
+> > > > 3. Create a triggered buffer with devm_iio_triggered_buffer_setup_ext() when
+> > > > the EC support FIFO as it is the only clean way to set the
+> > > > buffer extended attributes.
+> > > > Add a slim trigger to be sure the samples can flow via callback from the
+> > > > EC FIFO to the IIO buffer.
+> > > >
+> > > > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> > > > ---
+> > > >  drivers/iio/accel/cros_ec_accel_legacy.c      |  2 +-
+> > > >  .../cros_ec_sensors/cros_ec_lid_angle.c       |  3 +-
+> > > >  .../common/cros_ec_sensors/cros_ec_sensors.c  |  3 +-
+> > > >  .../cros_ec_sensors/cros_ec_sensors_core.c    | 58 +++++++++++--------
+> > > >  drivers/iio/light/cros_ec_light_prox.c        |  3 +-
+> > > >  drivers/iio/pressure/cros_ec_baro.c           |  3 +-
+> > > >  .../linux/iio/common/cros_ec_sensors_core.h   |  3 +-
+> > > >  7 files changed, 41 insertions(+), 34 deletions(-)
+> > > >
+> > > > diff --git a/drivers/iio/accel/cros_ec_accel_legacy.c b/drivers/iio/accel/cros_ec_accel_legacy.c
+> > > > index 8f1232c38e0d7..b6f3471b62dcf 100644
+> > > > --- a/drivers/iio/accel/cros_ec_accel_legacy.c
+> > > > +++ b/drivers/iio/accel/cros_ec_accel_legacy.c
+> > > > @@ -215,7 +215,7 @@ static int cros_ec_accel_legacy_probe(struct platform_device *pdev)
+> > > >                 return -ENOMEM;
+> > > >
+> > > >         ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
+> > > > -                                       cros_ec_sensors_capture, NULL, false);
+> > > > +                                       cros_ec_sensors_capture, NULL);
+> > > >         if (ret)
+> > > >                 return ret;
+> > > >
+> > > > diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
+> > > > index 752f59037715b..af801e203623e 100644
+> > > > --- a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
+> > > > +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
+> > > > @@ -97,8 +97,7 @@ static int cros_ec_lid_angle_probe(struct platform_device *pdev)
+> > > >         if (!indio_dev)
+> > > >                 return -ENOMEM;
+> > > >
+> > > > -       ret = cros_ec_sensors_core_init(pdev, indio_dev, false, NULL,
+> > > > -                                       NULL, false);
+> > > > +       ret = cros_ec_sensors_core_init(pdev, indio_dev, false, NULL, NULL);
+> > > >         if (ret)
+> > > >                 return ret;
+> > > >
+> > > > diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> > > > index dee1191de7528..376a5b30010ae 100644
+> > > > --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> > > > +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> > > > @@ -236,8 +236,7 @@ static int cros_ec_sensors_probe(struct platform_device *pdev)
+> > > >
+> > > >         ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
+> > > >                                         cros_ec_sensors_capture,
+> > > > -                                       cros_ec_sensors_push_data,
+> > > > -                                       true);
+> > > > +                                       cros_ec_sensors_push_data);
+> > > >         if (ret)
+> > > >                 return ret;
+> > > >
+> > > > diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> > > > index c833ec0ef2147..8ee89c4314a61 100644
+> > > > --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> > > > +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> > > > @@ -8,10 +8,12 @@
+> > > >  #include <linux/delay.h>
+> > > >  #include <linux/device.h>
+> > > >  #include <linux/iio/buffer.h>
+> > > > +#include <linux/iio/buffer_impl.h>
+> > > >  #include <linux/iio/common/cros_ec_sensors_core.h>
+> > > >  #include <linux/iio/iio.h>
+> > > >  #include <linux/iio/kfifo_buf.h>
+> > > >  #include <linux/iio/sysfs.h>
+> > > > +#include <linux/iio/trigger.h>
+> > > >  #include <linux/iio/trigger_consumer.h>
+> > > >  #include <linux/iio/triggered_buffer.h>
+> > > >  #include <linux/kernel.h>
+> > > > @@ -240,7 +242,6 @@ static void cros_ec_sensors_core_clean(void *arg)
+> > > >   *    for backward compatibility.
+> > > >   * @push_data:          function to call when cros_ec_sensorhub receives
+> > > >   *    a sample for that sensor.
+> > > > - * @has_hw_fifo:       Set true if this device has/uses a HW FIFO
+> > > >   *
+> > > >   * Return: 0 on success, -errno on failure.
+> > > >   */
+> > > > @@ -248,8 +249,7 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+> > > >                               struct iio_dev *indio_dev,
+> > > >                               bool physical_device,
+> > > >                               cros_ec_sensors_capture_t trigger_capture,
+> > > > -                             cros_ec_sensorhub_push_data_cb_t push_data,
+> > > > -                             bool has_hw_fifo)
+> > > > +                             cros_ec_sensorhub_push_data_cb_t push_data)
+> > > >  {
+> > > >         struct device *dev = &pdev->dev;
+> > > >         struct cros_ec_sensors_core_state *state = iio_priv(indio_dev);
+> > > > @@ -329,22 +329,41 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+> > > >                 }
+> > > >
+> > > >                 if (cros_ec_check_features(ec, EC_FEATURE_MOTION_SENSE_FIFO)) {
+> > > > +                       struct iio_trigger *trig;
+> > > > +
+> > > >                         /*
+> > > > -                        * Create a software buffer, feed by the EC FIFO.
+> > > > -                        * We can not use trigger here, as events are generated
+> > > > -                        * as soon as sample_frequency is set.
+> > > > +                        * Create a triggered buffer to be able to trigger data
+> > > > +                        * gathering manually, but by default, samples come from
+> > > > +                        * the EC FIFO.
+> > > >                          */
+> > > > -                       struct iio_buffer *buffer;
+> > > > +                       ret = devm_iio_triggered_buffer_setup_ext(dev, indio_dev,
+> > > > +                                       NULL, trigger_capture, NULL,
+> > > > +                                       cros_ec_sensor_fifo_attributes);
+> > > > +                       if (ret)
+> > > > +                               return ret;
+> > > >
+> > > > -                       buffer = devm_iio_kfifo_allocate(dev);
+> > > > -                       if (!buffer)
+> > > > +                       /*
+> > > > +                        * Register a trigger as plug to allow samples from the
+> > > > +                        * FIFO to flow.
+> > > > +                        * When cros-ec-sensor-ring is present, samples produced
+> > > > +                        * by the EC FIFO are directed to that ring only.
+> > > > +                        */
+> > > > +                       trig = devm_iio_trigger_alloc(dev, "cros_ec%d-dev%d",
+> > > > +                                       sensor_platform->sensor_num, indio_dev->id);
+> > > > +                       if (!trig)
+> > > >                                 return -ENOMEM;
+> > > >
+> > > > -                       iio_device_attach_buffer(indio_dev, buffer);
+> > > > -                       indio_dev->modes = INDIO_BUFFER_SOFTWARE;
+> > > > +                       ret = devm_iio_trigger_register(dev, trig);
+> > > > +                       if (ret < 0)
+> > > > +                               return ret;
+> > > > +                       indio_dev->trig = iio_trigger_get(trig);
+> > > >
+> > > > -                       ret = cros_ec_sensorhub_register_push_data(
+> > > > -                                       sensor_hub, sensor_platform->sensor_num,
+> > > > +                       /*
+> > > > +                        * Register the callback to use when a sensor sample is
+> > > > +                        * coming from the EC FIFO.
+> > > > +                        */
+> > > > +                       ret = cros_ec_sensorhub_register_push_data(sensor_hub,
+> > > > +                                       sensor_platform->sensor_num,
+> > > >                                         indio_dev, push_data);
+> > > >                         if (ret)
+> > > >                                 return ret;
+> > > > @@ -358,21 +377,14 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+> > > >                         ret = iio_device_set_clock(indio_dev, CLOCK_BOOTTIME);
+> > > >                         if (ret)
+> > > >                                 return ret;
+> > > > -               } else {
+> > > > -                       const struct attribute **fifo_attrs;
+> > > > -
+> > > > -                       if (has_hw_fifo)
+> > > > -                               fifo_attrs = cros_ec_sensor_fifo_attributes;
+> > > > -                       else
+> > > > -                               fifo_attrs = NULL;
+> > > >
+> > > > +               } else {
+> > > >                         /*
+> > > >                          * The only way to get samples in buffer is to set a
+> > > >                          * software trigger (systrig, hrtimer).
+> > > >                          */
+> > > > -                       ret = devm_iio_triggered_buffer_setup_ext(
+> > > > -                                       dev, indio_dev, NULL, trigger_capture,
+> > > > -                                       NULL, fifo_attrs);
+> > > > +                       ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
+> > > > +                                       NULL, trigger_capture, NULL);
+> > > >                         if (ret)
+> > > >                                 return ret;
+> > > >                 }
+> > > > diff --git a/drivers/iio/light/cros_ec_light_prox.c b/drivers/iio/light/cros_ec_light_prox.c
+> > > > index 75d6b5fcf2cc4..de472f23d1cba 100644
+> > > > --- a/drivers/iio/light/cros_ec_light_prox.c
+> > > > +++ b/drivers/iio/light/cros_ec_light_prox.c
+> > > > @@ -182,8 +182,7 @@ static int cros_ec_light_prox_probe(struct platform_device *pdev)
+> > > >
+> > > >         ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
+> > > >                                         cros_ec_sensors_capture,
+> > > > -                                       cros_ec_sensors_push_data,
+> > > > -                                       true);
+> > > > +                                       cros_ec_sensors_push_data);
+> > > >         if (ret)
+> > > >                 return ret;
+> > > >
+> > > > diff --git a/drivers/iio/pressure/cros_ec_baro.c b/drivers/iio/pressure/cros_ec_baro.c
+> > > > index aa043cb9ac426..2f882e1094232 100644
+> > > > --- a/drivers/iio/pressure/cros_ec_baro.c
+> > > > +++ b/drivers/iio/pressure/cros_ec_baro.c
+> > > > @@ -139,8 +139,7 @@ static int cros_ec_baro_probe(struct platform_device *pdev)
+> > > >
+> > > >         ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
+> > > >                                         cros_ec_sensors_capture,
+> > > > -                                       cros_ec_sensors_push_data,
+> > > > -                                       true);
+> > > > +                                       cros_ec_sensors_push_data);
+> > > >         if (ret)
+> > > >                 return ret;
+> > > >
+> > > > diff --git a/include/linux/iio/common/cros_ec_sensors_core.h b/include/linux/iio/common/cros_ec_sensors_core.h
+> > > > index c9b80be82440f..7ce8a8adad587 100644
+> > > > --- a/include/linux/iio/common/cros_ec_sensors_core.h
+> > > > +++ b/include/linux/iio/common/cros_ec_sensors_core.h
+> > > > @@ -96,8 +96,7 @@ struct platform_device;
+> > > >  int cros_ec_sensors_core_init(struct platform_device *pdev,
+> > > >                               struct iio_dev *indio_dev, bool physical_device,
+> > > >                               cros_ec_sensors_capture_t trigger_capture,
+> > > > -                             cros_ec_sensorhub_push_data_cb_t push_data,
+> > > > -                             bool has_hw_fifo);
+> > > > +                             cros_ec_sensorhub_push_data_cb_t push_data);
+> > > >
+> > > >  irqreturn_t cros_ec_sensors_capture(int irq, void *p);
+> > > >  int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
+> > > > --
+> > > > 2.30.1.766.gb4fecdf3b7-goog
+> > > >

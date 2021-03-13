@@ -2,29 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BC1E339F21
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Mar 2021 17:38:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44F32339F62
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Mar 2021 18:12:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233570AbhCMQhu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 13 Mar 2021 11:37:50 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56570 "EHLO mail.kernel.org"
+        id S234150AbhCMRLb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 13 Mar 2021 12:11:31 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59620 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234007AbhCMQhW (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 13 Mar 2021 11:37:22 -0500
+        id S234147AbhCMRLP (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 13 Mar 2021 12:11:15 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AE0B664F0C;
-        Sat, 13 Mar 2021 16:37:21 +0000 (UTC)
-Date:   Sat, 13 Mar 2021 16:37:19 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 86ADB64E45;
+        Sat, 13 Mar 2021 17:11:11 +0000 (UTC)
+Date:   Sat, 13 Mar 2021 17:11:07 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     <alexandru.tachici@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5 1/1] iio: adc: ad7124: allow more than 8 channels
-Message-ID: <20210313163719.50e84c04@archlinux>
-In-Reply-To: <20210311091154.47785-2-alexandru.tachici@analog.com>
-References: <20210311091154.47785-1-alexandru.tachici@analog.com>
-        <20210311091154.47785-2-alexandru.tachici@analog.com>
+To:     Jyoti Bhayana <jbhayana@google.com>
+Cc:     Cristian Marussi <cristian.marussi@arm.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Rob Herring <robh@kernel.org>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Enrico Granata <egranata@google.com>,
+        Mikhail Golubev <mikhail.golubev@opensynergy.com>,
+        Igor Skalkin <Igor.Skalkin@opensynergy.com>,
+        Peter Hilber <Peter.hilber@opensynergy.com>,
+        Ankit Arora <ankitarora@google.com>,
+        Guru Nagarajan <gurunagarajan@google.com>,
+        kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v7 1/1] iio/scmi: Adding support for IIO SCMI Based
+ Sensors
+Message-ID: <20210313171107.4c8215e7@archlinux>
+In-Reply-To: <CA+=V6c0boA1Q+k4rM0NOcK4ek_FYU7omEWhvMowqACH_t44sAQ@mail.gmail.com>
+References: <20210309231259.78050-1-jbhayana@google.com>
+        <20210309231259.78050-2-jbhayana@google.com>
+        <20210311210844.34371d8d@archlinux>
+        <20210312121639.00001c31@Huawei.com>
+        <20210312133101.GG30179@e120937-lin>
+        <CA+=V6c0boA1Q+k4rM0NOcK4ek_FYU7omEWhvMowqACH_t44sAQ@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -33,740 +55,899 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 11 Mar 2021 11:11:54 +0200
-<alexandru.tachici@analog.com> wrote:
+On Fri, 12 Mar 2021 09:54:12 -0800
+Jyoti Bhayana <jbhayana@google.com> wrote:
 
-> From: Alexandru Tachici <alexandru.tachici@analog.com>
+> Hi Jonathan,
 > 
-> Currently AD7124-8 driver cannot use more than 8 IIO channels
-> because it was assigning the channel configurations bijectively
-> to channels specified in the device-tree. This is not possible
-> to do when using more than 8 channels as AD7124-8 has only 8
-> configuration registers.
+> I also see what Cristian has observed that rc2 is still pointing to v6
+> of the SCMI IIO driver patch and it also doesn't have the changes
+> which you did in rc1 for changing long long to s64.
 > 
-> To allow the user to use all channels at once the driver
-> will keep in memory configurations for all channels but
-> will program only 8 of them at a time on the device.
-> If multiple channels have the same configuration, only
-> one configuration register will be used. If there
-> are more configurations than available registers only
-> the last 8 used configurations will be allowed to exist
-> on the device in a LRU fashion.
-> 
-> Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
+> Thanks,
+> Jyoti
 
-Hi Alexandru,
+Gah!  I must have grabbed wrong one somehow.
 
-Other than the two warnings that 0-day found I'm fine with this.
-Hence I've fixed those up as follows
-1) Indent was obvious so fixed.
-2) val being set but not used.  As far as I can tell, it has no relevance
-   where that happened, so I just dropped it.  If that's wrong let
-   me know.
+Anyhow, there is now a 
+https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/log/?h=ib-iio-scmi-5.12-rc2-take2
 
-Diff as follows:
-diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index 8b5b223938e8..9d3952b4674f 100644
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -366,7 +366,7 @@ static int ad7124_init_config_vref(struct ad7124_state *st, struct ad7124_channe
-                        dev_err(&st->sd.spi->dev,
-                                "Error, trying to use external voltage reference without a %s regulator.\n",
-                                ad7124_ref_names[refsel]);
--                               return PTR_ERR(st->vref[refsel]);
-+                       return PTR_ERR(st->vref[refsel]);
-                }
-                cfg->vref_mv = regulator_get_voltage(st->vref[refsel]);
-                /* Conversion from uV to mV */
-@@ -807,7 +807,7 @@ static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
- 
- static int ad7124_setup(struct ad7124_state *st)
- {
--       unsigned int val, fclk, power_mode;
-+       unsigned int fclk, power_mode;
-        int i, ret;
- 
-        fclk = clk_get_rate(st->mclk);
-@@ -834,7 +834,6 @@ static int ad7124_setup(struct ad7124_state *st)
-        mutex_init(&st->cfgs_lock);
-        INIT_KFIFO(st->live_cfgs_fifo);
-        for (i = 0; i < st->num_channels; i++) {
--               val = st->channels[i].ain;
- 
-                ret = ad7124_init_config_vref(st, &st->channels[i].cfg);
-                if (ret < 0)
+version which should looks to have the right dates an all.  Merge into
+my togreg still the same as it was previously.
 
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to see if they missed anything else :)
+Thanks,
 
 Jonathan
 
-> ---
->  drivers/iio/adc/ad7124.c | 458 +++++++++++++++++++++++++--------------
->  1 file changed, 301 insertions(+), 157 deletions(-)
 > 
-> diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-> index 766c73333604..8b5b223938e8 100644
-> --- a/drivers/iio/adc/ad7124.c
-> +++ b/drivers/iio/adc/ad7124.c
-> @@ -5,12 +5,14 @@
->   * Copyright 2018 Analog Devices Inc.
->   */
->  #include <linux/bitfield.h>
-> +#include <linux/bitops.h>
->  #include <linux/clk.h>
->  #include <linux/delay.h>
->  #include <linux/device.h>
->  #include <linux/err.h>
->  #include <linux/interrupt.h>
->  #include <linux/kernel.h>
-> +#include <linux/kfifo.h>
->  #include <linux/module.h>
->  #include <linux/of_device.h>
->  #include <linux/regulator/consumer.h>
-> @@ -86,6 +88,10 @@
->  #define AD7124_SINC3_FILTER 2
->  #define AD7124_SINC4_FILTER 0
->  
-> +#define AD7124_CONF_ADDR_OFFSET	20
-> +#define AD7124_MAX_CONFIGS	8
-> +#define AD7124_MAX_CHANNELS	16
-> +
->  enum ad7124_ids {
->  	ID_AD7124_4,
->  	ID_AD7124_8,
-> @@ -136,25 +142,37 @@ struct ad7124_chip_info {
->  };
->  
->  struct ad7124_channel_config {
-> +	bool live;
-> +	unsigned int cfg_slot;
->  	enum ad7124_ref_sel refsel;
->  	bool bipolar;
->  	bool buf_positive;
->  	bool buf_negative;
-> -	unsigned int ain;
->  	unsigned int vref_mv;
->  	unsigned int pga_bits;
->  	unsigned int odr;
-> +	unsigned int odr_sel_bits;
->  	unsigned int filter_type;
->  };
->  
-> +struct ad7124_channel {
-> +	unsigned int nr;
-> +	struct ad7124_channel_config cfg;
-> +	unsigned int ain;
-> +	unsigned int slot;
-> +};
-> +
->  struct ad7124_state {
->  	const struct ad7124_chip_info *chip_info;
->  	struct ad_sigma_delta sd;
-> -	struct ad7124_channel_config *channel_config;
-> +	struct ad7124_channel *channels;
->  	struct regulator *vref[4];
->  	struct clk *mclk;
->  	unsigned int adc_control;
->  	unsigned int num_channels;
-> +	struct mutex cfgs_lock; /* lock for configs access */
-> +	unsigned long cfg_slots_status; /* bitmap with slot status (1 means it is used) */
-> +	DECLARE_KFIFO(live_cfgs_fifo, struct ad7124_channel_config *, AD7124_MAX_CONFIGS);
->  };
->  
->  static const struct iio_chan_spec ad7124_channel_template = {
-> @@ -238,33 +256,9 @@ static int ad7124_set_mode(struct ad_sigma_delta *sd,
->  	return ad_sd_write_reg(&st->sd, AD7124_ADC_CONTROL, 2, st->adc_control);
->  }
->  
-> -static int ad7124_set_channel(struct ad_sigma_delta *sd, unsigned int channel)
-> -{
-> -	struct ad7124_state *st = container_of(sd, struct ad7124_state, sd);
-> -	unsigned int val;
-> -
-> -	val = st->channel_config[channel].ain | AD7124_CHANNEL_EN(1) |
-> -	      AD7124_CHANNEL_SETUP(channel);
-> -
-> -	return ad_sd_write_reg(&st->sd, AD7124_CHANNEL(channel), 2, val);
-> -}
-> -
-> -static const struct ad_sigma_delta_info ad7124_sigma_delta_info = {
-> -	.set_channel = ad7124_set_channel,
-> -	.set_mode = ad7124_set_mode,
-> -	.has_registers = true,
-> -	.addr_shift = 0,
-> -	.read_mask = BIT(6),
-> -	.data_reg = AD7124_DATA,
-> -	.irq_flags = IRQF_TRIGGER_FALLING,
-> -};
-> -
-> -static int ad7124_set_channel_odr(struct ad7124_state *st,
-> -				  unsigned int channel,
-> -				  unsigned int odr)
-> +static void ad7124_set_channel_odr(struct ad7124_state *st, unsigned int channel, unsigned int odr)
->  {
->  	unsigned int fclk, odr_sel_bits;
-> -	int ret;
->  
->  	fclk = clk_get_rate(st->mclk);
->  	/*
-> @@ -280,36 +274,12 @@ static int ad7124_set_channel_odr(struct ad7124_state *st,
->  	else if (odr_sel_bits > 2047)
->  		odr_sel_bits = 2047;
->  
-> -	ret = ad7124_spi_write_mask(st, AD7124_FILTER(channel),
-> -				    AD7124_FILTER_FS_MSK,
-> -				    AD7124_FILTER_FS(odr_sel_bits), 3);
-> -	if (ret < 0)
-> -		return ret;
-> -	/* fADC = fCLK / (FS[10:0] x 32) */
-> -	st->channel_config[channel].odr =
-> -		DIV_ROUND_CLOSEST(fclk, odr_sel_bits * 32);
-> -
-> -	return 0;
-> -}
-> -
-> -static int ad7124_set_channel_gain(struct ad7124_state *st,
-> -				   unsigned int channel,
-> -				   unsigned int gain)
-> -{
-> -	unsigned int res;
-> -	int ret;
-> -
-> -	res = ad7124_find_closest_match(ad7124_gain,
-> -					ARRAY_SIZE(ad7124_gain), gain);
-> -	ret = ad7124_spi_write_mask(st, AD7124_CONFIG(channel),
-> -				    AD7124_CONFIG_PGA_MSK,
-> -				    AD7124_CONFIG_PGA(res), 2);
-> -	if (ret < 0)
-> -		return ret;
-> -
-> -	st->channel_config[channel].pga_bits = res;
-> +	if (odr_sel_bits != st->channels[channel].cfg.odr_sel_bits)
-> +		st->channels[channel].cfg.live = false;
->  
-> -	return 0;
-> +	/* fADC = fCLK / (FS[10:0] x 32) */
-> +	st->channels[channel].cfg.odr = DIV_ROUND_CLOSEST(fclk, odr_sel_bits * 32);
-> +	st->channels[channel].cfg.odr_sel_bits = odr_sel_bits;
->  }
->  
->  static int ad7124_get_3db_filter_freq(struct ad7124_state *st,
-> @@ -317,9 +287,9 @@ static int ad7124_get_3db_filter_freq(struct ad7124_state *st,
->  {
->  	unsigned int fadc;
->  
-> -	fadc = st->channel_config[channel].odr;
-> +	fadc = st->channels[channel].cfg.odr;
->  
-> -	switch (st->channel_config[channel].filter_type) {
-> +	switch (st->channels[channel].cfg.filter_type) {
->  	case AD7124_SINC3_FILTER:
->  		return DIV_ROUND_CLOSEST(fadc * 230, 1000);
->  	case AD7124_SINC4_FILTER:
-> @@ -329,9 +299,8 @@ static int ad7124_get_3db_filter_freq(struct ad7124_state *st,
->  	}
->  }
->  
-> -static int ad7124_set_3db_filter_freq(struct ad7124_state *st,
-> -				      unsigned int channel,
-> -				      unsigned int freq)
-> +static void ad7124_set_3db_filter_freq(struct ad7124_state *st, unsigned int channel,
-> +				       unsigned int freq)
->  {
->  	unsigned int sinc4_3db_odr;
->  	unsigned int sinc3_3db_odr;
-> @@ -349,21 +318,211 @@ static int ad7124_set_3db_filter_freq(struct ad7124_state *st,
->  		new_odr = sinc3_3db_odr;
->  	}
->  
-> -	if (st->channel_config[channel].filter_type != new_filter) {
-> -		int ret;
-> +	if (new_odr != st->channels[channel].cfg.odr)
-> +		st->channels[channel].cfg.live = false;
->  
-> -		st->channel_config[channel].filter_type = new_filter;
-> -		ret = ad7124_spi_write_mask(st, AD7124_FILTER(channel),
-> -					    AD7124_FILTER_TYPE_MSK,
-> -					    AD7124_FILTER_TYPE_SEL(new_filter),
-> -					    3);
-> -		if (ret < 0)
-> -			return ret;
-> +	st->channels[channel].cfg.filter_type = new_filter;
-> +	st->channels[channel].cfg.odr = new_odr;
-> +}
-> +
-> +static struct ad7124_channel_config *ad7124_find_similar_live_cfg(struct ad7124_state *st,
-> +								  struct ad7124_channel_config *cfg)
-> +{
-> +	struct ad7124_channel_config *cfg_aux;
-> +	ptrdiff_t cmp_size;
-> +	int i;
-> +
-> +	cmp_size = (u8 *)&cfg->live - (u8 *)cfg;
-> +	for (i = 0; i < st->num_channels; i++) {
-> +		cfg_aux = &st->channels[i].cfg;
-> +
-> +		if (cfg_aux->live && !memcmp(cfg, cfg_aux, cmp_size))
-> +			return cfg_aux;
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
-> +static int ad7124_find_free_config_slot(struct ad7124_state *st)
-> +{
-> +	unsigned int free_cfg_slot;
-> +
-> +	free_cfg_slot = find_next_zero_bit(&st->cfg_slots_status, AD7124_MAX_CONFIGS, 0);
-> +	if (free_cfg_slot == AD7124_MAX_CONFIGS)
-> +		return -1;
-> +
-> +	return free_cfg_slot;
-> +}
-> +
-> +static int ad7124_init_config_vref(struct ad7124_state *st, struct ad7124_channel_config *cfg)
-> +{
-> +	unsigned int refsel = cfg->refsel;
-> +
-> +	switch (refsel) {
-> +	case AD7124_REFIN1:
-> +	case AD7124_REFIN2:
-> +	case AD7124_AVDD_REF:
-> +		if (IS_ERR(st->vref[refsel])) {
-> +			dev_err(&st->sd.spi->dev,
-> +				"Error, trying to use external voltage reference without a %s regulator.\n",
-> +				ad7124_ref_names[refsel]);
-> +				return PTR_ERR(st->vref[refsel]);
-> +		}
-> +		cfg->vref_mv = regulator_get_voltage(st->vref[refsel]);
-> +		/* Conversion from uV to mV */
-> +		cfg->vref_mv /= 1000;
-> +		return 0;
-> +	case AD7124_INT_REF:
-> +		cfg->vref_mv = 2500;
-> +		st->adc_control &= ~AD7124_ADC_CTRL_REF_EN_MSK;
-> +		st->adc_control |= AD7124_ADC_CTRL_REF_EN(1);
-> +		return ad_sd_write_reg(&st->sd, AD7124_ADC_CONTROL,
-> +				      2, st->adc_control);
-> +	default:
-> +		dev_err(&st->sd.spi->dev, "Invalid reference %d\n", refsel);
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int ad7124_write_config(struct ad7124_state *st, struct ad7124_channel_config *cfg,
-> +			       unsigned int cfg_slot)
-> +{
-> +	unsigned int tmp;
-> +	unsigned int val;
-> +	int ret;
-> +
-> +	cfg->cfg_slot = cfg_slot;
-> +
-> +	tmp = (cfg->buf_positive << 1) + cfg->buf_negative;
-> +	val = AD7124_CONFIG_BIPOLAR(cfg->bipolar) | AD7124_CONFIG_REF_SEL(cfg->refsel) |
-> +	      AD7124_CONFIG_IN_BUFF(tmp);
-> +	ret = ad_sd_write_reg(&st->sd, AD7124_CONFIG(cfg->cfg_slot), 2, val);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	tmp = AD7124_FILTER_TYPE_SEL(cfg->filter_type);
-> +	ret = ad7124_spi_write_mask(st, AD7124_FILTER(cfg->cfg_slot), AD7124_FILTER_TYPE_MSK,
-> +				    tmp, 3);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = ad7124_spi_write_mask(st, AD7124_FILTER(cfg->cfg_slot), AD7124_FILTER_FS_MSK,
-> +				    AD7124_FILTER_FS(cfg->odr_sel_bits), 3);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return ad7124_spi_write_mask(st, AD7124_CONFIG(cfg->cfg_slot), AD7124_CONFIG_PGA_MSK,
-> +				     AD7124_CONFIG_PGA(cfg->pga_bits), 2);
-> +}
-> +
-> +static struct ad7124_channel_config *ad7124_pop_config(struct ad7124_state *st)
-> +{
-> +	struct ad7124_channel_config *lru_cfg;
-> +	struct ad7124_channel_config *cfg;
-> +	int ret;
-> +	int i;
-> +
-> +	/*
-> +	 * Pop least recently used config from the fifo
-> +	 * in order to make room for the new one
-> +	 */
-> +	ret = kfifo_get(&st->live_cfgs_fifo, &lru_cfg);
-> +	if (ret <= 0)
-> +		return NULL;
-> +
-> +	lru_cfg->live = false;
-> +
-> +	/* mark slot as free */
-> +	assign_bit(lru_cfg->cfg_slot, &st->cfg_slots_status, 0);
-> +
-> +	/* invalidate all other configs that pointed to this one */
-> +	for (i = 0; i < st->num_channels; i++) {
-> +		cfg = &st->channels[i].cfg;
-> +
-> +		if (cfg->cfg_slot == lru_cfg->cfg_slot)
-> +			cfg->live = false;
->  	}
->  
-> -	return ad7124_set_channel_odr(st, channel, new_odr);
-> +	return lru_cfg;
->  }
->  
-> +static int ad7124_push_config(struct ad7124_state *st, struct ad7124_channel_config *cfg)
-> +{
-> +	struct ad7124_channel_config *lru_cfg;
-> +	int free_cfg_slot;
-> +
-> +	free_cfg_slot = ad7124_find_free_config_slot(st);
-> +	if (free_cfg_slot >= 0) {
-> +		/* push the new config in configs queue */
-> +		kfifo_put(&st->live_cfgs_fifo, cfg);
-> +	} else {
-> +		/* pop one config to make room for the new one */
-> +		lru_cfg = ad7124_pop_config(st);
-> +		if (!lru_cfg)
-> +			return -EINVAL;
-> +
-> +		/* push the new config in configs queue */
-> +		free_cfg_slot = lru_cfg->cfg_slot;
-> +		kfifo_put(&st->live_cfgs_fifo, cfg);
-> +	}
-> +
-> +	/* mark slot as used */
-> +	assign_bit(free_cfg_slot, &st->cfg_slots_status, 1);
-> +
-> +	return ad7124_write_config(st, cfg, free_cfg_slot);
-> +}
-> +
-> +static int ad7124_enable_channel(struct ad7124_state *st, struct ad7124_channel *ch)
-> +{
-> +	ch->cfg.live = true;
-> +	return ad_sd_write_reg(&st->sd, AD7124_CHANNEL(ch->nr), 2, ch->ain |
-> +			      AD7124_CHANNEL_SETUP(ch->cfg.cfg_slot) | AD7124_CHANNEL_EN(1));
-> +}
-> +
-> +static int ad7124_prepare_read(struct ad7124_state *st, int address)
-> +{
-> +	struct ad7124_channel_config *cfg = &st->channels[address].cfg;
-> +	struct ad7124_channel_config *live_cfg;
-> +
-> +	/*
-> +	 * Before doing any reads assign the channel a configuration.
-> +	 * Check if channel's config is on the device
-> +	 */
-> +	if (!cfg->live) {
-> +		/* check if config matches another one */
-> +		live_cfg = ad7124_find_similar_live_cfg(st, cfg);
-> +		if (!live_cfg)
-> +			ad7124_push_config(st, cfg);
-> +		else
-> +			cfg->cfg_slot = live_cfg->cfg_slot;
-> +	}
-> +
-> +	/* point channel to the config slot and enable */
-> +	return ad7124_enable_channel(st, &st->channels[address]);
-> +}
-> +
-> +static int ad7124_set_channel(struct ad_sigma_delta *sd, unsigned int channel)
-> +{
-> +	struct ad7124_state *st = container_of(sd, struct ad7124_state, sd);
-> +	int ret;
-> +
-> +	mutex_lock(&st->cfgs_lock);
-> +	ret = ad7124_prepare_read(st, channel);
-> +	mutex_unlock(&st->cfgs_lock);
-> +
-> +	return ret;
-> +}
-> +
-> +static const struct ad_sigma_delta_info ad7124_sigma_delta_info = {
-> +	.set_channel = ad7124_set_channel,
-> +	.set_mode = ad7124_set_mode,
-> +	.has_registers = true,
-> +	.addr_shift = 0,
-> +	.read_mask = BIT(6),
-> +	.data_reg = AD7124_DATA,
-> +	.irq_flags = IRQF_TRIGGER_FALLING
-> +};
-> +
->  static int ad7124_read_raw(struct iio_dev *indio_dev,
->  			   struct iio_chan_spec const *chan,
->  			   int *val, int *val2, long info)
-> @@ -378,36 +537,44 @@ static int ad7124_read_raw(struct iio_dev *indio_dev,
->  			return ret;
->  
->  		/* After the conversion is performed, disable the channel */
-> -		ret = ad_sd_write_reg(&st->sd,
-> -				      AD7124_CHANNEL(chan->address), 2,
-> -				      st->channel_config[chan->address].ain |
-> -				      AD7124_CHANNEL_EN(0));
-> +		ret = ad_sd_write_reg(&st->sd, AD7124_CHANNEL(chan->address), 2,
-> +				      st->channels[chan->address].ain | AD7124_CHANNEL_EN(0));
->  		if (ret < 0)
->  			return ret;
->  
->  		return IIO_VAL_INT;
->  	case IIO_CHAN_INFO_SCALE:
-> -		idx = st->channel_config[chan->address].pga_bits;
-> -		*val = st->channel_config[chan->address].vref_mv;
-> -		if (st->channel_config[chan->address].bipolar)
-> +		mutex_lock(&st->cfgs_lock);
-> +
-> +		idx = st->channels[chan->address].cfg.pga_bits;
-> +		*val = st->channels[chan->address].cfg.vref_mv;
-> +		if (st->channels[chan->address].cfg.bipolar)
->  			*val2 = chan->scan_type.realbits - 1 + idx;
->  		else
->  			*val2 = chan->scan_type.realbits + idx;
->  
-> +		mutex_unlock(&st->cfgs_lock);
->  		return IIO_VAL_FRACTIONAL_LOG2;
->  	case IIO_CHAN_INFO_OFFSET:
-> -		if (st->channel_config[chan->address].bipolar)
-> +		mutex_lock(&st->cfgs_lock);
-> +		if (st->channels[chan->address].cfg.bipolar)
->  			*val = -(1 << (chan->scan_type.realbits - 1));
->  		else
->  			*val = 0;
->  
-> +		mutex_unlock(&st->cfgs_lock);
->  		return IIO_VAL_INT;
->  	case IIO_CHAN_INFO_SAMP_FREQ:
-> -		*val = st->channel_config[chan->address].odr;
-> +		mutex_lock(&st->cfgs_lock);
-> +		*val = st->channels[chan->address].cfg.odr;
-> +		mutex_unlock(&st->cfgs_lock);
->  
->  		return IIO_VAL_INT;
->  	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-> +		mutex_lock(&st->cfgs_lock);
->  		*val = ad7124_get_3db_filter_freq(st, chan->scan_index);
-> +		mutex_unlock(&st->cfgs_lock);
-> +
->  		return IIO_VAL_INT;
->  	default:
->  		return -EINVAL;
-> @@ -420,35 +587,54 @@ static int ad7124_write_raw(struct iio_dev *indio_dev,
->  {
->  	struct ad7124_state *st = iio_priv(indio_dev);
->  	unsigned int res, gain, full_scale, vref;
-> +	int ret = 0;
-> +
-> +	mutex_lock(&st->cfgs_lock);
->  
->  	switch (info) {
->  	case IIO_CHAN_INFO_SAMP_FREQ:
-> -		if (val2 != 0)
-> -			return -EINVAL;
-> +		if (val2 != 0) {
-> +			ret = -EINVAL;
-> +			break;
-> +		}
->  
-> -		return ad7124_set_channel_odr(st, chan->address, val);
-> +		ad7124_set_channel_odr(st, chan->address, val);
-> +		break;
->  	case IIO_CHAN_INFO_SCALE:
-> -		if (val != 0)
-> -			return -EINVAL;
-> +		if (val != 0) {
-> +			ret = -EINVAL;
-> +			break;
-> +		}
->  
-> -		if (st->channel_config[chan->address].bipolar)
-> +		if (st->channels[chan->address].cfg.bipolar)
->  			full_scale = 1 << (chan->scan_type.realbits - 1);
->  		else
->  			full_scale = 1 << chan->scan_type.realbits;
->  
-> -		vref = st->channel_config[chan->address].vref_mv * 1000000LL;
-> +		vref = st->channels[chan->address].cfg.vref_mv * 1000000LL;
->  		res = DIV_ROUND_CLOSEST(vref, full_scale);
->  		gain = DIV_ROUND_CLOSEST(res, val2);
-> +		res = ad7124_find_closest_match(ad7124_gain, ARRAY_SIZE(ad7124_gain), gain);
->  
-> -		return ad7124_set_channel_gain(st, chan->address, gain);
-> +		if (st->channels[chan->address].cfg.pga_bits != res)
-> +			st->channels[chan->address].cfg.live = false;
-> +
-> +		st->channels[chan->address].cfg.pga_bits = res;
-> +		break;
->  	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-> -		if (val2 != 0)
-> -			return -EINVAL;
-> +		if (val2 != 0) {
-> +			ret = -EINVAL;
-> +			break;
-> +		}
->  
-> -		return ad7124_set_3db_filter_freq(st, chan->address, val);
-> +		ad7124_set_3db_filter_freq(st, chan->address, val);
-> +		break;
->  	default:
-> -		return -EINVAL;
-> +		ret =  -EINVAL;
->  	}
-> +
-> +	mutex_unlock(&st->cfgs_lock);
-> +	return ret;
->  }
->  
->  static int ad7124_reg_access(struct iio_dev *indio_dev,
-> @@ -547,47 +733,14 @@ static int ad7124_check_chip_id(struct ad7124_state *st)
->  	return 0;
->  }
->  
-> -static int ad7124_init_channel_vref(struct ad7124_state *st,
-> -				    unsigned int channel_number)
-> -{
-> -	unsigned int refsel = st->channel_config[channel_number].refsel;
-> -
-> -	switch (refsel) {
-> -	case AD7124_REFIN1:
-> -	case AD7124_REFIN2:
-> -	case AD7124_AVDD_REF:
-> -		if (IS_ERR(st->vref[refsel])) {
-> -			dev_err(&st->sd.spi->dev,
-> -				"Error, trying to use external voltage reference without a %s regulator.\n",
-> -				ad7124_ref_names[refsel]);
-> -			return PTR_ERR(st->vref[refsel]);
-> -		}
-> -		st->channel_config[channel_number].vref_mv =
-> -			regulator_get_voltage(st->vref[refsel]);
-> -		/* Conversion from uV to mV */
-> -		st->channel_config[channel_number].vref_mv /= 1000;
-> -		break;
-> -	case AD7124_INT_REF:
-> -		st->channel_config[channel_number].vref_mv = 2500;
-> -		st->adc_control &= ~AD7124_ADC_CTRL_REF_EN_MSK;
-> -		st->adc_control |= AD7124_ADC_CTRL_REF_EN(1);
-> -		return ad_sd_write_reg(&st->sd, AD7124_ADC_CONTROL,
-> -				      2, st->adc_control);
-> -	default:
-> -		dev_err(&st->sd.spi->dev, "Invalid reference %d\n", refsel);
-> -		return -EINVAL;
-> -	}
-> -
-> -	return 0;
-> -}
-> -
->  static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
->  					  struct device_node *np)
->  {
->  	struct ad7124_state *st = iio_priv(indio_dev);
-> +	struct ad7124_channel_config *cfg;
-> +	struct ad7124_channel *channels;
->  	struct device_node *child;
->  	struct iio_chan_spec *chan;
-> -	struct ad7124_channel_config *chan_config;
->  	unsigned int ain[2], channel = 0, tmp;
->  	int ret;
->  
-> @@ -602,16 +755,18 @@ static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
->  	if (!chan)
->  		return -ENOMEM;
->  
-> -	chan_config = devm_kcalloc(indio_dev->dev.parent, st->num_channels,
-> -				   sizeof(*chan_config), GFP_KERNEL);
-> -	if (!chan_config)
-> +	channels = devm_kcalloc(indio_dev->dev.parent, st->num_channels, sizeof(*channels),
-> +				GFP_KERNEL);
-> +	if (!channels)
->  		return -ENOMEM;
->  
->  	indio_dev->channels = chan;
->  	indio_dev->num_channels = st->num_channels;
-> -	st->channel_config = chan_config;
-> +	st->channels = channels;
->  
->  	for_each_available_child_of_node(np, child) {
-> +		cfg = &st->channels[channel].cfg;
-> +
->  		ret = of_property_read_u32(child, "reg", &channel);
->  		if (ret)
->  			goto err;
-> @@ -621,21 +776,20 @@ static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
->  		if (ret)
->  			goto err;
->  
-> -		st->channel_config[channel].ain = AD7124_CHANNEL_AINP(ain[0]) |
-> +		st->channels[channel].nr = channel;
-> +		st->channels[channel].ain = AD7124_CHANNEL_AINP(ain[0]) |
->  						  AD7124_CHANNEL_AINM(ain[1]);
-> -		st->channel_config[channel].bipolar =
-> -			of_property_read_bool(child, "bipolar");
-> +
-> +		cfg->bipolar = of_property_read_bool(child, "bipolar");
->  
->  		ret = of_property_read_u32(child, "adi,reference-select", &tmp);
->  		if (ret)
-> -			st->channel_config[channel].refsel = AD7124_INT_REF;
-> +			cfg->refsel = AD7124_INT_REF;
->  		else
-> -			st->channel_config[channel].refsel = tmp;
-> +			cfg->refsel = tmp;
->  
-> -		st->channel_config[channel].buf_positive =
-> -			of_property_read_bool(child, "adi,buffered-positive");
-> -		st->channel_config[channel].buf_negative =
-> -			of_property_read_bool(child, "adi,buffered-negative");
-> +		cfg->buf_positive = of_property_read_bool(child, "adi,buffered-positive");
-> +		cfg->buf_negative = of_property_read_bool(child, "adi,buffered-negative");
->  
->  		chan[channel] = ad7124_channel_template;
->  		chan[channel].address = channel;
-> @@ -654,7 +808,7 @@ static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
->  static int ad7124_setup(struct ad7124_state *st)
->  {
->  	unsigned int val, fclk, power_mode;
-> -	int i, ret, tmp;
-> +	int i, ret;
->  
->  	fclk = clk_get_rate(st->mclk);
->  	if (!fclk)
-> @@ -677,31 +831,21 @@ static int ad7124_setup(struct ad7124_state *st)
->  	if (ret < 0)
->  		return ret;
->  
-> +	mutex_init(&st->cfgs_lock);
-> +	INIT_KFIFO(st->live_cfgs_fifo);
->  	for (i = 0; i < st->num_channels; i++) {
-> -		val = st->channel_config[i].ain | AD7124_CHANNEL_SETUP(i);
-> -		ret = ad_sd_write_reg(&st->sd, AD7124_CHANNEL(i), 2, val);
-> -		if (ret < 0)
-> -			return ret;
-> +		val = st->channels[i].ain;
->  
-> -		ret = ad7124_init_channel_vref(st, i);
-> +		ret = ad7124_init_config_vref(st, &st->channels[i].cfg);
->  		if (ret < 0)
->  			return ret;
->  
-> -		tmp = (st->channel_config[i].buf_positive << 1)  +
-> -			st->channel_config[i].buf_negative;
-> -
-> -		val = AD7124_CONFIG_BIPOLAR(st->channel_config[i].bipolar) |
-> -		      AD7124_CONFIG_REF_SEL(st->channel_config[i].refsel) |
-> -		      AD7124_CONFIG_IN_BUFF(tmp);
-> -		ret = ad_sd_write_reg(&st->sd, AD7124_CONFIG(i), 2, val);
-> -		if (ret < 0)
-> -			return ret;
->  		/*
->  		 * 9.38 SPS is the minimum output data rate supported
->  		 * regardless of the selected power mode. Round it up to 10 and
-> -		 * set all the enabled channels to this default value.
-> +		 * set all channels to this default value.
->  		 */
-> -		ret = ad7124_set_channel_odr(st, i, 10);
-> +		ad7124_set_channel_odr(st, i, 10);
->  	}
->  
->  	return ret;
+> 
+> On Fri, Mar 12, 2021 at 5:31 AM Cristian Marussi
+> <cristian.marussi@arm.com> wrote:
+> >
+> > Hi Jonathan,
+> >
+> > thanks for this, I was starting working on top of this new immutable
+> > branch BUT I spotted a thing that I wanted to check.
+> >
+> > You latest immutable:
+> >  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/log/?h=ib-iio-scmi-5.12-rc2
+> >
+> > looking at the code in the SCMI IIO Jyoti driver
+> >
+> > https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/?h=ib-iio-scmi-5.12-rc2&id=f937d8c1ef246d99d2174ed88c629f6e24823918
+> >
+> > this seems to me that still includes v6 of IIO Jyoti patch:
+> >
+> > https://lore.kernel.org/linux-iio/20210212172235.507028-2-jbhayana@google.com/
+> >
+> > (the offending one on the bot report related to div symbols on MIPS if I got it right),
+> > in fact it has 710 insertions and still uses div64_u64 (and the Link tag leads to the v6)
+> >
+> > while the lastest v7
+> >
+> > https://lore.kernel.org/lkml/20210309231259.78050-2-jbhayana@google.com/
+> >
+> > has 715 insetions and uses do_div instead, but in fact this v7 has a Link:
+> > tag still pointing to v6 (maybe this is the issue...?)
+> >
+> > Sorry for the noise if I missed something and everything is fine please
+> > ignore me and I'll go ahead with this branch if you say so.
+> >
+> > Thanks
+> >
+> > Cristian
+> >
+> >
+> >
+> > On Fri, Mar 12, 2021 at 12:16:39PM +0000, Jonathan Cameron wrote:  
+> > > On Thu, 11 Mar 2021 21:08:44 +0000
+> > > Jonathan Cameron <jic23@kernel.org> wrote:
+> > >  
+> > > > On Tue,  9 Mar 2021 23:12:59 +0000
+> > > > Jyoti Bhayana <jbhayana@google.com> wrote:
+> > > >  
+> > > > > This change provides ARM SCMI Protocol based IIO device.
+> > > > > This driver provides support for Accelerometer and Gyroscope using
+> > > > > SCMI Sensor Protocol extensions added in the SCMIv3.0 ARM specification
+> > > > >
+> > > > > Reported-by: kernel test robot <lkp@intel.com>
+> > > > > Signed-off-by: Jyoti Bhayana <jbhayana@google.com>
+> > > > > Link: https://lore.kernel.org/r/20210212172235.507028-2-jbhayana@google.com
+> > > > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
+> > > >
+> > > > https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/log/?h=ib-iio-scmi-5.12-rc2
+> > > >
+> > > > New immutable branch.  I move to rc2 as the base as the rc1 tag
+> > > > has been removed for well publicized reasons.
+> > > >
+> > > > Should have the 0-day results in tomorrow morning. I'll shout
+> > > > if anything else shows up.  
+> > > 0-day is happy, so this is now immutable and suitable for pulling in through
+> > > whatever trees need it.
+> > >
+> > > Thanks,
+> > >
+> > > Jonathan
+> > >  
+> > > >
+> > > > Also rebased the togreg branch for the same reason (hadn't pushed it
+> > > > out as anything other than testing, so hopefully no one was basing
+> > > > anything significant on top)
+> > > >
+> > > > Thanks,
+> > > >
+> > > > Jonathan
+> > > >  
+> > > > > ---
+> > > > >  MAINTAINERS                                |   6 +
+> > > > >  drivers/firmware/arm_scmi/driver.c         |   2 +-
+> > > > >  drivers/iio/common/Kconfig                 |   1 +
+> > > > >  drivers/iio/common/Makefile                |   1 +
+> > > > >  drivers/iio/common/scmi_sensors/Kconfig    |  18 +
+> > > > >  drivers/iio/common/scmi_sensors/Makefile   |   5 +
+> > > > >  drivers/iio/common/scmi_sensors/scmi_iio.c | 683 +++++++++++++++++++++
+> > > > >  7 files changed, 715 insertions(+), 1 deletion(-)
+> > > > >  create mode 100644 drivers/iio/common/scmi_sensors/Kconfig
+> > > > >  create mode 100644 drivers/iio/common/scmi_sensors/Makefile
+> > > > >  create mode 100644 drivers/iio/common/scmi_sensors/scmi_iio.c
+> > > > >
+> > > > > diff --git a/MAINTAINERS b/MAINTAINERS
+> > > > > index d92f85ca831d..14227980f3d2 100644
+> > > > > --- a/MAINTAINERS
+> > > > > +++ b/MAINTAINERS
+> > > > > @@ -8692,6 +8692,12 @@ S: Maintained
+> > > > >  F:       Documentation/devicetree/bindings/iio/multiplexer/io-channel-mux.txt
+> > > > >  F:       drivers/iio/multiplexer/iio-mux.c
+> > > > >
+> > > > > +IIO SCMI BASED DRIVER
+> > > > > +M:       Jyoti Bhayana <jbhayana@google.com>
+> > > > > +L:       linux-iio@vger.kernel.org
+> > > > > +S:       Maintained
+> > > > > +F:       drivers/iio/common/scmi_sensors/scmi_iio.c
+> > > > > +
+> > > > >  IIO SUBSYSTEM AND DRIVERS
+> > > > >  M:       Jonathan Cameron <jic23@kernel.org>
+> > > > >  R:       Lars-Peter Clausen <lars@metafoo.de>
+> > > > > diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
+> > > > > index cacdf1589b10..3e748e57deab 100644
+> > > > > --- a/drivers/firmware/arm_scmi/driver.c
+> > > > > +++ b/drivers/firmware/arm_scmi/driver.c
+> > > > > @@ -741,7 +741,7 @@ static struct scmi_prot_devnames devnames[] = {
+> > > > >   { SCMI_PROTOCOL_SYSTEM, { "syspower" },},
+> > > > >   { SCMI_PROTOCOL_PERF,   { "cpufreq" },},
+> > > > >   { SCMI_PROTOCOL_CLOCK,  { "clocks" },},
+> > > > > - { SCMI_PROTOCOL_SENSOR, { "hwmon" },},
+> > > > > + { SCMI_PROTOCOL_SENSOR, { "hwmon", "iiodev" },},
+> > > > >   { SCMI_PROTOCOL_RESET,  { "reset" },},
+> > > > >   { SCMI_PROTOCOL_VOLTAGE,  { "regulator" },},
+> > > > >  };
+> > > > > diff --git a/drivers/iio/common/Kconfig b/drivers/iio/common/Kconfig
+> > > > > index 2b9ee9161abd..0334b4954773 100644
+> > > > > --- a/drivers/iio/common/Kconfig
+> > > > > +++ b/drivers/iio/common/Kconfig
+> > > > > @@ -6,5 +6,6 @@
+> > > > >  source "drivers/iio/common/cros_ec_sensors/Kconfig"
+> > > > >  source "drivers/iio/common/hid-sensors/Kconfig"
+> > > > >  source "drivers/iio/common/ms_sensors/Kconfig"
+> > > > > +source "drivers/iio/common/scmi_sensors/Kconfig"
+> > > > >  source "drivers/iio/common/ssp_sensors/Kconfig"
+> > > > >  source "drivers/iio/common/st_sensors/Kconfig"
+> > > > > diff --git a/drivers/iio/common/Makefile b/drivers/iio/common/Makefile
+> > > > > index 4bc30bb548e2..fad40e1e1718 100644
+> > > > > --- a/drivers/iio/common/Makefile
+> > > > > +++ b/drivers/iio/common/Makefile
+> > > > > @@ -11,5 +11,6 @@
+> > > > >  obj-y += cros_ec_sensors/
+> > > > >  obj-y += hid-sensors/
+> > > > >  obj-y += ms_sensors/
+> > > > > +obj-y += scmi_sensors/
+> > > > >  obj-y += ssp_sensors/
+> > > > >  obj-y += st_sensors/
+> > > > > diff --git a/drivers/iio/common/scmi_sensors/Kconfig b/drivers/iio/common/scmi_sensors/Kconfig
+> > > > > new file mode 100644
+> > > > > index 000000000000..67e084cbb1ab
+> > > > > --- /dev/null
+> > > > > +++ b/drivers/iio/common/scmi_sensors/Kconfig
+> > > > > @@ -0,0 +1,18 @@
+> > > > > +#
+> > > > > +# IIO over SCMI
+> > > > > +#
+> > > > > +# When adding new entries keep the list in alphabetical order
+> > > > > +
+> > > > > +menu "IIO SCMI Sensors"
+> > > > > +
+> > > > > +config IIO_SCMI
+> > > > > + tristate "IIO SCMI"
+> > > > > +        depends on ARM_SCMI_PROTOCOL
+> > > > > +        select IIO_BUFFER
+> > > > > +        select IIO_KFIFO_BUF
+> > > > > + help
+> > > > > +          Say yes here to build support for IIO SCMI Driver.
+> > > > > +          This provides ARM SCMI Protocol based IIO device.
+> > > > > +          This driver provides support for accelerometer and gyroscope
+> > > > > +          sensors available on SCMI based platforms.
+> > > > > +endmenu
+> > > > > diff --git a/drivers/iio/common/scmi_sensors/Makefile b/drivers/iio/common/scmi_sensors/Makefile
+> > > > > new file mode 100644
+> > > > > index 000000000000..f13140a2575a
+> > > > > --- /dev/null
+> > > > > +++ b/drivers/iio/common/scmi_sensors/Makefile
+> > > > > @@ -0,0 +1,5 @@
+> > > > > +# SPDX - License - Identifier : GPL - 2.0 - only
+> > > > > +#
+> > > > > +# Makefile for the IIO over SCMI
+> > > > > +#
+> > > > > +obj-$(CONFIG_IIO_SCMI) += scmi_iio.o
+> > > > > diff --git a/drivers/iio/common/scmi_sensors/scmi_iio.c b/drivers/iio/common/scmi_sensors/scmi_iio.c
+> > > > > new file mode 100644
+> > > > > index 000000000000..872d87ca6256
+> > > > > --- /dev/null
+> > > > > +++ b/drivers/iio/common/scmi_sensors/scmi_iio.c
+> > > > > @@ -0,0 +1,683 @@
+> > > > > +// SPDX-License-Identifier: GPL-2.0
+> > > > > +
+> > > > > +/*
+> > > > > + * System Control and Management Interface(SCMI) based IIO sensor driver
+> > > > > + *
+> > > > > + * Copyright (C) 2021 Google LLC
+> > > > > + */
+> > > > > +
+> > > > > +#include <linux/delay.h>
+> > > > > +#include <linux/err.h>
+> > > > > +#include <linux/iio/buffer.h>
+> > > > > +#include <linux/iio/iio.h>
+> > > > > +#include <linux/iio/kfifo_buf.h>
+> > > > > +#include <linux/iio/sysfs.h>
+> > > > > +#include <linux/kernel.h>
+> > > > > +#include <linux/kthread.h>
+> > > > > +#include <linux/module.h>
+> > > > > +#include <linux/scmi_protocol.h>
+> > > > > +#include <linux/time.h>
+> > > > > +#include <linux/types.h>
+> > > > > +
+> > > > > +#define SCMI_IIO_NUM_OF_AXIS 3
+> > > > > +
+> > > > > +struct scmi_iio_priv {
+> > > > > + struct scmi_handle *handle;
+> > > > > + const struct scmi_sensor_info *sensor_info;
+> > > > > + struct iio_dev *indio_dev;
+> > > > > + /* adding one additional channel for timestamp */
+> > > > > + s64 iio_buf[SCMI_IIO_NUM_OF_AXIS + 1];
+> > > > > + struct notifier_block sensor_update_nb;
+> > > > > + u32 *freq_avail;
+> > > > > +};
+> > > > > +
+> > > > > +static int scmi_iio_sensor_update_cb(struct notifier_block *nb,
+> > > > > +                              unsigned long event, void *data)
+> > > > > +{
+> > > > > + struct scmi_sensor_update_report *sensor_update = data;
+> > > > > + struct iio_dev *scmi_iio_dev;
+> > > > > + struct scmi_iio_priv *sensor;
+> > > > > + s8 tstamp_scale;
+> > > > > + u64 time, time_ns;
+> > > > > + int i;
+> > > > > +
+> > > > > + if (sensor_update->readings_count == 0)
+> > > > > +         return NOTIFY_DONE;
+> > > > > +
+> > > > > + sensor = container_of(nb, struct scmi_iio_priv, sensor_update_nb);
+> > > > > +
+> > > > > + for (i = 0; i < sensor_update->readings_count; i++)
+> > > > > +         sensor->iio_buf[i] = sensor_update->readings[i].value;
+> > > > > +
+> > > > > + if (!sensor->sensor_info->timestamped) {
+> > > > > +         time_ns = ktime_to_ns(sensor_update->timestamp);
+> > > > > + } else {
+> > > > > +         /*
+> > > > > +          *  All the axes are supposed to have the same value for timestamp.
+> > > > > +          *  We are just using the values from the Axis 0 here.
+> > > > > +          */
+> > > > > +         time = sensor_update->readings[0].timestamp;
+> > > > > +
+> > > > > +         /*
+> > > > > +          *  Timestamp returned by SCMI is in seconds and is equal to
+> > > > > +          *  time * power-of-10 multiplier(tstamp_scale) seconds.
+> > > > > +          *  Converting the timestamp to nanoseconds below.
+> > > > > +          */
+> > > > > +         tstamp_scale = sensor->sensor_info->tstamp_scale +
+> > > > > +                        const_ilog2(NSEC_PER_SEC) / const_ilog2(10);
+> > > > > +         if (tstamp_scale < 0) {
+> > > > > +                 do_div(time, int_pow(10, abs(tstamp_scale)));
+> > > > > +                 time_ns = time;
+> > > > > +         } else {
+> > > > > +                 time_ns = time * int_pow(10, tstamp_scale);
+> > > > > +         }
+> > > > > + }
+> > > > > +
+> > > > > + scmi_iio_dev = sensor->indio_dev;
+> > > > > + iio_push_to_buffers_with_timestamp(scmi_iio_dev, sensor->iio_buf,
+> > > > > +                                    time_ns);
+> > > > > + return NOTIFY_OK;
+> > > > > +}
+> > > > > +
+> > > > > +static int scmi_iio_buffer_preenable(struct iio_dev *iio_dev)
+> > > > > +{
+> > > > > + struct scmi_iio_priv *sensor = iio_priv(iio_dev);
+> > > > > + u32 sensor_id = sensor->sensor_info->id;
+> > > > > + u32 sensor_config = 0;
+> > > > > + int err;
+> > > > > +
+> > > > > + if (sensor->sensor_info->timestamped)
+> > > > > +         sensor_config |= FIELD_PREP(SCMI_SENS_CFG_TSTAMP_ENABLED_MASK,
+> > > > > +                                     SCMI_SENS_CFG_TSTAMP_ENABLE);
+> > > > > +
+> > > > > + sensor_config |= FIELD_PREP(SCMI_SENS_CFG_SENSOR_ENABLED_MASK,
+> > > > > +                             SCMI_SENS_CFG_SENSOR_ENABLE);
+> > > > > +
+> > > > > + err = sensor->handle->notify_ops->register_event_notifier(sensor->handle,
+> > > > > +                 SCMI_PROTOCOL_SENSOR, SCMI_EVENT_SENSOR_UPDATE,
+> > > > > +                 &sensor_id, &sensor->sensor_update_nb);
+> > > > > + if (err) {
+> > > > > +         dev_err(&iio_dev->dev,
+> > > > > +                 "Error in registering sensor update notifier for sensor %s err %d",
+> > > > > +                 sensor->sensor_info->name, err);
+> > > > > +         return err;
+> > > > > + }
+> > > > > +
+> > > > > + err = sensor->handle->sensor_ops->config_set(sensor->handle,
+> > > > > +                 sensor->sensor_info->id, sensor_config);
+> > > > > + if (err) {
+> > > > > +         sensor->handle->notify_ops->unregister_event_notifier(sensor->handle,
+> > > > > +                         SCMI_PROTOCOL_SENSOR,
+> > > > > +                         SCMI_EVENT_SENSOR_UPDATE, &sensor_id,
+> > > > > +                         &sensor->sensor_update_nb);
+> > > > > +         dev_err(&iio_dev->dev, "Error in enabling sensor %s err %d",
+> > > > > +                 sensor->sensor_info->name, err);
+> > > > > + }
+> > > > > +
+> > > > > + return err;
+> > > > > +}
+> > > > > +
+> > > > > +static int scmi_iio_buffer_postdisable(struct iio_dev *iio_dev)
+> > > > > +{
+> > > > > + struct scmi_iio_priv *sensor = iio_priv(iio_dev);
+> > > > > + u32 sensor_id = sensor->sensor_info->id;
+> > > > > + u32 sensor_config = 0;
+> > > > > + int err;
+> > > > > +
+> > > > > + sensor_config |= FIELD_PREP(SCMI_SENS_CFG_SENSOR_ENABLED_MASK,
+> > > > > +                             SCMI_SENS_CFG_SENSOR_DISABLE);
+> > > > > +
+> > > > > + err = sensor->handle->notify_ops->unregister_event_notifier(sensor->handle,
+> > > > > +                 SCMI_PROTOCOL_SENSOR, SCMI_EVENT_SENSOR_UPDATE,
+> > > > > +                 &sensor_id, &sensor->sensor_update_nb);
+> > > > > + if (err) {
+> > > > > +         dev_err(&iio_dev->dev,
+> > > > > +                 "Error in unregistering sensor update notifier for sensor %s err %d",
+> > > > > +                 sensor->sensor_info->name, err);
+> > > > > +         return err;
+> > > > > + }
+> > > > > +
+> > > > > + err = sensor->handle->sensor_ops->config_set(sensor->handle, sensor_id,
+> > > > > +                                              sensor_config);
+> > > > > + if (err) {
+> > > > > +         dev_err(&iio_dev->dev,
+> > > > > +                 "Error in disabling sensor %s with err %d",
+> > > > > +                 sensor->sensor_info->name, err);
+> > > > > + }
+> > > > > +
+> > > > > + return err;
+> > > > > +}
+> > > > > +
+> > > > > +static const struct iio_buffer_setup_ops scmi_iio_buffer_ops = {
+> > > > > + .preenable = scmi_iio_buffer_preenable,
+> > > > > + .postdisable = scmi_iio_buffer_postdisable,
+> > > > > +};
+> > > > > +
+> > > > > +static int scmi_iio_set_odr_val(struct iio_dev *iio_dev, int val, int val2)
+> > > > > +{
+> > > > > + struct scmi_iio_priv *sensor = iio_priv(iio_dev);
+> > > > > + const unsigned long UHZ_PER_HZ = 1000000UL;
+> > > > > + u64 sec, mult, uHz, sf;
+> > > > > + u32 sensor_config;
+> > > > > + char buf[32];
+> > > > > +
+> > > > > + int err = sensor->handle->sensor_ops->config_get(sensor->handle,
+> > > > > +                 sensor->sensor_info->id, &sensor_config);
+> > > > > + if (err) {
+> > > > > +         dev_err(&iio_dev->dev,
+> > > > > +                 "Error in getting sensor config for sensor %s err %d",
+> > > > > +                 sensor->sensor_info->name, err);
+> > > > > +         return err;
+> > > > > + }
+> > > > > +
+> > > > > + uHz = val * UHZ_PER_HZ + val2;
+> > > > > +
+> > > > > + /*
+> > > > > +  * The seconds field in the sensor interval in SCMI is 16 bits long
+> > > > > +  * Therefore seconds  = 1/Hz <= 0xFFFF. As floating point calculations are
+> > > > > +  * discouraged in the kernel driver code, to calculate the scale factor (sf)
+> > > > > +  * (1* 1000000 * sf)/uHz <= 0xFFFF. Therefore, sf <= (uHz * 0xFFFF)/1000000
+> > > > > +  * To calculate the multiplier,we convert the sf into char string  and
+> > > > > +  * count the number of characters
+> > > > > +  */
+> > > > > + sf = (u64)uHz * 0xFFFF;
+> > > > > + do_div(sf,  UHZ_PER_HZ);
+> > > > > + mult = scnprintf(buf, sizeof(buf), "%llu", sf) - 1;
+> > > > > +
+> > > > > + sec = int_pow(10, mult) * UHZ_PER_HZ;
+> > > > > + do_div(sec, uHz);
+> > > > > + if (sec == 0) {
+> > > > > +         dev_err(&iio_dev->dev,
+> > > > > +                 "Trying to set invalid sensor update value for sensor %s",
+> > > > > +                 sensor->sensor_info->name);
+> > > > > +         return -EINVAL;
+> > > > > + }
+> > > > > +
+> > > > > + sensor_config &= ~SCMI_SENS_CFG_UPDATE_SECS_MASK;
+> > > > > + sensor_config |= FIELD_PREP(SCMI_SENS_CFG_UPDATE_SECS_MASK, sec);
+> > > > > + sensor_config &= ~SCMI_SENS_CFG_UPDATE_EXP_MASK;
+> > > > > + sensor_config |= FIELD_PREP(SCMI_SENS_CFG_UPDATE_EXP_MASK, -mult);
+> > > > > +
+> > > > > + if (sensor->sensor_info->timestamped) {
+> > > > > +         sensor_config &= ~SCMI_SENS_CFG_TSTAMP_ENABLED_MASK;
+> > > > > +         sensor_config |= FIELD_PREP(SCMI_SENS_CFG_TSTAMP_ENABLED_MASK,
+> > > > > +                                     SCMI_SENS_CFG_TSTAMP_ENABLE);
+> > > > > + }
+> > > > > +
+> > > > > + sensor_config &= ~SCMI_SENS_CFG_ROUND_MASK;
+> > > > > + sensor_config |=
+> > > > > +         FIELD_PREP(SCMI_SENS_CFG_ROUND_MASK, SCMI_SENS_CFG_ROUND_AUTO);
+> > > > > +
+> > > > > + err = sensor->handle->sensor_ops->config_set(sensor->handle,
+> > > > > +                 sensor->sensor_info->id, sensor_config);
+> > > > > + if (err)
+> > > > > +         dev_err(&iio_dev->dev,
+> > > > > +                 "Error in setting sensor update interval for sensor %s value %u err %d",
+> > > > > +                 sensor->sensor_info->name, sensor_config, err);
+> > > > > +
+> > > > > + return err;
+> > > > > +}
+> > > > > +
+> > > > > +static int scmi_iio_write_raw(struct iio_dev *iio_dev,
+> > > > > +                       struct iio_chan_spec const *chan, int val,
+> > > > > +                       int val2, long mask)
+> > > > > +{
+> > > > > + int err;
+> > > > > +
+> > > > > + switch (mask) {
+> > > > > + case IIO_CHAN_INFO_SAMP_FREQ:
+> > > > > +         mutex_lock(&iio_dev->mlock);
+> > > > > +         err = scmi_iio_set_odr_val(iio_dev, val, val2);
+> > > > > +         mutex_unlock(&iio_dev->mlock);
+> > > > > +         return err;
+> > > > > + default:
+> > > > > +         return -EINVAL;
+> > > > > + }
+> > > > > +}
+> > > > > +
+> > > > > +static int scmi_iio_read_avail(struct iio_dev *iio_dev,
+> > > > > +                        struct iio_chan_spec const *chan,
+> > > > > +                        const int **vals, int *type, int *length,
+> > > > > +                        long mask)
+> > > > > +{
+> > > > > + struct scmi_iio_priv *sensor = iio_priv(iio_dev);
+> > > > > +
+> > > > > + switch (mask) {
+> > > > > + case IIO_CHAN_INFO_SAMP_FREQ:
+> > > > > +         *vals = sensor->freq_avail;
+> > > > > +         *type = IIO_VAL_INT_PLUS_MICRO;
+> > > > > +         *length = sensor->sensor_info->intervals.count * 2;
+> > > > > +         if (sensor->sensor_info->intervals.segmented)
+> > > > > +                 return IIO_AVAIL_RANGE;
+> > > > > +         else
+> > > > > +                 return IIO_AVAIL_LIST;
+> > > > > + default:
+> > > > > +         return -EINVAL;
+> > > > > + }
+> > > > > +}
+> > > > > +
+> > > > > +static void convert_ns_to_freq(u64 interval_ns, u64 *hz, u64 *uhz)
+> > > > > +{
+> > > > > + u64 rem, freq;
+> > > > > +
+> > > > > + freq = NSEC_PER_SEC;
+> > > > > + rem = do_div(freq, interval_ns);
+> > > > > + *hz = freq;
+> > > > > + *uhz = rem * 1000000UL;
+> > > > > + do_div(*uhz, interval_ns);
+> > > > > +}
+> > > > > +
+> > > > > +static int scmi_iio_get_odr_val(struct iio_dev *iio_dev, int *val, int *val2)
+> > > > > +{
+> > > > > + u64 sensor_update_interval, sensor_interval_mult, hz, uhz;
+> > > > > + struct scmi_iio_priv *sensor = iio_priv(iio_dev);
+> > > > > + u32 sensor_config;
+> > > > > + int mult;
+> > > > > +
+> > > > > + int err = sensor->handle->sensor_ops->config_get(sensor->handle,
+> > > > > +                 sensor->sensor_info->id, &sensor_config);
+> > > > > + if (err) {
+> > > > > +         dev_err(&iio_dev->dev,
+> > > > > +                 "Error in getting sensor config for sensor %s err %d",
+> > > > > +                 sensor->sensor_info->name, err);
+> > > > > +         return err;
+> > > > > + }
+> > > > > +
+> > > > > + sensor_update_interval =
+> > > > > +         SCMI_SENS_CFG_GET_UPDATE_SECS(sensor_config) * NSEC_PER_SEC;
+> > > > > +
+> > > > > + mult = SCMI_SENS_CFG_GET_UPDATE_EXP(sensor_config);
+> > > > > + if (mult < 0) {
+> > > > > +         sensor_interval_mult = int_pow(10, abs(mult));
+> > > > > +         do_div(sensor_update_interval, sensor_interval_mult);
+> > > > > + } else {
+> > > > > +         sensor_interval_mult = int_pow(10, mult);
+> > > > > +         sensor_update_interval =
+> > > > > +                 sensor_update_interval * sensor_interval_mult;
+> > > > > + }
+> > > > > +
+> > > > > + convert_ns_to_freq(sensor_update_interval, &hz, &uhz);
+> > > > > + *val = hz;
+> > > > > + *val2 = uhz;
+> > > > > + return 0;
+> > > > > +}
+> > > > > +
+> > > > > +static int scmi_iio_read_raw(struct iio_dev *iio_dev,
+> > > > > +                      struct iio_chan_spec const *ch, int *val,
+> > > > > +                      int *val2, long mask)
+> > > > > +{
+> > > > > + struct scmi_iio_priv *sensor = iio_priv(iio_dev);
+> > > > > + s8 scale;
+> > > > > + int ret;
+> > > > > +
+> > > > > + switch (mask) {
+> > > > > + case IIO_CHAN_INFO_SCALE:
+> > > > > +         scale = sensor->sensor_info->axis[ch->scan_index].scale;
+> > > > > +         if (scale < 0) {
+> > > > > +                 *val = 1;
+> > > > > +                 *val2 = int_pow(10, abs(scale));
+> > > > > +                 return IIO_VAL_FRACTIONAL;
+> > > > > +         }
+> > > > > +         *val = int_pow(10, scale);
+> > > > > +         return IIO_VAL_INT;
+> > > > > + case IIO_CHAN_INFO_SAMP_FREQ:
+> > > > > +         ret = scmi_iio_get_odr_val(iio_dev, val, val2);
+> > > > > +         return ret ? ret : IIO_VAL_INT_PLUS_MICRO;
+> > > > > + default:
+> > > > > +         return -EINVAL;
+> > > > > + }
+> > > > > +}
+> > > > > +
+> > > > > +static const struct iio_info scmi_iio_info = {
+> > > > > + .read_raw = scmi_iio_read_raw,
+> > > > > + .read_avail = scmi_iio_read_avail,
+> > > > > + .write_raw = scmi_iio_write_raw,
+> > > > > +};
+> > > > > +
+> > > > > +static ssize_t scmi_iio_get_raw_available(struct iio_dev *iio_dev,
+> > > > > +                                   uintptr_t private,
+> > > > > +                                   const struct iio_chan_spec *chan,
+> > > > > +                                   char *buf)
+> > > > > +{
+> > > > > + struct scmi_iio_priv *sensor = iio_priv(iio_dev);
+> > > > > + u64 resolution, rem;
+> > > > > + s64 min_range, max_range;
+> > > > > + s8 exponent, scale;
+> > > > > + int len = 0;
+> > > > > +
+> > > > > + /*
+> > > > > +  * All the axes are supposed to have the same value for range and resolution.
+> > > > > +  * We are just using the values from the Axis 0 here.
+> > > > > +  */
+> > > > > + if (sensor->sensor_info->axis[0].extended_attrs) {
+> > > > > +         min_range = sensor->sensor_info->axis[0].attrs.min_range;
+> > > > > +         max_range = sensor->sensor_info->axis[0].attrs.max_range;
+> > > > > +         resolution = sensor->sensor_info->axis[0].resolution;
+> > > > > +         exponent = sensor->sensor_info->axis[0].exponent;
+> > > > > +         scale = sensor->sensor_info->axis[0].scale;
+> > > > > +
+> > > > > +         /*
+> > > > > +          * To provide the raw value for the resolution to the userspace,
+> > > > > +          * need to divide the resolution exponent by the sensor scale
+> > > > > +          */
+> > > > > +         exponent = exponent - scale;
+> > > > > +         if (exponent < 0) {
+> > > > > +                 rem = do_div(resolution,
+> > > > > +                              int_pow(10, abs(exponent))
+> > > > > +                              );
+> > > > > +                 len = scnprintf(buf, PAGE_SIZE,
+> > > > > +                                 "[%lld %llu.%llu %lld]\n", min_range,
+> > > > > +                                 resolution, rem, max_range);
+> > > > > +         } else {
+> > > > > +                 resolution = resolution * int_pow(10, exponent);
+> > > > > +                 len = scnprintf(buf, PAGE_SIZE, "[%lld %llu %lld]\n",
+> > > > > +                                 min_range, resolution, max_range);
+> > > > > +         }
+> > > > > + }
+> > > > > + return len;
+> > > > > +}
+> > > > > +
+> > > > > +static const struct iio_chan_spec_ext_info scmi_iio_ext_info[] = {
+> > > > > + {
+> > > > > +         .name = "raw_available",
+> > > > > +         .read = scmi_iio_get_raw_available,
+> > > > > +         .shared = IIO_SHARED_BY_TYPE,
+> > > > > + },
+> > > > > + {},
+> > > > > +};
+> > > > > +
+> > > > > +static void scmi_iio_set_timestamp_channel(struct iio_chan_spec *iio_chan,
+> > > > > +                                    int scan_index)
+> > > > > +{
+> > > > > + iio_chan->type = IIO_TIMESTAMP;
+> > > > > + iio_chan->channel = -1;
+> > > > > + iio_chan->scan_index = scan_index;
+> > > > > + iio_chan->scan_type.sign = 'u';
+> > > > > + iio_chan->scan_type.realbits = 64;
+> > > > > + iio_chan->scan_type.storagebits = 64;
+> > > > > +}
+> > > > > +
+> > > > > +static void scmi_iio_set_data_channel(struct iio_chan_spec *iio_chan,
+> > > > > +                               enum iio_chan_type type,
+> > > > > +                               enum iio_modifier mod, int scan_index)
+> > > > > +{
+> > > > > + iio_chan->type = type;
+> > > > > + iio_chan->modified = 1;
+> > > > > + iio_chan->channel2 = mod;
+> > > > > + iio_chan->info_mask_separate = BIT(IIO_CHAN_INFO_SCALE);
+> > > > > + iio_chan->info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SAMP_FREQ);
+> > > > > + iio_chan->info_mask_shared_by_type_available =
+> > > > > +         BIT(IIO_CHAN_INFO_SAMP_FREQ);
+> > > > > + iio_chan->scan_index = scan_index;
+> > > > > + iio_chan->scan_type.sign = 's';
+> > > > > + iio_chan->scan_type.realbits = 64;
+> > > > > + iio_chan->scan_type.storagebits = 64;
+> > > > > + iio_chan->scan_type.endianness = IIO_LE;
+> > > > > + iio_chan->ext_info = scmi_iio_ext_info;
+> > > > > +}
+> > > > > +
+> > > > > +static int scmi_iio_get_chan_modifier(const char *name,
+> > > > > +                               enum iio_modifier *modifier)
+> > > > > +{
+> > > > > + char *pch, mod;
+> > > > > +
+> > > > > + if (!name)
+> > > > > +         return -EINVAL;
+> > > > > +
+> > > > > + pch = strrchr(name, '_');
+> > > > > + if (!pch)
+> > > > > +         return -EINVAL;
+> > > > > +
+> > > > > + mod = *(pch + 1);
+> > > > > + switch (mod) {
+> > > > > + case 'X':
+> > > > > +         *modifier = IIO_MOD_X;
+> > > > > +         return 0;
+> > > > > + case 'Y':
+> > > > > +         *modifier = IIO_MOD_Y;
+> > > > > +         return 0;
+> > > > > + case 'Z':
+> > > > > +         *modifier = IIO_MOD_Z;
+> > > > > +         return 0;
+> > > > > + default:
+> > > > > +         return -EINVAL;
+> > > > > + }
+> > > > > +}
+> > > > > +
+> > > > > +static int scmi_iio_get_chan_type(u8 scmi_type, enum iio_chan_type *iio_type)
+> > > > > +{
+> > > > > + switch (scmi_type) {
+> > > > > + case METERS_SEC_SQUARED:
+> > > > > +         *iio_type = IIO_ACCEL;
+> > > > > +         return 0;
+> > > > > + case RADIANS_SEC:
+> > > > > +         *iio_type = IIO_ANGL_VEL;
+> > > > > +         return 0;
+> > > > > + default:
+> > > > > +         return -EINVAL;
+> > > > > + }
+> > > > > +}
+> > > > > +
+> > > > > +static u64 scmi_iio_convert_interval_to_ns(u32 val)
+> > > > > +{
+> > > > > + u64 sensor_update_interval =
+> > > > > +         SCMI_SENS_INTVL_GET_SECS(val) * NSEC_PER_SEC;
+> > > > > + u64 sensor_interval_mult;
+> > > > > + int mult;
+> > > > > +
+> > > > > + mult = SCMI_SENS_INTVL_GET_EXP(val);
+> > > > > + if (mult < 0) {
+> > > > > +         sensor_interval_mult = int_pow(10, abs(mult));
+> > > > > +         do_div(sensor_update_interval, sensor_interval_mult);
+> > > > > + } else {
+> > > > > +         sensor_interval_mult = int_pow(10, mult);
+> > > > > +         sensor_update_interval =
+> > > > > +                 sensor_update_interval * sensor_interval_mult;
+> > > > > + }
+> > > > > + return sensor_update_interval;
+> > > > > +}
+> > > > > +
+> > > > > +static int scmi_iio_set_sampling_freq_avail(struct iio_dev *iio_dev)
+> > > > > +{
+> > > > > + u64 cur_interval_ns, low_interval_ns, high_interval_ns, step_size_ns,
+> > > > > +         hz, uhz;
+> > > > > + unsigned int cur_interval, low_interval, high_interval, step_size;
+> > > > > + struct scmi_iio_priv *sensor = iio_priv(iio_dev);
+> > > > > + int i;
+> > > > > +
+> > > > > + sensor->freq_avail =
+> > > > > +         devm_kzalloc(&iio_dev->dev,
+> > > > > +                      sizeof(*sensor->freq_avail) *
+> > > > > +                              (sensor->sensor_info->intervals.count * 2),
+> > > > > +                      GFP_KERNEL);
+> > > > > + if (!sensor->freq_avail)
+> > > > > +         return -ENOMEM;
+> > > > > +
+> > > > > + if (sensor->sensor_info->intervals.segmented) {
+> > > > > +         low_interval = sensor->sensor_info->intervals
+> > > > > +                                .desc[SCMI_SENS_INTVL_SEGMENT_LOW];
+> > > > > +         low_interval_ns = scmi_iio_convert_interval_to_ns(low_interval);
+> > > > > +         convert_ns_to_freq(low_interval_ns, &hz, &uhz);
+> > > > > +         sensor->freq_avail[0] = hz;
+> > > > > +         sensor->freq_avail[1] = uhz;
+> > > > > +
+> > > > > +         step_size = sensor->sensor_info->intervals
+> > > > > +                             .desc[SCMI_SENS_INTVL_SEGMENT_STEP];
+> > > > > +         step_size_ns = scmi_iio_convert_interval_to_ns(step_size);
+> > > > > +         convert_ns_to_freq(step_size_ns, &hz, &uhz);
+> > > > > +         sensor->freq_avail[2] = hz;
+> > > > > +         sensor->freq_avail[3] = uhz;
+> > > > > +
+> > > > > +         high_interval = sensor->sensor_info->intervals
+> > > > > +                                 .desc[SCMI_SENS_INTVL_SEGMENT_HIGH];
+> > > > > +         high_interval_ns =
+> > > > > +                 scmi_iio_convert_interval_to_ns(high_interval);
+> > > > > +         convert_ns_to_freq(high_interval_ns, &hz, &uhz);
+> > > > > +         sensor->freq_avail[4] = hz;
+> > > > > +         sensor->freq_avail[5] = uhz;
+> > > > > + } else {
+> > > > > +         for (i = 0; i < sensor->sensor_info->intervals.count; i++) {
+> > > > > +                 cur_interval = sensor->sensor_info->intervals.desc[i];
+> > > > > +                 cur_interval_ns =
+> > > > > +                         scmi_iio_convert_interval_to_ns(cur_interval);
+> > > > > +                 convert_ns_to_freq(cur_interval_ns, &hz, &uhz);
+> > > > > +                 sensor->freq_avail[i * 2] = hz;
+> > > > > +                 sensor->freq_avail[i * 2 + 1] = uhz;
+> > > > > +         }
+> > > > > + }
+> > > > > + return 0;
+> > > > > +}
+> > > > > +
+> > > > > +static int scmi_iio_buffers_setup(struct iio_dev *scmi_iiodev)
+> > > > > +{
+> > > > > + struct iio_buffer *buffer;
+> > > > > +
+> > > > > + buffer = devm_iio_kfifo_allocate(&scmi_iiodev->dev);
+> > > > > + if (!buffer)
+> > > > > +         return -ENOMEM;
+> > > > > +
+> > > > > + iio_device_attach_buffer(scmi_iiodev, buffer);
+> > > > > + scmi_iiodev->modes |= INDIO_BUFFER_SOFTWARE;
+> > > > > + scmi_iiodev->setup_ops = &scmi_iio_buffer_ops;
+> > > > > + return 0;
+> > > > > +}
+> > > > > +
+> > > > > +static struct iio_dev *scmi_alloc_iiodev(struct device *dev,
+> > > > > +                                  struct scmi_handle *handle,
+> > > > > +                                  const struct scmi_sensor_info *sensor_info)
+> > > > > +{
+> > > > > + struct iio_chan_spec *iio_channels;
+> > > > > + struct scmi_iio_priv *sensor;
+> > > > > + enum iio_modifier modifier;
+> > > > > + enum iio_chan_type type;
+> > > > > + struct iio_dev *iiodev;
+> > > > > + int i, ret;
+> > > > > +
+> > > > > + iiodev = devm_iio_device_alloc(dev, sizeof(*sensor));
+> > > > > + if (!iiodev)
+> > > > > +         return ERR_PTR(-ENOMEM);
+> > > > > +
+> > > > > + iiodev->modes = INDIO_DIRECT_MODE;
+> > > > > + iiodev->dev.parent = dev;
+> > > > > + sensor = iio_priv(iiodev);
+> > > > > + sensor->handle = handle;
+> > > > > + sensor->sensor_info = sensor_info;
+> > > > > + sensor->sensor_update_nb.notifier_call = scmi_iio_sensor_update_cb;
+> > > > > + sensor->indio_dev = iiodev;
+> > > > > +
+> > > > > + /* adding one additional channel for timestamp */
+> > > > > + iiodev->num_channels = sensor_info->num_axis + 1;
+> > > > > + iiodev->name = sensor_info->name;
+> > > > > + iiodev->info = &scmi_iio_info;
+> > > > > +
+> > > > > + iio_channels =
+> > > > > +         devm_kzalloc(dev,
+> > > > > +                      sizeof(*iio_channels) * (iiodev->num_channels),
+> > > > > +                      GFP_KERNEL);
+> > > > > + if (!iio_channels)
+> > > > > +         return ERR_PTR(-ENOMEM);
+> > > > > +
+> > > > > + ret = scmi_iio_set_sampling_freq_avail(iiodev);
+> > > > > + if (ret < 0)
+> > > > > +         return ERR_PTR(ret);
+> > > > > +
+> > > > > + for (i = 0; i < sensor_info->num_axis; i++) {
+> > > > > +         ret = scmi_iio_get_chan_type(sensor_info->axis[i].type, &type);
+> > > > > +         if (ret < 0)
+> > > > > +                 return ERR_PTR(ret);
+> > > > > +
+> > > > > +         ret = scmi_iio_get_chan_modifier(sensor_info->axis[i].name,
+> > > > > +                                          &modifier);
+> > > > > +         if (ret < 0)
+> > > > > +                 return ERR_PTR(ret);
+> > > > > +
+> > > > > +         scmi_iio_set_data_channel(&iio_channels[i], type, modifier,
+> > > > > +                                   sensor_info->axis[i].id);
+> > > > > + }
+> > > > > +
+> > > > > + scmi_iio_set_timestamp_channel(&iio_channels[i], i);
+> > > > > + iiodev->channels = iio_channels;
+> > > > > + return iiodev;
+> > > > > +}
+> > > > > +
+> > > > > +static int scmi_iio_dev_probe(struct scmi_device *sdev)
+> > > > > +{
+> > > > > + const struct scmi_sensor_info *sensor_info;
+> > > > > + struct scmi_handle *handle = sdev->handle;
+> > > > > + struct device *dev = &sdev->dev;
+> > > > > + struct iio_dev *scmi_iio_dev;
+> > > > > + u16 nr_sensors;
+> > > > > + int err = -ENODEV, i;
+> > > > > +
+> > > > > + if (!handle || !handle->sensor_ops) {
+> > > > > +         dev_err(dev, "SCMI device has no sensor interface\n");
+> > > > > +         return -EINVAL;
+> > > > > + }
+> > > > > +
+> > > > > + nr_sensors = handle->sensor_ops->count_get(handle);
+> > > > > + if (!nr_sensors) {
+> > > > > +         dev_dbg(dev, "0 sensors found via SCMI bus\n");
+> > > > > +         return -ENODEV;
+> > > > > + }
+> > > > > +
+> > > > > + for (i = 0; i < nr_sensors; i++) {
+> > > > > +         sensor_info = handle->sensor_ops->info_get(handle, i);
+> > > > > +         if (!sensor_info) {
+> > > > > +                 dev_err(dev, "SCMI sensor %d has missing info\n", i);
+> > > > > +                 return -EINVAL;
+> > > > > +         }
+> > > > > +
+> > > > > +         /* This driver only supports 3-axis accel and gyro, skipping other sensors */
+> > > > > +         if (sensor_info->num_axis != SCMI_IIO_NUM_OF_AXIS)
+> > > > > +                 continue;
+> > > > > +
+> > > > > +         /* This driver only supports 3-axis accel and gyro, skipping other sensors */
+> > > > > +         if (sensor_info->axis[0].type != METERS_SEC_SQUARED &&
+> > > > > +             sensor_info->axis[0].type != RADIANS_SEC)
+> > > > > +                 continue;
+> > > > > +
+> > > > > +         scmi_iio_dev = scmi_alloc_iiodev(dev, handle, sensor_info);
+> > > > > +         if (IS_ERR(scmi_iio_dev)) {
+> > > > > +                 dev_err(dev,
+> > > > > +                         "failed to allocate IIO device for sensor %s: %ld\n",
+> > > > > +                         sensor_info->name, PTR_ERR(scmi_iio_dev));
+> > > > > +                 return PTR_ERR(scmi_iio_dev);
+> > > > > +         }
+> > > > > +
+> > > > > +         err = scmi_iio_buffers_setup(scmi_iio_dev);
+> > > > > +         if (err < 0) {
+> > > > > +                 dev_err(dev,
+> > > > > +                         "IIO buffer setup error at sensor %s: %d\n",
+> > > > > +                         sensor_info->name, err);
+> > > > > +                 return err;
+> > > > > +         }
+> > > > > +
+> > > > > +         err = devm_iio_device_register(dev, scmi_iio_dev);
+> > > > > +         if (err) {
+> > > > > +                 dev_err(dev,
+> > > > > +                         "IIO device registration failed at sensor %s: %d\n",
+> > > > > +                         sensor_info->name, err);
+> > > > > +                 return err;
+> > > > > +         }
+> > > > > + }
+> > > > > + return err;
+> > > > > +}
+> > > > > +
+> > > > > +static const struct scmi_device_id scmi_id_table[] = {
+> > > > > + { SCMI_PROTOCOL_SENSOR, "iiodev" },
+> > > > > + {},
+> > > > > +};
+> > > > > +
+> > > > > +MODULE_DEVICE_TABLE(scmi, scmi_id_table);
+> > > > > +
+> > > > > +static struct scmi_driver scmi_iiodev_driver = {
+> > > > > + .name = "scmi-sensor-iiodev",
+> > > > > + .probe = scmi_iio_dev_probe,
+> > > > > + .id_table = scmi_id_table,
+> > > > > +};
+> > > > > +
+> > > > > +module_scmi_driver(scmi_iiodev_driver);
+> > > > > +
+> > > > > +MODULE_AUTHOR("Jyoti Bhayana <jbhayana@google.com>");
+> > > > > +MODULE_DESCRIPTION("SCMI IIO Driver");
+> > > > > +MODULE_LICENSE("GPL v2");  
+> > > >  
+> > >  
+> 
 

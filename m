@@ -2,32 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82990339FCE
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Mar 2021 19:18:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A0B06339FD3
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Mar 2021 19:26:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233951AbhCMSSN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 13 Mar 2021 13:18:13 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37152 "EHLO mail.kernel.org"
+        id S234124AbhCMS0E (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 13 Mar 2021 13:26:04 -0500
+Received: from mail.kernel.org ([198.145.29.99]:37518 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233635AbhCMSSN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 13 Mar 2021 13:18:13 -0500
+        id S233635AbhCMS0D (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 13 Mar 2021 13:26:03 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8F08A64EAE;
-        Sat, 13 Mar 2021 18:18:12 +0000 (UTC)
-Date:   Sat, 13 Mar 2021 18:18:09 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 794B564E58;
+        Sat, 13 Mar 2021 18:26:02 +0000 (UTC)
+Date:   Sat, 13 Mar 2021 18:25:58 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Gwendal Grignou <gwendal@chromium.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        linux-iio <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v3 0/8] iio: Set default trigger device parent
-Message-ID: <20210313181809.3683c23d@archlinux>
-In-Reply-To: <CAHp75VeLqcocDCTPe+oQQdUqYnCU9Nw1Ch4KVUhRYTAHObuT9A@mail.gmail.com>
-References: <20210309011816.2024099-1-gwendal@chromium.org>
-        <CAHp75VeLqcocDCTPe+oQQdUqYnCU9Nw1Ch4KVUhRYTAHObuT9A@mail.gmail.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
+        Peter Rosin <peda@axentia.se>,
+        Chris Lesiak <chris.lesiak@licor.com>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH 2/2 v4] hwmon: (ntc_thermistor): try reading processed
+Message-ID: <20210313182558.1120c09f@archlinux>
+In-Reply-To: <20210309171501.GB172171@roeck-us.net>
+References: <20210308100219.2732156-1-linus.walleij@linaro.org>
+        <20210308100219.2732156-2-linus.walleij@linaro.org>
+        <20210309171501.GB172171@roeck-us.net>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -36,114 +38,119 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 9 Mar 2021 12:04:21 +0200
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Tue, 9 Mar 2021 09:15:01 -0800
+Guenter Roeck <linux@roeck-us.net> wrote:
 
-> On Tue, Mar 9, 2021 at 3:18 AM Gwendal Grignou <gwendal@chromium.org> wrote:
-> >
-> > Each drivers are setting trig->dev.parent to a common value - usually.  
+> On Mon, Mar 08, 2021 at 11:02:19AM +0100, Linus Walleij wrote:
+> > Before trying the custom method of reading the sensor
+> > as raw and then converting, we want to use
+> > iio_read_channel_processed_scale() which first tries to
+> > see if the ADC can provide a processed value directly,
+> > else reads raw and applies scaling inside of IIO
+> > using the scale attributes of the ADC. We need to
+> > multiply the scaled value with 1000 to get to
+> > microvolts from millivolts which is what processed
+> > IIO channels returns.
+> > 
+> > Keep the code that assumes 12bit ADC around as a
+> > fallback.
+> > 
+> > This gives correct readings on the AB8500 thermistor
+> > inputs used in the Ux500 HREFP520 platform for reading
+> > battery and board temperature.
+> > 
+> > Cc: Peter Rosin <peda@axentia.se>
+> > Cc: Chris Lesiak <chris.lesiak@licor.com>
+> > Cc: Jonathan Cameron <jic23@kernel.org>
+> > Cc: linux-iio@vger.kernel.org
+> > Link: https://lore.kernel.org/linux-iio/20201224011607.1059534-1-linus.walleij@linaro.org/
+> > Signed-off-by: Linus Walleij <linus.walleij@linaro.org>  
 > 
-> "Each driver is"
+> Acked-by: Guenter Roeck <linux@roeck-us.net>
 > 
-> > Move that in boiler plate code.
-> >
-> > The first patch set the parent pointer, the next is an automatic change
-> > with spatch.
-> > The remaining ones are straightforward manual changes.  
-> 
-> Few nit-picks here and there, overall LGTM
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-@Gwendal.  Please make sure to pick up tags from earlier versions.
-I've gone back and added this for the series as I happened to notice.
+> Up to Jonathan to decide if he wants to take both patches.
+It seems unlikely that it will cause trouble in either tree (as the code
+in question isn't changing that often). So on basis Guenter already acked
+I'll pick them up through IIO.
 
-Thanks,
+Applied to the togreg branch of iio.git and pushed out as testing to
+see if the autobuilders notice anything we missed.
+thanks,
 
 Jonathan
 
 > 
-> > Few drivers remain:
-> > drivers/iio/adc/at91-sama5d2_adc.c
-> > drivers/iio/adc/mxs-lradc-adc.c
-> > trigger parent set to iio device instead of its parent.
-> >
-> > drivers/iio/adc/dln2-adc.c
-> > trigger parent not set.
-> >
-> > drivers/iio/gyro/mpu3050-core.c
-> > trigger allocated for iio device but parent set to iio device parent.
-> >
-> > drivers/iio/imu/bmi160/bmi160_core.c
-> > drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-> > trigger allocated for iio device but parent set to mapped register device holder. Looks like iio device parent.
-> >
-> > drivers/iio/trigger/stm32-lptimer-trigger.c
-> > drivers/iio/trigger/stm32-timer-trigger.c
-> > trigger allocated for device, but parent set to device parent.
-> >
-> > Gwendal Grignou (8):
-> >   iio: set default trig->dev.parent
-> >   iio: fix devm_iio_trigger_alloc with parent.cocci
-> >   iio: adis_trigger: Remove code to set trigger parent
-> >   iio: gp2ap020a00f: Remove code to set trigger parent
-> >   iio: lmp91000: Remove code to set trigger parent
-> >   iio: chemical: atlas: Remove code to set trigger parent
-> >   iio: as3935: Remove code to set trigger parent
-> >   iio: xilinx-xadc: Remove code to set trigger parent
-> >
-> >  drivers/iio/accel/adxl372.c                   |  2 --
-> >  drivers/iio/accel/bma180.c                    |  3 +-
-> >  drivers/iio/accel/bmc150-accel-core.c         |  1 -
-> >  drivers/iio/accel/kxcjk-1013.c                |  2 --
-> >  drivers/iio/accel/mma8452.c                   |  1 -
-> >  drivers/iio/accel/mxc4005.c                   |  1 -
-> >  drivers/iio/accel/stk8312.c                   |  1 -
-> >  drivers/iio/accel/stk8ba50.c                  |  1 -
-> >  drivers/iio/adc/ad7606.c                      |  1 -
-> >  drivers/iio/adc/ad7766.c                      |  1 -
-> >  drivers/iio/adc/ad7768-1.c                    |  1 -
-> >  drivers/iio/adc/ad_sigma_delta.c              |  6 ++--
-> >  drivers/iio/adc/at91_adc.c                    |  3 +-
-> >  drivers/iio/adc/max1027.c                     |  1 -
-> >  drivers/iio/adc/xilinx-xadc-core.c            |  1 -
-> >  drivers/iio/chemical/atlas-sensor.c           |  1 -
-> >  drivers/iio/chemical/ccs811.c                 |  1 -
-> >  drivers/iio/chemical/scd30_core.c             |  1 -
-> >  .../common/hid-sensors/hid-sensor-trigger.c   |  4 +--
-> >  .../common/st_sensors/st_sensors_trigger.c    |  4 +--
-> >  drivers/iio/gyro/adxrs290.c                   |  1 -
-> >  drivers/iio/gyro/bmg160_core.c                |  2 --
-> >  drivers/iio/gyro/fxas21002c_core.c            |  1 -
-> >  drivers/iio/gyro/itg3200_buffer.c             |  3 +-
-> >  drivers/iio/health/afe4403.c                  |  1 -
-> >  drivers/iio/health/afe4404.c                  |  1 -
-> >  drivers/iio/humidity/hts221_buffer.c          |  1 -
-> >  drivers/iio/imu/adis_trigger.c                | 10 ++----
-> >  drivers/iio/imu/kmx61.c                       |  1 -
-> >  drivers/iio/industrialio-trigger.c            | 36 +++++++++++--------
-> >  drivers/iio/light/gp2ap020a00f.c              |  1 -
-> >  drivers/iio/light/rpr0521.c                   |  1 -
-> >  drivers/iio/light/si1145.c                    |  1 -
-> >  drivers/iio/light/st_uvis25_core.c            |  1 -
-> >  drivers/iio/light/vcnl4000.c                  |  1 -
-> >  drivers/iio/light/vcnl4035.c                  |  1 -
-> >  drivers/iio/magnetometer/bmc150_magn.c        |  1 -
-> >  drivers/iio/magnetometer/rm3100-core.c        |  1 -
-> >  drivers/iio/potentiostat/lmp91000.c           |  3 +-
-> >  drivers/iio/pressure/zpa2326.c                |  1 -
-> >  drivers/iio/proximity/as3935.c                |  1 -
-> >  drivers/iio/proximity/sx9310.c                |  1 -
-> >  drivers/iio/proximity/sx9500.c                |  1 -
-> >  drivers/iio/trigger/iio-trig-hrtimer.c        |  2 +-
-> >  drivers/iio/trigger/iio-trig-interrupt.c      |  2 +-
-> >  drivers/iio/trigger/iio-trig-loop.c           |  2 +-
-> >  drivers/iio/trigger/iio-trig-sysfs.c          |  3 +-
-> >  include/linux/iio/iio.h                       |  2 +-
-> >  include/linux/iio/trigger.h                   |  3 +-
-> >  49 files changed, 42 insertions(+), 81 deletions(-)
-> >
-> > --
-> > 2.30.1.766.gb4fecdf3b7-goog
+> Thanks,
+> Guenter
+> 
+> > ---
+> > ChangeLog v3->v4:
+> > - Split out the new iio_read_channel_processed_scale()
+> >   API addition to a separate patch.
+> > - My suggestion is to apply both patches to the hwmon
+> >   tree.
+> > ChangeLog v2->v3:
+> > - After discussion about v2 we concludes that
+> >   iio_read_channel_processed() could loose precision
+> >   so we introduce a new API to read processed and
+> >   scale.
+> > - Include a link to the v2 discussion for reference.
+> > - For ease of applying to the hwmon tree, keep it all
+> >   in one patch.
+> > - This needs Jonathans ACK to be merged through hwmon.
+> > ChangeLog v1->v2:
+> > - Fix the patch to multiply the processed value by
+> >   1000 to get to microvolts from millivolts.
+> > - Fix up the confusion in the commit message.
+> > - Drop pointless comments about the code, we keep the
+> >   original code path around if processed reads don't
+> >   work, nothing bad with that.
+> > ---
+> >  drivers/hwmon/ntc_thermistor.c | 27 ++++++++++++++++++---------
+> >  1 file changed, 18 insertions(+), 9 deletions(-)
+> > 
+> > diff --git a/drivers/hwmon/ntc_thermistor.c b/drivers/hwmon/ntc_thermistor.c
+> > index 3aad62a0e661..8587189c7f15 100644
+> > --- a/drivers/hwmon/ntc_thermistor.c
+> > +++ b/drivers/hwmon/ntc_thermistor.c
+> > @@ -326,18 +326,27 @@ struct ntc_data {
+> >  static int ntc_adc_iio_read(struct ntc_thermistor_platform_data *pdata)
+> >  {
+> >  	struct iio_channel *channel = pdata->chan;
+> > -	int raw, uv, ret;
+> > +	int uv, ret;
 > >  
-> 
-> 
+> > -	ret = iio_read_channel_raw(channel, &raw);
+> > +	ret = iio_read_channel_processed_scale(channel, &uv, 1000);
+> >  	if (ret < 0) {
+> > -		pr_err("read channel() error: %d\n", ret);
+> > -		return ret;
+> > -	}
+> > +		int raw;
+> >  
+> > -	ret = iio_convert_raw_to_processed(channel, raw, &uv, 1000);
+> > -	if (ret < 0) {
+> > -		/* Assume 12 bit ADC with vref at pullup_uv */
+> > -		uv = (pdata->pullup_uv * (s64)raw) >> 12;
+> > +		/*
+> > +		 * This fallback uses a raw read and then
+> > +		 * assumes the ADC is 12 bits, scaling with
+> > +		 * a factor 1000 to get to microvolts.
+> > +		 */
+> > +		ret = iio_read_channel_raw(channel, &raw);
+> > +		if (ret < 0) {
+> > +			pr_err("read channel() error: %d\n", ret);
+> > +			return ret;
+> > +		}
+> > +		ret = iio_convert_raw_to_processed(channel, raw, &uv, 1000);
+> > +		if (ret < 0) {
+> > +			/* Assume 12 bit ADC with vref at pullup_uv */
+> > +			uv = (pdata->pullup_uv * (s64)raw) >> 12;
+> > +		}
+> >  	}
+> >  
+> >  	return uv;
+> > -- 
+> > 2.29.2
+> >   
 

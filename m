@@ -2,41 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C41A1339EB5
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Mar 2021 15:58:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 163AA339EC9
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Mar 2021 16:08:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232999AbhCMO5i (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 13 Mar 2021 09:57:38 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58954 "EHLO mail.kernel.org"
+        id S233486AbhCMPHn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 13 Mar 2021 10:07:43 -0500
+Received: from mail.kernel.org ([198.145.29.99]:60046 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229615AbhCMO5J (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 13 Mar 2021 09:57:09 -0500
+        id S233446AbhCMPH0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 13 Mar 2021 10:07:26 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B8CC464F14;
-        Sat, 13 Mar 2021 14:57:07 +0000 (UTC)
-Date:   Sat, 13 Mar 2021 14:57:04 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 484C464F18;
+        Sat, 13 Mar 2021 15:07:25 +0000 (UTC)
+Date:   Sat, 13 Mar 2021 15:07:22 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Gwendal Grignou <gwendal@chromium.org>
-Cc:     Stephen Boyd <swboyd@chromium.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Subject: Re: [PATCH v6 3/3] iio: proximity: Add a ChromeOS EC MKBP proximity
- driver
-Message-ID: <20210313145704.46775626@archlinux>
-In-Reply-To: <CAPUE2uu90ySZu6iyanakBZ+Oy-1YSTaHwBaeZdnUxK3ncW9BZA@mail.gmail.com>
-References: <20210211024601.1963379-1-swboyd@chromium.org>
-        <20210211024601.1963379-4-swboyd@chromium.org>
-        <20210214124809.4abfa363@archlinux>
-        <161333519805.1254594.18000613822693540497@swboyd.mtv.corp.google.com>
-        <20210221155314.56f55e85@archlinux>
-        <CAPUE2uu90ySZu6iyanakBZ+Oy-1YSTaHwBaeZdnUxK3ncW9BZA@mail.gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Subject: Re: [PATCH v1 1/1] iio: chemical: bmp680: Drop unneeded explicit
+ castings
+Message-ID: <20210313150722.6eb0fec6@archlinux>
+In-Reply-To: <20210312134349.3472-1-andriy.shevchenko@linux.intel.com>
+References: <20210312134349.3472-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -45,63 +35,47 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 12 Mar 2021 13:23:35 -0800
-Gwendal Grignou <gwendal@chromium.org> wrote:
+On Fri, 12 Mar 2021 15:43:49 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> On Sun, Feb 21, 2021 at 7:53 AM Jonathan Cameron <jic23@kernel.org> wrote:
-> >
-> > On Sun, 14 Feb 2021 12:39:58 -0800
-> > Stephen Boyd <swboyd@chromium.org> wrote:
-> >  
-> > > Quoting Jonathan Cameron (2021-02-14 04:48:09)  
-> > > > On Wed, 10 Feb 2021 18:46:01 -0800
-> > > > Stephen Boyd <swboyd@chromium.org> wrote:
-> > > >  
-> > > > > Add support for a ChromeOS EC proximity driver that exposes a "front"
-> > > > > proximity sensor via the IIO subsystem. The EC decides when front
-> > > > > proximity is near and sets an MKBP switch 'EC_MKBP_FRONT_PROXIMITY' to
-> > > > > notify the kernel of proximity. Similarly, when proximity detects
-> > > > > something far away it sets the switch bit to 0. For now this driver
-> > > > > exposes a single sensor, but it could be expanded in the future via more
-> > > > > MKBP bits if desired.
-> > > > >
-> > > > > Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> > > > > Cc: Benson Leung <bleung@chromium.org>
-> > > > > Cc: Guenter Roeck <groeck@chromium.org>
-> > > > > Cc: Douglas Anderson <dianders@chromium.org>
-> > > > > Cc: Gwendal Grignou <gwendal@chromium.org>
-> > > > > Reviewed-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
-> > > > > Signed-off-by: Stephen Boyd <swboyd@chromium.org>  
-> > > >
-> > > > I'm fine with this, but want to leave a little time for others to take
-> > > > one last look.  We've missed the coming merge window now anyway.
-> > > >
-> > > > If I seem to have forgotten this in a couple of weeks, feel free to
-> > > > give me a bump.
-> > > >  
-> > >
-> > > Ok no problem. Gwendal had some comments on v5 that may be applicable
-> > > here too but I think they mostly mean that the resume handler may not be
-> > > needed if cros ec is fixed. Having the resume handler shouldn't hurt
-> > > though unless I missed something. Gwendal?  
-> >
-> > @Gwendal, could you take a quick glance at this, or alternatively let
-> > us know if you need more time to get to it.  
-> It will work as is.
+> In few places the unnecessary explicit castings are being used.
+> Drop them for good.
 > 
-> Reviewed-by: Gwendal Grignou <gwendal@chromium.org>
-Applied to the togreg branch of iio.git.  My local build test highlighted
-a much older kernel-doc naming issue so I've sent out a patch to tidy that
-up whilst we are here.
-
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Applied.
 Thanks,
-
-Jonathan
-
-> >
-> > Thanks,
-> >
-> > Jonathan
-> >
-> >  
+J
+> ---
+>  drivers/iio/chemical/bme680_i2c.c | 3 +--
+>  drivers/iio/chemical/bme680_spi.c | 3 +--
+>  2 files changed, 2 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/iio/chemical/bme680_i2c.c b/drivers/iio/chemical/bme680_i2c.c
+> index de9c9e3d23ea..29c0dfa4702b 100644
+> --- a/drivers/iio/chemical/bme680_i2c.c
+> +++ b/drivers/iio/chemical/bme680_i2c.c
+> @@ -26,8 +26,7 @@ static int bme680_i2c_probe(struct i2c_client *client,
+>  
+>  	regmap = devm_regmap_init_i2c(client, &bme680_regmap_config);
+>  	if (IS_ERR(regmap)) {
+> -		dev_err(&client->dev, "Failed to register i2c regmap %d\n",
+> -				(int)PTR_ERR(regmap));
+> +		dev_err(&client->dev, "Failed to register i2c regmap %ld\n", PTR_ERR(regmap));
+>  		return PTR_ERR(regmap);
+>  	}
+>  
+> diff --git a/drivers/iio/chemical/bme680_spi.c b/drivers/iio/chemical/bme680_spi.c
+> index 3b838068a7e4..6f56ad48cc40 100644
+> --- a/drivers/iio/chemical/bme680_spi.c
+> +++ b/drivers/iio/chemical/bme680_spi.c
+> @@ -132,8 +132,7 @@ static int bme680_spi_probe(struct spi_device *spi)
+>  	regmap = devm_regmap_init(&spi->dev, &bme680_regmap_bus,
+>  				  bus_context, &bme680_regmap_config);
+>  	if (IS_ERR(regmap)) {
+> -		dev_err(&spi->dev, "Failed to register spi regmap %d\n",
+> -				(int)PTR_ERR(regmap));
+> +		dev_err(&spi->dev, "Failed to register spi regmap %ld\n", PTR_ERR(regmap));
+>  		return PTR_ERR(regmap);
+>  	}
+>  
 

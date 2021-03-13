@@ -2,30 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D64133A048
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Mar 2021 20:16:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 598B733A04E
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Mar 2021 20:22:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234181AbhCMTQM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 13 Mar 2021 14:16:12 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44478 "EHLO mail.kernel.org"
+        id S234385AbhCMTV6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 13 Mar 2021 14:21:58 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45670 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234182AbhCMTQA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 13 Mar 2021 14:16:00 -0500
+        id S231329AbhCMTVz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 13 Mar 2021 14:21:55 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9B47864ECE;
-        Sat, 13 Mar 2021 19:15:58 +0000 (UTC)
-Date:   Sat, 13 Mar 2021 19:15:54 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id CD2A864ED1;
+        Sat, 13 Mar 2021 19:21:53 +0000 (UTC)
+Date:   Sat, 13 Mar 2021 19:21:50 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Joe Sandom <joe.g.sandom@gmail.com>
+To:     Alexandru Ardelean <ardeleanalex@gmail.com>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v5] Added AMS tsl2591 driver implementation
-Message-ID: <20210313191554.3e8174d3@archlinux>
-In-Reply-To: <20210309011715.23245-1-joe.g.sandom@gmail.com>
-References: <20210309011715.23245-1-joe.g.sandom@gmail.com>
+        "to: Enrico Weigelt, metux IT consult" <info@metux.net>,
+        Mugil Raj <dmugil2000@gmail.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Utkarsh Verma <utkarshverma294@gmail.com>
+Subject: Re: GSoC IIO project: Mugil
+Message-ID: <20210313192150.74c0a91b@archlinux>
+In-Reply-To: <CA+U=DspeDi0uX3JYBt1Q0pCHhQ6bszg8siUPQ9HE4CJi7rpG_A@mail.gmail.com>
+References: <CAOgtOjMwnwsiXd8rPeGBBTVkZUeabQ5nLtPts2RQDDMc-TDgKA@mail.gmail.com>
+        <CA+U=DsqAcmQq2qPMfxVcuwLWJefus_qyM1wG+ioGyG8bej88pw@mail.gmail.com>
+        <20210313152834.GA99671@mugil-Nitro-AN515-52>
+        <CA+U=DspeDi0uX3JYBt1Q0pCHhQ6bszg8siUPQ9HE4CJi7rpG_A@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -34,1343 +39,130 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue,  9 Mar 2021 01:17:15 +0000
-Joe Sandom <joe.g.sandom@gmail.com> wrote:
+On Sat, 13 Mar 2021 20:43:33 +0200
+Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
 
-> Driver implementation for AMS/TAOS tsl2591 ambient light sensor.
+> On Sat, Mar 13, 2021 at 5:28 PM Mugilraj <dmugil2000@gmail.com> wrote:
+> >
+> > On Thu, Mar 11, 2021 at 10:58:53AM +0200, Alexandru Ardelean wrote:  
+> > > On Thu, Mar 11, 2021 at 9:03 AM Mugil Raj <dmugil2000@gmail.com> wrote:  
+> > > >
+> > > > Hi,
+> > > > This is Mugilraj, an undergrad at NIT Trichy, India. I'm applying to
+> > > > GSoC'21 for the project IIO driver. So, I need help from you guys with
+> > > > the application process and finding the device to develop a driver.
+> > > > I've done few exercises on patch submissions and completed a Linux
+> > > > Foundations course, "A beginners guide to Linux kernel development
+> > > > (LFD103)". I found this "https://kernelnewbies.org/IIO_tasks" task for
+> > > > beginners, and now I'm doing that also If anyone suggests some fixes
+> > > > to develop, that would be helpful for me.
+> > > >  
+> > >
+> > >
+> > > hey,
+> > >
+> > > i posted some ideas here:
+> > > https://lore.kernel.org/linux-iio/CA+U=Dsp98caW89g9FbsV-+KQ-NjyOqd+KSkO+aaFp4qBb-hpMg@mail.gmail.com/T/#md6c49f2e457d66d922d3d22f1f6fdb54971e6b8a
+> > >
+> > > [a quick copy + paste from that email]
+> > >
+> > > One thing I've always wanted to do, is to convert the entire IIO
+> > > subsystem to devm_ variants.
+> > > Essentially getting rid of the iio_device_unregister() function in
+> > > favor of using devm_iio_device_unregister() and similar.
+> > >
+> > > There's about ~217 uses of this function.
+> > > The more complicated one is in the 'drivers/platform/x86/toshiba_acpi.c'
+> > > I think reworking the Toshiba ACPI driver would also be interesting,
+> > > but it is some work.
+> > >
+> > > Now, converting everything to devm_ variants can be considered a bit
+> > > of an obsession [by some people].
+> > > But I sometimes find potential memory leaks by doing this conversion.
+> > > And chances are that we may never be able to fully convert the IIO API
+> > > to be devm_ variant-only.
+> > > But it is an interesting process [for me], just the cleanup itself.  
+> > I've gone through docs and I hade a dout on devm_iio_device_register().
+> > If we use this function it  will automatically unregistered on driver
+> > detach. Then what is the use of devm_iio_device_unregister().  
 > 
-> This driver supports configuration via device tree and sysfs.
-> Supported channels for raw infrared light intensity,
-> raw combined light intensity and illuminance in lux.
-> The driver additionally supports iio events on lower and
-> upper thresholds.
+> I think you forgot to hit reply all.
+> So, devm_iio_device_unregister() should no longer exist in a recent kernel.
+> So, the docs you are reading are from an older kernel.
+> I think 5.7 is the kernel where some IIO devm_ functions were removed.
 > 
-> This is a very-high sensitivity light-to-digital converter that
-> transforms light intensity into a digital signal.
+> But this is a general topic about why should there be a devm_init()
+> and a devm_uninit()
+> Especially if the resource allocated with devm_init() is known to be
+> automatically free'd at driver unload.
 > 
-> Datasheet: https://ams.com/tsl25911#tab/documents
-> 
-> Signed-off-by: Joe Sandom <joe.g.sandom@gmail.com>
+> The reasons why these existed in IIO [and other places] is because of
+> the classic C model of "you write an allocation function, then you
+> also write a deallocation function".
 
-A few minor details inline.  Very nearly good to go as far as
-I am concerned.
+I can absolutely confirm that was how this particular function
+came to be!  I wasn't thinking at the time. Oops ;)
+
+> But if you use functions like devm_iio_device_unregister() then it's
+> likely that the driver has some bad design.
+> 
+> Now there are some cases like  devm_k***alloc() and devm_kfree().
+> In these cases, you sometimes need to free a resource during driver
+> operation because it is allocated with devm_kalloc(), but you need to
+> change the size of the allocated memory block.
+> Example:
+> 
+> resoure_array = devm_kcalloc(n, m);
+> devm_kfree(resoure_array)
+> resoure_array = devm_kcalloc(n + 1, m);
+> 
+> If you were to use kfree() it would have caused a crash during driver
+> unload, because it would try to free an already free'd block.
+> Recently, a devm_krealloc() got introduced for this [in August 2020],
+> but you will see that devm_kfree() is quite used in the kernel.
+> I suspect it may be the most used  devm_<release_resource>() function
+> in the kernel (probably because there was no devm_krealloc() before),
+> because you need to do this run-time memory management for some driver
+> logic, but you also want the neatness of it being unloaded at driver
+> unload.
+> 
+> >
+> > It may be a silly question sorry:).  
+> 
+> not a silly question;
+> this is all kernel API stuff, which isn't obvious in the beginning
+
+This particular question focuses on one of the most common things people
+do wrong when first writing a driver (unnecessary cleanup of managed
+functions)  I have to explain this at least 10 times a year!
+
+If you spread out beyond IIO over time you'll find they don't all
+start with devm_ for example pcim_ which is much more subtle to spot.
+I'm glad we didn't go with iiom_* :)
 
 Jonathan
 
-
-> ---
 > 
-> Changes in v5:
-> - Added counterpart macro for integration time in ms to field value
-> - Tidied up some of the GENMASK usage
-> - Removed defines for ALS persist cycle literals, placed inline instead
-> - Removed unnecessary array size check & break in tsl2591_als_time_to_fval()
-> - Removed unnecessary casting and replaced with get_unaligned_le16() in
->   tsl2591_read_channel_data()
-> - Cleaned up some return code checks on i2c calls
-> - Explicit return codes rather than relying on default value at before
->   entering switch statements.
-> - Combine exit paths on error labels - following proper kernel idiom
-> - Cleaned up managed exit path for pm runtime
-> - Using reverse xmas tree convention for local vars in functions
-> - Corrected datasheet tag
-> 
-> Acknowledgements:
-> - Thanks to Jonathan and Andy for the constructive feedback!
-> 
-> NOTE:
-> Rob has reviewed the binding document and no changes required it
-> seems. Not sure what the best practice/convention is here; is [PATCH v5]
-> sufficient or do I still need to include the series number despite
-> there being no updates to the binding? please advise. Thank you!
-
-Always send out the full series and increase version number for all patches.
-For those that haven't changed, just state that in the change log.
-Remember to pick up tags from reviewers though for new versions.
-
-When everyone is happy I'll use the b4 utility which pulls the latest
-patch series down from lore.kernel.org and figures out any new tags
-for that last version.  It doesn't go scraping earlier versions for
-tags though.
-
-I might just have picked it up except for the question over spurious
-interrupt handling + giving Andy more time for another look if he
-wants to take one.  We are fairly early in the cycle still though
-so lets do this the slow and steady way of having a v6.
-
-> 
->  drivers/iio/light/Kconfig   |   11 +
->  drivers/iio/light/Makefile  |    1 +
->  drivers/iio/light/tsl2591.c | 1193 +++++++++++++++++++++++++++++++++++
->  3 files changed, 1205 insertions(+)
->  create mode 100644 drivers/iio/light/tsl2591.c
-> 
-> diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
-> index 33ad4dd0b5c7..6a69a9a3577a 100644
-> --- a/drivers/iio/light/Kconfig
-> +++ b/drivers/iio/light/Kconfig
-> @@ -501,6 +501,17 @@ config TSL2583
->  	  Provides support for the TAOS tsl2580, tsl2581 and tsl2583 devices.
->  	  Access ALS data via iio, sysfs.
->  
-> +config TSL2591
-> +        tristate "TAOS TSL2591 ambient light sensor"
-> +        depends on I2C
-> +        help
-> +          Select Y here for support of the AMS/TAOS TSL2591 ambient light sensor,
-> +          featuring channels for combined visible + IR intensity and lux illuminance.
-> +          Access data via iio and sysfs. Supports iio_events.
-> +
-> +          To compile this driver as a module, select M: the
-> +          module will be called tsl2591.
-> +
->  config TSL2772
->  	tristate "TAOS TSL/TMD2x71 and TSL/TMD2x72 Family of light and proximity sensors"
->  	depends on I2C
-> diff --git a/drivers/iio/light/Makefile b/drivers/iio/light/Makefile
-> index ea376deaca54..d10912faf964 100644
-> --- a/drivers/iio/light/Makefile
-> +++ b/drivers/iio/light/Makefile
-> @@ -48,6 +48,7 @@ obj-$(CONFIG_ST_UVIS25_SPI)	+= st_uvis25_spi.o
->  obj-$(CONFIG_TCS3414)		+= tcs3414.o
->  obj-$(CONFIG_TCS3472)		+= tcs3472.o
->  obj-$(CONFIG_TSL2583)		+= tsl2583.o
-> +obj-$(CONFIG_TSL2591)		+= tsl2591.o
->  obj-$(CONFIG_TSL2772)		+= tsl2772.o
->  obj-$(CONFIG_TSL4531)		+= tsl4531.o
->  obj-$(CONFIG_US5182D)		+= us5182d.o
-> diff --git a/drivers/iio/light/tsl2591.c b/drivers/iio/light/tsl2591.c
-> new file mode 100644
-> index 000000000000..ddecb32e206d
-> --- /dev/null
-> +++ b/drivers/iio/light/tsl2591.c
-> @@ -0,0 +1,1193 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Copyright (C) 2020 Joe Sandom <joe.g.sandom@gmail.com>
-> + *
-> + * Datasheet: https://ams.com/tsl25911#tab/documents
-> + *
-> + * Device driver for the TAOS TSL2591. This is a very-high sensitivity
-> + * light-to-digital converter that transforms light intensity into a digital
-> + * signal.
-> + */
-> +
-> +#include <asm/unaligned.h>
-> +#include <linux/bitfield.h>
-> +#include <linux/debugfs.h>
-> +#include <linux/delay.h>
-> +#include <linux/i2c.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-> +#include <linux/mutex.h>
-> +#include <linux/pm_runtime.h>
-> +
-> +#include <linux/iio/events.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/sysfs.h>
-> +
-> +/* ADC integration time, field value to time in ms*/
-> +#define TSL2591_FVAL_TO_ATIME(x) (((x) + 1) * 100)
-> +/* ADC integration time, time in ms to field value */
-> +#define TSL2591_ATIME_TO_FVAL(x) (((x) / 100) - 1)
-> +
-> +/* TSL2591 register set */
-> +#define TSL2591_ENABLE      0x00
-> +#define TSL2591_CONTROL     0x01
-> +#define TSL2591_AILTL       0x04
-> +#define TSL2591_AILTH       0x05
-> +#define TSL2591_AIHTL       0x06
-> +#define TSL2591_AIHTH       0x07
-> +#define TSL2591_NP_AILTL    0x08
-> +#define TSL2591_NP_AILTH    0x09
-> +#define TSL2591_NP_AIHTL    0x0A
-> +#define TSL2591_NP_AIHTH    0x0B
-> +#define TSL2591_PERSIST     0x0C
-> +#define TSL2591_PACKAGE_ID  0x11
-> +#define TSL2591_DEVICE_ID   0x12
-> +#define TSL2591_STATUS      0x13
-> +#define TSL2591_C0_DATAL    0x14
-> +#define TSL2591_C0_DATAH    0x15
-> +#define TSL2591_C1_DATAL    0x16
-> +#define TSL2591_C1_DATAH    0x17
-> +
-> +/* TSL2591 command register definitions */
-> +#define TSL2591_CMD_NOP             (BIT(5) | BIT(7))
-> +#define TSL2591_CMD_SF              GENMASK(7, 5)
-> +#define TSL2591_CMD_SF_INTSET       (BIT(2) | TSL2591_CMD_SF)
-> +#define TSL2591_CMD_SF_CALS_I       (BIT(0) | BIT(2) | TSL2591_CMD_SF)
-> +#define TSL2591_CMD_SF_CALS_NPI     (GENMASK(2, 0) | TSL2591_CMD_SF)
-> +#define TSL2591_CMD_SF_CNP_ALSI     (BIT(1) | BIT(3) | TSL2591_CMD_SF)
-> +
-> +/* TSL2591 enable register definitions */
-> +#define TSL2591_PWR_ON              BIT(0)
-> +#define TSL2591_PWR_OFF             (0 << 0)
-> +#define TSL2591_ENABLE_ALS          BIT(1)
-> +#define TSL2591_ENABLE_ALS_INT      BIT(4)
-> +#define TSL2591_ENABLE_SLEEP_INT    BIT(6)
-> +#define TSL2591_ENABLE_NP_INT       BIT(7)
-> +
-> +/* TSL2591 control register definitions */
-> +#define TSL2591_CTRL_ALS_INTEGRATION_100MS  (0 << 0)
-> +#define TSL2591_CTRL_ALS_INTEGRATION_200MS  BIT(0)
-> +#define TSL2591_CTRL_ALS_INTEGRATION_300MS  BIT(1)
-> +#define TSL2591_CTRL_ALS_INTEGRATION_400MS  GENMASK(1, 0)
-> +#define TSL2591_CTRL_ALS_INTEGRATION_500MS  BIT(2)
-> +#define TSL2591_CTRL_ALS_INTEGRATION_600MS  (BIT(0) | BIT(2))
-> +#define TSL2591_CTRL_ALS_LOW_GAIN           (0 << 0)
-> +#define TSL2591_CTRL_ALS_MED_GAIN           BIT(4)
-> +#define TSL2591_CTRL_ALS_HIGH_GAIN          BIT(5)
-> +#define TSL2591_CTRL_ALS_MAX_GAIN           GENMASK(5, 4)
-> +#define TSL2591_CTRL_SYS_RESET              BIT(7)
-> +
-> +/* TSL2591 persist register definitions */
-> +#define TSL2591_PRST_ALS_INT_CYCLE_0        (0 << 0)
-> +#define TSL2591_PRST_ALS_INT_CYCLE_ANY      BIT(0)
-> +#define TSL2591_PRST_ALS_INT_CYCLE_2        BIT(1)
-> +#define TSL2591_PRST_ALS_INT_CYCLE_3        GENMASK(1, 0)
-> +#define TSL2591_PRST_ALS_INT_CYCLE_5        BIT(2)
-> +#define TSL2591_PRST_ALS_INT_CYCLE_10       (BIT(0) | BIT(2))
-> +#define TSL2591_PRST_ALS_INT_CYCLE_15       GENMASK(2, 1)
-> +#define TSL2591_PRST_ALS_INT_CYCLE_20       GENMASK(2, 0)
-> +#define TSL2591_PRST_ALS_INT_CYCLE_25       BIT(3)
-> +#define TSL2591_PRST_ALS_INT_CYCLE_30       (BIT(0) | BIT(3))
-> +#define TSL2591_PRST_ALS_INT_CYCLE_35       (BIT(1) | BIT(3))
-> +#define TSL2591_PRST_ALS_INT_CYCLE_40       (GENMASK(1, 0) | BIT(3))
-> +#define TSL2591_PRST_ALS_INT_CYCLE_45       GENMASK(3, 2)
-> +#define TSL2591_PRST_ALS_INT_CYCLE_50       (BIT(0) | GENMASK(3, 2))
-> +#define TSL2591_PRST_ALS_INT_CYCLE_55       GENMASK(3, 1)
-> +#define TSL2591_PRST_ALS_INT_CYCLE_60       GENMASK(3, 0)
-> +#define TSL2591_PRST_ALS_INT_CYCLE_MAX      TSL2591_PRST_ALS_INT_CYCLE_60
-> +
-> +/* TSL2591 PID register mask */
-> +#define TSL2591_PACKAGE_ID_MASK    GENMASK(5, 4)
-> +
-> +/* TSL2591 ID register mask */
-> +#define TSL2591_DEVICE_ID_MASK     GENMASK(7, 0)
-> +
-> +/* TSL2591 status register masks */
-> +#define TSL2591_STS_ALS_VALID_MASK   BIT(0)
-> +#define TSL2591_STS_ALS_INT_MASK     BIT(4)
-> +#define TSL2591_STS_NPERS_INT_MASK   BIT(5)
-> +#define TSL2591_STS_VAL_HIGH_MASK    BIT(0)
-> +
-> +/* TSL2591 constant values */
-> +#define TSL2591_PACKAGE_ID_VAL  0x00
-> +#define TSL2591_DEVICE_ID_VAL   0x50
-> +
-> +/* Power off suspend delay time MS */
-> +#define TSL2591_POWER_OFF_DELAY_MS   2000
-> +
-> +/* TSL2591 default values */
-> +#define TSL2591_DEFAULT_ALS_INT_TIME          TSL2591_CTRL_ALS_INTEGRATION_300MS
-> +#define TSL2591_DEFAULT_ALS_GAIN              TSL2591_CTRL_ALS_MED_GAIN
-> +#define TSL2591_DEFAULT_ALS_PERSIST           TSL2591_PRST_ALS_INT_CYCLE_ANY
-> +#define TSL2591_DEFAULT_ALS_LOWER_THRESH      100
-> +#define TSL2591_DEFAULT_ALS_UPPER_THRESH      1500
-> +
-> +/* TSL2591 number of data registers */
-> +#define TSL2591_NUM_DATA_REGISTERS     4
-> +
-> +/* TSL2591 number of valid status reads on ADC complete */
-> +#define TSL2591_ALS_STS_VALID_COUNT    10
-> +
-> +/* TSL2591 maximum values */
-> +#define TSL2591_MAX_ALS_INT_TIME_MS    600
-> +#define TSL2591_ALS_MAX_VALUE	       (BIT(16) - 1)
-> +
-> +/*
-> + * LUX calculations;
-> + * AGAIN values from Adafruits TSL2591 Arduino library
-> + * https://github.com/adafruit/Adafruit_TSL2591_Library
-> + */
-> +#define TSL2591_CTRL_ALS_LOW_GAIN_MULTIPLIER   1
-> +#define TSL2591_CTRL_ALS_MED_GAIN_MULTIPLIER   25
-> +#define TSL2591_CTRL_ALS_HIGH_GAIN_MULTIPLIER  428
-> +#define TSL2591_CTRL_ALS_MAX_GAIN_MULTIPLIER   9876
-> +#define TSL2591_LUX_COEFFICIENT                408
-> +
-> +struct tsl2591_als_settings {
-> +	u16 als_lower_thresh;
-> +	u16 als_upper_thresh;
-> +	u8 als_int_time;
-> +	u8 als_persist;
-> +	u8 als_gain;
-> +};
-> +
-> +struct tsl2591_chip {
-> +	struct tsl2591_als_settings als_settings;
-> +	struct i2c_client *client;
-> +	/*
-> +	 * Keep als_settings in sync with hardware state
-> +	 * and ensure multiple readers are serialized.
-> +	 */
-> +	struct mutex als_mutex;
-> +	bool events_enabled;
-> +};
-> +
-> +/*
-> + * Period table is ALS persist cycle x integration time setting
-> + * Integration times: 100ms, 200ms, 300ms, 400ms, 500ms, 600ms
-> + * ALS cycles: 1, 2, 3, 5, 10, 20, 25, 30, 35, 40, 45, 50, 55, 60
-> + */
-> +static const char * const tsl2591_als_period_list[] = {
-> +	"0.1 0.2 0.3 0.5 1.0 2.0 2.5 3.0 3.5 4.0 4.5 5.0 5.5 6.0",
-> +	"0.2 0.4 0.6 1.0 2.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0 11.0 12.0",
-> +	"0.3 0.6 0.9 1.5 3.0 6.0 7.5 9.0 10.5 12.0 13.5 15.0 16.5 18.0",
-> +	"0.4 0.8 1.2 2.0 4.0 8.0 10.0 12.0 14.0 16.0 18.0 20.0 22.0 24.0",
-> +	"0.5 1.0 1.5 2.5 5.0 10.0 12.5 15.0 17.5 20.0 22.5 25.0 27.5 30.0",
-> +	"0.6 1.2 1.8 3.0 6.0 12.0 15.0 18.0 21.0 24.0 27.0 30.0 33.0 36.0",
-> +};
-> +
-> +static const int tsl2591_int_time_available[] = {
-> +	100, 200, 300, 400, 500, 600,
-> +};
-> +
-> +static const int tsl2591_calibscale_available[] = {
-> +	1, 25, 428, 9876,
-> +};
-> +
-> +static int tsl2591_gain_to_multiplier(const u8 als_gain)
-> +{
-> +	switch (als_gain) {
-> +	case TSL2591_CTRL_ALS_LOW_GAIN:
-> +		return TSL2591_CTRL_ALS_LOW_GAIN_MULTIPLIER;
-> +	case TSL2591_CTRL_ALS_MED_GAIN:
-> +		return TSL2591_CTRL_ALS_MED_GAIN_MULTIPLIER;
-> +	case TSL2591_CTRL_ALS_HIGH_GAIN:
-> +		return TSL2591_CTRL_ALS_HIGH_GAIN_MULTIPLIER;
-> +	case TSL2591_CTRL_ALS_MAX_GAIN:
-> +		return TSL2591_CTRL_ALS_MAX_GAIN_MULTIPLIER;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static u8 tsl2591_multiplier_to_gain(const u32 multiplier)
-> +{
-> +	switch (multiplier) {
-> +	case TSL2591_CTRL_ALS_LOW_GAIN_MULTIPLIER:
-> +		return TSL2591_CTRL_ALS_LOW_GAIN;
-> +	case TSL2591_CTRL_ALS_MED_GAIN_MULTIPLIER:
-> +		return TSL2591_CTRL_ALS_MED_GAIN;
-> +	case TSL2591_CTRL_ALS_HIGH_GAIN_MULTIPLIER:
-> +		return TSL2591_CTRL_ALS_HIGH_GAIN;
-> +	case TSL2591_CTRL_ALS_MAX_GAIN_MULTIPLIER:
-> +		return TSL2591_CTRL_ALS_MAX_GAIN;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int tsl2591_persist_cycle_to_lit(const u8 als_persist)
-> +{
-> +	switch (als_persist) {
-> +	case TSL2591_PRST_ALS_INT_CYCLE_ANY:
-> +		return 1;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_2:
-> +		return 2;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_3:
-> +		return 3;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_5:
-> +		return 5;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_10:
-> +		return 10;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_15:
-> +		return 15;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_20:
-> +		return 20;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_25:
-> +		return 25;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_30:
-> +		return 30;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_35:
-> +		return 35;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_40:
-> +		return 40;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_45:
-> +		return 45;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_50:
-> +		return 50;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_55:
-> +		return 55;
-> +	case TSL2591_PRST_ALS_INT_CYCLE_60:
-> +		return 60;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int tsl2591_persist_lit_to_cycle(const u8 als_persist)
-> +{
-> +	switch (als_persist) {
-> +	case 1:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_ANY;
-> +	case 2:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_2;
-> +	case 3:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_3;
-> +	case 5:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_5;
-> +	case 10:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_10;
-> +	case 15:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_15;
-> +	case 20:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_20;
-> +	case 25:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_25;
-> +	case 30:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_30;
-> +	case 35:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_35;
-> +	case 40:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_40;
-> +	case 45:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_45;
-> +	case 50:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_50;
-> +	case 55:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_55;
-> +	case 60:
-> +		return TSL2591_PRST_ALS_INT_CYCLE_60;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int tsl2591_compatible_int_time(struct tsl2591_chip *chip,
-> +				       const u32 als_integration_time)
-> +{
-> +	switch (als_integration_time) {
-> +	case TSL2591_CTRL_ALS_INTEGRATION_100MS:
-> +	case TSL2591_CTRL_ALS_INTEGRATION_200MS:
-> +	case TSL2591_CTRL_ALS_INTEGRATION_300MS:
-> +	case TSL2591_CTRL_ALS_INTEGRATION_400MS:
-> +	case TSL2591_CTRL_ALS_INTEGRATION_500MS:
-> +	case TSL2591_CTRL_ALS_INTEGRATION_600MS:
-> +		return 0;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int tsl2591_als_time_to_fval(const u32 als_integration_time)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < ARRAY_SIZE(tsl2591_int_time_available); ++i) {
-> +		if (als_integration_time == tsl2591_int_time_available[i])
-> +			return TSL2591_ATIME_TO_FVAL(als_integration_time);
-> +	}
-> +
-> +	return -EINVAL;
-> +}
-> +
-> +static int tsl2591_compatible_gain(struct tsl2591_chip *chip, const u8 als_gain)
-> +{
-> +	switch (als_gain) {
-> +	case TSL2591_CTRL_ALS_LOW_GAIN:
-> +	case TSL2591_CTRL_ALS_MED_GAIN:
-> +	case TSL2591_CTRL_ALS_HIGH_GAIN:
-> +	case TSL2591_CTRL_ALS_MAX_GAIN:
-> +		return 0;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int tsl2591_compatible_als_persist_cycle(struct tsl2591_chip *chip,
-> +						const u32 als_persist)
-> +{
-> +	switch (als_persist) {
-> +	case TSL2591_PRST_ALS_INT_CYCLE_ANY:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_2:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_3:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_5:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_10:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_15:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_20:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_25:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_30:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_35:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_40:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_45:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_50:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_55:
-> +	case TSL2591_PRST_ALS_INT_CYCLE_60:
-> +		return 0;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int tsl2591_wait_adc_complete(struct tsl2591_chip *chip)
-> +{
-> +	struct tsl2591_als_settings settings = chip->als_settings;
-> +	struct i2c_client *client = chip->client;
-> +	int delay;
-> +	int ret;
-> +	int i;
-> +
-> +	delay = TSL2591_FVAL_TO_ATIME(settings.als_int_time);
-> +	if (!delay)
-> +		return -EINVAL;
-> +
-> +	/*
-> +	 * Sleep for ALS integration time to allow enough time
-> +	 * for an ADC read cycle to complete. Check status after
-> +	 * delay for ALS valid.
-> +	 */
-> +	msleep(delay);
-> +
-> +	/* Check for status ALS valid flag for up to 100ms */
-> +	for (i = 0; i < TSL2591_ALS_STS_VALID_COUNT; ++i) {
-> +		ret = i2c_smbus_read_byte_data(client,
-> +					       TSL2591_CMD_NOP | TSL2591_STATUS);
-> +		if (ret < 0) {
-> +			dev_err(&client->dev, "Failed to read register\n");
-> +			return -EINVAL;
-> +		}
-> +		ret = FIELD_GET(TSL2591_STS_ALS_VALID_MASK, ret);
-> +		if (ret == TSL2591_STS_VAL_HIGH_MASK)
-> +			break;
-> +
-> +		if (i == TSL2591_ALS_STS_VALID_COUNT - 1)
-> +			return -ENODATA;
-> +
-> +		usleep_range(9000, 10000);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +/*
-> + * tsl2591_read_channel_data - Reads raw channel data and calculates lux
-> + *
-> + * Formula for lux calculation;
-> + * Derived from Adafruit's TSL2591 library
-> + * Link: https://github.com/adafruit/Adafruit_TSL2591_Library
-> + * Counts Per Lux (CPL) = (ATIME_ms * AGAIN) / LUX DF
-> + * lux = ((C0DATA - C1DATA) * (1 - (C1DATA / C0DATA))) / CPL
-> + *
-> + * Scale values to get more representative value of lux i.e.
-> + * lux = ((C0DATA - C1DATA) * (1000 - ((C1DATA * 1000) / C0DATA))) / CPL
-> + *
-> + * Channel 0 = IR + Visible
-> + * Channel 1 = IR only
-> + */
-> +static int tsl2591_read_channel_data(struct iio_dev *indio_dev,
-> +				     struct iio_chan_spec const *chan,
-> +				     int *val, int *val2)
-> +{
-> +	struct tsl2591_chip *chip = iio_priv(indio_dev);
-> +	struct tsl2591_als_settings *settings = &chip->als_settings;
-> +	struct i2c_client *client = chip->client;
-> +
-> +	u8 als_data[TSL2591_NUM_DATA_REGISTERS];
-> +	int counts_per_lux, int_time_fval, gain_multi, lux;
-> +	u16 als_ch0, als_ch1;
-> +	int ret;
-> +
-> +	ret = tsl2591_wait_adc_complete(chip);
-> +	if (ret < 0) {
-> +		dev_err(&client->dev, "No data available. Err: %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	ret = i2c_smbus_read_i2c_block_data(client,
-> +					    TSL2591_CMD_NOP | TSL2591_C0_DATAL,
-> +					    sizeof(als_data), als_data);
-> +	if (ret < 0) {
-> +		dev_err(&client->dev, "Failed to read data bytes");
-> +			return ret;
-> +	}
-> +
-> +	als_ch0 = get_unaligned_le16(&als_data[0]);
-> +	als_ch1 = get_unaligned_le16(&als_data[2]);
-> +
-> +	switch (chan->type) {
-> +	case IIO_INTENSITY:
-> +		if (chan->channel2 == IIO_MOD_LIGHT_BOTH)
-> +			*val = als_ch0;
-> +		else if (chan->channel2 == IIO_MOD_LIGHT_IR)
-> +			*val = als_ch1;
-> +		else
-> +			return -EINVAL;
-> +		break;
-> +	case IIO_LIGHT:
-> +		gain_multi = tsl2591_gain_to_multiplier(settings->als_gain);
-> +		if (gain_multi < 0) {
-> +			dev_err(&client->dev, "Invalid multiplier");
-> +			return gain_multi;
-> +		}
-> +
-> +		int_time_fval = TSL2591_FVAL_TO_ATIME(settings->als_int_time);
-> +		/* Calculate counts per lux value */
-> +		counts_per_lux = (int_time_fval * gain_multi) / TSL2591_LUX_COEFFICIENT;
-> +
-> +		dev_dbg(&client->dev, "Counts Per Lux: %d\n", counts_per_lux);
-> +
-> +		/* Calculate lux value */
-> +		lux = ((als_ch0 - als_ch1) *
-> +		       (1000 - ((als_ch1 * 1000) / als_ch0))) / counts_per_lux;
-> +
-> +		dev_dbg(&client->dev, "Raw lux calculation: %d\n", lux);
-> +
-> +		/* Divide by 1000 to get real lux value before scaling */
-> +		*val = lux / 1000;
-> +
-> +		/* Get the decimal part of lux reading */
-> +		*val2 = ((lux - (*val * 1000)) * 1000);
-> +
-> +		break;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int tsl2591_set_als_gain_int_time(struct tsl2591_chip *chip)
-> +{
-> +	struct tsl2591_als_settings als_settings = chip->als_settings;
-> +	struct i2c_client *client = chip->client;
-> +	int ret;
-> +
-> +	ret = i2c_smbus_write_byte_data(client,
-> +					TSL2591_CMD_NOP | TSL2591_CONTROL,
-> +					als_settings.als_int_time | als_settings.als_gain);
-> +	if (ret)
-> +		dev_err(&client->dev, "Failed to set als gain & int time\n");
-> +
-> +	return ret;
-> +}
-> +
-> +static int tsl2591_set_als_thresholds(struct tsl2591_chip *chip)
-> +{
-> +	struct tsl2591_als_settings als_settings = chip->als_settings;
-> +	struct i2c_client *client = chip->client;
-> +
-> +	u8 als_lower_l, als_lower_h, als_upper_l, als_upper_h;
-> +	int ret;
-> +
-> +	if (als_settings.als_lower_thresh >= als_settings.als_upper_thresh)
-> +		return -EINVAL;
-> +
-> +	if (als_settings.als_upper_thresh > TSL2591_ALS_MAX_VALUE)
-> +		return -EINVAL;
-> +
-> +	if (als_settings.als_upper_thresh < als_settings.als_lower_thresh)
-> +		return -EINVAL;
-> +
-> +	als_lower_l = (als_settings.als_lower_thresh & 0xFF);
-> +	als_lower_h = ((als_settings.als_lower_thresh >> 8) & 0xFF);
-> +	als_upper_l = (als_settings.als_upper_thresh & 0xFF);
-> +	als_upper_h = ((als_settings.als_upper_thresh >> 8) & 0xFF);
-> +
-> +	ret = i2c_smbus_write_byte_data(client,
-> +					TSL2591_CMD_NOP | TSL2591_AILTL,
-> +					als_lower_l);
-> +	if (ret) {
-> +		dev_err(&client->dev, "Failed to set als lower threshold\n");
-> +		return ret;
-> +	}
-> +
-> +	ret = i2c_smbus_write_byte_data(client,
-> +					TSL2591_CMD_NOP | TSL2591_AILTH,
-> +					als_lower_h);
-> +	if (ret) {
-> +		dev_err(&client->dev, "Failed to set als lower threshold\n");
-> +		return ret;
-> +	}
-> +
-> +	ret = i2c_smbus_write_byte_data(client,
-> +					TSL2591_CMD_NOP | TSL2591_AIHTL,
-> +					als_upper_l);
-> +	if (ret) {
-> +		dev_err(&client->dev, "Failed to set als upper threshold\n");
-> +		return ret;
-> +	}
-> +
-> +	ret = i2c_smbus_write_byte_data(client,
-> +					TSL2591_CMD_NOP | TSL2591_AIHTH,
-> +					als_upper_h);
-> +	if (ret) {
-> +		dev_err(&client->dev, "Failed to set als upper threshold\n");
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int tsl2591_set_als_persist_cycle(struct tsl2591_chip *chip)
-> +{
-> +	struct tsl2591_als_settings als_settings = chip->als_settings;
-> +	struct i2c_client *client = chip->client;
-> +	int ret;
-> +
-> +	ret = i2c_smbus_write_byte_data(client,
-> +					TSL2591_CMD_NOP | TSL2591_PERSIST,
-> +					als_settings.als_persist);
-> +	if (ret)
-> +		dev_err(&client->dev, "Failed to set als persist cycle\n");
-> +
-> +	return ret;
-> +}
-> +
-> +static int tsl2591_set_power_state(struct tsl2591_chip *chip, u8 state)
-> +{
-> +	struct i2c_client *client = chip->client;
-> +	int ret;
-> +
-> +	ret = i2c_smbus_write_byte_data(client,
-> +					TSL2591_CMD_NOP | TSL2591_ENABLE,
-> +					state);
-> +	if (ret)
-> +		dev_err(&client->dev,
-> +			"Failed to set the power state to %#04x\n", state);
-> +
-> +	return ret;
-> +}
-> +
-> +static ssize_t tsl2591_in_illuminance_period_available_show(struct device *dev,
-> +							    struct device_attribute *attr,
-> +							    char *buf)
-> +{
-> +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> +	struct tsl2591_chip *chip = iio_priv(indio_dev);
-> +
-> +	return snprintf(buf, PAGE_SIZE, "%s\n",
-> +		       tsl2591_als_period_list[chip->als_settings.als_int_time]);
-> +}
-> +
-> +static IIO_DEVICE_ATTR_RO(tsl2591_in_illuminance_period_available, 0);
-> +
-> +static struct attribute *tsl2591_event_attrs_ctrl[] = {
-> +	&iio_dev_attr_tsl2591_in_illuminance_period_available.dev_attr.attr,
-> +	NULL
-> +};
-> +
-> +static const struct attribute_group tsl2591_event_attribute_group = {
-> +	.attrs = tsl2591_event_attrs_ctrl,
-> +};
-> +
-> +static const struct iio_event_spec tsl2591_events[] = {
-> +	{
-> +		.type = IIO_EV_TYPE_THRESH,
-> +		.dir = IIO_EV_DIR_RISING,
-> +		.mask_separate = BIT(IIO_EV_INFO_VALUE),
-> +	}, {
-> +		.type = IIO_EV_TYPE_THRESH,
-> +		.dir = IIO_EV_DIR_FALLING,
-> +		.mask_separate = BIT(IIO_EV_INFO_VALUE),
-> +	}, {
-> +		.type = IIO_EV_TYPE_THRESH,
-> +		.dir = IIO_EV_DIR_EITHER,
-> +		.mask_separate = BIT(IIO_EV_INFO_PERIOD) |
-> +				BIT(IIO_EV_INFO_ENABLE),
-> +	},
-> +};
-> +
-> +static const struct iio_chan_spec tsl2591_channels[] = {
-> +	{
-> +		.type = IIO_INTENSITY,
-> +		.modified = 1,
-> +		.channel2 = IIO_MOD_LIGHT_IR,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-> +		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) |
-> +						     BIT(IIO_CHAN_INFO_CALIBSCALE),
-> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME) |
-> +					   BIT(IIO_CHAN_INFO_CALIBSCALE)
-> +	},
-> +	{
-> +		.type = IIO_INTENSITY,
-> +		.modified = 1,
-> +		.channel2 = IIO_MOD_LIGHT_BOTH,
-> +		.event_spec = tsl2591_events,
-> +		.num_event_specs = ARRAY_SIZE(tsl2591_events),
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-> +		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) |
-> +						     BIT(IIO_CHAN_INFO_CALIBSCALE),
-> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME) |
-> +					   BIT(IIO_CHAN_INFO_CALIBSCALE)
-> +	},
-> +	{
-> +		.type = IIO_LIGHT,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
-> +		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) |
-> +						     BIT(IIO_CHAN_INFO_CALIBSCALE),
-> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME) |
-> +					   BIT(IIO_CHAN_INFO_CALIBSCALE)
-> +	},
-> +};
-> +
-> +static int tsl2591_read_raw(struct iio_dev *indio_dev,
-> +			    struct iio_chan_spec const *chan,
-> +			    int *val, int *val2, long mask)
-> +{
-> +	struct tsl2591_chip *chip = iio_priv(indio_dev);
-> +	struct i2c_client *client = chip->client;
-> +	int ret;
-> +
-> +	pm_runtime_get_sync(&client->dev);
-> +
-> +	mutex_lock(&chip->als_mutex);
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		if (chan->type != IIO_INTENSITY) {
-> +			ret = -EINVAL;
-> +			break;
-> +		}
-> +
-> +		ret = tsl2591_read_channel_data(indio_dev, chan, val, val2);
-> +		if (ret < 0)
-> +			break;
-> +
-> +		ret = IIO_VAL_INT;
-> +		break;
-> +	case IIO_CHAN_INFO_PROCESSED:
-> +		if (chan->type != IIO_LIGHT) {
-> +			ret = -EINVAL;
-> +			break;
-> +		}
-> +
-> +		ret = tsl2591_read_channel_data(indio_dev, chan, val, val2);
-> +		if (ret < 0)
-> +			break;
-> +
-> +		ret = IIO_VAL_INT_PLUS_MICRO;
-> +		break;
-> +	case IIO_CHAN_INFO_INT_TIME:
-> +		if (chan->type != IIO_INTENSITY) {
-> +			ret = -EINVAL;
-> +			break;
-> +		}
-> +
-> +		*val = TSL2591_FVAL_TO_ATIME(chip->als_settings.als_int_time);
-> +		ret = IIO_VAL_INT;
-> +		break;
-> +	case IIO_CHAN_INFO_CALIBSCALE:
-> +		if (chan->type != IIO_INTENSITY) {
-> +			ret = -EINVAL;
-> +			break;
-> +		}
-> +
-> +		*val = tsl2591_gain_to_multiplier(chip->als_settings.als_gain);
-> +		ret = IIO_VAL_INT;
-> +		break;
-> +	default:
-> +		ret = -EINVAL;
-> +	}
-> +
-> +	mutex_unlock(&chip->als_mutex);
-> +
-> +	pm_runtime_mark_last_busy(&client->dev);
-> +	pm_runtime_put_autosuspend(&client->dev);
-> +
-> +	return ret;
-> +}
-> +
-> +static int tsl2591_write_raw(struct iio_dev *indio_dev,
-> +			     struct iio_chan_spec const *chan,
-> +			     int val, int val2, long mask)
-> +{
-> +	struct tsl2591_chip *chip = iio_priv(indio_dev);
-> +
-> +	u32 int_time;
-> +	u8 gain;
-> +	int ret;
-> +
-> +	mutex_lock(&chip->als_mutex);
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_INT_TIME:
-> +		int_time = tsl2591_als_time_to_fval(val);
-> +		if (int_time < 0) {
-> +			ret = int_time;
-> +			goto err;
-> +		}
-> +		ret = tsl2591_compatible_int_time(chip, int_time);
-> +		if (ret < 0)
-> +			goto err;
-> +
-> +		chip->als_settings.als_int_time = int_time;
-> +		break;
-> +	case IIO_CHAN_INFO_CALIBSCALE:
-> +		gain = tsl2591_multiplier_to_gain(val);
-> +		if (gain < 0) {
-> +			ret = gain;
-> +			goto err;
-> +		}
-> +		ret = tsl2591_compatible_gain(chip, gain);
-> +		if (ret < 0)
-> +			goto err;
-> +
-> +		chip->als_settings.als_gain = gain;
-> +		break;
-> +	default:
-> +		ret = -EINVAL;
-> +		goto err;
-> +	}
-> +
-> +	ret = tsl2591_set_als_gain_int_time(chip);
-> +	if (ret < 0)
-> +		goto err;
-> +
-> +err:
-> +	mutex_unlock(&chip->als_mutex);
-> +	return ret;
-> +}
-> +
-> +static int tsl2591_read_available(struct iio_dev *indio_dev,
-> +				  struct iio_chan_spec const *chan,
-> +				  const int **vals, int *type, int *length,
-> +				  long mask)
-> +{
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_INT_TIME:
-> +		*length = ARRAY_SIZE(tsl2591_int_time_available);
-> +		*vals = tsl2591_int_time_available;
-> +		*type = IIO_VAL_INT;
-> +		return IIO_AVAIL_LIST;
-> +
-> +	case IIO_CHAN_INFO_CALIBSCALE:
-> +		*length = ARRAY_SIZE(tsl2591_calibscale_available);
-> +		*vals = tsl2591_calibscale_available;
-> +		*type = IIO_VAL_INT;
-> +		return IIO_AVAIL_LIST;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int tsl2591_read_event_value(struct iio_dev *indio_dev,
-> +				    const struct iio_chan_spec *chan,
-> +				    enum iio_event_type type,
-> +				    enum iio_event_direction dir,
-> +				    enum iio_event_info info, int *val,
-> +				    int *val2)
-> +{
-> +	struct tsl2591_chip *chip = iio_priv(indio_dev);
-> +	struct i2c_client *client = chip->client;
-> +	int als_persist, int_time, period;
-> +	int ret;
-> +
-> +	mutex_lock(&chip->als_mutex);
-> +
-> +	switch (info) {
-> +	case IIO_EV_INFO_VALUE:
-> +		switch (dir) {
-> +		case IIO_EV_DIR_RISING:
-> +			*val = chip->als_settings.als_upper_thresh;
-> +			break;
-> +		case IIO_EV_DIR_FALLING:
-> +			*val = chip->als_settings.als_lower_thresh;
-> +			break;
-> +		default:
-> +			ret = -EINVAL;
-> +			goto err;
-> +		}
-> +		ret = IIO_VAL_INT;
-> +		break;
-> +	case IIO_EV_INFO_PERIOD:
-> +		ret = i2c_smbus_read_byte_data(client,
-> +					       TSL2591_CMD_NOP | TSL2591_PERSIST);
-> +		if (ret <= 0 || ret > TSL2591_PRST_ALS_INT_CYCLE_MAX)
-> +			goto err;
-> +
-> +		als_persist = tsl2591_persist_cycle_to_lit(ret);
-> +		int_time = TSL2591_FVAL_TO_ATIME(chip->als_settings.als_int_time);
-> +		period = als_persist * (int_time * MSEC_PER_SEC);
-> +
-> +		*val = period / USEC_PER_SEC;
-> +		*val2 = period % USEC_PER_SEC;
-> +
-> +		ret = IIO_VAL_INT_PLUS_MICRO;
-> +		break;
-> +	default:
-> +		ret = -EINVAL;
-> +		goto err;
-> +	}
-> +
-> +err:
-> +	mutex_unlock(&chip->als_mutex);
-> +	return ret;
-> +}
-> +
-> +static int tsl2591_write_event_value(struct iio_dev *indio_dev,
-> +				     const struct iio_chan_spec *chan,
-> +				     enum iio_event_type type,
-> +				     enum iio_event_direction dir,
-> +				     enum iio_event_info info, int val,
-> +				     int val2)
-> +{
-> +	struct tsl2591_chip *chip = iio_priv(indio_dev);
-> +	int period, int_time, als_persist;
-> +	int ret;
-> +
-> +	if (val < 0 || val2 < 0)
-> +		return -EINVAL;
-> +
-> +	mutex_lock(&chip->als_mutex);
-> +
-> +	switch (info) {
-> +	case IIO_EV_INFO_VALUE:
-> +		if (val > TSL2591_ALS_MAX_VALUE) {
-> +			ret = -EINVAL;
-> +			goto err;
-> +		}
-> +
-> +		/*
-Suggestion below to wrap setting up cached state and hardware into
-one call could also incorporate these adjustments.
-
-ret = tsl2591_set_als_threshold_upper(chip, val);
-Could be responsible for shifting the lower threshold, writing cache
-and writing to hardware.
-
-> +		 * Lower threshold should not be greater than upper. If this
-> +		 * is the case, then assert upper threshold to new lower
-> +		 * threshold + 1 to avoid ordering issues when setting
-> +		 * thresholds.
-> +		 */
-> +		if (dir == IIO_EV_DIR_FALLING)
-> +			if (val > chip->als_settings.als_upper_thresh)
-> +				chip->als_settings.als_upper_thresh = val + 1;
-> +
-> +		/*
-> +		 * Upper threshold should not be less than lower. If this
-> +		 * is the case, then assert lower threshold to new upper
-> +		 * threshold - 1 to avoid ordering issues when setting
-> +		 * thresholds.
-> +		 */
-> +		if (dir == IIO_EV_DIR_RISING)
-> +			if (val < chip->als_settings.als_lower_thresh)
-> +				chip->als_settings.als_lower_thresh = val - 1;
-> +
-> +		switch (dir) {
-> +		case IIO_EV_DIR_RISING:
-> +			chip->als_settings.als_upper_thresh = val;
-> +			ret = tsl2591_set_als_thresholds(chip);
-> +			if (ret < 0)
-> +				goto err;
-> +			break;
-> +		case IIO_EV_DIR_FALLING:
-> +			chip->als_settings.als_lower_thresh = val;
-> +			ret = tsl2591_set_als_thresholds(chip);
-> +			if (ret < 0)
-> +				goto err;
-> +			break;
-> +		default:
-> +			ret = -EINVAL;
-> +			goto err;
-> +		}
-> +		break;
-> +	case IIO_EV_INFO_PERIOD:
-> +		int_time = TSL2591_FVAL_TO_ATIME(chip->als_settings.als_int_time);
-> +
-> +		period = ((val * MSEC_PER_SEC) +
-> +			 (val2 / MSEC_PER_SEC)) / int_time;
-> +
-> +		als_persist = tsl2591_persist_lit_to_cycle(period);
-> +		if (als_persist < 0) {
-> +			ret = -EINVAL;
-> +			goto err;
-> +		}
-> +
-> +		ret = tsl2591_compatible_als_persist_cycle(chip, als_persist);
-> +		if (ret < 0)
-> +			goto err;
-> +		chip->als_settings.als_persist = als_persist;
-> +		ret = tsl2591_set_als_persist_cycle(chip);
-
-This is very much a suggestion, feel free to ignore!
-
-Rather than this approach a) set the value in chip, b) call function to update hardware,
-how about instead having
-		ret = tsl2591_set_als_persist_cycle(chip, als_persist);
-which does both those actions?
-Bit trickier for threshold cases, but could be done there by having separate
-upper and lower versions.
-
-> +		if (ret < 0)
-> +			goto err;
-> +		break;
-> +	default:
-> +		ret = -EINVAL;
-> +		goto err;
-> +	}
-> +
-> +err:
-> +	mutex_unlock(&chip->als_mutex);
-> +	return ret;
-> +}
-> +
-> +static int tsl2591_read_event_config(struct iio_dev *indio_dev,
-> +				     const struct iio_chan_spec *chan,
-> +				     enum iio_event_type type,
-> +				     enum iio_event_direction dir)
-> +{
-> +	struct tsl2591_chip *chip = iio_priv(indio_dev);
-> +
-> +	return chip->events_enabled;
-> +}
-> +
-> +static int tsl2591_write_event_config(struct iio_dev *indio_dev,
-> +				      const struct iio_chan_spec *chan,
-> +				      enum iio_event_type type,
-> +				      enum iio_event_direction dir,
-> +				      int state)
-> +{
-> +	struct tsl2591_chip *chip = iio_priv(indio_dev);
-> +	struct i2c_client *client = chip->client;
-> +
-> +	if (state && !chip->events_enabled) {
-> +		chip->events_enabled = true;
-> +		pm_runtime_get_sync(&client->dev);
-> +	} else if (!state && chip->events_enabled) {
-> +		chip->events_enabled = false;
-> +		pm_runtime_mark_last_busy(&client->dev);
-> +		pm_runtime_put_autosuspend(&client->dev);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct iio_info tsl2591_info = {
-> +	.event_attrs = &tsl2591_event_attribute_group,
-> +	.read_raw = tsl2591_read_raw,
-> +	.write_raw = tsl2591_write_raw,
-> +	.read_avail = tsl2591_read_available,
-> +	.read_event_value = tsl2591_read_event_value,
-> +	.write_event_value = tsl2591_write_event_value,
-> +	.read_event_config = tsl2591_read_event_config,
-> +	.write_event_config = tsl2591_write_event_config,
-> +};
-> +
-> +static int __maybe_unused tsl2591_suspend(struct device *dev)
-> +{
-> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> +	struct tsl2591_chip *chip = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	mutex_lock(&chip->als_mutex);
-> +	ret = tsl2591_set_power_state(chip, TSL2591_PWR_OFF);
-> +	mutex_unlock(&chip->als_mutex);
-> +
-> +	return ret;
-> +}
-> +
-> +static int __maybe_unused tsl2591_resume(struct device *dev)
-> +{
-> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> +	struct tsl2591_chip *chip = iio_priv(indio_dev);
-> +	int power_state;
-> +	int ret;
-> +
-> +	if (chip->events_enabled)
-> +		power_state = TSL2591_PWR_ON |
-> +			      TSL2591_ENABLE_ALS_INT |
-> +			      TSL2591_ENABLE_ALS;
-> +	else
-> +		power_state = TSL2591_PWR_ON | TSL2591_ENABLE_ALS;
-
-Trivial, but it might be clearer that we are just setting one extra flag if
-written as
-
-	int power_state = TSL2591_PWR_ON | TSL2591_ENABLE_ALS;
-
-	if (chip->events_enabled)
-		power_state |= TSL2591_ENABLE_ALS_INT;
-
-> +
-> +	mutex_lock(&chip->als_mutex);
-> +	ret = tsl2591_set_power_state(chip, power_state);
-> +	mutex_unlock(&chip->als_mutex);
-> +
-> +	return ret;
-> +}
-> +
-> +static const struct dev_pm_ops tsl2591_pm_ops = {
-> +	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend, pm_runtime_force_resume)
-> +	SET_RUNTIME_PM_OPS(tsl2591_suspend, tsl2591_resume, NULL)
-> +};
-> +
-> +static irqreturn_t tsl2591_event_handler(int irq, void *private)
-> +{
-> +	struct iio_dev *dev_info = private;
-> +	struct tsl2591_chip *chip = iio_priv(dev_info);
-> +	struct i2c_client *client = chip->client;
-> +
-> +	if (!chip->events_enabled)
-> +		return IRQ_HANDLED;
-
-This looks like a spurious interrupt to me.  If it's not add a comment
-explaining how we get here.  If it is spurious then
-return IRQ_NONE; to indicate that we haven't handled it to the
-interrupt code.
-
-> +
-> +	iio_push_event(dev_info,
-> +		       IIO_UNMOD_EVENT_CODE(IIO_LIGHT, 0,
-> +					    IIO_EV_TYPE_THRESH,
-> +					    IIO_EV_DIR_EITHER),
-> +					    iio_get_time_ns(dev_info));
-> +
-> +	/* Clear ALS irq */
-> +	i2c_smbus_write_byte(client, TSL2591_CMD_SF_CALS_NPI);
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static int tsl2591_load_defaults(struct tsl2591_chip *chip)
-> +{
-> +	int ret;
-> +
-> +	chip->als_settings.als_int_time = TSL2591_DEFAULT_ALS_INT_TIME;
-> +	chip->als_settings.als_gain = TSL2591_DEFAULT_ALS_GAIN;
-> +	chip->als_settings.als_persist = TSL2591_DEFAULT_ALS_PERSIST;
-> +	chip->als_settings.als_lower_thresh = TSL2591_DEFAULT_ALS_LOWER_THRESH;
-> +	chip->als_settings.als_upper_thresh = TSL2591_DEFAULT_ALS_UPPER_THRESH;
-> +
-> +	ret = tsl2591_set_als_gain_int_time(chip);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = tsl2591_set_als_persist_cycle(chip);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = tsl2591_set_als_thresholds(chip);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return 0;
-> +}
-> +
-> +static void tsl2591_chip_off(void *data)
-> +{
-> +	struct iio_dev *indio_dev = data;
-> +	struct tsl2591_chip *chip = iio_priv(indio_dev);
-> +	struct i2c_client *client = chip->client;
-> +
-> +	pm_runtime_disable(&client->dev);
-> +	pm_runtime_set_suspended(&client->dev);
-> +	pm_runtime_put_noidle(&client->dev);
-> +
-> +	tsl2591_set_power_state(chip, TSL2591_PWR_OFF);
-> +}
-> +
-> +static int tsl2591_probe(struct i2c_client *client)
-> +{
-> +	struct tsl2591_chip *chip;
-> +	struct iio_dev *indio_dev;
-> +	int ret;
-> +
-> +	if (!i2c_check_functionality(client->adapter,
-> +				     I2C_FUNC_SMBUS_BYTE_DATA)) {
-> +		dev_err(&client->dev,
-> +			"I2C smbus byte data functionality is not supported\n");
-> +		return -EOPNOTSUPP;
-> +	}
-> +
-> +	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*chip));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	chip = iio_priv(indio_dev);
-> +	chip->client = client;
-> +	i2c_set_clientdata(client, indio_dev);
-
-Not used that I can see.
-
-> +
-> +	if (client->irq) {
-> +		ret = devm_request_threaded_irq(&client->dev, client->irq,
-> +						NULL, tsl2591_event_handler,
-> +						IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
-> +						"tsl2591_irq", indio_dev);
-> +		if (ret) {
-> +			dev_err(&client->dev, "IRQ request error %d\n", -ret);
-> +			return -EINVAL;
-> +		}
-> +	}
-> +
-> +	mutex_init(&chip->als_mutex);
-> +
-> +	ret = i2c_smbus_read_byte_data(client,
-> +				       TSL2591_CMD_NOP | TSL2591_DEVICE_ID);
-> +	if (ret < 0) {
-> +		dev_err(&client->dev,
-> +			"Failed to read the device ID register\n");
-> +		return ret;
-> +	}
-> +	ret = FIELD_GET(TSL2591_DEVICE_ID_MASK, ret);
-> +	if (ret != TSL2591_DEVICE_ID_VAL) {
-> +		dev_err(&client->dev, "Device ID: %#04x unknown\n", ret);
-> +		return -EINVAL;
-> +	}
-> +
-> +	indio_dev->info = &tsl2591_info;
-> +	indio_dev->channels = tsl2591_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(tsl2591_channels);
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->name = chip->client->name;
-> +	chip->events_enabled = false;
-> +
-> +	pm_runtime_enable(&client->dev);
-> +	pm_runtime_set_autosuspend_delay(&client->dev,
-> +					 TSL2591_POWER_OFF_DELAY_MS);
-> +	pm_runtime_use_autosuspend(&client->dev);
-> +
-> +	/*
-> +	 * Add chip off to automatically managed path and disable runtime
-> +	 * power management. This ensures that the chip power management
-> +	 * is handled correctly on driver remove. tsl2591_chip_off must be
-> +	 * added to the managed path after pm runtime is enabled and before
-> +	 * any error exit paths are met to ensure we're not left in a state
-> +	 * of pm runtime not being disabled properly.
-> +	 */
-> +	ret = devm_add_action_or_reset(&client->dev, tsl2591_chip_off,
-> +				       indio_dev);
-> +	if (ret < 0)
-> +		return -EINVAL;
-> +
-> +	ret = tsl2591_load_defaults(chip);
-> +	if (ret < 0) {
-> +		dev_err(&client->dev, "Failed to load sensor defaults\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	ret = i2c_smbus_write_byte(client, TSL2591_CMD_SF_CALS_NPI);
-> +	if (ret < 0) {
-> +		dev_err(&client->dev, "Failed to clear als irq\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	return devm_iio_device_register(&client->dev, indio_dev);
-> +}
-> +
-> +static const struct of_device_id tsl2591_of_match[] = {
-> +	{ .compatible = "amstaos,tsl2591"},
-> +	{}
-> +};
-> +MODULE_DEVICE_TABLE(of, tsl2591_of_match);
-> +
-> +static struct i2c_driver tsl2591_driver = {
-> +	.driver = {
-> +		.name = "tsl2591",
-> +		.pm = &tsl2591_pm_ops,
-> +		.of_match_table = tsl2591_of_match,
-> +	},
-> +	.probe_new = tsl2591_probe
-> +};
-> +module_i2c_driver(tsl2591_driver);
-> +
-> +MODULE_AUTHOR("Joe Sandom <joe.g.sandom@gmail.com>");
-> +MODULE_DESCRIPTION("TAOS tsl2591 ambient light sensor driver");
-> +MODULE_LICENSE("GPL");
+> > >
+> > > Another one, that was interesting until 1-2 years ago, was the
+> > > conversion of OF drivers to be a bit more ACPI friendly [as well].
+> > > This is also a bit of work to convert drivers that use only
+> > > of_property_read_xxxx()  functions to   device_property_read_xxx()
+> > > functions.
+> > > This isn't always straightforward in all drivers, but I do find it
+> > > interesting to unify the OF & ACPI interfaces, so that all you have to
+> > > do, is just switch the system from OF to ACPI underneath, and if the
+> > > device-tree conversion to ACPI is done right, it just works.
+> > >
+> > > Then, there's the matter of moving fields [marked as [INTERN] )  from
+> > > "struct iio_dev"  to "struct iio_dev_opaque".
+> > > The value of this conversion is to reduce the review pain of having to
+> > > tell people not-to-use [INTERN] fields [especially when older drivers
+> > > do].
+> > >
+> > >  
+> > > > Is there any IRC channel for IIO?
+> > > >
+> > > > Thanks,
+> > > > Mugil  
 

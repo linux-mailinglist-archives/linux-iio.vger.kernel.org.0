@@ -2,169 +2,169 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1B6A339FD7
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Mar 2021 19:29:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AB2A33A009
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Mar 2021 19:44:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234181AbhCMS2r (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 13 Mar 2021 13:28:47 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37824 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234010AbhCMS2j (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 13 Mar 2021 13:28:39 -0500
-Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4DCE864E58;
-        Sat, 13 Mar 2021 18:28:38 +0000 (UTC)
-Date:   Sat, 13 Mar 2021 18:28:32 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <ardeleanalex@gmail.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v2] iio: buffer: fix use-after-free for attached_buffers
- array
-Message-ID: <20210313182832.588ed3d5@archlinux>
-In-Reply-To: <CA+U=DsoutVL5yeV_piZLJBSkUrMwTRZurUqW=mrZ-S-=LVw2VQ@mail.gmail.com>
-References: <20210306164710.9944-1-ardeleanalex@gmail.com>
-        <20210307185444.32924-1-ardeleanalex@gmail.com>
-        <CA+U=DsoutVL5yeV_piZLJBSkUrMwTRZurUqW=mrZ-S-=LVw2VQ@mail.gmail.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S234071AbhCMSn7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 13 Mar 2021 13:43:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55408 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233635AbhCMSnt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 13 Mar 2021 13:43:49 -0500
+Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com [IPv6:2607:f8b0:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B3F7C061574
+        for <linux-iio@vger.kernel.org>; Sat, 13 Mar 2021 10:43:45 -0800 (PST)
+Received: by mail-il1-x12b.google.com with SMTP id r7so5729352ilb.0
+        for <linux-iio@vger.kernel.org>; Sat, 13 Mar 2021 10:43:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=fXXmSnXERyR77QDTIuo0kEYhmKyNHGbTPlplB7dGsCg=;
+        b=DfwdX1+JG/H4S91ZEhgB4jfE+v0CSCKpgvunsn8K2TyHKYy65bCxbr2cGDLKRqxnhP
+         aC9tsCHG6u2K2nFK5dUfrLBsVMB7Ik+MCZYcVlmbfsXi2h17dg8L1fV19a2yV8V0oVO+
+         WIeRqqSNajtGYI0ACmVrlGruDmYmwuUkNjsSYCrxo4tE3dt7t9Eirz9UpoE2orZsKKj2
+         To6mf2nPGG8XCl3n5MZOTIDyrDV4WUPZQhchrilOqH3FBb6Rd3ODC0ayXN7MsxZ77HoK
+         7NIi9kgRdF8UZYKHOqYdIuuqk6AWk2mwppkethbYgrQ2VaTOtimB4PsRigU4q31ovM6Z
+         wo0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=fXXmSnXERyR77QDTIuo0kEYhmKyNHGbTPlplB7dGsCg=;
+        b=D/kSzM085CWwpbPZtE2fdMa+J0TFgjRQlIxa+nbjUrSsG7WIJoVzKbnJkK4rTe8Cgz
+         pb6tKhHFnBJE4MkhcE80FCzjlb+S0RSeV4s0AfxzvFpSUnbNWy5cQnK4iimAUiptdFw7
+         9h/cDkpDSLoXQT3GIdu5LqHxBcD6Wc9wkyJbhsJcBOdE9DVsHTpuTlO9U55XheohGWw2
+         GiKL25SL1uYAf3YSzSqV09Q2C/HUEIHTM7LyldRz02S3qKbtrDj8f1X0lr0VbunjaB++
+         0xrOLzruAKArFBKfY+UlmJiAZsZXWaymLq/8uaGFK1r4OlgfzuHrsPjQLpahb2E/+NK0
+         re2Q==
+X-Gm-Message-State: AOAM531x0syQJ2XmOSYrElkvlugPhlbsqR50AkIzIAJwBlAoK6xV+ziN
+        lLtJQmfXnjjmnjF3bL0yhmvVbRpr5fkxWmgaTxM=
+X-Google-Smtp-Source: ABdhPJxwrgWJ7wQw8OabcA56XwNx1pe7JheUK+zduTtfyalntB4CtBf4j5okH7iHQ0VWCfvmRNfAyYq7cGI+Mx8R/Sc=
+X-Received: by 2002:a92:3652:: with SMTP id d18mr7068370ilf.100.1615661025031;
+ Sat, 13 Mar 2021 10:43:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <CAOgtOjMwnwsiXd8rPeGBBTVkZUeabQ5nLtPts2RQDDMc-TDgKA@mail.gmail.com>
+ <CA+U=DsqAcmQq2qPMfxVcuwLWJefus_qyM1wG+ioGyG8bej88pw@mail.gmail.com> <20210313152834.GA99671@mugil-Nitro-AN515-52>
+In-Reply-To: <20210313152834.GA99671@mugil-Nitro-AN515-52>
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+Date:   Sat, 13 Mar 2021 20:43:33 +0200
+Message-ID: <CA+U=DspeDi0uX3JYBt1Q0pCHhQ6bszg8siUPQ9HE4CJi7rpG_A@mail.gmail.com>
+Subject: Re: GSoC IIO project: Mugil
+To:     Lars-Peter Clausen <lars@metafoo.de>,
+        "to: Enrico Weigelt, metux IT consult" <info@metux.net>,
+        Mugil Raj <dmugil2000@gmail.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Utkarsh Verma <utkarshverma294@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 8 Mar 2021 09:29:39 +0200
-Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
+On Sat, Mar 13, 2021 at 5:28 PM Mugilraj <dmugil2000@gmail.com> wrote:
+>
+> On Thu, Mar 11, 2021 at 10:58:53AM +0200, Alexandru Ardelean wrote:
+> > On Thu, Mar 11, 2021 at 9:03 AM Mugil Raj <dmugil2000@gmail.com> wrote:
+> > >
+> > > Hi,
+> > > This is Mugilraj, an undergrad at NIT Trichy, India. I'm applying to
+> > > GSoC'21 for the project IIO driver. So, I need help from you guys with
+> > > the application process and finding the device to develop a driver.
+> > > I've done few exercises on patch submissions and completed a Linux
+> > > Foundations course, "A beginners guide to Linux kernel development
+> > > (LFD103)". I found this "https://kernelnewbies.org/IIO_tasks" task for
+> > > beginners, and now I'm doing that also If anyone suggests some fixes
+> > > to develop, that would be helpful for me.
+> > >
+> >
+> >
+> > hey,
+> >
+> > i posted some ideas here:
+> > https://lore.kernel.org/linux-iio/CA+U=Dsp98caW89g9FbsV-+KQ-NjyOqd+KSkO+aaFp4qBb-hpMg@mail.gmail.com/T/#md6c49f2e457d66d922d3d22f1f6fdb54971e6b8a
+> >
+> > [a quick copy + paste from that email]
+> >
+> > One thing I've always wanted to do, is to convert the entire IIO
+> > subsystem to devm_ variants.
+> > Essentially getting rid of the iio_device_unregister() function in
+> > favor of using devm_iio_device_unregister() and similar.
+> >
+> > There's about ~217 uses of this function.
+> > The more complicated one is in the 'drivers/platform/x86/toshiba_acpi.c'
+> > I think reworking the Toshiba ACPI driver would also be interesting,
+> > but it is some work.
+> >
+> > Now, converting everything to devm_ variants can be considered a bit
+> > of an obsession [by some people].
+> > But I sometimes find potential memory leaks by doing this conversion.
+> > And chances are that we may never be able to fully convert the IIO API
+> > to be devm_ variant-only.
+> > But it is an interesting process [for me], just the cleanup itself.
+> I've gone through docs and I hade a dout on devm_iio_device_register().
+> If we use this function it  will automatically unregistered on driver
+> detach. Then what is the use of devm_iio_device_unregister().
 
-> On Sun, Mar 7, 2021 at 8:55 PM Alexandru Ardelean
-> <ardeleanalex@gmail.com> wrote:
-> >
-> > Thanks to Lars for finding this.
-> > The free of the 'attached_buffers' array should be done as late as
-> > possible. This change moves it to iio_buffers_put(), which looks like
-> > the best place for it, since it takes place right before the IIO device
-> > data is free'd.
-> > The free of this array will be handled by calling iio_device_free().
-> > The iio_buffers_put() function is renamed to iio_device_detach_buffers()
-> > since the role of this function changes a bit.
-> >
-> > It looks like this issue was ocurring on the error path of
-> > iio_buffers_alloc_sysfs_and_mask() and in
-> > iio_buffers_free_sysfs_and_mask()
-> >
-> > Added a comment in the doc-header of iio_device_attach_buffer() to
-> > mention how this will be free'd in case anyone is reading the code
-> > and becoming confused about it.
-> >
-> > Fixes: 36f3118c414d ("iio: buffer: introduce support for attaching more IIO buffers")
-> > Reported-by: Lars-Peter Clausen <lars@metafoo.de>
-> > Signed-off-by: Alexandru Ardelean <ardeleanalex@gmail.com>
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to poke at it.
+I think you forgot to hit reply all.
+So, devm_iio_device_unregister() should no longer exist in a recent kernel.
+So, the docs you are reading are from an older kernel.
+I think 5.7 is the kernel where some IIO devm_ functions were removed.
 
-Thanks,
+But this is a general topic about why should there be a devm_init()
+and a devm_uninit()
+Especially if the resource allocated with devm_init() is known to be
+automatically free'd at driver unload.
 
-Jonathan
-> > ---  
-> 
-> Forgot the changelog.
-> 
-> Changelog v1 -> v2:
-> * rename iio_buffers_put() -> iio_device_detach_buffers()
-> 
-> >  drivers/iio/iio_core.h            | 4 ++--
-> >  drivers/iio/industrialio-buffer.c | 9 +++++----
-> >  drivers/iio/industrialio-core.c   | 2 +-
-> >  3 files changed, 8 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/drivers/iio/iio_core.h b/drivers/iio/iio_core.h
-> > index 062fe16c6c49..8f4a9b264962 100644
-> > --- a/drivers/iio/iio_core.h
-> > +++ b/drivers/iio/iio_core.h
-> > @@ -77,7 +77,7 @@ void iio_buffers_free_sysfs_and_mask(struct iio_dev *indio_dev);
-> >
-> >  void iio_disable_all_buffers(struct iio_dev *indio_dev);
-> >  void iio_buffer_wakeup_poll(struct iio_dev *indio_dev);
-> > -void iio_buffers_put(struct iio_dev *indio_dev);
-> > +void iio_device_detach_buffers(struct iio_dev *indio_dev);
-> >
-> >  #else
-> >
-> > @@ -93,7 +93,7 @@ static inline void iio_buffers_free_sysfs_and_mask(struct iio_dev *indio_dev) {}
-> >
-> >  static inline void iio_disable_all_buffers(struct iio_dev *indio_dev) {}
-> >  static inline void iio_buffer_wakeup_poll(struct iio_dev *indio_dev) {}
-> > -static inline void iio_buffers_put(struct iio_dev *indio_dev) {}
-> > +static inline void iio_device_detach_buffers(struct iio_dev *indio_dev) {}
-> >
-> >  #endif
-> >
-> > diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-> > index 1a415e97174e..1ff7f731b044 100644
-> > --- a/drivers/iio/industrialio-buffer.c
-> > +++ b/drivers/iio/industrialio-buffer.c
-> > @@ -326,7 +326,7 @@ void iio_buffer_init(struct iio_buffer *buffer)
-> >  }
-> >  EXPORT_SYMBOL(iio_buffer_init);
-> >
-> > -void iio_buffers_put(struct iio_dev *indio_dev)
-> > +void iio_device_detach_buffers(struct iio_dev *indio_dev)
-> >  {
-> >         struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
-> >         struct iio_buffer *buffer;
-> > @@ -336,6 +336,8 @@ void iio_buffers_put(struct iio_dev *indio_dev)
-> >                 buffer = iio_dev_opaque->attached_buffers[i];
-> >                 iio_buffer_put(buffer);
-> >         }
-> > +
-> > +       kfree(iio_dev_opaque->attached_buffers);
-> >  }
-> >
-> >  static ssize_t iio_show_scan_index(struct device *dev,
-> > @@ -1764,7 +1766,6 @@ int iio_buffers_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
-> >                 buffer = iio_dev_opaque->attached_buffers[unwind_idx];
-> >                 __iio_buffer_free_sysfs_and_mask(buffer);
-> >         }
-> > -       kfree(iio_dev_opaque->attached_buffers);
-> >         return ret;
-> >  }
-> >
-> > @@ -1786,8 +1787,6 @@ void iio_buffers_free_sysfs_and_mask(struct iio_dev *indio_dev)
-> >                 buffer = iio_dev_opaque->attached_buffers[i];
-> >                 __iio_buffer_free_sysfs_and_mask(buffer);
-> >         }
-> > -
-> > -       kfree(iio_dev_opaque->attached_buffers);
-> >  }
-> >
-> >  /**
-> > @@ -2062,6 +2061,8 @@ static int iio_buffer_mmap(struct file *filep, struct vm_area_struct *vma)
-> >   * This function attaches a buffer to a IIO device. The buffer stays attached to
-> >   * the device until the device is freed. For legacy reasons, the first attached
-> >   * buffer will also be assigned to 'indio_dev->buffer'.
-> > + * The array allocated here, will be free'd via the iio_device_detach_buffers()
-> > + * call which is handled by the iio_device_free().
-> >   */
-> >  int iio_device_attach_buffer(struct iio_dev *indio_dev,
-> >                              struct iio_buffer *buffer)
-> > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> > index d74fbac908df..3be5f75c2846 100644
-> > --- a/drivers/iio/industrialio-core.c
-> > +++ b/drivers/iio/industrialio-core.c
-> > @@ -1587,7 +1587,7 @@ static void iio_dev_release(struct device *device)
-> >         iio_device_unregister_eventset(indio_dev);
-> >         iio_device_unregister_sysfs(indio_dev);
-> >
-> > -       iio_buffers_put(indio_dev);
-> > +       iio_device_detach_buffers(indio_dev);
-> >
-> >         ida_simple_remove(&iio_ida, indio_dev->id);
-> >         kfree(iio_dev_opaque);
-> > --
-> > 2.25.1
-> >  
+The reasons why these existed in IIO [and other places] is because of
+the classic C model of "you write an allocation function, then you
+also write a deallocation function".
+But if you use functions like devm_iio_device_unregister() then it's
+likely that the driver has some bad design.
 
+Now there are some cases like  devm_k***alloc() and devm_kfree().
+In these cases, you sometimes need to free a resource during driver
+operation because it is allocated with devm_kalloc(), but you need to
+change the size of the allocated memory block.
+Example:
+
+resoure_array = devm_kcalloc(n, m);
+devm_kfree(resoure_array)
+resoure_array = devm_kcalloc(n + 1, m);
+
+If you were to use kfree() it would have caused a crash during driver
+unload, because it would try to free an already free'd block.
+Recently, a devm_krealloc() got introduced for this [in August 2020],
+but you will see that devm_kfree() is quite used in the kernel.
+I suspect it may be the most used  devm_<release_resource>() function
+in the kernel (probably because there was no devm_krealloc() before),
+because you need to do this run-time memory management for some driver
+logic, but you also want the neatness of it being unloaded at driver
+unload.
+
+>
+> It may be a silly question sorry:).
+
+not a silly question;
+this is all kernel API stuff, which isn't obvious in the beginning
+
+> >
+> > Another one, that was interesting until 1-2 years ago, was the
+> > conversion of OF drivers to be a bit more ACPI friendly [as well].
+> > This is also a bit of work to convert drivers that use only
+> > of_property_read_xxxx()  functions to   device_property_read_xxx()
+> > functions.
+> > This isn't always straightforward in all drivers, but I do find it
+> > interesting to unify the OF & ACPI interfaces, so that all you have to
+> > do, is just switch the system from OF to ACPI underneath, and if the
+> > device-tree conversion to ACPI is done right, it just works.
+> >
+> > Then, there's the matter of moving fields [marked as [INTERN] )  from
+> > "struct iio_dev"  to "struct iio_dev_opaque".
+> > The value of this conversion is to reduce the review pain of having to
+> > tell people not-to-use [INTERN] fields [especially when older drivers
+> > do].
+> >
+> >
+> > > Is there any IRC channel for IIO?
+> > >
+> > > Thanks,
+> > > Mugil

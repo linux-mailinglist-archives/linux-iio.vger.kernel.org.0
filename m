@@ -2,117 +2,159 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BD1233A73A
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Mar 2021 18:58:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD19533A760
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Mar 2021 19:18:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232431AbhCNR5i (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 14 Mar 2021 13:57:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41424 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231205AbhCNR5i (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Mar 2021 13:57:38 -0400
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97E5AC061574;
-        Sun, 14 Mar 2021 10:57:37 -0700 (PDT)
-Received: by mail-pl1-x632.google.com with SMTP id z5so14192829plg.3;
-        Sun, 14 Mar 2021 10:57:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
-         :content-transfer-encoding;
-        bh=tRe63mOXEOy6zxRX1QNNRKDXtHVES7uBXxIwluuNQG8=;
-        b=SS0baeye3CdXT4p0PYnRzOQAfhfM0O3kOh/QNfVnl/F0zHq/HEpVxK2Wk5erpMt7Cg
-         WcjF67M4exWEDkPEFPhUthpF2ZBZdi4HU/GfrZ1BYKrm5lvcFDRwY8g5NqO5Xe0nFSCf
-         1GTuG6w+dNbZNtgrRtLHFi1sJe7iFjKvGCIbR4V9N8/a+lfXNgMYIP/VlJZXlD4A3cGQ
-         nv0I9/OtvIuYwXJb3RducmUmMQvAuFWc7oduearsCnWXUCsIWsaL1YkmqfzfInEhwEYm
-         64UbYRBbDzLhn3JDcTFdCphbTw3Ne/CnMCEanO8CROJJJcjJVcBAkpOg+xzP0drPIrDV
-         lGiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=tRe63mOXEOy6zxRX1QNNRKDXtHVES7uBXxIwluuNQG8=;
-        b=aZLsrSd4V+g9B1HbTVWv9Im3azwe9eRG8M8o3m+3HOOiS7WZuSZwXXluHHqZPKqqeH
-         8+Y5qgEWa1IvVyZQTlYF4RdRy1qozTnIHm166cHNq2Wt0/8V4BwMOMLrd5VTTis0QosW
-         t/FUS16TrDlsPwIqAkbmganSbnv7ioUJbKR3HpS/+SnlBn7bHMiUzRwxUOfjf0aNwpwj
-         7w37jW4GG+YNHSIoXCpMMVfy4N60Qq1jFiioIVfAaLMA9pEwU1a7boksfXfKvTllgWIj
-         LtU3F60SkAITNJnxAEAdF5Rr1l6g63J4DrPxwJo59HD+ukT4SdwwKMKcAPpy1RdysE4X
-         Ay4Q==
-X-Gm-Message-State: AOAM530aUK/EDCzUEluIkJiDEGgkn9jHD0eH7GxFhNLK+4qCXFSgjKQd
-        V1zXfdYs7uYihHUM5/TYqmU=
-X-Google-Smtp-Source: ABdhPJwEAKsPBH7kn2azStwrrC4zVXziImkWLBmxhWQX1WGjnEH+r9FKIJnDuTflsqQPJwHRpFohBA==
-X-Received: by 2002:a17:902:7b83:b029:e5:d4f4:fc4a with SMTP id w3-20020a1709027b83b02900e5d4f4fc4amr7810329pll.0.1615744656931;
-        Sun, 14 Mar 2021 10:57:36 -0700 (PDT)
-Received: from localhost.localdomain ([2409:4072:89b:3eb5:22db:84eb:67de:24b5])
-        by smtp.googlemail.com with ESMTPSA id x7sm8177670pjr.7.2021.03.14.10.57.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Mar 2021 10:57:36 -0700 (PDT)
-From:   Mugilraj Dhavachelvan <dmugil2000@gmail.com>
-To:     ardeleanalex@gmail.com, Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Mugilraj Dhavachelvan <dmugil2000@gmail.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] iio:dac:max517.c: Use devm_iio_device_register()
-Date:   Sun, 14 Mar 2021 23:27:09 +0530
-Message-Id: <20210314175709.34301-1-dmugil2000@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210314093356.10609-1-dmugil2000@gmail.com>
-References: <20210314093356.10609-1-dmugil2000@gmail.com>
+        id S233656AbhCNSRk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 14 Mar 2021 14:17:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44852 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231329AbhCNSRY (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 14 Mar 2021 14:17:24 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id DF7FA64E31;
+        Sun, 14 Mar 2021 18:17:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1615745844;
+        bh=1k8BmwjS5bLalom1GwknKuJ1chfmR4ru7i656P4dFEM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Bv5VLCY8Viq+r9Ky2djkPvd0nE6ppTtDI6KZJpeMxc2XD9iE5OB2vzAMoGsn/m9Jz
+         Kr0XA0JqFJ09QCADCWRqe+T88FJGujyehM5jCiDTBJzbXKwyC8xG/9XPVWj0h2PX5p
+         j1xNUpbRgQ7MR4GwuQl2n1nlflJqMjHo2G+NYSmRKlL5H2VTRCCDeoAFFGdvelWt3f
+         I7eTcpc0GnIPHYHqRYX/LPcn2ZMsjlbsK/KDifJEGDm+79KVyCX1rwzIkDAoBhrnvh
+         MZVhgqXxB4EImjLoCyl/j06U/naiFP3bIU0WgNvgNjP7v8vsS46pGVKYPKzvKi09fY
+         Qpmdxh4bREnlQ==
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     linux-iio@vger.kernel.org
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Alexandru Ardelean <aardelean@deviqon.com>, Robh+dt@kernel.org,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v2 00/24] staging:iio:cdc:ad7150: cleanup / fixup / graduate
+Date:   Sun, 14 Mar 2021 18:14:47 +0000
+Message-Id: <20210314181511.531414-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Use devm_iio_device_register() to avoid remove function and
-drop explicit call to iio_device_unregister().
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Signed-off-by: Mugilraj Dhavachelvan <dmugil2000@gmail.com>
+Hi All,
 
-changes v1->v2:
-	-As sugested by Alexandru removed i2c_set_clientdata() because the stored
-	 data will be never used.
----
- drivers/iio/dac/max517.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+There is just enough in here to need a full posting as v2.
+Note modifications are really small from v1. This v2 is more about seeking
+reviews of a few patches that still need some eyes on them.
 
-diff --git a/drivers/iio/dac/max517.c b/drivers/iio/dac/max517.c
-index 7e01838ef4d0..00f0062a0298 100644
---- a/drivers/iio/dac/max517.c
-+++ b/drivers/iio/dac/max517.c
-@@ -153,7 +153,6 @@ static int max517_probe(struct i2c_client *client,
- 	if (!indio_dev)
- 		return -ENOMEM;
- 	data = iio_priv(indio_dev);
--	i2c_set_clientdata(client, indio_dev);
- 	data->client = client;
- 
- 	/* establish that the iio_dev is a child of the i2c device */
-@@ -189,13 +188,7 @@ static int max517_probe(struct i2c_client *client,
- 			data->vref_mv[chan] = platform_data->vref_mv[chan];
- 	}
- 
--	return iio_device_register(indio_dev);
--}
--
--static int max517_remove(struct i2c_client *client)
--{
--	iio_device_unregister(i2c_get_clientdata(client));
--	return 0;
-+	return devm_iio_device_register(&client->dev, indio_dev);
- }
- 
- static const struct i2c_device_id max517_id[] = {
-@@ -214,7 +207,6 @@ static struct i2c_driver max517_driver = {
- 		.pm	= &max517_pm_ops,
- 	},
- 	.probe		= max517_probe,
--	.remove		= max517_remove,
- 	.id_table	= max517_id,
- };
- module_i2c_driver(max517_driver);
+Thanks to Alex and Barry for reviews on v1.  There are a few patches
+that still need someone to take a look though.
+
+23 - DT bindings (I moved these later in the series to help them stand out)
+     No changes in here beyond adding a clarification on the regulator to
+     the patch description. @Rob, if you could sanity check this that would
+     be great.
+
+12 - The big irq rework patch. Alex wasn't quite happy to give a tag
+     on that last time, but didn't mention anything specific. It's a bit
+     fiddly so fair enough!
+
+20 - of_match_table patch.  Simple patch, and I believe I addressed all
+     questions in v1, but no tags given yet.
+
+21 - ABI patch.  I don't think there is anything controversial in here
+     but it's not gained any tags yet.
+     
+13 - Really minor tweak to avoid a build warning.  I've kept Alex's
+     tag on that one.
+
+v1 description:
+
+This is an 'old' driver in IIO that has been in staging a while.
+First submitted in October 2010.
+
+I wanted to try and experiment and picked this driver to try it with.
+
+The cleanup etc here was all tested against some basic emulation
+added to QEMU rather than real hardware.  Once I've cleaned that up
+a tiny bit I'll push it up to https://github.com/jic23/qemu
+Note that for now I'm not proposing to upstream this to QEMU but
+would be interested in hearing if people thing it is a good idea to
+do so.
+
+Whilst it's obviously hard to be absolutely sure that the emulation is
+correct, the fact that the original driver worked as expected and the
+cleaned up version still does is certainly encouraging.
+
+Note however, that there were a few more significant changes in here than
+basic cleanup.
+1. Interrupts / events were handled in a rather esoteric fashion.
+   (Always on, window modes represented as magnitudes).
+   Note that for two channel devices there are separate lines. The original
+   driver was not supporting this at all.
+   They now look more like a standard IIO driver and reflect experience
+   that we've gained over the years in dealing with devices where these
+   aren't interrupt lines as such, but rather reporters of current status.
+2. Timeouts were handled in a fashion that clearly wouldn't work.
+
+Note that this moving out of staging makes a few bits of ABI 'official'
+and so those are added to the main IIO ABI Docs.
+
+Thanks in advance to anyone who has time to take a look.
+
+Jonathan Cameron (24):
+  staging:iio:cdc:ad7150: use swapped reads for i2c rather than open
+    coding.
+  staging:iio:cdc:ad7150: Remove magnitude adaptive events
+  staging:iio:cdc:ad7150: Refactor event parameter update
+  staging:iio:cdc:ad7150: Timeout register covers both directions so
+    both need updating
+  staging:iio:cdc:ad7150: Drop platform data support
+  staging:iio:cdc:ad7150: Handle variation in chan_spec across device
+    and irq present or not
+  staging:iio:cdc:ad7150: Simplify event handling by only using rising
+    direction.
+  staging:iio:cdc:ad7150: Drop noisy print in probe
+  staging:iio:cdc:ad7150: Add sampling_frequency support
+  iio:event: Add timeout event info type
+  staging:iio:cdc:ad7150: Change timeout units to seconds and use core
+    support
+  staging:iio:cdc:ad7150: Rework interrupt handling.
+  staging:iio:cdc:ad7150: More consistent register and field naming
+  staging:iio:cdc:ad7150: Reorganize headers.
+  staging:iio:cdc:ad7150: Tidy up local variable positioning.
+  staging:iio:cdc:ad7150: Drop unnecessary block comments.
+  staging:iio:cdc:ad7150: Shift the _raw readings by 4 bits.
+  staging:iio:cdc:ad7150: Add scale and offset to
+    info_mask_shared_by_type
+  staging:iio:cdc:ad7150: Really basic regulator support.
+  staging:iio:cdc:ad7150: Add of_match_table
+  iio:Documentation:ABI Add missing elements as used by the adi,ad7150
+  staging:iio:cdc:ad7150: Add copyright notice given substantial
+    changes.
+  dt-bindings:iio:cdc:adi,ad7150 binding doc
+  iio:cdc:ad7150: Move driver out of staging.
+
+ Documentation/ABI/testing/sysfs-bus-iio       |  33 +
+ .../bindings/iio/cdc/adi,ad7150.yaml          |  69 ++
+ drivers/iio/Kconfig                           |   1 +
+ drivers/iio/Makefile                          |   1 +
+ drivers/iio/cdc/Kconfig                       |  17 +
+ drivers/iio/cdc/Makefile                      |   6 +
+ drivers/iio/cdc/ad7150.c                      | 678 ++++++++++++++++++
+ drivers/iio/industrialio-event.c              |   1 +
+ drivers/staging/iio/cdc/Kconfig               |  10 -
+ drivers/staging/iio/cdc/Makefile              |   3 +-
+ drivers/staging/iio/cdc/ad7150.c              | 655 -----------------
+ include/linux/iio/types.h                     |   1 +
+ 12 files changed, 808 insertions(+), 667 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/cdc/adi,ad7150.yaml
+ create mode 100644 drivers/iio/cdc/Kconfig
+ create mode 100644 drivers/iio/cdc/Makefile
+ create mode 100644 drivers/iio/cdc/ad7150.c
+ delete mode 100644 drivers/staging/iio/cdc/ad7150.c
+
 -- 
-2.25.1
+2.30.2
 

@@ -2,26 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E6B0B33A703
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Mar 2021 17:52:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 521BA33A709
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Mar 2021 17:56:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232431AbhCNQvw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 14 Mar 2021 12:51:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55536 "EHLO mail.kernel.org"
+        id S234049AbhCNQzi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 14 Mar 2021 12:55:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55980 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233710AbhCNQv0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 14 Mar 2021 12:51:26 -0400
+        id S229870AbhCNQzJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 14 Mar 2021 12:55:09 -0400
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2F9BD64E10;
-        Sun, 14 Mar 2021 16:51:25 +0000 (UTC)
-Date:   Sun, 14 Mar 2021 16:51:22 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 4C9CA64DE1;
+        Sun, 14 Mar 2021 16:55:07 +0000 (UTC)
+Date:   Sun, 14 Mar 2021 16:55:04 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org, Mugil Raj <dmugil2000@gmail.com>,
-        Utkarsh Verma <utkarshverma294@gmail.com>
-Subject: iio: TODO Clean up W=1 warnings in staging drivers.
-Message-ID: <20210314165122.2ac5a72a@archlinux>
+To:     Oleksij Rempel <o.rempel@pengutronix.de>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        David Jander <david@protonic.nl>,
+        Robin van der Gracht <robin@protonic.nl>,
+        linux-iio@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH v8 0/2] add support for GPIO or IRQ based event counter
+Message-ID: <20210314165504.536d9ba6@archlinux>
+In-Reply-To: <20210301080401.22190-1-o.rempel@pengutronix.de>
+References: <20210301080401.22190-1-o.rempel@pengutronix.de>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -30,40 +38,68 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi All,
+On Mon,  1 Mar 2021 09:03:59 +0100
+Oleksij Rempel <o.rempel@pengutronix.de> wrote:
 
-Given we've had a few requests recently for useful tasks in IIO I thought I'd
-post the bits I'm not touching in a clean up series today.
+> changes v8:
+> - use use enum index instead of enum value for the counter function
+> - register signal unconditionally and return error is signal revel is
+>   read 
+> 
+> changes v7:
+> - make most of structs dynamically allocatable to assign IRQ based
+>   description to the signal
+> - assign dev name instead for driver name to the IRQ
+> 
+> changes v6:
+> - rename it to interrupt-counter
+> - driver fixes
+> - device tree fixes
+> 
+> changes v5:
+> - rename it to event counter, since it support different event sources
+> - make it work with gpio-only or irq-only configuration
+> - update yaml binding
+> 
+> changes v4:
+> - use IRQ_NOAUTOEN to not enable IRQ by default
+> - rename gpio_ from name pattern and make this driver work any IRQ
+>   source.
+> 
+> changes v3:
+> - convert counter to atomic_t
+> 
+> changes v2:
+> - add commas
+> - avoid possible unhandled interrupts in the enable path
+> - do not use of_ specific gpio functions
+> 
+> Add support for GPIO based pulse counter. For now it can only count
+> pulses. With counter char device support, we will be able to attach
+> timestamps and measure actual pulse frequency.
+> 
+> Never the less, it is better to mainline this driver now (before chardev
+> patches go mainline), to provide developers additional use case for the counter
+> framework with chardev support.
+> 
+> Oleksij Rempel (2):
+>   dt-bindings: counter: add interrupt-counter binding
+>   counter: add IRQ or GPIO based counter
 
-If you build the kernel with W=1 it will run kernel-doc tests on all the
-files.   That tends to show up places where the docs are in some sense not
-compliant with the kernel-doc format. See
-Documentation/doc-guide/kernel-doc.rst
+Series applied to the togreg branch of iio.git and pushed out as testing.
 
-I'm cleaning up a few that have sneaked into the drivers and core outside
-
-https://lore.kernel.org/linux-iio/20210314164655.408461-1-jic23@kernel.org/T/#t
-
-However, I haven't done the staging drivers
-
-drivers/staging/iio/frequency/ad9832.c:119: warning: Function parameter or member 'lock' not described in 'ad9832_state'
-drivers/staging/iio/frequency/ad9832.c:255: warning: Function parameter or member '0200' not described in 'IIO_DEV_ATTR_FREQ'
-drivers/staging/iio/frequency/ad9832.c:255: warning: Function parameter or member 'NULL' not described in 'IIO_DEV_ATTR_FREQ'
-drivers/staging/iio/frequency/ad9832.c:255: warning: Function parameter or member 'ad9832_write' not described in 'IIO_DEV_ATTR_FREQ'
-drivers/staging/iio/frequency/ad9832.c:255: warning: Function parameter or member 'AD9832_FREQ0HM' not described in 'IIO_DEV_ATTR_FREQ'
-drivers/staging/iio/frequency/ad9832.c:255: warning: expecting prototype for h for further information(). Prototype was for IIO_DEV_ATTR_FREQ() instead
-  CHECK   drivers/staging/iio/meter/ade7854-i2c.c
-drivers/staging/iio/frequency/ad9834.c:87: warning: Function parameter or member 'devid' not described in 'ad9834_state'
-drivers/staging/iio/frequency/ad9834.c:93: warning: cannot understand function prototype: 'enum ad9834_supported_device_ids '
-drivers/staging/iio/frequency/ad9834.c:323: warning: Function parameter or member '0200' not described in 'IIO_DEV_ATTR_FREQ'
-drivers/staging/iio/frequency/ad9834.c:323: warning: Function parameter or member 'NULL' not described in 'IIO_DEV_ATTR_FREQ'
-drivers/staging/iio/frequency/ad9834.c:323: warning: Function parameter or member 'ad9834_write' not described in 'IIO_DEV_ATTR_FREQ'
-drivers/staging/iio/frequency/ad9834.c:323: warning: Function parameter or member 'AD9834_REG_FREQ0' not described in 'IIO_DEV_ATTR_FREQ'
-drivers/staging/iio/frequency/ad9834.c:323: warning: expecting prototype for h for further information(). Prototype was for IIO_DEV_ATTR_FREQ() instead
-
-I've not even glanced at the code, so it will be a case of figuring
-out what needs fixing :)
-
-Thanks,
+thanks,
 
 Jonathan
+
+> 
+>  .../bindings/counter/interrupt-counter.yaml   |  62 +++++
+>  MAINTAINERS                                   |   7 +
+>  drivers/counter/Kconfig                       |  10 +
+>  drivers/counter/Makefile                      |   1 +
+>  drivers/counter/interrupt-cnt.c               | 244 ++++++++++++++++++
+>  5 files changed, 324 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/counter/interrupt-counter.yaml
+>  create mode 100644 drivers/counter/interrupt-cnt.c
+> 
+

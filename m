@@ -2,38 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9363333A76D
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Mar 2021 19:18:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 84CEB33A770
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Mar 2021 19:18:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231329AbhCNSSN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 14 Mar 2021 14:18:13 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45124 "EHLO mail.kernel.org"
+        id S233369AbhCNSSR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 14 Mar 2021 14:18:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45140 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233389AbhCNSRq (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 14 Mar 2021 14:17:46 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id ADA3464EC8;
-        Sun, 14 Mar 2021 18:17:43 +0000 (UTC)
+        id S233570AbhCNSRr (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 14 Mar 2021 14:17:47 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9A16A64E77;
+        Sun, 14 Mar 2021 18:17:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1615745865;
-        bh=Zm8XjHk4AwoEtqnPZvQuJ0k7zgJaNr6G+n5KpsPkHq4=;
+        s=k20201202; t=1615745867;
+        bh=JMB1duCPGPbf6nbVrCjPftJ9zq7HKD/995ez5S++nD0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iTYLFLnD7GSnajcwzqCB94jqRir+BMqV/4WLAdXsX/6nily6JD22n1RUF9NtxcsHD
-         8DCIuOCRlluepCF9LnkVRco1YZ7eNvz43rcRLfrrTAXSJkB95x1lZyZVMk0oUokFm/
-         POHGaU7fo9CYc8huYclqiW2lWkdYJ6eDTSSk0miXYah9FxfZEVTpiupp/zDRWN4naJ
-         EFvSXUIhTlkEp+5fgLKOYB+kMncV2gDMvtB31gUQjmW1fZH+sHwi73HsGrwmVVPMqq
-         kK3Fa8oQMJmFeq8Xxh4dBQnhRDVHseSXW2a8X4ridWZOVCOu6JAOkHiOaM4BdBxde/
-         RIknIT/OfGGkQ==
+        b=cLXI0iX4aWzdHJsyLUMK4RCU4tJTs6sYU3/HLeMxxPjB5e2XxvvvEZoIPOeRkeN7A
+         ktmSwtz6EsW5JBD6dK7sjAPqa//IWY/9UaEanhT1XxPqKvQINfp7P4YnHEgx1Vu9sH
+         8dAkIiUGmb8psSa2xR4dyuedO5fPejeH8Iw+G/eoJ6Hv3bFvmbzjJHLxE6UUcaxWhC
+         1UeoJA8XNYcJHUovGb+M+lcZfYLmPdvkwZGke2lxOmA4kSZtbZqv8V3rOP94N2FiAB
+         /JtDWJpKQ9ahQYPvZ+tirGY6y3LAqn1WePNqUGKGtTxmJE98VwFCWxHxL6a/6QfZF3
+         2DqYzpBHXlWQA==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         Alexandru Ardelean <aardelean@deviqon.com>, Robh+dt@kernel.org,
         Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v2 11/24] staging:iio:cdc:ad7150: Change timeout units to seconds and use core support
-Date:   Sun, 14 Mar 2021 18:14:58 +0000
-Message-Id: <20210314181511.531414-12-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v2 12/24] staging:iio:cdc:ad7150: Rework interrupt handling.
+Date:   Sun, 14 Mar 2021 18:14:59 +0000
+Message-Id: <20210314181511.531414-13-jic23@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210314181511.531414-1-jic23@kernel.org>
 References: <20210314181511.531414-1-jic23@kernel.org>
@@ -45,222 +44,406 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Now we have core support for timeouts related to adaptive events, let us
-use it.  Note the units of that attribute are seconds, so we also need
-to scale the cycles value by the period of each sample.
+Note this doesn't support everything the chip can do as we ignore
+window mode for now (in window / out of window).
+
+* Given the chip doesn't have any way of disabling the threshold
+  pins, use disable_irq() etc to mask them except when we actually
+  want them enabled (previously events were always enabled).
+  Note there are race conditions, but using the current state from
+  the status register and disabling interrupts across changes in
+  type of event should mean those races result in interrupts,
+  but no events to userspace.
+
+* Correctly reflect that there is one threshold line per channel.
+
+* Only take notice of rising edge. If anyone wants the other edge
+  then they should set the other threshold (they are available for
+  rising and falling directions).  This isn't perfect but it makes
+  it a lot simpler.
+
+* If insufficient interrupts are specified in firnware, don't support
+  events.
+
+* Adaptive events use the same pos/neg values of thrMD as non adaptive
+  ones.
+
+Tested against qemu based emulation.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Link: https://lore.kernel.org/r/20210207154623.433442-12-jic23@kernel.org
+Link: https://lore.kernel.org/r/20210207154623.433442-13-jic23@kernel.org
 ---
- drivers/staging/iio/cdc/ad7150.c | 159 ++++++++++---------------------
- 1 file changed, 52 insertions(+), 107 deletions(-)
+ drivers/staging/iio/cdc/ad7150.c | 258 ++++++++++++++++++-------------
+ 1 file changed, 153 insertions(+), 105 deletions(-)
 
 diff --git a/drivers/staging/iio/cdc/ad7150.c b/drivers/staging/iio/cdc/ad7150.c
-index 54f31aadc92a..f8183c540d5c 100644
+index f8183c540d5c..24be97456c03 100644
 --- a/drivers/staging/iio/cdc/ad7150.c
 +++ b/drivers/staging/iio/cdc/ad7150.c
-@@ -294,13 +294,22 @@ static int ad7150_read_event_value(struct iio_dev *indio_dev,
- 	int rising = (dir == IIO_EV_DIR_RISING);
+@@ -11,6 +11,7 @@
+ #include <linux/kernel.h>
+ #include <linux/slab.h>
+ #include <linux/i2c.h>
++#include <linux/irq.h>
+ #include <linux/module.h>
  
- 	/* Complex register sharing going on here */
--	switch (type) {
--	case IIO_EV_TYPE_THRESH_ADAPTIVE:
--		*val = chip->thresh_sensitivity[rising][chan->channel];
--		return IIO_VAL_INT;
--	case IIO_EV_TYPE_THRESH:
--		*val = chip->threshold[rising][chan->channel];
--		return IIO_VAL_INT;
-+	switch (info) {
-+	case IIO_EV_INFO_VALUE:
-+		switch (type) {
-+		case IIO_EV_TYPE_THRESH_ADAPTIVE:
-+			*val = chip->thresh_sensitivity[rising][chan->channel];
-+			return IIO_VAL_INT;
-+		case IIO_EV_TYPE_THRESH:
-+			*val = chip->threshold[rising][chan->channel];
-+			return IIO_VAL_INT;
-+		default:
-+			return -EINVAL;
-+		}
-+	case IIO_EV_INFO_TIMEOUT:
-+		*val = 0;
-+		*val2 = chip->thresh_timeout[rising][chan->channel] * 10000;
-+		return IIO_VAL_INT_PLUS_MICRO;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -318,13 +327,36 @@ static int ad7150_write_event_value(struct iio_dev *indio_dev,
- 	int rising = (dir == IIO_EV_DIR_RISING);
+ #include <linux/iio/iio.h>
+@@ -60,8 +61,6 @@ enum {
+ /**
+  * struct ad7150_chip_info - instance specific chip data
+  * @client: i2c client for this device
+- * @current_event: device always has one type of event enabled.
+- *	This element stores the event code of the current one.
+  * @threshold: thresholds for simple capacitance value events
+  * @thresh_sensitivity: threshold for simple capacitance offset
+  *	from 'average' value.
+@@ -70,21 +69,23 @@ enum {
+  *	value jumps to current value.  Note made up of two fields,
+  *      3:0 are for timeout receding - applies if below lower threshold
+  *      7:4 are for timeout approaching - applies if above upper threshold
+- * @old_state: store state from previous event, allowing confirmation
+- *	of new condition.
+- * @conversion_mode: the current conversion mode.
+  * @state_lock: ensure consistent state of this structure wrt the
+  *	hardware.
++ * @interrupts: one or two interrupt numbers depending on device type.
++ * @int_enabled: is a given interrupt currently enabled.
++ * @type: threshold type
++ * @dir: threshold direction
+  */
+ struct ad7150_chip_info {
+ 	struct i2c_client *client;
+-	u64 current_event;
+ 	u16 threshold[2][2];
+ 	u8 thresh_sensitivity[2][2];
+ 	u8 thresh_timeout[2][2];
+-	int old_state;
+-	char *conversion_mode;
+ 	struct mutex state_lock;
++	int interrupts[2];
++	bool int_enabled[2];
++	enum iio_event_type type;
++	enum iio_event_direction dir;
+ };
  
- 	mutex_lock(&chip->state_lock);
--	switch (type) {
--	case IIO_EV_TYPE_THRESH_ADAPTIVE:
--		chip->thresh_sensitivity[rising][chan->channel] = val;
-+	switch (info) {
-+	case IIO_EV_INFO_VALUE:
-+		switch (type) {
-+		case IIO_EV_TYPE_THRESH_ADAPTIVE:
-+			chip->thresh_sensitivity[rising][chan->channel] = val;
-+			break;
-+		case IIO_EV_TYPE_THRESH:
-+			chip->threshold[rising][chan->channel] = val;
-+			break;
-+		default:
-+			ret = -EINVAL;
-+			goto error_ret;
+ /*
+@@ -158,8 +159,8 @@ static int ad7150_read_event_config(struct iio_dev *indio_dev,
+ 	switch (type) {
+ 	case IIO_EV_TYPE_THRESH_ADAPTIVE:
+ 		if (dir == IIO_EV_DIR_RISING)
+-			return !thrfixed && (threshtype == 0x3);
+-		return !thrfixed && (threshtype == 0x2);
++			return !thrfixed && (threshtype == 0x1);
++		return !thrfixed && (threshtype == 0x0);
+ 	case IIO_EV_TYPE_THRESH:
+ 		if (dir == IIO_EV_DIR_RISING)
+ 			return thrfixed && (threshtype == 0x1);
+@@ -179,11 +180,9 @@ static int ad7150_write_event_params(struct iio_dev *indio_dev,
+ {
+ 	struct ad7150_chip_info *chip = iio_priv(indio_dev);
+ 	int rising = (dir == IIO_EV_DIR_RISING);
+-	u64 event_code;
+ 
+-	event_code = IIO_UNMOD_EVENT_CODE(IIO_CAPACITANCE, chan, type, dir);
+-
+-	if (event_code != chip->current_event)
++	/* Only update value live, if parameter is in use */
++	if ((type != chip->type) || (dir != chip->dir))
+ 		return 0;
+ 
+ 	switch (type) {
+@@ -231,52 +230,91 @@ static int ad7150_write_event_config(struct iio_dev *indio_dev,
+ 	int ret;
+ 	struct ad7150_chip_info *chip = iio_priv(indio_dev);
+ 	int rising = (dir == IIO_EV_DIR_RISING);
+-	u64 event_code;
+-
+-	/* Something must always be turned on */
+-	if (!state)
+-		return -EINVAL;
+ 
+-	event_code = IIO_UNMOD_EVENT_CODE(chan->type, chan->channel, type, dir);
+-	if (event_code == chip->current_event)
++	/*
++	 * There is only a single shared control and no on chip
++	 * interrupt disables for the two interrupt lines.
++	 * So, enabling will switch the events configured to enable
++	 * whatever was most recently requested and if necessary enable_irq()
++	 * the interrupt and any disable will disable_irq() for that
++	 * channels interrupt.
++	 */
++	if (!state) {
++		if ((chip->int_enabled[chan->channel]) &&
++		    (type == chip->type) && (dir == chip->dir)) {
++			disable_irq(chip->interrupts[chan->channel]);
++			chip->int_enabled[chan->channel] = false;
 +		}
- 		break;
--	case IIO_EV_TYPE_THRESH:
--		chip->threshold[rising][chan->channel] = val;
-+	case IIO_EV_INFO_TIMEOUT: {
-+		/*
-+		 * Raw timeout is in cycles of 10 msecs as long as both
-+		 * channels are enabled.
-+		 * In terms of INT_PLUS_MICRO, that is in units of 10,000
-+		 */
-+		int timeout = val2 / 10000;
-+
-+		if (val != 0 || timeout < 0 || timeout > 15 || val2 % 10000) {
-+			ret = -EINVAL;
-+			goto error_ret;
-+		}
-+
-+		chip->thresh_timeout[rising][chan->channel] = timeout;
- 		break;
+ 		return 0;
 +	}
- 	default:
- 		ret = -EINVAL;
- 		goto error_ret;
-@@ -338,91 +370,6 @@ static int ad7150_write_event_value(struct iio_dev *indio_dev,
- 	return ret;
- }
- 
--static ssize_t ad7150_show_timeout(struct device *dev,
--				   struct device_attribute *attr,
--				   char *buf)
--{
--	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
--	struct ad7150_chip_info *chip = iio_priv(indio_dev);
--	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
--	u8 value;
--
--	/* use the event code for consistency reasons */
--	int chan = IIO_EVENT_CODE_EXTRACT_CHAN(this_attr->address);
--	int rising = (IIO_EVENT_CODE_EXTRACT_DIR(this_attr->address)
--		      == IIO_EV_DIR_RISING) ? 1 : 0;
--
--	switch (IIO_EVENT_CODE_EXTRACT_TYPE(this_attr->address)) {
--	case IIO_EV_TYPE_THRESH_ADAPTIVE:
--		value = chip->thresh_timeout[rising][chan];
--		break;
--	default:
--		return -EINVAL;
--	}
--
--	return sprintf(buf, "%d\n", value);
--}
--
--static ssize_t ad7150_store_timeout(struct device *dev,
--				    struct device_attribute *attr,
--				    const char *buf,
--				    size_t len)
--{
--	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
--	struct ad7150_chip_info *chip = iio_priv(indio_dev);
--	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
--	int chan = IIO_EVENT_CODE_EXTRACT_CHAN(this_attr->address);
--	enum iio_event_direction dir;
--	enum iio_event_type type;
--	int rising;
--	u8 data;
--	int ret;
--
--	type = IIO_EVENT_CODE_EXTRACT_TYPE(this_attr->address);
--	dir = IIO_EVENT_CODE_EXTRACT_DIR(this_attr->address);
--	rising = (dir == IIO_EV_DIR_RISING);
--
--	ret = kstrtou8(buf, 10, &data);
++
+ 	mutex_lock(&chip->state_lock);
+-	ret = i2c_smbus_read_byte_data(chip->client, AD7150_CFG);
 -	if (ret < 0)
--		return ret;
--
--	if (data > GENMASK(3, 0))
--		return -EINVAL;
--
--	mutex_lock(&chip->state_lock);
+-		goto error_ret;
++	if ((type != chip->type) || (dir != chip->dir)) {
+ 
+-	cfg = ret & ~((0x03 << 5) | BIT(7));
++		/*
++		 * Need to temporarily disable both interrupts if
++		 * enabled - this is to avoid races around changing
++		 * config and thresholds.
++		 * Note enable/disable_irq() are reference counted so
++		 * no need to check if already enabled.
++		 */
++		disable_irq(chip->interrupts[0]);
++		disable_irq(chip->interrupts[1]);
+ 
 -	switch (type) {
 -	case IIO_EV_TYPE_THRESH_ADAPTIVE:
--		chip->thresh_timeout[rising][chan] = data;
+-		adaptive = 1;
+-		if (rising)
+-			thresh_type = 0x3;
+-		else
+-			thresh_type = 0x2;
+-		break;
+-	case IIO_EV_TYPE_THRESH:
+-		adaptive = 0;
+-		if (rising)
+-			thresh_type = 0x1;
+-		else
+-			thresh_type = 0x0;
 -		break;
 -	default:
 -		ret = -EINVAL;
 -		goto error_ret;
 -	}
--
--	ret = ad7150_write_event_params(indio_dev, chan, type, dir);
--error_ret:
--	mutex_unlock(&chip->state_lock);
--
++		ret = i2c_smbus_read_byte_data(chip->client, AD7150_CFG);
++		if (ret < 0)
++			goto error_ret;
+ 
+-	cfg |= (!adaptive << 7) | (thresh_type << 5);
++		cfg = ret & ~((0x03 << 5) | BIT(7));
+ 
+-	ret = i2c_smbus_write_byte_data(chip->client, AD7150_CFG, cfg);
 -	if (ret < 0)
--		return ret;
--
--	return len;
--}
--
--#define AD7150_TIMEOUT(chan, type, dir, ev_type, ev_dir)		\
--	IIO_DEVICE_ATTR(in_capacitance##chan##_##type##_##dir##_timeout, \
--		0644,							\
--		&ad7150_show_timeout,					\
--		&ad7150_store_timeout,					\
--		IIO_UNMOD_EVENT_CODE(IIO_CAPACITANCE,			\
--				     chan,				\
--				     IIO_EV_TYPE_##ev_type,		\
--				     IIO_EV_DIR_##ev_dir))
--static AD7150_TIMEOUT(0, thresh_adaptive, rising, THRESH_ADAPTIVE, RISING);
--static AD7150_TIMEOUT(0, thresh_adaptive, falling, THRESH_ADAPTIVE, FALLING);
--static AD7150_TIMEOUT(1, thresh_adaptive, rising, THRESH_ADAPTIVE, RISING);
--static AD7150_TIMEOUT(1, thresh_adaptive, falling, THRESH_ADAPTIVE, FALLING);
--
- static const struct iio_event_spec ad7150_events[] = {
- 	{
- 		.type = IIO_EV_TYPE_THRESH,
-@@ -438,12 +385,14 @@ static const struct iio_event_spec ad7150_events[] = {
- 		.type = IIO_EV_TYPE_THRESH_ADAPTIVE,
- 		.dir = IIO_EV_DIR_RISING,
- 		.mask_separate = BIT(IIO_EV_INFO_VALUE) |
--			BIT(IIO_EV_INFO_ENABLE),
-+			BIT(IIO_EV_INFO_ENABLE) |
-+			BIT(IIO_EV_INFO_TIMEOUT),
- 	}, {
- 		.type = IIO_EV_TYPE_THRESH_ADAPTIVE,
- 		.dir = IIO_EV_DIR_FALLING,
- 		.mask_separate = BIT(IIO_EV_INFO_VALUE) |
--			BIT(IIO_EV_INFO_ENABLE),
-+			BIT(IIO_EV_INFO_ENABLE) |
-+			BIT(IIO_EV_INFO_TIMEOUT),
- 	},
+-		goto error_ret;
++		switch (type) {
++		case IIO_EV_TYPE_THRESH_ADAPTIVE:
++			adaptive = 1;
++			if (rising)
++				thresh_type = 0x1;
++			else
++				thresh_type = 0x0;
++			break;
++		case IIO_EV_TYPE_THRESH:
++			adaptive = 0;
++			if (rising)
++				thresh_type = 0x1;
++			else
++				thresh_type = 0x0;
++			break;
++		default:
++			ret = -EINVAL;
++			goto error_ret;
++		}
+ 
+-	chip->current_event = event_code;
++		cfg |= (!adaptive << 7) | (thresh_type << 5);
++
++		ret = i2c_smbus_write_byte_data(chip->client, AD7150_CFG, cfg);
++		if (ret < 0)
++			goto error_ret;
++
++		/*
++		 * There is a potential race condition here, but not easy
++		 * to close given we can't disable the interrupt at the
++		 * chip side of things. Rely on the status bit.
++		 */
++		chip->type = type;
++		chip->dir = dir;
++
++		/* update control attributes */
++		ret = ad7150_write_event_params(indio_dev, chan->channel, type,
++						dir);
++		if (ret)
++			goto error_ret;
++		/* reenable any irq's we disabled whilst changing mode */
++		enable_irq(chip->interrupts[0]);
++		enable_irq(chip->interrupts[1]);
++	}
++	if (!chip->int_enabled[chan->channel]) {
++		enable_irq(chip->interrupts[chan->channel]);
++		chip->int_enabled[chan->channel] = true;
++	}
+ 
+-	/* update control attributes */
+-	ret = ad7150_write_event_params(indio_dev, chan->channel, type, dir);
+ error_ret:
+ 	mutex_unlock(&chip->state_lock);
+ 
+@@ -434,59 +472,44 @@ static const struct iio_chan_spec ad7151_channels_no_irq[] = {
+ 	AD7150_CAPACITANCE_CHAN_NO_IRQ(0),
  };
  
-@@ -538,15 +487,11 @@ static irqreturn_t ad7150_event_handler(int irq, void *private)
+-static irqreturn_t ad7150_event_handler(int irq, void *private)
++static irqreturn_t __ad7150_event_handler(void *private, u8 status_mask,
++					  int channel)
+ {
+ 	struct iio_dev *indio_dev = private;
+ 	struct ad7150_chip_info *chip = iio_priv(indio_dev);
+-	u8 int_status;
+ 	s64 timestamp = iio_get_time_ns(indio_dev);
+-	int ret;
++	int int_status;
+ 
+-	ret = i2c_smbus_read_byte_data(chip->client, AD7150_STATUS);
+-	if (ret < 0)
++	int_status = i2c_smbus_read_byte_data(chip->client, AD7150_STATUS);
++	if (int_status < 0)
+ 		return IRQ_HANDLED;
+ 
+-	int_status = ret;
+-
+-	if ((int_status & AD7150_STATUS_OUT1) &&
+-	    !(chip->old_state & AD7150_STATUS_OUT1))
+-		iio_push_event(indio_dev,
+-			       IIO_UNMOD_EVENT_CODE(IIO_CAPACITANCE,
+-						    0,
+-						    IIO_EV_TYPE_THRESH,
+-						    IIO_EV_DIR_RISING),
+-				timestamp);
+-	else if ((!(int_status & AD7150_STATUS_OUT1)) &&
+-		 (chip->old_state & AD7150_STATUS_OUT1))
+-		iio_push_event(indio_dev,
+-			       IIO_UNMOD_EVENT_CODE(IIO_CAPACITANCE,
+-						    0,
+-						    IIO_EV_TYPE_THRESH,
+-						    IIO_EV_DIR_FALLING),
+-			       timestamp);
+-
+-	if ((int_status & AD7150_STATUS_OUT2) &&
+-	    !(chip->old_state & AD7150_STATUS_OUT2))
+-		iio_push_event(indio_dev,
+-			       IIO_UNMOD_EVENT_CODE(IIO_CAPACITANCE,
+-						    1,
+-						    IIO_EV_TYPE_THRESH,
+-						    IIO_EV_DIR_RISING),
+-			       timestamp);
+-	else if ((!(int_status & AD7150_STATUS_OUT2)) &&
+-		 (chip->old_state & AD7150_STATUS_OUT2))
+-		iio_push_event(indio_dev,
+-			       IIO_UNMOD_EVENT_CODE(IIO_CAPACITANCE,
+-						    1,
+-						    IIO_EV_TYPE_THRESH,
+-						    IIO_EV_DIR_FALLING),
+-			       timestamp);
+-	/* store the status to avoid repushing same events */
+-	chip->old_state = int_status;
++	/*
++	 * There are race conditions around enabling and disabling that
++	 * could easily land us here with a spurious interrupt.
++	 * Just eat it if so.
++	 */
++	if (!(int_status & status_mask))
++		return IRQ_HANDLED;
++
++	iio_push_event(indio_dev,
++		       IIO_UNMOD_EVENT_CODE(IIO_CAPACITANCE, channel,
++					    chip->type, chip->dir),
++		       timestamp);
+ 
  	return IRQ_HANDLED;
  }
  
--/* Timeouts not currently handled by core */
-+static IIO_CONST_ATTR(in_capacitance_thresh_adaptive_timeout_available,
-+		      "[0 0.01 0.15]");
++static irqreturn_t ad7150_event_handler_ch1(int irq, void *private)
++{
++	return __ad7150_event_handler(private, AD7150_STATUS_OUT1, 0);
++}
 +
- static struct attribute *ad7150_event_attributes[] = {
--	&iio_dev_attr_in_capacitance0_thresh_adaptive_rising_timeout
--	.dev_attr.attr,
--	&iio_dev_attr_in_capacitance0_thresh_adaptive_falling_timeout
--	.dev_attr.attr,
--	&iio_dev_attr_in_capacitance1_thresh_adaptive_rising_timeout
--	.dev_attr.attr,
--	&iio_dev_attr_in_capacitance1_thresh_adaptive_falling_timeout
-+	&iio_const_attr_in_capacitance_thresh_adaptive_timeout_available
- 	.dev_attr.attr,
- 	NULL,
- };
++static irqreturn_t ad7150_event_handler_ch2(int irq, void *private)
++{
++	return __ad7150_event_handler(private, AD7150_STATUS_OUT2, 1);
++}
++
+ static IIO_CONST_ATTR(in_capacitance_thresh_adaptive_timeout_available,
+ 		      "[0 0.01 0.15]");
+ 
+@@ -533,12 +556,44 @@ static int ad7150_probe(struct i2c_client *client,
+ 
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 
+-	if (client->irq) {
++	chip->interrupts[0] = fwnode_irq_get(dev_fwnode(&client->dev), 0);
++	if (chip->interrupts[0] < 0)
++		return chip->interrupts[0];
++	if (id->driver_data == AD7150) {
++		chip->interrupts[1] = fwnode_irq_get(dev_fwnode(&client->dev), 1);
++		if (chip->interrupts[1] < 0)
++			return chip->interrupts[1];
++	}
++	if (chip->interrupts[0] &&
++	    (id->driver_data == AD7151 || chip->interrupts[1])) {
++		irq_set_status_flags(chip->interrupts[0], IRQ_NOAUTOEN);
++		ret = devm_request_threaded_irq(&client->dev,
++						chip->interrupts[0],
++						NULL,
++						&ad7150_event_handler_ch1,
++						IRQF_TRIGGER_RISING |
++						IRQF_ONESHOT,
++						"ad7150_irq1",
++						indio_dev);
++		if (ret)
++			return ret;
++
+ 		indio_dev->info = &ad7150_info;
+ 		switch (id->driver_data) {
+ 		case AD7150:
+ 			indio_dev->channels = ad7150_channels;
+ 			indio_dev->num_channels = ARRAY_SIZE(ad7150_channels);
++			irq_set_status_flags(chip->interrupts[1], IRQ_NOAUTOEN);
++			ret = devm_request_threaded_irq(&client->dev,
++							chip->interrupts[1],
++							NULL,
++							&ad7150_event_handler_ch2,
++							IRQF_TRIGGER_RISING |
++							IRQF_ONESHOT,
++							"ad7150_irq2",
++							indio_dev);
++			if (ret)
++				return ret;
+ 			break;
+ 		case AD7151:
+ 			indio_dev->channels = ad7151_channels;
+@@ -548,25 +603,18 @@ static int ad7150_probe(struct i2c_client *client,
+ 			return -EINVAL;
+ 		}
+ 
+-		ret = devm_request_threaded_irq(&client->dev, client->irq,
+-						NULL,
+-						&ad7150_event_handler,
+-						IRQF_TRIGGER_RISING |
+-						IRQF_ONESHOT,
+-						"ad7150_irq1",
+-						indio_dev);
+-		if (ret)
+-			return ret;
+ 	} else {
+ 		indio_dev->info = &ad7150_info_no_irq;
+ 		switch (id->driver_data) {
+ 		case AD7150:
+ 			indio_dev->channels = ad7150_channels_no_irq;
+-			indio_dev->num_channels = ARRAY_SIZE(ad7150_channels_no_irq);
++			indio_dev->num_channels =
++				ARRAY_SIZE(ad7150_channels_no_irq);
+ 			break;
+ 		case AD7151:
+ 			indio_dev->channels = ad7151_channels_no_irq;
+-			indio_dev->num_channels = ARRAY_SIZE(ad7151_channels_no_irq);
++			indio_dev->num_channels =
++				ARRAY_SIZE(ad7151_channels_no_irq);
+ 			break;
+ 		default:
+ 			return -EINVAL;
 -- 
 2.30.2
 

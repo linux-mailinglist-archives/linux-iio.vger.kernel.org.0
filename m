@@ -2,55 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B22C33ACE0
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Mar 2021 08:58:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A3E7433ACE1
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Mar 2021 08:59:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230020AbhCOH53 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 15 Mar 2021 03:57:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51126 "EHLO
+        id S229828AbhCOH6d (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 15 Mar 2021 03:58:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230404AbhCOH5I (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 Mar 2021 03:57:08 -0400
+        with ESMTP id S229995AbhCOH6G (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 Mar 2021 03:58:06 -0400
 Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0915CC061574
-        for <linux-iio@vger.kernel.org>; Mon, 15 Mar 2021 00:57:08 -0700 (PDT)
-Received: by mail-io1-xd31.google.com with SMTP id o11so32436751iob.1
-        for <linux-iio@vger.kernel.org>; Mon, 15 Mar 2021 00:57:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 724F3C061574
+        for <linux-iio@vger.kernel.org>; Mon, 15 Mar 2021 00:58:06 -0700 (PDT)
+Received: by mail-io1-xd31.google.com with SMTP id k2so32407870ioh.5
+        for <linux-iio@vger.kernel.org>; Mon, 15 Mar 2021 00:58:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=8Czj+quBHCqKhps1Re3ZcrIIxNeHMa3VxY46tAQeChQ=;
-        b=JAz1VacwcTDqwKQMgKUmlT8sjnc+tHaX0/blAHqP8PuFgk3BhGgSNzJf2JHCcvntsA
-         I6sHoJnQyQ2q/KSHoKP6SWppp22YrbL+AY0l97QApprUVzD4RuOHtDqT+wuE86bKhT04
-         cp+WInGL83LRVZk5E0sjXT7w06Fp0Nbo4oR4cnoSqu/EQgvFBm/iR/CtolLKQWdcA/JL
-         EV/beO4dH+v8UmrMSHsSqCd4CCGA6qKdRWfGl7QKi4H51yAWyvTCvA1MprDmJ9Bn7nVr
-         VGbw0Sttej2wFINGhmusOme0ctyEZv6hTyzEE7cIo+nEg7/1RiDHnAjV6H6DmD69f6Qb
-         2zyA==
+        bh=gXJotL87kb208DULEaYsuSrgsOPbWPHz2zA/gPV6XIY=;
+        b=m7jZrsykCIFh8ZJG01qIlZSyU0oBewuiKfYZ7zTwXn8IwEWH8caEAXV2N6VkxpaxKy
+         vhFsICiWO+b+dG16ENewg/Iqul9vSBCDBZ+7eiF9wEDUxDVWih6ebsyunx9Te74SIvwn
+         NGJQ7uHFFW/osmlcjsuxboHCG0+ZpBlYRAPKxQ9mt5sAdHwVw+0si2DozSmHh6cwjB+j
+         3j6gRCas3nmOBH2nXgkclUJXdpPPu0V5NQI+mECwTbS9ntjwEUxfbWqsTWLp4Ycl79zk
+         cHqTw+bfKniGhIhw2K5tE2CTQ6hVY8hrBmq+7BqCTRAgNabRGXQLEY8fkQr/X/puwfO+
+         VLOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=8Czj+quBHCqKhps1Re3ZcrIIxNeHMa3VxY46tAQeChQ=;
-        b=ort4d0jbR07XhxDrOdevOCCGw7B1u3pXXStHbQhBaAz1at8GN+z+8ih5zdw78Wk7Fc
-         MkdhQtyA5iZ4ebX/v2aIJwMaRXax28HZuTpGuCrURtSBTQrM/7I32tgRcF0U67dQnV+y
-         WdxTeBAT6W5RSpNTlmk+34UfW0uXKWKF0rGbUYxf1Cc0afJdxVLZMQo1hNthKWTR7b0H
-         acHzS3AxNg41nLm5jfT2R1QWppPzvBGdTNpIhKQuui8JAURFj7g33l8PyoU0Zy99l0nX
-         o+t+pujqMMUDKWsv1Nqfo70wIjopRWduFaIJ09PqHiASeewRXAmNAhPYZrLYP9WdkUaW
-         LQEg==
-X-Gm-Message-State: AOAM532mDIbPkjf6ml+h4NJz5MhKny2diB1Z4zaIB9n/AJhXQMAzvohV
-        lieAubcKWKQ/PXmXY8MgKMwxBejcGEaGe2ITr/0=
-X-Google-Smtp-Source: ABdhPJwgGtOj5AV3sKkjYjTrIuhq1uA5Ms2Zbg2siOStwDHGMMjS7H0moznBZNO9tiQdK2qmeQmnLBCw9fJMFtYE3C8=
-X-Received: by 2002:a05:6638:91:: with SMTP id v17mr8276637jao.69.1615795027539;
- Mon, 15 Mar 2021 00:57:07 -0700 (PDT)
+        bh=gXJotL87kb208DULEaYsuSrgsOPbWPHz2zA/gPV6XIY=;
+        b=Ki+xyYEvmRlXt/g2NqNQgGPBDxz/S8YReYCSSpwN9Y+RC5yMH8sMdHuMUFSabnXj5K
+         lNkAUFeApoFPZyngMJbFusUsg8bcWzDTF4N3H0M1Vfp7kbezKMZRhhkwnkxYFjghdFka
+         aRjfrTdv/9uoICp3Ggwp8rI5rJC1SunBbwPCqYDprkhwTMRSZtch3vPO7FEj5DAartBv
+         0S5hOeyE2S+rf6c1nYaGWZsoabu/i9cOYMjnnWHFD4PZ+kj2P2tMLCC9CL4KD2hq4WkS
+         Qbxkkz8BI/XdKFdPz4/B/rHWgL2kdUBR94GpBZezaTqHHtONO6dVkdkbLiio+/OL5yEE
+         1p1g==
+X-Gm-Message-State: AOAM532WRsV1xNXG4OyhPT6pRhf1qeTca6H0hHbECyKBLB+7VkafEnVU
+        7Jey5Q/d1yco86jVpCd8TYQAOXx2yV1uH2WOaOk=
+X-Google-Smtp-Source: ABdhPJwCe443x0BOPO66k2phQfnXjgmr7+6USrlhht08lNueU4TGTMiwaJJs7o/ct6RruSP19jqamsUGNqJ/92IsUBA=
+X-Received: by 2002:a02:9663:: with SMTP id c90mr8512259jai.16.1615795086003;
+ Mon, 15 Mar 2021 00:58:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210314164655.408461-1-jic23@kernel.org> <20210314164655.408461-4-jic23@kernel.org>
-In-Reply-To: <20210314164655.408461-4-jic23@kernel.org>
+References: <20210314164655.408461-1-jic23@kernel.org> <20210314164655.408461-2-jic23@kernel.org>
+In-Reply-To: <20210314164655.408461-2-jic23@kernel.org>
 From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Mon, 15 Mar 2021 09:56:56 +0200
-Message-ID: <CA+U=Dsrk8CAROmNFXPDEMdBWKZfUkeqO5pqCeMDqxZDCeACrQg@mail.gmail.com>
-Subject: Re: [PATCH 3/8] iio: dac: ad5770r: kernel-doc fix case of letter R
- wrong in structure name
+Date:   Mon, 15 Mar 2021 09:57:55 +0200
+Message-ID: <CA+U=DspfWZQfw-bsNOwyZSSTWnAMedCveq+LR=U1OLQY==u4TQ@mail.gmail.com>
+Subject: Re: [PATCH 1/8] iio: pressure: zpa2326: kernel-doc fixes
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
@@ -59,34 +58,43 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Mar 14, 2021 at 6:49 PM Jonathan Cameron <jic23@kernel.org> wrote:
+On Sun, Mar 14, 2021 at 6:53 PM Jonathan Cameron <jic23@kernel.org> wrote:
 >
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >
-> Nothing useful to add beyond this causing a warning with W=1
+> Two comment blocks had wrong naming for function/structures that they
+> referred to.  Results in warnings when doing a W=1 build.
 >
 
-Acked-by: Alexandru Ardelean <ardeleanalex@gmail.com>
+Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
 
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Alexandru Ardelean <ardeleanalex@gmail.com>
 > ---
->  drivers/iio/dac/ad5770r.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/iio/pressure/zpa2326.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> diff --git a/drivers/iio/dac/ad5770r.c b/drivers/iio/dac/ad5770r.c
-> index 84dcf149261f..4e7a8ed83cc1 100644
-> --- a/drivers/iio/dac/ad5770r.c
-> +++ b/drivers/iio/dac/ad5770r.c
-> @@ -118,7 +118,7 @@ struct ad5770r_out_range {
+> diff --git a/drivers/iio/pressure/zpa2326.c b/drivers/iio/pressure/zpa2326.c
+> index 70adff62cd20..a93411216aee 100644
+> --- a/drivers/iio/pressure/zpa2326.c
+> +++ b/drivers/iio/pressure/zpa2326.c
+> @@ -103,7 +103,7 @@ static const struct zpa2326_frequency *zpa2326_highest_frequency(void)
+>  }
+>
+>  /**
+> - * struct zpa_private - Per-device internal private state
+> + * struct zpa2326_private - Per-device internal private state
+>   * @timestamp:  Buffered samples ready datum.
+>   * @regmap:     Underlying I2C / SPI bus adapter used to abstract slave register
+>   *              accesses.
+> @@ -1382,7 +1382,7 @@ static const struct iio_trigger_ops zpa2326_trigger_ops = {
 >  };
 >
 >  /**
-> - * struct ad5770R_state - driver instance specific data
-> + * struct ad5770r_state - driver instance specific data
->   * @spi:               spi_device
->   * @regmap:            regmap
->   * @vref_reg:          fixed regulator for reference configuration
+> - * zpa2326_init_trigger() - Create an interrupt driven / hardware trigger
+> + * zpa2326_init_managed_trigger() - Create interrupt driven / hardware trigger
+>   *                          allowing to notify external devices a new sample is
+>   *                          ready.
+>   * @parent:    Hardware sampling device @indio_dev is a child of.
 > --
 > 2.30.2
 >

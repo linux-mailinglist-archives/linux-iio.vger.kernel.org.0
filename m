@@ -2,103 +2,87 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 94CDF33B4B7
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Mar 2021 14:38:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7095C33B4CB
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Mar 2021 14:42:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229637AbhCONhx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 15 Mar 2021 09:37:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39856 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229696AbhCONhi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 Mar 2021 09:37:38 -0400
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EF79C06174A;
-        Mon, 15 Mar 2021 06:37:38 -0700 (PDT)
-Received: by mail-pl1-x632.google.com with SMTP id d23so12106121plq.2;
-        Mon, 15 Mar 2021 06:37:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=fiSNz4Bld/PQvfFvdTn55/ssLR/DWX7rfzFxr95WxDc=;
-        b=eOv37JZH0OP/C/ioUhVtLwq7FJAL27YlfPn6YNIrDEqXc+Q8bS7NQn40DR1fAHdvwn
-         uoxTKoUA9IsT9FcrTFq34tPRCQnw0qU8lQqqELwNXk6cPZKilRGcTSDS0Msun5k2uGiC
-         AXidZ8Uxu2Q1aDy06pFPX8+EJIwbmTi5KKjNG0ZSmi21AA8EbvUYmekUD47Lh579G74M
-         S6bX7yK3EhxASOBOS5WCleSZ5L7kHcZdBw9yMwYeCiyA68Ggtx7noGi/c/9OASxc1kev
-         YrpPupYrV4w/P9rOHhoyzsXAkoCcx6bbiP6DKA6f2CLXUL7rgTGQhXhz26B9ePMG4wKE
-         yVCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=fiSNz4Bld/PQvfFvdTn55/ssLR/DWX7rfzFxr95WxDc=;
-        b=lI4YD3HSSQYg1Zd7wVbqX2LJX83BAqtt2x1+xOo23mlAJplra7Ct04FF6bM8sntTVv
-         8GZMaCB1bC0f6QvP+/3Pj3IVXMnNzWMW3zJKsN4/eq1E3RiQbth1B74Bz0VD7w6KytAU
-         HtKnRYfNJT1UiOvnMCog4waoq44lfQ8nfpLpoNrFlRH8M0y+AnUAOBOACb9ws+drZc++
-         Q6iAkCzj8/JUny+Kr8TB5Fbsi8F3Aq/XjxjipqFTvAjyhkrazEUfvSHbcCPEK0JecpY6
-         f/Zngx7D8tK1g91Lao+uQAXbqjFaum8/Lt1cM6eg24qj+TK/E64hCkhczfzNpkajtxB7
-         0/kA==
-X-Gm-Message-State: AOAM532c6rXyPm+8A7yyqFfHAgcZfu6EiMaL4EW3EIHa+MLL/3LHstkf
-        7Nkhwq102acJhwAlbFBR7nc=
-X-Google-Smtp-Source: ABdhPJwYElLS4W4P9UWY2WllTnYNoyDeMolaoAwDW5b7WyepJGoB6xBbtGk2c8sNknfglK21kPEaeA==
-X-Received: by 2002:a17:90a:4104:: with SMTP id u4mr12639092pjf.81.1615815457605;
-        Mon, 15 Mar 2021 06:37:37 -0700 (PDT)
-Received: from localhost.localdomain ([2409:4072:89b:3eb5:a73b:575c:3e6f:f296])
-        by smtp.googlemail.com with ESMTPSA id z11sm13925851pgj.22.2021.03.15.06.37.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Mar 2021 06:37:37 -0700 (PDT)
-From:   Mugilraj Dhavachelvan <dmugil2000@gmail.com>
-Cc:     Mugilraj Dhavachelvan <dmugil2000@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+        id S229826AbhCONmM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 15 Mar 2021 09:42:12 -0400
+Received: from foss.arm.com ([217.140.110.172]:41410 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229717AbhCONmF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 15 Mar 2021 09:42:05 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5F0261FB;
+        Mon, 15 Mar 2021 06:42:04 -0700 (PDT)
+Received: from bogus (unknown [10.163.67.35])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D3BF43F792;
+        Mon, 15 Mar 2021 06:41:58 -0700 (PDT)
+Date:   Mon, 15 Mar 2021 13:41:50 +0000
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Jyoti Bhayana <jbhayana@google.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] staging: iio: ad9832: kernel-doc fixes
-Date:   Mon, 15 Mar 2021 19:07:11 +0530
-Message-Id: <20210315133711.26860-1-dmugil2000@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Rob Herring <robh@kernel.org>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Enrico Granata <egranata@google.com>,
+        Mikhail Golubev <mikhail.golubev@opensynergy.com>,
+        Igor Skalkin <Igor.Skalkin@opensynergy.com>,
+        Peter Hilber <Peter.hilber@opensynergy.com>,
+        Ankit Arora <ankitarora@google.com>,
+        Guru Nagarajan <gurunagarajan@google.com>,
+        kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v7 1/1] iio/scmi: Adding support for IIO SCMI Based
+ Sensors
+Message-ID: <20210315134150.kq3b22dnzbtldihy@bogus>
+References: <20210309231259.78050-1-jbhayana@google.com>
+ <20210309231259.78050-2-jbhayana@google.com>
+ <20210311210844.34371d8d@archlinux>
+ <20210312121639.00001c31@Huawei.com>
+ <20210312133101.GG30179@e120937-lin>
+ <CA+=V6c0boA1Q+k4rM0NOcK4ek_FYU7omEWhvMowqACH_t44sAQ@mail.gmail.com>
+ <20210313171107.4c8215e7@archlinux>
+ <CA+=V6c0a8z9+gkD_M6KNviN-VActtmpTgkuCBn-sgC4Fm2C6QA@mail.gmail.com>
+ <20210314154033.3facf1a2@archlinux>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210314154033.3facf1a2@archlinux>
+User-Agent: NeoMutt/20171215
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Fixes a W=1 warning.
--Added ``:`` to lock parameter in 'ad9832_state' description.
--It's a reference comment so removed /**
+Hi Jonathan,
 
-Signed-off-by: Mugilraj Dhavachelvan <dmugil2000@gmail.com>
----
- drivers/staging/iio/frequency/ad9832.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On Sun, Mar 14, 2021 at 03:40:33PM +0000, Jonathan Cameron wrote:
+> On Sat, 13 Mar 2021 11:55:39 -0800
+> Jyoti Bhayana <jbhayana@google.com> wrote:
+>
+> > Hi Jonathan,
+> >
+> > I still see the old version 6 in ib-iio-scmi-5.12-rc2-take2 as well.
+>
+> OK. I'm completely confused as to what is going with my local tree.
+> I have the right patch in the history but it didn't end up in the final
+> pushed out version.  Fat finger mess-up I guess and too many similarly named
+> branches and the fact I didn't check the final result closely enough.
+>
+> There is now an ib-iio-scmi-5.12-rc2-take3 branch
+>
 
-diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/iio/frequency/ad9832.c
-index 74308a2e72db..e31ebba47a3c 100644
---- a/drivers/staging/iio/frequency/ad9832.c
-+++ b/drivers/staging/iio/frequency/ad9832.c
-@@ -86,7 +86,7 @@
-  * @freq_msg:		tuning word spi message
-  * @phase_xfer:		tuning word spi transfer
-  * @phase_msg:		tuning word spi message
-- * @lock		protect sensor state
-+ * @lock:		protect sensor state
-  * @data:		spi transmit buffer
-  * @phase_data:		tuning word spi transmit buffer
-  * @freq_data:		tuning word spi transmit buffer
-@@ -248,7 +248,7 @@ static ssize_t ad9832_write(struct device *dev, struct device_attribute *attr,
- 	return ret ? ret : len;
- }
- 
--/**
-+/*
-  * see dds.h for further information
-  */
- 
--- 
-2.25.1
+I have now used this for my for-next/scmi branch. It is not final yet,
+just pushed out for bots to build test and get into -next. Let me know
+if you have plans to change/rework this branch, I can update it anytime
+till end of this week to avoid multiple hashes.
 
+--
+Regards,
+Sudeep

@@ -2,50 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DFE2833DF91
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Mar 2021 21:53:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C6A1833DF9C
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Mar 2021 21:53:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232073AbhCPUwj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 16 Mar 2021 16:52:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36650 "EHLO mail.kernel.org"
+        id S232346AbhCPUxK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 16 Mar 2021 16:53:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36920 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232093AbhCPUv5 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 16 Mar 2021 16:51:57 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9D54D64F39;
-        Tue, 16 Mar 2021 20:51:56 +0000 (UTC)
+        id S232364AbhCPUww (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 16 Mar 2021 16:52:52 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1884A64E76;
+        Tue, 16 Mar 2021 20:52:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1615927917;
-        bh=V7nZ/wUA4PSv3Qcc8nLkGnVR8xNvrXQFP886MTk40b0=;
+        s=k20201202; t=1615927971;
+        bh=+dogfZ43isbezmZjR8u8oBMqRI6I4K4OVSRSSOGkf2s=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=r10UtbQbtA6DUDNmcPc7vDr0mvE/boynuT7HHJfqnRMV/J4zzuI2HniOcOCiGwuen
-         /mwp2CdVoqBDS7mSwHtWGM0ONyg/IoxAOC0eaxQOWb83iuYnQ18hxixwHRw6YNMlsw
-         rPCTmdWhLiUN9YeoONJGmfiOI1EmhbRGf+xykKUa3D3ouGRfyAyDd2QyxVgYEo6xxG
-         4lTbkNzFlxPPBk30RGHzRTkmVmMktwC3XA3e67tIBL1MHFizyrWr9Cj2HeP36T9Vw9
-         1wmhNZDbpTo7xJ0AjqN8C1PXRPSWeTi2r/xWj2PFV0ggdzwob7mWDJfqhONwgcISBz
-         xFadXktdvTB3w==
-Date:   Tue, 16 Mar 2021 20:51:54 +0000
+        b=YsWIEAjJBm0D4M77EqdYv/Leo+bMmaYAGUvI3VajtyYywcW/JFPzh9x57v3mfmwYf
+         YujlNJ+DBnuMusWrdfsN5gE1NlqpjUhmetkDfYik8DMM5yVHfoGGOJmNalRdHKTa6e
+         /0Ld2f5x1W77S1HfwxS33vLAcM4FgvAoeV/fKPZE+hHoZY6KURxMIPw+1a1PXp9y8g
+         eunsT2Tyv4+e/D2OgmBt2QBInqyEYuQpiF83O2YubdBBj+M54t5spPbxr0M0vWZo+5
+         fLJWcoGeXbyDgeobIKGeDLNj0hvA40Mb+Vpm01QLUawGk9fGKZxrebA+3ia2HFX5Jw
+         dkdqEWX2XCtww==
+Date:   Tue, 16 Mar 2021 20:52:49 +0000
 From:   Mark Brown <broonie@kernel.org>
 To:     Rob Herring <robh@kernel.org>
 Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Luca Ceresoli <luca@lucaceresoli.net>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>, Vinod Koul <vkoul@kernel.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Kevin Tsai <ktsai@capellamicro.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Sebastian Reichel <sre@kernel.org>, linux-iio@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: More cleanup of standard unit properties
-Message-ID: <20210316205154.GF4309@sirena.org.uk>
-References: <20210316194824.3526913-1-robh@kernel.org>
+        Pavel Machek <pavel@ucw.cz>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-clk@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-i3c@lists.infradead.org, linux-iio@vger.kernel.org,
+        linux-leds@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: Clean-up undocumented compatible strings
+Message-ID: <20210316205249.GG4309@sirena.org.uk>
+References: <20210316194918.3528417-1-robh@kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="FoLtEtfbNGMjfgrs"
+        protocol="application/pgp-signature"; boundary="lQSB8Tqijvu1+4Ba"
 Content-Disposition: inline
-In-Reply-To: <20210316194824.3526913-1-robh@kernel.org>
+In-Reply-To: <20210316194918.3528417-1-robh@kernel.org>
 X-Cookie: Results vary by individual.
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
@@ -53,29 +56,32 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---FoLtEtfbNGMjfgrs
+--lQSB8Tqijvu1+4Ba
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Mar 16, 2021 at 01:48:24PM -0600, Rob Herring wrote:
-> Properties with standard unit suffixes already have a type and don't need
-> type references. Fix a few more cases which have gotten added.
+On Tue, Mar 16, 2021 at 01:49:18PM -0600, Rob Herring wrote:
+> Adding checks for undocumented compatible strings reveals a bunch of
+> warnings in the DT binding examples. Fix the cases which are typos, just
+> a mismatch between the schema and the example, or aren't documented at all.
+> In a couple of cases, fixing the compatible revealed some schema errors
+> which are fixed.
 
 Acked-by: Mark Brown <broonie@kernel.org>
 
---FoLtEtfbNGMjfgrs
+--lQSB8Tqijvu1+4Ba
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmBRGmkACgkQJNaLcl1U
-h9B8VQf/Qt51KMcXwNANHSlYrtixnqP6+Lb7Sy0ifRpBT5ipmyfxnErRzPg8axY4
-lWKfoyVrfaZjIvJSLWkXGA2YB3syiY8N38U2qiFV5bTNdquw9GIBpk2OU4K8ffsG
-y/jvco6VEzDSViGZrBCW8nH7BsWrClRn625/aObf+hDjAkrJomVKmytp24k0zCw1
-be+lcJqINLsEehCehhnwsvmzle7IJU2ST5H7S/tP2v98INu/2GR5i6wb+tcmpLSs
-V+r8mEcs9to2AawWshiPvcZOj4Z1Vur5YEyCPF5AYfyZdQXGqVUBO8GfSKVBK1Ra
-jpDDGDEiiNP4zATt5sBWFFFGcSLqnw==
-=yuJq
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmBRGqAACgkQJNaLcl1U
+h9AAYwf/QQEXJESFxZVZKApeC2ypxUDckOjIAXw+3ZZYA3a9Mx/MllGedYIfGyqx
+aONmpU5uRZxnWP50YGV5Y5oYS6er1ey2MwMikahPpMxhLoUfXVdEQgsocEJxquWg
+3L0Yf9+3IZPTx0uH5yeyhiFnlUCjHxhm1CE3h1sKgQJsytcX+pHiew/vRQSfU8xW
+JDEEuG1WfeQgOQ7VU3RthJ118ifcy+QeZaU2oSA6GsrpFdQk/qyVUyIF3FVGCeck
+TAASFFWk7hmMFicdUN2pxZ3aUYewYwlZAsp2DdrfEvf2vIKCPxeVuLP8qSQ4O68+
+/7rhwzcbiO5Nkq6aIxXzcZ19meepFg==
+=bmyZ
 -----END PGP SIGNATURE-----
 
---FoLtEtfbNGMjfgrs--
+--lQSB8Tqijvu1+4Ba--

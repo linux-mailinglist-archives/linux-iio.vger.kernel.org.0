@@ -2,68 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 475F333E19C
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Mar 2021 23:44:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C027F33E639
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Mar 2021 02:36:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231510AbhCPWoQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 16 Mar 2021 18:44:16 -0400
-Received: from mail-io1-f47.google.com ([209.85.166.47]:43397 "EHLO
-        mail-io1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231614AbhCPWns (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Mar 2021 18:43:48 -0400
-Received: by mail-io1-f47.google.com with SMTP id f20so38945043ioo.10;
-        Tue, 16 Mar 2021 15:43:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=3AQHaxNTgps1UYSis5tdzaUweEo/y4yOoyxoMH6xdw0=;
-        b=tw+x6XOCAgSicAHsyGZAEmlAF0Vdb2aE5Be6G3hNkf5PFga+5xLfWkEInEjS4fbUW1
-         zHW8ol49h58ZDvWah+iPBGyXA3i7nu9ENn7UTBqrt18v00Wogf2jfRU9kjy+zW4yyt+g
-         0NBEq2QB08viskgLG+ymV+GJcH7xRHcIfqyUj27WuxriGmQJWm7qN5CKgAWiytsHnECz
-         XDLmcyX0oyPBS1/3NJtbt8vHykENoAPJn0PSnivRsnU1FPyMvplNhx/Tko8eTtJz60+m
-         d0vvhy9Nvg8kFEA5IyFy2CG3HtvbS1lK3j1HpixOPhD0W8puRWjCPJnXjhz/RTdbM9my
-         98fA==
-X-Gm-Message-State: AOAM531TiYn+044ukj5ISqOVDI0mtyeoDnSGOwfFjAbUwu840Ygei24H
-        B5Wt/haJvY1gN7W7ZoO0fw==
-X-Google-Smtp-Source: ABdhPJx7hy5YNHZ9YdWaP/Qmd/x7PZIbYcuO0BREm5pPQpv5v4qXdle2dM1a/H1nxKpNbXiVZWcvqQ==
-X-Received: by 2002:a02:662b:: with SMTP id k43mr653990jac.139.1615934628209;
-        Tue, 16 Mar 2021 15:43:48 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.253])
-        by smtp.gmail.com with ESMTPSA id b15sm6551871ilm.25.2021.03.16.15.43.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Mar 2021 15:43:47 -0700 (PDT)
-Received: (nullmailer pid 3823592 invoked by uid 1000);
-        Tue, 16 Mar 2021 22:43:44 -0000
-Date:   Tue, 16 Mar 2021 16:43:44 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
-Cc:     grygorii.tertychnyi@leica-geosystems.com,
-        andrey.zhizhikin@leica-geosystems.com, robh+dt@kernel.org,
-        andriy.shevchenko@linux.intel.com, linux-kernel@vger.kernel.org,
-        denis.ciocca@st.com, jic23@kernel.org, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org, pmeerw@pmeerw.net, lars@metafoo.de
-Subject: Re: [PATCH V2 1/2] dt-bindings: iio: st,st-sensors add IIS2MDC.
-Message-ID: <20210316224344.GA3823538@robh.at.kernel.org>
-References: <20210311030554.6428-1-Qing-wu.Li@leica-geosystems.com.cn>
- <20210311030554.6428-2-Qing-wu.Li@leica-geosystems.com.cn>
+        id S230015AbhCQBft (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 16 Mar 2021 21:35:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59450 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229490AbhCQBfs (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 16 Mar 2021 21:35:48 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4F4F364E76;
+        Wed, 17 Mar 2021 01:35:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1615944948;
+        bh=wfVsG34NpnkPgDNvkfeM6rHhymxXjOqDbCNsoIlma9s=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=YIqypZavA3LNYBIPc1EreM/QDPJFqyeB+Xdvbxq1wCfvXWZPydjiMAe93cDQh4+eP
+         gNfTj7D7paWO1O1uNQp5ZMkVeXR4tM+BdMTxVPf7ZHJgcbbQYFnHQUnkS0MbaK6aBI
+         1lYIEDicUaOY6H5SCN9STWjcGvWH9N6oQxERx16WPgjZ+GZOtcqa4v8Cv9dr0er7bD
+         zXQaQIScBIieUeVWBkI/izQUVGrDePmYFQnkIK9ggZdGQlXuXgCXkOD/lXjuMFUPAa
+         ElY2b6rfq+i9r07KPQ0xNtZvpLo2I2UF9Ks3/hgj/xLiUs+4v6dyI4uRkLJEViE+go
+         QGH6AH4BQz8Jg==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210311030554.6428-2-Qing-wu.Li@leica-geosystems.com.cn>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20210316194918.3528417-1-robh@kernel.org>
+References: <20210316194918.3528417-1-robh@kernel.org>
+Subject: Re: [PATCH] dt-bindings: Clean-up undocumented compatible strings
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, Maxime Ripard <mripard@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>, Vinod Koul <vkoul@kernel.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-clk@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-i3c@lists.infradead.org, linux-iio@vger.kernel.org,
+        linux-leds@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org
+To:     Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org
+Date:   Tue, 16 Mar 2021 18:35:46 -0700
+Message-ID: <161594494696.1478170.13888306623342465859@swboyd.mtv.corp.google.com>
+User-Agent: alot/0.9.1
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 11 Mar 2021 03:05:53 +0000, LI Qingwu wrote:
-> Add support for ST magnetometer IIS2MDC,
-> an I2C/SPI interface 3-axis magnetometer sensor.
-> The patch was tested on the instrument with IIS2MDC via I2C interface.
-> 
-> Signed-off-by: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
+Quoting Rob Herring (2021-03-16 12:49:18)
+> Adding checks for undocumented compatible strings reveals a bunch of
+> warnings in the DT binding examples. Fix the cases which are typos, just
+> a mismatch between the schema and the example, or aren't documented at al=
+l.
+> In a couple of cases, fixing the compatible revealed some schema errors
+> which are fixed.
+>=20
+> There's a bunch of others remaining after this which have bindings, but
+> those aren't converted to schema yet.
+>=20
+> Cc: Stephen Boyd <sboyd@kernel.org>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: Thierry Reding <thierry.reding@gmail.com>
+> Cc: Sam Ravnborg <sam@ravnborg.org>
+> Cc: Vinod Koul <vkoul@kernel.org>
+> Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> Cc: Jonathan Cameron <jic23@kernel.org>
+> Cc: Pavel Machek <pavel@ucw.cz>
+> Cc: Kishon Vijay Abraham I <kishon@ti.com>
+> Cc: Sebastian Reichel <sre@kernel.org>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: linux-clk@vger.kernel.org
+> Cc: dmaengine@vger.kernel.org
+> Cc: linux-i3c@lists.infradead.org
+> Cc: linux-iio@vger.kernel.org
+> Cc: linux-leds@vger.kernel.org
+> Cc: linux-pm@vger.kernel.org
+> Cc: linux-serial@vger.kernel.org
+> Cc: linux-spi@vger.kernel.org
+> Signed-off-by: Rob Herring <robh@kernel.org>
 > ---
->  Documentation/devicetree/bindings/iio/st,st-sensors.yaml | 1 +
->  1 file changed, 1 insertion(+)
-> 
 
-Acked-by: Rob Herring <robh@kernel.org>
+Acked-by: Stephen Boyd <sboyd@kernel.org>

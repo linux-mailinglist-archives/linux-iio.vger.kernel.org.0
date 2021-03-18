@@ -2,125 +2,108 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 53118340916
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Mar 2021 16:43:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 379DA340D77
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Mar 2021 19:46:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231789AbhCRPmd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 18 Mar 2021 11:42:33 -0400
-Received: from mout.kundenserver.de ([212.227.17.24]:33199 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231803AbhCRPmM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 18 Mar 2021 11:42:12 -0400
-Received: from [192.168.1.155] ([77.4.36.33]) by mrelayeu.kundenserver.de
- (mreue109 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1N4i3d-1lncYI1qo3-011hxK; Thu, 18 Mar 2021 16:42:01 +0100
-Subject: ADC subsystem [WAS: GSoC IIO project: Mugil]
-To:     Lars-Peter Clausen <lars@metafoo.de>,
-        "Enrico Weigelt, metux IT consult" <info@metux.net>,
-        Mugil Raj <dmugil2000@gmail.com>, linux-iio@vger.kernel.org,
-        utkarshverma294@gmail.com
-References: <CAOgtOjMwnwsiXd8rPeGBBTVkZUeabQ5nLtPts2RQDDMc-TDgKA@mail.gmail.com>
- <708e557e-8318-9141-ccab-c564249a7264@metux.net>
- <9028e023-fd0a-c10d-2d7a-3b4302638c35@metafoo.de>
-From:   "Enrico Weigelt, metux IT consult" <info@metux.net>
-Message-ID: <1c5e51c3-1643-763a-389e-e50f86bbb3a8@metux.net>
-Date:   Thu, 18 Mar 2021 16:42:00 +0100
+        id S232588AbhCRSpw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 18 Mar 2021 14:45:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54232 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232546AbhCRSpZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 18 Mar 2021 14:45:25 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA9F3C06174A;
+        Thu, 18 Mar 2021 11:45:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description;
+        bh=wDTHAbgDLyZrn6d64TVhU+dRn+k3q2aStgvSBcHqsWY=; b=H+2S0MDVY0wpSrcPygVZR+ZydC
+        MCqu0904GYOzNDQWWKIwE+qCzEjR6wFCqnhk9yfkabAsvH/uQVQ5d7I4DnPBtqvlE1OSKfw18+r3S
+        mg2hsuBo7fiPLlbwI0AsjBiFZ3UdnWw1Kd222BbC6bRyPBGT31hzWLYAvn7QuqKQ/YfhKBUwbwtTK
+        MFf027MEtJR8Ci0Eb8fcl3xFWi7FcKdHJ1gI/l1hamfBOpuZfuppAOex8h+EqAyGr9kUUIKpJOdju
+        5PuOIJTy+lR5yLxUthPjTheb9zN+ig5Z9Hzk+LOPxMzTNHYCjQJqw5nm9AsR3uWfPi3xhxzWhmnH5
+        fBHkeV/w==;
+Received: from [2601:1c0:6280:3f0::9757]
+        by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+        id 1lMxdS-003Mt3-MO; Thu, 18 Mar 2021 18:44:49 +0000
+Subject: Re: linux-next: Tree for Mar 16 (AD9467 & ADI_AXI_ADC)
+To:     Alexandru Ardelean <ardeleanalex@gmail.com>
+Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>
+References: <20210316155001.699efbb4@canb.auug.org.au>
+ <d3c9bca8-3709-3613-c4cd-6da2aa96c2b9@infradead.org>
+ <CA+U=DspHhL=Of2axKW6FiF3oG8S7FEP4QBLEZHc5VQ4LzmvqNQ@mail.gmail.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <136e564b-bc81-19b6-ca3d-6fe5bac4d429@infradead.org>
+Date:   Thu, 18 Mar 2021 11:44:39 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.8.0
 MIME-Version: 1.0
-In-Reply-To: <9028e023-fd0a-c10d-2d7a-3b4302638c35@metafoo.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: tl
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:/qDhfHXuz9eEcaw9AwL6VVHJSRBC3Iycv00Zs/LSW7bqZUU++Qq
- j5WowZJUMfbLpXTE4LIfWomBGIwzbGvXVSchxfjSY5xj8Qvf67IPtcYuk5gmcQWZ9jFbO3k
- N5H08d4rudT/bwm5oqTga4FYSNRuJjSl4xQh+9U2/MAAWtI4vKCa2N69Ki+ok3yWGrcEB5G
- +Wvq8WvLHci+Xy7mq8Rpg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:DKtYX8WFV1Y=:2kPVV+NxKOW4aVtox0T2u6
- 1fPvOub9iFbwIFvGNaFi2OABrZx9e7UUS6xMDsXyd1yRkVWma1qq/wpIorr3d0RGtGav+lap1
- rZTNm5V5XW3U9eXht2sSSVM0azdCDf2g8FiMGU5PJQtyklkRuC47bTaCAleYdfonXYbfWyrBl
- SeHKl8AYStHuvzic9OfpBzFNt1TjUg1ZCJqhcjxppvEVU67scIPqPWO3p2VNnQdufAiR2dgg8
- GrlQq1L4VtgRQBl49l+rNxe+5Q2/sk1mHf02EiiX+aHqMjblRuGgCPCd+jllSdbrViUJUVAAl
- se+cPadCMZupZgsdEGr4ba7THGjkC6YJOm+yumVkCRmYsV9VM3iEnsPE6ihIvWleFCjUg1R7h
- HYGgPwNFwT29JGhuLs1+TJ1ufKDUcIakQLmWdZV0Rgq8h4t6iv+HM3m+3aMV6
+In-Reply-To: <CA+U=DspHhL=Of2axKW6FiF3oG8S7FEP4QBLEZHc5VQ4LzmvqNQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 11.03.21 16:45, Lars-Peter Clausen wrote:
-
->> For simple ADCs, I've also got yet another(more complex) idea:
+On 3/17/21 1:16 AM, Alexandru Ardelean wrote:
+> On Tue, Mar 16, 2021 at 11:20 PM Randy Dunlap <rdunlap@infradead.org> wrote:
 >>
->> Create some 'simple-ADC' subsys, which gives a *simple* API for the
->> *simple* cases that's bridged to iio and hwmon (maybe even other
->> subsys's). The idea is getting actual hw drivers for those devices very
->> simple and small, make them usable in IIO as well as hwmon.
-> 
-> Not to forget ALSA. Some ADCs are multi-purpose so that they can be used 
-> for monitoring, but also audio applications.
-
-Oh, how could I forget that ;-)
-
-> I did propose such a ADC subsystem maybe 10 years ago. The conclusions 
-> back then was that we shouldn't create a subsystem for every sensor type 
-> and instead use IIO.
-
-I don't think, IIO is a good place here. IIO seems to be kinda catchall
-for anything that delivers samples of potentially multiple channels.
-That's okay for generic data acquisition, where the OS really can't know
-whats behind those IOs right know, and an specific application needs
-to take care of that. But it's a bad idea, if the IO has some specific
-and fixed purpose, eg. audio input, battery monitoring, etc.
-
-Yes, some of these device classes are already handled by IIO (different
-channel types, conversions, ...), but still that needs to be customized
-for each use case (the same ADC can be used for many different things),
-and often special userland code (eg. in the audio case).
-
-Maybe we need some kind of "policy layer" which tells what some physical
-device is used for ...
-
->> An interesting question here, that needs some deeper thoughs, is the
->> driver instantiation into the actual subsystems.
+>> On 3/15/21 9:50 PM, Stephen Rothwell wrote:
+>>> Hi all,
+>>>
+>>> News: there will be no linux-next release on Friday this week.
+>>>
+>>> Warning: Some of the branches in linux-next are still based on v5.12-rc1,
+>>> so please be careful if you are trying to bisect a bug.
+>>>
+>>> News: if your -next included tree is based on Linus' tree tag
+>>> v5.12-rc1{,-dontuse} (or somewhere between v5.11 and that tag), please
+>>> consider rebasing it onto v5.12-rc2. Also, please check any branches
+>>> merged into your branch.
+>>>
+>>> Changes since 20210315:
 >>
->> For example, if some DT says, there's some "ti,adcXYZABC" on the board,
->> what does that actually mean for us ? Where (eg. in which subsys) shall
->> it appear ? Is it an IIO or hwmon device ? Shall that decision even be
->> made only by DT, or do we rely on some other configuration layer ?
+>>
+>> on i386 or x86_64:
+>>
+>> WARNING: unmet direct dependencies detected for ADI_AXI_ADC
+>>   Depends on [n]: IIO [=y] && HAS_IOMEM [=y] && OF [=n]
+>>   Selected by [y]:
+>>   - AD9467 [=y] && IIO [=y] && SPI [=y]
+>>
+>>
+>> AD9467 should not select ADI_AXI_ADC when OF is not enabled,
+>> so possibly AD9467 should depend on OF.
 > 
-> Yes, that is a really complicated question. DT is not supposed to 
-> describe the software (sub-)systems that are used.
+> Hmm, this becomes a bit complicated.
+> We got here because we needed to add a depends on HAS_IOMEM for the
+> ADI_AXI_ADC (due to the s390 arch).
+> Maybe a better fix would be for AD9467 to depend on ADI_AXI_ADC.
+> The AD9467 driver can't function without the ADI_AXI_ADC driver.
 
-Nore sure, whether that belongs into category "software". Probably a
-different one describing the actual use in the greater context of a
-complete machine (which might be more than just the mainboard). In the
-audio example, it indeed is about hardware, but one that's only
-partially reflected in DT.
+Yes, "depends on" works here. Please go ahead with that change.
+Thanks.
 
-Maybe should introduce the idea of "composite devices". For DT that
-would introduce additional information what that particular ADC is
-used for. Could be an extra device_node that describes the audio output,
-which just happens to use the ADC as a component:
+> It is a little early to move this to a "high-speed ADC" subgroup.
+> 
+>>
+>>
+>> Full randconfig file is attached.
+>>
+>>
+>> --
+>> ~Randy
+>> Reported-by: Randy Dunlap <rdunlap@infradead.org>
 
-     audio0 {
-         compatible = "composite,simple-audio";
-         adc = <&adc1>;
-         headphone-detect-gpio = <&gpio77>;
-	...
-     };
-
-Same could be done w/ other things like battery monitoring, etc.
-
-
---mtx
 
 -- 
----
-Hinweis: unverschlüsselte E-Mails können leicht abgehört und manipuliert
-werden ! Für eine vertrauliche Kommunikation senden Sie bitte ihren
-GPG/PGP-Schlüssel zu.
----
-Enrico Weigelt, metux IT consult
-Free software and Linux embedded engineering
-info@metux.net -- +49-151-27565287
+~Randy
+

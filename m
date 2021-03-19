@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2A2C3423A0
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Mar 2021 18:47:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CBFEC3423A5
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Mar 2021 18:49:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230195AbhCSRrU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Mar 2021 13:47:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41568 "EHLO
+        id S230055AbhCSRsy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Mar 2021 13:48:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230177AbhCSRrB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Mar 2021 13:47:01 -0400
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1FF8C06174A
-        for <linux-iio@vger.kernel.org>; Fri, 19 Mar 2021 10:47:00 -0700 (PDT)
-Received: by mail-pj1-x1030.google.com with SMTP id nh23-20020a17090b3657b02900c0d5e235a8so5243128pjb.0
-        for <linux-iio@vger.kernel.org>; Fri, 19 Mar 2021 10:47:00 -0700 (PDT)
+        with ESMTP id S229956AbhCSRsx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Mar 2021 13:48:53 -0400
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37C66C06174A
+        for <linux-iio@vger.kernel.org>; Fri, 19 Mar 2021 10:48:53 -0700 (PDT)
+Received: by mail-pj1-x1034.google.com with SMTP id ga23-20020a17090b0397b02900c0b81bbcd4so7114608pjb.0
+        for <linux-iio@vger.kernel.org>; Fri, 19 Mar 2021 10:48:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=8VLEJ18GbAKtVQTsWI6Yc/3T4kStBYCYFCb9luLrpPQ=;
-        b=MGwmxyJjPQLvASbQSYRFssqHTMHbatjPF6m2jDrwXR5exiWQpkuuUPB9dyteHs0uzg
-         mpUBfKwLHAXoiWLn7xBz/eNwTd/DBpd9J7al3aWsrbMYUGiKFPjInWcLD3HoSfeJ65Et
-         4wb3xN8Q3nmdz/268JGE4qb9GmSLfehr6FgTnM+pgIc5tH+ZCl7XBGkyxB/QkTCbf2F1
-         U/HzSJ4K+jfGXUZx5UvbRZhm/MSZa3c4SF1Myz+oynArjj44fVi7322EO2dy4aL7GjqE
-         3Engw6C/WLXG+KBwH3npJSoTnFchAUs4iEN2UIZb1KJPBDC4ZYf4jqGJpDm+H1ybD5HQ
-         Nj/A==
+        bh=4KJyyJ9mdrUZmoi9juEn1IA8YndKGBGSVerMITk6BSQ=;
+        b=dgL3f3arNmYPHGlKVr3jX3z87FhZDiorqFAZ/mXCOfvfKiBxjpMn3f9a9tCNxlrCVN
+         dNilw6yBAajdNu0R/gemehag+sdA8himG3UtLIjbL643RMxQbUaGkkM7iggm/ZqzmyzH
+         9dES82b++ryn2abHA5h7I/BNJZP+LMUYTNKCLnOUJxd7KfQz8K9bnlOBnH4ggZ4JN61W
+         l1D1alUHDt/Ndh5y+vZ5JepBU2YU40U+vY8oU14UuHIHVpMVSXgGKPKYoKi3SR9tq8gk
+         G86E9kR9GgcMnIbOfM0vxq+YoXcXNWyUjRcwc60JfiZBE0IGNIRwqZLq4mhlYBMx9vo0
+         kgkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=8VLEJ18GbAKtVQTsWI6Yc/3T4kStBYCYFCb9luLrpPQ=;
-        b=pmQyKMdOM6BioOkddAfbtphPUp0bGpxRkXJDHbda/RJLp7OJimziXEiO27kVpRvSrx
-         +c0qtWJTTyPWOQJoflOONL66xon53MJv2h1WWoAk6x5/0coOvmvJa8mTd1+E8Ss+P0AO
-         kmJsrxyvGgrOHKOsqqM7qJYbDRVZFFQfS3fv2u3J6Me5C+GXCnW6UJEtz+biNWWNopZN
-         Cn8/DoSQ/FJTe20kijOcMRY6r50Bw8xOkFMWhN8eQGcGXVNulMkCC+dgzIcq5nCwezGi
-         rms3pyL85/cEvPuiSOwzlJRltgOGxdaKi5bK4ReOiFhQyxHIeaAVyUsQoxS5jx8Fj/G0
-         XLBg==
-X-Gm-Message-State: AOAM532DdJDkzlp9qbZMuUghB2OuOdw4KSWNoQu+H13amVuBcamokb2x
-        1jPIFqTWqYINXLTK0ycJXUhJMyr624eCcVR+ITw=
-X-Google-Smtp-Source: ABdhPJzp0KP4MlFpTiNW1DjKCARaWXczb5S72HynbXcBLV2x/1K2S9gJ18QZrL289FEU0dbeQ46uhBsa2q56PBJ0hFQ=
-X-Received: by 2002:a17:902:a406:b029:e6:78c4:71c8 with SMTP id
- p6-20020a170902a406b02900e678c471c8mr15320020plq.17.1616176020475; Fri, 19
- Mar 2021 10:47:00 -0700 (PDT)
+        bh=4KJyyJ9mdrUZmoi9juEn1IA8YndKGBGSVerMITk6BSQ=;
+        b=J05LV/aAaQ4YuSZ9zfLBn8ScjQuDtHXh0U6qeK9MSCt9m7lqveCDMQrk2SLocS0N/+
+         fqGzk89z1I6smmdo4k1knE71vxd3pw6BJlnW2mTJV/QbFB/Ff6mwciAB3HdeFjcERXBx
+         bFrtIEldhFmuzJFjyV7oA0istIEnG6dQCxTUMKnP0wYb5yqyMvana7xvEB04FTbmOr26
+         w9SBRAgHDuHRvYOoxyWJsqro9vxaY1zo/2gD5NfiHYHBaMnQlZSyJxcHry2Gdl6uSDY6
+         F4t/AuTi73Y7u82rEzPOPQVboFNIao6jHubPGTHgHePMrGiiJexppucmCR0tvex8Lkmb
+         7GnQ==
+X-Gm-Message-State: AOAM532zk3F1mYqHmzRNhVuRAQvxMVi55tHKJTepox/yPVQNnx6Bxvbo
+        ymwoBQ/T297z4N8+BEhzYN+hW/M9r6ecDJpuepg=
+X-Google-Smtp-Source: ABdhPJxTmNwCWMhuzx+pGdlE3oeNxFF9dRopbhoS69iKbf7MzvEorzrZn30HiTBJZXV0CZvLidMH3vn9NBt1sVTiNlM=
+X-Received: by 2002:a17:902:ee02:b029:e6:5397:d79c with SMTP id
+ z2-20020a170902ee02b02900e65397d79cmr10770671plb.21.1616176132710; Fri, 19
+ Mar 2021 10:48:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210319165807.3639636-1-gwendal@chromium.org>
-In-Reply-To: <20210319165807.3639636-1-gwendal@chromium.org>
+References: <20210319165807.3639636-1-gwendal@chromium.org> <20210319165807.3639636-3-gwendal@chromium.org>
+In-Reply-To: <20210319165807.3639636-3-gwendal@chromium.org>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 19 Mar 2021 19:46:44 +0200
-Message-ID: <CAHp75VcSHxRADWVMu8qfNwZrC_XanXTY-0dMfChuDuSemev9jw@mail.gmail.com>
-Subject: Re: [PATCH v5 0/2] iio: sx9310: Support ACPI properties
+Date:   Fri, 19 Mar 2021 19:48:36 +0200
+Message-ID: <CAHp75VeEV1ttWd1SKdrLYJZyN=4nDgcoKPTBCbdXOdh=J5fG8g@mail.gmail.com>
+Subject: Re: [PATCH v5 2/2] iio: sx9310: Support ACPI properties
 To:     Gwendal Grignou <gwendal@chromium.org>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -64,32 +64,18 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Fri, Mar 19, 2021 at 6:58 PM Gwendal Grignou <gwendal@chromium.org> wrote:
 >
-> Current sx9310 driver only support device tree properties.
-> To be able to use sensor on Intel platfrom, add support to read ACPI by
+> Use device_property_read_... to support both device tree and ACPI
 
-platform
+device_property_read_uXX()
 
-It's not Intel specific, but any which is using ACPI.
+> bindings when reading the properties we need to configure the SAR
+> sensor.
 
-Luckily it's a cover letter only :-)
+...
 
-> converting calls of_property_read_...() to device_property_read_...().
->
-> A bug was uncovered: if "semtech,combined-sensors" array was less than
-> 4 entries, its content would be ignored, as of_property_read_u32_array
-> would return -EOVERFLOW.
->
-> Gwendal Grignou (2):
->   iio: sx9310: Fix access to variable DT array
->   iio: sx9310: Support ACPI properties
->
->  drivers/iio/proximity/sx9310.c | 56 +++++++++++++++++++++-------------
->  1 file changed, 34 insertions(+), 22 deletions(-)
->
-> --
-> 2.31.0.291.g576ba9dcdaf-goog
->
+> +               count = device_property_read_u32_array(dev, "semtech,combined-sensors", NULL, 0);
 
+device_property_count_u32()
 
 -- 
 With Best Regards,

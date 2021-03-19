@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B9133341AFA
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Mar 2021 12:05:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 34CEC341AFB
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Mar 2021 12:05:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230151AbhCSLDz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Mar 2021 07:03:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39128 "EHLO
+        id S230121AbhCSLD4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Mar 2021 07:03:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230223AbhCSLDb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Mar 2021 07:03:31 -0400
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3431EC06174A;
-        Fri, 19 Mar 2021 04:03:31 -0700 (PDT)
-Received: by mail-pj1-x102a.google.com with SMTP id bt4so4459529pjb.5;
-        Fri, 19 Mar 2021 04:03:31 -0700 (PDT)
+        with ESMTP id S230378AbhCSLDg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Mar 2021 07:03:36 -0400
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D351C06174A;
+        Fri, 19 Mar 2021 04:03:36 -0700 (PDT)
+Received: by mail-pj1-x1036.google.com with SMTP id cl21-20020a17090af695b02900c61ac0f0e9so8303520pjb.1;
+        Fri, 19 Mar 2021 04:03:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=HvvZ2pFbiubk/RaFwxqoeYMzhVunEOAm5oGM3eeUGTQ=;
-        b=QJV7fv95tRRdF9dMz2rMqAh3PXAvZhzETCESyHORpq7x8zaFNohYd+hcP9fOE5yOWq
-         lk90CY0uPOLq9ALlpUjAcKv8rVibRlqvUd9Kn/fP93rV8PAANO23klH6qn3imFYw1LGx
-         nj0Khb283VbK6JHmRMPXFkvFvt68CivKVNdq3emh26UT1e3bSM3KdoMaswBNbOTfh52Q
-         83x9/PX6yL0I/N/MwcdzPKlHyK26Z/AWQrWrr4g9rpjtJ5Zk3/raOkkKPI/maZ9E6lVT
-         eSngc/ZSbSYu0q30HqpIGgiPzLxrbV+hs53seao99ATGuNJSvJ4hyp2xiX0OQ2hQxBrp
-         Taow==
+        bh=l2ypzjt3l7Y0nIjnP32LrmztjmBKkmNybVvXBUFclWg=;
+        b=Ct5N0zQwwau/wFdCMsBwcHx1SW2FTrRIOW9OPaAmlHY5nydVmUDy08Y3Ml5h2iOfit
+         oSu2GBts/Ri6XmgryW8IM2g+OetTNE9VCy71AvC/ub8lupKGxUepkRm7skL448rzW6MF
+         73XkXJUGuidut0R0t0bt8sql5E/PGhkoGYgVyVbUOQSev7bSWXL+5kduKRGquWMRQ0B1
+         lbC749z6pnw7yszCynIE+0ql+qt0h8x3XfAdoBv1ercGzmPePUnkgesWKsp8EeVwwQEo
+         zqBPvhT5Bg8ahCQfZyueyx2cim8zre+oTyMUEwVY3Tzqd4G59i6JXEaRVjPyxxV/87tc
+         ZySA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=HvvZ2pFbiubk/RaFwxqoeYMzhVunEOAm5oGM3eeUGTQ=;
-        b=S5oxhe7ZebgoSutVRmQp1tN7L/FHuDDjlUT6xiH/T1p+E2VxjDvylg1Va3P568Guv2
-         XGgxD3Yk1iOsfuynwlBv+loqxH2TpLcUCg4fBSctMpO7PTsl+XJmdZ4ojT0H3NKQiKCM
-         yR1vpBxbvexATjbrMhVp5eWLUTFxJ/T+d/ANy4pZnUJG2KVHTK1cPBycPMco5r+tpLEP
-         jDKUs+ZmYgiMG3UiF5nZF4168LvqIcZSSFE6riDeN1bj4PHicwxgT37oZXZMWD2kYiLB
-         bshYidn8QrkqiPsq8au/77HXmfBTsyJkLzzcPdTUTEqPZZ6BWR2mYYjtxY2hDYLzT8f3
-         q/dw==
-X-Gm-Message-State: AOAM532qxzk1XQ27EchGvyojxn/DCEaGTj5Nx8SjcI8jVhYsbvu10hyk
-        meuuWLnTm9seOUWjCHZMS18=
-X-Google-Smtp-Source: ABdhPJySR2eEoe+Yo+Lcvmnooi8jbrWZVxfL4eFoFxMkwGBmYvLZpUrXyf+N23OZ20WvIBCDGS3XPQ==
-X-Received: by 2002:a17:90b:4c0a:: with SMTP id na10mr9561896pjb.227.1616151810858;
-        Fri, 19 Mar 2021 04:03:30 -0700 (PDT)
+        bh=l2ypzjt3l7Y0nIjnP32LrmztjmBKkmNybVvXBUFclWg=;
+        b=Yqwn4s0iTgNSGAyNUGP332BvAd6hBKVpJuHCJK1vhb1fsG1HLBWc13AhbMmAUTTsDe
+         6IVTT9Qzqwp/GuemgjaTb9k1bwmoXDdrkW/n5P39XOSee7vicmBY4pPWBYQhZjAYyhJe
+         qteIyfesDvTdo/lPg+HXqxMec9rOLqknDL7XdL9nB2JBjSTG6X8KWYfm4RyvLjBV/7LA
+         pBdAvtwM3XUX6qPtqQU/DfCjzEZeqtIe2f2H+NbdHIZf/xADDn1BkyJdSVXgBVGj3RTA
+         H2VfUOp8iXNbyzpS9iAgAgQyYo2iNIOBp+gEW6Wr77bEfzTzIVwp72FgG3cA9V3Z91Nu
+         vJsA==
+X-Gm-Message-State: AOAM533AEGn9hlbk5pAYpwIqTsUaisliSLcYbhYNDWwcZkQ9EBqg9Fz+
+        tZ+y5r+4ITWBE6rHU8H3M3Q=
+X-Google-Smtp-Source: ABdhPJwiIe+r6Tkd9+7/IUbMKDsG3DSeVMkRjTdmJFeGvVrhXtld2ODT29zmT+P84/yQzi4GOJOLqQ==
+X-Received: by 2002:a17:902:8bcb:b029:e6:a4a1:9d7e with SMTP id r11-20020a1709028bcbb02900e6a4a19d7emr13796290plo.25.1616151815779;
+        Fri, 19 Mar 2021 04:03:35 -0700 (PDT)
 Received: from localhost.localdomain ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id i22sm4879042pjz.56.2021.03.19.04.03.26
+        by smtp.gmail.com with ESMTPSA id i22sm4879042pjz.56.2021.03.19.04.03.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Mar 2021 04:03:30 -0700 (PDT)
+        Fri, 19 Mar 2021 04:03:35 -0700 (PDT)
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     jic23@kernel.org
 Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
@@ -59,9 +59,9 @@ Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
         alexandre.torgue@st.com, o.rempel@pengutronix.de,
         William Breathitt Gray <vilhelm.gray@gmail.com>,
         Dan Carpenter <dan.carpenter@oracle.com>
-Subject: [PATCH v10 29/33] counter: Implement signalZ_action_component_id sysfs attribute
-Date:   Fri, 19 Mar 2021 20:00:48 +0900
-Message-Id: <699de2bee70cbcdbafd7ba652849fc3cf77b0e34.1616150619.git.vilhelm.gray@gmail.com>
+Subject: [PATCH v10 30/33] counter: Implement *_component_id sysfs attributes
+Date:   Fri, 19 Mar 2021 20:00:49 +0900
+Message-Id: <fc1424b1cc73420b2d5bb4961c0e5e1aa491a315.1616150619.git.vilhelm.gray@gmail.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <cover.1616150619.git.vilhelm.gray@gmail.com>
 References: <cover.1616150619.git.vilhelm.gray@gmail.com>
@@ -72,101 +72,128 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 The Generic Counter chrdev interface expects users to supply component
-IDs in order to select Synapses for requests. In order for users to know
-what component ID belongs to which Synapse this information must be
-exposed. The signalZ_action_component_id attribute provides a way for
-users to discover what component ID belongs to the respective Synapse.
+IDs in order to select extensions for requests. In order for users to
+know what component ID belongs to which extension this information must
+be exposed. The *_component_id attribute provides a way for users to
+discover what component ID belongs to which respective extension.
 
 Cc: David Lechner <david@lechnology.com>
 Cc: Gwendal Grignou <gwendal@chromium.org>
 Cc: Dan Carpenter <dan.carpenter@oracle.com>
 Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 ---
- Documentation/ABI/testing/sysfs-bus-counter |  7 ++++
- drivers/counter/counter-sysfs.c             | 45 +++++++++++++++++++++
- 2 files changed, 52 insertions(+)
+ Documentation/ABI/testing/sysfs-bus-counter | 16 ++++++++++-
+ drivers/counter/counter-sysfs.c             | 30 ++++++++++++++++-----
+ 2 files changed, 39 insertions(+), 7 deletions(-)
 
 diff --git a/Documentation/ABI/testing/sysfs-bus-counter b/Documentation/ABI/testing/sysfs-bus-counter
-index 6353f0a2f8f8..bee9289aecd1 100644
+index bee9289aecd1..57b051ba53a9 100644
 --- a/Documentation/ABI/testing/sysfs-bus-counter
 +++ b/Documentation/ABI/testing/sysfs-bus-counter
-@@ -203,6 +203,13 @@ Description:
+@@ -203,12 +203,26 @@ Description:
  		both edges:
  			Any state transition.
  
-+What:		/sys/bus/counter/devices/counterX/countY/signalZ_action_component_id
-+KernelVersion:	5.13
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Read-only attribute that indicates the component ID of the
-+		respective Synapse of Count Y for Signal Z.
-+
++What:		/sys/bus/counter/devices/counterX/countY/ceiling_component_id
++What:		/sys/bus/counter/devices/counterX/countY/floor_component_id
++What:		/sys/bus/counter/devices/counterX/countY/count_mode_component_id
++What:		/sys/bus/counter/devices/counterX/countY/direction_component_id
++What:		/sys/bus/counter/devices/counterX/countY/enable_component_id
++What:		/sys/bus/counter/devices/counterX/countY/error_noise_component_id
++What:		/sys/bus/counter/devices/counterX/countY/prescaler_component_id
++What:		/sys/bus/counter/devices/counterX/countY/preset_component_id
++What:		/sys/bus/counter/devices/counterX/countY/preset_enable_component_id
+ What:		/sys/bus/counter/devices/counterX/countY/signalZ_action_component_id
++What:		/sys/bus/counter/devices/counterX/signalY/cable_fault_component_id
++What:		/sys/bus/counter/devices/counterX/signalY/cable_fault_enable_component_id
++What:		/sys/bus/counter/devices/counterX/signalY/filter_clock_prescaler_component_id
++What:		/sys/bus/counter/devices/counterX/signalY/index_polarity_component_id
++What:		/sys/bus/counter/devices/counterX/signalY/synchronous_mode_component_id
+ KernelVersion:	5.13
+ Contact:	linux-iio@vger.kernel.org
+ Description:
+ 		Read-only attribute that indicates the component ID of the
+-		respective Synapse of Count Y for Signal Z.
++		respective extension or Synapse.
+ 
  What:		/sys/bus/counter/devices/counterX/name
  KernelVersion:	5.2
- Contact:	linux-iio@vger.kernel.org
 diff --git a/drivers/counter/counter-sysfs.c b/drivers/counter/counter-sysfs.c
-index 07588130600a..bb49a10f160b 100644
+index bb49a10f160b..eb1505bfbd89 100644
 --- a/drivers/counter/counter-sysfs.c
 +++ b/drivers/counter/counter-sysfs.c
-@@ -533,6 +533,46 @@ static int counter_name_attr_create(struct device *const dev,
- 	return 0;
- }
+@@ -587,6 +587,7 @@ static int counter_signal_attrs_create(struct counter_device *const counter,
+ 	int err;
+ 	struct counter_comp comp;
+ 	size_t i;
++	struct counter_comp *ext;
  
-+static ssize_t counter_comp_id_show(struct device *dev,
-+				    struct device_attribute *attr, char *buf)
-+{
-+	const size_t id = (size_t)to_counter_attribute(attr)->comp.priv;
+ 	/* Create main Signal attribute */
+ 	comp = counter_signal_comp;
+@@ -602,8 +603,13 @@ static int counter_signal_attrs_create(struct counter_device *const counter,
+ 
+ 	/* Create an attribute for each extension */
+ 	for (i = 0; i < signal->num_ext; i++) {
+-		err = counter_attr_create(dev, group, signal->ext + i, scope,
+-					  signal);
++		ext = signal->ext + i;
 +
-+	return sprintf(buf, "%zu\n", id);
-+}
-+
-+static int counter_comp_id_attr_create(struct device *const dev,
-+				       struct counter_attribute_group *const group,
-+				       const char *name, const size_t id)
-+{
-+	struct counter_attribute *counter_attr;
-+
-+	/* Allocate Counter attribute */
-+	counter_attr = devm_kzalloc(dev, sizeof(*counter_attr), GFP_KERNEL);
-+	if (!counter_attr)
-+		return -ENOMEM;
-+
-+	/* Generate component ID name */
-+	name = devm_kasprintf(dev, GFP_KERNEL, "%s_component_id", name);
-+	if (!name)
-+		return -ENOMEM;
-+
-+	/* Configure Counter attribute */
-+	counter_attr->comp.priv = (void *)id;
-+
-+	/* Configure device attribute */
-+	sysfs_attr_init(&counter_attr->dev_attr.attr);
-+	counter_attr->dev_attr.attr.name = name;
-+	counter_attr->dev_attr.attr.mode = 0444;
-+	counter_attr->dev_attr.show = counter_comp_id_show;
-+
-+	/* Store list node */
-+	list_add(&counter_attr->l, &group->attr_list);
-+	group->num_attr++;
-+
-+	return 0;
-+}
-+
- static struct counter_comp counter_signal_comp = {
- 	.type = COUNTER_COMP_SIGNAL_LEVEL,
- 	.name = "signal",
-@@ -627,6 +667,11 @@ static int counter_sysfs_synapses_add(struct counter_device *const counter,
- 					  COUNTER_SCOPE_COUNT, count);
- 		if (err < 0)
- 			return err;
-+
-+		/* Create Synapse component ID attribute */
-+		err = counter_comp_id_attr_create(dev, group, comp.name, i);
++		err = counter_attr_create(dev, group, ext, scope, signal);
 +		if (err < 0)
 +			return err;
++
++		err = counter_comp_id_attr_create(dev, group, ext->name, i);
+ 		if (err < 0)
+ 			return err;
  	}
+@@ -694,6 +700,7 @@ static int counter_count_attrs_create(struct counter_device *const counter,
+ 	int err;
+ 	struct counter_comp comp;
+ 	size_t i;
++	struct counter_comp *ext;
  
- 	return 0;
+ 	/* Create main Count attribute */
+ 	comp = counter_count_comp;
+@@ -718,8 +725,13 @@ static int counter_count_attrs_create(struct counter_device *const counter,
+ 
+ 	/* Create an attribute for each extension */
+ 	for (i = 0; i < count->num_ext; i++) {
+-		err = counter_attr_create(dev, group, count->ext + i, scope,
+-					  count);
++		ext = count->ext + i;
++
++		err = counter_attr_create(dev, group, ext, scope, count);
++		if (err < 0)
++			return err;
++
++		err = counter_comp_id_attr_create(dev, group, ext->name, i);
+ 		if (err < 0)
+ 			return err;
+ 	}
+@@ -783,6 +795,7 @@ static int counter_sysfs_attr_add(struct counter_device *const counter,
+ 	struct device *const dev = &counter->dev;
+ 	int err;
+ 	size_t i;
++	struct counter_comp *ext;
+ 
+ 	/* Add Signals sysfs attributes */
+ 	err = counter_sysfs_signals_add(counter, group);
+@@ -815,8 +828,13 @@ static int counter_sysfs_attr_add(struct counter_device *const counter,
+ 
+ 	/* Create an attribute for each extension */
+ 	for (i = 0; i < counter->num_ext; i++) {
+-		err = counter_attr_create(dev, group, counter->ext + i, scope,
+-					  NULL);
++		ext = counter->ext + i;
++
++		err = counter_attr_create(dev, group, ext, scope, NULL);
++		if (err < 0)
++			return err;
++
++		err = counter_comp_id_attr_create(dev, group, ext->name, i);
+ 		if (err < 0)
+ 			return err;
+ 	}
 -- 
 2.30.2
 

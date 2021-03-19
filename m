@@ -2,61 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 930DC341E6A
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Mar 2021 14:34:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FE77341ED7
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Mar 2021 14:53:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230010AbhCSNeZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Mar 2021 09:34:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43256 "EHLO
+        id S229634AbhCSNxV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Mar 2021 09:53:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229844AbhCSNeB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Mar 2021 09:34:01 -0400
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5482AC06174A
-        for <linux-iio@vger.kernel.org>; Fri, 19 Mar 2021 06:34:01 -0700 (PDT)
-Received: by mail-lj1-x233.google.com with SMTP id u20so11951262lja.13
-        for <linux-iio@vger.kernel.org>; Fri, 19 Mar 2021 06:34:01 -0700 (PDT)
+        with ESMTP id S229927AbhCSNxF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Mar 2021 09:53:05 -0400
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA9BCC06174A
+        for <linux-iio@vger.kernel.org>; Fri, 19 Mar 2021 06:53:04 -0700 (PDT)
+Received: by mail-lj1-x232.google.com with SMTP id f16so12131304ljm.1
+        for <linux-iio@vger.kernel.org>; Fri, 19 Mar 2021 06:53:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=f0IZHZ3RCROL0eolqJ5o76UXuWo1nZ9ixgurELXD9AE=;
-        b=XvfcxTGJ/8VSIrYC8aUUI0JPaOFFCMKTySpsOQMGbPxmRWGGgM7c67hZblewXwVsl4
-         R4UKkxzCwxIYxoNdbGQ3RrcOOYGdn6YnvDq/c0YZIa0owWrjKoHJwN20Oko0FDfnmkQQ
-         B1DbEGib6XuJl6i7m8ZQCk8Wqk/Aqb+VmL4SzNFgTWnT8tymT+v4CVTd9GiaIxe0O4rv
-         ChFDY+X5QFo06KHs75t5e3UXhAPSgnPmtMD97lcXpcoC4KKvVA/3OkQWBHlxfPZgOEJV
-         Vfa1Q7VfzRWakHCJm59syopVbbwlZ/eAXtl23QvqxZDgexodP7SB7BOOqRMDWEKk2+mD
-         m4EQ==
+        bh=JUeLUnlR94xPX9N99aZukfRyU4Iy1tiBeTupyd+pyx8=;
+        b=uQuEHNI/9cJcCsjIsiPwcwo459OQnbbXyioPoMHiGAGptuCnLSHP0n0ouWWuUni58L
+         9t409IjsGwmh01AQpbNfJGN4jfMwZOy8J7qNQnIgLrjxms1aoiBnQHZs/2zFDHxh1Uk6
+         m5SzpC3K6HKp+lTq+KWqNsaEwgNVlyCLWpKiPtJgj/FEpGZ2URREeoDSxaAH1X/ItjxJ
+         uiw3+WUx9o+wzxRb3NV49pNZbrvjXPc+ME+6PXiNkR4tLlvDxyrH5w1FhpYT6QQHpvmd
+         WGz497YDBlOtFbH2pkgxY6iqav4Cd69WmmcaaYyVbXJJiXuNo71bVN6bJiQnN9rtJIWq
+         b/Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=f0IZHZ3RCROL0eolqJ5o76UXuWo1nZ9ixgurELXD9AE=;
-        b=pFnWx3Q0oArliGZR6yQHDWIOrSLSmAgd86xACdbA3UNVLVvF9GVf5mMbyXsuR5LoVT
-         yFQQXDxgzYcCzhTnxzXVnZnQeqGNWERNjrCXOJMVULt0Fj5WBrss+BvVBhT5scxiw2gu
-         gu0+T6TvX3AXEDko70WpabSFzoADhgwu6R8HQDZ7AlYfbodwFyLDQTahqyw1F3NoPbiL
-         G8xeplff1XMVSkZ9LqdD+JRg8WBxGjk37nDpoQUmxtUm/mZlaZLRsF6l1SUkP0rSSPCo
-         md5LKbnxwExOP61ADu9jEZrdv1UeBC1L8gkKgIPV2znys0B19+kiQUtsPjJu0sQJmTcY
-         7n7g==
-X-Gm-Message-State: AOAM53268lTweyAFJu7xQoerxm/zHGhAia2faT4kauy8r+VbGFvaon4O
-        9VZklEBxEDt7qVOpfn2e79q8Nw==
-X-Google-Smtp-Source: ABdhPJwTD46E1cXyv2e11Zf1E4r8jUTZAiHaqWMLncDhxmzo/yWeh3s90oBvQNUnonp/BQsWNi8LYg==
-X-Received: by 2002:a2e:a494:: with SMTP id h20mr993093lji.292.1616160839835;
-        Fri, 19 Mar 2021 06:33:59 -0700 (PDT)
+        bh=JUeLUnlR94xPX9N99aZukfRyU4Iy1tiBeTupyd+pyx8=;
+        b=iPMMJbieFmrX4wuHEI34exO1ROxYpkTLRxnhMvhDIXlqa2jVRW9A52oRJaya0vbOFf
+         uRICyYf1/WqHSbaMSQLbhdDMRR6MA/nf38AaVSGCI/y+4X4I2l8QKX47tS+eMQDlL7Id
+         ia+QTov1f5BCU2xvnYNsZgEWhMliVyrkvhLYFWgVGx2KJ8kEvsqxqTiRyKwns4J+2bVw
+         /+dFpnh4CQES38bVZgqlvPT/LMG6myicPJ0uR6XiMQqgnE6kEqnTXLfb8Yp3k21A1zVX
+         +pJ98+crTalMgoXKc2lNoEFUyC7r2J+VEf4isyfB3amBbQFRnA9ObJvC+NyDfhOxR+Zw
+         v/AA==
+X-Gm-Message-State: AOAM533/tjbfOerNlTQhXgFbtCwNwCFpmZeComrddg1x8jMLpWEh0Cev
+        bKm+eF13bequTv9V4UQAfVy1Qg==
+X-Google-Smtp-Source: ABdhPJyVrwoaEOYh5yILayEx2npwUSCd2BoK6URqcmhcPOrR83F7KYXrdq74v6y7bujuORin9M4cBg==
+X-Received: by 2002:a2e:9002:: with SMTP id h2mr1040208ljg.145.1616161983176;
+        Fri, 19 Mar 2021 06:53:03 -0700 (PDT)
 Received: from localhost.localdomain (c-d7cb225c.014-348-6c756e10.bbcust.telenor.se. [92.34.203.215])
-        by smtp.gmail.com with ESMTPSA id r1sm767185ljn.71.2021.03.19.06.33.59
+        by smtp.gmail.com with ESMTPSA id m8sm91795lfa.274.2021.03.19.06.53.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Mar 2021 06:33:59 -0700 (PDT)
+        Fri, 19 Mar 2021 06:53:02 -0700 (PDT)
 From:   Linus Walleij <linus.walleij@linaro.org>
 To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
 Cc:     Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         Linus Walleij <linus.walleij@linaro.org>,
-        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
-Subject: [PATCH] iio: imu: inv_mpu6050: Use as standalone trigger
-Date:   Fri, 19 Mar 2021 14:33:57 +0100
-Message-Id: <20210319133357.541183-1-linus.walleij@linaro.org>
+        Bastien Nocera <hadess@hadess.net>
+Subject: [PATCH v2] iio: event_monitor: Enable events before monitoring
+Date:   Fri, 19 Mar 2021 14:53:01 +0100
+Message-Id: <20210319135301.542911-1-linus.walleij@linaro.org>
 X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -64,65 +64,168 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-It may happen that the MPU6050 is the only hardware
-trigger available on your system such as this:
+After some painful sessions with a driver that register an
+enable/disable sysfs knob (gp2ap002) and manually going
+in and enabling the event before monitoring it:
 
-> lsiio
-Device 003: hscdtd008a
-Device 001: mpu6050
-Device 002: gp2ap002
-Device 000: ab8500-gpadc
-Trigger 000: mpu6050-dev1
+  cd /sys/bus/iio/devices/iio\:device2/events
+  # ls
+  in_proximity_thresh_either_en
+  # echo 1 > in_proximity_thresh_either_en
 
-And when you want to use it to read periodically from
-your magnetometer like this:
+I realized that it's better if the iio_event_monitor is
+smart enough to enable all events by itself and disable them
+after use, if passed the -a flag familiar from the
+iio_generic_buffer tool.
 
-> iio_generic_buffer -a -c 100 -n hscdtd008a -t mpu6050-dev1
+Auto-enabling events depend on the hardware being able
+to handle all events at the same time which isn't
+necessarily the case, so a command line option is required
+for this.
 
-Then the following happens:
-
-[  209.951334] Internal error: Oops: 5 [#1] SMP ARM
-(...)
-[  209.981969] Hardware name: ST-Ericsson Ux5x0 platform (Device Tree Support)
-[  209.988925] PC is at inv_scan_query_mpu6050+0x8/0xb8
-[  209.993914] LR is at inv_mpu6050_set_enable+0x40/0x194
-
-This is because since we are not using any channels from the
-same device, the indio_dev->active_scan_mask is NULL.
-
-Just checking for that and bailing out is however not enough:
-we have to enable some kind of FIFO for the readout to work.
-So enable the temperature as a dummy FIFO and all works
-fine.
-
-Cc: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
+Cc: Bastien Nocera <hadess@hadess.net>
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ChangeLog v1->v2:
+- Activate all events in response to -a being passed
+  on the command line
+- Update help text
+---
+ tools/iio/iio_event_monitor.c | 69 ++++++++++++++++++++++++++++++++---
+ tools/iio/iio_utils.h         |  1 +
+ 2 files changed, 65 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-index f7b5a70be30f..6946d50b874a 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-@@ -11,6 +11,17 @@ static unsigned int inv_scan_query_mpu6050(struct iio_dev *indio_dev)
- 	struct inv_mpu6050_state  *st = iio_priv(indio_dev);
- 	unsigned int mask;
+diff --git a/tools/iio/iio_event_monitor.c b/tools/iio/iio_event_monitor.c
+index bb03859db89d..0076437f6e3f 100644
+--- a/tools/iio/iio_event_monitor.c
++++ b/tools/iio/iio_event_monitor.c
+@@ -14,6 +14,7 @@
  
-+	/*
-+	 * If the MPU6050 is just used as a trigger, then the scan mask
-+	 * is not allocated so we simply enable the temperature channel
-+	 * as a dummy and bail out.
-+	 */
-+	if (!indio_dev->active_scan_mask) {
-+		st->chip_config.temp_fifo_enable = true;
-+		mask = INV_MPU6050_SENSOR_TEMP;
-+		return mask;
+ #include <unistd.h>
+ #include <stdlib.h>
++#include <dirent.h>
+ #include <stdbool.h>
+ #include <stdio.h>
+ #include <errno.h>
+@@ -280,22 +281,69 @@ static void print_event(struct iio_event_data *event)
+ 	printf("\n");
+ }
+ 
++/* Enable or disable events in sysfs if the knob is available */
++static void enable_events(char *dev_dir, int enable)
++{
++	const struct dirent *ent;
++	char evdir[256];
++	int ret;
++	DIR *dp;
++
++	snprintf(evdir, sizeof(evdir), FORMAT_EVENTS_DIR, dev_dir);
++	evdir[sizeof(evdir)-1] = '\0';
++
++	dp = opendir(evdir);
++	if (!dp) {
++		fprintf(stderr, "Enabling/disabling events: can't open %s\n",
++			evdir);
++		return;
 +	}
 +
- 	st->chip_config.gyro_fifo_enable =
- 		test_bit(INV_MPU6050_SCAN_GYRO_X,
- 			 indio_dev->active_scan_mask) ||
++	while (ent = readdir(dp), ent) {
++		if (iioutils_check_suffix(ent->d_name, "_en")) {
++			printf("%sabling: %s\n",
++			       enable ? "En" : "Dis",
++			       ent->d_name);
++			ret = write_sysfs_int(ent->d_name, evdir,
++					      enable);
++			if (ret < 0)
++				fprintf(stderr, "Failed to enable/disable %s\n",
++					ent->d_name);
++		}
++	}
++
++	if (closedir(dp) == -1) {
++		perror("Enabling/disabling channels: "
++		       "Failed to close directory");
++		return;
++	}
++}
++
+ int main(int argc, char **argv)
+ {
+ 	struct iio_event_data event;
+ 	const char *device_name;
++	char *dev_dir_name = NULL;
+ 	char *chrdev_name;
+ 	int ret;
+ 	int dev_num;
+ 	int fd, event_fd;
+-
+-	if (argc <= 1) {
+-		fprintf(stderr, "Usage: %s <device_name>\n", argv[0]);
++	bool all_events = false;
++
++	if (argc == 2) {
++		device_name = argv[1];
++	} else if (argc == 3) {
++		device_name = argv[2];
++		if (!strcmp(argv[1], "-a"))
++			all_events = true;
++	} else {
++		fprintf(stderr,
++			"Usage: iio_event_monitor [options] <device_name>\n"
++			"Listen and display events from IIO devices\n"
++			"  -a         Auto-activate all available events\n");
+ 		return -1;
+ 	}
+ 
+-	device_name = argv[1];
+-
+ 	dev_num = find_type_by_name(device_name, "iio:device");
+ 	if (dev_num >= 0) {
+ 		printf("Found IIO device with name %s with device number %d\n",
+@@ -303,6 +351,10 @@ int main(int argc, char **argv)
+ 		ret = asprintf(&chrdev_name, "/dev/iio:device%d", dev_num);
+ 		if (ret < 0)
+ 			return -ENOMEM;
++		/* Look up sysfs dir as well if we can */
++		ret = asprintf(&dev_dir_name, "%siio:device%d", iio_dir, dev_num);
++		if (ret < 0)
++			return -ENOMEM;
+ 	} else {
+ 		/*
+ 		 * If we can't find an IIO device by name assume device_name is
+@@ -313,6 +365,9 @@ int main(int argc, char **argv)
+ 			return -ENOMEM;
+ 	}
+ 
++	if (all_events && dev_dir_name)
++		enable_events(dev_dir_name, 1);
++
+ 	fd = open(chrdev_name, 0);
+ 	if (fd == -1) {
+ 		ret = -errno;
+@@ -365,6 +420,10 @@ int main(int argc, char **argv)
+ 		perror("Failed to close event file");
+ 
+ error_free_chrdev_name:
++	/* Disable events after use */
++	if (all_events && dev_dir_name)
++		enable_events(dev_dir_name, 0);
++
+ 	free(chrdev_name);
+ 
+ 	return ret;
+diff --git a/tools/iio/iio_utils.h b/tools/iio/iio_utils.h
+index 74bde4fde2c8..c01695049739 100644
+--- a/tools/iio/iio_utils.h
++++ b/tools/iio/iio_utils.h
+@@ -13,6 +13,7 @@
+ #define IIO_MAX_NAME_LENGTH 64
+ 
+ #define FORMAT_SCAN_ELEMENTS_DIR "%s/scan_elements"
++#define FORMAT_EVENTS_DIR "%s/events"
+ #define FORMAT_TYPE_FILE "%s_type"
+ 
+ #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
 -- 
 2.29.2
 

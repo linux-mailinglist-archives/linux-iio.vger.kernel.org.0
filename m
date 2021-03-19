@@ -2,91 +2,80 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16C023423A8
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Mar 2021 18:50:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A8EA3426E3
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Mar 2021 21:31:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230118AbhCSRuC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Mar 2021 13:50:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42200 "EHLO
+        id S230223AbhCSUap (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Mar 2021 16:30:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229960AbhCSRt7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Mar 2021 13:49:59 -0400
-Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5744C06174A
-        for <linux-iio@vger.kernel.org>; Fri, 19 Mar 2021 10:49:59 -0700 (PDT)
-Received: by mail-pg1-x529.google.com with SMTP id v3so4194798pgq.2
-        for <linux-iio@vger.kernel.org>; Fri, 19 Mar 2021 10:49:59 -0700 (PDT)
+        with ESMTP id S230218AbhCSUaT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Mar 2021 16:30:19 -0400
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 860CCC06175F;
+        Fri, 19 Mar 2021 13:30:19 -0700 (PDT)
+Received: by mail-pf1-x431.google.com with SMTP id y5so6694221pfn.1;
+        Fri, 19 Mar 2021 13:30:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=V+uc078/ytbmfzSvwcCyQhTlXKa+P1OdGqk3qvv9m9w=;
-        b=hEsqPPV1EMmEGnmeGAtf0yhdImu7WRdKkuiETfmCetiBWl9iMdasvecCwrcIktTtlF
-         DYDC4LdVKg08JsyNEbJ9TUDqexWFDxFxwEJ3SfCPay3Vk88c3k4Dy6uyDyTtvduV3jQo
-         /r1Hz9RF3GQH8gEiuTe0aJRMRQ1yof9gQmbuYQC9zgiLZDKUAdLQLUlhNsYKPnenyCNt
-         ZVWsmLtKprzinzETtELLvEc45goyPtkW48SaxjYyJXzBuaEWvksWOr/Ix2JJ2BGoPv+C
-         DVcp/BOtwPeTLLDxlIl0wzrSDuDHzhCmpzdASbrKeDxzFh4bacG4cWrN2rlIRYZM8LBo
-         gWAg==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=vuZV268/nVtB3OjLJrE5F7mxwQHJCxzo9Qb+tN9aqg4=;
+        b=EJOzD8me34yPyBID9l4WiBKbwLsvi1lfneiWYrTmdnZjhhSjncjfX0qXtV6VNYWYPs
+         +t7+OKTaQJ9hlRyyZl8OSkfSEF14JvMykZ1By6dUFeTBmvtkUkiKMkYO271gwt/97bbb
+         tTCoZqUQ5GXHfJ/ivkb7Rgq6N5BndaB/Lo1zTS2Knd1rZvkZJHcNTTjp3YcupwBPVa7h
+         0tck/b0baYNl55uqgcBwN3BEiJofMUZnSrxlIhZoxU3I1si+0sYtFU16upnFxVxhOb7t
+         q99d3DeOJfUqlHtQCkeqlLeYNedPJPryJjZAt22uIlO9RQJOPrDBB0TSNaGehcetVcyX
+         RBWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=V+uc078/ytbmfzSvwcCyQhTlXKa+P1OdGqk3qvv9m9w=;
-        b=AjQ6oor5jyoySnK5XwN8yyoG8x+4EOKC5ZPqFcz0lWv+CzHJjPhjj2U2m/rvD4X6YM
-         +jfzJ//Obumu0ZBGJO0xMN0fRbOI15M4RwkHkc91MPkH/OItU4vH899vxM7FAKQMe1D7
-         AnNa2zn4Z11wcxb8zrVz/iZE93BH7cP8Ob1/mRQwow1oxwX12hub/1hft84NR/mtlmCM
-         zYfH2/Z5S1W/C3U5jGpYBxRszvuZBuvBIFxiGElRu5JPDnHllIyXOhwQTa9Kkh/RpUNp
-         GVJlQAvzk2qPEzAvoMW3znsnNQhN5wOL1DRi34Kt331ZPzaQE9eKU2kgaEBDj0artGlP
-         L0vg==
-X-Gm-Message-State: AOAM532KBIVpzuv4/lwMjQ5z4dZY5w8WbPFu4f9W5ageP1o83mhRwJ5z
-        h1HMRqocJmYg1bhwskm8WyJKv/f3XeqNy6D1KFA=
-X-Google-Smtp-Source: ABdhPJy8AUQmUiLVuidk5ORxcyh9LaXo8f+ys72uCi9YKA8efJ97/1jOH9WzgBFAA7uXaX+sXX2fVze4J5pgES5yT/0=
-X-Received: by 2002:a62:e50f:0:b029:214:8e4a:ae46 with SMTP id
- n15-20020a62e50f0000b02902148e4aae46mr634420pff.73.1616176199311; Fri, 19 Mar
- 2021 10:49:59 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=vuZV268/nVtB3OjLJrE5F7mxwQHJCxzo9Qb+tN9aqg4=;
+        b=JNYVgXd5HreHToaZEoqkhcifP429Iw6xTW3YVXbuSfFhKWDUu3/rytkQfqcDLlBlFi
+         G/Ohb5dAcylaoS5UHxaj0ola//kP6BBxjKzcxfdSafg7sQ80900ISoIHLf1N3eFDP66u
+         0VAW5PG/OYzDKCbycM2tA2UlLcTY447JZHNiqmwDTOucMHn8y9XZVCx3IU16bmu220aG
+         qHspq5f0el5rtkHKj9l0KiZKlpSFVskezb58Sbq+drlDGAm7Q+oz8mwBfm0jqDfFcP4U
+         ziKP/pD4bgc24EqGcVfoRdp78tXP/HFra7DkRPjw8qgiiXWny2D76VG52rjbpafrb+K4
+         Pt9w==
+X-Gm-Message-State: AOAM5302r4t2diJ38EE2/I9rbc2E3C+4EIoCX833AMDrVAO/dPXCaZ0b
+        TbFSj6O/KeDTFKNWUL9pSBQ=
+X-Google-Smtp-Source: ABdhPJwrrdKepZOzJFiQzpwaL8rEeiWmi1WBjh/NvKH3qokI2DU70jSxdOR1jH0elah3imSKSJ8Sgw==
+X-Received: by 2002:a65:4887:: with SMTP id n7mr12915057pgs.14.1616185818926;
+        Fri, 19 Mar 2021 13:30:18 -0700 (PDT)
+Received: from localhost.localdomain ([27.255.182.86])
+        by smtp.googlemail.com with ESMTPSA id m21sm6340406pff.61.2021.03.19.13.30.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Mar 2021 13:30:18 -0700 (PDT)
+From:   Puranjay Mohan <puranjay12@gmail.com>
+To:     alexandru.ardelean@analog.com, jic23@kernel.org,
+        devicetree@vger.kernel.org, knaack.h@gmx.de,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Puranjay Mohan <puranjay12@gmail.com>
+Subject: [PATCH 0/2] iio: temperature: add support for tmp117
+Date:   Sat, 20 Mar 2021 02:00:05 +0530
+Message-Id: <20210319203007.287802-1-puranjay12@gmail.com>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
-References: <20210319165807.3639636-1-gwendal@chromium.org>
-In-Reply-To: <20210319165807.3639636-1-gwendal@chromium.org>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 19 Mar 2021 19:49:43 +0200
-Message-ID: <CAHp75Vep=SXxMNs+8MinL_1BXyozrz8cYDZCH8A06a2dppoD0w@mail.gmail.com>
-Subject: Re: [PATCH v5 0/2] iio: sx9310: Support ACPI properties
-To:     Gwendal Grignou <gwendal@chromium.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Daniel Campello <campello@chromium.org>,
-        linux-iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Mar 19, 2021 at 6:58 PM Gwendal Grignou <gwendal@chromium.org> wrote:
->
-> Current sx9310 driver only support device tree properties.
-> To be able to use sensor on Intel platfrom, add support to read ACPI by
-> converting calls of_property_read_...() to device_property_read_...().
->
-> A bug was uncovered: if "semtech,combined-sensors" array was less than
-> 4 entries, its content would be ignored, as of_property_read_u32_array
-> would return -EOVERFLOW.
+Add the dt-bindings and the driver for tmp117 sensor.
 
-After addressing comments, feel free to add
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Puranjay Mohan (2):
+  dt-bindings: iio: temperature: Add DT bindings for TMP117
+  iio: temperature: add driver support for ti tmp117
 
-> Gwendal Grignou (2):
->   iio: sx9310: Fix access to variable DT array
->   iio: sx9310: Support ACPI properties
->
->  drivers/iio/proximity/sx9310.c | 56 +++++++++++++++++++++-------------
->  1 file changed, 34 insertions(+), 22 deletions(-)
->
-> --
-> 2.31.0.291.g576ba9dcdaf-goog
->
-
+ .../bindings/iio/temperature/ti,tmp117.yaml   |  40 ++++
+ drivers/iio/temperature/Kconfig               |  11 +
+ drivers/iio/temperature/Makefile              |   1 +
+ drivers/iio/temperature/tmp117.c              | 196 ++++++++++++++++++
+ 4 files changed, 248 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
+ create mode 100644 drivers/iio/temperature/tmp117.c
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.30.1
+

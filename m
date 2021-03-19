@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D9EE3341AA1
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Mar 2021 12:02:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 103CE341AA2
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Mar 2021 12:02:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229873AbhCSLBq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Mar 2021 07:01:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38586 "EHLO
+        id S229878AbhCSLBr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Mar 2021 07:01:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229787AbhCSLBO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Mar 2021 07:01:14 -0400
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 679BAC06174A;
-        Fri, 19 Mar 2021 04:01:14 -0700 (PDT)
-Received: by mail-pl1-x62e.google.com with SMTP id ay2so2781733plb.3;
-        Fri, 19 Mar 2021 04:01:14 -0700 (PDT)
+        with ESMTP id S229844AbhCSLBT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Mar 2021 07:01:19 -0400
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68273C06174A;
+        Fri, 19 Mar 2021 04:01:19 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id h20so2782931plr.4;
+        Fri, 19 Mar 2021 04:01:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=zNHAzRgGiY7J7G+f8mmaWum3SKthte+B3myyLZXUAyY=;
-        b=s02yFLPcTuICIO7+C+BcSoFLEftjPfweIg/sH113MKfHNgrEzsrKNyvl57Zx991Zns
-         JffwM12TkhbgTzson9zRHyQKSGthzQpmLJz0PhC4zULJ97p280R246dAdVyjXaP1GQpH
-         myWBIk8K5T5IokWp6IkefEMjawq3mX0O4OLv9V+JMno5CAcq4OMqyN2yUv4vlfl+nM+8
-         gIhsxUtpY+0keiQMZfN9UbuZ3M4rxMxHRO7GAgdR0YmL9HY8gE9fXpS0pS8MvKmeq8D7
-         rEAZT8Sw2YGQpUOcD63K+9pmeblQ7IIlwDkPM1URLEws02FJ+IW4lg73xbj9MWPrZ+Ag
-         vnCQ==
+        bh=YP6Y0iUlFGoxnb33nwnYEvQ4ZjRZgtWw9rrllhcAce8=;
+        b=EfPTCnysQ2SO1zX7Yo4KRrKJd4T+NRxlDLzkn+xhVOtwG47MHAVbglbAXMQq/g7KTj
+         e0ZUMRJrpemIZQRhRm4QevibXClI5xo33QBIsockGMprJ3UbtUz+b4lc2KcT2+bZserS
+         IcUG/2q9s3Li/oSPW8Hha6ySTnMhg+/QIf0/mUIlYvT9NC15hMP9ZjenhUVJqenSXovu
+         ZLj42xDF/jYkNMRWhGg+DD/QohSNPL4RKiEpMDMOh4wTaoBe6l05fEZ5ERgEMWnxjwrP
+         FkEguiXLcwijo8aOSae1VgrxLrNyEKZkSumeOOEAK6CCH6+UHtFUul4dHZ17IUg+6gjB
+         Vwzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=zNHAzRgGiY7J7G+f8mmaWum3SKthte+B3myyLZXUAyY=;
-        b=P1yoKgDqmPBvyWa+R6dV+2RaGxiH95TfkRARllAjHKD2ZHkdYSJ8zt2uXyKSaaEklY
-         wI8zzhl7g6S8UDuqkexUNO+uJPX1Mx/DR7tNGGmqUT4c64uqob7TJr0lm8yo/Mn4wO39
-         O7MfID2gbeTeX2GUHHXFVVNyZxIp2QsDBZc3c+fvNwIyJNDVXqeiNP0RBmpvdUyD7ne9
-         /4/zkADSSxavphneeikYbkBOexCBFPIvbzLXEM1qPBN/jlYyPbp/fiFj4rt9D4bvBmav
-         /gxo/8LIOASDYJzUtlXZPHSg8MwkLA+44Xo3BEGQoZOXHg2s4GATJ4orqmeGGyjnHyQz
-         BAfw==
-X-Gm-Message-State: AOAM531CrwrF9WHCtHQjtGbAQ6S3Iu7JMHpeyEOfNrTgZmRCgjATPG5B
-        DCNX8szZFde1BaehVjbrH2L8CzJcbuXGLA==
-X-Google-Smtp-Source: ABdhPJwcq2BYLCh/FKajfLUwOFiyLFNcNr3jYX5SAAIA1CUfh2Eckv5FIvqSO9atPlmB9lma39Ql3Q==
-X-Received: by 2002:a17:902:b78a:b029:e4:8ce6:fb64 with SMTP id e10-20020a170902b78ab02900e48ce6fb64mr14236203pls.77.1616151674053;
-        Fri, 19 Mar 2021 04:01:14 -0700 (PDT)
+        bh=YP6Y0iUlFGoxnb33nwnYEvQ4ZjRZgtWw9rrllhcAce8=;
+        b=NzHQ1gRw737FLOVbOp2QvhUY3099wG32VxvpQSoiDv9ydHUAlAO5uyusfkN6vLM6Pk
+         UfiVcwAJzf3MHsc1I2eOLEYUlxR3tAYvnEEDhkkECgcTQnloU0D1GTXxPY1T7YZjCXVl
+         nhtvlUABFInP+Jlkb5Gcq/gJcT97WQj33RUNRNXizzIDx88+9bIlpEqjnsk5sViV96rM
+         MfPuv2WMZYspAIi4jXAe+ODDOl6RAfkIS8A0Prx9kEx8ELgTM7bC8I02bxJmnd92sjFo
+         HikYzwEzZidw++GO4ZJMVTL0VJQGfddfObqfuTxYGt16KGIenzFCA2kBE+9zdIKvOCij
+         PC1A==
+X-Gm-Message-State: AOAM530HhiRLKULX2BaANIgHyu8sjbd7pn9G1LlB/bbwesPdVVmboQug
+        wnZgFthsbTcnH3npllt7YjI=
+X-Google-Smtp-Source: ABdhPJwEkXVpf7bCTq0t4YWhofrnRE9O3kVRUx9pwa8eP8pu6QtVdUaaJgXFqGgmXc7XvdKM4+CfGQ==
+X-Received: by 2002:a17:90b:344c:: with SMTP id lj12mr9432230pjb.208.1616151678943;
+        Fri, 19 Mar 2021 04:01:18 -0700 (PDT)
 Received: from localhost.localdomain ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id i22sm4879042pjz.56.2021.03.19.04.01.09
+        by smtp.gmail.com with ESMTPSA id i22sm4879042pjz.56.2021.03.19.04.01.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Mar 2021 04:01:13 -0700 (PDT)
+        Fri, 19 Mar 2021 04:01:18 -0700 (PDT)
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     jic23@kernel.org
 Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
@@ -58,9 +58,9 @@ Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
         fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
         alexandre.torgue@st.com, o.rempel@pengutronix.de,
         William Breathitt Gray <vilhelm.gray@gmail.com>
-Subject: [PATCH v10 02/33] docs: counter: Fix spelling
-Date:   Fri, 19 Mar 2021 20:00:21 +0900
-Message-Id: <a39062103d8e4ca5eb65c3c02b58571e62019de3.1616150619.git.vilhelm.gray@gmail.com>
+Subject: [PATCH v10 03/33] counter: 104-quad-8: Remove pointless comment
+Date:   Fri, 19 Mar 2021 20:00:22 +0900
+Message-Id: <e53df4416573f16069090f4c660afbd8d501f2a0.1616150619.git.vilhelm.gray@gmail.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <cover.1616150619.git.vilhelm.gray@gmail.com>
 References: <cover.1616150619.git.vilhelm.gray@gmail.com>
@@ -70,27 +70,27 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-"Miscellaneous" is the correct spelling.
+It is obvious that devm_counter_register() is used to register a Counter
+device, so a comment stating such is pointless here.
 
-Reviewed-by: David Lechner <david@lechnology.com>
+Cc: Syed Nayyar Waris <syednwaris@gmail.com>
 Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 ---
- Documentation/driver-api/generic-counter.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/counter/104-quad-8.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/Documentation/driver-api/generic-counter.rst b/Documentation/driver-api/generic-counter.rst
-index b02c52cd69d6..64fe7db080e5 100644
---- a/Documentation/driver-api/generic-counter.rst
-+++ b/Documentation/driver-api/generic-counter.rst
-@@ -307,7 +307,7 @@ Determining the type of extension to create is a matter of scope.
+diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
+index 9691f8612be8..4bb9abffae48 100644
+--- a/drivers/counter/104-quad-8.c
++++ b/drivers/counter/104-quad-8.c
+@@ -1082,7 +1082,6 @@ static int quad8_probe(struct device *dev, unsigned int id)
+ 	/* Enable all counters */
+ 	outb(QUAD8_CHAN_OP_ENABLE_COUNTERS, base[id] + QUAD8_REG_CHAN_OP);
  
- * Device extensions are attributes that expose information/control
-   non-specific to a particular Count or Signal. This is where you would
--  put your global features or other miscellanous functionality.
-+  put your global features or other miscellaneous functionality.
+-	/* Register Counter device */
+ 	return devm_counter_register(dev, &priv->counter);
+ }
  
-   For example, if your device has an overtemp sensor, you can report the
-   chip overheated via a device extension called "error_overtemp":
 -- 
 2.30.2
 

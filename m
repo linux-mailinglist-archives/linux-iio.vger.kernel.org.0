@@ -2,80 +2,92 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4141034214A
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Mar 2021 16:54:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A6D7E342169
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Mar 2021 17:00:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229978AbhCSPxp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Mar 2021 11:53:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45150 "EHLO
+        id S230081AbhCSQAL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Mar 2021 12:00:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230081AbhCSPxR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Mar 2021 11:53:17 -0400
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B254C06174A;
-        Fri, 19 Mar 2021 08:53:17 -0700 (PDT)
-Received: by mail-pl1-x62d.google.com with SMTP id e14so3150439plj.2;
-        Fri, 19 Mar 2021 08:53:17 -0700 (PDT)
+        with ESMTP id S229875AbhCSP7j (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Mar 2021 11:59:39 -0400
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 305AAC06174A
+        for <linux-iio@vger.kernel.org>; Fri, 19 Mar 2021 08:59:39 -0700 (PDT)
+Received: by mail-pf1-x429.google.com with SMTP id x184so6194560pfd.6
+        for <linux-iio@vger.kernel.org>; Fri, 19 Mar 2021 08:59:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=NkRkEyKVJ5bGUH6D89QDCO1/1FFw57umceeQiI1xt00=;
-        b=j3SHyAvOQHPxVILB/KLz/3qH/EegkC6L8Bf6BDKEuTk22CAnpKLPy547XUVf8nB4N7
-         maTziu99MoO57xpqYpcPgFfnszhcBreFJ0p2T5HunaLxCEzTKyLZYLD1haN3I3uMLGQT
-         /BszGvWleNk7PJBt2kDUNThHpVoycpvp2ldWGFRzCJIz3SkBQpq65bWhsfd/egQcGbjL
-         AJF6Djoa/2NUCeY4hxTrOftbYLICrQZ/4sMdDL3qoeao1CckjAGXG4/9xz7nd0Q1UAXJ
-         2pHy/k5IUfjZ1UqwhV5dU72w/gM6WL0KHAPiOyF37vqmdTrrE0es6f6cx1TtYo9BWXg0
-         6b6A==
+        bh=rMFmyuCkEUWBooj86yRGyWDShFeOV2hGlv8wDM3g/vE=;
+        b=FWXqFatYKJ8Iz6eKPjCIXNac5sgN0ds/UgjwTsGLgZBCLMMpzJAcQnFvtcD+rM/VMj
+         FqS6CI3ROboJJdDfBrO8g8nC9RLNT4u0QX/iC0HliWcIzBr34xI10DDB0TOYCVRfIFS9
+         0FkPxWIJxpgmExR/EWf1oYBO7KCIb9rIsxqN+TkxZGMeC/2hQU1RWiVGRWs+CEPH18n5
+         fMTd2/ArxpP+zrvlRVRB3mLc7YPc1pbHA/m4z/4aaLvCPynYGJzXoMEvuf5NkoK8yWDC
+         +owcliTJxoOLhaZ2Q228sF9+Y+T5cyi8ikQVDcwwWiqXCwoC/ZCRoSNWYDjMKmHLZ7Xe
+         DxNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=NkRkEyKVJ5bGUH6D89QDCO1/1FFw57umceeQiI1xt00=;
-        b=MUP3880/hCTgqwroO+HtJsaGI3HZkvt8Tb6T4+PhKGSXcHr9+fygjp2Km4LZM1a3WF
-         RJWCITH2t7AuzwzwduH4WZaRv3vQWeDzzK0aRRyHP3PvIeBBeCfYjj1qS+mAItPrU894
-         /t8R7J11ZD9XyBNH+TzDpv/0HZoL07ZHoj4qx05Wjr6sAgKw1moSVcguwwpdLCiax6F4
-         9cxJ7I9izWOb4jVOtqM2yjh0tZB/BcHKl03J3f9ZV4IZer056ZCTa/YPUMdT14qNwtyR
-         lxY3QywyOcMc9OmiJwqP6xLiY94dA+XPtazZm4BPWRbjGgbbZwB9OUDnZcDRKH7aHPdi
-         EcgQ==
-X-Gm-Message-State: AOAM531mPZ/qc/y+Cy6iuxiviO8LfWrWS7W4p6oYKM7j+HiuytJbMDbO
-        /MwPvzyEUwL+OlEh+pp3yaNsUJmuM1kjcbVrdfCUoWaWOX1JRg==
-X-Google-Smtp-Source: ABdhPJxFL0xfAbgHHbS1qg68GzqdBlNYPKHta7NttBmai5yqAHbDiZMrhrLWdbYWJ7+Je06zRHg+PqNte3U7S8pixsI=
-X-Received: by 2002:a17:902:a406:b029:e6:78c4:71c8 with SMTP id
- p6-20020a170902a406b02900e678c471c8mr14918369plq.17.1616169197138; Fri, 19
- Mar 2021 08:53:17 -0700 (PDT)
+        bh=rMFmyuCkEUWBooj86yRGyWDShFeOV2hGlv8wDM3g/vE=;
+        b=cXPr16B41kOTGGwiN8m+ZIPEga9lrAOgqEdcztwTO0LKn+uQ0vPZI8vKHTKV+NBq0D
+         e+vFbH475ErUJyoFL3vXezd6liyS/SZUjeUxWUJmt4tZixDwIiCIYvwIFfJ89K6qrnQp
+         FNFt8k1zv2JOTAdrXpIuZjfprAmdpXMuNj8a95tOejylHCSsxn/B2HxVWLKCKk0GT9ik
+         uUVwb6YQ96LIqMZHhsvTmpasWVUKNvNem3LixRKWk2jboBy6L2qigISijjfCSAq/X+CP
+         2FxiWz7JJG9bPyWnuaH4fl5NeSpn+88s5LFlaONhLLOHWRMrUAk5kgK+BaQ2xSi9BlNG
+         GIAg==
+X-Gm-Message-State: AOAM532KtH4+K3XURSAN17S27Q1Aqk7+t5UZtbBlY25TnmqbXXBjbisL
+        YQ85XhBrkrTzuxbXL73aFypncZYCn/7StdC1m2g=
+X-Google-Smtp-Source: ABdhPJyqxbH7edCxaHqkV1JhvUN8QDn+DBBWzgTzq5b8YJhUw0y9eHw8sZj5gJiCTkw7aDAiQ+s0wN6cKws02pKeDh0=
+X-Received: by 2002:a65:4c08:: with SMTP id u8mr11792110pgq.203.1616169578555;
+ Fri, 19 Mar 2021 08:59:38 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210309011715.23245-1-joe.g.sandom@gmail.com>
- <20210313191554.3e8174d3@archlinux> <20210319004223.tqaqpreo32vfnean@pop-os.localdomain>
-In-Reply-To: <20210319004223.tqaqpreo32vfnean@pop-os.localdomain>
+References: <77dd5cfb-1215-e929-24cf-2b773f33d2ef@cern.ch> <c41ae3c7-ce3d-9036-280c-b25354bea22b@metafoo.de>
+In-Reply-To: <c41ae3c7-ce3d-9036-280c-b25354bea22b@metafoo.de>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 19 Mar 2021 17:53:01 +0200
-Message-ID: <CAHp75Vd1LPB6Sc9-QHxyvBqL3JveiA+9EX2BHnULm8pAWX0LcQ@mail.gmail.com>
-Subject: Re: [PATCH v5] Added AMS tsl2591 driver implementation
-To:     Joe Sandom <joe.g.sandom@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+Date:   Fri, 19 Mar 2021 17:59:22 +0200
+Message-ID: <CAHp75Vep4q3J1YFscFyZM18ECBx1f1rGj7_mbwcSha9TpwHT7A@mail.gmail.com>
+Subject: Re: IIO advise + help
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Michel Arruat <michel.arruat@cern.ch>,
         linux-iio <linux-iio@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Mar 19, 2021 at 2:45 AM Joe Sandom <joe.g.sandom@gmail.com> wrote:
-> O Sat, Mar 13, 2021 at 07:15:54PM +0000, Jonathan Cameron wrote:
-> > On Tue,  9 Mar 2021 01:17:15 +0000
-> > Joe Sandom <joe.g.sandom@gmail.com> wrote:
+On Sat, Mar 13, 2021 at 12:56 PM Lars-Peter Clausen <lars@metafoo.de> wrote:
+> On 3/12/21 5:54 PM, Michel Arruat wrote:
 
-> Thanks for the feedback Jonathan, glad to hear that we're nearly ready
-> to merge :). The changes for V6 are complete now, will give it a couple
-> more days before I send it out in case Andy or anyone else has any points to raise
+...
 
-To make Andy look at this don't forget to Cc all reviewers from the
-previous series.
+> > So far we are using our framework named ZIO which was developed more than 10
+> > years ago, when IIO was not mature enough to handle high speed constraints,
+> > large DMA transfer(>256MB) and zero copy.
+> > Out of curiosity https://ohwr.org/project/zio
+>
+> I did have a few discussions with Frederico and Alessandro back in the day
+> (maybe 6-7 years now) about what can be done to combine IIO and ZIO.
+> Unfortunately we couldn't quite get agreement on whether it is better to have
+> one or two frameworks.
+>
+> One thing where IIO and ZIO differ is that IIO is more around streaming data,
+> while ZIO is around packetized data. In ZIO when you capture data you get a
+> header with metadata.
+>
+> But having support for packetized data with metadata in addition to streaming
+> data is something we wanted to have for IIO for a while now. Just nobody has
+> implemented it yet.
+>
+> I know that there are a few people that use IIO with packetized data, but it is
+> sort of in a hacky way where the userspace application uses the streaming
+> interface but captures exactly the number of bytes that are in a packet. This
+> sort of works, but having proper packetized data support would be nice.
 
-I'll look at the v5 at some point, maybe today, maybe not.
+I'm wondering if there could be some industrial standard for that,
+like the MIPI standard for tracing data.
 
 -- 
 With Best Regards,

@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 47DD3341AB9
+	by mail.lfdr.de (Postfix) with ESMTP id 95733341ABA
 	for <lists+linux-iio@lfdr.de>; Fri, 19 Mar 2021 12:03:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230034AbhCSLCS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Mar 2021 07:02:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38720 "EHLO
+        id S229955AbhCSLCT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Mar 2021 07:02:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229904AbhCSLBt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Mar 2021 07:01:49 -0400
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBE49C06174A;
-        Fri, 19 Mar 2021 04:01:48 -0700 (PDT)
-Received: by mail-pj1-x102e.google.com with SMTP id x7-20020a17090a2b07b02900c0ea793940so6546124pjc.2;
-        Fri, 19 Mar 2021 04:01:48 -0700 (PDT)
+        with ESMTP id S229956AbhCSLBy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Mar 2021 07:01:54 -0400
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4CB0C06174A;
+        Fri, 19 Mar 2021 04:01:53 -0700 (PDT)
+Received: by mail-pl1-x62e.google.com with SMTP id w11so2782147ply.6;
+        Fri, 19 Mar 2021 04:01:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=wYRkXjsb1PVUWcJtSf+4c08/zRkX/J8HBJAhSg6Bbvc=;
-        b=n7oeCws7sjZvBebyHE7fBiK6RqTLulu55vDhMPuOzayEz6rz+d1gs3fVWFOtfrJ62e
-         toRYYupwhq6QMZ5DL/ZttFp2LB0dIA4DYRM8vCsiVJBqibRMSZJ9aKWhzqptHY2Uu/e2
-         OCWOrGDxQ8lNJyRInF/2dOcoyCNxLFJx7Op7QtC2eSoui30LlusueFXfj0813mUgDO1s
-         Cyle8ufF1veYYkQltfkhXjr5Zq2lMjcsaOvqM4H2osxFTnzc6gE/RRMgf5IXRAPb8+l9
-         QrBSx+4OsUTFOd/rRATdLLUJ6IKwYArS0AZEJ5j7S+L3tJSJ/GP1mejYNihDbI33ikBq
-         pmng==
+        bh=CjJQUNTwsBa+RZPOzEy/Sih/eBggOo9hBH9OJm4YwV8=;
+        b=MkepcUzFZogp8zB2PNJuWmigI/5LesD3IUw/sJfRQzB0wwWDPN2B68iLLpurdR1PlC
+         23YaLOV5bj7v1kw1cMApbc0X/pyIXCcElFFarf+j4sPzHc+tx8zuBtOQ4c3qCWNC/5Lt
+         05cFWeoLzkV2rUjlBaW2nYTAf8d+fM6eo8FoP+xYxMVnyAK2Q6jGAp830LeYJ2AYZkcc
+         6I3dnDKWWuSMhU6UCtFZXrP/kCQkPZ6eXD5zOPjCO965p6fagAdyZ/YA3//Bd0A2TFml
+         /j+OEFAA/OFVAl0JiwokRoDye5rzYz/Htk0+SZSycagbQXl0qapDLqtUgJSh7MIEyEu+
+         PjZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=wYRkXjsb1PVUWcJtSf+4c08/zRkX/J8HBJAhSg6Bbvc=;
-        b=ulc8kKnjGrjwKDRFCjtDN+YQBb8Tm4H3HQ5w+VvbuqVJbtG4M6iCfyT1hqZYS9VdHP
-         lulw6tW9IK6EUQktSoYYQJSx4nkNmNne2hxpEASIjt1fdz3f6/zHAtN/zHBghikSkhcK
-         hcId+UIXIEq0zdHfUlJ9ECcosm9+iqmNYH2e7aYGulUpzwG/CK4/S2wpJM8NJ7GlHy7I
-         7wCyjvt75JyTNh0qhtlyoy5xCC35sC8dcBiLJbfp9AOFAQqghvX6Mn5+0aLuJTuPDVGq
-         LhFGmlWiZrVXbdcycAnKLPhfP3X8MW34FVNRuFNWvRgx+ggJJk1WTy/GN5aDFJHCqFwU
-         P1vA==
-X-Gm-Message-State: AOAM532u91VwSiNMEtjSbG1sGJt9op0GFJWlQqSK/2FBF2vmic+RTci3
-        6I34H9JGT0DAIRez6wdw81w=
-X-Google-Smtp-Source: ABdhPJzLKllTLseOaGqWk7ZaQmgb/qzKLLE1uT5g8JgA/XofhROJiz2cVxQ4Lv0hd09wd8lboU/QnQ==
-X-Received: by 2002:a17:902:7609:b029:e6:9f29:625f with SMTP id k9-20020a1709027609b02900e69f29625fmr14284842pll.80.1616151708526;
-        Fri, 19 Mar 2021 04:01:48 -0700 (PDT)
+        bh=CjJQUNTwsBa+RZPOzEy/Sih/eBggOo9hBH9OJm4YwV8=;
+        b=C3ww7TWeNDw3Q1ulgnHNWL7RhBJiNiGGqRQszMYC7WOKakg+exHgds4bqSozIIVfvt
+         4fFQ6+afttah2KhuxJmQw6lWhQ4ALl3apeWgaVs5kbU/IqepIvz8HjL3Wwvox//3buxu
+         IXRphxyE2n+OuSW6TN/HFFCdMsKdb+U5ZLEarOzi7hXREABzxj2/c8XVWlgrnjRLsNWW
+         3wmkni2WFMQ+lb3qp3Fq3GFKU7dJgw975jxnrptxDBO2MbEVcJWqn3mI2SP8lRPpR+6u
+         50JsK2G3apVE751AeX5R4GaHOuAopNbwq03uxOzykK1QA1W60ZFS9Qzk0Vs4+eoZfiqP
+         pioA==
+X-Gm-Message-State: AOAM531yAzrgfH41FGWm6ffOXUJcnfqAwPK6mfAaq7Jpdr7e7a7YWyb1
+        HBojt928rS8Y6zNYH3Kbk5h4UVq+3WdYvA==
+X-Google-Smtp-Source: ABdhPJzh7KmTVF5c/eWnSvJBwidUGWNTKqwczSwnvsTNxu/q0mMuF7gvIYCDa+BqKEltXK4+qmPpMA==
+X-Received: by 2002:a17:902:d4cd:b029:e5:dd6d:f9b3 with SMTP id o13-20020a170902d4cdb02900e5dd6df9b3mr13540874plg.43.1616151713477;
+        Fri, 19 Mar 2021 04:01:53 -0700 (PDT)
 Received: from localhost.localdomain ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id i22sm4879042pjz.56.2021.03.19.04.01.43
+        by smtp.gmail.com with ESMTPSA id i22sm4879042pjz.56.2021.03.19.04.01.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Mar 2021 04:01:48 -0700 (PDT)
+        Fri, 19 Mar 2021 04:01:53 -0700 (PDT)
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     jic23@kernel.org
 Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
@@ -58,9 +58,9 @@ Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
         fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
         alexandre.torgue@st.com, o.rempel@pengutronix.de,
         William Breathitt Gray <vilhelm.gray@gmail.com>
-Subject: [PATCH v10 09/33] counter: microchip-tcb-capture: Add const qualifier for functions_list array
-Date:   Fri, 19 Mar 2021 20:00:28 +0900
-Message-Id: <130ef8380b67430aed17ecd938e6460e73f80058.1616150619.git.vilhelm.gray@gmail.com>
+Subject: [PATCH v10 10/33] counter: stm32-lptimer-cnt: Add const qualifier for functions_list array
+Date:   Fri, 19 Mar 2021 20:00:29 +0900
+Message-Id: <e5dc16652697919af7baed6a630c436359455131.1616150619.git.vilhelm.gray@gmail.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <cover.1616150619.git.vilhelm.gray@gmail.com>
 References: <cover.1616150619.git.vilhelm.gray@gmail.com>
@@ -72,26 +72,26 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 The struct counter_count functions_list member expects a const enum
 counter_count_function array. This patch adds the const qualifier to the
-mchp_tc_count_functions to match functions_list.
+stm32_lptim_cnt_functions to match functions_list.
 
-Cc: Kamel Bouhara <kamel.bouhara@bootlin.com>
+Cc: Fabrice Gasnier <fabrice.gasnier@st.com>
 Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 ---
- drivers/counter/microchip-tcb-capture.c | 2 +-
+ drivers/counter/stm32-lptimer-cnt.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/microchip-tcb-capture.c
-index 710acc0a3704..cabcfebfc799 100644
---- a/drivers/counter/microchip-tcb-capture.c
-+++ b/drivers/counter/microchip-tcb-capture.c
-@@ -37,7 +37,7 @@ enum mchp_tc_count_function {
- 	MCHP_TC_FUNCTION_QUADRATURE,
+diff --git a/drivers/counter/stm32-lptimer-cnt.c b/drivers/counter/stm32-lptimer-cnt.c
+index 937439635d53..0f7d3f1ec1b6 100644
+--- a/drivers/counter/stm32-lptimer-cnt.c
++++ b/drivers/counter/stm32-lptimer-cnt.c
+@@ -134,7 +134,7 @@ enum stm32_lptim_cnt_function {
+ 	STM32_LPTIM_ENCODER_BOTH_EDGE,
  };
  
--static enum counter_count_function mchp_tc_count_functions[] = {
-+static const enum counter_count_function mchp_tc_count_functions[] = {
- 	[MCHP_TC_FUNCTION_INCREASE] = COUNTER_COUNT_FUNCTION_INCREASE,
- 	[MCHP_TC_FUNCTION_QUADRATURE] = COUNTER_COUNT_FUNCTION_QUADRATURE_X4,
+-static enum counter_count_function stm32_lptim_cnt_functions[] = {
++static const enum counter_count_function stm32_lptim_cnt_functions[] = {
+ 	[STM32_LPTIM_COUNTER_INCREASE] = COUNTER_COUNT_FUNCTION_INCREASE,
+ 	[STM32_LPTIM_ENCODER_BOTH_EDGE] = COUNTER_COUNT_FUNCTION_QUADRATURE_X4,
  };
 -- 
 2.30.2

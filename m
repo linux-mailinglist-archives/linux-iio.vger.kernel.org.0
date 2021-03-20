@@ -2,78 +2,154 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F24D0342CDF
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Mar 2021 13:53:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE8E9342D2B
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Mar 2021 14:52:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229672AbhCTMwj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 20 Mar 2021 08:52:39 -0400
-Received: from www381.your-server.de ([78.46.137.84]:51564 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229544AbhCTMw1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 Mar 2021 08:52:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=YnxDx14DgbEq/fFkIvh4xmfD+U9hJOx2AnbQTNDX3sE=; b=IQYd13PYwV7LpswK9GYCrY/ECx
-        W1UR4SSToi8Wo+dIPELAHEVIcGDnoQDUghBuDrFz82Aav3IGZ/o8WZtY7l2p/N6Cw1qOcWRsmCdae
-        Em6KCQ5FFRyO+g4mg4TnNsIDFDdj1GxyXuFaNSpWLVFoiwsB9d5yKifloXRJvQpI2l3qiB3JQXXVh
-        L7uCvGg4aq5iyTnGdugt2t6Q0YrlTIHyXUq0H4BiZ/jISDqi2ZqY+Om0t8PhE/E9F6CsUCVSNQIa6
-        Xlb3jXHCjqz4UcqhSbc0VdqJsYb0gK+Ie1dTJhJDVNn1blcCw3lSQk0daary0w9HgBPYFMhZv2gzK
-        A/7VPJRQ==;
-Received: from sslproxy03.your-server.de ([88.198.220.132])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1lNb5b-000B0J-Ez; Sat, 20 Mar 2021 13:52:23 +0100
-Received: from [2001:a61:2aa9:e001:9e5c:8eff:fe01:8578]
-        by sslproxy03.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1lNb5b-0006D0-BK; Sat, 20 Mar 2021 13:52:23 +0100
-Subject: Re: [PATCH 4/4] iio: dac: Convert powerdown read callbacks to
- sysfs_emit()
-To:     Joe Perches <joe@perches.com>, Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org
-References: <20210320071405.9347-1-lars@metafoo.de>
- <20210320071405.9347-5-lars@metafoo.de>
- <733be1879f059f87fc03df79b33cf5560f3dfcaf.camel@perches.com>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <3e26d657-4f03-5284-8cfe-73131a65e33f@metafoo.de>
-Date:   Sat, 20 Mar 2021 13:52:23 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+        id S229638AbhCTNvj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 20 Mar 2021 09:51:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44930 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229585AbhCTNvK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 20 Mar 2021 09:51:10 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5167C6193F;
+        Sat, 20 Mar 2021 13:51:05 +0000 (UTC)
+Date:   Sat, 20 Mar 2021 13:51:01 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Luca Ceresoli <luca@lucaceresoli.net>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Kevin Tsai <ktsai@capellamicro.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-pm@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: More cleanup of standard unit properties
+Message-ID: <20210320135101.64c5c4e1@jic23-huawei>
+In-Reply-To: <20210316194824.3526913-1-robh@kernel.org>
+References: <20210316194824.3526913-1-robh@kernel.org>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <733be1879f059f87fc03df79b33cf5560f3dfcaf.camel@perches.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.102.4/26115/Sat Mar 20 12:03:55 2021)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 3/20/21 12:01 PM, Joe Perches wrote:
-> On Sat, 2021-03-20 at 08:14 +0100, Lars-Peter Clausen wrote:
->> Update DAC drivers powerdown attribute show callback to use the new
->> sysfs_emit() function.
->>
->> sysfs_emit() is preferred over raw s*printf() for sysfs attributes since it
->> knows about the sysfs buffer specifics and has some built-in sanity checks.
-> Thanks.
->
-> unrelated trivia:
->
->> diff --git a/drivers/iio/dac/ad5360.c b/drivers/iio/dac/ad5360.c
-> []
->> @@ -255,7 +255,7 @@ static ssize_t ad5360_read_dac_powerdown(struct device *dev,
->>   	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
->>   	struct ad5360_state *st = iio_priv(indio_dev);
->>   
->> -	return sprintf(buf, "%d\n", (bool)(st->ctrl & AD5360_SF_CTRL_PWR_DOWN));
->> +	return sysfs_emit(buf, "%d\n", (bool)(st->ctrl & AD5360_SF_CTRL_PWR_DOWN));
-> rather than cast to bool, perhaps standardize to use !!(val & test)
-I very much prefer the cast to bool since it semantically stronger. You 
-don't have to know that the !! idiom is used to cast an int to bool.
+On Tue, 16 Mar 2021 13:48:24 -0600
+Rob Herring <robh@kernel.org> wrote:
+
+> Properties with standard unit suffixes already have a type and don't need
+> type references. Fix a few more cases which have gotten added.
+> 
+> Cc: Luca Ceresoli <luca@lucaceresoli.net>
+> Cc: Jonathan Cameron <jic23@kernel.org>
+> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
+> Cc: Zhang Rui <rui.zhang@intel.com>
+> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: Kevin Tsai <ktsai@capellamicro.com>
+> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Cc: Sebastian Reichel <sre@kernel.org>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: linux-iio@vger.kernel.org
+> Cc: linux-input@vger.kernel.org
+> Cc: linux-pm@vger.kernel.org
+> Signed-off-by: Rob Herring <robh@kernel.org>
+
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+> ---
+>  Documentation/devicetree/bindings/iio/light/capella,cm3605.yaml | 1 -
+>  Documentation/devicetree/bindings/input/input.yaml              | 1 -
+>  Documentation/devicetree/bindings/power/supply/bq256xx.yaml     | 1 -
+>  Documentation/devicetree/bindings/power/supply/ltc4162-l.yaml   | 2 --
+>  .../devicetree/bindings/regulator/qcom-labibb-regulator.yaml    | 1 -
+>  .../devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml          | 1 -
+>  6 files changed, 7 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/light/capella,cm3605.yaml b/Documentation/devicetree/bindings/iio/light/capella,cm3605.yaml
+> index 27972938b60d..c63b79c3351b 100644
+> --- a/Documentation/devicetree/bindings/iio/light/capella,cm3605.yaml
+> +++ b/Documentation/devicetree/bindings/iio/light/capella,cm3605.yaml
+> @@ -48,7 +48,6 @@ properties:
+>    vdd-supply: true
+>  
+>    capella,aset-resistance-ohms:
+> -    $ref: /schemas/types.yaml#/definitions/uint32
+>      enum: [50000, 100000, 300000, 600000]
+>      description: >
+>        Sensitivity calibration resistance. Note that calibration curves
+> diff --git a/Documentation/devicetree/bindings/input/input.yaml b/Documentation/devicetree/bindings/input/input.yaml
+> index ab407f266bef..3fc37478c0c0 100644
+> --- a/Documentation/devicetree/bindings/input/input.yaml
+> +++ b/Documentation/devicetree/bindings/input/input.yaml
+> @@ -32,6 +32,5 @@ properties:
+>        Duration in seconds which the key should be kept pressed for device to
+>        power off automatically. Device with key pressed shutdown feature can
+>        specify this property.
+> -    $ref: /schemas/types.yaml#/definitions/uint32
+>  
+>  additionalProperties: true
+> diff --git a/Documentation/devicetree/bindings/power/supply/bq256xx.yaml b/Documentation/devicetree/bindings/power/supply/bq256xx.yaml
+> index 18b54783e11a..92ec7ed25668 100644
+> --- a/Documentation/devicetree/bindings/power/supply/bq256xx.yaml
+> +++ b/Documentation/devicetree/bindings/power/supply/bq256xx.yaml
+> @@ -39,7 +39,6 @@ properties:
+>      maxItems: 1
+>  
+>    ti,watchdog-timeout-ms:
+> -    $ref: /schemas/types.yaml#/definitions/uint32
+>      default: 0
+>      description: |
+>        Watchdog timer in ms. 0 (default) disables the watchdog
+> diff --git a/Documentation/devicetree/bindings/power/supply/ltc4162-l.yaml b/Documentation/devicetree/bindings/power/supply/ltc4162-l.yaml
+> index 1f88c9e013f4..6d7aa97a6475 100644
+> --- a/Documentation/devicetree/bindings/power/supply/ltc4162-l.yaml
+> +++ b/Documentation/devicetree/bindings/power/supply/ltc4162-l.yaml
+> @@ -29,12 +29,10 @@ properties:
+>      description: I2C address of the charger.
+>  
+>    lltc,rsnsb-micro-ohms:
+> -    $ref: /schemas/types.yaml#/definitions/uint32
+>      description: Battery sense resistor in microohm.
+>      minimum: 1000
+>  
+>    lltc,rsnsi-micro-ohms:
+> -    $ref: /schemas/types.yaml#/definitions/uint32
+>      description: Input current sense resistor in microohm.
+>      minimum: 1000
+>  
+> diff --git a/Documentation/devicetree/bindings/regulator/qcom-labibb-regulator.yaml b/Documentation/devicetree/bindings/regulator/qcom-labibb-regulator.yaml
+> index cf784bd1f5e5..1ddc1efd19e2 100644
+> --- a/Documentation/devicetree/bindings/regulator/qcom-labibb-regulator.yaml
+> +++ b/Documentation/devicetree/bindings/regulator/qcom-labibb-regulator.yaml
+> @@ -23,7 +23,6 @@ properties:
+>  
+>      properties:
+>        qcom,soft-start-us:
+> -        $ref: /schemas/types.yaml#/definitions/uint32
+>          description: Regulator soft start time in microseconds.
+>          enum: [200, 400, 600, 800]
+>          default: 200
+> diff --git a/Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml b/Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml
+> index 7cd364430573..95a728f4d333 100644
+> --- a/Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml
+> +++ b/Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml
+> @@ -78,7 +78,6 @@ patternProperties:
+>            also known as absolute calibration.
+>  
+>        qcom,hw-settle-time-us:
+> -        $ref: /schemas/types.yaml#/definitions/uint32
+>          description: Time between AMUX getting configured and the ADC starting conversion.
+>          enum: [15, 100, 200, 300, 400, 500, 600, 700, 1000, 2000, 4000, 8000, 16000, 32000, 64000, 128000]
+>  
+

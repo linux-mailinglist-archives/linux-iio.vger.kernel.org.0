@@ -2,404 +2,652 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 892073433CB
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Mar 2021 18:38:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D70D53433D7
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Mar 2021 18:45:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230127AbhCURhj convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sun, 21 Mar 2021 13:37:39 -0400
-Received: from saturn.retrosnub.co.uk ([46.235.226.198]:34920 "EHLO
-        saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230327AbhCURhX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 21 Mar 2021 13:37:23 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id EC3B09E0079;
-        Sun, 21 Mar 2021 17:37:15 +0000 (GMT)
-Date:   Sun, 21 Mar 2021 17:37:13 +0000
-From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>
-Cc:     Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        id S229990AbhCURpV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 21 Mar 2021 13:45:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43016 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229913AbhCURpB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 21 Mar 2021 13:45:01 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A0712601FC;
+        Sun, 21 Mar 2021 17:44:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1616348701;
+        bh=fVDAACX8ix9LaRMMegRXWetEFa5OcuvVileJdJEaBVY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=bHevauPJDQ2Y8aLFxTDRB1AsmJ5dek8KtTMRau3/Gm3XvqdrjQkDQLE7YSEB/Bfs/
+         +d8SqB0vqt/vday1fnvmqcWrIiXFdOq5vZolfopLMYSz1Tm5gegs1MzedWW5u6gKcg
+         PTJsTBICif68HOtntNPlBnJaKlEy/4/cn3BZDEFML3SDUW4IVSNowCSdyMGIzOETTW
+         quO9FpviK6V8iOftuxreOJrXI2kM1QjPP86fBmd5btm6K7gDqHUlhEsMveCom96/iL
+         em4C79BOpFuH0R+8ng025GloO51XiOKSaXcQpXRKbBRC+QV0RrGdkoqjoQPSBvCpxE
+         zRcYDK4uKjYvg==
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     linux-iio@vger.kernel.org
+Cc:     Nuno Sa <Nuno.Sa@analog.com>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        "zzzzArdelean, zzzzAlexandru" <alexandru.Ardelean@analog.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>
-Subject: Re: [PATCH v6 20/24] iio: buffer: add ioctl() to support opening
- extra buffers for IIO device
-Message-ID: <20210321173713.2691e0bb@jic23-huawei>
-In-Reply-To: <20210320174100.6808ad36@jic23-huawei>
-References: <20210215104043.91251-1-alexandru.ardelean@analog.com>
-        <20210215104043.91251-21-alexandru.ardelean@analog.com>
-        <877ca331-1a56-1bd3-6637-482bbf060ba9@metafoo.de>
-        <20210228143429.00001f01@Huawei.com>
-        <5f9070a5-2c3d-f185-1981-10ec768dbb4a@metafoo.de>
-        <20210228172753.0000568c@Huawei.com>
-        <CA+U=Dsqs_B3=6FSS0dmGsRUKwD826Qy250OXzyp5mBFHt4t6MQ@mail.gmail.com>
-        <CY4PR03MB2631CF5082542DBF3F109E08996C9@CY4PR03MB2631.namprd03.prod.outlook.com>
-        <20210320174100.6808ad36@jic23-huawei>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH] iio:tools: PoC client server version of iio_event_monitor
+Date:   Sun, 21 Mar 2021 17:42:57 +0000
+Message-Id: <20210321174257.784913-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.31.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 20 Mar 2021 17:41:00 +0000
-Jonathan Cameron <jic23@kernel.org> wrote:
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-> On Mon, 15 Mar 2021 09:58:08 +0000
-> "Sa, Nuno" <Nuno.Sa@analog.com> wrote:
-> 
-> > > -----Original Message-----
-> > > From: Alexandru Ardelean <ardeleanalex@gmail.com>
-> > > Sent: Saturday, March 6, 2021 6:01 PM
-> > > To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > Cc: Lars-Peter Clausen <lars@metafoo.de>; zzzzArdelean,
-> > > zzzzAlexandru <alexandru.Ardelean@analog.com>; LKML <linux-    
-> > > kernel@vger.kernel.org>; linux-iio <linux-iio@vger.kernel.org>;    
-> > > Hennerich, Michael <Michael.Hennerich@analog.com>; Jonathan
-> > > Cameron <jic23@kernel.org>; Sa, Nuno <Nuno.Sa@analog.com>;
-> > > Bogdan, Dragos <Dragos.Bogdan@analog.com>
-> > > Subject: Re: [PATCH v6 20/24] iio: buffer: add ioctl() to support opening
-> > > extra buffers for IIO device
-> > > 
-> > > [External]
-> > > 
-> > > On Sun, Feb 28, 2021 at 9:00 PM Jonathan Cameron
-> > > <Jonathan.Cameron@huawei.com> wrote:    
-> > > >
-> > > > On Sun, 28 Feb 2021 16:51:51 +0100
-> > > > Lars-Peter Clausen <lars@metafoo.de> wrote:
-> > > >    
-> > > > > On 2/28/21 3:34 PM, Jonathan Cameron wrote:    
-> > > > > > On Sun, 28 Feb 2021 09:51:38 +0100
-> > > > > > Lars-Peter Clausen <lars@metafoo.de> wrote:
-> > > > > >    
-> > > > > >> On 2/15/21 11:40 AM, Alexandru Ardelean wrote:    
-> > > > > >>> With this change, an ioctl() call is added to open a character    
-> > > device for a    
-> > > > > >>> buffer. The ioctl() number is 'i' 0x91, which follows the
-> > > > > >>> IIO_GET_EVENT_FD_IOCTL ioctl.
-> > > > > >>>
-> > > > > >>> The ioctl() will return an FD for the requested buffer index.    
-> > > The indexes    
-> > > > > >>> are the same from the /sys/iio/devices/iio:deviceX/bufferY    
-> > > (i.e. the Y    
-> > > > > >>> variable).
-> > > > > >>>
-> > > > > >>> Since there doesn't seem to be a sane way to return the FD for    
-> > > buffer0 to    
-> > > > > >>> be the same FD for the /dev/iio:deviceX, this ioctl() will return    
-> > > another    
-> > > > > >>> FD for buffer0 (or the first buffer). This duplicate FD will be    
-> > > able to    
-> > > > > >>> access the same buffer object (for buffer0) as accessing    
-> > > directly the    
-> > > > > >>> /dev/iio:deviceX chardev.
-> > > > > >>>
-> > > > > >>> Also, there is no IIO_BUFFER_GET_BUFFER_COUNT ioctl()    
-> > > implemented, as the    
-> > > > > >>> index for each buffer (and the count) can be deduced from    
-> > > the    
-> > > > > >>> '/sys/bus/iio/devices/iio:deviceX/bufferY' folders (i.e the    
-> > > number of    
-> > > > > >>> bufferY folders).
-> > > > > >>>
-> > > > > >>> Used following C code to test this:
-> > > > > >>> -------------------------------------------------------------------
-> > > > > >>>
-> > > > > >>>    #include <stdio.h>
-> > > > > >>>    #include <stdlib.h>
-> > > > > >>>    #include <unistd.h>
-> > > > > >>>    #include <sys/ioctl.h>
-> > > > > >>>    #include <fcntl.h"
-> > > > > >>>    #include <errno.h>
-> > > > > >>>
-> > > > > >>>    #define IIO_BUFFER_GET_FD_IOCTL      _IOWR('i', 0x91, int)
-> > > > > >>>
-> > > > > >>> int main(int argc, char *argv[])
-> > > > > >>> {
-> > > > > >>>           int fd;
-> > > > > >>>           int fd1;
-> > > > > >>>           int ret;
-> > > > > >>>
-> > > > > >>>           if ((fd = open("/dev/iio:device0", O_RDWR))<0) {
-> > > > > >>>                   fprintf(stderr, "Error open() %d errno %d\n",fd,    
-> > > errno);    
-> > > > > >>>                   return -1;
-> > > > > >>>           }
-> > > > > >>>
-> > > > > >>>           fprintf(stderr, "Using FD %d\n", fd);
-> > > > > >>>
-> > > > > >>>           fd1 = atoi(argv[1]);
-> > > > > >>>
-> > > > > >>>           ret = ioctl(fd, IIO_BUFFER_GET_FD_IOCTL, &fd1);
-> > > > > >>>           if (ret < 0) {
-> > > > > >>>                   fprintf(stderr, "Error for buffer %d ioctl() %d errno    
-> > > %d\n", fd1, ret, errno);    
-> > > > > >>>                   close(fd);
-> > > > > >>>                   return -1;
-> > > > > >>>           }
-> > > > > >>>
-> > > > > >>>           fprintf(stderr, "Got FD %d\n", fd1);
-> > > > > >>>
-> > > > > >>>           close(fd1);
-> > > > > >>>           close(fd);
-> > > > > >>>
-> > > > > >>>           return 0;
-> > > > > >>> }
-> > > > > >>> -------------------------------------------------------------------
-> > > > > >>>
-> > > > > >>> Results are:
-> > > > > >>> -------------------------------------------------------------------
-> > > > > >>>    # ./test 0
-> > > > > >>>    Using FD 3
-> > > > > >>>    Got FD 4
-> > > > > >>>
-> > > > > >>>    # ./test 1
-> > > > > >>>    Using FD 3
-> > > > > >>>    Got FD 4
-> > > > > >>>
-> > > > > >>>    # ./test 2
-> > > > > >>>    Using FD 3
-> > > > > >>>    Got FD 4
-> > > > > >>>
-> > > > > >>>    # ./test 3
-> > > > > >>>    Using FD 3
-> > > > > >>>    Got FD 4
-> > > > > >>>
-> > > > > >>>    # ls /sys/bus/iio/devices/iio\:device0
-> > > > > >>>    buffer  buffer0  buffer1  buffer2  buffer3  dev
-> > > > > >>>    in_voltage_sampling_frequency  in_voltage_scale
-> > > > > >>>    in_voltage_scale_available
-> > > > > >>>    name  of_node  power  scan_elements  subsystem  uevent
-> > > > > >>> -------------------------------------------------------------------
-> > > > > >>>
-> > > > > >>> iio:device0 has some fake kfifo buffers attached to an IIO    
-> > > device.    
-> > > > > >> For me there is one major problem with this approach. We only    
-> > > allow one    
-> > > > > >> application to open /dev/iio:deviceX at a time. This means we    
-> > > can't have    
-> > > > > >> different applications access different buffers of the same    
-> > > device. I    
-> > > > > >> believe this is a circuital feature.    
-> > > > > > Thats not quite true (I think - though I've not tested it).  What we    
-> > > don't    
-> > > > > > allow is for multiple processes to access them in an unaware    
-> > > fashion.    
-> > > > > > My assumption is we can rely on fork + fd passing via appropriate    
-> > > sockets.    
-> > > > > >    
-> > > > > >> It is possible to open the chardev, get the annonfd, close the    
-> > > chardev    
-> > > > > >> and keep the annonfd open. Then the next application can do    
-> > > the same and    
-> > > > > >> get access to a different buffer. But this has room for race    
-> > > conditions    
-> > > > > >> when two applications try this at the very same time.
-> > > > > >>
-> > > > > >> We need to somehow address this.    
-> > > > > > I'd count this as a bug :).  It could be safely done in a particular    
-> > > custom    
-> > > > > > system but in general it opens a can of worm.
-> > > > > >    
-> > > > > >> I'm also not much of a fan of using ioctls to create annon fds. In    
-> > > part    
-> > > > > >> because all the standard mechanisms for access control no    
-> > > longer work.    
-> > > > > > The inability to trivially have multiple processes open the anon    
-> > > fds    
-> > > > > > without care is one of the things I like most about them.
-> > > > > >
-> > > > > > IIO drivers and interfaces really aren't designed for multiple    
-> > > unaware    
-> > > > > > processes to access them.  We don't have per process controls    
-> > > for device    
-> > > > > > wide sysfs attributes etc.  In general, it would be hard to
-> > > > > > do due to the complexity of modeling all the interactions    
-> > > between the    
-> > > > > > different interfaces (events / buffers / sysfs access) in a generic    
-> > > fashion.    
-> > > > > >
-> > > > > > As such, the model, in my head at least, is that we only want a    
-> > > single    
-> > > > > > process to ever be responsible for access control.  That process    
-> > > can then    
-> > > > > > assign access to children or via a deliberate action (I think passing    
-> > > the    
-> > > > > > anon fd over a unix socket should work for example).  The intent    
-> > > being    
-> > > > > > that it is also responsible for mediating access to infrastructure    
-> > > that    
-> > > > > > multiple child processes all want to access.
-> > > > > >
-> > > > > > As such, having one chrdev isn't a disadvantage because only one    
-> > > process    
-> > > > > > should ever open it at a time.  This same process also handles the
-> > > > > > resource / control mediation.  Therefore we should only have    
-> > > one file    
-> > > > > > exposed for all the standard access control mechanisms.
-> > > > > >    
-> > > > > Hm, I see your point, but I'm not convinced.
-> > > > >
-> > > > > Having to have explicit synchronization makes it difficult to mix and
-> > > > > match. E.g. at ADI a popular use case for testing was to run some    
-> > > signal    
-> > > > > generator application on the TX buffer and some signal analyzer
-> > > > > application on the RX buffer.
-> > > > >
-> > > > > Both can be launched independently and there can be different    
-> > > types of    
-> > > > > generator and analyzer applications. Having to have a 3rd    
-> > > application to    
-> > > > > arbitrate access makes this quite cumbersome. And I'm afraid that    
-> > > in    
-> > > > > reality people might just stick with the two devices model just to    
-> > > avoid    
-> > > > > this restriction.    
-> > > >
-> > > > I'd argue that's a problem best tackled in a library - though it's a bit
-> > > > fiddly.  It ought to be possible to make it invisible that this level
-> > > > of sharing is going on.   The management process you describe would    
-> > > probably    
-> > > > be a thread running inside the first process to try and access a given    
-> > > device.    
-> > > > A second process failing to open the file with -EBUSY then connects    
-> > > to    
-> > > > appropriate socket (via path in /tmp or similar) and asks for the FD.
-> > > > There are race conditions that might make it fail, but a retry loop    
-> > > should    
-> > > > deal with those.
-> > > >
-> > > > I agree people might just stick to a two device model and if the    
-> > > devices    
-> > > > are independent enough I'm not sure that is the wrong way to    
-> > > approach the    
-> > > > problem.  It represents the independence and that the driver is    
-> > > being careful    
-> > > > that it both can and is safely handle independent simultaneous    
-> > > accessors.    
-> > > > We are always going to have some drivers doing that anyway    
-> > > because they've    
-> > > > already been doing that for years.
-> > > >    
-> > > 
-> > > This is the last of the 3 patches that I need to re-spin after Lars' review.
-> > > I have a good handle on the small stuff.
-> > > 
-> > > I'm not sure about the race-condition about which Lars was talking
-> > > about.
-> > > I mean, I get the problem, but is it a problem that we should fix in the
-> > > kernel?    
-> > 
-> > Hi all,
-> > 
-> > FWIW, I think that this really depends on the chosen ABI. If we do use
-> > the ioctl to return the buffer fd and just allow one app to hold the chardev
-> > at a time, I agree with Alex that this is not really a race and is just something
-> > that userspace needs to deal with....
-> > 
-> > That said and giving my superficial (I did not really read the full series) piece on this,
-> > I get both Lars and Jonathan points and, personally, it feels that the most natural thing
-> > would be to have a chardev per buffer...
-> > 
-> > On the other hand, AFAIC, events are also being handled in the same chardev as
-> > buffers, which makes things harder in terms of consistency... Events are per device
-> > and not per buffers right? My point is that, to have a chardev per buffer, it would make
-> > sense to detach events from the buffer stuff and that seems to be not doable without
-> > breaking ABI (we would probably need to assume that events and buffer0 are on the
-> > same chardev).  
-> 
-> Events are interesting as there is no particular reason to assume the driver
-> handling buffer0 is the right one to deal with them.  It might just as easily
-> be the case that they are of interest to a process that is concerned with buffer1.
-> 
-> To add a bit more flavour to my earlier comments.
-> 
-> I'm still concerned that if we did do multiple /dev/* files it would allow code
-> to think it has complete control over the device when it really doesn't.
-> Events are just one aspect of that.
-> 
-> We have had discussions in the past about allowing multiple userspace consumers
-> for a single buffer, but the conclusion there was that was a job for userspace
-> (daemon or similar) software which can deal with control inter dependencies etc.
-> 
-> There are already potential messy corners we don't handle for userspace
-> iio buffers vs in kernel users (what happens if they both try to control the
-> sampling frequency?)  I'm not keen to broaden this problem set.
-> If a device genuinely has separate control and pipelines for different
-> buffers then we are probably better representing that cleanly as
-> an mfd type layer and two separate IIO devices. Its effectively the
-> same a multi chip package.
-> 
-> A more classic multibuffer usecase is the one where you have related
-> datastreams that run at different rates (often happens in devices with
-> tagged FIFO elements). These are tightly coupled but we need to split
-> the data stream (or add tagging to our FIFOs.). Another case would be
-> DMA based device that puts channels into buffers that are entirely
-> separate in memory address rather than interleaved.
-> 
-> So I still need to put together a PoC, but it feels like there are various
-> software models that will give the illusion of there being separate
-> /dev/* files, but with an aspect of control being possible.
-> 
-> 1. Daemon, if present that can hand off chardevs to who needs them
-> 2. Library to make the first user of the buffer responsible for providing
->    service to other users.  Yes there are races, but I don't think they
->    are hard to deal in normal usecases.  (retry loops)
+This is not intended for upstreaming etc, but rather as a crude
+way of illustrating use of unix sockets to hand over the file
+descriptors between programs.
 
-Hi Nuno / Others,
+It might be useful to do this for the event anon FD, but real target
+is the buffer anon FDs for multiple buffer IIO devices.
 
-Nuno's mention of things being similar for the event anon
-FD to the situation for the buffer anon FDs made me realise there was
-a horrible short cut to a proof of concept that didn't require me
-to wire up a multiple buffer device.
+In that case, first opener of the main file descriptor would
+hand off management to a thread which could then receive
+requests for the different buffer FDs.
 
-Upshot, is that I've just sent out a (definitely not for merging)
-hacked up version of the iio_event_monitor that can act as server
-or client.  The idea is that the socket handling looks a bit
-like what I'd expect to see hidden away in a library so as to
-allow
+Anynow this is clearly a hacked up mess based on cope coppied
+from the internet ;)
 
-1) Client 1 is after buffer 3.
-   It tries to open the /dev/iio\:deviceX chrdev and succeeds.
-   It spins up a thread with a listening socket for /tmp/iio\:deviceX-magic
-   Continues in main thread to request buffer 3.
-2) Client 2 is after buffer 2
-   I tries to open the /dev/iio\:deviceX chrdev and fails.
-   It sleeps a moment (reduces chance of race with client 1)
-   It opens a connection to the socket via /tmp/iio\:deviceX-magic
-   Sends a request for the buffer 2 FD.
-   Thread in Client 1 calls the ioctl to get the buffer 2 FD which
-   it then sends on to Client 2 which can use it as if it had
-   requested it directly.
+Not-signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ tools/iio/Build               |   1 +
+ tools/iio/Makefile            |   7 +-
+ tools/iio/iio_event_network.c | 545 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 552 insertions(+), 1 deletion(-)
 
-We might want to have a generic server version as well that doesn't
-itself make use of any of the buffers as keeps the model more symmetric
-and reduce common corner cases.
-
-Anyhow the code I put together is terrible, but I wasn't 100% sure
-there weren't any issues passing anon fd file handles and this shows
-that at least in theory the approach I proposed above works.
-
-Test is something like
-./iio_events_network /dev/iio\:device1
-./iio_events_network -c
-
-Then make some events happen (I was using the dummy driver and
-the event generator associated with that).
-The server in this PoC just quits after handling off the FD.
-
-Jonathan
-
-> 
-> Jonathan
-> 
-> 
-> > 
-> > - Nuno Sá  
-> 
+diff --git a/tools/iio/Build b/tools/iio/Build
+index 8d0f3af3723f..077028ae1150 100644
+--- a/tools/iio/Build
++++ b/tools/iio/Build
+@@ -2,3 +2,4 @@ iio_utils-y += iio_utils.o
+ lsiio-y += lsiio.o iio_utils.o
+ iio_event_monitor-y += iio_event_monitor.o iio_utils.o
+ iio_generic_buffer-y += iio_generic_buffer.o iio_utils.o
++iio_event_network-y += iio_event_network.o iio_utils.o
+\ No newline at end of file
+diff --git a/tools/iio/Makefile b/tools/iio/Makefile
+index 5d12ac4e7f8f..d63608fa0243 100644
+--- a/tools/iio/Makefile
++++ b/tools/iio/Makefile
+@@ -14,7 +14,7 @@ MAKEFLAGS += -r
+ 
+ override CFLAGS += -O2 -Wall -g -D_GNU_SOURCE -I$(OUTPUT)include
+ 
+-ALL_TARGETS := iio_event_monitor lsiio iio_generic_buffer
++ALL_TARGETS := iio_event_monitor lsiio iio_generic_buffer iio_event_network
+ ALL_PROGRAMS := $(patsubst %,$(OUTPUT)%,$(ALL_TARGETS))
+ 
+ all: $(ALL_PROGRAMS)
+@@ -55,6 +55,11 @@ $(IIO_GENERIC_BUFFER_IN): prepare FORCE $(OUTPUT)iio_utils-in.o
+ $(OUTPUT)iio_generic_buffer: $(IIO_GENERIC_BUFFER_IN)
+ 	$(QUIET_LINK)$(CC) $(CFLAGS) $(LDFLAGS) $< -o $@
+ 
++IIO_EVENT_NETWORK_IN := $(OUTPUT)iio_event_network-in.o
++$(IIO_EVENT_NETWORK_IN): prepare FORCE $(OUTPUT)iio_utils-in.o
++	$(Q)$(MAKE) $(build)=iio_event_network
++$(OUTPUT)iio_event_network: $(IIO_EVENT_NETWORK_IN)
++	$(QUIET_LINK)$(CC) $(CFLAGS) $(LDFLAGS) $< -o $@
+ clean:
+ 	rm -f $(ALL_PROGRAMS)
+ 	rm -rf $(OUTPUT)include/linux/iio
+diff --git a/tools/iio/iio_event_network.c b/tools/iio/iio_event_network.c
+new file mode 100644
+index 000000000000..186f5cc8bb94
+--- /dev/null
++++ b/tools/iio/iio_event_network.c
+@@ -0,0 +1,545 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Industrialio event test code.
++ *
++ * Copyright (c) 2011-2012 Lars-Peter Clausen <lars@metafoo.de>
++ *
++ * This program is primarily intended as an example application.
++ * Reads the current buffer setup from sysfs and starts a short capture
++ * from the specified device, pretty printing the result after appropriate
++ * conversion.
++ *
++ * Usage:
++ *	iio_event_monitor <device_name>
++ */
++
++#include <unistd.h>
++#include <stdlib.h>
++#include <dirent.h>
++#include <stdbool.h>
++#include <stdio.h>
++#include <errno.h>
++#include <string.h>
++#include <poll.h>
++#include <fcntl.h>
++#include <sys/ioctl.h>
++#include <sys/un.h>
++#include <sys/wait.h>
++#include <sys/socket.h>
++
++
++#include "iio_utils.h"
++#include <linux/iio/events.h>
++#include <linux/iio/types.h>
++
++static const char * const iio_chan_type_name_spec[] = {
++	[IIO_VOLTAGE] = "voltage",
++	[IIO_CURRENT] = "current",
++	[IIO_POWER] = "power",
++	[IIO_ACCEL] = "accel",
++	[IIO_ANGL_VEL] = "anglvel",
++	[IIO_MAGN] = "magn",
++	[IIO_LIGHT] = "illuminance",
++	[IIO_INTENSITY] = "intensity",
++	[IIO_PROXIMITY] = "proximity",
++	[IIO_TEMP] = "temp",
++	[IIO_INCLI] = "incli",
++	[IIO_ROT] = "rot",
++	[IIO_ANGL] = "angl",
++	[IIO_TIMESTAMP] = "timestamp",
++	[IIO_CAPACITANCE] = "capacitance",
++	[IIO_ALTVOLTAGE] = "altvoltage",
++	[IIO_CCT] = "cct",
++	[IIO_PRESSURE] = "pressure",
++	[IIO_HUMIDITYRELATIVE] = "humidityrelative",
++	[IIO_ACTIVITY] = "activity",
++	[IIO_STEPS] = "steps",
++	[IIO_ENERGY] = "energy",
++	[IIO_DISTANCE] = "distance",
++	[IIO_VELOCITY] = "velocity",
++	[IIO_CONCENTRATION] = "concentration",
++	[IIO_RESISTANCE] = "resistance",
++	[IIO_PH] = "ph",
++	[IIO_UVINDEX] = "uvindex",
++	[IIO_GRAVITY] = "gravity",
++	[IIO_POSITIONRELATIVE] = "positionrelative",
++	[IIO_PHASE] = "phase",
++	[IIO_MASSCONCENTRATION] = "massconcentration",
++};
++
++static const char * const iio_ev_type_text[] = {
++	[IIO_EV_TYPE_THRESH] = "thresh",
++	[IIO_EV_TYPE_MAG] = "mag",
++	[IIO_EV_TYPE_ROC] = "roc",
++	[IIO_EV_TYPE_THRESH_ADAPTIVE] = "thresh_adaptive",
++	[IIO_EV_TYPE_MAG_ADAPTIVE] = "mag_adaptive",
++	[IIO_EV_TYPE_CHANGE] = "change",
++};
++
++static const char * const iio_ev_dir_text[] = {
++	[IIO_EV_DIR_EITHER] = "either",
++	[IIO_EV_DIR_RISING] = "rising",
++	[IIO_EV_DIR_FALLING] = "falling"
++};
++
++static const char * const iio_modifier_names[] = {
++	[IIO_MOD_X] = "x",
++	[IIO_MOD_Y] = "y",
++	[IIO_MOD_Z] = "z",
++	[IIO_MOD_X_AND_Y] = "x&y",
++	[IIO_MOD_X_AND_Z] = "x&z",
++	[IIO_MOD_Y_AND_Z] = "y&z",
++	[IIO_MOD_X_AND_Y_AND_Z] = "x&y&z",
++	[IIO_MOD_X_OR_Y] = "x|y",
++	[IIO_MOD_X_OR_Z] = "x|z",
++	[IIO_MOD_Y_OR_Z] = "y|z",
++	[IIO_MOD_X_OR_Y_OR_Z] = "x|y|z",
++	[IIO_MOD_LIGHT_BOTH] = "both",
++	[IIO_MOD_LIGHT_IR] = "ir",
++	[IIO_MOD_ROOT_SUM_SQUARED_X_Y] = "sqrt(x^2+y^2)",
++	[IIO_MOD_SUM_SQUARED_X_Y_Z] = "x^2+y^2+z^2",
++	[IIO_MOD_LIGHT_CLEAR] = "clear",
++	[IIO_MOD_LIGHT_RED] = "red",
++	[IIO_MOD_LIGHT_GREEN] = "green",
++	[IIO_MOD_LIGHT_BLUE] = "blue",
++	[IIO_MOD_LIGHT_UV] = "uv",
++	[IIO_MOD_LIGHT_DUV] = "duv",
++	[IIO_MOD_QUATERNION] = "quaternion",
++	[IIO_MOD_TEMP_AMBIENT] = "ambient",
++	[IIO_MOD_TEMP_OBJECT] = "object",
++	[IIO_MOD_NORTH_MAGN] = "from_north_magnetic",
++	[IIO_MOD_NORTH_TRUE] = "from_north_true",
++	[IIO_MOD_NORTH_MAGN_TILT_COMP] = "from_north_magnetic_tilt_comp",
++	[IIO_MOD_NORTH_TRUE_TILT_COMP] = "from_north_true_tilt_comp",
++	[IIO_MOD_RUNNING] = "running",
++	[IIO_MOD_JOGGING] = "jogging",
++	[IIO_MOD_WALKING] = "walking",
++	[IIO_MOD_STILL] = "still",
++	[IIO_MOD_ROOT_SUM_SQUARED_X_Y_Z] = "sqrt(x^2+y^2+z^2)",
++	[IIO_MOD_I] = "i",
++	[IIO_MOD_Q] = "q",
++	[IIO_MOD_CO2] = "co2",
++	[IIO_MOD_ETHANOL] = "ethanol",
++	[IIO_MOD_H2] = "h2",
++	[IIO_MOD_VOC] = "voc",
++	[IIO_MOD_PM1] = "pm1",
++	[IIO_MOD_PM2P5] = "pm2p5",
++	[IIO_MOD_PM4] = "pm4",
++	[IIO_MOD_PM10] = "pm10",
++	[IIO_MOD_O2] = "o2",
++};
++
++static bool event_is_known(struct iio_event_data *event)
++{
++	enum iio_chan_type type = IIO_EVENT_CODE_EXTRACT_CHAN_TYPE(event->id);
++	enum iio_modifier mod = IIO_EVENT_CODE_EXTRACT_MODIFIER(event->id);
++	enum iio_event_type ev_type = IIO_EVENT_CODE_EXTRACT_TYPE(event->id);
++	enum iio_event_direction dir = IIO_EVENT_CODE_EXTRACT_DIR(event->id);
++
++	switch (type) {
++	case IIO_VOLTAGE:
++	case IIO_CURRENT:
++	case IIO_POWER:
++	case IIO_ACCEL:
++	case IIO_ANGL_VEL:
++	case IIO_MAGN:
++	case IIO_LIGHT:
++	case IIO_INTENSITY:
++	case IIO_PROXIMITY:
++	case IIO_TEMP:
++	case IIO_INCLI:
++	case IIO_ROT:
++	case IIO_ANGL:
++	case IIO_TIMESTAMP:
++	case IIO_CAPACITANCE:
++	case IIO_ALTVOLTAGE:
++	case IIO_CCT:
++	case IIO_PRESSURE:
++	case IIO_HUMIDITYRELATIVE:
++	case IIO_ACTIVITY:
++	case IIO_STEPS:
++	case IIO_ENERGY:
++	case IIO_DISTANCE:
++	case IIO_VELOCITY:
++	case IIO_CONCENTRATION:
++	case IIO_RESISTANCE:
++	case IIO_PH:
++	case IIO_UVINDEX:
++	case IIO_GRAVITY:
++	case IIO_POSITIONRELATIVE:
++	case IIO_PHASE:
++	case IIO_MASSCONCENTRATION:
++		break;
++	default:
++		return false;
++	}
++
++	switch (mod) {
++	case IIO_NO_MOD:
++	case IIO_MOD_X:
++	case IIO_MOD_Y:
++	case IIO_MOD_Z:
++	case IIO_MOD_X_AND_Y:
++	case IIO_MOD_X_AND_Z:
++	case IIO_MOD_Y_AND_Z:
++	case IIO_MOD_X_AND_Y_AND_Z:
++	case IIO_MOD_X_OR_Y:
++	case IIO_MOD_X_OR_Z:
++	case IIO_MOD_Y_OR_Z:
++	case IIO_MOD_X_OR_Y_OR_Z:
++	case IIO_MOD_LIGHT_BOTH:
++	case IIO_MOD_LIGHT_IR:
++	case IIO_MOD_ROOT_SUM_SQUARED_X_Y:
++	case IIO_MOD_SUM_SQUARED_X_Y_Z:
++	case IIO_MOD_LIGHT_CLEAR:
++	case IIO_MOD_LIGHT_RED:
++	case IIO_MOD_LIGHT_GREEN:
++	case IIO_MOD_LIGHT_BLUE:
++	case IIO_MOD_LIGHT_UV:
++	case IIO_MOD_LIGHT_DUV:
++	case IIO_MOD_QUATERNION:
++	case IIO_MOD_TEMP_AMBIENT:
++	case IIO_MOD_TEMP_OBJECT:
++	case IIO_MOD_NORTH_MAGN:
++	case IIO_MOD_NORTH_TRUE:
++	case IIO_MOD_NORTH_MAGN_TILT_COMP:
++	case IIO_MOD_NORTH_TRUE_TILT_COMP:
++	case IIO_MOD_RUNNING:
++	case IIO_MOD_JOGGING:
++	case IIO_MOD_WALKING:
++	case IIO_MOD_STILL:
++	case IIO_MOD_ROOT_SUM_SQUARED_X_Y_Z:
++	case IIO_MOD_I:
++	case IIO_MOD_Q:
++	case IIO_MOD_CO2:
++	case IIO_MOD_ETHANOL:
++	case IIO_MOD_H2:
++	case IIO_MOD_VOC:
++	case IIO_MOD_PM1:
++	case IIO_MOD_PM2P5:
++	case IIO_MOD_PM4:
++	case IIO_MOD_PM10:
++	case IIO_MOD_O2:
++		break;
++	default:
++		return false;
++	}
++
++	switch (ev_type) {
++	case IIO_EV_TYPE_THRESH:
++	case IIO_EV_TYPE_MAG:
++	case IIO_EV_TYPE_ROC:
++	case IIO_EV_TYPE_THRESH_ADAPTIVE:
++	case IIO_EV_TYPE_MAG_ADAPTIVE:
++	case IIO_EV_TYPE_CHANGE:
++		break;
++	default:
++		return false;
++	}
++
++	switch (dir) {
++	case IIO_EV_DIR_EITHER:
++	case IIO_EV_DIR_RISING:
++	case IIO_EV_DIR_FALLING:
++	case IIO_EV_DIR_NONE:
++		break;
++	default:
++		return false;
++	}
++
++	return true;
++}
++
++static void print_event(struct iio_event_data *event)
++{
++	enum iio_chan_type type = IIO_EVENT_CODE_EXTRACT_CHAN_TYPE(event->id);
++	enum iio_modifier mod = IIO_EVENT_CODE_EXTRACT_MODIFIER(event->id);
++	enum iio_event_type ev_type = IIO_EVENT_CODE_EXTRACT_TYPE(event->id);
++	enum iio_event_direction dir = IIO_EVENT_CODE_EXTRACT_DIR(event->id);
++	int chan = IIO_EVENT_CODE_EXTRACT_CHAN(event->id);
++	int chan2 = IIO_EVENT_CODE_EXTRACT_CHAN2(event->id);
++	bool diff = IIO_EVENT_CODE_EXTRACT_DIFF(event->id);
++
++	if (!event_is_known(event)) {
++		fprintf(stderr, "Unknown event: time: %lld, id: %llx\n",
++			event->timestamp, event->id);
++
++		return;
++	}
++
++	printf("Event: time: %lld, type: %s", event->timestamp,
++	       iio_chan_type_name_spec[type]);
++
++	if (mod != IIO_NO_MOD)
++		printf("(%s)", iio_modifier_names[mod]);
++
++	if (chan >= 0) {
++		printf(", channel: %d", chan);
++		if (diff && chan2 >= 0)
++			printf("-%d", chan2);
++	}
++
++	printf(", evtype: %s", iio_ev_type_text[ev_type]);
++
++	if (dir != IIO_EV_DIR_NONE)
++		printf(", direction: %s", iio_ev_dir_text[dir]);
++
++	printf("\n");
++}
++
++/* Enable or disable events in sysfs if the knob is available */
++static void enable_events(char *dev_dir, int enable)
++{
++	const struct dirent *ent;
++	char evdir[256];
++	int ret;
++	DIR *dp;
++
++	snprintf(evdir, sizeof(evdir), FORMAT_EVENTS_DIR, dev_dir);
++	evdir[sizeof(evdir)-1] = '\0';
++
++	dp = opendir(evdir);
++	if (!dp) {
++		fprintf(stderr, "Enabling/disabling events: can't open %s\n",
++			evdir);
++		return;
++	}
++
++	while (ent = readdir(dp), ent) {
++		if (iioutils_check_suffix(ent->d_name, "_en")) {
++			printf("%sabling: %s\n",
++			       enable ? "En" : "Dis",
++			       ent->d_name);
++			ret = write_sysfs_int(ent->d_name, evdir,
++					      enable);
++			if (ret < 0)
++				fprintf(stderr, "Failed to enable/disable %s\n",
++					ent->d_name);
++		}
++	}
++
++	if (closedir(dp) == -1) {
++		perror("Enabling/disabling channels: "
++		       "Failed to close directory");
++		return;
++	}
++}
++
++static int send_fd(int socket, int fd)
++{
++        struct msghdr msg = {0};
++        struct cmsghdr *cmsg;
++        char buf[CMSG_SPACE(sizeof(int))], dup[256];
++        memset(buf, 0, sizeof(buf));
++        struct iovec io = { .iov_base = &dup, .iov_len = sizeof(dup) };
++
++        msg.msg_iov = &io;
++        msg.msg_iovlen = 1;
++        msg.msg_control = buf;
++        msg.msg_controllen = sizeof(buf);
++
++        cmsg = CMSG_FIRSTHDR(&msg);
++        cmsg->cmsg_level = SOL_SOCKET;
++        cmsg->cmsg_type = SCM_RIGHTS;
++        cmsg->cmsg_len = CMSG_LEN(sizeof(int));
++
++        memcpy ((int *)CMSG_DATA(cmsg), &fd, sizeof(int));
++
++	printf("Sending event FD to client\n");
++        if (sendmsg (socket, &msg, 0) < 0) {
++		printf("Failed\n");
++		return -1;
++	}
++
++	return 0;
++}
++
++static int recv_fd(int socket)
++{
++	int fd;
++	struct msghdr msg = {0};
++	struct cmsghdr *cmsg;
++	char buf[CMSG_SPACE(sizeof(int))], dup[256];
++	memset(buf, 0, sizeof(buf));
++	struct iovec io = { .iov_base = &dup, .iov_len = sizeof(dup) };
++
++	msg.msg_iov = &io;
++	msg.msg_iovlen = 1;
++	msg.msg_control = buf;
++	msg.msg_controllen = sizeof(buf);
++
++	printf("Waiting for event file descriptor...\n");
++	if (recvmsg (socket, &msg, 0) < 0) {
++		printf("Failed to receive message\n");
++		return -1;
++	}
++
++	cmsg = CMSG_FIRSTHDR(&msg);
++	memcpy (&fd, (int *) CMSG_DATA(cmsg), sizeof(int));
++
++	printf("Recieved event FD\n");
++
++	return fd;
++}
++
++int main(int argc, char **argv)
++{
++	struct iio_event_data event;
++	const char *filename = "/tmp/iio-ev-bridge";
++	const char *device_name;
++	int sfd, cfd;
++	struct sockaddr_un addr;
++	char *dev_dir_name = NULL;
++	char *chrdev_name;
++	int ret;
++	int dev_num;
++	int fd, event_fd;
++	bool all_events = false;
++	bool client = false;
++
++	if (argc == 2) {
++		if (!strcmp(argv[1], "-c"))
++			client = true;
++		else
++			device_name = argv[1];
++
++	} else if (argc == 3) {
++		device_name = argv[2];
++		if (!strcmp(argv[1], "-a"))
++			all_events = true;
++	} else {
++		fprintf(stderr,
++			"Usage: iio_event_monitor [options] <device_name>\n"
++			"Listen and display events from IIO devices\n"
++			"  -a         Auto-activate all available events\n"
++			"  -c         Client mode\n");
++		return -1;
++	}
++
++	if (!client) {
++
++		dev_num = find_type_by_name(device_name, "iio:device");
++		if (dev_num >= 0) {
++			printf("Found IIO device with name %s with device number %d\n",
++				device_name, dev_num);
++			ret = asprintf(&chrdev_name, "/dev/iio:device%d", dev_num);
++			if (ret < 0)
++				return -ENOMEM;
++			/* Look up sysfs dir as well if we can */
++			ret = asprintf(&dev_dir_name, "%siio:device%d", iio_dir, dev_num);
++			if (ret < 0)
++				return -ENOMEM;
++		} else {
++			/*
++			 * If we can't find an IIO device by name assume device_name is
++			 * an IIO chrdev
++			 */
++			chrdev_name = strdup(device_name);
++			if (!chrdev_name)
++				return -ENOMEM;
++		}
++
++		if (all_events && dev_dir_name)
++			enable_events(dev_dir_name, 1);
++
++		fd = open(chrdev_name, 0);
++		if (fd == -1) {
++			ret = -errno;
++			fprintf(stderr, "Failed to open %s\n", chrdev_name);
++			goto error_free_chrdev_name;
++		}
++
++		ret = ioctl(fd, IIO_GET_EVENT_FD_IOCTL, &event_fd);
++		if (ret == -1 || event_fd == -1) {
++			ret = -errno;
++			if (ret == -ENODEV)
++				fprintf(stderr,
++					"This device does not support events\n");
++			else
++				fprintf(stderr, "Failed to retrieve event fd\n");
++			if (close(fd) == -1)
++				perror("Failed to close character device file");
++
++			goto error_free_chrdev_name;
++		}
++
++		if (close(fd) == -1)  {
++			ret = -errno;
++			goto error_free_chrdev_name;
++		}
++
++		sfd = socket(AF_UNIX, SOCK_STREAM, 0);
++		if (sfd == -1) {
++			printf("Could not create socket\n");
++			return -1;
++		}
++
++		memset(&addr, 0, sizeof(addr));
++		addr.sun_family = AF_UNIX;
++		strncpy(addr.sun_path, filename, sizeof(addr.sun_path) -1);
++		if (bind(sfd, (struct sockaddr *)&addr, sizeof(addr)) == -1) {
++			printf("Failed to bind\n");
++		}
++		if (listen(sfd, 5) == -1) {
++			printf("Failed to listen on socket\n");
++			return -1;
++		}
++		cfd = accept(sfd, NULL, NULL);
++		if (cfd == -1) {
++			printf("failed accept\n");
++			return -1;
++		}
++		send_fd(cfd, event_fd);
++
++		return 0;
++	}
++	/* Client path */
++	sfd = socket(AF_UNIX, SOCK_STREAM, 0);
++	if (sfd == -1) {
++		printf("could not create socket\n");
++		return -1;
++	}
++
++	memset(&addr, 0, sizeof(addr));
++	addr.sun_family = AF_UNIX;
++	strncpy(addr.sun_path, filename, sizeof(addr.sun_path) -1);
++	if (connect(sfd, (struct sockaddr *)&addr, sizeof(addr)) == -1) {
++		printf ("Failed to connect to socket\n");
++		return -1;
++	}
++
++	event_fd = recv_fd(sfd);
++
++	while (true) {
++		ret = read(event_fd, &event, sizeof(event));
++		if (ret == -1) {
++			if (errno == EAGAIN) {
++				fprintf(stderr, "nothing available\n");
++				continue;
++			} else {
++				ret = -errno;
++				perror("Failed to read event from device");
++				break;
++			}
++		}
++
++		if (ret != sizeof(event)) {
++			fprintf(stderr, "Reading event failed!\n");
++			ret = -EIO;
++			break;
++		}
++
++		print_event(&event);
++	}
++
++	if (close(event_fd) == -1)
++		perror("Failed to close event file");
++
++error_free_chrdev_name:
++	/* Disable events after use */
++	if (all_events && dev_dir_name)
++		enable_events(dev_dir_name, 0);
++
++	free(chrdev_name);
++
++	return ret;
++}
+-- 
+2.31.0
 

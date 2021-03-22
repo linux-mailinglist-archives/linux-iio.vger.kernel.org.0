@@ -2,100 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C5A5343592
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Mar 2021 23:55:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F4D43435E6
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Mar 2021 01:16:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231196AbhCUWyy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 21 Mar 2021 18:54:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45790 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231268AbhCUWyo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 21 Mar 2021 18:54:44 -0400
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58540C061574;
-        Sun, 21 Mar 2021 15:54:44 -0700 (PDT)
-Received: by mail-pl1-x62b.google.com with SMTP id e14so5563029plj.2;
-        Sun, 21 Mar 2021 15:54:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Gk6A8338xa9+KOeBrbrS5yYzBt071QVtFCzWrO9AcMk=;
-        b=iul765MCvW2akaWYSsRnEb7Pja9iVxTY14WAIQtFMF9rZ0qUAFeANpk3IjHtj5EPAi
-         Zb6/7mcHqrcr0TGX8SR8yJcRBAbvb81Aytr6jPyKEW/c9EhS3R36GXubtVdQj0DzyO4n
-         O2yi9d8dXBCgtI4cBsvb66wpHAq1hRyjIZqbmvn0IRk47iPUta6ZYwj/D/3A2KN+o/J2
-         5oL5wdULWZC2C8xjJa29OH/eglYf0sKtH0/73uJ0DuxHS9R6qiMxqiMZ3aMwMPmilfNU
-         U4k0vNauK6mvB3QkEoT6s2zbKUWDiW9hzxhO8QYmAYlcS28gVEvabSfTQNmsO5MDQDFp
-         sP/A==
+        id S229949AbhCVAP5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 21 Mar 2021 20:15:57 -0400
+Received: from mail-io1-f50.google.com ([209.85.166.50]:33378 "EHLO
+        mail-io1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229870AbhCVAPk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 21 Mar 2021 20:15:40 -0400
+Received: by mail-io1-f50.google.com with SMTP id n198so12143427iod.0;
+        Sun, 21 Mar 2021 17:15:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Gk6A8338xa9+KOeBrbrS5yYzBt071QVtFCzWrO9AcMk=;
-        b=SbxubZ66K3P0xLdlr2aeh5ouqF7Mtq1ASA3NGnvCvJ5S1/QV5PQXhA5WJEIsdwHmLU
-         OU5K618OvLFTlVH+HzQ52nyri9s2IIkBe0HrwdOxZ6PeiVsxcSpvru36LEEJt3Tj9tJs
-         d+w7SpEEgIjFAF8XJt5BMr/GFm0ILAq5AsE2nqYVBA6Gmeiv4WU5BkUy5b9o2TFj459w
-         yRwYdn25m8n4JvSz2zrifB/cR50GWzLieHtf5B1N4AXnpf9nyPjO+7difu8p3Hc1+6kQ
-         pKWA/OHzJ0aONdeCZpiDD/uHsIVDUGy8WUCCMimRBazvj6ubPckSgxK3lxLSV6IYuSw2
-         XZ/w==
-X-Gm-Message-State: AOAM532Gf8ppmU3ksddf4uAj0CNjuDFWck94rGRrkUEFxzVVaSgaryor
-        PghQGoY1+G2OD9i39Uhtb7U=
-X-Google-Smtp-Source: ABdhPJwUjKiwUIY2gR5v0t68n+s9S9RHxjh5tdqqi5s1ZgiTiLbNiorDYfl4POuOp7e5pSoWylxI9A==
-X-Received: by 2002:a17:90a:fa89:: with SMTP id cu9mr10261658pjb.204.1616367283943;
-        Sun, 21 Mar 2021 15:54:43 -0700 (PDT)
-Received: from google.com ([2620:15c:202:201:85c2:9df1:533a:87e9])
-        by smtp.gmail.com with ESMTPSA id a15sm11643646pju.34.2021.03.21.15.54.41
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=FxUp2jEO0KRbEY12V6xZa1U/LzshQlRJK7fSuCExngA=;
+        b=fheG02dhmMZXlmPj8qzRmbWK4HMxVYc7MHAMIkfBN6KGUxrXvpwcjWuYo/20MJMWUf
+         gG5YIle7HNM7xW9+fSLfrzuU0X9JvgLuqWC0hvvb2FCwLAyysYdJScPe4V7mAW87paT+
+         s7wpsMcQUlYiDjuRfYkCgHvxlsm/Rby85oiDH7m7JONtoqzGAV6kiLp5bjR1RGTw6WiJ
+         hdpWlxyPdUQ165mRwfAwhj0iYyLbC0zboylW2cowbPGEQieVxpO4tYv5W7dh+MsizVa0
+         feBVIQ/kc5CGXB6rHFA21SKdJA+cwjmdXiQWaxDWngG69J8eUCj7vb6+goOfNloBltU4
+         5RZg==
+X-Gm-Message-State: AOAM533ccorU8rpzVsOlQ8oqb3OcnSo1NVcuujSY7WRNO6fJ/jJQk677
+        rmRI5aLTl+nNXDJA2/2SIOkHeeL2XQ==
+X-Google-Smtp-Source: ABdhPJzwJ39k6DbRD/IcaVPrMClRm6JaxHcOm5Jlrno6VNA8zJ3eagAFcjnEmh1243i7QLSQIehXrQ==
+X-Received: by 2002:a5e:8902:: with SMTP id k2mr1479306ioj.48.1616372139615;
+        Sun, 21 Mar 2021 17:15:39 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.253])
+        by smtp.gmail.com with ESMTPSA id j14sm6726036ilu.3.2021.03.21.17.15.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Mar 2021 15:54:42 -0700 (PDT)
-Date:   Sun, 21 Mar 2021 15:54:39 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Rob Herring <robh@kernel.org>
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Luca Ceresoli <luca@lucaceresoli.net>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Kevin Tsai <ktsai@capellamicro.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: More cleanup of standard unit properties
-Message-ID: <YFfOr27g5cGFvwNR@google.com>
-References: <20210316194824.3526913-1-robh@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210316194824.3526913-1-robh@kernel.org>
+        Sun, 21 Mar 2021 17:15:39 -0700 (PDT)
+Received: (nullmailer pid 1475026 invoked by uid 1000);
+        Mon, 22 Mar 2021 00:15:37 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Puranjay Mohan <puranjay12@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, knaack.h@gmx.de,
+        linux-iio@vger.kernel.org, jic23@kernel.org,
+        alexandru.ardelean@analog.com, devicetree@vger.kernel.org
+In-Reply-To: <20210320064509.119878-2-puranjay12@gmail.com>
+References: <20210320064509.119878-1-puranjay12@gmail.com> <20210320064509.119878-2-puranjay12@gmail.com>
+Subject: Re: [PATCH v1 1/2] dt-bindings: iio: temperature: Add DT bindings for TMP117
+Date:   Sun, 21 Mar 2021 18:15:37 -0600
+Message-Id: <1616372137.235777.1475025.nullmailer@robh.at.kernel.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Mar 16, 2021 at 01:48:24PM -0600, Rob Herring wrote:
-> Properties with standard unit suffixes already have a type and don't need
-> type references. Fix a few more cases which have gotten added.
+On Sat, 20 Mar 2021 12:15:08 +0530, Puranjay Mohan wrote:
+> Add devicetree binding document for TMP117, a digital temperature sensor.
 > 
-> Cc: Luca Ceresoli <luca@lucaceresoli.net>
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
-> Cc: Zhang Rui <rui.zhang@intel.com>
-> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-> Cc: Linus Walleij <linus.walleij@linaro.org>
-> Cc: Kevin Tsai <ktsai@capellamicro.com>
-> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> Cc: Sebastian Reichel <sre@kernel.org>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: linux-iio@vger.kernel.org
-> Cc: linux-input@vger.kernel.org
-> Cc: linux-pm@vger.kernel.org
-> Signed-off-by: Rob Herring <robh@kernel.org>
+> Signed-off-by: Puranjay Mohan <puranjay12@gmail.com>
+> ---
+>  .../bindings/iio/temperature/ti,tmp117.yaml   | 27 +++++++++++++++++++
+>  1 file changed, 27 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
+> 
 
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+My bot found errors running 'make dt_binding_check' on your patch:
 
-Thanks.
+yamllint warnings/errors:
 
--- 
-Dmitry
+dtschema/dtc warnings/errors:
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml: examples: 'tmp117@48 {\n    compatible = "ti,tmp117";\n    reg = <0x48>;\n};\n' is not of type 'array'
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml: examples: 'tmp117@48 {\n    compatible = "ti,tmp117";\n    reg = <0x48>;\n};\n' is not of type 'array'
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml: 'additionalProperties' is a required property
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml: ignoring, error in schema: examples
+warning: no schema found in file: ./Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
+Error: Documentation/devicetree/bindings/iio/temperature/ti,tmp117.example.dts:20.5-6 syntax error
+FATAL ERROR: Unable to parse input tree
+make[1]: *** [scripts/Makefile.lib:349: Documentation/devicetree/bindings/iio/temperature/ti,tmp117.example.dt.yaml] Error 1
+make: *** [Makefile:1380: dt_binding_check] Error 2
+
+See https://patchwork.ozlabs.org/patch/1456094
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
+

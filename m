@@ -2,101 +2,195 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 03185343BF7
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Mar 2021 09:42:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D36A4343D48
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Mar 2021 10:55:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229574AbhCVIlu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 22 Mar 2021 04:41:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58596 "EHLO
+        id S229984AbhCVJya (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 22 Mar 2021 05:54:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229890AbhCVIlo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 22 Mar 2021 04:41:44 -0400
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6927C061756
-        for <linux-iio@vger.kernel.org>; Mon, 22 Mar 2021 01:41:42 -0700 (PDT)
-Received: by mail-ed1-x52c.google.com with SMTP id w18so18297574edc.0
-        for <linux-iio@vger.kernel.org>; Mon, 22 Mar 2021 01:41:42 -0700 (PDT)
+        with ESMTP id S229972AbhCVJyM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 22 Mar 2021 05:54:12 -0400
+Received: from mail-io1-xd2d.google.com (mail-io1-xd2d.google.com [IPv6:2607:f8b0:4864:20::d2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8204CC061574
+        for <linux-iio@vger.kernel.org>; Mon, 22 Mar 2021 02:54:11 -0700 (PDT)
+Received: by mail-io1-xd2d.google.com with SMTP id z136so13216663iof.10
+        for <linux-iio@vger.kernel.org>; Mon, 22 Mar 2021 02:54:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=deviqon.com; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=del3Cil/BVXixQldsxjVF/c61sD3Z5HRB8VzAyqfUhA=;
-        b=E+GgNAJRJ3nnvLVfV74QjgoXDvh4rGRHt5+NmDE1BetyeuWdjtJNDSs6xpHqmNC4Ra
-         2eaq/UsPWGCJ86ojDp7S/RShq5zyt8Hg9TrdQaHns6WHnnFn7Auh3mcJeTb7S6RuoxS4
-         4BJv1JWKE24smz8Nn5UskVFktF1NqBtAseySHbgjp7VT37ZtTOWnrLDFBvL8YW84zuBB
-         jVgwM2jqWfKfjr1YB6GNLBX6exziRM0X0ydTy1I+FD/HKvt0d2yyFjNhTFNZetgrXQcd
-         M3BFIH0fptYLS4zq9MVdsuRcsqBymy3HEUpiFvVRiHSIFRm2Zsi7apqcm1vqk0jPB00m
-         RTrA==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=l1adJFBoPVG8fqBuKNB0IlihiIsx7yMHi9VZJd5Jrik=;
+        b=X7PnkWoc0t0E/Gb3zSJ9vLUhFvj9gFWxaPB4htu3XzDWc5dPaJhV+fFv9RqvOgl1tM
+         NzpN25D4MfrJNxXHhI3J7N4Pda3s8RfLUX59V1BnPhfq8YzRz2B9T8nRfTevXhhvaT1Y
+         PxlaILCtuThOxw8xoG7NGJ/wXSdad3GMP3m0P8YXJ5srb3guJXJtw+Q1Q+5hblu8OgeW
+         84zmKzDBYSQuSgVjTnI3M2Ykkzqd6+rd9S1Z5EKBeiN5OnELRigBlEFkHGfyUQS3vz4o
+         Mmy3a2hCvvupwRfnmcEXXBVNAO2IlYxCZ0FzflqpvSG+dNbNUvO/kOudj1gX0fA1alyi
+         zvTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=del3Cil/BVXixQldsxjVF/c61sD3Z5HRB8VzAyqfUhA=;
-        b=pLyuiJwIEX+g3WcZ7u26RhubhaQVUk52lBE5QaZU9Dc0YRUsRs3AXyBgNXwFZO28n5
-         /5nWycOy+b5rZd1bRTwtl/WXScNr5Dz1WPw/MHNCULKgNBWRkt4f4sJedTd5OEzcjPK3
-         ng7G1WmHq82zF4b49+6/cAjTZRAzVi2ByhhYqOIL2IfTpbqAxei/seBr0jXpuzuiHRMM
-         4Foepk+0WrtvIb4OHbDAezvzdKvOxBVoQIqfRgH3ViYXKMdS33LrZ987QDLL//itsmI6
-         i9bmR+0CiSYM6RRfykRFflWxfW4p85+pzXe8vTsrl9F4txfk3gG/KvnysGusopXmVeSA
-         SHXQ==
-X-Gm-Message-State: AOAM532DBz2ldOT2L6gjsLPE3VQl6GJn4qYCnQiSVYN3KA3n2GLZhV8x
-        xC/0M5etk61SNHkSTot40R1swYjB/rTjrM/7
-X-Google-Smtp-Source: ABdhPJxYpHESoVUdHSbDd4QqcXykHItoGACdNL3FpYSXmgEZrjP6EhlWSunoHRmEI9O7X5j2AtNnOQ==
-X-Received: by 2002:a05:6402:8d7:: with SMTP id d23mr24810161edz.256.1616402501240;
-        Mon, 22 Mar 2021 01:41:41 -0700 (PDT)
-Received: from localhost.localdomain ([5.2.193.191])
-        by smtp.gmail.com with ESMTPSA id mc2sm9240019ejb.115.2021.03.22.01.41.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Mar 2021 01:41:40 -0700 (PDT)
-From:   Alexandru Ardelean <aardelean@deviqon.com>
-To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     jic23@kernel.org, Alexandru Ardelean <aardelean@deviqon.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH] iio: buffer: return 0 for buffer getfd ioctl handler
-Date:   Mon, 22 Mar 2021 10:41:35 +0200
-Message-Id: <20210322084135.17536-1-aardelean@deviqon.com>
-X-Mailer: git-send-email 2.30.2
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=l1adJFBoPVG8fqBuKNB0IlihiIsx7yMHi9VZJd5Jrik=;
+        b=HpHf9TcLiJuRpAGidXq9JCd67piawxKiZiB0wtzN43XOPE1g9GomuK6m2H1QpJSNm/
+         MsGosehx4K8R//NA6C9+Y2R8ZhIU455iylstjkyQkqqqLgm2V1TsLa9hSG9byL3gPzYE
+         eoYFBO+c3Hz3yyFlMBgmE0ZA+9GdyfFojah3evaZhhamr4wGruNwuWYv3eBzXoguDRGP
+         ROvrObBFL+FCfkqOJSZpGZ/f186gRkq6fZcOfwLjvSYV8assRiw2TaHY5OsKmiNBnoN7
+         /K6hm6+kq8PgE8Tzq0R/kCbq3wDoNttqOmMWhA9DSAfbVli20noxSGRFZaMYpNSs5Cal
+         T5Dw==
+X-Gm-Message-State: AOAM531Majr8wOtd7uPnYuI4lVbic6ifKsq9c7gGPZD0p9zZi2BW07O9
+        z03BSKTL8mI92JfrS4Z4MQkxnJf8js8cdYsRl60=
+X-Google-Smtp-Source: ABdhPJy4UbcnUle+uR1z62N/SvX+tZ/h55paoDG5h7m6pRYIVuU7hZeqTKmjpZUlqIlgppZ2ceUrOr39NbMxRDJCBYM=
+X-Received: by 2002:a6b:103:: with SMTP id 3mr10414579iob.98.1616406850935;
+ Mon, 22 Mar 2021 02:54:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210322073220.1637117-1-gwendal@chromium.org> <20210322073220.1637117-3-gwendal@chromium.org>
+In-Reply-To: <20210322073220.1637117-3-gwendal@chromium.org>
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+Date:   Mon, 22 Mar 2021 11:53:59 +0200
+Message-ID: <CA+U=DsqvwOMxXt_05WnmBDccJ4S=rMoNajM8Dr3u58uek4jE4w@mail.gmail.com>
+Subject: Re: [PATCH v6 2/2] iio: sx9310: Support ACPI properties
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>, swboyd@chromium.org,
+        campello@chromium.org, Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-As Lars pointed out, we could either return the FD vs memcpy-ing it to the
-userspace data object.
+On Mon, Mar 22, 2021 at 9:33 AM Gwendal Grignou <gwendal@chromium.org> wrote:
+>
+> Use device_property_read_uXX to support both device tree and ACPI
+> bindings when reading the properties we need to configure the SAR
+> sensor.
+>
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> ---
+>  Changes in v6:
+>  Use proper function to gather the number of elements in an array.
+>
+>  Changes in v5:
+>  Split in 2 patches, one for fixing access to propery array, the other
+>  to support ACPI.
+>
+>  drivers/iio/proximity/sx9310.c | 26 +++++++++++---------------
+>  1 file changed, 11 insertions(+), 15 deletions(-)
+>
+> diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
+> index 289c76bb3b024..3817a5714aab3 100644
+> --- a/drivers/iio/proximity/sx9310.c
+> +++ b/drivers/iio/proximity/sx9310.c
+> @@ -20,6 +20,7 @@
+>  #include <linux/mod_devicetable.h>
+>  #include <linux/module.h>
+>  #include <linux/pm.h>
+> +#include <linux/property.h>
+>  #include <linux/regmap.h>
+>  #include <linux/regulator/consumer.h>
+>  #include <linux/slab.h>
+> @@ -1213,10 +1214,9 @@ static int sx9310_init_compensation(struct iio_dev *indio_dev)
+>  }
+>
+>  static const struct sx9310_reg_default *
+> -sx9310_get_default_reg(struct sx9310_data *data, int idx,
+> +sx9310_get_default_reg(struct device *dev, int idx,
+>                        struct sx9310_reg_default *reg_def)
+>  {
+> -       const struct device_node *np = data->client->dev.of_node;
 
-However, this comment exposed a bug. We should return 0 or negative from
-these ioctl() handlers. Because an ioctl() handler can also return
-IIO_IOCTL_UNHANDLED (which is positive 1), which means that the ioctl()
-handler doesn't support this ioctl number. Positive 1 could also be a valid
-FD number in some corner cases.
+There may be an issue with this.
+'np' was coming from the parent device (which is an i2c device)
 
-The reason we did this is to be able to differentiate between an error
-code and an unsupported ioctl number; for unsupported ioctl numbers, the
-main loop should keep going.
+So, 'data->client->dev' should be the same pointer as 'indio_dev->dev.parent'
 
-Maybe we should change this to a higher negative number, to avoid such
-cases when/if we add more ioctl() handlers.
+Now, it's a reference to 'indio_dev->dev', so it's probably going to
+miss a lot of DT properties.
+Maybe an alternative would be to do:
 
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Fixes: f73f7f4da5818 ("iio: buffer: add ioctl() to support opening extra buffers for IIO device")
-Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
----
- drivers/iio/industrialio-buffer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+const struct device *dev = &data->client->dev;   [1]
 
-diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-index ee5aab9d4a23..d7a15c9bb0cd 100644
---- a/drivers/iio/industrialio-buffer.c
-+++ b/drivers/iio/industrialio-buffer.c
-@@ -1442,7 +1442,7 @@ static long iio_device_buffer_getfd(struct iio_dev *indio_dev, unsigned long arg
- 		goto error_free_ib;
- 	}
- 
--	return fd;
-+	return 0;
- 
- error_free_ib:
- 	kfree(ib);
--- 
-2.30.2
+Or instead of pass '&data->client->dev' or 'indio_dev->dev.parent'
+when calling sx9310_get_default_reg()
 
+Though [1] looks good to me as well.
+
+>         u32 combined[SX9310_NUM_CHANNELS];
+>         u32 start = 0, raw = 0, pos = 0;
+>         unsigned long comb_mask = 0;
+> @@ -1224,21 +1224,17 @@ sx9310_get_default_reg(struct sx9310_data *data, int idx,
+>         const char *res;
+>
+>         memcpy(reg_def, &sx9310_default_regs[idx], sizeof(*reg_def));
+> -       if (!np)
+> -               return reg_def;
+> -
+>         switch (reg_def->reg) {
+>         case SX9310_REG_PROX_CTRL2:
+> -               if (of_property_read_bool(np, "semtech,cs0-ground")) {
+> +               if (device_property_read_bool(dev, "semtech,cs0-ground")) {
+>                         reg_def->def &= ~SX9310_REG_PROX_CTRL2_SHIELDEN_MASK;
+>                         reg_def->def |= SX9310_REG_PROX_CTRL2_SHIELDEN_GROUND;
+>                 }
+>
+> -               count = of_property_count_elems_of_size(np, "semtech,combined-sensors",
+> -                                                       sizeof(u32));
+> +               count = device_property_count_u32(dev, "semtech,combined-sensors");
+>                 if (count > 0 && count <= ARRAY_SIZE(combined)) {
+> -                       ret = of_property_read_u32_array(np, "semtech,combined-sensors",
+> -                                                        combined, count);
+> +                       ret = device_property_read_u32_array(dev, "semtech,combined-sensors",
+> +                                                            combined, count);
+>                         if (ret)
+>                                 break;
+>                 } else {
+> @@ -1270,7 +1266,7 @@ sx9310_get_default_reg(struct sx9310_data *data, int idx,
+>
+>                 break;
+>         case SX9310_REG_PROX_CTRL4:
+> -               ret = of_property_read_string(np, "semtech,resolution", &res);
+> +               ret = device_property_read_string(dev, "semtech,resolution", &res);
+>                 if (ret)
+>                         break;
+>
+> @@ -1294,7 +1290,7 @@ sx9310_get_default_reg(struct sx9310_data *data, int idx,
+>
+>                 break;
+>         case SX9310_REG_PROX_CTRL5:
+> -               ret = of_property_read_u32(np, "semtech,startup-sensor", &start);
+> +               ret = device_property_read_u32(dev, "semtech,startup-sensor", &start);
+>                 if (ret) {
+>                         start = FIELD_GET(SX9310_REG_PROX_CTRL5_STARTUPSENS_MASK,
+>                                           reg_def->def);
+> @@ -1304,7 +1300,7 @@ sx9310_get_default_reg(struct sx9310_data *data, int idx,
+>                 reg_def->def |= FIELD_PREP(SX9310_REG_PROX_CTRL5_STARTUPSENS_MASK,
+>                                            start);
+>
+> -               ret = of_property_read_u32(np, "semtech,proxraw-strength", &raw);
+> +               ret = device_property_read_u32(dev, "semtech,proxraw-strength", &raw);
+>                 if (ret) {
+>                         raw = FIELD_GET(SX9310_REG_PROX_CTRL5_RAWFILT_MASK,
+>                                         reg_def->def);
+> @@ -1317,7 +1313,7 @@ sx9310_get_default_reg(struct sx9310_data *data, int idx,
+>                                            raw);
+>                 break;
+>         case SX9310_REG_PROX_CTRL7:
+> -               ret = of_property_read_u32(np, "semtech,avg-pos-strength", &pos);
+> +               ret = device_property_read_u32(dev, "semtech,avg-pos-strength", &pos);
+>                 if (ret)
+>                         break;
+>
+> @@ -1353,7 +1349,7 @@ static int sx9310_init_device(struct iio_dev *indio_dev)
+>
+>         /* Program some sane defaults. */
+>         for (i = 0; i < ARRAY_SIZE(sx9310_default_regs); i++) {
+> -               initval = sx9310_get_default_reg(data, i, &tmp);
+> +               initval = sx9310_get_default_reg(&indio_dev->dev, i, &tmp);
+>                 ret = regmap_write(data->regmap, initval->reg, initval->def);
+>                 if (ret)
+>                         return ret;
+> --
+> 2.31.0.291.g576ba9dcdaf-goog
+>

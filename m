@@ -2,104 +2,102 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DEE7344908
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Mar 2021 16:17:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 35210344B21
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Mar 2021 17:24:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229930AbhCVPQ6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 22 Mar 2021 11:16:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59840 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230225AbhCVPQz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 22 Mar 2021 11:16:55 -0400
-Received: from mail-io1-xd2d.google.com (mail-io1-xd2d.google.com [IPv6:2607:f8b0:4864:20::d2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF891C061574
-        for <linux-iio@vger.kernel.org>; Mon, 22 Mar 2021 08:16:55 -0700 (PDT)
-Received: by mail-io1-xd2d.google.com with SMTP id n21so14296098ioa.7
-        for <linux-iio@vger.kernel.org>; Mon, 22 Mar 2021 08:16:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ijhOIls8YU0yT7JZWlLYCgyOnDmqWsieNC9WpV+evWA=;
-        b=dji58ONwQpAtfcuhMdnEYZu0dM4aYGDcvLJjn4m6Sgq0mVJLa7uRHrHbFOWcqoUVmL
-         3j4262qWnEGifjL54CWe81CEov3Eb6EvPRxmif2m4TzqpLECJqXjSXZac29+ITct5eE7
-         Q/zWRaqrNVK0HbQOgKfaerP46gnUQt0VMqIv2LfrQfb94oVgZkW9KZjmVxqSA5ZsQS+x
-         VULhgiUCluFrLQM/laPwao1fOrnKPkBMpZ1toCP9Mi5oDEhRb7/cJzxqVDMyN9Hv9YdG
-         b5N3Kuk5CL090a4/Pydg+oZUn3WDMY0R1jfvjWgcCUfn7zDnTshonht6GzxjCtSmZQOF
-         YE+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ijhOIls8YU0yT7JZWlLYCgyOnDmqWsieNC9WpV+evWA=;
-        b=cLvBOHEBgqeRnIBmWAzAAC/0VyaNYZFNP7E1hIrvShUfbW+HMM2ybmSSJcjL447gBf
-         SUvt+zmRDioE07pkbQFmDj4jXjsnYrmGSq4tK43yR/qmGy1gjKlLi4yPULGFbhUKSAy0
-         7wE5mbERcYznweHAJZHi2YuObdpTV6ZNd71945eCYjyUMnDNoszg8JfmEPdRAss6Mfml
-         hNx21xOcUGqLDvJWz2vuk7Y/Ks0Tjr5zpo8TEEjw4bOL8/XbbII2HKAq9XSuvhyeua3a
-         yIholNsGCKrcrK/pS2xWt8gwg2A0pogaMhBw+0LY/uZesM3S8ROVl5EHdd6HUb/dX7YN
-         ViKA==
-X-Gm-Message-State: AOAM531BvpEHRT9JWfab4qd9Ty3mWw+jM8zbh+gTsiB25jRlgnJLU+6R
-        VyTSyO/Cqj2tDKfrZSzZcypQpzzglHahDXvpr5clpzcsECU=
-X-Google-Smtp-Source: ABdhPJxzS+7Anx/1jFuhqFxvZFqXg+J+UWbtnGHvThGEL261sTgAhZ+We6qjjJpvY+tcgh4NGGmjYqoHvFChovemIk4=
-X-Received: by 2002:a05:6638:3791:: with SMTP id w17mr11425664jal.91.1616426215167;
- Mon, 22 Mar 2021 08:16:55 -0700 (PDT)
+        id S231771AbhCVQXf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 22 Mar 2021 12:23:35 -0400
+Received: from mx07-00178001.pphosted.com ([185.132.182.106]:40262 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231703AbhCVQXa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 22 Mar 2021 12:23:30 -0400
+Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 12MGKkaT018624;
+        Mon, 22 Mar 2021 17:22:31 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=selector1;
+ bh=1tEm0LmoLr9QwFq83AxQ2i0VrT9e0ARcTO7nkzGA04U=;
+ b=0AGEEMO0j3xk3+SFfEulfxngvuilDc2lYuShqiVGZElpolMvcyFsxDvAl8BcG4Kg5ay2
+ 0tkh3QBK5p+wMYUqKEnANotXZkmtmfs5g2P2hju1Okz6B/wS9HlK4GTOTxJWGXmKWXLF
+ 2TmTz/+CpBIc0ZV6rNLWk7ZM281wpWSuhBntNYIu2izktYgj5Q1irvajwCNjLaDLEOll
+ Bi2z57qnIS5vr/crd9hAB5wVj3xQr0TX31jlIAypskZTOoZFEpyTCdhcYrYD8B4PLD8k
+ teyzcq45H5gVpul3CJ2gjBTT79mixSfGAvnpEYm2d0pyTTUJzscmOA2ucYbMHMwe/4d1 Uw== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 37d996acq1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 22 Mar 2021 17:22:31 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 8115010002A;
+        Mon, 22 Mar 2021 17:22:30 +0100 (CET)
+Received: from Webmail-eu.st.com (sfhdag2node3.st.com [10.75.127.6])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 4B8DF22A2A2;
+        Mon, 22 Mar 2021 17:22:30 +0100 (CET)
+Received: from [10.211.8.180] (10.75.127.49) by SFHDAG2NODE3.st.com
+ (10.75.127.6) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 22 Mar
+ 2021 17:22:28 +0100
+Subject: Re: [Linux-stm32] [PATCH v10 10/33] counter: stm32-lptimer-cnt: Add
+ const qualifier for functions_list array
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>, <jic23@kernel.org>
+CC:     <kamel.bouhara@bootlin.com>, <gwendal@chromium.org>,
+        <david@lechnology.com>, <linux-iio@vger.kernel.org>,
+        <patrick.havelange@essensium.com>, <alexandre.belloni@bootlin.com>,
+        <mcoquelin.stm32@gmail.com>, <linux-kernel@vger.kernel.org>,
+        <o.rempel@pengutronix.de>, <kernel@pengutronix.de>,
+        <fabrice.gasnier@st.com>, <syednwaris@gmail.com>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>, <alexandre.torgue@st.com>
+References: <cover.1616150619.git.vilhelm.gray@gmail.com>
+ <e5dc16652697919af7baed6a630c436359455131.1616150619.git.vilhelm.gray@gmail.com>
+From:   Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Message-ID: <fbc9bb93-30d0-eeb1-acf4-84570f59dde9@foss.st.com>
+Date:   Mon, 22 Mar 2021 17:22:28 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20210322073220.1637117-1-gwendal@chromium.org>
- <20210322073220.1637117-2-gwendal@chromium.org> <CA+U=Dspk-BdZoDNnNdXMMZ+hA=bCzea8v2zxsuCkf5-ecHr7Bg@mail.gmail.com>
- <CAHp75VcULMoQaDh5YEcJjJV2n_zSH236A=465Nki8QxPZ4n0jQ@mail.gmail.com>
-In-Reply-To: <CAHp75VcULMoQaDh5YEcJjJV2n_zSH236A=465Nki8QxPZ4n0jQ@mail.gmail.com>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Mon, 22 Mar 2021 17:16:44 +0200
-Message-ID: <CA+U=DsrMaQif+jC_PJixX=KKJ=t4Cqgn6cGUg6Dpdy8VtAviyw@mail.gmail.com>
-Subject: Re: [PATCH v6 1/2] iio: sx9310: Fix access to variable DT array
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Gwendal Grignou <gwendal@chromium.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Daniel Campello <campello@chromium.org>,
-        linux-iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <e5dc16652697919af7baed6a630c436359455131.1616150619.git.vilhelm.gray@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.75.127.49]
+X-ClientProxiedBy: SFHDAG3NODE2.st.com (10.75.127.8) To SFHDAG2NODE3.st.com
+ (10.75.127.6)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
+ definitions=2021-03-22_08:2021-03-22,2021-03-22 signatures=0
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Mar 22, 2021 at 3:29 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> On Mon, Mar 22, 2021 at 1:16 PM Alexandru Ardelean
-> <ardeleanalex@gmail.com> wrote:
-> > On Mon, Mar 22, 2021 at 9:33 AM Gwendal Grignou <gwendal@chromium.org> wrote:
->
-> ...
->
-> > but i think there may be a bug, in the fact that number of elements in
-> > the array must be 4 (no more, no less)
-> > that is, when reading the DT, it implies a variable array size of 1 to
-> > 4, which doesn't seem true in the code;
-> >
-> > maybe a better idea would be to use of_property_read_***variable***_u32_array()
-> > this would allow for a flexible array size;
->
-> Wouldn't work in conjunction with the second patch.
-> The above API is OF specific.
+On 3/19/21 12:00 PM, William Breathitt Gray wrote:
+> The struct counter_count functions_list member expects a const enum
+> counter_count_function array. This patch adds the const qualifier to the
+> stm32_lptim_cnt_functions to match functions_list.
+> 
+> Cc: Fabrice Gasnier <fabrice.gasnier@st.com>
+> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+> ---
+>  drivers/counter/stm32-lptimer-cnt.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-oh
-good point
+Hi William,
 
->
-> >                count = of_property_read_variable_u32_array(np,
-> > "semtech,combined-sensors",
-> >                                            combined, 1,
-> > ARRAY_SIZE(combined));   // min 1 , max 4 elements
-> >                // count must be int, so that if it is negative, the
-> > array doesn't loop;
-> >                 for (i = 0; i < count; i++) {
-> >                         if (combined[i] <= SX9310_NUM_CHANNELS)
-> >                                 comb_mask |= BIT(combined[i]);
-> >                 }
-> >
->
-> --
-> With Best Regards,
-> Andy Shevchenko
+You can add my:
+Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+
+Thanks,
+Fabrice
+> 
+> diff --git a/drivers/counter/stm32-lptimer-cnt.c b/drivers/counter/stm32-lptimer-cnt.c
+> index 937439635d53..0f7d3f1ec1b6 100644
+> --- a/drivers/counter/stm32-lptimer-cnt.c
+> +++ b/drivers/counter/stm32-lptimer-cnt.c
+> @@ -134,7 +134,7 @@ enum stm32_lptim_cnt_function {
+>  	STM32_LPTIM_ENCODER_BOTH_EDGE,
+>  };
+>  
+> -static enum counter_count_function stm32_lptim_cnt_functions[] = {
+> +static const enum counter_count_function stm32_lptim_cnt_functions[] = {
+>  	[STM32_LPTIM_COUNTER_INCREASE] = COUNTER_COUNT_FUNCTION_INCREASE,
+>  	[STM32_LPTIM_ENCODER_BOTH_EDGE] = COUNTER_COUNT_FUNCTION_QUADRATURE_X4,
+>  };
+> 

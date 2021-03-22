@@ -2,23 +2,23 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E52C7343E65
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Mar 2021 11:52:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 05CD4343E66
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Mar 2021 11:52:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230296AbhCVKwI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 22 Mar 2021 06:52:08 -0400
-Received: from mail-bn7nam10on2075.outbound.protection.outlook.com ([40.107.92.75]:57825
-        "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
+        id S230080AbhCVKwJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 22 Mar 2021 06:52:09 -0400
+Received: from mail-dm6nam08on2071.outbound.protection.outlook.com ([40.107.102.71]:18941
+        "EHLO NAM04-DM6-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229508AbhCVKvv (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 22 Mar 2021 06:51:51 -0400
+        id S229526AbhCVKvy (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 22 Mar 2021 06:51:54 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XbIhcqt4gXqUYiHGEVo+JJXw09GM2aFUfS/mkfJhVJAKixpiAWc4MPm1io9qq7ABnYWlvFLOcLbkwxVI17Wml5TVlVXRTBngntZOJmOKE2VxHA37lpNoVcrGIRuBi6S3PTz4Rw2ATU/S1+5H2+c8TNLFsAjXlrj7ACfuBAOgVWu2Lm7tjehuoZKkfVF+JOr6o6sEvBy7GkjTa8UIVpLRkaERAKcU9pXt/cSQ7noQc3l9pltF3ZRiVr9IgB0n5SnTf8BPJ+zQ84xStYXwzzyJH95xxXKmmiUjpt14zgeloGoaTyM0SocA7v2dtRFD9InEgFGah0TLWgEp16HlDP9GqQ==
+ b=Zm8l5hYeh60IcV5j7gxf6Y7vUyRBPTgqezIZUneiwS8lEXxrFhrisV35qyZbKgIMx7rpCwZmha5JG/6YhMuywXi+AbauZQwmesiKiEtB2DPOfphJeCfEUYJdyAEkdylrXOJ607fkJd0JjaECl+zq4h/r2iHIMTxZFwIKBuDvwy8HvC/kZJECpOsJILxJ3BNFxUBKq1QLfmPKR1ex71TA3cpjWebMT9zFtr+oUcKfvmER+uhhtgzk1Y/YmxjzVadGXaliHE26n54avX1wX6v45MpRiIcKPRvDUIJea3pyBi0CUYvLXb6aYtBKDpY7DjDi8AmY6MiR2GYHzm48LHz2rg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=K48reQq1rnHH0TWqFfjPcpxiNqjzAtv2CZvto+fP4bM=;
- b=lCsdxcd8WbnRI8EsWihLnPR7KAcmaCATwBkMz2Y+Q4/bNs/cHyjwu/9PRDnphUvvvsC5lP+CcyYYS+jAlnMC9RNUhyU0aC51Au+AsB1L+aG8XTtNqK+x2Zv2n4J55f877hNh3T/7pRJUO6tNKb0SSbFnsVwpZ7zp2luSXuMWujvzecMY9n9p3pqgNNocu258zzE810zj1y4VQ6q7ND4XzCqUEk7DcehGBsNIKatc0OvtLFxPzBadPryeyaab5yrozvtvPLgLi9HLsMWCXzw9FtbldTL7MzJltcnd82VzN4Rwwe8/aWAwXvnWQZN3bZLbeByOB3fK/AtmU2M6BNGz7g==
+ bh=q5apH1wMrPyp8D4cDGgM6WerkCM62/cfLRpaU/8xmuE=;
+ b=MpJzknPRwbsQ7REqwdaJAQ0Dl4iAq/Z5QBsMXd0HsPtwRcQCE0mhngM/dsgxTDDvtqSZy3as7nS75NWrAOZMn3I4EQV4A9wfFEWOj2XNyqt/H3/VRAWzLAHBI6Dc4Y6o2gtDqHrq+0L3GT0fCZhYrUgzbqw47AgaejmVsN/836V/s6/JJwsK6YxLo8LyeZknD4Tk680Xa0qCNoTCML0NclEE4PSvUcJcCNcdnXFIsQZ0ulaMF6zaOtWwD98jBtlXP7N91eMatxZ9SJzTbGHNRa8k0Ny5XR/j1LxCwqNkAm67sPIuHkTWUVnPiW1QuZVO7qhVlVUjoYP5PQPaqIWAXg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  149.199.62.198) smtp.rcpttodomain=kernel.org smtp.mailfrom=xilinx.com;
  dmarc=pass (p=none sp=none pct=100) action=none header.from=xilinx.com;
@@ -26,18 +26,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=K48reQq1rnHH0TWqFfjPcpxiNqjzAtv2CZvto+fP4bM=;
- b=iYNEtmEjiv3/WBnE46FOMuKCaeHxF8v+zYcfawDz1yQnot4+Yzq7D9rDzX077jyZZRpyMsGwVtY7hW7JOBKOFe2UJPnjL+IMLyEznpntDQf/QZDo4obO5sEqwH8KMGP+snRVYGvBOdOlWyjczRBHlsEhVjaGIwMeG2Am36SDpD0=
-Received: from BL1PR13CA0244.namprd13.prod.outlook.com (2603:10b6:208:2ba::9)
- by DM5PR02MB3257.namprd02.prod.outlook.com (2603:10b6:4:65::23) with
+ bh=q5apH1wMrPyp8D4cDGgM6WerkCM62/cfLRpaU/8xmuE=;
+ b=piU6LHgQFZu9Dja9iWZaugweAmkUs3FeplPs/3V8ax3wWHWWkJCp6iex0r7tQcxPkF84uQItq3cFwvYTPn1+Aj2BtlC/oZpEi8PYugAogfMe0Xi282lET1ACH1hwoNYvj5peMraA5ubrrTz/OfWWLa8z2cYoHbhmWSVK6+10N4g=
+Received: from BL1PR13CA0264.namprd13.prod.outlook.com (2603:10b6:208:2ba::29)
+ by BYAPR02MB3960.namprd02.prod.outlook.com (2603:10b6:a02:f5::31) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3955.25; Mon, 22 Mar
- 2021 10:51:49 +0000
+ 2021 10:51:51 +0000
 Received: from BL2NAM02FT016.eop-nam02.prod.protection.outlook.com
- (2603:10b6:208:2ba:cafe::87) by BL1PR13CA0244.outlook.office365.com
- (2603:10b6:208:2ba::9) with Microsoft SMTP Server (version=TLS1_2,
+ (2603:10b6:208:2ba:cafe::37) by BL1PR13CA0264.outlook.office365.com
+ (2603:10b6:208:2ba::29) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3977.9 via Frontend
- Transport; Mon, 22 Mar 2021 10:51:48 +0000
+ Transport; Mon, 22 Mar 2021 10:51:50 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 149.199.62.198)
  smtp.mailfrom=xilinx.com; kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=pass action=none header.from=xilinx.com;
@@ -47,14 +47,14 @@ Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
 Received: from xsj-pvapexch02.xlnx.xilinx.com (149.199.62.198) by
  BL2NAM02FT016.mail.protection.outlook.com (10.152.77.171) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.3955.24 via Frontend Transport; Mon, 22 Mar 2021 10:51:48 +0000
+ 15.20.3955.24 via Frontend Transport; Mon, 22 Mar 2021 10:51:50 +0000
 Received: from xsj-pvapexch02.xlnx.xilinx.com (172.19.86.41) by
  xsj-pvapexch02.xlnx.xilinx.com (172.19.86.41) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 22 Mar 2021 03:51:24 -0700
+ 15.1.2106.2; Mon, 22 Mar 2021 03:51:27 -0700
 Received: from smtp.xilinx.com (172.19.127.95) by
  xsj-pvapexch02.xlnx.xilinx.com (172.19.86.41) with Microsoft SMTP Server id
- 15.1.2106.2 via Frontend Transport; Mon, 22 Mar 2021 03:51:24 -0700
+ 15.1.2106.2 via Frontend Transport; Mon, 22 Mar 2021 03:51:27 -0700
 Envelope-to: git@xilinx.com,
  robh+dt@kernel.org,
  jic23@kernel.org,
@@ -66,62 +66,118 @@ Envelope-to: git@xilinx.com,
 Received: from [10.140.6.6] (port=46094 helo=xhdappanad40.xilinx.com)
         by smtp.xilinx.com with esmtp (Exim 4.90)
         (envelope-from <raviteja.narayanam@xilinx.com>)
-        id 1lOI9a-0007fI-MI; Mon, 22 Mar 2021 03:51:23 -0700
+        id 1lOI9e-0007fI-Gf; Mon, 22 Mar 2021 03:51:26 -0700
 From:   Raviteja Narayanam <raviteja.narayanam@xilinx.com>
 To:     <robh+dt@kernel.org>, <jic23@kernel.org>
 CC:     <michal.simek@xilinx.com>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
         <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <git@xilinx.com>,
         Raviteja Narayanam <raviteja.narayanam@xilinx.com>
-Subject: [PATCH 0/2] iio: adc: Add driver for INA260
-Date:   Mon, 22 Mar 2021 16:20:54 +0530
-Message-ID: <20210322105056.30571-1-raviteja.narayanam@xilinx.com>
+Subject: [PATCH 1/2] dt-bindings: iio: adc: Add ti,ina260.yaml
+Date:   Mon, 22 Mar 2021 16:20:55 +0530
+Message-ID: <20210322105056.30571-2-raviteja.narayanam@xilinx.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20210322105056.30571-1-raviteja.narayanam@xilinx.com>
+References: <20210322105056.30571-1-raviteja.narayanam@xilinx.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-Office365-Filtering-HT: Tenant
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 78ff8074-811c-46f9-9694-08d8ed207e55
-X-MS-TrafficTypeDiagnostic: DM5PR02MB3257:
-X-Microsoft-Antispam-PRVS: <DM5PR02MB3257BFA9B4ED284CB686D483CA659@DM5PR02MB3257.namprd02.prod.outlook.com>
+X-MS-Office365-Filtering-Correlation-Id: 62ede89a-a6c8-451e-98cd-08d8ed207f7f
+X-MS-TrafficTypeDiagnostic: BYAPR02MB3960:
+X-Microsoft-Antispam-PRVS: <BYAPR02MB39605D58D1F6F63F230A319DCA659@BYAPR02MB3960.namprd02.prod.outlook.com>
 X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-Oob-TLC-OOBClassifiers: OLM:3631;
+X-MS-Oob-TLC-OOBClassifiers: OLM:5516;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 1TEpfTv+rSqT44/X9RfzE4PMs3ZUTqgXZGVsTKpUBr8I+G1QBZtwLpy5ikTRGN8Ug/oBpWGPeHhVWT1FPObaAQX4hRZ9HDO1pUn7rwxeHvW29OcGOEI9BQW/HMkOXkOgod01ftrd4BfbnZsoc2/LWBxixN4p+whp6ccbLtqhiPQWz6L530+Fxav3PTxenbdSYkKwPhL7jAukPR3bEITpbySIMtiSufuSREM6A2ovVf8sLLMA6lyapiQRRZnc8MpgkY0p1qMhv7wofIaQ0Dx+9+R8biVwGwKOCzvEqPwxGwT2UDqKmhAIdd/HJfpgmmyopFcIUrEmQEAlLdCO5wuHS/kt4mWqSbPxLPc6RN++Lz9ARtZZ7VmN5Yz6hyjAoSpQiu4iaAC6HZ/uECemjTwEYApmBMVhCRkoKXTYxmHcBQYqaozqvcom9aZl9FJ+WsSI46xQHLMkW9aR6g6V3UF4UoMu9W4/2lCyjX53Nt49Ia7LTuwmDawAAipGuGcFlD83gvl/xTlRvRRuiQ2IiGPAJsas3AigEkCf3JSVwVKQMxOpXn09BayIfycS/zBMvdXnVnV+wxWzzy9uPgvcui7iDbtE5cylnatPqaBGG5YRYeULQKz6a1dBLoO0Vu2Un5vt/+tduDuty6IxWa9EH8yFreAooKRsTWOLYGqFtlPACIcCsILopqBzk9ELBonx2gnY
-X-Forefront-Antispam-Report: CIP:149.199.62.198;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:xsj-pvapexch02.xlnx.xilinx.com;PTR:unknown-62-198.xilinx.com;CAT:NONE;SFS:(4636009)(376002)(396003)(39860400002)(136003)(346002)(36840700001)(46966006)(316002)(44832011)(2906002)(5660300002)(9786002)(478600001)(8936002)(4326008)(110136005)(8676002)(36906005)(4744005)(426003)(336012)(7636003)(2616005)(1076003)(356005)(186003)(70206006)(54906003)(6666004)(26005)(47076005)(7696005)(82740400003)(36756003)(82310400003)(36860700001)(107886003)(70586007)(102446001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: o8LCjyNrwjta7P22tz5uutPc5ujmWSGFyvhljL+NWvKgbC5PxJz+inIhxoQT1IPkGvANIcHHVgy7pLRSOwfI2NN99XWLGKa58SglBuReRBq1Gj/sd2YBXz4Oi5P4F5HYVlWIijzry5NQnixykJo4tkn3sxJQmy7/CSoxKy+x0jJIgj8qyNuojwLpH64TrGrHF978qFqv/4q2HiZ0ti5EFMqDrxXstcUkGmfVgZ4SNRX5MaLB48ylrzurdZp20k1pnt/HPKKrJo2Zv94zx5ord3VK6QsUbdHmIzr7hYl4hI/6CsAfcXMGlZpjhLlwKcB+5qKqW79K+VBCmraf1v2EyTPLUi5Y060z8/1yCxckqfO3oqoJ3b68jxGMGOCjDGycY/fuxJ22pnduDGeZjv7UysFCag9woNJ9TJ1i3k0hZsi80Y9PkBhNBVA0f3GlUd5+VCFNSJVDNrSpSz3HmQYgoldP4eYKL3BJKTvdxSMD1mYs5bDFIIS6SdrcCuTfNebiL4aJQY89Hq0Yz1ahtCfdZw9c5oDQLTrxWHPJQH8tc92E95uCRYDWvCE0ay5Ay6LwkRDIemNttdLoZ5I27zBgpvY9PnlXmb9Sche3oHgL/NPiwrWQLBR967FLePZ1rE6/a+YuGr0uw8k2/s87VpUhZSxnymsl6c+x5x1VONhKXmKhcYjylNazq6pN3pAgrT3ZlgT4HYu8tKl7tp1Q0id6elhlfJpnr1ymeZznC3Tk/JDIxlW0eX/mIl3cOaLfYFiK9/veGcghVgpoA9DHIDv7EQ==
+X-Forefront-Antispam-Report: CIP:149.199.62.198;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:xsj-pvapexch02.xlnx.xilinx.com;PTR:unknown-62-198.xilinx.com;CAT:NONE;SFS:(4636009)(346002)(39860400002)(136003)(376002)(396003)(36840700001)(46966006)(336012)(8936002)(426003)(2616005)(44832011)(5660300002)(70586007)(82310400003)(478600001)(8676002)(36860700001)(1076003)(966005)(6666004)(9786002)(36906005)(316002)(7636003)(186003)(110136005)(70206006)(82740400003)(356005)(54906003)(107886003)(7696005)(47076005)(36756003)(4326008)(2906002)(26005)(102446001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Mar 2021 10:51:48.5717
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Mar 2021 10:51:50.5252
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 78ff8074-811c-46f9-9694-08d8ed207e55
+X-MS-Exchange-CrossTenant-Network-Message-Id: 62ede89a-a6c8-451e-98cd-08d8ed207f7f
 X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.62.198];Helo=[xsj-pvapexch02.xlnx.xilinx.com]
 X-MS-Exchange-CrossTenant-AuthSource: BL2NAM02FT016.eop-nam02.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR02MB3257
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR02MB3960
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patch series does the following:
--Add dt-bindings yaml file for ina260 driver.
--Add ina260 driver.
+Add a binding for Texas Instruments INA260 power monitor device.
 
-Raviteja Narayanam (2):
-  dt-bindings: iio: adc: Add ti,ina260.yaml
-  iio: adc: Add support for TI INA260 power monitors
-
- .../bindings/iio/adc/ti,ina260.yaml           |  57 ++
- MAINTAINERS                                   |   8 +
- drivers/iio/adc/Kconfig                       |  12 +
- drivers/iio/adc/Makefile                      |   1 +
- drivers/iio/adc/ina260-adc.c                  | 556 ++++++++++++++++++
- 5 files changed, 634 insertions(+)
+Signed-off-by: Raviteja Narayanam <raviteja.narayanam@xilinx.com>
+---
+ .../bindings/iio/adc/ti,ina260.yaml           | 57 +++++++++++++++++++
+ 1 file changed, 57 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ina260.yaml
- create mode 100644 drivers/iio/adc/ina260-adc.c
 
+diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ina260.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ina260.yaml
+new file mode 100644
+index 000000000000..97c68188e53d
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/ti,ina260.yaml
+@@ -0,0 +1,57 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/ti,ina260.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Texas Instruments INA260 power monitor
++
++maintainers:
++  - Raviteja Narayanam <raviteja.narayanam@xilinx.com>
++
++description: |
++  The INA260 is a digital-output, current, power and voltage monitor
++  with an I2C and SMBUS compatible interface with an integrated shunt
++  resistor. It features up to 16 programmable addresses on I2C compatible
++  interface. Datasheet - https://www.ti.com/lit/ds/symlink/ina260.pdf?ts=1608607288391
++
++properties:
++  compatible:
++    enum:
++      - ti,ina260
++
++  reg:
++    description: |
++      The 7-bits long I2c address of the device
++
++  "#io-channel-cells":
++    const: 1
++
++  interrupts:
++    description: |
++      IRQ line for the device
++
++  label:
++    description: |
++      A symbolic name for the device
++
++required:
++  - compatible
++  - reg
++  - "#io-channel-cells"
++
++additionalProperties: false
++
++examples:
++  - |
++    i2c {
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      ina260@40 {
++        compatible = "ti,ina260";
++        reg = <0x40>;
++        #io-channel-cells = <1>;
++      };
++    };
++...
 -- 
 2.17.1
 

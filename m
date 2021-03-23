@@ -2,335 +2,526 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B0BF345A9D
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Mar 2021 10:18:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F818345B5F
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Mar 2021 10:52:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229482AbhCWJSX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 Mar 2021 05:18:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37810 "EHLO
+        id S229504AbhCWJvh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 23 Mar 2021 05:51:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229639AbhCWJSE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 Mar 2021 05:18:04 -0400
-Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59006C061574;
-        Tue, 23 Mar 2021 02:18:04 -0700 (PDT)
-Received: by mail-pg1-x534.google.com with SMTP id n11so11044976pgm.12;
-        Tue, 23 Mar 2021 02:18:04 -0700 (PDT)
+        with ESMTP id S230153AbhCWJvR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 Mar 2021 05:51:17 -0400
+Received: from mail-il1-x130.google.com (mail-il1-x130.google.com [IPv6:2607:f8b0:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45B39C061574;
+        Tue, 23 Mar 2021 02:51:17 -0700 (PDT)
+Received: by mail-il1-x130.google.com with SMTP id v3so17566039ilj.12;
+        Tue, 23 Mar 2021 02:51:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=a1nvqAVkgaDQFydcSUnCRXIK8c0AoRKCmFEGXTN9RvU=;
-        b=imMX+Bt4obmiMjQ1pw0rUa4CBgpfqjndlPSFB8JzWTlI3sM+qTgZKUbIx2fblMZQMR
-         gLcsjhyVW4jPgVJ7d7Se/R4Lkea5A1MqIX3/h/PSz+MNF/NaUQvP9r6HS0A/G3TdjZ8d
-         HHNYyOm6LJ/W0a4zJh1ytxTc1pcey4rc6XxzkJzaZEORkiRnkkKM73iHEYV0kIl3XGwm
-         alLh7Lztb8ETaoSq/NNBbPtTc12QVGIxr2mTHFO9T19wQ+CgQglNBMgVlFTuRz5STTPb
-         SPAuH7xd4Wqw4qq08BOCzb8GXlctZ1V83641bUDazRR7HVhMQh6YMFEqfGO/F49dDaY0
-         cDdQ==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=J+WSriuUwQvhkJ+nAbVFbI+yZGyYoM9Oab0+ZkZxTBc=;
+        b=MKXSk5i7EcOQ1joO3Fl8ooDl0LdnCVzjU1TmFJ5E+6fhEBZdyisRM5mIqmx2/U6JgU
+         tjkEpFzYPHzCLCNzYNdfMKuCBFMDCT7Rii8kUjuACrHW0uxy3mIxHIzdp5ivW4L8qfmM
+         P4+GMiHOvSHSX+eqmz31RCiYgNa3lOHBq1hmD7KJ3LQTr/r7bVAvqZMS7uTp+F2TDThB
+         /1QsetOgcUevKcSK2D4AwdwTw941JRmKcz9Sz0aF7K1rhZYgNPHcGLP1tMepuNpeQ338
+         ABOVmIs3+D6DejL31X1uivkQZUNeiDyEmlRltf09oM66CsIQtpc0OyFL+MtWkecplPqg
+         sn5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=a1nvqAVkgaDQFydcSUnCRXIK8c0AoRKCmFEGXTN9RvU=;
-        b=GN/x+ExEjpV30m1Vx3In8jCrWwQ/ymPKT0aUmW8j+E/2qEpj/CySdnftBkAYQjLzz1
-         PPFom//GkAkaDluh0jCzM7jdL3XElSElMHZ/UtNspDajmQLvF2k0YI3Fboe97pJPTGMU
-         dZUWL6jUzw4qptpEvMbo89+iooqS3Bu34q8DHOhAzkBEMaJ1voGzGA/U5G88yPeejd5w
-         4vcsWl0BT01pucZQxqR23npE7suZPL0a2JJ8t1kUL0vlRAsLv3RGF2RFEwukwdm86Wuh
-         akxyhQaYqiHAIZ9QFH0ikNnySB2HvhX8JVZa78vN60Gs02Uk179zEMNDDAFAONheRzN3
-         iGIw==
-X-Gm-Message-State: AOAM531EBO46gnyoF0zfI8FiDrYd4OeEtb065yMtZcHsfCSvHzqZPvR6
-        dG7KOXuTbWyYYJ/fxlLBMsk=
-X-Google-Smtp-Source: ABdhPJypx1elQysu+4xRWNCydKD+DVTWMysYHRBHuvK19CoYX5iNseo29KB2p+23FI68f1U1eSeFBA==
-X-Received: by 2002:a17:902:ecc4:b029:e6:1a9f:3397 with SMTP id a4-20020a170902ecc4b02900e61a9f3397mr4484729plh.9.1616491083851;
-        Tue, 23 Mar 2021 02:18:03 -0700 (PDT)
-Received: from shinobu ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id z8sm1925768pjr.57.2021.03.23.02.17.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Mar 2021 02:18:02 -0700 (PDT)
-Date:   Tue, 23 Mar 2021 18:17:55 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Cc:     jic23@kernel.org, kamel.bouhara@bootlin.com, gwendal@chromium.org,
-        david@lechnology.com, linux-iio@vger.kernel.org,
-        patrick.havelange@essensium.com, alexandre.belloni@bootlin.com,
-        mcoquelin.stm32@gmail.com, linux-kernel@vger.kernel.org,
-        o.rempel@pengutronix.de, Dan Carpenter <dan.carpenter@oracle.com>,
-        kernel@pengutronix.de, syednwaris@gmail.com,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, alexandre.torgue@foss.st.com
-Subject: Re: [Linux-stm32] [PATCH v10 22/33] counter: Internalize sysfs
- interface code
-Message-ID: <YFmyQ4bnsS1lrm27@shinobu>
-References: <cover.1616150619.git.vilhelm.gray@gmail.com>
- <51becb2e067a4d2ee7bd99beb007831022fc4b29.1616150619.git.vilhelm.gray@gmail.com>
- <4cef2478-4093-fdef-2ae5-c27d0e8e1ccd@foss.st.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=J+WSriuUwQvhkJ+nAbVFbI+yZGyYoM9Oab0+ZkZxTBc=;
+        b=dGipMA8ENHe/CbzTG/tOCMks2zP5oP9L21tu+dEBI5bPg2JQWMP6n4JgERvsBMAWA4
+         jfT9lu7mwvrOcBlsykU2SPN89c7U7Jc+6koghw7/35uJcFZDEYVhpHsa5XqtN26hsLux
+         K58IgdvOhRjmzKJdaaEAhXGku5/lmT2M9idi1av7u3PHPUJaei60CH/5wqPEhHBVZkuX
+         ztL5aaaLD8K2IPKnxk2wSdUNnyRZ15DN4ORbHR5RlyggIeaKkPrXnol7qQM5nSFCS2DA
+         OIFY+8CD6UtytdCFZCiarqekCiYtKWo12CrmzQhXH9OUkmqdhDRLjhmWAR2CEImJgXiq
+         PAbg==
+X-Gm-Message-State: AOAM533h/obIL2u7u/ZiSitvragW5fVT4bN8Y06gZicnS8qxuHVmQc6Z
+        cmRDB8UkSunZCUJCXiXZsa2JxYIpYL1elH59QrQMPMrW3TE=
+X-Google-Smtp-Source: ABdhPJwR0XaUDuLIJRs8kzCVtckRsJpSueX0ej8zQ5KtLOnNcSFsGI/UCcJtxeWYtbCZbZPCbGw3CG9s8Nn7Pd25J84=
+X-Received: by 2002:a05:6e02:138f:: with SMTP id d15mr4000313ilo.217.1616493076710;
+ Tue, 23 Mar 2021 02:51:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="cqRhoqShv7pK17zI"
-Content-Disposition: inline
-In-Reply-To: <4cef2478-4093-fdef-2ae5-c27d0e8e1ccd@foss.st.com>
+References: <20210215104043.91251-1-alexandru.ardelean@analog.com>
+ <20210215104043.91251-21-alexandru.ardelean@analog.com> <877ca331-1a56-1bd3-6637-482bbf060ba9@metafoo.de>
+ <20210228143429.00001f01@Huawei.com> <5f9070a5-2c3d-f185-1981-10ec768dbb4a@metafoo.de>
+ <20210228172753.0000568c@Huawei.com> <CA+U=Dsqs_B3=6FSS0dmGsRUKwD826Qy250OXzyp5mBFHt4t6MQ@mail.gmail.com>
+ <CY4PR03MB2631CF5082542DBF3F109E08996C9@CY4PR03MB2631.namprd03.prod.outlook.com>
+ <20210320174100.6808ad36@jic23-huawei> <20210321173713.2691e0bb@jic23-huawei>
+In-Reply-To: <20210321173713.2691e0bb@jic23-huawei>
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+Date:   Tue, 23 Mar 2021 11:51:04 +0200
+Message-ID: <CA+U=DsouJuVyUThPO_p9MNt5ziWHdU2RhuGQLWgOBML6wFPWhA@mail.gmail.com>
+Subject: Re: [PATCH v6 20/24] iio: buffer: add ioctl() to support opening
+ extra buffers for IIO device
+To:     Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+Cc:     "Sa, Nuno" <Nuno.Sa@analog.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "zzzzArdelean, zzzzAlexandru" <alexandru.Ardelean@analog.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Sun, Mar 21, 2021 at 7:37 PM Jonathan Cameron
+<jic23@jic23.retrosnub.co.uk> wrote:
+>
+> On Sat, 20 Mar 2021 17:41:00 +0000
+> Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> > On Mon, 15 Mar 2021 09:58:08 +0000
+> > "Sa, Nuno" <Nuno.Sa@analog.com> wrote:
+> >
+> > > > -----Original Message-----
+> > > > From: Alexandru Ardelean <ardeleanalex@gmail.com>
+> > > > Sent: Saturday, March 6, 2021 6:01 PM
+> > > > To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > > Cc: Lars-Peter Clausen <lars@metafoo.de>; zzzzArdelean,
+> > > > zzzzAlexandru <alexandru.Ardelean@analog.com>; LKML <linux-
+> > > > kernel@vger.kernel.org>; linux-iio <linux-iio@vger.kernel.org>;
+> > > > Hennerich, Michael <Michael.Hennerich@analog.com>; Jonathan
+> > > > Cameron <jic23@kernel.org>; Sa, Nuno <Nuno.Sa@analog.com>;
+> > > > Bogdan, Dragos <Dragos.Bogdan@analog.com>
+> > > > Subject: Re: [PATCH v6 20/24] iio: buffer: add ioctl() to support o=
+pening
+> > > > extra buffers for IIO device
+> > > >
+> > > > [External]
+> > > >
+> > > > On Sun, Feb 28, 2021 at 9:00 PM Jonathan Cameron
+> > > > <Jonathan.Cameron@huawei.com> wrote:
+> > > > >
+> > > > > On Sun, 28 Feb 2021 16:51:51 +0100
+> > > > > Lars-Peter Clausen <lars@metafoo.de> wrote:
+> > > > >
+> > > > > > On 2/28/21 3:34 PM, Jonathan Cameron wrote:
+> > > > > > > On Sun, 28 Feb 2021 09:51:38 +0100
+> > > > > > > Lars-Peter Clausen <lars@metafoo.de> wrote:
+> > > > > > >
+> > > > > > >> On 2/15/21 11:40 AM, Alexandru Ardelean wrote:
+> > > > > > >>> With this change, an ioctl() call is added to open a charac=
+ter
+> > > > device for a
+> > > > > > >>> buffer. The ioctl() number is 'i' 0x91, which follows the
+> > > > > > >>> IIO_GET_EVENT_FD_IOCTL ioctl.
+> > > > > > >>>
+> > > > > > >>> The ioctl() will return an FD for the requested buffer inde=
+x.
+> > > > The indexes
+> > > > > > >>> are the same from the /sys/iio/devices/iio:deviceX/bufferY
+> > > > (i.e. the Y
+> > > > > > >>> variable).
+> > > > > > >>>
+> > > > > > >>> Since there doesn't seem to be a sane way to return the FD =
+for
+> > > > buffer0 to
+> > > > > > >>> be the same FD for the /dev/iio:deviceX, this ioctl() will =
+return
+> > > > another
+> > > > > > >>> FD for buffer0 (or the first buffer). This duplicate FD wil=
+l be
+> > > > able to
+> > > > > > >>> access the same buffer object (for buffer0) as accessing
+> > > > directly the
+> > > > > > >>> /dev/iio:deviceX chardev.
+> > > > > > >>>
+> > > > > > >>> Also, there is no IIO_BUFFER_GET_BUFFER_COUNT ioctl()
+> > > > implemented, as the
+> > > > > > >>> index for each buffer (and the count) can be deduced from
+> > > > the
+> > > > > > >>> '/sys/bus/iio/devices/iio:deviceX/bufferY' folders (i.e the
+> > > > number of
+> > > > > > >>> bufferY folders).
+> > > > > > >>>
+> > > > > > >>> Used following C code to test this:
+> > > > > > >>> -----------------------------------------------------------=
+--------
+> > > > > > >>>
+> > > > > > >>>    #include <stdio.h>
+> > > > > > >>>    #include <stdlib.h>
+> > > > > > >>>    #include <unistd.h>
+> > > > > > >>>    #include <sys/ioctl.h>
+> > > > > > >>>    #include <fcntl.h"
+> > > > > > >>>    #include <errno.h>
+> > > > > > >>>
+> > > > > > >>>    #define IIO_BUFFER_GET_FD_IOCTL      _IOWR('i', 0x91, in=
+t)
+> > > > > > >>>
+> > > > > > >>> int main(int argc, char *argv[])
+> > > > > > >>> {
+> > > > > > >>>           int fd;
+> > > > > > >>>           int fd1;
+> > > > > > >>>           int ret;
+> > > > > > >>>
+> > > > > > >>>           if ((fd =3D open("/dev/iio:device0", O_RDWR))<0) =
+{
+> > > > > > >>>                   fprintf(stderr, "Error open() %d errno %d=
+\n",fd,
+> > > > errno);
+> > > > > > >>>                   return -1;
+> > > > > > >>>           }
+> > > > > > >>>
+> > > > > > >>>           fprintf(stderr, "Using FD %d\n", fd);
+> > > > > > >>>
+> > > > > > >>>           fd1 =3D atoi(argv[1]);
+> > > > > > >>>
+> > > > > > >>>           ret =3D ioctl(fd, IIO_BUFFER_GET_FD_IOCTL, &fd1);
+> > > > > > >>>           if (ret < 0) {
+> > > > > > >>>                   fprintf(stderr, "Error for buffer %d ioct=
+l() %d errno
+> > > > %d\n", fd1, ret, errno);
+> > > > > > >>>                   close(fd);
+> > > > > > >>>                   return -1;
+> > > > > > >>>           }
+> > > > > > >>>
+> > > > > > >>>           fprintf(stderr, "Got FD %d\n", fd1);
+> > > > > > >>>
+> > > > > > >>>           close(fd1);
+> > > > > > >>>           close(fd);
+> > > > > > >>>
+> > > > > > >>>           return 0;
+> > > > > > >>> }
+> > > > > > >>> -----------------------------------------------------------=
+--------
+> > > > > > >>>
+> > > > > > >>> Results are:
+> > > > > > >>> -----------------------------------------------------------=
+--------
+> > > > > > >>>    # ./test 0
+> > > > > > >>>    Using FD 3
+> > > > > > >>>    Got FD 4
+> > > > > > >>>
+> > > > > > >>>    # ./test 1
+> > > > > > >>>    Using FD 3
+> > > > > > >>>    Got FD 4
+> > > > > > >>>
+> > > > > > >>>    # ./test 2
+> > > > > > >>>    Using FD 3
+> > > > > > >>>    Got FD 4
+> > > > > > >>>
+> > > > > > >>>    # ./test 3
+> > > > > > >>>    Using FD 3
+> > > > > > >>>    Got FD 4
+> > > > > > >>>
+> > > > > > >>>    # ls /sys/bus/iio/devices/iio\:device0
+> > > > > > >>>    buffer  buffer0  buffer1  buffer2  buffer3  dev
+> > > > > > >>>    in_voltage_sampling_frequency  in_voltage_scale
+> > > > > > >>>    in_voltage_scale_available
+> > > > > > >>>    name  of_node  power  scan_elements  subsystem  uevent
+> > > > > > >>> -----------------------------------------------------------=
+--------
+> > > > > > >>>
+> > > > > > >>> iio:device0 has some fake kfifo buffers attached to an IIO
+> > > > device.
+> > > > > > >> For me there is one major problem with this approach. We onl=
+y
+> > > > allow one
+> > > > > > >> application to open /dev/iio:deviceX at a time. This means w=
+e
+> > > > can't have
+> > > > > > >> different applications access different buffers of the same
+> > > > device. I
+> > > > > > >> believe this is a circuital feature.
+> > > > > > > Thats not quite true (I think - though I've not tested it).  =
+What we
+> > > > don't
+> > > > > > > allow is for multiple processes to access them in an unaware
+> > > > fashion.
+> > > > > > > My assumption is we can rely on fork + fd passing via appropr=
+iate
+> > > > sockets.
+> > > > > > >
+> > > > > > >> It is possible to open the chardev, get the annonfd, close t=
+he
+> > > > chardev
+> > > > > > >> and keep the annonfd open. Then the next application can do
+> > > > the same and
+> > > > > > >> get access to a different buffer. But this has room for race
+> > > > conditions
+> > > > > > >> when two applications try this at the very same time.
+> > > > > > >>
+> > > > > > >> We need to somehow address this.
+> > > > > > > I'd count this as a bug :).  It could be safely done in a par=
+ticular
+> > > > custom
+> > > > > > > system but in general it opens a can of worm.
+> > > > > > >
+> > > > > > >> I'm also not much of a fan of using ioctls to create annon f=
+ds. In
+> > > > part
+> > > > > > >> because all the standard mechanisms for access control no
+> > > > longer work.
+> > > > > > > The inability to trivially have multiple processes open the a=
+non
+> > > > fds
+> > > > > > > without care is one of the things I like most about them.
+> > > > > > >
+> > > > > > > IIO drivers and interfaces really aren't designed for multipl=
+e
+> > > > unaware
+> > > > > > > processes to access them.  We don't have per process controls
+> > > > for device
+> > > > > > > wide sysfs attributes etc.  In general, it would be hard to
+> > > > > > > do due to the complexity of modeling all the interactions
+> > > > between the
+> > > > > > > different interfaces (events / buffers / sysfs access) in a g=
+eneric
+> > > > fashion.
+> > > > > > >
+> > > > > > > As such, the model, in my head at least, is that we only want=
+ a
+> > > > single
+> > > > > > > process to ever be responsible for access control.  That proc=
+ess
+> > > > can then
+> > > > > > > assign access to children or via a deliberate action (I think=
+ passing
+> > > > the
+> > > > > > > anon fd over a unix socket should work for example).  The int=
+ent
+> > > > being
+> > > > > > > that it is also responsible for mediating access to infrastru=
+cture
+> > > > that
+> > > > > > > multiple child processes all want to access.
+> > > > > > >
+> > > > > > > As such, having one chrdev isn't a disadvantage because only =
+one
+> > > > process
+> > > > > > > should ever open it at a time.  This same process also handle=
+s the
+> > > > > > > resource / control mediation.  Therefore we should only have
+> > > > one file
+> > > > > > > exposed for all the standard access control mechanisms.
+> > > > > > >
+> > > > > > Hm, I see your point, but I'm not convinced.
+> > > > > >
+> > > > > > Having to have explicit synchronization makes it difficult to m=
+ix and
+> > > > > > match. E.g. at ADI a popular use case for testing was to run so=
+me
+> > > > signal
+> > > > > > generator application on the TX buffer and some signal analyzer
+> > > > > > application on the RX buffer.
+> > > > > >
+> > > > > > Both can be launched independently and there can be different
+> > > > types of
+> > > > > > generator and analyzer applications. Having to have a 3rd
+> > > > application to
+> > > > > > arbitrate access makes this quite cumbersome. And I'm afraid th=
+at
+> > > > in
+> > > > > > reality people might just stick with the two devices model just=
+ to
+> > > > avoid
+> > > > > > this restriction.
+> > > > >
+> > > > > I'd argue that's a problem best tackled in a library - though it'=
+s a bit
+> > > > > fiddly.  It ought to be possible to make it invisible that this l=
+evel
+> > > > > of sharing is going on.   The management process you describe wou=
+ld
+> > > > probably
+> > > > > be a thread running inside the first process to try and access a =
+given
+> > > > device.
+> > > > > A second process failing to open the file with -EBUSY then connec=
+ts
+> > > > to
+> > > > > appropriate socket (via path in /tmp or similar) and asks for the=
+ FD.
+> > > > > There are race conditions that might make it fail, but a retry lo=
+op
+> > > > should
+> > > > > deal with those.
+> > > > >
+> > > > > I agree people might just stick to a two device model and if the
+> > > > devices
+> > > > > are independent enough I'm not sure that is the wrong way to
+> > > > approach the
+> > > > > problem.  It represents the independence and that the driver is
+> > > > being careful
+> > > > > that it both can and is safely handle independent simultaneous
+> > > > accessors.
+> > > > > We are always going to have some drivers doing that anyway
+> > > > because they've
+> > > > > already been doing that for years.
+> > > > >
+> > > >
+> > > > This is the last of the 3 patches that I need to re-spin after Lars=
+' review.
+> > > > I have a good handle on the small stuff.
+> > > >
+> > > > I'm not sure about the race-condition about which Lars was talking
+> > > > about.
+> > > > I mean, I get the problem, but is it a problem that we should fix i=
+n the
+> > > > kernel?
+> > >
+> > > Hi all,
+> > >
+> > > FWIW, I think that this really depends on the chosen ABI. If we do us=
+e
+> > > the ioctl to return the buffer fd and just allow one app to hold the =
+chardev
+> > > at a time, I agree with Alex that this is not really a race and is ju=
+st something
+> > > that userspace needs to deal with....
+> > >
+> > > That said and giving my superficial (I did not really read the full s=
+eries) piece on this,
+> > > I get both Lars and Jonathan points and, personally, it feels that th=
+e most natural thing
+> > > would be to have a chardev per buffer...
+> > >
+> > > On the other hand, AFAIC, events are also being handled in the same c=
+hardev as
+> > > buffers, which makes things harder in terms of consistency... Events =
+are per device
+> > > and not per buffers right? My point is that, to have a chardev per bu=
+ffer, it would make
+> > > sense to detach events from the buffer stuff and that seems to be not=
+ doable without
+> > > breaking ABI (we would probably need to assume that events and buffer=
+0 are on the
+> > > same chardev).
+> >
+> > Events are interesting as there is no particular reason to assume the d=
+river
+> > handling buffer0 is the right one to deal with them.  It might just as =
+easily
+> > be the case that they are of interest to a process that is concerned wi=
+th buffer1.
+> >
+> > To add a bit more flavour to my earlier comments.
+> >
+> > I'm still concerned that if we did do multiple /dev/* files it would al=
+low code
+> > to think it has complete control over the device when it really doesn't=
+.
+> > Events are just one aspect of that.
+> >
+> > We have had discussions in the past about allowing multiple userspace c=
+onsumers
+> > for a single buffer, but the conclusion there was that was a job for us=
+erspace
+> > (daemon or similar) software which can deal with control inter dependen=
+cies etc.
+> >
+> > There are already potential messy corners we don't handle for userspace
+> > iio buffers vs in kernel users (what happens if they both try to contro=
+l the
+> > sampling frequency?)  I'm not keen to broaden this problem set.
+> > If a device genuinely has separate control and pipelines for different
+> > buffers then we are probably better representing that cleanly as
+> > an mfd type layer and two separate IIO devices. Its effectively the
+> > same a multi chip package.
+> >
+> > A more classic multibuffer usecase is the one where you have related
+> > datastreams that run at different rates (often happens in devices with
+> > tagged FIFO elements). These are tightly coupled but we need to split
+> > the data stream (or add tagging to our FIFOs.). Another case would be
+> > DMA based device that puts channels into buffers that are entirely
+> > separate in memory address rather than interleaved.
+> >
+> > So I still need to put together a PoC, but it feels like there are vari=
+ous
+> > software models that will give the illusion of there being separate
+> > /dev/* files, but with an aspect of control being possible.
+> >
+> > 1. Daemon, if present that can hand off chardevs to who needs them
+> > 2. Library to make the first user of the buffer responsible for providi=
+ng
+> >    service to other users.  Yes there are races, but I don't think they
+> >    are hard to deal in normal usecases.  (retry loops)
+>
+> Hi Nuno / Others,
+>
+> Nuno's mention of things being similar for the event anon
+> FD to the situation for the buffer anon FDs made me realise there was
+> a horrible short cut to a proof of concept that didn't require me
+> to wire up a multiple buffer device.
+>
+> Upshot, is that I've just sent out a (definitely not for merging)
+> hacked up version of the iio_event_monitor that can act as server
+> or client.  The idea is that the socket handling looks a bit
+> like what I'd expect to see hidden away in a library so as to
+> allow
+>
+> 1) Client 1 is after buffer 3.
+>    It tries to open the /dev/iio\:deviceX chrdev and succeeds.
+>    It spins up a thread with a listening socket for /tmp/iio\:deviceX-mag=
+ic
+>    Continues in main thread to request buffer 3.
+> 2) Client 2 is after buffer 2
+>    I tries to open the /dev/iio\:deviceX chrdev and fails.
+>    It sleeps a moment (reduces chance of race with client 1)
+>    It opens a connection to the socket via /tmp/iio\:deviceX-magic
+>    Sends a request for the buffer 2 FD.
+>    Thread in Client 1 calls the ioctl to get the buffer 2 FD which
+>    it then sends on to Client 2 which can use it as if it had
+>    requested it directly.
+>
+> We might want to have a generic server version as well that doesn't
+> itself make use of any of the buffers as keeps the model more symmetric
+> and reduce common corner cases.
+>
+> Anyhow the code I put together is terrible, but I wasn't 100% sure
+> there weren't any issues passing anon fd file handles and this shows
+> that at least in theory the approach I proposed above works.
+>
+> Test is something like
+> ./iio_events_network /dev/iio\:device1
+> ./iio_events_network -c
+>
+> Then make some events happen (I was using the dummy driver and
+> the event generator associated with that).
+> The server in this PoC just quits after handling off the FD.
 
---cqRhoqShv7pK17zI
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The whole code looks good functionally.
+If there are any race issues [as discussed here], they can be handled
+in the server code.
+And if this is the model we try to enforce/propose in userspace, then
+all should be fine.
 
-On Mon, Mar 22, 2021 at 05:44:01PM +0100, Fabrice Gasnier wrote:
-> On 3/19/21 12:00 PM, William Breathitt Gray wrote:
-> >  static const struct atmel_tcb_config tcb_rm9200_config =3D {
-> > diff --git a/drivers/counter/stm32-lptimer-cnt.c b/drivers/counter/stm3=
-2-lptimer-cnt.c
-> > index 13656957c45f..aef78a4217b5 100644
-> > --- a/drivers/counter/stm32-lptimer-cnt.c
-> > +++ b/drivers/counter/stm32-lptimer-cnt.c
-> > @@ -17,6 +17,7 @@
-> >  #include <linux/module.h>
-> >  #include <linux/pinctrl/consumer.h>
-> >  #include <linux/platform_device.h>
-> > +#include <linux/types.h>
-> > =20
-> >  struct stm32_lptim_cnt {
-> >  	struct counter_device counter;
-> > @@ -130,32 +131,46 @@ static int stm32_lptim_setup(struct stm32_lptim_c=
-nt *priv, int enable)
-> >   * +---------+----------+----------+---------+----------+---------+
-> >   */
-> >  enum stm32_lptim_cnt_function {
-> > -	STM32_LPTIM_COUNTER_INCREASE,
-> > -	STM32_LPTIM_ENCODER_BOTH_EDGE,
-> > +	STM32_LPTIM_COUNTER_INCREASE =3D COUNTER_FUNCTION_INCREASE,
-> > +	STM32_LPTIM_ENCODER_BOTH_EDGE =3D COUNTER_FUNCTION_QUADRATURE_X4,
->=20
-> Hi William,
->=20
-> I'm wondering if this enum is still necessary. I noticed the enum is
-> removed from the 104-quad-8 driver.
 
-Hi Fabrice,
+Continuing a bit with the original IIO buffer ioctl(), I talked to
+Lars a bit over IRC.
+And there was an idea/suggestion to maybe use a struct to pass more
+information to the buffer FD.
 
-This enum is no longer necessary. I wanted to leave it up to the
-maintainers to decide whether to remove any particular enum (or to do
-any other sort of code cleanup), so that is why I didn't remove it here.
+So, right now the ioctl() just returns an FD.
+Would it be worth to extend this to a struct?
+What I'm worried about is that it opens the discussion to add more
+stuff to that struct.
 
-> >  };
-> > =20
-> >  static const enum counter_function stm32_lptim_cnt_functions[] =3D {
-> > -	[STM32_LPTIM_COUNTER_INCREASE] =3D COUNTER_FUNCTION_INCREASE,
-> > -	[STM32_LPTIM_ENCODER_BOTH_EDGE] =3D COUNTER_FUNCTION_QUADRATURE_X4,
-> > +	STM32_LPTIM_COUNTER_INCREASE,
-> > +	STM32_LPTIM_ENCODER_BOTH_EDGE,
-> >  };
-> > =20
-> >  enum stm32_lptim_synapse_action {
-> > +	/* Index must match with stm32_lptim_cnt_polarity[] (priv->polarity) =
-*/
->=20
-> Arf... I forgot to update this comment in earlier commit:
-> d8ac6b4 counter: stm32-lptimer-cnt: remove iio counter abi
->=20
-> "stm32_lptim_cnt_polarity" doesn't exist anymore. So, this comment can
-> be updated. This should match the priv->polarity, as it's used to write
-> the "CKPOL" bits (e.g. 0x0 for rising, 0x1 falling, 0x2 both).
->=20
-> Or do you wish I send a separate patch ?
+so now, it would be:
 
-This is just a simple comment fix so I think it's best to send it as its
-own patch to the mailing list.
+struct iio_buffer_ioctl_data {
+            __u32 fd;
+            __u32 flags;   // flags for the new FD, which maybe we
+could also pass via fcntl()
+}
 
-> >  	STM32_LPTIM_SYNAPSE_ACTION_RISING_EDGE,
-> >  	STM32_LPTIM_SYNAPSE_ACTION_FALLING_EDGE,
-> >  	STM32_LPTIM_SYNAPSE_ACTION_BOTH_EDGES,
-> >  	STM32_LPTIM_SYNAPSE_ACTION_NONE,
-> >  };
-> > =20
-> > -static const enum counter_synapse_action stm32_lptim_cnt_synapse_actio=
-ns[] =3D {
-> > -	/* Index must match with stm32_lptim_cnt_polarity[] (priv->polarity) =
-*/
-> > +static const enum stm32_lptim_synapse_action stm32_lptim_c2l_actions_m=
-ap[] =3D {
-> > +	[COUNTER_SYNAPSE_ACTION_RISING_EDGE] =3D STM32_LPTIM_SYNAPSE_ACTION_R=
-ISING_EDGE,
-> > +	[COUNTER_SYNAPSE_ACTION_FALLING_EDGE] =3D STM32_LPTIM_SYNAPSE_ACTION_=
-FALLING_EDGE,
-> > +	[COUNTER_SYNAPSE_ACTION_BOTH_EDGES] =3D STM32_LPTIM_SYNAPSE_ACTION_BO=
-TH_EDGES,
-> > +	[COUNTER_SYNAPSE_ACTION_NONE] =3D STM32_LPTIM_SYNAPSE_ACTION_NONE,
-> > +};
-> > +
-> > +static const enum counter_synapse_action stm32_lptim_l2c_actions_map[]=
- =3D {
-> >  	[STM32_LPTIM_SYNAPSE_ACTION_RISING_EDGE] =3D COUNTER_SYNAPSE_ACTION_R=
-ISING_EDGE,
-> >  	[STM32_LPTIM_SYNAPSE_ACTION_FALLING_EDGE] =3D COUNTER_SYNAPSE_ACTION_=
-FALLING_EDGE,
-> >  	[STM32_LPTIM_SYNAPSE_ACTION_BOTH_EDGES] =3D COUNTER_SYNAPSE_ACTION_BO=
-TH_EDGES,
-> >  	[STM32_LPTIM_SYNAPSE_ACTION_NONE] =3D COUNTER_SYNAPSE_ACTION_NONE,
-> >  };
-> > =20
-> > +static const enum counter_synapse_action stm32_lptim_cnt_synapse_actio=
-ns[] =3D {
-> > +	COUNTER_SYNAPSE_ACTION_RISING_EDGE,
-> > +	COUNTER_SYNAPSE_ACTION_FALLING_EDGE,
-> > +	COUNTER_SYNAPSE_ACTION_BOTH_EDGES,
-> > +	COUNTER_SYNAPSE_ACTION_NONE,
-> > +};
-> > +
->=20
-> I'm getting confused with the two table entries, and the two enums that
-> are very similar. Could it be simplified ?
->=20
-> I'm thinking of something more straight-forward... in fact only one
-> array should be enough, to convert from synapse action to CKPOL value
-> before it's written to register in stm32_lptim_setup() routine.
-> This should be easier now that the iio part has been removed.
+anything else that we would need?
 
-Yes, this might just be a hold over from when we had to handle the
-legacy IIO Counter code. But now that it is gone, this could probably be
-simplified down to a single array then. If you have any idea of how to
-achieve that, please do.
-
-> > @@ -333,43 +333,39 @@ static int stm32_lptim_cnt_action_get(struct coun=
-ter_device *counter,
-> >  	}
-> >  }
-> > =20
-> > -static int stm32_lptim_cnt_action_set(struct counter_device *counter,
-> > -				      struct counter_count *count,
-> > -				      struct counter_synapse *synapse,
-> > -				      size_t action)
-> > +static int stm32_lptim_cnt_action_write(struct counter_device *counter,
-> > +					struct counter_count *count,
-> > +					struct counter_synapse *synapse,
-> > +					enum counter_synapse_action action)
-> >  {
-> >  	struct stm32_lptim_cnt *const priv =3D counter->priv;
-> > -	size_t function;
-> > +	enum counter_function function;
-> >  	int err;
-> > =20
-> >  	if (stm32_lptim_is_enabled(priv))
-> >  		return -EBUSY;
-> > =20
-> > -	err =3D stm32_lptim_cnt_function_get(counter, count, &function);
-> > +	err =3D stm32_lptim_cnt_function_read(counter, count, &function);
-> >  	if (err)
-> >  		return err;
-> > =20
-> >  	/* only set polarity when in counter mode (on input 1) */
-> > -	if (function =3D=3D STM32_LPTIM_COUNTER_INCREASE
-> > -	    && synapse->signal->id =3D=3D count->synapses[0].signal->id) {
-> > -		switch (action) {
-> > -		case STM32_LPTIM_SYNAPSE_ACTION_RISING_EDGE:
-> > -		case STM32_LPTIM_SYNAPSE_ACTION_FALLING_EDGE:
-> > -		case STM32_LPTIM_SYNAPSE_ACTION_BOTH_EDGES:
-> > -			priv->polarity =3D action;
-> > -			return 0;
-> > -		}
-> > -	}
-> > +	if ((enum stm32_lptim_cnt_function)function !=3D STM32_LPTIM_COUNTER_=
-INCREASE
->=20
-> Could COUNTER_FUNCTION_INCREASE be used directly here, to avoid casting ?
-
-Sure, you can remove the stm32_lptim_cnt_function enum from this driver
-and just use COUNTER_FUNCTION_INCREASE here.
-
-> > +	    || synapse->signal->id !=3D count->synapses[0].signal->id
-> > +	    || action =3D=3D COUNTER_SYNAPSE_ACTION_NONE)
-> > +		return -EINVAL;
-> > =20
-> > -	return -EINVAL;
-> > +	priv->polarity =3D stm32_lptim_c2l_actions_map[action];
-> > +
-> > +	return 0;
-> >  }
-> > =20
-> >  static const struct counter_ops stm32_lptim_cnt_ops =3D {
-> >  	.count_read =3D stm32_lptim_cnt_read,
-> > -	.function_get =3D stm32_lptim_cnt_function_get,
-> > -	.function_set =3D stm32_lptim_cnt_function_set,
-> > -	.action_get =3D stm32_lptim_cnt_action_get,
-> > -	.action_set =3D stm32_lptim_cnt_action_set,
-> > +	.function_read =3D stm32_lptim_cnt_function_read,
-> > +	.function_write =3D stm32_lptim_cnt_function_write,
-> > +	.action_read =3D stm32_lptim_cnt_action_read,
-> > +	.action_write =3D stm32_lptim_cnt_action_write,
-> >  };
-> > =20
-> >  static struct counter_signal stm32_lptim_cnt_signals[] =3D {
-> > diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-=
-timer-cnt.c
-> > index 3fb0debd7425..c690b76e5dab 100644
-> > --- a/drivers/counter/stm32-timer-cnt.c
-> > +++ b/drivers/counter/stm32-timer-cnt.c
-> > @@ -13,6 +13,7 @@
-> >  #include <linux/module.h>
-> >  #include <linux/pinctrl/consumer.h>
-> >  #include <linux/platform_device.h>
-> > +#include <linux/types.h>
-> > =20
-> >  #define TIM_CCMR_CCXS	(BIT(8) | BIT(0))
-> >  #define TIM_CCMR_MASK	(TIM_CCMR_CC1S | TIM_CCMR_CC2S | \
-> > @@ -44,21 +45,21 @@ struct stm32_timer_cnt {
-> >   * @STM32_COUNT_ENCODER_MODE_3: counts on both TI1FP1 and TI2FP2 edges
-> >   */
-> >  enum stm32_count_function {
-> > +	STM32_COUNT_SLAVE_MODE_DISABLED =3D COUNTER_FUNCTION_INCREASE,
-> > +	STM32_COUNT_ENCODER_MODE_1 =3D COUNTER_FUNCTION_QUADRATURE_X2_A,
-> > +	STM32_COUNT_ENCODER_MODE_2 =3D COUNTER_FUNCTION_QUADRATURE_X2_B,
-> > +	STM32_COUNT_ENCODER_MODE_3 =3D COUNTER_FUNCTION_QUADRATURE_X4,
-> > +};
-> > +
->=20
-> Same as for the LPTIM driver above, I noticed the enum is removed from
-> the 104-quad-8 driver.
->=20
-> I'm fine both ways... I just feel like this could be more consistent
-> later in the function read/write routines to report enum from the
-> counter_function definition (e.g. like COUNTER_FUNCTION_QUADRATURE_X4
-> instead of STM32_COUNT_ENCODER_MODE_3).
->=20
-> Thanks,
-> Fabrice
-
-Yes, this enum is just used to alias those constants. If you think the
-code will be clearer by using the COUNTER_FUNCTION_* constants directly,
-then please do so.
-
-I don't know whether this v10 revision of the patchset will be merged
-or if we'll need a v11. So send your updates for stm32-lptimer-cnt.c and
-stm32-timer-cnt.c to me directly and I'll squash them with this patch if
-we do have a v11; otherwise you can submit them separately to the
-mailing list if this v10 is merged afterall.
-
-Thanks,
-
-William Breathitt Gray
-
---cqRhoqShv7pK17zI
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmBZsjgACgkQhvpINdm7
-VJJZDw/9H+TCABTs1cLpAbmLd2sUEyLjaI19qQOiJ8LJYXNIPuzkmYon1Aro9t6O
-CV7Gb1zvpXorE+fCByANz8PXKS/IroXuGA/VVlIJzX3BVEk9rkYO+QPxJR7V7dtq
-zQyLdHKpEBpoLhVgteJBXAGjQKiKw5uEP+3KZczRqAE5KFoTsZCAXjHflcb7Awci
-yEjlnoIOpEVcFJf00cnjUAYx+bBRFHM3pHINag2p/Tb5rihKOJWtcxoviXM0Y00Q
-bedD8D0/DkjLuRRXmrhpExTEKoLiK5FZfN+uveb/wAqrUw7Vslr17MOS396rr7Fb
-DybH6m089JALYJdfRBTD3om1SYfNWvvoauC13FnS4+vuFmwGKkH2KX2bscRzRdZI
-EGZytTeTN01MkvyFuon/SP2GxqsBrjJ/0s5n1erwQqSssKK15tWVw9/224ImS7b5
-lwAICzePbaBKHiZ6FhXvqj7i97Gbb0BCNWlutr/ynHI+Hsf9VTbBmjvs5upUosJV
-0V4I3Q7lOgfJZGTODcRjilZOYxEhT7R43dhH78Ou+wbxUwetdiYc1gWwTQvYKEqP
-e1PKk8Wsk+qPz6l9cDXeaigO+mvMNRwdtWFVJmKb9erPN+O+vFiSxeX3maZadJYL
-GFbSV3VYrt65t0MrPP5rm3iY5RMxrh5k21QuxikruVVFw9LWRcQ=
-=axoY
------END PGP SIGNATURE-----
-
---cqRhoqShv7pK17zI--
+>
+> Jonathan
+>
+> >
+> > Jonathan
+> >
+> >
+> > >
+> > > - Nuno S=C3=A1
+> >
+>

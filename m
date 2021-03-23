@@ -2,64 +2,87 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 44E133451E2
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Mar 2021 22:38:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DAAFF3454EF
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Mar 2021 02:23:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229930AbhCVVhm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 22 Mar 2021 17:37:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57094 "EHLO
+        id S231580AbhCWBWm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 22 Mar 2021 21:22:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229933AbhCVVhV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 22 Mar 2021 17:37:21 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DDD6C061756
-        for <linux-iio@vger.kernel.org>; Mon, 22 Mar 2021 14:37:18 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id w37so23563653lfu.13
-        for <linux-iio@vger.kernel.org>; Mon, 22 Mar 2021 14:37:17 -0700 (PDT)
+        with ESMTP id S231559AbhCWBWc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 22 Mar 2021 21:22:32 -0400
+Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA7D8C061574;
+        Mon, 22 Mar 2021 18:22:31 -0700 (PDT)
+Received: by mail-qv1-xf29.google.com with SMTP id x27so9690506qvd.2;
+        Mon, 22 Mar 2021 18:22:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=ZoFi747BMIBv44jVyJA6Rbtux2kDlDRfb4aXNCXPk+M=;
-        b=QlRQtQeI4ZV7lQzXLvmvFc1WUPSEXgoiB1LJnFurhE7BZ7/Xlkjfai6EBLHn6bzXxT
-         ztjaYzPUfR27AxnjA8Lb908Cojm7QjyDDCN3fIOqILyLxX3pST0UPLZY/bGlbNII9HLS
-         jOQAHrwIsxOoFb5JJsKyAnJRxewmuG3TOEoCplLVKZFvId2dgD7NUcrw1PqkUOK9bZ8/
-         TRtq48tSsy+iQBzS3nqHR9mwxbjDWLqMLDJk99LFlpW4O1c7oE7P0k5OeQTHDrFyfFJm
-         DezcDMpO17k868C2TPAQTK4s1RxetdpcxeMDvePEON3jdAtTXmX51A9CTtgAYhQ/06pS
-         YljA==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=oy04/El40Ne1ubQawCjKO3bb/wFTwFt+f7NEOOoONMs=;
+        b=qZ620LGPTtlsTf367eU1NiqWUBhP+Ym1FqCf3JA0vAZicZKnNgbAYQDtH9okaEO60J
+         PxZpDselVxLahdpOf89Thr5mvrxGTVS1Y7mXKqD/2NlPryruPXk6ixwNPTj1rrA8tgDf
+         Gp9e36zVhpIhGukhrKAG8QTkopYE2c5FhcI9AdEqmC+/cfFBr5/Mf2OVy9fLQQVWL65U
+         3S7o1lJ76vaMwiDbxJUJlhb+SBWDwEMq8qc+TdDuHiQwLnKFTsJZ29HeydMDwFDTzDjV
+         d1HyXIC5Uvvnt6Qlrv1EOIcelG1tpeyz4J73WnIHxnHxe/ofVugh3zGf1O+W25v8a0G7
+         nrnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=ZoFi747BMIBv44jVyJA6Rbtux2kDlDRfb4aXNCXPk+M=;
-        b=a2mE4WOE9yQw+p+rg81Wwe679+44vdy881iSajUfLlkDuy9shGX6ttihIxC1dCsZZj
-         eG3Ig6jndSBrT5inPQIujMDMHhUDgL9LWqpV9yn0uv4B/gGRWdNpx3xgNr9y9nKGD/BX
-         kOoxIPhuZAUsHod012HOMQltwyae0drrHLYAQUrf7Q+PoURkosyGlZCJVyBjxPkrDm+4
-         Fw7cIawGLMRiGyDMPZu8gjg+LVis86fsuN5ybdPqv6fieVvP43SO7bWyQf9EpKUrXgHn
-         0rVskY9NmQpQTHLkoAeox3XSU6vg6uB+tVlaJK5OASA6lGGilHIUzaaCs1c9ECOOuS+r
-         Tohw==
-X-Gm-Message-State: AOAM530IGwy9Aa2H/gf6YPv/vcjPCJvWy06TkMrQKmxZnX+UebB1FQzH
-        EDuRsLUeDEQHCPGch6mFssSR8PO+jMrr4S8wqVo=
-X-Google-Smtp-Source: ABdhPJxdrfVoso/faa/HnxPnKi8sq7OUuceT3q4dqr6gSfkbIBOYQZmUnm6BonWc3X/4ULf7VM8odlaf6L61ftORZFg=
-X-Received: by 2002:a05:6512:31d6:: with SMTP id j22mr706467lfe.637.1616449036422;
- Mon, 22 Mar 2021 14:37:16 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=oy04/El40Ne1ubQawCjKO3bb/wFTwFt+f7NEOOoONMs=;
+        b=EG3FEzol0M0Bn6g0zhiwTZwa6iMY1d7oH+71urjO2L5bcsl5CcGnXDQSmbM37GoNME
+         RYRn0VjVUjgqQxRaITI/PqYbCvJA3LpCBgUgufLaGyxpGFURootnKuypiO+qTlJrx6ax
+         chw9g2UHcoWUC7gpWVUOx+z5UdWM2HKIJxgdmReLg16oj8B1H6acw1VihLC00oWuXNRh
+         +DfMpOEk0CunnYsStXWQUROjPgPBGlXZVrsI1zFJn1XJrS/eawPtyNRNdUQnSUPyb0hn
+         +mrDRzNnh/XhbEnoeTnZ4iAoPA5/FBNsDCPEaeIOkBFnFAqm/3bgxF/K9qmafI/Gnmw6
+         GS4Q==
+X-Gm-Message-State: AOAM532K47QiHHJ/tfRmXu4jO3FIR5RjwdOkm9TnStj+weGVwROA4ntm
+        NGa6oElx/xymZ5qyPzU4p48=
+X-Google-Smtp-Source: ABdhPJwjLF3vW90pqxpmz/cYw4RaTWr+fSidr90ggYnLlnntadiyfnbsk1WZp9kZApKyiJwXhniM4g==
+X-Received: by 2002:a0c:a425:: with SMTP id w34mr2601728qvw.2.1616462551254;
+        Mon, 22 Mar 2021 18:22:31 -0700 (PDT)
+Received: from localhost.localdomain ([37.19.198.117])
+        by smtp.gmail.com with ESMTPSA id 184sm12439706qki.97.2021.03.22.18.22.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Mar 2021 18:22:30 -0700 (PDT)
+From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
+To:     lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
+        pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     rdunlap@infradead.org, Bhaskar Chowdhury <unixbhaskar@gmail.com>
+Subject: [PATCH] iio: dac: Rudimentary typo fix
+Date:   Tue, 23 Mar 2021 06:52:15 +0530
+Message-Id: <20210323012215.451075-1-unixbhaskar@gmail.com>
+X-Mailer: git-send-email 2.31.0
 MIME-Version: 1.0
-Received: by 2002:a05:6504:6025:0:0:0:0 with HTTP; Mon, 22 Mar 2021 14:37:15
- -0700 (PDT)
-Reply-To: blakeanold@outlook.com
-From:   Blake Arnold <offficcemun@gmail.com>
-Date:   Mon, 22 Mar 2021 22:37:15 +0100
-Message-ID: <CAPNDa7GX1Raqun=eJf=RLxA9QLbQ8noRzAvmMaerFOVZstMb1A@mail.gmail.com>
-Subject: Greetings!
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello,
 
-I have sent you mails, but still have not received a response. Kindly
-get back to me for a mutual benefit transaction.
+s/concurent/concurrent/
 
-Thank you.
-Blake Arnold
+Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+---
+ drivers/iio/dac/ad5766.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/iio/dac/ad5766.c b/drivers/iio/dac/ad5766.c
+index ef1618ea6a20..79837a4b3a41 100644
+--- a/drivers/iio/dac/ad5766.c
++++ b/drivers/iio/dac/ad5766.c
+@@ -89,7 +89,7 @@ static const char * const ad5766_dither_scales[] = {
+ /**
+  * struct ad5766_state - driver instance specific data
+  * @spi:		SPI device
+- * @lock:		Lock used to restrict concurent access to SPI device
++ * @lock:		Lock used to restrict concurrent access to SPI device
+  * @chip_info:		Chip model specific constants
+  * @gpio_reset:		Reset GPIO, used to reset the device
+  * @crt_range:		Current selected output range
+--
+2.31.0
+

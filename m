@@ -2,115 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FC8D345D26
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Mar 2021 12:41:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E6BB0345E03
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Mar 2021 13:28:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229574AbhCWLk2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 Mar 2021 07:40:28 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2730 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229962AbhCWLkA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 Mar 2021 07:40:00 -0400
-Received: from fraeml703-chm.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4F4Thg0TyCz67rYB;
-        Tue, 23 Mar 2021 19:31:15 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml703-chm.china.huawei.com (10.206.15.52) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2106.2; Tue, 23 Mar 2021 12:39:58 +0100
-Received: from localhost (10.47.84.123) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2106.2; Tue, 23 Mar
- 2021 11:39:57 +0000
-Date:   Tue, 23 Mar 2021 11:38:39 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Drew Fustini <drew@beagleboard.org>
-CC:     Jonathan Cameron <jic23@jic23.retrosnub.co.uk>,
-        Sean Nyekjaer <sean@geanix.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        "Daniel Baluta" <daniel.baluta@nxp.com>,
-        David Lechner <david@lechnology.com>,
-        <linux-iio@vger.kernel.org>
-Subject: Re: iio: adc: anyone working on TI ADS7066?
-Message-ID: <20210323113839.0000537a@Huawei.com>
-In-Reply-To: <20210323043917.GA517382@x1>
-References: <20210320035234.GA95301@x1>
-        <20210320182609.5e4e7f3c@jic23-huawei>
-        <20210323043917.GA517382@x1>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S230273AbhCWM1m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 23 Mar 2021 08:27:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50200 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230198AbhCWM1K (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 Mar 2021 08:27:10 -0400
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FC1FC061574
+        for <linux-iio@vger.kernel.org>; Tue, 23 Mar 2021 05:27:10 -0700 (PDT)
+Received: by mail-lj1-x233.google.com with SMTP id u20so25309462lja.13
+        for <linux-iio@vger.kernel.org>; Tue, 23 Mar 2021 05:27:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XngEVJM1BlZxxtxKJcCTSV7ycav5zHqwABJNpRvqI6Q=;
+        b=Uy/27Eg7txLYmAnlljepIsKLGRhNLdLyNc+/sfTzSpEb0Y+7K03YdVG69+BPByLwWU
+         47Wd5lcyXTEeL+VN/u4z31CwJKnYud8GltPWHjsKNiI6H4Krc/4EsLQ0Iia/dSkRrnJ2
+         TxE8sXrWbJ18bH8KsPWfXNJywhYO2+ryYLfzVW4UfAtC/Q2OulU2J+T7Vi/mLeWTvmEU
+         5jYb0N2j6gw+KaUCO2wSDHqRcp7NlJytltjbQ7/qBAporXCqHjmnoXLXkb+weoR9YlOU
+         PXYm3iMmZFKR2lAItZNxj48/MQUI/Oe4vONf3jtylNxgNxPy5pZQVEBctO0PTTUhXTIn
+         IF7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XngEVJM1BlZxxtxKJcCTSV7ycav5zHqwABJNpRvqI6Q=;
+        b=HIVT3X/0h4XxVKSN4rFz/S9KwZDsryh//hpGpVKafq4SjFqmqtls6/DiY94bcfhn+a
+         r+fA5nhBbtgJiKXKTbF/OLjcYUPsEvZASD1qylMIX5xY9YK9oAes4aasti6Bz8/A71yw
+         P6yvPIWGdLVrGGN8bCGx6kZUbiOy/VJXuMo3BavIU10Ee2XzQH/lt1o4BpCMQkMAJ+ff
+         u7S0TuogakpjBpgOOno56MgkKQ3sWrnp7hi8KJ7SMA/wtcM9iSYXIriupc/oo4pU9IgS
+         n6mFwWKUNhgB4YGA1mBT62MZFXH6pFh9yi2P2fHTQ6fFDBoAWtoYcw+NcLDY3Gn7n7SE
+         wZLQ==
+X-Gm-Message-State: AOAM533f4P4T3Fr+pdaSyI7OPlKTTcJMpvLLaqAXQ9AFlo8noARBMdT/
+        FMO7Dr91yCn+nxAB8UIXbIty6w==
+X-Google-Smtp-Source: ABdhPJxYS6GvNaVy1YMbppYLcgi4tu48i6Znc4+EII3HzDNv1642jQyanrfYmTGJYHzzhiKJsjITKw==
+X-Received: by 2002:a05:651c:2005:: with SMTP id s5mr3084316ljo.491.1616502428925;
+        Tue, 23 Mar 2021 05:27:08 -0700 (PDT)
+Received: from localhost.localdomain (c-d7cb225c.014-348-6c756e10.bbcust.telenor.se. [92.34.203.215])
+        by smtp.gmail.com with ESMTPSA id e18sm2311245ljl.92.2021.03.23.05.27.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Mar 2021 05:27:08 -0700 (PDT)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH] iio: Fix iio_read_channel_processed_scale()
+Date:   Tue, 23 Mar 2021 13:27:05 +0100
+Message-Id: <20210323122705.1326362-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.84.123]
-X-ClientProxiedBy: lhreml703-chm.china.huawei.com (10.201.108.52) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 22 Mar 2021 21:39:17 -0700
-Drew Fustini <drew@beagleboard.org> wrote:
+The code was checking if (ret) from the processed
+channel readout, not smart, we need to check if (ret < 0)
+as this will likely be something like IIO_VAL_INT.
 
-> On Sat, Mar 20, 2021 at 06:26:24PM +0000, Jonathan Cameron wrote:
-> > On Fri, 19 Mar 2021 20:52:34 -0700
-> > Drew Fustini <drew@beagleboard.org> wrote:
-> >   
-> > > I have a board with a TI ADS7066 8-channel ADC [1] that I want to get
-> > > working in Linux.  I see there is already driver support in iio for
-> > > ADS1015, ADS79xx, ADS8344, ADS868x and ADS124S0x.
-> > > 
-> > > Is anyone already working with the ADS7066 or a similar part in that
-> > > series?
-> > > 
-> > > If not, I'll take one of the existing TI drivers as a template for the
-> > > ADS7066 driver.
-> > > 
-> > > Thank you,
-> > > Drew  
-> > 
-> > Hi Drew,
-> > 
-> > I've not seen anything for this part.
-> > 
-> > From a 10 second glance at the data sheet I see it's capable of
-> > ADC / GPIO on each pin.   If you plan to support that functionality
-> > at somepoint make sure to define dt bindings and similar to specify
-> > which channels are enabled and dynamically create the iio_chan_spec
-> > array to match.  It can be a bit ugly to retrofit later.  
-> 
-> Thanks for the feedback.  The GPIO functionality is not used on the
-> custom hardware that I have, so I am thinking I would only implement
-> the ADC functionality.  Is that too short sighted?
+Fixes: dc98269f7c7d ("iio: Provide iio_read_channel_processed_scale() API")
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+Jonathan: this Fixes tag is the commit ID found in your
+testing branch, feel free to just squash if you prefer
+that.
+---
+ drivers/iio/inkern.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-That's fine.  We'd just end up with a DT binding that had a default
-of "no channels specified == all ADC".
-
-It might turn out you want to do per channel settings anyway in DT.
-
-> 
-> > Oh. It does daisy chaining as well. That is always fun to support
-> > though I guess you may well not have it wired up to do that.
-> > Oversampling as well - though that looks nice and simple for once.  
-> 
-> The hardware I have has two ADS7066 wired up in parallel so I don't
-> think I would be looking at implementing dasiy chain initially.
-> 
-> Is that ok just implement what I am actually using or is the preference
-> to have a driver implement all the latent functionality before it would
-> be merged?
-
-Absolutely fine to do just what you need initially then others can add
-the fun bells and whistles when they need them.
-
-Only exception is the binding doc should try to reflect what the hardware
-can support even if the driver doesn't use it.  This applies to things
-like interrupt lines or regulators.
-
-Jonathan
-
-> 
-> Thanks,
-> Drew
+diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+index c61fc06f98b8..9c22697b7e83 100644
+--- a/drivers/iio/inkern.c
++++ b/drivers/iio/inkern.c
+@@ -702,7 +702,7 @@ int iio_read_channel_processed_scale(struct iio_channel *chan, int *val,
+ 	if (iio_channel_has_info(chan->channel, IIO_CHAN_INFO_PROCESSED)) {
+ 		ret = iio_channel_read(chan, val, NULL,
+ 				       IIO_CHAN_INFO_PROCESSED);
+-		if (ret)
++		if (ret < 0)
+ 			goto err_unlock;
+ 		*val *= scale;
+ 	} else {
+-- 
+2.29.2
 

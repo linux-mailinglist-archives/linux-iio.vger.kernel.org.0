@@ -2,79 +2,190 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FE49347F08
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Mar 2021 18:14:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 14510347F6F
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Mar 2021 18:35:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236883AbhCXRN7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 24 Mar 2021 13:13:59 -0400
-Received: from mail-il1-f171.google.com ([209.85.166.171]:43946 "EHLO
-        mail-il1-f171.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237139AbhCXRNv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 24 Mar 2021 13:13:51 -0400
-Received: by mail-il1-f171.google.com with SMTP id d2so22040654ilm.10;
-        Wed, 24 Mar 2021 10:13:51 -0700 (PDT)
+        id S237286AbhCXRei (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 24 Mar 2021 13:34:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33890 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237201AbhCXReK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 24 Mar 2021 13:34:10 -0400
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB774C0613E0
+        for <linux-iio@vger.kernel.org>; Wed, 24 Mar 2021 10:34:09 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id jy13so34220597ejc.2
+        for <linux-iio@vger.kernel.org>; Wed, 24 Mar 2021 10:34:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=VoFNqvJqV3TdL84vFoklC/P+s5SxY+mp4X8TTiNgMtE=;
+        b=p5GUKS/uwIXlF0KDHuVWCTKOILfvq6pgQeedSTtsSMFwzeuZp8AKlKbhStPy4SRDFk
+         HRqJKvh8toc4XC2CDpMwgejowYDSgwwsD1NNm/IZLadO+9aHWEJEa7SnZn+Fzie+/tpY
+         cHhRabnd8kARi5Sxtf813O8WVqAJ4I6376ff+ZdtFwIXyxn2TFZwAcHQP8iPkpz2DhES
+         sPWg2kI28DA6L8flcNKaK7fCrqsKbgjkmeINLGfWN8W8iv4Lz10+IASi3UZhscm0Vp5a
+         4LfKAQOpAmDlZWEXD41zDbsvBBjj9lvzYhyZx+Ckfdf3hiQ9fnRbMmWjK4JD9JZdNjZV
+         soZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=/317AgX3s99KFrkx7VorpzhdeLK4kgmrKfsU5wf4js8=;
-        b=qwiF6qZ4/K2cnTXyU/rp5uwmODdPtJAoPflf8+1b32VJgX2D+nFED7dBFn7DK1P6dB
-         /zQ0hIqaNKWrK3UyxB1hYPAkWXY9oN1xXyyoREEG73cO1ws3JvIybpGLY1+mE5Z5HqYW
-         5WQD3/b7mdgWCWFiLaFK7VgBFyUJyKCNIVOQYkrR+waQvyxtu3rrfolUUrP85oD6tg+e
-         kxF/FPk+k3AuEsH69+VNyU6qAMg1AoxxiUB6LAaemKikKxONTA4Ec77UTZcBi7HJt90D
-         p+3QbFVoP6ASnL9U2Ou398RT0PBFr4a8L2+v/somQTg2k3PWuSx+jCA9FE1b9EFgSNYx
-         ybFg==
-X-Gm-Message-State: AOAM532AEqRTj+gUD7clot2jZOL9cHoZFgM9I5VYkuxmWTVLuy0byVMP
-        EzW0aoYQuvmAkfco2M+crQ==
-X-Google-Smtp-Source: ABdhPJwEjumbwytU+/AtAqPrLFwDlEAjXdmLZVxZGKHBahiSjMnR8NFDw+bfXcaMS8KLfuZe9rry2A==
-X-Received: by 2002:a92:c702:: with SMTP id a2mr3504492ilp.219.1616606030906;
-        Wed, 24 Mar 2021 10:13:50 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.253])
-        by smtp.gmail.com with ESMTPSA id z17sm1370166ilz.58.2021.03.24.10.13.49
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=VoFNqvJqV3TdL84vFoklC/P+s5SxY+mp4X8TTiNgMtE=;
+        b=oJVyilcyQKKRan/i3xv9Df/mgrtF8xC6q75u46RTUOFyH6R4dMX1rMsQ0jRsPErItr
+         7EPUjXdsQVfHVbWI8UxqYFarySw8D4zYpldRjJnSDq+u5g1vCkXLObBbPBlZO4ODiClA
+         3hjC1dkAq0VZy+PZHLjr1VhOKde96Y5yPKIb3NzzTT2ERQt1LgYVn3oIW6J9Hsey39sj
+         pnsvlxeKxYQ1KbmNXG52qvHvvXYMxihVNeVe4SihdQfFzbm1Qwo3EHfyAPKhoMauVP8P
+         +3v82KXQcCumPQDlyziHd2KHnyMTw2OK4ebXWqYFmn20Be9qCeWpkmGH6CKNjftdDQiU
+         OSDQ==
+X-Gm-Message-State: AOAM530M2LV2SOgumqCBzZG7tFCsy/U5CQ9XlrEIwtNlk8VPZiJ/A0sw
+        guBz6dVbHOcqZIpiQddHOUY2Rw==
+X-Google-Smtp-Source: ABdhPJzwCa1MrVqILnw5ineqDKoBXsRVPYAznXPlfLrlyyVo9HL2XAvV+eancRBLlKNZ4hQlmcJ62g==
+X-Received: by 2002:a17:906:7946:: with SMTP id l6mr4857686ejo.500.1616607247797;
+        Wed, 24 Mar 2021 10:34:07 -0700 (PDT)
+Received: from dell.default ([91.110.221.180])
+        by smtp.gmail.com with ESMTPSA id p19sm1466367edr.57.2021.03.24.10.34.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Mar 2021 10:13:50 -0700 (PDT)
-Received: (nullmailer pid 3266595 invoked by uid 1000);
-        Wed, 24 Mar 2021 17:13:48 -0000
-Date:   Wed, 24 Mar 2021 11:13:48 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, Robh+dt@kernel.org,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        linux-iio@vger.kernel.org,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        devicetree@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v2 23/24] dt-bindings:iio:cdc:adi,ad7150 binding doc
-Message-ID: <20210324171348.GA3266557@robh.at.kernel.org>
-References: <20210314181511.531414-1-jic23@kernel.org>
- <20210314181511.531414-24-jic23@kernel.org>
+        Wed, 24 Mar 2021 10:34:07 -0700 (PDT)
+From:   Lee Jones <lee.jones@linaro.org>
+To:     lee.jones@linaro.org
+Cc:     linux-kernel@vger.kernel.org,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Anssi Hannula <anssi.hannula@gmail.com>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        =?UTF-8?q?Bruno=20Pr=C3=A9mont?= <bonbons@linux-vserver.org>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Daniel Drubin <daniel.drubin@intel.com>,
+        Dario Pagani <dario.pagani.146+linuxk@gmail.com>,
+        dri-devel@lists.freedesktop.org,
+        Henrik Rydberg <rydberg@bitmath.org>,
+        Jiri Kosina <jikos@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        Kim Kuparinen <kimi.h.kuparinen@gmail.com>,
+        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+        linaro-mm-sig@lists.linaro.org,
+        linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-usb@vger.kernel.org, Lopez Casado <nlopezcasad@logitech.com>,
+        "L. Vinyard, Jr" <rvinyard@cs.nmsu.edu>,
+        Masaki Ota <masaki.ota@jp.alps.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        message to <vojtech@ucw.cz>,
+        Michael Haboustak <mike-@cinci.rr.com>,
+        Rushikesh S Kadam <rushikesh.s.kadam@intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
+        Vojtech Pavlik <vojtech@suse.cz>,
+        Zhang Lixu <lixu.zhang@intel.com>
+Subject: [PATCH 00/25] Rid W=1 warnings from HID
+Date:   Wed, 24 Mar 2021 17:33:39 +0000
+Message-Id: <20210324173404.66340-1-lee.jones@linaro.org>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210314181511.531414-24-jic23@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 14 Mar 2021 18:15:10 +0000, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> Binding covering the ad7150, ad7151 and ad7156 capacitance to digital
-> convertors.  The only difference between these is how many channels they
-> have (1 or 2)
-> 
-> Whilst it is clearly necessary to provide power to the part, we don't
-> need to know the voltage or anything so if it is always on, there should
-> be no need to have it specified in the binding.
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Robh+dt@kernel.org
-> Cc: devicetree@vger.kernel.org
-> Link: https://lore.kernel.org/r/20210207154623.433442-22-jic23@kernel.org
-> ---
->  .../bindings/iio/cdc/adi,ad7150.yaml          | 69 +++++++++++++++++++
->  1 file changed, 69 insertions(+)
-> 
+This set is part of a larger effort attempting to clean-up W=1
+kernel builds, which are currently overwhelmingly riddled with
+niggly little warnings.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Lee Jones (25):
+  HID: intel-ish-hid: Remove unused variable 'err'
+  HID: ishtp-hid-client: Move variable to where it's actually used
+  HID: intel-ish-hid: pci-ish: Remove unused variable 'ret'
+  HID: intel-ish: Supply some missing param descriptions
+  HID: intel-ish: Fix a naming disparity and a formatting error
+  HID: usbhid: Repair a formatting issue in a struct description
+  HID: intel-ish-hid: Fix a little doc-rot
+  HID: usbhid: hid-pidff: Demote a couple kernel-doc abuses
+  HID: hid-alps: Correct struct misnaming
+  HID: intel-ish-hid: Fix potential copy/paste error
+  HID: hid-core: Fix incorrect function name in header
+  HID: intel-ish-hid: ipc: Correct fw_reset_work_fn() function name in
+    header
+  HID: ishtp-hid-client: Fix incorrect function name report_bad_packet()
+  HID: hid-kye: Fix incorrect function name for kye_tablet_enable()
+  HID: hid-picolcd_core: Remove unused variable 'ret'
+  HID: hid-logitech-hidpp: Fix conformant kernel-doc header and demote
+    abuses
+  HID: hid-uclogic-rdesc: Kernel-doc is for functions and structs
+  HID: hid-thrustmaster: Demote a bunch of kernel-doc abuses
+  HID: hid-uclogic-params: Ensure function names are present and correct
+    in kernel-doc headers
+  HID: hid-sensor-custom: Remove unused variable 'ret'
+  HID: wacom_sys: Demote kernel-doc abuse
+  HID: hid-sensor-hub: Remove unused struct member 'quirks'
+  HID: hid-sensor-hub: Move 'hsdev' description to correct struct
+    definition
+  HID: intel-ish-hid: ishtp-fw-loader: Fix a bunch of formatting issues
+  HID: ishtp-hid-client: Fix 'suggest-attribute=format' compiler warning
+
+ drivers/hid/hid-alps.c                       |  2 +-
+ drivers/hid/hid-core.c                       |  2 +-
+ drivers/hid/hid-kye.c                        |  2 +-
+ drivers/hid/hid-logitech-hidpp.c             |  7 +--
+ drivers/hid/hid-picolcd_core.c               |  5 +--
+ drivers/hid/hid-sensor-custom.c              |  5 +--
+ drivers/hid/hid-sensor-hub.c                 |  4 +-
+ drivers/hid/hid-thrustmaster.c               | 24 +++++------
+ drivers/hid/hid-uclogic-params.c             |  8 ++--
+ drivers/hid/hid-uclogic-rdesc.c              |  2 +-
+ drivers/hid/intel-ish-hid/ipc/ipc.c          |  2 +-
+ drivers/hid/intel-ish-hid/ipc/pci-ish.c      |  3 +-
+ drivers/hid/intel-ish-hid/ishtp-fw-loader.c  | 45 ++++++++++----------
+ drivers/hid/intel-ish-hid/ishtp-hid-client.c | 11 +++--
+ drivers/hid/intel-ish-hid/ishtp-hid.c        |  2 +-
+ drivers/hid/intel-ish-hid/ishtp-hid.h        |  9 +---
+ drivers/hid/intel-ish-hid/ishtp/bus.c        |  9 +++-
+ drivers/hid/intel-ish-hid/ishtp/client.c     |  5 +--
+ drivers/hid/intel-ish-hid/ishtp/hbm.c        |  4 +-
+ drivers/hid/intel-ish-hid/ishtp/ishtp-dev.h  |  4 +-
+ drivers/hid/usbhid/hid-pidff.c               |  4 +-
+ drivers/hid/usbhid/usbkbd.c                  |  2 +-
+ drivers/hid/wacom_sys.c                      |  2 +-
+ include/linux/intel-ish-client-if.h          |  8 +++-
+ 24 files changed, 90 insertions(+), 81 deletions(-)
+
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: Anssi Hannula <anssi.hannula@gmail.com>
+Cc: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Cc: "Bruno Prémont" <bonbons@linux-vserver.org>
+Cc: "Christian König" <christian.koenig@amd.com>
+Cc: Daniel Drubin <daniel.drubin@intel.com>
+Cc: Dario Pagani <dario.pagani.146+linuxk@gmail.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: Henrik Rydberg <rydberg@bitmath.org>
+Cc: Jiri Kosina <jikos@kernel.org>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Cc: Kim Kuparinen <kimi.h.kuparinen@gmail.com>
+Cc: "Krzysztof Wilczyński" <kw@linux.com>
+Cc: Lee Jones <lee.jones@linaro.org>
+Cc: linaro-mm-sig@lists.linaro.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-iio@vger.kernel.org
+Cc: linux-input@vger.kernel.org
+Cc: linux-media@vger.kernel.org
+Cc: linux-stm32@st-md-mailman.stormreply.com
+Cc: linux-usb@vger.kernel.org
+Cc: Lopez Casado <nlopezcasad@logitech.com>
+Cc: "L. Vinyard, Jr" <rvinyard@cs.nmsu.edu>
+Cc: Masaki Ota <masaki.ota@jp.alps.com>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Cc: message to <vojtech@ucw.cz>
+Cc: Michael Haboustak <mike-@cinci.rr.com>
+Cc: Rushikesh S Kadam <rushikesh.s.kadam@intel.com>
+Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: Sumit Semwal <sumit.semwal@linaro.org>
+Cc: "Uwe Kleine-König" <uwe@kleine-koenig.org>
+Cc: Vojtech Pavlik <vojtech@suse.cz>
+Cc: Zhang Lixu <lixu.zhang@intel.com>
+-- 
+2.27.0
+

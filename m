@@ -2,171 +2,162 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BAA7834A68A
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Mar 2021 12:42:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 185D534A772
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Mar 2021 13:41:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229744AbhCZLmL convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Fri, 26 Mar 2021 07:42:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42390 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229590AbhCZLmH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 26 Mar 2021 07:42:07 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 25CBE61A26;
-        Fri, 26 Mar 2021 11:41:57 +0000 (UTC)
-Date:   Fri, 26 Mar 2021 11:42:02 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Anssi Hannula <anssi.hannula@gmail.com>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Bruno =?UTF-8?B?UHI=?= =?UTF-8?B?w6ltb250?= 
-        <bonbons@linux-vserver.org>,
-        Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-        Daniel Drubin <daniel.drubin@intel.com>,
-        Dario Pagani <dario.pagani.146+linuxk@gmail.com>,
-        dri-devel@lists.freedesktop.org,
-        Henrik Rydberg <rydberg@bitmath.org>,
-        Jiri Kosina <jikos@kernel.org>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Kim Kuparinen <kimi.h.kuparinen@gmail.com>,
-        Krzysztof =?UTF-8?B?V2lsY3p5xYRza2k=?= <kw@linux.com>,
-        linaro-mm-sig@lists.linaro.org,
-        linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-usb@vger.kernel.org, Lopez Casado <nlopezcasad@logitech.com>,
-        "L. Vinyard, Jr" <rvinyard@cs.nmsu.edu>,
-        Masaki Ota <masaki.ota@jp.alps.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        message to <vojtech@ucw.cz>,
-        Michael Haboustak <mike-@cinci.rr.com>,
-        Rushikesh S Kadam <rushikesh.s.kadam@intel.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <uwe@kleine-koenig.org>,
-        Vojtech Pavlik <vojtech@suse.cz>,
-        Zhang Lixu <lixu.zhang@intel.com>
-Subject: Re: [PATCH 00/25] Rid W=1 warnings from HID
-Message-ID: <20210326114202.3862b8c5@jic23-huawei>
-In-Reply-To: <20210324173404.66340-1-lee.jones@linaro.org>
-References: <20210324173404.66340-1-lee.jones@linaro.org>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S229671AbhCZMlG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 26 Mar 2021 08:41:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56348 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229839AbhCZMlD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 Mar 2021 08:41:03 -0400
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ED80C0613AA;
+        Fri, 26 Mar 2021 05:41:02 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id h13so6141790eds.5;
+        Fri, 26 Mar 2021 05:41:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=Ai/sBaJhqrRCWGFUEsUnLWF/QfwBQ52U7SGdirULJxA=;
+        b=uCjETYGYNoXkWFnAnxrREMGnWCf4CT3WkSUcUIwelIYp/DG4PNHW59MxV0ndLkmKgw
+         L2IWwNo6EyYyTYDtD8OnYmHTc3e6jv9884w6qBn83ztCcGKzBTfT9VZi4FrsY0fAmdgD
+         ur9rC0Au9YibHKnhDtRtnuR6TmiDKHMLiKkdFQBru/Rg3CNOG0AO1xf2t/BfGdTfqqmA
+         XwvFfXkcKbOAT7hy7hseEdn4+/SVJmzCmlcRTdfpBXzf34azVckBOAtF5T9AGODNsmHi
+         JB9fYSTh7FLf8XAc67eXw0GuTEJ4SVHnGJeGbaLRFM/fngNYTBDvYjVjkIiDqEkKOz/Z
+         NJ0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=Ai/sBaJhqrRCWGFUEsUnLWF/QfwBQ52U7SGdirULJxA=;
+        b=PskyuHmVOQ7HEj1LDTVXQ1f6BBNHgfkTXhdCl8prHgTNxtonMOGlIHSwp2tZCSeXHB
+         bXdyGgXwkqzKkPvCDXO9FNpEA5M24TEazXVLarTHCnB7sOff0fCcXMO1YPB7rQEE0kcu
+         oi1ObVOy5AoV0S763IeokLDhDQF+SWDjRyQdaGN9YZehJNDADc8ch0fFirS/S8RG4xT9
+         mSHRFt/wSLQaXoQHNKnwD9Szs89YpTchjEd3clrg0Kr+59M2Fuh7f+rrHCTPP7L1scAk
+         dDvYzuNF/VKpc0ohE7+itMixgpjVSko4NtZhGm1kL5ZvgRTiuTo0lLpFrTxs5bQrM+fm
+         BHzA==
+X-Gm-Message-State: AOAM533MrmKCwoOhVpgX7K1zK5BOuc0VyOXlaQkLTpT8UwRc3c1KN2xT
+        KuD8J3nimkYrTTxxhky1UGI=
+X-Google-Smtp-Source: ABdhPJyBfhRplv3kSXtcQVbf9j3CtTsxKbJ2vdFf6xxPS0KZwTr0+U5i0X7OFEFWWah2Xup+2PjS6w==
+X-Received: by 2002:a05:6402:254f:: with SMTP id l15mr14885368edb.189.1616762461102;
+        Fri, 26 Mar 2021 05:41:01 -0700 (PDT)
+Received: from localhost ([62.96.65.119])
+        by smtp.gmail.com with ESMTPSA id x1sm3830371eji.8.2021.03.26.05.40.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Mar 2021 05:40:59 -0700 (PDT)
+Date:   Fri, 26 Mar 2021 13:41:22 +0100
+From:   Thierry Reding <thierry.reding@gmail.com>
+To:     Rob Herring <robh@kernel.org>
+Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Stephen Boyd <sboyd@kernel.org>,
+        Maxime Ripard <mripard@kernel.org>,
+        Sam Ravnborg <sam@ravnborg.org>, Vinod Koul <vkoul@kernel.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-clk@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-i3c@lists.infradead.org, linux-iio@vger.kernel.org,
+        linux-leds@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: Clean-up undocumented compatible strings
+Message-ID: <YF3WctL0BJON130C@orome.fritz.box>
+References: <20210316194918.3528417-1-robh@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="anrc3HovXG4wMGPC"
+Content-Disposition: inline
+In-Reply-To: <20210316194918.3528417-1-robh@kernel.org>
+User-Agent: Mutt/2.0.6 (98f8cb83) (2021-03-06)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 24 Mar 2021 17:33:39 +0000
-Lee Jones <lee.jones@linaro.org> wrote:
 
-> This set is part of a larger effort attempting to clean-up W=1
-> kernel builds, which are currently overwhelmingly riddled with
-> niggly little warnings.
+--anrc3HovXG4wMGPC
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Lee, it's a bit novel to cc linux-iio on the cover letter but
-none of the actual patches..  Or least none of them reached
-me or lore.kernel.org
-
-I'm sure they are great :)
-
-Jonathan
-
-> 
-> Lee Jones (25):
->   HID: intel-ish-hid: Remove unused variable 'err'
->   HID: ishtp-hid-client: Move variable to where it's actually used
->   HID: intel-ish-hid: pci-ish: Remove unused variable 'ret'
->   HID: intel-ish: Supply some missing param descriptions
->   HID: intel-ish: Fix a naming disparity and a formatting error
->   HID: usbhid: Repair a formatting issue in a struct description
->   HID: intel-ish-hid: Fix a little doc-rot
->   HID: usbhid: hid-pidff: Demote a couple kernel-doc abuses
->   HID: hid-alps: Correct struct misnaming
->   HID: intel-ish-hid: Fix potential copy/paste error
->   HID: hid-core: Fix incorrect function name in header
->   HID: intel-ish-hid: ipc: Correct fw_reset_work_fn() function name in
->     header
->   HID: ishtp-hid-client: Fix incorrect function name report_bad_packet()
->   HID: hid-kye: Fix incorrect function name for kye_tablet_enable()
->   HID: hid-picolcd_core: Remove unused variable 'ret'
->   HID: hid-logitech-hidpp: Fix conformant kernel-doc header and demote
->     abuses
->   HID: hid-uclogic-rdesc: Kernel-doc is for functions and structs
->   HID: hid-thrustmaster: Demote a bunch of kernel-doc abuses
->   HID: hid-uclogic-params: Ensure function names are present and correct
->     in kernel-doc headers
->   HID: hid-sensor-custom: Remove unused variable 'ret'
->   HID: wacom_sys: Demote kernel-doc abuse
->   HID: hid-sensor-hub: Remove unused struct member 'quirks'
->   HID: hid-sensor-hub: Move 'hsdev' description to correct struct
->     definition
->   HID: intel-ish-hid: ishtp-fw-loader: Fix a bunch of formatting issues
->   HID: ishtp-hid-client: Fix 'suggest-attribute=format' compiler warning
-> 
->  drivers/hid/hid-alps.c                       |  2 +-
->  drivers/hid/hid-core.c                       |  2 +-
->  drivers/hid/hid-kye.c                        |  2 +-
->  drivers/hid/hid-logitech-hidpp.c             |  7 +--
->  drivers/hid/hid-picolcd_core.c               |  5 +--
->  drivers/hid/hid-sensor-custom.c              |  5 +--
->  drivers/hid/hid-sensor-hub.c                 |  4 +-
->  drivers/hid/hid-thrustmaster.c               | 24 +++++------
->  drivers/hid/hid-uclogic-params.c             |  8 ++--
->  drivers/hid/hid-uclogic-rdesc.c              |  2 +-
->  drivers/hid/intel-ish-hid/ipc/ipc.c          |  2 +-
->  drivers/hid/intel-ish-hid/ipc/pci-ish.c      |  3 +-
->  drivers/hid/intel-ish-hid/ishtp-fw-loader.c  | 45 ++++++++++----------
->  drivers/hid/intel-ish-hid/ishtp-hid-client.c | 11 +++--
->  drivers/hid/intel-ish-hid/ishtp-hid.c        |  2 +-
->  drivers/hid/intel-ish-hid/ishtp-hid.h        |  9 +---
->  drivers/hid/intel-ish-hid/ishtp/bus.c        |  9 +++-
->  drivers/hid/intel-ish-hid/ishtp/client.c     |  5 +--
->  drivers/hid/intel-ish-hid/ishtp/hbm.c        |  4 +-
->  drivers/hid/intel-ish-hid/ishtp/ishtp-dev.h  |  4 +-
->  drivers/hid/usbhid/hid-pidff.c               |  4 +-
->  drivers/hid/usbhid/usbkbd.c                  |  2 +-
->  drivers/hid/wacom_sys.c                      |  2 +-
->  include/linux/intel-ish-client-if.h          |  8 +++-
->  24 files changed, 90 insertions(+), 81 deletions(-)
-> 
-> Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
-> Cc: Anssi Hannula <anssi.hannula@gmail.com>
-> Cc: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-> Cc: "Bruno Prémont" <bonbons@linux-vserver.org>
-> Cc: "Christian König" <christian.koenig@amd.com>
-> Cc: Daniel Drubin <daniel.drubin@intel.com>
-> Cc: Dario Pagani <dario.pagani.146+linuxk@gmail.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: Henrik Rydberg <rydberg@bitmath.org>
-> Cc: Jiri Kosina <jikos@kernel.org>
+On Tue, Mar 16, 2021 at 01:49:18PM -0600, Rob Herring wrote:
+> Adding checks for undocumented compatible strings reveals a bunch of
+> warnings in the DT binding examples. Fix the cases which are typos, just
+> a mismatch between the schema and the example, or aren't documented at al=
+l.
+> In a couple of cases, fixing the compatible revealed some schema errors
+> which are fixed.
+>=20
+> There's a bunch of others remaining after this which have bindings, but
+> those aren't converted to schema yet.
+>=20
+> Cc: Stephen Boyd <sboyd@kernel.org>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: Thierry Reding <thierry.reding@gmail.com>
+> Cc: Sam Ravnborg <sam@ravnborg.org>
+> Cc: Vinod Koul <vkoul@kernel.org>
+> Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
 > Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> Cc: Kim Kuparinen <kimi.h.kuparinen@gmail.com>
-> Cc: "Krzysztof Wilczyński" <kw@linux.com>
-> Cc: Lee Jones <lee.jones@linaro.org>
-> Cc: linaro-mm-sig@lists.linaro.org
-> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: Pavel Machek <pavel@ucw.cz>
+> Cc: Kishon Vijay Abraham I <kishon@ti.com>
+> Cc: Sebastian Reichel <sre@kernel.org>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: linux-clk@vger.kernel.org
+> Cc: dmaengine@vger.kernel.org
+> Cc: linux-i3c@lists.infradead.org
 > Cc: linux-iio@vger.kernel.org
-> Cc: linux-input@vger.kernel.org
-> Cc: linux-media@vger.kernel.org
-> Cc: linux-stm32@st-md-mailman.stormreply.com
-> Cc: linux-usb@vger.kernel.org
-> Cc: Lopez Casado <nlopezcasad@logitech.com>
-> Cc: "L. Vinyard, Jr" <rvinyard@cs.nmsu.edu>
-> Cc: Masaki Ota <masaki.ota@jp.alps.com>
-> Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-> Cc: message to <vojtech@ucw.cz>
-> Cc: Michael Haboustak <mike-@cinci.rr.com>
-> Cc: Rushikesh S Kadam <rushikesh.s.kadam@intel.com>
-> Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> Cc: Sumit Semwal <sumit.semwal@linaro.org>
-> Cc: "Uwe Kleine-König" <uwe@kleine-koenig.org>
-> Cc: Vojtech Pavlik <vojtech@suse.cz>
-> Cc: Zhang Lixu <lixu.zhang@intel.com>
+> Cc: linux-leds@vger.kernel.org
+> Cc: linux-pm@vger.kernel.org
+> Cc: linux-serial@vger.kernel.org
+> Cc: linux-spi@vger.kernel.org
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+>  .../clock/allwinner,sun4i-a10-pll1-clk.yaml   |  2 +-
+>  .../bindings/clock/milbeaut-clock.yaml        | 12 +++++----
+>  .../bindings/display/brcm,bcm2835-dsi0.yaml   |  6 -----
+>  .../bindings/display/panel/panel-dpi.yaml     |  2 +-
+>  .../devicetree/bindings/dma/qcom,gpi.yaml     |  2 +-
+>  .../devicetree/bindings/i3c/i3c.yaml          |  7 ++---
+>  .../iio/adc/brcm,iproc-static-adc.yaml        |  5 ----
+>  .../iio/gyroscope/nxp,fxas21002c.yaml         |  2 +-
+>  .../bindings/iio/light/upisemi,us5182.yaml    |  4 +--
+>  .../interrupt-controller/loongson,htpic.yaml  |  2 +-
+>  .../devicetree/bindings/leds/leds-lgm.yaml    | 26 ++++++++++++++++---
+>  .../bindings/phy/ti,phy-j721e-wiz.yaml        |  2 +-
+>  .../bindings/power/supply/cw2015_battery.yaml |  2 +-
+>  .../bindings/power/supply/power-supply.yaml   | 22 ----------------
+>  .../devicetree/bindings/serial/serial.yaml    |  2 +-
+>  .../bindings/spi/amlogic,meson-gx-spicc.yaml  |  4 +--
+>  .../bindings/spi/spi-controller.yaml          | 21 ++++++++-------
+>  .../devicetree/bindings/spi/spi-mux.yaml      |  8 ++----
+>  .../devicetree/bindings/spi/st,stm32-spi.yaml |  6 -----
+>  19 files changed, 58 insertions(+), 79 deletions(-)
 
+Acked-by: Thierry Reding <thierry.reding@gmail.com>
+
+--anrc3HovXG4wMGPC
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmBd1nIACgkQ3SOs138+
+s6EKNw/+PWZ5d3e0xEwvPK7F2Ar6aLwrAZTugsDRjLWV08E7tyOy+G9o7fONJcWa
+rYcXHvrQzc3Vr6/H0Aht9gv8h4N1ouQlIYbKkommVUDHWZlKKKKuf2UW9DeIzbLp
+jRdHkqZsdlRy/1UZGl7oXPsDf+OIYG04QbOA1+uBhqW+BdpfEC59ouN/KDCou9aq
+7JvFVhtOB5SZBDQhNNyY9VINpf7uHivV+onqfwg40fO/QTkYaHINb29gb73NBZWr
+fqP16h7YrpKw+JqePYucWisMfZ8hubG6mNypAlhnRBdaqhoPm+OwmRFfbb9hE0f4
+VtTBHT2HndgpshRyqJZegJUueeRQX5scz0IYfDdpHSvJ/+bvZ3HwmxOG3XHOIsEz
+o36PE9KKIX3b9PZqEtMrNfnC7a9KzlnGJzQ0N+ZKvNZufnlkpbGuKC2PN/gTnADi
+p6Shg4Nz6Jg67p2nWhIoFWMA1sYd1b18urfFn133K3B4R+6ox7NfDl7jDoLO//rO
+qxgp4aySmSZyGC0LnhX/rjThoVGggs/Ph99sxbDaObX1bed7K/3MVfuFHv9dgNxq
+BMerE+S1zd+XdeI1iSdQ459gqtFuWyTNTX4Atm3ddd+7P1Ay7iRMjyAjZ5MgwUvn
+NUVQ+ss5oAt4BguhMPXeKvkkJEDQWl8xSzXm5qd39jSxZ06FAL8=
+=w24T
+-----END PGP SIGNATURE-----
+
+--anrc3HovXG4wMGPC--

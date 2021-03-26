@@ -2,108 +2,99 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56DCA34A628
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Mar 2021 12:12:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6222C34A663
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Mar 2021 12:22:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229794AbhCZLMB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 26 Mar 2021 07:12:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40366 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229984AbhCZLLc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 26 Mar 2021 07:11:32 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8F44A619D3;
-        Fri, 26 Mar 2021 11:11:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1616757081;
-        bh=OMUao5vlqjQHGj4GF0Flv7CKVb6dYZSSo3IxA+44B7I=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=IK40F0mzHocFozIzuahG61IKOjMLHPyCLeBGfNxTJ9waM7XzEQnxwIhJeROR72CSy
-         u45HNsLaL/6LE7etIai2blCOmw0WLRp3/PUc0jFQTCoY4+7xF15wSyNcbetsNtHD9T
-         Gqut+kB45CCDPJFPjP+c7o9UpFhym4cQhqUTDLkc=
-Date:   Fri, 26 Mar 2021 12:11:18 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, Ye Xiang <xiang.ye@intel.com>
-Subject: Re: [PULL] 1st set of IIO and counter new device support and core
- changes for the 5.13 cycle.
-Message-ID: <YF3BVjBTwP9ZOMuY@kroah.com>
-References: <20210326104656.5d7689cb@jic23-huawei>
- <20210326105436.44e9d3de@jic23-huawei>
+        id S229604AbhCZLVl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 26 Mar 2021 07:21:41 -0400
+Received: from saturn.retrosnub.co.uk ([46.235.226.198]:44258 "EHLO
+        saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229589AbhCZLVT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 Mar 2021 07:21:19 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id 5C2409E0088;
+        Fri, 26 Mar 2021 11:21:12 +0000 (GMT)
+Date:   Fri, 26 Mar 2021 11:21:17 +0000
+From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+To:     Mugil Raj <dmugil2000@gmail.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>, dragos.bogdan@analog.com
+Subject: Re: [RFC] GSoC'21 IIO project: Mugil
+Message-ID: <20210326112056.50950fb6@jic23-huawei>
+In-Reply-To: <CAOgtOjMw0UDhOgXU=HY=+kUhVU+Ya_N=Mvxj-cA_gvj-r9HwuQ@mail.gmail.com>
+References: <CAOgtOjMw0UDhOgXU=HY=+kUhVU+Ya_N=Mvxj-cA_gvj-r9HwuQ@mail.gmail.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210326105436.44e9d3de@jic23-huawei>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Mar 26, 2021 at 10:54:36AM +0000, Jonathan Cameron wrote:
-> On Fri, 26 Mar 2021 10:46:56 +0000
-> Jonathan Cameron <jic23@kernel.org> wrote:
+On Fri, 26 Mar 2021 15:20:52 +0530
+Mugil Raj <dmugil2000@gmail.com> wrote:
+
+> Hello All,
 > 
-> > The following changes since commit c972c2d821ca3eda001a20dbe2ca0b4718838caf:
-> > 
-> >   staging: unisys: visornic: Fix repeated words in comments (2021-03-10 09:25:33 +0100)
-> > 
-> > are available in the Git repository at:
-> > 
-> >   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-5.13a
-> > 
-> > for you to fetch changes up to 1b33dfa5d5f165782a1cb18ba1350a42d5d7a579:
-> > 
-> >   Merge remote-tracking branch 'local/ib-iio-scmi-5.12-rc2-take3' into togreg (2021-03-26 10:23:46 +0000)
+> [Dragos here you have a quick intro about me if you want,
+> https://lore.kernel.org/linux-iio/CAOgtOjMwnwsiXd8rPeGBBTVkZUeabQ5nLtPts2RQDDMc-TDgKA@mail.gmail.com/]
 > 
-> Hi Greg,
+> For GSoC'21 IIO project I would like to choose  AD4695/AD4696 device
+> for implementing the driver.
+> I referred Analog Device, Inc.'s page that lists all drivers and
+> their kernel tree, but there is no existence of any compatible drivers
+> for this component.
 > 
-> There is a conflict merging this into staging/staging-next that needs
-> manual resolution.  It is is in hid-sensor-prox.c and resolution I would
-> recommend is to drop the block that is in staging-next.
+> About AD4695:
+> - 16-Channel, 16-bit 500 kSPS SAR ADC
+> - "Recommended for New Designs" phase
+> - SPI digital output
+> - Datasheet in [1]
+> - Product overview in [2]
 > 
-> @@ -220,29 +225,6 @@ static int prox_parse_report(struct platform_device *pdev,
->         dev_dbg(&pdev->dev, "prox %x:%x\n", st->prox_attr.index,
->                         st->prox_attr.report_id);
->  
-> -       /* Set Sensitivity field ids, when there is no individual modifier */
-> -       if (st->common_attributes.sensitivity.index < 0) {
-> -               sensor_hub_input_get_attribute_info(hsdev,
-> -                       HID_FEATURE_REPORT, usage_id,
-> -                       HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSITIVITY_ABS |
-> -                       HID_USAGE_SENSOR_DATA_PRESENCE,
-> -                       &st->common_attributes.sensitivity);
-> -               dev_dbg(&pdev->dev, "Sensitivity index:report %d:%d\n",
-> -                       st->common_attributes.sensitivity.index,
-> -                       st->common_attributes.sensitivity.report_id);
-> -       }
-> -       if (st->common_attributes.sensitivity.index < 0)
-> -               sensor_hub_input_get_attribute_info(hsdev,
-> -                       HID_FEATURE_REPORT, usage_id,
-> -                       HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSITIVITY_ABS |
-> -                       HID_USAGE_SENSOR_HUMAN_PRESENCE,
-> -                       &st->common_attributes.sensitivity);
-> -
-> -       st->scale_precision = hid_sensor_format_scale(
-> -                               hsdev->usage,
-> -                               &st->prox_attr,
-> -                               &st->scale_pre_decml, &st->scale_post_decml);
-> -
->         return ret;
->  }
+> Is there any other factor I should consider before choosing a component
+> to make a driver for? Do I go ahead with AD4695  in my
+> proposal? 
+
+Obviously Dragos and others may have other opinions / knowledge of this part, but
+form a quick look at the datasheet it seems like a good balance of complexity
+vs simplicity of device.  Easy to start with basic operation then work
+towards enabling some of the fancy features later :)
+
+> If yes, are there any recommendations/suggestions you'd like
+> to provide for a beginner indulging in making a kernel driver for such a
+> component?
+
+See if you can find another driver that looks fairly similar. Whist there
+check other ADI drivers to make sure it's not so similar that you should
+just add the part to some other driver.
+
+Make sure you understand how SPI works in general + how the kernel
+subsystem works.  Make a plan for which features you will implement in
+each stage.  Whilst I'm more than happy to receive really quite complex
+drivers in one go, for someone starting out it is much better to do
+it step by step.  Obviously review etc takes time, so you can be well
+into step 2 whilst step 1 is under reviews, but that's better than discovering
+there was a problem in step 1 when you are on step 10!
+
+Also once you get started, get very familiar with git and how to use
+it to keep coherent patch sets at all times. That means getting familiar
+with interactive rebasing, editing the history etc + if you like
+them the various somewhat visual tools (I'm a great fan if tig but that
+might be because a lot of the time my only connection to dev machines
+is via an ssh terminal ;).
+Those tricks make it a lot easier to update earlier parts of your work and
+just have the newer stuff carry on working.  It's a vital part of working in the
+mainline kernel as reviews / discussions can be 'slow'. I for one mostly
+catch up with outstanding review at weekends as I never find a long enough
+quiet period during the week (too many meeting :(
+
+Good luck and keep asking questions if you get stuck.
+
+Jonathan
 > 
-> Ye Xiang, if that looks wrong to you let us know.
+> Thanks,
+> Mugil
+> 
+> [1] https://www.analog.com/media/en/technical-documentation/data-sheets/ad4695_4696.pdf
+> [2] https://www.analog.com/en/products/ad4695.html#product-overview
 
-That worked for me.
-
-Note, I get the following "warning" from my scripts when trying to merge
-this:
-
- Commit: 0463e60f0870 ("iio: adis16480: fix pps mode sampling frequency math")
-	Fixes tag: Fixes: 326e2357553d3 ("iio: imu: adis16480: Add support for external clock")
-	Has these problem(s):
-	        - empty lines surround the Fixes tag
-
-I'm going to ignore this, but expect a message from the linux-next
-maintainer about this :(
-
-thanks,
-
-greg k-h

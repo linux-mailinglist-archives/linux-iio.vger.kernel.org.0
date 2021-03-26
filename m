@@ -2,162 +2,123 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 185D534A772
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Mar 2021 13:41:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49B4A34A98B
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Mar 2021 15:21:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229671AbhCZMlG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 26 Mar 2021 08:41:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56348 "EHLO
+        id S230230AbhCZOUy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 26 Mar 2021 10:20:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229839AbhCZMlD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 Mar 2021 08:41:03 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ED80C0613AA;
-        Fri, 26 Mar 2021 05:41:02 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id h13so6141790eds.5;
-        Fri, 26 Mar 2021 05:41:02 -0700 (PDT)
+        with ESMTP id S230227AbhCZOUs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 Mar 2021 10:20:48 -0400
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86325C0613AA
+        for <linux-iio@vger.kernel.org>; Fri, 26 Mar 2021 07:20:47 -0700 (PDT)
+Received: by mail-wm1-x331.google.com with SMTP id w203-20020a1c49d40000b029010c706d0642so6018666wma.0
+        for <linux-iio@vger.kernel.org>; Fri, 26 Mar 2021 07:20:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=Ai/sBaJhqrRCWGFUEsUnLWF/QfwBQ52U7SGdirULJxA=;
-        b=uCjETYGYNoXkWFnAnxrREMGnWCf4CT3WkSUcUIwelIYp/DG4PNHW59MxV0ndLkmKgw
-         L2IWwNo6EyYyTYDtD8OnYmHTc3e6jv9884w6qBn83ztCcGKzBTfT9VZi4FrsY0fAmdgD
-         ur9rC0Au9YibHKnhDtRtnuR6TmiDKHMLiKkdFQBru/Rg3CNOG0AO1xf2t/BfGdTfqqmA
-         XwvFfXkcKbOAT7hy7hseEdn4+/SVJmzCmlcRTdfpBXzf34azVckBOAtF5T9AGODNsmHi
-         JB9fYSTh7FLf8XAc67eXw0GuTEJ4SVHnGJeGbaLRFM/fngNYTBDvYjVjkIiDqEkKOz/Z
-         NJ0g==
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=6xcgNGeiKXVzTZo3oILiZykt3w8GnNqVy7yzUHjFBQQ=;
+        b=XeWeBn8WX5c+uJ8CnM+CQZtmzh/4bB4qoMOD512ejsGsAJhBMpIRE45WmKhdf2TLqx
+         MiQ6KDk6/7dK5bC7/+YYWLHrtI06Ylrvmd6twooQS+XegMtZPl4Yf+uUHzXSdofzs0cp
+         bvHUTHcKSdaDDHV+Y53fP3oLBS8LcoFCOQn4l1FbEJucpwut9t3dciREPiwQSF0ZQKKQ
+         Ee1jr+vVwrB3+iekJsvmKwpu8RuaJaotHb+gkCtGTJOoxCEV/+4RHUazLmcluVA1pSht
+         YojJg8tbVnIbRSxGQoaeSJBznKPSXq3Clwm4mlT+W4SXXom4TtpEkaUJ2pRM4TzCKw5Z
+         FVdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Ai/sBaJhqrRCWGFUEsUnLWF/QfwBQ52U7SGdirULJxA=;
-        b=PskyuHmVOQ7HEj1LDTVXQ1f6BBNHgfkTXhdCl8prHgTNxtonMOGlIHSwp2tZCSeXHB
-         bXdyGgXwkqzKkPvCDXO9FNpEA5M24TEazXVLarTHCnB7sOff0fCcXMO1YPB7rQEE0kcu
-         oi1ObVOy5AoV0S763IeokLDhDQF+SWDjRyQdaGN9YZehJNDADc8ch0fFirS/S8RG4xT9
-         mSHRFt/wSLQaXoQHNKnwD9Szs89YpTchjEd3clrg0Kr+59M2Fuh7f+rrHCTPP7L1scAk
-         dDvYzuNF/VKpc0ohE7+itMixgpjVSko4NtZhGm1kL5ZvgRTiuTo0lLpFrTxs5bQrM+fm
-         BHzA==
-X-Gm-Message-State: AOAM533MrmKCwoOhVpgX7K1zK5BOuc0VyOXlaQkLTpT8UwRc3c1KN2xT
-        KuD8J3nimkYrTTxxhky1UGI=
-X-Google-Smtp-Source: ABdhPJyBfhRplv3kSXtcQVbf9j3CtTsxKbJ2vdFf6xxPS0KZwTr0+U5i0X7OFEFWWah2Xup+2PjS6w==
-X-Received: by 2002:a05:6402:254f:: with SMTP id l15mr14885368edb.189.1616762461102;
-        Fri, 26 Mar 2021 05:41:01 -0700 (PDT)
-Received: from localhost ([62.96.65.119])
-        by smtp.gmail.com with ESMTPSA id x1sm3830371eji.8.2021.03.26.05.40.59
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=6xcgNGeiKXVzTZo3oILiZykt3w8GnNqVy7yzUHjFBQQ=;
+        b=J2cNM5MAHqo8dOQ/lIR1aBIGQsJjpwBNWlbavc/ZyfTzPketEi6vK5R3+B+Plx2FD1
+         Bv2ujO9oRLrIFq2JqG7IsE16SEn0NkKCuhSIKCrXqpNJYz0fb2OQbRxIH4cyr83kJ5Vk
+         BtpwDwMDFboxq5wYbBxAUtERxSwgUpFotjMR1PLfp5/csq3liCh7e+qnqbjzAmHFs87E
+         SfwEQjwV8agg0TkHR2XBhNJyu2uSpsgZ1mfETw2XlCPnssSkj9v0VwhlUjAN/qJ6hoyS
+         t9FjutIdkufqm/TPOb9aw5wWQh1TZ1JJEy6EC1clgWDO2rO0UFpg5Z7vC7Xy8AKpyqLR
+         99zA==
+X-Gm-Message-State: AOAM5327wnWgPA5FtuNqdaAuzEoLKj1OObnjG9aZUjNWyic/50AL/EOp
+        r0OmFseECRbEVj10uP4pyTgoLw==
+X-Google-Smtp-Source: ABdhPJzCoDvRJ0yro1yeYdy8gIdvQTImgu841Bp+OkX3kL6D2LJpK0xk7inIx+W3Fy7Q3UcDJTIu1w==
+X-Received: by 2002:a05:600c:378c:: with SMTP id o12mr13377556wmr.69.1616768446113;
+        Fri, 26 Mar 2021 07:20:46 -0700 (PDT)
+Received: from dell ([91.110.221.194])
+        by smtp.gmail.com with ESMTPSA id e8sm11125675wme.14.2021.03.26.07.20.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Mar 2021 05:40:59 -0700 (PDT)
-Date:   Fri, 26 Mar 2021 13:41:22 +0100
-From:   Thierry Reding <thierry.reding@gmail.com>
-To:     Rob Herring <robh@kernel.org>
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Stephen Boyd <sboyd@kernel.org>,
-        Maxime Ripard <mripard@kernel.org>,
-        Sam Ravnborg <sam@ravnborg.org>, Vinod Koul <vkoul@kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-clk@vger.kernel.org, dmaengine@vger.kernel.org,
-        linux-i3c@lists.infradead.org, linux-iio@vger.kernel.org,
-        linux-leds@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: Clean-up undocumented compatible strings
-Message-ID: <YF3WctL0BJON130C@orome.fritz.box>
-References: <20210316194918.3528417-1-robh@kernel.org>
+        Fri, 26 Mar 2021 07:20:45 -0700 (PDT)
+Date:   Fri, 26 Mar 2021 14:20:41 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Anssi Hannula <anssi.hannula@gmail.com>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Bruno =?iso-8859-1?Q?Pr=E9mont?= <bonbons@linux-vserver.org>,
+        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        Daniel Drubin <daniel.drubin@intel.com>,
+        Dario Pagani <dario.pagani.146+linuxk@gmail.com>,
+        dri-devel@lists.freedesktop.org,
+        Henrik Rydberg <rydberg@bitmath.org>,
+        Jiri Kosina <jikos@kernel.org>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        Kim Kuparinen <kimi.h.kuparinen@gmail.com>,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        linaro-mm-sig@lists.linaro.org,
+        linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-usb@vger.kernel.org, Lopez Casado <nlopezcasad@logitech.com>,
+        "L. Vinyard, Jr" <rvinyard@cs.nmsu.edu>,
+        Masaki Ota <masaki.ota@jp.alps.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        message to <vojtech@ucw.cz>,
+        Michael Haboustak <mike-@cinci.rr.com>,
+        Rushikesh S Kadam <rushikesh.s.kadam@intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <uwe@kleine-koenig.org>,
+        Vojtech Pavlik <vojtech@suse.cz>,
+        Zhang Lixu <lixu.zhang@intel.com>
+Subject: Re: [PATCH 00/25] Rid W=1 warnings from HID
+Message-ID: <20210326142041.GZ2916463@dell>
+References: <20210324173404.66340-1-lee.jones@linaro.org>
+ <20210326114202.3862b8c5@jic23-huawei>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="anrc3HovXG4wMGPC"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20210316194918.3528417-1-robh@kernel.org>
-User-Agent: Mutt/2.0.6 (98f8cb83) (2021-03-06)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210326114202.3862b8c5@jic23-huawei>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Fri, 26 Mar 2021, Jonathan Cameron wrote:
 
---anrc3HovXG4wMGPC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On Wed, 24 Mar 2021 17:33:39 +0000
+> Lee Jones <lee.jones@linaro.org> wrote:
+> 
+> > This set is part of a larger effort attempting to clean-up W=1
+> > kernel builds, which are currently overwhelmingly riddled with
+> > niggly little warnings.
+> 
+> Lee, it's a bit novel to cc linux-iio on the cover letter but
+> none of the actual patches..  Or least none of them reached
+> me or lore.kernel.org
 
-On Tue, Mar 16, 2021 at 01:49:18PM -0600, Rob Herring wrote:
-> Adding checks for undocumented compatible strings reveals a bunch of
-> warnings in the DT binding examples. Fix the cases which are typos, just
-> a mismatch between the schema and the example, or aren't documented at al=
-l.
-> In a couple of cases, fixing the compatible revealed some schema errors
-> which are fixed.
->=20
-> There's a bunch of others remaining after this which have bindings, but
-> those aren't converted to schema yet.
->=20
-> Cc: Stephen Boyd <sboyd@kernel.org>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Thierry Reding <thierry.reding@gmail.com>
-> Cc: Sam Ravnborg <sam@ravnborg.org>
-> Cc: Vinod Koul <vkoul@kernel.org>
-> Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: Pavel Machek <pavel@ucw.cz>
-> Cc: Kishon Vijay Abraham I <kishon@ti.com>
-> Cc: Sebastian Reichel <sre@kernel.org>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: linux-clk@vger.kernel.org
-> Cc: dmaengine@vger.kernel.org
-> Cc: linux-i3c@lists.infradead.org
-> Cc: linux-iio@vger.kernel.org
-> Cc: linux-leds@vger.kernel.org
-> Cc: linux-pm@vger.kernel.org
-> Cc: linux-serial@vger.kernel.org
-> Cc: linux-spi@vger.kernel.org
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
->  .../clock/allwinner,sun4i-a10-pll1-clk.yaml   |  2 +-
->  .../bindings/clock/milbeaut-clock.yaml        | 12 +++++----
->  .../bindings/display/brcm,bcm2835-dsi0.yaml   |  6 -----
->  .../bindings/display/panel/panel-dpi.yaml     |  2 +-
->  .../devicetree/bindings/dma/qcom,gpi.yaml     |  2 +-
->  .../devicetree/bindings/i3c/i3c.yaml          |  7 ++---
->  .../iio/adc/brcm,iproc-static-adc.yaml        |  5 ----
->  .../iio/gyroscope/nxp,fxas21002c.yaml         |  2 +-
->  .../bindings/iio/light/upisemi,us5182.yaml    |  4 +--
->  .../interrupt-controller/loongson,htpic.yaml  |  2 +-
->  .../devicetree/bindings/leds/leds-lgm.yaml    | 26 ++++++++++++++++---
->  .../bindings/phy/ti,phy-j721e-wiz.yaml        |  2 +-
->  .../bindings/power/supply/cw2015_battery.yaml |  2 +-
->  .../bindings/power/supply/power-supply.yaml   | 22 ----------------
->  .../devicetree/bindings/serial/serial.yaml    |  2 +-
->  .../bindings/spi/amlogic,meson-gx-spicc.yaml  |  4 +--
->  .../bindings/spi/spi-controller.yaml          | 21 ++++++++-------
->  .../devicetree/bindings/spi/spi-mux.yaml      |  8 ++----
->  .../devicetree/bindings/spi/st,stm32-spi.yaml |  6 -----
->  19 files changed, 58 insertions(+), 79 deletions(-)
+Looks like only 18 of the 25 actually made it onto the list.
 
-Acked-by: Thierry Reding <thierry.reding@gmail.com>
+How odd!
 
---anrc3HovXG4wMGPC
-Content-Type: application/pgp-signature; name="signature.asc"
+Hold on, I'll submit a [RESEND].
 
------BEGIN PGP SIGNATURE-----
+> I'm sure they are great :)
 
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmBd1nIACgkQ3SOs138+
-s6EKNw/+PWZ5d3e0xEwvPK7F2Ar6aLwrAZTugsDRjLWV08E7tyOy+G9o7fONJcWa
-rYcXHvrQzc3Vr6/H0Aht9gv8h4N1ouQlIYbKkommVUDHWZlKKKKuf2UW9DeIzbLp
-jRdHkqZsdlRy/1UZGl7oXPsDf+OIYG04QbOA1+uBhqW+BdpfEC59ouN/KDCou9aq
-7JvFVhtOB5SZBDQhNNyY9VINpf7uHivV+onqfwg40fO/QTkYaHINb29gb73NBZWr
-fqP16h7YrpKw+JqePYucWisMfZ8hubG6mNypAlhnRBdaqhoPm+OwmRFfbb9hE0f4
-VtTBHT2HndgpshRyqJZegJUueeRQX5scz0IYfDdpHSvJ/+bvZ3HwmxOG3XHOIsEz
-o36PE9KKIX3b9PZqEtMrNfnC7a9KzlnGJzQ0N+ZKvNZufnlkpbGuKC2PN/gTnADi
-p6Shg4Nz6Jg67p2nWhIoFWMA1sYd1b18urfFn133K3B4R+6ox7NfDl7jDoLO//rO
-qxgp4aySmSZyGC0LnhX/rjThoVGggs/Ph99sxbDaObX1bed7K/3MVfuFHv9dgNxq
-BMerE+S1zd+XdeI1iSdQ459gqtFuWyTNTX4Atm3ddd+7P1Ay7iRMjyAjZ5MgwUvn
-NUVQ+ss5oAt4BguhMPXeKvkkJEDQWl8xSzXm5qd39jSxZ06FAL8=
-=w24T
------END PGP SIGNATURE-----
+Naturally!
 
---anrc3HovXG4wMGPC--
+-- 
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog

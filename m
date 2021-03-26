@@ -2,100 +2,84 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D4E0034A61F
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Mar 2021 12:08:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D9D234A622
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Mar 2021 12:11:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229794AbhCZLIJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 26 Mar 2021 07:08:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36332 "EHLO
+        id S229528AbhCZLKv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 26 Mar 2021 07:10:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229463AbhCZLH6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 Mar 2021 07:07:58 -0400
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 780AFC0613AA
-        for <linux-iio@vger.kernel.org>; Fri, 26 Mar 2021 04:07:58 -0700 (PDT)
-Received: by mail-pj1-x102a.google.com with SMTP id x21-20020a17090a5315b029012c4a622e4aso1555979pjh.2
-        for <linux-iio@vger.kernel.org>; Fri, 26 Mar 2021 04:07:58 -0700 (PDT)
+        with ESMTP id S229463AbhCZLKV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 Mar 2021 07:10:21 -0400
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F208C0613AA
+        for <linux-iio@vger.kernel.org>; Fri, 26 Mar 2021 04:10:21 -0700 (PDT)
+Received: by mail-pg1-x52e.google.com with SMTP id r17so4416352pgi.0
+        for <linux-iio@vger.kernel.org>; Fri, 26 Mar 2021 04:10:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=q/OwgrLHB0R3WT7/McUUo5IStVQyg1I1zxsyK5Hop9w=;
-        b=Bg5iSMvWg2QCAi8NBUvUN8YOgwSUNSpZUyLQu8m8uIRD5xlDYtWLCKiwSr7NXP0huh
-         Ubt6K2v8oHdjdu7R6gLEg5782KFdcBeymeoreoy1JKbqO8WrKGqOFyK+VVCTsUvrV33g
-         WZC6SoSUoW8TW1rwGgDsPyv7BAiK7sNwNBlM6qvaep+yoy/pqz5Bz8TeqGekq1bVxyqC
-         Pn96HyV7u4u+/lwNHx96lJ0CqnyL/OvPaIHK0d8Gk4FXoxK/jD3fu7cA0ZHEtAycHgVv
-         w+ELdRn7bWp42OCfKlDxUHzw8l9KatbafZFdqzadvSrhZ3AG8Elhn10YOb7Zub2w3Gnm
-         WHAw==
+        bh=+ESkiuzFdHr5x3dfBhpjsPkUNut5fZ7p7Th9LXZWJ8o=;
+        b=D+JIORhDGQLzPhmLrsDREnMN2ksMrspCrE0CByTFKcU56lAf8vNDzgkRDRnsJIHMRE
+         pV80s5Oe/tapIlLEwj/3PkVMfdGbpAcGc6QS8CT74jp92BGDlnxmUinMjGXC2YU/82DM
+         BT/6Qr1K/R0VnzqjX/IVO9j+cibltEg8KNNsfDch7KazunXLMIoH3EPTLA7INXW6ghib
+         A7oNsHEvULNgdVL+QeuWasUMLSRA4rcXq9k/WpTTrtfOE6QueezppGjMkfdyL9IjOkmi
+         BOzPmobeAeh1OrID/iCLdMBIuwe3foMjipac4FFJ9IdNY9x4a8BnFCo59H0FlVPmqnE9
+         hNJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=q/OwgrLHB0R3WT7/McUUo5IStVQyg1I1zxsyK5Hop9w=;
-        b=lXFoxn8SdgpYNUK94k/BJaFbVj516YYpylYr5c+tk2Qmyx2Gu7xQdHLuUykbYeGjnr
-         sBwjyUMdZ0Gr5PfHIRJ6tCgcO67qBH+mHSw+lpRa9ocWDduvYngj9UnliJXyhO7LwxHv
-         YJSlZcOXU8PZZOWXvAaXzP4/qJcKGYsczeTrk1tB+y3iXaG1DHNc8Mw5RpAdQlVcbgtu
-         JuJAsnMZU8C5KsHwrWdfvQDh4iNpBR4aC2OEEIYEhYsIvIRErqevf3Pyw+Z/lqism7+q
-         VBLBYGXdLPjdAg0RjOlrLfczuNmGGL+Y5Ny11nqXgpjI9NqM71KD+4Ol0SZ/4LdvXpbM
-         163w==
-X-Gm-Message-State: AOAM533vuc44SDndpCR7gqTAKu3cDcVP6/RY3tBxEQErH8VAdFEq7RFj
-        b/s24PBi3AZMHjVXTVof0GZ6g1CY6py3SPxH41U=
-X-Google-Smtp-Source: ABdhPJxPIq3WZikgO8QgE9OusAY8HDCfsVw/VyM1w7aqkr52e1xh/XOpOh/LhSp24QrQSZEThowX/oapu/KfQcNpX9k=
-X-Received: by 2002:a17:902:ee02:b029:e6:5397:d79c with SMTP id
- z2-20020a170902ee02b02900e65397d79cmr14734470plb.21.1616756877990; Fri, 26
- Mar 2021 04:07:57 -0700 (PDT)
+        bh=+ESkiuzFdHr5x3dfBhpjsPkUNut5fZ7p7Th9LXZWJ8o=;
+        b=mSYN34Bqne4Cl83jAxndRkQsXg8F63odDvSZ0HoMwHhTw/t4kmhPLm2zG8lmsASf9Z
+         EH4B9+WsPsybpukoOpF1dNjHipnpVpUjqNCvKj+mywUirwtBqHPvJsxAI3T4cOWfu8+q
+         h94nT4zgyfbHibaZ9gFrRnIiBycQjz42a1tI4MVUelE5ADRWJyh4+Wys2Hn5tuyWrmFG
+         KBX9z1DTrKSEXdjBr5MRMEaW09aWCMk4y/lvCs+4L2GAkk3o5TORsu1f5vLwu38YzqaE
+         OKccaZzlf+D7P3wH96Nij8TaYCtoG39i+uvfpEhQXoO/zIltGlM+yFM6MUTHzfwSJeV5
+         Y4fw==
+X-Gm-Message-State: AOAM531dP4UrmKvkEg8Dx3DjzsrXeLAGlwite78tqyY8DNUBnS3xRVVf
+        gzGIxD45C1NnE/EVKyptiZMI/7WbrAsEBWr/gVN+NCdBIndagA==
+X-Google-Smtp-Source: ABdhPJziPgD7BhVov+3EP5nlnL2c6Gq4njLWLdCs3aCV7GIDXii0JZCQ5XvmQfMST1xjaqS5duEisCkovegP8+pts4E=
+X-Received: by 2002:a65:4c08:: with SMTP id u8mr11440240pgq.203.1616757020665;
+ Fri, 26 Mar 2021 04:10:20 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAOgtOjMw0UDhOgXU=HY=+kUhVU+Ya_N=Mvxj-cA_gvj-r9HwuQ@mail.gmail.com>
-In-Reply-To: <CAOgtOjMw0UDhOgXU=HY=+kUhVU+Ya_N=Mvxj-cA_gvj-r9HwuQ@mail.gmail.com>
+References: <20210325191855.5bfdf0e3@jic23-huawei>
+In-Reply-To: <20210325191855.5bfdf0e3@jic23-huawei>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 26 Mar 2021 13:07:42 +0200
-Message-ID: <CAHp75VcP8CbJ7w-9LjAvg4scKVNtMaMfqzS7umtXhWVnVavmwQ@mail.gmail.com>
-Subject: Re: [RFC] GSoC'21 IIO project: Mugil
-To:     Mugil Raj <dmugil2000@gmail.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        "Bogdan, Dragos" <dragos.bogdan@analog.com>
+Date:   Fri, 26 Mar 2021 13:10:04 +0200
+Message-ID: <CAHp75VcEEx8GOnBEV=U1sYAaSokpwYQBR1uA1=XQHRaza3YrmQ@mail.gmail.com>
+Subject: Re: iio togreg branch rebase.
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio <linux-iio@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Mar 26, 2021 at 11:53 AM Mugil Raj <dmugil2000@gmail.com> wrote:
+On Thu, Mar 25, 2021 at 9:20 PM Jonathan Cameron <jic23@kernel.org> wrote:
 >
-> Hello All,
+> Hi All,
 >
-> [Dragos here you have a quick intro about me if you want,
-> https://lore.kernel.org/linux-iio/CAOgtOjMwnwsiXd8rPeGBBTVkZUeabQ5nLtPts2RQDDMc-TDgKA@mail.gmail.com/]
+> Unfortunately the mess I made of building the immutable branch earlier
+> in this cycle to deal with the SCMI driver meant I'd missed some
+> fixes tags that needed updating.
 >
-> For GSoC'21 IIO project I would like to choose  AD4695/AD4696 device
-> for implementing the driver.
-> I referred Analog Device, Inc.'s page that lists all drivers and
-> their kernel tree, but there is no existence of any compatible drivers
-> for this component.
+> Anyhow, upshot is I only realised during last minute tests before
+> a pull request.   Had to rebase to fix, so apologies to anyone who
+> happened to be basing their trees on IIO.
 >
-> About AD4695:
-> - 16-Channel, 16-bit 500 kSPS SAR ADC
-> - "Recommended for New Designs" phase
-> - SPI digital output
-> - Datasheet in [1]
-> - Product overview in [2]
+> No actual code changes, but the history will be different.
 >
-> Is there any other factor I should consider before choosing a component
-> to make a driver for?
+> I need to redo the SCMI IB merge on top, but for now the togreg
+> branch should be good again.
 
-I would consider the "popularity" of the component, e.g. how many
-questions on SO or similar forums about the component, how many
-(broken, ugly, etc) drivers are floating around.
+To make less impact I use --rebase-merges option for `git rebase
+--interactive ...`, so I can save as much history as possible in this
+case.
 
-> Do I go ahead with AD4695  in my
-> proposal? If yes, are there any recommendations/suggestions you'd like
-> to provide for a beginner indulging in making a kernel driver for such a
-> component?
->
-> Thanks,
-> Mugil
->
-> [1] https://www.analog.com/media/en/technical-documentation/data-sheets/ad4695_4696.pdf
-> [2] https://www.analog.com/en/products/ad4695.html#product-overview
+> It's likely any fixes in flight for stuff this cycle will need
+> their tags updating, but hopefully I'll spot them this time!
 
 
 

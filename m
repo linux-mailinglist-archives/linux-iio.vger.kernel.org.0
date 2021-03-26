@@ -2,105 +2,203 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E50F334A9F1
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Mar 2021 15:37:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A1F234AE88
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Mar 2021 19:27:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229871AbhCZOft (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 26 Mar 2021 10:35:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52774 "EHLO
+        id S230223AbhCZS1U (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 26 Mar 2021 14:27:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230374AbhCZOf1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 Mar 2021 10:35:27 -0400
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28647C0613B5
-        for <linux-iio@vger.kernel.org>; Fri, 26 Mar 2021 07:35:27 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id x7so5843392wrw.10
-        for <linux-iio@vger.kernel.org>; Fri, 26 Mar 2021 07:35:27 -0700 (PDT)
+        with ESMTP id S230198AbhCZS1U (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 Mar 2021 14:27:20 -0400
+Received: from mail-il1-x130.google.com (mail-il1-x130.google.com [IPv6:2607:f8b0:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CF77C0613AA
+        for <linux-iio@vger.kernel.org>; Fri, 26 Mar 2021 11:27:20 -0700 (PDT)
+Received: by mail-il1-x130.google.com with SMTP id d10so5808654ils.5
+        for <linux-iio@vger.kernel.org>; Fri, 26 Mar 2021 11:27:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=cQiBvBGnEPCfXvDLlcXYmYRETtwubP2zncCLn7n+qro=;
-        b=I00rzJ2Pb7xw7qyx/Ux/iw5avL4Qa+ePqFm2O47i8SPa2MwvByhdllikoreR5RZPq5
-         gmf29+BchuESCtjhbW500HI1pMhjDYSqXRz0zpDsl0VWtvfTtm+yyvYEQLZq7ygzrLax
-         uhk3PwjegUKYtD9HfqGHoLz2N1l+lBtd/82MXC7T39KAink0dpxWK8q0V+o75Bz6ijTg
-         VQELl51GdcI6SVg266nyjrsOigDblcjUYU/UG48jNjSZGpYeMgUzogjETeYNI8OXS9ws
-         bzBYIx32n/T5T2bFM/Cb5T+T45cBCLIOP22bxe37CEx/vLAW5+ETfsOQhYNDt5YYlW+o
-         duEg==
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=hwvHT1vxmXiCrTOzPU3exgwc23FADjBCZW+3xtAZlv0=;
+        b=H5Xul7h43adFkJcEOlcs677pDclxyGp/Ga6QKPPbjnKZPANQcFzayafpAk4vp9AJQH
+         F9h841jN0YgrOV4eJpq2Ee1Q/fYBwC+SxIHJZrLURJ8jIBz/JxZw2uxbGfO8DZvKJ6cm
+         zKNhYxPgUHvHoPNz5VUwF+/YB/cK/ETQ72D9k=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=cQiBvBGnEPCfXvDLlcXYmYRETtwubP2zncCLn7n+qro=;
-        b=oW9xrHUNxP7qUSsA72U1Bw/3o1/cgPukdNzp4ABgy311r7vAEwlKG1xyMNNol6r6OP
-         zLxB3tuaZJZ72M3eMGC/1fkvMoD6NYvP3SGNrLUDtCIct1/gNLp660EXz2e3fIRkCkZs
-         gvlGFmVVvP9wzkbUtES89ER7/+0YreS0P6Vr9kCAe946tOZFTf+E8BTZTlYYWWGhMwez
-         N6NRqm+LhuGmnk4s/CCurue8GtnyCDGwDIiyFX6JTPsMSC/k4y8N4sOTKSwoUe+wgQvS
-         1TlLpQBksuNCg44lghGejAHM9BcQdwPjJY5e3jp2QTdaJn5HmlTeTXWg7NIiIb0FMPnq
-         lEtw==
-X-Gm-Message-State: AOAM533taG6PKWiIdwkgozJJtSvvKaWIk/OIMFS4MVPRCE1c50zjJkAV
-        7B5ZTm022OvzwRO2Y25k4Ui9Fg==
-X-Google-Smtp-Source: ABdhPJxVQH9E7yz/g9mCKCmuf6kL2CneZmZwGC42RiuDWq3ME4fXeUoxutDqT538V/wUc8tO54qLtA==
-X-Received: by 2002:adf:e34f:: with SMTP id n15mr14838333wrj.224.1616769325875;
-        Fri, 26 Mar 2021 07:35:25 -0700 (PDT)
-Received: from dell.default ([91.110.221.194])
-        by smtp.gmail.com with ESMTPSA id j26sm12878225wrh.57.2021.03.26.07.35.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Mar 2021 07:35:25 -0700 (PDT)
-From:   Lee Jones <lee.jones@linaro.org>
-To:     lee.jones@linaro.org
-Cc:     linux-kernel@vger.kernel.org, Jiri Kosina <jikos@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        linux-input@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: [PATCH 23/25] HID: hid-sensor-hub: Move 'hsdev' description to correct struct definition
-Date:   Fri, 26 Mar 2021 14:34:56 +0000
-Message-Id: <20210326143458.508959-25-lee.jones@linaro.org>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210326143458.508959-1-lee.jones@linaro.org>
-References: <20210326143458.508959-1-lee.jones@linaro.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=hwvHT1vxmXiCrTOzPU3exgwc23FADjBCZW+3xtAZlv0=;
+        b=WKyuOBNJh9fioTfqtU6CDAi6Y471GO2Mou3TlG9nhs8itTvyNp1mpUxyjavAgxPV8R
+         LOLGTH9lg0sh3Y4fOxKnP2seWaflp2J1WeftwfzmK5fPvZJh8Y78ZAx7PmVCKUOm3roc
+         1JmUTWzO5JQbfOgLyPM0iySr7L5wbmRJKB9S6lcaSmGa8wLgH+QTotAnNdDXGhEq8tzB
+         9ZIiYOFwF6vR2IKxYu4GHOzWeoNx49DVesCV+7sBVoY6hNx7F3OigCTbLbz8hv8oOysP
+         JtuUyHWhC4wINhcEFPtIxjxNUQUUpR+85ICwdPdlP5HLABkKikYvTsQGNHaC6ZvFUDxi
+         DcCQ==
+X-Gm-Message-State: AOAM5317lOA+f5MDyrv2hxDJ61D2+hvN/4xeOpcMVuymIyHeVngQtOPS
+        8Tobm5VmPnR+1tMUzwY3aA4SURrFThlDdjzZfJ173g==
+X-Google-Smtp-Source: ABdhPJxqlQahwkFX34rcARrE9iXZo/UliHi8MpQXJhF+9KyOQzDW2Km43DbGx2qLsKNy2F46qMVrFoiDFCfWLczrh7o=
+X-Received: by 2002:a05:6e02:1b86:: with SMTP id h6mr10967395ili.145.1616783239583;
+ Fri, 26 Mar 2021 11:27:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210322073220.1637117-1-gwendal@chromium.org>
+ <20210322073220.1637117-3-gwendal@chromium.org> <CA+U=DsqvwOMxXt_05WnmBDccJ4S=rMoNajM8Dr3u58uek4jE4w@mail.gmail.com>
+In-Reply-To: <CA+U=DsqvwOMxXt_05WnmBDccJ4S=rMoNajM8Dr3u58uek4jE4w@mail.gmail.com>
+From:   Gwendal Grignou <gwendal@chromium.org>
+Date:   Fri, 26 Mar 2021 11:27:07 -0700
+Message-ID: <CAPUE2uvYEoy+QarZa8UeN1CgszHJz+4mFCGpL4oa8LZ6P1NXGg@mail.gmail.com>
+Subject: Re: [PATCH v6 2/2] iio: sx9310: Support ACPI properties
+To:     Alexandru Ardelean <ardeleanalex@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Daniel Campello <campello@chromium.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Fixes the following W=1 kernel build warning(s):
+On Mon, Mar 22, 2021 at 2:54 AM Alexandru Ardelean
+<ardeleanalex@gmail.com> wrote:
+>
+> On Mon, Mar 22, 2021 at 9:33 AM Gwendal Grignou <gwendal@chromium.org> wrote:
+> >
+> > Use device_property_read_uXX to support both device tree and ACPI
+> > bindings when reading the properties we need to configure the SAR
+> > sensor.
+> >
+> > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > ---
+> >  Changes in v6:
+> >  Use proper function to gather the number of elements in an array.
+> >
+> >  Changes in v5:
+> >  Split in 2 patches, one for fixing access to propery array, the other
+> >  to support ACPI.
+> >
+> >  drivers/iio/proximity/sx9310.c | 26 +++++++++++---------------
+> >  1 file changed, 11 insertions(+), 15 deletions(-)
+> >
+> > diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
+> > index 289c76bb3b024..3817a5714aab3 100644
+> > --- a/drivers/iio/proximity/sx9310.c
+> > +++ b/drivers/iio/proximity/sx9310.c
+> > @@ -20,6 +20,7 @@
+> >  #include <linux/mod_devicetable.h>
+> >  #include <linux/module.h>
+> >  #include <linux/pm.h>
+> > +#include <linux/property.h>
+> >  #include <linux/regmap.h>
+> >  #include <linux/regulator/consumer.h>
+> >  #include <linux/slab.h>
+> > @@ -1213,10 +1214,9 @@ static int sx9310_init_compensation(struct iio_dev *indio_dev)
+> >  }
+> >
+> >  static const struct sx9310_reg_default *
+> > -sx9310_get_default_reg(struct sx9310_data *data, int idx,
+> > +sx9310_get_default_reg(struct device *dev, int idx,
+> >                        struct sx9310_reg_default *reg_def)
+> >  {
+> > -       const struct device_node *np = data->client->dev.of_node;
+>
+> There may be an issue with this.
+> 'np' was coming from the parent device (which is an i2c device)
+>
+> So, 'data->client->dev' should be the same pointer as 'indio_dev->dev.parent'
+>
+> Now, it's a reference to 'indio_dev->dev', so it's probably going to
+> miss a lot of DT properties.
+> Maybe an alternative would be to do:
+>
+> const struct device *dev = &data->client->dev;   [1]
+>
+> Or instead of pass '&data->client->dev' or 'indio_dev->dev.parent'
+> when calling sx9310_get_default_reg()
+>
+> Though [1] looks good to me as well.
+Indeed, the current code does not work with device-tree bindings. The
+proposed fix solves the issue, sending v7.
 
- drivers/hid/hid-sensor-hub.c:54: warning: Function parameter or member 'hsdev' not described in 'hid_sensor_hub_callbacks_list'
-
-Cc: Jiri Kosina <jikos@kernel.org>
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Cc: linux-input@vger.kernel.org
-Cc: linux-iio@vger.kernel.org
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
----
- drivers/hid/hid-sensor-hub.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/hid/hid-sensor-hub.c b/drivers/hid/hid-sensor-hub.c
-index 36b6852f75dd5..95cf88f3bafb9 100644
---- a/drivers/hid/hid-sensor-hub.c
-+++ b/drivers/hid/hid-sensor-hub.c
-@@ -18,7 +18,6 @@
- 
- /**
-  * struct sensor_hub_data - Hold a instance data for a HID hub device
-- * @hsdev:		Stored hid instance for current hub device.
-  * @mutex:		Mutex to serialize synchronous request.
-  * @lock:		Spin lock to protect pending request structure.
-  * @dyn_callback_list:	Holds callback function
-@@ -41,6 +40,7 @@ struct sensor_hub_data {
-  * struct hid_sensor_hub_callbacks_list - Stores callback list
-  * @list:		list head.
-  * @usage_id:		usage id for a physical device.
-+ * @hsdev:		Stored hid instance for current hub device.
-  * @usage_callback:	Stores registered callback functions.
-  * @priv:		Private data for a physical device.
-  */
--- 
-2.27.0
-
+Thanks,
+Gwendal.
+>
+> >         u32 combined[SX9310_NUM_CHANNELS];
+> >         u32 start = 0, raw = 0, pos = 0;
+> >         unsigned long comb_mask = 0;
+> > @@ -1224,21 +1224,17 @@ sx9310_get_default_reg(struct sx9310_data *data, int idx,
+> >         const char *res;
+> >
+> >         memcpy(reg_def, &sx9310_default_regs[idx], sizeof(*reg_def));
+> > -       if (!np)
+> > -               return reg_def;
+> > -
+> >         switch (reg_def->reg) {
+> >         case SX9310_REG_PROX_CTRL2:
+> > -               if (of_property_read_bool(np, "semtech,cs0-ground")) {
+> > +               if (device_property_read_bool(dev, "semtech,cs0-ground")) {
+> >                         reg_def->def &= ~SX9310_REG_PROX_CTRL2_SHIELDEN_MASK;
+> >                         reg_def->def |= SX9310_REG_PROX_CTRL2_SHIELDEN_GROUND;
+> >                 }
+> >
+> > -               count = of_property_count_elems_of_size(np, "semtech,combined-sensors",
+> > -                                                       sizeof(u32));
+> > +               count = device_property_count_u32(dev, "semtech,combined-sensors");
+> >                 if (count > 0 && count <= ARRAY_SIZE(combined)) {
+> > -                       ret = of_property_read_u32_array(np, "semtech,combined-sensors",
+> > -                                                        combined, count);
+> > +                       ret = device_property_read_u32_array(dev, "semtech,combined-sensors",
+> > +                                                            combined, count);
+> >                         if (ret)
+> >                                 break;
+> >                 } else {
+> > @@ -1270,7 +1266,7 @@ sx9310_get_default_reg(struct sx9310_data *data, int idx,
+> >
+> >                 break;
+> >         case SX9310_REG_PROX_CTRL4:
+> > -               ret = of_property_read_string(np, "semtech,resolution", &res);
+> > +               ret = device_property_read_string(dev, "semtech,resolution", &res);
+> >                 if (ret)
+> >                         break;
+> >
+> > @@ -1294,7 +1290,7 @@ sx9310_get_default_reg(struct sx9310_data *data, int idx,
+> >
+> >                 break;
+> >         case SX9310_REG_PROX_CTRL5:
+> > -               ret = of_property_read_u32(np, "semtech,startup-sensor", &start);
+> > +               ret = device_property_read_u32(dev, "semtech,startup-sensor", &start);
+> >                 if (ret) {
+> >                         start = FIELD_GET(SX9310_REG_PROX_CTRL5_STARTUPSENS_MASK,
+> >                                           reg_def->def);
+> > @@ -1304,7 +1300,7 @@ sx9310_get_default_reg(struct sx9310_data *data, int idx,
+> >                 reg_def->def |= FIELD_PREP(SX9310_REG_PROX_CTRL5_STARTUPSENS_MASK,
+> >                                            start);
+> >
+> > -               ret = of_property_read_u32(np, "semtech,proxraw-strength", &raw);
+> > +               ret = device_property_read_u32(dev, "semtech,proxraw-strength", &raw);
+> >                 if (ret) {
+> >                         raw = FIELD_GET(SX9310_REG_PROX_CTRL5_RAWFILT_MASK,
+> >                                         reg_def->def);
+> > @@ -1317,7 +1313,7 @@ sx9310_get_default_reg(struct sx9310_data *data, int idx,
+> >                                            raw);
+> >                 break;
+> >         case SX9310_REG_PROX_CTRL7:
+> > -               ret = of_property_read_u32(np, "semtech,avg-pos-strength", &pos);
+> > +               ret = device_property_read_u32(dev, "semtech,avg-pos-strength", &pos);
+> >                 if (ret)
+> >                         break;
+> >
+> > @@ -1353,7 +1349,7 @@ static int sx9310_init_device(struct iio_dev *indio_dev)
+> >
+> >         /* Program some sane defaults. */
+> >         for (i = 0; i < ARRAY_SIZE(sx9310_default_regs); i++) {
+> > -               initval = sx9310_get_default_reg(data, i, &tmp);
+> > +               initval = sx9310_get_default_reg(&indio_dev->dev, i, &tmp);
+> >                 ret = regmap_write(data->regmap, initval->reg, initval->def);
+> >                 if (ret)
+> >                         return ret;
+> > --
+> > 2.31.0.291.g576ba9dcdaf-goog
+> >

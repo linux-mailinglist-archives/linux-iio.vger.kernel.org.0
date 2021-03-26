@@ -2,89 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24531349EF5
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Mar 2021 02:47:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CF2A34A4E9
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Mar 2021 10:51:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230137AbhCZBqn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 25 Mar 2021 21:46:43 -0400
-Received: from mail-il1-f173.google.com ([209.85.166.173]:43931 "EHLO
-        mail-il1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230324AbhCZBqT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 25 Mar 2021 21:46:19 -0400
-Received: by mail-il1-f173.google.com with SMTP id d2so3780209ilm.10;
-        Thu, 25 Mar 2021 18:46:18 -0700 (PDT)
+        id S229753AbhCZJvS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 26 Mar 2021 05:51:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47908 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230056AbhCZJvF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 Mar 2021 05:51:05 -0400
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D71E4C0613AA
+        for <linux-iio@vger.kernel.org>; Fri, 26 Mar 2021 02:51:04 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id bx7so5561889edb.12
+        for <linux-iio@vger.kernel.org>; Fri, 26 Mar 2021 02:51:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=wZPpf9llPyuTQAfH2IdoRQHFkEp599p5e0afGH+gDpM=;
+        b=WGl0zGHug3WDu1yHqdYVz2+yt6FgWgleIWxvBgCqaAh4/9sCIaiC5UlPMmBlxvnzTw
+         hj1KLnF8uajofzjlI2YGLoMu0oDK5Dzt0xXUDObAjZGQU1/WVfbXXPV1Qhk+H66/u2BP
+         Hzi9cplij4ElAsdfhLLm/LktZmZp6KTZd1B2CV6U7IoyFNH4jQuvzWolScB3H9k8AF/R
+         Y/Wcs78BpHM+jUB4wUm+h2NOFEbaClBhmPkqQvhwxXvCTaP3Ff1cqCTQ3zbaPQj/+RY+
+         6gJfNUk6J6z1BcMtDsDMSk4lslCtTs8nWgpnB12xdvJiHn384/qAo20D9TKl6OFDTLoO
+         ISVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=r8oIhicR0M0rWsVThiNvSmTLmYajZwzOVB1v/JAmNUo=;
-        b=GY9jqOj5MErUBryAp2O4rMi2sXihkFhRV5lbRhaYhVsef9jQ+VLa5yJjPpOBWywwq3
-         Xt8faZ5WwPpPxYugVV2fPY5QNW6ASO0CKtxohpZ3ZdtSFsKoBn6VCQHRgC9NEQB5DA13
-         DwQf3xXIYcVR8olqQIebe3HVBmaqPsqB2akzDZenxnjdMOeFIFtI1YMU/gZ4ZPNJUEI3
-         vJn8rSw+/jo7EQ6i+IMdddH5JvUimnwYXl0GR0BTh69kygwEsVcJXT+ohwXRf3N68mXG
-         mKfVgYNz34SAqsY76bvAl+kRyhAchKZHxnUDptTwHvHCO360Hsttdl6O8GXhojOfbdZ2
-         XY3g==
-X-Gm-Message-State: AOAM530qn+yn8bqLwSfwFZD5Yp81OwZj2uS/JzeXPws8QqMgZ3wr6z0c
-        JAIsB4StK3Jayc9IDWRyTQ==
-X-Google-Smtp-Source: ABdhPJwPChqbBJ77wIDn5W+k0ERwri8ICIG3Ysr443SmIFXqsQ/x1s7q28o5ZtNwCs7WuCdCIH0oGw==
-X-Received: by 2002:a05:6e02:1143:: with SMTP id o3mr8643517ill.104.1616723178197;
-        Thu, 25 Mar 2021 18:46:18 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.253])
-        by smtp.gmail.com with ESMTPSA id f15sm3616031ilj.24.2021.03.25.18.46.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Mar 2021 18:46:17 -0700 (PDT)
-Received: (nullmailer pid 2154103 invoked by uid 1000);
-        Fri, 26 Mar 2021 01:46:13 -0000
-Date:   Thu, 25 Mar 2021 19:46:13 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Seiya Wang <seiya.wang@mediatek.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
-        linux-kernel@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
-        linux-watchdog@vger.kernel.org,
-        Jonathan Cameron <jic23@kernel.org>,
-        Fabien Parent <fparent@baylibre.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Chunfeng Yun <chunfeng.yun@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        devicetree@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        Hsin-Yi Wang <hsinyi@chromium.org>,
-        Stanley Chu <stanley.chu@mediatek.com>,
-        srv_heupstream@mediatek.com, linux-arm-kernel@lists.infradead.org,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        linux-iio@vger.kernel.org, Sean Wang <sean.wang@mediatek.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        linux-mmc@vger.kernel.org, Wenbin Mei <wenbin.mei@mediatek.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Vinod Koul <vkoul@kernel.org>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        linux-serial@vger.kernel.org,
-        Zhiyong Tao <zhiyong.tao@mediatek.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH v2 7/8] dt-bindings: phy: fix dt_binding_check warning in
- mediatek, ufs-phy.yaml
-Message-ID: <20210326014613.GA2153687@robh.at.kernel.org>
-References: <20210319023427.16711-1-seiya.wang@mediatek.com>
- <20210319023427.16711-9-seiya.wang@mediatek.com>
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=wZPpf9llPyuTQAfH2IdoRQHFkEp599p5e0afGH+gDpM=;
+        b=UeENfccXFOENqzRlxa2jgjoP3BcdDpWHlSA2NHlUdwIWEOefybkNXzkXhsuQFtF3qk
+         IPSv0Dw54yuIFfWs1TFh0IguYxd42vHoxAW04W67EKkGTEeHxLkfvUqhv0smzNkWoayz
+         IXnlST8nrQubWKY1IbZLcqYq4w3MVc+jS8HYcdp8DImZ9vkmAIvPYCQZaEFo359VjSNh
+         Gm5YG5XFYj/9OS4VxiwOCf6WcnJfpngfiG73MA78Mq8Xa2JD+Mk1AlW8nmdYOv0P8FOl
+         HwuAjFPfsqnlXM7huDKjnBNJ96msc5ipo06GzRdxvxRqfP/FTXD8hP9JTJg0FIJud8Vb
+         Huwg==
+X-Gm-Message-State: AOAM5323OF5WHy/SKFDCCl/zOcNTBxL3BFU83WwLr0YyrYKV2hhGGbuq
+        bDKKzbwjQi3CIGZLH28T+L27I7VTsuU6xGMeyPax56+Fot9j6A==
+X-Google-Smtp-Source: ABdhPJxwd+LgoQ6fLbDiI6GU1R5Y74LJ8eKn6oxhwO0e8rDavIhh6SYMa0xa/taOulT8NmeLY66VBBHBFk4dVhG4fv0=
+X-Received: by 2002:aa7:db15:: with SMTP id t21mr13919805eds.145.1616752263277;
+ Fri, 26 Mar 2021 02:51:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210319023427.16711-9-seiya.wang@mediatek.com>
+From:   Mugil Raj <dmugil2000@gmail.com>
+Date:   Fri, 26 Mar 2021 15:20:52 +0530
+Message-ID: <CAOgtOjMw0UDhOgXU=HY=+kUhVU+Ya_N=Mvxj-cA_gvj-r9HwuQ@mail.gmail.com>
+Subject: [RFC] GSoC'21 IIO project: Mugil
+To:     linux-iio <linux-iio@vger.kernel.org>, dragos.bogdan@analog.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 19 Mar 2021 10:34:26 +0800, Seiya Wang wrote:
-> This commit fixes the warning messages of make dt_binding_check from
-> newly added mediatek,mt8195-ufsphy in mediatek,ufs-phy.yaml
-> 
-> Signed-off-by: Seiya Wang <seiya.wang@mediatek.com>
-> ---
->  Documentation/devicetree/bindings/phy/mediatek,ufs-phy.yaml | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
+Hello All,
 
-Acked-by: Rob Herring <robh@kernel.org>
+[Dragos here you have a quick intro about me if you want,
+https://lore.kernel.org/linux-iio/CAOgtOjMwnwsiXd8rPeGBBTVkZUeabQ5nLtPts2RQDDMc-TDgKA@mail.gmail.com/]
+
+For GSoC'21 IIO project I would like to choose  AD4695/AD4696 device
+for implementing the driver.
+I referred Analog Device, Inc.'s page that lists all drivers and
+their kernel tree, but there is no existence of any compatible drivers
+for this component.
+
+About AD4695:
+- 16-Channel, 16-bit 500 kSPS SAR ADC
+- "Recommended for New Designs" phase
+- SPI digital output
+- Datasheet in [1]
+- Product overview in [2]
+
+Is there any other factor I should consider before choosing a component
+to make a driver for? Do I go ahead with AD4695  in my
+proposal? If yes, are there any recommendations/suggestions you'd like
+to provide for a beginner indulging in making a kernel driver for such a
+component?
+
+Thanks,
+Mugil
+
+[1] https://www.analog.com/media/en/technical-documentation/data-sheets/ad4695_4696.pdf
+[2] https://www.analog.com/en/products/ad4695.html#product-overview

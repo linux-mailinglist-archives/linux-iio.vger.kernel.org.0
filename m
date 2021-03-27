@@ -2,245 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 309EB34B151
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Mar 2021 22:29:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C658834B618
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Mar 2021 11:28:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230107AbhCZV2t (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 26 Mar 2021 17:28:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57460 "EHLO
+        id S229883AbhC0K2E (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 27 Mar 2021 06:28:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230043AbhCZV2i (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 Mar 2021 17:28:38 -0400
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F836C0613B1
-        for <linux-iio@vger.kernel.org>; Fri, 26 Mar 2021 14:28:38 -0700 (PDT)
-Received: by mail-pl1-x62d.google.com with SMTP id v23so1541369ple.9
-        for <linux-iio@vger.kernel.org>; Fri, 26 Mar 2021 14:28:38 -0700 (PDT)
+        with ESMTP id S229875AbhC0K2E (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 27 Mar 2021 06:28:04 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32269C0613B1
+        for <linux-iio@vger.kernel.org>; Sat, 27 Mar 2021 03:28:04 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id l3so6577243pfc.7
+        for <linux-iio@vger.kernel.org>; Sat, 27 Mar 2021 03:28:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=/5V8iAlwvsAzldY1s3tib/9Q19sEa+gv4KTAqeL8Na8=;
-        b=iiM1ds9oT4j/H6CFJvCKMAUT3iEPPg5pJpMR7KPd1vcYZ5+pKIWbHXmsZvbXAz9yTl
-         U0vK3sZ/J3U/SwBz2pjmVOd9CKKw7z2KtaYVOpgXOPWO2Lu7rofOHbh0B7f9gFha6oV7
-         HWrz4YsC19Fs+ki9qE9euaD9RkC16x5t+OqbY=
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=p4PGTbNdoG+HY2/qTcdV4fTRPwEOaZ+x1HHRRWYY/Hk=;
+        b=oQIKGAjuMT8O7JDf00EO9ZsTH2LXkJZY4mec4F96fChZjZfSLKaw560bMarFXmpcpp
+         TScF8LPcl8/r5UeUSJwQjA9e5a/d+B9dafkWcSYniqtujs+RPF5UIjk+LJe2t/X2cgw6
+         RVMOUaOM5dw4eIl3i/wSquWVF+Mk11MkQTG1eHWYInI+rqdZBF7BKwwO7FJZeDxEobvk
+         lm8dTwPYkPCtIZydqz1ZNNOijFG6vaZbxa3TznATnu0wQz4Uqo68I0Ct9Hre6bnjYWK8
+         6Hhl2dSVSZHb+TM/J0f+vFz4c7W9niTLwAPLhxtfh/vNTrjC63aHtuSAkntdaBS7tGMk
+         agtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=/5V8iAlwvsAzldY1s3tib/9Q19sEa+gv4KTAqeL8Na8=;
-        b=nE1KwTt7kTxfKTDGFHZ+aqNRb0e1oiPknJfWj8HQRXh0yEs+RLI+ckJDADN8ctCQAe
-         XXoMWj2KmJF6FsjSb3JRho/1LktNHwsTWVJU6H4/17HVaWcWJdVF6Z+Kt047N3nHLVDH
-         2yVfwazJqmj3lpLKmWPKVZJmZoLur4Bw8cHRH7jVhA+MT5Vgu8/yw8q6wygOJ0G+w7O+
-         q/Z/A1Ibxa8d5brOpwaDlOfbsqXDlEE/+1H+y3tQAinFVwk7WLQBKZOEnJOk6HA1/GIF
-         0PQafscIDfGiKnCQqndVmxZuvC499/+CyUSyX1509jDG64Az6Zfvbm96oC70/XvwTgkt
-         J1fg==
-X-Gm-Message-State: AOAM530+Kyc3GetQxcW6O0Qd2lAbd9G3AthIZ3DJEof7hEABUp1Vjeg4
-        ZwhxCylHJmXQTzFJAbBs5Rf/FQ==
-X-Google-Smtp-Source: ABdhPJxtk2gHlNfG4W1vgUmxbXTwVsAxnsj+gA1s8MwMGZ8oCUH7JhlegGnF2xC+fp09eoffDEgv/w==
-X-Received: by 2002:a17:902:8482:b029:e6:325b:5542 with SMTP id c2-20020a1709028482b02900e6325b5542mr17357424plo.70.1616794117587;
-        Fri, 26 Mar 2021 14:28:37 -0700 (PDT)
-Received: from localhost ([2620:15c:202:201:e071:1f4b:7e7:f3c7])
-        by smtp.gmail.com with UTF8SMTPSA id i22sm9024742pjz.56.2021.03.26.14.28.36
+        bh=p4PGTbNdoG+HY2/qTcdV4fTRPwEOaZ+x1HHRRWYY/Hk=;
+        b=rnm6gCNZAVx64L1Hak9ovrO/qtZeIg7a0O7JtdTedV8X5yrY7/1l+4MJOxVWrCS3l5
+         ovBJ/RDWYDCAq9+M+F6XAIj1+B3NC082CAWmpmqqgEQrbGTT9l88oym309GZFe5FlfTF
+         1R/JjPBSq18XAjCoCpo30AKplctHALnZ7AMOBA6dIAt/lVvGl/k3v9VgVD7rty+2cNhg
+         IYHfBVqvOYOaq+F9r5QigP/kBxLk1Il+N19PETg0iZl+vfrfcOxBK7I6HZHsJCoCA9JA
+         q9X72TiTLtvaUYAm+6XhwIzl4sZxJTOsv/yJs5x9d7/Bmg0/GasNt+7/qxV98UUiq/C/
+         g8WQ==
+X-Gm-Message-State: AOAM53000MjNWVP2wKLODRbQeytdcYWjpaMRFDetSIoGepmdBhpON6x9
+        C79wLDcfIi5IWfTtukNYPH0=
+X-Google-Smtp-Source: ABdhPJypchjfNorAkmAIHJsAkd33J6rzm/MFVq65JzIv7vBGZumy2RAg9IKMylgD7FEHSxNVG46jbw==
+X-Received: by 2002:a63:494b:: with SMTP id y11mr15688922pgk.99.1616840883435;
+        Sat, 27 Mar 2021 03:28:03 -0700 (PDT)
+Received: from ?IPv6:2409:4072:183:1c64:881a:3344:4c61:9a4b? ([2409:4072:183:1c64:881a:3344:4c61:9a4b])
+        by smtp.gmail.com with ESMTPSA id s3sm11671973pfs.185.2021.03.27.03.28.00
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 26 Mar 2021 14:28:36 -0700 (PDT)
-From:   Gwendal Grignou <gwendal@chromium.org>
-To:     Jonathan.Cameron@huawei.com, ardeleanalex@gmail.com,
-        andy.shevchenko@gmail.com, groeck@chromium.org
-Cc:     linux-iio@vger.kernel.org, stable@vger.kernel.org,
-        Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH] Revert "iio: cros_ec: unify hw fifo attributes into the core file"
-Date:   Fri, 26 Mar 2021 14:28:23 -0700
-Message-Id: <20210326212823.386611-1-gwendal@chromium.org>
-X-Mailer: git-send-email 2.31.0.291.g576ba9dcdaf-goog
+        Sat, 27 Mar 2021 03:28:02 -0700 (PDT)
+Subject: Re: [RFC] GSoC'21 IIO project: Mugil
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        "Bogdan, Dragos" <dragos.bogdan@analog.com>
+References: <CAOgtOjMw0UDhOgXU=HY=+kUhVU+Ya_N=Mvxj-cA_gvj-r9HwuQ@mail.gmail.com>
+ <CAHp75VcP8CbJ7w-9LjAvg4scKVNtMaMfqzS7umtXhWVnVavmwQ@mail.gmail.com>
+From:   Mugilraj D <dmugil2000@gmail.com>
+Message-ID: <98c35f3c-59dc-c2f9-bab5-151bfa3c5fac@gmail.com>
+Date:   Sat, 27 Mar 2021 15:57:57 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHp75VcP8CbJ7w-9LjAvg4scKVNtMaMfqzS7umtXhWVnVavmwQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This reverts commit 2e2366c2d14193d3b95bab1fb484a9377224962b.
 
-In linux 5.10, commit 2e2366c2d141 ("iio: cros_ec: unify hw fifo attributes into the core file")
-centralizes iio_buffer_set_attrs() calls at one location
-(cros_ec_sensors_core_init()) to simplify removal of that function in
-subsequent commits (commit 165aea80e2e2 ("iio: cros_ec: use devm_iio_triggered_buffer_setup_ext()")
-and commit 21232b4456ba ("iio: buffer: remove iio_buffer_set_attrs() helper")).
+On 26/03/21 4:37 pm, Andy Shevchenko wrote:
+> On Fri, Mar 26, 2021 at 11:53 AM Mugil Raj <dmugil2000@gmail.com> wrote:
+>>
+>> Hello All,
+>>
+>> [Dragos here you have a quick intro about me if you want,
+>> https://lore.kernel.org/linux-iio/CAOgtOjMwnwsiXd8rPeGBBTVkZUeabQ5nLtPts2RQDDMc-TDgKA@mail.gmail.com/]
+>>
+>> For GSoC'21 IIO project I would like to choose  AD4695/AD4696 device
+>> for implementing the driver.
+>> I referred Analog Device, Inc.'s page that lists all drivers and
+>> their kernel tree, but there is no existence of any compatible drivers
+>> for this component.
+>>
+>> About AD4695:
+>> - 16-Channel, 16-bit 500 kSPS SAR ADC
+>> - "Recommended for New Designs" phase
+>> - SPI digital output
+>> - Datasheet in [1]
+>> - Product overview in [2]
+>>
+>> Is there any other factor I should consider before choosing a component
+>> to make a driver for?
+> 
+> I would consider the "popularity" of the component, e.g. how many
+> questions on SO or similar forums about the component, how many
+> (broken, ugly, etc) drivers are floating around.
 
-However the commit is not right as it set buffer extended attributes
-at the wrong place.
+I searched about it but unable to find any device. If you 
+have any such device please suggest me.
 
-Given the subsequent commits are not in 5.10 (only 5.12 and later) and
-they are part of an overhaul that is unlikely to be back-ported in
--stable, it is safe to revert the commit.
-
-For reference, commit b2871606c9ca9 ("iio: cros: unify hw fifo attributes without API changes")
-addresses the issue for the upstream kernel.
-
-Cc: <stable@vger.kernel.org> # 5.10.y
-Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
----
- drivers/iio/accel/cros_ec_accel_legacy.c              |  2 +-
- .../iio/common/cros_ec_sensors/cros_ec_lid_angle.c    |  3 +--
- drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c  |  5 +++--
- .../iio/common/cros_ec_sensors/cros_ec_sensors_core.c | 11 +++--------
- drivers/iio/light/cros_ec_light_prox.c                |  5 +++--
- drivers/iio/pressure/cros_ec_baro.c                   |  5 +++--
- include/linux/iio/common/cros_ec_sensors_core.h       |  4 ++--
- 7 files changed, 16 insertions(+), 19 deletions(-)
-
-diff --git a/drivers/iio/accel/cros_ec_accel_legacy.c b/drivers/iio/accel/cros_ec_accel_legacy.c
-index 8f1232c38e0d7..b6f3471b62dcf 100644
---- a/drivers/iio/accel/cros_ec_accel_legacy.c
-+++ b/drivers/iio/accel/cros_ec_accel_legacy.c
-@@ -215,7 +215,7 @@ static int cros_ec_accel_legacy_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
--					cros_ec_sensors_capture, NULL, false);
-+					cros_ec_sensors_capture, NULL);
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
-index 752f59037715b..af801e203623e 100644
---- a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
-@@ -97,8 +97,7 @@ static int cros_ec_lid_angle_probe(struct platform_device *pdev)
- 	if (!indio_dev)
- 		return -ENOMEM;
- 
--	ret = cros_ec_sensors_core_init(pdev, indio_dev, false, NULL,
--					NULL, false);
-+	ret = cros_ec_sensors_core_init(pdev, indio_dev, false, NULL, NULL);
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-index dee1191de7528..d71e9064c7896 100644
---- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-@@ -236,11 +236,12 @@ static int cros_ec_sensors_probe(struct platform_device *pdev)
- 
- 	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
- 					cros_ec_sensors_capture,
--					cros_ec_sensors_push_data,
--					true);
-+					cros_ec_sensors_push_data);
- 	if (ret)
- 		return ret;
- 
-+	iio_buffer_set_attrs(indio_dev->buffer, cros_ec_sensor_fifo_attributes);
-+
- 	indio_dev->info = &ec_sensors_info;
- 	state = iio_priv(indio_dev);
- 	for (channel = state->channels, i = CROS_EC_SENSOR_X;
-diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-index e3f507771f17e..90c1a1f757b4b 100644
---- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-@@ -177,11 +177,12 @@ static ssize_t hwfifo_watermark_max_show(struct device *dev,
- 
- static IIO_DEVICE_ATTR_RO(hwfifo_watermark_max, 0);
- 
--static const struct attribute *cros_ec_sensor_fifo_attributes[] = {
-+const struct attribute *cros_ec_sensor_fifo_attributes[] = {
- 	&iio_dev_attr_hwfifo_timeout.dev_attr.attr,
- 	&iio_dev_attr_hwfifo_watermark_max.dev_attr.attr,
- 	NULL,
- };
-+EXPORT_SYMBOL_GPL(cros_ec_sensor_fifo_attributes);
- 
- int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
- 			      s16 *data,
-@@ -240,7 +241,6 @@ static void cros_ec_sensors_core_clean(void *arg)
-  *    for backward compatibility.
-  * @push_data:          function to call when cros_ec_sensorhub receives
-  *    a sample for that sensor.
-- * @has_hw_fifo:	Set true if this device has/uses a HW FIFO
-  *
-  * Return: 0 on success, -errno on failure.
-  */
-@@ -248,8 +248,7 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
- 			      struct iio_dev *indio_dev,
- 			      bool physical_device,
- 			      cros_ec_sensors_capture_t trigger_capture,
--			      cros_ec_sensorhub_push_data_cb_t push_data,
--			      bool has_hw_fifo)
-+			      cros_ec_sensorhub_push_data_cb_t push_data)
- {
- 	struct device *dev = &pdev->dev;
- 	struct cros_ec_sensors_core_state *state = iio_priv(indio_dev);
-@@ -368,10 +367,6 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
- 					NULL);
- 			if (ret)
- 				return ret;
--
--			if (has_hw_fifo)
--				iio_buffer_set_attrs(indio_dev->buffer,
--						     cros_ec_sensor_fifo_attributes);
- 		}
- 	}
- 
-diff --git a/drivers/iio/light/cros_ec_light_prox.c b/drivers/iio/light/cros_ec_light_prox.c
-index 75d6b5fcf2cc4..fed79ba27fda5 100644
---- a/drivers/iio/light/cros_ec_light_prox.c
-+++ b/drivers/iio/light/cros_ec_light_prox.c
-@@ -182,11 +182,12 @@ static int cros_ec_light_prox_probe(struct platform_device *pdev)
- 
- 	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
- 					cros_ec_sensors_capture,
--					cros_ec_sensors_push_data,
--					true);
-+					cros_ec_sensors_push_data);
- 	if (ret)
- 		return ret;
- 
-+	iio_buffer_set_attrs(indio_dev->buffer, cros_ec_sensor_fifo_attributes);
-+
- 	indio_dev->info = &cros_ec_light_prox_info;
- 	state = iio_priv(indio_dev);
- 	state->core.type = state->core.resp->info.type;
-diff --git a/drivers/iio/pressure/cros_ec_baro.c b/drivers/iio/pressure/cros_ec_baro.c
-index aa043cb9ac426..f0938b6fbba07 100644
---- a/drivers/iio/pressure/cros_ec_baro.c
-+++ b/drivers/iio/pressure/cros_ec_baro.c
-@@ -139,11 +139,12 @@ static int cros_ec_baro_probe(struct platform_device *pdev)
- 
- 	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
- 					cros_ec_sensors_capture,
--					cros_ec_sensors_push_data,
--					true);
-+					cros_ec_sensors_push_data);
- 	if (ret)
- 		return ret;
- 
-+	iio_buffer_set_attrs(indio_dev->buffer, cros_ec_sensor_fifo_attributes);
-+
- 	indio_dev->info = &cros_ec_baro_info;
- 	state = iio_priv(indio_dev);
- 	state->core.type = state->core.resp->info.type;
-diff --git a/include/linux/iio/common/cros_ec_sensors_core.h b/include/linux/iio/common/cros_ec_sensors_core.h
-index c9b80be82440f..caa8bb279a346 100644
---- a/include/linux/iio/common/cros_ec_sensors_core.h
-+++ b/include/linux/iio/common/cros_ec_sensors_core.h
-@@ -96,8 +96,7 @@ struct platform_device;
- int cros_ec_sensors_core_init(struct platform_device *pdev,
- 			      struct iio_dev *indio_dev, bool physical_device,
- 			      cros_ec_sensors_capture_t trigger_capture,
--			      cros_ec_sensorhub_push_data_cb_t push_data,
--			      bool has_hw_fifo);
-+			      cros_ec_sensorhub_push_data_cb_t push_data);
- 
- irqreturn_t cros_ec_sensors_capture(int irq, void *p);
- int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
-@@ -126,5 +125,6 @@ extern const struct dev_pm_ops cros_ec_sensors_pm_ops;
- 
- /* List of extended channel specification for all sensors. */
- extern const struct iio_chan_spec_ext_info cros_ec_sensors_ext_info[];
-+extern const struct attribute *cros_ec_sensor_fifo_attributes[];
- 
- #endif  /* __CROS_EC_SENSORS_CORE_H */
--- 
-2.31.0.291.g576ba9dcdaf-goog
-
+>> Do I go ahead with AD4695  in my
+>> proposal? If yes, are there any recommendations/suggestions you'd like
+>> to provide for a beginner indulging in making a kernel driver for such a
+>> component?
+>>
+>> Thanks,
+>> Mugil
+>>
+>> [1] https://www.analog.com/media/en/technical-documentation/data-sheets/ad4695_4696.pdf
+>> [2] https://www.analog.com/en/products/ad4695.html#product-overview
+>

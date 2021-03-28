@@ -2,138 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB25D34B860
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Mar 2021 18:05:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 71D1C34BA8C
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Mar 2021 05:38:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230114AbhC0RCW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 27 Mar 2021 13:02:22 -0400
-Received: from mail-oi1-f170.google.com ([209.85.167.170]:41475 "EHLO
-        mail-oi1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229990AbhC0RCB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 27 Mar 2021 13:02:01 -0400
-Received: by mail-oi1-f170.google.com with SMTP id z15so8993950oic.8;
-        Sat, 27 Mar 2021 10:02:00 -0700 (PDT)
+        id S230495AbhC1DhY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 27 Mar 2021 23:37:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47400 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230451AbhC1Dgq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 27 Mar 2021 23:36:46 -0400
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CAEBC0613B1
+        for <linux-iio@vger.kernel.org>; Sat, 27 Mar 2021 20:36:46 -0700 (PDT)
+Received: by mail-pf1-x436.google.com with SMTP id j25so7602878pfe.2
+        for <linux-iio@vger.kernel.org>; Sat, 27 Mar 2021 20:36:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=g55s+qGud9ob/EhXq7vN0WUXspe2A0tB4UDs0xkj+cg=;
+        b=oEbZdEBz5EveLJl9AS35lLDorko7es888fvu2VP9/WP4UTblzQYx1OfKb/P/MK03u1
+         3ISsIC0AAspY+PuSgZ2X4Ak05DbNGC/UnU8ywoddQNQxEY21fNHWY4fSPUImO3+Z2QXa
+         ArbbL0uycLSiWLmGuO7lhgPfqDgV/VcEU87oE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=ldGNUOc4SBVAB+z9wRCXO6PlOlMpMotMJHqEqZkxP0Q=;
-        b=KTidhLynN64ioxemkxCaA2vGwmBb1MyDohHczP/uqpBuA5FIIJ+VCYg4zCSbwi0VSP
-         Xa+PfUSFTr2KdNL99sYxr3wxt7P0EiL8wzV6+my9RHQqgvXxJRo255MxQ0HQxLAZgboN
-         Bd4dd6aP9Tasvt5O5CMTgVUj65mPWkPceSZ0R9ItTCNK+MzEvJ1dMWL+SVKxxgU0brlz
-         S7e9rAn/hPmakKBdhqeHSfEDovJNXQaJ4/G2+CE2C4r+9A/NzoaG5lgd8SbJMwxfj1Pz
-         Fa3s4aodMk1JOxb0RkTlQ+ZP4NOnGMJj2JKfjoB/QcoSOxmcHyPZzLbW9QvHwnCAC5cB
-         kjDw==
-X-Gm-Message-State: AOAM531O4rGD2tgIHe2CZC9tq8MXijR24X6cH6Na3t7IUhkP4f8FLFtN
-        0voWZgSae5WW0KInKizoe9BdbqYfug==
-X-Google-Smtp-Source: ABdhPJxxiEl5w7Dd7XM49OqfgN5wHD0q2gRI43tMxxKgnPf42SyfZhIxlLA6NROR/Hy1Na3KPZa6gA==
-X-Received: by 2002:a54:408a:: with SMTP id i10mr14047231oii.141.1616864520517;
-        Sat, 27 Mar 2021 10:02:00 -0700 (PDT)
-Received: from robh.at.kernel.org ([172.58.107.88])
-        by smtp.gmail.com with ESMTPSA id z14sm2511644oid.12.2021.03.27.10.01.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Mar 2021 10:01:59 -0700 (PDT)
-Received: (nullmailer pid 245995 invoked by uid 1000);
-        Sat, 27 Mar 2021 17:01:53 -0000
-Date:   Sat, 27 Mar 2021 11:01:53 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Raviteja Narayanam <raviteja.narayanam@xilinx.com>
-Cc:     jic23@kernel.org, michal.simek@xilinx.com, lars@metafoo.de,
-        pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        git@xilinx.com
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: Add ti,ina260.yaml
-Message-ID: <20210327170153.GA243988@robh.at.kernel.org>
-References: <20210322105056.30571-1-raviteja.narayanam@xilinx.com>
- <20210322105056.30571-2-raviteja.narayanam@xilinx.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=g55s+qGud9ob/EhXq7vN0WUXspe2A0tB4UDs0xkj+cg=;
+        b=t3YM66nJflibDf4yZhn0bEFV52yLaV3EU4xS8XLMFBHJ4j9WygQzyiygwYp/74GtBy
+         NY4E6iPRFAi32b9a3nx/Zipyln02WFNIFProF+D4YY/B8tuMNgmQvyTMK39ZiyKpAtf+
+         oITocuO2CiZcyWlxpc9UKbEFyRENh96Z4az3uDIOQ44ktcC1xynN77xEY6jOKSEpNIZ0
+         e+DDUqlJ9H2LbMhaaH4/7Bb/tsll9554r/nEYpxpbtzthppkvZ3mTHGmYUUlZne6xytm
+         dx97Tds7RbW/2d/ksTkwmTnFkoLOWNKVEBcpId0wCujq9DCsKhcu+2eYYxtTW31UXo5f
+         WJsQ==
+X-Gm-Message-State: AOAM530hTIZi0D2jhwLmdoojncUshBTNKqmWP2Cxa2jlC+FeSkNmZNn/
+        xkYw4WmMZ36db+S3zya2d5HJLsbnVUHyZA==
+X-Google-Smtp-Source: ABdhPJw/O7R9adXH3IH5bLakCDoptxyHNqfrJtZ8x+kxzRMv53WwcjrCUk/iyH9h9nkWxdAYi4l4jA==
+X-Received: by 2002:a63:ec50:: with SMTP id r16mr18222132pgj.451.1616902606147;
+        Sat, 27 Mar 2021 20:36:46 -0700 (PDT)
+Received: from localhost ([2620:15c:202:201:5993:d227:a897:4c2a])
+        by smtp.gmail.com with UTF8SMTPSA id gb1sm11845283pjb.21.2021.03.27.20.36.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 27 Mar 2021 20:36:45 -0700 (PDT)
+From:   Gwendal Grignou <gwendal@chromium.org>
+To:     jic23@kernel.org, lars@metafoo.de, swboyd@chromium.org,
+        campello@chromium.org, andy.shevchenko@gmail.com,
+        ardeleanalex@gmail.com
+Cc:     linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>
+Subject: [PATCH 0/2] iio: sx9310: Add debouncer-depth parameters
+Date:   Sat, 27 Mar 2021 20:36:37 -0700
+Message-Id: <20210328033639.1021599-1-gwendal@chromium.org>
+X-Mailer: git-send-email 2.31.0.291.g576ba9dcdaf-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210322105056.30571-2-raviteja.narayanam@xilinx.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Mar 22, 2021 at 04:20:55PM +0530, Raviteja Narayanam wrote:
-> Add a binding for Texas Instruments INA260 power monitor device.
-> 
-> Signed-off-by: Raviteja Narayanam <raviteja.narayanam@xilinx.com>
-> ---
->  .../bindings/iio/adc/ti,ina260.yaml           | 57 +++++++++++++++++++
->  1 file changed, 57 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ina260.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ina260.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ina260.yaml
-> new file mode 100644
-> index 000000000000..97c68188e53d
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/ti,ina260.yaml
-> @@ -0,0 +1,57 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/ti,ina260.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Texas Instruments INA260 power monitor
-> +
-> +maintainers:
-> +  - Raviteja Narayanam <raviteja.narayanam@xilinx.com>
-> +
-> +description: |
-> +  The INA260 is a digital-output, current, power and voltage monitor
-> +  with an I2C and SMBUS compatible interface with an integrated shunt
-> +  resistor. It features up to 16 programmable addresses on I2C compatible
-> +  interface. Datasheet - https://www.ti.com/lit/ds/symlink/ina260.pdf?ts=1608607288391
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - ti,ina260
-> +
-> +  reg:
-> +    description: |
-> +      The 7-bits long I2c address of the device
+Semtech SX9310 SAR sensor has a debouncer filter: only when N
+measurements are above/below the far/close threshold an event is
+sent to the host.
+By default the debouncer is set to 2 events for the close to far
+transition and 1 event (no debounce) for far to close.
+It is a balance speed of detection and false positive avoidance.
 
-Just 'maxItems: 1'
+On some chromebooks, the debouncer is set to a larger number.
 
-> +
-> +  "#io-channel-cells":
-> +    const: 1
-> +
-> +  interrupts:
-> +    description: |
-> +      IRQ line for the device
+This patch applies on top of commit 103d6ec82676 ("iio: sx9310: Support ACPI properties")
 
-That's every 'interrupts' property. Drop.
+Gwendal Grignou (2):
+  dt-bindings: iio: sx9310: Add close/far debouncer strength
+  iio: sx9310: Add debouncer-depth parameters
 
-You need to say how many: maxItems: 1
+ .../iio/proximity/semtech,sx9310.yaml         | 18 ++++++++++++++++
+ drivers/iio/proximity/sx9310.c                | 21 ++++++++++++++++++-
+ 2 files changed, 38 insertions(+), 1 deletion(-)
 
-> +
-> +  label:
-> +    description: |
-> +      A symbolic name for the device
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - "#io-channel-cells"
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    i2c {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +
-> +      ina260@40 {
-> +        compatible = "ti,ina260";
-> +        reg = <0x40>;
-> +        #io-channel-cells = <1>;
-> +      };
-> +    };
-> +...
-> -- 
-> 2.17.1
-> 
+-- 
+2.31.0.291.g576ba9dcdaf-goog
+

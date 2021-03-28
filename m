@@ -2,84 +2,103 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 373CC34BC56
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Mar 2021 14:34:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B924534BDC2
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Mar 2021 19:43:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229762AbhC1Mdm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 28 Mar 2021 08:33:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48466 "EHLO
+        id S229538AbhC1RnL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 28 Mar 2021 13:43:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230466AbhC1MdB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 Mar 2021 08:33:01 -0400
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 961A6C061762
-        for <linux-iio@vger.kernel.org>; Sun, 28 Mar 2021 05:32:53 -0700 (PDT)
-Received: by mail-pj1-x1035.google.com with SMTP id ot17-20020a17090b3b51b0290109c9ac3c34so6393817pjb.4
-        for <linux-iio@vger.kernel.org>; Sun, 28 Mar 2021 05:32:53 -0700 (PDT)
+        with ESMTP id S230144AbhC1Rmq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 Mar 2021 13:42:46 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AB6CC061756
+        for <linux-iio@vger.kernel.org>; Sun, 28 Mar 2021 10:42:46 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id j25so8388136pfe.2
+        for <linux-iio@vger.kernel.org>; Sun, 28 Mar 2021 10:42:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=xFgRAiozSuIsPnNupM1553EqM57FpMfSBpRQbSpKgqc=;
-        b=DcJnvdgNTWN0GzFGo0O7s05utPOFc1jm2TDIroRxbUjODgOPdpWmKkO/WJEf6rY4db
-         Ajibgx90GH66H9Ww7MoKRKJy2QFuXWJxBuKoUhAk1kiTrMq+Jfbtaox4cNofAPVIPFTq
-         hbyGgS9frJaSZkUUW7cOcWPfZ97VJ51NQFYbJM9/RZkzULQopgVSxtIxmOuud81eQC6M
-         +CM1vbQ7wriAH7TY5b6WKw0v7CVXTNI71pqhmGmezVwHpOb3DcOK9/alG2nZQVAWwr/t
-         LTeidy+2aqL3MVAytVSi7z1sBGe7AfxTDdX/4JiqCdPe6JXn9Y1Bw9WPghM14BlfaVcJ
-         K69w==
+        h=subject:from:to:references:message-id:date:user-agent:mime-version
+         :in-reply-to:content-language:content-transfer-encoding;
+        bh=Ye+m/OIlmTMjg+aDM6OQcZLwWdpiWjCHWPLqdTZti6w=;
+        b=m5dQPaPRfmY+Ky9LVhk0cPttFQYsJW9dAA3zBwHt/eN/SVS6czLlX2kX28Eq/b+GWu
+         ZOhBsUJe7ze4wYSF6oF9KJtbbh0itZ/p3padHoLbruzvRUkd8vna5XomryO7+d800m5B
+         jmyrLz6tlQYnHZuTZ5xdx7xAuw+uRJYOWR2eAXisnfxzrurYFfUFb5HbvWGlH3AE3Ev+
+         /MMqZ340JR7SInhkyjHZpkcQ6M7T9yeOYgsrjfdAD3AQqwkeGtCUiZPeT9AweUe4X6P1
+         ZMgKel2eDREn2ecor/F0t3tEowTVEl7na4m1BPSO9KIq93/EHkMGe3gZiUvI32sjZs/Y
+         +oJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=xFgRAiozSuIsPnNupM1553EqM57FpMfSBpRQbSpKgqc=;
-        b=ckUJvxsb2bhfeCiPc2vju8p+c1v8vukEEwig1LWq/qbnQFCGtiuJeX517sidvRx4/W
-         JRW76EnZHTRXvt69fzX0sfRT9jK586oLWFKxHfy1KDZT9BJ6NtqFcbs7i1AIJZmtzQMd
-         wHAPlDsTuBA90m906+/TiGhwk59jbKKurFy4lVscoiUSs5hWoNZE/OF4M6JpGav5s4T2
-         9FzB7l1ekR7jOoY6/gt860d+qDFE2n/ukJ1McexFt/DKmdTmHViuWqKuia+sC5Hfobne
-         whBzB7j1HE/7ltkwZN2LZg7j9YkqGwR5ViTgPR2Hhldfc5GZ8RGTfZGPLqUO575NfVvR
-         3NUQ==
-X-Gm-Message-State: AOAM531dNWl5owUKuYUmIHEgd3B7WChGKVcLQl2dQRlfP9QF2EsJbgPd
-        nPKNJQx0GpAxOZmtNHdFrolQb3elp1QLgpPOjJf45FOYIRI=
-X-Google-Smtp-Source: ABdhPJzNdEoE6mgZ9kLfhwntIzDWSBxxSSZFa0H9TFVFF8aDxTesRzRtSV8NGzqjE5bFUdlVtQ1TtPKQhOnronDGG1I=
-X-Received: by 2002:a17:90a:e454:: with SMTP id jp20mr22940003pjb.129.1616934773013;
- Sun, 28 Mar 2021 05:32:53 -0700 (PDT)
+        h=x-gm-message-state:subject:from:to:references:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Ye+m/OIlmTMjg+aDM6OQcZLwWdpiWjCHWPLqdTZti6w=;
+        b=TYLxUMqt/Mc6gHqAkaMnM+PvBAt7hC4fO53SBZIZzftK0s9eJ17hLPkd71Axdj+Yd0
+         GyYvRP8GrG+leq8+zGrx6ZiQzTagiShl2GaDgHpN3nQcwuWyRrJkTY6Y66u2IrCxRITg
+         1QxZMmr4KEBTi04LD5XBSMUdxcIM5Y8SbZQv9+h631tvE8RknWhbe0mKnbox/mWsEbND
+         2Z9co3MDg4faKtMb/B+Ijv5WFoHo34xQjOxcFAM1sgVVlC11dPUee7wVQcm/pGQFNgTM
+         nTsS3hFwKQ2bJmVfoHh8J/inFx/C/Pg0AL6gWgoXH6HIh8PspvffQtERlx6PEyYkDOL5
+         ocoA==
+X-Gm-Message-State: AOAM531XDVYhooQD6kQ1hPlO4OXPeDlCFtKhaHB+gevZJXkHB80gm6I1
+        Ddz4aItoiDkb7ZHlqh4QVffKdpBykjPMbw==
+X-Google-Smtp-Source: ABdhPJy+bIJ/cKxpPoNh3pcQwoyeNZ/05eda4Uf3+i//zjomyquRut+mKB6nYbOu8doTowP6ZD+geA==
+X-Received: by 2002:a65:43c6:: with SMTP id n6mr20651877pgp.170.1616953365429;
+        Sun, 28 Mar 2021 10:42:45 -0700 (PDT)
+Received: from ?IPv6:2409:4072:21b:917d:6a69:e0c5:1507:d785? ([2409:4072:21b:917d:6a69:e0c5:1507:d785])
+        by smtp.gmail.com with ESMTPSA id t12sm14239117pga.85.2021.03.28.10.42.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 28 Mar 2021 10:42:44 -0700 (PDT)
+Subject: Re: [RFC] GSoC'21 IIO project: Mugil
+From:   Mugilraj D <dmugil2000@gmail.com>
+To:     linux-iio <linux-iio@vger.kernel.org>, dragos.bogdan@analog.com
+References: <CAOgtOjMw0UDhOgXU=HY=+kUhVU+Ya_N=Mvxj-cA_gvj-r9HwuQ@mail.gmail.com>
+Message-ID: <6e95cf24-9b8b-dd8d-d9cd-c3302d0f7993@gmail.com>
+Date:   Sun, 28 Mar 2021 23:12:39 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20210328033639.1021599-1-gwendal@chromium.org> <20210328033639.1021599-3-gwendal@chromium.org>
-In-Reply-To: <20210328033639.1021599-3-gwendal@chromium.org>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 28 Mar 2021 15:32:36 +0300
-Message-ID: <CAHp75VcD4NC8AN1m4DoW8D_Y=n2yTFUyWt5ZSX5=Awg=yFLwNA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] iio: sx9310: Add debouncer-depth parameters
-To:     Gwendal Grignou <gwendal@chromium.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Daniel Campello <campello@chromium.org>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        linux-iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAOgtOjMw0UDhOgXU=HY=+kUhVU+Ya_N=Mvxj-cA_gvj-r9HwuQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Mar 28, 2021 at 6:36 AM Gwendal Grignou <gwendal@chromium.org> wrote:
->
-> Semtech SX9310 SAR sensor has a debouncer filter: only when N
-> measurements are above/below the far/close threshold an event is
-> sent to the host.
-> By default the debouncer is set to 2 events for the close to far
-> transition and 1 event (no debounce) for far to close.
-> It is a balance speed of detection and false positive avoidance.
->
-> On some chromebooks, the debouncer is set to a larger number.
-...
 
-> +               ret = device_property_read_u32(dev, "semtech,close-debouncer-depth", &depth);
-> +               ret = device_property_read_u32(dev, "semtech,far-debouncer-depth", &depth);
 
-Are they existing properties or new ones? To me sounds like the
-latter. In such a case you missed DT bindings update.
+On 26/03/21 3:20 pm, Mugil Raj wrote:
+> Hello All,
+> 
+> [Dragos here you have a quick intro about me if you want,
+> https://lore.kernel.org/linux-iio/CAOgtOjMwnwsiXd8rPeGBBTVkZUeabQ5nLtPts2RQDDMc-TDgKA@mail.gmail.com/]
+> 
+> For GSoC'21 IIO project I would like to choose  AD4695/AD4696 device
+> for implementing the driver.
+> I referred Analog Device, Inc.'s page that lists all drivers and
+> their kernel tree, but there is no existence of any compatible drivers
+> for this component.
+> 
+> About AD4695:
+> - 16-Channel, 16-bit 500 kSPS SAR ADC
+> - "Recommended for New Designs" phase
+> - SPI digital output
+> - Datasheet in [1]
+> - Product overview in [2]
+> 
+> Is there any other factor I should consider before choosing a component
+> to make a driver for? Do I go ahead with AD4695  in my
+> proposal? If yes, are there any recommendations/suggestions you'd like
+> to provide for a beginner indulging in making a kernel driver for such a
+> component?
+> 
 
--- 
-With Best Regards,
-Andy Shevchenko
+I would like to hear from Dragos but seems like he is busy/out of station. 
+So, if possible can any other ADI peoples comment on this?
+
+> Thanks,
+> Mugil
+> 
+> [1] https://www.analog.com/media/en/technical-documentation/data-sheets/ad4695_4696.pdf
+> [2] https://www.analog.com/en/products/ad4695.html#product-overview
+> 

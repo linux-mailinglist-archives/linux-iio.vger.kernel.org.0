@@ -2,99 +2,110 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF64A34C4BC
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Mar 2021 09:19:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61B0534C4FA
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Mar 2021 09:32:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230450AbhC2HS7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 29 Mar 2021 03:18:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34694 "EHLO
+        id S230503AbhC2HcE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 29 Mar 2021 03:32:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229711AbhC2HSo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 29 Mar 2021 03:18:44 -0400
-Received: from mail-il1-x12a.google.com (mail-il1-x12a.google.com [IPv6:2607:f8b0:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 739D9C061574;
-        Mon, 29 Mar 2021 00:18:44 -0700 (PDT)
-Received: by mail-il1-x12a.google.com with SMTP id r17so4271852ilt.0;
-        Mon, 29 Mar 2021 00:18:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ipGIX5vIwXmNlWMmQnWuyNW0ntYcVKs6pD8ajiwAnug=;
-        b=XyZL/W8VaxFDzjFLaaYW/fQo+48ztvKqEBg+KJxrYfBdVANhaJ1U3TLOtlYswRQkap
-         1lFPil6jY9ZwtJ8qKXZ0AcTcsVOpByWh2kz7E/BcqFWe7/mkw3uOMGgGnqbE0dCsugaZ
-         248C5uWfZJAcfMnGGkS1Vf/H6ARTbkOnYnNSyHOdC9TxblQ5cUj8qF0I66wSl6CBQnuh
-         e4sV05K0uGcVI0jJ5OsMxNaHBaIYDAWAd7X7i2YWm+VyIpySXjm42YueJxQDKvSOMPJn
-         yuUFAKlp2UB1qx9owUfcR4Gdt56qzzbkkfQP3LkszC879mU9WdQSFGA/loe/Klt+JCbW
-         Gx3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ipGIX5vIwXmNlWMmQnWuyNW0ntYcVKs6pD8ajiwAnug=;
-        b=GjV3cewFIio2XYL6zBd6Kh2u2gyyIfzCZQNbqlKtk/Hkri6JSEhJxbhsygld4Vl2LC
-         FTtpN8c87vitGhqvuKYSTxqojaLIQWMs5Nl3xG8FA87UNl7dqRPKcFzo1MWzmSZ2oFWL
-         2YkXDL1P9ADfAxcBwzteXIxzY6sSvZixOVRqjCSggcgriFxd1oiRFq5qL9SYJSWiM6W5
-         y9nWbqCjguVMgqoDpJ4jqlAJDlXE3IgxbTzjAAswKHqqgyJJFPX1CaPSi9coBiLvv8FO
-         MWk3xNFzKimUvRE4qzHA7+PyqiTy8H4V3rE/LLI3p6gSEw186PVwRcz6JBAc1guGrX5P
-         8cZQ==
-X-Gm-Message-State: AOAM533a3/tLo54Vp/JLtze1751SbDrzAptsRvZGuPRyu+rZiQ8SJRbP
-        LsFoS0wJdydPzxkIUjovBCkU2ys1ze5ERNGyGFGfMhF+qmFoUA==
-X-Google-Smtp-Source: ABdhPJxgoEy+504UKzc83Pshb0sd4GwTxbG1/5jJB/P/wMWiVbHYiQiSccfdpfpCm+G/V2KxS41eSBOAm9n5Nr5g37o=
-X-Received: by 2002:a92:194c:: with SMTP id e12mr19805012ilm.292.1617002323859;
- Mon, 29 Mar 2021 00:18:43 -0700 (PDT)
+        with ESMTP id S230512AbhC2Hbm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 29 Mar 2021 03:31:42 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03DE3C061762
+        for <linux-iio@vger.kernel.org>; Mon, 29 Mar 2021 00:31:42 -0700 (PDT)
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1lQmN3-0001Sm-KL; Mon, 29 Mar 2021 09:31:33 +0200
+Received: from ore by dude.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1lQmN2-0000TI-Q2; Mon, 29 Mar 2021 09:31:32 +0200
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
+To:     Rob Herring <robh+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        David Jander <david@protonic.nl>,
+        Robin van der Gracht <robin@protonic.nl>,
+        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH v5 0/3] mainline ti tsc2046 adc driver
+Date:   Mon, 29 Mar 2021 09:31:28 +0200
+Message-Id: <20210329073131.1759-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-References: <cover.1616966903.git.lucas.p.stankus@gmail.com>
-In-Reply-To: <cover.1616966903.git.lucas.p.stankus@gmail.com>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Mon, 29 Mar 2021 10:18:32 +0300
-Message-ID: <CA+U=DsqOq2ZYRTy-VG-N-5fb_9TY6RNa4KM1uVdQb6eW-6VH6w@mail.gmail.com>
-Subject: Re: [PATCH 0/3] iio: adc: ad7923: convert driver resources routines
- to device-managed counterparts
-To:     Lucas Stankus <lucas.p.stankus@gmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Mar 29, 2021 at 12:48 AM Lucas Stankus
-<lucas.p.stankus@gmail.com> wrote:
->
-> Following the initiative proposed by Alexandru, this patch series aims
-> to convert the ad7923 to use only device-managed routines.
->
+changes v5:
+- remove type for the settling-time-us property
 
-This idea is becoming popular it seems :)
+changes v4:
+- spell fixes
+- add more comments
+- make code more readable
+- move scan_buf to the priv
+- use FIELD_GET to extract ADC data
+- make some multi line code as one line
+- do not use atomic API for trig_more_count
+- fix build warning on 64bit system
+- add NULL check for the devm_kasprintf()
+- use return devm_iio_device_register(), without additional error
+  printing.
 
-Thanks to Lars for pointing out that spi_set_drvdata() omission.
-With that fixed:
+changes v3:
+- different spell fixes
+- add some notes about driver structure
+- rename the trigger to point on the touchscreen nature of it
+- rename DT binding to oversampling-ratio
+- make sure we have some defaults in case no DT property is set
 
-Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
+changes v2:
+- rework and extend DT binding properties
+- remove touchscreen related code from the IIO ADC driver
+- make trigger be active longer then IRQ is requesting. This is needed
+  to get "inactive" samples
+- make oversampling and settle time configurable
 
-If you want, you can also search for more of these xxx_set_drvdata() omissions.
-There were more conversions to devm_ that forgot to remove those.
-Maybe a cocci script would be nice to find them.
-But all this is optional. Only if you want.
+TI TSC2046 is a touchscreen controller based on 8 channel ADC. Since most of
+this ADC based touchscreen controller share same set of challenges, it
+is better keep then as simple IIO ADC devices attached to a generic
+resistive-adc-touch driver.
 
-> Part of the driver was already using devm_ functions, so it was possible
-> to convert the remainder of it without much hassle.
->
-> With that, the deregistration function was no longer necessary and could
-> be entirely removed from the driver.
->
-> Lucas Stankus (3):
->   iio: adc: ad7923: use devm_add_action_or_reset for regulator disable
->   iio: adc: ad7923: use device-managed function for triggered buffer
->   iio: adc: ad7923: register device with devm_iio_device_register
->
->  drivers/iio/adc/ad7923.c | 39 +++++++++++++--------------------------
->  1 file changed, 13 insertions(+), 26 deletions(-)
->
-> --
-> 2.31.0
->
+This driver can replace drivers/input/touchscreen/ads7846.c and has
+following advantages over it:
+- less code to maintain
+- shared code paths (resistive-adc-touch, iio-hwmon, etc)
+- can be used as plain IIO ADC to investigate signaling issues or test
+  real capacity of the plates and attached low-pass filters
+  (or use the touchscreen as a microphone if you like ;) )
+
+Oleksij Rempel (3):
+  dt-bindings:iio:adc: add generic settling-time-us and
+    oversampling-ratio channel properties
+  dt-bindings:iio:adc: add documentation for TI TSC2046 controller
+  iio: adc: add ADC driver for the TI TSC2046 controller
+
+ .../devicetree/bindings/iio/adc/adc.yaml      |   8 +
+ .../bindings/iio/adc/ti,tsc2046.yaml          | 115 +++
+ MAINTAINERS                                   |   8 +
+ drivers/iio/adc/Kconfig                       |  12 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/ti-tsc2046.c                  | 726 ++++++++++++++++++
+ 6 files changed, 870 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,tsc2046.yaml
+ create mode 100644 drivers/iio/adc/ti-tsc2046.c
+
+-- 
+2.29.2
+

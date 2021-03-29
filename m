@@ -2,80 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 59F5734C22A
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Mar 2021 05:13:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F3EB34C3F5
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Mar 2021 08:43:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230286AbhC2DNE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 28 Mar 2021 23:13:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38540 "EHLO
+        id S229709AbhC2Gma (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 29 Mar 2021 02:42:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230271AbhC2DMe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 Mar 2021 23:12:34 -0400
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A00EC061574
-        for <linux-iio@vger.kernel.org>; Sun, 28 Mar 2021 20:12:34 -0700 (PDT)
-Received: by mail-pl1-x634.google.com with SMTP id d8so3729910plh.11
-        for <linux-iio@vger.kernel.org>; Sun, 28 Mar 2021 20:12:34 -0700 (PDT)
+        with ESMTP id S229655AbhC2GmY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 29 Mar 2021 02:42:24 -0400
+Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0BC2C061574;
+        Sun, 28 Mar 2021 23:42:23 -0700 (PDT)
+Received: by mail-io1-xd33.google.com with SMTP id j26so11633816iog.13;
+        Sun, 28 Mar 2021 23:42:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:content-transfer-encoding:in-reply-to:references
-         :subject:from:cc:to:date:message-id:user-agent;
-        bh=+9+4oo05hDGvnI5hJt7kWUj73df8yaEhUznP7X+ojcQ=;
-        b=ih9q1FUKcYI/z8r+kyWhEeTE6Olz6Vbm3k0JCbJnoXAF7OQWA3BWbZdinAy07b2eT2
-         cNHGm6shWdKCNU7NCao69bV7rfrpXAApBXTYBrIED0Y6+xyEM6CwrrlQcUeLMa+URsK7
-         A5FZoOcEWmYkW1bYbWmbllGe1YGwpNdZR4208=
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=590wVvTYdFk9t8zKZJMq+7iofIj4M2X5kyHkLHAKRX8=;
+        b=hiumg1nODsUWTv6OC9EEPBPJ5ddKMaXEoqpFobvUdc/fvlVazh0jZoaUMr3ncUHnuG
+         QmGmtTqWIT5OYMIhkz+BAwyBQ5KMuG3dzzsynlZdAht4z32FzmbUR5pwG82o+RvWBCki
+         F+ycx1CSflrxOLeaMxASydGSC3EI4tDMvKWrYh8ONWGmUnTFvdoUCX3MQmvqCE5ksWjl
+         uRrnkEkTDK5NBaPyZclkxRjvlX0kDU/JN8MKCFL4t2k9g32GnIKn7R3TJfRnxqEegSmR
+         5j4RYxUJNtJrNvMCKxjFPJ2/wieSwYeSrMTx/OLEzEy8tZIGDbGmbJugobZpynUvZp++
+         E8Tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:content-transfer-encoding
-         :in-reply-to:references:subject:from:cc:to:date:message-id
-         :user-agent;
-        bh=+9+4oo05hDGvnI5hJt7kWUj73df8yaEhUznP7X+ojcQ=;
-        b=OQWuLOdO0qk8txJp/uGSAL0qzrnq6o01dDkxEFDUWf/lAZ/pn7t6W92MHYQrcuqp8F
-         Hc2gzpdufBEcQwEHJ76ep28AUO/eLjXGrAlAwJ1845dllAUYC4TVTX2vW5vm/5ovyX0x
-         6wrXmTwClzDtCyIgNwO4L+/K3iI00oHxNUUNRIsWm90yueslqxe8No0fnWACjcqAKMy/
-         XIBKtPWIYCyqdt9IPFPdFSC33gxnZVPX1gVl0L7Ao0WZRzxb5eFKWQVCp+AglBgY/EB5
-         2z6t3Q9w0XI7lqTQ+QvjtxqvY1akNvI2lOHj6kHVK2hH6MreLVxqur3db/alY43M/fJR
-         RgMw==
-X-Gm-Message-State: AOAM533u7udjsYxTduMjzJ67dGnZFF2ZDM33HgYdS/834SXVheSKAunV
-        3g6KgX4p2tINfaVcuOzGc2oZIfy1lQjXbg==
-X-Google-Smtp-Source: ABdhPJx/yHEDBVu1TGineOAvCaXWx8ugHX7Muo0TVkRrl5SvBFQ2f/cxnIs/07J0SjXbC6H+3vNSnQ==
-X-Received: by 2002:a17:902:c408:b029:e7:3242:5690 with SMTP id k8-20020a170902c408b02900e732425690mr14609655plk.85.1616987553694;
-        Sun, 28 Mar 2021 20:12:33 -0700 (PDT)
-Received: from chromium.org ([2620:15c:202:201:d06e:3541:6cd6:ab0e])
-        by smtp.gmail.com with ESMTPSA id i10sm24048465pjm.1.2021.03.28.20.12.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 28 Mar 2021 20:12:33 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=590wVvTYdFk9t8zKZJMq+7iofIj4M2X5kyHkLHAKRX8=;
+        b=BFWCQo6VB9O/htnQkkR0WC6qYkgkEXTMOQ51maEzNy+znSNBJFyETGid4Rp/fGMPs9
+         ebYhjLbzfURwHaIbv2L2sz7xgcMBzHK81x5RO4NUOVBFdZq+3AdaD5C+pohcURwyLhA/
+         lfzMEF5zvUHLcDqNk0eE6QdQDdICKLlsHB7e0ugHulc3Gp6Z234DbL/7hr+9RjxbIFue
+         ZowU0S74jN8il7Cp+FDOVHTX4IjRADS//SFcTJlpXB/finwyt9w0a8spZzXmMTHhW5Rl
+         vhoK0HUHFeYfxJVUXIrvf+kAXOWxcwVVK4VEGZO0yrTgbCCnPeoyQKfCLZlMzDBownwV
+         MNaA==
+X-Gm-Message-State: AOAM531A4jpJT/zUpvnwrMQ8sP7SS+v0N8qcgSnO5U3AC8EA8Qr4++++
+        B0Q7Ha2on5yWTiTnoP2aJsZr8DiXtQQ7QMzeGpE=
+X-Google-Smtp-Source: ABdhPJxi1IVMCWYVLFR9bzDgrTvNoOIQ/WXiJ/SwfwMjS0Sn3QwYFUViOfGdAwEiqtfVRw+qqeKl06BYHNmxrYFkFBc=
+X-Received: by 2002:a02:8545:: with SMTP id g63mr22606460jai.79.1617000143505;
+ Sun, 28 Mar 2021 23:42:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20210328033639.1021599-1-gwendal@chromium.org>
-References: <20210328033639.1021599-1-gwendal@chromium.org>
-Subject: Re: [PATCH 0/2] iio: sx9310: Add debouncer-depth parameters
-From:   Stephen Boyd <swboyd@chromium.org>
-Cc:     linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>
-To:     Gwendal Grignou <gwendal@chromium.org>, andy.shevchenko@gmail.com,
-        ardeleanalex@gmail.com, campello@chromium.org, jic23@kernel.org,
-        lars@metafoo.de
-Date:   Sun, 28 Mar 2021 20:12:31 -0700
-Message-ID: <161698755179.3012082.10332557476670862687@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.9.1
+References: <20210328035159.47259-1-julianbraha@gmail.com>
+In-Reply-To: <20210328035159.47259-1-julianbraha@gmail.com>
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+Date:   Mon, 29 Mar 2021 09:42:12 +0300
+Message-ID: <CA+U=DsrbZN51cR6tbyNuwQ-zZnauOrmqetGa6T8+RtcC58mxFg@mail.gmail.com>
+Subject: Re: [PATCH] drivers: iio: adc: fix unmet dependency on OF
+To:     Julian Braha <julianbraha@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>, fazilyildiran@gmail.com,
+        linux-iio <linux-iio@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Quoting Gwendal Grignou (2021-03-27 20:36:37)
-> Semtech SX9310 SAR sensor has a debouncer filter: only when N
-> measurements are above/below the far/close threshold an event is
-> sent to the host.
-> By default the debouncer is set to 2 events for the close to far
-> transition and 1 event (no debounce) for far to close.
-> It is a balance speed of detection and false positive avoidance.
->=20
-> On some chromebooks, the debouncer is set to a larger number.
->=20
-> This patch applies on top of commit 103d6ec82676 ("iio: sx9310: Support A=
-CPI properties")
+On Sun, Mar 28, 2021 at 7:08 AM Julian Braha <julianbraha@gmail.com> wrote:
+>
+> When AD9467 is enabled, and OF is disabled,
+> Kbuild gives the following warning:
+>
+> WARNING: unmet direct dependencies detected for ADI_AXI_ADC
+>  Depends on [n]: IIO [=y] && HAS_IOMEM [=y] && OF [=n]
+>  Selected by [y]:
+>  - AD9467 [=y] && IIO [=y] && SPI [=y]
+>
+> This is because AD9467 selects ADI_AXI_ADC
+> without selecting or depending on OF,
+> despite ADI_AXI_ADC depending on OF.
+>
 
-The near/far debounce settings are already supported via sysfs. Can you
-use those instead of putting this into DT/ACPI? See
-sx9310_read_far_debounce() and associated code.
+Hey,
+
+Thanks for the patch.
+This should have been fixed a bit differently with patch:
+https://patchwork.kernel.org/project/linux-iio/patch/20210324182746.9337-1-aardelean@deviqon.com/
+
+Can you check if this fixes your setup?
+
+Thanks
+Alex
+
+> Signed-off-by: Julian Braha <julianbraha@gmail.com>
+> ---
+>  drivers/iio/adc/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> index e0667c4b3c08..7606c9b1630e 100644
+> --- a/drivers/iio/adc/Kconfig
+> +++ b/drivers/iio/adc/Kconfig
+> @@ -248,7 +248,7 @@ config AD799X
+>
+>  config AD9467
+>         tristate "Analog Devices AD9467 High Speed ADC driver"
+> -       depends on SPI
+> +       depends on SPI && OF
+>         select ADI_AXI_ADC
+>         help
+>           Say yes here to build support for Analog Devices:
+> --
+> 2.25.1
+>

@@ -2,33 +2,33 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F11934CDC6
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Mar 2021 12:14:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A895F34CDCE
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Mar 2021 12:16:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231313AbhC2KNu convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Mon, 29 Mar 2021 06:13:50 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39766 "EHLO mail.kernel.org"
+        id S231192AbhC2KP4 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 29 Mar 2021 06:15:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40248 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232243AbhC2KNn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 29 Mar 2021 06:13:43 -0400
+        id S229655AbhC2KP3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 29 Mar 2021 06:15:29 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8AEAD617C9;
-        Mon, 29 Mar 2021 10:13:41 +0000 (UTC)
-Date:   Mon, 29 Mar 2021 11:13:46 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 759BF6157F;
+        Mon, 29 Mar 2021 10:15:28 +0000 (UTC)
+Date:   Mon, 29 Mar 2021 11:15:34 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Joe Perches <joe@perches.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 4/4] iio: dac: Convert powerdown read callbacks to
- sysfs_emit()
-Message-ID: <20210329111346.64af72ab@jic23-huawei>
-In-Reply-To: <5fda4359734f5b008040090d1bad96e36473e307.camel@perches.com>
-References: <20210320071405.9347-1-lars@metafoo.de>
-        <20210320071405.9347-5-lars@metafoo.de>
-        <733be1879f059f87fc03df79b33cf5560f3dfcaf.camel@perches.com>
-        <3e26d657-4f03-5284-8cfe-73131a65e33f@metafoo.de>
-        <5fda4359734f5b008040090d1bad96e36473e307.camel@perches.com>
+To:     Alexandru Ardelean <ardeleanalex@gmail.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Himanshu Jha <himanshujha199640@gmail.com>,
+        Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
+Subject: Re: [PATCH] iio:accel:adis16201: Fix wrong axis assignment that
+ prevents loading
+Message-ID: <20210329111534.532e08da@jic23-huawei>
+In-Reply-To: <CA+U=DsqiYC7Gq3N_htgAmLrRXBvJtfV1urFoG2aYVf=G15hB9Q@mail.gmail.com>
+References: <20210321182956.844652-1-jic23@kernel.org>
+        <CA+U=DsqiYC7Gq3N_htgAmLrRXBvJtfV1urFoG2aYVf=G15hB9Q@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -37,50 +37,58 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 20 Mar 2021 08:13:55 -0700
-Joe Perches <joe@perches.com> wrote:
+On Mon, 22 Mar 2021 09:43:57 +0200
+Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
 
-> On Sat, 2021-03-20 at 13:52 +0100, Lars-Peter Clausen wrote:
-> > On 3/20/21 12:01 PM, Joe Perches wrote:  
-> > > On Sat, 2021-03-20 at 08:14 +0100, Lars-Peter Clausen wrote:  
-> > > > Update DAC drivers powerdown attribute show callback to use the new
-> > > > sysfs_emit() function.
-> > > > 
-> > > > sysfs_emit() is preferred over raw s*printf() for sysfs attributes since it
-> > > > knows about the sysfs buffer specifics and has some built-in sanity checks.  
-> > > Thanks.
-> > > 
-> > > unrelated trivia:
-> > >   
-> > > > diff --git a/drivers/iio/dac/ad5360.c b/drivers/iio/dac/ad5360.c  
-> > > []  
-> > > > @@ -255,7 +255,7 @@ static ssize_t ad5360_read_dac_powerdown(struct device *dev,
-> > > >   	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> > > >   	struct ad5360_state *st = iio_priv(indio_dev);
-> > > >   
-> > > > 
-> > > > -	return sprintf(buf, "%d\n", (bool)(st->ctrl & AD5360_SF_CTRL_PWR_DOWN));
-> > > > +	return sysfs_emit(buf, "%d\n", (bool)(st->ctrl & AD5360_SF_CTRL_PWR_DOWN));  
-> > > rather than cast to bool, perhaps standardize to use !!(val & test)  
-> > I very much prefer the cast to bool since it semantically stronger. You 
-> > don't have to know that the !! idiom is used to cast an int to bool.  
+> On Sun, Mar 21, 2021 at 8:34 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >
+> > Whilst running some basic tests as part of writing up the dt-bindings for
+> > this driver (to follow), it became clear it doesn't actually load
+> > currently.
+> >
+> > iio iio:device1: tried to double register : in_incli_x_index
+> > adis16201 spi0.0: Failed to create buffer sysfs interfaces
+> > adis16201: probe of spi0.0 failed with error -16
+> >
+> > Looks like a cut and paste / update bug.  Fixes tag obviously not accurate
+> > but we don't want to bother carry thing back to before the driver moved
+> > out of staging.
+> >  
 > 
-> Using !! does not cast to bool, it's an int.
-> 
-> casting to bool and using %d in a printf equivalent ends up with an
-> integer promotion/implicit type conversion from bool to int.
-> 
-> Anyway, it's not my code so it's author's choice, but similar
-> code using different styles is, at a minimum, inconsistent.
-> 
-I'm certainly not against cleaning this up at somepoint, but it's not strictly
-part of what this particular patch set is doing, so I'd rather do
-it separately anyway.
-
-Applied to the togreg branch of iio.git and pushed out as testing
-for all the normal reasons.
+> Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
+Give this has been broken a while I'm not going to rush it it as a
+fix.  Applied to the togreg branch of iio.git and pushed out as testing
+for the autobuilders to poke at it.
 
 Thanks,
 
 Jonathan
+
+> 
+> > Fixes: 591298e54cea ("Staging: iio: accel: adis16201: Move adis16201 driver out of staging")
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Cc: Himanshu Jha <himanshujha199640@gmail.com>
+> > Cc: Nuno Sá <nuno.sa@analog.com>
+> > ---
+> >  drivers/iio/accel/adis16201.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/iio/accel/adis16201.c b/drivers/iio/accel/adis16201.c
+> > index 3633a4e302c6..fe225990de24 100644
+> > --- a/drivers/iio/accel/adis16201.c
+> > +++ b/drivers/iio/accel/adis16201.c
+> > @@ -215,7 +215,7 @@ static const struct iio_chan_spec adis16201_channels[] = {
+> >         ADIS_AUX_ADC_CHAN(ADIS16201_AUX_ADC_REG, ADIS16201_SCAN_AUX_ADC, 0, 12),
+> >         ADIS_INCLI_CHAN(X, ADIS16201_XINCL_OUT_REG, ADIS16201_SCAN_INCLI_X,
+> >                         BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
+> > -       ADIS_INCLI_CHAN(X, ADIS16201_YINCL_OUT_REG, ADIS16201_SCAN_INCLI_Y,
+> > +       ADIS_INCLI_CHAN(Y, ADIS16201_YINCL_OUT_REG, ADIS16201_SCAN_INCLI_Y,
+> >                         BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
+> >         IIO_CHAN_SOFT_TIMESTAMP(7)
+> >  };
+> > --
+> > 2.31.0
+> >  
 

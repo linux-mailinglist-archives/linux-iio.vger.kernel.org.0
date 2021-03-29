@@ -2,105 +2,117 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F67734D0C4
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Mar 2021 15:01:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C80F34D0EE
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Mar 2021 15:07:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231237AbhC2NAg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 29 Mar 2021 09:00:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54222 "EHLO
+        id S231667AbhC2NG7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 29 Mar 2021 09:06:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231565AbhC2NAL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 29 Mar 2021 09:00:11 -0400
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13A0EC061756
-        for <linux-iio@vger.kernel.org>; Mon, 29 Mar 2021 06:00:11 -0700 (PDT)
-Received: by mail-wm1-x333.google.com with SMTP id m20-20020a7bcb940000b029010cab7e5a9fso8486430wmi.3
-        for <linux-iio@vger.kernel.org>; Mon, 29 Mar 2021 06:00:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=jCUqg4nsEzEqtyzud18lcBEpBdMMiZlVAoErgBu3JkY=;
-        b=vOt0R8wK8tF4UmjM2P1wuE4cJ7w969xRcI1DYLEWFa4igqbgEv4O6XjVlYwnX9sbOD
-         OT+wp3zgGntZ3aYtYDC0aHemcddiilzD/v+jvl4QgQyOnb9JTNR3xcuvG2RLLlYDFFv4
-         fMj+2HOhvCYOdoxXgc8zNK4lrfsFrFPyOwjgvS5p4KK4mODTquxlX9IRmlXLXW/m6rTZ
-         lePrVC7xWVIyaqmxnSB9esvMPa5g+1Aqrwl+IhdU2HaAQwQEvrAxgjD4zvMR3ujyDTmg
-         9kN0oAr3pxjDZPxMSEdCYcr0BWS3C66EFc0Y45lkUME1vK923EMkDwlJ8QGv+ZxozsVi
-         tytQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=jCUqg4nsEzEqtyzud18lcBEpBdMMiZlVAoErgBu3JkY=;
-        b=FyIZs/l2/FoJzhUzqvRI0TQuIYWgGfbSEk/+q4JzGqRLZJqtm3z/5gX5y8Iv5cbsdj
-         PvVz4vwl9SxDYG3csGeKgUJvBeJro/LNdHGe6bspgFUy1x2BEM1CUbndNPD7zoUo9f+V
-         D6dwla56/DkNkAL8Tj2FRUWohCgcVPohZjJZX/qH4olk09diyq75D0JDklGIUvoJQhnB
-         GWkMINkchh5GuH1e0GXjS7RJxlsCt8GPft/MmkWxw5vmsGc94rTMHAAFZhbtOrhhIojY
-         a/nlkS7fagUttVAZUQQcTCd9NbAoHs3ocm4qfo2JQIefZX+r/OyE5NKoFDGtKCMx6881
-         1KmA==
-X-Gm-Message-State: AOAM533D0zT/igv5v8AR4WqnaR3YNNw2jBNOwOpGQtMeO9IlPN6SA0Rz
-        132YT0m16G5u02hUDE8TyxL6wg==
-X-Google-Smtp-Source: ABdhPJyQFDQ3f0eu2peFHQzda+vDUvw89r6ri/h5SbAo6VJHOhtIUv6JMIaMb1sGCHNr1ab0gPPiDA==
-X-Received: by 2002:a1c:4382:: with SMTP id q124mr25026035wma.16.1617022809717;
-        Mon, 29 Mar 2021 06:00:09 -0700 (PDT)
-Received: from dell ([91.110.221.217])
-        by smtp.gmail.com with ESMTPSA id t1sm34302738wry.90.2021.03.29.06.00.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Mar 2021 06:00:09 -0700 (PDT)
-Date:   Mon, 29 Mar 2021 14:00:07 +0100
-From:   Lee Jones <lee.jones@linaro.org>
+        with ESMTP id S231592AbhC2NGa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 29 Mar 2021 09:06:30 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1070C061574
+        for <linux-iio@vger.kernel.org>; Mon, 29 Mar 2021 06:06:29 -0700 (PDT)
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1lQrb3-0006o4-6z; Mon, 29 Mar 2021 15:06:21 +0200
+Received: from ore by pty.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ore@pengutronix.de>)
+        id 1lQrb2-000345-I5; Mon, 29 Mar 2021 15:06:20 +0200
+Date:   Mon, 29 Mar 2021 15:06:20 +0200
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, Jiri Kosina <jikos@kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        linux-input@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 23/25] HID: hid-sensor-hub: Move 'hsdev' description to
- correct struct definition
-Message-ID: <20210329130007.GE2916463@dell>
-References: <20210326143458.508959-1-lee.jones@linaro.org>
- <20210326143458.508959-25-lee.jones@linaro.org>
- <20210329123020.10250228@jic23-huawei>
+Cc:     Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        David Jander <david@protonic.nl>,
+        Robin van der Gracht <robin@protonic.nl>,
+        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: Re: [PATCH v5 1/3] dt-bindings:iio:adc: add generic settling-time-us
+ and oversampling-ratio channel properties
+Message-ID: <20210329130620.utfdlgwzixrenqka@pengutronix.de>
+References: <20210329073131.1759-1-o.rempel@pengutronix.de>
+ <20210329073131.1759-2-o.rempel@pengutronix.de>
+ <20210329112532.174825d6@jic23-huawei>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210329123020.10250228@jic23-huawei>
+In-Reply-To: <20210329112532.174825d6@jic23-huawei>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-IRC:  #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 14:57:12 up 117 days,  3:03, 48 users,  load average: 0.14, 0.14,
+ 0.09
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 29 Mar 2021, Jonathan Cameron wrote:
-
-> On Fri, 26 Mar 2021 14:34:56 +0000
-> Lee Jones <lee.jones@linaro.org> wrote:
+On Mon, Mar 29, 2021 at 11:25:32AM +0100, Jonathan Cameron wrote:
+> On Mon, 29 Mar 2021 09:31:29 +0200
+> Oleksij Rempel <o.rempel@pengutronix.de> wrote:
 > 
-> > Fixes the following W=1 kernel build warning(s):
+> > Settling time and over sampling is a typical challenge for different IIO ADC
+> > devices. So, introduce channel specific settling-time-us and oversampling-ratio
+> > properties to cover this use case.
 > > 
-> >  drivers/hid/hid-sensor-hub.c:54: warning: Function parameter or member 'hsdev' not described in 'hid_sensor_hub_callbacks_list'
+> > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> > ---
+> >  Documentation/devicetree/bindings/iio/adc/adc.yaml | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
 > > 
+> > diff --git a/Documentation/devicetree/bindings/iio/adc/adc.yaml b/Documentation/devicetree/bindings/iio/adc/adc.yaml
+> > index 912a7635edc4..d5bc86d2a2af 100644
+> > --- a/Documentation/devicetree/bindings/iio/adc/adc.yaml
+> > +++ b/Documentation/devicetree/bindings/iio/adc/adc.yaml
+> > @@ -39,4 +39,12 @@ properties:
+> >        The first value specifies the positive input pin, the second
+> >        specifies the negative input pin.
+> >  
+> > +  settling-time-us:
+> > +    description:
+> > +      Time between enabling the channel and firs stable readings.
 > 
-> Perhaps nice to mention that this was a result of
+> first
+
+ack
+
+> > +
+> > +  oversampling-ratio:
+> > +    $ref: /schemas/types.yaml#/definitions/uint32
+> > +    description: Number of data samples which are averaged for each read.
 > 
-> ca2ed12f163b ("HID: hid-sensor-hub: Processing for duplicate physical ids")
+> I think I've asked about this in previous reviews, but I want a clear statement
+> of why you think this property is a feature of the 'board' (and hence should be
+> in device tree) rather than setting sensible defaults and leaving any control
+> to userspace?
 
-I only tend to do that for Fixes: tags, but Greg has made it clear
-that these patches are not suitable for stable.
+yes, my reply was:
+> Oversampling is used as replacement of or addition to the low-pass filter. The
+> filter can be implemented on board, but it will change settling time
+> characteristic. Since low-pass filter is board specific characteristic, this
+> property belongs in device tree as well.
 
-> > Cc: Jiri Kosina <jikos@kernel.org>
-> > Cc: Jonathan Cameron <jic23@kernel.org>
-> > Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> > Cc: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-> > Cc: linux-input@vger.kernel.org
-> > Cc: linux-iio@vger.kernel.org
-> > Signed-off-by: Lee Jones <lee.jones@linaro.org>
+I could imagine that this values can be overwritten from user space for
+diagnostic, but we need some working default values. 
 
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Should I integrate this comment in to the yaml?
 
-Thanks dude, much appreciated.
-
+Regards,
+Oleksij
 -- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |

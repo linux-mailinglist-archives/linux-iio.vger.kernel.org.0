@@ -2,270 +2,86 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 53CC634E98B
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Mar 2021 15:48:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 063CC34EE0B
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Mar 2021 18:38:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232010AbhC3NsW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 30 Mar 2021 09:48:22 -0400
-Received: from foss.arm.com ([217.140.110.172]:34596 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231622AbhC3Nrs (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 30 Mar 2021 09:47:48 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E5A0F31B;
-        Tue, 30 Mar 2021 06:47:47 -0700 (PDT)
-Received: from e120937-lin.home (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CE5623F719;
-        Tue, 30 Mar 2021 06:47:46 -0700 (PDT)
-From:   Cristian Marussi <cristian.marussi@arm.com>
-To:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-iio@vger.kernel.org
-Cc:     sudeep.holla@arm.com, cristian.marussi@arm.com,
-        Jyoti Bhayana <jbhayana@google.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH v8 25/38] iio/scmi: Port driver to the new scmi_sensor_proto_ops interface
-Date:   Tue, 30 Mar 2021 14:47:11 +0100
-Message-Id: <20210330134711.1962-1-cristian.marussi@arm.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210330123325.00000456@Huawei.com>
-References: <20210330123325.00000456@Huawei.com>
+        id S232201AbhC3Qha (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 30 Mar 2021 12:37:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45282 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231636AbhC3QhY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 30 Mar 2021 12:37:24 -0400
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC71CC061574
+        for <linux-iio@vger.kernel.org>; Tue, 30 Mar 2021 09:37:23 -0700 (PDT)
+Received: by mail-lj1-x22e.google.com with SMTP id f16so20645226ljm.1
+        for <linux-iio@vger.kernel.org>; Tue, 30 Mar 2021 09:37:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=4ZE/q1GCahIerSH8xZlTpJrld48yQuMwSq+TUXGYQWE=;
+        b=REhjx7ya0eJXssI64KNhwYguBgq5m41OTi1L760SNtCfjzJb4UqJ/gdLcvQIErW0/Z
+         Q/nQVzgZEQ0lDLyR0IF8LAQJ418VU15/x/AfFO68Gm2ABaP9nnNQ6mJYIqlxF3o8Lu00
+         CTlAkT+O+4vrjsfVDBSickKe+K4y2tpKQXt9QxQPL+YNJH2coNbniMPnOuMqIziXXOXe
+         +MQpPZETNjVG8ka+YxtvHY9gA+yghWDem3qLnprnidbpL/shD6Ns4u5VVpVExF/j4QNJ
+         jPbxlpctOhv4CTHgZ8gduHkeZucjdC9EA84S3MwiQ5osTR6u5CKFPrOxpgnkZWPxLup/
+         oK5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=4ZE/q1GCahIerSH8xZlTpJrld48yQuMwSq+TUXGYQWE=;
+        b=hHWu7zua1pBB8kNFLGcGoXjlvjQ6XjP+17e0R8vAiuJ2GV3AZi1lxNtOw6AoMSXo0n
+         JY2ntrLpVv/VgeCu/+SvuaF7KfF7+HXkKqSqCXaP0Omln4Rv0QbqlspG/pVl/LmraMO/
+         lyigvUp61NZunIpcy6NA5LZ6MV18qF0/jNMtkFYlWG5Wp8fNYtU/gsOW6ga8tsc1DWhL
+         YmWMVIQvv/nmVpH2/g2S1Y6bsKweLEeDX0nctc8yMF+ZJJn/qG+23KYnC++EChQxZI5i
+         lzZ/eaEORKwC75BQ6dVyx3QOEGbjermw013QWyrxpPD8te6vYGFrtInJzKztDPnQEuj1
+         UXAw==
+X-Gm-Message-State: AOAM532I+e2TLsKHErVwcKl8mzlxX1255fMM15FmF16jnOvysagkjZmO
+        VSKcxtsfSY5ttjmpH57Hv4uw9Xr4wtasP1qgToXWCjaAU0D1ZA==
+X-Google-Smtp-Source: ABdhPJybtTgpUWo73P0UG3tFarQFUHmH9ZG4JFXTt4Ht0r1dZQ2Oz2zpl8jdht89/ew4WfEmHxzBaqbWX/n7PFmQLWM=
+X-Received: by 2002:a2e:8e78:: with SMTP id t24mr22113689ljk.161.1617122241939;
+ Tue, 30 Mar 2021 09:37:21 -0700 (PDT)
+MIME-Version: 1.0
+From:   Puranjay Mohan <puranjay12@gmail.com>
+Date:   Tue, 30 Mar 2021 22:07:10 +0530
+Message-ID: <CANk7y0j89CFD7y2sY8B+H+YQ8P-w3EXmjzSL2=UitLpcgjYttQ@mail.gmail.com>
+Subject: IIO: GSOC 2021 Project Proposal
+To:     linux-iio <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>, lars@metafoo.de,
+        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
+        alexandru.ardelean@analog.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Port the scmi iio driver to the new SCMI sensor interface based on
-protocol handles and common devm_get_ops().
+Hi Everyone, I am Puranjay Mohan a junior at SRMIST, India, pursuing
+electronics and communications engineering. I wish to participate in
+the GSoC 2021 as a part of Linux Foundation, IIO Workgroup.
 
-Link: https://lore.kernel.org/r/20210316124903.35011-26-cristian.marussi@arm.com
-Cc: Jyoti Bhayana <jbhayana@google.com>
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org
-Tested-by: Florian Fainelli <f.fainelli@gmail.com>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-----
-v7 --> v8
-- make sensor_ops NON global
----
- drivers/iio/common/scmi_sensors/scmi_iio.c | 100 ++++++++++-----------
- 1 file changed, 50 insertions(+), 50 deletions(-)
+I have been contributing to the Linux kernel and have more than 30
+accepted patches. I was a mentee in the Linux Kernel mentorship
+program where I worked under the mentorship of Bjorn Helgaas(PCI
+maintainer) on PCI latency tolerance reporting.
 
-diff --git a/drivers/iio/common/scmi_sensors/scmi_iio.c b/drivers/iio/common/scmi_sensors/scmi_iio.c
-index 872d87ca6256..8f4154d92c68 100644
---- a/drivers/iio/common/scmi_sensors/scmi_iio.c
-+++ b/drivers/iio/common/scmi_sensors/scmi_iio.c
-@@ -22,7 +22,8 @@
- #define SCMI_IIO_NUM_OF_AXIS 3
- 
- struct scmi_iio_priv {
--	struct scmi_handle *handle;
-+	const struct scmi_sensor_proto_ops *sensor_ops;
-+	struct scmi_protocol_handle *ph;
- 	const struct scmi_sensor_info *sensor_info;
- 	struct iio_dev *indio_dev;
- 	/* adding one additional channel for timestamp */
-@@ -82,7 +83,6 @@ static int scmi_iio_sensor_update_cb(struct notifier_block *nb,
- static int scmi_iio_buffer_preenable(struct iio_dev *iio_dev)
- {
- 	struct scmi_iio_priv *sensor = iio_priv(iio_dev);
--	u32 sensor_id = sensor->sensor_info->id;
- 	u32 sensor_config = 0;
- 	int err;
- 
-@@ -92,27 +92,12 @@ static int scmi_iio_buffer_preenable(struct iio_dev *iio_dev)
- 
- 	sensor_config |= FIELD_PREP(SCMI_SENS_CFG_SENSOR_ENABLED_MASK,
- 				    SCMI_SENS_CFG_SENSOR_ENABLE);
--
--	err = sensor->handle->notify_ops->register_event_notifier(sensor->handle,
--			SCMI_PROTOCOL_SENSOR, SCMI_EVENT_SENSOR_UPDATE,
--			&sensor_id, &sensor->sensor_update_nb);
--	if (err) {
--		dev_err(&iio_dev->dev,
--			"Error in registering sensor update notifier for sensor %s err %d",
--			sensor->sensor_info->name, err);
--		return err;
--	}
--
--	err = sensor->handle->sensor_ops->config_set(sensor->handle,
--			sensor->sensor_info->id, sensor_config);
--	if (err) {
--		sensor->handle->notify_ops->unregister_event_notifier(sensor->handle,
--				SCMI_PROTOCOL_SENSOR,
--				SCMI_EVENT_SENSOR_UPDATE, &sensor_id,
--				&sensor->sensor_update_nb);
-+	err = sensor->sensor_ops->config_set(sensor->ph,
-+					     sensor->sensor_info->id,
-+					     sensor_config);
-+	if (err)
- 		dev_err(&iio_dev->dev, "Error in enabling sensor %s err %d",
- 			sensor->sensor_info->name, err);
--	}
- 
- 	return err;
- }
-@@ -120,25 +105,14 @@ static int scmi_iio_buffer_preenable(struct iio_dev *iio_dev)
- static int scmi_iio_buffer_postdisable(struct iio_dev *iio_dev)
- {
- 	struct scmi_iio_priv *sensor = iio_priv(iio_dev);
--	u32 sensor_id = sensor->sensor_info->id;
- 	u32 sensor_config = 0;
- 	int err;
- 
- 	sensor_config |= FIELD_PREP(SCMI_SENS_CFG_SENSOR_ENABLED_MASK,
- 				    SCMI_SENS_CFG_SENSOR_DISABLE);
--
--	err = sensor->handle->notify_ops->unregister_event_notifier(sensor->handle,
--			SCMI_PROTOCOL_SENSOR, SCMI_EVENT_SENSOR_UPDATE,
--			&sensor_id, &sensor->sensor_update_nb);
--	if (err) {
--		dev_err(&iio_dev->dev,
--			"Error in unregistering sensor update notifier for sensor %s err %d",
--			sensor->sensor_info->name, err);
--		return err;
--	}
--
--	err = sensor->handle->sensor_ops->config_set(sensor->handle, sensor_id,
--						     sensor_config);
-+	err = sensor->sensor_ops->config_set(sensor->ph,
-+					     sensor->sensor_info->id,
-+					     sensor_config);
- 	if (err) {
- 		dev_err(&iio_dev->dev,
- 			"Error in disabling sensor %s with err %d",
-@@ -161,8 +135,9 @@ static int scmi_iio_set_odr_val(struct iio_dev *iio_dev, int val, int val2)
- 	u32 sensor_config;
- 	char buf[32];
- 
--	int err = sensor->handle->sensor_ops->config_get(sensor->handle,
--			sensor->sensor_info->id, &sensor_config);
-+	int err = sensor->sensor_ops->config_get(sensor->ph,
-+						 sensor->sensor_info->id,
-+						 &sensor_config);
- 	if (err) {
- 		dev_err(&iio_dev->dev,
- 			"Error in getting sensor config for sensor %s err %d",
-@@ -208,8 +183,9 @@ static int scmi_iio_set_odr_val(struct iio_dev *iio_dev, int val, int val2)
- 	sensor_config |=
- 		FIELD_PREP(SCMI_SENS_CFG_ROUND_MASK, SCMI_SENS_CFG_ROUND_AUTO);
- 
--	err = sensor->handle->sensor_ops->config_set(sensor->handle,
--			sensor->sensor_info->id, sensor_config);
-+	err = sensor->sensor_ops->config_set(sensor->ph,
-+					     sensor->sensor_info->id,
-+					     sensor_config);
- 	if (err)
- 		dev_err(&iio_dev->dev,
- 			"Error in setting sensor update interval for sensor %s value %u err %d",
-@@ -274,8 +250,9 @@ static int scmi_iio_get_odr_val(struct iio_dev *iio_dev, int *val, int *val2)
- 	u32 sensor_config;
- 	int mult;
- 
--	int err = sensor->handle->sensor_ops->config_get(sensor->handle,
--			sensor->sensor_info->id, &sensor_config);
-+	int err = sensor->sensor_ops->config_get(sensor->ph,
-+						 sensor->sensor_info->id,
-+						 &sensor_config);
- 	if (err) {
- 		dev_err(&iio_dev->dev,
- 			"Error in getting sensor config for sensor %s err %d",
-@@ -542,15 +519,19 @@ static int scmi_iio_buffers_setup(struct iio_dev *scmi_iiodev)
- 	return 0;
- }
- 
--static struct iio_dev *scmi_alloc_iiodev(struct device *dev,
--					 struct scmi_handle *handle,
--					 const struct scmi_sensor_info *sensor_info)
-+static struct iio_dev *
-+scmi_alloc_iiodev(struct scmi_device *sdev,
-+		  const struct scmi_sensor_proto_ops *ops,
-+		  struct scmi_protocol_handle *ph,
-+		  const struct scmi_sensor_info *sensor_info)
- {
- 	struct iio_chan_spec *iio_channels;
- 	struct scmi_iio_priv *sensor;
- 	enum iio_modifier modifier;
- 	enum iio_chan_type type;
- 	struct iio_dev *iiodev;
-+	struct device *dev = &sdev->dev;
-+	const struct scmi_handle *handle = sdev->handle;
- 	int i, ret;
- 
- 	iiodev = devm_iio_device_alloc(dev, sizeof(*sensor));
-@@ -560,7 +541,8 @@ static struct iio_dev *scmi_alloc_iiodev(struct device *dev,
- 	iiodev->modes = INDIO_DIRECT_MODE;
- 	iiodev->dev.parent = dev;
- 	sensor = iio_priv(iiodev);
--	sensor->handle = handle;
-+	sensor->sensor_ops = ops;
-+	sensor->ph = ph;
- 	sensor->sensor_info = sensor_info;
- 	sensor->sensor_update_nb.notifier_call = scmi_iio_sensor_update_cb;
- 	sensor->indio_dev = iiodev;
-@@ -595,6 +577,17 @@ static struct iio_dev *scmi_alloc_iiodev(struct device *dev,
- 					  sensor_info->axis[i].id);
- 	}
- 
-+	ret = handle->notify_ops->devm_event_notifier_register(sdev,
-+				SCMI_PROTOCOL_SENSOR, SCMI_EVENT_SENSOR_UPDATE,
-+				&sensor->sensor_info->id,
-+				&sensor->sensor_update_nb);
-+	if (ret) {
-+		dev_err(&iiodev->dev,
-+			"Error in registering sensor update notifier for sensor %s err %d",
-+			sensor->sensor_info->name, ret);
-+		return ERR_PTR(ret);
-+	}
-+
- 	scmi_iio_set_timestamp_channel(&iio_channels[i], i);
- 	iiodev->channels = iio_channels;
- 	return iiodev;
-@@ -604,24 +597,30 @@ static int scmi_iio_dev_probe(struct scmi_device *sdev)
- {
- 	const struct scmi_sensor_info *sensor_info;
- 	struct scmi_handle *handle = sdev->handle;
-+	const struct scmi_sensor_proto_ops *sensor_ops;
-+	struct scmi_protocol_handle *ph;
- 	struct device *dev = &sdev->dev;
- 	struct iio_dev *scmi_iio_dev;
- 	u16 nr_sensors;
- 	int err = -ENODEV, i;
- 
--	if (!handle || !handle->sensor_ops) {
-+	if (!handle)
-+		return -ENODEV;
-+
-+	sensor_ops = handle->devm_protocol_get(sdev, SCMI_PROTOCOL_SENSOR, &ph);
-+	if (IS_ERR(sensor_ops)) {
- 		dev_err(dev, "SCMI device has no sensor interface\n");
--		return -EINVAL;
-+		return PTR_ERR(sensor_ops);
- 	}
- 
--	nr_sensors = handle->sensor_ops->count_get(handle);
-+	nr_sensors = sensor_ops->count_get(ph);
- 	if (!nr_sensors) {
- 		dev_dbg(dev, "0 sensors found via SCMI bus\n");
- 		return -ENODEV;
- 	}
- 
- 	for (i = 0; i < nr_sensors; i++) {
--		sensor_info = handle->sensor_ops->info_get(handle, i);
-+		sensor_info = sensor_ops->info_get(ph, i);
- 		if (!sensor_info) {
- 			dev_err(dev, "SCMI sensor %d has missing info\n", i);
- 			return -EINVAL;
-@@ -636,7 +635,8 @@ static int scmi_iio_dev_probe(struct scmi_device *sdev)
- 		    sensor_info->axis[0].type != RADIANS_SEC)
- 			continue;
- 
--		scmi_iio_dev = scmi_alloc_iiodev(dev, handle, sensor_info);
-+		scmi_iio_dev = scmi_alloc_iiodev(sdev, sensor_ops, ph,
-+						 sensor_info);
- 		if (IS_ERR(scmi_iio_dev)) {
- 			dev_err(dev,
- 				"failed to allocate IIO device for sensor %s: %ld\n",
+I have completed the IIO_tasks,  for learning the IIO Subsystem I am
+working on an IIO Driver for TI's TMP117 temperature sensor, the patch
+can be seen here:-
+https://lore.kernel.org/linux-iio/20210320064509.119878-1-puranjay12@gmail.com/
+
+For GSoC 2021, I have chosen the ADXL355 Accelerometer as my device of
+choice, but I am ready to work on another device if Analog Devices,
+Inc. wants to get the driver for another device. I choose this device
+because I saw a post on ADI Engineer Zone asking for its driver.
+
+I know it is too early, but I have written a proposal and wish to get
+your comments on it so that I can improve it further.
+Here is the google docs link, please add your comments on
+it:-https://docs.google.com/document/d/16xusxryh_3F7Svje14fD7dAx6qzEN4fbFPpvvdJB09A/edit?usp=sharing
+
 -- 
-2.17.1
+Thanks and Regards
 
+Yours Truly,
+
+Puranjay Mohan

@@ -2,36 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA423350000
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Mar 2021 14:14:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC1B7350051
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Mar 2021 14:29:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235289AbhCaMNb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 31 Mar 2021 08:13:31 -0400
-Received: from saturn.retrosnub.co.uk ([46.235.226.198]:59636 "EHLO
-        saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235286AbhCaMN1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 31 Mar 2021 08:13:27 -0400
+        id S235399AbhCaM3Q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 31 Mar 2021 08:29:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38358 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235716AbhCaM2f (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 31 Mar 2021 08:28:35 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id 2B96D9E004C;
-        Wed, 31 Mar 2021 13:13:18 +0100 (BST)
-Date:   Wed, 31 Mar 2021 13:13:27 +0100
-From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-To:     "Song Bao Hua (Barry Song)" <song.bao.hua@hisilicon.com>
-Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        "Robh+dt@kernel.org" <Robh+dt@kernel.org>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>
-Subject: Re: [PATCH v2 00/24] staging:iio:cdc:ad7150: cleanup / fixup /
- graduate
-Message-ID: <20210331131327.5f938957@jic23-huawei>
-In-Reply-To: <9218f13e32e642a19cb7df6e7c8c358f@hisilicon.com>
-References: <20210314181511.531414-1-jic23@kernel.org>
-        <20210329163021.20d9c9b7@jic23-huawei>
-        <20210329163601.3e3a88ac@jic23-huawei>
-        <9218f13e32e642a19cb7df6e7c8c358f@hisilicon.com>
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id CEDA4619EA;
+        Wed, 31 Mar 2021 12:28:29 +0000 (UTC)
+Date:   Wed, 31 Mar 2021 13:28:37 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Cristian Marussi <cristian.marussi@arm.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        sudeep.holla@arm.com, lukasz.luba@arm.com,
+        james.quinlan@broadcom.com, f.fainelli@gmail.com,
+        etienne.carriere@linaro.org, thara.gopinath@linaro.org,
+        vincent.guittot@linaro.org, souvik.chakravarty@arm.com,
+        Jyoti Bhayana <jbhayana@google.com>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v7 25/38] iio/scmi: port driver to the new
+ scmi_sensor_proto_ops interface
+Message-ID: <20210331132837.6e65c4a6@jic23-huawei>
+In-Reply-To: <20210331083219.GE43717@e120937-lin>
+References: <20210316124903.35011-1-cristian.marussi@arm.com>
+        <20210316124903.35011-26-cristian.marussi@arm.com>
+        <20210330123325.00000456@Huawei.com>
+        <20210330125113.GD43717@e120937-lin>
+        <20210330183404.00001909@Huawei.com>
+        <20210331083219.GE43717@e120937-lin>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -40,230 +44,370 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 30 Mar 2021 21:23:59 +0000
-"Song Bao Hua (Barry Song)" <song.bao.hua@hisilicon.com> wrote:
+On Wed, 31 Mar 2021 09:32:19 +0100
+Cristian Marussi <cristian.marussi@arm.com> wrote:
 
-> > -----Original Message-----
-> > From: Jonathan Cameron [mailto:jic23@jic23.retrosnub.co.uk]
-> > Sent: Tuesday, March 30, 2021 4:36 AM
-> > To: linux-iio@vger.kernel.org; Song Bao Hua (Barry Song)
-> > <song.bao.hua@hisilicon.com>
-> > Cc: Lars-Peter Clausen <lars@metafoo.de>; Michael Hennerich
-> > <Michael.Hennerich@analog.com>; Alexandru Ardelean <aardelean@deviqon.com>;
-> > Robh+dt@kernel.org; Alexandru Ardelean <ardeleanalex@gmail.com>; Jonathan
-> > Cameron <jonathan.cameron@huawei.com>
-> > Subject: Re: [PATCH v2 00/24] staging:iio:cdc:ad7150: cleanup / fixup / graduate
-> > 
-> > On Mon, 29 Mar 2021 16:30:21 +0100
-> > Jonathan Cameron <jic23@kernel.org> wrote:
+> Hi Jonathan
+> 
+> On Tue, Mar 30, 2021 at 06:34:04PM +0100, Jonathan Cameron wrote:
+> > On Tue, 30 Mar 2021 13:51:13 +0100
+> > Cristian Marussi <cristian.marussi@arm.com> wrote:
 > >   
-> > > Hi All,
-> > >
-> > > Whilst I'll give up at some point and just apply this without additional
-> > > tags I really don't like doing that as I've made too many idiot mistakes
-> > > in the past.
-> > >
-> > > Some of these are fairly trivial so please can people take a look if
-> > > they have a chance. Rob did the DT one (thanks!) so we are down to...
-> > >  
-> > > >
-> > > > 12 - The big irq rework patch. Alex wasn't quite happy to give a tag
-> > > >      on that last time, but didn't mention anything specific. It's a bit
-> > > >      fiddly so fair enough!  
-> > >
-> > > (it's not that bad!)
-> > >  
+> > > Hi Jonathan,
+> > > 
+> > > On Tue, Mar 30, 2021 at 12:33:25PM +0100, Jonathan Cameron wrote:  
+> > > > On Tue, 16 Mar 2021 12:48:50 +0000
+> > > > Cristian Marussi <cristian.marussi@arm.com> wrote:
+> > > >     
+> > > > > Port driver to the new SCMI Sensor interface based on protocol handles
+> > > > > and common devm_get_ops().
+> > > > > 
+> > > > > Cc: Jyoti Bhayana <jbhayana@google.com>
+> > > > > Cc: Jonathan Cameron <jic23@kernel.org>
+> > > > > Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>    
+> > > > 
+> > > > +CC linux-iio@vger.kernel.org
+> > > > 
+> > > > Rule of thumb if it doesn't go there it ends up in randomly location based
+> > > > on other lists and I might not see it for a few weeks :(
+> > > >     
+> > > 
+> > > Ah sorry, I thought the direct CC was enough.  
 > > 
-> > 20 had an ack that I think was accidentally sent off list and hence burried
-> > in my junk. And then there were two...
+> > No problem. Too much email :)
 > >   
-> > > >
-> > > > 21 - ABI patch.  I don't think there is anything controversial in here
-> > > >      but it's not gained any tags yet.
-> > > >  
-> > >
-> > > Perhaps didn't help that I accidentally didn't cc Barry on v2.
-> > >
-> > > Thanks,
-> > >
-> > > Jonathan
-> > >
-> > >
-> > >  
-> > > > v1 description:
-> > > >
-> > > > This is an 'old' driver in IIO that has been in staging a while.
-> > > > First submitted in October 2010.
-> > > >
-> > > > I wanted to try and experiment and picked this driver to try it with.
-> > > >
-> > > > The cleanup etc here was all tested against some basic emulation
-> > > > added to QEMU rather than real hardware.  Once I've cleaned that up
-> > > > a tiny bit I'll push it up to https://github.com/jic23/qemu
-> > > > Note that for now I'm not proposing to upstream this to QEMU but
-> > > > would be interested in hearing if people thing it is a good idea to
-> > > > do so.
-> > > >
-> > > > Whilst it's obviously hard to be absolutely sure that the emulation is
-> > > > correct, the fact that the original driver worked as expected and the
-> > > > cleaned up version still does is certainly encouraging.
-> > > >
-> > > > Note however, that there were a few more significant changes in here than
-> > > > basic cleanup.
-> > > > 1. Interrupts / events were handled in a rather esoteric fashion.
-> > > >    (Always on, window modes represented as magnitudes).
-> > > >    Note that for two channel devices there are separate lines. The original
-> > > >    driver was not supporting this at all.
-> > > >    They now look more like a standard IIO driver and reflect experience
-> > > >    that we've gained over the years in dealing with devices where these
-> > > >    aren't interrupt lines as such, but rather reporters of current status.
-> > > > 2. Timeouts were handled in a fashion that clearly wouldn't work.
-> > > >
-> > > > Note that this moving out of staging makes a few bits of ABI 'official'
-> > > > and so those are added to the main IIO ABI Docs.
-> > > >
-> > > > Thanks in advance to anyone who has time to take a look.
-> > > >
-> > > > Jonathan Cameron (24):
-> > > >   staging:iio:cdc:ad7150: use swapped reads for i2c rather than open
-> > > >     coding.  
+> > >   
+> > > > > ---
+> > > > >  drivers/iio/common/scmi_sensors/scmi_iio.c | 91 ++++++++++------------
+> > > > >  1 file changed, 41 insertions(+), 50 deletions(-)
+> > > > > 
+> > > > > diff --git a/drivers/iio/common/scmi_sensors/scmi_iio.c b/drivers/iio/common/scmi_sensors/scmi_iio.c
+> > > > > index 872d87ca6256..b4bdc3f3a946 100644
+> > > > > --- a/drivers/iio/common/scmi_sensors/scmi_iio.c
+> > > > > +++ b/drivers/iio/common/scmi_sensors/scmi_iio.c
+> > > > > @@ -21,8 +21,10 @@
+> > > > >  
+> > > > >  #define SCMI_IIO_NUM_OF_AXIS 3
+> > > > >  
+> > > > > +static const struct scmi_sensor_proto_ops *sensor_ops;    
+> > > > 
+> > > > Hmm.   I'm not keen on globals when they really should not be necessary.
+> > > > They just result in lifetimes being out of sync.  Here you are fine because
+> > > > you set it to an appropriate value as the first thing you do in probe, and
+> > > > I assume the function only ever returns on answer on repeated calls.
+> > > > 
+> > > > Why not put a copy of that pointer inside the struct scmi_iio_priv structures?
+> > > >     
+> > > 
+> > > The reason for this, as I said to Jyoyi who made the same comment indeed,
+> > > from my point of view (maybe wrong..) was that while the protocol_handle,
+> > > and previously the handle, are 'per-instance data' (so that you get a
+> > > different one each time this driver is possibly probed against a different
+> > > platform-handle) and as such are stored in scmi_iio_priv, the _ops are
+> > > just plain code pointers and are returned always the same for the same
+> > > protocol no matter how many times you probe this driver:  
+> > 
+> > As that's the case, I'm a little confused to why you have added the complexity
+> > of a query interface in the first place?  Why not just export the ops and
+> > have the various drivers access them directly?  If there is only
+> > one set of scmi_sensor_ops etc, then let drivers at it directly, or
+> > indeed export the functions that make up the ops structure directly.
+> > 
+> > This sounds like a bit of abstraction that only serves to make the
+> > code harder to read.
+> >   
 > 
-> Using i2c_smbus_read_word_swapper and i2c_smbus_write_word_swapped
-> looks good to me. The only thing is that your changelog didn't
-> mention you also used swapper write as you said "use swapped
-> reads". Otherwise,
+> Thanks for your comments, let me explain a bit.
 > 
-> Reviewed-by: Barry Song <song.bao.hua@hisilicon>
+> While the ops are indeed per-protocol common code available to SCMI drivers,
+> the protocol handle, which you also obtain with devm_protocol_get(), is
+> instead an opaque reference bound to the specific protocol instance
+> associated to the platform handle you're using, so that, in case there are
+> multiple SCMI platforms defined on the system, you'll get, at each probe a
+> specific and distinct protocol_handle to use with your ops: this way
+> you'll act upon a completely distinct initialized protocol stack, using
+> a distinct underlying transport layer toward your platform of choice.
 > 
-> > > >   staging:iio:cdc:ad7150: Remove magnitude adaptive events
-> > > >   staging:iio:cdc:ad7150: Refactor event parameter update
-> > > >   staging:iio:cdc:ad7150: Timeout register covers both directions so
-> > > >     both need updating
-> > > >   staging:iio:cdc:ad7150: Drop platform data support
-> > > >   staging:iio:cdc:ad7150: Handle variation in chan_spec across device
-> > > >     and irq present or not
-> > > >   staging:iio:cdc:ad7150: Simplify event handling by only using rising
-> > > >     direction.
-> > > >   staging:iio:cdc:ad7150: Drop noisy print in probe
-> > > >   staging:iio:cdc:ad7150: Add sampling_frequency support
-> > > >   iio:event: Add timeout event info type
-> > > >   staging:iio:cdc:ad7150: Change timeout units to seconds and use core
-> > > >     support
-> > > >   staging:iio:cdc:ad7150: Rework interrupt handling.  
+> Since this series wanted to unify SCMI standard and custom protocol interfaces
+> and enable modularization too, the get/put abstraction is there indeed to be
+> able to track internally protocol users and do resource accounting so that an
+> SCMI driver has to explicitly ask to use a protocol: the protocols instances are
+> then initialized on demand only when the first user shows up and more importantly
+> a hold is put on the protocol module refs avoiding its possible unloading
+> while still in use (even though only custom protocol are allowed as loadable
+> modules as of now...)
 > 
-> +	/*
-> +	 * There are race conditions around enabling and disabling that
-> +	 * could easily land us here with a spurious interrupt.
-> +	 * Just eat it if so.
-> +	 */
-> +	if (!(int_status & status_mask))
-> +		return IRQ_HANDLED;
-> +
-> 
-> I am not sure what kind of race conditions we have since disable_irq()
-> will synchronize with the irq handler.
-> 
-> If we are in an interrupt, the user who calls disable_irq will wait
-> for the completion of irq handler.
-> If an interrupt comes in the gap of disable_irq and enable_irq, we should
-> have a valid int_status after we re-enable the interrupt?
-> 
-> Maybe it is because of the weird behavior of the hardware?
+> Coming to the ops instead, the reason not to simply export them was...well...
+> ...not to export new symbols, and not just to stick to the old handle->ops()
+> interface way of non-exporting ops, or because I'm pavid at exporting new symbols
+> (I am :D), but because the idea was that in this way it would also have been
+> easier for vendors writing custom protocol modules to be able to just use them
+> in their own SCMI driver without the need to export also their new custom ops.
+> (and same goes generally for any new possible future standard protocol
+>  which will not require endlessly further exports)
 
-I think you are right and I was being overly paranoid on that one. I'll drop
-the comment, though I'll leave the paranoid check.
+I'll let this rest, but I'm unconvinced.  This smacks of reinventing the wheel
+and a false layer of abstraction + unnecessary indirection.  Current interface
+strongly hints that those ops structure pointers are decided at runtime.
 
-> 
-> > > >   staging:iio:cdc:ad7150: More consistent register and field naming
-> > > >   staging:iio:cdc:ad7150: Reorganize headers.
-> > > >   staging:iio:cdc:ad7150: Tidy up local variable positioning.
-> > > >   staging:iio:cdc:ad7150: Drop unnecessary block comments.
-> > > >   staging:iio:cdc:ad7150: Shift the _raw readings by 4 bits.
-> > > >   staging:iio:cdc:ad7150: Add scale and offset to
-> > > >     info_mask_shared_by_type
-> > > >   staging:iio:cdc:ad7150: Really basic regulator support.
-> > > >   staging:iio:cdc:ad7150: Add of_match_table  
-> 
-> Reviewed-by: Barry Song <song.bao.hua@hisilicon>
-> 
-> > > >   iio:Documentation:ABI Add missing elements as used by the adi,ad7150  
-> 
-> +What:		/sys/.../events/in_capacitanceY_adaptive_thresh_rising_en
-> +What:		/sys/.../events/in_capacitanceY_adaptive_thresh_falling_en
-> +KernelVersion:	5.11
-> 
-> Is kernel 5.11 the right version? Guess not :-)
-Oops Can tell this took a while.  I'll tidy that up whilst applying.
-> 
-> > > >   staging:iio:cdc:ad7150: Add copyright notice given substantial
-> > > >     changes.
-> > > >   dt-bindings:iio:cdc:adi,ad7150 binding doc  
-> 
-> Reviewed-by: Barry Song <song.bao.hua@hisilicon>
-> 
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - adi,ad7150
-> +              - adi,ad7156
-> +    then:
-> +      properties:
-> +        interrupts:
-> +          minItems: 2
-> +          maxItems: 2
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: adi,ad7151
-> +    then:
-> +      properties:
-> +        interrupts:
-> +          minItems: 1
-> +          maxItems: 1
-> 
-> A further follow-up might be:
-> we can move to read two irq number for adi7150/7156
-> and one irq number for adi7151 in driver?
+For a custom protocol, you will need a header that defines the signatures of
+those functions anyway.  So you are only one step from just exporting them
+and relying on the existing nice module dependency tracking and loading etc.
+The only difference is that loading the SCMI driver module would require the
+protocol module to be loaded rather than it being based on an instantiation.
+(however, I'd hope that the SCMI driver modules are only loaded if we think
+there is something there for them to use!)
 
-Unless I'm miss understanding you I think we already do.
-There is a check against the driver_data being AD7150 which is set for
-the two parts that have 2 interrupts.  If we don't get that we don't
-query the second irq number.
+Now if there was a chance that different providers of a protocols could provide
+different _ops structures then this interface might make sense, but then putting
+them in a global pointer is the wrong approach because of lifetimes being
+mismatched. 
 
-> 
-> > > >   iio:cdc:ad7150: Move driver out of staging.
-> > > >
-> > > >  Documentation/ABI/testing/sysfs-bus-iio       |  33 +
-> > > >  .../bindings/iio/cdc/adi,ad7150.yaml          |  69 ++
-> > > >  drivers/iio/Kconfig                           |   1 +
-> > > >  drivers/iio/Makefile                          |   1 +
-> > > >  drivers/iio/cdc/Kconfig                       |  17 +
-> > > >  drivers/iio/cdc/Makefile                      |   6 +
-> > > >  drivers/iio/cdc/ad7150.c                      | 678 ++++++++++++++++++
-> > > >  drivers/iio/industrialio-event.c              |   1 +
-> > > >  drivers/staging/iio/cdc/Kconfig               |  10 -
-> > > >  drivers/staging/iio/cdc/Makefile              |   3 +-
-> > > >  drivers/staging/iio/cdc/ad7150.c              | 655 -----------------
-> > > >  include/linux/iio/types.h                     |   1 +
-> > > >  12 files changed, 808 insertions(+), 667 deletions(-)
-> > > >  create mode 100644  
-> > Documentation/devicetree/bindings/iio/cdc/adi,ad7150.yaml  
-> > > >  create mode 100644 drivers/iio/cdc/Kconfig
-> > > >  create mode 100644 drivers/iio/cdc/Makefile
-> > > >  create mode 100644 drivers/iio/cdc/ad7150.c
-> > > >  delete mode 100644 drivers/staging/iio/cdc/ad7150.c
-> > > >  
-> > >  
-> 
-> 
-> Thanks
-> Barry
-> 
-
-Thanks!
+Meh, it's your problem to maintain it not mine :)
 
 Jonathan
 
+> 
+> Just for these reasons I attached the ops retrieval the same protocol_get()
+> interface already introduced to handle all of the above.
+> 
+> > > you just end up
+> > > calling them against the proper different saved protocol_handle; so it
+> > > seemed to me an unneeded duplication to stick a copy of the same _ops
+> > > inside each per-instance scmi_iio_priv, and at the same time it seemed
+> > > also more straigthforward to access them without too many indirections
+> > > from inside the scmi_iio_priv struct).
+> > > 
+> > > But if these are not valid points I can change this in IIO now, and in
+> > > the future also in all the other SCMI drivers that currently use this
+> > > same API and pattern of usage with global ops. (..at least because I'd
+> > > have to collect again all the other ACks agains and it's a bit later for
+> > > that now)  
+> > 
+> > I'm fine with leaving it as is.  There's no fundamental issue, it's just
+> > a little bit ugly and I'm fussy :)
+> >   
+> 
+> I'm not fullly liking it too, but it was the best I could come up to cope
+> with the above reqs (and the limited amount of my grey-matter :D)
+> 
+> But if in the future we can come up with something better, or some reqs
+> are dropped/revisited I'll be happy to flood the list with another
+> jumbo-series.
+> 
+> Thanks
+> 
+> Cristian
+> 
+> > > 
+> > > Thanks
+> > > 
+> > > Cristian
+> > >   
+> > > > Otherwise this all looks like straight forward refactoring so given the
+> > > > above is more a 'bad smell' than a bug and I'm rather late to the game.
+> > > > 
+> > > > Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > > 
+> > > >     
+> > > > > +
+> > > > >  struct scmi_iio_priv {
+> > > > > -	struct scmi_handle *handle;
+> > > > > +	struct scmi_protocol_handle *ph;
+> > > > >  	const struct scmi_sensor_info *sensor_info;
+> > > > >  	struct iio_dev *indio_dev;
+> > > > >  	/* adding one additional channel for timestamp */
+> > > > > @@ -82,7 +84,6 @@ static int scmi_iio_sensor_update_cb(struct notifier_block *nb,
+> > > > >  static int scmi_iio_buffer_preenable(struct iio_dev *iio_dev)
+> > > > >  {
+> > > > >  	struct scmi_iio_priv *sensor = iio_priv(iio_dev);
+> > > > > -	u32 sensor_id = sensor->sensor_info->id;
+> > > > >  	u32 sensor_config = 0;
+> > > > >  	int err;
+> > > > >  
+> > > > > @@ -92,27 +93,11 @@ static int scmi_iio_buffer_preenable(struct iio_dev *iio_dev)
+> > > > >  
+> > > > >  	sensor_config |= FIELD_PREP(SCMI_SENS_CFG_SENSOR_ENABLED_MASK,
+> > > > >  				    SCMI_SENS_CFG_SENSOR_ENABLE);
+> > > > > -
+> > > > > -	err = sensor->handle->notify_ops->register_event_notifier(sensor->handle,
+> > > > > -			SCMI_PROTOCOL_SENSOR, SCMI_EVENT_SENSOR_UPDATE,
+> > > > > -			&sensor_id, &sensor->sensor_update_nb);
+> > > > > -	if (err) {
+> > > > > -		dev_err(&iio_dev->dev,
+> > > > > -			"Error in registering sensor update notifier for sensor %s err %d",
+> > > > > -			sensor->sensor_info->name, err);
+> > > > > -		return err;
+> > > > > -	}
+> > > > > -
+> > > > > -	err = sensor->handle->sensor_ops->config_set(sensor->handle,
+> > > > > -			sensor->sensor_info->id, sensor_config);
+> > > > > -	if (err) {
+> > > > > -		sensor->handle->notify_ops->unregister_event_notifier(sensor->handle,
+> > > > > -				SCMI_PROTOCOL_SENSOR,
+> > > > > -				SCMI_EVENT_SENSOR_UPDATE, &sensor_id,
+> > > > > -				&sensor->sensor_update_nb);
+> > > > > +	err = sensor_ops->config_set(sensor->ph, sensor->sensor_info->id,
+> > > > > +				     sensor_config);
+> > > > > +	if (err)
+> > > > >  		dev_err(&iio_dev->dev, "Error in enabling sensor %s err %d",
+> > > > >  			sensor->sensor_info->name, err);
+> > > > > -	}
+> > > > >  
+> > > > >  	return err;
+> > > > >  }
+> > > > > @@ -120,25 +105,13 @@ static int scmi_iio_buffer_preenable(struct iio_dev *iio_dev)
+> > > > >  static int scmi_iio_buffer_postdisable(struct iio_dev *iio_dev)
+> > > > >  {
+> > > > >  	struct scmi_iio_priv *sensor = iio_priv(iio_dev);
+> > > > > -	u32 sensor_id = sensor->sensor_info->id;
+> > > > >  	u32 sensor_config = 0;
+> > > > >  	int err;
+> > > > >  
+> > > > >  	sensor_config |= FIELD_PREP(SCMI_SENS_CFG_SENSOR_ENABLED_MASK,
+> > > > >  				    SCMI_SENS_CFG_SENSOR_DISABLE);
+> > > > > -
+> > > > > -	err = sensor->handle->notify_ops->unregister_event_notifier(sensor->handle,
+> > > > > -			SCMI_PROTOCOL_SENSOR, SCMI_EVENT_SENSOR_UPDATE,
+> > > > > -			&sensor_id, &sensor->sensor_update_nb);
+> > > > > -	if (err) {
+> > > > > -		dev_err(&iio_dev->dev,
+> > > > > -			"Error in unregistering sensor update notifier for sensor %s err %d",
+> > > > > -			sensor->sensor_info->name, err);
+> > > > > -		return err;
+> > > > > -	}
+> > > > > -
+> > > > > -	err = sensor->handle->sensor_ops->config_set(sensor->handle, sensor_id,
+> > > > > -						     sensor_config);
+> > > > > +	err = sensor_ops->config_set(sensor->ph, sensor->sensor_info->id,
+> > > > > +				     sensor_config);
+> > > > >  	if (err) {
+> > > > >  		dev_err(&iio_dev->dev,
+> > > > >  			"Error in disabling sensor %s with err %d",
+> > > > > @@ -161,8 +134,8 @@ static int scmi_iio_set_odr_val(struct iio_dev *iio_dev, int val, int val2)
+> > > > >  	u32 sensor_config;
+> > > > >  	char buf[32];
+> > > > >  
+> > > > > -	int err = sensor->handle->sensor_ops->config_get(sensor->handle,
+> > > > > -			sensor->sensor_info->id, &sensor_config);
+> > > > > +	int err = sensor_ops->config_get(sensor->ph, sensor->sensor_info->id,
+> > > > > +					 &sensor_config);
+> > > > >  	if (err) {
+> > > > >  		dev_err(&iio_dev->dev,
+> > > > >  			"Error in getting sensor config for sensor %s err %d",
+> > > > > @@ -208,8 +181,8 @@ static int scmi_iio_set_odr_val(struct iio_dev *iio_dev, int val, int val2)
+> > > > >  	sensor_config |=
+> > > > >  		FIELD_PREP(SCMI_SENS_CFG_ROUND_MASK, SCMI_SENS_CFG_ROUND_AUTO);
+> > > > >  
+> > > > > -	err = sensor->handle->sensor_ops->config_set(sensor->handle,
+> > > > > -			sensor->sensor_info->id, sensor_config);
+> > > > > +	err = sensor_ops->config_set(sensor->ph, sensor->sensor_info->id,
+> > > > > +				     sensor_config);
+> > > > >  	if (err)
+> > > > >  		dev_err(&iio_dev->dev,
+> > > > >  			"Error in setting sensor update interval for sensor %s value %u err %d",
+> > > > > @@ -274,8 +247,8 @@ static int scmi_iio_get_odr_val(struct iio_dev *iio_dev, int *val, int *val2)
+> > > > >  	u32 sensor_config;
+> > > > >  	int mult;
+> > > > >  
+> > > > > -	int err = sensor->handle->sensor_ops->config_get(sensor->handle,
+> > > > > -			sensor->sensor_info->id, &sensor_config);
+> > > > > +	int err = sensor_ops->config_get(sensor->ph, sensor->sensor_info->id,
+> > > > > +					 &sensor_config);
+> > > > >  	if (err) {
+> > > > >  		dev_err(&iio_dev->dev,
+> > > > >  			"Error in getting sensor config for sensor %s err %d",
+> > > > > @@ -542,15 +515,17 @@ static int scmi_iio_buffers_setup(struct iio_dev *scmi_iiodev)
+> > > > >  	return 0;
+> > > > >  }
+> > > > >  
+> > > > > -static struct iio_dev *scmi_alloc_iiodev(struct device *dev,
+> > > > > -					 struct scmi_handle *handle,
+> > > > > -					 const struct scmi_sensor_info *sensor_info)
+> > > > > +static struct iio_dev *
+> > > > > +scmi_alloc_iiodev(struct scmi_device *sdev, struct scmi_protocol_handle *ph,
+> > > > > +		  const struct scmi_sensor_info *sensor_info)
+> > > > >  {
+> > > > >  	struct iio_chan_spec *iio_channels;
+> > > > >  	struct scmi_iio_priv *sensor;
+> > > > >  	enum iio_modifier modifier;
+> > > > >  	enum iio_chan_type type;
+> > > > >  	struct iio_dev *iiodev;
+> > > > > +	struct device *dev = &sdev->dev;
+> > > > > +	const struct scmi_handle *handle = sdev->handle;
+> > > > >  	int i, ret;
+> > > > >  
+> > > > >  	iiodev = devm_iio_device_alloc(dev, sizeof(*sensor));
+> > > > > @@ -560,7 +535,7 @@ static struct iio_dev *scmi_alloc_iiodev(struct device *dev,
+> > > > >  	iiodev->modes = INDIO_DIRECT_MODE;
+> > > > >  	iiodev->dev.parent = dev;
+> > > > >  	sensor = iio_priv(iiodev);
+> > > > > -	sensor->handle = handle;
+> > > > > +	sensor->ph = ph;
+> > > > >  	sensor->sensor_info = sensor_info;
+> > > > >  	sensor->sensor_update_nb.notifier_call = scmi_iio_sensor_update_cb;
+> > > > >  	sensor->indio_dev = iiodev;
+> > > > > @@ -595,6 +570,17 @@ static struct iio_dev *scmi_alloc_iiodev(struct device *dev,
+> > > > >  					  sensor_info->axis[i].id);
+> > > > >  	}
+> > > > >  
+> > > > > +	ret = handle->notify_ops->devm_event_notifier_register(sdev,
+> > > > > +				SCMI_PROTOCOL_SENSOR, SCMI_EVENT_SENSOR_UPDATE,
+> > > > > +				&sensor->sensor_info->id,
+> > > > > +				&sensor->sensor_update_nb);
+> > > > > +	if (ret) {
+> > > > > +		dev_err(&iiodev->dev,
+> > > > > +			"Error in registering sensor update notifier for sensor %s err %d",
+> > > > > +			sensor->sensor_info->name, ret);
+> > > > > +		return ERR_PTR(ret);
+> > > > > +	}
+> > > > > +
+> > > > >  	scmi_iio_set_timestamp_channel(&iio_channels[i], i);
+> > > > >  	iiodev->channels = iio_channels;
+> > > > >  	return iiodev;
+> > > > > @@ -604,24 +590,29 @@ static int scmi_iio_dev_probe(struct scmi_device *sdev)
+> > > > >  {
+> > > > >  	const struct scmi_sensor_info *sensor_info;
+> > > > >  	struct scmi_handle *handle = sdev->handle;
+> > > > > +	struct scmi_protocol_handle *ph;
+> > > > >  	struct device *dev = &sdev->dev;
+> > > > >  	struct iio_dev *scmi_iio_dev;
+> > > > >  	u16 nr_sensors;
+> > > > >  	int err = -ENODEV, i;
+> > > > >  
+> > > > > -	if (!handle || !handle->sensor_ops) {
+> > > > > +	if (!handle)
+> > > > > +		return -ENODEV;
+> > > > > +
+> > > > > +	sensor_ops = handle->devm_protocol_get(sdev, SCMI_PROTOCOL_SENSOR, &ph);
+> > > > > +	if (IS_ERR(sensor_ops)) {
+> > > > >  		dev_err(dev, "SCMI device has no sensor interface\n");
+> > > > > -		return -EINVAL;
+> > > > > +		return PTR_ERR(sensor_ops);
+> > > > >  	}
+> > > > >  
+> > > > > -	nr_sensors = handle->sensor_ops->count_get(handle);
+> > > > > +	nr_sensors = sensor_ops->count_get(ph);
+> > > > >  	if (!nr_sensors) {
+> > > > >  		dev_dbg(dev, "0 sensors found via SCMI bus\n");
+> > > > >  		return -ENODEV;
+> > > > >  	}
+> > > > >  
+> > > > >  	for (i = 0; i < nr_sensors; i++) {
+> > > > > -		sensor_info = handle->sensor_ops->info_get(handle, i);
+> > > > > +		sensor_info = sensor_ops->info_get(ph, i);
+> > > > >  		if (!sensor_info) {
+> > > > >  			dev_err(dev, "SCMI sensor %d has missing info\n", i);
+> > > > >  			return -EINVAL;
+> > > > > @@ -636,7 +627,7 @@ static int scmi_iio_dev_probe(struct scmi_device *sdev)
+> > > > >  		    sensor_info->axis[0].type != RADIANS_SEC)
+> > > > >  			continue;
+> > > > >  
+> > > > > -		scmi_iio_dev = scmi_alloc_iiodev(dev, handle, sensor_info);
+> > > > > +		scmi_iio_dev = scmi_alloc_iiodev(sdev, ph, sensor_info);
+> > > > >  		if (IS_ERR(scmi_iio_dev)) {
+> > > > >  			dev_err(dev,
+> > > > >  				"failed to allocate IIO device for sensor %s: %ld\n",    
+> > > >     
+> >   
 

@@ -2,116 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D509E3502BF
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Mar 2021 16:51:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1DCD350639
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Mar 2021 20:23:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236187AbhCaOvS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 31 Mar 2021 10:51:18 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:43286 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235452AbhCaOus (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 31 Mar 2021 10:50:48 -0400
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12VEceGB011345;
-        Wed, 31 Mar 2021 14:50:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=F54Hp/vKV1mmuD8poN/zo4ahre9EvaYtFY+tH2asrf0=;
- b=HDSDrc5DLZ4jYi++ozURLtz5UyuWHBqs0stxXmys0oZeS16IL+EHZLWGQuy1NB4DxNWm
- TsMBCrKyyFnSk8tQ4Yv4dwhZlUqJWVwqCAfj1DTVjqpH51OQ6CmyhpUY8D7F5xvY4EvX
- BK6ACCBdeYc2yhIaHFo2g8AOGkEuqUpn203LcwuPtOX0WEsyoiF4Ja4PZ+Xprzhq3WBI
- EYzY1ecE/cLW1/wjknLamZFXItxDILaFi0nuSCSVd0Ex3p8toC4XbMEuoibjCHKOWVIx
- xVJAiGepNjbHqpExc1xVfzyYqG211rO4eMPUDldREcyaoITRfLlb266q8g1SU92ic3zv Fw== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2130.oracle.com with ESMTP id 37mafv2ge9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 31 Mar 2021 14:50:46 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12VEdXm2015715;
-        Wed, 31 Mar 2021 14:50:44 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 37mabmapvc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 31 Mar 2021 14:50:44 +0000
-Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 12VEoh0j005102;
-        Wed, 31 Mar 2021 14:50:44 GMT
-Received: from mwanda (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 31 Mar 2021 07:50:43 -0700
-Date:   Wed, 31 Mar 2021 17:50:37 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     gwendal@chromium.org
-Cc:     linux-iio@vger.kernel.org
-Subject: [bug report] iio: hrtimer: Allow sub Hz granularity
-Message-ID: <YGSMPTIRAEQRyMWb@mwanda>
+        id S234446AbhCaSWv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 31 Mar 2021 14:22:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39732 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234984AbhCaSW2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 31 Mar 2021 14:22:28 -0400
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4906C06174A
+        for <linux-iio@vger.kernel.org>; Wed, 31 Mar 2021 11:22:28 -0700 (PDT)
+Received: by mail-pj1-x102b.google.com with SMTP id w8so9938446pjf.4
+        for <linux-iio@vger.kernel.org>; Wed, 31 Mar 2021 11:22:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=6fG3M9tA0KoHwDLLm38rn/CCdGLZ4zzjS0UaZN9gjYs=;
+        b=CXzu91MfNaKV/RkPW5JWqeToS32DZALRnPfsqYUQqEEb7vDFKohysIrfFw22LpT53X
+         LE/rBeI1jpRLL/VCekdNewN0AnCCgMYwu+RL9q9mBHDn33dKqp/ft2SU0LCvm3ZaMIkR
+         U4jUPJK3yQPbnS+bNpwCCfju0YI0qFub5SpEM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=6fG3M9tA0KoHwDLLm38rn/CCdGLZ4zzjS0UaZN9gjYs=;
+        b=ORL7Uhd2OPN+dDTy5O5va24keNdR44FMqGVkBKxL61y11vTxUf9aXu+hXvWhvrSvZn
+         nlJKtHABeF0etQjveDuaF+dZmYd7DjdUqqpXEDhdhWgkBAUC6zTRA0vRO2lTzWAc+KXc
+         Yy8noqVDlhATlgDM0nlFWBE+kueAAaVP2Op42rFpos1znl4yugiBBMztgYM6tDYvXupP
+         O3xLMgweKJQKjmFlM7jnzsCTOcEk1ZPXxIZ+UMdXpWSAgeqwKdftCOX4HqKfNuxExHS7
+         vAuBQksdRKgEdSD/zfpaipMfw3f8+osDxugEyzS8wqm/I/KHCdIBrlB3/xNsGZVo0DSC
+         5XyQ==
+X-Gm-Message-State: AOAM5325A5KZ/aVC1TtsWxqeVdcGkl2cl1VDrYCNoWvGXWxl4SZA6KVM
+        rryMAyP8YIudLo+X+dGBqbaP/Q==
+X-Google-Smtp-Source: ABdhPJyQ6IwDLoJEcFdxS/PdQYeV96UpU/r9hnWhj9bMCMezNLMSmLBtAcCfVnQX2pOMV9NOSJtdyg==
+X-Received: by 2002:a17:902:6541:b029:e6:27a4:80fb with SMTP id d1-20020a1709026541b02900e627a480fbmr4272304pln.15.1617214948164;
+        Wed, 31 Mar 2021 11:22:28 -0700 (PDT)
+Received: from localhost ([2620:15c:202:201:9840:2987:57cd:7dfe])
+        by smtp.gmail.com with UTF8SMTPSA id j21sm2634142pfc.114.2021.03.31.11.22.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 31 Mar 2021 11:22:27 -0700 (PDT)
+From:   Gwendal Grignou <gwendal@chromium.org>
+To:     jic23@kernel.org, lars@metafoo.de, swboyd@chromium.org,
+        campello@chromium.org, andy.shevchenko@gmail.com
+Cc:     linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>,
+        stable@vger.kernel.org
+Subject: [PATCH] iio: sx9310: Fix write_.._debounce()
+Date:   Wed, 31 Mar 2021 11:22:22 -0700
+Message-Id: <20210331182222.219533-1-gwendal@chromium.org>
+X-Mailer: git-send-email 2.31.0.291.g576ba9dcdaf-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Proofpoint-IMR: 1
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9940 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0
- mlxlogscore=999 phishscore=0 suspectscore=0 spamscore=0 adultscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2103300000 definitions=main-2103310106
-X-Proofpoint-ORIG-GUID: ujVOE01iXYOWHlMnZS1zUhehPZpvNy00
-X-Proofpoint-GUID: ujVOE01iXYOWHlMnZS1zUhehPZpvNy00
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9940 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1011 adultscore=0
- impostorscore=0 bulkscore=0 spamscore=0 lowpriorityscore=0 mlxlogscore=999
- priorityscore=1501 phishscore=0 malwarescore=0 mlxscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2103300000
- definitions=main-2103310106
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Gwendal Grignou,
+Check input to be sure it matches Semtech sx9310 specification and
+can fit into debounce register.
+Compare argument writen to thresh_.._period with read from same
+sysfs attribute:
 
-The patch dafcf4ed8392: "iio: hrtimer: Allow sub Hz granularity" from
-Feb 25, 2021, leads to the following static checker warning:
+Before:                   Afer:
+write   |  read           write   |  read
+-1      |     8           -1 fails: -EINVAL
+0       |     8           0       |     0
+1       |     0           1       |     0
+2..15   |  2^log2(N)      2..15   |  2^log2(N)
+16      |     0           >= 16 fails: -EINVAL
 
-	drivers/iio/trigger/iio-trig-hrtimer.c:68 iio_hrtimer_store_sampling_frequency()
-	warn: assigned value is less than 'u32max'
+Fixes: 1b6872015f0b ("iio: sx9310: Support setting debounce values")
+Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+Cc: stable@vger.kernel.org
+---
+ drivers/iio/proximity/sx9310.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-drivers/iio/trigger/iio-trig-hrtimer.c
-    49  static
-    50  ssize_t iio_hrtimer_store_sampling_frequency(struct device *dev,
-    51                                               struct device_attribute *attr,
-    52                                               const char *buf, size_t len)
-    53  {
-    54          struct iio_trigger *trig = to_iio_trigger(dev);
-    55          struct iio_hrtimer_info *info = iio_trigger_get_drvdata(trig);
-    56          unsigned long long val;
-    57          u64 period;
-    58          int integer, fract, ret;
-    59  
-    60          ret = iio_str_to_fixpoint(buf, 100, &integer, &fract);
-    61          if (ret)
-    62                  return ret;
-    63          if (integer < 0 || fract < 0)
-    64                  return -ERANGE;
-    65  
-    66          val = fract + 1000 * integer;  /* mHz */
-                      ^^^^^^^^^^^^^^^^^^^^^^
-"fract" and "integer" are integers so the arithmatic will wrap instead
-of going above UINT_MAX
+diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
+index 578d8841c5398..e5a756f4afa2b 100644
+--- a/drivers/iio/proximity/sx9310.c
++++ b/drivers/iio/proximity/sx9310.c
+@@ -764,7 +764,11 @@ static int sx9310_write_far_debounce(struct sx9310_data *data, int val)
+ 	int ret;
+ 	unsigned int regval;
+ 
+-	val = ilog2(val);
++	if (val > 0)
++		val = ilog2(val);
++	if (!FIELD_FIT(SX9310_REG_PROX_CTRL10_FAR_DEBOUNCE_MASK, val))
++		return -EINVAL;
++
+ 	regval = FIELD_PREP(SX9310_REG_PROX_CTRL10_FAR_DEBOUNCE_MASK, val);
+ 
+ 	mutex_lock(&data->mutex);
+@@ -781,7 +785,11 @@ static int sx9310_write_close_debounce(struct sx9310_data *data, int val)
+ 	int ret;
+ 	unsigned int regval;
+ 
+-	val = ilog2(val);
++	if (val > 0)
++		val = ilog2(val);
++	if (!FIELD_FIT(SX9310_REG_PROX_CTRL10_CLOSE_DEBOUNCE_MASK, val))
++		return -EINVAL;
++
+ 	regval = FIELD_PREP(SX9310_REG_PROX_CTRL10_CLOSE_DEBOUNCE_MASK, val);
+ 
+ 	mutex_lock(&data->mutex);
+-- 
+2.31.0.291.g576ba9dcdaf-goog
 
-    67  
-    68          if (!val || val > UINT_MAX)
-                            ^^^^^^^^^^^^^^
-Unpossible!
-
-    69                  return -EINVAL;
-    70  
-    71          info->sampling_frequency[0] = integer;  /* Hz */
-    72          info->sampling_frequency[1] = fract * 1000;  /* uHz */
-    73          period = PSEC_PER_SEC;
-    74          do_div(period, val);
-    75          info->period = period;  /* nS */
-    76  
-    77          return len;
-    78  }
-
-regards,
-dan carpenter

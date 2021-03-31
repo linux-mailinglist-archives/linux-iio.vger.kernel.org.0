@@ -2,267 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 182CD34F2FF
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Mar 2021 23:25:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FCD934F585
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Mar 2021 02:38:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232329AbhC3VYe convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Tue, 30 Mar 2021 17:24:34 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2750 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230125AbhC3VYF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 30 Mar 2021 17:24:05 -0400
-Received: from fraeml742-chm.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4F92Mh6QjSz684Fg;
-        Wed, 31 Mar 2021 05:17:20 +0800 (CST)
-Received: from lhreml717-chm.china.huawei.com (10.201.108.68) by
- fraeml742-chm.china.huawei.com (10.206.15.223) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Tue, 30 Mar 2021 23:24:03 +0200
-Received: from dggemi761-chm.china.huawei.com (10.1.198.147) by
- lhreml717-chm.china.huawei.com (10.201.108.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2106.2; Tue, 30 Mar 2021 22:24:01 +0100
-Received: from dggemi761-chm.china.huawei.com ([10.9.49.202]) by
- dggemi761-chm.china.huawei.com ([10.9.49.202]) with mapi id 15.01.2106.013;
- Wed, 31 Mar 2021 05:23:59 +0800
-From:   "Song Bao Hua (Barry Song)" <song.bao.hua@hisilicon.com>
-To:     Jonathan Cameron <jic23@jic23.retrosnub.co.uk>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-CC:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        "Robh+dt@kernel.org" <Robh+dt@kernel.org>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>
-Subject: RE: [PATCH v2 00/24] staging:iio:cdc:ad7150: cleanup / fixup /
- graduate
-Thread-Topic: [PATCH v2 00/24] staging:iio:cdc:ad7150: cleanup / fixup /
- graduate
-Thread-Index: AQHXJLCHuIN4NEiakEib4Q2/+Ou+W6qakvSAgAJttxA=
-Date:   Tue, 30 Mar 2021 21:23:59 +0000
-Message-ID: <9218f13e32e642a19cb7df6e7c8c358f@hisilicon.com>
-References: <20210314181511.531414-1-jic23@kernel.org>
-        <20210329163021.20d9c9b7@jic23-huawei> <20210329163601.3e3a88ac@jic23-huawei>
-In-Reply-To: <20210329163601.3e3a88ac@jic23-huawei>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.126.202.63]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S232905AbhCaAiW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 30 Mar 2021 20:38:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35922 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232900AbhCaAiR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 30 Mar 2021 20:38:17 -0400
+Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E80FC061574
+        for <linux-iio@vger.kernel.org>; Tue, 30 Mar 2021 17:38:17 -0700 (PDT)
+Received: by mail-il1-x12e.google.com with SMTP id r17so9547664ilt.0
+        for <linux-iio@vger.kernel.org>; Tue, 30 Mar 2021 17:38:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=P5BD0xwsyzWtgrYN78O5NZBCcGxuWb1OBPHfXomu+hY=;
+        b=XkudtjyOi+lTX2UiyqunhojeQZHvmzqllFnD6vz7PB+dau5a//xUQtrSHqA9gMf4Fr
+         ZJAvNLeQ5+V7mlzzBtoJoyEF/QdX3ucmhK5i6qXkXAYB7MBLhzcnGTOY+Q68EUFN2u3J
+         HQHzsR2ojgZJ1QMrczpFaQ2RM3bKCd7yXUzRg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=P5BD0xwsyzWtgrYN78O5NZBCcGxuWb1OBPHfXomu+hY=;
+        b=sn0flxd/e89OofVZlxK1TVIj4MAR6Tc/ZDKRZJRPOufPbVprb6Afo5e5Lc+Q9XDcra
+         IdKIQE2kiNbYJvDLWuZ7l6zoluL2vJFwMRHrwmxnzX7/1NQEtYSxLiTRCXx8amm1BnRb
+         EgdlRW/Av+vhYTlIoC0V+WDPJJRaj9sV8EPyOQlncQP3Y+JhlZ7Np1W6rIUXIcF3QhxS
+         5VCwgobFGVWM/EUD6zk+pgQuMhcdBE5+r74bNlhzGKi0EP70rfEjACa1Oe14WeH6nbZB
+         ew/aILTT81qE+Fe6fldWo+EsN6MdM7nNLW5M7xC1vuP8TseIP+5xQxubFpLdE9LzZNZF
+         FJtw==
+X-Gm-Message-State: AOAM531D3PoYQgPuGMLjoOoaYktS9O16TtVZFOLTCtSmNowxTTAmja5M
+        MsO84QV9jOxv77HiJN2A7T3br4k/017B8oRtvGDVIh15QAnY2A==
+X-Google-Smtp-Source: ABdhPJyOB/HwC6UN0pGq4RjaMXN8jBmradDeAhHbAOYbM7tCyCeFbK1DY/N+kXf1lG2dvdqXBtuLQCc3koYAwfsvOsE=
+X-Received: by 2002:a92:c568:: with SMTP id b8mr624758ilj.50.1617151096522;
+ Tue, 30 Mar 2021 17:38:16 -0700 (PDT)
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+References: <20210328033639.1021599-1-gwendal@chromium.org> <161698755179.3012082.10332557476670862687@swboyd.mtv.corp.google.com>
+In-Reply-To: <161698755179.3012082.10332557476670862687@swboyd.mtv.corp.google.com>
+From:   Gwendal Grignou <gwendal@chromium.org>
+Date:   Tue, 30 Mar 2021 17:38:03 -0700
+Message-ID: <CAPUE2usX-Tq2wyO4ekkAUaR6rRfJ3mZG3SQMqJbpzzUTMwd-0A@mail.gmail.com>
+Subject: Re: [PATCH 0/2] iio: sx9310: Add debouncer-depth parameters
+To:     Stephen Boyd <swboyd@chromium.org>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        Daniel Campello <campello@chromium.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
-
-> -----Original Message-----
-> From: Jonathan Cameron [mailto:jic23@jic23.retrosnub.co.uk]
-> Sent: Tuesday, March 30, 2021 4:36 AM
-> To: linux-iio@vger.kernel.org; Song Bao Hua (Barry Song)
-> <song.bao.hua@hisilicon.com>
-> Cc: Lars-Peter Clausen <lars@metafoo.de>; Michael Hennerich
-> <Michael.Hennerich@analog.com>; Alexandru Ardelean <aardelean@deviqon.com>;
-> Robh+dt@kernel.org; Alexandru Ardelean <ardeleanalex@gmail.com>; Jonathan
-> Cameron <jonathan.cameron@huawei.com>
-> Subject: Re: [PATCH v2 00/24] staging:iio:cdc:ad7150: cleanup / fixup / graduate
-> 
-> On Mon, 29 Mar 2021 16:30:21 +0100
-> Jonathan Cameron <jic23@kernel.org> wrote:
-> 
-> > Hi All,
+On Sun, Mar 28, 2021 at 8:12 PM Stephen Boyd <swboyd@chromium.org> wrote:
+>
+> Quoting Gwendal Grignou (2021-03-27 20:36:37)
+> > Semtech SX9310 SAR sensor has a debouncer filter: only when N
+> > measurements are above/below the far/close threshold an event is
+> > sent to the host.
+> > By default the debouncer is set to 2 events for the close to far
+> > transition and 1 event (no debounce) for far to close.
+> > It is a balance speed of detection and false positive avoidance.
 > >
-> > Whilst I'll give up at some point and just apply this without additional
-> > tags I really don't like doing that as I've made too many idiot mistakes
-> > in the past.
+> > On some chromebooks, the debouncer is set to a larger number.
 > >
-> > Some of these are fairly trivial so please can people take a look if
-> > they have a chance. Rob did the DT one (thanks!) so we are down to...
-> >
-> > >
-> > > 12 - The big irq rework patch. Alex wasn't quite happy to give a tag
-> > >      on that last time, but didn't mention anything specific. It's a bit
-> > >      fiddly so fair enough!
-> >
-> > (it's not that bad!)
-> >
-> 
-> 20 had an ack that I think was accidentally sent off list and hence burried
-> in my junk. And then there were two...
-> 
-> > >
-> > > 21 - ABI patch.  I don't think there is anything controversial in here
-> > >      but it's not gained any tags yet.
-> > >
-> >
-> > Perhaps didn't help that I accidentally didn't cc Barry on v2.
-> >
-> > Thanks,
-> >
-> > Jonathan
-> >
-> >
-> >
-> > > v1 description:
-> > >
-> > > This is an 'old' driver in IIO that has been in staging a while.
-> > > First submitted in October 2010.
-> > >
-> > > I wanted to try and experiment and picked this driver to try it with.
-> > >
-> > > The cleanup etc here was all tested against some basic emulation
-> > > added to QEMU rather than real hardware.  Once I've cleaned that up
-> > > a tiny bit I'll push it up to https://github.com/jic23/qemu
-> > > Note that for now I'm not proposing to upstream this to QEMU but
-> > > would be interested in hearing if people thing it is a good idea to
-> > > do so.
-> > >
-> > > Whilst it's obviously hard to be absolutely sure that the emulation is
-> > > correct, the fact that the original driver worked as expected and the
-> > > cleaned up version still does is certainly encouraging.
-> > >
-> > > Note however, that there were a few more significant changes in here than
-> > > basic cleanup.
-> > > 1. Interrupts / events were handled in a rather esoteric fashion.
-> > >    (Always on, window modes represented as magnitudes).
-> > >    Note that for two channel devices there are separate lines. The original
-> > >    driver was not supporting this at all.
-> > >    They now look more like a standard IIO driver and reflect experience
-> > >    that we've gained over the years in dealing with devices where these
-> > >    aren't interrupt lines as such, but rather reporters of current status.
-> > > 2. Timeouts were handled in a fashion that clearly wouldn't work.
-> > >
-> > > Note that this moving out of staging makes a few bits of ABI 'official'
-> > > and so those are added to the main IIO ABI Docs.
-> > >
-> > > Thanks in advance to anyone who has time to take a look.
-> > >
-> > > Jonathan Cameron (24):
-> > >   staging:iio:cdc:ad7150: use swapped reads for i2c rather than open
-> > >     coding.
+> > This patch applies on top of commit 103d6ec82676 ("iio: sx9310: Support ACPI properties")
+>
+> The near/far debounce settings are already supported via sysfs. Can you
+> use those instead of putting this into DT/ACPI? See
+> sx9310_read_far_debounce() and associated code.
+Stephen, I missed you already proposed these bindings earlier
+[https://lore.kernel.org/linux-devicetree/20200906150247.3aaef3a3@archlinux/].
+After Jonathan inputs, it is done via sysfs interface
+[events/thresh_{falling|rising}_period].
 
-Using i2c_smbus_read_word_swapper and i2c_smbus_write_word_swapped
-looks good to me. The only thing is that your changelog didn't
-mention you also used swapper write as you said "use swapped
-reads". Otherwise,
+The debounce parameters are in the same class as the other parameters
+already present in the DT. They are calculated during tests to meet
+FCC requirements, in particular the time it takes to detect a human
+body near the antennas.
+Depending on the SAR antenna design, it is a balance between lowering
+the debouncer "period" to raise an event as soon as possible, and
+increasing it to prevent false posible.
 
-Reviewed-by: Barry Song <song.bao.hua@hisilicon>
+In addition to controlling it from sysfs, could it be acceptable to
+have it in DT/ACPI as well?
+In the meantime, I will make sure semtech,sx9310.yaml matches
+in_proximityX_hardwaregain_available and connect to that attribute.
 
-> > >   staging:iio:cdc:ad7150: Remove magnitude adaptive events
-> > >   staging:iio:cdc:ad7150: Refactor event parameter update
-> > >   staging:iio:cdc:ad7150: Timeout register covers both directions so
-> > >     both need updating
-> > >   staging:iio:cdc:ad7150: Drop platform data support
-> > >   staging:iio:cdc:ad7150: Handle variation in chan_spec across device
-> > >     and irq present or not
-> > >   staging:iio:cdc:ad7150: Simplify event handling by only using rising
-> > >     direction.
-> > >   staging:iio:cdc:ad7150: Drop noisy print in probe
-> > >   staging:iio:cdc:ad7150: Add sampling_frequency support
-> > >   iio:event: Add timeout event info type
-> > >   staging:iio:cdc:ad7150: Change timeout units to seconds and use core
-> > >     support
-> > >   staging:iio:cdc:ad7150: Rework interrupt handling.
-
-+	/*
-+	 * There are race conditions around enabling and disabling that
-+	 * could easily land us here with a spurious interrupt.
-+	 * Just eat it if so.
-+	 */
-+	if (!(int_status & status_mask))
-+		return IRQ_HANDLED;
-+
-
-I am not sure what kind of race conditions we have since disable_irq()
-will synchronize with the irq handler.
-
-If we are in an interrupt, the user who calls disable_irq will wait
-for the completion of irq handler.
-If an interrupt comes in the gap of disable_irq and enable_irq, we should
-have a valid int_status after we re-enable the interrupt?
-
-Maybe it is because of the weird behavior of the hardware?
-
-> > >   staging:iio:cdc:ad7150: More consistent register and field naming
-> > >   staging:iio:cdc:ad7150: Reorganize headers.
-> > >   staging:iio:cdc:ad7150: Tidy up local variable positioning.
-> > >   staging:iio:cdc:ad7150: Drop unnecessary block comments.
-> > >   staging:iio:cdc:ad7150: Shift the _raw readings by 4 bits.
-> > >   staging:iio:cdc:ad7150: Add scale and offset to
-> > >     info_mask_shared_by_type
-> > >   staging:iio:cdc:ad7150: Really basic regulator support.
-> > >   staging:iio:cdc:ad7150: Add of_match_table
-
-Reviewed-by: Barry Song <song.bao.hua@hisilicon>
-
-> > >   iio:Documentation:ABI Add missing elements as used by the adi,ad7150
-
-+What:		/sys/.../events/in_capacitanceY_adaptive_thresh_rising_en
-+What:		/sys/.../events/in_capacitanceY_adaptive_thresh_falling_en
-+KernelVersion:	5.11
-
-Is kernel 5.11 the right version? Guess not :-)
-
-> > >   staging:iio:cdc:ad7150: Add copyright notice given substantial
-> > >     changes.
-> > >   dt-bindings:iio:cdc:adi,ad7150 binding doc
-
-Reviewed-by: Barry Song <song.bao.hua@hisilicon>
-
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - adi,ad7150
-+              - adi,ad7156
-+    then:
-+      properties:
-+        interrupts:
-+          minItems: 2
-+          maxItems: 2
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: adi,ad7151
-+    then:
-+      properties:
-+        interrupts:
-+          minItems: 1
-+          maxItems: 1
-
-A further follow-up might be:
-we can move to read two irq number for adi7150/7156
-and one irq number for adi7151 in driver?
-
-> > >   iio:cdc:ad7150: Move driver out of staging.
-> > >
-> > >  Documentation/ABI/testing/sysfs-bus-iio       |  33 +
-> > >  .../bindings/iio/cdc/adi,ad7150.yaml          |  69 ++
-> > >  drivers/iio/Kconfig                           |   1 +
-> > >  drivers/iio/Makefile                          |   1 +
-> > >  drivers/iio/cdc/Kconfig                       |  17 +
-> > >  drivers/iio/cdc/Makefile                      |   6 +
-> > >  drivers/iio/cdc/ad7150.c                      | 678 ++++++++++++++++++
-> > >  drivers/iio/industrialio-event.c              |   1 +
-> > >  drivers/staging/iio/cdc/Kconfig               |  10 -
-> > >  drivers/staging/iio/cdc/Makefile              |   3 +-
-> > >  drivers/staging/iio/cdc/ad7150.c              | 655 -----------------
-> > >  include/linux/iio/types.h                     |   1 +
-> > >  12 files changed, 808 insertions(+), 667 deletions(-)
-> > >  create mode 100644
-> Documentation/devicetree/bindings/iio/cdc/adi,ad7150.yaml
-> > >  create mode 100644 drivers/iio/cdc/Kconfig
-> > >  create mode 100644 drivers/iio/cdc/Makefile
-> > >  create mode 100644 drivers/iio/cdc/ad7150.c
-> > >  delete mode 100644 drivers/staging/iio/cdc/ad7150.c
-> > >
-> >
-
-
-Thanks
-Barry
-
+Gwendal.

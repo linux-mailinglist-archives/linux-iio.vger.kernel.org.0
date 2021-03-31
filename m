@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BDB134FFE4
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Mar 2021 14:05:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA423350000
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Mar 2021 14:14:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235286AbhCaMFV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 31 Mar 2021 08:05:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33550 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235325AbhCaMFM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 31 Mar 2021 08:05:12 -0400
+        id S235289AbhCaMNb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 31 Mar 2021 08:13:31 -0400
+Received: from saturn.retrosnub.co.uk ([46.235.226.198]:59636 "EHLO
+        saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235286AbhCaMN1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 31 Mar 2021 08:13:27 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C60D86198F;
-        Wed, 31 Mar 2021 12:05:09 +0000 (UTC)
-Date:   Wed, 31 Mar 2021 13:05:17 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <ardeleanalex@gmail.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id 2B96D9E004C;
+        Wed, 31 Mar 2021 13:13:18 +0100 (BST)
+Date:   Wed, 31 Mar 2021 13:13:27 +0100
+From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+To:     "Song Bao Hua (Barry Song)" <song.bao.hua@hisilicon.com>
+Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         Alexandru Ardelean <aardelean@deviqon.com>,
-        Rob Herring <Robh+dt@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v2 12/24] staging:iio:cdc:ad7150: Rework interrupt
- handling.
-Message-ID: <20210331130517.0f6c6449@jic23-huawei>
-In-Reply-To: <CA+U=DsqYjVSyPqBGU+pnY1iJxePiZyWyzzqrxT=cYBtbaX-tLQ@mail.gmail.com>
+        "Robh+dt@kernel.org" <Robh+dt@kernel.org>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>
+Subject: Re: [PATCH v2 00/24] staging:iio:cdc:ad7150: cleanup / fixup /
+ graduate
+Message-ID: <20210331131327.5f938957@jic23-huawei>
+In-Reply-To: <9218f13e32e642a19cb7df6e7c8c358f@hisilicon.com>
 References: <20210314181511.531414-1-jic23@kernel.org>
-        <20210314181511.531414-13-jic23@kernel.org>
-        <CA+U=DsqYjVSyPqBGU+pnY1iJxePiZyWyzzqrxT=cYBtbaX-tLQ@mail.gmail.com>
+        <20210329163021.20d9c9b7@jic23-huawei>
+        <20210329163601.3e3a88ac@jic23-huawei>
+        <9218f13e32e642a19cb7df6e7c8c358f@hisilicon.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -40,498 +40,230 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 31 Mar 2021 10:29:51 +0300
-Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
+On Tue, 30 Mar 2021 21:23:59 +0000
+"Song Bao Hua (Barry Song)" <song.bao.hua@hisilicon.com> wrote:
 
-> On Sun, Mar 14, 2021 at 8:17 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> >
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >
-> > Note this doesn't support everything the chip can do as we ignore
-> > window mode for now (in window / out of window).
-> >
-> > * Given the chip doesn't have any way of disabling the threshold
-> >   pins, use disable_irq() etc to mask them except when we actually
-> >   want them enabled (previously events were always enabled).
-> >   Note there are race conditions, but using the current state from
-> >   the status register and disabling interrupts across changes in
-> >   type of event should mean those races result in interrupts,
-> >   but no events to userspace.
-> >
-> > * Correctly reflect that there is one threshold line per channel.
-> >
-> > * Only take notice of rising edge. If anyone wants the other edge
-> >   then they should set the other threshold (they are available for
-> >   rising and falling directions).  This isn't perfect but it makes
-> >   it a lot simpler.
-> >
-> > * If insufficient interrupts are specified in firnware, don't support
-> >   events.
-> >
-> > * Adaptive events use the same pos/neg values of thrMD as non adaptive
-> >   ones.
-> >
-> > Tested against qemu based emulation.
-> >  
+> > -----Original Message-----
+> > From: Jonathan Cameron [mailto:jic23@jic23.retrosnub.co.uk]
+> > Sent: Tuesday, March 30, 2021 4:36 AM
+> > To: linux-iio@vger.kernel.org; Song Bao Hua (Barry Song)
+> > <song.bao.hua@hisilicon.com>
+> > Cc: Lars-Peter Clausen <lars@metafoo.de>; Michael Hennerich
+> > <Michael.Hennerich@analog.com>; Alexandru Ardelean <aardelean@deviqon.com>;
+> > Robh+dt@kernel.org; Alexandru Ardelean <ardeleanalex@gmail.com>; Jonathan
+> > Cameron <jonathan.cameron@huawei.com>
+> > Subject: Re: [PATCH v2 00/24] staging:iio:cdc:ad7150: cleanup / fixup / graduate
+> > 
+> > On Mon, 29 Mar 2021 16:30:21 +0100
+> > Jonathan Cameron <jic23@kernel.org> wrote:
+> >   
+> > > Hi All,
+> > >
+> > > Whilst I'll give up at some point and just apply this without additional
+> > > tags I really don't like doing that as I've made too many idiot mistakes
+> > > in the past.
+> > >
+> > > Some of these are fairly trivial so please can people take a look if
+> > > they have a chance. Rob did the DT one (thanks!) so we are down to...
+> > >  
+> > > >
+> > > > 12 - The big irq rework patch. Alex wasn't quite happy to give a tag
+> > > >      on that last time, but didn't mention anything specific. It's a bit
+> > > >      fiddly so fair enough!  
+> > >
+> > > (it's not that bad!)
+> > >  
+> > 
+> > 20 had an ack that I think was accidentally sent off list and hence burried
+> > in my junk. And then there were two...
+> >   
+> > > >
+> > > > 21 - ABI patch.  I don't think there is anything controversial in here
+> > > >      but it's not gained any tags yet.
+> > > >  
+> > >
+> > > Perhaps didn't help that I accidentally didn't cc Barry on v2.
+> > >
+> > > Thanks,
+> > >
+> > > Jonathan
+> > >
+> > >
+> > >  
+> > > > v1 description:
+> > > >
+> > > > This is an 'old' driver in IIO that has been in staging a while.
+> > > > First submitted in October 2010.
+> > > >
+> > > > I wanted to try and experiment and picked this driver to try it with.
+> > > >
+> > > > The cleanup etc here was all tested against some basic emulation
+> > > > added to QEMU rather than real hardware.  Once I've cleaned that up
+> > > > a tiny bit I'll push it up to https://github.com/jic23/qemu
+> > > > Note that for now I'm not proposing to upstream this to QEMU but
+> > > > would be interested in hearing if people thing it is a good idea to
+> > > > do so.
+> > > >
+> > > > Whilst it's obviously hard to be absolutely sure that the emulation is
+> > > > correct, the fact that the original driver worked as expected and the
+> > > > cleaned up version still does is certainly encouraging.
+> > > >
+> > > > Note however, that there were a few more significant changes in here than
+> > > > basic cleanup.
+> > > > 1. Interrupts / events were handled in a rather esoteric fashion.
+> > > >    (Always on, window modes represented as magnitudes).
+> > > >    Note that for two channel devices there are separate lines. The original
+> > > >    driver was not supporting this at all.
+> > > >    They now look more like a standard IIO driver and reflect experience
+> > > >    that we've gained over the years in dealing with devices where these
+> > > >    aren't interrupt lines as such, but rather reporters of current status.
+> > > > 2. Timeouts were handled in a fashion that clearly wouldn't work.
+> > > >
+> > > > Note that this moving out of staging makes a few bits of ABI 'official'
+> > > > and so those are added to the main IIO ABI Docs.
+> > > >
+> > > > Thanks in advance to anyone who has time to take a look.
+> > > >
+> > > > Jonathan Cameron (24):
+> > > >   staging:iio:cdc:ad7150: use swapped reads for i2c rather than open
+> > > >     coding.  
 > 
-> Overall looks ok.
-> A few minor issues with the device-matching and OF.
-> And maybe with the interrupt handling.
-
-Hopefully answers below address those two.
-
-
+> Using i2c_smbus_read_word_swapper and i2c_smbus_write_word_swapped
+> looks good to me. The only thing is that your changelog didn't
+> mention you also used swapper write as you said "use swapped
+> reads". Otherwise,
 > 
+> Reviewed-by: Barry Song <song.bao.hua@hisilicon>
 > 
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Link: https://lore.kernel.org/r/20210207154623.433442-13-jic23@kernel.org
-> > ---
-> >  drivers/staging/iio/cdc/ad7150.c | 258 ++++++++++++++++++-------------
-> >  1 file changed, 153 insertions(+), 105 deletions(-)
-> >
-> > diff --git a/drivers/staging/iio/cdc/ad7150.c b/drivers/staging/iio/cdc/ad7150.c
-> > index f8183c540d5c..24be97456c03 100644
-> > --- a/drivers/staging/iio/cdc/ad7150.c
-> > +++ b/drivers/staging/iio/cdc/ad7150.c
-> > @@ -11,6 +11,7 @@
-> >  #include <linux/kernel.h>
-> >  #include <linux/slab.h>
-> >  #include <linux/i2c.h>
-> > +#include <linux/irq.h>
-> >  #include <linux/module.h>
-> >
-> >  #include <linux/iio/iio.h>
-> > @@ -60,8 +61,6 @@ enum {
-> >  /**
-> >   * struct ad7150_chip_info - instance specific chip data
-> >   * @client: i2c client for this device
-> > - * @current_event: device always has one type of event enabled.
-> > - *     This element stores the event code of the current one.
-> >   * @threshold: thresholds for simple capacitance value events
-> >   * @thresh_sensitivity: threshold for simple capacitance offset
-> >   *     from 'average' value.
-> > @@ -70,21 +69,23 @@ enum {
-> >   *     value jumps to current value.  Note made up of two fields,
-> >   *      3:0 are for timeout receding - applies if below lower threshold
-> >   *      7:4 are for timeout approaching - applies if above upper threshold
-> > - * @old_state: store state from previous event, allowing confirmation
-> > - *     of new condition.
-> > - * @conversion_mode: the current conversion mode.
-> >   * @state_lock: ensure consistent state of this structure wrt the
-> >   *     hardware.
-> > + * @interrupts: one or two interrupt numbers depending on device type.
-> > + * @int_enabled: is a given interrupt currently enabled.
-> > + * @type: threshold type
-> > + * @dir: threshold direction
-> >   */
-> >  struct ad7150_chip_info {
-> >         struct i2c_client *client;
-> > -       u64 current_event;
-> >         u16 threshold[2][2];
-> >         u8 thresh_sensitivity[2][2];
-> >         u8 thresh_timeout[2][2];
-> > -       int old_state;
-> > -       char *conversion_mode;
-> >         struct mutex state_lock;
-> > +       int interrupts[2];
-> > +       bool int_enabled[2];
-> > +       enum iio_event_type type;
-> > +       enum iio_event_direction dir;
-> >  };
-> >
-> >  /*
-> > @@ -158,8 +159,8 @@ static int ad7150_read_event_config(struct iio_dev *indio_dev,
-> >         switch (type) {
-> >         case IIO_EV_TYPE_THRESH_ADAPTIVE:
-> >                 if (dir == IIO_EV_DIR_RISING)
-> > -                       return !thrfixed && (threshtype == 0x3);
-> > -               return !thrfixed && (threshtype == 0x2);
-> > +                       return !thrfixed && (threshtype == 0x1);
-> > +               return !thrfixed && (threshtype == 0x0);
-> >         case IIO_EV_TYPE_THRESH:
-> >                 if (dir == IIO_EV_DIR_RISING)
-> >                         return thrfixed && (threshtype == 0x1);
-> > @@ -179,11 +180,9 @@ static int ad7150_write_event_params(struct iio_dev *indio_dev,
-> >  {
-> >         struct ad7150_chip_info *chip = iio_priv(indio_dev);
-> >         int rising = (dir == IIO_EV_DIR_RISING);
-> > -       u64 event_code;
-> >
-> > -       event_code = IIO_UNMOD_EVENT_CODE(IIO_CAPACITANCE, chan, type, dir);
-> > -
-> > -       if (event_code != chip->current_event)
-> > +       /* Only update value live, if parameter is in use */
-> > +       if ((type != chip->type) || (dir != chip->dir))
-> >                 return 0;
-> >
-> >         switch (type) {
-> > @@ -231,52 +230,91 @@ static int ad7150_write_event_config(struct iio_dev *indio_dev,
-> >         int ret;
-> >         struct ad7150_chip_info *chip = iio_priv(indio_dev);
-> >         int rising = (dir == IIO_EV_DIR_RISING);
-> > -       u64 event_code;
-> > -
-> > -       /* Something must always be turned on */
-> > -       if (!state)
-> > -               return -EINVAL;
-> >
-> > -       event_code = IIO_UNMOD_EVENT_CODE(chan->type, chan->channel, type, dir);
-> > -       if (event_code == chip->current_event)
-> > +       /*
-> > +        * There is only a single shared control and no on chip
-> > +        * interrupt disables for the two interrupt lines.
-> > +        * So, enabling will switch the events configured to enable
-> > +        * whatever was most recently requested and if necessary enable_irq()
-> > +        * the interrupt and any disable will disable_irq() for that
-> > +        * channels interrupt.
-> > +        */
-> > +       if (!state) {
-> > +               if ((chip->int_enabled[chan->channel]) &&
-> > +                   (type == chip->type) && (dir == chip->dir)) {
-> > +                       disable_irq(chip->interrupts[chan->channel]);
-> > +                       chip->int_enabled[chan->channel] = false;
-> > +               }
-> >                 return 0;
-> > +       }
-> > +
-> >         mutex_lock(&chip->state_lock);
-> > -       ret = i2c_smbus_read_byte_data(chip->client, AD7150_CFG);
-> > -       if (ret < 0)
-> > -               goto error_ret;
-> > +       if ((type != chip->type) || (dir != chip->dir)) {
-> >
-> > -       cfg = ret & ~((0x03 << 5) | BIT(7));
-> > +               /*
-> > +                * Need to temporarily disable both interrupts if
-> > +                * enabled - this is to avoid races around changing
-> > +                * config and thresholds.
-> > +                * Note enable/disable_irq() are reference counted so
-> > +                * no need to check if already enabled.
-> > +                */
-> > +               disable_irq(chip->interrupts[0]);
-> > +               disable_irq(chip->interrupts[1]);
-> >
-> > -       switch (type) {
-> > -       case IIO_EV_TYPE_THRESH_ADAPTIVE:
-> > -               adaptive = 1;
-> > -               if (rising)
-> > -                       thresh_type = 0x3;
-> > -               else
-> > -                       thresh_type = 0x2;
-> > -               break;
-> > -       case IIO_EV_TYPE_THRESH:
-> > -               adaptive = 0;
-> > -               if (rising)
-> > -                       thresh_type = 0x1;
-> > -               else
-> > -                       thresh_type = 0x0;
-> > -               break;
-> > -       default:
-> > -               ret = -EINVAL;
-> > -               goto error_ret;
-> > -       }
-> > +               ret = i2c_smbus_read_byte_data(chip->client, AD7150_CFG);
-> > +               if (ret < 0)
-> > +                       goto error_ret;
-> >
-> > -       cfg |= (!adaptive << 7) | (thresh_type << 5);
-> > +               cfg = ret & ~((0x03 << 5) | BIT(7));
-> >
-> > -       ret = i2c_smbus_write_byte_data(chip->client, AD7150_CFG, cfg);
-> > -       if (ret < 0)
-> > -               goto error_ret;
-> > +               switch (type) {
-> > +               case IIO_EV_TYPE_THRESH_ADAPTIVE:
-> > +                       adaptive = 1;
-> > +                       if (rising)
-> > +                               thresh_type = 0x1;
-> > +                       else
-> > +                               thresh_type = 0x0;
-> > +                       break;
-> > +               case IIO_EV_TYPE_THRESH:
-> > +                       adaptive = 0;
-> > +                       if (rising)
-> > +                               thresh_type = 0x1;
-> > +                       else
-> > +                               thresh_type = 0x0;  
+> > > >   staging:iio:cdc:ad7150: Remove magnitude adaptive events
+> > > >   staging:iio:cdc:ad7150: Refactor event parameter update
+> > > >   staging:iio:cdc:ad7150: Timeout register covers both directions so
+> > > >     both need updating
+> > > >   staging:iio:cdc:ad7150: Drop platform data support
+> > > >   staging:iio:cdc:ad7150: Handle variation in chan_spec across device
+> > > >     and irq present or not
+> > > >   staging:iio:cdc:ad7150: Simplify event handling by only using rising
+> > > >     direction.
+> > > >   staging:iio:cdc:ad7150: Drop noisy print in probe
+> > > >   staging:iio:cdc:ad7150: Add sampling_frequency support
+> > > >   iio:event: Add timeout event info type
+> > > >   staging:iio:cdc:ad7150: Change timeout units to seconds and use core
+> > > >     support
+> > > >   staging:iio:cdc:ad7150: Rework interrupt handling.  
 > 
-> this can be ignored; it's a minor nit;
-> the if (rising) {} else {} block looks duplicate;
-> it could be moved after the switch() block;
+> +	/*
+> +	 * There are race conditions around enabling and disabling that
+> +	 * could easily land us here with a spurious interrupt.
+> +	 * Just eat it if so.
+> +	 */
+> +	if (!(int_status & status_mask))
+> +		return IRQ_HANDLED;
+> +
+> 
+> I am not sure what kind of race conditions we have since disable_irq()
+> will synchronize with the irq handler.
+> 
+> If we are in an interrupt, the user who calls disable_irq will wait
+> for the completion of irq handler.
+> If an interrupt comes in the gap of disable_irq and enable_irq, we should
+> have a valid int_status after we re-enable the interrupt?
+> 
+> Maybe it is because of the weird behavior of the hardware?
 
-If you are happy with rest I'll just roll that in whilst applying.
+I think you are right and I was being overly paranoid on that one. I'll drop
+the comment, though I'll leave the paranoid check.
 
 > 
-> > +                       break;
-> > +               default:
-> > +                       ret = -EINVAL;
-> > +                       goto error_ret;
-> > +               }
-> >
-> > -       chip->current_event = event_code;
-> > +               cfg |= (!adaptive << 7) | (thresh_type << 5);
-> > +
-> > +               ret = i2c_smbus_write_byte_data(chip->client, AD7150_CFG, cfg);
-> > +               if (ret < 0)
-> > +                       goto error_ret;
-> > +
-> > +               /*
-> > +                * There is a potential race condition here, but not easy
-> > +                * to close given we can't disable the interrupt at the
-> > +                * chip side of things. Rely on the status bit.
-> > +                */
-> > +               chip->type = type;
-> > +               chip->dir = dir;
-> > +
-> > +               /* update control attributes */
-> > +               ret = ad7150_write_event_params(indio_dev, chan->channel, type,
-> > +                                               dir);
-> > +               if (ret)
-> > +                       goto error_ret;
-> > +               /* reenable any irq's we disabled whilst changing mode */
-> > +               enable_irq(chip->interrupts[0]);
-> > +               enable_irq(chip->interrupts[1]);  
+> > > >   staging:iio:cdc:ad7150: More consistent register and field naming
+> > > >   staging:iio:cdc:ad7150: Reorganize headers.
+> > > >   staging:iio:cdc:ad7150: Tidy up local variable positioning.
+> > > >   staging:iio:cdc:ad7150: Drop unnecessary block comments.
+> > > >   staging:iio:cdc:ad7150: Shift the _raw readings by 4 bits.
+> > > >   staging:iio:cdc:ad7150: Add scale and offset to
+> > > >     info_mask_shared_by_type
+> > > >   staging:iio:cdc:ad7150: Really basic regulator support.
+> > > >   staging:iio:cdc:ad7150: Add of_match_table  
 > 
-> i'm wondering if we need to set   'chip->int_enabled[ for 0 & 1 ] = true;'
-> tbh i am not sure if there is a chance of mismatch between
-> 'int_enabled' and the actual enable_irq()
+> Reviewed-by: Barry Song <song.bao.hua@hisilicon>
 > 
-> maybe it might make sense to add an  ad7150_{enable/disable}_irq()
-> that checks the per-channel 'int_enabled' field;
-
-Ah.  I'm playing a bit of a game here. (there is a comment at the irq_disable() calls
-that was meant to indicate what was going on).
-
-There is a difference between when chip->int_enabled[] is changed in conjunction
-with enable_irq()/disable_irq() and when enable_irq()/disable_irq() are change on their own.
-
-The intent is that int_enabled[] reflects non-transient state of whether
-the interrupt is enabled - I don't want to update it during transient states.
-
-We are fine to do the disable_irq() calls on irqs that aren't enabled because
-disable_irq() calls can be safely nested.  Only when you have more enable_irq()
-calls (including startup if it's auto enabled) than you have disable_irq() calls
-will the interrupt be enabled.
-
-https://elixir.bootlin.com/linux/latest/source/kernel/irq/manage.c#L771
-https://elixir.bootlin.com/linux/latest/source/include/linux/irqdesc.h#L28
-The depth field in irq_desc is used for this.
-
+> > > >   iio:Documentation:ABI Add missing elements as used by the adi,ad7150  
 > 
+> +What:		/sys/.../events/in_capacitanceY_adaptive_thresh_rising_en
+> +What:		/sys/.../events/in_capacitanceY_adaptive_thresh_falling_en
+> +KernelVersion:	5.11
 > 
-> > +       }
-> > +       if (!chip->int_enabled[chan->channel]) {
-> > +               enable_irq(chip->interrupts[chan->channel]);
-> > +               chip->int_enabled[chan->channel] = true;
-> > +       }
-> >
-> > -       /* update control attributes */
-> > -       ret = ad7150_write_event_params(indio_dev, chan->channel, type, dir);
-> >  error_ret:
-> >         mutex_unlock(&chip->state_lock);
-> >
-> > @@ -434,59 +472,44 @@ static const struct iio_chan_spec ad7151_channels_no_irq[] = {
-> >         AD7150_CAPACITANCE_CHAN_NO_IRQ(0),
-> >  };
-> >
-> > -static irqreturn_t ad7150_event_handler(int irq, void *private)
-> > +static irqreturn_t __ad7150_event_handler(void *private, u8 status_mask,
-> > +                                         int channel)
-> >  {
-> >         struct iio_dev *indio_dev = private;
-> >         struct ad7150_chip_info *chip = iio_priv(indio_dev);
-> > -       u8 int_status;
-> >         s64 timestamp = iio_get_time_ns(indio_dev);
-> > -       int ret;
-> > +       int int_status;
-> >
-> > -       ret = i2c_smbus_read_byte_data(chip->client, AD7150_STATUS);
-> > -       if (ret < 0)
-> > +       int_status = i2c_smbus_read_byte_data(chip->client, AD7150_STATUS);
-> > +       if (int_status < 0)
-> >                 return IRQ_HANDLED;
-> >
-> > -       int_status = ret;
-> > -
-> > -       if ((int_status & AD7150_STATUS_OUT1) &&
-> > -           !(chip->old_state & AD7150_STATUS_OUT1))
-> > -               iio_push_event(indio_dev,
-> > -                              IIO_UNMOD_EVENT_CODE(IIO_CAPACITANCE,
-> > -                                                   0,
-> > -                                                   IIO_EV_TYPE_THRESH,
-> > -                                                   IIO_EV_DIR_RISING),
-> > -                               timestamp);
-> > -       else if ((!(int_status & AD7150_STATUS_OUT1)) &&
-> > -                (chip->old_state & AD7150_STATUS_OUT1))
-> > -               iio_push_event(indio_dev,
-> > -                              IIO_UNMOD_EVENT_CODE(IIO_CAPACITANCE,
-> > -                                                   0,
-> > -                                                   IIO_EV_TYPE_THRESH,
-> > -                                                   IIO_EV_DIR_FALLING),
-> > -                              timestamp);
-> > -
-> > -       if ((int_status & AD7150_STATUS_OUT2) &&
-> > -           !(chip->old_state & AD7150_STATUS_OUT2))
-> > -               iio_push_event(indio_dev,
-> > -                              IIO_UNMOD_EVENT_CODE(IIO_CAPACITANCE,
-> > -                                                   1,
-> > -                                                   IIO_EV_TYPE_THRESH,
-> > -                                                   IIO_EV_DIR_RISING),
-> > -                              timestamp);
-> > -       else if ((!(int_status & AD7150_STATUS_OUT2)) &&
-> > -                (chip->old_state & AD7150_STATUS_OUT2))
-> > -               iio_push_event(indio_dev,
-> > -                              IIO_UNMOD_EVENT_CODE(IIO_CAPACITANCE,
-> > -                                                   1,
-> > -                                                   IIO_EV_TYPE_THRESH,
-> > -                                                   IIO_EV_DIR_FALLING),
-> > -                              timestamp);
-> > -       /* store the status to avoid repushing same events */
-> > -       chip->old_state = int_status;
-> > +       /*
-> > +        * There are race conditions around enabling and disabling that
-> > +        * could easily land us here with a spurious interrupt.
-> > +        * Just eat it if so.
-> > +        */
-> > +       if (!(int_status & status_mask))
-> > +               return IRQ_HANDLED;
-> > +
-> > +       iio_push_event(indio_dev,
-> > +                      IIO_UNMOD_EVENT_CODE(IIO_CAPACITANCE, channel,
-> > +                                           chip->type, chip->dir),
-> > +                      timestamp);
-> >
-> >         return IRQ_HANDLED;
-> >  }
-> >
-> > +static irqreturn_t ad7150_event_handler_ch1(int irq, void *private)
-> > +{
-> > +       return __ad7150_event_handler(private, AD7150_STATUS_OUT1, 0);
-> > +}
-> > +
-> > +static irqreturn_t ad7150_event_handler_ch2(int irq, void *private)
-> > +{
-> > +       return __ad7150_event_handler(private, AD7150_STATUS_OUT2, 1);
-> > +}
-> > +
-> >  static IIO_CONST_ATTR(in_capacitance_thresh_adaptive_timeout_available,
-> >                       "[0 0.01 0.15]");
-> >
-> > @@ -533,12 +556,44 @@ static int ad7150_probe(struct i2c_client *client,
-> >
-> >         indio_dev->modes = INDIO_DIRECT_MODE;
-> >
-> > -       if (client->irq) {
-> > +       chip->interrupts[0] = fwnode_irq_get(dev_fwnode(&client->dev), 0);
-> > +       if (chip->interrupts[0] < 0)
-> > +               return chip->interrupts[0];
-> > +       if (id->driver_data == AD7150) {  
+> Is kernel 5.11 the right version? Guess not :-)
+Oops Can tell this took a while.  I'll tidy that up whilst applying.
 > 
-> checking  'id->driver_data'  will be flaky after the of_match_table is added;
-
-It's not, though the path is a bit obscure and only works if you don't use
-probe_new() - if using probe_new() you to call i2c_match_id() directly.
-
-I remember raising this in a review I did a few years back and chasing it down.
-I just sanity checked and it still works ;)
-
-So, even if we do an of_based registration the following happens
-
-of_i2c_register_device()
--> of_i2c_get_board_info() // gets the of_node pointer
--> i2c_new_client_device(adap, &info); 
-..  some time later the i2c_bus_type.probe() gets called for the devices we added
-   and
-
-
--> i2c_device_probe()
-  -> driver->probe(client, i2c_match_id(driver->id_table, client))
-    -> i2c_match_id() //matches against id table and hence gets us the driver_data.
-
-
-
-> either we defer the of_match_table patch, or we update it somehow;
-> maybe a chip_info struct is an idea;
-> otherwise we need to do void pointer to int conversions [which look nasty];
+> > > >   staging:iio:cdc:ad7150: Add copyright notice given substantial
+> > > >     changes.
+> > > >   dt-bindings:iio:cdc:adi,ad7150 binding doc  
 > 
-> i'm also seeing that there is a 'type' field inside of_device_id that
-> is underused, but looks useful for cases like this;
-> i'm also a bit paranoid to use it; because it may not be compatible
-> with acpi_device_id
+> Reviewed-by: Barry Song <song.bao.hua@hisilicon>
+> 
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - adi,ad7150
+> +              - adi,ad7156
+> +    then:
+> +      properties:
+> +        interrupts:
+> +          minItems: 2
+> +          maxItems: 2
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: adi,ad7151
+> +    then:
+> +      properties:
+> +        interrupts:
+> +          minItems: 1
+> +          maxItems: 1
+> 
+> A further follow-up might be:
+> we can move to read two irq number for adi7150/7156
+> and one irq number for adi7151 in driver?
 
-We can refactor this at some point, but I don't think it is necessary to move
-the driver out of staging as a lot of drivers are doing things the same
-way we do it here.
+Unless I'm miss understanding you I think we already do.
+There is a check against the driver_data being AD7150 which is set for
+the two parts that have 2 interrupts.  If we don't get that we don't
+query the second irq number.
 
 > 
-> > +               chip->interrupts[1] = fwnode_irq_get(dev_fwnode(&client->dev), 1);
-> > +               if (chip->interrupts[1] < 0)
-> > +                       return chip->interrupts[1];
-> > +       }
-> > +       if (chip->interrupts[0] &&
-> > +           (id->driver_data == AD7151 || chip->interrupts[1])) {
-> > +               irq_set_status_flags(chip->interrupts[0], IRQ_NOAUTOEN);
-> > +               ret = devm_request_threaded_irq(&client->dev,
-> > +                                               chip->interrupts[0],
-> > +                                               NULL,
-> > +                                               &ad7150_event_handler_ch1,
-> > +                                               IRQF_TRIGGER_RISING |
-> > +                                               IRQF_ONESHOT,
-> > +                                               "ad7150_irq1",
-> > +                                               indio_dev);
-> > +               if (ret)
-> > +                       return ret;
-> > +
-> >                 indio_dev->info = &ad7150_info;
-> >                 switch (id->driver_data) {
-> >                 case AD7150:
-> >                         indio_dev->channels = ad7150_channels;
-> >                         indio_dev->num_channels = ARRAY_SIZE(ad7150_channels);
-> > +                       irq_set_status_flags(chip->interrupts[1], IRQ_NOAUTOEN);
-> > +                       ret = devm_request_threaded_irq(&client->dev,
-> > +                                                       chip->interrupts[1],
-> > +                                                       NULL,
-> > +                                                       &ad7150_event_handler_ch2,
-> > +                                                       IRQF_TRIGGER_RISING |
-> > +                                                       IRQF_ONESHOT,
-> > +                                                       "ad7150_irq2",
-> > +                                                       indio_dev);
-> > +                       if (ret)
-> > +                               return ret;
-> >                         break;
-> >                 case AD7151:
-> >                         indio_dev->channels = ad7151_channels;
-> > @@ -548,25 +603,18 @@ static int ad7150_probe(struct i2c_client *client,
-> >                         return -EINVAL;
-> >                 }
-> >
-> > -               ret = devm_request_threaded_irq(&client->dev, client->irq,
-> > -                                               NULL,
-> > -                                               &ad7150_event_handler,
-> > -                                               IRQF_TRIGGER_RISING |
-> > -                                               IRQF_ONESHOT,
-> > -                                               "ad7150_irq1",
-> > -                                               indio_dev);
-> > -               if (ret)
-> > -                       return ret;
-> >         } else {
-> >                 indio_dev->info = &ad7150_info_no_irq;
-> >                 switch (id->driver_data) {
-> >                 case AD7150:
-> >                         indio_dev->channels = ad7150_channels_no_irq;
-> > -                       indio_dev->num_channels = ARRAY_SIZE(ad7150_channels_no_irq);
-> > +                       indio_dev->num_channels =
-> > +                               ARRAY_SIZE(ad7150_channels_no_irq);
-> >                         break;
-> >                 case AD7151:
-> >                         indio_dev->channels = ad7151_channels_no_irq;
-> > -                       indio_dev->num_channels = ARRAY_SIZE(ad7151_channels_no_irq);
-> > +                       indio_dev->num_channels =
-> > +                               ARRAY_SIZE(ad7151_channels_no_irq);
-> >                         break;
-> >                 default:
-> >                         return -EINVAL;
-> > --
-> > 2.30.2
-> >  
+> > > >   iio:cdc:ad7150: Move driver out of staging.
+> > > >
+> > > >  Documentation/ABI/testing/sysfs-bus-iio       |  33 +
+> > > >  .../bindings/iio/cdc/adi,ad7150.yaml          |  69 ++
+> > > >  drivers/iio/Kconfig                           |   1 +
+> > > >  drivers/iio/Makefile                          |   1 +
+> > > >  drivers/iio/cdc/Kconfig                       |  17 +
+> > > >  drivers/iio/cdc/Makefile                      |   6 +
+> > > >  drivers/iio/cdc/ad7150.c                      | 678 ++++++++++++++++++
+> > > >  drivers/iio/industrialio-event.c              |   1 +
+> > > >  drivers/staging/iio/cdc/Kconfig               |  10 -
+> > > >  drivers/staging/iio/cdc/Makefile              |   3 +-
+> > > >  drivers/staging/iio/cdc/ad7150.c              | 655 -----------------
+> > > >  include/linux/iio/types.h                     |   1 +
+> > > >  12 files changed, 808 insertions(+), 667 deletions(-)
+> > > >  create mode 100644  
+> > Documentation/devicetree/bindings/iio/cdc/adi,ad7150.yaml  
+> > > >  create mode 100644 drivers/iio/cdc/Kconfig
+> > > >  create mode 100644 drivers/iio/cdc/Makefile
+> > > >  create mode 100644 drivers/iio/cdc/ad7150.c
+> > > >  delete mode 100644 drivers/staging/iio/cdc/ad7150.c
+> > > >  
+> > >  
+> 
+> 
+> Thanks
+> Barry
+> 
+
+Thanks!
+
+Jonathan
+
 

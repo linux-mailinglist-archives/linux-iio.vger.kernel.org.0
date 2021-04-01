@@ -2,138 +2,100 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0744F351BB0
-	for <lists+linux-iio@lfdr.de>; Thu,  1 Apr 2021 20:11:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2131351A26
+	for <lists+linux-iio@lfdr.de>; Thu,  1 Apr 2021 20:04:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234628AbhDASKn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 1 Apr 2021 14:10:43 -0400
-Received: from mga07.intel.com ([134.134.136.100]:1736 "EHLO mga07.intel.com"
+        id S236136AbhDAR61 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 1 Apr 2021 13:58:27 -0400
+Received: from mga04.intel.com ([192.55.52.120]:52043 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236615AbhDASCp (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 1 Apr 2021 14:02:45 -0400
-IronPort-SDR: AosnQ+6nSoLTZ8YlxVgXpKw+b4pU4V4kK1Zmq04SKOxc87ZpKxuROjEguP8WFG18SzxqJDr2mU
- SEHAvL9uaDMQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9941"; a="256244491"
+        id S236745AbhDARzO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 1 Apr 2021 13:55:14 -0400
+IronPort-SDR: Uf+n2cYiuDCFzdC1QYC9WF/rcSyWndHN//sQQcEqB+Gcoc2xu4WOmJmVO+nlOlTJ9EOB3g4Icv
+ ASj9HAXdOw7g==
+X-IronPort-AV: E=McAfee;i="6000,8403,9941"; a="190035775"
 X-IronPort-AV: E=Sophos;i="5.81,296,1610438400"; 
-   d="scan'208";a="256244491"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2021 07:54:50 -0700
-IronPort-SDR: X9eLACOkTT5s82bm68RFcb7IcKuSxWeqc0tDNTkihzqGTXvuC0QEZfQ2TXEgsuY9JVRnD8vA4X
- HWKH4yKraf4Q==
+   d="scan'208";a="190035775"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2021 08:32:37 -0700
+IronPort-SDR: gFwxRxy+CLm11pAPs2/8KkEaYpMKWoO2ZDH3ypVLkCqoH/W0Kzi55C6GXk5zeSgiKS+R3oQzPX
+ mnmGi7QGBP3w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.81,296,1610438400"; 
-   d="scan'208";a="377726725"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga003.jf.intel.com with ESMTP; 01 Apr 2021 07:54:48 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 85C7D29D; Thu,  1 Apr 2021 17:55:03 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 2/2] iio: trigger: Fix strange (ladder-tupe) indentation
-Date:   Thu,  1 Apr 2021 17:54:57 +0300
-Message-Id: <20210401145457.12255-2-andriy.shevchenko@linux.intel.com>
+   d="scan'208";a="607640491"
+Received: from mylly.fi.intel.com (HELO mylly.fi.intel.com.) ([10.237.72.184])
+  by fmsmga006.fm.intel.com with ESMTP; 01 Apr 2021 08:32:36 -0700
+From:   Jarkko Nikula <jarkko.nikula@linux.intel.com>
+To:     linux-iio@vger.kernel.org
+Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        Felipe Balbi <balbi@kernel.org>
+Subject: [PATCH 1/2] counter: Add support for Quadrature x4 with swapped inputs
+Date:   Thu,  1 Apr 2021 18:32:27 +0300
+Message-Id: <20210401153228.2773560-1-jarkko.nikula@linux.intel.com>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210401145457.12255-1-andriy.shevchenko@linux.intel.com>
-References: <20210401145457.12255-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-In some cases indentation looks a bit weird with starting from = sign
-and being in a ladder-type style. Unify it across the module.
+Some Quadrature Encoders can swap phase inputs A and B internally. This
+new function will allow drivers to configure input swap mode.
 
-While at it, add blank line after definition block where it needed,
+This was implemented by Felipe Balbi while he was working at Intel.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Felipe Balbi (Intel) <balbi@kernel.org>
+Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 ---
- drivers/iio/industrialio-trigger.c | 25 ++++++++++++-------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
+ Documentation/ABI/testing/sysfs-bus-counter | 4 ++++
+ drivers/counter/counter.c                   | 3 ++-
+ include/linux/counter.h                     | 3 ++-
+ 3 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
-index 77fca24147b2..f998900a34f5 100644
---- a/drivers/iio/industrialio-trigger.c
-+++ b/drivers/iio/industrialio-trigger.c
-@@ -211,6 +211,7 @@ EXPORT_SYMBOL(iio_trigger_notify_done);
- static int iio_trigger_get_irq(struct iio_trigger *trig)
- {
- 	int ret;
-+
- 	mutex_lock(&trig->pool_lock);
- 	ret = bitmap_find_free_region(trig->pool,
- 				      CONFIG_IIO_CONSUMERS_PER_TRIGGER,
-@@ -239,9 +240,9 @@ static void iio_trigger_put_irq(struct iio_trigger *trig, int irq)
- int iio_trigger_attach_poll_func(struct iio_trigger *trig,
- 				 struct iio_poll_func *pf)
- {
-+	bool notinuse =
-+		bitmap_empty(trig->pool, CONFIG_IIO_CONSUMERS_PER_TRIGGER);
- 	int ret = 0;
--	bool notinuse
--		= bitmap_empty(trig->pool, CONFIG_IIO_CONSUMERS_PER_TRIGGER);
+diff --git a/Documentation/ABI/testing/sysfs-bus-counter b/Documentation/ABI/testing/sysfs-bus-counter
+index 566bd99fe0a5..8f1e3de88c77 100644
+--- a/Documentation/ABI/testing/sysfs-bus-counter
++++ b/Documentation/ABI/testing/sysfs-bus-counter
+@@ -146,6 +146,10 @@ Description:
+ 			updates	the respective count. Quadrature encoding
+ 			determines the direction.
  
- 	/* Prevent the module from being removed whilst attached to a trigger */
- 	__module_get(pf->indio_dev->driver_module);
-@@ -290,11 +291,10 @@ int iio_trigger_attach_poll_func(struct iio_trigger *trig,
- int iio_trigger_detach_poll_func(struct iio_trigger *trig,
- 				 struct iio_poll_func *pf)
- {
-+	bool no_other_users =
-+		bitmap_weight(trig->pool, CONFIG_IIO_CONSUMERS_PER_TRIGGER) == 1;
- 	int ret = 0;
--	bool no_other_users
--		= (bitmap_weight(trig->pool,
--				 CONFIG_IIO_CONSUMERS_PER_TRIGGER)
--		   == 1);
++		quadrature x4 swapped:
++			Same as quadrature x4, however Phase A and Phase B
++			signals are swapped.
 +
- 	if (trig->ops && trig->ops->set_trigger_state && no_other_users) {
- 		ret = trig->ops->set_trigger_state(trig, false);
- 		if (ret)
-@@ -312,6 +312,7 @@ int iio_trigger_detach_poll_func(struct iio_trigger *trig,
- irqreturn_t iio_pollfunc_store_time(int irq, void *p)
- {
- 	struct iio_poll_func *pf = p;
-+
- 	pf->timestamp = iio_get_time_ns(pf->indio_dev);
- 	return IRQ_WAKE_THREAD;
- }
-@@ -498,18 +499,16 @@ static const struct device_type iio_trig_type = {
- static void iio_trig_subirqmask(struct irq_data *d)
- {
- 	struct irq_chip *chip = irq_data_get_irq_chip(d);
--	struct iio_trigger *trig
--		= container_of(chip,
--			       struct iio_trigger, subirq_chip);
-+	struct iio_trigger *trig = container_of(chip, struct iio_trigger, subirq_chip);
-+
- 	trig->subirqs[d->irq - trig->subirq_base].enabled = false;
- }
+ What:		/sys/bus/counter/devices/counterX/countY/name
+ KernelVersion:	5.2
+ Contact:	linux-iio@vger.kernel.org
+diff --git a/drivers/counter/counter.c b/drivers/counter/counter.c
+index 6a683d086008..11d357245b14 100644
+--- a/drivers/counter/counter.c
++++ b/drivers/counter/counter.c
+@@ -752,7 +752,8 @@ static const char *const counter_count_function_str[] = {
+ 	[COUNTER_COUNT_FUNCTION_QUADRATURE_X1_B] = "quadrature x1 b",
+ 	[COUNTER_COUNT_FUNCTION_QUADRATURE_X2_A] = "quadrature x2 a",
+ 	[COUNTER_COUNT_FUNCTION_QUADRATURE_X2_B] = "quadrature x2 b",
+-	[COUNTER_COUNT_FUNCTION_QUADRATURE_X4] = "quadrature x4"
++	[COUNTER_COUNT_FUNCTION_QUADRATURE_X4] = "quadrature x4",
++	[COUNTER_COUNT_FUNCTION_QUADRATURE_X4_SWAPPED] = "quadrature x4 swapped"
+ };
  
- static void iio_trig_subirqunmask(struct irq_data *d)
- {
- 	struct irq_chip *chip = irq_data_get_irq_chip(d);
--	struct iio_trigger *trig
--		= container_of(chip,
--			       struct iio_trigger, subirq_chip);
-+	struct iio_trigger *trig = container_of(chip, struct iio_trigger, subirq_chip);
-+
- 	trig->subirqs[d->irq - trig->subirq_base].enabled = true;
- }
+ static ssize_t counter_function_show(struct device *dev,
+diff --git a/include/linux/counter.h b/include/linux/counter.h
+index 9dbd5df4cd34..c3b4d263eb22 100644
+--- a/include/linux/counter.h
++++ b/include/linux/counter.h
+@@ -170,7 +170,8 @@ enum counter_count_function {
+ 	COUNTER_COUNT_FUNCTION_QUADRATURE_X1_B,
+ 	COUNTER_COUNT_FUNCTION_QUADRATURE_X2_A,
+ 	COUNTER_COUNT_FUNCTION_QUADRATURE_X2_B,
+-	COUNTER_COUNT_FUNCTION_QUADRATURE_X4
++	COUNTER_COUNT_FUNCTION_QUADRATURE_X4,
++	COUNTER_COUNT_FUNCTION_QUADRATURE_X4_SWAPPED,
+ };
  
-@@ -695,7 +694,7 @@ EXPORT_SYMBOL(iio_trigger_using_own);
-  * device, -EINVAL otherwise.
-  */
- int iio_trigger_validate_own_device(struct iio_trigger *trig,
--	struct iio_dev *indio_dev)
-+				    struct iio_dev *indio_dev)
- {
- 	if (indio_dev->dev.parent != trig->dev.parent)
- 		return -EINVAL;
+ /**
 -- 
 2.30.2
 

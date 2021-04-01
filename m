@@ -2,90 +2,125 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F3D87351D3D
-	for <lists+linux-iio@lfdr.de>; Thu,  1 Apr 2021 20:48:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 126D7351E95
+	for <lists+linux-iio@lfdr.de>; Thu,  1 Apr 2021 20:55:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236807AbhDAS1o (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 1 Apr 2021 14:27:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37146 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239238AbhDASPu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 1 Apr 2021 14:15:50 -0400
-Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12AC5C0F26CA;
-        Thu,  1 Apr 2021 07:56:29 -0700 (PDT)
-Received: by mail-oi1-x232.google.com with SMTP id n8so2016723oie.10;
-        Thu, 01 Apr 2021 07:56:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=hmK4hQlTe/dm4OEhWDvI1X0E5xhesSt9X9vk7PN2+D0=;
-        b=Nt3OrrBvL3S9XKUVqA54ZvBGEsaBvezPl3jRLE0I2Bi0NWtYOZ61z05xk5t0aahcS3
-         iKsAk7vQVS9oV8UWzL8INOpgyzhugy7vON9xMXMREoLwQcdbduWVnLvXfkZquUmwvzbz
-         sjJiRCLDSWYIsmRe+BxuRCYgU4VJ9swJKjnVKyz5TrUaAjzFeIn9Kcc7XKOc4RdpA4rM
-         kR+XQ9PIs9NEbPwWMDk8Mu1UxX+NYGWpvDINS4NrOnA3yzvE+YdHi9I2d3T+iIL7hC0u
-         WmJJG2Zecscg0R3l06J+8g/yLQensHlob2lkGgQr8npEQ9Mhhq7zn9bP2Qdwtf4ZRxIB
-         q+7Q==
-X-Gm-Message-State: AOAM533+7v6il8Nkpt37Z0U4nFlnYvXbVBUu2I7mbeUniBP6ecZQl08+
-        l8rkVm+KjwyjC18vFZmDHA==
-X-Google-Smtp-Source: ABdhPJzSJezFFJWfsrLlTbHO7wSon9UUy58X1LwrBJKlLXSZ7+3BsgnGryhpiYtiaivLvDP+5R1zPg==
-X-Received: by 2002:a05:6808:249:: with SMTP id m9mr6434303oie.170.1617288986305;
-        Thu, 01 Apr 2021 07:56:26 -0700 (PDT)
-Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id v65sm1092368oib.42.2021.04.01.07.56.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Apr 2021 07:56:24 -0700 (PDT)
-Received: (nullmailer pid 409162 invoked by uid 1000);
-        Thu, 01 Apr 2021 14:56:21 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Puranjay Mohan <puranjay12@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, alexandru.ardelean@analog.com,
-        knaack.h@gmx.de, devicetree@vger.kernel.org, lars@metafoo.de,
-        jic23@kernel.org, linux-iio@vger.kernel.org
-In-Reply-To: <20210401091648.87421-2-puranjay12@gmail.com>
-References: <20210401091648.87421-1-puranjay12@gmail.com> <20210401091648.87421-2-puranjay12@gmail.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: temperature: Add DT bindings for TMP117
-Date:   Thu, 01 Apr 2021 09:56:21 -0500
-Message-Id: <1617288981.576340.409161.nullmailer@robh.at.kernel.org>
+        id S237245AbhDASnx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 1 Apr 2021 14:43:53 -0400
+Received: from mail.kernel.org ([198.145.29.99]:32786 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S238339AbhDASh7 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 1 Apr 2021 14:37:59 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9787461264;
+        Thu,  1 Apr 2021 15:00:11 +0000 (UTC)
+Date:   Thu, 1 Apr 2021 16:00:20 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+        <nuno.sa@analog.com>, <dragos.bogdan@analog.com>,
+        Greg KH <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH v2 1/5] iio: Documentation: update definitions for
+ bufferY and scan_elements
+Message-ID: <20210401160020.17537821@jic23-huawei>
+In-Reply-To: <20210401154408.5f26a3c6@coco.lan>
+References: <20210217083438.37865-1-alexandru.ardelean@analog.com>
+        <20210217083438.37865-2-alexandru.ardelean@analog.com>
+        <20210401154408.5f26a3c6@coco.lan>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 01 Apr 2021 14:46:47 +0530, Puranjay Mohan wrote:
-> Add devicetree binding document for TMP117, a digital temperature sensor.
+On Thu, 1 Apr 2021 15:44:08 +0200
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+
+> Em Wed, 17 Feb 2021 10:34:34 +0200
+> Alexandru Ardelean <alexandru.ardelean@analog.com> escreveu:
 > 
-> Signed-off-by: Puranjay Mohan <puranjay12@gmail.com>
-> ---
->  .../bindings/iio/temperature/ti,tmp117.yaml   | 34 +++++++++++++++++++
->  1 file changed, 34 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
+> > Since the new change to the IIO buffer infrastructure, the buffer/ and
+> > scan_elements/ directories have been merged into bufferY/ to have some
+> > attributes available per-buffer.
+> > 
+> > This change updates the ABI docs to reflect this change.
+> > 
+> > The hwfifo attributes are not updated, as for now these should be used
+> > via the legacy buffer/ directory until they are moved into core.
+> > 
+> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> > ---
+> >  Documentation/ABI/testing/sysfs-bus-iio | 85 +++++++++++++++++++++++++
+> >  1 file changed, 85 insertions(+)
+> > 
+> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+> > index d957f5da5c04..f2a72d7fbacb 100644
+> > --- a/Documentation/ABI/testing/sysfs-bus-iio
+> > +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> > @@ -1118,12 +1118,16 @@ Description:
+> >  
+> >  What:		/sys/bus/iio/devices/iio:deviceX/buffer/length
+> >  KernelVersion:	2.6.35
+> > +What:		/sys/bus/iio/devices/iio:deviceX/bufferY/length
+> > +KernelVersion:	5.11
+> >  Contact:	linux-iio@vger.kernel.org
+> >  Description:
+> >  		Number of scans contained by the buffer.  
 > 
+> The ABI parser doesn't like things like this:
+> 
+> 	$ ./scripts/get_abi.pl validate
+> 
+> 	Warning: file Documentation/ABI/testing/sysfs-bus-iio#1167:
+> 		What '/sys/bus/iio/devices/iio:deviceX/buffer/length' doesn't have a description
+> 
+> The main reason is that all properties, including KernelVersion, 
+> Contact and Description are associated to a group of properties.
+> 
+> To be frank, for me that don't work with IIO, the above ABI
+> description doesn't sound clear.
+> 
+> I mean, what's the difference between
+> 	/sys/bus/iio/devices/iio:deviceX/buffer/length
+> and
+> 	/sys/bus/iio/devices/iio:deviceX/bufferY/length?
+> 
+> 
+> If the intention is to tell that:
+> 	/sys/bus/iio/devices/iio:deviceX/buffer/length
+> was obsoleted by:
+> 	/sys/bus/iio/devices/iio:deviceX/bufferY/length
+> 
+> IMO, the right thing would be to move the deprecated definition to
+> 	Documentation/ABI/obsolete/
+> 
+> If, on the other hand, both are completely identical and 
+> non-obsoleted, why to have both APIs? 
+> 
+> Or did you just missed adding a different description for the
+> new ABI symbols, but this was dropped due to some merge
+> conflict?
 
-My bot found errors running 'make dt_binding_check' on your patch:
+You are right that the version with out the index is obsolete
+but it's only just become so and there are no realistic way we
+are going to ever be able to remove it however much we encourage
+userspace to use the new interface.  We are stuck with this bit
+of backwards compatibility indefinitely.
 
-yamllint warnings/errors:
+I'm fine with moving it and related definitions over to
+ABI/obsolete if that makes sense.
 
-dtschema/dtc warnings/errors:
-Documentation/devicetree/bindings/iio/temperature/ti,tmp117.example.dts:21.13-26: Warning (reg_format): /example-0/tmp117@48:reg: property has invalid length (4 bytes) (#address-cells == 1, #size-cells == 1)
-Documentation/devicetree/bindings/iio/temperature/ti,tmp117.example.dt.yaml: Warning (pci_device_reg): Failed prerequisite 'reg_format'
-Documentation/devicetree/bindings/iio/temperature/ti,tmp117.example.dt.yaml: Warning (pci_device_bus_num): Failed prerequisite 'reg_format'
-Documentation/devicetree/bindings/iio/temperature/ti,tmp117.example.dt.yaml: Warning (simple_bus_reg): Failed prerequisite 'reg_format'
-Documentation/devicetree/bindings/iio/temperature/ti,tmp117.example.dt.yaml: Warning (i2c_bus_reg): Failed prerequisite 'reg_format'
-Documentation/devicetree/bindings/iio/temperature/ti,tmp117.example.dt.yaml: Warning (spi_bus_reg): Failed prerequisite 'reg_format'
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.example.dt.yaml: example-0: tmp117@48:reg:0: [72] is too short
-	From schema: /usr/local/lib/python3.8/dist-packages/dtschema/schemas/reg.yaml
+Jonathan
 
-See https://patchwork.ozlabs.org/patch/1460920
 
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
+> 
+> Thanks,
+> Mauro
 

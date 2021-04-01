@@ -2,131 +2,90 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CAD50351E92
-	for <lists+linux-iio@lfdr.de>; Thu,  1 Apr 2021 20:55:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3D87351D3D
+	for <lists+linux-iio@lfdr.de>; Thu,  1 Apr 2021 20:48:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236588AbhDASnp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 1 Apr 2021 14:43:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57618 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237199AbhDASdC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 1 Apr 2021 14:33:02 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C2C636135E;
-        Thu,  1 Apr 2021 14:56:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1617288964;
-        bh=9nGCAXDp6OelbE7tz1e6xJ0PqioU1rqkdi7vdNwhnHs=;
-        h=From:To:Cc:Subject:Date:From;
-        b=DFO+KLWc6v1piMLn8m7vsnNF6kl0O39zoVez/n6cI2DT7ixcAxdSDyfJW8hUUNmRI
-         IOox1YjvwF5Ihj0O5GyaS3vOMBg1lTptaIc9Rf0bSm0zJqA1uwoyuv+RVlZXqCVsvL
-         xmDHRKlnSxtmNdaSJv84qiXlzFYhhtSoEXX1io9nXfujiQZAZY4cf5R39v3gV0aSF4
-         vue3FBomsJvf/lCYbGzYDwABlftwFMNxUv0hlgqJg8LpVYpSfrbUvQIO815mQMR8Ct
-         hMVmiMdm5Lr6PM27XURFes6sTkw/k7sqpxoP0JUEGAbLgIdqENzuaArnvtr8Af71i9
-         VssIW+/kyxxKw==
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org
-Cc:     Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: [PATCH] iio:adc: Drop false comment about lack of timestamp control
-Date:   Thu,  1 Apr 2021 15:54:10 +0100
-Message-Id: <20210401145410.226917-1-jic23@kernel.org>
-X-Mailer: git-send-email 2.31.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S236807AbhDAS1o (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 1 Apr 2021 14:27:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37146 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239238AbhDASPu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 1 Apr 2021 14:15:50 -0400
+Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12AC5C0F26CA;
+        Thu,  1 Apr 2021 07:56:29 -0700 (PDT)
+Received: by mail-oi1-x232.google.com with SMTP id n8so2016723oie.10;
+        Thu, 01 Apr 2021 07:56:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=hmK4hQlTe/dm4OEhWDvI1X0E5xhesSt9X9vk7PN2+D0=;
+        b=Nt3OrrBvL3S9XKUVqA54ZvBGEsaBvezPl3jRLE0I2Bi0NWtYOZ61z05xk5t0aahcS3
+         iKsAk7vQVS9oV8UWzL8INOpgyzhugy7vON9xMXMREoLwQcdbduWVnLvXfkZquUmwvzbz
+         sjJiRCLDSWYIsmRe+BxuRCYgU4VJ9swJKjnVKyz5TrUaAjzFeIn9Kcc7XKOc4RdpA4rM
+         kR+XQ9PIs9NEbPwWMDk8Mu1UxX+NYGWpvDINS4NrOnA3yzvE+YdHi9I2d3T+iIL7hC0u
+         WmJJG2Zecscg0R3l06J+8g/yLQensHlob2lkGgQr8npEQ9Mhhq7zn9bP2Qdwtf4ZRxIB
+         q+7Q==
+X-Gm-Message-State: AOAM533+7v6il8Nkpt37Z0U4nFlnYvXbVBUu2I7mbeUniBP6ecZQl08+
+        l8rkVm+KjwyjC18vFZmDHA==
+X-Google-Smtp-Source: ABdhPJzSJezFFJWfsrLlTbHO7wSon9UUy58X1LwrBJKlLXSZ7+3BsgnGryhpiYtiaivLvDP+5R1zPg==
+X-Received: by 2002:a05:6808:249:: with SMTP id m9mr6434303oie.170.1617288986305;
+        Thu, 01 Apr 2021 07:56:26 -0700 (PDT)
+Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id v65sm1092368oib.42.2021.04.01.07.56.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Apr 2021 07:56:24 -0700 (PDT)
+Received: (nullmailer pid 409162 invoked by uid 1000);
+        Thu, 01 Apr 2021 14:56:21 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Puranjay Mohan <puranjay12@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, alexandru.ardelean@analog.com,
+        knaack.h@gmx.de, devicetree@vger.kernel.org, lars@metafoo.de,
+        jic23@kernel.org, linux-iio@vger.kernel.org
+In-Reply-To: <20210401091648.87421-2-puranjay12@gmail.com>
+References: <20210401091648.87421-1-puranjay12@gmail.com> <20210401091648.87421-2-puranjay12@gmail.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: temperature: Add DT bindings for TMP117
+Date:   Thu, 01 Apr 2021 09:56:21 -0500
+Message-Id: <1617288981.576340.409161.nullmailer@robh.at.kernel.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Thu, 01 Apr 2021 14:46:47 +0530, Puranjay Mohan wrote:
+> Add devicetree binding document for TMP117, a digital temperature sensor.
+> 
+> Signed-off-by: Puranjay Mohan <puranjay12@gmail.com>
+> ---
+>  .../bindings/iio/temperature/ti,tmp117.yaml   | 34 +++++++++++++++++++
+>  1 file changed, 34 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
+> 
 
-The timestamp control has been a function implemented in the core of
-IIO for a long time, so this comment is incorrect and has clearly been
-cut and paste into all these drivers.
+My bot found errors running 'make dt_binding_check' on your patch:
 
-The remainder of the comment added nothing and was confusing so dropped
-that as well.
+yamllint warnings/errors:
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>
+dtschema/dtc warnings/errors:
+Documentation/devicetree/bindings/iio/temperature/ti,tmp117.example.dts:21.13-26: Warning (reg_format): /example-0/tmp117@48:reg: property has invalid length (4 bytes) (#address-cells == 1, #size-cells == 1)
+Documentation/devicetree/bindings/iio/temperature/ti,tmp117.example.dt.yaml: Warning (pci_device_reg): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/iio/temperature/ti,tmp117.example.dt.yaml: Warning (pci_device_bus_num): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/iio/temperature/ti,tmp117.example.dt.yaml: Warning (simple_bus_reg): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/iio/temperature/ti,tmp117.example.dt.yaml: Warning (i2c_bus_reg): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/iio/temperature/ti,tmp117.example.dt.yaml: Warning (spi_bus_reg): Failed prerequisite 'reg_format'
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.example.dt.yaml: example-0: tmp117@48:reg:0: [72] is too short
+	From schema: /usr/local/lib/python3.8/dist-packages/dtschema/schemas/reg.yaml
 
----
- drivers/iio/adc/ad7298.c | 6 ------
- drivers/iio/adc/ad7887.c | 6 ------
- drivers/iio/adc/ad7923.c | 6 ------
- drivers/iio/adc/ad799x.c | 6 ------
- 4 files changed, 24 deletions(-)
+See https://patchwork.ozlabs.org/patch/1460920
 
-diff --git a/drivers/iio/adc/ad7298.c b/drivers/iio/adc/ad7298.c
-index 689ecd5dd563..d2163cb62f4f 100644
---- a/drivers/iio/adc/ad7298.c
-+++ b/drivers/iio/adc/ad7298.c
-@@ -142,12 +142,6 @@ static int ad7298_update_scan_mode(struct iio_dev *indio_dev,
- 	return 0;
- }
- 
--/*
-- * ad7298_trigger_handler() bh of trigger launched polling to ring buffer
-- *
-- * Currently there is no option in this driver to disable the saving of
-- * timestamps within the ring.
-- */
- static irqreturn_t ad7298_trigger_handler(int irq, void *p)
- {
- 	struct iio_poll_func *pf = p;
-diff --git a/drivers/iio/adc/ad7887.c b/drivers/iio/adc/ad7887.c
-index 4f6f0e0e03ee..9b3cbe1ddc6f 100644
---- a/drivers/iio/adc/ad7887.c
-+++ b/drivers/iio/adc/ad7887.c
-@@ -109,12 +109,6 @@ static int ad7887_ring_postdisable(struct iio_dev *indio_dev)
- 	return spi_sync(st->spi, &st->msg[AD7887_CH0]);
- }
- 
--/*
-- * ad7887_trigger_handler() bh of trigger launched polling to ring buffer
-- *
-- * Currently there is no option in this driver to disable the saving of
-- * timestamps within the ring.
-- **/
- static irqreturn_t ad7887_trigger_handler(int irq, void *p)
- {
- 	struct iio_poll_func *pf = p;
-diff --git a/drivers/iio/adc/ad7923.c b/drivers/iio/adc/ad7923.c
-index 287f4c13194e..9a649745cd0a 100644
---- a/drivers/iio/adc/ad7923.c
-+++ b/drivers/iio/adc/ad7923.c
-@@ -192,12 +192,6 @@ static int ad7923_update_scan_mode(struct iio_dev *indio_dev,
- 	return 0;
- }
- 
--/*
-- * ad7923_trigger_handler() bh of trigger launched polling to ring buffer
-- *
-- * Currently there is no option in this driver to disable the saving of
-- * timestamps within the ring.
-- */
- static irqreturn_t ad7923_trigger_handler(int irq, void *p)
- {
- 	struct iio_poll_func *pf = p;
-diff --git a/drivers/iio/adc/ad799x.c b/drivers/iio/adc/ad799x.c
-index 1575b7670207..18bf8386d50a 100644
---- a/drivers/iio/adc/ad799x.c
-+++ b/drivers/iio/adc/ad799x.c
-@@ -182,12 +182,6 @@ static int ad799x_update_config(struct ad799x_state *st, u16 config)
- 	return 0;
- }
- 
--/*
-- * ad799x_trigger_handler() bh of trigger launched polling to ring buffer
-- *
-- * Currently there is no option in this driver to disable the saving of
-- * timestamps within the ring.
-- **/
- static irqreturn_t ad799x_trigger_handler(int irq, void *p)
- {
- 	struct iio_poll_func *pf = p;
--- 
-2.31.1
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
 

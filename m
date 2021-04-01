@@ -2,114 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E954351AB3
-	for <lists+linux-iio@lfdr.de>; Thu,  1 Apr 2021 20:07:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2065351AAF
+	for <lists+linux-iio@lfdr.de>; Thu,  1 Apr 2021 20:07:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236605AbhDASCo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 1 Apr 2021 14:02:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33036 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236043AbhDAR5R (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 1 Apr 2021 13:57:17 -0400
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FE56C0D9424;
-        Thu,  1 Apr 2021 07:53:03 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id v10so1654569pfn.5;
-        Thu, 01 Apr 2021 07:53:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=S8v12+xvw38bIlezrR3XZMbu9iWBOqwBPhWL+2JH5Uc=;
-        b=Dyqaw1+fyqUfg5bx0s7dFljkCV8PaVIz36dJtCnis6d0JE98H+gWGEiJkpxzAu72t5
-         7wx0QmLOv6AMm0/1H50UY2mhotoAXpVBh6TjlUbhRDghDYIvd4Na88BsYOU/MfjiG/Ek
-         5L9NUBnbr0HDgBFpjCwPCjneRQQqWMFxfdBdAOUbbkWGh50YlaxYeyrpcBppDZxPfLju
-         7W5/5wDngGZi9dfnVSeMQtKWEkaIJVTGbtbo9z+RiPBI2tP2AG9Lmg2iFXLV7/mlHJpP
-         BdQnus19uPbIqKC78aExwLAg091o5q+nisiOXbINw42FSWQE+dz2viABp1CuUiFcQbbV
-         QNRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=S8v12+xvw38bIlezrR3XZMbu9iWBOqwBPhWL+2JH5Uc=;
-        b=Z2EEFRlRaxyJjpEDPgbwcpPGf79rKZ+dkUxR09P7igo4/zPaRSZ8ZE7DkTnnW+xoyn
-         nT9TSiVra1gutF6KT2paqnplhpdCB3t4nqSQfU1nUvyPKcIj6D0/Bb2BePIgyYWG+25R
-         3oTtIBniU7qSdN6/iFyukMHbqk5FD5nme49uf2QoTbz0l2KTjmkkSC44sDh46wd42n4v
-         a0qLR+eh6HL9XiJKfxrXQlt8oDSgUeJe1gq3Gxm46NADfPqC32pirK8Jhkn1w/7auoVz
-         7gbPEfRJTH4wBgTKkor29QVPOu/STCaipTrgq3C47R/4vHN7mrtwp4YLNVsUHf+L/WSd
-         CCrg==
-X-Gm-Message-State: AOAM533CrZt/KvlcNgh369tUdh25Wk8PAve6Q0GGDBLZS45PHSr0gy+b
-        BbMOnf1PyABJO9M23bDF7M67wJHxUjEWh1xF
-X-Google-Smtp-Source: ABdhPJzu44h9Fj7Ot3tFgyse9/w8XDAsDQQFWBiJsD/anxTnTfRamR8LuuoBNBHgcCRNKdUOVvGHZw==
-X-Received: by 2002:a63:1a47:: with SMTP id a7mr7729388pgm.437.1617288782443;
-        Thu, 01 Apr 2021 07:53:02 -0700 (PDT)
-Received: from ?IPv6:2409:4072:6307:8389:a773:d07f:cd55:994a? ([2409:4072:6307:8389:a773:d07f:cd55:994a])
-        by smtp.gmail.com with ESMTPSA id s19sm5825401pfh.168.2021.04.01.07.52.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 Apr 2021 07:53:01 -0700 (PDT)
-Subject: Re: [PATCH] iio: adc: bcm_iproc_adc: Use %s and __func__
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
+        id S236590AbhDASCn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 1 Apr 2021 14:02:43 -0400
+Received: from mga02.intel.com ([134.134.136.20]:34705 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235115AbhDAR4S (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 1 Apr 2021 13:56:18 -0400
+IronPort-SDR: QQrT7Lv3r93+6Tp7g9Nh8UreNouC3Jn3bb1EAHkzpJJ3dRVHyjlElH4cdcOIiOtTidDcYkNj9r
+ be282oNTgxbw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9941"; a="179392886"
+X-IronPort-AV: E=Sophos;i="5.81,296,1610438400"; 
+   d="scan'208";a="179392886"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2021 07:54:49 -0700
+IronPort-SDR: s6iDBroVq39H0T6xw7Oqd0VieF9lpLSatZ+p1i8nN+EMCq0EG2q2BMKeQzQiOFnU7PA14ciBo3
+ TXNXU4XE9W6g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.81,296,1610438400"; 
+   d="scan'208";a="456013958"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga001.jf.intel.com with ESMTP; 01 Apr 2021 07:54:47 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id D2C9222B; Thu,  1 Apr 2021 17:55:02 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20210401062517.28832-1-dmugil2000@gmail.com>
- <CAHp75VfgL0KW0fetgE3NuBb4itMK1oY+yLmr1xDYkn390hCscg@mail.gmail.com>
- <20210401113015.00006b70@Huawei.com>
-From:   Mugilraj D <dmugil2000@gmail.com>
-Message-ID: <a2ac91a9-54e3-2525-1e7e-00a26d3393e3@gmail.com>
-Date:   Thu, 1 Apr 2021 20:22:47 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/2] iio: trigger: Replace explicit casting and wrong specifier with proper one
+Date:   Thu,  1 Apr 2021 17:54:56 +0300
+Message-Id: <20210401145457.12255-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-In-Reply-To: <20210401113015.00006b70@Huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+By unknown reason device name is set with an index casted from int
+to unsigned long while at the same time with "%ld" specifier. Both parts
+seems wrong to me, thus replace replace explicit casting and wrong specifier
+with proper one, i.e. "%u".
 
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/iio/industrialio-trigger.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-On 01/04/21 4:00 pm, Jonathan Cameron wrote:
-> On Thu, 1 Apr 2021 12:24:50 +0300
-> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> 
->> On Thu, Apr 1, 2021 at 9:27 AM Mugilraj Dhavachelvan
->> <dmugil2000@gmail.com> wrote:
->>>
->>> Change function's name to %s and __func__ to fix checkpatch.pl errors.  
->>
->> No, just drop the __func__ completely. First of all, we have a device
->> name, and uniqueness of the messages in the driver should guarantee
->> easy findings. Second, specific to _dbg() variants, with enabled
->> Dynamic Debug it can be chosen at run time!
->>
->> I recommend going through all drivers and drop __func__ near to
->> dev_dbg() and pr_debug().
->>
-> 
-> Agreed.  Though beware that some maintainers will count this
-> as noise and get grumpy.
-> 
-> I'm fine with such patches for IIO.
+diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
+index 32ac1bec25e3..77fca24147b2 100644
+--- a/drivers/iio/industrialio-trigger.c
++++ b/drivers/iio/industrialio-trigger.c
+@@ -75,8 +75,7 @@ int __iio_trigger_register(struct iio_trigger *trig_info,
+ 		return trig_info->id;
+ 
+ 	/* Set the name used for the sysfs directory etc */
+-	dev_set_name(&trig_info->dev, "trigger%ld",
+-		     (unsigned long) trig_info->id);
++	dev_set_name(&trig_info->dev, "trigger%u", trig_info->id);
+ 
+ 	ret = device_add(&trig_info->dev);
+ 	if (ret)
+-- 
+2.30.2
 
-Sorry for the noise. I just seen the docs about dynamic debug.
-So, if we use dev_dbg("log_msg") it will print statement like
-filename:lineno [module]func flag log_msg, If I get it correctly.
-And no need of specifying __func__ in dev_dbg() and dp_dbg() right!!
-
-Jonathan do you have any TODO's?
-
-> 
-> Jonathan
-> 

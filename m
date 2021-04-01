@@ -2,84 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 976A335079C
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Mar 2021 21:50:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2C8F350EFD
+	for <lists+linux-iio@lfdr.de>; Thu,  1 Apr 2021 08:26:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236309AbhCaTtc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 31 Mar 2021 15:49:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58564 "EHLO
+        id S229459AbhDAG0J (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 1 Apr 2021 02:26:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236338AbhCaTtV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 31 Mar 2021 15:49:21 -0400
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0553DC06174A
-        for <linux-iio@vger.kernel.org>; Wed, 31 Mar 2021 12:49:21 -0700 (PDT)
-Received: by mail-pj1-x102e.google.com with SMTP id ha17so10077934pjb.2
-        for <linux-iio@vger.kernel.org>; Wed, 31 Mar 2021 12:49:21 -0700 (PDT)
+        with ESMTP id S233102AbhDAGZ4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 1 Apr 2021 02:25:56 -0400
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75EC5C0613E6;
+        Wed, 31 Mar 2021 23:25:56 -0700 (PDT)
+Received: by mail-pj1-x1032.google.com with SMTP id k23-20020a17090a5917b02901043e35ad4aso2525564pji.3;
+        Wed, 31 Mar 2021 23:25:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:content-transfer-encoding:in-reply-to:references
-         :subject:from:cc:to:date:message-id:user-agent;
-        bh=32Kbmqg3krs7p25f4rHegFa5WMse8PFOAVaaQM1G2kY=;
-        b=RID7sPvJRaiT505nWlLaHQPp0SOLeE5Inrx3h+T0Tjgp+1oZo3aWOEv7yXOaG5OP3U
-         tLdPIiB62drBuH+ruCcxqHn+zb1d6z8Wzn1qAaDrkwXT5WBpAADab5PR53NjWMdjPyHp
-         BpIvKijc5HnlljRdmwjgeRNqK82MybXqcOnqQ=
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=LXnLdVNgyUimdPfL+v5GFIuyPBZ6lA/hlpHGp24V/bk=;
+        b=KVo7mQYW1fGm/1RDQuou3EKnitEFnv+ZUo7CJdDAMt+YrRIMG08OavCbVAIPcJMf2E
+         dLStXZ4J6EJ0Y6GVF+WxbtYcap9xiurjUW/7sdP8ySg+cL0cXd7O+3bUS9cdTZDAmsGR
+         dFn1s0SUa4/GE9ndbltNn5U2KQtilEUJpr/tnYsaO30Ngkb/HL+nM7+0Od9khC8HLZv6
+         KbwkIEmJwhnyRqDei3GwOCMkSfwVT5++Kcy05+qJ1NsXywkFZZ770p6jZea8Exj4JEpY
+         zd0b79fH6eBsk2O0jG8ojHKDye755toxBPRdi5hBvvQzfQe9rKJ948WNKHEuMORD78cE
+         80MQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:content-transfer-encoding
-         :in-reply-to:references:subject:from:cc:to:date:message-id
-         :user-agent;
-        bh=32Kbmqg3krs7p25f4rHegFa5WMse8PFOAVaaQM1G2kY=;
-        b=qS8CDmGuIAwXiUZlWYQadfckhf4zu5ggxM7RWRPL9/EzHPguQNYBk1sDCpoYwOmJ9C
-         QYuiD0a5GfJL0IVFpnPftGHh1kZ/sKgJA7KwGp+Fxsr7NNa2Xk9zzUYdC6u0RBcMEOTH
-         UYT15jdMc2WxBqc9OUKc3ARkKkY8UZh1TakWZFzejxvEn9tLbiMs1q1RN8CgzzzfY3t0
-         km4YQlDcvn16sAQlNTZ5rXZYx9yg15n3lG+Ful6ajm3jZQJ+Sl6ieHj/MkEN1UDVOrtt
-         Film7mCzjD988xR1Q0gjMCjRCqNMyTY6YaoCCJqJ68J3yIpUJawhmMf0J7dhdlqYbHb1
-         b0rA==
-X-Gm-Message-State: AOAM530KxSASWucoxG61HFtDQ72NQ7klwJnZg22jxaMJaJv14Hwt0BjQ
-        ZlpTggmKEBGBNZMTFO64T1OLOIoVDI7u7Q==
-X-Google-Smtp-Source: ABdhPJzadUAI2e4f50j9jMf/MFgcJi23Kc1BCe7cqA1YDG9pbGtny7HLuW5ge9IjRZaZugoVIcDT+Q==
-X-Received: by 2002:a17:90b:284:: with SMTP id az4mr5113153pjb.12.1617220160440;
-        Wed, 31 Mar 2021 12:49:20 -0700 (PDT)
-Received: from chromium.org ([2620:15c:202:201:7515:8c2e:1867:2767])
-        by smtp.gmail.com with ESMTPSA id l22sm3250010pjl.14.2021.03.31.12.49.19
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=LXnLdVNgyUimdPfL+v5GFIuyPBZ6lA/hlpHGp24V/bk=;
+        b=tYVueuK2ky2pegzPKsAA6Y1/14yDb1GnBz2zo9OkSY3OhygijL5388PL4whi0Pigld
+         nG9+V3ngNQfAbtpGQiWl4fK4PlN4PVjY6FodnusAlST8hZTdDG7pWjXtjZXM1loSptJW
+         Ae3u6MlvnfoPz34eerdlKHnQsXh7U36NyXMVHYgpC+op4Qstwd4hmGtsrPYb/GMNw0TX
+         UlNkwj+Cnb7NIRaj+bguGzSFWHlj2Kn5TjKl8xeBHSY8dFX9AcoBd0l+IClDipF1YywK
+         xmMaZD5E1d/+vv43pK4Yn4HkYkRGzlj0xFEPF74n757ZZ70qbT8ZiRetr3Ky4jZD543b
+         IIIA==
+X-Gm-Message-State: AOAM530ztDOPC7P+myP78yw0pTIfsZZuF5IJ663grae/k9pXAAPGEoao
+        iwLzqUCIMltE3TQ9amVw4to=
+X-Google-Smtp-Source: ABdhPJxxRRk0Kz8yGHIwAIfry8GyT5A4KQRcQQkGhaZqDW/dNneq0Xw64nnvhaAdzlpb5uYM5sH/9w==
+X-Received: by 2002:a17:90a:5b0b:: with SMTP id o11mr7347687pji.18.1617258355805;
+        Wed, 31 Mar 2021 23:25:55 -0700 (PDT)
+Received: from localhost.localdomain ([2409:4072:6307:8389:1a0d:8ccb:e643:1f59])
+        by smtp.googlemail.com with ESMTPSA id b3sm4231857pjg.41.2021.03.31.23.25.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Mar 2021 12:49:19 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        Wed, 31 Mar 2021 23:25:55 -0700 (PDT)
+From:   Mugilraj Dhavachelvan <dmugil2000@gmail.com>
+Cc:     Mugilraj Dhavachelvan <dmugil2000@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        bcm-kernel-feedback-list@broadcom.com, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: adc: bcm_iproc_adc: Use %s and __func__
+Date:   Thu,  1 Apr 2021 11:55:17 +0530
+Message-Id: <20210401062517.28832-1-dmugil2000@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20210331182222.219533-1-gwendal@chromium.org>
-References: <20210331182222.219533-1-gwendal@chromium.org>
-Subject: Re: [PATCH] iio: sx9310: Fix write_.._debounce()
-From:   Stephen Boyd <swboyd@chromium.org>
-Cc:     linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>,
-        stable@vger.kernel.org
-To:     Gwendal Grignou <gwendal@chromium.org>, andy.shevchenko@gmail.com,
-        campello@chromium.org, jic23@kernel.org, lars@metafoo.de
-Date:   Wed, 31 Mar 2021 12:49:18 -0700
-Message-ID: <161722015839.2260335.4267819779077188735@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.9.1
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Quoting Gwendal Grignou (2021-03-31 11:22:22)
-> Check input to be sure it matches Semtech sx9310 specification and
-> can fit into debounce register.
-> Compare argument writen to thresh_.._period with read from same
-> sysfs attribute:
->=20
-> Before:                   Afer:
-> write   |  read           write   |  read
-> -1      |     8           -1 fails: -EINVAL
-> 0       |     8           0       |     0
-> 1       |     0           1       |     0
-> 2..15   |  2^log2(N)      2..15   |  2^log2(N)
-> 16      |     0           >=3D 16 fails: -EINVAL
->=20
-> Fixes: 1b6872015f0b ("iio: sx9310: Support setting debounce values")
-> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-> Cc: stable@vger.kernel.org
-> ---
+Change function's name to %s and __func__ to fix checkpatch.pl errors.
 
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Mugilraj Dhavachelvan <dmugil2000@gmail.com>
+---
+ drivers/iio/adc/bcm_iproc_adc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/iio/adc/bcm_iproc_adc.c b/drivers/iio/adc/bcm_iproc_adc.c
+index 5e396104ac86..6bffda1082a2 100644
+--- a/drivers/iio/adc/bcm_iproc_adc.c
++++ b/drivers/iio/adc/bcm_iproc_adc.c
+@@ -170,8 +170,7 @@ static irqreturn_t iproc_adc_interrupt_handler(int irq, void *data)
+ 	adc_priv = iio_priv(indio_dev);
+ 
+ 	regmap_read(adc_priv->regmap, IPROC_INTERRUPT_STATUS, &intr_status);
+-	dev_dbg(&indio_dev->dev, "iproc_adc_interrupt_handler(),INTRPT_STS:%x\n",
+-			intr_status);
++	dev_dbg(&indio_dev->dev, "%s,INTRPT_STS:%x\n", __func__, intr_status);
+ 
+ 	intr_channels = (intr_status & IPROC_ADC_INTR_MASK) >> IPROC_ADC_INTR;
+ 	if (intr_channels) {
+-- 
+2.25.1
+

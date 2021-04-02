@@ -2,139 +2,85 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC311352EB7
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Apr 2021 19:49:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E67B5352F67
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Apr 2021 20:47:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235938AbhDBRtE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 2 Apr 2021 13:49:04 -0400
-Received: from mga04.intel.com ([192.55.52.120]:17691 "EHLO mga04.intel.com"
+        id S230092AbhDBSro (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 2 Apr 2021 14:47:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59772 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235836AbhDBRtC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 2 Apr 2021 13:49:02 -0400
-IronPort-SDR: 3Ioe8XTko4Lnm3kgz5QttT6PRNroz/RlxbD3y9FiFwIdFyjWhqZimvcGq5K9Fx1J7e1uUhxvP4
- mgwzVm8p+hxA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9942"; a="190278005"
-X-IronPort-AV: E=Sophos;i="5.81,300,1610438400"; 
-   d="scan'208";a="190278005"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2021 10:49:01 -0700
-IronPort-SDR: j5s1BPlZdyePNVg2hcTS5FTsJBRILEsx1hDEf/0tZ4uXMSFEiYbIu9RAzLwa4YPHfV/MPmnmog
- /CvlIJ1GCTiA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.81,300,1610438400"; 
-   d="scan'208";a="439702772"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga004.fm.intel.com with ESMTP; 02 Apr 2021 10:48:59 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 04EF12E4; Fri,  2 Apr 2021 20:49:14 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v2 2/2] iio: trigger: Fix strange (ladder-type) indentation
-Date:   Fri,  2 Apr 2021 20:49:11 +0300
-Message-Id: <20210402174911.44408-2-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210402174911.44408-1-andriy.shevchenko@linux.intel.com>
-References: <20210402174911.44408-1-andriy.shevchenko@linux.intel.com>
+        id S229722AbhDBSro (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 2 Apr 2021 14:47:44 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1F3D6610F7;
+        Fri,  2 Apr 2021 18:47:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1617389262;
+        bh=Xwky7C1/fM6TBbTqaNYAvyMsk5rcIoa5LN8GkkuDRQ0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=O1V68RaViCpUXqYwcm71TyH7kI1K0OkT8P5vaErvsO8Ax+zh/n6RdmRM/UgGDmvre
+         FEyk+gbkOl60m59EtwH2Y+ytkNX+e0P4ZpSW4iAnTP4ODldcr8f+c6rph/nkqebTrS
+         CCqndq4Jy8LBDmtzUabmrvZW+Z1TITAVkijuCstUxph65wWs+R23t4fC9tPv9uRZ13
+         V1uPF1MXuxq4Qz7C53iqQDBHF7aQd50pWoVbdIvXOQGOCMk3vsQsi8Yhz/zGOcBqJ4
+         axiYtGvg8YAkb4vU7qdNy00Pd/VTj0mf09Hr7nu8I5bPhwG86msBnBAMRa5pDkN46Z
+         PeiqcBKlw+BhQ==
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     linux-iio@vger.kernel.org
+Cc:     Barry Song <song.bao.hua@hisilicon.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 0/7] iio: Use IRQF_NO_AUTOEN 
+Date:   Fri,  2 Apr 2021 19:45:37 +0100
+Message-Id: <20210402184544.488862-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-In some cases indentation looks a bit weird with starting from = sign
-and being in a ladder-type style. Unify it across the module.
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-While at it, add blank line after definition block where it needed,
+This series is dependant on
+cbe16f35bee68 ("genirq: Add IRQF_NO_AUTOEN for request_irq/nmi()")
+which is available in an immutable tag in the tip tree.
+https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/tag/?h=irq-no-autoen-2021-03-25
+which I'll merge in to the IIO tree if we need it before it's available
+upstream.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
-v2: fixed typo in the commit message (tupe->type)
- drivers/iio/industrialio-trigger.c | 25 ++++++++++++-------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
+That patch introduces a new IRQF_NO_AUTOEN flag for irq requests to avoid
+the current dance where we either mark an irq as not to be autoenabled before
+we know if we can actually request it succesfully, or (as IIO drivers seem to
+have gone with) we disable the interrupt just after requesting it.
+In short the flag stops the interrupt being autoenabled in the first place.
 
-diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
-index 78e30f0f915c..ec72ff04b38d 100644
---- a/drivers/iio/industrialio-trigger.c
-+++ b/drivers/iio/industrialio-trigger.c
-@@ -211,6 +211,7 @@ EXPORT_SYMBOL(iio_trigger_notify_done);
- static int iio_trigger_get_irq(struct iio_trigger *trig)
- {
- 	int ret;
-+
- 	mutex_lock(&trig->pool_lock);
- 	ret = bitmap_find_free_region(trig->pool,
- 				      CONFIG_IIO_CONSUMERS_PER_TRIGGER,
-@@ -239,9 +240,9 @@ static void iio_trigger_put_irq(struct iio_trigger *trig, int irq)
- int iio_trigger_attach_poll_func(struct iio_trigger *trig,
- 				 struct iio_poll_func *pf)
- {
-+	bool notinuse =
-+		bitmap_empty(trig->pool, CONFIG_IIO_CONSUMERS_PER_TRIGGER);
- 	int ret = 0;
--	bool notinuse
--		= bitmap_empty(trig->pool, CONFIG_IIO_CONSUMERS_PER_TRIGGER);
- 
- 	/* Prevent the module from being removed whilst attached to a trigger */
- 	__module_get(pf->indio_dev->driver_module);
-@@ -290,11 +291,10 @@ int iio_trigger_attach_poll_func(struct iio_trigger *trig,
- int iio_trigger_detach_poll_func(struct iio_trigger *trig,
- 				 struct iio_poll_func *pf)
- {
-+	bool no_other_users =
-+		bitmap_weight(trig->pool, CONFIG_IIO_CONSUMERS_PER_TRIGGER) == 1;
- 	int ret = 0;
--	bool no_other_users
--		= (bitmap_weight(trig->pool,
--				 CONFIG_IIO_CONSUMERS_PER_TRIGGER)
--		   == 1);
-+
- 	if (trig->ops && trig->ops->set_trigger_state && no_other_users) {
- 		ret = trig->ops->set_trigger_state(trig, false);
- 		if (ret)
-@@ -312,6 +312,7 @@ int iio_trigger_detach_poll_func(struct iio_trigger *trig,
- irqreturn_t iio_pollfunc_store_time(int irq, void *p)
- {
- 	struct iio_poll_func *pf = p;
-+
- 	pf->timestamp = iio_get_time_ns(pf->indio_dev);
- 	return IRQ_WAKE_THREAD;
- }
-@@ -498,18 +499,16 @@ static const struct device_type iio_trig_type = {
- static void iio_trig_subirqmask(struct irq_data *d)
- {
- 	struct irq_chip *chip = irq_data_get_irq_chip(d);
--	struct iio_trigger *trig
--		= container_of(chip,
--			       struct iio_trigger, subirq_chip);
-+	struct iio_trigger *trig = container_of(chip, struct iio_trigger, subirq_chip);
-+
- 	trig->subirqs[d->irq - trig->subirq_base].enabled = false;
- }
- 
- static void iio_trig_subirqunmask(struct irq_data *d)
- {
- 	struct irq_chip *chip = irq_data_get_irq_chip(d);
--	struct iio_trigger *trig
--		= container_of(chip,
--			       struct iio_trigger, subirq_chip);
-+	struct iio_trigger *trig = container_of(chip, struct iio_trigger, subirq_chip);
-+
- 	trig->subirqs[d->irq - trig->subirq_base].enabled = true;
- }
- 
-@@ -695,7 +694,7 @@ EXPORT_SYMBOL(iio_trigger_using_own);
-  * device, -EINVAL otherwise.
-  */
- int iio_trigger_validate_own_device(struct iio_trigger *trig,
--	struct iio_dev *indio_dev)
-+				    struct iio_dev *indio_dev)
- {
- 	if (indio_dev->dev.parent != trig->dev.parent)
- 		return -EINVAL;
+So this series applies this magic to IIO :)
+
+Note these are all just compile tested and some of them aren't entirely
+trivial because of other aspects of the irq flag handling.
+
+Jonathan Cameron (7):
+  iio:adc:ad7766: Use new IRQF_NO_AUTOEN to reduce boilerplate
+  iio:adc:exynos-adc: Use new IRQF_NO_AUTOEN flag rather than separate
+    irq_disable()
+  iio:adc:nau7802: Use IRQF_NO_AUTOEN instead of request then disable
+  iio:adc:sun4i-gpadc: Use new IRQF_NO_AUTOEN flag instead of request
+    then disable
+  iio:chemical:scd30: Use IRQF_NO_AUTOEN to avoid irq request then
+    disable
+  iio:imu:adis: Use IRQF_NO_AUTOEN instead of irq request then disable
+  iio:adc:ad_sigma_delta: Use IRQF_NO_AUTOEN rather than request and
+    disable
+
+ drivers/iio/adc/ad7766.c          | 15 +++++++--------
+ drivers/iio/adc/ad_sigma_delta.c  |  7 ++-----
+ drivers/iio/adc/exynos_adc.c      |  4 ++--
+ drivers/iio/adc/nau7802.c         |  6 +++---
+ drivers/iio/adc/sun4i-gpadc-iio.c |  4 ++--
+ drivers/iio/chemical/scd30_core.c | 16 ++++++++--------
+ drivers/iio/imu/adis16460.c       |  4 ++--
+ drivers/iio/imu/adis16475.c       |  5 +++--
+ drivers/iio/imu/adis_trigger.c    | 11 ++++++-----
+ 9 files changed, 35 insertions(+), 37 deletions(-)
+
 -- 
-2.30.2
+2.31.1
 

@@ -2,33 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FCA93528C8
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Apr 2021 11:30:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 998D53528E9
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Apr 2021 11:36:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235080AbhDBJaK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 2 Apr 2021 05:30:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60704 "EHLO mail.kernel.org"
+        id S234397AbhDBJgT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 2 Apr 2021 05:36:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33810 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235043AbhDBJaJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 2 Apr 2021 05:30:09 -0400
+        id S234559AbhDBJgO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 2 Apr 2021 05:36:14 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A874661005;
-        Fri,  2 Apr 2021 09:30:06 +0000 (UTC)
-Date:   Fri, 2 Apr 2021 10:30:19 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id C935961103;
+        Fri,  2 Apr 2021 09:36:10 +0000 (UTC)
+Date:   Fri, 2 Apr 2021 10:36:21 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <ardeleanalex@gmail.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+To:     Stephen Boyd <swboyd@chromium.org>
+Cc:     Gwendal Grignou <gwendal@chromium.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        Daniel Campello <campello@chromium.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH] iio:adc: Drop false comment about lack of timestamp
- control
-Message-ID: <20210402103019.75bf89d9@jic23-huawei>
-In-Reply-To: <CA+U=DsoFoBXAht_1QmROOshXKe=Vh8PBo5HfXj6c2WSn-_Qgpw@mail.gmail.com>
-References: <20210401145410.226917-1-jic23@kernel.org>
-        <CA+U=DsoFoBXAht_1QmROOshXKe=Vh8PBo5HfXj6c2WSn-_Qgpw@mail.gmail.com>
+        linux-iio <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH 0/2] iio: sx9310: Add debouncer-depth parameters
+Message-ID: <20210402103621.7403af14@jic23-huawei>
+In-Reply-To: <161732394517.2260335.9268876008128877361@swboyd.mtv.corp.google.com>
+References: <20210328033639.1021599-1-gwendal@chromium.org>
+        <161698755179.3012082.10332557476670862687@swboyd.mtv.corp.google.com>
+        <CAPUE2usX-Tq2wyO4ekkAUaR6rRfJ3mZG3SQMqJbpzzUTMwd-0A@mail.gmail.com>
+        <20210401141935.1fd2e15d@jic23-huawei>
+        <161732394517.2260335.9268876008128877361@swboyd.mtv.corp.google.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -37,111 +41,83 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 2 Apr 2021 10:25:41 +0300
-Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
+On Thu, 01 Apr 2021 17:39:05 -0700
+Stephen Boyd <swboyd@chromium.org> wrote:
 
-> On Thu, Apr 1, 2021 at 5:56 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> >
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >
-> > The timestamp control has been a function implemented in the core of
-> > IIO for a long time, so this comment is incorrect and has clearly been
-> > cut and paste into all these drivers.
-> >
-> > The remainder of the comment added nothing and was confusing so dropped
-> > that as well.
-> >  
+> Quoting Jonathan Cameron (2021-04-01 06:19:35)
+> > On Tue, 30 Mar 2021 17:38:03 -0700
+> > Gwendal Grignou <gwendal@chromium.org> wrote:
+> >   
+> > > On Sun, Mar 28, 2021 at 8:12 PM Stephen Boyd <swboyd@chromium.org> wrote:  
+> > > >
+> > > > Quoting Gwendal Grignou (2021-03-27 20:36:37)    
+> > > > > Semtech SX9310 SAR sensor has a debouncer filter: only when N
+> > > > > measurements are above/below the far/close threshold an event is
+> > > > > sent to the host.
+> > > > > By default the debouncer is set to 2 events for the close to far
+> > > > > transition and 1 event (no debounce) for far to close.
+> > > > > It is a balance speed of detection and false positive avoidance.
+> > > > >
+> > > > > On some chromebooks, the debouncer is set to a larger number.
+> > > > >
+> > > > > This patch applies on top of commit 103d6ec82676 ("iio: sx9310: Support ACPI properties")    
+> > > >
+> > > > The near/far debounce settings are already supported via sysfs. Can you
+> > > > use those instead of putting this into DT/ACPI? See
+> > > > sx9310_read_far_debounce() and associated code.    
+> > > Stephen, I missed you already proposed these bindings earlier
+> > > [https://lore.kernel.org/linux-devicetree/20200906150247.3aaef3a3@archlinux/].
+> > > After Jonathan inputs, it is done via sysfs interface
+> > > [events/thresh_{falling|rising}_period].
+> > > 
+> > > The debounce parameters are in the same class as the other parameters
+> > > already present in the DT. They are calculated during tests to meet
+> > > FCC requirements, in particular the time it takes to detect a human
+> > > body near the antennas.  
 > 
-> Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
+> The same could be said for the threshold values but those are in sysfs.
 
-Applied to the togreg branch of iio.git and push out testing for
-all the normal reasons.
+Good point.
 
-Thanks,
+> 
+> > > Depending on the SAR antenna design, it is a balance between lowering
+> > > the debouncer "period" to raise an event as soon as possible, and
+> > > increasing it to prevent false posible.
+> > > 
+> > > In addition to controlling it from sysfs, could it be acceptable to
+> > > have it in DT/ACPI as well?
+> > > In the meantime, I will make sure semtech,sx9310.yaml matches
+> > > in_proximityX_hardwaregain_available and connect to that attribute.
+> > >   
+> 
+> My understanding from the previous discussions with Jonathan was that
+> anything that could be delayed until later should be done through sysfs.
+> That's why only some properties are in DT, because they were used during
+> initial compensation of the device that happens when the device driver
+> probes. These other values like thresholds and debounce weren't required
+> for that so I put them into sysfs.
+
+My intent wasn't so much things that 'could' be delayed until later, but
+rather the divide between policy (which should be in userspace control)
+and hardware factors. We have a bit of an edge case here so not clear
+cut.
+
+I may well have been wrong in the past on this :(
 
 Jonathan
 
 > 
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Cc: Lars-Peter Clausen <lars@metafoo.de>
-> > Cc: Michael Hennerich <Michael.Hennerich@analog.com>
-> >
-> > ---
-> >  drivers/iio/adc/ad7298.c | 6 ------
-> >  drivers/iio/adc/ad7887.c | 6 ------
-> >  drivers/iio/adc/ad7923.c | 6 ------
-> >  drivers/iio/adc/ad799x.c | 6 ------
-> >  4 files changed, 24 deletions(-)
-> >
-> > diff --git a/drivers/iio/adc/ad7298.c b/drivers/iio/adc/ad7298.c
-> > index 689ecd5dd563..d2163cb62f4f 100644
-> > --- a/drivers/iio/adc/ad7298.c
-> > +++ b/drivers/iio/adc/ad7298.c
-> > @@ -142,12 +142,6 @@ static int ad7298_update_scan_mode(struct iio_dev *indio_dev,
-> >         return 0;
-> >  }
-> >
-> > -/*
-> > - * ad7298_trigger_handler() bh of trigger launched polling to ring buffer
-> > - *
-> > - * Currently there is no option in this driver to disable the saving of
-> > - * timestamps within the ring.
-> > - */
-> >  static irqreturn_t ad7298_trigger_handler(int irq, void *p)
-> >  {
-> >         struct iio_poll_func *pf = p;
-> > diff --git a/drivers/iio/adc/ad7887.c b/drivers/iio/adc/ad7887.c
-> > index 4f6f0e0e03ee..9b3cbe1ddc6f 100644
-> > --- a/drivers/iio/adc/ad7887.c
-> > +++ b/drivers/iio/adc/ad7887.c
-> > @@ -109,12 +109,6 @@ static int ad7887_ring_postdisable(struct iio_dev *indio_dev)
-> >         return spi_sync(st->spi, &st->msg[AD7887_CH0]);
-> >  }
-> >
-> > -/*
-> > - * ad7887_trigger_handler() bh of trigger launched polling to ring buffer
-> > - *
-> > - * Currently there is no option in this driver to disable the saving of
-> > - * timestamps within the ring.
-> > - **/
-> >  static irqreturn_t ad7887_trigger_handler(int irq, void *p)
-> >  {
-> >         struct iio_poll_func *pf = p;
-> > diff --git a/drivers/iio/adc/ad7923.c b/drivers/iio/adc/ad7923.c
-> > index 287f4c13194e..9a649745cd0a 100644
-> > --- a/drivers/iio/adc/ad7923.c
-> > +++ b/drivers/iio/adc/ad7923.c
-> > @@ -192,12 +192,6 @@ static int ad7923_update_scan_mode(struct iio_dev *indio_dev,
-> >         return 0;
-> >  }
-> >
-> > -/*
-> > - * ad7923_trigger_handler() bh of trigger launched polling to ring buffer
-> > - *
-> > - * Currently there is no option in this driver to disable the saving of
-> > - * timestamps within the ring.
-> > - */
-> >  static irqreturn_t ad7923_trigger_handler(int irq, void *p)
-> >  {
-> >         struct iio_poll_func *pf = p;
-> > diff --git a/drivers/iio/adc/ad799x.c b/drivers/iio/adc/ad799x.c
-> > index 1575b7670207..18bf8386d50a 100644
-> > --- a/drivers/iio/adc/ad799x.c
-> > +++ b/drivers/iio/adc/ad799x.c
-> > @@ -182,12 +182,6 @@ static int ad799x_update_config(struct ad799x_state *st, u16 config)
-> >         return 0;
-> >  }
-> >
-> > -/*
-> > - * ad799x_trigger_handler() bh of trigger launched polling to ring buffer
-> > - *
-> > - * Currently there is no option in this driver to disable the saving of
-> > - * timestamps within the ring.
-> > - **/
-> >  static irqreturn_t ad799x_trigger_handler(int irq, void *p)
-> >  {
-> >         struct iio_poll_func *pf = p;
-> > --
-> > 2.31.1
+> > 
+> > 
+> > Ok, add something to make it clear that these effectively tied to the board
+> > hardware because of this FCC requirement.
+> > 
+> > As long as that's clear the Rob is fine with the DT binding I don't mind.
+> > 
+> > Is there a requirement as a result of this FCC stuff that we should not
+> > expose them to userspace control if they are provided in DT?
+> > 
+> > If so we should figure out a sensible way of doing that without breaking
+> > the existing ABI.
 > >  
 

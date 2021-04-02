@@ -2,135 +2,103 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CB3D352485
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Apr 2021 02:39:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CECD835248C
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Apr 2021 02:43:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231550AbhDBAjI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 1 Apr 2021 20:39:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36422 "EHLO
+        id S231179AbhDBAns (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 1 Apr 2021 20:43:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231160AbhDBAjH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 1 Apr 2021 20:39:07 -0400
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5B68C0613E6
-        for <linux-iio@vger.kernel.org>; Thu,  1 Apr 2021 17:39:07 -0700 (PDT)
-Received: by mail-pl1-x629.google.com with SMTP id h20so1820428plr.4
-        for <linux-iio@vger.kernel.org>; Thu, 01 Apr 2021 17:39:07 -0700 (PDT)
+        with ESMTP id S231160AbhDBAnr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 1 Apr 2021 20:43:47 -0400
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B5F3C0613E6;
+        Thu,  1 Apr 2021 17:43:46 -0700 (PDT)
+Received: by mail-ed1-x531.google.com with SMTP id y6so3917094eds.1;
+        Thu, 01 Apr 2021 17:43:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:content-transfer-encoding:in-reply-to:references
-         :subject:from:cc:to:date:message-id:user-agent;
-        bh=C5nDZ2Lf/vMBfXoBtSWjP1kUmR4Tb4xAiaE8aD5EI4M=;
-        b=gwSU4xMAvwRs7LySnRHQ7ZK/t4tUdSrA1QBTekRzaEXCBtH9mS0zoeqG9MgZ2eUnfF
-         2AT0InyqZ3r345wfAJFaRIOVF/kjF0eAGERJ4cbePRmZVqTuWukQq7zz/ENdrlIMFRQv
-         9/z227zDpda/rsQk32GZ2LRiXjXZw8RN3cl2g=
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=7UrqDDIRn+G5yinBQZ3ltJnZdRsMl7oWcUPTgk2Dir4=;
+        b=XYZnRD8SG0fD4hiN/6u5iJnkyNaBaChUDm+M0Q7D2dy9lsSNGUDOPlvUg0czvyN+sr
+         Q7wHzsfyxEFdbzvKRawoe+5i7mQpyC+Dk7ePIYTkkk+UB8zDRShF0BXj2ZHacwf2I/HJ
+         D11+Uzo6x9Z/2b25FBdi0OXQwSbtOcexXwolmIcQT2Yapk7QW7GbhY/aNGQv8/ldZcec
+         1jSMs+vllkYo5wFME0tCgF5vYL2Hfgin3BW3CVE4+pj4KzW3iKVmzS01j/qm9UCQzjU/
+         7k4QSPjcNRoQ9cPHD9chHhrIfeWpRfaqqSq120QxxZO64yAmB+Sk4n/MvgW4thtr5T2S
+         4OpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:content-transfer-encoding
-         :in-reply-to:references:subject:from:cc:to:date:message-id
-         :user-agent;
-        bh=C5nDZ2Lf/vMBfXoBtSWjP1kUmR4Tb4xAiaE8aD5EI4M=;
-        b=mS2/0yYBOGV2Ke9sLGntiMkreVTrELzU2RRY0Lariygk8NC/uQ6LeuWntqscDjo1yW
-         bda97k3Yt9UfV0FP9pZ2o8SEACQyWmio2oQEBaewTxIg6Lr6VVN+elOdnJFKtrcfWlcW
-         x8z74B+q8ht1yLm4+SnrTE6/hj7FYHcajjWFmMoBURYakmVwgOuN652832jXwgC4lFdD
-         fPwO/XbBR9uAI8ozCpabK/MmNIGBzlgrz/7zpbqmiJzVfHPsUaqUmyf8JAz26yTgsy/V
-         hsxjoeyw5cKyesZXUW1kkQFyiDUdaCUNVGT1AaouV749UOVSA+2qh+zA/d3gz81gx8vd
-         o/QA==
-X-Gm-Message-State: AOAM533rlMKF1wA/zyr/THSJ+QZaoq5u0jwNN+tgy/5QgjLBGQUP6Obi
-        9DDhV+d5PXmq6VqVSu/kYg7FOg==
-X-Google-Smtp-Source: ABdhPJxwnsMgU3W+NQYajY8Tz2NMW08vZpOG174uPq/qM2OMGNob2WKjT1p9zaB1pnECIhmQiBK+XA==
-X-Received: by 2002:a17:90a:f298:: with SMTP id fs24mr11529362pjb.57.1617323947036;
-        Thu, 01 Apr 2021 17:39:07 -0700 (PDT)
-Received: from chromium.org ([2620:15c:202:201:450:f2a9:b3ca:879f])
-        by smtp.gmail.com with ESMTPSA id g3sm6158983pfk.186.2021.04.01.17.39.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Apr 2021 17:39:06 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20210401141935.1fd2e15d@jic23-huawei>
-References: <20210328033639.1021599-1-gwendal@chromium.org> <161698755179.3012082.10332557476670862687@swboyd.mtv.corp.google.com> <CAPUE2usX-Tq2wyO4ekkAUaR6rRfJ3mZG3SQMqJbpzzUTMwd-0A@mail.gmail.com> <20210401141935.1fd2e15d@jic23-huawei>
-Subject: Re: [PATCH 0/2] iio: sx9310: Add debouncer-depth parameters
-From:   Stephen Boyd <swboyd@chromium.org>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Daniel Campello <campello@chromium.org>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=7UrqDDIRn+G5yinBQZ3ltJnZdRsMl7oWcUPTgk2Dir4=;
+        b=Yt9KtciHy/m3vxU5gu7ednhr7dJm8GjKaZl1pmkdTISOdT7z9M2ibUu0vhfKKAg5S6
+         up8PFOYieAHW0WZ1fzHLh8vcgSSKiHn2iJTJPGuOX23DssVgUxBXLNiZBD9ISjCKzImg
+         6MvtZnjoe7ROLTNVvRevqsxgK8FGX1SM/PLq08VuVzoPJowRRglYANwY9q+etp76RB4G
+         gFCK9sU+m+mVWLVAlmFcr3rM3rfQJD5pbmKS8Vki2vxkyPWjWtp2f9G/BO9wtGuraN8G
+         MPhZzOgTQ5vfk74ZdnAFkBtC8/AC/tAB68NffmwQCgJlgQI9Vg/CIi2nKl/LrENFa4Mn
+         ajfg==
+X-Gm-Message-State: AOAM5302Cgg7B5uPwh5kvZb7iKzeFYt6SyRTE9Ft8qigipFYQe9TaLSg
+        XtaR9zhlIFbq1JvPVS1vRwA=
+X-Google-Smtp-Source: ABdhPJymnDNjJPPhcffXrecS1m6STmKkl5TA3xsipMY5so77b22+mxwc1TfydA+yvQBgzb8BhZl91Q==
+X-Received: by 2002:a05:6402:278d:: with SMTP id b13mr12641332ede.34.1617324224900;
+        Thu, 01 Apr 2021 17:43:44 -0700 (PDT)
+Received: from pop-os.localdomain (cpc97922-walt21-2-0-cust248.13-2.cable.virginm.net. [82.16.251.249])
+        by smtp.gmail.com with ESMTPSA id p19sm4560876edr.57.2021.04.01.17.43.44
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 01 Apr 2021 17:43:44 -0700 (PDT)
+Date:   Fri, 2 Apr 2021 01:43:42 +0100
+From:   Joe Sandom <joe.g.sandom@gmail.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio <linux-iio@vger.kernel.org>
-To:     Gwendal Grignou <gwendal@chromium.org>,
-        Jonathan Cameron <jic23@kernel.org>
-Date:   Thu, 01 Apr 2021 17:39:05 -0700
-Message-ID: <161732394517.2260335.9268876008128877361@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.9.1
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v6 1/2] Added AMS tsl2591 driver implementation
+Message-ID: <20210402004342.bkbtgc2yondhnwto@pop-os.localdomain>
+References: <20210325220505.14507-1-joe.g.sandom@gmail.com>
+ <CAHp75VcfE0VUrtAqCM0KC9RFvy8XMv++tjYCP2dKZCMosPQ2tw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHp75VcfE0VUrtAqCM0KC9RFvy8XMv++tjYCP2dKZCMosPQ2tw@mail.gmail.com>
+User-Agent: NeoMutt/20171215
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Quoting Jonathan Cameron (2021-04-01 06:19:35)
-> On Tue, 30 Mar 2021 17:38:03 -0700
-> Gwendal Grignou <gwendal@chromium.org> wrote:
->=20
-> > On Sun, Mar 28, 2021 at 8:12 PM Stephen Boyd <swboyd@chromium.org> wrot=
-e:
-> > >
-> > > Quoting Gwendal Grignou (2021-03-27 20:36:37) =20
-> > > > Semtech SX9310 SAR sensor has a debouncer filter: only when N
-> > > > measurements are above/below the far/close threshold an event is
-> > > > sent to the host.
-> > > > By default the debouncer is set to 2 events for the close to far
-> > > > transition and 1 event (no debounce) for far to close.
-> > > > It is a balance speed of detection and false positive avoidance.
-> > > >
-> > > > On some chromebooks, the debouncer is set to a larger number.
-> > > >
-> > > > This patch applies on top of commit 103d6ec82676 ("iio: sx9310: Sup=
-port ACPI properties") =20
-> > >
-> > > The near/far debounce settings are already supported via sysfs. Can y=
-ou
-> > > use those instead of putting this into DT/ACPI? See
-> > > sx9310_read_far_debounce() and associated code. =20
-> > Stephen, I missed you already proposed these bindings earlier
-> > [https://lore.kernel.org/linux-devicetree/20200906150247.3aaef3a3@archl=
-inux/].
-> > After Jonathan inputs, it is done via sysfs interface
-> > [events/thresh_{falling|rising}_period].
-> >=20
-> > The debounce parameters are in the same class as the other parameters
-> > already present in the DT. They are calculated during tests to meet
-> > FCC requirements, in particular the time it takes to detect a human
-> > body near the antennas.
+On Fri, Mar 26, 2021 at 01:01:57PM +0200, Andy Shevchenko wrote:
+> On Fri, Mar 26, 2021 at 12:05 AM Joe Sandom <joe.g.sandom@gmail.com> wrote:
+> >
+> > Driver implementation for AMS/TAOS tsl2591 ambient light sensor.
+> >
+> > This driver supports configuration via device tree and sysfs.
+> > Supported channels for raw infrared light intensity,
+> > raw combined light intensity and illuminance in lux.
+> > The driver additionally supports iio events on lower and
+> > upper thresholds.
+> >
+> > This is a very-high sensitivity light-to-digital converter that
+> > transforms light intensity into a digital signal.
+> 
+> I'm under the impression that you ignored at least half of my comments
 
-The same could be said for the threshold values but those are in sysfs.
+The majority of your comments were applied in V5 as far as I can see.
+Some of them I recognised as optional at the time. I had another sweep
+through and have seen value in enforcing a few of the other points you
+mentioned. I've added them to V7 and will release shortly. Thanks for
+the feedback Andy.
 
-> > Depending on the SAR antenna design, it is a balance between lowering
-> > the debouncer "period" to raise an event as soon as possible, and
-> > increasing it to prevent false posible.
-> >=20
-> > In addition to controlling it from sysfs, could it be acceptable to
-> > have it in DT/ACPI as well?
-> > In the meantime, I will make sure semtech,sx9310.yaml matches
-> > in_proximityX_hardwaregain_available and connect to that attribute.
-> >=20
-
-My understanding from the previous discussions with Jonathan was that
-anything that could be delayed until later should be done through sysfs.
-That's why only some properties are in DT, because they were used during
-initial compensation of the device that happens when the device driver
-probes. These other values like thresholds and debounce weren't required
-for that so I put them into sysfs.
-
->=20
->=20
-> Ok, add something to make it clear that these effectively tied to the boa=
-rd
-> hardware because of this FCC requirement.
->=20
-> As long as that's clear the Rob is fine with the DT binding I don't mind.
->=20
-> Is there a requirement as a result of this FCC stuff that we should not
-> expose them to userspace control if they are provided in DT?
->=20
-> If so we should figure out a sensible way of doing that without breaking
-> the existing ABI.
->
+> [1]. Have you seen them?
+> 
+> [1]: https://lore.kernel.org/linux-iio/CAHp75VcSW2xXdH--rXaN7xt0Ju+qfw9c_va0gGRGPgpBua0H-Q@mail.gmail.com/
+> 
+> Please. address and come again.
+> NAK for this version, sorry.
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko

@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 37E53352F69
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Apr 2021 20:47:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E074E352F6A
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Apr 2021 20:47:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231443AbhDBSrr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 2 Apr 2021 14:47:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59794 "EHLO mail.kernel.org"
+        id S231149AbhDBSru (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 2 Apr 2021 14:47:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59804 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231149AbhDBSrr (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 2 Apr 2021 14:47:47 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id F13BB61164;
-        Fri,  2 Apr 2021 18:47:44 +0000 (UTC)
+        id S231462AbhDBSrt (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 2 Apr 2021 14:47:49 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9893761151;
+        Fri,  2 Apr 2021 18:47:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1617389265;
-        bh=uOJdjmzfcNjl5H10qT6HFOCrKm91lAWpHVnh7oG1Ybc=;
+        s=k20201202; t=1617389268;
+        bh=S4oG72TbJDDFDuf16qz3CrczaERMvPOwJ7VUOi2FjwI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mJySNRwDOHHGmwJe77JHpzm8h0lmF0WRp1+OvlMu2Lvse4vQmBuapvqeWGLIzv7jP
-         aQZ/7DhCAixveuqQCskb+lDDf56Gx1wPa/lh7t9CREoKf11gvAmTWvoh935dMW4U1j
-         18O3Jlwfz8Up0a5lVP1+dH5n2cShze2NJD6nn0xTCisrB7I2Funs03mkiW1y/VxCVZ
-         4xYlJv8QkcsuhbP0B7yTvq7ixfZXhEeBk2g61zptTu0aOP5YDSEEo+l1+hFxykt99O
-         s7UJenaGfOOcBcyKpb24CHsAeVgP6TXqelOVUI6AIiWgegtYn3y8bXn7Ih1el277zD
-         vCBXJz8gxhlQA==
+        b=hgLDqODon7HjoLDvehRC1nnJwEG8wvX6OBdmMDr7S4KBdLylNtLIk6k0Coxw4qJ6R
+         KxlKkl9ZkWhmyIEa2yF0K8oVfO7dlms00GQWJDnvvBZXQDhAqleMutTuBl+eneeto+
+         FG2/wTnse3/0O6PEdCFRMiX5mWnVug4f9QHLoulOhvB51GP/QYBz+ydSLe0etIHjSI
+         kI/ogB2mmRobTEUGGewo+A7votaRrlM8QicxChOn579L9JceE1mZoIaTa6V1BUeTMY
+         IGj3leCSD/YJprROJljOUZtp7fnPbw6yau7Op/wD33+6kbyECCucQpQex7Tpn6wU6O
+         pHzDQg91/1QOQ==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Barry Song <song.bao.hua@hisilicon.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH 2/7] iio:adc:exynos-adc: Use new IRQF_NO_AUTOEN flag rather than separate irq_disable()
-Date:   Fri,  2 Apr 2021 19:45:39 +0100
-Message-Id: <20210402184544.488862-3-jic23@kernel.org>
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 3/7] iio:adc:nau7802: Use IRQF_NO_AUTOEN instead of request then disable
+Date:   Fri,  2 Apr 2021 19:45:40 +0100
+Message-Id: <20210402184544.488862-4-jic23@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210402184544.488862-1-jic23@kernel.org>
 References: <20210402184544.488862-1-jic23@kernel.org>
@@ -42,32 +42,40 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Disabling an irq before the driver has actually atempted to request it
-may work, but is definitely not as clean as just requesting it as
-normal but with the auto enable disabled.
+Whilst a race during interrupt enabling is probably not a problem,
+it is better to not enable the interrupt at all.  The new
+IRQF_NO_AUTOEN flag allows us to do that.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
 ---
- drivers/iio/adc/exynos_adc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/adc/nau7802.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
-index 784c10deeb1a..8c98d8c9ab1f 100644
---- a/drivers/iio/adc/exynos_adc.c
-+++ b/drivers/iio/adc/exynos_adc.c
-@@ -778,9 +778,9 @@ static int exynos_adc_ts_init(struct exynos_adc *info)
- 		return ret;
+diff --git a/drivers/iio/adc/nau7802.c b/drivers/iio/adc/nau7802.c
+index 07c85434b568..bb70b51d25b1 100644
+--- a/drivers/iio/adc/nau7802.c
++++ b/drivers/iio/adc/nau7802.c
+@@ -498,7 +498,8 @@ static int nau7802_probe(struct i2c_client *client,
+ 		ret = request_threaded_irq(client->irq,
+ 				NULL,
+ 				nau7802_eoc_trigger,
+-				IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++				IRQF_TRIGGER_HIGH | IRQF_ONESHOT |
++				IRQF_NO_AUTOEN,
+ 				client->dev.driver->name,
+ 				indio_dev);
+ 		if (ret) {
+@@ -513,8 +514,7 @@ static int nau7802_probe(struct i2c_client *client,
+ 			dev_info(&client->dev,
+ 				"Failed to allocate IRQ, using polling mode\n");
+ 			client->irq = 0;
+-		} else
+-			disable_irq(client->irq);
++		}
  	}
  
--	disable_irq(info->tsirq);
- 	ret = request_threaded_irq(info->tsirq, NULL, exynos_ts_isr,
--				   IRQF_ONESHOT, "touchscreen", info);
-+				   IRQF_ONESHOT | IRQF_NO_AUTOEN,
-+				   "touchscreen", info);
- 	if (ret)
- 		input_unregister_device(info->input);
- 
+ 	if (!client->irq) {
 -- 
 2.31.1
 

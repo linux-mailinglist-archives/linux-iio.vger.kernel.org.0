@@ -2,95 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C7C8A352EAE
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Apr 2021 19:46:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FC69352EB6
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Apr 2021 19:49:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235522AbhDBRqO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 2 Apr 2021 13:46:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60616 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235426AbhDBRqN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 2 Apr 2021 13:46:13 -0400
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED5E6C0613E6;
-        Fri,  2 Apr 2021 10:46:11 -0700 (PDT)
-Received: by mail-pf1-x429.google.com with SMTP id m11so1378838pfc.11;
-        Fri, 02 Apr 2021 10:46:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=Hev9CLh/h74S7Fbo3xndcdWaR2hML7wLaPxLi/omfis=;
-        b=ID4Wf7ALZIiPVEmhVFZkbP2aFSYwsk7edMPOKf+WVKbVueJ7ShhGwfQY/m5sGHiD+W
-         SVF6N/45Udmsxp6LRuFArvMKtgjPCeN0JxgXH1ak7Z1rxvP7aKAQBqw1O8jwpKIzXk7S
-         Sg0kMHnlqDfIlmvN272xPvVKEEvj4VOJX0bgV5tQP/6x3Yazyh/+4hUhEzjqLAO3eTUP
-         mThMJXkaG6ZgqLLqtrH+H4KoC2Hf1m0Hv2n/6ISraf/i6KKv0ygMGfaMxACsIrI06y0f
-         Z0mUoTAeoA90lm4xqKHXSsgb8sJw1uuzH3LndPhfv29ecjwjCn/qpvKAcFAJW7Fg3vaU
-         0YCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=Hev9CLh/h74S7Fbo3xndcdWaR2hML7wLaPxLi/omfis=;
-        b=ddy16/vNNLwXIf1pOu+x3p178v+CLcK5hip034bMm47Z3BJIHeIrojjO2QOHlHRMaN
-         vnxEqFJuEK0VrMGJ7N4EUwcuKI2MFZTevH3S7QXS8o/kdBe7C98+8Sz+BvEkPqC4LAbN
-         dONlmoM5jmplMry3yXdO08bD1qMJ7hpXKj/Qg9VEf1znP9357Q+/9VSdrs2elgrsMkZL
-         giEgY+typWiPN3ZF68HJBV9UfdnpVyCXilHPT2PRR0j2bDVsHuLN7rCoINVU0cbkVst2
-         xdqLjkuVN5WofRGWNHIGyvTx6IPJY+aKZCSKbugxee432bid2NUGQTyqz8iHyGd/mt9y
-         Q3BQ==
-X-Gm-Message-State: AOAM531cYi0FmO0VfqCLmxC9OMXq2Aw/F5aC029QAHz43Hf2qWqhyXeC
-        mWfi/sEHNAlH5SoiAgZ9s0mUNmcb8lPJ87Wsx+k=
-X-Google-Smtp-Source: ABdhPJwsw5JiGiZOCvBiTM3UrNGME8MWrLlebBOuOQFyvmtcGZt+9sqvgUnSV375xATeTO1q9XluJk5ZowfkRq2EtVk=
-X-Received: by 2002:a62:7c43:0:b029:1ef:20ce:ba36 with SMTP id
- x64-20020a627c430000b02901ef20ceba36mr13250559pfc.40.1617385571413; Fri, 02
- Apr 2021 10:46:11 -0700 (PDT)
+        id S235649AbhDBRtC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 2 Apr 2021 13:49:02 -0400
+Received: from mga04.intel.com ([192.55.52.120]:17691 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234488AbhDBRtC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 2 Apr 2021 13:49:02 -0400
+IronPort-SDR: g5i2wSmf22gD10LloUMFeJDRVjwAxVdGtfdp4Q4A//DnefRSCYLqmBJEBnPfynAIDp9FYM6vdT
+ AMwKyEqZ4OsQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9942"; a="190278002"
+X-IronPort-AV: E=Sophos;i="5.81,300,1610438400"; 
+   d="scan'208";a="190278002"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2021 10:49:00 -0700
+IronPort-SDR: YWno7GKDwlS5K0URHqz6OiC8DPP806DO5xT5nrf4+SR9Vq6m35yVlBPwW34WZIN8pGmrPBcb2F
+ OLsep7SJvfFQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.81,300,1610438400"; 
+   d="scan'208";a="439702770"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga004.fm.intel.com with ESMTP; 02 Apr 2021 10:48:59 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 4305022B; Fri,  2 Apr 2021 20:49:13 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v2 1/2] iio: trigger: Replace explicit casting and wrong specifier with proper one
+Date:   Fri,  2 Apr 2021 20:49:10 +0300
+Message-Id: <20210402174911.44408-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <20210401145457.12255-1-andriy.shevchenko@linux.intel.com>
- <20210402103927.6758416d@jic23-huawei> <CAHp75VfijXvPEqCnJh2RDuhi0Ets_L034LYz-bp1zNuKA-x6AQ@mail.gmail.com>
-In-Reply-To: <CAHp75VfijXvPEqCnJh2RDuhi0Ets_L034LYz-bp1zNuKA-x6AQ@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 2 Apr 2021 20:45:55 +0300
-Message-ID: <CAHp75VcriL=Hei-UBJ2TT0ZDBq=n=cqd=z3Svob+LRauhFWhOg@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] iio: trigger: Replace explicit casting and wrong
- specifier with proper one
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Apr 2, 2021 at 4:25 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> On Friday, April 2, 2021, Jonathan Cameron <jic23@kernel.org> wrote:
->> On Thu,  1 Apr 2021 17:54:56 +0300
->> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
->>
->> > By unknown reason device name is set with an index casted from int
->> > to unsigned long while at the same time with "%ld" specifier. Both par=
-ts
->> > seems wrong to me, thus replace replace explicit casting and wrong spe=
-cifier
->> > with proper one, i.e. "%u".
->> I'm not going to pretend to know what planet I was on when I wrote this =
-:)
->
->
-> Actually =E2=80=9C%d=E2=80=9D is even more correct (aligned with the type=
-), but either will work.
+By unknown reason device name is set with an index casted from int
+to unsigned long while at the same time with "%ld" specifier. Both parts
+seems wrong to me, thus replace replace explicit casting and wrong specifier
+with proper one, i.e. "%d".
 
-I have noticed a typo in the commit message of the other patch.
-I'll send a v2 altogether.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+v2: used %d which is really correct one
+ drivers/iio/industrialio-trigger.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
->> Series applied to the togreg branch of iio.git and pushed out as testing
->> for the autobuilders to poke at.
+diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
+index 32ac1bec25e3..78e30f0f915c 100644
+--- a/drivers/iio/industrialio-trigger.c
++++ b/drivers/iio/industrialio-trigger.c
+@@ -75,8 +75,7 @@ int __iio_trigger_register(struct iio_trigger *trig_info,
+ 		return trig_info->id;
+ 
+ 	/* Set the name used for the sysfs directory etc */
+-	dev_set_name(&trig_info->dev, "trigger%ld",
+-		     (unsigned long) trig_info->id);
++	dev_set_name(&trig_info->dev, "trigger%d", trig_info->id);
+ 
+ 	ret = device_add(&trig_info->dev);
+ 	if (ret)
+-- 
+2.30.2
 
-
---=20
-With Best Regards,
-Andy Shevchenko

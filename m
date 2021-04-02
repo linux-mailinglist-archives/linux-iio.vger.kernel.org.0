@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E0038352F6B
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Apr 2021 20:47:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51313352F6C
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Apr 2021 20:47:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231462AbhDBSrw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 2 Apr 2021 14:47:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59814 "EHLO mail.kernel.org"
+        id S234275AbhDBSry (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 2 Apr 2021 14:47:54 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59824 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231577AbhDBSrw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 2 Apr 2021 14:47:52 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 14B0161165;
-        Fri,  2 Apr 2021 18:47:48 +0000 (UTC)
+        id S235984AbhDBSry (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 2 Apr 2021 14:47:54 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9F74361151;
+        Fri,  2 Apr 2021 18:47:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1617389270;
-        bh=v/LYvSH89yZ1xU15oxNGe9W7Dqxs2TkiUTMAZ9JOKiA=;
+        s=k20201202; t=1617389273;
+        bh=zYKZZTERA99i0KEMqsxBjYL6dtr3DGCWTOfkshaW+J0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=C4Wfnphl2df3TULWa/i+A1CSjPQlTIuAK4OsXXjYxhIw7YFCb0b4P3pHZLlvhuzzx
-         3dDXsuDXRUjidHLeDrTOt50U2L1nNYO/D0OH1eXYDxsWE6s0bjYH5+hEy49OJa+W12
-         pgtyCAUKN0E6xUH4AxE6+N6TBAncaoR89bz4hG++db1VE38ghyW64NP4SyVO+f6vIq
-         eLF2YQ2Ok3HI6bE4A/cErQQsiKEMlGNJUrOSBfPb6Y+J1ftssusE7skcPTngDq9Cgo
-         MMY4VQdAuYeWF+speLnXN7nKfBuo1ksGukHwid3RCydICg79kp0TS4ceQacGQVnp6H
-         wst8ElMRwi9Cg==
+        b=BWI2qE+rXJnucqHBeRuxG0nfRXEDstDBjwPca/1PN6ATbk5AwnIVDNLehT3wN1WH3
+         gdl25JUOxnvNlTC/mHOgQ8rh7dIATTbPkbpxs5DrOOUGrzcpjkgwfYel5xa7GemwDi
+         woj80rTLZb1SmlAVvC+2Mqz07u1yeU9dY4WdwfPgw7T7oDoNcXo8TdsGZB3RoY1Hju
+         A/JHvSc0tOxSwMfcnkWN6hqg/HWv8dYAGfdoCLjDpiFke6M76WYuUEvccZklBvbPkq
+         MqhSjNRAz7p8zTaqOgkre6+j1+0k1jvktj+v9mYHJWxwASHgA5m+L2EbUZrpEWwsrA
+         CujwcazSaMDVQ==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Barry Song <song.bao.hua@hisilicon.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Maxime Ripard <maxime.ripard@bootlin.com>
-Subject: [PATCH 4/7] iio:adc:sun4i-gpadc: Use new IRQF_NO_AUTOEN flag instead of request then disable
-Date:   Fri,  2 Apr 2021 19:45:41 +0100
-Message-Id: <20210402184544.488862-5-jic23@kernel.org>
+        Tomasz Duszynski <tomasz.duszynski@octakon.com>
+Subject: [PATCH 5/7] iio:chemical:scd30: Use IRQF_NO_AUTOEN to avoid irq request then disable
+Date:   Fri,  2 Apr 2021 19:45:42 +0100
+Message-Id: <20210402184544.488862-6-jic23@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210402184544.488862-1-jic23@kernel.org>
 References: <20210402184544.488862-1-jic23@kernel.org>
@@ -42,38 +42,48 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-This new flag ensures a requested irq is not autoenabled, thus removing
-the need for the disable_irq() that follows and closing off any chance
-of spurious interrupts.
+This new flag cleanly avoids the need for a dance where we request the
+interrupt only to immediately disabling it by ensuring it is not
+auto-enabled in the first place.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Maxime Ripard <maxime.ripard@bootlin.com>
+Cc: Tomasz Duszynski <tomasz.duszynski@octakon.com>
 ---
- drivers/iio/adc/sun4i-gpadc-iio.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/chemical/scd30_core.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/iio/adc/sun4i-gpadc-iio.c b/drivers/iio/adc/sun4i-gpadc-iio.c
-index 99b43f28e879..2d393a4dfff6 100644
---- a/drivers/iio/adc/sun4i-gpadc-iio.c
-+++ b/drivers/iio/adc/sun4i-gpadc-iio.c
-@@ -470,7 +470,8 @@ static int sun4i_irq_init(struct platform_device *pdev, const char *name,
- 	}
+diff --git a/drivers/iio/chemical/scd30_core.c b/drivers/iio/chemical/scd30_core.c
+index 261c277ac4a5..d89f117dd0ef 100644
+--- a/drivers/iio/chemical/scd30_core.c
++++ b/drivers/iio/chemical/scd30_core.c
+@@ -655,19 +655,19 @@ static int scd30_setup_trigger(struct iio_dev *indio_dev)
  
- 	*irq = ret;
--	ret = devm_request_any_context_irq(&pdev->dev, *irq, handler, 0,
-+	ret = devm_request_any_context_irq(&pdev->dev, *irq, handler,
-+					   IRQF_NO_AUTOEN,
- 					   devname, info);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "could not request %s interrupt: %d\n",
-@@ -478,7 +479,6 @@ static int sun4i_irq_init(struct platform_device *pdev, const char *name,
- 		return ret;
- 	}
+ 	indio_dev->trig = iio_trigger_get(trig);
  
--	disable_irq(*irq);
- 	atomic_set(atomic, 0);
++	/*
++	 * Interrupt is enabled just before taking a fresh measurement
++	 * and disabled afterwards. This means we need to ensure it is not
++	 * enabled here to keep calls to enable/disable balanced.
++	 */
+ 	ret = devm_request_threaded_irq(dev, state->irq, scd30_irq_handler,
+-					scd30_irq_thread_handler, IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++					scd30_irq_thread_handler,
++					IRQF_TRIGGER_HIGH | IRQF_ONESHOT |
++					IRQF_NO_AUTOEN,
+ 					indio_dev->name, indio_dev);
+ 	if (ret)
+ 		dev_err(dev, "failed to request irq\n");
  
- 	return 0;
+-	/*
+-	 * Interrupt is enabled just before taking a fresh measurement
+-	 * and disabled afterwards. This means we need to disable it here
+-	 * to keep calls to enable/disable balanced.
+-	 */
+-	disable_irq(state->irq);
+-
+ 	return ret;
+ }
+ 
 -- 
 2.31.1
 

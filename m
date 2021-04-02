@@ -2,126 +2,125 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C05103526F7
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Apr 2021 09:34:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44EF1352742
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Apr 2021 10:13:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234345AbhDBHe4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 2 Apr 2021 03:34:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40950 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234327AbhDBHey (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 2 Apr 2021 03:34:54 -0400
-Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B6E0C0613E6;
-        Fri,  2 Apr 2021 00:34:54 -0700 (PDT)
-Received: by mail-io1-xd35.google.com with SMTP id z136so4580938iof.10;
-        Fri, 02 Apr 2021 00:34:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=S8YiWEgAWNK+PWFAwlRLwclHpIGKDlHTAlTUSmH/65s=;
-        b=jFUe8fj/rlXjI53aUF/H7YFiHByWQ4hDH19JCq4435UfFGgeAj9AUTeSGK+svJ0RbH
-         ouvKNhYESpEQcNmF/f8a6it7JO+IYvF0h25WjxQUibN12shEBIq8jmGshVWPW4Wwhuv6
-         GRM1waAT5nWoOhEnAZhrHYfJWxYBpC1FfhkfzaQ/0KhabL689p/gLsy2vZN+Tr5EseMg
-         8iWCvo/uD3oa/TBL2LONUyd8febqLoptvKPUDi89m9/+vC/LjW/4ibAIRMZkUtBdI7V0
-         UTxrOr6cNio2+ye0bbhAVOPNqczxXxASLoEeqlbLTSRMlbMiYUryty4PJBZU0DTLHYPm
-         WIKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=S8YiWEgAWNK+PWFAwlRLwclHpIGKDlHTAlTUSmH/65s=;
-        b=C7xZ7ehIGE/F1JjkYp6EfleN8zRGX4LNneA/6trB+8WHLGApALbrQcYOx/Tify+xMR
-         SSWXCtLhid512M1N0tZw9NVfEbw+nLlOj73TSSqH9g/Uu1YW8L5zC9hIfLgCPAP6zuRw
-         Y/g/VRZElfPzmBIERZgn4MsRZlDbB1JQ0S2azu6IcBwBPZaCTBg7xsYryGH+E4TaVAti
-         bVP9ptO06gJRwatuou5WHcubYhnjP03YtY8QW0rOiilEdS2PxP5YBdlsmzT2SoKbHz7c
-         RDrKwHLCvz9zDsqwiOG9A3dLpqY2wKFmc+n/oZUEtjEdP+WOcNSXmdXJ5LITwJszQPJz
-         0OIA==
-X-Gm-Message-State: AOAM532OLnG1QfuhrDTUBaQrUuv1qA0TA1CKWaTYoBi0nknxUj0xpYm7
-        WWEaQDao/Rxyjl0uvhW1eHLQK2gHvDgFudVevYg=
-X-Google-Smtp-Source: ABdhPJydMTWYDIZREgnTQx666V8nT2/KJLSYAkt+IR7zQKVsyhiAi4hsU4Dy1m0Xg401RwfZHKWoOLbX20rc26JQwNY=
-X-Received: by 2002:a05:6638:3791:: with SMTP id w17mr11482434jal.91.1617348893555;
- Fri, 02 Apr 2021 00:34:53 -0700 (PDT)
+        id S231160AbhDBINc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 2 Apr 2021 04:13:32 -0400
+Received: from www381.your-server.de ([78.46.137.84]:40276 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229722AbhDBINb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 2 Apr 2021 04:13:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:To:Subject:Sender:Reply-To:Cc:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=WJYHZD/yI9+GiC21G4z8as+Vha9BjY024yCLrBq/FNg=; b=gfrgzGBNOQeO+oZDrXCXU45Y9f
+        68hnYKo9Xt0kzKUxqowB//IILbH82VFLsbpBztU4bs3hbL77VLV6Gtici84oyaO6i7/3x4DMT5tZT
+        8zTOt5XOnuvrN2WFmdbGDJigIaAS/BLfGAlpuTBT8MNx7+8SktcSqhkeXh2YJAfJoHqw5wHUK9PLK
+        azHnpsjZrP1VVRJgL3q9mbmQFa6Xw9iH+kewsuxKpLK4/1BmIJpH8Few+uJuk6qNq9UNisvRG/WWC
+        zKzJfe94RHNRnrKBofDV5+ErOuYUmJ/7fH+xZOrtQeU/PuwPPknklPgY2kdNj82eXLRYxlmsrmmqv
+        M+lmShPA==;
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <lars@metafoo.de>)
+        id 1lSEvm-0002av-8M; Fri, 02 Apr 2021 10:13:26 +0200
+Received: from [2001:a61:2aa1:1e01:9e5c:8eff:fe01:8578]
+        by sslproxy03.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1lSEvm-000DeJ-17; Fri, 02 Apr 2021 10:13:26 +0200
+Subject: Re: [PATCH v2 2/2] iio: temperature: add driver support for ti tmp117
+To:     Puranjay Mohan <puranjay12@gmail.com>,
+        alexandru.ardelean@analog.com, jic23@kernel.org,
+        devicetree@vger.kernel.org, knaack.h@gmx.de,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20210401091648.87421-1-puranjay12@gmail.com>
+ <20210401091648.87421-3-puranjay12@gmail.com>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <7a9097bf-9f8d-0fe7-7b5e-84643bcff760@metafoo.de>
+Date:   Fri, 2 Apr 2021 10:13:25 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
 MIME-Version: 1.0
-References: <20210401171759.318140-1-jic23@kernel.org> <20210401171759.318140-2-jic23@kernel.org>
-In-Reply-To: <20210401171759.318140-2-jic23@kernel.org>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Fri, 2 Apr 2021 10:34:42 +0300
-Message-ID: <CA+U=DspFppB_cnufH6VLULKCaVQ796GsNykt90OJPPj_ThcyvQ@mail.gmail.com>
-Subject: Re: [PATCH 1/3] iio:adc:ad7476: Fix remove handling
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210401091648.87421-3-puranjay12@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.102.4/26127/Thu Apr  1 13:11:26 2021)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Apr 1, 2021 at 8:47 PM Jonathan Cameron <jic23@kernel.org> wrote:
+On 4/1/21 11:16 AM, Puranjay Mohan wrote:
+> TMP117 is a Digital temperature sensor with integrated NV memory.
 >
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Add support for tmp117 driver in iio subsystem.
+> Datasheet:-https://www.ti.com/lit/gpn/tmp117
 >
-> This driver was in an odd half way state between devm based cleanup
-> and manual cleanup (most of which was missing).
-> I would guess something went wrong with a rebase or similar.
-> Anyhow, this basially finishes the job as a precusor to improving
+> Signed-off-by: Puranjay Mohan <puranjay12@gmail.com>
 
-2 typos in this commit description
+Nice and clean driver. Just some comments about the CALIBBIAS.
 
-> the regulator handling.
->
+> [...]
+> +#define TMP117_RESOLUTION_10UC		78125
+Isn't the unit here 100 uC?
+> +#define TMP117_DEVICE_ID		0x0117
+> +
+> +struct tmp117_data {
+> +	struct i2c_client *client;
+> +};
+> +
+> +static int tmp117_read_raw(struct iio_dev *indio_dev,
+> +		struct iio_chan_spec const *channel, int *val,
+> +		int *val2, long mask)
+> +{
+> [...]
+> +	case IIO_CHAN_INFO_CALIBBIAS:
+> +		ret = i2c_smbus_read_word_swapped(data->client,
+> +					TMP117_REG_TEMP_OFFSET);
+> +		if (ret < 0)
+> +			return ret;
+> +		*val = ((int16_t)ret * (int32_t)TMP117_RESOLUTION_10UC)
+> +								/ 10000;
+> +		*val2 = ((int16_t)ret * (int32_t)TMP117_RESOLUTION_10UC)
+> +								% 10000;
 
-I was pretty surprised about this patch [before reading through it].
-Anyhow:
+If I understand this right CALBBIAS is written in one unit, but read in 
+another unit. E.g. if you do `echo 100 > ..._calibbias` and then `cat 
+..._calibbias` you'd read a different value back.
 
-Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
+I think that would be quite unexpected behavior. The unit should be the 
+same. Here in the read function you can just return the register value. 
+Just make sure to properly sign extend like for the RAW property.
 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Fixes: 4bb2b8f94ace3 ("iio: adc: ad7476: implement devm_add_action_or_reset")
-> Cc: Michael Hennerich <michael.hennerich@analog.com>
-> ---
->  drivers/iio/adc/ad7476.c | 18 ++++--------------
->  1 file changed, 4 insertions(+), 14 deletions(-)
->
-> diff --git a/drivers/iio/adc/ad7476.c b/drivers/iio/adc/ad7476.c
-> index 17402714b387..9e9ff07cf972 100644
-> --- a/drivers/iio/adc/ad7476.c
-> +++ b/drivers/iio/adc/ad7476.c
-> @@ -321,25 +321,15 @@ static int ad7476_probe(struct spi_device *spi)
->         spi_message_init(&st->msg);
->         spi_message_add_tail(&st->xfer, &st->msg);
->
-> -       ret = iio_triggered_buffer_setup(indio_dev, NULL,
-> -                       &ad7476_trigger_handler, NULL);
-> +       ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev, NULL,
-> +                                             &ad7476_trigger_handler, NULL);
->         if (ret)
-> -               goto error_disable_reg;
-> +               return ret;
->
->         if (st->chip_info->reset)
->                 st->chip_info->reset(st);
->
-> -       ret = iio_device_register(indio_dev);
-> -       if (ret)
-> -               goto error_ring_unregister;
-> -       return 0;
-> -
-> -error_ring_unregister:
-> -       iio_triggered_buffer_cleanup(indio_dev);
-> -error_disable_reg:
-> -       regulator_disable(st->reg);
-> -
-> -       return ret;
-> +       return devm_iio_device_register(&spi->dev, indio_dev);
->  }
->
->  static const struct spi_device_id ad7476_id[] = {
-> --
-> 2.31.1
->
+> +		return IIO_VAL_INT_PLUS_MICRO;
+> [...]
+> +}
+> +
+> +static int tmp117_write_raw(struct iio_dev *indio_dev,
+> +		struct iio_chan_spec const *channel, int val,
+> +		int val2, long mask)
+> +{
+> +	struct tmp117_data *data = iio_priv(indio_dev);
+> +	s16 off;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_CALIBBIAS:
+> +		off = (s16)val;
+This should have some input validation to avoid writing bogus values to 
+the register when the value is out of range. You can either reject out 
+of range values or clamp them into the valid range (using the clamp() 
+macro).
+> +		return i2c_smbus_write_word_swapped(data->client,
+> +						TMP117_REG_TEMP_OFFSET, off);
+> +
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+[...]

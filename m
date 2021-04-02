@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E30B5352F68
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Apr 2021 20:47:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37E53352F69
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Apr 2021 20:47:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229722AbhDBSrq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 2 Apr 2021 14:47:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59782 "EHLO mail.kernel.org"
+        id S231443AbhDBSrr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 2 Apr 2021 14:47:47 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59794 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231149AbhDBSrq (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 2 Apr 2021 14:47:46 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 42BCF61163;
-        Fri,  2 Apr 2021 18:47:43 +0000 (UTC)
+        id S231149AbhDBSrr (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 2 Apr 2021 14:47:47 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id F13BB61164;
+        Fri,  2 Apr 2021 18:47:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1617389264;
-        bh=F5DJLUEddjefE0vfPGumnLhU2dCP5adrDt+DWAnO6WM=;
+        s=k20201202; t=1617389265;
+        bh=uOJdjmzfcNjl5H10qT6HFOCrKm91lAWpHVnh7oG1Ybc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t5pqJSLuFH0XcuaGdgaz6CNMgw2IqYWEqzMqrhZp6mAbBnXQbXMthegnBbySLXifP
-         cDNdb/LyOrdlFLK2dytoD5iW76wCl4xZezSDrQkbEcjMRSwhh6kLCgXgWQk06aZhEn
-         FD5oihX9ReYvaL+3fbLZ7cpRFEI01YHFQHWa/gn4IIac5umUO4iqNUays12HrITeak
-         OiurqtlmjMYySx6vjHvs+4msR3hEwc4QloOoJAG6felSDUOESXW9l+25Bf+ByE5lMG
-         cAr2bw3sU/+3kuWazLNQiz6r/Mpuo0ch/w3Glwx6luCa2VfTSKp2YDhXL996Gds1nN
-         b7hWwY21GvY0Q==
+        b=mJySNRwDOHHGmwJe77JHpzm8h0lmF0WRp1+OvlMu2Lvse4vQmBuapvqeWGLIzv7jP
+         aQZ/7DhCAixveuqQCskb+lDDf56Gx1wPa/lh7t9CREoKf11gvAmTWvoh935dMW4U1j
+         18O3Jlwfz8Up0a5lVP1+dH5n2cShze2NJD6nn0xTCisrB7I2Funs03mkiW1y/VxCVZ
+         4xYlJv8QkcsuhbP0B7yTvq7ixfZXhEeBk2g61zptTu0aOP5YDSEEo+l1+hFxykt99O
+         s7UJenaGfOOcBcyKpb24CHsAeVgP6TXqelOVUI6AIiWgegtYn3y8bXn7Ih1el277zD
+         vCBXJz8gxhlQA==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Barry Song <song.bao.hua@hisilicon.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH 1/7] iio:adc:ad7766: Use new IRQF_NO_AUTOEN to reduce boilerplate
-Date:   Fri,  2 Apr 2021 19:45:38 +0100
-Message-Id: <20210402184544.488862-2-jic23@kernel.org>
+        Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [PATCH 2/7] iio:adc:exynos-adc: Use new IRQF_NO_AUTOEN flag rather than separate irq_disable()
+Date:   Fri,  2 Apr 2021 19:45:39 +0100
+Message-Id: <20210402184544.488862-3-jic23@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210402184544.488862-1-jic23@kernel.org>
 References: <20210402184544.488862-1-jic23@kernel.org>
@@ -42,47 +42,32 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-As iio_poll_trigger() is safe against spurious interrupts when the
-trigger is not enabled, this is not a fix despite looking like
-a race.  It is nice to simplify the code however so the interrupt
-is never enabled in the first place.
+Disabling an irq before the driver has actually atempted to request it
+may work, but is definitely not as clean as just requesting it as
+normal but with the auto enable disabled.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- drivers/iio/adc/ad7766.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/iio/adc/exynos_adc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7766.c b/drivers/iio/adc/ad7766.c
-index 829a3426f235..1e41759f3ee5 100644
---- a/drivers/iio/adc/ad7766.c
-+++ b/drivers/iio/adc/ad7766.c
-@@ -255,18 +255,17 @@ static int ad7766_probe(struct spi_device *spi)
- 		ad7766->trig->ops = &ad7766_trigger_ops;
- 		iio_trigger_set_drvdata(ad7766->trig, ad7766);
+diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
+index 784c10deeb1a..8c98d8c9ab1f 100644
+--- a/drivers/iio/adc/exynos_adc.c
++++ b/drivers/iio/adc/exynos_adc.c
+@@ -778,9 +778,9 @@ static int exynos_adc_ts_init(struct exynos_adc *info)
+ 		return ret;
+ 	}
  
--		ret = devm_request_irq(&spi->dev, spi->irq, ad7766_irq,
--			IRQF_TRIGGER_FALLING, dev_name(&spi->dev),
--			ad7766->trig);
--		if (ret < 0)
--			return ret;
--
- 		/*
- 		 * The device generates interrupts as long as it is powered up.
- 		 * Some platforms might not allow the option to power it down so
--		 * disable the interrupt to avoid extra load on the system
-+		 * don't enable the interrupt to avoid extra load on the system
- 		 */
--		disable_irq(spi->irq);
-+		ret = devm_request_irq(&spi->dev, spi->irq, ad7766_irq,
-+				       IRQF_TRIGGER_FALLING | IRQF_NO_AUTOEN,
-+				       dev_name(&spi->dev),
-+				       ad7766->trig);
-+		if (ret < 0)
-+			return ret;
+-	disable_irq(info->tsirq);
+ 	ret = request_threaded_irq(info->tsirq, NULL, exynos_ts_isr,
+-				   IRQF_ONESHOT, "touchscreen", info);
++				   IRQF_ONESHOT | IRQF_NO_AUTOEN,
++				   "touchscreen", info);
+ 	if (ret)
+ 		input_unregister_device(info->input);
  
- 		ret = devm_iio_trigger_register(&spi->dev, ad7766->trig);
- 		if (ret)
 -- 
 2.31.1
 

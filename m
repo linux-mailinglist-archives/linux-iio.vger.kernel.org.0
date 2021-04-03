@@ -2,125 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB69935346F
-	for <lists+linux-iio@lfdr.de>; Sat,  3 Apr 2021 17:03:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 389E73534CB
+	for <lists+linux-iio@lfdr.de>; Sat,  3 Apr 2021 19:01:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236641AbhDCPDY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 3 Apr 2021 11:03:24 -0400
-Received: from www381.your-server.de ([78.46.137.84]:45268 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231821AbhDCPDX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 3 Apr 2021 11:03:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=Aw1UNqJ5vEutFfUOJuRXblyd5gG8qhauQ3xAU2OtKaI=; b=NRu1djl1A64MiXCAr9ExVVzg0R
-        i+m2b9VDizmYjavQjAgDC2rgfbnOGfqL4b/zXi7yVMW91ayYM3RDOCcDKQqKXnc5/yjKjP4x5ZLks
-        noSSK0wHYWfh8GHe8OqZFvJ/+CPfCLcIqMPDiKGKf2yvNA+tCrFvlNRx1+rxLtjuhQ4GQweCFLMIt
-        EQx8C9eqU5bEQtL7edP0TZC3HkFfBJ8Ra18xG7dOXWPOd3DHAYNGI/Vm8RCj4b8nyN/qpIAlSyR3h
-        XCpKoKkWFFdUSQCCluYNJOoLYXPkYROIbKjk3W8i7p+CwK7zvE4TrRUX3VRzzM5vPogMkHx84OLNj
-        7WqR4tDA==;
-Received: from sslproxy02.your-server.de ([78.47.166.47])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1lShnx-000B0U-Cz; Sat, 03 Apr 2021 17:03:17 +0200
-Received: from [2001:a61:2aa1:1e01:9e5c:8eff:fe01:8578]
-        by sslproxy02.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1lShnx-000PvC-8K; Sat, 03 Apr 2021 17:03:17 +0200
-Subject: Re: [PATCH v2 2/2] iio: temperature: add driver support for ti tmp117
-To:     Puranjay Mohan <puranjay12@gmail.com>
-Cc:     alexandru.ardelean@analog.com, Jonathan Cameron <jic23@kernel.org>,
-        devicetree@vger.kernel.org, knaack.h@gmx.de,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20210401091648.87421-1-puranjay12@gmail.com>
- <20210401091648.87421-3-puranjay12@gmail.com>
- <7a9097bf-9f8d-0fe7-7b5e-84643bcff760@metafoo.de>
- <CANk7y0gwSZgxzmxtOZayyy_TrUP+rbjtN4WXZAsZE7E46UmUDg@mail.gmail.com>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <e76fbb33-f0d9-6067-0a44-aa7e7646595e@metafoo.de>
-Date:   Sat, 3 Apr 2021 17:03:17 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
+        id S236867AbhDCRBb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 3 Apr 2021 13:01:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48862 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236855AbhDCRBa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 3 Apr 2021 13:01:30 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3742AC061788
+        for <linux-iio@vger.kernel.org>; Sat,  3 Apr 2021 10:01:27 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id w28so11575135lfn.2
+        for <linux-iio@vger.kernel.org>; Sat, 03 Apr 2021 10:01:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=lI/1OIoZnH0zHCP8zocmSNndjhp0wXRUN/SXyEbSp7o=;
+        b=LFPZ4vZUpnHnF3kzGUOxn0VBpF3tVlu8ESNevVv8UBT8zQIGyQEeOB2NJUzP4UZlvu
+         oKgOXIW0UDgOqPW3bb5fnvZsU6aFEOc3+rSPaTXT+gFC97hUx+DVjpb9fkEuoU9tnpHY
+         T0GRk5fSxrAxyxhC0f2YLWIYIBX0o2QC52z3r8gCDo7LrY7l7wJfbAVvrCKX5JvAL5J5
+         4RUcZ5IMV6/TJrMuvlMGiPq+hqBzxuawkz2ILeMVGuX1jDMdJRRNQMSvqwj3NSDV6172
+         os8U04qPvxF+0w95t8MrVcgGi6F2x3GyrFIYmi1VlYGBkO9XCusKsO7n4lZs0i48rZ6A
+         lNow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=lI/1OIoZnH0zHCP8zocmSNndjhp0wXRUN/SXyEbSp7o=;
+        b=Ck5rozPAeSZsEjkyTM0F24EGuSjHFlK2VbAGFUe/gREBtJ6mJ6RIT3AO4m6W7+5Gjg
+         7HjkSnFZYf7RynTJ3lriZJ/tYuzvyf5D/X31wxeivl59NuSaMNqEYvBF5fuhOe7gHSB5
+         K52r1fRD4HP07pWvKTq1Q96Ip6YrmpVCl/ikek+/9g+zFVan17rKfBqTwf58l4ZC/wsz
+         RJsA2ZelF+DKDVmc5Zo6Hze+hY5MXq40WXYLC6tpalX2V4neRRHxCpj3GIuGZU5GeO6H
+         vvo5GkTWNpbhsTCQkD0ZcyFOpwBM6YCVnal6AKorLNicLJgxOJvWXfGJqrUz3acQh3Dm
+         8nAw==
+X-Gm-Message-State: AOAM5322omofF7bGLrvG+0PvoSPbbq8VjQeUlwnVqV3ehUr9T441o8l7
+        2La06M9F+77WgMmwKI6GKh6wLYe+4l+DcHnCzWAlskx75pqGNQ==
+X-Google-Smtp-Source: ABdhPJx1VEB6XJaF57ViQBiyLEIu6QoTpGYHrmKVxM4eZ8lwh/ojbHxIxtcDKGPOCFcRaI4Yk0oihJyNkPFtN92oAVg=
+X-Received: by 2002:a19:f812:: with SMTP id a18mr12272739lff.254.1617469285453;
+ Sat, 03 Apr 2021 10:01:25 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CANk7y0gwSZgxzmxtOZayyy_TrUP+rbjtN4WXZAsZE7E46UmUDg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.102.4/26129/Sat Apr  3 13:05:44 2021)
+References: <CANk7y0j89CFD7y2sY8B+H+YQ8P-w3EXmjzSL2=UitLpcgjYttQ@mail.gmail.com>
+ <CANk7y0hhsP6j6geLGrHc=A=B_h7_Gv_7Y2R+RtL+KACVEVcZtw@mail.gmail.com>
+In-Reply-To: <CANk7y0hhsP6j6geLGrHc=A=B_h7_Gv_7Y2R+RtL+KACVEVcZtw@mail.gmail.com>
+From:   Puranjay Mohan <puranjay12@gmail.com>
+Date:   Sat, 3 Apr 2021 22:31:13 +0530
+Message-ID: <CANk7y0hAzcJAtQ7qbdvZZbNked=w7Nmj7OdLHyx-E1zKV+B=Eg@mail.gmail.com>
+Subject: Re: IIO: GSOC 2021 Project Proposal
+To:     linux-iio <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
+        alexandru.ardelean@analog.com,
+        Alexandru Ardelean <ardeleanalex@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 4/3/21 4:58 PM, Puranjay Mohan wrote:
-> On Fri, Apr 2, 2021 at 1:43 PM Lars-Peter Clausen <lars@metafoo.de> wrote:
->> On 4/1/21 11:16 AM, Puranjay Mohan wrote:
->>> TMP117 is a Digital temperature sensor with integrated NV memory.
->>>
->>> Add support for tmp117 driver in iio subsystem.
->>> Datasheet:-https://www.ti.com/lit/gpn/tmp117
->>>
->>> Signed-off-by: Puranjay Mohan <puranjay12@gmail.com>
->> Nice and clean driver. Just some comments about the CALIBBIAS.
->>
->>> [...]
->>> +#define TMP117_RESOLUTION_10UC               78125
->> Isn't the unit here 100 uC?
-> it is 7.8125 milli degrees_C so 78125 x 10^-4 milli degrees_C
-> which is 78125 x 10^-4 x 10^3 micro degrees_C
-> so it becomes 78125 x 10^-1 micro degrees_C = 78125 10_microdegrees_C.
-> Did it in detail so I remember it in the future. I guess you thought
-> it as 0.78125 millidegrees_C?
-Ah, I get it, it is a tenth micro degree, not tens of micro degrees, 
-sorry got confused.
-> [...]
->
->> I think that would be quite unexpected behavior. The unit should be the
->> same. Here in the read function you can just return the register value.
-> Okay, if you feel that would be right then I will do it.
-Yea, I think reading and writing in different units would be a bit 
-confusing.
->> Just make sure to properly sign extend like for the RAW property.
->>
->>> +             return IIO_VAL_INT_PLUS_MICRO;
->>> [...]
->>> +}
->>> +
->>> +static int tmp117_write_raw(struct iio_dev *indio_dev,
->>> +             struct iio_chan_spec const *channel, int val,
->>> +             int val2, long mask)
->>> +{
->>> +     struct tmp117_data *data = iio_priv(indio_dev);
->>> +     s16 off;
->>> +
->>> +     switch (mask) {
->>> +     case IIO_CHAN_INFO_CALIBBIAS:
->>> +             off = (s16)val;
->> This should have some input validation to avoid writing bogus values to
->> the register when the value is out of range. You can either reject out
->> of range values or clamp them into the valid range (using the clamp()
->> macro).
-> the maximum value which this register takes is 0xffff, so it should
-> get clamped automatically when casting to s16?
-> I might be wrong here.
-Casting will truncate the upper bits. So something like 0x12345 gets 
-turned into 0x2345.
->
->>> +             return i2c_smbus_write_word_swapped(data->client,
->>> +                                             TMP117_REG_TEMP_OFFSET, off);
->>> +
->>> +     default:
->>> +             return -EINVAL;
->>> +     }
->>> +}
->>> +
->> [...]
->
->
+Sorry, I replied through my smartphone and it sent it in HTML, so it
+didn't go through the mailing list.
+I really regret doing this.
 
+
+On Sat, Apr 3, 2021 at 10:23 PM Puranjay Mohan <puranjay12@gmail.com> wrote:
+>
+> Hi Everyone,
+> I am looking forward to hearing from you. Please give some feedback, it will be very helpful for me.
+>
+> Thanks & Regards
+> Puranjay Mohan
+>
+> On Tue, 30 Mar, 2021, 22:07 Puranjay Mohan, <puranjay12@gmail.com> wrote:
+>>
+>> Hi Everyone, I am Puranjay Mohan a junior at SRMIST, India, pursuing
+>> electronics and communications engineering. I wish to participate in
+>> the GSoC 2021 as a part of Linux Foundation, IIO Workgroup.
+>>
+>> I have been contributing to the Linux kernel and have more than 30
+>> accepted patches. I was a mentee in the Linux Kernel mentorship
+>> program where I worked under the mentorship of Bjorn Helgaas(PCI
+>> maintainer) on PCI latency tolerance reporting.
+>>
+>> I have completed the IIO_tasks,  for learning the IIO Subsystem I am
+>> working on an IIO Driver for TI's TMP117 temperature sensor, the patch
+>> can be seen here:-
+>> https://lore.kernel.org/linux-iio/20210320064509.119878-1-puranjay12@gmail.com/
+>>
+>> For GSoC 2021, I have chosen the ADXL355 Accelerometer as my device of
+>> choice, but I am ready to work on another device if Analog Devices,
+>> Inc. wants to get the driver for another device. I choose this device
+>> because I saw a post on ADI Engineer Zone asking for its driver.
+>>
+>> I know it is too early, but I have written a proposal and wish to get
+>> your comments on it so that I can improve it further.
+>> Here is the google docs link, please add your comments on
+>> it:-https://docs.google.com/document/d/16xusxryh_3F7Svje14fD7dAx6qzEN4fbFPpvvdJB09A/edit?usp=sharing
+>>
+>> --
+>> Thanks and Regards
+>>
+>> Yours Truly,
+>>
+>> Puranjay Mohan
+
+
+
+-- 
+Thanks and Regards
+
+Yours Truly,
+
+Puranjay Mohan

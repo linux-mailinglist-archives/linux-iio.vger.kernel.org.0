@@ -2,115 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B8643539C1
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Apr 2021 22:33:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78FB8353A0F
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Apr 2021 00:25:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231481AbhDDUdi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 4 Apr 2021 16:33:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35014 "EHLO
+        id S231596AbhDDWY5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 4 Apr 2021 18:24:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231445AbhDDUdh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Apr 2021 16:33:37 -0400
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89CD2C061793
-        for <linux-iio@vger.kernel.org>; Sun,  4 Apr 2021 13:33:31 -0700 (PDT)
-Received: by mail-wr1-x429.google.com with SMTP id i18so5810355wrm.5
-        for <linux-iio@vger.kernel.org>; Sun, 04 Apr 2021 13:33:31 -0700 (PDT)
+        with ESMTP id S231453AbhDDWYy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Apr 2021 18:24:54 -0400
+Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD9B5C061756;
+        Sun,  4 Apr 2021 15:24:48 -0700 (PDT)
+Received: by mail-ot1-x329.google.com with SMTP id c24-20020a9d6c980000b02902662e210895so9336136otr.9;
+        Sun, 04 Apr 2021 15:24:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=qLAy95bvS1zAnYuhC/w4xxxlm+O0tzNR1N2BJpqbw5w=;
-        b=Uj0Y5h5dAclSEpTTchKZoN6d6/X2/jxuIIdiY2TiTyk3Va6KgXWEIR7nXrbx2G6DmG
-         DEj8NTV0WHUfrymtdaelg8IdCSbFubY9BkAoUgH6qQf8EqAg7oNdPZikt1hBXz6v20zs
-         A8AaPWXWp0Z2jemWr2KvX3VEPPGU3IlyIZPwCyiC+SenicBH6/PCmHtanTK6GQ1U+Ifg
-         VY2SBWvWpq0G2yymbRGsBY5fsQ3VQ4aGS/FzsLk9krR6A4W7hb8uudpCoMiP1AUhW51x
-         KAc2oi6Fi2BSvj3YthT1WKevVUyAKnRg3u5L4ySofPzK4gqEB2ss/pH/Whz46Pfeo62Z
-         VcVg==
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :content-transfer-encoding;
+        bh=7mopXWBi2wijSGKa4AiTjRSanyVNKQw/ECdzYkzyHBg=;
+        b=TVG60R2H4bKieRfyglnQsIBgGK4c5WjLKncENtq0PCeTqi0D6q5ytdppV9OrFrcyfW
+         HHH8bCRos+sm+98LPMbzfw9UHqsTBBg7s/QkgB1moRZ5iouugI0y+vNhwmbhAePnOB4i
+         UHm7CwCPhCx4Va+74vAKzs/MYhDMCYVVJk5Niwvy5dk5Tb+bSMDd87VQEozlro4dyDG6
+         AmPXEEKsjQqXG482qICSickkZGyHeqV/iHIPo8n5z2ogNCNr7F4BNBGtqg0y29ni41l5
+         KgrHtAzgpk6axHm7eaSh7ZnahfnCXCwIhxpCHE4w7O1ko7h6Z3DhSzbH48qD+o6iYVPk
+         2dlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=qLAy95bvS1zAnYuhC/w4xxxlm+O0tzNR1N2BJpqbw5w=;
-        b=UXRCmBg0RVtj46YCnKHCqevCLJcFSTdl0KbtZW5gMReaBvM/hp9KxTpLYA/j1RDmD7
-         N1n7RE5RhjprRmJbj64t2EPwyw8aafseIlCbsdBygJ522qwNzOJYGkFoQBUrOa4hpT8g
-         o4dSq5kJmMr4SNIDj3Oh2RHXgGe7c6XV2ur0e+ib4cVuHli4PzBz5LqJWWiMSVaZ6yUe
-         oBhn1d4RIlyKP6cNyfwGqFZSMl/agAtoY7memoTwvSMMeOH+KCelNnFSqd3V+N9Vo3CH
-         MY7C/7DWvcKoE2skVNyyjbjVjdiFlgYZARRmsXP8XxxsM7CNYSpBMV1mXiwQMre1IWqA
-         EBnA==
-X-Gm-Message-State: AOAM530NwsjuIZgUEZNzQP4O+Q0BW4s01O4xyYAjnLduR3t6nt/LJx1q
-        pkGrHS2mgJ6c0DUuWD3yp3XLkmT7lzJhdQ==
-X-Google-Smtp-Source: ABdhPJyhT6Ya2IgUD2RMKPgOE6BwHgGaUQpbUoSsELec3O9UxvF/KjbQKc6zYs03mvxBXK/bekFFsg==
-X-Received: by 2002:a05:6000:10c4:: with SMTP id b4mr8456271wrx.386.1617568410016;
-        Sun, 04 Apr 2021 13:33:30 -0700 (PDT)
-Received: from ?IPv6:2a01:e34:ed2f:f020:6d68:6b9a:7a3c:4a9f? ([2a01:e34:ed2f:f020:6d68:6b9a:7a3c:4a9f])
-        by smtp.googlemail.com with ESMTPSA id u19sm8383785wml.28.2021.04.04.13.33.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 04 Apr 2021 13:33:29 -0700 (PDT)
-Subject: Re: [PATCH v2 1/8] dt-bindings: timer: Add compatible for Mediatek
- MT8195
-To:     Matthias Brugger <matthias.bgg@gmail.com>,
-        Seiya Wang <seiya.wang@mediatek.com>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Chunfeng Yun <chunfeng.yun@mediatek.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Hsin-Yi Wang <hsinyi@chromium.org>,
-        Fabien Parent <fparent@baylibre.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Zhiyong Tao <zhiyong.tao@mediatek.com>,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
-        Wenbin Mei <wenbin.mei@mediatek.com>,
-        Stanley Chu <stanley.chu@mediatek.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-serial@vger.kernel.org,
-        linux-watchdog@vger.kernel.org, srv_heupstream@mediatek.com
-References: <20210319023427.16711-1-seiya.wang@mediatek.com>
- <20210319023427.16711-3-seiya.wang@mediatek.com>
- <bf7ad31e-974a-3e0a-12bd-32973c7c3cbd@gmail.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <11bf6761-8902-bfa5-8577-d397846e7638@linaro.org>
-Date:   Sun, 4 Apr 2021 22:33:26 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:content-transfer-encoding;
+        bh=7mopXWBi2wijSGKa4AiTjRSanyVNKQw/ECdzYkzyHBg=;
+        b=rIWl+jIxj/IhA12XX+4AccCP9SnWgPhKTPu5+r11PNWstEFAAMfCVMc4+lNeZxk1bh
+         Eea7ZGtC8fgBKuTYqZWVO4Yo1zCo2FcrTmZmv4E3IFUGzXvHcfrvI4Tarsbr4PgMFvBn
+         YubJkZ1DRU2TAdSr00ZN9NzxCaqbd0GPtH79CrFKk2jGjGg8T0u1V5jnFxLeV0ABgCxt
+         wXE/bkZmA1eQHj+xKxQejz4E+qAAEM3fkMnni4jXidhBRTP6Ww8CufGh1RCEFYmyp6AX
+         7nBDkQxfRfjgKGHabGSGsH1eSw/ctz4tQxmqaKkFFgTHkdOziKEiLydXPsYK8hMcKfTm
+         gZ0A==
+X-Gm-Message-State: AOAM532wqmUs0qTVtwpQjXR5cT1lmoSa5+XAt9X3nAxeUL6icu61my8q
+        /DpDWv1hWWDhpNvq/9xF90U=
+X-Google-Smtp-Source: ABdhPJxD6prBgFyahJBLuz/JwVFWQaAr1RfWSibZEFa/57wziYI+4OJwVB+xK+3mf1B5TIarlh4DHQ==
+X-Received: by 2002:a9d:2e1:: with SMTP id 88mr19725255otl.120.1617575088397;
+        Sun, 04 Apr 2021 15:24:48 -0700 (PDT)
+Received: from fedora ([2806:2f0:7000:86b1:c1bc:6875:f962:d652])
+        by smtp.gmail.com with ESMTPSA id h59sm3528290otb.29.2021.04.04.15.24.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 Apr 2021 15:24:48 -0700 (PDT)
+Date:   Sun, 4 Apr 2021 17:24:43 -0500
+From:   David Villasana =?iso-8859-1?Q?Jim=E9nez?= 
+        <davidvillasana14@gmail.com>
+To:     jic23@kernel.org, lars@metafoo.de, gregkh@linuxfoundation.org
+Cc:     linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-kernel@vger.kernel.org, outreachy-kernel@googlegroups.com
+Subject: [PATCH] staging: iio: cdc: remove repeated word
+Message-ID: <YGo8q4R5dqgtDMlg@fedora>
 MIME-Version: 1.0
-In-Reply-To: <bf7ad31e-974a-3e0a-12bd-32973c7c3cbd@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 29/03/2021 13:52, Matthias Brugger wrote:
-> 
-> 
-> On 19/03/2021 03:34, Seiya Wang wrote:
->> This commit adds dt-binding documentation of timer for Mediatek MT8195 SoC
->> Platform.
->>
->> Signed-off-by: Seiya Wang <seiya.wang@mediatek.com>
-> 
-> Applied to v5.12-next/dts64
+Fix checkpatch warning:
+WARNING: Possible repeated word: 'from'
 
-Usually bindings go through the subsystem maintainer.
+Signed-off-by: David Villasana Jiménez <davidvillasana14@gmail.com>
+---
+ drivers/staging/iio/cdc/ad7150.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
+diff --git a/drivers/staging/iio/cdc/ad7150.c b/drivers/staging/iio/cdc/ad7150.c
+index 48132ab157ef..1be214512ff8 100644
+--- a/drivers/staging/iio/cdc/ad7150.c
++++ b/drivers/staging/iio/cdc/ad7150.c
+@@ -57,7 +57,7 @@
+  * @threshold: thresholds for simple capacitance value events
+  * @thresh_sensitivity: threshold for simple capacitance offset
+  *	from 'average' value.
+- * @mag_sensitity: threshold for magnitude of capacitance offset from
++ * @mag_sensitity: threshold for magnitude of capacitance offset
+  *	from 'average' value.
+  * @thresh_timeout: a timeout, in samples from the moment an
+  *	adaptive threshold event occurs to when the average
 -- 
-<http://www.linaro.org/> Linaro.org â”‚ Open source software for ARM SoCs
+2.30.2
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog

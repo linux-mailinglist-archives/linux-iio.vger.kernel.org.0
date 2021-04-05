@@ -2,30 +2,26 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BDA9354522
+	by mail.lfdr.de (Postfix) with ESMTP id E73EF354524
 	for <lists+linux-iio@lfdr.de>; Mon,  5 Apr 2021 18:27:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242355AbhDEQ0l (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 5 Apr 2021 12:26:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37468 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242354AbhDEQ0h (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 5 Apr 2021 12:26:37 -0400
+        id S238720AbhDEQ1g (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 5 Apr 2021 12:27:36 -0400
+Received: from saturn.retrosnub.co.uk ([46.235.226.198]:49124 "EHLO
+        saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238474AbhDEQ1g (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Apr 2021 12:27:36 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 385A761394;
-        Mon,  5 Apr 2021 16:26:28 +0000 (UTC)
-Date:   Mon, 5 Apr 2021 17:26:46 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] iio: hrtimer-trigger: Fix potential integer
- overflow in iio_hrtimer_store_sampling_frequency
-Message-ID: <20210405172646.6a9f1b7d@jic23-huawei>
-In-Reply-To: <20210329205817.GA188755@embeddedor>
-References: <20210329205817.GA188755@embeddedor>
+        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id F394C9E00EC;
+        Mon,  5 Apr 2021 17:27:28 +0100 (BST)
+Date:   Mon, 5 Apr 2021 17:27:47 +0100
+From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     gwendal@chromium.org, linux-iio@vger.kernel.org
+Subject: Re: [bug report] iio: hrtimer: Allow sub Hz granularity
+Message-ID: <20210405172747.1c9913ec@jic23-huawei>
+In-Reply-To: <YGSMPTIRAEQRyMWb@mwanda>
+References: <YGSMPTIRAEQRyMWb@mwanda>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -34,41 +30,63 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 29 Mar 2021 15:58:17 -0500
-"Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
+On Wed, 31 Mar 2021 17:50:37 +0300
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-> Add suffix ULL to constant 1000 in order to avoid a potential integer
-> overflow and give the compiler complete information about the proper
-> arithmetic to use. Notice that this constant is being used in a context
-> that expects an expression of type unsigned long long, but it's
-> currently evaluated using 32-bit arithmetic.
+> Hello Gwendal Grignou,
 > 
-> Addresses-Coverity-ID: 1503062 ("Unintentional integer overflow")
-> Fixes: dafcf4ed8392 ("iio: hrtimer: Allow sub Hz granularity")
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-
-Thanks, Applied to the togreg branch of iio.git and pushed out as testing
-for 0-day to poke at it.
+> The patch dafcf4ed8392: "iio: hrtimer: Allow sub Hz granularity" from
+> Feb 25, 2021, leads to the following static checker warning:
+> 
+> 	drivers/iio/trigger/iio-trig-hrtimer.c:68 iio_hrtimer_store_sampling_frequency()
+> 	warn: assigned value is less than 'u32max'
+Coverity + Gustavo spotted this one as well. I've just queued up a fix
+based on 1000ULL to ensure the maths is done at appropriate precision.
 
 Thanks,
 
 Jonathan
 
-> ---
->  drivers/iio/trigger/iio-trig-hrtimer.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/trigger/iio-trig-hrtimer.c b/drivers/iio/trigger/iio-trig-hrtimer.c
-> index 51e362f091c2..716c795d08fb 100644
-> --- a/drivers/iio/trigger/iio-trig-hrtimer.c
-> +++ b/drivers/iio/trigger/iio-trig-hrtimer.c
-> @@ -63,7 +63,7 @@ ssize_t iio_hrtimer_store_sampling_frequency(struct device *dev,
->  	if (integer < 0 || fract < 0)
->  		return -ERANGE;
->  
-> -	val = fract + 1000 * integer;  /* mHz */
-> +	val = fract + 1000ULL * integer;  /* mHz */
->  
->  	if (!val || val > UINT_MAX)
->  		return -EINVAL;
+> drivers/iio/trigger/iio-trig-hrtimer.c
+>     49  static
+>     50  ssize_t iio_hrtimer_store_sampling_frequency(struct device *dev,
+>     51                                               struct device_attribute *attr,
+>     52                                               const char *buf, size_t len)
+>     53  {
+>     54          struct iio_trigger *trig = to_iio_trigger(dev);
+>     55          struct iio_hrtimer_info *info = iio_trigger_get_drvdata(trig);
+>     56          unsigned long long val;
+>     57          u64 period;
+>     58          int integer, fract, ret;
+>     59  
+>     60          ret = iio_str_to_fixpoint(buf, 100, &integer, &fract);
+>     61          if (ret)
+>     62                  return ret;
+>     63          if (integer < 0 || fract < 0)
+>     64                  return -ERANGE;
+>     65  
+>     66          val = fract + 1000 * integer;  /* mHz */
+>                       ^^^^^^^^^^^^^^^^^^^^^^
+> "fract" and "integer" are integers so the arithmatic will wrap instead
+> of going above UINT_MAX
+> 
+>     67  
+>     68          if (!val || val > UINT_MAX)
+>                             ^^^^^^^^^^^^^^
+> Unpossible!
+> 
+>     69                  return -EINVAL;
+>     70  
+>     71          info->sampling_frequency[0] = integer;  /* Hz */
+>     72          info->sampling_frequency[1] = fract * 1000;  /* uHz */
+>     73          period = PSEC_PER_SEC;
+>     74          do_div(period, val);
+>     75          info->period = period;  /* nS */
+>     76  
+>     77          return len;
+>     78  }
+> 
+> regards,
+> dan carpenter
 

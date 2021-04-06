@@ -2,320 +2,268 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D1800355B5E
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Apr 2021 20:29:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F8D3355D9F
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Apr 2021 23:05:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238411AbhDFS3W (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 6 Apr 2021 14:29:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39792 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238333AbhDFS3U (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Apr 2021 14:29:20 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9F15C06174A;
-        Tue,  6 Apr 2021 11:29:12 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id a12so11048043pfc.7;
-        Tue, 06 Apr 2021 11:29:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=GIL7rCODKF/xXDJXa/SMy996Dbick98n/f2XKrRaD7U=;
-        b=Caaj1zABlixtHGW+cg9/Fzfai9mIWGQel39ECmacW7GjFbsqXuH+4ZXxojnEwieaDL
-         zYZy29t+GcOjD4OvzCzLEefEyjmrnAbOCp5p/tNzuBN0vejf81ho1pywPcsZGbwciGsj
-         WWCstTxS3YlsIWWplANMqsaxzFq/exROdpLRkGrinf0ex5v4IseGOyIucWjy30FiX4N7
-         VjbbKZI5nibx+R3gN1YKZijlfJRLWl+6x547+ZOMSY+NgUlGrYgEBw9N5JNTsHmqXuAk
-         zbEdOPZ0/VjZGa8x9/i6fg/2IyAeASXBaRFV6HQXD+KXhFuZiscuc5eaGafU5Uyxgxjm
-         TNvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=GIL7rCODKF/xXDJXa/SMy996Dbick98n/f2XKrRaD7U=;
-        b=ZDrakz9OEUmPc69Oa70xc1PunpgFnKgC/YlnlNnWXGzbg2YJYrcoZsuwQ7lFeMWhp3
-         Ojad/tJeBpzyN/sGarcSdzfqOlUz7+aNYUsyxr2Qu4K32DeceJgxkCww8SY/TdQpQDCl
-         TRo9+3LMlXxq8YBnTBa96BnFkVKEC7vpcwi3tLgbTSpZ2E1p3/agWngzSPTCde5UtcFm
-         wtiAsAYPhq3yKZHYzRLy+TeWynnzXNX5o1COWnuqCo2sSh4bgo68w2m7pg1AOtz5P0su
-         mXDhgm8nsTpBrJCoDq2kMVr1NTy3bDcyezyQdutaKWmplePnYKzpRjvnzs/0IS8hEN6F
-         nyAw==
-X-Gm-Message-State: AOAM531vHj6+eWbRsTiDZ5tuKFvPAcUjjQ+o3/feuF0WOHy1eDlHk+LV
-        4pWLF+Gzip1b1nGkTl1XM6E=
-X-Google-Smtp-Source: ABdhPJzIuqvHcT3T4EW7OlWXJNKpGpbCCF9v+9JkoBV47e1xBym3cG4T6ZvqRuPUKtfmUqBoQR6qkg==
-X-Received: by 2002:a05:6a00:b89:b029:22f:dce:9fd5 with SMTP id g9-20020a056a000b89b029022f0dce9fd5mr28275846pfj.78.1617733752291;
-        Tue, 06 Apr 2021 11:29:12 -0700 (PDT)
-Received: from localhost.localdomain ([124.253.94.185])
-        by smtp.googlemail.com with ESMTPSA id x25sm19652383pfn.81.2021.04.06.11.29.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Apr 2021 11:29:11 -0700 (PDT)
-From:   Puranjay Mohan <puranjay12@gmail.com>
-To:     alexandru.ardelean@analog.com, jic23@kernel.org,
-        devicetree@vger.kernel.org, knaack.h@gmx.de,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        lars@metafoo.de, andy.shevchenko@gmail.com
-Cc:     Puranjay Mohan <puranjay12@gmail.com>
-Subject: [PATCH v3 2/2] iio: temperature: add driver support for ti tmp117
-Date:   Tue,  6 Apr 2021 23:58:52 +0530
-Message-Id: <20210406182852.263605-3-puranjay12@gmail.com>
-X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210406182852.263605-1-puranjay12@gmail.com>
-References: <20210406182852.263605-1-puranjay12@gmail.com>
+        id S1343535AbhDFVFu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 6 Apr 2021 17:05:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41472 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1343556AbhDFVFt (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 6 Apr 2021 17:05:49 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9B681613CD;
+        Tue,  6 Apr 2021 21:05:40 +0000 (UTC)
+Date:   Tue, 6 Apr 2021 22:05:55 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
+Subject: [PULL] 2nd set of IIO features and cleanup etc for 5.13
+Message-ID: <20210406220555.0d6bc9b6@jic23-huawei>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-TMP117 is a Digital temperature sensor with integrated NV memory.
-Add support for tmp117 driver in iio subsystem.
+The following changes since commit 9c15db92a8e56bcde0f58064ac1adc28c0579b51:
 
-Datasheet: https://www.ti.com/lit/gpn/tmp117
-Signed-off-by: Puranjay Mohan <puranjay12@gmail.com>
----
- MAINTAINERS                      |   7 ++
- drivers/iio/temperature/Kconfig  |  10 ++
- drivers/iio/temperature/Makefile |   1 +
- drivers/iio/temperature/tmp117.c | 182 +++++++++++++++++++++++++++++++
- 4 files changed, 200 insertions(+)
- create mode 100644 drivers/iio/temperature/tmp117.c
+  Merge tag 'iio-for-5.13a' of https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio into staging-next (2021-03-26 12:09:47 +0100)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 60ed2963e..c9b806b63 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16666,6 +16666,13 @@ F:	include/dt-bindings/soc/ti,sci_pm_domain.h
- F:	include/linux/soc/ti/ti_sci_inta_msi.h
- F:	include/linux/soc/ti/ti_sci_protocol.h
- 
-+TEXAS INSTRUMENTS' TMP117 TEMPERATURE SENSOR DRIVER
-+M:	Puranjay Mohan <puranjay12@gmail.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Supported
-+F:	Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
-+F:	drivers/iio/temperature/tmp117.c
-+
- THANKO'S RAREMONO AM/FM/SW RADIO RECEIVER USB DRIVER
- M:	Hans Verkuil <hverkuil@xs4all.nl>
- L:	linux-media@vger.kernel.org
-diff --git a/drivers/iio/temperature/Kconfig b/drivers/iio/temperature/Kconfig
-index f1f2a1499..c5482983f 100644
---- a/drivers/iio/temperature/Kconfig
-+++ b/drivers/iio/temperature/Kconfig
-@@ -97,6 +97,16 @@ config TMP007
- 	  This driver can also be built as a module. If so, the module will
- 	  be called tmp007.
- 
-+config TMP117
-+	tristate "TMP117 Digital temperature sensor with integrated NV memory"
-+	depends on I2C
-+	help
-+	  If you say yes here you get support for the Texas Instruments
-+	  TMP117 Digital temperature sensor with integrated NV memory.
-+
-+	  This driver can also be built as a module. If so, the module will
-+	  be called tmp117.
-+
- config TSYS01
- 	tristate "Measurement Specialties TSYS01 temperature sensor using I2C bus connection"
- 	depends on I2C
-diff --git a/drivers/iio/temperature/Makefile b/drivers/iio/temperature/Makefile
-index 90c113115..e3392c4b2 100644
---- a/drivers/iio/temperature/Makefile
-+++ b/drivers/iio/temperature/Makefile
-@@ -12,5 +12,6 @@ obj-$(CONFIG_MLX90614) += mlx90614.o
- obj-$(CONFIG_MLX90632) += mlx90632.o
- obj-$(CONFIG_TMP006) += tmp006.o
- obj-$(CONFIG_TMP007) += tmp007.o
-+obj-$(CONFIG_TMP117) += tmp117.o
- obj-$(CONFIG_TSYS01) += tsys01.o
- obj-$(CONFIG_TSYS02D) += tsys02d.o
-diff --git a/drivers/iio/temperature/tmp117.c b/drivers/iio/temperature/tmp117.c
-new file mode 100644
-index 000000000..c3ff2913b
---- /dev/null
-+++ b/drivers/iio/temperature/tmp117.c
-@@ -0,0 +1,182 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Digital temperature sensor with integrated NV memory
-+ * Copyright (c) 2021 Puranjay Mohan <puranjay12@gmail.com>
-+ *
-+ * Driver for the Texas Instruments TMP117 Temperature Sensor
-+ * (7-bit I2C slave address (0x48 - 0x4B), changeable via ADD pins)
-+ *
-+ * Note: This driver assumes that the sensor has been calibrated beforehand.
-+ */
-+
-+#include <linux/err.h>
-+#include <linux/i2c.h>
-+#include <linux/module.h>
-+#include <linux/bitops.h>
-+#include <linux/types.h>
-+#include <linux/kernel.h>
-+
-+#include <linux/iio/iio.h>
-+
-+#define TMP117_REG_TEMP			0x0
-+#define TMP117_REG_CFGR			0x1
-+#define TMP117_REG_HIGH_LIM		0x2
-+#define TMP117_REG_LOW_LIM		0x3
-+#define TMP117_REG_EEPROM_UL		0x4
-+#define TMP117_REG_EEPROM1		0x5
-+#define TMP117_REG_EEPROM2		0x6
-+#define TMP117_REG_TEMP_OFFSET		0x7
-+#define TMP117_REG_EEPROM3		0x8
-+#define TMP117_REG_DEVICE_ID		0xF
-+
-+#define TMP117_RESOLUTION_10UC		78125
-+#define TMP117_DEVICE_ID		0x0117
-+#define MICRODEGREE_PER_10MILLIDEGREE	10000
-+
-+struct tmp117_data {
-+	struct i2c_client *client;
-+	s16 calibbias;
-+};
-+
-+static int tmp117_read_raw(struct iio_dev *indio_dev,
-+		struct iio_chan_spec const *channel, int *val,
-+		int *val2, long mask)
-+{
-+	struct tmp117_data *data = iio_priv(indio_dev);
-+	s32 ret;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		ret = i2c_smbus_read_word_swapped(data->client,
-+						TMP117_REG_TEMP);
-+		if (ret < 0)
-+			return ret;
-+		*val = sign_extend32(ret, 15);
-+		return IIO_VAL_INT;
-+
-+	case IIO_CHAN_INFO_CALIBBIAS:
-+		ret = i2c_smbus_read_word_swapped(data->client,
-+					TMP117_REG_TEMP_OFFSET);
-+		if (ret < 0)
-+			return ret;
-+		*val = sign_extend32(ret, 15);
-+		return IIO_VAL_INT;
-+
-+	case IIO_CHAN_INFO_SCALE:
-+		/* Conversion from 10s of uC to mC
-+		 * as IIO reports temperature in mC
-+		 */
-+		*val = TMP117_RESOLUTION_10UC / MICRODEGREE_PER_10MILLIDEGREE;
-+		*val2 = (TMP117_RESOLUTION_10UC %
-+					MICRODEGREE_PER_10MILLIDEGREE) * 100;
-+
-+		return IIO_VAL_INT_PLUS_MICRO;
-+
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int tmp117_write_raw(struct iio_dev *indio_dev,
-+		struct iio_chan_spec const *channel, int val,
-+		int val2, long mask)
-+{
-+	struct tmp117_data *data = iio_priv(indio_dev);
-+	s16 off;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_CALIBBIAS:
-+		off = clamp(val, -32768, 32767);
-+		if (off == data->calibbias)
-+			return 0;
-+		return i2c_smbus_write_word_swapped(data->client,
-+						TMP117_REG_TEMP_OFFSET, off);
-+
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static const struct iio_chan_spec tmp117_channels[] = {
-+	{
-+		.type = IIO_TEMP,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+			BIT(IIO_CHAN_INFO_CALIBBIAS) | BIT(IIO_CHAN_INFO_SCALE),
-+	},
-+};
-+
-+static const struct iio_info tmp117_info = {
-+	.read_raw = tmp117_read_raw,
-+	.write_raw = tmp117_write_raw,
-+};
-+
-+static int tmp117_identify(struct i2c_client *client)
-+{
-+	int dev_id;
-+
-+	dev_id = i2c_smbus_read_word_swapped(client, TMP117_REG_DEVICE_ID);
-+	if (dev_id < 0)
-+		return dev_id;
-+	if (dev_id != TMP117_DEVICE_ID) {
-+		dev_err(&client->dev, "TMP117 not found\n");
-+		return -ENODEV;
-+	}
-+	return 0;
-+}
-+
-+static int tmp117_probe(struct i2c_client *client)
-+{
-+	struct tmp117_data *data;
-+	struct iio_dev *indio_dev;
-+	int ret;
-+
-+	if (!i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_WORD_DATA))
-+		return -EOPNOTSUPP;
-+
-+	ret = tmp117_identify(client);
-+	if (ret < 0)
-+		return ret;
-+
-+	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	data = iio_priv(indio_dev);
-+	data->client = client;
-+	data->calibbias = 0;
-+
-+	indio_dev->name = "tmp117";
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->info = &tmp117_info;
-+
-+	indio_dev->channels = tmp117_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(tmp117_channels);
-+
-+	return devm_iio_device_register(&client->dev, indio_dev);
-+}
-+
-+static const struct of_device_id tmp117_of_match[] = {
-+	{ .compatible = "ti,tmp117", },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, tmp117_of_match);
-+
-+static const struct i2c_device_id tmp117_id[] = {
-+	{ "tmp117", 0 },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(i2c, tmp117_id);
-+
-+static struct i2c_driver tmp117_driver = {
-+	.driver = {
-+		.name	= "tmp117",
-+		.of_match_table = tmp117_of_match,
-+	},
-+	.probe_new	= tmp117_probe,
-+	.id_table	= tmp117_id,
-+};
-+module_i2c_driver(tmp117_driver);
-+
-+MODULE_AUTHOR("Puranjay Mohan <puranjay12@gmail.com>");
-+MODULE_DESCRIPTION("TI TMP117 Temperature sensor driver");
-+MODULE_LICENSE("GPL");
--- 
-2.30.1
+are available in the Git repository at:
 
+  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-5.13b
+
+for you to fetch changes up to eaec775ae6ae9c72c3cb320bb2d2990fdf2263d8:
+
+  iio: inv_mpu6050: Fully validate gyro and accel scale writes (2021-04-06 19:11:55 +0100)
+
+----------------------------------------------------------------
+2nd set of IIO features, cleanups etc for 5.13
+
+A few of these are fixes for major rework earlier in cycle.
+Bulk of patches are the ad7150 pre graduation cleanup, some link
+fixes in maintainers and set using the new IRQF_NO_AUTOEN flag.
+
+Note includes a merge of a tag from tip to get the IRQF_NO_AUTOEN
+support (one patch only from Barry Song)
+
+Staging graduation
+* adi,ad7150 CDC
+  - A lot of precursor patches cleaning it up first.
+  - Includes core support for timeout event ABI where after a time
+    a adaptive threshold jumps to fix slow tracking problems.
+
+Cleanups and minor / late breaking fixes
+* core
+  - Use sysfs_emit() and sysfs_emit_at() as appropriate
+  - Fix a bug introduced in this cycle for iio_read_channel_processed_scale()
+  - Fix handling of getfd ioctl as IIO_IOCTL_UNHANDLED is a valid ioctl number
+  - Tidy up some pointless type conversion in string formatting and odd
+    indentation.
+* dac
+  - Use sysfs_emit() for powerdown attribute show() functions.
+* docs
+  - Fix dead links due to txt to yaml binding conversions.
+* treewide
+  - Use IRQF_NO_AUTOEN
+* various
+  - Typo fixes in comments.
+* triggers/hr-timer-trigger
+  - Fix an overflow handing issue.
+* ad,ad7923
+  - Device managed functions in probe()
+* ad,ad9467
+  - Fix kconfig dependency issue
+* adi,adis16201
+  - Fix a wrong axis assignment that stops the driver loading.
+* invensense,mpu6050
+  - Allow use as a standalone trigger (no channels enabled)
+  - Drop unnecessary manual assignment of indio_dev->modes
+  - Make device function in a basic way if no interrupt wired.
+  - Sanity check scale writes.
+* semtech,sx9310
+  - Fix access to a variable length array in DT binding.
+  - Sanity check input before writing debounce register.
+* st,stm32-dfsdm
+  - Drop __func__ from dev_dbg() and pr_debug().
+* yamaha,yas530
+  - Include asm/unaligned.h instead of be_byteshift.h
+  - Fix an issue with return value on an error path.
+
+----------------------------------------------------------------
+Alexandru Ardelean (3):
+      iio: buffer: return 0 for buffer getfd ioctl handler
+      iio: buffer: use sysfs_attr_init() on allocated attrs
+      iio: adc: Kconfig: make AD9467 depend on ADI_AXI_ADC symbol
+
+Andy Shevchenko (2):
+      iio: trigger: Replace explicit casting and wrong specifier with proper one
+      iio: trigger: Fix strange (ladder-type) indentation
+
+Barry Song (1):
+      genirq: Add IRQF_NO_AUTOEN for request_irq/nmi()
+
+Bhaskar Chowdhury (1):
+      iio: dac: Rudimentary typo fix
+
+Guoqing Chi (1):
+      iio:imu:mpu6050: Modify matricies to matrices
+
+Gustavo A. R. Silva (1):
+      iio: hrtimer-trigger: Fix potential integer overflow in iio_hrtimer_store_sampling_frequency
+
+Gwendal Grignou (2):
+      iio: sx9310: Fix access to variable DT array
+      iio: sx9310: Fix write_.._debounce()
+
+Jonathan Cameron (37):
+      iio:accel:adis16201: Fix wrong axis assignment that prevents loading
+      staging:iio:cdc:ad7150: use swapped reads/writes for i2c rather than open coding
+      staging:iio:cdc:ad7150: Remove magnitude adaptive events
+      staging:iio:cdc:ad7150: Refactor event parameter update
+      staging:iio:cdc:ad7150: Timeout register covers both directions so both need updating
+      staging:iio:cdc:ad7150: Drop platform data support
+      staging:iio:cdc:ad7150: Handle variation in chan_spec across device and irq present or not
+      staging:iio:cdc:ad7150: Simplify event handling by only using rising direction.
+      staging:iio:cdc:ad7150: Drop noisy print in probe
+      staging:iio:cdc:ad7150: Add sampling_frequency support
+      iio:event: Add timeout event info type
+      staging:iio:cdc:ad7150: Change timeout units to seconds and use core support
+      staging:iio:cdc:ad7150: Rework interrupt handling.
+      staging:iio:cdc:ad7150: More consistent register and field naming
+      staging:iio:cdc:ad7150: Reorganize headers.
+      staging:iio:cdc:ad7150: Tidy up local variable positioning.
+      staging:iio:cdc:ad7150: Drop unnecessary block comments.
+      staging:iio:cdc:ad7150: Shift the _raw readings by 4 bits.
+      staging:iio:cdc:ad7150: Add scale and offset to info_mask_shared_by_type
+      staging:iio:cdc:ad7150: Really basic regulator support.
+      staging:iio:cdc:ad7150: Add of_match_table
+      iio:Documentation:ABI Add missing elements as used by the adi,ad7150
+      staging:iio:cdc:ad7150: Add copyright notice given substantial changes.
+      dt-bindings:iio:cdc:adi,ad7150 binding doc
+      iio:cdc:ad7150: Move driver out of staging.
+      iio:adc: Drop false comment about lack of timestamp control
+      Merge tag 'irq-no-autoen-2021-03-25' into togreg
+      iio:adc:ad7766: Use new IRQF_NO_AUTOEN to reduce boilerplate
+      iio:adc:exynos-adc: Use new IRQF_NO_AUTOEN flag rather than separate irq_disable()
+      iio:adc:nau7802: Use IRQF_NO_AUTOEN instead of request then disable
+      iio:adc:sun4i-gpadc: Use new IRQF_NO_AUTOEN flag instead of request then disable
+      iio:chemical:scd30: Use IRQF_NO_AUTOEN to avoid irq request then disable
+      iio:imu:adis: Use IRQF_NO_AUTOEN instead of irq request then disable
+      iio:adc:ad_sigma_delta: Use IRQF_NO_AUTOEN rather than request and disable
+      iio:adc:ad7476: Fix remove handling
+      iio:adc: Fix trivial typo
+      iio:cdc:ad7150: Fix use of uninitialized ret
+
+Lars-Peter Clausen (7):
+      iio: core: Use sysfs_emit() (trivial bits)
+      iio: iio_enum_available_read(): Convert to sysfs_emit_at()
+      iio: __iio_format_value(): Convert to sysfs_emit_at()
+      iio: dac: Convert powerdown read callbacks to sysfs_emit()
+      iio: inv_mpu6050: Remove superfluous indio_dev->modes assignment
+      iio: inv_mpu6050: Make interrupt optional
+      iio: inv_mpu6050: Fully validate gyro and accel scale writes
+
+Linus Walleij (4):
+      iio: imu: inv_mpu6050: Use as standalone trigger
+      iio: Fix iio_read_channel_processed_scale()
+      iio: magnetometer: yas530: Fix return value on error path
+      iio: magnetometer: yas530: Include right header
+
+Lucas Stankus (3):
+      iio: adc: ad7923: use devm_add_action_or_reset for regulator disable
+      iio: adc: ad7923: use device-managed function for triggered buffer
+      iio: adc: ad7923: register device with devm_iio_device_register
+
+Mauro Carvalho Chehab (14):
+      MAINTAINERS: update adi,ad5758.yaml reference
+      MAINTAINERS: update st,hts221.yaml reference
+      MAINTAINERS: update dpot-dac.yaml reference
+      MAINTAINERS: update envelope-detector.yaml reference
+      MAINTAINERS: update current-sense-amplifier.yaml reference
+      MAINTAINERS: update current-sense-shunt.yaml reference
+      MAINTAINERS: update voltage-divider.yaml reference
+      MAINTAINERS: update atmel,sama5d2-adc.yaml reference
+      MAINTAINERS: update pni,rm3100.yaml reference
+      MAINTAINERS: update renesas,rcar-gyroadc.yaml reference
+      MAINTAINERS: update st,lsm6dsx.yaml reference
+      MAINTAINERS: update st,vl53l0x.yaml reference
+      MAINTAINERS: update ti,dac7612.yaml reference
+      dt-bindings:iio:dac: update microchip,mcp4725.yaml reference
+
+Mugilraj Dhavachelvan (1):
+      iio: adc: stm32-dfsdm: drop __func__ while using Dynamic debug
+
+ Documentation/ABI/testing/sysfs-bus-iio            |  33 +
+ .../devicetree/bindings/iio/cdc/adi,ad7150.yaml    |  69 +++
+ MAINTAINERS                                        |  26 +-
+ drivers/iio/Kconfig                                |   1 +
+ drivers/iio/Makefile                               |   1 +
+ drivers/iio/accel/adis16201.c                      |   2 +-
+ drivers/iio/adc/Kconfig                            |   4 +-
+ drivers/iio/adc/ad7298.c                           |   6 -
+ drivers/iio/adc/ad7476.c                           |  18 +-
+ drivers/iio/adc/ad7766.c                           |  15 +-
+ drivers/iio/adc/ad7887.c                           |   6 -
+ drivers/iio/adc/ad7923.c                           |  47 +-
+ drivers/iio/adc/ad799x.c                           |   6 -
+ drivers/iio/adc/ad_sigma_delta.c                   |   7 +-
+ drivers/iio/adc/exynos_adc.c                       |   4 +-
+ drivers/iio/adc/nau7802.c                          |   6 +-
+ drivers/iio/adc/stm32-dfsdm-adc.c                  |  10 +-
+ drivers/iio/adc/sun4i-gpadc-iio.c                  |   4 +-
+ drivers/iio/cdc/Kconfig                            |  17 +
+ drivers/iio/cdc/Makefile                           |   6 +
+ drivers/iio/cdc/ad7150.c                           | 673 +++++++++++++++++++++
+ drivers/iio/chemical/scd30_core.c                  |  16 +-
+ drivers/iio/dac/ad5064.c                           |   2 +-
+ drivers/iio/dac/ad5360.c                           |   2 +-
+ drivers/iio/dac/ad5380.c                           |   2 +-
+ drivers/iio/dac/ad5446.c                           |   2 +-
+ drivers/iio/dac/ad5504.c                           |   4 +-
+ drivers/iio/dac/ad5624r_spi.c                      |   4 +-
+ drivers/iio/dac/ad5686.c                           |   2 +-
+ drivers/iio/dac/ad5755.c                           |   4 +-
+ drivers/iio/dac/ad5758.c                           |   2 +-
+ drivers/iio/dac/ad5766.c                           |   2 +-
+ drivers/iio/dac/ad5770r.c                          |   2 +-
+ drivers/iio/dac/ad5791.c                           |   2 +-
+ drivers/iio/dac/ad7303.c                           |   2 +-
+ drivers/iio/dac/ltc2632.c                          |   4 +-
+ drivers/iio/dac/max5821.c                          |   2 +-
+ drivers/iio/dac/mcp4725.c                          |   2 +-
+ drivers/iio/dac/stm32-dac.c                        |   2 +-
+ drivers/iio/dac/ti-dac082s085.c                    |   2 +-
+ drivers/iio/dac/ti-dac5571.c                       |   2 +-
+ drivers/iio/dac/ti-dac7311.c                       |   2 +-
+ drivers/iio/imu/adis16460.c                        |   4 +-
+ drivers/iio/imu/adis16475.c                        |   5 +-
+ drivers/iio/imu/adis_trigger.c                     |  11 +-
+ drivers/iio/imu/inv_mpu6050/inv_mpu_core.c         |  72 ++-
+ drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c      |  10 +
+ drivers/iio/industrialio-buffer.c                  |  23 +-
+ drivers/iio/industrialio-core.c                    |  70 +--
+ drivers/iio/industrialio-event.c                   |   3 +-
+ drivers/iio/industrialio-trigger.c                 |  32 +-
+ drivers/iio/inkern.c                               |   2 +-
+ drivers/iio/magnetometer/yamaha-yas530.c           |   4 +-
+ drivers/iio/proximity/sx9310.c                     |  52 +-
+ drivers/iio/trigger/iio-trig-hrtimer.c             |   2 +-
+ drivers/staging/iio/cdc/Kconfig                    |  10 -
+ drivers/staging/iio/cdc/Makefile                   |   3 +-
+ drivers/staging/iio/cdc/ad7150.c                   | 655 --------------------
+ include/linux/iio/dac/mcp4725.h                    |   2 +-
+ include/linux/iio/types.h                          |   1 +
+ include/linux/interrupt.h                          |   4 +
+ include/linux/platform_data/invensense_mpu6050.h   |   2 +-
+ kernel/irq/manage.c                                |  11 +-
+ 63 files changed, 1077 insertions(+), 926 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/cdc/adi,ad7150.yaml
+ create mode 100644 drivers/iio/cdc/Kconfig
+ create mode 100644 drivers/iio/cdc/Makefile
+ create mode 100644 drivers/iio/cdc/ad7150.c
+ delete mode 100644 drivers/staging/iio/cdc/ad7150.c

@@ -2,178 +2,155 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E4987354901
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Apr 2021 00:56:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DDC9354C9D
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Apr 2021 08:17:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229662AbhDEW4m convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Mon, 5 Apr 2021 18:56:42 -0400
-Received: from szxga08-in.huawei.com ([45.249.212.255]:3330 "EHLO
-        szxga08-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230401AbhDEW4k (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Apr 2021 18:56:40 -0400
-Received: from dggeme710-chm.china.huawei.com (unknown [172.30.72.55])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4FDmCL69V9z14CQP;
-        Tue,  6 Apr 2021 06:53:02 +0800 (CST)
-Received: from dggemi761-chm.china.huawei.com (10.1.198.147) by
- dggeme710-chm.china.huawei.com (10.1.199.106) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2106.2; Tue, 6 Apr 2021 06:56:29 +0800
-Received: from dggemi761-chm.china.huawei.com ([10.9.49.202]) by
- dggemi761-chm.china.huawei.com ([10.9.49.202]) with mapi id 15.01.2106.013;
- Tue, 6 Apr 2021 06:56:29 +0800
-From:   "Song Bao Hua (Barry Song)" <song.bao.hua@hisilicon.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        "tiantao (H)" <tiantao6@hisilicon.com>
-Subject: RE: [PATCH 7/7] iio:adc:ad_sigma_delta: Use IRQF_NO_AUTOEN rather
- than request and disable
-Thread-Topic: [PATCH 7/7] iio:adc:ad_sigma_delta: Use IRQF_NO_AUTOEN rather
- than request and disable
-Thread-Index: AQHXJ/C5T8RD3naq3EySlPnFa6wlYaqhqiMwgAPWTACAAQs2cA==
-Date:   Mon, 5 Apr 2021 22:56:29 +0000
-Message-ID: <45db9c440033417ba081d1a3bc2cc967@hisilicon.com>
-References: <20210402184544.488862-1-jic23@kernel.org>
-        <20210402184544.488862-8-jic23@kernel.org>
-        <b63838854fee434aa96cd54c13014b51@hisilicon.com>
- <20210405155152.14abf3dc@jic23-huawei>
-In-Reply-To: <20210405155152.14abf3dc@jic23-huawei>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.126.200.143]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S234060AbhDFGRT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 6 Apr 2021 02:17:19 -0400
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:48872 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234003AbhDFGRT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Apr 2021 02:17:19 -0400
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20210406061710euoutp01e993743a45e1832087216a42065a48ed~zMFRm51y51053510535euoutp01F
+        for <linux-iio@vger.kernel.org>; Tue,  6 Apr 2021 06:17:10 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20210406061710euoutp01e993743a45e1832087216a42065a48ed~zMFRm51y51053510535euoutp01F
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1617689830;
+        bh=6kxgouY+vTopnyddfeFYlz4bGmxSvwI6aXPtC0I4ymI=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=ceti/8F3fRirnOqi6/7nV2YlBz2r0JCjiFtPn1oQfn/5ewxS1vNcoyfz1/9iK2Yrs
+         G/nDFsNRo0+gxpoLRYrcalPSNFke6uG//bViutZGDCtPBXwXhoxvcwL3bdrzihGESf
+         HGFQwOCnS1Llb6xOuBMUjo/MK2DqPqTI2akx4qpc=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20210406061710eucas1p1ccfa6bfa7b4eb73c6dcfc0b2c2397d3f~zMFRfFOK32975229752eucas1p1W;
+        Tue,  6 Apr 2021 06:17:10 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id EE.32.09444.5ECFB606; Tue,  6
+        Apr 2021 07:17:09 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20210406061709eucas1p1e8c4a2ad214fc3eec6e3c91c09607fed~zMFRDu2ML2972829728eucas1p1D;
+        Tue,  6 Apr 2021 06:17:09 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20210406061709eusmtrp2337a8e0a500d478fa32c67b0a23ee101~zMFRDINWU2270622706eusmtrp2o;
+        Tue,  6 Apr 2021 06:17:09 +0000 (GMT)
+X-AuditID: cbfec7f4-dbdff700000024e4-7f-606bfce5573a
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id 23.6C.08705.5ECFB606; Tue,  6
+        Apr 2021 07:17:09 +0100 (BST)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20210406061709eusmtip147463ca24a3bca8c6459eba331cb0e1e~zMFQv9cZ-0978709787eusmtip1g;
+        Tue,  6 Apr 2021 06:17:09 +0000 (GMT)
+Subject: Re: [PATCH] iio: buffer: use sysfs_attr_init() on allocated attrs
+To:     Alexandru Ardelean <aardelean@deviqon.com>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Cc:     jic23@kernel.org
+From:   Marek Szyprowski <m.szyprowski@samsung.com>
+Message-ID: <6c77abb2-0b6f-a745-0950-0be34d41913e@samsung.com>
+Date:   Tue, 6 Apr 2021 08:17:09 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0)
+        Gecko/20100101 Thunderbird/78.9.0
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+In-Reply-To: <20210402174226.630346-1-aardelean@deviqon.com>
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmplleLIzCtJLcpLzFFi42LZduznOd2nf7ITDLoO2Fi0PVexeNC0isli
+        3pF3LBaXd81hc2DxWLVzHbPHplWdbB6fN8kFMEdx2aSk5mSWpRbp2yVwZfTsvsBWcJWv4u7K
+        jywNjMt4uhg5OSQETCTenehj72Lk4hASWMEo8enQfFYI5wujxLMpe6AynxklVr8+xg7T8rPz
+        PxtEYjmjxOU7e1ggnI+MEl9XnmADqRIW8JJYt+8WWIeIQKbErWm/WUFsZgERiY+9W8HibAKG
+        El1vu8DqeQXsJJ7PWsoIYrMIqEis+7EIrEZUIEli6aN/jBA1ghInZz5hAbE5BWwkNsycAzVT
+        XmL72znMELa4xK0n85lADpIQ2MEh8XTKQ0aIs10kDr5rg7KFJV4d3wL1jozE/50wDc2MEg/P
+        rWWHcHqAfmuaAdVhLXHn3C+gUzmAVmhKrN+lDxF2lLi4t48JJCwhwCdx460gxBF8EpO2TWeG
+        CPNKdLQJQVSrScw6vg5u7cELl5gnMCrNQvLaLCTvzELyziyEvQsYWVYxiqeWFuempxYb5aWW
+        6xUn5haX5qXrJefnbmIEppTT/45/2cG4/NVHvUOMTByMhxglOJiVRHh39GYnCPGmJFZWpRbl
+        xxeV5qQWH2KU5mBREudN2rImXkggPbEkNTs1tSC1CCbLxMEp1cA0vck6fuakR+1XBCbwXZmo
+        12+2ITjWcGUaW50Z84zZq/11+kRb1v5yLgsTK3hue/S9wv3Ds9mX/tS6JSU0SWfFzE/xrCFu
+        h8u3Tk4X/2YmcNRgivqN20+EnyrxH/Tnsvn2YvIyzStvLynJtDIEO03dqS4n6tzabX4/etnl
+        E+vq/zrYep+Ku/Ukf9GmM92urIZSDDw2QRNTWBZe3jyx79S6/2Fxhu+fFJwzWjmvxc8qoq+m
+        +NaDpU55vGYCnYwr7Hd+y7FKcsyQ3Dj/8GT1ZNHO+zk3Nat6XFf9v1d0q/K6Z8aFwuWCatWc
+        MkaFFYodGQ22rVNqkte8Oh29r0c18bflFAHNq8s2mIs7eUxYt12JpTgj0VCLuag4EQDvwIA0
+        mAMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprKIsWRmVeSWpSXmKPExsVy+t/xu7pP/2QnGKx6rGTR9lzF4kHTKiaL
+        eUfesVhc3jWHzYHFY9XOdcwem1Z1snl83iQXwBylZ1OUX1qSqpCRX1xiqxRtaGGkZ2hpoWdk
+        YqlnaGwea2VkqqRvZ5OSmpNZllqkb5egl9Gz+wJbwVW+irsrP7I0MC7j6WLk5JAQMJH42fmf
+        rYuRi0NIYCmjxLwDPxghEjISJ6c1sELYwhJ/rnVBFb1nlFj+5AkLSEJYwEti3b5b7F2MHBwi
+        ApkSX995g4SZBUQkPvZuZQexhQT6GSWmnNEBsdkEDCW63oLM4eTgFbCTeD5rKdguFgEViXU/
+        FoHViwokSbTtnskOUSMocXImxCpOARuJDTPnsELMN5OYt/khM4QtL7H97RwoW1zi1pP5TBMY
+        hWYhaZ+FpGUWkpZZSFoWMLKsYhRJLS3OTc8tNtQrTswtLs1L10vOz93ECIyfbcd+bt7BOO/V
+        R71DjEwcjIcYJTiYlUR4d/RmJwjxpiRWVqUW5ccXleakFh9iNAX6ZyKzlGhyPjCC80riDc0M
+        TA1NzCwNTC3NjJXEebfOXRMvJJCeWJKanZpakFoE08fEwSnVwKRwTOgB4+yzi+7YNXv36zt+
+        1maef31+Iv86m7zijtOhKpf/LTfdYnDi25I7D04lnftkx3Xo/haBtCsbM5u5RKYsn6Dsfeuf
+        d+X/FT80rx1SmyeY8f8Rr8lBRc9gJ4ZD/TMdPNUU9jaVLQ9zUtm9pO60a+MfB4OMVNXHnnv3
+        au3My5U1yY/cb1MQWD99YYr/FG/9H+dmKVmv6mrZXeKi4vJIQShuUeEG06KgBbLHBb/Kr7z+
+        s1vbosxSr2VS3hmeYlt3zsCdB/dFupW5b5504YvZmz8H3h4p3fZ5w/KM8nmBjCqP/rzNnVyR
+        qS+64CIfn++vZf4HuvZ9MTqW++vcv4keWg8jnC7+c3l8o7OVY4kSS3FGoqEWc1FxIgA5puS4
+        KAMAAA==
+X-CMS-MailID: 20210406061709eucas1p1e8c4a2ad214fc3eec6e3c91c09607fed
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20210402174237eucas1p1b117ceaf744e851703a229e87725f776
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20210402174237eucas1p1b117ceaf744e851703a229e87725f776
+References: <CGME20210402174237eucas1p1b117ceaf744e851703a229e87725f776@eucas1p1.samsung.com>
+        <20210402174226.630346-1-aardelean@deviqon.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On 02.04.2021 19:42, Alexandru Ardelean wrote:
+> When dynamically allocating sysfs attributes, it's a good idea to call
+> sysfs_attr_init() on them to initialize lock_class_keys.
+> This change does that.
+>
+> The lock_class_keys are set when the CONFIG_DEBUG_LOCK_ALLOC symbol is
+> enabled. Which is [likely] one reason why I did not see this during
+> development.
+>
+> I also am not able to see this even with CONFIG_DEBUG_LOCK_ALLOC enabled,
+> so this may [likely] be reproduce-able on some system configurations.
+>
+> This was reported via:
+>    https://lore.kernel.org/linux-iio/CA+U=DsrsvGgXEF30-vXuXS_k=-mjSjiBwEEzwKb1hJVn1P98OA@mail.gmail.com/T/#u
+>
+> Fixes: 15097c7a1adc ("iio: buffer: wrap all buffer attributes into iio_dev_attr")
+> Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
+> ---
+>
+> @Marek: could you maybe test this on your setup?
+>
+> I haven't been able to reproduce this on mine.
 
+Works fine with this fix. Thanks!
 
-> -----Original Message-----
-> From: Jonathan Cameron [mailto:jic23@kernel.org]
-> Sent: Tuesday, April 6, 2021 2:52 AM
-> To: Song Bao Hua (Barry Song) <song.bao.hua@hisilicon.com>
-> Cc: linux-iio@vger.kernel.org; Jonathan Cameron <jonathan.cameron@huawei.com>;
-> Lars-Peter Clausen <lars@metafoo.de>; Alexandru Ardelean
-> <ardeleanalex@gmail.com>; tiantao (H) <tiantao6@hisilicon.com>
-> Subject: Re: [PATCH 7/7] iio:adc:ad_sigma_delta: Use IRQF_NO_AUTOEN rather than
-> request and disable
-> 
-> On Fri, 2 Apr 2021 20:30:17 +0000
-> "Song Bao Hua (Barry Song)" <song.bao.hua@hisilicon.com> wrote:
-> 
-> > > -----Original Message-----
-> > > From: Jonathan Cameron [mailto:jic23@kernel.org]
-> > > Sent: Saturday, April 3, 2021 7:46 AM
-> > > To: linux-iio@vger.kernel.org
-> > > Cc: Song Bao Hua (Barry Song) <song.bao.hua@hisilicon.com>; Jonathan Cameron
-> > > <jonathan.cameron@huawei.com>; Lars-Peter Clausen <lars@metafoo.de>;
-> > > Alexandru Ardelean <ardeleanalex@gmail.com>
-> > > Subject: [PATCH 7/7] iio:adc:ad_sigma_delta: Use IRQF_NO_AUTOEN rather than
-> > > request and disable
-> > >
-> > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > >
-> > > These devices are not able to mask the signal used as a data ready
-> > > interrupt.  As such they previously requested the irq then immediately
-> > > disabled it.  Now we can avoid the potential of a spurious interrupt
-> > > by avoiding the irq being auto enabled in the first place.
-> > >
-> > > I'm not sure how this code could have been called with the irq already
-> > > disabled, so I believe the conditional would always have been true and
-> > > have removed it.
-> > >
-> >
-> > If irq_dis is true, it seems the original code assumed interrupt was
-> > open. Now the code is moving to disable-irq for true irq_dis. For
-> > false irq_dis, this patch has no side effect so looks correct.
-> Hi Barry,
-> 
-> As far as I can tell (and I looked closely :), at the point where
-> ad_sd_probe_trigger() can be called, irq_dis is always false,
-> so the original check is misleading by implying
-> otherwise.
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
 
-I didn't realize that. Thanks for clarification.
+> Thanks
+> Alex
+>
+>   drivers/iio/industrialio-buffer.c | 1 +
+>   1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+> index ee5aab9d4a23..06b2ea087408 100644
+> --- a/drivers/iio/industrialio-buffer.c
+> +++ b/drivers/iio/industrialio-buffer.c
+> @@ -1309,6 +1309,7 @@ static struct attribute *iio_buffer_wrap_attr(struct iio_buffer *buffer,
+>   	iio_attr->buffer = buffer;
+>   	memcpy(&iio_attr->dev_attr, dattr, sizeof(iio_attr->dev_attr));
+>   	iio_attr->dev_attr.attr.name = kstrdup_const(attr->name, GFP_KERNEL);
+> +	sysfs_attr_init(&iio_attr->dev_attr.attr);
+>   
+>   	list_add(&iio_attr->l, &buffer->buffer_attr_list);
+>   
 
-> 
-> Taken in isolation of what is visible in this patch I'd agree
-> the change you suggest makes sense, but I'd also like to clean
-> up the wrong impression the original check was giving.  It is
-> also worth noting that ad_sigma_delta.h lists irq_dis as a
-> private member of the structure that should only be used in the
-> library (reducing chances of any drivers in future doing something
-> odd with it).
-> 
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
-Yes. It makes sense.
-
-> The other checks on irq_dis look suspicious as well, but removing
-> those would rather spread the scope of this patch.
-> 
-> As Lars has given an Reviewed-by and this is his code, I'm going
-> to press ahead with this as it stands.
-> 
-> Applied to the togreg branch of iio.git and pushed out as testing
-> for the autobuilders to see if we missed anything.
-> 
-> Thanks,
-> 
-> Jonathan
-> 
-> >
-> > A safer way might be as below?
-> >
-> > if(!sigma_delta->irq_dis)
-> > 	irq_flags = sigma_delta->info->irq_flags | IRQF_NO_AUTOEN;
-> >
-> > request_irq(irq_flags);
-> >
-> > sigma_delta->irq_dis =  true;
-> >
-> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > Cc: Lars-Peter Clausen <lars@metafoo.de>
-> > > Cc: Alexandru Ardelean <ardeleanalex@gmail.com>
-> > > ---
-> > >  drivers/iio/adc/ad_sigma_delta.c | 7 ++-----
-> > >  1 file changed, 2 insertions(+), 5 deletions(-)
-> > >
-> > > diff --git a/drivers/iio/adc/ad_sigma_delta.c
-> > > b/drivers/iio/adc/ad_sigma_delta.c
-> > > index 9289812c0a94..e777ec718973 100644
-> > > --- a/drivers/iio/adc/ad_sigma_delta.c
-> > > +++ b/drivers/iio/adc/ad_sigma_delta.c
-> > > @@ -485,18 +485,15 @@ static int ad_sd_probe_trigger(struct iio_dev
-> *indio_dev)
-> > >  	sigma_delta->trig->ops = &ad_sd_trigger_ops;
-> > >  	init_completion(&sigma_delta->completion);
-> > >
-> > > +	sigma_delta->irq_dis = true;
-> > >  	ret = request_irq(sigma_delta->spi->irq,
-> > >  			  ad_sd_data_rdy_trig_poll,
-> > > -			  sigma_delta->info->irq_flags,
-> > > +			  sigma_delta->info->irq_flags | IRQF_NO_AUTOEN,
-> > >  			  indio_dev->name,
-> > >  			  sigma_delta);
-> > >  	if (ret)
-> > >  		goto error_free_trig;
-> > >
-> > > -	if (!sigma_delta->irq_dis) {
-> > > -		sigma_delta->irq_dis = true;
-> > > -		disable_irq_nosync(sigma_delta->spi->irq);
-> > > -	}
-> > >  	iio_trigger_set_drvdata(sigma_delta->trig, sigma_delta);
-> > >
-> > >  	ret = iio_trigger_register(sigma_delta->trig);
-> > > --
-> > > 2.31.1
-> >
-
-Thanks
-Barry

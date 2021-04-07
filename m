@@ -2,167 +2,175 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 78A0E356670
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Apr 2021 10:21:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DD3B3566BD
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Apr 2021 10:25:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347064AbhDGIVY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 7 Apr 2021 04:21:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48640 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240507AbhDGIVR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 7 Apr 2021 04:21:17 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9215E613E3;
-        Wed,  7 Apr 2021 08:21:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1617783662;
-        bh=NPMfGgHKVQk69CaP3CWjyeJKVdj6F+brEur4iKI4NSI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ddaNIzq2i0IDLiuh7aVaFMqdcNmKbRkg1tKkkVnsi4MljgODt/+I3mLP1Wi9iE7B9
-         WUD9g8Hh+jGtHAlfLdL8LO9uieyJ65X1iZ82UMM4h2rdIfPpMmYHIy6dOJ+oYLtxFu
-         zpAS/QzJtK9kzSOyBQ1Stjr2KazYdX8TKyt39tU1KidiYwy5vS8elOTA/atbdDhlYG
-         R2ll/+aa8Z+FqQ3zBkj1dG3XgR2IuZXt4U69TBYjVRxrxu8dX/k/DLxRrF7suT+kS4
-         I6YQZ5oX20uu1etMgMnkLnNn3XgptE+YOwEaA+ujq29+JzNTFozkc0bj8NhneBuMJO
-         R8/sARQlCXl4Q==
-Received: by mail.kernel.org with local (Exim 4.94)
-        (envelope-from <mchehab@kernel.org>)
-        id 1lU3Qq-005i2K-FK; Wed, 07 Apr 2021 10:21:00 +0200
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        "Jonathan Corbet" <corbet@lwn.net>,
-        Artur Rojek <contact@artur-rojek.eu>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jean Delvare <jdelvare@suse.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Lee Jones <lee.jones@linaro.org>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Sebastian Reichel <sre@kernel.org>, devicetree@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org
-Subject: [PATCH v2 07/19] dt-bindings: fix references for iio-bindings.txt
-Date:   Wed,  7 Apr 2021 10:20:46 +0200
-Message-Id: <c4e3cfcc666552084df5155c4f3957134b72ef7a.1617783062.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <cover.1617783062.git.mchehab+huawei@kernel.org>
-References: <cover.1617783062.git.mchehab+huawei@kernel.org>
+        id S232604AbhDGIZO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 7 Apr 2021 04:25:14 -0400
+Received: from www381.your-server.de ([78.46.137.84]:51256 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234381AbhDGIZN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 7 Apr 2021 04:25:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=i5z8vIX5++eLc4QF/YGiMmJYLPuXjQP6lKVPsWZFrBI=; b=KRXJkQwz5U1hFSpfFbTxB01qqX
+        xwcOZe2YbKvT030v0P24/5zoRSPj92tHvy8S6Nma0m8KSghQk6YFiPN8JN6BRQUav60jcDiMnLm9t
+        6RB0e/BdNr8Xer77AXazTKxJyYUHzI/o3nNrLt4LKlVFrJBrPgUzQ/AKT7tZAxj1Q/GJCF8zbxrR/
+        yN/+aDUFMcexpPVWntzZM95q+CIzzdNwBkDom/9N1GJXTR9557AsnH1gqYAm5h3egPu+L140ZWbS6
+        W2Gglryt6cMF5u0cU51f0+gRYsNDPEjMEAMWv5vZokX4u8Japr7SgrSNTlHUd0tCQBttIAh/9vdId
+        Sn+J/wyA==;
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <lars@metafoo.de>)
+        id 1lU3Uk-0009Ix-Rm; Wed, 07 Apr 2021 10:25:02 +0200
+Received: from [2001:a61:2bab:901:9e5c:8eff:fe01:8578]
+        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1lU3Uk-000S7E-Mz; Wed, 07 Apr 2021 10:25:02 +0200
+Subject: Re: [PATCH] iio: adis16480: support burst read function
+To:     Nuno Sa <nuno.sa@analog.com>, linux-iio@vger.kernel.org
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>
+References: <20210406151424.110477-1-nuno.sa@analog.com>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <b62f72d8-4d9a-dfb6-685c-3e5985aae8c6@metafoo.de>
+Date:   Wed, 7 Apr 2021 10:25:02 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: Mauro Carvalho Chehab <mchehab@kernel.org>
+In-Reply-To: <20210406151424.110477-1-nuno.sa@analog.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.102.4/26132/Tue Apr  6 13:06:05 2021)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The iio-bindings.txt was converted into two files and merged
-at the dt-schema git tree at:
+On 4/6/21 5:14 PM, Nuno Sa wrote:
+> Some supported devices support burst read function. This provides a method
+> for reading a batch of data (status, temperature, gyroscopes,
+> accelerometers, time stamp/data counter, and CRC code), which does not
+> require a stall time between each 16-bit segment and only requires one
+> command on the DIN line to initiate. Devices supporting this mode
+> are:
+>
+>    * adis16495-1
+>    * adis16495-2
+>    * adis16495-3
+>    * adis16497-1
+>    * adis16497-2
+>    * adis16497-3
+>
+> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 
-	https://github.com/devicetree-org/dt-schema
+Looks good to me, just some thoughts on CRC and endiness conversion.
 
-Yet, some documents still refer to the old file. Fix their
-references, in order to point to the right URL.
+> ---
+>   drivers/iio/imu/adis16480.c | 157 +++++++++++++++++++++++++++++++++---
+>   1 file changed, 144 insertions(+), 13 deletions(-)
+>
+> diff --git a/drivers/iio/imu/adis16480.c b/drivers/iio/imu/adis16480.c
+> index f81b86690b76..341945f8339e 100644
+> --- a/drivers/iio/imu/adis16480.c
+> +++ b/drivers/iio/imu/adis16480.c
+> @@ -5,6 +5,7 @@
+>    * Copyright 2012 Analog Devices Inc.
+>    */
+>   
+> [...]
+> +static bool adis16480_validate_crc(const u16 *buf, const u8 n_elem, const u32 crc)
+const __be16 *buf
+> +{
+> +	u32 crc_calc;
+> +	u16 crc_buf[15];
+> +	int j;
+> +
+> +	for (j = 0; j < n_elem; j++)
+> +		crc_buf[j] = swab16(buf[j]);
+be16_to_cpu(buf[j])
+> +
+> +	crc_calc = crc32(~0, crc_buf, n_elem * 2);
+> +	crc_calc ^= ~0;
+> +
+> +	return (crc == crc_calc);
+> +}
+> +
+> +static irqreturn_t adis16480_trigger_handler(int irq, void *p)
+> +{
+> +	struct iio_poll_func *pf = p;
+> +	struct iio_dev *indio_dev = pf->indio_dev;
+> +	struct adis16480 *st = iio_priv(indio_dev);
+> +	struct adis *adis = &st->adis;
+> +	int ret, bit, offset, i = 0;
+> +	__be16 *buffer;
+> +	u32 crc;
+> +	bool valid;
+> +	const u32 cached_spi_speed_hz = adis->spi->max_speed_hz;
+> +
+> +	adis_dev_lock(adis);
+> +	if (adis->current_page != 0) {
+> +		adis->tx[0] = ADIS_WRITE_REG(ADIS_REG_PAGE_ID);
+> +		adis->tx[1] = 0;
+> +		ret = spi_write(adis->spi, adis->tx, 2);
+> +		if (ret) {
+> +			dev_err(&adis->spi->dev, "Failed to change device page: %d\n", ret);
+> +			adis_dev_unlock(adis);
+> +			return ret;
+> +		}
+> +	}
+> +
+> +	adis->spi->max_speed_hz = ADIS16495_BURST_MAX_SPEED;
+> +
+> +	ret = spi_sync(adis->spi, &adis->msg);
+> +	if (ret) {
+> +		dev_err(&adis->spi->dev, "Failed to read data: %d\n", ret);
+> +		adis_dev_unlock(adis);
+> +		return ret;
+> +	}
+> +
+> +	adis->spi->max_speed_hz = cached_spi_speed_hz;
+> +	adis->current_page = 0;
+> +	adis_dev_unlock(adis);
+> +
+> +	/*
+> +	 * After making the burst request, the response can have one or two
+> +	 * 16-bit responses containing the BURST_ID depending on the sclk. If
+> +	 * clk > 3.6MHz, then we will have two BURST_ID in a row. If clk < 3MHZ,
+> +	 * we have only one. To manage that variation, we use the transition from the
+> +	 * BURST_ID to the SYS_E_FLAG register, which will not be equal to 0xA5A5. If
+> +	 * we not find this variation in the first 4 segments, then the data should
+> +	 * not be valid. We don't return right away since the crc validation should
+> +	 * fail anyways...
+> +	 */
+> +	buffer = adis->buffer;
+> +	for (offset = 0; offset < 4; offset++) {
+> +		u16 curr = be16_to_cpu(buffer[offset]);
+> +		u16 next = be16_to_cpu(buffer[offset + 1]);
+> +
+> +		if (curr == ADIS16495_BURST_ID && next != ADIS16495_BURST_ID) {
+> +			offset++;
+> +			break;
+> +		}
+> +	}
 
-Fixes: dba91f82d580 ("dt-bindings:iio:iio-binding.txt Drop file as content now in dt-schema")
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
----
- Documentation/devicetree/bindings/hwmon/ntc_thermistor.txt   | 2 +-
- Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml   | 5 +++--
- Documentation/devicetree/bindings/input/adc-joystick.yaml    | 4 +++-
- .../bindings/input/touchscreen/resistive-adc-touch.txt       | 5 ++++-
- Documentation/devicetree/bindings/mfd/ab8500.txt             | 4 +++-
- .../devicetree/bindings/power/supply/da9150-charger.txt      | 2 +-
- 6 files changed, 15 insertions(+), 7 deletions(-)
+I think offset can be up to 4 here, in which case offset + 16 is 
+out-of-bounds for buffer. Maybe return right away if offset is 4.
 
-diff --git a/Documentation/devicetree/bindings/hwmon/ntc_thermistor.txt b/Documentation/devicetree/bindings/hwmon/ntc_thermistor.txt
-index 37f18d684f6a..4c5c3712970e 100644
---- a/Documentation/devicetree/bindings/hwmon/ntc_thermistor.txt
-+++ b/Documentation/devicetree/bindings/hwmon/ntc_thermistor.txt
-@@ -32,7 +32,7 @@ Optional node properties:
- - "#thermal-sensor-cells" Used to expose itself to thermal fw.
- 
- Read more about iio bindings at
--	Documentation/devicetree/bindings/iio/iio-bindings.txt
-+	https://github.com/devicetree-org/dt-schema/blob/master/schemas/iio/
- 
- Example:
- 	ncp15wb473@0 {
-diff --git a/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml b/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
-index 9f414dbdae86..433a3fb55a2e 100644
---- a/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
-@@ -14,8 +14,9 @@ description: >
-   Industrial I/O subsystem bindings for ADC controller found in
-   Ingenic JZ47xx SoCs.
- 
--  ADC clients must use the format described in iio-bindings.txt, giving
--  a phandle and IIO specifier pair ("io-channels") to the ADC controller.
-+  ADC clients must use the format described in
-+  https://github.com/devicetree-org/dt-schema/blob/master/schemas/iio/iio-consumer.yaml,
-+  giving a phandle and IIO specifier pair ("io-channels") to the ADC controller.
- 
- properties:
-   compatible:
-diff --git a/Documentation/devicetree/bindings/input/adc-joystick.yaml b/Documentation/devicetree/bindings/input/adc-joystick.yaml
-index 054406bbd22b..721878d5b7af 100644
---- a/Documentation/devicetree/bindings/input/adc-joystick.yaml
-+++ b/Documentation/devicetree/bindings/input/adc-joystick.yaml
-@@ -24,7 +24,9 @@ properties:
-     description: >
-       List of phandle and IIO specifier pairs.
-       Each pair defines one ADC channel to which a joystick axis is connected.
--      See Documentation/devicetree/bindings/iio/iio-bindings.txt for details.
-+      See
-+      https://github.com/devicetree-org/dt-schema/blob/master/schemas/iio/iio-consumer.yaml
-+      for details.
- 
-   '#address-cells':
-     const: 1
-diff --git a/Documentation/devicetree/bindings/input/touchscreen/resistive-adc-touch.txt b/Documentation/devicetree/bindings/input/touchscreen/resistive-adc-touch.txt
-index fee0da12474e..af5223bb5bdd 100644
---- a/Documentation/devicetree/bindings/input/touchscreen/resistive-adc-touch.txt
-+++ b/Documentation/devicetree/bindings/input/touchscreen/resistive-adc-touch.txt
-@@ -5,7 +5,10 @@ Required properties:
-  - compatible: must be "resistive-adc-touch"
- The device must be connected to an ADC device that provides channels for
- position measurement and optional pressure.
--Refer to Documentation/devicetree/bindings/iio/iio-bindings.txt for details
-+Refer to
-+https://github.com/devicetree-org/dt-schema/blob/master/schemas/iio/iio-consumer.yaml
-+for details
-+
-  - iio-channels: must have at least two channels connected to an ADC device.
- These should correspond to the channels exposed by the ADC device and should
- have the right index as the ADC device registers them. These channels
-diff --git a/Documentation/devicetree/bindings/mfd/ab8500.txt b/Documentation/devicetree/bindings/mfd/ab8500.txt
-index d2a6e835c257..937b3e5505e0 100644
---- a/Documentation/devicetree/bindings/mfd/ab8500.txt
-+++ b/Documentation/devicetree/bindings/mfd/ab8500.txt
-@@ -72,7 +72,9 @@ Required child device properties:
-                                                pwm|regulator|rtc|sysctrl|usb]";
- 
-   A few child devices require ADC channels from the GPADC node. Those follow the
--  standard bindings from iio/iio-bindings.txt and iio/adc/adc.txt
-+  standard bindings from
-+  https://github.com/devicetree-org/dt-schema/blob/master/schemas/iio/iio-consumer.yaml
-+  and Documentation/devicetree/bindings/iio/adc/adc.yaml
- 
-   abx500-temp		 : io-channels "aux1" and "aux2" for measuring external
- 			   temperatures.
-diff --git a/Documentation/devicetree/bindings/power/supply/da9150-charger.txt b/Documentation/devicetree/bindings/power/supply/da9150-charger.txt
-index f3906663c454..033a9b6e1dd5 100644
---- a/Documentation/devicetree/bindings/power/supply/da9150-charger.txt
-+++ b/Documentation/devicetree/bindings/power/supply/da9150-charger.txt
-@@ -7,7 +7,7 @@ Optional properties:
- - io-channels: List of phandle and IIO specifier pairs
- - io-channel-names: List of channel names used by charger
-       ["CHAN_IBUS", "CHAN_VBUS", "CHAN_TJUNC", "CHAN_VBAT"]
--  (See Documentation/devicetree/bindings/iio/iio-bindings.txt for further info)
-+  (See https://github.com/devicetree-org/dt-schema/blob/master/schemas/iio/iio-consumer.yaml for further info)
- 
- 
- Example:
--- 
-2.30.2
+> +
+> +	crc = be16_to_cpu(buffer[offset + 16]) << 16 | be16_to_cpu(buffer[offset + 15]);
+> +	valid = adis16480_validate_crc((u16 *)&buffer[offset], 15, crc);
+> +	if (!valid) {
+> +		dev_err(&adis->spi->dev, "Invalid crc\n");
+> +		goto irq_done;
+> +	}
+> +
+> [...]
+
 

@@ -2,97 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B33C7356597
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Apr 2021 09:40:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DD183565A6
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Apr 2021 09:43:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233326AbhDGHkc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 7 Apr 2021 03:40:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42118 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233404AbhDGHka (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 7 Apr 2021 03:40:30 -0400
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E4F4C06174A;
-        Wed,  7 Apr 2021 00:40:19 -0700 (PDT)
-Received: by mail-pl1-x629.google.com with SMTP id g10so8891760plt.8;
-        Wed, 07 Apr 2021 00:40:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=G0HqwbRDMsL0HeE4ze7Mb/YeGbLkf8kKL2SuI0HMZ0I=;
-        b=pI+pq2HJvInbR8Xk9AXXrAqfkRiYR357oaQTkdZoplMzNey3/1al94cvoZwpJiXg8E
-         6uQhLi8y60oZaCb9KY/+n0fjH+LbPd360Lo1XOA9H5nC9NphvueeFhk6tlyVHgQAF6uy
-         E4qNlrBMBVPKrqKwiFKBaOk/bt7EBC8Um9m2FFEWgEZEgQkEa19Xt3jA5ipQSLbzTNk9
-         0iV780FP56NQSjRlH77HHQ3QARf9nQKWw2yIC2lpeJsgbUHfWMk82TB9c4JLfTREdRtj
-         UbkgxinAOiqVmhUDrmzx/DdGwsol8hhpAPNLi8Lo8bZKTkYnnYd4w6BqPuQNjzp/DSCD
-         3/+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=G0HqwbRDMsL0HeE4ze7Mb/YeGbLkf8kKL2SuI0HMZ0I=;
-        b=fVbVPkrqUOJWvqzChfnFPXOZloLhzdk8kiHyTRDjHAjJdZ0wxhe6w/tSjdvFoRu21z
-         SCecuRO0TcW4KDvd3fszGbhw0BjAJFKjo4v8+dHCmo4K8yYm9QiFu2R4sH/eJNnf5Gk8
-         cE5oJlh+xkB8C6TjrfHKQ0JaR7Cd62ByaA8ULjyHm6kp+AYJdMYXd5/kqbiImemz2QRG
-         nHP6eYq00D9ezchx9mF1UVBYSMm39rIaN9An59xFba16JNlU3sdLxP/q8pqeCiijx/t8
-         MhP8eJu3gpp3NEiY6a0nbSEx1cWjg98VxT3Z2OtEE0eH6kDF5g0QV+/KUiBYGsVQTwh6
-         aDLw==
-X-Gm-Message-State: AOAM530Oe8L1laLE91NkXr6kpVi2Zmo68y2NHGKSouP9hBRZPPkYHv5j
-        DEOwtoRIbKfaJjVu4RjMBKr+E/ICw2WfQ64AOLQHZnXMEPs=
-X-Google-Smtp-Source: ABdhPJwLWkfhmDPrGu8OIr1wBENfJbPhlYX7GbkNK6sZYAvZ3941djMcZP4ew06WI+oVhJf2v2DM5+REaao14Wy/Jtk=
-X-Received: by 2002:a17:90b:1e0a:: with SMTP id pg10mr1419277pjb.129.1617781219051;
- Wed, 07 Apr 2021 00:40:19 -0700 (PDT)
+        id S244424AbhDGHn0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 7 Apr 2021 03:43:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37652 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233952AbhDGHn0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 7 Apr 2021 03:43:26 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B4FE76136A;
+        Wed,  7 Apr 2021 07:43:15 +0000 (UTC)
+Date:   Wed, 7 Apr 2021 08:43:32 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     linux-iio@vger.kernel.org
+Subject: Re: [PULL] 2nd set of IIO features and cleanup etc for 5.13
+Message-ID: <20210407084332.6ac35e61@jic23-huawei>
+In-Reply-To: <YG1SvdUpcSSc2ZsK@kroah.com>
+References: <20210406220555.0d6bc9b6@jic23-huawei>
+        <YG1SvdUpcSSc2ZsK@kroah.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20210407045938.29129-1-dinghao.liu@zju.edu.cn>
-In-Reply-To: <20210407045938.29129-1-dinghao.liu@zju.edu.cn>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 7 Apr 2021 10:40:02 +0300
-Message-ID: <CAHp75VeH08V8UUDmPx=XrA98cvMnQXyF3Qe+5+mrTBe4C=1MFQ@mail.gmail.com>
-Subject: Re: [PATCH] iio: proximity: pulsedlight: Fix rumtime PM imbalance on error
-To:     Dinghao Liu <dinghao.liu@zju.edu.cn>
-Cc:     Kangjie Lu <kjlu@umn.edu>, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Apr 7, 2021 at 7:59 AM Dinghao Liu <dinghao.liu@zju.edu.cn> wrote:
->
-> When lidar_write_control() fails, a pairing PM usage counter
-> decrement is needed to keep the counter balanced.
+On Wed, 7 Apr 2021 08:35:41 +0200
+Greg KH <gregkh@linuxfoundation.org> wrote:
 
-FWIW,
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> On Tue, Apr 06, 2021 at 10:05:55PM +0100, Jonathan Cameron wrote:
+> > The following changes since commit 9c15db92a8e56bcde0f58064ac1adc28c0579b51:
+> > 
+> >   Merge tag 'iio-for-5.13a' of https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio into staging-next (2021-03-26 12:09:47 +0100)
+> > 
+> > are available in the Git repository at:
+> > 
+> >   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-5.13b  
+> 
+> It looks like I had a minor cleanup fix to one of the files you removed
+> from staging in my tree, but that was reasy to resolve.
+> 
+> However, I got the following error when trying to push these out:
+> 
+> Commit: b3c20190dd32 ("iio: Fix iio_read_channel_processed_scale()")
+> 	Fixes tag: Fixes: dc98269f7c7d ("iio: Provide iio_read_channel_processed_scale() API")
+> 	Has these problem(s):
+> 	        - Target SHA1 does not exist
+> 
+> Where did that git commit id come from?
 
-> Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-> ---
->  drivers/iio/proximity/pulsedlight-lidar-lite-v2.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c b/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c
-> index c685f10b5ae4..cc206bfa09c7 100644
-> --- a/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c
-> +++ b/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c
-> @@ -160,6 +160,7 @@ static int lidar_get_measurement(struct lidar_data *data, u16 *reg)
->         ret = lidar_write_control(data, LIDAR_REG_CONTROL_ACQUIRE);
->         if (ret < 0) {
->                 dev_err(&client->dev, "cannot send start measurement command");
-> +               pm_runtime_put_noidle(&client->dev);
->                 return ret;
->         }
->
-> --
-> 2.17.1
->
+There were a bunch of rebases earlier this cycle that must have crossed.
 
+Oddly the fixes checking script I've been using is happy with that
+id but it's clearly wrong.  *sigh*  I'll have to take a closer look
+at what it is doing.  Sorry about that.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Anyhow, rebased with that tag fixes and I'll send a new pull in a few minutes
+
+Jonathan
+
+> 
+> Can you fix that up please?
+> 
+> thanks,
+> 
+> greg k-h
+

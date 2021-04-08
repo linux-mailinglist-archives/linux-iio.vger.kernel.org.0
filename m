@@ -2,29 +2,29 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A8EBC358227
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Apr 2021 13:41:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1F3535822A
+	for <lists+linux-iio@lfdr.de>; Thu,  8 Apr 2021 13:41:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231329AbhDHLlL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 8 Apr 2021 07:41:11 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:15980 "EHLO
+        id S231308AbhDHLlP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 8 Apr 2021 07:41:15 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:16046 "EHLO
         szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229751AbhDHLlK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 8 Apr 2021 07:41:10 -0400
+        with ESMTP id S231292AbhDHLlO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 8 Apr 2021 07:41:14 -0400
 Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.60])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4FGK5y09cBzyNQP;
-        Thu,  8 Apr 2021 19:38:46 +0800 (CST)
+        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4FGK5M39vyzNtx0;
+        Thu,  8 Apr 2021 19:38:15 +0800 (CST)
 Received: from localhost.localdomain (10.67.165.24) by
  DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
- 14.3.498.0; Thu, 8 Apr 2021 19:40:51 +0800
+ 14.3.498.0; Thu, 8 Apr 2021 19:40:52 +0800
 From:   Yicong Yang <yangyicong@hisilicon.com>
 To:     <jic23@kernel.org>, <linux-iio@vger.kernel.org>
 CC:     <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
         <pmeerw@pmeerw.net>, <prime.zeng@huawei.com>,
         <tiantao6@hisilicon.com>, <yangyicong@hisilicon.com>
-Subject: [PATCH 6/7] iio: trigger: simplify __devm_iio_trigger_register
-Date:   Thu, 8 Apr 2021 19:38:15 +0800
-Message-ID: <1617881896-3164-7-git-send-email-yangyicong@hisilicon.com>
+Subject: [PATCH 7/7] iio: inkern: simplify some devm functions
+Date:   Thu, 8 Apr 2021 19:38:16 +0800
+Message-ID: <1617881896-3164-8-git-send-email-yangyicong@hisilicon.com>
 X-Mailer: git-send-email 2.8.1
 In-Reply-To: <1617881896-3164-1-git-send-email-yangyicong@hisilicon.com>
 References: <1617881896-3164-1-git-send-email-yangyicong@hisilicon.com>
@@ -42,50 +42,118 @@ code. There is no functional changes.
 
 Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
 ---
- drivers/iio/industrialio-trigger.c | 18 +++++-------------
- 1 file changed, 5 insertions(+), 13 deletions(-)
+ drivers/iio/inkern.c | 61 ++++++++++++++++++++--------------------------------
+ 1 file changed, 23 insertions(+), 38 deletions(-)
 
-diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
-index ea3c985..0db0952 100644
---- a/drivers/iio/industrialio-trigger.c
-+++ b/drivers/iio/industrialio-trigger.c
-@@ -624,9 +624,9 @@ struct iio_trigger *devm_iio_trigger_alloc(struct device *dev,
+diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+index db77a2d..5de35cc 100644
+--- a/drivers/iio/inkern.c
++++ b/drivers/iio/inkern.c
+@@ -359,30 +359,24 @@ void iio_channel_release(struct iio_channel *channel)
  }
- EXPORT_SYMBOL_GPL(devm_iio_trigger_alloc);
+ EXPORT_SYMBOL_GPL(iio_channel_release);
  
--static void devm_iio_trigger_unreg(struct device *dev, void *res)
-+static void devm_iio_trigger_unreg(void *trigger_info)
+-static void devm_iio_channel_free(struct device *dev, void *res)
++static void devm_iio_channel_free(void *iio_channel)
  {
--	iio_trigger_unregister(*(struct iio_trigger **)res);
-+	iio_trigger_unregister(trigger_info);
- }
- 
- /**
-@@ -647,21 +647,13 @@ int __devm_iio_trigger_register(struct device *dev,
- 				struct iio_trigger *trig_info,
- 				struct module *this_mod)
- {
--	struct iio_trigger **ptr;
- 	int ret;
- 
--	ptr = devres_alloc(devm_iio_trigger_unreg, sizeof(*ptr), GFP_KERNEL);
--	if (!ptr)
--		return -ENOMEM;
+-	struct iio_channel *channel = *(struct iio_channel **)res;
 -
--	*ptr = trig_info;
- 	ret = __iio_trigger_register(trig_info, this_mod);
--	if (!ret)
--		devres_add(dev, ptr);
--	else
--		devres_free(ptr);
-+	if (ret)
-+		return ret;
- 
--	return ret;
-+	return devm_add_action_or_reset(dev, devm_iio_trigger_unreg, trig_info);
+-	iio_channel_release(channel);
++	iio_channel_release(iio_channel);
  }
- EXPORT_SYMBOL_GPL(__devm_iio_trigger_register);
  
+ struct iio_channel *devm_iio_channel_get(struct device *dev,
+ 					 const char *channel_name)
+ {
+-	struct iio_channel **ptr, *channel;
+-
+-	ptr = devres_alloc(devm_iio_channel_free, sizeof(*ptr), GFP_KERNEL);
+-	if (!ptr)
+-		return ERR_PTR(-ENOMEM);
++	struct iio_channel *channel;
++	int ret;
+ 
+ 	channel = iio_channel_get(dev, channel_name);
+-	if (IS_ERR(channel)) {
+-		devres_free(ptr);
++	if (IS_ERR(channel))
+ 		return channel;
+-	}
+ 
+-	*ptr = channel;
+-	devres_add(dev, ptr);
++	ret = devm_add_action_or_reset(dev, devm_iio_channel_free, channel);
++	if (ret)
++		return ERR_PTR(ret);
+ 
+ 	return channel;
+ }
+@@ -392,20 +386,16 @@ struct iio_channel *devm_of_iio_channel_get_by_name(struct device *dev,
+ 						    struct device_node *np,
+ 						    const char *channel_name)
+ {
+-	struct iio_channel **ptr, *channel;
+-
+-	ptr = devres_alloc(devm_iio_channel_free, sizeof(*ptr), GFP_KERNEL);
+-	if (!ptr)
+-		return ERR_PTR(-ENOMEM);
++	struct iio_channel *channel;
++	int ret;
+ 
+ 	channel = of_iio_channel_get_by_name(np, channel_name);
+-	if (IS_ERR(channel)) {
+-		devres_free(ptr);
++	if (IS_ERR(channel))
+ 		return channel;
+-	}
+ 
+-	*ptr = channel;
+-	devres_add(dev, ptr);
++	ret = devm_add_action_or_reset(dev, devm_iio_channel_free, channel);
++	if (ret)
++		return ERR_PTR(ret);
+ 
+ 	return channel;
+ }
+@@ -496,29 +486,24 @@ void iio_channel_release_all(struct iio_channel *channels)
+ }
+ EXPORT_SYMBOL_GPL(iio_channel_release_all);
+ 
+-static void devm_iio_channel_free_all(struct device *dev, void *res)
++static void devm_iio_channel_free_all(void *iio_channels)
+ {
+-	struct iio_channel *channels = *(struct iio_channel **)res;
+-
+-	iio_channel_release_all(channels);
++	iio_channel_release_all(iio_channels);
+ }
+ 
+ struct iio_channel *devm_iio_channel_get_all(struct device *dev)
+ {
+-	struct iio_channel **ptr, *channels;
+-
+-	ptr = devres_alloc(devm_iio_channel_free_all, sizeof(*ptr), GFP_KERNEL);
+-	if (!ptr)
+-		return ERR_PTR(-ENOMEM);
++	struct iio_channel *channels;
++	int ret;
+ 
+ 	channels = iio_channel_get_all(dev);
+-	if (IS_ERR(channels)) {
+-		devres_free(ptr);
++	if (IS_ERR(channels))
+ 		return channels;
+-	}
+ 
+-	*ptr = channels;
+-	devres_add(dev, ptr);
++	ret = devm_add_action_or_reset(dev, devm_iio_channel_free_all,
++				       channels);
++	if (ret)
++		return ERR_PTR(ret);
+ 
+ 	return channels;
+ }
 -- 
 2.8.1
 

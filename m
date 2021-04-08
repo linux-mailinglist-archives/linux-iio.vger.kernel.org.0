@@ -2,128 +2,163 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 189173578A0
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Apr 2021 01:42:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 558D6357CF3
+	for <lists+linux-iio@lfdr.de>; Thu,  8 Apr 2021 09:06:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229484AbhDGXm6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 7 Apr 2021 19:42:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56824 "EHLO
+        id S229813AbhDHHGV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 8 Apr 2021 03:06:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229480AbhDGXm6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 7 Apr 2021 19:42:58 -0400
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20B4BC061760
-        for <linux-iio@vger.kernel.org>; Wed,  7 Apr 2021 16:42:48 -0700 (PDT)
-Received: by mail-pj1-x1030.google.com with SMTP id o18so142667pjs.4
-        for <linux-iio@vger.kernel.org>; Wed, 07 Apr 2021 16:42:48 -0700 (PDT)
+        with ESMTP id S229510AbhDHHGU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 8 Apr 2021 03:06:20 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD71BC061760
+        for <linux-iio@vger.kernel.org>; Thu,  8 Apr 2021 00:06:09 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id m3so1101080edv.5
+        for <linux-iio@vger.kernel.org>; Thu, 08 Apr 2021 00:06:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=W5UeUzP9r+VV/GKz4HTtWPSQvJvi4GAn9GYWvQZt0Wg=;
-        b=aZ92KpPowfTRI/71c0jDaL2MLdeaYC10bKYkWTmZvS387kELHDfgmp+glTbjh/9nh3
-         GzChdIt0HpSf8y0a152PWHMBb5o1mpfxU4p4yW/APoOzazkjSQhYYIuZaES6UX8nfRv7
-         8H2KaB4bYmp4CG3jEdPkAHzKAqIzlPfwYlCS+sUKIj23jUoGAwGARjg48f5EOlInWf0n
-         xzPxgPNZ8FvctaSgeCqs1D+mDXGG6JAaMGjCttcn6ElTQ9giXBVYWvlH3lpMaBpP0yZC
-         A9kp0ZWSrOIJ2d0admFEDO/M5oL/yYQAaeSd/AmfaUM8Y0bV/64bHi6TZJVvzy9k0K66
-         kwFg==
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=z4Gitq6pVFDGPa5UrDIJQObnLNdxwY706RuaVL/8cJQ=;
+        b=Rq/AVPm1jCL9qyyHKxT5usmTELeBq1QBK7S0jE9FhIpcOnkmIE1MFYUSaaLB+fbeG4
+         woViT2OkK6JUUf3A2pifrsX5TFDVEZfZya+OSIC/IKAg4osGnjzTTNPpvYzlhqNEJGTc
+         CyQuygiOyddbOLcV9fNt8j8cWcoY5jPX7ERVGHmcm4UIxIqYaDrUz/IJFIT1ktLpb4rd
+         dhA3O4NnNSbVMZrBVtPWqo2gxWeYgW/qSBaWA8dFh8D4M8VVcD4zXhwnNPoFZ1JuOnq0
+         a1nKocWIAJawxgrF7mtFwTlMC+n6jAdNlz5Tl3pqZOd3kKWkQc0WWuZq0v4zfd9PMsx9
+         xj/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=W5UeUzP9r+VV/GKz4HTtWPSQvJvi4GAn9GYWvQZt0Wg=;
-        b=sc0eogaPCO/Tnj3PT64FkoK7zluu/xeb74JfYbKlZEqz8EmR+opwQQj1CZZ1POrFkT
-         IpvI0f3+Tpm0kYVLsXnqkX0/mkOWap6FeDNHM9zz6ZLMxNaLiwxeckn0o7y06wivI6Sy
-         oqnDV1OJhbqAZ90AcD868/OGxQN2UIW1vyOueWRsu8ZifSWjP/KVpOnXfwEfxAT/LJWI
-         A/6F7pA0KfbOSOC7CzJxR9sBzGmsxpkWbjS4bhDXkzll0mw/FarQ54GkyV7nh5lDiZp6
-         005WfkWu/7+GsdV18uT96FADfWjD8G/T4JLrAxvz3h/Md6SVPL8zuWEpc9ISM4b+2V54
-         sbHg==
-X-Gm-Message-State: AOAM530D2FJgUBWbkHcxlrBs6YPgBHGS0NQ2iv79EvHfHN1yAQpADrlU
-        Q7mnxPEskYQ6STonNN1gkgzSQpmqO4c=
-X-Google-Smtp-Source: ABdhPJyI8ufCodIBch3nxf54DGQ7imRHw5/uDwgp+iRO8hYkhSO2gGMsnbNCThDb4bzqNJS1tD3ezQ==
-X-Received: by 2002:a17:902:8306:b029:e6:125c:1a3a with SMTP id bd6-20020a1709028306b02900e6125c1a3amr5322928plb.65.1617838967434;
-        Wed, 07 Apr 2021 16:42:47 -0700 (PDT)
-Received: from shinobu ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id 4sm6425221pjl.51.2021.04.07.16.42.44
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=z4Gitq6pVFDGPa5UrDIJQObnLNdxwY706RuaVL/8cJQ=;
+        b=gEdV80udwN4Jx5VCyzc+9SBb1eg1Q6s19bpmjh1T2yVoW9a0IPQRfjECfhj+QZGISx
+         mWYlLheRroYx00/Sf4XGkZJUL0ebeYgtOYSMRxCCFgLl0xHpu1ZycFsssolCG8l4jEdk
+         m9DiKRcf6XyC0KgLB3dqgUIr1XTWSnFPeOsQIAFPstrZAfLohwa9TQR5faBUJOOS+QRg
+         SKup9auZkFUC7BBcCLfQomFT0WYLJDVcI/oNVF826YDQ4Z3fUvsYhE/GQt3OskhZeQZQ
+         3qCZE+luaSWYzCieI8G9gR7LCEMV1hG+iYX0uvC0BYfMFMwTewv5v+whSxnGnWDICmmx
+         YLNA==
+X-Gm-Message-State: AOAM530QjhxdQvsgPT4HA0wOf60X7Pj341z4QDp4637/u+fJjd0sqCLR
+        X99IHhw1IzXojw+L+OsLqZXSxA==
+X-Google-Smtp-Source: ABdhPJxnL59ZtT6Iah9N++cMUYV0rXC755tzrsh7H6THlQikyo2EcZ08HAyhG/iIV512tuxRYVlbrA==
+X-Received: by 2002:a05:6402:4d1:: with SMTP id n17mr9243636edw.118.1617865568643;
+        Thu, 08 Apr 2021 00:06:08 -0700 (PDT)
+Received: from dell ([91.110.221.215])
+        by smtp.gmail.com with ESMTPSA id q16sm13810809ejd.15.2021.04.08.00.06.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Apr 2021 16:42:46 -0700 (PDT)
-Date:   Thu, 8 Apr 2021 08:42:42 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Cc:     Jonathan.Cameron@huawei.com, linux-iio@vger.kernel.org,
-        Felipe Balbi <balbi@kernel.org>,
-        Raymond Tan <raymond.tan@intel.com>
-Subject: Re: [PATCH 2/2] counter: Add support for Intel Quadrature Encoder
- Peripheral
-Message-ID: <YG5DcjXAFafqbD5t@shinobu>
-References: <20210401153228.2773560-1-jarkko.nikula@linux.intel.com>
- <20210401153228.2773560-2-jarkko.nikula@linux.intel.com>
- <YGbyVHNY/55akU9I@shinobu>
- <778390eb-d27b-c486-0f3d-610e019e69f0@linux.intel.com>
+        Thu, 08 Apr 2021 00:06:08 -0700 (PDT)
+Date:   Thu, 8 Apr 2021 08:06:05 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Cc:     lkml <linux-kernel@vger.kernel.org>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Anssi Hannula <anssi.hannula@gmail.com>,
+        Bruno =?iso-8859-1?Q?Pr=E9mont?= <bonbons@linux-vserver.org>,
+        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        Daniel Drubin <daniel.drubin@intel.com>,
+        Dario Pagani <dario.pagani.146+linuxk@gmail.com>,
+        dri-devel@lists.freedesktop.org,
+        Henrik Rydberg <rydberg@bitmath.org>,
+        Jiri Kosina <jikos@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        Kim Kuparinen <kimi.h.kuparinen@gmail.com>,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        linaro-mm-sig@lists.linaro.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:HID CORE LAYER" <linux-input@vger.kernel.org>,
+        linux-media@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        Linux USB Mailing List <linux-usb@vger.kernel.org>,
+        Lopez Casado <nlopezcasad@logitech.com>,
+        "L. Vinyard, Jr" <rvinyard@cs.nmsu.edu>,
+        Masaki Ota <masaki.ota@jp.alps.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        message to <vojtech@ucw.cz>,
+        Michael Haboustak <mike-@cinci.rr.com>,
+        Rushikesh S Kadam <rushikesh.s.kadam@intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <uwe@kleine-koenig.org>,
+        Vojtech Pavlik <vojtech@suse.cz>,
+        Zhang Lixu <lixu.zhang@intel.com>
+Subject: Re: [RESEND 00/25] Rid W=1 warnings from HID
+Message-ID: <20210408070605.GC2961413@dell>
+References: <20210326143458.508959-1-lee.jones@linaro.org>
+ <20210406085605.GS2916463@dell>
+ <CAO-hwJ+5Vd6jC2+0pfHLOw3opdXzKoc9pUWzxmBVhSvQvNWMsQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="6lyffGT3CQuATrki"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <778390eb-d27b-c486-0f3d-610e019e69f0@linux.intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAO-hwJ+5Vd6jC2+0pfHLOw3opdXzKoc9pUWzxmBVhSvQvNWMsQ@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Wed, 07 Apr 2021, Benjamin Tissoires wrote:
 
---6lyffGT3CQuATrki
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On Tue, Apr 6, 2021 at 10:56 AM Lee Jones <lee.jones@linaro.org> wrote:
+> >
+> > On Fri, 26 Mar 2021, Lee Jones wrote:
+> >
+> > > This set is part of a larger effort attempting to clean-up W=1
+> > > kernel builds, which are currently overwhelmingly riddled with
+> > > niggly little warnings.
+> > >
+> > > Lee Jones (25):
+> > >   HID: intel-ish-hid: Remove unused variable 'err'
+> > >   HID: ishtp-hid-client: Move variable to where it's actually used
+> > >   HID: intel-ish-hid: pci-ish: Remove unused variable 'ret'
+> > >   HID: intel-ish: Supply some missing param descriptions
+> > >   HID: intel-ish: Fix a naming disparity and a formatting error
+> > >   HID: usbhid: Repair a formatting issue in a struct description
+> > >   HID: intel-ish-hid: Fix a little doc-rot
+> > >   HID: usbhid: hid-pidff: Demote a couple kernel-doc abuses
+> > >   HID: hid-alps: Correct struct misnaming
+> > >   HID: intel-ish-hid: Fix potential copy/paste error
+> > >   HID: hid-core: Fix incorrect function name in header
+> > >   HID: intel-ish-hid: ipc: Correct fw_reset_work_fn() function name in
+> > >     header
+> > >   HID: ishtp-hid-client: Fix incorrect function name report_bad_packet()
+> > >   HID: hid-kye: Fix incorrect function name for kye_tablet_enable()
+> > >   HID: hid-picolcd_core: Remove unused variable 'ret'
+> > >   HID: hid-logitech-hidpp: Fix conformant kernel-doc header and demote
+> > >     abuses
+> > >   HID: hid-uclogic-rdesc: Kernel-doc is for functions and structs
+> > >   HID: hid-thrustmaster: Demote a bunch of kernel-doc abuses
+> > >   HID: hid-uclogic-params: Ensure function names are present and correct
+> > >     in kernel-doc headers
+> > >   HID: hid-sensor-custom: Remove unused variable 'ret'
+> > >   HID: wacom_sys: Demote kernel-doc abuse
+> > >   HID: hid-sensor-hub: Remove unused struct member 'quirks'
+> > >   HID: hid-sensor-hub: Move 'hsdev' description to correct struct
+> > >     definition
+> > >   HID: intel-ish-hid: ishtp-fw-loader: Fix a bunch of formatting issues
+> > >   HID: ishtp-hid-client: Fix 'suggest-attribute=format' compiler warning
+> >
+> > These have been on the list for a couple of weeks now.
+> >
+> > Is there anything I can do to help expedite their merge?
+> >
+> > I'm concerned since -rc6 has just been released.
+> 
+> Sorry for the delay.
+> 
+> I am currently queuing them locally and running a few tests on them. I
+> don't expect anything to happen, but better be safe than anything.
+> 
+> FWIW, I am splitting the series in 3:
+> - 11 patches for intel ish are going to be queued in for-5.13/intel-ish
+> - the thrustmaster one in for-5.13/thrustmaster
+> - the rest (13 patches) will be sent in for-5.13/warnings.
 
-On Wed, Apr 07, 2021 at 05:25:48PM +0300, Jarkko Nikula wrote:
-> On 4/2/21 1:30 PM, William Breathitt Gray wrote:
-> > On Thu, Apr 01, 2021 at 06:32:28PM +0300, Jarkko Nikula wrote:
-> >> +static const struct counter_device_ext intel_qep_ext[] =3D {
-> >> +	INTEL_QEP_COUNTER_EXT_RW(noise),
-> >> +	INTEL_QEP_COUNTER_EXT_RW(preset_enable)
-> >> +};
-> >=20
-> > "noise" is a new attribute so you'll need to provide an entry in
-> > Documentation/ABI/testing/sysfs-bus-counter explaining it.
-> >=20
-> Should this noise actually be visible as seconds (ns, =C2=B5s, ms) instea=
-d of=20
-> plain register value? From the spec "It selects the maximum glitch width=
-=20
-> to remove in terms of peripheral clock cycles: PCLK_CYCLES =3D MAX_COUNT =
-+ 2".
->=20
-> I think it should since for a person configuring the system plain=20
-> register value is more or less guesswork.
->=20
-> Jarkko
+Sounds good to me.  Thanks Benjamin.
 
-If this clock is actually temporal in nature then denominating this
-value in a temporal unit such as nanonseconds should be fine as long as
-such values have a well-defined behavior for this device. I do recommend
-giving this attribute a more fitting name however because it is not
-immediately obvious what an attribute called "noise" controls.
-
-William Breathitt Gray
-
---6lyffGT3CQuATrki
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmBuQ1MACgkQhvpINdm7
-VJJPXA/+JhMHAkmJBudc8ZbJTlENdUL7YAy4eILAVQzsGfc9ARcLOYFM2jvAg4pg
-jz/KPedEFZEVcnEKb755kbKyqIYOYZD7laaGiHNt86b5r8ETvlqIdFkce3bdC0/l
-IaEe+iOwzjNIRxoctM3oRbfyahk/TBNZpmn6V2G9xX/TfNlNuZF18I/5j3KKHBDb
-3pO36X+/48+JvpXtz/0L/7bfynZ8Q7hOB6SlMg2XQ7S/vkgLHg6MNmhcsRcG6i+3
-+NhSQRKHGyzGyZVYlKu582jNKZxjs2Jgo6P8fp4ZEsS9iCbw2BuwjRsmZFv7SYnz
-XV9dJItqpm6f+tTj5f1Ukc0wzSiK8lHk/wLXD2VCOwiqpt0RI+J6KELYQurEeHRe
-62xBNA+gkjuu1+hkiOa5YWmAlqjbie3ufow7rwgm/s4fJ/FQATbcuub3d1ejDeEs
-vAjOj96/2/zJ2JJL3Mb3agrDsTDF+CpgNHIl0oUn3V07fK82DlH9N1jnf7gUnvPB
-VRhNOWS/Zsg2W/373c1k3GvXa+XuudHPWwLROYqfzKg4sI+aX5RcC8D6GK9/dyhH
-ENko6DGxgM/fBjpTVTkVnzzno1pU8U1fPO9PPTOD+139dEUHs+wFVs3thxCgnHvk
-evJCrBNCbnYum3ePz0nmOPgSrhMeR8c53RevA5B+KCla1rOeiPw=
-=7nwh
------END PGP SIGNATURE-----
-
---6lyffGT3CQuATrki--
+-- 
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog

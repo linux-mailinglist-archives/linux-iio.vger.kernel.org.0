@@ -2,55 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D457535843A
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Apr 2021 15:09:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48BF935845C
+	for <lists+linux-iio@lfdr.de>; Thu,  8 Apr 2021 15:15:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231294AbhDHNKF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 8 Apr 2021 09:10:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34374 "EHLO
+        id S229751AbhDHNPP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 8 Apr 2021 09:15:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229751AbhDHNKF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 8 Apr 2021 09:10:05 -0400
-Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0638BC061761
-        for <linux-iio@vger.kernel.org>; Thu,  8 Apr 2021 06:09:54 -0700 (PDT)
-Received: by mail-pg1-x52e.google.com with SMTP id f29so1368654pgm.8
-        for <linux-iio@vger.kernel.org>; Thu, 08 Apr 2021 06:09:54 -0700 (PDT)
+        with ESMTP id S231158AbhDHNPP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 8 Apr 2021 09:15:15 -0400
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04119C061760
+        for <linux-iio@vger.kernel.org>; Thu,  8 Apr 2021 06:15:04 -0700 (PDT)
+Received: by mail-pf1-x432.google.com with SMTP id m11so1777122pfc.11
+        for <linux-iio@vger.kernel.org>; Thu, 08 Apr 2021 06:15:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=8hcl50LhJuH+uYrpvn/trW/t+kW0OQV+dOKCnzxMCwo=;
-        b=mKCO3VdF7dA3/RDvkleD2pFHgR/1ZHue20azBhEW2w1Q1LrbUqwSSj1IOWWox5A+5q
-         XaSyz0Okoczkrg2Z4cVru3XjIS7hJikY3ADmdk7f+bzRacm94x+R0eRGI3HU26/a3r55
-         NRRs8Zyyk347dbGUWsuNf9g5wyKeJYVSx5NmXxShqrJy00VkFSXsVWwiyIrUgF1oWVLU
-         xT5buqM2YOKwGum8CLdztKVuwAtm7Fvgh9PpOTWm444cc9RS9VC7oxmkFtAg3S/8WMpP
-         YDiIMY0HWaONv8jtRTe+F8xECTSsrfFRc0RwukmRYQE8UWe25a+RKgVPWi3CX3ccZLhV
-         NSNg==
+        bh=yhQqQPDGyQMxZKtfCIcfqDXGiQY0+ycfeKZZHoKU2rY=;
+        b=rFVnQV2nUL9qMN7rMvNHLJG2TRzWnJVy7O2Hcm2UmyPMoOGyXYcFEwVY2n+pk7jdQv
+         XEm7UTUMXPEhQ0y7zxqV8gMdP7TNgzn1CIkVQLIXs7iSRzRMtTivLiiMJjfdYefsn0lP
+         m0IPqtdt5Yxqhud86mCWAzVmyFdj0nT8Sk52mbd1W4ErvKr859mcmfMEcOn79T8dHL/4
+         GWtTgchpmLF9jYrG2DjpMov2iReZk6hXrLYhbuh/cZ/A0n2S56mBnX0KPdc+0/KlIpfV
+         QxcZZHPuo5h591Sct/n0GTijaW6wvcNR/QxPq2d/mwgfjgec8BjBGvloXWFJfQLaABFI
+         mPaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=8hcl50LhJuH+uYrpvn/trW/t+kW0OQV+dOKCnzxMCwo=;
-        b=LCVjZlfBbhq5xyzSVZgGafkBZmzYGI802/fciiLl9VBUqXUVonUClvxOkk9UcoaN2j
-         Drw8O6LTIpGj/R/LUGodp9gQD9mpj2bSb4MiCegbFrkRCTjrXI1XPn6Q4ecbC1Jr/Klz
-         kY7NQSLrld2ya12nAvUtiERWQdbBGIb9U8iZtLOGznPXGfn9bP/kVvLLFRwFPlzv6LnJ
-         vokI6QyvJXOFC3NjqR9mrhBFvIjTFKO4BoERIH8zl1cNh3KpwRAfpE4JznIDvBaTmqVL
-         ZNiKiuTbh76ddb/scmLGJe/NxiDEnV2CcgGoMpXiI1krR8mNQDEJHvVinA6WzvBJt/af
-         ENag==
-X-Gm-Message-State: AOAM532IzituNH6c2GAvcXUGCObJPlWFUZqOzHeyhEI8f7vYHLgPRwjx
-        WT/vGtLQ4cm/RCy/SepeZlauGybtqP4lfmsBZ+g=
-X-Google-Smtp-Source: ABdhPJwNwFgWNs3E5S70GDBSf6rcKu9kBJHtxI0zfFAsCJ34CNqgp0UVrG8OwwpGLf8RYlhTq+uN5mvdg4GNR8OeHkw=
-X-Received: by 2002:a05:6a00:7c5:b029:21d:2ea5:a684 with SMTP id
- n5-20020a056a0007c5b029021d2ea5a684mr7335977pfu.36.1617887393539; Thu, 08 Apr
- 2021 06:09:53 -0700 (PDT)
+        bh=yhQqQPDGyQMxZKtfCIcfqDXGiQY0+ycfeKZZHoKU2rY=;
+        b=nwybXQ+u4NpuQulliZ88NYOuHKsL6f4ibKQ9/b0YOaqi31hpz/qv/E25HNjvphiu7E
+         4iNNPNalgnoalY6UtXpBR3vS2JFGaHkbZInm8NnOTo6K7fpzX1cHy1BOi7UMtbFnUUKg
+         2Q26HU0YP8o/hXbURZ6ZgyvQM3UMgLx8NLfoeR0zgsPponxGWXac+RoaGoZatfe7rUlD
+         yvi0albXMm43T9CS7u98MdaJ6ee6t/wExp+1tMRMK2pTRSpVCU3IfFY488QaE9NB2XvF
+         IVQd4Bto/ryRDt2P2QA+ZOqUHIt4J2cPyAvru8YvFGcF9rLSyoOfOB6jYLCuHpzuN39q
+         P/gQ==
+X-Gm-Message-State: AOAM531kfgvPVHGuwxB5DsqYFcT7Car+ylncD3oiLpEvBEdcrMkKLg8H
+        Qg0lUP9VR6mDWme1Jn3785EgmRBBYSZnWVMQrNI=
+X-Google-Smtp-Source: ABdhPJzuOWbZmFXeQiT735OYr14lxZdmAtWLqjsOPVzJLWKrQC/S/J08R0i61GMjl3+xBgpdBx4k4iv69HSqH2raJm0=
+X-Received: by 2002:a63:703:: with SMTP id 3mr8133935pgh.253.1617887703528;
+ Thu, 08 Apr 2021 06:15:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <1617881896-3164-1-git-send-email-yangyicong@hisilicon.com> <1617881896-3164-6-git-send-email-yangyicong@hisilicon.com>
-In-Reply-To: <1617881896-3164-6-git-send-email-yangyicong@hisilicon.com>
+References: <1617881896-3164-1-git-send-email-yangyicong@hisilicon.com>
+In-Reply-To: <1617881896-3164-1-git-send-email-yangyicong@hisilicon.com>
 From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Thu, 8 Apr 2021 16:09:42 +0300
-Message-ID: <CA+U=DspZCGVjFxB0YH7OAPBKhFAKz=a9Q=O7xW-Xu4BPZKC=pA@mail.gmail.com>
-Subject: Re: [PATCH 5/7] iio: core: simplify some devm functions
+Date:   Thu, 8 Apr 2021 16:14:52 +0300
+Message-ID: <CA+U=Dsp7gP+LaBGdFCafn=6xP+HZ0sT29Gq4Jd9TAkuat21THg@mail.gmail.com>
+Subject: Re: [PATCH 0/7] Simplify codes with devm_add_action_or_reset
 To:     Yicong Yang <yangyicong@hisilicon.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         linux-iio <linux-iio@vger.kernel.org>,
@@ -65,101 +64,34 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Thu, Apr 8, 2021 at 2:41 PM Yicong Yang <yangyicong@hisilicon.com> wrote:
 >
-> Use devm_add_action_or_reset() instead of devres_alloc() and
-> devres_add(), which works the same. This will simplify the
-> code. There is no functional changes.
+> Some devm variants are implemented with devres_alloc() and devres_add()
+> manually to only manage a single pointer. This can be simplified with
+> devm_add_action_or_reset() which works the same. Simplify these functions.
 >
-> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-> ---
->  drivers/iio/industrialio-core.c | 43 +++++++++++++++--------------------------
->  1 file changed, 16 insertions(+), 27 deletions(-)
->
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> index 7db761a..2dfbed3 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -1627,9 +1627,9 @@ void iio_device_free(struct iio_dev *dev)
->  }
->  EXPORT_SYMBOL(iio_device_free);
->
-> -static void devm_iio_device_release(struct device *dev, void *res)
-> +static void devm_iio_device_release(void *iio_dev)
->  {
-> -       iio_device_free(*(struct iio_dev **)res);
-> +       iio_device_free(iio_dev);
->  }
->
->  /**
-> @@ -1645,20 +1645,17 @@ static void devm_iio_device_release(struct device *dev, void *res)
->   */
->  struct iio_dev *devm_iio_device_alloc(struct device *parent, int sizeof_priv)
->  {
-> -       struct iio_dev **ptr, *iio_dev;
-> -
-> -       ptr = devres_alloc(devm_iio_device_release, sizeof(*ptr),
-> -                          GFP_KERNEL);
-> -       if (!ptr)
-> -               return NULL;
-> +       struct iio_dev *iio_dev;
-> +       int ret;
->
->         iio_dev = iio_device_alloc(parent, sizeof_priv);
-> -       if (iio_dev) {
-> -               *ptr = iio_dev;
-> -               devres_add(parent, ptr);
-> -       } else {
-> -               devres_free(ptr);
-> -       }
-> +       if (!iio_dev)
-> +               return iio_dev;
 
-This is correct.
-But the preference is usually:
-        if (!iio_dev)
-            return NULL;
+Series looks good.
+There are a few elements that are a bit strange (from a habit perspective).
 
-> +
-> +       ret = devm_add_action_or_reset(parent, devm_iio_device_release,
-> +                                      iio_dev);
-> +       if (ret)
-> +               return ERR_PTR(ret);
+For the devm_add_action_or_reset() callback usually there's a cast being done.
+But that's a preference I don't feel too strongly about.
+
+> Yicong Yang (7):
+>   iio: adc: adi-axi-adc: simplify devm_adi_axi_adc_conv_register
+>   iio: buffer-dmaengine: simplify __devm_iio_dmaengine_buffer_free
+>   iio: hw_consumer: simplify devm_iio_hw_consumer_alloc
+>   iio: triggered-buffer: simplify devm_iio_triggered_buffer_setup_ext
+>   iio: core: simplify some devm functions
+>   iio: trigger: simplify __devm_iio_trigger_register
+>   iio: inkern: simplify some devm functions
 >
->         return iio_dev;
->  }
-> @@ -1889,29 +1886,21 @@ void iio_device_unregister(struct iio_dev *indio_dev)
->  }
->  EXPORT_SYMBOL(iio_device_unregister);
->
-> -static void devm_iio_device_unreg(struct device *dev, void *res)
-> +static void devm_iio_device_unreg(void *indio_dev)
->  {
-> -       iio_device_unregister(*(struct iio_dev **)res);
-> +       iio_device_unregister(indio_dev);
->  }
->
->  int __devm_iio_device_register(struct device *dev, struct iio_dev *indio_dev,
->                                struct module *this_mod)
->  {
-> -       struct iio_dev **ptr;
->         int ret;
->
-> -       ptr = devres_alloc(devm_iio_device_unreg, sizeof(*ptr), GFP_KERNEL);
-> -       if (!ptr)
-> -               return -ENOMEM;
-> -
-> -       *ptr = indio_dev;
->         ret = __iio_device_register(indio_dev, this_mod);
-> -       if (!ret)
-> -               devres_add(dev, ptr);
-> -       else
-> -               devres_free(ptr);
-> +       if (ret)
-> +               return ret;
->
-> -       return ret;
-> +       return devm_add_action_or_reset(dev, devm_iio_device_unreg, indio_dev);
->  }
->  EXPORT_SYMBOL_GPL(__devm_iio_device_register);
+>  drivers/iio/adc/adi-axi-adc.c                      | 22 ++++----
+>  drivers/iio/buffer/industrialio-buffer-dmaengine.c | 22 ++++----
+>  drivers/iio/buffer/industrialio-hw-consumer.c      | 25 ++++-----
+>  drivers/iio/buffer/industrialio-triggered-buffer.c | 19 ++-----
+>  drivers/iio/industrialio-core.c                    | 43 ++++++---------
+>  drivers/iio/industrialio-trigger.c                 | 18 ++-----
+>  drivers/iio/inkern.c                               | 61 ++++++++--------------
+>  7 files changed, 78 insertions(+), 132 deletions(-)
 >
 > --
 > 2.8.1

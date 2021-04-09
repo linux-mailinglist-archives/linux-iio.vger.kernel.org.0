@@ -2,154 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC2D9359F23
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Apr 2021 14:48:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 935E1359F82
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Apr 2021 15:06:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233823AbhDIMsS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 9 Apr 2021 08:48:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41718 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233776AbhDIMsO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 9 Apr 2021 08:48:14 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 550F0610E7;
-        Fri,  9 Apr 2021 12:48:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1617972481;
-        bh=m2eKblH+l+hCzdwNUEf5egrpSG7CdIPFtLnlQPtnfug=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kVDJDoaipcVMiN/navLdNp8KHl4PhMRXFyRHkYU7u4A6gsBhu6CvRiVAdWK1SHVzR
-         PSw/OyrAxxZ2lmV5QKREtKcQBh6oXrc/i27jpKSRTpg4mtww9bKxNZ3knjwKMHqrY1
-         BmozC3kJ08vKC3+rdkPSa9coB+zdWFz3i7BHFldjWop1NdATWhxmOlUhpBQFhgjBFM
-         KY3y2LlEyBwbnZ7gW91iNvU2HKlZz8uJ9HU/J8LusbkwDT6gbTxhDfuSFBRtK+7VAV
-         Z4NVL5s1s8XkWn1jpibe5mujpgKy5EMSjAimxIlhEPEXNXnwN74PAB4EFLPHBG55rC
-         Zo7tnPLUQzMPg==
-Received: by mail.kernel.org with local (Exim 4.94)
-        (envelope-from <mchehab@kernel.org>)
-        id 1lUqYE-001SLi-5x; Fri, 09 Apr 2021 14:47:54 +0200
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        "Jonathan Corbet" <corbet@lwn.net>
-Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Artur Rojek <contact@artur-rojek.eu>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jean Delvare <jdelvare@suse.com>,
+        id S231370AbhDINGQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 9 Apr 2021 09:06:16 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:15657 "EHLO
+        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231127AbhDINGP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 9 Apr 2021 09:06:15 -0400
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FGyww3jPPzpWcK;
+        Fri,  9 Apr 2021 21:03:12 +0800 (CST)
+Received: from [127.0.0.1] (10.69.38.196) by DGGEMS406-HUB.china.huawei.com
+ (10.3.19.206) with Microsoft SMTP Server id 14.3.498.0; Fri, 9 Apr 2021
+ 21:05:50 +0800
+Subject: Re: [PATCH 5/7] iio: core: simplify some devm functions
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+CC:     Alexandru Ardelean <ardeleanalex@gmail.com>,
         Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Lee Jones <lee.jones@linaro.org>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v3 2/8] dt-bindings: fix references for iio-bindings.txt
-Date:   Fri,  9 Apr 2021 14:47:46 +0200
-Message-Id: <4efd81eca266ca0875d3bf9d1672097444146c69.1617972339.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <cover.1617972339.git.mchehab+huawei@kernel.org>
-References: <cover.1617972339.git.mchehab+huawei@kernel.org>
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "Peter Meerwald-Stadler" <pmeerw@pmeerw.net>,
+        <prime.zeng@huawei.com>, Tian Tao <tiantao6@hisilicon.com>
+References: <1617881896-3164-1-git-send-email-yangyicong@hisilicon.com>
+ <1617881896-3164-6-git-send-email-yangyicong@hisilicon.com>
+ <CA+U=DspZCGVjFxB0YH7OAPBKhFAKz=a9Q=O7xW-Xu4BPZKC=pA@mail.gmail.com>
+ <9f1257a2-a69e-acbc-8c0a-2d2157274225@hisilicon.com>
+ <CAHp75Ve_JwGeruZeZnVk3pXXmETVERQTdR2+MSPX=Y75+nQLcw@mail.gmail.com>
+ <94bbe851-1f09-7099-38ac-2b6fcb056349@hisilicon.com>
+ <CAHp75Ve7+-_=nsUjn5e3tR-37Fg622_PSPyR5CrgUWGxk6zPKA@mail.gmail.com>
+From:   Yicong Yang <yangyicong@hisilicon.com>
+Message-ID: <59831f7e-106b-013b-818d-8411777eed85@hisilicon.com>
+Date:   Fri, 9 Apr 2021 21:05:49 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: Mauro Carvalho Chehab <mchehab@kernel.org>
+In-Reply-To: <CAHp75Ve7+-_=nsUjn5e3tR-37Fg622_PSPyR5CrgUWGxk6zPKA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.69.38.196]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The iio-bindings.txt was converted into two files and merged
-at the dt-schema git tree at:
+On 2021/4/9 17:55, Andy Shevchenko wrote:
+> On Fri, Apr 9, 2021 at 12:42 PM Yicong Yang <yangyicong@hisilicon.com> wrote:
+>> On 2021/4/9 17:19, Andy Shevchenko wrote:
+>>> On Fri, Apr 9, 2021 at 10:22 AM Yicong Yang <yangyicong@hisilicon.com> wrote:
+>>>> On 2021/4/8 21:09, Alexandru Ardelean wrote:
+>>>>> On Thu, Apr 8, 2021 at 2:41 PM Yicong Yang <yangyicong@hisilicon.com> wrote:
+> 
+> ...
+> 
+>>> Actually Alexandru has a good point. Compare the pieces I left above.
+>>>
+>>
+>> a little different from my perspective when I did this.
+>>
+>> previously:
+>>
+>> -       ptr = devres_alloc(devm_iio_device_release, sizeof(*ptr),
+>> -                          GFP_KERNEL);
+>> -       if (!ptr)
+>> -               return NULL;
+>>
+>> if devres_alloc() failure we return NULL.
+>>
+>>
+>>         iio_dev = iio_device_alloc(parent, sizeof_priv);
+>> -       if (iio_dev) {
+>> -               *ptr = iio_dev;
+>> -               devres_add(parent, ptr);
+>> -       } else {
+>> -               devres_free(ptr);
+>> -       }
+>>
+>>         return iio_dev;
+>>
+>> if iio_device_alloc() failed, we return what it returns.
+>>
+>> now we remove devres_alloc() and stay iio_device_alloc(), so I just
+>> keep to return iio_dev.
+>>
+>> but actually iio_device_alloc() will return NULL at failure. :)
+>> so return NULL here is definitely correct. i'll change to that if
+>> it's recommended.
+> 
+> Confusing here (in your case) is that:
+> 
+> if (!FOO)
+>  return BAR;
+> 
+> ...
+> 
+> return BAR;
+> 
+> I.e. twice returning BAR for different occasions. This makes
+> additional cognitive work and decrease readability / maintainability
+> of the code.
+> 
+> I.o.w., yes, it's preferred.
+> 
 
-	https://github.com/devicetree-org/dt-schema
+got it. will return NULL and will check if other patches in this series
+met the same condition.
 
-Yet, some documents still refer to the old file. Fix their
-references, in order to point to the right URL.
-
-Fixes: dba91f82d580 ("dt-bindings:iio:iio-binding.txt Drop file as content now in dt-schema")
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Acked-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
----
- Documentation/devicetree/bindings/hwmon/ntc_thermistor.txt   | 2 +-
- Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml   | 5 +++--
- Documentation/devicetree/bindings/input/adc-joystick.yaml    | 4 +++-
- .../bindings/input/touchscreen/resistive-adc-touch.txt       | 5 ++++-
- Documentation/devicetree/bindings/mfd/ab8500.txt             | 4 +++-
- 5 files changed, 14 insertions(+), 6 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/hwmon/ntc_thermistor.txt b/Documentation/devicetree/bindings/hwmon/ntc_thermistor.txt
-index 37f18d684f6a..4c5c3712970e 100644
---- a/Documentation/devicetree/bindings/hwmon/ntc_thermistor.txt
-+++ b/Documentation/devicetree/bindings/hwmon/ntc_thermistor.txt
-@@ -32,7 +32,7 @@ Optional node properties:
- - "#thermal-sensor-cells" Used to expose itself to thermal fw.
- 
- Read more about iio bindings at
--	Documentation/devicetree/bindings/iio/iio-bindings.txt
-+	https://github.com/devicetree-org/dt-schema/blob/master/schemas/iio/
- 
- Example:
- 	ncp15wb473@0 {
-diff --git a/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml b/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
-index 9f414dbdae86..433a3fb55a2e 100644
---- a/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
-@@ -14,8 +14,9 @@ description: >
-   Industrial I/O subsystem bindings for ADC controller found in
-   Ingenic JZ47xx SoCs.
- 
--  ADC clients must use the format described in iio-bindings.txt, giving
--  a phandle and IIO specifier pair ("io-channels") to the ADC controller.
-+  ADC clients must use the format described in
-+  https://github.com/devicetree-org/dt-schema/blob/master/schemas/iio/iio-consumer.yaml,
-+  giving a phandle and IIO specifier pair ("io-channels") to the ADC controller.
- 
- properties:
-   compatible:
-diff --git a/Documentation/devicetree/bindings/input/adc-joystick.yaml b/Documentation/devicetree/bindings/input/adc-joystick.yaml
-index 054406bbd22b..721878d5b7af 100644
---- a/Documentation/devicetree/bindings/input/adc-joystick.yaml
-+++ b/Documentation/devicetree/bindings/input/adc-joystick.yaml
-@@ -24,7 +24,9 @@ properties:
-     description: >
-       List of phandle and IIO specifier pairs.
-       Each pair defines one ADC channel to which a joystick axis is connected.
--      See Documentation/devicetree/bindings/iio/iio-bindings.txt for details.
-+      See
-+      https://github.com/devicetree-org/dt-schema/blob/master/schemas/iio/iio-consumer.yaml
-+      for details.
- 
-   '#address-cells':
-     const: 1
-diff --git a/Documentation/devicetree/bindings/input/touchscreen/resistive-adc-touch.txt b/Documentation/devicetree/bindings/input/touchscreen/resistive-adc-touch.txt
-index fee0da12474e..af5223bb5bdd 100644
---- a/Documentation/devicetree/bindings/input/touchscreen/resistive-adc-touch.txt
-+++ b/Documentation/devicetree/bindings/input/touchscreen/resistive-adc-touch.txt
-@@ -5,7 +5,10 @@ Required properties:
-  - compatible: must be "resistive-adc-touch"
- The device must be connected to an ADC device that provides channels for
- position measurement and optional pressure.
--Refer to Documentation/devicetree/bindings/iio/iio-bindings.txt for details
-+Refer to
-+https://github.com/devicetree-org/dt-schema/blob/master/schemas/iio/iio-consumer.yaml
-+for details
-+
-  - iio-channels: must have at least two channels connected to an ADC device.
- These should correspond to the channels exposed by the ADC device and should
- have the right index as the ADC device registers them. These channels
-diff --git a/Documentation/devicetree/bindings/mfd/ab8500.txt b/Documentation/devicetree/bindings/mfd/ab8500.txt
-index d2a6e835c257..937b3e5505e0 100644
---- a/Documentation/devicetree/bindings/mfd/ab8500.txt
-+++ b/Documentation/devicetree/bindings/mfd/ab8500.txt
-@@ -72,7 +72,9 @@ Required child device properties:
-                                                pwm|regulator|rtc|sysctrl|usb]";
- 
-   A few child devices require ADC channels from the GPADC node. Those follow the
--  standard bindings from iio/iio-bindings.txt and iio/adc/adc.txt
-+  standard bindings from
-+  https://github.com/devicetree-org/dt-schema/blob/master/schemas/iio/iio-consumer.yaml
-+  and Documentation/devicetree/bindings/iio/adc/adc.yaml
- 
-   abx500-temp		 : io-channels "aux1" and "aux2" for measuring external
- 			   temperatures.
--- 
-2.30.2
+thanks.
 

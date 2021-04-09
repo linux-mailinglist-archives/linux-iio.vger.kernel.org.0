@@ -2,71 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2FDE35A136
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Apr 2021 16:35:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8480B35A13D
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Apr 2021 16:37:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233983AbhDIOfx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 9 Apr 2021 10:35:53 -0400
-Received: from mail-oo1-f43.google.com ([209.85.161.43]:43740 "EHLO
-        mail-oo1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233980AbhDIOfv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 9 Apr 2021 10:35:51 -0400
-Received: by mail-oo1-f43.google.com with SMTP id x187-20020a4a41c40000b02901b664cf3220so1380931ooa.10;
-        Fri, 09 Apr 2021 07:35:37 -0700 (PDT)
+        id S233856AbhDIOh3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 9 Apr 2021 10:37:29 -0400
+Received: from mail-oi1-f179.google.com ([209.85.167.179]:34566 "EHLO
+        mail-oi1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231946AbhDIOh3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 9 Apr 2021 10:37:29 -0400
+Received: by mail-oi1-f179.google.com with SMTP id k18so1065695oik.1;
+        Fri, 09 Apr 2021 07:37:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=ZBBOiFRpBx4bA8E/XQtp4Rp9qQp2tH4w680gLDV9MSQ=;
-        b=VtrK5L1unl1CbOTPGmq2+MXqLgS9KwzU/eVDJAehA6Z8ctd0uT24VWE2ufQ2vWK755
-         HNVortIuvk90ZW6i/JWhOn4rlBSuMAujWG3KYY4KfvZ+em/0JupzwrNcL3LuHVlmAcPD
-         5vMhj85ZImzP26KjwXshkb6bSMcxc35eF9+M9+YBHt1kTrmVsdVh7c6vR0YVllG439N0
-         QabN3W16IJJ5EvyOXPbF6UU1dRq4Sp/fizwTnkpTGPY3GfInGefiVTiA6QSctZ+qZPor
-         qy6LNuxheLnqLrVaYkQjfEzut3d79budSaBT5FonK+6vN3lyLWf75kbj2IiDEAtgA8LS
-         VgHw==
-X-Gm-Message-State: AOAM532gX2Y+lz0xvujX0pI0ei0n7vouG7QLyJVWbFefl7zFw2HUrC0E
-        fPx4Zvxdh/IY2bOi/Y627A==
-X-Google-Smtp-Source: ABdhPJxozl9LMxtRqtih2nFFEiAm+HcRQ+a/UKgbt0l7xZOvpCJwyyc0PDYxzmPx/481UsLpBARMjg==
-X-Received: by 2002:a4a:d24c:: with SMTP id e12mr12265114oos.73.1617978937516;
-        Fri, 09 Apr 2021 07:35:37 -0700 (PDT)
+        bh=Ks4Ks6gtPzqkxui8NxmdiZQeRSOGRF5OfHX/GCB9fAo=;
+        b=Yi6QGx6JnqHZbpbiHfogtKwRny/taIUkEz1zhzsNOdzs6GC8mFj4ggVn9uxhzNLB0Y
+         iW8gDql/1r5bDTK9pDXtcuTZgnVqEux5Bb5by+Bm90GfZzq7crKk84RWMWtqHW/XE2t4
+         g8hZmslkiZVEAHQI2pD8TN3422X0iTkh9sIWMurhyV2y/BfvUJkSAg4bo4BeJHxrfsD9
+         2yiYOwEWGrdLSDogopQcu4dnMdV7R4CjVLhISv9Zc9MSZXPxsK7oP52Ba/tejuGKAaJl
+         /p/R1KgdfFxWLR0hzaJjdSCF80nMKyN6TwdC9iTCgM24zvOWAAWeCdH0KZ/Baet7y+ho
+         3J/A==
+X-Gm-Message-State: AOAM531kKgy2hepVqoyjaEHqeB924bOrBUiS1bLiF6S06jSxUxxmboAY
+        iUVTjRIjODSaLAEx2/OTFA==
+X-Google-Smtp-Source: ABdhPJwFW47ONTuUTpNDcOSa6Udlx0pmTKeQuowG8cK24l2GxrSGa4hbMUYZugi0/HtuFKQOEa/CHw==
+X-Received: by 2002:aca:1218:: with SMTP id 24mr10472146ois.75.1617979034507;
+        Fri, 09 Apr 2021 07:37:14 -0700 (PDT)
 Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id y10sm515544oih.37.2021.04.09.07.35.36
+        by smtp.gmail.com with ESMTPSA id t203sm553174oig.2.2021.04.09.07.37.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Apr 2021 07:35:36 -0700 (PDT)
-Received: (nullmailer pid 3612243 invoked by uid 1000);
-        Fri, 09 Apr 2021 14:35:36 -0000
-Date:   Fri, 9 Apr 2021 09:35:36 -0500
+        Fri, 09 Apr 2021 07:37:13 -0700 (PDT)
+Received: (nullmailer pid 3614445 invoked by uid 1000);
+        Fri, 09 Apr 2021 14:37:12 -0000
+Date:   Fri, 9 Apr 2021 09:37:12 -0500
 From:   Rob Herring <robh@kernel.org>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+Cc:     linux-iio@vger.kernel.org,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        devicetree@vger.kernel.org,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH 5/6] dt-bindings:trivial-devices: Add sensortek,stk8312
- and sensortek,s8ba50
-Message-ID: <20210409143536.GA3612151@robh.at.kernel.org>
+        Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH 6/6] dt-bindings:iio:adc:adi,ad7298 document bindings
+Message-ID: <20210409143712.GA3614371@robh.at.kernel.org>
 References: <20210401174112.320497-1-jic23@kernel.org>
- <20210401174112.320497-6-jic23@kernel.org>
+ <20210401174112.320497-7-jic23@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210401174112.320497-6-jic23@kernel.org>
+In-Reply-To: <20210401174112.320497-7-jic23@kernel.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 01 Apr 2021 18:41:11 +0100, Jonathan Cameron wrote:
+On Thu, 01 Apr 2021 18:41:12 +0100, Jonathan Cameron wrote:
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> Two simple devices. The stk8ba50 datasheet could be found via
-> google, but I only have the driver for the 8312.
-> 
-> Given they both seem to be 3 axis devices with a single interrupt
-> line, add them to trivial-devices.yaml
+> The device has a tsens-busy pin, but it's both fiddly and currently
+> ignored by the Linux driver.  Given it's not clear whether the binding
+> should be an interrupt, or a GPIO I have left that out for now.
 > 
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Michael Hennerich <michael.hennerich@analog.com>
 > ---
->  Documentation/devicetree/bindings/trivial-devices.yaml | 4 ++++
->  1 file changed, 4 insertions(+)
+>  .../bindings/iio/adc/adi,ad7298.yaml          | 48 +++++++++++++++++++
+>  1 file changed, 48 insertions(+)
 > 
 
 Reviewed-by: Rob Herring <robh@kernel.org>

@@ -2,48 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6668F3595DC
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Apr 2021 08:52:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C91AF3595DF
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Apr 2021 08:54:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233434AbhDIGwt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 9 Apr 2021 02:52:49 -0400
-Received: from www381.your-server.de ([78.46.137.84]:48566 "EHLO
+        id S233346AbhDIGyL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 9 Apr 2021 02:54:11 -0400
+Received: from www381.your-server.de ([78.46.137.84]:49900 "EHLO
         www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233482AbhDIGwn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 9 Apr 2021 02:52:43 -0400
+        with ESMTP id S231540AbhDIGyL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 9 Apr 2021 02:54:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
          s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        MIME-Version:Date:Message-ID:From:References:To:Subject:Sender:Reply-To:Cc:
         Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
         Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=RLEoa/8G3ilSJPXImnUYOkUDSVQwMjz0bBC+96PHorI=; b=ZSbyz1/zZIK4dXsglS/MwKSnQz
-        w26YI3p7fibNpvNuir+Wru7OQPs+Nv8tZnYEbxahiwmL4wAOuE8oALkvqjuzH+a6fOdXuSMjT+J4Q
-        6SXIlyOux0RffW8PB78vKDD7K0J3R35p0fA9KmPcnY1JkSxsxKEd1o7hksr39BlAO27FKxVjMegS+
-        aXRFMUh/mfHrw8EAJptDdAwX48nGkaRw0fT0POFPw6wBCnW+O/4GRBo5puMuZ9JvFrXdk9Ysx9RVP
-        EcgFRv0I04iSjFKtlZEHnHyo2nhMKS8XoAHT1G2CQbyxH1trsN5QwRAkRoUbQSWdvHDZda/khtIoJ
-        3NkQqDog==;
+        bh=m0u4XcGvYFcZ1UHSFyyZX1Jfe2bc3nmFCI95VAmpg/Y=; b=bPnDJ71ykZh+qpXXKWPEWeesS0
+        WLPil5vj03znC6R7KltB9Ojr+UczWFOdzIROqQc8WS5uB12+c9ikHNFORL6OqH76eKH6TuwexOSKc
+        C5yK8f1B2L1A0/RUrUDAbtzM3qR9FDwaBzq+jHfbBkthk4vU9x3Z3rLmnyvfTUNLagIOGyz+nGe2T
+        DCihPb/6BMMzfMzj+hF43FEHelnphzri0INg9vQMwd0Y7yLjHURcAcal8U/aHQ8e+ULb9kYzFlKLf
+        xywpC+a2/gv4+PyYS9pIUOlpIVZLHrJV6pSffmOX/MMHiAajIttTp2d0sJ8oSNsyPpZdYZQYkQU05
+        2s9VAmYw==;
 Received: from sslproxy05.your-server.de ([78.46.172.2])
         by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
         (Exim 4.92.3)
         (envelope-from <lars@metafoo.de>)
-        id 1lUl0H-0001kx-8n; Fri, 09 Apr 2021 08:52:29 +0200
+        id 1lUl1e-0001w4-R5; Fri, 09 Apr 2021 08:53:54 +0200
 Received: from [2001:a61:2bab:901:9e5c:8eff:fe01:8578]
         by sslproxy05.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <lars@metafoo.de>)
-        id 1lUl0H-000OJC-4Y; Fri, 09 Apr 2021 08:52:29 +0200
-Subject: Re: [PATCH v2] iio: adis16480: support burst read function
-To:     Nuno Sa <nuno.sa@analog.com>, linux-iio@vger.kernel.org
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-References: <20210408075643.70183-1-nuno.sa@analog.com>
+        id 1lUl1e-0005l9-MY; Fri, 09 Apr 2021 08:53:54 +0200
+Subject: Re: [PATCH v4 2/2] iio: temperature: add driver support for ti tmp117
+To:     Puranjay Mohan <puranjay12@gmail.com>,
+        alexandru.ardelean@analog.com, jic23@kernel.org,
+        devicetree@vger.kernel.org, knaack.h@gmx.de,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        andy.shevchenko@gmail.com
+References: <20210407182147.77221-1-puranjay12@gmail.com>
+ <20210407182147.77221-3-puranjay12@gmail.com>
 From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <c94d1489-a9d6-8e86-80de-fc1936608d08@metafoo.de>
-Date:   Fri, 9 Apr 2021 08:52:28 +0200
+Message-ID: <66a723ee-c04c-a70c-42d3-03f6ffed9733@metafoo.de>
+Date:   Fri, 9 Apr 2021 08:53:54 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.9.0
 MIME-Version: 1.0
-In-Reply-To: <20210408075643.70183-1-nuno.sa@analog.com>
+In-Reply-To: <20210407182147.77221-3-puranjay12@gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Content-Language: en-US
@@ -53,24 +56,15 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 4/8/21 9:56 AM, Nuno Sa wrote:
-> Some supported devices support burst read function. This provides a method
-> for reading a batch of data (status, temperature, gyroscopes,
-> accelerometers, time stamp/data counter, and CRC code), which does not
-> require a stall time between each 16-bit segment and only requires one
-> command on the DIN line to initiate. Devices supporting this mode
-> are:
+On 4/7/21 8:21 PM, Puranjay Mohan wrote:
+> TMP117 is a Digital temperature sensor with integrated Non-Volatile memory.
+> Add support for tmp117 driver in iio subsystem.
 >
->    * adis16495-1
->    * adis16495-2
->    * adis16495-3
->    * adis16497-1
->    * adis16497-2
->    * adis16497-3
->
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> Datasheet: https://www.ti.com/lit/gpn/tmp117
+> Signed-off-by: Puranjay Mohan <puranjay12@gmail.com>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-Looks good to me.
+Looks good to me, thanks.
 
 Reviewed-by: Lars-Peter Clausen <lars@metafoo.de>
 

@@ -2,128 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 44AEA359A22
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Apr 2021 11:56:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CA43359F27
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Apr 2021 14:48:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233622AbhDIJ4U (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 9 Apr 2021 05:56:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52764 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233465AbhDIJzw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 9 Apr 2021 05:55:52 -0400
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A990FC0613DA
-        for <linux-iio@vger.kernel.org>; Fri,  9 Apr 2021 02:55:38 -0700 (PDT)
-Received: by mail-pf1-x42c.google.com with SMTP id q5so3877898pfh.10
-        for <linux-iio@vger.kernel.org>; Fri, 09 Apr 2021 02:55:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=7eD+elrYRDLpQrW74rbdw9/C9GZrRnF7A8PFe13iiCU=;
-        b=mFaW6qyQOJn/r3hkRUQIuE5Wax8yjbgo+WU3lqTiuzqQFf0oFAXj+YSiJRTurdbrQG
-         FulYMNTAVhZZVywuO6caQIizr9rVzKRuiZ5MifFmFJC4mPaqHHR4z4AFLZqWbYrWWpvT
-         fC1jf7bq+/abnwxL3x7yFtsKGg/1dkL0hLNgmPxXQuIb9viY535kWUAnzefka3EEB7hk
-         cZvXkiBGlrU2t9KRy6cDbnMUS3w4jN0QCtdFoy5kc6dTgFUak4N7TW6N9wzjnLbeCJ7n
-         TmZduxoaVhnJctlcao/Qb0kxIxur/PRJCaWJTQO/leDJTZhG1m6J3LYR/aXpsrBmxNdf
-         ROlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=7eD+elrYRDLpQrW74rbdw9/C9GZrRnF7A8PFe13iiCU=;
-        b=JPUtM/Shl+VsQe+x4N+g8VgBwJRO4vcy7u2SzylzHuZXn6rQvZCgy4c+DddcNkedHh
-         ezBOUHoeaF8kooLLwGuuCFQb1HADkjLYFkzAHyWPJ3DGRJL3KlKql/xlQ/tUwHiNy7bC
-         GEczXjy1TECWNxHcW3xB6+Xb3lJT9HCfy9Aj5QxvjRL7R+iAQpM2Xz6YBhsAhuICzDTv
-         DkQoKGlYrzDBGUhK9e1ggIpRhy8Ih4ZoP1cGs7Sa/w5cHqUol2n3k9px+RmW5WRFFV3I
-         LZC88rG7+LM2N94+r0mzAwHW1Uuze6ErfwiPHUPKoza9XQZr7T5CkZCJPwsve8Xc+ZhJ
-         4Sfg==
-X-Gm-Message-State: AOAM533aYg5emiy9DAVEP3nJ+h03o0oeFA01iA7MAZgQf2x/+IZU0YjV
-        Yz02L8Ev1Nxv+u5Dj8mp56ZIkasMWTaqP7gqm3TGOKnaIwudtMkG
-X-Google-Smtp-Source: ABdhPJwPzsUS+G2Csjx/TijELdgvd5XRhPacwlZ+7wJG3pcaxxXhOv2IsuUL4zi+pdZDA8Sj4o1saD3/Zkta3F3LKck=
-X-Received: by 2002:a63:c48:: with SMTP id 8mr12287783pgm.74.1617962138214;
- Fri, 09 Apr 2021 02:55:38 -0700 (PDT)
-MIME-Version: 1.0
-References: <1617881896-3164-1-git-send-email-yangyicong@hisilicon.com>
- <1617881896-3164-6-git-send-email-yangyicong@hisilicon.com>
- <CA+U=DspZCGVjFxB0YH7OAPBKhFAKz=a9Q=O7xW-Xu4BPZKC=pA@mail.gmail.com>
- <9f1257a2-a69e-acbc-8c0a-2d2157274225@hisilicon.com> <CAHp75Ve_JwGeruZeZnVk3pXXmETVERQTdR2+MSPX=Y75+nQLcw@mail.gmail.com>
- <94bbe851-1f09-7099-38ac-2b6fcb056349@hisilicon.com>
-In-Reply-To: <94bbe851-1f09-7099-38ac-2b6fcb056349@hisilicon.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 9 Apr 2021 12:55:22 +0300
-Message-ID: <CAHp75Ve7+-_=nsUjn5e3tR-37Fg622_PSPyR5CrgUWGxk6zPKA@mail.gmail.com>
-Subject: Re: [PATCH 5/7] iio: core: simplify some devm functions
-To:     Yicong Yang <yangyicong@hisilicon.com>
-Cc:     Alexandru Ardelean <ardeleanalex@gmail.com>,
+        id S233848AbhDIMsS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 9 Apr 2021 08:48:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41840 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233712AbhDIMsP (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 9 Apr 2021 08:48:15 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 5DEB26113A;
+        Fri,  9 Apr 2021 12:48:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1617972481;
+        bh=KVB99uveFfZEtOFS+rw6+GuSTG0eUAu7eT5aXgN+A2I=;
+        h=From:To:Cc:Subject:Date:From;
+        b=HVeqO0LTdb6P34NPuz+kcIo3Rf749nd/WbbdJGxFgX+jaSQh3ut1YKoPYl1MgyRxh
+         Q7kRjml+eMUN9cb6xXsqyy1LpRy94RSYcfiRD58M7/eXFD0KYEG5fV6LbU9gb6NNhs
+         OKJrR0HItZx9dkSG0Rw4RaD0KWq57c5q3+CPTWH2cN7XJpYHQhm2OdH9T1q1mdIFOS
+         qamXogV+8qqqQnkylXpoWSIOs+K54//txxScI0SkPXbR+BMNCVw9UukyZhMQi81Ybh
+         U+G/5ZiQeDykJPDsU7gNFXuoH2Hs/Mon3ZPlABh5XFVA3MUkHq3gld+lw+RHLfRuKm
+         yWvyZlhUcvMnA==
+Received: by mail.kernel.org with local (Exim 4.94)
+        (envelope-from <mchehab@kernel.org>)
+        id 1lUqYE-001SLe-2j; Fri, 09 Apr 2021 14:47:54 +0200
+From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        "Jonathan Corbet" <corbet@lwn.net>
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-kernel@vger.kernel.org,
+        "Alexander A. Klimov" <grandmaster@al2klimov.de>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Alex Shi <alexs@kernel.org>,
+        Artur Rojek <contact@artur-rojek.eu>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Federico Vaga <federico.vaga@vaga.pv.it>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
+        Kir Kolyshkin <kolyshkin@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Mark Pearson <markpearson@lenovo.com>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        prime.zeng@huawei.com, Tian Tao <tiantao6@hisilicon.com>
-Content-Type: text/plain; charset="UTF-8"
+        Peter Zijlstra <peterz@infradead.org>,
+        Rob Herring <robh+dt@kernel.org>, Tejun Heo <tj@kernel.org>,
+        Thorsten Leemhuis <linux@leemhuis.info>,
+        Wu XiangCheng <bobwxc@email.cn>, devicetree@vger.kernel.org,
+        kvm@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-input@vger.kernel.org
+Subject: [PATCH v3 0/8] Fix broken documentation file references
+Date:   Fri,  9 Apr 2021 14:47:44 +0200
+Message-Id: <cover.1617972339.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab@kernel.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Apr 9, 2021 at 12:42 PM Yicong Yang <yangyicong@hisilicon.com> wrote:
-> On 2021/4/9 17:19, Andy Shevchenko wrote:
-> > On Fri, Apr 9, 2021 at 10:22 AM Yicong Yang <yangyicong@hisilicon.com> wrote:
-> >> On 2021/4/8 21:09, Alexandru Ardelean wrote:
-> >>> On Thu, Apr 8, 2021 at 2:41 PM Yicong Yang <yangyicong@hisilicon.com> wrote:
+Hi Jon,
 
-...
+As files keep being moved around and DT bindings are 
+converted and renamed to yaml, their doc references get 
+outdated, pointing to an invalid places.
 
-> > Actually Alexandru has a good point. Compare the pieces I left above.
-> >
->
-> a little different from my perspective when I did this.
->
-> previously:
->
-> -       ptr = devres_alloc(devm_iio_device_release, sizeof(*ptr),
-> -                          GFP_KERNEL);
-> -       if (!ptr)
-> -               return NULL;
->
-> if devres_alloc() failure we return NULL.
->
->
->         iio_dev = iio_device_alloc(parent, sizeof_priv);
-> -       if (iio_dev) {
-> -               *ptr = iio_dev;
-> -               devres_add(parent, ptr);
-> -       } else {
-> -               devres_free(ptr);
-> -       }
->
->         return iio_dev;
->
-> if iio_device_alloc() failed, we return what it returns.
->
-> now we remove devres_alloc() and stay iio_device_alloc(), so I just
-> keep to return iio_dev.
->
-> but actually iio_device_alloc() will return NULL at failure. :)
-> so return NULL here is definitely correct. i'll change to that if
-> it's recommended.
+This series address those. It is based on the top of docs-next tree,
+and most patches here are independent from the other ones.
 
-Confusing here (in your case) is that:
+v3:
+  - Dropped patches already applied at next-20210409 and
+    changes that would cause conflicts there;
+  - Added received acks.
 
-if (!FOO)
- return BAR;
+v2:
+  - Dropped patches that were already applied, Most of those
+    will be following via Jonathan Cameron's iio tree;
+  - Dropped patches that don't apply on the top of docs next.
+  - Added some new patches fixing other breakages.
 
-...
+Mauro Carvalho Chehab (8):
+  dt-bindings: don't use ../dir for doc references
+  dt-bindings: fix references for iio-bindings.txt
+  dt-bindings:iio:adc: update motorola,cpcap-adc.yaml reference
+  docs: update sysfs-platform_profile.rst reference
+  docs: vcpu-requests.rst: fix reference for atomic ops
+  docs: replace transation references for reporting-bugs.rst
+  docs: translations/zh_CN: fix a typo at 8.Conclusion.rst
+  docs: sched-bwc.rst: fix a typo on a doc name
 
-return BAR;
-
-I.e. twice returning BAR for different occasions. This makes
-additional cognitive work and decrease readability / maintainability
-of the code.
-
-I.o.w., yes, it's preferred.
+ .../devicetree/bindings/hwmon/ntc_thermistor.txt |  2 +-
+ .../devicetree/bindings/iio/adc/ingenic,adc.yaml |  5 +++--
+ .../devicetree/bindings/input/adc-joystick.yaml  |  4 +++-
+ .../input/touchscreen/resistive-adc-touch.txt    |  5 ++++-
+ Documentation/devicetree/bindings/mfd/ab8500.txt |  4 +++-
+ .../devicetree/bindings/mfd/motorola-cpcap.txt   | 16 ++++++++--------
+ Documentation/scheduler/sched-bwc.rst            |  2 +-
+ .../translations/it_IT/process/howto.rst         |  2 +-
+ Documentation/translations/ja_JP/howto.rst       |  2 +-
+ Documentation/translations/zh_CN/SecurityBugs    |  2 +-
+ .../zh_CN/admin-guide/reporting-issues.rst       |  4 ++--
+ .../translations/zh_CN/process/8.Conclusion.rst  |  2 +-
+ .../translations/zh_CN/process/howto.rst         |  2 +-
+ Documentation/virt/kvm/vcpu-requests.rst         |  2 +-
+ include/linux/platform_profile.h                 |  2 +-
+ 15 files changed, 32 insertions(+), 24 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.30.2
+
+

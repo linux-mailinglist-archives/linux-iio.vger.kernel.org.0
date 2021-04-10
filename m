@@ -2,58 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E657F35AF02
-	for <lists+linux-iio@lfdr.de>; Sat, 10 Apr 2021 18:15:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 748C735AF0B
+	for <lists+linux-iio@lfdr.de>; Sat, 10 Apr 2021 18:20:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234513AbhDJQQF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 10 Apr 2021 12:16:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51220 "EHLO
+        id S234513AbhDJQU7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 10 Apr 2021 12:20:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234334AbhDJQQF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 10 Apr 2021 12:16:05 -0400
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0170FC06138A;
-        Sat, 10 Apr 2021 09:15:50 -0700 (PDT)
-Received: by mail-pl1-x636.google.com with SMTP id y2so4193922plg.5;
-        Sat, 10 Apr 2021 09:15:50 -0700 (PDT)
+        with ESMTP id S234334AbhDJQU7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 10 Apr 2021 12:20:59 -0400
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E2D6C06138A;
+        Sat, 10 Apr 2021 09:20:44 -0700 (PDT)
+Received: by mail-pf1-x431.google.com with SMTP id w8so2820562pfn.9;
+        Sat, 10 Apr 2021 09:20:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=6AzED3WX9uZhznt9Toi/RF3r18Jze+otjqZ77388uaE=;
-        b=ofcSZxrICvNJf0Gcs3Zr3b9sNjTh/K5jK2d+PS3tTdJmS8TqSzif0iO4X5qfhpLy8c
-         KAM++uUbGzfzl4dno4Ll5msj8oHpGaTTEx0TlIwrUl0pplOasUPCK+/47qSoH7QsRo7s
-         00tfC+sJ1AkPvuKRPDspxeBGtGXS9PHmI/lT69aq0tBJqzhN9NhEBVZOTKTx73JDFlaE
-         8kF5Cgww6l6rS7Y2/j/5syrotzTbCkG6VgponBJn5AELFv9O//tjT4vTKLnpZyBUp/lu
-         pG14BIkA4j1rIetLUiGFQ/rtoVEyWyxEGg5oyPOzhok2ulnFVLq9XIVB8SZWWFYLK0/e
-         EutQ==
+        bh=T/2OfzzxnxOCDxc5Ilck7Epb5dTCszeXwDU9tJLtUKc=;
+        b=JGjbNbMLLzkVqRq62QyonJjoR9WwRVFsF0oyMguSXQy4XNImhjTDh48Nl/hEZczEzu
+         Kz9bOAmYqHNTRB9N6V8YLhIdW602GBoWKGG4qC1V17db9B+4Mh7Zv6blRzmEi76Ge2GZ
+         y2vgTHxrNa9IAoHeco2Hiz++jezn/5ZRbE5AK5/ylBCVd+UNhxzMdzoqVCn64PquDSJB
+         Cp6Jpm/UaMaVvtp/dmbH8u6v5inm2NtjdW0K6m8OaSkf8xb+awZFazVgxVAxjlXZzgn4
+         zfYR2TNSd2FdbeGUZh/SB0neBaEfKz5fwcE2CHUuRtdDV6GdV3Ui2TvcXyhbUEPWU1t6
+         G0EA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=6AzED3WX9uZhznt9Toi/RF3r18Jze+otjqZ77388uaE=;
-        b=B4EDuCyO8j040R8NyXBOUSM99Rg/9aPTj6jaQw0qew+dfT3Ug4a0zxTdPqnGD4UNtF
-         GKWYKICM2KwDYKzqvv2e6GGU6yaWjEKwB7xvFBhqHxm/rbFI2p8oXTNegcvfACXwHsH5
-         5tWzWvyWeaa21nMow5EMxiqAMR1EJgITJe6u4EM5k5lbcJ6XaPy+U4oPIWc8XwWXETpJ
-         DXdJL6TOxGYJ715W294CLL6qaQ421IWcyLTBU6FrM0mBgW4WacMGFKujfQC/9DP/ZZZ7
-         E0nK9Ipk4vBcPA7nXm2J/OCnnWXECo55PBnL1S0uC+88z+GU+v1YoBUaS2RDI3ZPAnRH
-         9WQg==
-X-Gm-Message-State: AOAM533L4mnjjbQyd97xOMBgtpmYWh53590RZlH3m4ascwgouueUXLWZ
-        k+vc2iYIsE9/239Ida6iydJEGpNuT8lOKzIJFEo=
-X-Google-Smtp-Source: ABdhPJzmpsDfHZ2eDvbkQmWePBfWblFvMNvkabSPe67K1ZxH/zIhLJCrfDH6kAkbvW+nTFG8IBx6wnd9a6zpNYwMKMw=
-X-Received: by 2002:a17:902:c641:b029:e9:4226:beca with SMTP id
- s1-20020a170902c641b02900e94226becamr18555646pls.38.1618071350405; Sat, 10
- Apr 2021 09:15:50 -0700 (PDT)
+        bh=T/2OfzzxnxOCDxc5Ilck7Epb5dTCszeXwDU9tJLtUKc=;
+        b=LLGA2W+lF5Bb7ZPKgCnv8oFgAJ9h3Mt1FRdm0uAsdtsP+Rhs5e7xOB7ZIpWR1r69PV
+         /o37wPOifJu1oVYPevrz43D+gVDIn0BMW7bahPAsRTUm+DlP5BJMh9OqLgM1l56b0R4w
+         PYrjDp63xGsh1pZW/RBhnZp7S/HKT6QM65v2NEV6d9eGlR9tHZXmlPEwrAv/YWyVOSDb
+         1oSHRT6qTpgpQw4+gKF1DiSg5ENXbDKhl2thwhpooPTI+H3oRMCnpFblbslZn7LhA7Fr
+         ycFhbMAzun2RZjK4VkUR167BKHZvDewOzncJX4s+v4oXdoC++iw0zDEOWEArWyIqn7uT
+         AHvQ==
+X-Gm-Message-State: AOAM530v62yATwjR0Y1iKeIer/A+L7CqXV2MP/ooVgBUOBgNPrAseauo
+        jv368dO1FEzAxiS+b5g4E5RagHo23zZd1OhDtoci0isWf2Q=
+X-Google-Smtp-Source: ABdhPJysfXNLMQ7FkAAnDg8NfcshdeP6IElWUUeqtmyMFGwMs/IKB9hx9lW/QzNPk6Aa+7YLaslAjMlPeHInIfaNbFU=
+X-Received: by 2002:a65:6645:: with SMTP id z5mr18024871pgv.273.1618071643867;
+ Sat, 10 Apr 2021 09:20:43 -0700 (PDT)
 MIME-Version: 1.0
 References: <cover.1617993776.git.lucas.p.stankus@gmail.com>
- <39486895e4e985d0220342f3accfd98a1e149ea7.1617993776.git.lucas.p.stankus@gmail.com>
- <CA+U=Dsot+p76kaCAecN+ORdhZ_u+Bw1J8oVKZYAjoexHgiazVg@mail.gmail.com>
-In-Reply-To: <CA+U=Dsot+p76kaCAecN+ORdhZ_u+Bw1J8oVKZYAjoexHgiazVg@mail.gmail.com>
+In-Reply-To: <cover.1617993776.git.lucas.p.stankus@gmail.com>
 From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Sat, 10 Apr 2021 19:15:39 +0300
-Message-ID: <CA+U=DsqGG=NA9yHimRYuoSuBxupiqZ8JH-7FKThXj9J7D__U=A@mail.gmail.com>
-Subject: Re: [PATCH 2/3] staging: iio: cdc: ad7746: use dt bindings to set the
- EXCx pins output
+Date:   Sat, 10 Apr 2021 19:20:32 +0300
+Message-ID: <CA+U=Dsq7EgSapyCmQfuFr+qyDGc=6wLWOruLrugsJsxbGTyBtg@mail.gmail.com>
+Subject: Re: [PATCH 0/3] staging: iio: cdc: ad7746: remove platform_data in
+ favor of device tree bindings
 To:     Lucas Stankus <lucas.p.stankus@gmail.com>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         "Hennerich, Michael" <Michael.Hennerich@analog.com>,
@@ -67,126 +64,36 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Apr 10, 2021 at 7:12 PM Alexandru Ardelean
-<ardeleanalex@gmail.com> wrote:
+On Fri, Apr 9, 2021 at 9:50 PM Lucas Stankus <lucas.p.stankus@gmail.com> wrote:
 >
-> On Fri, Apr 9, 2021 at 9:51 PM Lucas Stankus <lucas.p.stankus@gmail.com> wrote:
-> >
-> > Ditch platform_data fields in favor of device tree properties for
-> > configuring EXCA and EXCB output.
-> > This also removes the fields from the platform_data struct, since they're
-> > not used anymore.
-> >
-> > Signed-off-by: Lucas Stankus <lucas.p.stankus@gmail.com>
-> > ---
-> >  drivers/staging/iio/cdc/ad7746.c | 33 +++++++++++++++++---------------
-> >  drivers/staging/iio/cdc/ad7746.h |  4 ----
-> >  2 files changed, 18 insertions(+), 19 deletions(-)
-> >
-> > diff --git a/drivers/staging/iio/cdc/ad7746.c b/drivers/staging/iio/cdc/ad7746.c
-> > index dfd71e99e872..63041b164dbe 100644
-> > --- a/drivers/staging/iio/cdc/ad7746.c
-> > +++ b/drivers/staging/iio/cdc/ad7746.c
-> > @@ -677,8 +677,10 @@ static int ad7746_probe(struct i2c_client *client,
-> >                         const struct i2c_device_id *id)
-> >  {
-> >         struct ad7746_platform_data *pdata = client->dev.platform_data;
-> > +       struct device_node *np = client->dev.of_node;
-> >         struct ad7746_chip_info *chip;
-> >         struct iio_dev *indio_dev;
-> > +       unsigned int exca_en, excb_en;
-> >         unsigned char regval = 0;
-> >         int ret = 0;
-> >
-> > @@ -703,26 +705,27 @@ static int ad7746_probe(struct i2c_client *client,
-> >         indio_dev->num_channels = ARRAY_SIZE(ad7746_channels);
-> >         indio_dev->modes = INDIO_DIRECT_MODE;
-> >
+> This patch series aims to replace the platform_struct for the ad7746 driver
+> in favor of device tree bindings, creating the dt-bindings documentation in
+> the process.
 >
-> [1]
->
-> > -       if (pdata) {
-> > -               if (pdata->exca_en) {
-> > -                       if (pdata->exca_inv_en)
-> > -                               regval |= AD7746_EXCSETUP_NEXCA;
-> > -                       else
-> > -                               regval |= AD7746_EXCSETUP_EXCA;
-> > -               }
-> > +       ret = of_property_read_u32(np, "adi,exca-output", &exca_en);
->
-> maybe a better idea would be to use:
->
-> device_property_read_u32(dev, .... )
-> where:
-> dev = client->dev.;
->
-> this would make the driver a bit more friendly with both OF and ACPI
->
-> > +       if (!ret && exca_en) {
-> > +               if (exca_en == 1)
-> > +                       regval |= AD7746_EXCSETUP_EXCA;
-> > +               else
-> > +                       regval |= AD7746_EXCSETUP_NEXCA;
-> > +       }
-> >
-> > -               if (pdata->excb_en) {
-> > -                       if (pdata->excb_inv_en)
-> > -                               regval |= AD7746_EXCSETUP_NEXCB;
-> > -                       else
-> > -                               regval |= AD7746_EXCSETUP_EXCB;
-> > -               }
-> > +       ret = of_property_read_u32(np, "adi,excb-output", &excb_en);
-> > +       if (!ret && excb_en) {
-> > +               if (excb_en == 1)
-> > +                       regval |= AD7746_EXCSETUP_EXCB;
-> > +               else
-> > +                       regval |= AD7746_EXCSETUP_NEXCB;
-> > +       }
-> >
-> > +       if (pdata) {
-> >                 regval |= AD7746_EXCSETUP_EXCLVL(pdata->exclvl);
-> >         } else {
-> >                 dev_warn(&client->dev, "No platform data? using default\n");
-> > -               regval = AD7746_EXCSETUP_EXCA | AD7746_EXCSETUP_EXCB |
-> > -                       AD7746_EXCSETUP_EXCLVL(3);
->
-> This logic is problematic now.
-> Because no matter what you're setting in the DT, it always gets
-> overridden here because there is no platform data.
->
-> Maybe a better idea is to do something like:
-> if (!pdata)
->      regval = AD7746_EXCSETUP_EXCLVL(3);
->
-> but this should be placed somewhere around [1]
+> Since the header file was only used to define the struct and the excitation
+> level values, it was possible to remove the file entirely.
 
-[ i can see that this logic will get corrected in the next patch]
-to add here a bit: the idea of a patch is that it should try to not
-introduce any [even temporary] breakage, even when it's in a series;
-if a driver was already broken, then it should get fixed via it's own patch;
-but no patch should introduce any breakages [if possible]
+From my side: I need to get better at understanding IIO and how to
+place some logic of devices into IIO,
+I don't know if there is a better approach at converting the current
+platform_data into DT/OF.
+Maybe Jonathan [or someone else] has some better ideas.
+Otherwise the overall approach looks fine from my side.
 
 >
+> Lucas Stankus (3):
+>   dt-bindings: staging: iio: cdc: ad7746: add binding documentation for
+>     AD7746
+>   staging: iio: cdc: ad7746: use dt bindings to set the EXCx pins output
+>   staging: iio: cdc: ad7746: use dt binding to set the excitation level
 >
-> > +               regval = AD7746_EXCSETUP_EXCLVL(3);
-> >         }
-> >
-> >         ret = i2c_smbus_write_byte_data(chip->client,
-> > diff --git a/drivers/staging/iio/cdc/ad7746.h b/drivers/staging/iio/cdc/ad7746.h
-> > index 8bdbd732dbbd..6cae4ecf779e 100644
-> > --- a/drivers/staging/iio/cdc/ad7746.h
-> > +++ b/drivers/staging/iio/cdc/ad7746.h
-> > @@ -19,10 +19,6 @@
-> >
-> >  struct ad7746_platform_data {
-> >         unsigned char exclvl;   /*Excitation Voltage Level */
-> > -       bool exca_en;           /* enables EXCA pin as the excitation output */
-> > -       bool exca_inv_en;       /* enables /EXCA pin as the excitation output */
-> > -       bool excb_en;           /* enables EXCB pin as the excitation output */
-> > -       bool excb_inv_en;       /* enables /EXCB pin as the excitation output */
-> >  };
-> >
-> >  #endif /* IIO_CDC_AD7746_H_ */
-> > --
-> > 2.31.1
-> >
+>  .../bindings/iio/cdc/adi,ad7746.yaml          | 79 +++++++++++++++++++
+>  drivers/staging/iio/cdc/ad7746.c              | 43 +++++-----
+>  drivers/staging/iio/cdc/ad7746.h              | 28 -------
+>  3 files changed, 100 insertions(+), 50 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/iio/cdc/adi,ad7746.yaml
+>  delete mode 100644 drivers/staging/iio/cdc/ad7746.h
+>
+> --
+> 2.31.1
+>

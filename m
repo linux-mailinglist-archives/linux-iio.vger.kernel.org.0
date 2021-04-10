@@ -2,98 +2,84 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 748C735AF0B
-	for <lists+linux-iio@lfdr.de>; Sat, 10 Apr 2021 18:20:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D00335AF1B
+	for <lists+linux-iio@lfdr.de>; Sat, 10 Apr 2021 18:47:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234513AbhDJQU7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 10 Apr 2021 12:20:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52272 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234334AbhDJQU7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 10 Apr 2021 12:20:59 -0400
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E2D6C06138A;
-        Sat, 10 Apr 2021 09:20:44 -0700 (PDT)
-Received: by mail-pf1-x431.google.com with SMTP id w8so2820562pfn.9;
-        Sat, 10 Apr 2021 09:20:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=T/2OfzzxnxOCDxc5Ilck7Epb5dTCszeXwDU9tJLtUKc=;
-        b=JGjbNbMLLzkVqRq62QyonJjoR9WwRVFsF0oyMguSXQy4XNImhjTDh48Nl/hEZczEzu
-         Kz9bOAmYqHNTRB9N6V8YLhIdW602GBoWKGG4qC1V17db9B+4Mh7Zv6blRzmEi76Ge2GZ
-         y2vgTHxrNa9IAoHeco2Hiz++jezn/5ZRbE5AK5/ylBCVd+UNhxzMdzoqVCn64PquDSJB
-         Cp6Jpm/UaMaVvtp/dmbH8u6v5inm2NtjdW0K6m8OaSkf8xb+awZFazVgxVAxjlXZzgn4
-         zfYR2TNSd2FdbeGUZh/SB0neBaEfKz5fwcE2CHUuRtdDV6GdV3Ui2TvcXyhbUEPWU1t6
-         G0EA==
+        id S234761AbhDJQrr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 10 Apr 2021 12:47:47 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:49502 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234668AbhDJQrq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 10 Apr 2021 12:47:46 -0400
+Received: from mail-wr1-f69.google.com ([209.85.221.69])
+        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <krzysztof.kozlowski@canonical.com>)
+        id 1lVGle-0008Kn-QB
+        for linux-iio@vger.kernel.org; Sat, 10 Apr 2021 16:47:30 +0000
+Received: by mail-wr1-f69.google.com with SMTP id a15so3665170wrf.19
+        for <linux-iio@vger.kernel.org>; Sat, 10 Apr 2021 09:47:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=T/2OfzzxnxOCDxc5Ilck7Epb5dTCszeXwDU9tJLtUKc=;
-        b=LLGA2W+lF5Bb7ZPKgCnv8oFgAJ9h3Mt1FRdm0uAsdtsP+Rhs5e7xOB7ZIpWR1r69PV
-         /o37wPOifJu1oVYPevrz43D+gVDIn0BMW7bahPAsRTUm+DlP5BJMh9OqLgM1l56b0R4w
-         PYrjDp63xGsh1pZW/RBhnZp7S/HKT6QM65v2NEV6d9eGlR9tHZXmlPEwrAv/YWyVOSDb
-         1oSHRT6qTpgpQw4+gKF1DiSg5ENXbDKhl2thwhpooPTI+H3oRMCnpFblbslZn7LhA7Fr
-         ycFhbMAzun2RZjK4VkUR167BKHZvDewOzncJX4s+v4oXdoC++iw0zDEOWEArWyIqn7uT
-         AHvQ==
-X-Gm-Message-State: AOAM530v62yATwjR0Y1iKeIer/A+L7CqXV2MP/ooVgBUOBgNPrAseauo
-        jv368dO1FEzAxiS+b5g4E5RagHo23zZd1OhDtoci0isWf2Q=
-X-Google-Smtp-Source: ABdhPJysfXNLMQ7FkAAnDg8NfcshdeP6IElWUUeqtmyMFGwMs/IKB9hx9lW/QzNPk6Aa+7YLaslAjMlPeHInIfaNbFU=
-X-Received: by 2002:a65:6645:: with SMTP id z5mr18024871pgv.273.1618071643867;
- Sat, 10 Apr 2021 09:20:43 -0700 (PDT)
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=yja8hXnSiAu+0aHoGZXireKiKWwNFLqckJS2FN9snds=;
+        b=qJKH1Tcnk9c0soF9WoV9stEeeQFNLpEuRIJ5fT1IMOKrzeoWquYiKm6dSxp8kQ/bM+
+         yNKu0tM9uoMI7xU9okG0qbmf3eBzlLqJE0NX0H6b+t/lADtD4JlmXlIpVWZP7xUT4RLT
+         XCrQaY9QtCbGRa/B5qK1EUMhDlUC6uPi3gDLBi740RLmeQ8j5bJAnH0YcxebhPo6cTGD
+         C2VLYzoXkTHGSkzl/WioXwSCv25sJTLFsMVRQkpRXRocRhx0uSbxnavZUg/7e6oJ8dj2
+         TdcEe8s2iCdqxJPNxA6Nxeq+LWo+I9PW6HvO+naDHT0YI2wOQahRJ81EWxXzF9uhtomR
+         sBqA==
+X-Gm-Message-State: AOAM530nz97syl+EM42upgFdvGWRFsjOFw2HI92geAi7gkf5HGrzqyCp
+        mYYX+R+wMyx3y3wgkN2u0uKrTeq1tQX/vldaG9T1PYdAy+3AbIOEQCHujwDxqntUswGz/I1e5H9
+        8iOh9IkNhbG8e7U2qoAqyhsNNg16VDFsE09zDtg==
+X-Received: by 2002:a5d:5711:: with SMTP id a17mr2657284wrv.342.1618073250619;
+        Sat, 10 Apr 2021 09:47:30 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzH68hN25kDxZ6InU8FQmZEZIFAyVtxpAPrME+esYPR8r0CNYLqCCdxgrzUaS0vKsgog0iRDw==
+X-Received: by 2002:a5d:5711:: with SMTP id a17mr2657269wrv.342.1618073250459;
+        Sat, 10 Apr 2021 09:47:30 -0700 (PDT)
+Received: from localhost.localdomain (xdsl-188-155-192-147.adslplus.ch. [188.155.192.147])
+        by smtp.gmail.com with ESMTPSA id o12sm10130918wrj.34.2021.04.10.09.47.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 10 Apr 2021 09:47:30 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH]  iio: adc: exynos: drop unneeded variable assignment
+Date:   Sat, 10 Apr 2021 18:47:28 +0200
+Message-Id: <20210410164728.8096-1-krzysztof.kozlowski@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <cover.1617993776.git.lucas.p.stankus@gmail.com>
-In-Reply-To: <cover.1617993776.git.lucas.p.stankus@gmail.com>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Sat, 10 Apr 2021 19:20:32 +0300
-Message-ID: <CA+U=Dsq7EgSapyCmQfuFr+qyDGc=6wLWOruLrugsJsxbGTyBtg@mail.gmail.com>
-Subject: Re: [PATCH 0/3] staging: iio: cdc: ad7746: remove platform_data in
- favor of device tree bindings
-To:     Lucas Stankus <lucas.p.stankus@gmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        linux-staging@lists.linux.dev, LKML <linux-kernel@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Apr 9, 2021 at 9:50 PM Lucas Stankus <lucas.p.stankus@gmail.com> wrote:
->
-> This patch series aims to replace the platform_struct for the ad7746 driver
-> in favor of device tree bindings, creating the dt-bindings documentation in
-> the process.
->
-> Since the header file was only used to define the struct and the excitation
-> level values, it was possible to remove the file entirely.
+The initialization of 'ret' variable in probe function is shortly after
+overwritten.  This initialization is simply not used.
 
-From my side: I need to get better at understanding IIO and how to
-place some logic of devices into IIO,
-I don't know if there is a better approach at converting the current
-platform_data into DT/OF.
-Maybe Jonathan [or someone else] has some better ideas.
-Otherwise the overall approach looks fine from my side.
+Addresses-Coverity: Unused value
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+---
+ drivers/iio/adc/exynos_adc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
->
-> Lucas Stankus (3):
->   dt-bindings: staging: iio: cdc: ad7746: add binding documentation for
->     AD7746
->   staging: iio: cdc: ad7746: use dt bindings to set the EXCx pins output
->   staging: iio: cdc: ad7746: use dt binding to set the excitation level
->
->  .../bindings/iio/cdc/adi,ad7746.yaml          | 79 +++++++++++++++++++
->  drivers/staging/iio/cdc/ad7746.c              | 43 +++++-----
->  drivers/staging/iio/cdc/ad7746.h              | 28 -------
->  3 files changed, 100 insertions(+), 50 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/iio/cdc/adi,ad7746.yaml
->  delete mode 100644 drivers/staging/iio/cdc/ad7746.h
->
-> --
-> 2.31.1
->
+diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
+index 784c10deeb1a..2d8e36408f0e 100644
+--- a/drivers/iio/adc/exynos_adc.c
++++ b/drivers/iio/adc/exynos_adc.c
+@@ -794,7 +794,7 @@ static int exynos_adc_probe(struct platform_device *pdev)
+ 	struct s3c2410_ts_mach_info *pdata = dev_get_platdata(&pdev->dev);
+ 	struct iio_dev *indio_dev = NULL;
+ 	bool has_ts = false;
+-	int ret = -ENODEV;
++	int ret;
+ 	int irq;
+ 
+ 	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(struct exynos_adc));
+-- 
+2.25.1
+

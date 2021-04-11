@@ -2,114 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7365B35B607
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Apr 2021 18:06:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E964835B678
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Apr 2021 20:07:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236391AbhDKQGy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 11 Apr 2021 12:06:54 -0400
-Received: from mga05.intel.com ([192.55.52.43]:63433 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236336AbhDKQGx (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 11 Apr 2021 12:06:53 -0400
-IronPort-SDR: f9upS+UTTlOInoyyfcuCvJeGYCU+CHF/OxnYQt9UWhjQiNfdqPdUlUxb7YvTSC1A643H7CM3yo
- OZB0xCu8Ilgg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9951"; a="279339599"
-X-IronPort-AV: E=Sophos;i="5.82,214,1613462400"; 
-   d="scan'208";a="279339599"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2021 09:06:36 -0700
-IronPort-SDR: muuYQBEec/nm4lJTFq5kEdfvwsFQ3Xli2/vfZ5JI0OkN+3BmshVlST9fseMmIbl4DNYzId3+wj
- +1EMe0+Mmk+A==
-X-IronPort-AV: E=Sophos;i="5.82,214,1613462400"; 
-   d="scan'208";a="417033834"
-Received: from eunsohlk-mobl1.amr.corp.intel.com ([10.212.186.19])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2021 09:06:36 -0700
-Message-ID: <ceb25b0000013f1c3e89d772c62b5e967a032446.camel@linux.intel.com>
-Subject: Re: [PATCH] HID: hid-sensor-custom: remove useless variable
-From:   Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Jiapeng Chong <jiapeng.chong@linux.alibaba.com>, jikos@kernel.org,
-        benjamin.tissoires@redhat.com, linux-input@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Sun, 11 Apr 2021 09:06:35 -0700
-In-Reply-To: <20210411145635.3c6b48d1@jic23-huawei>
-References: <1617952508-47150-1-git-send-email-jiapeng.chong@linux.alibaba.com>
-         <4079bb49a9c0022603abeffcdaec32208f449e51.camel@linux.intel.com>
-         <20210411145635.3c6b48d1@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+        id S235420AbhDKSH7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 11 Apr 2021 14:07:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43962 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235284AbhDKSH7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 11 Apr 2021 14:07:59 -0400
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18BD8C061574;
+        Sun, 11 Apr 2021 11:07:40 -0700 (PDT)
+Received: by mail-pf1-x42e.google.com with SMTP id a85so7245907pfa.0;
+        Sun, 11 Apr 2021 11:07:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=jEcbYX8Y08bH641l8oqV2fm1Zee8I5Yt330pQIjrzVk=;
+        b=pgYrJQULHlSnRawowMrMHD1vjVKyGInW9gfvEHYsWwQM8Mr4xTjOMBigglW3/iQ9dG
+         DW2f/ffyxMzB+/hksKSaYgkuN/gN9gRnF8yKuaVZtLHp+VV9niC4FdBet0Vk+bRTJNOP
+         qY6pggvzlbs8aCOxit3o+h5BADahAuwZJpw8OeZuZormFZ0e7KQ3QkH6Tt6vc3DbXDHi
+         axOM1mibDy/zuunSfLv+OdnXVzEH8X4d3/u6cL8AfgEllSe75XShqY9IH7g1VG3HoNjW
+         tcGftpvdXrbtmCa9sN3gFLKhimxnPWnsiZLzZIo2L55QphYULMR9/KjXuZDfd/jZuKbV
+         WRTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=jEcbYX8Y08bH641l8oqV2fm1Zee8I5Yt330pQIjrzVk=;
+        b=laQamOeMZnyOV3+Q3NMqJmtf3uIaUA/UJUs279mYZC+2PbjHS4FF1LLQFXtXPXEViD
+         i6dRwPZAwoH9KdN3k+NaDtywqJTd5FobgW3X3lxG6/0HKG7CzXERTGBPoqs4fvnlJBeY
+         4QddSX19mK98/7oLFizsEcU1kTzzsGM1JlB1+rIR0SSF/3mHBZD6MoGvR2ZrBa9FCokY
+         4vjX6SRrxIfu/1ENsYewrUVXXCUFm0dbn3Jqu5YbbrwDIbS5Uf4wKlb97GN07Q+rniT7
+         7KJDPcYWzHzgbwrEY2JfBIgdSm0tbDMsLe4qu8G1v7XoxrMKWLnGUnycdQSTObaXXJpL
+         B2+w==
+X-Gm-Message-State: AOAM531J0Voncr50xp84fAFbwq8lyNrmEoHHjj7pfDNtnZ1PxyzIMz9N
+        qOO0NV0YkGvI6FNbcG8l4BrDHGYjWpM5txrukUY=
+X-Google-Smtp-Source: ABdhPJwkzlrouaFhCAJ7iLqKaaTDjIhbP3qlzq8AMegpU8mUaAcB9EY6MM44FCYn9Z2x5IstFiib/ie6d6/vfWTp7FU=
+X-Received: by 2002:a63:3e4b:: with SMTP id l72mr22714087pga.203.1618164459392;
+ Sun, 11 Apr 2021 11:07:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210407182147.77221-1-puranjay12@gmail.com> <20210407182147.77221-3-puranjay12@gmail.com>
+ <20210411155420.318e866e@jic23-huawei>
+In-Reply-To: <20210411155420.318e866e@jic23-huawei>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sun, 11 Apr 2021 21:07:22 +0300
+Message-ID: <CAHp75VcQYLRJ-p4CWJyk3h0=nL=TqwEFAxkO+z1Nbg8=3Fchyg@mail.gmail.com>
+Subject: Re: [PATCH v4 2/2] iio: temperature: add driver support for ti tmp117
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Puranjay Mohan <puranjay12@gmail.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        devicetree <devicetree@vger.kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 2021-04-11 at 14:56 +0100, Jonathan Cameron wrote:
-> On Fri, 09 Apr 2021 11:19:12 -0700
-> Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com> wrote:
-> 
-> > On Fri, 2021-04-09 at 15:15 +0800, Jiapeng Chong wrote:
-> > > Fix the following gcc warning:
-> > > 
-> > > drivers/hid/hid-sensor-custom.c:400:7: warning: variable ‘ret’
-> > > set
-> > > but
-> > > not used [-Wunused-but-set-variable].
-> > > 
-> > > Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-> > > Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>  
-> > Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com
-> 
-> Perhaps better to return ret if it is non zero?
-> I can't immediately figure out if there is a reason we know that
-> can't
-> happen.
-Only time it can fail when there is no report descriptor or the field
-index is >= report->maxfield.
-But since the attribute is registered from the report descriptor and
-index, this can't happen.
-But we can enhance sensor_hub_set_feature() to fail when
- hid_set_field() fails. There is one case where field->logical_minimum
-< 0  and value is out of range.
+On Sun, Apr 11, 2021 at 5:53 PM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> On Wed,  7 Apr 2021 23:51:47 +0530
+> Puranjay Mohan <puranjay12@gmail.com> wrote:
+>
+> > TMP117 is a Digital temperature sensor with integrated Non-Volatile memory.
+> > Add support for tmp117 driver in iio subsystem.
 
-Thanks,
-Srinivas
+...
 
+> > +             off = clamp(val, S16_MIN, S16_MAX);
+>
+> With a C=1 W=1 build (sparse an lots of warnings) this causes problems because
+> the S16_MIN and S16_MAX are as you might imagine s16 values whereas val is
+> an int.  I've added casts to force S16_MIN and S16_MAX to ints as well.
 
-> 
-> Jonathan
-> 
-> > > ---
-> > >  drivers/hid/hid-sensor-custom.c | 5 ++---
-> > >  1 file changed, 2 insertions(+), 3 deletions(-)
-> > > 
-> > > diff --git a/drivers/hid/hid-sensor-custom.c b/drivers/hid/hid-
-> > > sensor-custom.c
-> > > index 2628bc5..e430673 100644
-> > > --- a/drivers/hid/hid-sensor-custom.c
-> > > +++ b/drivers/hid/hid-sensor-custom.c
-> > > @@ -397,15 +397,14 @@ static ssize_t store_value(struct device
-> > > *dev,
-> > > struct device_attribute *attr,
-> > >  
-> > >  	if (!strncmp(name, "value", strlen("value"))) {
-> > >  		u32 report_id;
-> > > -		int ret;
-> > >  
-> > >  		if (kstrtoint(buf, 0, &value) != 0)
-> > >  			return -EINVAL;
-> > >  
-> > >  		report_id = sensor_inst->fields[field_index].attribute.
-> > >  								report_
-> > > id;
-> > > -		ret = sensor_hub_set_feature(sensor_inst->hsdev,
-> > > report_id,
-> > > -					     index, sizeof(value),
-> > > &value);
-> > > +		sensor_hub_set_feature(sensor_inst->hsdev, report_id,
-> > > index,
-> > > +				       sizeof(value), &value);
-> > >  	} else
-> > >  		return -EINVAL;
-> > >    
+Good point, but better is to use clamp_t(s16, ...) rather than explicit casting.
+I always consider explicit casting in C (and esp. in Linux kernel) is
+a red flag. Should be really rarely needed.
 
+> > +             if (off == data->calibbias)
+> > +                     return 0;
+
+-- 
+With Best Regards,
+Andy Shevchenko

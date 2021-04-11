@@ -2,30 +2,32 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CFF635B588
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Apr 2021 16:00:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69E7435B59A
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Apr 2021 16:11:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235467AbhDKOAf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 11 Apr 2021 10:00:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38684 "EHLO mail.kernel.org"
+        id S235778AbhDKOMN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 11 Apr 2021 10:12:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42178 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233514AbhDKOAe (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 11 Apr 2021 10:00:34 -0400
+        id S235229AbhDKOMN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 11 Apr 2021 10:12:13 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 55A8B611AD;
-        Sun, 11 Apr 2021 14:00:15 +0000 (UTC)
-Date:   Sun, 11 Apr 2021 15:00:39 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 04E07610A8;
+        Sun, 11 Apr 2021 14:11:53 +0000 (UTC)
+Date:   Sun, 11 Apr 2021 15:12:15 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH]  iio: adc: exynos: drop unneeded variable assignment
-Message-ID: <20210411150039.1dcc76b8@jic23-huawei>
-In-Reply-To: <20210410164728.8096-1-krzysztof.kozlowski@canonical.com>
-References: <20210410164728.8096-1-krzysztof.kozlowski@canonical.com>
+To:     Yicong Yang <yangyicong@hisilicon.com>
+Cc:     <linux-iio@vger.kernel.org>, <lars@metafoo.de>,
+        <Michael.Hennerich@analog.com>, <pmeerw@pmeerw.net>,
+        <prime.zeng@huawei.com>, <tiantao6@hisilicon.com>
+Subject: Re: [PATCH 1/7] iio: adc: adi-axi-adc: simplify
+ devm_adi_axi_adc_conv_register
+Message-ID: <20210411151215.5d3e5494@jic23-huawei>
+In-Reply-To: <1617881896-3164-2-git-send-email-yangyicong@hisilicon.com>
+References: <1617881896-3164-1-git-send-email-yangyicong@hisilicon.com>
+        <1617881896-3164-2-git-send-email-yangyicong@hisilicon.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -34,39 +36,71 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 10 Apr 2021 18:47:28 +0200
-Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com> wrote:
+On Thu, 8 Apr 2021 19:38:10 +0800
+Yicong Yang <yangyicong@hisilicon.com> wrote:
 
-> The initialization of 'ret' variable in probe function is shortly after
-> overwritten.  This initialization is simply not used.
+> Use devm_add_action_or_reset() instead of devres_alloc() and
+> devres_add(), which works the same. This will simplify the
+> code. There is no functional changes.
 > 
-> Addresses-Coverity: Unused value
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+> ---
+>  drivers/iio/adc/adi-axi-adc.c | 22 +++++++++-------------
+>  1 file changed, 9 insertions(+), 13 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
+> index 9109da2..575a63f 100644
+> --- a/drivers/iio/adc/adi-axi-adc.c
+> +++ b/drivers/iio/adc/adi-axi-adc.c
+> @@ -210,29 +210,25 @@ static void adi_axi_adc_conv_unregister(struct adi_axi_adc_conv *conv)
+>  	kfree(cl);
+>  }
+>  
+> -static void devm_adi_axi_adc_conv_release(struct device *dev, void *res)
+> +static void devm_adi_axi_adc_conv_release(void *conv)
+>  {
+> -	adi_axi_adc_conv_unregister(*(struct adi_axi_adc_conv **)res);
+> +	adi_axi_adc_conv_unregister(conv);
+>  }
+>  
+>  struct adi_axi_adc_conv *devm_adi_axi_adc_conv_register(struct device *dev,
+>  							size_t sizeof_priv)
+>  {
+> -	struct adi_axi_adc_conv **ptr, *conv;
+> -
+> -	ptr = devres_alloc(devm_adi_axi_adc_conv_release, sizeof(*ptr),
+> -			   GFP_KERNEL);
+> -	if (!ptr)
+> -		return ERR_PTR(-ENOMEM);
+> +	struct adi_axi_adc_conv *conv;
+> +	int ret;
+>  
+>  	conv = adi_axi_adc_conv_register(dev, sizeof_priv);
+> -	if (IS_ERR(conv)) {
+> -		devres_free(ptr);
+> +	if (IS_ERR(conv))
+>  		return ERR_CAST(conv);
 
-Too late for this cycle, but I've queued it up for the next one.
-
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to see if we missed anything.
+Is that ERR_CAST() needed here?  conv is already of the
+right type so we don't need to cast it to a void * and back gain.
+Obviously was there before an not needed either, but might as well
+tidy it up whilst we are here!
 
 Thanks,
 
 Jonathan
 
-> ---
->  drivers/iio/adc/exynos_adc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
-> index 784c10deeb1a..2d8e36408f0e 100644
-> --- a/drivers/iio/adc/exynos_adc.c
-> +++ b/drivers/iio/adc/exynos_adc.c
-> @@ -794,7 +794,7 @@ static int exynos_adc_probe(struct platform_device *pdev)
->  	struct s3c2410_ts_mach_info *pdata = dev_get_platdata(&pdev->dev);
->  	struct iio_dev *indio_dev = NULL;
->  	bool has_ts = false;
-> -	int ret = -ENODEV;
-> +	int ret;
->  	int irq;
+
+
+> -	}
 >  
->  	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(struct exynos_adc));
+> -	*ptr = conv;
+> -	devres_add(dev, ptr);
+> +	ret = devm_add_action_or_reset(dev, devm_adi_axi_adc_conv_release,
+> +				       conv);
+> +	if (ret)
+> +		return ERR_PTR(ret);
+>  
+>  	return conv;
+>  }
 

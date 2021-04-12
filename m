@@ -2,43 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 59A9935C39C
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Apr 2021 12:20:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D98CD35C3B5
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Apr 2021 12:22:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238052AbhDLKUJ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Mon, 12 Apr 2021 06:20:09 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2833 "EHLO
+        id S238913AbhDLKW2 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 12 Apr 2021 06:22:28 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2834 "EHLO
         frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237743AbhDLKUH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Apr 2021 06:20:07 -0400
-Received: from fraeml736-chm.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4FJl2y4ZRdz688lj;
-        Mon, 12 Apr 2021 18:14:34 +0800 (CST)
+        with ESMTP id S239008AbhDLKW0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Apr 2021 06:22:26 -0400
+Received: from fraeml714-chm.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4FJl3M1h5sz688RF;
+        Mon, 12 Apr 2021 18:14:55 +0800 (CST)
 Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml736-chm.china.huawei.com (10.206.15.217) with Microsoft SMTP Server
+ fraeml714-chm.china.huawei.com (10.206.15.33) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 12 Apr 2021 12:19:48 +0200
+ 15.1.2106.2; Mon, 12 Apr 2021 12:22:06 +0200
 Received: from localhost (10.47.93.73) by lhreml710-chm.china.huawei.com
  (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Mon, 12 Apr
- 2021 11:19:47 +0100
-Date:   Mon, 12 Apr 2021 11:18:21 +0100
+ 2021 11:22:05 +0100
+Date:   Mon, 12 Apr 2021 11:20:39 +0100
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>
+To:     Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 CC:     Jonathan Cameron <jic23@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v2] iio: adis16480: support burst read function
-Message-ID: <20210412111821.00004183@Huawei.com>
-In-Reply-To: <CY4PR03MB3112C03AD3DDF60A10F0018699709@CY4PR03MB3112.namprd03.prod.outlook.com>
-References: <20210408075643.70183-1-nuno.sa@analog.com>
-        <20210411154002.159c4018@jic23-huawei>
-        <CY4PR03MB3112C03AD3DDF60A10F0018699709@CY4PR03MB3112.namprd03.prod.outlook.com>
+        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+        <jikos@kernel.org>, <benjamin.tissoires@redhat.com>,
+        <linux-input@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] HID: hid-sensor-custom: remove useless variable
+Message-ID: <20210412112039.00006821@Huawei.com>
+In-Reply-To: <ceb25b0000013f1c3e89d772c62b5e967a032446.camel@linux.intel.com>
+References: <1617952508-47150-1-git-send-email-jiapeng.chong@linux.alibaba.com>
+        <4079bb49a9c0022603abeffcdaec32208f449e51.camel@linux.intel.com>
+        <20210411145635.3c6b48d1@jic23-huawei>
+        <ceb25b0000013f1c3e89d772c62b5e967a032446.camel@linux.intel.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Originating-IP: [10.47.93.73]
 X-ClientProxiedBy: lhreml713-chm.china.huawei.com (10.201.108.64) To
@@ -48,73 +50,83 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-...
-> > > +static irqreturn_t adis16480_trigger_handler(int irq, void *p)
-> > > +{
-> > > +	struct iio_poll_func *pf = p;
-> > > +	struct iio_dev *indio_dev = pf->indio_dev;
-> > > +	struct adis16480 *st = iio_priv(indio_dev);
-> > > +	struct adis *adis = &st->adis;
-> > > +	int ret, bit, offset, i = 0;
-> > > +	__be16 *buffer;
-> > > +	u32 crc;
-> > > +	bool valid;
-> > > +	const u32 cached_spi_speed_hz = adis->spi->max_speed_hz;
-> > > +
-> > > +	adis_dev_lock(adis);
-> > > +	if (adis->current_page != 0) {
-> > > +		adis->tx[0] = ADIS_WRITE_REG(ADIS_REG_PAGE_ID);
-> > > +		adis->tx[1] = 0;
-> > > +		ret = spi_write(adis->spi, adis->tx, 2);
-> > > +		if (ret) {
-> > > +			dev_err(&adis->spi->dev, "Failed to change  
-> > device page: %d\n", ret);  
-> > > +			adis_dev_unlock(adis);
-> > > +			return ret;  
-> > 
-> > This is an interrupt handler, you should be careful what you return
-> > as they will be treated as irqreturn_t not ints.
-> > 
-> > return IRQ_HANDLED even in error paths.  
-> 
-> Hmm, yeah, this is definitely not ok. Also imposes the question if we should
-> call ' iio_trigger_notify_done()' in these error paths? I'm pending to do it as
-> it might be a big assumption to say the device is 'broken' if some spi transfer
-> fails...
+On Sun, 11 Apr 2021 09:06:35 -0700
+Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com> wrote:
 
-Yup, that has always been a bit of an open question in drivers. As likely
-as not, any breakage leaves the device in a state from which we can't recover
-anyway.  I've mostly left whether to call iio_trigger_notify_done() to the
-discretion of the driver writers.
+> On Sun, 2021-04-11 at 14:56 +0100, Jonathan Cameron wrote:
+> > On Fri, 09 Apr 2021 11:19:12 -0700
+> > Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com> wrote:
+> >   
+> > > On Fri, 2021-04-09 at 15:15 +0800, Jiapeng Chong wrote:  
+> > > > Fix the following gcc warning:
+> > > > 
+> > > > drivers/hid/hid-sensor-custom.c:400:7: warning: variable ‘ret’
+> > > > set
+> > > > but
+> > > > not used [-Wunused-but-set-variable].
+> > > > 
+> > > > Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+> > > > Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>    
+> > > Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com  
+> > 
+> > Perhaps better to return ret if it is non zero?
+> > I can't immediately figure out if there is a reason we know that
+> > can't
+> > happen.  
+> Only time it can fail when there is no report descriptor or the field
+> index is >= report->maxfield.
+> But since the attribute is registered from the report descriptor and
+> index, this can't happen.
+> But we can enhance sensor_hub_set_feature() to fail when
+>  hid_set_field() fails. There is one case where field->logical_minimum
+> < 0  and value is out of range.
+
+I'll go with what you think.  Apply as is, or handle the
+return value because we might at some later date return an error that
+can actually happen from here?
+
+Jonathan
 
 > 
-> Not doing it means we will never receive another irq (I think this is also true if
-> we do not return IRQ_HANDLED)...
+> Thanks,
+> Srinivas
 > 
-> Also need to check other places as I'm fairly sure we have this problem (at least)
-> in the adis16475 driver...
-oops. Guess I missed it there ;)
-> > > +		}
-> > > +	}
-> > > +
-> > > +	adis->spi->max_speed_hz = ADIS16495_BURST_MAX_SPEED;
-> > > +
-> > > +	ret = spi_sync(adis->spi, &adis->msg);
-> > > +	if (ret) {
-> > > +		dev_err(&adis->spi->dev, "Failed to read data: %d\n",  
-> > ret);  
-> > > +		adis_dev_unlock(adis);
-> > > +		return ret;
-> > > +	}
-> > > +
-> > > +	adis->spi->max_speed_hz = cached_spi_speed_hz;
-> > > +	adis->current_page = 0;  
+> 
 > > 
-> > Does it make more sense to move this to just after we changed the
-> > page?  
+> > Jonathan
+> >   
+> > > > ---
+> > > >  drivers/hid/hid-sensor-custom.c | 5 ++---
+> > > >  1 file changed, 2 insertions(+), 3 deletions(-)
+> > > > 
+> > > > diff --git a/drivers/hid/hid-sensor-custom.c b/drivers/hid/hid-
+> > > > sensor-custom.c
+> > > > index 2628bc5..e430673 100644
+> > > > --- a/drivers/hid/hid-sensor-custom.c
+> > > > +++ b/drivers/hid/hid-sensor-custom.c
+> > > > @@ -397,15 +397,14 @@ static ssize_t store_value(struct device
+> > > > *dev,
+> > > > struct device_attribute *attr,
+> > > >  
+> > > >  	if (!strncmp(name, "value", strlen("value"))) {
+> > > >  		u32 report_id;
+> > > > -		int ret;
+> > > >  
+> > > >  		if (kstrtoint(buf, 0, &value) != 0)
+> > > >  			return -EINVAL;
+> > > >  
+> > > >  		report_id = sensor_inst->fields[field_index].attribute.
+> > > >  								report_
+> > > > id;
+> > > > -		ret = sensor_hub_set_feature(sensor_inst->hsdev,
+> > > > report_id,
+> > > > -					     index, sizeof(value),
+> > > > &value);
+> > > > +		sensor_hub_set_feature(sensor_inst->hsdev, report_id,
+> > > > index,
+> > > > +				       sizeof(value), &value);
+> > > >  	} else
+> > > >  		return -EINVAL;
+> > > >      
 > 
-> Yes, it does. If the second spi transfer fails, we already moved to page 0
-> but did not updated this variable...
-> 
-> - Nuno S�
 

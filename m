@@ -2,120 +2,103 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EAAB935C06F
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Apr 2021 11:21:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4C7835C197
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Apr 2021 11:31:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239723AbhDLJNT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Apr 2021 05:13:19 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:16570 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240615AbhDLJKr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Apr 2021 05:10:47 -0400
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.60])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FJjZP2nSrz1BGg3;
-        Mon, 12 Apr 2021 17:08:13 +0800 (CST)
-Received: from [127.0.0.1] (10.69.38.196) by DGGEMS401-HUB.china.huawei.com
- (10.3.19.201) with Microsoft SMTP Server id 14.3.498.0; Mon, 12 Apr 2021
- 17:10:17 +0800
-Subject: Re: [PATCH 1/7] iio: adc: adi-axi-adc: simplify
- devm_adi_axi_adc_conv_register
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     <linux-iio@vger.kernel.org>, <lars@metafoo.de>,
-        <Michael.Hennerich@analog.com>, <pmeerw@pmeerw.net>,
-        <prime.zeng@huawei.com>, <tiantao6@hisilicon.com>
-References: <1617881896-3164-1-git-send-email-yangyicong@hisilicon.com>
- <1617881896-3164-2-git-send-email-yangyicong@hisilicon.com>
- <20210411151215.5d3e5494@jic23-huawei>
-From:   Yicong Yang <yangyicong@hisilicon.com>
-Message-ID: <e58b460c-33c7-e544-539c-2d25f96fa17a@hisilicon.com>
-Date:   Mon, 12 Apr 2021 17:10:17 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.1
+        id S239850AbhDLJbh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Apr 2021 05:31:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43698 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241030AbhDLJZP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Apr 2021 05:25:15 -0400
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 090D3C06134C;
+        Mon, 12 Apr 2021 02:24:00 -0700 (PDT)
+Received: by mail-pl1-x62d.google.com with SMTP id u7so4232408plr.6;
+        Mon, 12 Apr 2021 02:24:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=RIGQO9nYpsI/HgMjEptp4zz4oGeZWu2/3SsVEhd+9po=;
+        b=ZFWAhZimDycszC+pOXKzjXZ0blVkeVP3qf/F01akrbzIiOnX6SIOZmIVg54q2UnUvp
+         mHjaXffYXxr+9otijaD24X/2532BlkA/BOa06jAD4Rcl3WRmD5Mw8ARzBvS0l+DE9byV
+         aEj1IVlKcPtXJOp5zKfBku6Vf6Tpo4753EAQ906IDdKs5o7ne5JJf6EGAWZnvbXE4IEv
+         39a/pcDQ+Smd3leerNckwtVPDXqsNnqfOKNT4elFI0UEY9Y8m2SFGG+Pd8xNuuXM7xBe
+         J2BtzQM+lFX4Yzk0VLVKB9tikbERvHgzSmIRCLpAksIfHEQyn6crhVy2KADF9dW6c+Gj
+         cg9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=RIGQO9nYpsI/HgMjEptp4zz4oGeZWu2/3SsVEhd+9po=;
+        b=hSwTiHfnPspGsJ7VjSQmEIHQJOq6xXvvkBuhhs1LIfU29YoR++uWsb+ioHBFMqZpFm
+         7DGkpO01D2JH7HCGd7JlDuUb2+ruCDb2GHWdA49Ehskb8xIjF3CUhD1oQVPwrF7QKXp9
+         J49Hml6Lwh/5ezTa14EvtUfUUOnTDJc2XQQIdkdhSeu8HxD1ErxxaMUGgBb+76YHIKlZ
+         2wfGhW5rmRRHe/BbCkKKmrt9NO1/OqPz80CTYZQT2KRyw2xj9u62MsLUrh5qTdLhA05E
+         uqzUiLbs5L6zUJccaIbM0CjuxrHmajUuhNIMsVGcGDdS/mre7gbml9rjKiidDK5wmnNd
+         jxLw==
+X-Gm-Message-State: AOAM531JB2k/6OVUA9PgXgtZSgridzfDYb/00d0VexfeRfIbbXT9e987
+        EHF9TRUYrSUyztJpU2BbbZIy56Dag1cJ07ur2O2Ic8v7N/E=
+X-Google-Smtp-Source: ABdhPJz1pBrpFo/vAqpBjDCsf8p0x7DUOAC1VTRX9FBLoB7jXKvOJypbiHnRm6FRziX1XdaGcPJlfC9ViR5tJwJ9PV4=
+X-Received: by 2002:a17:90b:1e0a:: with SMTP id pg10mr28396882pjb.129.1618219439594;
+ Mon, 12 Apr 2021 02:23:59 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210411151215.5d3e5494@jic23-huawei>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.69.38.196]
-X-CFilter-Loop: Reflected
+References: <20210412053204.4889-1-dinghao.liu@zju.edu.cn>
+In-Reply-To: <20210412053204.4889-1-dinghao.liu@zju.edu.cn>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 12 Apr 2021 12:23:43 +0300
+Message-ID: <CAHp75Vch8zrFmRQNkXE1HopPN_JBsNYfuRDpPN-W0m74OE7fhQ@mail.gmail.com>
+Subject: Re: [PATCH] [v2] iio: proximity: pulsedlight: Fix rumtime PM
+ imbalance on error
+To:     Dinghao Liu <dinghao.liu@zju.edu.cn>
+Cc:     Kangjie Lu <kjlu@umn.edu>, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2021/4/11 22:12, Jonathan Cameron wrote:
-> On Thu, 8 Apr 2021 19:38:10 +0800
-> Yicong Yang <yangyicong@hisilicon.com> wrote:
-> 
->> Use devm_add_action_or_reset() instead of devres_alloc() and
->> devres_add(), which works the same. This will simplify the
->> code. There is no functional changes.
->>
->> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
->> ---
->>  drivers/iio/adc/adi-axi-adc.c | 22 +++++++++-------------
->>  1 file changed, 9 insertions(+), 13 deletions(-)
->>
->> diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
->> index 9109da2..575a63f 100644
->> --- a/drivers/iio/adc/adi-axi-adc.c
->> +++ b/drivers/iio/adc/adi-axi-adc.c
->> @@ -210,29 +210,25 @@ static void adi_axi_adc_conv_unregister(struct adi_axi_adc_conv *conv)
->>  	kfree(cl);
->>  }
->>  
->> -static void devm_adi_axi_adc_conv_release(struct device *dev, void *res)
->> +static void devm_adi_axi_adc_conv_release(void *conv)
->>  {
->> -	adi_axi_adc_conv_unregister(*(struct adi_axi_adc_conv **)res);
->> +	adi_axi_adc_conv_unregister(conv);
->>  }
->>  
->>  struct adi_axi_adc_conv *devm_adi_axi_adc_conv_register(struct device *dev,
->>  							size_t sizeof_priv)
->>  {
->> -	struct adi_axi_adc_conv **ptr, *conv;
->> -
->> -	ptr = devres_alloc(devm_adi_axi_adc_conv_release, sizeof(*ptr),
->> -			   GFP_KERNEL);
->> -	if (!ptr)
->> -		return ERR_PTR(-ENOMEM);
->> +	struct adi_axi_adc_conv *conv;
->> +	int ret;
->>  
->>  	conv = adi_axi_adc_conv_register(dev, sizeof_priv);
->> -	if (IS_ERR(conv)) {
->> -		devres_free(ptr);
->> +	if (IS_ERR(conv))
->>  		return ERR_CAST(conv);
-> 
-> Is that ERR_CAST() needed here?  conv is already of the
-> right type so we don't need to cast it to a void * and back gain.
-> Obviously was there before an not needed either, but might as well
-> tidy it up whilst we are here!
+On Mon, Apr 12, 2021 at 8:32 AM Dinghao Liu <dinghao.liu@zju.edu.cn> wrote:
+>
+> When lidar_write_control() fails, a pairing PM usage counter
+> decrement is needed to keep the counter balanced.
 
-sure. thanks for the hint. I didn't notice this. will drop the ERR_CAST.
+You forgot to collect given tags.
 
-thanks!
+> Fixes: 4ac4e086fd8c5 ("iio: pulsedlight-lidar-lite: add runtime PM")
+> Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+> ---
+>
+> Changelog:
+>
+> v2: - Add the fix tag.
+> ---
+>  drivers/iio/proximity/pulsedlight-lidar-lite-v2.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c b/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c
+> index c685f10b5ae4..cc206bfa09c7 100644
+> --- a/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c
+> +++ b/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c
+> @@ -160,6 +160,7 @@ static int lidar_get_measurement(struct lidar_data *data, u16 *reg)
+>         ret = lidar_write_control(data, LIDAR_REG_CONTROL_ACQUIRE);
+>         if (ret < 0) {
+>                 dev_err(&client->dev, "cannot send start measurement command");
+> +               pm_runtime_put_noidle(&client->dev);
+>                 return ret;
+>         }
+>
+> --
+> 2.17.1
+>
 
-> 
-> Thanks,
-> 
-> Jonathan
-> 
-> 
-> 
->> -	}
->>  
->> -	*ptr = conv;
->> -	devres_add(dev, ptr);
->> +	ret = devm_add_action_or_reset(dev, devm_adi_axi_adc_conv_release,
->> +				       conv);
->> +	if (ret)
->> +		return ERR_PTR(ret);
->>  
->>  	return conv;
->>  }
-> 
-> 
-> .
-> 
 
+-- 
+With Best Regards,
+Andy Shevchenko

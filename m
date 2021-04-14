@@ -2,78 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 940D435EFC9
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Apr 2021 10:46:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6078E35F025
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Apr 2021 10:57:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232043AbhDNIhv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 14 Apr 2021 04:37:51 -0400
-Received: from www381.your-server.de ([78.46.137.84]:60644 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230160AbhDNIhu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Apr 2021 04:37:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=I3h8InelMwWQEwsxRD1zDPA27Lroskn99+uQLhVojSQ=; b=W3oorWTruECHV7pKRofXhos/In
-        zoe7kCcyW8qbkpdF1yakMAMlEqLNz5LxEPmbpfgwtprZcBd+ylP+bXps2ygbuFqmM8IGqC5AxZFP1
-        j4ubFyCugt1r+36MdU30nQhxxho4dddJHHKC/UHzgNHm78wR0rTh58uYXuJct8aLbO4piUToOl5hz
-        rHRKcdVpWCIL8oldZuqZ47RoKL9WKmkYXbCSIOFw0zftRG1Us+5Br7aGZaWcX0lmw8TXmPWVVxO2e
-        ID6G3WWfLWF3ckgAKiHIxNqQvLCPM6xS+TliSCCASN1UvzGWI7XgFVrU4I3BA2rodF5cP27CLlh2u
-        WsCHrcMQ==;
-Received: from sslproxy01.your-server.de ([78.46.139.224])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1lWb1Z-000F3S-9Z; Wed, 14 Apr 2021 10:37:25 +0200
-Received: from [2001:a61:2bab:901:9e5c:8eff:fe01:8578]
-        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1lWb1Z-000WjH-63; Wed, 14 Apr 2021 10:37:25 +0200
-Subject: Re: [PATCH 0/7] Adis IRQ fixes and minor improvements
-To:     Nuno Sa <nuno.sa@analog.com>, linux-iio@vger.kernel.org
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-References: <20210413112105.69458-1-nuno.sa@analog.com>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <67e2d21b-83b0-2d42-45db-4e0e009f73bc@metafoo.de>
-Date:   Wed, 14 Apr 2021 10:37:24 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
+        id S232748AbhDNIsy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 14 Apr 2021 04:48:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43870 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232706AbhDNIsv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Apr 2021 04:48:51 -0400
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A24FEC061574
+        for <linux-iio@vger.kernel.org>; Wed, 14 Apr 2021 01:48:28 -0700 (PDT)
+Received: by mail-pg1-x533.google.com with SMTP id b17so13919975pgh.7
+        for <linux-iio@vger.kernel.org>; Wed, 14 Apr 2021 01:48:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=6yke+bSyJ0j5ZSy3rVqv9cM/2GRtMq6TK4p2whz+uwA=;
+        b=DI+Kk0QLPS3f2U03YaHPkzF55zVZotaseZOylfw6rJmclD4gZqAXEwtiprwPuzgWQa
+         pBXREj+CbeDZEswr1rMMjYpoIUlPTFyCLoaETaKvxsZaPCPQ+N6FVh9Uz3J4g9N86MPn
+         jw7KXiRoTFqKuZXipKw+dhoLyCkuFoQD7z7ls60FaqEWjPvgRLNVarMKW1AO0efKS1hj
+         hMsW9RSlrDdKjCYeQQ0WL6NPXElEmvVzuuWkbR56jGzqRhuqhtZ9K1WHS66l55twaRRP
+         nD+y4bncLcGBsoixG/YtOOR53cG3SKV38eGhMT8Wt4SeDwJcFDBpg3UrUderNwFDJ/R/
+         UIQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=6yke+bSyJ0j5ZSy3rVqv9cM/2GRtMq6TK4p2whz+uwA=;
+        b=kF1GfAMQBf65nRTsgG6ijXllEJde4ao/fpit9H33xhUeE/rthkoNi8/mthAnNhdihp
+         2MGmAFbVDSpX3vJgHFwef7u6zP3fvBptgi+ed+qqftQTebvx5OiaAmWY1ftv1atM08L6
+         q60fg8VoZ63Uux71PCpUHIE85QGm/82EcsddN1v7ez4wJFQ1fHI6cZRt66pNbxj9XcoJ
+         tfIqT0rxLK7kXI6ox5HwXMB+2+wHG3F8uZ//64j8nfCDaF0DRnSjq+9Kn0vztUejP8r+
+         VX0XL3H9c5kIDo+mhj40t9f3PPhLtjoiHRYDdt6Hl4WlCl+qLYVol8by69AKAs9NlcFZ
+         s88g==
+X-Gm-Message-State: AOAM5336dwXi5Ml6TdfjO1UTqWQUq70FYRSIBK1qCYMXFml21sTPUPC5
+        wpcCn8P4/IU1v8YzGYcR71Hq0l41gaSuRRGg7y/EOS06Kikatw==
+X-Google-Smtp-Source: ABdhPJyxzshPp0xeAOVqJ3mANQF8IcTs5jH9Es6CkBOe+5jRmcGRssyYvRWjzkfD4mDXMnaO64l6w+V34WiiDJi6mEc=
+X-Received: by 2002:a65:6645:: with SMTP id z5mr35727415pgv.273.1618390108168;
+ Wed, 14 Apr 2021 01:48:28 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210413112105.69458-1-nuno.sa@analog.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.102.4/26139/Tue Apr 13 13:07:58 2021)
+References: <0ba66635-920a-2541-7b92-447cdb37764b@gentoo.org>
+In-Reply-To: <0ba66635-920a-2541-7b92-447cdb37764b@gentoo.org>
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+Date:   Wed, 14 Apr 2021 11:48:17 +0300
+Message-ID: <CA+U=DsopM1MXZJEP-h1rjny-fwhvY0s281L5W2EjYe0gD=FDiA@mail.gmail.com>
+Subject: Re: CONFIG_HID_SENSOR_IIO_TRIGGER depends on CONFIG_IIO_TRIGGERED_BUFFER
+To:     Thomas Deutschmann <whissi@gentoo.org>
+Cc:     linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 4/13/21 1:20 PM, Nuno Sa wrote:
-> The primary goal of this series was to fix the return value on some
-> trigger handlers as spotted in [1]. While doing it, I found some minor
-> improvements that I think are simple enough to include in this series.
+On Wed, Apr 14, 2021 at 10:47 AM Thomas Deutschmann <whissi@gentoo.org> wrote:
 >
-> As for the first 2 patches, I opted to not do any functional change so
-> I'm keeping the 'if (!adis->buffer)' check. However, 'adis-buffer' is
-> allocated in 'update_scan_mode' hook which means we should be sure that
-> the buffer is allocated and the check is really not needed. I did not
-> went into the details but is there any way for the trigger handler to be
-> called before the 'update_scan_mode' hook? If not, I'm happy in sending
-> a v2 where we just remove the 'if'...
+> Hi,
+>
+> when you try to build kernel with
+>
+>    CONFIG_HID_SENSOR_IIO_TRIGGER=m
+>    # CONFIG_IIO_TRIGGERED_BUFFER is not set
+>
+> build will fail with
+>
+> > ERROR: modpost: "iio_triggered_buffer_cleanup" [drivers/iio/common/hid-sensors/hid-sensor-trigger.ko] undefined!
+> > ERROR: modpost: "iio_triggered_buffer_setup" [drivers/iio/common/hid-sensors/hid-sensor-trigger.ko] undefined!
+>
+> So CONFIG_HID_SENSOR_IIO_TRIGGER should depend on
+> CONFIG_IIO_TRIGGERED_BUFFER.
 
-I do remember that the check was deliberate. I do remember of thinking 
-about whether we need this and feeling uncomfortable about not having 
-the check. But I think it is more a instance of defensive programming 
-rather than actually being required.
+My bad here.
+Will send a fix.
+This is a peculiar case where the his-sensor-trigger module gets built
+without any sensor drivers to use it.
 
-It was less about the trigger being called before update_scan_mode, but 
-in case it gets called if the allocation in update_scan_mode fails. But 
-I think this should not be possible. So it is probably safe to remove it.
-
-- Lars
-
+>
+> This was reported via https://bugs.gentoo.org/782496.
+>
+>
+> --
+> Regards,
+> Thomas Deutschmann / Gentoo Linux Developer
+> fpr: C4DD 695F A713 8F24 2AA1 5638 5849 7EE5 1D5D 74A5
+>

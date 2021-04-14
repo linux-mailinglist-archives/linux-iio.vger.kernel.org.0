@@ -2,119 +2,102 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2FC035FA6E
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Apr 2021 20:22:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE69135FBFB
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Apr 2021 21:54:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352217AbhDNSMY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 14 Apr 2021 14:12:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54936 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348551AbhDNSMU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Apr 2021 14:12:20 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC7F1C06138D
-        for <linux-iio@vger.kernel.org>; Wed, 14 Apr 2021 11:11:57 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id 18so24854238edx.3
-        for <linux-iio@vger.kernel.org>; Wed, 14 Apr 2021 11:11:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=1FkcH1e9hYvIbJdpOMTWhzNlkcIJrWILNcigOFG2FmU=;
-        b=Sk/WTkZAuHDpcGf+GHnX710BXbpHEmEDG9z7TRxU4ja70oWumGQRzzwotgrwU9kkZB
-         15N79CN8qm6R+o3jO0oxofszdSNbHmicMrZoDiENtfPcnGJOY+sph34VVY/SIzmD5dhg
-         fRhvGhxRXzAjFP4B7/6EUQDos9/ZJYApCpJELPNk7RhpBQSf6vOqwawfSperjvoKCyi+
-         3iYPxd5ijBrw6D0o3d+UqvMHJupnoy7W3+Cyl2nQqTkiwBUcx1OT2IbUMG8gdVtdAlJW
-         UfGisHayr6i5mb4ITHEKxHZUrUyflJNdGs77u+XzFOmvt3LigaWZ+Ys+nWHOKeK5e+RF
-         aCSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=1FkcH1e9hYvIbJdpOMTWhzNlkcIJrWILNcigOFG2FmU=;
-        b=VXef9zru0+ItuUoV8dP7FtoZE+4ZKf8gTNMg2tEeM/C5O+SzKBKh7ds2kquADTUPhP
-         u73F6mse3WYphFey5RdYdvPK4XGRqaeDJjfrHlV4rJEqo6LGRt5c1NpxtrZhP3fwyAdM
-         u260OULuSRgVPZQM4wXUv10aswLm4QaCScuxf7lGtLgkCtgAZa25hqwXDML7ggFnAQV6
-         NwAgx+GesznUiW+uruGrw6nfRHnZ/10mAV1GQXU5fO6l5fwsBQpCSggZNGXODUb8kdcz
-         ObtIOye1sPxgZJLYjwl9dS9CtIPISXuyNXYfnw28qC3fW4vLNnmHRmLfWyLGIv5ZVGJN
-         hwYg==
-X-Gm-Message-State: AOAM5319mswEZTBOCPT1G2G0ISsLve20ZQkC3j50a3nKT9i0gfQQpSrL
-        9GNsckhz/y71PocYxH6ruKIfoQ==
-X-Google-Smtp-Source: ABdhPJxpJ9atcM+SLAo1W9rqLdmUTJu3dHHuCOAp1eh87GSq+5VbT6HivdOXrdeeqMNXHTYD8kaVuQ==
-X-Received: by 2002:aa7:db95:: with SMTP id u21mr209134edt.152.1618423916541;
-        Wed, 14 Apr 2021 11:11:56 -0700 (PDT)
-Received: from dell.default ([91.110.221.215])
-        by smtp.gmail.com with ESMTPSA id v1sm279493eds.17.2021.04.14.11.11.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Apr 2021 11:11:56 -0700 (PDT)
-From:   Lee Jones <lee.jones@linaro.org>
-To:     lee.jones@linaro.org
-Cc:     linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-iio@vger.kernel.org, linux-staging@lists.linux.dev
-Subject: [PATCH 21/57] staging: iio: frequency: ad9834: Provide missing description for 'devid'
-Date:   Wed, 14 Apr 2021 19:10:53 +0100
-Message-Id: <20210414181129.1628598-22-lee.jones@linaro.org>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210414181129.1628598-1-lee.jones@linaro.org>
-References: <20210414181129.1628598-1-lee.jones@linaro.org>
+        id S234239AbhDNTzF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 14 Apr 2021 15:55:05 -0400
+Received: from mga03.intel.com ([134.134.136.65]:24033 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234221AbhDNTzE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 14 Apr 2021 15:55:04 -0400
+IronPort-SDR: YJXZP66igMd6NYI1XTDQ3+PnEpZqOTM7e0KSD7A77EU1vzbGGfzVha9S0Hbexmnc2qcYQuooCH
+ 0Ojy/xDkAedg==
+X-IronPort-AV: E=McAfee;i="6200,9189,9954"; a="194746787"
+X-IronPort-AV: E=Sophos;i="5.82,223,1613462400"; 
+   d="scan'208";a="194746787"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2021 12:54:42 -0700
+IronPort-SDR: uIZik0HELf6Ho3DWaXwnW3kA6Ctv6iworPDgFeoiw1dnpyGBAWNEhcwykydtS0eKggA0Ft5qUW
+ +pbAFTtA8o+Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.82,223,1613462400"; 
+   d="scan'208";a="424883201"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga008.jf.intel.com with ESMTP; 14 Apr 2021 12:54:38 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 36FC712A; Wed, 14 Apr 2021 22:54:54 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        =?UTF-8?q?Ga=C3=ABtan=20Andr=C3=A9?= <rvlander@gaetanandre.eu>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+        Denis Ciocca <denis.ciocca@st.com>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>
+Subject: [PATCH v1 1/7] iio: accel: st_accel: Move platform data from header to C file
+Date:   Wed, 14 Apr 2021 22:54:48 +0300
+Message-Id: <20210414195454.84183-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Also demote kernel-doc abuses
+Platform data is solely used by one file. Don't share it with others.
 
-Fixes the following W=1 kernel build warning(s):
+While at it, drop unneeded anymore __maybe_unused and fix kernel doc
+to avoid warning:
 
- drivers/staging/iio/frequency/ad9834.c:87: warning: Function parameter or member 'devid' not described in 'ad9834_state'
- drivers/staging/iio/frequency/ad9834.c:93: warning: cannot understand function prototype: 'enum ad9834_supported_device_ids '
- drivers/staging/iio/frequency/ad9834.c:320: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+  st_accel_core.c:1079: error: Cannot parse struct or union!
 
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-iio@vger.kernel.org
-Cc: linux-staging@lists.linux.dev
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
+by converting to a simple comment. It is described at the declaration.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/staging/iio/frequency/ad9834.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/iio/accel/st_accel.h      | 8 --------
+ drivers/iio/accel/st_accel_core.c | 5 +++++
+ 2 files changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/staging/iio/frequency/ad9834.c b/drivers/staging/iio/frequency/ad9834.c
-index 60a3ae5587b90..94b131ef8a22c 100644
---- a/drivers/staging/iio/frequency/ad9834.c
-+++ b/drivers/staging/iio/frequency/ad9834.c
-@@ -58,6 +58,7 @@
-  * @spi:		spi_device
-  * @mclk:		external master clock
-  * @control:		cached control word
-+ * @devid:		device id
-  * @xfer:		default spi transfer
-  * @msg:		default spi message
-  * @freq_xfer:		tuning word spi transfer
-@@ -86,7 +87,7 @@ struct ad9834_state {
- 	__be16				freq_data[2];
+diff --git a/drivers/iio/accel/st_accel.h b/drivers/iio/accel/st_accel.h
+index 5d356288e001..181ebe79c4eb 100644
+--- a/drivers/iio/accel/st_accel.h
++++ b/drivers/iio/accel/st_accel.h
+@@ -62,14 +62,6 @@ enum st_accel_type {
+ #define LIS2DE12_ACCEL_DEV_NAME		"lis2de12"
+ #define LIS2HH12_ACCEL_DEV_NAME		"lis2hh12"
+ 
+-/**
+-* struct st_sensors_platform_data - default accel platform data
+-* @drdy_int_pin: default accel DRDY is available on INT1 pin.
+-*/
+-static __maybe_unused const struct st_sensors_platform_data default_accel_pdata = {
+-	.drdy_int_pin = 1,
+-};
+-
+ const struct st_sensor_settings *st_accel_get_settings(const char *name);
+ int st_accel_common_probe(struct iio_dev *indio_dev);
+ void st_accel_common_remove(struct iio_dev *indio_dev);
+diff --git a/drivers/iio/accel/st_accel_core.c b/drivers/iio/accel/st_accel_core.c
+index 43c50167d220..a1bd7e3b912e 100644
+--- a/drivers/iio/accel/st_accel_core.c
++++ b/drivers/iio/accel/st_accel_core.c
+@@ -983,6 +983,11 @@ static const struct st_sensor_settings st_accel_sensors_settings[] = {
+ 
  };
  
--/**
-+/*
-  * ad9834_supported_device_ids:
-  */
- 
-@@ -316,7 +317,7 @@ ssize_t ad9834_show_out1_wavetype_available(struct device *dev,
- static IIO_DEVICE_ATTR(out_altvoltage0_out1_wavetype_available, 0444,
- 		       ad9834_show_out1_wavetype_available, NULL, 0);
- 
--/**
-+/*
-  * see dds.h for further information
-  */
- 
++/* Default accel DRDY is available on INT1 pin */
++static const struct st_sensors_platform_data default_accel_pdata = {
++	.drdy_int_pin = 1,
++};
++
+ static int st_accel_read_raw(struct iio_dev *indio_dev,
+ 			struct iio_chan_spec const *ch, int *val,
+ 							int *val2, long mask)
 -- 
-2.27.0
+2.30.2
 

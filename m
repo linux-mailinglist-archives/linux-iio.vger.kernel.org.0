@@ -2,90 +2,99 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9ED2635E9B7
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Apr 2021 01:34:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D567F35EE4C
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Apr 2021 09:28:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231882AbhDMXei (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 13 Apr 2021 19:34:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36786 "EHLO
+        id S1348575AbhDNHYK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 14 Apr 2021 03:24:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230123AbhDMXei (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Apr 2021 19:34:38 -0400
-Received: from smtp.gentoo.org (dev.gentoo.org [IPv6:2001:470:ea4a:1:5054:ff:fec7:86e4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 163CFC061574
-        for <linux-iio@vger.kernel.org>; Tue, 13 Apr 2021 16:34:18 -0700 (PDT)
-To:     linux-iio@vger.kernel.org
-From:   Thomas Deutschmann <whissi@gentoo.org>
-Subject: CONFIG_HID_SENSOR_IIO_TRIGGER depends on CONFIG_IIO_TRIGGERED_BUFFER
-Organization: Gentoo Linux
-Message-ID: <0ba66635-920a-2541-7b92-447cdb37764b@gentoo.org>
-Date:   Wed, 14 Apr 2021 01:34:09 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.1
+        with ESMTP id S1349682AbhDNHYI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Apr 2021 03:24:08 -0400
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 407F6C061574
+        for <linux-iio@vger.kernel.org>; Wed, 14 Apr 2021 00:23:46 -0700 (PDT)
+Received: by mail-pj1-x1032.google.com with SMTP id k23-20020a17090a5917b02901043e35ad4aso12017794pji.3
+        for <linux-iio@vger.kernel.org>; Wed, 14 Apr 2021 00:23:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=LsJjvl96ZNZtufLqMaRTOWlnQdvU3hCsf4mFJbBQVbA=;
+        b=Xwx7g5Yff4JE13ZiTa+dKbg76lERE7MaVW+Iucu5yTwx6i8iHJpg6kaZrSjiJBjiQw
+         zkccE3OfTrXcJhJ3zBf50JIvpSzy4bQUuIme0UhrCHF5X8kCINrfj706LeFGvgjNqVRG
+         xvAykMRL3bFWe5m5z2nUcX+zgnH97/L0s+0SSatljS0FEx4MhtbJ4B8n6u0xBio0NSBY
+         RFMjKWenMDvpvUjJzkTO3Gl84AmLaR/kZL2mgMYvgd3OFDJ69l7q3rGD9JqI6ocJ/Ybi
+         tn+kf1/kmc5or8zhsuURNyU3GsqsUHW1YNLlzFO8B59rFtGvhshW0BBAAHIJ4zg86XQx
+         6OGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=LsJjvl96ZNZtufLqMaRTOWlnQdvU3hCsf4mFJbBQVbA=;
+        b=gyVyaQ/Xso2yj0FVFhygOM7ez9kyKUz7EKePJlqw2RqY2/HAY2SW/KzhhWrjKrM2dw
+         API3Z9xeq/TGo5H5n9+DNTxFMgZ33Tb1LLBv1+pDdfIZpyXLBZ7Eku/D8ju/DDV7aJWD
+         egIWBhiBNbSILt8Uk1SjtdCq34w/5Z+x4d04E/uo0AZ/5rv9SnVO1PC7sw7RAoJdqCaP
+         JTN+SH2I20YQQTsp5pjkYWelfpyzS7PGEG/gxRO+sfkB+mOxZE6ZTt3hodPY6kjnATlj
+         hVdP2rtpRMzE6b0p+4VW/5Gksliw8I8YwPZncyfuCCR5sPYBxeb7XYNyqg2Ve3LC7xnA
+         +86A==
+X-Gm-Message-State: AOAM530H7BTfiWYup/aY3yAhInooddKv54NEWkUAxEvh1flhEgBc0Hjp
+        rN0G/d1TUp06ZMRcebvHhLujl00NAjzuYblZr8GSBWyX2xtMKw==
+X-Google-Smtp-Source: ABdhPJzcsW0pIXE9YybI366broqJ/rgXT1LfwEzY9gv8FUshMLDsL2mYe6EuKZaRfjtwrf3Uj1Hzh3lIldrrwiMs2B4=
+X-Received: by 2002:a17:90a:d352:: with SMTP id i18mr2172324pjx.19.1618385025390;
+ Wed, 14 Apr 2021 00:23:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="LamQn7TxeaejNiKQiIgNmsaFG2lCugZwo"
+References: <20210413112105.69458-1-nuno.sa@analog.com> <20210413112105.69458-2-nuno.sa@analog.com>
+In-Reply-To: <20210413112105.69458-2-nuno.sa@analog.com>
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+Date:   Wed, 14 Apr 2021 10:23:34 +0300
+Message-ID: <CA+U=DsohUdAdUGG9_U5URp5HLYpEO=uQtX-V6UzpzikO1G0Syg@mail.gmail.com>
+Subject: Re: [PATCH 1/7] iio: adis_buffer: do not return ints in irq handlers
+To:     Nuno Sa <nuno.sa@analog.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---LamQn7TxeaejNiKQiIgNmsaFG2lCugZwo
-Content-Type: multipart/mixed; boundary="nbKOBoZZpn3VGff3h96RQtPHMI1nyNXMs";
- protected-headers="v1"
-From: Thomas Deutschmann <whissi@gentoo.org>
-To: linux-iio@vger.kernel.org
-Message-ID: <0ba66635-920a-2541-7b92-447cdb37764b@gentoo.org>
-Subject: CONFIG_HID_SENSOR_IIO_TRIGGER depends on CONFIG_IIO_TRIGGERED_BUFFER
+On Tue, Apr 13, 2021 at 5:45 PM Nuno Sa <nuno.sa@analog.com> wrote:
+>
+> On an IRQ handler we should return normal error codes as 'irqreturn_t'
+> is expected.
+>
 
---nbKOBoZZpn3VGff3h96RQtPHMI1nyNXMs
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
 
-Hi,
-
-when you try to build kernel with
-
-   CONFIG_HID_SENSOR_IIO_TRIGGER=3Dm
-   # CONFIG_IIO_TRIGGERED_BUFFER is not set
-
-build will fail with
-
-> ERROR: modpost: "iio_triggered_buffer_cleanup" [drivers/iio/common/hid-=
-sensors/hid-sensor-trigger.ko] undefined!
-> ERROR: modpost: "iio_triggered_buffer_setup" [drivers/iio/common/hid-se=
-nsors/hid-sensor-trigger.ko] undefined!
-
-So CONFIG_HID_SENSOR_IIO_TRIGGER should depend on=20
-CONFIG_IIO_TRIGGERED_BUFFER.
-
-This was reported via https://bugs.gentoo.org/782496.
-
-
---=20
-Regards,
-Thomas Deutschmann / Gentoo Linux Developer
-fpr: C4DD 695F A713 8F24 2AA1 5638 5849 7EE5 1D5D 74A5
-
-
---nbKOBoZZpn3VGff3h96RQtPHMI1nyNXMs--
-
---LamQn7TxeaejNiKQiIgNmsaFG2lCugZwo
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
-
------BEGIN PGP SIGNATURE-----
-
-wsB5BAABCAAjFiEEExKRzo+LDXJgXHuURObr3Jv2BVkFAmB2KnEFAwAAAAAACgkQRObr3Jv2BVnF
-Swf/dVKY01vrgJge6nu+N/uhBmaVGq2ApVxD5p/cqkOO+gx4wTA1RZWr56J0Tx2Scj8TBMq0v5p9
-e9LM8H2KG2JbfrCPuteid6RoBV4NWp1WlZ21QE/APpahzeB82CaNdt2vWr6hLwRqjBOwrKZmEcX8
-0jXY4ud+tZIXHHv/J4mn6OO/mBqz3Zqd1TY7N0Rp/zyeRRiB2IaPlweXsyL3kmTBWU8m1prPOJKn
-erPJ/x/lUk7pqZKbOKbupZyqX7yVLqYC7gPhFpKqzLVbVn/BTnZZfFiRn/pMDbArtlNwe/L3YnjT
-E6xfrHBIw0keAV5q31SiPWQJBoT3QY6Zlc5TWDJ4jA==
-=CfYo
------END PGP SIGNATURE-----
-
---LamQn7TxeaejNiKQiIgNmsaFG2lCugZwo--
+> Fixes: ccd2b52f4ac69 ("staging:iio: Add common ADIS library")
+> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> ---
+>  drivers/iio/imu/adis_buffer.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/iio/imu/adis_buffer.c b/drivers/iio/imu/adis_buffer.c
+> index ac354321f63a..f89bce10090a 100644
+> --- a/drivers/iio/imu/adis_buffer.c
+> +++ b/drivers/iio/imu/adis_buffer.c
+> @@ -130,7 +130,7 @@ static irqreturn_t adis_trigger_handler(int irq, void *p)
+>         int ret;
+>
+>         if (!adis->buffer)
+> -               return -ENOMEM;
+> +               goto irq_done;
+>
+>         if (adis->data->has_paging) {
+>                 mutex_lock(&adis->state_lock);
+> @@ -154,6 +154,7 @@ static irqreturn_t adis_trigger_handler(int irq, void *p)
+>         iio_push_to_buffers_with_timestamp(indio_dev, adis->buffer,
+>                 pf->timestamp);
+>
+> +irq_done:
+>         iio_trigger_notify_done(indio_dev->trig);
+>
+>         return IRQ_HANDLED;
+> --
+> 2.31.1
+>

@@ -2,41 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6944E361169
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Apr 2021 19:51:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3642D361173
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Apr 2021 19:53:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233640AbhDORvc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 15 Apr 2021 13:51:32 -0400
-Received: from first.geanix.com ([116.203.34.67]:35396 "EHLO first.geanix.com"
+        id S233395AbhDORx3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 15 Apr 2021 13:53:29 -0400
+Received: from first.geanix.com ([116.203.34.67]:35476 "EHLO first.geanix.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233551AbhDORvc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 15 Apr 2021 13:51:32 -0400
+        id S233052AbhDORx3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 15 Apr 2021 13:53:29 -0400
 Received: from [192.168.16.66] (unknown [185.233.254.173])
-        by first.geanix.com (Postfix) with ESMTPSA id 9FD5046364D;
-        Thu, 15 Apr 2021 17:51:06 +0000 (UTC)
+        by first.geanix.com (Postfix) with ESMTPSA id E86244633E2;
+        Thu, 15 Apr 2021 17:53:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1618509066; bh=vYAJWRFyhmjngiYajeb9a8he7H/cNjOrwpF4lRHj13s=;
+        t=1618509184; bh=d/GFrnKnmc5rFzC7uCDXeDSBdAQl0DzSoGqfq7W0Pwc=;
         h=Subject:To:References:From:Date:In-Reply-To;
-        b=FD/ysOC8ahVN1mvORi/AjS9Lf2W5pzuDzLYgtsjEkWYsGQNDUQNygg7bRvoFYhZBc
-         b0wYL4tFNKgiL7OA8yiZluax2YZP58CnuH3BQuGezeyY9eQX3DCzDLKURcdX0+0sLq
-         wYSmCXYTu8zilChWgqTeWSdzCoy4GeFWFWXHKD3yQX53Mi4McNLZx0+9/Abf+Kw0DY
-         9Ucp46dpflCO+vRH2/qMeu5WJuTqRN/GN7CfeG2fD+qDaTV2jclJn8fWA6F3eoJx9g
-         Jp8UmlOjilERI+ueaG7npOxDH9VeY5e3EXIGMkuJQoQL9RadZ0ZboxT3+xHS1Q7BcL
-         7SqCS/DwW9Kwg==
+        b=k78rt5KuFq4qC1qo227g4ecs6eIXxRlwhYh0LsYDrkxcq2qv8g3JAR27bb6yA5jL0
+         x8sUrfW65we8+HMehQFhTfqiRkYNze3jmo0to7IRK9z/ypUZQ/EB+9aBlpEl8aIGjM
+         9Es4f2/2eZeVSC1K0zW9dEaFCXTy9E6fAyo6yA9PD3IQJuEcMZKPj0GoOGnVWcSE9u
+         dmXuWdOX/InHo/huU3w9N169kfhVeOK3gNsACfCOow1c+QzD6X/3OHpjsEC7zB+uqa
+         X3k+GDAtsadq184ROzQnkj+/7d+fLWc3r9LkpCt1R2Tg5ZONH6HgM2bde8JjS5VjGE
+         NreumYWiz/3qg==
 Subject: Re: [RFC PATCH 1/2] iio: accel: add support for FXLS8962AF/FXLS8964AF
  accelerometers
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+To:     Lars-Peter Clausen <lars@metafoo.de>, jic23@kernel.org,
+        linux-iio@vger.kernel.org, robh+dt@kernel.org,
+        devicetree@vger.kernel.org
 References: <20210415114614.1071928-1-sean@geanix.com>
- <CY4PR03MB31127BA6AD9A0F7DCF295ED0994D9@CY4PR03MB3112.namprd03.prod.outlook.com>
+ <11adb882-1af8-ab08-fcd9-47bedad02699@metafoo.de>
 From:   Sean Nyekjaer <sean@geanix.com>
-Message-ID: <634cf024-dc01-431a-4955-88b453e2c629@geanix.com>
-Date:   Thu, 15 Apr 2021 19:51:06 +0200
+Message-ID: <31ecc4b0-d09b-a0c4-531a-3c0c28bac46f@geanix.com>
+Date:   Thu, 15 Apr 2021 19:53:03 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.9.0
 MIME-Version: 1.0
-In-Reply-To: <CY4PR03MB31127BA6AD9A0F7DCF295ED0994D9@CY4PR03MB3112.namprd03.prod.outlook.com>
+In-Reply-To: <11adb882-1af8-ab08-fcd9-47bedad02699@metafoo.de>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Content-Language: en-US
@@ -50,15 +50,19 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 
 
-On 15/04/2021 17.10, Sa, Nuno wrote:
->> +	pm_runtime_enable(dev);
->> +	pm_runtime_set_autosuspend_delay(dev,
->> FXLS8962AF_AUTO_SUSPEND_DELAY_MS);
->> +	pm_runtime_use_autosuspend(dev);
-> Maybe add devm_add_action_or_reset() here and after enabling the
-> regulator and we can then ditch ' fxls8962af_core_remove ()'...
+On 15/04/2021 14.50, Lars-Peter Clausen wrote:
+> On 4/15/21 1:46 PM, Sean Nyekjaer wrote:
+>> Add basic support for NXP FXLS8962AF/FXLS8964AF Automotive
+>> accelerometers.
+>> It will allow setting up scale/gain and reading x,y,z
+>> axis.
+>
+> Hi,
+>
+> Thanks for the patch. This looks very good! 
 Thanks for the review :)
-I'm think not able to ditch the fxls8962af_core_remove() I still have 
-the pm_runtime stuff or can they be removed via some devm_ functions?
+I have addressed the comments in my local tree.
+It took quite some time to implement the read_avail callback, it's not 
+that compatible with what I have done :/
 
 /Sean

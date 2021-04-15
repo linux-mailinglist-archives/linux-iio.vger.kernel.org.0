@@ -2,52 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 655C8360E81
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Apr 2021 17:16:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2179360E9A
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Apr 2021 17:20:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234415AbhDOPQQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 15 Apr 2021 11:16:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47480 "EHLO
+        id S234807AbhDOPQl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 15 Apr 2021 11:16:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236641AbhDOPPH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 15 Apr 2021 11:15:07 -0400
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57FD0C06175F;
-        Thu, 15 Apr 2021 08:14:44 -0700 (PDT)
-Received: by mail-pf1-x435.google.com with SMTP id c17so16264955pfn.6;
-        Thu, 15 Apr 2021 08:14:44 -0700 (PDT)
+        with ESMTP id S234447AbhDOPQE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 15 Apr 2021 11:16:04 -0400
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9784BC061756;
+        Thu, 15 Apr 2021 08:15:39 -0700 (PDT)
+Received: by mail-pj1-x1034.google.com with SMTP id b8-20020a17090a5508b029014d0fbe9b64so14575570pji.5;
+        Thu, 15 Apr 2021 08:15:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=Ax39KJeRsWzONrhn+72TkNapDpAhRxhVHYcwUNfI7/8=;
-        b=dZXTlmwxnwELuSG5gVg7O/1XlkljIXnmaZxoSsrmXYAif0qd0cS2nLBV31LseGwAww
-         08AZo0PIV9odOFgEtGAoQWBGVis/cpRaldCoMSgWx0i8u3k4eVdGECk2soddkRtwXr8W
-         goG25yIsWtbaRs4263s3TAzPuDz4xEVthaSwE0PSnmyj2wnXsT4D3uqzUe74laAsfCR3
-         MQSfG5xqP9CGq5I/QyeX62oZhM24rciIbTqtir2WC5A6knnDxSt7RtEd+shZndTNr08p
-         mpUHl+Wi+PbhhT5515odVLZx/3VzDUQWi+fZApvrNtlCzuIaZIE/IU4atSpxhtB0XLJd
-         qUNA==
+        bh=RuiLtWNxMd40+FIGD3C4gu6eExR7oO+TwAUL1WIQWJQ=;
+        b=CMPu8NaC9ExpNZ0knaznfSJByoJpBOrJtdzfENSlzZRfqG3kbCaBVUqgdk2SACGwjg
+         CCdcwj+XP2KaHnzx0XfSo4BnkYfN7mToSyu/4dqrMmYbp8GJ6q+WX9lPIDfOqFP1EVIW
+         bPHSizmQGrP2TFSBW/+95v40fFxCWys8tzhdBfI/Ajp4MgUWEw+Tx722u4UfaviA/s2H
+         Amj7/5nfJhhsn9Lq7n9zSnbYwTI5Vr9DCBT3uVTLljjez5t6bhudDSJa/7AMbK645+iE
+         +Ug9EVzEYqFX+mSFlYf+ov5w2YIBMSyroseGomvZtWGs/OwYL3UrPaAJ1O0BnwJa42PF
+         hkNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Ax39KJeRsWzONrhn+72TkNapDpAhRxhVHYcwUNfI7/8=;
-        b=q2nMUCLyJBQExynUQRijrLm1g37hFO02WL6hfGqJLZSPcZszJtEM9aTupnQ0Ns9Vqd
-         BsUcI82fIjvWWNJWh6bC5J2hgqlFsRhme0c/87qXZG45X+JDiWrTjsEf1PM59Y5TglDV
-         ISmAWTyjDJxwyGEc6omDbfEhr9mOcu5QRfyu4867shjHQ6DNtkXmWEaEAii7crFvM1/0
-         8PpcMsJVnPlcG1jZ0IagxRuJ+R6W130Z8gjuYpmbg4sJ2MemAFWx1Zk8hp/MYuz1pTTX
-         kt1lQJBA/rdR0otTF18yWRj9kSJtJym3FDmUR3N081cliMisE/AmjmmqvnvInHyRtjpB
-         twRg==
-X-Gm-Message-State: AOAM531+UyY0gQ3zv2FwZB4CJZSwntrsg972xzEzduEwNlo+6jBzDkcD
-        LhavriAsKfH9tfNHbcnAzgJ6ElxyqeA=
-X-Google-Smtp-Source: ABdhPJy7h45A/JGY8V4v3PNXukYZA8GUaHq8q5XZTPvNARGrwJyJ1oIa8vavVXfsZ1NSqZbWbAyD3Q==
-X-Received: by 2002:aa7:864d:0:b029:24b:dd03:edec with SMTP id a13-20020aa7864d0000b029024bdd03edecmr3764464pfo.18.1618499683934;
-        Thu, 15 Apr 2021 08:14:43 -0700 (PDT)
+        bh=RuiLtWNxMd40+FIGD3C4gu6eExR7oO+TwAUL1WIQWJQ=;
+        b=RrOrlPgzuksKG1Oeagm4sEEVkYLELFcTK99w6I55q1Wda94092pp/IBl7JXOAUNFus
+         NdJEiOVclU+Exc2B3MsVJMLLzTQPHpR6TDnLzZPuMmT5YlqIizbm6xjKfZg16jcEob7+
+         tL/KRYDylGkKKJkhUKty+wBh56XE+V28y+NfGz7QYkFX+Qd7ZHTgyqtfqUVP1eMwWTUD
+         47NrRRH1h8tYsq/pvXWFHBV2hkRMxpDoSh0Hh2+8LaX+Sf5DC4e3b2mifu4T1ov2lvpH
+         w2NgimeC4Vv0bD+GVqTxVi8lfl1RM2mkcuGHW6DVPPAkXjWuGWE23Ekuf1N2ufOrpZ+O
+         sq0w==
+X-Gm-Message-State: AOAM531z77HyKjhBRja+Fk879Tz71AHVosJA7YGvVT4FYNdpynNF1/8m
+        eeCMWr5EM0VbdkrM3nEB7w4TtUvObpw=
+X-Google-Smtp-Source: ABdhPJwNs29RBYXQcWurs9YVnGIS/ETzTjJ4BFbp9aGhG6Ko7ult4MqFLvrwpLHUmzefnsw1es3yZA==
+X-Received: by 2002:a17:902:a515:b029:eb:2723:3fde with SMTP id s21-20020a170902a515b02900eb27233fdemr4416016plq.56.1618499739213;
+        Thu, 15 Apr 2021 08:15:39 -0700 (PDT)
 Received: from syed ([2401:4900:2eec:4193:f802:b600:e94c:55c4])
-        by smtp.gmail.com with ESMTPSA id u5sm684396pfn.155.2021.04.15.08.14.35
+        by smtp.gmail.com with ESMTPSA id m7sm2711418pjc.54.2021.04.15.08.15.31
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 15 Apr 2021 08:14:42 -0700 (PDT)
-Date:   Thu, 15 Apr 2021 20:44:31 +0530
+        Thu, 15 Apr 2021 08:15:38 -0700 (PDT)
+Date:   Thu, 15 Apr 2021 20:45:28 +0530
 From:   Syed Nayyar Waris <syednwaris@gmail.com>
 To:     William Breathitt Gray <vilhelm.gray@gmail.com>
 Cc:     jic23@kernel.org, kernel@pengutronix.de,
@@ -59,54 +59,60 @@ Cc:     jic23@kernel.org, kernel@pengutronix.de,
         patrick.havelange@essensium.com, fabrice.gasnier@st.com,
         mcoquelin.stm32@gmail.com, alexandre.torgue@st.com,
         o.rempel@pengutronix.de
-Subject: Re: [PATCH v10 04/33] counter: 104-quad-8: Return error when invalid
- mode during ceiling_write
-Message-ID: <20210415151431.GB8933@syed>
+Subject: Re: [PATCH v10 05/33] counter: 104-quad-8: Annotate hardware config
+ module parameter
+Message-ID: <20210415151528.GC8933@syed>
 References: <cover.1616150619.git.vilhelm.gray@gmail.com>
- <98676f9a2e9cf991d7a002b3b264cca774e5b3c8.1616150619.git.vilhelm.gray@gmail.com>
+ <203f1b6084ed86a6696eb422bcadc0955c6427bb.1616150619.git.vilhelm.gray@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <98676f9a2e9cf991d7a002b3b264cca774e5b3c8.1616150619.git.vilhelm.gray@gmail.com>
+In-Reply-To: <203f1b6084ed86a6696eb422bcadc0955c6427bb.1616150619.git.vilhelm.gray@gmail.com>
 User-Agent: Mutt/1.5.24 (2015-08-30)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Mar 19, 2021 at 08:00:23PM +0900, William Breathitt Gray wrote:
-> The 104-QUAD-8 only has two count modes where a ceiling value makes
-> sense: Range Limit and Modulo-N. Outside of these two modes, setting a
-> ceiling value is an invalid operation -- so let's report it as such by
-> returning -EINVAL.
+On Fri, Mar 19, 2021 at 08:00:24PM +0900, William Breathitt Gray wrote:
+> When the kernel is running in secure boot mode, we lock down the kernel to
+> prevent userspace from modifying the running kernel image.  Whilst this
+> includes prohibiting access to things like /dev/mem, it must also prevent
+> access by means of configuring driver modules in such a way as to cause a
+> device to access or modify the kernel image.
 > 
-> Fixes: fc069262261c ("counter: 104-quad-8: Add lock guards - generic interface")
+> To this end, annotate module_param* statements that refer to hardware
+> configuration and indicate for future reference what type of parameter they
+> specify.  The parameter parser in the core sees this information and can
+> skip such parameters with an error message if the kernel is locked down.
+> The module initialisation then runs as normal, but just sees whatever the
+> default values for those parameters is.
+> 
+> Note that we do still need to do the module initialisation because some
+> drivers have viable defaults set in case parameters aren't specified and
+> some drivers support automatic configuration (e.g. PNP or PCI) in addition
+> to manually coded parameters.
+> 
+> This patch annotates the 104-QUAD-8 driver.
+> 
 > Cc: Syed Nayyar Waris <syednwaris@gmail.com>
 > Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 > ---
->  drivers/counter/104-quad-8.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+>  drivers/counter/104-quad-8.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 > diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
-> index 4bb9abffae48..233a3acc1377 100644
+> index 233a3acc1377..0fd61cc82d30 100644
 > --- a/drivers/counter/104-quad-8.c
 > +++ b/drivers/counter/104-quad-8.c
-> @@ -714,13 +714,14 @@ static ssize_t quad8_count_ceiling_write(struct counter_device *counter,
->  	switch (priv->count_mode[count->id]) {
->  	case 1:
->  	case 3:
-> +		mutex_unlock(&priv->lock);
->  		quad8_preset_register_set(priv, count->id, ceiling);
-> -		break;
-> +		return len;
->  	}
+> @@ -21,7 +21,7 @@
 >  
->  	mutex_unlock(&priv->lock);
+>  static unsigned int base[max_num_isa_dev(QUAD8_EXTENT)];
+>  static unsigned int num_quad8;
+> -module_param_array(base, uint, &num_quad8, 0);
+> +module_param_hw_array(base, uint, ioport, &num_quad8, 0);
+>  MODULE_PARM_DESC(base, "ACCES 104-QUAD-8 base addresses");
 >  
-> -	return len;
-> +	return -EINVAL;
->  }
->  
->  static ssize_t quad8_count_preset_enable_read(struct counter_device *counter,
+>  #define QUAD8_NUM_COUNTERS 8
 > -- 
 > 2.30.2
 >

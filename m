@@ -2,67 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3642D361173
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Apr 2021 19:53:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA807361283
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Apr 2021 20:52:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233395AbhDORx3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 15 Apr 2021 13:53:29 -0400
-Received: from first.geanix.com ([116.203.34.67]:35476 "EHLO first.geanix.com"
+        id S234359AbhDOSw6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 15 Apr 2021 14:52:58 -0400
+Received: from mga04.intel.com ([192.55.52.120]:31157 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233052AbhDORx3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 15 Apr 2021 13:53:29 -0400
-Received: from [192.168.16.66] (unknown [185.233.254.173])
-        by first.geanix.com (Postfix) with ESMTPSA id E86244633E2;
-        Thu, 15 Apr 2021 17:53:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1618509184; bh=d/GFrnKnmc5rFzC7uCDXeDSBdAQl0DzSoGqfq7W0Pwc=;
-        h=Subject:To:References:From:Date:In-Reply-To;
-        b=k78rt5KuFq4qC1qo227g4ecs6eIXxRlwhYh0LsYDrkxcq2qv8g3JAR27bb6yA5jL0
-         x8sUrfW65we8+HMehQFhTfqiRkYNze3jmo0to7IRK9z/ypUZQ/EB+9aBlpEl8aIGjM
-         9Es4f2/2eZeVSC1K0zW9dEaFCXTy9E6fAyo6yA9PD3IQJuEcMZKPj0GoOGnVWcSE9u
-         dmXuWdOX/InHo/huU3w9N169kfhVeOK3gNsACfCOow1c+QzD6X/3OHpjsEC7zB+uqa
-         X3k+GDAtsadq184ROzQnkj+/7d+fLWc3r9LkpCt1R2Tg5ZONH6HgM2bde8JjS5VjGE
-         NreumYWiz/3qg==
-Subject: Re: [RFC PATCH 1/2] iio: accel: add support for FXLS8962AF/FXLS8964AF
- accelerometers
-To:     Lars-Peter Clausen <lars@metafoo.de>, jic23@kernel.org,
-        linux-iio@vger.kernel.org, robh+dt@kernel.org,
-        devicetree@vger.kernel.org
-References: <20210415114614.1071928-1-sean@geanix.com>
- <11adb882-1af8-ab08-fcd9-47bedad02699@metafoo.de>
-From:   Sean Nyekjaer <sean@geanix.com>
-Message-ID: <31ecc4b0-d09b-a0c4-531a-3c0c28bac46f@geanix.com>
-Date:   Thu, 15 Apr 2021 19:53:03 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
+        id S234101AbhDOSw5 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 15 Apr 2021 14:52:57 -0400
+IronPort-SDR: XvI4ysctFejX4uyz5VK18NhRSsFJVb7k33FunaIfLnZgx1/d0Pde5HgvvU8JF0qmWv2cSRyQMJ
+ Y5mMsLcCgyHA==
+X-IronPort-AV: E=McAfee;i="6200,9189,9955"; a="192792351"
+X-IronPort-AV: E=Sophos;i="5.82,225,1613462400"; 
+   d="scan'208";a="192792351"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2021 11:52:34 -0700
+IronPort-SDR: WB2x6z6CCoH5XIEzorYma2EX9jtZ2l+8i7JM5jECwf9LC/1rItW8KiDCtEs7hzjz6VxZV7qu7i
+ zPb49kjLhHeA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.82,225,1613462400"; 
+   d="scan'208";a="384108663"
+Received: from spandruv-desk.jf.intel.com ([10.54.75.21])
+  by orsmga006.jf.intel.com with ESMTP; 15 Apr 2021 11:52:33 -0700
+From:   Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+To:     jikos@kernel.org, jic23@kernel.org, benjamin.tissoires@redhat.com
+Cc:     jiapeng.chong@linux.alibaba.com, linux-input@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Subject: [PATCH 1/2] HID: hid-sensor-hub: Return error for hid_set_field() failure
+Date:   Thu, 15 Apr 2021 11:52:31 -0700
+Message-Id: <20210415185232.2617398-1-srinivas.pandruvada@linux.intel.com>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-In-Reply-To: <11adb882-1af8-ab08-fcd9-47bedad02699@metafoo.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        URIBL_BLOCKED autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on 93bd6fdb21b5
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+In the function sensor_hub_set_feature(), return error when hid_set_field()
+fails.
 
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+---
+ drivers/hid/hid-sensor-hub.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-On 15/04/2021 14.50, Lars-Peter Clausen wrote:
-> On 4/15/21 1:46 PM, Sean Nyekjaer wrote:
->> Add basic support for NXP FXLS8962AF/FXLS8964AF Automotive
->> accelerometers.
->> It will allow setting up scale/gain and reading x,y,z
->> axis.
->
-> Hi,
->
-> Thanks for the patch. This looks very good! 
-Thanks for the review :)
-I have addressed the comments in my local tree.
-It took quite some time to implement the read_avail callback, it's not 
-that compatible with what I have done :/
+diff --git a/drivers/hid/hid-sensor-hub.c b/drivers/hid/hid-sensor-hub.c
+index 3dd7d3246737..f9983145d4e7 100644
+--- a/drivers/hid/hid-sensor-hub.c
++++ b/drivers/hid/hid-sensor-hub.c
+@@ -210,16 +210,21 @@ int sensor_hub_set_feature(struct hid_sensor_hub_device *hsdev, u32 report_id,
+ 	buffer_size = buffer_size / sizeof(__s32);
+ 	if (buffer_size) {
+ 		for (i = 0; i < buffer_size; ++i) {
+-			hid_set_field(report->field[field_index], i,
+-				      (__force __s32)cpu_to_le32(*buf32));
++			ret = hid_set_field(report->field[field_index], i,
++					    (__force __s32)cpu_to_le32(*buf32));
++			if (ret)
++				goto done_proc;
++
+ 			++buf32;
+ 		}
+ 	}
+ 	if (remaining_bytes) {
+ 		value = 0;
+ 		memcpy(&value, (u8 *)buf32, remaining_bytes);
+-		hid_set_field(report->field[field_index], i,
+-			      (__force __s32)cpu_to_le32(value));
++		ret = hid_set_field(report->field[field_index], i,
++				    (__force __s32)cpu_to_le32(value));
++		if (ret)
++			goto done_proc;
+ 	}
+ 	hid_hw_request(hsdev->hdev, report, HID_REQ_SET_REPORT);
+ 	hid_hw_wait(hsdev->hdev);
+-- 
+2.27.0
 
-/Sean

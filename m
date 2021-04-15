@@ -2,56 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 97A36360413
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Apr 2021 10:17:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C423F360427
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Apr 2021 10:20:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231483AbhDOISS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 15 Apr 2021 04:18:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40896 "EHLO
+        id S231678AbhDOIUs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 15 Apr 2021 04:20:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231482AbhDOISP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 15 Apr 2021 04:18:15 -0400
-Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D652CC061574
-        for <linux-iio@vger.kernel.org>; Thu, 15 Apr 2021 01:17:51 -0700 (PDT)
-Received: by mail-pg1-x531.google.com with SMTP id t22so16425091pgu.0
-        for <linux-iio@vger.kernel.org>; Thu, 15 Apr 2021 01:17:51 -0700 (PDT)
+        with ESMTP id S231483AbhDOIUr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 15 Apr 2021 04:20:47 -0400
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3516C061574
+        for <linux-iio@vger.kernel.org>; Thu, 15 Apr 2021 01:20:22 -0700 (PDT)
+Received: by mail-pj1-x102c.google.com with SMTP id b8-20020a17090a5508b029014d0fbe9b64so13949652pji.5
+        for <linux-iio@vger.kernel.org>; Thu, 15 Apr 2021 01:20:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=/9AWoB4ye/0POiEbbIM/oDk0WhuOPc64+qLDIN/mbeQ=;
-        b=OLI73ol7TlL70w3gmHZauoH4ow4D23caoG3K27RbUmmCKkjRWCf1F536iFI43EbQ4m
-         EMhms311e0mAgqm90kk5hxa3o+npidJSd4UTOjh+h/rwwNAAnJ6QFT2pvqeY9fw1meQa
-         nhHXCq5/xwZIPBCm0MS8FKrQ7VcrH+8nDSYySNk+JDd7d42GDimE4fKSOYBicy7VDWcY
-         bMsiVMzadQDRT7VFpjlOQPrdBCPOmfNeq1JU3M+/IQGetWIWPQfmN8QmjWk/M9nlrCK9
-         FJvXiAL8Y7lJIZah9G/cbw0bK4duVzVx70q0po7rvyxeZvySQZOMnp+t7YEMvUBPyHAC
-         LSxg==
+        bh=J5TxEKY/oiLNJxlC2tQtj/whqVrZyf6XAKgtMawzWbY=;
+        b=ZWxeMl/OyM9aGvgmt9AM2fTEgFRq3VNNpZ9Yo5nPLqWMRJfVLIwt6B5kkkgofWH476
+         7LLcW2U1cLntCEFncTyh8+HHcJAtS+r9T60Xbx281Kl6NiXF/Z66L5iHYND+XJAgf0QC
+         9sLRHR1mCWrnjh0yjdkYJ3PNYpYx87jMRKYRREtDaHpG1hw11FXKcfuBXVfCb8IIznHE
+         MdeAVzX4LmFc5HopozBEt4oFO+VGTEZnfZBWrB3TQhIDCvNgJbtwslRZTlFwRhhlsVBi
+         P4mfj5bJDHsr0FTWm5tKg6Vokvp26GodItgWrbHv9H5fL+z4DgJMnYjjdttvsr/N/qPd
+         w/Ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=/9AWoB4ye/0POiEbbIM/oDk0WhuOPc64+qLDIN/mbeQ=;
-        b=JemDJCX+kyqCNDdEMr41kBijmU6oyipInEv583R6ZVac6DRiDt7x4VUsP+V4PAzck+
-         gzcU16s5TRm8Ttc5ohVZQh3f0MciUA6paxnosa6y4YuWZ3yrQP4aKnG0cZEC1ViI3tB4
-         GFnxZU+NLup906/07YFEgRnd51CcUGFhOZ/ohY5a+lQbL4nOsEdr+BnUK01HRStQy6TE
-         fh8HNJETKCYrq1eoWpGbVkhl8e2zyIL1t4La8JOirjz41tZM0EPUKhxF9TPuBALcDgkY
-         ejM7yHJ1oIFCbN8AnN7o1OeRCJ10EN7gPYFtCuce3Ok2MqaVEGFCrdltWzQKfONVx3QM
-         A7uQ==
-X-Gm-Message-State: AOAM5329I9+/59nAxYLnl46ptiqh3NOCuEg7LXxruM4ILuStL78E7yB2
-        4CsZavgMXKE/xtE7ezeLxykEX/Hw2vgk5KIDgmf/YZJjcrTfVA==
-X-Google-Smtp-Source: ABdhPJxqtWRI51BZsK46eeLVrdMaEqbzDRHUxYlBfK1ooJJCS9/GIwiZ+DQpWkaMJvhJcIB4CUJqDFlN9PEWpj7eXdk=
-X-Received: by 2002:a62:3486:0:b029:24c:34c0:3c7a with SMTP id
- b128-20020a6234860000b029024c34c03c7amr2258503pfa.36.1618474671433; Thu, 15
- Apr 2021 01:17:51 -0700 (PDT)
+        bh=J5TxEKY/oiLNJxlC2tQtj/whqVrZyf6XAKgtMawzWbY=;
+        b=n5Xy+v1PCm9OvtRMImkYbplN1HuAPJBO+3YfHkjmAS5+kJzVReI3dAJPqf1RzE2dAe
+         SHtx6DGUNvoSLuccqV0c5KZxifvN2KWKss8urFwiezEbtRfLvVZmAhkzSk+IEQl2x/Xn
+         +8YeWMkYFpxq7YlWK2QPShuDdmvE15+AKYG+hTbpDmmV3wLp+pCwiA09uhAVJ5bSQ4u0
+         H7KdqWB9zVuV5n2KHUlLCVovnvgH8oaiK0oSmcQoO9fSjU2Jr0z7J/AmMFg9N2XGtgB3
+         Mw/8tACuAs1GrMsKnyI5EOoe5MKjWhdY3X05+f33a3yKlxqOVdkVRZX5kzPHjUJBviAB
+         2row==
+X-Gm-Message-State: AOAM533hBMvYpP3rD7eTMIjB0xRsWT7kjj0MhTTagEhgma7fTcD7TOa2
+        wJk1BD+0ufqQYaaSy0w64aeOl0RQtewOAqy180Q=
+X-Google-Smtp-Source: ABdhPJwiI7r/gwrBU+J3GvwhsKLp/S77KpzT6+85e0tqHmlJB0A7HebcvTuNgzjctfWSh0mkDKGG4gcUdP0q/ok6D70=
+X-Received: by 2002:a17:90a:ae10:: with SMTP id t16mr2719047pjq.86.1618474822508;
+ Thu, 15 Apr 2021 01:20:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210413112105.69458-1-nuno.sa@analog.com> <20210413112105.69458-4-nuno.sa@analog.com>
- <CA+U=DsqFJ_qJk_vnyvxJeN0Cfm9uN82RfWmvrNV5uDX7qgWPGA@mail.gmail.com> <CY4PR03MB3112FE37268179DA1ED3436C994D9@CY4PR03MB3112.namprd03.prod.outlook.com>
-In-Reply-To: <CY4PR03MB3112FE37268179DA1ED3436C994D9@CY4PR03MB3112.namprd03.prod.outlook.com>
+References: <20210413112105.69458-1-nuno.sa@analog.com> <20210413112105.69458-8-nuno.sa@analog.com>
+ <CA+U=DsrBUFcwkO900StwY8-8W9fn3z+LZOaJ7YR=9qBQsFi_2w@mail.gmail.com> <CY4PR03MB311236A292933D2C89CB9B53994D9@CY4PR03MB3112.namprd03.prod.outlook.com>
+In-Reply-To: <CY4PR03MB311236A292933D2C89CB9B53994D9@CY4PR03MB3112.namprd03.prod.outlook.com>
 From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Thu, 15 Apr 2021 11:17:40 +0300
-Message-ID: <CA+U=DsrC=QFLn9YJNa7O7=gsLkm-utg3UKJwXMipgnzSzOhRNQ@mail.gmail.com>
-Subject: Re: [PATCH 3/7] iio: adis16475: do not return ints in irq handlers
+Date:   Thu, 15 Apr 2021 11:20:10 +0300
+Message-ID: <CA+U=Dsr1RF7XNvQ9s77vGERXbmdY4PKGbymXYtZpmoarN+DN7Q@mail.gmail.com>
+Subject: Re: [PATCH 7/7] iio: adis_buffer: update device page after changing it
 To:     "Sa, Nuno" <Nuno.Sa@analog.com>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
@@ -62,54 +61,56 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Apr 15, 2021 at 10:38 AM Sa, Nuno <Nuno.Sa@analog.com> wrote:
+On Thu, Apr 15, 2021 at 10:58 AM Sa, Nuno <Nuno.Sa@analog.com> wrote:
 >
 >
+>
+> > -----Original Message-----
 > > From: Alexandru Ardelean <ardeleanalex@gmail.com>
-> > Sent: Wednesday, April 14, 2021 9:27 AM
+> > Sent: Wednesday, April 14, 2021 9:39 AM
 > > To: Sa, Nuno <Nuno.Sa@analog.com>
 > > Cc: linux-iio <linux-iio@vger.kernel.org>; Jonathan Cameron
 > > <jic23@kernel.org>; Hennerich, Michael
 > > <Michael.Hennerich@analog.com>; Lars-Peter Clausen
 > > <lars@metafoo.de>
-> > Subject: Re: [PATCH 3/7] iio: adis16475: do not return ints in irq
-> > handlers
+> > Subject: Re: [PATCH 7/7] iio: adis_buffer: update device page after
+> > changing it
 > >
 > > [External]
 > >
 > > On Tue, Apr 13, 2021 at 5:45 PM Nuno Sa <nuno.sa@analog.com>
 > > wrote:
 > > >
-> > > On an IRQ handler we should return normal error codes as
-> > 'irqreturn_t'
-> > > is expected.
-> > >
-> > > Fixes: fff7352bf7a3c ("iio: imu: Add support for adis16475")
+> > > With commit 41f2770a07e0 ("iio: adis_buffer: don't push data to
+> > buffers on
+> > > failure"), we return if 'spi_sync()' fails which would leave
+> > > 'adis->current_page' in an incoherent state. Hence, set this variable
+> > > right after we change the device page.
 > > >
 > > > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 > > > ---
-> > >  drivers/iio/imu/adis16475.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >  drivers/iio/imu/adis_buffer.c | 6 +++---
+> > >  1 file changed, 3 insertions(+), 3 deletions(-)
 > > >
-> > > diff --git a/drivers/iio/imu/adis16475.c b/drivers/iio/imu/adis16475.c
-> > > index 1de62fc79e0f..51b76444db0b 100644
-> > > --- a/drivers/iio/imu/adis16475.c
-> > > +++ b/drivers/iio/imu/adis16475.c
-> > > @@ -1068,7 +1068,7 @@ static irqreturn_t
-> > adis16475_trigger_handler(int irq, void *p)
-> > >
-> > >         ret = spi_sync(adis->spi, &adis->msg);
-> > >         if (ret)
-> > > -               return ret;
-> > > +               goto check_burst32;
+> > > diff --git a/drivers/iio/imu/adis_buffer.c
+> > b/drivers/iio/imu/adis_buffer.c
+> > > index 73790b71102b..aa37981c28f1 100644
+> > > --- a/drivers/iio/imu/adis_buffer.c
+> > > +++ b/drivers/iio/imu/adis_buffer.c
+> > > @@ -142,6 +142,8 @@ static irqreturn_t adis_trigger_handler(int irq,
+> > void *p)
+> > >                                 dev_err(&adis->spi->dev, "Failed to change device
+> > page: %d\n", ret);
+> > >                                 goto irq_done;
+> > >                         }
+> > > +
+> > > +                       adis->current_page = 0;
 > >
-> > This is also going to call adis16475_burst32_check().
-> > Which in itself is [probably] an undesired behavior change.
+> > If the above spi_write() fails, this adis->current_page isn't reset.
+> > Maybe reset this as the first thing in this if block?
 > >
-> > Maybe this needs a new 'irq_done' label?
 >
-> That was intentional. If someone changed the decimation or the FIR
-> filters so that we can change to burst32, we can just do it now...
->
+> If the 'spi_write()' fails it means that we could not change to page0,
+> so we should not update the current_page...
 
 ack

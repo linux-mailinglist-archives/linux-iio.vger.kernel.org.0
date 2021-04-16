@@ -2,201 +2,353 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AFAC361A88
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Apr 2021 09:27:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82F7D361A97
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Apr 2021 09:40:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239444AbhDPH0l (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 16 Apr 2021 03:26:41 -0400
-Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:12600 "EHLO
-        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231666AbhDPH0l (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Apr 2021 03:26:41 -0400
-Received: from pps.filterd (m0167091.ppops.net [127.0.0.1])
-        by mx0b-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 13G7KxP0014969;
-        Fri, 16 Apr 2021 03:26:12 -0400
-Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2048.outbound.protection.outlook.com [104.47.66.48])
-        by mx0b-00128a01.pphosted.com with ESMTP id 37x9mw4ebm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 16 Apr 2021 03:26:12 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Ns9m8tlOHhF4nowR8qxh1QGraTFqjqZ5ABqi3fw0AmvxA7mcJSfyaxVeld8EnQO09JC0tsBiATuiFG9vebJQRtsOswFWvpTgWA+pJMhzGQjtMRgEsfkl+TSc/kdbVpEBzhkjtl1ePz3gQjB9tPaFgWtgoVVDq3laGpZTYfmmAjuxJfKgxLSorRNyv+3o0I7r0vp8YnMzFo43wJHzcXKZ9A/8yVvt/YQBxsgBAMxesIhe2okIZGD+PMacBYMrcmKIwTp5rnOSKI9d08xiSqNkucxcWIfghUlWe9HG83uvJznlqWsMTpWwM0hrUau9BAnF5H+SBFs3629TbeDXHs041A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hbBtTanYsCvmycl53HjKi1VKhOnAdT8RwSYHuTTLDis=;
- b=U1mwh7r5WJSBPMiPdRRMK5Z/zSVUeOiUzLlAHYd4AKq2PJ2g3Jv3mNqhXYDb0wsA1J508iLKHjkgzSpuSHk7t4iF5SK5sk5K5CK881a+mia8H9MZZlYJbyBFff7AQ6vHCKoihMJcm6jFXNSGEHcualUhkNf5xZS/yRZWVFJPEFv5pGjEmgf/re5M6FzdX4+sNeYblOamBZdrN1gytFK4JqTogaMKkPE/MLn2UrLLBAUg5Vkup8/HiN3t9H10DE0IFz4X3yZXrIwJhS48itmXB0znijLmhNiZD5mmKlyV5NKvRbXyf/gB9nx6zwYentrQIzwW085qvP/LJmpZvj1+7A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
+        id S239479AbhDPH2Z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 16 Apr 2021 03:28:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34258 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231666AbhDPH2Z (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Apr 2021 03:28:25 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2C0FC061574;
+        Fri, 16 Apr 2021 00:27:59 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id l4so40641523ejc.10;
+        Fri, 16 Apr 2021 00:27:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hbBtTanYsCvmycl53HjKi1VKhOnAdT8RwSYHuTTLDis=;
- b=8BugidDDlkrBsqt6dwMcRfzR1+haytvtCVHsvLddnbc1TbW8tCCxfu3HCx4JoUNLDmcmIAV1W0nDFT0+Bt3C3FbGdMxvoCBIFr8WMwKjcPPXD+4yEvbhw88iPWxeVo2oGeqnAXOrirHhL0VfiIHOpvZ6CbGhmwylheamLqcotTQ=
-Received: from CY4PR03MB3112.namprd03.prod.outlook.com (2603:10b6:910:53::25)
- by CY1PR03MB2316.namprd03.prod.outlook.com (2a01:111:e400:c615::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4042.16; Fri, 16 Apr
- 2021 07:26:09 +0000
-Received: from CY4PR03MB3112.namprd03.prod.outlook.com
- ([fe80::4da5:ed3c:b627:2a24]) by CY4PR03MB3112.namprd03.prod.outlook.com
- ([fe80::4da5:ed3c:b627:2a24%6]) with mapi id 15.20.4042.018; Fri, 16 Apr 2021
- 07:26:09 +0000
-From:   "Sa, Nuno" <Nuno.Sa@analog.com>
-To:     Sean Nyekjaer <sean@geanix.com>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: RE: [RFC PATCH 1/2] iio: accel: add support for FXLS8962AF/FXLS8964AF
- accelerometers
-Thread-Topic: [RFC PATCH 1/2] iio: accel: add support for
- FXLS8962AF/FXLS8964AF accelerometers
-Thread-Index: AQHXMe48BgOnzTPNVkKybkvDFYrEQKq1qp9wgAAxVQCAAOKpIA==
-Date:   Fri, 16 Apr 2021 07:26:09 +0000
-Message-ID: <CY4PR03MB3112E2AD7053C5C795517089994C9@CY4PR03MB3112.namprd03.prod.outlook.com>
-References: <20210415114614.1071928-1-sean@geanix.com>
- <CY4PR03MB31127BA6AD9A0F7DCF295ED0994D9@CY4PR03MB3112.namprd03.prod.outlook.com>
- <634cf024-dc01-431a-4955-88b453e2c629@geanix.com>
-In-Reply-To: <634cf024-dc01-431a-4955-88b453e2c629@geanix.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: =?utf-8?B?UEcxbGRHRStQR0YwSUc1dFBTSmliMlI1TG5SNGRDSWdjRDBpWXpwY2RYTmxj?=
- =?utf-8?B?bk5jYm5OaFhHRndjR1JoZEdGY2NtOWhiV2x1WjF3d09XUTRORGxpTmkwek1t?=
- =?utf-8?B?UXpMVFJoTkRBdE9EVmxaUzAyWWpnMFltRXlPV1V6TldKY2JYTm5jMXh0YzJj?=
- =?utf-8?B?dE1ERTJNakV4T1RFdE9XVTROUzB4TVdWaUxUaGlNMkl0Wm1NM056YzBNakZt?=
- =?utf-8?B?WTJGbFhHRnRaUzEwWlhOMFhEQXhOakl4TVRrekxUbGxPRFV0TVRGbFlpMDRZ?=
- =?utf-8?B?ak5pTFdaak56YzNOREl4Wm1OaFpXSnZaSGt1ZEhoMElpQnplajBpTVRNd01T?=
- =?utf-8?B?SWdkRDBpTVRNeU5qTXdNekUxTmpZMU9UYzFNekV6SWlCb1BTSldNbXMwZFZj?=
- =?utf-8?B?ellXZ3ZXamRxVEUxRE9FUnBWRmxPUlVsUWRGRTlJaUJwWkQwaUlpQmliRDBp?=
- =?utf-8?B?TUNJZ1ltODlJakVpSUdOcFBTSmpRVUZCUVVWU1NGVXhVbE5TVlVaT1EyZFZR?=
- =?utf-8?B?VUZKV1VSQlFVRlNOa3htUkd0VVRGaEJZbWh2YzBSdFIyeDBOWE4xUjJsM1Qx?=
- =?utf-8?B?bGhWek50ZDBaQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCU0VG?=
- =?utf-8?B?QlFVRkJWMEYzUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJSVUZC?=
- =?utf-8?B?VVVGQ1FVRkJRV0pLVUZOa1VVRkJRVUZCUVVGQlFVRkJRVUZCUVVvMFFVRkJR?=
- =?utf-8?B?bWhCUjFGQllWRkNaa0ZJVFVGYVVVSnFRVWhWUVdOblFteEJSamhCWTBGQ2VV?=
- =?utf-8?B?RkhPRUZoWjBKc1FVZE5RV1JCUW5wQlJqaEJXbWRDYUVGSGQwRmpkMEpzUVVZ?=
- =?utf-8?B?NFFWcG5RblpCU0UxQllWRkNNRUZIYTBGa1owSnNRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkZRVUZCUVVGQlFVRkJRV2RCUVVG?=
- =?utf-8?B?QlFVRnVaMEZCUVVkRlFWcEJRbkJCUmpoQlkzZENiRUZIVFVGa1VVSjVRVWRW?=
- =?utf-8?B?UVZoM1FuZEJTRWxCWW5kQ2NVRkhWVUZaZDBJd1FVaE5RVmgzUWpCQlIydEJX?=
- =?utf-8?B?bEZDZVVGRVJVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCVVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVOQlFVRkJRVUZEWlVGQlFVRlpVVUpyUVVkclFWaDNRbnBCUjFWQldY?=
- =?utf-8?B?ZENNVUZJU1VGYVVVSm1RVWhCUVdOblFuWkJSMjlCV2xGQ2FrRklVVUZqZDBK?=
- =?utf-8?B?bVFVaFJRV0ZSUW14QlNFbEJUV2RCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFrRkJRVUZCUVVGQlFVRkpRVUZCUVVGQlNqUkJRVUZDYUVGSVNVRmhVVUpv?=
- =?utf-8?B?UVVZNFFWcEJRbkJCUjAxQlpFRkNjRUZIT0VGaVowSm9RVWhKUVdWUlFtWkJT?=
- =?utf-8?B?RkZCWVZGQ2JFRklTVUZOVVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVVZCUVVGQlFVRkJRVUZCWjBGQlFVRkJRVzVuUVVGQlIw?=
- =?utf-8?B?VkJZMmRDY0VGSFJVRllkMEpyUVVkclFWbDNRakJCUjJ0QlluZENkVUZIUlVG?=
- =?utf-8?B?alowSTFRVVk0UVdSQlFuQkJSMVZCWTJkQmVVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGUlFVRkJRVUZCUVVGQlEwRkJRVUZC?=
- =?utf-8?B?UVVFOUlpOCtQQzl0WlhSaFBnPT0=?=
-x-dg-rorf: true
-authentication-results: geanix.com; dkim=none (message not signed)
- header.d=none;geanix.com; dmarc=none action=none header.from=analog.com;
-x-originating-ip: [2001:a61:250c:6a01:6534:6e99:3179:7d3b]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 66379b75-3ac8-4c94-9fab-08d900a8e803
-x-ms-traffictypediagnostic: CY1PR03MB2316:
-x-microsoft-antispam-prvs: <CY1PR03MB23162E6E8A790730B9C7A23E994C9@CY1PR03MB2316.namprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: sbe5UN3aZKViPY235Aub7OWnY4O/unxaCRDAUBQMOLP8Aix36EPqCaAuxeieRxW7id4Z1thZJhG49+3Z/+2hhN3U+ESNAlmk0S7wlNZkiY/EpmByfSf4bwi1Owasv0d6jwhzGdKF19ngY5dAWhDFSAVm3I4WS+8BBRCTnMENH4Sasjn/yEXc8+WJHPX+CHPwULd6bgCI95EAevQNDmPOC8mwjoUaMZCd1dR7O0E1rFyfqiI5X516yiWcFjEIk/cZq+s1VREw6aSIpu1c/vmUMyEfPeCyShyanflwZk5i9APKDwKXhph24Q7pfKQsmG9OkgrnX5unj9D07ST3IF7I0fg3nBtBNT3pKpyqWWBkcDEpsuo68gXkhkhDJllPANBC9mygCfMseGjSzzXHE0LP0S9D8QhbfWnLrpx2NFe7c3gRs/TlyjzRUVYH35azC/uL++YsAJdVKkGLNMn2qyD0Vsle1j6vd1lkqFAxWbgszM5O/LPavCg+sl5owRjiZ+h76XB9g4Ni3wNs4Phx7bxFBQ/VyAzHcVahiGsBcmLZzZ6136NozuHHuv6M+LGUy9mqW/aqiMDeEhA7SnS3BC+BzzjrN0AnoXVkiYK3cQdJOHs=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY4PR03MB3112.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(376002)(346002)(39860400002)(366004)(136003)(52536014)(6506007)(53546011)(86362001)(7696005)(110136005)(83380400001)(478600001)(5660300002)(66446008)(55016002)(71200400001)(66476007)(66946007)(66556008)(64756008)(9686003)(8676002)(2906002)(316002)(33656002)(76116006)(186003)(8936002)(38100700002)(122000001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: =?utf-8?B?S3ZwMVVaZDBXSHhiY0pZY1B5MWJKOFpPd3diZEpRRXNHSVJqODMvVEpiVDg3?=
- =?utf-8?B?c3hEYlR3ZGdCZllNcnRUUWxqMTZZV0FCZ2MxL0R2Y1NWcXczRjNtTmhhM0Va?=
- =?utf-8?B?Y3d5eCttUkJpZlN2ZjBMNitadXg2UkVQNEhCdkJvZkxLWmljMUxQV04zdHdh?=
- =?utf-8?B?UFVHQzBTSURJZHRvR3VsTHZIeWR2QThLbDAyUUNHSUoyMmlVRmtZT3JyajhC?=
- =?utf-8?B?WGxDa0hsU0NuQ0NFc3NkbUMxb2l1ME1Mdkg4T3ZoNDV6WGRZTG9kejl4ekIr?=
- =?utf-8?B?MnJIdlpsaDU1TEUyd01lNmxiNHRhcG5wcjFYeTBoY3YyblZHaE1vUUFHNnpL?=
- =?utf-8?B?L1Q5eDMveDZiMHBpWXJqMDJrbnN6OGpmT3JQMlJ4MEJ4eFdJbHU4dTA5bDFQ?=
- =?utf-8?B?a0xGQ3dMRldtMUFkamQwbU1FcTMyYkVZV3pYQnlTNUlQODluM28rYjA2bzB3?=
- =?utf-8?B?cWxSek9BbXhPZ1FjZXAyTmlDdjNwWUdySEFiNC9kV1drRmdRTzljN0o2QXIz?=
- =?utf-8?B?ZEQvNktpc3YyTnpvUjZjWUJTWnBaMkZmSkFod2pFT0xRcjJ2Mk5yWlI4eUJm?=
- =?utf-8?B?SW9NQ096anJiK0IyY2hOZnpVZ054YzY0RXdiQ1QyajJQOXp1VnU5TVpoR3JY?=
- =?utf-8?B?OUVHRFhmaUF0dlZGRjdvRjVCbVZDOG5oZm40MmJUcUtPWFFDMXNjZlN6Znky?=
- =?utf-8?B?Z2dxeG1WbzViT3MwQ3p1Z3VGaFRnaGRVd1FIL2xEOWlFSkJLTmFac0xEZ0k1?=
- =?utf-8?B?S3M4eE5lbkwrQW5qQUtLeldldjZTQVZONHJKUDlYRmtqT08xa2RrOUhSTkVt?=
- =?utf-8?B?TjlpeDNjMnJ6elRhS2JCNEFXVmRXZTZFdVUzNGQ4c3VST3dQamwyODNmeXlv?=
- =?utf-8?B?ajJhRDZGMDFUcW1NcUhheWJ5TjRSZXJFTjB1akV1Nms4eFNUek1iOEtpdHE1?=
- =?utf-8?B?bExTTmE0RnBMTDZUZEVMT0xUejlJclpCNHZvM1c0K2xSQ1ByUTNtcyttU1dj?=
- =?utf-8?B?MU5ObVF6Um9tRnZRbi9wQ2VpU0FFUkl6czVjWFV0S2UvTXkwUC80NndrN1J0?=
- =?utf-8?B?aFQwRlVBbGpLL1F4MTBPQVM4K0tXNUw4OERhOGc2NUVOWnV0RWtNRjI2RTZT?=
- =?utf-8?B?clgwWFUwczhQdEcwRjhXeG1UM3J2NGJEZDlWemVUTDhoTlFSSWJiMHVIQ1Rh?=
- =?utf-8?B?cXBQbEVKcTlkYjZ0WnlwQkI3azgraFp6bU1XTzJ1S2QrdTVLQnhTZWZsRUJY?=
- =?utf-8?B?b3M4ZldBQ0xJZkx6Y1QrMjRCc0dpZitRRjZubG03UituNG1LMm0xd3JYb084?=
- =?utf-8?B?dlV0akVNb2ovNm1OcVRCSnJQWVNMTi8yY3RKNzlaQUhKOCtVNHhYT3JmbFdu?=
- =?utf-8?B?Nkl2NERoZERMcWN2YmdYK0crVjhSUWVCS3BWZW56ajNUclZ4VEpqSFRtc0F2?=
- =?utf-8?B?bHl2NlhLZDdrM09QbFFJWUh1Tkh1WGJqMVNjL2Z1eEtVb0lIa3ZHM0grZGJF?=
- =?utf-8?B?d0IzTkpaWThtelZFTlhLQ3hmQjhZMlhxZUFJekJIQUhqTDBqQmxQY3JwczdM?=
- =?utf-8?B?ZFBsMjNENWp1L1dBRm8wV2R5a2o5M1dzejJxWEVSOGtnM0JraEN1Rzd2YUd5?=
- =?utf-8?B?c01RdHVDbUxVbE1RTDVQdS80ZnJmanp2N0NLSisveUZrUWlENmxsUmFGQ1JK?=
- =?utf-8?B?aThuaCttVHZsazhML1hiZER0TnB6ZTJXS1J4ekl1ZjFVSy9CakRDRHBhckZI?=
- =?utf-8?B?SmlWOFhPTWpXM21xb2lKWU00cjMyUC96aVMrR3liVDREVHNwdlJVckQrOUNE?=
- =?utf-8?B?cFNpSlhQaW9kaTQvKzF6K3NNQUplLzc3MU9KcVpuazM0ZkFBSHhheCt0QUJt?=
- =?utf-8?Q?JfrDN1Edf1rDA?=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=uIAH1plO3MN4SRUjVKd4kP8g31/+FxJs1fOzDsYlCbo=;
+        b=N6uGgQO8+cLVzD/QgDSA5V7zSmM9UIFDjyJzz2OmlxctfAJ1lC8JM/97knIOwmw0K9
+         r0vWmDeEsfxNSRtooUNDvJdOqIi/VDZQfXZJJvSgF6sq9H7cGZGCxjjCFS7gOSn5mIs/
+         W/NGSe/Mqvdm5gp1xlkb6mZqg9jRK6TP5WD4d9xO79DJgtdQHKujPzuvmBsfiYn9+N0Q
+         t7CvW3g2kqIqRNiA952nUUEuFrSHCmSGxfTQqyxx0Dd8Txy6tyaRZlY7QEB3gxUb8cAF
+         2uRbVoDhe+yVdFhaVbzgmUhjQRZCKQuJWWTkZumJO5AMpTjz6xM4fydiAFSOzQx118vq
+         7SQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=uIAH1plO3MN4SRUjVKd4kP8g31/+FxJs1fOzDsYlCbo=;
+        b=FSltQiaQQ8zO41idzEEafBbHySib5yQr+UB4Xtv583EAcNfjqEL2eJkxKrY0WAJh3O
+         HiGjMQ+UZxGAswryah1a3hU3O/YZOq0FIIduSp0v+Y9foCz8efWPatH9UcrlyYT+afXh
+         lrAmaXzfFkCsqbssgvdw5L8QKOjsPMKPDJmsmqsD+bjyrQp+Q7OTvdLVbqTkRhlK+Wma
+         PFBukK8qLql7sO/gLMYOTVQZz6nlCNrr8Oj26b4hZ2Z6RVkfjH8orPVtZZmLSoVd2/W5
+         EBfIZ18n27wzmba1nSm18Hr1oeQb2XXNGKmEjfr/BUIwlWqn2lXMolb3mP3feBmnu5Ht
+         1mtA==
+X-Gm-Message-State: AOAM531BVQ1L8+2PuDNiFAGmPb914B2giSOL9MEPAxbk7Za4jN6TcGWj
+        QWlDOtgPJVFn/jErYuVcf3mL63lqNRA=
+X-Google-Smtp-Source: ABdhPJwpTyTaQDc+EbhpxL8tFd56oLWRh0t8z7AnP8xqKqmpD6luDMq0WqTz/Ca/WfMV75lvMvKyQw==
+X-Received: by 2002:a17:907:3f08:: with SMTP id hq8mr7264695ejc.90.1618558078374;
+        Fri, 16 Apr 2021 00:27:58 -0700 (PDT)
+Received: from agape.jhs ([5.171.81.105])
+        by smtp.gmail.com with ESMTPSA id bh14sm3577410ejb.104.2021.04.16.00.27.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Apr 2021 00:27:57 -0700 (PDT)
+Date:   Fri, 16 Apr 2021 09:27:51 +0200
+From:   Fabio Aiuto <fabioaiuto83@gmail.com>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     linux-kernel@vger.kernel.org, ac100@lists.launchpad.net,
+        "Alexander A. Klimov" <grandmaster@al2klimov.de>,
+        Allen Pais <apais@linux.microsoft.com>,
+        Anders Blomdell <anders.blomdell@control.lth.se>,
+        Andrea Merello <andrea.merello@gmail.com>,
+        Andres Klode <jak@jak-linux.org>,
+        Andrey Shvetsov <andrey.shvetsov@k2l.de>,
+        Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>,
+        Christian Brauner <christian@brauner.io>,
+        Comedi <comedi@comedi.org>, "David A. Schleef" <ds@schleef.org>,
+        dri-devel@lists.freedesktop.org,
+        Florian Schilhabel <florian.c.schilhabel@googlemail.com>,
+        Forest Bond <forest@alittletooquiet.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Herman.Bruyninckx@mech.kuleuven.ac.be,
+        H Hartley Sweeten <hsweeten@visionengravers.com>,
+        Hridya Valsaraju <hridya@google.com>,
+        Ian Abbott <abbotti@mev.co.uk>,
+        Ilya Petrov <ilya.muromec@gmail.com>,
+        Jacob Feder <jacobsfeder@gmail.com>,
+        Jerry chuang <wlanfae@realtek.com>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        "John B. Wyatt IV" <jbwyatt4@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        "J.P. Mellor" <jpmellor@rose-hulman.edu>,
+        karthik alapati <mail@karthek.com>,
+        Kees Cook <keescook@chromium.org>,
+        Kernel Team <ac100@lists.lauchpad.net>,
+        Klaas.Gadeyne@mech.kuleuven.ac.be,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-fbdev@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-pwm@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-tegra@vger.kernel.org, Marc Dietrich <marvin24@gmx.de>,
+        Marco Cesati <marcocesati@gmail.com>,
+        Martijn Coenen <maco@android.com>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Michael Straube <straube.linux@gmail.com>,
+        Mori Hess <fmhess@users.sourceforge.net>,
+        =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado 
+        <nfraprado@protonmail.com>,
+        Peter Hurley <peter@hurleysoftware.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Pierre-Hugues Husson <phhusson@free.fr>,
+        Robert Love <rlove@google.com>,
+        Romain Perier <romain.perier@gmail.com>,
+        Ross Schmidt <ross.schm.dev@gmail.com>,
+        "Spencer E. Olson" <olsonse@umich.edu>, Stanley@BB.SD3,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        Sumera Priyadarsini <sylphrenadin@gmail.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Teddy Wang <teddy.wang@siliconmotion.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Todd Kjos <tkjos@android.com>,
+        Truxton Fulton <trux@truxton.com>,
+        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Wim.Meeussen@mech.kuleuven.ac.be,
+        Zhansaya Bagdauletkyzy <zhansayabagdaulet@gmail.com>
+Subject: Re: [PATCH 00/57] Rid W=1 warnings from Staging
+Message-ID: <20210416072749.GA1394@agape.jhs>
+References: <20210414181129.1628598-1-lee.jones@linaro.org>
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY4PR03MB3112.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 66379b75-3ac8-4c94-9fab-08d900a8e803
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Apr 2021 07:26:09.4784
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: L9OeQZx6kS8r9q2pXKFZcl+HRWf72AMyXKY+0U8PZLbqVjM2dGzVRaINiIPAAnqsgDy5xdVg6iueWO2TJYTG2A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR03MB2316
-X-Proofpoint-GUID: lsSmeU4H3PAZLxIRHgcl9iCWt3zKpK9L
-X-Proofpoint-ORIG-GUID: lsSmeU4H3PAZLxIRHgcl9iCWt3zKpK9L
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
- definitions=2021-04-15_11:2021-04-15,2021-04-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- mlxlogscore=750 malwarescore=0 adultscore=0 bulkscore=0 suspectscore=0
- spamscore=0 lowpriorityscore=0 priorityscore=1501 clxscore=1015 mlxscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104160054
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210414181129.1628598-1-lee.jones@linaro.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogU2VhbiBOeWVramFlciA8
-c2VhbkBnZWFuaXguY29tPg0KPiBTZW50OiBUaHVyc2RheSwgQXByaWwgMTUsIDIwMjEgNzo1MSBQ
-TQ0KPiBUbzogU2EsIE51bm8gPE51bm8uU2FAYW5hbG9nLmNvbT47IGppYzIzQGtlcm5lbC5vcmc7
-IGxpbnV4LQ0KPiBpaW9Admdlci5rZXJuZWwub3JnDQo+IFN1YmplY3Q6IFJlOiBbUkZDIFBBVENI
-IDEvMl0gaWlvOiBhY2NlbDogYWRkIHN1cHBvcnQgZm9yDQo+IEZYTFM4OTYyQUYvRlhMUzg5NjRB
-RiBhY2NlbGVyb21ldGVycw0KPiANCj4gDQo+IA0KPiBPbiAxNS8wNC8yMDIxIDE3LjEwLCBTYSwg
-TnVubyB3cm90ZToNCj4gPj4gKwlwbV9ydW50aW1lX2VuYWJsZShkZXYpOw0KPiA+PiArCXBtX3J1
-bnRpbWVfc2V0X2F1dG9zdXNwZW5kX2RlbGF5KGRldiwNCj4gPj4gRlhMUzg5NjJBRl9BVVRPX1NV
-U1BFTkRfREVMQVlfTVMpOw0KPiA+PiArCXBtX3J1bnRpbWVfdXNlX2F1dG9zdXNwZW5kKGRldik7
-DQo+ID4gTWF5YmUgYWRkIGRldm1fYWRkX2FjdGlvbl9vcl9yZXNldCgpIGhlcmUgYW5kIGFmdGVy
-IGVuYWJsaW5nDQo+IHRoZQ0KPiA+IHJlZ3VsYXRvciBhbmQgd2UgY2FuIHRoZW4gZGl0Y2ggJyBm
-eGxzODk2MmFmX2NvcmVfcmVtb3ZlICgpJy4uLg0KPiBUaGFua3MgZm9yIHRoZSByZXZpZXcgOikN
-Cj4gSSdtIHRoaW5rIG5vdCBhYmxlIHRvIGRpdGNoIHRoZSBmeGxzODk2MmFmX2NvcmVfcmVtb3Zl
-KCkgSSBzdGlsbCBoYXZlDQo+IHRoZSBwbV9ydW50aW1lIHN0dWZmIG9yIGNhbiB0aGV5IGJlIHJl
-bW92ZWQgdmlhIHNvbWUgZGV2bV8NCj4gZnVuY3Rpb25zPw0KPiANCg0KSSBkbyBub3Qgc2VlIHdo
-eSB5b3UgY2FuJ3QgZG8gdGhpczoNCg0KcG1fcnVudGltZV9kaXNhYmxlKGRldik7DQpwbV9ydW50
-aW1lX3NldF9zdXNwZW5kZWQoZGV2KTsNCnBtX3J1bnRpbWVfcHV0X25vaWRsZShkZXYpOw0KDQpJ
-biBhIGRldm0gaGFuZGxlci4uLiBBbnl3YXlzIHRoaXMgaXMgbW9yZSBhIHBlcnNvbmFsIHByZWZl
-cmVuY2UNCnRvIHVzZSB0aGlzIGhhbmRsZXIgcmF0aGVyIHRoYW4gdGhlICdyZW1vdmUoKScgaG9v
-ay4gU28sIGlmIHlvdQ0KcHJlZmVyIHRvIGtlZXAgdGhpcyBhbmQgSm9uYXRoYW4gaXMgZmluZSB3
-aXRoIGl0LCBpdCdzIGFsc28gZmluZSBieQ0KbWUuLi4NCg0KLSBOdW5vIFPDoQ0K
+On Wed, Apr 14, 2021 at 07:10:32PM +0100, Lee Jones wrote:
+> This set is part of a larger effort attempting to clean-up W=1
+> kernel builds, which are currently overwhelmingly riddled with
+> niggly little warnings.
+> 
+> Lee Jones (57):
+>   staging: r8192U_core: Remove two unused variables 'ret' and
+>     'reset_status'
+>   staging: android: ashmem: Supply description for 'new_range'
+>   staging: comedi_8254: Fix descriptions for 'i8254' and 'iobase'
+>   staging: r8192U_core: Do not use kernel-doc formatting for !kernel-doc
+>     headers
+>   staging: r819xU_phy: Remove some local variables from the stack
+>   staging: r819xU_cmdpkt: Remove functionless method
+>     'cmpk_handle_query_config_rx'
+>   staging: wlan-ng: cfg80211: Move large struct onto the heap
+>   staging: rtw_ioctl_set: Move 'channel_table' to the only place it's
+>     used
+>   staging: rtl8188eu: core: rtw_ieee80211: Fix incorrectly documented
+>     function
+>   staging: rtl8723bs: core: rtw_mlme: Remove a bunch of unused variables
+>   staging: rtl8723bs: core: rtw_mlme_ext: Deal with a bunch of unused
+>     variables
+>   staging: rtl8712: rtl871x_mp_ioctl: Remove a bunch of unused tables
+>   staging: rtl8723bs: core: rtw_recv: Mark debug variable as
+>     __maybe_unused
+>   staging: rtl8188eu: core: rtw_security: Fix some formatting and
+>     misdocumentation
+>   staging: rtl8723bs: core: rtw_security: Demote non-conformant
+>     kernel-doc header
+>   staging: rtl8723bs: core: rtw_sta_mgt: Remove unused variable 'psta'
+>   staging: rtl8723bs: core: rtw_sta_mgt: Return error value directly
+>   staging: octeon: ethernet-tx: Fix formatting issue in function header
+>   staging: rtl8723bs: core: rtw_wlan_util: Remove unused variable
+>     'start_seq'
+>   staging: rtl8712: rtl871x_mp_ioctl: Move a large data struct onto the
+>     heap
+>   staging: iio: frequency: ad9834: Provide missing description for
+>     'devid'
+>   staging: nvec: Fix a bunch of kernel-doc issues
+>   staging: ks7010: ks_hostif: Remove a bunch of unused variables
+>   staging: fwserial: Demote a whole host of kernel-doc abuses
+>   staging: sm750fb: sm750_accel: Provide description for 'accel' and fix
+>     function naming
+>   staging: most: net: Fix some kernel-doc formatting issues
+>   staging: vt6655: upc: Suppress set but not used warning in macro
+>   staging: rtl8192u: ieee80211_softmac: Move a large data struct onto
+>     the heap
+>   staging: most: dim2: Provide missing descriptions and fix doc-rot
+>   staging: rtl8723bs: core: rtw_ieee80211: Remove seemingly pointless
+>     copy
+>   staging: rtl8723bs: core: rtw_mlme: 'retry' is only used if REJOIN is
+>     set
+>   staging: rtl8723bs: core: rtw_mlme_ext: 'evt_seq' is only used if
+>     CHECK_EVENT_SEQ is set
+>   staging: most: i2c: Fix a little doc-rot
+>   staging: most: dim2: hal: Fix one kernel-doc header and demote two
+>     non-conforming ones
+>   staging: most: dim2: hal: Demote non-conformant kernel-doc headers
+>   staging: axis-fifo: axis-fifo: Fix some formatting issues
+>   staging: rtl8188eu: os_dep: ioctl_linux: Move 2 large data buffers
+>     into the heap
+>   staging: fbtft: fb_ili9320: Remove unused variable 'ret'
+>   staging: rtl8723bs: core: rtw_ieee80211: Fix incorrectly named
+>     function
+>   staging: rtl8723bs: hal: odm_NoiseMonitor: Remove unused variable and
+>     dead code
+>   staging: rtl8188eu: os_dep: mon: Demote non-conforming kernel-doc
+>     headers
+>   staging: rtl8188eu: os_dep: rtw_android: Demote kernel-doc abuse
+>   staging: rtl8723bs: hal: rtl8723b_hal_init: Remove unused variable and
+>     dead code
+>   staging: rtl8723bs: hal: rtl8723b_phycfg: Fix a bunch of misnamed
+>     functions
+>   staging: rtl8723bs: hal: sdio_halinit: 'start' is only used if debug
+>     is enabled
+>   staging: rtl8723bs: hal: sdio_ops: Mark used 'err' as __maybe_unused
+>     and remove another
+>   staging: rtl8723bs: os_dep: ioctl_cfg80211: 'ack' is used when debug
+>     is enabled
+>   staging: comedi: drivers: jr3_pci: Remove set but unused variable
+>     'min_full_scale'
+>   staging: comedi: drivers: ni_tio: Fix slightly broken kernel-doc and
+>     demote others
+>   staging: comedi: drivers: ni_routes: Demote non-conforming kernel-doc
+>     headers
+>   staging: axis-fifo: axis-fifo: Fix function naming in the
+>     documentation
+>   staging: rtl8723bs: hal: odm_NoiseMonitor: Remove unused variable
+>     'func_start'
+>   staging: rtl8723bs: core: rtw_mlme_ext: Move very large data buffer
+>     onto the heap
+>   staging: rtl8723bs: hal: rtl8723b_hal_init: Mark a bunch of debug
+>     variables as __maybe_unused
+>   staging: comedi: drivers: ni_mio_common: Move 'range_ni_E_ao_ext' to
+>     where it is used
+>   staging: comedi: drivers: comedi_isadma: Fix misspelling of
+>     'dma_chan1'
+>   staging: rtl8723bs: hal: sdio_halinit: Remove unused variable 'ret'
+> 
+>  drivers/staging/android/ashmem.c              |   1 +
+>  drivers/staging/axis-fifo/axis-fifo.c         |  18 +--
+>  drivers/staging/comedi/drivers/comedi_8254.c  |   3 +-
+>  .../staging/comedi/drivers/comedi_isadma.c    |   2 +-
+>  drivers/staging/comedi/drivers/jr3_pci.c      |   3 +-
+>  .../staging/comedi/drivers/ni_mio_common.c    |   9 --
+>  drivers/staging/comedi/drivers/ni_routes.c    |   6 +-
+>  drivers/staging/comedi/drivers/ni_stc.h       |   9 +-
+>  drivers/staging/comedi/drivers/ni_tio.c       |  12 +-
+>  drivers/staging/fbtft/fb_ili9320.c            |   3 +-
+>  drivers/staging/fwserial/fwserial.c           |  46 +++----
+>  drivers/staging/iio/frequency/ad9834.c        |   5 +-
+>  drivers/staging/ks7010/ks_hostif.c            |  14 +-
+>  drivers/staging/most/dim2/dim2.c              |  23 ++--
+>  drivers/staging/most/dim2/hal.c               |  10 +-
+>  drivers/staging/most/i2c/i2c.c                |  12 +-
+>  drivers/staging/most/net/net.c                |   6 +-
+>  drivers/staging/nvec/nvec.c                   |   7 +-
+>  drivers/staging/octeon/ethernet-tx.c          |   1 -
+>  drivers/staging/qlge/qlge_main.c              |   4 +-
+>  .../staging/rtl8188eu/core/rtw_ieee80211.c    |   2 +-
+>  .../staging/rtl8188eu/core/rtw_ioctl_set.c    |   8 ++
+>  drivers/staging/rtl8188eu/core/rtw_security.c |  10 +-
+>  .../staging/rtl8188eu/include/rtw_mlme_ext.h  |   8 --
+>  .../staging/rtl8188eu/os_dep/ioctl_linux.c    |  12 +-
+>  drivers/staging/rtl8188eu/os_dep/mon.c        |   6 +-
+>  .../staging/rtl8188eu/os_dep/rtw_android.c    |   2 +-
+>  .../rtl8192u/ieee80211/ieee80211_softmac.c    |   9 +-
+>  drivers/staging/rtl8192u/r8192U_core.c        |  11 +-
+>  drivers/staging/rtl8192u/r819xU_cmdpkt.c      |  41 ------
+>  drivers/staging/rtl8192u/r819xU_phy.c         |  48 +++++--
+>  drivers/staging/rtl8712/rtl871x_mp_ioctl.c    |  29 ++--
+>  drivers/staging/rtl8712/rtl871x_mp_ioctl.h    | 127 ------------------
+>  .../staging/rtl8723bs/core/rtw_ieee80211.c    |   6 +-
+>  drivers/staging/rtl8723bs/core/rtw_mlme.c     |  17 +--
+>  drivers/staging/rtl8723bs/core/rtw_mlme_ext.c |  19 +--
+>  drivers/staging/rtl8723bs/core/rtw_recv.c     |   2 +-
+>  drivers/staging/rtl8723bs/core/rtw_security.c |   2 +-
+>  drivers/staging/rtl8723bs/core/rtw_sta_mgt.c  |  10 +-
+>  .../staging/rtl8723bs/core/rtw_wlan_util.c    |   4 +-
+>  .../staging/rtl8723bs/hal/odm_NoiseMonitor.c  |   9 +-
+>  .../staging/rtl8723bs/hal/rtl8723b_hal_init.c |  21 +--
+>  .../staging/rtl8723bs/hal/rtl8723b_phycfg.c   |  10 +-
+>  drivers/staging/rtl8723bs/hal/sdio_halinit.c  |   8 +-
+>  drivers/staging/rtl8723bs/hal/sdio_ops.c      |   7 +-
+>  .../staging/rtl8723bs/os_dep/ioctl_cfg80211.c |   2 +-
+>  drivers/staging/sm750fb/sm750_accel.c         |   4 +-
+>  drivers/staging/vt6655/upc.h                  |   2 +-
+>  drivers/staging/wlan-ng/cfg80211.c            |  30 +++--
+>  49 files changed, 256 insertions(+), 404 deletions(-)
+> 
+> Cc: ac100@lists.launchpad.net
+> Cc: "Alexander A. Klimov" <grandmaster@al2klimov.de>
+> Cc: Allen Pais <apais@linux.microsoft.com>
+> Cc: Anders Blomdell <anders.blomdell@control.lth.se>
+> Cc: Andrea Merello <andrea.merello@gmail.com>
+> Cc: Andres Klode <jak@jak-linux.org>
+> Cc: Andrey Shvetsov <andrey.shvetsov@k2l.de>
+> Cc: "Arve Hjønnevåg" <arve@android.com>
+> Cc: Christian Brauner <christian@brauner.io>
+> Cc: Comedi <comedi@comedi.org>
+> Cc: "David A. Schleef" <ds@schleef.org>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: Fabio Aiuto <fabioaiuto83@gmail.com>
+> Cc: Florian Schilhabel <florian.c.schilhabel@googlemail.com>
+> Cc: Forest Bond <forest@alittletooquiet.net>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Herman.Bruyninckx@mech.kuleuven.ac.be
+> Cc: H Hartley Sweeten <hsweeten@visionengravers.com>
+> Cc: Hridya Valsaraju <hridya@google.com>
+> Cc: Ian Abbott <abbotti@mev.co.uk>
+> Cc: Ilya Petrov <ilya.muromec@gmail.com>
+> Cc: Jacob Feder <jacobsfeder@gmail.com>
+> Cc: Jerry chuang <wlanfae@realtek.com>
+> Cc: Joel Fernandes <joel@joelfernandes.org>
+> Cc: "John B. Wyatt IV" <jbwyatt4@gmail.com>
+> Cc: Jonathan Cameron <jic23@kernel.org>
+> Cc: "J.P. Mellor" <jpmellor@rose-hulman.edu>
+> Cc: karthik alapati <mail@karthek.com>
+> Cc: Kees Cook <keescook@chromium.org>
+> Cc: Kernel Team <ac100@lists.lauchpad.net>
+> Cc: Klaas.Gadeyne@mech.kuleuven.ac.be
+> Cc: Larry Finger <Larry.Finger@lwfinger.net>
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: Lee Jones <lee.jones@linaro.org>
+> Cc: linux-fbdev@vger.kernel.org
+> Cc: linux-iio@vger.kernel.org
+> Cc: linux-pwm@vger.kernel.org
+> Cc: linux-staging@lists.linux.dev
+> Cc: linux-tegra@vger.kernel.org
+> Cc: Marc Dietrich <marvin24@gmx.de>
+> Cc: Marco Cesati <marcocesati@gmail.com>
+> Cc: Martijn Coenen <maco@android.com>
+> Cc: Michael Hennerich <Michael.Hennerich@analog.com>
+> Cc: Michael Straube <straube.linux@gmail.com>
+> Cc: Mori Hess <fmhess@users.sourceforge.net>
+> Cc: "Nícolas F. R. A. Prado" <nfraprado@protonmail.com>
+> Cc: Peter Hurley <peter@hurleysoftware.com>
+> Cc: Philipp Zabel <p.zabel@pengutronix.de>
+> Cc: Pierre-Hugues Husson <phhusson@free.fr>
+> Cc: Robert Love <rlove@google.com>
+> Cc: Romain Perier <romain.perier@gmail.com>
+> Cc: Ross Schmidt <ross.schm.dev@gmail.com>
+> Cc: "Spencer E. Olson" <olsonse@umich.edu>
+> Cc: Stanley@BB.SD3
+> Cc: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+> Cc: Sumera Priyadarsini <sylphrenadin@gmail.com>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Teddy Wang <teddy.wang@siliconmotion.com>
+> Cc: Thierry Reding <thierry.reding@gmail.com>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Todd Kjos <tkjos@android.com>
+> Cc: Truxton Fulton <trux@truxton.com>
+> Cc: "Uwe Kleine-König" <u.kleine-koenig@pengutronix.de>
+> Cc: Wim.Meeussen@mech.kuleuven.ac.be
+> Cc: WLAN FAE <wlanfae@realtek.com>
+> Cc: Zhansaya Bagdauletkyzy <zhansayabagdaulet@gmail.com>
+> -- 
+> 2.27.0
+> 
+
+Hi,
+
+what about splitting this series in smaller per driver series?
+
+thank you,
+
+fabio

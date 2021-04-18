@@ -2,125 +2,95 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 61B173636B5
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Apr 2021 18:44:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78BFE363743
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Apr 2021 21:09:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229783AbhDRQpM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Apr 2021 12:45:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49366 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229446AbhDRQpL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 18 Apr 2021 12:45:11 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1B9756101E;
-        Sun, 18 Apr 2021 16:44:38 +0000 (UTC)
-Date:   Sun, 18 Apr 2021 17:45:10 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+        id S232200AbhDRTKI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Apr 2021 15:10:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48040 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229488AbhDRTKE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Apr 2021 15:10:04 -0400
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D93CC06174A;
+        Sun, 18 Apr 2021 12:09:35 -0700 (PDT)
+Received: by mail-pj1-x102c.google.com with SMTP id y22-20020a17090a8b16b0290150ae1a6d2bso343865pjn.0;
+        Sun, 18 Apr 2021 12:09:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=o2tYufll/NX6d87pvgl+s9xxBkdd0xug4aHJ/ZVKLa0=;
+        b=q4Ct89cbWRxw1j2BaB8janLyLEtrqBHPvpHX0bkKxrQu4QbTYbMESLo4pC9NlDQUbL
+         mdTDiVdVrTA9/EEHCoUR9HpCIFspQEZXTA8331JXDQKiuGQWjTj8rbB2OWXVD+2q5+l+
+         baGdGW3TBWfsMekERyoVBRvie94mCrYXx5t354jd2+2ftSQ6OFZMP23t7mnKiE72Jq4n
+         x0c0B75dCymAFxCLWDwHBlkCCLlQiZI+fHw10xlpWD7Hz9eMJdq2N3eezPTsu5bvLc5C
+         rkkI51JECMxGNyXOUeGzeP/waDx7+8sk3SEp/nopERSqXLKg4qDh1plu2v2Z2bwFjlfL
+         hfNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=o2tYufll/NX6d87pvgl+s9xxBkdd0xug4aHJ/ZVKLa0=;
+        b=mwXPAfdk5XuqY2mZjaP/YxAiNC1O4XrayiPCBNBPA6DTH3cj3rNo82SWAtsI/6eqiI
+         Gq2PgnRuGB6spiPB2xxVYbj78qEclmQ8+j7tPQRth2m2vVOa9gjUsgT6E5Q0jl0Z5NWx
+         CrJu36IFG8z4NZPpjfKQbbjKHFNYg6vZAgM3k/wYCvHPCUuubWLIz4xZ+nr6AGs5NiLz
+         Azozhk1d3Ui15PvlDxsWP9xzsUuxvds9CyVrYjwThbBPFwOlR/Qao6QdaqJXdp70wJE2
+         RxzWjddyRAzEreuFcaeVqxXU5XKQpgMRbfpilhd2d7BHNe8B01sgpD5KaNzDraV20olu
+         rp2w==
+X-Gm-Message-State: AOAM533vskDX3QiEYqfxeaH4uZmeITYYd/oIFPfI3WDgxCmusp6HSSot
+        h4h4ZreO4pQEAm0k2aEusBcxxQmv6lMvprwiGkw=
+X-Google-Smtp-Source: ABdhPJx9TuThlLPUyP7gKC2hKyMVVZVabcKn8CWJZzF5F5pl08wclqvs0NsmBk8ioIV5CzollKsye7UejcmMsWJiE7I=
+X-Received: by 2002:a17:90b:1184:: with SMTP id gk4mr15448275pjb.129.1618772974826;
+ Sun, 18 Apr 2021 12:09:34 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210414195454.84183-1-andriy.shevchenko@linux.intel.com>
+ <20210414195454.84183-4-andriy.shevchenko@linux.intel.com> <20210418115403.059f94cd@jic23-huawei>
+In-Reply-To: <20210418115403.059f94cd@jic23-huawei>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sun, 18 Apr 2021 22:09:18 +0300
+Message-ID: <CAHp75Ve+_XurtoyOKizocyO0RkFaLvhR3mKp_pSvznmmGrQEXA@mail.gmail.com>
+Subject: Re: [PATCH v1 4/7] iio: st_sensors: Call st_sensors_power_enable()
+ from bus drivers
+To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         =?UTF-8?B?R2HDq3RhbiBBbmRyw6k=?= <rvlander@gaetanandre.eu>,
-        Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
         Denis Ciocca <denis.ciocca@st.com>,
         linux-iio <linux-iio@vger.kernel.org>,
         devicetree <devicetree@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Matija Podravec <matija_podravec@fastmail.fm>,
-        Sergey Borishchenko <borischenko.sergey@gmail.com>
-Subject: Re: [PATCH v1 6/7] iio: st_sensors: Add lsm9ds0 IMU support
-Message-ID: <20210418174510.64df5344@jic23-huawei>
-In-Reply-To: <CAHp75VeRgGcat18p+dN+pbHEYqm+YLGB_06kFEjFsahB2EW9Fw@mail.gmail.com>
-References: <20210414195454.84183-1-andriy.shevchenko@linux.intel.com>
-        <20210414195454.84183-6-andriy.shevchenko@linux.intel.com>
-        <20210418120655.3b2501fc@jic23-huawei>
-        <CAHp75Vcrf02cVaeDevN-cEFFTPoxq6kyO3gGQYTcs-U4yHOFaQ@mail.gmail.com>
-        <CAHp75VeRgGcat18p+dN+pbHEYqm+YLGB_06kFEjFsahB2EW9Fw@mail.gmail.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        Rob Herring <robh+dt@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 18 Apr 2021 16:59:02 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Sun, Apr 18, 2021 at 1:54 PM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> On Wed, 14 Apr 2021 22:54:51 +0300
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+>
+> > In case we would initialize two IIO devices from one physical device,
+> > we shouldn't have a clash on regulators. That's why move
+> > st_sensors_power_enable() call from core to bus drivers.
+>
+> Why is this a problem?  The two instances would double up and both get +
+> enable + disable the regulators.  However, that shouldn't matter as
+> they are reference counted anyway.
 
-> On Sun, Apr 18, 2021 at 4:49 PM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
-> >
-> > On Sun, Apr 18, 2021 at 2:07 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> >
-> > Thanks for review, my answers below.
-> >  
-> > > On Wed, 14 Apr 2021 22:54:53 +0300
-> > > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> > >  
-> > > > We can utilize separate drivers for accelerometer and magnetometer,
-> > > > so here is the glue driver to enable LSM9DS0 IMU support.
-> > > >
-> > > > The idea was suggested by Crestez Dan Leonard in [1]. The proposed change
-> > > > was sent as RFC due to race condition concerns, which are indeed possible.  
-> > >
-> > > If you are going to mention races, good to give some flavour in here!  
-> >
-> > I meant that the initial idea is racy due to different devices
-> > communicating to the same i2c address.
-> > So, any sequence of transfers are not serialized and you may end up with
-> >
-> > drv1 -> i2c
-> > drv2 -> i2c
-> > drv1 <- i2c # garbage
-> >  
-> > > This driver makes me very nervous indeed.  
-> >
-> > Why?! This one is race free as far as I can see. Or maybe I interpret
-> > this wrongly and you are talking about initial RFC?
-> >  
-> > >  I haven't 'found' any places
-> > > where the fact we'll write the same registers from each of the drivers
-> > > causes problems (e.g. int pin setup etc) but perhaps I'm missing something.
-> > >
-> > > Shall we say that makes me rather keener to get eyes (and thought) on this
-> > > patch than normal :)  
-> >
-> > How should I amend the commit message to state:
-> > 1. First idea (RFC by the link) *is* racy AFAIU
-> > 2. This one *is not* racy.  
+> Perhaps an example?  Even in patch 6 I can only see that it is wasteful
+> to do it twice, rather than wrong as such.
 
-Great.  I read it as meaning they were both potentially racey!
-This is less worrying.
+Yep, now I also understand that I do it twice after this patch. But
+lemme check next week this all
 
-> 
-> I re-read this and now understand better what you meant.
-> So, it may be that the initial proposal may work without any
-> amendment, but since I haven't investigated much, I should rather use
-> the phrase "potentially racy". In my variant it's using one regmap for
-> both drivers (not two), which makes the register state consistent. Am
-> I wrong?
+P.S. I have real hardware to test on. But my tests I guess are limited
+to iio_info or so.
 
-I think this approach is fine.  I'd be more worried about the two 'sub' drivers
-not necessarily being happy that someone else touches state they care about.
-There are places where I think we write the same value to the same register
-twice during setup with this model, but that shouldn't matter.   I'm not 100%
-sure that there aren't other cases though I think there aren't.
-
-So what you have is probably fine, but more eyes would make me happier ;)
-
-Lots of people care about this particular driver so hopefully we'll get
-them.
-
-> Do we have some places where we may write to the same register concurrently?
-> 
-Only ones I can find are the setup ones where it writes the same value twice
-I think.  So *crosses fingers* :)
-
-Given timing (missed merge window) we have masses of time to let this sit
-on list a while and see if anyone can spot issues neither of us have found.
-
-Jonathan
+-- 
+With Best Regards,
+Andy Shevchenko

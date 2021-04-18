@@ -2,95 +2,123 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 78BFE363743
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Apr 2021 21:09:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69317363801
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Apr 2021 00:17:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232200AbhDRTKI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Apr 2021 15:10:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48040 "EHLO
+        id S231899AbhDRWRe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Apr 2021 18:17:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229488AbhDRTKE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Apr 2021 15:10:04 -0400
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D93CC06174A;
-        Sun, 18 Apr 2021 12:09:35 -0700 (PDT)
-Received: by mail-pj1-x102c.google.com with SMTP id y22-20020a17090a8b16b0290150ae1a6d2bso343865pjn.0;
-        Sun, 18 Apr 2021 12:09:35 -0700 (PDT)
+        with ESMTP id S230258AbhDRWRd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Apr 2021 18:17:33 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F973C06174A;
+        Sun, 18 Apr 2021 15:17:03 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id y5-20020a05600c3645b0290132b13aaa3bso5286368wmq.1;
+        Sun, 18 Apr 2021 15:17:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=o2tYufll/NX6d87pvgl+s9xxBkdd0xug4aHJ/ZVKLa0=;
-        b=q4Ct89cbWRxw1j2BaB8janLyLEtrqBHPvpHX0bkKxrQu4QbTYbMESLo4pC9NlDQUbL
-         mdTDiVdVrTA9/EEHCoUR9HpCIFspQEZXTA8331JXDQKiuGQWjTj8rbB2OWXVD+2q5+l+
-         baGdGW3TBWfsMekERyoVBRvie94mCrYXx5t354jd2+2ftSQ6OFZMP23t7mnKiE72Jq4n
-         x0c0B75dCymAFxCLWDwHBlkCCLlQiZI+fHw10xlpWD7Hz9eMJdq2N3eezPTsu5bvLc5C
-         rkkI51JECMxGNyXOUeGzeP/waDx7+8sk3SEp/nopERSqXLKg4qDh1plu2v2Z2bwFjlfL
-         hfNQ==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=MakLW4/ABJt5A2wbd0oookNXhTi2QU35p1hgi1JeVaQ=;
+        b=RIcsx4Qj/fYUqHsay8hlOGfVyRR9i3jEw6oCGvUEWEXprIcJ3NvqfYRqeKU+q5clT4
+         E8G9J3UgbBrz8cUBc0efK2kfZYH1NV9jSJyPbeDbl5kOe7Cae8HM7oTdJU3pRGksemBu
+         zyMoVKbb5Ek89cIqUkp35oyCMGTjHOdbJsd/i39iXBoyacSwrB1zMdcvMrhJf+Deme4r
+         6+sTnoUqxgLUQEHna2l2YG6QpZXNcfAmYRFLQXz0P/RSrNoJQ0JcXNOlIISd5IiSZyNa
+         KQIUHLMVc9CmozdgWYGbFtH49NHsPAQrDfpP/736+pgSA12Ucjwbpemcpd2sYvNCFjdR
+         08pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=o2tYufll/NX6d87pvgl+s9xxBkdd0xug4aHJ/ZVKLa0=;
-        b=mwXPAfdk5XuqY2mZjaP/YxAiNC1O4XrayiPCBNBPA6DTH3cj3rNo82SWAtsI/6eqiI
-         Gq2PgnRuGB6spiPB2xxVYbj78qEclmQ8+j7tPQRth2m2vVOa9gjUsgT6E5Q0jl0Z5NWx
-         CrJu36IFG8z4NZPpjfKQbbjKHFNYg6vZAgM3k/wYCvHPCUuubWLIz4xZ+nr6AGs5NiLz
-         Azozhk1d3Ui15PvlDxsWP9xzsUuxvds9CyVrYjwThbBPFwOlR/Qao6QdaqJXdp70wJE2
-         RxzWjddyRAzEreuFcaeVqxXU5XKQpgMRbfpilhd2d7BHNe8B01sgpD5KaNzDraV20olu
-         rp2w==
-X-Gm-Message-State: AOAM533vskDX3QiEYqfxeaH4uZmeITYYd/oIFPfI3WDgxCmusp6HSSot
-        h4h4ZreO4pQEAm0k2aEusBcxxQmv6lMvprwiGkw=
-X-Google-Smtp-Source: ABdhPJx9TuThlLPUyP7gKC2hKyMVVZVabcKn8CWJZzF5F5pl08wclqvs0NsmBk8ioIV5CzollKsye7UejcmMsWJiE7I=
-X-Received: by 2002:a17:90b:1184:: with SMTP id gk4mr15448275pjb.129.1618772974826;
- Sun, 18 Apr 2021 12:09:34 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210414195454.84183-1-andriy.shevchenko@linux.intel.com>
- <20210414195454.84183-4-andriy.shevchenko@linux.intel.com> <20210418115403.059f94cd@jic23-huawei>
-In-Reply-To: <20210418115403.059f94cd@jic23-huawei>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 18 Apr 2021 22:09:18 +0300
-Message-ID: <CAHp75Ve+_XurtoyOKizocyO0RkFaLvhR3mKp_pSvznmmGrQEXA@mail.gmail.com>
-Subject: Re: [PATCH v1 4/7] iio: st_sensors: Call st_sensors_power_enable()
- from bus drivers
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        =?UTF-8?B?R2HDq3RhbiBBbmRyw6k=?= <rvlander@gaetanandre.eu>,
-        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
-        Denis Ciocca <denis.ciocca@st.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=MakLW4/ABJt5A2wbd0oookNXhTi2QU35p1hgi1JeVaQ=;
+        b=Q5lqST0XwSsgqxIE2Q6a4dMwme7TxLq05xBDC0tCRLvGIOHeaGhCvsjS9tYp0t7nk4
+         vRH/SrmkRI0Rrh5o3xebwH/wB3kQxRx4ov0lu3zfbuHAgxew/6VBGvOOLNv3wRlC0a+I
+         X5zAzWUvudWqUrHvB8/ey3ocEdj6dVA/kltltxccPSko2Q9boXxGvoYz8MTS4eka6ne0
+         ZmBy+tK26+p9teU1+MynXF1/P69zNVU8CSvo6ElaMLLY+Qt1S2l4xivSLrErFEpnYJdJ
+         HWkU5d7VRSRzI3PLQRvm0833Mf85/bkJXx3C0G1KO8aPR3/9GxYQchlPZpUic7dTrAlh
+         YlIw==
+X-Gm-Message-State: AOAM530EVzPErprt5PNmeiJdqkhzNZKa5ZvOaHTpfoft4hVNcugBJTBA
+        SU/sKYT4pnZoKF7mtQCIj3VEK2g60No=
+X-Google-Smtp-Source: ABdhPJwXcQQ0S/0sj9OBcptSDCVIfr5v3KiLoVygwWGT/UNTo5Qp4hhb6/3ncjo7xost7PYxIxnFoA==
+X-Received: by 2002:a05:600c:35cc:: with SMTP id r12mr2504688wmq.147.1618784222206;
+        Sun, 18 Apr 2021 15:17:02 -0700 (PDT)
+Received: from pop-os.localdomain ([2a01:4b00:8534:a300:35c9:f774:7b2:b3ba])
+        by smtp.gmail.com with ESMTPSA id p18sm19409239wrs.68.2021.04.18.15.17.01
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 18 Apr 2021 15:17:01 -0700 (PDT)
+Date:   Sun, 18 Apr 2021 23:17:00 +0100
+From:   Joe Sandom <joe.g.sandom@gmail.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Rob Herring <robh+dt@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v8 1/2] Added AMS tsl2591 driver implementation
+Message-ID: <20210418221659.iyzihpmgkggsb5id@pop-os.localdomain>
+References: <20210416174902.9036-1-joe.g.sandom@gmail.com>
+ <CAHp75VeSNDdY_jUsgy06mLpLVXnuyw3NjvxJBN6D-cxV5-VvUg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHp75VeSNDdY_jUsgy06mLpLVXnuyw3NjvxJBN6D-cxV5-VvUg@mail.gmail.com>
+User-Agent: NeoMutt/20171215
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Apr 18, 2021 at 1:54 PM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Wed, 14 Apr 2021 22:54:51 +0300
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
->
-> > In case we would initialize two IIO devices from one physical device,
-> > we shouldn't have a clash on regulators. That's why move
-> > st_sensors_power_enable() call from core to bus drivers.
->
-> Why is this a problem?  The two instances would double up and both get +
-> enable + disable the regulators.  However, that shouldn't matter as
-> they are reference counted anyway.
+On Sat, Apr 17, 2021 at 03:50:16PM +0300, Andy Shevchenko wrote:
+> On Fri, Apr 16, 2021 at 8:49 PM Joe Sandom <joe.g.sandom@gmail.com> wrote:
+> >
+> > Driver implementation for AMS/TAOS tsl2591 ambient light sensor.
+> >
+> > This driver supports configuration via device tree and sysfs.
+> > Supported channels for raw infrared light intensity,
+> > raw combined light intensity and illuminance in lux.
+> > The driver additionally supports iio events on lower and
+> > upper thresholds.
+> >
+> > This is a very-high sensitivity light-to-digital converter that
+> > transforms light intensity into a digital signal.
+> 
+> Hmm... It's v8 and the subject line is wrongly formatted.
+> Please add the corresponding prefix "iio: light: ..."
+> 
+Thanks for pointing that out Andy. I'll be sure to correct this in v9.
 
-> Perhaps an example?  Even in patch 6 I can only see that it is wasteful
-> to do it twice, rather than wrong as such.
-
-Yep, now I also understand that I do it twice after this patch. But
-lemme check next week this all
-
-P.S. I have real hardware to test on. But my tests I guess are limited
-to iio_info or so.
-
--- 
-With Best Regards,
-Andy Shevchenko
+> Otherwise it's in very good shape.
+> 
+> ...
+> 
+> > +/* TSL2591 enable register definitions */
+> > +#define TSL2591_PWR_ON              0x01
+> > +#define TSL2591_PWR_OFF             0x00
+> 
+> > +#define TSL2591_ENABLE_ALS          0x02
+> > +#define TSL2591_ENABLE_ALS_INT      0x10
+> > +#define TSL2591_ENABLE_SLEEP_INT    0x40
+> > +#define TSL2591_ENABLE_NP_INT       0x80
+> 
+> Is it a bitfield?
+> 
+> ...
+> 
+> > +       als_lower_l = als_lower_threshold;
+> 
+> >> 0, but it's up to you.
+> 
+> > +       als_lower_h = als_lower_threshold >> 8;
+> 
+> ...
+> 
+> > +       als_upper_l = als_upper_threshold;
+> > +       als_upper_h = als_upper_threshold >> 8;
+> 
+> Ditto.
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko

@@ -2,35 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CA1E363496
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Apr 2021 12:20:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C97D7363498
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Apr 2021 12:22:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229809AbhDRKU6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Apr 2021 06:20:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54390 "EHLO mail.kernel.org"
+        id S229574AbhDRKXX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Apr 2021 06:23:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54930 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229544AbhDRKU5 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 18 Apr 2021 06:20:57 -0400
+        id S229544AbhDRKXW (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 18 Apr 2021 06:23:22 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5F99B61090;
-        Sun, 18 Apr 2021 10:20:26 +0000 (UTC)
-Date:   Sun, 18 Apr 2021 11:20:58 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id E19A161245;
+        Sun, 18 Apr 2021 10:22:53 +0000 (UTC)
+Date:   Sun, 18 Apr 2021 11:23:24 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>
-Cc:     Alexandru Ardelean <ardeleanalex@gmail.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+To:     Nuno Sa <nuno.sa@analog.com>
+Cc:     <linux-iio@vger.kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
         Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH 4/7] iio: adis16475: re-set max spi transfer
-Message-ID: <20210418112058.7bb04fa6@jic23-huawei>
-In-Reply-To: <CY4PR03MB3112BFAA334A280B0E04CB88994D9@CY4PR03MB3112.namprd03.prod.outlook.com>
-References: <20210413112105.69458-1-nuno.sa@analog.com>
-        <20210413112105.69458-5-nuno.sa@analog.com>
-        <CA+U=DsqeiRRGp+Q+yZ7OVOE719aBiyMoBLsFTZL3amGfWHtgkg@mail.gmail.com>
-        <CY4PR03MB3112C342E901F4E308D0AFF0994D9@CY4PR03MB3112.namprd03.prod.outlook.com>
-        <CY4PR03MB3112BFAA334A280B0E04CB88994D9@CY4PR03MB3112.namprd03.prod.outlook.com>
+Subject: Re: [PATCH v3] iio: adis16480: support burst read function
+Message-ID: <20210418112324.5b49356d@jic23-huawei>
+In-Reply-To: <20210418105307.67fad41e@jic23-huawei>
+References: <20210413092815.28626-1-nuno.sa@analog.com>
+        <20210418105307.67fad41e@jic23-huawei>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -39,99 +35,355 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 15 Apr 2021 08:16:30 +0000
-"Sa, Nuno" <Nuno.Sa@analog.com> wrote:
+On Sun, 18 Apr 2021 10:53:07 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> > -----Original Message-----
-> > From: Sa, Nuno <Nuno.Sa@analog.com>
-> > Sent: Thursday, April 15, 2021 9:54 AM
-> > To: Alexandru Ardelean <ardeleanalex@gmail.com>
-> > Cc: linux-iio <linux-iio@vger.kernel.org>; Jonathan Cameron
-> > <jic23@kernel.org>; Hennerich, Michael
-> > <Michael.Hennerich@analog.com>; Lars-Peter Clausen
-> > <lars@metafoo.de>
-> > Subject: RE: [PATCH 4/7] iio: adis16475: re-set max spi transfer
-> > 
-> > [External]
-> > 
-> > 
-> >   
-> > > -----Original Message-----
-> > > From: Alexandru Ardelean <ardeleanalex@gmail.com>
-> > > Sent: Wednesday, April 14, 2021 9:29 AM
-> > > To: Sa, Nuno <Nuno.Sa@analog.com>
-> > > Cc: linux-iio <linux-iio@vger.kernel.org>; Jonathan Cameron
-> > > <jic23@kernel.org>; Hennerich, Michael
-> > > <Michael.Hennerich@analog.com>; Lars-Peter Clausen
-> > > <lars@metafoo.de>
-> > > Subject: Re: [PATCH 4/7] iio: adis16475: re-set max spi transfer
-> > >
-> > > [External]
-> > >
-> > > On Tue, Apr 13, 2021 at 5:45 PM Nuno Sa <nuno.sa@analog.com>
-> > > wrote:  
-> > > >
-> > > > In case 'spi_sync()' fails, we would be left with a max spi transfer
-> > > > which is not the one the user expects it to be. Hence, we need to  
-> > re-  
-> > > set  
-> > > > it also in this error path.
-> > > >
-> > > > Fixes: fff7352bf7a3c ("iio: imu: Add support for adis16475")
-> > > > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> > > > ---
-> > > >  drivers/iio/imu/adis16475.c | 4 +++-
-> > > >  1 file changed, 3 insertions(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/drivers/iio/imu/adis16475.c  
-> > b/drivers/iio/imu/adis16475.c  
-> > > > index 51b76444db0b..9dca7e506200 100644
-> > > > --- a/drivers/iio/imu/adis16475.c
-> > > > +++ b/drivers/iio/imu/adis16475.c
-> > > > @@ -1067,8 +1067,10 @@ static irqreturn_t  
-> > > adis16475_trigger_handler(int irq, void *p)  
-> > > >         adis->spi->max_speed_hz = ADIS16475_BURST_MAX_SPEED;
-> > > >
-> > > >         ret = spi_sync(adis->spi, &adis->msg);  
-> > >
-> > > Purely stylistic here.
-> > > But, the restore from the cached variable could be done here in a
-> > > single line.
-> > > So. just moving [1] here.  
-> > 
-> > You mean also doing it in the label? I thought about that and the
-> > reason
-> > why I didn't is that on a normal run, I want to reset the max freq as
-> > soon
-> > as possible so that if someone concurrently tries to read 'direct mode'
-> > attrs
-> > gets the max freq. This was my reasoning but I admit that it's not that
-> > important so I will leave this to Jonathan's preference...
-> > 
-> > Hmm now that I spoke about the concurrently access to IIO attr and
-> > being paranoid about
-> > the compiler, I wonder if we should not use
-> > WRITE_ONCE(adis->spi->max_speed_hz,
-> > ADIS16475_BURST_MAX_SPEED)...  
+> On Tue, 13 Apr 2021 11:28:14 +0200
+> Nuno Sa <nuno.sa@analog.com> wrote:
 > 
-> Hmmm, actually WRITE_ONCE would not be any help since the spi core
-> does not use READ_ONCE. So, if we are going to be paranoid about the
-> compiler and load/store tearing, I guess the only safe way here is to
-> acquire the adis lock [btw, I'm a bit paranoid with this stuff :)]...
+> > Some supported devices support burst read function. This provides a method
+> > for reading a batch of data (status, temperature, gyroscopes,
+> > accelerometers, time stamp/data counter, and CRC code), which does not
+> > require a stall time between each 16-bit segment and only requires one
+> > command on the DIN line to initiate. Devices supporting this mode
+> > are:
+> > 
+> >  * adis16495-1
+> >  * adis16495-2
+> >  * adis16495-3
+> >  * adis16497-1
+> >  * adis16497-2
+> >  * adis16497-3
+> > 
+> > Signed-off-by: Nuno Sa <nuno.sa@analog.com>  
 > 
-> Anyways, arguably the likelihood for this to happen is really, really small... 
-
-Really small, but needs fixing.  We shouldn't have a window in which this
-can happen.  So either we need to stop those attributes from reading whilst
-we are in buffered mode (via claim_direct_mode pattern) or we need to put
-a lock around this.  As an alternative, could we use the speed_hz field
-in appropriate spi_transfer structures to tweak in this path without
-affecting others?  That should make this concurrency problem an issue
-for the spi core (which I'd assume handles this).
-
-I'm going to hold this series for now on basis we should resolve this whilst
-here.
+> Applied and I've added the tag Lars gave for v2.
+> If you intentionally drop someones tag, please call out why alongside
+> your change log.  Here the tweaks were fairly minor so I don't think
+> there was any need to drop it.
+> 
+> Appiled to the togreg branch of iio.git and pushed out as testing for
+> the autobuilders to poke at it and see if we missed anything.
+> 
+> Thanks,
+> 
+> Jonathan
+Backed out as I think this has the same narrow race you spotted in the
+other series.
 
 Jonathan
 
+> 
+> 
+> > ---
+> > Changes in v2:
+> >  * Return right away if offset == 4 (no valid transition found from
+> > brurst_id to sys_flags).
+> > 
+> > Changes in v3:
+> >  * Move crc32.h header;
+> >  * Return proper 'irqreturn_t' types in all error paths;
+> >  * Move 'adis->current_page = 0' to right after setting it;
+> >  * Restore spi max transfer in case 'spi_sync()' fails;
+> >  * Use 80 line chars for 'devm_adis_setup_buffer_and_trigger()'.
+> > 
+> >  drivers/iio/imu/adis16480.c | 164 +++++++++++++++++++++++++++++++++---
+> >  1 file changed, 151 insertions(+), 13 deletions(-)
+> > 
+> > diff --git a/drivers/iio/imu/adis16480.c b/drivers/iio/imu/adis16480.c
+> > index f81b86690b76..f7026c804f3a 100644
+> > --- a/drivers/iio/imu/adis16480.c
+> > +++ b/drivers/iio/imu/adis16480.c
+> > @@ -19,11 +19,15 @@
+> >  #include <linux/sysfs.h>
+> >  #include <linux/module.h>
+> >  #include <linux/lcm.h>
+> > +#include <linux/swab.h>
+> > +#include <linux/crc32.h>
+> >  
+> >  #include <linux/iio/iio.h>
+> >  #include <linux/iio/sysfs.h>
+> >  #include <linux/iio/buffer.h>
+> >  #include <linux/iio/imu/adis.h>
+> > +#include <linux/iio/triggered_buffer.h>
+> > +#include <linux/iio/trigger_consumer.h>
+> >  
+> >  #include <linux/debugfs.h>
+> >  
+> > @@ -103,6 +107,12 @@
+> >   * Available only for ADIS1649x devices
+> >   */
+> >  #define ADIS16495_REG_SYNC_SCALE		ADIS16480_REG(0x03, 0x10)
+> > +#define ADIS16495_REG_BURST_CMD			ADIS16480_REG(0x00, 0x7C)
+> > +#define ADIS16495_BURST_ID			0xA5A5
+> > +/* total number of segments in burst */
+> > +#define ADIS16495_BURST_MAX_DATA		20
+> > +/* spi max speed in burst mode */
+> > +#define ADIS16495_BURST_MAX_SPEED              6000000
+> >  
+> >  #define ADIS16480_REG_SERIAL_NUM		ADIS16480_REG(0x04, 0x20)
+> >  
+> > @@ -163,6 +173,8 @@ struct adis16480 {
+> >  	struct clk *ext_clk;
+> >  	enum adis16480_clock_mode clk_mode;
+> >  	unsigned int clk_freq;
+> > +	/* Alignment needed for the timestamp */
+> > +	__be16 data[ADIS16495_BURST_MAX_DATA] __aligned(8);
+> >  };
+> >  
+> >  static const char * const adis16480_int_pin_names[4] = {
+> > @@ -863,7 +875,7 @@ static const char * const adis16480_status_error_msgs[] = {
+> >  
+> >  static int adis16480_enable_irq(struct adis *adis, bool enable);
+> >  
+> > -#define ADIS16480_DATA(_prod_id, _timeouts)				\
+> > +#define ADIS16480_DATA(_prod_id, _timeouts, _burst_len)			\
+> >  {									\
+> >  	.diag_stat_reg = ADIS16480_REG_DIAG_STS,			\
+> >  	.glob_cmd_reg = ADIS16480_REG_GLOB_CMD,				\
+> > @@ -887,6 +899,8 @@ static int adis16480_enable_irq(struct adis *adis, bool enable);
+> >  		BIT(ADIS16480_DIAG_STAT_BARO_FAIL),			\
+> >  	.enable_irq = adis16480_enable_irq,				\
+> >  	.timeouts = (_timeouts),					\
+> > +	.burst_reg_cmd = ADIS16495_REG_BURST_CMD,			\
+> > +	.burst_len = (_burst_len),					\
+> >  }
+> >  
+> >  static const struct adis_timeout adis16485_timeouts = {
+> > @@ -931,7 +945,7 @@ static const struct adis16480_chip_info adis16480_chip_info[] = {
+> >  		.int_clk = 2460000,
+> >  		.max_dec_rate = 2048,
+> >  		.filter_freqs = adis16480_def_filter_freqs,
+> > -		.adis_data = ADIS16480_DATA(16375, &adis16485_timeouts),
+> > +		.adis_data = ADIS16480_DATA(16375, &adis16485_timeouts, 0),
+> >  	},
+> >  	[ADIS16480] = {
+> >  		.channels = adis16480_channels,
+> > @@ -944,7 +958,7 @@ static const struct adis16480_chip_info adis16480_chip_info[] = {
+> >  		.int_clk = 2460000,
+> >  		.max_dec_rate = 2048,
+> >  		.filter_freqs = adis16480_def_filter_freqs,
+> > -		.adis_data = ADIS16480_DATA(16480, &adis16480_timeouts),
+> > +		.adis_data = ADIS16480_DATA(16480, &adis16480_timeouts, 0),
+> >  	},
+> >  	[ADIS16485] = {
+> >  		.channels = adis16485_channels,
+> > @@ -957,7 +971,7 @@ static const struct adis16480_chip_info adis16480_chip_info[] = {
+> >  		.int_clk = 2460000,
+> >  		.max_dec_rate = 2048,
+> >  		.filter_freqs = adis16480_def_filter_freqs,
+> > -		.adis_data = ADIS16480_DATA(16485, &adis16485_timeouts),
+> > +		.adis_data = ADIS16480_DATA(16485, &adis16485_timeouts, 0),
+> >  	},
+> >  	[ADIS16488] = {
+> >  		.channels = adis16480_channels,
+> > @@ -970,7 +984,7 @@ static const struct adis16480_chip_info adis16480_chip_info[] = {
+> >  		.int_clk = 2460000,
+> >  		.max_dec_rate = 2048,
+> >  		.filter_freqs = adis16480_def_filter_freqs,
+> > -		.adis_data = ADIS16480_DATA(16488, &adis16485_timeouts),
+> > +		.adis_data = ADIS16480_DATA(16488, &adis16485_timeouts, 0),
+> >  	},
+> >  	[ADIS16490] = {
+> >  		.channels = adis16485_channels,
+> > @@ -984,7 +998,7 @@ static const struct adis16480_chip_info adis16480_chip_info[] = {
+> >  		.max_dec_rate = 4250,
+> >  		.filter_freqs = adis16495_def_filter_freqs,
+> >  		.has_pps_clk_mode = true,
+> > -		.adis_data = ADIS16480_DATA(16490, &adis16495_timeouts),
+> > +		.adis_data = ADIS16480_DATA(16490, &adis16495_timeouts, 0),
+> >  	},
+> >  	[ADIS16495_1] = {
+> >  		.channels = adis16485_channels,
+> > @@ -998,7 +1012,9 @@ static const struct adis16480_chip_info adis16480_chip_info[] = {
+> >  		.max_dec_rate = 4250,
+> >  		.filter_freqs = adis16495_def_filter_freqs,
+> >  		.has_pps_clk_mode = true,
+> > -		.adis_data = ADIS16480_DATA(16495, &adis16495_1_timeouts),
+> > +		/* 20 elements of 16bits */
+> > +		.adis_data = ADIS16480_DATA(16495, &adis16495_1_timeouts,
+> > +					    ADIS16495_BURST_MAX_DATA * 2),
+> >  	},
+> >  	[ADIS16495_2] = {
+> >  		.channels = adis16485_channels,
+> > @@ -1012,7 +1028,9 @@ static const struct adis16480_chip_info adis16480_chip_info[] = {
+> >  		.max_dec_rate = 4250,
+> >  		.filter_freqs = adis16495_def_filter_freqs,
+> >  		.has_pps_clk_mode = true,
+> > -		.adis_data = ADIS16480_DATA(16495, &adis16495_1_timeouts),
+> > +		/* 20 elements of 16bits */
+> > +		.adis_data = ADIS16480_DATA(16495, &adis16495_1_timeouts,
+> > +					    ADIS16495_BURST_MAX_DATA * 2),
+> >  	},
+> >  	[ADIS16495_3] = {
+> >  		.channels = adis16485_channels,
+> > @@ -1026,7 +1044,9 @@ static const struct adis16480_chip_info adis16480_chip_info[] = {
+> >  		.max_dec_rate = 4250,
+> >  		.filter_freqs = adis16495_def_filter_freqs,
+> >  		.has_pps_clk_mode = true,
+> > -		.adis_data = ADIS16480_DATA(16495, &adis16495_1_timeouts),
+> > +		/* 20 elements of 16bits */
+> > +		.adis_data = ADIS16480_DATA(16495, &adis16495_1_timeouts,
+> > +					    ADIS16495_BURST_MAX_DATA * 2),
+> >  	},
+> >  	[ADIS16497_1] = {
+> >  		.channels = adis16485_channels,
+> > @@ -1040,7 +1060,9 @@ static const struct adis16480_chip_info adis16480_chip_info[] = {
+> >  		.max_dec_rate = 4250,
+> >  		.filter_freqs = adis16495_def_filter_freqs,
+> >  		.has_pps_clk_mode = true,
+> > -		.adis_data = ADIS16480_DATA(16497, &adis16495_1_timeouts),
+> > +		/* 20 elements of 16bits */
+> > +		.adis_data = ADIS16480_DATA(16497, &adis16495_1_timeouts,
+> > +					    ADIS16495_BURST_MAX_DATA * 2),
+> >  	},
+> >  	[ADIS16497_2] = {
+> >  		.channels = adis16485_channels,
+> > @@ -1054,7 +1076,9 @@ static const struct adis16480_chip_info adis16480_chip_info[] = {
+> >  		.max_dec_rate = 4250,
+> >  		.filter_freqs = adis16495_def_filter_freqs,
+> >  		.has_pps_clk_mode = true,
+> > -		.adis_data = ADIS16480_DATA(16497, &adis16495_1_timeouts),
+> > +		/* 20 elements of 16bits */
+> > +		.adis_data = ADIS16480_DATA(16497, &adis16495_1_timeouts,
+> > +					    ADIS16495_BURST_MAX_DATA * 2),
+> >  	},
+> >  	[ADIS16497_3] = {
+> >  		.channels = adis16485_channels,
+> > @@ -1068,10 +1092,123 @@ static const struct adis16480_chip_info adis16480_chip_info[] = {
+> >  		.max_dec_rate = 4250,
+> >  		.filter_freqs = adis16495_def_filter_freqs,
+> >  		.has_pps_clk_mode = true,
+> > -		.adis_data = ADIS16480_DATA(16497, &adis16495_1_timeouts),
+> > +		/* 20 elements of 16bits */
+> > +		.adis_data = ADIS16480_DATA(16497, &adis16495_1_timeouts,
+> > +					    ADIS16495_BURST_MAX_DATA * 2),
+> >  	},
+> >  };
+> >  
+> > +static bool adis16480_validate_crc(const u16 *buf, const u8 n_elem, const u32 crc)
+> > +{
+> > +	u32 crc_calc;
+> > +	u16 crc_buf[15];
+> > +	int j;
+> > +
+> > +	for (j = 0; j < n_elem; j++)
+> > +		crc_buf[j] = swab16(buf[j]);
+> > +
+> > +	crc_calc = crc32(~0, crc_buf, n_elem * 2);
+> > +	crc_calc ^= ~0;
+> > +
+> > +	return (crc == crc_calc);
+> > +}
+> > +
+> > +static irqreturn_t adis16480_trigger_handler(int irq, void *p)
+> > +{
+> > +	struct iio_poll_func *pf = p;
+> > +	struct iio_dev *indio_dev = pf->indio_dev;
+> > +	struct adis16480 *st = iio_priv(indio_dev);
+> > +	struct adis *adis = &st->adis;
+> > +	int ret, bit, offset, i = 0;
+> > +	__be16 *buffer;
+> > +	u32 crc;
+> > +	bool valid;
+> > +	const u32 cached_spi_speed_hz = adis->spi->max_speed_hz;
+> > +
+> > +	adis_dev_lock(adis);
+> > +	if (adis->current_page != 0) {
+> > +		adis->tx[0] = ADIS_WRITE_REG(ADIS_REG_PAGE_ID);
+> > +		adis->tx[1] = 0;
+> > +		ret = spi_write(adis->spi, adis->tx, 2);
+> > +		if (ret) {
+> > +			dev_err(&adis->spi->dev, "Failed to change device page: %d\n", ret);
+> > +			adis_dev_unlock(adis);
+> > +			goto irq_done;
+> > +		}
+> > +
+> > +		adis->current_page = 0;
+> > +	}
+> > +
+> > +	adis->spi->max_speed_hz = ADIS16495_BURST_MAX_SPEED;
+> > +
+> > +	ret = spi_sync(adis->spi, &adis->msg);
+> > +	if (ret) {
+> > +		dev_err(&adis->spi->dev, "Failed to read data: %d\n", ret);
+> > +		adis->spi->max_speed_hz = cached_spi_speed_hz;
+> > +		adis_dev_unlock(adis);
+> > +		goto irq_done;
+> > +	}
+> > +
+> > +	adis->spi->max_speed_hz = cached_spi_speed_hz;
+> > +	adis_dev_unlock(adis);
+> > +
+> > +	/*
+> > +	 * After making the burst request, the response can have one or two
+> > +	 * 16-bit responses containing the BURST_ID depending on the sclk. If
+> > +	 * clk > 3.6MHz, then we will have two BURST_ID in a row. If clk < 3MHZ,
+> > +	 * we have only one. To manage that variation, we use the transition from the
+> > +	 * BURST_ID to the SYS_E_FLAG register, which will not be equal to 0xA5A5. If
+> > +	 * we not find this variation in the first 4 segments, then the data should
+> > +	 * not be valid.
+> > +	 */
+> > +	buffer = adis->buffer;
+> > +	for (offset = 0; offset < 4; offset++) {
+> > +		u16 curr = be16_to_cpu(buffer[offset]);
+> > +		u16 next = be16_to_cpu(buffer[offset + 1]);
+> > +
+> > +		if (curr == ADIS16495_BURST_ID && next != ADIS16495_BURST_ID) {
+> > +			offset++;
+> > +			break;
+> > +		}
+> > +	}
+> > +
+> > +	if (offset == 4) {
+> > +		dev_err(&adis->spi->dev, "Invalid burst data\n");
+> > +		goto irq_done;
+> > +	}
+> > +
+> > +	crc = be16_to_cpu(buffer[offset + 16]) << 16 | be16_to_cpu(buffer[offset + 15]);
+> > +	valid = adis16480_validate_crc((u16 *)&buffer[offset], 15, crc);
+> > +	if (!valid) {
+> > +		dev_err(&adis->spi->dev, "Invalid crc\n");
+> > +		goto irq_done;
+> > +	}
+> > +
+> > +	for_each_set_bit(bit, indio_dev->active_scan_mask, indio_dev->masklength) {
+> > +		/*
+> > +		 * When burst mode is used, temperature is the first data
+> > +		 * channel in the sequence, but the temperature scan index
+> > +		 * is 10.
+> > +		 */
+> > +		switch (bit) {
+> > +		case ADIS16480_SCAN_TEMP:
+> > +			st->data[i++] = buffer[offset + 1];
+> > +			break;
+> > +		case ADIS16480_SCAN_GYRO_X ... ADIS16480_SCAN_ACCEL_Z:
+> > +			/* The lower register data is sequenced first */
+> > +			st->data[i++] = buffer[2 * bit + offset + 3];
+> > +			st->data[i++] = buffer[2 * bit + offset + 2];
+> > +			break;
+> > +		}
+> > +	}
+> > +
+> > +	iio_push_to_buffers_with_timestamp(indio_dev, st->data, pf->timestamp);
+> > +irq_done:
+> > +	iio_trigger_notify_done(indio_dev->trig);
+> > +
+> > +	return IRQ_HANDLED;
+> > +}
+> > +
+> >  static const struct iio_info adis16480_info = {
+> >  	.read_raw = &adis16480_read_raw,
+> >  	.write_raw = &adis16480_write_raw,
+> > @@ -1341,7 +1478,8 @@ static int adis16480_probe(struct spi_device *spi)
+> >  		st->clk_freq = st->chip_info->int_clk;
+> >  	}
+> >  
+> > -	ret = devm_adis_setup_buffer_and_trigger(&st->adis, indio_dev, NULL);
+> > +	ret = devm_adis_setup_buffer_and_trigger(&st->adis, indio_dev,
+> > +						 adis16480_trigger_handler);
+> >  	if (ret)
+> >  		return ret;
+> >    
+> 
 

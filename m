@@ -2,253 +2,130 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C714636346D
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Apr 2021 11:20:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4F13363479
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Apr 2021 11:43:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229871AbhDRJVB convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sun, 18 Apr 2021 05:21:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39178 "EHLO mail.kernel.org"
+        id S229574AbhDRJn4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Apr 2021 05:43:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44812 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229652AbhDRJVB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 18 Apr 2021 05:21:01 -0400
+        id S229544AbhDRJnz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 18 Apr 2021 05:43:55 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 231C061245;
-        Sun, 18 Apr 2021 09:20:30 +0000 (UTC)
-Date:   Sun, 18 Apr 2021 10:21:00 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 1231B61029;
+        Sun, 18 Apr 2021 09:43:24 +0000 (UTC)
+Date:   Sun, 18 Apr 2021 10:43:53 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Bastien Nocera <hadess@hadess.net>,
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Dinghao Liu <dinghao.liu@zju.edu.cn>,
+        Kangjie Lu <kjlu@umn.edu>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Mark Pearson <mpearson@lenovo.com>
-Subject: Re: [PATCH v2 resend 1/2] iio: documentation: Document proximity
- sensor label use
-Message-ID: <20210418102100.1a1ad4f3@jic23-huawei>
-In-Reply-To: <78d53c41-35ab-d0aa-1c8b-a7f78bc481a0@redhat.com>
-References: <20210405204224.18715-1-hdegoede@redhat.com>
-        <20210405204224.18715-2-hdegoede@redhat.com>
-        <fb8ada0ee326245bbf9c9db8a3bcfbbbccfed4a5.camel@hadess.net>
-        <78d53c41-35ab-d0aa-1c8b-a7f78bc481a0@redhat.com>
+        linux-iio <linux-iio@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: [PATCH] iio: light: gp2ap002: Fix rumtime PM imbalance on error
+Message-ID: <20210418104353.5a6e498f@jic23-huawei>
+In-Reply-To: <CACRpkdY9sDbVSjBULg3tV-Zpr_Tizd4HKeTG-NjCjUru=94QYQ@mail.gmail.com>
+References: <20210407034927.16882-1-dinghao.liu@zju.edu.cn>
+        <20210411160720.037c405c@jic23-huawei>
+        <CACRpkdYrRi3pa6Gw4_Q+P=WYbv-a27FHmOupKVv5s=yU53RFWA@mail.gmail.com>
+        <20210412111506.0000653c@Huawei.com>
+        <CACRpkdY9sDbVSjBULg3tV-Zpr_Tizd4HKeTG-NjCjUru=94QYQ@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 16 Apr 2021 13:13:57 +0200
-Hans de Goede <hdegoede@redhat.com> wrote:
+On Mon, 12 Apr 2021 13:47:58 +0200
+Linus Walleij <linus.walleij@linaro.org> wrote:
 
-> Hi,
+> On Mon, Apr 12, 2021 at 12:16 PM Jonathan Cameron
+> <Jonathan.Cameron@huawei.com> wrote:
 > 
-> On 4/16/21 12:45 PM, Bastien Nocera wrote:
-> > Hey,
-> > 
-> > On Mon, 2021-04-05 at 22:42 +0200, Hans de Goede wrote:  
-> >> Add an entry to Documentation/ABI/testing/sysfs-bus-iio for
-> >> the new device label sysfs-attribute support.
-> >>
-> >> And document the standardized labels which may be used with proximity
-> >> sensors to hint userspace about the intended use of the sensor.
-> >>
-> >> Using labels to differentiate between the multiple proximity sensors
-> >> which a modern laptop/tablet may have was discussed in this thread:
-> >> https://lore.kernel.org/linux-iio/9f9b0ff6-3bf1-63c4-eb36-901cecd7c4d9@redhat.com/
-> >>
-> >> As mentioned there the "proximity-wifi*" labels are already being
-> >> used
-> >> in this manner on some chromebooks, see e.g.:
-> >> arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi
-> >> arch/arm64/boot/dts/qcom/sc7180-trogdor-lte-sku.dtsi
-> >>
-> >> And the "proximity-palmrest" and "proximity-lap" labels are intended
-> >> to be used with the lap and palmrest sensors found in recent Lenovo
-> >> ThinkPad models.
-> >>
-> >> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> >> Cc: Mark Pearson <mpearson@lenovo.com>
-> >> Cc: Bastien Nocera <hadess@hadess.net>
-> >> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> >> ---
-> >> Changes in v2:
-> >> - Drop the too generic:
-> >>   What:           /sys/bus/iio/devices/iio:deviceX/in_*_label
-> >>   What:           /sys/bus/iio/devices/iio:deviceX/out_*_label
-> >>   lines from the newly added documentation, if/when we start
-> >>   using channel-labels with proximity sensors then those should
-> >>   get a separate in_proximityX_label documentation.
-> >> ---
-> >>  Documentation/ABI/testing/sysfs-bus-iio | 39
-> >> +++++++++++++++++++++++++
-> >>  1 file changed, 39 insertions(+)
-> >>
-> >> diff --git a/Documentation/ABI/testing/sysfs-bus-iio
-> >> b/Documentation/ABI/testing/sysfs-bus-iio
-> >> index d957f5da5c04..7379e40d862d 100644
-> >> --- a/Documentation/ABI/testing/sysfs-bus-iio
-> >> +++ b/Documentation/ABI/testing/sysfs-bus-iio
-> >> @@ -33,6 +33,45 @@ Description:
-> >>                 Description of the physical chip / device for device
-> >> X.
-> >>                 Typically a part number.
-> >>  
-> >> +What:          /sys/bus/iio/devices/iio:deviceX/label
-> >> +KernelVersion: 5.8
-> >> +Contact:       linux-iio@vger.kernel.org
-> >> +Description:
-> >> +               Optional symbolic label for a device.
-> >> +               This is useful for userspace to be able to better
-> >> identify an
-> >> +               individual device.
-> >> +
-> >> +               The contents of the label are free-form, but there
-> >> are some
-> >> +               standardized uses:
-> >> +
-> >> +               For proximity sensors which give the proximity (of a
-> >> person) to
-> >> +               a certain wlan or wwan antenna the following
-> >> standardized labels
-> >> +               are used:
-> >> +
-> >> +               * "proximity-wifi"
-> >> +               * "proximity-lte"
-> >> +               * "proximity-wifi-lte"
-> >> +               * "proximity-wifi-left"
-> >> +               * "proximity-wifi-right"  
-> > 
-> > Could we avoid having "lte" in the label names? Do we have a way to
-> > communicate that some of those labels are deprecated and should be
-> > avoided?
-> > 
-> > I would use "wwan" instead of "lte" here, and just mention "proximity-
-> > wifi-lte" as a synonym for "proximity-wifi-wwan".  
+> > An example would be the bmc150_magn driver which does exactly the
+> > same call sequence as this one, but without the reference count increment
+> > and decrement.  Basically I want to know if there is a problem in
+> > those other drivers that is being protected against here!  
 > 
-> the "lte" postfix is currently in use on ChromeOS, which is why
-> I chose it here. I'm fine with adding some text that new drivers
-> should use -wwan, although I wonder how this will work with
-> separate mmwave and normal 5g antennas as such keeping lte for
-> both 4g + regular 5g might actually be better and then the separate  
-> mmwave antennas can use a -mmwave postfix.
+> The bmc150_magn driver does not look like I would have done it.
 > 
-> Dmitry IIRC you brought up the use of these labels in a previous
-> discussion. Do you have anything to add here ?  Is ChromeOS
-> already doing anything wrt SAR for mmwave antennas?
+> That said, I think it works, because the only thing it is calling is
+> bmc150_magn_set_power_mode() and that seems stateless,
+> just poking some regmap bits. The state is tracked by the driver
+> AFAICT and we don't need pm_runtime_get_noresume() because
+> it doesn't really matter if the pm_runtime_suspend() callback
+> gets called immediately or randomly out of sync with what we are
+> doing from this point.
 > 
-> >   
-> >> +
-> >> +               These are used to indicate to userspace that these
-> >> proximity
-> >> +               sensors may be used to tune transmit power to ensure
-> >> that
-> >> +               Specific Absorption Rate (SAR) limits are honored.
-> >> +               The "-left" and "-right" labels are for devices with
-> >> multiple
-> >> +               antennas.
-> >> +
-> >> +               In some laptops/tablets the standardized proximity
-> >> sensor labels
-> >> +               instead indicate proximity to a specific part of the
-> >> device:
-> >> +
-> >> +               * "proximity-palmrest" indicates proximity to the
-> >> keyboard's palmrest
-> >> +               * "proximity-palmrest-left" indicates proximity to
-> >> the left part of the palmrest
-> >> +               * "proximity-palmrest-right" indicates proximity to
-> >> the right part of the palmrest
-> >> +               * "proximity-lap" indicates the device is being used
-> >> on someone's lap
-> >> +
-> >> +               Note "proximity-lap" is special in that its value may
-> >> be
-> >> +               calculated by firmware from other sensor readings,
-> >> rather then
-> >> +               being a raw sensor reading.  
-> > 
-> > I don't think that this is needed. I would expect that this sensor
-> > would have a "0" minimum and "1" maximum value, which makes it clear
-> > that the sensor value is synthesised.  
+> I would anyways patch it like the gp2ap002 driver because it
+> is easier to follow the code. Including using only runtime PM
+> att setting SET_SYSTEM_SLEEP_PM_OPS() to the
+> pm_runtime_force_suspend and pm_runtime_force_resume
+> functions, everything just get so much easier when you use
+> only one type of PM and not two orthogonal ones.
 > 
-> IIO typically exports real sensor readings, not these kind of
-> synthesized values so IMHO it is good to mention this in the docs.
+> drivers/iio/light/bh1780.c
+> should be a good example of how to do it idiomatically
+> because it was reviewed by Ulf Hansson who knows this
+> runtime PM stuff better than me.
+> 
+> A sequence like this:
+> 
+>    pm_runtime_get_noresume(&client->dev);
+>    pm_runtime_set_active(&client->dev);
+>    pm_runtime_enable(&client->dev);
+>    pm_runtime_set_autosuspend_delay(&client->dev, 5000);
+>    pm_runtime_use_autosuspend(&client->dev);
+>    pm_runtime_put(&client->dev);
+> 
+> is very nice because you can clearly see that it will not race
+> and after the last put() unless something happens the
+> runtime suspend will kick in after 5000 ms.
+> 
+> Likewise when disabling:
+> 
+>     pm_runtime_get_sync(&client->dev);
+>     pm_runtime_put_noidle(&client->dev);
+>     pm_runtime_disable(&client->dev);
+> 
+> same thing: crystal clear there are no races, the device is
+> definately runtime resumed and we can proceed to
+> shut down resources explicitly after this point.
+> 
+> If you then add:
+> 
+> SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
+>                                 pm_runtime_force_resume)
+> 
+> Now you have ordinary sleep PM for free. It will just
+> force the same suspend/resume callbacks and they are
+> guaranteed to be race free.
+> 
+> This doesn't work for everyone but surprisingly often this is
+> what you want.
 
-We do similar synthesized values in a few similar places.  The assumption
-is there is a _scale that would map these to 'real world units'.  We might
-not know what it is however.  So I'm not against adding them here.
+I'm still far from completely convinced that it is 'necessary'
+to take the reference whilst going through this sequence because
+there is nothing to kick off the suspend until we tell it to use
+autosuspend.  However, I appreciate (much like taking locks in
+general in probe) that it makes it easy to see there is no race.
 
-Real readings of course preferred if they are available.
-We can provide _available attributes for raw readings that
-let userspace know it only has range 0..1 with a step size of 1.
+Anyhow, fix is still valid either way so applied to the fixes
+togreg branch of iio.git with a fixes tag added to the initial
+introduction of the driver (which I think is where this came in).
 
+Thanks,
+
+Jonathan
 
 > 
-> > Maybe this special case should be mentioned (if that's needed), rather
-> > than pointing out that this particular sensor might be special (they
-> > could all be, depending on how the system is implemented after all).
-> > 
-> > Did you think about where you wanted the sensor's threshold to be
-> > exported? Still in udev/hwdb?  
-> 
-> AFAIK the plan was for the driver to export this as a IIO sysfs
-> attribute, Documentation/ABI/testing/sysfs-bus-iio
-> already has:
-> 
-> What:           /sys/.../events/in_proximity0_thresh_falling_value
-> What:           /sys/.../events/in_proximity0_thresh_rising_value
-> 
-> Those are intended for the trigger interface, but IIRC I think the
-
-Event rather than trigger interface, but I get what you mean.
-
-> plan was to also use these on a device without trigger support
-> to advertise the recommended threshold to be used by userspace.
-
-That is rather nasty as any standard userspace will map those to
-actually generating iio events.
-
-So if I follow correctly this is meta data that might of use to userspace
-and we want some way to expose that?
-
-If so I think I'd rather see new ABI to expose that. 
-We might have some spec or testing defined notion of 'near' alongside an
-actual threshold detector that can be controlled to be more paranoid for
-example and hence need the above interface.
-
-No idea on naming for a new ABI though :)  Could be something like
-in_proximity0_raw_hintnear though I'm sure others will have better ideas
-perhaps related to what this threshold is called in relevant specs etc.
-
-> 
-> Jonathan ?
-
-I'll be honest I've lost track of where we were going with this so it's
-more than possible I'll disagree with earlier me, let alone everyone else :)
-
-> 
-> Regards,
-> 
-> Hans
-> 
-> 
-> 
-> 
-> 
-> 
-> > 
-> > Cheers
-> >   
-> >> +
-> >>  What:          /sys/bus/iio/devices/iio:deviceX/current_timestamp_cl
-> >> ock
-> >>  KernelVersion: 4.5
-> >>  Contact:       linux-iio@vger.kernel.org  
-> > 
-> >   
-> 
+> Yours,
+> Linus Walleij
 

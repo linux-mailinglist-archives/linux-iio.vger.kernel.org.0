@@ -2,216 +2,157 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A995364206
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Apr 2021 14:49:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4285336443A
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Apr 2021 15:33:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239229AbhDSMt1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 19 Apr 2021 08:49:27 -0400
-Received: from mail-eopbgr140049.outbound.protection.outlook.com ([40.107.14.49]:19460
-        "EHLO EUR01-VE1-obe.outbound.protection.outlook.com"
+        id S241200AbhDSNZz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 19 Apr 2021 09:25:55 -0400
+Received: from mail-eopbgr10050.outbound.protection.outlook.com ([40.107.1.50]:12610
+        "EHLO EUR02-HE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S239248AbhDSMt1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 19 Apr 2021 08:49:27 -0400
+        id S241115AbhDSNXW (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 19 Apr 2021 09:23:22 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jxFQpuiUOA4FPL2UG6KXTjveQoqaFilbUh35rI6dVNlVyzoN61GSXKGKbwxEFW4FR7AZR9HVIA5f2PgnOb1pJCmfbSk2e/I7McSkeYT93vAlLP+fMKsttBNPg9kYU7zYWmjCWwfyhiU4Ineg9qmgek8Solr1Y3QBGY3aLB1QjXcD6N5TFtnVxu0QEvlsdlKAatbMEaABRXBNnAdl6Wv36hXCv8gS9csvCfUvgiOF2LrY/I8gtT5AUsb+ibDFfSVNKRLDrOKM5VMOmp+j4G+fRV2wS7A8luy0C0XYvKht1JiOEde5NIL3Koj+f6hkIDmVJNyBginsw7BS2uwmM3h7zQ==
+ b=Z7zaHRLRI1MEgB4NwSx3+JhfyvEhLwyMC0BeAV5gQgpSnQY7UZ9nbo0ZJZr96LoEbBvC3Ku+nO4UeZV6gLB6U9uUWOOvdbIlHSE0ppGbhm9ycM9UD/izwO2ohkFvay2IiOYyPtV4b23+kis/2dW/ltLupHtuyLf4Ya9HzeBH+5jhWHgzdCdmh8s0mNa0Jb3pdAfCRpr73vpq1w+o/TUYMS7Br83MdZPuClBDBghzDwNhBJuHnwK/uMBvVo8Rjnl7i6UeACV7NW0aQszBX1WfejmlcdhhevAlIGmurpFdoVlAg6IU4TKEHNGDVYAwRCe3P0XBv9hRiEZQO8hPYs0BXQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ROKjHgEUlusy+VMuf4laLTCubCY9F338iXsMTzguZXI=;
- b=ntbenZCciT34bBiTekK62GvBGCHxyTlc81FdW6Z2z/eXaPH5++QbtNQamvEvOfuwqj4xfzJ7jUicUv8ab2Y6p0PvqoeJh2mX5968oLinPI5ry9ri7UaT8lOn83CHz7pM/KGDEziXvjtAU0/33yzsA4Za9t5Fd2xX0BkQds96nHYcvPbcQAPjgzRjfCV+7RhuaUvkXiko4yQ8AnCFDeGL8wo4InyuGawxpsMQi53k9H5wzVOKC906/pHDuoNFGTbaeOoqFJ5VvxQYCBsKZhngZkuND0leKb4Yh1hBIU7y5l1tyeGQbVjeooWj/a6yFkQWQx3fYbfIplyiQY9aVv+0nQ==
+ bh=XJCjI957nGK17dqBxAGK9n6eItbIlAXbki9GoJOfHaI=;
+ b=bLofsXf2sA4j+JZjSISmJVjpK7jPx/lQBlzKrsYzyi4Crwh4zsDVuPHlDu2Kb5ikX5pTPybbH6kDOCCvvDJ3jg3mVpvBgZXgftQSP5ausfdZH5G2BH7OanPE5+OA/GIwO7qo5kJmTqexfmd1ntGBha+KR9C4xLtLbvIfbXZuo6z4oKL9L2nCRQoQMSdc3WsOVhrr0VGwon8GU3bwrr9ezOdTS4UU8zlI5C9WhfHm21N1IyCUhrqRnsmHCcu/8KtYl45woG8WJHbt6jM2/fKaqC1Sz+ND7QyNCSk1u4FXfFPH5MM0y5OK+jEcKvF7xJ+zsZn9GovS153+WuedkwKJcw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=vaisala.com; dmarc=pass action=none header.from=vaisala.com;
  dkim=pass header.d=vaisala.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vaisala.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ROKjHgEUlusy+VMuf4laLTCubCY9F338iXsMTzguZXI=;
- b=CDBvAPW6BYyU75dzsGU1/xX4Dx6mBpsSJNweE2DUGNmRFuUPD3V+Smh6DCEYcnQnj6YXulluMBPjB3dTn28NrjG+WbP6A/v1Ht6ljvUQgrvi7zO6q/VXjJvKFRICNfwNqAazHWPx5G0Sn37/mTbNx3kS+StIIyxlAzFDBwBJoWenmsJRZdC4aSxNTRkkjutbRVfcViQzaq7V03GvyF+lg0QeWelHFconruSv0EUbZsv+hkO38JxXK64RoO28nTGcl3XK4FzjxxME7yAslPXyyNVIoLqcCmPuZskRfCkRQ8GmALdRQbaNlghWyQIUsEp7TIg+orVV398iumc0tr46Gg==
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none
- header.from=vaisala.com;
+ bh=XJCjI957nGK17dqBxAGK9n6eItbIlAXbki9GoJOfHaI=;
+ b=xW5fBhmf/WnD2vRpsRNiDvAyWB71xAziW59v2c3S7n0a3ejldKgvuE0DlJGg/ZSLEfPMwSDtYxMOqYY+uCmMc6x0f4JlQ/XlTUzwAy5PNZVPUqljz4dHb2IZdiddUD7V4V9aI+ytS+Gj33ygxhoQkCOAc19o6HvDU6B6jTQBEEwx60RojBZV0kFkgCUUOUnf4hWkQlR9fX7YZtdMek7BVymBP88C0TxzvN8QO3OmgAMEQ1fRZaCDa4F3EBaszojIwpqg2tY8BHpaE6uNxcdcUqBcKyVzDqxCPPwfnfEKX1VtrOwGEujIubV4DsodFdM55l+pExlswyPbpKnRECNLBA==
+Authentication-Results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=vaisala.com;
 Received: from VI1PR0602MB3568.eurprd06.prod.outlook.com
- (2603:10a6:803:10::31) by VE1PR06MB6893.eurprd06.prod.outlook.com
- (2603:10a6:800:1a2::8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4042.18; Mon, 19 Apr
- 2021 12:48:54 +0000
+ (2603:10a6:803:10::31) by VI1PR0601MB2109.eurprd06.prod.outlook.com
+ (2603:10a6:800:27::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4042.16; Mon, 19 Apr
+ 2021 13:22:45 +0000
 Received: from VI1PR0602MB3568.eurprd06.prod.outlook.com
  ([fe80::c471:1848:5f45:95a4]) by VI1PR0602MB3568.eurprd06.prod.outlook.com
  ([fe80::c471:1848:5f45:95a4%7]) with mapi id 15.20.4042.024; Mon, 19 Apr 2021
- 12:48:54 +0000
-Subject: Re: [PATCH v2 2/2] iio: accel: Add driver for Murata SCA3300
- accelerometer
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20210416134546.38475-1-tomas.melin@vaisala.com>
- <20210416134546.38475-3-tomas.melin@vaisala.com>
- <CAHp75VcibWup79np=xeQpO2z+OGCFXPhL6vWL6aWRZ+G8+djwQ@mail.gmail.com>
- <91ea3aba-854e-30f1-1236-733debfcf5dc@vaisala.com>
- <CAHp75VcWu96EAjzYYwt_gqscvJp3s9Y+ZnaK2NQa_=L+S+r5zQ@mail.gmail.com>
- <9d6e9205-6fcd-1112-46da-2062e12311e1@vaisala.com>
- <CAHp75Vd_bV63rQLfGHk8uxROt=br33sZ18E14uAsuYkcQiMx-Q@mail.gmail.com>
+ 13:22:45 +0000
 From:   Tomas Melin <tomas.melin@vaisala.com>
-Message-ID: <8ca189e8-dc68-8438-ab3f-f468e839507a@vaisala.com>
-Date:   Mon, 19 Apr 2021 15:48:52 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
-In-Reply-To: <CAHp75Vd_bV63rQLfGHk8uxROt=br33sZ18E14uAsuYkcQiMx-Q@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+To:     jic23@kernel.org, devicetree@vger.kernel.org
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/2] iio: accel: sca3300: Accelerometer support and binding docs
+Date:   Mon, 19 Apr 2021 16:21:57 +0300
+Message-Id: <20210419132159.4450-1-tomas.melin@vaisala.com>
+X-Mailer: git-send-email 2.21.3
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: text/plain
 X-Originating-IP: [85.156.166.106]
-X-ClientProxiedBy: HE1PR0701CA0064.eurprd07.prod.outlook.com
- (2603:10a6:3:9e::32) To VI1PR0602MB3568.eurprd06.prod.outlook.com
- (2603:10a6:803:10::31)
+X-ClientProxiedBy: HE1P191CA0023.EURP191.PROD.OUTLOOK.COM (2603:10a6:3:cf::33)
+ To VI1PR0602MB3568.eurprd06.prod.outlook.com (2603:10a6:803:10::31)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.242.132] (85.156.166.106) by HE1PR0701CA0064.eurprd07.prod.outlook.com (2603:10a6:3:9e::32) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4065.8 via Frontend Transport; Mon, 19 Apr 2021 12:48:54 +0000
+Received: from fedora-vm.localdomain (85.156.166.106) by HE1P191CA0023.EURP191.PROD.OUTLOOK.COM (2603:10a6:3:cf::33) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4042.16 via Frontend Transport; Mon, 19 Apr 2021 13:22:44 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 04244ab0-1eeb-4af5-6f2a-08d903317d89
-X-MS-TrafficTypeDiagnostic: VE1PR06MB6893:
-X-Microsoft-Antispam-PRVS: <VE1PR06MB6893004F1364128B72FE9299FD499@VE1PR06MB6893.eurprd06.prod.outlook.com>
+X-MS-Office365-Filtering-Correlation-Id: d5a8f7e9-d535-44a7-4658-08d9033637e6
+X-MS-TrafficTypeDiagnostic: VI1PR0601MB2109:
+X-Microsoft-Antispam-PRVS: <VI1PR0601MB21096BE7FD60306C33EA20D1FD499@VI1PR0601MB2109.eurprd06.prod.outlook.com>
 X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: iypMe+ARC8r5gB8OpaUVhVgVeEt0+tTM3nZ4rEfGaAI4vhzLtOnixpKI0o7TEJ3lNvf8ZNw6HeCi6d670lIwKr169L4nA5HeuYmiLa49xL2CTQ+0TPUul2Cn7F59Y6jHCSTjb4ay/6XXNiDRvVDGFRbHJ/OWYe8RqVr54NzEeXASa5bMeEt1yexw+fjnD7fbtEXGlhPrtRlYvXulgp4xnBoi5nqy2J2Q8T5U638F3VkB1nlOkePux0ck+7xCGSuN1LG9rsLSLdFRum8Wh8EQUGGe3L2KB19ZgyX1pn87pvQ0rlA4yrV5bpjZOlhRuA0b4BIDjgOfCfmjC99ooVNKmFQnQ4C582sVY1M2Vskfvzn1BsDWdEHKFY51XjcViyIpR0a7807T1Be9MrEcgcHzXixHg4UyxvSHk+boytfik4G8QsqrcNRHWrHNoM20OXJcDu2IkVvUvac4ei4hBYPwNkrX3isrFbiXXRhnbLVnnPcgv+2bxHZOH5Xpuq+LbmeA6ERws1Xf82SzYBuqhPf7LmwbYMBIc4oLVrXpPlxcK0yw2qJhx1aLO7ilfKXvQHDxKrU6HDlEst83f1zCD1dkKdVbpQtHXuznF5kUutvPp11BmH23JjbvairW4P00fk4NG6Fwm/C4hjEXCwWQdZKJqjl598ekF85dSG0K3H6BmVLzny8hXSB/pGlBF7z+uWnqBsgO2CuP99+H6xfHl2P6MD8rR7rVa56SegcKnQiYJ/A=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR0602MB3568.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39850400004)(376002)(396003)(346002)(136003)(366004)(36756003)(44832011)(956004)(54906003)(16576012)(316002)(2616005)(66476007)(53546011)(26005)(16526019)(8936002)(8676002)(186003)(6916009)(6486002)(478600001)(52116002)(66556008)(2906002)(4326008)(66946007)(5660300002)(83380400001)(31696002)(38100700002)(38350700002)(31686004)(86362001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?T2wxQ0k5dElOWEF5dE43S1o4K0tkZmMvYkVraDRKWVRReThzUlFlQlBWeTcz?=
- =?utf-8?B?VkVFdDl5ajZlVFFVeDgrbGtqK0JLdjh3S21JRnI1bHFyeXdwTUt4cmtTNEFa?=
- =?utf-8?B?L1g0Z1poMEFGWG0zVWJQY1NuTHBKQlZ3YXZaaDB0b3NwazM5U3JORENkTzlR?=
- =?utf-8?B?ZFhVL0IwallYM09KUnk3N1UzQUxKTFFyTTVTS2dIZGtWNW5qM0xzVDZPdUtB?=
- =?utf-8?B?LzB4cWpRRXZ4Rk54Z3VoMHUzRWpveVFFbWNLTVpmUDRRdkUyOFhoWDdXQWNB?=
- =?utf-8?B?aGNJanpFekQvM0F1Y1RhS0wxM2lWdTRad2FCNVN0UmEyc29OUUM4V281YlFN?=
- =?utf-8?B?MkMxMWxzaEs0V0g0OHNBNTljM0hjeGQ5SVJ2VDV1VDkxUU5KbFltNi8zdFJw?=
- =?utf-8?B?ZjVscFpkUlJDQjFjY2l2a2NnS1ZDZ24rcVMzSC8yVUE0NStCckUva2RxUUhs?=
- =?utf-8?B?ckZPNFFUazBEdGJPdENOUVh6eDgvWkM1R0J1QmdrUEs1QTZETmUwVWR4YThi?=
- =?utf-8?B?QjFERXc2TmtOU1kvVDFrMTFaOThvY0xXUnVnNlRLMjZleWtLQXY1SUtQOEcz?=
- =?utf-8?B?ZjAxRnZPZVE1eElsNDJuRE1NYklCeitKM05ScWJ5S0IzeHF4OGpGcFRTNzc3?=
- =?utf-8?B?RmNpcFF4bGFaWlhIVksyVEI1clVrdmJST0xhZnhLNDlzQkFrOVRrNytOL3Ry?=
- =?utf-8?B?L3hvbWRQVTUrZnFzY0V6Q2c0QTU3a200ZUM3K2FpT3c2YmZWRHFLRU9yaHVT?=
- =?utf-8?B?R01qRktJQTRnVHRYVFFWVDhWRWN6VldMeW1LclFmWTVId3cxSWdVWkhCdmZJ?=
- =?utf-8?B?TlRMQ1UyN1J4U2o5TThLMlA3WW42bTRmbHVqZFYvUFBLUkdCOWFCL2JtM2x4?=
- =?utf-8?B?bXgxY3hBNWZ5QktzOWJjTVNtV2hHTTI1eXNjL3dWSjJpK2VvR3pIcTFWOCt3?=
- =?utf-8?B?TG1FSDZ0ZENFSjlPcklZL0xnaEppWm9zK2wyTE56OWRuTm5HNlZCNVplQkht?=
- =?utf-8?B?SGp6b1lFZFppSGZhUlBjZmtqUitxSXlxU1ZRMFltNG5vbzg2Ni9QRUZwSWMv?=
- =?utf-8?B?YThwbVl6cmJMVW5KemJzMXl2a1RuUTNXTWRJV2s1dkMwc0VNSjJ0ZVkvMTNz?=
- =?utf-8?B?ZDc3UXk4cjJWWmpmQ1prWG95dHQ3YnVqV2hURlNiOWtMbGF4VXN4MFdJQkpp?=
- =?utf-8?B?MThNVXI5QVNlQitIU3Q3UmRMTHhHQ0NqYmkvZmZIZ1FaTFRUVjc3Zm1mZ2Yw?=
- =?utf-8?B?YWhhcTlYWEdaNVp2Q0l0TDJ2YTdKbE42blFDS2xOSFdZRTR1OFR0eTJCcE1V?=
- =?utf-8?B?SktCWFhoS3VIUE9mL3dZWGEvTU5ZQmtmMzI3c2YzWDRiWU9vKy9UaXc5OWlB?=
- =?utf-8?B?Z09McnRaQWQrZnRCbVV3MnpTQXA3Y1hBRlNXQWc4eUJ4SWQ3NERJSHFyeE5x?=
- =?utf-8?B?ZEtRanMrZ2NtcWJ4ejA5VDNnSDk1dGtzOG1STmVPZmpnei9nQ3hMdlBLV0t6?=
- =?utf-8?B?UXN1eksrOFFBekhncVljc1JQWnpsSFphUzdxSCtYUUxOU2t0ZGdiSTA3clY0?=
- =?utf-8?B?VXdUNkxWSldER3VKL1V5TTRtd0huSDlId0FFSlFVS1ZBRmxRSVZhNVVjT2s3?=
- =?utf-8?B?b0NEekhuNllFSGwxQUZQY3dYdm9ld0VHUG04dFZTQ0dNazhvcURWZEt4d0JP?=
- =?utf-8?B?RHhCT0Z4ZWNJeXIxMDFwYys5WWxSOGxhejJCUGU1TUpZM2g4anM0bm1BZXZv?=
- =?utf-8?Q?CRIZtr66zoOXC3dWfJ3B7DdyLFXpX4xWnid3Wtp?=
+X-Microsoft-Antispam-Message-Info: 5H2ofc6mUleryffUQLsqWqPczvjcLDzz8iBfRXm5dDYxtOhvv5rwQ6V8RX7QZEz7jDTV6PSxfx175FzlxufGGxZyXxKmvC6FLCndu/BBWpvLuNGYWbO68af2Ap6jymb5ai3EOkZOU6pLEcvcFviv2ajqTIpCxpsA64ygInV+dwjhDgAx2WpPc4N9qcidIzRkWROHHc/S/H6d4tpgyEGB1Ib3reAOknrjYgdgA6/stY0ICT86cHXVHRUFbTuU8h5J54Zldu/LCI09YHzpzkJM9AOLLEQ3BIF1uiDrLrRCj1AtPF9XHN6YWJSmvkzgjWwOxJppg4RYeL5GCww72xpTqIBOg9lK6UQJT3pnz8Mg56UNpOymUioF/drQBAVkGZoE4+i3NqnTw8IL5Y6X1/qupy2M2I6BjRFDA4o776yZmoCm0oi5xr47Gy9GmYGSX4G0My0gOv+qxcXXH5/pGZOyYcRqNBxx+m7rjKIza5gliST3yOy8zYEkzpUPjV3XlDOiY+cSWrRo1oJ0FE/i8SNQDUCb0Bg5xuJZOYCPlY7wTQWjZX7TjYdDssGUKBD6ONR839XXf6ru1Q63Tz9jqXKFF032VVZjVq8Y4pvtB9Ge2fDY+629qC3WBESj2KGfpWqYavICgmR0kQObp1QbW0NAI5EWq7jP5XgoV5z0UAIm9Kg=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR0602MB3568.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(396003)(366004)(376002)(346002)(39850400004)(956004)(83380400001)(2616005)(26005)(1076003)(86362001)(6506007)(44832011)(6486002)(478600001)(36756003)(16526019)(5660300002)(186003)(52116002)(6666004)(66946007)(66556008)(8676002)(2906002)(6512007)(4326008)(38350700002)(66476007)(38100700002)(8936002)(316002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?HRGkfVXS1BjoLNyfnMFuIurYX/Pp4cATW0cc1RP/rYCyWIzAESe8oRoWckdZ?=
+ =?us-ascii?Q?8xTJ15GPtL7XhAmQFSBc3/4d2QzcJZqx8SXibG9EC/01DcO/fh+65HtEf+dA?=
+ =?us-ascii?Q?jO2CeI3zEvFCe7r3VtLpOYbHYmYKi7t0JDO94xavDOzPXFdLKTVKAiMa5OnE?=
+ =?us-ascii?Q?pUgjVPSwxH2QS/TFuQG06yK7OJuNvK3DDCXRdb5Z/CbAzQzYvM1B9LPbbNqi?=
+ =?us-ascii?Q?mY8vswMOa7lTITV2HmnUXm48b5+a37W2JZRKkxh0UYGXyMolE3VCeNB3bjiP?=
+ =?us-ascii?Q?vCwpqZwKO6Dr1qip1jBYoQdrZkorIFHp7JQMHqOlNSLSdLvNf2jxqMwIepEd?=
+ =?us-ascii?Q?WlIjMfUUbD+zpGWJuEG1jwKEbobyBsvvTMSR/bP9V5mXIaXOZcgwvya0BVan?=
+ =?us-ascii?Q?wV1MCdA760bJs9h+nfCsoXukj07W/Dh48u58KdXvkKHKS4bAOUCQHvkKh615?=
+ =?us-ascii?Q?4ZS8X6YmWPaOKFs9v55f/OMESWFOJnqaUtukfL/hJzDEcgxcO18CT5XEz41x?=
+ =?us-ascii?Q?I912jP3qQQImhHeWZNnF+e6rzgB50ze51d2+o+T0LCiKUY/1dX1Ssk6Hqpzk?=
+ =?us-ascii?Q?c61W9wiHk1qvKdvvEi/UmtlomiBsQfJ/m4HOOOLJ5Th7/vDfO43YmlIvX9KL?=
+ =?us-ascii?Q?UUSquwLA7q0Wj1kpheXqZ2W9cZz0oK9Ra1F1ZsrNNACHWIn8a1jysqbDjT4t?=
+ =?us-ascii?Q?m4qVZKjtAxJsLxP9vwB3vf3MEhIMLgRVk79NQPehqHf7I52i3NSN7lymxRlj?=
+ =?us-ascii?Q?AzszjyXR7D/ubJJl7DSnOoeVylJuv39p9mB5J7qFqn5t9XMvw8Od7JKjh7Mt?=
+ =?us-ascii?Q?jKDtmYEKGXSBC6VFBDGlo27D2tkuHxtWaBZbe+LOgUMCo2ChGqsOlNDVgYeP?=
+ =?us-ascii?Q?5ESKnupMMLksqE20JMlf6WryOCBXP6pd4aHYR9yhs/1lzJYhul5z4xWDFGk+?=
+ =?us-ascii?Q?CKwv5Ur6ZerHxf2S2FBGJvF/b2M7I6PRHsDdJ7yzH6bro6GSHmELXdISMKD9?=
+ =?us-ascii?Q?1hQk5cRqqfu6e0++je7CElV9BvvInxn6oWgmkzPr9wgm8o1hm+yLDgmK2g/2?=
+ =?us-ascii?Q?fWOMWmeS5RlyrhdMHFS+DeaBqqrz9Fi58l+Kt2y4IEh0WYsH7mYSrFP0rJoI?=
+ =?us-ascii?Q?v1S5xgUki4CLjCR6VkFi/v2ANp5lyaC1zkbQRBRLhsK4Z6UXYyzo2n/R8xj8?=
+ =?us-ascii?Q?+sl5bG2q3D/fJo1wk+QiCyAf67NB5qqw2h1OKnWJzUxYtfNgZE/u+z+PjUv/?=
+ =?us-ascii?Q?2eLq2X6HucmwsM7Dz13HbXrMNVCSfo3p1y2zPANvr8tgq9XxS54BdDPt9IRK?=
+ =?us-ascii?Q?UHg7+24dwI+ZIEyUGUU6yivX?=
 X-OriginatorOrg: vaisala.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 04244ab0-1eeb-4af5-6f2a-08d903317d89
+X-MS-Exchange-CrossTenant-Network-Message-Id: d5a8f7e9-d535-44a7-4658-08d9033637e6
 X-MS-Exchange-CrossTenant-AuthSource: VI1PR0602MB3568.eurprd06.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Apr 2021 12:48:54.5714
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Apr 2021 13:22:45.3089
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 6d7393e0-41f5-4c2e-9b12-4c2be5da5c57
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jrKqgUjuLDAVoDc8En6WgWgjV4y1pBcFKwTf2nhWYRS34XhVoySpOq7IA3pZrdPMqSVbLFbPI/NMrni2QfW8Nw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR06MB6893
+X-MS-Exchange-CrossTenant-UserPrincipalName: qbigfEPKUyH1IjMwMf1RBxCX1W8VneQyD8gtXLngHltsm8SNGPlnqvlwwOZuBvwJnEpaJN89VuXMBkmJ3hXtGg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0601MB2109
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Patch series adds driver and dt-bindings for Murata SCA3300 accelerometer.
 
-On 4/19/21 3:29 PM, Andy Shevchenko wrote:
-> On Mon, Apr 19, 2021 at 2:36 PM Tomas Melin <tomas.melin@vaisala.com> wrote:
->> On 4/19/21 2:14 PM, Andy Shevchenko wrote:
->>> On Mon, Apr 19, 2021 at 1:29 PM Tomas Melin <tomas.melin@vaisala.com> wrote:
->>>> On 4/17/21 3:39 PM, Andy Shevchenko wrote:
->>>>> On Fri, Apr 16, 2021 at 5:21 PM Tomas Melin <tomas.melin@vaisala.com> wrote:
->>>>>> Add initial support for Murata SCA3300 3-axis industrial
->>>>>> accelerometer with digital SPI interface. This device also
->>>>>> provides a temperature measurement.
->>> ...
->>>
->>>>>> +       ret = spi_sync_transfer(sca_data->spi, xfers, ARRAY_SIZE(xfers));
->>>>>> +       if (ret < 0) {
->>>>>> +               dev_err(&sca_data->spi->dev,
->>>>>> +                       "transfer error, error: %d\n", ret);
->>>>>> +               return -EIO;
->>>>> Why shadowing error code?
->>>> Returning EIO here to have full control over the return value from this
->>>> function. As return value of this is used for testing
->>> Care to show what kind of testing requires this?
->>> Also why can't it be refactored to accept all error codes?
->> I was referring to this:
->>
->> +static int sca3300_read_reg(struct sca3300_data *sca_data, u8 reg, int *val)
->> +{
->> +       int ret;
->> +
->> +       mutex_lock(&sca_data->lock);
->> +       sca_data->txbuf[0] = 0x0 | (reg << 2);
->> +       ret = sca3300_transfer(sca_data, val);
->> +       mutex_unlock(&sca_data->lock);
->> +       if (ret == -EINVAL)
->> +               ret  = sca3300_error_handler(sca_data);
->> +
->> +       return ret;
->> +}
->> +
->> +static int sca3300_write_reg(struct sca3300_data *sca_data, u8 reg, int val)
->> +{
->> +       int reg_val = 0;
->> +       int ret;
->> +
->> +       mutex_lock(&sca_data->lock);
->> +       sca_data->txbuf[0] = BIT(7) | (reg << 2);
->> +       put_unaligned_be16(val, &sca_data->txbuf[1]);
->> +       ret = sca3300_transfer(sca_data, &reg_val);
->> +       mutex_unlock(&sca_data->lock);
->> +       if (ret == -EINVAL)
->> +               ret  = sca3300_error_handler(sca_data);
->> +
->> +       return ret;
->> +}
->>
->> So this goes into error handling only when transfer indicates EINVAL
->> (which happens when
->>
->> transfer otherwise is good, but device return status has error flags set
->> i message).
-> In such cases I would recommend introducing your own error space (with
-> positive numbers) or playing around with the number of transfers (but
-> this usually works only if you anticipate several of them in a row).
->
-> Something like
->
-> #define SCA3300_ERROR_FLAGS 1
-> ...
->
-> if (ret > 0)
->    return error_handler(..., ret); // ret in case if you want to
-> convert the code to something in Linux error code space.
+Device is a 3-axis Accelerometer with digital SPI interface.
 
-In version 1 of this patchset, positive return values were used for 
-indicating this situation.
+Patches are tested and based on linux-next.
 
-One of the comments I got from Jonathan to that version was to change
+Changes V3:
+Addressed comments from Jonathan Cameron and Andy Shevchenko
+- Grouped include statements
+- Revised SCA* define naming and grouped statements
+- Changed to GENMASK() for masks
+- Indentation fix for ACCEL_CHANNEL define
+- Remove field declarations using default values
+- Change to if(ret) style for checking return values
+- Add defined mask value SCA3300_MASK_STATUS for return status
+- Remove redundant type casts
+- Clarify comment wording
+- Refactor to remove variable idx and redundant else branches
+- Unify sleep in device init, separate sleeps not needed since operation mode change dropped
+- Drop redundant memory allocation error message in probe
+- dev.parent is set by iio core, removed from driver probe
+- Drop of_match_ptr()
 
-to use appropriate standard error code rather than positive return value.
+Changes V2:
+Addressed comments from Jonathan Cameron
+- Add manufacturer name to dt-binding file
+- Update spdx license statement for dt-bindings
+- Remove murata,opmode devicetree property in favor of driver scale + frequency properties
+- Add copyright year for driver
+- Remove X_READ and X_WRITE defines
+- Add _available sysfs attributes
+- Fix errors in documentation formatting
+- Use ARRAY_SIZE where applicable
+- Use get/put_unaligned_be16() helpers where applicable
+- Factor out error handling to separate function
+- Return only negative values from transfer function
+- Fix INFO_SCALE to return multiplier instead of inverted value
+- Change INFO_SCALE values to be actual scale instead of mode value
+- Do not provide INFO_PROCESSED values for user space
+- Add error message for failed data read in irq handler
+- Move trigger handler timestamping as part of pushing data to buffers
+- Document startup sequence, providing reference to data sheet section
+- Convert iio_triggered_buffer_setup to devm_iio_triggered_buffer_setup,
+making remove() obsolete
 
-I would thus keep this as is, hopefully You are ok with current approach.
+Tomas Melin (2):
+      dt-bindings: iio: accel: Add SCA3300 documentation
+      iio: accel: Add driver for Murata SCA3300 accelerometer
 
-Thanks,
-
-Tomas
+ Documentation/devicetree/bindings/iio/accel/murata,sca3300.yaml |  44 ++++++++++++++++++
+ drivers/iio/accel/Kconfig                                       |  13 ++++++
+ drivers/iio/accel/Makefile                                      |   1 +
+ drivers/iio/accel/sca3300.c                                     | 462 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 520 insertions(+)
 
 
->
->>>> for possible status error (EINVAL), feels more confident to have it like
->>>> this to avoid any confusion. And atleast spi_sync_transfer() return value
->>>>
->>>> would be visible in error message.
->>>>>> +       }

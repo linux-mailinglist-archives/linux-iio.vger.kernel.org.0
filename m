@@ -2,49 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4285336443A
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Apr 2021 15:33:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B91336443C
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Apr 2021 15:33:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241200AbhDSNZz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 19 Apr 2021 09:25:55 -0400
-Received: from mail-eopbgr10050.outbound.protection.outlook.com ([40.107.1.50]:12610
+        id S241227AbhDSNZ5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 19 Apr 2021 09:25:57 -0400
+Received: from mail-eopbgr10055.outbound.protection.outlook.com ([40.107.1.55]:26603
         "EHLO EUR02-HE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S241115AbhDSNXW (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 19 Apr 2021 09:23:22 -0400
+        id S240166AbhDSNXt (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 19 Apr 2021 09:23:49 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Z7zaHRLRI1MEgB4NwSx3+JhfyvEhLwyMC0BeAV5gQgpSnQY7UZ9nbo0ZJZr96LoEbBvC3Ku+nO4UeZV6gLB6U9uUWOOvdbIlHSE0ppGbhm9ycM9UD/izwO2ohkFvay2IiOYyPtV4b23+kis/2dW/ltLupHtuyLf4Ya9HzeBH+5jhWHgzdCdmh8s0mNa0Jb3pdAfCRpr73vpq1w+o/TUYMS7Br83MdZPuClBDBghzDwNhBJuHnwK/uMBvVo8Rjnl7i6UeACV7NW0aQszBX1WfejmlcdhhevAlIGmurpFdoVlAg6IU4TKEHNGDVYAwRCe3P0XBv9hRiEZQO8hPYs0BXQ==
+ b=HdIAOpkDH06C7jsbiZbOj1KNKRSqZTbjXcjIQw0wG19h1/1EioxkkKfEWS8yFxR0E85N5a5rgatPDAT8++AvQseroddi5DbNWyZ9/44MiLQC1/i1N4Zxo+H+EfIXlVbTL7dAVW/+mo6L7Fw/h6NvruwRxPWG5G38x8em5sXggR3fhaVQbidPSl2xTgw9+azUjOO5UZBv+DbT5dQ7s+rqo5lKUKIXjjovrs6pDWQSb4qwc9T8KYCW4AASbk7qftcU/oO+xANgWnMJNPkCyJj+ah4/u7LWtKWzeCePcstPJ93/VgaGEANqUeVrGni1RYzSevn5vVBqXfO2JlCwfdNWTg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XJCjI957nGK17dqBxAGK9n6eItbIlAXbki9GoJOfHaI=;
- b=bLofsXf2sA4j+JZjSISmJVjpK7jPx/lQBlzKrsYzyi4Crwh4zsDVuPHlDu2Kb5ikX5pTPybbH6kDOCCvvDJ3jg3mVpvBgZXgftQSP5ausfdZH5G2BH7OanPE5+OA/GIwO7qo5kJmTqexfmd1ntGBha+KR9C4xLtLbvIfbXZuo6z4oKL9L2nCRQoQMSdc3WsOVhrr0VGwon8GU3bwrr9ezOdTS4UU8zlI5C9WhfHm21N1IyCUhrqRnsmHCcu/8KtYl45woG8WJHbt6jM2/fKaqC1Sz+ND7QyNCSk1u4FXfFPH5MM0y5OK+jEcKvF7xJ+zsZn9GovS153+WuedkwKJcw==
+ bh=Y3GWXW0zCnyft8zBkB0j79N4qoghPeC0Arp1zz7GUNk=;
+ b=je3hoFtE6kHv8ChLbIbY5v/zsu0u5MeDT7YsEDI1xt4TeF+QeYFkAwpqToYf2EcNdNrF9+VF6AS6uHKTPFxvn2kPTPFkW2QZInl8jUanWOO7ZuCBXTXPB9zZLNqH/FMiisDNGfi2pPcN8XOKPYzEIKkF0NpainndRGEI+lfnPfGMyGtbNL2dL/dRaiMI8ppVAPkIo/ewjnVXBcOihqSJfcuxH47Ekb1yfldjy0JNOQAXCUdZrlfPKVUaDseoWm3mQ5IbPu854wTU/Hk1+LHdKMGdxOwOO2ZqFykLlqiCQ+jKnfbn0KSsZH2VYmXMpHhqN73gNZaHlBU9q8zp0VlpjA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=vaisala.com; dmarc=pass action=none header.from=vaisala.com;
  dkim=pass header.d=vaisala.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vaisala.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XJCjI957nGK17dqBxAGK9n6eItbIlAXbki9GoJOfHaI=;
- b=xW5fBhmf/WnD2vRpsRNiDvAyWB71xAziW59v2c3S7n0a3ejldKgvuE0DlJGg/ZSLEfPMwSDtYxMOqYY+uCmMc6x0f4JlQ/XlTUzwAy5PNZVPUqljz4dHb2IZdiddUD7V4V9aI+ytS+Gj33ygxhoQkCOAc19o6HvDU6B6jTQBEEwx60RojBZV0kFkgCUUOUnf4hWkQlR9fX7YZtdMek7BVymBP88C0TxzvN8QO3OmgAMEQ1fRZaCDa4F3EBaszojIwpqg2tY8BHpaE6uNxcdcUqBcKyVzDqxCPPwfnfEKX1VtrOwGEujIubV4DsodFdM55l+pExlswyPbpKnRECNLBA==
+ bh=Y3GWXW0zCnyft8zBkB0j79N4qoghPeC0Arp1zz7GUNk=;
+ b=x0K/aS+ZX5x1vc2W8BslWD6Q+Wgrm1atIphw2U475HGNORFUhjcCZjppLCKvQfUCVPyAMKCdVZvNUrDbnJZO+PtfCrb9izJPpl/AmhsloPHFjsDFmYXh98UQ1CNcTOC1H4bSQDxv4RjTEh22HbPo/Qj4cwyJQV8ZHpatWazKrzlJ3aQegwq0m51HD/GhCf2+vPkDesUpz5XPownuJYUiSFWpYfkRt6FKi6t8CuUcUerDIAY5ojvlZ4ENufOnGP8RWQHxg18kfiAOAtMASnC06jp6J/FC0OyYtoI9lgpdi9lZPVJBB1/xE1a1lXhq05pLaYCbS4yYQGLCyjbcQfyBxw==
 Authentication-Results: kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=none action=none header.from=vaisala.com;
 Received: from VI1PR0602MB3568.eurprd06.prod.outlook.com
  (2603:10a6:803:10::31) by VI1PR0601MB2109.eurprd06.prod.outlook.com
  (2603:10a6:800:27::11) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4042.16; Mon, 19 Apr
- 2021 13:22:45 +0000
+ 2021 13:22:46 +0000
 Received: from VI1PR0602MB3568.eurprd06.prod.outlook.com
  ([fe80::c471:1848:5f45:95a4]) by VI1PR0602MB3568.eurprd06.prod.outlook.com
  ([fe80::c471:1848:5f45:95a4%7]) with mapi id 15.20.4042.024; Mon, 19 Apr 2021
- 13:22:45 +0000
+ 13:22:46 +0000
 From:   Tomas Melin <tomas.melin@vaisala.com>
 To:     jic23@kernel.org, devicetree@vger.kernel.org
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v3 0/2] iio: accel: sca3300: Accelerometer support and binding docs
-Date:   Mon, 19 Apr 2021 16:21:57 +0300
-Message-Id: <20210419132159.4450-1-tomas.melin@vaisala.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Tomas Melin <tomas.melin@vaisala.com>
+Subject: [PATCH v3 1/2] dt-bindings: iio: accel: Add SCA3300 documentation
+Date:   Mon, 19 Apr 2021 16:21:58 +0300
+Message-Id: <20210419132159.4450-2-tomas.melin@vaisala.com>
 X-Mailer: git-send-email 2.21.3
+In-Reply-To: <20210419132159.4450-1-tomas.melin@vaisala.com>
+References: <20210419132159.4450-1-tomas.melin@vaisala.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [85.156.166.106]
@@ -52,107 +55,113 @@ X-ClientProxiedBy: HE1P191CA0023.EURP191.PROD.OUTLOOK.COM (2603:10a6:3:cf::33)
  To VI1PR0602MB3568.eurprd06.prod.outlook.com (2603:10a6:803:10::31)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from fedora-vm.localdomain (85.156.166.106) by HE1P191CA0023.EURP191.PROD.OUTLOOK.COM (2603:10a6:3:cf::33) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4042.16 via Frontend Transport; Mon, 19 Apr 2021 13:22:44 +0000
+Received: from fedora-vm.localdomain (85.156.166.106) by HE1P191CA0023.EURP191.PROD.OUTLOOK.COM (2603:10a6:3:cf::33) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4042.16 via Frontend Transport; Mon, 19 Apr 2021 13:22:45 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: d5a8f7e9-d535-44a7-4658-08d9033637e6
+X-MS-Office365-Filtering-Correlation-Id: ce7b3aaf-b387-416d-459e-08d903363869
 X-MS-TrafficTypeDiagnostic: VI1PR0601MB2109:
-X-Microsoft-Antispam-PRVS: <VI1PR0601MB21096BE7FD60306C33EA20D1FD499@VI1PR0601MB2109.eurprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <VI1PR0601MB210926F9DA5D2E15A4F9AD7CFD499@VI1PR0601MB2109.eurprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:1079;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 5H2ofc6mUleryffUQLsqWqPczvjcLDzz8iBfRXm5dDYxtOhvv5rwQ6V8RX7QZEz7jDTV6PSxfx175FzlxufGGxZyXxKmvC6FLCndu/BBWpvLuNGYWbO68af2Ap6jymb5ai3EOkZOU6pLEcvcFviv2ajqTIpCxpsA64ygInV+dwjhDgAx2WpPc4N9qcidIzRkWROHHc/S/H6d4tpgyEGB1Ib3reAOknrjYgdgA6/stY0ICT86cHXVHRUFbTuU8h5J54Zldu/LCI09YHzpzkJM9AOLLEQ3BIF1uiDrLrRCj1AtPF9XHN6YWJSmvkzgjWwOxJppg4RYeL5GCww72xpTqIBOg9lK6UQJT3pnz8Mg56UNpOymUioF/drQBAVkGZoE4+i3NqnTw8IL5Y6X1/qupy2M2I6BjRFDA4o776yZmoCm0oi5xr47Gy9GmYGSX4G0My0gOv+qxcXXH5/pGZOyYcRqNBxx+m7rjKIza5gliST3yOy8zYEkzpUPjV3XlDOiY+cSWrRo1oJ0FE/i8SNQDUCb0Bg5xuJZOYCPlY7wTQWjZX7TjYdDssGUKBD6ONR839XXf6ru1Q63Tz9jqXKFF032VVZjVq8Y4pvtB9Ge2fDY+629qC3WBESj2KGfpWqYavICgmR0kQObp1QbW0NAI5EWq7jP5XgoV5z0UAIm9Kg=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR0602MB3568.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(396003)(366004)(376002)(346002)(39850400004)(956004)(83380400001)(2616005)(26005)(1076003)(86362001)(6506007)(44832011)(6486002)(478600001)(36756003)(16526019)(5660300002)(186003)(52116002)(6666004)(66946007)(66556008)(8676002)(2906002)(6512007)(4326008)(38350700002)(66476007)(38100700002)(8936002)(316002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?HRGkfVXS1BjoLNyfnMFuIurYX/Pp4cATW0cc1RP/rYCyWIzAESe8oRoWckdZ?=
- =?us-ascii?Q?8xTJ15GPtL7XhAmQFSBc3/4d2QzcJZqx8SXibG9EC/01DcO/fh+65HtEf+dA?=
- =?us-ascii?Q?jO2CeI3zEvFCe7r3VtLpOYbHYmYKi7t0JDO94xavDOzPXFdLKTVKAiMa5OnE?=
- =?us-ascii?Q?pUgjVPSwxH2QS/TFuQG06yK7OJuNvK3DDCXRdb5Z/CbAzQzYvM1B9LPbbNqi?=
- =?us-ascii?Q?mY8vswMOa7lTITV2HmnUXm48b5+a37W2JZRKkxh0UYGXyMolE3VCeNB3bjiP?=
- =?us-ascii?Q?vCwpqZwKO6Dr1qip1jBYoQdrZkorIFHp7JQMHqOlNSLSdLvNf2jxqMwIepEd?=
- =?us-ascii?Q?WlIjMfUUbD+zpGWJuEG1jwKEbobyBsvvTMSR/bP9V5mXIaXOZcgwvya0BVan?=
- =?us-ascii?Q?wV1MCdA760bJs9h+nfCsoXukj07W/Dh48u58KdXvkKHKS4bAOUCQHvkKh615?=
- =?us-ascii?Q?4ZS8X6YmWPaOKFs9v55f/OMESWFOJnqaUtukfL/hJzDEcgxcO18CT5XEz41x?=
- =?us-ascii?Q?I912jP3qQQImhHeWZNnF+e6rzgB50ze51d2+o+T0LCiKUY/1dX1Ssk6Hqpzk?=
- =?us-ascii?Q?c61W9wiHk1qvKdvvEi/UmtlomiBsQfJ/m4HOOOLJ5Th7/vDfO43YmlIvX9KL?=
- =?us-ascii?Q?UUSquwLA7q0Wj1kpheXqZ2W9cZz0oK9Ra1F1ZsrNNACHWIn8a1jysqbDjT4t?=
- =?us-ascii?Q?m4qVZKjtAxJsLxP9vwB3vf3MEhIMLgRVk79NQPehqHf7I52i3NSN7lymxRlj?=
- =?us-ascii?Q?AzszjyXR7D/ubJJl7DSnOoeVylJuv39p9mB5J7qFqn5t9XMvw8Od7JKjh7Mt?=
- =?us-ascii?Q?jKDtmYEKGXSBC6VFBDGlo27D2tkuHxtWaBZbe+LOgUMCo2ChGqsOlNDVgYeP?=
- =?us-ascii?Q?5ESKnupMMLksqE20JMlf6WryOCBXP6pd4aHYR9yhs/1lzJYhul5z4xWDFGk+?=
- =?us-ascii?Q?CKwv5Ur6ZerHxf2S2FBGJvF/b2M7I6PRHsDdJ7yzH6bro6GSHmELXdISMKD9?=
- =?us-ascii?Q?1hQk5cRqqfu6e0++je7CElV9BvvInxn6oWgmkzPr9wgm8o1hm+yLDgmK2g/2?=
- =?us-ascii?Q?fWOMWmeS5RlyrhdMHFS+DeaBqqrz9Fi58l+Kt2y4IEh0WYsH7mYSrFP0rJoI?=
- =?us-ascii?Q?v1S5xgUki4CLjCR6VkFi/v2ANp5lyaC1zkbQRBRLhsK4Z6UXYyzo2n/R8xj8?=
- =?us-ascii?Q?+sl5bG2q3D/fJo1wk+QiCyAf67NB5qqw2h1OKnWJzUxYtfNgZE/u+z+PjUv/?=
- =?us-ascii?Q?2eLq2X6HucmwsM7Dz13HbXrMNVCSfo3p1y2zPANvr8tgq9XxS54BdDPt9IRK?=
- =?us-ascii?Q?UHg7+24dwI+ZIEyUGUU6yivX?=
+X-Microsoft-Antispam-Message-Info: bbdQvJNXTBWNZzKrkb2mIkqOVOxfPBOVP74rNanckdPpkSkovrkL4L89QQvv+wXrlszJtQzIX6md+crpBB7TmSDcFloM9HR9rp8vQ3YCDsu3mMPhDm7fvKdkmvM7msAyiG4SKEC9qw12L8Ppi3/ODD1cLfwyoFzXRh0t0rqM92LA7dzVITrWsfPf0wU3juIr6xnMs4pR60zXDMhWecD9G62V9rVC8O52nOLUH7xcTOQtLSaiwX7aeuavVaDX9EYGwJ+F6CJVdmGu/t5eyobLA4N7+7uLudGMyI58AXug65ebTK45fAwdYFbCVvesFEFhIIBUVbHMKpNKEWFXHXmkPP/JlmUxWxB6uuPzh+Q4EfuqNmZEQmtSrFcytq7llwEhgnUDmYvwkveZLrsokWnBNtvAm2l9N990aQnSDp/dsQsrqZDShmeJrHLPYiFP1IbEiIkizjadI7xD/ktrg2n2/fNwv9xHuRl7cfEaV9FqihiC4Hi6ZaNAkuvgtMWPwcbAnRaI80PouhzOSbUDNfildeDduOUBDsvIdihxbilKVQNxQS2savemL94TLMK2WdhQn4J7HDZyUXmTT88ItsNEv7cyjSirMxMggzkeXfCv8KOLpCOKxMf1de2YvP97LFNpbYam1GWHqWbhCHwc78GRoiz6bb4xhQ5IZVle+Qnz4xCmuO5VQR6nVMAoV7Dfc6KcPzMhoUFootAXMRrAYC8YA0A0RRJQHujWzZTwPbvapQ8=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR0602MB3568.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(396003)(366004)(376002)(346002)(39850400004)(956004)(2616005)(26005)(1076003)(86362001)(6506007)(44832011)(107886003)(966005)(6486002)(478600001)(36756003)(16526019)(5660300002)(186003)(52116002)(6666004)(66946007)(66556008)(8676002)(2906002)(6512007)(4326008)(38350700002)(66476007)(38100700002)(8936002)(316002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?xhtK6/xjDrqk7oRMUFKs7u42MAb8R0yIJUxUQLqVlGdT0wdHB4+K8LummMmf?=
+ =?us-ascii?Q?a+JGE72ufzFVc3lpl9yLiTds8Je+cKz9ITT5SMv8GBqr2tp4aSFz+jSYpVqq?=
+ =?us-ascii?Q?qSacPl5DTMHpILIjX5OY4q+2a/8G9CebfLBFu7rIkVK7mQheMPLWBdn2fwP6?=
+ =?us-ascii?Q?uR0Ml0HxPQaJM1vx88OD2s9fjiG+5r1JI0/hiGP70Fe4EU6WbekEDKCgKcuC?=
+ =?us-ascii?Q?p6axu+WMqmYA9bGbCqw/1Vefn6PuSuyLlOG4G+c1Rig4NcE4Au7L0oVecTlX?=
+ =?us-ascii?Q?CVmA3OcofkjQAC8l0lTgrry9Tc9DWLsr8TqxTs49mE2Q+3K6gRxh3V0FszUb?=
+ =?us-ascii?Q?imQBpKosPS8+ftwMhemxERZblncOJLmWGdsQW8MkQxfbhetk6V35VFhTxpS1?=
+ =?us-ascii?Q?V3WIUgTOUK5h50sQHarrb/kB28XUx9aLh1vBZqAiv6/g/hAmkhR43pKSR3xI?=
+ =?us-ascii?Q?FLT/grjEbK42ghbMRAjuRYccNBuCCKx5wXHBA3FMmUZVfVMcj5ljaPXc2OYm?=
+ =?us-ascii?Q?FT/djUrZ/MxMO3TnNWxcCaoLpkDWd07x+Lrun81wrIyRLAY8SgnL3rk1jguQ?=
+ =?us-ascii?Q?xw5m9rDmZDwd4TkK+wErq5IO+pOmPoETsAhVPLS6QRmfrpHerP1gH12LYFlW?=
+ =?us-ascii?Q?ys0YNQ7/t5L/sLE0AyeZwT/Vj8r46KcMHTLkspEURnyKXRNVe9ZIxVrN9yYX?=
+ =?us-ascii?Q?Vk6WLWld8KlBN0eg2s8DLGzeGidJwxz16XGTPJDPZc4tquUqjwF9uC4xXwiv?=
+ =?us-ascii?Q?T7/ZX//QD0IDiVHfC5ne8SPkDP1TjyqfYXDlBbnccZlaZ/bu6ZnqzGhWJ1Zj?=
+ =?us-ascii?Q?k46qX8a0yfX1/X2ubEofjxgzK/M+yqrNlPD84uuHsfmG7Ko8DpIetEpZYVoK?=
+ =?us-ascii?Q?21qRnz+px72asqHP+Ontr+gnVIuwTlmH6RldXM8JNuX+0l33vus2CNRQEFGF?=
+ =?us-ascii?Q?H2fox13ZxepSxf/7O5eE7xJjJmOBt8DA0UqR3IWG7t/jRdW4xg7ZAaSkgm2e?=
+ =?us-ascii?Q?WvuraW9MbeErIEi4xEEPfEphkoads9S51e7AUh8bxA0oqvRO9y3Xn2MCQ9EF?=
+ =?us-ascii?Q?hdckU/SwB0P6Y1kBPdqW9rWu4qr7k0XCh6Grev2rWeppoQyVB8eI/ronfhhm?=
+ =?us-ascii?Q?aqwJvCPz7vISP53x0AypV8R7BuKC7U2Aq6JZxiDnIGtHFnuJc3S8DMuxI6gm?=
+ =?us-ascii?Q?M13+4bGnvctEjJNth0qAWlH+QsSpmr+VDG/vWJobh5UFwREUo2VnUAW2Rthp?=
+ =?us-ascii?Q?l4/3LgBZSaBpw/cOOA3DzSi/11pq92RwGjQki3x+7xG5v+8/gktgjDyv1do2?=
+ =?us-ascii?Q?+p4BAVW8UogzR5LR2uJMYmnn?=
 X-OriginatorOrg: vaisala.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d5a8f7e9-d535-44a7-4658-08d9033637e6
+X-MS-Exchange-CrossTenant-Network-Message-Id: ce7b3aaf-b387-416d-459e-08d903363869
 X-MS-Exchange-CrossTenant-AuthSource: VI1PR0602MB3568.eurprd06.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Apr 2021 13:22:45.3089
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Apr 2021 13:22:46.0975
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 6d7393e0-41f5-4c2e-9b12-4c2be5da5c57
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qbigfEPKUyH1IjMwMf1RBxCX1W8VneQyD8gtXLngHltsm8SNGPlnqvlwwOZuBvwJnEpaJN89VuXMBkmJ3hXtGg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: h9uw9O0Gxog3ipEnX//9JAxrPdv/7uUKpcocnCF7YcxRe7vXY0PgLUU+V1kXwkD3uCPFZB8G9a60o0fs94TZNw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0601MB2109
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Patch series adds driver and dt-bindings for Murata SCA3300 accelerometer.
+initial DT bindings for Murata SCA3300 Accelerometer.
 
-Device is a 3-axis Accelerometer with digital SPI interface.
+Signed-off-by: Tomas Melin <tomas.melin@vaisala.com>
+---
+ .../bindings/iio/accel/murata,sca3300.yaml    | 44 +++++++++++++++++++
+ 1 file changed, 44 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/accel/murata,sca3300.yaml
 
-Patches are tested and based on linux-next.
-
-Changes V3:
-Addressed comments from Jonathan Cameron and Andy Shevchenko
-- Grouped include statements
-- Revised SCA* define naming and grouped statements
-- Changed to GENMASK() for masks
-- Indentation fix for ACCEL_CHANNEL define
-- Remove field declarations using default values
-- Change to if(ret) style for checking return values
-- Add defined mask value SCA3300_MASK_STATUS for return status
-- Remove redundant type casts
-- Clarify comment wording
-- Refactor to remove variable idx and redundant else branches
-- Unify sleep in device init, separate sleeps not needed since operation mode change dropped
-- Drop redundant memory allocation error message in probe
-- dev.parent is set by iio core, removed from driver probe
-- Drop of_match_ptr()
-
-Changes V2:
-Addressed comments from Jonathan Cameron
-- Add manufacturer name to dt-binding file
-- Update spdx license statement for dt-bindings
-- Remove murata,opmode devicetree property in favor of driver scale + frequency properties
-- Add copyright year for driver
-- Remove X_READ and X_WRITE defines
-- Add _available sysfs attributes
-- Fix errors in documentation formatting
-- Use ARRAY_SIZE where applicable
-- Use get/put_unaligned_be16() helpers where applicable
-- Factor out error handling to separate function
-- Return only negative values from transfer function
-- Fix INFO_SCALE to return multiplier instead of inverted value
-- Change INFO_SCALE values to be actual scale instead of mode value
-- Do not provide INFO_PROCESSED values for user space
-- Add error message for failed data read in irq handler
-- Move trigger handler timestamping as part of pushing data to buffers
-- Document startup sequence, providing reference to data sheet section
-- Convert iio_triggered_buffer_setup to devm_iio_triggered_buffer_setup,
-making remove() obsolete
-
-Tomas Melin (2):
-      dt-bindings: iio: accel: Add SCA3300 documentation
-      iio: accel: Add driver for Murata SCA3300 accelerometer
-
- Documentation/devicetree/bindings/iio/accel/murata,sca3300.yaml |  44 ++++++++++++++++++
- drivers/iio/accel/Kconfig                                       |  13 ++++++
- drivers/iio/accel/Makefile                                      |   1 +
- drivers/iio/accel/sca3300.c                                     | 462 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 520 insertions(+)
-
+diff --git a/Documentation/devicetree/bindings/iio/accel/murata,sca3300.yaml b/Documentation/devicetree/bindings/iio/accel/murata,sca3300.yaml
+new file mode 100644
+index 000000000000..55fd3548e3b6
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/accel/murata,sca3300.yaml
+@@ -0,0 +1,44 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/accel/murata,sca3300.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Murata SCA3300 Accelerometer
++
++description: |
++  3-axis industrial accelerometer with digital SPI interface
++  https://www.murata.com/en-global/products/sensor/accel/sca3300
++
++maintainers:
++  - Tomas Melin <tomas.melin@vaisala.com>
++
++properties:
++  compatible:
++    enum:
++      - murata,sca3300
++
++  reg:
++    maxItems: 1
++
++  spi-max-frequency:
++    maximum: 8000000
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++        accelerometer@0 {
++            compatible = "murata,sca3300";
++            reg = <0x0>;
++            spi-max-frequency = <4000000>;
++        };
++    };
++...
+-- 
+2.21.3
 

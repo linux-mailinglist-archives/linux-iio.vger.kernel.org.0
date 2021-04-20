@@ -2,49 +2,49 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C742A3659E5
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Apr 2021 15:24:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AA0F3659EC
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Apr 2021 15:25:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232269AbhDTNYi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 20 Apr 2021 09:24:38 -0400
+        id S232412AbhDTNYl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 20 Apr 2021 09:24:41 -0400
 Received: from mail-vi1eur05on2079.outbound.protection.outlook.com ([40.107.21.79]:25344
         "EHLO EUR05-VI1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S232034AbhDTNYi (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 20 Apr 2021 09:24:38 -0400
+        id S232359AbhDTNYk (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 20 Apr 2021 09:24:40 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gyTH3xtnMH6UHjHnbNqi3ZAjnbpn8Cpe+XJoxx+ZnggNEDfKhrFdxfO18aKFNLG8TQByGSSPtOuGU+Biwg7tz9PNMNL93+1dE6fWbnuJRHBzk7clMepATGCMIH1lFX2b7kUg9KuWyORGoBekY5M2hyxuAto6DwHpcFwP4hkckcIs+1a51qKJz/JKcwKcJ4e7JIjx6JoT/V9kUXSKpKOA5rzlJHlqaU8tOva7jhNHlyIMY3nuE9jPIwZhiGDfhTNeCm2P1Erv1aWhGz/2rMoKIvG6MyM2jom3M6+XmZJSUpLDkAvtC+xRrppuWtN3F6OMeROENYlwKB6ow1jReBdniQ==
+ b=l/lPxClqs6MQ6tU8O3NnSix1ZCeVxJ9fSrl9jdtY4peWj3He40ZvQrqgbvgDiBxer89muObpCPLTtNFvdi8HT6tahKD86MG6+sm/Uxg3TU3L9b+YiCXwUGGuhI7UoQcMD6EHxlFnF02x2xCmiJEupdwuyoQ4MwrFWCZMqnF8h0s02ltfg0itv7juu+LdhR2h+zP3bKAlpFcVGfPUbelCS5vpP3OZE6naw73uXniLxrI1Tgczjevae6RtlGKWB7DALGj9o22VDYNlVUlW9di+tV3nM74Y54ZjqpOBrhSo+FDfSZ11sQkK5JSbTBjd21Rmmv74bpUp18sooiCSNJ2XuQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Y3GWXW0zCnyft8zBkB0j79N4qoghPeC0Arp1zz7GUNk=;
- b=X8TywYZ5Gga2HYtknCqyU5te49RjDPD+ZGPJitvw/hAHXVnzzVneTQpngSrxF9/cURUYO6BqCTOUzXQppAwHQrd2PzaDBQh/0FQCSUcB0p6OqNPh8JYjgAOoxbFpLTgf2vLsw3kQgvS0b41MtMalLLqThfRqqLkOWMD5kvYdFJhw06jAb216z72RHGh5BSOG32WcI01wuaJzg8rqeHmgS+tD7bHBXb6W6jXUBwHmgCwwJaOkC5YhoIQmJ2JcblemdIW5M/LSTWIm1gSD56RZI72tvwud8AYvo+/NzQsLrWjrwsB1w5a//MaznPrvycArN/yYLcoXViWqd7o/KDgnFQ==
+ bh=Ly+1Zx5lNK03H/1mSJneMkF+7g0pwO2w8HpS/fRDZa4=;
+ b=N+pBTprjteVISy7G9zwBzzScFePwB2kcqU/en68gYdIhDAlf95WD79aWngn/boJivTYIyD4HlmxiuHvZn/hIr6sK6ygm8H3I2PyzNc2XzENvlG6LTfMR+Pf2/MtVbIbYS1Eq5W7OAYGlseGzmyoY5C/GqyvmdDJ0cmTo50GH8GZt8yCQQHOdSY/9KM8GF77jgNqAjdyzn3xxTtKnen3BneiDYtvkHVNDW0aerNvmG9iPoUYRjB2aUWXVS7ytJCTM5vdpr5pAyY2U4G4Gb4aeRI989qaK1a1Zb0x/JFWXjpK7Aaqw/vIHFFCK/aa1lnU5bSEa5En0KoVqbbqZa8cNqg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=vaisala.com; dmarc=pass action=none header.from=vaisala.com;
  dkim=pass header.d=vaisala.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vaisala.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Y3GWXW0zCnyft8zBkB0j79N4qoghPeC0Arp1zz7GUNk=;
- b=xbPBr+zD6KOdcyMXD7cEAeirJzDUVyZ32dnZhu0CWtfZf264FZ4wEwiXsxCgOkb0SAAId7IxunlZRj3SC2Vyp6UMK3XtaDT+y2ZGE0/29GV0Jz+GYbJNk7C1HCg4tHwEQW+ZRE2GVMyTEmYsLJEOODVOuOqpl8Za+3IKsHGaY8IFVjL9Ip3NWT8UBxTzEBKNPfp5o0M/FqWhIA6N+3gkb5B3zh5AicwRmXBcV+E7nBIPyzikuKrb7oIEjtwS/1BB1/gSgal7ojHRYHPHSxgsA67QHPLkWGWOIzA6GRpShZ0zzUhDyWZ9okBm1dmEQhBurhAe8No3kyZzfXZnA5XL3w==
+ bh=Ly+1Zx5lNK03H/1mSJneMkF+7g0pwO2w8HpS/fRDZa4=;
+ b=oBnEx223TdC/bmXl0YsMNTDPoGw9UGOM32M5BdUP6tftZfhzttxKpxmVbErdPUthjPF9d+du1c4GFuv58xKhjLQAFD3eTVStJw77r4JRblGYz9CWQUOPJumpt0LXwJ9nwB+5+u4aKvGP44xk3L03tEzvJ1vZ91AuuJLQHJkRtc8jVifASTXr+NiKMIbSPTJIB8yU2sf0Do/7VdRqKOHyr1z/eZGOiuMc/S4TfsshzDGTF9pQ1mwtpuA8ednqi4kdilexjXqlXSf2laItNJPjYiwohA0OzoKeHfpHXNWBItMY/9NjOsiZD5Vrm3iTpZyjVc1ywWk902YDdQxZLC4OgA==
 Authentication-Results: kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=none action=none header.from=vaisala.com;
 Received: from VI1PR0602MB3568.eurprd06.prod.outlook.com
  (2603:10a6:803:10::31) by VE1PR06MB7088.eurprd06.prod.outlook.com
  (2603:10a6:800:1a8::15) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4042.16; Tue, 20 Apr
- 2021 13:24:04 +0000
+ 2021 13:24:05 +0000
 Received: from VI1PR0602MB3568.eurprd06.prod.outlook.com
  ([fe80::c471:1848:5f45:95a4]) by VI1PR0602MB3568.eurprd06.prod.outlook.com
  ([fe80::c471:1848:5f45:95a4%7]) with mapi id 15.20.4042.024; Tue, 20 Apr 2021
- 13:24:04 +0000
+ 13:24:05 +0000
 From:   Tomas Melin <tomas.melin@vaisala.com>
 To:     jic23@kernel.org, devicetree@vger.kernel.org
 Cc:     andy.shevchenko@gmail.com, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org, Tomas Melin <tomas.melin@vaisala.com>
-Subject: [PATCH v4 1/2] dt-bindings: iio: accel: Add SCA3300 documentation
-Date:   Tue, 20 Apr 2021 16:23:32 +0300
-Message-Id: <20210420132333.99886-2-tomas.melin@vaisala.com>
+Subject: [PATCH v4 2/2] iio: accel: Add driver for Murata SCA3300 accelerometer
+Date:   Tue, 20 Apr 2021 16:23:33 +0300
+Message-Id: <20210420132333.99886-3-tomas.melin@vaisala.com>
 X-Mailer: git-send-email 2.21.3
 In-Reply-To: <20210420132333.99886-1-tomas.melin@vaisala.com>
 References: <20210420132333.99886-1-tomas.melin@vaisala.com>
@@ -55,113 +55,580 @@ X-ClientProxiedBy: HE1P190CA0005.EURP190.PROD.OUTLOOK.COM (2603:10a6:3:bc::15)
  To VI1PR0602MB3568.eurprd06.prod.outlook.com (2603:10a6:803:10::31)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from fedora-vm.vaisala.com (85.156.166.106) by HE1P190CA0005.EURP190.PROD.OUTLOOK.COM (2603:10a6:3:bc::15) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4065.20 via Frontend Transport; Tue, 20 Apr 2021 13:24:03 +0000
+Received: from fedora-vm.vaisala.com (85.156.166.106) by HE1P190CA0005.EURP190.PROD.OUTLOOK.COM (2603:10a6:3:bc::15) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4065.20 via Frontend Transport; Tue, 20 Apr 2021 13:24:04 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 33ccb593-b778-4178-1181-08d903ff9199
+X-MS-Office365-Filtering-Correlation-Id: 7694d2dc-d28d-4ed6-755b-08d903ff9212
 X-MS-TrafficTypeDiagnostic: VE1PR06MB7088:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <VE1PR06MB70889A933980AD96BB2783B9FD489@VE1PR06MB7088.eurprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:1079;
+X-Microsoft-Antispam-PRVS: <VE1PR06MB70885E30D03D8C86D4E597FCFD489@VE1PR06MB7088.eurprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: rF4KfuzFiCDpyCgiXo3hy+3t2R0nnM7u8MxT6P2Sqla4iqmQPiZ6q6eeGh7PBt3XJbvXxHBeIKgLuoo76xXLG2pwAnbLS0vQ1wsjAKALbVXYfX2pb5i49ar/1t8DcahVRa66j/u61NBwCrM0wtl5JMpO+tts7V2Fc1RhbES4+h4xPEcQZPhf0v7xev1KM6rMjhuyksdsNkRZTVtZMIK0Y1g5zyYiW1fU65cv9xxDUwTLnzLH4TJB76h0JuIvHTwIJ6MOt0OvWi5QSRqLIEJWb3CPgUlGbz6T4DRGVSp4KJYKcZweXCDk4YYWNJSQKZyEVikqfTqHHf86teT1Zz5VG8m6GrDBBXUUV1HS6B3Y3dDbYF/+OICLMMP4vBo9YmB0XIVgQe28Rnf3TDxXgnCggTMqM9virlHK44qzmQTPei67EBEGyU7r70zh21jF+IEMGdBhYLgfD3KyrwJGIJKV9ebaOx+CYL3QpVNO91XHcHXgWn+ffG/BBSJVm4ihYFJAvqhzrKYgL/VImfhxKGtrdhtxezg48swb6xsOQRPWYC1KqGJ8ISCOQipi2bAm7ORaxrU/9IONvXe4xFKKgNh3helKh1zzGP90gVs+Xu/sDRrJnwwYJdpDOh/uwwIkmcRT43CBu9Z7sV1cR8NY83DH20FB7VZBVmLnjwqFH72p+118ntEzVAe2W7tiyulu65epJMjsB7nljZo8iN9LE/cN74y1zW+QzlB6mnpztn0ZaA0=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR0602MB3568.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(1076003)(8936002)(66476007)(26005)(86362001)(66946007)(66556008)(4326008)(498600001)(38100700002)(956004)(186003)(38350700002)(8676002)(966005)(7696005)(52116002)(2906002)(5660300002)(44832011)(6486002)(36756003)(6666004)(16526019)(2616005)(107886003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?8s675m03c7Gq7+GwfAMAI7wr0G/GHpgxJU2aAw/wkIYIkymkUdT6JB02WnpI?=
- =?us-ascii?Q?gjoUqQSspf7AbGZRQEGLg1wMVSZML3XM2CcZQo157q+Ru0xLxEt+oLSOcoRr?=
- =?us-ascii?Q?cZvx19vxENm2JO6DXAVJIrwYhGLoW7KFZt5hQwbl7BMiN/BjnTGthWpGdt32?=
- =?us-ascii?Q?LA/QVp/947f3c8fQW3RPcmlXPXiKw4jnNLj5dC4aw7QjJ+5i7cafHPr1x9ol?=
- =?us-ascii?Q?CXHFJY5tKrmsAfUDuTFUVzQnWN9UWgGslYdsB+jtMMh9CcDBW/hXceu18G5K?=
- =?us-ascii?Q?A+SjPsvNdggdOQSX61C5Zc3jPFQwGwaU0y0ohOTFM7Tht31Jj4MkeSi5P7aX?=
- =?us-ascii?Q?SBvXT9XIsktylrILYE/0X/HhCqSGL1qdzKeu+T6+4qxGOlBVZ9N5ctVEYY/2?=
- =?us-ascii?Q?xZpiyN8qyBqBS0iWc3jeftQj53vyOZ8YNnvc1T8YNdSQHpj9e0vv1vBxbBlA?=
- =?us-ascii?Q?1s+eO4LxHBJN5iJL33lkeK0a+ye19uBAIzBOkm7pekSxVXIdfefh7QY/1mta?=
- =?us-ascii?Q?4wCnJss5n713GYJ2qX8LEpUyJJMBBi1wTGEwZEWJnrt29+ssnviyHiYK9r//?=
- =?us-ascii?Q?h8DvrIRoFe8Yg2kFdblHaKYdKM/W1tABGMBZCtw9+r0ojATGfvmLh6KaOcNs?=
- =?us-ascii?Q?wyrktjOIeqmHHfx3d77ew4lwrt6Z+m/G9D9Re9kjyff2vCcgrrc+op/b3FCM?=
- =?us-ascii?Q?NSgNqMXVTSaQRu52OB0V5e33C1VVDekPQrGKlFXOWLSmCv9yDcrom9aB/gTd?=
- =?us-ascii?Q?0oNST6QxJatvJZHXfBsC3uUGcCWOU2oBCekS/uc6SeEPikFZ7lQeODYL/8Zb?=
- =?us-ascii?Q?hdnT447n9SAMt28YxZsyzafBnvDfVcaJuJHhj1tmxfX2XNNVbF18kT64C6Cu?=
- =?us-ascii?Q?hFOaFHDmwzFeVrtTkDL8ISqfNwn6hX6JOuLiMOBFsvPYJfTd65Ob29mRBopo?=
- =?us-ascii?Q?b4g7oKqa3u7Q9lVhsbXS13VFhnqvVpMYl5Z1huQHjUqQv/HTG78YcDsvBqon?=
- =?us-ascii?Q?dP1Qn5U2I2y1sh8jWQtZMp/22vHflgzbBdPUcXwJP8ecTe/2nR9LNPm+NLhB?=
- =?us-ascii?Q?GhMwf5uhvTtSvAo3AgLeGraIOOij27NTRt+YlS1gyG+Ki/xNLglmjf9Mt4wP?=
- =?us-ascii?Q?akz/tr4X7LyaN+A1caVZkPbioFhUpuCcUkNE/jd3xvjzRBOLrCuRzO6JR5Z2?=
- =?us-ascii?Q?P+j3EIA6Wxxmoas19RmedmY/ulyTtyqknYq8g23KIY8qEaOyiOYzwqrn5pn7?=
- =?us-ascii?Q?scbu8T2a/6fq9iv/BN9b7aTGU1HWfW9H/7wR/ZO0RjTbkkv5LBmicx1nL6P4?=
- =?us-ascii?Q?Emdj3H+Oc33RWXR4yWdpCqvm?=
+X-Microsoft-Antispam-Message-Info: u+a+GT3og5FIyl4ZlOw6qPScmr6yoMcdCb66kN80WS6fD98BweORpr2i0YMMsjCdAeT1VIkGbbbjc0H2MUbMR2mjUK5bWBd6hi3gr4EI8AbmmemZzW7mfvX7lZpxnSTOEZ1+Ht/xgDpnZ7hTIqmgQ9a7nXoqU0N4w8/3scU1G4tdds4OZnz7z97pIJ/uZrbMRK8h5MGtNRsUZIPdiGfJuHiW158D/Co15nJ59Z1A6JozTslcMAubghNnO3lHRpEquqwQD5S1Sw5FYZoX3ax8TT3nmrmj5QAVU0L1IK+S/NjQKn1pq6FL8qIUT5M8enOmrdn8dk18FxS4Bw5TG+uiOELwYeK18hVuQgxiCxcvtvPejapLNDqTJtE77PPdU0HBRzluTzwsLJbo83Z3imTTzS/OKUA8FGW/JJbC+ldbbow+7dixhLyTU9TwuQE8ttIDluOVE/WjybpqvCklmZBQ/Mp/jt16kExZUMxfQXssMid44G2/Bg2J07rRF4DgjcKMaWkkf9uSZoQbi7QtER7JJ7GLlKDO1FnkBzPzpwedhiZJY+73++GtvAlXVfbW6e5H1csOakrgJJMmm7Pvh/fSnOkIkU2RzEF0rPjfNBEj+KcUNK3L6dxX6QSCnwo/JBMykscJx98ipNkmBuPno1iUYFiiX9yVZtwXdN64AUztaD4mFQ4kN2jOWpRV5tXUso5gEb4FkRlUBmgncTlEaC6sKDrROQF+h2BJgn06JeGK08k=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR0602MB3568.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(1076003)(8936002)(66476007)(30864003)(26005)(86362001)(66946007)(66556008)(4326008)(498600001)(83380400001)(38100700002)(956004)(186003)(38350700002)(8676002)(966005)(7696005)(52116002)(2906002)(5660300002)(44832011)(6486002)(36756003)(6666004)(16526019)(2616005)(107886003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?KinTCxEJPkA7bOt2RnSALbw7XbpcDsB+/PqE4KS9aUfTF14AuqQkcQ0OcYAV?=
+ =?us-ascii?Q?uRl98qR40/6fvJ3eWE1GHnN7PGu7/edl8KVJsGd9BpiIJczDtwD7D+dBfs1z?=
+ =?us-ascii?Q?hrD2C9bIqDjt12qifWAqYbTIPbZlS6+UZYcQl+IaXTei7Qoe19uqVw4NsCjg?=
+ =?us-ascii?Q?RZkrgkf5JgKQPNE2O93gThTTIUZ9UquE9odKdvgg9ECfslb7/Kkn0RgvV3yh?=
+ =?us-ascii?Q?vSlfaUsB6lMlenXiEzvbCJhD06s2qIv7sOJ9lRIxaqvfaaAN3bZXrTpB1Oil?=
+ =?us-ascii?Q?itrZMzYNrnktJBFQ40EkIzQ0iPdyRNvkKvnRkUEFGT0/5ItRpZwK/KtUtSyQ?=
+ =?us-ascii?Q?whCgCVwFbc9QZV2sum17jQwd646/K6jer2qaYPc7RzGPLTk1YDJTEv6H8K8D?=
+ =?us-ascii?Q?VmFv8Z/0Uk8WpqYT2Cz7TirhZiD+MKy6eXW5sUZkui716JZyLP6NZmnb/T4U?=
+ =?us-ascii?Q?r8rO5H2MFeGfaIeRTtjxlezO1BjpZHwExHDRVkmPJEEMc+HkHnV0tlOaElZH?=
+ =?us-ascii?Q?+DNldZ/G71tu7nCr9KeEy0liUIfGtQBRDbiFFEEiXQ2pRGu7am0kBLfgdmCq?=
+ =?us-ascii?Q?T2JZ1D0yIfDUfOGZRHmszfgqt6bKruNYNHb+t/JRZt+5RAfZZzf2fsd+40Ji?=
+ =?us-ascii?Q?TZnStbbe2EAWIZj8NUFsVWlahms+LqGNA4sxVQwRJzX3YGhI99ItbWFE5ju4?=
+ =?us-ascii?Q?VTz5gnWKvbo764oFA4t8BjSqNDSrEnsm//teazhpMuBo22rX1Pwvnq8afLPA?=
+ =?us-ascii?Q?CI9nC51ggGnsp3ga3ba/iqHuBoy3gnq/ZMV93rW/u9FP4vrDR7NawpgFP3bb?=
+ =?us-ascii?Q?3XfIcr4HUwgijMjVMSRmwLuC3mSnc/JnQNF3Vshoup+7D1J4T5//yv4YBqdn?=
+ =?us-ascii?Q?Qmqn5TKGHAXegfwtpPU9uxuGUsMywOQQZRRnzaaGgjxKXQcEy+rafnqMlz0j?=
+ =?us-ascii?Q?9fndch7UN6d5HCays1+LaOwOUMX+lPgtu8BUK0S6dtNoNw0OXNuusxcGhklE?=
+ =?us-ascii?Q?WLY7Orv7beTxmK43KXyIFdpZeq63vTtPuDrDZgc07R5YmRzyY5MUJmMd2jFS?=
+ =?us-ascii?Q?5phYZssUf00dMYlww4Nh8q89Fgs212ABKtnVHYrvM5QxhGwR8D25yTecfNvE?=
+ =?us-ascii?Q?QPRsgfjpi+8XHk1auSnnQ7Z2CG0rSx4hf9SdUU2COO1fcB+WjEA1lS/JZFZ3?=
+ =?us-ascii?Q?T02AdIH08wTfa/K4sPbmVzeTPhfsa4qMPcAVITv5mIKV+EDSxuchIstJTZjr?=
+ =?us-ascii?Q?mStqi84aFKBlE+T0o/tS8o9rH7RS6HCLr33SlAew0eW73nHqLHc2inSrxmHx?=
+ =?us-ascii?Q?DbwKpYgRJwlkBjixYQ+nJqft?=
 X-OriginatorOrg: vaisala.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 33ccb593-b778-4178-1181-08d903ff9199
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7694d2dc-d28d-4ed6-755b-08d903ff9212
 X-MS-Exchange-CrossTenant-AuthSource: VI1PR0602MB3568.eurprd06.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Apr 2021 13:24:04.5656
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Apr 2021 13:24:05.3511
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 6d7393e0-41f5-4c2e-9b12-4c2be5da5c57
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VO0m060+KWx4X4s5wNtsSRvPNTn7hoXU1dCszjPeOzCmHb2cdyHZM3Of6TucAeGYh44+/KkTa/5h36VhyrtJHg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: tJvp1VzbgAYTSj6WxE5dI9huWnGoerNvFdgRehwpbIWXo3c8uxxuxc4UCXwNWekCd4P8sFBYwg0y0R6i1SAqRA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR06MB7088
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-initial DT bindings for Murata SCA3300 Accelerometer.
+Add initial support for Murata SCA3300 3-axis industrial
+accelerometer with digital SPI interface. This device also
+provides a temperature measurement.
 
+Datasheet: https://www.murata.com/en-global/products/sensor/accel/sca3300
 Signed-off-by: Tomas Melin <tomas.melin@vaisala.com>
 ---
- .../bindings/iio/accel/murata,sca3300.yaml    | 44 +++++++++++++++++++
- 1 file changed, 44 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/accel/murata,sca3300.yaml
+ drivers/iio/accel/Kconfig   |  13 +
+ drivers/iio/accel/Makefile  |   1 +
+ drivers/iio/accel/sca3300.c | 470 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 484 insertions(+)
+ create mode 100644 drivers/iio/accel/sca3300.c
 
-diff --git a/Documentation/devicetree/bindings/iio/accel/murata,sca3300.yaml b/Documentation/devicetree/bindings/iio/accel/murata,sca3300.yaml
+diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
+index cceda3cecbcf..0dbf7b648e8a 100644
+--- a/drivers/iio/accel/Kconfig
++++ b/drivers/iio/accel/Kconfig
+@@ -450,6 +450,19 @@ config SCA3000
+ 	  To compile this driver as a module, say M here: the module will be
+ 	  called sca3000.
+ 
++config SCA3300
++	tristate "Murata SCA3300 3-Axis Accelerometer Driver"
++	depends on SPI
++	select CRC8
++	select IIO_BUFFER
++	select IIO_TRIGGERED_BUFFER
++	help
++	  Say yes here to build support for Murata SCA3300 3-Axis
++	  accelerometer.
++
++	  To compile this driver as a module, choose M here: the module will be
++	  called sca3300.
++
+ config STK8312
+ 	tristate "Sensortek STK8312 3-Axis Accelerometer Driver"
+ 	depends on I2C
+diff --git a/drivers/iio/accel/Makefile b/drivers/iio/accel/Makefile
+index 32cd1342a31a..4b56527a2b97 100644
+--- a/drivers/iio/accel/Makefile
++++ b/drivers/iio/accel/Makefile
+@@ -50,6 +50,7 @@ obj-$(CONFIG_MXC4005)		+= mxc4005.o
+ obj-$(CONFIG_MXC6255)		+= mxc6255.o
+ 
+ obj-$(CONFIG_SCA3000)		+= sca3000.o
++obj-$(CONFIG_SCA3300)		+= sca3300.o
+ 
+ obj-$(CONFIG_STK8312)		+= stk8312.o
+ obj-$(CONFIG_STK8BA50)		+= stk8ba50.o
+diff --git a/drivers/iio/accel/sca3300.c b/drivers/iio/accel/sca3300.c
 new file mode 100644
-index 000000000000..55fd3548e3b6
+index 000000000000..2be0012471cc
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/accel/murata,sca3300.yaml
-@@ -0,0 +1,44 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/accel/murata,sca3300.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++++ b/drivers/iio/accel/sca3300.c
+@@ -0,0 +1,470 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Murata SCA3300 3-axis industrial accelerometer
++ * Copyright (c) 2021 Vaisala Oyj. All rights reserved.
++ */
 +
-+title: Murata SCA3300 Accelerometer
++#include <linux/bitops.h>
++#include <linux/crc8.h>
++#include <linux/delay.h>
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/spi/spi.h>
 +
-+description: |
-+  3-axis industrial accelerometer with digital SPI interface
-+  https://www.murata.com/en-global/products/sensor/accel/sca3300
++#include <asm/unaligned.h>
 +
-+maintainers:
-+  - Tomas Melin <tomas.melin@vaisala.com>
++#include <linux/iio/buffer.h>
++#include <linux/iio/iio.h>
++#include <linux/iio/sysfs.h>
++#include <linux/iio/trigger_consumer.h>
++#include <linux/iio/triggered_buffer.h>
 +
-+properties:
-+  compatible:
-+    enum:
-+      - murata,sca3300
++#define SCA3300_ALIAS "sca3300"
 +
-+  reg:
-+    maxItems: 1
++#define SCA3300_CRC8_POLYNOMIAL 0x1d
 +
-+  spi-max-frequency:
-+    maximum: 8000000
++/* Device mode register */
++#define SCA3300_REG_MODE	0xd
++#define SCA3300_MODE_SW_RESET	0x20
 +
-+required:
-+  - compatible
-+  - reg
++/* Last register in map */
++#define SCA3300_REG_SELBANK	0x1f
 +
-+additionalProperties: false
++/* Device status and mask */
++#define SCA3300_REG_STATUS	0x6
++#define SCA3300_STATUS_MASK	GENMASK(8, 0)
 +
-+examples:
-+  - |
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        accelerometer@0 {
-+            compatible = "murata,sca3300";
-+            reg = <0x0>;
-+            spi-max-frequency = <4000000>;
-+        };
-+    };
-+...
++/* Device ID */
++#define SCA3300_REG_WHOAMI	0x10
++#define SCA3300_WHOAMI_ID	0x51
++
++/* Device return status and mask */
++#define SCA3300_VALUE_RS_ERROR	0x3
++#define SCA3300_MASK_RS_STATUS	GENMASK(1, 0)
++
++enum sca3300_scan_indexes {
++	SCA3300_ACC_X = 0,
++	SCA3300_ACC_Y,
++	SCA3300_ACC_Z,
++	SCA3300_TEMP,
++	SCA3300_TIMESTAMP,
++};
++
++#define SCA3300_ACCEL_CHANNEL(index, reg, axis) {			\
++	.type = IIO_ACCEL,						\
++	.address = reg,							\
++	.modified = 1,							\
++	.channel2 = IIO_MOD_##axis,					\
++	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),			\
++	.info_mask_shared_by_type =					\
++	BIT(IIO_CHAN_INFO_SCALE) |					\
++	BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),		\
++	.info_mask_shared_by_type_available =				\
++	BIT(IIO_CHAN_INFO_SCALE) |					\
++	BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),		\
++	.scan_index = index,						\
++	.scan_type = {							\
++		.sign = 's',						\
++		.realbits = 16,						\
++		.storagebits = 16,					\
++		.endianness = IIO_CPU,					\
++	},								\
++}
++
++static const struct iio_chan_spec sca3300_channels[] = {
++	SCA3300_ACCEL_CHANNEL(SCA3300_ACC_X, 0x1, X),
++	SCA3300_ACCEL_CHANNEL(SCA3300_ACC_Y, 0x2, Y),
++	SCA3300_ACCEL_CHANNEL(SCA3300_ACC_Z, 0x3, Z),
++	{
++		.type = IIO_TEMP,
++		.address = 0x5,
++		.scan_index = SCA3300_TEMP,
++		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
++		.scan_type = {
++			.sign = 's',
++			.realbits = 16,
++			.storagebits = 16,
++			.endianness = IIO_CPU,
++		},
++	},
++	IIO_CHAN_SOFT_TIMESTAMP(4),
++};
++
++static const int sca3300_lp_freq[] = {70, 70, 70, 10};
++static const int sca3300_accel_scale[][2] = {{0, 370}, {0, 741}, {0, 185}, {0, 185}};
++
++static const unsigned long sca3300_scan_masks[] = {
++	BIT(SCA3300_ACC_X) | BIT(SCA3300_ACC_Y) | BIT(SCA3300_ACC_Z) |
++	BIT(SCA3300_TEMP),
++	0
++};
++
++/**
++ * struct sca3300_data - device data
++ * @spi: SPI device structure
++ * @lock: Data buffer lock
++ * @scan: Triggered buffer. Four channel 16-bit data + 64-bit timestamp
++ * @txbuf: Transmit buffer
++ * @rxbuf: Receive buffer
++ */
++struct sca3300_data {
++	struct spi_device *spi;
++	struct mutex lock;
++	struct {
++		s16 channels[4];
++		s64 ts __aligned(sizeof(s64));
++	} scan;
++	u8 txbuf[4] ____cacheline_aligned;
++	u8 rxbuf[4];
++};
++
++DECLARE_CRC8_TABLE(sca3300_crc_table);
++
++static int sca3300_transfer(struct sca3300_data *sca_data, int *val)
++{
++	struct spi_delay delay = { .value = 10, .unit = SPI_DELAY_UNIT_USECS };
++	int32_t ret;
++	int rs;
++	u8 crc;
++	struct spi_transfer xfers[2] = {
++		{
++			.tx_buf = sca_data->txbuf,
++			.len = ARRAY_SIZE(sca_data->txbuf),
++			.delay = delay,
++			.cs_change = 1,
++		},
++		{
++			.rx_buf = sca_data->rxbuf,
++			.len = ARRAY_SIZE(sca_data->rxbuf),
++			.delay = delay,
++		}
++	};
++
++	/* inverted crc value as described in device data sheet */
++	crc = ~crc8(sca3300_crc_table, &sca_data->txbuf[0], 3, CRC8_INIT_VALUE);
++	sca_data->txbuf[3] = crc;
++
++	ret = spi_sync_transfer(sca_data->spi, xfers, ARRAY_SIZE(xfers));
++	if (ret) {
++		dev_err(&sca_data->spi->dev,
++			"transfer error, error: %d\n", ret);
++		return -EIO;
++	}
++
++	crc = ~crc8(sca3300_crc_table, &sca_data->rxbuf[0], 3, CRC8_INIT_VALUE);
++	if (sca_data->rxbuf[3] != crc) {
++		dev_err(&sca_data->spi->dev, "CRC checksum mismatch");
++		return -EIO;
++	}
++
++	/* get return status */
++	rs = sca_data->rxbuf[0] & SCA3300_MASK_RS_STATUS;
++	if (rs == SCA3300_VALUE_RS_ERROR)
++		ret = -EINVAL;
++
++	*val = sign_extend32(get_unaligned_be16(&sca_data->rxbuf[1]), 15);
++
++	return ret;
++}
++
++static int sca3300_error_handler(struct sca3300_data *sca_data)
++{
++	int ret;
++	int val;
++
++	mutex_lock(&sca_data->lock);
++	sca_data->txbuf[0] = SCA3300_REG_STATUS << 2;
++	ret = sca3300_transfer(sca_data, &val);
++	mutex_unlock(&sca_data->lock);
++	/*
++	 * Return status error is cleared after reading status register once,
++	 * expect EINVAL here.
++	 */
++	if (ret != -EINVAL) {
++		dev_err(&sca_data->spi->dev,
++			"error reading device status: %d\n", ret);
++		return ret;
++	}
++
++	dev_err(&sca_data->spi->dev, "device status: 0x%lx\n",
++		val & SCA3300_STATUS_MASK);
++
++	return 0;
++}
++
++static int sca3300_read_reg(struct sca3300_data *sca_data, u8 reg, int *val)
++{
++	int ret;
++
++	mutex_lock(&sca_data->lock);
++	sca_data->txbuf[0] = reg << 2;
++	ret = sca3300_transfer(sca_data, val);
++	mutex_unlock(&sca_data->lock);
++	if (ret != -EINVAL)
++		return ret;
++
++	return sca3300_error_handler(sca_data);
++}
++
++static int sca3300_write_reg(struct sca3300_data *sca_data, u8 reg, int val)
++{
++	int reg_val = 0;
++	int ret;
++
++	mutex_lock(&sca_data->lock);
++	/* BIT(7) for write operation */
++	sca_data->txbuf[0] = BIT(7) | (reg << 2);
++	put_unaligned_be16(val, &sca_data->txbuf[1]);
++	ret = sca3300_transfer(sca_data, &reg_val);
++	mutex_unlock(&sca_data->lock);
++	if (ret != -EINVAL)
++		return ret;
++
++	return sca3300_error_handler(sca_data);
++}
++
++static int sca3300_write_raw(struct iio_dev *indio_dev,
++			     struct iio_chan_spec const *chan,
++			     int val, int val2, long mask)
++{
++	struct sca3300_data *data = iio_priv(indio_dev);
++	int reg_val;
++	int ret;
++	int i;
++
++	switch (mask) {
++	case IIO_CHAN_INFO_SCALE:
++		if (val)
++			return -EINVAL;
++
++		for (i = 0; i < ARRAY_SIZE(sca3300_accel_scale); i++) {
++			if (val2 == sca3300_accel_scale[i][1])
++				return sca3300_write_reg(data, SCA3300_REG_MODE, i);
++		}
++		return -EINVAL;
++
++	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
++		ret = sca3300_read_reg(data, SCA3300_REG_MODE, &reg_val);
++		if (ret)
++			return ret;
++		/* freq. change is possible only for mode 3 and 4 */
++		if (reg_val == 2 && val == sca3300_lp_freq[3])
++			return sca3300_write_reg(data, SCA3300_REG_MODE, 3);
++		if (reg_val == 3 && val == sca3300_lp_freq[2])
++			return sca3300_write_reg(data, SCA3300_REG_MODE, 2);
++		return -EINVAL;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int sca3300_read_raw(struct iio_dev *indio_dev,
++			    struct iio_chan_spec const *chan,
++			    int *val, int *val2, long mask)
++{
++	struct sca3300_data *data = iio_priv(indio_dev);
++	int ret;
++	int reg_val;
++
++	switch (mask) {
++	case IIO_CHAN_INFO_RAW:
++		ret = sca3300_read_reg(data, chan->address, val);
++		if (ret)
++			return ret;
++		return IIO_VAL_INT;
++	case IIO_CHAN_INFO_SCALE:
++		ret = sca3300_read_reg(data, SCA3300_REG_MODE, &reg_val);
++		if (ret)
++			return ret;
++		*val = 0;
++		*val2 = sca3300_accel_scale[reg_val][1];
++		return IIO_VAL_INT_PLUS_MICRO;
++	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
++		ret = sca3300_read_reg(data, SCA3300_REG_MODE, &reg_val);
++		if (ret)
++			return ret;
++		*val = sca3300_lp_freq[reg_val];
++		return IIO_VAL_INT;
++	default:
++		return -EINVAL;
++	}
++}
++
++static irqreturn_t sca3300_trigger_handler(int irq, void *p)
++{
++	struct iio_poll_func *pf = p;
++	struct iio_dev *indio_dev = pf->indio_dev;
++	struct sca3300_data *data = iio_priv(indio_dev);
++	int bit, ret, val, i = 0;
++
++	for_each_set_bit(bit, indio_dev->active_scan_mask,
++			 indio_dev->masklength) {
++		ret = sca3300_read_reg(data, sca3300_channels[bit].address,
++				       &val);
++		if (ret) {
++			dev_err_ratelimited(&data->spi->dev,
++				"failed to read register, error: %d\n", ret);
++			/* handled, but bailing out due to errors */
++			goto out;
++		}
++		data->scan.channels[i++] = val;
++	}
++
++	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
++					   iio_get_time_ns(indio_dev));
++out:
++	iio_trigger_notify_done(indio_dev->trig);
++
++	return IRQ_HANDLED;
++}
++
++/*
++ * sca3300_init - Device init sequence. See datasheet rev 2 section
++ * 4.2 Start-Up Sequence for details.
++ */
++static int sca3300_init(struct sca3300_data *sca_data,
++			struct iio_dev *indio_dev)
++{
++	int ret;
++	int value = 0;
++
++	ret = sca3300_write_reg(sca_data, SCA3300_REG_MODE,
++				SCA3300_MODE_SW_RESET);
++	if (ret)
++		return ret;
++
++	/*
++	 * Wait 1ms after SW-reset command.
++	 * Wait 15ms for settling of signal paths.
++	 */
++	usleep_range(16e3, 50e3);
++
++	ret = sca3300_read_reg(sca_data, SCA3300_REG_WHOAMI, &value);
++	if (ret)
++		return ret;
++
++	if (value != SCA3300_WHOAMI_ID) {
++		dev_err(&sca_data->spi->dev,
++			"device id not expected value, %d != %u\n",
++			value, SCA3300_WHOAMI_ID);
++		return -ENODEV;
++	}
++	return 0;
++}
++
++static int sca3300_debugfs_reg_access(struct iio_dev *indio_dev,
++				      unsigned int reg, unsigned int writeval,
++				      unsigned int *readval)
++{
++	struct sca3300_data *data = iio_priv(indio_dev);
++	int value;
++	int ret;
++
++	if (reg > SCA3300_REG_SELBANK)
++		return -EINVAL;
++
++	if (!readval)
++		return sca3300_write_reg(data, reg, writeval);
++
++	ret = sca3300_read_reg(data, reg, &value);
++	if (ret)
++		return ret;
++
++	*readval = value;
++
++	return 0;
++}
++
++static int sca3300_read_avail(struct iio_dev *indio_dev,
++			      struct iio_chan_spec const *chan,
++			      const int **vals, int *type, int *length,
++			      long mask)
++{
++	switch (mask) {
++	case IIO_CHAN_INFO_SCALE:
++		*vals = (const int *)sca3300_accel_scale;
++		*length = ARRAY_SIZE(sca3300_accel_scale) * 2 - 2;
++		*type = IIO_VAL_INT_PLUS_MICRO;
++		return IIO_AVAIL_LIST;
++	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
++		*vals = &sca3300_lp_freq[2];
++		*length = 2;
++		*type = IIO_VAL_INT;
++		return IIO_AVAIL_LIST;
++	default:
++		return -EINVAL;
++	}
++}
++
++static const struct iio_info sca3300_info = {
++	.read_raw = sca3300_read_raw,
++	.write_raw = sca3300_write_raw,
++	.debugfs_reg_access = &sca3300_debugfs_reg_access,
++	.read_avail = sca3300_read_avail,
++};
++
++static int sca3300_probe(struct spi_device *spi)
++{
++	struct sca3300_data *sca_data;
++	struct iio_dev *indio_dev;
++	int ret;
++
++	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*sca_data));
++	if (!indio_dev)
++		return -ENOMEM;
++
++	sca_data = iio_priv(indio_dev);
++	mutex_init(&sca_data->lock);
++	sca_data->spi = spi;
++
++	crc8_populate_msb(sca3300_crc_table, SCA3300_CRC8_POLYNOMIAL);
++
++	indio_dev->info = &sca3300_info;
++	indio_dev->name = SCA3300_ALIAS;
++	indio_dev->modes = INDIO_DIRECT_MODE;
++	indio_dev->channels = sca3300_channels;
++	indio_dev->num_channels = ARRAY_SIZE(sca3300_channels);
++	indio_dev->available_scan_masks = sca3300_scan_masks;
++
++	ret = sca3300_init(sca_data, indio_dev);
++	if (ret) {
++		dev_err(&spi->dev, "failed to init device, error: %d\n", ret);
++		return ret;
++	}
++
++	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
++					      iio_pollfunc_store_time,
++					      sca3300_trigger_handler, NULL);
++	if (ret) {
++		dev_err(&spi->dev,
++			"iio triggered buffer setup failed, error: %d\n", ret);
++		return ret;
++	}
++
++	ret = devm_iio_device_register(&spi->dev, indio_dev);
++	if (ret) {
++		dev_err(&spi->dev, "iio device register failed, error: %d\n",
++			ret);
++	}
++
++	return ret;
++}
++
++static const struct of_device_id sca3300_dt_ids[] = {
++	{ .compatible = "murata,sca3300"},
++	{}
++};
++MODULE_DEVICE_TABLE(of, sca3300_dt_ids);
++
++static struct spi_driver sca3300_driver = {
++	.driver = {
++		.name		= SCA3300_ALIAS,
++		.of_match_table = sca3300_dt_ids,
++	},
++	.probe	= sca3300_probe,
++};
++module_spi_driver(sca3300_driver);
++
++MODULE_AUTHOR("Tomas Melin <tomas.melin@vaisala.com>");
++MODULE_DESCRIPTION("Murata SCA3300 SPI Accelerometer");
++MODULE_LICENSE("GPL v2");
 -- 
 2.21.3
 

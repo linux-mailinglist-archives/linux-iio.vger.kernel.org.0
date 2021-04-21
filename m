@@ -2,141 +2,105 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F150E366194
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Apr 2021 23:26:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF97E366864
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Apr 2021 11:54:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234163AbhDTV1E (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 20 Apr 2021 17:27:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59474 "EHLO
+        id S236150AbhDUJzK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 21 Apr 2021 05:55:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234024AbhDTV1D (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 20 Apr 2021 17:27:03 -0400
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7702EC06174A;
-        Tue, 20 Apr 2021 14:26:31 -0700 (PDT)
-Received: by mail-lj1-x230.google.com with SMTP id m7so34475878ljp.10;
-        Tue, 20 Apr 2021 14:26:31 -0700 (PDT)
+        with ESMTP id S235490AbhDUJzK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Apr 2021 05:55:10 -0400
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31EB5C06138B
+        for <linux-iio@vger.kernel.org>; Wed, 21 Apr 2021 02:54:37 -0700 (PDT)
+Received: by mail-lj1-x231.google.com with SMTP id u4so46991789ljo.6
+        for <linux-iio@vger.kernel.org>; Wed, 21 Apr 2021 02:54:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=NnEKqD9C28fKA636i2L+i6cL9LnMvcl3J0Uu0ib7IW4=;
-        b=WxjER0/8npOdOTDj6FIdSV8HRBQrc+YXxC5qHzwww5TJguuHF9eLNflU+O9uWuv9GC
-         vQFS5pW1xxeUQggIbxnFCjHQgQHHdvOWfYA6tw1zSNb1a4g08Cche+tnqZjTSKuHdlM9
-         RQWCGNg4eBV4dTthM4BmJWPKEg4il4XBkqvnipLXvudzPZBC81ZaRktmZ7ZAGOmQ2UQn
-         g+QfU7PvzpNcKNryvymlm93HVi5HAkCJ+li+kT7D2BoYZHPzAk96d7omFwMKms4H5i+1
-         XyahZJ/L0+yxfpH/N+ltp/rnrpDI/7CVMVC1CCJTI4qz56PpFwXlHK6oXdSUxXJo5kJY
-         1lQw==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Amhw8bvKHF0P/YwOkjDFZIuS537DvDV3fmjtkAeOJmI=;
+        b=zoLRYbRnOVyRRdmxgAJ2LPReQuKLKwaN8+bANZQrKWM6q+W6Wn/CVEpZSJlUSBncLv
+         byYshVXoV2Sk4WYQB72TROIW4XGrpnayBThVJcu6UJMwN2hcSNe04vlgnb8kjgO7gSQZ
+         Oi+hzv+UQ4wRuEqgm7uCgv6DgRdqEXzC6M6bf4PWWwt9j3j/odurauNaLTt0OlWJTOhd
+         5nz9+7BC4qP0XPcmgL27iLMoU1cBrwEfo88PJ5WXHi4gw1euKJXApsYPi+7bksmVTdlO
+         fZfkFwXM4Oc4r66rd+CtUsCFAySFznZ3YBx0vNUA/9HsDZeAVpClxXbDeM9obNXghR7T
+         Tt1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=NnEKqD9C28fKA636i2L+i6cL9LnMvcl3J0Uu0ib7IW4=;
-        b=F3X9zgUxR+JksvUysL/61uTnBMmQJrxDzmhQOVZeMATe8U2dxp12DgImprA6xdxt8i
-         mWefBFKdPky3KpkD9cZiXRmoWdvBjtS1dqEHL9XGQi8Rfes8zdkOWzuJoMq7Pb7xQAkx
-         Xb0J9FJWBJAXF/yeLhUWNGDwqgq1DquR5yoGA1Ouf4KhuS1I+VxgK8iVYXi4BO7m5NR9
-         fWb6pWMXBygYhxdvsXyy/0+WE3KnpcyilUg7wOBcw4KlG5b38t3i7MYpPOQgdrPmrAkV
-         dkhjcJitRfwSWGZV0OdLj4LMYBIQv8590b0v3rCnr7y4nardv/MDRiasWIIJoYKvpWEI
-         a7fA==
-X-Gm-Message-State: AOAM531e3BmBV/BkYLZ580kHh0AncSUQ5prwyjTxEb8/kn6UgJBHMbh8
-        JyUCkMUI+BHI5H3WNYW5Pq+1VjN4VMs=
-X-Google-Smtp-Source: ABdhPJzCLWcKhuVqqStrn5MoWzJmSbs/Tiq9jNGrxJfaTkaI+HLRXuZy4dWtWipoSbXagESlxT/Stg==
-X-Received: by 2002:a2e:990b:: with SMTP id v11mr6659909lji.53.1618953989985;
-        Tue, 20 Apr 2021 14:26:29 -0700 (PDT)
-Received: from [192.168.2.145] (109-252-193-103.dynamic.spd-mgts.ru. [109.252.193.103])
-        by smtp.googlemail.com with ESMTPSA id p18sm3863ljo.75.2021.04.20.14.26.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Apr 2021 14:26:29 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Amhw8bvKHF0P/YwOkjDFZIuS537DvDV3fmjtkAeOJmI=;
+        b=UALoKpHL7YIqHs7Xv7Z+9KKOxDgMs7ZoNYjHXH56fIYoM/kQ6YjySxZpfk4Ta3HVLp
+         5OaMqSSv3aQz2pBtm2auo9cJQyM1WSONZY1sgDDrP5PZ77W2VKyC0nLuCieLLrQwo72D
+         aSAESVjcGq88uOsr/5TJVrEEX/9W2FGTFe7GytMfkjLsZrbMkr5974N/5rAW6r/ygHq5
+         O81+AeM0XhDZ3WHBpncXH+ioZKmey/i5JzmenxNS5EtWRL4eE2vkG55VpLFfa2Wjek3s
+         FP7eyN1R/CUHf33DpFQMx52TdrOpevzA4dEx2v9GvQPOipU+uz0vgkFiDL+5SRkbcgbe
+         lwyA==
+X-Gm-Message-State: AOAM530rcfXp9WxFlDI+YZRF+vc2cFXHxIRJNGOZkSD0D4PJ7ihswxvu
+        PDru3zS3xmwzA/d5TB6K7uv+mV3MQKdEY6F655qE+EBpRbo=
+X-Google-Smtp-Source: ABdhPJyJuUEXXYzilkrsnliZ/waDIzceWTF++xtfReO6qLkFGuOGc+BPYe/Pelkuq4dg5lUMXtVtTwvYmgCTUtoIvrg=
+X-Received: by 2002:a05:651c:503:: with SMTP id o3mr18074061ljp.368.1618998875678;
+ Wed, 21 Apr 2021 02:54:35 -0700 (PDT)
+MIME-Version: 1.0
+References: <483ac17b-705a-38c3-54ee-7f0089262c03@gmail.com>
+ <CACRpkdbEue3OLpU0L_SDAsxpLTY7aqRP5sOZ90pF=o-Yb0ot4Q@mail.gmail.com> <f2b7938f-12ea-529b-da5e-83c9c8074e1a@gmail.com>
+In-Reply-To: <f2b7938f-12ea-529b-da5e-83c9c8074e1a@gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 21 Apr 2021 11:54:24 +0200
+Message-ID: <CACRpkdbtnCoDdwJA9oi88NKStf5uhi72DgP_a=3Dpp_aT=kYNg@mail.gmail.com>
 Subject: Re: BUG: iio: mpu3050: Wrong temperature scale
-To:     Linus Walleij <linus.walleij@linaro.org>
+To:     Dmitry Osipenko <digetx@gmail.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Svyatoslav Ryhel <clamor95@gmail.com>,
         Nathan Royer <nroyer@invensense.com>,
         Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
-References: <483ac17b-705a-38c3-54ee-7f0089262c03@gmail.com>
- <CACRpkdbEue3OLpU0L_SDAsxpLTY7aqRP5sOZ90pF=o-Yb0ot4Q@mail.gmail.com>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <f2b7938f-12ea-529b-da5e-83c9c8074e1a@gmail.com>
-Date:   Wed, 21 Apr 2021 00:26:28 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
-MIME-Version: 1.0
-In-Reply-To: <CACRpkdbEue3OLpU0L_SDAsxpLTY7aqRP5sOZ90pF=o-Yb0ot4Q@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-19.04.2021 13:07, Linus Walleij пишет:
-> On Mon, Apr 19, 2021 at 8:06 AM Dmitry Osipenko <digetx@gmail.com> wrote:
-> 
->> The driver uses
->> (x+23000)/280 formula for the conversion of raw temperature value, which
->> gives 82C for x=0, thus apparently formula is wrong because x=50000
->> should give us ~25C.
->>
->> I tried to search for the datasheet with the formula, but couldn't find it.
-> 
-> There is no public datasheet. I have never seen a non-public datasheet
-> either.
-> 
-> As the initial submission of the driver says:
-> 
-> "This driver is based on information from the rough input driver
->  in drivers/input/misc/mpu3050.c and the scratch misc driver
->  posted by Nathan Royer in 2011. Some years have passed but this
->  is finally a fully-fledged driver for this gyroscope. It was
->  developed and tested on the Qualcomm APQ8060 Dragonboard."
-> 
-> Nathans submission:
-> https://lore.kernel.org/lkml/1309486707-1658-1-git-send-email-nroyer@invensense.com/
-> (you find the threads at the bottom)
-> 
-> This submission came from inside Invensense so it is the closest
-> authoritative source we have.
-> 
->> Linus, will you be able to check whether the formula used by the driver
->> is correct? Thanks in advance.
-> 
-> Sadly the code is the documentation when it comes to Invensense stuff,
-> I am CC:ing Nathans Invensense address in the vain hope he is still
-> working there and could help, also CC to Jean-Baptiste who was
-> there last year and maybe can help out.
-> 
-> I don't anymore remember exactly how I found this equation,
-> but it wasn't from any datasheet. I vaguely remember browsing
-> through some Android userspace sensor code.
-> 
-> What I tend to do is dig around in old mobile
-> phone Android trees, and there you sometimes find this information
-> in different GPL code drops. I bet I got it from browsing some of
-> those.
-> 
-> Here is an example (Tegra):
-> https://android.googlesource.com/kernel/tegra/+/dba2740d025c8e7e7e3c61d84a4f964d2c1c0ac9/drivers/misc/inv_mpu
-> 
-> Worst case what one *can* do is to calibrate the scale, like put
-> the device in a controlled environment of some two reasonably
-> far apart temperatures and measure, assuming it is at least
-> linear. Some professionals use controlled environment
-> chambers for this. But I hope there is a better way.
+On Tue, Apr 20, 2021 at 11:26 PM Dmitry Osipenko <digetx@gmail.com> wrote:
 
-Linus, thank you very much for the answer! I found a non-kernel example
-which uses a similar equation [1], but in a different form. The main
-difference is that the Arduino code interprets a raw temperature value
-as a signed integer, while upstream assumes it's unsigned.
+> I found a non-kernel example
+> which uses a similar equation [1], but in a different form. The main
+> difference is that the Arduino code interprets a raw temperature value
+> as a signed integer, while upstream assumes it's unsigned.
+>
+> [1]
+> https://github.com/blaisejarrett/Arduino-Lib.MPU3050/blob/master/MPU3050lib.cpp#L111
 
-[1]
-https://github.com/blaisejarrett/Arduino-Lib.MPU3050/blob/master/MPU3050lib.cpp#L111
+Oh that's nice. Room temperature as mentioned is 20 deg C
+I think?
 
+The divide by 280 part seems coherent in all examples.
 
-Still, even if assume that the raw temperature is a signed s16 value, it
-gives us ~35C in a result, which should be off by ~10C.
+> Still, even if assume that the raw temperature is a signed s16 value, it
+> gives us ~35C in a result, which should be off by ~10C.
+>
+> Certainly a manual calibration is an option, but we will try to wait for
+> the answer from Nathans and Jean-Baptiste before going that route.
 
-Certainly a manual calibration is an option, but we will try to wait for
-the answer from Nathans and Jean-Baptiste before going that route.
+The method I have seen used is:
+- Collect many bags of silica gel, those little packages of "dryer" that
+come in shoe boxes.
+- Put the device with all these in two layers of plastic bags and pull out
+cables, glue or strap many layers around the bags to make it really tight
+where the cables come out.
+- Submerge this into a mixture of ice and water which is known to be
+a calibration point for 0 degrees C, wait for some hour or so to
+stabilize, add some ice if it all melts.
+
+Now measures should be 0 deg C so any deviance will be the constant
+offset that need be added for the sensor.
+
+I guess the OTP (one time programmable memory) also contains
+device-unique calibration, maybe also for the temperature sensor,
+but IIUC that is read in automatically by the hardware since no
+drivers seem to look into that.
+
+Yours,
+Linus Walleij

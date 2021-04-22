@@ -2,114 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 164693675E8
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Apr 2021 01:49:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C843367664
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Apr 2021 02:41:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343768AbhDUXu1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 21 Apr 2021 19:50:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40360 "EHLO
+        id S1344013AbhDVAjm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 21 Apr 2021 20:39:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234816AbhDUXu0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Apr 2021 19:50:26 -0400
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6B4AC06174A;
-        Wed, 21 Apr 2021 16:49:52 -0700 (PDT)
-Received: by mail-lj1-x235.google.com with SMTP id a1so49724411ljp.2;
-        Wed, 21 Apr 2021 16:49:52 -0700 (PDT)
+        with ESMTP id S239761AbhDVAjj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Apr 2021 20:39:39 -0400
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8DA9C06138A
+        for <linux-iio@vger.kernel.org>; Wed, 21 Apr 2021 17:39:04 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id j4so29980249lfp.0
+        for <linux-iio@vger.kernel.org>; Wed, 21 Apr 2021 17:39:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=5rLqatd0/cPLTKtVbdK7mYIU6Py/40xQ4LKl2quF0qk=;
-        b=h9AgVeqfNYvmKTbZiu5GNcEmw9xgAeFCaltYCTxxGreTrtwN4fpvS1sV7J5Sw3csX0
-         hZJc3ERjkk0FzYCvHu+PlVfVCwEvBGAADt6aZpqxDshtBF6bElhJj03YZ0zxsB9LM/yT
-         axXwjmoaoUhLLj7E1Evw/YqWayBwHemfikEaZkihF4WEzQsajNSCLmC0FPVgPFalorAn
-         j4YLzjZYKG7pEo3XKjjzJXLZrpjeltmpldIRjpVpQ3dsrhGbDHLhmIwxBwgCziKQXbjl
-         zfKfDDDXPJwvNNstIWsp0/CmWKw+5v9OVzbUERAbBlemo9QtNCWbrWISPuSKYB1YtPEm
-         XD0A==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=YtZuY+Qe3tPYFoELBmvxSJOd7sSfQjqqJhXvG/Slrwk=;
+        b=Itbw7CndvF5ZKecqeCy8pddawQ6qg/Vl0A8SYW2+djcLLsGOvRxHR3O1pZW4p0rSuZ
+         q9jShETfEwMuKX85xvCTIn4w98BR1G7Jmmy8zh3jaB5pu1EQBM+uvvWJEVV0uBw/xDtH
+         eEIUXOmEl1xehACaVc6T4RTLFsx6i3k1aQIUPeRFR/CivpXT4VSSkLbkp6HZhAtfjerG
+         blUSuuLcENqfKMI50mLbg9bgDFTKgbtayFnRtvQElnA41vftU2l8TXUpkuldJeqEeqxy
+         y486OIMgN28IZJRzg6vraEqEzdR8agCzdK36K01U9SMHZqy2LBnrybMdb18NPYDtYOtW
+         SmgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=5rLqatd0/cPLTKtVbdK7mYIU6Py/40xQ4LKl2quF0qk=;
-        b=F/58YdzHzwD2x13OUWB6RkMIqzzCbLs+y2yhaSHfrzZO84/skvJtQtVKPHeqwlzMTy
-         VJr1Ma/KyNNxcScN3zLDGSNQhNiHNSWCSECOQXsYOFwXofOa0I6SSOqgdGNLKQYDML7i
-         WpnijLz/jxRrDq7sMrChMyRQdseMImQQTsLsgn1bOh63B/02n46UDGbqim/OqIMzRNAm
-         aNVcNp9LPyQNNpXhMOurc6KqcoDwRb/cJGaI5bVk1tVWZ/PCGzVP0S1dA4p6VXrsel+t
-         MB22YYiCllMUGI7RR7FBdVKSoOYDhcSL876LCoY2P9tIQX1204qhPzYlW8Pt0xl/5YNR
-         2IVg==
-X-Gm-Message-State: AOAM530jwlGDF2gFUxHyZcpEooDL1MHyltV1L++nXxHd+19O/yIqxvSi
-        g2mYbZMHOrEx9MT6TB/8DIU=
-X-Google-Smtp-Source: ABdhPJznnuxx9XBJ1JQpBCbM/IsT0QdoG97Yok024S5D1tB8/C4i/WG4Qic7AUaBEL+kn90VQWucIg==
-X-Received: by 2002:a2e:7119:: with SMTP id m25mr490630ljc.231.1619048991396;
-        Wed, 21 Apr 2021 16:49:51 -0700 (PDT)
-Received: from localhost.localdomain (109-252-193-103.dynamic.spd-mgts.ru. [109.252.193.103])
-        by smtp.gmail.com with ESMTPSA id u6sm94758lfr.164.2021.04.21.16.49.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Apr 2021 16:49:51 -0700 (PDT)
-From:   Dmitry Osipenko <digetx@gmail.com>
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=YtZuY+Qe3tPYFoELBmvxSJOd7sSfQjqqJhXvG/Slrwk=;
+        b=cNbPbxe+r62F4SViFbESrd6B2ju0dg7fhrAevhq7XpT2g1lRRgGYfV4c/ORGHDgPhh
+         28M4xp7ynwuUGJMiBxCB4svhvek5Pgs6/1f0COsKbRKPXRMZpCOP0pBfzixyjQ5NfzoU
+         vev6tp3oNz7AkmfvpwysMst32ujlNCTslFfQjS3v47jHXtZXYTjmjQ6flk0JIRFW9J2G
+         f9X4aD2NcLrO6OgY/17bicYiUNEv28ubcHanpBBYcRNO5EKteZzqTv+7a8Cz3p/JJWEf
+         k3m9O1wkA5Qw2rRlnjpEd3RlBb73y1/LrEdcRqhcLnzJVZe0W6wLzUd3huBq3sbwYywY
+         QMUw==
+X-Gm-Message-State: AOAM531wK98CiZPSuXz6ZT61XYbJgSrEJ0Vf7E/IhhFdqjmjnTPzTtRl
+        vfq4HHJ/v7TbPfdCx6jXaZVnMaafp79uw0R6i3CJcA==
+X-Google-Smtp-Source: ABdhPJzJMRjp/2v0gT0Psu0Qt1Ah73A49pOXUCbvI1fLocklY+PxwLeDkxSEqzCYYgbpLOVCppUc2MZB9h1jtatLRKU=
+X-Received: by 2002:a19:c38c:: with SMTP id t134mr604670lff.29.1619051943391;
+ Wed, 21 Apr 2021 17:39:03 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210421234820.32211-1-digetx@gmail.com>
+In-Reply-To: <20210421234820.32211-1-digetx@gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 22 Apr 2021 02:38:52 +0200
+Message-ID: <CACRpkda_tfuXH=kE+SbY1BC1rXsYUkQigtkWQ8Dz29JX-SaemA@mail.gmail.com>
+Subject: Re: [PATCH v1] iio: gyro: mpu3050: Fix reported temperature value
+To:     Dmitry Osipenko <digetx@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
         Maxim Schwalm <maxim.schwalm@gmail.com>,
-        Svyatoslav Ryhel <clamor95@gmail.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v1] iio: gyro: mpu3050: Fix reported temperature value
-Date:   Thu, 22 Apr 2021 02:48:20 +0300
-Message-Id: <20210421234820.32211-1-digetx@gmail.com>
-X-Mailer: git-send-email 2.30.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Svyatoslav Ryhel <clamor95@gmail.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The raw temperature value is a signed 16bit integer. The sign casting
-is missed in the code, which results in a wrong temperature reported by
-userspace tools, fix it.
+On Thu, Apr 22, 2021 at 1:49 AM Dmitry Osipenko <digetx@gmail.com> wrote:
 
-Cc: stable@vger.kernel.org
-Link: https://www.cdiweb.com/datasheets/invensense/mpu-3000a.pdf
-Tested-by: Maxim Schwalm <maxim.schwalm@gmail.com> # Asus TF700T
-Tested-by: Svyatoslav Ryhel <clamor95@gmail.com> # Asus TF201
-Reported-by: Svyatoslav Ryhel <clamor95@gmail.com>
-Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
----
- drivers/iio/gyro/mpu3050-core.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+> The raw temperature value is a signed 16bit integer. The sign casting
+> is missed in the code, which results in a wrong temperature reported by
+> userspace tools, fix it.
+>
+> Cc: stable@vger.kernel.org
+> Link: https://www.cdiweb.com/datasheets/invensense/mpu-3000a.pdf
+> Tested-by: Maxim Schwalm <maxim.schwalm@gmail.com> # Asus TF700T
+> Tested-by: Svyatoslav Ryhel <clamor95@gmail.com> # Asus TF201
+> Reported-by: Svyatoslav Ryhel <clamor95@gmail.com>
+> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 
-diff --git a/drivers/iio/gyro/mpu3050-core.c b/drivers/iio/gyro/mpu3050-core.c
-index ac90be03332a..9885428ca12e 100644
---- a/drivers/iio/gyro/mpu3050-core.c
-+++ b/drivers/iio/gyro/mpu3050-core.c
-@@ -272,7 +272,16 @@ static int mpu3050_read_raw(struct iio_dev *indio_dev,
- 	case IIO_CHAN_INFO_OFFSET:
- 		switch (chan->type) {
- 		case IIO_TEMP:
--			/* The temperature scaling is (x+23000)/280 Celsius */
-+			/*
-+			 * The temperature scaling is (x+23000)/280 Celsius,
-+			 * where 23000 includes room temperature offset of
-+			 * +35C, 280 is the precision scale and x is the signed
-+			 * 16bit integer which corresponds to the temperature
-+			 * range of -40C..85C.
-+			 *
-+			 * Temperature value itself represents temperature of
-+			 * the sensor die.
-+			 */
- 			*val = 23000;
- 			return IIO_VAL_INT;
- 		default:
-@@ -329,7 +338,7 @@ static int mpu3050_read_raw(struct iio_dev *indio_dev,
- 				goto out_read_raw_unlock;
- 			}
- 
--			*val = be16_to_cpu(raw_val);
-+			*val = (s16)be16_to_cpu(raw_val);
- 			ret = IIO_VAL_INT;
- 
- 			goto out_read_raw_unlock;
--- 
-2.30.2
++/- Andy's comments:
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
+I never thought this driver would have so many users (3 people signed
+testing it!) but I realize it is more widely deployed than I thought.
+
+I have totally ignored the MPU3050's ability to act as a "sensor hub"
+and talk to accelerometers and magnetometers directly. I always
+thought it would be better to just route the I2C right through it and
+put Linux in direct control, but I realize this was not Invensese's
+intention. I don't know if it can be actually utilized in some generic
+way, all kernels using that have separate hacky drivers for all the
+sub-sensors duplicating the kernel drivers we already have ...
+
+Yours,
+Linus Walleij

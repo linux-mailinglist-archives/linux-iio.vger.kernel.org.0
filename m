@@ -2,104 +2,109 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 918A6368DBF
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Apr 2021 09:15:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6651368DC4
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Apr 2021 09:17:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229935AbhDWHPi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Apr 2021 03:15:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59432 "EHLO
+        id S229935AbhDWHSa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 23 Apr 2021 03:18:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229456AbhDWHPh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Apr 2021 03:15:37 -0400
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 868AEC061574
-        for <linux-iio@vger.kernel.org>; Fri, 23 Apr 2021 00:15:00 -0700 (PDT)
-Received: by mail-pl1-x636.google.com with SMTP id e9so7816626plj.2
-        for <linux-iio@vger.kernel.org>; Fri, 23 Apr 2021 00:15:00 -0700 (PDT)
+        with ESMTP id S229456AbhDWHSa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Apr 2021 03:18:30 -0400
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DB74C061574;
+        Fri, 23 Apr 2021 00:17:54 -0700 (PDT)
+Received: by mail-pg1-x529.google.com with SMTP id w10so34620579pgh.5;
+        Fri, 23 Apr 2021 00:17:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=UR4ccHzmNfbzQe6WHOzqmgABDlK6zbcYqMSpzojceLs=;
-        b=cPhyfvyqBsfaDJ2FuPDa0YIZd1OX5pwyOZPtcm7KfxYnoD50tKXGF2VKZ7LpxtoCB+
-         SLvxc66ax3CKAGU5z9H65NqsnkJT9UdOWWu6m8KvvnC5YmDTOi2RWqKDbxHtF7Sgfsmn
-         7PEItKLvUo6JKTNyC6O2tzJ3RPIYdaV3iKAgSwUQVrPXmlFd+9TUM7iIjegVINyriYx0
-         0FAE+8Q/rmw4XsvwD19IxmXtA+nC2hRpOEbHiDUaA7tKzwslcoV9reXbW8Ts8u+SwTDe
-         /nLAwf63LkkUvSFFQ3OyUOInh97K0lIMZuz7DNn6FWPmUV143NJ+AYXLx5YiYX6R/lFu
-         K0gQ==
+        bh=PEJFE5Us5nPbS8VEWlQXC5wzvw+D+TXLK0GefcXaYv8=;
+        b=IKJ1RG5vaecp/cGk3HvxViaKDRbwmInxDthboLi0jjhj1Moh3I0uDZmW8OtgsfzNLn
+         n4YJ60nUjpcFMaTRw0f6W751yPVU10vzbc4GWvjKOpliftZWj+gL0hvb/GsoElK3ZVZn
+         f3+eglf1GJ2f1UotOqoMjW+oVt1Mn9Hg2qZf9DE9/kVqeExmaNgDbMrKJHuIinp2Exzi
+         jY0DXrb3Fd8hrL2ldFxflaPQdQ4RRtvpXp+VQp7R3vVASmkiIU2FuIGyfJvOEFxMa//F
+         9AMWbedbp4Y3M5FRG62VcmNDn/+7jDbC9VqEKaWafNltJf4PaMvZsIxZyMsFnfELz7GN
+         zTeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=UR4ccHzmNfbzQe6WHOzqmgABDlK6zbcYqMSpzojceLs=;
-        b=ZRyPai1bKZ6ktNQ0zHNADTKp2Fa0M0n8idHC4uEgRqrO4UxiiApsAQ051oJH4yfrS7
-         rrAXALrwoZq4iQ62h5GZNl2IQeSFXiGRB6oo5ldaC9CwuZsbF9hR1O0zC0099GNsHs5t
-         uF01WiGCpyomkQDhaWSgYTwTSXQmxb6qJc9RonrF40RGNqNHbIo48PHL8B/9ej/n5BnA
-         iacRKrp0oG2GeqwQAm5tMCIJ48V46pFHt/fK8zL/tAROMNCV1YyMgJK1cieOr7eqIyAk
-         3SJS26GUzjqRpu7OhfKf4o4NciUZiWS/VhwgVPH4P0XObuih8cMYSGj5ZtnXXnlTOlxW
-         YQUA==
-X-Gm-Message-State: AOAM532o029/ScOS9LX9pLuGDnU35SXbjaO2AehQ4vO8uOiaWV2ks7FU
-        rbzuZLfUVF2Y+MgAlpQmTw2lHKWplzKSXjVd9kM=
-X-Google-Smtp-Source: ABdhPJzHmr03EaY8Fg0Kgj5MUfa2nIPr3DnkK3oWx1B3A3sHyJ3wbZ3E5Ov8weMi34oyWjwCdub2UJue/ZYJqulmDdc=
-X-Received: by 2002:a17:902:e851:b029:eb:1fd0:fa8e with SMTP id
- t17-20020a170902e851b02900eb1fd0fa8emr2492340plg.38.1619162099934; Fri, 23
- Apr 2021 00:14:59 -0700 (PDT)
+        bh=PEJFE5Us5nPbS8VEWlQXC5wzvw+D+TXLK0GefcXaYv8=;
+        b=gEoIKZftyrXHcT2Dq0xmbRBn2EVL80R2SbDRD03uuUDc8dd7OFi2baAb6aBGR1ummf
+         v1Q9B6OOXhInAna6+WskvYfecCbwsCgB0RJW2cknntgwYylzTXtnqucFF2jTfiIt0prC
+         IeUdWcvemq3tWEXQjQnv5cIzrSXg/PNKnywKTviwZ6MMnLsIf7TyKUNKBN9rgQ++PEB4
+         OUk0tTu8RSFkMT4dphBRslUpIANH6W21KyLooLBDHaT/+DV/Qa/GPL4xohOTC2XLkPju
+         pQGtVj/xlNf3SFRoNILIHpzCGxAwpASuAgyLypJHvP/Rc6nCvLqK+FlU8gdM2qpLbLMy
+         IuBg==
+X-Gm-Message-State: AOAM531TMR9p2BmEsvai4aMarkmVqKklgnsVrK2FdhiGhWGCVq3kQgaC
+        vlSYJN/doILVhb3tztHyDZW6NJVKhEgMsNLDjrY=
+X-Google-Smtp-Source: ABdhPJwRSC/hxnwubvl2jfYUaac1hIOjGjhJik/8DBca7tBqZTA2Xsl+AB55dAhz8nmdx5m0S5MExRZ6G39RmGSAs5Y=
+X-Received: by 2002:a63:b515:: with SMTP id y21mr2513563pge.253.1619162273587;
+ Fri, 23 Apr 2021 00:17:53 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210422101911.135630-1-nuno.sa@analog.com> <20210422101911.135630-5-nuno.sa@analog.com>
-In-Reply-To: <20210422101911.135630-5-nuno.sa@analog.com>
+References: <20210422201415.46378-1-tomasz.duszynski@octakon.com>
+In-Reply-To: <20210422201415.46378-1-tomasz.duszynski@octakon.com>
 From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Fri, 23 Apr 2021 10:14:48 +0300
-Message-ID: <CA+U=Dsp6Rc6j5cwN77F1s=inBy3Cj+L=zwSm2AchZdmugAe1HQ@mail.gmail.com>
-Subject: Re: [PATCH v2 4/9] iio: adis_buffer: check return value on page change
-To:     Nuno Sa <nuno.sa@analog.com>
+Date:   Fri, 23 Apr 2021 10:17:42 +0300
+Message-ID: <CA+U=DsqQUse-cP7k+42reHPYfbAUMTsqLst5--BHKg53FhNbxg@mail.gmail.com>
+Subject: Re: [PATCH] iio: core: fix ioctl handlers removal
+To:     Tomasz Duszynski <tomasz.duszynski@octakon.com>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
         Lars-Peter Clausen <lars@metafoo.de>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Apr 22, 2021 at 1:17 PM Nuno Sa <nuno.sa@analog.com> wrote:
+On Thu, Apr 22, 2021 at 11:26 PM Tomasz Duszynski
+<tomasz.duszynski@octakon.com> wrote:
 >
-> On the trigger handler, we might need to change the device page. Hence,
-> we should check the return value from 'spi_write()' and act accordingly.
+> Currently ioctl handlers are removed twice. For the first time during
+> iio_device_unregister() then later on inside
+> iio_device_unregister_eventset() and iio_buffers_free_sysfs_and_mask().
+> Double free leads to kernel panic.
+>
+> Fix this by not touching ioctl handlers list directly but rather
+> letting code responsible for registration call the matching cleanup
+> routine itself.
 >
 
-Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
+This change is missing this tag:
 
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Fixes: 8dedcc3eee3ac ("iio: core: centralize ioctl() calls to the main chardev")
+
+With that tag added:
+Acked-by: Alexandru Ardelean <ardeleanalex@gmail.com>
+
+Apologies for the breakage.
+Also, I wasn't sure if Jonathan or anyone else wanted to do this change.
+
+Thanks for the patch
+Alex
+
+> Signed-off-by: Tomasz Duszynski <tomasz.duszynski@octakon.com>
 > ---
->  drivers/iio/imu/adis_buffer.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
+>  drivers/iio/industrialio-core.c | 3 ---
+>  1 file changed, 3 deletions(-)
 >
-> diff --git a/drivers/iio/imu/adis_buffer.c b/drivers/iio/imu/adis_buffer.c
-> index 175af154e443..0ae551a748eb 100644
-> --- a/drivers/iio/imu/adis_buffer.c
-> +++ b/drivers/iio/imu/adis_buffer.c
-> @@ -134,7 +134,12 @@ static irqreturn_t adis_trigger_handler(int irq, void *p)
->                 if (adis->current_page != 0) {
->                         adis->tx[0] = ADIS_WRITE_REG(ADIS_REG_PAGE_ID);
->                         adis->tx[1] = 0;
-> -                       spi_write(adis->spi, adis->tx, 2);
-> +                       ret = spi_write(adis->spi, adis->tx, 2);
-> +                       if (ret) {
-> +                               dev_err(&adis->spi->dev, "Failed to change device page: %d\n", ret);
-> +                               mutex_unlock(&adis->state_lock);
-> +                               goto irq_done;
-> +                       }
->                 }
->         }
+> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> index d92c58a94fe4..98944cfc7331 100644
+> --- a/drivers/iio/industrialio-core.c
+> +++ b/drivers/iio/industrialio-core.c
+> @@ -1939,9 +1939,6 @@ void iio_device_unregister(struct iio_dev *indio_dev)
 >
-> @@ -151,6 +156,7 @@ static irqreturn_t adis_trigger_handler(int irq, void *p)
->         iio_push_to_buffers_with_timestamp(indio_dev, adis->buffer,
->                 pf->timestamp);
+>         indio_dev->info = NULL;
 >
-> +irq_done:
->         iio_trigger_notify_done(indio_dev->trig);
+> -       list_for_each_entry_safe(h, t, &iio_dev_opaque->ioctl_handlers, entry)
+> -               list_del(&h->entry);
+> -
+>         iio_device_wakeup_eventset(indio_dev);
+>         iio_buffer_wakeup_poll(indio_dev);
 >
->         return IRQ_HANDLED;
 > --
 > 2.31.1
 >

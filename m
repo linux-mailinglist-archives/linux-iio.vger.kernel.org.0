@@ -2,1003 +2,158 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A1C0B369273
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Apr 2021 14:52:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 584D0369443
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Apr 2021 15:56:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230305AbhDWMwi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Apr 2021 08:52:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48816 "EHLO
+        id S231220AbhDWN5P (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 23 Apr 2021 09:57:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230521AbhDWMwg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Apr 2021 08:52:36 -0400
-Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5624AC061574;
-        Fri, 23 Apr 2021 05:52:00 -0700 (PDT)
-Received: by mail-pg1-x52b.google.com with SMTP id b17so35125571pgh.7;
-        Fri, 23 Apr 2021 05:52:00 -0700 (PDT)
+        with ESMTP id S229794AbhDWN5O (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Apr 2021 09:57:14 -0400
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70CCBC061574
+        for <linux-iio@vger.kernel.org>; Fri, 23 Apr 2021 06:56:38 -0700 (PDT)
+Received: by mail-pj1-x102a.google.com with SMTP id g1-20020a17090adac1b0290150d07f9402so1218099pjx.5
+        for <linux-iio@vger.kernel.org>; Fri, 23 Apr 2021 06:56:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=qWzhe4TOgrGYmaQMTLAqV+a9P8snDM+OnmiXJMDy534=;
-        b=scr3U4SPVPNS/Q+5qDcOEpCHRgDk/fSi2rXHZNpiyATE0zPWv2Sqpu1npHtMeno7rH
-         JC2srxsHZxIt7oXP3ty4Zqdm9azYWjyGP1uEMzGzCmXFx0ddT6hlxz80Py1rfyTJ0Jr4
-         mlS4FGw5In7FOXQvGP+8cvzguYCXeBLQfrYTqcLEIY2e1DIFBAvt2cnAzwcCRGby6wzr
-         TLhLylpmNZt3hPUZCQ8pz12zQLXCZVjO6rN+uGylqPNjPFtLowtOp+EjLrH8ILFrnXul
-         ZKOECZAoXdGChqovH0xUeB2oIiu5uICoY1vTHPJ4d0b1ExRUNMlCaXoE5evRTsMEPWT7
-         C4Gg==
+         :cc:content-transfer-encoding;
+        bh=q2r4TMc91iaMtJTQ7NpNLrQzrRAOSL+yBUctMmDUgT8=;
+        b=Lh3vBTaKzo7RYM3gWDxxg6uF8uDtxcqoiEoIollP1ajJA2hzGNnXqNf93Z85+Kd6gk
+         T/Hx5y9olwcyx+ol97CKojeGMysNZh+5Y7W+/1tCZ7fX+BHG93KpRwFglelciwrhv4u3
+         EiovBKAt7bDJQ/ZQsF+tGw8pPZDfdLpxolBRJZS053BkCERT7hE3eqf0Ai0r7ek2FAS6
+         mzLpcwWCTgQepEpeobQ7ZrQNiYtHKy8sLWpgcgmjRGpL7x7eTKEGTKteTF2q1ijZYLkP
+         Kjr7XTy+jRGR1Rps3+hgRwzGrxOoTCJwRtxAeYqcZlNxhs/z2yW76aqYtcNEVnAFjA0Y
+         xjWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=qWzhe4TOgrGYmaQMTLAqV+a9P8snDM+OnmiXJMDy534=;
-        b=jKDlubhESl6M82sWwhoCMS+U8WBNxuaD3CM/hKA7pvoQFFReEO6UIVvbl7IsxCHh5G
-         X2/7ncyCeu/hVJaS+loP3EnS+HkeKyhxFHcQVQossX1Tf5g9mQL+M0eZxHGPcWUMkeiR
-         Z9IqYXRMwjdW1cI07oJyReEO1iiENVPesRZtOYIZSJtZtSE42KgE1NmeFPQo99r4qIJu
-         6EIqYqONvTN6JtjTTv/5CTKnMmc5PlDxJ75bzWrnuQ75tJ9A1Dsl0pwBSnpNO8f38eSh
-         7xMIRoMqHstubejXicQIeuF6Apj3luWjuDCRVL1wLa9NSZlfBhgy5lv9UjoYubaKSo77
-         dRxA==
-X-Gm-Message-State: AOAM533OUAleE22XNppoOn5L9Pcz4+mw/inTBRJcpkYQJ43jthaiRva0
-        N9JAMRof/HeQ+T2Op4475ctwxSyVjNBCdptMqUPx6DZnalM=
-X-Google-Smtp-Source: ABdhPJwibFePl16cl8SWn9cow9I8zGYTCQ3d5BtFwEkxs9tN9UjBS/sLJfklO7KSwCiok6MHnrHRyw6seJbI+gGM6AU=
-X-Received: by 2002:a63:a847:: with SMTP id i7mr3556440pgp.203.1619182319664;
- Fri, 23 Apr 2021 05:51:59 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=q2r4TMc91iaMtJTQ7NpNLrQzrRAOSL+yBUctMmDUgT8=;
+        b=tyZyuLKKffvAPfBE+yTM23m470k+yZTQ7lNk1ZYjkT/Jv0G/dk/bGs8lmtCJeKL74Y
+         f1LifvN1SKExc1yUDmBclj/YiwM+aSAqRPYaYgoj92sN55c8/EKenQuR7CU50RX+LpaK
+         wEs+uElOkRohQkB1rhO2zgbrsOounDx8E97dA/PYk5EK+4WqUX2i7qs9k2bzpg/p09yi
+         FtNI2Zoz/dJG4dxInT7887p3V8ZZ+2z4sTurSUFJxiUlm6kGt245OMIAtGPOPIZcm5RJ
+         Sn2oVrIbRXUXXERSkF7FW1GwmxEZ9Wbo9SK6ODCWqkBYM1PXEeqzapEZOT+hdIHMid7/
+         hkKg==
+X-Gm-Message-State: AOAM531jJYaTn6J76uG5X1Dd10ibXzh9kGRj6uYoC9UxwoiDmQiXTq8v
+        /BA0Sk3MEb/aryWRZ7H3+frgy69vGcH295ue/kZ62Hredps=
+X-Google-Smtp-Source: ABdhPJy1MrMXRTBMj2hx9cbro8v955XxdSqTyEJC5uX9RS9rEJJjczzbFLdL8fQ6jV2TdsqFhAxMyxudPpVyMDVJAfU=
+X-Received: by 2002:a17:90a:2807:: with SMTP id e7mr4676418pjd.181.1619186197993;
+ Fri, 23 Apr 2021 06:56:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210423101951.2876009-1-sean@geanix.com>
-In-Reply-To: <20210423101951.2876009-1-sean@geanix.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 23 Apr 2021 15:51:43 +0300
-Message-ID: <CAHp75VdEHy0-F-pg8sSUF5FK=NfDgBuDj0wLWqpGjpqE11mjww@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] iio: accel: add support for FXLS8962AF/FXLS8964AF accelerometers
-To:     Sean Nyekjaer <sean@geanix.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        =?UTF-8?B?TnVubyBTw6E=?= <Nuno.Sa@analog.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        devicetree <devicetree@vger.kernel.org>
+References: <20210422101911.135630-1-nuno.sa@analog.com> <20210422101911.135630-7-nuno.sa@analog.com>
+ <CA+U=Dsphpu97Et6sgjd+9TUEHTw7xq44M5yL=CFtuCEU9QLxQQ@mail.gmail.com> <CY4PR03MB311220A749133B44C778F9F799459@CY4PR03MB3112.namprd03.prod.outlook.com>
+In-Reply-To: <CY4PR03MB311220A749133B44C778F9F799459@CY4PR03MB3112.namprd03.prod.outlook.com>
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+Date:   Fri, 23 Apr 2021 16:56:26 +0300
+Message-ID: <CA+U=Dsp08Hv7KtV_K=mG9RfDWpTezhPa0Xjp_R7jZrAuOqKz_w@mail.gmail.com>
+Subject: Re: [PATCH v2 6/9] iio: adis_buffer: update device page after
+ changing it
+To:     "Sa, Nuno" <Nuno.Sa@analog.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Apr 23, 2021 at 1:20 PM Sean Nyekjaer <sean@geanix.com> wrote:
-
-Thanks for an update, my comments below.
-After addressing them feel free to add
-
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-
-> Add basic support for NXP FXLS8962AF/FXLS8964AF Automotive
-> accelerometers.
-> It will allow setting up scale/gain and reading x,y,z
-> axis.
-
-> Datasheets for the devices can be found here:
-> https://www.nxp.com/docs/en/data-sheet/FXLS8962AF.pdf
-> https://www.nxp.com/docs/en/data-sheet/FXLS8964AF.pdf
-
-
-Can you split it into two Datasheet: tags?
-
-> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-> ---
-> Changes for v2:
->  - Addressed Kconfig comments
->  - Using regmap_read_poll_timeout()
->  - Addresed comments from Andy and Jonathan
+On Fri, Apr 23, 2021 at 3:20 PM Sa, Nuno <Nuno.Sa@analog.com> wrote:
 >
->  drivers/iio/accel/Kconfig           |  27 ++
->  drivers/iio/accel/Makefile          |   3 +
->  drivers/iio/accel/fxls8962af-core.c | 620 ++++++++++++++++++++++++++++
->  drivers/iio/accel/fxls8962af-i2c.c  |  57 +++
->  drivers/iio/accel/fxls8962af-spi.c  |  57 +++
->  drivers/iio/accel/fxls8962af.h      |  21 +
->  6 files changed, 785 insertions(+)
->  create mode 100644 drivers/iio/accel/fxls8962af-core.c
->  create mode 100644 drivers/iio/accel/fxls8962af-i2c.c
->  create mode 100644 drivers/iio/accel/fxls8962af-spi.c
->  create mode 100644 drivers/iio/accel/fxls8962af.h
+> > From: Alexandru Ardelean <ardeleanalex@gmail.com>
+> > Sent: Friday, April 23, 2021 9:33 AM
+> > To: Sa, Nuno <Nuno.Sa@analog.com>
+> > Cc: linux-iio <linux-iio@vger.kernel.org>; Jonathan Cameron
+> > <jic23@kernel.org>; Hennerich, Michael
+> > <Michael.Hennerich@analog.com>; Lars-Peter Clausen
+> > <lars@metafoo.de>
+> > Subject: Re: [PATCH v2 6/9] iio: adis_buffer: update device page after
+> > changing it
+> >
+> > [External]
+> >
+> > On Thu, Apr 22, 2021 at 1:17 PM Nuno Sa <nuno.sa@analog.com>
+> > wrote:
+> > >
+> > > With commit 58ca347b9b24 ("iio: adis_buffer: don't push data to
+> > buffers on
+> > > failure"), we return if 'spi_sync()' fails which would leave
+> > > 'adis->current_page' in an incoherent state. Hence, set this variable
+> > > right after we change the device page.
+> > >
+> > > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> > > ---
+> > >  drivers/iio/imu/adis_buffer.c | 6 +++---
+> > >  1 file changed, 3 insertions(+), 3 deletions(-)
+> > >
+> > > diff --git a/drivers/iio/imu/adis_buffer.c
+> > b/drivers/iio/imu/adis_buffer.c
+> > > index a29d22f657ce..dda367071980 100644
+> > > --- a/drivers/iio/imu/adis_buffer.c
+> > > +++ b/drivers/iio/imu/adis_buffer.c
+> > > @@ -140,6 +140,8 @@ static irqreturn_t adis_trigger_handler(int irq,
+> > void *p)
+> > >                                 mutex_unlock(&adis->state_lock);
+> > >                                 goto irq_done;
+> > >                         }
+> > > +
+> > > +                       adis->current_page =3D 0;
+> > >                 }
+> > >         }
+> > >
+> > > @@ -151,10 +153,8 @@ static irqreturn_t adis_trigger_handler(int
+> > irq, void *p)
+> > >                 goto irq_done;
+> > >         }
+> > >
+> > > -       if (adis->data->has_paging) {
+> > > -               adis->current_page =3D 0;
+> > > +       if (adis->data->has_paging)
+> > >                 mutex_unlock(&adis->state_lock);
+> > > -       }
+> >
+> > So, continuing from my comment here [1]:
+> >
+> > https://urldefense.com/v3/__https://patchwork.kernel.org/project/li
+> > nux-iio/patch/20210422101911.135630-6-
+> > nuno.sa@analog.com/__;!!A3Ni8CS0y2Y!u1RyPNeh8e5m7lPfDa5H5ZjT
+> > hA9TdsLGvk2m1kFQBbAKe40PmvQS8O8N-f-GEg$
+> >
+> > This can become more elegant, because this block:
+> >        if (adis->data->has_paging)
+> >                 mutex_unlock(&adis->state_lock);
+> >
+> > can be moved right after "ret =3D spi_sync(adis->spi, &adis->msg);"
+> >
+> > And then the duplication added in patch [1] can be cleaned up.
+> > So maybe a re-ordering of patches could simplify/remove the added
+> > duplication.
+> >
 >
-> diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
-> index 2e0c62c39155..902f2e2edf65 100644
-> --- a/drivers/iio/accel/Kconfig
-> +++ b/drivers/iio/accel/Kconfig
-> @@ -208,6 +208,33 @@ config DMARD10
->           Choosing M will build the driver as a module. If so, the module
->           will be called dmard10.
+> Hmmm I'm not following you :). What's your idea? You mean the block
+> inside the 'if (ret)' in case spi_sync fails? If so, we can move it but t=
+hen
+> we cannot do the goto jump... you mean something like?
 >
-> +config FXLS8962AF
-> +       tristate
-> +
-> +config FXLS8962AF_I2C
-> +       tristate "NXP FXLS8962AF/FXLS8964AF Accelerometer I2C Driver"
-> +       depends on I2C
-> +       select REGMAP_I2C
-> +       select FXLS8962AF
-> +       help
-> +         Say yes here to build support for the NXP 3-axis automotive
-> +         accelerometer FXLS8962AF/FXLS8964AF with I2C support.
-> +
-> +         To compile this driver as a module, choose M here: the module
-> +         will be called fxls8962af_i2c.
-> +
-> +config FXLS8962AF_SPI
-> +       tristate "NXP FXLS8962AF/FXLS8964AF Accelerometer SPI Driver"
-> +       depends on SPI
-> +       select FXLS8962AF
-> +       select REGMAP_SPI
-> +       help
-> +         Say yes here to build support for the NXP 3-axis automotive
-> +         accelerometer FXLS8962AF/FXLS8964AF with SPI support.
-> +
-> +         To compile this driver as a module, choose M here: the module
-> +         will be called fxls8962af_spi.
-> +
->  config HID_SENSOR_ACCEL_3D
->         depends on HID_SENSOR_HUB
->         select IIO_BUFFER
-> diff --git a/drivers/iio/accel/Makefile b/drivers/iio/accel/Makefile
-> index 4f6c1ebe13b0..1b8c479c6f7c 100644
-> --- a/drivers/iio/accel/Makefile
-> +++ b/drivers/iio/accel/Makefile
-> @@ -25,6 +25,9 @@ obj-$(CONFIG_DA311)   += da311.o
->  obj-$(CONFIG_DMARD06)  += dmard06.o
->  obj-$(CONFIG_DMARD09)  += dmard09.o
->  obj-$(CONFIG_DMARD10)  += dmard10.o
-> +obj-$(CONFIG_FXLS8962AF)       += fxls8962af-core.o
-> +obj-$(CONFIG_FXLS8962AF_I2C)   += fxls8962af-i2c.o
-> +obj-$(CONFIG_FXLS8962AF_SPI)   += fxls8962af-spi.o
->  obj-$(CONFIG_HID_SENSOR_ACCEL_3D) += hid-sensor-accel-3d.o
->  obj-$(CONFIG_KXCJK1013) += kxcjk-1013.o
->  obj-$(CONFIG_KXSD9)    += kxsd9.o
-> diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
-> new file mode 100644
-> index 000000000000..6fda3bc1f28f
-> --- /dev/null
-> +++ b/drivers/iio/accel/fxls8962af-core.c
-> @@ -0,0 +1,620 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * NXP FXLS8962AF/FXLS8964AF Accelerometer Core Driver
-> + *
-> + * Copyright 2021 Connected Cars A/S
-> + *
-> + * Datasheet:
-> + * https://www.nxp.com/docs/en/data-sheet/FXLS8962AF.pdf
-> + * https://www.nxp.com/docs/en/data-sheet/FXLS8964AF.pdf
-> + */
-> +
-> +#include <linux/bits.h>
-> +#include <linux/bitfield.h>
-> +#include <linux/module.h>
-> +#include <linux/pm_runtime.h>
-> +#include <linux/regulator/consumer.h>
-> +#include <linux/regmap.h>
-> +
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/sysfs.h>
-> +
-> +#include "fxls8962af.h"
-> +
-> +#define FXLS8962AF_INT_STATUS                  0x00
-> +#define FXLS8962AF_INT_STATUS_SRC_DRDY         BIT(7)
-> +#define FXLS8962AF_TEMP_OUT                    0x01
-> +#define FXLS8962AF_VECM_LSB                    0x02
-> +#define FXLS8962AF_OUT_X_LSB                   0x04
-> +#define FXLS8962AF_OUT_Y_LSB                   0x06
-> +#define FXLS8962AF_OUT_Z_LSB                   0x08
-> +#define FXLS8962AF_BUF_STATUS                  0x0b
-> +#define FXLS8962AF_BUF_X_LSB                   0x0c
-> +#define FXLS8962AF_BUF_Y_LSB                   0x0e
-> +#define FXLS8962AF_BUF_Z_LSB                   0x10
-> +
-> +#define FXLS8962AF_PROD_REV                    0x12
-> +#define FXLS8962AF_WHO_AM_I                    0x13
-> +
-> +#define FXLS8962AF_SYS_MODE                    0x14
-> +#define FXLS8962AF_SENS_CONFIG1                        0x15
-> +#define FXLS8962AF_SENS_CONFIG1_ACTIVE         BIT(0)
-> +#define FXLS8962AF_SENS_CONFIG1_RST            BIT(7)
-> +#define FXLS8962AF_SC1_FSR_MASK                        GENMASK(2, 1)
-> +#define FXLS8962AF_SC1_FSR_PREP(x)             FIELD_PREP(FXLS8962AF_SC1_FSR_MASK, x)
-> +#define FXLS8962AF_SC1_FSR_GET(x)              FIELD_GET(FXLS8962AF_SC1_FSR_MASK, x)
-> +
-> +#define FXLS8962AF_SENS_CONFIG2                        0x16
-> +#define FXLS8962AF_SENS_CONFIG3                        0x17
-> +#define FXLS8962AF_SENS_CONFIG4                        0x18
-> +#define FXLS8962AF_SENS_CONFIG5                        0x19
-> +
-> +#define FXLS8962AF_WAKE_IDLE_LSB               0x1b
-> +#define FXLS8962AF_SLEEP_IDLE_LSB              0x1c
-> +#define FXLS8962AF_ASLP_COUNT_LSB              0x1e
-> +
-> +#define FXLS8962AF_INT_EN                      0x20
-> +#define FXLS8962AF_INT_PIN_SEL                 0x21
-> +
-> +#define FXLS8962AF_OFF_X                       0x22
-> +#define FXLS8962AF_OFF_Y                       0x23
-> +#define FXLS8962AF_OFF_Z                       0x24
-> +
-> +#define FXLS8962AF_BUF_CONFIG1                 0x26
-> +#define FXLS8962AF_BUF_CONFIG2                 0x27
-> +
-> +#define FXLS8962AF_ORIENT_STATUS               0x28
-> +#define FXLS8962AF_ORIENT_CONFIG               0x29
-> +#define FXLS8962AF_ORIENT_DBCOUNT              0x2a
-> +#define FXLS8962AF_ORIENT_BF_ZCOMP             0x2b
-> +#define FXLS8962AF_ORIENT_THS_REG              0x2c
-> +
-> +#define FXLS8962AF_SDCD_INT_SRC1               0x2d
-> +#define FXLS8962AF_SDCD_INT_SRC2               0x2e
-> +#define FXLS8962AF_SDCD_CONFIG1                        0x2f
-> +#define FXLS8962AF_SDCD_CONFIG2                        0x30
-> +#define FXLS8962AF_SDCD_OT_DBCNT               0x31
-> +#define FXLS8962AF_SDCD_WT_DBCNT               0x32
-> +#define FXLS8962AF_SDCD_LTHS_LSB               0x33
-> +#define FXLS8962AF_SDCD_UTHS_LSB               0x35
-> +
-> +#define FXLS8962AF_SELF_TEST_CONFIG1           0x37
-> +#define FXLS8962AF_SELF_TEST_CONFIG2           0x38
-> +
-> +#define FXLS8962AF_MAX_REG                     0x38
-> +
-> +#define FXLS8962AF_DEVICE_ID                   0x62
-> +#define FXLS8964AF_DEVICE_ID                   0x84
-> +
-> +/*Raw temp channel offset */
-
-Missed space.
-
-> +#define FXLS8962AF_TEMP_CENTER_VAL             25
-> +
-> +#define FXLS8962AF_AUTO_SUSPEND_DELAY_MS       2000
-> +
-> +#define FXLS8962AF_SCALE_TABLE_LEN             4
-> +
-> +static const int fxls8962af_scale_table[FXLS8962AF_SCALE_TABLE_LEN][2] = {
-> +       {0, IIO_G_TO_M_S_2(980000)},
-> +       {0, IIO_G_TO_M_S_2(1950000)},
-> +       {0, IIO_G_TO_M_S_2(3910000)},
-> +       {0, IIO_G_TO_M_S_2(7810000)},
-> +};
-> +
-> +struct fxls8962af_chip_info {
-> +       const char *name;
-> +       const struct iio_chan_spec *channels;
-> +       int num_channels;
-> +       u8 chip_id;
-> +};
-> +
-> +struct fxls8962af_data {
-> +       struct regmap *regmap;
-> +       const struct fxls8962af_chip_info *chip_info;
-> +       struct regulator *vdd_reg;
-> +       struct iio_mount_matrix orientation;
-> +};
-> +
-> +const struct regmap_config fxls8962af_regmap_conf = {
-> +       .reg_bits = 8,
-> +       .val_bits = 8,
-> +       .max_register = FXLS8962AF_MAX_REG,
-> +};
-> +EXPORT_SYMBOL_GPL(fxls8962af_regmap_conf);
-> +
-> +enum {
-> +       fxls8962af_idx_x,
-> +       fxls8962af_idx_y,
-> +       fxls8962af_idx_z,
-> +       fxls8962af_idx_ts,
-> +};
-> +
-> +static int fxls8962af_drdy(struct fxls8962af_data *data)
-> +{
-> +       struct device *dev = regmap_get_device(data->regmap);
-> +       unsigned int reg;
-> +       int ret;
-> +
-> +       ret = regmap_read_poll_timeout(data->regmap, FXLS8962AF_INT_STATUS, reg,
-> +                       (reg & FXLS8962AF_INT_STATUS_SRC_DRDY), 20000, 2000000);
-> +       if (ret) {
-> +               dev_err(dev, "drdy timeout, int_status = 0x%x\n", reg);
-
-> +               return ret;
-> +       }
-> +
-> +       return 0;
-
-It can be (all 4 LOCs) simply
-
-return ret;
-
-> +}
-> +
-> +static int fxls8962af_power_on(struct fxls8962af_data *data)
-> +{
-> +       struct device *dev = regmap_get_device(data->regmap);
-> +       int ret;
-> +
-> +       ret = pm_runtime_get_sync(dev);
-> +
-> +       if (ret < 0) {
-> +               dev_err(dev, "failed to power on\n");
-> +               pm_runtime_put_noidle(dev);
-> +               return ret;
-> +       }
-> +
-> +       return 0;
-> +}
-> +
-> +static int fxls8962af_power_off(struct fxls8962af_data *data)
-> +{
-> +       struct device *dev = regmap_get_device(data->regmap);
-> +       int ret;
-> +
-> +       pm_runtime_mark_last_busy(dev);
-> +       ret = pm_runtime_put_autosuspend(dev);
-> +
-> +       if (ret < 0) {
-> +               dev_err(dev, "failed to power off\n");
-> +               return ret;
-> +       }
-> +
-> +       return 0;
-> +}
-> +
-> +static int fxls8962af_get_temp(struct fxls8962af_data *data, int *val)
-> +{
-> +       struct device *dev = regmap_get_device(data->regmap);
-> +       int ret;
-> +       unsigned int value;
-
-Can we keep reversed xmas tree order?
-
-> +       ret = fxls8962af_drdy(data);
-> +       if (ret < 0)
-> +               return ret;
-> +
-> +       ret = fxls8962af_power_on(data);
-> +       if (ret)
-> +               return ret;
-> +
-> +       ret = regmap_read(data->regmap, FXLS8962AF_TEMP_OUT, &value);
-> +       if (ret < 0) {
-> +               dev_err(dev, "Error reading reg_temp\n");
-> +               fxls8962af_power_off(data);
-> +               return ret;
-> +       }
-> +
-> +       fxls8962af_power_off(data);
-> +
-> +       *val = sign_extend32(value, 7);
-> +
-> +       return IIO_VAL_INT;
-> +}
-> +
-> +static int fxls8962af_get_axis(struct fxls8962af_data *data,
-> +                              struct iio_chan_spec const *chan, int *val)
-> +{
-> +       struct device *dev = regmap_get_device(data->regmap);
-> +       int ret;
-> +       __le16 raw_val;
-
-Ditto.
-
-> +       ret = fxls8962af_drdy(data);
-> +       if (ret < 0)
-> +               return ret;
-> +
-> +       ret = fxls8962af_power_on(data);
-> +       if (ret)
-> +               return ret;
-> +
-> +       ret = regmap_bulk_read(data->regmap, chan->address,
-> +                              &raw_val, sizeof(raw_val));
-> +       if (ret < 0) {
-> +               dev_err(dev, "failed to read axes\n");
-> +               fxls8962af_power_off(data);
-> +               return ret;
-> +       }
-> +
-> +       fxls8962af_power_off(data);
-> +
-> +       *val = sign_extend32(le16_to_cpu(raw_val), chan->scan_type.realbits - 1);
-> +
-> +       return IIO_VAL_INT;
-> +}
-> +
-> +static int fxls8962af_read_avail(struct iio_dev *indio_dev,
-> +                                struct iio_chan_spec const *chan,
-> +                                const int **vals, int *type, int *length,
-> +                                long mask)
-> +{
-> +       switch (mask) {
-> +       case IIO_CHAN_INFO_SCALE:
-> +               *type = IIO_VAL_INT_PLUS_NANO;
-> +               *vals = (int *)fxls8962af_scale_table;
-> +               *length = ARRAY_SIZE(fxls8962af_scale_table) * 2;
-> +               return IIO_AVAIL_LIST;
-> +       default:
-> +               return -EINVAL;
-> +       }
-> +}
-> +
-> +static int fxls8962af_write_raw_get_fmt(struct iio_dev *indio_dev,
-> +                                       struct iio_chan_spec const *chan,
-> +                                       long mask)
-> +{
-> +       return IIO_VAL_INT_PLUS_NANO;
-> +}
-> +
-> +static int fxls8962af_standby(struct fxls8962af_data *data)
-> +{
-> +       return regmap_update_bits(data->regmap, FXLS8962AF_SENS_CONFIG1,
-> +                                 FXLS8962AF_SENS_CONFIG1_ACTIVE, 0);
-> +}
-> +
-> +static int fxls8962af_active(struct fxls8962af_data *data)
-> +{
-> +       return regmap_update_bits(data->regmap, FXLS8962AF_SENS_CONFIG1,
-> +                                 FXLS8962AF_SENS_CONFIG1_ACTIVE, 1);
-> +}
-> +
-> +static int fxls8962af_is_active(struct fxls8962af_data *data)
-> +{
-> +       unsigned int reg;
-> +       int ret;
-> +
-> +       ret = regmap_read(data->regmap, FXLS8962AF_SENS_CONFIG1, &reg);
-> +       if (ret < 0)
-> +               return ret;
-> +
-> +       return reg & FXLS8962AF_SENS_CONFIG1_ACTIVE;
-> +}
-> +
-> +static int fxls8962af_update_config(struct fxls8962af_data *data, u8 reg,
-> +                                   u8 mask, u8 val)
-> +{
-> +       int ret;
-> +       int is_active;
-> +
-> +       is_active = fxls8962af_is_active(data);
-> +       if (is_active) {
-> +               ret = fxls8962af_standby(data);
-> +               if (ret < 0)
-> +                       return ret;
-> +       }
-> +
-> +       ret = regmap_update_bits(data->regmap, reg, mask, val);
-> +       if (ret < 0)
-> +               return ret;
-> +
-> +       if (is_active) {
-> +               ret = fxls8962af_active(data);
-> +               if (ret < 0)
-> +                       return ret;
-> +       }
-> +
-> +       return 0;
-> +}
-> +
-> +static int fxls8962af_set_full_scale(struct fxls8962af_data *data, u32 scale)
-> +{
-> +       int i;
-> +
-> +       for (i = 0; i < ARRAY_SIZE(fxls8962af_scale_table); i++)
-> +               if (scale == fxls8962af_scale_table[i][1])
-> +                       break;
-> +
-> +       if (i == ARRAY_SIZE(fxls8962af_scale_table))
-> +               return -EINVAL;
-> +
-> +       return fxls8962af_update_config(data, FXLS8962AF_SENS_CONFIG1,
-> +                                       FXLS8962AF_SC1_FSR_MASK,
-> +                                       FXLS8962AF_SC1_FSR_PREP(i));
-> +}
-> +
-> +static unsigned int fxls8962af_read_full_scale(struct fxls8962af_data *data,
-> +                                              int *val)
-> +{
-> +       int ret;
-> +       unsigned int reg;
-> +       u8 range_idx;
-> +
-> +       ret = regmap_read(data->regmap, FXLS8962AF_SENS_CONFIG1, &reg);
-> +       if (ret < 0)
-> +               return ret;
-> +
-> +       range_idx = FXLS8962AF_SC1_FSR_GET(reg);
-> +
-> +       *val = fxls8962af_scale_table[range_idx][1];
-> +
-> +       return IIO_VAL_INT_PLUS_NANO;
-> +}
-> +
-> +static int fxls8962af_read_raw(struct iio_dev *indio_dev,
-> +                              struct iio_chan_spec const *chan,
-> +                              int *val, int *val2, long mask)
-> +{
-> +       struct fxls8962af_data *data = iio_priv(indio_dev);
-> +       int ret;
-> +
-> +       switch (mask) {
-> +       case IIO_CHAN_INFO_RAW:
-> +               ret = iio_device_claim_direct_mode(indio_dev);
-> +               if (ret)
-> +                       return ret;
-> +
-> +               switch (chan->type) {
-> +               case IIO_TEMP:
-> +                       ret = fxls8962af_get_temp(data, val);
-> +                       break;
-> +               case IIO_ACCEL:
-> +                       ret = fxls8962af_get_axis(data, chan, val);
-> +                       break;
-> +               default:
-
-> +                       ret = -EINVAL;
-> +                       break;
-
-return -EINVAL;
-
-> +               }
-> +
-> +               iio_device_release_direct_mode(indio_dev);
-> +               return ret;
-> +       case IIO_CHAN_INFO_OFFSET:
-
-> +               if (chan->type == IIO_TEMP) {
-
-Can we use traditional pattern here, i.e.
-
-if (type != IIO_TEMP)
-  return -EINVAL;
-
-?
-
-> +                       *val = FXLS8962AF_TEMP_CENTER_VAL;
-> +                       return IIO_VAL_INT;
-> +               }
-
-> +               break;
-> +       case IIO_CHAN_INFO_SCALE:
-> +               *val = 0;
-> +               return fxls8962af_read_full_scale(data, val2);
-> +       default:
-> +               return -EINVAL;
-> +       }
-
-> +
-> +       return -EINVAL;
-
-(Almost) dead code (see above).
-
-> +}
-> +
-> +static int fxls8962af_write_raw(struct iio_dev *indio_dev,
-> +                               struct iio_chan_spec const *chan,
-> +                               int val, int val2, long mask)
-> +{
-> +       struct fxls8962af_data *data = iio_priv(indio_dev);
-> +       int ret;
-> +
-> +       switch (mask) {
-> +       case IIO_CHAN_INFO_SCALE:
-> +               if (val != 0)
-> +                       return -EINVAL;
-> +
-> +               ret = iio_device_claim_direct_mode(indio_dev);
-> +               if (ret)
-> +                       return ret;
-> +
-> +               ret = fxls8962af_set_full_scale(data, val2);
-> +
-> +               iio_device_release_direct_mode(indio_dev);
-> +               return ret;
-> +       default:
-> +               return -EINVAL;
-> +       }
-
-> +
-> +       return -EINVAL;
-
-Dead code.
-
-> +}
-> +
-> +#define FXLS8962AF_CHANNEL(axis, reg, idx) { \
-> +       .type = IIO_ACCEL, \
-> +       .address = reg, \
-> +       .modified = 1, \
-> +       .channel2 = IIO_MOD_##axis, \
-> +       .info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
-> +       .info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE), \
-> +       .info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SCALE), \
-> +       .scan_index = idx, \
-> +       .scan_type = { \
-> +               .sign = 's', \
-> +               .realbits = 12, \
-> +               .storagebits = 16, \
-> +               .shift = 4, \
-> +               .endianness = IIO_BE, \
-> +       }, \
-> +}
-> +
-> +#define FXLS8962AF_TEMP_CHANNEL { \
-> +       .type = IIO_TEMP, \
-> +       .info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
-> +                             BIT(IIO_CHAN_INFO_OFFSET),\
-> +       .scan_index = -1, \
-> +       .scan_type = { \
-> +               .realbits = 8, \
-> +       }, \
-> +}
-> +
-> +static const struct iio_chan_spec fxls8962af_channels[] = {
-> +       FXLS8962AF_CHANNEL(X, FXLS8962AF_OUT_X_LSB, fxls8962af_idx_x),
-> +       FXLS8962AF_CHANNEL(Y, FXLS8962AF_OUT_Y_LSB, fxls8962af_idx_y),
-> +       FXLS8962AF_CHANNEL(Z, FXLS8962AF_OUT_Z_LSB, fxls8962af_idx_z),
-> +       IIO_CHAN_SOFT_TIMESTAMP(fxls8962af_idx_ts),
-> +       FXLS8962AF_TEMP_CHANNEL,
-> +};
-> +
-> +static const struct fxls8962af_chip_info fxls_chip_info_table[] = {
-> +       [fxls8962af] = {
-> +               .chip_id = FXLS8962AF_DEVICE_ID,
-> +               .name = "fxls8962af",
-> +               .channels = fxls8962af_channels,
-> +               .num_channels = ARRAY_SIZE(fxls8962af_channels),
-> +       },
-> +       [fxls8964af] = {
-> +               .chip_id = FXLS8964AF_DEVICE_ID,
-> +               .name = "fxls8964af",
-> +               .channels = fxls8962af_channels,
-> +               .num_channels = ARRAY_SIZE(fxls8962af_channels),
-> +       },
-> +};
-> +
-> +static const struct iio_info fxls8962af_info = {
-> +       .read_raw = &fxls8962af_read_raw,
-> +       .write_raw = &fxls8962af_write_raw,
-> +       .write_raw_get_fmt = fxls8962af_write_raw_get_fmt,
-> +       .read_avail = fxls8962af_read_avail,
-> +};
-> +
-> +static int fxls8962af_reset(struct fxls8962af_data *data)
-> +{
-> +       struct device *dev = regmap_get_device(data->regmap);
-> +       unsigned int reg;
-> +       int ret;
-> +
-> +       ret = regmap_update_bits(data->regmap, FXLS8962AF_SENS_CONFIG1,
-> +                                FXLS8962AF_SENS_CONFIG1_RST,
-> +                                FXLS8962AF_SENS_CONFIG1_RST);
-> +       if (ret < 0)
-> +               return ret;
-> +
-> +       /* TBOOT1, TBOOT2, specifies we have to wait between 1 - 17.7ms */
-> +       ret = regmap_read_poll_timeout(data->regmap, FXLS8962AF_SENS_CONFIG1, reg,
-> +                       !(reg & FXLS8962AF_SENS_CONFIG1_RST), 1000, 18000);
-> +       if (ret) {
-> +               dev_err(dev, "reset timeout, sens_config1 = 0x%x\n", reg);
-
-> +               return ret;
-> +       }
-
-These two lines are redundant.
-
-> +
-> +       return ret;
-> +}
-> +
-> +static void fxls8962af_regulator_disable(void *data_ptr)
-> +{
-> +       struct fxls8962af_data *data = data_ptr;
-> +
-> +       regulator_disable(data->vdd_reg);
-> +}
-> +
-> +static void fxls8962af_pm_disable(void *dev_ptr)
-> +{
-> +       struct device *dev = dev_ptr;
-> +       struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> +
-> +       pm_runtime_disable(dev);
-> +       pm_runtime_set_suspended(dev);
-> +       pm_runtime_put_noidle(dev);
-> +
-> +       fxls8962af_standby(iio_priv(indio_dev));
-> +}
-> +
-> +int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq)
-> +{
-> +       struct fxls8962af_data *data;
-> +       struct iio_dev *indio_dev;
-> +       unsigned int reg;
-> +       int ret, i;
-> +
-> +       indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-> +       if (!indio_dev)
-> +               return -ENOMEM;
-> +
-> +       data = iio_priv(indio_dev);
-> +       dev_set_drvdata(dev, indio_dev);
-> +       data->regmap = regmap;
-> +
-> +       ret = iio_read_mount_matrix(dev, "mount-matrix", &data->orientation);
-> +       if (ret)
-> +               return ret;
-> +
-> +       data->vdd_reg = devm_regulator_get(dev, "vdd");
-> +       if (IS_ERR(data->vdd_reg))
-> +               return dev_err_probe(dev, PTR_ERR(data->vdd_reg),
-> +                                    "Failed to get vdd regulator\n");
-> +
-> +       ret = regulator_enable(data->vdd_reg);
-> +       if (ret) {
-> +               dev_err(dev, "Failed to enable vdd regulator: %d\n", ret);
-> +               return ret;
-> +       }
-> +
-> +       ret = devm_add_action_or_reset(dev, fxls8962af_regulator_disable, data);
-> +       if (ret)
-> +               return ret;
-> +
-> +       ret = regmap_read(data->regmap, FXLS8962AF_WHO_AM_I, &reg);
-> +       if (ret < 0)
-> +               return ret;
-> +
-> +       for (i = 0; i < ARRAY_SIZE(fxls_chip_info_table); i++) {
-> +               if (fxls_chip_info_table[i].chip_id == reg) {
-> +                       data->chip_info = &fxls_chip_info_table[i];
-> +                       break;
-> +               }
-> +       }
-> +       if (i == ARRAY_SIZE(fxls_chip_info_table)) {
-> +               dev_err(dev, "failed to match device in table\n");
-> +               return -ENXIO;
-> +       }
-> +
-> +       indio_dev->channels = data->chip_info->channels;
-> +       indio_dev->num_channels = data->chip_info->num_channels;
-> +       indio_dev->name = data->chip_info->name;
-> +       indio_dev->info = &fxls8962af_info;
-> +       indio_dev->modes = INDIO_DIRECT_MODE;
-> +
-> +       ret = fxls8962af_reset(data);
-> +       if (ret < 0)
-> +               return ret;
-> +
-> +       ret = pm_runtime_set_active(dev);
-> +       if (ret < 0)
-> +               return ret;
-> +
-> +       pm_runtime_enable(dev);
-> +       pm_runtime_set_autosuspend_delay(dev, FXLS8962AF_AUTO_SUSPEND_DELAY_MS);
-> +       pm_runtime_use_autosuspend(dev);
-> +
-> +       ret = devm_add_action_or_reset(dev, fxls8962af_pm_disable, dev);
-> +       if (ret)
-> +               return ret;
-> +
-> +       return devm_iio_device_register(dev, indio_dev);
-> +}
-> +EXPORT_SYMBOL_GPL(fxls8962af_core_probe);
-> +
-> +static int __maybe_unused fxls8962af_runtime_suspend(struct device *dev)
-> +{
-> +       struct fxls8962af_data *data = iio_priv(dev_get_drvdata(dev));
-> +       int ret;
-> +
-> +       ret = fxls8962af_standby(data);
-> +       if (ret < 0) {
-> +               dev_err(dev, "powering off device failed\n");
-> +               return ret;
-> +       }
-> +
-> +       return 0;
-> +}
-> +
-> +static int __maybe_unused fxls8962af_runtime_resume(struct device *dev)
-> +{
-> +       struct fxls8962af_data *data = iio_priv(dev_get_drvdata(dev));
-> +
-> +       return fxls8962af_active(data);
-> +}
-> +
-> +const struct dev_pm_ops fxls8962af_pm_ops = {
-> +       SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
-> +                               pm_runtime_force_resume)
-> +       SET_RUNTIME_PM_OPS(fxls8962af_runtime_suspend,
-> +                          fxls8962af_runtime_resume, NULL)
-> +};
-> +EXPORT_SYMBOL_GPL(fxls8962af_pm_ops);
-> +
-> +MODULE_AUTHOR("Sean Nyekjaer <sean@geanix.com>");
-> +MODULE_DESCRIPTION("NXP FXLS8962AF/FXLS8964AF accelerometer driver");
-> +MODULE_LICENSE("GPL v2");
-> diff --git a/drivers/iio/accel/fxls8962af-i2c.c b/drivers/iio/accel/fxls8962af-i2c.c
-> new file mode 100644
-> index 000000000000..0dd86ece46ae
-> --- /dev/null
-> +++ b/drivers/iio/accel/fxls8962af-i2c.c
-> @@ -0,0 +1,57 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * NXP FXLS8962AF/FXLS8964AF Accelerometer I2C Driver
-> + *
-> + * Copyright 2021 Connected Cars A/S
-> + */
-> +
-> +#include <linux/dev_printk.h>
-
-+ err.h
-
-> +#include <linux/i2c.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/module.h>
-> +#include <linux/regmap.h>
-> +
-> +#include "fxls8962af.h"
-> +
-> +static int fxls8962af_probe(struct i2c_client *client)
-> +{
-> +       struct regmap *regmap;
-> +
-> +       regmap = devm_regmap_init_i2c(client, &fxls8962af_regmap_conf);
-> +       if (IS_ERR(regmap)) {
-> +               dev_err(&client->dev, "Failed to initialize i2c regmap\n");
-> +               return PTR_ERR(regmap);
-> +       }
-> +
-> +       return fxls8962af_core_probe(&client->dev, regmap, client->irq);
-> +}
-> +
-> +static const struct i2c_device_id fxls8962af_id[] = {
-> +       {"fxls8962af", fxls8962af},
-> +       {"fxls8964af", fxls8964af},
-> +       {}
-> +};
-> +MODULE_DEVICE_TABLE(i2c, fxls8962af_id);
-> +
-> +static const struct of_device_id fxls8962af_of_match[] = {
-> +       {.compatible = "nxp,fxls8962af"},
-> +       {.compatible = "nxp,fxls8964af"},
-> +       {}
-> +};
-> +MODULE_DEVICE_TABLE(of, fxls8962af_of_match);
-> +
-> +static struct i2c_driver fxls8962af_driver = {
-> +       .driver = {
-> +                  .name = "fxls8962af_i2c",
-> +                  .of_match_table = fxls8962af_of_match,
-> +                  .pm = &fxls8962af_pm_ops,
-> +                  },
-> +       .probe_new = fxls8962af_probe,
-> +       .id_table = fxls8962af_id,
-> +};
-
-> +
-
-No need a blank line here.
-
-> +module_i2c_driver(fxls8962af_driver);
-> +
-> +MODULE_AUTHOR("Sean Nyekjaer <sean@geanix.com>");
-> +MODULE_DESCRIPTION("NXP FXLS8962AF/FXLS8964AF accelerometer i2c driver");
-> +MODULE_LICENSE("GPL v2");
-> diff --git a/drivers/iio/accel/fxls8962af-spi.c b/drivers/iio/accel/fxls8962af-spi.c
-> new file mode 100644
-> index 000000000000..0597c3fef504
-> --- /dev/null
-> +++ b/drivers/iio/accel/fxls8962af-spi.c
-> @@ -0,0 +1,57 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * NXP FXLS8962AF/FXLS8964AF Accelerometer SPI Driver
-> + *
-> + * Copyright 2021 Connected Cars A/S
-> + */
-> +
-> +#include <linux/dev_printk.h>
-
-+ err.h
-+ mod_devicetable.h
-
-> +#include <linux/module.h>
-> +#include <linux/spi/spi.h>
-
-> +//#include <linux/slab.h>
-
-???
-
-Remove it.
-
-> +#include <linux/regmap.h>
-> +
-> +#include "fxls8962af.h"
-> +
-> +static int fxls8962af_probe(struct spi_device *spi)
-> +{
-> +       struct regmap *regmap;
-> +
-> +       regmap = devm_regmap_init_spi(spi, &fxls8962af_regmap_conf);
-> +       if (IS_ERR(regmap)) {
-> +               dev_err(&spi->dev, "Failed to initialize spi regmap\n");
-> +               return PTR_ERR(regmap);
-> +       }
-> +
-> +       return fxls8962af_core_probe(&spi->dev, regmap, spi->irq);
-> +}
-> +
-> +static const struct of_device_id fxls8962af_spi_of_match[] = {
-> +       {.compatible = "nxp,fxls8962af"},
-> +       {.compatible = "nxp,fxls8964af"},
-> +       {}
-> +};
-> +MODULE_DEVICE_TABLE(of, fxls8962af_spi_of_match);
-> +
-> +static const struct spi_device_id fxls8962af_spi_id_table[] = {
-> +       {"fxls8962af", fxls8962af},
-> +       {"fxls8964af", fxls8964af},
-> +       {}
-> +};
-> +MODULE_DEVICE_TABLE(spi, fxls8962af_spi_id_table);
-> +
-> +static struct spi_driver fxls8962af_driver = {
-> +       .driver = {
-> +                  .name = "fxls8962af_spi",
-> +                  .pm = &fxls8962af_pm_ops,
-> +                  .of_match_table = fxls8962af_spi_of_match,
-> +                  },
-> +       .probe = fxls8962af_probe,
-> +       .id_table = fxls8962af_spi_id_table,
-> +};
-
-> +
-
-No need to have a blank line here.
-
-> +module_spi_driver(fxls8962af_driver);
-> +
-> +MODULE_AUTHOR("Sean Nyekjaer <sean@geanix.com>");
-> +MODULE_DESCRIPTION("NXP FXLS8962AF/FXLS8964AF accelerometer spi driver");
-> +MODULE_LICENSE("GPL v2");
-> diff --git a/drivers/iio/accel/fxls8962af.h b/drivers/iio/accel/fxls8962af.h
-> new file mode 100644
-> index 000000000000..1dc3b0e317dc
-> --- /dev/null
-> +++ b/drivers/iio/accel/fxls8962af.h
-> @@ -0,0 +1,21 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * Copyright 2021 Connected Cars A/S
-> + */
-> +#ifndef _FXLS8962AF_H_
-> +#define _FXLS8962AF_H_
-> +
-> +struct regmap;
-> +struct device;
-> +
-> +enum {
-> +       fxls8962af,
-> +       fxls8964af,
-> +};
-> +
-> +int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq);
-> +int fxls8962af_core_remove(struct device *dev);
-
-+ blank line?
-
-> +extern const struct dev_pm_ops fxls8962af_pm_ops;
-> +extern const struct regmap_config fxls8962af_regmap_conf;
-> +
-> +#endif                         /* _FXLS8962AF_H_ */
-> --
-> 2.31.0
+> ret =3D spi_sync();
+> if (adis->data->has_paging)
+>         mutex_unlock(&adis->state_lock);
+> if (ret) {
+>         dev_err();
+>         goto irq_done;
+> }
 >
+> I don't particularly like the paging stuff after the spi_sync but this av=
+oids
+> some duplication for sure... and reduces some lines of code :)
 
+Yeah, this was the suggestion.
+No strong opinion about it.
 
--- 
-With Best Regards,
-Andy Shevchenko
+>
+> - Nuno S=C3=A1

@@ -2,234 +2,1003 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 400BF3691E9
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Apr 2021 14:20:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1C0B369273
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Apr 2021 14:52:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242249AbhDWMU7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Apr 2021 08:20:59 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:37106 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231312AbhDWMU7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Apr 2021 08:20:59 -0400
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 13NCJX2H025560;
-        Fri, 23 Apr 2021 08:20:10 -0400
-Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2103.outbound.protection.outlook.com [104.47.55.103])
-        by mx0a-00128a01.pphosted.com with ESMTP id 382kdbyj23-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 23 Apr 2021 08:20:09 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VcKMnG5p91gQRtJiO07ka4LECw5RcShwX4tZEMDkevsv+c83gURyhboNnLOJNuXZOXUW55IGHBDHwNZgVqwHzlkRjV+/tyGN3sTUKit4nTHQcwnJBGQggLwhjadaUs4flM9Rh3uXR/77JHpcehhpc9T06ZCAca/mdhC31d98fzlixuDIwFKFXUaQyAzb29J82fO+YObCbCmFFyX6PGjc69gDY6qGqavu994f1wbCYIXm/9lSu7VnwVzrP9p8GJCom1srWxObYZoczydyqLVIq9DqEG8dj/sEWZ7jU6csmX2xLGiqJKTBd3BEOV/iFLrHVVUZyvp+MDz4XSefEXuXUw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lQ3CMopBJbfmoPUBbjxoXg0v1dWVq+2Rqt0ebjdHNBs=;
- b=W2MS8zDnmhTDtY6T5vKXLRry8HzYt0vCulSnrzN3k4QzJuT72v5dOxoGsoIKs5fBcoR1hkaPQtJF8TdjWbIbVon2lX63Wj/r7R0tlgFJ+LvDMvGYhuBxcLVvF45OfwyAM4eYzmtRydy9DUB7V1Pv9s/P+uDhej6Y8C0kBPt6sBSfxE7YgMI5/j1oD8wecGvtysdg8n3V8PykLdaUwu2tw51jClpc/zsVpfXpXoK7VDQxq6nkNaZvGaqRSwuwQvlWaaH6s1viGk1J+PUsjMJHhAUi5yT5BW8n9UivlXYMigNTX9PmPiPDPD2OOCzyWYE3zoXwzQnP5bSGQp9Y6RFBsw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
+        id S230305AbhDWMwi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 23 Apr 2021 08:52:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48816 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230521AbhDWMwg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Apr 2021 08:52:36 -0400
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5624AC061574;
+        Fri, 23 Apr 2021 05:52:00 -0700 (PDT)
+Received: by mail-pg1-x52b.google.com with SMTP id b17so35125571pgh.7;
+        Fri, 23 Apr 2021 05:52:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lQ3CMopBJbfmoPUBbjxoXg0v1dWVq+2Rqt0ebjdHNBs=;
- b=re/QMUJVVynkhiooM3ZGSSVcn6Qfm6h/ZLHpSDD4M/hn+1oIoQYk90fYXB/+Rb34hn8qiWcGdhbd8Ar7f1VWn6dASQrNDpjZFQ+Cm3vOHe7x8rltX4BLVE0UQzIsmmAWd/0Wppp0lsx00cBk/hd82wSYST089d+I0RCwxaT002s=
-Received: from CY4PR03MB3112.namprd03.prod.outlook.com (2603:10b6:910:53::25)
- by CY1PR03MB2313.namprd03.prod.outlook.com (2a01:111:e400:c612::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4065.23; Fri, 23 Apr
- 2021 12:20:07 +0000
-Received: from CY4PR03MB3112.namprd03.prod.outlook.com
- ([fe80::4da5:ed3c:b627:2a24]) by CY4PR03MB3112.namprd03.prod.outlook.com
- ([fe80::4da5:ed3c:b627:2a24%6]) with mapi id 15.20.4042.024; Fri, 23 Apr 2021
- 12:20:07 +0000
-From:   "Sa, Nuno" <Nuno.Sa@analog.com>
-To:     Alexandru Ardelean <ardeleanalex@gmail.com>
-CC:     linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: RE: [PATCH v2 6/9] iio: adis_buffer: update device page after
- changing it
-Thread-Topic: [PATCH v2 6/9] iio: adis_buffer: update device page after
- changing it
-Thread-Index: AQHXN2Cp8BnpkysPxkOQt9kSn1xzsKrBtu8AgABMrkA=
-Date:   Fri, 23 Apr 2021 12:20:06 +0000
-Message-ID: <CY4PR03MB311220A749133B44C778F9F799459@CY4PR03MB3112.namprd03.prod.outlook.com>
-References: <20210422101911.135630-1-nuno.sa@analog.com>
- <20210422101911.135630-7-nuno.sa@analog.com>
- <CA+U=Dsphpu97Et6sgjd+9TUEHTw7xq44M5yL=CFtuCEU9QLxQQ@mail.gmail.com>
-In-Reply-To: <CA+U=Dsphpu97Et6sgjd+9TUEHTw7xq44M5yL=CFtuCEU9QLxQQ@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: =?utf-8?B?UEcxbGRHRStQR0YwSUc1dFBTSmliMlI1TG5SNGRDSWdjRDBpWXpwY2RYTmxj?=
- =?utf-8?B?bk5jYm5OaFhHRndjR1JoZEdGY2NtOWhiV2x1WjF3d09XUTRORGxpTmkwek1t?=
- =?utf-8?B?UXpMVFJoTkRBdE9EVmxaUzAyWWpnMFltRXlPV1V6TldKY2JYTm5jMXh0YzJj?=
- =?utf-8?B?dE0ySTBNakpsTURRdFlUUXlaUzB4TVdWaUxUaGlOREF0Wm1NM056YzBNakZt?=
- =?utf-8?B?WTJGbFhHRnRaUzEwWlhOMFhETmlOREl5WlRBMUxXRTBNbVV0TVRGbFlpMDRZ?=
- =?utf-8?B?alF3TFdaak56YzNOREl4Wm1OaFpXSnZaSGt1ZEhoMElpQnplajBpTXpBM09D?=
- =?utf-8?B?SWdkRDBpTVRNeU5qTTJOVFF3TURRMU9UYzJPREl5SWlCb1BTSlBia0ZyTlVw?=
- =?utf-8?B?TmNrSkJhbGhJWmpVcmNuWTVTMFZUWXpkTmNVRTlJaUJwWkQwaUlpQmliRDBp?=
- =?utf-8?B?TUNJZ1ltODlJakVpSUdOcFBTSmpRVUZCUVVWU1NGVXhVbE5TVlVaT1EyZFZR?=
- =?utf-8?B?VUZKV1VSQlFVUXlXa3N6T1U5cWFsaEJaR05ITlhKVGJIY3lZMWd4ZDJKdGRF?=
- =?utf-8?B?dFlSRnA0WTBaQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCU0VG?=
- =?utf-8?B?QlFVRkJWMEYzUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJSVUZC?=
- =?utf-8?B?VVVGQ1FVRkJRV0pLVUZOa1VVRkJRVUZCUVVGQlFVRkJRVUZCUVVvMFFVRkJR?=
- =?utf-8?B?bWhCUjFGQllWRkNaa0ZJVFVGYVVVSnFRVWhWUVdOblFteEJSamhCWTBGQ2VV?=
- =?utf-8?B?RkhPRUZoWjBKc1FVZE5RV1JCUW5wQlJqaEJXbWRDYUVGSGQwRmpkMEpzUVVZ?=
- =?utf-8?B?NFFWcG5RblpCU0UxQllWRkNNRUZIYTBGa1owSnNRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkZRVUZCUVVGQlFVRkJRV2RCUVVG?=
- =?utf-8?B?QlFVRnVaMEZCUVVkRlFWcEJRbkJCUmpoQlkzZENiRUZIVFVGa1VVSjVRVWRW?=
- =?utf-8?B?UVZoM1FuZEJTRWxCWW5kQ2NVRkhWVUZaZDBJd1FVaE5RVmgzUWpCQlIydEJX?=
- =?utf-8?B?bEZDZVVGRVJVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCVVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVOQlFVRkJRVUZEWlVGQlFVRlpVVUpyUVVkclFWaDNRbnBCUjFWQldY?=
- =?utf-8?B?ZENNVUZJU1VGYVVVSm1RVWhCUVdOblFuWkJSMjlCV2xGQ2FrRklVVUZqZDBK?=
- =?utf-8?B?bVFVaFJRV0ZSUW14QlNFbEJUV2RCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFrRkJRVUZCUVVGQlFVRkpRVUZCUVVGQlNqUkJRVUZDYUVGSVNVRmhVVUpv?=
- =?utf-8?B?UVVZNFFWcEJRbkJCUjAxQlpFRkNjRUZIT0VGaVowSm9RVWhKUVdWUlFtWkJT?=
- =?utf-8?B?RkZCWVZGQ2JFRklTVUZOVVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVVZCUVVGQlFVRkJRVUZCWjBGQlFVRkJRVzVuUVVGQlIw?=
- =?utf-8?B?VkJZMmRDY0VGSFJVRllkMEpyUVVkclFWbDNRakJCUjJ0QlluZENkVUZIUlVG?=
- =?utf-8?B?alowSTFRVVk0UVdSQlFuQkJSMVZCWTJkQmVVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGUlFVRkJRVUZCUVVGQlEwRkJRVUZC?=
- =?utf-8?B?UVVFOUlpOCtQQzl0WlhSaFBnPT0=?=
-x-dg-rorf: true
-authentication-results: gmail.com; dkim=none (message not signed)
- header.d=none;gmail.com; dmarc=none action=none header.from=analog.com;
-x-originating-ip: [2001:a62:456:d301:47b:9590:7c55:846]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 79afa7d7-55e3-445d-d73b-08d9065221a1
-x-ms-traffictypediagnostic: CY1PR03MB2313:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <CY1PR03MB231381C79A9045884C563F5299459@CY1PR03MB2313.namprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: caiTfkGYJSB9Cdch0YuDYC0ngftVqy1Y7KoylWOtQ3LCzNeVVY6iV9rtI/SAYTiIFhxxxSMN3eeuRzOeakDI+c7AQ3KOD/iWhCVlgvGmzxsEGX8tR1bVrRHax5nLwnBGGFZiMTtevLtkuHZGCc5lF04m1gP306JK7Cs+mOnHp30YuttgI707lfKoITTK/xOYBnUSQ/H6jTGv1KUdiQvlwdyutPh8yoffBXdAHNom3a+LEoEwv8OTvxGezdrpoAqyd8snd9Ka5ZTn7pUCWYhscKB9L7y/DEiSBwDmAUKphdJci7RunsXY/0Kfzn8F+bwm3Ihfwc6BV73vGBXYwwhW5FhsHgQXtfRhS2AHrXknfMT78ZQrz4n7lL+37QwV0XEoeBD4OcdIPGNUa0rNBqRiNrGDQMh6e2VVYWXlQmR+FUr+spihr/+YJrfGuqd1/H5bv2JoqBCmiTisKnYubydcdx2Uah8blEMBCuigj0HOX9lKTKIeIW+3A36+pmIlQaFOAsxktMqDWEqQiWXi8PNKTFPT04YOiNUPhttkKhZlOaRPa3j3bMi3DVf92yy8/j5q9zw37szF8jSTtsEpZCHE22+rchNmEf9Nwdj7YDsvyPtWoeHZxRv9PYW8JP+tbPAi6/L0Z/QiSWxSgJPZME9NQWGAiAQbR8aT4uwaNORjfe0jTbzypWtxsThWZwJzVHIN
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY4PR03MB3112.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(396003)(366004)(376002)(39840400004)(136003)(76116006)(66556008)(71200400001)(316002)(66476007)(66946007)(54906003)(15650500001)(55016002)(66446008)(64756008)(86362001)(8936002)(9686003)(186003)(8676002)(966005)(33656002)(7696005)(5660300002)(52536014)(2906002)(478600001)(6916009)(53546011)(6506007)(122000001)(38100700002)(4326008)(83380400001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: =?utf-8?B?RmVzZmIzdGdRd1ZMRXMwVUFlcTZCNlhVUTJZOS9WRWovVFNzN0Mxb25HWnhY?=
- =?utf-8?B?OUdoR2dhd3UyRldMcFpWd1phTVRzVnROckFnWjVPZHZ2MWIvTUE3Umd6LytF?=
- =?utf-8?B?cDladWFXMFRrdGV3TzRzVUNWRDRuRWkxTlExOWNJZ2VnTFg3WjVud3lUdXR0?=
- =?utf-8?B?Kytlanc2SnhWRy9FS1ZXdllNVVAzS2RKNUdLSUdva3VqRk1lYklta05ROWhT?=
- =?utf-8?B?M2dRdXg3aW1nRFdSbk9NL2Erajk1RVdEWVZodS9zWTNoNmp4aEhLNm9ucmM1?=
- =?utf-8?B?NExUSzQwaVNHME00ZytPZXpzUEZ3T21lcmdIRjhDdWc2WGxVbEVQZm12WEJy?=
- =?utf-8?B?VDRDSXFHZkpkL2RYVGo2bUdVd3dFcnZJYU9WZDBlc3dyZStDSm16eHk1UmFP?=
- =?utf-8?B?bXJ1MXV0N0laTmw2Y256dG5pZWZGZ1ltMGswQmFibjM0Z29jd1ZIcEllOXFG?=
- =?utf-8?B?K2hoS0ZDc2NpOVBPVmFuYjlvSFdXQk5EQXU2R1ZRUkU4bHdFVmo4RGFySmpi?=
- =?utf-8?B?bHlwdjNSS3pKY0hZSXhoNlRnbEVXYXRua2RDMnhyQjQwSytseWlLVUIrb1dU?=
- =?utf-8?B?aHdCUitFR1FpWlpzOUUybUJ2bnlPQjNzbGFUVlJSZkVLT3A5ZjdWYzgvZnh1?=
- =?utf-8?B?RGREYzRhdFZtZlR4NE9idE4ycjJtNTZ2Mi85NnU0N3RncGc4RjNOS1JGUGw3?=
- =?utf-8?B?WkZHRWYra2t1dzhpNS9jbWpZblB2aXhHalhoOXlwZ3o3Uk5LeVJWVEEvT1BM?=
- =?utf-8?B?b01kaWltVVNaWk9ST0x5ck5HR1orTjlPRDd1bjlDL3hWTWtWcmY5dVAyN3cv?=
- =?utf-8?B?MFlabWlxQzI1bVhlTXhsbG5JMXlFK01EL2xsQ1daMmg4SWc1SUZFZzloUEZF?=
- =?utf-8?B?SXdadzZZR3JOWjJIOEVCeGt0bGlzSjVvWmRrcjZkYzJCLytDRndxV3JOSk1L?=
- =?utf-8?B?bVhLS0dEaTZDbTk3aDM4MkZLZ2lkTkhTaThXVzRneGJTSnZQbjRGa1Ztb0JO?=
- =?utf-8?B?R2hxd2tzTGZFazQ3VHVLSDlrbVJwNUc5UTVmOHJPU1lyMk9EeXYrM0puQTZE?=
- =?utf-8?B?ZXF5M1ZsWUpkTGJDd3RBZThvUW9TMXN6OGNMMjh1VFg1RFZ5UGJvNVhGbDBY?=
- =?utf-8?B?SHQ3Vnh4RlA4ZzVIdTlQM2NDVU9xMjBQQkgzVjUzSFV3V3poV0syU3FaSWpH?=
- =?utf-8?B?UlBldkR4RkY2TGRHYUNBZHMxYUp3RGpVcjJUWUNzNHhueFRZaUgrZVdtN2pJ?=
- =?utf-8?B?VmdiM1ZGZFFCbVJlYjUzTk9FbGdVRWRRbjk3OXFtY2NTWkN2RjVCKzlYOUM4?=
- =?utf-8?B?eU4xb3VzK3lkcDNsK0Yrdko5SlFvMXlQZTZXYmg5NXhhenljaDNoN09QMDBM?=
- =?utf-8?B?bzdoMjZ6aTVWWGxWdmI2M016UElEWjBIQ2tvaU9jSllWMjBhLzdKbnJvTTkr?=
- =?utf-8?B?d2tPdGlYazJjOEhOSG5PMG1PMnA4ZW5JTXAyOUdEVEpjRzBYQ2REVDBmZmpU?=
- =?utf-8?B?TEV3MVBmVUIyYUpiTDhqa0tYbGlXUU44OXpCdVFhQWg2OHpvQWpKZ3FGbmR2?=
- =?utf-8?B?alVvSzRDaS96ZXkySS9yNncxV2VNSWsySkpnZExHMm1ZT055R2VuTzAyZlBP?=
- =?utf-8?B?eWRIT0FvdmxzTCtxUS9iMFc0UlFmNzIvTlpveWg2VlNoOFRLb2RrejJrbHJJ?=
- =?utf-8?B?aGtHakdOZitDcDlmemx1bFJUTk5VeUtZb2xtb0c0bUpVUDgrZlBhVkZhRy9x?=
- =?utf-8?B?aFQyN2RNVWNRQzFzSWhNWEx2YXVEVFhyMmNqUGkwbDhmV3ZucUpOQWcray9G?=
- =?utf-8?Q?pXfIk2GBWr5vb89QtfQiHe5SuJE5+2luVNCwI=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=qWzhe4TOgrGYmaQMTLAqV+a9P8snDM+OnmiXJMDy534=;
+        b=scr3U4SPVPNS/Q+5qDcOEpCHRgDk/fSi2rXHZNpiyATE0zPWv2Sqpu1npHtMeno7rH
+         JC2srxsHZxIt7oXP3ty4Zqdm9azYWjyGP1uEMzGzCmXFx0ddT6hlxz80Py1rfyTJ0Jr4
+         mlS4FGw5In7FOXQvGP+8cvzguYCXeBLQfrYTqcLEIY2e1DIFBAvt2cnAzwcCRGby6wzr
+         TLhLylpmNZt3hPUZCQ8pz12zQLXCZVjO6rN+uGylqPNjPFtLowtOp+EjLrH8ILFrnXul
+         ZKOECZAoXdGChqovH0xUeB2oIiu5uICoY1vTHPJ4d0b1ExRUNMlCaXoE5evRTsMEPWT7
+         C4Gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=qWzhe4TOgrGYmaQMTLAqV+a9P8snDM+OnmiXJMDy534=;
+        b=jKDlubhESl6M82sWwhoCMS+U8WBNxuaD3CM/hKA7pvoQFFReEO6UIVvbl7IsxCHh5G
+         X2/7ncyCeu/hVJaS+loP3EnS+HkeKyhxFHcQVQossX1Tf5g9mQL+M0eZxHGPcWUMkeiR
+         Z9IqYXRMwjdW1cI07oJyReEO1iiENVPesRZtOYIZSJtZtSE42KgE1NmeFPQo99r4qIJu
+         6EIqYqONvTN6JtjTTv/5CTKnMmc5PlDxJ75bzWrnuQ75tJ9A1Dsl0pwBSnpNO8f38eSh
+         7xMIRoMqHstubejXicQIeuF6Apj3luWjuDCRVL1wLa9NSZlfBhgy5lv9UjoYubaKSo77
+         dRxA==
+X-Gm-Message-State: AOAM533OUAleE22XNppoOn5L9Pcz4+mw/inTBRJcpkYQJ43jthaiRva0
+        N9JAMRof/HeQ+T2Op4475ctwxSyVjNBCdptMqUPx6DZnalM=
+X-Google-Smtp-Source: ABdhPJwibFePl16cl8SWn9cow9I8zGYTCQ3d5BtFwEkxs9tN9UjBS/sLJfklO7KSwCiok6MHnrHRyw6seJbI+gGM6AU=
+X-Received: by 2002:a63:a847:: with SMTP id i7mr3556440pgp.203.1619182319664;
+ Fri, 23 Apr 2021 05:51:59 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY4PR03MB3112.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 79afa7d7-55e3-445d-d73b-08d9065221a1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Apr 2021 12:20:06.9396
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: AOkLcgwyisVbaUPyp6Q9B5JXtSr5RqMBoTl69Inq+cS3reglMr/j98N1qaDOLxOHSSRM6Fo95uV7gUdq5eGL7A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR03MB2313
-X-Proofpoint-GUID: qiYrEPIL_t5e_OfN_H5iUdPttFYaGnwX
-X-Proofpoint-ORIG-GUID: qiYrEPIL_t5e_OfN_H5iUdPttFYaGnwX
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
- definitions=2021-04-23_04:2021-04-23,2021-04-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxscore=0
- suspectscore=0 spamscore=0 mlxlogscore=999 impostorscore=0 clxscore=1015
- phishscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104230080
+References: <20210423101951.2876009-1-sean@geanix.com>
+In-Reply-To: <20210423101951.2876009-1-sean@geanix.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 23 Apr 2021 15:51:43 +0300
+Message-ID: <CAHp75VdEHy0-F-pg8sSUF5FK=NfDgBuDj0wLWqpGjpqE11mjww@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] iio: accel: add support for FXLS8962AF/FXLS8964AF accelerometers
+To:     Sean Nyekjaer <sean@geanix.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        =?UTF-8?B?TnVubyBTw6E=?= <Nuno.Sa@analog.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        devicetree <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-PiBGcm9tOiBBbGV4YW5kcnUgQXJkZWxlYW4gPGFyZGVsZWFuYWxleEBnbWFpbC5jb20+DQo+IFNl
-bnQ6IEZyaWRheSwgQXByaWwgMjMsIDIwMjEgOTozMyBBTQ0KPiBUbzogU2EsIE51bm8gPE51bm8u
-U2FAYW5hbG9nLmNvbT4NCj4gQ2M6IGxpbnV4LWlpbyA8bGludXgtaWlvQHZnZXIua2VybmVsLm9y
-Zz47IEpvbmF0aGFuIENhbWVyb24NCj4gPGppYzIzQGtlcm5lbC5vcmc+OyBIZW5uZXJpY2gsIE1p
-Y2hhZWwNCj4gPE1pY2hhZWwuSGVubmVyaWNoQGFuYWxvZy5jb20+OyBMYXJzLVBldGVyIENsYXVz
-ZW4NCj4gPGxhcnNAbWV0YWZvby5kZT4NCj4gU3ViamVjdDogUmU6IFtQQVRDSCB2MiA2LzldIGlp
-bzogYWRpc19idWZmZXI6IHVwZGF0ZSBkZXZpY2UgcGFnZSBhZnRlcg0KPiBjaGFuZ2luZyBpdA0K
-PiANCj4gW0V4dGVybmFsXQ0KPiANCj4gT24gVGh1LCBBcHIgMjIsIDIwMjEgYXQgMToxNyBQTSBO
-dW5vIFNhIDxudW5vLnNhQGFuYWxvZy5jb20+DQo+IHdyb3RlOg0KPiA+DQo+ID4gV2l0aCBjb21t
-aXQgNThjYTM0N2I5YjI0ICgiaWlvOiBhZGlzX2J1ZmZlcjogZG9uJ3QgcHVzaCBkYXRhIHRvDQo+
-IGJ1ZmZlcnMgb24NCj4gPiBmYWlsdXJlIiksIHdlIHJldHVybiBpZiAnc3BpX3N5bmMoKScgZmFp
-bHMgd2hpY2ggd291bGQgbGVhdmUNCj4gPiAnYWRpcy0+Y3VycmVudF9wYWdlJyBpbiBhbiBpbmNv
-aGVyZW50IHN0YXRlLiBIZW5jZSwgc2V0IHRoaXMgdmFyaWFibGUNCj4gPiByaWdodCBhZnRlciB3
-ZSBjaGFuZ2UgdGhlIGRldmljZSBwYWdlLg0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogTnVubyBT
-YSA8bnVuby5zYUBhbmFsb2cuY29tPg0KPiA+IC0tLQ0KPiA+ICBkcml2ZXJzL2lpby9pbXUvYWRp
-c19idWZmZXIuYyB8IDYgKysrLS0tDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMo
-KyksIDMgZGVsZXRpb25zKC0pDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9paW8vaW11
-L2FkaXNfYnVmZmVyLmMNCj4gYi9kcml2ZXJzL2lpby9pbXUvYWRpc19idWZmZXIuYw0KPiA+IGlu
-ZGV4IGEyOWQyMmY2NTdjZS4uZGRhMzY3MDcxOTgwIDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMv
-aWlvL2ltdS9hZGlzX2J1ZmZlci5jDQo+ID4gKysrIGIvZHJpdmVycy9paW8vaW11L2FkaXNfYnVm
-ZmVyLmMNCj4gPiBAQCAtMTQwLDYgKzE0MCw4IEBAIHN0YXRpYyBpcnFyZXR1cm5fdCBhZGlzX3Ry
-aWdnZXJfaGFuZGxlcihpbnQgaXJxLA0KPiB2b2lkICpwKQ0KPiA+ICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgbXV0ZXhfdW5sb2NrKCZhZGlzLT5zdGF0ZV9sb2NrKTsNCj4gPiAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIGdvdG8gaXJxX2RvbmU7DQo+ID4gICAgICAgICAg
-ICAgICAgICAgICAgICAgfQ0KPiA+ICsNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICBhZGlz
-LT5jdXJyZW50X3BhZ2UgPSAwOw0KPiA+ICAgICAgICAgICAgICAgICB9DQo+ID4gICAgICAgICB9
-DQo+ID4NCj4gPiBAQCAtMTUxLDEwICsxNTMsOCBAQCBzdGF0aWMgaXJxcmV0dXJuX3QgYWRpc190
-cmlnZ2VyX2hhbmRsZXIoaW50DQo+IGlycSwgdm9pZCAqcCkNCj4gPiAgICAgICAgICAgICAgICAg
-Z290byBpcnFfZG9uZTsNCj4gPiAgICAgICAgIH0NCj4gPg0KPiA+IC0gICAgICAgaWYgKGFkaXMt
-PmRhdGEtPmhhc19wYWdpbmcpIHsNCj4gPiAtICAgICAgICAgICAgICAgYWRpcy0+Y3VycmVudF9w
-YWdlID0gMDsNCj4gPiArICAgICAgIGlmIChhZGlzLT5kYXRhLT5oYXNfcGFnaW5nKQ0KPiA+ICAg
-ICAgICAgICAgICAgICBtdXRleF91bmxvY2soJmFkaXMtPnN0YXRlX2xvY2spOw0KPiA+IC0gICAg
-ICAgfQ0KPiANCj4gU28sIGNvbnRpbnVpbmcgZnJvbSBteSBjb21tZW50IGhlcmUgWzFdOg0KPiAN
-Cj4gaHR0cHM6Ly91cmxkZWZlbnNlLmNvbS92My9fX2h0dHBzOi8vcGF0Y2h3b3JrLmtlcm5lbC5v
-cmcvcHJvamVjdC9saQ0KPiBudXgtaWlvL3BhdGNoLzIwMjEwNDIyMTAxOTExLjEzNTYzMC02LQ0K
-PiBudW5vLnNhQGFuYWxvZy5jb20vX187ISFBM05pOENTMHkyWSF1MVJ5UE5laDhlNW03bFBmRGE1
-SDVaalQNCj4gaEE5VGRzTEd2azJtMWtGUUJiQUtlNDBQbXZRUzhPOE4tZi1HRWckDQo+IA0KPiBU
-aGlzIGNhbiBiZWNvbWUgbW9yZSBlbGVnYW50LCBiZWNhdXNlIHRoaXMgYmxvY2s6DQo+ICAgICAg
-ICBpZiAoYWRpcy0+ZGF0YS0+aGFzX3BhZ2luZykNCj4gICAgICAgICAgICAgICAgIG11dGV4X3Vu
-bG9jaygmYWRpcy0+c3RhdGVfbG9jayk7DQo+IA0KPiBjYW4gYmUgbW92ZWQgcmlnaHQgYWZ0ZXIg
-InJldCA9IHNwaV9zeW5jKGFkaXMtPnNwaSwgJmFkaXMtPm1zZyk7Ig0KPiANCj4gQW5kIHRoZW4g
-dGhlIGR1cGxpY2F0aW9uIGFkZGVkIGluIHBhdGNoIFsxXSBjYW4gYmUgY2xlYW5lZCB1cC4NCj4g
-U28gbWF5YmUgYSByZS1vcmRlcmluZyBvZiBwYXRjaGVzIGNvdWxkIHNpbXBsaWZ5L3JlbW92ZSB0
-aGUgYWRkZWQNCj4gZHVwbGljYXRpb24uDQo+IA0KDQpIbW1tIEknbSBub3QgZm9sbG93aW5nIHlv
-dSA6KS4gV2hhdCdzIHlvdXIgaWRlYT8gWW91IG1lYW4gdGhlIGJsb2NrDQppbnNpZGUgdGhlICdp
-ZiAocmV0KScgaW4gY2FzZSBzcGlfc3luYyBmYWlscz8gSWYgc28sIHdlIGNhbiBtb3ZlIGl0IGJ1
-dCB0aGVuDQp3ZSBjYW5ub3QgZG8gdGhlIGdvdG8ganVtcC4uLiB5b3UgbWVhbiBzb21ldGhpbmcg
-bGlrZT8NCg0KcmV0ID0gc3BpX3N5bmMoKTsNCmlmIChhZGlzLT5kYXRhLT5oYXNfcGFnaW5nKQ0K
-CW11dGV4X3VubG9jaygmYWRpcy0+c3RhdGVfbG9jayk7DQppZiAocmV0KSB7DQoJZGV2X2Vycigp
-Ow0KCWdvdG8gaXJxX2RvbmU7DQp9DQoNCkkgZG9uJ3QgcGFydGljdWxhcmx5IGxpa2UgdGhlIHBh
-Z2luZyBzdHVmZiBhZnRlciB0aGUgc3BpX3N5bmMgYnV0IHRoaXMgYXZvaWRzDQpzb21lIGR1cGxp
-Y2F0aW9uIGZvciBzdXJlLi4uIGFuZCByZWR1Y2VzIHNvbWUgbGluZXMgb2YgY29kZSA6KQ0KDQot
-IE51bm8gU8OhIA0K
+On Fri, Apr 23, 2021 at 1:20 PM Sean Nyekjaer <sean@geanix.com> wrote:
+
+Thanks for an update, my comments below.
+After addressing them feel free to add
+
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+
+> Add basic support for NXP FXLS8962AF/FXLS8964AF Automotive
+> accelerometers.
+> It will allow setting up scale/gain and reading x,y,z
+> axis.
+
+> Datasheets for the devices can be found here:
+> https://www.nxp.com/docs/en/data-sheet/FXLS8962AF.pdf
+> https://www.nxp.com/docs/en/data-sheet/FXLS8964AF.pdf
+
+
+Can you split it into two Datasheet: tags?
+
+> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+> ---
+> Changes for v2:
+>  - Addressed Kconfig comments
+>  - Using regmap_read_poll_timeout()
+>  - Addresed comments from Andy and Jonathan
+>
+>  drivers/iio/accel/Kconfig           |  27 ++
+>  drivers/iio/accel/Makefile          |   3 +
+>  drivers/iio/accel/fxls8962af-core.c | 620 ++++++++++++++++++++++++++++
+>  drivers/iio/accel/fxls8962af-i2c.c  |  57 +++
+>  drivers/iio/accel/fxls8962af-spi.c  |  57 +++
+>  drivers/iio/accel/fxls8962af.h      |  21 +
+>  6 files changed, 785 insertions(+)
+>  create mode 100644 drivers/iio/accel/fxls8962af-core.c
+>  create mode 100644 drivers/iio/accel/fxls8962af-i2c.c
+>  create mode 100644 drivers/iio/accel/fxls8962af-spi.c
+>  create mode 100644 drivers/iio/accel/fxls8962af.h
+>
+> diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
+> index 2e0c62c39155..902f2e2edf65 100644
+> --- a/drivers/iio/accel/Kconfig
+> +++ b/drivers/iio/accel/Kconfig
+> @@ -208,6 +208,33 @@ config DMARD10
+>           Choosing M will build the driver as a module. If so, the module
+>           will be called dmard10.
+>
+> +config FXLS8962AF
+> +       tristate
+> +
+> +config FXLS8962AF_I2C
+> +       tristate "NXP FXLS8962AF/FXLS8964AF Accelerometer I2C Driver"
+> +       depends on I2C
+> +       select REGMAP_I2C
+> +       select FXLS8962AF
+> +       help
+> +         Say yes here to build support for the NXP 3-axis automotive
+> +         accelerometer FXLS8962AF/FXLS8964AF with I2C support.
+> +
+> +         To compile this driver as a module, choose M here: the module
+> +         will be called fxls8962af_i2c.
+> +
+> +config FXLS8962AF_SPI
+> +       tristate "NXP FXLS8962AF/FXLS8964AF Accelerometer SPI Driver"
+> +       depends on SPI
+> +       select FXLS8962AF
+> +       select REGMAP_SPI
+> +       help
+> +         Say yes here to build support for the NXP 3-axis automotive
+> +         accelerometer FXLS8962AF/FXLS8964AF with SPI support.
+> +
+> +         To compile this driver as a module, choose M here: the module
+> +         will be called fxls8962af_spi.
+> +
+>  config HID_SENSOR_ACCEL_3D
+>         depends on HID_SENSOR_HUB
+>         select IIO_BUFFER
+> diff --git a/drivers/iio/accel/Makefile b/drivers/iio/accel/Makefile
+> index 4f6c1ebe13b0..1b8c479c6f7c 100644
+> --- a/drivers/iio/accel/Makefile
+> +++ b/drivers/iio/accel/Makefile
+> @@ -25,6 +25,9 @@ obj-$(CONFIG_DA311)   += da311.o
+>  obj-$(CONFIG_DMARD06)  += dmard06.o
+>  obj-$(CONFIG_DMARD09)  += dmard09.o
+>  obj-$(CONFIG_DMARD10)  += dmard10.o
+> +obj-$(CONFIG_FXLS8962AF)       += fxls8962af-core.o
+> +obj-$(CONFIG_FXLS8962AF_I2C)   += fxls8962af-i2c.o
+> +obj-$(CONFIG_FXLS8962AF_SPI)   += fxls8962af-spi.o
+>  obj-$(CONFIG_HID_SENSOR_ACCEL_3D) += hid-sensor-accel-3d.o
+>  obj-$(CONFIG_KXCJK1013) += kxcjk-1013.o
+>  obj-$(CONFIG_KXSD9)    += kxsd9.o
+> diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
+> new file mode 100644
+> index 000000000000..6fda3bc1f28f
+> --- /dev/null
+> +++ b/drivers/iio/accel/fxls8962af-core.c
+> @@ -0,0 +1,620 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * NXP FXLS8962AF/FXLS8964AF Accelerometer Core Driver
+> + *
+> + * Copyright 2021 Connected Cars A/S
+> + *
+> + * Datasheet:
+> + * https://www.nxp.com/docs/en/data-sheet/FXLS8962AF.pdf
+> + * https://www.nxp.com/docs/en/data-sheet/FXLS8964AF.pdf
+> + */
+> +
+> +#include <linux/bits.h>
+> +#include <linux/bitfield.h>
+> +#include <linux/module.h>
+> +#include <linux/pm_runtime.h>
+> +#include <linux/regulator/consumer.h>
+> +#include <linux/regmap.h>
+> +
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/sysfs.h>
+> +
+> +#include "fxls8962af.h"
+> +
+> +#define FXLS8962AF_INT_STATUS                  0x00
+> +#define FXLS8962AF_INT_STATUS_SRC_DRDY         BIT(7)
+> +#define FXLS8962AF_TEMP_OUT                    0x01
+> +#define FXLS8962AF_VECM_LSB                    0x02
+> +#define FXLS8962AF_OUT_X_LSB                   0x04
+> +#define FXLS8962AF_OUT_Y_LSB                   0x06
+> +#define FXLS8962AF_OUT_Z_LSB                   0x08
+> +#define FXLS8962AF_BUF_STATUS                  0x0b
+> +#define FXLS8962AF_BUF_X_LSB                   0x0c
+> +#define FXLS8962AF_BUF_Y_LSB                   0x0e
+> +#define FXLS8962AF_BUF_Z_LSB                   0x10
+> +
+> +#define FXLS8962AF_PROD_REV                    0x12
+> +#define FXLS8962AF_WHO_AM_I                    0x13
+> +
+> +#define FXLS8962AF_SYS_MODE                    0x14
+> +#define FXLS8962AF_SENS_CONFIG1                        0x15
+> +#define FXLS8962AF_SENS_CONFIG1_ACTIVE         BIT(0)
+> +#define FXLS8962AF_SENS_CONFIG1_RST            BIT(7)
+> +#define FXLS8962AF_SC1_FSR_MASK                        GENMASK(2, 1)
+> +#define FXLS8962AF_SC1_FSR_PREP(x)             FIELD_PREP(FXLS8962AF_SC1_FSR_MASK, x)
+> +#define FXLS8962AF_SC1_FSR_GET(x)              FIELD_GET(FXLS8962AF_SC1_FSR_MASK, x)
+> +
+> +#define FXLS8962AF_SENS_CONFIG2                        0x16
+> +#define FXLS8962AF_SENS_CONFIG3                        0x17
+> +#define FXLS8962AF_SENS_CONFIG4                        0x18
+> +#define FXLS8962AF_SENS_CONFIG5                        0x19
+> +
+> +#define FXLS8962AF_WAKE_IDLE_LSB               0x1b
+> +#define FXLS8962AF_SLEEP_IDLE_LSB              0x1c
+> +#define FXLS8962AF_ASLP_COUNT_LSB              0x1e
+> +
+> +#define FXLS8962AF_INT_EN                      0x20
+> +#define FXLS8962AF_INT_PIN_SEL                 0x21
+> +
+> +#define FXLS8962AF_OFF_X                       0x22
+> +#define FXLS8962AF_OFF_Y                       0x23
+> +#define FXLS8962AF_OFF_Z                       0x24
+> +
+> +#define FXLS8962AF_BUF_CONFIG1                 0x26
+> +#define FXLS8962AF_BUF_CONFIG2                 0x27
+> +
+> +#define FXLS8962AF_ORIENT_STATUS               0x28
+> +#define FXLS8962AF_ORIENT_CONFIG               0x29
+> +#define FXLS8962AF_ORIENT_DBCOUNT              0x2a
+> +#define FXLS8962AF_ORIENT_BF_ZCOMP             0x2b
+> +#define FXLS8962AF_ORIENT_THS_REG              0x2c
+> +
+> +#define FXLS8962AF_SDCD_INT_SRC1               0x2d
+> +#define FXLS8962AF_SDCD_INT_SRC2               0x2e
+> +#define FXLS8962AF_SDCD_CONFIG1                        0x2f
+> +#define FXLS8962AF_SDCD_CONFIG2                        0x30
+> +#define FXLS8962AF_SDCD_OT_DBCNT               0x31
+> +#define FXLS8962AF_SDCD_WT_DBCNT               0x32
+> +#define FXLS8962AF_SDCD_LTHS_LSB               0x33
+> +#define FXLS8962AF_SDCD_UTHS_LSB               0x35
+> +
+> +#define FXLS8962AF_SELF_TEST_CONFIG1           0x37
+> +#define FXLS8962AF_SELF_TEST_CONFIG2           0x38
+> +
+> +#define FXLS8962AF_MAX_REG                     0x38
+> +
+> +#define FXLS8962AF_DEVICE_ID                   0x62
+> +#define FXLS8964AF_DEVICE_ID                   0x84
+> +
+> +/*Raw temp channel offset */
+
+Missed space.
+
+> +#define FXLS8962AF_TEMP_CENTER_VAL             25
+> +
+> +#define FXLS8962AF_AUTO_SUSPEND_DELAY_MS       2000
+> +
+> +#define FXLS8962AF_SCALE_TABLE_LEN             4
+> +
+> +static const int fxls8962af_scale_table[FXLS8962AF_SCALE_TABLE_LEN][2] = {
+> +       {0, IIO_G_TO_M_S_2(980000)},
+> +       {0, IIO_G_TO_M_S_2(1950000)},
+> +       {0, IIO_G_TO_M_S_2(3910000)},
+> +       {0, IIO_G_TO_M_S_2(7810000)},
+> +};
+> +
+> +struct fxls8962af_chip_info {
+> +       const char *name;
+> +       const struct iio_chan_spec *channels;
+> +       int num_channels;
+> +       u8 chip_id;
+> +};
+> +
+> +struct fxls8962af_data {
+> +       struct regmap *regmap;
+> +       const struct fxls8962af_chip_info *chip_info;
+> +       struct regulator *vdd_reg;
+> +       struct iio_mount_matrix orientation;
+> +};
+> +
+> +const struct regmap_config fxls8962af_regmap_conf = {
+> +       .reg_bits = 8,
+> +       .val_bits = 8,
+> +       .max_register = FXLS8962AF_MAX_REG,
+> +};
+> +EXPORT_SYMBOL_GPL(fxls8962af_regmap_conf);
+> +
+> +enum {
+> +       fxls8962af_idx_x,
+> +       fxls8962af_idx_y,
+> +       fxls8962af_idx_z,
+> +       fxls8962af_idx_ts,
+> +};
+> +
+> +static int fxls8962af_drdy(struct fxls8962af_data *data)
+> +{
+> +       struct device *dev = regmap_get_device(data->regmap);
+> +       unsigned int reg;
+> +       int ret;
+> +
+> +       ret = regmap_read_poll_timeout(data->regmap, FXLS8962AF_INT_STATUS, reg,
+> +                       (reg & FXLS8962AF_INT_STATUS_SRC_DRDY), 20000, 2000000);
+> +       if (ret) {
+> +               dev_err(dev, "drdy timeout, int_status = 0x%x\n", reg);
+
+> +               return ret;
+> +       }
+> +
+> +       return 0;
+
+It can be (all 4 LOCs) simply
+
+return ret;
+
+> +}
+> +
+> +static int fxls8962af_power_on(struct fxls8962af_data *data)
+> +{
+> +       struct device *dev = regmap_get_device(data->regmap);
+> +       int ret;
+> +
+> +       ret = pm_runtime_get_sync(dev);
+> +
+> +       if (ret < 0) {
+> +               dev_err(dev, "failed to power on\n");
+> +               pm_runtime_put_noidle(dev);
+> +               return ret;
+> +       }
+> +
+> +       return 0;
+> +}
+> +
+> +static int fxls8962af_power_off(struct fxls8962af_data *data)
+> +{
+> +       struct device *dev = regmap_get_device(data->regmap);
+> +       int ret;
+> +
+> +       pm_runtime_mark_last_busy(dev);
+> +       ret = pm_runtime_put_autosuspend(dev);
+> +
+> +       if (ret < 0) {
+> +               dev_err(dev, "failed to power off\n");
+> +               return ret;
+> +       }
+> +
+> +       return 0;
+> +}
+> +
+> +static int fxls8962af_get_temp(struct fxls8962af_data *data, int *val)
+> +{
+> +       struct device *dev = regmap_get_device(data->regmap);
+> +       int ret;
+> +       unsigned int value;
+
+Can we keep reversed xmas tree order?
+
+> +       ret = fxls8962af_drdy(data);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       ret = fxls8962af_power_on(data);
+> +       if (ret)
+> +               return ret;
+> +
+> +       ret = regmap_read(data->regmap, FXLS8962AF_TEMP_OUT, &value);
+> +       if (ret < 0) {
+> +               dev_err(dev, "Error reading reg_temp\n");
+> +               fxls8962af_power_off(data);
+> +               return ret;
+> +       }
+> +
+> +       fxls8962af_power_off(data);
+> +
+> +       *val = sign_extend32(value, 7);
+> +
+> +       return IIO_VAL_INT;
+> +}
+> +
+> +static int fxls8962af_get_axis(struct fxls8962af_data *data,
+> +                              struct iio_chan_spec const *chan, int *val)
+> +{
+> +       struct device *dev = regmap_get_device(data->regmap);
+> +       int ret;
+> +       __le16 raw_val;
+
+Ditto.
+
+> +       ret = fxls8962af_drdy(data);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       ret = fxls8962af_power_on(data);
+> +       if (ret)
+> +               return ret;
+> +
+> +       ret = regmap_bulk_read(data->regmap, chan->address,
+> +                              &raw_val, sizeof(raw_val));
+> +       if (ret < 0) {
+> +               dev_err(dev, "failed to read axes\n");
+> +               fxls8962af_power_off(data);
+> +               return ret;
+> +       }
+> +
+> +       fxls8962af_power_off(data);
+> +
+> +       *val = sign_extend32(le16_to_cpu(raw_val), chan->scan_type.realbits - 1);
+> +
+> +       return IIO_VAL_INT;
+> +}
+> +
+> +static int fxls8962af_read_avail(struct iio_dev *indio_dev,
+> +                                struct iio_chan_spec const *chan,
+> +                                const int **vals, int *type, int *length,
+> +                                long mask)
+> +{
+> +       switch (mask) {
+> +       case IIO_CHAN_INFO_SCALE:
+> +               *type = IIO_VAL_INT_PLUS_NANO;
+> +               *vals = (int *)fxls8962af_scale_table;
+> +               *length = ARRAY_SIZE(fxls8962af_scale_table) * 2;
+> +               return IIO_AVAIL_LIST;
+> +       default:
+> +               return -EINVAL;
+> +       }
+> +}
+> +
+> +static int fxls8962af_write_raw_get_fmt(struct iio_dev *indio_dev,
+> +                                       struct iio_chan_spec const *chan,
+> +                                       long mask)
+> +{
+> +       return IIO_VAL_INT_PLUS_NANO;
+> +}
+> +
+> +static int fxls8962af_standby(struct fxls8962af_data *data)
+> +{
+> +       return regmap_update_bits(data->regmap, FXLS8962AF_SENS_CONFIG1,
+> +                                 FXLS8962AF_SENS_CONFIG1_ACTIVE, 0);
+> +}
+> +
+> +static int fxls8962af_active(struct fxls8962af_data *data)
+> +{
+> +       return regmap_update_bits(data->regmap, FXLS8962AF_SENS_CONFIG1,
+> +                                 FXLS8962AF_SENS_CONFIG1_ACTIVE, 1);
+> +}
+> +
+> +static int fxls8962af_is_active(struct fxls8962af_data *data)
+> +{
+> +       unsigned int reg;
+> +       int ret;
+> +
+> +       ret = regmap_read(data->regmap, FXLS8962AF_SENS_CONFIG1, &reg);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       return reg & FXLS8962AF_SENS_CONFIG1_ACTIVE;
+> +}
+> +
+> +static int fxls8962af_update_config(struct fxls8962af_data *data, u8 reg,
+> +                                   u8 mask, u8 val)
+> +{
+> +       int ret;
+> +       int is_active;
+> +
+> +       is_active = fxls8962af_is_active(data);
+> +       if (is_active) {
+> +               ret = fxls8962af_standby(data);
+> +               if (ret < 0)
+> +                       return ret;
+> +       }
+> +
+> +       ret = regmap_update_bits(data->regmap, reg, mask, val);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       if (is_active) {
+> +               ret = fxls8962af_active(data);
+> +               if (ret < 0)
+> +                       return ret;
+> +       }
+> +
+> +       return 0;
+> +}
+> +
+> +static int fxls8962af_set_full_scale(struct fxls8962af_data *data, u32 scale)
+> +{
+> +       int i;
+> +
+> +       for (i = 0; i < ARRAY_SIZE(fxls8962af_scale_table); i++)
+> +               if (scale == fxls8962af_scale_table[i][1])
+> +                       break;
+> +
+> +       if (i == ARRAY_SIZE(fxls8962af_scale_table))
+> +               return -EINVAL;
+> +
+> +       return fxls8962af_update_config(data, FXLS8962AF_SENS_CONFIG1,
+> +                                       FXLS8962AF_SC1_FSR_MASK,
+> +                                       FXLS8962AF_SC1_FSR_PREP(i));
+> +}
+> +
+> +static unsigned int fxls8962af_read_full_scale(struct fxls8962af_data *data,
+> +                                              int *val)
+> +{
+> +       int ret;
+> +       unsigned int reg;
+> +       u8 range_idx;
+> +
+> +       ret = regmap_read(data->regmap, FXLS8962AF_SENS_CONFIG1, &reg);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       range_idx = FXLS8962AF_SC1_FSR_GET(reg);
+> +
+> +       *val = fxls8962af_scale_table[range_idx][1];
+> +
+> +       return IIO_VAL_INT_PLUS_NANO;
+> +}
+> +
+> +static int fxls8962af_read_raw(struct iio_dev *indio_dev,
+> +                              struct iio_chan_spec const *chan,
+> +                              int *val, int *val2, long mask)
+> +{
+> +       struct fxls8962af_data *data = iio_priv(indio_dev);
+> +       int ret;
+> +
+> +       switch (mask) {
+> +       case IIO_CHAN_INFO_RAW:
+> +               ret = iio_device_claim_direct_mode(indio_dev);
+> +               if (ret)
+> +                       return ret;
+> +
+> +               switch (chan->type) {
+> +               case IIO_TEMP:
+> +                       ret = fxls8962af_get_temp(data, val);
+> +                       break;
+> +               case IIO_ACCEL:
+> +                       ret = fxls8962af_get_axis(data, chan, val);
+> +                       break;
+> +               default:
+
+> +                       ret = -EINVAL;
+> +                       break;
+
+return -EINVAL;
+
+> +               }
+> +
+> +               iio_device_release_direct_mode(indio_dev);
+> +               return ret;
+> +       case IIO_CHAN_INFO_OFFSET:
+
+> +               if (chan->type == IIO_TEMP) {
+
+Can we use traditional pattern here, i.e.
+
+if (type != IIO_TEMP)
+  return -EINVAL;
+
+?
+
+> +                       *val = FXLS8962AF_TEMP_CENTER_VAL;
+> +                       return IIO_VAL_INT;
+> +               }
+
+> +               break;
+> +       case IIO_CHAN_INFO_SCALE:
+> +               *val = 0;
+> +               return fxls8962af_read_full_scale(data, val2);
+> +       default:
+> +               return -EINVAL;
+> +       }
+
+> +
+> +       return -EINVAL;
+
+(Almost) dead code (see above).
+
+> +}
+> +
+> +static int fxls8962af_write_raw(struct iio_dev *indio_dev,
+> +                               struct iio_chan_spec const *chan,
+> +                               int val, int val2, long mask)
+> +{
+> +       struct fxls8962af_data *data = iio_priv(indio_dev);
+> +       int ret;
+> +
+> +       switch (mask) {
+> +       case IIO_CHAN_INFO_SCALE:
+> +               if (val != 0)
+> +                       return -EINVAL;
+> +
+> +               ret = iio_device_claim_direct_mode(indio_dev);
+> +               if (ret)
+> +                       return ret;
+> +
+> +               ret = fxls8962af_set_full_scale(data, val2);
+> +
+> +               iio_device_release_direct_mode(indio_dev);
+> +               return ret;
+> +       default:
+> +               return -EINVAL;
+> +       }
+
+> +
+> +       return -EINVAL;
+
+Dead code.
+
+> +}
+> +
+> +#define FXLS8962AF_CHANNEL(axis, reg, idx) { \
+> +       .type = IIO_ACCEL, \
+> +       .address = reg, \
+> +       .modified = 1, \
+> +       .channel2 = IIO_MOD_##axis, \
+> +       .info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
+> +       .info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE), \
+> +       .info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SCALE), \
+> +       .scan_index = idx, \
+> +       .scan_type = { \
+> +               .sign = 's', \
+> +               .realbits = 12, \
+> +               .storagebits = 16, \
+> +               .shift = 4, \
+> +               .endianness = IIO_BE, \
+> +       }, \
+> +}
+> +
+> +#define FXLS8962AF_TEMP_CHANNEL { \
+> +       .type = IIO_TEMP, \
+> +       .info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
+> +                             BIT(IIO_CHAN_INFO_OFFSET),\
+> +       .scan_index = -1, \
+> +       .scan_type = { \
+> +               .realbits = 8, \
+> +       }, \
+> +}
+> +
+> +static const struct iio_chan_spec fxls8962af_channels[] = {
+> +       FXLS8962AF_CHANNEL(X, FXLS8962AF_OUT_X_LSB, fxls8962af_idx_x),
+> +       FXLS8962AF_CHANNEL(Y, FXLS8962AF_OUT_Y_LSB, fxls8962af_idx_y),
+> +       FXLS8962AF_CHANNEL(Z, FXLS8962AF_OUT_Z_LSB, fxls8962af_idx_z),
+> +       IIO_CHAN_SOFT_TIMESTAMP(fxls8962af_idx_ts),
+> +       FXLS8962AF_TEMP_CHANNEL,
+> +};
+> +
+> +static const struct fxls8962af_chip_info fxls_chip_info_table[] = {
+> +       [fxls8962af] = {
+> +               .chip_id = FXLS8962AF_DEVICE_ID,
+> +               .name = "fxls8962af",
+> +               .channels = fxls8962af_channels,
+> +               .num_channels = ARRAY_SIZE(fxls8962af_channels),
+> +       },
+> +       [fxls8964af] = {
+> +               .chip_id = FXLS8964AF_DEVICE_ID,
+> +               .name = "fxls8964af",
+> +               .channels = fxls8962af_channels,
+> +               .num_channels = ARRAY_SIZE(fxls8962af_channels),
+> +       },
+> +};
+> +
+> +static const struct iio_info fxls8962af_info = {
+> +       .read_raw = &fxls8962af_read_raw,
+> +       .write_raw = &fxls8962af_write_raw,
+> +       .write_raw_get_fmt = fxls8962af_write_raw_get_fmt,
+> +       .read_avail = fxls8962af_read_avail,
+> +};
+> +
+> +static int fxls8962af_reset(struct fxls8962af_data *data)
+> +{
+> +       struct device *dev = regmap_get_device(data->regmap);
+> +       unsigned int reg;
+> +       int ret;
+> +
+> +       ret = regmap_update_bits(data->regmap, FXLS8962AF_SENS_CONFIG1,
+> +                                FXLS8962AF_SENS_CONFIG1_RST,
+> +                                FXLS8962AF_SENS_CONFIG1_RST);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       /* TBOOT1, TBOOT2, specifies we have to wait between 1 - 17.7ms */
+> +       ret = regmap_read_poll_timeout(data->regmap, FXLS8962AF_SENS_CONFIG1, reg,
+> +                       !(reg & FXLS8962AF_SENS_CONFIG1_RST), 1000, 18000);
+> +       if (ret) {
+> +               dev_err(dev, "reset timeout, sens_config1 = 0x%x\n", reg);
+
+> +               return ret;
+> +       }
+
+These two lines are redundant.
+
+> +
+> +       return ret;
+> +}
+> +
+> +static void fxls8962af_regulator_disable(void *data_ptr)
+> +{
+> +       struct fxls8962af_data *data = data_ptr;
+> +
+> +       regulator_disable(data->vdd_reg);
+> +}
+> +
+> +static void fxls8962af_pm_disable(void *dev_ptr)
+> +{
+> +       struct device *dev = dev_ptr;
+> +       struct iio_dev *indio_dev = dev_get_drvdata(dev);
+> +
+> +       pm_runtime_disable(dev);
+> +       pm_runtime_set_suspended(dev);
+> +       pm_runtime_put_noidle(dev);
+> +
+> +       fxls8962af_standby(iio_priv(indio_dev));
+> +}
+> +
+> +int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq)
+> +{
+> +       struct fxls8962af_data *data;
+> +       struct iio_dev *indio_dev;
+> +       unsigned int reg;
+> +       int ret, i;
+> +
+> +       indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
+> +       if (!indio_dev)
+> +               return -ENOMEM;
+> +
+> +       data = iio_priv(indio_dev);
+> +       dev_set_drvdata(dev, indio_dev);
+> +       data->regmap = regmap;
+> +
+> +       ret = iio_read_mount_matrix(dev, "mount-matrix", &data->orientation);
+> +       if (ret)
+> +               return ret;
+> +
+> +       data->vdd_reg = devm_regulator_get(dev, "vdd");
+> +       if (IS_ERR(data->vdd_reg))
+> +               return dev_err_probe(dev, PTR_ERR(data->vdd_reg),
+> +                                    "Failed to get vdd regulator\n");
+> +
+> +       ret = regulator_enable(data->vdd_reg);
+> +       if (ret) {
+> +               dev_err(dev, "Failed to enable vdd regulator: %d\n", ret);
+> +               return ret;
+> +       }
+> +
+> +       ret = devm_add_action_or_reset(dev, fxls8962af_regulator_disable, data);
+> +       if (ret)
+> +               return ret;
+> +
+> +       ret = regmap_read(data->regmap, FXLS8962AF_WHO_AM_I, &reg);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       for (i = 0; i < ARRAY_SIZE(fxls_chip_info_table); i++) {
+> +               if (fxls_chip_info_table[i].chip_id == reg) {
+> +                       data->chip_info = &fxls_chip_info_table[i];
+> +                       break;
+> +               }
+> +       }
+> +       if (i == ARRAY_SIZE(fxls_chip_info_table)) {
+> +               dev_err(dev, "failed to match device in table\n");
+> +               return -ENXIO;
+> +       }
+> +
+> +       indio_dev->channels = data->chip_info->channels;
+> +       indio_dev->num_channels = data->chip_info->num_channels;
+> +       indio_dev->name = data->chip_info->name;
+> +       indio_dev->info = &fxls8962af_info;
+> +       indio_dev->modes = INDIO_DIRECT_MODE;
+> +
+> +       ret = fxls8962af_reset(data);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       ret = pm_runtime_set_active(dev);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       pm_runtime_enable(dev);
+> +       pm_runtime_set_autosuspend_delay(dev, FXLS8962AF_AUTO_SUSPEND_DELAY_MS);
+> +       pm_runtime_use_autosuspend(dev);
+> +
+> +       ret = devm_add_action_or_reset(dev, fxls8962af_pm_disable, dev);
+> +       if (ret)
+> +               return ret;
+> +
+> +       return devm_iio_device_register(dev, indio_dev);
+> +}
+> +EXPORT_SYMBOL_GPL(fxls8962af_core_probe);
+> +
+> +static int __maybe_unused fxls8962af_runtime_suspend(struct device *dev)
+> +{
+> +       struct fxls8962af_data *data = iio_priv(dev_get_drvdata(dev));
+> +       int ret;
+> +
+> +       ret = fxls8962af_standby(data);
+> +       if (ret < 0) {
+> +               dev_err(dev, "powering off device failed\n");
+> +               return ret;
+> +       }
+> +
+> +       return 0;
+> +}
+> +
+> +static int __maybe_unused fxls8962af_runtime_resume(struct device *dev)
+> +{
+> +       struct fxls8962af_data *data = iio_priv(dev_get_drvdata(dev));
+> +
+> +       return fxls8962af_active(data);
+> +}
+> +
+> +const struct dev_pm_ops fxls8962af_pm_ops = {
+> +       SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
+> +                               pm_runtime_force_resume)
+> +       SET_RUNTIME_PM_OPS(fxls8962af_runtime_suspend,
+> +                          fxls8962af_runtime_resume, NULL)
+> +};
+> +EXPORT_SYMBOL_GPL(fxls8962af_pm_ops);
+> +
+> +MODULE_AUTHOR("Sean Nyekjaer <sean@geanix.com>");
+> +MODULE_DESCRIPTION("NXP FXLS8962AF/FXLS8964AF accelerometer driver");
+> +MODULE_LICENSE("GPL v2");
+> diff --git a/drivers/iio/accel/fxls8962af-i2c.c b/drivers/iio/accel/fxls8962af-i2c.c
+> new file mode 100644
+> index 000000000000..0dd86ece46ae
+> --- /dev/null
+> +++ b/drivers/iio/accel/fxls8962af-i2c.c
+> @@ -0,0 +1,57 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * NXP FXLS8962AF/FXLS8964AF Accelerometer I2C Driver
+> + *
+> + * Copyright 2021 Connected Cars A/S
+> + */
+> +
+> +#include <linux/dev_printk.h>
+
++ err.h
+
+> +#include <linux/i2c.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/module.h>
+> +#include <linux/regmap.h>
+> +
+> +#include "fxls8962af.h"
+> +
+> +static int fxls8962af_probe(struct i2c_client *client)
+> +{
+> +       struct regmap *regmap;
+> +
+> +       regmap = devm_regmap_init_i2c(client, &fxls8962af_regmap_conf);
+> +       if (IS_ERR(regmap)) {
+> +               dev_err(&client->dev, "Failed to initialize i2c regmap\n");
+> +               return PTR_ERR(regmap);
+> +       }
+> +
+> +       return fxls8962af_core_probe(&client->dev, regmap, client->irq);
+> +}
+> +
+> +static const struct i2c_device_id fxls8962af_id[] = {
+> +       {"fxls8962af", fxls8962af},
+> +       {"fxls8964af", fxls8964af},
+> +       {}
+> +};
+> +MODULE_DEVICE_TABLE(i2c, fxls8962af_id);
+> +
+> +static const struct of_device_id fxls8962af_of_match[] = {
+> +       {.compatible = "nxp,fxls8962af"},
+> +       {.compatible = "nxp,fxls8964af"},
+> +       {}
+> +};
+> +MODULE_DEVICE_TABLE(of, fxls8962af_of_match);
+> +
+> +static struct i2c_driver fxls8962af_driver = {
+> +       .driver = {
+> +                  .name = "fxls8962af_i2c",
+> +                  .of_match_table = fxls8962af_of_match,
+> +                  .pm = &fxls8962af_pm_ops,
+> +                  },
+> +       .probe_new = fxls8962af_probe,
+> +       .id_table = fxls8962af_id,
+> +};
+
+> +
+
+No need a blank line here.
+
+> +module_i2c_driver(fxls8962af_driver);
+> +
+> +MODULE_AUTHOR("Sean Nyekjaer <sean@geanix.com>");
+> +MODULE_DESCRIPTION("NXP FXLS8962AF/FXLS8964AF accelerometer i2c driver");
+> +MODULE_LICENSE("GPL v2");
+> diff --git a/drivers/iio/accel/fxls8962af-spi.c b/drivers/iio/accel/fxls8962af-spi.c
+> new file mode 100644
+> index 000000000000..0597c3fef504
+> --- /dev/null
+> +++ b/drivers/iio/accel/fxls8962af-spi.c
+> @@ -0,0 +1,57 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * NXP FXLS8962AF/FXLS8964AF Accelerometer SPI Driver
+> + *
+> + * Copyright 2021 Connected Cars A/S
+> + */
+> +
+> +#include <linux/dev_printk.h>
+
++ err.h
++ mod_devicetable.h
+
+> +#include <linux/module.h>
+> +#include <linux/spi/spi.h>
+
+> +//#include <linux/slab.h>
+
+???
+
+Remove it.
+
+> +#include <linux/regmap.h>
+> +
+> +#include "fxls8962af.h"
+> +
+> +static int fxls8962af_probe(struct spi_device *spi)
+> +{
+> +       struct regmap *regmap;
+> +
+> +       regmap = devm_regmap_init_spi(spi, &fxls8962af_regmap_conf);
+> +       if (IS_ERR(regmap)) {
+> +               dev_err(&spi->dev, "Failed to initialize spi regmap\n");
+> +               return PTR_ERR(regmap);
+> +       }
+> +
+> +       return fxls8962af_core_probe(&spi->dev, regmap, spi->irq);
+> +}
+> +
+> +static const struct of_device_id fxls8962af_spi_of_match[] = {
+> +       {.compatible = "nxp,fxls8962af"},
+> +       {.compatible = "nxp,fxls8964af"},
+> +       {}
+> +};
+> +MODULE_DEVICE_TABLE(of, fxls8962af_spi_of_match);
+> +
+> +static const struct spi_device_id fxls8962af_spi_id_table[] = {
+> +       {"fxls8962af", fxls8962af},
+> +       {"fxls8964af", fxls8964af},
+> +       {}
+> +};
+> +MODULE_DEVICE_TABLE(spi, fxls8962af_spi_id_table);
+> +
+> +static struct spi_driver fxls8962af_driver = {
+> +       .driver = {
+> +                  .name = "fxls8962af_spi",
+> +                  .pm = &fxls8962af_pm_ops,
+> +                  .of_match_table = fxls8962af_spi_of_match,
+> +                  },
+> +       .probe = fxls8962af_probe,
+> +       .id_table = fxls8962af_spi_id_table,
+> +};
+
+> +
+
+No need to have a blank line here.
+
+> +module_spi_driver(fxls8962af_driver);
+> +
+> +MODULE_AUTHOR("Sean Nyekjaer <sean@geanix.com>");
+> +MODULE_DESCRIPTION("NXP FXLS8962AF/FXLS8964AF accelerometer spi driver");
+> +MODULE_LICENSE("GPL v2");
+> diff --git a/drivers/iio/accel/fxls8962af.h b/drivers/iio/accel/fxls8962af.h
+> new file mode 100644
+> index 000000000000..1dc3b0e317dc
+> --- /dev/null
+> +++ b/drivers/iio/accel/fxls8962af.h
+> @@ -0,0 +1,21 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * Copyright 2021 Connected Cars A/S
+> + */
+> +#ifndef _FXLS8962AF_H_
+> +#define _FXLS8962AF_H_
+> +
+> +struct regmap;
+> +struct device;
+> +
+> +enum {
+> +       fxls8962af,
+> +       fxls8964af,
+> +};
+> +
+> +int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq);
+> +int fxls8962af_core_remove(struct device *dev);
+
++ blank line?
+
+> +extern const struct dev_pm_ops fxls8962af_pm_ops;
+> +extern const struct regmap_config fxls8962af_regmap_conf;
+> +
+> +#endif                         /* _FXLS8962AF_H_ */
+> --
+> 2.31.0
+>
+
+
+-- 
+With Best Regards,
+Andy Shevchenko

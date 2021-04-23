@@ -2,158 +2,156 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 584D0369443
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Apr 2021 15:56:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7ACEC36969D
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Apr 2021 18:06:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231220AbhDWN5P (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Apr 2021 09:57:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34846 "EHLO
+        id S242874AbhDWQHa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 23 Apr 2021 12:07:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229794AbhDWN5O (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Apr 2021 09:57:14 -0400
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70CCBC061574
-        for <linux-iio@vger.kernel.org>; Fri, 23 Apr 2021 06:56:38 -0700 (PDT)
-Received: by mail-pj1-x102a.google.com with SMTP id g1-20020a17090adac1b0290150d07f9402so1218099pjx.5
-        for <linux-iio@vger.kernel.org>; Fri, 23 Apr 2021 06:56:38 -0700 (PDT)
+        with ESMTP id S229691AbhDWQH3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Apr 2021 12:07:29 -0400
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23157C061574;
+        Fri, 23 Apr 2021 09:06:52 -0700 (PDT)
+Received: by mail-pj1-x1034.google.com with SMTP id g1-20020a17090adac1b0290150d07f9402so1422485pjx.5;
+        Fri, 23 Apr 2021 09:06:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=q2r4TMc91iaMtJTQ7NpNLrQzrRAOSL+yBUctMmDUgT8=;
-        b=Lh3vBTaKzo7RYM3gWDxxg6uF8uDtxcqoiEoIollP1ajJA2hzGNnXqNf93Z85+Kd6gk
-         T/Hx5y9olwcyx+ol97CKojeGMysNZh+5Y7W+/1tCZ7fX+BHG93KpRwFglelciwrhv4u3
-         EiovBKAt7bDJQ/ZQsF+tGw8pPZDfdLpxolBRJZS053BkCERT7hE3eqf0Ai0r7ek2FAS6
-         mzLpcwWCTgQepEpeobQ7ZrQNiYtHKy8sLWpgcgmjRGpL7x7eTKEGTKteTF2q1ijZYLkP
-         Kjr7XTy+jRGR1Rps3+hgRwzGrxOoTCJwRtxAeYqcZlNxhs/z2yW76aqYtcNEVnAFjA0Y
-         xjWA==
+         :cc;
+        bh=IogqCPyvEvuM6GWvpXpHl19+M+Wj9F934eJ8mKManQw=;
+        b=k2KvuTXUaJRxSWSbxOHfmPWor1BH2QRGJTkOflXnvKePtPb2rFZVAnV+MN3p4+VBYe
+         zqL//K4qzi9xpVeQ27cexC+jwQ/ch6vrLSOfCy+5068m/S7jQ/IIBy3F7XHM89stpaQC
+         5yJgpQs4Mnr1aEsnzaPEtQ+9jQe/OwsvpEY6Ixpxwro+3+0ouzUJJ0iSK5E6348mTBUX
+         VF0LYVKjKY2kxfKpNz0rpjIBGUlLpNDH0nUU4eyxUQVyHAex+/tzHtMY0JJyywMJZbmI
+         q9ZMPZIuenE05lKaPeFwyWP+K0Z0oGZjIk1DkSAy1d8b4eZIAkCPxdStzMDoGFREKBA8
+         6Nig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=q2r4TMc91iaMtJTQ7NpNLrQzrRAOSL+yBUctMmDUgT8=;
-        b=tyZyuLKKffvAPfBE+yTM23m470k+yZTQ7lNk1ZYjkT/Jv0G/dk/bGs8lmtCJeKL74Y
-         f1LifvN1SKExc1yUDmBclj/YiwM+aSAqRPYaYgoj92sN55c8/EKenQuR7CU50RX+LpaK
-         wEs+uElOkRohQkB1rhO2zgbrsOounDx8E97dA/PYk5EK+4WqUX2i7qs9k2bzpg/p09yi
-         FtNI2Zoz/dJG4dxInT7887p3V8ZZ+2z4sTurSUFJxiUlm6kGt245OMIAtGPOPIZcm5RJ
-         Sn2oVrIbRXUXXERSkF7FW1GwmxEZ9Wbo9SK6ODCWqkBYM1PXEeqzapEZOT+hdIHMid7/
-         hkKg==
-X-Gm-Message-State: AOAM531jJYaTn6J76uG5X1Dd10ibXzh9kGRj6uYoC9UxwoiDmQiXTq8v
-        /BA0Sk3MEb/aryWRZ7H3+frgy69vGcH295ue/kZ62Hredps=
-X-Google-Smtp-Source: ABdhPJy1MrMXRTBMj2hx9cbro8v955XxdSqTyEJC5uX9RS9rEJJjczzbFLdL8fQ6jV2TdsqFhAxMyxudPpVyMDVJAfU=
-X-Received: by 2002:a17:90a:2807:: with SMTP id e7mr4676418pjd.181.1619186197993;
- Fri, 23 Apr 2021 06:56:37 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=IogqCPyvEvuM6GWvpXpHl19+M+Wj9F934eJ8mKManQw=;
+        b=g3HF3dGunErDdOgt/deLUe4+fZybL+7VlA0onvRXnrIly0hJhiYyLkIGWceVP6gN/V
+         AFmZw3oTONGf02Fdw6bOadoz8SRAWAEaH1/kb7H37eHVzZxGiILaCGs8fF2d8ownsq+p
+         i0UV0BdU/G0e+lTH2UPBK8yDCLND+cX4jG35p2rTAH3tlxDEYrph4ULQmrHh0bGt0XxI
+         uZ5hAG5K1aAoqgpNEdFDvz3xpLIaAur0gBnfW+oQpJBrieMIXCuWo4Lt9hgde8XfrCRt
+         437gPpoya+DBOSKkDhCqM3XatReKguPSnmFXaJOHUKABuBJZZNZzFfO7TTfcR/AAyl0K
+         K9ag==
+X-Gm-Message-State: AOAM533CzlOwDzKXuchMp9C51Mx6UFj9BY9Qhu8yM6C8CuPyXdgfZC+D
+        w7wskyzU5CYaBvueNZ4EcsKjYD4TOY02UudxNJ0=
+X-Google-Smtp-Source: ABdhPJyCF5pfkqJvfI/SycPE59PP6Rrzx1x/SiXt/11eiyE8YcxxM3KPBfePw+OrmXFGq3h+2xVTOOJevU9KJV3Hpic=
+X-Received: by 2002:a17:90a:bd13:: with SMTP id y19mr6859715pjr.181.1619194006820;
+ Fri, 23 Apr 2021 09:06:46 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210422101911.135630-1-nuno.sa@analog.com> <20210422101911.135630-7-nuno.sa@analog.com>
- <CA+U=Dsphpu97Et6sgjd+9TUEHTw7xq44M5yL=CFtuCEU9QLxQQ@mail.gmail.com> <CY4PR03MB311220A749133B44C778F9F799459@CY4PR03MB3112.namprd03.prod.outlook.com>
-In-Reply-To: <CY4PR03MB311220A749133B44C778F9F799459@CY4PR03MB3112.namprd03.prod.outlook.com>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Fri, 23 Apr 2021 16:56:26 +0300
-Message-ID: <CA+U=Dsp08Hv7KtV_K=mG9RfDWpTezhPa0Xjp_R7jZrAuOqKz_w@mail.gmail.com>
-Subject: Re: [PATCH v2 6/9] iio: adis_buffer: update device page after
- changing it
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
+References: <20210420132333.99886-1-tomas.melin@vaisala.com> <20210420132333.99886-3-tomas.melin@vaisala.com>
+In-Reply-To: <20210420132333.99886-3-tomas.melin@vaisala.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 23 Apr 2021 19:06:30 +0300
+Message-ID: <CAHp75Ve2AEA8yPw5qN+R=K=ovaO8vX53hYU9=knjY_Z+EHDdww@mail.gmail.com>
+Subject: Re: [PATCH v4 2/2] iio: accel: Add driver for Murata SCA3300 accelerometer
+To:     Tomas Melin <tomas.melin@vaisala.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Apr 23, 2021 at 3:20 PM Sa, Nuno <Nuno.Sa@analog.com> wrote:
+On Tue, Apr 20, 2021 at 4:24 PM Tomas Melin <tomas.melin@vaisala.com> wrote:
 >
-> > From: Alexandru Ardelean <ardeleanalex@gmail.com>
-> > Sent: Friday, April 23, 2021 9:33 AM
-> > To: Sa, Nuno <Nuno.Sa@analog.com>
-> > Cc: linux-iio <linux-iio@vger.kernel.org>; Jonathan Cameron
-> > <jic23@kernel.org>; Hennerich, Michael
-> > <Michael.Hennerich@analog.com>; Lars-Peter Clausen
-> > <lars@metafoo.de>
-> > Subject: Re: [PATCH v2 6/9] iio: adis_buffer: update device page after
-> > changing it
-> >
-> > [External]
-> >
-> > On Thu, Apr 22, 2021 at 1:17 PM Nuno Sa <nuno.sa@analog.com>
-> > wrote:
-> > >
-> > > With commit 58ca347b9b24 ("iio: adis_buffer: don't push data to
-> > buffers on
-> > > failure"), we return if 'spi_sync()' fails which would leave
-> > > 'adis->current_page' in an incoherent state. Hence, set this variable
-> > > right after we change the device page.
-> > >
-> > > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> > > ---
-> > >  drivers/iio/imu/adis_buffer.c | 6 +++---
-> > >  1 file changed, 3 insertions(+), 3 deletions(-)
-> > >
-> > > diff --git a/drivers/iio/imu/adis_buffer.c
-> > b/drivers/iio/imu/adis_buffer.c
-> > > index a29d22f657ce..dda367071980 100644
-> > > --- a/drivers/iio/imu/adis_buffer.c
-> > > +++ b/drivers/iio/imu/adis_buffer.c
-> > > @@ -140,6 +140,8 @@ static irqreturn_t adis_trigger_handler(int irq,
-> > void *p)
-> > >                                 mutex_unlock(&adis->state_lock);
-> > >                                 goto irq_done;
-> > >                         }
-> > > +
-> > > +                       adis->current_page =3D 0;
-> > >                 }
-> > >         }
-> > >
-> > > @@ -151,10 +153,8 @@ static irqreturn_t adis_trigger_handler(int
-> > irq, void *p)
-> > >                 goto irq_done;
-> > >         }
-> > >
-> > > -       if (adis->data->has_paging) {
-> > > -               adis->current_page =3D 0;
-> > > +       if (adis->data->has_paging)
-> > >                 mutex_unlock(&adis->state_lock);
-> > > -       }
-> >
-> > So, continuing from my comment here [1]:
-> >
-> > https://urldefense.com/v3/__https://patchwork.kernel.org/project/li
-> > nux-iio/patch/20210422101911.135630-6-
-> > nuno.sa@analog.com/__;!!A3Ni8CS0y2Y!u1RyPNeh8e5m7lPfDa5H5ZjT
-> > hA9TdsLGvk2m1kFQBbAKe40PmvQS8O8N-f-GEg$
-> >
-> > This can become more elegant, because this block:
-> >        if (adis->data->has_paging)
-> >                 mutex_unlock(&adis->state_lock);
-> >
-> > can be moved right after "ret =3D spi_sync(adis->spi, &adis->msg);"
-> >
-> > And then the duplication added in patch [1] can be cleaned up.
-> > So maybe a re-ordering of patches could simplify/remove the added
-> > duplication.
-> >
->
-> Hmmm I'm not following you :). What's your idea? You mean the block
-> inside the 'if (ret)' in case spi_sync fails? If so, we can move it but t=
-hen
-> we cannot do the goto jump... you mean something like?
->
-> ret =3D spi_sync();
-> if (adis->data->has_paging)
->         mutex_unlock(&adis->state_lock);
-> if (ret) {
->         dev_err();
->         goto irq_done;
-> }
->
-> I don't particularly like the paging stuff after the spi_sync but this av=
-oids
-> some duplication for sure... and reduces some lines of code :)
+> Add initial support for Murata SCA3300 3-axis industrial
+> accelerometer with digital SPI interface. This device also
+> provides a temperature measurement.
 
-Yeah, this was the suggestion.
-No strong opinion about it.
+Thanks for an update, my comments below.
 
->
-> - Nuno S=C3=A1
+They can be addressed as followups, but I think regmap API can be
+considered right now.
+
+...
+
+> +static int sca3300_read_reg(struct sca3300_data *sca_data, u8 reg, int *val)
+> +{
+> +       int ret;
+> +
+> +       mutex_lock(&sca_data->lock);
+> +       sca_data->txbuf[0] = reg << 2;
+> +       ret = sca3300_transfer(sca_data, val);
+> +       mutex_unlock(&sca_data->lock);
+> +       if (ret != -EINVAL)
+> +               return ret;
+> +
+> +       return sca3300_error_handler(sca_data);
+> +}
+> +
+> +static int sca3300_write_reg(struct sca3300_data *sca_data, u8 reg, int val)
+> +{
+> +       int reg_val = 0;
+> +       int ret;
+> +
+> +       mutex_lock(&sca_data->lock);
+> +       /* BIT(7) for write operation */
+> +       sca_data->txbuf[0] = BIT(7) | (reg << 2);
+> +       put_unaligned_be16(val, &sca_data->txbuf[1]);
+> +       ret = sca3300_transfer(sca_data, &reg_val);
+> +       mutex_unlock(&sca_data->lock);
+> +       if (ret != -EINVAL)
+> +               return ret;
+> +
+> +       return sca3300_error_handler(sca_data);
+> +}
+
+Okay, BIT(7) for write/read is pretty much standard stuff for such
+sensors. If you transform your driver to use REGMAP_SPI, you will get
+it thru regmap configuration. Also, you will get a locking there, in
+case you don't need to have several I/O in a row atomically.
+
+..
+
+> +       for_each_set_bit(bit, indio_dev->active_scan_mask,
+> +                        indio_dev->masklength) {
+
+One line?
+
+> +               ret = sca3300_read_reg(data, sca3300_channels[bit].address,
+> +                                      &val);
+> +               if (ret) {
+> +                       dev_err_ratelimited(&data->spi->dev,
+> +                               "failed to read register, error: %d\n", ret);
+> +                       /* handled, but bailing out due to errors */
+> +                       goto out;
+> +               }
+> +               data->scan.channels[i++] = val;
+> +       }
+
+...
+
+> +       int ret;
+> +       int value = 0;
+
+Reversed xmas tree ordering?
+
+...
+
+> +       /*
+> +        * Wait 1ms after SW-reset command.
+> +        * Wait 15ms for settling of signal paths.
+> +        */
+> +       usleep_range(16e3, 50e3);
+
+Hmm... Perhaps re-use msleep_range()
+https://elixir.bootlin.com/linux/latest/source/drivers/media/i2c/imx274.c#L601?
+
+...
+
+> +       .debugfs_reg_access = &sca3300_debugfs_reg_access,
+
+Reading of the registers you will get as a bonus when switching over
+to regmap SPI API.
+
+-- 
+With Best Regards,
+Andy Shevchenko

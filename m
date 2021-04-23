@@ -2,56 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E604368DF0
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Apr 2021 09:32:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44070368DF1
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Apr 2021 09:34:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229982AbhDWHdb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Apr 2021 03:33:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35166 "EHLO
+        id S229982AbhDWHfN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 23 Apr 2021 03:35:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229456AbhDWHdb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Apr 2021 03:33:31 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02E49C061574
-        for <linux-iio@vger.kernel.org>; Fri, 23 Apr 2021 00:32:53 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id w6so18991869pfc.8
-        for <linux-iio@vger.kernel.org>; Fri, 23 Apr 2021 00:32:53 -0700 (PDT)
+        with ESMTP id S229456AbhDWHfM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Apr 2021 03:35:12 -0400
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8BB9C061574
+        for <linux-iio@vger.kernel.org>; Fri, 23 Apr 2021 00:34:35 -0700 (PDT)
+Received: by mail-pj1-x1034.google.com with SMTP id em21-20020a17090b0155b029014e204a81e6so4049827pjb.1
+        for <linux-iio@vger.kernel.org>; Fri, 23 Apr 2021 00:34:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=I7o/J49XnttM3C7JtSbDdwuykDnVIXLGSUqWKPIFokg=;
-        b=QajwIcWvDKTo6VUgurUTGs5oRJsxFhcBH3KDDxVMspyXqAlo4SXaJ8nDoauD9ybuc+
-         OlxK4Nn5TDTGWQJvDkQRmrIFZVR4NfdGaw6ffKv8NYtxZxaBKiHPyDKonQ5z/JhZZc1m
-         5UdbPvF2mi4ZkS+NY1JM528P/tMwB5BQL1zd4AmrLBN/j69Mz49cm+2fKgqXZpIDkbKN
-         XWb9A8vT9zHtXiNEv4weV9IX8eadSc3ju1Vgdq+djeS0aZPvIuyqt6ECeZI/gjiOPLdg
-         s/5yY792CoxYsEVRZVjksQwtVIQPPreBFgVsS4BKKO1YqDbJsuD/fYH1nPRex52fnH7Y
-         S0Aw==
+        bh=7iSe0RyMcfjwv5x8H5oUC9pebXswZgLBzJX5WsyGcNs=;
+        b=WICdqb336n921vEjCLh+bM0dSPl5uFe1R+yScHxkTgNLbQy0jOiy5ub2vAZiiebdHX
+         GJgBq+4A4UhbhPSsbKyDoFG8E0IoNgYWRn1c54It+Rs9PQkkVIU2hdze1sO8uJA2nbII
+         1E36QhQswvFoS9qeRAYF5FasB2qKRvMW/cU7wpOEuhovlTevx8kvvT7eVK+REab4YOpH
+         PejO2NC8IWc/E0Juzgw7OlAhTU65L6+NtBTdss/0F31EWKX2baBrUsj4DQvzuV+tuZMq
+         /HkmjEzpRK6kdMLGlhkA6TkdJYZR7AFybAqEb9TkHRGXTWdQG/FYZsP0Kj5ynTLgwKp6
+         NGPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=I7o/J49XnttM3C7JtSbDdwuykDnVIXLGSUqWKPIFokg=;
-        b=VsGMWVn2yGY2wwqJlZFOpoyNXMRWFO2HsFhe3BXGifFPS1zEdu0rXIEdMuNDLwQM/3
-         XNlFvIAbQ1stEHrjAX5VORj+3Sy49wXxac09klYsqLzPmfFXRDiAbLDXoJi+p4bu7ta6
-         iGa764OWqEJ9uYuHryfVs21vcq9FlbLhMVMz8r5JcEbYyWEvtHoUre6gqafm6QJ9fN0Z
-         fHo9rnJ0JgQUsJsX+oceujLRdEwUUJpYTZfLnaVvU4lSoIsTEvA/z3l1TrQ6cqGtC/qU
-         pfbFZySzt5rBZiD7cqR1lO68OCIKqGEzKBh/7+z4Kk1zLWKx7nZVknU6dl+KHTBCfGgG
-         LblQ==
-X-Gm-Message-State: AOAM531qKXGp0cbb31fXRrboX5tE62JXpiFy2lZqYliTW+tofA+599r/
-        yTHsm/DLqHEMLgWLZxeAgkUvHrcoVm45gdOXXux/cSrJWZ5IAT7P
-X-Google-Smtp-Source: ABdhPJysEisGMBX8H6L7SpY4hAnhK8tduVQ/cVAxPLtDku/gmcRQeEf2NjQoKgzWyyrTApRcTudQVX1FCxMbTYlr9CY=
-X-Received: by 2002:a05:6a00:22d6:b029:246:6209:b483 with SMTP id
- f22-20020a056a0022d6b02902466209b483mr2759426pfj.58.1619163173443; Fri, 23
- Apr 2021 00:32:53 -0700 (PDT)
+        bh=7iSe0RyMcfjwv5x8H5oUC9pebXswZgLBzJX5WsyGcNs=;
+        b=Hpa/kGvSXmC4ObLlQRjPdFLXplSIW944/Nl3QrsQBQXpR08jDW0H5K20xr3Rmk/k6c
+         tLrg7DC1QrhyxlnK58/uTAvaJ/9qKaKatJ8jalPimYHSXU67/BeaJQyfTSuXedrnlW4V
+         v1dORG9jmZqm3iOsxDkf2a1VQZgv/zfNqvBauJFa3ERJjhlr/6chXq1kmr5ejjatAfuB
+         guj/MfnHZOcDPoYZMuOfM4TaL7IJRmNkRM8u26yCaW5sYsrIU1cWv1RuvEiUHFljV781
+         dEZEc8JifvCBA0XhcaezHxyOtSGND6XHCPjpquLXmfhsM9cX/kmDMF0JZKJWzUq/ve6z
+         zDTQ==
+X-Gm-Message-State: AOAM530/TwY31ubaJPCqOqB0yIrDIikd6KQY9jL3j7EROchGGnYTnoPt
+        yiYeCvHtwEJ2/+VOVUP7afq+UdhRINh7kPhkhbk=
+X-Google-Smtp-Source: ABdhPJxvdZW/iPzPihJLFBSQ82D7ogSSmLTzRel0lXBmh15hN8IbL5TaYZNOc2knbVDhUNJwdhEfCK8oBAG49T5QLrU=
+X-Received: by 2002:a17:90a:d352:: with SMTP id i18mr4489645pjx.19.1619163275306;
+ Fri, 23 Apr 2021 00:34:35 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210422101911.135630-1-nuno.sa@analog.com> <20210422101911.135630-7-nuno.sa@analog.com>
-In-Reply-To: <20210422101911.135630-7-nuno.sa@analog.com>
+References: <20210422101911.135630-1-nuno.sa@analog.com> <20210422101911.135630-8-nuno.sa@analog.com>
+In-Reply-To: <20210422101911.135630-8-nuno.sa@analog.com>
 From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Fri, 23 Apr 2021 10:32:42 +0300
-Message-ID: <CA+U=Dsphpu97Et6sgjd+9TUEHTw7xq44M5yL=CFtuCEU9QLxQQ@mail.gmail.com>
-Subject: Re: [PATCH v2 6/9] iio: adis_buffer: update device page after
- changing it
+Date:   Fri, 23 Apr 2021 10:34:24 +0300
+Message-ID: <CA+U=DsqOFY1JbffqOjhcqFQzjeC3sEQc=gHF-AgZwuyfxsandA@mail.gmail.com>
+Subject: Re: [PATCH v2 7/9] iio: adis: add burst_max_speed_hz variable
 To:     Nuno Sa <nuno.sa@analog.com>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
@@ -64,54 +62,60 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Thu, Apr 22, 2021 at 1:17 PM Nuno Sa <nuno.sa@analog.com> wrote:
 >
-> With commit 58ca347b9b24 ("iio: adis_buffer: don't push data to buffers on
-> failure"), we return if 'spi_sync()' fails which would leave
-> 'adis->current_page' in an incoherent state. Hence, set this variable
-> right after we change the device page.
+> Typically, in burst mode, the device cannot operate at it's full spi
+> speed. Hence, the spi transfers for burst mode have to take this into
+> account. With this change we avoid a potential race with the spi core as
+> drivers were 'hacking' the device 'max_speed_hz' directly in the
+> trigger handler.
 >
+
+Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
+
+
 > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 > ---
->  drivers/iio/imu/adis_buffer.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>  drivers/iio/imu/adis_buffer.c | 4 ++++
+>  include/linux/iio/imu/adis.h  | 2 ++
+>  2 files changed, 6 insertions(+)
 >
 > diff --git a/drivers/iio/imu/adis_buffer.c b/drivers/iio/imu/adis_buffer.c
-> index a29d22f657ce..dda367071980 100644
+> index dda367071980..82239da2f441 100644
 > --- a/drivers/iio/imu/adis_buffer.c
 > +++ b/drivers/iio/imu/adis_buffer.c
-> @@ -140,6 +140,8 @@ static irqreturn_t adis_trigger_handler(int irq, void *p)
->                                 mutex_unlock(&adis->state_lock);
->                                 goto irq_done;
->                         }
-> +
-> +                       adis->current_page = 0;
->                 }
->         }
+> @@ -51,9 +51,13 @@ static int adis_update_scan_mode_burst(struct iio_dev *indio_dev,
+>         adis->xfer[0].tx_buf = tx;
+>         adis->xfer[0].bits_per_word = 8;
+>         adis->xfer[0].len = 2;
+> +       if (adis->data->burst_max_speed_hz)
+> +               adis->xfer[0].speed_hz = adis->data->burst_max_speed_hz;
+>         adis->xfer[1].rx_buf = adis->buffer;
+>         adis->xfer[1].bits_per_word = 8;
+>         adis->xfer[1].len = burst_length;
+> +       if (adis->data->burst_max_speed_hz)
+> +               adis->xfer[1].speed_hz = adis->data->burst_max_speed_hz;
 >
-> @@ -151,10 +153,8 @@ static irqreturn_t adis_trigger_handler(int irq, void *p)
->                 goto irq_done;
->         }
+>         spi_message_init(&adis->msg);
+>         spi_message_add_tail(&adis->xfer[0], &adis->msg);
+> diff --git a/include/linux/iio/imu/adis.h b/include/linux/iio/imu/adis.h
+> index f9b728d490b1..cf49997d5903 100644
+> --- a/include/linux/iio/imu/adis.h
+> +++ b/include/linux/iio/imu/adis.h
+> @@ -55,6 +55,7 @@ struct adis_timeout {
+>   *                     this should be the minimum size supported by the device.
+>   * @burst_max_len:     Holds the maximum burst size when the device supports
+>   *                     more than one burst mode with different sizes
+> + * @burst_max_speed_hz:        Maximum spi speed that can be used in burst mode
+>   */
+>  struct adis_data {
+>         unsigned int read_delay;
+> @@ -83,6 +84,7 @@ struct adis_data {
+>         unsigned int burst_reg_cmd;
+>         unsigned int burst_len;
+>         unsigned int burst_max_len;
+> +       unsigned int burst_max_speed_hz;
+>  };
 >
-> -       if (adis->data->has_paging) {
-> -               adis->current_page = 0;
-> +       if (adis->data->has_paging)
->                 mutex_unlock(&adis->state_lock);
-> -       }
-
-So, continuing from my comment here [1]:
-   https://patchwork.kernel.org/project/linux-iio/patch/20210422101911.135630-6-nuno.sa@analog.com/
-
-This can become more elegant, because this block:
-       if (adis->data->has_paging)
-                mutex_unlock(&adis->state_lock);
-
-can be moved right after "ret = spi_sync(adis->spi, &adis->msg);"
-
-And then the duplication added in patch [1] can be cleaned up.
-So maybe a re-ordering of patches could simplify/remove the added duplication.
-
->
->         iio_push_to_buffers_with_timestamp(indio_dev, adis->buffer,
->                 pf->timestamp);
+>  /**
 > --
 > 2.31.1
 >

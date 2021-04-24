@@ -2,148 +2,102 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8D2536A10C
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Apr 2021 14:00:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5E9536A112
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Apr 2021 14:13:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233833AbhDXMAi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 24 Apr 2021 08:00:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48046 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231203AbhDXMAc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 24 Apr 2021 08:00:32 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9A66B61422;
-        Sat, 24 Apr 2021 11:59:52 +0000 (UTC)
-Date:   Sat, 24 Apr 2021 13:00:25 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Lucas Stankus <lucas.p.stankus@gmail.com>,
-        Rob Herring <robh@kernel.org>, Michael.Hennerich@analog.com,
-        gregkh@linuxfoundation.org, linux-iio@vger.kernel.org,
-        linux-staging@lists.linux.dev,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: staging: iio: cdc: ad7746: add
- binding documentation for AD7746
-Message-ID: <20210424130025.35b5cdcb@jic23-huawei>
-In-Reply-To: <8b2c672a-f260-fe19-5baf-adf6ce6fabf2@metafoo.de>
-References: <cover.1618785336.git.lucas.p.stankus@gmail.com>
-        <54a9eaeaa42d47037b2a07bd933e6dfade745d02.1618785336.git.lucas.p.stankus@gmail.com>
-        <20210420193746.GA3632576@robh.at.kernel.org>
-        <CACKVXZDtUync4HnScJnMEj=Gh7bukUUpnPrtE0w1PPgCZOHORg@mail.gmail.com>
-        <8b2c672a-f260-fe19-5baf-adf6ce6fabf2@metafoo.de>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S232148AbhDXMOW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 24 Apr 2021 08:14:22 -0400
+Received: from smtpout1.mo3004.mail-out.ovh.net ([79.137.123.219]:39635 "EHLO
+        smtpout1.mo3004.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231836AbhDXMOU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 24 Apr 2021 08:14:20 -0400
+Received: from pro2.mail.ovh.net (unknown [10.109.143.176])
+        by mo3004.mail-out.ovh.net (Postfix) with ESMTPS id 99D6723D114;
+        Sat, 24 Apr 2021 12:13:39 +0000 (UTC)
+Received: from localhost (89.70.221.198) by DAG2EX1.emp2.local (172.16.2.11)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Sat, 24 Apr
+ 2021 14:13:39 +0200
+Date:   Sat, 24 Apr 2021 14:09:36 +0200
+From:   Tomasz Duszynski <tomasz.duszynski@octakon.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     Tomasz Duszynski <tomasz.duszynski@octakon.com>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <lars@metafoo.de>, <ardeleanalex@gmail.com>
+Subject: Re: [PATCH v2] iio: core: fix ioctl handlers removal
+Message-ID: <YIQKgLtdUlSHsJXu@arch>
+References: <20210423080244.2790-1-tomasz.duszynski@octakon.com>
+ <20210424115250.14d21a71@jic23-huawei>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+In-Reply-To: <20210424115250.14d21a71@jic23-huawei>
+X-Originating-IP: [89.70.221.198]
+X-ClientProxiedBy: CAS2.emp2.local (172.16.1.2) To DAG2EX1.emp2.local
+ (172.16.2.11)
+X-Ovh-Tracer-Id: 825003158838008914
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrvddugedgheduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpeffhffvuffkfhggtggujghisehttdortddttdejnecuhfhrohhmpefvohhmrghsiicuffhushiihihnshhkihcuoehtohhmrghsiidrughushiihihnshhkihesohgtthgrkhhonhdrtghomheqnecuggftrfgrthhtvghrnhepkeejgfevledtgfdtfeettdektedvieeiveduueetudekieetiedujedtleevleelnecukfhppedtrddtrddtrddtpdekledrjedtrddvvddurdduleeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhrohdvrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepthhomhgrshiirdguuhhsiiihnhhskhhisehotghtrghkohhnrdgtohhmpdhrtghpthhtoheprghruggvlhgvrghnrghlvgigsehgmhgrihhlrdgtohhm
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 22 Apr 2021 22:56:38 +0200
-Lars-Peter Clausen <lars@metafoo.de> wrote:
+On Sat, Apr 24, 2021 at 11:52:50AM +0100, Jonathan Cameron wrote:
+> On Fri, 23 Apr 2021 10:02:44 +0200
+> Tomasz Duszynski <tomasz.duszynski@octakon.com> wrote:
+>
+> > Currently ioctl handlers are removed twice. For the first time during
+> > iio_device_unregister() then later on inside
+> > iio_device_unregister_eventset() and iio_buffers_free_sysfs_and_mask().
+> > Double free leads to kernel panic.
+> >
+> > Fix this by not touching ioctl handlers list directly but rather
+> > letting code responsible for registration call the matching cleanup
+> > routine itself.
+> >
+> > Fixes: 8dedcc3eee3ac ("iio: core: centralize ioctl() calls to the main chardev")
+> > Signed-off-by: Tomasz Duszynski <tomasz.duszynski@octakon.com>
+> > Acked-by: Alexandru Ardelean <ardeleanalex@gmail.com>
+>
+> There are a bunch of unused local variables as a result of this change
+> (build warnings on my standard W=1 C=1 test).  I've dropped those as well and
+> applied this to the fixes-togreg branch of iio.git.
+>
 
-> On 4/22/21 9:16 PM, Lucas Stankus wrote:
-> > On Tue, Apr 20, 2021 at 4:37 PM Rob Herring <robh@kernel.org> wrote:  
-> >> On Sun, Apr 18, 2021 at 07:49:51PM -0300, Lucas Stankus wrote:  
-> >>> Add device tree binding documentation for AD7746 cdc in YAML format.
-> >>>
-> >>> Signed-off-by: Lucas Stankus <lucas.p.stankus@gmail.com>
-> >>> ---
-> >>>
-> >>> A minor note about the adi,excitation-vdd-permille property. Jonathan
-> >>> suggested the name to be adi,excitation-vdd-milicent, but I was unsure of
-> >>> the milicent naming. With a quick search I found out that the common way to
-> >>> call a thousandth is 'per mille'[1], but I didn't find any use of it in the
-> >>> kernel documentation. Any thoughts about it?  
-> >> Seems okay to me.
-> >>  
-> >>> [1] https://en.wikipedia.org/wiki/Per_mille
-> >>>
-> >>>   .../bindings/iio/cdc/adi,ad7746.yaml          | 73 +++++++++++++++++++
-> >>>   1 file changed, 73 insertions(+)
-> >>>   create mode 100644 Documentation/devicetree/bindings/iio/cdc/adi,ad7746.yaml
-> >>>
-> >>> diff --git a/Documentation/devicetree/bindings/iio/cdc/adi,ad7746.yaml b/Documentation/devicetree/bindings/iio/cdc/adi,ad7746.yaml
-> >>> new file mode 100644
-> >>> index 000000000000..a2a7eee674ba
-> >>> --- /dev/null
-> >>> +++ b/Documentation/devicetree/bindings/iio/cdc/adi,ad7746.yaml
-> >>> @@ -0,0 +1,73 @@
-> >>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> >>> +%YAML 1.2
-> >>> +---
-> >>> +$id: http://devicetree.org/schemas/iio/cdc/adi,ad7746.yaml#
-> >>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> >>> +
-> >>> +title: AD7746 24-Bit Capacitance-to-Digital Converter with Temperature Sensor
-> >>> +
-> >>> +maintainers:
-> >>> +  - Michael Hennerich <michael.hennerich@analog.com>
-> >>> +
-> >>> +description: |
-> >>> +  AD7746 24-Bit Capacitance-to-Digital Converter with Temperature Sensor
-> >>> +
-> >>> +  Specifications about the part can be found at:
-> >>> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7291.pdf
-> >>> +
-> >>> +properties:
-> >>> +  compatible:
-> >>> +    enum:
-> >>> +      - adi,ad7745
-> >>> +      - adi,ad7746
-> >>> +      - adi,ad7747
-> >>> +
-> >>> +  reg:
-> >>> +    maxItems: 1
-> >>> +
-> >>> +  adi,excitation-vdd-permille:
-> >>> +    description: |
-> >>> +      Set VDD per mille to be used as the excitation voltage.
-> >>> +    $ref: /schemas/types.yaml#/definitions/uint32
-> >>> +    enum: [125, 250, 375, 500]
-> >>> +
-> >>> +  adi,exca-output-en:
-> >>> +    description: Enables the EXCA pin as the excitation output.
-> >>> +    type: boolean
-> >>> +
-> >>> +  adi,exca-output-invert:
-> >>> +    description: Inverts the excitation output in the EXCA pin.
-> >>> +    type: boolean  
-> >> 'invert' assumes I know what the non-inverted signal is. Sometimes that
-> >> makes sense, but if you can define in terms of the inverse that would be
-> >> better. For example, for a normally active low signal, name the property
-> >> 'foo-active-high'.  
-> > Thanks for the feedback!
-> >  From reading the data sheet I couldn't quite grasp what would be an inverted
-> > excitation output, but I don't have a lot of experience with CDCs. Maybe someone
-> > with more experience could help out with a better suggestion.  
-> 
-> This is the only thing I could find 
-> https://www.analog.com/media/en/technical-documentation/application-notes/AN-1585.pdf.
-> 
-> The datasheet also says that only at most one of them should be 
-> inverted. So maybe only a single property which selects which of the two 
-> is inverted.
-> 
-> 
+Right, thanks for catching this.
 
-Nice. I was wondering what on earth that was for as well.  That note
-makes it a little clearer!
-
-I'd keep them as separate properties because there 'might' be another
-circuit where inverting them both makes sense (though I have no idea
-what it would look like). A reference to that note though to explain
-why you might do this would be great to have the dt property description.
-
-If anyone ever actually does do this, we'll need to add a description
-of the analog front end somehow to actually support reporting in
-meaningful units.
-
-Let's not tackle that problem today though and it might be we'd actually
-just use a generic AFE IIO consumer to do the scaling rather than needing
-anything custom.
-
-Jonathan
+> We are a bit unfortunate on timing for this as I won't send a pull request
+> for fixes until towards the end of the merge window.  I've marked it for stable
+> though so it should filter back fairly quickly so kernels people actually
+> use.
+>
+> Thanks,
+>
+> Jonathan
+>
+> > ---
+> > v2:
+> > * add fixes tag and ack
+> >
+> >  drivers/iio/industrialio-core.c | 3 ---
+> >  1 file changed, 3 deletions(-)
+> >
+> > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> > index d92c58a94fe4..98944cfc7331 100644
+> > --- a/drivers/iio/industrialio-core.c
+> > +++ b/drivers/iio/industrialio-core.c
+> > @@ -1939,9 +1939,6 @@ void iio_device_unregister(struct iio_dev *indio_dev)
+> >
+> >  	indio_dev->info = NULL;
+> >
+> > -	list_for_each_entry_safe(h, t, &iio_dev_opaque->ioctl_handlers, entry)
+> > -		list_del(&h->entry);
+> > -
+> >  	iio_device_wakeup_eventset(indio_dev);
+> >  	iio_buffer_wakeup_poll(indio_dev);
+> >
+> > --
+> > 2.31.1
+> >
+>

@@ -2,164 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2B8A36A188
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Apr 2021 16:13:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2536D36A18D
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Apr 2021 16:14:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231892AbhDXONJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 24 Apr 2021 10:13:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55964 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231836AbhDXONH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 24 Apr 2021 10:13:07 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 28A60613B1;
-        Sat, 24 Apr 2021 14:12:15 +0000 (UTC)
-Date:   Sat, 24 Apr 2021 15:12:56 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
+        id S232250AbhDXOPR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 24 Apr 2021 10:15:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40490 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232004AbhDXOPR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 24 Apr 2021 10:15:17 -0400
+Received: from haggis.mythic-beasts.com (haggis.mythic-beasts.com [IPv6:2a00:1098:0:86:1000:0:2:1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4854C061574
+        for <linux-iio@vger.kernel.org>; Sat, 24 Apr 2021 07:14:38 -0700 (PDT)
+Received: from [81.101.6.87] (port=48670 helo=jic23-huawei)
+        by haggis.mythic-beasts.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <jic23@jic23.retrosnub.co.uk>)
+        id 1laJ3M-0004s3-Of; Sat, 24 Apr 2021 15:14:37 +0100
+Date:   Sat, 24 Apr 2021 15:15:14 +0100
+From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
 To:     Yicong Yang <yangyicong@hisilicon.com>
 Cc:     <linux-iio@vger.kernel.org>, <lars@metafoo.de>,
         <Michael.Hennerich@analog.com>, <pmeerw@pmeerw.net>,
         <prime.zeng@huawei.com>, <tiantao6@hisilicon.com>
-Subject: Re: [PATCH 7/7] iio: inkern: simplify some devm functions
-Message-ID: <20210424151256.020b24a6@jic23-huawei>
-In-Reply-To: <1617881896-3164-8-git-send-email-yangyicong@hisilicon.com>
+Subject: Re: [PATCH 0/7] Simplify codes with devm_add_action_or_reset
+Message-ID: <20210424151455.0de017f4@jic23-huawei>
+In-Reply-To: <20210411152120.0c806bba@jic23-huawei>
 References: <1617881896-3164-1-git-send-email-yangyicong@hisilicon.com>
-        <1617881896-3164-8-git-send-email-yangyicong@hisilicon.com>
+        <20210411152120.0c806bba@jic23-huawei>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-BlackCat-Spam-Score: 4
+X-Spam-Status: No, score=0.4
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 8 Apr 2021 19:38:16 +0800
-Yicong Yang <yangyicong@hisilicon.com> wrote:
+On Sun, 11 Apr 2021 15:21:20 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> Use devm_add_action_or_reset() instead of devres_alloc() and
-> devres_add(), which works the same. This will simplify the
-> code. There is no functional changes.
+> On Thu, 8 Apr 2021 19:38:09 +0800
+> Yicong Yang <yangyicong@hisilicon.com> wrote:
 > 
-> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+> > Some devm variants are implemented with devres_alloc() and devres_add()
+> > manually to only manage a single pointer. This can be simplified with
+> > devm_add_action_or_reset() which works the same. Simplify these functions.
+> > 
+> > Yicong Yang (7):
+> >   iio: adc: adi-axi-adc: simplify devm_adi_axi_adc_conv_register
+> >   iio: buffer-dmaengine: simplify __devm_iio_dmaengine_buffer_free
+> >   iio: hw_consumer: simplify devm_iio_hw_consumer_alloc
+> >   iio: triggered-buffer: simplify devm_iio_triggered_buffer_setup_ext
+> >   iio: core: simplify some devm functions
+> >   iio: trigger: simplify __devm_iio_trigger_register
+> >   iio: inkern: simplify some devm functions  
+> 
+> Nice set.  Note no rush for a v2 as IIO is effectively closed for the
+> coming merge window.  Hence these won't hit linux-next now until after
+> the merge window closes.
 
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to play with it.
+On second thoughts was just easier for me to make the minor tweaks and
+apply so I did that.
+
+All applied to the togreg branch of iio.git and pushed out as testing
+for autobuilders etc to poke at.
+
+Thanks,
 
 Jonathan
 
-> ---
->  drivers/iio/inkern.c | 61 ++++++++++++++++++++--------------------------------
->  1 file changed, 23 insertions(+), 38 deletions(-)
 > 
-> diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-> index db77a2d..5de35cc 100644
-> --- a/drivers/iio/inkern.c
-> +++ b/drivers/iio/inkern.c
-> @@ -359,30 +359,24 @@ void iio_channel_release(struct iio_channel *channel)
->  }
->  EXPORT_SYMBOL_GPL(iio_channel_release);
->  
-> -static void devm_iio_channel_free(struct device *dev, void *res)
-> +static void devm_iio_channel_free(void *iio_channel)
->  {
-> -	struct iio_channel *channel = *(struct iio_channel **)res;
-> -
-> -	iio_channel_release(channel);
-> +	iio_channel_release(iio_channel);
->  }
->  
->  struct iio_channel *devm_iio_channel_get(struct device *dev,
->  					 const char *channel_name)
->  {
-> -	struct iio_channel **ptr, *channel;
-> -
-> -	ptr = devres_alloc(devm_iio_channel_free, sizeof(*ptr), GFP_KERNEL);
-> -	if (!ptr)
-> -		return ERR_PTR(-ENOMEM);
-> +	struct iio_channel *channel;
-> +	int ret;
->  
->  	channel = iio_channel_get(dev, channel_name);
-> -	if (IS_ERR(channel)) {
-> -		devres_free(ptr);
-> +	if (IS_ERR(channel))
->  		return channel;
-> -	}
->  
-> -	*ptr = channel;
-> -	devres_add(dev, ptr);
-> +	ret = devm_add_action_or_reset(dev, devm_iio_channel_free, channel);
-> +	if (ret)
-> +		return ERR_PTR(ret);
->  
->  	return channel;
->  }
-> @@ -392,20 +386,16 @@ struct iio_channel *devm_of_iio_channel_get_by_name(struct device *dev,
->  						    struct device_node *np,
->  						    const char *channel_name)
->  {
-> -	struct iio_channel **ptr, *channel;
-> -
-> -	ptr = devres_alloc(devm_iio_channel_free, sizeof(*ptr), GFP_KERNEL);
-> -	if (!ptr)
-> -		return ERR_PTR(-ENOMEM);
-> +	struct iio_channel *channel;
-> +	int ret;
->  
->  	channel = of_iio_channel_get_by_name(np, channel_name);
-> -	if (IS_ERR(channel)) {
-> -		devres_free(ptr);
-> +	if (IS_ERR(channel))
->  		return channel;
-> -	}
->  
-> -	*ptr = channel;
-> -	devres_add(dev, ptr);
-> +	ret = devm_add_action_or_reset(dev, devm_iio_channel_free, channel);
-> +	if (ret)
-> +		return ERR_PTR(ret);
->  
->  	return channel;
->  }
-> @@ -496,29 +486,24 @@ void iio_channel_release_all(struct iio_channel *channels)
->  }
->  EXPORT_SYMBOL_GPL(iio_channel_release_all);
->  
-> -static void devm_iio_channel_free_all(struct device *dev, void *res)
-> +static void devm_iio_channel_free_all(void *iio_channels)
->  {
-> -	struct iio_channel *channels = *(struct iio_channel **)res;
-> -
-> -	iio_channel_release_all(channels);
-> +	iio_channel_release_all(iio_channels);
->  }
->  
->  struct iio_channel *devm_iio_channel_get_all(struct device *dev)
->  {
-> -	struct iio_channel **ptr, *channels;
-> -
-> -	ptr = devres_alloc(devm_iio_channel_free_all, sizeof(*ptr), GFP_KERNEL);
-> -	if (!ptr)
-> -		return ERR_PTR(-ENOMEM);
-> +	struct iio_channel *channels;
-> +	int ret;
->  
->  	channels = iio_channel_get_all(dev);
-> -	if (IS_ERR(channels)) {
-> -		devres_free(ptr);
-> +	if (IS_ERR(channels))
->  		return channels;
-> -	}
->  
-> -	*ptr = channels;
-> -	devres_add(dev, ptr);
-> +	ret = devm_add_action_or_reset(dev, devm_iio_channel_free_all,
-> +				       channels);
-> +	if (ret)
-> +		return ERR_PTR(ret);
->  
->  	return channels;
->  }
+> Thanks,
+> 
+> Jonathan
+> 
+> > 
+> >  drivers/iio/adc/adi-axi-adc.c                      | 22 ++++----
+> >  drivers/iio/buffer/industrialio-buffer-dmaengine.c | 22 ++++----
+> >  drivers/iio/buffer/industrialio-hw-consumer.c      | 25 ++++-----
+> >  drivers/iio/buffer/industrialio-triggered-buffer.c | 19 ++-----
+> >  drivers/iio/industrialio-core.c                    | 43 ++++++---------
+> >  drivers/iio/industrialio-trigger.c                 | 18 ++-----
+> >  drivers/iio/inkern.c                               | 61 ++++++++--------------
+> >  7 files changed, 78 insertions(+), 132 deletions(-)
+> >   
+> 
 

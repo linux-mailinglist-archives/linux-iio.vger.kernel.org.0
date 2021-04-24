@@ -2,88 +2,183 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AA07369EEB
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Apr 2021 07:04:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 370B1369FED
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Apr 2021 09:07:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230309AbhDXE6w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 24 Apr 2021 00:58:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33858 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229850AbhDXE6w (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 24 Apr 2021 00:58:52 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BB2FC061574;
-        Fri, 23 Apr 2021 21:58:13 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id y4so40318760lfl.10;
-        Fri, 23 Apr 2021 21:58:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=a/RO6+FvE3kXQ+8npkkEY+xEAPWUQZ6kpW2OWxzDF7w=;
-        b=T8Br2P6B9akN5tV8qbEolTp6pdmIa/h7nfHSMpxrK5pc3lUU8tsi1bzmtT+6EDFSO7
-         oQyq1ZxWV0ohcbSUP8Zn6c6Hy9dbJj3Nr/+Ph01TcTyvFBsMZ2KYfRcEepijRFkUmZ6r
-         //Owc1euvC0OfC/0cjl4zCbJSmqQjEI9RI+b/5b6gJ67MM/knKqZDL+rlSLqCYZljsUz
-         3m4SET1CHF9OUqs0/7kKjSnAiebuojsLpHX1w8R2Af+ErjLdWfHQx8MzpBzbXQqc5hF3
-         FGzfuhPrxalZHwVveIjfroOnRdFtcLx9M8fWS9yr/EEbEo30ONptDpcsy/FaXqGnn+h9
-         92xg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=a/RO6+FvE3kXQ+8npkkEY+xEAPWUQZ6kpW2OWxzDF7w=;
-        b=Av/v9ZIUuXhCyhTz+e8s5TjGaQ0CEIOOtw+FMWr4qhNUf8Vr+dvNSXMUHD8wjMKtfd
-         vICo16XWW/yD6SIX2VFo42tQJgUskw7XppNJinMEgoKkZdaYs+/TR4LErY/oLG+/ll2I
-         WE7swfkvuLAGr9S7rQo0D2FYLTNvUfCcVtWqMNJdKgnt/lP2XV450+MJBcRPUIXOD7k3
-         K793+TKlKw0Tk/T+ZENeBmAocG4kezdmLcEDQ87/yM+yA8YQ/x1l/oz7IOzLe+CgeGgd
-         ZSkNsjSxDO7rnw/bw29nFre1BFzI3FfrtsZdvJkC2AkiFRNMcwwbGZiSieg7TNgKmWX3
-         BAog==
-X-Gm-Message-State: AOAM530vc3SGknqZ9ZHxIFMl2XJMJqVvBD/pN+cs+kBNiup+TDR/dE5S
-        7AZ5kOXLNXUgMuIU3kcmd58sezdoihM=
-X-Google-Smtp-Source: ABdhPJwMZcy+121C4CMY16Kpzu9tInro2H9NFAapjK8Hti8rdjBpMxbTCIvr1N1bMEYE6Omlv/ZpRQ==
-X-Received: by 2002:a05:6512:110f:: with SMTP id l15mr4981027lfg.258.1619240289347;
-        Fri, 23 Apr 2021 21:58:09 -0700 (PDT)
-Received: from [192.168.2.145] (109-252-193-103.dynamic.spd-mgts.ru. [109.252.193.103])
-        by smtp.googlemail.com with ESMTPSA id x3sm740012ljm.90.2021.04.23.21.58.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 23 Apr 2021 21:58:08 -0700 (PDT)
-Subject: Re: [PATCH v3] iio: gyro: mpu3050: Fix reported temperature value
-To:     Jean-Baptiste Maneyrol <JManeyrol@invensense.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Maxim Schwalm <maxim.schwalm@gmail.com>,
-        Svyatoslav Ryhel <clamor95@gmail.com>
-Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20210423020959.5023-1-digetx@gmail.com>
- <BL0PR12MB5011563BCD5E11683D51F34EC4459@BL0PR12MB5011.namprd12.prod.outlook.com>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <edd85a7f-4c1f-9d2f-0425-93a6e45f13bb@gmail.com>
-Date:   Sat, 24 Apr 2021 07:58:08 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+        id S230471AbhDXHIa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 24 Apr 2021 03:08:30 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32]:46072 "EHLO
+        mx0a-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229682AbhDXHI3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 24 Apr 2021 03:08:29 -0400
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 13O77lGL023962;
+        Sat, 24 Apr 2021 07:07:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ content-transfer-encoding : in-reply-to; s=corp-2020-01-29;
+ bh=wOmJSzOdmq3CPYG3OnPjUMtUuMELhMK6xMPL1sWb2/w=;
+ b=L3mJQ1Cd97shNhGGcZ0Iw/N6tb5Tq0FHnltUbnpB/6JsBeF2ELGWPE2w6rZhYQMMxflr
+ 05D9ho/Oy2X9K9tYAzNul/JOIkNu2h7Q/rEWXBgqCdViA5Cqj8whcTda8zXAYVaI6Wnk
+ PJEdoWudYgwPM/YwJh2tiWehqdCVWHEGO2MRv3IH0nn0gqV4kPlhtTN6pbQvgEOyPY8r
+ sp5qLkUCRoqKhSRC1XHTiaPKiHZcq6vqZdTgDtBVQC3UOYvp6oK2c2AEsThhW3pHwxT4
+ /r8nWxlg3x0WvV8dU0LlTRFcpoNIQzl7RhTRngvsnep9eE4drOPcqoPVP4xp21J6457i Tg== 
+Received: from oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by mx0b-00069f02.pphosted.com with ESMTP id 384bvu013y-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 24 Apr 2021 07:07:47 +0000
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [127.0.0.1])
+        by pps.podrdrct (8.16.0.36/8.16.0.36) with SMTP id 13O77kmQ065752;
+        Sat, 24 Apr 2021 07:07:46 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by aserp3030.oracle.com with ESMTP id 3849c9yn21-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 24 Apr 2021 07:07:46 +0000
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 13O77jgt065729;
+        Sat, 24 Apr 2021 07:07:45 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3030.oracle.com with ESMTP id 3849c9yn1t-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 24 Apr 2021 07:07:45 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 13O77ieU015982;
+        Sat, 24 Apr 2021 07:07:45 GMT
+Received: from kadam (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sat, 24 Apr 2021 00:07:44 -0700
+Date:   Sat, 24 Apr 2021 10:07:39 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     "k.wrona@samsung.com" <k.wrona@samsung.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [bug report] iio: common: ssp_sensors: Add sensorhub driver
+Message-ID: <20210424070739.GX1959@kadam>
+References: <YIK3FmCXeM6QcUYQ@mwanda>
+ <CAHp75VeXUCjVnfED504SzByJwnWAtjDUsZe6HjQ3TqFLdbFQWw@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <BL0PR12MB5011563BCD5E11683D51F34EC4459@BL0PR12MB5011.namprd12.prod.outlook.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHp75VeXUCjVnfED504SzByJwnWAtjDUsZe6HjQ3TqFLdbFQWw@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-GUID: -Hd8eg2_8P-a-LI_gf1FCWpwYRs7dQI_
+X-Proofpoint-ORIG-GUID: -Hd8eg2_8P-a-LI_gf1FCWpwYRs7dQI_
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-23.04.2021 13:14, Jean-Baptiste Maneyrol пишет:
-> Hello,
+On Sat, Apr 24, 2021 at 01:12:46AM +0300, Andy Shevchenko wrote:
+> On Friday, April 23, 2021, Dan Carpenter <dan.carpenter@oracle.com> wrote:
 > 
-> thanks for this work.
+> > Hello Karol Wrona,
+> >
+> > The patch 50dd64d57eee: "iio: common: ssp_sensors: Add sensorhub
+> > driver" from Jan 28, 2015, leads to the following static checker
+> > warning:
+> >
+> >         drivers/iio/common/ssp_sensors/ssp_spi.c:276 ssp_parse_dataframe()
+> >         warn: check that incremented offset 'idx' is capped
+> >
+> > drivers/iio/common/ssp_sensors/ssp_spi.c
+> >    267  static int ssp_parse_dataframe(struct ssp_data *data, char
+> > *dataframe, int len)
+> >    268  {
+> >    269          int idx, sd;
+> >    270          struct ssp_sensor_data *spd;
+> >    271          struct iio_dev **indio_devs = data->sensor_devs;
+> >    272
+> >    273          for (idx = 0; idx < len;) {
+> >    274                  switch (dataframe[idx++]) {
+> >    275                  case SSP_MSG2AP_INST_BYPASS_DATA:
+> >
+> > There needs to be be a check here:
+> >
+> >                                 if (idx == len)
+> >                                         return -EPROTO;
+> >
+> >    276                          sd = dataframe[idx++];
+> >    277                          if (sd < 0 || sd >= SSP_SENSOR_MAX) {
+> >    278                                  dev_err(SSP_DEV,
+> >    279                                          "Mcu data frame1 error
+> > %d\n", sd);
+> >    280                                  return -EPROTO;
+> >    281                          }
+> >    282
+> >    283                          if (indio_devs[sd]) {
+> >    284                                  spd = iio_priv(indio_devs[sd]);
+> >    285                                  if (spd->process_data)
+> >    286
+> > spd->process_data(indio_devs[sd],
+> >    287
+> > &dataframe[idx],
+> >    288
+> > data->timestamp);
+> >
+> > But then the problem is we don't pass the "len" to ->process_data().  I
+> > looked at trying to fix this but it's a bit involved.
 > 
-> Temperature value should obviously be 16 bits signed, thanks for the fix. By looking at our internal datasheets, I can confirm the values for MPU-30x0 family (div by 280 and 23000 offset LSB).
 > 
-> I'm sorry I don't have access to these more than 1 decade old chips, so I cannot test on my side. But there is no reason it wouldn't be OK.
+> Because infinite loops are bad. That’s why I try convince people to avoid
+> them as much as possible.
 > 
-> Acked-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
 
-Thank you very much for confirming that the equation is correct, very
-appreciate that.
+I'm not sure what you mean at all.  The issue here is that
+->process_data() reads an unknown number of bytes.  We need to pass
+"len - idx" to ->process_data() to detect the overflow and return -EPROTO.
+
+regards,
+dan carpenter
+
+> 
+> >
+> >    289                          } else {
+> >    290                                  dev_err(SSP_DEV, "no client for
+> > frame\n");
+> >    291                          }
+> >    292
+> >    293                          idx += ssp_offset_map[sd];
+> >    294                          break;
+> >    295                  case SSP_MSG2AP_INST_DEBUG_DATA:
+> >    296                          sd = ssp_print_mcu_debug(dataframe, &idx,
+> > len);
+> >                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> > There is another potential read overflow here because we read one more
+> > byte before we check the "len".
+> >
+> >    297                          if (sd) {
+> >    298                                  dev_err(SSP_DEV,
+> >    299                                          "Mcu data frame3 error
+> > %d\n", sd);
+> >    300                                  return sd;
+> >    301                          }
+> >    302                          break;
+> >    303                  case SSP_MSG2AP_INST_LIBRARY_DATA:
+> >    304                          idx += len;
+> >    305                          break;
+> >    306                  case SSP_MSG2AP_INST_BIG_DATA:
+> >    307                          ssp_handle_big_data(data, dataframe, &idx);
+> >    308                          break;
+> >    309                  case SSP_MSG2AP_INST_TIME_SYNC:
+> >    310                          data->time_syncing = true;
+> >    311                          break;
+> >    312                  case SSP_MSG2AP_INST_RESET:
+> >    313                          ssp_queue_ssp_refresh_task(data, 0);
+> >    314                          break;
+> >    315                  }
+> >    316          }
+> >    317
+> >    318          if (data->time_syncing)
+> >    319                  data->timestamp = ktime_get_real_ns();
+> >    320
+> >    321          return 0;
+> >    322  }
+> >
+> > regards,
+> > dan carpenter
+> >
+> 
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko

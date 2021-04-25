@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 817F336A863
-	for <lists+linux-iio@lfdr.de>; Sun, 25 Apr 2021 18:33:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09B6236A865
+	for <lists+linux-iio@lfdr.de>; Sun, 25 Apr 2021 18:33:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230478AbhDYQeP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 25 Apr 2021 12:34:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41542 "EHLO mail.kernel.org"
+        id S230486AbhDYQeQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 25 Apr 2021 12:34:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41586 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230359AbhDYQeO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 25 Apr 2021 12:34:14 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6AAA661284;
-        Sun, 25 Apr 2021 16:33:32 +0000 (UTC)
+        id S230494AbhDYQeQ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 25 Apr 2021 12:34:16 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0474E6134F;
+        Sun, 25 Apr 2021 16:33:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1619368414;
-        bh=cJP2j/et9mnYMsRKtw7VBAxmDc1dBAqRlgNuoVrduyM=;
+        s=k20201202; t=1619368416;
+        bh=1cnTOpwEmhHn/XHo6OAvGUqI9JyOEADFhQakxBUHShA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FT52rWsHvm/G4U5anxtPTLQmHWYG2/o5PxAmckJ8RESMduZWvxotoFthhpQr4Nr/p
-         go3XL35JHIEWMZI7pOA+K1s78nz168ouFLF7SyeWFRxFxnIEKWa91yW9ZCRfZTIb30
-         +q6yf43TTZxWvicMbzmKQHWC9UEqYyvm6eaZhfO/QU7pJSax3N1PzHW99REAlCtBU0
-         e38IvhH81r9PFu+/cGsvlyG0cHF4oXjghueaGm6Wg/d/Z9dhsU+gojnGoD/8LWpTee
-         23MyWBrVIr90KudCbNuNoX89znqEIFmzM/hYYi2qEzb4cgZyjy/lnMrQVGz3yjPMHZ
-         8YR1h+wfbYvTQ==
+        b=pohBCduKfFnb9/C3+RwYv6DDrf/xJSZimrOgwDwN54XnDV5xVKkD8romnodSMQQ8B
+         YYYtOkC5AVBABpuSbKAJne7WR+hVKKKJkzNz/Jq6F4YzTeRKWQ2IeVR8nCN+fh1IXx
+         1ErgrRKsXIm3cd4U4eGhPYjm3onvgTuX1EsJOewquKmtIOpwgYDEGEdTPffC6wCPOt
+         EbSKWCkcOoTCJn8X9KvbtaxiFhqJPj37+BihhJLxxjrIIrQo7fg2qDZuT8XVlcNZF1
+         NZUilz9MjW3Gvldpf2oj56JibTzwJ+kirGazfKKf5cfd+mRxsnNpSVT+HJOMiWd8rC
+         9CEE7hhzHoVwA==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>, devicetree@vger.kernel.org,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Michael Hennerich <michael.hennerich@analog.com>,
-        kernel test robot <lkp@intel.com>
-Subject: [PATCH v4 1/2] iio:adc:ad7476: Handle the different regulators used by various parts.
-Date:   Sun, 25 Apr 2021 17:31:53 +0100
-Message-Id: <20210425163154.73209-2-jic23@kernel.org>
+        Rob Herring <robh@kernel.org>
+Subject: [PATCH v4 2/2] dt-bindings:iio:adc:adi,ad7476: Add missing binding document
+Date:   Sun, 25 Apr 2021 17:31:54 +0100
+Message-Id: <20210425163154.73209-3-jic23@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210425163154.73209-1-jic23@kernel.org>
 References: <20210425163154.73209-1-jic23@kernel.org>
@@ -43,264 +43,204 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Not all of the parts supported by this driver use single supply.
-Hence we add chip_info fields to say what additional supplies exist
-and in the case of vref, ensure that is used for the reference voltage
-rather than vcc.
+This binding covers class of simple SPI ADCs which only provide
+data output - they don't have MOSI pin.
 
-One corner case is the ad7091r which has an internal reference that
-can be over-driven by an external reference connected on the vref pin.
-To handle that force_ext_vref is introduced and set if an optional
-vref regulator is present.
+The only real variation between them is over how many supplies they
+use and which one is used for the reference.
 
-Tested using really simple QEMU model and some fixed regulators.
-
-The devm_add_action_or_reset() callback is changed to take the
-regulator as it's parameter so we can use one callback for all the
-different regulators without having to store pointers to them in
-the iio_priv() structure.
+Michael listed as maintainer for this one as it is his driver and
+falls under the catch all MAINTAINERS entry for ADI devices.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc: Michael Hennerich <michael.hennerich@analog.com>
-Reported-by: kernel test robot <lkp@intel.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
 ---
-v4: Added check that the optional regulator is indeed not there rather
-    than some other error case (deferred for example).
-    That code is a little convoluted but having tried a few options this
-    is the cleanest I could come up with.
+v4: Fixed part number typo in patch title.
 
-drivers/iio/adc/ad7476.c | 118 ++++++++++++++++++++++++++++++++++-----
- 1 file changed, 103 insertions(+), 15 deletions(-)
+.../bindings/iio/adc/adi,ad7476.yaml          | 174 ++++++++++++++++++
+ 1 file changed, 174 insertions(+)
 
-diff --git a/drivers/iio/adc/ad7476.c b/drivers/iio/adc/ad7476.c
-index 9e9ff07cf972..9d5a71df02b0 100644
---- a/drivers/iio/adc/ad7476.c
-+++ b/drivers/iio/adc/ad7476.c
-@@ -32,12 +32,14 @@ struct ad7476_chip_info {
- 	/* channels used when convst gpio is defined */
- 	struct iio_chan_spec		convst_channel[2];
- 	void (*reset)(struct ad7476_state *);
-+	bool				has_vref;
-+	bool				has_vdrive;
- };
- 
- struct ad7476_state {
- 	struct spi_device		*spi;
- 	const struct ad7476_chip_info	*chip_info;
--	struct regulator		*reg;
-+	struct regulator		*ref_reg;
- 	struct gpio_desc		*convst_gpio;
- 	struct spi_transfer		xfer;
- 	struct spi_message		msg;
-@@ -52,13 +54,17 @@ struct ad7476_state {
- };
- 
- enum ad7476_supported_device_ids {
-+	ID_AD7091,
- 	ID_AD7091R,
-+	ID_AD7273,
-+	ID_AD7274,
- 	ID_AD7276,
- 	ID_AD7277,
- 	ID_AD7278,
- 	ID_AD7466,
- 	ID_AD7467,
- 	ID_AD7468,
-+	ID_AD7475,
- 	ID_AD7495,
- 	ID_AD7940,
- 	ID_ADC081S,
-@@ -145,8 +151,8 @@ static int ad7476_read_raw(struct iio_dev *indio_dev,
- 			GENMASK(st->chip_info->channel[0].scan_type.realbits - 1, 0);
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SCALE:
--		if (!st->chip_info->int_vref_uv) {
--			scale_uv = regulator_get_voltage(st->reg);
-+		if (st->ref_reg) {
-+			scale_uv = regulator_get_voltage(st->ref_reg);
- 			if (scale_uv < 0)
- 				return scale_uv;
- 		} else {
-@@ -187,13 +193,32 @@ static int ad7476_read_raw(struct iio_dev *indio_dev,
- 		BIT(IIO_CHAN_INFO_RAW))
- 
- static const struct ad7476_chip_info ad7476_chip_info_tbl[] = {
-+	[ID_AD7091] = {
-+		.channel[0] = AD7091R_CHAN(12),
-+		.channel[1] = IIO_CHAN_SOFT_TIMESTAMP(1),
-+		.convst_channel[0] = AD7091R_CONVST_CHAN(12),
-+		.convst_channel[1] = IIO_CHAN_SOFT_TIMESTAMP(1),
-+		.reset = ad7091_reset,
-+	},
- 	[ID_AD7091R] = {
- 		.channel[0] = AD7091R_CHAN(12),
- 		.channel[1] = IIO_CHAN_SOFT_TIMESTAMP(1),
- 		.convst_channel[0] = AD7091R_CONVST_CHAN(12),
- 		.convst_channel[1] = IIO_CHAN_SOFT_TIMESTAMP(1),
-+		.int_vref_uv = 2500000,
-+		.has_vref = true,
- 		.reset = ad7091_reset,
- 	},
-+	[ID_AD7273] = {
-+		.channel[0] = AD7940_CHAN(10),
-+		.channel[1] = IIO_CHAN_SOFT_TIMESTAMP(1),
-+		.has_vref = true,
-+	},
-+	[ID_AD7274] = {
-+		.channel[0] = AD7940_CHAN(12),
-+		.channel[1] = IIO_CHAN_SOFT_TIMESTAMP(1),
-+		.has_vref = true,
-+	},
- 	[ID_AD7276] = {
- 		.channel[0] = AD7940_CHAN(12),
- 		.channel[1] = IIO_CHAN_SOFT_TIMESTAMP(1),
-@@ -218,10 +243,17 @@ static const struct ad7476_chip_info ad7476_chip_info_tbl[] = {
- 		.channel[0] = AD7476_CHAN(8),
- 		.channel[1] = IIO_CHAN_SOFT_TIMESTAMP(1),
- 	},
-+	[ID_AD7475] = {
-+		.channel[0] = AD7476_CHAN(12),
-+		.channel[1] = IIO_CHAN_SOFT_TIMESTAMP(1),
-+		.has_vref = true,
-+		.has_vdrive = true,
-+	},
- 	[ID_AD7495] = {
- 		.channel[0] = AD7476_CHAN(12),
- 		.channel[1] = IIO_CHAN_SOFT_TIMESTAMP(1),
- 		.int_vref_uv = 2500000,
-+		.has_vdrive = true,
- 	},
- 	[ID_AD7940] = {
- 		.channel[0] = AD7940_CHAN(14),
-@@ -254,6 +286,7 @@ static const struct ad7476_chip_info ad7476_chip_info_tbl[] = {
- 	[ID_LTC2314_14] = {
- 		.channel[0] = AD7940_CHAN(14),
- 		.channel[1] = IIO_CHAN_SOFT_TIMESTAMP(1),
-+		.has_vref = true,
- 	},
- };
- 
-@@ -263,15 +296,16 @@ static const struct iio_info ad7476_info = {
- 
- static void ad7476_reg_disable(void *data)
- {
--	struct ad7476_state *st = data;
-+	struct regulator *reg = data;
- 
--	regulator_disable(st->reg);
-+	regulator_disable(reg);
- }
- 
- static int ad7476_probe(struct spi_device *spi)
- {
- 	struct ad7476_state *st;
- 	struct iio_dev *indio_dev;
-+	struct regulator *reg;
- 	int ret;
- 
- 	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
-@@ -282,19 +316,73 @@ static int ad7476_probe(struct spi_device *spi)
- 	st->chip_info =
- 		&ad7476_chip_info_tbl[spi_get_device_id(spi)->driver_data];
- 
--	st->reg = devm_regulator_get(&spi->dev, "vcc");
--	if (IS_ERR(st->reg))
--		return PTR_ERR(st->reg);
-+	reg = devm_regulator_get(&spi->dev, "vcc");
-+	if (IS_ERR(reg))
-+		return PTR_ERR(reg);
- 
--	ret = regulator_enable(st->reg);
-+	ret = regulator_enable(reg);
- 	if (ret)
- 		return ret;
- 
--	ret = devm_add_action_or_reset(&spi->dev, ad7476_reg_disable,
--				       st);
-+	ret = devm_add_action_or_reset(&spi->dev, ad7476_reg_disable, reg);
- 	if (ret)
- 		return ret;
- 
-+	/* Either vcc or vref (below) as appropriate */
-+	if (!st->chip_info->int_vref_uv)
-+		st->ref_reg = reg;
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7476.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7476.yaml
+new file mode 100644
+index 000000000000..cf711082ad7d
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7476.yaml
+@@ -0,0 +1,174 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++# Copyright 2019 Analog Devices Inc.
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/adi,ad7476.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+	if (st->chip_info->has_vref) {
++title: AD7476 and similar simple SPI ADCs from multiple manufacturers.
 +
-+		/* If a device has an internal reference vref is optional */
-+		if (st->chip_info->int_vref_uv) {
-+			reg = devm_regulator_get_optional(&spi->dev, "vref");
-+			if (IS_ERR(reg) && (PTR_ERR(reg) != -ENODEV))
-+				return PTR_ERR(reg);
-+		} else {
-+			reg = devm_regulator_get(&spi->dev, "vref");
-+			if (IS_ERR(reg))
-+				return PTR_ERR(reg);
-+		}
++maintainers:
++  - Michael Hennerich <michael.hennerich@analog.com>
 +
-+		if (!IS_ERR(reg)) {
-+			ret = regulator_enable(reg);
-+			if (ret)
-+				return ret;
++description: |
++  A lot of simple SPI ADCs have very straight forward interfaces.
++  They typically don't provide a MOSI pin, simply reading out data
++  on MISO when the clock toggles.
 +
-+			ret = devm_add_action_or_reset(&spi->dev,
-+						       ad7476_reg_disable,
-+						       reg);
-+			if (ret)
-+				return ret;
-+			st->ref_reg = reg;
-+		} else {
-+			/*
-+			 * Can only get here if device supports both internal
-+			 * and external reference, but the regulator connected
-+			 * to the external reference is not connected.
-+			 * Set the reference regulator pointer to NULL to
-+			 * indicate this.
-+			 */
-+			st->ref_reg = NULL;
-+		}
-+	}
++properties:
++  compatible:
++    enum:
++      - adi,ad7091
++      - adi,ad7091r
++      - adi,ad7273
++      - adi,ad7274
++      - adi,ad7276
++      - adi,ad7277
++      - adi,ad7278
++      - adi,ad7466
++      - adi,ad7467
++      - adi,ad7468
++      - adi,ad7475
++      - adi,ad7476
++      - adi,ad7476a
++      - adi,ad7477
++      - adi,ad7477a
++      - adi,ad7478
++      - adi,ad7478a
++      - adi,ad7495
++      - adi,ad7910
++      - adi,ad7920
++      - adi,ad7940
++      - ti,adc081s
++      - ti,adc101s
++      - ti,adc121s
++      - ti,ads7866
++      - ti,ads7867
++      - ti,ads7868
++      - lltc,ltc2314-14
 +
-+	if (st->chip_info->has_vdrive) {
-+		reg = devm_regulator_get(&spi->dev, "vdrive");
-+		if (IS_ERR(reg))
-+			return PTR_ERR(reg);
++  reg:
++    maxItems: 1
 +
-+		ret = regulator_enable(reg);
-+		if (ret)
-+			return ret;
++  vcc-supply:
++    description:
++      Main powersupply voltage for the chips, sometimes referred to as VDD on
++      datasheets.  If there is no separate vref-supply, then this is needed
++      to establish channel scaling.
 +
-+		ret = devm_add_action_or_reset(&spi->dev, ad7476_reg_disable,
-+					       reg);
-+		if (ret)
-+			return ret;
-+	}
++  vdrive-supply:
++    description:
++      Some devices have separate supply for their digital control side.
 +
- 	st->convst_gpio = devm_gpiod_get_optional(&spi->dev,
- 						  "adi,conversion-start",
- 						  GPIOD_OUT_LOW);
-@@ -333,17 +421,17 @@ static int ad7476_probe(struct spi_device *spi)
- }
- 
- static const struct spi_device_id ad7476_id[] = {
--	{"ad7091", ID_AD7091R},
-+	{"ad7091", ID_AD7091},
- 	{"ad7091r", ID_AD7091R},
--	{"ad7273", ID_AD7277},
--	{"ad7274", ID_AD7276},
-+	{"ad7273", ID_AD7273},
-+	{"ad7274", ID_AD7274},
- 	{"ad7276", ID_AD7276},
- 	{"ad7277", ID_AD7277},
- 	{"ad7278", ID_AD7278},
- 	{"ad7466", ID_AD7466},
- 	{"ad7467", ID_AD7467},
- 	{"ad7468", ID_AD7468},
--	{"ad7475", ID_AD7466},
-+	{"ad7475", ID_AD7475},
- 	{"ad7476", ID_AD7466},
- 	{"ad7476a", ID_AD7466},
- 	{"ad7477", ID_AD7467},
++  vref-supply:
++    description:
++      Some devices have a specific reference voltage supplied on a different pin
++      to the other supplies. Needed to be able to establish channel scaling
++      unless there is also an internal reference available (e.g. ad7091r)
++
++  spi-max-frequency: true
++
++  adi,conversion-start-gpios:
++    description: A GPIO used to trigger the start of a conversion
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++allOf:
++  # Devices where reference is vcc
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - adi,ad7091
++              - adi,ad7276
++              - adi,ad7277
++              - adi,ad7278
++              - adi,ad7466
++              - adi,ad7467
++              - adi,ad7468
++              - adi,ad7940
++              - ti,adc081s
++              - ti,adc101s
++              - ti,adc121s
++              - ti,ads7866
++              - ti,ads7868
++      required:
++        - vcc-supply
++  # Devices with a vref
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - adi,ad7091r
++              - adi,ad7273
++              - adi,ad7274
++              - adi,ad7475
++              - lltc,ltc2314-14
++    then:
++      properties:
++        vref-supply: true
++    else:
++      properties:
++        vref-supply: false
++  # Devices with a vref where it is not optional
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - adi,ad7273
++              - adi,ad7274
++              - adi,ad7475
++              - lltc,ltc2314-14
++    then:
++      required:
++        - vref-supply
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - adi,ad7475
++              - adi,ad7495
++    then:
++      properties:
++        vdrive-supply: true
++    else:
++      properties:
++        vdrive-supply: false
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - adi,ad7091
++              - adi,ad7091r
++    then:
++      properties:
++        adi,conversion-start-gpios: true
++    else:
++      properties:
++        adi,conversion-start-gpios: false
++
++examples:
++  - |
++    spi {
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      adc@0 {
++        compatible = "adi,ad7091r";
++        reg = <0>;
++        spi-max-frequency = <5000000>;
++        vcc-supply = <&adc_vcc>;
++        vref-supply = <&adc_vref>;
++      };
++    };
++...
 -- 
 2.31.1
 

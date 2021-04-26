@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5570336B775
+	by mail.lfdr.de (Postfix) with ESMTP id C6FA536B776
 	for <lists+linux-iio@lfdr.de>; Mon, 26 Apr 2021 19:04:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234466AbhDZRFG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 26 Apr 2021 13:05:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50392 "EHLO mail.kernel.org"
+        id S235193AbhDZRFH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 26 Apr 2021 13:05:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50516 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235195AbhDZRFF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 26 Apr 2021 13:05:05 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id EFF7F61077;
-        Mon, 26 Apr 2021 17:04:21 +0000 (UTC)
+        id S235135AbhDZRFG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 26 Apr 2021 13:05:06 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C9CE3613AA;
+        Mon, 26 Apr 2021 17:04:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1619456663;
-        bh=hMrnruaS8RaqHRuRGs9ZkakrCCbkQdPm1xRdb710jXs=;
+        s=k20201202; t=1619456665;
+        bh=um7xTbcfIkZ3pU67vL/jR1erRTfwDGHwZ8NDAi54i18=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KfqODkUc0qNs/5GKa/ujsnq9RKD30PLBmjOvKmI+4+PyqAQbHzT5La8yj6aZ4bthq
-         iymaLSZMSaRxpjdOIa5qPzkOMYuzJVQSO7EXrFkRsojRA8G1VEIvW23wwkFYTw58nS
-         0YFrIe/zTX5a2uigUAdBOBp4K6/zxrx2PD/eZiviZf2X9i9csDkLSyywqi8p8cwiW4
-         BBiJFbu/TGBmnXn3CV3LKXITYqO0Z8EZKYw7+zJhriJii04sCG9lARctLoEQRCP28o
-         TPBitgKPmiziWQHKoF1yBiyZNck1Qrj4SSVA5ejjFHc8M4a7+P8oRGTM1BRuTU0uUt
-         f1vGwPi9EixbQ==
+        b=I2GFUxzGhZV4V8FnHjBR+zB8bfiE4ZNFUPK03L6Cca3jS5ISscQpegI61BS0aj9SL
+         ohmi2U4Qus6tlbI57BIxAulbQplPoFY0VEAI0Pq68oHEGnCH5vRJxOP7VkQ2kTmCBg
+         B+WT6U0lcf/KUk6aq2ARvz/VpQzhv0KSSRSZshIRy07qxpITBA2nfn4ROT565sZNDk
+         7fGifR5ZrN2hapbjlBzUyMeUX1snInhBhHm0rUuTJlTVNC/hXrxPsdIy3dxnQD4dSv
+         nXi/bg3nqfoBhYRX/grVq6Ww8nlT79VznW+2XKXpWr8HJdAICo8KWTwLTyM592GkWo
+         hpsyK2lnfxD1A==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Alexandru Ardelean <ardeleanalex@gmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Ye Xiang <xiang.ye@intel.com>
-Subject: [PATCH 7/8] iio: position: hid-sensor-custom-intel-hinge: Drop duplicate parent setting.
-Date:   Mon, 26 Apr 2021 18:02:50 +0100
-Message-Id: <20210426170251.351957-8-jic23@kernel.org>
+        Jyoti Bhayana <jbhayana@google.com>
+Subject: [PATCH 8/8] iio: common: scmi_sensors: Drop duplicate setting of iio_dev.dev.parent
+Date:   Mon, 26 Apr 2021 18:02:51 +0100
+Message-Id: <20210426170251.351957-9-jic23@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210426170251.351957-1-jic23@kernel.org>
 References: <20210426170251.351957-1-jic23@kernel.org>
@@ -42,27 +42,26 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-iio_dev.dev.parent is already set to the same value in
-devm_iio_device_alloc()
+This is already set to the same value in devm_iio_device_alloc()
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Ye Xiang <xiang.ye@intel.com>
+Cc: Jyoti Bhayana <jbhayana@google.com>
 ---
- drivers/iio/position/hid-sensor-custom-intel-hinge.c | 1 -
+ drivers/iio/common/scmi_sensors/scmi_iio.c | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/drivers/iio/position/hid-sensor-custom-intel-hinge.c b/drivers/iio/position/hid-sensor-custom-intel-hinge.c
-index fd77e7ee87f3..738b5f4626ce 100644
---- a/drivers/iio/position/hid-sensor-custom-intel-hinge.c
-+++ b/drivers/iio/position/hid-sensor-custom-intel-hinge.c
-@@ -303,7 +303,6 @@ static int hid_hinge_probe(struct platform_device *pdev)
- 		return ret;
- 	}
+diff --git a/drivers/iio/common/scmi_sensors/scmi_iio.c b/drivers/iio/common/scmi_sensors/scmi_iio.c
+index 63e4cec9de5e..16f0526ff01a 100644
+--- a/drivers/iio/common/scmi_sensors/scmi_iio.c
++++ b/drivers/iio/common/scmi_sensors/scmi_iio.c
+@@ -544,7 +544,6 @@ static struct iio_dev *scmi_alloc_iiodev(struct device *dev,
+ 		return ERR_PTR(-ENOMEM);
  
--	indio_dev->dev.parent = &pdev->dev;
- 	indio_dev->info = &hinge_info;
- 	indio_dev->name = "hinge";
- 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 	iiodev->modes = INDIO_DIRECT_MODE;
+-	iiodev->dev.parent = dev;
+ 	sensor = iio_priv(iiodev);
+ 	sensor->handle = handle;
+ 	sensor->sensor_info = sensor_info;
 -- 
 2.31.1
 

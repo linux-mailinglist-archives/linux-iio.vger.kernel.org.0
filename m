@@ -2,171 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FA7D36B1A7
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Apr 2021 12:29:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B41936B1DB
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Apr 2021 12:50:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232601AbhDZKai (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 26 Apr 2021 06:30:38 -0400
-Received: from smtpout1.mo528.mail-out.ovh.net ([46.105.34.251]:51871 "EHLO
-        smtpout1.mo528.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232547AbhDZKah (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 26 Apr 2021 06:30:37 -0400
-Received: from pro2.mail.ovh.net (unknown [10.108.16.4])
-        by mo528.mail-out.ovh.net (Postfix) with ESMTPS id 07C07A26112A;
-        Mon, 26 Apr 2021 12:29:42 +0200 (CEST)
+        id S232897AbhDZKu4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 26 Apr 2021 06:50:56 -0400
+Received: from smtpout1.mo3004.mail-out.ovh.net ([79.137.123.219]:54701 "EHLO
+        smtpout1.mo3004.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232422AbhDZKuz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 26 Apr 2021 06:50:55 -0400
+Received: from pro2.mail.ovh.net (unknown [10.109.156.180])
+        by mo3004.mail-out.ovh.net (Postfix) with ESMTPS id 36AE823D295;
+        Mon, 26 Apr 2021 10:50:12 +0000 (UTC)
 Received: from localhost (89.70.221.198) by DAG2EX1.emp2.local (172.16.2.11)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Mon, 26 Apr
- 2021 12:29:41 +0200
-Date:   Mon, 26 Apr 2021 12:25:36 +0200
+ 2021 12:50:11 +0200
+Date:   Mon, 26 Apr 2021 12:46:06 +0200
 From:   Tomasz Duszynski <tomasz.duszynski@octakon.com>
-To:     Jonathan Cameron <jic23@kernel.org>
+To:     Lars-Peter Clausen <lars@metafoo.de>
 CC:     Tomasz Duszynski <tomasz.duszynski@octakon.com>,
         <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <lars@metafoo.de>,
+        <devicetree@vger.kernel.org>, <jic23@kernel.org>,
         <robh+dt@kernel.org>
 Subject: Re: [PATCH 2/3] iio: sps30: add support for serial interface
-Message-ID: <YIaVIKkB8q0MPARM@arch>
+Message-ID: <YIaZ7rfniLVgMHMh@arch>
 References: <20210425135546.57343-1-tomasz.duszynski@octakon.com>
  <20210425135546.57343-3-tomasz.duszynski@octakon.com>
- <20210425165344.407202fc@jic23-huawei>
+ <6b00dc0d-f678-07e2-96be-35eeca90d799@metafoo.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
-In-Reply-To: <20210425165344.407202fc@jic23-huawei>
+In-Reply-To: <6b00dc0d-f678-07e2-96be-35eeca90d799@metafoo.de>
 X-Originating-IP: [89.70.221.198]
-X-ClientProxiedBy: CAS2.emp2.local (172.16.1.2) To DAG2EX1.emp2.local
+X-ClientProxiedBy: DAG1EX1.emp2.local (172.16.2.1) To DAG2EX1.emp2.local
  (172.16.2.11)
-X-Ovh-Tracer-Id: 10814831555318013010
+X-Ovh-Tracer-Id: 11161045780033068116
 X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrvddukedgfedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpeffhffvuffkfhggtggujghisehttdertddttdejnecuhfhrohhmpefvohhmrghsiicuffhushiihihnshhkihcuoehtohhmrghsiidrughushiihihnshhkihesohgtthgrkhhonhdrtghomheqnecuggftrfgrthhtvghrnheptdehveethfffudetjeeftdekueehjeegjedvteffgfevkefffeegffeugeehgfejnecukfhppedtrddtrddtrddtpdekledrjedtrddvvddurdduleeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhrohdvrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepthhomhgrshiirdguuhhsiiihnhhskhhisehotghtrghkohhnrdgtohhmpdhrtghpthhtoheprhhosghhodgutheskhgvrhhnvghlrdhorhhg
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrvddukedgfeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvffukfhfgggtuggjihesthdtredttddtjeenucfhrhhomhepvfhomhgrshiiucffuhhsiiihnhhskhhiuceothhomhgrshiirdguuhhsiiihnhhskhhisehotghtrghkohhnrdgtohhmqeenucggtffrrghtthgvrhhnpedtheevtefhffduteejfedtkeeuheejgeejvdetfffgveekffefgeffueeghefgjeenucfkpheptddrtddrtddrtddpkeelrdejtddrvddvuddrudelkeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehprhhovddrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpehtohhmrghsiidrughushiihihnshhkihesohgtthgrkhhonhdrtghomhdprhgtphhtthhopehrohgshhdoughtsehkvghrnhgvlhdrohhrgh
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Apr 25, 2021 at 04:53:44PM +0100, Jonathan Cameron wrote:
-> On Sun, 25 Apr 2021 15:55:45 +0200
-> Tomasz Duszynski <tomasz.duszynski@octakon.com> wrote:
->
-> > Sensor has support for both i2c and serial communication interfaces.
-> > Both offer very similar set of features. Minor differences don't impact
-> > overall functionality like doing measurements, etc.
+On Sun, Apr 25, 2021 at 05:52:47PM +0200, Lars-Peter Clausen wrote:
+> On 4/25/21 3:55 PM, Tomasz Duszynski wrote:
+> > [...]
 > >
-> > Support for i2c have already been added, this patch adds support
-> > for the latter ie. serial interface.
-> >
-> > Signed-off-by: Tomasz Duszynski <tomasz.duszynski@octakon.com>
->
-> Hi Tomasz,
->
-> A few things inline that need tidying up.
->
-> I'm far from an expert on serdev drivers though so I'm not 100% sure on that
-> side of things.
->
-> Thanks,
->
-> Jonathan
->
-> > ---
-> >  MAINTAINERS                         |   1 +
-> >  drivers/iio/chemical/Kconfig        |  10 +
-> >  drivers/iio/chemical/Makefile       |   1 +
-> >  drivers/iio/chemical/sps30_serial.c | 420 ++++++++++++++++++++++++++++
-> >  4 files changed, 432 insertions(+)
-> >  create mode 100644 drivers/iio/chemical/sps30_serial.c
-> >
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 4b39a9c48736..cab9a63ad2cf 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -16138,6 +16138,7 @@ S:	Maintained
-> >  F:	Documentation/devicetree/bindings/iio/chemical/sensirion,sps30.yaml
-> >  F:	drivers/iio/chemical/sps30.c
-> >  F:	drivers/iio/chemical/sps30_i2c.c
-> > +F:	drivers/iio/chemical/sps30_serial.c
-> >
-> >  SERIAL DEVICE BUS
-> >  M:	Rob Herring <robh@kernel.org>
-> > diff --git a/drivers/iio/chemical/Kconfig b/drivers/iio/chemical/Kconfig
-> > index 82af5f62fbc6..6909b4754b9e 100644
-> > --- a/drivers/iio/chemical/Kconfig
-> > +++ b/drivers/iio/chemical/Kconfig
-> > @@ -153,6 +153,16 @@ config SPS30_I2C
-> >  	  To compile this driver as a module, choose M here: the module will
-> >  	  be called sps30_i2c.
-> >
-> > +config SPS30_SERIAL
-> > +	tristate "SPS30 particulate matter sensor serial driver"
-> > +	depends on SPS30 && SERIAL_DEV_BUS
-> > +	help
-> > +	  Say Y here to build support for the Sensirion SPS30 serial interface
-> > +	  driver.
-> > +
-> > +	  To compile this driver as a module, choose M here: the module will
-> > +	  be called sps30_serial.
-> > +
-> >  config VZ89X
-> >  	tristate "SGX Sensortech MiCS VZ89X VOC sensor"
-> >  	depends on I2C
-> > diff --git a/drivers/iio/chemical/Makefile b/drivers/iio/chemical/Makefile
-> > index 41c264a229c0..4898690cc155 100644
-> > --- a/drivers/iio/chemical/Makefile
-> > +++ b/drivers/iio/chemical/Makefile
-> > @@ -18,4 +18,5 @@ obj-$(CONFIG_SCD30_SERIAL) += scd30_serial.o
-> >  obj-$(CONFIG_SENSIRION_SGP30)	+= sgp30.o
-> >  obj-$(CONFIG_SPS30) += sps30.o
-> >  obj-$(CONFIG_SPS30_I2C) += sps30_i2c.o
-> > +obj-$(CONFIG_SPS30_SERIAL) += sps30_serial.o
-> >  obj-$(CONFIG_VZ89X)		+= vz89x.o
-> > diff --git a/drivers/iio/chemical/sps30_serial.c b/drivers/iio/chemical/sps30_serial.c
-> > new file mode 100644
-> > index 000000000000..5adeeed9bc8f
-> > --- /dev/null
-> > +++ b/drivers/iio/chemical/sps30_serial.c
-> > @@ -0,0 +1,420 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * Sensirion SPS30 particulate matter sensor serial driver
-> > + *
-> > + * Copyright (c) 2021 Tomasz Duszynski <tomasz.duszynski@octakon.com>
-> > + */
-> > +#include <linux/completion.h>
-> > +#include <linux/device.h>
-> > +#include <linux/errno.h>
-> > +#include <linux/iio/iio.h>
-> > +#include <linux/mod_devicetable.h>
-> > +#include <linux/module.h>
-> > +#include <linux/serdev.h>
-> > +
-> > +#include "sps30.h"
-> > +
-> > +#define SPS30_SERIAL_SOF_EOF 0x7e
-> > +#define SPS30_SERIAL_TIMEOUT msecs_to_jiffies(20)
-> > +#define SPS30_SERIAL_MAX_BUF_SIZE 263
-> > +#define SPS30_SERIAL_ESCAPE_CHAR 0x7d
-> > +
-> > +#define SPS30_SERIAL_FRAME_MIN_SIZE 7
-> > +#define SPS30_SERIAL_FRAME_ADR_OFFSET 1
-> > +#define SPS30_SERIAL_FRAME_CMD_OFFSET 2
-> > +#define SPS30_SERIAL_FRAME_MOSI_LEN_OFFSET 3
-> > +#define SPS30_SERIAL_FRAME_MISO_STATE_OFFSET 3
-> > +#define SPS30_SERIAL_FRAME_MISO_LEN_OFFSET 4
-> > +#define SPS30_SERIAL_FRAME_MISO_DATA_OFFSET 5
-> > +
-> > +#define SPS30_SERIAL_START_MEAS 0x00
-> > +#define SPS30_SERIAL_STOP_MEAS 0x01
-> > +#define SPS30_SERIAL_READ_MEAS 0x03
-> > +#define SPS30_SERIAL_RESET 0xd3
-> > +#define SPS30_SERIAL_CLEAN_FAN 0x56
-> > +#define SPS30_SERIAL_PERIOD 0x80
-> > +#define SPS30_SERIAL_DEV_INFO 0xd0
-> > +#define SPS30_SERIAL_READ_VERSION 0xd1
-> > +
 > > +struct sps30_serial_priv {
 > > +	struct completion new_frame;
 > > +	char buf[SPS30_SERIAL_MAX_BUF_SIZE];
+> The driver uses char, but the serdev API uses unsigned char. Just to avoid
+> any surprises I'd use unsigned char for all the buffers in the driver as
+> well.
+
+Sure, will use unsigned variant consistently then.
+
 > > +	int num;
 > > +	unsigned int chksum;
 > > +	bool escaped;
@@ -183,6 +74,12 @@ On Sun, Apr 25, 2021 at 04:53:44PM +0100, Jonathan Cameron wrote:
 > > +	priv->chksum = 0;
 > > +	priv->escaped = false;
 > > +	priv->done = false;
+> Hm... no locking with regards to the serdev callback. I guess the assumption
+> is that we'll never receive any data without explicitly requesting it.
+
+Correct, sensor shouldn't put anything on the bus without explicic
+request. Nonetheless I added some flag just in case.
+
 > > +
 > > +	ret = serdev_device_write(serdev, buf, size, SPS30_SERIAL_TIMEOUT);
 > > +	if (ret < 0)
@@ -198,84 +95,7 @@ On Sun, Apr 25, 2021 at 04:53:44PM +0100, Jonathan Cameron wrote:
 > > +
 > > +	return 0;
 > > +}
-> > +
-> > +static struct {
-> > +	char byte;
-> > +	char byte2;
-> > +} sps30_serial_bytes[] = {
-> > +	{ 0x11, 0x31 },
-> > +	{ 0x13, 0x33 },
-> > +	{ 0x7e, 0x5e },
-> > +	{ 0x7d, 0x5d },
-> > +};
-> > +
-> > +static int sps30_serial_put_byte(char *buf, char byte)
-> > +{
-> > +	int i;
-> > +
-> > +	for (i = 0; i < ARRAY_SIZE(sps30_serial_bytes); i++) {
-> > +		if (sps30_serial_bytes[i].byte != byte)
-> > +			continue;
-> > +
-> > +		buf[0] = SPS30_SERIAL_ESCAPE_CHAR;
-> > +		buf[1] = sps30_serial_bytes[i].byte2;
-> > +
-> > +		return 2;
-> > +	}
-> > +
-> > +	buf[0] = byte;
-> > +
-> > +	return 1;
-> > +}
-> > +
-> > +static char sps30_serial_get_byte(bool escaped, char byte2)
-> > +{
-> > +	int i;
-> > +
-> > +	if (!escaped)
-> > +		return byte2;
-> > +
-> > +	for (i = 0; i < ARRAY_SIZE(sps30_serial_bytes); i++) {
-> > +		if (sps30_serial_bytes[i].byte2 != byte2)
-> > +			continue;
-> > +
-> > +		return sps30_serial_bytes[i].byte;
-> > +	}
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int sps30_serial_prep_frame(char *buf, char cmd, const char *arg, int arg_size)
-> > +{
-> > +	unsigned int chksum;
-> > +	unsigned char byte;
-> > +	int i, num = 0;
-> > +
-> > +	buf[num++] = SPS30_SERIAL_SOF_EOF;
-> > +	buf[num++] = 0;
-> > +
-> > +	byte = cmd;
-> > +	num += sps30_serial_put_byte(buf + num, byte);
-> > +	chksum = byte;
-> > +
-> > +	byte = (unsigned char)arg_size;
-> > +	num += sps30_serial_put_byte(buf + num, byte);
-> > +	chksum += byte;
-> > +
-> > +	for (i = 0; i < arg_size; i++) {
-> > +		byte = arg[i];
-> > +		num += sps30_serial_put_byte(buf + num, byte);
-> > +		chksum += byte;
-> > +	}
-> > +
-> > +	byte = (unsigned char)~chksum;
-> > +	num += sps30_serial_put_byte(buf + num, byte);
-> > +
-> > +	buf[num++] = SPS30_SERIAL_SOF_EOF;
-> > +
-> > +	return num;
-> > +}
-> > +
+> > [...]
 > > +static bool sps30_serial_frame_valid(struct sps30_state *state, const char *buf)
 > > +{
 > > +	struct sps30_serial_priv *priv = state->priv;
@@ -297,9 +117,11 @@ On Sun, Apr 25, 2021 at 04:53:44PM +0100, Jonathan Cameron wrote:
 > > +		dev_err(state->dev, "frame with non-zero state received (0x%02x)\n",
 > > +			priv->buf[SPS30_SERIAL_FRAME_MISO_STATE_OFFSET]);
 > > +		//return false;
->
-> ?
->
+> What's with the out commented line?
+
+Good catch. This shouldn't be commented - not sure how that two slashes
+got here.
+
 > > +	}
 > > +
 > > +	if (priv->buf[priv->num - 2] != priv->chksum) {
@@ -327,6 +149,11 @@ On Sun, Apr 25, 2021 at 04:53:44PM +0100, Jonathan Cameron wrote:
 > > +
 > > +	if (rsp) {
 > > +		rsp_size = clamp((int)priv->buf[SPS30_SERIAL_FRAME_MISO_LEN_OFFSET], 0, rsp_size);
+> If buf is unsigned char this can be a min_t(unsigned int, ...). And maybe
+> also make rsp_size unsigned int.
+
+Okay.
+
 > > +		memcpy(rsp, &priv->buf[SPS30_SERIAL_FRAME_MISO_DATA_OFFSET], rsp_size);
 > > +	}
 > > +
@@ -344,6 +171,7 @@ On Sun, Apr 25, 2021 at 04:53:44PM +0100, Jonathan Cameron wrote:
 > > +
 > > +	if (!indio_dev)
 > > +		return 0;
+>
 > > +
 > > +	state = iio_priv(indio_dev);
 > > +	priv = state->priv;
@@ -375,9 +203,31 @@ On Sun, Apr 25, 2021 at 04:53:44PM +0100, Jonathan Cameron wrote:
 > > +		priv->buf[priv->num] = byte;
 > > +
 > > +		if (priv->num++ && !priv->escaped && byte == SPS30_SERIAL_SOF_EOF) {
+>
+> This is a bit to tricky for my taste.
+>
+
+Less than ideal but didn't come up with anything better which is why I
+put extra comment a few lines above.
+
+> How about.
+>
+> priv->num++
+>
+> if (priv->num > 1 && ...)
+>
+
+Makes sense.
+
 > > +			/* SOF, EOF and checksum itself are not checksummed */
 > > +			priv->chksum -= 2 * SPS30_SERIAL_SOF_EOF + priv->buf[priv->num - 2];
 > > +			priv->chksum = (unsigned char)~priv->chksum;
+> To keep the whole checksum stuff simpler, maybe just compute it in
+> sps30_serial_frame_valid() over the whole set of data.
+
+Okay that fits there as well. Advantage here is chksum is computed on
+the fly though.
+
 > > +			priv->done = true;
 > > +			complete(&priv->new_frame);
 > > +			i++;
@@ -389,177 +239,19 @@ On Sun, Apr 25, 2021 at 04:53:44PM +0100, Jonathan Cameron wrote:
 > > +
 > > +	return i;
 > > +}
-> > +
-> > +static const struct serdev_device_ops sps30_serial_device_ops = {
-> > +	.receive_buf = sps30_serial_receive_buf,
-> > +	.write_wakeup = serdev_device_write_wakeup,
-> > +};
-> > +
-> > +static int sps30_serial_start_meas(struct sps30_state *state)
-> > +{
-> > +	/* request BE IEEE754 formatted data */
-> > +	char buf[] = { 0x01, 0x03 };
-> > +
-> > +	return sps30_serial_command(state, SPS30_SERIAL_START_MEAS, buf, sizeof(buf), NULL, 0);
-> > +}
-> > +
-> > +static int sps30_serial_stop_meas(struct sps30_state *state)
-> > +{
-> > +	return sps30_serial_command(state, SPS30_SERIAL_STOP_MEAS, NULL, 0, NULL, 0);
-> > +}
-> > +
-> > +static int sps30_serial_reset(struct sps30_state *state)
-> > +{
-> > +	int ret;
-> > +
-> > +	ret = sps30_serial_command(state, SPS30_SERIAL_RESET, NULL, 0, NULL, 0);
-> > +	msleep(500);
-> > +
-> > +	return ret;
-> > +}
-> > +
-> > +static int sps30_serial_read_meas(struct sps30_state *state, int *meas, int num)
-> > +{
-> > +	int ret, tries = 3;
-> > +
->
-> For any repeat loops like this, please add a comment to explain why you picked 3
-> retries.  (it works is a valid comment, but obviously datasheet reference is better :)
->
-
-According to the spec sensor spits out data each second but sometimes it
-looks as if they are available in 500ms or so. Picking 3 for the number of
-tries covers two cases.
-
-> > +	do {
-> > +		ret = sps30_serial_command(state, SPS30_SERIAL_READ_MEAS, NULL, 0,
-> > +					   meas, num * sizeof(num));
-> > +		if (ret < 0)
-> > +			return ret;
-> > +		/* if measurements aren't ready sensor returns empty frame */
-> > +		if (ret == num * sizeof(int))
-> > +			break;
-> > +
-> > +		if (msleep_interruptible(500))
-> > +			return -EINTR;
-> > +	} while (--tries);
-> > +
-> > +	return !tries ? -ETIMEDOUT : 0;
-> > +}
-> > +
-> > +static int sps30_serial_clean_fan(struct sps30_state *state)
-> > +{
-> > +	return sps30_serial_command(state, SPS30_SERIAL_CLEAN_FAN, NULL, 0, NULL, 0);
-> > +}
-> > +
-> > +static int sps30_serial_read_cleaning_period(struct sps30_state *state, int *period)
-> > +{
-> > +	char buf[] = { 0x00 };
-> > +	int ret;
-> > +
-> > +	ret = sps30_serial_command(state, SPS30_SERIAL_PERIOD, buf, sizeof(buf),
-> > +				   period, sizeof(*period));
-> > +	if (ret < 0)
-> > +		return ret;
-> > +	if (ret != sizeof(*period))
-> > +		return -EIO;
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int sps30_serial_write_cleaning_period(struct sps30_state *state, int period)
-> > +{
-> > +	char buf[5] = { 0x00 };
-> > +
-> > +	memcpy(buf + 1, &period, sizeof(period));
->
-> Same issue with what size period could in theory be. Also should be no problem keeping
-> it in the __be32 type throughout.
->
-> > +
-> > +	return sps30_serial_command(state, SPS30_SERIAL_PERIOD, buf, sizeof(buf), NULL, 0);
-> > +}
-> > +
-> > +static int sps30_serial_show_info(struct sps30_state *state)
-> > +{
-> > +	/* extra nul byte just in case serial number isn't a valid string */
-> > +	char buf[32 + 1] = { 0x00 };
-> > +	struct device *dev = state->dev;
-> > +	int ret;
-> > +
-> > +	/* tell device to return serial number */
-> > +	buf[0] = 0x03;
-> > +	ret = sps30_serial_command(state, SPS30_SERIAL_DEV_INFO, buf, 1, buf, sizeof(buf) - 1);
-> > +	if (ret < 0)
-> > +		return ret;
-> > +
-> > +	dev_info(dev, "serial number: %s\n", buf);
-> > +
-> > +	ret = sps30_serial_command(state, SPS30_SERIAL_READ_VERSION, NULL, 0, buf, sizeof(buf) - 1);
-> > +	if (ret < 0)
-> > +		return ret;
-> > +	if (ret < 2)
-> > +		return -EIO;
-> > +
-> > +	dev_info(dev, "fw version: %u.%u\n", buf[0], buf[1]);
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static const struct sps30_ops sps30_serial_ops = {
-> > +	.start_meas = sps30_serial_start_meas,
-> > +	.stop_meas = sps30_serial_stop_meas,
-> > +	.read_meas = sps30_serial_read_meas,
-> > +	.reset = sps30_serial_reset,
-> > +	.clean_fan = sps30_serial_clean_fan,
-> > +	.read_cleaning_period = sps30_serial_read_cleaning_period,
-> > +	.write_cleaning_period = sps30_serial_write_cleaning_period,
-> > +	.show_info = sps30_serial_show_info,
-> > +};
-> > +
+> > [...]
 > > +static int sps30_serial_probe(struct serdev_device *serdev)
 > > +{
-> > +	struct device *dev = &serdev->dev;
-> > +	struct sps30_serial_priv *priv;
-> > +	int ret;
-> > +
-> > +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-> > +	if (!priv)
-> > +		return -ENOMEM;
-> > +
-> > +	init_completion(&priv->new_frame);
-> > +	serdev_device_set_client_ops(serdev, &sps30_serial_device_ops);
-> > +
-> > +	ret = devm_serdev_device_open(dev, serdev);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	serdev_device_set_baudrate(serdev, 115200);
-> > +	serdev_device_set_flow_control(serdev, false);
-> > +
-> > +	ret = serdev_device_set_parity(serdev, SERDEV_PARITY_NONE);
-> > +	if (ret)
-> > +		return ret;
-> > +
+> > [...]
 > > +	return sps30_probe(dev, KBUILD_MODNAME, priv, &sps30_serial_ops);
+> Usually the IIO device name should just be the part number. Ideally the
+> application should not care about the backend. I'd just pass "sps30" here
+> for the name.
+
+Fair enough.
+
+Thanks for review.
+
 > > +}
-> > +
-> > +static const struct of_device_id sps30_serial_of_match[] = {
-> > +	{ .compatible = "sensirion,sps30" },
-> > +	{ }
-> > +};
-> > +MODULE_DEVICE_TABLE(of, sps30_serial_of_match);
-> > +
-> > +static struct serdev_device_driver sps30_serial_driver = {
-> > +	.driver = {
-> > +		.name = KBUILD_MODNAME,
-> > +		.of_match_table = sps30_serial_of_match,
-> > +	},
-> > +	.probe = sps30_serial_probe,
-> > +};
-> > +module_serdev_device_driver(sps30_serial_driver);
-> > +
-> > +MODULE_AUTHOR("Tomasz Duszynski <tomasz.duszynski@octakon.com>");
-> > +MODULE_DESCRIPTION("Sensirion SPS30 particulate matter sensor serial driver");
-> > +MODULE_LICENSE("GPL v2");
+>
 >

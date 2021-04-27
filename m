@@ -2,96 +2,149 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74C4436CA50
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Apr 2021 19:25:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23C3136CA5A
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Apr 2021 19:29:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236690AbhD0R0a (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 27 Apr 2021 13:26:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38250 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236019AbhD0R0a (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 27 Apr 2021 13:26:30 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A936C61154;
-        Tue, 27 Apr 2021 17:25:45 +0000 (UTC)
-Date:   Tue, 27 Apr 2021 18:26:30 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nuno Sa <nuno.sa@analog.com>
-Cc:     <linux-iio@vger.kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v3 0/6] Adis IRQ fixes and minor improvements
-Message-ID: <20210427182630.43d15ff0@jic23-huawei>
-In-Reply-To: <20210427085454.30616-1-nuno.sa@analog.com>
-References: <20210427085454.30616-1-nuno.sa@analog.com>
+        id S236690AbhD0RaY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 27 Apr 2021 13:30:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38706 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230219AbhD0RaY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Apr 2021 13:30:24 -0400
+Received: from haggis.mythic-beasts.com (haggis.mythic-beasts.com [IPv6:2a00:1098:0:86:1000:0:2:1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF448C061574
+        for <linux-iio@vger.kernel.org>; Tue, 27 Apr 2021 10:29:40 -0700 (PDT)
+Received: from [81.101.6.87] (port=33690 helo=jic23-huawei)
+        by haggis.mythic-beasts.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <jic23@jic23.retrosnub.co.uk>)
+        id 1lbRWk-0008NX-Sk; Tue, 27 Apr 2021 18:29:39 +0100
+Date:   Tue, 27 Apr 2021 18:30:20 +0100
+From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+To:     linux-iio@vger.kernel.org, linux-doc@vger.kernel.org,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
+Subject: Re: [RFC PATCH 1/7] iio:ABI docs: Fix up duplicate *_calibbias_*
+ documentation for icm42600
+Message-ID: <20210427183004.14fede9c@jic23-huawei>
+In-Reply-To: <20210221160529.0012c931@archlinux>
+References: <20210117153816.696693-1-jic23@kernel.org>
+        <20210117153816.696693-2-jic23@kernel.org>
+        <20210221160529.0012c931@archlinux>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-BlackCat-Spam-Score: 19
+X-Spam-Status: No, score=1.9
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 27 Apr 2021 10:54:48 +0200
-Nuno Sa <nuno.sa@analog.com> wrote:
+On Sun, 21 Feb 2021 16:05:29 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> The primary goal of this series was to fix the return value on some
-> trigger handlers as spotted in [1]. While doing it, I found some minor
-> improvements that I think are simple enough to include in this series.
+> On Sun, 17 Jan 2021 15:38:10 +0000
+> Jonathan Cameron <jic23@kernel.org> wrote:
 > 
-> As for the first 2 patches, I opted to not do any functional change so
-> I'm keeping the 'if (!adis->buffer)' check. However, 'adis-buffer' is
-> allocated in 'update_scan_mode' hook which means we should be sure that
-> the buffer is allocated and the check is really not needed. I did not
-> went into the details but is there any way for the trigger handler to be
-> called before the 'update_scan_mode' hook? If not, I'm happy in sending
-> a v2 where we just remove the 'if'...
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
+> @Jean-Baptiste.
 > 
-> 
-> Changes in v2:
->  * Remove the 'if' check for the allocated buffer;
->  * Make sure the adis 'state_lock' is unlocked on error paths;
->  * Fixed the commit message on the first 3 patches.
->  * Dropped ("iio: adis16475: re-set max spi transfer") and added 3 new
-> patches (last 3 in the series ) to fix a potential race with the spi core
-> as discussed in [2].
-> 
-> Changes in v3:
->  * Improved commit description on ("iio: adis16475: do not return ints in
-> irq handlers");
->  * Reordered patch 2 and 3 so that patch 3 is easier to apply;
->  * Re-arranged the error handling on 'spi_sync()' error path.
-> 
-> [1]: https://marc.info/?l=linux-iio&m=161815197426882&w=2
-> [2]: https://marc.info/?l=linux-iio&m=161884696722142&w=2
+> Whilst this is 'fairly obviously' fine, could you take a quick glance at it.
+> I'm never keen to take my own patches without someone having agreed
+> I haven't done anything particularly silly ;)
 
-Not rushing these in as not comfortable with marking them for stable.
-If we want to do a specific stable request at a later date that can
-easily explain we need all of them.
+As these are still frustrating Mauro's attempt to get the docs to build
+cleanly and it should be safe enough.
 
 Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to poke at them and see if they can find anything we
-missed.
-
-Thanks,
+the autobuilders to poke at it.
 
 Jonathan
 
 > 
-> Nuno Sa (6):
->   iio: adis16475: do not return ints in irq handlers
->   iio: adis_buffer: update device page after changing it
->   iio: adis_buffer: don't push data to buffers on failure
->   iio: adis: add burst_max_speed_hz variable
->   iio: adis16475: do not directly change spi 'max_speed_hz'
->   iio: adis16400: do not directly change spi 'max_speed_hz'
+> Jonathan
 > 
->  drivers/iio/imu/adis16400.c   | 15 ++-------------
->  drivers/iio/imu/adis16475.c   |  9 +++------
->  drivers/iio/imu/adis_buffer.c | 16 ++++++++++------
->  include/linux/iio/imu/adis.h  |  2 ++
->  4 files changed, 17 insertions(+), 25 deletions(-)
+> > 
+> > This device has the unusual characteristic that the calibbias values
+> > have well defined units (more commonly they are tweaks to a DAC)
+> > Unfortunately the previous approach of having more specific documentation
+> > in sysfs-bus-iio-icm42600 results in warnings during the documentation
+> > build and random ordering in the resulting documentation.
+> > 
+> > To avoid this, add a note to the main documentation on this special
+> > characteristic for the icm42600.   The _available for calibbias was
+> > missing from the main sysfs-bus-iio docs so also add that, allowing
+> > us to drop the icm42600 specific file.
+> > 
+> > Fixes
+> > $ scripts/get_abi.pl validate warning:
+> > Warning: /sys/bus/iio/devices/iio:deviceX/in_accel_x_calibbias is defined 2 times:  ./Documentation/ABI/testing/sysfs-bus-iio-icm42600:0  ./Documentation/ABI/testing/sysfs-bus-iio:394
+> > Warning: /sys/bus/iio/devices/iio:deviceX/in_accel_y_calibbias is defined 2 times:  ./Documentation/ABI/testing/sysfs-bus-iio-icm42600:1  ./Documentation/ABI/testing/sysfs-bus-iio:395
+> > Warning: /sys/bus/iio/devices/iio:deviceX/in_accel_z_calibbias is defined 2 times:  ./Documentation/ABI/testing/sysfs-bus-iio-icm42600:2  ./Documentation/ABI/testing/sysfs-bus-iio:396
+> > Warning: /sys/bus/iio/devices/iio:deviceX/in_anglvel_x_calibbias is defined 2 times:  ./Documentation/ABI/testing/sysfs-bus-iio-icm42600:3  ./Documentation/ABI/testing/sysfs-bus-iio:397
+> > Warning: /sys/bus/iio/devices/iio:deviceX/in_anglvel_y_calibbias is defined 2 times:  ./Documentation/ABI/testing/sysfs-bus-iio-icm42600:4  ./Documentation/ABI/testing/sysfs-bus-iio:398
+> > Warning: /sys/bus/iio/devices/iio:deviceX/in_anglvel_z_calibbias is defined 2 times:  ./Documentation/ABI/testing/sysfs-bus-iio-icm42600:5  ./Documentation/ABI/testing/sysfs-bus-iio:399
+> > 
+> > Cc: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
+> > Reported-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > ---
+> >  Documentation/ABI/testing/sysfs-bus-iio       | 13 ++++++++++++
+> >  .../ABI/testing/sysfs-bus-iio-icm42600        | 20 -------------------
+> >  2 files changed, 13 insertions(+), 20 deletions(-)
+> > 
+> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+> > index d957f5da5c04..d2dd9cc280f9 100644
+> > --- a/Documentation/ABI/testing/sysfs-bus-iio
+> > +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> > @@ -408,6 +408,19 @@ Contact:	linux-iio@vger.kernel.org
+> >  Description:
+> >  		Hardware applied calibration offset (assumed to fix production
+> >  		inaccuracies).
+> > +		icm42600: For this device values are real physical offsets
+> > +		expressed in SI units (m/s^2 for accelerometers and rad/s
+> > +		for gyroscope)/
+> > +
+> > +What:		/sys/bus/iio/devices/iio:deviceX/in_accel_calibbias_available
+> > +What:		/sys/bus/iio/devices/iio:deviceX/in_anglvel_calibbias_available
+> > +KernelVersion:  5.8
+> > +Contact:        linux-iio@vger.kernel.org
+> > +Description:
+> > +		Available values of calibbias. Maybe expressed as either of:
+> > +
+> > +		- a small discrete set of values like "0 2 4 6 8"
+> > +		- a range specified as "[min step max]"
+> >  
+> >  What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_calibscale
+> >  What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_supply_calibscale
+> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio-icm42600 b/Documentation/ABI/testing/sysfs-bus-iio-icm42600
+> > deleted file mode 100644
+> > index 0bf1fd4f5bf1..000000000000
+> > --- a/Documentation/ABI/testing/sysfs-bus-iio-icm42600
+> > +++ /dev/null
+> > @@ -1,20 +0,0 @@
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_accel_x_calibbias
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_accel_y_calibbias
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_accel_z_calibbias
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_anglvel_x_calibbias
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_anglvel_y_calibbias
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_anglvel_z_calibbias
+> > -KernelVersion:  5.8
+> > -Contact:        linux-iio@vger.kernel.org
+> > -Description:
+> > -		Hardware applied calibration offset (assumed to fix production
+> > -		inaccuracies). Values represent a real physical offset expressed
+> > -		in SI units (m/s^2 for accelerometer and rad/s for gyroscope).
+> > -
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_accel_calibbias_available
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_anglvel_calibbias_available
+> > -KernelVersion:  5.8
+> > -Contact:        linux-iio@vger.kernel.org
+> > -Description:
+> > -		Range of available values for hardware offset. Values in SI
+> > -		units (m/s^2 for accelerometer and rad/s for gyroscope).  
 > 
 

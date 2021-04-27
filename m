@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B045636C07B
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Apr 2021 10:02:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80BB836C07F
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Apr 2021 10:03:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231262AbhD0IDA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 27 Apr 2021 04:03:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53606 "EHLO
+        id S231262AbhD0IEC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 27 Apr 2021 04:04:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231161AbhD0IC6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Apr 2021 04:02:58 -0400
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A480C061574
-        for <linux-iio@vger.kernel.org>; Tue, 27 Apr 2021 01:02:14 -0700 (PDT)
-Received: by mail-pj1-x102a.google.com with SMTP id gq23-20020a17090b1057b0290151869af68bso6661540pjb.4
-        for <linux-iio@vger.kernel.org>; Tue, 27 Apr 2021 01:02:14 -0700 (PDT)
+        with ESMTP id S231161AbhD0IEB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Apr 2021 04:04:01 -0400
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F75CC061574
+        for <linux-iio@vger.kernel.org>; Tue, 27 Apr 2021 01:03:18 -0700 (PDT)
+Received: by mail-pj1-x1032.google.com with SMTP id lp8so404527pjb.1
+        for <linux-iio@vger.kernel.org>; Tue, 27 Apr 2021 01:03:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Xcr/dvssiR1peLMOYlIhB5qNdm03USu5jxpBduxexKE=;
-        b=tUIE35WCoEb21rV7Agnsovzs9Gf4lEGkT38mtWny4eC/JiMJIJeuKIdeX7eDviOpgB
-         TyHpRKi0uCR5dCbb4kts08M1ddMTsT072wy3r481uuJi0jOuEUHOYBb8gOETnLRXD/UJ
-         4I7PgtGhe/ZCMJFyyzOLO9NZooLrMGCOIiSnKwsmk3HP6lZaQEkfwoCV9Tm+GfRfFX/7
-         gyyAHjarS3xAGhhcpKRj1aU0Dnyeox5/MYhN5MabeyU9ZNz0Mk+pJjFBYEtbgrIVQbvz
-         /nZuognwkQf0J08gd/MI/FdqCRxtYyTqH6uxWjbfq+6Wc6dZn2UNptjY3LVRkoLPflG0
-         spzQ==
+        bh=5s23WhGhGu7PYhb37njhkBFV52eNxO04MnKCADrPVkM=;
+        b=Vor6rDeYlIX4hT0MpXacujU8JySj7Loo9FD5ZIrYJyPIB5hPig3lcZUxdihcN88r1w
+         6LnbhmGgrPw7pLfvxG93ahPP5HiXWY0RvtRqtBXhTubUPDo6Bh6zQlCknvVeqPBAFaut
+         xvRpdxWDflNF3FQXE522fNYmJazniiUsbY4k4MhQiFbDInkqfl2NaCdUD0Gx2qfQc7lx
+         2D0CqYb8/WqBWxNWBzwLsv2NbbylGcobiT3BFCM7RiXPzhiPtJPGJhBIb+jiYqt/l3T/
+         Gh3gdak49rBSll/4ZAEu71QIg/a/h2jO8KMbu7e8NhnG4pBUYcTVQ+nxJDxfJnXDM5Ii
+         fZfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Xcr/dvssiR1peLMOYlIhB5qNdm03USu5jxpBduxexKE=;
-        b=fFc5auZZw9iyu0qvjHev9ZmkRNMANfSLL1iGY/0zk+rAbNk7PDlQ3xZil3IIq7IvfB
-         PYt/sFqnUOGCAGm/TfKTDKMh7vXP/NfFqIfTdyhKtTr7IPAGzUt0vCL6IAyEpfHW4Gim
-         +M7Z9fJJW2m8XBYso+lPOl3ATB4suM4ljfk/qn9jhTob69j1XSAO8SQMqxOaNy2MMc4k
-         ewW2VZtgKKrrE+0UrWDoB7BkIBFNMRJiibc6vvpJBeNDIpQX3WffCej+WbLu8HCnSMpZ
-         icQ7i3n0FznWZsTJ+hZjNiGANxwrTbn2uWJPuiRPAKck/LTlv8y+KcoWW+jMRIbfvS/r
-         ehrg==
-X-Gm-Message-State: AOAM532nz7j5yoOfi2VYNr/Dg0/PscYcQOjBriYPaZ3jCJNTVBRbw2jW
-        XszFD3N6MAepB8O5zWWibktEGLNXNLLv9i2xAIE=
-X-Google-Smtp-Source: ABdhPJx7cGUSBXdhsqX/WMAwWRMdoVAPsTMM75ft90lb7KgtB6FwxpzJECbZf2QcehAph137ZirjbJ4cZyaLvFOMYhE=
-X-Received: by 2002:a17:90b:1995:: with SMTP id mv21mr3703019pjb.19.1619510533480;
- Tue, 27 Apr 2021 01:02:13 -0700 (PDT)
+        bh=5s23WhGhGu7PYhb37njhkBFV52eNxO04MnKCADrPVkM=;
+        b=DLhyna1RnQkwXGjsvV/osDypy4xZGCQRlbN82YHAJXxfy85wtk5eGnwKh6v859JhZX
+         JYCaouc8fgMcJS/dKUm8bhyirYQfL5MfBv+f+OJRcsi1rnY66lXzpGVN1Nm2Jt7Z1GpS
+         qbYvX9p3hxbdUu83oE4pMpRUjIKgshWJQ7XIYqcPQRL/svAn96Ujt+W2zWboigP6tRD0
+         2dX9cH8qJNm0Hl7ZdyVagC0e/zI95RRJfzez2SaD3rZ5ExJDMoEMG5jAmn0rRdoBPQ+8
+         ufCYxGrUboWKsNtCO+NyjH95cHfE6UWfPoYe4leC+vK45gZAb9/7Fxo1AOJFTMbyN7qv
+         KpYg==
+X-Gm-Message-State: AOAM5321L9TkqlpOjP5DxREZYFjwXkZsRmTLklkO+fgcxUKGq8P1IGyc
+        VPZ44vK3tKk8xNU4S/+k95AOpmq5jGDVdJdWOwCklFe1WAEPjt8h
+X-Google-Smtp-Source: ABdhPJznkjKZabw9z6Rre7a/JCaGi22fhvk1oYcSDI74P0mqawZAmMhpliD7VHwfoWKAqvWghr7kPJ1tnmymgViXVdI=
+X-Received: by 2002:a17:90a:ae10:: with SMTP id t16mr26637490pjq.86.1619510597909;
+ Tue, 27 Apr 2021 01:03:17 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210426174911.397061-1-jic23@kernel.org> <20210426174911.397061-10-jic23@kernel.org>
-In-Reply-To: <20210426174911.397061-10-jic23@kernel.org>
+References: <20210426174911.397061-1-jic23@kernel.org> <20210426174911.397061-5-jic23@kernel.org>
+In-Reply-To: <20210426174911.397061-5-jic23@kernel.org>
 From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Tue, 27 Apr 2021 11:02:02 +0300
-Message-ID: <CA+U=DsrsFhH65HkdNSTFLXF3-rbpEYkZ5MvoXDmuSeniHampXA@mail.gmail.com>
-Subject: Re: [PATCH 9/9] iio: core: move @clock_id from struct iio_dev to
+Date:   Tue, 27 Apr 2021 11:03:06 +0300
+Message-ID: <CA+U=Dsro4QKn1sGBwryDgpuNVuLKLYx7SzsM1q-+mUBrsqaY1w@mail.gmail.com>
+Subject: Re: [PATCH 4/9] iio: core: move @trig_readonly from struct iio_dev to
  struct iio_dev_opaque
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
@@ -63,116 +63,103 @@ On Mon, Apr 26, 2021 at 8:50 PM Jonathan Cameron <jic23@kernel.org> wrote:
 >
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >
-> There is already an acessor function used to access it, making this
-> move straight forward.
+> This is only set via the iio_trig_set_immutable() call and later used
+> by the IIO core so there is no benefit in drivers being able to access
+> it.
 
-Right now the iio_device_get_clock() helper is only being used in the
-Chrome EC core sensor driver.
-Maybe later if that can be reworked without this helper, then it could
-be made private to IIO core.
-Though, chances are some other driver may come along later and ask for
-it to be public again.
-
-Anyway.
 
 Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
+
 
 >
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > ---
->  drivers/iio/industrialio-core.c | 14 +++++++++++++-
->  include/linux/iio/iio-opaque.h  |  2 ++
->  include/linux/iio/iio.h         | 12 +-----------
->  3 files changed, 16 insertions(+), 12 deletions(-)
+>  drivers/iio/industrialio-trigger.c | 10 +++++++---
+>  include/linux/iio/iio-opaque.h     |  2 ++
+>  include/linux/iio/iio.h            |  2 --
+>  3 files changed, 9 insertions(+), 5 deletions(-)
 >
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> index 4a4c02fea152..efb4cf91c9e4 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -271,13 +271,25 @@ int iio_device_set_clock(struct iio_dev *indio_dev, clockid_t clock_id)
->                 mutex_unlock(&indio_dev->mlock);
->                 return -EBUSY;
->         }
-> -       indio_dev->clock_id = clock_id;
-> +       iio_dev_opaque->clock_id = clock_id;
+> diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
+> index b489eeeb0004..b23caa2f2aa1 100644
+> --- a/drivers/iio/industrialio-trigger.c
+> +++ b/drivers/iio/industrialio-trigger.c
+> @@ -117,14 +117,17 @@ EXPORT_SYMBOL(iio_trigger_unregister);
+>
+>  int iio_trigger_set_immutable(struct iio_dev *indio_dev, struct iio_trigger *trig)
+>  {
+> +       struct iio_dev_opaque *iio_dev_opaque;
+> +
+>         if (!indio_dev || !trig)
+>                 return -EINVAL;
+>
+> +       iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+>         mutex_lock(&indio_dev->mlock);
+> -       WARN_ON(indio_dev->trig_readonly);
+> +       WARN_ON(iio_dev_opaque->trig_readonly);
+>
+>         indio_dev->trig = iio_trigger_get(trig);
+> -       indio_dev->trig_readonly = true;
+> +       iio_dev_opaque->trig_readonly = true;
 >         mutex_unlock(&indio_dev->mlock);
 >
 >         return 0;
->  }
->  EXPORT_SYMBOL(iio_device_set_clock);
->
-> +/**
-> + * iio_device_get_clock() - Retrieve current timestamping clock for the device
-> + * @indio_dev: IIO device structure containing the device
-> + */
-> +clockid_t iio_device_get_clock(const struct iio_dev *indio_dev)
-> +{
+> @@ -402,6 +405,7 @@ static ssize_t iio_trigger_write_current(struct device *dev,
+>                                          size_t len)
+>  {
+>         struct iio_dev *indio_dev = dev_to_iio_dev(dev);
 > +       struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
-> +
-> +       return iio_dev_opaque->clock_id;
-> +}
-> +EXPORT_SYMBOL(iio_device_get_clock);
-> +
->  /**
->   * iio_get_time_ns() - utility function to get a time stamp for events etc
->   * @indio_dev: device
+>         struct iio_trigger *oldtrig = indio_dev->trig;
+>         struct iio_trigger *trig;
+>         int ret;
+> @@ -411,7 +415,7 @@ static ssize_t iio_trigger_write_current(struct device *dev,
+>                 mutex_unlock(&indio_dev->mlock);
+>                 return -EBUSY;
+>         }
+> -       if (indio_dev->trig_readonly) {
+> +       if (iio_dev_opaque->trig_readonly) {
+>                 mutex_unlock(&indio_dev->mlock);
+>                 return -EPERM;
+>         }
 > diff --git a/include/linux/iio/iio-opaque.h b/include/linux/iio/iio-opaque.h
-> index d7c3036861ac..c9504e9da571 100644
+> index 96dd265103d0..10aa97239117 100644
 > --- a/include/linux/iio/iio-opaque.h
 > +++ b/include/linux/iio/iio-opaque.h
-> @@ -24,6 +24,7 @@
->   * @legacy_scan_el_group:      attribute group for legacy scan elements attribute group
->   * @legacy_buffer_group:       attribute group for legacy buffer attributes group
->   * @scan_index_timestamp:      cache of the index to the timestamp
-> + * @clock_id:                  timestamping clock posix identifier
->   * @chrdev:                    associated character device
->   * @flags:                     file ops related flags including busy flag.
->   * @debugfs_dentry:            device specific debugfs dentry
-> @@ -51,6 +52,7 @@ struct iio_dev_opaque {
->         struct attribute_group          legacy_buffer_group;
->
->         unsigned int                    scan_index_timestamp;
-> +       clockid_t                       clock_id;
->         struct cdev                     chrdev;
->         unsigned long                   flags;
->
+> @@ -8,6 +8,7 @@
+>   * @indio_dev:                 public industrial I/O device information
+>   * @id:                        used to identify device internally
+>   * @driver_module:             used to make it harder to undercut users
+> + * @trig_readonly:             mark the current trigger immutable
+>   * @event_interface:           event chrdevs associated with interrupt lines
+>   * @attached_buffers:          array of buffers statically attached by the driver
+>   * @attached_buffers_cnt:      number of buffers in the array of statically attached buffers
+> @@ -30,6 +31,7 @@ struct iio_dev_opaque {
+>         struct iio_dev                  indio_dev;
+>         int                             id;
+>         struct module                   *driver_module;
+> +       bool                            trig_readonly;
+>         struct iio_event_interface      *event_interface;
+>         struct iio_buffer               **attached_buffers;
+>         unsigned int                    attached_buffers_cnt;
 > diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-> index ed0537015eee..5606a3f4c4cb 100644
+> index 9e8e1358a032..672f141f74c5 100644
 > --- a/include/linux/iio/iio.h
 > +++ b/include/linux/iio/iio.h
-> @@ -509,7 +509,6 @@ struct iio_buffer_setup_ops {
->   * @name:              [DRIVER] name of the device.
->   * @label:              [DRIVER] unique name to identify which device this is
->   * @info:              [DRIVER] callbacks and constant info from driver
-> - * @clock_id:          [INTERN] timestamping clock posix identifier
->   * @setup_ops:         [DRIVER] callbacks to call before and after buffer
->   *                     enable/disable
->   * @priv:              [DRIVER] reference to driver's private information
-> @@ -538,7 +537,6 @@ struct iio_dev {
->         const char                      *name;
->         const char                      *label;
->         const struct iio_info           *info;
-> -       clockid_t                       clock_id;
->         const struct iio_buffer_setup_ops       *setup_ops;
+> @@ -503,7 +503,6 @@ struct iio_buffer_setup_ops {
+>   * @scan_timestamp:    [INTERN] set if any buffers have requested timestamp
+>   * @scan_index_timestamp:[INTERN] cache of the index to the timestamp
+>   * @trig:              [INTERN] current device trigger (buffer modes)
+> - * @trig_readonly:     [INTERN] mark the current trigger immutable
+>   * @pollfunc:          [DRIVER] function run on trigger being received
+>   * @pollfunc_event:    [DRIVER] function run on events trigger being received
+>   * @channels:          [DRIVER] channel specification structure table
+> @@ -535,7 +534,6 @@ struct iio_dev {
+>         bool                            scan_timestamp;
+>         unsigned                        scan_index_timestamp;
+>         struct iio_trigger              *trig;
+> -       bool                            trig_readonly;
+>         struct iio_poll_func            *pollfunc;
+>         struct iio_poll_func            *pollfunc_event;
 >
->         void                            *priv;
-> @@ -589,15 +587,7 @@ static inline void iio_device_put(struct iio_dev *indio_dev)
->                 put_device(&indio_dev->dev);
->  }
->
-> -/**
-> - * iio_device_get_clock() - Retrieve current timestamping clock for the device
-> - * @indio_dev: IIO device structure containing the device
-> - */
-> -static inline clockid_t iio_device_get_clock(const struct iio_dev *indio_dev)
-> -{
-> -       return indio_dev->clock_id;
-> -}
-> -
-> +clockid_t iio_device_get_clock(const struct iio_dev *indio_dev);
->  int iio_device_set_clock(struct iio_dev *indio_dev, clockid_t clock_id);
->
->  /**
 > --
 > 2.31.1
 >

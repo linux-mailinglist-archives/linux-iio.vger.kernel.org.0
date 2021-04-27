@@ -2,115 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C1EA136C108
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Apr 2021 10:34:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9272236C136
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Apr 2021 10:52:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235058AbhD0IfH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 27 Apr 2021 04:35:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60638 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234975AbhD0IfF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Apr 2021 04:35:05 -0400
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB906C061574
-        for <linux-iio@vger.kernel.org>; Tue, 27 Apr 2021 01:34:20 -0700 (PDT)
-Received: by mail-pj1-x102c.google.com with SMTP id f11-20020a17090a638bb02901524d3a3d48so6708194pjj.3
-        for <linux-iio@vger.kernel.org>; Tue, 27 Apr 2021 01:34:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ak7s2qFoFa0+7LG7NW9Df5TuS9EY4i8D09ozQkOFaU4=;
-        b=DxDoJlYwN3IB6ZnXBg8RStOGhfOxNxfb4MAsHLxCHu2J2VgVujmLgBoy5YrEUVbet+
-         RYfUQ46ZuKTut3XsIL+OWsgJ37zb2iJd2WBjR/JFwiiPRAhP5N1jh5lWHHWWRvEkJZY6
-         NVv+kRSPQ7RFa/eVgA+gv+vuwxYsyAz9VPnv1xO/a3oGBJH4pJgYuQNFSjp5xWmt487m
-         AxAKP5/J8AGAnHycR+R5c0ltgaxQx3vu1ybXPxFoPbVL+g6qA8UQVaEaAaWH/j9qhBEv
-         OTxAsbvNct4+xnrH65ErBylEj/4V/B+cnJfE0h0AF5EysZ1bPNrQCBd59VrpYAL570qH
-         LpfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ak7s2qFoFa0+7LG7NW9Df5TuS9EY4i8D09ozQkOFaU4=;
-        b=TZekopjH6syRXtpmsUkeukwTP/AMXjothY+hT0j6RFZwe6UkWRgJOL015xN9Kjte8m
-         Srn9GqeyeRT7SsCfnB5Xf0/kX0YfLe2qmnSYwrDuqrV8pUMizdfupWEFQzBMOgrStr5k
-         KmYtX1CYoQQ2qZacpvEmYTr7scMbzwNTAlloZPuSuzHWKkdF6usYZ2MwTqBH4FCrQgt9
-         rq6KEsfT4+BWWTZaaMUzEquv7xckrmpEiy5eGSlYU+C+jgT7UY4/1oK9yylMIyWSTGqH
-         Frc9Dh3t3Bk7bfR7aCYGPZ8QJT6mYikF1sNbZQnZOjaoA+IH6/UOrpvYZScIGETGpiqX
-         iKlw==
-X-Gm-Message-State: AOAM533mf0RNFFkVmBw4v/CNUZHuBzaSvmxN2UZxInFbdXDG4wzORc6N
-        1qCDMRSKnzVXYMyxyCKQDxKy5hALC6hnYkR6eKg=
-X-Google-Smtp-Source: ABdhPJxlNrBSnQlOjZIRJrbca69UYA45aUF6wf61CPcNa+iCfl4RGg2b28OnZUIeiLStInEEOVCFGiItE4j7GPeCg3k=
-X-Received: by 2002:a17:90a:1b0b:: with SMTP id q11mr19524587pjq.181.1619512460233;
- Tue, 27 Apr 2021 01:34:20 -0700 (PDT)
+        id S230354AbhD0IxY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 27 Apr 2021 04:53:24 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:37478 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229629AbhD0IxX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Apr 2021 04:53:23 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 13R8p1jY005446;
+        Tue, 27 Apr 2021 04:52:28 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 3866auh9d5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 27 Apr 2021 04:52:28 -0400
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 13R8qROd033982
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 27 Apr 2021 04:52:27 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.858.5; Tue, 27 Apr 2021
+ 04:52:25 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.858.5 via Frontend Transport;
+ Tue, 27 Apr 2021 04:52:25 -0400
+Received: from nsa.sphairon.box ([10.44.3.51])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 13R8qNJk007577;
+        Tue, 27 Apr 2021 04:52:24 -0400
+From:   Nuno Sa <nuno.sa@analog.com>
+To:     <linux-iio@vger.kernel.org>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH v3 0/6] Adis IRQ fixes and minor improvements 
+Date:   Tue, 27 Apr 2021 10:54:48 +0200
+Message-ID: <20210427085454.30616-1-nuno.sa@analog.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-References: <202103162301.oomY9NwI-lkp@intel.com> <ac51550d-c72e-4a85-ed0e-a4cddbf495be@infradead.org>
- <8d72be21988d46c2ac8ad0de15689452@huawei.com>
-In-Reply-To: <8d72be21988d46c2ac8ad0de15689452@huawei.com>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Tue, 27 Apr 2021 11:34:09 +0300
-Message-ID: <CA+U=DsppGq0CyWY+Y0ob-j+FuyPqd9hpb46wmYy9u9CJ6X4gKA@mail.gmail.com>
-Subject: Re: FW: ingenic-adc.c:undefined reference to `clk_get_parent'
-To:     Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: k8eYQIGn-GA7P7wnCUZ523Ts5tNL_oup
+X-Proofpoint-GUID: k8eYQIGn-GA7P7wnCUZ523Ts5tNL_oup
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
+ definitions=2021-04-27_05:2021-04-27,2021-04-27 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=740
+ priorityscore=1501 spamscore=0 bulkscore=0 impostorscore=0 clxscore=1015
+ mlxscore=0 lowpriorityscore=0 malwarescore=0 adultscore=0 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104270065
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Apr 26, 2021 at 11:43 AM Jonathan Cameron
-<jonathan.cameron@huawei.com> wrote:
->
->
 
-The .config would help to reproduce this.
-I don't see it attached.
+The primary goal of this series was to fix the return value on some
+trigger handlers as spotted in [1]. While doing it, I found some minor
+improvements that I think are simple enough to include in this series.
 
->
-> -----Original Message-----
-> From: Randy Dunlap [mailto:rdunlap@infradead.org]
-> Sent: 26 April 2021 06:44
-> To: kernel test robot <lkp@intel.com>; Jonathan Cameron <jonathan.cameron@huawei.com>; linux-clk@vger.kernel.org
-> Cc: kbuild-all@lists.01.org; linux-kernel@vger.kernel.org; Andy Shevchenko <andy.shevchenko@gmail.com>; Stephen Boyd <sboyd@kernel.org>; Michael Turquette <mturquette@baylibre.com>
-> Subject: Re: ingenic-adc.c:undefined reference to `clk_get_parent'
->
-> [add linux-clk + maintainers]
->
-> On 3/16/21 8:54 AM, kernel test robot wrote:
-> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-> > head:   1a4431a5db2bf800c647ee0ed87f2727b8d6c29c
-> > commit: a07a4fe5ff460e99293c0d682421920d54e31d7f iio:adc:ingenic: drop of_match_ptr protection and include mod_devicetable.h
-> > date:   8 months ago
-> > config: mips-randconfig-p001-20210316 (attached as .config)
-> > compiler: mips-linux-gcc (GCC) 9.3.0
-> > reproduce (this is a W=1 build):
-> >         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-> >         chmod +x ~/bin/make.cross
-> >         # https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=a07a4fe5ff460e99293c0d682421920d54e31d7f
-> >         git remote add linus https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-> >         git fetch --no-tags linus master
-> >         git checkout a07a4fe5ff460e99293c0d682421920d54e31d7f
-> >         # save the attached .config to linux build tree
-> >         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-9.3.0 make.cross
-> > ARCH=mips
-> >
-> > If you fix the issue, kindly add following tag as appropriate
-> > Reported-by: kernel test robot <lkp@intel.com>
-> >
-> > All errors (new ones prefixed by >>):
-> >
-> >    mips-linux-ld: drivers/iio/adc/ingenic-adc.o: in function `jz4770_adc_init_clk_div':
-> >>> ingenic-adc.c:(.text+0x8c): undefined reference to `clk_get_parent'
-> >    mips-linux-ld: drivers/iio/adc/ingenic-adc.o: in function `jz4725b_adc_init_clk_div':
-> >    ingenic-adc.c:(.text+0x164): undefined reference to `clk_get_parent'
->
-> Hi,
->
-> My guess (analysis) suggests that this problem is due to a difference in when clk_get_parent() is available between <linux/clk.h> where it depends on CONFIG_HAVE_CLK and drivers/clk/clk.c, which is built iff CONFIG_COMMON_CLK.
->
-> Any comments/suggestions?
->
-> thanks.
-> --
-> ~Randy
->
+As for the first 2 patches, I opted to not do any functional change so
+I'm keeping the 'if (!adis->buffer)' check. However, 'adis-buffer' is
+allocated in 'update_scan_mode' hook which means we should be sure that
+the buffer is allocated and the check is really not needed. I did not
+went into the details but is there any way for the trigger handler to be
+called before the 'update_scan_mode' hook? If not, I'm happy in sending
+a v2 where we just remove the 'if'...
+
+
+Changes in v2:
+ * Remove the 'if' check for the allocated buffer;
+ * Make sure the adis 'state_lock' is unlocked on error paths;
+ * Fixed the commit message on the first 3 patches.
+ * Dropped ("iio: adis16475: re-set max spi transfer") and added 3 new
+patches (last 3 in the series ) to fix a potential race with the spi core
+as discussed in [2].
+
+Changes in v3:
+ * Improved commit description on ("iio: adis16475: do not return ints in
+irq handlers");
+ * Reordered patch 2 and 3 so that patch 3 is easier to apply;
+ * Re-arranged the error handling on 'spi_sync()' error path.
+
+[1]: https://marc.info/?l=linux-iio&m=161815197426882&w=2
+[2]: https://marc.info/?l=linux-iio&m=161884696722142&w=2
+
+Nuno Sa (6):
+  iio: adis16475: do not return ints in irq handlers
+  iio: adis_buffer: update device page after changing it
+  iio: adis_buffer: don't push data to buffers on failure
+  iio: adis: add burst_max_speed_hz variable
+  iio: adis16475: do not directly change spi 'max_speed_hz'
+  iio: adis16400: do not directly change spi 'max_speed_hz'
+
+ drivers/iio/imu/adis16400.c   | 15 ++-------------
+ drivers/iio/imu/adis16475.c   |  9 +++------
+ drivers/iio/imu/adis_buffer.c | 16 ++++++++++------
+ include/linux/iio/imu/adis.h  |  2 ++
+ 4 files changed, 17 insertions(+), 25 deletions(-)
+
+-- 
+2.31.1
+

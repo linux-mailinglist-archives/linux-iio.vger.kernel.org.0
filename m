@@ -2,85 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B57F236C8A4
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Apr 2021 17:31:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D7D036C9E9
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Apr 2021 19:00:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237474AbhD0Pbu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 27 Apr 2021 11:31:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40358 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235974AbhD0Pbu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Apr 2021 11:31:50 -0400
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F7AEC061574;
-        Tue, 27 Apr 2021 08:31:07 -0700 (PDT)
-Received: by mail-pj1-x1035.google.com with SMTP id m6-20020a17090a8586b02901507e1acf0fso7428882pjn.3;
-        Tue, 27 Apr 2021 08:31:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=NlT55eDRLRMC68OgsxtoMKsNvSDlBl3a8sRcKjxQNro=;
-        b=Hsrl4pcZEzqOhzhrdTOljEvfQ2Y0w9RhmRposz67Ofezf2bX19lLEj4spo7KcC8lYC
-         pdypJ7c4EtrL08419WDnWhD0AbImk3ThLjzE0LGr+vjLXj7KmEp3iZz+xGUt5gWs1cUs
-         S7MqHYQsti62PNNb4f2uZpv7SHu2UyeWvyz7yl+LW6o0zOpT15NF7txKYHk2jf43LVhC
-         SO6JNQ+t7jUmKXvYgT3znTk17QfhoWczK9qewsCy0YAeAn+aWovww1KWdiHBGBh6aJ1/
-         BEQhO0nK5t4Q7Sq87T8h6982byoywG1sVE9paKWUUEyBAXaWUo8XkSgNZyNp32goJzx+
-         ekfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=NlT55eDRLRMC68OgsxtoMKsNvSDlBl3a8sRcKjxQNro=;
-        b=SiTKmAFra/CoUJb4qe8c4Ro9poALC6DzR/dn0sgt/QjBtnRSTYzzZgGozSY7At15vE
-         o9btYbaXp6FHUopZtDxoh2U+0FS8TATlErcGypWCabql3ba4J3Qh5mv0ZuQO+rfoDQaQ
-         DVzYmZpOdQQl5LJQXZSAFWu5mfd1w45VIcSxwuHMhUT+1e7MITWtV2WsooHJp3FrVYjz
-         kkKvUohYcDVSSmAwY6onFaNG8DPDSUx00brzmx3PLxFr0EhtV7GqhpKd02h3N81/zi8/
-         W+wwBVEuHgTLmZ3nhyso7aPlGGmhNch8zdTzeSZLgsz6q3Ev95+PQty7yZRC2CqoapSO
-         hzQg==
-X-Gm-Message-State: AOAM531X6vTBreyvyIu9J6jt1zqK3qIk+XVSNowgwEqDblZYAz9TJsit
-        4kmjkZdu85F++01xzFKxvZFyieVbxzwYOK/Is+A=
-X-Google-Smtp-Source: ABdhPJwHHDqr6o7NKershRtJgu3HsYsg9QK8K4jG405d1cw6qHyCoCAYBGxal5Lc9rvzbi4Ymuxfn6gGYmRYFUAXguw=
-X-Received: by 2002:a17:902:e546:b029:ec:a7f5:2a88 with SMTP id
- n6-20020a170902e546b02900eca7f52a88mr25297336plf.21.1619537466620; Tue, 27
- Apr 2021 08:31:06 -0700 (PDT)
+        id S238104AbhD0RA5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 27 Apr 2021 13:00:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46364 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237893AbhD0RAv (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 27 Apr 2021 13:00:51 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2504C6103E;
+        Tue, 27 Apr 2021 17:00:05 +0000 (UTC)
+Date:   Tue, 27 Apr 2021 18:00:50 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>, devicetree@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v4 0/2] iio:adc:ad7476: Regulator support and binding
+ doc
+Message-ID: <20210427180050.5c6a9d76@jic23-huawei>
+In-Reply-To: <20210425163154.73209-1-jic23@kernel.org>
+References: <20210425163154.73209-1-jic23@kernel.org>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20210423101951.2876009-1-sean@geanix.com> <CAHp75VdEHy0-F-pg8sSUF5FK=NfDgBuDj0wLWqpGjpqE11mjww@mail.gmail.com>
- <5110607a-c94a-d833-fd7d-52bd40d35b79@geanix.com>
-In-Reply-To: <5110607a-c94a-d833-fd7d-52bd40d35b79@geanix.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 27 Apr 2021 18:30:50 +0300
-Message-ID: <CAHp75Vfgk7-0jg1K9TqkBcrkLe4B22RrbpMswGGkVSN5OrkWzQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] iio: accel: add support for FXLS8962AF/FXLS8964AF accelerometers
-To:     Sean Nyekjaer <sean@geanix.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        =?UTF-8?B?TnVubyBTw6E=?= <Nuno.Sa@analog.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        devicetree <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Apr 27, 2021 at 6:11 PM Sean Nyekjaer <sean@geanix.com> wrote:
-> On 23/04/2021 14.51, Andy Shevchenko wrote:
-> >> +               default:
-> >> +                       ret = -EINVAL;
-> >> +                       break;
-> > return -EINVAL;
-> >
-> >> +               }
-> >> +
-> >> +               iio_device_release_direct_mode(indio_dev);
-> Hi Andy,
->
-> Thanks for the review :)
-> Will have to set ret in order to clear the direct_mode();
+On Sun, 25 Apr 2021 17:31:52 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-Right, thanks for clarifying!
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> This driver supports a whole load of devices with a range of different
+> power supply connections.
+> 
+> Lars-Peter Clausen pointed out v1 did not handle the the ad7091r which
+> an internal voltage reference, but that can be over-driven on the vref_in /
+> vref_out pin.  The v2 handles that device properly.  I also realized that
+> I'd the binding was more restrictive for devices with internal references
+> than it needed to be (required vcc-supply) so I've relaxed that in
+> the updated bindings.  Also reorganized the big allOf block in the
+> binding doc to put all the constraints on reference voltage first.
+> 
+> v3 incorporates Lars' suggestion to set the regulator pointer to null
+> as a way to indicate that we should definitely use the internal reference.
+> 
+> v4 fixes case of errors on the devm_regulator_get_optional() that are about
+> something different than -ENODEV which signifies the regulator isn't
+> specified.
+Series applied to the togreg branch of iio.git and pushed out as testing
+for the autobuilders to poke at it and see what I missed.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Thanks,
+
+Jonathan
+> 
+> Jonathan Cameron (2):
+>   iio:adc:ad7476: Handle the different regulators used by various parts.
+>   dt-bindings:iio:adc:adi,ad7476: Add missing binding document
+> 
+>  .../bindings/iio/adc/adi,ad7476.yaml          | 174 ++++++++++++++++++
+>  drivers/iio/adc/ad7476.c                      | 118 ++++++++++--
+>  2 files changed, 277 insertions(+), 15 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7476.yaml
+> 
+

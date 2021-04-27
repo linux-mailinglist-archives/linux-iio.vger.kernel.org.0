@@ -2,55 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FBA736C08F
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Apr 2021 10:07:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D41DE36C0A4
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Apr 2021 10:09:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235054AbhD0IIK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 27 Apr 2021 04:08:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54722 "EHLO
+        id S231475AbhD0IJs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 27 Apr 2021 04:09:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235037AbhD0III (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Apr 2021 04:08:08 -0400
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CAE2C061574
-        for <linux-iio@vger.kernel.org>; Tue, 27 Apr 2021 01:07:25 -0700 (PDT)
-Received: by mail-pf1-x435.google.com with SMTP id h11so1181360pfn.0
-        for <linux-iio@vger.kernel.org>; Tue, 27 Apr 2021 01:07:25 -0700 (PDT)
+        with ESMTP id S230324AbhD0IJr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Apr 2021 04:09:47 -0400
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51EE0C061574
+        for <linux-iio@vger.kernel.org>; Tue, 27 Apr 2021 01:09:04 -0700 (PDT)
+Received: by mail-pf1-x42b.google.com with SMTP id 10so5408839pfl.1
+        for <linux-iio@vger.kernel.org>; Tue, 27 Apr 2021 01:09:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=uDOToIY5hsKyRt7oOXROnDg+mLriF+/m7D3nKk2Q+UM=;
-        b=r+WVef3Fq9tWMC20lID/Oir9NqCg+XZ8fMjKhR5U5UD1dzuyrN5ny1ZVwQiyvGbPwH
-         wgItNoK9+nnLDsI4ZnbX1NYpIR9z6Cq5f/UbV6PY49f6KHS5byOHgVmmyS5wzQqeKixU
-         jNdwfccMEjFRkwEtqfyN0bl6cpR3mEb0gkRU06OLZorTD8gEjo61i+mYeF+qOyhisO1F
-         y0TVidnYaaQZTM0JTyDCjT7d2PUrauYfeGCNUEvM0+5ISxd2A/gtjPOh8BPp8BjcV4Tn
-         qR5PfpEGIA3uXokzlAKwBoprC4/XXPQD2fz4bcYIoHhLrv8FJIQJ3VBCILMDQ19BASM3
-         +V/Q==
+        bh=a42McrxsZBHfAnNDEN0ZkQMO63ZQN6j4zRouiKivhDE=;
+        b=ZSHkYyPzQRXOTl+Cd3p0LSCMZaZ6y0aJHFiNbu7epGr0VTDoQHiUVRplx2HPRqWACJ
+         6yL9PWSj/rVOmPX/KKl1oLrjUdeCLa9x140ZCP+HelqwGVfjqFbAEW1KNsu7zXrXzbjj
+         AZPcbfZj3jgnVEJvc0A8gEbsUt1+kIPeallgLEnB28FRsvXZT9z05Zu1d6FbZuv/YOUR
+         /u0ny/hdMy/iwx2adqKym4+m1lO8TXIchqDgjiIkcvU3LrK4u/xPiOGf21E5VfuiXSJs
+         4+jqjrIpfYDBv2m9pHeST5phERut4RgdxZ+RsY/IE9GdXTnjCUqxuDxiL19TIKrYK7qS
+         kfOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=uDOToIY5hsKyRt7oOXROnDg+mLriF+/m7D3nKk2Q+UM=;
-        b=qFcOY7sZ9WtJxa0fg6NUHwxpUod9KDBt/NMieEtsKOxZQT516jUphKDE3ztAh+RP48
-         JNe4amyUWHQoSvIYzXa5HTapagvIzaxtM4hN63Rnn1NZ0qMCvHGcVlmHiGYLgTyp4l+1
-         dS1fdhC6rHTp6mSJvRzGAsIEtzXcRd3tpHODTMHInJIULvP8I2DTMbr3YCcJa/h7T0QJ
-         9JdWjd563q4eCeGfu8b1jZpB/fAahCMNZ+VmOOZX9XppwHWzR6prLPJEVuOZiGc1wbuE
-         y4t0pCMm12xP+L6CKuKmaw+NFOkZDtZAJ2yv9hgCrT0RjieyygVAnhh75y9RmgiikeMd
-         zYtg==
-X-Gm-Message-State: AOAM530ri2DL/vM3j2xlCOgM668wwwO5KDd/Orz2A2rJLoe2lAy4TLG2
-        uYLFHf5chXx/e2RyFkfznr7FbWr5XpKbvljZpCY=
-X-Google-Smtp-Source: ABdhPJysAO3VH7d8C7puZnD9hOUn7Ky1LQI77mNiRHQ6VNTjLVduWv6cZWD5FJcfyoYsNjZLC5PEs+vTSreTptcFvfo=
-X-Received: by 2002:a62:3486:0:b029:24c:34c0:3c7a with SMTP id
- b128-20020a6234860000b029024c34c03c7amr21474028pfa.36.1619510844763; Tue, 27
- Apr 2021 01:07:24 -0700 (PDT)
+        bh=a42McrxsZBHfAnNDEN0ZkQMO63ZQN6j4zRouiKivhDE=;
+        b=Gbm48WqRt2Bj8flsxgyrQiHtW0rMVRvf2wjwg3kZYtE5HwvQp9SiKLtLuX9NOJl3I+
+         va+2dYFBQSFVcRjF4AK1KeI8jJYiQ1VjIqk5UucUl606KrHXYURvcMdW3a4NmuHExc3A
+         nxvNvNd5ELlFCiIzRDwZlFO2U+2wUQ184qxqbsyus7lOW9rOPFfTQ8dDQHNKIcwstPH6
+         SUAfY0LAyNvtnSWco+xQrwGhSD7SRT0Lx6hy51KezGdzgoSFlrTKIY2ElIlDC37rCWEj
+         lUI2zajs0jze2v17XIU8Lhd+cfsKGyOIqbiiD5ySj07p6V+DeNzsqs/laBr1HLeAXwFD
+         MjIQ==
+X-Gm-Message-State: AOAM533VpxUPk5uOwowIrpqdUaPq7MEel+5ZLAo1PKEkQ+ZuDpwwJKf2
+        aNbXs2HLtu5ZqQdlg8vwGOpJmpA2ic1u3vWZ9Vo=
+X-Google-Smtp-Source: ABdhPJzXtl2lLABwda7JP5RH5hjs6ZyGO6IeRTMJgLIX6oP3eRTTsniypKlBPuIuzAuQFu36/JfjHkGRMj4nXggjla4=
+X-Received: by 2002:a63:6805:: with SMTP id d5mr20363032pgc.273.1619510943905;
+ Tue, 27 Apr 2021 01:09:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210426174911.397061-1-jic23@kernel.org> <20210426174911.397061-9-jic23@kernel.org>
-In-Reply-To: <20210426174911.397061-9-jic23@kernel.org>
+References: <20210426174911.397061-1-jic23@kernel.org>
+In-Reply-To: <20210426174911.397061-1-jic23@kernel.org>
 From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Tue, 27 Apr 2021 11:07:13 +0300
-Message-ID: <CA+U=Dsq5eFonKFbrQTKLRD4L2WSa7sH=6xgxrb2QkO+_sbuJpA@mail.gmail.com>
-Subject: Re: [PATCH 8/9] iio: core: move @flags from struct iio_dev to struct iio_dev_opaque
+Date:   Tue, 27 Apr 2021 11:08:52 +0300
+Message-ID: <CA+U=DsrcU7F5JHCZsoRdiXa0oKmJ4DxDktHYTRW4z1TdhA2P4Q@mail.gmail.com>
+Subject: Re: [PATCH 0/9] iio: Move more things from iio_dev to iio_dev_opaque
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
@@ -63,90 +62,101 @@ On Mon, Apr 26, 2021 at 8:50 PM Jonathan Cameron <jic23@kernel.org> wrote:
 >
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >
-> No reason any driver should ever need access to this field, so hide it.
+> Intent here is to clear out the low hanging fruit so we can focus on the
+> more interesting elements.
+>
+> Hopefully this set are all uncontroversial. Lightly tested only but
+> all fairly mechanical so hopefully I didn't mess up.
 >
 
+Series looks good.
+Thanks for moving this forward :)
 
-Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
+Alex
 
-
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->  drivers/iio/industrialio-core.c | 6 +++---
->  include/linux/iio/iio-opaque.h  | 2 ++
->  include/linux/iio/iio.h         | 2 --
->  3 files changed, 5 insertions(+), 5 deletions(-)
+> As for the others my current thinking is as follows
 >
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> index 6fbe29f0b1de..4a4c02fea152 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -1720,7 +1720,7 @@ static int iio_chrdev_open(struct inode *inode, struct file *filp)
->         struct iio_dev *indio_dev = &iio_dev_opaque->indio_dev;
->         struct iio_dev_buffer_pair *ib;
+> mlock: Still some instances to clear out of this being used to protect things
+> it should not be used for. Long run we definitely want to move this one.
 >
-> -       if (test_and_set_bit(IIO_BUSY_BIT_POS, &indio_dev->flags))
-> +       if (test_and_set_bit(IIO_BUSY_BIT_POS, &iio_dev_opaque->flags))
->                 return -EBUSY;
+> scan_timestamp: Can easily use a look up function in drivers that access this
+> directly, but that feels like an unwanted level of indirection in
+> iio_push_to_buffers_with_timestamp().  Perhaps worth doing anyway.
+> scan_bytes is also used in this function.
 >
->         iio_device_get(indio_dev);
-> @@ -1728,7 +1728,7 @@ static int iio_chrdev_open(struct inode *inode, struct file *filp)
->         ib = kmalloc(sizeof(*ib), GFP_KERNEL);
->         if (!ib) {
->                 iio_device_put(indio_dev);
-> -               clear_bit(IIO_BUSY_BIT_POS, &indio_dev->flags);
-> +               clear_bit(IIO_BUSY_BIT_POS, &iio_dev_opaque->flags);
->                 return -ENOMEM;
->         }
+> active_scan_mask and masklength: Both used in valid ways inside drivers.
+> Could be wrapped up in access functions, but it does seem a little
+> convoluted.
 >
-> @@ -1754,7 +1754,7 @@ static int iio_chrdev_release(struct inode *inode, struct file *filp)
->                 container_of(inode->i_cdev, struct iio_dev_opaque, chrdev);
->         struct iio_dev *indio_dev = &iio_dev_opaque->indio_dev;
->         kfree(ib);
-> -       clear_bit(IIO_BUSY_BIT_POS, &indio_dev->flags);
-> +       clear_bit(IIO_BUSY_BIT_POS, &iio_dev_opaque->flags);
->         iio_device_put(indio_dev);
+> trig: This is used correctly in lots of drivers, so should stay in
+> struct iio_dev.
 >
->         return 0;
-> diff --git a/include/linux/iio/iio-opaque.h b/include/linux/iio/iio-opaque.h
-> index 2f8ef5d15a66..d7c3036861ac 100644
-> --- a/include/linux/iio/iio-opaque.h
-> +++ b/include/linux/iio/iio-opaque.h
-> @@ -25,6 +25,7 @@
->   * @legacy_buffer_group:       attribute group for legacy buffer attributes group
->   * @scan_index_timestamp:      cache of the index to the timestamp
->   * @chrdev:                    associated character device
-> + * @flags:                     file ops related flags including busy flag.
->   * @debugfs_dentry:            device specific debugfs dentry
->   * @cached_reg_addr:           cached register address for debugfs reads
->   * @read_buf:                  read buffer to be used for the initial reg read
-> @@ -51,6 +52,7 @@ struct iio_dev_opaque {
+> Jonathan Cameron (9):
+>   iio: core: move @id from struct iio_dev to struct iio_dev_opaque
+>   iio: avoid shadowing of variable name in to_iio_dev_opaque()
+>   iio: core: move @driver_module from struct iio_dev to struct
+>     iio_dev_opaque
+>   iio: core: move @trig_readonly from struct iio_dev to struct
+>     iio_dev_opaque
+>   iio: core: move @scan_index_timestamp to struct iio_dev_opaque
+>   iio: core: move @info_exist_lock to struct iio_dev_opaque
+>   iio: core: move @chrdev from struct iio_dev to struct iio_dev_opaque
+>   iio: core: move @flags from struct iio_dev to struct iio_dev_opaque
+>   iio: core: move @clock_id from struct iio_dev to struct iio_dev_opaque
 >
->         unsigned int                    scan_index_timestamp;
->         struct cdev                     chrdev;
-> +       unsigned long                   flags;
->
->  #if defined(CONFIG_DEBUG_FS)
->         struct dentry                   *debugfs_dentry;
-> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-> index 586e2dc4fbf3..ed0537015eee 100644
-> --- a/include/linux/iio/iio.h
-> +++ b/include/linux/iio/iio.h
-> @@ -512,7 +512,6 @@ struct iio_buffer_setup_ops {
->   * @clock_id:          [INTERN] timestamping clock posix identifier
->   * @setup_ops:         [DRIVER] callbacks to call before and after buffer
->   *                     enable/disable
-> - * @flags:             [INTERN] file ops related flags including busy flag.
->   * @priv:              [DRIVER] reference to driver's private information
->   *                     **MUST** be accessed **ONLY** via iio_priv() helper
->   */
-> @@ -542,7 +541,6 @@ struct iio_dev {
->         clockid_t                       clock_id;
->         const struct iio_buffer_setup_ops       *setup_ops;
->
-> -       unsigned long                   flags;
->         void                            *priv;
->  };
+>  drivers/iio/accel/adxl372.c                   |  4 +-
+>  drivers/iio/accel/bma180.c                    |  2 +-
+>  drivers/iio/accel/bmc150-accel-core.c         |  4 +-
+>  drivers/iio/accel/kxcjk-1013.c                |  4 +-
+>  drivers/iio/accel/mma8452.c                   |  2 +-
+>  drivers/iio/accel/mxc4005.c                   |  2 +-
+>  drivers/iio/accel/stk8312.c                   |  2 +-
+>  drivers/iio/accel/stk8ba50.c                  |  2 +-
+>  drivers/iio/adc/ad7606.c                      |  3 +-
+>  drivers/iio/adc/ad7766.c                      |  3 +-
+>  drivers/iio/adc/ad7768-1.c                    |  3 +-
+>  drivers/iio/adc/ad_sigma_delta.c              |  2 +-
+>  drivers/iio/adc/at91_adc.c                    |  4 +-
+>  drivers/iio/adc/dln2-adc.c                    |  3 +-
+>  drivers/iio/adc/ina2xx-adc.c                  |  3 +-
+>  drivers/iio/adc/ti-ads131e08.c                |  2 +-
+>  drivers/iio/adc/xilinx-xadc-core.c            |  2 +-
+>  .../buffer/industrialio-triggered-buffer.c    |  2 +-
+>  drivers/iio/chemical/atlas-sensor.c           |  2 +-
+>  drivers/iio/chemical/ccs811.c                 |  2 +-
+>  drivers/iio/chemical/scd30_core.c             |  3 +-
+>  .../common/hid-sensors/hid-sensor-trigger.c   |  2 +-
+>  drivers/iio/gyro/adxrs290.c                   |  2 +-
+>  drivers/iio/gyro/bmg160_core.c                |  4 +-
+>  drivers/iio/gyro/fxas21002c_core.c            |  2 +-
+>  drivers/iio/gyro/itg3200_buffer.c             |  2 +-
+>  drivers/iio/gyro/mpu3050-core.c               |  2 +-
+>  drivers/iio/health/afe4403.c                  |  2 +-
+>  drivers/iio/health/afe4404.c                  |  2 +-
+>  drivers/iio/imu/adis_trigger.c                |  3 +-
+>  drivers/iio/imu/bmi160/bmi160_core.c          |  3 +-
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c |  2 +-
+>  drivers/iio/imu/kmx61.c                       |  2 +-
+>  drivers/iio/industrialio-buffer.c             | 12 ++-
+>  drivers/iio/industrialio-core.c               | 76 +++++++++++++------
+>  drivers/iio/industrialio-trigger.c            | 19 +++--
+>  drivers/iio/industrialio-triggered-event.c    |  2 +-
+>  drivers/iio/inkern.c                          | 46 ++++++-----
+>  drivers/iio/light/acpi-als.c                  |  3 +-
+>  drivers/iio/light/rpr0521.c                   |  2 +-
+>  drivers/iio/light/si1145.c                    |  2 +-
+>  drivers/iio/light/vcnl4000.c                  |  3 +-
+>  drivers/iio/light/vcnl4035.c                  |  2 +-
+>  drivers/iio/magnetometer/bmc150_magn.c        |  2 +-
+>  drivers/iio/magnetometer/rm3100-core.c        |  2 +-
+>  drivers/iio/potentiostat/lmp91000.c           |  3 +-
+>  drivers/iio/pressure/zpa2326.c                |  3 +-
+>  drivers/iio/proximity/as3935.c                |  3 +-
+>  drivers/iio/proximity/sx9310.c                |  2 +-
+>  drivers/iio/proximity/sx9500.c                |  2 +-
+>  include/linux/iio/iio-opaque.h                | 22 +++++-
+>  include/linux/iio/iio.h                       | 29 +------
+>  52 files changed, 188 insertions(+), 131 deletions(-)
 >
 > --
 > 2.31.1

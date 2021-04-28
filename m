@@ -2,36 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C3D2736D3D6
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Apr 2021 10:22:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCA0636D3DA
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Apr 2021 10:22:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236787AbhD1IXJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 28 Apr 2021 04:23:09 -0400
-Received: from first.geanix.com ([116.203.34.67]:54878 "EHLO first.geanix.com"
+        id S231635AbhD1IXK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 28 Apr 2021 04:23:10 -0400
+Received: from first.geanix.com ([116.203.34.67]:54892 "EHLO first.geanix.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231635AbhD1IXJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 28 Apr 2021 04:23:09 -0400
+        id S237049AbhD1IXK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 28 Apr 2021 04:23:10 -0400
 Received: from zen.. (unknown [185.17.218.86])
-        by first.geanix.com (Postfix) with ESMTPSA id B285E466237;
-        Wed, 28 Apr 2021 08:22:22 +0000 (UTC)
+        by first.geanix.com (Postfix) with ESMTPSA id C9DA4466247;
+        Wed, 28 Apr 2021 08:22:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1619598142; bh=rXBeEcA9CZf0wbgtQwxj0IR+2E3k+SkK1PjHdt8Xma8=;
-        h=From:To:Cc:Subject:Date;
-        b=IILr6Ar7iYI5TRHeUH14Vnp1SzVczjUfgotv5FG58NwLHxelZf0asoecXLDZlRVDO
-         i0Hm4jh9cgSPkTminPa0tUGOf8k7K+PORJxs5LkFmFqFHtmMDYbACS8n99xTOqEQ6r
-         pyPoN7Hpv0ei/B7k4MKzCqu8s0uX+IqlJq0DIG3wlU0ilBLNhXBlixAMijBK7LuThx
-         Zq2pflRvp2H6u/hy0ONUHA/EiQyjWDqvaxm2yB0uB1/J3Yf0q40WXM7pHCrtbhrJCd
-         ZD+qoM3OoVuDsrEnlL0+CnbStLLQYbX0drrMCk8JSUu/Un1STdalr2JTjo9swSxp0q
-         Q4V/TRrz7AsKw==
+        t=1619598144; bh=yxyUaE3usL1VvpfSS4eG3SS+uBcOJ5IHRl4PETO1cVY=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=ACXZz79MoaN8kOKBmLyC+p41voTeX8aBpKJoNtx/QWZYUPAZch4iwZtrTGgtyoyqP
+         ZPgVG9O4VkqASuZROIRrqw8YxD5ai7nxSVGQ7E/qvQjf5XhDVQAV0KZM8HFQegYyh8
+         ur5IU1MooyF7K/fNPtd2FFjhMBAsnUDByWUJYPsSk4NvzyUJU0/d6B9Xr3sHQpuy6K
+         Qcm7flchn5BrrunzVfpV+iUZLaMohvLG2gONph0qBlt16dtenH7TuNfpUtbVGLknpX
+         6wJtNZ6iECfLY7KiCCFz6hc7gDg7qF/XYpIMHcVe4e7tkO8vspAhSREY1BFTyAdTJT
+         X9UFaAuz2EJvQ==
 From:   Sean Nyekjaer <sean@geanix.com>
 To:     jic23@kernel.org, linux-iio@vger.kernel.org,
         andy.shevchenko@gmail.com, lars@metafoo.de, Nuno.Sa@analog.com,
         robh+dt@kernel.org, devicetree@vger.kernel.org
 Cc:     Sean Nyekjaer <sean@geanix.com>
-Subject: [RFC PATCH 1/4] dt-bindings: iio: accel: fxls8962af: add interrupt options
-Date:   Wed, 28 Apr 2021 10:22:00 +0200
-Message-Id: <20210428082203.3587022-1-sean@geanix.com>
+Subject: [RFC PATCH 2/4] iio: accel: fxls8962af: add interrupt support
+Date:   Wed, 28 Apr 2021 10:22:01 +0200
+Message-Id: <20210428082203.3587022-2-sean@geanix.com>
 X-Mailer: git-send-email 2.31.0
+In-Reply-To: <20210428082203.3587022-1-sean@geanix.com>
+References: <20210428082203.3587022-1-sean@geanix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
@@ -42,52 +44,185 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This in done for supporting hw buffered sampling
+Preparation commit for the next that adds hw buffered sampling
 
 Signed-off-by: Sean Nyekjaer <sean@geanix.com>
 ---
 This series depends on "iio: accel: add support for
 FXLS8962AF/FXLS8964AF accelerometers"
 
- .../bindings/iio/accel/nxp,fxls8962af.yaml           | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/iio/accel/fxls8962af-core.c | 116 ++++++++++++++++++++++++++++
+ 1 file changed, 116 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml b/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
-index c7be7a1679ab..e0e5542377df 100644
---- a/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
-+++ b/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
-@@ -32,6 +32,16 @@ properties:
-   interrupts:
-     maxItems: 1
+diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
+index b47d81bebf43..848f3d68f5d4 100644
+--- a/drivers/iio/accel/fxls8962af-core.c
++++ b/drivers/iio/accel/fxls8962af-core.c
+@@ -15,6 +15,7 @@
+ #include <linux/bits.h>
+ #include <linux/bitfield.h>
+ #include <linux/module.h>
++#include <linux/of_irq.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/regmap.h>
+@@ -54,6 +55,10 @@
+ #define FXLS8962AF_SC3_WAKE_ODR_PREP(x)		FIELD_PREP(FXLS8962AF_SC3_WAKE_ODR_MASK, x)
+ #define FXLS8962AF_SC3_WAKE_ODR_GET(x)		FIELD_GET(FXLS8962AF_SC3_WAKE_ODR_MASK, x)
+ #define FXLS8962AF_SENS_CONFIG4			0x18
++#define FXLS8962AF_SC4_INT_PP_OD_MASK		BIT(1)
++#define FXLS8962AF_SC4_INT_PP_OD_PREP(x)	FIELD_PREP(FXLS8962AF_SC4_INT_PP_OD_MASK, x)
++#define FXLS8962AF_SC4_INT_POL_MASK		BIT(0)
++#define FXLS8962AF_SC4_INT_POL_PREP(x)		FIELD_PREP(FXLS8962AF_SC4_INT_POL_MASK, x)
+ #define FXLS8962AF_SENS_CONFIG5			0x19
  
-+  interrupt-names:
-+    maxItems: 1
-+    items:
-+      enum:
-+        - INT1
-+        - INT2
+ #define FXLS8962AF_WAKE_IDLE_LSB		0x1b
+@@ -62,6 +67,9 @@
+ 
+ #define FXLS8962AF_INT_EN			0x20
+ #define FXLS8962AF_INT_PIN_SEL			0x21
++#define FXLS8962AF_INT_PIN_SEL_MASK		GENMASK(7, 0)
++#define FXLS8962AF_INT_PIN_SEL_INT1		0x00
++#define FXLS8962AF_INT_PIN_SEL_INT2		GENMASK(7, 0)
+ 
+ #define FXLS8962AF_OFF_X			0x22
+ #define FXLS8962AF_OFF_Y			0x23
+@@ -142,6 +150,11 @@ enum {
+ 	fxls8962af_idx_ts,
+ };
+ 
++enum fxls8962af_int_pin {
++	FXLS8962AF_PIN_INT1,
++	FXLS8962AF_PIN_INT2,
++};
 +
-+  drive-open-drain:
-+    type: boolean
+ static int fxls8962af_drdy(struct fxls8962af_data *data)
+ {
+ 	struct device *dev = regmap_get_device(data->regmap);
+@@ -559,6 +572,20 @@ static int fxls8962af_reset(struct fxls8962af_data *data)
+ 	return ret;
+ }
+ 
++static irqreturn_t fxls8962af_interrupt(int irq, void *p)
++{
++	struct iio_dev *indio_dev = p;
++	struct fxls8962af_data *data = iio_priv(indio_dev);
++	unsigned int reg;
++	int ret;
 +
- required:
-   - compatible
-   - reg
-@@ -51,6 +61,7 @@ examples:
-             reg = <0x62>;
-             interrupt-parent = <&gpio0>;
-             interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-+            interrupt-names = "INT1";
-         };
-     };
-   - |
-@@ -66,5 +77,6 @@ examples:
-             spi-max-frequency = <4000000>;
-             interrupt-parent = <&gpio0>;
-             interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-+            interrupt-names = "INT1";
-         };
-     };
++	ret = regmap_read(data->regmap, FXLS8962AF_INT_STATUS, &reg);
++	if (ret < 0)
++		return IRQ_NONE;
++
++	return IRQ_NONE;
++}
++
+ static void fxls8962af_regulator_disable(void *data_ptr)
+ {
+ 	struct fxls8962af_data *data = data_ptr;
+@@ -578,6 +605,89 @@ static void fxls8962af_pm_disable(void *dev_ptr)
+ 	fxls8962af_standby(iio_priv(indio_dev));
+ }
+ 
++static void fxls8962af_get_irq(struct device_node *of_node, enum fxls8962af_int_pin *pin)
++{
++	int irq;
++
++	irq = of_irq_get_byname(of_node, "INT2");
++	if (irq > 0) {
++		*pin = FXLS8962AF_PIN_INT2;
++		return;
++	}
++
++	*pin = FXLS8962AF_PIN_INT1;
++}
++
++static int fxls8962af_irq_setup(struct iio_dev *indio_dev, int irq)
++{
++	struct fxls8962af_data *data = iio_priv(indio_dev);
++	struct device *dev = regmap_get_device(data->regmap);
++	unsigned long irq_type;
++	bool irq_active_high;
++	enum fxls8962af_int_pin int_pin;
++	u8 int_pin_sel;
++	int ret;
++
++	fxls8962af_get_irq(dev->of_node, &int_pin);
++	switch (int_pin) {
++	case FXLS8962AF_PIN_INT1:
++		int_pin_sel = FXLS8962AF_INT_PIN_SEL_INT1;
++		break;
++	case FXLS8962AF_PIN_INT2:
++		int_pin_sel = FXLS8962AF_INT_PIN_SEL_INT2;
++		break;
++	default:
++		dev_err(dev, "unsupported int pin selected\n");
++		return -EINVAL;
++	}
++
++	ret = regmap_update_bits(data->regmap, FXLS8962AF_INT_PIN_SEL,
++				 FXLS8962AF_INT_PIN_SEL_MASK,
++				 int_pin_sel);
++	if (ret)
++		return ret;
++
++	irq_type = irqd_get_trigger_type(irq_get_irq_data(irq));
++
++	switch (irq_type) {
++	case IRQF_TRIGGER_HIGH:
++	case IRQF_TRIGGER_RISING:
++		irq_active_high = true;
++		break;
++	case IRQF_TRIGGER_LOW:
++	case IRQF_TRIGGER_FALLING:
++		irq_active_high = false;
++		break;
++	default:
++		dev_info(dev, "mode %lx unsupported\n", irq_type);
++		return -EINVAL;
++	}
++
++	ret = regmap_update_bits(data->regmap, FXLS8962AF_SENS_CONFIG4,
++				 FXLS8962AF_SC4_INT_POL_MASK,
++				 FXLS8962AF_SC4_INT_POL_PREP(irq_active_high));
++	if (ret < 0)
++		return ret;
++
++	if (device_property_read_bool(dev, "drive-open-drain")) {
++		ret = regmap_update_bits(data->regmap, FXLS8962AF_SENS_CONFIG4,
++					 FXLS8962AF_SC4_INT_PP_OD_MASK,
++					 FXLS8962AF_SC4_INT_PP_OD_PREP(1));
++		if (ret < 0)
++			return ret;
++
++		irq_type |= IRQF_SHARED;
++	}
++
++	ret = devm_request_threaded_irq(dev,
++					irq,
++					NULL, fxls8962af_interrupt,
++					irq_type | IRQF_ONESHOT,
++					indio_dev->name, indio_dev);
++
++	return ret;
++}
++
+ int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq)
+ {
+ 	struct fxls8962af_data *data;
+@@ -637,6 +747,12 @@ int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq)
+ 	if (ret < 0)
+ 		return ret;
+ 
++	if (irq) {
++		ret = fxls8962af_irq_setup(indio_dev, irq);
++		if (ret < 0)
++			return ret;
++	}
++
+ 	ret = pm_runtime_set_active(dev);
+ 	if (ret < 0)
+ 		return ret;
 -- 
 2.31.0
 

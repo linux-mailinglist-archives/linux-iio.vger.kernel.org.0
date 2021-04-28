@@ -2,98 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA7DC36DDC0
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Apr 2021 19:01:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EDA136DEAF
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Apr 2021 19:55:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241423AbhD1RBw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 28 Apr 2021 13:01:52 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2947 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241235AbhD1RBw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 28 Apr 2021 13:01:52 -0400
-Received: from fraeml702-chm.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4FVl7g1YR8z6xhS0;
-        Thu, 29 Apr 2021 00:53:19 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml702-chm.china.huawei.com (10.206.15.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Wed, 28 Apr 2021 19:01:05 +0200
-Received: from localhost (10.52.123.69) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Wed, 28 Apr
- 2021 18:01:05 +0100
-Date:   Wed, 28 Apr 2021 17:59:31 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Oleksij Rempel <o.rempel@pengutronix.de>
-CC:     Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        "Pengutronix Kernel Team" <kernel@pengutronix.de>,
-        David Jander <david@protonic.nl>,
-        "Robin van der Gracht" <robin@protonic.nl>,
-        <linux-iio@vger.kernel.org>,
-        "Lars-Peter Clausen" <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "Dmitry Torokhov" <dmitry.torokhov@gmail.com>
-Subject: Re: [PATCH v6 1/3] dt-bindings:iio:adc: add generic
- settling-time-us and oversampling-ratio channel properties
-Message-ID: <20210428175931.00002a7e@Huawei.com>
-In-Reply-To: <20210428073208.19570-2-o.rempel@pengutronix.de>
-References: <20210428073208.19570-1-o.rempel@pengutronix.de>
-        <20210428073208.19570-2-o.rempel@pengutronix.de>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
+        id S243365AbhD1R4F (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 28 Apr 2021 13:56:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51856 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S243349AbhD1R4F (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 28 Apr 2021 13:56:05 -0400
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73673C061573
+        for <linux-iio@vger.kernel.org>; Wed, 28 Apr 2021 10:55:20 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id 20so29335910pll.7
+        for <linux-iio@vger.kernel.org>; Wed, 28 Apr 2021 10:55:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=IXE4lrUTtC/fcZSSikTjmsNLf1BSdReBXiBTFFNlgtw=;
+        b=lhvZrTRvPyx2bOUt4V1ow9GWRxQcqk8xh20XiFVxNWtvB9an/gWEUZXRC8xgLdb5Uy
+         1UuLHJ9tS+Hn9quaAU7z2ojpuK1z3xtrAJy+/R9IeU7EOyTeGsrOr8yKq/r+UN1Yyt3y
+         0cjmvuqNCM/O0iQIC/Bb+1MF1cFpT4J6+bIk46Cja/uu3Ny4Lpu6aZGIU2uZ0zfnBm5o
+         BIAhY56r0lIoDuM1/YRAJDSpfJ+ACK96zZye4cBkewAMKcl99HVhuohcVV8ni505xOc4
+         qM0n6KyQ8hq/5794a9jVABDPoHECt473366dojQklrELjejdGlHTozeAZjib5Yy2aLj+
+         iDkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=IXE4lrUTtC/fcZSSikTjmsNLf1BSdReBXiBTFFNlgtw=;
+        b=gkFpkDmlCcPQjoQzm2lq4xYdlNBsGLQaAdITGIwuGe3u7IofrMmdPSRledX40kz5b+
+         oAnFqOdEazRYKfAu9B642cMDXKIna3wj2V+f/3U8H3xiveOIVQwbGJE59dXiUbYTxEKj
+         HhK0CgCRtyIWgeOyzrpy/3xCsX/2+Rq96BBfmGd468Woe7ioo0ZwxWg6q9OMmo6dXMQk
+         cLA5vwwZY/9tDzeRZGb7JFL4ZN+dIIDMX00exFKyvUpgFLQTloSDa6SrXN2FtO5wuYp9
+         3jh9IMFjsFU4Nv+aOf3iYVEI8gJICYsYAnvvQpEX/EiGpjekTAFgQXHJ3ve6s44DVCkl
+         W3gg==
+X-Gm-Message-State: AOAM532eI6Z0L1ZPw3WWtxV1ghJ70cpGkEUdDwuchY3bazVyyy5LfYev
+        DrFtTN5+2qVS30GenHwdEVLwdYkd3EN+z58l3TY=
+X-Google-Smtp-Source: ABdhPJwn7OCgR8VAlURIbAb6MoerM9wnhdBaUs2t+InWP/fv4oBqne1g+pcI3mvnhrjrelMH8o3J4GVsh9n7tIyWbW0=
+X-Received: by 2002:a17:90a:6f45:: with SMTP id d63mr5194600pjk.39.1619632520069;
+ Wed, 28 Apr 2021 10:55:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.123.69]
-X-ClientProxiedBy: lhreml751-chm.china.huawei.com (10.201.108.201) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Received: by 2002:a05:6a20:7f9a:b029:1d:2140:cffe with HTTP; Wed, 28 Apr 2021
+ 10:55:19 -0700 (PDT)
+Reply-To: k238336@gmail.com
+From:   Joseph Kallu <davidottih0@gmail.com>
+Date:   Wed, 28 Apr 2021 10:55:19 -0700
+Message-ID: <CAHvD5oaTDV6AZiODfbjiA8tffi8RKb5cnj2p0A3hnJLX25Pt6A@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 28 Apr 2021 09:32:06 +0200
-Oleksij Rempel <o.rempel@pengutronix.de> wrote:
-
-> Settling time and over sampling is a typical challenge for different IIO ADC
-> devices. So, introduce channel specific settling-time-us and oversampling-ratio
-> properties to cover this use case.
-> 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-This and patch 2 both look good to me.  Given Rob gave a minor comment on the
-previous version I don't feel I need him to look at this again.
-
-Will pick up in a few days if no other reviews come in to require a v7.
-
-Thanks,
-
-Jonathan
-
-> ---
->  Documentation/devicetree/bindings/iio/adc/adc.yaml | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adc.yaml b/Documentation/devicetree/bindings/iio/adc/adc.yaml
-> index 912a7635edc4..db348fcbb52c 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adc.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adc.yaml
-> @@ -39,4 +39,16 @@ properties:
->        The first value specifies the positive input pin, the second
->        specifies the negative input pin.
->  
-> +  settling-time-us:
-> +    description:
-> +      Time between enabling the channel and first stable readings.
-> +
-> +  oversampling-ratio:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      Oversampling is used as replacement of or addition to the low-pass filter.
-> +      In some cases, the desired filtering characteristics are a function the
-> +      device design and can interact with other characteristics such as
-> +      settling time.
-> +
->  additionalProperties: true
-
+0KXQtdGYLCDRgdGA0LXRm9Cw0L0g0LTQsNC9LCDQv9C+0YHQu9Cw0L4g0YHQsNC8INGC0Lgg0LUt
+0LzQsNC40Lsg0ZjRg9GH0LUsINCw0LvQuA0K0J3QtdC80LAg0L7QtNCz0L7QstC+0YDQsCwg0L7Q
+tNCz0L7QstC+0YDQuNGC0LUg0L7QtNC80LDRhQ0K

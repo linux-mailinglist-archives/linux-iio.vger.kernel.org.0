@@ -2,71 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 57BF536D69E
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Apr 2021 13:37:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51FDE36D8F5
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Apr 2021 15:56:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239364AbhD1LiA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 28 Apr 2021 07:38:00 -0400
-Received: from first.geanix.com ([116.203.34.67]:38050 "EHLO first.geanix.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234158AbhD1LiA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 28 Apr 2021 07:38:00 -0400
-Received: from [192.168.64.189] (unknown [185.17.218.86])
-        by first.geanix.com (Postfix) with ESMTPSA id 3CF7B4661E5;
-        Wed, 28 Apr 2021 11:37:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1619609833; bh=cJNNPY3OXkJ4ZqpUBnyX7/E7d3vUz7Wmr4y6JSvleG8=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=C2K8dg19zdapAoSgRnbXbnwpMavkswJvsO1k9RragI8B99zvlmb73BpS9EFCQOGe3
-         bvEXl7MBECSaJK3V+mTmtWKJQGSVGy5pDymjhdZi3h8eiBSu7hkibdwVSN7MEP256n
-         nbSxAo029Vc2kNBRnABIV5VnGyj998t1sBVmxgelWzc/f9yGg16npw9mcejhcPtoiC
-         h3c+SdWK/DPCiE2YVpQjHBneUM0aYZKOU2+GNZuBkEJQlmWoynULclbt5m8/bc52WT
-         5nFddBpABRLLuV2bfID/mm/MB840Y+vOoMprLXvAORaKxo4EmWX2v9KOt6dfKUPS0H
-         iBw5w42vR4zug==
-Subject: Re: [RFC PATCH 4/4] iio: accel: fxls8962af: fix errata bug E3 - I2C
- burst reads
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        =?UTF-8?Q?Nuno_S=c3=a1?= <Nuno.Sa@analog.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        devicetree <devicetree@vger.kernel.org>
+        id S231395AbhD1Nz7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 28 Apr 2021 09:55:59 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2939 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229965AbhD1Nz7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 28 Apr 2021 09:55:59 -0400
+Received: from fraeml712-chm.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4FVg3f2C0zz72f7l;
+        Wed, 28 Apr 2021 21:49:34 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml712-chm.china.huawei.com (10.206.15.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Wed, 28 Apr 2021 15:55:12 +0200
+Received: from localhost (10.52.123.69) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Wed, 28 Apr
+ 2021 14:55:11 +0100
+Date:   Wed, 28 Apr 2021 14:53:37 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Sean Nyekjaer <sean@geanix.com>
+CC:     <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
+        <andy.shevchenko@gmail.com>, <lars@metafoo.de>,
+        <Nuno.Sa@analog.com>, <robh+dt@kernel.org>,
+        <devicetree@vger.kernel.org>
+Subject: Re: [RFC PATCH 3/4] iio: accel: fxls8962af: add hw buffered
+ sampling
+Message-ID: <20210428145337.00002166@Huawei.com>
+In-Reply-To: <d536b4ab-eaa5-5411-9b68-266b7a8a56b6@geanix.com>
 References: <20210428082203.3587022-1-sean@geanix.com>
- <20210428082203.3587022-4-sean@geanix.com>
- <CAHp75Ve5Dyz-Cc7p8G4JzZ1Jhbey330WEHu2u7DLrRsoRbvgjg@mail.gmail.com>
-From:   Sean Nyekjaer <sean@geanix.com>
-Message-ID: <65d00eec-6787-b9f5-c954-bbf1eac47050@geanix.com>
-Date:   Wed, 28 Apr 2021 13:37:12 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
+        <20210428082203.3587022-3-sean@geanix.com>
+        <d536b4ab-eaa5-5411-9b68-266b7a8a56b6@geanix.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
 MIME-Version: 1.0
-In-Reply-To: <CAHp75Ve5Dyz-Cc7p8G4JzZ1Jhbey330WEHu2u7DLrRsoRbvgjg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        URIBL_BLOCKED autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on 93bd6fdb21b5
+X-Originating-IP: [10.52.123.69]
+X-ClientProxiedBy: lhreml751-chm.china.huawei.com (10.201.108.201) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Wed, 28 Apr 2021 13:05:38 +0200
+Sean Nyekjaer <sean@geanix.com> wrote:
 
+> On 28/04/2021 10.22, Sean Nyekjaer wrote:
+> > |@@ -433,7 +450,10 @@ static int fxls8962af_read_raw(struct iio_dev 
+> > *indio_dev, ret = fxls8962af_get_temp(data, val); break; case 
+> > IIO_ACCEL: - ret = fxls8962af_get_axis(data, chan, val); + if 
+> > (iio_buffer_enabled(indio_dev))|  
+> |Seeing the iio_device_claim_direct_mode() is doing exactly the same 
+> check :)|
 
-On 28/04/2021 13.24, Andy Shevchenko wrote:
-> This should be part of that series.
-OK, will include next week...
->
-> Besides, see below.
->
-> ...
->
->> +       bool i2c_device;
->> +       data->i2c_device = i2c_device;
-> This is redundant. Use i2c_verify_client() instead.
-Thanks I've been looking for a that functionality :)
+And in a race free fashion ;)
 
-/Sean
+> > |+ ret = -EBUSY; + else + ret = fxls8962af_get_axis(data, chan, val); 
+> > break; default: ret = -EINVAL;|  
+> 
 

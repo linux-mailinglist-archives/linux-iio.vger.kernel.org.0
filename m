@@ -2,855 +2,909 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED6D736D332
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Apr 2021 09:33:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCC5436D396
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Apr 2021 10:01:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236874AbhD1HdJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 28 Apr 2021 03:33:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53558 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236888AbhD1HdG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 28 Apr 2021 03:33:06 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E48FC06138A
-        for <linux-iio@vger.kernel.org>; Wed, 28 Apr 2021 00:32:21 -0700 (PDT)
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1lbeg7-00034L-1x; Wed, 28 Apr 2021 09:32:11 +0200
-Received: from ore by dude.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1lbeg5-00056z-Eg; Wed, 28 Apr 2021 09:32:09 +0200
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
-To:     Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        David Jander <david@protonic.nl>,
-        Robin van der Gracht <robin@protonic.nl>,
-        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH v6 3/3] iio: adc: add ADC driver for the TI TSC2046 controller
-Date:   Wed, 28 Apr 2021 09:32:08 +0200
-Message-Id: <20210428073208.19570-4-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210428073208.19570-1-o.rempel@pengutronix.de>
-References: <20210428073208.19570-1-o.rempel@pengutronix.de>
+        id S237162AbhD1ICV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 28 Apr 2021 04:02:21 -0400
+Received: from first.geanix.com ([116.203.34.67]:53732 "EHLO first.geanix.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237139AbhD1ICM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 28 Apr 2021 04:02:12 -0400
+Received: from zen.. (unknown [185.17.218.86])
+        by first.geanix.com (Postfix) with ESMTPSA id 1B61D4661DA;
+        Wed, 28 Apr 2021 08:01:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
+        t=1619596881; bh=Re2Rd1dTfeF4oTEYrN8OXM2q2T6jwK3LEKGwpa+9e50=;
+        h=From:To:Cc:Subject:Date;
+        b=HCHLq0mPx/YVdVib/IviRPkp5Cj6QO/jzdqhMnw5cfiB+dUsab6Iy4CX/V5+U9393
+         FKR+We/reK4wDmCJ2mzGM+tLhlq5EPK2QGGfQcmutRlavzW7LRickS3XxFNP7g3Ond
+         zooWUitNVO4iSzKhhyr/zaPGpsLBwv6CS4AMTtmuDNjBh9rsSdNuFjRW9LOALBCUvc
+         RO+iNx+ldU9VBhU6VLg5vkgA4aDP2CCaBWRKutOz16LnZinhPCb9K0Gt+NfcN9msDe
+         G745i4cu+HAVTNB2GDXNyOh5n/aEegKaUHBca/wycTQvUV2n57Vz7hwTI/4KdY2JlB
+         gJwOelaK4AZ7Q==
+From:   Sean Nyekjaer <sean@geanix.com>
+To:     jic23@kernel.org, linux-iio@vger.kernel.org,
+        andy.shevchenko@gmail.com, lars@metafoo.de, Nuno.Sa@analog.com,
+        robh+dt@kernel.org, devicetree@vger.kernel.org
+Cc:     Sean Nyekjaer <sean@geanix.com>
+Subject: [PATCH v3 1/2] iio: accel: add support for FXLS8962AF/FXLS8964AF accelerometers
+Date:   Wed, 28 Apr 2021 10:01:06 +0200
+Message-Id: <20210428080107.3584120-1-sean@geanix.com>
+X-Mailer: git-send-email 2.31.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
+        autolearn=disabled version=3.4.4
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on 93bd6fdb21b5
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Basically the TI TSC2046 touchscreen controller is 8 channel ADC optimized for
-the touchscreen use case. By implementing it as an IIO ADC device, we can
-make use of resistive-adc-touch and iio-hwmon drivers.
+Add basic support for NXP FXLS8962AF/FXLS8964AF Automotive
+accelerometers.
+It will allow setting up scale/gain and reading x,y,z
+axis.
 
-Polled readings are currently not implemented to keep this patch small, so
-iio-hwmon will not work out of the box for now.
-
-So far, this driver was tested with a custom version of resistive-adc-touch driver,
-since it needs to be extended to make use of Z1 and Z2 channels. The X/Y
-are working without additional changes.
-
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Datasheet: https://www.nxp.com/docs/en/data-sheet/FXLS8962AF.pdf
+Datasheet: https://www.nxp.com/docs/en/data-sheet/FXLS8964AF.pdf
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
 Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 ---
- MAINTAINERS                  |   8 +
- drivers/iio/adc/Kconfig      |  12 +
- drivers/iio/adc/Makefile     |   1 +
- drivers/iio/adc/ti-tsc2046.c | 720 +++++++++++++++++++++++++++++++++++
- 4 files changed, 741 insertions(+)
- create mode 100644 drivers/iio/adc/ti-tsc2046.c
+Changes for v2: 
+ - Addressed Kconfig comments
+ - Using regmap_read_poll_timeout()
+ - Addresed comments from Andy and Jonathan
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ccc59fd7e5c0..861904555c17 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -18009,6 +18009,14 @@ S:	Supported
- F:	Documentation/devicetree/bindings/net/nfc/trf7970a.txt
- F:	drivers/nfc/trf7970a.c
+Changes for v3:
+ - fixed Kconfig ordering
+ - read INT_STATUS after reset, to ensure the device is ready
+ - fixed a few xmas trees
+ - added datasheet tags 
+
+I'm adding interrupt support RFC will be posted soonish :)
+
+ drivers/iio/accel/Kconfig           |  27 ++
+ drivers/iio/accel/Makefile          |   3 +
+ drivers/iio/accel/fxls8962af-core.c | 616 ++++++++++++++++++++++++++++
+ drivers/iio/accel/fxls8962af-i2c.c  |  57 +++
+ drivers/iio/accel/fxls8962af-spi.c  |  57 +++
+ drivers/iio/accel/fxls8962af.h      |  22 +
+ 6 files changed, 782 insertions(+)
+ create mode 100644 drivers/iio/accel/fxls8962af-core.c
+ create mode 100644 drivers/iio/accel/fxls8962af-i2c.c
+ create mode 100644 drivers/iio/accel/fxls8962af-spi.c
+ create mode 100644 drivers/iio/accel/fxls8962af.h
+
+diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
+index 2e0c62c39155..7317d839ca1a 100644
+--- a/drivers/iio/accel/Kconfig
++++ b/drivers/iio/accel/Kconfig
+@@ -208,6 +208,33 @@ config DMARD10
+ 	  Choosing M will build the driver as a module. If so, the module
+ 	  will be called dmard10.
  
-+TI TSC2046 ADC DRIVER
-+M:	Oleksij Rempel <o.rempel@pengutronix.de>
-+R:	kernel@pengutronix.de
-+L:	linux-iio@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/adc/ti,tsc2046.yaml
-+F:	drivers/iio/adc/ti-tsc2046.c
++config FXLS8962AF
++	tristate
 +
- TI TWL4030 SERIES SOC CODEC DRIVER
- M:	Peter Ujfalusi <peter.ujfalusi@gmail.com>
- L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index c7946c439612..db0c8fb60515 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -1190,6 +1190,18 @@ config TI_TLC4541
- 	  This driver can also be built as a module. If so, the module will be
- 	  called ti-tlc4541.
- 
-+config TI_TSC2046
-+	tristate "Texas Instruments TSC2046 ADC driver"
-+	depends on SPI
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
++config FXLS8962AF_I2C
++	tristate "NXP FXLS8962AF/FXLS8964AF Accelerometer I2C Driver"
++	depends on I2C
++	select FXLS8962AF
++	select REGMAP_I2C
 +	help
-+	  Say yes here to build support for ADC functionality of Texas
-+	  Instruments TSC2046 touch screen controller.
++	  Say yes here to build support for the NXP 3-axis automotive
++	  accelerometer FXLS8962AF/FXLS8964AF with I2C support.
 +
-+	  This driver can also be built as a module. If so, the module will be
-+	  called ti-tsc2046.
++	  To compile this driver as a module, choose M here: the module
++	  will be called fxls8962af_i2c.
 +
- config TWL4030_MADC
- 	tristate "TWL4030 MADC (Monitoring A/D Converter)"
- 	depends on TWL4030_CORE
-diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-index a226657d19c0..f70d877c555a 100644
---- a/drivers/iio/adc/Makefile
-+++ b/drivers/iio/adc/Makefile
-@@ -106,6 +106,7 @@ obj-$(CONFIG_TI_ADS124S08) += ti-ads124s08.o
- obj-$(CONFIG_TI_ADS131E08) += ti-ads131e08.o
- obj-$(CONFIG_TI_AM335X_ADC) += ti_am335x_adc.o
- obj-$(CONFIG_TI_TLC4541) += ti-tlc4541.o
-+obj-$(CONFIG_TI_TSC2046) += ti-tsc2046.o
- obj-$(CONFIG_TWL4030_MADC) += twl4030-madc.o
- obj-$(CONFIG_TWL6030_GPADC) += twl6030-gpadc.o
- obj-$(CONFIG_VF610_ADC) += vf610_adc.o
-diff --git a/drivers/iio/adc/ti-tsc2046.c b/drivers/iio/adc/ti-tsc2046.c
++config FXLS8962AF_SPI
++	tristate "NXP FXLS8962AF/FXLS8964AF Accelerometer SPI Driver"
++	depends on SPI
++	select FXLS8962AF
++	select REGMAP_SPI
++	help
++	  Say yes here to build support for the NXP 3-axis automotive
++	  accelerometer FXLS8962AF/FXLS8964AF with SPI support.
++
++	  To compile this driver as a module, choose M here: the module
++	  will be called fxls8962af_spi.
++
+ config HID_SENSOR_ACCEL_3D
+ 	depends on HID_SENSOR_HUB
+ 	select IIO_BUFFER
+diff --git a/drivers/iio/accel/Makefile b/drivers/iio/accel/Makefile
+index 4f6c1ebe13b0..1b8c479c6f7c 100644
+--- a/drivers/iio/accel/Makefile
++++ b/drivers/iio/accel/Makefile
+@@ -25,6 +25,9 @@ obj-$(CONFIG_DA311)	+= da311.o
+ obj-$(CONFIG_DMARD06)	+= dmard06.o
+ obj-$(CONFIG_DMARD09)	+= dmard09.o
+ obj-$(CONFIG_DMARD10)	+= dmard10.o
++obj-$(CONFIG_FXLS8962AF)	+= fxls8962af-core.o
++obj-$(CONFIG_FXLS8962AF_I2C)	+= fxls8962af-i2c.o
++obj-$(CONFIG_FXLS8962AF_SPI)	+= fxls8962af-spi.o
+ obj-$(CONFIG_HID_SENSOR_ACCEL_3D) += hid-sensor-accel-3d.o
+ obj-$(CONFIG_KXCJK1013) += kxcjk-1013.o
+ obj-$(CONFIG_KXSD9)	+= kxsd9.o
+diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
 new file mode 100644
-index 000000000000..b86a3156f159
+index 000000000000..b3b0169e6a17
 --- /dev/null
-+++ b/drivers/iio/adc/ti-tsc2046.c
-@@ -0,0 +1,720 @@
++++ b/drivers/iio/accel/fxls8962af-core.c
+@@ -0,0 +1,616 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * Texas Instruments TSC2046 SPI ADC driver
++ * NXP FXLS8962AF/FXLS8964AF Accelerometer Core Driver
 + *
-+ * Copyright (c) 2021 Oleksij Rempel <kernel@pengutronix.de>, Pengutronix
++ * Copyright 2021 Connected Cars A/S
++ *
++ * Datasheet:
++ * https://www.nxp.com/docs/en/data-sheet/FXLS8962AF.pdf
++ * https://www.nxp.com/docs/en/data-sheet/FXLS8964AF.pdf
++ *
++ * Errata:
++ * https://www.nxp.com/docs/en/errata/ES_FXLS8962AF.pdf
 + */
 +
++#include <linux/bits.h>
 +#include <linux/bitfield.h>
-+#include <linux/delay.h>
 +#include <linux/module.h>
-+#include <linux/spi/spi.h>
++#include <linux/pm_runtime.h>
++#include <linux/regulator/consumer.h>
++#include <linux/regmap.h>
 +
-+#include <asm/unaligned.h>
++#include <linux/iio/iio.h>
++#include <linux/iio/sysfs.h>
 +
-+#include <linux/iio/buffer.h>
-+#include <linux/iio/trigger_consumer.h>
-+#include <linux/iio/triggered_buffer.h>
-+#include <linux/iio/trigger.h>
++#include "fxls8962af.h"
 +
-+/*
-+ * The PENIRQ of TSC2046 controller is implemented as level shifter attached to
-+ * the X+ line. If voltage of the X+ line reaches a specific level the IRQ will
-+ * be activated or deactivated.
-+ * To make this kind of IRQ reusable as trigger following additions were
-+ * implemented:
-+ * - rate limiting:
-+ *   For typical touchscreen use case, we need to trigger about each 10ms.
-+ * - hrtimer:
-+ *   Continue triggering at least once after the IRQ was deactivated. Then
-+ *   deactivate this trigger to stop sampling in order to reduce power
-+ *   consumption.
-+ */
++#define FXLS8962AF_INT_STATUS			0x00
++#define FXLS8962AF_INT_STATUS_SRC_BOOT		BIT(0)
++#define FXLS8962AF_INT_STATUS_SRC_DRDY		BIT(7)
++#define FXLS8962AF_TEMP_OUT			0x01
++#define FXLS8962AF_VECM_LSB			0x02
++#define FXLS8962AF_OUT_X_LSB			0x04
++#define FXLS8962AF_OUT_Y_LSB			0x06
++#define FXLS8962AF_OUT_Z_LSB			0x08
++#define FXLS8962AF_BUF_STATUS			0x0b
++#define FXLS8962AF_BUF_X_LSB			0x0c
++#define FXLS8962AF_BUF_Y_LSB			0x0e
++#define FXLS8962AF_BUF_Z_LSB			0x10
 +
-+#define TI_TSC2046_NAME				"tsc2046"
++#define FXLS8962AF_PROD_REV			0x12
++#define FXLS8962AF_WHO_AM_I			0x13
 +
-+/* This driver doesn't aim at the peak continuous sample rate */
-+#define	TI_TSC2046_MAX_SAMPLE_RATE		125000
-+#define	TI_TSC2046_SAMPLE_BITS \
-+	BITS_PER_TYPE(struct tsc2046_adc_atom)
-+#define	TI_TSC2046_MAX_CLK_FREQ \
-+	(TI_TSC2046_MAX_SAMPLE_RATE * TI_TSC2046_SAMPLE_BITS)
++#define FXLS8962AF_SYS_MODE			0x14
++#define FXLS8962AF_SENS_CONFIG1			0x15
++#define FXLS8962AF_SENS_CONFIG1_ACTIVE		BIT(0)
++#define FXLS8962AF_SENS_CONFIG1_RST		BIT(7)
++#define FXLS8962AF_SC1_FSR_MASK			GENMASK(2, 1)
++#define FXLS8962AF_SC1_FSR_PREP(x)		FIELD_PREP(FXLS8962AF_SC1_FSR_MASK, x)
++#define FXLS8962AF_SC1_FSR_GET(x)		FIELD_GET(FXLS8962AF_SC1_FSR_MASK, x)
 +
-+#define TI_TSC2046_SAMPLE_INTERVAL_US		10000
++#define FXLS8962AF_SENS_CONFIG2			0x16
++#define FXLS8962AF_SENS_CONFIG3			0x17
++#define FXLS8962AF_SENS_CONFIG4			0x18
++#define FXLS8962AF_SENS_CONFIG5			0x19
 +
-+#define TI_TSC2046_START			BIT(7)
-+#define TI_TSC2046_ADDR				GENMASK(6, 4)
-+#define TI_TSC2046_ADDR_TEMP1			7
-+#define TI_TSC2046_ADDR_AUX			6
-+#define TI_TSC2046_ADDR_X			5
-+#define TI_TSC2046_ADDR_Z2			4
-+#define TI_TSC2046_ADDR_Z1			3
-+#define TI_TSC2046_ADDR_VBAT			2
-+#define TI_TSC2046_ADDR_Y			1
-+#define TI_TSC2046_ADDR_TEMP0			0
++#define FXLS8962AF_WAKE_IDLE_LSB		0x1b
++#define FXLS8962AF_SLEEP_IDLE_LSB		0x1c
++#define FXLS8962AF_ASLP_COUNT_LSB		0x1e
 +
-+/*
-+ * The mode bit sets the resolution of the ADC. With this bit low, the next
-+ * conversion has 12-bit resolution, whereas with this bit high, the next
-+ * conversion has 8-bit resolution. This driver is optimized for 12-bit mode.
-+ * So, for this driver, this bit should stay zero.
-+ */
-+#define TI_TSC2046_8BIT_MODE			BIT(3)
++#define FXLS8962AF_INT_EN			0x20
++#define FXLS8962AF_INT_PIN_SEL			0x21
 +
-+/*
-+ * SER/DFR - The SER/DFR bit controls the reference mode, either single-ended
-+ * (high) or differential (low).
-+ */
-+#define TI_TSC2046_SER				BIT(2)
++#define FXLS8962AF_OFF_X			0x22
++#define FXLS8962AF_OFF_Y			0x23
++#define FXLS8962AF_OFF_Z			0x24
 +
-+/*
-+ * If VREF_ON and ADC_ON are both zero, then the chip operates in
-+ * auto-wake/suspend mode. In most case this bits should stay zero.
-+ */
-+#define TI_TSC2046_PD1_VREF_ON			BIT(1)
-+#define TI_TSC2046_PD0_ADC_ON			BIT(0)
++#define FXLS8962AF_BUF_CONFIG1			0x26
++#define FXLS8962AF_BUF_CONFIG2			0x27
 +
-+/*
-+ * All supported devices can do 8 or 12bit resolution. This driver
-+ * supports only 12bit mode, here we have a 16bit data transfer, where
-+ * the MSB and the 3 LSB are 0.
-+ */
-+#define TI_TSC2046_DATA_12BIT			GENMASK(14, 3)
++#define FXLS8962AF_ORIENT_STATUS		0x28
++#define FXLS8962AF_ORIENT_CONFIG		0x29
++#define FXLS8962AF_ORIENT_DBCOUNT		0x2a
++#define FXLS8962AF_ORIENT_BF_ZCOMP		0x2b
++#define FXLS8962AF_ORIENT_THS_REG		0x2c
 +
-+#define TI_TSC2046_MAX_CHAN			8
++#define FXLS8962AF_SDCD_INT_SRC1		0x2d
++#define FXLS8962AF_SDCD_INT_SRC2		0x2e
++#define FXLS8962AF_SDCD_CONFIG1			0x2f
++#define FXLS8962AF_SDCD_CONFIG2			0x30
++#define FXLS8962AF_SDCD_OT_DBCNT		0x31
++#define FXLS8962AF_SDCD_WT_DBCNT		0x32
++#define FXLS8962AF_SDCD_LTHS_LSB		0x33
++#define FXLS8962AF_SDCD_UTHS_LSB		0x35
 +
-+/* Represents a HW sample */
-+struct tsc2046_adc_atom {
-+	/*
-+	 * Command transmitted to the controller. This field is empty on the RX
-+	 * buffer.
-+	 */
-+	u8 cmd;
-+	/*
-+	 * Data received from the controller. This field is empty for the TX
-+	 * buffer
-+	 */
-+	__be16 data;
-+} __packed;
++#define FXLS8962AF_SELF_TEST_CONFIG1		0x37
++#define FXLS8962AF_SELF_TEST_CONFIG2		0x38
 +
-+/* Layout of atomic buffers within big buffer */
-+struct tsc2046_adc_group_layout {
-+	/* Group offset within the SPI RX buffer */
-+	unsigned int offset;
-+	/*
-+	 * Amount of tsc2046_adc_atom structs within the same command gathered
-+	 * within same group.
-+	 */
-+	unsigned int count;
-+	/*
-+	 * Settling samples (tsc2046_adc_atom structs) which should be skipped
-+	 * before good samples will start.
-+	 */
-+	unsigned int skip;
++#define FXLS8962AF_MAX_REG			0x38
++
++#define FXLS8962AF_DEVICE_ID			0x62
++#define FXLS8964AF_DEVICE_ID			0x84
++
++/* Raw temp channel offset */
++#define FXLS8962AF_TEMP_CENTER_VAL		25
++
++#define FXLS8962AF_AUTO_SUSPEND_DELAY_MS	2000
++
++#define FXLS8962AF_SCALE_TABLE_LEN		4
++
++static const int fxls8962af_scale_table[FXLS8962AF_SCALE_TABLE_LEN][2] = {
++	{0, IIO_G_TO_M_S_2(980000)},
++	{0, IIO_G_TO_M_S_2(1950000)},
++	{0, IIO_G_TO_M_S_2(3910000)},
++	{0, IIO_G_TO_M_S_2(7810000)},
 +};
 +
-+struct tsc2046_adc_dcfg {
++struct fxls8962af_chip_info {
++	const char *name;
 +	const struct iio_chan_spec *channels;
-+	unsigned int num_channels;
++	int num_channels;
++	u8 chip_id;
 +};
 +
-+struct tsc2046_adc_ch_cfg {
-+	unsigned int settling_time_us;
-+	unsigned int oversampling_ratio;
++struct fxls8962af_data {
++	struct regmap *regmap;
++	const struct fxls8962af_chip_info *chip_info;
++	struct regulator *vdd_reg;
++	struct iio_mount_matrix orientation;
 +};
 +
-+struct tsc2046_adc_priv {
-+	struct spi_device *spi;
-+	const struct tsc2046_adc_dcfg *dcfg;
++const struct regmap_config fxls8962af_regmap_conf = {
++	.reg_bits = 8,
++	.val_bits = 8,
++	.max_register = FXLS8962AF_MAX_REG,
++};
++EXPORT_SYMBOL_GPL(fxls8962af_regmap_conf);
 +
-+	struct iio_trigger *trig;
-+	struct hrtimer trig_timer;
-+	spinlock_t trig_lock;
-+	unsigned int trig_more_count;
-+
-+	struct spi_transfer xfer;
-+	struct spi_message msg;
-+
-+	struct {
-+		/* Scan data for each channel */
-+		u16 data[TI_TSC2046_MAX_CHAN];
-+		/* Timestamp */
-+		s64 ts __aligned(8);
-+	} scan_buf;
-+
-+	/*
-+	 * Lock to protect the layout and the SPI transfer buffer.
-+	 * tsc2046_adc_group_layout can be changed within update_scan_mode(),
-+	 * in this case the l[] and tx/rx buffer will be out of sync to each
-+	 * other.
-+	 */
-+	struct mutex slock;
-+	struct tsc2046_adc_group_layout l[TI_TSC2046_MAX_CHAN];
-+	struct tsc2046_adc_atom *rx;
-+	struct tsc2046_adc_atom *tx;
-+
-+	struct tsc2046_adc_atom *rx_one;
-+	struct tsc2046_adc_atom *tx_one;
-+
-+	unsigned int count;
-+	unsigned int groups;
-+	u32 effective_speed_hz;
-+	u32 scan_interval_us;
-+	u32 time_per_scan_us;
-+	u32 time_per_bit_ns;
-+
-+	struct tsc2046_adc_ch_cfg ch_cfg[TI_TSC2046_MAX_CHAN];
++enum {
++	fxls8962af_idx_x,
++	fxls8962af_idx_y,
++	fxls8962af_idx_z,
++	fxls8962af_idx_ts,
 +};
 +
-+#define TI_TSC2046_V_CHAN(index, bits, name)			\
-+{								\
-+	.type = IIO_VOLTAGE,					\
-+	.indexed = 1,						\
-+	.channel = index,					\
-+	.datasheet_name = "#name",				\
-+	.scan_index = index,					\
-+	.scan_type = {						\
-+		.sign = 'u',					\
-+		.realbits = bits,				\
-+		.storagebits = 16,				\
-+		.endianness = IIO_CPU,				\
-+	},							\
-+}
-+
-+#define DECLARE_TI_TSC2046_8_CHANNELS(name, bits) \
-+const struct iio_chan_spec name ## _channels[] = { \
-+	TI_TSC2046_V_CHAN(0, bits, TEMP0), \
-+	TI_TSC2046_V_CHAN(1, bits, Y), \
-+	TI_TSC2046_V_CHAN(2, bits, VBAT), \
-+	TI_TSC2046_V_CHAN(3, bits, Z1), \
-+	TI_TSC2046_V_CHAN(4, bits, Z2), \
-+	TI_TSC2046_V_CHAN(5, bits, X), \
-+	TI_TSC2046_V_CHAN(6, bits, AUX), \
-+	TI_TSC2046_V_CHAN(7, bits, TEMP1), \
-+	IIO_CHAN_SOFT_TIMESTAMP(8), \
-+}
-+
-+static DECLARE_TI_TSC2046_8_CHANNELS(tsc2046_adc, 12);
-+
-+static const struct tsc2046_adc_dcfg tsc2046_adc_dcfg_tsc2046e = {
-+	.channels = tsc2046_adc_channels,
-+	.num_channels = ARRAY_SIZE(tsc2046_adc_channels),
-+};
-+
-+/*
-+ * Convert time to a number of samples which can be transferred within this
-+ * time.
-+ */
-+static unsigned int tsc2046_adc_time_to_count(struct tsc2046_adc_priv *priv,
-+					      unsigned long time)
++static int fxls8962af_drdy(struct fxls8962af_data *data)
 +{
-+	unsigned int bit_count, sample_count;
-+
-+	bit_count = DIV_ROUND_UP(time * NSEC_PER_USEC, priv->time_per_bit_ns);
-+	sample_count = DIV_ROUND_UP(bit_count, TI_TSC2046_SAMPLE_BITS);
-+
-+	dev_dbg(&priv->spi->dev, "Effective speed %u, time per bit: %u, count bits: %u, count samples: %u\n",
-+		priv->effective_speed_hz, priv->time_per_bit_ns,
-+		bit_count, sample_count);
-+
-+	return sample_count;
-+}
-+
-+static u8 tsc2046_adc_get_cmd(struct tsc2046_adc_priv *priv, int ch_idx,
-+			      bool keep_power)
-+{
-+	u32 pd;
-+
-+	/*
-+	 * if PD bits are 0, controller will automatically disable ADC, VREF and
-+	 * enable IRQ.
-+	 */
-+	if (keep_power)
-+		pd = TI_TSC2046_PD0_ADC_ON;
-+	else
-+		pd = 0;
-+
-+	return TI_TSC2046_START | FIELD_PREP(TI_TSC2046_ADDR, ch_idx) | pd;
-+}
-+
-+static u16 tsc2046_adc_get_value(struct tsc2046_adc_atom *buf)
-+{
-+	return FIELD_GET(TI_TSC2046_DATA_12BIT, get_unaligned_be16(&buf->data));
-+}
-+
-+static int tsc2046_adc_read_one(struct tsc2046_adc_priv *priv, int ch_idx,
-+				u32 *effective_speed_hz)
-+{
-+	struct spi_transfer xfer;
-+	struct spi_message msg;
++	struct device *dev = regmap_get_device(data->regmap);
++	unsigned int reg;
 +	int ret;
 +
-+	memset(&xfer, 0, sizeof(xfer));
-+	priv->tx_one->cmd = tsc2046_adc_get_cmd(priv, ch_idx, false);
-+	priv->tx_one->data = 0;
-+	xfer.tx_buf = priv->tx_one;
-+	xfer.rx_buf = priv->rx_one;
-+	xfer.len = sizeof(*priv->tx_one);
-+	spi_message_init(&msg);
-+	spi_message_add_tail(&xfer, &msg);
-+
-+	/*
-+	 * We aren't using spi_write_then_read() because we need to be able
-+	 * to get hold of the effective_speed_hz from the xfer
-+	 */
-+	ret = spi_sync(priv->spi, &msg);
++	ret = regmap_read_poll_timeout(data->regmap, FXLS8962AF_INT_STATUS, reg,
++			(reg & FXLS8962AF_INT_STATUS_SRC_DRDY), 20000, 2000000);
 +	if (ret) {
-+		dev_err_ratelimited(&priv->spi->dev, "SPI transfer failed %pe\n",
-+				    ERR_PTR(ret));
-+		return ret;
++		dev_err(dev, "drdy timeout, int_status = 0x%x\n", reg);
 +	}
 +
-+	if (effective_speed_hz)
-+		*effective_speed_hz = xfer.effective_speed_hz;
-+
-+	return tsc2046_adc_get_value(priv->rx_one);
++	return ret;
 +}
 +
-+static size_t tsc2046_adc_group_set_layout(struct tsc2046_adc_priv *priv,
-+					   unsigned int group,
-+					   unsigned int ch_idx)
++static int fxls8962af_power_on(struct fxls8962af_data *data)
 +{
-+	struct tsc2046_adc_ch_cfg *ch = &priv->ch_cfg[ch_idx];
-+	struct tsc2046_adc_group_layout *cur;
-+	unsigned int max_count, count_skip;
-+	unsigned int offset = 0;
-+
-+	if (group)
-+		offset = priv->l[group - 1].offset + priv->l[group - 1].count;
-+
-+	count_skip = tsc2046_adc_time_to_count(priv, ch->settling_time_us);
-+	max_count = count_skip + ch->oversampling_ratio;
-+
-+	cur = &priv->l[group];
-+	cur->offset = offset;
-+	cur->count = max_count;
-+	cur->skip = count_skip;
-+
-+	return sizeof(*priv->tx) * max_count;
-+}
-+
-+static void tsc2046_adc_group_set_cmd(struct tsc2046_adc_priv *priv,
-+				      unsigned int group, int ch_idx)
-+{
-+	struct tsc2046_adc_group_layout *l = &priv->l[group];
-+	unsigned int i;
-+	u8 cmd;
-+
-+	/*
-+	 * Do not enable automatic power down on working samples. Otherwise the
-+	 * plates will never be completely charged.
-+	 */
-+	cmd = tsc2046_adc_get_cmd(priv, ch_idx, true);
-+
-+	for (i = 0; i < l->count - 1; i++)
-+		priv->tx[l->offset + i].cmd = cmd;
-+
-+	/* automatically power down on last sample */
-+	priv->tx[l->offset + i].cmd = tsc2046_adc_get_cmd(priv, ch_idx, false);
-+}
-+
-+static u16 tsc2046_adc_get_val(struct tsc2046_adc_priv *priv, int group)
-+{
-+	struct tsc2046_adc_group_layout *l;
-+	unsigned int val, val_normalized = 0;
-+	int valid_count, i;
-+
-+	l = &priv->l[group];
-+	valid_count = l->count - l->skip;
-+
-+	for (i = 0; i < valid_count; i++) {
-+		val = tsc2046_adc_get_value(&priv->rx[l->offset + l->skip + i]);
-+		val_normalized += val;
-+	}
-+
-+	return DIV_ROUND_UP(val_normalized, valid_count);
-+}
-+
-+static int tsc2046_adc_scan(struct iio_dev *indio_dev)
-+{
-+	struct tsc2046_adc_priv *priv = iio_priv(indio_dev);
-+	struct device *dev = &priv->spi->dev;
-+	int group;
++	struct device *dev = regmap_get_device(data->regmap);
 +	int ret;
 +
-+	ret = spi_sync(priv->spi, &priv->msg);
++	ret = pm_runtime_get_sync(dev);
++
 +	if (ret < 0) {
-+		dev_err_ratelimited(dev, "SPI transfer failed: %pe\n", ERR_PTR(ret));
-+		return ret;
-+	}
-+
-+	for (group = 0; group < priv->groups; group++)
-+		priv->scan_buf.data[group] = tsc2046_adc_get_val(priv, group);
-+
-+	ret = iio_push_to_buffers_with_timestamp(indio_dev, &priv->scan_buf,
-+						 iio_get_time_ns(indio_dev));
-+	/* If the consumer is kfifo, we may get a EBUSY here - ignore it. */
-+	if (ret < 0 && ret != -EBUSY) {
-+		dev_err_ratelimited(dev, "Failed to push scan buffer %pe\n",
-+				    ERR_PTR(ret));
-+
++		dev_err(dev, "failed to power on\n");
++		pm_runtime_put_noidle(dev);
 +		return ret;
 +	}
 +
 +	return 0;
 +}
 +
-+static irqreturn_t tsc2046_adc_trigger_handler(int irq, void *p)
++static int fxls8962af_power_off(struct fxls8962af_data *data)
 +{
-+	struct iio_poll_func *pf = p;
-+	struct iio_dev *indio_dev = pf->indio_dev;
-+	struct tsc2046_adc_priv *priv = iio_priv(indio_dev);
-+
-+	mutex_lock(&priv->slock);
-+	tsc2046_adc_scan(indio_dev);
-+	mutex_unlock(&priv->slock);
-+
-+	iio_trigger_notify_done(indio_dev->trig);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static int tsc2046_adc_update_scan_mode(struct iio_dev *indio_dev,
-+					const unsigned long *active_scan_mask)
-+{
-+	struct tsc2046_adc_priv *priv = iio_priv(indio_dev);
-+	unsigned int ch_idx, group = 0;
-+	size_t size;
-+
-+	mutex_lock(&priv->slock);
-+
-+	size = 0;
-+	for_each_set_bit(ch_idx, active_scan_mask, indio_dev->num_channels) {
-+		size += tsc2046_adc_group_set_layout(priv, group, ch_idx);
-+		tsc2046_adc_group_set_cmd(priv, group, ch_idx);
-+		group++;
-+	}
-+
-+	priv->groups = group;
-+	priv->xfer.len = size;
-+	priv->time_per_scan_us = size * 8 * priv->time_per_bit_ns / NSEC_PER_USEC;
-+
-+	if ((priv->scan_interval_us - priv->time_per_scan_us) < 0)
-+		dev_warn(&priv->spi->dev, "The scan interval (%d) is less then calculated scan time (%d)\n",
-+			 priv->scan_interval_us, priv->time_per_scan_us);
-+
-+	mutex_unlock(&priv->slock);
-+
-+	return 0;
-+}
-+
-+static const struct iio_info tsc2046_adc_info = {
-+	.update_scan_mode = tsc2046_adc_update_scan_mode,
-+};
-+
-+static enum hrtimer_restart tsc2046_adc_trig_more(struct hrtimer *hrtimer)
-+{
-+	struct tsc2046_adc_priv *priv = container_of(hrtimer,
-+						     struct tsc2046_adc_priv,
-+						     trig_timer);
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&priv->trig_lock, flags);
-+
-+	disable_irq_nosync(priv->spi->irq);
-+
-+	priv->trig_more_count++;
-+	iio_trigger_poll(priv->trig);
-+
-+	spin_unlock_irqrestore(&priv->trig_lock, flags);
-+
-+	return HRTIMER_NORESTART;
-+}
-+
-+static irqreturn_t tsc2046_adc_irq(int irq, void *dev_id)
-+{
-+	struct iio_dev *indio_dev = dev_id;
-+	struct tsc2046_adc_priv *priv = iio_priv(indio_dev);
-+
-+	spin_lock(&priv->trig_lock);
-+
-+	hrtimer_try_to_cancel(&priv->trig_timer);
-+
-+	priv->trig_more_count = 0;
-+	disable_irq_nosync(priv->spi->irq);
-+	iio_trigger_poll(priv->trig);
-+
-+	spin_unlock(&priv->trig_lock);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static void tsc2046_adc_reenable_trigger(struct iio_trigger *trig)
-+{
-+	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
-+	struct tsc2046_adc_priv *priv = iio_priv(indio_dev);
-+	unsigned long flags;
-+	int delta;
-+
-+	/*
-+	 * We can sample it as fast as we can, but usually we do not need so
-+	 * many samples. Reduce the sample rate for default (touchscreen) use
-+	 * case.
-+	 * Currently we do not need a highly precise sample rate. It is enough
-+	 * to have calculated numbers.
-+	 */
-+	delta = priv->scan_interval_us - priv->time_per_scan_us;
-+	if (delta > 0)
-+		fsleep(delta);
-+
-+	spin_lock_irqsave(&priv->trig_lock, flags);
-+
-+	/*
-+	 * We need to trigger at least one extra sample to detect state
-+	 * difference on ADC side.
-+	 */
-+	if (!priv->trig_more_count) {
-+		int timeout_ms = DIV_ROUND_UP(priv->scan_interval_us,
-+					      USEC_PER_MSEC);
-+
-+		hrtimer_start(&priv->trig_timer, ms_to_ktime(timeout_ms),
-+			      HRTIMER_MODE_REL_SOFT);
-+	}
-+
-+	enable_irq(priv->spi->irq);
-+
-+	spin_unlock_irqrestore(&priv->trig_lock, flags);
-+}
-+
-+static int tsc2046_adc_set_trigger_state(struct iio_trigger *trig, bool enable)
-+{
-+	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
-+	struct tsc2046_adc_priv *priv = iio_priv(indio_dev);
-+
-+	if (enable) {
-+		enable_irq(priv->spi->irq);
-+	} else {
-+		disable_irq(priv->spi->irq);
-+		hrtimer_try_to_cancel(&priv->trig_timer);
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct iio_trigger_ops tsc2046_adc_trigger_ops = {
-+	.set_trigger_state = tsc2046_adc_set_trigger_state,
-+	.reenable = tsc2046_adc_reenable_trigger,
-+};
-+
-+static int tsc2046_adc_setup_spi_msg(struct tsc2046_adc_priv *priv)
-+{
-+	unsigned int ch_idx;
-+	size_t size;
++	struct device *dev = regmap_get_device(data->regmap);
 +	int ret;
 +
-+	priv->tx_one = devm_kzalloc(&priv->spi->dev, sizeof(*priv->tx_one),
-+				    GFP_KERNEL);
-+	if (!priv->tx_one)
-+		return -ENOMEM;
++	pm_runtime_mark_last_busy(dev);
++	ret = pm_runtime_put_autosuspend(dev);
 +
-+	priv->rx_one = devm_kzalloc(&priv->spi->dev, sizeof(*priv->rx_one),
-+				    GFP_KERNEL);
-+	if (!priv->rx_one)
-+		return -ENOMEM;
++	if (ret < 0) {
++		dev_err(dev, "failed to power off\n");
++		return ret;
++	}
 +
-+	/*
-+	 * Make dummy read to set initial power state and get real SPI clock
-+	 * freq. It seems to be not important which channel is used for this
-+	 * case.
-+	 */
-+	ret = tsc2046_adc_read_one(priv, TI_TSC2046_ADDR_TEMP0,
-+				   &priv->effective_speed_hz);
++	return 0;
++}
++
++static int fxls8962af_get_temp(struct fxls8962af_data *data, int *val)
++{
++	struct device *dev = regmap_get_device(data->regmap);
++	unsigned int value;
++	int ret;
++
++	ret = fxls8962af_drdy(data);
 +	if (ret < 0)
 +		return ret;
 +
-+	/*
-+	 * In case SPI controller do not report effective_speed_hz, use
-+	 * configure value and hope it will match.
-+	 */
-+	if (!priv->effective_speed_hz)
-+		priv->effective_speed_hz = priv->spi->max_speed_hz;
++	ret = fxls8962af_power_on(data);
++	if (ret)
++		return ret;
 +
++	ret = regmap_read(data->regmap, FXLS8962AF_TEMP_OUT, &value);
++	if (ret < 0) {
++		dev_err(dev, "Error reading reg_temp\n");
++		fxls8962af_power_off(data);
++		return ret;
++	}
 +
-+	priv->scan_interval_us = TI_TSC2046_SAMPLE_INTERVAL_US;
-+	priv->time_per_bit_ns = DIV_ROUND_UP(NSEC_PER_SEC,
-+					     priv->effective_speed_hz);
++	fxls8962af_power_off(data);
 +
-+	/*
-+	 * Calculate and allocate maximal size buffer if all channels are
-+	 * enabled.
-+	 */
-+	size = 0;
-+	for (ch_idx = 0; ch_idx < priv->dcfg->num_channels; ch_idx++)
-+		size += tsc2046_adc_group_set_layout(priv, ch_idx, ch_idx);
++	*val = sign_extend32(value, 7);
 +
-+	priv->tx = devm_kzalloc(&priv->spi->dev, size, GFP_KERNEL);
-+	if (!priv->tx)
-+		return -ENOMEM;
++	return IIO_VAL_INT;
++}
 +
-+	priv->rx = devm_kzalloc(&priv->spi->dev, size, GFP_KERNEL);
-+	if (!priv->rx)
-+		return -ENOMEM;
++static int fxls8962af_get_axis(struct fxls8962af_data *data,
++			       struct iio_chan_spec const *chan, int *val)
++{
++	struct device *dev = regmap_get_device(data->regmap);
++	__le16 raw_val;
++	int ret;
 +
-+	spi_message_init(&priv->msg);
-+	priv->msg.context = priv;
++	ret = fxls8962af_drdy(data);
++	if (ret < 0)
++		return ret;
 +
-+	priv->xfer.tx_buf = priv->tx;
-+	priv->xfer.rx_buf = priv->rx;
-+	priv->xfer.len = size;
-+	spi_message_add_tail(&priv->xfer, &priv->msg);
++	ret = fxls8962af_power_on(data);
++	if (ret)
++		return ret;
++
++	ret = regmap_bulk_read(data->regmap, chan->address,
++			       &raw_val, sizeof(raw_val));
++	if (ret < 0) {
++		dev_err(dev, "failed to read axes\n");
++		fxls8962af_power_off(data);
++		return ret;
++	}
++
++	fxls8962af_power_off(data);
++
++	*val = sign_extend32(le16_to_cpu(raw_val), chan->scan_type.realbits - 1);
++
++	return IIO_VAL_INT;
++}
++
++static int fxls8962af_read_avail(struct iio_dev *indio_dev,
++				 struct iio_chan_spec const *chan,
++				 const int **vals, int *type, int *length,
++				 long mask)
++{
++	switch (mask) {
++	case IIO_CHAN_INFO_SCALE:
++		*type = IIO_VAL_INT_PLUS_NANO;
++		*vals = (int *)fxls8962af_scale_table;
++		*length = ARRAY_SIZE(fxls8962af_scale_table) * 2;
++		return IIO_AVAIL_LIST;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int fxls8962af_write_raw_get_fmt(struct iio_dev *indio_dev,
++					struct iio_chan_spec const *chan,
++					long mask)
++{
++	return IIO_VAL_INT_PLUS_NANO;
++}
++
++static int fxls8962af_standby(struct fxls8962af_data *data)
++{
++	return regmap_update_bits(data->regmap, FXLS8962AF_SENS_CONFIG1,
++				  FXLS8962AF_SENS_CONFIG1_ACTIVE, 0);
++}
++
++static int fxls8962af_active(struct fxls8962af_data *data)
++{
++	return regmap_update_bits(data->regmap, FXLS8962AF_SENS_CONFIG1,
++				  FXLS8962AF_SENS_CONFIG1_ACTIVE, 1);
++}
++
++static int fxls8962af_is_active(struct fxls8962af_data *data)
++{
++	unsigned int reg;
++	int ret;
++
++	ret = regmap_read(data->regmap, FXLS8962AF_SENS_CONFIG1, &reg);
++	if (ret < 0)
++		return ret;
++
++	return reg & FXLS8962AF_SENS_CONFIG1_ACTIVE;
++}
++
++static int fxls8962af_update_config(struct fxls8962af_data *data, u8 reg,
++				    u8 mask, u8 val)
++{
++	int ret;
++	int is_active;
++
++	is_active = fxls8962af_is_active(data);
++	if (is_active) {
++		ret = fxls8962af_standby(data);
++		if (ret < 0)
++			return ret;
++	}
++
++	ret = regmap_update_bits(data->regmap, reg, mask, val);
++	if (ret < 0)
++		return ret;
++
++	if (is_active) {
++		ret = fxls8962af_active(data);
++		if (ret < 0)
++			return ret;
++	}
 +
 +	return 0;
 +}
 +
-+static void tsc2046_adc_parse_fwnode(struct tsc2046_adc_priv *priv)
++static int fxls8962af_set_full_scale(struct fxls8962af_data *data, u32 scale)
 +{
-+	struct fwnode_handle *child;
-+	struct device *dev = &priv->spi->dev;
-+	unsigned int i;
++	int i;
 +
-+	for (i = 0; i < ARRAY_SIZE(priv->ch_cfg); i++) {
-+		priv->ch_cfg[i].settling_time_us = 1;
-+		priv->ch_cfg[i].oversampling_ratio = 1;
-+	}
++	for (i = 0; i < ARRAY_SIZE(fxls8962af_scale_table); i++)
++		if (scale == fxls8962af_scale_table[i][1])
++			break;
 +
-+	device_for_each_child_node(dev, child) {
-+		u32 stl, overs, reg;
-+		int ret;
++	if (i == ARRAY_SIZE(fxls8962af_scale_table))
++		return -EINVAL;
 +
-+		ret = fwnode_property_read_u32(child, "reg", &reg);
-+		if (ret) {
-+			dev_err(dev, "invalid reg on %pfw, err: %pe\n", child,
-+				ERR_PTR(ret));
-+			continue;
++	return fxls8962af_update_config(data, FXLS8962AF_SENS_CONFIG1,
++					FXLS8962AF_SC1_FSR_MASK,
++					FXLS8962AF_SC1_FSR_PREP(i));
++}
++
++static unsigned int fxls8962af_read_full_scale(struct fxls8962af_data *data,
++					       int *val)
++{
++	int ret;
++	unsigned int reg;
++	u8 range_idx;
++
++	ret = regmap_read(data->regmap, FXLS8962AF_SENS_CONFIG1, &reg);
++	if (ret < 0)
++		return ret;
++
++	range_idx = FXLS8962AF_SC1_FSR_GET(reg);
++
++	*val = fxls8962af_scale_table[range_idx][1];
++
++	return IIO_VAL_INT_PLUS_NANO;
++}
++
++static int fxls8962af_read_raw(struct iio_dev *indio_dev,
++			       struct iio_chan_spec const *chan,
++			       int *val, int *val2, long mask)
++{
++	struct fxls8962af_data *data = iio_priv(indio_dev);
++	int ret;
++
++	switch (mask) {
++	case IIO_CHAN_INFO_RAW:
++		ret = iio_device_claim_direct_mode(indio_dev);
++		if (ret)
++			return ret;
++
++		switch (chan->type) {
++		case IIO_TEMP:
++			ret = fxls8962af_get_temp(data, val);
++			break;
++		case IIO_ACCEL:
++			ret = fxls8962af_get_axis(data, chan, val);
++			break;
++		default:
++			ret = -EINVAL;
 +		}
 +
-+		if (reg >= ARRAY_SIZE(priv->ch_cfg)) {
-+			dev_err(dev, "%pfw: Unsupported reg value: %i, max supported is: %zu.\n",
-+				child, reg, ARRAY_SIZE(priv->ch_cfg));
-+			continue;
-+		}
++		iio_device_release_direct_mode(indio_dev);
++		return ret;
++	case IIO_CHAN_INFO_OFFSET:
++		if (chan->type != IIO_TEMP)
++			return -EINVAL;
 +
-+		ret = fwnode_property_read_u32(child, "settling-time-us", &stl);
-+		if (!ret)
-+			priv->ch_cfg[reg].settling_time_us = stl;
-+
-+		ret = fwnode_property_read_u32(child, "oversampling-ratio",
-+					       &overs);
-+		if (!ret)
-+			priv->ch_cfg[reg].oversampling_ratio = overs;
++		*val = FXLS8962AF_TEMP_CENTER_VAL;
++		return IIO_VAL_INT;
++	case IIO_CHAN_INFO_SCALE:
++		*val = 0;
++		return fxls8962af_read_full_scale(data, val2);
++	default:
++		return -EINVAL;
 +	}
 +}
 +
-+static int tsc2046_adc_probe(struct spi_device *spi)
++static int fxls8962af_write_raw(struct iio_dev *indio_dev,
++				struct iio_chan_spec const *chan,
++				int val, int val2, long mask)
 +{
-+	const struct tsc2046_adc_dcfg *dcfg;
-+	struct device *dev = &spi->dev;
-+	struct tsc2046_adc_priv *priv;
++	struct fxls8962af_data *data = iio_priv(indio_dev);
++	int ret;
++
++	switch (mask) {
++	case IIO_CHAN_INFO_SCALE:
++		if (val != 0)
++			return -EINVAL;
++
++		ret = iio_device_claim_direct_mode(indio_dev);
++		if (ret)
++			return ret;
++
++		ret = fxls8962af_set_full_scale(data, val2);
++
++		iio_device_release_direct_mode(indio_dev);
++		return ret;
++	default:
++		return -EINVAL;
++	}
++}
++
++#define FXLS8962AF_CHANNEL(axis, reg, idx) { \
++	.type = IIO_ACCEL, \
++	.address = reg, \
++	.modified = 1, \
++	.channel2 = IIO_MOD_##axis, \
++	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
++	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE), \
++	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SCALE), \
++	.scan_index = idx, \
++	.scan_type = { \
++		.sign = 's', \
++		.realbits = 12, \
++		.storagebits = 16, \
++		.shift = 4, \
++		.endianness = IIO_BE, \
++	}, \
++}
++
++#define FXLS8962AF_TEMP_CHANNEL { \
++	.type = IIO_TEMP, \
++	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
++			      BIT(IIO_CHAN_INFO_OFFSET),\
++	.scan_index = -1, \
++	.scan_type = { \
++		.realbits = 8, \
++	}, \
++}
++
++static const struct iio_chan_spec fxls8962af_channels[] = {
++	FXLS8962AF_CHANNEL(X, FXLS8962AF_OUT_X_LSB, fxls8962af_idx_x),
++	FXLS8962AF_CHANNEL(Y, FXLS8962AF_OUT_Y_LSB, fxls8962af_idx_y),
++	FXLS8962AF_CHANNEL(Z, FXLS8962AF_OUT_Z_LSB, fxls8962af_idx_z),
++	IIO_CHAN_SOFT_TIMESTAMP(fxls8962af_idx_ts),
++	FXLS8962AF_TEMP_CHANNEL,
++};
++
++static const struct fxls8962af_chip_info fxls_chip_info_table[] = {
++	[fxls8962af] = {
++		.chip_id = FXLS8962AF_DEVICE_ID,
++		.name = "fxls8962af",
++		.channels = fxls8962af_channels,
++		.num_channels = ARRAY_SIZE(fxls8962af_channels),
++	},
++	[fxls8964af] = {
++		.chip_id = FXLS8964AF_DEVICE_ID,
++		.name = "fxls8964af",
++		.channels = fxls8962af_channels,
++		.num_channels = ARRAY_SIZE(fxls8962af_channels),
++	},
++};
++
++static const struct iio_info fxls8962af_info = {
++	.read_raw = &fxls8962af_read_raw,
++	.write_raw = &fxls8962af_write_raw,
++	.write_raw_get_fmt = fxls8962af_write_raw_get_fmt,
++	.read_avail = fxls8962af_read_avail,
++};
++
++static int fxls8962af_reset(struct fxls8962af_data *data)
++{
++	struct device *dev = regmap_get_device(data->regmap);
++	unsigned int reg;
++	int ret;
++
++	ret = regmap_update_bits(data->regmap, FXLS8962AF_SENS_CONFIG1,
++				 FXLS8962AF_SENS_CONFIG1_RST,
++				 FXLS8962AF_SENS_CONFIG1_RST);
++	if (ret < 0)
++		return ret;
++
++	/* TBOOT1, TBOOT2, specifies we have to wait between 1 - 17.7ms */
++	ret = regmap_read_poll_timeout(data->regmap, FXLS8962AF_INT_STATUS, reg,
++			(reg & FXLS8962AF_INT_STATUS_SRC_BOOT), 1000, 18000);
++	if (ret)
++		dev_err(dev, "reset timeout, int_status = 0x%x\n", reg);
++
++	return ret;
++}
++
++static void fxls8962af_regulator_disable(void *data_ptr)
++{
++	struct fxls8962af_data *data = data_ptr;
++
++	regulator_disable(data->vdd_reg);
++}
++
++static void fxls8962af_pm_disable(void *dev_ptr)
++{
++	struct device *dev = dev_ptr;
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
++
++	pm_runtime_disable(dev);
++	pm_runtime_set_suspended(dev);
++	pm_runtime_put_noidle(dev);
++
++	fxls8962af_standby(iio_priv(indio_dev));
++}
++
++int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq)
++{
++	struct fxls8962af_data *data;
 +	struct iio_dev *indio_dev;
-+	struct iio_trigger *trig;
-+	int ret;
++	unsigned int reg;
++	int ret, i;
 +
-+	if (spi->max_speed_hz > TI_TSC2046_MAX_CLK_FREQ) {
-+		dev_err(dev, "SPI max_speed_hz is too high: %d Hz. Max supported freq is %zu Hz\n",
-+			spi->max_speed_hz, TI_TSC2046_MAX_CLK_FREQ);
-+		return -EINVAL;
-+	}
-+
-+	dcfg = device_get_match_data(dev);
-+	if (!dcfg)
-+		return -EINVAL;
-+
-+	spi->bits_per_word = 8;
-+	spi->mode &= ~SPI_MODE_X_MASK;
-+	spi->mode |= SPI_MODE_0;
-+	ret = spi_setup(spi);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "Error in SPI setup\n");
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*priv));
++	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
 +	if (!indio_dev)
 +		return -ENOMEM;
 +
-+	priv = iio_priv(indio_dev);
-+	priv->dcfg = dcfg;
++	data = iio_priv(indio_dev);
++	dev_set_drvdata(dev, indio_dev);
++	data->regmap = regmap;
 +
-+	spi_set_drvdata(spi, indio_dev);
-+
-+	priv->spi = spi;
-+
-+	indio_dev->name = TI_TSC2046_NAME;
-+	indio_dev->modes = INDIO_DIRECT_MODE | INDIO_BUFFER_TRIGGERED;
-+	indio_dev->channels = dcfg->channels;
-+	indio_dev->num_channels = dcfg->num_channels;
-+	indio_dev->info = &tsc2046_adc_info;
-+
-+	tsc2046_adc_parse_fwnode(priv);
-+
-+	ret = tsc2046_adc_setup_spi_msg(priv);
++	ret = iio_read_mount_matrix(dev, "mount-matrix", &data->orientation);
 +	if (ret)
 +		return ret;
 +
-+	mutex_init(&priv->slock);
++	data->vdd_reg = devm_regulator_get(dev, "vdd");
++	if (IS_ERR(data->vdd_reg))
++		return dev_err_probe(dev, PTR_ERR(data->vdd_reg),
++				     "Failed to get vdd regulator\n");
 +
-+	/* TODO: remove IRQ_NOAUTOEN after needed patches are mainline */
-+	irq_set_status_flags(spi->irq, IRQ_NOAUTOEN);
-+	ret = devm_request_irq(dev, spi->irq, &tsc2046_adc_irq,
-+			       0, indio_dev->name, indio_dev);
++	ret = regulator_enable(data->vdd_reg);
++	if (ret) {
++		dev_err(dev, "Failed to enable vdd regulator: %d\n", ret);
++		return ret;
++	}
++
++	ret = devm_add_action_or_reset(dev, fxls8962af_regulator_disable, data);
 +	if (ret)
 +		return ret;
 +
-+	trig = devm_iio_trigger_alloc(dev, "touchscreen-%s", indio_dev->name);
-+	if (!trig)
-+		return -ENOMEM;
-+
-+	priv->trig = trig;
-+	iio_trigger_set_drvdata(trig, indio_dev);
-+	trig->ops = &tsc2046_adc_trigger_ops;
-+
-+	spin_lock_init(&priv->trig_lock);
-+	hrtimer_init(&priv->trig_timer, CLOCK_MONOTONIC,
-+		     HRTIMER_MODE_REL_SOFT);
-+	priv->trig_timer.function = tsc2046_adc_trig_more;
-+
-+	ret = devm_iio_trigger_register(dev, trig);
-+	if (ret) {
-+		dev_err(dev, "failed to register trigger\n");
++	ret = regmap_read(data->regmap, FXLS8962AF_WHO_AM_I, &reg);
++	if (ret < 0)
 +		return ret;
++
++	for (i = 0; i < ARRAY_SIZE(fxls_chip_info_table); i++) {
++		if (fxls_chip_info_table[i].chip_id == reg) {
++			data->chip_info = &fxls_chip_info_table[i];
++			break;
++		}
++	}
++	if (i == ARRAY_SIZE(fxls_chip_info_table)) {
++		dev_err(dev, "failed to match device in table\n");
++		return -ENXIO;
 +	}
 +
-+	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
-+					      &tsc2046_adc_trigger_handler, NULL);
-+	if (ret) {
-+		dev_err(dev, "Failed to setup triggered buffer\n");
-+		return ret;
-+	}
++	indio_dev->channels = data->chip_info->channels;
++	indio_dev->num_channels = data->chip_info->num_channels;
++	indio_dev->name = data->chip_info->name;
++	indio_dev->info = &fxls8962af_info;
++	indio_dev->modes = INDIO_DIRECT_MODE;
 +
-+	/* set default trigger */
-+	indio_dev->trig = iio_trigger_get(priv->trig);
++	ret = fxls8962af_reset(data);
++	if (ret < 0)
++		return ret;
++
++	ret = pm_runtime_set_active(dev);
++	if (ret < 0)
++		return ret;
++
++	pm_runtime_enable(dev);
++	pm_runtime_set_autosuspend_delay(dev, FXLS8962AF_AUTO_SUSPEND_DELAY_MS);
++	pm_runtime_use_autosuspend(dev);
++
++	ret = devm_add_action_or_reset(dev, fxls8962af_pm_disable, dev);
++	if (ret)
++		return ret;
 +
 +	return devm_iio_device_register(dev, indio_dev);
 +}
++EXPORT_SYMBOL_GPL(fxls8962af_core_probe);
 +
-+static const struct of_device_id ads7950_of_table[] = {
-+	{ .compatible = "ti,tsc2046e-adc", .data = &tsc2046_adc_dcfg_tsc2046e },
-+	{ }
++static int __maybe_unused fxls8962af_runtime_suspend(struct device *dev)
++{
++	struct fxls8962af_data *data = iio_priv(dev_get_drvdata(dev));
++	int ret;
++
++	ret = fxls8962af_standby(data);
++	if (ret < 0) {
++		dev_err(dev, "powering off device failed\n");
++		return ret;
++	}
++
++	return 0;
++}
++
++static int __maybe_unused fxls8962af_runtime_resume(struct device *dev)
++{
++	struct fxls8962af_data *data = iio_priv(dev_get_drvdata(dev));
++
++	return fxls8962af_active(data);
++}
++
++const struct dev_pm_ops fxls8962af_pm_ops = {
++	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
++				pm_runtime_force_resume)
++	SET_RUNTIME_PM_OPS(fxls8962af_runtime_suspend,
++			   fxls8962af_runtime_resume, NULL)
 +};
-+MODULE_DEVICE_TABLE(of, ads7950_of_table);
++EXPORT_SYMBOL_GPL(fxls8962af_pm_ops);
 +
-+static struct spi_driver tsc2046_adc_driver = {
-+	.driver = {
-+		.name = "tsc2046",
-+		.of_match_table = ads7950_of_table,
-+	},
-+	.probe = tsc2046_adc_probe,
-+};
-+module_spi_driver(tsc2046_adc_driver);
-+
-+MODULE_AUTHOR("Oleksij Rempel <kernel@pengutronix.de>");
-+MODULE_DESCRIPTION("TI TSC2046 ADC");
++MODULE_AUTHOR("Sean Nyekjaer <sean@geanix.com>");
++MODULE_DESCRIPTION("NXP FXLS8962AF/FXLS8964AF accelerometer driver");
 +MODULE_LICENSE("GPL v2");
+diff --git a/drivers/iio/accel/fxls8962af-i2c.c b/drivers/iio/accel/fxls8962af-i2c.c
+new file mode 100644
+index 000000000000..cba12160a714
+--- /dev/null
++++ b/drivers/iio/accel/fxls8962af-i2c.c
+@@ -0,0 +1,57 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * NXP FXLS8962AF/FXLS8964AF Accelerometer I2C Driver
++ *
++ * Copyright 2021 Connected Cars A/S
++ */
++
++#include <linux/dev_printk.h>
++#include <linux/err.h>
++#include <linux/i2c.h>
++#include <linux/mod_devicetable.h>
++#include <linux/module.h>
++#include <linux/regmap.h>
++
++#include "fxls8962af.h"
++
++static int fxls8962af_probe(struct i2c_client *client)
++{
++	struct regmap *regmap;
++
++	regmap = devm_regmap_init_i2c(client, &fxls8962af_regmap_conf);
++	if (IS_ERR(regmap)) {
++		dev_err(&client->dev, "Failed to initialize i2c regmap\n");
++		return PTR_ERR(regmap);
++	}
++
++	return fxls8962af_core_probe(&client->dev, regmap, client->irq);
++}
++
++static const struct i2c_device_id fxls8962af_id[] = {
++	{"fxls8962af", fxls8962af},
++	{"fxls8964af", fxls8964af},
++	{}
++};
++MODULE_DEVICE_TABLE(i2c, fxls8962af_id);
++
++static const struct of_device_id fxls8962af_of_match[] = {
++	{.compatible = "nxp,fxls8962af"},
++	{.compatible = "nxp,fxls8964af"},
++	{}
++};
++MODULE_DEVICE_TABLE(of, fxls8962af_of_match);
++
++static struct i2c_driver fxls8962af_driver = {
++	.driver = {
++		   .name = "fxls8962af_i2c",
++		   .of_match_table = fxls8962af_of_match,
++		   .pm = &fxls8962af_pm_ops,
++		   },
++	.probe_new = fxls8962af_probe,
++	.id_table = fxls8962af_id,
++};
++module_i2c_driver(fxls8962af_driver);
++
++MODULE_AUTHOR("Sean Nyekjaer <sean@geanix.com>");
++MODULE_DESCRIPTION("NXP FXLS8962AF/FXLS8964AF accelerometer i2c driver");
++MODULE_LICENSE("GPL v2");
+diff --git a/drivers/iio/accel/fxls8962af-spi.c b/drivers/iio/accel/fxls8962af-spi.c
+new file mode 100644
+index 000000000000..cb971b76d135
+--- /dev/null
++++ b/drivers/iio/accel/fxls8962af-spi.c
+@@ -0,0 +1,57 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * NXP FXLS8962AF/FXLS8964AF Accelerometer SPI Driver
++ *
++ * Copyright 2021 Connected Cars A/S
++ */
++
++#include <linux/dev_printk.h>
++#include <linux/err.h>
++#include <linux/module.h>
++#include <linux/mod_devicetable.h>
++#include <linux/spi/spi.h>
++#include <linux/regmap.h>
++
++#include "fxls8962af.h"
++
++static int fxls8962af_probe(struct spi_device *spi)
++{
++	struct regmap *regmap;
++
++	regmap = devm_regmap_init_spi(spi, &fxls8962af_regmap_conf);
++	if (IS_ERR(regmap)) {
++		dev_err(&spi->dev, "Failed to initialize spi regmap\n");
++		return PTR_ERR(regmap);
++	}
++
++	return fxls8962af_core_probe(&spi->dev, regmap, spi->irq);
++}
++
++static const struct of_device_id fxls8962af_spi_of_match[] = {
++	{.compatible = "nxp,fxls8962af"},
++	{.compatible = "nxp,fxls8964af"},
++	{}
++};
++MODULE_DEVICE_TABLE(of, fxls8962af_spi_of_match);
++
++static const struct spi_device_id fxls8962af_spi_id_table[] = {
++	{"fxls8962af", fxls8962af},
++	{"fxls8964af", fxls8964af},
++	{}
++};
++MODULE_DEVICE_TABLE(spi, fxls8962af_spi_id_table);
++
++static struct spi_driver fxls8962af_driver = {
++	.driver = {
++		   .name = "fxls8962af_spi",
++		   .pm = &fxls8962af_pm_ops,
++		   .of_match_table = fxls8962af_spi_of_match,
++		   },
++	.probe = fxls8962af_probe,
++	.id_table = fxls8962af_spi_id_table,
++};
++module_spi_driver(fxls8962af_driver);
++
++MODULE_AUTHOR("Sean Nyekjaer <sean@geanix.com>");
++MODULE_DESCRIPTION("NXP FXLS8962AF/FXLS8964AF accelerometer spi driver");
++MODULE_LICENSE("GPL v2");
+diff --git a/drivers/iio/accel/fxls8962af.h b/drivers/iio/accel/fxls8962af.h
+new file mode 100644
+index 000000000000..b67572c3ef06
+--- /dev/null
++++ b/drivers/iio/accel/fxls8962af.h
+@@ -0,0 +1,22 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright 2021 Connected Cars A/S
++ */
++#ifndef _FXLS8962AF_H_
++#define _FXLS8962AF_H_
++
++struct regmap;
++struct device;
++
++enum {
++	fxls8962af,
++	fxls8964af,
++};
++
++int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq);
++int fxls8962af_core_remove(struct device *dev);
++
++extern const struct dev_pm_ops fxls8962af_pm_ops;
++extern const struct regmap_config fxls8962af_regmap_conf;
++
++#endif				/* _FXLS8962AF_H_ */
 -- 
-2.29.2
+2.31.0
 

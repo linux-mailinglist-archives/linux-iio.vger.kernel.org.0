@@ -2,116 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 17BC136E437
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Apr 2021 06:28:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A622536E4A4
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Apr 2021 07:53:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231405AbhD2E2e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 29 Apr 2021 00:28:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48514 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229746AbhD2E2U (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 29 Apr 2021 00:28:20 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F773C06138C
-        for <linux-iio@vger.kernel.org>; Wed, 28 Apr 2021 21:27:11 -0700 (PDT)
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1lbyGU-0006mq-Fp; Thu, 29 Apr 2021 06:27:02 +0200
-Received: from ore by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ore@pengutronix.de>)
-        id 1lbyGR-0007Ca-4z; Thu, 29 Apr 2021 06:26:59 +0200
-Date:   Thu, 29 Apr 2021 06:26:59 +0200
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
+        id S232155AbhD2FyY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 29 Apr 2021 01:54:24 -0400
+Received: from first.geanix.com ([116.203.34.67]:36028 "EHLO first.geanix.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229814AbhD2FyY (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 29 Apr 2021 01:54:24 -0400
+Received: from [192.168.64.189] (unknown [185.17.218.86])
+        by first.geanix.com (Postfix) with ESMTPSA id E53224660FB;
+        Thu, 29 Apr 2021 05:53:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
+        t=1619675616; bh=zSYlWFz2O93WvLrDkXlJ/t/irAYSXtm5kijIeiKmvHM=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=iSmrfln6r3QVg/K1qv4Q3EmJ9TKnSNwuEm51c2K3jtc0RrBtCPnT7ImFxQoCW2kK/
+         J1k7HJ+2P7YVPXkgdh0VbAbmHdn2SylGSUd6KqVYmfjMlbKvQcN5MCDWqUXmhm6MoL
+         EicGsbwnVVYL+jG//3/oyU8Ht9Pm4TCQQchq5sredbH5iHfMe8pHb23XBHTeW78AJ+
+         X719gKtPhK9ajJN8qvwT3c+jvwiWGVGIdjzaN+IDqb53bgtBTc8O+ayM5rE5HDp8g5
+         QrfVDxca7lEcFo/67xyRu0ULnMkGpSXzJZ+JtNt/Piadr4tceWUagG2CBer99an5pg
+         2kd/jyJ/hA1oA==
+Subject: Re: [PATCH v3 1/2] iio: accel: add support for FXLS8962AF/FXLS8964AF
+ accelerometers
 To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org,
-        Robin van der Gracht <robin@protonic.nl>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        David Jander <david@protonic.nl>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH v6 1/3] dt-bindings:iio:adc: add generic settling-time-us
- and oversampling-ratio channel properties
-Message-ID: <20210429042659.rioipw3sqdmtmymy@pengutronix.de>
-References: <20210428073208.19570-1-o.rempel@pengutronix.de>
- <20210428073208.19570-2-o.rempel@pengutronix.de>
- <20210428175931.00002a7e@Huawei.com>
+Cc:     jic23@kernel.org, linux-iio@vger.kernel.org,
+        andy.shevchenko@gmail.com, lars@metafoo.de, Nuno.Sa@analog.com,
+        robh+dt@kernel.org, devicetree@vger.kernel.org
+References: <20210428080107.3584120-1-sean@geanix.com>
+ <20210428151925.000015e3@Huawei.com>
+From:   Sean Nyekjaer <sean@geanix.com>
+Message-ID: <b1529522-6fc9-ad01-e05c-5b8d4c8364f1@geanix.com>
+Date:   Thu, 29 Apr 2021 07:53:35 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210428175931.00002a7e@Huawei.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-IRC:  #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 06:26:38 up 147 days, 18:33, 33 users,  load average: 0.15, 0.06,
- 0.01
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+In-Reply-To: <20210428151925.000015e3@Huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        URIBL_BLOCKED autolearn=disabled version=3.4.4
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on 93bd6fdb21b5
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Apr 28, 2021 at 05:59:31PM +0100, Jonathan Cameron wrote:
-> On Wed, 28 Apr 2021 09:32:06 +0200
-> Oleksij Rempel <o.rempel@pengutronix.de> wrote:
-> 
-> > Settling time and over sampling is a typical challenge for different IIO ADC
-> > devices. So, introduce channel specific settling-time-us and oversampling-ratio
-> > properties to cover this use case.
-> > 
-> > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> This and patch 2 both look good to me.  Given Rob gave a minor comment on the
-> previous version I don't feel I need him to look at this again.
-> 
-> Will pick up in a few days if no other reviews come in to require a v7.
-
-Ok, thank you!
 
 
-> Thanks,
-> 
-> Jonathan
-> 
-> > ---
-> >  Documentation/devicetree/bindings/iio/adc/adc.yaml | 12 ++++++++++++
-> >  1 file changed, 12 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/adc.yaml b/Documentation/devicetree/bindings/iio/adc/adc.yaml
-> > index 912a7635edc4..db348fcbb52c 100644
-> > --- a/Documentation/devicetree/bindings/iio/adc/adc.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/adc/adc.yaml
-> > @@ -39,4 +39,16 @@ properties:
-> >        The first value specifies the positive input pin, the second
-> >        specifies the negative input pin.
-> >  
-> > +  settling-time-us:
-> > +    description:
-> > +      Time between enabling the channel and first stable readings.
-> > +
-> > +  oversampling-ratio:
-> > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > +    description:
-> > +      Oversampling is used as replacement of or addition to the low-pass filter.
-> > +      In some cases, the desired filtering characteristics are a function the
-> > +      device design and can interact with other characteristics such as
-> > +      settling time.
-> > +
-> >  additionalProperties: true
-> 
-> 
-> 
+On 28/04/2021 16.19, Jonathan Cameron wrote:
+>> +static int fxls8962af_get_temp(struct fxls8962af_data *data, int *val)
+>> +{
+>> +	struct device *dev = regmap_get_device(data->regmap);
+>> +	unsigned int value;
+>> +	int ret;
+>> +
+>> +	ret = fxls8962af_drdy(data);
+> I'm a little confused.  You check data is ready before calling power on
+> which could result in you moving from standby to active state?
+>
+>
+Reading it again, I would definitively move it around :)
+When testing it looks like we currently are getting the last sample from 
+active state.
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+/Sean

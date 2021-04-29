@@ -2,114 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DCFC36E6F3
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Apr 2021 10:17:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31C1F36E77A
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Apr 2021 10:59:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239784AbhD2IRA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 29 Apr 2021 04:17:00 -0400
-Received: from mx07-00178001.pphosted.com ([185.132.182.106]:11602 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232480AbhD2IQ6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 29 Apr 2021 04:16:58 -0400
-Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 13T8AjdW007177;
-        Thu, 29 Apr 2021 10:16:03 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=selector1;
- bh=OuvovnZksrZCaSbY5PMovdoAT58xVgjjdSdXd2wOHCU=;
- b=lSR7x1TgxBDV8mPES2XbNdH/Zlid60lZX7sRJxOWFOaVQDZE4+EJZqdJcL/CeUn6jZXx
- csKNgPnp+ggLmpbk/ZrkZQG4OTUG3q+yWAQ9cqNX3pqvA59MPP4Md6b42XHE+am8pf9b
- GhOmdoouqH/ZrTXXBgt8FUch5oGQDGHxzLlekXuYOlhSHq2j4HVQQcQOoHioiWasAEdh
- T6d2CNLj60Nw/rwEBDp61voUAJI3lLiYSpbYEWG0NHdcsvPEIlYxEo3DAiriAE4z1rjW
- eWeS5oBiMgoOGh2Bw0CVgbieIpwVdWoUL75xuJp7fCPEnUhsobQfVf15SOR8jSz+YRgj Jg== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 3871k17y4r-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 29 Apr 2021 10:16:03 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 3B90210002A;
-        Thu, 29 Apr 2021 10:16:01 +0200 (CEST)
-Received: from Webmail-eu.st.com (sfhdag2node3.st.com [10.75.127.6])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id E2E1420EA00;
-        Thu, 29 Apr 2021 10:16:01 +0200 (CEST)
-Received: from [10.211.0.181] (10.75.127.45) by SFHDAG2NODE3.st.com
- (10.75.127.6) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 29 Apr
- 2021 10:16:01 +0200
-Subject: Re: [PATCH] iio: adc: stm32-adc: Fix docs wrongly marked as
- kernel-doc
-To:     Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>
-CC:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Olivier MOYSAN <olivier.moysan@foss.st.com>
-References: <20210428192612.147524-1-jic23@kernel.org>
-From:   Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Message-ID: <03045348-8edd-7a93-cdb4-2cb412ff5cd9@foss.st.com>
-Date:   Thu, 29 Apr 2021 10:16:00 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S233104AbhD2I7m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 29 Apr 2021 04:59:42 -0400
+Received: from www381.your-server.de ([78.46.137.84]:53950 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232714AbhD2I7l (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 29 Apr 2021 04:59:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:To:Subject:Sender:Reply-To:Cc:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=wkI6VedDBhz3elMdASecoXfk2atYi4oo78R8rslH5Gg=; b=B8kfdHQfwdcgOTXwbHnHpFnHc3
+        hPGZXTOmeX3AEe5RpdKJfeqac/SjEsSCyQzyj555BNavwlGMicAOywKqC13LrwCitazWNqk7itYZk
+        Caf9Yp7W3vmruBDUbSPU/6tizq3RsP0eOuq6Vk7DV4BA7Oi5xueF/vKO6zdbKfYobpS4S3E5BLQxK
+        jkaZ4XTBXxxCQFudxCGDQJXs5/j/pF8SJtxbO4Pq6qWHkPE2gnyaH8nQeUUkmvhQK9ndDM73HpE0S
+        mvXwAwuCZ3BnIYCr542kRcZ6Tl1sQNGq008cWuA0zWi7K1rI87Yz3gRqiC0U7Hfksp2BwgF0ILxYh
+        1BmpFPVA==;
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <lars@metafoo.de>)
+        id 1lc2VY-0006nY-1z; Thu, 29 Apr 2021 10:58:52 +0200
+Received: from [2001:a61:2bd3:3c01:9e5c:8eff:fe01:8578]
+        by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1lc2VX-000KsX-M6; Thu, 29 Apr 2021 10:58:51 +0200
+Subject: Re: [RFC PATCH 2/4] iio: accel: fxls8962af: add interrupt support
+To:     Sean Nyekjaer <sean@geanix.com>, jic23@kernel.org,
+        linux-iio@vger.kernel.org, andy.shevchenko@gmail.com,
+        Nuno.Sa@analog.com, robh+dt@kernel.org, devicetree@vger.kernel.org
+References: <20210428082203.3587022-1-sean@geanix.com>
+ <20210428082203.3587022-2-sean@geanix.com>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <28f1e2a4-b2fa-5e4a-954f-92d90966eaf7@metafoo.de>
+Date:   Thu, 29 Apr 2021 10:58:51 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.0
 MIME-Version: 1.0
-In-Reply-To: <20210428192612.147524-1-jic23@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
+In-Reply-To: <20210428082203.3587022-2-sean@geanix.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.75.127.45]
-X-ClientProxiedBy: SFHDAG1NODE3.st.com (10.75.127.3) To SFHDAG2NODE3.st.com
- (10.75.127.6)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
- definitions=2021-04-29_05:2021-04-28,2021-04-29 signatures=0
+Content-Language: en-US
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.103.2/26154/Wed Apr 28 13:07:51 2021)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 4/28/21 9:26 PM, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> W=1 highlights these two cases that are obviously not in kernel-doc
-> format.
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-
-Hi Jonathan,
-
-I've been a bit surprised but I finally found out the checks have
-evolved [1].
-[1] https://lore.kernel.org/linux-next/87pmzlvi0y.fsf@meer.lwn.net/T/
-
-It seems it's exposed by commit:
-52042e2db452 ("scripts: kernel-doc: validate kernel-doc markup with the
-actual names")
-
-You can add my:
-Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-
-Thanks,
-Fabrice
-
+On 4/28/21 10:22 AM, Sean Nyekjaer wrote:
+> Preparation commit for the next that adds hw buffered sampling
+>
+> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
 > ---
->  drivers/iio/adc/stm32-adc.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-> index 922af2d75c1e..5088de835bb1 100644
-> --- a/drivers/iio/adc/stm32-adc.c
-> +++ b/drivers/iio/adc/stm32-adc.c
-> @@ -449,7 +449,7 @@ static const struct stm32_adc_regspec stm32h7_adc_regspec = {
->  	.smp_bits = stm32h7_smp_bits,
->  };
->  
-> -/**
-> +/*
->   * STM32 ADC registers access routines
->   * @adc: stm32 adc instance
->   * @reg: reg offset in adc instance
-> @@ -851,7 +851,7 @@ static int stm32h7_adc_restore_selfcalib(struct iio_dev *indio_dev)
->  	return 0;
->  }
->  
-> -/**
-> +/*
->   * Fixed timeout value for ADC calibration.
->   * worst cases:
->   * - low clock frequency
-> 
+> [...]
+>   
+> +static void fxls8962af_get_irq(struct device_node *of_node, enum fxls8962af_int_pin *pin)
+> +{
+> +	int irq;
+> +
+> +	irq = of_irq_get_byname(of_node, "INT2");
+
+For this I'd use device_property_match_string(dev, "interrupt-names", 
+"INT2"). Means it won't try to map the interrupt again, and also this is 
+the only place where the driver directly depends on OF, everything else 
+already uses the device_ API.
+
+
+> +	if (irq > 0) {
+> +		*pin = FXLS8962AF_PIN_INT2;
+> +		return;
+> +	}
+> +
+> +	*pin = FXLS8962AF_PIN_INT1;
+> +}
+

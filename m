@@ -2,42 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A622536E4A4
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Apr 2021 07:53:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1C5136E62C
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Apr 2021 09:42:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232155AbhD2FyY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 29 Apr 2021 01:54:24 -0400
-Received: from first.geanix.com ([116.203.34.67]:36028 "EHLO first.geanix.com"
+        id S230174AbhD2Hku (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 29 Apr 2021 03:40:50 -0400
+Received: from first.geanix.com ([116.203.34.67]:39984 "EHLO first.geanix.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229814AbhD2FyY (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 29 Apr 2021 01:54:24 -0400
+        id S229814AbhD2Hku (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 29 Apr 2021 03:40:50 -0400
 Received: from [192.168.64.189] (unknown [185.17.218.86])
-        by first.geanix.com (Postfix) with ESMTPSA id E53224660FB;
-        Thu, 29 Apr 2021 05:53:35 +0000 (UTC)
+        by first.geanix.com (Postfix) with ESMTPSA id 2215446636B;
+        Thu, 29 Apr 2021 07:40:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1619675616; bh=zSYlWFz2O93WvLrDkXlJ/t/irAYSXtm5kijIeiKmvHM=;
+        t=1619682001; bh=56ciJXj0zEPbXvYjI8z9gZXwvKQykcQRAbA6bjkZZeA=;
         h=Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=iSmrfln6r3QVg/K1qv4Q3EmJ9TKnSNwuEm51c2K3jtc0RrBtCPnT7ImFxQoCW2kK/
-         J1k7HJ+2P7YVPXkgdh0VbAbmHdn2SylGSUd6KqVYmfjMlbKvQcN5MCDWqUXmhm6MoL
-         EicGsbwnVVYL+jG//3/oyU8Ht9Pm4TCQQchq5sredbH5iHfMe8pHb23XBHTeW78AJ+
-         X719gKtPhK9ajJN8qvwT3c+jvwiWGVGIdjzaN+IDqb53bgtBTc8O+ayM5rE5HDp8g5
-         QrfVDxca7lEcFo/67xyRu0ULnMkGpSXzJZ+JtNt/Piadr4tceWUagG2CBer99an5pg
-         2kd/jyJ/hA1oA==
-Subject: Re: [PATCH v3 1/2] iio: accel: add support for FXLS8962AF/FXLS8964AF
- accelerometers
+        b=hNfpozdCd3y5U+w9Dh2lPcgSHYhFC9DslnaxMfLrzv+oQfsUS8CP4hJ+fw+2pMcOM
+         OpvEZcDrUI0QbHIY+K92bxSlajFssnBFIuUAYm7iCjPz1Ine46NIRJEEy8Kc9undQd
+         Z+Jzyi8yV6T4HmOQ+4ceYtqrcenZchDuLvOSSI9vSb6y2iKUGHr3ehRj4WjrG23OZf
+         LrHDgadUhJesl+JMlVNiLpXgSCPh9huEllkHfxET0VMv77ZH9xVM7wz0GdyzfvYmCT
+         hap8bY3KR0Vq/Nkd4FYpKp50wj6+PCs/LouTnG8d/fcwIkgmyQJDUqoK1pxiPWWDAe
+         oAhbgXtb/QCuA==
+Subject: Re: [RFC PATCH 3/4] iio: accel: fxls8962af: add hw buffered sampling
 To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 Cc:     jic23@kernel.org, linux-iio@vger.kernel.org,
         andy.shevchenko@gmail.com, lars@metafoo.de, Nuno.Sa@analog.com,
         robh+dt@kernel.org, devicetree@vger.kernel.org
-References: <20210428080107.3584120-1-sean@geanix.com>
- <20210428151925.000015e3@Huawei.com>
+References: <20210428082203.3587022-1-sean@geanix.com>
+ <20210428082203.3587022-3-sean@geanix.com>
+ <20210428173238.0000540d@Huawei.com>
 From:   Sean Nyekjaer <sean@geanix.com>
-Message-ID: <b1529522-6fc9-ad01-e05c-5b8d4c8364f1@geanix.com>
-Date:   Thu, 29 Apr 2021 07:53:35 +0200
+Message-ID: <f679124a-4efc-c98d-49ec-dd294fe44b5a@geanix.com>
+Date:   Thu, 29 Apr 2021 09:40:00 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.10.0
 MIME-Version: 1.0
-In-Reply-To: <20210428151925.000015e3@Huawei.com>
+In-Reply-To: <20210428173238.0000540d@Huawei.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Content-Language: en-US
@@ -51,20 +51,31 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 
 
-On 28/04/2021 16.19, Jonathan Cameron wrote:
->> +static int fxls8962af_get_temp(struct fxls8962af_data *data, int *val)
->> +{
->> +	struct device *dev = regmap_get_device(data->regmap);
->> +	unsigned int value;
->> +	int ret;
->> +
->> +	ret = fxls8962af_drdy(data);
-> I'm a little confused.  You check data is ready before calling power on
-> which could result in you moving from standby to active state?
+On 28/04/2021 18.32, Jonathan Cameron wrote:
+>> When buffered sampling is enabled, the accelerometer will dump data into
+>> the internal fifo and interrupt at watermark. Then the driver flushes
+>> all data to the iio buffer.
+>> As the accelerometer doesn't have internal timestamps, they are aproximated
+>> between to interrupts.
+> two?
 >
+> This tends to be a noisy approach, so people often try to apply a filter.
+> However, no need to do that for an initial version.
 >
-Reading it again, I would definitively move it around :)
-When testing it looks like we currently are getting the last sample from 
-active state.
+> There are some things in here referring to enabling triggered modes, but I'm
+> not seeing code to actually do so.  The fun question when dealing with fifos
+> and triggered mode is what the interface is to switch between the two.
+> One option I think we've used before is to just have 'no trigger' match
+> up to fifo mode and if a trigger is set, don't use the fifo.
+>
+Thanks Jonathan.
+
+Fixed the above text to:
+As the accelerometer doesn't have internal timestamps,
+they are approximated between the current and last interrupt.
+
+I don't know the correct term here, the accelerometer via the watermark, 
+is doing interrupts.
+Is that called no-trigger / trigger ?
 
 /Sean

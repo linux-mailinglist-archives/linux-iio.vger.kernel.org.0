@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CADA36EA76
+	by mail.lfdr.de (Postfix) with ESMTP id 890AB36EA77
 	for <lists+linux-iio@lfdr.de>; Thu, 29 Apr 2021 14:28:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232657AbhD2M3I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 29 Apr 2021 08:29:08 -0400
-Received: from first.geanix.com ([116.203.34.67]:50676 "EHLO first.geanix.com"
+        id S235470AbhD2M3J (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 29 Apr 2021 08:29:09 -0400
+Received: from first.geanix.com ([116.203.34.67]:50672 "EHLO first.geanix.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234147AbhD2M3H (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 29 Apr 2021 08:29:07 -0400
+        id S233731AbhD2M3I (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 29 Apr 2021 08:29:08 -0400
 Received: from zen.. (unknown [185.17.218.86])
-        by first.geanix.com (Postfix) with ESMTPSA id 33082466694;
-        Thu, 29 Apr 2021 12:28:18 +0000 (UTC)
+        by first.geanix.com (Postfix) with ESMTPSA id 97F18466697;
+        Thu, 29 Apr 2021 12:28:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1619699298; bh=t2nOExvUWFV6hW1+7WzgJD61WEA4HpnmlKhS9gzZprE=;
+        t=1619699299; bh=9KNwoN/9slPsT4i6pDC3pLpd9Ibh66p8L4fF3y6OuDk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=WuJjSJiooQMjWk365wKYgsbzdYOQEhWWXuKV5ndAE75j4NFnXVBYgzIP/gUDVsK/g
-         0xJsjPTp5B7Hr9Y/9gRZ5uRtnsLxWzn7ORK5dTlrAJROVjyzZPsJ3ge925t1kc+lCf
-         HkAXUEiiSkFHxYXxyIugEc7Bmtx4ZCUqxM32Id3cp1ar4fbMFJFKMXLYjUI0H+iGn8
-         R/YU13nC1fKbiztoKR1TrvwqBPfFmFV7Uh696Jg4L+RxWevUUcn3bU5UU9pQlJBcoS
-         hX5lF6vPeR5gjntft7NwTCArAzFR/gvYaa2mqxNT6z3VizJfwKW/iwhr6Jp538e9Tt
-         h0oIk+Nu9keuA==
+        b=M5cl237IskeBgudhtsPMMBGFxTAEr/48TpWY0Td6CdAEa9oBbXCiYM6FXxcYK9Byl
+         HqGuTwQhavRBasOm5ST8VP0UFkZr1VdnzdDHCVFHYCYmfBm8nLEKZL64vjN4G7Vn8+
+         c6k2hwLZgzhqo3o1ccP6lNjkZ2axpMXlpXTXB6yMf2cCzugOxvpfpsiMbO0Tym1Du6
+         Lvs2srsolHzREbcap0gMI9/ednIZOdunbMi4bdYGPgT7WaQEFFZUOQQV12MnExOlJg
+         9/zZc6MrfeKPthhylRLHXFaCWmIf752g+NMhkRqjLAMl5IUS0TxQEa+t7R6oLxnBJv
+         tkFmrQERJ85sQ==
 From:   Sean Nyekjaer <sean@geanix.com>
 To:     jic23@kernel.org, linux-iio@vger.kernel.org,
         andy.shevchenko@gmail.com, lars@metafoo.de, Nuno.Sa@analog.com,
         robh+dt@kernel.org, devicetree@vger.kernel.org
 Cc:     Sean Nyekjaer <sean@geanix.com>
-Subject: [PATCH v4 4/6] iio: accel: fxls8962af: add interrupt support
-Date:   Thu, 29 Apr 2021 14:28:04 +0200
-Message-Id: <20210429122806.3814330-4-sean@geanix.com>
+Subject: [PATCH v4 5/6] iio: accel: fxls8962af: add hw buffered sampling
+Date:   Thu, 29 Apr 2021 14:28:05 +0200
+Message-Id: <20210429122806.3814330-5-sean@geanix.com>
 X-Mailer: git-send-email 2.31.0
 In-Reply-To: <20210429122806.3814330-1-sean@geanix.com>
 References: <20210429122806.3814330-1-sean@geanix.com>
@@ -44,181 +44,323 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Preparation commit for the next that adds hw buffered sampling
+When buffered sampling is enabled, the accelerometer will dump data into
+the internal fifo and interrupt at watermark. Then the driver flushes
+all data to the iio buffer.
+As the accelerometer doesn't have internal timestamps, they are approximated
+between the current and last interrupt.
 
 Signed-off-by: Sean Nyekjaer <sean@geanix.com>
 ---
 Changes from RFC:
- - Changed of_irq_get_byname -> device_property_match_string?? Lars /
-   Andy ??
+ - Dropped the claim stuff for read_raw
+ - Added watermark get/set
+ - Consistent use of u16 for buffer size
 
- drivers/iio/accel/fxls8962af-core.c | 111 ++++++++++++++++++++++++++++
- 1 file changed, 111 insertions(+)
+ drivers/iio/accel/fxls8962af-core.c | 208 ++++++++++++++++++++++++++++
+ 1 file changed, 208 insertions(+)
 
 diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
-index 9de30e8539b1..3696546fe23a 100644
+index 3696546fe23a..2e863ef71a7d 100644
 --- a/drivers/iio/accel/fxls8962af-core.c
 +++ b/drivers/iio/accel/fxls8962af-core.c
-@@ -15,6 +15,7 @@
- #include <linux/bits.h>
- #include <linux/bitfield.h>
- #include <linux/module.h>
-+#include <linux/of_irq.h>
- #include <linux/pm_runtime.h>
+@@ -20,13 +20,17 @@
  #include <linux/regulator/consumer.h>
  #include <linux/regmap.h>
-@@ -54,6 +55,10 @@
- #define FXLS8962AF_SC3_WAKE_ODR_PREP(x)		FIELD_PREP(FXLS8962AF_SC3_WAKE_ODR_MASK, (x))
- #define FXLS8962AF_SC3_WAKE_ODR_GET(x)		FIELD_GET(FXLS8962AF_SC3_WAKE_ODR_MASK, (x))
- #define FXLS8962AF_SENS_CONFIG4			0x18
-+#define FXLS8962AF_SC4_INT_PP_OD_MASK		BIT(1)
-+#define FXLS8962AF_SC4_INT_PP_OD_PREP(x)	FIELD_PREP(FXLS8962AF_SC4_INT_PP_OD_MASK, (x))
-+#define FXLS8962AF_SC4_INT_POL_MASK		BIT(0)
-+#define FXLS8962AF_SC4_INT_POL_PREP(x)		FIELD_PREP(FXLS8962AF_SC4_INT_POL_MASK, (x))
- #define FXLS8962AF_SENS_CONFIG5			0x19
  
- #define FXLS8962AF_WAKE_IDLE_LSB		0x1b
-@@ -62,6 +67,9 @@
++#include <linux/iio/buffer.h>
+ #include <linux/iio/iio.h>
++#include <linux/iio/kfifo_buf.h>
+ #include <linux/iio/sysfs.h>
++#include <linux/iio/trigger.h>
+ 
+ #include "fxls8962af.h"
+ 
+ #define FXLS8962AF_INT_STATUS			0x00
+ #define FXLS8962AF_INT_STATUS_SRC_BOOT		BIT(0)
++#define FXLS8962AF_INT_STATUS_SRC_BUF		BIT(5)
+ #define FXLS8962AF_INT_STATUS_SRC_DRDY		BIT(7)
+ #define FXLS8962AF_TEMP_OUT			0x01
+ #define FXLS8962AF_VECM_LSB			0x02
+@@ -34,6 +38,9 @@
+ #define FXLS8962AF_OUT_Y_LSB			0x06
+ #define FXLS8962AF_OUT_Z_LSB			0x08
+ #define FXLS8962AF_BUF_STATUS			0x0b
++#define FXLS8962AF_BUF_STATUS_BUF_CNT		GENMASK(5, 0)
++#define FXLS8962AF_BUF_STATUS_BUF_OVF		BIT(6)
++#define FXLS8962AF_BUF_STATUS_BUF_WMRK		BIT(7)
+ #define FXLS8962AF_BUF_X_LSB			0x0c
+ #define FXLS8962AF_BUF_Y_LSB			0x0e
+ #define FXLS8962AF_BUF_Z_LSB			0x10
+@@ -66,6 +73,7 @@
+ #define FXLS8962AF_ASLP_COUNT_LSB		0x1e
  
  #define FXLS8962AF_INT_EN			0x20
++#define FXLS8962AF_INT_EN_BUF_EN		BIT(6)
  #define FXLS8962AF_INT_PIN_SEL			0x21
-+#define FXLS8962AF_INT_PIN_SEL_MASK		GENMASK(7, 0)
-+#define FXLS8962AF_INT_PIN_SEL_INT1		0x00
-+#define FXLS8962AF_INT_PIN_SEL_INT2		GENMASK(7, 0)
+ #define FXLS8962AF_INT_PIN_SEL_MASK		GENMASK(7, 0)
+ #define FXLS8962AF_INT_PIN_SEL_INT1		0x00
+@@ -76,7 +84,10 @@
+ #define FXLS8962AF_OFF_Z			0x24
  
- #define FXLS8962AF_OFF_X			0x22
- #define FXLS8962AF_OFF_Y			0x23
-@@ -142,6 +150,11 @@ enum {
- 	fxls8962af_idx_ts,
+ #define FXLS8962AF_BUF_CONFIG1			0x26
++#define FXLS8962AF_BC1_BUF_MODE_MASK		GENMASK(6, 5)
++#define FXLS8962AF_BC1_BUF_MODE_PREP(x)		FIELD_PREP(FXLS8962AF_BC1_BUF_MODE_MASK, (x))
+ #define FXLS8962AF_BUF_CONFIG2			0x27
++#define FXLS8962AF_BUF_CONFIG2_BUF_WMRK		GENMASK(5, 0)
+ 
+ #define FXLS8962AF_ORIENT_STATUS		0x28
+ #define FXLS8962AF_ORIENT_CONFIG		0x29
+@@ -106,6 +117,7 @@
+ 
+ #define FXLS8962AF_AUTO_SUSPEND_DELAY_MS	2000
+ 
++#define FXLS8962AF_FIFO_LENGTH			32
+ #define FXLS8962AF_SCALE_TABLE_LEN		4
+ #define FXLS8962AF_SAMP_FREQ_TABLE_LEN		13
+ 
+@@ -133,7 +145,13 @@ struct fxls8962af_data {
+ 	struct regmap *regmap;
+ 	const struct fxls8962af_chip_info *chip_info;
+ 	struct regulator *vdd_reg;
++	struct {
++		__le16 channels[3];
++		s64 ts __aligned(8);
++	} scan;
++	int64_t timestamp, old_timestamp; /* Only used in hw fifo mode. */
+ 	struct iio_mount_matrix orientation;
++	u8 watermark;
  };
  
-+enum fxls8962af_int_pin {
-+	FXLS8962AF_PIN_INT1,
-+	FXLS8962AF_PIN_INT2,
-+};
+ const struct regmap_config fxls8962af_regmap_conf = {
+@@ -436,6 +454,18 @@ static int fxls8962af_write_raw(struct iio_dev *indio_dev,
+ 	}
+ }
+ 
++static int fxls8962af_set_watermark(struct iio_dev *indio_dev, unsigned val)
++{
++	struct fxls8962af_data *data = iio_priv(indio_dev);
 +
- static int fxls8962af_power_on(struct fxls8962af_data *data)
- {
- 	struct device *dev = regmap_get_device(data->regmap);
-@@ -506,6 +519,20 @@ static int fxls8962af_reset(struct fxls8962af_data *data)
++	if (val > FXLS8962AF_FIFO_LENGTH)
++		val = FXLS8962AF_FIFO_LENGTH;
++
++	data->watermark = val;
++
++	return 0;
++}
++
+ #define FXLS8962AF_CHANNEL(axis, reg, idx) { \
+ 	.type = IIO_ACCEL, \
+ 	.address = reg, \
+@@ -496,6 +526,7 @@ static const struct iio_info fxls8962af_info = {
+ 	.write_raw = &fxls8962af_write_raw,
+ 	.write_raw_get_fmt = fxls8962af_write_raw_get_fmt,
+ 	.read_avail = fxls8962af_read_avail,
++	.hwfifo_set_watermark = fxls8962af_set_watermark,
+ };
+ 
+ static int fxls8962af_reset(struct fxls8962af_data *data)
+@@ -519,6 +550,158 @@ static int fxls8962af_reset(struct fxls8962af_data *data)
  	return ret;
  }
  
-+static irqreturn_t fxls8962af_interrupt(int irq, void *p)
++static int __fxls8962af_fifo_set_mode(struct fxls8962af_data *data, bool onoff)
 +{
-+	struct iio_dev *indio_dev = p;
-+	struct fxls8962af_data *data = iio_priv(indio_dev);
-+	unsigned int reg;
 +	int ret;
 +
-+	ret = regmap_read(data->regmap, FXLS8962AF_INT_STATUS, &reg);
++	/* Enable watermark at max fifo size*/
++	ret = regmap_update_bits(data->regmap, FXLS8962AF_BUF_CONFIG2,
++				 FXLS8962AF_BUF_CONFIG2_BUF_WMRK,
++				 data->watermark);
 +	if (ret < 0)
-+		return IRQ_NONE;
++		return ret;
 +
-+	return IRQ_NONE;
++	return regmap_update_bits(data->regmap, FXLS8962AF_BUF_CONFIG1,
++				  FXLS8962AF_BC1_BUF_MODE_MASK,
++				  FXLS8962AF_BC1_BUF_MODE_PREP(onoff));
++}
++
++static int fxls8962af_buffer_preenable(struct iio_dev *indio_dev)
++{
++	return fxls8962af_power_on(iio_priv(indio_dev));
++}
++
++static int fxls8962af_buffer_postenable(struct iio_dev *indio_dev)
++{
++	struct fxls8962af_data *data = iio_priv(indio_dev);
++	int ret;
++
++	fxls8962af_standby(data);
++
++	/* Enable buffer interrupt*/
++	ret = regmap_update_bits(data->regmap, FXLS8962AF_INT_EN,
++				 FXLS8962AF_INT_EN_BUF_EN,
++				 FXLS8962AF_INT_EN_BUF_EN);
++	if (ret < 0)
++		return ret;
++
++	ret = __fxls8962af_fifo_set_mode(data, true);
++
++	fxls8962af_active(data);
++
++	return ret;
++}
++
++static int fxls8962af_buffer_predisable(struct iio_dev *indio_dev)
++{
++	struct fxls8962af_data *data = iio_priv(indio_dev);
++	int ret = 0;
++
++	fxls8962af_standby(data);
++
++	/* Disable buffer interrupt*/
++	ret = regmap_update_bits(data->regmap, FXLS8962AF_INT_EN,
++			FXLS8962AF_INT_EN_BUF_EN, 0);
++	if (ret < 0)
++		return ret;
++
++	ret = __fxls8962af_fifo_set_mode(data, false);
++
++	fxls8962af_active(data);
++
++	return ret;
++}
++
++static int fxls8962af_buffer_postdisable(struct iio_dev *indio_dev)
++{
++	struct fxls8962af_data *data = iio_priv(indio_dev);
++
++	return fxls8962af_power_off(data);
++}
++
++static const struct iio_buffer_setup_ops fxls8962af_buffer_ops = {
++	.preenable = fxls8962af_buffer_preenable,
++	.postenable = fxls8962af_buffer_postenable,
++	.predisable = fxls8962af_buffer_predisable,
++	.postdisable = fxls8962af_buffer_postdisable,
++};
++
++static int fxls8962af_fifo_transfer(struct fxls8962af_data *data,
++				    u16 *buffer, int samples)
++{
++	struct device *dev = regmap_get_device(data->regmap);
++	int sample_length = 3 * sizeof(*buffer);
++	int ret;
++	int total_length = samples * sample_length;
++
++	ret = regmap_raw_read(data->regmap, FXLS8962AF_BUF_X_LSB, buffer,
++			      total_length);
++	if (ret < 0)
++		dev_err(dev, "Error transferring data from fifo: %d\n", ret);
++
++	return ret;
++}
++
++static int fxls8962af_fifo_flush(struct iio_dev *indio_dev)
++{
++	struct fxls8962af_data *data = iio_priv(indio_dev);
++	struct device *dev = regmap_get_device(data->regmap);
++	u16 buffer[FXLS8962AF_FIFO_LENGTH * 3];
++	uint64_t sample_period;
++	unsigned int reg;
++	int64_t tstamp;
++	int ret, i;
++	u8 count;
++
++	ret = regmap_read(data->regmap, FXLS8962AF_BUF_STATUS, &reg);
++	if (ret < 0)
++		return ret;
++
++	if (reg & FXLS8962AF_BUF_STATUS_BUF_OVF) {
++		dev_err(dev, "Buffer overflown");
++		return -1;
++	}
++
++	count = reg & FXLS8962AF_BUF_STATUS_BUF_CNT;
++
++	if (!count)
++		return 0;
++
++	data->old_timestamp = data->timestamp;
++	data->timestamp = iio_get_time_ns(indio_dev);
++
++	/*
++	 * Approximate timestamps for each of the sample based on the sampling,
++	 * frequency, timestamp for last sample and number of samples.
++	 */
++	sample_period = (data->timestamp - data->old_timestamp);
++	do_div(sample_period, count);
++	tstamp = data->timestamp - (count - 1) * sample_period;
++
++	ret = fxls8962af_fifo_transfer(data, buffer, count);
++	if (ret)
++		return ret;
++
++	/* Demux hw FIFO into kfifo. */
++	for (i = 0; i < count; i++) {
++		int j, bit;
++
++		j = 0;
++		for_each_set_bit(bit, indio_dev->active_scan_mask,
++				 indio_dev->masklength) {
++			memcpy(&data->scan.channels[j++], &buffer[i * 3 + bit],
++			       sizeof(data->scan.channels[0]));
++		}
++
++		iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
++						   tstamp);
++
++		tstamp += sample_period;
++	}
++
++	return count;
++}
++
+ static irqreturn_t fxls8962af_interrupt(int irq, void *p)
+ {
+ 	struct iio_dev *indio_dev = p;
+@@ -530,9 +713,32 @@ static irqreturn_t fxls8962af_interrupt(int irq, void *p)
+ 	if (ret < 0)
+ 		return IRQ_NONE;
+ 
++	if (reg & FXLS8962AF_INT_STATUS_SRC_BUF) {
++		ret = fxls8962af_fifo_flush(indio_dev);
++		if (ret < 0)
++			return IRQ_NONE;
++
++		return IRQ_HANDLED;
++	}
++
+ 	return IRQ_NONE;
+ }
+ 
++static int fxls8962af_fifo_setup(struct iio_dev *indio_dev)
++{
++	struct iio_buffer *buffer;
++
++	buffer = devm_iio_kfifo_allocate(&indio_dev->dev);
++	if (!buffer)
++		return -ENOMEM;
++
++	iio_device_attach_buffer(indio_dev, buffer);
++	indio_dev->modes |= INDIO_BUFFER_SOFTWARE;
++	indio_dev->setup_ops = &fxls8962af_buffer_ops;
++
++	return 0;
 +}
 +
  static void fxls8962af_regulator_disable(void *data_ptr)
  {
  	struct fxls8962af_data *data = data_ptr;
-@@ -525,6 +552,84 @@ static void fxls8962af_pm_disable(void *dev_ptr)
- 	fxls8962af_standby(iio_priv(indio_dev));
- }
+@@ -693,6 +899,8 @@ int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq)
+ 		ret = fxls8962af_irq_setup(indio_dev, irq);
+ 		if (ret < 0)
+ 			return ret;
++
++		fxls8962af_fifo_setup(indio_dev);
+ 	}
  
-+static void fxls8962af_get_irq(struct device *dev, enum fxls8962af_int_pin *pin)
-+{
-+	if (!device_property_match_string(dev, "interrupt-names", "INT2")) {
-+		*pin = FXLS8962AF_PIN_INT2;
-+		return;
-+	}
-+
-+	*pin = FXLS8962AF_PIN_INT1;
-+}
-+
-+static int fxls8962af_irq_setup(struct iio_dev *indio_dev, int irq)
-+{
-+	struct fxls8962af_data *data = iio_priv(indio_dev);
-+	struct device *dev = regmap_get_device(data->regmap);
-+	unsigned long irq_type;
-+	bool irq_active_high;
-+	enum fxls8962af_int_pin int_pin;
-+	u8 int_pin_sel;
-+	int ret;
-+
-+	fxls8962af_get_irq(dev, &int_pin);
-+	switch (int_pin) {
-+	case FXLS8962AF_PIN_INT1:
-+		int_pin_sel = FXLS8962AF_INT_PIN_SEL_INT1;
-+		break;
-+	case FXLS8962AF_PIN_INT2:
-+		int_pin_sel = FXLS8962AF_INT_PIN_SEL_INT2;
-+		break;
-+	default:
-+		dev_err(dev, "unsupported int pin selected\n");
-+		return -EINVAL;
-+	}
-+
-+	ret = regmap_update_bits(data->regmap, FXLS8962AF_INT_PIN_SEL,
-+				 FXLS8962AF_INT_PIN_SEL_MASK,
-+				 int_pin_sel);
-+	if (ret)
-+		return ret;
-+
-+	irq_type = irqd_get_trigger_type(irq_get_irq_data(irq));
-+
-+	switch (irq_type) {
-+	case IRQF_TRIGGER_HIGH:
-+	case IRQF_TRIGGER_RISING:
-+		irq_active_high = true;
-+		break;
-+	case IRQF_TRIGGER_LOW:
-+	case IRQF_TRIGGER_FALLING:
-+		irq_active_high = false;
-+		break;
-+	default:
-+		dev_info(dev, "mode %lx unsupported\n", irq_type);
-+		return -EINVAL;
-+	}
-+
-+	ret = regmap_update_bits(data->regmap, FXLS8962AF_SENS_CONFIG4,
-+				 FXLS8962AF_SC4_INT_POL_MASK,
-+				 FXLS8962AF_SC4_INT_POL_PREP(irq_active_high));
-+	if (ret < 0)
-+		return ret;
-+
-+	if (device_property_read_bool(dev, "drive-open-drain")) {
-+		ret = regmap_update_bits(data->regmap, FXLS8962AF_SENS_CONFIG4,
-+					 FXLS8962AF_SC4_INT_PP_OD_MASK,
-+					 FXLS8962AF_SC4_INT_PP_OD_PREP(1));
-+		if (ret < 0)
-+			return ret;
-+
-+		irq_type |= IRQF_SHARED;
-+	}
-+
-+	return devm_request_threaded_irq(dev,
-+					 irq,
-+					 NULL, fxls8962af_interrupt,
-+					 irq_type | IRQF_ONESHOT,
-+					 indio_dev->name, indio_dev);
-+}
-+
- int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq)
- {
- 	struct fxls8962af_data *data;
-@@ -584,6 +689,12 @@ int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq)
- 	if (ret < 0)
- 		return ret;
- 
-+	if (irq) {
-+		ret = fxls8962af_irq_setup(indio_dev, irq);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
  	ret = pm_runtime_set_active(dev);
- 	if (ret < 0)
- 		return ret;
 -- 
 2.31.0
 

@@ -2,103 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDA8536EA7A
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Apr 2021 14:28:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC57836ECCB
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Apr 2021 16:53:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236133AbhD2M3K (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 29 Apr 2021 08:29:10 -0400
-Received: from first.geanix.com ([116.203.34.67]:50676 "EHLO first.geanix.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234147AbhD2M3J (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 29 Apr 2021 08:29:09 -0400
-Received: from zen.. (unknown [185.17.218.86])
-        by first.geanix.com (Postfix) with ESMTPSA id 44643466699;
-        Thu, 29 Apr 2021 12:28:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1619699301; bh=f/d1enRQkRJtaWSp6G4i9eygpUWyG+QO1k1J0/b1mUU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=UZFkm3VZZSqlK/ZlgbwjrRGuYFYypskBV/S3n7vcWp2HEZ9B2ZUH0+MM3W+JFAb7U
-         L5+VoEMzz8aJakD6bZUaMG9spv1QudgXYLaJXR1DAsI29Pbw0QLXqvsILRpiicvMXu
-         uGlawLcn5Y4pgstDkJEAjraWbC3TadbCROwmsZh3Qlrwpla8yCtxZBWvdrFdGPY5pJ
-         xhNksduUP27unN4gYbUvq9xImXlNAd60gFkhEbNDmlMU7Kn+ylauC9p8OnAe5Hc17O
-         Llixt4Yjgvey0qBkb2oMbS30h8IkA1NgQ01d2E4nqn2rORwG4PK0++egC/NveHpYCl
-         i6c3Tq/Eag9wg==
-From:   Sean Nyekjaer <sean@geanix.com>
-To:     jic23@kernel.org, linux-iio@vger.kernel.org,
-        andy.shevchenko@gmail.com, lars@metafoo.de, Nuno.Sa@analog.com,
-        robh+dt@kernel.org, devicetree@vger.kernel.org
-Cc:     Sean Nyekjaer <sean@geanix.com>
-Subject: [PATCH v4 6/6] iio: accel: fxls8962af: fix errata bug E3 - I2C burst reads
-Date:   Thu, 29 Apr 2021 14:28:06 +0200
-Message-Id: <20210429122806.3814330-6-sean@geanix.com>
-X-Mailer: git-send-email 2.31.0
-In-Reply-To: <20210429122806.3814330-1-sean@geanix.com>
-References: <20210429122806.3814330-1-sean@geanix.com>
+        id S232989AbhD2Oyl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 29 Apr 2021 10:54:41 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2953 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232556AbhD2Oyl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 29 Apr 2021 10:54:41 -0400
+Received: from fraeml740-chm.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4FWJJs2Sv7z72fBb;
+        Thu, 29 Apr 2021 22:48:13 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml740-chm.china.huawei.com (10.206.15.221) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Thu, 29 Apr 2021 16:53:52 +0200
+Received: from localhost (10.52.122.22) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2176.2; Thu, 29 Apr
+ 2021 15:53:51 +0100
+Date:   Thu, 29 Apr 2021 15:52:17 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Sean Nyekjaer <sean@geanix.com>
+CC:     <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
+        <andy.shevchenko@gmail.com>, <lars@metafoo.de>,
+        <Nuno.Sa@analog.com>, <robh+dt@kernel.org>,
+        <devicetree@vger.kernel.org>
+Subject: Re: [RFC PATCH 3/4] iio: accel: fxls8962af: add hw buffered
+ sampling
+Message-ID: <20210429155217.00006a34@Huawei.com>
+In-Reply-To: <f679124a-4efc-c98d-49ec-dd294fe44b5a@geanix.com>
+References: <20210428082203.3587022-1-sean@geanix.com>
+        <20210428082203.3587022-3-sean@geanix.com>
+        <20210428173238.0000540d@Huawei.com>
+        <f679124a-4efc-c98d-49ec-dd294fe44b5a@geanix.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
-        autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on 93bd6fdb21b5
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.52.122.22]
+X-ClientProxiedBy: lhreml705-chm.china.huawei.com (10.201.108.54) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-When flushing the hw fifo there is a bug in the I2C that prevents burst
-reads of more than one sample pair.
+On Thu, 29 Apr 2021 09:40:00 +0200
+Sean Nyekjaer <sean@geanix.com> wrote:
 
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
----
-Changes from RFC:
- - using i2c_verify_client() to detect if hw is connected on I2C bus
+> On 28/04/2021 18.32, Jonathan Cameron wrote:
+> >> When buffered sampling is enabled, the accelerometer will dump data into
+> >> the internal fifo and interrupt at watermark. Then the driver flushes
+> >> all data to the iio buffer.
+> >> As the accelerometer doesn't have internal timestamps, they are aproximated
+> >> between to interrupts.  
+> > two?
+> >
+> > This tends to be a noisy approach, so people often try to apply a filter.
+> > However, no need to do that for an initial version.
+> >
+> > There are some things in here referring to enabling triggered modes, but I'm
+> > not seeing code to actually do so.  The fun question when dealing with fifos
+> > and triggered mode is what the interface is to switch between the two.
+> > One option I think we've used before is to just have 'no trigger' match
+> > up to fifo mode and if a trigger is set, don't use the fifo.
+> >  
+> Thanks Jonathan.
+> 
+> Fixed the above text to:
+> As the accelerometer doesn't have internal timestamps,
+> they are approximated between the current and last interrupt.
+Nice.
 
- drivers/iio/accel/fxls8962af-core.c | 24 +++++++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
+> 
+> I don't know the correct term here, the accelerometer via the watermark, 
+> is doing interrupts.
+> Is that called no-trigger / trigger ?
 
-diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
-index 2e863ef71a7d..e45c9e88bf6e 100644
---- a/drivers/iio/accel/fxls8962af-core.c
-+++ b/drivers/iio/accel/fxls8962af-core.c
-@@ -14,6 +14,7 @@
- 
- #include <linux/bits.h>
- #include <linux/bitfield.h>
-+#include <linux/i2c.h>
- #include <linux/module.h>
- #include <linux/of_irq.h>
- #include <linux/pm_runtime.h>
-@@ -631,11 +632,28 @@ static int fxls8962af_fifo_transfer(struct fxls8962af_data *data,
- {
- 	struct device *dev = regmap_get_device(data->regmap);
- 	int sample_length = 3 * sizeof(*buffer);
--	int ret;
-+	int ret, i;
- 	int total_length = samples * sample_length;
- 
--	ret = regmap_raw_read(data->regmap, FXLS8962AF_BUF_X_LSB, buffer,
--			      total_length);
-+	if (i2c_verify_client(dev)) {
-+		/*
-+		 * Due to errata bug:
-+		 * E3: FIFO burst read operation error using I2C interface
-+		 * We have to avoid burst reads on I2C..
-+		 */
-+		for (i = 0; i < samples; i++) {
-+			ret = regmap_raw_read(data->regmap, FXLS8962AF_BUF_X_LSB,
-+					      &buffer[i],
-+					      sample_length);
-+			if (ret < 0)
-+				goto out;
-+		}
-+	} else {
-+		ret = regmap_raw_read(data->regmap, FXLS8962AF_BUF_X_LSB, buffer,
-+				      total_length);
-+	}
-+
-+ out:
- 	if (ret < 0)
- 		dev_err(dev, "Error transferring data from fifo: %d\n", ret);
- 
--- 
-2.31.0
+Triggers are one per scan (Set of samples take at approximately the same time)
+So anything involving a fifo is without trigger (we don't expose anything because
+it is of no use for doing synchronous capture across multiple devices).
+
+One day I'll add a terminology section to the docs!
+
+J
+
+> 
+> /Sean
 

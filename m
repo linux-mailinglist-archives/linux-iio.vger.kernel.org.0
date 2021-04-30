@@ -2,73 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 952713701DE
-	for <lists+linux-iio@lfdr.de>; Fri, 30 Apr 2021 22:11:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 069D43702F1
+	for <lists+linux-iio@lfdr.de>; Fri, 30 Apr 2021 23:24:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235727AbhD3UMc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 30 Apr 2021 16:12:32 -0400
-Received: from mail-oi1-f177.google.com ([209.85.167.177]:36381 "EHLO
-        mail-oi1-f177.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235511AbhD3UMQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Apr 2021 16:12:16 -0400
-Received: by mail-oi1-f177.google.com with SMTP id i26so15834360oii.3;
-        Fri, 30 Apr 2021 13:11:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=ZvO3LxOxOIkv8yR5Vc69bUEj37EUFhpgFZtgFVNXDtw=;
-        b=jHBUD20r6//oLO7Ow5Q9om8HhF6mqpcAujDP5opCGeczS+R1GOmyuvzs+GDEHEuCnY
-         04k1nyBKAO1DeQDgVKSbwRZdh/muB2T0ZyCmifcN3HbypZQdKaOxWMLTYIK2Cl+48ZVg
-         j3fqjw/gplkTf69R77m9h+laTrGsxhIpQSED2EEjd0k1fK8HgWDfXit0dQyBsD3axtOS
-         wc6LcoRHuaGH9IKIlu/YuGn5F1JuS2wSruaO0yt9NJ+IZawHFCq4nhxOueXFGGom+Qyu
-         mw2gg4SRPKYcQuEuQ47cCu9LAgKdOKQgbxd5fN2/u2ABJXgdKTzanXBTV/+xwhG0PMaH
-         bw2A==
-X-Gm-Message-State: AOAM533GE3NP/vI1s+UwVCIdqOOJ0wOJHH+UKwIcsgz6v74x7HFuCoRt
-        z8AXtROMITP0/gkwYSswRA==
-X-Google-Smtp-Source: ABdhPJw0uvLCVyy4NAu0MSdkZzahieMTHD/PKbDqcmpklekgLaJo0mK5gTRC4XI0+9wB55raSQYHnQ==
-X-Received: by 2002:a54:4704:: with SMTP id k4mr11960683oik.127.1619813487100;
-        Fri, 30 Apr 2021 13:11:27 -0700 (PDT)
-Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id g5sm1032459oiy.24.2021.04.30.13.11.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Apr 2021 13:11:26 -0700 (PDT)
-Received: (nullmailer pid 3806058 invoked by uid 1000);
-        Fri, 30 Apr 2021 20:11:25 -0000
-Date:   Fri, 30 Apr 2021 15:11:25 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Oleksij Rempel <o.rempel@pengutronix.de>
-Cc:     linux-iio@vger.kernel.org, David Jander <david@protonic.nl>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Robin van der Gracht <robin@protonic.nl>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v6 1/3] dt-bindings:iio:adc: add generic settling-time-us
- and oversampling-ratio channel properties
-Message-ID: <20210430201125.GA3806025@robh.at.kernel.org>
-References: <20210428073208.19570-1-o.rempel@pengutronix.de>
- <20210428073208.19570-2-o.rempel@pengutronix.de>
+        id S231241AbhD3VY6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 30 Apr 2021 17:24:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54410 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231173AbhD3VY6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Apr 2021 17:24:58 -0400
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08B57C06174A;
+        Fri, 30 Apr 2021 14:24:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:Content-Type:
+        MIME-Version:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=t45yD8Tz8EVh7zr7z9a7QSK1nAjvYCl7n2zVHHXnLGk=; b=POTbr6zXE1kikSsUIgDM8jOS6M
+        1ncmQva3gUCk3tr70PK7l/PoctVdgJoqPAuAegB9ijO3CeHgv+x6L/WSA/F5IinFFx/s5cRPljODp
+        I9IKK0easSJsomyru6Di3XjhC9JAgwkE1o3egl9j4jHIUiDUb7BuZH3AQGtEBqHHH0nM=;
+Received: from p200300ccff0893001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff08:9300:1a3d:a2ff:febf:d33a] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1lcacH-0003hy-C6; Fri, 30 Apr 2021 23:24:05 +0200
+Date:   Fri, 30 Apr 2021 23:24:04 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     linux-iio@vger.kernel.org, jic23@kernel.org,
+        linux-hwmon@vger.kernel.org, linux@roeck-us.net, jdelvare@suse.com,
+        kernel@pengutronix.de, linux-imx@nxp.com
+Cc:     Jonathan =?UTF-8?B?TmV1c2Now6RmZXI=?= <j.neuschaefer@gmx.net>,
+        letux-kernel@goldelico.com
+Subject: [Q] tps65185 EPD PMIC temperature interface - which subsystem
+Message-ID: <20210430232404.26d60fef@aktux>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210428073208.19570-2-o.rempel@pengutronix.de>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Score: -1.0 (-)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 28 Apr 2021 09:32:06 +0200, Oleksij Rempel wrote:
-> Settling time and over sampling is a typical challenge for different IIO ADC
-> devices. So, introduce channel specific settling-time-us and oversampling-ratio
-> properties to cover this use case.
-> 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  Documentation/devicetree/bindings/iio/adc/adc.yaml | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> 
+Hi,
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+I am going about to clean up stuff to further upstream support for my
+ebook readers. One question arises about the temperature interface of
+the EPD PMIC. Vendor code uses regulator_get_voltage in the EPDC
+driver to read a temperature in celsius and provides temperature through
+the regulator interface (besides sysfs/hwmon). That is ugly. But what
+are the options, if a kernel consumer should be able to reference it via
+devicetree phandle and read out from it? I see temperature sensors
+both in the iio and the hwmon subsystem, but do not find a description
+why these things are there. If I put it into the iio-subsystem
+iio_channel_get() and friends can be used, if I understand things
+correctly, there are no such functions in the hwmon subsystem, so I
+would not be able to use it there. So the better choice is to put it
+into the iio subsystem?
+
+On the consumer side, the temperature, which is pratically the ambient
+temperature, is used to choose the right waveform for the corresponding
+temperature range. Here are some code snippets in the vendor kernel:
+
+temperature = regulator_get_voltage(fb_data->tmst_regulator);
+dev_dbg(fb_data->dev, "auto temperature reading = %d\n", temperature);
+
+if (temperature != 0xFF) {
+	fb_data->last_time_temp_auto_update = now;
+	fb_data->temp_index = mxc_epdc_fb_get_temp_index(fb_data, temperature);
+}
+
+static int mxc_epdc_fb_get_temp_index(struct mxc_epdc_fb_data *fb_data, int temp
+)
+{
+        int i;
+        int index = -1;
+
+        if (fb_data->trt_entries == 0) {
+                dev_err(fb_data->dev,
+                        "No TRT exists...using default temp index\n");
+                return DEFAULT_TEMP_INDEX;
+        }
+
+        /* Search temperature ranges for a match */
+        for (i = 0; i < fb_data->trt_entries - 1; i++) {
+                if ((temp >= fb_data->temp_range_bounds[i])
+                        && (temp < fb_data->temp_range_bounds[i+1])) {
+                        index = i;
+                        break;
+                }
+        }
+
+... and writing that index to some register in the EPDC.
+
+As the consumer is not upstream (I have a basic drm-based variant also
+in my clean-up queue), compatibilty to existing systems does not matter
+that much. Also I see no drivers for similar chips upstream.
+
+Regards,
+Andreas

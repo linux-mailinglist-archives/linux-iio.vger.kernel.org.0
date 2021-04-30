@@ -2,62 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C4E636F767
-	for <lists+linux-iio@lfdr.de>; Fri, 30 Apr 2021 10:54:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 575E036F77A
+	for <lists+linux-iio@lfdr.de>; Fri, 30 Apr 2021 11:02:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229601AbhD3Izp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 30 Apr 2021 04:55:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57616 "EHLO
+        id S229524AbhD3JDm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 30 Apr 2021 05:03:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229507AbhD3Izp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Apr 2021 04:55:45 -0400
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2AE2C06174A;
-        Fri, 30 Apr 2021 01:54:57 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id j6so8637906pfh.5;
-        Fri, 30 Apr 2021 01:54:57 -0700 (PDT)
+        with ESMTP id S229522AbhD3JDm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Apr 2021 05:03:42 -0400
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BF74C06174A;
+        Fri, 30 Apr 2021 02:02:53 -0700 (PDT)
+Received: by mail-pf1-x433.google.com with SMTP id m11so4858779pfc.11;
+        Fri, 30 Apr 2021 02:02:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=amPt7GENecI5RZIuIegdl9lEK8dib9aTLCmx2zlJxqc=;
-        b=Pj9PtB+mOxG5qnAs2g84MDbWlrI3JxpSGfEnVjm3jKxNPTwScLjgubZREBWewJPNPC
-         +o6txmu05Gm0BOFz2/2tyU73eKWtMaAi3vor3auwbU8NZBDhdcHnjQ1AZEFwvEwtayEL
-         HThSkIUSa/2ixPlxDChzHcp71b42vGMWIqs2xAHm8Ml3EwwNI9IrI2Oc3rLx39IyEy5H
-         +OPTKWnjPorjLy3NbVw8XuW+ah+dl+wX1ZYb8D0/8eKRTEoA9sNV68YZUIpxvU6f3x6O
-         /ncNYyZAyqK4yMxcd5N+NnkRvts1DpsLTgLTdhwOs7ynVgkOReGa9XrL5ArHIsgrodiF
-         B0IA==
+        bh=BfGbSMZc7bvjVY6nx1HPF1pRepvP5IrlXq3RZS+72MY=;
+        b=pz8Tc/MBWdz5VC1p7aLi42FHnVMNJs3NPJ2adbMjhFR2Zzs/aTW1U4L1dfZWNqyJYK
+         MKO7iMs57DpAilXlC4ywIVRs9yA9CGIff6s/jvY/L9swib7pYvOxlsCkgEYBYWXgFBxR
+         zktT/pk5pQXucYSR5DfLOp4o7guK6T8p+kAdI7AVLfshQEbe2DiloOYFWeF2aoBaEn0U
+         4eeAVzxCHUmgF4pByfxpc+/LQPG6vBE3e6KH2fzUG28kX1NWRCXjppFZu5DxqfIEIKP+
+         ooB49gkVdVvSAidHKXX8kQJ/CTTG18Ug5s1QRVqraOGtKWurhecXnSWXVo9wWMJTBEhI
+         BGAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=amPt7GENecI5RZIuIegdl9lEK8dib9aTLCmx2zlJxqc=;
-        b=VCupngHPfEKUxUvI+wqZv8adYsGZKXMKJoduUZkE27m3jNzK6fxBp85RZHzRBbFWA8
-         +E3dpl9bBUf9VZJu6vtPGscDsbeXZ+6WozuAKtP6QUaPPkqL2hH/We+RiGediYvBgsf4
-         JFppngZ5QFekB68SMxv/tfnsS+XT+J+kez824jShOImwy47FpMuHlchdwPVWhHPz5gea
-         orW/0kMIs4Yc8qIaLHKldQQhtLnSaxiPI6p6rkzyoQrmr+uAJ1lxiNe8tHSY0+TEyLRq
-         i82zsjMa4mlo4Ge9eo+pTnM/0x0DtYZ4hEGLC4+eYIRO8G5tiyEQNIYIBrECnyGDlm7v
-         UYXA==
-X-Gm-Message-State: AOAM533xzyxxPyvRlLFLheLmEdF3JUmZR1781QDy0Kb2Ema3RmSTjKhM
-        WabgTfQSFT3eh59elOCfurB/sRsZ3b6R1zTPQHRR2g3YqOPwrA==
-X-Google-Smtp-Source: ABdhPJw4FZ/DlItoOrzKjOiieaLEOQz40U4pteDPNNLHlAEydjA8bAEApTSsRokhPBg36wiB9KrsgcXOFxGFGb3JTSg=
-X-Received: by 2002:a62:528e:0:b029:1f5:c5ee:a487 with SMTP id
- g136-20020a62528e0000b02901f5c5eea487mr4159308pfb.7.1619772897114; Fri, 30
- Apr 2021 01:54:57 -0700 (PDT)
+        bh=BfGbSMZc7bvjVY6nx1HPF1pRepvP5IrlXq3RZS+72MY=;
+        b=CdwVhx5YTpxvWG4sSjWKY8KdOWjvkU01xnAZQMmZuL48+016qdYOD/oR0tj+9sKN0U
+         Zl1u7Sd38TZU5Wr6ONbo/V/c9+gVrwz2fGnnE6WRbqeT6gUaZGKMWkfEjiwdLKBeIeeO
+         evsCriLgfg1isSjgQdGjldW/yopvJHwBIHK21mIk4X2sz+EDWlVkqkXHgAPQ9zGvCbCm
+         JtshJEaYvuO3s0z2am45BMctf8WK52JZ7vZCSHhxyWsS1VUvmb0QbbODUHAIZRd6g+/O
+         /4S+quOMg/9+HqyzkrmD7xnB7CFwDZttm/XMP7rGf60ATAMky2F+N3hsNlFhOP5E5Qeh
+         dW/Q==
+X-Gm-Message-State: AOAM533CgbwgX2yvFchD79D3FXQBs/FtH3D6NrDkv0fkC3D2jRF8uWFf
+        cCVoUL4hp4JfQxJAEfHZ2tUhDEMGfhXrsJUqV7U=
+X-Google-Smtp-Source: ABdhPJz72seNM8qiGKE4ZlJrRuJfr9QGEGlAlFoa0eNUUgXz/SZALqMGcniYzRfjPFox5XdFo3teVG2gNVcyunQjHVs=
+X-Received: by 2002:a65:5a4d:: with SMTP id z13mr3766067pgs.4.1619773372827;
+ Fri, 30 Apr 2021 02:02:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210428082203.3587022-1-sean@geanix.com> <20210428082203.3587022-2-sean@geanix.com>
- <28f1e2a4-b2fa-5e4a-954f-92d90966eaf7@metafoo.de> <CAHp75Vd1j=rqmzEuo9fQMYDc+Y1=8kfyVJq6VR4Oip-O918Xow@mail.gmail.com>
- <2cc54acd-1de2-b462-0f77-145244580999@metafoo.de> <CAHp75VdptykxXy3dOR4sAZfzezt+7Fdk9yeWczFa1tGCZfzF+Q@mail.gmail.com>
- <1abf8476-e1e3-5c0e-e480-daa7c291b4c8@metafoo.de>
-In-Reply-To: <1abf8476-e1e3-5c0e-e480-daa7c291b4c8@metafoo.de>
+References: <20210429122806.3814330-1-sean@geanix.com> <20210429122806.3814330-4-sean@geanix.com>
+In-Reply-To: <20210429122806.3814330-4-sean@geanix.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 30 Apr 2021 11:54:40 +0300
-Message-ID: <CAHp75VdBxVbPnxk1uh_DaCw56x0qCn9CgcrLt0uvJp-hFUyiRQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 2/4] iio: accel: fxls8962af: add interrupt support
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Sean Nyekjaer <sean@geanix.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+Date:   Fri, 30 Apr 2021 12:02:36 +0300
+Message-ID: <CAHp75Vf7-5EOpsP8u4rfcjceoKFwQH+U90+JazsLJvmARXmEBQ@mail.gmail.com>
+Subject: Re: [PATCH v4 4/6] iio: accel: fxls8962af: add interrupt support
+To:     Sean Nyekjaer <sean@geanix.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         linux-iio <linux-iio@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         =?UTF-8?B?TnVubyBTw6E=?= <Nuno.Sa@analog.com>,
         Rob Herring <robh+dt@kernel.org>,
         devicetree <devicetree@vger.kernel.org>
@@ -66,32 +62,60 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Apr 29, 2021 at 10:19 PM Lars-Peter Clausen <lars@metafoo.de> wrote:
-> On 4/29/21 1:35 PM, Andy Shevchenko wrote:
-> > On Thu, Apr 29, 2021 at 12:37 PM Lars-Peter Clausen <lars@metafoo.de> wrote:
-> >> On 4/29/21 11:35 AM, Andy Shevchenko wrote:
-> >>> On Thu, Apr 29, 2021 at 11:58 AM Lars-Peter Clausen <lars@metafoo.de> wrote:
-> >>>> On 4/28/21 10:22 AM, Sean Nyekjaer wrote:
-> >>>>> Preparation commit for the next that adds hw buffered sampling
-> >>> ...
-> >>>
-> >>>>> +     irq = of_irq_get_byname(of_node, "INT2");
-> >>>> For this I'd use device_property_match_string(dev, "interrupt-names",
-> >>>> "INT2"). Means it won't try to map the interrupt again, and also this is
-> >>>> the only place where the driver directly depends on OF, everything else
-> >>>> already uses the device_ API.
-> >>> Why not platform_get_irq_byname_optional() ?
-> >> Because it is not a platform device :)
-> > Then device_property reading like this isn't really needed.
-> Why?
+On Thu, Apr 29, 2021 at 3:28 PM Sean Nyekjaer <sean@geanix.com> wrote:
+>
+> Preparation commit for the next that adds hw buffered sampling
 
-Because it doesn't bring any value in this case and actually makes
-readers confused. ACPI doesn't have properties started with # (they
-are special for OF and hiding it behind device property API is not
-correct).
+It misses a better description of what's going on here.
+It misses the period at the end of the line.
 
-So, either leave it OF, or introduce the above API (or use existing
-fwnode_get_irq() by index).
+...
+
+> +#include <linux/of_irq.h>
+
+See below.
+
+...
+
+> +static irqreturn_t fxls8962af_interrupt(int irq, void *p)
+> +{
+> +       struct iio_dev *indio_dev = p;
+> +       struct fxls8962af_data *data = iio_priv(indio_dev);
+> +       unsigned int reg;
+> +       int ret;
+> +
+> +       ret = regmap_read(data->regmap, FXLS8962AF_INT_STATUS, &reg);
+> +       if (ret < 0)
+> +               return IRQ_NONE;
+> +
+> +       return IRQ_NONE;
+
+And how is it handled?
+
+> +}
+
+...
+
+> +static void fxls8962af_get_irq(struct device *dev, enum fxls8962af_int_pin *pin)
+> +{
+> +       if (!device_property_match_string(dev, "interrupt-names", "INT2")) {
+
+This doesn't feel right.
+You should use fwnode_get_irq() or introduce fwnode_get_irq_by_name().
+
+Since ACPI has no given names for Interrupt resources (and moreover
+there are two types of them), it also needs a support from the
+software like we have for GPIOs with struct acpi_gpio_table (luckily
+it's part of _DSD() nowadays, but in general it's not required by the
+spec).
+
+> +               *pin = FXLS8962AF_PIN_INT2;
+> +               return;
+> +       }
+> +
+> +       *pin = FXLS8962AF_PIN_INT1;
+> +}
+
 
 -- 
 With Best Regards,

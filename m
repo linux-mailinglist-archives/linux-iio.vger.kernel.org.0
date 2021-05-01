@@ -2,34 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 145AA370820
-	for <lists+linux-iio@lfdr.de>; Sat,  1 May 2021 19:15:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B659D370821
+	for <lists+linux-iio@lfdr.de>; Sat,  1 May 2021 19:15:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231426AbhEARQW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 1 May 2021 13:16:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54048 "EHLO mail.kernel.org"
+        id S231500AbhEARQX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 1 May 2021 13:16:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54070 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230195AbhEARQV (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 1 May 2021 13:16:21 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6B52A61606;
-        Sat,  1 May 2021 17:15:30 +0000 (UTC)
+        id S230195AbhEARQX (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 1 May 2021 13:16:23 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 127D761284;
+        Sat,  1 May 2021 17:15:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1619889331;
-        bh=KvP2G+zbo2Jhbu7xynUgrJA23NE6FxeyqETBqh+9DYI=;
+        s=k20201202; t=1619889333;
+        bh=2nyzGl1dLGqNduo1q2W6IN09V0foDNM3moAfWVlppr0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=C3AgqDCXqpdv+RWS1+Z+ecV0900ZxXpuyZHH1uvVBU+axLHTmZtRjjVG/Liu5p8LH
-         VQ6VcAeZFt9xSuQL51jjIlIorQeCxOMBpKaJmQ3oN9rsqBgG8p80G2ocpuV3CEHgvk
-         Uw1xa9iayxN3mE5AgEijjPe6/X+qfhAAlWMxhzDeOaalKZ1jnYtUlt0L5qGYIkLncL
-         pcMZ6YLbjUl5hZBewXmycF6CrzGE9Jh8ZkkeskCZ1887U3h8p6s3LURGDnZS+LguUM
-         /iizG2sU3Xas4tEwwf+YwZmQoV6KgIc31tgjepvffKhbzuHUhDURydQU88s45Qt+mC
-         VlLVSiZkhb5dA==
+        b=NcZvsA3hTFyTOwm/0d6bZlSuyOeno/EwxI1bp47l8Qun06cN303egEhmEyFpe+Aeh
+         Kv1+HzIWOr3KUvwic5VphAI/Hct5BCRFb6jBdgggevOoJVG4f8g2ZJlhxuSJOc/jeg
+         Lh+FtR5H8XPo+s3ISfl9gYbsHX0wCs5wviw4mPxUimhyD2UEQLFXUhMr63QW8BLQB8
+         /mUyjWw+EsHqJK1sQx/Yz1jXQrkDhJRALpoEw2Y5dTBkosyawiQcHUihhUUtg1azx9
+         wDajS4Ml8xYtZes6gi+WHMIExrsctt4YrcuBNj6xNugDwQyocTNkr8rcbf9yV4TTQJ
+         5LoB7gRpgcTmg==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Matt Ranostay <matt.ranostay@konsulko.com>
-Subject: [PATCH 05/11] iio: chemical: atlas: Fix buffer alignment in iio_push_to_buffers_with_timestamp()
-Date:   Sat,  1 May 2021 18:13:46 +0100
-Message-Id: <20210501171352.512953-6-jic23@kernel.org>
+        Gwendal Grignou <gwendal@chromium.org>
+Subject: [PATCH 06/11] iio: cros_ec_sensors: Fix alignment of buffer in iio_push_to_buffers_with_timestamp()
+Date:   Sat,  1 May 2021 18:13:47 +0100
+Message-Id: <20210501171352.512953-7-jic23@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210501171352.512953-1-jic23@kernel.org>
 References: <20210501171352.512953-1-jic23@kernel.org>
@@ -41,37 +41,32 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Variable location for the timestamp, so just use __aligned(8)
-to ensure it is always possible to naturally align it.
+The samples buffer is passed to iio_push_to_buffers_with_timestamp()
+which requires a buffer aligned to 8 bytes as it is assumed that
+the timestamp will be naturally aligned if present.
 
-Found during an audit of all calls of uses of
-iio_push_to_buffers_with_timestamp()
+Fixes tag is inaccurate but prior to that likely manual backporting needed.
 
-Fixes tag is not accurate, but it will need manual backporting beyond
-that point if anyone cares.
-
-Fixes: 0d15190f53b4 ("iio: chemical: atlas-ph-sensor: rename atlas-ph-sensor to atlas-sensor")
+Fixes: 5a0b8cb46624c ("iio: cros_ec: Move cros_ec_sensors_core.h in /include")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Matt Ranostay <matt.ranostay@konsulko.com>
+Cc: Gwendal Grignou <gwendal@chromium.org>
 ---
- drivers/iio/chemical/atlas-sensor.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/iio/common/cros_ec_sensors_core.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/chemical/atlas-sensor.c b/drivers/iio/chemical/atlas-sensor.c
-index 56ba6c82b501..6795722c68b2 100644
---- a/drivers/iio/chemical/atlas-sensor.c
-+++ b/drivers/iio/chemical/atlas-sensor.c
-@@ -91,8 +91,8 @@ struct atlas_data {
- 	struct regmap *regmap;
- 	struct irq_work work;
- 	unsigned int interrupt_enabled;
--
--	__be32 buffer[6]; /* 96-bit data + 32-bit pad + 64-bit timestamp */
-+	/* 96-bit data + 32-bit pad + 64-bit timestamp */
-+	__be32 buffer[6] __aligned(8);
- };
+diff --git a/include/linux/iio/common/cros_ec_sensors_core.h b/include/linux/iio/common/cros_ec_sensors_core.h
+index 7ce8a8adad58..c582e1a14232 100644
+--- a/include/linux/iio/common/cros_ec_sensors_core.h
++++ b/include/linux/iio/common/cros_ec_sensors_core.h
+@@ -77,7 +77,7 @@ struct cros_ec_sensors_core_state {
+ 		u16 scale;
+ 	} calib[CROS_EC_SENSOR_MAX_AXIS];
+ 	s8 sign[CROS_EC_SENSOR_MAX_AXIS];
+-	u8 samples[CROS_EC_SAMPLE_SIZE];
++	u8 samples[CROS_EC_SAMPLE_SIZE] __aligned(8);
  
- static const struct regmap_config atlas_regmap_config = {
+ 	int (*read_ec_sensors_data)(struct iio_dev *indio_dev,
+ 				    unsigned long scan_mask, s16 *data);
 -- 
 2.31.1
 

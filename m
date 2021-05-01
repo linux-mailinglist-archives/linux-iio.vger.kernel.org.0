@@ -2,34 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E6E8370805
-	for <lists+linux-iio@lfdr.de>; Sat,  1 May 2021 19:02:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65E76370806
+	for <lists+linux-iio@lfdr.de>; Sat,  1 May 2021 19:02:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230522AbhEARDo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 1 May 2021 13:03:44 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47386 "EHLO mail.kernel.org"
+        id S231335AbhEARDq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 1 May 2021 13:03:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47400 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230450AbhEARDo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 1 May 2021 13:03:44 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D4D9661494;
-        Sat,  1 May 2021 17:02:52 +0000 (UTC)
+        id S230450AbhEARDq (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 1 May 2021 13:03:46 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id AD9116157F;
+        Sat,  1 May 2021 17:02:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1619888574;
-        bh=BX6Iw21GDeejPH68jGbn565Pbkk9PXZkUCOeUqy6jhc=;
+        s=k20201202; t=1619888576;
+        bh=gQpVM9Cjx5z63XPT6CD6bJ12GbYdKROqP9XpixHdnbk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=anjuhdNoF3tJWmZljHfhWbDj+XtogUrCfl21xwXqMPHCh2vEWlhtHYehUjEFzxZaz
-         MATZB7eYAr8Td5qbn4ePo2RrfUZmlKE52dm4AAjJAf6ziF7kwcKDEiZHNmILgXsCG4
-         Ccb/+9XoFinMnWYqrL7hp0U8FSjEjbG+59GuIo+ovPnO2pjn5vLKSmZ83/v5BwxBMa
-         XnN3lMgYwFbdWLia4E2I/QLZSOb9j0jAbEwTqIBOC0SpVSM1bdEbJA3tlS1IFsZ7gt
-         qvqElP98MWhxuZNS2PP88sD+IyCbIUhTIx247byyAfIM1yVU7BF5tx3TiJfBrP2U28
-         8ldIG86qQmumg==
+        b=ncfjSczyyk4p/DnXfqwzTVSSbzv9Alv/Vb+WQj7S3+tkMXk/sI5eHRQyMBDOMO2j3
+         3XbyaE0ZnluKyg506QZVkGM4nllBIKu0lw6HhGhf+MR1n8iMTkV262X9Sj7fW3zXpt
+         yZb68NFEDOV+zHyk0Y6cMkUSH8FmQ0lobYvV3z1umh4Lt+vb6eL4ZgLL+4a40a1fuQ
+         zKh5MLZ8HvbYDixtLCXZzH2gRbINCPzwRBzHJ4zD4iEx0Y/kWFX7YfeY8zhoHSEFMg
+         a7RCY5i4UZ9vclyWBU/XWb1raRILo+3OQfYDqZM9hZv1gDoyRvR9qTcM5rJXuPDWta
+         ABfJnq0wCRYTw==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 02/19] iio: accel: bma220: Fix buffer alignment in iio_push_to_buffers_with_timestamp()
-Date:   Sat,  1 May 2021 18:01:04 +0100
-Message-Id: <20210501170121.512209-3-jic23@kernel.org>
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Subject: [PATCH 03/19] iio: accel: hid: Fix buffer alignment in iio_push_to_buffers_with_timestamp()
+Date:   Sat,  1 May 2021 18:01:05 +0100
+Message-Id: <20210501170121.512209-4-jic23@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210501170121.512209-1-jic23@kernel.org>
 References: <20210501170121.512209-1-jic23@kernel.org>
@@ -43,48 +43,56 @@ From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
 To make code more readable, use a structure to express the channel
 layout and ensure the timestamp is 8 byte aligned.
+Note this matches what was done in all the other hid sensor drivers.
+This one was missed previously due to an extra level of indirection.
 
 Found during an audit of all calls of this function.
 
-Fixes: 194dc4c71413 ("iio: accel: Add triggered buffer support for BMA220")
+Fixes: a96cd0f901ee ("iio: accel: hid-sensor-accel-3d: Add timestamp")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 ---
- drivers/iio/accel/bma220_spi.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/iio/accel/hid-sensor-accel-3d.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/accel/bma220_spi.c b/drivers/iio/accel/bma220_spi.c
-index 36fc9876dbca..2802ce1852ef 100644
---- a/drivers/iio/accel/bma220_spi.c
-+++ b/drivers/iio/accel/bma220_spi.c
-@@ -63,7 +63,11 @@ static const int bma220_scale_table[][2] = {
- struct bma220_data {
- 	struct spi_device *spi_device;
- 	struct mutex lock;
--	s8 buffer[16]; /* 3x8-bit channels + 5x8 padding + 8x8 timestamp */
+diff --git a/drivers/iio/accel/hid-sensor-accel-3d.c b/drivers/iio/accel/hid-sensor-accel-3d.c
+index 2f9465cb382f..27f47e1c251e 100644
+--- a/drivers/iio/accel/hid-sensor-accel-3d.c
++++ b/drivers/iio/accel/hid-sensor-accel-3d.c
+@@ -28,8 +28,11 @@ struct accel_3d_state {
+ 	struct hid_sensor_hub_callbacks callbacks;
+ 	struct hid_sensor_common common_attributes;
+ 	struct hid_sensor_hub_attribute_info accel[ACCEL_3D_CHANNEL_MAX];
+-	/* Reserve for 3 channels + padding + timestamp */
+-	u32 accel_val[ACCEL_3D_CHANNEL_MAX + 3];
++	/* Ensure timestamp is naturally aligned */
 +	struct {
-+		s8 chans[2];
-+		/* Ensure timestamp is naturally aligned. */
++		u32 accel_val[3];
 +		s64 timestamp __aligned(8);
 +	} scan;
- 	u8 tx_buf[2] ____cacheline_aligned;
- };
+ 	int scale_pre_decml;
+ 	int scale_post_decml;
+ 	int scale_precision;
+@@ -245,8 +248,8 @@ static int accel_3d_proc_event(struct hid_sensor_hub_device *hsdev,
+ 			accel_state->timestamp = iio_get_time_ns(indio_dev);
  
-@@ -94,12 +98,12 @@ static irqreturn_t bma220_trigger_handler(int irq, void *p)
+ 		hid_sensor_push_data(indio_dev,
+-				     accel_state->accel_val,
+-				     sizeof(accel_state->accel_val),
++				     &accel_state->scan,
++				     sizeof(accel_state->scan),
+ 				     accel_state->timestamp);
  
- 	mutex_lock(&data->lock);
- 	data->tx_buf[0] = BMA220_REG_ACCEL_X | BMA220_READ_MASK;
--	ret = spi_write_then_read(spi, data->tx_buf, 1, data->buffer,
-+	ret = spi_write_then_read(spi, data->tx_buf, 1, &data->scan.chans,
- 				  ARRAY_SIZE(bma220_channels) - 1);
- 	if (ret < 0)
- 		goto err;
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, data->buffer,
-+	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
- 					   pf->timestamp);
- err:
- 	mutex_unlock(&data->lock);
+ 		accel_state->timestamp = 0;
+@@ -271,7 +274,7 @@ static int accel_3d_capture_sample(struct hid_sensor_hub_device *hsdev,
+ 	case HID_USAGE_SENSOR_ACCEL_Y_AXIS:
+ 	case HID_USAGE_SENSOR_ACCEL_Z_AXIS:
+ 		offset = usage_id - HID_USAGE_SENSOR_ACCEL_X_AXIS;
+-		accel_state->accel_val[CHANNEL_SCAN_INDEX_X + offset] =
++		accel_state->scan.accel_val[CHANNEL_SCAN_INDEX_X + offset] =
+ 						*(u32 *)raw_data;
+ 		ret = 0;
+ 	break;
 -- 
 2.31.1
 

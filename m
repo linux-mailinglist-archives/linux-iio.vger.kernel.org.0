@@ -2,35 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3658737080C
+	by mail.lfdr.de (Postfix) with ESMTP id B058637080D
 	for <lists+linux-iio@lfdr.de>; Sat,  1 May 2021 19:03:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231593AbhEARD4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 1 May 2021 13:03:56 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47490 "EHLO mail.kernel.org"
+        id S231603AbhEARD6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 1 May 2021 13:03:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47506 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231342AbhEARDz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 1 May 2021 13:03:55 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 39EA861477;
-        Sat,  1 May 2021 17:03:04 +0000 (UTC)
+        id S231342AbhEARD6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 1 May 2021 13:03:58 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 453FC61481;
+        Sat,  1 May 2021 17:03:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1619888585;
-        bh=iLsqnvUGJ5w7dL2XC3H9hWJQeQgj59U5ptcRzYEzatY=;
+        s=k20201202; t=1619888587;
+        bh=YhgPQNVhD2LLf3qbyBKimqGaJBG0GcllGE/6daIATZU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lnKXb6ciBRzsLRPQHTG1UPLakkpi2zHOGZvV3EW0tclTi6xP/b+ijsjCrTqwf59ug
-         JUesfpyylF3F1FQFedKzsgpPNQEfXFtOw0uZJFW+N6cM1whoclGFHBPbRbGk7YzalS
-         VZRFElUS03BcuBNZnQ6hsYPMgPSi62Lqoj+70kGs1x72OpzEAimPgduQ+fmuUZZMQq
-         pM4mk6MgSFvKj1RLBCmm9pjd2b49jZHlt18K9o1AHX1XiH8MCEyEK74QWSK4eNsBc2
-         3c298IGDnjtpTaQPCzgok3WM8TRfkqvH38PywPrz02o1Na8kqRvaet9CJEBJ2v+UYp
-         JxA+LAL5vo32Q==
+        b=RCCzHz5Hmb0p4gzwMjABEYMJqh/WzSEC6yDwGUKcDi4wsKFkU6MW/KWNVgw+hSk/Z
+         fVfpIgnEy8f/17rhSF0BZBxH5rfy6hD2EJasnykA4tlFRZDDlFERnpUOEuY1PDRsyk
+         FM6lsBn/wUhGPQtzamWUIdAuIVIbCUyI/kkaCaflFSmGordI6Xrw5kctrGGP6a/AVs
+         F9nCSnYeITZNQRCWe3l2IW53bmqR2Sl3JseCk/y/25AUljiBZUr7CbT7cOb/SeGPuT
+         Qp8pihJRwgQFbq7nxw20mVovIVviiDEcu5BqMFTn7N+xeRLraLZI7W2w1tlFnhjMVN
+         5qPYqvEw4Sy2g==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>,
-        Sanchayan Maity <maitysanchayan@gmail.com>
-Subject: [PATCH 09/19] iio: adc: vf610: Fix buffer alignment in iio_push_to_buffers_with_timestamp()
-Date:   Sat,  1 May 2021 18:01:11 +0100
-Message-Id: <20210501170121.512209-10-jic23@kernel.org>
+        Stephan Gerhold <stephan@gerhold.net>
+Subject: [PATCH 10/19] iio: gyro: bmg160: Fix buffer alignment in iio_push_to_buffers_with_timestamp()
+Date:   Sat,  1 May 2021 18:01:12 +0100
+Message-Id: <20210501170121.512209-11-jic23@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210501170121.512209-1-jic23@kernel.org>
 References: <20210501170121.512209-1-jic23@kernel.org>
@@ -48,43 +47,45 @@ layout and ensure the timestamp is 8 byte aligned.
 Found during an audit of all calls of uses of
 iio_push_to_buffers_with_timestamp()
 
-Fixes: 0010d6b44406 ("iio: adc: vf610: Add IIO buffer support for Vybrid ADC")
+Fixes: 13426454b649 ("iio: bmg160: Separate i2c and core driver")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>
-Cc: Sanchayan Maity <maitysanchayan@gmail.com>
+Cc: Stephan Gerhold <stephan@gerhold.net>
 ---
- drivers/iio/adc/vf610_adc.c | 10 +++++++---
+ drivers/iio/gyro/bmg160_core.c | 10 +++++++---
  1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/adc/vf610_adc.c b/drivers/iio/adc/vf610_adc.c
-index 1d794cf3e3f1..fd57fc43e8e5 100644
---- a/drivers/iio/adc/vf610_adc.c
-+++ b/drivers/iio/adc/vf610_adc.c
-@@ -167,7 +167,11 @@ struct vf610_adc {
- 	u32 sample_freq_avail[5];
- 
- 	struct completion completion;
--	u16 buffer[8];
-+	/* Ensure the timestamp is naturally aligned */
+diff --git a/drivers/iio/gyro/bmg160_core.c b/drivers/iio/gyro/bmg160_core.c
+index b11ebd9bb7a4..7bc13ff2c3ac 100644
+--- a/drivers/iio/gyro/bmg160_core.c
++++ b/drivers/iio/gyro/bmg160_core.c
+@@ -98,7 +98,11 @@ struct bmg160_data {
+ 	struct iio_trigger *motion_trig;
+ 	struct iio_mount_matrix orientation;
+ 	struct mutex mutex;
+-	s16 buffer[8];
++	/* Ensure naturally aligned timestamp */
 +	struct {
-+		u16 chan;
++		s16 chans[3];
 +		s64 timestamp __aligned(8);
 +	} scan;
- };
+ 	u32 dps_range;
+ 	int ev_enable_state;
+ 	int slope_thres;
+@@ -882,12 +886,12 @@ static irqreturn_t bmg160_trigger_handler(int irq, void *p)
  
- static const u32 vf610_hw_avgs[] = { 1, 4, 8, 16, 32 };
-@@ -579,9 +583,9 @@ static irqreturn_t vf610_adc_isr(int irq, void *dev_id)
- 	if (coco & VF610_ADC_HS_COCO0) {
- 		info->value = vf610_adc_read_data(info);
- 		if (iio_buffer_enabled(indio_dev)) {
--			info->buffer[0] = info->value;
-+			info->scan.chan = info->value;
- 			iio_push_to_buffers_with_timestamp(indio_dev,
--					info->buffer,
-+					&info->scan,
- 					iio_get_time_ns(indio_dev));
- 			iio_trigger_notify_done(indio_dev->trig);
- 		} else
+ 	mutex_lock(&data->mutex);
+ 	ret = regmap_bulk_read(data->regmap, BMG160_REG_XOUT_L,
+-			       data->buffer, AXIS_MAX * 2);
++			       data->scan.chans, AXIS_MAX * 2);
+ 	mutex_unlock(&data->mutex);
+ 	if (ret < 0)
+ 		goto err;
+ 
+-	iio_push_to_buffers_with_timestamp(indio_dev, data->buffer,
++	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
+ 					   pf->timestamp);
+ err:
+ 	iio_trigger_notify_done(indio_dev->trig);
 -- 
 2.31.1
 

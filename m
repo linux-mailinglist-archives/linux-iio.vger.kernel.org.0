@@ -2,34 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A8F9370822
-	for <lists+linux-iio@lfdr.de>; Sat,  1 May 2021 19:15:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39B7E370823
+	for <lists+linux-iio@lfdr.de>; Sat,  1 May 2021 19:15:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231593AbhEARQZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S231556AbhEARQZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Sat, 1 May 2021 13:16:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54088 "EHLO mail.kernel.org"
+Received: from mail.kernel.org ([198.145.29.99]:54104 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230195AbhEARQY (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 1 May 2021 13:16:24 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 91527614A7;
-        Sat,  1 May 2021 17:15:33 +0000 (UTC)
+        id S231566AbhEARQZ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 1 May 2021 13:16:25 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D2E2F61494;
+        Sat,  1 May 2021 17:15:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1619889334;
-        bh=JwEAoIwHkzBSAmAdq3Nrno00qVDCe+GWTUHUoWHQKdc=;
+        s=k20201202; t=1619889335;
+        bh=89oLJqJwIQXRp1mCCkHQbbgvhA/qytOulqQlmRBlKcQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pJkZWUtYX795o038yqIPd/jLUSH1u1KhRWgGKpNSrWzAAyMm7Ll3gTnEmbARcFhwD
-         mBeZPZSge2rdqPq//KzmY/gzgfmTkKNIET1I+UIr1I99gYy/Jku7Ag9dZ8BZytB6IE
-         6fG40LuxU1FRvjktzPRQR13aN7VxMBvvNn7IbjerBTJzcAez8wmKP9g9TToYyq/3If
-         +fsdBTlKu4JOz6QmV3MQktDYlWB8SqHYG65Yyrb9TcYnlfI2vgQqcvhIwFrtrMs7v/
-         pBHA9UyVTGYjfgIwXt38DvKZTEFuEImyvqf/oSwpDEqzj2mBtABGtNwM1udAjBW8tl
-         0NSlcG9WIlzLA==
+        b=YfjrEiay9E8n8Mj5dhuPjeg4vqvSlNzI4/TsQQsVuP4mC96Ou4yi+oGQOetJ1BiZi
+         DBPd6am4Irmc1aQHu1mXRj1e8THTjy7Bxrak08SD40ofu/ybkRpg1XXmE1BBm3S3HC
+         H5WNdayfQvTvuaMAehPQuQsf9vyCpUeqtRE6HLAMfL30OwZ1Q4iAQw+JHkegIAk72G
+         32zVVI7oh0ar8x3ELXjTe6ZLk0F0xy8ILY+yaslVlge8IDjbU7YlYh8O0q9gzOlPS3
+         37NuF2vIJZQz7qReXRkGnvwHGk9AmiJ3X9Kg77dhBi9+78MmAmPvSYoWdQzWgfmLQ2
+         yMLOm5/n3Ip3w==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Matt Ranostay <matt.ranostay@konsulko.com>
-Subject: [PATCH 07/11] iio: potentiostat: lmp91000: Fix alignment of buffer in iio_push_to_buffers_with_timestamp()
-Date:   Sat,  1 May 2021 18:13:48 +0100
-Message-Id: <20210501171352.512953-8-jic23@kernel.org>
+        Song Qiang <songqiang1304521@gmail.com>
+Subject: [PATCH 08/11] iio: magn: rm3100: Fix alignment of buffer in iio_push_to_buffers_with_timestamp()
+Date:   Sat,  1 May 2021 18:13:49 +0100
+Message-Id: <20210501171352.512953-9-jic23@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210501171352.512953-1-jic23@kernel.org>
 References: <20210501171352.512953-1-jic23@kernel.org>
@@ -45,31 +45,30 @@ Add __aligned(8) to ensure the buffer passed to
 iio_push_to_buffers_with_timestamp() is suitable for the naturally
 aligned timestamp that will be inserted.
 
-Here structure is not used, because this buffer is also used
-elsewhere in the driver.
+Here an explicit structure is not used, because this buffer is used in
+a non-trivial way for data repacking.
 
-Fixes: 67e17300dc1d ("iio: potentiostat: add LMP91000 support")
+Fixes: 121354b2eceb ("iio: magnetometer: Add driver support for PNI RM3100")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Matt Ranostay <matt.ranostay@konsulko.com>
+Cc: Song Qiang <songqiang1304521@gmail.com>
 ---
- drivers/iio/potentiostat/lmp91000.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/magnetometer/rm3100-core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/potentiostat/lmp91000.c b/drivers/iio/potentiostat/lmp91000.c
-index 8a9c576616ee..ff39ba975da7 100644
---- a/drivers/iio/potentiostat/lmp91000.c
-+++ b/drivers/iio/potentiostat/lmp91000.c
-@@ -71,8 +71,8 @@ struct lmp91000_data {
+diff --git a/drivers/iio/magnetometer/rm3100-core.c b/drivers/iio/magnetometer/rm3100-core.c
+index dd811da9cb6d..934da20781bb 100644
+--- a/drivers/iio/magnetometer/rm3100-core.c
++++ b/drivers/iio/magnetometer/rm3100-core.c
+@@ -78,7 +78,8 @@ struct rm3100_data {
+ 	bool use_interrupt;
+ 	int conversion_time;
+ 	int scale;
+-	u8 buffer[RM3100_SCAN_BYTES];
++	/* Ensure naturally aligned timestamp */
++	u8 buffer[RM3100_SCAN_BYTES] __aligned(8);
+ 	struct iio_trigger *drdy_trig;
  
- 	struct completion completion;
- 	u8 chan_select;
--
--	u32 buffer[4]; /* 64-bit data + 64-bit timestamp */
-+	/* 64-bit data + 64-bit naturally aligned timestamp */
-+	u32 buffer[4] __aligned(8);
- };
- 
- static const struct iio_chan_spec lmp91000_channels[] = {
+ 	/*
 -- 
 2.31.1
 

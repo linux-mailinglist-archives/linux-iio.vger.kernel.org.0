@@ -2,33 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FFFB3707FA
-	for <lists+linux-iio@lfdr.de>; Sat,  1 May 2021 18:54:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9EA03707FB
+	for <lists+linux-iio@lfdr.de>; Sat,  1 May 2021 18:54:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231415AbhEAQzm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 1 May 2021 12:55:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44420 "EHLO mail.kernel.org"
+        id S231517AbhEAQzo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 1 May 2021 12:55:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44450 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230195AbhEAQzm (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 1 May 2021 12:55:42 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 2AAA861459;
-        Sat,  1 May 2021 16:54:50 +0000 (UTC)
+        id S230195AbhEAQzo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 1 May 2021 12:55:44 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 07A3C61477;
+        Sat,  1 May 2021 16:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1619888092;
-        bh=PEOILIYk7lWdgrDQVgxebujywNWQ6JLX3kDYv7lbgx0=;
+        s=k20201202; t=1619888094;
+        bh=36uePG+qgyqQVBTud8/t51FHRljBV4GAYAz6sngmxGs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l7PsdL7HBno3zb6nWMC+jhDhKUqDcqWVPPhoFIG5GGAboZl4IopDtNRgStiEyV+PQ
-         JYTzouykBUcBJbeWdxAeuvoD6gVXPTTydrkPzSJpawMbSaoMfQP66J92owP9BcwkSK
-         IK+pVBB3Nb878S28KVBj8K5GDlLlFXIY8Eb12m7rupFWzYpJP191BgM2rNneDmIyrR
-         xu3y7lpZNeX7Zp0l37CWrpTM9T4swmrpccS1nV/p0nkHebjoPvd2J7n/3kkVMdrWZ6
-         CqB21qMw4oP++BHxP9yLBkb/WNlStwj6Jg7vaAJL9K9cg0DGSh2zoTL1bNA6ghLP8r
-         n62IpXVLxs8Aw==
+        b=cw/U1k7Jv27q12Vyb7/iyZWLgDOWxSjm9bHJS3cfMZq3TZUeRHRwJ+XQFvsP4pP9D
+         WMPTHn1OA3ecHZu4yVY7Hx1C7HmSrdGsWWRokWLwwlNrpafdotioniLrTvL5wGy5uR
+         ssDyKjy+vM78UbBSG9yZ7WRL9z9VSx1Y7UjJR9Zwlaxh0pUkj1eREF9+BEp9m1lTDa
+         QHtcm/nJzkWi+kw0SnffJQY56sAtui1niGbbn1Zr01RyZRHtn8r1BTyMrpNPMQWA4M
+         tSrggLnvIc2IMZ2tKNeWzeZ6LxDI0HxJofJUuwQrq7M+VkCffF0hPVMF0co2SzMkV8
+         w+DDKLtOk7t4w==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 1/2] iio: adc: ad7768-1: Fix too small buffer passed to iio_push_to_buffers_with_timestamp()
-Date:   Sat,  1 May 2021 17:53:13 +0100
-Message-Id: <20210501165314.511954-2-jic23@kernel.org>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Daniel Junho <djunho@gmail.com>
+Subject: [PATCH 2/2] iio: adc: ad7923: Fix undersized rx buffer.
+Date:   Sat,  1 May 2021 17:53:14 +0100
+Message-Id: <20210501165314.511954-3-jic23@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210501165314.511954-1-jic23@kernel.org>
 References: <20210501165314.511954-1-jic23@kernel.org>
@@ -40,44 +41,32 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Add space for the timestamp to be inserted.  Also ensure correct
-alignment for passing to iio_push_to_buffers_with_timestamp()
+Fixes tag is where the max channels became 8, but timestamp space was missing
+before that.
 
-Fixes: a5f8c7da3dbe ("iio: adc: Add AD7768-1 ADC basic support")
+Fixes: 851644a60d20 ("iio: adc: ad7923: Add support for the ad7908/ad7918/ad7928")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Daniel Junho <djunho@gmail.com>
 ---
- drivers/iio/adc/ad7768-1.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/iio/adc/ad7923.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-index c945f1349623..60f21fed6dcb 100644
---- a/drivers/iio/adc/ad7768-1.c
-+++ b/drivers/iio/adc/ad7768-1.c
-@@ -167,6 +167,10 @@ struct ad7768_state {
+diff --git a/drivers/iio/adc/ad7923.c b/drivers/iio/adc/ad7923.c
+index 9a649745cd0a..069b561ee768 100644
+--- a/drivers/iio/adc/ad7923.c
++++ b/drivers/iio/adc/ad7923.c
+@@ -59,8 +59,10 @@ struct ad7923_state {
+ 	/*
+ 	 * DMA (thus cache coherency maintenance) requires the
  	 * transfer buffers to live in their own cache lines.
++	 * Ensure rx_buf can be directly used in iio_push_to_buffers_with_timetamp
++	 * Length = 8 channels + 4 extra for 8 byte timestamp
  	 */
- 	union {
-+		struct {
-+			__be32 chan;
-+			s64 timestamp;
-+		} scan;
- 		__be32 d32;
- 		u8 d8[2];
- 	} data ____cacheline_aligned;
-@@ -469,11 +473,11 @@ static irqreturn_t ad7768_trigger_handler(int irq, void *p)
+-	__be16				rx_buf[4] ____cacheline_aligned;
++	__be16				rx_buf[12] ____cacheline_aligned;
+ 	__be16				tx_buf[4];
+ };
  
- 	mutex_lock(&st->lock);
- 
--	ret = spi_read(st->spi, &st->data.d32, 3);
-+	ret = spi_read(st->spi, &st->data.scan.chan, 3);
- 	if (ret < 0)
- 		goto err_unlock;
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, &st->data.d32,
-+	iio_push_to_buffers_with_timestamp(indio_dev, &st->data.scan,
- 					   iio_get_time_ns(indio_dev));
- 
- 	iio_trigger_notify_done(indio_dev->trig);
 -- 
 2.31.1
 

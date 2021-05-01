@@ -2,44 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EB65370803
-	for <lists+linux-iio@lfdr.de>; Sat,  1 May 2021 19:02:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19CEA370804
+	for <lists+linux-iio@lfdr.de>; Sat,  1 May 2021 19:02:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230391AbhEARDm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S230195AbhEARDm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Sat, 1 May 2021 13:03:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47312 "EHLO mail.kernel.org"
+Received: from mail.kernel.org ([198.145.29.99]:47356 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230195AbhEARDl (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 1 May 2021 13:03:41 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 559F360FEB;
-        Sat,  1 May 2021 17:02:47 +0000 (UTC)
+        id S230450AbhEARDm (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 1 May 2021 13:03:42 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1F07461477;
+        Sat,  1 May 2021 17:02:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1619888570;
-        bh=beQTznlIxYQXL5tbbc86wt2ien8TxzFNiS2KpYVC8w8=;
-        h=From:To:Cc:Subject:Date:From;
-        b=pl5KYUYA7Dl2QUAS8dCNqNbcKJdtpxKK3MFxwWxV4Ig09+IvK6/aCMWq/RKI9Ttt9
-         V9pBmIaMuryG48zIzo3zvP61dz0/Nstzceg549vAL2hdK12LMX64YUCUDQQsiZj8gE
-         NpS0Xs4Pwm4ed8TFraSK+einu6IEahJkX6Hwodw3T1fR/T3omLBCOzAnTugGmgiq2U
-         OjVfRbSEzpeT3+5ytCZfJ3KFidYxH8ceZOh6hOD5e6RVanl8X2oLgn7UhMmo37ONDk
-         egz78A+Kj98ACBOa+/c95YrD1RfoG2IIuX4cuYvelBA6Jxte4Wr1w/dhVlRHgdgY6M
-         m7SgEjgUV91Lw==
+        s=k20201202; t=1619888572;
+        bh=l+q9JoD+N6d5yOdWpLTkf2DWswGnbFRHMRoaHpupKvQ=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=sFURnOk6rzfe54+4NzUu/qHTEXDRBXQpHeqM1aKPnBZWnDLUxD+egZteMC8w9hU0e
+         cZK2u4B0MOJXX2Y8MTnnbfZEsDzCIUDkx2kGXrGTYuaNfGy3S0WLOG2fT37u4xgxod
+         GlMqMsAajvhtE5fN71rTrUvSrpog+ZN1KDFIqQiHGV8gkN2SHG3wjzTEx3e5f+6xfn
+         W9F/2SauD6jElcj28lP+bFiu5qvr3PZFu/3YHrdaNN6EKu61Oyl67Tg1vgzOQXMv1F
+         R7piCXf/mTavLF41k4WB+N5AF0c5+Gmv7T11tU3cPDVQWc8NbQ1dr8qM8YksmMECYD
+         pQdGJpkgXa7ew==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Daniel Baluta <daniel.baluta@nxp.com>,
-        Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>,
-        Sanchayan Maity <maitysanchayan@gmail.com>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Andreas Klinger <ak@it-klinger.de>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 00/19] IIO: Alignment fixes part 2 - struct used to ensure alignment
-Date:   Sat,  1 May 2021 18:01:02 +0100
-Message-Id: <20210501170121.512209-1-jic23@kernel.org>
+        Peter Meerwald <pmeerw@pmeerw.net>
+Subject: [PATCH 01/19] iio: accel: bma180: Fix buffer alignment in iio_push_to_buffers_with_timestamp()
+Date:   Sat,  1 May 2021 18:01:03 +0100
+Message-Id: <20210501170121.512209-2-jic23@kernel.org>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20210501170121.512209-1-jic23@kernel.org>
+References: <20210501170121.512209-1-jic23@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,101 +41,50 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-I finally got around to do a manual audit of all the calls to
-iio_push_to_buffers_with_timestamp() which has the somewhat odd requirements
-of:
-1. 8 byte alignment of the provided buffer.
-2. space for an 8 byte naturally aligned timestamp to be inserted at the
-   end.
+To make code more readable, use a structure to express the channel
+layout and ensure the timestamp is 8 byte aligned.
 
-Unfortuantely there were rather a lot of these left, but time to bite the bullet
-and clean them up.
+Found during an audit of all calls of this function.
 
-As discussed previous in
-https://lore.kernel.org/linux-iio/20200920112742.170751-1-jic23@kernel.org/
-it is not easy to fix the alignment issue without requiring a bounce buffer
-(see part 4 of the alignment fixes for a proposal for that where it is
-absolutely necessary).
-
-Part 2 is the simple cases where the timestamp position is always the same
-(as not more than 8 bytes of other scan elements) and where it is either
-in a structure that is kzalloc'd or there was already an explicit memset
-that would clear any holes in the structure (and hence avoid a potential
-kernel data leak).
-
+Fixes: b9a6a237ffc9 ("iio:bma180: Drop _update_scan_mode()")
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc: Peter Meerwald <pmeerw@pmeerw.net>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: Daniel Baluta <daniel.baluta@nxp.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>
-Cc: Sanchayan Maity <maitysanchayan@gmail.com>
-Cc: Stephan Gerhold <stephan@gerhold.net>
-Cc: Andreas Klinger <ak@it-klinger.de>
-Cc: Matt Ranostay <matt.ranostay@konsulko.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>
+---
+ drivers/iio/accel/bma180.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-Jonathan Cameron (19):
-  iio: accel: bma180: Fix buffer alignment in
-    iio_push_to_buffers_with_timestamp()
-  iio: accel: bma220: Fix buffer alignment in
-    iio_push_to_buffers_with_timestamp()
-  iio: accel: hid: Fix buffer alignment in
-    iio_push_to_buffers_with_timestamp()
-  iio: accel: kxcjk-1013: Fix buffer alignment in
-    iio_push_to_buffers_with_timestamp()
-  iio: accel: mxc4005: Fix overread of data and alignment issue.
-  iio: accel: stk8312: Fix buffer alignment in
-    iio_push_to_buffers_with_timestamp()
-  iio: accel: stk8ba50: Fix buffer alignment in
-    iio_push_to_buffers_with_timestamp()
-  iio: adc: ti-ads1015: Fix buffer alignment in
-    iio_push_to_buffers_with_timestamp()
-  iio: adc: vf610: Fix buffer alignment in
-    iio_push_to_buffers_with_timestamp()
-  iio: gyro: bmg160: Fix buffer alignment in
-    iio_push_to_buffers_with_timestamp()
-  iio: humidity: am2315: Fix buffer alignment in
-    iio_push_to_buffers_with_timestamp()
-  iio: prox: srf08: Fix buffer alignment in
-    iio_push_to_buffers_with_timestamp()
-  iio: prox: pulsed-light: Fix buffer alignment in
-    iio_push_to_buffers_with_timestamp()
-  iio: prox: as3935: Fix buffer alignment in
-    iio_push_to_buffers_with_timestamp()
-  iio: magn: hmc5843: Fix buffer alignment in
-    iio_push_to_buffers_with_timestamp()
-  iio: magn: bmc150: Fix buffer alignment in
-    iio_push_to_buffers_with_timestamp()
-  iio: light: isl29125: Fix buffer alignment in
-    iio_push_to_buffers_with_timestamp()
-  iio: light: tcs3414: Fix buffer alignment in
-    iio_push_to_buffers_with_timestamp()
-  iio: light: tcs3472: Fix buffer alignment in
-    iio_push_to_buffers_with_timestamp()
-
- drivers/iio/accel/bma180.c                    | 10 +++++---
- drivers/iio/accel/bma220_spi.c                | 10 +++++---
- drivers/iio/accel/hid-sensor-accel-3d.c       | 13 ++++++----
- drivers/iio/accel/kxcjk-1013.c                | 24 +++++++++++--------
- drivers/iio/accel/mxc4005.c                   | 10 +++++---
- drivers/iio/accel/stk8312.c                   | 12 ++++++----
- drivers/iio/accel/stk8ba50.c                  | 17 +++++++------
- drivers/iio/adc/ti-ads1015.c                  | 12 ++++++----
- drivers/iio/adc/vf610_adc.c                   | 10 +++++---
- drivers/iio/gyro/bmg160_core.c                | 10 +++++---
- drivers/iio/humidity/am2315.c                 | 16 ++++++++-----
- drivers/iio/light/isl29125.c                  | 10 +++++---
- drivers/iio/light/tcs3414.c                   | 10 +++++---
- drivers/iio/light/tcs3472.c                   | 10 +++++---
- drivers/iio/magnetometer/bmc150_magn.c        | 11 +++++----
- drivers/iio/magnetometer/hmc5843.h            |  8 +++++--
- drivers/iio/magnetometer/hmc5843_core.c       |  4 ++--
- drivers/iio/proximity/as3935.c                | 10 +++++---
- .../iio/proximity/pulsedlight-lidar-lite-v2.c | 10 +++++---
- drivers/iio/proximity/srf08.c                 | 14 +++++------
- 20 files changed, 148 insertions(+), 83 deletions(-)
-
+diff --git a/drivers/iio/accel/bma180.c b/drivers/iio/accel/bma180.c
+index b8a7469cdae4..2e901f900ea7 100644
+--- a/drivers/iio/accel/bma180.c
++++ b/drivers/iio/accel/bma180.c
+@@ -162,7 +162,11 @@ struct bma180_data {
+ 	int scale;
+ 	int bw;
+ 	bool pmode;
+-	u8 buff[16]; /* 3x 16-bit + 8-bit + padding + timestamp */
++	/* Ensure timestamp is naturally aligned */
++	struct {
++		s16 chan[3];
++		s64 timestamp __aligned(8);
++	} scan;
+ };
+ 
+ enum bma180_chan {
+@@ -938,12 +942,12 @@ static irqreturn_t bma180_trigger_handler(int irq, void *p)
+ 			mutex_unlock(&data->mutex);
+ 			goto err;
+ 		}
+-		((s16 *)data->buff)[i++] = ret;
++		data->scan.chan[i++] = ret;
+ 	}
+ 
+ 	mutex_unlock(&data->mutex);
+ 
+-	iio_push_to_buffers_with_timestamp(indio_dev, data->buff, time_ns);
++	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan, time_ns);
+ err:
+ 	iio_trigger_notify_done(indio_dev->trig);
+ 
 -- 
 2.31.1
 

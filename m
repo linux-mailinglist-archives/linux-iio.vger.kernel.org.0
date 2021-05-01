@@ -2,58 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 254C73708B1
-	for <lists+linux-iio@lfdr.de>; Sat,  1 May 2021 21:09:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE1E83708B4
+	for <lists+linux-iio@lfdr.de>; Sat,  1 May 2021 21:11:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232056AbhEATKk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 1 May 2021 15:10:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52868 "EHLO
+        id S231556AbhEATL4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 1 May 2021 15:11:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231556AbhEATKj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 May 2021 15:10:39 -0400
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CA54C06174A
-        for <linux-iio@vger.kernel.org>; Sat,  1 May 2021 12:09:49 -0700 (PDT)
-Received: by mail-pj1-x1036.google.com with SMTP id h14-20020a17090aea8eb02901553e1cc649so3503283pjz.0
-        for <linux-iio@vger.kernel.org>; Sat, 01 May 2021 12:09:49 -0700 (PDT)
+        with ESMTP id S232311AbhEATL4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 May 2021 15:11:56 -0400
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0477AC06174A
+        for <linux-iio@vger.kernel.org>; Sat,  1 May 2021 12:11:05 -0700 (PDT)
+Received: by mail-pl1-x630.google.com with SMTP id n16so605413plf.7
+        for <linux-iio@vger.kernel.org>; Sat, 01 May 2021 12:11:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=S0nouzsd7CfE/HtbUQtxEPnk17JhCB6+zlKQ9B+jeV4=;
-        b=Un/Oh7334EUln8UJK/sM4/bJ1KCAkhr+bWRAYmMVXtG33lDE2BK/92NNMwU2k/HEMt
-         bjb4BDVASn2sIp/lJ54+gO3ZavsJv51ZD6Al6rx7uUBWN4nvFjwHOQh+E8oQZhGVWLWR
-         OPwtR3uzNpJp7ZUEsgTlYyMNlYL146Ym+jCXjpnZEoEQy1MVsBv1hstLzxFsro7EQZiC
-         jIw0Zki21k3WIOB/JQa8nmZEzYpzofZB/ixNjUPz77TOW9Nl3PWOQkEqyNcsVygL5o+7
-         zNm2Uo1dNX5uc4lMl3c4+wpk8SYjQYkDyMLwkHejIHU592AtdokML2vygnhET9go2NP1
-         oyIA==
+        bh=ZPGet8QMOx3fTp9C3o1q26iL27uqnPIe7E0TBoqktAI=;
+        b=u3F/v1UcgBG582fb2QOAh/jCUOxU/PSuV7O3PszSgmutfsqxvdQCkakVWLVsn2PzJS
+         xbPAeaLAUedKoHs8/kjY6uAi44JzOkU6DHlqWj6sEJB3KQN94r5bMkmPnGz9iZIyc4vy
+         Ay32n8ncjYLrHT/a19uUm3xTRae6Ky1J5RZxcdtuzweJW/Zy9Aby9RhphYajp8IMc1GS
+         9eYucZXZqfCuO5bZcKmI7RgYlDvMHyuLpPJNMezLlKmqZTJlgWcTzoRMJ68pxDo+9QjF
+         HAQ4zWy64uO6vLFmP0gb2T45BktMlEdLrTNsLvNHZpHwbzb2spxOF6+iciac7TbXM224
+         RmjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=S0nouzsd7CfE/HtbUQtxEPnk17JhCB6+zlKQ9B+jeV4=;
-        b=nqRlxRIkJCdBUIWzjUfZC13izhccTLmadaGUrseqMjS8n4+24a1gVz19F5/kvpomRx
-         wDzfdgCsWmO9ipZuW4kX/PvTeTEBOP1tXeSyAqlnGmahbKsrUOXtJc33UCKLKkKjpRGn
-         0FY8QEAGrowHgaFS/M11zK8E0qGuKKW/7PN9QpcaNMWlZFSlHuxB2/7X0xf4RzP0AlHD
-         n6ZTWVAH0yeZWh2FQxBR97O2tTJ8CxPUiK7q5uRetOF/Lh/n+bULAc4sThdJmfRZH6WQ
-         cWqstGd43SXFXKkVTKpDnSxvoAtgoMClMcYR+rNGlIwb+Re8coOsCT710P8v185Fp6tK
-         0tfQ==
-X-Gm-Message-State: AOAM533DOyRw/SK26iLWM78PoOjSxcydJvcJeCWRWge8IBCwFmmZI6jU
-        ccWjLkCKLQ5xbGpASsYrpP7yXapt0PdLtKNFx8e6B4fv1CbBQA==
-X-Google-Smtp-Source: ABdhPJyK6Kb5ie12x5+9v/KfaGEI2VKVexRXgVnGZGK/rL0JFBxi7wJZtnm25kzjQAcS1ovzc9S2xMBeKQS9+64wp3E=
-X-Received: by 2002:a17:902:264:b029:eb:3d3a:a09c with SMTP id
- 91-20020a1709020264b02900eb3d3aa09cmr11750137plc.0.1619896188778; Sat, 01 May
- 2021 12:09:48 -0700 (PDT)
+        bh=ZPGet8QMOx3fTp9C3o1q26iL27uqnPIe7E0TBoqktAI=;
+        b=RjYM9KpMgsB7ioav/7PKbleBbsnPwC2PNeklm3Ak9FHV0/YbwjnMfFtfLYs3pv7C6+
+         1HaPMhq+9XonZ/N+7xn1ATlg2MX7l83FoqjUc3yQ0Te+Av/pDvDyEv1yTNkC4Cf5tfLF
+         d9ERxoD9K1ban4GbZhhoOXLuWXiJegXRdc1Tfkp4bmLggDx5ww6TRbsgARN8tk8sR1HQ
+         NUP3oRGMHHeJ2y3rcA2P5U/hf/6XcaDoQfqSrYfBI9UystJ6vfofMpFll3ZXsOuGTJd7
+         jsjcXOrOWHDEhtipwKgtsw4R/IkBNZtGrJ62iAP70FLU2uS/F0VXGgzF4REmRLf2jGl8
+         Vd/A==
+X-Gm-Message-State: AOAM5332gVtip8meLwHwj/pvBG0Tr34xXZsoYVuOJSOcFn1om+QZUqb2
+        stzsPxnCdGE+kDCazzWX98hNDbjrn49s8da1Q2s=
+X-Google-Smtp-Source: ABdhPJzjffOYk2BAl6jGgu8vlWPW9bK0aEKPQyDjl4ntZwdxvhq9ehKPoTcugtljIdz5UyTIwH+Rp9kpcFIH1dB/+m4=
+X-Received: by 2002:a17:90b:1c0f:: with SMTP id oc15mr12372321pjb.228.1619896264433;
+ Sat, 01 May 2021 12:11:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210501170121.512209-1-jic23@kernel.org> <20210501170121.512209-20-jic23@kernel.org>
-In-Reply-To: <20210501170121.512209-20-jic23@kernel.org>
+References: <20210501170121.512209-1-jic23@kernel.org> <20210501170121.512209-5-jic23@kernel.org>
+In-Reply-To: <20210501170121.512209-5-jic23@kernel.org>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sat, 1 May 2021 22:09:32 +0300
-Message-ID: <CAHp75VeDefx25avQSBE0qHbid=wjU=Tof-v1SzUU18BfTbyvmQ@mail.gmail.com>
-Subject: Re: [PATCH 19/19] iio: light: tcs3472: Fix buffer alignment in iio_push_to_buffers_with_timestamp()
+Date:   Sat, 1 May 2021 22:10:48 +0300
+Message-ID: <CAHp75Vc9hOe66LaC7AzbmbZ5+EMCSdgCnxCLY0NQdurmWtyFVQ@mail.gmail.com>
+Subject: Re: [PATCH 04/19] iio: accel: kxcjk-1013: Fix buffer alignment in iio_push_to_buffers_with_timestamp()
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
@@ -66,51 +66,81 @@ On Sat, May 1, 2021 at 8:03 PM Jonathan Cameron <jic23@kernel.org> wrote:
 > To make code more readable, use a structure to express the channel
 > layout and ensure the timestamp is 8 byte aligned.
 >
-> Found during an audit of all calls of uses of
-> iio_push_to_buffers_with_timestamp()
-
-Missed period at the end of the line.
-
-> Fixes tag is not strictly accurate as prior to that patch there was
-> potentially an unaligned write.  However, any backport past there will
-> need to be done manually.
+> Found during an audit of all calls of this function.
 >
-> Fixes: 0624bf847dd0 ("iio:tcs3472: Use iio_push_to_buffers_with_timestamp()")
+> Fixes: 1a4fbf6a9286 ("iio: accel: kxcjk1013 3-axis accelerometer driver")
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 > ---
->  drivers/iio/light/tcs3472.c | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
+>  drivers/iio/accel/kxcjk-1013.c | 24 ++++++++++++++----------
+>  1 file changed, 14 insertions(+), 10 deletions(-)
 >
-> diff --git a/drivers/iio/light/tcs3472.c b/drivers/iio/light/tcs3472.c
-> index a0dc447aeb68..90dc3fef59e6 100644
-> --- a/drivers/iio/light/tcs3472.c
-> +++ b/drivers/iio/light/tcs3472.c
-> @@ -64,7 +64,11 @@ struct tcs3472_data {
->         u8 control;
->         u8 atime;
->         u8 apers;
-> -       u16 buffer[8]; /* 4 16-bit channels + 64-bit timestamp */
-> +       /* Ensure timestamp is naturally aligned */
-> +       struct {
-> +               u16 chans[4];
-> +               s64 timestamp __aligned(8);
-> +       } scan;
+> diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxcjk-1013.c
+> index ff724bc17a45..96ab247f17b3 100644
+> --- a/drivers/iio/accel/kxcjk-1013.c
+> +++ b/drivers/iio/accel/kxcjk-1013.c
+> @@ -133,6 +133,13 @@ enum kx_acpi_type {
+>         ACPI_KIOX010A,
 >  };
 >
->  static const struct iio_event_spec tcs3472_events[] = {
-> @@ -386,10 +390,10 @@ static irqreturn_t tcs3472_trigger_handler(int irq, void *p)
->                 if (ret < 0)
->                         goto done;
+> +enum kxcjk1013_axis {
+> +       AXIS_X,
+> +       AXIS_Y,
+> +       AXIS_Z,
+
+> +       AXIS_MAX,
+
+I see that this is from original code, though I think you have a
+chance to remove unneeded comma here. Let's make the terminator line
+terminate.
+
+> +};
+> +
+>  struct kxcjk1013_data {
+>         struct regulator_bulk_data regulators[2];
+>         struct i2c_client *client;
+> @@ -140,7 +147,11 @@ struct kxcjk1013_data {
+>         struct iio_trigger *motion_trig;
+>         struct iio_mount_matrix orientation;
+>         struct mutex mutex;
+> -       s16 buffer[8];
+> +       /* Ensure timestamp naturally aligned */
+> +       struct {
+> +               s16 chans[AXIS_MAX];
+> +               s64 timestamp __aligned(8);
+> +       } scan;
+>         u8 odr_bits;
+>         u8 range;
+>         int wake_thres;
+> @@ -154,13 +165,6 @@ struct kxcjk1013_data {
+>         enum kx_acpi_type acpi_type;
+>  };
 >
-> -               data->buffer[j++] = ret;
-> +               data->scan.chans[j++] = ret;
->         }
+> -enum kxcjk1013_axis {
+> -       AXIS_X,
+> -       AXIS_Y,
+> -       AXIS_Z,
+> -       AXIS_MAX,
+> -};
+> -
+>  enum kxcjk1013_mode {
+>         STANDBY,
+>         OPERATION,
+> @@ -1094,12 +1098,12 @@ static irqreturn_t kxcjk1013_trigger_handler(int irq, void *p)
+>         ret = i2c_smbus_read_i2c_block_data_or_emulated(data->client,
+>                                                         KXCJK1013_REG_XOUT_L,
+>                                                         AXIS_MAX * 2,
+> -                                                       (u8 *)data->buffer);
+> +                                                       (u8 *)data->scan.chans);
+>         mutex_unlock(&data->mutex);
+>         if (ret < 0)
+>                 goto err;
 >
 > -       iio_push_to_buffers_with_timestamp(indio_dev, data->buffer,
 > +       iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
->                 iio_get_time_ns(indio_dev));
->
->  done:
+>                                            data->timestamp);
+>  err:
+>         iio_trigger_notify_done(indio_dev->trig);
 > --
 > 2.31.1
 >

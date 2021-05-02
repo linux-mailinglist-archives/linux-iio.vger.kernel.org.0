@@ -2,860 +2,855 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 06B86370EE9
-	for <lists+linux-iio@lfdr.de>; Sun,  2 May 2021 21:58:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 476B9370F23
+	for <lists+linux-iio@lfdr.de>; Sun,  2 May 2021 22:51:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232374AbhEBT6x (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 May 2021 15:58:53 -0400
-Received: from smtpout1.mo528.mail-out.ovh.net ([46.105.34.251]:42219 "EHLO
-        smtpout1.mo528.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231909AbhEBT6x (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 May 2021 15:58:53 -0400
-Received: from pro2.mail.ovh.net (unknown [10.108.20.106])
-        by mo528.mail-out.ovh.net (Postfix) with ESMTPS id 42D51A3B8581;
-        Sun,  2 May 2021 21:58:00 +0200 (CEST)
-Received: from localhost (89.70.221.198) by DAG2EX1.emp2.local (172.16.2.11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Sun, 2 May 2021
- 21:57:59 +0200
-Date:   Sun, 2 May 2021 21:53:47 +0200
-From:   Tomasz Duszynski <tomasz.duszynski@octakon.com>
+        id S232401AbhEBUuT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 May 2021 16:50:19 -0400
+Received: from bmail1.ministro.hu ([5.249.150.236]:55810 "EHLO
+        bmail1.ministro.hu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232338AbhEBUuS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 May 2021 16:50:18 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by bmail1.ministro.hu (Postfix) with ESMTP id 6D8AC123F6E;
+        Sun,  2 May 2021 22:49:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ministro.hu;
+        s=201804; t=1619988562;
+        bh=fgLT4hafJG+1PqcReTS+6XQ5YhwCIqYr+5981q2LEjo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=9mDIUKhZ1C4j82HdjpnaZ5eP5boBX+gNzWdAjfhGbqkanrEGnSYsLkPU2S7KMgQrg
+         IApOvN/fSYVbBbn2HeQg389y+HI19eXb2iGzkUyney1YwRN/7KpIRI+eJtYwSb51cW
+         hKrO+eIh0MGa6U5vobijLxe/teCVLw0ExPcQMFvVOdyrNO04grGmpFY7JVDIQ0mRU3
+         Z+CEGExD5EgYp0RKvMY1ggI8KsCcmMymU37ruLRxzB9ZHPqob3WlHAvuOwHY7D8FDv
+         RLuRU6Jw3U5fek6ZtzARN0PnyJRMG1thjJPQaDPRzauHonRIuOj/ySXHHd/jixiPYg
+         lsJDunVWYxJBw==
+X-Virus-Scanned: Debian amavisd-new at ministro.hu
+Received: from bmail1.ministro.hu ([127.0.0.1])
+        by localhost (bmail1.ministro.hu [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id bUiyfDI6_iHy; Sun,  2 May 2021 22:48:50 +0200 (CEST)
+Received: from dev (localhost [127.0.0.1])
+        by bmail1.ministro.hu (Postfix) with ESMTPSA id 8835111FFC7;
+        Sun,  2 May 2021 22:48:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ministro.hu;
+        s=201804; t=1619988530;
+        bh=fgLT4hafJG+1PqcReTS+6XQ5YhwCIqYr+5981q2LEjo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=4N5d11RP8HjamgV4MFVVV0+vYY3iHIe8vDCG+lwXXDEHV4AQqgcmCoGRUhjqOcQF1
+         YhZ0vb1D3+FqAvksXh1qxA1v+1vZXZ+j1sS6QEJYf3IInqD9WcoYR8T60IiBXvQDTn
+         3X/L3luTHkAxGybe16Ng6ROJNcd4P8kU7BqLhifdhchU1pIogMG1Nzp/zFqihJFTsM
+         bHQ/uCJCGp4zpiXwUYvya8wu8JWPVmRECmaOKR70T5eJwYVQXpbWsPc0rzqC7UeHbT
+         zKm+PCz6RcrORsE/mlIgdsbXKNAT1PISYzxsNmHxs6lYAM2Fg4iqWjHNZSPI5tOAAy
+         yFqmTA8Jxg+mQ==
+Date:   Sun, 2 May 2021 20:48:47 +0000
+From:   =?iso-8859-1?Q?J=F3zsef_Horv=E1th?= <info@ministro.hu>
 To:     Jonathan Cameron <jic23@kernel.org>
-CC:     Tomasz Duszynski <tomasz.duszynski@octakon.com>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <lars@metafoo.de>,
-        <robh+dt@kernel.org>
-Subject: Re: [PATCH v2 1/3] iio: sps30: separate core and interface specific
- code
-Message-ID: <YI8DS2MQN+we4zTO@arch>
-References: <20210502134431.42647-1-tomasz.duszynski@octakon.com>
- <20210502134431.42647-2-tomasz.duszynski@octakon.com>
- <20210502183220.0ed8ff1c@jic23-huawei>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Alex Dewar <alex.dewar90@gmail.com>,
+        Gene Chen <gene_chen@richtek.com>,
+        Saravanan Sekar <sravanhome@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] iio: adc: driver for texas instruments ads7142
+Message-ID: <20210502204846.GA32610@dev>
+References: <bffbc2b24a869dc42307adf8e3fc71f08fcff6dd.1619892171.git.info@ministro.hu>
+ <20210502181423.1712130b@jic23-huawei>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210502183220.0ed8ff1c@jic23-huawei>
-X-Originating-IP: [89.70.221.198]
-X-ClientProxiedBy: DAG2EX1.emp2.local (172.16.2.11) To DAG2EX1.emp2.local
- (172.16.2.11)
-X-Ovh-Tracer-Id: 308496576637197394
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrvdefvddghedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpeffhffvuffkfhggtggujghisehttdertddttdejnecuhfhrohhmpefvohhmrghsiicuffhushiihihnshhkihcuoehtohhmrghsiidrughushiihihnshhkihesohgtthgrkhhonhdrtghomheqnecuggftrfgrthhtvghrnheptdehveethfffudetjeeftdekueehjeegjedvteffgfevkefffeegffeugeehgfejnecukfhppedtrddtrddtrddtpdekledrjedtrddvvddurdduleeknecuvehluhhsthgvrhfuihiivgepudenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhrohdvrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepthhomhgrshiirdguuhhsiiihnhhskhhisehotghtrghkohhnrdgtohhmpdhrtghpthhtoheprhhosghhodgutheskhgvrhhnvghlrdhorhhg
+In-Reply-To: <20210502181423.1712130b@jic23-huawei>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, May 02, 2021 at 06:32:20PM +0100, Jonathan Cameron wrote:
-> On Sun, 2 May 2021 15:44:29 +0200
-> Tomasz Duszynski <tomasz.duszynski@octakon.com> wrote:
->
-> > Move code responsible for handling i2c communication to a separate file.
-> > Rationale for this change is preparation for adding support for serial
-> > communication.
-> >
-> > Signed-off-by: Tomasz Duszynski <tomasz.duszynski@octakon.com>
-> A comment way down the end.   Basically says that dropping the i2c_device_id
-> table is fine with me, but does occasionally cause problems as it's still used
-> IIRC by greybus.  Maybe someone will one day connect one of these to greybus :)
->
-> Otherwise, looks good to me.
->
+On Sun, May 02, 2021 at 06:14:23PM +0100, Jonathan Cameron wrote:
+> On Sat, 1 May 2021 18:24:28 +0000
+> Jozsef Horvath <info@ministro.hu> wrote:
+> 
+> > This is an iio driver for
+> >  Texas Instruments ADS7142 dual-channel, programmable sensor monitor.
+> > 
+> > Operation modes supportedby the driver:
+> >   When the 'ti,monitoring-mode' property is not present
+> >     in the devicetree node definition, the driver initiates a single
+> >     conversion in the device for each read request
+> >     (/sys/bus/iio/devices/iio:deviceX/in_voltageY_raw).
+> >     This is a one-shot conversion, and it is called
+> >     "Manual Mode" in the datasheet.
+> > 
+> >   When the 'ti,monitoring-mode' property is present
+> >     in the devicetree node definition, the driver configures
+> >     the device's digital window comparator and sets the device's
+> >     data buffer operation mode to pre alert data mode.
+> >     The driver reads the conversion result when the BUSY/RDY interrupt
+> >     fires, and keeps the value until the next BUSY/RDY interrupt
+> >     or the first read request
+> >     (/sys/bus/iio/devices/iio:deviceX/in_voltageY_raw).
+> 
+> Hi Jozsef.
+> 
+> Interesting device - somewhat like an impact sensor, but on a general
+> purpose ADC.
 
-Good point. I'll leave it as is then just to make sure everything
-behaves as before.
+Yes, but now I'm using as an ADC in my project.
+In my point of view this is a general purpose ADC with monitoring features.
 
->
-> Jonathan
->
+> 
+> Hmm. This sounds rather unintuitive and also very much like a policy
+> decision rather than anything to do with the hardware.  Hence it
+> should almost certainly be in control of userspace and no via
+> dt parameters.
+> 
+
+I think that, this operation modes are not generic enough to bring it to sysfs.
+
+> The interrupt driven nature of the device implies that a polled interface
+> such as sysfs is not appropriate to support this mode.
+> 
+> Based on the description you have given here and a quick look
+> at the flow charts in the datasheet I would suggest.
+> 1) Enable sysfs reads as manual mode only.
+> 2) Implement the buffered part of an IIO driver.  This is what we use
+>    for data where autonomous clocking is going on.
+
+I'll check the buffered api.
+
+> 3) Add triggers to represent the different autonomous modes.  In some
+>    sense all the modes present can be considered be a series of
+>    'capture now' signals that are being generated by the hardware in
+>    response to some event'.
+> 
+> So you'd have a pre_alert_tigger, post_alert_trigger
+> Stop_burst and start_burst are more interesting to handle because you
+> will need something to actually start/stop them.  These could be done
+> via a sysfs attribute for the trigger, or more complex schemes exist
+> such as triggering them off another trigger... one or two of the SoC
+> ADCs do that sort of thing.
+> 
+>  
+> >     The digital window comparator and hysteresis parameters
+> >     can be controlled by:
+> >       - the devicetree definition of channel node
+> >       - iio sysfs interfaces
+> >     This is event driven conversion, and is called
+> >     "Autonomous Mode with Pre Alert Data" in the datasheet.
+> >     This mode can be used to wake up the system with the ALERT pin,
+> >     in case when the monitored voltage level is out of the configured range.
+> 
+> Whilst it's fine to only enable the modes you want, we should think about how
+> to ensure other modes can be supported.
+> 
+
+As I described above, I would keep the operation modes in dt, and
+ 'ti,monitoring-mode' can be an enum.
+
+> > 
+> > Datasheet: https://www.ti.com/lit/ds/symlink/ads7142.pdf
+> > 
+> > Signed-off-by: Jozsef Horvath <info@ministro.hu>
 > > ---
-> >  MAINTAINERS                      |   1 +
-> >  drivers/iio/chemical/Kconfig     |  16 +-
-> >  drivers/iio/chemical/Makefile    |   1 +
-> >  drivers/iio/chemical/sps30.c     | 269 ++++++-------------------------
-> >  drivers/iio/chemical/sps30.h     |  35 ++++
-> >  drivers/iio/chemical/sps30_i2c.c | 251 ++++++++++++++++++++++++++++
-> >  6 files changed, 347 insertions(+), 226 deletions(-)
-> >  create mode 100644 drivers/iio/chemical/sps30.h
-> >  create mode 100644 drivers/iio/chemical/sps30_i2c.c
-> >
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index ccc59fd7e5c0..4b39a9c48736 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -16137,6 +16137,7 @@ M:	Tomasz Duszynski <tduszyns@gmail.com>
-> >  S:	Maintained
-> >  F:	Documentation/devicetree/bindings/iio/chemical/sensirion,sps30.yaml
-> >  F:	drivers/iio/chemical/sps30.c
-> > +F:	drivers/iio/chemical/sps30_i2c.c
-> >
-> >  SERIAL DEVICE BUS
-> >  M:	Rob Herring <robh@kernel.org>
-> > diff --git a/drivers/iio/chemical/Kconfig b/drivers/iio/chemical/Kconfig
-> > index 10bb431bc3ce..2b45a76ab7bc 100644
-> > --- a/drivers/iio/chemical/Kconfig
-> > +++ b/drivers/iio/chemical/Kconfig
-> > @@ -132,17 +132,21 @@ config SENSIRION_SGP30
-> >  	  module will be called sgp30.
-> >
-> >  config SPS30
-> > -	tristate "SPS30 particulate matter sensor"
-> > -	depends on I2C
-> > -	select CRC8
-> > +	tristate
-> >  	select IIO_BUFFER
-> >  	select IIO_TRIGGERED_BUFFER
-> > +
-> > +config SPS30_I2C
-> > +	tristate "SPS30 particulate matter sensor I2C driver"
+> Should only be one ---
+> 
+> comments inline.
+> > ---
+> >  MAINTAINERS                  |    6 +
+> >  drivers/iio/adc/Kconfig      |   10 +
+> >  drivers/iio/adc/Makefile     |    1 +
+> >  
+> > +config TI_ADS7142
+> > +	tristate "Texas Instruments ADS7142 ADC driver"
 > > +	depends on I2C
-> > +	select SPS30
-> > +	select CRC8
-> >  	help
-> > -	  Say Y here to build support for the Sensirion SPS30 particulate
-> > -	  matter sensor.
-> > +	  Say Y here to build support for the Sensirion SPS30 I2C interface
-> > +	  driver.
-> >
-> >  	  To compile this driver as a module, choose M here: the module will
-> > -	  be called sps30.
-> > +	  be called sps30_i2c.
-> >
-> >  config VZ89X
-> >  	tristate "SGX Sensortech MiCS VZ89X VOC sensor"
-> > diff --git a/drivers/iio/chemical/Makefile b/drivers/iio/chemical/Makefile
-> > index fef63dd5bf92..41c264a229c0 100644
-> > --- a/drivers/iio/chemical/Makefile
-> > +++ b/drivers/iio/chemical/Makefile
-> > @@ -17,4 +17,5 @@ obj-$(CONFIG_SCD30_I2C) += scd30_i2c.o
-> >  obj-$(CONFIG_SCD30_SERIAL) += scd30_serial.o
-> >  obj-$(CONFIG_SENSIRION_SGP30)	+= sgp30.o
-> >  obj-$(CONFIG_SPS30) += sps30.o
-> > +obj-$(CONFIG_SPS30_I2C) += sps30_i2c.o
-> >  obj-$(CONFIG_VZ89X)		+= vz89x.o
-> > diff --git a/drivers/iio/chemical/sps30.c b/drivers/iio/chemical/sps30.c
-> > index 7486591588c3..d51314505115 100644
-> > --- a/drivers/iio/chemical/sps30.c
-> > +++ b/drivers/iio/chemical/sps30.c
-> > @@ -3,11 +3,8 @@
-> >   * Sensirion SPS30 particulate matter sensor driver
-> >   *
-> >   * Copyright (c) Tomasz Duszynski <tduszyns@gmail.com>
-> > - *
-> > - * I2C slave address: 0x69
-> >   */
-> >
-> > -#include <asm/unaligned.h>
-> >  #include <linux/crc8.h>
-> >  #include <linux/delay.h>
-> >  #include <linux/i2c.h>
-> > @@ -19,27 +16,14 @@
-> >  #include <linux/kernel.h>
-> >  #include <linux/module.h>
-> >
-> > -#define SPS30_CRC8_POLYNOMIAL 0x31
-> > -/* max number of bytes needed to store PM measurements or serial string */
-> > -#define SPS30_MAX_READ_SIZE 48
-> > +#include "sps30.h"
+> > +	help
+> > +	  This driver is for Texas Instruments ADS7142 Nanopower, Dual-Channel, Programmable Sensor Monitor.
+> 
+> Please keep to shorter lines in Kconfig files  < 80 chars preferred.
+
+Ok, you are right.
+
+> 
+> > +	  Say 'Y' here if you wish to use it.
 > > +
-> >  /* sensor measures reliably up to 3000 ug / m3 */
-> >  #define SPS30_MAX_PM 3000
-> >  /* minimum and maximum self cleaning periods in seconds */
-> >  #define SPS30_AUTO_CLEANING_PERIOD_MIN 0
-> >  #define SPS30_AUTO_CLEANING_PERIOD_MAX 604800
-> >
-> > -/* SPS30 commands */
-> > -#define SPS30_START_MEAS 0x0010
-> > -#define SPS30_STOP_MEAS 0x0104
-> > -#define SPS30_RESET 0xd304
-> > -#define SPS30_READ_DATA_READY_FLAG 0x0202
-> > -#define SPS30_READ_DATA 0x0300
-> > -#define SPS30_READ_SERIAL 0xd033
-> > -#define SPS30_START_FAN_CLEANING 0x5607
-> > -#define SPS30_AUTO_CLEANING_PERIOD 0x8004
-> > -/* not a sensor command per se, used only to distinguish write from read */
-> > -#define SPS30_READ_AUTO_CLEANING_PERIOD 0x8005
-> > -
-> >  enum {
-> >  	PM1,
-> >  	PM2P5,
-> > @@ -52,114 +36,9 @@ enum {
-> >  	MEASURING,
-> >  };
-> >
-> > -struct sps30_state {
-> > -	struct i2c_client *client;
-> > -	/*
-> > -	 * Guards against concurrent access to sensor registers.
-> > -	 * Must be held whenever sequence of commands is to be executed.
-> > -	 */
-> > -	struct mutex lock;
-> > -	int state;
-> > -};
-> > -
-> > -DECLARE_CRC8_TABLE(sps30_crc8_table);
-> > -
-> > -static int sps30_write_then_read(struct sps30_state *state, u8 *txbuf,
-> > -				 int txsize, u8 *rxbuf, int rxsize)
-> > -{
-> > -	int ret;
-> > -
-> > -	/*
-> > -	 * Sensor does not support repeated start so instead of
-> > -	 * sending two i2c messages in a row we just send one by one.
-> > -	 */
-> > -	ret = i2c_master_send(state->client, txbuf, txsize);
-> > -	if (ret != txsize)
-> > -		return ret < 0 ? ret : -EIO;
-> > -
-> > -	if (!rxbuf)
-> > -		return 0;
-> > -
-> > -	ret = i2c_master_recv(state->client, rxbuf, rxsize);
-> > -	if (ret != rxsize)
-> > -		return ret < 0 ? ret : -EIO;
-> > -
-> > -	return 0;
-> > -}
-> > -
-> > -static int sps30_do_cmd(struct sps30_state *state, u16 cmd, u8 *data, int size)
-> > -{
-> > -	/*
-> > -	 * Internally sensor stores measurements in a following manner:
-> > -	 *
-> > -	 * PM1: upper two bytes, crc8, lower two bytes, crc8
-> > -	 * PM2P5: upper two bytes, crc8, lower two bytes, crc8
-> > -	 * PM4: upper two bytes, crc8, lower two bytes, crc8
-> > -	 * PM10: upper two bytes, crc8, lower two bytes, crc8
-> > -	 *
-> > -	 * What follows next are number concentration measurements and
-> > -	 * typical particle size measurement which we omit.
-> > -	 */
-> > -	u8 buf[SPS30_MAX_READ_SIZE] = { cmd >> 8, cmd };
-> > -	int i, ret = 0;
-> > -
-> > -	switch (cmd) {
-> > -	case SPS30_START_MEAS:
-> > -		buf[2] = 0x03;
-> > -		buf[3] = 0x00;
-> > -		buf[4] = crc8(sps30_crc8_table, &buf[2], 2, CRC8_INIT_VALUE);
-> > -		ret = sps30_write_then_read(state, buf, 5, NULL, 0);
-> > -		break;
-> > -	case SPS30_STOP_MEAS:
-> > -	case SPS30_RESET:
-> > -	case SPS30_START_FAN_CLEANING:
-> > -		ret = sps30_write_then_read(state, buf, 2, NULL, 0);
-> > -		break;
-> > -	case SPS30_READ_AUTO_CLEANING_PERIOD:
-> > -		buf[0] = SPS30_AUTO_CLEANING_PERIOD >> 8;
-> > -		buf[1] = (u8)(SPS30_AUTO_CLEANING_PERIOD & 0xff);
-> > -		fallthrough;
-> > -	case SPS30_READ_DATA_READY_FLAG:
-> > -	case SPS30_READ_DATA:
-> > -	case SPS30_READ_SERIAL:
-> > -		/* every two data bytes are checksummed */
-> > -		size += size / 2;
-> > -		ret = sps30_write_then_read(state, buf, 2, buf, size);
-> > -		break;
-> > -	case SPS30_AUTO_CLEANING_PERIOD:
-> > -		buf[2] = data[0];
-> > -		buf[3] = data[1];
-> > -		buf[4] = crc8(sps30_crc8_table, &buf[2], 2, CRC8_INIT_VALUE);
-> > -		buf[5] = data[2];
-> > -		buf[6] = data[3];
-> > -		buf[7] = crc8(sps30_crc8_table, &buf[5], 2, CRC8_INIT_VALUE);
-> > -		ret = sps30_write_then_read(state, buf, 8, NULL, 0);
-> > -		break;
-> > -	}
-> > -
-> > -	if (ret)
-> > -		return ret;
-> > -
-> > -	/* validate received data and strip off crc bytes */
-> > -	for (i = 0; i < size; i += 3) {
-> > -		u8 crc = crc8(sps30_crc8_table, &buf[i], 2, CRC8_INIT_VALUE);
-> > -
-> > -		if (crc != buf[i + 2]) {
-> > -			dev_err(&state->client->dev,
-> > -				"data integrity check failed\n");
-> > -			return -EIO;
-> > -		}
-> > -
-> > -		*data++ = buf[i];
-> > -		*data++ = buf[i + 1];
-> > -	}
-> > -
-> > -	return 0;
-> > -}
-> > -
-> > -static s32 sps30_float_to_int_clamped(const u8 *fp)
-> > +static s32 sps30_float_to_int_clamped(__be32 *fp)
-> >  {
-> > -	int val = get_unaligned_be32(fp);
-> > +	int val = be32_to_cpup(fp);
-> >  	int mantissa = val & GENMASK(22, 0);
-> >  	/* this is fine since passed float is always non-negative */
-> >  	int exp = val >> 23;
-> > @@ -188,38 +67,35 @@ static s32 sps30_float_to_int_clamped(const u8 *fp)
-> >
-> >  static int sps30_do_meas(struct sps30_state *state, s32 *data, int size)
-> >  {
-> > -	int i, ret, tries = 5;
-> > -	u8 tmp[16];
-> > +	int i, ret;
-> >
-> >  	if (state->state == RESET) {
-> > -		ret = sps30_do_cmd(state, SPS30_START_MEAS, NULL, 0);
-> > +		ret = state->ops->start_meas(state);
-> >  		if (ret)
-> >  			return ret;
-> >
-> >  		state->state = MEASURING;
-> >  	}
-> >
-> > -	while (tries--) {
-> > -		ret = sps30_do_cmd(state, SPS30_READ_DATA_READY_FLAG, tmp, 2);
-> > -		if (ret)
-> > -			return -EIO;
-> > +	ret = state->ops->read_meas(state, (__be32 *)data, size);
-> > +	if (ret)
-> > +		return ret;
-> >
-> > -		/* new measurements ready to be read */
-> > -		if (tmp[1] == 1)
-> > -			break;
-> > +	for (i = 0; i < size; i++)
-> > +		data[i] = sps30_float_to_int_clamped((__be32 *)&data[i]);
-> >
-> > -		msleep_interruptible(300);
-> > -	}
-> > +	return 0;
-> > +}
-> >
-> > -	if (tries == -1)
-> > -		return -ETIMEDOUT;
-> > +static int sps30_do_reset(struct sps30_state *state)
-> > +{
-> > +	int ret;
-> >
-> > -	ret = sps30_do_cmd(state, SPS30_READ_DATA, tmp, sizeof(int) * size);
-> > +	ret = state->ops->reset(state);
-> >  	if (ret)
-> >  		return ret;
-> >
-> > -	for (i = 0; i < size; i++)
-> > -		data[i] = sps30_float_to_int_clamped(&tmp[4 * i]);
-> > +	state->state = RESET;
-> >
-> >  	return 0;
-> >  }
-> > @@ -310,24 +186,6 @@ static int sps30_read_raw(struct iio_dev *indio_dev,
-> >  	return -EINVAL;
-> >  }
-> >
-> > -static int sps30_do_cmd_reset(struct sps30_state *state)
-> > -{
-> > -	int ret;
-> > -
-> > -	ret = sps30_do_cmd(state, SPS30_RESET, NULL, 0);
-> > -	msleep(300);
-> > -	/*
-> > -	 * Power-on-reset causes sensor to produce some glitch on i2c bus and
-> > -	 * some controllers end up in error state. Recover simply by placing
-> > -	 * some data on the bus, for example STOP_MEAS command, which
-> > -	 * is NOP in this case.
-> > -	 */
-> > -	sps30_do_cmd(state, SPS30_STOP_MEAS, NULL, 0);
-> > -	state->state = RESET;
-> > -
-> > -	return ret;
-> > -}
-> > -
-> >  static ssize_t start_cleaning_store(struct device *dev,
-> >  				    struct device_attribute *attr,
-> >  				    const char *buf, size_t len)
-> > @@ -340,7 +198,7 @@ static ssize_t start_cleaning_store(struct device *dev,
-> >  		return -EINVAL;
-> >
-> >  	mutex_lock(&state->lock);
-> > -	ret = sps30_do_cmd(state, SPS30_START_FAN_CLEANING, NULL, 0);
-> > +	ret = state->ops->clean_fan(state);
-> >  	mutex_unlock(&state->lock);
-> >  	if (ret)
-> >  		return ret;
-> > @@ -349,31 +207,29 @@ static ssize_t start_cleaning_store(struct device *dev,
-> >  }
-> >
-> >  static ssize_t cleaning_period_show(struct device *dev,
-> > -				      struct device_attribute *attr,
-> > -				      char *buf)
-> > +				    struct device_attribute *attr,
-> > +				    char *buf)
-> >  {
-> >  	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> >  	struct sps30_state *state = iio_priv(indio_dev);
-> > -	u8 tmp[4];
-> > +	__be32 val;
-> >  	int ret;
-> >
-> >  	mutex_lock(&state->lock);
-> > -	ret = sps30_do_cmd(state, SPS30_READ_AUTO_CLEANING_PERIOD, tmp, 4);
-> > +	ret = state->ops->read_cleaning_period(state, &val);
-> >  	mutex_unlock(&state->lock);
-> >  	if (ret)
-> >  		return ret;
-> >
-> > -	return sprintf(buf, "%d\n", get_unaligned_be32(tmp));
-> > +	return sprintf(buf, "%d\n", be32_to_cpu(val));
-> >  }
-> >
-> > -static ssize_t cleaning_period_store(struct device *dev,
-> > -				       struct device_attribute *attr,
-> > -				       const char *buf, size_t len)
-> > +static ssize_t cleaning_period_store(struct device *dev, struct device_attribute *attr,
-> > +				     const char *buf, size_t len)
-> >  {
-> >  	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> >  	struct sps30_state *state = iio_priv(indio_dev);
-> >  	int val, ret;
-> > -	u8 tmp[4];
-> >
-> >  	if (kstrtoint(buf, 0, &val))
-> >  		return -EINVAL;
-> > @@ -382,10 +238,8 @@ static ssize_t cleaning_period_store(struct device *dev,
-> >  	    (val > SPS30_AUTO_CLEANING_PERIOD_MAX))
-> >  		return -EINVAL;
-> >
-> > -	put_unaligned_be32(val, tmp);
-> > -
-> >  	mutex_lock(&state->lock);
-> > -	ret = sps30_do_cmd(state, SPS30_AUTO_CLEANING_PERIOD, tmp, 0);
-> > +	ret = state->ops->write_cleaning_period(state, cpu_to_be32(val));
-> >  	if (ret) {
-> >  		mutex_unlock(&state->lock);
-> >  		return ret;
-> > @@ -397,7 +251,7 @@ static ssize_t cleaning_period_store(struct device *dev,
-> >  	 * sensor requires reset in order to return up to date self cleaning
-> >  	 * period
-> >  	 */
-> > -	ret = sps30_do_cmd_reset(state);
-> > +	ret = sps30_do_reset(state);
-> >  	if (ret)
-> >  		dev_warn(dev,
-> >  			 "period changed but reads will return the old value\n");
-> > @@ -460,90 +314,65 @@ static const struct iio_chan_spec sps30_channels[] = {
-> >  	IIO_CHAN_SOFT_TIMESTAMP(4),
-> >  };
-> >
-> > -static void sps30_stop_meas(void *data)
-> > +static void sps30_devm_stop_meas(void *data)
-> >  {
-> >  	struct sps30_state *state = data;
-> >
-> > -	sps30_do_cmd(state, SPS30_STOP_MEAS, NULL, 0);
-> > +	if (state->state == MEASURING)
-> > +		state->ops->stop_meas(state);
-> >  }
-> >
-> >  static const unsigned long sps30_scan_masks[] = { 0x0f, 0x00 };
-> >
-> > -static int sps30_probe(struct i2c_client *client)
-> > +int sps30_probe(struct device *dev, const char *name, void *priv, const struct sps30_ops *ops)
-> >  {
-> >  	struct iio_dev *indio_dev;
-> >  	struct sps30_state *state;
-> > -	u8 buf[32];
-> >  	int ret;
-> >
-> > -	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C))
-> > -		return -EOPNOTSUPP;
-> > -
-> > -	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*state));
-> > +	indio_dev = devm_iio_device_alloc(dev, sizeof(*state));
-> >  	if (!indio_dev)
-> >  		return -ENOMEM;
-> >
-> > +	dev_set_drvdata(dev, indio_dev);
-> > +
-> >  	state = iio_priv(indio_dev);
-> > -	i2c_set_clientdata(client, indio_dev);
-> > -	state->client = client;
-> > -	state->state = RESET;
-> > +	state->dev = dev;
-> > +	state->priv = priv;
-> > +	state->ops = ops;
-> > +	mutex_init(&state->lock);
-> > +
-> >  	indio_dev->info = &sps30_info;
-> > -	indio_dev->name = client->name;
-> > +	indio_dev->name = name;
-> >  	indio_dev->channels = sps30_channels;
-> >  	indio_dev->num_channels = ARRAY_SIZE(sps30_channels);
-> >  	indio_dev->modes = INDIO_DIRECT_MODE;
-> >  	indio_dev->available_scan_masks = sps30_scan_masks;
-> >
-> > -	mutex_init(&state->lock);
-> > -	crc8_populate_msb(sps30_crc8_table, SPS30_CRC8_POLYNOMIAL);
-> > -
-> > -	ret = sps30_do_cmd_reset(state);
-> > +	ret = sps30_do_reset(state);
-> >  	if (ret) {
-> > -		dev_err(&client->dev, "failed to reset device\n");
-> > +		dev_err(dev, "failed to reset device\n");
-> >  		return ret;
-> >  	}
-> >
-> > -	ret = sps30_do_cmd(state, SPS30_READ_SERIAL, buf, sizeof(buf));
-> > +	ret = state->ops->show_info(state);
-> >  	if (ret) {
-> > -		dev_err(&client->dev, "failed to read serial number\n");
-> > +		dev_err(dev, "failed to read device info\n");
-> >  		return ret;
-> >  	}
-> > -	/* returned serial number is already NUL terminated */
-> > -	dev_info(&client->dev, "serial number: %s\n", buf);
-> >
-> > -	ret = devm_add_action_or_reset(&client->dev, sps30_stop_meas, state);
-> > +	ret = devm_add_action_or_reset(dev, sps30_devm_stop_meas, state);
-> >  	if (ret)
-> >  		return ret;
-> >
-> > -	ret = devm_iio_triggered_buffer_setup(&client->dev, indio_dev, NULL,
-> > +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
-> >  					      sps30_trigger_handler, NULL);
-> >  	if (ret)
-> >  		return ret;
-> >
-> > -	return devm_iio_device_register(&client->dev, indio_dev);
-> > +	return devm_iio_device_register(dev, indio_dev);
-> >  }
-> > -
-> > -static const struct i2c_device_id sps30_id[] = {
-> > -	{ "sps30" },
-> > -	{ }
-> > -};
-> > -MODULE_DEVICE_TABLE(i2c, sps30_id);
-> > -
-> > -static const struct of_device_id sps30_of_match[] = {
-> > -	{ .compatible = "sensirion,sps30" },
-> > -	{ }
-> > -};
-> > -MODULE_DEVICE_TABLE(of, sps30_of_match);
-> > -
-> > -static struct i2c_driver sps30_driver = {
-> > -	.driver = {
-> > -		.name = "sps30",
-> > -		.of_match_table = sps30_of_match,
-> > -	},
-> > -	.id_table = sps30_id,
-> > -	.probe_new = sps30_probe,
-> > -};
-> > -module_i2c_driver(sps30_driver);
-> > +EXPORT_SYMBOL_GPL(sps30_probe);
-> >
-> >  MODULE_AUTHOR("Tomasz Duszynski <tduszyns@gmail.com>");
-> >  MODULE_DESCRIPTION("Sensirion SPS30 particulate matter sensor driver");
-> > diff --git a/drivers/iio/chemical/sps30.h b/drivers/iio/chemical/sps30.h
-> > new file mode 100644
-> > index 000000000000..a58ee43cf45d
-> > --- /dev/null
-> > +++ b/drivers/iio/chemical/sps30.h
-> > @@ -0,0 +1,35 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +#ifndef _SPS30_H
-> > +#define _SPS30_H
-> > +
-> > +#include <linux/types.h>
-> > +
-> > +struct sps30_state;
-> > +struct sps30_ops {
-> > +	int (*start_meas)(struct sps30_state *state);
-> > +	int (*stop_meas)(struct sps30_state *state);
-> > +	int (*read_meas)(struct sps30_state *state, __be32 *meas, size_t num);
-> > +	int (*reset)(struct sps30_state *state);
-> > +	int (*clean_fan)(struct sps30_state *state);
-> > +	int (*read_cleaning_period)(struct sps30_state *state, __be32 *period);
-> > +	int (*write_cleaning_period)(struct sps30_state *state, __be32 period);
-> > +	int (*show_info)(struct sps30_state *state);
-> > +};
-> > +
-> > +struct sps30_state {
-> > +	/* serialize access to the device */
-> > +	struct mutex lock;
-> > +	struct device *dev;
-> > +	int state;
-> > +	/*
-> > +	 * priv pointer is solely for serdev driver private data. We keep it
-> > +	 * here because driver_data inside dev has been already used for iio and
-> > +	 * struct serdev_device doesn't have one.
-> > +	 */
-> > +	void *priv;
-> > +	const struct sps30_ops *ops;
-> > +};
-> > +
-> > +int sps30_probe(struct device *dev, const char *name, void *priv, const struct sps30_ops *ops);
-> > +
-> > +#endif
-> > diff --git a/drivers/iio/chemical/sps30_i2c.c b/drivers/iio/chemical/sps30_i2c.c
-> > new file mode 100644
-> > index 000000000000..123ef23bf0eb
-> > --- /dev/null
-> > +++ b/drivers/iio/chemical/sps30_i2c.c
-> > @@ -0,0 +1,251 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * Sensirion SPS30 particulate matter sensor i2c driver
+> > +	  To compile this driver as a module, choose M here: the
+> > +	  module will be called ti-ads7142.
+> > + * Copyright (C) 2020 Jozsef Horvath <info@ministro.hu>
 > > + *
-> > + * Copyright (c) 2020 Tomasz Duszynski <tomasz.duszynski@octakon.com>
-> > + *
-> > + * I2C slave address: 0x69
-> > + */
-> > +#include <asm/unaligned.h>
-> > +#include <linux/crc8.h>
-> > +#include <linux/delay.h>
-> > +#include <linux/device.h>
-> > +#include <linux/errno.h>
-> > +#include <linux/i2c.h>
-> > +#include <linux/mod_devicetable.h>
-> > +#include <linux/module.h>
-> > +#include <linux/types.h>
-> > +
-> > +#include "sps30.h"
-> > +
-> > +#define SPS30_I2C_CRC8_POLYNOMIAL 0x31
-> > +/* max number of bytes needed to store PM measurements or serial string */
-> > +#define SPS30_I2C_MAX_BUF_SIZE 48
-> > +
-> > +DECLARE_CRC8_TABLE(sps30_i2c_crc8_table);
-> > +
-> > +#define SPS30_I2C_START_MEAS 0x0010
-> > +#define SPS30_I2C_STOP_MEAS 0x0104
-> > +#define SPS30_I2C_READ_MEAS 0x0300
-> > +#define SPS30_I2C_MEAS_READY 0x0202
-> > +#define SPS30_I2C_RESET 0xd304
-> > +#define SPS30_I2C_CLEAN_FAN 0x5607
-> > +#define SPS30_I2C_PERIOD 0x8004
-> > +#define SPS30_I2C_READ_SERIAL 0xd033
-> > +#define SPS30_I2C_READ_VERSION 0xd100
-> > +
-> > +static int sps30_i2c_xfer(struct sps30_state *state, unsigned char *txbuf, size_t txsize,
-> > +			  unsigned char *rxbuf, size_t rxsize)
-> > +{
-> > +	struct i2c_client *client = to_i2c_client(state->dev);
-> > +	int ret;
-> > +
-> > +	/*
-> > +	 * Sensor does not support repeated start so instead of
-> > +	 * sending two i2c messages in a row we just send one by one.
-> > +	 */
-> > +	ret = i2c_master_send(client, txbuf, txsize);
-> > +	if (ret < 0)
-> > +		return ret;
-> > +	if (ret != txsize)
-> > +		return -EIO;
-> > +
-> > +	if (!rxsize)
-> > +		return 0;
-> > +
-> > +	ret = i2c_master_recv(client, rxbuf, rxsize);
-> > +	if (ret < 0)
-> > +		return ret;
-> > +	if (ret != rxsize)
-> > +		return -EIO;
-> > +
-> > +	return 0;
+> blank line not needed, plus maybe 2021 given when you are posting it?
+> 
 > > +}
 > > +
-> > +static int sps30_i2c_command(struct sps30_state *state, u16 cmd, void *arg, size_t arg_size,
-> > +			     void *rsp, size_t rsp_size)
+> > +static int ti_ads7142_reg_read(const struct i2c_client *client, u8 reg,
+> > +			       u8 *data)
 > > +{
-> > +	/*
-> > +	 * Internally sensor stores measurements in a following manner:
-> > +	 *
-> > +	 * PM1: upper two bytes, crc8, lower two bytes, crc8
-> > +	 * PM2P5: upper two bytes, crc8, lower two bytes, crc8
-> > +	 * PM4: upper two bytes, crc8, lower two bytes, crc8
-> > +	 * PM10: upper two bytes, crc8, lower two bytes, crc8
-> > +	 *
-> > +	 * What follows next are number concentration measurements and
-> > +	 * typical particle size measurement which we omit.
-> > +	 */
-> > +	unsigned char buf[SPS30_I2C_MAX_BUF_SIZE];
-> > +	unsigned char *tmp;
-> > +	unsigned char crc;
-> > +	size_t i;
+> > +	struct i2c_msg msg[2];
+> Use c99 assignment to do this as something like.
+> 
+> 	struct i2c_msg msg[2] = {
+> 		{
+> 			.addr = client->addr,
+> 			.len = 2,
+> 			.buf = buf,
+> 		}, {
+> 			.addr = client->addr,
+> 			.flags = I2C_M_RD,
+> 			.len = 1,
+> 			.buf = data,
+> 		}
+> }	;
+> > +	u8 buf[2];
+> 
+> 	u8 buf[2] = { TI_..., reg };
+> 
+
+Ok, you are right
+
+> > +static int ti_ads7142_data_buffer_read(const struct i2c_client *client,
+> > +				       int length, void *data)
+> > +{
+> > +	struct i2c_msg msg;
 > > +	int ret;
 > > +
-> > +	put_unaligned_be16(cmd, buf);
-> > +	i = 2;
+> > +	msg.addr = client->addr;
+> > +	msg.flags = I2C_M_RD;
+> > +	msg.len = length;
+> > +	msg.buf = data;
 > > +
-> > +	if (rsp) {
-> > +		/* each two bytes are followed by a crc8 */
-> > +		rsp_size += rsp_size / 2;
-> > +	} else {
-> > +		tmp = arg;
+> > +	ret = i2c_transfer(client->adapter, &msg, 1);
+> 
+> Looks very similar to an i2c_smbus_read_block_data call though I suppose it
+> is a little odd to use mixture of smbus and non in one driver.
+> 
+
+I would use i2c_transfer, or i2c_master_recv could better.
+
+> > +static int ti_ads7142_soft_reset(const struct i2c_client *client)
+> > +{
+> > +	struct i2c_msg msg;
+> > +	u8 buf[2];
+> u8 buf[2] = { TI_ADS7142_OC_GENERAL, 0x06 }; is more compact for no loss
+> of readability.
+> 
+
+Ok, I'll do that
+
+> > +	int ret;
 > > +
-> > +		while (arg_size) {
-> > +			buf[i] = *tmp++;
-> > +			buf[i + 1] = *tmp++;
-> > +			buf[i + 2] = crc8(sps30_i2c_crc8_table, buf + i, 2, CRC8_INIT_VALUE);
-> > +			arg_size -= 2;
-> > +			i += 3;
+> > +	buf[0] = TI_ADS7142_OC_GENERAL;
+> > +	buf[1] = 0x06;
+> > +
+> > +	msg.addr = client->addr;
+> > +	msg.flags = 0;
+> > +	msg.len = 2;
+> > +	msg.buf = buf;
+> > +
+> > +	ret = i2c_transfer(client->adapter, &msg, 1);
+> 
+> i2c_master_send() or even better isn't this just an open coded
+> i2c_smbus_write_byte_data()
+
+You are right, I'll change to i2c_master_send
+
+> 
+> 
+> > +
+> > +	return ret >= 0 ? 0 : ret;
+> 
+> if ret == 0 then something went wrong and we should report that.
+
+You are right
+
+> > +				channel->data.value = value;
+> > +				*channel_collected |= 1 << channel_address;
+> > +			}
 > > +		}
-> > +	}
-> > +
-> > +	ret = sps30_i2c_xfer(state, buf, i, buf, rsp_size);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	/* validate received data and strip off crc bytes */
-> > +	tmp = rsp;
-> > +	for (i = 0; i < rsp_size; i += 3) {
-> > +		crc = crc8(sps30_i2c_crc8_table, buf + i, 2, CRC8_INIT_VALUE);
-> > +		if (crc != buf[i + 2]) {
-> > +			dev_err(state->dev, "data integrity check failed\n");
-> > +			return -EIO;
-> > +		}
-> > +
-> > +		*tmp++ = buf[i];
-> > +		*tmp++ = buf[i + 1];
-> > +	}
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int sps30_i2c_start_meas(struct sps30_state *state)
-> > +{
-> > +	/* request BE IEEE754 formatted data */
-> > +	unsigned char buf[] = { 0x03, 0x00 };
-> > +
-> > +	return sps30_i2c_command(state, SPS30_I2C_START_MEAS, buf, sizeof(buf), NULL, 0);
-> > +}
-> > +
-> > +static int sps30_i2c_stop_meas(struct sps30_state *state)
-> > +{
-> > +	return sps30_i2c_command(state, SPS30_I2C_STOP_MEAS, NULL, 0, NULL, 0);
-> > +}
-> > +
-> > +static int sps30_i2c_reset(struct sps30_state *state)
-> > +{
-> > +	int ret;
-> > +
-> > +	ret = sps30_i2c_command(state, SPS30_I2C_RESET, NULL, 0, NULL, 0);
-> > +	msleep(500);
-> > +	/*
-> > +	 * Power-on-reset causes sensor to produce some glitch on i2c bus and
-> > +	 * some controllers end up in error state. Recover simply by placing
-> > +	 * some data on the bus, for example STOP_MEAS command, which
-> > +	 * is NOP in this case.
-> > +	 */
-> > +	sps30_i2c_stop_meas(state);
+> > +	} while (--data_buffer_status);
 > > +
 > > +	return ret;
 > > +}
 > > +
-> > +static bool sps30_i2c_meas_ready(struct sps30_state *state)
+> > +static int ti_ads7142_do_work(struct iio_dev *indio_dev)
+> 
+> As mentioned below, these function needs a more informative name.
+
+I'll change it to ..._do_monitoring_work, and create something like
+ start_pre_alert_monitoring, start_post_alert_monitoring, etc
+
+> > +static int ti_ads7142_read_channel_manual(struct iio_dev *indio_dev,
+> > +					  int address, int *val)
 > > +{
-> > +	unsigned char buf[2];
+> > +	struct ti_ads7142_priv *priv = iio_priv(indio_dev);
+> > +	struct i2c_client *client = to_i2c_client(indio_dev->dev.parent);
+> > +	u16 data_buffer;
 > > +	int ret;
 > > +
-> > +	ret = sps30_i2c_command(state, SPS30_I2C_MEAS_READY, NULL, 0, buf, sizeof(buf));
-> > +	if (ret)
-> > +		return false;
-> > +
-> > +	return buf[1];
-> > +}
-> > +
-> > +static int sps30_i2c_read_meas(struct sps30_state *state, __be32 *meas, size_t num)
+> > +	if (address < 0 || address > 1)
+> 
+> I'm assuming there is no way we could get here with this not being true?
+> If so drop it.  If it is possible, then add a comment as it seems like
+> an odd thing to need to check.
+> 
+
+I'ts get called by iio_info.read_raw, so if it's not require to check, I'll remove it.
+
+> > +static int ti_ads7142_read_channel_monitor(struct iio_dev *indio_dev,
+> > +					   int address, int *val)
 > > +{
-> > +	/* measurements are ready within a second */
-> > +	if (msleep_interruptible(1000))
-> > +		return -EINTR;
-> > +
-> > +	if (!sps30_i2c_meas_ready(state))
-> > +		return -ETIMEDOUT;
-> > +
-> > +	return sps30_i2c_command(state, SPS30_I2C_READ_MEAS, NULL, 0, meas, sizeof(num) * num);
-> > +}
-> > +
-> > +static int sps30_i2c_clean_fan(struct sps30_state *state)
-> > +{
-> > +	return sps30_i2c_command(state, SPS30_I2C_CLEAN_FAN, NULL, 0, NULL, 0);
-> > +}
-> > +
-> > +static int sps30_i2c_read_cleaning_period(struct sps30_state *state, __be32 *period)
-> > +{
-> > +	return sps30_i2c_command(state, SPS30_I2C_PERIOD, NULL, 0, period, sizeof(*period));
-> > +}
-> > +
-> > +static int sps30_i2c_write_cleaning_period(struct sps30_state *state, __be32 period)
-> > +{
-> > +	return sps30_i2c_command(state, SPS30_I2C_PERIOD, &period, sizeof(period), NULL, 0);
-> > +}
-> > +
-> > +static int sps30_i2c_show_info(struct sps30_state *state)
-> > +{
-> > +	/* extra nul just in case */
-> > +	unsigned char buf[32 + 1] = { 0x00 };
+> > +	struct ti_ads7142_priv *priv = iio_priv(indio_dev);
+> > +	struct ti_ads7142_channel *channel;
 > > +	int ret;
 > > +
-> > +	ret = sps30_i2c_command(state, SPS30_I2C_READ_SERIAL, NULL, 0, buf, sizeof(buf) - 1);
+> > +	if (address < 0 || address > 1)
+> > +		return -EINVAL;
+> > +
+> > +	ret = ti_ads7142_address2channel(indio_dev, address, &channel);
 > > +	if (ret)
 > > +		return ret;
 > > +
-> > +	dev_info(state->dev, "serial number: %s\n", buf);
+> > +	mutex_lock(&priv->lock);
+> > +	if (!channel->data.status) {
+> > +		ret = -EAGAIN;
+> > +	} else {
+> > +		*val = channel->data.value;
+> > +		channel->data.status = 0;
+> > +		ret = 0;
+> 
+> ret already is 0 so no need to set it.
+
+You are right.
+
+> > +static irqreturn_t ti_ads7142_ist(int irq, void *dev_id)
+> > +{
+> > +	struct iio_dev *indio_dev = dev_id;
+> > +	struct i2c_client *client = to_i2c_client(indio_dev->dev.parent);
+> > +	struct ti_ads7142_priv *priv = iio_priv(indio_dev);
+> > +	struct ti_ads7142_channel *channel;
+> > +	u8 low_flags;
+> > +	u8 high_flags;
+> > +	u8 seq_st;
+> > +	int i;
+> > +	int ret;
+> > +	int channel_collected;
+> > +	s64 timestamp = iio_get_time_ns(indio_dev);
 > > +
-> > +	ret = sps30_i2c_command(state, SPS30_I2C_READ_VERSION, NULL, 0, buf, 2);
+> > +	mutex_lock(&priv->lock);
+> > +	if (!priv->config.monitoring_mode || !priv->monitor_pending) {
+> > +		mutex_unlock(&priv->lock);
+> > +		return IRQ_NONE;
+> > +	}
+> > +
+> > +	ret = ti_ads7142_reg_read(client, TI_ADS7142_SEQUENCE_STATUS, &seq_st);
+> > +	if (ret) {
+> > +		dev_err(indio_dev->dev.parent,
+> > +			"%s: SEQUENCE_STATUS reg read error(%i)",
+> > +			__func__, ret);
+> > +		goto final;
+> > +	}
+> > +
+> > +	if ((seq_st & TI_ADS7142_SEQUENCE_STATUS_SEQ_ERR_ST_MSK)
+> > +	    != TI_ADS7142_SEQUENCE_STATUS_SEQ_ENABLED) {
+> > +		dev_err(indio_dev->dev.parent,
+> > +			"%s: SEQUENCE_STATUS error(%i)",
+> > +			__func__, seq_st);
+> > +		goto final;
+> > +	}
+> > +
+> > +	ret = ti_ads7142_reg_read(client, TI_ADS7142_ALT_LOW_FLAGS,
+> > +				  &low_flags);
+> > +	if (ret) {
+> > +		dev_err(indio_dev->dev.parent,
+> > +			"%s: ALT_LOW_FLAGS reg read error(%i)",
+> > +			__func__, ret);
+> > +		goto final;
+> > +	}
+> > +
+> > +	ret = ti_ads7142_reg_read(client, TI_ADS7142_ALT_HIGH_FLAGS,
+> > +				  &high_flags);
+> > +	if (ret) {
+> > +		dev_err(indio_dev->dev.parent,
+> > +			"%s: ALT_HIGH_FLAGS reg read error(%i)",
+> > +			__func__, ret);
+> > +		goto final;
+> > +	}
+> > +
+> > +	channel_collected = 0;
+> > +	ret = ti_ads7142_collect_channel_data(indio_dev, &channel_collected);
+> > +	if (ret)
+> > +		goto final;
+> > +
+> > +	if (!channel_collected)
+> > +		goto final;
+> > +
+> > +	for (i = 0; i < priv->channel_count; i++) {
+> > +		channel = &priv->channels[i];
+> > +		if (!(channel_collected & (1 << channel->channel)))
+> > +			continue;
+> 
+> Perhaps use a for_each_bit_set(i, channel_collected) to simplify this.
+> 
+
+I'll check it. Thank you.
+
+> > +static int ti_ads7142_read_raw(struct iio_dev *indio_dev,
+> > +			       struct iio_chan_spec const *chan,
+> > +			       int *val, int *val2, long info)
+> > +{
+> > +	struct ti_ads7142_priv *priv = iio_priv(indio_dev);
+> > +	int ret;
+> > +
+> > +	switch (info) {
+> > +	case IIO_CHAN_INFO_RAW:
+> > +		ret = ti_ads7142_read_channel(indio_dev, chan->address, val);
+> > +		if (!ret)
+> 
+> 		if (ret)
+> 			return ret;
+> 
+> 		return IIO_VAL_INT;
+> 
+> Always have error cases out of line.  That consistency makes
+> it easier to review.
+> 
+
+I dont like 'return' from 'case', but I can live with this. I'll change it.
+
+> > +static int ti_ads7142_write_raw(struct iio_dev *indio_dev,
+> > +				struct iio_chan_spec const *chan,
+> > +				int val, int val2, long mask)
+> > +{
+> > +	struct ti_ads7142_priv *priv = iio_priv(indio_dev);
+> > +	int ret;
+> > +
+> > +	switch (mask) {
+> > +	case IIO_CHAN_INFO_SAMP_FREQ:
+> > +		priv->config.n_clk = val;
+> > +		if (priv->config.monitoring_mode)
+> > +			ret = ti_ads7142_do_work(indio_dev);
+> return ti_...
+> 
+> Early returns almost always easier to read.
+> Note applies to lots of stuff above.
+>
+
+Ok, I'll fix it all
+ 
+> > +static int ti_ads7142_read_event_config(struct iio_dev *indio_dev,
+> > +					const struct iio_chan_spec *chan,
+> > +					enum iio_event_type type,
+> > +					enum iio_event_direction dir)
+> > +{
+> > +	struct ti_ads7142_priv *priv = iio_priv(indio_dev);
+> > +	struct ti_ads7142_channel *channel;
+> > +	int ret;
+> > +
+> > +	if (!priv->config.monitoring_mode)
+> > +		return -EINVAL;
+> > +
+> > +	if (type != IIO_EV_TYPE_THRESH)
+> > +		return -EINVAL;
+> > +
+> > +	ret = ti_ads7142_address2channel(indio_dev, chan->address,
+> > +					 &channel);
 > > +	if (ret)
 > > +		return ret;
 > > +
-> > +	dev_info(state->dev, "fw version: %u.%u\n", buf[0], buf[1]);
+> > +	if (dir == IIO_EV_DIR_RISING)
+> > +		ret = channel->config.alert_high ? 1 : 0;
+> 
+> Not fine using ret = channel->config.alert_high; directly?
+> 
+
+alert_high is bool, ret is int.
+ I know, the 'true' value is 1, and its autmatically casted,
+ but who knows the future...I would keep this, if possible.
+
+> > +static int ti_ads7142_write_event_config(struct iio_dev *indio_dev,
+> > +					 const struct iio_chan_spec *chan,
+> > +					 enum iio_event_type type,
+> > +					 enum iio_event_direction dir,
+> > +					 int state)
+> > +{
+> > +	struct ti_ads7142_priv *priv = iio_priv(indio_dev);
+> > +	struct ti_ads7142_channel *channel;
+> > +	bool have_to_do = false;
+> > +	int ret;
+> > +
+> > +	if (!priv->config.monitoring_mode)
+> > +		return -EINVAL;
+> > +
+> > +	if (type != IIO_EV_TYPE_THRESH)
+> > +		return -EINVAL;
+> > +
+> > +	ret = ti_ads7142_address2channel(indio_dev, chan->address,
+> > +					 &channel);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	mutex_lock(&priv->lock);
+> > +	if (dir == IIO_EV_DIR_RISING) {
+> > +		if (channel->config.alert_high != state) {
+> > +			channel->config.alert_high = state;
+> > +			have_to_do = true;
+> > +		}
+> > +	} else {
+> > +		if (channel->config.alert_low != state) {
+> > +			channel->config.alert_low = state;
+> > +			have_to_do = true;
+> > +		}
+> > +	}
+> > +	mutex_unlock(&priv->lock);
+> > +
+> > +	if (have_to_do)
+> > +		ret = ti_ads7142_do_work(indio_dev);
+> that's going to need a better name as I have no idea what _do_work implies.
+> 
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +static const struct iio_info ti_ads7142_iio_info = {
+> 
+> If interrupt is going to be optional, pick between two versions of struct iio_info
+> so that we don't provide callbacks for the case where we have no interrupts.
+> 
+
+Ok, I'll do that.
+
+> > +	.read_raw		= ti_ads7142_read_raw,
+> > +	.write_raw		= ti_ads7142_write_raw,
+> > +	.read_event_value	= ti_ads7142_read_event_value,
+> > +	.write_event_value	= ti_ads7142_write_event_value,
+> > +	.read_event_config	= ti_ads7142_read_event_config,
+> > +	.write_event_config	= ti_ads7142_write_event_config,
+> > +};
+> > +
+> > +static int ti_ads7142_parse_channel_config_of(struct device *dev,
+> > +					      struct iio_dev *indio_dev)
+> > +{
+> > +	struct ti_ads7142_priv *priv = iio_priv(indio_dev);
+> > +	struct device_node *channel_node;
+> > +	struct iio_chan_spec *iio_channels;
+> > +	struct iio_chan_spec *iio_channel;
+> > +	struct ti_ads7142_channel *ads_channel;
+> > +	int channel_index = 0;
+> > +	int ret;
+> > +
+> > +	priv->channel_count = of_get_available_child_count(dev->of_node);
+> > +	if (!priv->channel_count) {
+> > +		dev_err(dev, "dt: there is no channel definition");
+> > +		return -ENODEV;
+> > +	}
+> > +
+> > +	priv->channels = devm_kcalloc(dev, priv->channel_count,
+> > +				      sizeof(*priv->channels),
+> > +				      GFP_KERNEL);
+> > +	if (!priv->channels)
+> > +		return -ENOMEM;
+> > +
+> > +	indio_dev->num_channels = priv->channel_count;
+> 
+> Why do you need that in two places?
+> 
+
+You are right this is redundancy.
+
+> > +	iio_channels = devm_kcalloc(dev, priv->channel_count,
+> > +				    sizeof(*iio_channels),
+> > +				    GFP_KERNEL);
+> > +	if (!iio_channels)
+> > +		return -ENOMEM;
+> > +
+> > +	indio_dev->channels = iio_channels;
+> > +
+> > +	for_each_available_child_of_node(dev->of_node, channel_node) {
+> > +		ads_channel = &priv->channels[channel_index];
+> > +
+> > +		ret = of_property_read_u32(channel_node, "reg",
+> > +					   &ads_channel->channel);
+> > +		if (ret)
+> > +			goto err;
+> > +
+> > +		iio_channel = &iio_channels[channel_index];
+> > +		iio_channel->type = IIO_VOLTAGE;
+> > +		iio_channel->indexed = 1;
+> > +		iio_channel->info_mask_separate = BIT(IIO_CHAN_INFO_RAW)
+> > +						  | BIT(IIO_CHAN_INFO_SAMP_FREQ);
+> > +		if (!IS_ERR(priv->vref))
+> Ah.  This somewhat explains the optional regulator.
+> We have done this in a few old drivers because they initially were missing vref support
+> and we couldn't break existing device tree bindings.  I'm not keen to see it
+> done for a new driver.  Just make the vref-supply required.
+> If it's a fixed voltage that is always on, then the device tree additions are
+> trivial anyway.
+> 
+
+Ok, I'll do that.
+
+> > +			iio_channel->info_mask_separate |= BIT(IIO_CHAN_INFO_SCALE);
+> > +		iio_channel->scan_type.sign = 'u';
+> > +		iio_channel->scan_type.realbits = 12;
+> > +		iio_channel->scan_type.storagebits = 16;
+> > +		iio_channel->scan_type.shift = 0;
+> 
+> No need to specify obvious default shift of 0.  Rely on the zeroed allocation.
+> 
+> > +		iio_channel->scan_type.endianness = IIO_CPU;
+> > +		iio_channel->address = ads_channel->channel;
+> > +		iio_channel->scan_index = ads_channel->channel;
+> > +		iio_channel->channel = ads_channel->channel;
+> > +		if (priv->config.monitoring_mode) {
+> > +			iio_channel->event_spec = ti_ads7142_events;
+> > +			iio_channel->num_event_specs = ARRAY_SIZE(ti_ads7142_events);
+> > +		}
+> > +
+> > +		ads_channel->config.high_threshold = TI_ADS7142_THRESHOLD_MSK;
+> > +		ret = of_property_read_u32(channel_node, "ti,threshold-rising",
+> 
+> These are usually considered a matter of userspace policy only.   Will need a strong
+> argument for them to be in DT.
+
+Ok, I'll remove this from dt.
+
+> 
+> > +					   &ads_channel->config.high_threshold);
+> > +		ads_channel->config.alert_high = !ret;
+> > +		ret = of_property_read_u32(channel_node, "ti,threshold-falling",
+> > +					   &ads_channel->config.low_threshold);
+> > +		ads_channel->config.alert_low = !ret;
+> > +		ret = of_property_read_u32(channel_node, "ti,hysteresis",
+> > +					   &ads_channel->config.hysteresis);
+> > +		channel_index++;
+> > +	}
+> > +
+> > +	return 0;
+> > +err:
+> > +	of_node_put(channel_node);
+> > +	return ret;
+> > +}
+> > +
+> > +static int ti_ads7142_parse_config_of(struct device *dev,
+> > +				      struct iio_dev *indio_dev)
+> > +{
+> > +	struct ti_ads7142_priv *priv = iio_priv(indio_dev);
+> > +
+> > +	priv->config.osc_sel = of_property_read_bool(dev->of_node,
+> > +						     "ti,osc-sel");
+> 
+> Please use generic device property access functions where possible.
+> That basically gives us support on non OF based platforms for free.
+
+Could you please explain this, I dont understand.
+
+> 
+> > +	of_property_read_u32(dev->of_node, "ti,n-clk", &priv->config.n_clk);
+> > +	priv->config.monitoring_mode = of_property_read_bool(dev->of_node,
+> > +							     "ti,monitoring-mode");
+> > +
+> > +	return ti_ads7142_parse_channel_config_of(dev, indio_dev);
+> > +}
+> > +
+> > +static int ti_ads7142_probe(struct i2c_client *client,
+> > +			    const struct i2c_device_id *id)
+> > +{
+> > +	struct iio_dev *indio_dev;
+> > +	struct ti_ads7142_priv *priv;
+> > +	int ret;
+> > +
+> > +	ret = ti_ads7142_soft_reset(client);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*priv));
+> > +	if (!indio_dev)
+> > +		return -ENOMEM;
+> > +
+> > +	priv = iio_priv(indio_dev);
+> > +	i2c_set_clientdata(client, indio_dev);
+> > +
+> > +	indio_dev->dev.parent = &client->dev;
+> > +	indio_dev->dev.of_node = client->dev.of_node;
+> 
+> Both of the above are set by the iio core, so no need to set her.
+
+Ok, thank you, I'll remove it.
+
+>  
+> > +	indio_dev->name = TI_ADS7142_NAME;
+> > +	indio_dev->modes = INDIO_DIRECT_MODE;
+> > +	indio_dev->info = &ti_ads7142_iio_info;
+> > +
+> > +	mutex_init(&priv->lock);
+> > +
+> > +	priv->vref = devm_regulator_get_optional(&client->dev, "vref");
+> 
+> There isn't a vref pin on the device.  Vref is used in the datasheet
+> but the pinout makes it clear it is actually avdd which is definitely
+> not optional.
+
+You are right, avdd is a better name.
+
+> 
+> > +	if (!IS_ERR(priv->vref)) {
+> > +		ret = regulator_enable(priv->vref);
+> > +		if (ret)
+> > +			goto err;
+> As you have simple handling of power in here, I would definitely look
+> to use managed calls to disable the regulators.
+> 
+> 	devm_add_action_or_reset() is usual way of doing this.
+> 
+> If nothing else it will ensure that the unwind on removal is the mirror
+> image of the setup on probe() and hence it is much easier to avoid any
+> subtle race conditions.
+
+Very good suggestion, thank you.
+
+> 
+> > +	}
+> > +
+> > +	priv->power = devm_regulator_get_optional(&client->dev, "power");
+> 
+> dvdd?  Not sure what else power could be.  Note that you should only
+> use _get_optional() for regulators that really optional and may not be
+> connected.  For cases where you simply can't control them and they aren't
+> specified in the dts then devm_regulator_get() will supply a stub regulator
+> that is always on.
+>
+
+Ok, I'll change it to dvdd and required property
+ 
+> 
+> > +	if (!IS_ERR(priv->power)) {
+> > +		ret = regulator_enable(priv->power);
+> > +		if (ret)
+> > +			goto err_regulator;
+> > +	}
+> > +
+> > +	ret = ti_ads7142_parse_config_of(&client->dev, indio_dev);
+> > +	if (ret)
+> > +		goto err_regulator;
+> > +
+> > +	if (!client->irq && priv->config.monitoring_mode) {
+> 
+> Given you can check this before you have to do any unwinding, move it
+> earlier.
+
+Ok, I'll do this.
+
+> 
+> > +		ret = -EINVAL;
+> > +		dev_err(&client->dev, "Interrupt not specified\n");
+> > +		goto err_regulator;
+> > +	}
+> > +	if (client->irq && priv->config.monitoring_mode) {
+> > +		ret = devm_request_threaded_irq(&client->dev, client->irq,
+> > +						NULL, ti_ads7142_ist,
+> > +						IRQF_ONESHOT | IRQF_SHARED,
+> > +						dev_name(&client->dev),
+> > +						indio_dev);
+> > +		if (ret) {
+> > +			dev_err(&client->dev, "Unable to request IRQ %i",
+> > +				client->irq);
+> > +			goto err_regulator;
+> > +		}
+> > +	}
+> > +
+> > +	ret = iio_device_register(indio_dev);
+> > +	if (ret) {
+> > +		dev_err(&client->dev, "Failed to register iio device");
+> > +		goto err_regulator;
+> > +	}
+> > +
+> > +	ret = ti_ads7142_do_work(indio_dev);
+> 
+> As iio_device_register() is responsible for exposing userspace interfaces it
+> is very rarely a good idea to do anything after it in probe()
+> (some exceptions for runtime pm autosuspend setup as that can kick in later)
+> 
+
+Ok, I'll move it earlier.
+
+> > +	if (!ret) {
+> > +		dev_info(&client->dev, "%s is a %s device at address 0x%X",
+> > +			 dev_name(&indio_dev->dev), indio_dev->name,
+> > +			 client->addr);
+> > +		return ret;
+> Always have the error path out of line as it is much more consistent
+> with what reviewers are expecting
+> 
+> 	if (ret)
+> 		goto error_unregister()
+> 
+> 	return 0;
+> 
+> > +	}
+> > +
+> > +	iio_device_unregister(indio_dev);
+> 
+> 
+> 
+> > +
+> > +err_regulator:
+> > +	if (!IS_ERR(priv->vref))
+> > +		regulator_disable(priv->vref);
+> > +	if (!IS_ERR(priv->power))
+> > +		regulator_disable(priv->power);
+> > +err:
+> > +	mutex_destroy(&priv->lock);
+> We rarely bother with mutex_destroy() in paths where the driver is being
+> removed as it is only useful for debugging use of mutexes after they have
+> been removed.  That doesn't happen in these paths so it tends to just be
+> noise to have a mutex_destroy().  This function is useful if you have a
+> mutex inside something with a different lifespan from the device and
+> like to enable mutex debugging.
+> 
+
+Ok, I'll remove it, thank you for the explanation.
+
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +static int ti_ads7142_remove(struct i2c_client *client)
+> > +{
+> > +	struct iio_dev *indio_dev = i2c_get_clientdata(client);
+> > +	struct ti_ads7142_priv *priv = iio_priv(indio_dev);
+> > +
+> > +	if (!IS_ERR(priv->vref))
+> > +		regulator_disable(priv->vref);
+> If you'd not used _optional() above you could do these without worrying
+> about whether the regulator was  there or not.
+> 
+> > +	if (!IS_ERR(priv->power))
+> > +		regulator_disable(priv->power);
+> > +	mutex_destroy(&priv->lock);
+> > +	iio_device_unregister(indio_dev);
+> 
+> _remove should always look like the unwinding of probe - so
+> I should be able to match items in reverse order.
+
+Ok, I check it.
+
+Thank you for the review and suggestions.
+
+Best regards
+Jozsef
+
+> 
 > > +
 > > +	return 0;
 > > +}
 > > +
-> > +static const struct sps30_ops sps30_i2c_ops = {
-> > +	.start_meas = sps30_i2c_start_meas,
-> > +	.stop_meas = sps30_i2c_stop_meas,
-> > +	.read_meas = sps30_i2c_read_meas,
-> > +	.reset = sps30_i2c_reset,
-> > +	.clean_fan = sps30_i2c_clean_fan,
-> > +	.read_cleaning_period = sps30_i2c_read_cleaning_period,
-> > +	.write_cleaning_period = sps30_i2c_write_cleaning_period,
-> > +	.show_info = sps30_i2c_show_info,
-> > +};
+> > +module_i2c_driver(ti_ads7142_driver);
 > > +
-> > +static int sps30_i2c_probe(struct i2c_client *client)
-> > +{
-> > +	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C))
-> > +		return -EOPNOTSUPP;
-> > +
-> > +	crc8_populate_msb(sps30_i2c_crc8_table, SPS30_I2C_CRC8_POLYNOMIAL);
-> > +
-> > +	return sps30_probe(&client->dev, client->name, NULL, &sps30_i2c_ops);
-> > +}
-> > +
-> > +static const struct of_device_id sps30_i2c_of_match[] = {
-> > +	{ .compatible = "sensirion,sps30" },
->
-> This drops the i2c_device_id table.   I personally don't mind doing that, but
-> it will cause trouble for anyone trying to use greybus or similar with this part
-> (as IIRC they still rely on that id table).
->
-> > +	{ }
-> > +};
-> > +MODULE_DEVICE_TABLE(of, sps30_i2c_of_match);
-> > +
-> > +static struct i2c_driver sps30_i2c_driver = {
-> > +	.driver = {
-> > +		.name = KBUILD_MODNAME,
-> > +		.of_match_table = sps30_i2c_of_match,
-> > +	},
-> > +	.probe_new = sps30_i2c_probe,
-> > +};
-> > +module_i2c_driver(sps30_i2c_driver);
-> > +
-> > +MODULE_AUTHOR("Tomasz Duszynski <tomasz.duszynski@octakon.com>");
-> > +MODULE_DESCRIPTION("Sensirion SPS30 particulate matter sensor i2c driver");
-> > +MODULE_LICENSE("GPL v2");
->
+> > +MODULE_LICENSE("GPL");
+> > +MODULE_AUTHOR("Jozsef Horvath <info@ministro.hu>");
+> > +MODULE_DESCRIPTION("Texas Instruments TI_ADS7142 ADC driver");
+> 
+> 
+

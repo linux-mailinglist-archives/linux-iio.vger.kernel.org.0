@@ -2,80 +2,66 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 97B8A370BB4
-	for <lists+linux-iio@lfdr.de>; Sun,  2 May 2021 15:48:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E56C370DA7
+	for <lists+linux-iio@lfdr.de>; Sun,  2 May 2021 17:36:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232224AbhEBNtq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 May 2021 09:49:46 -0400
-Received: from smtpout1.mo3004.mail-out.ovh.net ([79.137.123.219]:59287 "EHLO
-        smtpout1.mo3004.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232151AbhEBNtq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 May 2021 09:49:46 -0400
-Received: from pro2.mail.ovh.net (unknown [10.109.138.51])
-        by mo3004.mail-out.ovh.net (Postfix) with ESMTPS id 7887423CFEA;
-        Sun,  2 May 2021 13:48:53 +0000 (UTC)
-Received: from arch.lan (89.70.221.198) by DAG2EX1.emp2.local (172.16.2.11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Sun, 2 May 2021
- 15:48:52 +0200
-From:   Tomasz Duszynski <tomasz.duszynski@octakon.com>
-To:     <linux-iio@vger.kernel.org>
-CC:     <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <jic23@kernel.org>, <lars@metafoo.de>, <robh+dt@kernel.org>,
-        Tomasz Duszynski <tomasz.duszynski@octakon.com>
-Subject: [PATCH v2 3/3] dt-bindings: iio: chemical: sps30: update binding with serial example
-Date:   Sun, 2 May 2021 15:44:31 +0200
-Message-ID: <20210502134431.42647-4-tomasz.duszynski@octakon.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210502134431.42647-1-tomasz.duszynski@octakon.com>
-References: <20210502134431.42647-1-tomasz.duszynski@octakon.com>
+        id S231130AbhEBPh1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 May 2021 11:37:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33284 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230110AbhEBPh1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 2 May 2021 11:37:27 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8C94661175;
+        Sun,  2 May 2021 15:36:34 +0000 (UTC)
+Date:   Sun, 2 May 2021 16:37:24 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [RFC PATCH 1/4] iio: core: Introduce
+ iio_push_to_buffers_with_ts_na() for non aligned case.
+Message-ID: <20210502163724.0a943f6e@jic23-huawei>
+In-Reply-To: <CAHp75VdNiEGLC44AycNTJ7_oaibtshJHaFFcq+UKBJ3XtAcp+w@mail.gmail.com>
+References: <20210501172515.513486-1-jic23@kernel.org>
+        <20210501172515.513486-2-jic23@kernel.org>
+        <CAHp75VdRTh6Pzj8yy6sDQqfhfAJj1nGZ79UmzBckNR4b1h5sog@mail.gmail.com>
+        <CAHp75VdNiEGLC44AycNTJ7_oaibtshJHaFFcq+UKBJ3XtAcp+w@mail.gmail.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [89.70.221.198]
-X-ClientProxiedBy: DAG4EX1.emp2.local (172.16.2.31) To DAG2EX1.emp2.local
- (172.16.2.11)
-X-Ovh-Tracer-Id: 12521414339802323991
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrvdefuddguddvtdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecunecujfgurhephffvufffkffojghfggfgtghisehtkeertdertddtnecuhfhrohhmpefvohhmrghsiicuffhushiihihnshhkihcuoehtohhmrghsiidrughushiihihnshhkihesohgtthgrkhhonhdrtghomheqnecuggftrfgrthhtvghrnhepveejvdekueeiheevgeegudduvdfhudfhhfehudefjeduheekuefhgfehudffuddunecukfhppedtrddtrddtrddtpdekledrjedtrddvvddurdduleeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhrohdvrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepthhomhgrshiirdguuhhsiiihnhhskhhisehotghtrghkohhnrdgtohhmpdhrtghpthhtoheprhhosghhodgutheskhgvrhhnvghlrdhorhhg
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-sps30 has gained support for serial communication so add example to the
-binding file. While at it remove reg property from list of required
-properties because it's no-op in case of serial communication.
+On Sat, 1 May 2021 22:27:22 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-Signed-off-by: Tomasz Duszynski <tomasz.duszynski@octakon.com>
----
- .../devicetree/bindings/iio/chemical/sensirion,sps30.yaml  | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+> On Sat, May 1, 2021 at 10:25 PM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
+> > On Sat, May 1, 2021 at 8:28 PM Jonathan Cameron <jic23@kernel.org> wrote:  
+> 
+> ...
+> 
+> > > +               iio_dev_opaque->bounce_buffer =
+> > > +                       devm_krealloc(&indio_dev->dev,
+> > > +                                     iio_dev_opaque->bounce_buffer,  
+> >
+> > Oh la la, foo = realloc(foo, ...) is 101 type of mistakes.
+> > Please, don't do this.
+> >  
+> > > +                                     indio_dev->scan_bytes, GFP_KERNEL);
+> > > +               if (!iio_dev_opaque)  
+> 
+> And this check...
+Yup. Thoroughly broken.  Hohum, but basic idea conveyed however bad the rfc was :(
 
-diff --git a/Documentation/devicetree/bindings/iio/chemical/sensirion,sps30.yaml b/Documentation/devicetree/bindings/iio/chemical/sensirion,sps30.yaml
-index a93d1972a5c2..967500b7e773 100644
---- a/Documentation/devicetree/bindings/iio/chemical/sensirion,sps30.yaml
-+++ b/Documentation/devicetree/bindings/iio/chemical/sensirion,sps30.yaml
-@@ -22,7 +22,6 @@ properties:
- 
- required:
-   - compatible
--  - reg
- 
- additionalProperties: false
- 
-@@ -37,5 +36,11 @@ examples:
-         reg = <0x69>;
-       };
-     };
-+  - |
-+    serial {
-+      air-pollution-sensor {
-+        compatible = "sensirion,sps30";
-+      };
-+    };
- 
- ...
--- 
-2.31.1
+
+> 
+> > > +                       return -ENOMEM;
+> > > +       }  
+> 
 

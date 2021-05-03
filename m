@@ -2,111 +2,162 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 355323716D4
-	for <lists+linux-iio@lfdr.de>; Mon,  3 May 2021 16:44:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C79C3716DF
+	for <lists+linux-iio@lfdr.de>; Mon,  3 May 2021 16:45:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229649AbhECOov (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 3 May 2021 10:44:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52448 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229616AbhECOov (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 May 2021 10:44:51 -0400
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 853BBC061761
-        for <linux-iio@vger.kernel.org>; Mon,  3 May 2021 07:43:57 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id a4so8270487ejk.1
-        for <linux-iio@vger.kernel.org>; Mon, 03 May 2021 07:43:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=deviqon.com; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=K+sSoI8mYAtclTc9ch+HKJwJxzZIGx+EMq0xg4jwGJY=;
-        b=lcMg1GRQK96CSLu9muYJ/38tJfNVTje46sVXV9uLDLW+WcllEPA0D1aj/1UEnTPqgt
-         KGRWoSR4BisAYbjYErXdN2bIuPbIia5aCZd8hjcURs32Nj/WqjA4bu/oZo4PY0n+trn/
-         yusgEeJqq3BKieXfp/qHxFoA1MmTiRRo3dij9wudixzpfghDJHhiI7gEkR2aYn4gspLC
-         Ho0+eKxdqoUXlpMRQbGR6e8jMUyOsecJWsgeHYLGGaDggzDCiEjT2z4atmpfdJilboJP
-         MA9DHMtRfyOnf96sskvuMcdkeBE9LX+YavPYfBVTWQRIs/HpFOH0dj3S06wvS0FMY6Fz
-         2yYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=K+sSoI8mYAtclTc9ch+HKJwJxzZIGx+EMq0xg4jwGJY=;
-        b=NXiAdMXcxZt1en5L/1E4TeHt3zPwQ8iN/245DkSKMw1kmQeWeod4K3TofWj1EpgtqA
-         yIRDvujEhAVE+3X9JkUGL93VXxukptCz9l+VukJPM5ueYKXf0NnedcRTu8lhdYqPPm3O
-         IUsfI+wASw0m3TpzjL0J0XnM3K9Jkv3tNGTJw29NYACVYqk98wQQeczw6HJNhnVXzJi6
-         eppaDdpKizMB1OU+AOzm6c0u/ENdx59QCYG7qZOka1RAtQ/+tFrA0brXsHn1FhSZyqqZ
-         /dex+jFE4QhrMdNCAmORwEM8WzUlcxCkWpkfv+3NpuAVM45a6F7TNA3a2ncFcUWbhYiK
-         136g==
-X-Gm-Message-State: AOAM533boqPCn8ZyPzfeDB4pSyNX6EmiX+XEzmIlaYdJ9cbjxliH9yN9
-        1W9Xj25fcl03vn7UB2qUGNkVrQwO6GaVmA==
-X-Google-Smtp-Source: ABdhPJzz8YSG1ci1mdLP9jB4YLfscuJhMz3kr/0Wr1oKGOdWmN24W8jyr6/Hcqis9MIkLZIU6GdSDw==
-X-Received: by 2002:a17:906:a10e:: with SMTP id t14mr16892149ejy.103.1620053035841;
-        Mon, 03 May 2021 07:43:55 -0700 (PDT)
-Received: from neptune.. ([188.27.131.122])
-        by smtp.gmail.com with ESMTPSA id e19sm2005867edv.10.2021.05.03.07.43.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 May 2021 07:43:55 -0700 (PDT)
-From:   Alexandru Ardelean <aardelean@deviqon.com>
-To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     jic23@kernel.org, lars@metafoo.de,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Nuno Sa <nuno.sa@analog.com>
-Subject: [PATCH] iio: core: return ENODEV if ioctl is unknown
-Date:   Mon,  3 May 2021 17:43:50 +0300
-Message-Id: <20210503144350.7496-1-aardelean@deviqon.com>
-X-Mailer: git-send-email 2.31.1
+        id S229844AbhECOqC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 3 May 2021 10:46:02 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:43078 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229904AbhECOqA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 May 2021 10:46:00 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 143EiLvb002715;
+        Mon, 3 May 2021 14:44:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=F5Gq3RM9SXS/0D9/JJvhMbztWLCjlhpTmu0PVituFkg=;
+ b=n5SZwk9VPKMb6VRhgWH8tRyrPDOriKliiP9LQhMCHCIkXsRis+xK1qJ1G8Kxs18EXzql
+ 6HqqTyM+xVwhlxekyd4jxS6Z7WQGv1gjgYESfqz43qYutP/RzTCvMuejADVUmQCnUPRh
+ vnt5ocMiFR8SsWqnmQkoq1Rs7dZBFJzwY9rcvZovI9SxW1RjDweZjM8ijCA71FJO+bgG
+ txnLxLh4MBHpOwE/2G9/RSqqOu4U4uuSjIqVqwVgrRIioX8nFJK3Xs2Adni8qLdUNtes
+ fUTKMHXWZ6cKYnoxaT+Od5MpTq9MKWmvRvUbwBrobMrN78oGhvW5CRtTKOjhXavLqVre iQ== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 389h13tr6t-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 03 May 2021 14:44:41 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 143EeBep028546;
+        Mon, 3 May 2021 14:44:40 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by aserp3020.oracle.com with ESMTP id 388xt2gdb6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 03 May 2021 14:44:40 +0000
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 143EieId101156;
+        Mon, 3 May 2021 14:44:40 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 388xt2gdb1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 03 May 2021 14:44:40 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 143Eicdl031343;
+        Mon, 3 May 2021 14:44:38 GMT
+Received: from kadam (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 03 May 2021 07:44:38 -0700
+Date:   Mon, 3 May 2021 17:44:29 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Lucas Stankus <lucas.p.stankus@gmail.com>
+Cc:     lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
+        gregkh@linuxfoundation.org, linux-iio@vger.kernel.org,
+        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] staging: iio: cdc: ad7746: use dt for capacitive
+ channel setup.
+Message-ID: <20210503144429.GN21598@kadam>
+References: <cover.1619841953.git.lucas.p.stankus@gmail.com>
+ <3e7f2a0a8960cece185f518ff2b7ceb87891edcd.1619841953.git.lucas.p.stankus@gmail.com>
+ <20210503100720.GP1981@kadam>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210503100720.GP1981@kadam>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-ORIG-GUID: j3GYA5SgvROSBYTLZ60Q1c1N67ftKOHO
+X-Proofpoint-GUID: j3GYA5SgvROSBYTLZ60Q1c1N67ftKOHO
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9973 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015 spamscore=0 mlxscore=0
+ phishscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0
+ priorityscore=1501 mlxlogscore=999 malwarescore=0 impostorscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2105030102
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-When the ioctl() mechanism was introduced in IIO core to centralize the
-registration of all ioctls in one place via commit 8dedcc3eee3ac ("iio:
-core: centralize ioctl() calls to the main chardev"), the return code was
-changed from ENODEV to EINVAL, when the ioctl code isn't known.
+On Mon, May 03, 2021 at 01:07:20PM +0300, Dan Carpenter wrote:
+> On Sat, May 01, 2021 at 09:32:53AM -0300, Lucas Stankus wrote:
+> > diff --git a/drivers/staging/iio/cdc/ad7746.c b/drivers/staging/iio/cdc/ad7746.c
+> > index dfd71e99e872..531f1b96dea2 100644
+> > --- a/drivers/staging/iio/cdc/ad7746.c
+> > +++ b/drivers/staging/iio/cdc/ad7746.c
+> > @@ -18,8 +18,6 @@
+> >  #include <linux/iio/iio.h>
+> >  #include <linux/iio/sysfs.h>
+> >  
+> > -#include "ad7746.h"
+> > -
+> >  /*
+> >   * AD7746 Register Definition
+> >   */
+> > @@ -676,10 +674,11 @@ static const struct iio_info ad7746_info = {
+> >  static int ad7746_probe(struct i2c_client *client,
+> >  			const struct i2c_device_id *id)
+> >  {
+> > -	struct ad7746_platform_data *pdata = client->dev.platform_data;
+> > +	struct device *dev = &client->dev;
+> >  	struct ad7746_chip_info *chip;
+> >  	struct iio_dev *indio_dev;
+> >  	unsigned char regval = 0;
+> > +	unsigned int vdd_permille;
+> >  	int ret = 0;
+> >  
+> >  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*chip));
+> > @@ -703,26 +702,39 @@ static int ad7746_probe(struct i2c_client *client,
+> >  	indio_dev->num_channels = ARRAY_SIZE(ad7746_channels);
+> >  	indio_dev->modes = INDIO_DIRECT_MODE;
+> >  
+> > -	if (pdata) {
+> > -		if (pdata->exca_en) {
+> > -			if (pdata->exca_inv_en)
+> > -				regval |= AD7746_EXCSETUP_NEXCA;
+> > -			else
+> > -				regval |= AD7746_EXCSETUP_EXCA;
+> > -		}
+> > +	if (device_property_read_bool(dev, "adi,exca-output-en")) {
+> > +		if (device_property_read_bool(dev, "adi,exca-output-invert"))
+> > +			regval |= AD7746_EXCSETUP_NEXCA;
+> > +		else
+> > +			regval |= AD7746_EXCSETUP_EXCA;
+> > +	}
+> >  
+> > -		if (pdata->excb_en) {
+> > -			if (pdata->excb_inv_en)
+> > -				regval |= AD7746_EXCSETUP_NEXCB;
+> > -			else
+> > -				regval |= AD7746_EXCSETUP_EXCB;
+> > -		}
+> > +	if (device_property_read_bool(dev, "adi,excb-output-en")) {
+> > +		if (device_property_read_bool(dev, "adi,excb-output-invert"))
+> > +			regval |= AD7746_EXCSETUP_NEXCB;
+> > +		else
+> > +			regval |= AD7746_EXCSETUP_EXCB;
+> > +	}
+> >  
+> > -		regval |= AD7746_EXCSETUP_EXCLVL(pdata->exclvl);
+> > -	} else {
+> > -		dev_warn(&client->dev, "No platform data? using default\n");
+> > -		regval = AD7746_EXCSETUP_EXCA | AD7746_EXCSETUP_EXCB |
+> > -			AD7746_EXCSETUP_EXCLVL(3);
+> > +	ret = device_property_read_u32(dev, "adi,excitation-vdd-permille",
+> > +				       &vdd_permille);
+> > +	if (!ret) {
+> 
+> This test is reversed.  I wonder if the static checkers can catch the
+> uninitialized variable bug...  It's probably better to write it as:
+> 
+> 	if (device_property_read_u32(dev, "adi,excitation-vdd-permille",
+> 				     &vdd_permille) {
+> 
+> So it matches the others.
 
-This was done by accident.
+Oops.  Sorry for the noise.  I was wrong on this.  I looked at the
+device_property_read_bool() code instead of the device_property_read_u32().
 
-This change reverts back to the old behavior, where if the ioctl() code
-isn't known, ENODEV is returned (vs EINVAL).
+It's disappointing that the returns are reversed.
 
-This was brought into perspective by this patch:
-  https://lore.kernel.org/linux-iio/20210428150815.136150-1-paul@crapouillou.net/
-
-Fixes: 8dedcc3eee3ac ("iio: core: centralize ioctl() calls to the main chardev")
-Cc: Linus Walleij <linus.walleij@linaro.org>
-Cc: Paul Cercueil <paul@crapouillou.net>
-Cc: Nuno Sa <nuno.sa@analog.com>
-Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
----
- drivers/iio/industrialio-core.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index efb4cf91c9e4..9a3a83211a90 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -1803,7 +1803,6 @@ static long iio_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
- 	if (!indio_dev->info)
- 		goto out_unlock;
- 
--	ret = -EINVAL;
- 	list_for_each_entry(h, &iio_dev_opaque->ioctl_handlers, entry) {
- 		ret = h->ioctl(indio_dev, filp, cmd, arg);
- 		if (ret != IIO_IOCTL_UNHANDLED)
-@@ -1811,7 +1810,7 @@ static long iio_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
- 	}
- 
- 	if (ret == IIO_IOCTL_UNHANDLED)
--		ret = -EINVAL;
-+		ret = -ENODEV;
- 
- out_unlock:
- 	mutex_unlock(&iio_dev_opaque->info_exist_lock);
--- 
-2.31.1
+regards,
+dan carpenter
 

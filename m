@@ -2,177 +2,297 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C45137135E
-	for <lists+linux-iio@lfdr.de>; Mon,  3 May 2021 12:08:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80132371397
+	for <lists+linux-iio@lfdr.de>; Mon,  3 May 2021 12:26:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233251AbhECKIv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 3 May 2021 06:08:51 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:43082 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233245AbhECKIt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 May 2021 06:08:49 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 143A3lX6097332;
-        Mon, 3 May 2021 10:07:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=0m6CZKMKH0CXm0dLQ0wuv9R6uvsrR8sLUyperFhMgWQ=;
- b=XUMu9wd9V9A+Uoz4d0UJUDQ2Ww8J1dRk//bZ+A2Q4fvYe9lR+Po9sMG/MT6cN7eqmAy6
- SetGbtUJdTaQ30DLGjPxfDGPAYRfq765WbFGFEEzdMZ9lDLOWYbf0WImEgjqEf9OVE6q
- YGHwNdfQ4tRR8gilOqDN0Pha1onnllAxMrYgFOgVhT1gUuEvPbmfXnHFvRr/4IDEL2ZE
- hDlsOFZFSMCko9TvnviEjkmyNM6EzaEW8dFyQq9Xmx3rGuoH/Rfir351BZVt2wUr8q8A
- zaAi5KdNg8KQAq5L/47y+jOPk4tZJ7UtygfrlVeZfo98mK3GTTcLqQXHfVsJ8GbkBy4R Fg== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 388xdru5yf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 03 May 2021 10:07:31 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 143A5EXH145104;
-        Mon, 3 May 2021 10:07:30 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by userp3020.oracle.com with ESMTP id 389grqgd7w-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 03 May 2021 10:07:30 +0000
-Received: from userp3020.oracle.com (userp3020.oracle.com [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 143A7Ulg151722;
-        Mon, 3 May 2021 10:07:30 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 389grqgd7n-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 03 May 2021 10:07:30 +0000
-Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 143A7S4w017140;
-        Mon, 3 May 2021 10:07:28 GMT
-Received: from kadam (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 03 May 2021 03:07:27 -0700
-Date:   Mon, 3 May 2021 13:07:20 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Lucas Stankus <lucas.p.stankus@gmail.com>
-Cc:     lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
-        gregkh@linuxfoundation.org, linux-iio@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] staging: iio: cdc: ad7746: use dt for capacitive
- channel setup.
-Message-ID: <20210503100720.GP1981@kadam>
-References: <cover.1619841953.git.lucas.p.stankus@gmail.com>
- <3e7f2a0a8960cece185f518ff2b7ceb87891edcd.1619841953.git.lucas.p.stankus@gmail.com>
+        id S233069AbhECK1f convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 3 May 2021 06:27:35 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52890 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233340AbhECK1b (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 3 May 2021 06:27:31 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id AE8E8610C9;
+        Mon,  3 May 2021 10:25:09 +0000 (UTC)
+Date:   Mon, 3 May 2021 11:26:00 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     =?UTF-8?B?SsOzenNlZiBIb3J2w6F0aA==?= <info@ministro.hu>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Alex Dewar <alex.dewar90@gmail.com>,
+        Gene Chen <gene_chen@richtek.com>,
+        Saravanan Sekar <sravanhome@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] iio: adc: driver for texas instruments ads7142
+Message-ID: <20210503112600.35c4016e@jic23-huawei>
+In-Reply-To: <20210502204846.GA32610@dev>
+References: <bffbc2b24a869dc42307adf8e3fc71f08fcff6dd.1619892171.git.info@ministro.hu>
+        <20210502181423.1712130b@jic23-huawei>
+        <20210502204846.GA32610@dev>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3e7f2a0a8960cece185f518ff2b7ceb87891edcd.1619841953.git.lucas.p.stankus@gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-ORIG-GUID: hZadFzO0eJeomz8GQTOutIhakF-cZ0Dr
-X-Proofpoint-GUID: hZadFzO0eJeomz8GQTOutIhakF-cZ0Dr
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9972 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 impostorscore=0 clxscore=1011
- lowpriorityscore=0 adultscore=0 spamscore=0 priorityscore=1501
- mlxlogscore=999 bulkscore=0 mlxscore=0 suspectscore=0 malwarescore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2105030066
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, May 01, 2021 at 09:32:53AM -0300, Lucas Stankus wrote:
-> diff --git a/drivers/staging/iio/cdc/ad7746.c b/drivers/staging/iio/cdc/ad7746.c
-> index dfd71e99e872..531f1b96dea2 100644
-> --- a/drivers/staging/iio/cdc/ad7746.c
-> +++ b/drivers/staging/iio/cdc/ad7746.c
-> @@ -18,8 +18,6 @@
->  #include <linux/iio/iio.h>
->  #include <linux/iio/sysfs.h>
+On Sun, 2 May 2021 20:48:47 +0000
+József Horváth <info@ministro.hu> wrote:
+
+> On Sun, May 02, 2021 at 06:14:23PM +0100, Jonathan Cameron wrote:
+> > On Sat, 1 May 2021 18:24:28 +0000
+> > Jozsef Horvath <info@ministro.hu> wrote:
+> >   
+> > > This is an iio driver for
+> > >  Texas Instruments ADS7142 dual-channel, programmable sensor monitor.
+> > > 
+> > > Operation modes supportedby the driver:
+> > >   When the 'ti,monitoring-mode' property is not present
+> > >     in the devicetree node definition, the driver initiates a single
+> > >     conversion in the device for each read request
+> > >     (/sys/bus/iio/devices/iio:deviceX/in_voltageY_raw).
+> > >     This is a one-shot conversion, and it is called
+> > >     "Manual Mode" in the datasheet.
+> > > 
+> > >   When the 'ti,monitoring-mode' property is present
+> > >     in the devicetree node definition, the driver configures
+> > >     the device's digital window comparator and sets the device's
+> > >     data buffer operation mode to pre alert data mode.
+> > >     The driver reads the conversion result when the BUSY/RDY interrupt
+> > >     fires, and keeps the value until the next BUSY/RDY interrupt
+> > >     or the first read request
+> > >     (/sys/bus/iio/devices/iio:deviceX/in_voltageY_raw).  
+> > 
+> > Hi Jozsef.
+> > 
+> > Interesting device - somewhat like an impact sensor, but on a general
+> > purpose ADC.  
+> 
+> Yes, but now I'm using as an ADC in my project.
+> In my point of view this is a general purpose ADC with monitoring features.
+> 
+> > 
+> > Hmm. This sounds rather unintuitive and also very much like a policy
+> > decision rather than anything to do with the hardware.  Hence it
+> > should almost certainly be in control of userspace and no via
+> > dt parameters.
+> >   
+> 
+> I think that, this operation modes are not generic enough to bring it to sysfs.
+
+That just means you need to figure out how to do it, not make it a
+boot time, or board flash time based control.
+
+> 
+> > The interrupt driven nature of the device implies that a polled interface
+> > such as sysfs is not appropriate to support this mode.
+> > 
+> > Based on the description you have given here and a quick look
+> > at the flow charts in the datasheet I would suggest.
+> > 1) Enable sysfs reads as manual mode only.
+> > 2) Implement the buffered part of an IIO driver.  This is what we use
+> >    for data where autonomous clocking is going on.  
+> 
+> I'll check the buffered api.
+> 
+> > 3) Add triggers to represent the different autonomous modes.  In some
+> >    sense all the modes present can be considered be a series of
+> >    'capture now' signals that are being generated by the hardware in
+> >    response to some event'.
+> > 
+> > So you'd have a pre_alert_tigger, post_alert_trigger
+> > Stop_burst and start_burst are more interesting to handle because you
+> > will need something to actually start/stop them.  These could be done
+> > via a sysfs attribute for the trigger, or more complex schemes exist
+> > such as triggering them off another trigger... one or two of the SoC
+> > ADCs do that sort of thing.
+> > 
+> >    
+> > >     The digital window comparator and hysteresis parameters
+> > >     can be controlled by:
+> > >       - the devicetree definition of channel node
+> > >       - iio sysfs interfaces
+> > >     This is event driven conversion, and is called
+> > >     "Autonomous Mode with Pre Alert Data" in the datasheet.
+> > >     This mode can be used to wake up the system with the ALERT pin,
+> > >     in case when the monitored voltage level is out of the configured range.  
+> > 
+> > Whilst it's fine to only enable the modes you want, we should think about how
+> > to ensure other modes can be supported.
+> >   
+> 
+> As I described above, I would keep the operation modes in dt, and
+>  'ti,monitoring-mode' can be an enum.
+
+Sorry but no.  Unless you can make a 'very' strong argument of the
+fact that this a characteristic of the hardware setup (wiring etc) then
+it needs to be userspace controlled.
+
+> 
+> > > 
+> > > Datasheet: https://www.ti.com/lit/ds/symlink/ads7142.pdf
+> > > 
+> > > Signed-off-by: Jozsef Horvath <info@ministro.hu>
+> > > ---  
+
+...
+
+> 
+> > 
+> >   
+> > > +
+> > > +	return ret >= 0 ? 0 : ret;  
+> > 
+> > if ret == 0 then something went wrong and we should report that.  
+> 
+> You are right
+> 
+> > > +				channel->data.value = value;
+> > > +				*channel_collected |= 1 << channel_address;
+> > > +			}
+> > > +		}
+> > > +	} while (--data_buffer_status);
+> > > +
+> > > +	return ret;
+> > > +}
+> > > +
+> > > +static int ti_ads7142_do_work(struct iio_dev *indio_dev)  
+> > 
+> > As mentioned below, these function needs a more informative name.  
+> 
+> I'll change it to ..._do_monitoring_work, and create something like
+>  start_pre_alert_monitoring, start_post_alert_monitoring, etc
+
+Maybe, but I'd expect 'work' to imply it was the function called on
+each cycle of monitoring.  This is more monitoring_setup()
+
+
+...
+
 >  
-> -#include "ad7746.h"
-> -
->  /*
->   * AD7746 Register Definition
->   */
-> @@ -676,10 +674,11 @@ static const struct iio_info ad7746_info = {
->  static int ad7746_probe(struct i2c_client *client,
->  			const struct i2c_device_id *id)
->  {
-> -	struct ad7746_platform_data *pdata = client->dev.platform_data;
-> +	struct device *dev = &client->dev;
->  	struct ad7746_chip_info *chip;
->  	struct iio_dev *indio_dev;
->  	unsigned char regval = 0;
-> +	unsigned int vdd_permille;
->  	int ret = 0;
->  
->  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*chip));
-> @@ -703,26 +702,39 @@ static int ad7746_probe(struct i2c_client *client,
->  	indio_dev->num_channels = ARRAY_SIZE(ad7746_channels);
->  	indio_dev->modes = INDIO_DIRECT_MODE;
->  
-> -	if (pdata) {
-> -		if (pdata->exca_en) {
-> -			if (pdata->exca_inv_en)
-> -				regval |= AD7746_EXCSETUP_NEXCA;
-> -			else
-> -				regval |= AD7746_EXCSETUP_EXCA;
-> -		}
-> +	if (device_property_read_bool(dev, "adi,exca-output-en")) {
-> +		if (device_property_read_bool(dev, "adi,exca-output-invert"))
-> +			regval |= AD7746_EXCSETUP_NEXCA;
-> +		else
-> +			regval |= AD7746_EXCSETUP_EXCA;
-> +	}
->  
-> -		if (pdata->excb_en) {
-> -			if (pdata->excb_inv_en)
-> -				regval |= AD7746_EXCSETUP_NEXCB;
-> -			else
-> -				regval |= AD7746_EXCSETUP_EXCB;
-> -		}
-> +	if (device_property_read_bool(dev, "adi,excb-output-en")) {
-> +		if (device_property_read_bool(dev, "adi,excb-output-invert"))
-> +			regval |= AD7746_EXCSETUP_NEXCB;
-> +		else
-> +			regval |= AD7746_EXCSETUP_EXCB;
-> +	}
->  
-> -		regval |= AD7746_EXCSETUP_EXCLVL(pdata->exclvl);
-> -	} else {
-> -		dev_warn(&client->dev, "No platform data? using default\n");
-> -		regval = AD7746_EXCSETUP_EXCA | AD7746_EXCSETUP_EXCB |
-> -			AD7746_EXCSETUP_EXCLVL(3);
-> +	ret = device_property_read_u32(dev, "adi,excitation-vdd-permille",
-> +				       &vdd_permille);
-> +	if (!ret) {
+> > > +static int ti_ads7142_read_event_config(struct iio_dev *indio_dev,
+> > > +					const struct iio_chan_spec *chan,
+> > > +					enum iio_event_type type,
+> > > +					enum iio_event_direction dir)
+> > > +{
+> > > +	struct ti_ads7142_priv *priv = iio_priv(indio_dev);
+> > > +	struct ti_ads7142_channel *channel;
+> > > +	int ret;
+> > > +
+> > > +	if (!priv->config.monitoring_mode)
+> > > +		return -EINVAL;
+> > > +
+> > > +	if (type != IIO_EV_TYPE_THRESH)
+> > > +		return -EINVAL;
+> > > +
+> > > +	ret = ti_ads7142_address2channel(indio_dev, chan->address,
+> > > +					 &channel);
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	if (dir == IIO_EV_DIR_RISING)
+> > > +		ret = channel->config.alert_high ? 1 : 0;  
+> > 
+> > Not fine using ret = channel->config.alert_high; directly?
+> >   
+> 
+> alert_high is bool, ret is int.
+>  I know, the 'true' value is 1, and its autmatically casted,
+>  but who knows the future...I would keep this, if possible.
 
-This test is reversed.  I wonder if the static checkers can catch the
-uninitialized variable bug...  It's probably better to write it as:
+Ok.  Assuming the c spec will change to make this invalid is a bit implausible,
+but it's not too bad I guess.
 
-	if (device_property_read_u32(dev, "adi,excitation-vdd-permille",
-				     &vdd_permille) {
+> 
+...
 
-So it matches the others.
+> 
+> >   
+> > > +					   &ads_channel->config.high_threshold);
+> > > +		ads_channel->config.alert_high = !ret;
+> > > +		ret = of_property_read_u32(channel_node, "ti,threshold-falling",
+> > > +					   &ads_channel->config.low_threshold);
+> > > +		ads_channel->config.alert_low = !ret;
+> > > +		ret = of_property_read_u32(channel_node, "ti,hysteresis",
+> > > +					   &ads_channel->config.hysteresis);
+> > > +		channel_index++;
+> > > +	}
+> > > +
+> > > +	return 0;
+> > > +err:
+> > > +	of_node_put(channel_node);
+> > > +	return ret;
+> > > +}
+> > > +
+> > > +static int ti_ads7142_parse_config_of(struct device *dev,
+> > > +				      struct iio_dev *indio_dev)
+> > > +{
+> > > +	struct ti_ads7142_priv *priv = iio_priv(indio_dev);
+> > > +
+> > > +	priv->config.osc_sel = of_property_read_bool(dev->of_node,
+> > > +						     "ti,osc-sel");  
+> > 
+> > Please use generic device property access functions where possible.
+> > That basically gives us support on non OF based platforms for free.  
+> 
+> Could you please explain this, I dont understand.
 
-regards,
-dan carpenter;
+See include/linux/property.h
 
-> +		switch (vdd_permille) {
-> +		case 125:
-> +			regval |= AD7746_EXCSETUP_EXCLVL(0);
-> +			break;
-> +		case 250:
-> +			regval |= AD7746_EXCSETUP_EXCLVL(1);
-> +			break;
-> +		case 375:
-> +			regval |= AD7746_EXCSETUP_EXCLVL(2);
-> +			break;
-> +		case 500:
-> +			regval |= AD7746_EXCSETUP_EXCLVL(3);
-> +			break;
-> +		default:
-> +			break;
-> +		}
->  	}
->  
->  	ret = i2c_smbus_write_byte_data(chip->client,
+That provides firmware type agnostic property accessors - so they will work
+whether the property is provided via ACPI or via DT (or a number of other
+options though those are less common).
+
+ACPI DSDT tables can use a special device type PRP0001 which basically is a
+wrapper for device tree properties.  So the properties are all the same
+(including compatible) but you need to use the generic accessors to be able to
+read them. 
 
 
+> 
+> >   
+> > > +	of_property_read_u32(dev->of_node, "ti,n-clk", &priv->config.n_clk);
+> > > +	priv->config.monitoring_mode = of_property_read_bool(dev->of_node,
+> > > +							     "ti,monitoring-mode");
+> > > +
+> > > +	return ti_ads7142_parse_channel_config_of(dev, indio_dev);
+> > > +}
+>
+...
+> Thank you for the review and suggestions.
+
+You are welcome.
+
+Thanks,
+
+Jonathan
+
+> 
+> Best regards
+> Jozsef
+
+> 
+> >   
+> > > +
+> > > +	return 0;
+> > > +}
+> > > +
+> > > +module_i2c_driver(ti_ads7142_driver);
+> > > +
+> > > +MODULE_LICENSE("GPL");
+> > > +MODULE_AUTHOR("Jozsef Horvath <info@ministro.hu>");
+> > > +MODULE_DESCRIPTION("Texas Instruments TI_ADS7142 ADC driver");  
+> > 
+> >   
+> 
 

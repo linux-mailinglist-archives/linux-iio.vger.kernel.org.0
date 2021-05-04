@@ -2,97 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DAF23727C6
-	for <lists+linux-iio@lfdr.de>; Tue,  4 May 2021 11:05:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 804313728B8
+	for <lists+linux-iio@lfdr.de>; Tue,  4 May 2021 12:22:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230118AbhEDJGA convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Tue, 4 May 2021 05:06:00 -0400
-Received: from aposti.net ([89.234.176.197]:34686 "EHLO aposti.net"
+        id S230176AbhEDKXN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 4 May 2021 06:23:13 -0400
+Received: from first.geanix.com ([116.203.34.67]:46996 "EHLO first.geanix.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230130AbhEDJFy (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 4 May 2021 05:05:54 -0400
-Date:   Tue, 04 May 2021 10:04:24 +0100
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH] iio: core: return ENODEV if ioctl is unknown
-To:     Alexandru Ardelean <aardelean@deviqon.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        jic23@kernel.org, lars@metafoo.de,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Nuno Sa <nuno.sa@analog.com>
-Message-Id: <CVRKSQ.S9TXIAZ9W6262@crapouillou.net>
-In-Reply-To: <20210503144350.7496-1-aardelean@deviqon.com>
-References: <20210503144350.7496-1-aardelean@deviqon.com>
+        id S230202AbhEDKXK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 4 May 2021 06:23:10 -0400
+Received: from [192.168.100.10] (unknown [185.233.254.173])
+        by first.geanix.com (Postfix) with ESMTPSA id F1B454672FE;
+        Tue,  4 May 2021 10:22:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
+        t=1620123734; bh=DvjEbdXM+YwK/VtgClqx8F5XvELPDcbwnseD9yD1Ay0=;
+        h=To:From:Subject:Date;
+        b=j6jqV1YQ8UmstEOZupX1LsiCk6g4sCqpzrhC1oZdnTalqB37aZrcv0JyQJoZwozLT
+         7Po52wMyGVbGfdNfW2lN/1vWba+QT8yNQXkny0TqKXkefHs1TxE+JrfPSWeT5S/T3R
+         dyN+XQshC2+COsTBgeBo4iW0RZwsOIDxnkryZJLSveZ6id8QEcsgJaRMM2HMjdyt24
+         WhcwUuf9MQBqmG/umSA195P2kfggNTOKAmCzwCxazOV9s9BRBIVtfNLu1oAxIYgQOH
+         tQLexIY/jnPaiPUU8Tr+yENznB6X+GN4JIPTt3iR3fBtbZuFWuZxgZwMyz3z2im/3S
+         sW1zdiF8bYamQ==
+To:     Lorenzo Bianconi <lorenzo@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>
+From:   Sean Nyekjaer <sean@geanix.com>
+Subject: iio: imu: st_lsm6dsx: sample rate?
+Message-ID: <1b645b15-f866-ee45-1b92-8dd32340409a@geanix.com>
+Date:   Tue, 4 May 2021 12:22:13 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
+        autolearn=disabled version=3.4.4
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on 93bd6fdb21b5
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi,
 
+Any specific reason to why the 12.5Hz sample rate is implemented as 13Hz ?
 
-Le lun., mai 3 2021 at 17:43:50 +0300, Alexandru Ardelean 
-<aardelean@deviqon.com> a écrit :
-> When the ioctl() mechanism was introduced in IIO core to centralize 
-> the
-> registration of all ioctls in one place via commit 8dedcc3eee3ac 
-> ("iio:
-> core: centralize ioctl() calls to the main chardev"), the return code 
-> was
-> changed from ENODEV to EINVAL, when the ioctl code isn't known.
-> 
-> This was done by accident.
-> 
-> This change reverts back to the old behavior, where if the ioctl() 
-> code
-> isn't known, ENODEV is returned (vs EINVAL).
-> 
-> This was brought into perspective by this patch:
->   
-> https://lore.kernel.org/linux-iio/20210428150815.136150-1-paul@crapouillou.net/
-> 
-> Fixes: 8dedcc3eee3ac ("iio: core: centralize ioctl() calls to the 
-> main chardev")
-> Cc: Linus Walleij <linus.walleij@linaro.org>
-> Cc: Paul Cercueil <paul@crapouillou.net>
-> Cc: Nuno Sa <nuno.sa@analog.com>
-> Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
-
-Tested-by: Paul Cercueil <paul@crapouillou.net>
-
-Thanks!
--Paul
-
-> ---
->  drivers/iio/industrialio-core.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/industrialio-core.c 
-> b/drivers/iio/industrialio-core.c
-> index efb4cf91c9e4..9a3a83211a90 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -1803,7 +1803,6 @@ static long iio_ioctl(struct file *filp, 
-> unsigned int cmd, unsigned long arg)
->  	if (!indio_dev->info)
->  		goto out_unlock;
-> 
-> -	ret = -EINVAL;
->  	list_for_each_entry(h, &iio_dev_opaque->ioctl_handlers, entry) {
->  		ret = h->ioctl(indio_dev, filp, cmd, arg);
->  		if (ret != IIO_IOCTL_UNHANDLED)
-> @@ -1811,7 +1810,7 @@ static long iio_ioctl(struct file *filp, 
-> unsigned int cmd, unsigned long arg)
->  	}
-> 
->  	if (ret == IIO_IOCTL_UNHANDLED)
-> -		ret = -EINVAL;
-> +		ret = -ENODEV;
-> 
->  out_unlock:
->  	mutex_unlock(&iio_dev_opaque->info_exist_lock);
-> --
-> 2.31.1
-> 
-
-
+Br,
+/Sean 

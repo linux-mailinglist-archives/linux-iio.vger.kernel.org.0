@@ -2,87 +2,137 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 51F0A373BD3
-	for <lists+linux-iio@lfdr.de>; Wed,  5 May 2021 14:59:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D81BE373BDD
+	for <lists+linux-iio@lfdr.de>; Wed,  5 May 2021 15:00:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232280AbhEEM75 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 5 May 2021 08:59:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45982 "EHLO
+        id S233348AbhEENBZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 5 May 2021 09:01:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231899AbhEEM75 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 May 2021 08:59:57 -0400
-Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E801C061574
-        for <linux-iio@vger.kernel.org>; Wed,  5 May 2021 05:59:01 -0700 (PDT)
-Received: by mail-lj1-x22b.google.com with SMTP id o16so2337258ljp.3
-        for <linux-iio@vger.kernel.org>; Wed, 05 May 2021 05:59:00 -0700 (PDT)
+        with ESMTP id S233153AbhEENBX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 May 2021 09:01:23 -0400
+Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9503C061574;
+        Wed,  5 May 2021 06:00:25 -0700 (PDT)
+Received: by mail-ot1-x32b.google.com with SMTP id u25-20020a0568302319b02902ac3d54c25eso1609741ote.1;
+        Wed, 05 May 2021 06:00:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=aq5XNOfUQdjc5MQW5ThVD1Tl4zjG0Q3QxIAgOhGNuPE=;
-        b=VoVtb69GLr/uP8AzeqYYHJ1+txH+ndgSdDMviYaU5d9PI0zKfz3gH+SQ43ULm/slGK
-         MonoWnQ/ZgzUnDlgwwktsaG0MPmezGOV0nUsaZ14xZUr0I9TmNohzbYRKKJIQXvtVXcA
-         m3B2oJTfNswrfbk3Uyn+Bm2/TzuINQBU41Aamd95hBv7qv+hO6Xfk5SRUfaIn7IqRuCS
-         BQsGQAxiu31fZ19JKeEjjO6IkjCFqIQfxIaOUN07p6u09zLkOBVT0Hx1fhqVutiU6FzJ
-         uO2UqQG35EYR84hRobuEbbcZTW+oLrsZ6DlvScHlakH5uwY7pun3fD6yYsXUe0lQoZf6
-         eiCQ==
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=6/BCvyE+swEfZEm7dx62fy7UpXmf1gCYIgzc2eCpj8s=;
+        b=p35u/rFxZvoWd10s8IxG5QjMDNeASuUBfDl8KvNhsQUcarDIs2CdbbwHAUfbl8ISwz
+         ScHGAwb8A8JiGRqOEKDAcyrxx4DZ0YyZ9cr72Ec//iFIS8rjU8TugErVjeaGQp7mLSw4
+         K4Ew+rhAcuxSCEmqgrtQzkQOoSnhUXHAp/ElIIo60mEMeShrPP+FG2qwBX0GmYjCaB2O
+         ifdXIrjfPJrMPIuHbvL3qn2QIcldc+EvCnaisfRRNQRPXAj13Im9IYDGtIpH0ExTZQyG
+         +Zpyvy4YajTi+my96PF6PsaBNOZJVgYS6MJwWoYa5oKkaVnCwEFsdWSO8DCbKpimQFt1
+         cuUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=aq5XNOfUQdjc5MQW5ThVD1Tl4zjG0Q3QxIAgOhGNuPE=;
-        b=YsxgfTAvXEY9lPHSqsMW3OpSpf0LRwxCH63F4LXGpdEmEEeSQl5wuRaxcfaag58945
-         CfL/MAgh0m3NXkqc4JYp+jubDygwi0O2Lck73GZO5w/d48uefAeHjyBFzkSutWaL3xHT
-         49gqKbljX4lOkpnOHPoSSoegP7FHcT+KSMJV7/62Yjc2x/f8ggAfiNSEGrrRuhBO6Gb2
-         lhPL5IsritsfurCGaiGINVbH56XUsPcKOBSfcwZU44v/8PzvssO5fAH/9Dbvmo9KLW+N
-         +jOz2q+gj0qwcRf9rd6+eDBFZ/hHXG+XgXjc1sExjVpxgm91kDzRuJtm9LP2B3BWHqVP
-         iQig==
-X-Gm-Message-State: AOAM532VqlIZkv3kY4v4BpnbQzkkUkf7aRJjmkltdfDlvdYSllcwnPkb
-        qhpqcGAGHN8UJ/djeKD1k679qE6IEk9PMV0AIG+/NA==
-X-Google-Smtp-Source: ABdhPJxpUhmUqcuQfT6D4cK9JLJLqw92q7SDF8w6GljL3Hlgy64ll/PLaapVldeNYKkjXnHBL5I8zPz7vnn7b1zPyD4=
-X-Received: by 2002:a2e:81d0:: with SMTP id s16mr14607110ljg.74.1620219539556;
- Wed, 05 May 2021 05:58:59 -0700 (PDT)
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=6/BCvyE+swEfZEm7dx62fy7UpXmf1gCYIgzc2eCpj8s=;
+        b=USHeFnl2nS2A3VvA4FILpKftn4AmE3QxaWY0s9DH+xZ1ck2ziyndCc9jTRR8NMzzqD
+         gl8eEQabSyRFI2NhC0OKHYqzDa5Px+GmaXHjKGQvvDlazpACDqNYBdcxSWOsbsxCxotp
+         7yOoEwc/3x1lz0oWY11GA6s2ONM1sZn1ClNAE66Wt0yKmnk3pGnc2zB9xtTivOaBfELx
+         h2XQ1N1ornIHxAzgN3YS+Yd8S63CwtdCVT0r4iAdly14L5wY5uYyHUzZMvlRtU3Ko+WB
+         ilFw5yeGy3QkxG06r/YtwM0AYBqI2j2CfNLkGfmmuR0YzkK7N3iCT6kEh9ZSnBu28fkC
+         g/xQ==
+X-Gm-Message-State: AOAM532IkqVZ33IeOOqVrHavL0LlCN8gvt4BRqGxNauPT/Avy9e3grkB
+        7Xu2QoN113FmtR6ts4VY4tQ=
+X-Google-Smtp-Source: ABdhPJw0ajwlSvji6vU1NttfNQWcwxzdynIQTMExnHD+Mdt1mIqGLpGKnFso5gq0NV6p4Wnk/pvSBA==
+X-Received: by 2002:a9d:200b:: with SMTP id n11mr8706329ota.177.1620219625295;
+        Wed, 05 May 2021 06:00:25 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id c95sm635326otb.80.2021.05.05.06.00.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 May 2021 06:00:24 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Wed, 5 May 2021 06:00:22 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH] iio: bme680_i2c: Make bme680_acpi_match depend on
+ CONFIG_ACPI
+Message-ID: <20210505130022.GA3752808@roeck-us.net>
+References: <20210504174019.2134652-1-linux@roeck-us.net>
+ <CAHp75Vd-iTkA5Y6tEHtfcqLxxmHaaU8nLQSL7eWb-gaa-c8AJg@mail.gmail.com>
+ <8f8b6f33-4308-bfda-2238-9a54e19c3f9f@roeck-us.net>
+ <20210505093235.00007c38@Huawei.com>
+ <20210505093438.00005238@Huawei.com>
 MIME-Version: 1.0
-References: <20210501172515.513486-1-jic23@kernel.org> <20210501172515.513486-4-jic23@kernel.org>
-In-Reply-To: <20210501172515.513486-4-jic23@kernel.org>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 5 May 2021 14:58:48 +0200
-Message-ID: <CACRpkdZJfcgHM7m=TA-qKJOOh3fmF9d+2cP3G=NSuyuhj_svww@mail.gmail.com>
-Subject: Re: [RFC PATCH 3/4] iio: gyro: mpu3050: Fix alignment and size issues
- with buffers.
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210505093438.00005238@Huawei.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, May 1, 2021 at 7:26 PM Jonathan Cameron <jic23@kernel.org> wrote:
+On Wed, May 05, 2021 at 09:34:38AM +0100, Jonathan Cameron wrote:
+> On Wed, 5 May 2021 09:32:35 +0100
+> Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+> 
+> > On Tue, 4 May 2021 11:00:52 -0700
+> > Guenter Roeck <linux@roeck-us.net> wrote:
+> > 
+> > > On 5/4/21 10:44 AM, Andy Shevchenko wrote:  
+> > > > On Tue, May 4, 2021 at 8:40 PM Guenter Roeck <linux@roeck-us.net> wrote:    
+> > > >>
+> > > >> With CONFIG_ACPI=n and -Werror, 0-day reports:
+> > > >>
+> > > >> drivers/iio/chemical/bme680_i2c.c:46:36: error:
+> > > >>         'bme680_acpi_match' defined but not used    
+> > > >     
+> > > >> Given the other patch, question of course is if this ACPI ID
+> > > >> is real. A Google search suggests that this might not be the case.
+> > > >> Should we remove it as well ? STK8312 has the same problem.    
+> > > > 
+> > > > For this one definitely removal. Looking into the code it suggests a
+> > > > cargo cult taken that time by a few contributors to invent fake ACPI
+> > > > IDs while submitting new drivers.
+> > > > Feel free to add my tag or if you wish me I'll add it explicitly.
+> > > >     
+> > > 
+> > > I'll resend and let you add the tag, and send a similar patch
+> > > for STK8312. I'll wait until tomorrow, though - I sent a number of
+> > > patches today already, and I want to avoid yet another "account
+> > > suspended" notice from gmail.  
+> > 
+> > If you find some valid ACPI entries that are hitting this problem,
+> > I'd prefer we just got rid of the ACPI_PTR() usecases rather than
+> > added IFDEF magic.
+> > 
+> > The space wasted by having these is trivial and I'd rather not
+> > introduce ifdef around any of these tables.
+> > 
+> > Dropping the ones we are fairly sure are spurious is even better!
+> 
+> If I get bored I'll just do a scrub of all the instances of this that
+> you haven't already cleaned up.  It's worth noting that we do
+> know some highly suspicious looking entries are out there in the wild. 
+> 
 
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> Fix a set of closely related issues.
-> 1. When using fifo_values() there was not enough space for the timestamp to
->    be inserted by iio_push_to_buffers_with_timestamp()
-> 2. fifo_values() did not meet the alignment requirement of
->    iio_push_to_buffers_with_timestamp()
-> 3. hw_values did not meet the alignment requirement either.
->
-> 1 and 2 fixed by using new iio_push_to_buffers_with_ts_na() which has
-> no alignment or space padding requirements.
-> 3 fixed by introducing a structure that makes the space and alignment
-> requirements explicit.
->
-> Fixes: 3904b28efb2c ("iio: gyro: Add driver for the MPU-3050 gyroscope")
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Linus Walleij <linus.walleij@linaro.org>
+The ones reported by 0-day are AOS2315, BME0680, and STK8312.
+You just accepted a patch for -next which claims that all users of
+STK8312 would be ACPI, yet Andy says that STK8312 isn't a valid ACPI ID.
 
-Again a very nice fix:
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Not really sure from the above if I should send patches to remove
+acpi support from those drivers or if you want to handle that yourself.
 
-Again I wonder how we can help driver authors to always get this right.
+Other drivers such as FXOS8700 should also generate a warning with
+CONFIG_ACPI=n but for some reason don't. I have not tried to track down
+the reason.
 
-Yours,
-Linus Walleij
+Anyway, for an "outsider" it seems all but impossible to determine if
+an ACPI ID is real or made up. How does one know ?
+
+Note that I didn't actually get any of your e-mails (nor, I notice, several
+other e-mails I was copied on). I picked this one up from the linux-kernel
+mailing list. My apologies if I don't reply to any of your e-mails;
+that would be the reason.
+
+Guenter

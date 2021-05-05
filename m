@@ -2,75 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 55915373B7C
-	for <lists+linux-iio@lfdr.de>; Wed,  5 May 2021 14:38:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DDCD373BBC
+	for <lists+linux-iio@lfdr.de>; Wed,  5 May 2021 14:52:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233427AbhEEMjY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 5 May 2021 08:39:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53818 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233555AbhEEMjL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 5 May 2021 08:39:11 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0FBEA608FE;
-        Wed,  5 May 2021 12:38:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620218294;
-        bh=/+2VzFRJPGasWSU5GhWAr3OrK3XekxrSTsUlVTbikPY=;
-        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-        b=D59oFyJHUt9CttXDsUimugJnjeOHwFL1YmM4DQ0BXW5gQqOH1qJUlYqUwlHPLduNI
-         gXkaQv0wTHqG8G0+Ac6zApU6wsb8s881hbwSVph2nIJjqD2HWjZ08G2NgJTWJ1tl30
-         uQQ64Slbd4aUP9hrM+fzTK5pH/dbShuK93JOPxpd6YR0WvtnErk9uo6vgEFw2zvJsx
-         1xvbD9yFw8nEfhP3AOgjewQiNBhFieOOe3E2J2BiGzHU0e3QfBYi1vyFCNzGaYvUoA
-         l66NMR0T10dN9t8KeDIecQjaYxROf112+JlZkYtxzkd4PRsReTDTj2lS0cUuEqIQZH
-         +0OHv88r9uxPw==
-Date:   Wed, 5 May 2021 14:38:11 +0200 (CEST)
-From:   Jiri Kosina <jikos@kernel.org>
-To:     Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-cc:     jic23@kernel.org, benjamin.tissoires@redhat.com,
-        jiapeng.chong@linux.alibaba.com, linux-input@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Abaci Robot <abaci@linux.alibaba.com>
-Subject: Re: [PATCH 2/2] HID: hid-sensor-custom: Process failure of
- sensor_hub_set_feature()
-In-Reply-To: <20210415185232.2617398-2-srinivas.pandruvada@linux.intel.com>
-Message-ID: <nycvar.YFH.7.76.2105051437420.28378@cbobk.fhfr.pm>
-References: <20210415185232.2617398-1-srinivas.pandruvada@linux.intel.com> <20210415185232.2617398-2-srinivas.pandruvada@linux.intel.com>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+        id S232992AbhEEMxe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 5 May 2021 08:53:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44564 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232079AbhEEMxd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 May 2021 08:53:33 -0400
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25913C061574
+        for <linux-iio@vger.kernel.org>; Wed,  5 May 2021 05:52:36 -0700 (PDT)
+Received: by mail-lf1-x12f.google.com with SMTP id 124so2399466lff.5
+        for <linux-iio@vger.kernel.org>; Wed, 05 May 2021 05:52:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DUJ6wIodjpCneHighQ0GfY8iqpoBiT6LHmEd2Kcx/xc=;
+        b=EUV6OxDbgS6qzK3ecwukeDactMuVot2m/JQ5e65pqn9Y5KX9Wd0U4L5oGUUHTVMc8T
+         sJTshB6mNhR87tzS/RUDKmqmDpZtp/jo9bgY/Ct9XH7TaNonjfjWYaCgAeffGhlGUuwL
+         Ocm1KpZ1GTP60hKlL1xK4R9ryauExez8czBIh+EjqHYAaxBTcAEka/pXR83SOD/Db9V6
+         ZBeuEb3hvfy0Mn5rfZMEDpph73rCJFBfpMIoTXc/IBnR0UPvWX2eFwM+hd98bki354Xd
+         4bQAOMFTyavJo49o2wwbesF9tIzRDR0zbWYURxbxMmh7ypjI6+qua08ndZVANo5e+KGq
+         vvgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DUJ6wIodjpCneHighQ0GfY8iqpoBiT6LHmEd2Kcx/xc=;
+        b=q78wUZJkRAs5xBlfsGP61nLkvyoE+EDro6OS5XLCA/OCOv274v1vV2LDQsxLGPoRto
+         lIhGAPEokOq/fvgH67oa4x5ktMZ3j1+P6mSZz78ikAmXdJtIovKz+1bew4ho2302Anrv
+         HffEj0THMuiRmlocBpOqn65sK4Jy5GBDjRuC1WjcwOy/ReVqNEtpQPPGLfeM4+8XZ4I7
+         vdwmgcKD4D6BD9xv55yWMurLM992zMbumDr5j4HGZCH5AX1sGhTf5u1Li9/egaiasdAs
+         /Mj6IwUM1EsN/B99sorZU5CS7tGxXelIVXESEK8udKSW2h4J3kmwDeqKtkQ3ai2mJbC2
+         hd6A==
+X-Gm-Message-State: AOAM531oVZWU2aDTlqeIOHf1Ifisos2NmdTy3enzVB0YkJr7dbKz0kDI
+        X/FEO2ev9PIQfH5M9o3E90mL5bLMv0B0qOOaAS6BYA==
+X-Google-Smtp-Source: ABdhPJxYcof+sEcIS6k1g2fBI94Tsit285jfjEfq4xJ9sCMXYWCCpOkw77yViYGWgY2XHiMONxP5KDRPgNY4lIinde4=
+X-Received: by 2002:a19:b0b:: with SMTP id 11mr19983583lfl.291.1620219154638;
+ Wed, 05 May 2021 05:52:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+References: <20210503144350.7496-1-aardelean@deviqon.com>
+In-Reply-To: <20210503144350.7496-1-aardelean@deviqon.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 5 May 2021 14:52:23 +0200
+Message-ID: <CACRpkdZcnzx6+OQjG_3z8MP1EkhGFBKx1kDxaSFBmDcxs4KHGw@mail.gmail.com>
+Subject: Re: [PATCH] iio: core: return ENODEV if ioctl is unknown
+To:     Alexandru Ardelean <aardelean@deviqon.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Nuno Sa <nuno.sa@analog.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 15 Apr 2021, Srinivas Pandruvada wrote:
+On Mon, May 3, 2021 at 4:43 PM Alexandru Ardelean <aardelean@deviqon.com> wrote:
 
-> When user modifies a custom feature value and sensor_hub_set_feature()
-> fails, return error.
-> 
-> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-> Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> ---
-> Replaces patch: HID: hid-sensor-custom: remove useless variable
-> by Jiapeng Chong <jiapeng.chong@linux.alibaba.com> 
-> 
->  drivers/hid/hid-sensor-custom.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/hid/hid-sensor-custom.c b/drivers/hid/hid-sensor-custom.c
-> index 2628bc53ed80..58b54b127cdf 100644
-> --- a/drivers/hid/hid-sensor-custom.c
-> +++ b/drivers/hid/hid-sensor-custom.c
-> @@ -406,6 +406,8 @@ static ssize_t store_value(struct device *dev, struct device_attribute *attr,
->  								report_id;
->  		ret = sensor_hub_set_feature(sensor_inst->hsdev, report_id,
->  					     index, sizeof(value), &value);
-> +		if (ret)
-> +			return ret;
+> When the ioctl() mechanism was introduced in IIO core to centralize the
+> registration of all ioctls in one place via commit 8dedcc3eee3ac ("iio:
+> core: centralize ioctl() calls to the main chardev"), the return code was
+> changed from ENODEV to EINVAL, when the ioctl code isn't known.
+>
+> This was done by accident.
+>
+> This change reverts back to the old behavior, where if the ioctl() code
+> isn't known, ENODEV is returned (vs EINVAL).
+>
+> This was brought into perspective by this patch:
+>   https://lore.kernel.org/linux-iio/20210428150815.136150-1-paul@crapouillou.net/
+>
+> Fixes: 8dedcc3eee3ac ("iio: core: centralize ioctl() calls to the main chardev")
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: Paul Cercueil <paul@crapouillou.net>
+> Cc: Nuno Sa <nuno.sa@analog.com>
+> Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
 
-What tree is this patch against? In my tree, we're not even assigning 
-sensor_hub_set_feature() return value to anything.
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
--- 
-Jiri Kosina
-SUSE Labs
-
+Yours,
+Linus Walleij

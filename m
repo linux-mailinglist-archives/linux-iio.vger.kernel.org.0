@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 33146374FC9
-	for <lists+linux-iio@lfdr.de>; Thu,  6 May 2021 09:09:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 318BE374FCA
+	for <lists+linux-iio@lfdr.de>; Thu,  6 May 2021 09:09:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232958AbhEFHKu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 6 May 2021 03:10:50 -0400
-Received: from first.geanix.com ([116.203.34.67]:43788 "EHLO first.geanix.com"
+        id S231929AbhEFHKw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 6 May 2021 03:10:52 -0400
+Received: from first.geanix.com ([116.203.34.67]:43804 "EHLO first.geanix.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232934AbhEFHKu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 6 May 2021 03:10:50 -0400
+        id S233070AbhEFHKv (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 6 May 2021 03:10:51 -0400
 Received: from zen.. (unknown [185.17.218.86])
-        by first.geanix.com (Postfix) with ESMTPSA id EA476467C0A;
-        Thu,  6 May 2021 07:09:49 +0000 (UTC)
+        by first.geanix.com (Postfix) with ESMTPSA id 6DA35467C0C;
+        Thu,  6 May 2021 07:09:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1620284990; bh=zmNmn17zhZnlWksVvRksJRpMuk99Gn7tcwbpIrS4AXg=;
+        t=1620284991; bh=wqED4axQUlyM4KkUuBGGG1pLEn7eRBbhATafGypGP8Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=TYA4hAxF7a/Ls/isNZjoRA7sxS41lzkBUhkgkO71dKzAgJzECo2V8dCcsZdxwSH9s
-         oV3AVYwwfv9rCfyJBfCqwzg/fcZnnoCWG4VP87q4yP9mTxiagGsKv7aGAhJ5FXuHuT
-         7RAS+aRIZdZBkk6/VUJc83UWWG/auHHqBQIKHQPeEYaKkODbXM0A4PVS2pgOGt1Ss7
-         jaEP3ihfhHFJD3v1vF+PTY4DZ54lp/W0D7XI+MJg1KxMQ1HU5N9lD3nG/uFOPcSeiw
-         esnDNMNh32Hw4aUt1UnMn8gHMAnX4Raim9IvCQQRyX0tMsVNrduxYOkDyKQVqqkoYp
-         BZTdZYLOQO8TA==
+        b=YkcgWCrME/YdjBj9WW+gWeN0vaqJfivQd+5wTKLXoV4HKqJFOyA7NfMsEvSL9ltb3
+         TCsuKqItW1dGAbM14JcdqIGeZm466zaJF0LjCIPMJPlEfBtYCrKJzgDU/FxMOWO4hi
+         3G2z7Ot0FNFemO+o8FdLmLxkv4MaQhuufEgtuCwD3UIzipiqvI4cRd0ztTpFRUnl+l
+         +YptzKZHoElb+GAEnzWv62+LR+D4P2AtoBxnksW0IOkbOG5JtIU9/igvrYIbqjICF3
+         wkYcrDvf2We3OXZ6n7/7DuWLT+lLQBjsfiOp+svZB2W9zLFcQJ+o1LCPxc2pAdLAzG
+         +yY7wOHWRX8Uw==
 From:   Sean Nyekjaer <sean@geanix.com>
 To:     jic23@kernel.org, linux-iio@vger.kernel.org,
         andy.shevchenko@gmail.com, lars@metafoo.de, Nuno.Sa@analog.com,
         robh+dt@kernel.org, devicetree@vger.kernel.org,
         tomas.melin@vaisala.com
 Cc:     Sean Nyekjaer <sean@geanix.com>
-Subject: [PATCH v5 3/6] iio: accel: fxls8962af: add set/get of samplerate
-Date:   Thu,  6 May 2021 09:09:37 +0200
-Message-Id: <20210506070940.312959-3-sean@geanix.com>
+Subject: [PATCH v5 4/6] iio: accel: fxls8962af: add interrupt support
+Date:   Thu,  6 May 2021 09:09:38 +0200
+Message-Id: <20210506070940.312959-4-sean@geanix.com>
 X-Mailer: git-send-email 2.31.0
 In-Reply-To: <20210506070940.312959-1-sean@geanix.com>
 References: <20210506070940.312959-1-sean@geanix.com>
@@ -45,159 +45,185 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This adds support for setting de accelerometers output data rate.
-Primarily used for hardware buffered reads.
+Preparation commit for the next that adds hw buffered sampling.
+Adds the interrupt function and reads the devicetree for which
+interrupt pin that is used.
 
 Signed-off-by: Sean Nyekjaer <sean@geanix.com>
 ---
- drivers/iio/accel/fxls8962af-core.c | 78 +++++++++++++++++++++++++++--
- 1 file changed, 75 insertions(+), 3 deletions(-)
+Changes for v5:
+ - using of_irq_get_byname()
+
+ drivers/iio/accel/fxls8962af-core.c | 114 ++++++++++++++++++++++++++++
+ 1 file changed, 114 insertions(+)
 
 diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
-index 61b1825c85d1..13167bae9e67 100644
+index 13167bae9e67..b909ba23e47c 100644
 --- a/drivers/iio/accel/fxls8962af-core.c
 +++ b/drivers/iio/accel/fxls8962af-core.c
-@@ -50,6 +50,9 @@
- 
- #define FXLS8962AF_SENS_CONFIG2			0x16
- #define FXLS8962AF_SENS_CONFIG3			0x17
-+#define FXLS8962AF_SC3_WAKE_ODR_MASK		GENMASK(7, 4)
-+#define FXLS8962AF_SC3_WAKE_ODR_PREP(x)		FIELD_PREP(FXLS8962AF_SC3_WAKE_ODR_MASK, (x))
-+#define FXLS8962AF_SC3_WAKE_ODR_GET(x)		FIELD_GET(FXLS8962AF_SC3_WAKE_ODR_MASK, (x))
+@@ -15,6 +15,7 @@
+ #include <linux/bits.h>
+ #include <linux/bitfield.h>
+ #include <linux/module.h>
++#include <linux/of_irq.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/regmap.h>
+@@ -54,6 +55,10 @@
+ #define FXLS8962AF_SC3_WAKE_ODR_PREP(x)		FIELD_PREP(FXLS8962AF_SC3_WAKE_ODR_MASK, (x))
+ #define FXLS8962AF_SC3_WAKE_ODR_GET(x)		FIELD_GET(FXLS8962AF_SC3_WAKE_ODR_MASK, (x))
  #define FXLS8962AF_SENS_CONFIG4			0x18
++#define FXLS8962AF_SC4_INT_PP_OD_MASK		BIT(1)
++#define FXLS8962AF_SC4_INT_PP_OD_PREP(x)	FIELD_PREP(FXLS8962AF_SC4_INT_PP_OD_MASK, (x))
++#define FXLS8962AF_SC4_INT_POL_MASK		BIT(0)
++#define FXLS8962AF_SC4_INT_POL_PREP(x)		FIELD_PREP(FXLS8962AF_SC4_INT_POL_MASK, (x))
  #define FXLS8962AF_SENS_CONFIG5			0x19
  
-@@ -96,6 +99,7 @@
- #define FXLS8962AF_AUTO_SUSPEND_DELAY_MS	2000
+ #define FXLS8962AF_WAKE_IDLE_LSB		0x1b
+@@ -62,6 +67,9 @@
  
- #define FXLS8962AF_SCALE_TABLE_LEN		4
-+#define FXLS8962AF_SAMP_FREQ_TABLE_LEN		13
+ #define FXLS8962AF_INT_EN			0x20
+ #define FXLS8962AF_INT_PIN_SEL			0x21
++#define FXLS8962AF_INT_PIN_SEL_MASK		GENMASK(7, 0)
++#define FXLS8962AF_INT_PIN_SEL_INT1		0x00
++#define FXLS8962AF_INT_PIN_SEL_INT2		GENMASK(7, 0)
  
- static const int fxls8962af_scale_table[FXLS8962AF_SCALE_TABLE_LEN][2] = {
- 	{0, IIO_G_TO_M_S_2(980000)},
-@@ -104,6 +108,12 @@ static const int fxls8962af_scale_table[FXLS8962AF_SCALE_TABLE_LEN][2] = {
- 	{0, IIO_G_TO_M_S_2(7810000)},
+ #define FXLS8962AF_OFF_X			0x22
+ #define FXLS8962AF_OFF_Y			0x23
+@@ -142,6 +150,11 @@ enum {
+ 	fxls8962af_idx_ts,
  };
  
-+static const int fxls8962af_samp_freq_table[FXLS8962AF_SAMP_FREQ_TABLE_LEN][2] = {
-+	{3200, 0}, {1600, 0}, {800, 0}, {400, 0}, {200, 0}, {100, 0},
-+	{50, 0}, {25, 0}, {12, 500000}, {6, 250000}, {3, 125000},
-+	{1, 563000}, {0, 781000},
++enum fxls8962af_int_pin {
++	FXLS8962AF_PIN_INT1,
++	FXLS8962AF_PIN_INT2,
 +};
 +
- struct fxls8962af_chip_info {
- 	const char *name;
- 	const struct iio_chan_spec *channels;
-@@ -224,6 +234,11 @@ static int fxls8962af_read_avail(struct iio_dev *indio_dev,
- 		*vals = (int *)fxls8962af_scale_table;
- 		*length = ARRAY_SIZE(fxls8962af_scale_table) * 2;
- 		return IIO_AVAIL_LIST;
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		*type = IIO_VAL_INT_PLUS_MICRO;
-+		*vals = (int *)fxls8962af_samp_freq_table;
-+		*length = ARRAY_SIZE(fxls8962af_samp_freq_table) * 2;
-+		return IIO_AVAIL_LIST;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -233,7 +248,14 @@ static int fxls8962af_write_raw_get_fmt(struct iio_dev *indio_dev,
- 					struct iio_chan_spec const *chan,
- 					long mask)
+ static int fxls8962af_power_on(struct fxls8962af_data *data)
  {
--	return IIO_VAL_INT_PLUS_NANO;
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SCALE:
-+		return IIO_VAL_INT_PLUS_NANO;
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		return IIO_VAL_INT_PLUS_MICRO;
-+	default:
-+		return IIO_VAL_INT_PLUS_NANO;
-+	}
+ 	struct device *dev = regmap_get_device(data->regmap);
+@@ -504,6 +517,20 @@ static int fxls8962af_reset(struct fxls8962af_data *data)
+ 	return ret;
  }
  
- static int fxls8962af_update_config(struct fxls8962af_data *data, u8 reg,
-@@ -296,6 +318,43 @@ static unsigned int fxls8962af_read_full_scale(struct fxls8962af_data *data,
- 	return IIO_VAL_INT_PLUS_NANO;
- }
- 
-+static int fxls8962af_set_samp_freq(struct fxls8962af_data *data, u32 val,
-+				    u32 val2)
++static irqreturn_t fxls8962af_interrupt(int irq, void *p)
 +{
-+	int i;
++	struct iio_dev *indio_dev = p;
++	struct fxls8962af_data *data = iio_priv(indio_dev);
++	unsigned int reg;
++	int ret;
 +
-+	for (i = 0; i < ARRAY_SIZE(fxls8962af_samp_freq_table); i++)
-+		if (val == fxls8962af_samp_freq_table[i][0] &&
-+		    val2 == fxls8962af_samp_freq_table[i][1])
-+			break;
++	ret = regmap_read(data->regmap, FXLS8962AF_INT_STATUS, &reg);
++	if (ret)
++		return IRQ_NONE;
 +
-+	if (i == ARRAY_SIZE(fxls8962af_samp_freq_table))
-+		return -EINVAL;
-+
-+	return fxls8962af_update_config(data, FXLS8962AF_SENS_CONFIG3,
-+					FXLS8962AF_SC3_WAKE_ODR_MASK,
-+					FXLS8962AF_SC3_WAKE_ODR_PREP(i));
++	return IRQ_NONE;
 +}
 +
-+static unsigned int fxls8962af_read_samp_freq(struct fxls8962af_data *data,
-+					      int *val, int *val2)
+ static void fxls8962af_regulator_disable(void *data_ptr)
+ {
+ 	struct fxls8962af_data *data = data_ptr;
+@@ -523,6 +550,87 @@ static void fxls8962af_pm_disable(void *dev_ptr)
+ 	fxls8962af_standby(iio_priv(indio_dev));
+ }
+ 
++static void fxls8962af_get_irq(struct device_node *of_node,
++			       enum fxls8962af_int_pin *pin)
 +{
-+	int ret;
-+	unsigned int reg;
-+	u8 range_idx;
++	int irq;
 +
-+	ret = regmap_read(data->regmap, FXLS8962AF_SENS_CONFIG3, &reg);
++	irq = of_irq_get_byname(of_node, "INT2");
++	if (irq > 0) {
++		*pin = FXLS8962AF_PIN_INT2;
++		return;
++	}
++
++	*pin = FXLS8962AF_PIN_INT1;
++}
++
++static int fxls8962af_irq_setup(struct iio_dev *indio_dev, int irq)
++{
++	struct fxls8962af_data *data = iio_priv(indio_dev);
++	struct device *dev = regmap_get_device(data->regmap);
++	unsigned long irq_type;
++	bool irq_active_high;
++	enum fxls8962af_int_pin int_pin;
++	u8 int_pin_sel;
++	int ret;
++
++	fxls8962af_get_irq(dev->of_node, &int_pin);
++	switch (int_pin) {
++	case FXLS8962AF_PIN_INT1:
++		int_pin_sel = FXLS8962AF_INT_PIN_SEL_INT1;
++		break;
++	case FXLS8962AF_PIN_INT2:
++		int_pin_sel = FXLS8962AF_INT_PIN_SEL_INT2;
++		break;
++	default:
++		dev_err(dev, "unsupported int pin selected\n");
++		return -EINVAL;
++	}
++
++	ret = regmap_update_bits(data->regmap, FXLS8962AF_INT_PIN_SEL,
++				 FXLS8962AF_INT_PIN_SEL_MASK, int_pin_sel);
 +	if (ret)
 +		return ret;
 +
-+	range_idx = FXLS8962AF_SC3_WAKE_ODR_GET(reg);
++	irq_type = irqd_get_trigger_type(irq_get_irq_data(irq));
 +
-+	*val = fxls8962af_samp_freq_table[range_idx][0];
-+	*val2 = fxls8962af_samp_freq_table[range_idx][1];
++	switch (irq_type) {
++	case IRQF_TRIGGER_HIGH:
++	case IRQF_TRIGGER_RISING:
++		irq_active_high = true;
++		break;
++	case IRQF_TRIGGER_LOW:
++	case IRQF_TRIGGER_FALLING:
++		irq_active_high = false;
++		break;
++	default:
++		dev_info(dev, "mode %lx unsupported\n", irq_type);
++		return -EINVAL;
++	}
 +
-+	return IIO_VAL_INT_PLUS_MICRO;
-+}
-+
- static int fxls8962af_read_raw(struct iio_dev *indio_dev,
- 			       struct iio_chan_spec const *chan,
- 			       int *val, int *val2, long mask)
-@@ -320,6 +379,8 @@ static int fxls8962af_read_raw(struct iio_dev *indio_dev,
- 	case IIO_CHAN_INFO_SCALE:
- 		*val = 0;
- 		return fxls8962af_read_full_scale(data, val2);
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		return fxls8962af_read_samp_freq(data, val, val2);
- 	default:
- 		return -EINVAL;
- 	}
-@@ -343,6 +404,15 @@ static int fxls8962af_write_raw(struct iio_dev *indio_dev,
- 
- 		ret = fxls8962af_set_full_scale(data, val2);
- 
-+		iio_device_release_direct_mode(indio_dev);
++	ret = regmap_update_bits(data->regmap, FXLS8962AF_SENS_CONFIG4,
++				 FXLS8962AF_SC4_INT_POL_MASK,
++				 FXLS8962AF_SC4_INT_POL_PREP(irq_active_high));
++	if (ret)
 +		return ret;
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		ret = iio_device_claim_direct_mode(indio_dev);
++
++	if (device_property_read_bool(dev, "drive-open-drain")) {
++		ret = regmap_update_bits(data->regmap, FXLS8962AF_SENS_CONFIG4,
++					 FXLS8962AF_SC4_INT_PP_OD_MASK,
++					 FXLS8962AF_SC4_INT_PP_OD_PREP(1));
 +		if (ret)
 +			return ret;
 +
-+		ret = fxls8962af_set_samp_freq(data, val, val2);
++		irq_type |= IRQF_SHARED;
++	}
 +
- 		iio_device_release_direct_mode(indio_dev);
++	return devm_request_threaded_irq(dev,
++					 irq,
++					 NULL, fxls8962af_interrupt,
++					 irq_type | IRQF_ONESHOT,
++					 indio_dev->name, indio_dev);
++}
++
+ int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq)
+ {
+ 	struct fxls8962af_data *data;
+@@ -582,6 +690,12 @@ int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq)
+ 	if (ret)
  		return ret;
- 	default:
-@@ -356,8 +426,10 @@ static int fxls8962af_write_raw(struct iio_dev *indio_dev,
- 	.modified = 1, \
- 	.channel2 = IIO_MOD_##axis, \
- 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
--	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE), \
--	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SCALE), \
-+	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) | \
-+				    BIT(IIO_CHAN_INFO_SAMP_FREQ), \
-+	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SCALE) | \
-+					      BIT(IIO_CHAN_INFO_SAMP_FREQ), \
- 	.scan_index = idx, \
- 	.scan_type = { \
- 		.sign = 's', \
+ 
++	if (irq) {
++		ret = fxls8962af_irq_setup(indio_dev, irq);
++		if (ret)
++			return ret;
++	}
++
+ 	ret = pm_runtime_set_active(dev);
+ 	if (ret)
+ 		return ret;
 -- 
 2.31.0
 

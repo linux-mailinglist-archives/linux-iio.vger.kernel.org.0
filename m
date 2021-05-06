@@ -2,116 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA50F37558F
-	for <lists+linux-iio@lfdr.de>; Thu,  6 May 2021 16:24:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20D1F375598
+	for <lists+linux-iio@lfdr.de>; Thu,  6 May 2021 16:25:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234602AbhEFOZK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 6 May 2021 10:25:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46124 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234485AbhEFOZK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 May 2021 10:25:10 -0400
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 438EFC061574;
-        Thu,  6 May 2021 07:24:12 -0700 (PDT)
-Received: by mail-pj1-x102a.google.com with SMTP id b14-20020a17090a6e0eb0290155c7f6a356so2923037pjk.0;
-        Thu, 06 May 2021 07:24:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=4glvnlaFWn01xnV1JtCJ2JwFkwp5srepoGHpfN8ZxeM=;
-        b=slTGTTGfU1Fc5HFY3pMpvELCBOEsT/K5DVnm6MXQkW+DiDwGw5B4fLBxqYJ/k0EC+/
-         a9DWTMLlsJFVuFtUeKPV1eRpTKMDeeSI33k2/4g6Zdaq3kouRlkxvzGIT5BAvXC4ne4y
-         dr3BzefObjl+8XIdTZ4e3aPRaqwL4C3p98A0yimj7E4QukD9AfSOGNWvwRVSJg0jx/0S
-         ZUOgE6VN6DvW4d4uKcl+voPMFrw1qjRqncjnm90ZqA99X+WUsURSEWscfrdPBt9XNOCI
-         G3rF1lw33yqdyVaL37+R16OvYNZ5XO+byI077ALQNjA6dNTAM8T3ap14bG5WPBRQVeCW
-         3HbA==
+        id S234612AbhEFO0f (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 6 May 2021 10:26:35 -0400
+Received: from mail-ot1-f51.google.com ([209.85.210.51]:40458 "EHLO
+        mail-ot1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234002AbhEFO0e (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 May 2021 10:26:34 -0400
+Received: by mail-ot1-f51.google.com with SMTP id c28-20020a9d615c0000b02902dde7c8833eso55778otk.7;
+        Thu, 06 May 2021 07:25:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4glvnlaFWn01xnV1JtCJ2JwFkwp5srepoGHpfN8ZxeM=;
-        b=b5aM2jiBZB4lDag7b3LNwmNrfGjlLjk1bM93FToPFtGTEIdiCDvPIesNkYhgmlOXR3
-         +Dxk5/JyhCmKVE1MR99iZoeDjvTZMNkL5sYqlS7RKwVphemlNfZyoQO+cTtRiJwsX7BM
-         CR4JzkKTnt7zNoewzAJdtu7WfhHmhQ+SqpYh8G50L389oTvav4dBPQfryr8GmWcOd75B
-         EbYJ6OPYFXBkcshmkS74MX6BoNWn1lrMakq2UKfeAKbTFSqt7uzVd9ycTKqDcaDfrx4a
-         jZPrOkTQAdy+RtumzNeTrGqYq7HNG3Q8yMdkYakH73YQ3fKy/bvb5WyFXCaD5RBS6Hfz
-         3aAw==
-X-Gm-Message-State: AOAM532kU2HbX18i81s4xYuUL2EtqJBYMw40KBv967xNMNCqmKl0p0Nr
-        pgN4yIHo3z6O8s7hvbEBlv3jLkuszGmt/7Hz8NI=
-X-Google-Smtp-Source: ABdhPJw+reSNZtl9CN6kUTlQBS8RYpAYnENBOPmcpuoJox5lgSMGm082tl4ZLXJO0svA79fbUqlo+ywmgeP27M+cqjU=
-X-Received: by 2002:a17:90a:bd13:: with SMTP id y19mr18762947pjr.181.1620311051365;
- Thu, 06 May 2021 07:24:11 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=NO5xlMoNjYCr6KREf7vnuwTavEBKSBCosskSU2E1U4A=;
+        b=BS+RpSKSesKEVKCmf8VX0CEW0UDDsroiBo+Px1rFTDjz6jejx9BYDR3dIPHH6hAtwZ
+         AFCquvzJI4Yf9DircaRXDJtp4m2W6YwPPspnO4CGZg9QeREjrczmjmv0ZCjTXN/g2tMF
+         Dk3E/LNq7GfH7zXNPi5dExHXH6vfQudBfuFjH65RcmKzuTYTAicV15+TzMHoM9cXDdyc
+         smNfnNP5JYlnuhiXnVtWaYILQrGq2tPQx9lhmXYW2JpZ3eUiM52SX3VrrQ4sF21azNA3
+         MxqYxMrF7DWPUxvbBzsfZBBC30g5wKY+KGTfCzJyNUlESndXN4M/TZLYKyp4c1pxFvx1
+         XptA==
+X-Gm-Message-State: AOAM533XOlLcVNf8JAa2SciESFudJulwkl1EcTuPle4DxA789vSXQhuA
+        05P8trV6MBgUmkqNlaLmTg==
+X-Google-Smtp-Source: ABdhPJw4F88w3A2wOguIyMIrYqJqK/2fOGIqigAkknVGyAjqgSNQEKVRVS8ziJsZawxLOzJU2MaRAg==
+X-Received: by 2002:a05:6830:2159:: with SMTP id r25mr3846804otd.313.1620311136040;
+        Thu, 06 May 2021 07:25:36 -0700 (PDT)
+Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id m25sm443067oih.15.2021.05.06.07.25.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 May 2021 07:25:35 -0700 (PDT)
+Received: (nullmailer pid 277878 invoked by uid 1000);
+        Thu, 06 May 2021 14:25:34 -0000
+Date:   Thu, 6 May 2021 09:25:34 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Lucas Stankus <lucas.p.stankus@gmail.com>
+Cc:     linux-staging@lists.linux.dev, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org, gregkh@linuxfoundation.org,
+        lars@metafoo.de, linux-kernel@vger.kernel.org,
+        Michael.Hennerich@analog.com, jic23@kernel.org
+Subject: Re: [PATCH v3 1/2] dt-bindings: staging: iio: cdc: ad7746: add
+ binding documentation for AD7746
+Message-ID: <20210506142534.GA277826@robh.at.kernel.org>
+References: <cover.1619841953.git.lucas.p.stankus@gmail.com>
+ <2c2f4d486a94e0740e112bfac0d9306bdb7ea69c.1619841953.git.lucas.p.stankus@gmail.com>
 MIME-Version: 1.0
-References: <20210506133145.2266604-1-linux@roeck-us.net>
-In-Reply-To: <20210506133145.2266604-1-linux@roeck-us.net>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 6 May 2021 17:23:55 +0300
-Message-ID: <CAHp75VeJTZcq-gTrd5s7Ovbyg7TQUoGC35T6p7ZO1XeEePSuMA@mail.gmail.com>
-Subject: Re: [PATCH] iio: bme680_spi: Remove ACPI support
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2c2f4d486a94e0740e112bfac0d9306bdb7ea69c.1619841953.git.lucas.p.stankus@gmail.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, May 6, 2021 at 4:31 PM Guenter Roeck <linux@roeck-us.net> wrote:
->
-> BME0680 is not an official ACPI ID, so let's remove it before someone
-> starts using it.
-
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-
-> Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
-> Cc: Hans de Goede <hdegoede@redhat.com>
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+On Sat, 01 May 2021 09:32:31 -0300, Lucas Stankus wrote:
+> Add device tree binding documentation for AD7746 cdc in YAML format.
+> 
+> Signed-off-by: Lucas Stankus <lucas.p.stankus@gmail.com>
 > ---
->  drivers/iio/chemical/bme680_spi.c | 8 --------
->  1 file changed, 8 deletions(-)
->
-> diff --git a/drivers/iio/chemical/bme680_spi.c b/drivers/iio/chemical/bme680_spi.c
-> index 6f56ad48cc40..cc579a7ac5ce 100644
-> --- a/drivers/iio/chemical/bme680_spi.c
-> +++ b/drivers/iio/chemical/bme680_spi.c
-> @@ -4,7 +4,6 @@
->   *
->   * Copyright (C) 2018 Himanshu Jha <himanshujha199640@gmail.com>
->   */
-> -#include <linux/acpi.h>
->  #include <linux/module.h>
->  #include <linux/of.h>
->  #include <linux/regmap.h>
-> @@ -145,12 +144,6 @@ static const struct spi_device_id bme680_spi_id[] = {
->  };
->  MODULE_DEVICE_TABLE(spi, bme680_spi_id);
->
-> -static const struct acpi_device_id bme680_acpi_match[] = {
-> -       {"BME0680", 0},
-> -       {},
-> -};
-> -MODULE_DEVICE_TABLE(acpi, bme680_acpi_match);
-> -
->  static const struct of_device_id bme680_of_spi_match[] = {
->         { .compatible = "bosch,bme680", },
->         {},
-> @@ -160,7 +153,6 @@ MODULE_DEVICE_TABLE(of, bme680_of_spi_match);
->  static struct spi_driver bme680_spi_driver = {
->         .driver = {
->                 .name                   = "bme680_spi",
-> -               .acpi_match_table       = ACPI_PTR(bme680_acpi_match),
->                 .of_match_table         = bme680_of_spi_match,
->         },
->         .probe = bme680_spi_probe,
-> --
-> 2.25.1
->
+>  .../bindings/iio/cdc/adi,ad7746.yaml          | 77 +++++++++++++++++++
+>  1 file changed, 77 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/cdc/adi,ad7746.yaml
+> 
 
-
--- 
-With Best Regards,
-Andy Shevchenko
+Reviewed-by: Rob Herring <robh@kernel.org>

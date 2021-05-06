@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2A5A374FC6
-	for <lists+linux-iio@lfdr.de>; Thu,  6 May 2021 09:09:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33146374FC9
+	for <lists+linux-iio@lfdr.de>; Thu,  6 May 2021 09:09:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232700AbhEFHKt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 6 May 2021 03:10:49 -0400
-Received: from first.geanix.com ([116.203.34.67]:43776 "EHLO first.geanix.com"
+        id S232958AbhEFHKu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 6 May 2021 03:10:50 -0400
+Received: from first.geanix.com ([116.203.34.67]:43788 "EHLO first.geanix.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231929AbhEFHKt (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 6 May 2021 03:10:49 -0400
+        id S232934AbhEFHKu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 6 May 2021 03:10:50 -0400
 Received: from zen.. (unknown [185.17.218.86])
-        by first.geanix.com (Postfix) with ESMTPSA id B4C5E467B91;
-        Thu,  6 May 2021 07:09:48 +0000 (UTC)
+        by first.geanix.com (Postfix) with ESMTPSA id EA476467C0A;
+        Thu,  6 May 2021 07:09:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1620284988; bh=63pLvFMM0fWPTWS+syaz4IkTW6fwQBurzDkBQp/9rdE=;
+        t=1620284990; bh=zmNmn17zhZnlWksVvRksJRpMuk99Gn7tcwbpIrS4AXg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=No8F7fESBagDiBzzBImd0haxW3P5+LChpfn0bCOOvUITlo58YX9WW/1TT7lm/LbQK
-         /L4wtAeoBpdpaKg4jC24Eqqj0u9YPPduV+DVsPA0/alh5cdvP9v5mGE9NvL/uRvD/P
-         ww7JdSmab1DKdUqt6i2HKuVo/xMB0jWgC4V7BV1F92L7+0DwVVKzV4Le1JiV2VW1L+
-         e3RMv542Dlp3geTyJrmaL+mhr0pFd5jklfIBSsup6/MVLqFITg7Q8rDJZfWf+4OhL0
-         OBtHXwle2nxKC/91q2Wzl9SHRW89/TV3LyeYpmXmisjQXt10Q+OWOEZpJ/HRIxATLp
-         kuhFZcWcaS6wg==
+        b=TYA4hAxF7a/Ls/isNZjoRA7sxS41lzkBUhkgkO71dKzAgJzECo2V8dCcsZdxwSH9s
+         oV3AVYwwfv9rCfyJBfCqwzg/fcZnnoCWG4VP87q4yP9mTxiagGsKv7aGAhJ5FXuHuT
+         7RAS+aRIZdZBkk6/VUJc83UWWG/auHHqBQIKHQPeEYaKkODbXM0A4PVS2pgOGt1Ss7
+         jaEP3ihfhHFJD3v1vF+PTY4DZ54lp/W0D7XI+MJg1KxMQ1HU5N9lD3nG/uFOPcSeiw
+         esnDNMNh32Hw4aUt1UnMn8gHMAnX4Raim9IvCQQRyX0tMsVNrduxYOkDyKQVqqkoYp
+         BZTdZYLOQO8TA==
 From:   Sean Nyekjaer <sean@geanix.com>
 To:     jic23@kernel.org, linux-iio@vger.kernel.org,
         andy.shevchenko@gmail.com, lars@metafoo.de, Nuno.Sa@analog.com,
         robh+dt@kernel.org, devicetree@vger.kernel.org,
         tomas.melin@vaisala.com
 Cc:     Sean Nyekjaer <sean@geanix.com>
-Subject: [PATCH v5 2/6] dt-bindings: iio: accel: fxls8962af: add bindings
-Date:   Thu,  6 May 2021 09:09:36 +0200
-Message-Id: <20210506070940.312959-2-sean@geanix.com>
+Subject: [PATCH v5 3/6] iio: accel: fxls8962af: add set/get of samplerate
+Date:   Thu,  6 May 2021 09:09:37 +0200
+Message-Id: <20210506070940.312959-3-sean@geanix.com>
 X-Mailer: git-send-email 2.31.0
 In-Reply-To: <20210506070940.312959-1-sean@geanix.com>
 References: <20210506070940.312959-1-sean@geanix.com>
@@ -45,113 +45,159 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add devicetree binding for the NXP FXLS8962AF/FXLS8964AF
-accelerometer sensor.
+This adds support for setting de accelerometers output data rate.
+Primarily used for hardware buffered reads.
 
 Signed-off-by: Sean Nyekjaer <sean@geanix.com>
 ---
-Changes for v2:
- - removed requirement for interrupt
+ drivers/iio/accel/fxls8962af-core.c | 78 +++++++++++++++++++++++++++--
+ 1 file changed, 75 insertions(+), 3 deletions(-)
 
-Changes for v3:
- - None
-
-Changes for v4:
- - Included the dt patch from the RFC
-
-Changes for v5:
- - fixed interrupt enum
-
- .../bindings/iio/accel/nxp,fxls8962af.yaml    | 80 +++++++++++++++++++
- 1 file changed, 80 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
-
-diff --git a/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml b/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
-new file mode 100644
-index 000000000000..ad529ab2c6e2
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
-@@ -0,0 +1,80 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/accel/nxp,fxls8962af.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
+index 61b1825c85d1..13167bae9e67 100644
+--- a/drivers/iio/accel/fxls8962af-core.c
++++ b/drivers/iio/accel/fxls8962af-core.c
+@@ -50,6 +50,9 @@
+ 
+ #define FXLS8962AF_SENS_CONFIG2			0x16
+ #define FXLS8962AF_SENS_CONFIG3			0x17
++#define FXLS8962AF_SC3_WAKE_ODR_MASK		GENMASK(7, 4)
++#define FXLS8962AF_SC3_WAKE_ODR_PREP(x)		FIELD_PREP(FXLS8962AF_SC3_WAKE_ODR_MASK, (x))
++#define FXLS8962AF_SC3_WAKE_ODR_GET(x)		FIELD_GET(FXLS8962AF_SC3_WAKE_ODR_MASK, (x))
+ #define FXLS8962AF_SENS_CONFIG4			0x18
+ #define FXLS8962AF_SENS_CONFIG5			0x19
+ 
+@@ -96,6 +99,7 @@
+ #define FXLS8962AF_AUTO_SUSPEND_DELAY_MS	2000
+ 
+ #define FXLS8962AF_SCALE_TABLE_LEN		4
++#define FXLS8962AF_SAMP_FREQ_TABLE_LEN		13
+ 
+ static const int fxls8962af_scale_table[FXLS8962AF_SCALE_TABLE_LEN][2] = {
+ 	{0, IIO_G_TO_M_S_2(980000)},
+@@ -104,6 +108,12 @@ static const int fxls8962af_scale_table[FXLS8962AF_SCALE_TABLE_LEN][2] = {
+ 	{0, IIO_G_TO_M_S_2(7810000)},
+ };
+ 
++static const int fxls8962af_samp_freq_table[FXLS8962AF_SAMP_FREQ_TABLE_LEN][2] = {
++	{3200, 0}, {1600, 0}, {800, 0}, {400, 0}, {200, 0}, {100, 0},
++	{50, 0}, {25, 0}, {12, 500000}, {6, 250000}, {3, 125000},
++	{1, 563000}, {0, 781000},
++};
 +
-+title: NXP FXLS8962AF/FXLS8964AF Accelerometer driver
+ struct fxls8962af_chip_info {
+ 	const char *name;
+ 	const struct iio_chan_spec *channels;
+@@ -224,6 +234,11 @@ static int fxls8962af_read_avail(struct iio_dev *indio_dev,
+ 		*vals = (int *)fxls8962af_scale_table;
+ 		*length = ARRAY_SIZE(fxls8962af_scale_table) * 2;
+ 		return IIO_AVAIL_LIST;
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		*type = IIO_VAL_INT_PLUS_MICRO;
++		*vals = (int *)fxls8962af_samp_freq_table;
++		*length = ARRAY_SIZE(fxls8962af_samp_freq_table) * 2;
++		return IIO_AVAIL_LIST;
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -233,7 +248,14 @@ static int fxls8962af_write_raw_get_fmt(struct iio_dev *indio_dev,
+ 					struct iio_chan_spec const *chan,
+ 					long mask)
+ {
+-	return IIO_VAL_INT_PLUS_NANO;
++	switch (mask) {
++	case IIO_CHAN_INFO_SCALE:
++		return IIO_VAL_INT_PLUS_NANO;
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		return IIO_VAL_INT_PLUS_MICRO;
++	default:
++		return IIO_VAL_INT_PLUS_NANO;
++	}
+ }
+ 
+ static int fxls8962af_update_config(struct fxls8962af_data *data, u8 reg,
+@@ -296,6 +318,43 @@ static unsigned int fxls8962af_read_full_scale(struct fxls8962af_data *data,
+ 	return IIO_VAL_INT_PLUS_NANO;
+ }
+ 
++static int fxls8962af_set_samp_freq(struct fxls8962af_data *data, u32 val,
++				    u32 val2)
++{
++	int i;
 +
-+maintainers:
-+  - Sean Nyekjaer <sean@geanix.com>
++	for (i = 0; i < ARRAY_SIZE(fxls8962af_samp_freq_table); i++)
++		if (val == fxls8962af_samp_freq_table[i][0] &&
++		    val2 == fxls8962af_samp_freq_table[i][1])
++			break;
 +
-+description: |
-+  NXP FXLS8962AF/FXLS8964AF Accelerometer driver that supports
-+  SPI and I2C interface.
-+    https://www.nxp.com/docs/en/data-sheet/FXLS8962AF.pdf
-+    https://www.nxp.com/docs/en/data-sheet/FXLS8964AF.pdf
++	if (i == ARRAY_SIZE(fxls8962af_samp_freq_table))
++		return -EINVAL;
 +
-+properties:
-+  compatible:
-+    enum:
-+      - nxp,fxls8962af
-+      - nxp,fxls8964af
++	return fxls8962af_update_config(data, FXLS8962AF_SENS_CONFIG3,
++					FXLS8962AF_SC3_WAKE_ODR_MASK,
++					FXLS8962AF_SC3_WAKE_ODR_PREP(i));
++}
 +
-+  reg:
-+    maxItems: 1
++static unsigned int fxls8962af_read_samp_freq(struct fxls8962af_data *data,
++					      int *val, int *val2)
++{
++	int ret;
++	unsigned int reg;
++	u8 range_idx;
 +
-+  vdd-supply:
-+    description: phandle to the regulator that provides power to the accelerometer
++	ret = regmap_read(data->regmap, FXLS8962AF_SENS_CONFIG3, &reg);
++	if (ret)
++		return ret;
 +
-+  spi-max-frequency: true
++	range_idx = FXLS8962AF_SC3_WAKE_ODR_GET(reg);
 +
-+  interrupts:
-+    maxItems: 1
++	*val = fxls8962af_samp_freq_table[range_idx][0];
++	*val2 = fxls8962af_samp_freq_table[range_idx][1];
 +
-+  interrupt-names:
-+    enum:
-+      - INT1
-+      - INT2
++	return IIO_VAL_INT_PLUS_MICRO;
++}
 +
-+  drive-open-drain:
-+    type: boolean
+ static int fxls8962af_read_raw(struct iio_dev *indio_dev,
+ 			       struct iio_chan_spec const *chan,
+ 			       int *val, int *val2, long mask)
+@@ -320,6 +379,8 @@ static int fxls8962af_read_raw(struct iio_dev *indio_dev,
+ 	case IIO_CHAN_INFO_SCALE:
+ 		*val = 0;
+ 		return fxls8962af_read_full_scale(data, val2);
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		return fxls8962af_read_samp_freq(data, val, val2);
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -343,6 +404,15 @@ static int fxls8962af_write_raw(struct iio_dev *indio_dev,
+ 
+ 		ret = fxls8962af_set_full_scale(data, val2);
+ 
++		iio_device_release_direct_mode(indio_dev);
++		return ret;
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		ret = iio_device_claim_direct_mode(indio_dev);
++		if (ret)
++			return ret;
 +
-+required:
-+  - compatible
-+  - reg
++		ret = fxls8962af_set_samp_freq(data, val, val2);
 +
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    i2c0 {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        /* Example for a I2C device node */
-+        accelerometer@62 {
-+            compatible = "nxp,fxls8962af";
-+            reg = <0x62>;
-+            interrupt-parent = <&gpio0>;
-+            interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-+            interrupt-names = "INT1";
-+        };
-+    };
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    spi0 {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        /* Example for a SPI device node */
-+        accelerometer@0 {
-+            compatible = "nxp,fxls8962af";
-+            reg = <0>;
-+            spi-max-frequency = <4000000>;
-+            interrupt-parent = <&gpio0>;
-+            interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-+            interrupt-names = "INT1";
-+        };
-+    };
+ 		iio_device_release_direct_mode(indio_dev);
+ 		return ret;
+ 	default:
+@@ -356,8 +426,10 @@ static int fxls8962af_write_raw(struct iio_dev *indio_dev,
+ 	.modified = 1, \
+ 	.channel2 = IIO_MOD_##axis, \
+ 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
+-	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE), \
+-	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SCALE), \
++	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) | \
++				    BIT(IIO_CHAN_INFO_SAMP_FREQ), \
++	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SCALE) | \
++					      BIT(IIO_CHAN_INFO_SAMP_FREQ), \
+ 	.scan_index = idx, \
+ 	.scan_type = { \
+ 		.sign = 's', \
 -- 
 2.31.0
 

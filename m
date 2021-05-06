@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2083374FCC
-	for <lists+linux-iio@lfdr.de>; Thu,  6 May 2021 09:09:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1985374FCE
+	for <lists+linux-iio@lfdr.de>; Thu,  6 May 2021 09:10:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233131AbhEFHKz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 6 May 2021 03:10:55 -0400
-Received: from first.geanix.com ([116.203.34.67]:43818 "EHLO first.geanix.com"
+        id S233120AbhEFHK4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 6 May 2021 03:10:56 -0400
+Received: from first.geanix.com ([116.203.34.67]:43834 "EHLO first.geanix.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233120AbhEFHKy (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 6 May 2021 03:10:54 -0400
+        id S233116AbhEFHKz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 6 May 2021 03:10:55 -0400
 Received: from zen.. (unknown [185.17.218.86])
-        by first.geanix.com (Postfix) with ESMTPSA id B29B8467C11;
-        Thu,  6 May 2021 07:09:52 +0000 (UTC)
+        by first.geanix.com (Postfix) with ESMTPSA id DFA3C467C14;
+        Thu,  6 May 2021 07:09:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1620284992; bh=tUnC6c+MGPSxWwaiGIC1msKlnRbEuFDNPDgxeMbhNWc=;
+        t=1620284995; bh=jOibTSPS6GfMEalWCAqhIQ4KL1a+okB78aZWmriQ+lg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=CMsLZz3xEE1ziG3ywJVEA+3qc/SZy5Kxj8IXQ/+9cM646yXzANpjoj0/oN1LNwHuI
-         KL0G/lJYZ5UF7GrIpBQAGCkhKSkCN9dbhK4z+4cHVL2W80FfYKxpjTrE8HKyZv50Hq
-         S862wRWDIwys81f5ny6KY//Eon9oEcdiHGESISz3QvFeSHCJIzAP8hRC3lQzabtBfi
-         o1IyLUGH+7uBtE5AjCitmitAmaoXlNLQGQBFqQwXUMRkQr4fJ3kT4EDDJkS0TZQsIU
-         dhEbkhuQiTJAR8TXdcIjozGEQAy3Ld4A+5YVoEy4dcS1z2HM3/AxGZGE/JOZsXO7+Q
-         kd9Ywdi1cd2cw==
+        b=KxxVfgQzoGmw50+YvlAS+k2qAOsInZqyudtO3UjToJlcJ2psBtv2SbpRT0uZDG6s8
+         mIc25oNQ5HFwEXELnB14cdr312fLzMgSXbLhL5euoLvRFHcdHgcxlDmOR7GE3khXEz
+         f4yN08Y9dLYzv9mVCNMcSH1B1BkoGWxt2cs3vyM/MzY+1UIs3LKJOPCOmTgVxbjO23
+         p2MhxLRCCEfJm5KP8jguVt9oAsph6CkhO70UqPRJ0WgyhFoKzbjHd6h3UtQxWddluI
+         hEoAbrb4uYnXQgK1SQu/VMR23zV2CCEsR+yui/G31v2m2q6aKsj/3GskJpdtj9aZ+1
+         bgSnOdcvkSKgA==
 From:   Sean Nyekjaer <sean@geanix.com>
 To:     jic23@kernel.org, linux-iio@vger.kernel.org,
         andy.shevchenko@gmail.com, lars@metafoo.de, Nuno.Sa@analog.com,
         robh+dt@kernel.org, devicetree@vger.kernel.org,
         tomas.melin@vaisala.com
 Cc:     Sean Nyekjaer <sean@geanix.com>
-Subject: [PATCH v5 5/6] iio: accel: fxls8962af: add hw buffered sampling
-Date:   Thu,  6 May 2021 09:09:39 +0200
-Message-Id: <20210506070940.312959-5-sean@geanix.com>
+Subject: [PATCH v5 6/6] iio: accel: fxls8962af: fix errata bug E3 - I2C burst reads
+Date:   Thu,  6 May 2021 09:09:40 +0200
+Message-Id: <20210506070940.312959-6-sean@geanix.com>
 X-Mailer: git-send-email 2.31.0
 In-Reply-To: <20210506070940.312959-1-sean@geanix.com>
 References: <20210506070940.312959-1-sean@geanix.com>
@@ -45,325 +45,78 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-When buffered sampling is enabled, the accelerometer will dump data into
-the internal fifo and interrupt at watermark. Then the driver flushes
-all data to the iio buffer.
-As the accelerometer doesn't have internal timestamps, they are
-approximated between the current and last interrupt.
+When flushing the hw fifo there is a bug in the I2C that prevents burst
+reads of more than one sample pair.
 
 Signed-off-by: Sean Nyekjaer <sean@geanix.com>
 ---
 Changes from RFC:
- - Dropped the claim stuff for read_raw
- - Added watermark get/set
- - Consistent use of u16 for buffer size
+ - using i2c_verify_client() to detect if hw is connected on I2C bus
 
 Changes for v5:
- - removed redundant blank lines and redundant assignments
+ - added errata function
 
- drivers/iio/accel/fxls8962af-core.c | 207 ++++++++++++++++++++++++++++
- 1 file changed, 207 insertions(+)
+ drivers/iio/accel/fxls8962af-core.c | 33 ++++++++++++++++++++++++++---
+ 1 file changed, 30 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
-index b909ba23e47c..889e470658b9 100644
+index 889e470658b9..9f4fdddfee41 100644
 --- a/drivers/iio/accel/fxls8962af-core.c
 +++ b/drivers/iio/accel/fxls8962af-core.c
-@@ -20,13 +20,17 @@
- #include <linux/regulator/consumer.h>
- #include <linux/regmap.h>
+@@ -14,6 +14,7 @@
  
-+#include <linux/iio/buffer.h>
- #include <linux/iio/iio.h>
-+#include <linux/iio/kfifo_buf.h>
- #include <linux/iio/sysfs.h>
-+#include <linux/iio/trigger.h>
- 
- #include "fxls8962af.h"
- 
- #define FXLS8962AF_INT_STATUS			0x00
- #define FXLS8962AF_INT_STATUS_SRC_BOOT		BIT(0)
-+#define FXLS8962AF_INT_STATUS_SRC_BUF		BIT(5)
- #define FXLS8962AF_INT_STATUS_SRC_DRDY		BIT(7)
- #define FXLS8962AF_TEMP_OUT			0x01
- #define FXLS8962AF_VECM_LSB			0x02
-@@ -34,6 +38,9 @@
- #define FXLS8962AF_OUT_Y_LSB			0x06
- #define FXLS8962AF_OUT_Z_LSB			0x08
- #define FXLS8962AF_BUF_STATUS			0x0b
-+#define FXLS8962AF_BUF_STATUS_BUF_CNT		GENMASK(5, 0)
-+#define FXLS8962AF_BUF_STATUS_BUF_OVF		BIT(6)
-+#define FXLS8962AF_BUF_STATUS_BUF_WMRK		BIT(7)
- #define FXLS8962AF_BUF_X_LSB			0x0c
- #define FXLS8962AF_BUF_Y_LSB			0x0e
- #define FXLS8962AF_BUF_Z_LSB			0x10
-@@ -66,6 +73,7 @@
- #define FXLS8962AF_ASLP_COUNT_LSB		0x1e
- 
- #define FXLS8962AF_INT_EN			0x20
-+#define FXLS8962AF_INT_EN_BUF_EN		BIT(6)
- #define FXLS8962AF_INT_PIN_SEL			0x21
- #define FXLS8962AF_INT_PIN_SEL_MASK		GENMASK(7, 0)
- #define FXLS8962AF_INT_PIN_SEL_INT1		0x00
-@@ -76,7 +84,10 @@
- #define FXLS8962AF_OFF_Z			0x24
- 
- #define FXLS8962AF_BUF_CONFIG1			0x26
-+#define FXLS8962AF_BC1_BUF_MODE_MASK		GENMASK(6, 5)
-+#define FXLS8962AF_BC1_BUF_MODE_PREP(x)		FIELD_PREP(FXLS8962AF_BC1_BUF_MODE_MASK, (x))
- #define FXLS8962AF_BUF_CONFIG2			0x27
-+#define FXLS8962AF_BUF_CONFIG2_BUF_WMRK		GENMASK(5, 0)
- 
- #define FXLS8962AF_ORIENT_STATUS		0x28
- #define FXLS8962AF_ORIENT_CONFIG		0x29
-@@ -106,6 +117,7 @@
- 
- #define FXLS8962AF_AUTO_SUSPEND_DELAY_MS	2000
- 
-+#define FXLS8962AF_FIFO_LENGTH			32
- #define FXLS8962AF_SCALE_TABLE_LEN		4
- #define FXLS8962AF_SAMP_FREQ_TABLE_LEN		13
- 
-@@ -133,7 +145,13 @@ struct fxls8962af_data {
- 	struct regmap *regmap;
- 	const struct fxls8962af_chip_info *chip_info;
- 	struct regulator *vdd_reg;
-+	struct {
-+		__le16 channels[3];
-+		s64 ts __aligned(8);
-+	} scan;
-+	int64_t timestamp, old_timestamp;	/* Only used in hw fifo mode. */
- 	struct iio_mount_matrix orientation;
-+	u8 watermark;
+ #include <linux/bits.h>
+ #include <linux/bitfield.h>
++#include <linux/i2c.h>
+ #include <linux/module.h>
+ #include <linux/of_irq.h>
+ #include <linux/pm_runtime.h>
+@@ -624,16 +625,42 @@ static const struct iio_buffer_setup_ops fxls8962af_buffer_ops = {
+ 	.postdisable = fxls8962af_buffer_postdisable,
  };
  
- const struct regmap_config fxls8962af_regmap_conf = {
-@@ -433,6 +451,18 @@ static int fxls8962af_write_raw(struct iio_dev *indio_dev,
- 	}
- }
- 
-+static int fxls8962af_set_watermark(struct iio_dev *indio_dev, unsigned val)
++static int fxls8962af_i2c_raw_read_errata3(struct fxls8962af_data *data,
++					   u16 *buffer, int samples,
++					   int sample_length)
 +{
-+	struct fxls8962af_data *data = iio_priv(indio_dev);
++	int i, ret;
 +
-+	if (val > FXLS8962AF_FIFO_LENGTH)
-+		val = FXLS8962AF_FIFO_LENGTH;
-+
-+	data->watermark = val;
-+
-+	return 0;
-+}
-+
- #define FXLS8962AF_CHANNEL(axis, reg, idx) { \
- 	.type = IIO_ACCEL, \
- 	.address = reg, \
-@@ -493,6 +523,7 @@ static const struct iio_info fxls8962af_info = {
- 	.write_raw = &fxls8962af_write_raw,
- 	.write_raw_get_fmt = fxls8962af_write_raw_get_fmt,
- 	.read_avail = fxls8962af_read_avail,
-+	.hwfifo_set_watermark = fxls8962af_set_watermark,
- };
- 
- static int fxls8962af_reset(struct fxls8962af_data *data)
-@@ -517,6 +548,157 @@ static int fxls8962af_reset(struct fxls8962af_data *data)
- 	return ret;
- }
- 
-+static int __fxls8962af_fifo_set_mode(struct fxls8962af_data *data, bool onoff)
-+{
-+	int ret;
-+
-+	/* Enable watermark at max fifo size */
-+	ret = regmap_update_bits(data->regmap, FXLS8962AF_BUF_CONFIG2,
-+				 FXLS8962AF_BUF_CONFIG2_BUF_WMRK,
-+				 data->watermark);
-+	if (ret)
-+		return ret;
-+
-+	return regmap_update_bits(data->regmap, FXLS8962AF_BUF_CONFIG1,
-+				  FXLS8962AF_BC1_BUF_MODE_MASK,
-+				  FXLS8962AF_BC1_BUF_MODE_PREP(onoff));
-+}
-+
-+static int fxls8962af_buffer_preenable(struct iio_dev *indio_dev)
-+{
-+	return fxls8962af_power_on(iio_priv(indio_dev));
-+}
-+
-+static int fxls8962af_buffer_postenable(struct iio_dev *indio_dev)
-+{
-+	struct fxls8962af_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	fxls8962af_standby(data);
-+
-+	/* Enable buffer interrupt */
-+	ret = regmap_update_bits(data->regmap, FXLS8962AF_INT_EN,
-+				 FXLS8962AF_INT_EN_BUF_EN,
-+				 FXLS8962AF_INT_EN_BUF_EN);
-+	if (ret)
-+		return ret;
-+
-+	ret = __fxls8962af_fifo_set_mode(data, true);
-+
-+	fxls8962af_active(data);
-+
-+	return ret;
-+}
-+
-+static int fxls8962af_buffer_predisable(struct iio_dev *indio_dev)
-+{
-+	struct fxls8962af_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	fxls8962af_standby(data);
-+
-+	/* Disable buffer interrupt */
-+	ret = regmap_update_bits(data->regmap, FXLS8962AF_INT_EN,
-+				 FXLS8962AF_INT_EN_BUF_EN, 0);
-+	if (ret)
-+		return ret;
-+
-+	ret = __fxls8962af_fifo_set_mode(data, false);
-+
-+	fxls8962af_active(data);
-+
-+	return ret;
-+}
-+
-+static int fxls8962af_buffer_postdisable(struct iio_dev *indio_dev)
-+{
-+	struct fxls8962af_data *data = iio_priv(indio_dev);
-+
-+	return fxls8962af_power_off(data);
-+}
-+
-+static const struct iio_buffer_setup_ops fxls8962af_buffer_ops = {
-+	.preenable = fxls8962af_buffer_preenable,
-+	.postenable = fxls8962af_buffer_postenable,
-+	.predisable = fxls8962af_buffer_predisable,
-+	.postdisable = fxls8962af_buffer_postdisable,
-+};
-+
-+static int fxls8962af_fifo_transfer(struct fxls8962af_data *data,
-+				    u16 *buffer, int samples)
-+{
-+	struct device *dev = regmap_get_device(data->regmap);
-+	int sample_length = 3 * sizeof(*buffer);
-+	int ret;
-+	int total_length = samples * sample_length;
-+
-+	ret = regmap_raw_read(data->regmap, FXLS8962AF_BUF_X_LSB, buffer,
-+			      total_length);
-+	if (ret)
-+		dev_err(dev, "Error transferring data from fifo: %d\n", ret);
-+
-+	return ret;
-+}
-+
-+static int fxls8962af_fifo_flush(struct iio_dev *indio_dev)
-+{
-+	struct fxls8962af_data *data = iio_priv(indio_dev);
-+	struct device *dev = regmap_get_device(data->regmap);
-+	u16 buffer[FXLS8962AF_FIFO_LENGTH * 3];
-+	uint64_t sample_period;
-+	unsigned int reg;
-+	int64_t tstamp;
-+	int ret, i;
-+	u8 count;
-+
-+	ret = regmap_read(data->regmap, FXLS8962AF_BUF_STATUS, &reg);
-+	if (ret)
-+		return ret;
-+
-+	if (reg & FXLS8962AF_BUF_STATUS_BUF_OVF) {
-+		dev_err(dev, "Buffer overflow");
-+		return -EOVERFLOW;
-+	}
-+
-+	count = reg & FXLS8962AF_BUF_STATUS_BUF_CNT;
-+	if (!count)
-+		return 0;
-+
-+	data->old_timestamp = data->timestamp;
-+	data->timestamp = iio_get_time_ns(indio_dev);
-+
-+	/*
-+	 * Approximate timestamps for each of the sample based on the sampling,
-+	 * frequency, timestamp for last sample and number of samples.
-+	 */
-+	sample_period = (data->timestamp - data->old_timestamp);
-+	do_div(sample_period, count);
-+	tstamp = data->timestamp - (count - 1) * sample_period;
-+
-+	ret = fxls8962af_fifo_transfer(data, buffer, count);
-+	if (ret)
-+		return ret;
-+
-+	/* Demux hw FIFO into kfifo. */
-+	for (i = 0; i < count; i++) {
-+		int j, bit;
-+
-+		j = 0;
-+		for_each_set_bit(bit, indio_dev->active_scan_mask,
-+				 indio_dev->masklength) {
-+			memcpy(&data->scan.channels[j++], &buffer[i * 3 + bit],
-+			       sizeof(data->scan.channels[0]));
-+		}
-+
-+		iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
-+						   tstamp);
-+
-+		tstamp += sample_period;
-+	}
-+
-+	return count;
-+}
-+
- static irqreturn_t fxls8962af_interrupt(int irq, void *p)
- {
- 	struct iio_dev *indio_dev = p;
-@@ -528,9 +710,32 @@ static irqreturn_t fxls8962af_interrupt(int irq, void *p)
- 	if (ret)
- 		return IRQ_NONE;
- 
-+	if (reg & FXLS8962AF_INT_STATUS_SRC_BUF) {
-+		ret = fxls8962af_fifo_flush(indio_dev);
++	for (i = 0; i < samples; i++) {
++		ret = regmap_raw_read(data->regmap, FXLS8962AF_BUF_X_LSB,
++				      &buffer[i * 3], sample_length);
 +		if (ret)
-+			return IRQ_NONE;
-+
-+		return IRQ_HANDLED;
++			return ret;
 +	}
 +
- 	return IRQ_NONE;
- }
- 
-+static int fxls8962af_fifo_setup(struct iio_dev *indio_dev)
-+{
-+	struct iio_buffer *buffer;
-+
-+	buffer = devm_iio_kfifo_allocate(&indio_dev->dev);
-+	if (!buffer)
-+		return -ENOMEM;
-+
-+	iio_device_attach_buffer(indio_dev, buffer);
-+	indio_dev->modes |= INDIO_BUFFER_SOFTWARE;
-+	indio_dev->setup_ops = &fxls8962af_buffer_ops;
-+
-+	return 0;
++	return ret;
 +}
 +
- static void fxls8962af_regulator_disable(void *data_ptr)
+ static int fxls8962af_fifo_transfer(struct fxls8962af_data *data,
+ 				    u16 *buffer, int samples)
  {
- 	struct fxls8962af_data *data = data_ptr;
-@@ -694,6 +899,8 @@ int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq)
- 		ret = fxls8962af_irq_setup(indio_dev, irq);
- 		if (ret)
- 			return ret;
+ 	struct device *dev = regmap_get_device(data->regmap);
+ 	int sample_length = 3 * sizeof(*buffer);
+-	int ret;
+ 	int total_length = samples * sample_length;
++	int ret;
 +
-+		fxls8962af_fifo_setup(indio_dev);
- 	}
++	if (i2c_verify_client(dev))
++		/*
++		 * Due to errata bug:
++		 * E3: FIFO burst read operation error using I2C interface
++		 * We have to avoid burst reads on I2C..
++		 */
++		ret = fxls8962af_i2c_raw_read_errata3(data, buffer, samples,
++						      sample_length);
++	else
++		ret = regmap_raw_read(data->regmap, FXLS8962AF_BUF_X_LSB, buffer,
++				      total_length);
  
- 	ret = pm_runtime_set_active(dev);
+-	ret = regmap_raw_read(data->regmap, FXLS8962AF_BUF_X_LSB, buffer,
+-			      total_length);
+ 	if (ret)
+ 		dev_err(dev, "Error transferring data from fifo: %d\n", ret);
+ 
 -- 
 2.31.0
 

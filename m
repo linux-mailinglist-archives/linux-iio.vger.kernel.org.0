@@ -2,79 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 519BA375E10
-	for <lists+linux-iio@lfdr.de>; Fri,  7 May 2021 02:52:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9913E3762C8
+	for <lists+linux-iio@lfdr.de>; Fri,  7 May 2021 11:25:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233074AbhEGAxt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 6 May 2021 20:53:49 -0400
-Received: from mail-oi1-f180.google.com ([209.85.167.180]:43721 "EHLO
-        mail-oi1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229650AbhEGAxr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 May 2021 20:53:47 -0400
-Received: by mail-oi1-f180.google.com with SMTP id j75so7227789oih.10;
-        Thu, 06 May 2021 17:52:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=730yCidVaF7UqEn0Z+nYrT2OtebyefuFsPE1idfkvVA=;
-        b=kqCmyKyX6Obkg5czjxh6L9ZMNLJzMFNTzhnAHrIIL0UUFYTZmANsVyMkCoyx+j+1bN
-         yoYw4i1EUi20EM/qIVbClQ0toCEXetQ6JaAEr27U8Hkz26jr53wvCzpV7F187N3kMC3r
-         DHHCo11gIXbsUOIecdeyxOAfnfspHvoIgauGaEXhmCPAvz3rvA9NEXDzFFm6ZPeCAMXh
-         8LX1726H2Nkv1I+lw1TsvgI4NxWU3zwGlU27i2bfzvTG8CTTokK8Fj2cC2pOZ3ucFUwI
-         4ogb0wVjX4g64HbHw/iZUt6HPLSS52Is5v0+mdn/Axqwji0/cxX91csYIwpdKLCqWAGl
-         jFhg==
-X-Gm-Message-State: AOAM533HyU8MzVusJA2CNH/U9W3C6FqJzqcpjNxobCuj2cVeE8W2BmEn
-        kWiaehk4vQX4cT15KEz8mF2BD/TUQQ==
-X-Google-Smtp-Source: ABdhPJyhLUj36MZKsD1jJNAgYPQimK7lpn9GeTIUVUyfj0Rs71lpL9XQpQZMYWsZGIOw4na34pJMvQ==
-X-Received: by 2002:aca:3c09:: with SMTP id j9mr12629423oia.28.1620348768736;
-        Thu, 06 May 2021 17:52:48 -0700 (PDT)
-Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id k35sm896772otc.13.2021.05.06.17.52.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 May 2021 17:52:48 -0700 (PDT)
-Received: (nullmailer pid 1097796 invoked by uid 1000);
-        Fri, 07 May 2021 00:52:47 -0000
-Date:   Thu, 6 May 2021 19:52:47 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Sean Nyekjaer <sean@geanix.com>
-Cc:     robh+dt@kernel.org, tomas.melin@vaisala.com,
-        linux-iio@vger.kernel.org, lars@metafoo.de, Nuno.Sa@analog.com,
-        devicetree@vger.kernel.org, jic23@kernel.org,
-        andy.shevchenko@gmail.com
-Subject: Re: [PATCH v5 2/6] dt-bindings: iio: accel: fxls8962af: add bindings
-Message-ID: <20210507005247.GA1097749@robh.at.kernel.org>
-References: <20210506070940.312959-1-sean@geanix.com>
- <20210506070940.312959-2-sean@geanix.com>
+        id S234338AbhEGJ0b (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 7 May 2021 05:26:31 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:3036 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234398AbhEGJ0b (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 7 May 2021 05:26:31 -0400
+Received: from fraeml708-chm.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Fc4Wp3Ps6z70gHy;
+        Fri,  7 May 2021 17:14:14 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml708-chm.china.huawei.com (10.206.15.36) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Fri, 7 May 2021 11:25:17 +0200
+Received: from localhost (10.52.124.175) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Fri, 7 May 2021
+ 10:25:16 +0100
+Date:   Fri, 7 May 2021 10:23:33 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Linus Walleij <linus.walleij@linaro.org>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Stephan Gerhold <stephan@gerhold.net>
+Subject: Re: [PATCH 16/19] iio: magn: bmc150: Fix buffer alignment in
+ iio_push_to_buffers_with_timestamp()
+Message-ID: <20210507102333.00004e07@Huawei.com>
+In-Reply-To: <CACRpkdbYemUZCPwET4=dCGcJUfph3En+STtNphK8fbN0er1Z3Q@mail.gmail.com>
+References: <20210501170121.512209-1-jic23@kernel.org>
+        <20210501170121.512209-17-jic23@kernel.org>
+        <CACRpkdbYemUZCPwET4=dCGcJUfph3En+STtNphK8fbN0er1Z3Q@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210506070940.312959-2-sean@geanix.com>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.52.124.175]
+X-ClientProxiedBy: lhreml733-chm.china.huawei.com (10.201.108.84) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 06 May 2021 09:09:36 +0200, Sean Nyekjaer wrote:
-> Add devicetree binding for the NXP FXLS8962AF/FXLS8964AF
-> accelerometer sensor.
-> 
-> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-> ---
-> Changes for v2:
->  - removed requirement for interrupt
-> 
-> Changes for v3:
->  - None
-> 
-> Changes for v4:
->  - Included the dt patch from the RFC
-> 
-> Changes for v5:
->  - fixed interrupt enum
-> 
->  .../bindings/iio/accel/nxp,fxls8962af.yaml    | 80 +++++++++++++++++++
->  1 file changed, 80 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
-> 
+On Wed, 5 May 2021 14:57:12 +0200
+Linus Walleij <linus.walleij@linaro.org> wrote:
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+> On Sat, May 1, 2021 at 7:03 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> 
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >
+> > To make code more readable, use a structure to express the channel
+> > layout and ensure the timestamp is 8 byte aligned.
+> >
+> > Found during an audit of all calls of uses of
+> > iio_push_to_buffers_with_timestamp()
+> >
+> > Fixes: c91746a2361d ("iio: magn: Add support for BMC150 magnetometer")
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Cc: Stephan Gerhold <stephan@gerhold.net>
+> > Cc: Linus Walleij <linus.walleij@linaro.org>  
+> 
+> Excellent work Jonathan.
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> 
+> I wonder if there is some way for us to abstract this into the core so
+> we can't get it wrong.
+
+Abstracting is a bit of a pain, because we end up creating unnecessary
+limitations on what can be done.  Often having buffer a lot larger than
+it needs to be is sensible for example...
+
+However, I'm definitely thinking we should look at what checks we can
+add once all these cases are fixed and there might be a nice
+pattern to use for those cases where we currently have a bounce buffer
+anyway due to hardware restrictions.  In most others, moving to the pattern
+where the timestamp is explicit in the structure makes it obvious (subject
+to the fun question of x86_32 alignment and whether that matters - we don't
+know of any bugs as a result but it's possible some buffer consumer will assume
+8 byte alignment - hence the hardening in these cases).
+
+The size being too small case for example should be easy - we just augment
+iio_push_to_buffers_with_timestamp() to take the size and check it against
+scan_bytes.  Alignment is trickier... 
+
+Jonathan
+
+
+> Yours,
+> Linus Walleij
+

@@ -2,109 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FF36376552
-	for <lists+linux-iio@lfdr.de>; Fri,  7 May 2021 14:40:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AB4C37663C
+	for <lists+linux-iio@lfdr.de>; Fri,  7 May 2021 15:34:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234097AbhEGMlO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 7 May 2021 08:41:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60572 "EHLO
+        id S234769AbhEGNfn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 7 May 2021 09:35:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231363AbhEGMlN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 7 May 2021 08:41:13 -0400
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7D45C061574;
-        Fri,  7 May 2021 05:40:13 -0700 (PDT)
-Received: by mail-pf1-x432.google.com with SMTP id c17so7524071pfn.6;
-        Fri, 07 May 2021 05:40:13 -0700 (PDT)
+        with ESMTP id S233487AbhEGNfm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 7 May 2021 09:35:42 -0400
+Received: from mail-oo1-xc32.google.com (mail-oo1-xc32.google.com [IPv6:2607:f8b0:4864:20::c32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA3BDC061574;
+        Fri,  7 May 2021 06:34:40 -0700 (PDT)
+Received: by mail-oo1-xc32.google.com with SMTP id u48-20020a4a97330000b02901fa060b8066so1974098ooi.8;
+        Fri, 07 May 2021 06:34:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=XP+2sJOhJarbu28eKxfaAb5g7ehkupmenZaHEZxQ8Jc=;
-        b=h8VxxrRK7k5MkyRjP0vUIPHkppAkl/EGznIjZr6Nc1k8vJZyG7rrsdVRXz4398w3AY
-         aSNvE8aW3vAMENrw15BGIVRNYjPFb5+VaSjzFkMGP0WbhWeNA17a21sn/XjE5OhEqylx
-         C4TYt273PSoriQAyI7SD6tb2zTZA1K37E2tVacugS5DJLt4ZlRDyaNh0OCl8aDfvGlvU
-         2/erZ/kqWsnLs8k/wxrX4x8LBLJA//rfy/HhaifVcy1UR0hG2tzgAjMs8rpy3mqYGt/o
-         goN5Sn8HFMRhTaFiOFlq830Y9g0IUUGlAMLax98GT0/Je1zvkUI2mCZLMEax1oySGdLi
-         qnOA==
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=rSwV1abiHwYQxyZpaOTUg0r4TBMXE5DrMeEgSz835H4=;
+        b=hcGnvHHCVlpUenkLBj4fu/Npe9kGddavG2Zwxuv8oTzVTD/GM/ISnnanC6Z83i1F4X
+         6EmaFmErpGB0lpXU6rSM+hRi1HHY0ZN0leKX9y657SpfSpnyhh7Sp1i72Nqf68Ej7HVS
+         LlTwGOvByh/K2zQBlJAld11xMFm8TcBHQSbB81Rl/5U4+NAD0iKlMcdcIE/U3FNRLvFq
+         mxUdNWfzeHXh+22/uKT6j3og9rmOWT4JGG1TaYOSbmoIUozRL9zdFeRrPb5g0O0I12VF
+         YySImfDqI5j9QjyKZg6azcrkxJ7S+gHbI55ajEm6a3UIgaNj52nmvEHn5LPqVrRI/rKL
+         k07w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=XP+2sJOhJarbu28eKxfaAb5g7ehkupmenZaHEZxQ8Jc=;
-        b=JeeyjmiO8FXYTde+3kMXVebBcxm2EK43UoEMnVFJUvLohI5Co6McbVyb8NR/V5k3f5
-         Qme0LGJ3mK30sxClQoXqW2/igb2ZDel5Kd2fXMTejpzNV0NPnLC8lsOLDVb/WitaLSTE
-         sZNHlwjzdo43teDiJy5kkzuBNLZ6sRuMFkSqTFoFJjKkiZ6KWd1HYN6CDhLt5lmIezb1
-         CJRILDi4m7PJWWrQEaZX+sJn6LFHrtAT/KpcUcnCCCiavV6n9jOtk/6ZOMAu6aND+9NR
-         2b9y3YpJgTJmX8B6FHtWPMFVWs0yyj+50sj0g4lz9sLyYtXGdTjB245MImvC6Yws49Q5
-         8VRA==
-X-Gm-Message-State: AOAM532gUAnNENoDVY2Odj/vZ7qcdXExZHI/rMFmhMmE0t9AQuxxeg/9
-        7w34HpxZAoPjPPKjWnZhhyKK4qzjjAqoekrTkoeDqMJXeeU=
-X-Google-Smtp-Source: ABdhPJyYIPjiMCOh3evT3bees6PyL45b1TFlF7ycIYOWfIte9+rCMwvW8tcyMuvcAmr5L3GPBWZ7mabWkTYpuMsPdm8=
-X-Received: by 2002:a63:cd11:: with SMTP id i17mr9658198pgg.74.1620391213106;
- Fri, 07 May 2021 05:40:13 -0700 (PDT)
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=rSwV1abiHwYQxyZpaOTUg0r4TBMXE5DrMeEgSz835H4=;
+        b=hNWi984exRWBJUIMxjiaKKwx4m3YYGsmZDt5aLHti6oeYZVPR+Tm5lguRffO1m5aXA
+         be+3uZKWtbke7cLzei2mnSX4fk2uIt9yWTcH5nPWVN5eFcCKY0dvjnUd9Hxy+jUNdY3r
+         igre2Z9SccUPye89wHLr2yJYq3hUa39464HhZ8/WH3TOt7nhcTuM5zeXOlfQGM7sGk+k
+         p23AI7ba5sMj9/Sz5fCAJoz39ckQdV/OVFFm2mTrYZfiX5ofH18oE/V1KACDjNl8SZUu
+         TJrBgHzgCSAScWN7KqH7dNIXR6dKblwEVgFlY5dZdzsDUPSgEVwjy90WdyvVMQqTX0sA
+         cTrA==
+X-Gm-Message-State: AOAM533QqiLRUXgnKCoFcx2lrCpIteJv9SC2WbnMAlmGfIVGAFipg0F+
+        CedU9e2gETVadNGzUhWwyig=
+X-Google-Smtp-Source: ABdhPJwiL+MLZwoT8SpWsM8oxXlpGI3tVew0cpbUgI+/btRlyyK1T9V0MQAhWTEWJLH2nylOo3tjcw==
+X-Received: by 2002:a4a:e965:: with SMTP id i5mr7718698ooe.59.1620394476966;
+        Fri, 07 May 2021 06:34:36 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id 2sm695901ota.67.2021.05.07.06.34.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 07 May 2021 06:34:35 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Subject: Re: [PATCH v2] iio: bme680_i2c: Remove ACPI support
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>
+References: <20210506034332.752263-1-linux@roeck-us.net>
+ <20210507103154.00006763@Huawei.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+Message-ID: <d966a55e-65e0-cbb0-6c4e-4339f577b18e@roeck-us.net>
+Date:   Fri, 7 May 2021 06:34:33 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
-References: <20210504174019.2134652-1-linux@roeck-us.net> <CAHp75Vd-iTkA5Y6tEHtfcqLxxmHaaU8nLQSL7eWb-gaa-c8AJg@mail.gmail.com>
- <8f8b6f33-4308-bfda-2238-9a54e19c3f9f@roeck-us.net> <20210505093235.00007c38@Huawei.com>
- <20210505093438.00005238@Huawei.com> <CAHp75VezSD_TcbQ_OBZXPo-szTr-qwOT9oU+7h7W6nk65ZLBhA@mail.gmail.com>
- <20210507115302.GA20751@amd>
-In-Reply-To: <20210507115302.GA20751@amd>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 7 May 2021 15:39:57 +0300
-Message-ID: <CAHp75VcxQYp0V9oM_UYMfwcR1GMo+MTYgurj2qichGgpDzm4SA@mail.gmail.com>
-Subject: Re: [PATCH] iio: bme680_i2c: Make bme680_acpi_match depend on CONFIG_ACPI
-To:     Pavel Machek <pavel@denx.de>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Paul Menzel <paulepanter@users.sourceforge.net>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210507103154.00006763@Huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, May 7, 2021 at 2:53 PM Pavel Machek <pavel@denx.de> wrote:
-> On Wed 2021-05-05 16:22:07, Andy Shevchenko wrote:
-> > On Wed, May 5, 2021 at 11:36 AM Jonathan Cameron
-> > <Jonathan.Cameron@huawei.com> wrote:
-> > > On Wed, 5 May 2021 09:32:35 +0100
-> > > Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
-> > > > On Tue, 4 May 2021 11:00:52 -0700
-> > > > Guenter Roeck <linux@roeck-us.net> wrote:
-> >
-> > +Cc: Paul (I hope you are related to coreboot somehow and can
-> > communicate this further), Pavel and Jacek (LED subsystem suffered
-> > with this as well), Hans, Rafael and linux-acpi@
->
-> Thanks for Cc. I prefer @ucw.cz address for the LED work.
+On 5/7/21 2:31 AM, Jonathan Cameron wrote:
+> On Wed,  5 May 2021 20:43:32 -0700
+> Guenter Roeck <linux@roeck-us.net> wrote:
+> 
+>> With CONFIG_ACPI=n and -Werror, 0-day reports:
+>>
+>> drivers/iio/chemical/bme680_i2c.c:46:36: error:
+>> 	'bme680_acpi_match' defined but not used
+>>
+>> Apparently BME0680 is not a valid ACPI ID. Remove it and with it
+>> ACPI support from the bme680_i2c driver.
+>>
+>> Reported-by: kernel test robot <lkp@intel.com>
+>> Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+>> Cc: Hans de Goede <hdegoede@redhat.com>
+>> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> 
+> A note for these is that I'll change the patch titles when applying.
+> We aren't removing ACPI support from the drivers, we are simply
+> removing the ACPI ID table entries.  For most of these PRP0001 magic
+> will work just fine with the OF table.  That's probably the
+> right way for small companies etc to use these in products without
+> having to jump through the hoops of getting an ACPI ID.
+> 
 
-Noted!
+Ok, no problem. I'll keep that in mind if I hit any others.
 
-> > > > Dropping the ones we are fairly sure are spurious is even better!
-> > >
-> > > If I get bored I'll just do a scrub of all the instances of this that
-> > > you haven't already cleaned up.  It's worth noting that we do
-> > > know some highly suspicious looking entries are out there in the wild.
-> >
-> > I have counted ~60 users of acpi_device_id in IIO. Brief looking at
-> > the IDs themselves rings an alarm about half of them.
->
-> As far as I can tell, this means asking "is this real ID or did you
-> just invent it" at patch submission. Okay...
-
-I would put it in a way that "Please, provide an ASL excerpt / ACPI
-tables dump" or something alike. Because it may also show some
-additional information that would make sense to consider when adding
-an ID to the driver.
-
-
--- 
-With Best Regards,
-Andy Shevchenko
+Thanks,
+Guenter

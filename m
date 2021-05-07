@@ -2,81 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 504FA376CA7
-	for <lists+linux-iio@lfdr.de>; Sat,  8 May 2021 00:26:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D91D376C59
+	for <lists+linux-iio@lfdr.de>; Sat,  8 May 2021 00:16:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229886AbhEGW1h (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 7 May 2021 18:27:37 -0400
-Received: from bosmailout01.eigbox.net ([66.96.190.1]:36027 "EHLO
-        bosmailout01.eigbox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbhEGW1h (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 7 May 2021 18:27:37 -0400
-X-Greylist: delayed 1929 seconds by postgrey-1.27 at vger.kernel.org; Fri, 07 May 2021 18:27:30 EDT
-Received: from bosmailscan09.eigbox.net ([10.20.15.9])
-        by bosmailout01.eigbox.net with esmtp (Exim)
-        id 1lf8QO-00068o-JJ; Fri, 07 May 2021 17:54:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=godsofu4.com; s=dkim; h=Sender:Content-Transfer-Encoding:Content-Type:
-        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=aM9bUFGSTpfnep8zAVAJMnojqhcwpuHDFPgQnPqW4M4=; b=bjgKomV6NO5Eg5D3qsCBps1llx
-        tj4k2teSfIdfo/duBtOSoC/FW1+C1nXiYJbrvf2JDobx8fDCsgnxHFoPWOCb5eI+OJOIgvnnfKlpl
-        ZqidIuDnjEPTMao1vFwrg6M9FUKU/cz6TT5/KN4ccsk+aQli3Wgs3G1cQz5vdbC1Y2SXULFY8Mu2t
-        1PShwmiDRn71EPzgUHUVu0GG39z6uSTEuRgOXhiNl9ekuZ5QXUAEykoocvC5/DkORRmERAA91o1HY
-        Sl76pPWw9UBVGbuFbfdVPfVcFxJM5xZDrmgt6uCf9J+dn/n7LFOSOxBaL9svxxYdhOkJwdz4uh075
-        2gI+xJSw==;
-Received: from [10.115.3.32] (helo=bosimpout12)
-        by bosmailscan09.eigbox.net with esmtp (Exim)
-        id 1lf8QO-0003aD-AI; Fri, 07 May 2021 17:54:20 -0400
-Received: from boswebmail06.eigbox.net ([10.20.16.6])
-        by bosimpout12 with 
-        id 1xuH2500407qujN01xuLVi; Fri, 07 May 2021 17:54:20 -0400
-X-EN-SP-DIR: OUT
-X-EN-SP-SQ: 1
-Received: from [127.0.0.1] (helo=homestead)
-        by boswebmail06.eigbox.net with esmtp (Exim)
-        id 1lf8QL-0006fx-UG; Fri, 07 May 2021 17:54:17 -0400
-Received: from [197.239.81.229]
- by emailmg.homestead.com
- with HTTP (HTTP/1.1 POST); Fri, 07 May 2021 17:54:17 -0400
+        id S229791AbhEGWRG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 7 May 2021 18:17:06 -0400
+Received: from mail-oi1-f171.google.com ([209.85.167.171]:41621 "EHLO
+        mail-oi1-f171.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229524AbhEGWRF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 7 May 2021 18:17:05 -0400
+Received: by mail-oi1-f171.google.com with SMTP id c3so10007095oic.8;
+        Fri, 07 May 2021 15:16:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Tiub5wckWCZgWB+zl+PgHhpRQTIZAIX3PBjR724A/DI=;
+        b=OeWpuxkS8WV/yVdqaYLJNo2CWdHsQMYdh+AbCgZyu3ZcAwYY3VS9YIUOeuXTBg1Lb1
+         zfIDUWEknjolAootdRNv3uTf/8EX4T8EtI2ht94sPtfrw7aIDtpfEg/g6+EPhlnawU/0
+         y9LICLzSb7hLegxTQWMptoP/1MP8cQvLJjOZCFDN6S/qDUrZ8NnHd46u0DCSHsBm+kUb
+         BPbuklt6+HQx3DTo7s2/LNBn/bWMmdqwYQC1bsFzD8B2rGxoA1Dtpv4km3P36ECMfoHr
+         c9CPkc85Fliu0l2C4mlfsaED2QDMyl+MS3Q+noygmKVJxzabzcTE5NBi8mEN8luOau4c
+         4WLg==
+X-Gm-Message-State: AOAM532tJZqm0CObJ5S8ZZyN90PIbRWFOqb+QZjp+vYYlwam0Xmae8R2
+        t+Ffy23jUlXu5sKB34QGnEBTiZ6JuQ==
+X-Google-Smtp-Source: ABdhPJwDyL3D3bpZWEsWu/gymymyW3eLZ3eftxGCMxskLzMhSyGtQHvSPd6RGYwWdwdSHEhYJXcAew==
+X-Received: by 2002:aca:4f51:: with SMTP id d78mr8758439oib.168.1620425763899;
+        Fri, 07 May 2021 15:16:03 -0700 (PDT)
+Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id m67sm1423721otm.69.2021.05.07.15.16.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 May 2021 15:16:03 -0700 (PDT)
+Received: (nullmailer pid 2994502 invoked by uid 1000);
+        Fri, 07 May 2021 22:16:02 -0000
+Date:   Fri, 7 May 2021 17:16:02 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Peter Rosin <peda@axentia.se>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH] dt-bindings: iio: afe: current-sense-shunt: add
+ io-channel-cells
+Message-ID: <20210507221602.GA2994472@robh.at.kernel.org>
+References: <20210506150637.35288-1-krzysztof.kozlowski@canonical.com>
 MIME-Version: 1.0
-Date:   Fri, 07 May 2021 21:54:17 +0000
-From:   Mrs Suzara Maling Wan <fast65@godsofu4.com>
-To:     undisclosed-recipients:;
-Subject: URGENT REPLY NEEDED
-Reply-To: suzara2017malingwan@gmail.com
-Mail-Reply-To: suzara2017malingwan@gmail.com
-Message-ID: <36acfe805efde59f3f399df1324ce6b9@godsofu4.com>
-X-Sender: fast65@godsofu4.com
-User-Agent: Roundcube Webmail/1.3.14
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-EN-AuthUser: fast65@godsofu4.com
-Sender:  Mrs Suzara Maling Wan <fast65@godsofu4.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210506150637.35288-1-krzysztof.kozlowski@canonical.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Thu, 06 May 2021 11:06:37 -0400, Krzysztof Kozlowski wrote:
+> The current-sense-shunt is an IIO provider thus can be referenced by IIO
+> consumers (via "io-channels" property in consumer device node).
+> Such provider is required to describe number of cells used in phandle
+> lookup with "io-channel-cells" property.  This also fixes dtbs_check
+> warnings like:
+> 
+>   arch/arm/boot/dts/s5pv210-fascinate4g.dt.yaml: current-sense-shunt:
+>     '#io-channel-cells' does not match any of the regexes: 'pinctrl-[0-9]+'
+> 
+> Fixes: ce66e52b6c16 ("dt-bindings:iio:afe:current-sense-shunt: txt to yaml conversion.")
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+> ---
+>  .../devicetree/bindings/iio/afe/current-sense-shunt.yaml     | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
 
-
-My names are Mrs Suzara Maling Wan, I am a Nationality of the Republic
-of the Philippine presently base in West Africa B/F, dealing with
-exportation of Gold, I was diagnose of blood Causal decease, and my
-doctor have announce to me that I have few days to leave due to the
-condition of my sickness.
-
-I have a desire to build an orphanage home in your country of which i
-cannot execute the project myself due to my present health condition,
-I am willing to hand over the project under your care for you to help
-me fulfill my dreams and desire of building an orphanage home in your
-country.
-
-Reply in you are will to help so that I can direct you to my bank for
-the urgent transfer of the fund/money require for the project to your
-account as I have already made the fund/money available.
-
-With kind regards
-Mrs Suzara Maling Wan
+Reviewed-by: Rob Herring <robh@kernel.org>

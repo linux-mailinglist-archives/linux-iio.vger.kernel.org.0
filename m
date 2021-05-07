@@ -2,33 +2,33 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F2BC3763CF
-	for <lists+linux-iio@lfdr.de>; Fri,  7 May 2021 12:31:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFB693763D1
+	for <lists+linux-iio@lfdr.de>; Fri,  7 May 2021 12:32:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236572AbhEGKci (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 7 May 2021 06:32:38 -0400
-Received: from first.geanix.com ([116.203.34.67]:38858 "EHLO first.geanix.com"
+        id S236872AbhEGKdA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 7 May 2021 06:33:00 -0400
+Received: from first.geanix.com ([116.203.34.67]:38870 "EHLO first.geanix.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229829AbhEGKch (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 7 May 2021 06:32:37 -0400
+        id S229829AbhEGKdA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 7 May 2021 06:33:00 -0400
 Received: from zen.. (109.57.11.253.mobile.3.dk [109.57.11.253])
-        by first.geanix.com (Postfix) with ESMTPSA id 914064680DE;
-        Fri,  7 May 2021 10:31:34 +0000 (UTC)
+        by first.geanix.com (Postfix) with ESMTPSA id 99B404680DE;
+        Fri,  7 May 2021 10:31:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1620383495; bh=S2q2tzdDm6E95jCOCbV5DhbJxg2LzcGDOE4mBgDMDoI=;
+        t=1620383518; bh=S2q2tzdDm6E95jCOCbV5DhbJxg2LzcGDOE4mBgDMDoI=;
         h=From:To:Cc:Subject:Date;
-        b=IGzL/SZUosa+4Ke+FNLhGkkC25iT+dmOVs75OEYXLpV3VxESqcho0zV0/Vb6OvV0z
-         IszYOEJqEQhhe7wnqGCYZaevq7l3DvhvuBIh8p5ExhWHkQbBV9GCZ9PPRByM7tEdvy
-         yo1EQN355CvdIFJXTx9fBmc7Li0/W+g4Z06sUSAFSw9gTZqovUN1OBjthSRzxSKndj
-         Y3xJNrI5QL7KK2tCbb4uwjR+UoXgbN3qKiKG8T3EpIYQ4HJVJGkH3W0JMxw3zLZVyF
-         jZrfDa7FfC+ULXRmhrfyr53xyvZqMK1QerEE0pjZLEzTtOH0EjOgczkoJT1Hnr3Zua
-         Az+pnAhdl5ksg==
+        b=M2kMxJxyARHo8vp3CGMpTysRbGfkELEWB7Y1zo0HOxG6mSofysRdVyRpUR8Sb8fxW
+         /4zT8fmChXeZZlwKKQKphC8PhRS1wFk7M0Xz9SQbWNtlYGjXHBP4FCKz891pPkF16t
+         5NyjvxWuG8yg4UMXnfGW8oyqUFFcFua8dceTJnJEIow4hfry2zRtYpQZQ0RJ1O8H3D
+         J9p0ELcXeLTeYkzl4v+bcbuepV1edMyu9dHJRvKQNBwLHx7DnEZO/YDIbpNFxac9aG
+         pUZQPq1B2Y4sFDuHLFCWdc1TXQWzq1hfr/5kujqqNBBhZU6zD1MDNY/pMGZ47we1Sr
+         2TVGO9QalPSEA==
 From:   Sean Nyekjaer <sean@geanix.com>
 To:     lorenzo.bianconi83@gmail.com, jic23@kernel.org
 Cc:     Sean Nyekjaer <sean@geanix.com>, linux-iio@vger.kernel.org
 Subject: [PATCH] iio: imu: st_lsm6dsx: correct ODR in header
-Date:   Fri,  7 May 2021 12:31:26 +0200
-Message-Id: <20210507103126.2193875-1-sean@geanix.com>
+Date:   Fri,  7 May 2021 12:31:49 +0200
+Message-Id: <20210507103149.2193932-1-sean@geanix.com>
 X-Mailer: git-send-email 2.31.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit

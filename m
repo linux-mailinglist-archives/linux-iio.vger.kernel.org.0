@@ -2,31 +2,30 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A72673772CA
-	for <lists+linux-iio@lfdr.de>; Sat,  8 May 2021 17:50:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 484FA3772CC
+	for <lists+linux-iio@lfdr.de>; Sat,  8 May 2021 17:51:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229679AbhEHPvZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 8 May 2021 11:51:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39826 "EHLO mail.kernel.org"
+        id S229558AbhEHPwi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 8 May 2021 11:52:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40700 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229657AbhEHPvY (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 8 May 2021 11:51:24 -0400
+        id S229552AbhEHPwg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 8 May 2021 11:52:36 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 74869610C9;
-        Sat,  8 May 2021 15:50:21 +0000 (UTC)
-Date:   Sat, 8 May 2021 16:51:19 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 8A6196101A;
+        Sat,  8 May 2021 15:51:33 +0000 (UTC)
+Date:   Sat, 8 May 2021 16:52:31 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Guenter Roeck <linux@roeck-us.net>
 Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel test robot <lkp@intel.com>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
         Hans de Goede <hdegoede@redhat.com>
-Subject: Re: [PATCH v2] iio: bme680_i2c: Remove ACPI support
-Message-ID: <20210508165119.69ca980c@jic23-huawei>
-In-Reply-To: <20210506034332.752263-1-linux@roeck-us.net>
-References: <20210506034332.752263-1-linux@roeck-us.net>
+Subject: Re: [PATCH] iio: bme680_spi: Remove ACPI support
+Message-ID: <20210508165231.162fdccd@jic23-huawei>
+In-Reply-To: <20210506133145.2266604-1-linux@roeck-us.net>
+References: <20210506133145.2266604-1-linux@roeck-us.net>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -35,49 +34,39 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed,  5 May 2021 20:43:32 -0700
+On Thu,  6 May 2021 06:31:45 -0700
 Guenter Roeck <linux@roeck-us.net> wrote:
 
-> With CONFIG_ACPI=n and -Werror, 0-day reports:
+> BME0680 is not an official ACPI ID, so let's remove it before someone
+> starts using it.
 > 
-> drivers/iio/chemical/bme680_i2c.c:46:36: error:
-> 	'bme680_acpi_match' defined but not used
-> 
-> Apparently BME0680 is not a valid ACPI ID. Remove it and with it
-> ACPI support from the bme680_i2c driver.
-> 
-> Reported-by: kernel test robot <lkp@intel.com>
 > Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
 > Cc: Hans de Goede <hdegoede@redhat.com>
 > Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Message tweaked to reflect PRP0001 route which should work just fine
-with ACPI and this driver.
+Applied with message tweaked for PRP0001 and title changed to make
+it clear this isn't removing ACPI support, just one means of doing it.
 
 Jonathan
 
 > ---
-> v2: Instead of making bme680_acpi_match conditional,
->     remove ACPI support entirely since the ACPI ID is
->     not valid.
-> 
->  drivers/iio/chemical/bme680_i2c.c | 8 --------
+>  drivers/iio/chemical/bme680_spi.c | 8 --------
 >  1 file changed, 8 deletions(-)
 > 
-> diff --git a/drivers/iio/chemical/bme680_i2c.c b/drivers/iio/chemical/bme680_i2c.c
-> index 29c0dfa4702b..74cf89c82c0a 100644
-> --- a/drivers/iio/chemical/bme680_i2c.c
-> +++ b/drivers/iio/chemical/bme680_i2c.c
-> @@ -11,7 +11,6 @@
->   * Note: SDO pin cannot be left floating otherwise I2C address
->   *	 will be undefined.
+> diff --git a/drivers/iio/chemical/bme680_spi.c b/drivers/iio/chemical/bme680_spi.c
+> index 6f56ad48cc40..cc579a7ac5ce 100644
+> --- a/drivers/iio/chemical/bme680_spi.c
+> +++ b/drivers/iio/chemical/bme680_spi.c
+> @@ -4,7 +4,6 @@
+>   *
+>   * Copyright (C) 2018 Himanshu Jha <himanshujha199640@gmail.com>
 >   */
 > -#include <linux/acpi.h>
->  #include <linux/i2c.h>
 >  #include <linux/module.h>
+>  #include <linux/of.h>
 >  #include <linux/regmap.h>
-> @@ -42,12 +41,6 @@ static const struct i2c_device_id bme680_i2c_id[] = {
+> @@ -145,12 +144,6 @@ static const struct spi_device_id bme680_spi_id[] = {
 >  };
->  MODULE_DEVICE_TABLE(i2c, bme680_i2c_id);
+>  MODULE_DEVICE_TABLE(spi, bme680_spi_id);
 >  
 > -static const struct acpi_device_id bme680_acpi_match[] = {
 > -	{"BME0680", 0},
@@ -85,15 +74,15 @@ Jonathan
 > -};
 > -MODULE_DEVICE_TABLE(acpi, bme680_acpi_match);
 > -
->  static const struct of_device_id bme680_of_i2c_match[] = {
+>  static const struct of_device_id bme680_of_spi_match[] = {
 >  	{ .compatible = "bosch,bme680", },
 >  	{},
-> @@ -57,7 +50,6 @@ MODULE_DEVICE_TABLE(of, bme680_of_i2c_match);
->  static struct i2c_driver bme680_i2c_driver = {
+> @@ -160,7 +153,6 @@ MODULE_DEVICE_TABLE(of, bme680_of_spi_match);
+>  static struct spi_driver bme680_spi_driver = {
 >  	.driver = {
->  		.name			= "bme680_i2c",
-> -		.acpi_match_table       = ACPI_PTR(bme680_acpi_match),
->  		.of_match_table		= bme680_of_i2c_match,
+>  		.name			= "bme680_spi",
+> -		.acpi_match_table	= ACPI_PTR(bme680_acpi_match),
+>  		.of_match_table		= bme680_of_spi_match,
 >  	},
->  	.probe = bme680_i2c_probe,
+>  	.probe = bme680_spi_probe,
 

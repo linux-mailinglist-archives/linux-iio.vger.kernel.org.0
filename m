@@ -2,179 +2,267 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD43A376CE8
-	for <lists+linux-iio@lfdr.de>; Sat,  8 May 2021 00:45:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B98D376F12
+	for <lists+linux-iio@lfdr.de>; Sat,  8 May 2021 05:09:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229542AbhEGWqE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 7 May 2021 18:46:04 -0400
-Received: from mail-eopbgr60100.outbound.protection.outlook.com ([40.107.6.100]:24645
-        "EHLO EUR04-DB3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229470AbhEGWqE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 7 May 2021 18:46:04 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FgBxQkv4jKnpWonP2Gv5T5MiPfi7dpQeqDFUvjenedUtYz7dFLhpoBf7uxT1EPupNatpQ5ACo656zON3/zcT6k5GFH22NccFjGInq98uiPo+azXeZMo8AJqIct2j7vi6shxs6jort89DF5AxCYvuPgBDCAjpGgdllyHqoZmOuOdFzRVX0M29TrQV74OvobkMn2Ep4+EwIE+5UJ3+PvInMUZM6gOilVDddAUzf8AqLVvhfhVzQBzPPT8Z0pd0Tlfi6o1v0paHulixLizvp2pTx21ZJAjsZkPiTVb9BJw7ClBZiQnBBPT+LVltDieD4m2SWEzs094E4gI0RtgrRQJXNA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YKqY0UwB97/aLXfsGstGKgVq40yDemKiIxvAgsYgEuk=;
- b=kZO1X8cJNLZipwXfAwMpYaIR0vkV9HKJsJlk2ff+iKHAw+2ME0JK0dbTa1hB9xl7uSnv4iRBlPSmMu8kaLt5eN+2RgPKWzh8Sm1Ur8oWXU5J9QFh+In2ub6XO64Oga0T9YO0x9gmqnhyd/q6VIbNT6Ld+Gzn5ajVPbb7QDCv82xQFn+M73KxDlvosNh1EmDCcrp1IUaPnDQSRZJSuUDxQhNnxaZfAu8fpj1D9CGLr/7M6wlo8lzd8pQkNL7L5U4nmHSZqgWmIN5eYbQmNG+YlCbVNPryxJJBxDrgQ6dtZqCHAUzBNjSZsPZZdhPeXeVIEcvBbt3Jp3Sr8PAOrOFf+A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=axentia.se; dmarc=pass action=none header.from=axentia.se;
- dkim=pass header.d=axentia.se; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axentia.se;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YKqY0UwB97/aLXfsGstGKgVq40yDemKiIxvAgsYgEuk=;
- b=kuZbS7y5ahg/ir9u5KB884vj0to7CBMNHlf2F7j/tlIQkSAX8h1CPrnNbU6ssUOFoU9kbay+iubyORC7i8esUrWwNX4iFXTMxf95jNmXUqsfRqRNPJKxYnN460sC2UP0cWIWJfntobNVhMLrFyBwub6QNmo9GltjqNQXvcmgmQw=
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none header.from=axentia.se;
-Received: from VE1PR02MB5487.eurprd02.prod.outlook.com (2603:10a6:803:115::17)
- by VI1PR02MB4269.eurprd02.prod.outlook.com (2603:10a6:803:88::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4108.26; Fri, 7 May
- 2021 22:45:01 +0000
-Received: from VE1PR02MB5487.eurprd02.prod.outlook.com
- ([fe80::10c7:71b5:b4ac:e4f2]) by VE1PR02MB5487.eurprd02.prod.outlook.com
- ([fe80::10c7:71b5:b4ac:e4f2%6]) with mapi id 15.20.4108.029; Fri, 7 May 2021
- 22:45:01 +0000
-Subject: Re: [PATCH] dt-bindings: iio: afe: current-sense-shunt: add
- io-channel-cells
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210506150637.35288-1-krzysztof.kozlowski@canonical.com>
-From:   Peter Rosin <peda@axentia.se>
-Organization: Axentia Technologies AB
-Message-ID: <0e68ca18-7d8c-12ab-59b1-56404b29be77@axentia.se>
-Date:   Sat, 8 May 2021 00:44:58 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
-In-Reply-To: <20210506150637.35288-1-krzysztof.kozlowski@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [85.229.94.233]
-X-ClientProxiedBy: HE1PR0301CA0024.eurprd03.prod.outlook.com
- (2603:10a6:3:76::34) To VE1PR02MB5487.eurprd02.prod.outlook.com
- (2603:10a6:803:115::17)
+        id S230394AbhEHDKl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 7 May 2021 23:10:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54140 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229775AbhEHDKl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 7 May 2021 23:10:41 -0400
+Received: from mail-oo1-xc34.google.com (mail-oo1-xc34.google.com [IPv6:2607:f8b0:4864:20::c34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3F76C061574;
+        Fri,  7 May 2021 20:09:39 -0700 (PDT)
+Received: by mail-oo1-xc34.google.com with SMTP id h9-20020a4a94090000b02901f9d4f64172so2382943ooi.5;
+        Fri, 07 May 2021 20:09:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=pZZVUqkHquac1Wjj54lNX3+sEEM5nk4IsB+iHsgz5Lc=;
+        b=B7JL28jcAfDU5fnNf0RQIc9yEYnUC7RmNjxds9x6heFoJ/NL8LCusiE3WBPEiflv1D
+         kbTBt61W5XE/CYRLjuvxVp6pRZQHBh/C37P6GJGYfOqWcUE39bb11ul93WJbDQbbjXNE
+         eRG6F/gbfyQ+AZEkYKwAJ9RU1W1u30lyrPF/MjOf4mpW1eVn18cwwGmSi4s1wezkyyuR
+         VSbLHmiVTBSxiT39uzzp2Z7bihpwGnWlUXIgetg4LozNbEAG5zRD+SW49DNcFtuKXn/m
+         p2yv31HAmBdgeYqOeQ0H4l2JRpEXla093m7aZmk8E55RaYzHa+RYG1dkeoe5/4SwkDpW
+         KhVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=pZZVUqkHquac1Wjj54lNX3+sEEM5nk4IsB+iHsgz5Lc=;
+        b=pQJ2zc1rsiNcCsI1AijtXSMheUMPV0yHszbUXthCVLtix7S0NyElnPyNSe3o0h6qvg
+         JxM6UoH2JiUD7TlqSsXC+/Agu9pDKeh9iHnqIlARANEe0LwskDNt/kI6OMA3P544kuAD
+         BMjOjkejTP41QftE6eKX6DxfZhi0fzHRg9OegudfXDxTYzsvjALrnbNFwk//kCyEt2Gj
+         6XA93J3S74sBtN8loYmstnjltH+s6kt8fSJelAyEDT2usYsee+DeDUOcB705oHkWy7aF
+         SOrckhf1to9PyHo7FCI+k7nSS3CdtagH+rrQAaxw8bWKgj77yc4N/86Q7+cfpV6CsBzj
+         3mig==
+X-Gm-Message-State: AOAM530WQqukNy5PXpUyMjMQBASSNFcCA8d0mpkjyN5W/70b6uj0zWHQ
+        vdFttAy+AGfrD/SBJvWG3eddLeNwejM=
+X-Google-Smtp-Source: ABdhPJwbgtQhG4vyU3WTUhxnK+XB1GmxRRA0pOGjjMsDRC9c9DZXnh2fJeWcydeq7vnIrtqbel+YCg==
+X-Received: by 2002:a4a:4bc2:: with SMTP id q185mr10273520ooa.19.1620443379124;
+        Fri, 07 May 2021 20:09:39 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id x24sm1584490otq.34.2021.05.07.20.09.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 May 2021 20:09:38 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Fri, 7 May 2021 20:09:36 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Subject: Re: [PATCH v2] iio: bme680_i2c: Remove ACPI support
+Message-ID: <20210508030936.GA3879276@roeck-us.net>
+References: <20210506034332.752263-1-linux@roeck-us.net>
+ <20210507103154.00006763@Huawei.com>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.13.3] (85.229.94.233) by HE1PR0301CA0024.eurprd03.prod.outlook.com (2603:10a6:3:76::34) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4108.25 via Frontend Transport; Fri, 7 May 2021 22:45:00 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: aea846ef-1c19-42e7-0fe9-08d911a9bf5b
-X-MS-TrafficTypeDiagnostic: VI1PR02MB4269:
-X-Microsoft-Antispam-PRVS: <VI1PR02MB42691847F97EFE4DCDF4FAA5BC579@VI1PR02MB4269.eurprd02.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: qculLFO88qN4A2MLWafDOZHH7HFlv0hVmE7VdpqyF6//fTY94/Pe3q8G937EWMn/2aa4JNoeEdF23Df8vZVf6uMfs6vXcndU68nYL4Lhh/wU6Zu/DJ1eKXxgYjkR/uI0CqVHT3aYaFE6tc1WhKYv0TJI01QuX6eK3hhrcAdNaDU87bKW97ZqAPs/qYoIVGgravnoW6Zzl9hbEo8ITdC5enxq+nMRz7gApkBe6skPSkZhTtsA1DWQgAP7fTJrrt3XLptTtYIh+RUBXK8zV4y4H+HBUwyKLWDLgO1G3kPE7khmP4WrMtyAHtiWSJ35Fjle0zyRlWkyhl8p1c86QNwoYUR8KYAmskt6aMGXicDqrlh5YDnX65cPwe1oCeNBHPZ6Hk9HEl5qzXuFXyoGrsrn+aE1TQIlxzQTicgwf9VqSL53Xum8RMauqEJ8+PUrtMajuKXfjocs1sJbxK7MlXuQNq7R2T7M69HEEuRt3fkPdzmMgkfBIyxfB12laeX352XTZmOWo0dG4qpjaSaz9FgU3aOXgAI6rfSllawy5mUgM8Upma21BZu6/lGZtyHlSOL3N4sizce9Osl1x/VJ8RVIDukh4L0z30BaIh3umc+JQu1QdXRERbylVcQDW+gaBmF7T0pnnYXWfxztiHKvbC+xcZ9+7RJYR3gFRHz6mwGVh0xZ/YBtA5bnB/7WwHzl8ISg
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR02MB5487.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(396003)(366004)(376002)(346002)(39830400003)(136003)(2616005)(956004)(26005)(66946007)(53546011)(86362001)(31696002)(83380400001)(38100700002)(186003)(31686004)(316002)(36756003)(36916002)(16526019)(8676002)(16576012)(2906002)(110136005)(5660300002)(66476007)(8936002)(66556008)(6486002)(478600001)(45980500001)(43740500002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aE1tUjhKV3hrazllZ1lRcnpUeVJvM3lwM2VqYmpLVENyVEhFVVYvajEzMmt0?=
- =?utf-8?B?bzdBL2NwS0J5WCtCVUEyWldYYTRuUUV2SnZLR0svejh0TzdOK1RFZUdSMGUx?=
- =?utf-8?B?MG9mellvY1JlOGhPeUp3blZEa0Fsa2p0WjlsQUh5QjA3cktEaCt3bFI5cHVh?=
- =?utf-8?B?SHIvNTUybFlxT0dOSURzS2s4Y2ErRWh5eDg0MTl5RDNmKzh1eE5lSFRsL2Jr?=
- =?utf-8?B?QnUzZi9BbTdBUG9BSitMamdHcnVGbmpjUmhOWml1N2lxem9xaVJrMTlwQnZ3?=
- =?utf-8?B?VHhGdmdObEl6ajhmY05BK01TbkpKTGcvNFBqNGJzT1ZDamNTWmZZd2NCekZR?=
- =?utf-8?B?dVNLQzJtNHUxV0E0eDY2OVdPd1JrMkc3ZXZUTkxKZU5qMlZnTytQQUMvMUtU?=
- =?utf-8?B?VWkyemxXNm1sTFE4TDhXQSsxS24wejJYczkwTG5mNjRteUU5bXhIVS9scXhp?=
- =?utf-8?B?R2J1N1pBeldBL0RXcndwN0Q0NHFvMjdoSUhJSzdva0FKeVYxR25tZzdVKzRZ?=
- =?utf-8?B?WDR6bkkyZnFsSllIdEY0ckJHNk1Ra2UwemdOM0o1eXN4bU9kK1IrZnZLRndG?=
- =?utf-8?B?K2pvTFJtSm9zS08yTklNZnhDY2xZbG9FVFhGd3JxOGxoa1kyNTdHTVg3SUlu?=
- =?utf-8?B?ZU9nU3VCV0dJL0dlYm9ZRk1FbW1kak91Mml0ek5nSVhkQnFIelpXWndGbW8y?=
- =?utf-8?B?UU1WYzF6WC9BV3hSM09kYjhBakltWXdFVmVKZEpZK3VHVmRBRzdGRmlTWGww?=
- =?utf-8?B?dWwvajBsOUcrOWMwLzlCd2Ura1cydmdETlFhdUtPcjV3SGFTUHV2ek5HUVJp?=
- =?utf-8?B?SGVkZjRXZjlSVHhFU2wyc1NKdFoxSHpxN1p3U1E3bGtkTWNJeWZPM2RRNmg4?=
- =?utf-8?B?aFpscEZDN2tTSi8xMTdadlZ0RFBGdS8wTENwN1BCL3J5V3daa3JxTVFLOVJn?=
- =?utf-8?B?S1ovcVlhSG1vNDFnMnBMckJQUjlBaFBlUm1mZFEvei90YlRCeEgwTWdBMGVW?=
- =?utf-8?B?Z3pHTlhtU3Yyb2QyQ3FmN1I5K2FCc3RKWjRYUVEwc2MzQytDNjVESmkxejZi?=
- =?utf-8?B?YVR2KzN6YTRwNkNSR0o5ODBMNFVab1ZwaTJkWlN6ajBWdUFhQlRsT3cxbGZx?=
- =?utf-8?B?YTlpVzk2d0tySzZVUmZkbm04aG9DN1p5NGNYY0FWck1OTmhiTVdURGllTnJu?=
- =?utf-8?B?VWlMTVFCZ2xQd0R0aEVNWGZFeXE2bVU4NFozSmRtY2hEbHFUMUxHV0tjbjAv?=
- =?utf-8?B?empJalJNRFhtek00cHZMZFZJVmlNVXVmcG5GOC9yMm9vT3pOTzRJV1A1T1dj?=
- =?utf-8?B?ejlvdTcrZ3VRKzFEQmVtWU42Tzhhb01PY09CK09XNm9Rd2t6d3pLT1BPZFBm?=
- =?utf-8?B?NnJKUUxoZzNzT0M0NXE3eldlMENsN1VvTEtvNGJkd0U0OHNZVlpOSDlqaTB0?=
- =?utf-8?B?cVJxL2NuSFlib0g0NzlTSURMTjRvdzZqYTZjK3ZTMHRydnU3cS91QTdHWHdw?=
- =?utf-8?B?WlFQTmR6Tlg1SDNKejlEcjNUZHljakorYUFYVHowOHVWWVd2dVhtRklvQ0Ev?=
- =?utf-8?B?cFZKYzBocUs2V3dUM2dOQU1QUS8rMFpzN21nekhPNCs5SE05Sm0zZ05RdTZR?=
- =?utf-8?B?WTJjMVJ2a2ZRNGt1dVMrYnJrNEhtdDI2NVBtamIza0RtK2RxV2dMa3U0UjlL?=
- =?utf-8?B?amRNTDY2c05xZ0VaNnBad0xXNGpLRHBnNFJmMWxLM2NhU0Vwam5GZ2s0bG5Y?=
- =?utf-8?Q?bUrn497oKaHPS7HE/xjpQm3azIVr04s4qpv5Ula?=
-X-OriginatorOrg: axentia.se
-X-MS-Exchange-CrossTenant-Network-Message-Id: aea846ef-1c19-42e7-0fe9-08d911a9bf5b
-X-MS-Exchange-CrossTenant-AuthSource: VE1PR02MB5487.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2021 22:45:00.8526
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4ee68585-03e1-4785-942a-df9c1871a234
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: faOi5rdy6zEXGVw3yxzaSgnw/CYXN7DBhRT3LV6BuCtwbkZTYCqiaS9LNpb8xuPJ
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR02MB4269
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210507103154.00006763@Huawei.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi!
-
-On 2021-05-06 17:06, Krzysztof Kozlowski wrote:
-> The current-sense-shunt is an IIO provider thus can be referenced by IIO
-> consumers (via "io-channels" property in consumer device node).
-> Such provider is required to describe number of cells used in phandle
-> lookup with "io-channel-cells" property.  This also fixes dtbs_check
-> warnings like:
+On Fri, May 07, 2021 at 10:31:54AM +0100, Jonathan Cameron wrote:
+> On Wed,  5 May 2021 20:43:32 -0700
+> Guenter Roeck <linux@roeck-us.net> wrote:
 > 
->   arch/arm/boot/dts/s5pv210-fascinate4g.dt.yaml: current-sense-shunt:
->     '#io-channel-cells' does not match any of the regexes: 'pinctrl-[0-9]+'
+> > With CONFIG_ACPI=n and -Werror, 0-day reports:
+> > 
+> > drivers/iio/chemical/bme680_i2c.c:46:36: error:
+> > 	'bme680_acpi_match' defined but not used
+> > 
+> > Apparently BME0680 is not a valid ACPI ID. Remove it and with it
+> > ACPI support from the bme680_i2c driver.
+> > 
+> > Reported-by: kernel test robot <lkp@intel.com>
+> > Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > Cc: Hans de Goede <hdegoede@redhat.com>
+> > Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 > 
-> Fixes: ce66e52b6c16 ("dt-bindings:iio:afe:current-sense-shunt: txt to yaml conversion.")
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-> ---
->  .../devicetree/bindings/iio/afe/current-sense-shunt.yaml     | 5 +++++
->  1 file changed, 5 insertions(+)
+> A note for these is that I'll change the patch titles when applying.
+> We aren't removing ACPI support from the drivers, we are simply
+> removing the ACPI ID table entries.  For most of these PRP0001 magic
+> will work just fine with the OF table.  That's probably the
+> right way for small companies etc to use these in products without
+> having to jump through the hoops of getting an ACPI ID.
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/afe/current-sense-shunt.yaml b/Documentation/devicetree/bindings/iio/afe/current-sense-shunt.yaml
-> index 90439a8dc785..05166d8a3124 100644
-> --- a/Documentation/devicetree/bindings/iio/afe/current-sense-shunt.yaml
-> +++ b/Documentation/devicetree/bindings/iio/afe/current-sense-shunt.yaml
-> @@ -24,12 +24,16 @@ properties:
->      description: |
->        Channel node of a voltage io-channel.
->  
-> +  "#io-channel-cells":
-> +    const: 0
-> +
->    shunt-resistor-micro-ohms:
->      description: The shunt resistance.
->  
->  required:
->    - compatible
->    - io-channels
-> +  - "#io-channel-cells"
->    - shunt-resistor-micro-ohms
 
-I know I'm listed as maintainer and all, but I have not kept up with the yaml
-conversion. Sorry. So, given that I might very well fundamentally misunderstand
-something, it does not sound correct that #io-channel-cells is now "required".
-I regard it as optional, and only needed if some other in-kernel driver is
-consuming the sensed current. What am I missing?
+Below is what Coccinelle tells me about ACPI IDs in drivers/iio.
+The script (tries) to do a prefix match of all ACPI IDs it finds against
+the PNP and ACPI ID databases from https://uefi.org/PNP_ACPI_Registry.
 
-Also, whatever is done in this binding should preferably also be done in the
-two "sister" afe bindings, i.e. current-sense-amplifier and voltage-divider.
+Andy, Hans, does that look about right ?
 
-Cheers,
-Peter
+Next question is what to do with the mismatches and with false
+negatives such as:
 
->  additionalProperties: false
-> @@ -57,6 +61,7 @@ examples:
->      sysi {
->          compatible = "current-sense-shunt";
->          io-channels = <&tiadc 0>;
-> +        #io-channel-cells = <0>;
->  
->          /* Divide the voltage by 3300000/1000000 (or 3.3) for the current. */
->          shunt-resistor-micro-ohms = <3300000>;
-> 
+drivers/iio/accel/stk8312.c
+  STK8312: match (prefix) against STK (SANTAK CORP.)
+drivers/iio/light/isl29018.c
+  ISL29018: match (prefix) against ISL (Isolation Systems)
+  ISL29023: match (prefix) against ISL (Isolation Systems)
+  ISL29035: match (prefix) against ISL (Isolation Systems)
+drivers/iio/gyro/bmg160_i2c.c
+  BMI055B: match (prefix) against BMI (Benson Medical Instruments Company)
+  BMI088B: match (prefix) against BMI (Benson Medical Instruments Company)
+
+[ and how to auto-detect those - any idea ? ]
+
+If you like I'll be happy to send you the coccinelle script I wrote
+to play with.
+
+Guenter
+
+---
+drivers/iio/light/stk3310.c
+  STK3310: match (prefix) against STK (SANTAK CORP.)
+  STK3311: match (prefix) against STK (SANTAK CORP.)
+  STK3335: match (prefix) against STK (SANTAK CORP.)
+drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
+  INVN6000: match (ACPI ID) against INVN (Invensense, Inc)
+drivers/iio/imu/fxos8700_i2c.c
+  FXOS8700: No match
+drivers/iio/dac/ad5592r.c
+  ADS5592: match (prefix) against ADS (Analog Devices Inc)
+drivers/iio/accel/stk8312.c
+  STK8312: match (prefix) against STK (SANTAK CORP.)
+drivers/iio/light/us5182d.c
+  USD5182: match (prefix) against USD (U.S. Digital Corporation)
+drivers/iio/imu/fxos8700_spi.c
+  FXOS8700: No match
+drivers/iio/dac/ad5593r.c
+  ADS5593: match (prefix) against ADS (Analog Devices Inc)
+drivers/iio/accel/stk8ba50.c
+  STK8BA50: match (prefix) against STK (SANTAK CORP.)
+drivers/iio/accel/bma220_spi.c
+  BMA0220: No match
+drivers/iio/magnetometer/ak8975.c
+  AK8975: No match
+  AK8963: No match
+  INVN6500: match (ACPI ID) against INVN (Invensense, Inc)
+  AK009911: No match
+  AK09911: No match
+  AKM9911: match (prefix) against AKM (Asahi Kasei Microsystems Company Ltd)
+  AK09912: No match
+drivers/iio/imu/bmi160/bmi160_i2c.c
+  BMI0160: match (prefix) against BMI (Benson Medical Instruments Company)
+drivers/iio/chemical/bme680_i2c.c
+  BME0680: No match
+drivers/iio/accel/mxc6255.c
+  MXC6225: No match
+  MXC6255: No match
+drivers/iio/accel/da280.c
+  MIRAACC: match (prefix) against MIR (Miro Computer Prod.)
+drivers/iio/proximity/sx9310.c
+  STH9310: match (prefix) against STH (Semtech Corporation)
+  STH9311: match (prefix) against STH (Semtech Corporation)
+drivers/iio/accel/bmc150-accel-i2c.c
+  BSBA0150: No match
+  BMC150A: No match
+  BMI055A: match (prefix) against BMI (Benson Medical Instruments Company)
+  BMA0255: No match
+  BMA250E: No match
+  BMA222: No match
+  BMA222E: No match
+  BMA0280: No match
+  BOSC0200: match (ACPI ID) against BOSC (Robert Bosch GmbH)
+drivers/iio/light/rpr0521.c
+  RPR0521: No match
+drivers/iio/humidity/hts221_i2c.c
+  SMO9100: match (prefix) against SMO (STMicroelectronics)
+drivers/iio/adc/ti-adc108s102.c
+  INT3495: match (prefix) against INT (Interphase Corporation)
+drivers/iio/accel/kxcjk-1013.c
+  KXCJ1013: No match
+  KXCJ1008: No match
+  KXCJ9000: No match
+  KIOX0008: match (ACPI ID) against KIOX (Kionix, Inc.)
+  KIOX0009: match (ACPI ID) against KIOX (Kionix, Inc.)
+  KIOX000A: match (ACPI ID) against KIOX (Kionix, Inc.)
+  KIOX010A: match (ACPI ID) against KIOX (Kionix, Inc.)
+  KIOX020A: match (ACPI ID) against KIOX (Kionix, Inc.)
+  KXTJ1009: No match
+  KXJ2109: No match
+  SMO8500: match (prefix) against SMO (STMicroelectronics)
+drivers/iio/magnetometer/mmc35240.c
+  MMC35240: No match
+drivers/iio/light/apds9960.c
+  MSHW0184: match (ACPI ID) against MSHW (Microsoft Corporation)
+drivers/iio/accel/bmc150-accel-spi.c
+  BSBA0150: No match
+  BMC150A: No match
+  BMI055A: match (prefix) against BMI (Benson Medical Instruments Company)
+  BMA0255: No match
+  BMA250E: No match
+  BMA222: No match
+  BMA222E: No match
+  BMA0280: No match
+drivers/iio/proximity/sx9500.c
+  SSX9500: No match
+  SASX9500: match (prefix) against SAS (Stores Automated Systems Inc)
+drivers/iio/imu/bmi160/bmi160_spi.c
+  BMI0160: match (prefix) against BMI (Benson Medical Instruments Company)
+drivers/iio/chemical/bme680_spi.c
+  BME0680: No match
+drivers/iio/accel/mxc4005.c
+  MXC4005: No match
+  MXC6655: No match
+drivers/iio/pressure/hp206c.c
+  HOP206C: No match
+drivers/iio/light/isl29018.c
+  ISL29018: match (prefix) against ISL (Isolation Systems)
+  ISL29023: match (prefix) against ISL (Isolation Systems)
+  ISL29035: match (prefix) against ISL (Isolation Systems)
+drivers/iio/accel/mma9551.c
+  MMA9551: match (prefix) against MMA (Micromedia AG)
+drivers/iio/potentiometer/max5487.c
+  MAX5487: match (prefix) against MAX (Rogen Tech Distribution Inc)
+  MAX5488: match (prefix) against MAX (Rogen Tech Distribution Inc)
+  MAX5489: match (prefix) against MAX (Rogen Tech Distribution Inc)
+drivers/iio/light/jsa1212.c
+  JSA1212: No match
+drivers/iio/imu/kmx61.c
+  KMX61021: No match
+drivers/iio/pressure/st_pressure_i2c.c
+  SNO9210: match (prefix) against SNO (SINOSUN TECHNOLOGY CO., LTD)
+drivers/iio/light/pa12203001.c
+  TXCPA122: No match
+drivers/iio/light/cm32181.c
+  CPLM3218: match (ACPI ID) against CPLM (Capella Microsystems Inc.)
+drivers/iio/humidity/am2315.c
+  AOS2315: No match
+drivers/iio/accel/st_accel_i2c.c
+  SMO8840: match (prefix) against SMO (STMicroelectronics)
+  SMO8A90: match (prefix) against SMO (STMicroelectronics)
+drivers/iio/accel/mma7660.c
+  MMA7660: match (prefix) against MMA (Micromedia AG)
+drivers/iio/magnetometer/bmc150_magn_spi.c
+  BMC150B: No match
+  BMC156B: No match
+  BMM150B: No match
+drivers/iio/light/max44000.c
+  MAX44000: match (prefix) against MAX (Rogen Tech Distribution Inc)
+drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
+  INVN6500: match (ACPI ID) against INVN (Invensense, Inc)
+drivers/iio/gyro/bmg160_i2c.c
+  BMG0160: No match
+  BMI055B: match (prefix) against BMI (Benson Medical Instruments Company)
+  BMI088B: match (prefix) against BMI (Benson Medical Instruments Company)
+drivers/iio/adc/ti-adc128s052.c
+  AANT1280: match (ACPI ID) against AANT (AAEON Technology Inc.)
+drivers/iio/accel/mma9553.c
+  MMA9553: match (prefix) against MMA (Micromedia AG)
+drivers/iio/magnetometer/bmc150_magn_i2c.c
+  BMC150B: No match
+  BMC156B: No match
+  BMM150B: No match
+drivers/iio/light/ltr501.c
+  LTER0501: No match
+  LTER0559: No match
+  LTER0301: No match
+

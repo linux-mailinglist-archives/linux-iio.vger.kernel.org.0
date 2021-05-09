@@ -2,37 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FB6D37765D
-	for <lists+linux-iio@lfdr.de>; Sun,  9 May 2021 13:37:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10B9337765E
+	for <lists+linux-iio@lfdr.de>; Sun,  9 May 2021 13:37:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229616AbhEILiJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 9 May 2021 07:38:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53626 "EHLO mail.kernel.org"
+        id S229618AbhEILiL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 9 May 2021 07:38:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53678 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229609AbhEILiI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 9 May 2021 07:38:08 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 07324613F0;
-        Sun,  9 May 2021 11:37:03 +0000 (UTC)
+        id S229609AbhEILiK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 9 May 2021 07:38:10 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2C05B61401;
+        Sun,  9 May 2021 11:37:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620560225;
-        bh=cJngXrvFUs6hR//juFsPm9bJ/pJKZFHgVYA73AHf/Fk=;
+        s=k20201202; t=1620560228;
+        bh=rVbI4Gr++tq/9a+iXLs0VL/yh09VWbY10FGE3C9nngM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u9WhqDrt4PBOwXUUsrT0PkTbxgegwNLUvtEoSM6LfvyPR0iPlzTIpiGIUBUqHQuHU
-         tujGkBlsh1lHvNAlE1RqRpTiKfzyfFTM/wHuiQWCQR+qArEoKpb6bv6bY8RlDNflur
-         gyA/bryYJ3cfRBNzRxc0+0CNR8Vsjkfs9sqTPNoRkjDERsk7/L9kO+DNSUzLypU+lU
-         G/kEpQb2u2j54SwlxxFrJt3DHWw5OPPH6eTS8JQ/Hkl63xGh9Ss1dUwRKZf2xw2WQw
-         JnULKwHTHWDiTWRXK/bJCcoJmhJxfn7vz4NTqhJVwJbk6LnNagv/tjJZGAfLSmT707
-         tOWsXy8miSQGw==
+        b=XcC+sRm4lJaKtCZjB+kMRU8ZoaUkwsQ0LllJ65NjWG0IdBlQA1UP6Q7tTQ1Ew7A/U
+         p7oZoU7jJdFvrxKs6e749y4Ki08vDmqXJEp2AkH+miX1CgTsdwUEX0W748zZ4h2mop
+         Bf8ARDBbYTl0N7SlMvrzczdf+L0w1LudDsGYtXMtbRLo8TEWMMPxqAkwedg49hNveB
+         Srl2QMIeQWQpl9ekiKYuMTf9mUS6KcIZ/w2lpCITbMqGVOqiRfKm8p5x3JyZjWwZPt
+         HmNBw8XahzLUFfCAfQYKp7qlskB8P4ju46RMZneEr7qVTdxQySzOUGgc6unent3OUf
+         /fd47b6bap8VA==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
         Julia Lawall <Julia.Lawall@inria.fr>,
         "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 07/28] iio: accel: kxcjk-1013: Balance runtime pm + use pm_runtime_resume_and_get()
-Date:   Sun,  9 May 2021 12:33:33 +0100
-Message-Id: <20210509113354.660190-8-jic23@kernel.org>
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Subject: [PATCH 08/28] iio: hid: trigger: Balance runtime pm + use pm_runtime_resume_and_get()
+Date:   Sun,  9 May 2021 12:33:34 +0100
+Message-Id: <20210509113354.660190-9-jic23@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210509113354.660190-1-jic23@kernel.org>
 References: <20210509113354.660190-1-jic23@kernel.org>
@@ -44,51 +44,53 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-This driver alls pm_runtime_put_noidle() in it's remove function, but there
-is no matching get call.  This isn't a bug as runtime pm will not allow
-the reference counter to go negative, but it is missleading so lets remove
-it.
+The call to pm_runtime_put_noidle() in remove() callback is not
+balanced by any gets
 
-Whilst here use pm_runtime_resume_and_get() to tidy up some boilerplate.
-The coccicheck script didn't get this one due to the less obvious
-structure. Found by inspection.
+Note this doesn't cause any problems beyond reader confusion as the runtime
+pm core protects against the reference counter going negative.
+
+Whilst here, use pm_runtiem_resume_and_get() to simplify code a little.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Hans de Goede <hdegoede@redhat.com>
+Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 ---
- drivers/iio/accel/kxcjk-1013.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/iio/common/hid-sensors/hid-sensor-trigger.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxcjk-1013.c
-index 283e6a3feffc..a9e3dae43ac5 100644
---- a/drivers/iio/accel/kxcjk-1013.c
-+++ b/drivers/iio/accel/kxcjk-1013.c
-@@ -478,7 +478,7 @@ static int kxcjk1013_set_power_state(struct kxcjk1013_data *data, bool on)
- 	int ret;
+diff --git a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
+index 5a7b3e253e58..c06537e106e9 100644
+--- a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
++++ b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
+@@ -163,18 +163,15 @@ int hid_sensor_power_state(struct hid_sensor_common *st, bool state)
  
- 	if (on)
--		ret = pm_runtime_get_sync(&data->client->dev);
-+		ret = pm_runtime_resume_and_get(&data->client->dev);
- 	else {
- 		pm_runtime_mark_last_busy(&data->client->dev);
- 		ret = pm_runtime_put_autosuspend(&data->client->dev);
-@@ -486,8 +486,6 @@ static int kxcjk1013_set_power_state(struct kxcjk1013_data *data, bool on)
- 	if (ret < 0) {
- 		dev_err(&data->client->dev,
- 			"Failed: %s for %d\n", __func__, on);
--		if (on)
--			pm_runtime_put_noidle(&data->client->dev);
- 		return ret;
+ 	if (state) {
+ 		atomic_inc(&st->user_requested_state);
+-		ret = pm_runtime_get_sync(&st->pdev->dev);
++		ret = pm_runtime_resume_and_get(&st->pdev->dev);
+ 	} else {
+ 		atomic_dec(&st->user_requested_state);
+ 		pm_runtime_mark_last_busy(&st->pdev->dev);
+ 		pm_runtime_use_autosuspend(&st->pdev->dev);
+ 		ret = pm_runtime_put_autosuspend(&st->pdev->dev);
  	}
- #endif
-@@ -1485,7 +1483,6 @@ static int kxcjk1013_remove(struct i2c_client *client)
+-	if (ret < 0) {
+-		if (state)
+-			pm_runtime_put_noidle(&st->pdev->dev);
++	if (ret < 0)
+ 		return ret;
+-	}
  
- 	pm_runtime_disable(&client->dev);
- 	pm_runtime_set_suspended(&client->dev);
--	pm_runtime_put_noidle(&client->dev);
+ 	return 0;
+ #else
+@@ -222,7 +219,6 @@ void hid_sensor_remove_trigger(struct iio_dev *indio_dev,
+ 		pm_runtime_disable(&attrb->pdev->dev);
  
- 	if (data->dready_trig) {
- 		iio_triggered_buffer_cleanup(indio_dev);
+ 	pm_runtime_set_suspended(&attrb->pdev->dev);
+-	pm_runtime_put_noidle(&attrb->pdev->dev);
+ 
+ 	cancel_work_sync(&attrb->work);
+ 	iio_trigger_unregister(attrb->trigger);
 -- 
 2.31.1
 

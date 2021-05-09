@@ -2,37 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EF54377672
-	for <lists+linux-iio@lfdr.de>; Sun,  9 May 2021 13:37:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 154BC377673
+	for <lists+linux-iio@lfdr.de>; Sun,  9 May 2021 13:37:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229709AbhEILiy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 9 May 2021 07:38:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54600 "EHLO mail.kernel.org"
+        id S229700AbhEILi4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 9 May 2021 07:38:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54650 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229707AbhEILiy (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 9 May 2021 07:38:54 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 5FEA9613E5;
-        Sun,  9 May 2021 11:37:49 +0000 (UTC)
+        id S229712AbhEILi4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 9 May 2021 07:38:56 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B6A2B613D6;
+        Sun,  9 May 2021 11:37:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620560271;
-        bh=7v361hqgBE1lMuKYO6LrJ64ROS0EptwwvqD6k3sa+SQ=;
+        s=k20201202; t=1620560273;
+        bh=F9CGTM7syg6rMDyuEAZU/s4AUgmiXP8BljnCUbKbZM0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QFmz36ZtVKpWge7aPwcyXX2zxS4l2kOYeoFSx4/rYyXrdR3cC1V8bfDJv84cxtqmo
-         ipqaRfxX0vnSeLDU0xdl4+DC0Ubc1Kf3jsKL2kYuk/MIq8zMIfK22k0BfxMLyGj9UP
-         286QHMLh9F/NZrRdmo6aH6WEcFHWoiRuP2+DnODLCRi32145inCvvuEaVsgPMb8mCh
-         dn3myC33jO8VnAWOF6vOqwGSUYzG0A3JxdUhEPPA2C3udsDNsVQAd7VQIj6BLrpQcu
-         wxBYbykobJrv+HlZk6ah6z7aebvWYGthN4LEmt/oDCMviSqdKQTw4ff6p8nGT2p9JO
-         +68vVM4QspNEw==
+        b=SBsY2ird4Ec+7Aq49attMbRVisVXkBPHgAiYS7pt5FJRdinP8JsTZlU/PBflot/T6
+         tFWaniDmz66dfgiiU+EbZKJr4Al2X5A+qVn/AJEoD2nx8MTPoEcs/IQUcPDzE5rrHV
+         N+JHU+56RLcsWMqZITqNkfqygKbZCCrWWBoa2kpMXGFH4UjR83JUfIBWOndcXGX6+t
+         cuxS7wiZygKZcC3ZnEvctbYw/UF/UEI6GErtT5owZIFaZ/JQg8fiGxMDqewqWtqFt4
+         ehsPowPg+COjgALFsW6dANBzPmgOZkrPkYJQUiRsc8dHNE3XWBB1z/4AHwdFuCCrvq
+         jyalyqkfzZREQ==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
         Julia Lawall <Julia.Lawall@inria.fr>,
         "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
-Subject: [PATCH 27/28] iio: pressure: icp10100: Use pm_runtime_resume_and_get() + handle errors
-Date:   Sun,  9 May 2021 12:33:53 +0100
-Message-Id: <20210509113354.660190-28-jic23@kernel.org>
+        Marek Vasut <marek.vasut@gmail.com>
+Subject: [PATCH 28/28] iio: adc: rcar-gyroadc: Use pm_runtime_resume_and_get() and check in probe()
+Date:   Sun,  9 May 2021 12:33:54 +0100
+Message-Id: <20210509113354.660190-29-jic23@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210509113354.660190-1-jic23@kernel.org>
 References: <20210509113354.660190-1-jic23@kernel.org>
@@ -44,30 +44,68 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Using this new call makes it easy to handle failures in resume as it
-doesn't hold a reference count if it exits with an error.
+1 instance found using coccicheck script under review at:
+https://lore.kernel.org/lkml/20210427141946.2478411-1-Julia.Lawall@inria.fr/
+The other instance changed did not check for failure of the
+pm_runtime_get_sync() so that is added.
+
+Note the remaining pm_runtime_get_sync() call is left alone because it
+is not obvious what to do on failure to power up in remove()
+
+This is a prequel to taking a closer look at the runtime pm in IIO drivers
+in general.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
+Cc: Marek Vasut <marek.vasut@gmail.com>
 ---
- drivers/iio/pressure/icp10100.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/iio/adc/rcar-gyroadc.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/iio/pressure/icp10100.c b/drivers/iio/pressure/icp10100.c
-index 48759fc4bf18..80cd66688731 100644
---- a/drivers/iio/pressure/icp10100.c
-+++ b/drivers/iio/pressure/icp10100.c
-@@ -250,7 +250,9 @@ static int icp10100_get_measures(struct icp10100_state *st,
- 	__be16 measures[3];
- 	int ret;
+diff --git a/drivers/iio/adc/rcar-gyroadc.c b/drivers/iio/adc/rcar-gyroadc.c
+index 9f38cf3c7dc2..a48895046408 100644
+--- a/drivers/iio/adc/rcar-gyroadc.c
++++ b/drivers/iio/adc/rcar-gyroadc.c
+@@ -162,18 +162,13 @@ static const struct iio_chan_spec rcar_gyroadc_iio_channels_3[] = {
+ static int rcar_gyroadc_set_power(struct rcar_gyroadc *priv, bool on)
+ {
+ 	struct device *dev = priv->dev;
+-	int ret;
  
--	pm_runtime_get_sync(&st->client->dev);
-+	ret = pm_runtime_resume_and_get(&st->client->dev);
-+	if (ret < 0)
-+		return ret;
+ 	if (on) {
+-		ret = pm_runtime_get_sync(dev);
+-		if (ret < 0)
+-			pm_runtime_put_noidle(dev);
++		return pm_runtime_resume_and_get(dev);
+ 	} else {
+ 		pm_runtime_mark_last_busy(dev);
+-		ret = pm_runtime_put_autosuspend(dev);
++		return pm_runtime_put_autosuspend(dev);
+ 	}
+-
+-	return ret;
+ }
  
- 	mutex_lock(&st->lock);
- 	cmd = &icp10100_cmd_measure[st->mode];
+ static int rcar_gyroadc_read_raw(struct iio_dev *indio_dev,
+@@ -535,7 +530,10 @@ static int rcar_gyroadc_probe(struct platform_device *pdev)
+ 	pm_runtime_use_autosuspend(dev);
+ 	pm_runtime_enable(dev);
+ 
+-	pm_runtime_get_sync(dev);
++	ret = pm_runtime_resume_and_get(dev);
++	if (ret)
++		goto err_power_up;
++
+ 	rcar_gyroadc_hw_init(priv);
+ 	rcar_gyroadc_hw_start(priv);
+ 
+@@ -552,6 +550,7 @@ static int rcar_gyroadc_probe(struct platform_device *pdev)
+ err_iio_device_register:
+ 	rcar_gyroadc_hw_stop(priv);
+ 	pm_runtime_put_sync(dev);
++err_power_up:
+ 	pm_runtime_disable(dev);
+ 	pm_runtime_set_suspended(dev);
+ 	clk_disable_unprepare(priv->clk);
 -- 
 2.31.1
 

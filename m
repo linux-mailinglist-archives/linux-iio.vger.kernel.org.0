@@ -2,37 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B9EFA377666
-	for <lists+linux-iio@lfdr.de>; Sun,  9 May 2021 13:37:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3317377667
+	for <lists+linux-iio@lfdr.de>; Sun,  9 May 2021 13:37:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229649AbhEILi3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 9 May 2021 07:38:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54050 "EHLO mail.kernel.org"
+        id S229640AbhEILic (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 9 May 2021 07:38:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54084 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229640AbhEILi3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 9 May 2021 07:38:29 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C854C613F0;
-        Sun,  9 May 2021 11:37:24 +0000 (UTC)
+        id S229645AbhEILib (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 9 May 2021 07:38:31 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 29DB3613E5;
+        Sun,  9 May 2021 11:37:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620560246;
-        bh=nUYCEpZ4d5x4PUSJjh7b5cyzrnTJXFaXEP3ADX/XbeQ=;
+        s=k20201202; t=1620560248;
+        bh=L6bvA0UdHArtdy5oOTzfgym9WzGpT/8959l9seqgw0A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ctGUjowZP7p9xLopvCdAgnrFVlQD44VVRwTBap3WvlDz2TdXLPQLbRNPWG7rAHx3U
-         zcaI6scEVP5HPqcGE71h1W9eaMHUacXp0YQcC0nXBBFGi9p1BGNzQw3j9+RBwOiUgj
-         9f1GdLyTd+1pC1qA8w67pjfMbzrAA2WECZ/fMyJ7m1Tjqs8GFR9NdwJIEE6TDOMZP9
-         PH9V+luzgSv6XjuICqFjvoYzH+2/pXqE190NHgyPZFf8vmyztRxgwcW+M6MfEL3Xp4
-         xXEfXQ/2j9J7wTHfUAgDfgopQBbFaucHqtutGZzAp1SagZkaB9fqTNAVGoINpFUwKP
-         YnKIVcsagSXUw==
+        b=OAXddpyOVlyLb/vpGu5MJAN5j0iz0MVC6tKQcvwVp4H3ma8TQBCi96mosOb0A/tx6
+         Ry0msRZ6o+VkUeARfSVsqtekR5eGM3+bs5Af05SRC3BNXqhoc/kyV2Ln2YwmfVPu6w
+         ipP3QgF+IuixdjtxUn4zDAN6/cBcrq8HnH0fcxkrzHe6cKAL7ni1MIO9z77TKl7/4s
+         aUODkkGj6iifnKjYZCZt2mlPVdzCV6jYAYN1nftQPT/7WfjfXCjnAgnP71x+BA9Nw5
+         j7dwh1fvcH2ysftSinxokW8lmb2fX/8HC1pWumV49h7tCBfENSD0GefoZ9aZkxUztx
+         3BG80TWu87zhg==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
         Julia Lawall <Julia.Lawall@inria.fr>,
         "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Subject: [PATCH 16/28] iio: dac: stm32-dac: Use pm_runtime_resume_and_get() to replace open coding.
-Date:   Sun,  9 May 2021 12:33:42 +0100
-Message-Id: <20210509113354.660190-17-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 17/28] iio: adc: ads1015: Use pm_runtime_resume_and_get() to replace open coding.
+Date:   Sun,  9 May 2021 12:33:43 +0100
+Message-Id: <20210509113354.660190-18-jic23@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210509113354.660190-1-jic23@kernel.org>
 References: <20210509113354.660190-1-jic23@kernel.org>
@@ -48,29 +47,28 @@ Found using coccicheck script under review at:
 https://lore.kernel.org/lkml/20210427141946.2478411-1-Julia.Lawall@inria.fr/
 
 This is a prequel to taking a closer look at the runtime pm in IIO drivers
-in general
+in general.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 ---
- drivers/iio/dac/stm32-dac.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/iio/adc/ti-ads1015.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/iio/dac/stm32-dac.c b/drivers/iio/dac/stm32-dac.c
-index a5b0a52bf86e..dd2e306824e7 100644
---- a/drivers/iio/dac/stm32-dac.c
-+++ b/drivers/iio/dac/stm32-dac.c
-@@ -69,9 +69,8 @@ static int stm32_dac_set_enable_state(struct iio_dev *indio_dev, int ch,
- 	}
+diff --git a/drivers/iio/adc/ti-ads1015.c b/drivers/iio/adc/ti-ads1015.c
+index 9fef39bcf997..4b61ee3d2501 100644
+--- a/drivers/iio/adc/ti-ads1015.c
++++ b/drivers/iio/adc/ti-ads1015.c
+@@ -323,9 +323,7 @@ static int ads1015_set_power_state(struct ads1015_data *data, bool on)
+ 	struct device *dev = regmap_get_device(data->regmap);
  
- 	if (enable) {
+ 	if (on) {
 -		ret = pm_runtime_get_sync(dev);
-+		ret = pm_runtime_resume_and_get(dev);
- 		if (ret < 0) {
+-		if (ret < 0)
 -			pm_runtime_put_noidle(dev);
- 			mutex_unlock(&dac->lock);
- 			return ret;
- 		}
++		ret = pm_runtime_resume_and_get(dev);
+ 	} else {
+ 		pm_runtime_mark_last_busy(dev);
+ 		ret = pm_runtime_put_autosuspend(dev);
 -- 
 2.31.1
 

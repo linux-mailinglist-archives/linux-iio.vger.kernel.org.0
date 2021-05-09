@@ -2,101 +2,149 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EAE00377754
-	for <lists+linux-iio@lfdr.de>; Sun,  9 May 2021 17:29:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA9263777C7
+	for <lists+linux-iio@lfdr.de>; Sun,  9 May 2021 19:26:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229669AbhEIPa1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 9 May 2021 11:30:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43324 "EHLO
+        id S229666AbhEIR1l (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 9 May 2021 13:27:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229645AbhEIPa0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 May 2021 11:30:26 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C2DDC061573
-        for <linux-iio@vger.kernel.org>; Sun,  9 May 2021 08:29:23 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id z9so19661278lfu.8
-        for <linux-iio@vger.kernel.org>; Sun, 09 May 2021 08:29:23 -0700 (PDT)
+        with ESMTP id S229662AbhEIR1l (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 May 2021 13:27:41 -0400
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FD26C061573
+        for <linux-iio@vger.kernel.org>; Sun,  9 May 2021 10:26:38 -0700 (PDT)
+Received: by mail-wr1-x42b.google.com with SMTP id z6so14189753wrm.4
+        for <linux-iio@vger.kernel.org>; Sun, 09 May 2021 10:26:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=RfytLqDiupqOX141fLSL5xEwQRMVrqKR8ufOfjP5OyA=;
-        b=Ktds/ZaQeE5yB1wDXiD5N5gvkojsmePb+JwhTjC9LepAwBxMhNer2JQfvxPn6D2I5c
-         GjuoVORhoE1YlrqXe4XFQooOGPkmgIgjFbO7okAVLp05Rn9q55IV1SxGasgPvX0SPwMb
-         tEkRU9phTqgpHUJngUYXdG4H7Xj7SyiYuLCykRJ+kbEPfDV7zakynUgNZn94lvF8vb69
-         mB1wzSG06iyK/0bkWOdFuRw0nrNArksEN6tlC7QPafZwXvqxBW88SRKGF5U68aErubmV
-         Wp3/eomuX3rqFTUx93CNgCIB7VA/H2/tBSOiTFqaeLwQwluYNEzO4jBM2eyid+jgFEd+
-         vgLg==
+        h=mime-version:content-transfer-encoding:date:message-id:subject:from
+         :to:cc:references:in-reply-to;
+        bh=AERuuXJeCMDAEmKQz1U7heVv2Js4WHBCt6/Zut8OB2Q=;
+        b=FgWpl4eqcZe0vJcmPQzYgemLcQQcjd9lnyekr2dxG292+B9BVYQwM12ILyJ2Pjv0eh
+         tnhSJfLp7wsd/FvgtC1LiYwVIlWaGgg6j8+PBxJ9g0yJ/teSF6ZvFPYjt7O+YeGrEw2n
+         77IJL+HHF2Hbvnzewfd0P/pydFeT73jQQKyMaMVl7NsuGB6PchClHh7ixwQ5Wa+hB6dp
+         Yee5M6YclzAYmDa361KOQDQchq4cOhbi06D22m8jzwOknWXTlJNjV11t29yBC+Ta4tDs
+         Z1zaKgwHNVpIH+VKcvHDzTVxX+XG3Gh4RSy5xTIzU6WQRcincf6qFb5tR3P4q6+tiqSI
+         LFhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=RfytLqDiupqOX141fLSL5xEwQRMVrqKR8ufOfjP5OyA=;
-        b=Num47Z0dHDzNlNQwOE5ZZVBKRekDNMDjt/1NWR6qGQvCAG9l5HAMFkzBAXmhV/zWIN
-         JN3w3rUYuzFU03kLiRXwYFyuuXA3b0dPwaYbKy1oZVNzPr4AZtO7wRQ7sip3Cpw5dqqM
-         KXU1aZGg85Vp1I5m7DmG3JsSi2rgEvdbwG8X0UNMF5oS65oVMCJE/u4ckLp9CFtfMJh3
-         KtTrqo1Npmds4TCz9+r5JtEJWvs3Gu0EpB41mQ953bitOyKps7rSJWWrTfqDJbFEHnUx
-         SovJ/4L4UUlY5/8DWUoSsSn1omuBI3cdCEzOqDJt8U/PBJ5+u03iiaACG5JWwYDKUxjq
-         QGNw==
-X-Gm-Message-State: AOAM533SFBvCK6oG/OaBDnmr4x4pA4iPX3c1tHZCPI53OEZur8E438fc
-        4Vmwb8WY/E/2KWnGoPzvNBxcvTlgwFX530kS8LHvVnLMTBI=
-X-Google-Smtp-Source: ABdhPJwduQTbLLBzaZ6ljrIubI2SeSOyYd8nExbkfVznc6U3Xu9stSuhqtNubx9O6xTJeH+5A/gdVoso1OHYnDxk5lY=
-X-Received: by 2002:a19:b0b:: with SMTP id 11mr13534649lfl.291.1620574161920;
- Sun, 09 May 2021 08:29:21 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210503144350.7496-1-aardelean@deviqon.com> <20210508161643.5990ec15@jic23-huawei>
- <CACRpkdaK6AMVUC+B7JW3y28nNeAYHAS9UjC40KfShZNrHLD7rQ@mail.gmail.com> <20210509111925.52f3f4e3@jic23-huawei>
-In-Reply-To: <20210509111925.52f3f4e3@jic23-huawei>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sun, 9 May 2021 17:29:10 +0200
-Message-ID: <CACRpkdZ2mC5V6PdphmtmtQKHZwPfc7mVgZ-FH3io2ihB8foA4g@mail.gmail.com>
-Subject: Re: [PATCH] iio: core: return ENODEV if ioctl is unknown
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Alexandru Ardelean <aardelean@deviqon.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Nuno Sa <nuno.sa@analog.com>
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:mime-version:content-transfer-encoding:date
+         :message-id:subject:from:to:cc:references:in-reply-to;
+        bh=AERuuXJeCMDAEmKQz1U7heVv2Js4WHBCt6/Zut8OB2Q=;
+        b=DWUM3vTzWbCXzOqZRRdeUUGaxCYZiwvLXteM0FlgnefeIj819/bY5imZOvmyuGSNIg
+         hIwvojvbCABQGQgjQcCvZuqeVPfDF01EKaH6V0QgHh0DEtCuCLNjhhb2T+yft41qAS6f
+         xHBhDgB7iuwK1UGCp0imZ9XKjZMnxKCTiJSVWvtTUtr69sYYEReeCJrB5Q/y6YjINIG3
+         LA0Hsut00r5EddLmv+psr0iwktNiTTlxCP+g0g73wTYGQXgE/8+7p+1/Ve7vCpbJOmSK
+         94OeiEOlyUyHiml+8Zq+qM8f27HJODH3i+etq3OSrumrszmzbwfX4zHECrR5jIhq66UI
+         T6Rg==
+X-Gm-Message-State: AOAM533O85ywPyqDMyMwi0/CIvyht0QoJpsKemAUXjMVrBIBnyAdhpC+
+        iI9oUuNxzq5G4mT44BpBknRNT8nd8NvP0w==
+X-Google-Smtp-Source: ABdhPJyMI3yglo2LV4CgKRoq9IYWzsbVtVBwZRoWY58KXLwitvUZuXBXpp3j66I3FS5dUB2SzBFORQ==
+X-Received: by 2002:a5d:6dc4:: with SMTP id d4mr26785903wrz.105.1620581196898;
+        Sun, 09 May 2021 10:26:36 -0700 (PDT)
+Received: from localhost (a109-49-46-234.cpe.netcabo.pt. [109.49.46.234])
+        by smtp.gmail.com with ESMTPSA id n10sm19331893wrw.37.2021.05.09.10.26.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 May 2021 10:26:36 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Sun, 09 May 2021 18:26:35 +0100
+Message-Id: <CB8W37F6P01Y.1OXBUYVJ2AKOS@arch-thunder>
+Subject: Re: [PATCH 01/28] iio: gyro: fxa210002c: Balance runtime pm + use
+ pm_runtime_resume_and_get().
+From:   "Rui Miguel Silva" <rui.silva@linaro.org>
+To:     "Jonathan Cameron" <jic23@kernel.org>, <linux-iio@vger.kernel.org>
+Cc:     "Mauro Carvalho Chehab" <mchehab@kernel.org>,
+        "Julia Lawall" <Julia.Lawall@inria.fr>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        "Jonathan Cameron" <Jonathan.Cameron@huawei.com>
+References: <20210509113354.660190-1-jic23@kernel.org>
+ <20210509113354.660190-2-jic23@kernel.org>
+In-Reply-To: <20210509113354.660190-2-jic23@kernel.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, May 9, 2021 at 12:18 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> On Sat, 8 May 2021 20:21:08 +0200
-> Linus Walleij <linus.walleij@linaro.org> wrote:
+Hi Jonathan,
+thanks for the patch.
 
-> > Unless you really like to base your work on Gregs tree for
-> > some reason or other, that is.
+On Sun May 9, 2021 at 12:33 PM WEST, Jonathan Cameron wrote:
+
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >
-> Definitely appreciate Greg's help (and patience), but no
-> particularly strong reason to waste his time dealing with my
-> mess ups. Hopefully they'll reduce now IIO trees are going directly
-> into linux-next though.
+> In both the probe() error path and remove() pm_runtime_put_noidle()
+> is called which will decrement the runtime pm reference count.
+> However, there is no matching function to have raised the reference count=
+.
+> Not this isn't a fix as the runtime pm core will stop the reference count
+> going negative anyway.
+>
+> An alternative would have been to raise the count in these paths, but
+> it is not clear why that would be necessary.
+>
+> Whilst we are here replace some boilerplate with pm_runtime_resume_and_ge=
+t()
+> Found using coccicheck script under review at:
+> https://lore.kernel.org/lkml/20210427141946.2478411-1-Julia.Lawall@inria.=
+fr/
+>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Rui Miguel Silva <rui.silva@linaro.org>
 
-I'd suggest to move to sending pulls to Torvalds directly
-for IIO to cut the intermediary staging tree step, since
-now the subsystem is pretty large and see a bunch of
-frequent fixes that need an express path to Torvalds.
+With s/fxa210002c:/fxa21002c:/ in the patch subject:
 
-Pushing through Greg per se isn't really the problem,
-I think the problem is that IIO is going through the
-staging tree which (I guess) isn't a high priority activity
-and not expected to carry any serious critical fixes and
-I guess this can cause lags.
+Reviewed-by: Rui Miguel Silva <rui.silva@linaro.org>
 
-Maybe Greg has some other branch to take in IIO
-fixes and for-next but I don't really see the point.
+Cheers,
+   Rui
 
-The IIO left in the staging tree is just regular staging
-business at this point, the main IIO is much more
-important.
+> ---
+>  drivers/iio/gyro/fxas21002c_core.c | 11 +----------
+>  1 file changed, 1 insertion(+), 10 deletions(-)
+>
+> diff --git a/drivers/iio/gyro/fxas21002c_core.c b/drivers/iio/gyro/fxas21=
+002c_core.c
+> index 5af7b48ff01a..539585b0d300 100644
+> --- a/drivers/iio/gyro/fxas21002c_core.c
+> +++ b/drivers/iio/gyro/fxas21002c_core.c
+> @@ -366,14 +366,7 @@ static int fxas21002c_write(struct fxas21002c_data *=
+data,
+> =20
+>  static int  fxas21002c_pm_get(struct fxas21002c_data *data)
+>  {
+> -	struct device *dev =3D regmap_get_device(data->regmap);
+> -	int ret;
+> -
+> -	ret =3D pm_runtime_get_sync(dev);
+> -	if (ret < 0)
+> -		pm_runtime_put_noidle(dev);
+> -
+> -	return ret;
+> +	return pm_runtime_resume_and_get(regmap_get_device(data->regmap));
+>  }
+> =20
+>  static int  fxas21002c_pm_put(struct fxas21002c_data *data)
+> @@ -1002,7 +995,6 @@ int fxas21002c_core_probe(struct device *dev, struct=
+ regmap *regmap, int irq,
+>  pm_disable:
+>  	pm_runtime_disable(dev);
+>  	pm_runtime_set_suspended(dev);
+> -	pm_runtime_put_noidle(dev);
+> =20
+>  	return ret;
+>  }
+> @@ -1016,7 +1008,6 @@ void fxas21002c_core_remove(struct device *dev)
+> =20
+>  	pm_runtime_disable(dev);
+>  	pm_runtime_set_suspended(dev);
+> -	pm_runtime_put_noidle(dev);
+>  }
+>  EXPORT_SYMBOL_GPL(fxas21002c_core_remove);
+> =20
+> --=20
+> 2.31.1
 
-Linus 2: would pulling the IIO tree directly work for
-you if Jonathan makes up his mind in favor for that?
 
-Yours,
-Linus Walleij
+

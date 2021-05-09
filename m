@@ -2,156 +2,162 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CE2937739B
-	for <lists+linux-iio@lfdr.de>; Sat,  8 May 2021 20:24:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35DBC3775C4
+	for <lists+linux-iio@lfdr.de>; Sun,  9 May 2021 09:20:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229523AbhEHSZl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 8 May 2021 14:25:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34048 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229586AbhEHSZl (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 8 May 2021 14:25:41 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 925AA6140F;
-        Sat,  8 May 2021 18:24:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620498279;
-        bh=lauP138cIHeiwsPYhU9Sowp8TxNDkBL7ETNWKJD5jIw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H130zbrLH/mFCQfPdWd9IpYPVbjIqUeySGkIEoIU/DmRNNXpv1bkPCsk/g+U6HpJN
-         1GSkNCwUyakb11UxbtaRA84Sre9+Mwiu2W6K7sfaugiHWoVgtwRWc7ETR0kvZrVVUR
-         y6zx9xNdDE1nA6gJTYdCkP2I5XRYOSsSM7yqFZhCjXTOz0UZX7rLtQKcV3qJPZmHed
-         dY0U4lDHFTpBot1KjiQ0gofzU98wO9vaM4UZL7sQUuxTI9CsVvGAdnrJowyzzrY7cU
-         Fqg0NYsgKL6sM8DM7XC0acjEiuAhTCmQmgjqWpC/AJZ1kc64IjPPMOen7XhbYJGlHu
-         CX85YR0cI1BDw==
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, alexandru.tachici@analog.com,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 3/3] iio: adc: ad7124: Use devm_ managed calls for all of probe() + drop remove()
-Date:   Sat,  8 May 2021 19:23:19 +0100
-Message-Id: <20210508182319.488551-4-jic23@kernel.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210508182319.488551-1-jic23@kernel.org>
-References: <20210508182319.488551-1-jic23@kernel.org>
+        id S229585AbhEIHV0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 9 May 2021 03:21:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51150 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229558AbhEIHVZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 May 2021 03:21:25 -0400
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E606C061573
+        for <linux-iio@vger.kernel.org>; Sun,  9 May 2021 00:20:22 -0700 (PDT)
+Received: by mail-pl1-x62f.google.com with SMTP id t21so7652709plo.2
+        for <linux-iio@vger.kernel.org>; Sun, 09 May 2021 00:20:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=XnXrLc1kcjkMCfV6t4hsxU88T/vM1ZtX+oYFbSQNHpU=;
+        b=BRn655dXIbNmDZ3gmFpMBPrinp+MfmoD0Fi7bBb+DwnS3UlShaWGqJHu/cQq6brKqA
+         KebUDp2gBGw3ZtpFCpgpTNq1kbbfL/hBa18B0HjA49tdq4Z2LE/7WZKW2zdoSyJh0OtZ
+         s04Sg2FIPxb6TfkK+kxaNN63yyKTR6ero6thC8qjPBHr0aGzEjymDh5b09Yf1qTDKjBV
+         DQrmwl9jiCI+khFgySgWs/TD3bvNlT1c9iY9Vgz5Ma2OIzdZ5RmthxyN+j/AZvHd9+IT
+         joNo3BIcO5r3hlgRue0EPSH91RejG0PW9bdltkBZaALiwBLTFQ8gomZrzOSZOiI/PBDu
+         RpmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=XnXrLc1kcjkMCfV6t4hsxU88T/vM1ZtX+oYFbSQNHpU=;
+        b=F/fDcvc38ClBUQRJGZJYUuBHlDBArsW5cO73kSyOh1XiVPCGS2aA+KiqwgFMcpjRHl
+         cZyBlQ/IOhsB090Mt+ofHERKx7M+csYPULlbB29yUwfIoTZFRyO0fD7sN0ZVaE02Kbxp
+         MESin3TMDgavlcfLBVY9bUdngzxV4Wb8HppLef7looInyerVmR7DXsHdHrsJztzHgjvt
+         aOIBfzJBAp7cKbIhd9+mdFH2v1JftGnW9L+7mpDFnLwD+w8QZJKb7b7fruFaByx6ytEc
+         TNd/feNkkhRAYdXG44mWETOmkMQZOdQfG+Bk8AFGLMAcgvmImWi7hUNI1P5wwdYCC5PJ
+         NrMw==
+X-Gm-Message-State: AOAM530hll+hiFbv0CX3NNTsYNK/L/jgFLbO92ZfKU5FcCVAcNVneCU/
+        eGz36oByU7KuXByKBCm5l+qcFZ3gFoQiq9cineo=
+X-Google-Smtp-Source: ABdhPJwfMI6Y9uRQgutnGga+KT9XRhkswWJEyMGgwkG1Xf2wcLKadMZ9FeSwsVjq4vBTIKnhg+dmDC26Y9MrHRIYDRk=
+X-Received: by 2002:a17:90a:1b0b:: with SMTP id q11mr21090507pjq.181.1620544821722;
+ Sun, 09 May 2021 00:20:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210508182319.488551-1-jic23@kernel.org> <20210508182319.488551-2-jic23@kernel.org>
+In-Reply-To: <20210508182319.488551-2-jic23@kernel.org>
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+Date:   Sun, 9 May 2021 10:20:10 +0300
+Message-ID: <CA+U=DsqW=NszVukaDK1-MXhZbr3F_RwD1YghnfFqWesYnQh7tA@mail.gmail.com>
+Subject: Re: [PATCH 1/3] iio: adc: ad7124: Fix missbalanced regulator enable /
+ disable on error.
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        alexandru.tachici@analog.com,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Sat, May 8, 2021 at 9:24 PM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
+> If the devm_regulator_get() call succeeded but not the regulator_enable()
+> then regulator_disable() would be called on a regulator that was not
+> enabled.
+>
+> Fix this by moving regulator enabling / disabling over to
+> devm_ management via devm_add_action_or_reset.
+>
 
-As not many steps were not already devm_ managed, use
-devm_add_action_or_reset() to handle the rest.
+Definitely looks unbalanced.
+This was probably written in the days when I wasn't familiar with devm_ much.
+I probably would have complained about this.
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Cc: Alexandru Ardelean <ardeleanalex@gmail.com>
----
- drivers/iio/adc/ad7124.c | 53 ++++++++++++++++++----------------------
- 1 file changed, 24 insertions(+), 29 deletions(-)
+Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
 
-diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index 9c2401c5848e..deb166d2b645 100644
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -719,6 +719,16 @@ static void ad7124_reg_disable(void *r)
- 	regulator_disable(r);
- }
- 
-+static void ad7124_clk_disable(void *c)
-+{
-+	clk_disable_unprepare(c);
-+}
-+
-+static void ad7124_buffer_cleanup(void *idev)
-+{
-+	ad_sd_cleanup_buffer_and_trigger(idev);
-+}
-+
- static int ad7124_probe(struct spi_device *spi)
- {
- 	const struct ad7124_chip_info *info;
-@@ -740,8 +750,6 @@ static int ad7124_probe(struct spi_device *spi)
- 
- 	ad_sd_init(&st->sd, indio_dev, spi, &ad7124_sigma_delta_info);
- 
--	spi_set_drvdata(spi, indio_dev);
--
- 	indio_dev->name = st->chip_info->name;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->info = &ad7124_info;
-@@ -779,48 +787,36 @@ static int ad7124_probe(struct spi_device *spi)
- 	if (ret < 0)
- 		return ret;
- 
-+	ret = devm_add_action_or_reset(&spi->dev, ad7124_clk_disable, st->mclk);
-+	if (ret)
-+		return ret;
-+
- 	ret = ad7124_soft_reset(st);
- 	if (ret < 0)
--		goto error_clk_disable_unprepare;
-+		return ret;
- 
- 	ret = ad7124_check_chip_id(st);
- 	if (ret)
--		goto error_clk_disable_unprepare;
-+		return ret;
- 
- 	ret = ad7124_setup(st);
- 	if (ret < 0)
--		goto error_clk_disable_unprepare;
-+		return ret;
- 
- 	ret = ad_sd_setup_buffer_and_trigger(indio_dev);
- 	if (ret < 0)
--		goto error_clk_disable_unprepare;
--
--	ret = iio_device_register(indio_dev);
--	if (ret < 0) {
--		dev_err(&spi->dev, "Failed to register iio device\n");
--		goto error_remove_trigger;
--	}
-+		return ret;
- 
--	return 0;
-+	ret = devm_add_action_or_reset(&spi->dev, ad7124_buffer_cleanup, indio_dev);
-+	if (ret)
-+		return ret;
- 
--error_remove_trigger:
--	ad_sd_cleanup_buffer_and_trigger(indio_dev);
--error_clk_disable_unprepare:
--	clk_disable_unprepare(st->mclk);
-+	ret = devm_iio_device_register(&spi->dev, indio_dev);
-+	if (ret)
-+		dev_err(&spi->dev, "Failed to register iio device\n");
- 
- 	return ret;
--}
- 
--static int ad7124_remove(struct spi_device *spi)
--{
--	struct iio_dev *indio_dev = spi_get_drvdata(spi);
--	struct ad7124_state *st = iio_priv(indio_dev);
--
--	iio_device_unregister(indio_dev);
--	ad_sd_cleanup_buffer_and_trigger(indio_dev);
--	clk_disable_unprepare(st->mclk);
--
--	return 0;
- }
- 
- static const struct of_device_id ad7124_of_match[] = {
-@@ -838,7 +834,6 @@ static struct spi_driver ad71124_driver = {
- 		.of_match_table = ad7124_of_match,
- 	},
- 	.probe = ad7124_probe,
--	.remove	= ad7124_remove,
- };
- module_spi_driver(ad71124_driver);
- 
--- 
-2.31.1
-
+> Fixes: b3af341bbd96 ("iio: adc: Add ad7124 support")
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Alexandru Ardelean <ardeleanalex@gmail.com>
+> ---
+>  drivers/iio/adc/ad7124.c | 29 +++++++++++++----------------
+>  1 file changed, 13 insertions(+), 16 deletions(-)
+>
+> diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+> index 766c73333604..c0d0870a29ff 100644
+> --- a/drivers/iio/adc/ad7124.c
+> +++ b/drivers/iio/adc/ad7124.c
+> @@ -707,6 +707,11 @@ static int ad7124_setup(struct ad7124_state *st)
+>         return ret;
+>  }
+>
+> +static void ad7124_reg_disable(void *r)
+> +{
+> +       regulator_disable(r);
+> +}
+> +
+>  static int ad7124_probe(struct spi_device *spi)
+>  {
+>         const struct ad7124_chip_info *info;
+> @@ -752,17 +757,20 @@ static int ad7124_probe(struct spi_device *spi)
+>                 ret = regulator_enable(st->vref[i]);
+>                 if (ret)
+>                         return ret;
+> +
+> +               ret = devm_add_action_or_reset(&spi->dev, ad7124_reg_disable,
+> +                                              st->vref[i]);
+> +               if (ret)
+> +                       return ret;
+>         }
+>
+>         st->mclk = devm_clk_get(&spi->dev, "mclk");
+> -       if (IS_ERR(st->mclk)) {
+> -               ret = PTR_ERR(st->mclk);
+> -               goto error_regulator_disable;
+> -       }
+> +       if (IS_ERR(st->mclk))
+> +               return PTR_ERR(st->mclk);
+>
+>         ret = clk_prepare_enable(st->mclk);
+>         if (ret < 0)
+> -               goto error_regulator_disable;
+> +               return ret;
+>
+>         ret = ad7124_soft_reset(st);
+>         if (ret < 0)
+> @@ -792,11 +800,6 @@ static int ad7124_probe(struct spi_device *spi)
+>         ad_sd_cleanup_buffer_and_trigger(indio_dev);
+>  error_clk_disable_unprepare:
+>         clk_disable_unprepare(st->mclk);
+> -error_regulator_disable:
+> -       for (i = ARRAY_SIZE(st->vref) - 1; i >= 0; i--) {
+> -               if (!IS_ERR_OR_NULL(st->vref[i]))
+> -                       regulator_disable(st->vref[i]);
+> -       }
+>
+>         return ret;
+>  }
+> @@ -805,17 +808,11 @@ static int ad7124_remove(struct spi_device *spi)
+>  {
+>         struct iio_dev *indio_dev = spi_get_drvdata(spi);
+>         struct ad7124_state *st = iio_priv(indio_dev);
+> -       int i;
+>
+>         iio_device_unregister(indio_dev);
+>         ad_sd_cleanup_buffer_and_trigger(indio_dev);
+>         clk_disable_unprepare(st->mclk);
+>
+> -       for (i = ARRAY_SIZE(st->vref) - 1; i >= 0; i--) {
+> -               if (!IS_ERR_OR_NULL(st->vref[i]))
+> -                       regulator_disable(st->vref[i]);
+> -       }
+> -
+>         return 0;
+>  }
+>
+> --
+> 2.31.1
+>

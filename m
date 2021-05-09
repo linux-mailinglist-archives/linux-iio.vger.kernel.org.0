@@ -2,37 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 67D0E37765A
-	for <lists+linux-iio@lfdr.de>; Sun,  9 May 2021 13:37:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54EF637765B
+	for <lists+linux-iio@lfdr.de>; Sun,  9 May 2021 13:37:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229602AbhEILiD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 9 May 2021 07:38:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53488 "EHLO mail.kernel.org"
+        id S229614AbhEILiF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 9 May 2021 07:38:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53528 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229609AbhEILiC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 9 May 2021 07:38:02 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8E4E96140B;
-        Sun,  9 May 2021 11:36:57 +0000 (UTC)
+        id S229618AbhEILiE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 9 May 2021 07:38:04 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B1B6C613F0;
+        Sun,  9 May 2021 11:36:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620560219;
-        bh=mFBTbu4veWJ9vAdRhDSlxS48yXps33WUKtff0aPHXbg=;
+        s=k20201202; t=1620560221;
+        bh=9/fypVOuUPMlqQi8+HubR/7gSqQgko5wh+rE1ez/cFI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ErJb2kAr2D/NLDp74GgLXpSNlTZWEckg8NBixBVhZQw5m8UzsBVnUyYq3Q+5wyydo
-         +QN31xUl6QKD+CXSEZK5SCdyufrqAinf9/rzRUBmb+a9yIiYqNt/9qg7c7xkPU/jdu
-         l6M8uD+aN8S74Al4oVMbO1nkHjxB987X4abjcP8SDpYdXMun1mUTxtu3EvVlAFXkCH
-         Wzgf9N+c1PHp3PSJ3Wwlhw8/uzuBv3cq4gv7Dvdo08LeuG+mhIIF32i1wEBU+dsA1w
-         jHgIzay8xgN5MdzQLB2vhrs7DwJAVDoJJRwJZ7MblDkKlLeTr/O+Vo6PwJcb/GgJAJ
-         nh6W8zimSFF0g==
+        b=ELAxqBVYDuy+u1VXlOP/00EkxzLRrFoDF8DkIN12gner2k3q/GlZrtTEGEAC3hZFP
+         JGevS6XjgdamATHznzX+Y/d+SQ5A1nWqVigtmdo2aiiyUakNh565Dr5V9a9kr8W/AO
+         amZf884hVrFAGXZGJmMD+fyAdjdghAZb7S05HKbf3OsGw0+lvfvnPVJDi52Ny12EHP
+         lmZthzqHkQhx/gtVXIpJccXg+x29zDi9Rg+JTIWbH1Ztk5WPk2uU7HosBKzuXKuqM0
+         b5vsY5/brEknFK4kEebjISuEHE+j8LGZRV90eNx4ZotxqY3i9rsywoVztNLem2UZMH
+         1DOKaw2kmK9bg==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
         Julia Lawall <Julia.Lawall@inria.fr>,
         "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 04/28] iio: accel: bmc150-accel: Balanced runtime pm + use pm_runtime_resume_and_get()
-Date:   Sun,  9 May 2021 12:33:30 +0100
-Message-Id: <20210509113354.660190-5-jic23@kernel.org>
+        Sean Nyekjaer <sean@geanix.com>
+Subject: [PATCH 05/28] iio: accel: mma8452: Balance runtime pm + use pm_runtime_resume_and_get()
+Date:   Sun,  9 May 2021 12:33:31 +0100
+Message-Id: <20210509113354.660190-6-jic23@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210509113354.660190-1-jic23@kernel.org>
 References: <20210509113354.660190-1-jic23@kernel.org>
@@ -44,52 +44,50 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-A call to pm_runtime_put_noidle() doesn't match any call that would
-result in a get().  It is safe because runtime pm core protects against
-the reference counter going 0, but it makes it harder to understand the
-code.
+Remove() callback calls pm_runtime_put_noidle() but there it is not
+balancing a get.  No actual affect because the runtime pm core prevents
+the reference count going negative.
 
-Whilst here use pm_runtime_resume_and_get() to tidy things up.
-The Coccinelle script didn't get this one due to more complex code
+Whilst here use pm_runtime_resume_and_get() rather than open coded version.
+Again, coccinelle script missed this one due to more complex code
 structure.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Hans de Goede <hdegoede@redhat.com>
+Cc: Sean Nyekjaer <sean@geanix.com>
 ---
- drivers/iio/accel/bmc150-accel-core.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/iio/accel/mma8452.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
-index 62a164a7b852..43cfadf8f6b7 100644
---- a/drivers/iio/accel/bmc150-accel-core.c
-+++ b/drivers/iio/accel/bmc150-accel-core.c
-@@ -389,7 +389,7 @@ static int bmc150_accel_set_power_state(struct bmc150_accel_data *data, bool on)
+diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
+index 464a6bfe6746..715b8138fb71 100644
+--- a/drivers/iio/accel/mma8452.c
++++ b/drivers/iio/accel/mma8452.c
+@@ -221,7 +221,7 @@ static int mma8452_set_runtime_pm_state(struct i2c_client *client, bool on)
  	int ret;
  
  	if (on) {
--		ret = pm_runtime_get_sync(dev);
-+		ret = pm_runtime_resume_and_get(dev);
+-		ret = pm_runtime_get_sync(&client->dev);
++		ret = pm_runtime_resume_and_get(&client->dev);
  	} else {
- 		pm_runtime_mark_last_busy(dev);
- 		ret = pm_runtime_put_autosuspend(dev);
-@@ -398,9 +398,6 @@ static int bmc150_accel_set_power_state(struct bmc150_accel_data *data, bool on)
+ 		pm_runtime_mark_last_busy(&client->dev);
+ 		ret = pm_runtime_put_autosuspend(&client->dev);
+@@ -230,8 +230,6 @@ static int mma8452_set_runtime_pm_state(struct i2c_client *client, bool on)
  	if (ret < 0) {
- 		dev_err(dev,
- 			"Failed: %s for %d\n", __func__, on);
+ 		dev_err(&client->dev,
+ 			"failed to change power state to %d\n", on);
 -		if (on)
--			pm_runtime_put_noidle(dev);
--
+-			pm_runtime_put_noidle(&client->dev);
+ 
  		return ret;
  	}
+@@ -1711,7 +1709,6 @@ static int mma8452_remove(struct i2c_client *client)
  
-@@ -1836,7 +1833,6 @@ int bmc150_accel_core_remove(struct device *dev)
+ 	pm_runtime_disable(&client->dev);
+ 	pm_runtime_set_suspended(&client->dev);
+-	pm_runtime_put_noidle(&client->dev);
  
- 	pm_runtime_disable(dev);
- 	pm_runtime_set_suspended(dev);
--	pm_runtime_put_noidle(dev);
- 
- 	bmc150_accel_unregister_triggers(data, BMC150_ACCEL_TRIGGERS - 1);
- 
+ 	iio_triggered_buffer_cleanup(indio_dev);
+ 	mma8452_trigger_cleanup(indio_dev);
 -- 
 2.31.1
 

@@ -2,199 +2,129 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 821ED378E56
-	for <lists+linux-iio@lfdr.de>; Mon, 10 May 2021 15:51:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1C13378F48
+	for <lists+linux-iio@lfdr.de>; Mon, 10 May 2021 15:53:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241977AbhEJNJd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 May 2021 09:09:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44166 "EHLO
+        id S237201AbhEJNnN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 May 2021 09:43:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351230AbhEJNDK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 May 2021 09:03:10 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E601CC061375
-        for <linux-iio@vger.kernel.org>; Mon, 10 May 2021 05:56:02 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id x5so16504584wrv.13
-        for <linux-iio@vger.kernel.org>; Mon, 10 May 2021 05:56:02 -0700 (PDT)
+        with ESMTP id S236863AbhEJNR0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 May 2021 09:17:26 -0400
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED3A6C06138C;
+        Mon, 10 May 2021 06:16:19 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id 82-20020a1c01550000b0290142562ff7c9so8868251wmb.3;
+        Mon, 10 May 2021 06:16:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=deviqon.com; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=jHJAupFk4VVa7z8ctgtedCHBJAEpOSwdi50lGjIjnM8=;
-        b=Lw9aPEnGCjsbM32sKxySIMXcTdcULo0+Rg/tmyTIBhvIl6sQfMY+I65XAY9r3OZiWZ
-         poPiVstp8gUSAwkb54qwecMB+bKCsTFvoAJMcmN7rsPF+mY7pafWUCIZuMk1ONG0YxUi
-         HAilK03xSi6c3gvsFcGUU+6dY7ZXsooCIZ/wZo5yVrr0GCcjfgkYnhzqDCfUUaQ/oCki
-         zcecNbKfH+zVB+aUfZYrpy0YwJwDFlXtO165XBEnH2E5EUMLVznbnlxyMcLF6ZPku8kq
-         7pBva4YRiosJct5/VIZNIFqH9iHY1bPnEV0nee1yAlqcwSRsJgguculoE8tENd5OjlWd
-         sl3Q==
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=Sh4i9feljTPFrIfpR/IU/E8n0D3Fda88xyQfypmum7w=;
+        b=GfQpYA/u/ESXNzCwhJN35I1L0Sb2vRVeukRNG83W8xG2OMlDA6+i5W0OODo/+LWE9E
+         ivWW5//Dci3M+PXPgJnH/odM7KtTO7yjQKrEe7KAvh4E7fvrd/ZuLkJAZP62sWtsDMuB
+         AIqgCRqoTLZzj0iGC6/REa3QuGlmZjiRxifV0mZYrMLJSap8JjiujnvbMmFTzTlx+O95
+         x9XnwiLNDr5qqWcsdoyW+ETG1hWAlzA+FW12aKJEwh2j5DlnppfpjkE6ahf9DAyZ8V+v
+         c4HLN0tsaWZM2+zfMzrOFU3u/mXI98pyg6LlDYSgFBtDuHlk1DmX0lhge4HX1KOLhtwA
+         z+4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=jHJAupFk4VVa7z8ctgtedCHBJAEpOSwdi50lGjIjnM8=;
-        b=PdNuNIDkdVS6juG2FEVDqkKes5iLVFtrMlRtlZp5ffmd/zFsqMPmjjsz0m6emxcaUZ
-         FDw0s1QOxRrICoy0tSeMx7iqGZOimt4w4hIQWigfApNd+j6UlQN+8ofdphqWC9DARSc7
-         seyp4Gx/ZePRcb+wB3AV1jQCxOvQV61kJYKZbqIgSm/Oc517DaKkLISdh/HaE6JUVA+4
-         e8sr1q2xmrh0NbGug82FAnXlvvk8/c8A+BSWKefHG51xpgAMt5hd3FxdPLixo340jc6o
-         8sJIM4eB2BkGa7nCP+LT1hHHcCZQZJwxhX4HQLkQPF0UkzyiismOnY8mSi9CPBIqEZwd
-         ENuw==
-X-Gm-Message-State: AOAM532m3M4gbFkGkhooUV97PO10XKUapMr/qKeWXdrdHV6jRWXmPKQb
-        CNNu8Rj9uUsG1kY9yzApqj8bvZbdCt34Ug==
-X-Google-Smtp-Source: ABdhPJwBLRLlpmibnMuPeJQJOER41JHLTwSUHgTz5UUARVCV5UjsabjfuRTjaY1dKjxEod7ANUx8Tw==
-X-Received: by 2002:a05:6000:1846:: with SMTP id c6mr29885828wri.129.1620651361440;
-        Mon, 10 May 2021 05:56:01 -0700 (PDT)
-Received: from neptune.. ([5.2.193.191])
-        by smtp.gmail.com with ESMTPSA id n2sm23134329wmb.32.2021.05.10.05.56.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 May 2021 05:56:01 -0700 (PDT)
-From:   Alexandru Ardelean <aardelean@deviqon.com>
-To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     jic23@kernel.org, Jonathan.Cameron@huawei.com,
-        alexandru.tachici@analog.com, linux@deviqon.com,
-        Alexandru Ardelean <aardelean@deviqon.com>
-Subject: [PATCH 11/11] iio: adc: ad_sigma_delta: remove ad_sd_{setup,cleanup}_buffer_and_trigger()
-Date:   Mon, 10 May 2021 15:55:23 +0300
-Message-Id: <20210510125523.1271237-12-aardelean@deviqon.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210510125523.1271237-1-aardelean@deviqon.com>
-References: <20210510125523.1271237-1-aardelean@deviqon.com>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Sh4i9feljTPFrIfpR/IU/E8n0D3Fda88xyQfypmum7w=;
+        b=cYGoVbnuzC8qi/rSzJ+ExaPcPY6WDiRnoQYrUOJUW/LDLaupeK70YlIz31CC6DpEIO
+         YjQqqXw2K1KRvLE2EmkMqZgmSNaOqjLw3WgaQER7nKYN78smSnUQvql/Lq9C3BYIAbbS
+         A89hiMUo84LxHpIIH5PXWbH2rmZnREpJ+CAq/H0QPEPvY3481ifRRLSpOK8Cv3AHyzwB
+         Y9C4Y5kQCgYC6MsNt9LSL+mATP7JJWBNR9KZjed7REYhOTmkJTYOrQnd1aSrwgzazjvo
+         Ixtv6yd4OPdU4nF7WYCxOtY9Watsai28mxpDWeEFK5xhy198jgxuKAvRFJqigderRiYZ
+         zU/w==
+X-Gm-Message-State: AOAM5320WfRdSTq1VXESkXjcB7G2WrDl9rtLEDxZcnwiFr7WOtK+XUaU
+        ikYqT3CuD1N4pbhEXWdxDhI=
+X-Google-Smtp-Source: ABdhPJysoQ4YBpE1J87NsTC/Z24p8NQqGLKPSudpVCmtLwZFhM2Wy0R7/k0aKiXMKdpTI23nPdYVEw==
+X-Received: by 2002:a05:600c:47d7:: with SMTP id l23mr36980376wmo.95.1620652578722;
+        Mon, 10 May 2021 06:16:18 -0700 (PDT)
+Received: from [192.168.1.122] (cpc159425-cmbg20-2-0-cust403.5-4.cable.virginm.net. [86.7.189.148])
+        by smtp.gmail.com with ESMTPSA id s1sm27945073wmj.8.2021.05.10.06.16.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 May 2021 06:16:17 -0700 (PDT)
+Subject: Re: [PATCH 00/53] Get rid of UTF-8 chars that can be mapped as ASCII
+To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        David Woodhouse <dwmw2@infradead.org>
+Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        alsa-devel@alsa-project.org, coresight@lists.linaro.org,
+        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+        intel-wired-lan@lists.osuosl.org, keyrings@vger.kernel.org,
+        kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+        linux-fpga@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-integrity@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-sgx@vger.kernel.org, linux-usb@vger.kernel.org,
+        mjpeg-users@lists.sourceforge.net, netdev@vger.kernel.org,
+        rcu@vger.kernel.org, x86@kernel.org
+References: <cover.1620641727.git.mchehab+huawei@kernel.org>
+ <2ae366fdff4bd5910a2270823e8da70521c859af.camel@infradead.org>
+ <20210510135518.305cc03d@coco.lan>
+From:   Edward Cree <ecree.xilinx@gmail.com>
+Message-ID: <df6b4567-030c-a480-c5a6-fe579830e8c0@gmail.com>
+Date:   Mon, 10 May 2021 14:16:16 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.0
 MIME-Version: 1.0
+In-Reply-To: <20210510135518.305cc03d@coco.lan>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Since all AD Sigma-Delta drivers now use the
-devm_ad_sd_setup_buffer_and_trigger() function, we can remove the old
-ad_sd_{setup,cleanup}_buffer_and_trigger() functions.
+On 10/05/2021 12:55, Mauro Carvalho Chehab wrote:
+> The main point on this series is to replace just the occurrences
+> where ASCII represents the symbol equally well
 
-This way we can discourage new drivers that use the ad_sigma_delta
-lib-driver to use these (older functions).
+> 	- U+2014 ('—'): EM DASH
+Em dash is not the same thing as hyphen-minus, and the latter does not
+ serve 'equally well'.  People use em dashes because — even in
+ monospace fonts — they make text easier to read and comprehend, when
+ used correctly.
+I accept that some of the other distinctions — like en dashes — are
+ needlessly pedantic (though I don't doubt there is someone out there
+ who will gladly defend them with the same fervour with which I argue
+ for the em dash) and I wouldn't take the trouble to use them myself;
+ but I think there is a reasonable assumption that when someone goes
+ to the effort of using a Unicode punctuation mark that is semantic
+ (rather than merely typographical), they probably had a reason for
+ doing so.
 
-Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
----
- drivers/iio/adc/ad_sigma_delta.c       | 86 --------------------------
- include/linux/iio/adc/ad_sigma_delta.h |  3 -
- 2 files changed, 89 deletions(-)
+> 	- U+2018 ('‘'): LEFT SINGLE QUOTATION MARK
+> 	- U+2019 ('’'): RIGHT SINGLE QUOTATION MARK
+> 	- U+201c ('“'): LEFT DOUBLE QUOTATION MARK
+> 	- U+201d ('”'): RIGHT DOUBLE QUOTATION MARK
+(These are purely typographic, I have no problem with dumping them.)
 
-diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
-index d5801a47be07..1d652d9b2f5c 100644
---- a/drivers/iio/adc/ad_sigma_delta.c
-+++ b/drivers/iio/adc/ad_sigma_delta.c
-@@ -470,49 +470,6 @@ EXPORT_SYMBOL_GPL(ad_sd_validate_trigger);
- static const struct iio_trigger_ops ad_sd_trigger_ops = {
- };
- 
--static int ad_sd_probe_trigger(struct iio_dev *indio_dev)
--{
--	struct ad_sigma_delta *sigma_delta = iio_device_get_drvdata(indio_dev);
--	int ret;
--
--	sigma_delta->trig = iio_trigger_alloc(&sigma_delta->spi->dev,
--					      "%s-dev%d", indio_dev->name,
--					      iio_device_id(indio_dev));
--	if (sigma_delta->trig == NULL) {
--		ret = -ENOMEM;
--		goto error_ret;
--	}
--	sigma_delta->trig->ops = &ad_sd_trigger_ops;
--	init_completion(&sigma_delta->completion);
--
--	sigma_delta->irq_dis = true;
--	ret = request_irq(sigma_delta->spi->irq,
--			  ad_sd_data_rdy_trig_poll,
--			  sigma_delta->info->irq_flags | IRQF_NO_AUTOEN,
--			  indio_dev->name,
--			  sigma_delta);
--	if (ret)
--		goto error_free_trig;
--
--	iio_trigger_set_drvdata(sigma_delta->trig, sigma_delta);
--
--	ret = iio_trigger_register(sigma_delta->trig);
--	if (ret)
--		goto error_free_irq;
--
--	/* select default trigger */
--	indio_dev->trig = iio_trigger_get(sigma_delta->trig);
--
--	return 0;
--
--error_free_irq:
--	free_irq(sigma_delta->spi->irq, sigma_delta);
--error_free_trig:
--	iio_trigger_free(sigma_delta->trig);
--error_ret:
--	return ret;
--}
--
- static int devm_ad_sd_probe_trigger(struct device *dev, struct iio_dev *indio_dev)
- {
- 	struct ad_sigma_delta *sigma_delta = iio_device_get_drvdata(indio_dev);
-@@ -553,49 +510,6 @@ static int devm_ad_sd_probe_trigger(struct device *dev, struct iio_dev *indio_de
- 	return 0;
- }
- 
--static void ad_sd_remove_trigger(struct iio_dev *indio_dev)
--{
--	struct ad_sigma_delta *sigma_delta = iio_device_get_drvdata(indio_dev);
--
--	iio_trigger_unregister(sigma_delta->trig);
--	free_irq(sigma_delta->spi->irq, sigma_delta);
--	iio_trigger_free(sigma_delta->trig);
--}
--
--/**
-- * ad_sd_setup_buffer_and_trigger() -
-- * @indio_dev: The IIO device
-- */
--int ad_sd_setup_buffer_and_trigger(struct iio_dev *indio_dev)
--{
--	int ret;
--
--	ret = iio_triggered_buffer_setup(indio_dev, &iio_pollfunc_store_time,
--			&ad_sd_trigger_handler, &ad_sd_buffer_setup_ops);
--	if (ret)
--		return ret;
--
--	ret = ad_sd_probe_trigger(indio_dev);
--	if (ret) {
--		iio_triggered_buffer_cleanup(indio_dev);
--		return ret;
--	}
--
--	return 0;
--}
--EXPORT_SYMBOL_GPL(ad_sd_setup_buffer_and_trigger);
--
--/**
-- * ad_sd_cleanup_buffer_and_trigger() -
-- * @indio_dev: The IIO device
-- */
--void ad_sd_cleanup_buffer_and_trigger(struct iio_dev *indio_dev)
--{
--	ad_sd_remove_trigger(indio_dev);
--	iio_triggered_buffer_cleanup(indio_dev);
--}
--EXPORT_SYMBOL_GPL(ad_sd_cleanup_buffer_and_trigger);
--
- /**
-  * devm_ad_sd_setup_buffer_and_trigger() - Device-managed buffer & trigger setup
-  * @dev: Device object to which to bind the life-time of the resources attached
-diff --git a/include/linux/iio/adc/ad_sigma_delta.h b/include/linux/iio/adc/ad_sigma_delta.h
-index be81ad39fb7a..c525fd51652f 100644
---- a/include/linux/iio/adc/ad_sigma_delta.h
-+++ b/include/linux/iio/adc/ad_sigma_delta.h
-@@ -133,9 +133,6 @@ int ad_sd_calibrate_all(struct ad_sigma_delta *sigma_delta,
- int ad_sd_init(struct ad_sigma_delta *sigma_delta, struct iio_dev *indio_dev,
- 	struct spi_device *spi, const struct ad_sigma_delta_info *info);
- 
--int ad_sd_setup_buffer_and_trigger(struct iio_dev *indio_dev);
--void ad_sd_cleanup_buffer_and_trigger(struct iio_dev *indio_dev);
--
- int devm_ad_sd_setup_buffer_and_trigger(struct device *dev, struct iio_dev *indio_dev);
- 
- int ad_sd_validate_trigger(struct iio_dev *indio_dev, struct iio_trigger *trig);
--- 
-2.31.1
+> 	- U+00d7 ('×'): MULTIPLICATION SIGN
+Presumably this is appearing in mathematical formulae, in which case
+ changing it to 'x' loses semantic information.
 
+> Using the above symbols will just trick tools like grep for no good
+> reason.
+NBSP, sure.  That one's probably an artefact of some document format
+ conversion somewhere along the line, anyway.
+But what kinds of things with × or — in are going to be grept for?
+
+If there are em dashes lying around that semantically _should_ be
+ hyphen-minus (one of your patches I've seen, for instance, fixes an
+ *en* dash moonlighting as the option character in an `ethtool`
+ command line), then sure, convert them.
+But any time someone is using a Unicode character to *express
+ semantics*, even if you happen to think the semantic distinction
+ involved is a pedantic or unimportant one, I think you need an
+ explicit grep case to justify ASCIIfying it.
+
+-ed

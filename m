@@ -2,115 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A05B379674
-	for <lists+linux-iio@lfdr.de>; Mon, 10 May 2021 19:51:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91EE6379799
+	for <lists+linux-iio@lfdr.de>; Mon, 10 May 2021 21:22:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233060AbhEJRwR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 May 2021 13:52:17 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:3057 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233191AbhEJRwQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 May 2021 13:52:16 -0400
-Received: from fraeml712-chm.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Ff7k155mbz6rnT8;
-        Tue, 11 May 2021 01:45:13 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml712-chm.china.huawei.com (10.206.15.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Mon, 10 May 2021 19:51:10 +0200
-Received: from localhost (10.52.123.16) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Mon, 10 May
- 2021 18:51:09 +0100
-Date:   Mon, 10 May 2021 18:49:27 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Alexandru Ardelean <aardelean@deviqon.com>
-CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <jic23@kernel.org>, <alexandru.tachici@analog.com>,
-        <linux@deviqon.com>
-Subject: Re: [PATCH 00/11] ad_sigma_delta: convert all drivers to
- device-managed
-Message-ID: <20210510184927.00000e6d@Huawei.com>
-In-Reply-To: <20210510125523.1271237-1-aardelean@deviqon.com>
-References: <20210510125523.1271237-1-aardelean@deviqon.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
+        id S233241AbhEJTXx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 May 2021 15:23:53 -0400
+Received: from outgoing-auth-1.mit.edu ([18.9.28.11]:47815 "EHLO
+        outgoing.mit.edu" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S233208AbhEJTXt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 May 2021 15:23:49 -0400
+Received: from cwcc.thunk.org (pool-72-74-133-215.bstnma.fios.verizon.net [72.74.133.215])
+        (authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 14AJM3dI013584
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 10 May 2021 15:22:05 -0400
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+        id F267215C3CD9; Mon, 10 May 2021 15:22:02 -0400 (EDT)
+Date:   Mon, 10 May 2021 15:22:02 -0400
+From:   "Theodore Ts'o" <tytso@mit.edu>
+To:     David Woodhouse <dwmw2@infradead.org>
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        alsa-devel@alsa-project.org, coresight@lists.linaro.org,
+        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+        intel-wired-lan@lists.osuosl.org, keyrings@vger.kernel.org,
+        kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+        linux-fpga@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-integrity@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-sgx@vger.kernel.org, linux-usb@vger.kernel.org,
+        mjpeg-users@lists.sourceforge.net, netdev@vger.kernel.org,
+        rcu@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH 00/53] Get rid of UTF-8 chars that can be mapped as ASCII
+Message-ID: <YJmH2irxoRsyNudb@mit.edu>
+References: <cover.1620641727.git.mchehab+huawei@kernel.org>
+ <2ae366fdff4bd5910a2270823e8da70521c859af.camel@infradead.org>
+ <20210510135518.305cc03d@coco.lan>
+ <de6d1fa5b7934f4afd61370d9c58502bef588466.camel@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.123.16]
-X-ClientProxiedBy: lhreml720-chm.china.huawei.com (10.201.108.71) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <de6d1fa5b7934f4afd61370d9c58502bef588466.camel@infradead.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 10 May 2021 15:55:12 +0300
-Alexandru Ardelean <aardelean@deviqon.com> wrote:
-
-> Well, for lack of a better title that's what this series does.
-> It merges Jonathan's patches from:
->   * https://lore.kernel.org/linux-iio/20210508182319.488551-1-jic23@kernel.org/
->     Patch 3/3 was a polished a bit with my comments from that review and also
->     to use the devm_ad_sd_setup_buffer_and_trigger() function.
->   * https://lore.kernel.org/linux-iio/20210509114118.660422-1-jic23@kernel.org/
->     Added only to base the conversion to devm_
+On Mon, May 10, 2021 at 02:49:44PM +0100, David Woodhouse wrote:
+> On Mon, 2021-05-10 at 13:55 +0200, Mauro Carvalho Chehab wrote:
+> > This patch series is doing conversion only when using ASCII makes
+> > more sense than using UTF-8. 
+> > 
+> > See, a number of converted documents ended with weird characters
+> > like ZERO WIDTH NO-BREAK SPACE (U+FEFF) character. This specific
+> > character doesn't do any good.
+> > 
+> > Others use NO-BREAK SPACE (U+A0) instead of 0x20. Harmless, until
+> > someone tries to use grep[1].
 > 
-> The AD Sigma Delta family of ADC drivers share a lot of the logic in the
-> ad_sigma_delta lib-driver.
-> 
-> This set introduces a devm_ad_sd_setup_buffer_and_trigger() call, which
-> aims to replace the 'ad_sd_{setup,cleanup}_buffer_and_trigger()' pair.
-> 
-> This helps with converting the AD7780, AD7791, AD7793 and AD7192
-> drivers use be fully converted to device-managed functions.
+> Replacing those makes sense. But replacing emdashes — which are a
+> distinct character that has no direct replacement in ASCII and which
+> people do *deliberately* use instead of hyphen-minus — does not.
 
-Almost perfect code wise (just the one bug that predates this series I think).
+I regularly use --- for em-dashes and -- for en-dashes.  Markdown will
+automatically translate 3 ASCII hypens to em-dashes, and 2 ASCII
+hyphens to en-dashes.  It's much, much easier for me to type 2 or 3
+hypens into my text editor of choice than trying to enter the UTF-8
+characters.  If we can make sphinx do this translation, maybe that's
+the best way of dealing with these two characters?
 
-Couple of notes on series from process point of view.
+Cheers,
 
-1) Fixes at the front. Makes for uglier series but nicer backporting.
-2) Sign-off on everything - even the ones from me that you didn't change. From DCO
-   point of view you handled them (passed them back to me ;) so need your
-   sign off.  I have occasionally wondered if I should sign off again when this
-   happens :)
-
-If you don't do a v2, just reply to say you are fine with me fixing the sign offs
-and I can do it whilst applying.
-
-Thanks,
-
-Jonathan
-
-> 
-> Alexandru Ardelean (7):
->   iio: adc: ad_sigma_delta: introduct
->     devm_ad_sd_setup_buffer_and_trigger()
->   iio: adc: ad7793: convert to device-managed functions
->   iio: adc: ad7791: convert to device-managed functions
->   iio: adc: ad7780: convert to device-managed functions
->   iio: adc: ad7192: use devm_clk_get_optional() for mclk
->   iio: adc: ad7192: convert to device-managed functions
->   iio: adc: ad_sigma_delta: remove
->     ad_sd_{setup,cleanup}_buffer_and_trigger()
-> 
-> Jonathan Cameron (4):
->   iio: adc: ad7192: Avoid disabling a clock that was never enabled.
->   iio: adc: ad7124: Fix missbalanced regulator enable / disable on
->     error.
->   iio: adc: ad7124: Fix potential overflow due to non sequential channel
->     numbers
->   iio: adc: ad7124: Use devm_ managed calls for all of probe() + drop
->     remove()
-> 
->  drivers/iio/adc/ad7124.c               | 84 ++++++++++--------------
->  drivers/iio/adc/ad7192.c               | 90 +++++++++++---------------
->  drivers/iio/adc/ad7780.c               | 38 +++--------
->  drivers/iio/adc/ad7791.c               | 44 ++++---------
->  drivers/iio/adc/ad7793.c               | 53 +++++----------
->  drivers/iio/adc/ad_sigma_delta.c       | 82 ++++++++---------------
->  include/linux/iio/adc/ad_sigma_delta.h |  4 +-
->  7 files changed, 141 insertions(+), 254 deletions(-)
-> 
-
+					- Ted

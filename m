@@ -2,82 +2,125 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 55CEC377C7C
-	for <lists+linux-iio@lfdr.de>; Mon, 10 May 2021 08:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDC9B377CB5
+	for <lists+linux-iio@lfdr.de>; Mon, 10 May 2021 09:00:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229863AbhEJGt7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 May 2021 02:49:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38776 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229608AbhEJGt7 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 10 May 2021 02:49:59 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3883A61409;
-        Mon, 10 May 2021 06:48:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1620629335;
-        bh=ASacdpOlQuH135AzXf7Jffw+O0OQ6HRYX3B7lI/zHqk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=nyAYJYWsaPA8vtKzZrhefsMQaL/p5Sh8rTnmEtJOGy3LOCEXauRmbSTMIkYXDzJpZ
-         Fl2arSdhFGxHli8rPsZJtQUq6o8p55U1bssP/+Vxnde9pgUDvxAKZEa8CS49YpVG0w
-         DAWD4k898oJagldSEQvXpyGgnq31kbAF+MYog8rY=
-Date:   Mon, 10 May 2021 08:48:51 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
+        id S230029AbhEJHBL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 May 2021 03:01:11 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:50012 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229863AbhEJHBK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 May 2021 03:01:10 -0400
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 14A6xjvj118442;
+        Mon, 10 May 2021 06:59:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ content-transfer-encoding : in-reply-to; s=corp-2020-01-29;
+ bh=4e7dQppKfNIV7YVAFBbupKmBJtQcsa0sycuBhEJrB08=;
+ b=f9a+II+4xilHF+3C2FBIoI0hgNKODGJYn5fXqlzQcv9FOvY2mE/AFcZE9yaWDErFzkUN
+ vLRy5XrWIpSHqRaH+dJb5SMs2Mw2VzQnenNvDDkY0rheEEkI6CYfl40aIoRPIhWSv9Nh
+ 4fjrwGFYVFA92fTULbOxnBlxRyTHSzfHOIhKds3mDiu5J0cdGYbhsLh+YCPHz0gneD9B
+ dJa3Rl1QCQzWinHnBEqeheoEdUt8B2n7vyd9tI0sHmSxhIx2LJplOExBOtRmb44Rq002
+ 01VY+2bHnhI7E8k3Azg+kwKnAtxJMBh7J3HXPSGn6F1Us9BPlfJVMSfegiCTwftFz8gy Tw== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2130.oracle.com with ESMTP id 38dg5ba5ru-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 10 May 2021 06:59:45 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 14A6pX3Q017400;
+        Mon, 10 May 2021 06:59:42 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by userp3030.oracle.com with ESMTP id 38dfrusufx-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 10 May 2021 06:59:42 +0000
+Received: from userp3030.oracle.com (userp3030.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 14A6xfRt042804;
+        Mon, 10 May 2021 06:59:41 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 38dfrusuew-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 10 May 2021 06:59:41 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 14A6xaPL019927;
+        Mon, 10 May 2021 06:59:39 GMT
+Received: from kadam (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sun, 09 May 2021 23:59:36 -0700
+Date:   Mon, 10 May 2021 09:59:28 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Joe Perches <joe@perches.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
+        Colin King <colin.king@canonical.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Nuno Sa <nuno.sa@analog.com>
-Subject: Re: [PATCH] iio: core: return ENODEV if ioctl is unknown
-Message-ID: <YJjXU/mBKnmknItg@kroah.com>
-References: <20210503144350.7496-1-aardelean@deviqon.com>
- <20210508161643.5990ec15@jic23-huawei>
- <CACRpkdaK6AMVUC+B7JW3y28nNeAYHAS9UjC40KfShZNrHLD7rQ@mail.gmail.com>
- <20210509111925.52f3f4e3@jic23-huawei>
- <CACRpkdZ2mC5V6PdphmtmtQKHZwPfc7mVgZ-FH3io2ihB8foA4g@mail.gmail.com>
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Jon Brenner <jbrenner@taosinc.com>, linux-iio@vger.kernel.org,
+        clang-built-linux@googlegroups.com,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: tsl2583: Fix division by a zero lux_val
+Message-ID: <20210510065928.GR1955@kadam>
+References: <20210507183041.115864-1-colin.king@canonical.com>
+ <20210508171258.2ef71a70@jic23-huawei>
+ <1eb0428d352be2498739de71eb65746309c90f4c.camel@perches.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <CACRpkdZ2mC5V6PdphmtmtQKHZwPfc7mVgZ-FH3io2ihB8foA4g@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1eb0428d352be2498739de71eb65746309c90f4c.camel@perches.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-GUID: Wofz6Vl8vwk6Pcbex2r8_g2sHLoUZkQg
+X-Proofpoint-ORIG-GUID: Wofz6Vl8vwk6Pcbex2r8_g2sHLoUZkQg
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9979 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 malwarescore=0
+ bulkscore=0 spamscore=0 clxscore=1011 priorityscore=1501 adultscore=0
+ mlxlogscore=980 mlxscore=0 suspectscore=0 impostorscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
+ definitions=main-2105100049
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, May 09, 2021 at 05:29:10PM +0200, Linus Walleij wrote:
-> On Sun, May 9, 2021 at 12:18 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> > On Sat, 8 May 2021 20:21:08 +0200
-> > Linus Walleij <linus.walleij@linaro.org> wrote:
+On Sat, May 08, 2021 at 10:01:14AM -0700, Joe Perches wrote:
+> On Sat, 2021-05-08 at 17:12 +0100, Jonathan Cameron wrote:
+> > On Fri,  7 May 2021 19:30:41 +0100 Colin King <colin.king@canonical.com> wrote:
+> []
+> > > The lux_val returned from tsl2583_get_lux can potentially be zero,
+> > > so check for this to avoid a division by zero and an overflowed
+> > > gain_trim_val.
+> []
+> > > Fixes: ac4f6eee8fe8 ("staging: iio: TAOS tsl258x: Device driver")
+> > > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > Definitely looks like it could happen so applied to the fixes-togreg branch of
+> > iio.git and marked for stable.
+> []
+> > > diff --git a/drivers/iio/light/tsl2583.c b/drivers/iio/light/tsl2583.c
+> []
+> > > @@ -341,6 +341,14 @@ static int tsl2583_als_calibrate(struct iio_dev *indio_dev)
+> > >  		return lux_val;
+> > >  	}
+> > > 
+> > > +	/* Avoid division by zero of lux_value later on */
+> > > +	if (lux_val == 0) {
+> > > +		dev_err(&chip->client->dev,
+> > > +			"%s: lux_val of 0 will produce out of range trim_value\n",
+> > > +			__func__);
+> > > +		return -ENODATA;
+> > > +	}
+> > > +
+> > >  	gain_trim_val = (unsigned int)(((chip->als_settings.als_cal_target)
+> > >  			* chip->als_settings.als_gain_trim) / lux_val);
 > 
-> > > Unless you really like to base your work on Gregs tree for
-> > > some reason or other, that is.
-> >
-> > Definitely appreciate Greg's help (and patience), but no
-> > particularly strong reason to waste his time dealing with my
-> > mess ups. Hopefully they'll reduce now IIO trees are going directly
-> > into linux-next though.
-> 
-> I'd suggest to move to sending pulls to Torvalds directly
-> for IIO to cut the intermediary staging tree step, since
-> now the subsystem is pretty large and see a bunch of
-> frequent fixes that need an express path to Torvalds.
-> 
-> Pushing through Greg per se isn't really the problem,
-> I think the problem is that IIO is going through the
-> staging tree which (I guess) isn't a high priority activity
-> and not expected to carry any serious critical fixes and
-> I guess this can cause lags.
-> 
-> Maybe Greg has some other branch to take in IIO
-> fixes and for-next but I don't really see the point.
+> Is a multiplication overflow possible here?
 
-I can take IIO changes in my char/misc tree like many other driver
-subsystems go, if the staging portions are not involved.  Otherwise, I
-really don't see the problem with it as-is, what problems is this
-causing at the moment?
+These are chip->foo values and they ought to be trustworthy.
 
-thanks,
+Of course, in real life, they can be set to INT_MAX in
+in_illuminance_input_target_store() and tsl2583_write_raw so they can
+overflow...  Anyway, if we were going to add a check it would be at
+the point where we get the number from the user and before we save it
+to chip->
 
-greg k-h
+regards,
+dan carpenter
+

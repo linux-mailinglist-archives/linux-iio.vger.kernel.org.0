@@ -2,125 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDC9B377CB5
-	for <lists+linux-iio@lfdr.de>; Mon, 10 May 2021 09:00:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FEEE377D86
+	for <lists+linux-iio@lfdr.de>; Mon, 10 May 2021 09:54:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230029AbhEJHBL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 May 2021 03:01:11 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:50012 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229863AbhEJHBK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 May 2021 03:01:10 -0400
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 14A6xjvj118442;
-        Mon, 10 May 2021 06:59:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- content-transfer-encoding : in-reply-to; s=corp-2020-01-29;
- bh=4e7dQppKfNIV7YVAFBbupKmBJtQcsa0sycuBhEJrB08=;
- b=f9a+II+4xilHF+3C2FBIoI0hgNKODGJYn5fXqlzQcv9FOvY2mE/AFcZE9yaWDErFzkUN
- vLRy5XrWIpSHqRaH+dJb5SMs2Mw2VzQnenNvDDkY0rheEEkI6CYfl40aIoRPIhWSv9Nh
- 4fjrwGFYVFA92fTULbOxnBlxRyTHSzfHOIhKds3mDiu5J0cdGYbhsLh+YCPHz0gneD9B
- dJa3Rl1QCQzWinHnBEqeheoEdUt8B2n7vyd9tI0sHmSxhIx2LJplOExBOtRmb44Rq002
- 01VY+2bHnhI7E8k3Azg+kwKnAtxJMBh7J3HXPSGn6F1Us9BPlfJVMSfegiCTwftFz8gy Tw== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2130.oracle.com with ESMTP id 38dg5ba5ru-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 10 May 2021 06:59:45 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 14A6pX3Q017400;
-        Mon, 10 May 2021 06:59:42 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by userp3030.oracle.com with ESMTP id 38dfrusufx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 10 May 2021 06:59:42 +0000
-Received: from userp3030.oracle.com (userp3030.oracle.com [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 14A6xfRt042804;
-        Mon, 10 May 2021 06:59:41 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 38dfrusuew-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 10 May 2021 06:59:41 +0000
-Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 14A6xaPL019927;
-        Mon, 10 May 2021 06:59:39 GMT
-Received: from kadam (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Sun, 09 May 2021 23:59:36 -0700
-Date:   Mon, 10 May 2021 09:59:28 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Joe Perches <joe@perches.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Colin King <colin.king@canonical.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Jon Brenner <jbrenner@taosinc.com>, linux-iio@vger.kernel.org,
-        clang-built-linux@googlegroups.com,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: tsl2583: Fix division by a zero lux_val
-Message-ID: <20210510065928.GR1955@kadam>
-References: <20210507183041.115864-1-colin.king@canonical.com>
- <20210508171258.2ef71a70@jic23-huawei>
- <1eb0428d352be2498739de71eb65746309c90f4c.camel@perches.com>
+        id S230029AbhEJHzN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 May 2021 03:55:13 -0400
+Received: from first.geanix.com ([116.203.34.67]:58530 "EHLO first.geanix.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229852AbhEJHzM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 10 May 2021 03:55:12 -0400
+Received: from [192.168.100.10] (unknown [185.233.254.173])
+        by first.geanix.com (Postfix) with ESMTPSA id 67736468164;
+        Mon, 10 May 2021 07:54:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
+        t=1620633246; bh=zpKUyJqSq7e88ZBcJAhoYfLo1E8NTxjf+fdtYV/W39A=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=b3h0n4NgeDbpICf9B9/5vuqXqTRxezjkHnGH8MutW4L32eMLkhVOAWBJ6ov3mTeib
+         uuJfW+wcLgJPS050VSOFfvod1Kj9mg7DXS7K1SBotL9O/ombuL/z89aqyiNjuBJWcc
+         VsjzBbqKmGXzV4S9qzLt0NUOKyglKie0H3Jgy21M0+ikZ+ETghslky/qrBfkDMZvdX
+         5NiNOXljppa7Izrm2qLDjyg3wLno9ZEfy1lCJ/L8ifd3yEA1g+uQQkUbHXeVKjkEu7
+         WB3NmAXZKehMrrYUI0q6M3DuT6nH5oayyVw5Enz15vZtCHQkKXlMhsfxBzsb6lIUC6
+         vmXIPTYkr4o0g==
+Subject: Re: [PATCH v5 5/6] iio: accel: fxls8962af: add hw buffered sampling
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org
+References: <20210506070940.312959-1-sean@geanix.com>
+ <20210506070940.312959-5-sean@geanix.com>
+ <20210508173947.47d18328@jic23-huawei>
+From:   Sean Nyekjaer <sean@geanix.com>
+Message-ID: <f50d0b0f-f00d-35c9-9cf5-2a9e9ffaa8ca@geanix.com>
+Date:   Mon, 10 May 2021 09:54:05 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1eb0428d352be2498739de71eb65746309c90f4c.camel@perches.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-GUID: Wofz6Vl8vwk6Pcbex2r8_g2sHLoUZkQg
-X-Proofpoint-ORIG-GUID: Wofz6Vl8vwk6Pcbex2r8_g2sHLoUZkQg
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9979 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 malwarescore=0
- bulkscore=0 spamscore=0 clxscore=1011 priorityscore=1501 adultscore=0
- mlxlogscore=980 mlxscore=0 suspectscore=0 impostorscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
- definitions=main-2105100049
+In-Reply-To: <20210508173947.47d18328@jic23-huawei>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        URIBL_BLOCKED autolearn=disabled version=3.4.4
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on 93bd6fdb21b5
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, May 08, 2021 at 10:01:14AM -0700, Joe Perches wrote:
-> On Sat, 2021-05-08 at 17:12 +0100, Jonathan Cameron wrote:
-> > On Fri,  7 May 2021 19:30:41 +0100 Colin King <colin.king@canonical.com> wrote:
-> []
-> > > The lux_val returned from tsl2583_get_lux can potentially be zero,
-> > > so check for this to avoid a division by zero and an overflowed
-> > > gain_trim_val.
-> []
-> > > Fixes: ac4f6eee8fe8 ("staging: iio: TAOS tsl258x: Device driver")
-> > > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> > Definitely looks like it could happen so applied to the fixes-togreg branch of
-> > iio.git and marked for stable.
-> []
-> > > diff --git a/drivers/iio/light/tsl2583.c b/drivers/iio/light/tsl2583.c
-> []
-> > > @@ -341,6 +341,14 @@ static int tsl2583_als_calibrate(struct iio_dev *indio_dev)
-> > >  		return lux_val;
-> > >  	}
-> > > 
-> > > +	/* Avoid division by zero of lux_value later on */
-> > > +	if (lux_val == 0) {
-> > > +		dev_err(&chip->client->dev,
-> > > +			"%s: lux_val of 0 will produce out of range trim_value\n",
-> > > +			__func__);
-> > > +		return -ENODATA;
-> > > +	}
-> > > +
-> > >  	gain_trim_val = (unsigned int)(((chip->als_settings.als_cal_target)
-> > >  			* chip->als_settings.als_gain_trim) / lux_val);
+On 08/05/2021 18.39, Jonathan Cameron wrote:
+> On Thu,  6 May 2021 09:09:39 +0200
+> Sean Nyekjaer <sean@geanix.com> wrote:
 > 
-> Is a multiplication overflow possible here?
+>> When buffered sampling is enabled, the accelerometer will dump data into
+>> the internal fifo and interrupt at watermark. Then the driver flushes
+>> all data to the iio buffer.
+>> As the accelerometer doesn't have internal timestamps, they are
+>> approximated between the current and last interrupt.
+>>
+>> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+> 
+> Hi Sean,
+> 
+> Couple of things I adjusted whilst applying this.
+> 1) trigger.h isn't used as no triggers are involved currently in this driver so
+>    I dropped it.
+> 2) kfifo allocation etc has changed in the IIO core whilst this driver was in
+>    development. Now we have devm_iio_kfifo_setup() which does everything your
+>    locals _setup() function does. 
+> 
+> I've made changes for both of the above whilst applying so please take a look
+> at the result which I'll shortly push out as testing for the autobuilders to
+> poke at as well.
+> 
+> Other than that I tweaked a bit of whilespace in the id tables in patch 1.
+> 
+> Series applied to the togreg branch of iio.git but initially just pushed out as
+> testing to let 0-day work it's magic.
+> 
+> Thanks,
+> 
+> Jonathan
+> 
 
-These are chip->foo values and they ought to be trustworthy.
+Hi Jonathan,
 
-Of course, in real life, they can be set to INT_MAX in
-in_illuminance_input_target_store() and tsl2583_write_raw so they can
-overflow...  Anyway, if we were going to add a check it would be at
-the point where we get the number from the user and before we save it
-to chip->
+Guess it's okay, but I can't find the patches here:
+https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/log/?h=togreg
 
-regards,
-dan carpenter
+:-)
+
+Br,
+/Sean
 

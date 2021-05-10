@@ -2,68 +2,100 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73B22379382
-	for <lists+linux-iio@lfdr.de>; Mon, 10 May 2021 18:16:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D165379499
+	for <lists+linux-iio@lfdr.de>; Mon, 10 May 2021 18:53:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231364AbhEJQRF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 May 2021 12:17:05 -0400
-Received: from flippiebeckerswealth.xyz ([62.173.147.206]:33650 "EHLO
-        host.flippiebeckerswealth.xyz" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231180AbhEJQRE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 May 2021 12:17:04 -0400
-Received: from flippiebeckerswealth.xyz (ec2-3-142-218-249.us-east-2.compute.amazonaws.com [3.142.218.249])
-        by host.flippiebeckerswealth.xyz (Postfix) with ESMTPA id 8D86D2311EF
-        for <linux-iio@vger.kernel.org>; Mon, 10 May 2021 17:06:50 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippiebeckerswealth.xyz 8D86D2311EF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=flippiebeckerswealth.xyz; s=default; t=1620655612;
-        bh=Lxx5rGQCX/MQzrwE9epz1Mb5yPYRqDyEupWj6GReobo=;
-        h=Reply-To:From:To:Subject:Date:From;
-        b=nwTyUw8gf6qeK6BrQwajtni41r2EhaMXrRLaSTqpBpMJCBCTLcuz2T5tSu1EH+8dP
-         4rA5FedKGxu5GTGq0se10Vu9pWqHcQufBbiHvEz/p/EZNsvXIRHP//KGmcvw55Us8+
-         chO0VqtygzCw2SPKVnxtAOmRRet5u513A5r/n+yo=
-DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippiebeckerswealth.xyz 8D86D2311EF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=flippiebeckerswealth.xyz; s=default; t=1620655612;
-        bh=Lxx5rGQCX/MQzrwE9epz1Mb5yPYRqDyEupWj6GReobo=;
-        h=Reply-To:From:To:Subject:Date:From;
-        b=nwTyUw8gf6qeK6BrQwajtni41r2EhaMXrRLaSTqpBpMJCBCTLcuz2T5tSu1EH+8dP
-         4rA5FedKGxu5GTGq0se10Vu9pWqHcQufBbiHvEz/p/EZNsvXIRHP//KGmcvw55Us8+
-         chO0VqtygzCw2SPKVnxtAOmRRet5u513A5r/n+yo=
-Reply-To: cpavlides@flippiebeckerwealthservices.com
-From:   Chris Pavlides <cpavlides@flippiebeckerswealth.xyz>
-To:     linux-iio@vger.kernel.org
-Subject: Personal
-Date:   10 May 2021 14:06:49 +0000
-Message-ID: <20210510140649.9F25FDA306A3C628@flippiebeckerswealth.xyz>
-Mime-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+        id S230152AbhEJQyC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 May 2021 12:54:02 -0400
+Received: from first.geanix.com ([116.203.34.67]:57878 "EHLO first.geanix.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231984AbhEJQx6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 10 May 2021 12:53:58 -0400
+Received: from [192.168.100.11] (unknown [185.233.254.173])
+        by first.geanix.com (Postfix) with ESMTPSA id 050FD468AE9;
+        Mon, 10 May 2021 16:52:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
+        t=1620665571; bh=Y0DUdfBRrpWLCGuinz0ADO3W/thjnRF4UJFQP0wvpd8=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=NHnvaTU+atXjwEcnS5GNp3jSlHQcoqMFi6RMYwL/M/4eXfxnxfHncOHEZWFPNgle4
+         r+lHbLHGm/6nQj9i42MJtTtEawL34LGqzUeK6xFHg94M9pRrysQLvpr5j7HNcNNTXH
+         aRrTclKUiozMCV2C9MIbThi65SBak4fO1PvhYjPndqEqVUyzVR31AWQ36lxlZxApex
+         3tFkTWi84vMa9ZAukt9P/4F80OsUJFYA/4y+WfdhFQmRSkFI/KLM4XV+SPNv2efcAn
+         wO4Wu+5Qyp/KXbt5k8DPZyz+C54SEAO7650W52jJmGYSFJSnDAY7ZrtTPGVNhdekKI
+         MqQUTRqa2qhzw==
+Subject: Re: [PATCH] iio: imu: st_lsm6dsx: do not roundup set samplerate
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     lorenzo.bianconi83@gmail.com, jic23@kernel.org,
+        linux-iio@vger.kernel.org
+References: <20210507103220.2194009-1-sean@geanix.com>
+ <YJUeKhjooi8lAN1Q@lore-desk>
+ <d0b62523-dcc9-ff14-aeaf-db24915f7aeb@geanix.com>
+ <YJjSfpTfSMqf3w0v@lore-desk>
+ <303a2899-2aff-410f-3bce-e40a7d7637e9@geanix.com>
+ <YJkh6c297Msx0Xwn@lore-desk>
+ <e0d50da5-7aac-1ba3-e60c-f6cd85037d30@geanix.com>
+ <YJlHjMtosViHbzAV@lore-desk>
+From:   Sean Nyekjaer <sean@geanix.com>
+Message-ID: <431ddd82-8873-15a5-6f11-9556e0d37ef3@geanix.com>
+Date:   Mon, 10 May 2021 18:52:50 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
+MIME-Version: 1.0
+In-Reply-To: <YJlHjMtosViHbzAV@lore-desk>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        URIBL_BLOCKED autolearn=disabled version=3.4.4
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on 93bd6fdb21b5
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello there,
+On 10/05/2021 16.47, Lorenzo Bianconi wrote:
+>> On 10/05/2021 14.07, Lorenzo Bianconi wrote:
+>>>> On 10/05/2021 08.28, Lorenzo Bianconi wrote:
+>>>>>> On 07/05/2021 13.02, Lorenzo Bianconi wrote:
+>>>>>>>> The correct way to set the sampling rate to 12.5 Hz before
+>>>>>>>> commit f8710f0357bc ("iio: imu: st_lsm6dsx: express odr in mHZ")
+>>>>>>>> was to write 13 Hz to sampling_frequency.
+>>>>>>>> Before this patch writing 13 to samplerate results in sample rate set
+>>>>>>>> to 26 Hz.
+>>>>>>>> Now we return EINVAL if the sampling rate is not in table.
+>>>>>>>>
+>>>>>>>> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+>>>>>>>
+>>>>>>> I think this patch is breaking i2c-master support available in st_lsm6dsx, have you tested it?
+>>>>>>>
+>>>>>> I have not tested with i2c-master.
+>>>>>> But it's not nice to round up sample rate from user space without any notice.
+>>>>>
+>>>>> the point is accel odr is used as trigger for i2c-slave sampling. Connected
+>>>>> i2c slave devices have different sample rates (e.g. LIS2MDL), so we need to
+>>>>> select the lower accel odr greather than slave device one.
+>>>>>
+>>>>> Regards,
+>>>>> Lorenzo
+>>>>>
+>>>>
+>>>> We could open up for custom sample rates if i2c-slaves are enabled?
+>>>
+>>> can you please explain what you mean?
+>>>
+>> If i2c-slaves are enabled, it's allowed to set off table sample rates.(We roundup samplerate like now)
+>> If i2c-slaves are disabled, we return -EINVAL if we can't find the chosen samplerate in the samplerate table?
+> 
+> IMO this is not a big deal because if you set the proper ODR (e.g. 26Hz) with the
+> i2c-master disabled, the sample rate will not be rounded-up. If you set 20Hz,
+> the accel ODR will be set to 26Hz. I think it does not worth to make the code
+> uglier and more complex to maintain.
+> 
+> Regards,
+> Lorenzo
+> 
 
-I hope this message finds you in good spirits especially during=20
-this challenging time of coronavirus pandemic. I hope you and=20
-your family are well and keeping safe. Anyway, I am Chris=20
-Pavlides, a broker working with Flippiebecker Wealth. I got your=20
-contact (along with few other contacts) through an online=20
-business directory and I thought I should contact you to see if=20
-you are interested in this opportunity. I am contacting you=20
-because one of my high profile clients is interested in investing=20
-abroad and has asked me to look for individuals and companies=20
-with interesting business ideas and projects that he can invest=20
-in. He wants to invest a substantial amount of asset abroad.
+Sure, but we had some existing code that was setting the samplerate to 13Hz as that was the way to set 12.5Hz samplerate in the past.
+Suddenly without any notice 13Hz(of cause the kernel was updated) resulted in a samplerate of 26Hz. :/
 
-Please kindly respond back to this email if you are interested in=20
-this opportunity. Once I receive your response, I will give you=20
-more details and we can plan a strategy that will be beneficial=20
-to all parties.
-
-Best regards
-
-C Pavlides
-Flippiebecker Wealth
+/Sean

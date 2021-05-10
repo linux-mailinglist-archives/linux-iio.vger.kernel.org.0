@@ -2,85 +2,138 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B9375378E47
-	for <lists+linux-iio@lfdr.de>; Mon, 10 May 2021 15:50:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4C89378E48
+	for <lists+linux-iio@lfdr.de>; Mon, 10 May 2021 15:50:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233478AbhEJNHw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 May 2021 09:07:52 -0400
-Received: from first.geanix.com ([116.203.34.67]:47886 "EHLO first.geanix.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1344257AbhEJMPa (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 10 May 2021 08:15:30 -0400
-Received: from [192.168.100.10] (unknown [185.233.254.173])
-        by first.geanix.com (Postfix) with ESMTPSA id 0C0EF466BCE;
-        Mon, 10 May 2021 12:14:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1620648863; bh=dCjihH62aa3VL5t4jdIUppDG3Jid7/iUxZxY9N2K0MI=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=RzmMvrpPzQbxLBLsYpVtRWWTlYwg98MfyDB0NCMtBrGcrAou9on9JSry/2GGAyQzy
-         IXhNqI+pBqvttE3CxhYt1SKzRzCpWLBthfoMLQG0O3Ji77t5YRC8ZiVl+cce6qbuwI
-         CWg/wUrGrW46sB96UC4YJCU2nuWN85lMPf7K2nEYRg874BAAEgZMnh8I/sT0qG42o1
-         UOqcT9p4qvzRipdTfugFc2iXZP7AldNOXsZDFw3X0B14ltaC4prUGzvEtBZNiR6vX2
-         RvjI3hOYAMarISdqu5z6qEkRtSrsaDenJ86hy5a0eZfjOxcTev3bL44gTMu1bhBGiK
-         Jsw5wrogS+kEw==
-Subject: Re: [PATCH] iio: imu: st_lsm6dsx: do not roundup set samplerate
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     lorenzo.bianconi83@gmail.com, jic23@kernel.org,
-        linux-iio@vger.kernel.org
-References: <20210507103220.2194009-1-sean@geanix.com>
- <YJUeKhjooi8lAN1Q@lore-desk>
- <d0b62523-dcc9-ff14-aeaf-db24915f7aeb@geanix.com>
- <YJjSfpTfSMqf3w0v@lore-desk>
- <303a2899-2aff-410f-3bce-e40a7d7637e9@geanix.com>
- <YJkh6c297Msx0Xwn@lore-desk>
-From:   Sean Nyekjaer <sean@geanix.com>
-Message-ID: <e0d50da5-7aac-1ba3-e60c-f6cd85037d30@geanix.com>
-Date:   Mon, 10 May 2021 14:14:22 +0200
+        id S235662AbhEJNID (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 May 2021 09:08:03 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:43266 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234871AbhEJMSo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 May 2021 08:18:44 -0400
+Received: from mail-qk1-f199.google.com ([209.85.222.199])
+        by youngberry.canonical.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <krzysztof.kozlowski@canonical.com>)
+        id 1lg4qu-00035B-K4
+        for linux-iio@vger.kernel.org; Mon, 10 May 2021 12:17:36 +0000
+Received: by mail-qk1-f199.google.com with SMTP id d201-20020ae9efd20000b02902e9e9d8d9dcso11436015qkg.10
+        for <linux-iio@vger.kernel.org>; Mon, 10 May 2021 05:17:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=hcrqYtVd277y8wGe0DAUkPRsrC0LqbV2x0VgcwLCb3c=;
+        b=Aij3AuTuObxrsC/ULh4nBHm3SeaAA0+v0vNKHcVZU4i4mzBBRkifdDl3YEmaIWH4u+
+         XMmZyjsMq5KidikinhD4Gtn8UgAbEG2c2vL0eEImF2p9rFvO9RE9HrMdcPyp1LCEIipJ
+         uhMgA4EvnVr7QrJxtaiT6CgYZO3h/gZ1/1GnzEPp4TuBLZ+GHQ/otIgBRmynq0cWZytC
+         A/4LecKamGJ1b5kSN4yrkcqQGzGRJeWWaJ/Xl0nnv4Ka0IyFjQKnrvV9mck+BPG/PEAE
+         1ya0c/03sLyUT6aslv2PaYz2cheRX4hAwYu9nciI1DJgvMujCel52kE8AXTKxppmvM6b
+         dqOA==
+X-Gm-Message-State: AOAM532IzqXS9egT0htikXwRBUELssvjfuN1ck5bQaMzvmoHs6MhD9Xv
+        l8kniDU2mzf8IyqMV3YHKadO0EhGPP2+6XCIRJlTE1G2HxLzxWUOBWjunUCiNFxucUI5Q40m0ou
+        z/+SSu2v6mpFW8wdqT8LpuhUbSc3iPAuormCY1Q==
+X-Received: by 2002:ae9:ec03:: with SMTP id h3mr23609152qkg.87.1620649055715;
+        Mon, 10 May 2021 05:17:35 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwfAZJ/fJms6W3J42t4JspLSmay5z4r7ykDR8TMfCxjU9edR+ivZa0FNnGuW9w4GO5cBfzfug==
+X-Received: by 2002:ae9:ec03:: with SMTP id h3mr23609128qkg.87.1620649055479;
+        Mon, 10 May 2021 05:17:35 -0700 (PDT)
+Received: from [192.168.1.4] ([45.237.49.2])
+        by smtp.gmail.com with ESMTPSA id g140sm10110983qke.32.2021.05.10.05.17.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 May 2021 05:17:34 -0700 (PDT)
+Subject: Re: [PATCH] dt-bindings: iio: afe: current-sense-shunt: add
+ io-channel-cells
+To:     Jonathan Cameron <jic23@kernel.org>, Peter Rosin <peda@axentia.se>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20210506150637.35288-1-krzysztof.kozlowski@canonical.com>
+ <0e68ca18-7d8c-12ab-59b1-56404b29be77@axentia.se>
+ <20210508165944.2e3d8d91@jic23-huawei>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Message-ID: <1e8651a3-e730-411b-18a8-800e9bd9304e@canonical.com>
+Date:   Mon, 10 May 2021 08:17:17 -0400
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+ Thunderbird/78.7.1
 MIME-Version: 1.0
-In-Reply-To: <YJkh6c297Msx0Xwn@lore-desk>
-Content-Type: text/plain; charset=windows-1252
+In-Reply-To: <20210508165944.2e3d8d91@jic23-huawei>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        URIBL_BLOCKED autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on 93bd6fdb21b5
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 10/05/2021 14.07, Lorenzo Bianconi wrote:
->> On 10/05/2021 08.28, Lorenzo Bianconi wrote:
->>>> On 07/05/2021 13.02, Lorenzo Bianconi wrote:
->>>>>> The correct way to set the sampling rate to 12.5 Hz before
->>>>>> commit f8710f0357bc ("iio: imu: st_lsm6dsx: express odr in mHZ")
->>>>>> was to write 13 Hz to sampling_frequency.
->>>>>> Before this patch writing 13 to samplerate results in sample rate set
->>>>>> to 26 Hz.
->>>>>> Now we return EINVAL if the sampling rate is not in table.
->>>>>>
->>>>>> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
->>>>>
->>>>> I think this patch is breaking i2c-master support available in st_lsm6dsx, have you tested it?
->>>>>
->>>> I have not tested with i2c-master.
->>>> But it's not nice to round up sample rate from user space without any notice.
->>>
->>> the point is accel odr is used as trigger for i2c-slave sampling. Connected
->>> i2c slave devices have different sample rates (e.g. LIS2MDL), so we need to
->>> select the lower accel odr greather than slave device one.
->>>
->>> Regards,
->>> Lorenzo
->>>
+On 08/05/2021 11:59, Jonathan Cameron wrote:
+> On Sat, 8 May 2021 00:44:58 +0200
+> Peter Rosin <peda@axentia.se> wrote:
+> 
+>> Hi!
 >>
->> We could open up for custom sample rates if i2c-slaves are enabled?
+>> On 2021-05-06 17:06, Krzysztof Kozlowski wrote:
+>>> The current-sense-shunt is an IIO provider thus can be referenced by IIO
+>>> consumers (via "io-channels" property in consumer device node).
+>>> Such provider is required to describe number of cells used in phandle
+>>> lookup with "io-channel-cells" property.  This also fixes dtbs_check
+>>> warnings like:
+>>>
+>>>   arch/arm/boot/dts/s5pv210-fascinate4g.dt.yaml: current-sense-shunt:
+>>>     '#io-channel-cells' does not match any of the regexes: 'pinctrl-[0-9]+'
+>>>
+>>> Fixes: ce66e52b6c16 ("dt-bindings:iio:afe:current-sense-shunt: txt to yaml conversion.")
+>>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+>>> ---
+>>>  .../devicetree/bindings/iio/afe/current-sense-shunt.yaml     | 5 +++++
+>>>  1 file changed, 5 insertions(+)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/iio/afe/current-sense-shunt.yaml b/Documentation/devicetree/bindings/iio/afe/current-sense-shunt.yaml
+>>> index 90439a8dc785..05166d8a3124 100644
+>>> --- a/Documentation/devicetree/bindings/iio/afe/current-sense-shunt.yaml
+>>> +++ b/Documentation/devicetree/bindings/iio/afe/current-sense-shunt.yaml
+>>> @@ -24,12 +24,16 @@ properties:
+>>>      description: |
+>>>        Channel node of a voltage io-channel.
+>>>  
+>>> +  "#io-channel-cells":
+>>> +    const: 0
+>>> +
+>>>    shunt-resistor-micro-ohms:
+>>>      description: The shunt resistance.
+>>>  
+>>>  required:
+>>>    - compatible
+>>>    - io-channels
+>>> +  - "#io-channel-cells"
+>>>    - shunt-resistor-micro-ohms  
+>>
+>> I know I'm listed as maintainer and all, but I have not kept up with the yaml
+>> conversion. Sorry. So, given that I might very well fundamentally misunderstand
+>> something, it does not sound correct that #io-channel-cells is now "required".
+>> I regard it as optional, and only needed if some other in-kernel driver is
+>> consuming the sensed current. What am I missing?
+>>
 > 
-> can you please explain what you mean?
+> Agreed. This should be optional and I have deliberately not introduced it
+> into all the bindings that could in theory support being used as providers.
 > 
-If i2c-slaves are enabled, it's allowed to set off table sample rates.(We roundup samplerate like now)
-If i2c-slaves are disabled, we return -EINVAL if we can't find the chosen samplerate in the samplerate table?
+> So far I've not pushed it out in a blanket fashion into existing bindings
+> even as optional.
+> 
+>> Also, whatever is done in this binding should preferably also be done in the
+>> two "sister" afe bindings, i.e. current-sense-amplifier and voltage-divider.
+> 
+> This particular case is squashing an error, so whilst I'm happy to have those
+> gain the binding addition, I would like to see them in a separate patch as
+> less likely they'd get back ported.
+> 
+> If Kryysztof is fine with me just dropping the required I can pick up this patch.
 
-/Sean
+Having here required number of cells helps any DT-user to seamlessly
+integrate with it (e.g. with his in-tree or out-of-tree DTS, with
+overlays). However it also can be added with such DTS or overlay, so in
+general I don't mind dropping the required piece. Thanks!
+
+Best regards,
+Krzysztof

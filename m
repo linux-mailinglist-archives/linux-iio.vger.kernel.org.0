@@ -2,118 +2,117 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EDECD37913F
-	for <lists+linux-iio@lfdr.de>; Mon, 10 May 2021 16:48:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 463A4379242
+	for <lists+linux-iio@lfdr.de>; Mon, 10 May 2021 17:15:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237061AbhEJOuC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 May 2021 10:50:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43486 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240067AbhEJOsu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 10 May 2021 10:48:50 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8D546613DE;
-        Mon, 10 May 2021 14:47:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620658065;
-        bh=kHbtU5LMf+KlOpMKVRwQwYeO/rtT2+Cpt+i0hb+ABx8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=vJirzEQcWhiQ7r5iZRShIz9FhMoUDXn7bkGYjhS13F4AbaEmWvc88qu1hguDdlrWO
-         dd7ZYLB5HqNe2Zw8NRsijo5LmeMDVcdvk9fQZPQsj5wZzNrAnVWFMKhTPWzz3Azal2
-         U7z7LEj/Mauziwy1kyDu7U2sVVeFh2Wbv16jXSdbeB1IffHfu4iA+xGRF+pmUkkPMs
-         3co8FhX3r+71ucEIouWDrofqROE4+ngs7KrTt51SnbX77HZIMfYL+msGz9iGWTQwgS
-         tVx+puwAcOipxPUNv7NUsoCtYBboSe/68Y6vGqvY1Tcp2cJ9T55WQj5jcg8m3Fa12M
-         vm4ufZbrURCrg==
-Date:   Mon, 10 May 2021 16:47:40 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Sean Nyekjaer <sean@geanix.com>
-Cc:     lorenzo.bianconi83@gmail.com, jic23@kernel.org,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: imu: st_lsm6dsx: do not roundup set samplerate
-Message-ID: <YJlHjMtosViHbzAV@lore-desk>
-References: <20210507103220.2194009-1-sean@geanix.com>
- <YJUeKhjooi8lAN1Q@lore-desk>
- <d0b62523-dcc9-ff14-aeaf-db24915f7aeb@geanix.com>
- <YJjSfpTfSMqf3w0v@lore-desk>
- <303a2899-2aff-410f-3bce-e40a7d7637e9@geanix.com>
- <YJkh6c297Msx0Xwn@lore-desk>
- <e0d50da5-7aac-1ba3-e60c-f6cd85037d30@geanix.com>
+        id S241716AbhEJPQc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 May 2021 11:16:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45230 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240361AbhEJPOf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 May 2021 11:14:35 -0400
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B71FCC056756;
+        Mon, 10 May 2021 07:33:50 -0700 (PDT)
+Received: by mail-wr1-x42c.google.com with SMTP id t18so16891382wry.1;
+        Mon, 10 May 2021 07:33:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=iXsxoOt9fS3DXvxCyyFOaJfbPkU6WlTqA1MG4BgEpJA=;
+        b=jIc4OS4UG1e9Htue39hs2SdJXCmPLn+MTostxG/pw06sXYt4cF0beJY8cOPd4XkNvN
+         wMkWqq4rS4nqVWqmlHYwknDCThc4F5oj3a10x6AGXMwZ0Kkxjgx6mU53ky5S6gct5IOF
+         gb8YE/CdqFeQhJSfkuXg75IoXDsEW/QKbfnCDm8DSyF/6zHxA2in236S9Jv233h02Cag
+         nY/zUkluYzDhxrfM75C6Qnf/beBRBG9DBN2uslTW/jB8AmOrnU4strwuRTlIYCmTiED9
+         Adakd2gy/AYmhY6PfiGery2Nb+BVYLJb2xN6RqR96XQSpLkoAkrrTIc1zJH3tzspThUx
+         eDlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=iXsxoOt9fS3DXvxCyyFOaJfbPkU6WlTqA1MG4BgEpJA=;
+        b=mtcfeMsx7dMqYNepetHcvVEp2glMa9yIlLyEQ8rzKenwJZWsHQ0xYa4FlfmN2J8LUY
+         bPfOWxNXZyLuUbv6mxcQzDooN2CybZw4KKRpvAa/DrNtG9dFdBPkqfMLVMWB9yeSeuhw
+         KifzQf56nF3lwZi75f/YZ9fJAMLNWYeuMRIm/mSQXcM0o6HLRxrVNe3PcWPOde4Ouehf
+         HQo08nNDf9XEIEtKPrSCYDyPT+1asNxWQJ15AiWCwdz6YBacVGiCzslr6WMf0PAAJhWe
+         NOEZZaMTk+c6yb5EuDFdDdRkIJXz5xQH1O3KiVzaCllG860vf8paCuiuRV8XjsFmGVtg
+         sxhw==
+X-Gm-Message-State: AOAM532ZdhgvQU2/PzbBMlyPonGNmCSVV+wEv5FYNx421ebedZz5AXty
+        8pgEwWSVt3X7TC9UFQeGUWQ=
+X-Google-Smtp-Source: ABdhPJze1q8t3iuv5DjzOv0RveTjqSpEwnprh+IG3St78u9eWCZrU93KSEZYLbobgkyZLBZ/m0bYBQ==
+X-Received: by 2002:adf:e98c:: with SMTP id h12mr30469476wrm.314.1620657229579;
+        Mon, 10 May 2021 07:33:49 -0700 (PDT)
+Received: from [192.168.1.122] (cpc159425-cmbg20-2-0-cust403.5-4.cable.virginm.net. [86.7.189.148])
+        by smtp.gmail.com with ESMTPSA id h9sm20117820wmb.35.2021.05.10.07.33.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 May 2021 07:33:48 -0700 (PDT)
+Subject: Re: [PATCH 00/53] Get rid of UTF-8 chars that can be mapped as ASCII
+To:     Matthew Wilcox <willy@infradead.org>
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        alsa-devel@alsa-project.org, coresight@lists.linaro.org,
+        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+        intel-wired-lan@lists.osuosl.org, keyrings@vger.kernel.org,
+        kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+        linux-fpga@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-integrity@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-sgx@vger.kernel.org, linux-usb@vger.kernel.org,
+        mjpeg-users@lists.sourceforge.net, netdev@vger.kernel.org,
+        rcu@vger.kernel.org, x86@kernel.org
+References: <cover.1620641727.git.mchehab+huawei@kernel.org>
+ <2ae366fdff4bd5910a2270823e8da70521c859af.camel@infradead.org>
+ <20210510135518.305cc03d@coco.lan>
+ <df6b4567-030c-a480-c5a6-fe579830e8c0@gmail.com>
+ <YJk8LMFViV7Z3Uu7@casper.infradead.org>
+From:   Edward Cree <ecree.xilinx@gmail.com>
+Message-ID: <ed65025c-1087-9672-7451-6d28e7ab8f92@gmail.com>
+Date:   Mon, 10 May 2021 15:33:47 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="AXXbmkK6J6t2Z5xA"
-Content-Disposition: inline
-In-Reply-To: <e0d50da5-7aac-1ba3-e60c-f6cd85037d30@geanix.com>
+In-Reply-To: <YJk8LMFViV7Z3Uu7@casper.infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On 10/05/2021 14:59, Matthew Wilcox wrote:
+> Most of these
+> UTF-8 characters come from latex conversions and really aren't
+> necessary (and are being used incorrectly).
+I fully agree with fixing those.
+The cover-letter, however, gave the impression that that was not the
+ main purpose of this series; just, perhaps, a happy side-effect.
 
---AXXbmkK6J6t2Z5xA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> You seem quite knowedgeable about the various differences.  Perhaps
+> you'd be willing to write a document for Documentation/doc-guide/
+> that provides guidance for when to use which kinds of horizontal
+> line?I have Opinions about the proper usage of punctuation, but I also know
+ that other people have differing opinions.  For instance, I place
+ spaces around an em dash, which is nonstandard according to most
+ style guides.  Really this is an individual enough thing that I'm not
+ sure we could have a "kernel style guide" that would be more useful
+ than general-purpose guidance like the page you linked.
+Moreover, such a guide could make non-native speakers needlessly self-
+ conscious about their writing and discourage them from contributing
+ documentation at all.  I'm not advocating here for trying to push
+ kernel developers towards an eats-shoots-and-leaves level of
+ linguistic pedantry; rather, I merely think that existing correct
+ usages should be left intact (and therefore, excising incorrect usage
+ should only be attempted by someone with both the expertise and time
+ to check each case).
 
-> On 10/05/2021 14.07, Lorenzo Bianconi wrote:
-> >> On 10/05/2021 08.28, Lorenzo Bianconi wrote:
-> >>>> On 07/05/2021 13.02, Lorenzo Bianconi wrote:
-> >>>>>> The correct way to set the sampling rate to 12.5 Hz before
-> >>>>>> commit f8710f0357bc ("iio: imu: st_lsm6dsx: express odr in mHZ")
-> >>>>>> was to write 13 Hz to sampling_frequency.
-> >>>>>> Before this patch writing 13 to samplerate results in sample rate =
-set
-> >>>>>> to 26 Hz.
-> >>>>>> Now we return EINVAL if the sampling rate is not in table.
-> >>>>>>
-> >>>>>> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-> >>>>>
-> >>>>> I think this patch is breaking i2c-master support available in st_l=
-sm6dsx, have you tested it?
-> >>>>>
-> >>>> I have not tested with i2c-master.
-> >>>> But it's not nice to round up sample rate from user space without an=
-y notice.
-> >>>
-> >>> the point is accel odr is used as trigger for i2c-slave sampling. Con=
-nected
-> >>> i2c slave devices have different sample rates (e.g. LIS2MDL), so we n=
-eed to
-> >>> select the lower accel odr greather than slave device one.
-> >>>
-> >>> Regards,
-> >>> Lorenzo
-> >>>
-> >>
-> >> We could open up for custom sample rates if i2c-slaves are enabled?
-> >=20
-> > can you please explain what you mean?
-> >=20
-> If i2c-slaves are enabled, it's allowed to set off table sample rates.(We=
- roundup samplerate like now)
-> If i2c-slaves are disabled, we return -EINVAL if we can't find the chosen=
- samplerate in the samplerate table?
+But if you really want such a doc I wouldn't mind contributing to it.
 
-IMO this is not a big deal because if you set the proper ODR (e.g. 26Hz) wi=
-th the
-i2c-master disabled, the sample rate will not be rounded-up. If you set 20H=
-z,
-the accel ODR will be set to 26Hz. I think it does not worth to make the co=
-de
-uglier and more complex to maintain.
-
-Regards,
-Lorenzo
-
->=20
-> /Sean
-
---AXXbmkK6J6t2Z5xA
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYJlHigAKCRA6cBh0uS2t
-rE8zAP9s8Mri50OgZLba59MSpk2Swm6yOUGkEFKkTkQYvQZqcwD/WDO8ziXjpvjf
-P/+Jg09MPPtscCUgFhkdKxvHkRtlrg8=
-=drDy
------END PGP SIGNATURE-----
-
---AXXbmkK6J6t2Z5xA--
+-ed

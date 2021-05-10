@@ -2,181 +2,126 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 65C6A378E43
+	by mail.lfdr.de (Postfix) with ESMTP id EAE0A378E44
 	for <lists+linux-iio@lfdr.de>; Mon, 10 May 2021 15:50:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236399AbhEJNHe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 May 2021 09:07:34 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44172 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S243600AbhEJL4e (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 10 May 2021 07:56:34 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 383C061260;
-        Mon, 10 May 2021 11:55:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620647729;
-        bh=dyIPtb49LgFnCoKazyq+bQhPSj3PCobNssG21KHdoK4=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=S4cpkndG9UuTYGkhKfO3hJLbYIHDWve5Su3QQFRXInDkMRoAu9bVjsNPKBQQExFiA
-         MH/LvEqboPFe5Mg323DsrqgW7WJPZfjJ5OWh3KcGd7Kzb/Ed/OuhsjfzebDsCLf+jo
-         Z2y3h21hX1f0r0znndE/gsvI3+7MfvcFNE3R9vJ3F6eSaoK3rYc9HAxpysQKCzq2nw
-         XliTZNXkMCNQpYy6ormSrp00pDOW21OImF+xXBpjWC/JIXAZfq/wrXo3rh38peS5/g
-         BQeri8Wl+fs0ihvm/Fcaw0vxpMvqk7Fkm7kctYIMuGKithMKv3Kd8J2NMAGsk2M1IJ
-         Z8/9XzwZufeKA==
-Date:   Mon, 10 May 2021 13:55:18 +0200
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     David Woodhouse <dwmw2@infradead.org>
-Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        alsa-devel@alsa-project.org, coresight@lists.linaro.org,
-        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-        intel-wired-lan@lists.osuosl.org, keyrings@vger.kernel.org,
-        kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-        linux-fpga@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-integrity@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-sgx@vger.kernel.org, linux-usb@vger.kernel.org,
-        mjpeg-users@lists.sourceforge.net, netdev@vger.kernel.org,
-        rcu@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH 00/53] Get rid of UTF-8 chars that can be mapped as
- ASCII
-Message-ID: <20210510135518.305cc03d@coco.lan>
-In-Reply-To: <2ae366fdff4bd5910a2270823e8da70521c859af.camel@infradead.org>
-References: <cover.1620641727.git.mchehab+huawei@kernel.org>
-        <2ae366fdff4bd5910a2270823e8da70521c859af.camel@infradead.org>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
+        id S234836AbhEJNHl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 May 2021 09:07:41 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:3043 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244582AbhEJL73 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 May 2021 07:59:29 -0400
+Received: from fraeml745-chm.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Fdztx3wNWz6rmgC;
+        Mon, 10 May 2021 19:52:25 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml745-chm.china.huawei.com (10.206.15.226) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Mon, 10 May 2021 13:58:21 +0200
+Received: from localhost (10.52.123.16) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Mon, 10 May
+ 2021 12:58:20 +0100
+Date:   Mon, 10 May 2021 12:56:39 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Alexandru Ardelean <ardeleanalex@gmail.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Alexandru Tachici <alexandru.tachici@analog.com>
+Subject: Re: [PATCH] iio: adc: ad7192: Avoid disabling a clock that was
+ never enabled.
+Message-ID: <20210510125639.00004fab@Huawei.com>
+In-Reply-To: <CA+U=Dsp5T52yJ9rs1Ov4W9Lxs6mySGa9cndAiKMhEzh0K1-8oQ@mail.gmail.com>
+References: <20210509114118.660422-1-jic23@kernel.org>
+        <CA+U=Dsp5T52yJ9rs1Ov4W9Lxs6mySGa9cndAiKMhEzh0K1-8oQ@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.52.123.16]
+X-ClientProxiedBy: lhreml720-chm.china.huawei.com (10.201.108.71) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi David,
+On Mon, 10 May 2021 14:30:48 +0300
+Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
 
-Em Mon, 10 May 2021 11:54:02 +0100
-David Woodhouse <dwmw2@infradead.org> escreveu:
+> On Sun, May 9, 2021 at 2:42 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >
+> > Found by inspection.
+> >
+> > If the internal clock source is being used, the driver doesn't
+> > call clk_prepare_enable() and as such we should not call
+> > clk_disable_unprepare()
+> >
+> > Use the same condition to protect the disable path as is used
+> > on the enable one.  Note this will all get simplified when
+> > the driver moves over to a full devm_ flow, but that would make
+> > backporting the fix harder.
+> >
+> > Fix obviously predates move out of staging, but backporting will
+> > become more complex (and is unlikely to happen), hence that patch
+> > is given in the fixes tag.
+> >  
+> 
+> This also looks like a conversion to devm_ would help.
+> But later.
 
-> On Mon, 2021-05-10 at 12:26 +0200, Mauro Carvalho Chehab wrote:
-> > There are several UTF-8 characters at the Kernel's documentation.
-> >=20
-> > Several of them were due to the process of converting files from
-> > DocBook, LaTeX, HTML and Markdown. They were probably introduced
-> > by the conversion tools used on that time.
-> >=20
-> > Other UTF-8 characters were added along the time, but they're easily
-> > replaceable by ASCII chars.
-> >=20
-> > As Linux developers are all around the globe, and not everybody has UTF=
--8
-> > as their default charset, better to use UTF-8 only on cases where it is=
- really
-> > needed. =20
->=20
-> No, that is absolutely the wrong approach.
->=20
-> If someone has a local setup which makes bogus assumptions about text
-> encodings, that is their own mistake.
->=20
-> We don't do them any favours by trying to *hide* it in the common case
-> so that they don't notice it for longer.
->=20
-> There really isn't much excuse for such brokenness, this far into the
-> 21st century.
->=20
-> Even *before* UTF-8 came along in the final decade of the last
-> millennium, it was important to know which character set a given piece
-> of text was encoded in.
->=20
-> In fact it was even *more* important back then, we couldn't just assume
-> UTF-8 everywhere like we can in modern times.
->=20
-> Git can already do things like CRLF conversion on checking files out to
-> match local conventions; if you want to teach it to do character set
-> conversions too then I suppose that might be useful to a few developers
-> who've fallen through a time warp and still need it. But nobody's ever
-> bothered before because it just isn't necessary these days.
->=20
-> Please *don't* attempt to address this anachronistic and esoteric
-> "requirement" by dragging the kernel source back in time by three
-> decades.
+Absolutely.  I decided to do a pre parse of likely targets for
+devmification to see if we had fixed that needed to go first and
+that's when I noticed this one.
 
-No. The idea is not to go back three decades ago.=20
+That way we don't end up with the mess I caused in the previous
+set where I have to remember to finally pick up the non fix
+part after the fixes are in.
 
-The goal is just to avoid use UTF-8 where it is not needed. See, the vast
-majority of UTF-8 chars are kept:
+Jonathan
 
-	- Non-ASCII Latin and Greek chars;
-	- Box drawings;
-	- arrows;
-	- most symbols.
+> 
+> Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
 
-There, it makes perfect sense to keep using UTF-8.
+> 
+> > Fixes: b581f748cce0 ("staging: iio: adc: ad7192: move out of staging")
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Cc: Alexandru Tachici <alexandru.tachici@analog.com>
+> > Cc: Alexandru Ardelean <ardeleanalex@gmail.com>
+> > ---
+> >  drivers/iio/adc/ad7192.c | 8 ++++++--
+> >  1 file changed, 6 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
+> > index 2ed580521d81..d3be67aa0522 100644
+> > --- a/drivers/iio/adc/ad7192.c
+> > +++ b/drivers/iio/adc/ad7192.c
+> > @@ -1014,7 +1014,9 @@ static int ad7192_probe(struct spi_device *spi)
+> >         return 0;
+> >
+> >  error_disable_clk:
+> > -       clk_disable_unprepare(st->mclk);
+> > +       if (st->clock_sel == AD7192_CLK_EXT_MCLK1_2 ||
+> > +           st->clock_sel == AD7192_CLK_EXT_MCLK2)
+> > +               clk_disable_unprepare(st->mclk);
+> >  error_remove_trigger:
+> >         ad_sd_cleanup_buffer_and_trigger(indio_dev);
+> >  error_disable_dvdd:
+> > @@ -1031,7 +1033,9 @@ static int ad7192_remove(struct spi_device *spi)
+> >         struct ad7192_state *st = iio_priv(indio_dev);
+> >
+> >         iio_device_unregister(indio_dev);
+> > -       clk_disable_unprepare(st->mclk);
+> > +       if (st->clock_sel == AD7192_CLK_EXT_MCLK1_2 ||
+> > +           st->clock_sel == AD7192_CLK_EXT_MCLK2)
+> > +               clk_disable_unprepare(st->mclk);
+> >         ad_sd_cleanup_buffer_and_trigger(indio_dev);
+> >
+> >         regulator_disable(st->dvdd);
+> > --
+> > 2.31.1
+> >  
 
-We should keep using UTF-8 on Kernel. This is something that it shouldn't
-be changed.
-
----
-
-This patch series is doing conversion only when using ASCII makes
-more sense than using UTF-8.=20
-
-See, a number of converted documents ended with weird characters
-like ZERO WIDTH NO-BREAK SPACE (U+FEFF) character. This specific
-character doesn't do any good.
-
-Others use NO-BREAK SPACE (U+A0) instead of 0x20. Harmless, until
-someone tries to use grep[1].
-
-[1] try to run:
-
-    $ git grep "CPU 0 has been" Documentation/RCU/
-
-    it will return nothing with current upstream.
-
-    But it will work fine after the series is applied:
-
-    $ git grep "CPU 0 has been" Documentation/RCU/
-      Documentation/RCU/Design/Data-Structures/Data-Structures.rst:| #. CPU=
- 0 has been in dyntick-idle mode for quite some time. When it   |
-      Documentation/RCU/Design/Data-Structures/Data-Structures.rst:|    not=
-ices that CPU 0 has been in dyntick idle mode, which qualifies  |
-
-The main point on this series is to replace just the occurrences
-where ASCII represents the symbol equally well, e. g. it is limited
-for those chars:
-
-	- U+2010 ('=E2=80=90'): HYPHEN
-	- U+00ad ('=C2=AD'): SOFT HYPHEN
-	- U+2013 ('=E2=80=93'): EN DASH
-	- U+2014 ('=E2=80=94'): EM DASH
-
-	- U+2018 ('=E2=80=98'): LEFT SINGLE QUOTATION MARK
-	- U+2019 ('=E2=80=99'): RIGHT SINGLE QUOTATION MARK
-	- U+00b4 ('=C2=B4'): ACUTE ACCENT
-
-	- U+201c ('=E2=80=9C'): LEFT DOUBLE QUOTATION MARK
-	- U+201d ('=E2=80=9D'): RIGHT DOUBLE QUOTATION MARK
-
-	- U+00d7 ('=C3=97'): MULTIPLICATION SIGN
-	- U+2212 ('=E2=88=92'): MINUS SIGN
-
-	- U+2217 ('=E2=88=97'): ASTERISK OPERATOR
-	  (this one used as a pointer reference like "*foo" on C code
-	   example inside a document converted from LaTeX)
-
-	- U+00bb ('=C2=BB'): RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK
-	  (this one also used wrongly on an ABI file, meaning '>')
-
-	- U+00a0 ('=C2=A0'): NO-BREAK SPACE
-	- U+feff ('=EF=BB=BF'): ZERO WIDTH NO-BREAK SPACE
-
-Using the above symbols will just trick tools like grep for no good
-reason.
-
-Thanks,
-Mauro

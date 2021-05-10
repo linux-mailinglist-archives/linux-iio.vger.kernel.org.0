@@ -2,59 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D377378E50
-	for <lists+linux-iio@lfdr.de>; Mon, 10 May 2021 15:51:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1298A378E55
+	for <lists+linux-iio@lfdr.de>; Mon, 10 May 2021 15:51:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240589AbhEJNIx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 May 2021 09:08:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44214 "EHLO
+        id S234934AbhEJNJT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 May 2021 09:09:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351161AbhEJNDC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 May 2021 09:03:02 -0400
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15222C061360
+        with ESMTP id S1351214AbhEJNDI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 May 2021 09:03:08 -0400
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFF92C061362
         for <linux-iio@vger.kernel.org>; Mon, 10 May 2021 05:56:00 -0700 (PDT)
-Received: by mail-wr1-x430.google.com with SMTP id m9so16540433wrx.3
+Received: by mail-wr1-x433.google.com with SMTP id d4so16508451wru.7
         for <linux-iio@vger.kernel.org>; Mon, 10 May 2021 05:56:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=deviqon.com; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=5I8AlEC8dBHxWFP7B4nHqLuYclQwxngKCwv+MqH04xk=;
-        b=sQfd4NvTRV4ixQQ86oG2ZoHxdXUfEauJV7TV36o6f3OfhJ39gNJvExCMosqH9kYn5T
-         aFhsp0Ro31OhwJgSLHagc26/AxQk3KbawtB+3P27yoR6Dzccrtjhu0ErpDvgtKfOFz0h
-         HiKISzMcmbpd96L7vR2Vqs1kig5TzCONiS0Uxka50YEGVLpImwy8kGEKIOF+CPHz3Zdh
-         /mrRi4/UhP3qmVOnxFdx9TPITxEm0uu+oxQqqcvcEIFrstCAj/MQWR742OjVDrfa56oq
-         mR4rHyLersV5LpCDWyR+QWpA2CQfeLW78k9O8EXZdDHmnlAdzB4qijY3zFNY0345NcCx
-         R6Ow==
+        bh=PjOlhmCbAbyUbUH7pil1I907GgA6nAM7F2t7vQHJi14=;
+        b=f9lveGxFe9Pw8WYVlGxIEgVuO1mnm7e2GgPSpQGuhH/T2sjSEST44fTvFD+tp/lIzi
+         l12Qf+xSoCOYm/RxYEcaz6XwDoOsuAG+UUBpPK8nX+aGhC2BBawQOU2ZDUT3RnRJUzDh
+         uucUDHJuS5NOdIvek5tQEBO3Z5BbpLO/m/QQ4PLJieBfwdpZJom4VnQDZHpQ59S1Y3Jn
+         AuZJEIRF5iOmaDEyonyDmEcSSEBEnoIWLsnndskhAS9exaxVyKIIYgmJddbQEdFejIFu
+         8iDI+MQVHXyShSpy0aVLKNwf47BfbRU6I+p02s9D9aYLqW+kikf+eAmxiWUR3dfIkzWr
+         f6zQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=5I8AlEC8dBHxWFP7B4nHqLuYclQwxngKCwv+MqH04xk=;
-        b=r6pCaIm49sAQ5kbU6fGwzzT8ra/t2dmn+wV3LQ+pJo4wMESekMzhGTGLxnRYbq8VL/
-         JHlf5OwZNGuth7ukmUOj8QjfB086RjYyT61CHOh8VUpcU/fAF2kFgNj33yRMZCnpOIdN
-         7O2GZajoKlp5ZxbRgWvJEx3yAXMIE+rHx5LeOaKeIPHiJELQezhW1GDSVsvuoewzGlBB
-         +qqqCLqCtdPCrICqYKOvy/aT06hVV898cmem5koc2v1CnMIxL270B/NJrRacW9SZut3O
-         7f3gQdeeTgRTsq9DJ1pWK+kqgVg27wbw4jpS6yQ2RS8HYtEPjjpyIVpW/WMY3aAtmQZN
-         iZyA==
-X-Gm-Message-State: AOAM530tmFFG9cEOwrpRvK8wn8NKd9WL3wnWsVIMagdpTlfEtSumkKWL
-        w0YonK54JcB1YztH8zpr4UvdpG6Pj0sr6w==
-X-Google-Smtp-Source: ABdhPJxOWtpr8Do6Tf/iovboR54hvTwbW1Gisv2RZXs4FQEfB48TuZVMAOrU8aX33X8DYta11pNbRw==
-X-Received: by 2002:adf:cd06:: with SMTP id w6mr30419014wrm.93.1620651358650;
-        Mon, 10 May 2021 05:55:58 -0700 (PDT)
+        bh=PjOlhmCbAbyUbUH7pil1I907GgA6nAM7F2t7vQHJi14=;
+        b=YimpBdLJcV+MfXXcD5AthsgIzlQ/WJv/hx/zyIVz8X0uekBStdRv0aR8fi1sostjG2
+         CZ7jF3K511ImBk+6dOR76Os26eV2Ai95o7xWA4p3xnMXpwkIrkWet49AU1mWxjdpWZCA
+         efRrE+RvED46FCRRUShufQ+ZacidL+AEvERm3RJ38nSQcg8GTezq2nCYyg4vLmIXkfok
+         ntMTnQ7n6AMHCpyRHHHSgdzjnycwigaQ+2Ei6/pyWTHHD7DoFcuFnq9FNMlnY3Ga3LT2
+         EJlevm/rwBM5dPgHyAen3Xzx78Lo7vckxRE7Vp6CogHU1YUZsOpbXi/IVqWarq/KyZpA
+         9gLg==
+X-Gm-Message-State: AOAM532bDlbSNu+4TjvzgFxAp3rbYE678Lc2UImm2uImFwSL1p9P8uRw
+        TkC/5oIiNtsx/odBs/paDML/Qfo7KBOfqQ==
+X-Google-Smtp-Source: ABdhPJyAXSIWebWDF2S3D1eLFeO0OlxyJoRD3nHZbVLU9Hc5ZKi7lZjH0aZy9cWQknjoFHOmhKU0TQ==
+X-Received: by 2002:adf:d4ca:: with SMTP id w10mr31894907wrk.244.1620651359564;
+        Mon, 10 May 2021 05:55:59 -0700 (PDT)
 Received: from neptune.. ([5.2.193.191])
-        by smtp.gmail.com with ESMTPSA id n2sm23134329wmb.32.2021.05.10.05.55.57
+        by smtp.gmail.com with ESMTPSA id n2sm23134329wmb.32.2021.05.10.05.55.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 May 2021 05:55:58 -0700 (PDT)
+        Mon, 10 May 2021 05:55:59 -0700 (PDT)
 From:   Alexandru Ardelean <aardelean@deviqon.com>
 To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc:     jic23@kernel.org, Jonathan.Cameron@huawei.com,
         alexandru.tachici@analog.com, linux@deviqon.com,
         Alexandru Ardelean <ardeleanalex@gmail.com>
-Subject: [PATCH 08/11] iio: adc: ad7124: Fix missbalanced regulator enable / disable on error.
-Date:   Mon, 10 May 2021 15:55:20 +0300
-Message-Id: <20210510125523.1271237-9-aardelean@deviqon.com>
+Subject: [PATCH 09/11] iio: adc: ad7124: Fix potential overflow due to non sequential channel numbers
+Date:   Mon, 10 May 2021 15:55:21 +0300
+Message-Id: <20210510125523.1271237-10-aardelean@deviqon.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210510125523.1271237-1-aardelean@deviqon.com>
 References: <20210510125523.1271237-1-aardelean@deviqon.com>
@@ -66,93 +66,41 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-If the devm_regulator_get() call succeeded but not the regulator_enable()
-then regulator_disable() would be called on a regulator that was not
-enabled.
+Channel numbering must start at 0 and then not have any holes, or
+it is possible to overflow the available storage.  Note this bug was
+introduced as part of a fix to ensure we didn't rely on the ordering
+of child nodes.  So we need to support arbitrary ordering but they all
+need to be there somewhere.
 
-Fix this by moving regulator enabling / disabling over to
-devm_ management via devm_add_action_or_reset.
+Note I hit this when using qemu to test the rest of this series.
+Arguably this isn't the best fix, but it is probably the most minimal
+option for backporting etc.
 
-Fixes: b3af341bbd96 ("iio: adc: Add ad7124 support")
-Cc: Alexandru Ardelean <ardeleanalex@gmail.com>
+Fixes: d7857e4ee1ba6 ("iio: adc: ad7124: Fix DT channel configuration")
 Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/ad7124.c | 29 +++++++++++++----------------
- 1 file changed, 13 insertions(+), 16 deletions(-)
+ drivers/iio/adc/ad7124.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index 9d3952b4674f..437116a07cf1 100644
+index 437116a07cf1..a27db78ea13e 100644
 --- a/drivers/iio/adc/ad7124.c
 +++ b/drivers/iio/adc/ad7124.c
-@@ -850,6 +850,11 @@ static int ad7124_setup(struct ad7124_state *st)
- 	return ret;
- }
- 
-+static void ad7124_reg_disable(void *r)
-+{
-+	regulator_disable(r);
-+}
-+
- static int ad7124_probe(struct spi_device *spi)
- {
- 	const struct ad7124_chip_info *info;
-@@ -895,17 +900,20 @@ static int ad7124_probe(struct spi_device *spi)
- 		ret = regulator_enable(st->vref[i]);
+@@ -771,6 +771,13 @@ static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
  		if (ret)
- 			return ret;
+ 			goto err;
+ 
++		if (channel >= indio_dev->num_channels) {
++			dev_err(indio_dev->dev.parent,
++				"Channel index >= number of channels\n");
++			ret = -EINVAL;
++			goto err;
++		}
 +
-+		ret = devm_add_action_or_reset(&spi->dev, ad7124_reg_disable,
-+					       st->vref[i]);
-+		if (ret)
-+			return ret;
- 	}
- 
- 	st->mclk = devm_clk_get(&spi->dev, "mclk");
--	if (IS_ERR(st->mclk)) {
--		ret = PTR_ERR(st->mclk);
--		goto error_regulator_disable;
--	}
-+	if (IS_ERR(st->mclk))
-+		return PTR_ERR(st->mclk);
- 
- 	ret = clk_prepare_enable(st->mclk);
- 	if (ret < 0)
--		goto error_regulator_disable;
-+		return ret;
- 
- 	ret = ad7124_soft_reset(st);
- 	if (ret < 0)
-@@ -935,11 +943,6 @@ static int ad7124_probe(struct spi_device *spi)
- 	ad_sd_cleanup_buffer_and_trigger(indio_dev);
- error_clk_disable_unprepare:
- 	clk_disable_unprepare(st->mclk);
--error_regulator_disable:
--	for (i = ARRAY_SIZE(st->vref) - 1; i >= 0; i--) {
--		if (!IS_ERR_OR_NULL(st->vref[i]))
--			regulator_disable(st->vref[i]);
--	}
- 
- 	return ret;
- }
-@@ -948,17 +951,11 @@ static int ad7124_remove(struct spi_device *spi)
- {
- 	struct iio_dev *indio_dev = spi_get_drvdata(spi);
- 	struct ad7124_state *st = iio_priv(indio_dev);
--	int i;
- 
- 	iio_device_unregister(indio_dev);
- 	ad_sd_cleanup_buffer_and_trigger(indio_dev);
- 	clk_disable_unprepare(st->mclk);
- 
--	for (i = ARRAY_SIZE(st->vref) - 1; i >= 0; i--) {
--		if (!IS_ERR_OR_NULL(st->vref[i]))
--			regulator_disable(st->vref[i]);
--	}
--
- 	return 0;
- }
- 
+ 		ret = of_property_read_u32_array(child, "diff-channels",
+ 						 ain, 2);
+ 		if (ret)
 -- 
 2.31.1
 

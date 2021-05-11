@@ -2,121 +2,169 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C41DB37A8E9
-	for <lists+linux-iio@lfdr.de>; Tue, 11 May 2021 16:18:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45F8E37A90F
+	for <lists+linux-iio@lfdr.de>; Tue, 11 May 2021 16:24:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231659AbhEKOTs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 11 May 2021 10:19:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56392 "EHLO mail.kernel.org"
+        id S231721AbhEKOZI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 11 May 2021 10:25:08 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60488 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231523AbhEKOTr (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 11 May 2021 10:19:47 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3647B611BE;
-        Tue, 11 May 2021 14:18:39 +0000 (UTC)
-Date:   Tue, 11 May 2021 15:19:45 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Cc:     Peter Rosin <peda@axentia.se>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: afe: current-sense-shunt: add
- io-channel-cells
-Message-ID: <20210511151945.1c3fd6e0@jic23-huawei>
-In-Reply-To: <1e8651a3-e730-411b-18a8-800e9bd9304e@canonical.com>
-References: <20210506150637.35288-1-krzysztof.kozlowski@canonical.com>
-        <0e68ca18-7d8c-12ab-59b1-56404b29be77@axentia.se>
-        <20210508165944.2e3d8d91@jic23-huawei>
-        <1e8651a3-e730-411b-18a8-800e9bd9304e@canonical.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S231773AbhEKOZH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 11 May 2021 10:25:07 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7BF676187E;
+        Tue, 11 May 2021 14:24:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1620743040;
+        bh=K5dIHfa4f6iByDzBZIlrjQRjF6/bEjxWK1nUAqzRpew=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=JwaonazL7mHtxi37clzYyAaTtim9WYGe0jNdHlIfH66KDgGwD7QSLjEbrzvQMGgxj
+         cDxVGdxsCSttt8JIk8CkX28GzepNyrYgvBI1JuvlFOJaMgtQqfDezEAUokTzNj9Di/
+         AXk99SIB1YVQuMhT8u6c+PflBGCBBVOhpYgwe9cQWyML9PY1iJv974grpxFQf2Zlfk
+         aUGvNVSxIAiuPtI40JwsNp54vhkyiWFA7kZoGWTVhKJA8n9Wz1XL4k007CFv87+k2k
+         ie6Ts3jvb6fuJ96vpOt+4eetlT3LXFNfFHwPDzEMeFWHkETQEygR474DDgvL+Oc1l/
+         9cZVdIGiRgynA==
+Received: by mail-ed1-f53.google.com with SMTP id v5so12032451edc.8;
+        Tue, 11 May 2021 07:24:00 -0700 (PDT)
+X-Gm-Message-State: AOAM5336IfGGHK4WvHXBJwJ1DkR9FDCNaG8F6ys88Kmm2uB8QC8lGEBv
+        7Kemzwb5+bFmJnTumAKG56ABR7gqI57cF0v2Aw==
+X-Google-Smtp-Source: ABdhPJxvejkoMRuepYDfIZklCbkFbvR1TbNfZ2DNIhf0/HxlULmwCrdyYucaU8vfjuT695OoYvWsI5knsrz4cgRv3yU=
+X-Received: by 2002:a50:c446:: with SMTP id w6mr33152086edf.62.1620743038881;
+ Tue, 11 May 2021 07:23:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20210510204524.617390-1-robh@kernel.org> <d3aae746-284b-b0bc-0d52-a76c361d3592@lucaceresoli.net>
+ <CAL_JsqLhwifngoNK0ciO=yuVqpEbMGOSWMHyT=5DcYcO9jcuCw@mail.gmail.com> <2b09c4ed-758d-6eed-8fc1-39653d10e844@lucaceresoli.net>
+In-Reply-To: <2b09c4ed-758d-6eed-8fc1-39653d10e844@lucaceresoli.net>
+From:   Rob Herring <robh@kernel.org>
+Date:   Tue, 11 May 2021 09:23:44 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqKEdtJ=NndWAR4j1WEBnzML_UkGFzKd6fkKOiV1SLFczg@mail.gmail.com>
+Message-ID: <CAL_JsqKEdtJ=NndWAR4j1WEBnzML_UkGFzKd6fkKOiV1SLFczg@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: More removals of type references on common properties
+To:     Luca Ceresoli <luca@lucaceresoli.net>
+Cc:     devicetree@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Olivier Moysan <olivier.moysan@foss.st.com>,
+        Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Georgi Djakov <djakov@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Fabrice Gasnier <fabrice.gasnier@st.com>,
+        Odelu Kukatla <okukatla@codeaurora.org>,
+        Alex Elder <elder@kernel.org>,
+        Shengjiu Wang <shengjiu.wang@nxp.com>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        Linux-ALSA <alsa-devel@alsa-project.org>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        Linux Input <linux-input@vger.kernel.org>,
+        "open list:THERMAL" <linux-pm@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 10 May 2021 08:17:17 -0400
-Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com> wrote:
-
-> On 08/05/2021 11:59, Jonathan Cameron wrote:
-> > On Sat, 8 May 2021 00:44:58 +0200
-> > Peter Rosin <peda@axentia.se> wrote:
-> >   
-> >> Hi!
+On Tue, May 11, 2021 at 9:09 AM Luca Ceresoli <luca@lucaceresoli.net> wrote:
+>
+> Hi Rob,
+>
+> On 11/05/21 15:44, Rob Herring wrote:
+> > On Tue, May 11, 2021 at 2:20 AM Luca Ceresoli <luca@lucaceresoli.net> wrote:
 > >>
-> >> On 2021-05-06 17:06, Krzysztof Kozlowski wrote:  
-> >>> The current-sense-shunt is an IIO provider thus can be referenced by IIO
-> >>> consumers (via "io-channels" property in consumer device node).
-> >>> Such provider is required to describe number of cells used in phandle
-> >>> lookup with "io-channel-cells" property.  This also fixes dtbs_check
-> >>> warnings like:
+> >> Hi,
+> >>
+> >> On 10/05/21 22:45, Rob Herring wrote:
+> >>> Users of common properties shouldn't have a type definition as the
+> >>> common schemas already have one. A few new ones slipped in and
+> >>> *-names was missed in the last clean-up pass. Drop all the unnecessary
+> >>> type references in the tree.
 > >>>
-> >>>   arch/arm/boot/dts/s5pv210-fascinate4g.dt.yaml: current-sense-shunt:
-> >>>     '#io-channel-cells' does not match any of the regexes: 'pinctrl-[0-9]+'
+> >>> A meta-schema update to catch these is pending.
 > >>>
-> >>> Fixes: ce66e52b6c16 ("dt-bindings:iio:afe:current-sense-shunt: txt to yaml conversion.")
-> >>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+> >>> Cc: Luca Ceresoli <luca@lucaceresoli.net>
+> >>> Cc: Stephen Boyd <sboyd@kernel.org>
+> >>> Cc: Olivier Moysan <olivier.moysan@foss.st.com>
+> >>> Cc: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
+> >>> Cc: Jonathan Cameron <jic23@kernel.org>
+> >>> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> >>> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> >>> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
+> >>> Cc: Georgi Djakov <djakov@kernel.org>
+> >>> Cc: "David S. Miller" <davem@davemloft.net>
+> >>> Cc: Jakub Kicinski <kuba@kernel.org>
+> >>> Cc: Sebastian Reichel <sre@kernel.org>
+> >>> Cc: Orson Zhai <orsonzhai@gmail.com>
+> >>> Cc: Baolin Wang <baolin.wang7@gmail.com>
+> >>> Cc: Chunyan Zhang <zhang.lyra@gmail.com>
+> >>> Cc: Liam Girdwood <lgirdwood@gmail.com>
+> >>> Cc: Mark Brown <broonie@kernel.org>
+> >>> Cc: Fabrice Gasnier <fabrice.gasnier@st.com>
+> >>> Cc: Odelu Kukatla <okukatla@codeaurora.org>
+> >>> Cc: Alex Elder <elder@kernel.org>
+> >>> Cc: Shengjiu Wang <shengjiu.wang@nxp.com>
+> >>> Cc: linux-clk@vger.kernel.org
+> >>> Cc: alsa-devel@alsa-project.org
+> >>> Cc: linux-iio@vger.kernel.org
+> >>> Cc: linux-arm-kernel@lists.infradead.org
+> >>> Cc: linux-input@vger.kernel.org
+> >>> Cc: linux-pm@vger.kernel.org
+> >>> Cc: netdev@vger.kernel.org
+> >>> Signed-off-by: Rob Herring <robh@kernel.org>
 > >>> ---
-> >>>  .../devicetree/bindings/iio/afe/current-sense-shunt.yaml     | 5 +++++
-> >>>  1 file changed, 5 insertions(+)
+> >>>  Documentation/devicetree/bindings/clock/idt,versaclock5.yaml    | 2 --
+> >>>  .../devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml         | 1 -
+> >>>  Documentation/devicetree/bindings/input/input.yaml              | 1 -
+> >>>  Documentation/devicetree/bindings/interconnect/qcom,rpmh.yaml   | 1 -
+> >>>  Documentation/devicetree/bindings/net/qcom,ipa.yaml             | 1 -
+> >>>  .../devicetree/bindings/power/supply/sc2731-charger.yaml        | 2 +-
+> >>>  Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml          | 2 +-
+> >>>  7 files changed, 2 insertions(+), 8 deletions(-)
 > >>>
-> >>> diff --git a/Documentation/devicetree/bindings/iio/afe/current-sense-shunt.yaml b/Documentation/devicetree/bindings/iio/afe/current-sense-shunt.yaml
-> >>> index 90439a8dc785..05166d8a3124 100644
-> >>> --- a/Documentation/devicetree/bindings/iio/afe/current-sense-shunt.yaml
-> >>> +++ b/Documentation/devicetree/bindings/iio/afe/current-sense-shunt.yaml
-> >>> @@ -24,12 +24,16 @@ properties:
-> >>>      description: |
-> >>>        Channel node of a voltage io-channel.
-> >>>  
-> >>> +  "#io-channel-cells":
-> >>> +    const: 0
-> >>> +
-> >>>    shunt-resistor-micro-ohms:
-> >>>      description: The shunt resistance.
-> >>>  
-> >>>  required:
-> >>>    - compatible
-> >>>    - io-channels
-> >>> +  - "#io-channel-cells"
-> >>>    - shunt-resistor-micro-ohms    
+> >>> diff --git a/Documentation/devicetree/bindings/clock/idt,versaclock5.yaml b/Documentation/devicetree/bindings/clock/idt,versaclock5.yaml
+> >>> index c268debe5b8d..28675b0b80f1 100644
+> >>> --- a/Documentation/devicetree/bindings/clock/idt,versaclock5.yaml
+> >>> +++ b/Documentation/devicetree/bindings/clock/idt,versaclock5.yaml
+> >>> @@ -60,7 +60,6 @@ properties:
+> >>>      maxItems: 2
+> >>>
+> >>>    idt,xtal-load-femtofarads:
+> >>> -    $ref: /schemas/types.yaml#/definitions/uint32
+> >>>      minimum: 9000
+> >>>      maximum: 22760
+> >>>      description: Optional load capacitor for XTAL1 and XTAL2
+> >>> @@ -84,7 +83,6 @@ patternProperties:
+> >>>          enum: [ 1800000, 2500000, 3300000 ]
+> >>>        idt,slew-percent:
+> >>>          description: The Slew rate control for CMOS single-ended.
+> >>> -        $ref: /schemas/types.yaml#/definitions/uint32
+> >>>          enum: [ 80, 85, 90, 100 ]
 > >>
-> >> I know I'm listed as maintainer and all, but I have not kept up with the yaml
-> >> conversion. Sorry. So, given that I might very well fundamentally misunderstand
-> >> something, it does not sound correct that #io-channel-cells is now "required".
-> >> I regard it as optional, and only needed if some other in-kernel driver is
-> >> consuming the sensed current. What am I missing?
-> >>  
-> > 
-> > Agreed. This should be optional and I have deliberately not introduced it
-> > into all the bindings that could in theory support being used as providers.
-> > 
-> > So far I've not pushed it out in a blanket fashion into existing bindings
-> > even as optional.
-> >   
-> >> Also, whatever is done in this binding should preferably also be done in the
-> >> two "sister" afe bindings, i.e. current-sense-amplifier and voltage-divider.  
-> > 
-> > This particular case is squashing an error, so whilst I'm happy to have those
-> > gain the binding addition, I would like to see them in a separate patch as
-> > less likely they'd get back ported.
-> > 
-> > If Kryysztof is fine with me just dropping the required I can pick up this patch.  
-> 
-> Having here required number of cells helps any DT-user to seamlessly
-> integrate with it (e.g. with his in-tree or out-of-tree DTS, with
-> overlays). However it also can be added with such DTS or overlay, so in
-> general I don't mind dropping the required piece. Thanks!
-I dropped the required and applied to the togreg branch of iio.git.
+> >> Ok, but shouldn't "percent" be listed in
+> >> Documentation/devicetree/bindings/property-units.txt?
+> >
+> > It is in the schema already[1].
+>
+> Sure, but having an incomplete file in the kernel is poorly useful, if
+> not misleading. What about any of these options:
+>
+> - add to property-units.txt the missing units
+> - delete property-units.txt from the kernel sources
+> - replace the entire content of property-units.txt with a link to the
+>   schema file, stating it is the authoritative and complete source
+>
+> I would feel a lot better with any of these. I can prepare the patch too.
 
-Thanks,
+Yes, we should remove it. I just hadn't gotten around to it. Note
+there is one reference to it in writing-bindings.rst.
 
-Jonathan
-
-> 
-> Best regards,
-> Krzysztof
-
+Rob

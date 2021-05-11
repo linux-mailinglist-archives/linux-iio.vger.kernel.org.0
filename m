@@ -2,143 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CDD4379FEC
-	for <lists+linux-iio@lfdr.de>; Tue, 11 May 2021 08:46:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D12337A092
+	for <lists+linux-iio@lfdr.de>; Tue, 11 May 2021 09:18:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230218AbhEKGr3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 11 May 2021 02:47:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56686 "EHLO
+        id S230196AbhEKHTn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 11 May 2021 03:19:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229807AbhEKGr3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 May 2021 02:47:29 -0400
-Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A66DC061574;
-        Mon, 10 May 2021 23:46:23 -0700 (PDT)
-Received: by mail-pg1-x52b.google.com with SMTP id q15so10828303pgg.12;
-        Mon, 10 May 2021 23:46:23 -0700 (PDT)
+        with ESMTP id S230005AbhEKHTn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 May 2021 03:19:43 -0400
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEC52C06175F
+        for <linux-iio@vger.kernel.org>; Tue, 11 May 2021 00:18:36 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id w3so28258882ejc.4
+        for <linux-iio@vger.kernel.org>; Tue, 11 May 2021 00:18:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=R8EwDQcP5dXlqw1ZUG9G8NrXJImpox+QEmMv1x2YmLw=;
-        b=mryw+plkFx+G8e4zTqB+dXbCQ5BV5naDf2dQTtuzgrSZhSIhFJFuqX+S7ikJu8PAUF
-         U1Ofu46wB1goCdFiaEecWS6NcjiMM86BJ2H1LjA3JAxT+jHJg8rJ1ufHwzAlAm6MlXaT
-         LWMoAp7XOo8DMJeWLSzsXwWmV33OO7gamDElnUROkK25MHs5aiPgM+EEw9zFTEKLRPq4
-         G31dLb+Vtd0hEehwnHAJ7CGazlGMHeJjTrbfaJFXgPDPs/5WPt+SXIXn5zmoA1c5mTRK
-         jvwVhHZj/OwTA/NY5u7YE1GmCosHowSUJeJ9Urt4ZFD74VSKIuudQnjtwNLAdVzELwlM
-         +RYQ==
+        d=deviqon.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=42nRc1RoYbJhNJdFtPlhV0Uv4mwluFFOOWJNQT2V7xw=;
+        b=iI1qpxJCMqx98GwvYhhavvuWFXAHqnZu78ocNVP23PAUS3z5/sd13wKarQoym3J1nL
+         myo+991CNDs7udnQlhycuhf4VOVwYx10KVNY3N4FDS6fSw1xjd3MKT4GkipgO9XCEbiW
+         yIqXpJj8CIphjXB1vYtDr1mYjgchtnWIq4kFvjmjPJKWhEGslnXNlHRjfTOUDiVO4gBq
+         wOHigDkDyE9z3Pviil8GOi6+uT1YGiPbaEbKu4cx0Zg8mKBpefZX3syZQ/6CbRMCsk5b
+         oTnFV0yKvuQJgDD+eY/kBolWjXVkukZgS27c+VQ4Sc6V7jIWhxLt3E1F/zuV3SAT20JS
+         uIZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=R8EwDQcP5dXlqw1ZUG9G8NrXJImpox+QEmMv1x2YmLw=;
-        b=s5sf6RcovKJIW7DnOWJPQL4JnL6Hgv/IT3wv70MOa+6ChWbt4B+dffi6capruwn4hu
-         mM9z+xvglO88MI/AvbUppj3vGcL0qWqp7QaPaUbx9gEOE8/037DXKVpfTi8B9FNcRogX
-         n8XR5p+uBT1nfqpH2BA6NFe1d+kpKXz8Ze7MJUBau584KjWaC7xNxbLoQDaRoLUxRA78
-         Vb24+YDdyelbkZAKoAuH8GKPft2LklC3PZiumPtOl2CoGcS34cCEVVMb7QAYKQgfLJ5i
-         QqHWqrVIYKbGbJcxjwcNOB0NWHt9LFpoDu4zkEXpyZ0NjZ9ndFz+LKOvZt3KZIYAxetn
-         f3DQ==
-X-Gm-Message-State: AOAM5327FuUFwg4cDlqj7jbA7nzBKlW8QNNgGaykKQAP/3ZzbGkP9NGt
-        gBvYTaHyYPWJToC9TFws4U8xQnd3iHDImemHSjM=
-X-Google-Smtp-Source: ABdhPJwCkFDHy6Kcfy0TzDnvTx6RBIhOsFmYcS4mCSqNYHzJTtkZnRqwUhGDrk47wny4mKFa3zciq8+FfWulf+xUHlk=
-X-Received: by 2002:a63:b243:: with SMTP id t3mr20241621pgo.253.1620715582970;
- Mon, 10 May 2021 23:46:22 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=42nRc1RoYbJhNJdFtPlhV0Uv4mwluFFOOWJNQT2V7xw=;
+        b=l1Iy0UE7wrg44oqAcfN1vuPYkkIDRGm1s2ESB5Zt6pwXR5DCIt68svCd3PPrYSkVXy
+         934qfOJBeWjX9bGKO6FuVuCB8FJNgWQtyDO82ho//E66q2osKIlIhr+qJSVJWs/2mqlX
+         je7pMxHSk6YDa5C1hSU9Rm9G3ONNDN9mUXafgbIuEtQshdaKEzpVGCDiAEu9Uo6zOX2x
+         6v34RWNFQh6CxvXV1nphY5AN9IddXr0NihnpLiNEqKEwhGp8xP3qQO5viKcWHJRV017T
+         5XpW7AbweaxVRg8R35zMNz4HxJf+6BNi5WwT8Be3AyYudmoZTj1mP8aOAeGIMJmhioEz
+         327Q==
+X-Gm-Message-State: AOAM532yhGD95hVb64N3z+5T33JwnhIyobohHTpUopcXXcuV6TiZLm49
+        UjeUB/MYaBTtlcp9dsky6b4Ah/QnIMShKyjX
+X-Google-Smtp-Source: ABdhPJzlvKdO7Bp+YdLp+TiUkg1H68x4BQ7NVjZ9JuPeP23VFDaV5pngvVsxp//vCrtBBhhDTJGUIQ==
+X-Received: by 2002:a17:906:3646:: with SMTP id r6mr30014424ejb.43.1620717515236;
+        Tue, 11 May 2021 00:18:35 -0700 (PDT)
+Received: from neptune.. ([188.27.131.122])
+        by smtp.gmail.com with ESMTPSA id i6sm13871558eds.83.2021.05.11.00.18.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 May 2021 00:18:34 -0700 (PDT)
+From:   Alexandru Ardelean <aardelean@deviqon.com>
+To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     jic23@kernel.org, Jonathan.Cameron@huawei.com,
+        alexandru.tachici@analog.com, linux@deviqon.com,
+        Alexandru Ardelean <aardelean@deviqon.com>
+Subject: [PATCH v2 00/12] ad_sigma_delta: convert all drivers to device-managed
+Date:   Tue, 11 May 2021 10:18:19 +0300
+Message-Id: <20210511071831.576145-1-aardelean@deviqon.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-References: <20210510125523.1271237-1-aardelean@deviqon.com> <20210510184927.00000e6d@Huawei.com>
-In-Reply-To: <20210510184927.00000e6d@Huawei.com>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Tue, 11 May 2021 09:46:11 +0300
-Message-ID: <CA+U=Dsq-_a8KwJ7WGOi-kD6dF5h_JSuRwf6JW+Yp0mZ6k+eObw@mail.gmail.com>
-Subject: Re: [PATCH 00/11] ad_sigma_delta: convert all drivers to device-managed
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     Alexandru Ardelean <aardelean@deviqon.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        linux@deviqon.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, May 10, 2021 at 8:52 PM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
->
-> On Mon, 10 May 2021 15:55:12 +0300
-> Alexandru Ardelean <aardelean@deviqon.com> wrote:
->
-> > Well, for lack of a better title that's what this series does.
-> > It merges Jonathan's patches from:
-> >   * https://lore.kernel.org/linux-iio/20210508182319.488551-1-jic23@kernel.org/
-> >     Patch 3/3 was a polished a bit with my comments from that review and also
-> >     to use the devm_ad_sd_setup_buffer_and_trigger() function.
-> >   * https://lore.kernel.org/linux-iio/20210509114118.660422-1-jic23@kernel.org/
-> >     Added only to base the conversion to devm_
-> >
-> > The AD Sigma Delta family of ADC drivers share a lot of the logic in the
-> > ad_sigma_delta lib-driver.
-> >
-> > This set introduces a devm_ad_sd_setup_buffer_and_trigger() call, which
-> > aims to replace the 'ad_sd_{setup,cleanup}_buffer_and_trigger()' pair.
-> >
-> > This helps with converting the AD7780, AD7791, AD7793 and AD7192
-> > drivers use be fully converted to device-managed functions.
->
-> Almost perfect code wise (just the one bug that predates this series I think).
->
-> Couple of notes on series from process point of view.
->
-> 1) Fixes at the front. Makes for uglier series but nicer backporting.
+Well, for lack of a better title that's what this series does.
+It merges Jonathan's patches from:
+  * https://lore.kernel.org/linux-iio/20210508182319.488551-1-jic23@kernel.org/
+    Patch 3/3 was a polished a bit with my comments from that review and also
+    to use the devm_ad_sd_setup_buffer_and_trigger() function.
+  * https://lore.kernel.org/linux-iio/20210509114118.660422-1-jic23@kernel.org/
+    Added only to base the conversion to devm_
 
-ack
+The AD Sigma Delta family of ADC drivers share a lot of the logic in the
+ad_sigma_delta lib-driver.
 
-> 2) Sign-off on everything - even the ones from me that you didn't change. From DCO
->    point of view you handled them (passed them back to me ;) so need your
->    sign off.  I have occasionally wondered if I should sign off again when this
->    happens :)
+This set introduces a devm_ad_sd_setup_buffer_and_trigger() call, which
+aims to replace the 'ad_sd_{setup,cleanup}_buffer_and_trigger()' pair.
 
-ack; will do it;
+This helps with converting the AD7780, AD7791, AD7793 and AD7192
+drivers use be fully converted to device-managed functions.
 
->
-> If you don't do a v2, just reply to say you are fine with me fixing the sign offs
-> and I can do it whilst applying.
+Changelog v1 -> v2:
+* https://lore.kernel.org/linux-iio/20210510125523.1271237-1-aardelean@deviqon.com/
+* add my S-o-b tags on all patches; with @deviqon.com email
+  - Note: I'm a little unsure about the correctness of these tags; there
+    are a few mixed-in, with Reviewed-by & Signed-off-by; I'm fine if
+    Jonathan tweaks these as needed;
+* added patch 'iio: adc: ad7192: handle zero Avdd regulator value as error'
+* all Fixes patches should be now at the beginning of the series
 
-i'll send a V2
+Alexandru Ardelean (8):
+  iio: adc: ad7192: handle zero Avdd regulator value as error
+  iio: adc: ad_sigma_delta: introduct
+    devm_ad_sd_setup_buffer_and_trigger()
+  iio: adc: ad7793: convert to device-managed functions
+  iio: adc: ad7791: convert to device-managed functions
+  iio: adc: ad7780: convert to device-managed functions
+  iio: adc: ad7192: use devm_clk_get_optional() for mclk
+  iio: adc: ad7192: convert to device-managed functions
+  iio: adc: ad_sigma_delta: remove
+    ad_sd_{setup,cleanup}_buffer_and_trigger()
 
->
-> Thanks,
->
-> Jonathan
->
-> >
-> > Alexandru Ardelean (7):
-> >   iio: adc: ad_sigma_delta: introduct
-> >     devm_ad_sd_setup_buffer_and_trigger()
-> >   iio: adc: ad7793: convert to device-managed functions
-> >   iio: adc: ad7791: convert to device-managed functions
-> >   iio: adc: ad7780: convert to device-managed functions
-> >   iio: adc: ad7192: use devm_clk_get_optional() for mclk
-> >   iio: adc: ad7192: convert to device-managed functions
-> >   iio: adc: ad_sigma_delta: remove
-> >     ad_sd_{setup,cleanup}_buffer_and_trigger()
-> >
-> > Jonathan Cameron (4):
-> >   iio: adc: ad7192: Avoid disabling a clock that was never enabled.
-> >   iio: adc: ad7124: Fix missbalanced regulator enable / disable on
-> >     error.
-> >   iio: adc: ad7124: Fix potential overflow due to non sequential channel
-> >     numbers
-> >   iio: adc: ad7124: Use devm_ managed calls for all of probe() + drop
-> >     remove()
-> >
-> >  drivers/iio/adc/ad7124.c               | 84 ++++++++++--------------
-> >  drivers/iio/adc/ad7192.c               | 90 +++++++++++---------------
-> >  drivers/iio/adc/ad7780.c               | 38 +++--------
-> >  drivers/iio/adc/ad7791.c               | 44 ++++---------
-> >  drivers/iio/adc/ad7793.c               | 53 +++++----------
-> >  drivers/iio/adc/ad_sigma_delta.c       | 82 ++++++++---------------
-> >  include/linux/iio/adc/ad_sigma_delta.h |  4 +-
-> >  7 files changed, 141 insertions(+), 254 deletions(-)
-> >
->
+Jonathan Cameron (4):
+  iio: adc: ad7124: Fix missbalanced regulator enable / disable on
+    error.
+  iio: adc: ad7124: Fix potential overflow due to non sequential channel
+    numbers
+  iio: adc: ad7192: Avoid disabling a clock that was never enabled.
+  iio: adc: ad7124: Use devm_ managed calls for all of probe() + drop
+    remove()
+
+ drivers/iio/adc/ad7124.c               | 84 ++++++++++-------------
+ drivers/iio/adc/ad7192.c               | 94 ++++++++++++--------------
+ drivers/iio/adc/ad7780.c               | 38 +++--------
+ drivers/iio/adc/ad7791.c               | 44 ++++--------
+ drivers/iio/adc/ad7793.c               | 53 ++++-----------
+ drivers/iio/adc/ad_sigma_delta.c       | 82 ++++++++--------------
+ include/linux/iio/adc/ad_sigma_delta.h |  4 +-
+ 7 files changed, 145 insertions(+), 254 deletions(-)
+
+-- 
+2.31.1
+

@@ -2,52 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F14E137BD18
-	for <lists+linux-iio@lfdr.de>; Wed, 12 May 2021 14:52:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70EFF37BD2B
+	for <lists+linux-iio@lfdr.de>; Wed, 12 May 2021 14:52:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231961AbhELMxJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 May 2021 08:53:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52778 "EHLO mail.kernel.org"
+        id S232817AbhELMxY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 May 2021 08:53:24 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53116 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231388AbhELMw4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 12 May 2021 08:52:56 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 2B11D61175;
+        id S231514AbhELMxB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 12 May 2021 08:53:01 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id CB04A61442;
         Wed, 12 May 2021 12:51:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620823902;
-        bh=L+E/N8mtA2/+iSqhjhIyKk7M7RrC5qMfkQmRh4SXqOM=;
-        h=From:To:Cc:Subject:Date:From;
-        b=ucNSAhXYlF3Szz7W2irBTsvcIq33u1CrsW3ughaZJQqP+LrxpB0KjDChNaWylRCiA
-         8uidMvIFPObFZ6akJiKIQ1n/loNfn6hx8yVucw2xWZ73EfgNRibzOSlugYBt51kwpz
-         sdmRPA3LdwD45uYQTpj7XZoENUjgUxwJTlI1qlwGCNWZNWI+BkaJBNQJYsI68pIF0d
-         fXOa2Wzs1nudr171bvqR7b67LC1CF/NPtlR0c90fFeyu9TgllD9P44UMzmzYncl5FJ
-         KVeCETjMQ0hlqHZjf6TbTaK//D282G036gFoleiqqZjAOauHQnBlpoCUvLp2Ls+ug5
-         bNkKFQYHSRskA==
+        s=k20201202; t=1620823903;
+        bh=Kk11vvdpqmF0cZ2tgc4BefQKiqLRAn74Q/I4wTEDIYA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=f3TG62LaQojTzevTAiDOyoFReZbHD6UONh/GiH3E43mdHseOmujLbCoMVdjJWbsjg
+         7kLOic67pSaUlHXnca7EozRVRvV2eiqKuYRwqYR1AjetOE+IKP5so8u1r/djbv2UCH
+         +O8NbLRDJv64UHUlJcZBRGEPIGWOMdN1AKQzVZ6lpQzx+0bCplMJGB8yMY47bhwv0R
+         wBjNoEkf+W8mNmAU6W0IPMPXa+vvU1bSyJ/124ZwU8bORrzfr1He5o/k6idLgIzjnW
+         2ijqrpfBX9Pi6wI1RI7+DfQoA2zZomDBcckMCP8zyBUabchA5os0cEyL32bHpXvTO8
+         uPNYI7fvDhWcQ==
 Received: by mail.kernel.org with local (Exim 4.94.2)
         (envelope-from <mchehab@kernel.org>)
-        id 1lgoKy-0018go-1r; Wed, 12 May 2021 14:51:40 +0200
+        id 1lgoKy-0018iA-VR; Wed, 12 May 2021 14:51:40 +0200
 From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
 Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Mali DP Maintainers <malidp@foss.arm.com>,
-        alsa-devel@alsa-project.org, coresight@lists.linaro.org,
-        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-        intel-wired-lan@lists.osuosl.org, keyrings@vger.kernel.org,
-        kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-sgx@vger.kernel.org, linux-usb@vger.kernel.org,
-        mjpeg-users@lists.sourceforge.net, netdev@vger.kernel.org,
-        rcu@vger.kernel.org
-Subject: [PATCH v2 00/40] Use ASCII subset instead of UTF-8 alternate symbols
-Date:   Wed, 12 May 2021 14:50:04 +0200
-Message-Id: <cover.1620823573.git.mchehab+huawei@kernel.org>
+        "Jonathan Corbet" <corbet@lwn.net>,
+        "Mark O'Donovan" <shiftee@posteo.net>,
+        Jiri Kosina <jikos@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2 21/40] docs: hid: Use ASCII subset instead of UTF-8 alternate symbols
+Date:   Wed, 12 May 2021 14:50:25 +0200
+Message-Id: <c9241635fbc24fb8aeb205b2af05cfb710410226.1620823573.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <cover.1620823573.git.mchehab+huawei@kernel.org>
+References: <cover.1620823573.git.mchehab+huawei@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -56,219 +51,378 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This series contain basically a cleanup from all those years of converting
-files to ReST.
+The conversion tools used during DocBook/LaTeX/Markdown->ReST conversion
+and some automatic rules which exists on certain text editors like
+LibreOffice turned ASCII characters into some UTF-8 alternatives that
+are better displayed on html and PDF.
 
-During the conversion period, several tools like LaTeX, pandoc, DocBook
-and some specially-written scripts were used in order to convert
-existing documents.
+While it is OK to use UTF-8 characters in Linux, it is better to
+use the ASCII subset instead of using an UTF-8 equivalent character
+as it makes life easier for tools like grep, and are easier to edit
+with the some commonly used text/source code editors.
 
-Such conversion tools - plus some text editor like LibreOffice  or similar  - have
-a set of rules that turns some typed ASCII characters into UTF-8 alternatives,
-for instance converting commas into curly commas and adding non-breakable
-spaces. All of those are meant to produce better results when the text is
-displayed in HTML or PDF formats.
+Also, Sphinx already do such conversion automatically outside literal blocks:
+   https://docutils.sourceforge.io/docs/user/smartquotes.html
 
-While it is perfectly fine to use UTF-8 characters in Linux, and specially at
-the documentation,  it is better to  stick to the ASCII subset  on such
-particular case,  due to a couple of reasons:
+So, replace the occurences of the following UTF-8 characters:
 
-1. it makes life easier for tools like grep;
-2. they easier to edit with the some commonly used text/source
-   code editors.
-    
-Also, Sphinx already do such conversion automatically outside 
-literal blocks, as described at:
+	- U+00a0 (' '): NO-BREAK SPACE
 
-       https://docutils.sourceforge.io/docs/user/smartquotes.html
-
-In this series, the following UTF-8 symbols are replaced:
-
-            - U+00a0 (' '): NO-BREAK SPACE
-            - U+00ad ('­'): SOFT HYPHEN
-            - U+00b4 ('´'): ACUTE ACCENT
-            - U+00d7 ('×'): MULTIPLICATION SIGN
-            - U+2010 ('‐'): HYPHEN
-            - U+2018 ('‘'): LEFT SINGLE QUOTATION MARK
-            - U+2019 ('’'): RIGHT SINGLE QUOTATION MARK
-            - U+201c ('“'): LEFT DOUBLE QUOTATION MARK
-            - U+201d ('”'): RIGHT DOUBLE QUOTATION MARK
-            - U+2212 ('−'): MINUS SIGN
-            - U+2217 ('∗'): ASTERISK OPERATOR
-            - U+feff ('﻿'): ZERO WIDTH NO-BREAK SPACE (BOM)
-
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
+ Documentation/hid/hid-sensor.rst    |  70 ++++----
+ Documentation/hid/intel-ish-hid.rst | 246 ++++++++++++++--------------
+ 2 files changed, 158 insertions(+), 158 deletions(-)
 
-v2:
-- removed EM/EN DASH conversion from this patchset;
-- removed a few fixes, as those were addressed on a separate series.
+diff --git a/Documentation/hid/hid-sensor.rst b/Documentation/hid/hid-sensor.rst
+index c1c9b8d8dca6..b98d7a415cda 100644
+--- a/Documentation/hid/hid-sensor.rst
++++ b/Documentation/hid/hid-sensor.rst
+@@ -173,39 +173,39 @@ An example of this representation on sysfs::
  
-PS.:
-   The first version of this series was posted with a different name:
-
-	https://lore.kernel.org/lkml/cover.1620641727.git.mchehab+huawei@kernel.org/
-
-   I also changed the patch texts, in order to better describe the patches goals.
-
-Mauro Carvalho Chehab (40):
-  docs: hwmon: Use ASCII subset instead of UTF-8 alternate symbols
-  docs: admin-guide: Use ASCII subset instead of UTF-8 alternate symbols
-  docs: admin-guide: media: ipu3.rst: Use ASCII subset instead of UTF-8
-    alternate symbols
-  docs: admin-guide: perf: imx-ddr.rst: Use ASCII subset instead of
-    UTF-8 alternate symbols
-  docs: admin-guide: pm: Use ASCII subset instead of UTF-8 alternate
-    symbols
-  docs: trace: coresight: coresight-etm4x-reference.rst: Use ASCII
-    subset instead of UTF-8 alternate symbols
-  docs: driver-api: ioctl.rst: Use ASCII subset instead of UTF-8
-    alternate symbols
-  docs: driver-api: thermal: Use ASCII subset instead of UTF-8 alternate
-    symbols
-  docs: driver-api: media: drivers: Use ASCII subset instead of UTF-8
-    alternate symbols
-  docs: driver-api: firmware: other_interfaces.rst: Use ASCII subset
-    instead of UTF-8 alternate symbols
-  docs: fault-injection: nvme-fault-injection.rst: Use ASCII subset
-    instead of UTF-8 alternate symbols
-  docs: usb: Use ASCII subset instead of UTF-8 alternate symbols
-  docs: process: code-of-conduct.rst: Use ASCII subset instead of UTF-8
-    alternate symbols
-  docs: userspace-api: media: fdl-appendix.rst: Use ASCII subset instead
-    of UTF-8 alternate symbols
-  docs: userspace-api: media: v4l: Use ASCII subset instead of UTF-8
-    alternate symbols
-  docs: userspace-api: media: dvb: Use ASCII subset instead of UTF-8
-    alternate symbols
-  docs: vm: zswap.rst: Use ASCII subset instead of UTF-8 alternate
-    symbols
-  docs: filesystems: f2fs.rst: Use ASCII subset instead of UTF-8
-    alternate symbols
-  docs: filesystems: ext4: Use ASCII subset instead of UTF-8 alternate
-    symbols
-  docs: kernel-hacking: Use ASCII subset instead of UTF-8 alternate
-    symbols
-  docs: hid: Use ASCII subset instead of UTF-8 alternate symbols
-  docs: security: tpm: tpm_event_log.rst: Use ASCII subset instead of
-    UTF-8 alternate symbols
-  docs: security: keys: trusted-encrypted.rst: Use ASCII subset instead
-    of UTF-8 alternate symbols
-  docs: networking: scaling.rst: Use ASCII subset instead of UTF-8
-    alternate symbols
-  docs: networking: devlink: devlink-dpipe.rst: Use ASCII subset instead
-    of UTF-8 alternate symbols
-  docs: networking: device_drivers: Use ASCII subset instead of UTF-8
-    alternate symbols
-  docs: x86: Use ASCII subset instead of UTF-8 alternate symbols
-  docs: scheduler: sched-deadline.rst: Use ASCII subset instead of UTF-8
-    alternate symbols
-  docs: power: powercap: powercap.rst: Use ASCII subset instead of UTF-8
-    alternate symbols
-  docs: ABI: Use ASCII subset instead of UTF-8 alternate symbols
-  docs: PCI: acpi-info.rst: Use ASCII subset instead of UTF-8 alternate
-    symbols
-  docs: gpu: Use ASCII subset instead of UTF-8 alternate symbols
-  docs: sound: kernel-api: writing-an-alsa-driver.rst: Use ASCII subset
-    instead of UTF-8 alternate symbols
-  docs: arm64: arm-acpi.rst: Use ASCII subset instead of UTF-8 alternate
-    symbols
-  docs: infiniband: tag_matching.rst: Use ASCII subset instead of UTF-8
-    alternate symbols
-  docs: misc-devices: ibmvmc.rst: Use ASCII subset instead of UTF-8
-    alternate symbols
-  docs: firmware-guide: acpi: lpit.rst: Use ASCII subset instead of
-    UTF-8 alternate symbols
-  docs: firmware-guide: acpi: dsd: graph.rst: Use ASCII subset instead
-    of UTF-8 alternate symbols
-  docs: virt: kvm: api.rst: Use ASCII subset instead of UTF-8 alternate
-    symbols
-  docs: RCU: Use ASCII subset instead of UTF-8 alternate symbols
-
- ...sfs-class-chromeos-driver-cros-ec-lightbar |   2 +-
- .../ABI/testing/sysfs-devices-platform-ipmi   |   2 +-
- .../testing/sysfs-devices-platform-trackpoint |   2 +-
- Documentation/ABI/testing/sysfs-devices-soc   |   4 +-
- Documentation/PCI/acpi-info.rst               |  22 +-
- .../Data-Structures/Data-Structures.rst       |  52 ++--
- .../Expedited-Grace-Periods.rst               |  40 +--
- .../Tree-RCU-Memory-Ordering.rst              |  10 +-
- .../RCU/Design/Requirements/Requirements.rst  | 122 ++++-----
- Documentation/admin-guide/media/ipu3.rst      |   2 +-
- Documentation/admin-guide/perf/imx-ddr.rst    |   2 +-
- Documentation/admin-guide/pm/intel_idle.rst   |   4 +-
- Documentation/admin-guide/pm/intel_pstate.rst |   4 +-
- Documentation/admin-guide/ras.rst             |  86 +++---
- .../admin-guide/reporting-issues.rst          |   2 +-
- Documentation/arm64/arm-acpi.rst              |   8 +-
- .../driver-api/firmware/other_interfaces.rst  |   2 +-
- Documentation/driver-api/ioctl.rst            |   8 +-
- .../media/drivers/sh_mobile_ceu_camera.rst    |   8 +-
- .../driver-api/media/drivers/zoran.rst        |   2 +-
- .../driver-api/thermal/cpu-idle-cooling.rst   |  14 +-
- .../driver-api/thermal/intel_powerclamp.rst   |   6 +-
- .../thermal/x86_pkg_temperature_thermal.rst   |   2 +-
- .../fault-injection/nvme-fault-injection.rst  |   2 +-
- Documentation/filesystems/ext4/attributes.rst |  20 +-
- Documentation/filesystems/ext4/bigalloc.rst   |   6 +-
- Documentation/filesystems/ext4/blockgroup.rst |   8 +-
- Documentation/filesystems/ext4/blocks.rst     |   2 +-
- Documentation/filesystems/ext4/directory.rst  |  16 +-
- Documentation/filesystems/ext4/eainode.rst    |   2 +-
- Documentation/filesystems/ext4/inlinedata.rst |   6 +-
- Documentation/filesystems/ext4/inodes.rst     |   6 +-
- Documentation/filesystems/ext4/journal.rst    |   8 +-
- Documentation/filesystems/ext4/mmp.rst        |   2 +-
- .../filesystems/ext4/special_inodes.rst       |   4 +-
- Documentation/filesystems/ext4/super.rst      |  10 +-
- Documentation/filesystems/f2fs.rst            |   4 +-
- .../firmware-guide/acpi/dsd/graph.rst         |   2 +-
- Documentation/firmware-guide/acpi/lpit.rst    |   2 +-
- Documentation/gpu/i915.rst                    |   2 +-
- Documentation/gpu/komeda-kms.rst              |   2 +-
- Documentation/hid/hid-sensor.rst              |  70 ++---
- Documentation/hid/intel-ish-hid.rst           | 246 +++++++++---------
- Documentation/hwmon/ir36021.rst               |   2 +-
- Documentation/hwmon/ltc2992.rst               |   2 +-
- Documentation/hwmon/pm6764tr.rst              |   2 +-
- Documentation/infiniband/tag_matching.rst     |   4 +-
- Documentation/kernel-hacking/hacking.rst      |   2 +-
- Documentation/kernel-hacking/locking.rst      |   2 +-
- Documentation/misc-devices/ibmvmc.rst         |   8 +-
- .../device_drivers/ethernet/intel/i40e.rst    |   8 +-
- .../device_drivers/ethernet/intel/iavf.rst    |   4 +-
- .../device_drivers/ethernet/netronome/nfp.rst |  12 +-
- .../networking/devlink/devlink-dpipe.rst      |   2 +-
- Documentation/networking/scaling.rst          |  18 +-
- Documentation/power/powercap/powercap.rst     | 210 +++++++--------
- Documentation/process/code-of-conduct.rst     |   2 +-
- Documentation/scheduler/sched-deadline.rst    |   2 +-
- .../security/keys/trusted-encrypted.rst       |   4 +-
- Documentation/security/tpm/tpm_event_log.rst  |   2 +-
- .../kernel-api/writing-an-alsa-driver.rst     |  68 ++---
- .../coresight/coresight-etm4x-reference.rst   |  16 +-
- Documentation/usb/ehci.rst                    |   2 +-
- Documentation/usb/gadget_printer.rst          |   2 +-
- Documentation/usb/mass-storage.rst            |  36 +--
- .../media/dvb/audio-set-bypass-mode.rst       |   2 +-
- .../userspace-api/media/dvb/audio.rst         |   2 +-
- .../userspace-api/media/dvb/dmx-fopen.rst     |   2 +-
- .../userspace-api/media/dvb/dmx-fread.rst     |   2 +-
- .../media/dvb/dmx-set-filter.rst              |   2 +-
- .../userspace-api/media/dvb/intro.rst         |   6 +-
- .../userspace-api/media/dvb/video.rst         |   2 +-
- .../userspace-api/media/fdl-appendix.rst      |  64 ++---
- .../userspace-api/media/v4l/crop.rst          |  16 +-
- .../userspace-api/media/v4l/dev-decoder.rst   |   6 +-
- .../userspace-api/media/v4l/diff-v4l.rst      |   2 +-
- .../userspace-api/media/v4l/open.rst          |   2 +-
- .../media/v4l/vidioc-cropcap.rst              |   4 +-
- Documentation/virt/kvm/api.rst                |  28 +-
- Documentation/vm/zswap.rst                    |   4 +-
- Documentation/x86/resctrl.rst                 |   2 +-
- Documentation/x86/sgx.rst                     |   4 +-
- 82 files changed, 693 insertions(+), 693 deletions(-)
-
+   /sys/devices/pci0000:00/INT33C2:00/i2c-0/i2c-INT33D1:00/0018:8086:09FA.0001/HID-SENSOR-2000e1.6.auto$ tree -R
+   .
+-  │   ├──  enable_sensor
+-  │   │   ├── feature-0-200316
+-  │   │   │   ├── feature-0-200316-maximum
+-  │   │   │   ├── feature-0-200316-minimum
+-  │   │   │   ├── feature-0-200316-name
+-  │   │   │   ├── feature-0-200316-size
+-  │   │   │   ├── feature-0-200316-unit-expo
+-  │   │   │   ├── feature-0-200316-units
+-  │   │   │   ├── feature-0-200316-value
+-  │   │   ├── feature-1-200201
+-  │   │   │   ├── feature-1-200201-maximum
+-  │   │   │   ├── feature-1-200201-minimum
+-  │   │   │   ├── feature-1-200201-name
+-  │   │   │   ├── feature-1-200201-size
+-  │   │   │   ├── feature-1-200201-unit-expo
+-  │   │   │   ├── feature-1-200201-units
+-  │   │   │   ├── feature-1-200201-value
+-  │   │   ├── input-0-200201
+-  │   │   │   ├── input-0-200201-maximum
+-  │   │   │   ├── input-0-200201-minimum
+-  │   │   │   ├── input-0-200201-name
+-  │   │   │   ├── input-0-200201-size
+-  │   │   │   ├── input-0-200201-unit-expo
+-  │   │   │   ├── input-0-200201-units
+-  │   │   │   ├── input-0-200201-value
+-  │   │   ├── input-1-200202
+-  │   │   │   ├── input-1-200202-maximum
+-  │   │   │   ├── input-1-200202-minimum
+-  │   │   │   ├── input-1-200202-name
+-  │   │   │   ├── input-1-200202-size
+-  │   │   │   ├── input-1-200202-unit-expo
+-  │   │   │   ├── input-1-200202-units
+-  │   │   │   ├── input-1-200202-value
++  │   ├──  enable_sensor
++  │   │   ├── feature-0-200316
++  │   │   │   ├── feature-0-200316-maximum
++  │   │   │   ├── feature-0-200316-minimum
++  │   │   │   ├── feature-0-200316-name
++  │   │   │   ├── feature-0-200316-size
++  │   │   │   ├── feature-0-200316-unit-expo
++  │   │   │   ├── feature-0-200316-units
++  │   │   │   ├── feature-0-200316-value
++  │   │   ├── feature-1-200201
++  │   │   │   ├── feature-1-200201-maximum
++  │   │   │   ├── feature-1-200201-minimum
++  │   │   │   ├── feature-1-200201-name
++  │   │   │   ├── feature-1-200201-size
++  │   │   │   ├── feature-1-200201-unit-expo
++  │   │   │   ├── feature-1-200201-units
++  │   │   │   ├── feature-1-200201-value
++  │   │   ├── input-0-200201
++  │   │   │   ├── input-0-200201-maximum
++  │   │   │   ├── input-0-200201-minimum
++  │   │   │   ├── input-0-200201-name
++  │   │   │   ├── input-0-200201-size
++  │   │   │   ├── input-0-200201-unit-expo
++  │   │   │   ├── input-0-200201-units
++  │   │   │   ├── input-0-200201-value
++  │   │   ├── input-1-200202
++  │   │   │   ├── input-1-200202-maximum
++  │   │   │   ├── input-1-200202-minimum
++  │   │   │   ├── input-1-200202-name
++  │   │   │   ├── input-1-200202-size
++  │   │   │   ├── input-1-200202-unit-expo
++  │   │   │   ├── input-1-200202-units
++  │   │   │   ├── input-1-200202-value
+ 
+ Here there is a custom sensor with four fields: two feature and two inputs.
+ Each field is represented by a set of attributes. All fields except the "value"
+@@ -234,8 +234,8 @@ Once enabled and powered on, sensor can report value using HID reports.
+ These reports are pushed using misc device interface in a FIFO order::
+ 
+ 	/dev$ tree | grep HID-SENSOR-2000e1.6.auto
+-	│   │   │   ├── 10:53 -> ../HID-SENSOR-2000e1.6.auto
+-	│   ├──  HID-SENSOR-2000e1.6.auto
++	│   │   │   ├── 10:53 -> ../HID-SENSOR-2000e1.6.auto
++	│   ├──  HID-SENSOR-2000e1.6.auto
+ 
+ Each report can be of variable length preceded by a header. This header
+ consists of a 32-bit usage id, 64-bit time stamp and 32-bit length field of raw
+diff --git a/Documentation/hid/intel-ish-hid.rst b/Documentation/hid/intel-ish-hid.rst
+index 7a851252267a..a525cdefc937 100644
+--- a/Documentation/hid/intel-ish-hid.rst
++++ b/Documentation/hid/intel-ish-hid.rst
+@@ -355,133 +355,133 @@ To debug ISH, event tracing mechanism is used. To enable debug logs::
+   root@otcpl-ThinkPad-Yoga-260:~# tree -l /sys/bus/iio/devices/
+   /sys/bus/iio/devices/
+   ├── iio:device0 -> ../../../devices/0044:8086:22D8.0001/HID-SENSOR-200073.9.auto/iio:device0
+-  │   ├── buffer
+-  │   │   ├── enable
+-  │   │   ├── length
+-  │   │   └── watermark
++  │   ├── buffer
++  │   │   ├── enable
++  │   │   ├── length
++  │   │   └── watermark
+   ...
+-  │   ├── in_accel_hysteresis
+-  │   ├── in_accel_offset
+-  │   ├── in_accel_sampling_frequency
+-  │   ├── in_accel_scale
+-  │   ├── in_accel_x_raw
+-  │   ├── in_accel_y_raw
+-  │   ├── in_accel_z_raw
+-  │   ├── name
+-  │   ├── scan_elements
+-  │   │   ├── in_accel_x_en
+-  │   │   ├── in_accel_x_index
+-  │   │   ├── in_accel_x_type
+-  │   │   ├── in_accel_y_en
+-  │   │   ├── in_accel_y_index
+-  │   │   ├── in_accel_y_type
+-  │   │   ├── in_accel_z_en
+-  │   │   ├── in_accel_z_index
+-  │   │   └── in_accel_z_type
++  │   ├── in_accel_hysteresis
++  │   ├── in_accel_offset
++  │   ├── in_accel_sampling_frequency
++  │   ├── in_accel_scale
++  │   ├── in_accel_x_raw
++  │   ├── in_accel_y_raw
++  │   ├── in_accel_z_raw
++  │   ├── name
++  │   ├── scan_elements
++  │   │   ├── in_accel_x_en
++  │   │   ├── in_accel_x_index
++  │   │   ├── in_accel_x_type
++  │   │   ├── in_accel_y_en
++  │   │   ├── in_accel_y_index
++  │   │   ├── in_accel_y_type
++  │   │   ├── in_accel_z_en
++  │   │   ├── in_accel_z_index
++  │   │   └── in_accel_z_type
+   ...
+-  │   │   ├── devices
+-  │   │   │   │   ├── buffer
+-  │   │   │   │   │   ├── enable
+-  │   │   │   │   │   ├── length
+-  │   │   │   │   │   └── watermark
+-  │   │   │   │   ├── dev
+-  │   │   │   │   ├── in_intensity_both_raw
+-  │   │   │   │   ├── in_intensity_hysteresis
+-  │   │   │   │   ├── in_intensity_offset
+-  │   │   │   │   ├── in_intensity_sampling_frequency
+-  │   │   │   │   ├── in_intensity_scale
+-  │   │   │   │   ├── name
+-  │   │   │   │   ├── scan_elements
+-  │   │   │   │   │   ├── in_intensity_both_en
+-  │   │   │   │   │   ├── in_intensity_both_index
+-  │   │   │   │   │   └── in_intensity_both_type
+-  │   │   │   │   ├── trigger
+-  │   │   │   │   │   └── current_trigger
++  │   │   ├── devices
++  │   │   │   │   ├── buffer
++  │   │   │   │   │   ├── enable
++  │   │   │   │   │   ├── length
++  │   │   │   │   │   └── watermark
++  │   │   │   │   ├── dev
++  │   │   │   │   ├── in_intensity_both_raw
++  │   │   │   │   ├── in_intensity_hysteresis
++  │   │   │   │   ├── in_intensity_offset
++  │   │   │   │   ├── in_intensity_sampling_frequency
++  │   │   │   │   ├── in_intensity_scale
++  │   │   │   │   ├── name
++  │   │   │   │   ├── scan_elements
++  │   │   │   │   │   ├── in_intensity_both_en
++  │   │   │   │   │   ├── in_intensity_both_index
++  │   │   │   │   │   └── in_intensity_both_type
++  │   │   │   │   ├── trigger
++  │   │   │   │   │   └── current_trigger
+   ...
+-  │   │   │   │   ├── buffer
+-  │   │   │   │   │   ├── enable
+-  │   │   │   │   │   ├── length
+-  │   │   │   │   │   └── watermark
+-  │   │   │   │   ├── dev
+-  │   │   │   │   ├── in_magn_hysteresis
+-  │   │   │   │   ├── in_magn_offset
+-  │   │   │   │   ├── in_magn_sampling_frequency
+-  │   │   │   │   ├── in_magn_scale
+-  │   │   │   │   ├── in_magn_x_raw
+-  │   │   │   │   ├── in_magn_y_raw
+-  │   │   │   │   ├── in_magn_z_raw
+-  │   │   │   │   ├── in_rot_from_north_magnetic_tilt_comp_raw
+-  │   │   │   │   ├── in_rot_hysteresis
+-  │   │   │   │   ├── in_rot_offset
+-  │   │   │   │   ├── in_rot_sampling_frequency
+-  │   │   │   │   ├── in_rot_scale
+-  │   │   │   │   ├── name
++  │   │   │   │   ├── buffer
++  │   │   │   │   │   ├── enable
++  │   │   │   │   │   ├── length
++  │   │   │   │   │   └── watermark
++  │   │   │   │   ├── dev
++  │   │   │   │   ├── in_magn_hysteresis
++  │   │   │   │   ├── in_magn_offset
++  │   │   │   │   ├── in_magn_sampling_frequency
++  │   │   │   │   ├── in_magn_scale
++  │   │   │   │   ├── in_magn_x_raw
++  │   │   │   │   ├── in_magn_y_raw
++  │   │   │   │   ├── in_magn_z_raw
++  │   │   │   │   ├── in_rot_from_north_magnetic_tilt_comp_raw
++  │   │   │   │   ├── in_rot_hysteresis
++  │   │   │   │   ├── in_rot_offset
++  │   │   │   │   ├── in_rot_sampling_frequency
++  │   │   │   │   ├── in_rot_scale
++  │   │   │   │   ├── name
+   ...
+-  │   │   │   │   ├── scan_elements
+-  │   │   │   │   │   ├── in_magn_x_en
+-  │   │   │   │   │   ├── in_magn_x_index
+-  │   │   │   │   │   ├── in_magn_x_type
+-  │   │   │   │   │   ├── in_magn_y_en
+-  │   │   │   │   │   ├── in_magn_y_index
+-  │   │   │   │   │   ├── in_magn_y_type
+-  │   │   │   │   │   ├── in_magn_z_en
+-  │   │   │   │   │   ├── in_magn_z_index
+-  │   │   │   │   │   ├── in_magn_z_type
+-  │   │   │   │   │   ├── in_rot_from_north_magnetic_tilt_comp_en
+-  │   │   │   │   │   ├── in_rot_from_north_magnetic_tilt_comp_index
+-  │   │   │   │   │   └── in_rot_from_north_magnetic_tilt_comp_type
+-  │   │   │   │   ├── trigger
+-  │   │   │   │   │   └── current_trigger
++  │   │   │   │   ├── scan_elements
++  │   │   │   │   │   ├── in_magn_x_en
++  │   │   │   │   │   ├── in_magn_x_index
++  │   │   │   │   │   ├── in_magn_x_type
++  │   │   │   │   │   ├── in_magn_y_en
++  │   │   │   │   │   ├── in_magn_y_index
++  │   │   │   │   │   ├── in_magn_y_type
++  │   │   │   │   │   ├── in_magn_z_en
++  │   │   │   │   │   ├── in_magn_z_index
++  │   │   │   │   │   ├── in_magn_z_type
++  │   │   │   │   │   ├── in_rot_from_north_magnetic_tilt_comp_en
++  │   │   │   │   │   ├── in_rot_from_north_magnetic_tilt_comp_index
++  │   │   │   │   │   └── in_rot_from_north_magnetic_tilt_comp_type
++  │   │   │   │   ├── trigger
++  │   │   │   │   │   └── current_trigger
+   ...
+-  │   │   │   │   ├── buffer
+-  │   │   │   │   │   ├── enable
+-  │   │   │   │   │   ├── length
+-  │   │   │   │   │   └── watermark
+-  │   │   │   │   ├── dev
+-  │   │   │   │   ├── in_anglvel_hysteresis
+-  │   │   │   │   ├── in_anglvel_offset
+-  │   │   │   │   ├── in_anglvel_sampling_frequency
+-  │   │   │   │   ├── in_anglvel_scale
+-  │   │   │   │   ├── in_anglvel_x_raw
+-  │   │   │   │   ├── in_anglvel_y_raw
+-  │   │   │   │   ├── in_anglvel_z_raw
+-  │   │   │   │   ├── name
+-  │   │   │   │   ├── scan_elements
+-  │   │   │   │   │   ├── in_anglvel_x_en
+-  │   │   │   │   │   ├── in_anglvel_x_index
+-  │   │   │   │   │   ├── in_anglvel_x_type
+-  │   │   │   │   │   ├── in_anglvel_y_en
+-  │   │   │   │   │   ├── in_anglvel_y_index
+-  │   │   │   │   │   ├── in_anglvel_y_type
+-  │   │   │   │   │   ├── in_anglvel_z_en
+-  │   │   │   │   │   ├── in_anglvel_z_index
+-  │   │   │   │   │   └── in_anglvel_z_type
+-  │   │   │   │   ├── trigger
+-  │   │   │   │   │   └── current_trigger
++  │   │   │   │   ├── buffer
++  │   │   │   │   │   ├── enable
++  │   │   │   │   │   ├── length
++  │   │   │   │   │   └── watermark
++  │   │   │   │   ├── dev
++  │   │   │   │   ├── in_anglvel_hysteresis
++  │   │   │   │   ├── in_anglvel_offset
++  │   │   │   │   ├── in_anglvel_sampling_frequency
++  │   │   │   │   ├── in_anglvel_scale
++  │   │   │   │   ├── in_anglvel_x_raw
++  │   │   │   │   ├── in_anglvel_y_raw
++  │   │   │   │   ├── in_anglvel_z_raw
++  │   │   │   │   ├── name
++  │   │   │   │   ├── scan_elements
++  │   │   │   │   │   ├── in_anglvel_x_en
++  │   │   │   │   │   ├── in_anglvel_x_index
++  │   │   │   │   │   ├── in_anglvel_x_type
++  │   │   │   │   │   ├── in_anglvel_y_en
++  │   │   │   │   │   ├── in_anglvel_y_index
++  │   │   │   │   │   ├── in_anglvel_y_type
++  │   │   │   │   │   ├── in_anglvel_z_en
++  │   │   │   │   │   ├── in_anglvel_z_index
++  │   │   │   │   │   └── in_anglvel_z_type
++  │   │   │   │   ├── trigger
++  │   │   │   │   │   └── current_trigger
+   ...
+-  │   │   │   │   ├── buffer
+-  │   │   │   │   │   ├── enable
+-  │   │   │   │   │   ├── length
+-  │   │   │   │   │   └── watermark
+-  │   │   │   │   ├── dev
+-  │   │   │   │   ├── in_anglvel_hysteresis
+-  │   │   │   │   ├── in_anglvel_offset
+-  │   │   │   │   ├── in_anglvel_sampling_frequency
+-  │   │   │   │   ├── in_anglvel_scale
+-  │   │   │   │   ├── in_anglvel_x_raw
+-  │   │   │   │   ├── in_anglvel_y_raw
+-  │   │   │   │   ├── in_anglvel_z_raw
+-  │   │   │   │   ├── name
+-  │   │   │   │   ├── scan_elements
+-  │   │   │   │   │   ├── in_anglvel_x_en
+-  │   │   │   │   │   ├── in_anglvel_x_index
+-  │   │   │   │   │   ├── in_anglvel_x_type
+-  │   │   │   │   │   ├── in_anglvel_y_en
+-  │   │   │   │   │   ├── in_anglvel_y_index
+-  │   │   │   │   │   ├── in_anglvel_y_type
+-  │   │   │   │   │   ├── in_anglvel_z_en
+-  │   │   │   │   │   ├── in_anglvel_z_index
+-  │   │   │   │   │   └── in_anglvel_z_type
+-  │   │   │   │   ├── trigger
+-  │   │   │   │   │   └── current_trigger
++  │   │   │   │   ├── buffer
++  │   │   │   │   │   ├── enable
++  │   │   │   │   │   ├── length
++  │   │   │   │   │   └── watermark
++  │   │   │   │   ├── dev
++  │   │   │   │   ├── in_anglvel_hysteresis
++  │   │   │   │   ├── in_anglvel_offset
++  │   │   │   │   ├── in_anglvel_sampling_frequency
++  │   │   │   │   ├── in_anglvel_scale
++  │   │   │   │   ├── in_anglvel_x_raw
++  │   │   │   │   ├── in_anglvel_y_raw
++  │   │   │   │   ├── in_anglvel_z_raw
++  │   │   │   │   ├── name
++  │   │   │   │   ├── scan_elements
++  │   │   │   │   │   ├── in_anglvel_x_en
++  │   │   │   │   │   ├── in_anglvel_x_index
++  │   │   │   │   │   ├── in_anglvel_x_type
++  │   │   │   │   │   ├── in_anglvel_y_en
++  │   │   │   │   │   ├── in_anglvel_y_index
++  │   │   │   │   │   ├── in_anglvel_y_type
++  │   │   │   │   │   ├── in_anglvel_z_en
++  │   │   │   │   │   ├── in_anglvel_z_index
++  │   │   │   │   │   └── in_anglvel_z_type
++  │   │   │   │   ├── trigger
++  │   │   │   │   │   └── current_trigger
+   ...
 -- 
 2.30.2
-
 

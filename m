@@ -2,127 +2,128 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04CA237D367
+	by mail.lfdr.de (Postfix) with ESMTP id A158137D368
 	for <lists+linux-iio@lfdr.de>; Wed, 12 May 2021 20:21:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242668AbhELSV6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 May 2021 14:21:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46268 "EHLO
+        id S242681AbhELSV7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 May 2021 14:21:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348246AbhELRfr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 May 2021 13:35:47 -0400
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15CA4C061358;
-        Wed, 12 May 2021 10:33:21 -0700 (PDT)
-Received: by mail-pl1-x631.google.com with SMTP id n3so725776plf.7;
-        Wed, 12 May 2021 10:33:21 -0700 (PDT)
+        with ESMTP id S1350504AbhELRvF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 May 2021 13:51:05 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E07AEC0613ED
+        for <linux-iio@vger.kernel.org>; Wed, 12 May 2021 10:49:56 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id v5so17014068edc.8
+        for <linux-iio@vger.kernel.org>; Wed, 12 May 2021 10:49:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=K/Pm8uY+AjoJVI9OqoE7C7bqpQJBmCJUql194cT1sRI=;
-        b=YQCkngmEgnmJH8laOgr5SiRh1EjFYL3bZw6APsX8Ws8qgT0glcuzLp80bmFu4yqWbt
-         Bg77zKgSEAJ3CU0HoirVKmeAY5KCEaU1x+TJUFFZyvrfoed6kXVUfpFueyjWNuN9ok4L
-         YPB1nNk3FFFX182+gyX7v6z4zltqNb8enccvRrUZ6YVlzdzShZfV36TrxaYQmMVUzxJF
-         utlM/oC7Cb/9voUmN+Ou7Z59XfxJOZvG1zVR+MwWMAHYXQspt1IeThGMlrZRukkW7deQ
-         obD6cxWnZMRItH13f490p/Ca2Da/vZM/NlQiKWdxDmaHkA09EHyMql1GIqBxgLBrHVyN
-         n+Wg==
+        d=deviqon.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=6CF6JaLEsr4bT8+QMif5jPEHXEsPl26FZvVRFcuOkwc=;
+        b=uOBsu1XrTiZAwShcaOMcffKTDx/Ophnyzam9nkJ6oEg55xrsCEksPt88yeaVa3Ovqt
+         2/SRVcnxMhYkX8I+aQHAHvvVHAEERH9RqzuRChVR45Vb8nLFAY4b+mPf7n0P6R/yAhnY
+         La735GzTyGtprzS0GPLMFfXKxBsaYrUiQYIoBEOQCf8s44lJxk6UUHMuxCQr4/fwjl7n
+         84f5uecYvko4pNv+RgrtmFDbLWXd2F1AS4LzNxHRZT+wE7DwWFrDOb5ytKsewOqZmC8m
+         GFh5Ff8BKcz6x7jBJHc47fz8x21FoqGJA4SiGAe4LyjrqMZ600q6hfvYcyE+DNN7vvG2
+         WjUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=K/Pm8uY+AjoJVI9OqoE7C7bqpQJBmCJUql194cT1sRI=;
-        b=rdRXk7Lp/jOHTA31xiden3CRaYG7p1qz/lLwycy4m05s0vpsLIEGiB/OPfCkkTVSAr
-         wv9LX4NKfa7Jyme/yndx2mA9I/ai22bJJup0IWUzuJuvXfTuC2mery7BQNWQmXQlCqb1
-         ckaV/rfM7R1njtz0EIVhhCe4JrlsRLgB6bBP81omyU49ktq7gZup/WpMg6RYz1xFC0RP
-         ECUva8K8KOlpkwlf3JQCQYDKIm2vh+bgLpEF7RMss+NlOVhLAyenzWdwvYUqWnijF2ZD
-         ncWqi4M70Nfj0m021mUGNnJKmo3kGX+g0ELSZWzazFOYDygtV641I67C7Byy7kkvy7Kw
-         g0hQ==
-X-Gm-Message-State: AOAM530IvBbNhpk9SL2wjTifVF8fW2XSXlFuWDQL/jWG6lty97HUnCrZ
-        pW/YFJEjfwCvYyfFUybXxQzBrG9acIY5GFWF5/A=
-X-Google-Smtp-Source: ABdhPJwTXd7T2dzSEPTNfRmvseSk41y6zLPIAEHJ+5CYjpYUtwD/xFC07w0jHDeQdr1S8pcozwocecMj1CYFjkUkB5A=
-X-Received: by 2002:a17:90b:1c10:: with SMTP id oc16mr7425665pjb.86.1620840800569;
- Wed, 12 May 2021 10:33:20 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=6CF6JaLEsr4bT8+QMif5jPEHXEsPl26FZvVRFcuOkwc=;
+        b=nzp52NH7hqZaYfrXx6cHyUf2BsNGRlHlePgwZ8aJZmV67pxa66ya8On+GFqqPj83tv
+         21MfPcYHOKiBb5nHR7f2YZBzYtzdMFKjPUD3ZsJggPvVn0ZcG0bntFkPWFToAYJuJl0N
+         jqE+nmy/xk0At3u8NuUu10H1y2MNTazj9QFVxZRb5SB7H40jawf1I7KgBCexwvrYHJZ4
+         bZc8iLAp11ucQEijt7SzU0CRzR7roRhAdwK19dteBAjJj4/MpJ+uwJFXhxwV2BciefpP
+         7XV/XSP/mir5YYWu6K84IqJjaIdI6HfNSj94bAWJylHAr2Nm263ta2cg2/mJcRLn+6uZ
+         EXEQ==
+X-Gm-Message-State: AOAM532xELjb+NGY41IDqKRV+egWQnlGEH0eg7+qAoNfyXouIqYPML1Q
+        JEC+LVfZ04wUqifriKXq5qE1dkkp04t7OQ==
+X-Google-Smtp-Source: ABdhPJzy+ZctiG/CuSRiDfEFPWdzDWwJlut5GCbXDpDUdtanYQzxV0aXnNO3mPgLQRGnzdTtFbtu2g==
+X-Received: by 2002:aa7:dc54:: with SMTP id g20mr45080155edu.266.1620841795330;
+        Wed, 12 May 2021 10:49:55 -0700 (PDT)
+Received: from neptune.. ([5.2.193.191])
+        by smtp.gmail.com with ESMTPSA id r16sm338058edq.87.2021.05.12.10.49.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 May 2021 10:49:54 -0700 (PDT)
+From:   Alexandru Ardelean <aardelean@deviqon.com>
+To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     jic23@kernel.org, Jonathan.Cameron@huawei.com,
+        alexandru.tachici@analog.com, linux@deviqon.com,
+        Alexandru Ardelean <aardelean@deviqon.com>
+Subject: [PATCH v3 00/12] ad_sigma_delta: convert all drivers to device-managed
+Date:   Wed, 12 May 2021 20:49:02 +0300
+Message-Id: <20210512174914.10549-1-aardelean@deviqon.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-References: <20210510095649.3302835-1-andy.shevchenko@gmail.com>
-In-Reply-To: <20210510095649.3302835-1-andy.shevchenko@gmail.com>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Wed, 12 May 2021 20:33:09 +0300
-Message-ID: <CA+U=DsoX1kTy-NwNFPajWMZnJT+cY9MocSGpgTggmhgXrhXREg@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] iio: dac: ad5770r: Put fwnode in error case during ->probe()
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Alexandru Tachici <alexandru.tachici@analog.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, May 10, 2021 at 12:59 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> device_for_each_child_node() bumps a reference counting of a returned variable.
-> We have to balance it whenever we return to the caller.
+Well, for lack of a better title that's what this series does.
+It merges Jonathan's patches from:
+  * https://lore.kernel.org/linux-iio/20210508182319.488551-1-jic23@kernel.org/
+    Patch 3/3 was a polished a bit with my comments from that review and also
+    to use the devm_ad_sd_setup_buffer_and_trigger() function.
+  * https://lore.kernel.org/linux-iio/20210509114118.660422-1-jic23@kernel.org/
+    Added only to base the conversion to devm_
 
-This feels like the device_for_each_child_node() [and the of_node
-variant] iterator[s] need[s] some re-design to account for how easy it
-is to slip stuff by.
-But that's something quite out of this scope.
+The AD Sigma Delta family of ADC drivers share a lot of the logic in the
+ad_sigma_delta lib-driver.
 
-Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
+This set introduces a devm_ad_sd_setup_buffer_and_trigger() call, which
+aims to replace the 'ad_sd_{setup,cleanup}_buffer_and_trigger()' pair.
 
->
-> Fixes: cbbb819837f6 ("iio: dac: ad5770r: Add AD5770R support")
-> Cc: Alexandru Tachici <alexandru.tachici@analog.com>
-> Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> ---
->  drivers/iio/dac/ad5770r.c | 16 +++++++++++-----
->  1 file changed, 11 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/iio/dac/ad5770r.c b/drivers/iio/dac/ad5770r.c
-> index 7ab2ccf90863..8107f7bbbe3c 100644
-> --- a/drivers/iio/dac/ad5770r.c
-> +++ b/drivers/iio/dac/ad5770r.c
-> @@ -524,23 +524,29 @@ static int ad5770r_channel_config(struct ad5770r_state *st)
->         device_for_each_child_node(&st->spi->dev, child) {
->                 ret = fwnode_property_read_u32(child, "num", &num);
->                 if (ret)
-> -                       return ret;
-> -               if (num >= AD5770R_MAX_CHANNELS)
-> -                       return -EINVAL;
-> +                       goto err_child_out;
-> +               if (num >= AD5770R_MAX_CHANNELS) {
-> +                       ret = -EINVAL;
-> +                       goto err_child_out;
-> +               }
->
->                 ret = fwnode_property_read_u32_array(child,
->                                                      "adi,range-microamp",
->                                                      tmp, 2);
->                 if (ret)
-> -                       return ret;
-> +                       goto err_child_out;
->
->                 min = tmp[0] / 1000;
->                 max = tmp[1] / 1000;
->                 ret = ad5770r_store_output_range(st, min, max, num);
->                 if (ret)
-> -                       return ret;
-> +                       goto err_child_out;
->         }
->
-> +       return 0;
-> +
-> +err_child_out:
-> +       fwnode_handle_put(child);
->         return ret;
->  }
->
-> --
-> 2.31.1
->
+This helps with converting the AD7780, AD7791, AD7793 and AD7192
+drivers use be fully converted to device-managed functions.
+
+Changelog v2 -> v3:
+* https://lore.kernel.org/linux-iio/20210511071831.576145-1-aardelean@deviqon.com/
+* patch 'iio: adc: ad7192: handle zero Avdd regulator value as error'
+  is now 'iio: adc: ad7192: handle zero Avdd regulator value'
+  essentially just doing a simple 'if (voltage_uv >= 0)' check now
+
+Changelog v1 -> v2:
+* https://lore.kernel.org/linux-iio/20210510125523.1271237-1-aardelean@deviqon.com/
+* add my S-o-b tags on all patches; with @deviqon.com email
+  - Note: I'm a little unsure about the correctness of these tags; there
+    are a few mixed-in, with Reviewed-by & Signed-off-by; I'm fine if
+    Jonathan tweaks these as needed;
+* added patch 'iio: adc: ad7192: handle zero Avdd regulator value as error'
+* all Fixes patches should be now at the beginning of the series
+
+Alexandru Ardelean (8):
+  iio: adc: ad7192: handle zero Avdd regulator value
+  iio: adc: ad_sigma_delta: introduct
+    devm_ad_sd_setup_buffer_and_trigger()
+  iio: adc: ad7793: convert to device-managed functions
+  iio: adc: ad7791: convert to device-managed functions
+  iio: adc: ad7780: convert to device-managed functions
+  iio: adc: ad7192: use devm_clk_get_optional() for mclk
+  iio: adc: ad7192: convert to device-managed functions
+  iio: adc: ad_sigma_delta: remove
+    ad_sd_{setup,cleanup}_buffer_and_trigger()
+
+Jonathan Cameron (4):
+  iio: adc: ad7124: Fix missbalanced regulator enable / disable on
+    error.
+  iio: adc: ad7124: Fix potential overflow due to non sequential channel
+    numbers
+  iio: adc: ad7192: Avoid disabling a clock that was never enabled.
+  iio: adc: ad7124: Use devm_ managed calls for all of probe() + drop
+    remove()
+
+ drivers/iio/adc/ad7124.c               | 84 ++++++++++-------------
+ drivers/iio/adc/ad7192.c               | 92 +++++++++++---------------
+ drivers/iio/adc/ad7780.c               | 38 +++--------
+ drivers/iio/adc/ad7791.c               | 44 ++++--------
+ drivers/iio/adc/ad7793.c               | 53 +++++----------
+ drivers/iio/adc/ad_sigma_delta.c       | 82 ++++++++---------------
+ include/linux/iio/adc/ad_sigma_delta.h |  4 +-
+ 7 files changed, 142 insertions(+), 255 deletions(-)
+
+-- 
+2.31.1
+

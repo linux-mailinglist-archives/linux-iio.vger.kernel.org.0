@@ -2,122 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC6AA37C282
-	for <lists+linux-iio@lfdr.de>; Wed, 12 May 2021 17:10:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0206037C672
+	for <lists+linux-iio@lfdr.de>; Wed, 12 May 2021 17:51:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232523AbhELPLI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 May 2021 11:11:08 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40812 "EHLO mail.kernel.org"
+        id S234116AbhELPvR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 May 2021 11:51:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49178 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231377AbhELPII (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 12 May 2021 11:08:08 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0B6AF611AD;
-        Wed, 12 May 2021 15:01:42 +0000 (UTC)
+        id S235091AbhELPfS (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 12 May 2021 11:35:18 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 455F961C3E;
+        Wed, 12 May 2021 15:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620831704;
-        bh=tl1Us0IjRXhQGvdTa2eYDls5gfP5C2BFoj6/gJWmsic=;
+        s=k20201202; t=1620832672;
+        bh=zB2G4t5ozyJ72g68BGRplKf2lQRTS6CtRvJ7FVX3NWE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=fG/zv8OFlpR1FwPAbCRcICrQOWzjYXcR+Pz79e/YbQRK1IYk2XcVckGZ58aGvh0EX
-         t+8oR0dJOKMtqbYJ+RrOguAJM05DilWcuJgnzD3wshICk09B1FCWgJy/jZ8b1W3iRI
-         SqZrU9RuisT2xI9A9eE5f2yFldZSvDQjrpwTy7WGNRmfrwWCqc6Wsj66h+NMsWppjd
-         Vp85O7U9BD2MAZWLH3+bBLqxcoYths6XJHp1NxO1qSnIWtSjVINW+RdY2lHHUK4tab
-         z0i+zXh7ugCzgbM9EEQaq+r7Nj7viMAobbRqvrVMZpp1JLOYnR9cZr2UeuEAcYQDof
-         XO00op2U3lCzA==
-Date:   Wed, 12 May 2021 17:01:40 +0200
-From:   Mauro Carvalho Chehab <mchehab@kernel.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Marek Vasut <marek.vasut@gmail.com>
-Subject: Re: [PATCH 28/28] iio: adc: rcar-gyroadc: Use
- pm_runtime_resume_and_get() and check in probe()
-Message-ID: <20210512170140.0e79aa86@coco.lan>
-In-Reply-To: <20210509113354.660190-29-jic23@kernel.org>
-References: <20210509113354.660190-1-jic23@kernel.org>
-        <20210509113354.660190-29-jic23@kernel.org>
+        b=DBjrvZcbfODq6o/u3ovhcKp34o3mQ/2g2kqOKbw7rqi0UbJcuDmNkgLMMy0M05dFs
+         mwfV7fdqIvkaHvs5FkFIxP3pQ5mW2wuelKsM0Zg1XI928MZ1g6hDtwlC/lZ6mTYtDn
+         L0yXyxJPdKzjgMXD6Vs/vdQOXuvQV+DBBKSwRDhM/LlZ9x9/DV6Qnq7MjBym4Ue3He
+         LklNFflnfSaW1SCikrvqRJriPDliUiNhIaGm2pb/3nXItDzT/4/obeOPpO0NPN/v0m
+         Pwish5sD0axq4vDEIuCSUJZyKrnPcy3P6Nd30IKN+fHXybC5E+QSyK+xdLgaNeWw/l
+         +EUyGcBOd8VUw==
+Date:   Wed, 12 May 2021 17:17:41 +0200
+From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To:     "Theodore Ts'o" <tytso@mit.edu>
+Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        Mali DP Maintainers <malidp@foss.arm.com>,
+        alsa-devel@alsa-project.org, coresight@lists.linaro.org,
+        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+        intel-wired-lan@lists.osuosl.org, keyrings@vger.kernel.org,
+        kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-sgx@vger.kernel.org, linux-usb@vger.kernel.org,
+        mjpeg-users@lists.sourceforge.net, netdev@vger.kernel.org,
+        rcu@vger.kernel.org
+Subject: Re: [PATCH v2 00/40] Use ASCII subset instead of UTF-8 alternate
+ symbols
+Message-ID: <20210512171741.2870bcbc@coco.lan>
+In-Reply-To: <YJvi1L2ss5Tfi+My@mit.edu>
+References: <cover.1620823573.git.mchehab+huawei@kernel.org>
+        <YJvi1L2ss5Tfi+My@mit.edu>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Em Sun,  9 May 2021 12:33:54 +0100
-Jonathan Cameron <jic23@kernel.org> escreveu:
+Em Wed, 12 May 2021 10:14:44 -0400
+"Theodore Ts'o" <tytso@mit.edu> escreveu:
 
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> 1 instance found using coccicheck script under review at:
-> https://lore.kernel.org/lkml/20210427141946.2478411-1-Julia.Lawall@inria.fr/
-> The other instance changed did not check for failure of the
-> pm_runtime_get_sync() so that is added.
-> 
-> Note the remaining pm_runtime_get_sync() call is left alone because it
-> is not obvious what to do on failure to power up in remove()
-> 
-> This is a prequel to taking a closer look at the runtime pm in IIO drivers
-> in general.
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Marek Vasut <marek.vasut@gmail.com>
+> On Wed, May 12, 2021 at 02:50:04PM +0200, Mauro Carvalho Chehab wrote:
+> > v2:
+> > - removed EM/EN DASH conversion from this patchset; =20
+>=20
+> Are you still thinking about doing the
+>=20
+> EN DASH --> "--"
+> EM DASH --> "---"
+>=20
+> conversion? =20
 
-LGTM.
+Yes, but I intend to submit it on a separate patch series, probably after
+having this one merged. Let's first cleanup the large part of the=20
+conversion-generated UTF-8 char noise ;-)
 
-Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> That's not going to change what the documentation will
+> look like in the HTML and PDF output forms, and I think it would make
+> life easier for people are reading and editing the Documentation/*
+> files in text form.
 
-> ---
->  drivers/iio/adc/rcar-gyroadc.c | 15 +++++++--------
->  1 file changed, 7 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/rcar-gyroadc.c b/drivers/iio/adc/rcar-gyroadc.c
-> index 9f38cf3c7dc2..a48895046408 100644
-> --- a/drivers/iio/adc/rcar-gyroadc.c
-> +++ b/drivers/iio/adc/rcar-gyroadc.c
-> @@ -162,18 +162,13 @@ static const struct iio_chan_spec rcar_gyroadc_iio_channels_3[] = {
->  static int rcar_gyroadc_set_power(struct rcar_gyroadc *priv, bool on)
->  {
->  	struct device *dev = priv->dev;
-> -	int ret;
->  
->  	if (on) {
-> -		ret = pm_runtime_get_sync(dev);
-> -		if (ret < 0)
-> -			pm_runtime_put_noidle(dev);
-> +		return pm_runtime_resume_and_get(dev);
->  	} else {
->  		pm_runtime_mark_last_busy(dev);
-> -		ret = pm_runtime_put_autosuspend(dev);
-> +		return pm_runtime_put_autosuspend(dev);
->  	}
-> -
-> -	return ret;
->  }
->  
->  static int rcar_gyroadc_read_raw(struct iio_dev *indio_dev,
-> @@ -535,7 +530,10 @@ static int rcar_gyroadc_probe(struct platform_device *pdev)
->  	pm_runtime_use_autosuspend(dev);
->  	pm_runtime_enable(dev);
->  
-> -	pm_runtime_get_sync(dev);
-> +	ret = pm_runtime_resume_and_get(dev);
-> +	if (ret)
-> +		goto err_power_up;
-> +
->  	rcar_gyroadc_hw_init(priv);
->  	rcar_gyroadc_hw_start(priv);
->  
-> @@ -552,6 +550,7 @@ static int rcar_gyroadc_probe(struct platform_device *pdev)
->  err_iio_device_register:
->  	rcar_gyroadc_hw_stop(priv);
->  	pm_runtime_put_sync(dev);
-> +err_power_up:
->  	pm_runtime_disable(dev);
->  	pm_runtime_set_suspended(dev);
->  	clk_disable_unprepare(priv->clk);
+Agreed. I'm also considering to add a couple of cases of this char:
 
+	- U+2026 ('=E2=80=A6'): HORIZONTAL ELLIPSIS
 
+As Sphinx also replaces "..." into HORIZONTAL ELLIPSIS.
+
+-
+
+Anyway, I'm opting to submitting those in separate because it seems
+that at least some maintainers added EM/EN DASH intentionally.
+
+So, it may generate case-per-case discussions.
+
+Also, IMO, at least a couple of EN/EM DASH cases would be better served=20
+with a single hyphen.
 
 Thanks,
 Mauro

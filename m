@@ -2,100 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5721337B900
-	for <lists+linux-iio@lfdr.de>; Wed, 12 May 2021 11:22:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEBEC37B963
+	for <lists+linux-iio@lfdr.de>; Wed, 12 May 2021 11:39:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230037AbhELJXJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 May 2021 05:23:09 -0400
-Received: from www381.your-server.de ([78.46.137.84]:35388 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229850AbhELJXI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 May 2021 05:23:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=MwqqwIdfiD/WX5E7Qn5GFIZo/GhWwZi7A+vrKKTaYGY=; b=HCLyOnJRZc5/pC2adtasnvFNS5
-        c/FOY9MJp7juM+U+LWbRpWHORYp+6Zn7jq+/K7KLHH9z1WdITrBMFtuLpMPjFeRwGzPg59yWZlMSe
-        bi28Rp3E6P5BWp/GErkSnISC0H7BczuuYMFvtIV6/j3jqRpscS9q4cB0pjLa21vDRuYb5VU9jmka6
-        5JLtihtyWXxCYRtQTMv938rPyM2y3D3ACmck23xcXqcuyFrxYgjt8e7+ICsVXEGw9RFw2HAos22Nl
-        1GbtDcIqtxKujcbeLIqzsLFT6FgV1bzFtos11Uzgi9wEVRJzyulJlhJWC3CZNPvQwRqfVrqaDnmdL
-        oJgR2YOg==;
-Received: from sslproxy02.your-server.de ([78.47.166.47])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1lgl3x-0001ts-5k; Wed, 12 May 2021 11:21:53 +0200
-Received: from [2001:a61:2bd3:3c01:9e5c:8eff:fe01:8578]
-        by sslproxy02.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1lgl3x-0003EJ-0M; Wed, 12 May 2021 11:21:53 +0200
-Subject: Re: [PATCH] iio: adc: ad7768-1: Fix the right interrupt
- interfacecalls
-To:     tangbin <tangbin@cmss.chinamobile.com>
-Cc:     Michael.Hennerich@analog.com, jic23@kernel.org, knaack.h@gmx.de,
-        pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20210511153108.14816-1-tangbin@cmss.chinamobile.com>
- <e923eaea-bd62-2395-5c71-92eb9d849fd5@metafoo.de>
- <5dd97e8f-8a52-c79c-2b00-7e6b807990ed@cmss.chinamobile.com>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <41d9dc0f-2e65-075f-9b57-740f31081860@metafoo.de>
-Date:   Wed, 12 May 2021 11:21:52 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
+        id S230135AbhELJk1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 May 2021 05:40:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53254 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230134AbhELJk0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 May 2021 05:40:26 -0400
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58F72C061574;
+        Wed, 12 May 2021 02:39:19 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id h7so12245993plt.1;
+        Wed, 12 May 2021 02:39:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=kL3PnYBjbGyIzaSUKB/SpTvmbE4guCrpRlT62MJ7G+4=;
+        b=EMy33MGujBLV5IjAxdPcjQaejvbwjBPaB/AYmvUyTcAD1ljWoAGErl9e7kkMJcKHpR
+         D/MCocEJmTn6AQbt1UplqXRzN/u6iNviEt+17gpcazCbRKhzsCKFxB1H6h88o68fdkcA
+         W0XtZl4wAZ44QHfwA0iq5EhtHwjhaKG8UhUmx1pAh8vtZkrTjdF8URY0CvDl9tAqZQ6J
+         E2IJQeCG5klAEMJAmlzAgHDGI9B/EF11yO1qHKnsJiafSzSH9U6CSvHGNN4vgITat4mU
+         n/rzXirGuZK/rk6s9KYoWVfH8GXAmavWPTootzMGuGCmN3ZDjh/wZTRZHrUxwYut4+oz
+         sDNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=kL3PnYBjbGyIzaSUKB/SpTvmbE4guCrpRlT62MJ7G+4=;
+        b=aO8SnQZQvNiRDC0Gj+HxJu67eNb1FbeApn4KbRjCT458mFoUTn94n5xyRiMxSOXvGj
+         ar47mQ8XNfebHCqA7se5ZMvgM/8513U6MM46xsHxm7GcLcveCyTSckB6CWBLC8YhoSJ1
+         8v6mlmIcMjyfGQk782NhTfclD2l8k/2LNRBF543WPwDgy5A49xuvRjS4TvrNjgCALTrU
+         NVzlcG1GggNjNv5C++0BLqdgucWy4GgGUaCrfEqNQUX38A/8w66mqqdJT0cy1x3tS4LY
+         FTyNku4yEWZs1ZAjAiK0M4nsBOGgf1Dls3vbtpDzOQaw0Vwi7qHvzEQv+43B1eJm0g84
+         pkqg==
+X-Gm-Message-State: AOAM532L6dJ2K5ufrlIQloH6ifobCkMtdZ9clh5qd/elHSdz/Sh/ecD4
+        8m7GQSW52edmZ1YbiDnVyDeO4AxGbIY=
+X-Google-Smtp-Source: ABdhPJyEicVV21gtSUQ3O/5O/+Wd9hV0X9GOFi9/inbETfX1O4xT7CQYCIpFX6jOmQzT7lksJhxaww==
+X-Received: by 2002:a17:90a:8902:: with SMTP id u2mr38555380pjn.143.1620812359039;
+        Wed, 12 May 2021 02:39:19 -0700 (PDT)
+Received: from ubt.spreadtrum.com ([117.18.48.102])
+        by smtp.gmail.com with ESMTPSA id j23sm16180833pfh.179.2021.05.12.02.39.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 May 2021 02:39:18 -0700 (PDT)
+From:   Chunyan Zhang <zhang.lyra@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, Baolin Wang <baolin.wang7@gmail.com>,
+        linux-kernel@vger.kernel.org, Orson Zhai <orsonzhai@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Chunyan Zhang <chunyan.zhang@unisoc.com>
+Subject: [PATCH] iio: adc: Add missing MODULE_DEVICE_TABLE
+Date:   Wed, 12 May 2021 17:38:44 +0800
+Message-Id: <20210512093844.243245-1-zhang.lyra@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <5dd97e8f-8a52-c79c-2b00-7e6b807990ed@cmss.chinamobile.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.103.2/26167/Tue May 11 13:12:12 2021)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 5/12/21 10:39 AM, tangbin wrote:
-> Hi Lars-Peter:
->
->         Thanks for you reply!
->
->> Hi,
->>
->> Thanks for the patch. Aren't those two expressions equivalent? Are 
->> you seeing an issue with the current code? If so can you include that 
->> in the commit message?
->>
->> - Lars
->>
->>
->        When submitting this patch, I actually thought about it for a 
-> while, but finally decided to submit it, my reason is as follows:
->
->         In numerical data of address, &ad7768_interrupt is equal to 
-> ad7768_interrupt, and the compilation can pass. But I think they are 
-> not the same, ad7768_interrupt is the first
->
-> address of the function, and its type is irqreturn_t, 
-> &ad7768_interrupt represents the address of an object that points to 
-> the function ad7768_interrupt().
->
->         So I think they are not the same, For previous experience with 
-> devm_request_irq(), I send this patch. If I'm wrong, I'm sorry to 
-> bother you.
->
-Have a look at 
-https://stackoverflow.com/questions/6893285/why-do-function-pointer-definitions-work-with-any-number-of-ampersands-or-as 
-for some background on this.
+From: Chunyan Zhang <chunyan.zhang@unisoc.com>
 
-You can also easily verify that they are the same with a simple test program
+MODULE_DEVICE_TABLE is used to extract the device information out of the
+driver and builds a table when being compiled. If using this macro,
+kernel can find the driver if available when the device is plugged in,
+and then loads that driver and initializes the device.
 
-static void foo(void) {}
+Signed-off-by: Chunyan Zhang <chunyan.zhang@unisoc.com>
+---
+ drivers/iio/adc/sc27xx_adc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-int main(void) {
-     printf("%p %p %d\n", foo, &foo, foo == &foo);
-}
-
+diff --git a/drivers/iio/adc/sc27xx_adc.c b/drivers/iio/adc/sc27xx_adc.c
+index 301cf66de695..00098caf6d9e 100644
+--- a/drivers/iio/adc/sc27xx_adc.c
++++ b/drivers/iio/adc/sc27xx_adc.c
+@@ -549,6 +549,7 @@ static const struct of_device_id sc27xx_adc_of_match[] = {
+ 	{ .compatible = "sprd,sc2731-adc", },
+ 	{ }
+ };
++MODULE_DEVICE_TABLE(of, sc27xx_adc_of_match);
+ 
+ static struct platform_driver sc27xx_adc_driver = {
+ 	.probe = sc27xx_adc_probe,
+-- 
+2.25.1
 

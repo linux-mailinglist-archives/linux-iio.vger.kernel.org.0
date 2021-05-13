@@ -2,34 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BA6537FBA1
-	for <lists+linux-iio@lfdr.de>; Thu, 13 May 2021 18:36:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE15037FBA7
+	for <lists+linux-iio@lfdr.de>; Thu, 13 May 2021 18:39:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234261AbhEMQhw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 13 May 2021 12:37:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36282 "EHLO mail.kernel.org"
+        id S235170AbhEMQke (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 13 May 2021 12:40:34 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36768 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231426AbhEMQhv (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 13 May 2021 12:37:51 -0400
+        id S232279AbhEMQkI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 13 May 2021 12:40:08 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0661D61396;
-        Thu, 13 May 2021 16:36:39 +0000 (UTC)
-Date:   Thu, 13 May 2021 17:37:48 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 9DACE6143B;
+        Thu, 13 May 2021 16:38:29 +0000 (UTC)
+Date:   Thu, 13 May 2021 17:39:37 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc:     linux-iio@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>,
+To:     Brian Masney <masneyb@onstation.org>
+Cc:     linux-iio@vger.kernel.org,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Julia Lawall <Julia.Lawall@inria.fr>,
         "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.co.uk>
-Subject: Re: [PATCH 02/28] iio: light: isl29028: Balance runtime pm + use
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 03/28] iio: light: tsl2583: Balance runtime pm + use
  pm_runtime_resume_and_get()
-Message-ID: <20210513173748.55aa2ae8@jic23-huawei>
-In-Reply-To: <20210512153335.5acb9e3f@coco.lan>
+Message-ID: <20210513173937.75a1dcf7@jic23-huawei>
+In-Reply-To: <20210510104601.GB296@onstation.org>
 References: <20210509113354.660190-1-jic23@kernel.org>
-        <20210509113354.660190-3-jic23@kernel.org>
-        <20210512153335.5acb9e3f@coco.lan>
+        <20210509113354.660190-4-jic23@kernel.org>
+        <20210510104601.GB296@onstation.org>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -38,68 +39,24 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 12 May 2021 15:33:35 +0200
-Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+On Mon, 10 May 2021 06:46:01 -0400
+Brian Masney <masneyb@onstation.org> wrote:
 
-> Em Sun,  9 May 2021 12:33:28 +0100
-> Jonathan Cameron <jic23@kernel.org> escreveu:
-> 
+> On Sun, May 09, 2021 at 12:33:29PM +0100, Jonathan Cameron wrote:
 > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > > 
-> > In remove this driver called pm_runtime_put_noidle() but there is
-> > no matching get operation.  This does not cause any problems because
-> > the reference counter will not change if already zero, but it
-> > does make the code harder to reason about so should be dropped.
+> > Error paths in read_raw() and write_raw() callbacks failed to perform and
+> > type of runtime pm put().  Remove called pm_runtime_put_noidle()
+> > but there is no equivalent get (this is safe because the reference
+> > count is protected against going below zero, but it is misleading.
 > > 
-> > Whilst we are here, use pm_runtime_resume_and_get() to replace open
-> > coded version.
-> > Found using coccicheck script under review at:
-> > https://lore.kernel.org/lkml/20210427141946.2478411-1-Julia.Lawall@inria.fr/
+> > Whilst here use pm_runtime_resume_and_get() to replace boilerplate.
 > > 
 > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Cc: Sebastian Reichel <sebastian.reichel@collabora.co.uk>  
+> > Cc: Brian Masney <masneyb@onstation.org>  
 > 
-> LGTM.
+> Reviewed-by: Brian Masney <masneyb@onstation.org>
 > 
-> Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-
-Applied to the togreg branch of iio.git
-
-Thanks,
+Applied.  Thanks,
 
 Jonathan
-
-> 
-> > ---
-> >  drivers/iio/light/isl29028.c | 5 +----
-> >  1 file changed, 1 insertion(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/iio/light/isl29028.c b/drivers/iio/light/isl29028.c
-> > index 2f8b494f3e08..9de3262aa688 100644
-> > --- a/drivers/iio/light/isl29028.c
-> > +++ b/drivers/iio/light/isl29028.c
-> > @@ -339,9 +339,7 @@ static int isl29028_set_pm_runtime_busy(struct isl29028_chip *chip, bool on)
-> >  	int ret;
-> >  
-> >  	if (on) {
-> > -		ret = pm_runtime_get_sync(dev);
-> > -		if (ret < 0)
-> > -			pm_runtime_put_noidle(dev);
-> > +		ret = pm_runtime_resume_and_get(dev);
-> >  	} else {
-> >  		pm_runtime_mark_last_busy(dev);
-> >  		ret = pm_runtime_put_autosuspend(dev);
-> > @@ -647,7 +645,6 @@ static int isl29028_remove(struct i2c_client *client)
-> >  
-> >  	pm_runtime_disable(&client->dev);
-> >  	pm_runtime_set_suspended(&client->dev);
-> > -	pm_runtime_put_noidle(&client->dev);
-> >  
-> >  	return isl29028_clear_configure_reg(chip);
-> >  }  
-> 
-> 
-> 
-> Thanks,
-> Mauro
-

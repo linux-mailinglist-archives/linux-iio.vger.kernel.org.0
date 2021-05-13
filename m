@@ -2,199 +2,180 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A622D37FCDD
-	for <lists+linux-iio@lfdr.de>; Thu, 13 May 2021 19:52:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CDFD37FCE1
+	for <lists+linux-iio@lfdr.de>; Thu, 13 May 2021 19:53:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231278AbhEMRx6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 13 May 2021 13:53:58 -0400
-Received: from bmail1.ministro.hu ([5.249.150.236]:34102 "EHLO
-        bmail1.ministro.hu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229652AbhEMRx4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 May 2021 13:53:56 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by bmail1.ministro.hu (Postfix) with ESMTP id 270EF123FA3;
-        Thu, 13 May 2021 19:52:42 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ministro.hu;
-        s=201804; t=1620928363;
-        bh=TdTIa7yziCVaTex9roLeZmpCMHy6bRXGu5aF2UJOI7Y=;
-        h=Date:From:To:Subject:References:In-Reply-To:From;
-        b=kysXDc8v7duDJV7iYTbYCEdCFn7tqcDg97YPNIu8JujUiNFGdB5Me7AhadH1GMskI
-         5n1au3SUMMoO0hb2TdBxx9bupj3jTKhImquQSCIu3px5tYXtVvzp1g8HHCdmBtw4p/
-         toJ0SnWlUPZf4F0AvdB3QUBSj9n6vAE601ggx3vRD7JWgszWTMwXxAnvKmxppu15zQ
-         dzIf5MMiLXyW7WXVXAVofzY12UAOxr5Bqd6DhtXQ7znxOPhEPROK2Sz42I/ZPu3qo8
-         4yGy+s7TUG60CdDAMlcVHCCHn9rGu4G3wSnQWlEOxc8zxoggpuise5mulUycF/lUX/
-         05dJoyttpgIoA==
-X-Virus-Scanned: Debian amavisd-new at ministro.hu
-Received: from bmail1.ministro.hu ([127.0.0.1])
-        by localhost (bmail1.ministro.hu [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id F20WVs3WoxVF; Thu, 13 May 2021 19:52:04 +0200 (CEST)
-Received: from dev (localhost [127.0.0.1])
-        by bmail1.ministro.hu (Postfix) with ESMTPSA id 796E4123F56;
-        Thu, 13 May 2021 19:52:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ministro.hu;
-        s=201804; t=1620928324;
-        bh=TdTIa7yziCVaTex9roLeZmpCMHy6bRXGu5aF2UJOI7Y=;
-        h=Date:From:To:Subject:References:In-Reply-To:From;
-        b=OGcSpDyAtSEGlUm6hGcOtoQ7G8Rb3PHI3N1iWkKqZmUrNaSGsmzS6rq7y9uIfY/Xm
-         JBMp2Lb5MK+P2L7Djh4WkHdgPeS4plrEBoKhS+wAaA+IsYiyrItXedjrZxqJs8uTcQ
-         apn744rt3fJ2w+F1CWcB/FTuIfjp7QOBQyLIylEjaN3XcXMalfAqdJgSIv56He89pG
-         n5qayafIshxb/dlUOe30jartLMM2HjL/utt9CjdfkGIMpsz58Q9O+pN4xXhKwFVZvp
-         3qeQqNmpvgPFe1BV7ZVA53nNW05m9Sc115IwmJTNAP/U0ZJhrq5/8s0rxsLY07ClKj
-         Rw32CC80tTRRg==
-Date:   Thu, 13 May 2021 17:52:01 +0000
-From:   Jozsef Horvath <info@ministro.hu>
-To:     Jozsef Horvath <info@ministro.hu>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Alex Dewar <alex.dewar90@gmail.com>,
-        Gene Chen <gene_chen@richtek.com>,
-        Saravanan Sekar <sravanhome@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v1 2/2] dt-bindings: iio: adc: devicetree bindings for texas
- instruments ads7142 iio driver
-Message-ID: <3f94f31f0cd5732f90d66ea507e6b9ff03a7024f.1620926923.git.info@ministro.hu>
-References: <a50bce9fd6d28fa2aa0171ba406da0dd6714fcc3.1620926923.git.info@ministro.hu>
+        id S231420AbhEMRyh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 13 May 2021 13:54:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43990 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231462AbhEMRyX (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 13 May 2021 13:54:23 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B913B61166;
+        Thu, 13 May 2021 17:53:09 +0000 (UTC)
+Date:   Thu, 13 May 2021 18:54:18 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Daniel Baluta <daniel.baluta@nxp.com>,
+        Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>,
+        Sanchayan Maity <maitysanchayan@gmail.com>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Andreas Klinger <ak@it-klinger.de>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH 00/19] IIO: Alignment fixes part 2 - struct used to
+ ensure alignment
+Message-ID: <20210513185418.0e7766e5@jic23-huawei>
+In-Reply-To: <CAHp75VdWmEHdn1iuA3xNHLMbhiapguEmrktGkf5vDFrPdy1XJA@mail.gmail.com>
+References: <20210501170121.512209-1-jic23@kernel.org>
+        <CAHp75VdWmEHdn1iuA3xNHLMbhiapguEmrktGkf5vDFrPdy1XJA@mail.gmail.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <a50bce9fd6d28fa2aa0171ba406da0dd6714fcc3.1620926923.git.info@ministro.hu>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This is a device tree schema for iio driver for
- Texas Instruments ADS7142 dual-channel, programmable sensor monitor.
+On Sat, 1 May 2021 22:12:40 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-Datasheet: https://www.ti.com/lit/ds/symlink/ads7142.pdf
+> On Sat, May 1, 2021 at 8:03 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >
+> > I finally got around to do a manual audit of all the calls to
+> > iio_push_to_buffers_with_timestamp() which has the somewhat odd requirements
+> > of:
+> > 1. 8 byte alignment of the provided buffer.
+> > 2. space for an 8 byte naturally aligned timestamp to be inserted at the
+> >    end.
+> >
+> > Unfortuantely there were rather a lot of these left, but time to bite the bullet  
+> 
+> Unfortunately
+> 
+> > and clean them up.
+> >
+> > As discussed previous in
+> > https://lore.kernel.org/linux-iio/20200920112742.170751-1-jic23@kernel.org/
+> > it is not easy to fix the alignment issue without requiring a bounce buffer
+> > (see part 4 of the alignment fixes for a proposal for that where it is
+> > absolutely necessary).
+> >
+> > Part 2 is the simple cases where the timestamp position is always the same
+> > (as not more than 8 bytes of other scan elements) and where it is either
+> > in a structure that is kzalloc'd or there was already an explicit memset
+> > that would clear any holes in the structure (and hence avoid a potential
+> > kernel data leak).
+> >
+> > Cc: Peter Meerwald <pmeerw@pmeerw.net>  
+> 
+> > Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>  
+> 
+> 1
+> 
+> > Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+> > Cc: Daniel Baluta <daniel.baluta@nxp.com>  
+> 
+> > Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>  
+> 
+> 2
+> 
+> One time is enough :-)
+> 
+> Anyway, I looked at them all and haven't seen any issues on the first glance, so
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-Signed-off-by: Jozsef Horvath <info@ministro.hu>
----
+Thanks.  Whole series applied though seems I was being more than a bit careless
+in some of the early ones so I took a very close look at all them whilst applying.
 
-changes v1
-  - Redundant parameters (ti,threshold-rising, etc.)
-    are removed
-  - Supply name changed(vref -> avdd)
-  - Added dvdd supply
-  - All the properties are removed with prefix "ti,"
----
- .../bindings/iio/adc/ti,ads7142.yaml          | 99 +++++++++++++++++++
- 1 file changed, 99 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads7142.yaml
+Do too many similar patches, and mistakes slip in :(
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads7142.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads7142.yaml
-new file mode 100644
-index 000000000000..e4d701d1b2c6
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/ti,ads7142.yaml
-@@ -0,0 +1,99 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: "http://devicetree.org/schemas/iio/adc/ti,ads7142.yaml#"
-+$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+
-+title: Texas Instruments ADS7142 adc driver device tree bindings
-+
-+maintainers:
-+  - József Horváth <info@ministro.hu>
-+
-+description: |
-+  This document is for describing the required device tree parameters
-+   for ads7142 adc
-+  The required parameters for proper operation are described below.
-+
-+  Datasheet: https://www.ti.com/lit/ds/symlink/ads7142.pdf
-+
-+properties:
-+  compatible:
-+    const: ti,ads7142
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    description: |
-+      The BUSY/PDY pin is used as interrupt line in autonomous monitoring mode.
-+    maxItems: 1
-+
-+  avdd-supply:
-+    description: Regulator for the reference voltage
-+
-+  dvdd-supply: true
-+
-+  "#address-cells":
-+    const: 1
-+
-+  "#size-cells":
-+    const: 0
-+
-+  "#io-channel-cells":
-+    const: 1
-+
-+patternProperties:
-+  "^channel@[0-1]$":
-+    $ref: "adc.yaml"
-+    type: object
-+    description: |
-+      Represents the external channels which are connected to the ADC.
-+    properties:
-+      reg:
-+        description: |
-+          The channel number.
-+        items:
-+          minimum: 0
-+          maximum: 1
-+
-+    required:
-+      - reg
-+
-+    additionalProperties: false
-+
-+required:
-+  - compatible
-+  - "#io-channel-cells"
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    i2c {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+      adc@1f {
-+        compatible = "ti,ads7142";
-+        reg = <0x1f>;
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        #io-channel-cells = <1>;
-+
-+        avdd-supply = <&vdd_3v3_reg>;
-+        dvdd-supply = <&vdd_1v8_reg>;
-+
-+        interrupt-parent = <&gpio>;
-+        interrupts = <7 2>;
-+
-+        channel@0 {
-+          reg = <0>;
-+        };
-+
-+        channel@1 {
-+          reg = <1>;
-+        };
-+      };
-+    };
-+...
-+
--- 
-2.17.1
+Thanks,
+
+Jonathan
+
+> 
+> > Cc: Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>
+> > Cc: Sanchayan Maity <maitysanchayan@gmail.com>
+> > Cc: Stephan Gerhold <stephan@gerhold.net>
+> > Cc: Andreas Klinger <ak@it-klinger.de>
+> > Cc: Matt Ranostay <matt.ranostay@konsulko.com>
+> > Cc: Linus Walleij <linus.walleij@linaro.org>
+> >
+> > Jonathan Cameron (19):
+> >   iio: accel: bma180: Fix buffer alignment in
+> >     iio_push_to_buffers_with_timestamp()
+> >   iio: accel: bma220: Fix buffer alignment in
+> >     iio_push_to_buffers_with_timestamp()
+> >   iio: accel: hid: Fix buffer alignment in
+> >     iio_push_to_buffers_with_timestamp()
+> >   iio: accel: kxcjk-1013: Fix buffer alignment in
+> >     iio_push_to_buffers_with_timestamp()
+> >   iio: accel: mxc4005: Fix overread of data and alignment issue.
+> >   iio: accel: stk8312: Fix buffer alignment in
+> >     iio_push_to_buffers_with_timestamp()
+> >   iio: accel: stk8ba50: Fix buffer alignment in
+> >     iio_push_to_buffers_with_timestamp()
+> >   iio: adc: ti-ads1015: Fix buffer alignment in
+> >     iio_push_to_buffers_with_timestamp()
+> >   iio: adc: vf610: Fix buffer alignment in
+> >     iio_push_to_buffers_with_timestamp()
+> >   iio: gyro: bmg160: Fix buffer alignment in
+> >     iio_push_to_buffers_with_timestamp()
+> >   iio: humidity: am2315: Fix buffer alignment in
+> >     iio_push_to_buffers_with_timestamp()
+> >   iio: prox: srf08: Fix buffer alignment in
+> >     iio_push_to_buffers_with_timestamp()
+> >   iio: prox: pulsed-light: Fix buffer alignment in
+> >     iio_push_to_buffers_with_timestamp()
+> >   iio: prox: as3935: Fix buffer alignment in
+> >     iio_push_to_buffers_with_timestamp()
+> >   iio: magn: hmc5843: Fix buffer alignment in
+> >     iio_push_to_buffers_with_timestamp()
+> >   iio: magn: bmc150: Fix buffer alignment in
+> >     iio_push_to_buffers_with_timestamp()
+> >   iio: light: isl29125: Fix buffer alignment in
+> >     iio_push_to_buffers_with_timestamp()
+> >   iio: light: tcs3414: Fix buffer alignment in
+> >     iio_push_to_buffers_with_timestamp()
+> >   iio: light: tcs3472: Fix buffer alignment in
+> >     iio_push_to_buffers_with_timestamp()
+> >
+> >  drivers/iio/accel/bma180.c                    | 10 +++++---
+> >  drivers/iio/accel/bma220_spi.c                | 10 +++++---
+> >  drivers/iio/accel/hid-sensor-accel-3d.c       | 13 ++++++----
+> >  drivers/iio/accel/kxcjk-1013.c                | 24 +++++++++++--------
+> >  drivers/iio/accel/mxc4005.c                   | 10 +++++---
+> >  drivers/iio/accel/stk8312.c                   | 12 ++++++----
+> >  drivers/iio/accel/stk8ba50.c                  | 17 +++++++------
+> >  drivers/iio/adc/ti-ads1015.c                  | 12 ++++++----
+> >  drivers/iio/adc/vf610_adc.c                   | 10 +++++---
+> >  drivers/iio/gyro/bmg160_core.c                | 10 +++++---
+> >  drivers/iio/humidity/am2315.c                 | 16 ++++++++-----
+> >  drivers/iio/light/isl29125.c                  | 10 +++++---
+> >  drivers/iio/light/tcs3414.c                   | 10 +++++---
+> >  drivers/iio/light/tcs3472.c                   | 10 +++++---
+> >  drivers/iio/magnetometer/bmc150_magn.c        | 11 +++++----
+> >  drivers/iio/magnetometer/hmc5843.h            |  8 +++++--
+> >  drivers/iio/magnetometer/hmc5843_core.c       |  4 ++--
+> >  drivers/iio/proximity/as3935.c                | 10 +++++---
+> >  .../iio/proximity/pulsedlight-lidar-lite-v2.c | 10 +++++---
+> >  drivers/iio/proximity/srf08.c                 | 14 +++++------
+> >  20 files changed, 148 insertions(+), 83 deletions(-)
+> >
+> > --
+> > 2.31.1
+> >  
+> 
+> 
 

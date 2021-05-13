@@ -2,32 +2,32 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0650837FD05
-	for <lists+linux-iio@lfdr.de>; Thu, 13 May 2021 19:58:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19B8837FD0B
+	for <lists+linux-iio@lfdr.de>; Thu, 13 May 2021 20:02:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231494AbhEMR7p (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 13 May 2021 13:59:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46152 "EHLO mail.kernel.org"
+        id S231553AbhEMSD3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 13 May 2021 14:03:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47232 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231447AbhEMR7n (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 13 May 2021 13:59:43 -0400
+        id S231447AbhEMSD3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 13 May 2021 14:03:29 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F1F93611CE;
-        Thu, 13 May 2021 17:58:30 +0000 (UTC)
-Date:   Thu, 13 May 2021 18:59:39 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id CC4F461438;
+        Thu, 13 May 2021 18:02:18 +0000 (UTC)
+Date:   Thu, 13 May 2021 19:03:27 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Matt Ranostay <matt.ranostay@konsulko.com>
-Cc:     "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 05/11] iio: chemical: atlas: Fix buffer alignment in
+Subject: Re: [PATCH 06/11] iio: cros_ec_sensors: Fix alignment of buffer in
  iio_push_to_buffers_with_timestamp()
-Message-ID: <20210513185939.44e6ce6b@jic23-huawei>
-In-Reply-To: <CAJCx=gnHaX2rWVm5WS9C5j0pSdioK344Ji+s39V8=SxLEL-+gw@mail.gmail.com>
+Message-ID: <20210513190327.7ccdbbcc@jic23-huawei>
+In-Reply-To: <CAPUE2uv7dX8kArmA76bLQ0DQmd=F_Obsv54KZGVcbFfC-aRC1g@mail.gmail.com>
 References: <20210501171352.512953-1-jic23@kernel.org>
-        <20210501171352.512953-6-jic23@kernel.org>
-        <CAJCx=gnHaX2rWVm5WS9C5j0pSdioK344Ji+s39V8=SxLEL-+gw@mail.gmail.com>
+        <20210501171352.512953-7-jic23@kernel.org>
+        <CAPUE2uv7dX8kArmA76bLQ0DQmd=F_Obsv54KZGVcbFfC-aRC1g@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -36,55 +36,58 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 5 May 2021 23:44:54 -0700
-Matt Ranostay <matt.ranostay@konsulko.com> wrote:
+On Sat, 1 May 2021 16:58:21 -0700
+Gwendal Grignou <gwendal@chromium.org> wrote:
 
-> On Sat, May 1, 2021 at 10:15 AM Jonathan Cameron <jic23@kernel.org> wrote:
-> >
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >
-> > Variable location for the timestamp, so just use __aligned(8)
-> > to ensure it is always possible to naturally align it.
-> >
-> > Found during an audit of all calls of uses of
-> > iio_push_to_buffers_with_timestamp()
-> >
-> > Fixes tag is not accurate, but it will need manual backporting beyond
-> > that point if anyone cares.
-> >
-> > Fixes: 0d15190f53b4 ("iio: chemical: atlas-ph-sensor: rename atlas-ph-sensor to atlas-sensor")
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
+> Fixes tag is correct up to kernel stable 4.18.
+> Before, the include file to fix is
+> drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.h:
+> commit 974e6f02e27 ("iio: cros_ec_sensors_core: Add common functions
+> for the ChromeOS EC Sensor Hub.") present since kernel stable 4.10.
 > 
-> Acked-by: Matt Ranostay <matt.ranostay@konsulko.com>
+Applied with this extra info to the togreg branch of iio.git and pushed
+out as testing for the autobuilders to poke at it.
 
-Applied to the togreg branch of iio.git and pushed out as testing for the
-autobuilders to have a go at breaking things.
+This series (in it's complete form) is large enough that I'm not comfortable
+rushing it in.  The bug is also rarely seen in practice so this can wait
+for the next merge window.
 
 Thanks,
 
 Jonathan
 
+> Reviewed-by: Gwendal Grignou <gwendal@chromium.org
 > 
-> > Cc: Matt Ranostay <matt.ranostay@konsulko.com>
+> On Sat, May 1, 2021 at 10:15 AM Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >
+> > The samples buffer is passed to iio_push_to_buffers_with_timestamp()
+> > which requires a buffer aligned to 8 bytes as it is assumed that
+> > the timestamp will be naturally aligned if present.
+> >
+> > Fixes tag is inaccurate but prior to that likely manual backporting needed.
+> >
+> > Fixes: 5a0b8cb46624c ("iio: cros_ec: Move cros_ec_sensors_core.h in /include")
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Cc: Gwendal Grignou <gwendal@chromium.org>
 > > ---
-> >  drivers/iio/chemical/atlas-sensor.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >  include/linux/iio/common/cros_ec_sensors_core.h | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
 > >
-> > diff --git a/drivers/iio/chemical/atlas-sensor.c b/drivers/iio/chemical/atlas-sensor.c
-> > index 56ba6c82b501..6795722c68b2 100644
-> > --- a/drivers/iio/chemical/atlas-sensor.c
-> > +++ b/drivers/iio/chemical/atlas-sensor.c
-> > @@ -91,8 +91,8 @@ struct atlas_data {
-> >         struct regmap *regmap;
-> >         struct irq_work work;
-> >         unsigned int interrupt_enabled;
-> > -
-> > -       __be32 buffer[6]; /* 96-bit data + 32-bit pad + 64-bit timestamp */
-> > +       /* 96-bit data + 32-bit pad + 64-bit timestamp */
-> > +       __be32 buffer[6] __aligned(8);
-> >  };
+> > diff --git a/include/linux/iio/common/cros_ec_sensors_core.h b/include/linux/iio/common/cros_ec_sensors_core.h
+> > index 7ce8a8adad58..c582e1a14232 100644
+> > --- a/include/linux/iio/common/cros_ec_sensors_core.h
+> > +++ b/include/linux/iio/common/cros_ec_sensors_core.h
+> > @@ -77,7 +77,7 @@ struct cros_ec_sensors_core_state {
+> >                 u16 scale;
+> >         } calib[CROS_EC_SENSOR_MAX_AXIS];
+> >         s8 sign[CROS_EC_SENSOR_MAX_AXIS];
+> > -       u8 samples[CROS_EC_SAMPLE_SIZE];
+> > +       u8 samples[CROS_EC_SAMPLE_SIZE] __aligned(8);
 > >
-> >  static const struct regmap_config atlas_regmap_config = {
+> >         int (*read_ec_sensors_data)(struct iio_dev *indio_dev,
+> >                                     unsigned long scan_mask, s16 *data);
 > > --
 > > 2.31.1
 > >  

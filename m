@@ -2,82 +2,84 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0987237FB2D
-	for <lists+linux-iio@lfdr.de>; Thu, 13 May 2021 18:02:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDA9237FB4C
+	for <lists+linux-iio@lfdr.de>; Thu, 13 May 2021 18:13:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234988AbhEMQDu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 13 May 2021 12:03:50 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49762 "EHLO mail.kernel.org"
+        id S235057AbhEMQOh convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Thu, 13 May 2021 12:14:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53910 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234922AbhEMQDi (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 13 May 2021 12:03:38 -0400
+        id S234993AbhEMQOb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 13 May 2021 12:14:31 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id ED232613BC;
-        Thu, 13 May 2021 16:02:25 +0000 (UTC)
-Date:   Thu, 13 May 2021 17:03:34 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id BA3EC6142E;
+        Thu, 13 May 2021 16:13:18 +0000 (UTC)
+Date:   Thu, 13 May 2021 17:14:26 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Tang Bin <tangbin@cmss.chinamobile.com>
-Cc:     lars@metafoo.de, Michael.Hennerich@analog.com, knaack.h@gmx.de,
-        pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Zhang Shengju <zhangshengju@cmss.chinamobile.com>
-Subject: Re: [PATCH] iio:adc:ad7766: Fix unnecessary check in ad7766_probe()
-Message-ID: <20210513170334.479953d3@jic23-huawei>
-In-Reply-To: <20210511134739.948-1-tangbin@cmss.chinamobile.com>
-References: <20210511134739.948-1-tangbin@cmss.chinamobile.com>
+To:     =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
+Cc:     Stephan Gerhold <stephan@gerhold.net>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Robert Yang <decatf@gmail.com>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Hans de Goede <hdegoede@redhat.com>
+Subject: Re: [PATCH 0/3] iio: accel: kxcjk-1013: Add support for KX023-1025
+Message-ID: <20210513171426.27dd6533@jic23-huawei>
+In-Reply-To: <20210511145051.GC4413@qmqm.qmqm.pl>
+References: <20210511095409.9290-1-stephan@gerhold.net>
+        <20210511142847.GA4413@qmqm.qmqm.pl>
+        <YJqWzgmxVEvfElZj@gerhold.net>
+        <20210511145051.GC4413@qmqm.qmqm.pl>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 11 May 2021 21:47:39 +0800
-Tang Bin <tangbin@cmss.chinamobile.com> wrote:
+On Tue, 11 May 2021 16:50:51 +0200
+Michał Mirosław <mirq-linux@rere.qmqm.pl> wrote:
 
-> In the function ad7766_probe(), the return value of
-> devm_iio_device_register() can be zero or ret, Thus it
-> is unnecessary to repeated check here.
+> On Tue, May 11, 2021 at 04:38:06PM +0200, Stephan Gerhold wrote:
+> > Hi Michał,
+> > 
+> > On Tue, May 11, 2021 at 04:28:47PM +0200, Michał Mirosław wrote:  
+> > > On Tue, May 11, 2021 at 11:54:06AM +0200, Stephan Gerhold wrote:  
+> > > > KX023-1025 [1] is another accelerometer from Kionix that has lots
+> > > > of additional functionality compared to KXCJK-1013. It combines the
+> > > > motion interrupt functionality from KXCJK with the tap detection
+> > > > from KXTF9, plus a lot more other functionality.  
+> > > When I researched KXTF9 support it occurred to me that the -10xx part is
+> > > duplicating the information in 'KXyyy' - it seems to be a project number
+> > > or something. I would suggest to use just 'kx023' prefix for the code
+> > > and DT but leave the full identification in the comments/description.  
+> > There do seem to be two different KXTF9 from Kionix, a KXTF9-4100 [1]
+> > and a KXTF9-2050 [2] with separate datasheets. Have you checked if there
+> > is a meaningful difference between them?  
 > 
-> Signed-off-by: Zhang Shengju <zhangshengju@cmss.chinamobile.com>
-> Signed-off-by: Tang Bin <tangbin@cmss.chinamobile.com>
+> I haven't compared them thoroughly, but the versions seem to differ only
+> in power consumption (maybe a different manufacturing process?). The
+> register sets seem the same.
 
-Hi Tang Bin,
+Differ in expected Vdd supply voltage. 3.3 vs 1.8V .  Looks like this has
+knock on effects on things like self test values.  So I'd argue it's worth keeping
+the distinction for device tree. 
 
-A quick query on this sign off sequence as I'd like to check what the
-intended meaning is.
+We could do a double compatible
 
-If you both developed this patch, please use the Co-developed-by: tag
-to indicate that.   If Zhang Shengju wrote the patch then you sent it
-upstream, please fix the 'from' field on the email to reflect that.
+compatible = kionix,kx023-1024, konix,kx023;
 
-Patch itself is good.
-
-Thanks,
+but may be too late to do that now.
 
 Jonathan
 
-> ---
->  drivers/iio/adc/ad7766.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
+
 > 
-> diff --git a/drivers/iio/adc/ad7766.c b/drivers/iio/adc/ad7766.c
-> index b6b6765be..acf56e987 100644
-> --- a/drivers/iio/adc/ad7766.c
-> +++ b/drivers/iio/adc/ad7766.c
-> @@ -291,10 +291,7 @@ static int ad7766_probe(struct spi_device *spi)
->  	if (ret)
->  		return ret;
->  
-> -	ret = devm_iio_device_register(&spi->dev, indio_dev);
-> -	if (ret)
-> -		return ret;
-> -	return 0;
-> +	return devm_iio_device_register(&spi->dev, indio_dev);
->  }
->  
->  static const struct spi_device_id ad7766_id[] = {
+> Best Regards
+> Michał Mirosław
 

@@ -2,85 +2,159 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 980D6380468
-	for <lists+linux-iio@lfdr.de>; Fri, 14 May 2021 09:36:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9F653804C3
+	for <lists+linux-iio@lfdr.de>; Fri, 14 May 2021 09:57:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232515AbhENHhV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 14 May 2021 03:37:21 -0400
-Received: from www381.your-server.de ([78.46.137.84]:45848 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230427AbhENHhT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 May 2021 03:37:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=PWTmH56HY36qKMzCnSYGCgSGgKhWjIRrgfj8aQWb0qs=; b=N/v3irlWROUoBoZFePCB9SyUS5
-        E17ewZyDf9n3SQ/iP1WRxXHcYwb+AvW0O4ZZkKnCZ9kgLT02VsFfSDB8bFWw26ESxo2QmccZ7BtVG
-        ev/dS+GgAU/jb7YJ6Ubeaa2ncbiJLfI/9BmxlTZK0NkMGWxRT/PT+rFfLEzFcOPJLeR4S7+ksQji7
-        xJ0EebuygcZxGwSCc4gVkX/seWJSYZOp8VDal9aKvIwt8OfEf0RAgVkcRUzVqyRijxPCDY1Nymhtw
-        FhA9AXXHjlMpNfjNuP4z/6qh7gpObSgFj7Re9MMYWHj7kLcxyLVawGBQSJ9aCDxtui8VdgJkcttsG
-        YPZxNz4A==;
-Received: from sslproxy05.your-server.de ([78.46.172.2])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1lhSMb-0002qM-KS; Fri, 14 May 2021 09:36:01 +0200
-Received: from [2001:a61:2bd3:3c01:9e5c:8eff:fe01:8578]
-        by sslproxy05.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        id S231259AbhENH6w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 14 May 2021 03:58:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48854 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233325AbhENH6w (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 May 2021 03:58:52 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7862FC061574
+        for <linux-iio@vger.kernel.org>; Fri, 14 May 2021 00:57:41 -0700 (PDT)
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1lhSMb-000E9Z-FX; Fri, 14 May 2021 09:36:01 +0200
-Subject: Re: [PATCH -next] iio: adc: ad7793: Add missing error code in
- ad7793_setup()
-To:     YueHaibing <yuehaibing@huawei.com>, Michael.Hennerich@analog.com,
-        jic23@kernel.org, gregkh@suse.de
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210514065431.4328-1-yuehaibing@huawei.com>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <fb7f5595-5e70-98a1-220a-935f899773c6@metafoo.de>
-Date:   Fri, 14 May 2021 09:36:01 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
+        (envelope-from <ore@pengutronix.de>)
+        id 1lhShQ-0001hC-LK; Fri, 14 May 2021 09:57:32 +0200
+Received: from ore by pty.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ore@pengutronix.de>)
+        id 1lhShP-0005IV-Vo; Fri, 14 May 2021 09:57:31 +0200
+Date:   Fri, 14 May 2021 09:57:31 +0200
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        David Jander <david@protonic.nl>,
+        Robin van der Gracht <robin@protonic.nl>,
+        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: Re: [PATCH v6 0/3] mainline ti tsc2046 adc driver
+Message-ID: <20210514075731.ipxq2o4cdxd3piu3@pengutronix.de>
+References: <20210428073208.19570-1-o.rempel@pengutronix.de>
+ <20210503122818.59f50e45@jic23-huawei>
 MIME-Version: 1.0
-In-Reply-To: <20210514065431.4328-1-yuehaibing@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.103.2/26169/Thu May 13 13:04:54 2021)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20210503122818.59f50e45@jic23-huawei>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-IRC:  #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 09:44:59 up 162 days, 21:51, 46 users,  load average: 0.01, 0.04,
+ 0.00
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 5/14/21 8:54 AM, YueHaibing wrote:
-> Set error code while device ID query failed.
->
-> Fixes: 88bc30548aae ("IIO: ADC: New driver for AD7792/AD7793 3 Channel SPI ADC")
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Hi Jonathan,
 
-Hi,
+On Mon, May 03, 2021 at 12:28:18PM +0100, Jonathan Cameron wrote:
+> On Wed, 28 Apr 2021 09:32:05 +0200
+> Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+> 
+> Hi Oleksij,
+> 
+> Series applied with the tweaks as per review to patch 3.  Please
+> check I didn't mess those up though.
+> 
+> Applied to the togreg branch of iio.git and pushed out as testing for
+> the autobuilders to poke at it.
 
-Thanks for finding and fixing this. One small comment.
+It works. Thx!
 
+Now i need to make configurable iio buffer layout
 
-> ---
->   drivers/iio/adc/ad7793.c | 1 +
->   1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/iio/adc/ad7793.c b/drivers/iio/adc/ad7793.c
-> index 5e980a06258e..b4f9ac3838e1 100644
-> --- a/drivers/iio/adc/ad7793.c
-> +++ b/drivers/iio/adc/ad7793.c
-> @@ -279,6 +279,7 @@ static int ad7793_setup(struct iio_dev *indio_dev,
->   	id &= AD7793_ID_MASK;
->   
->   	if (id != st->chip_info->id) {
-> +		ret = -EINVAL;
-Usually we use ENODEV as the error code when the device ID does not match.
->   		dev_err(&st->sd.spi->dev, "device ID query failed\n");
->   		goto out;
->   	}
+for the drivers/input/touchscreen/resistive-adc-touch.c
 
+Do you have ideas what is the proper way to make it?
 
+Regards,
+Oleksij
+
+> 
+> Jonathan
+> 
+> > changes v6:
+> > - get blessing from Dmitry Torokhov
+> > - rebase against latest iio/testing
+> > - use simple name for iio_dev->name
+> > - use Jonathan's version for oversampling-ratio description 
+> > 
+> > changes v5:
+> > - remove type for the settling-time-us property
+> > 
+> > changes v4:
+> > - spell fixes
+> > - add more comments
+> > - make code more readable
+> > - move scan_buf to the priv
+> > - use FIELD_GET to extract ADC data
+> > - make some multi line code as one line
+> > - do not use atomic API for trig_more_count
+> > - fix build warning on 64bit system
+> > - add NULL check for the devm_kasprintf()
+> > - use return devm_iio_device_register(), without additional error
+> >   printing.
+> > 
+> > changes v3:
+> > - different spell fixes
+> > - add some notes about driver structure
+> > - rename the trigger to point on the touchscreen nature of it
+> > - rename DT binding to oversampling-ratio
+> > - make sure we have some defaults in case no DT property is set
+> > 
+> > changes v2:
+> > - rework and extend DT binding properties
+> > - remove touchscreen related code from the IIO ADC driver
+> > - make trigger be active longer then IRQ is requesting. This is needed
+> >   to get "inactive" samples
+> > - make oversampling and settle time configurable
+> > 
+> > TI TSC2046 is a touchscreen controller based on 8 channel ADC. Since most of
+> > this ADC based touchscreen controller share same set of challenges, it
+> > is better keep then as simple IIO ADC devices attached to a generic
+> > resistive-adc-touch driver.
+> > 
+> > This driver can replace drivers/input/touchscreen/ads7846.c and has
+> > following advantages over it:
+> > - less code to maintain
+> > - shared code paths (resistive-adc-touch, iio-hwmon, etc)
+> > - can be used as plain IIO ADC to investigate signaling issues or test
+> >   real capacity of the plates and attached low-pass filters
+> >   (or use the touchscreen as a microphone if you like ;) )
+> > 
+> > Oleksij Rempel (3):
+> >   dt-bindings:iio:adc: add generic settling-time-us and
+> >     oversampling-ratio channel properties
+> >   dt-bindings:iio:adc: add documentation for TI TSC2046 controller
+> >   iio: adc: add ADC driver for the TI TSC2046 controller
+> > 
+> >  .../devicetree/bindings/iio/adc/adc.yaml      |  12 +
+> >  .../bindings/iio/adc/ti,tsc2046.yaml          | 115 +++
+> >  MAINTAINERS                                   |   8 +
+> >  drivers/iio/adc/Kconfig                       |  12 +
+> >  drivers/iio/adc/Makefile                      |   1 +
+> >  drivers/iio/adc/ti-tsc2046.c                  | 720 ++++++++++++++++++
+> >  6 files changed, 868 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,tsc2046.yaml
+> >  create mode 100644 drivers/iio/adc/ti-tsc2046.c
+> > 
+> 
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |

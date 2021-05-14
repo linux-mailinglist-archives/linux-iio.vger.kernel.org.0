@@ -2,114 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A85B538081D
-	for <lists+linux-iio@lfdr.de>; Fri, 14 May 2021 13:08:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BD6D380A31
+	for <lists+linux-iio@lfdr.de>; Fri, 14 May 2021 15:10:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231403AbhENLJw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 14 May 2021 07:09:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35466 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbhENLJu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 May 2021 07:09:50 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39449C061574;
-        Fri, 14 May 2021 04:08:39 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id n17-20020a7bc5d10000b0290169edfadac9so1248684wmk.1;
-        Fri, 14 May 2021 04:08:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=DnsDrIqkWnYf7da8HpIWFBQQt2XImu+6ZyHWBvjrfcE=;
-        b=sDX/4vOZ59ic93Kj1k7EQHH5H75TwRxFQdfU97NsB2/Y+xVttZgCu6VcmdiZBbTXV4
-         Yd9dS94Y1asR2VIYZN7NEerfwgmtEUFK3NZSUIzeY6J/4AmyVofgnwxiuO5puvulkCHX
-         zAH+iCNJUU2yLFhQkplxklOlcyZUbrmQbTIThNq4BukYbZy9X610Bla24hpoPnMCKKtF
-         HaX7GWwtAjZyjiNuvWcCoIBPkXTf9xY5aCFfjMGcrbRCdRoMLY/c+VX1+t1XGHSYNqtQ
-         /vEAS8jymBn+QTD3oR/5dtU3nH62pPJpzKh6iPn38AjBb8Fr8EpkCArPsjTRrMSNZ8n3
-         9CtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=DnsDrIqkWnYf7da8HpIWFBQQt2XImu+6ZyHWBvjrfcE=;
-        b=TD856n5ZaQSeJHGEx9lBl3DYJwSrmzWVHV1McUmXOwhUBLbSBNiZ/6VlNVh199g9Ri
-         9ldmsRKsgTpW0jJKu8wKKq9vTGxH8oYk1RYzr0pjjLyUXEWToFutGV6NHvDxrr3dRNcd
-         xpI6drJa0q8KxQI7Q383NhY5taZvAWG0bu4SH+Vv8KsL8GmXv+26WjLv17OjGJIsC9KP
-         zFk3FPiWWaCXwZzHBuEalGXketW02Jwpz/pzIJrrM7hhmVXx0ONOcWgQH31a0goO2DN0
-         0t4ahJ7da1+KepMU+CFz4Dgi5zZsjD3BtWZd2x/DzFYx57euWgcPya3+ADCpQXiDX1a0
-         9KEw==
-X-Gm-Message-State: AOAM530kBEY1aeTl7/fqP01xjKBxsG+XUhMJjIAC3GW4JTFpOAA74x2o
-        06yceDCYnkP+PZ9QsYvx+4mADfV1+btBCg==
-X-Google-Smtp-Source: ABdhPJwViz0BDPUuVH349RqXP0p4zCVFhrVjXNorTYnm55dAjMiaqH0FajvtM+sJwCYcinjBh5k1qQ==
-X-Received: by 2002:a7b:c005:: with SMTP id c5mr21007074wmb.113.1620990517974;
-        Fri, 14 May 2021 04:08:37 -0700 (PDT)
-Received: from [192.168.1.122] (cpc159425-cmbg20-2-0-cust403.5-4.cable.virginm.net. [86.7.189.148])
-        by smtp.gmail.com with ESMTPSA id b10sm7116349wrr.27.2021.05.14.04.08.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 14 May 2021 04:08:37 -0700 (PDT)
-Subject: Re: [PATCH v2 00/40] Use ASCII subset instead of UTF-8 alternate
- symbols
-To:     David Woodhouse <dwmw2@infradead.org>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Mali DP Maintainers <malidp@foss.arm.com>,
-        alsa-devel@alsa-project.org, coresight@lists.linaro.org,
-        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-        intel-wired-lan@lists.osuosl.org, keyrings@vger.kernel.org,
-        kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-sgx@vger.kernel.org, linux-usb@vger.kernel.org,
-        mjpeg-users@lists.sourceforge.net, netdev@vger.kernel.org,
-        rcu@vger.kernel.org
-References: <cover.1620823573.git.mchehab+huawei@kernel.org>
- <d2fed242fbe200706b8d23a53512f0311d900297.camel@infradead.org>
- <20210514102118.1b71bec3@coco.lan>
- <61c286b7afd6c4acf71418feee4eecca2e6c80c8.camel@infradead.org>
-From:   Edward Cree <ecree.xilinx@gmail.com>
-Message-ID: <8b8bc929-2f07-049d-f24c-cb1f1d85bbaa@gmail.com>
-Date:   Fri, 14 May 2021 12:08:36 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+        id S229724AbhENNLo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 14 May 2021 09:11:44 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32]:16352 "EHLO
+        mx0a-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229469AbhENNLn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 May 2021 09:11:43 -0400
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 14ED2taC015440;
+        Fri, 14 May 2021 13:10:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=BWZS0HN8ia2EZ8/iDhv4qJtHdLFxZrWdNxtzGbJVoN0=;
+ b=ocYbePh5J/X9c1hpPR3BUDrT+QM2TqhQy9lZYKDxqBNKca/MxMVEFdBlg8Sh6PLUMvLe
+ 8M+plEmYrliWXZM7T2rc2cuMEyjeewecvxE1Mqm8GCAderzdz+omUR5CV/qFBr76CxLP
+ Qkt9CH+rCta59TQTymgER1T8se4U4GgpEQ6UKghmbqHoqx4whtR6GDBRe2ZuyfUH1Gb0
+ /MVeMvT1egGXDSZ+p9orNLesSDds4yScw87JNeZ/EQr2NbGF/P5D77XO/FuPYFezYPmm
+ z6xTmGQE7LXiySXikKRqTDOhR3jlUFQVE/wZrI0htFHqi+X5HUVPLkstDSIUux6yWodx Gg== 
+Received: from oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by mx0b-00069f02.pphosted.com with ESMTP id 38gpqsrp8x-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 14 May 2021 13:10:17 +0000
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [127.0.0.1])
+        by pps.podrdrct (8.16.0.36/8.16.0.36) with SMTP id 14ED1DTI084169;
+        Fri, 14 May 2021 13:10:16 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by aserp3020.oracle.com with ESMTP id 38gppe5jax-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 14 May 2021 13:10:16 +0000
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 14ED40Aa113198;
+        Fri, 14 May 2021 13:10:15 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3020.oracle.com with ESMTP id 38gppe5j9a-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 14 May 2021 13:10:15 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 14EDAEuv018893;
+        Fri, 14 May 2021 13:10:14 GMT
+Received: from mwanda (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 14 May 2021 06:10:13 -0700
+Date:   Fri, 14 May 2021 16:10:07 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Joe Sandom <joe.g.sandom@gmail.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH 1/2] iio: light: tsl2591: fix some signedness bugs
+Message-ID: <YJ52r1XZ44myD9Xx@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <61c286b7afd6c4acf71418feee4eecca2e6c80c8.camel@infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-GUID: Sb-hFiORgf1OQUOz4XMQTOELAE__bnP3
+X-Proofpoint-ORIG-GUID: Sb-hFiORgf1OQUOz4XMQTOELAE__bnP3
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-> On Fri, 2021-05-14 at 10:21 +0200, Mauro Carvalho Chehab wrote:
->> I do use a lot of UTF-8 here, as I type texts in Portuguese, but I rely
->> on the US-intl keyboard settings, that allow me to type as "'a" for á.
->> However, there's no shortcut for non-Latin UTF-codes, as far as I know.
->>
->> So, if would need to type a curly comma on the text editors I normally 
->> use for development (vim, nano, kate), I would need to cut-and-paste
->> it from somewhere
+These variables need to be int for the error handling to work.
 
-For anyone who doesn't know about it: X has this wonderful thing called
- the Compose key[1].  For instance, type ⎄--- to get —, or ⎄<" for “.
-Much more mnemonic than Unicode codepoints; and you can extend it with
- user-defined sequences in your ~/.XCompose file.
-(I assume Wayland supports all this too, but don't know the details.)
+Fixes: f053d4e748ce ("iio: light: Added AMS tsl2591 driver implementation")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/iio/light/tsl2591.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-On 14/05/2021 10:06, David Woodhouse wrote:
-> Again, if you want to make specific fixes like removing non-breaking
-> spaces and byte order marks, with specific reasons, then those make
-> sense. But it's got very little to do with UTF-8 and how easy it is to
-> type them. And the excuse you've put in the commit comment for your
-> patches is utterly bogus.
+diff --git a/drivers/iio/light/tsl2591.c b/drivers/iio/light/tsl2591.c
+index 2bdae388ff01..26e3cb6c4ff8 100644
+--- a/drivers/iio/light/tsl2591.c
++++ b/drivers/iio/light/tsl2591.c
+@@ -213,7 +213,7 @@ static int tsl2591_gain_to_multiplier(const u8 als_gain)
+ 	}
+ }
+ 
+-static u8 tsl2591_multiplier_to_gain(const u32 multiplier)
++static int tsl2591_multiplier_to_gain(const u32 multiplier)
+ {
+ 	switch (multiplier) {
+ 	case TSL2591_CTRL_ALS_LOW_GAIN_MULTIPLIER:
+@@ -783,8 +783,8 @@ static int tsl2591_write_raw(struct iio_dev *indio_dev,
+ 			     int val, int val2, long mask)
+ {
+ 	struct tsl2591_chip *chip = iio_priv(indio_dev);
+-	u32 int_time;
+-	u8 gain;
++	int int_time;
++	int gain;
+ 	int ret;
+ 
+ 	mutex_lock(&chip->als_mutex);
+-- 
+2.30.2
 
-+1
-
--ed
-
-[1] https://en.wikipedia.org/wiki/Compose_key

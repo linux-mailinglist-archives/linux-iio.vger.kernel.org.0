@@ -2,88 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 09BDB380B99
-	for <lists+linux-iio@lfdr.de>; Fri, 14 May 2021 16:18:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3E98380F31
+	for <lists+linux-iio@lfdr.de>; Fri, 14 May 2021 19:45:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233494AbhENOTu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 14 May 2021 10:19:50 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37092 "EHLO mail.kernel.org"
+        id S235201AbhENRqQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 14 May 2021 13:46:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46754 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230097AbhENOTu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 14 May 2021 10:19:50 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9C73C61408;
-        Fri, 14 May 2021 14:18:31 +0000 (UTC)
+        id S230213AbhENRqP (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 14 May 2021 13:46:15 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2B734613D6;
+        Fri, 14 May 2021 17:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1621001918;
-        bh=c7dfcDSUedN/VQoQv/XM8fRZG2HhOOW57vq4i3XI37w=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=OQ+w8jq41p/pK8QPzt383K43rnWDvG9IebEZzoZj7WKu0EgpEM3a4OB9pZnDV5/lC
-         MxVWpkmQpp2inFtKTGn6bM1fAR+gA+04aBXFsHrR34k+VM9wQUFTEenWCHNxw8mV5S
-         Rr3kzMIGVT+KJ8CgQJfj5jt0KJvZQg0gfBfD7ImGjDrz6TXEWqjpD0nn1NC8t6bBSV
-         Y2m7PBzQCXheFvsYF9jZqx3chr66nJXcElBiHfvACPcxjY0VNJoiSeft4M6sPjRp9i
-         /15Ta8qfh6z3LjSIBpnNeZl0hFKEsFjvWWGKfF/qxDT0jcgdTLCyifuXI2D1S1QhIL
-         whK9i7cORQs2g==
-Date:   Fri, 14 May 2021 16:18:25 +0200
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     Edward Cree <ecree.xilinx@gmail.com>
-Cc:     David Woodhouse <dwmw2@infradead.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Mali DP Maintainers <malidp@foss.arm.com>,
-        alsa-devel@alsa-project.org, coresight@lists.linaro.org,
-        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-        intel-wired-lan@lists.osuosl.org, keyrings@vger.kernel.org,
-        kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-sgx@vger.kernel.org, linux-usb@vger.kernel.org,
-        mjpeg-users@lists.sourceforge.net, netdev@vger.kernel.org,
-        rcu@vger.kernel.org
-Subject: Re: [PATCH v2 00/40] Use ASCII subset instead of UTF-8 alternate
- symbols
-Message-ID: <20210514161825.4e4c0d3e@coco.lan>
-In-Reply-To: <8b8bc929-2f07-049d-f24c-cb1f1d85bbaa@gmail.com>
-References: <cover.1620823573.git.mchehab+huawei@kernel.org>
-        <d2fed242fbe200706b8d23a53512f0311d900297.camel@infradead.org>
-        <20210514102118.1b71bec3@coco.lan>
-        <61c286b7afd6c4acf71418feee4eecca2e6c80c8.camel@infradead.org>
-        <8b8bc929-2f07-049d-f24c-cb1f1d85bbaa@gmail.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
+        s=k20201202; t=1621014303;
+        bh=OdG7QFpYNaI0q2QXmh6Rq7lI2lHh8xRpNEIu72tie+A=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=Y+L4WCeH9e3iYuEe03OmsdcZMWofID21dvsomCcqmfpXWSPJwTHGL60AqXFNk4IHX
+         ZY0IrTm2pF5Gjt+fwNEhq2n9VKGeHvOuL1TJlRDmPMxAdkTam36WN4QBwbnXWsK+oD
+         /BKSIQQ2IjZcW4eomdRLN/xivhCss3pffzQ5/X7jjiKHwJ3Uhs5GEC5ouLz0rzBfSk
+         JgkQJbAfhBbxvC8IvMtGS8vTNWIgaa0yrrkepvuE7M9eTwxyl6KN3q8YEYtpCsFvL8
+         HjQtj7JzC6bkV2365zLC9AVjMI+wKXTxtLL089qhPT1q7d/nqlWhvgsMSMCKzEJavw
+         g7qYVKm+p/+Yw==
+Subject: Re: [PATCH] iio: si1133: fix format string warnings
+To:     Arnd Bergmann <arnd@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        =?UTF-8?Q?Maxime_Roussin-B=c3=a9langer?= 
+        <maxime.roussinbelanger@gmail.com>,
+        Jean-Francois Dagenais <jeff.dagenais@gmail.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        clang-built-linux@googlegroups.com
+References: <20210514135927.2926482-1-arnd@kernel.org>
+From:   Nathan Chancellor <nathan@kernel.org>
+Message-ID: <7afc367b-8103-9d48-1bfe-d505d86553b9@kernel.org>
+Date:   Fri, 14 May 2021 10:45:02 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20210514135927.2926482-1-arnd@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Em Fri, 14 May 2021 12:08:36 +0100
-Edward Cree <ecree.xilinx@gmail.com> escreveu:
+On 5/14/2021 6:59 AM, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> clang complains about multiple instances of printing an integer
+> using the %hhx format string:
+> 
+> drivers/iio/light/si1133.c:982:4: error: format specifies type 'unsigned char' but the argument has type 'unsigned int' [-Werror,-Wformat]
+>                   part_id, rev_id, mfr_id);
+>                   ^~~~~~~
+> 
+> Print them as a normal integer instead, leaving the "#02"
+> length modifier.
+> 
+> Fixes: e01e7eaf37d8 ("iio: light: introduce si1133")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-> For anyone who doesn't know about it: X has this wonderful thing called
->  the Compose key[1].  For instance, type =E2=8E=84--- to get =E2=80=94, o=
-r =E2=8E=84<" for =E2=80=9C.
-> Much more mnemonic than Unicode codepoints; and you can extend it with
->  user-defined sequences in your ~/.XCompose file.
+Indeed, use of %hx and %hhx have been discouraged since commit 
+cbacb5ab0aa0 ("docs: printk-formats: Stop encouraging use of unnecessary 
+%h[xudi] and %hh[xudi]").
 
-Good tip. I haven't use composite for years, as US-intl with dead keys is
-enough for 99.999% of my needs.=20
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
 
-Btw, at least on Fedora with Mate, Composite is disabled by default. It has
-to be enabled first using the same tool that allows changing the Keyboard
-layout[1].
+> ---
+>   drivers/iio/light/si1133.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/light/si1133.c b/drivers/iio/light/si1133.c
+> index c280b4195003..fd302480262b 100644
+> --- a/drivers/iio/light/si1133.c
+> +++ b/drivers/iio/light/si1133.c
+> @@ -978,11 +978,11 @@ static int si1133_validate_ids(struct iio_dev *iio_dev)
+>   		return err;
+>   
+>   	dev_info(&iio_dev->dev,
+> -		 "Device ID part %#02hhx rev %#02hhx mfr %#02hhx\n",
+> +		 "Device ID part %#02x rev %#02x mfr %#02x\n",
+>   		 part_id, rev_id, mfr_id);
+>   	if (part_id != SI1133_PART_ID) {
+>   		dev_err(&iio_dev->dev,
+> -			"Part ID mismatch got %#02hhx, expected %#02x\n",
+> +			"Part ID mismatch got %#02x, expected %#02x\n",
+>   			part_id, SI1133_PART_ID);
+>   		return -ENODEV;
+>   	}
+> 
 
-Yet, typing an EN DASH for example, would be "<composite>--.", with is 4
-keystrokes instead of just two ('--'). It means twice the effort ;-)
-
-[1] KDE, GNome, Mate, ... have different ways to enable it and to=20
-    select what key would be considered <composite>:
-
-	https://dry.sailingissues.com/us-international-keyboard-layout.html
-	https://help.ubuntu.com/community/ComposeKey
-
-Thanks,
-Mauro

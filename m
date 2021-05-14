@@ -2,181 +2,192 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 847243804F5
-	for <lists+linux-iio@lfdr.de>; Fri, 14 May 2021 10:17:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8727F38050D
+	for <lists+linux-iio@lfdr.de>; Fri, 14 May 2021 10:21:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231454AbhENIS3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 14 May 2021 04:18:29 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:3758 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229654AbhENIS1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 May 2021 04:18:27 -0400
-Received: from dggems705-chm.china.huawei.com (unknown [172.30.72.58])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FhLrt2vd4zqTrp;
-        Fri, 14 May 2021 16:13:50 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- dggems705-chm.china.huawei.com (10.3.19.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Fri, 14 May 2021 16:17:14 +0800
-Received: from localhost (10.52.120.239) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2176.2; Fri, 14 May
- 2021 09:17:07 +0100
-Date:   Fri, 14 May 2021 09:15:20 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Oleksij Rempel <o.rempel@pengutronix.de>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        "Pengutronix Kernel Team" <kernel@pengutronix.de>,
-        David Jander <david@protonic.nl>,
-        "Robin van der Gracht" <robin@protonic.nl>,
-        <linux-iio@vger.kernel.org>,
-        "Lars-Peter Clausen" <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "Dmitry Torokhov" <dmitry.torokhov@gmail.com>
-Subject: Re: [PATCH v6 0/3] mainline ti tsc2046 adc driver
-Message-ID: <20210514091520.00004930@Huawei.com>
-In-Reply-To: <20210514075731.ipxq2o4cdxd3piu3@pengutronix.de>
-References: <20210428073208.19570-1-o.rempel@pengutronix.de>
-        <20210503122818.59f50e45@jic23-huawei>
-        <20210514075731.ipxq2o4cdxd3piu3@pengutronix.de>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
+        id S233472AbhENIWk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 14 May 2021 04:22:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45708 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233416AbhENIWk (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 14 May 2021 04:22:40 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C728061408;
+        Fri, 14 May 2021 08:21:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1620980488;
+        bh=gH2wh+Hc0GOhQOIRbo/h4JAX62sDUeKs2tmsR+5ILos=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=e4qbUbfx0hxY+yj5rwe10X7fv77kQb6ZtXwJRT57564V2F/AP6l30KEqmfnQ8Z9/m
+         GbE6KTSFaLVgK/IALz8lgNCCJI09Wv6ypJxw7X8+NYsSH+qLTaA3rBVUJFbnXj6RkO
+         OLP+toeaBJ59mDypgIfhUX1EfHY2OFa2Ex63sriWaBCbSg8WSO+y0qdrgc5mMfEUKi
+         zoIKuKJCbIWchz7V1P1kNvQQPYr/hVEIXMXwl9v4IpEIdTp9mOKu3ZsGi5lbDjocf7
+         LN9AhGRwhMXdDuYb3SF+qI1QUoGfgKM56pIxwAOv5jsDOpM5r9sAA4fr4BFVLy6RmQ
+         IhAi7M7Jw2dRw==
+Date:   Fri, 14 May 2021 10:21:18 +0200
+From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To:     David Woodhouse <dwmw2@infradead.org>
+Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        Mali DP Maintainers <malidp@foss.arm.com>,
+        alsa-devel@alsa-project.org, coresight@lists.linaro.org,
+        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+        intel-wired-lan@lists.osuosl.org, keyrings@vger.kernel.org,
+        kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-sgx@vger.kernel.org, linux-usb@vger.kernel.org,
+        mjpeg-users@lists.sourceforge.net, netdev@vger.kernel.org,
+        rcu@vger.kernel.org
+Subject: Re: [PATCH v2 00/40] Use ASCII subset instead of UTF-8 alternate
+ symbols
+Message-ID: <20210514102118.1b71bec3@coco.lan>
+In-Reply-To: <d2fed242fbe200706b8d23a53512f0311d900297.camel@infradead.org>
+References: <cover.1620823573.git.mchehab+huawei@kernel.org>
+        <d2fed242fbe200706b8d23a53512f0311d900297.camel@infradead.org>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.120.239]
-X-ClientProxiedBy: lhreml706-chm.china.huawei.com (10.201.108.55) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 14 May 2021 09:57:31 +0200
-Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+Em Wed, 12 May 2021 18:07:04 +0100
+David Woodhouse <dwmw2@infradead.org> escreveu:
 
-> Hi Jonathan,
-> 
-> On Mon, May 03, 2021 at 12:28:18PM +0100, Jonathan Cameron wrote:
-> > On Wed, 28 Apr 2021 09:32:05 +0200
-> > Oleksij Rempel <o.rempel@pengutronix.de> wrote:
-> > 
-> > Hi Oleksij,
-> > 
-> > Series applied with the tweaks as per review to patch 3.  Please
-> > check I didn't mess those up though.
-> > 
-> > Applied to the togreg branch of iio.git and pushed out as testing for
-> > the autobuilders to poke at it.  
-> 
-> It works. Thx!
-> 
-> Now i need to make configurable iio buffer layout
-> 
-> for the drivers/input/touchscreen/resistive-adc-touch.c
-> 
-> Do you have ideas what is the proper way to make it?
+> On Wed, 2021-05-12 at 14:50 +0200, Mauro Carvalho Chehab wrote:
+> > Such conversion tools - plus some text editor like LibreOffice  or simi=
+lar  - have
+> > a set of rules that turns some typed ASCII characters into UTF-8 altern=
+atives,
+> > for instance converting commas into curly commas and adding non-breakab=
+le
+> > spaces. All of those are meant to produce better results when the text =
+is
+> > displayed in HTML or PDF formats. =20
+>=20
+> And don't we render our documentation into HTML or PDF formats?=20
 
-So IIRC the issue here was making the ordering of the channels
-more flexible?  
+Yes.
 
-We should be able to do that using the names in DT.
+> Are
+> some of those non-breaking spaces not actually *useful* for their
+> intended purpose?
 
-Right now the touch screen driver just grabs them all an assumes
-a particular order, but if you look at the binding it requires naming
+No.
 
-https://elixir.bootlin.com/linux/latest/source/Documentation/devicetree/bindings/input/touchscreen/resistive-adc-touch.txt
+The thing is: non-breaking space can cause a lot of problems.
 
-That naming should associate 'which channel' is which when
-we then do the get_all() in the driver.  If it matches the existing
-layout, nothing to do, but if we have something more complex then
-we can do data shuffling etc in the touchscreen driver to compensate
-for that.
+We even had to disable Sphinx usage of non-breaking space for
+PDF outputs, as this was causing bad LaTeX/PDF outputs.
 
-A useful starting point is probably to do a yaml conversion of
-that binding doc.  Then follow that up by making the doc more flexible
-so that it copes with what you want to do. 
+See, commit: 3b4c963243b1 ("docs: conf.py: adjust the LaTeX document output=
+")
 
-That should give us a good basis on which to then implement the
-handling in driver (which is often easier than defining the binding!)
+The afore mentioned patch disables Sphinx default behavior of
+using NON-BREAKABLE SPACE on literal blocks and strings, using this
+special setting: "parsedliteralwraps=3Dtrue".
 
-Jonathan
+When NON-BREAKABLE SPACE were used on PDF outputs, several parts of=20
+the media uAPI docs were violating the document margins by far,
+causing texts to be truncated.
 
-> 
-> Regards,
-> Oleksij
-> 
-> > 
-> > Jonathan
-> >   
-> > > changes v6:
-> > > - get blessing from Dmitry Torokhov
-> > > - rebase against latest iio/testing
-> > > - use simple name for iio_dev->name
-> > > - use Jonathan's version for oversampling-ratio description 
-> > > 
-> > > changes v5:
-> > > - remove type for the settling-time-us property
-> > > 
-> > > changes v4:
-> > > - spell fixes
-> > > - add more comments
-> > > - make code more readable
-> > > - move scan_buf to the priv
-> > > - use FIELD_GET to extract ADC data
-> > > - make some multi line code as one line
-> > > - do not use atomic API for trig_more_count
-> > > - fix build warning on 64bit system
-> > > - add NULL check for the devm_kasprintf()
-> > > - use return devm_iio_device_register(), without additional error
-> > >   printing.
-> > > 
-> > > changes v3:
-> > > - different spell fixes
-> > > - add some notes about driver structure
-> > > - rename the trigger to point on the touchscreen nature of it
-> > > - rename DT binding to oversampling-ratio
-> > > - make sure we have some defaults in case no DT property is set
-> > > 
-> > > changes v2:
-> > > - rework and extend DT binding properties
-> > > - remove touchscreen related code from the IIO ADC driver
-> > > - make trigger be active longer then IRQ is requesting. This is needed
-> > >   to get "inactive" samples
-> > > - make oversampling and settle time configurable
-> > > 
-> > > TI TSC2046 is a touchscreen controller based on 8 channel ADC. Since most of
-> > > this ADC based touchscreen controller share same set of challenges, it
-> > > is better keep then as simple IIO ADC devices attached to a generic
-> > > resistive-adc-touch driver.
-> > > 
-> > > This driver can replace drivers/input/touchscreen/ads7846.c and has
-> > > following advantages over it:
-> > > - less code to maintain
-> > > - shared code paths (resistive-adc-touch, iio-hwmon, etc)
-> > > - can be used as plain IIO ADC to investigate signaling issues or test
-> > >   real capacity of the plates and attached low-pass filters
-> > >   (or use the touchscreen as a microphone if you like ;) )
-> > > 
-> > > Oleksij Rempel (3):
-> > >   dt-bindings:iio:adc: add generic settling-time-us and
-> > >     oversampling-ratio channel properties
-> > >   dt-bindings:iio:adc: add documentation for TI TSC2046 controller
-> > >   iio: adc: add ADC driver for the TI TSC2046 controller
-> > > 
-> > >  .../devicetree/bindings/iio/adc/adc.yaml      |  12 +
-> > >  .../bindings/iio/adc/ti,tsc2046.yaml          | 115 +++
-> > >  MAINTAINERS                                   |   8 +
-> > >  drivers/iio/adc/Kconfig                       |  12 +
-> > >  drivers/iio/adc/Makefile                      |   1 +
-> > >  drivers/iio/adc/ti-tsc2046.c                  | 720 ++++++++++++++++++
-> > >  6 files changed, 868 insertions(+)
-> > >  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,tsc2046.yaml
-> > >  create mode 100644 drivers/iio/adc/ti-tsc2046.c
-> > >   
-> > 
-> >   
-> 
+So, please **don't add NON-BREAKABLE SPACE**, unless you test
+(and keep testing it from time to time) if outputs on all
+formats are properly supporting it on different Sphinx versions.
 
+-
+
+Also, most of those came from conversion tools, together with other
+eccentricities, like the usage of U+FEFF (BOM) character at the
+start of some documents. The remaining ones seem to came from=20
+cut-and-paste.
+
+For instance,  bibliographic references (there are a couple of
+those on media) sometimes have NON-BREAKABLE SPACE. I'm pretty
+sure that those came from cut-and-pasting the document titles
+from their names at the original PDF documents or web pages that
+are referenced.
+
+> > While it is perfectly fine to use UTF-8 characters in Linux, and specia=
+lly at
+> > the documentation,  it is better to  stick to the ASCII subset  on such
+> > particular case,  due to a couple of reasons:
+> >=20
+> > 1. it makes life easier for tools like grep; =20
+>=20
+> Barely, as noted, because of things like line feeds.
+
+You can use grep with "-z" to seek for multi-line strings(*), Like:
+
+	$ grep -Pzl 'grace period started,\s*then' $(find Documentation/ -type f)
+	Documentation/RCU/Design/Data-Structures/Data-Structures.rst
+
+(*) Unfortunately, while "git grep" also has a "-z" flag, it
+    seems that this is (currently?) broken with regards of handling multili=
+nes:
+
+	$ git grep -Pzl 'grace period started,\s*then'
+	$
+
+> > 2. they easier to edit with the some commonly used text/source
+> >    code editors. =20
+>=20
+> That is nonsense. Any but the most broken and/or anachronistic
+> environments and editors will be just fine.
+
+Not really.
+
+I do use a lot of UTF-8 here, as I type texts in Portuguese, but I rely
+on the US-intl keyboard settings, that allow me to type as "'a" for =C3=A1.
+However, there's no shortcut for non-Latin UTF-codes, as far as I know.
+
+So, if would need to type a curly comma on the text editors I normally=20
+use for development (vim, nano, kate), I would need to cut-and-paste
+it from somewhere[1].
+
+[1] If I have a table with UTF-8 codes handy, I could type the UTF-8=20
+    number manually... However, it seems that this is currently broken=20
+    at least on Fedora 33 (with Mate Desktop and US intl keyboard with=20
+    dead keys).
+
+    Here, <CTRL><SHIFT>U is not working. No idea why. I haven't=20
+    test it for *years*, as I din't see any reason why I would
+    need to type UTF-8 characters by numbers until we started
+    this thread.
+=20
+In practice, on the very rare cases where I needed to write
+non-Latin utf-8 chars (maybe once in a year or so, Like when I
+would need to use a Greek letter or some weird symbol), there changes
+are high that I wouldn't remember its UTF-8 code.
+
+So, If I need to spend time to seek for an specific symbol, after
+finding it, I just cut-and-paste it.
+
+But even in the best case scenario where I know the UTF-8 and
+<CTRL><SHIFT>U works, if I wanted to use, for instance, a curly
+comma, the keystroke sequence would be:
+
+	<CTRL><SHIFT>U201csome string<CTRL><SHIFT>U201d
+
+That's a lot harder than typing and has a higher chances of
+mistakenly add a wrong symbol than just typing:
+
+	"some string"
+
+Knowing that both will produce *exactly* the same output, why
+should I bother doing it the hard way?
+
+-
+
+Now, I'm not arguing that you can't use whatever UTF-8 symbol you
+want on your docs. I'm just saying that, now that the conversion=20
+is over and a lot of documents ended getting some UTF-8 characters
+by accident, it is time for a cleanup.
+
+Thanks,
+Mauro

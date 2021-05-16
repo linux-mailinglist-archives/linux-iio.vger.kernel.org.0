@@ -2,73 +2,110 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C038381D98
-	for <lists+linux-iio@lfdr.de>; Sun, 16 May 2021 11:16:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46557381DA0
+	for <lists+linux-iio@lfdr.de>; Sun, 16 May 2021 11:21:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234436AbhEPJRs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 May 2021 05:17:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52246 "EHLO mail.kernel.org"
+        id S231959AbhEPJXM convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Sun, 16 May 2021 05:23:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53066 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234423AbhEPJRr (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 16 May 2021 05:17:47 -0400
+        id S231187AbhEPJXM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 16 May 2021 05:23:12 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 16A0C610C9;
-        Sun, 16 May 2021 09:16:30 +0000 (UTC)
-Date:   Sun, 16 May 2021 10:17:42 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 949036023B;
+        Sun, 16 May 2021 09:21:55 +0000 (UTC)
+Date:   Sun, 16 May 2021 10:23:06 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
-        <gregkh@suse.de>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 -next] iio: adc: ad7793: Add missing error code in
- ad7793_setup()
-Message-ID: <20210516101742.7ff1d3ed@jic23-huawei>
-In-Reply-To: <20210514080254.9620-1-yuehaibing@huawei.com>
-References: <20210514080254.9620-1-yuehaibing@huawei.com>
+To:     tangbin <tangbin@cmss.chinamobile.com>
+Cc:     lars@metafoo.de, Michael.Hennerich@analog.com, knaack.h@gmx.de,
+        pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Zhang Shengju <zhangshengju@cmss.chinamobile.com>
+Subject: Re: [PATCH] iio:adc:ad7766: Fix unnecessary check in ad7766_probe()
+Message-ID: <20210516102306.4487d222@jic23-huawei>
+In-Reply-To: <05486432-25ab-0e48-c31b-148049a80732@cmss.chinamobile.com>
+References: <20210511134739.948-1-tangbin@cmss.chinamobile.com>
+        <20210513170334.479953d3@jic23-huawei>
+        <05486432-25ab-0e48-c31b-148049a80732@cmss.chinamobile.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 14 May 2021 16:02:54 +0800
-YueHaibing <yuehaibing@huawei.com> wrote:
+On Fri, 14 May 2021 14:12:45 +0800
+tangbin <tangbin@cmss.chinamobile.com> wrote:
 
-> Set error code while device ID query failed.
+> Hi Jonathan:
 > 
-> Fixes: 88bc30548aae ("IIO: ADC: New driver for AD7792/AD7793 3 Channel SPI ADC")
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> On 2021/5/14 0:03, Jonathan Cameron wrote:
+> > On Tue, 11 May 2021 21:47:39 +0800
+> > Tang Bin <tangbin@cmss.chinamobile.com> wrote:
+> >  
+> >> In the function ad7766_probe(), the return value of
+> >> devm_iio_device_register() can be zero or ret, Thus it
+> >> is unnecessary to repeated check here.
+> >>
+> >> Signed-off-by: Zhang Shengju <zhangshengju@cmss.chinamobile.com>
+> >> Signed-off-by: Tang Bin <tangbin@cmss.chinamobile.com>  
+> > Hi Tang Bin,
+> >
+> > A quick query on this sign off sequence as I'd like to check what the
+> > intended meaning is.
+> >
+> > If you both developed this patch, please use the Co-developed-by: tag
+> > to indicate that.   If Zhang Shengju wrote the patch then you sent it
+> > upstream, please fix the 'from' field on the email to reflect that.
+> >
+> > Patch itself is good.  
+> 
+> Thanks for your reply, it's my mistake, this place should use:
+> 
+>      Co-developed-by: Zhang Shengju <zhangshengju@cmss.chinamobile.com>
 
-This one is going to be 'interesting' as that bit of code has changed a lot
-since the fixes tag so chances are we may need to do a manual backport (or several!)
+Thanks for clarifying that.
 
-Applied to the fixes-togreg branch of iio.git.
+Applied to the togreg branch of iio.git and pushed out as testing for
+the autobuilders to see if we missed anything.
 
 Thanks,
 
 Jonathan
 
-
-> ---
-> v2: use ENODEV instead of EINVAL
 > 
->  drivers/iio/adc/ad7793.c | 1 +
->  1 file changed, 1 insertion(+)
+> Thanks
 > 
-> diff --git a/drivers/iio/adc/ad7793.c b/drivers/iio/adc/ad7793.c
-> index 5e980a06258e..b4f9ac3838e1 100644
-> --- a/drivers/iio/adc/ad7793.c
-> +++ b/drivers/iio/adc/ad7793.c
-> @@ -279,6 +279,7 @@ static int ad7793_setup(struct iio_dev *indio_dev,
->  	id &= AD7793_ID_MASK;
->  
->  	if (id != st->chip_info->id) {
-> +		ret = -ENODEV;
->  		dev_err(&st->sd.spi->dev, "device ID query failed\n");
->  		goto out;
->  	}
+> Tang Bin
+> 
+> 
+> > Thanks,
+> >
+> > Jonathan
+> >  
+> >> ---
+> >>   drivers/iio/adc/ad7766.c | 5 +----
+> >>   1 file changed, 1 insertion(+), 4 deletions(-)
+> >>
+> >> diff --git a/drivers/iio/adc/ad7766.c b/drivers/iio/adc/ad7766.c
+> >> index b6b6765be..acf56e987 100644
+> >> --- a/drivers/iio/adc/ad7766.c
+> >> +++ b/drivers/iio/adc/ad7766.c
+> >> @@ -291,10 +291,7 @@ static int ad7766_probe(struct spi_device *spi)
+> >>   	if (ret)
+> >>   		return ret;
+> >>   
+> >> -	ret = devm_iio_device_register(&spi->dev, indio_dev);
+> >> -	if (ret)
+> >> -		return ret;
+> >> -	return 0;
+> >> +	return devm_iio_device_register(&spi->dev, indio_dev);
+> >>   }
+> >>   
+> >>   static const struct spi_device_id ad7766_id[] = {  
+> 
+> 
 

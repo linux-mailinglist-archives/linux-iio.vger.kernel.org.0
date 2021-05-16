@@ -2,31 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE4E4381DA8
-	for <lists+linux-iio@lfdr.de>; Sun, 16 May 2021 11:29:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B89BE381DAB
+	for <lists+linux-iio@lfdr.de>; Sun, 16 May 2021 11:35:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234590AbhEPJa6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 May 2021 05:30:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55088 "EHLO mail.kernel.org"
+        id S234974AbhEPJgd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 May 2021 05:36:33 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57392 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231187AbhEPJa5 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 16 May 2021 05:30:57 -0400
+        id S234937AbhEPJgd (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 16 May 2021 05:36:33 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CCD1E61139;
-        Sun, 16 May 2021 09:29:41 +0000 (UTC)
-Date:   Sun, 16 May 2021 10:30:53 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 162C761028;
+        Sun, 16 May 2021 09:35:15 +0000 (UTC)
+Date:   Sun, 16 May 2021 10:36:28 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Joe Sandom <joe.g.sandom@gmail.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH 1/2] iio: light: tsl2591: fix some signedness bugs
-Message-ID: <20210516103053.35528ab4@jic23-huawei>
-In-Reply-To: <YJ52r1XZ44myD9Xx@mwanda>
-References: <YJ52r1XZ44myD9Xx@mwanda>
+To:     Nathan Chancellor <nathan@kernel.org>
+Cc:     Arnd Bergmann <arnd@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Maxime =?UTF-8?B?Um91c3Npbi1Cw6lsYW5nZXI=?= 
+        <maxime.roussinbelanger@gmail.com>,
+        Jean-Francois Dagenais <jeff.dagenais@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        clang-built-linux@googlegroups.com
+Subject: Re: [PATCH] iio: si1133: fix format string warnings
+Message-ID: <20210516103628.2cf899a0@jic23-huawei>
+In-Reply-To: <7afc367b-8103-9d48-1bfe-d505d86553b9@kernel.org>
+References: <20210514135927.2926482-1-arnd@kernel.org>
+        <7afc367b-8103-9d48-1bfe-d505d86553b9@kernel.org>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -35,50 +42,60 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 14 May 2021 16:10:07 +0300
-Dan Carpenter <dan.carpenter@oracle.com> wrote:
+On Fri, 14 May 2021 10:45:02 -0700
+Nathan Chancellor <nathan@kernel.org> wrote:
 
-> These variables need to be int for the error handling to work.
+> On 5/14/2021 6:59 AM, Arnd Bergmann wrote:
+> > From: Arnd Bergmann <arnd@arndb.de>
+> > 
+> > clang complains about multiple instances of printing an integer
+> > using the %hhx format string:
+> > 
+> > drivers/iio/light/si1133.c:982:4: error: format specifies type 'unsigned char' but the argument has type 'unsigned int' [-Werror,-Wformat]
+> >                   part_id, rev_id, mfr_id);
+> >                   ^~~~~~~
+> > 
+> > Print them as a normal integer instead, leaving the "#02"
+> > length modifier.
+> > 
+> > Fixes: e01e7eaf37d8 ("iio: light: introduce si1133")
+> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>  
 > 
-> Fixes: f053d4e748ce ("iio: light: Added AMS tsl2591 driver implementation")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Indeed, use of %hx and %hhx have been discouraged since commit 
+> cbacb5ab0aa0 ("docs: printk-formats: Stop encouraging use of unnecessary 
+> %h[xudi] and %hh[xudi]").
+> 
+> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
 
-Both applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to poke at it.
+Applied to the togreg branch of iio.git and pushed out as testing
+for the autobuilders to poke at it.
 
-As such, there is still a bit of time if anyone else wants to review
-these / give tags etc, before I push it out as a non rebasing branch.
-
-thanks,
+Thanks,
 
 Jonathan
-
-> ---
->  drivers/iio/light/tsl2591.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/iio/light/tsl2591.c b/drivers/iio/light/tsl2591.c
-> index 2bdae388ff01..26e3cb6c4ff8 100644
-> --- a/drivers/iio/light/tsl2591.c
-> +++ b/drivers/iio/light/tsl2591.c
-> @@ -213,7 +213,7 @@ static int tsl2591_gain_to_multiplier(const u8 als_gain)
->  	}
->  }
->  
-> -static u8 tsl2591_multiplier_to_gain(const u32 multiplier)
-> +static int tsl2591_multiplier_to_gain(const u32 multiplier)
->  {
->  	switch (multiplier) {
->  	case TSL2591_CTRL_ALS_LOW_GAIN_MULTIPLIER:
-> @@ -783,8 +783,8 @@ static int tsl2591_write_raw(struct iio_dev *indio_dev,
->  			     int val, int val2, long mask)
->  {
->  	struct tsl2591_chip *chip = iio_priv(indio_dev);
-> -	u32 int_time;
-> -	u8 gain;
-> +	int int_time;
-> +	int gain;
->  	int ret;
->  
->  	mutex_lock(&chip->als_mutex);
+> > ---
+> >   drivers/iio/light/si1133.c | 4 ++--
+> >   1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/iio/light/si1133.c b/drivers/iio/light/si1133.c
+> > index c280b4195003..fd302480262b 100644
+> > --- a/drivers/iio/light/si1133.c
+> > +++ b/drivers/iio/light/si1133.c
+> > @@ -978,11 +978,11 @@ static int si1133_validate_ids(struct iio_dev *iio_dev)
+> >   		return err;
+> >   
+> >   	dev_info(&iio_dev->dev,
+> > -		 "Device ID part %#02hhx rev %#02hhx mfr %#02hhx\n",
+> > +		 "Device ID part %#02x rev %#02x mfr %#02x\n",
+> >   		 part_id, rev_id, mfr_id);
+> >   	if (part_id != SI1133_PART_ID) {
+> >   		dev_err(&iio_dev->dev,
+> > -			"Part ID mismatch got %#02hhx, expected %#02x\n",
+> > +			"Part ID mismatch got %#02x, expected %#02x\n",
+> >   			part_id, SI1133_PART_ID);
+> >   		return -ENODEV;
+> >   	}
+> >   
+> 
 

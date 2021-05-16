@@ -2,154 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A12FC381FCB
-	for <lists+linux-iio@lfdr.de>; Sun, 16 May 2021 18:25:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43F97382031
+	for <lists+linux-iio@lfdr.de>; Sun, 16 May 2021 19:26:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230365AbhEPQ0Y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 May 2021 12:26:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50380 "EHLO mail.kernel.org"
+        id S229632AbhEPR1c (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 May 2021 13:27:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59596 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230032AbhEPQ0Y (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 16 May 2021 12:26:24 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5B79F61026;
-        Sun, 16 May 2021 16:25:06 +0000 (UTC)
-Date:   Sun, 16 May 2021 17:26:18 +0100
+        id S229610AbhEPR1b (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 16 May 2021 13:27:31 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D5EAA6113C;
+        Sun, 16 May 2021 17:26:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1621185976;
+        bh=BU9n8k/YaTKmh8gVDCPdYF1vdSQt6lrt4nPok7J6Zw8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ttFT0PQgyJlAfr86MUoyBJnsWZSKNsrs1w4R1mhzu+Xp2NT+Tgc5e5hkmx1KM7mMQ
+         t9vcThfriR+D15O9tXjaJZaYO7yeIONpYX+d2zkLjmZIvfO76rAlCJmfJWTz0I/tkG
+         2GiYKvsmbnF8sPHl4MHg8/RoAQh1fop2vVXCfMrq3zgrYwTT64sEuT170xoDP65+Q5
+         USeW3o5osNiunQW42xZ5+09UWGa5BDYKSnTX1hVlc4Q4rKtzR7l1TaqsebVsgl3R4z
+         Mf4HrIL+ggxK3T9xVY8/tlFOx2hQxpUSgs6LR38qqOxr/oyE56yMHRIQYs/BEQKPWQ
+         PPbccrPlxDVgw==
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Liam Beguin <liambeguin@gmail.com>, jdelvare@suse.com,
-        lars@metafoo.de, pmeerw@pmeerw.net, linux-hwmon@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, robh+dt@kernel.org,
-        Peter Rosin <peda@axentia.se>
-Subject: Re: [RFC PATCH v1 0/2] hwmon: (iio_hwmon) optionally force iio
- channel type
-Message-ID: <20210516172618.2d7ad168@jic23-huawei>
-In-Reply-To: <e56146c5-2bff-3a6d-b54e-fd40993f82aa@roeck-us.net>
-References: <20210516044315.116290-1-liambeguin@gmail.com>
-        <20210516100631.7310a7bb@jic23-huawei>
-        <CBEREZMZ2Z8U.13BH8G7RKPPL7@shaak>
-        <e56146c5-2bff-3a6d-b54e-fd40993f82aa@roeck-us.net>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+To:     linux-iio@vger.kernel.org
+Cc:     Alexandru Ardelean <aardelean@deviqon.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 0/8] iio: adc: Maxim and TI ADC driver cleanups
+Date:   Sun, 16 May 2021 18:25:12 +0100
+Message-Id: <20210516172520.1398835-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 16 May 2021 08:54:06 -0700
-Guenter Roeck <linux@roeck-us.net> wrote:
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-> On 5/16/21 8:02 AM, Liam Beguin wrote:
-> > Hi Jonathan,
-> > 
-> > On Sun May 16, 2021 at 5:06 AM EDT, Jonathan Cameron wrote:  
-> >> On Sun, 16 May 2021 00:43:13 -0400
-> >> Liam Beguin <liambeguin@gmail.com> wrote:
-> >>  
-> >>> Add a devicetree binding to optionally force a different IIO channel
-> >>> type.
-> >>>
-> >>> This is useful in cases where ADC channels are connected to a circuit
-> >>> that represent another unit such as a temperature or a current.
-> >>>
-> >>> `channel-types` was chosen instead of `io-channel-types` as this is not
-> >>> part of the iio consumer bindings.
-> >>>
-> >>> In the current form, this patch does what it's intended to do:
-> >>> change the unit displayed by `sensors`, but feels like the wrong way to
-> >>> address the problem.
-> >>>
-> >>> Would it be possible to force the type of different IIO channels for
-> >>> this kind of use case with a devicetree binding from the IIO subsystem?
-> >>>
-> >>> It would be convenient to do it within the IIO subsystem to have the
-> >>> right unit there too.
-> >>>
-> >>> Thanks for your time,
-> >>> Liam  
-> >>
-> >> Hi Liam,
-> >>
-> >> +CC Peter for AFE part.
-> >>
-> >> It's an interesting approach, but I would suggest we think about this
-> >> a different way.
-> >>
-> >> Whenever a channel is being used to measure something 'different' from
-> >> what it actually measures (e.g. a voltage ADC measuring a current) that
-> >> reflects their being some analog component involved.
-> >> If you look at drivers/iio/afe/iio-rescale.c you can see the approach
-> >> we currently use to handle this.  
-> > 
-> > Many thanks for pointing out the AFE code. That look like what I was
-> > hoping to accomplish, but in a much better way.
-> >   
-> >>
-> >> Effectively what you add to devicetree is a consumer of the ADC channel
-> >> which in turn provides services to other devices. For this current case
-> >> it would be either a current-sense-amplifier or a current-sense-shunt
-> >> depending on what the analog front end looks like. We have to describe
-> >> the characteristics of that front end which isn't something that can
-> >> be done via a simple channel type.
-> >>  
-> > 
-> > Understood. My original intention was to use sensors.conf to do the
-> > conversions and take into accounts those parameters.
-> >   
-> >> That afe consumer device can then provide services to another consumer
-> >> (e.g. iio-hwmon) which work for your usecase.
-> >>
-> >> The main limitation of this approach currently is you end up with
-> >> one device per channel. That could be improved upon if you have a
-> >> usecase
-> >> where it matters.
-> >>
-> >> I don't think we currently have an equivalent for temperature sensing
-> >> but it would be easy enough to do something similar.  
-> > 
-> > Wonderful, thanks again for pointing out the AFE!
-> >   
-> 
-> Please don't reinvent the ntc_thermistor driver.
-Agreed, I'd forgotten it existed :(  Had a feeling we'd solved that problem before
-but couldn't remember the name of the driver.
+A few random bits of tidying up for a Sunday evening.
+Mostly devm stuff, but other things in here as well that came up whilst
+I was looking.
 
-The afe driver already deals with current / voltage scaling and conversion
-for common analog circuits. Potential dividers, current shunts etc, but they
-are all the linear cases IIRC.
+Note this was a fairly random selection, so isn't implying there
+aren't similar cleanups to be done in other TI and Maxim drivers.
+(there definitely are plenty more of these if anyone is bored ;)
 
-ntc_thermistor deals with the much more complex job of dealing with a thermistor.
+Cc: Alexandru Ardelean <aardelean@deviqon.com>
 
-Thanks,
+Jonathan Cameron (8):
+  iio: adc: max11100: Use get_unaligned_be16() rather than opencoding.
+  iio: adc: max11100: Use devm_ functions for rest of probe()
+  iio: adc: max1118: Use devm_ managed functions for all of probe
+  iio: adc: max1118: Avoid jumping back and forth between spi and iio
+    structures
+  iio: adc: ti-adc081c: Use devm managed functions for all of probe()
+  iio: adc: ti-adc0832: Use devm managed functions for all of probe()
+  iio: adc: ti-adc108s102: Use devm managed functions for all of probe()
+  iio: adc: ti-adc161s626: Use devm managed functions for all of probe.
 
-Jonathan
+ drivers/iio/adc/max11100.c      | 32 ++++++----------
+ drivers/iio/adc/max1118.c       | 68 ++++++++++++---------------------
+ drivers/iio/adc/ti-adc081c.c    | 43 +++++++--------------
+ drivers/iio/adc/ti-adc0832.c    | 39 ++++++-------------
+ drivers/iio/adc/ti-adc108s102.c | 45 ++++++++--------------
+ drivers/iio/adc/ti-adc161s626.c | 50 +++++++++---------------
+ 6 files changed, 94 insertions(+), 183 deletions(-)
 
-> 
-> Thanks,
-> Guenter
-> 
-> > Liam
-> >   
-> >>
-> >> Jonathan
-> >>
-> >>  
-> >>>
-> >>> Liam Beguin (2):
-> >>>    hwmon: (iio_hwmon) optionally force iio channel type
-> >>>    dt-bindings: hwmon: add iio-hwmon bindings
-> >>>
-> >>>   .../devicetree/bindings/hwmon/iio-hwmon.yaml  | 41 +++++++++++++++++++
-> >>>   drivers/hwmon/iio_hwmon.c                     |  2 +
-> >>>   2 files changed, 43 insertions(+)
-> >>>   create mode 100644 Documentation/devicetree/bindings/hwmon/iio-hwmon.yaml
-> >>>
-> >>>
-> >>> base-commit: 9f4ad9e425a1d3b6a34617b8ea226d56a119a717  
-> >   
-> 
+-- 
+2.31.1
 

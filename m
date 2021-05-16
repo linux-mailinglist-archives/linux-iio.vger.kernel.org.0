@@ -2,261 +2,125 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B328381EC3
-	for <lists+linux-iio@lfdr.de>; Sun, 16 May 2021 14:31:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 678D9381F5C
+	for <lists+linux-iio@lfdr.de>; Sun, 16 May 2021 16:55:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233280AbhEPMc0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 May 2021 08:32:26 -0400
-Received: from bmail1.ministro.hu ([5.249.150.236]:55224 "EHLO
-        bmail1.ministro.hu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233207AbhEPMcX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 May 2021 08:32:23 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by bmail1.ministro.hu (Postfix) with ESMTP id 10E8A123FB1;
-        Sun, 16 May 2021 14:31:04 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ministro.hu;
-        s=201804; t=1621168264;
-        bh=gItPiLbgsq5Pc2gLAyoyfRNvG8QZDPfhQdAxTT8wlAw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=bUnvVREEelzZF3+WS625AK0Kvt6qnlFyIhifoZahs4DH1Z8Q7576UVPGy0CM4V1uB
-         /vA6LDzDqLD19iMXejCu+OpcJhYOnOjq/ZTd0A4kAqq8AsXIb0kXQLvm1a9KBaGPjF
-         nVtvcQs1PddCxo4S2krxt3q32K9UVI1kKFgmAhIo9KHK9GPUp3TX3K2qZJqR1Gm2sd
-         lEwny7hYVTIrpxsSa/40d/CzpKphFut/3SUSSUyMJFCYTi4JeG8L1I4syyZmRaJyU8
-         FmW7j/h7/ReNySjCI5QixDexa5d3E4tIKaYD1ZOjCxlQR38Lft+mS+V+rmsrlMtUEh
-         jJYJBom01CRHQ==
-X-Virus-Scanned: Debian amavisd-new at ministro.hu
-Received: from bmail1.ministro.hu ([127.0.0.1])
-        by localhost (bmail1.ministro.hu [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id Tn3TxwOs_J-k; Sun, 16 May 2021 14:30:31 +0200 (CEST)
-Received: from dev (localhost [127.0.0.1])
-        by bmail1.ministro.hu (Postfix) with ESMTPSA id 929B1123FA7;
-        Sun, 16 May 2021 14:30:30 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ministro.hu;
-        s=201804; t=1621168231;
-        bh=gItPiLbgsq5Pc2gLAyoyfRNvG8QZDPfhQdAxTT8wlAw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=jhyPaxNPEGcZArozbdNC7ixV+F/JWcNmU8GW/R/iwFudbyYWx0gbH1YvBmZWxvSZO
-         uZ/t0ou1cVDHe38yAYPAJBGXuM9io6V6QtLbB1HMMbxb9SEtMtNMHjPhdc4pNaAchz
-         LK/vlbe4E1EEHUDMOwYD+B2vJEhF9o/ao5AO8pi+Ok06+spsNBOSQW5VsS9NIrklde
-         urQxwJuBj6JIRvwgBpEBy1w+KSuV8QDIJRUwPuNVDpeB9iOq5RCaZf49wvkegdw13O
-         KUeCl7TTLGWx/scgNRdfRwzEo68UbxcbOBKQ6qMFCLsGUc0d6HGz0v1SCOw2YHZSEk
-         eaTDpSt+GRaeQ==
-Date:   Sun, 16 May 2021 12:30:28 +0000
-From:   =?iso-8859-1?Q?J=F3zsef_Horv=E1th?= <info@ministro.hu>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Oleksij Rempel <linux@rempel-privat.de>,
-        Saravanan Sekar <sravanhome@gmail.com>,
-        Tomislav Denis <tomislav.denis@avl.com>,
-        Gene Chen <gene_chen@richtek.com>,
-        Alex Dewar <alex.dewar90@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] dt-bindings: iio: adc: devicetree bindings for
- texas instruments ads7142
-Message-ID: <20210516123027.GA16211@dev>
-References: <9f9c64ca70f80d8a024ea66e3963350e35f27c1d.1621105931.git.info@ministro.hu>
- <a8200f9ce6a4b3fdf5a9b1e61bbc7c4ced8361b6.1621105931.git.info@ministro.hu>
- <20210516105720.2b9cf46a@jic23-huawei>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210516105720.2b9cf46a@jic23-huawei>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+        id S234392AbhEPO47 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 May 2021 10:56:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37680 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234382AbhEPO46 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 May 2021 10:56:58 -0400
+Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com [IPv6:2607:f8b0:4864:20::734])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08DEDC061573;
+        Sun, 16 May 2021 07:55:43 -0700 (PDT)
+Received: by mail-qk1-x734.google.com with SMTP id 197so3453242qkl.12;
+        Sun, 16 May 2021 07:55:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:content-transfer-encoding:date:message-id:cc:subject
+         :from:to:references:in-reply-to;
+        bh=eHswci81bzxhd6oQF655OE4yXzxna+rlMF6/uXVPvIU=;
+        b=eq05b9vKUtajtauFWC7moRZEv0qkx0aIaDm20UqPYnC7OwWSFY7E37zIEuVJQ9LW8L
+         D9+JHTwWKde7UHj6ZbW0Hkz/u1az8qnXSHz6vxsadPZMfkqOjEqzDzxWytLryd0NZcMC
+         whFCIry9iQouwaggHFNN0GEz1OdlY1jxuO5290NcGZ1JVLFkAbeUmDcFbqzU7zkp85pY
+         7SkDL/umCmwjkQ6UCc5Z7r2o0y+FHP2NclGxUam6AMZxx/DP8pXBZRLltg+Dgh/WoKOc
+         w5dBHPNwBIOO2g5wLS4lhspO15MpHBJzEa1TC2fGzQh6L8E5hCPMMTUFU+wMLykqoSq0
+         FEzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:content-transfer-encoding:date
+         :message-id:cc:subject:from:to:references:in-reply-to;
+        bh=eHswci81bzxhd6oQF655OE4yXzxna+rlMF6/uXVPvIU=;
+        b=FA5ojN4EdTWYhSAcqoytKGwfEac3wlpypTSRTsOCJYxQMjPJFULM6RIbu3QD4KdMc+
+         Lro0iRfVMaReuR2P171pMAAxxWaQqoiRVs17tvs+2HPB9zbw6b99g05NdDlJ34wevWcK
+         bVUInMTqqm5pJIA3KrraaFstX2w2iJo34nUodk4Jv5NYYwKTCEt/c3bZ871iDdzht9NM
+         lsEZnL6ChSfVOOq4puATrf/YRt5K/RVAIzEIC4H6r0JyGiRYqBD4wXGB89zlsZ4nNrrp
+         7J9byFchi1KPbSpFxHdtkBwJnmrEvyLMqJQX5EsR5bsgeJUMdU4W9h+RHYClZSSzcunm
+         f36g==
+X-Gm-Message-State: AOAM532FeZWdBH7dZ483cNxpYEaqhDFBYUa2IMq9VOpHc4JhV6dxgrZ8
+        b/D+iglORroGLf1Oc9nCDYKaktLAR/svgQ==
+X-Google-Smtp-Source: ABdhPJyIv77anuRJzOKw9Uz80BRHilgiuRYDoHd7qqfr+vTelJmEVeXTr6xtFSq5t3uVNN+YJKne4A==
+X-Received: by 2002:a37:e10b:: with SMTP id c11mr52200367qkm.152.1621176942294;
+        Sun, 16 May 2021 07:55:42 -0700 (PDT)
+Received: from localhost (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
+        by smtp.gmail.com with ESMTPSA id j1sm8325416qkk.78.2021.05.16.07.55.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 16 May 2021 07:55:41 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Sun, 16 May 2021 10:55:40 -0400
+Message-Id: <CBER9H2H2I30.25AABLQDA7CD3@shaak>
+Cc:     <linux-hwmon@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <robh+dt@kernel.org>
+Subject: Re: [RFC PATCH v1 0/2] hwmon: (iio_hwmon) optionally force iio
+ channel type
+From:   "Liam Beguin" <liambeguin@gmail.com>
+To:     "Guenter Roeck" <linux@roeck-us.net>, <jdelvare@suse.com>,
+        <jic23@kernel.org>, <lars@metafoo.de>, <pmeerw@pmeerw.net>
+References: <20210516044315.116290-1-liambeguin@gmail.com>
+ <29235b1d-78f3-6d8f-567f-78ca6f350340@roeck-us.net>
+In-Reply-To: <29235b1d-78f3-6d8f-567f-78ca6f350340@roeck-us.net>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+Hi Guenter,
 
-On Sun, May 16, 2021 at 10:57:20AM +0100, Jonathan Cameron wrote:
-> On Sun, 16 May 2021 07:31:05 +0000
-> Jozsef Horvath <info@ministro.hu> wrote:
-> 
-> > This is a device tree schema for iio driver for
-> >  Texas Instruments ADS7142 dual-channel, programmable sensor monitor.
-> > 
-> > Datasheet: https://www.ti.com/lit/ds/symlink/ads7142.pdf
-> > 
-> > Signed-off-by: Jozsef Horvath <info@ministro.hu>
-> 
-> Hi József,
-> 
-> A few comments inline.
-> 
-> thanks,
-> 
-> Jonathan
-> > ---
-> > 
-> > changes v1
-> >   - Redundant parameters (ti,threshold-rising, etc.)
-> >     are removed
-> >   - Supply name changed(vref -> avdd)
-> >   - Added dvdd supply
-> >   - All the properties are removed with prefix "ti,"
-> > changes v2
-> >   - "ti,prealert-count" parameter added, just for completeness.
-> > ---
-> >  .../bindings/iio/adc/ti,ads7142.yaml          | 110 ++++++++++++++++++
-> >  1 file changed, 110 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads7142.yaml
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads7142.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads7142.yaml
-> > new file mode 100644
-> > index 000000000000..6e52079c68f7
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/adc/ti,ads7142.yaml
-> > @@ -0,0 +1,110 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: "http://devicetree.org/schemas/iio/adc/ti,ads7142.yaml#"
-> > +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-> > +
-> > +title: Texas Instruments ADS7142 adc driver device tree bindings
-> 
-> ADC
-> 
-> > +
-> > +maintainers:
-> > +  - József Horváth <info@ministro.hu>
-> > +
-> > +description: |
-> > +  This document is for describing the required device tree parameters
-> > +   for ads7142 adc
-> 
-> ADC
-> 
-> > +  The required parameters for proper operation are described below.
-> > +
-> > +  Datasheet: https://www.ti.com/lit/ds/symlink/ads7142.pdf
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: ti,ads7142
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  interrupts:
-> > +    description: |
-> > +      The BUSY/PDY pin is used as interrupt line
-> 
-> RDY ?
+On Sun May 16, 2021 at 4:56 AM EDT, Guenter Roeck wrote:
+> On 5/15/21 9:43 PM, Liam Beguin wrote:
+> > Add a devicetree binding to optionally force a different IIO channel
+> > type.
+> >=20
+> > This is useful in cases where ADC channels are connected to a circuit
+> > that represent another unit such as a temperature or a current.
+> >=20
+> > `channel-types` was chosen instead of `io-channel-types` as this is not
+> > part of the iio consumer bindings.
+> >=20
+> > In the current form, this patch does what it's intended to do:
+> > change the unit displayed by `sensors`, but feels like the wrong way to
+> > address the problem.
+> >=20
+> > Would it be possible to force the type of different IIO channels for
+> > this kind of use case with a devicetree binding from the IIO subsystem?
+> >=20
+>
+> That doesn't make sense to me. If an ADC is used to report temperatures,
+> it would be a thermistor, and the ntc_thermistor driver should be used.
+> Not sure what to do with currents, but overriding "voltage" with
+> "current"
+> seems wrong.
 
-I'll fix these typos in v3
+Thanks for pointing out the ntc_thermistor.
+It makes sense that the ADC channel would become a thermistor.
+I'll have a look and see if it fits my use case.
 
-> 
-> > +       in autonomous monitoring mode.
-> > +    maxItems: 1
-> > +
-> > +  avdd-supply:
-> > +    description: Regulator for the reference voltage
-> > +
-> > +  dvdd-supply: true
-> > +
-> > +  "#address-cells":
-> > +    const: 1
-> > +
-> > +  "#size-cells":
-> > +    const: 0
-> > +
-> > +  "#io-channel-cells":
-> > +    const: 1
-> > +
-> > +  ti,prealert-count:
-> > +    description: |
-> > +      Sets the Pre-Alert Event Count for both,
-> > +       high and low comparators, for both the channels.
-> 
-> Interesting.  Why is this a device tree property rather than something
-> we want to configure from userspace?  Looks like it would map to _period
-> after scaling by the sampling frequency.
-> 
-> https://elixir.bootlin.com/linux/latest/source/Documentation/ABI/testing/sysfs-bus-iio#L1003
-> 
-> 
+Liam
 
-Ok, I'll try to bring it to sysfs as you suggested
+>
+> Guenter
+>
+> > It would be convenient to do it within the IIO subsystem to have the
+> > right unit there too.
+> >=20
+> > Thanks for your time,
+> > Liam
+> >=20
+> > Liam Beguin (2):
+> >    hwmon: (iio_hwmon) optionally force iio channel type
+> >    dt-bindings: hwmon: add iio-hwmon bindings
+> >=20
+> >   .../devicetree/bindings/hwmon/iio-hwmon.yaml  | 41 ++++++++++++++++++=
++
+> >   drivers/hwmon/iio_hwmon.c                     |  2 +
+> >   2 files changed, 43 insertions(+)
+> >   create mode 100644 Documentation/devicetree/bindings/hwmon/iio-hwmon.=
+yaml
+> >=20
+> >=20
+> > base-commit: 9f4ad9e425a1d3b6a34617b8ea226d56a119a717
+> >=20
 
-> > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > +    maximum: 15
-> > +    minimum: 0
-> > +
-> > +patternProperties:
-> > +  "^channel@[0-1]$":
-> > +    $ref: "adc.yaml"
-> > +    type: object
-> > +    description: |
-> > +      Represents the external channels which are connected to the ADC.
-> > +    properties:
-> > +      reg:
-> > +        description: |
-> > +          The channel number.
-> > +        items:
-> > +          minimum: 0
-> > +          maximum: 1
-> 
-> enum: [0 1]
-> is a more compact way of putting this IIRC.
->  
-
-I'll do that
-
-> > +
-> > +    required:
-> > +      - reg
-> > +
-> > +    additionalProperties: false
-> > +
-> > +required:
-> > +  - compatible
-> > +  - "#io-channel-cells"
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    i2c {
-> > +      #address-cells = <1>;
-> > +      #size-cells = <0>;
-> > +      adc@1f {
-> > +        compatible = "ti,ads7142";
-> > +        reg = <0x1f>;
-> > +        #address-cells = <1>;
-> > +        #size-cells = <0>;
-> > +
-> > +        #io-channel-cells = <1>;
-> > +
-> > +        avdd-supply = <&vdd_3v3_reg>;
-> > +        dvdd-supply = <&vdd_1v8_reg>;
-> > +
-> > +        interrupt-parent = <&gpio>;
-> > +        interrupts = <7 2>;
-> > +
-> > +        ti,prealert-count = <4>;
-> > +
-> > +        channel@0 {
-> > +          reg = <0>;
-> > +        };
-> > +
-> > +        channel@1 {
-> > +          reg = <1>;
-> > +        };
-> > +      };
-> > +    };
-> > +...
-> > +
-> 
-
-Thank you.
-
-Best regards
-József

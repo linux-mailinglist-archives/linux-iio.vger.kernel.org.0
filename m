@@ -2,123 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16615383AE3
-	for <lists+linux-iio@lfdr.de>; Mon, 17 May 2021 19:13:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 604B2383AD1
+	for <lists+linux-iio@lfdr.de>; Mon, 17 May 2021 19:12:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236001AbhEQRON (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 May 2021 13:14:13 -0400
-Received: from mta-02.yadro.com ([89.207.88.252]:50964 "EHLO mta-01.yadro.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S243316AbhEQROK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 17 May 2021 13:14:10 -0400
-Received: from localhost (unknown [127.0.0.1])
-        by mta-01.yadro.com (Postfix) with ESMTP id 370E541370;
-        Mon, 17 May 2021 17:12:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
-        content-transfer-encoding:mime-version:user-agent:content-type
-        :content-type:organization:references:in-reply-to:date:date:from
-        :from:subject:subject:message-id:received:received:received; s=
-        mta-01; t=1621271570; x=1623085971; bh=yk9EC+Dve1pamEtbvjpjbU1uw
-        Oxf7cDLNNgPjnJ+aDs=; b=eZ7Z2RRNqXGEHeDei3cSHutMBxCxQz6+J9MLIYwI0
-        VadwEH4iVup8LD2PLNo3DSPrh4nP1Sa+rMH5TjMejtDYdNCTJM1f4RYuPX5inWKz
-        W/nAVSKemIWYdu4I7bYJAZtyMFvMBQk/bfqhFKLLLIAnuoHag+432eZPROhdQmlF
-        gU=
-X-Virus-Scanned: amavisd-new at yadro.com
-Received: from mta-01.yadro.com ([127.0.0.1])
-        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id He7ny6xBWzgN; Mon, 17 May 2021 20:12:50 +0300 (MSK)
-Received: from T-EXCH-03.corp.yadro.com (t-exch-03.corp.yadro.com [172.17.100.103])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mta-01.yadro.com (Postfix) with ESMTPS id 835F241384;
-        Mon, 17 May 2021 19:59:49 +0300 (MSK)
-Received: from localhost.localdomain (10.199.0.36) by T-EXCH-03.corp.yadro.com
- (172.17.100.103) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Mon, 17
- May 2021 19:59:49 +0300
-Message-ID: <f6d48db00698793b9d6a8c04a228101a0898e671.camel@yadro.com>
-Subject: Re: [PATCH 4/4] hwmon: vcnl3020: add hwmon driver for intrusion
- sensor
-From:   Ivan Mikhaylov <i.mikhaylov@yadro.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "Jean Delvare" <jdelvare@suse.com>, <linux-kernel@vger.kernel.org>,
-        <linux-iio@vger.kernel.org>, <linux-hwmon@vger.kernel.org>
-Date:   Mon, 17 May 2021 20:08:24 +0300
-In-Reply-To: <20210505140208.GA1913659@roeck-us.net>
-References: <20210430152419.261757-1-i.mikhaylov@yadro.com>
-         <20210430152419.261757-5-i.mikhaylov@yadro.com>
-         <20210430163831.GA3163069@roeck-us.net>
-         <8dbdf071f9f2041b92cabfa417487a3ec3e9647e.camel@yadro.com>
-         <20210505140208.GA1913659@roeck-us.net>
-Organization: YADRO
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
+        id S235955AbhEQRNa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 May 2021 13:13:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34486 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235847AbhEQRN3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 17 May 2021 13:13:29 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7ADCF61263;
+        Mon, 17 May 2021 17:12:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1621271532;
+        bh=myekqU/aHMu+SNpPjDj6HSNb54sVhWc06AyYqeEhmNo=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=JuCpCfV6Yzo2MEVHxX3JPqBahyG2xLM+rVOy4JFtqvG7iy6jdEcgyXv0ksHRbkYKj
+         eVYWePGxXWmLtp3JeJbkRO5hHqRV0BjFAHk/x+I08IcHPuwDt4Nve5g2ihCdLoI2k5
+         qufBm5gcpz4F9pPy3M28Z4JM2qNH0OWOkUNRjvX+s8H60Ytf4SwLTBLfAX2ZLtIJEH
+         msMsssNVN3cGDY1b9N/QTsIZ3cG8Gn9KBHhps++ZiyxQQ8OBXsMgsgjCTakgCwE2dN
+         oOktwdyhIO3zmxeE+/3SvKsANM9C+J6bhLIQjVhM9zl30gpm6y1/iuzYPP+USe6mit
+         EHGnp8r6NmpmQ==
+Subject: Re: [PATCH 2/4] iio: light: si1133: Drop remaining uses of %hhx
+ format string.
+To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        =?UTF-8?Q?Maxime_Roussin-B=c3=a9langer?= 
+        <maxime.roussinbelanger@gmail.com>
+References: <20210517125554.1463156-1-jic23@kernel.org>
+ <20210517125554.1463156-3-jic23@kernel.org>
+From:   Nathan Chancellor <nathan@kernel.org>
+Message-ID: <ec2a5309-bec8-adb8-61d8-d359e12fdb2f@kernel.org>
+Date:   Mon, 17 May 2021 10:12:10 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.199.0.36]
-X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
- T-EXCH-03.corp.yadro.com (172.17.100.103)
+In-Reply-To: <20210517125554.1463156-3-jic23@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 2021-05-05 at 07:02 -0700, Guenter Roeck wrote:
-> On Tue, May 04, 2021 at 10:46:53PM +0300, Ivan Mikhaylov wrote:
-> > On Fri, 2021-04-30 at 09:38 -0700, Guenter Roeck wrote:
-> > > On Fri, Apr 30, 2021 at 06:24:19PM +0300, Ivan Mikhaylov wrote:
-> > > > Intrusion status detection via Interrupt Status Register.
-> > > > 
-> > > > Signed-off-by: Ivan Mikhaylov <i.mikhaylov@yadro.com>
-> > > 
-> > > I think this should, if at all, be handled using the
-> > > iio->hwmon bridge (or, in other words, require a solution
-> > > which is not chip specific).
-> > 
-> > Thanks a lot for suggestion, it's actually looks what's needed here instead
-> > of
-> > this driver. Anyways, there is no IIO_PROXIMITY support inside supported
-> > types
-> > in iio_hwmon.c. Should I add additional case inside this driver for
-> > IIO_PROXIMITY type?
-> > 
-> > > I am also not sure if "proximity" is really appropriate to use
-> > > for intrusion detection in the sense of hardware monitoring.
-> > > This would require a proximity sensor within a chassis, which
-> > > would be both overkill and unlikely to happen in the real world.
-> > > "Intrusion", in hardware monitoring context, means "someone
-> > > opened the chassis", not "someone got [too] close".
-> > > 
-> > 
-> > I'm not sure either but it exists :) And it's exactly for this purpose:
-> > "someone opened the chassis", "how near/far is cover?".
-> > 
+On 5/17/2021 5:55 AM, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> The cost for VCNL3020, for a full reel with 3,300 chips, is $1.17 per chip
-> at Mouser. A mechanical switch costs a couple of cents. A single proximity
-> sensor won't cover all parts of a chassis; one would likely need several
-> chips to be sure that are no blind spots (if that is even possible - I don't
-> think it is in any of my PC chassis due to mechanical limitations). This
-> is on top of programming, which would be sensitive to generating false
-> alarms (or missing alarms, for that matter). That sounds quite impractical
-> and expensive to me. I'd really like to see the actual use case where a
-> proximity sensor (or set of proximity sensors) is used for intrusion
-> detection in the sense of hardware monitoring - not just the technical
-> possibility of doing so, but an actual use case (as in "this vendor,
-> in this chassis, is doing it").
+> Since:
+> commit cbacb5ab0aa0 ("docs: printk-formats: Stop encouraging use of
+> unnecessary %h[xudi] and %hh[xudi]")
+> use of these format strings has been discouraged.
 > 
-> Thanks,
-> Guenter
+> As there are not that many in IIO, this is part of an effort to clear
+> them out so we don't have any instances that might get coppied into
+> new drivers.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Maxime Roussin-Bélanger <maxime.roussinbelanger@gmail.com>
+> Cc: Nathan Chancellor <nathan@kernel.org>
 
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
 
-Guenter, VCNL3020 is indeed used as an intrusion detection sensor at least in
-one real design. That is YADRO VESNIN Rev. C where the proximity sensor is
-installed in a very tight space on an nvme switch board where installation of a
-mechanical switch was not possible without substantial redesign of the existing
-other components that would cost a lot more than the price of VCNL3020.
-
-VESNIN is a very tight-packed design of 4 x POWER8 CPUs, up to 8TB of RAM, and 26 nvme disks, all that in just 2U.
-* https://imgur.com/a/wU9wEd4
+> ---
+>   drivers/iio/light/si1133.c | 14 +++++++-------
+>   1 file changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/iio/light/si1133.c b/drivers/iio/light/si1133.c
+> index fd302480262b..0af36176907d 100644
+> --- a/drivers/iio/light/si1133.c
+> +++ b/drivers/iio/light/si1133.c
+> @@ -352,22 +352,22 @@ static int si1133_parse_response_err(struct device *dev, u32 resp, u8 cmd)
+>   
+>   	switch (resp) {
+>   	case SI1133_ERR_OUTPUT_BUFFER_OVERFLOW:
+> -		dev_warn(dev, "Output buffer overflow: %#02hhx\n", cmd);
+> +		dev_warn(dev, "Output buffer overflow: %#02x\n", cmd);
+>   		return -EOVERFLOW;
+>   	case SI1133_ERR_SATURATION_ADC_OR_OVERFLOW_ACCUMULATION:
+> -		dev_warn(dev, "Saturation of the ADC or overflow of accumulation: %#02hhx\n",
+> +		dev_warn(dev, "Saturation of the ADC or overflow of accumulation: %#02x\n",
+>   			 cmd);
+>   		return -EOVERFLOW;
+>   	case SI1133_ERR_INVALID_LOCATION_CMD:
+>   		dev_warn(dev,
+> -			 "Parameter access to an invalid location: %#02hhx\n",
+> +			 "Parameter access to an invalid location: %#02x\n",
+>   			 cmd);
+>   		return -EINVAL;
+>   	case SI1133_ERR_INVALID_CMD:
+> -		dev_warn(dev, "Invalid command %#02hhx\n", cmd);
+> +		dev_warn(dev, "Invalid command %#02x\n", cmd);
+>   		return -EINVAL;
+>   	default:
+> -		dev_warn(dev, "Unknown error %#02hhx\n", cmd);
+> +		dev_warn(dev, "Unknown error %#02x\n", cmd);
+>   		return -EINVAL;
+>   	}
+>   }
+> @@ -400,7 +400,7 @@ static int si1133_command(struct si1133_data *data, u8 cmd)
+>   
+>   	err = regmap_write(data->regmap, SI1133_REG_COMMAND, cmd);
+>   	if (err) {
+> -		dev_warn(dev, "Failed to write command %#02hhx, ret=%d\n", cmd,
+> +		dev_warn(dev, "Failed to write command %#02x, ret=%d\n", cmd,
+>   			 err);
+>   		goto out;
+>   	}
+> @@ -425,7 +425,7 @@ static int si1133_command(struct si1133_data *data, u8 cmd)
+>   					       SI1133_CMD_TIMEOUT_MS * 1000);
+>   		if (err) {
+>   			dev_warn(dev,
+> -				 "Failed to read command %#02hhx, ret=%d\n",
+> +				 "Failed to read command %#02x, ret=%d\n",
+>   				 cmd, err);
+>   			goto out;
+>   		}
+> 
 

@@ -2,76 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4204E38246F
-	for <lists+linux-iio@lfdr.de>; Mon, 17 May 2021 08:35:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C0BD3824E5
+	for <lists+linux-iio@lfdr.de>; Mon, 17 May 2021 08:59:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232059AbhEQGgw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 May 2021 02:36:52 -0400
-Received: from mga11.intel.com ([192.55.52.93]:26155 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230260AbhEQGgw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 17 May 2021 02:36:52 -0400
-IronPort-SDR: X7J+FDf9IVebI0tUqwLSyQD7cBzfz4Ks7+AAhoWQxmGbcAMif+q12l/d475pOboxvXkxlrYlNN
- G4oMK/HrNOBw==
-X-IronPort-AV: E=McAfee;i="6200,9189,9986"; a="197308894"
-X-IronPort-AV: E=Sophos;i="5.82,306,1613462400"; 
-   d="scan'208";a="197308894"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2021 23:35:36 -0700
-IronPort-SDR: lAXmrOYT2oX1A2RdYUaSvrb0mGQQTKsYwRlGqIA+nrv+A5dhb9HdqI0K+Ov0CEhOqFqVRMUTP6
- MCcyt98Ao47g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.82,306,1613462400"; 
-   d="scan'208";a="472256369"
-Received: from host.sh.intel.com ([10.239.154.115])
-  by orsmga001.jf.intel.com with ESMTP; 16 May 2021 23:35:34 -0700
-From:   Ye Xiang <xiang.ye@intel.com>
-To:     jikos@kernel.org, jic23@kernel.org,
-        srinivas.pandruvada@linux.intel.com
-Cc:     linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Ye Xiang <xiang.ye@intel.com>
-Subject: [PATCH] HID: intel-ish-hid: ipc: Add Alder Lake device IDs
-Date:   Mon, 17 May 2021 14:36:09 +0800
-Message-Id: <20210517063609.23267-1-xiang.ye@intel.com>
-X-Mailer: git-send-email 2.17.1
+        id S233266AbhEQHBM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 May 2021 03:01:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51224 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230374AbhEQHBL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 May 2021 03:01:11 -0400
+Received: from mail-vs1-xe35.google.com (mail-vs1-xe35.google.com [IPv6:2607:f8b0:4864:20::e35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C657C061573
+        for <linux-iio@vger.kernel.org>; Sun, 16 May 2021 23:59:54 -0700 (PDT)
+Received: by mail-vs1-xe35.google.com with SMTP id t6so2572090vsp.13
+        for <linux-iio@vger.kernel.org>; Sun, 16 May 2021 23:59:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=deviqon.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ReTTiFWa1m1hmQDvf71/ta5Pzoxt6mRHHiPQQ3OOXk8=;
+        b=G303/rVc3KLJhCxCDPKOPXxHPRPSBUdm1J3sDIRBZzPbLQ29PJ796p232bAH0dLb9v
+         QA1iLaQrwXCvOXsLs/0ZChWBrWAiVQ4plhbd1Mn4WKy5CyzuBVkeHikX9qAkVk2F4aiK
+         g1rQhuVQWeGXrY7IFQ69BlVAkw8KQBgMr3IwG/WVsl87v+gKHdisXl1LrhLIQb+asILa
+         zDXHsjWB2S0KnAjTdrOiWxHP0vxBALt6M17XGUUWuVDww6OLRFFPdgg7N0uzirT7kgcs
+         tli30R1O05gFeDwnkVWUjof0BMKLOH4l/AI2OBBZWoQhYqoUGU3fZTQj6FITO6mv/mpH
+         IWaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ReTTiFWa1m1hmQDvf71/ta5Pzoxt6mRHHiPQQ3OOXk8=;
+        b=OlqmJubhHQs72JglCBDuXpN9NkjasQdvEfAJdOl3VpjYZRA0LVEilaUu3mCq7yg7nX
+         ZtH2PFr2SHaoRUQefW7eTwddesHKjt+od8d+HJAimdiKYYIaA5H7QpDNTQ7khkYjavsC
+         ihkD3DVdyThPs+ekY5K7kL1on6ppCEEWbr/d4vPkR8O8j1tMOdKDDF5CTbdEPWyvOB85
+         CsYi5Iui+OPqid7nIcGA4wGyroSfUduwf0Es6463xoecxK4LW4eUo6jNH+LyXiqTsWmv
+         nkvE4ep0BXUGYw1mYIAX9Rdya9BqSx3inlNlAE6HJ0hP+HgkhXa3IiuDrlURKPrYYJp9
+         vDvw==
+X-Gm-Message-State: AOAM532tIMCBu9qnSsg5Qoio/32NHbvGQ10324FwaSYNrb8klSE2TdO2
+        ayL1fqc7BbL313aw8RroUcnNygXxg6jUNBvel6qq1Q==
+X-Google-Smtp-Source: ABdhPJxj/S5umGtScA89JIoi9QicWkysy1P51bONskgdVO0kCBZo5Wtb0UnNjaQQTF29pKVxBytOkAvh1oeclSBdtTk=
+X-Received: by 2002:a67:db91:: with SMTP id f17mr50202698vsk.47.1621234792215;
+ Sun, 16 May 2021 23:59:52 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210516172520.1398835-1-jic23@kernel.org> <20210516172520.1398835-2-jic23@kernel.org>
+In-Reply-To: <20210516172520.1398835-2-jic23@kernel.org>
+From:   Alexandru Ardelean <aardelean@deviqon.com>
+Date:   Mon, 17 May 2021 09:59:41 +0300
+Message-ID: <CAASAkobT5CaBhZpTykuLeUOEZK+NMdbL4t5xRmFvoMh8tCDFug@mail.gmail.com>
+Subject: Re: [PATCH 1/8] iio: adc: max11100: Use get_unaligned_be16() rather
+ than opencoding.
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Jacopo Mondi <jacopo@jmondi.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add Alder Lake PCI device IDs to the supported device list.
+On Sun, 16 May 2021 at 20:26, Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
+> The function is more explicit in showing the intent + quicker on some
+> platforms.
 
-Signed-off-by: Ye Xiang <xiang.ye@intel.com>
----
- drivers/hid/intel-ish-hid/ipc/hw-ish.h  | 2 ++
- drivers/hid/intel-ish-hid/ipc/pci-ish.c | 2 ++
- 2 files changed, 4 insertions(+)
+Reviewed-by: Alexandru Ardelean <aardelean@deviqon.com>
 
-diff --git a/drivers/hid/intel-ish-hid/ipc/hw-ish.h b/drivers/hid/intel-ish-hid/ipc/hw-ish.h
-index 21b87e4003af..07e3cbc86bef 100644
---- a/drivers/hid/intel-ish-hid/ipc/hw-ish.h
-+++ b/drivers/hid/intel-ish-hid/ipc/hw-ish.h
-@@ -28,6 +28,8 @@
- #define EHL_Ax_DEVICE_ID	0x4BB3
- #define TGL_LP_DEVICE_ID	0xA0FC
- #define TGL_H_DEVICE_ID		0x43FC
-+#define ADL_S_DEVICE_ID		0x7AF8
-+#define ADL_P_DEVICE_ID		0x51FC
- 
- #define	REVISION_ID_CHT_A0	0x6
- #define	REVISION_ID_CHT_Ax_SI	0x0
-diff --git a/drivers/hid/intel-ish-hid/ipc/pci-ish.c b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
-index 06081cf9b85a..a6d5173ac003 100644
---- a/drivers/hid/intel-ish-hid/ipc/pci-ish.c
-+++ b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
-@@ -39,6 +39,8 @@ static const struct pci_device_id ish_pci_tbl[] = {
- 	{PCI_DEVICE(PCI_VENDOR_ID_INTEL, EHL_Ax_DEVICE_ID)},
- 	{PCI_DEVICE(PCI_VENDOR_ID_INTEL, TGL_LP_DEVICE_ID)},
- 	{PCI_DEVICE(PCI_VENDOR_ID_INTEL, TGL_H_DEVICE_ID)},
-+	{PCI_DEVICE(PCI_VENDOR_ID_INTEL, ADL_S_DEVICE_ID)},
-+	{PCI_DEVICE(PCI_VENDOR_ID_INTEL, ADL_P_DEVICE_ID)},
- 	{0, }
- };
- MODULE_DEVICE_TABLE(pci, ish_pci_tbl);
--- 
-2.17.1
-
+>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Jacopo Mondi <jacopo@jmondi.org>
+> ---
+>  drivers/iio/adc/max11100.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/iio/adc/max11100.c b/drivers/iio/adc/max11100.c
+> index 6cf21758ca66..69d607fa17aa 100644
+> --- a/drivers/iio/adc/max11100.c
+> +++ b/drivers/iio/adc/max11100.c
+> @@ -12,6 +12,7 @@
+>  #include <linux/module.h>
+>  #include <linux/regulator/consumer.h>
+>  #include <linux/spi/spi.h>
+> +#include <asm/unaligned.h>
+>
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/driver.h>
+> @@ -63,7 +64,7 @@ static int max11100_read_single(struct iio_dev *indio_dev, int *val)
+>                 return -EINVAL;
+>         }
+>
+> -       *val = (state->buffer[1] << 8) | state->buffer[2];
+> +       *val = get_unaligned_be16(&state->buffer[1]);
+>
+>         return 0;
+>  }
+> --
+> 2.31.1
+>

@@ -2,125 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 18165386C2B
-	for <lists+linux-iio@lfdr.de>; Mon, 17 May 2021 23:20:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65A58386C82
+	for <lists+linux-iio@lfdr.de>; Mon, 17 May 2021 23:44:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241352AbhEQVWD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 May 2021 17:22:03 -0400
-Received: from mail-ot1-f41.google.com ([209.85.210.41]:44571 "EHLO
-        mail-ot1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238105AbhEQVWC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 May 2021 17:22:02 -0400
-Received: by mail-ot1-f41.google.com with SMTP id r26-20020a056830121ab02902a5ff1c9b81so6801804otp.11;
-        Mon, 17 May 2021 14:20:45 -0700 (PDT)
+        id S237993AbhEQVpj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 May 2021 17:45:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54428 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237989AbhEQVpi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 May 2021 17:45:38 -0400
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0877C061573
+        for <linux-iio@vger.kernel.org>; Mon, 17 May 2021 14:44:21 -0700 (PDT)
+Received: by mail-lf1-x131.google.com with SMTP id i22so10877341lfl.10
+        for <linux-iio@vger.kernel.org>; Mon, 17 May 2021 14:44:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=csdWjW1cBvN8ly67d30X0KBHCJnajtFtJnhMZldr7DQ=;
+        b=X8c1ILfF0ZzCL+qQFnCDw2IY2gfXLRgMvv+w8Tckt/71uXOJjLFC4kOula2ID9fw2L
+         vrE3mRM1xDUaDQ7Ti/ArQR6d37maQ49Iq5w7lJV8GRuh3cIYAW8djEj2uDGc+bqtjEpd
+         sMyzW4pHarhiojkX7PY01ju26IbDJEZ1kS77lv47wkXkB0ruWeGsaGscEKyMgP+SdTsP
+         uXopCru+XOV8bW4I79AB/CyBL0YPuq2kexx6FX22KbZq3OQTycm8ij0OB+DEW4ELdoc+
+         vVQrVaSivpMJsCxSEBwldt+Icl04XlACveTUSeGDdMqn5ZvBfSniuASTR05kAopLwMzz
+         CPpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=YcPVqnyxUoQRqLqrcd+xwOvSykAyUXn6XXyXXfewed8=;
-        b=mtIO+EMTrhG0OFp22u7lFtRl2KcrfioE8we6bdl6QaDdVzWKkrjHzr5NSSAzjEfEK3
-         +uC0PnHiL6yYpt1AU4vERZqQmbpY0DjPYBf1fbnyA7YiQA1MCdMW9mLCjiwlTmMU+N4/
-         C3WYlQy0Khqzn9C37V4N0EUpchIEmyJbqV3Sj2eFj3omkuG/OLNte89KxujUC53b9WbV
-         pD1ynqWGamMaXuxblqlVsvvRx/ohfMs+gCoq51AmF7iU2TijaEvRJsCunU9XHG5tmkAD
-         1VBX4N6KZsa5IL6TSd/8fmHaS93FpVilsALOrBrjAHcb8eNild+zKygDTLrOgE5q+bsg
-         in9w==
-X-Gm-Message-State: AOAM533tbhNUmyfK3yNKFx8XdslE0i57ER21Ol71btaIivjk1+1+c3m9
-        dldr3jWbHRl0fXuhG+Cxvg==
-X-Google-Smtp-Source: ABdhPJyETxg9k9XJAKSPDZnyLWwwIHaYxzn+ovOlDY4J+ItNb3j1tMU05rQr9vzb7eu8lf00QgA4Rw==
-X-Received: by 2002:a9d:5a1a:: with SMTP id v26mr1334412oth.50.1621286444548;
-        Mon, 17 May 2021 14:20:44 -0700 (PDT)
-Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id y191sm2998370oia.50.2021.05.17.14.19.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 May 2021 14:19:33 -0700 (PDT)
-Received: (nullmailer pid 3215069 invoked by uid 1000);
-        Mon, 17 May 2021 21:18:28 -0000
-Date:   Mon, 17 May 2021 16:18:28 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Stephen Boyd <sboyd@kernel.org>, alsa-devel@alsa-project.org,
-        Georgi Djakov <djakov@kernel.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-pm@vger.kernel.org, Alex Elder <elder@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        devicetree@vger.kernel.org,
-        Fabrice Gasnier <fabrice.gasnier@st.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-        Luca Ceresoli <luca@lucaceresoli.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
-        linux-input@vger.kernel.org,
-        Odelu Kukatla <okukatla@codeaurora.org>,
-        Shengjiu Wang <shengjiu.wang@nxp.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jonathan Cameron <jic23@kernel.org>, netdev@vger.kernel.org,
-        Orson Zhai <orsonzhai@gmail.com>
-Subject: Re: [PATCH] dt-bindings: More removals of type references on common
- properties
-Message-ID: <20210517211828.GA3214995@robh.at.kernel.org>
-References: <20210510204524.617390-1-robh@kernel.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=csdWjW1cBvN8ly67d30X0KBHCJnajtFtJnhMZldr7DQ=;
+        b=SBRCSTv9rU4tzP2Di2zL7O9D5tG9z8TSTeK5TkBUNAghRrnBPpplpba0lFwJmdZJ/a
+         dNWaBgQjphB29i+T524cAfHOJwcq6rTCq5ypqssMuumSdRx8gLlYC2Nf2pRLPpLipN7D
+         FkclAX9SKGgf/5XXkRs62bcspUqZNz+Zwwfxsrg3QGJLgkXr5U/JOpmZC4LiD3owcaBv
+         mjp/VXaOR4M17d8wZiit5TQNodIvGmKqIsdkTKz3BryZ7yWNzPUqq0XS4ly4UB/8dc90
+         4Q41p1JQ/upiWxUbVR4QcxsfLpyc35VWC2O9p69zk/+ZBMzcmNFvl88nt7TitXN1h3IA
+         Zk0Q==
+X-Gm-Message-State: AOAM531t4/WbYCSzd/JlhTnrEzkLki1go48FvYZcxGyhF9X6VMQLT4Rx
+        7bmxehfZR7kll4RF96uzN+MuKuMGMXuVRewp35kNGw==
+X-Google-Smtp-Source: ABdhPJx8y/v+HeLyrsmexLFJ2tAaSkwimFtfg4aUESvp51GcxVgT89cheOBkHD4DXuk71vsJ3XHlibYFHKhUI1wmZY4=
+X-Received: by 2002:a05:6512:1050:: with SMTP id c16mr1327134lfb.586.1621287860169;
+ Mon, 17 May 2021 14:44:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210510204524.617390-1-robh@kernel.org>
+References: <20210509113354.660190-1-jic23@kernel.org> <20210509113354.660190-3-jic23@kernel.org>
+In-Reply-To: <20210509113354.660190-3-jic23@kernel.org>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Mon, 17 May 2021 23:44:09 +0200
+Message-ID: <CACRpkdb0yDo5vgs1wnc-8VipP43Job9z2oGQb7Y4LwBrgXoEdA@mail.gmail.com>
+Subject: Re: [PATCH 02/28] iio: light: isl29028: Balance runtime pm + use pm_runtime_resume_and_get()
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Julia Lawall <Julia.Lawall@inria.fr>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.co.uk>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 10 May 2021 15:45:24 -0500, Rob Herring wrote:
-> Users of common properties shouldn't have a type definition as the
-> common schemas already have one. A few new ones slipped in and
-> *-names was missed in the last clean-up pass. Drop all the unnecessary
-> type references in the tree.
-> 
-> A meta-schema update to catch these is pending.
-> 
-> Cc: Luca Ceresoli <luca@lucaceresoli.net>
-> Cc: Stephen Boyd <sboyd@kernel.org>
-> Cc: Olivier Moysan <olivier.moysan@foss.st.com>
-> Cc: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
-> Cc: Georgi Djakov <djakov@kernel.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Sebastian Reichel <sre@kernel.org>
-> Cc: Orson Zhai <orsonzhai@gmail.com>
-> Cc: Baolin Wang <baolin.wang7@gmail.com>
-> Cc: Chunyan Zhang <zhang.lyra@gmail.com>
-> Cc: Liam Girdwood <lgirdwood@gmail.com>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Fabrice Gasnier <fabrice.gasnier@st.com>
-> Cc: Odelu Kukatla <okukatla@codeaurora.org>
-> Cc: Alex Elder <elder@kernel.org>
-> Cc: Shengjiu Wang <shengjiu.wang@nxp.com>
-> Cc: linux-clk@vger.kernel.org
-> Cc: alsa-devel@alsa-project.org
-> Cc: linux-iio@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-input@vger.kernel.org
-> Cc: linux-pm@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
->  Documentation/devicetree/bindings/clock/idt,versaclock5.yaml    | 2 --
->  .../devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml         | 1 -
->  Documentation/devicetree/bindings/input/input.yaml              | 1 -
->  Documentation/devicetree/bindings/interconnect/qcom,rpmh.yaml   | 1 -
->  Documentation/devicetree/bindings/net/qcom,ipa.yaml             | 1 -
->  .../devicetree/bindings/power/supply/sc2731-charger.yaml        | 2 +-
->  Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml          | 2 +-
->  7 files changed, 2 insertions(+), 8 deletions(-)
-> 
+On Sun, May 9, 2021 at 1:36 PM Jonathan Cameron <jic23@kernel.org> wrote:
 
-Applied, thanks!
+> Whilst we are here, use pm_runtime_resume_and_get() to replace open
+> coded version.
+
+Wow that is a new API. Why didn't I know about it...
+Oh it is only from november last year that is why.
+I guess we should switch to this everywhere.
+
+> Found using coccicheck script under review at:
+> https://lore.kernel.org/lkml/20210427141946.2478411-1-Julia.Lawall@inria.fr/
+>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Sebastian Reichel <sebastian.reichel@collabora.co.uk>
+
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+
+Yours,
+Linus Walleij

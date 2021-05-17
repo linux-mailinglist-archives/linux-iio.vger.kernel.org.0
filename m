@@ -2,78 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B97943833D5
-	for <lists+linux-iio@lfdr.de>; Mon, 17 May 2021 17:04:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 928E9383AA6
+	for <lists+linux-iio@lfdr.de>; Mon, 17 May 2021 19:00:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241634AbhEQPCp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 May 2021 11:02:45 -0400
-Received: from cmccmta2.chinamobile.com ([221.176.66.80]:36510 "EHLO
-        cmccmta2.chinamobile.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241379AbhEQPAl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 May 2021 11:00:41 -0400
-Received: from spf.mail.chinamobile.com (unknown[172.16.121.5]) by rmmx-syy-dmz-app07-12007 (RichMail) with SMTP id 2ee760a284bd938-7a86d; Mon, 17 May 2021 22:59:09 +0800 (CST)
-X-RM-TRANSID: 2ee760a284bd938-7a86d
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG: 00000000
-Received: from localhost.localdomain (unknown[112.22.251.112])
-        by rmsmtp-syy-appsvr03-12003 (RichMail) with SMTP id 2ee360a284b91a9-6be9a;
-        Mon, 17 May 2021 22:59:09 +0800 (CST)
-X-RM-TRANSID: 2ee360a284b91a9-6be9a
-From:   Tang Bin <tangbin@cmss.chinamobile.com>
-To:     lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
-        knaack.h@gmx.de, pmeerw@pmeerw.net, gregkh@linuxfoundation.org
-Cc:     linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org,
-        Tang Bin <tangbin@cmss.chinamobile.com>
-Subject: [PATCH] staging: iio: cdc: ad7746: Fix unnecessary check and assignment in ad7746_probe()
-Date:   Mon, 17 May 2021 23:00:06 +0800
-Message-Id: <20210517150006.8436-1-tangbin@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.20.1.windows.1
+        id S237967AbhEQRBt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 May 2021 13:01:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53716 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236776AbhEQRBs (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 17 May 2021 13:01:48 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 59CE861185;
+        Mon, 17 May 2021 17:00:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1621270831;
+        bh=kvGcl1jg3vnyaJfsKuv2eV98xymBY/ABPqrDZtVJyB0=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=fVIGHOZTsQlYUQcszg6S9WnyLGe/yOvjdGqEr+zql+eoc3CgrQsysU+vKdNpHskPz
+         um7AmYYCfcVkq+FDzxISBJn1ql1aR8BQJJZanZU+EQEYhALjlicRl64NIL68FGrTeE
+         CCIN29uEjNYJw6CwHyB1nQwJK7ZTnFOz+Jv/tq7LlYLXKoTqryDxopH4RmJnbmiVla
+         g+5XdDNyz35v1N2WWwnxys/JPFuiFcjFurjYfxsmU1Qh7CA8Rx6fr5Noas1x3msU8I
+         4eLBOopLtbdEx/26TwQXFtFuxGXFZMFI0YQLQfSlpv10IT0N0hX2FJkSm/hmMaZX8b
+         NiRi52/++rrEw==
+Subject: Re: [PATCH 1/4] iio: imu: inv_mpu6050: Drop use of %hhx format
+ string.
+To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20210517125554.1463156-1-jic23@kernel.org>
+ <20210517125554.1463156-2-jic23@kernel.org>
+From:   Nathan Chancellor <nathan@kernel.org>
+Message-ID: <f4ef58eb-b9dd-e53b-c5d1-fec3137483eb@kernel.org>
+Date:   Mon, 17 May 2021 10:00:29 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210517125554.1463156-2-jic23@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-In the function ad7746_probe(), the return value of
-devm_iio_device_register() can be zero or ret, thus it is
-unnecessary to repeated check here. And delete unused
-initialized value of 'ret', because it will be assigned by
-the function i2c_smbus_write_byte_data().
+On 5/17/2021 5:55 AM, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> Since:
+> commit cbacb5ab0aa0 ("docs: printk-formats: Stop encouraging use of
+> unnecessary %h[xudi] and %hh[xudi]")
+> use of these format strings has been discouraged.
+> 
+> Part of a series removing all uses from IIO in the interestings of
+> avoiding providing bad examples for people to copy.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
 
-Signed-off-by: Tang Bin <tangbin@cmss.chinamobile.com>
----
- drivers/staging/iio/cdc/ad7746.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/staging/iio/cdc/ad7746.c b/drivers/staging/iio/cdc/ad7746.c
-index dfd71e99e..d3b6e68df 100644
---- a/drivers/staging/iio/cdc/ad7746.c
-+++ b/drivers/staging/iio/cdc/ad7746.c
-@@ -680,7 +680,7 @@ static int ad7746_probe(struct i2c_client *client,
- 	struct ad7746_chip_info *chip;
- 	struct iio_dev *indio_dev;
- 	unsigned char regval = 0;
--	int ret = 0;
-+	int ret;
- 
- 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*chip));
- 	if (!indio_dev)
-@@ -730,11 +730,7 @@ static int ad7746_probe(struct i2c_client *client,
- 	if (ret < 0)
- 		return ret;
- 
--	ret = devm_iio_device_register(indio_dev->dev.parent, indio_dev);
--	if (ret)
--		return ret;
--
--	return 0;
-+	return devm_iio_device_register(indio_dev->dev.parent, indio_dev);
- }
- 
- static const struct i2c_device_id ad7746_id[] = {
--- 
-2.20.1.windows.1
-
-
+> ---
+>   drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 5 ++---
+>   1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> index 6244a07048df..3169d3153b83 100644
+> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> @@ -1314,8 +1314,7 @@ static int inv_check_and_setup_chip(struct inv_mpu6050_state *st)
+>   		for (i = 0; i < INV_NUM_PARTS; ++i) {
+>   			if (regval == hw_info[i].whoami) {
+>   				dev_warn(regmap_get_device(st->map),
+> -					"whoami mismatch got %#02x (%s)"
+> -					"expected %#02hhx (%s)\n",
+> +					"whoami mismatch got %#02x (%s) expected %#02x (%s)\n",
+>   					regval, hw_info[i].name,
+>   					st->hw->whoami, st->hw->name);
+>   				break;
+> @@ -1323,7 +1322,7 @@ static int inv_check_and_setup_chip(struct inv_mpu6050_state *st)
+>   		}
+>   		if (i >= INV_NUM_PARTS) {
+>   			dev_err(regmap_get_device(st->map),
+> -				"invalid whoami %#02x expected %#02hhx (%s)\n",
+> +				"invalid whoami %#02x expected %#02x (%s)\n",
+>   				regval, st->hw->whoami, st->hw->name);
+>   			return -ENODEV;
+>   		}
+> 
 

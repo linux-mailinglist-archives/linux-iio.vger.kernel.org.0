@@ -2,81 +2,125 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EAD8C383AE8
-	for <lists+linux-iio@lfdr.de>; Mon, 17 May 2021 19:13:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18165386C2B
+	for <lists+linux-iio@lfdr.de>; Mon, 17 May 2021 23:20:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235929AbhEQROj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 May 2021 13:14:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36236 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235848AbhEQROi (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 17 May 2021 13:14:38 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7E71861261;
-        Mon, 17 May 2021 17:13:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1621271602;
-        bh=LqxcP+iRytVRKoR8B0Oxj0Pc29HXawdIxiiLNmrB1wM=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=EJ/LjhI4ApufpBwUEoYcMb9b6pVXuljp5rIRKsBNvrdY/1eKO/ZmQ9vV0FEAww4lB
-         KmiobiN7mUecp8TFeZOc5fflPVF4g9PdnPKFgPMHdn6spuPKEVV4mdc62AaEe5j0X9
-         2/6HtZs9USJBCSX+gDJwTvMS8Xsw12CcfcL62tf51OIKLvyn7lLg3RuSXFtFNeGkio
-         /2UXAAHnBliOuqcxHl+NvRkB4iRQYG0kYZaCuVH1JGOyRX6lRMWS/tJ4g+UabkHeet
-         3NDAKEVIYrp/WA/BA50uYM3glVCCXfyHuE+0zQEcEndIG3aIx7xkiO9Pu/5eL1lh9n
-         CPhRszRxQnrFg==
-Subject: Re: [PATCH 4/4] iio: chemical: sgp30: Drop use of %hx in format
- string.
-To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Andreas Brauchli <andreas.brauchli@sensirion.com>
-References: <20210517125554.1463156-1-jic23@kernel.org>
- <20210517125554.1463156-5-jic23@kernel.org>
-From:   Nathan Chancellor <nathan@kernel.org>
-Message-ID: <d8f92d79-799e-3533-e075-ed92fec80c84@kernel.org>
-Date:   Mon, 17 May 2021 10:13:19 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        id S241352AbhEQVWD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 May 2021 17:22:03 -0400
+Received: from mail-ot1-f41.google.com ([209.85.210.41]:44571 "EHLO
+        mail-ot1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238105AbhEQVWC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 May 2021 17:22:02 -0400
+Received: by mail-ot1-f41.google.com with SMTP id r26-20020a056830121ab02902a5ff1c9b81so6801804otp.11;
+        Mon, 17 May 2021 14:20:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=YcPVqnyxUoQRqLqrcd+xwOvSykAyUXn6XXyXXfewed8=;
+        b=mtIO+EMTrhG0OFp22u7lFtRl2KcrfioE8we6bdl6QaDdVzWKkrjHzr5NSSAzjEfEK3
+         +uC0PnHiL6yYpt1AU4vERZqQmbpY0DjPYBf1fbnyA7YiQA1MCdMW9mLCjiwlTmMU+N4/
+         C3WYlQy0Khqzn9C37V4N0EUpchIEmyJbqV3Sj2eFj3omkuG/OLNte89KxujUC53b9WbV
+         pD1ynqWGamMaXuxblqlVsvvRx/ohfMs+gCoq51AmF7iU2TijaEvRJsCunU9XHG5tmkAD
+         1VBX4N6KZsa5IL6TSd/8fmHaS93FpVilsALOrBrjAHcb8eNild+zKygDTLrOgE5q+bsg
+         in9w==
+X-Gm-Message-State: AOAM533tbhNUmyfK3yNKFx8XdslE0i57ER21Ol71btaIivjk1+1+c3m9
+        dldr3jWbHRl0fXuhG+Cxvg==
+X-Google-Smtp-Source: ABdhPJyETxg9k9XJAKSPDZnyLWwwIHaYxzn+ovOlDY4J+ItNb3j1tMU05rQr9vzb7eu8lf00QgA4Rw==
+X-Received: by 2002:a9d:5a1a:: with SMTP id v26mr1334412oth.50.1621286444548;
+        Mon, 17 May 2021 14:20:44 -0700 (PDT)
+Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id y191sm2998370oia.50.2021.05.17.14.19.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 May 2021 14:19:33 -0700 (PDT)
+Received: (nullmailer pid 3215069 invoked by uid 1000);
+        Mon, 17 May 2021 21:18:28 -0000
+Date:   Mon, 17 May 2021 16:18:28 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Stephen Boyd <sboyd@kernel.org>, alsa-devel@alsa-project.org,
+        Georgi Djakov <djakov@kernel.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-pm@vger.kernel.org, Alex Elder <elder@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        devicetree@vger.kernel.org,
+        Fabrice Gasnier <fabrice.gasnier@st.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+        Luca Ceresoli <luca@lucaceresoli.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
+        linux-input@vger.kernel.org,
+        Odelu Kukatla <okukatla@codeaurora.org>,
+        Shengjiu Wang <shengjiu.wang@nxp.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Olivier Moysan <olivier.moysan@foss.st.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jonathan Cameron <jic23@kernel.org>, netdev@vger.kernel.org,
+        Orson Zhai <orsonzhai@gmail.com>
+Subject: Re: [PATCH] dt-bindings: More removals of type references on common
+ properties
+Message-ID: <20210517211828.GA3214995@robh.at.kernel.org>
+References: <20210510204524.617390-1-robh@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20210517125554.1463156-5-jic23@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210510204524.617390-1-robh@kernel.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 5/17/2021 5:55 AM, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Mon, 10 May 2021 15:45:24 -0500, Rob Herring wrote:
+> Users of common properties shouldn't have a type definition as the
+> common schemas already have one. A few new ones slipped in and
+> *-names was missed in the last clean-up pass. Drop all the unnecessary
+> type references in the tree.
 > 
-> Since:
-> commit cbacb5ab0aa0 ("docs: printk-formats: Stop encouraging use of
-> unnecessary %h[xudi] and %hh[xudi]")
-> use of these format strings has been discouraged.
+> A meta-schema update to catch these is pending.
 > 
-> As there are only a few such uses in IIO, lets clear them all out and
-> avoid chance of them getting copied into new drivers.
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Nathan Chancellor <nathan@kernel.org>
-> Cc: Andreas Brauchli <andreas.brauchli@sensirion.com>
-
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-
+> Cc: Luca Ceresoli <luca@lucaceresoli.net>
+> Cc: Stephen Boyd <sboyd@kernel.org>
+> Cc: Olivier Moysan <olivier.moysan@foss.st.com>
+> Cc: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
+> Cc: Jonathan Cameron <jic23@kernel.org>
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
+> Cc: Georgi Djakov <djakov@kernel.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Sebastian Reichel <sre@kernel.org>
+> Cc: Orson Zhai <orsonzhai@gmail.com>
+> Cc: Baolin Wang <baolin.wang7@gmail.com>
+> Cc: Chunyan Zhang <zhang.lyra@gmail.com>
+> Cc: Liam Girdwood <lgirdwood@gmail.com>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Fabrice Gasnier <fabrice.gasnier@st.com>
+> Cc: Odelu Kukatla <okukatla@codeaurora.org>
+> Cc: Alex Elder <elder@kernel.org>
+> Cc: Shengjiu Wang <shengjiu.wang@nxp.com>
+> Cc: linux-clk@vger.kernel.org
+> Cc: alsa-devel@alsa-project.org
+> Cc: linux-iio@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-input@vger.kernel.org
+> Cc: linux-pm@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+> Signed-off-by: Rob Herring <robh@kernel.org>
 > ---
->   drivers/iio/chemical/sgp30.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/chemical/sgp30.c b/drivers/iio/chemical/sgp30.c
-> index 1029c457be15..2343d444604d 100644
-> --- a/drivers/iio/chemical/sgp30.c
-> +++ b/drivers/iio/chemical/sgp30.c
-> @@ -425,7 +425,7 @@ static int sgp_check_compat(struct sgp_data *data,
->   
->   	product = SGP_VERS_PRODUCT(data);
->   	if (product != product_id) {
-> -		dev_err(dev, "sensor reports a different product: 0x%04hx\n",
-> +		dev_err(dev, "sensor reports a different product: 0x%04x\n",
->   			product);
->   		return -ENODEV;
->   	}
+>  Documentation/devicetree/bindings/clock/idt,versaclock5.yaml    | 2 --
+>  .../devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml         | 1 -
+>  Documentation/devicetree/bindings/input/input.yaml              | 1 -
+>  Documentation/devicetree/bindings/interconnect/qcom,rpmh.yaml   | 1 -
+>  Documentation/devicetree/bindings/net/qcom,ipa.yaml             | 1 -
+>  .../devicetree/bindings/power/supply/sc2731-charger.yaml        | 2 +-
+>  Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml          | 2 +-
+>  7 files changed, 2 insertions(+), 8 deletions(-)
 > 
 
+Applied, thanks!

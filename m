@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C1919382545
-	for <lists+linux-iio@lfdr.de>; Mon, 17 May 2021 09:24:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75355382549
+	for <lists+linux-iio@lfdr.de>; Mon, 17 May 2021 09:26:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235173AbhEQH0I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 May 2021 03:26:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56800 "EHLO
+        id S229736AbhEQH1x (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 May 2021 03:27:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230339AbhEQH0I (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 May 2021 03:26:08 -0400
-Received: from mail-vs1-xe2f.google.com (mail-vs1-xe2f.google.com [IPv6:2607:f8b0:4864:20::e2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 437D0C061573
-        for <linux-iio@vger.kernel.org>; Mon, 17 May 2021 00:24:52 -0700 (PDT)
-Received: by mail-vs1-xe2f.google.com with SMTP id s15so2632454vsi.4
-        for <linux-iio@vger.kernel.org>; Mon, 17 May 2021 00:24:52 -0700 (PDT)
+        with ESMTP id S229734AbhEQH1w (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 May 2021 03:27:52 -0400
+Received: from mail-vs1-xe32.google.com (mail-vs1-xe32.google.com [IPv6:2607:f8b0:4864:20::e32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EB49C061573
+        for <linux-iio@vger.kernel.org>; Mon, 17 May 2021 00:26:34 -0700 (PDT)
+Received: by mail-vs1-xe32.google.com with SMTP id 66so2610750vsk.9
+        for <linux-iio@vger.kernel.org>; Mon, 17 May 2021 00:26:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=deviqon.com; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=LREjrWvYIHGfm6by36A9p3jiYX2RQPXm1/k93mOgsT8=;
-        b=FJPyTyjHliVyyXuS2q7XK50kYkl8TVCfnV/hc14E7PTcbBt99AjwM90yX4UnpQTc6J
-         6ZtWSWSXOBiwtwFt/HM8V1GUeJg3kBdmTGj1KkPE22UMGCJhVOpVP2BgdIFYNl4dCcua
-         WFhB6GFzywu+0u67GZEhXcrsmXXMcOulNv5dJtdmlGavZy/kjmI88J4eso/ghkItQukV
-         +6TriBwyPhhJVdI65tS3GI3WCVb/HqrEBwYhnPcCyBuBcWu2oe7L6FHXMsVujxbznvdC
-         u03EE4dmZprTZyPgPMuD/0IQFpuKvO2S9sf9IxHzh/CpDUwBCyKnBF0nPKUdFBaIIA73
-         TEwg==
+        bh=/PTI2FZtDYEzJXLhu3TanBqKUmJsL8910C5RrJh+7xY=;
+        b=lfhVPys1Fj/Tk948B3sBWRmhqoO+iB4rCb01U5KHtlO61MVKXlcru+elqPOOSnRB9p
+         Bjah7mabC7gvu4+0IySDhx2j1wKKPn/qjl4rSQbz8KQVdZ6CVQqGjVsiL+Mx60FHSREo
+         pmmf3MGjrhwfGXP1aSd2JfXTTD2t7a45CXjy09D3pYU9RRpl3UoAlPssVhu6j72s75VT
+         aNUYpvRtYHS2OFRnVjJNFk5bBkri+7JYS1VcG1jy8+ydoWIpYV0YRYaKE0rECXe8clBD
+         t8UW0ZFvcc+L8iYtKIbItHX/grC1U/wlPa4UKSI+9hg2zo7HxwhL9uRwcrkaPdYFuT1C
+         DThg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=LREjrWvYIHGfm6by36A9p3jiYX2RQPXm1/k93mOgsT8=;
-        b=VR9A0G+uyDkOtA1ROKkuv8zSg12JFVhhMglDnZCq406I/7cZ2cNziJgMP79Yx9aJ1o
-         /1Wcjdv1eW3M5ZtPRe9v5UNooUxM6xqUElV6tTVqEL0lY8+w8McCaO58YFBY8+vcFOp5
-         C/069s9xR3bcqquMvfH1hIYLXHPnf2wLI7y+anPNFcy2YIqanynP8KiaxxIlgaOkYa7r
-         B1aLxJdwozoIDHJLiqofjbqrdSnVmdzml9rK9jdl5KnA/5+w3VNvjudlHQqbqiUb1/G7
-         D2PNG3dSlDfTYHMH3Povh3Du+tLV6m8VA0oCKRr1fTifRKXJePRTobMTwQbqUHK8rszc
-         XKtQ==
-X-Gm-Message-State: AOAM532+AzOFVZFi3LIlLDIOe7giYazXkrwHFdBNN1zvRGxApQI8RAss
-        tCDKVVZV+F3fRPAaiCPD7wwu7uuCfFaX2cG7L4tMD9Q9wpQbgY0WwoU=
-X-Google-Smtp-Source: ABdhPJycQTgfVGWSlaZRkz+15PuFwQ9c8lacZFOw/S3vJSussReJapyx/0gkkohysuGqtkmwJkya7MpJ+q2jjbGVM6k=
-X-Received: by 2002:a67:7d85:: with SMTP id y127mr5495616vsc.43.1621236291461;
- Mon, 17 May 2021 00:24:51 -0700 (PDT)
+        bh=/PTI2FZtDYEzJXLhu3TanBqKUmJsL8910C5RrJh+7xY=;
+        b=KLtlfHCZ9UPcjltUjv3vvOXvEOi1KDwiQS22BQ9yMjI7fLRl1dD67TLXp3eufaW1Nh
+         Gw48GnM1Og/RLKRCEf7wSESuGCzY9UiFDrbfHnWB7TvASj1wgi+B4ir0xVYno4fFX3MS
+         gfMH9vp35X32Vl8IcFupO0yYyt1Vp632e8liFb9SBw6v42MhpOjXzT8HxWNPd4AtMq+s
+         wR2TYhhqNQwncKTk4Aa9D+NvOiK4Wmrb9YSb6Np/d/YnQsbWdtH+EurrmjFhPL8Gs2II
+         5HvNWLRyQxptq5LHCcDLp7SoEVuCz963qmX6n5vHseBh9UfOB01nK/RCo9a4OdqbVfCY
+         UJdA==
+X-Gm-Message-State: AOAM533d0sytIdaVmC2mlnLwZVsUv7aDi8DDTY0krUAg2fejYWcszVGo
+        vaQ6t0nYyXyrK9Wz/B2kjzWKiWUEeU/J/VmZXoGkig==
+X-Google-Smtp-Source: ABdhPJw5LqeO5oFRP3jv5PC7tpBykORW+g0TskSdQi5mcgD4i0M5/X0H8ZJwZ/YjJAMN+YSHVRgQ+DeA1ALYDSZewg0=
+X-Received: by 2002:a05:6102:30ad:: with SMTP id y13mr49913624vsd.19.1621236393593;
+ Mon, 17 May 2021 00:26:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210516172520.1398835-1-jic23@kernel.org> <20210516172520.1398835-5-jic23@kernel.org>
-In-Reply-To: <20210516172520.1398835-5-jic23@kernel.org>
+References: <20210516172520.1398835-1-jic23@kernel.org> <20210516172520.1398835-6-jic23@kernel.org>
+In-Reply-To: <20210516172520.1398835-6-jic23@kernel.org>
 From:   Alexandru Ardelean <aardelean@deviqon.com>
-Date:   Mon, 17 May 2021 10:24:40 +0300
-Message-ID: <CAASAkoZsMtshXJ-J4tcWQL-aPct6M0_cvTsiAwMHGtzBHufCGA@mail.gmail.com>
-Subject: Re: [PATCH 4/8] iio: adc: max1118: Avoid jumping back and forth
- between spi and iio structures
+Date:   Mon, 17 May 2021 10:26:22 +0300
+Message-ID: <CAASAkoY7w1rvELfjUS710=tM=XWFNnE3dQfWrbE+JBAWTNrXLg@mail.gmail.com>
+Subject: Re: [PATCH 5/8] iio: adc: ti-adc081c: Use devm managed functions for
+ all of probe()
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
@@ -63,103 +63,95 @@ On Sun, 16 May 2021 at 20:26, Jonathan Cameron <jic23@kernel.org> wrote:
 >
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >
-> Changing from passing the spi structure into various functions to
-> passing struct iio_dev avoids use of spi_get_drvdata and lets us
-> stop setting that at all.  Previous code was unnecessarily complex.
+> Simplifies error handling and allows us to drop remove() entirely.
 >
 
 Reviewed-by: Alexandru Ardelean <aardelean@deviqon.com>
 
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > ---
->  drivers/iio/adc/max1118.c | 22 +++++++++-------------
->  1 file changed, 9 insertions(+), 13 deletions(-)
+>  drivers/iio/adc/ti-adc081c.c | 43 ++++++++++++------------------------
+>  1 file changed, 14 insertions(+), 29 deletions(-)
 >
-> diff --git a/drivers/iio/adc/max1118.c b/drivers/iio/adc/max1118.c
-> index 4dfbed63ad7f..8cec9d949083 100644
-> --- a/drivers/iio/adc/max1118.c
-> +++ b/drivers/iio/adc/max1118.c
-> @@ -66,9 +66,8 @@ static const struct iio_chan_spec max1118_channels[] = {
->         IIO_CHAN_SOFT_TIMESTAMP(2),
->  };
->
-> -static int max1118_read(struct spi_device *spi, int channel)
-> +static int max1118_read(struct iio_dev *indio_dev, int channel)
->  {
-> -       struct iio_dev *indio_dev = spi_get_drvdata(spi);
->         struct max1118 *adc = iio_priv(indio_dev);
->         struct spi_transfer xfers[] = {
->                 /*
-> @@ -103,9 +102,9 @@ static int max1118_read(struct spi_device *spi, int channel)
->         int ret;
->
->         if (channel == 0)
-> -               ret = spi_sync_transfer(spi, xfers + 1, 2);
-> +               ret = spi_sync_transfer(adc->spi, xfers + 1, 2);
->         else
-> -               ret = spi_sync_transfer(spi, xfers, 3);
-> +               ret = spi_sync_transfer(adc->spi, xfers, 3);
->
->         if (ret)
->                 return ret;
-> @@ -113,11 +112,10 @@ static int max1118_read(struct spi_device *spi, int channel)
->         return adc->data;
+> diff --git a/drivers/iio/adc/ti-adc081c.c b/drivers/iio/adc/ti-adc081c.c
+> index b64718daa201..16fc608db36a 100644
+> --- a/drivers/iio/adc/ti-adc081c.c
+> +++ b/drivers/iio/adc/ti-adc081c.c
+> @@ -146,6 +146,11 @@ static irqreturn_t adc081c_trigger_handler(int irq, void *p)
+>         return IRQ_HANDLED;
 >  }
 >
-> -static int max1118_get_vref_mV(struct spi_device *spi)
-> +static int max1118_get_vref_mV(struct iio_dev *indio_dev)
+> +static void adc081c_reg_disable(void *reg)
+> +{
+> +       regulator_disable(reg);
+> +}
+> +
+>  static int adc081c_probe(struct i2c_client *client,
+>                          const struct i2c_device_id *id)
 >  {
-> -       struct iio_dev *indio_dev = spi_get_drvdata(spi);
->         struct max1118 *adc = iio_priv(indio_dev);
-> -       const struct spi_device_id *id = spi_get_device_id(spi);
-> +       const struct spi_device_id *id = spi_get_device_id(adc->spi);
->         int vref_uV;
+> @@ -175,6 +180,11 @@ static int adc081c_probe(struct i2c_client *client,
+>         if (err < 0)
+>                 return err;
 >
->         switch (id->driver_data) {
-> @@ -144,14 +142,14 @@ static int max1118_read_raw(struct iio_dev *indio_dev,
->         switch (mask) {
->         case IIO_CHAN_INFO_RAW:
->                 mutex_lock(&adc->lock);
-> -               *val = max1118_read(adc->spi, chan->channel);
-> +               *val = max1118_read(indio_dev, chan->channel);
->                 mutex_unlock(&adc->lock);
->                 if (*val < 0)
->                         return *val;
+> +       err = devm_add_action_or_reset(&client->dev, adc081c_reg_disable,
+> +                                      adc->ref);
+> +       if (err)
+> +               return err;
+> +
+>         iio->name = dev_name(&client->dev);
+>         iio->modes = INDIO_DIRECT_MODE;
+>         iio->info = &adc081c_info;
+> @@ -182,38 +192,14 @@ static int adc081c_probe(struct i2c_client *client,
+>         iio->channels = model->channels;
+>         iio->num_channels = ADC081C_NUM_CHANNELS;
 >
->                 return IIO_VAL_INT;
->         case IIO_CHAN_INFO_SCALE:
-> -               *val = max1118_get_vref_mV(adc->spi);
-> +               *val = max1118_get_vref_mV(indio_dev);
->                 if (*val < 0)
->                         return *val;
->                 *val2 = 8;
-> @@ -180,7 +178,7 @@ static irqreturn_t max1118_trigger_handler(int irq, void *p)
->                         indio_dev->masklength) {
->                 const struct iio_chan_spec *scan_chan =
->                                 &indio_dev->channels[scan_index];
-> -               int ret = max1118_read(adc->spi, scan_chan->channel);
-> +               int ret = max1118_read(indio_dev, scan_chan->channel);
->
->                 if (ret < 0) {
->                         dev_warn(&adc->spi->dev,
-> @@ -238,8 +236,6 @@ static int max1118_probe(struct spi_device *spi)
->
+> -       err = iio_triggered_buffer_setup(iio, NULL, adc081c_trigger_handler, NULL);
+> +       err = devm_iio_triggered_buffer_setup(&client->dev, iio, NULL,
+> +                                             adc081c_trigger_handler, NULL);
+>         if (err < 0) {
+>                 dev_err(&client->dev, "iio triggered buffer setup failed\n");
+> -               goto err_regulator_disable;
+> +               return err;
 >         }
 >
-> -       spi_set_drvdata(spi, indio_dev);
+> -       err = iio_device_register(iio);
+> -       if (err < 0)
+> -               goto err_buffer_cleanup;
 > -
->         indio_dev->name = spi_get_device_id(spi)->name;
->         indio_dev->info = &max1118_info;
->         indio_dev->modes = INDIO_DIRECT_MODE;
-> @@ -252,7 +248,7 @@ static int max1118_probe(struct spi_device *spi)
->          * a conversion has been completed, the MAX1117/MAX1118/MAX1119 will go
->          * into AutoShutdown mode until the next conversion is initiated.
->          */
-> -       max1118_read(spi, 0);
-> +       max1118_read(indio_dev, 0);
+> -       i2c_set_clientdata(client, iio);
+> -
+> -       return 0;
+> -
+> -err_buffer_cleanup:
+> -       iio_triggered_buffer_cleanup(iio);
+> -err_regulator_disable:
+> -       regulator_disable(adc->ref);
+> -
+> -       return err;
+> -}
+> -
+> -static int adc081c_remove(struct i2c_client *client)
+> -{
+> -       struct iio_dev *iio = i2c_get_clientdata(client);
+> -       struct adc081c *adc = iio_priv(iio);
+> -
+> -       iio_device_unregister(iio);
+> -       iio_triggered_buffer_cleanup(iio);
+> -       regulator_disable(adc->ref);
+> -
+> -       return 0;
+> +       return devm_iio_device_register(&client->dev, iio);
+>  }
 >
->         ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev, NULL,
->                                               max1118_trigger_handler, NULL);
+>  static const struct i2c_device_id adc081c_id[] = {
+> @@ -238,7 +224,6 @@ static struct i2c_driver adc081c_driver = {
+>                 .of_match_table = adc081c_of_match,
+>         },
+>         .probe = adc081c_probe,
+> -       .remove = adc081c_remove,
+>         .id_table = adc081c_id,
+>  };
+>  module_i2c_driver(adc081c_driver);
 > --
 > 2.31.1
 >

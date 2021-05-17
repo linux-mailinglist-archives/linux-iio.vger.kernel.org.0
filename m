@@ -2,58 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 75355382549
-	for <lists+linux-iio@lfdr.de>; Mon, 17 May 2021 09:26:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D251382553
+	for <lists+linux-iio@lfdr.de>; Mon, 17 May 2021 09:29:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229736AbhEQH1x (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 May 2021 03:27:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57194 "EHLO
+        id S230339AbhEQHaa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 May 2021 03:30:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229734AbhEQH1w (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 May 2021 03:27:52 -0400
+        with ESMTP id S233350AbhEQHa2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 May 2021 03:30:28 -0400
 Received: from mail-vs1-xe32.google.com (mail-vs1-xe32.google.com [IPv6:2607:f8b0:4864:20::e32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EB49C061573
-        for <linux-iio@vger.kernel.org>; Mon, 17 May 2021 00:26:34 -0700 (PDT)
-Received: by mail-vs1-xe32.google.com with SMTP id 66so2610750vsk.9
-        for <linux-iio@vger.kernel.org>; Mon, 17 May 2021 00:26:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A91D1C061573
+        for <linux-iio@vger.kernel.org>; Mon, 17 May 2021 00:29:10 -0700 (PDT)
+Received: by mail-vs1-xe32.google.com with SMTP id s15so2637181vsi.4
+        for <linux-iio@vger.kernel.org>; Mon, 17 May 2021 00:29:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=deviqon.com; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=/PTI2FZtDYEzJXLhu3TanBqKUmJsL8910C5RrJh+7xY=;
-        b=lfhVPys1Fj/Tk948B3sBWRmhqoO+iB4rCb01U5KHtlO61MVKXlcru+elqPOOSnRB9p
-         Bjah7mabC7gvu4+0IySDhx2j1wKKPn/qjl4rSQbz8KQVdZ6CVQqGjVsiL+Mx60FHSREo
-         pmmf3MGjrhwfGXP1aSd2JfXTTD2t7a45CXjy09D3pYU9RRpl3UoAlPssVhu6j72s75VT
-         aNUYpvRtYHS2OFRnVjJNFk5bBkri+7JYS1VcG1jy8+ydoWIpYV0YRYaKE0rECXe8clBD
-         t8UW0ZFvcc+L8iYtKIbItHX/grC1U/wlPa4UKSI+9hg2zo7HxwhL9uRwcrkaPdYFuT1C
-         DThg==
+        bh=TdSr5/mQ8gnf0SD+zRSvkS6htDfU+9UXj7SJ0/y0+BM=;
+        b=ZuGI9QdLNqnCJeZWyP0VOKsZfTFa3TweAPuV8You6KwOMhs3QkKtKPrQ17SqMzf82Y
+         ZZhuaAMuWGuFP9pwidIyEywVE9GEREVeRnhH8o5npierFS7uF3PBRDgBUhO+D7oMd/ZE
+         s+XK/KVP926yYXWAmtdBvOqmqvLwjo4enpR5m45GCb7SFCbdQOS9g/MgMlKvbv6gVnjk
+         Zz26RiVrxG8DTbx9Ai9/JOXrJsQYja2Udy/w1ZGWOrSziiLryUvO5kUrjBiI0WetR9en
+         wBtIJarOSOw1rnOlSDyseEgJv1bZpBw4Xl3hzbNPUDbBopIAUbiEDSiFWdPS9p9EQxKt
+         RR8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=/PTI2FZtDYEzJXLhu3TanBqKUmJsL8910C5RrJh+7xY=;
-        b=KLtlfHCZ9UPcjltUjv3vvOXvEOi1KDwiQS22BQ9yMjI7fLRl1dD67TLXp3eufaW1Nh
-         Gw48GnM1Og/RLKRCEf7wSESuGCzY9UiFDrbfHnWB7TvASj1wgi+B4ir0xVYno4fFX3MS
-         gfMH9vp35X32Vl8IcFupO0yYyt1Vp632e8liFb9SBw6v42MhpOjXzT8HxWNPd4AtMq+s
-         wR2TYhhqNQwncKTk4Aa9D+NvOiK4Wmrb9YSb6Np/d/YnQsbWdtH+EurrmjFhPL8Gs2II
-         5HvNWLRyQxptq5LHCcDLp7SoEVuCz963qmX6n5vHseBh9UfOB01nK/RCo9a4OdqbVfCY
-         UJdA==
-X-Gm-Message-State: AOAM533d0sytIdaVmC2mlnLwZVsUv7aDi8DDTY0krUAg2fejYWcszVGo
-        vaQ6t0nYyXyrK9Wz/B2kjzWKiWUEeU/J/VmZXoGkig==
-X-Google-Smtp-Source: ABdhPJw5LqeO5oFRP3jv5PC7tpBykORW+g0TskSdQi5mcgD4i0M5/X0H8ZJwZ/YjJAMN+YSHVRgQ+DeA1ALYDSZewg0=
-X-Received: by 2002:a05:6102:30ad:: with SMTP id y13mr49913624vsd.19.1621236393593;
- Mon, 17 May 2021 00:26:33 -0700 (PDT)
+        bh=TdSr5/mQ8gnf0SD+zRSvkS6htDfU+9UXj7SJ0/y0+BM=;
+        b=Qb8CpQMGBA67kyAynHhLV5D3Ip8wpSX8O6l16eAo2rh3/JTx7aJORnhXqmywqgY/9w
+         +nVQTd+47fq3pa4YPnqBye3yGdBQOLcmXmA5MXUBqoZMhGxIGBRKv8sMlS1WbVP3rdhn
+         W+TxmqDL31MvbOLtN5NPUg45R5BiBWAjLrpxxEygKtgEzFg5wfScqa3fScXH29J4tOU1
+         8EihQLAd6E0Ew3CuwiVBukNIj20qcGFS5rmraUErcomENFACvwe20Ugcik3FomERnfBW
+         Q+6Werq+YiOCI1XUiq4nf58uA4fxWrQANwlShYFsOjOeRlWJWK9CcQ3IHRldjgN2T40z
+         TwEg==
+X-Gm-Message-State: AOAM530OSSsQTu4/48R/RPnodzJ4uT9yGoRwGHnqVdeGRbEpZakts6iT
+        c4j1h9eb2YPa60juy5vtmK5m7zP9C4UNsJlvcksxCiuFW3UWQUI0gD0=
+X-Google-Smtp-Source: ABdhPJycTb3NK938iG5kuC5mywGIJkh7r36vB5xUrjaQ2CtCYA2KE0MdT9GO8gjHYKIJR39mX0rXZrlbjggF1wJ04T8=
+X-Received: by 2002:a67:7d85:: with SMTP id y127mr5521149vsc.43.1621236549969;
+ Mon, 17 May 2021 00:29:09 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210516172520.1398835-1-jic23@kernel.org> <20210516172520.1398835-6-jic23@kernel.org>
-In-Reply-To: <20210516172520.1398835-6-jic23@kernel.org>
+References: <20210516172520.1398835-1-jic23@kernel.org> <20210516172520.1398835-7-jic23@kernel.org>
+In-Reply-To: <20210516172520.1398835-7-jic23@kernel.org>
 From:   Alexandru Ardelean <aardelean@deviqon.com>
-Date:   Mon, 17 May 2021 10:26:22 +0300
-Message-ID: <CAASAkoY7w1rvELfjUS710=tM=XWFNnE3dQfWrbE+JBAWTNrXLg@mail.gmail.com>
-Subject: Re: [PATCH 5/8] iio: adc: ti-adc081c: Use devm managed functions for
+Date:   Mon, 17 May 2021 10:28:59 +0300
+Message-ID: <CAASAkob2k-BKWX5d9dD0smtCEEL2_xssDU=uSu8+YOV6qj+DnA@mail.gmail.com>
+Subject: Re: [PATCH 6/8] iio: adc: ti-adc0832: Use devm managed functions for
  all of probe()
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Akinobu Mita <akinobu.mita@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
@@ -63,95 +64,86 @@ On Sun, 16 May 2021 at 20:26, Jonathan Cameron <jic23@kernel.org> wrote:
 >
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >
-> Simplifies error handling and allows us to drop remove() entirely.
+> Simplifies error handling, plus allows us to drop the remove()
+> function entirely.
 >
 
 Reviewed-by: Alexandru Ardelean <aardelean@deviqon.com>
 
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Akinobu Mita <akinobu.mita@gmail.com>
 > ---
->  drivers/iio/adc/ti-adc081c.c | 43 ++++++++++++------------------------
->  1 file changed, 14 insertions(+), 29 deletions(-)
+>  drivers/iio/adc/ti-adc0832.c | 39 +++++++++++-------------------------
+>  1 file changed, 12 insertions(+), 27 deletions(-)
 >
-> diff --git a/drivers/iio/adc/ti-adc081c.c b/drivers/iio/adc/ti-adc081c.c
-> index b64718daa201..16fc608db36a 100644
-> --- a/drivers/iio/adc/ti-adc081c.c
-> +++ b/drivers/iio/adc/ti-adc081c.c
-> @@ -146,6 +146,11 @@ static irqreturn_t adc081c_trigger_handler(int irq, void *p)
+> diff --git a/drivers/iio/adc/ti-adc0832.c b/drivers/iio/adc/ti-adc0832.c
+> index 0261b3cfc92b..fb5e72600b96 100644
+> --- a/drivers/iio/adc/ti-adc0832.c
+> +++ b/drivers/iio/adc/ti-adc0832.c
+> @@ -236,6 +236,11 @@ static irqreturn_t adc0832_trigger_handler(int irq, void *p)
 >         return IRQ_HANDLED;
 >  }
 >
-> +static void adc081c_reg_disable(void *reg)
+> +static void adc0832_reg_disable(void *reg)
 > +{
 > +       regulator_disable(reg);
 > +}
 > +
->  static int adc081c_probe(struct i2c_client *client,
->                          const struct i2c_device_id *id)
+>  static int adc0832_probe(struct spi_device *spi)
 >  {
-> @@ -175,6 +180,11 @@ static int adc081c_probe(struct i2c_client *client,
->         if (err < 0)
->                 return err;
+>         struct iio_dev *indio_dev;
+> @@ -287,36 +292,17 @@ static int adc0832_probe(struct spi_device *spi)
+>         if (ret)
+>                 return ret;
 >
-> +       err = devm_add_action_or_reset(&client->dev, adc081c_reg_disable,
-> +                                      adc->ref);
-> +       if (err)
-> +               return err;
-> +
->         iio->name = dev_name(&client->dev);
->         iio->modes = INDIO_DIRECT_MODE;
->         iio->info = &adc081c_info;
-> @@ -182,38 +192,14 @@ static int adc081c_probe(struct i2c_client *client,
->         iio->channels = model->channels;
->         iio->num_channels = ADC081C_NUM_CHANNELS;
+> -       spi_set_drvdata(spi, indio_dev);
+> -
+> -       ret = iio_triggered_buffer_setup(indio_dev, NULL,
+> -                                        adc0832_trigger_handler, NULL);
+> +       ret = devm_add_action_or_reset(&spi->dev, adc0832_reg_disable,
+> +                                      adc->reg);
+>         if (ret)
+> -               goto err_reg_disable;
+> +               return ret;
 >
-> -       err = iio_triggered_buffer_setup(iio, NULL, adc081c_trigger_handler, NULL);
-> +       err = devm_iio_triggered_buffer_setup(&client->dev, iio, NULL,
-> +                                             adc081c_trigger_handler, NULL);
->         if (err < 0) {
->                 dev_err(&client->dev, "iio triggered buffer setup failed\n");
-> -               goto err_regulator_disable;
-> +               return err;
->         }
->
-> -       err = iio_device_register(iio);
-> -       if (err < 0)
+> -       ret = iio_device_register(indio_dev);
+> +       ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev, NULL,
+> +                                             adc0832_trigger_handler, NULL);
+>         if (ret)
 > -               goto err_buffer_cleanup;
 > -
-> -       i2c_set_clientdata(client, iio);
-> -
 > -       return 0;
-> -
 > -err_buffer_cleanup:
-> -       iio_triggered_buffer_cleanup(iio);
-> -err_regulator_disable:
-> -       regulator_disable(adc->ref);
+> -       iio_triggered_buffer_cleanup(indio_dev);
+> -err_reg_disable:
+> -       regulator_disable(adc->reg);
 > -
-> -       return err;
+> -       return ret;
 > -}
 > -
-> -static int adc081c_remove(struct i2c_client *client)
+> -static int adc0832_remove(struct spi_device *spi)
 > -{
-> -       struct iio_dev *iio = i2c_get_clientdata(client);
-> -       struct adc081c *adc = iio_priv(iio);
+> -       struct iio_dev *indio_dev = spi_get_drvdata(spi);
+> -       struct adc0832 *adc = iio_priv(indio_dev);
 > -
-> -       iio_device_unregister(iio);
-> -       iio_triggered_buffer_cleanup(iio);
-> -       regulator_disable(adc->ref);
-> -
+> -       iio_device_unregister(indio_dev);
+> -       iio_triggered_buffer_cleanup(indio_dev);
+> -       regulator_disable(adc->reg);
+> +               return ret;
+>
 > -       return 0;
-> +       return devm_iio_device_register(&client->dev, iio);
+> +       return devm_iio_device_register(&spi->dev, indio_dev);
 >  }
 >
->  static const struct i2c_device_id adc081c_id[] = {
-> @@ -238,7 +224,6 @@ static struct i2c_driver adc081c_driver = {
->                 .of_match_table = adc081c_of_match,
+>  static const struct of_device_id adc0832_dt_ids[] = {
+> @@ -343,7 +329,6 @@ static struct spi_driver adc0832_driver = {
+>                 .of_match_table = adc0832_dt_ids,
 >         },
->         .probe = adc081c_probe,
-> -       .remove = adc081c_remove,
->         .id_table = adc081c_id,
+>         .probe = adc0832_probe,
+> -       .remove = adc0832_remove,
+>         .id_table = adc0832_id,
 >  };
->  module_i2c_driver(adc081c_driver);
+>  module_spi_driver(adc0832_driver);
 > --
 > 2.31.1
 >

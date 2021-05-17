@@ -2,130 +2,117 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 839DF386CC8
-	for <lists+linux-iio@lfdr.de>; Tue, 18 May 2021 00:14:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C777B386DB3
+	for <lists+linux-iio@lfdr.de>; Tue, 18 May 2021 01:35:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244566AbhEQWPh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 May 2021 18:15:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32854 "EHLO
+        id S239302AbhEQXgu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 May 2021 19:36:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235143AbhEQWPh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 May 2021 18:15:37 -0400
-Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98FDAC061573;
-        Mon, 17 May 2021 15:14:20 -0700 (PDT)
-Received: by mail-qk1-x732.google.com with SMTP id o27so7411603qkj.9;
-        Mon, 17 May 2021 15:14:20 -0700 (PDT)
+        with ESMTP id S235189AbhEQXgt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 May 2021 19:36:49 -0400
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C741C061573
+        for <linux-iio@vger.kernel.org>; Mon, 17 May 2021 16:35:31 -0700 (PDT)
+Received: by mail-lj1-x234.google.com with SMTP id v5so9269001ljg.12
+        for <linux-iio@vger.kernel.org>; Mon, 17 May 2021 16:35:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=x8jZwx6c5i2SOaFzHODGVo8OGmNto4+v8Ypo2f4e070=;
-        b=B6NKR/6TrH5w0WY/tpQ117wFdQ1QGUn5h2cexgAhLcgnRg/V/fXrRCcbMQVnd1Exmi
-         FnFJvomRCg77isFSk1h7coNwVjO3VffU5VRldVU06AGwKHQPVMO+Zxep0QlCU/YFcQ8A
-         CS+ZBfW6mDznrlAuT8EOExQ01dszzJVPXL/BiB7s/kHmNzAu+U78GHsR7ffv6ZgtMupG
-         My+Ra9A78E64TweZKzEzVfHMM13GjysLtCsmCTglKN5F9Xhfy0X6LJTGEijPX3c1XSHM
-         AJB+SXKPuIuMlyvFy9Lx/+e//1CHHObuL1NFvXXzm4A2V4BNEUA6AGCWh4SgsIN4MqQq
-         ZNOQ==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=GDsfl8BtnMrIaPegpt8K35ViaVv1v2HfOtAAQSHJJnQ=;
+        b=dM5HTpqTzypLbOt2sI0RVqq7FaMCqVr9GfnOtlMgM09omyNxB8EZNVGiOpu64DOChU
+         RUV5IjNhDYXGJ9tZksPZTxhnVtcPi2JEExnp0z7tW2lCcwjCRw2QlxNvB3DaEG1NhMim
+         P+fa2wETZXUdfuJS3zrDfGomrWoAdTUg/ilj3mea/QBVg+JwiMRYuJPS9NFnYy34js1t
+         3PqeYyJiswyPkBSwiRHlGfrlMOOwYGKwSqxYIRKnbbf8bTLROAXL1qW9kBxO5rmbtHrW
+         Q2ikiRXDAQHkbVbBs4UFxM4vo1Hb6BD9FgzQU1u6XDTuzan0qSqTZoKokJrkuZnOlg5E
+         yetQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=x8jZwx6c5i2SOaFzHODGVo8OGmNto4+v8Ypo2f4e070=;
-        b=JDcZf+sVGnnv5njnXum2yDYH0zWfGAMkENqOTWi2ykKS3KNEGXmYeQ6OF/B7krRuhM
-         fmOaer+Sd6gqNBYRg3tUFYArloQtROiQdxGIQWSg16MAS0e0TmjcPxOF2fPUlmHT9ERQ
-         8rRBDGFGvJMyqnfzB1x52sWXAdFqiscj6vQACKeoSXrp/GECLk8+YDpI8vyT8eVA+Wq2
-         k809HX/R+rDy7TJ7JOioGzE00oFaqGcu79y46ovKFniipeKehNbuF7PkNL3grp6MJWQM
-         vmMS945tndvQuu/oYZdXSZzZe2A7TyizoNjkPhqA/vfPwAtxUqpzl5BBpHMLEQHHijsu
-         U7iA==
-X-Gm-Message-State: AOAM532KMAM3Ao90GZelJXEhcHAwnltSqUUqmqRJr7Iw2xSuZDA5nDFe
-        JIjjGNZLd9ZgNmNYfO1IuJ4=
-X-Google-Smtp-Source: ABdhPJwRSDs4C853GPKUkZ8M4SFnSZ3G0icrJVmKCKNMuG9Oh2gfgt347z8sbwc1os7nVBm3gKOaLw==
-X-Received: by 2002:ae9:f50f:: with SMTP id o15mr2174586qkg.445.1621289659862;
-        Mon, 17 May 2021 15:14:19 -0700 (PDT)
-Received: from smtp.gmail.com ([2804:30c:b19:6700:15d6:7f1d:c87:ccf7])
-        by smtp.gmail.com with ESMTPSA id i10sm11539253qko.68.2021.05.17.15.14.15
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=GDsfl8BtnMrIaPegpt8K35ViaVv1v2HfOtAAQSHJJnQ=;
+        b=FHETR7uxAn0kBTxps+MNKtry9pE9ZwGDwk5tU/BZrTqcX726AB5e7/2efHFaWQdfAL
+         JuSsXosVSw9UV5pH2Ngt9hBYHvoVLcdL7OoDlTwJX0MLwL6xN6MW7NZLTFo2Q9CWiyca
+         qfrM2JO+IaQOBMQsu74e7SCbMKceByPjrFMlImwu1xtHTOCBGrOdp557nTiwFrPibiTW
+         0inxDWjs3umqEU429WobspTecoDe/yJNfqzcrBekCM5pIjUG7+c8TqLNt81RTIYA1XQe
+         Rr9+7hTzfQo/KvTsrmYceU91JzbUCJAvFduIc7Ou3jo/B+qweiLtGKB7oEPPBu9sF22q
+         uBrA==
+X-Gm-Message-State: AOAM532u/QV0Ev8dgWqqm+ITPENYb512P+mYIDCGw9L8+J2s97xpGL61
+        TgYekcw6yNvxe1xF5THGs3UkZw==
+X-Google-Smtp-Source: ABdhPJyaisHV5NEBBUZ9qIUyF1/UMcgWZgMh/aRySgBD+81/16Okkvm3Mwm5WRf4K5x5A1Q1LTrxBQ==
+X-Received: by 2002:a2e:9dd7:: with SMTP id x23mr1528825ljj.79.1621294529921;
+        Mon, 17 May 2021 16:35:29 -0700 (PDT)
+Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
+        by smtp.gmail.com with ESMTPSA id r10sm168425lfe.110.2021.05.17.16.35.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 May 2021 15:14:19 -0700 (PDT)
-Date:   Mon, 17 May 2021 19:14:13 -0300
-From:   Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To:     Tang Bin <tangbin@cmss.chinamobile.com>
-Cc:     lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
-        knaack.h@gmx.de, pmeerw@pmeerw.net, gregkh@linuxfoundation.org,
-        linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org, lucas.p.stankus@gmail.com
-Subject: Re: [PATCH] staging: iio: cdc: ad7746: Fix unnecessary check and
- assignment in ad7746_probe()
-Message-ID: <YKLqtc8cowOxUTid@smtp.gmail.com>
-References: <20210517150006.8436-1-tangbin@cmss.chinamobile.com>
+        Mon, 17 May 2021 16:35:29 -0700 (PDT)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Denis Ciocca <denis.ciocca@st.com>,
+        Daniel Drake <drake@endlessm.com>,
+        Stephan Gerhold <stephan@gerhold.net>
+Subject: [PATCH 1/5 v2] iio: st_sensors: Create extended attr macro
+Date:   Tue, 18 May 2021 01:33:18 +0200
+Message-Id: <20210517233322.383043-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210517150006.8436-1-tangbin@cmss.chinamobile.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Tang,
+Extend ST_SENSORS_LSM_CHANNELS() to a version that will accept extended
+attributes named ST_SENSORS_LSM_CHANNELS_EXT() and wrap the former as a
+specialized version of the former.
 
-The patch looks overall good, though I think it could be split into two
-pieces: one for simplifying ret declaration and another for removing the
-check after device register.
-Despite that, I guess Lucas might already be working on similar changes.
-https://lore.kernel.org/linux-iio/cover.1620766020.git.lucas.p.stankus@gmail.com/
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Denis Ciocca <denis.ciocca@st.com>
+Cc: Daniel Drake <drake@endlessm.com>
+Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ChangeLog v1->v2:
+- New helper patch from Stephan.
+---
+ include/linux/iio/common/st_sensors.h | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-As general advice, I would recommend avoiding using generic words such
-as fix in the subject line. It's often better to say something about the
-nature of what is being done.
+diff --git a/include/linux/iio/common/st_sensors.h b/include/linux/iio/common/st_sensors.h
+index 33e939977444..704217a5c3ba 100644
+--- a/include/linux/iio/common/st_sensors.h
++++ b/include/linux/iio/common/st_sensors.h
+@@ -46,8 +46,8 @@
+ #define ST_SENSORS_MAX_NAME			17
+ #define ST_SENSORS_MAX_4WAI			8
+ 
+-#define ST_SENSORS_LSM_CHANNELS(device_type, mask, index, mod, \
+-					ch2, s, endian, rbits, sbits, addr) \
++#define ST_SENSORS_LSM_CHANNELS_EXT(device_type, mask, index, mod, \
++				    ch2, s, endian, rbits, sbits, addr, ext) \
+ { \
+ 	.type = device_type, \
+ 	.modified = mod, \
+@@ -63,8 +63,14 @@
+ 		.storagebits = sbits, \
+ 		.endianness = endian, \
+ 	}, \
++	.ext_info = ext, \
+ }
+ 
++#define ST_SENSORS_LSM_CHANNELS(device_type, mask, index, mod, \
++				ch2, s, endian, rbits, sbits, addr)	\
++	ST_SENSORS_LSM_CHANNELS_EXT(device_type, mask, index, mod,	\
++				    ch2, s, endian, rbits, sbits, addr, NULL)
++
+ #define ST_SENSORS_DEV_ATTR_SAMP_FREQ_AVAIL() \
+ 		IIO_DEV_ATTR_SAMP_FREQ_AVAIL( \
+ 			st_sensors_sysfs_sampling_frequency_avail)
+-- 
+2.31.1
 
-
-Cc: lucas.p.stankus@gmail.com
-
-
-Best regards,
-
-Marcelo
-
-On 05/17, Tang Bin wrote:
-> In the function ad7746_probe(), the return value of
-> devm_iio_device_register() can be zero or ret, thus it is
-> unnecessary to repeated check here. And delete unused
-> initialized value of 'ret', because it will be assigned by
-> the function i2c_smbus_write_byte_data().
-> 
-> Signed-off-by: Tang Bin <tangbin@cmss.chinamobile.com>
-> ---
->  drivers/staging/iio/cdc/ad7746.c | 8 ++------
->  1 file changed, 2 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/staging/iio/cdc/ad7746.c b/drivers/staging/iio/cdc/ad7746.c
-> index dfd71e99e..d3b6e68df 100644
-> --- a/drivers/staging/iio/cdc/ad7746.c
-> +++ b/drivers/staging/iio/cdc/ad7746.c
-> @@ -680,7 +680,7 @@ static int ad7746_probe(struct i2c_client *client,
->  	struct ad7746_chip_info *chip;
->  	struct iio_dev *indio_dev;
->  	unsigned char regval = 0;
-> -	int ret = 0;
-> +	int ret;
->  
->  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*chip));
->  	if (!indio_dev)
-> @@ -730,11 +730,7 @@ static int ad7746_probe(struct i2c_client *client,
->  	if (ret < 0)
->  		return ret;
->  
-> -	ret = devm_iio_device_register(indio_dev->dev.parent, indio_dev);
-> -	if (ret)
-> -		return ret;
-> -
-> -	return 0;
-> +	return devm_iio_device_register(indio_dev->dev.parent, indio_dev);
->  }
->  
->  static const struct i2c_device_id ad7746_id[] = {
-> -- 
-> 2.20.1.windows.1
-> 
-> 
-> 

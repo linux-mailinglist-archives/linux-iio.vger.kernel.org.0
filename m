@@ -2,181 +2,202 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26630382572
-	for <lists+linux-iio@lfdr.de>; Mon, 17 May 2021 09:37:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40DD33825A1
+	for <lists+linux-iio@lfdr.de>; Mon, 17 May 2021 09:46:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231491AbhEQHi7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 May 2021 03:38:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59670 "EHLO
+        id S231787AbhEQHro (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 May 2021 03:47:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230499AbhEQHi6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 May 2021 03:38:58 -0400
-Received: from mail-vs1-xe2c.google.com (mail-vs1-xe2c.google.com [IPv6:2607:f8b0:4864:20::e2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDD14C061573
-        for <linux-iio@vger.kernel.org>; Mon, 17 May 2021 00:37:42 -0700 (PDT)
-Received: by mail-vs1-xe2c.google.com with SMTP id 66so2623999vsk.9
-        for <linux-iio@vger.kernel.org>; Mon, 17 May 2021 00:37:42 -0700 (PDT)
+        with ESMTP id S232909AbhEQHrn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 May 2021 03:47:43 -0400
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B40DDC061573
+        for <linux-iio@vger.kernel.org>; Mon, 17 May 2021 00:46:27 -0700 (PDT)
+Received: by mail-pj1-x1029.google.com with SMTP id b13-20020a17090a8c8db029015cd97baea9so4080838pjo.0
+        for <linux-iio@vger.kernel.org>; Mon, 17 May 2021 00:46:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=deviqon.com; s=google;
+        d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=+sj5Np2+8inI665WoQ6AJL8HD1n2fstnINDnLTrN+dQ=;
-        b=gMYgeO7Bq6xqaQWQ5A4niiSLQx9UpseKu5NevHyw4ay5/VfzPobI8j34xx2FTzgd7P
-         jFfmQ0okm7rdyh1zeqrEPEP6A6wI7Al1MSpUB7X4itp1tT2QvKKpC2zLH/2bOR0W4QLE
-         yleypbpfZKY+VZgRxpd5qycIkO+35t94DB5zA8Yg34I2luSa85fPqpxsvaBsW6sEch13
-         GmxF5mjslCf/mJrsjlUktYNEx1Os5hxLO8P+2SPHudnpn0UyKveHA6T69x61IVczf1yw
-         JGUuqMAR9aYjrnl05uXyWaJsCcNu2qzbMtKM10nmO9TWIptjdc5X2zpuUUVLYya/kD4Q
-         w1wQ==
+        bh=x9Y2K5Ans0M4CSOMKP1w1Y9kx0u6b1RLtEmzO6UjsDk=;
+        b=dH4nQnYiVHZUW+9DJTmab/Ne9FtVtcTrulVqztp+mHJBkhx03FRSruAhle5mbBV6uk
+         T9skGSiVeFehPBHp0hFihc2U6xf+bpuFMpctfe9PrA6OINyd3cmWwEcx8mvklr4MR7El
+         vmxCbr8naeWjS5Q2yu4DiP6LjP5IPth8fQRJeC6t7h6aetA1nVc0GeUoBnrZ/938k/a1
+         0iwbWW1rum1n5ElQCMy7z+BHaoSJktkpuBeMUzPhjUlLo+FgqgY3a96VdWLZFcmX6b+Q
+         yjHdMd2onLP/UplW/8E9DBYPmdlQ1kXY6XN+m7ZvL3bwRFiWQ8lpMnULKHsJCHDsSe1T
+         mxkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=+sj5Np2+8inI665WoQ6AJL8HD1n2fstnINDnLTrN+dQ=;
-        b=lg6s0mCIrnQYzfU9flDMlrThDbRz3RZl7lyO5HFN6QxYC124O4tGKaZhtb5BIvRhSX
-         1Gh1iL4nlpP3azMxxgcVDLSIEErdFAnHArViy3h5EDrHlUwJSYOlJw/Vk53MV3yr93z4
-         cH1mdA9nnq8Ijm+TXSSdp4qUGNMTjMalfqRY3v3lv6sfSD966VxDz/bJOpen7eIq+sny
-         GQbdAkNKtvGaNc1+eeG0BiukRNPSrwfAjWxDJg072bHYDtnuJC4SHwloCVjUYSeAy/Gh
-         zylziY9bCTxP0SYTqn7LOcj6XCFiTfRJ+VDFdPU7Y08cV9Dv3n6WRbijNgexac22+Z38
-         ZgfQ==
-X-Gm-Message-State: AOAM533LTlMrc0BeajIk8BLFAdw2WfAoIdCfaCXPDrIWdRZ8T8zJT4XQ
-        0cEoB/C4oIVUwXi3x34zH+peNZ7BYiCT12a2B40bNQ==
-X-Google-Smtp-Source: ABdhPJz0SzkfkTr40mPF69qxxymd+LL7USqJwGop95CdeAPwUXnN0D/yYq8+mL0QJKiSM/DjCEBjgeVcP2+rZJiLvIE=
-X-Received: by 2002:a67:db91:: with SMTP id f17mr50441769vsk.47.1621237062133;
- Mon, 17 May 2021 00:37:42 -0700 (PDT)
+        bh=x9Y2K5Ans0M4CSOMKP1w1Y9kx0u6b1RLtEmzO6UjsDk=;
+        b=TDod36YdcvM+heWsxbRGpFq7qrH3m07mL6MjUquuzbKIpOJ2XFnfzO+im3PgiKg5+j
+         ipAOjCo8oKMcyTNo9VW9sqSgsos/OET5IFbsYKTUERmO3Tn4sIvuED/xv5HQfRJaE9yj
+         XkKMBm3eT3zmNXiw6Rlbk24d5nYTXj/49nFBotRWaT9wHzGKtp/ElduVfI1jRYM4mhBs
+         3omzwrobv6+P2V64hKXQ83X4oaTCu+8UgDiyjVSxfKq+tbr0PG6Zu4NTwK29MsIwhV0p
+         MAWcuvioeJ73/5Li0NoqAhIlQFORsxRQdPKliEieAy8eXRAT47ypUPUWUKSeewre9qop
+         jrwA==
+X-Gm-Message-State: AOAM5304WVBnxfnDfff+RkIpRNBcJcIYwNHfuwwuQkWc2v3YeDQi9G/x
+        SQSg1uUTgTSkgo7BQBq0MyJU6gExzK8iNxGkyRE=
+X-Google-Smtp-Source: ABdhPJzTsVzVVVPGebowcEMAg8E7NftAfZEWH0wHhHEIiX/N3bnuVCEWz/KlzueBLV3Ykuf/CTd66wATQNq3jSsTxeY=
+X-Received: by 2002:a17:90a:d184:: with SMTP id fu4mr1622116pjb.129.1621237587294;
+ Mon, 17 May 2021 00:46:27 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210516172520.1398835-1-jic23@kernel.org> <20210516172520.1398835-8-jic23@kernel.org>
- <CAASAkoYqGqwQcHZpSJHBZp+t_9bAZ04DSqAzM9=yHB4aaj_VWw@mail.gmail.com>
-In-Reply-To: <CAASAkoYqGqwQcHZpSJHBZp+t_9bAZ04DSqAzM9=yHB4aaj_VWw@mail.gmail.com>
-From:   Alexandru Ardelean <aardelean@deviqon.com>
-Date:   Mon, 17 May 2021 10:37:31 +0300
-Message-ID: <CAASAkoZxvz05Q3ep4uQH=Zh7xehZPPSRmC=y+xP18MAdsymjSw@mail.gmail.com>
-Subject: Re: [PATCH 7/8] iio: adc: ti-adc108s102: Use devm managed functions
- for all of probe()
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20210515000058.204601-1-linus.walleij@linaro.org>
+In-Reply-To: <20210515000058.204601-1-linus.walleij@linaro.org>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 17 May 2021 10:46:11 +0300
+Message-ID: <CAHp75Ve-dNqKprs-qsEDbKtZAh74Tdvbggwj5p6W9Akt1=01FQ@mail.gmail.com>
+Subject: Re: [PATCH] iio: accel: st_sensors: Support generic mounting matrix
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Denis Ciocca <denis.ciocca@st.com>,
+        Daniel Drake <drake@endlessm.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 17 May 2021 at 10:31, Alexandru Ardelean <aardelean@deviqon.com> wrote:
+On Sat, May 15, 2021 at 6:17 AM Linus Walleij <linus.walleij@linaro.org> wrote:
 >
-> On Sun, 16 May 2021 at 20:26, Jonathan Cameron <jic23@kernel.org> wrote:
-> >
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >
-> > Simplifies error handling and lets us drop remove() entirely.
-> >
+> The ST accelerators support a special type of quirky
+> mounting matrix found in ACPI systems, but not a generic
+> mounting matrix such as from the device tree.
+>
+> Augment the ACPI hack to be a bit more generic and
+> accept a mounting matrix from device properties.
+>
+> This makes it possible to fix orientation on the Ux500
+> HREF device.
+
+I think this entire thread may be interesting to Hans, hence Cc him.
+
+
+> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Cc: Denis Ciocca <denis.ciocca@st.com>
+> Cc: Daniel Drake <drake@endlessm.com>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+>  drivers/iio/accel/st_accel_core.c | 51 ++++++++++++++++++++-----------
+>  1 file changed, 34 insertions(+), 17 deletions(-)
+>
+> diff --git a/drivers/iio/accel/st_accel_core.c b/drivers/iio/accel/st_accel_core.c
+> index 43c50167d220..cfbcf740e3cb 100644
+> --- a/drivers/iio/accel/st_accel_core.c
+> +++ b/drivers/iio/accel/st_accel_core.c
+> @@ -1069,26 +1069,25 @@ static const struct iio_trigger_ops st_accel_trigger_ops = {
+>  #define ST_ACCEL_TRIGGER_OPS NULL
+>  #endif
+>
+> -#ifdef CONFIG_ACPI
+>  static const struct iio_mount_matrix *
+> -get_mount_matrix(const struct iio_dev *indio_dev,
+> -                const struct iio_chan_spec *chan)
+> +st_accel_get_mount_matrix(const struct iio_dev *indio_dev,
+> +                         const struct iio_chan_spec *chan)
+>  {
+>         struct st_sensor_data *adata = iio_priv(indio_dev);
+>
+>         return adata->mount_matrix;
+>  }
+>
+> -static const struct iio_chan_spec_ext_info mount_matrix_ext_info[] = {
+> -       IIO_MOUNT_MATRIX(IIO_SHARED_BY_ALL, get_mount_matrix),
+> +static const struct iio_chan_spec_ext_info st_accel_mount_matrix_ext_info[] = {
+> +       IIO_MOUNT_MATRIX(IIO_SHARED_BY_ALL, st_accel_get_mount_matrix),
+>         { },
+>  };
+>
+> +#ifdef CONFIG_ACPI
+>  /* Read ST-specific _ONT orientation data from ACPI and generate an
+>   * appropriate mount matrix.
+>   */
+> -static int apply_acpi_orientation(struct iio_dev *indio_dev,
+> -                                 struct iio_chan_spec *channels)
+> +static int apply_acpi_orientation(struct iio_dev *indio_dev)
+>  {
+>         struct st_sensor_data *adata = iio_priv(indio_dev);
+>         struct acpi_buffer buffer = {ACPI_ALLOCATE_BUFFER, NULL};
+> @@ -1207,22 +1206,20 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev,
+>                 }
+>         }
+>
+> -       /* Expose the mount matrix via ext_info */
+> -       for (i = 0; i < indio_dev->num_channels; i++)
+> -               channels[i].ext_info = mount_matrix_ext_info;
+> -
+>         ret = 0;
+>         dev_info(&indio_dev->dev, "computed mount matrix from ACPI\n");
+>
+>  out:
+>         kfree(buffer.pointer);
+> +       dev_warn(&indio_dev->dev,
+> +                "failed to apply ACPI orientation data: %d\n", ret);
+> +
+>         return ret;
+>  }
+>  #else /* !CONFIG_ACPI */
+> -static int apply_acpi_orientation(struct iio_dev *indio_dev,
+> -                                 struct iio_chan_spec *channels)
+> +static int apply_acpi_orientation(struct iio_dev *indio_dev)
+>  {
+> -       return 0;
+> +       return -EINVAL;
+>  }
+>  #endif
+>
+> @@ -1251,6 +1248,7 @@ int st_accel_common_probe(struct iio_dev *indio_dev)
+>         struct iio_chan_spec *channels;
+>         size_t channels_size;
+>         int err;
+> +       int i;
+>
+>         indio_dev->modes = INDIO_DIRECT_MODE;
+>         indio_dev->info = &accel_info;
+> @@ -1275,9 +1273,28 @@ int st_accel_common_probe(struct iio_dev *indio_dev)
+>                 goto st_accel_power_off;
+>         }
+>
+> -       if (apply_acpi_orientation(indio_dev, channels))
+> -               dev_warn(&indio_dev->dev,
+> -                        "failed to apply ACPI orientation data: %d\n", err);
+> +       /* First try ACPI orientation then try the generic function */
+> +       err = apply_acpi_orientation(indio_dev);
+> +       if (err) {
+> +               adata->mount_matrix = devm_kmalloc(&indio_dev->dev,
+> +                                                  sizeof(*adata->mount_matrix),
+> +                                                  GFP_KERNEL);
+> +               if (!adata->mount_matrix) {
+> +                       err = -ENOMEM;
+> +                       goto st_accel_power_off;
+> +               }
+> +
+> +               err = iio_read_mount_matrix(adata->dev, "mount-matrix",
+> +                                           adata->mount_matrix);
+> +               if (err)
+> +                       goto st_accel_power_off;
+> +       }
+> +       /*
+> +        * We have at least an identity matrix, so expose the mount
+> +        * matrix via ext_info
+> +        */
+> +       for (i = 0; i < indio_dev->num_channels; i++)
+> +               channels[i].ext_info = st_accel_mount_matrix_ext_info;
+>
+>         indio_dev->channels = channels;
+>         adata->current_fullscale = &adata->sensor_settings->fs.fs_avl[0];
+> --
+> 2.31.1
 >
 
-// Removed Bogdan's email; it's not working;
-Apologies to return on this.
-This note can be disregarded, but this patch could do a direct return
-for devm_iio_device_register().
-It doesn't make much sense to print a failure there as that can be
-also viewed via some broader kernel logging.
-But it's also fine to leave it.
 
-> Reviewed-by: Alexandru Ardelean <aardelean@deviqon.com>
->
->
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Cc: Bogdan Pricop <bogdan.pricop@emutex.com>
-> > ---
-> >  drivers/iio/adc/ti-adc108s102.c | 45 +++++++++++----------------------
-> >  1 file changed, 15 insertions(+), 30 deletions(-)
-> >
-> > diff --git a/drivers/iio/adc/ti-adc108s102.c b/drivers/iio/adc/ti-adc108s102.c
-> > index 183b2245e89b..db902aef2abe 100644
-> > --- a/drivers/iio/adc/ti-adc108s102.c
-> > +++ b/drivers/iio/adc/ti-adc108s102.c
-> > @@ -215,6 +215,11 @@ static const struct iio_info adc108s102_info = {
-> >         .update_scan_mode       = &adc108s102_update_scan_mode,
-> >  };
-> >
-> > +static void adc108s102_reg_disable(void *reg)
-> > +{
-> > +       regulator_disable(reg);
-> > +}
-> > +
-> >  static int adc108s102_probe(struct spi_device *spi)
-> >  {
-> >         struct adc108s102_state *st;
-> > @@ -239,6 +244,10 @@ static int adc108s102_probe(struct spi_device *spi)
-> >                         dev_err(&spi->dev, "Cannot enable vref regulator\n");
-> >                         return ret;
-> >                 }
-> > +               ret = devm_add_action_or_reset(&spi->dev, adc108s102_reg_disable,
-> > +                                              st->reg);
-> > +               if (ret)
-> > +                       return ret;
-> >
-> >                 ret = regulator_get_voltage(st->reg);
-> >                 if (ret < 0) {
-> > @@ -249,7 +258,6 @@ static int adc108s102_probe(struct spi_device *spi)
-> >                 st->va_millivolt = ret / 1000;
-> >         }
-> >
-> > -       spi_set_drvdata(spi, indio_dev);
-> >         st->spi = spi;
-> >
-> >         indio_dev->name = spi->modalias;
-> > @@ -266,40 +274,18 @@ static int adc108s102_probe(struct spi_device *spi)
-> >         spi_message_init_with_transfers(&st->scan_single_msg,
-> >                                         &st->scan_single_xfer, 1);
-> >
-> > -       ret = iio_triggered_buffer_setup(indio_dev, NULL,
-> > -                                        &adc108s102_trigger_handler, NULL);
-> > +       ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev, NULL,
-> > +                                             &adc108s102_trigger_handler,
-> > +                                             NULL);
-> >         if (ret)
-> > -               goto error_disable_reg;
-> > +               return ret;
-> >
-> > -       ret = iio_device_register(indio_dev);
-> > -       if (ret) {
-> > +       ret = devm_iio_device_register(&spi->dev, indio_dev);
-> > +       if (ret)
-> >                 dev_err(&spi->dev, "Failed to register IIO device\n");
-> > -               goto error_cleanup_triggered_buffer;
-> > -       }
-> > -       return 0;
-> > -
-> > -error_cleanup_triggered_buffer:
-> > -       iio_triggered_buffer_cleanup(indio_dev);
-> > -
-> > -error_disable_reg:
-> > -       regulator_disable(st->reg);
-> > -
-> >         return ret;
-> >  }
-> >
-> > -static int adc108s102_remove(struct spi_device *spi)
-> > -{
-> > -       struct iio_dev *indio_dev = spi_get_drvdata(spi);
-> > -       struct adc108s102_state *st = iio_priv(indio_dev);
-> > -
-> > -       iio_device_unregister(indio_dev);
-> > -       iio_triggered_buffer_cleanup(indio_dev);
-> > -
-> > -       regulator_disable(st->reg);
-> > -
-> > -       return 0;
-> > -}
-> > -
-> >  static const struct of_device_id adc108s102_of_match[] = {
-> >         { .compatible = "ti,adc108s102" },
-> >         { }
-> > @@ -327,7 +313,6 @@ static struct spi_driver adc108s102_driver = {
-> >                 .acpi_match_table = ACPI_PTR(adc108s102_acpi_ids),
-> >         },
-> >         .probe          = adc108s102_probe,
-> > -       .remove         = adc108s102_remove,
-> >         .id_table       = adc108s102_id,
-> >  };
-> >  module_spi_driver(adc108s102_driver);
-> > --
-> > 2.31.1
-> >
+-- 
+With Best Regards,
+Andy Shevchenko

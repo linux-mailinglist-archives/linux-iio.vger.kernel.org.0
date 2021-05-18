@@ -2,90 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EED62387648
-	for <lists+linux-iio@lfdr.de>; Tue, 18 May 2021 12:17:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6A10387711
+	for <lists+linux-iio@lfdr.de>; Tue, 18 May 2021 13:03:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241365AbhERKSa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 18 May 2021 06:18:30 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:48746 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241172AbhERKSa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 18 May 2021 06:18:30 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 14IAF7mh097788;
-        Tue, 18 May 2021 10:16:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=Dz0JFBpG2YkGnA6Kv+iRNqW5ei6j9FYbBlVBaa8JuDE=;
- b=j/msDuiXPVfGAKm6W7G3t7KrT7HSSMjxMOz3rCLqQVkbCkOrjP+dVeEk3CpLGxek+JCb
- xELI9DYOJESBCVu1u1f68s0cT3rGRGrBZhEDkQxRB00NzE0Hvr8v4RFQLSXOICeOl7Hf
- CMYbj9S6OHK9ztKMXRuAlStvDwBwDIjtCw1sgYOjNCN2BO1gvT2iz788PeoLV4ygwatv
- BiAGeO4C/LLuQceg26mcXL66lHuIw3PKSPhw8+F3leG+68ywVQhmD5tkH77Yw6pATDD5
- H6ZQlfP6KulEgX6N7gukK3Bl2MLJsM7q2g2D6gGkFFSEU4D2IsQqEGqbKtXC2jhtmtY3 2A== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 38j5qr5wgu-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 18 May 2021 10:16:40 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 14IAFq2r125832;
-        Tue, 18 May 2021 10:16:39 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by aserp3020.oracle.com with ESMTP id 38j6486fg2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 18 May 2021 10:16:39 +0000
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 14IAGcZ0132121;
-        Tue, 18 May 2021 10:16:38 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 38j6486feh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 18 May 2021 10:16:38 +0000
-Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 14IAGY6b016208;
-        Tue, 18 May 2021 10:16:36 GMT
-Received: from kadam (/62.8.83.26)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 18 May 2021 10:16:34 +0000
-Date:   Tue, 18 May 2021 13:16:26 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Tang Bin <tangbin@cmss.chinamobile.com>
-Cc:     lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
-        knaack.h@gmx.de, pmeerw@pmeerw.net, gregkh@linuxfoundation.org,
-        linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] staging: iio: cdc: ad7746: Remove unnecessary assignment
- in ad7746_probe()
-Message-ID: <20210518101626.GO1955@kadam>
-References: <20210518095647.3008-1-tangbin@cmss.chinamobile.com>
+        id S242023AbhERLFE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 18 May 2021 07:05:04 -0400
+Received: from mga06.intel.com ([134.134.136.31]:47202 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S240967AbhERLFD (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 18 May 2021 07:05:03 -0400
+IronPort-SDR: jQQdU7wccAuW4HTy4XRp94524S17TmvaGmWum37NSB98X6Lxgqu5BUqoKaxi8OroQA4B4eOox+
+ IPqkxsAPN3vw==
+X-IronPort-AV: E=McAfee;i="6200,9189,9987"; a="261912472"
+X-IronPort-AV: E=Sophos;i="5.82,309,1613462400"; 
+   d="scan'208";a="261912472"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2021 04:03:44 -0700
+IronPort-SDR: X4bazmpVHc2qwsjCBoEdhg1Q1QeIjX4Q9/DmGIGpY+wUq4a6Sj/1lOffTyeP0v3bbyAl5Zn03F
+ xweywIkkGVaA==
+X-IronPort-AV: E=Sophos;i="5.82,309,1613462400"; 
+   d="scan'208";a="393912376"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2021 04:03:42 -0700
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1lixVj-00CvxV-EC; Tue, 18 May 2021 14:03:39 +0300
+Date:   Tue, 18 May 2021 14:03:39 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Denis Ciocca <denis.ciocca@st.com>,
+        Daniel Drake <drake@endlessm.com>,
+        Stephan Gerhold <stephan@gerhold.net>
+Subject: Re: [PATCH 2/5 v2] iio: accel: st_sensors: Support generic mounting
+ matrix
+Message-ID: <YKOfCyuPOeomUbG1@smile.fi.intel.com>
+References: <20210517233322.383043-1-linus.walleij@linaro.org>
+ <20210517233322.383043-2-linus.walleij@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210518095647.3008-1-tangbin@cmss.chinamobile.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-GUID: pFFpgWCER-ethSIjiD4beJU8BUWa1bhp
-X-Proofpoint-ORIG-GUID: pFFpgWCER-ethSIjiD4beJU8BUWa1bhp
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9987 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015 impostorscore=0
- mlxscore=0 lowpriorityscore=0 malwarescore=0 mlxlogscore=999
- suspectscore=0 adultscore=0 priorityscore=1501 spamscore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2105180071
+In-Reply-To: <20210517233322.383043-2-linus.walleij@linaro.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, May 18, 2021 at 05:56:47PM +0800, Tang Bin wrote:
-> In the function ad7746_probe(), the initialized value of 'ret' is unused,
-> because it will be assigned by the function i2c_smbus_write_byte_data(),
-> thus remove it.
+On Tue, May 18, 2021 at 01:33:19AM +0200, Linus Walleij wrote:
+> The ST accelerators support a special type of quirky mounting matrix found
+> in ACPI systems, but not a generic mounting matrix such as from the device
+> tree.
 > 
-> Signed-off-by: Tang Bin <tangbin@cmss.chinamobile.com>
+> Augment the ACPI hack to be a bit more generic and accept a mounting
+> matrix from device properties.
+> 
+> This makes it possible to fix orientation on the Ux500 HREF device.
 
-Thanks!
+...
 
-Reviewed-by: Dan Carpenter <dan.carpenter@oracle.com>
+> +static const struct iio_chan_spec_ext_info st_accel_mount_matrix_ext_info[] = {
+> +	IIO_MOUNT_MATRIX(IIO_SHARED_BY_ALL, st_accel_get_mount_matrix),
+> +	{ },
 
-regards,
-dan carpenter
+Comma is not needed for terminator lines.
+
+> +};
+
+...
+
+> +	/* First try ACPI orientation then try the generic function */
+
+It's a bit confusing, because the generic also tries ACPI.
+
+Perhaps "...try specific ACPI methods to retrieve orientation, then..."?
+
+> +	err = apply_acpi_orientation(indio_dev);
+> +	if (err) {
+> +		err = iio_read_mount_matrix(adata->dev, "mount-matrix",
+> +					    &adata->mount_matrix);
+> +		if (err)
+> +			goto st_accel_power_off;
+> +	}
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 

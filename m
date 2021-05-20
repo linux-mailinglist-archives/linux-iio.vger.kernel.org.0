@@ -2,137 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 91E1838B504
-	for <lists+linux-iio@lfdr.de>; Thu, 20 May 2021 19:14:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67E8838B7F0
+	for <lists+linux-iio@lfdr.de>; Thu, 20 May 2021 22:00:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231745AbhETRPZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 20 May 2021 13:15:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36850 "EHLO
+        id S238151AbhETUBc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 20 May 2021 16:01:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231730AbhETRPY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 May 2021 13:15:24 -0400
-Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com [IPv6:2607:f8b0:4864:20::733])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B39EC061574;
-        Thu, 20 May 2021 10:14:01 -0700 (PDT)
-Received: by mail-qk1-x733.google.com with SMTP id i67so16926810qkc.4;
-        Thu, 20 May 2021 10:14:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=jq3RYlVbDqirRaEWm8uYC1ns+MqjwZOrxQ2cNaYJlDg=;
-        b=RcqLGnRn4lP6HGnhbtHRODna8BfZi+cQ75Ojh1B4T/MQoZSyXe2wIId8LU/kqGA7RM
-         Jp1XZ8pXeszuDXG2zHzwpmNEWdzYkAqLorKBiBofI+lWWUy9ou5hlBCb/00XqAx7VGqX
-         B2nUQXfsNTC0+7l1GVDhg99kfLgOkyzkrIu2GHZp+5/U4nrOe9v+sKXA4Rrh1IRQs5NC
-         TtjfKt0OJKP+qzmj623o4ETkBwevelOVGwy/nGA4p61DCshVyCcWWdEIZ1L+DULfysEX
-         oUOHMtklqm/ZpQ4LRNJj968x5SDD3XYUmYrQljJeJOO9Y3Z+bNBNtPqjnJ2CuJySJs24
-         6yZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=jq3RYlVbDqirRaEWm8uYC1ns+MqjwZOrxQ2cNaYJlDg=;
-        b=dsICxuT99/hCXoElAdGM3dyegCt+4kQ2YozJQDCCgxFCc6CBOyLPja3UC0eUKAX19U
-         9zvevYKSumHVswlv0/Q+tZZgL+8UpmUp9/N9eoc3rn7GSVzdNdNJVaGd9+rDzNCuFU1z
-         7jReg53nkgEm7Mu/QwfoIOyN9sQZo+XPf6FNDK0VvqSvPydlL7u7UfSnZfEf6FefXxUg
-         fJYM4xIjmjmTx6fhNW10OYrdQz1u1bv2H8AC4MJftoYOTKZCfN3H5RcH2ucqb6xBu4Bd
-         fzicNLyrFyt7G3CxBo8ypdkOg5/Pmta275KFCefXhYui0/u0GhkAroywc7jr5mnXWyf+
-         rnOg==
-X-Gm-Message-State: AOAM532UMSvN3Eu5I4GnY5pqmYAjVrGAWeJFbWabFC2EoZGhYD0L0vJU
-        XIrgmstgZ25Tg7umJyppcVs=
-X-Google-Smtp-Source: ABdhPJyYWtKsmIPSoSGsuqdD6zSwDOtYPVRAqi9Swk/0eu3dTFJS9AZQooo4mifGsrIHWJWHudqfBw==
-X-Received: by 2002:a37:93c2:: with SMTP id v185mr6435183qkd.179.1621530840751;
-        Thu, 20 May 2021 10:14:00 -0700 (PDT)
-Received: from smtp.gmail.com ([2804:30c:b19:6700:15d6:7f1d:c87:ccf7])
-        by smtp.gmail.com with ESMTPSA id f127sm2462842qkd.81.2021.05.20.10.13.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 May 2021 10:14:00 -0700 (PDT)
-Date:   Thu, 20 May 2021 14:13:56 -0300
-From:   Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To:     Wang Qing <wangqing@vivo.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S237298AbhETUBa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 May 2021 16:01:30 -0400
+Received: from ms.lwn.net (ms.lwn.net [IPv6:2600:3c01:e000:3a1::42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 305CAC061574;
+        Thu, 20 May 2021 13:00:09 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:281:8300:104d::5f6])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ms.lwn.net (Postfix) with ESMTPSA id D3783301;
+        Thu, 20 May 2021 20:00:07 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net D3783301
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+        t=1621540808; bh=2WNLJX/xlZc5xTtT/m0BAIjR0dGVeWDMrn8wfYaNCUM=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=JWiESVFNzhYgP3LIrHH+2tY7pTjoh+gKnctlpgARBvgwBWg4BACU+o/zkUA8eRdPF
+         jS85XmMhRO5jK77x2BlQkPxDSbCrzhxlhaMXvDctoM1+BMQOa0yL/SZHdunNPbhAgt
+         4USigcfd0H+vMC4CmQMvwXkhr8hvfRf3UC0K6z2vi4HY7A5m+ShwS2LJ/UDdBlnsDP
+         SPBGKoeOrTvsAjV7A36ox1hL3nOjKNp5cU8ATBlHyBRqSKzr5ElccrOeoSfEDcgg8h
+         LH4udeqBoy+VzdXLKBnnbzSb6qpvpqwupJQPHnbWB4IHmqCdgQ0/NFGZsiTs5E64Wr
+         JxMzmR3UeuhAA==
+From:   Jonathan Corbet <corbet@lwn.net>
+To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-kernel@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] staging: iio: fix some formatting issues
-Message-ID: <YKaY1GAKkqXnAUrq@smtp.gmail.com>
-References: <1621389170-5850-1-git-send-email-wangqing@vivo.com>
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Lee Jones <lee.jones@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        alsa-devel@alsa-project.org, dri-devel@lists.freedesktop.org,
+        kvm@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-iio@vger.kernel.org, patches@opensource.cirrus.com
+Subject: Re: [PATCH 00/10] Documentation build warning fixes
+In-Reply-To: <cover.1621413933.git.mchehab+huawei@kernel.org>
+References: <cover.1621413933.git.mchehab+huawei@kernel.org>
+Date:   Thu, 20 May 2021 14:00:07 -0600
+Message-ID: <87wnrtnpko.fsf@meer.lwn.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1621389170-5850-1-git-send-email-wangqing@vivo.com>
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Wang,
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
 
-Nice patch for a start. Yet, I think there is room for some improvement.
+> Hi Jon,
+>
+> This small series contain a series of fixes for the documentation. it is
+> against your docs-next branch.
+>
+> Three of the patches fix duplicated symbols at the ABI documents.
+> There are still some ABI warnings from IIO, but all but one were
+> already fixed at linux-next. So, hopefully, after having everything
+> merged, the ABI warnings will be solved.
+>
+> Mauro Carvalho Chehab (10):
+>   docs: update sysfs-platform_profile.rst reference
+>   docs: vcpu-requests.rst: fix reference for atomic ops
+>   docs: translations/zh_CN: fix a typo at 8.Conclusion.rst
+>   docs: sched-bwc.rst: fix a typo on a doc name
+>   docs: update pin-control.rst references
+>   docs: virt: api.rst: fix a pointer to SGX documentation
+>   docs: ABI: iommu: remove duplicated definition for
+>     sysfs-kernel-iommu_groups
+>   docs: ABI: sysfs-class-backlight: unify ambient light zone nodes
+>   docs: ABI: sysfs-class-led-trigger-pattern: remove repeat duplication
+>   iio: documentation: fix a typo
 
-On 05/19, Wang Qing wrote:
-> fixing:
-If you wish, you may add here that this style check is reported by
-checkpatch.
+Seems like good stuff.  The last patch in the series, though, adds a
+warning:
 
-> CHECK: Alignment should match open parenthesis
-> #1351: FILE: drivers/staging/iio/addac/adt7316.c:1351:
-Checkpatch warns that commit log lines starting with '#' are dropped by
-git as comments. Is this intentional?
+  Documentation/ABI/testing/sysfs-bus-iio:799: WARNING: Inline emphasis start-string without end-string.
 
-> 
-> CHECK: Alignment should match open parenthesis
-> #1378: FILE: drivers/staging/iio/addac/adt7316.c:1378:
-Same warning here.
+So I left that one out and applied the rest.
 
-Its probably not a requirement, but the subject line could be more
-specific about where the changes are for. Maybe start with
-staging: iio: addac:
-or even
-staging: iio: addac: adt7316:
+Thanks,
 
-
-Regards,
-
-Marcelo
-
-> 
-> Signed-off-by: Wang Qing <wangqing@vivo.com>
-> ---
->  drivers/staging/iio/addac/adt7316.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/staging/iio/addac/adt7316.c b/drivers/staging/iio/addac/adt7316.c
-> index ccbafca..79467f0 100644
-> --- a/drivers/staging/iio/addac/adt7316.c
-> +++ b/drivers/staging/iio/addac/adt7316.c
-> @@ -1348,9 +1348,9 @@ static ssize_t adt7316_show_in_analog_temp_offset(struct device *dev,
->  }
->  
->  static ssize_t adt7316_store_in_analog_temp_offset(struct device *dev,
-> -						struct device_attribute *attr,
-> -						const char *buf,
-> -						size_t len)
-> +						   struct device_attribute *attr,
-> +						   const char *buf,
-> +						   size_t len)
->  {
->  	struct iio_dev *dev_info = dev_to_iio_dev(dev);
->  	struct adt7316_chip_info *chip = iio_priv(dev_info);
-> @@ -1375,9 +1375,9 @@ static ssize_t adt7316_show_ex_analog_temp_offset(struct device *dev,
->  }
->  
->  static ssize_t adt7316_store_ex_analog_temp_offset(struct device *dev,
-> -						struct device_attribute *attr,
-> -						const char *buf,
-> -						size_t len)
-> +						   struct device_attribute *attr,
-> +						   const char *buf,
-> +						   size_t len)
->  {
->  	struct iio_dev *dev_info = dev_to_iio_dev(dev);
->  	struct adt7316_chip_info *chip = iio_priv(dev_info);
-> -- 
-> 2.7.4
-> 
+jon

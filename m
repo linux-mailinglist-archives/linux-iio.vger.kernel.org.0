@@ -2,102 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D18438CB75
-	for <lists+linux-iio@lfdr.de>; Fri, 21 May 2021 19:00:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88E0138CBB0
+	for <lists+linux-iio@lfdr.de>; Fri, 21 May 2021 19:14:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237507AbhEURB5 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Fri, 21 May 2021 13:01:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43110 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237529AbhEURBz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 21 May 2021 13:01:55 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S238070AbhEURPu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 May 2021 13:15:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:28073 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229999AbhEURPu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 May 2021 13:15:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1621617267;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=pCgaqDw5Xoc3eJxJfY7O89kRCc0yBN0WDqkGQNlmEqk=;
+        b=VPiKs51mBaYWBXXp/nlLBBOO/bh9IVmAkF+SNwF6F27gjnEysEo/i2wN/Bl6jCJapCXHLa
+        PH53pj7fhapW1602f+QogzqaKgrFHR5OtySwxs8DLTNML4T+lH9PyMeKIoOGi2olInDvBj
+        gj4sBBALBODM373ixb0bHjV9Icxps0o=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-143-oof1jAQOO12a2qpiSgeZyw-1; Fri, 21 May 2021 13:14:23 -0400
+X-MC-Unique: oof1jAQOO12a2qpiSgeZyw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E94E561074;
-        Fri, 21 May 2021 17:00:29 +0000 (UTC)
-Date:   Fri, 21 May 2021 18:01:50 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Meng.Li@windriver.com, lars@metafoo.de,
-        Michael.Hennerich@analog.com, pmeerw@pmeerw.net,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH] driver: adc: ltc2497: return directly after reading the
- adc conversion value
-Message-ID: <20210521180150.0f4d1b5d@jic23-huawei>
-In-Reply-To: <20210519092104.pntanimcjg6s6fca@pengutronix.de>
-References: <20210512045725.23390-1-Meng.Li@windriver.com>
-        <20210519092104.pntanimcjg6s6fca@pengutronix.de>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 5D3F9104FB62;
+        Fri, 21 May 2021 17:14:21 +0000 (UTC)
+Received: from x1.localdomain (ovpn-114-187.ams2.redhat.com [10.36.114.187])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 057B810013D6;
+        Fri, 21 May 2021 17:14:18 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jeremy Cline <jeremy@jcline.org>, linux-iio@vger.kernel.org,
+        Charles Keepax <ckeepax@opensource.cirrus.com>,
+        patches@opensource.cirrus.com, alsa-devel@alsa-project.org
+Subject: [PATCH 0/8] iio: accel: bmc150: Add support for yoga's with dual accelerometers with an ACPI HID of DUAL250E
+Date:   Fri, 21 May 2021 19:14:10 +0200
+Message-Id: <20210521171418.393871-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 19 May 2021 11:21:04 +0200
-Uwe Kleine-König <u.kleine-koenig@pengutronix.de> wrote:
+Hi All,
 
-> On Wed, May 12, 2021 at 12:57:25PM +0800, Meng.Li@windriver.com wrote:
-> > From: Meng Li <Meng.Li@windriver.com>
-> > 
-> > When read adc conversion value with below command:
-> > cat /sys/.../iio:device0/in_voltage0-voltage1_raw
-> > There is an error reported as below:
-> > ltc2497 0-0014: i2c transfer failed: -EREMOTEIO
-> > This i2c transfer issue is introduced by commit 69548b7c2c4f ("iio:
-> > adc: ltc2497: split protocol independent part in a separate module").
-> > When extract the common code into ltc2497-core.c, it change the
-> > code logic of function ltc2497core_read(). With wrong reading
-> > sequence, the action of enable adc channel is sent to chip again
-> > during adc channel is in conversion status. In this way, there is
-> > no ack from chip, and then cause i2c transfer failed.
-> > In order to keep the code logic is the same with original ideal,
-> > it is need to return direct after reading the adc conversion value.
-> > 
-> > Fixes: 69548b7c2c4f ("iio: adc: ltc2497: split protocol independent part in a separate module ")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Meng Li <Meng.Li@windriver.com>
-> > ---
-> >  drivers/iio/adc/ltc2497.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> > 
-> > diff --git a/drivers/iio/adc/ltc2497.c b/drivers/iio/adc/ltc2497.c
-> > index 1adddf5a88a9..fd5a66860a47 100644
-> > --- a/drivers/iio/adc/ltc2497.c
-> > +++ b/drivers/iio/adc/ltc2497.c
-> > @@ -41,6 +41,8 @@ static int ltc2497_result_and_measure(struct ltc2497core_driverdata *ddata,
-> >  		}
-> >  
-> >  		*val = (be32_to_cpu(st->buf) >> 14) - (1 << 17);
-> > +
-> > +		return ret;  
-> 
-> This looks wrong for me. The idea of the function
-> ltc2497_result_and_measure is that it reads the result and starts a new
-> measurement. I guess the problem is that ltc2497_result_and_measure is
-> called to early, not that it does too much.
-> 
-> But note I don't have such a system handy to actually debug this any
-> more.
+Some 360 degree hinges (yoga) style 2-in-1 devices use 2 bmc150 accels
+to allow the OS to determine the angle between the display and the base
+of the device, so that the OS can determine if the 2-in-1 is in laptop
+or in tablet-mode.
 
-@Meng Li,
+We already support this setup on devices using a single ACPI node
+with a HID of "BOSC0200" to describe both accelerometers. This patch
+set extends this support to also support the same setup but then
+using a HID of "DUAL250E".
 
-I see from the datasheet that the device can be used with an external oscillator.
-Is that the case on your boards, because if so the timing delay of 150msecs may
-be far too short.  If not, perhaps the part is right at the upper end of
-timings and we just need to add 20% to the 150msecs to be sure of not
-hitting the limit?
+While testing this I found some crashes on rmmod, patches 1-2
+fix those patches, patch 3 does some refactoring and patch 4
+adds support for the "DUAL250E" HID.
 
-Thanks,
+Unfortunately we need some more special handling though, which the
+rest of the patches are for.
 
-Jonathan
+On Windows both accelerometers are read (polled) by a special service
+and this service calls a DSM (Device Specific Method), which in turn
+translates the angles to one of laptop/tablet/tent/stand mode and then
+notifies the EC about the new mode and the EC then enables or disables
+the builtin keyboard and touchpad based in the mode.
+
+When the 2-in-1 is powered-on or resumed folded in tablet mode the
+EC senses this independent of the DSM by using a HALL effect sensor
+which senses that the keyboard has been folded away behind the display.
+
+At power-on or resume the EC disables the keyboard based on this and
+the only way to get the keyboard to work after this is to call the
+DSM to re-enable it (similar to how we also need to call a special
+DSM in the kxcjk-1013.c accel driver to re-enable the keyboard).
+
+Patches 5-7 deal with the DSM mess and patch 8 adds labels to the
+2 accelerometers specifying which one is which.
+
+Regards,
+
+Hans
 
 
-> 
-> Best regards
-> Uwe
-> 
+Hans de Goede (8):
+  iio: accel: bmc150: Fix dereferencing the wrong pointer in
+    bmc150_get/set_second_device
+  iio: accel: bmc150: Don't make the remove function of the second
+    accelerometer unregister itself
+  iio: accel: bmc150: Move check for second ACPI device into a separate
+    function
+  iio: accel: bmc150: Add support for dual-accelerometers with a
+    DUAL250E HID
+  iio: accel: bmc150: Move struct bmc150_accel_data definition to
+    bmc150-accel.h
+  iio: accel: bmc150: Remove bmc150_set/get_second_device() accessor
+    functions
+  iio: accel: bmc150: Add support for DUAL250E ACPI DSM for setting the
+    hinge angle
+  iio: accel: bmc150: Set label based on accel-location for ACPI
+    DUAL250E fwnodes
+
+ drivers/iio/accel/bmc150-accel-core.c |  87 ++----------
+ drivers/iio/accel/bmc150-accel-i2c.c  | 192 +++++++++++++++++++++-----
+ drivers/iio/accel/bmc150-accel.h      |  66 ++++++++-
+ 3 files changed, 239 insertions(+), 106 deletions(-)
+
+-- 
+2.31.1
 

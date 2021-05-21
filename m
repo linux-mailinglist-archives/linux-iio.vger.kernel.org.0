@@ -2,100 +2,103 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8C1138C281
-	for <lists+linux-iio@lfdr.de>; Fri, 21 May 2021 11:00:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14E1138CB4D
+	for <lists+linux-iio@lfdr.de>; Fri, 21 May 2021 18:52:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234711AbhEUJCN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 May 2021 05:02:13 -0400
-Received: from first.geanix.com ([116.203.34.67]:36094 "EHLO first.geanix.com"
+        id S237753AbhEUQyM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 May 2021 12:54:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41480 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234881AbhEUJCM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 21 May 2021 05:02:12 -0400
-Received: from [192.168.100.10] (unknown [185.233.254.173])
-        by first.geanix.com (Postfix) with ESMTPSA id DBCFF46531B;
-        Fri, 21 May 2021 09:00:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1621587645; bh=3xolAQOkDdfYsAWj/GpN99/E68e71DE4mOHkZNqSG4g=;
-        h=Subject:To:References:From:Date:In-Reply-To;
-        b=N6asiGwveQ6nZpu7zo7PJa+Kj4al5Q+wCRvSWzyEF3ca2V85c/g6BsLRr2WWwqQzq
-         DyxRbwmPfaBQARb5qUKmFUEjJo7jSXaFW+x9ofyxkiCLlIP0EeGMCaCGcC/st5kVyG
-         xR6MrcwyI6bhzsCau/aizvKew1twxPn1QofVBFuBetemM+kIpyGtVLZvZLYoW0WX/e
-         UMAxfZdnR0Gicm7gvUcLETysAlMTrTVmaEmn/qF8Uu8v8LNNJwlEczTIRifkqXtljO
-         L2EuLBBLTmAsC9RoXOnqTVxI4BJFKKAYIz22I+hSbyDTVkFgME06QuVwgG5WxPw1Xe
-         ZvctaDlltXxAA==
-Subject: Re: mmotm 2021-05-19-23-58 uploaded
- (drivers/iio/accel/fxls8962af-core.o)
-To:     Randy Dunlap <rdunlap@infradead.org>, akpm@linux-foundation.org,
-        broonie@kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-next@vger.kernel.org, mhocko@suse.cz,
-        mm-commits@vger.kernel.org, sfr@canb.auug.org.au,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>
-References: <20210520065918.KsmugQp47%akpm@linux-foundation.org>
- <0aa5599d-cd74-ea39-8acd-202582e76e15@infradead.org>
-From:   Sean Nyekjaer <sean@geanix.com>
-Message-ID: <40a21519-0755-74f6-da11-da9d0af4aab6@geanix.com>
-Date:   Fri, 21 May 2021 11:00:44 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        id S230471AbhEUQyL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 21 May 2021 12:54:11 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 436A261073;
+        Fri, 21 May 2021 16:52:46 +0000 (UTC)
+Date:   Fri, 21 May 2021 17:54:06 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Sean Nyekjaer <sean@geanix.com>
+Cc:     trix@redhat.com, lars@metafoo.de, andy.shevchenko@gmail.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Wolfram Sang <wsa@kernel.org>, linux-i2c@vger.kernel.org
+Subject: Re: [PATCH] iio: accel: fxls8962af: conditionally compile
+ fxls8962af_i2c_raw_read_errata3()
+Message-ID: <20210521175406.274f713b@jic23-huawei>
+In-Reply-To: <a3329058-2b2d-415a-5d2a-0bdf2f97d23d@geanix.com>
+References: <20210518234828.1930387-1-trix@redhat.com>
+        <a3329058-2b2d-415a-5d2a-0bdf2f97d23d@geanix.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <0aa5599d-cd74-ea39-8acd-202582e76e15@infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        URIBL_BLOCKED autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on 93bd6fdb21b5
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 21/05/2021 00.53, Randy Dunlap wrote:
-> On 5/19/21 11:59 PM, akpm@linux-foundation.org wrote:
->> The mm-of-the-moment snapshot 2021-05-19-23-58 has been uploaded to
->>
->>    https://www.ozlabs.org/~akpm/mmotm/
->>
->> mmotm-readme.txt says
->>
->> README for mm-of-the-moment:
->>
->> https://www.ozlabs.org/~akpm/mmotm/
->>
->> This is a snapshot of my -mm patch queue.  Uploaded at random hopefully
->> more than once a week.
->>
->> You will need quilt to apply these patches to the latest Linus release (5.x
->> or 5.x-rcY).  The series file is in broken-out.tar.gz and is duplicated in
->> https://ozlabs.org/~akpm/mmotm/series
->>
->> The file broken-out.tar.gz contains two datestamp files: .DATE and
->> .DATE-yyyy-mm-dd-hh-mm-ss.  Both contain the string yyyy-mm-dd-hh-mm-ss,
->> followed by the base kernel version against which this patch series is to
->> be applied.
->>
->> This tree is partially included in linux-next.  To see which patches are
->> included in linux-next, consult the `series' file.  Only the patches
->> within the #NEXT_PATCHES_START/#NEXT_PATCHES_END markers are included in
->> linux-next.
-> 
-> on x86_64:
-> (from linux-next, not mmotm)
-> 
-> CONFIG_FXLS8962AF=y
-> CONFIG_FXLS8962AF_SPI=y
-> but no I2C.
-> 
-> ld: drivers/iio/accel/fxls8962af-core.o: in function `fxls8962af_fifo_flush':
-> fxls8962af-core.c:(.text+0x9d4): undefined reference to `i2c_verify_client'
-> 
-> Full randconfig file is attached.
-> 
-Thanks :)
+On Wed, 19 May 2021 07:37:16 +0200
+Sean Nyekjaer <sean@geanix.com> wrote:
 
-It's fixed in:
-https://lore.kernel.org/linux-iio/a3329058-2b2d-415a-5d2a-0bdf2f97d23d@geanix.com/T/#t
+> On 19/05/2021 01.48, trix@redhat.com wrote:
+> > From: Tom Rix <trix@redhat.com>
+> > 
+> > The build is failing with this link error
+> > ld: fxls8962af-core.o: in function `fxls8962af_fifo_transfer':
+> > fxls8962af-core.c: undefined reference to `i2c_verify_client'
+> > 
+> > This is needed for the i2c variant, not the spi variant. So
+> > conditionally compile based on CONFIG_FXLS8962AF_I2C.
+> >   
+> Fixes: 68068fad0e1c ("iio: accel: fxls8962af: fix errata bug E3 - I2C burst reads")
+> > Signed-off-by: Tom Rix <trix@redhat.com>  
+> Reviewed-by: Sean Nyekjaer <sean@geanix.com>
 
-/Sean
+Given the purpose of that check is to verify it was an i2c_client
+should we be looking to instead provide a stub for the case where
+we don't have CONFIG_I2C?
+
++CC Wolfram and linux-i2c list for input.
+
+> > ---
+> >  drivers/iio/accel/fxls8962af-core.c | 4 ++++
+> >  1 file changed, 4 insertions(+)
+> > 
+> > diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
+> > index 9fe5a18a605cc..b6d833e2058c8 100644
+> > --- a/drivers/iio/accel/fxls8962af-core.c
+> > +++ b/drivers/iio/accel/fxls8962af-core.c
+> > @@ -624,6 +624,7 @@ static const struct iio_buffer_setup_ops fxls8962af_buffer_ops = {
+> >  	.postdisable = fxls8962af_buffer_postdisable,
+> >  };
+> >  
+> > +#if IS_ENABLED(CONFIG_FXLS8962AF_I2C)
+> >  static int fxls8962af_i2c_raw_read_errata3(struct fxls8962af_data *data,
+> >  					   u16 *buffer, int samples,
+> >  					   int sample_length)
+> > @@ -639,6 +640,7 @@ static int fxls8962af_i2c_raw_read_errata3(struct fxls8962af_data *data,
+> >  
+> >  	return ret;
+> >  }
+> > +#endif
+> >  
+> >  static int fxls8962af_fifo_transfer(struct fxls8962af_data *data,
+> >  				    u16 *buffer, int samples)
+> > @@ -648,6 +650,7 @@ static int fxls8962af_fifo_transfer(struct fxls8962af_data *data,
+> >  	int total_length = samples * sample_length;
+> >  	int ret;
+> >  
+> > +#if IS_ENABLED(CONFIG_FXLS8962AF_I2C)
+> >  	if (i2c_verify_client(dev))
+> >  		/*
+> >  		 * Due to errata bug:
+> > @@ -657,6 +660,7 @@ static int fxls8962af_fifo_transfer(struct fxls8962af_data *data,
+> >  		ret = fxls8962af_i2c_raw_read_errata3(data, buffer, samples,
+> >  						      sample_length);
+> >  	else
+> > +#endif
+> >  		ret = regmap_raw_read(data->regmap, FXLS8962AF_BUF_X_LSB, buffer,
+> >  				      total_length);
+> >  
+> >   
+> 
+

@@ -2,103 +2,102 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 14E1138CB4D
-	for <lists+linux-iio@lfdr.de>; Fri, 21 May 2021 18:52:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D18438CB75
+	for <lists+linux-iio@lfdr.de>; Fri, 21 May 2021 19:00:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237753AbhEUQyM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 May 2021 12:54:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41480 "EHLO mail.kernel.org"
+        id S237507AbhEURB5 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Fri, 21 May 2021 13:01:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43110 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230471AbhEUQyL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 21 May 2021 12:54:11 -0400
+        id S237529AbhEURBz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 21 May 2021 13:01:55 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 436A261073;
-        Fri, 21 May 2021 16:52:46 +0000 (UTC)
-Date:   Fri, 21 May 2021 17:54:06 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id E94E561074;
+        Fri, 21 May 2021 17:00:29 +0000 (UTC)
+Date:   Fri, 21 May 2021 18:01:50 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Sean Nyekjaer <sean@geanix.com>
-Cc:     trix@redhat.com, lars@metafoo.de, andy.shevchenko@gmail.com,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Wolfram Sang <wsa@kernel.org>, linux-i2c@vger.kernel.org
-Subject: Re: [PATCH] iio: accel: fxls8962af: conditionally compile
- fxls8962af_i2c_raw_read_errata3()
-Message-ID: <20210521175406.274f713b@jic23-huawei>
-In-Reply-To: <a3329058-2b2d-415a-5d2a-0bdf2f97d23d@geanix.com>
-References: <20210518234828.1930387-1-trix@redhat.com>
-        <a3329058-2b2d-415a-5d2a-0bdf2f97d23d@geanix.com>
+To:     Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Meng.Li@windriver.com, lars@metafoo.de,
+        Michael.Hennerich@analog.com, pmeerw@pmeerw.net,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH] driver: adc: ltc2497: return directly after reading the
+ adc conversion value
+Message-ID: <20210521180150.0f4d1b5d@jic23-huawei>
+In-Reply-To: <20210519092104.pntanimcjg6s6fca@pengutronix.de>
+References: <20210512045725.23390-1-Meng.Li@windriver.com>
+        <20210519092104.pntanimcjg6s6fca@pengutronix.de>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 19 May 2021 07:37:16 +0200
-Sean Nyekjaer <sean@geanix.com> wrote:
+On Wed, 19 May 2021 11:21:04 +0200
+Uwe Kleine-König <u.kleine-koenig@pengutronix.de> wrote:
 
-> On 19/05/2021 01.48, trix@redhat.com wrote:
-> > From: Tom Rix <trix@redhat.com>
+> On Wed, May 12, 2021 at 12:57:25PM +0800, Meng.Li@windriver.com wrote:
+> > From: Meng Li <Meng.Li@windriver.com>
 > > 
-> > The build is failing with this link error
-> > ld: fxls8962af-core.o: in function `fxls8962af_fifo_transfer':
-> > fxls8962af-core.c: undefined reference to `i2c_verify_client'
+> > When read adc conversion value with below command:
+> > cat /sys/.../iio:device0/in_voltage0-voltage1_raw
+> > There is an error reported as below:
+> > ltc2497 0-0014: i2c transfer failed: -EREMOTEIO
+> > This i2c transfer issue is introduced by commit 69548b7c2c4f ("iio:
+> > adc: ltc2497: split protocol independent part in a separate module").
+> > When extract the common code into ltc2497-core.c, it change the
+> > code logic of function ltc2497core_read(). With wrong reading
+> > sequence, the action of enable adc channel is sent to chip again
+> > during adc channel is in conversion status. In this way, there is
+> > no ack from chip, and then cause i2c transfer failed.
+> > In order to keep the code logic is the same with original ideal,
+> > it is need to return direct after reading the adc conversion value.
 > > 
-> > This is needed for the i2c variant, not the spi variant. So
-> > conditionally compile based on CONFIG_FXLS8962AF_I2C.
-> >   
-> Fixes: 68068fad0e1c ("iio: accel: fxls8962af: fix errata bug E3 - I2C burst reads")
-> > Signed-off-by: Tom Rix <trix@redhat.com>  
-> Reviewed-by: Sean Nyekjaer <sean@geanix.com>
-
-Given the purpose of that check is to verify it was an i2c_client
-should we be looking to instead provide a stub for the case where
-we don't have CONFIG_I2C?
-
-+CC Wolfram and linux-i2c list for input.
-
+> > Fixes: 69548b7c2c4f ("iio: adc: ltc2497: split protocol independent part in a separate module ")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Meng Li <Meng.Li@windriver.com>
 > > ---
-> >  drivers/iio/accel/fxls8962af-core.c | 4 ++++
-> >  1 file changed, 4 insertions(+)
+> >  drivers/iio/adc/ltc2497.c | 2 ++
+> >  1 file changed, 2 insertions(+)
 > > 
-> > diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
-> > index 9fe5a18a605cc..b6d833e2058c8 100644
-> > --- a/drivers/iio/accel/fxls8962af-core.c
-> > +++ b/drivers/iio/accel/fxls8962af-core.c
-> > @@ -624,6 +624,7 @@ static const struct iio_buffer_setup_ops fxls8962af_buffer_ops = {
-> >  	.postdisable = fxls8962af_buffer_postdisable,
-> >  };
+> > diff --git a/drivers/iio/adc/ltc2497.c b/drivers/iio/adc/ltc2497.c
+> > index 1adddf5a88a9..fd5a66860a47 100644
+> > --- a/drivers/iio/adc/ltc2497.c
+> > +++ b/drivers/iio/adc/ltc2497.c
+> > @@ -41,6 +41,8 @@ static int ltc2497_result_and_measure(struct ltc2497core_driverdata *ddata,
+> >  		}
 > >  
-> > +#if IS_ENABLED(CONFIG_FXLS8962AF_I2C)
-> >  static int fxls8962af_i2c_raw_read_errata3(struct fxls8962af_data *data,
-> >  					   u16 *buffer, int samples,
-> >  					   int sample_length)
-> > @@ -639,6 +640,7 @@ static int fxls8962af_i2c_raw_read_errata3(struct fxls8962af_data *data,
-> >  
-> >  	return ret;
-> >  }
-> > +#endif
-> >  
-> >  static int fxls8962af_fifo_transfer(struct fxls8962af_data *data,
-> >  				    u16 *buffer, int samples)
-> > @@ -648,6 +650,7 @@ static int fxls8962af_fifo_transfer(struct fxls8962af_data *data,
-> >  	int total_length = samples * sample_length;
-> >  	int ret;
-> >  
-> > +#if IS_ENABLED(CONFIG_FXLS8962AF_I2C)
-> >  	if (i2c_verify_client(dev))
-> >  		/*
-> >  		 * Due to errata bug:
-> > @@ -657,6 +660,7 @@ static int fxls8962af_fifo_transfer(struct fxls8962af_data *data,
-> >  		ret = fxls8962af_i2c_raw_read_errata3(data, buffer, samples,
-> >  						      sample_length);
-> >  	else
-> > +#endif
-> >  		ret = regmap_raw_read(data->regmap, FXLS8962AF_BUF_X_LSB, buffer,
-> >  				      total_length);
-> >  
-> >   
+> >  		*val = (be32_to_cpu(st->buf) >> 14) - (1 << 17);
+> > +
+> > +		return ret;  
+> 
+> This looks wrong for me. The idea of the function
+> ltc2497_result_and_measure is that it reads the result and starts a new
+> measurement. I guess the problem is that ltc2497_result_and_measure is
+> called to early, not that it does too much.
+> 
+> But note I don't have such a system handy to actually debug this any
+> more.
+
+@Meng Li,
+
+I see from the datasheet that the device can be used with an external oscillator.
+Is that the case on your boards, because if so the timing delay of 150msecs may
+be far too short.  If not, perhaps the part is right at the upper end of
+timings and we just need to add 20% to the 150msecs to be sure of not
+hitting the limit?
+
+Thanks,
+
+Jonathan
+
+
+> 
+> Best regards
+> Uwe
 > 
 

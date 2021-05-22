@@ -2,84 +2,127 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 088C238D6DC
-	for <lists+linux-iio@lfdr.de>; Sat, 22 May 2021 20:11:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8040938D6DF
+	for <lists+linux-iio@lfdr.de>; Sat, 22 May 2021 20:14:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231153AbhEVSNQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 22 May 2021 14:13:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41994 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230497AbhEVSNQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 22 May 2021 14:13:16 -0400
-Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A7CBC061574
-        for <linux-iio@vger.kernel.org>; Sat, 22 May 2021 11:11:50 -0700 (PDT)
-Received: by mail-pg1-x52c.google.com with SMTP id j12so16877300pgh.7
-        for <linux-iio@vger.kernel.org>; Sat, 22 May 2021 11:11:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=7SK1jwCORAJwOku71k74kizq3BL/irGNdgIM5FobjmM=;
-        b=VHJIUfmLszzHd+U/XxstxbnDiua+CqbneEPzSwbTrodTOtPvnn86yMa9AcyoPJO92Q
-         7ynnKMbSMq7/1yUqP8XF0CF8hZSwezJiU3q4GS79TMLtaTgJ6aWqfyvT+NwIEZJMl1xY
-         v4WHfjErBVp45Xwp9+9xN/BHOXG2+k/SP3LBQrYXRxVWjFjMQL20mOptdXm2ukhRwGx8
-         Br1buXG1k8BRq87rwYJuA3PTtyt+qubUEqhN3db19aiJiXb2eXoFBo7M3zJYYrxPvQwd
-         PuPmNn85YMrcRopcm72/3aI03L9kDvd7oGOkN+OJbR3q5UOrKd8/D8MIumUrP605pfCU
-         EyWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=7SK1jwCORAJwOku71k74kizq3BL/irGNdgIM5FobjmM=;
-        b=eAXdczWecwiI+uTzGF1FsB/NgTNOssG9WFJKKM6N9SZgnPxGZ3d59W+jsMpvGfTZQP
-         FZMe1RMN/XXmuFyLfYlfTVgkVluswG46ebPGcSDRtM0suf9xQl54sARqB4hIAf3xNt9j
-         nVfaEymU6X0CxPw54UV2mj/pPszzFTDf6Jgct7ZxAiVgE/aPRgu1wH+VhGKdaDNC9ZR1
-         0crTIFmA5eTkQGTKww8KlgtNUDK+eRtKd9+cSoQ55DV79Tk9AdZlyuPAQ6Vne827+m4C
-         5BoqTM/i6qmS8WvTyzFiXaZ3TABa00aFHnE1Ras6oxaa0nUNfb/0w6yA+hdm/3bYJEsK
-         U+Lg==
-X-Gm-Message-State: AOAM532Cb+4Dh1t79m4yqbHdBr5LoYAWBtlM9QyCyoVzrpCz7O+gNIVh
-        xZ74lPTqyDJ87r3C+X3+ZV8r/K4b00yl+1R3SVQ=
-X-Google-Smtp-Source: ABdhPJxNLyTS1W/9LF7NcfOsca+cphRVoI5JVl72ltX0NVbzB6beP5o/0iTUNuBCog2Iz9M5dAWa7LGTFikQR9Psx3U=
-X-Received: by 2002:a05:6a00:a1e:b029:2e2:89d8:5c87 with SMTP id
- p30-20020a056a000a1eb02902e289d85c87mr14588981pfh.73.1621707109670; Sat, 22
- May 2021 11:11:49 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210521171418.393871-1-hdegoede@redhat.com> <20210521171418.393871-5-hdegoede@redhat.com>
-In-Reply-To: <20210521171418.393871-5-hdegoede@redhat.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sat, 22 May 2021 21:11:32 +0300
-Message-ID: <CAHp75Vf_itoC8hiacBPXLK73NLbFre58b=wmVdEbviwEj0ZHHA@mail.gmail.com>
-Subject: Re: [PATCH 4/8] iio: accel: bmc150: Add support for
- dual-accelerometers with a DUAL250E HID
+        id S231195AbhEVSPc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 22 May 2021 14:15:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51522 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231156AbhEVSPc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 22 May 2021 14:15:32 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6FCB161139;
+        Sat, 22 May 2021 18:14:04 +0000 (UTC)
+Date:   Sat, 22 May 2021 19:15:27 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
 To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Jeremy Cline <jeremy@jcline.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
-        patches@opensource.cirrus.com,
-        ALSA Development Mailing List <alsa-devel@alsa-project.org>
-Content-Type: text/plain; charset="UTF-8"
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Denis Ciocca <denis.ciocca@st.com>,
+        Daniel Drake <drake@endlessm.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Stephan Gerhold <stephan@gerhold.net>
+Subject: Re: [PATCH 1/5 v3] iio: st_sensors: Create extended attr macro
+Message-ID: <20210522191527.228f795a@jic23-huawei>
+In-Reply-To: <323cc45a-6db2-8732-d3b0-784b1250d7f7@redhat.com>
+References: <20210518230722.522446-1-linus.walleij@linaro.org>
+        <323cc45a-6db2-8732-d3b0-784b1250d7f7@redhat.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, May 21, 2021 at 11:23 PM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> The Lenovo Yoga 300-11IBR has a ACPI fwnode with a HID of DUAL250E
-> which contains I2C and IRQ resources for 2 accelerometers, 1 in the
-> display and one in the base of the device. Add support for this.
+On Wed, 19 May 2021 15:17:36 +0200
+Hans de Goede <hdegoede@redhat.com> wrote:
 
-...
+> Hi,
+> 
+> On 5/19/21 1:07 AM, Linus Walleij wrote:
+> > Extend ST_SENSORS_LSM_CHANNELS() to a version that will accept extended
+> > attributes named ST_SENSORS_LSM_CHANNELS_EXT() and wrap the former as a
+> > specialized version of the former.
+> > 
+> > Cc: Hans de Goede <hdegoede@redhat.com>
+> > Cc: Denis Ciocca <denis.ciocca@st.com>
+> > Cc: Daniel Drake <drake@endlessm.com>
+> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+> > Signed-off-by: Linus Walleij <linus.walleij@linaro.org>  
+> 
+> Thanks.
+> 
+> The entire series looks good to me:
+> 
+> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 
-> +       board_info.irq = acpi_dev_gpio_irq_get_by(adev, NULL, 1);
+@Linus, for IIO stuff, please put a cover letter on series as it makes it
+easier for people to reply with things like this and still let me use b4
+without manual tweaking.
 
-If NULL will be there after the series, why not to use
-acpi_dev_gpio_irq_get() directly?
+Anyhow, manually tweaked series applied to the togreg branch of iio.git and
+pushed out as testing for the autobuilders to poke at it and see what they
+find.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Thanks,
+
+Jonathan
+
+
+> 
+> for the series.
+> 
+> Regards,
+> 
+> Hans
+> 
+> 
+> > ---
+> > ChangeLog v2->v3:
+> > - Rebase and resend.
+> > ChangeLog v1->v2:
+> > - New helper patch from Stephan.
+> > ---
+> >  include/linux/iio/common/st_sensors.h | 10 ++++++++--
+> >  1 file changed, 8 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/include/linux/iio/common/st_sensors.h b/include/linux/iio/common/st_sensors.h
+> > index 0b9aeb479f48..8e0d76b42db9 100644
+> > --- a/include/linux/iio/common/st_sensors.h
+> > +++ b/include/linux/iio/common/st_sensors.h
+> > @@ -48,8 +48,8 @@
+> >  #define ST_SENSORS_MAX_NAME			17
+> >  #define ST_SENSORS_MAX_4WAI			8
+> >  
+> > -#define ST_SENSORS_LSM_CHANNELS(device_type, mask, index, mod, \
+> > -					ch2, s, endian, rbits, sbits, addr) \
+> > +#define ST_SENSORS_LSM_CHANNELS_EXT(device_type, mask, index, mod, \
+> > +				    ch2, s, endian, rbits, sbits, addr, ext) \
+> >  { \
+> >  	.type = device_type, \
+> >  	.modified = mod, \
+> > @@ -65,8 +65,14 @@
+> >  		.storagebits = sbits, \
+> >  		.endianness = endian, \
+> >  	}, \
+> > +	.ext_info = ext, \
+> >  }
+> >  
+> > +#define ST_SENSORS_LSM_CHANNELS(device_type, mask, index, mod, \
+> > +				ch2, s, endian, rbits, sbits, addr)	\
+> > +	ST_SENSORS_LSM_CHANNELS_EXT(device_type, mask, index, mod,	\
+> > +				    ch2, s, endian, rbits, sbits, addr, NULL)
+> > +
+> >  #define ST_SENSORS_DEV_ATTR_SAMP_FREQ_AVAIL() \
+> >  		IIO_DEV_ATTR_SAMP_FREQ_AVAIL( \
+> >  			st_sensors_sysfs_sampling_frequency_avail)
+> >   
+> 
+

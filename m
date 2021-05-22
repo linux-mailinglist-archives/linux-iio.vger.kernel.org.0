@@ -2,32 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 647E738D69E
-	for <lists+linux-iio@lfdr.de>; Sat, 22 May 2021 19:26:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45C1738D6A6
+	for <lists+linux-iio@lfdr.de>; Sat, 22 May 2021 19:35:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231317AbhEVR1g (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 22 May 2021 13:27:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46774 "EHLO mail.kernel.org"
+        id S231337AbhEVRhJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 22 May 2021 13:37:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47254 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231314AbhEVR1f (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 22 May 2021 13:27:35 -0400
+        id S231330AbhEVRhJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 22 May 2021 13:37:09 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C47926100C;
-        Sat, 22 May 2021 17:26:08 +0000 (UTC)
-Date:   Sat, 22 May 2021 18:27:30 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 9CC4C6100B;
+        Sat, 22 May 2021 17:35:41 +0000 (UTC)
+Date:   Sat, 22 May 2021 18:37:03 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org, Rob Herring <robh@kernel.org>,
-        Peter Rosin <peda@axentia.se>
-Cc:     devicetree@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 1/1] dt-bindings: iio: multiplexer: Convert
- io-channel-mux bindings to DT schema
-Message-ID: <20210522182730.695a8611@jic23-huawei>
-In-Reply-To: <20210522112908.1611389-3-jic23@kernel.org>
-References: <20210522112908.1611389-1-jic23@kernel.org>
-        <20210522112908.1611389-3-jic23@kernel.org>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jeremy Cline <jeremy@jcline.org>, linux-iio@vger.kernel.org,
+        Charles Keepax <ckeepax@opensource.cirrus.com>,
+        patches@opensource.cirrus.com, alsa-devel@alsa-project.org
+Subject: Re: [PATCH 3/8] iio: accel: bmc150: Move check for second ACPI
+ device into a separate function
+Message-ID: <20210522183703.4328c4d8@jic23-huawei>
+In-Reply-To: <20210521171418.393871-4-hdegoede@redhat.com>
+References: <20210521171418.393871-1-hdegoede@redhat.com>
+        <20210521171418.393871-4-hdegoede@redhat.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -36,159 +39,152 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 22 May 2021 12:29:08 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Fri, 21 May 2021 19:14:13 +0200
+Hans de Goede <hdegoede@redhat.com> wrote:
 
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Move the check for a second ACPI device for BOSC0200 ACPI fwnodes into
+> a new bmc150_acpi_dual_accel_probe() helper function.
 > 
-> Straight conversion of the txt file using the mux-consumer.yaml
-> binding now that is available.
+> This is a preparation patch for adding support for a new "DUAL250E" ACPI
+> Hardware-ID (HID) used on some devices.
 > 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Peter Rosin <peda@axentia.se>
-> Cc: Rob Herring <robh@kernel.org>
-oops, accidental earlier version included here. Look at the other patch 1/1!
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 
-J
+A few places I'd like comments rewrapped on basis of still having
+a minor preference for a 80 chars limit unless there is a reason to
+do otherwise.
+
+If this is all that turns up in the series, I can do that whilst
+applying.
+
+Thanks,
+
+Jonathan
+
+
 > ---
->  .../iio/multiplexer/io-channel-mux.txt        | 39 ----------
->  .../iio/multiplexer/io-channel-mux.yaml       | 71 +++++++++++++++++++
->  MAINTAINERS                                   |  2 +-
->  3 files changed, 72 insertions(+), 40 deletions(-)
+>  drivers/iio/accel/bmc150-accel-i2c.c | 80 +++++++++++++++++-----------
+>  1 file changed, 49 insertions(+), 31 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/multiplexer/io-channel-mux.txt b/Documentation/devicetree/bindings/iio/multiplexer/io-channel-mux.txt
-> deleted file mode 100644
-> index d2b3105dba67..000000000000
-> --- a/Documentation/devicetree/bindings/iio/multiplexer/io-channel-mux.txt
-> +++ /dev/null
-> @@ -1,39 +0,0 @@
-> -I/O channel multiplexer bindings
-> -
-> -If a multiplexer is used to select which hardware signal is fed to
-> -e.g. an ADC channel, these bindings describe that situation.
-> -
-> -Required properties:
-> -- compatible : "io-channel-mux"
-> -- io-channels : Channel node of the parent channel that has multiplexed
-> -		input.
-> -- io-channel-names : Should be "parent".
-> -- #address-cells = <1>;
-> -- #size-cells = <0>;
-> -- mux-controls : Mux controller node to use for operating the mux
-> -- channels : List of strings, labeling the mux controller states.
-> -
-> -For each non-empty string in the channels property, an io-channel will
-> -be created. The number of this io-channel is the same as the index into
-> -the list of strings in the channels property, and also matches the mux
-> -controller state. The mux controller state is described in
-> -../mux/mux-controller.yaml
-> -
-> -Example:
-> -	mux: mux-controller {
-> -		compatible = "gpio-mux";
-> -		#mux-control-cells = <0>;
-> -
-> -		mux-gpios = <&pioA 0 GPIO_ACTIVE_HIGH>,
-> -			    <&pioA 1 GPIO_ACTIVE_HIGH>;
-> -	};
-> -
-> -	adc-mux {
-> -		compatible = "io-channel-mux";
-> -		io-channels = <&adc 0>;
-> -		io-channel-names = "parent";
-> -
-> -		mux-controls = <&mux>;
-> -
-> -		channels = "sync", "in", "system-regulator";
-> -	};
-> diff --git a/Documentation/devicetree/bindings/iio/multiplexer/io-channel-mux.yaml b/Documentation/devicetree/bindings/iio/multiplexer/io-channel-mux.yaml
-> new file mode 100644
-> index 000000000000..37382b85f2b8
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/multiplexer/io-channel-mux.yaml
-> @@ -0,0 +1,71 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/multiplexer/io-channel-mux.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: I/O channel multiplexer bindings
-> +
-> +maintainers:
-> +  - Peter Rosin <peda@axentia.se>
-> +
-> +description: |
-> +  If a multiplexer is used to select which hardware signal is fed to
-> +  e.g. an ADC channel, these bindings describe that situation.
-> +
-> +  For each non-empty string in the channels property, an io-channel will be
-> +  created. The number of this io-channel is the same as the index into the list
-> +  of strings in the channels property, and also matches the mux controller
-> +  state. The mux controller state is described in
-> +  Documentation/device-tree/bindings/mux/mux-controller.yaml
-> +
-> +properties:
-> +
-> +  compatible:
-> +    const: "io-channel-mux"
-> +
-> +  io-channels:
-> +    maxItems: 1
-> +    description: Channel node of the parent channel that has multiplexed input.
-> +
-> +  io-channel-names:
-> +    const: "parent"
-> +
-> +  mux-controls:
-> +    $ref: "../../mux/mux-consumer.yaml"
-> +  mux-control-names: true
-> +
-> +  channels:
-> +    $ref: /schemas/types.yaml#/definitions/string-array
-> +    description:
-> +      List of strings, labeling the mux controller states.
-> +
-> +required:
-> +  - compatible
-> +  - io-channels
-> +  - io-channel-names
-> +  - mux-controls
-> +  - channels
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    mux: mux-controller {
-> +      compatible = "gpio-mux";
-> +      #mux-control-cells = <0>;
-> +
-> +      mux-gpios = <&pioA 0 GPIO_ACTIVE_HIGH>,
-> +                  <&pioA 1 GPIO_ACTIVE_HIGH>;
-> +    };
-> +
-> +    adc-mux {
-> +      compatible = "io-channel-mux";
-> +      io-channels = <&adc 0>;
-> +      io-channel-names = "parent";
-> +
-> +      mux-controls = <&mux>;
-> +      channels = "sync", "in", "system-regulator";
-> +    };
-> +...
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index fc771d2aacef..eba1687688a5 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -8858,7 +8858,7 @@ IIO MULTIPLEXER
->  M:	Peter Rosin <peda@axentia.se>
->  L:	linux-iio@vger.kernel.org
->  S:	Maintained
-> -F:	Documentation/devicetree/bindings/iio/multiplexer/io-channel-mux.txt
-> +F:	Documentation/devicetree/bindings/iio/multiplexer/io-channel-mux.yaml
->  F:	drivers/iio/multiplexer/iio-mux.c
+> diff --git a/drivers/iio/accel/bmc150-accel-i2c.c b/drivers/iio/accel/bmc150-accel-i2c.c
+> index 2afaae0294ee..e24ce28a4660 100644
+> --- a/drivers/iio/accel/bmc150-accel-i2c.c
+> +++ b/drivers/iio/accel/bmc150-accel-i2c.c
+> @@ -21,6 +21,51 @@
 >  
->  IIO SCMI BASED DRIVER
+>  #include "bmc150-accel.h"
+>  
+> +#ifdef CONFIG_ACPI
+> +static const struct acpi_device_id bmc150_acpi_dual_accel_ids[] = {
+> +	{"BOSC0200"},
+> +	{ },
+> +};
+> +
+> +/*
+> + * Some acpi_devices describe 2 accelerometers in a single ACPI device, try instantiating
+
+80 char wrap still preferred when it doesn't otherwise hurt readability.
+
+> + * a second i2c_client for an I2cSerialBusV2 ACPI resource with index 1.
+> + */
+> +static void bmc150_acpi_dual_accel_probe(struct i2c_client *client)
+> +{
+> +	struct acpi_device *adev = ACPI_COMPANION(&client->dev);
+> +	struct i2c_client *second_dev;
+> +	struct i2c_board_info board_info = {
+> +		.type = "bmc150_accel",
+> +		/*
+> +		 * The 2nd accel sits in the base of 2-in-1s. Note this
+> +		 * name is static, as there should never be more then 1
+> +		 * BOSC0200 ACPI node with 2 accelerometers in it.
+
+Given the lesser indent after pulling this out into a new function, it would
+be good to rewrap this text as nearer to 80 chars.
+
+> +		 */
+> +		.dev_name = "BOSC0200:base",
+> +		.fwnode = client->dev.fwnode,
+> +		.irq = -ENOENT,
+> +	};
+> +
+> +	if (acpi_match_device_ids(adev, bmc150_acpi_dual_accel_ids))
+> +		return;
+> +
+> +	second_dev = i2c_acpi_new_device(&client->dev, 1, &board_info);
+> +	if (!IS_ERR(second_dev))
+> +		bmc150_set_second_device(client, second_dev);
+> +}
+> +
+> +static void bmc150_acpi_dual_accel_remove(struct i2c_client *client)
+> +{
+> +	struct i2c_client *second_dev = bmc150_get_second_device(client);
+> +
+> +	i2c_unregister_device(second_dev);
+> +}
+> +#else
+> +static void bmc150_acpi_dual_accel_probe(struct i2c_client *client) {}
+> +static void bmc150_acpi_dual_accel_remove(struct i2c_client *client) {}
+> +#endif
+> +
+>  static int bmc150_accel_probe(struct i2c_client *client,
+>  			      const struct i2c_device_id *id)
+>  {
+> @@ -30,7 +75,6 @@ static int bmc150_accel_probe(struct i2c_client *client,
+>  		i2c_check_functionality(client->adapter, I2C_FUNC_I2C) ||
+>  		i2c_check_functionality(client->adapter,
+>  					I2C_FUNC_SMBUS_READ_I2C_BLOCK);
+> -	struct acpi_device __maybe_unused *adev;
+>  	int ret;
+>  
+>  	regmap = devm_regmap_init_i2c(client, &bmc150_regmap_conf);
+> @@ -46,42 +90,16 @@ static int bmc150_accel_probe(struct i2c_client *client,
+>  	if (ret)
+>  		return ret;
+>  
+> -	/*
+> -	 * Some BOSC0200 acpi_devices describe 2 accelerometers in a single ACPI
+> -	 * device, try instantiating a second i2c_client for an I2cSerialBusV2
+> -	 * ACPI resource with index 1. The !id check avoids recursion when
+> -	 * bmc150_accel_probe() gets called for the second client.
+> -	 */
+> -#ifdef CONFIG_ACPI
+> -	adev = ACPI_COMPANION(&client->dev);
+> -	if (!id && adev && strcmp(acpi_device_hid(adev), "BOSC0200") == 0) {
+> -		struct i2c_board_info board_info = {
+> -			.type = "bmc150_accel",
+> -			/*
+> -			 * The 2nd accel sits in the base of 2-in-1s. Note this
+> -			 * name is static, as there should never be more then 1
+> -			 * BOSC0200 ACPI node with 2 accelerometers in it.
+> -			 */
+> -			.dev_name = "BOSC0200:base",
+> -			.fwnode = client->dev.fwnode,
+> -			.irq = -ENOENT,
+> -		};
+> -		struct i2c_client *second_dev;
+> -
+> -		second_dev = i2c_acpi_new_device(&client->dev, 1, &board_info);
+> -		if (!IS_ERR(second_dev))
+> -			bmc150_set_second_device(client, second_dev);
+> -	}
+> -#endif
+> +	/* The !id check avoids recursion when probe() gets called for the second client. */
+
+Won't hurt readability to wrap this to 80 chars as a multiline comment.
+
+> +	if (!id && has_acpi_companion(&client->dev))
+> +		bmc150_acpi_dual_accel_probe(client);
+>  
+>  	return 0;
+>  }
+>  
+>  static int bmc150_accel_remove(struct i2c_client *client)
+>  {
+> -	struct i2c_client *second_dev = bmc150_get_second_device(client);
+> -
+> -	i2c_unregister_device(second_dev);
+> +	bmc150_acpi_dual_accel_remove(client);
+>  
+>  	return bmc150_accel_core_remove(&client->dev);
+>  }
 

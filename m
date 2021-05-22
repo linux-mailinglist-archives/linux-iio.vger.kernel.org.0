@@ -2,58 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 808BF38D6D8
-	for <lists+linux-iio@lfdr.de>; Sat, 22 May 2021 20:10:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 088C238D6DC
+	for <lists+linux-iio@lfdr.de>; Sat, 22 May 2021 20:11:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231146AbhEVSLl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 22 May 2021 14:11:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:23179 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230497AbhEVSLl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 22 May 2021 14:11:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1621707015;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=4W2QcH7GGhbjcz45YQXs8r26c8aVBBmE8RTGqgNUAzA=;
-        b=LB7RvtCAGyeo0oHmUwqIr+wyKNZsPCkaFfrSdzFFVg2SIA22M5ck2HoJ2ONyfdlC+Zp7Vw
-        k6lcexajxfhgSEsQ0qPtpCWuDdMgQVS96iW42brG89hMbWC95URj9BJRMaKslnP9ptKSd3
-        f/J6DP4KJQOyUL/M8pyuc5wcrOQ5bYM=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-588-dpEO83ygMKCLikkAdYh7ww-1; Sat, 22 May 2021 14:10:14 -0400
-X-MC-Unique: dpEO83ygMKCLikkAdYh7ww-1
-Received: by mail-ed1-f72.google.com with SMTP id da10-20020a056402176ab029038f0fea1f51so4958087edb.13
-        for <linux-iio@vger.kernel.org>; Sat, 22 May 2021 11:10:14 -0700 (PDT)
+        id S231153AbhEVSNQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 22 May 2021 14:13:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41994 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230497AbhEVSNQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 22 May 2021 14:13:16 -0400
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A7CBC061574
+        for <linux-iio@vger.kernel.org>; Sat, 22 May 2021 11:11:50 -0700 (PDT)
+Received: by mail-pg1-x52c.google.com with SMTP id j12so16877300pgh.7
+        for <linux-iio@vger.kernel.org>; Sat, 22 May 2021 11:11:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=7SK1jwCORAJwOku71k74kizq3BL/irGNdgIM5FobjmM=;
+        b=VHJIUfmLszzHd+U/XxstxbnDiua+CqbneEPzSwbTrodTOtPvnn86yMa9AcyoPJO92Q
+         7ynnKMbSMq7/1yUqP8XF0CF8hZSwezJiU3q4GS79TMLtaTgJ6aWqfyvT+NwIEZJMl1xY
+         v4WHfjErBVp45Xwp9+9xN/BHOXG2+k/SP3LBQrYXRxVWjFjMQL20mOptdXm2ukhRwGx8
+         Br1buXG1k8BRq87rwYJuA3PTtyt+qubUEqhN3db19aiJiXb2eXoFBo7M3zJYYrxPvQwd
+         PuPmNn85YMrcRopcm72/3aI03L9kDvd7oGOkN+OJbR3q5UOrKd8/D8MIumUrP605pfCU
+         EyWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=4W2QcH7GGhbjcz45YQXs8r26c8aVBBmE8RTGqgNUAzA=;
-        b=COvoiLcGUD1U8IY+9VAcLRSZiG1r24k/NvMQ6GiTD6UmnY55vFJjroPz4ALIB40B/o
-         lyX78a3e+9aj8BeIxuIGDd3KtmGBu/AuDxgnUk+risomMSUXeeNqQC+32A4ASPC+840d
-         RgaSGQ3DYWnf7l2daNSuXAymXEr5C5Imf1uki3UCcCEN5Jgl65syxzaLftLLAKz5MqPz
-         tTM1C8Y6LB7RoeuuMktsSbmkpZsfI/UG8/eZslJSPFtE+GmADhxdYhmHek2WP/FytcTQ
-         c3jceErv6pd3oe7bCaqMZelv9feTojh+77EUWNKo81rXnAvP9Vh7/sq1SwGW6GoIFPqv
-         86zw==
-X-Gm-Message-State: AOAM5328dsfy4fIIzRrIpdcD6circq/7ZiMK2Us24OoqD6lWKMybrpZO
-        rwmLo+srJeBqVDJy2BdQL/M2eO+rRcaOV0bZfi+VbE4ukn9Qc3o+fc5Tb5iy3K0GO/93Z6Db/7j
-        fDR/CUsSEuRuLQ8O+9EZA
-X-Received: by 2002:a17:906:e15:: with SMTP id l21mr15377147eji.538.1621707013115;
-        Sat, 22 May 2021 11:10:13 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyDDRmIS+L1ZyDel3O6pfJ1kfu8hHyQboMTZ25cTa+wEBEqX7ZEtMU1ZbxLOAuGTslV7Zx0hA==
-X-Received: by 2002:a17:906:e15:: with SMTP id l21mr15377135eji.538.1621707012974;
-        Sat, 22 May 2021 11:10:12 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id s11sm6716936edt.27.2021.05.22.11.10.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 22 May 2021 11:10:12 -0700 (PDT)
-Subject: Re: [PATCH 2/8] iio: accel: bmc150: Don't make the remove function of
- the second accelerometer unregister itself
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=7SK1jwCORAJwOku71k74kizq3BL/irGNdgIM5FobjmM=;
+        b=eAXdczWecwiI+uTzGF1FsB/NgTNOssG9WFJKKM6N9SZgnPxGZ3d59W+jsMpvGfTZQP
+         FZMe1RMN/XXmuFyLfYlfTVgkVluswG46ebPGcSDRtM0suf9xQl54sARqB4hIAf3xNt9j
+         nVfaEymU6X0CxPw54UV2mj/pPszzFTDf6Jgct7ZxAiVgE/aPRgu1wH+VhGKdaDNC9ZR1
+         0crTIFmA5eTkQGTKww8KlgtNUDK+eRtKd9+cSoQ55DV79Tk9AdZlyuPAQ6Vne827+m4C
+         5BoqTM/i6qmS8WvTyzFiXaZ3TABa00aFHnE1Ras6oxaa0nUNfb/0w6yA+hdm/3bYJEsK
+         U+Lg==
+X-Gm-Message-State: AOAM532Cb+4Dh1t79m4yqbHdBr5LoYAWBtlM9QyCyoVzrpCz7O+gNIVh
+        xZ74lPTqyDJ87r3C+X3+ZV8r/K4b00yl+1R3SVQ=
+X-Google-Smtp-Source: ABdhPJxNLyTS1W/9LF7NcfOsca+cphRVoI5JVl72ltX0NVbzB6beP5o/0iTUNuBCog2Iz9M5dAWa7LGTFikQR9Psx3U=
+X-Received: by 2002:a05:6a00:a1e:b029:2e2:89d8:5c87 with SMTP id
+ p30-20020a056a000a1eb02902e289d85c87mr14588981pfh.73.1621707109670; Sat, 22
+ May 2021 11:11:49 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210521171418.393871-1-hdegoede@redhat.com> <20210521171418.393871-5-hdegoede@redhat.com>
+In-Reply-To: <20210521171418.393871-5-hdegoede@redhat.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sat, 22 May 2021 21:11:32 +0300
+Message-ID: <CAHp75Vf_itoC8hiacBPXLK73NLbFre58b=wmVdEbviwEj0ZHHA@mail.gmail.com>
+Subject: Re: [PATCH 4/8] iio: accel: bmc150: Add support for
+ dual-accelerometers with a DUAL250E HID
+To:     Hans de Goede <hdegoede@redhat.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>,
@@ -63,62 +62,24 @@ Cc:     Jonathan Cameron <jic23@kernel.org>,
         Charles Keepax <ckeepax@opensource.cirrus.com>,
         patches@opensource.cirrus.com,
         ALSA Development Mailing List <alsa-devel@alsa-project.org>
-References: <20210521171418.393871-1-hdegoede@redhat.com>
- <20210521171418.393871-3-hdegoede@redhat.com>
- <CAHp75VchPrngr5h91sfqxEPk81DHG43UkOsjhXpz4iNDagPjaw@mail.gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <88627e31-b417-c0b3-2019-84fd9be69a0b@redhat.com>
-Date:   Sat, 22 May 2021 20:10:12 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
-MIME-Version: 1.0
-In-Reply-To: <CAHp75VchPrngr5h91sfqxEPk81DHG43UkOsjhXpz4iNDagPjaw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+On Fri, May 21, 2021 at 11:23 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> The Lenovo Yoga 300-11IBR has a ACPI fwnode with a HID of DUAL250E
+> which contains I2C and IRQ resources for 2 accelerometers, 1 in the
+> display and one in the base of the device. Add support for this.
 
-On 5/22/21 8:06 PM, Andy Shevchenko wrote:
-> On Fri, May 21, 2021 at 11:23 PM Hans de Goede <hdegoede@redhat.com> wrote:
->> On machines with dual accelerometers described in a single ACPI fwnode,
->> the bmc150_accel_probe() instantiates a second i2c-client for the second
->> accelerometer.
->>
->> A pointer to this manually instantiated second i2c-client is stored
->> inside the iio_dev's private-data through bmc150_set_second_device(),
->> so that the i2c-client can be unregistered from bmc150_accel_remove().
->>
->> Before this commit bmc150_set_second_device() took only 1 argument so it
->> would store the pointer in private-data of the iio_dev belonging to the
->> manually instantiated i2c-client, leading to the bmc150_accel_remove()
->> call for the second_dev trying to unregister *itself* while it was
->> being removed, leading to a deadlock and rmmod hanging.
->>
->> Change bmc150_set_second_device() to take 2 arguments: 1. The i2c-client
->> which is instantiating the second i2c-client for the 2nd accelerometer and
->> 2. The second-device pointer itself (which also is an i2c-client).
->>
->> This will store the second_device pointer in the private data of the
->> iio_dev belonging to the (ACPI instantiated) i2c-client for the first
->> accelerometer and will make bmc150_accel_remove() unregister the
->> second_device i2c-client when called for the first client,
->> avoiding the deadlock.
-> 
-> I would rather call it aux device (at least in the code). The
-> terminology maybe needs more clarification (like the main one in the
-> block with the display panel and aux in the keyboard).
-> 
-> If you disagree, ignore this comment. I have no strong opinion here
-> since I don't know the difference between them (accelerometers).
+...
 
-Thank you for your input, but both sensors are identical, so calling
-one aux sounds of to me, so lets keep this as is.
+> +       board_info.irq = acpi_dev_gpio_irq_get_by(adev, NULL, 1);
 
-Regards,
+If NULL will be there after the series, why not to use
+acpi_dev_gpio_irq_get() directly?
 
-Hans
-
+-- 
+With Best Regards,
+Andy Shevchenko

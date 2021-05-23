@@ -2,141 +2,147 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E9E138DC22
-	for <lists+linux-iio@lfdr.de>; Sun, 23 May 2021 19:12:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54EC938DC8B
+	for <lists+linux-iio@lfdr.de>; Sun, 23 May 2021 21:09:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231907AbhEWROK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 23 May 2021 13:14:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60226 "EHLO
+        id S231939AbhEWTKm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 23 May 2021 15:10:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231888AbhEWROJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 May 2021 13:14:09 -0400
-Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com [IPv6:2607:f8b0:4864:20::731])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10568C061574;
-        Sun, 23 May 2021 10:12:42 -0700 (PDT)
-Received: by mail-qk1-x731.google.com with SMTP id v8so24935334qkv.1;
-        Sun, 23 May 2021 10:12:42 -0700 (PDT)
+        with ESMTP id S231883AbhEWTKm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 May 2021 15:10:42 -0400
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01B0BC061574
+        for <linux-iio@vger.kernel.org>; Sun, 23 May 2021 12:09:14 -0700 (PDT)
+Received: by mail-pj1-x1034.google.com with SMTP id g6-20020a17090adac6b029015d1a9a6f1aso9218534pjx.1
+        for <linux-iio@vger.kernel.org>; Sun, 23 May 2021 12:09:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=NI6VGTgdO7QUPT8Xbl98mX1OA2u/yEB+lofSkIV6DFs=;
-        b=Cv08fynHoQ3MdJJet/pK3X9cTxSniHt3KnvtbV43MHXpC8EgI7CB3ZmkQvDpeU+ldV
-         AXOpIRVo9PUUPrhvkMkeyxlsh5BOWuSlIqbDhXA2XDHSkRn1UZLjpZWNow/c0qPzbeYu
-         y5+5rLV9wslYZjJqRw87WlIG5v3AIYUXZuJbtgzmRUaw4rN3t6l44+o1eEVrhtCIS53w
-         KxLyliwMZP1fltrBWLtvagEwSpnEx0Qa+uuBw9AG8VvSlskxvRLE2ZKrwYhuicVDloOU
-         C/GFSfMFEfp/iNrpP5r7d29LimWwzj5Lp9aITO7UNutfDtwHS4attXoTHhcmMnM/BWVX
-         i7jw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=/FKla85xuumYLoXrDQb7lCH5KkqAg/YfMPErEisPyMU=;
+        b=p6iHkkICO/qCmFyLz+2YY01cAaEgnM4/mdz9L7nEMfDRMcjXcoPdM2u6LzqORi/0/L
+         bXCKKCWz8SlTsJnjAiK0SFiM5chzTtG49gjBgrJWn9/W06TtzwYYYP2w0JZxU4f4Pc3p
+         VWo8HPhRMcydxbzUlc69Lvn3/1d+PI3MqJqew0vL9+/zDf7H79DuVEAkXHyxRer1DPhq
+         Y9y9VFsU+kBWvinujLWh+T5slXXOuIVM0Rbthpj04k/a8bpRMSOjC8+mwLUJ+PrqenVi
+         p/jydQqGal32m5AhwPy51E4Qf12GA03iAbxP24DNe+bExkeLfoa8lLFqGARjyG8BDFtP
+         haRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=NI6VGTgdO7QUPT8Xbl98mX1OA2u/yEB+lofSkIV6DFs=;
-        b=CeoWQY2o4gFF80XDqdSMlIl7KHILG9ipISdGD2WozsnvvJkAEm3pdmNZepYwzsMEdM
-         JezrzlLw6yDkHeJcLb1JMBnZVB2mhHgJZ+Bngq01uUG926QXmhxxCCvCYC/yHfLjd970
-         hAXFlItGDwNtSzqE1dvL0xE6/gJaRvvpIBdR/6lmhNL+JIKu3Z2+4bWZR55jBxQ5Ihp0
-         sloRKHlHEi4o+FVNN1KUB/o+MZJ25Uniejrv5ue5ffK8zVyvwazFmygd1IIDxsyA3Vjt
-         lawtAe4/sYvBJGf4q/ID39co1tdN/EZNCKuEDpFYGrcZsgE7dYKi1FyUI5sbfD2e5pav
-         2vvQ==
-X-Gm-Message-State: AOAM531EoPNcPZ6luUOgncRlWdORmEzUdyr1kYAITLyeVYGJn43UAw0j
-        Z8R4LDomyKuHvyjPKEWjFxI=
-X-Google-Smtp-Source: ABdhPJzMy+yWRIRNkHTk1RCYZRyY0+b9LlR7tq95R7QTH1YZgdH9euujbyRqArU714Yh2EL+jvrcKg==
-X-Received: by 2002:a37:aa4c:: with SMTP id t73mr26395487qke.79.1621789961284;
-        Sun, 23 May 2021 10:12:41 -0700 (PDT)
-Received: from smtp.gmail.com ([2804:14c:73:9a01::1003])
-        by smtp.gmail.com with ESMTPSA id n18sm9115529qkh.13.2021.05.23.10.12.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 May 2021 10:12:40 -0700 (PDT)
-Date:   Sun, 23 May 2021 14:12:37 -0300
-From:   Lucas Stankus <lucas.p.stankus@gmail.com>
-To:     lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
-        gregkh@linuxfoundation.org
-Cc:     linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2 3/3] staging: iio: cdc: ad7746: extract capac setup to own
- function
-Message-ID: <b637a5ecde4e5f9f927a5b104332378d4721c91d.1621786036.git.lucas.p.stankus@gmail.com>
-References: <cover.1621786036.git.lucas.p.stankus@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=/FKla85xuumYLoXrDQb7lCH5KkqAg/YfMPErEisPyMU=;
+        b=LEQQcLQxWZt0gjy2ceUkKNTVJLtauZm3qDIIKLJpanwA6iBNiu1v9aAdbsv/71HEt3
+         gIpmYboE6xXQhIaCsI3AjDUTUKufvDda22nnuD2lZG91fx/TuurkgrhEPaduTFbz3K07
+         ElfchtJai7DQqk9xu8vwO9IAhDGaUSRXA1sGZgMfTh8qynjFfb6ZVWCiKBlmF9TQj18Q
+         IU5q+A9T5PgJ5JAd9tQk2QJyQR+4wbWd95XgPv1DctojBXBY58ciCNXiBkFbdig91pNM
+         pBihogY/+oq2F4RbMsat3wY9dP7Trc2LXwqmxx+YXpHRxFryWC/PYwE6WYP8qIIJOOKs
+         QrTg==
+X-Gm-Message-State: AOAM531qIrpGJZ3lFUZwf6CFM6/VX3bF0ZnR/kkKd9v1E2h+J+1+kciP
+        FyeOzWtCHiL0qqyxhJ46m1FaLikXB1xdDQPX/hg=
+X-Google-Smtp-Source: ABdhPJzNxgMIR/4Bo5myrfpVZnXQI3IqwKdOi6dPYKURR4BOdZKQfXLiC4ejwd8tM9JkN0QgcFhBWWuausUNep71vR4=
+X-Received: by 2002:a17:90a:af8b:: with SMTP id w11mr21129407pjq.228.1621796953339;
+ Sun, 23 May 2021 12:09:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1621786036.git.lucas.p.stankus@gmail.com>
+References: <20210523170103.176958-1-hdegoede@redhat.com>
+In-Reply-To: <20210523170103.176958-1-hdegoede@redhat.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sun, 23 May 2021 22:08:57 +0300
+Message-ID: <CAHp75Vc=3VH=Mj-jZAYWjgp-bRU46CGtqw90b_2QYfoLurEeQw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/9] iio: accel: bmc150: Add support for yoga's with
+ dual accelerometers with an ACPI HID of DUAL250E
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jeremy Cline <jeremy@jcline.org>,
+        linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Refactor the capac register write logic to own function.
+On Sun, May 23, 2021 at 8:01 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Hi all,
+>
+> Here is v2 of this series, addressing Andy's review remarks and
+> rewrap some comments at 80 chars limit.
+>
+> For more info here is the v1 cover-letter:
+>
+> Some 360 degree hinges (yoga) style 2-in-1 devices use 2 bmc150 accels
+> to allow the OS to determine the angle between the display and the base
+> of the device, so that the OS can determine if the 2-in-1 is in laptop
+> or in tablet-mode.
+>
+> We already support this setup on devices using a single ACPI node
+> with a HID of "BOSC0200" to describe both accelerometers. This patch
+> set extends this support to also support the same setup but then
+> using a HID of "DUAL250E".
+>
+> While testing this I found some crashes on rmmod, patches 1-2
+> fix those patches, patch 3 does some refactoring and patch 4
+> adds support for the "DUAL250E" HID.
+>
+> Unfortunately we need some more special handling though, which the
+> rest of the patches are for.
+>
+> On Windows both accelerometers are read (polled) by a special service
+> and this service calls a DSM (Device Specific Method), which in turn
+> translates the angles to one of laptop/tablet/tent/stand mode and then
+> notifies the EC about the new mode and the EC then enables or disables
+> the builtin keyboard and touchpad based in the mode.
+>
+> When the 2-in-1 is powered-on or resumed folded in tablet mode the
+> EC senses this independent of the DSM by using a HALL effect sensor
+> which senses that the keyboard has been folded away behind the display.
+>
+> At power-on or resume the EC disables the keyboard based on this and
+> the only way to get the keyboard to work after this is to call the
+> DSM to re-enable it (similar to how we also need to call a special
+> DSM in the kxcjk-1013.c accel driver to re-enable the keyboard).
+>
+> Patches 5-7 deal with the DSM mess and patch 8 adds labels to the
+> 2 accelerometers specifying which one is which.
 
-Also fixes the following checkpatch warning:
-CHECK: Alignment should match open parenthesis
+Thanks!
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-Signed-off-by: Lucas Stankus <lucas.p.stankus@gmail.com>
----
- drivers/staging/iio/cdc/ad7746.c | 36 ++++++++++++++++----------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+> Regards,
+>
+> Hans
+>
+>
+> Hans de Goede (9):
+>   iio: accel: bmc150: Fix dereferencing the wrong pointer in
+>     bmc150_get/set_second_device
+>   iio: accel: bmc150: Don't make the remove function of the second
+>     accelerometer unregister itself
+>   iio: accel: bmc150: Move check for second ACPI device into a separate
+>     function
+>   iio: accel: bmc150: Add support for dual-accelerometers with a
+>     DUAL250E HID
+>   iio: accel: bmc150: Move struct bmc150_accel_data definition to
+>     bmc150-accel.h
+>   iio: accel: bmc150: Remove bmc150_set/get_second_device() accessor
+>     functions
+>   iio: accel: bmc150: Add support for DUAL250E ACPI DSM for setting the
+>     hinge angle
+>   iio: accel: bmc150: Refactor bmc150_apply_acpi_orientation()
+>   iio: accel: bmc150: Set label based on accel-location for ACPI
+>     DUAL250E fwnodes
+>
+>  drivers/iio/accel/bmc150-accel-core.c | 110 +++++----------
+>  drivers/iio/accel/bmc150-accel-i2c.c  | 193 ++++++++++++++++++++++----
+>  drivers/iio/accel/bmc150-accel.h      |  66 ++++++++-
+>  3 files changed, 260 insertions(+), 109 deletions(-)
+>
+> --
+> 2.31.1
+>
 
-diff --git a/drivers/staging/iio/cdc/ad7746.c b/drivers/staging/iio/cdc/ad7746.c
-index 367a5990ae35..4221312f0a32 100644
---- a/drivers/staging/iio/cdc/ad7746.c
-+++ b/drivers/staging/iio/cdc/ad7746.c
-@@ -209,6 +209,19 @@ static const unsigned char ad7746_cap_filter_rate_table[][2] = {
- 	{16, 62 + 1}, {13, 77 + 1}, {11, 92 + 1}, {9, 110 + 1},
- };
- 
-+static int ad7746_set_capdac(struct ad7746_chip_info *chip, int channel)
-+{
-+	int ret = i2c_smbus_write_byte_data(chip->client,
-+					    AD7746_REG_CAPDACA,
-+					    chip->capdac[channel][0]);
-+	if (ret < 0)
-+		return ret;
-+
-+	return i2c_smbus_write_byte_data(chip->client,
-+					  AD7746_REG_CAPDACB,
-+					  chip->capdac[channel][1]);
-+}
-+
- static int ad7746_select_channel(struct iio_dev *indio_dev,
- 				 struct iio_chan_spec const *chan)
- {
-@@ -224,17 +237,11 @@ static int ad7746_select_channel(struct iio_dev *indio_dev,
- 			AD7746_CONF_CAPFS_SHIFT;
- 		delay = ad7746_cap_filter_rate_table[idx][1];
- 
-+		ret = ad7746_set_capdac(chip, chan->channel);
-+		if (ret < 0)
-+			return ret;
-+
- 		if (chip->capdac_set != chan->channel) {
--			ret = i2c_smbus_write_byte_data(chip->client,
--				AD7746_REG_CAPDACA,
--				chip->capdac[chan->channel][0]);
--			if (ret < 0)
--				return ret;
--			ret = i2c_smbus_write_byte_data(chip->client,
--				AD7746_REG_CAPDACB,
--				chip->capdac[chan->channel][1]);
--			if (ret < 0)
--				return ret;
- 
- 			chip->capdac_set = chan->channel;
- 		}
-@@ -478,14 +485,7 @@ static int ad7746_write_raw(struct iio_dev *indio_dev,
- 		chip->capdac[chan->channel][chan->differential] = val > 0 ?
- 			AD7746_CAPDAC_DACP(val) | AD7746_CAPDAC_DACEN : 0;
- 
--		ret = i2c_smbus_write_byte_data(chip->client,
--						AD7746_REG_CAPDACA,
--						chip->capdac[chan->channel][0]);
--		if (ret < 0)
--			goto out;
--		ret = i2c_smbus_write_byte_data(chip->client,
--						AD7746_REG_CAPDACB,
--						chip->capdac[chan->channel][1]);
-+		ret = ad7746_set_capdac(chip, chan->channel);
- 		if (ret < 0)
- 			goto out;
- 
+
 -- 
-2.31.1
-
+With Best Regards,
+Andy Shevchenko

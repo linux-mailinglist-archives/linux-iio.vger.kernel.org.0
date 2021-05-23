@@ -2,175 +2,123 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3746038DBEA
-	for <lists+linux-iio@lfdr.de>; Sun, 23 May 2021 18:24:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 856CF38DBFC
+	for <lists+linux-iio@lfdr.de>; Sun, 23 May 2021 19:01:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231842AbhEWQZg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 23 May 2021 12:25:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57924 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231821AbhEWQZg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 23 May 2021 12:25:36 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id AAC666117A;
-        Sun, 23 May 2021 16:24:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1621787049;
-        bh=Z0P4r1dCUgEDfsa4CtP560vDgjEiLt5/rkR+lk+HPYs=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NF/2GOUBFK8Mq86YxlR2m1l9iJeoaHEbUuBgPQhmS+QqJTF5HvvuIX2DZthlcEjpg
-         T490Z+06r9jF90mO423skhGa5V7t/90k6cFexjTgL+TFAQwtl4cY/KgbC1ylMZ8vGb
-         tkkt1YgsQX9YJYkQZGDhYw1SdvR9QVNCXAzs4SlwWQu8Oxd3suOuYKd5V1JWHtgsOr
-         YHyomTUnpDm3hWdBQQIX6zhMYevEzao6jQ3nQ/vrk3/4AZ5D2NkPAEkoQJjc2a17CO
-         GPNq3uzIkw8iE0om9yCtqTo2q03hN9t8+MZZouRe9OXLyIdrRD8Spov/qUMKDC6/x3
-         +cbVGAhFg6cXg==
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5/5] iio: accel: mma9553: Use devm managed functions to tidy up probe()
-Date:   Sun, 23 May 2021 17:23:15 +0100
-Message-Id: <20210523162315.1965869-6-jic23@kernel.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210523162315.1965869-1-jic23@kernel.org>
-References: <20210523162315.1965869-1-jic23@kernel.org>
+        id S231856AbhEWRCh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 23 May 2021 13:02:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:52566 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231821AbhEWRCh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 May 2021 13:02:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1621789269;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=SrXNkz53ySTGpigrRKYpycHhIbtjz7THZSCO6yI0sDA=;
+        b=VOOIYlCDITZtX5z2Cwq/8RYJ1L+ZbeQgjMj6vpE9foozOKuGx4hAykrTj7i6Dt/WpPa3MA
+        h1dOkDO0NJNHbSAk/UHzH2hT3BEJoUrV4M2LdqsnElbwzFAaAdBVvwHQ3YVpZg/lySC2iO
+        50X4YychtIjVGoxvRdNrRLFpUSsrSdU=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-573-ehFqQU2MNJGWQgHjX41J4w-1; Sun, 23 May 2021 13:01:07 -0400
+X-MC-Unique: ehFqQU2MNJGWQgHjX41J4w-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B72E280ED8B;
+        Sun, 23 May 2021 17:01:05 +0000 (UTC)
+Received: from x1.localdomain (ovpn-112-61.ams2.redhat.com [10.36.112.61])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 7597E5D9F2;
+        Sun, 23 May 2021 17:01:04 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Andy Shevchenko <andy@infradead.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jeremy Cline <jeremy@jcline.org>, linux-iio@vger.kernel.org
+Subject: [PATCH v2 0/9] iio: accel: bmc150: Add support for yoga's with dual accelerometers with an ACPI HID of DUAL250E
+Date:   Sun, 23 May 2021 19:00:54 +0200
+Message-Id: <20210523170103.176958-1-hdegoede@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Hi all,
 
-The error handling in here left runtime pm enabled, and didn't do the
-same steps as occurred in remove.  Moving over to fully devm_ managed
-makes it harder to get this stuff wrong, so let's do that.
+Here is v2 of this series, addressing Andy's review remarks and
+rewrap some comments at 80 chars limit.
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/iio/accel/mma9553.c | 70 ++++++++++++++++++++-----------------
- 1 file changed, 37 insertions(+), 33 deletions(-)
+For more info here is the v1 cover-letter:
 
-diff --git a/drivers/iio/accel/mma9553.c b/drivers/iio/accel/mma9553.c
-index dc2a3316c1a3..14a9d5fedc06 100644
---- a/drivers/iio/accel/mma9553.c
-+++ b/drivers/iio/accel/mma9553.c
-@@ -375,6 +375,15 @@ static int mma9553_conf_gpio(struct mma9553_data *data)
- 	return 0;
- }
- 
-+static void mma9553_disable_cb(void *_data)
-+{
-+	struct mma9553_data *data = _data;
-+
-+	mutex_lock(&data->mutex);
-+	mma9551_set_device_state(data->client, false);
-+	mutex_unlock(&data->mutex);
-+}
-+
- static int mma9553_init(struct mma9553_data *data)
- {
- 	int ret;
-@@ -430,7 +439,11 @@ static int mma9553_init(struct mma9553_data *data)
- 		return ret;
- 	}
- 
--	return mma9551_set_device_state(data->client, true);
-+	ret = mma9551_set_device_state(data->client, true);
-+	if (ret)
-+		return ret;
-+
-+	return devm_add_action_or_reset(&data->client->dev, mma9553_disable_cb, data);
- }
- 
- static int mma9553_read_status_word(struct mma9553_data *data, u16 reg,
-@@ -1062,6 +1075,16 @@ static irqreturn_t mma9553_event_handler(int irq, void *private)
- 	return IRQ_HANDLED;
- }
- 
-+static void mma9553_rpm_set_susp(void *d)
-+{
-+	pm_runtime_set_suspended(d);
-+}
-+
-+static void mma9553_rpm_disable(void *d)
-+{
-+	pm_runtime_disable(d);
-+}
-+
- static int mma9553_probe(struct i2c_client *client,
- 			 const struct i2c_device_id *id)
- {
-@@ -1105,48 +1128,30 @@ static int mma9553_probe(struct i2c_client *client,
- 		if (ret < 0) {
- 			dev_err(&client->dev, "request irq %d failed\n",
- 				client->irq);
--			goto out_poweroff;
-+			return ret;
- 		}
- 	}
- 
- 	ret = pm_runtime_set_active(&client->dev);
- 	if (ret < 0)
--		goto out_poweroff;
-+		return ret;
-+
-+	ret = devm_add_action_or_reset(&client->dev, mma9553_rpm_set_susp,
-+				       &client->dev);
-+	if (ret)
-+		return ret;
- 
- 	pm_runtime_enable(&client->dev);
-+	ret = devm_add_action_or_reset(&client->dev, mma9553_rpm_disable,
-+				       &client->dev);
-+	if (ret)
-+		return ret;
-+
- 	pm_runtime_set_autosuspend_delay(&client->dev,
- 					 MMA9551_AUTO_SUSPEND_DELAY_MS);
- 	pm_runtime_use_autosuspend(&client->dev);
- 
--	ret = iio_device_register(indio_dev);
--	if (ret < 0) {
--		dev_err(&client->dev, "unable to register iio device\n");
--		goto out_poweroff;
--	}
--
--	dev_dbg(&indio_dev->dev, "Registered device %s\n", name);
--	return 0;
--
--out_poweroff:
--	mma9551_set_device_state(client, false);
--	return ret;
--}
--
--static int mma9553_remove(struct i2c_client *client)
--{
--	struct iio_dev *indio_dev = i2c_get_clientdata(client);
--	struct mma9553_data *data = iio_priv(indio_dev);
--
--	iio_device_unregister(indio_dev);
--
--	pm_runtime_disable(&client->dev);
--	pm_runtime_set_suspended(&client->dev);
--
--	mutex_lock(&data->mutex);
--	mma9551_set_device_state(data->client, false);
--	mutex_unlock(&data->mutex);
--
--	return 0;
-+	return devm_iio_device_register(&client->dev, indio_dev);
- }
- 
- static __maybe_unused int mma9553_runtime_suspend(struct device *dev)
-@@ -1200,7 +1205,6 @@ static struct i2c_driver mma9553_driver = {
- 		   .pm = &mma9553_pm_ops,
- 		   },
- 	.probe = mma9553_probe,
--	.remove = mma9553_remove,
- 	.id_table = mma9553_id,
- };
- 
+Some 360 degree hinges (yoga) style 2-in-1 devices use 2 bmc150 accels
+to allow the OS to determine the angle between the display and the base
+of the device, so that the OS can determine if the 2-in-1 is in laptop
+or in tablet-mode.
+
+We already support this setup on devices using a single ACPI node
+with a HID of "BOSC0200" to describe both accelerometers. This patch
+set extends this support to also support the same setup but then
+using a HID of "DUAL250E".
+
+While testing this I found some crashes on rmmod, patches 1-2
+fix those patches, patch 3 does some refactoring and patch 4
+adds support for the "DUAL250E" HID.
+
+Unfortunately we need some more special handling though, which the
+rest of the patches are for.
+
+On Windows both accelerometers are read (polled) by a special service
+and this service calls a DSM (Device Specific Method), which in turn
+translates the angles to one of laptop/tablet/tent/stand mode and then
+notifies the EC about the new mode and the EC then enables or disables
+the builtin keyboard and touchpad based in the mode.
+
+When the 2-in-1 is powered-on or resumed folded in tablet mode the
+EC senses this independent of the DSM by using a HALL effect sensor
+which senses that the keyboard has been folded away behind the display.
+
+At power-on or resume the EC disables the keyboard based on this and
+the only way to get the keyboard to work after this is to call the
+DSM to re-enable it (similar to how we also need to call a special
+DSM in the kxcjk-1013.c accel driver to re-enable the keyboard).
+
+Patches 5-7 deal with the DSM mess and patch 8 adds labels to the
+2 accelerometers specifying which one is which.
+
+Regards,
+
+Hans
+
+
+Hans de Goede (9):
+  iio: accel: bmc150: Fix dereferencing the wrong pointer in
+    bmc150_get/set_second_device
+  iio: accel: bmc150: Don't make the remove function of the second
+    accelerometer unregister itself
+  iio: accel: bmc150: Move check for second ACPI device into a separate
+    function
+  iio: accel: bmc150: Add support for dual-accelerometers with a
+    DUAL250E HID
+  iio: accel: bmc150: Move struct bmc150_accel_data definition to
+    bmc150-accel.h
+  iio: accel: bmc150: Remove bmc150_set/get_second_device() accessor
+    functions
+  iio: accel: bmc150: Add support for DUAL250E ACPI DSM for setting the
+    hinge angle
+  iio: accel: bmc150: Refactor bmc150_apply_acpi_orientation()
+  iio: accel: bmc150: Set label based on accel-location for ACPI
+    DUAL250E fwnodes
+
+ drivers/iio/accel/bmc150-accel-core.c | 110 +++++----------
+ drivers/iio/accel/bmc150-accel-i2c.c  | 193 ++++++++++++++++++++++----
+ drivers/iio/accel/bmc150-accel.h      |  66 ++++++++-
+ 3 files changed, 260 insertions(+), 109 deletions(-)
+
 -- 
 2.31.1
 

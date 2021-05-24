@@ -2,144 +2,143 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2043238E22F
-	for <lists+linux-iio@lfdr.de>; Mon, 24 May 2021 10:17:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7850C38E35A
+	for <lists+linux-iio@lfdr.de>; Mon, 24 May 2021 11:29:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232279AbhEXIS1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 May 2021 04:18:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60818 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232266AbhEXIS1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 May 2021 04:18:27 -0400
-Received: from mail-ua1-x930.google.com (mail-ua1-x930.google.com [IPv6:2607:f8b0:4864:20::930])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97723C061574
-        for <linux-iio@vger.kernel.org>; Mon, 24 May 2021 01:16:58 -0700 (PDT)
-Received: by mail-ua1-x930.google.com with SMTP id x9so9071443uao.3
-        for <linux-iio@vger.kernel.org>; Mon, 24 May 2021 01:16:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=deviqon.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=U8QMajxDiOxfs9o4d9bwLOk0rMAh1fDmI4EQ9nhU62Q=;
-        b=e1Evp9sZcWDfZhBwNJbqddH7kKc9NGq0ynltNevYJNriMvAuIheB3DoLVprBFFO4xu
-         p/payRKt+bgBce3JEsTjTneQvVgJnlt4N+JN+B2/s2UbniireYf3qTNCGy7+AE/Nn31i
-         0hiFVbJlxYECl79fRMjuD0792NDKeflf521aR74UmTAOiZSMQZMhTdU+a1K3S9gZoIFL
-         49bEmcLRpiwerqyPUfUsyh+3Yb4KBoaX2X4hUHpAgTlq7UaF5faGR+QwW8siQRlGi4uf
-         zZZ9g/F7m2anNOk90/dE9mg8BwNYLAMS4nDjvlm2DTjSR8yGWGzODsb4wPUPfEVVW5j2
-         qNlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=U8QMajxDiOxfs9o4d9bwLOk0rMAh1fDmI4EQ9nhU62Q=;
-        b=nqJ1eefcT7iQzyWmEcT2Q/IshtirjdDH2KV4pGwEYtrGZVOCxrIBG17OJBX9RMJEN2
-         3UuFBiy3OKrCsC6E0X2kwo7JPW9hqKRZYUEqll7dbGWtSqRIEBSdSmUj2PD3pjqsJXHT
-         pSkqi/wU5lk/mn8w9MiKXeR0alIdZwUVccJ/j4WeiXVa9f6jB1t+xqdKXBYn5GwvPjBv
-         MzxZnRB/7DjKsM0zeWn1L7vMKcMWVilNj6QC8WVGggO51Y/qzRnqME2N1OQCElzNr5+M
-         qmvZ0pkYyEAysUs01W3LS4toHI6gV3/OFCHDhB8CgRfu/5oUN1o96MumKyNbedu4ua7f
-         9Dkg==
-X-Gm-Message-State: AOAM533duSv5bBmzHgVl0k+z4KN7RnhNRLfYZOGjMIXZ62/xv3uJbcI+
-        SQ4Dnfftr44FOrEJ4RLy2dTHdH5keX+fXmh2NcH5BA==
-X-Google-Smtp-Source: ABdhPJxyL8RWryX38tv2jwJLPxgUuIZyrw3xJ//GWyD79xCSAIQjG1dBL+j9XKn+ekz1uRMFQsOw1tCsA0aizM4Ligk=
-X-Received: by 2002:ab0:40e:: with SMTP id 14mr20722192uav.42.1621844217811;
- Mon, 24 May 2021 01:16:57 -0700 (PDT)
+        id S232455AbhEXJa4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 May 2021 05:30:56 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:5530 "EHLO
+        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232318AbhEXJa4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 May 2021 05:30:56 -0400
+Received: from dggems704-chm.china.huawei.com (unknown [172.30.72.60])
+        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4FpX0D5sGpzkX9b;
+        Mon, 24 May 2021 17:26:36 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ dggems704-chm.china.huawei.com (10.3.19.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Mon, 24 May 2021 17:29:26 +0800
+Received: from localhost (10.52.125.72) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2176.2; Mon, 24 May
+ 2021 10:29:24 +0100
+Date:   Mon, 24 May 2021 10:27:36 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Alexandru Ardelean <aardelean@deviqon.com>,
+        Shawn Guo <shawnguo@kernel.org>
+Subject: Re: [PATCH 3/5] iio: accel: mma9551: Add support to get irqs
+ directly from fwnode
+Message-ID: <20210524102736.00007567@Huawei.com>
+In-Reply-To: <CAHp75VcPvyOkmv18D4DBxeMdJwcKH8sYjoYPLPrCfsymFGCjfw@mail.gmail.com>
+References: <20210523162315.1965869-1-jic23@kernel.org>
+        <20210523162315.1965869-4-jic23@kernel.org>
+        <CAHp75VcPvyOkmv18D4DBxeMdJwcKH8sYjoYPLPrCfsymFGCjfw@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
 MIME-Version: 1.0
-References: <20210523162315.1965869-1-jic23@kernel.org> <20210523162315.1965869-4-jic23@kernel.org>
-In-Reply-To: <20210523162315.1965869-4-jic23@kernel.org>
-From:   Alexandru Ardelean <aardelean@deviqon.com>
-Date:   Mon, 24 May 2021 11:16:47 +0300
-Message-ID: <CAASAkoY+gz0B9ig4napKdXmtTr74DXs_ONXnBmh9sghk1a6gxg@mail.gmail.com>
-Subject: Re: [PATCH 3/5] iio: accel: mma9551: Add support to get irqs directly
- from fwnode
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.52.125.72]
+X-ClientProxiedBy: lhreml706-chm.china.huawei.com (10.201.108.55) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 23 May 2021 at 19:24, Jonathan Cameron <jic23@kernel.org> wrote:
->
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> The driver previous supported using GPIO requests to retrieve
-> multiple interrupt lines.  As existing firmware may be using
-> this method, we need to continue to support it.  However, that doesn't
-> stop us also supporting just getting irqs directly.
->
-> The handling of irqflags has to take into account the fact that using
-> a GPIO method to identify the interrupt does not convey direction of
-> the trigger that fwnode_irq_get() will. So we need to set the
-> IRQF_TRIGGER_RISING in that path but not otherwise, where it will
-> cause an issue if we reprobe the driver after removal.
->
+On Mon, 24 May 2021 09:13:30 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-I'm not too experienced here [with this GPIO/IRQ API] to be able to
-review this confidently.
+> On Sun, May 23, 2021 at 7:24 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >
+> > The driver previous supported using GPIO requests to retrieve  
+> 
+> previously
+> 
+> > multiple interrupt lines.  As existing firmware may be using
+> > this method, we need to continue to support it.  However, that doesn't
+> > stop us also supporting just getting irqs directly.
+> >
+> > The handling of irqflags has to take into account the fact that using
+> > a GPIO method to identify the interrupt does not convey direction of
+> > the trigger that fwnode_irq_get() will. So we need to set the
+> > IRQF_TRIGGER_RISING in that path but not otherwise, where it will
+> > cause an issue if we reprobe the driver after removal.  
+> 
+> ...
+> 
+> > +               /* fwnode_irq_get() returns 0 for not present on OF, and -EINVAL for ACPI */
+> > +               if (ret == 0 || ret == -EINVAL) {
+> > +                       gpio = devm_gpiod_get_index(dev, NULL, i, GPIOD_IN);
+> > +                       if (IS_ERR(gpio)) {  
+> 
+> > +                               dev_err(dev, "gpio get index failed\n");
+> > +                               return PTR_ERR(gpio);  
+> 
+> This should be dev_err_probe().
+> (I guess you need to prepend this patch with one that switches to
+> dev_err_probe() API)
+> 
+> > +                       }
+> > +
+> > +                       ret = gpiod_to_irq(gpio);
+> > +                       if (ret < 0)
+> > +                               return ret;  
+> 
+> > +                       /* GPIO interrupt does npt have a specified direction */
 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->  drivers/iio/accel/mma9551.c | 35 +++++++++++++++++++++--------------
->  1 file changed, 21 insertions(+), 14 deletions(-)
->
-> diff --git a/drivers/iio/accel/mma9551.c b/drivers/iio/accel/mma9551.c
-> index 1b4a8b27f14a..a0bb4ccdbec7 100644
-> --- a/drivers/iio/accel/mma9551.c
-> +++ b/drivers/iio/accel/mma9551.c
-> @@ -406,30 +406,37 @@ static int mma9551_gpio_probe(struct iio_dev *indio_dev)
->         int i, ret;
->         struct mma9551_data *data = iio_priv(indio_dev);
->         struct device *dev = &data->client->dev;
-> +       unsigned long irqflags = IRQF_ONESHOT;
->
->         for (i = 0; i < MMA9551_GPIO_COUNT; i++) {
-> -               gpio = devm_gpiod_get_index(dev, NULL, i, GPIOD_IN);
-> -               if (IS_ERR(gpio)) {
-> -                       dev_err(dev, "acpi gpio get index failed\n");
-> -                       return PTR_ERR(gpio);
-> -               }
-> -
-> -               ret = gpiod_to_irq(gpio);
-> -               if (ret < 0)
-> +               /* GPIO provided for backwards compatibility reasons */
-> +               ret = fwnode_irq_get(dev_fwnode(dev), i);
-> +               if (ret == -EPROBE_DEFER)
->                         return ret;
->
-> +               /* fwnode_irq_get() returns 0 for not present on OF, and -EINVAL for ACPI */
-> +               if (ret == 0 || ret == -EINVAL) {
-> +                       gpio = devm_gpiod_get_index(dev, NULL, i, GPIOD_IN);
-> +                       if (IS_ERR(gpio)) {
-> +                               dev_err(dev, "gpio get index failed\n");
-> +                               return PTR_ERR(gpio);
-> +                       }
-> +
-> +                       ret = gpiod_to_irq(gpio);
-> +                       if (ret < 0)
-> +                               return ret;
-> +                       /* GPIO interrupt does npt have a specified direction */
-> +                       irqflags |= IRQF_TRIGGER_RISING;
-> +               }
->                 data->irqs[i] = ret;
->                 ret = devm_request_threaded_irq(dev, data->irqs[i],
-> -                               NULL, mma9551_event_handler,
-> -                               IRQF_TRIGGER_RISING | IRQF_ONESHOT,
-> -                               MMA9551_IRQ_NAME, indio_dev);
-> +                                               NULL, mma9551_event_handler,
-> +                                               irqflags,
-> +                                               MMA9551_IRQ_NAME, indio_dev);
->                 if (ret < 0) {
->                         dev_err(dev, "request irq %d failed\n", data->irqs[i]);
->                         return ret;
->                 }
-> -
-> -               dev_dbg(dev, "gpio resource, no:%d irq:%d\n",
-> -                       desc_to_gpio(gpio), data->irqs[i]);
->         }
->
->         return 0;
-> --
-> 2.31.1
->
+Gah. What is it with me and spelling in comments...
+
+> > +                       irqflags |= IRQF_TRIGGER_RISING;  
+> 
+> I'm not sure I understand this part. If we are talking about the ACPI
+> GpioInt() resource, then it should have this flag. If GpioIo() is in
+> use (which is already a sign of either using the line in dual
+> direction mode, but this needs to be described in the data sheet and
+> thus used in the driver, or misdesigned ACPI tables). DT, I suppose,
+> should have all necessary information.
+
+Honestly I have no idea.  I didn't want to change the exiting flags without
+any visibility of what the ACPI tables look like (assuming they exist).
+Given I'm proposing killing of the ID, chances are ACPI is broken anyway
+now :)  So, more risky is DT out there that just specifies this as a
+GPIO.
+
+Plan B would be to just drop the GPIO support entirely.
+
+Would GpioInt() get picked up by the the fwnode_irq_get() path?
+
+I'm guessing these were on a dev board 6+ years ago, but whilst I can
+find references to the mma9553 on some freescale platforms, not finding
+much on the mma9551.
+
+Looking a bit deeper they are both listed as obsolete parts now (according to
+digikey as I can't find status on nxp.com)
+...  So plan C is just remove the drivers on the basis they are significantly
+odd and we don't know of a platform anyone cares about with them on.
+
+Mind you, aside from having a lack of documented bindings (which was what was
+annoying me, they aren't doing any harm or causing any real maintenance burden.)
+More than possible someone out there is using them.  The mm9953 appears on the
+warpboard.org reference platform, but seems the sensor was never enabled upstream.
+
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/log/arch/arm/boot/dts/imx6sl-warp.dts
+https://revotics.com/warp?v=a284e24d5f46
+
+Also, only some passing references in there, so I'd guess it got dropped in
+later revisions?  Shaun, any ideas?
+
+Jonathan
+
+
+> 
+> > +               }  
+> 
+> 
+> 
+

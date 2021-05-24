@@ -2,143 +2,114 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7850C38E35A
-	for <lists+linux-iio@lfdr.de>; Mon, 24 May 2021 11:29:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB84B38E37F
+	for <lists+linux-iio@lfdr.de>; Mon, 24 May 2021 11:43:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232455AbhEXJa4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 May 2021 05:30:56 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:5530 "EHLO
-        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232318AbhEXJa4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 May 2021 05:30:56 -0400
-Received: from dggems704-chm.china.huawei.com (unknown [172.30.72.60])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4FpX0D5sGpzkX9b;
-        Mon, 24 May 2021 17:26:36 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- dggems704-chm.china.huawei.com (10.3.19.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Mon, 24 May 2021 17:29:26 +0800
-Received: from localhost (10.52.125.72) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2176.2; Mon, 24 May
- 2021 10:29:24 +0100
-Date:   Mon, 24 May 2021 10:27:36 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        Shawn Guo <shawnguo@kernel.org>
-Subject: Re: [PATCH 3/5] iio: accel: mma9551: Add support to get irqs
- directly from fwnode
-Message-ID: <20210524102736.00007567@Huawei.com>
-In-Reply-To: <CAHp75VcPvyOkmv18D4DBxeMdJwcKH8sYjoYPLPrCfsymFGCjfw@mail.gmail.com>
-References: <20210523162315.1965869-1-jic23@kernel.org>
-        <20210523162315.1965869-4-jic23@kernel.org>
-        <CAHp75VcPvyOkmv18D4DBxeMdJwcKH8sYjoYPLPrCfsymFGCjfw@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
+        id S232426AbhEXJox (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 May 2021 05:44:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52166 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232318AbhEXJox (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 May 2021 05:44:53 -0400
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5792AC061574
+        for <linux-iio@vger.kernel.org>; Mon, 24 May 2021 02:43:24 -0700 (PDT)
+Received: by mail-lj1-x231.google.com with SMTP id s25so32725568ljo.11
+        for <linux-iio@vger.kernel.org>; Mon, 24 May 2021 02:43:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=/+7VcbFhCLsORk4AL5LwpxSLV1BgnffBxx0vGz+mfvQ=;
+        b=MiDF5sKmsC9xOKtlOHbSNZV8ifWz1ILGJobQhTzrftj6LpizdTC6e5eVP+mHMro4iR
+         Sxk15vP0irKjz8ZniuzY1agSJZdP//zMps0aE0Y+TcsXzkTAXqKZuuQM1wODg3qnrfLg
+         IqbBz59GV8DkDN45RC7f1A9wIEg+yO9Na8XePrfWOY11eGnAnzXcuhRv9HR+dVu/BcRz
+         Fiqqo4qIBZ7KgUJMrZ7tZwnuhILN+CUlj8eGh/UJlI4tOI0L4Ea1chMj4YJAQd/h9FyN
+         oyL9JG6VjWIboTFtLFNaRIfGYLbRTJbkrqIIqq+Z7brNHvjB3p6OXRwE0SRmpgpMKZmh
+         peKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=/+7VcbFhCLsORk4AL5LwpxSLV1BgnffBxx0vGz+mfvQ=;
+        b=AVrP4X3SHESsPP+LjmClZXfZXqIqekGK0klNahpK7iZvzpVEvssNzDXUTA0dhEjSnu
+         sLN7nVZE+neyos86nSemnFDHCzUo1+X0EUJefOalNDSC9Y7zFavAzqNwyTaLCGvPTXcK
+         3Acp3VrElm7cGtK/XrQuEEOkOypjXnTpe5DQSjlJ7z0B6n+D9sHeET3NnTzxwznSIQLC
+         ZPFSJQhKuR6+CA6kc+QVV1DqyXnTWNCHl/TPlOUmtJyoRZGhIUG5DTdr/vcfWtxwt0Ny
+         zSiRtkZxdhLi0/FV8CQujtr9PZRWm1r7+xV0mDpXmgHQQIs1dKSNxXrmRZHo6xUggGl6
+         FBVw==
+X-Gm-Message-State: AOAM531Qor1dxm3B3WGQ0L8Fgk6BmyKZVmG6oC7OlcooV6iOAQUdvnqQ
+        BbwSX3I66dZIepHUORvqbVsE0ETw9qLZK9QjXqpy+g==
+X-Google-Smtp-Source: ABdhPJx5orS/qR1u4F+jnTL42ezcA7woRdr0+5nHYlfG5G+D9J9EIfxIPziQrGpipAfqPWKm9qcuEjETNpdAXvUCHmM=
+X-Received: by 2002:a05:651c:4c6:: with SMTP id e6mr16854161lji.326.1621849402733;
+ Mon, 24 May 2021 02:43:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.125.72]
-X-ClientProxiedBy: lhreml706-chm.china.huawei.com (10.201.108.55) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+References: <20210518230722.522446-1-linus.walleij@linaro.org>
+ <323cc45a-6db2-8732-d3b0-784b1250d7f7@redhat.com> <20210522191527.228f795a@jic23-huawei>
+In-Reply-To: <20210522191527.228f795a@jic23-huawei>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Mon, 24 May 2021 11:43:11 +0200
+Message-ID: <CACRpkdZu0PjH4ciJMSRZ0bywYFjrfWvvfvcpxPQQ+4P=rTNmTw@mail.gmail.com>
+Subject: Re: [PATCH 1/5 v3] iio: st_sensors: Create extended attr macro
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Denis Ciocca <denis.ciocca@st.com>,
+        Daniel Drake <drake@endlessm.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Stephan Gerhold <stephan@gerhold.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 24 May 2021 09:13:30 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Sat, May 22, 2021 at 8:14 PM Jonathan Cameron <jic23@kernel.org> wrote:
 
-> On Sun, May 23, 2021 at 7:24 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> >
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >
-> > The driver previous supported using GPIO requests to retrieve  
-> 
-> previously
-> 
-> > multiple interrupt lines.  As existing firmware may be using
-> > this method, we need to continue to support it.  However, that doesn't
-> > stop us also supporting just getting irqs directly.
-> >
-> > The handling of irqflags has to take into account the fact that using
-> > a GPIO method to identify the interrupt does not convey direction of
-> > the trigger that fwnode_irq_get() will. So we need to set the
-> > IRQF_TRIGGER_RISING in that path but not otherwise, where it will
-> > cause an issue if we reprobe the driver after removal.  
-> 
-> ...
-> 
-> > +               /* fwnode_irq_get() returns 0 for not present on OF, and -EINVAL for ACPI */
-> > +               if (ret == 0 || ret == -EINVAL) {
-> > +                       gpio = devm_gpiod_get_index(dev, NULL, i, GPIOD_IN);
-> > +                       if (IS_ERR(gpio)) {  
-> 
-> > +                               dev_err(dev, "gpio get index failed\n");
-> > +                               return PTR_ERR(gpio);  
-> 
-> This should be dev_err_probe().
-> (I guess you need to prepend this patch with one that switches to
-> dev_err_probe() API)
-> 
-> > +                       }
-> > +
-> > +                       ret = gpiod_to_irq(gpio);
-> > +                       if (ret < 0)
-> > +                               return ret;  
-> 
-> > +                       /* GPIO interrupt does npt have a specified direction */
+> @Linus, for IIO stuff, please put a cover letter on series as it makes it
+> easier for people to reply with things like this
 
-Gah. What is it with me and spelling in comments...
+OK sorry about that, I'll try to keep it in mind.
 
-> > +                       irqflags |= IRQF_TRIGGER_RISING;  
-> 
-> I'm not sure I understand this part. If we are talking about the ACPI
-> GpioInt() resource, then it should have this flag. If GpioIo() is in
-> use (which is already a sign of either using the line in dual
-> direction mode, but this needs to be described in the data sheet and
-> thus used in the driver, or misdesigned ACPI tables). DT, I suppose,
-> should have all necessary information.
+> and still let me use b4
+> without manual tweaking.
 
-Honestly I have no idea.  I didn't want to change the exiting flags without
-any visibility of what the ACPI tables look like (assuming they exist).
-Given I'm proposing killing of the ID, chances are ACPI is broken anyway
-now :)  So, more risky is DT out there that just specifies this as a
-GPIO.
+b4 only need the patches to be sent in a thread which I
+actually did, at least this works fine for me from here:
 
-Plan B would be to just drop the GPIO support entirely.
+tmp]$ b4 am -t 20210518230722.522446-1-linus.walleij@linaro.org
+Looking up https://lore.kernel.org/r/20210518230722.522446-1-linus.walleij%=
+40linaro.org
+Grabbing thread from lore.kernel.org/linux-iio
+Analyzing 7 messages in the thread
+---
+Writing ./v3_20210519_linus_walleij_iio_st_sensors_create_extended_attr_mac=
+ro.mbx
+  =E2=9C=93 [PATCH 1/5 v3] iio: st_sensors: Create extended attr macro
+    + Reviewed-by: Hans de Goede <hdegoede@redhat.com> (=E2=9C=93 DKIM/redh=
+at.com)
+  =E2=9C=93 [PATCH 2/5 v3] iio: accel: st_sensors: Support generic mounting=
+ matrix
+  =E2=9C=93 [PATCH 3/5 v3] iio: accel: st_sensors: Stop copying channels
+  =E2=9C=93 [PATCH 4/5 v3] iio: magnetometer: st_magn: Support mount matrix
+  =E2=9C=93 [PATCH 5/5 v3] iio: gyro: st_gyro: Support mount matrix
+  ---
+  =E2=9C=93 Attestation-by: DKIM/linaro.org (From: linus.walleij@linaro.org=
+)
+---
+Total patches: 5
+---
+ Link: https://lore.kernel.org/r/20210518230722.522446-1-linus.walleij@lina=
+ro.org
+ Base: not found
+       git am ./v3_20210519_linus_walleij_iio_st_sensors_create_extended_at=
+tr_macro.mbx
 
-Would GpioInt() get picked up by the the fwnode_irq_get() path?
+But I guess that without a 00/nn it is maybe not as clear if a series was
+sent as a thread.
 
-I'm guessing these were on a dev board 6+ years ago, but whilst I can
-find references to the mma9553 on some freescale platforms, not finding
-much on the mma9551.
-
-Looking a bit deeper they are both listed as obsolete parts now (according to
-digikey as I can't find status on nxp.com)
-...  So plan C is just remove the drivers on the basis they are significantly
-odd and we don't know of a platform anyone cares about with them on.
-
-Mind you, aside from having a lack of documented bindings (which was what was
-annoying me, they aren't doing any harm or causing any real maintenance burden.)
-More than possible someone out there is using them.  The mm9953 appears on the
-warpboard.org reference platform, but seems the sensor was never enabled upstream.
-
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/log/arch/arm/boot/dts/imx6sl-warp.dts
-https://revotics.com/warp?v=a284e24d5f46
-
-Also, only some passing references in there, so I'd guess it got dropped in
-later revisions?  Shaun, any ideas?
-
-Jonathan
-
-
-> 
-> > +               }  
-> 
-> 
-> 
-
+Yours,
+Linus Walleij

@@ -2,148 +2,198 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD7BC38E229
-	for <lists+linux-iio@lfdr.de>; Mon, 24 May 2021 10:09:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A73A38E22D
+	for <lists+linux-iio@lfdr.de>; Mon, 24 May 2021 10:14:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232295AbhEXILH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 May 2021 04:11:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59194 "EHLO
+        id S232311AbhEXIP0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 May 2021 04:15:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232266AbhEXILH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 May 2021 04:11:07 -0400
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 781B6C061574;
-        Mon, 24 May 2021 01:09:33 -0700 (PDT)
-Received: by mail-pj1-x1032.google.com with SMTP id ml1-20020a17090b3601b029015f9b1ebce0so1485124pjb.5;
-        Mon, 24 May 2021 01:09:33 -0700 (PDT)
+        with ESMTP id S232279AbhEXIP0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 May 2021 04:15:26 -0400
+Received: from mail-vs1-xe2e.google.com (mail-vs1-xe2e.google.com [IPv6:2607:f8b0:4864:20::e2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E6FBC061574
+        for <linux-iio@vger.kernel.org>; Mon, 24 May 2021 01:13:58 -0700 (PDT)
+Received: by mail-vs1-xe2e.google.com with SMTP id j12so8772921vsq.9
+        for <linux-iio@vger.kernel.org>; Mon, 24 May 2021 01:13:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=deviqon.com; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=mnD4LZr5vh+XK9rOEnNIl7niFIb137sw/yseGObE7Qo=;
-        b=HOQOAvWtX5lC19tOGny/nwjg4Fbx5t7ovxswRTbeG/BljGJt23qiDkrBtUrrm0ej0R
-         njjEm+CWtj7BARm1yVyr4Lf6eYYaLeb9f1oVVERu9TFdSB9VfGq9PoqqUoVDYaHvNJde
-         OUavGU1jOowQA0gD/JneY8A9msxwytL1XhNU7JLyeCAMK3icf7wtsNhDWxGJM75weVIi
-         n0r10MV1LGI7BSU5UhJs3M7K5yluUHrWwgRvk5gwqhzg+Ubqsq8nJM8ybdCJN0TZLEvy
-         Q4LUGESNxq+rIs8AJq71lvFQvXBRmm99Z4OPUj1Y8s9ZQBY6kt859NLc8d+rHc/8Iwnt
-         KWLQ==
+        bh=noqRgOg3VMiBTnwIHaAc+KPSOD1eUrURGc+0stbD3NE=;
+        b=rIdkhcPayBubukS9o5GpUDFsVmFLjjEcXUDiVnt0chBVE1h2604oJficcTonA5X2ow
+         sfTCE03yXen/qFYpojUHEW3ODYY3Jv6LL5Uz0aX3AZJMj0mR4Ab8s/Cf6B+4Q7hkItof
+         r1aXfZimqmGUHTI87Cc/lcbulbdbVAa1430GHESH9goWDo3jhP3hEVrBinMOLuzPAzYs
+         MX4/AUE7uUTqFbLOSRMVJ9c6EkRXV77g0iTRv1JJHbiShmtfDt6s5LzDC1oa7To2q6Mi
+         oBSswFGSyFAvfNiKmn2qCMd5BkHo9zf52U43QJ+2QJgfzoDX53C+yRQpU9EGQbpRoujq
+         rOIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=mnD4LZr5vh+XK9rOEnNIl7niFIb137sw/yseGObE7Qo=;
-        b=Z3dN26eqC1FvDQoUiOWBYx1m+svBqcx8QdPPy/dkX7MYRqlrmMAGz98mOvgCvg31a6
-         9LKUNR72MwQBXzJxxt6a88ZASCsz9Dmilxr7tTGKSp2139kz7mdcokRHmc49q3wKx6PE
-         3b5Q3W8pAV334EEyd6V7PuZTMF6PlwvlynklAMdxveXi51NYJryzguQAtkqb97MjCWhc
-         v8n1kmo7buQh/9Bu3tfE3Bo4r2+pxcivyg2pRAtNEmOj679Pnl7f8rHw6apJNHc1a+B0
-         0H5zzZiFsL+OOoBAHNlC1C12WB0Ul5pNWeVdS3g94br8Q0UQyuOD0EaXKsDu5j9ITnyn
-         /aqA==
-X-Gm-Message-State: AOAM531YMX+ZPykDuJ4E3G/5B7OWS1TNiKD1hcgapxfTFr2l+9dG37zV
-        9lZ8bR+jazY0vAJnjCMuPAMq6m2ffXeERTe06jg=
-X-Google-Smtp-Source: ABdhPJzLIrL7B36432y+EKVC3r0wTFrpaP48sylTGFqBNMWAhj+uLC+MeuMNBGI/VK+cekzOtXJhnj/OTnTU0F90jEY=
-X-Received: by 2002:a17:902:e00e:b029:ef:5f1c:18a8 with SMTP id
- o14-20020a170902e00eb02900ef5f1c18a8mr24599956plo.38.1621843772829; Mon, 24
- May 2021 01:09:32 -0700 (PDT)
+        bh=noqRgOg3VMiBTnwIHaAc+KPSOD1eUrURGc+0stbD3NE=;
+        b=lD20XbP55qW03rvqfFhQCKIhJVmTveZnj+d7xlovXLIXZKvP+slhwFw2AryToGGEPB
+         VUyXBz08E1IsiSqGAE0zDMBt/ICRrxpZFmVOMnnW2KUfGHgDvadcf072ErzDEuCwTgtB
+         YdIYHOIwfY1WZWc4A3xbIJoRh98g/hiVvgdhMsbh3Y5VNIUt8UG8cBN32kd3163VZB4o
+         XOxGhexCAOd9CWYQa8RyXeGeq6ykE5apC5il4Prw+40v1jvvX/JgwYUWVg+3jEcuKmcU
+         Yqc7Hfzu79/ZjORtW0a/1IqEflv+CJxkJ7Um2I3D5Rtm8ApJYO6RBgE7S5O+pbaeXtZY
+         vNQA==
+X-Gm-Message-State: AOAM530577qFrOejiH6W3o4Z6JfyGZI1/9mmdNy5g7yueqGmXJbFnUks
+        A5kixMVZ3bSMGN22pcvQ0OY/xxREPcCWSDE2Q0Evjg==
+X-Google-Smtp-Source: ABdhPJxcJg0vOsiOnb/Qol2Iuhh84OaT88Lv4jQhKWk6DT7gXyiILuyQsttL1FYMli4t3rOR5hiQoiUUmd1RIyxm1ZU=
+X-Received: by 2002:a05:6102:30ad:: with SMTP id y13mr20218627vsd.19.1621844037745;
+ Mon, 24 May 2021 01:13:57 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1621786036.git.lucas.p.stankus@gmail.com> <b637a5ecde4e5f9f927a5b104332378d4721c91d.1621786036.git.lucas.p.stankus@gmail.com>
-In-Reply-To: <b637a5ecde4e5f9f927a5b104332378d4721c91d.1621786036.git.lucas.p.stankus@gmail.com>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Mon, 24 May 2021 11:09:21 +0300
-Message-ID: <CA+U=DsqD+g5LDP0Je5WAsrKheYog--OcXNRbLZNxVJ1J6u66XA@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] staging: iio: cdc: ad7746: extract capac setup to
- own function
-To:     Lucas Stankus <lucas.p.stankus@gmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        linux-staging@lists.linux.dev, LKML <linux-kernel@vger.kernel.org>
+References: <20210523162315.1965869-1-jic23@kernel.org> <20210523162315.1965869-5-jic23@kernel.org>
+In-Reply-To: <20210523162315.1965869-5-jic23@kernel.org>
+From:   Alexandru Ardelean <aardelean@deviqon.com>
+Date:   Mon, 24 May 2021 11:13:46 +0300
+Message-ID: <CAASAkoYLYaSZeV_FqtVhnhRPzkYPeR02CnaMusEn9rnwb6m4ug@mail.gmail.com>
+Subject: Re: [PATCH 4/5] iio: accel: mma9551: Use devm managed functions to
+ tidy up probe()
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, May 23, 2021 at 8:13 PM Lucas Stankus <lucas.p.stankus@gmail.com> wrote:
+On Sun, 23 May 2021 at 19:24, Jonathan Cameron <jic23@kernel.org> wrote:
 >
-> Refactor the capac register write logic to own function.
-
-Minor typo 'capac' -> 'capdac'
-
-Other than that:
-
-Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
-
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >
-> Also fixes the following checkpatch warning:
-> CHECK: Alignment should match open parenthesis
+> The error handling in here left runtime pm enabled, and didn't do the
+> same steps as occurred in remove.  Moving over to fully devm_ managed
+> makes it harder to get this stuff wrong, so let's do that.
 >
-> Signed-off-by: Lucas Stankus <lucas.p.stankus@gmail.com>
+
+Reviewed-by: Alexandru Ardelean <aardelean@deviqon.com>
+
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > ---
->  drivers/staging/iio/cdc/ad7746.c | 36 ++++++++++++++++----------------
->  1 file changed, 18 insertions(+), 18 deletions(-)
+>  drivers/iio/accel/mma9551.c | 71 ++++++++++++++++++++-----------------
+>  1 file changed, 38 insertions(+), 33 deletions(-)
 >
-> diff --git a/drivers/staging/iio/cdc/ad7746.c b/drivers/staging/iio/cdc/ad7746.c
-> index 367a5990ae35..4221312f0a32 100644
-> --- a/drivers/staging/iio/cdc/ad7746.c
-> +++ b/drivers/staging/iio/cdc/ad7746.c
-> @@ -209,6 +209,19 @@ static const unsigned char ad7746_cap_filter_rate_table[][2] = {
->         {16, 62 + 1}, {13, 77 + 1}, {11, 92 + 1}, {9, 110 + 1},
->  };
+> diff --git a/drivers/iio/accel/mma9551.c b/drivers/iio/accel/mma9551.c
+> index a0bb4ccdbec7..f539772f8295 100644
+> --- a/drivers/iio/accel/mma9551.c
+> +++ b/drivers/iio/accel/mma9551.c
+> @@ -389,6 +389,15 @@ static irqreturn_t mma9551_event_handler(int irq, void *private)
+>         return IRQ_HANDLED;
+>  }
 >
-> +static int ad7746_set_capdac(struct ad7746_chip_info *chip, int channel)
+> +static void mma9551_disable_cb(void *_data)
 > +{
-> +       int ret = i2c_smbus_write_byte_data(chip->client,
-> +                                           AD7746_REG_CAPDACA,
-> +                                           chip->capdac[channel][0]);
-> +       if (ret < 0)
-> +               return ret;
+> +       struct mma9551_data *data = _data;
 > +
-> +       return i2c_smbus_write_byte_data(chip->client,
-> +                                         AD7746_REG_CAPDACB,
-> +                                         chip->capdac[channel][1]);
+> +       mutex_lock(&data->mutex);
+> +       mma9551_set_device_state(data->client, false);
+> +       mutex_unlock(&data->mutex);
 > +}
 > +
->  static int ad7746_select_channel(struct iio_dev *indio_dev,
->                                  struct iio_chan_spec const *chan)
+>  static int mma9551_init(struct mma9551_data *data)
 >  {
-> @@ -224,17 +237,11 @@ static int ad7746_select_channel(struct iio_dev *indio_dev,
->                         AD7746_CONF_CAPFS_SHIFT;
->                 delay = ad7746_cap_filter_rate_table[idx][1];
+>         int ret;
+> @@ -397,7 +406,12 @@ static int mma9551_init(struct mma9551_data *data)
+>         if (ret)
+>                 return ret;
 >
-> +               ret = ad7746_set_capdac(chip, chan->channel);
-> +               if (ret < 0)
-> +                       return ret;
+> -       return mma9551_set_device_state(data->client, true);
+> +       ret = mma9551_set_device_state(data->client, true);
+> +       if (ret)
+> +               return ret;
 > +
->                 if (chip->capdac_set != chan->channel) {
-> -                       ret = i2c_smbus_write_byte_data(chip->client,
-> -                               AD7746_REG_CAPDACA,
-> -                               chip->capdac[chan->channel][0]);
-> -                       if (ret < 0)
-> -                               return ret;
-> -                       ret = i2c_smbus_write_byte_data(chip->client,
-> -                               AD7746_REG_CAPDACB,
-> -                               chip->capdac[chan->channel][1]);
-> -                       if (ret < 0)
-> -                               return ret;
+> +       return devm_add_action_or_reset(&data->client->dev, mma9551_disable_cb,
+> +                                       data);
+>  }
 >
->                         chip->capdac_set = chan->channel;
->                 }
-> @@ -478,14 +485,7 @@ static int ad7746_write_raw(struct iio_dev *indio_dev,
->                 chip->capdac[chan->channel][chan->differential] = val > 0 ?
->                         AD7746_CAPDAC_DACP(val) | AD7746_CAPDAC_DACEN : 0;
+>  static int mma9551_gpio_probe(struct iio_dev *indio_dev)
+> @@ -442,6 +456,16 @@ static int mma9551_gpio_probe(struct iio_dev *indio_dev)
+>         return 0;
+>  }
 >
-> -               ret = i2c_smbus_write_byte_data(chip->client,
-> -                                               AD7746_REG_CAPDACA,
-> -                                               chip->capdac[chan->channel][0]);
-> -               if (ret < 0)
-> -                       goto out;
-> -               ret = i2c_smbus_write_byte_data(chip->client,
-> -                                               AD7746_REG_CAPDACB,
-> -                                               chip->capdac[chan->channel][1]);
-> +               ret = ad7746_set_capdac(chip, chan->channel);
->                 if (ret < 0)
->                         goto out;
+> +static void mma9551_rpm_susp(void *d)
+> +{
+> +       pm_runtime_set_suspended(d);
+> +}
+> +
+> +static void mma9551_rpm_disable(void *d)
+> +{
+> +       pm_runtime_disable(d);
+> +}
+> +
+>  static int mma9551_probe(struct i2c_client *client,
+>                          const struct i2c_device_id *id)
+>  {
+> @@ -475,46 +499,28 @@ static int mma9551_probe(struct i2c_client *client,
+>
+>         ret = mma9551_gpio_probe(indio_dev);
+>         if (ret < 0)
+> -               goto out_poweroff;
+> +               return ret;
+>
+>         ret = pm_runtime_set_active(&client->dev);
+>         if (ret < 0)
+> -               goto out_poweroff;
+> +               return ret;
+> +
+> +       ret = devm_add_action_or_reset(&client->dev, mma9551_rpm_susp,
+> +                                      &client->dev);
+> +       if (ret)
+> +               return ret;
+>
+>         pm_runtime_enable(&client->dev);
+> +       ret = devm_add_action_or_reset(&client->dev, mma9551_rpm_disable,
+> +                                      &client->dev);
+> +       if (ret)
+> +               return ret;
+> +
+>         pm_runtime_set_autosuspend_delay(&client->dev,
+>                                          MMA9551_AUTO_SUSPEND_DELAY_MS);
+>         pm_runtime_use_autosuspend(&client->dev);
+>
+> -       ret = iio_device_register(indio_dev);
+> -       if (ret < 0) {
+> -               dev_err(&client->dev, "unable to register iio device\n");
+> -               goto out_poweroff;
+> -       }
+> -
+> -       return 0;
+> -
+> -out_poweroff:
+> -       mma9551_set_device_state(client, false);
+> -
+> -       return ret;
+> -}
+> -
+> -static int mma9551_remove(struct i2c_client *client)
+> -{
+> -       struct iio_dev *indio_dev = i2c_get_clientdata(client);
+> -       struct mma9551_data *data = iio_priv(indio_dev);
+> -
+> -       iio_device_unregister(indio_dev);
+> -
+> -       pm_runtime_disable(&client->dev);
+> -       pm_runtime_set_suspended(&client->dev);
+> -
+> -       mutex_lock(&data->mutex);
+> -       mma9551_set_device_state(data->client, false);
+> -       mutex_unlock(&data->mutex);
+> -
+> -       return 0;
+> +       return devm_iio_device_register(&client->dev, indio_dev);
+>  }
+>
+>  static __maybe_unused int mma9551_runtime_suspend(struct device *dev)
+> @@ -569,7 +575,6 @@ static struct i2c_driver mma9551_driver = {
+>                    .pm = &mma9551_pm_ops,
+>                    },
+>         .probe = mma9551_probe,
+> -       .remove = mma9551_remove,
+>         .id_table = mma9551_id,
+>  };
 >
 > --
 > 2.31.1

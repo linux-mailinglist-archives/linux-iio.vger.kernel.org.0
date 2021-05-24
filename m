@@ -2,80 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC54C38E641
-	for <lists+linux-iio@lfdr.de>; Mon, 24 May 2021 14:08:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0037D38E81E
+	for <lists+linux-iio@lfdr.de>; Mon, 24 May 2021 15:54:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232476AbhEXMJe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 May 2021 08:09:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56760 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232110AbhEXMJd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 May 2021 08:09:33 -0400
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF0D5C061574
-        for <linux-iio@vger.kernel.org>; Mon, 24 May 2021 05:08:05 -0700 (PDT)
-Received: by mail-lj1-x22a.google.com with SMTP id b12so26012950ljp.1
-        for <linux-iio@vger.kernel.org>; Mon, 24 May 2021 05:08:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=eTg7vm4pMEpR4uU5fit+ewi8JjBhW91KZBkpLnssSAU=;
-        b=UOjcuWtRE8ZvaCFKvkm8afFSb+UkRHwi+EM3f61MTMRipwXj+ryZ7ypL6qugExCOzr
-         H2Pt2L5lZB3grehpmZvb8QHDd/LZ6jP+0ZAbv5mmrX/4ExFxMuHaeU8OBa4SgJF3qIEr
-         w1B9V4burZf2We6hYUzqpE5rw1RvIkDdxoJHhKTAhFTSgbPu797sIdyd0OaRWSAwKoe4
-         zsQycnNP3EzanrXB7JSgD/g0FAipB+54+fRUHSGTP3V9T6nYYbpyWJnMqQSB6D1ndpKx
-         iDB2bua7gViWEcY7vwOTqJZI16AWCKD+qlxP1N0sSl1VjkxQe5ikVNB4cQr4gcHeO7cK
-         8h2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=eTg7vm4pMEpR4uU5fit+ewi8JjBhW91KZBkpLnssSAU=;
-        b=DSRLXL5eeRR/itN/FIxziqXKDmDnNR+eZ4wAuFw4ByxB6jFAFVXCtccIp3LuFK60Dd
-         Y6T1f9+Wtm7KaQFIgYRuKCjOH9+hGM6XaUS7a3GRSoL+iQP8Mu4F38+NHnrQ4X+m6iTu
-         udDhxroGyMbwH2EH117zc2mBMdooQ5a3o7dOMIDeDNyTiWjsYFWCYKOhAtnVhCssTMud
-         1QawGtT9XvxHQ99ULdoQwKfJML54C6Ofme+8h4vPdespVwDA/YjuO86rw/+A4tUZyYC1
-         CtopDwZMeq8e4Vjp8f7kcx/1QadqH/ZnJPIW6eMyWIP9OV7gG1ijxgrzJ8VdtsfnTw9C
-         SPRA==
-X-Gm-Message-State: AOAM531UvDLo5nJ/IV7swRuFFNwdfLq3iZogKy6D1/278Adgzt9SBCDu
-        5MpsnrINKH+m+GSg6Ip4sVFud8P/pohK50XCLux5Ng==
-X-Google-Smtp-Source: ABdhPJyieMB2C2IRG21yk6NFSZteTH3v01BEPAggAJbGOLWC82SHLhiMVoLgKUL2uPxxLhiqoN3itjkuwz+1sX3p5Aw=
-X-Received: by 2002:a2e:1319:: with SMTP id 25mr16759965ljt.200.1621858084220;
- Mon, 24 May 2021 05:08:04 -0700 (PDT)
+        id S232462AbhEXN4N (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 May 2021 09:56:13 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:3986 "EHLO
+        szxga06-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232409AbhEXN4N (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 May 2021 09:56:13 -0400
+Received: from dggems704-chm.china.huawei.com (unknown [172.30.72.59])
+        by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4Fpdtv4MkGzmZx5;
+        Mon, 24 May 2021 21:52:23 +0800 (CST)
+Received: from dggeml759-chm.china.huawei.com (10.1.199.138) by
+ dggems704-chm.china.huawei.com (10.3.19.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2176.2; Mon, 24 May 2021 21:54:43 +0800
+Received: from localhost.localdomain (10.175.102.38) by
+ dggeml759-chm.china.huawei.com (10.1.199.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2176.2; Mon, 24 May 2021 21:54:42 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     <weiyongjun1@huawei.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>
+CC:     <linux-iio@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH -next] iio: dummy: Fix build error when CONFIG_IIO_TRIGGERED_BUFFER is not set
+Date:   Mon, 24 May 2021 14:05:36 +0000
+Message-ID: <20210524140536.116224-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20210518230722.522446-1-linus.walleij@linaro.org>
- <323cc45a-6db2-8732-d3b0-784b1250d7f7@redhat.com> <20210522191527.228f795a@jic23-huawei>
- <CACRpkdZu0PjH4ciJMSRZ0bywYFjrfWvvfvcpxPQQ+4P=rTNmTw@mail.gmail.com> <20210524105042.00002e59@Huawei.com>
-In-Reply-To: <20210524105042.00002e59@Huawei.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 24 May 2021 14:07:53 +0200
-Message-ID: <CACRpkdb9D01p=qsSEFSKz_KSRcQdA5L8J65oQ+c3X2OsdqE=kg@mail.gmail.com>
-Subject: Re: [PATCH 1/5 v3] iio: st_sensors: Create extended attr macro
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Denis Ciocca <denis.ciocca@st.com>,
-        Daniel Drake <drake@endlessm.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Stephan Gerhold <stephan@gerhold.net>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.102.38]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggeml759-chm.china.huawei.com (10.1.199.138)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, May 24, 2021 at 11:52 AM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
+Gcc reports build error when CONFIG_IIO_TRIGGERED_BUFFER is not set:
 
-> That only adds the Reviewed-by for patch 1 which was not Hans'
-> intention.  If the reply was to a cover letter it would apply to all of the patches.
+riscv64-linux-gnu-ld: drivers/iio/dummy/iio_simple_dummy_buffer.o: in function `iio_simple_dummy_configure_buffer':
+iio_simple_dummy_buffer.c:(.text+0x2b0): undefined reference to `iio_triggered_buffer_setup_ext'
+riscv64-linux-gnu-ld: drivers/iio/dummy/iio_simple_dummy_buffer.o: in function `.L0 ':
+iio_simple_dummy_buffer.c:(.text+0x2fc): undefined reference to `iio_triggered_buffer_cleanup'
 
-Aha I see, yeah that makes a lot of sense.
-I'll try to put cover letters on my series!
+Fix it by select IIO_TRIGGERED_BUFFER for config IIO_SIMPLE_DUMMY_BUFFER.
 
-Yours,
-Linus Walleij
+Fixes: 738f6ba11800 ("iio: dummy: iio_simple_dummy_buffer: use triggered buffer core calls")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ drivers/iio/dummy/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/iio/dummy/Kconfig b/drivers/iio/dummy/Kconfig
+index 5c5c2f8c55f3..1f46cb9e51b7 100644
+--- a/drivers/iio/dummy/Kconfig
++++ b/drivers/iio/dummy/Kconfig
+@@ -34,6 +34,7 @@ config IIO_SIMPLE_DUMMY_BUFFER
+ 	select IIO_BUFFER
+ 	select IIO_TRIGGER
+ 	select IIO_KFIFO_BUF
++	select IIO_TRIGGERED_BUFFER
+ 	help
+ 	  Add buffered data capture to the simple dummy driver.
+ 
+

@@ -2,108 +2,80 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8890F391720
-	for <lists+linux-iio@lfdr.de>; Wed, 26 May 2021 14:12:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEC21391721
+	for <lists+linux-iio@lfdr.de>; Wed, 26 May 2021 14:12:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234639AbhEZMNw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 26 May 2021 08:13:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58182 "EHLO
+        id S233517AbhEZMO3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 26 May 2021 08:14:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234729AbhEZMNr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 26 May 2021 08:13:47 -0400
-Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33273C061756
-        for <linux-iio@vger.kernel.org>; Wed, 26 May 2021 05:12:16 -0700 (PDT)
-Received: by mail-lj1-x234.google.com with SMTP id c15so1323991ljr.7
-        for <linux-iio@vger.kernel.org>; Wed, 26 May 2021 05:12:16 -0700 (PDT)
+        with ESMTP id S233673AbhEZMO2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 26 May 2021 08:14:28 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAD1CC061574
+        for <linux-iio@vger.kernel.org>; Wed, 26 May 2021 05:12:56 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id e11so1303280ljn.13
+        for <linux-iio@vger.kernel.org>; Wed, 26 May 2021 05:12:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=76p9wT8QuwVg5ew9GnKLqtzRWlQefAzPXOCMAhErJUM=;
-        b=bf5rvIezGjDJQas1Jm0FHmH8RbEFAk2UIyzPIR1txeUXwich6fHGjvGE/wUSydRWe7
-         qS9Oi0IAefDve14zdC58XR5m/w14LPoXxspXqCJy4gVuqffm7FIfwVk7wnfPMRAl9yEk
-         RgsIDE6rWuRNsI4ftFwYI5jz45BX/zcziV0FL6nfDYo+y2Kh8p4QKryjZH4knk0gYlpe
-         t2FCgA1WGisKV2XqYE9E6XDJFMP4MApC43QyuOrF0djmmUIKFOPWZmZXt738KqSehHYK
-         Q5Wpag4uqNBirsiKYo1pnrb99Dr3XBrocg4sKmnecIke2bKrTc1+Nc3j0SdNd6gBmODH
-         N+mw==
+         :cc;
+        bh=v6cjFJOi/C3qLKP6nlHD6DQjz0ttxVnMBviJYIywEOE=;
+        b=D4sOVY2ClTdGtp+G0cLkDjjVVdb7H/4I2OIDXNxfXExFT56KZ4hDH2qox6axslr7AF
+         NUAPSpQAHKU71RVg7f8S1EPVKdh9bfyszSzP3ihkwoZ/rmr7Rx7yITXuWIbc8Ki8kbBU
+         DXGm0sN0kaVSXg3BPRL0Ean16wRRRmSJckFkTydp5CxdDBTBzf81980j6hy3aP/TpF9h
+         xuncUB15CW1wRTrA7S+VfRwBUYbVIcX0aqB1FXr8gD+XVJLiEPlRaX/63++gEZmLtqAN
+         DZqNgOpD4fTUOcj845rRTjxcFhI7c0/+Hf9JJnrsobcDvaL9oCqnX8Y+8/eOyLYYuKyk
+         GSVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=76p9wT8QuwVg5ew9GnKLqtzRWlQefAzPXOCMAhErJUM=;
-        b=nh5visQ85n7n3CdoeL62xOztwil3fka0bH2+fdgRk8F+CxO47EPvNBUz59GqKEKhuy
-         B2ytL9rfH4oeHa3/AiDifxSR5LPr7DeKGvYupjsSsI4CawENMbK7TSzndMLtmwEWL63Q
-         OC2Uwi7nmJ2lrfHWNu7aI3w+/zspm2ns8pMvrz56QD/jM37Mg8/im39RqUPZyS8rKtoQ
-         LRe9f5zo8ZWDbjKiXxgCuETLmNVl/2IXRgtkaGrMX0GA5pohSxj692vriEwh8vCqko4o
-         0oWp3Zju+BS6t54XJ0jyO7GKPmQtLfxqoADbGtWRw2DjAteYk2Ae7UPEYqedo4h6hO/N
-         yvVQ==
-X-Gm-Message-State: AOAM530IRq2r80AbfyPvvuser1SDkVy1aKm6+zacGw+ACjRnYYG3HZlh
-        B21iSYcEZ/ItbHWLM8e9aS+AIDoMUByfH44ATiCHPQ==
-X-Google-Smtp-Source: ABdhPJxGabSI+GmUS0ZHRlXFFPBAHljNRwKEJv8onxPUVj0feimpj8ZknOi25MDqd+vu2ReJ7Y3r+u/0Z9F0zsQqhX0=
-X-Received: by 2002:a2e:22c3:: with SMTP id i186mr2042387lji.273.1622031134390;
- Wed, 26 May 2021 05:12:14 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=v6cjFJOi/C3qLKP6nlHD6DQjz0ttxVnMBviJYIywEOE=;
+        b=m9kFxtAMgTAJ+2TE+KAjUy9JTgkdoQN80+Y+e9KOXUlY5kIlOJ3noCxrM21UjIEzkU
+         Z41bqeQtBVTPg4PMXT6XQhxwyg5lRyDBY616MF0z+BguSaaPlWbTgfo8vD3GgAM2zlMR
+         wmJ2/pSom27K/a3sZyyiohQJMxRy6sipFU58PWbSB7PkRmHEdOD65kJ8Zl8SR162UKE7
+         IX102ovhLR7ISQBgntfCW9IXa2G1Rno9M8L4U26t5DmndXWLXdRb4Tur2F9tzMyDQ8fS
+         q8g1+i3jZRPGj6JXqUTCMluWhMoOzDOAFmq2Kh0gOnajVfsiZ6zn5P7rDmNJzK5IiJif
+         UZ6g==
+X-Gm-Message-State: AOAM530+pXu1sX9n0u8z3z7Nm6CT1e9B7HUF0ECTC5HjACxXBInaPP4z
+        ZSgrk0aNoBmBTa7WxU0nAvKldgjA7fSjYFXhO7Qu7Q==
+X-Google-Smtp-Source: ABdhPJzrsGOjwH+6oGcct2w7C+OCZXlqdj614/fJxA2bbHIJW+uxUD+wPV175cWUQdsbK+fdVjCn859c+nJSFCheN7M=
+X-Received: by 2002:a2e:1319:: with SMTP id 25mr2005340ljt.200.1622031175267;
+ Wed, 26 May 2021 05:12:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210526094408.34298-1-stephan@gerhold.net> <20210526094408.34298-2-stephan@gerhold.net>
-In-Reply-To: <20210526094408.34298-2-stephan@gerhold.net>
+References: <20210526094408.34298-1-stephan@gerhold.net> <20210526094408.34298-3-stephan@gerhold.net>
+In-Reply-To: <20210526094408.34298-3-stephan@gerhold.net>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 26 May 2021 14:12:02 +0200
-Message-ID: <CACRpkdZweO5kCdSky8Nc+QmKWRuGLKX4QEct5LmH4RTPirRLhg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] iio: accel: bma180: Fix BMA25x bandwidth register values
+Date:   Wed, 26 May 2021 14:12:44 +0200
+Message-ID: <CACRpkdbT25_MXtJd02g_8JuD-29Heg_CMwRP2ROoRuXjRUGAKQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] iio: accel: bma180: Add missing 500 Hz / 1000 Hz bandwidth
 To:     Stephan Gerhold <stephan@gerhold.net>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald <pmeerw@pmeerw.net>,
         linux-iio <linux-iio@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, May 26, 2021 at 11:44 AM Stephan Gerhold <stephan@gerhold.net> wrot=
-e:
+On Wed, May 26, 2021 at 11:44 AM Stephan Gerhold <stephan@gerhold.net> wrote:
 
-> According to the BMA253 datasheet [1] and BMA250 datasheet [2] the
-> bandwidth value for BMA25x should be set as 01xxx:
+> According to the BMA253 datasheet [1] and BMA250 datasheet [2] BMA25x
+> also supports a bandwidth of 500 Hz and 1000 Hz but this was not listed
+> in the driver for some reason.
 >
->   "Settings 00xxx result in a bandwidth of 7.81 Hz; [...]
->    It is recommended [...] to use the range from =C2=B401000b=C2=B4 to =
-=C2=B401111b=C2=B4
->    only in order to be compatible with future products."
+> Add it to the bw_table to make the driver match the datasheet.
 >
-> However, at the moment the drivers sets bandwidth values from 0 to 6,
-> which is not recommended and always results into 7.81 Hz bandwidth
-> according to the datasheet.
->
-> Fix this by introducing a bw_offset =3D 8 =3D 01000b for BMA25x,
-> so the additional bit is always set for BMA25x.
->
-> [1]: https://www.bosch-sensortec.com/media/boschsensortec/downloads/datas=
-heets/bst-bma253-ds000.pdf
+> [1]: https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bma253-ds000.pdf
 > [2]: https://datasheet.octopart.com/BMA250-Bosch-datasheet-15540103.pdf
 >
 > Cc: Peter Meerwald <pmeerw@pmeerw.net>
 > Cc: Linus Walleij <linus.walleij@linaro.org>
-> Fixes: 2017cff24cc0 ("iio:bma180: Add BMA250 chip support")
 > Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 
-Good catch!
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-
-> After spending some more time with the driver I noticed that BMA253/BMA25=
-4
-> would actually be better supported by the bmc150-accel driver (which
-> doesn't have this problem and also supports the motion trigger/interrupt)=
-.
->
-> I'm preparing a separate patch set to move BMA254 to bmc150-accel at leas=
-t,
-> but I'm not sure about BMA250 so this patch is relevant anyway. And I had
-> it almost done already, so I thought it's better to send it. :)
-
-I looked at the preliminary patches and this looks really good
-too.
 
 Yours,
 Linus Walleij

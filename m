@@ -2,99 +2,85 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 566BF390A77
-	for <lists+linux-iio@lfdr.de>; Tue, 25 May 2021 22:30:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 757D639140A
+	for <lists+linux-iio@lfdr.de>; Wed, 26 May 2021 11:47:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233249AbhEYUcZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 25 May 2021 16:32:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33968 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229643AbhEYUcZ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 25 May 2021 16:32:25 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9BA8A613EC;
-        Tue, 25 May 2021 20:30:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1621974655;
-        bh=YB5s9KqU3I3U0EwmlQEZQw1u1H5+l4vhQZio8tQDxYs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=l/kSEVjzzpoSmDZtXwhyPpiLBWJFOMLiiJdkZnUkEnjVxIP+ymjMljIoA6VJxwL7f
-         6oHEtmU95MjYLld20dbrEUhyRA5a05j5LdrpfZ1SoSD+sNzvAeJj/L+x4UOLzJAMS7
-         jKhmGmaIqQUsWjxLEHCeJKHhYbQ7DLvN2m7scGtHFauO0fr53Y2S2j1EiuQcwC2/Vk
-         iYl3Wl6Ge54GPYeQONO0Tgm40jtbkOUI63JYunfQuFF0kzdTPv08bgrSWHJxWDl8Dx
-         ATTJniz3W3LO7Yyo3MkohMzYa407hq0Lp2pVYkkutpEObLKqUhHBmG4z72z+ZS9Uu8
-         8JDPTeCNf/1mw==
-Date:   Tue, 25 May 2021 22:30:52 +0200
-From:   Wolfram Sang <wsa@kernel.org>
+        id S233669AbhEZJs7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 26 May 2021 05:48:59 -0400
+Received: from mo4-p00-ob.smtp.rzone.de ([85.215.255.22]:34457 "EHLO
+        mo4-p00-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233348AbhEZJs7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 26 May 2021 05:48:59 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1622022264; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=ofeG/Aq6GFQsmGK3ATw6bdG6aM0kfW8YD+MNL/7SegjEYyvgPnD50f+BSYKK1nz1g3
+    4AAZ9Wso4sO8lH1j1WRTrBinjxVy4axgsGJPj7r3G4a2j23Hsixul484nntjHCE2Hpv+
+    Yea4sUgx6uR2eS+H3L4s9vRdjs7n6zMH9eEpMFnIxOi66hZBMo9u3Y9RKSRcyS9Dlr4K
+    0VSjmmdfU+L7FvYMZhDnNthOZtoaXMRo+DtLW7dwNF0jMR8hDSQQqmj0htVVwM25HP3O
+    ZHTiCpxLnVC2Ao51IJcgFDYHx0Cib9Tb8yfylm8MhbKBu2mhsih/A7DYIEhwc4x43IFo
+    LTOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1622022264;
+    s=strato-dkim-0002; d=strato.com;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=QVOMXLRWjlmCV9N5QIsOg4wDezgi0D1fXUhjrijitHI=;
+    b=KaiAto3wdpM0n3MYj+igxfPJCllw62O+Mku2dLo/gpJM2j52POQu99PZ36IkMlsQSw
+    asrNbAlQxdc+z7rUz8uXXj8GhCYHMGZQcT3GRCkWM98RaX5aFnOcbGxMy+DcHUwjaFC5
+    1UHI7VfhfWBv/ftERWhKV5GjLKbg9M9XWPAArIYxLaqJodJ65cgzMxRvR8TBGl7sMOXM
+    jMIp4JAsgMBgtzBCzTSOCa5ja34hNBszpoSQo2Uipue+hnYjGOs8vjxHdmg9QQJGKMil
+    g0NZWrBB95QfCQ8Ha6SyijWDB6lRpJUDGmT/xmGT9PEv0QQKlkSdSOReOlQBCmj9H+oH
+    mwKQ==
+ARC-Authentication-Results: i=1; strato.com;
+    dkim=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1622022264;
+    s=strato-dkim-0002; d=gerhold.net;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=QVOMXLRWjlmCV9N5QIsOg4wDezgi0D1fXUhjrijitHI=;
+    b=ZJqoXci6jvv4nle94AvLxuMvBM8Bj/QU/rL0uZCGhPrdaKkezMOfwdG84IscyLCSOm
+    v87jZNNBATiPLNf8uz1K1RbDuBpQEt1eJe5regvKpOdp0SICXgCUfrG9A8h33XTSF2pp
+    ZjCDlpH5WRY9uErb9j6ctmVJ+ancwN2mz9mL2oEALy2YQ+tu3m+Co5fr1t5mdJUgoUuy
+    kHFe9AsRCwbIvi80AhO9ingQVIPmUBxLOPDLKnVph5WTt+WhL5GJb3PGw90UV8HRYgOY
+    llT+HZjqWToxxy7mk6UZ4s/qbQlGNVvh8Iv8XjHemQxwHZc4gXZGVqpxB3QrVk+HXeK/
+    VBiQ==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVORvLd4SsytBXS7IYBkLahKxB4W6JG0s="
+X-RZG-CLASS-ID: mo00
+Received: from droid..
+    by smtp.strato.de (RZmta 47.26.2 DYNA|AUTH)
+    with ESMTPSA id w02ed1x4Q9iO6K9
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Wed, 26 May 2021 11:44:24 +0200 (CEST)
+From:   Stephan Gerhold <stephan@gerhold.net>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Sean Nyekjaer <sean@geanix.com>, trix@redhat.com, lars@metafoo.de,
-        andy.shevchenko@gmail.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org
-Subject: Re: [PATCH] iio: accel: fxls8962af: conditionally compile
- fxls8962af_i2c_raw_read_errata3()
-Message-ID: <YK1efL7DMOVZSPuz@kunai>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Sean Nyekjaer <sean@geanix.com>, trix@redhat.com, lars@metafoo.de,
-        andy.shevchenko@gmail.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org
-References: <20210518234828.1930387-1-trix@redhat.com>
- <a3329058-2b2d-415a-5d2a-0bdf2f97d23d@geanix.com>
- <20210521175406.274f713b@jic23-huawei>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Peter Meerwald <pmeerw@pmeerw.net>, linux-iio@vger.kernel.org,
+        Stephan Gerhold <stephan@gerhold.net>
+Subject: [PATCH 0/2] iio: accel: bma180: Fix BMA25x bandwidth selection
+Date:   Wed, 26 May 2021 11:44:06 +0200
+Message-Id: <20210526094408.34298-1-stephan@gerhold.net>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="v0fj/HaOmU5lDP4H"
-Content-Disposition: inline
-In-Reply-To: <20210521175406.274f713b@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+This patch series fixes the bandwidth selection for BMA25x
+in the bma180 driver. See the patches for details.
 
---v0fj/HaOmU5lDP4H
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+(Normally I would omit the cover letter here but Jonathan
+ mentioned this makes things easier... :D)
 
+Stephan Gerhold (2):
+  iio: accel: bma180: Fix BMA25x bandwidth register values
+  iio: accel: bma180: Add missing 500 Hz / 1000 Hz bandwidth
 
-> > > The build is failing with this link error
-> > > ld: fxls8962af-core.o: in function `fxls8962af_fifo_transfer':
-> > > fxls8962af-core.c: undefined reference to `i2c_verify_client'
-> > >=20
-> > > This is needed for the i2c variant, not the spi variant. So
-> > > conditionally compile based on CONFIG_FXLS8962AF_I2C.
-> > >  =20
-> > Fixes: 68068fad0e1c ("iio: accel: fxls8962af: fix errata bug E3 - I2C b=
-urst reads")
-> > > Signed-off-by: Tom Rix <trix@redhat.com> =20
-> > Reviewed-by: Sean Nyekjaer <sean@geanix.com>
->=20
-> Given the purpose of that check is to verify it was an i2c_client
-> should we be looking to instead provide a stub for the case where
-> we don't have CONFIG_I2C?
->=20
-> +CC Wolfram and linux-i2c list for input.
+ drivers/iio/accel/bma180.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-Such a stub sounds reasonable.
+-- 
+2.31.1
 
-
---v0fj/HaOmU5lDP4H
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmCtXncACgkQFA3kzBSg
-KbaGzg/+PC+EeK4TZxKGveYd0I11gaP37dNvJKXHqjBQO8pzsZnBpWzzprDPvrt7
-7+hC6jYXPErO5okEMg+Dj+LC0T94F+YoNG7zvq4Q3BZ9aar6F8pmACeXKCTxU+di
-NmBDqGVqGUqu6YQY/0Ya3XBewc4OXfAJtFvtxydVJjwZ4U1r0gKssXoT2QD9GY1r
-0MzNUtP6Vqgqu65wOGmtp36+hsxJQ+kesKA9YQhV/NyNwKKwO5+PRbUMeyNjAGIr
-nUsw7N+Y7K8jdinauJguJmwa75ff3ZL8fGj0hTJR4V+twKP+u0OwRHxNYi0jLNQF
-Zq7/4K+ktNEupCl0yJenrQyGTwdS6F5lpr3trPm8uY03SZBdnUZHUmmzpviX251l
-uyIv272uWq8PQVXQ203VjeOxbnvK6OUfOkc+yDoA5B22AWlrL/Q7HBWStZj8iVCr
-yjADh39qnZjdAbggBCkcL54hKumFhiHcIXP6tGsrtx64uAOoo7ndnqKDLVKPbuz7
-qZaggAabA18Pi6o3+y+jE8u8xSxoU2JRGu+WdsFvfCZaYkIAnP4mVgD/duhumWww
-vC+x4XxSWVvR9bGX/FK5P3sh0J3kQF+Re7ysreydNBLiHlniVZ60Z7AhwetIw7eR
-wwP2oeNwHfkF60289uRYcCtSCuwCfUBaY0w3TnP/PqUMXrvW98U=
-=XRTq
------END PGP SIGNATURE-----
-
---v0fj/HaOmU5lDP4H--

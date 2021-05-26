@@ -2,30 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E62CF391D62
-	for <lists+linux-iio@lfdr.de>; Wed, 26 May 2021 18:57:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC087391D69
+	for <lists+linux-iio@lfdr.de>; Wed, 26 May 2021 18:58:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233619AbhEZQ7Q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 26 May 2021 12:59:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45308 "EHLO mail.kernel.org"
+        id S233653AbhEZRAX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 26 May 2021 13:00:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45598 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233550AbhEZQ7P (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 26 May 2021 12:59:15 -0400
+        id S233648AbhEZRAX (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 26 May 2021 13:00:23 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2794F613D7;
-        Wed, 26 May 2021 16:57:40 +0000 (UTC)
-Date:   Wed, 26 May 2021 17:59:08 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 87650613E1;
+        Wed, 26 May 2021 16:58:49 +0000 (UTC)
+Date:   Wed, 26 May 2021 18:00:18 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        "Jonathan Corbet" <corbet@lwn.net>, linux-kernel@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 0/2] doc: add a couple fixups for IIO ABI files
-Message-ID: <20210526175908.42db03a0@jic23-huawei>
-In-Reply-To: <cover.1621944866.git.mchehab+huawei@kernel.org>
-References: <cover.1621944866.git.mchehab+huawei@kernel.org>
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        <linux-iio@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Hulk Robot <hulkci@huawei.com>
+Subject: Re: [PATCH -next] iio: dummy: Fix build error when
+ CONFIG_IIO_TRIGGERED_BUFFER is not set
+Message-ID: <20210526180018.66ac9989@jic23-huawei>
+In-Reply-To: <20210524140536.116224-1-weiyongjun1@huawei.com>
+References: <20210524140536.116224-1-weiyongjun1@huawei.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -34,35 +35,43 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 25 May 2021 14:23:51 +0200
-Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+On Mon, 24 May 2021 14:05:36 +0000
+Wei Yongjun <weiyongjun1@huawei.com> wrote:
 
-> Patch 1 was already submitted as patch 10/10 on this series:
-> 	https://lore.kernel.org/linux-doc/87wnrtnpko.fsf@meer.lwn.net/
+> Gcc reports build error when CONFIG_IIO_TRIGGERED_BUFFER is not set:
 > 
-> However, it generated a new warning, due to a separate issue.
+> riscv64-linux-gnu-ld: drivers/iio/dummy/iio_simple_dummy_buffer.o: in function `iio_simple_dummy_configure_buffer':
+> iio_simple_dummy_buffer.c:(.text+0x2b0): undefined reference to `iio_triggered_buffer_setup_ext'
+> riscv64-linux-gnu-ld: drivers/iio/dummy/iio_simple_dummy_buffer.o: in function `.L0 ':
+> iio_simple_dummy_buffer.c:(.text+0x2fc): undefined reference to `iio_triggered_buffer_cleanup'
 > 
-> So, resend it together with a warning fix patch.
+> Fix it by select IIO_TRIGGERED_BUFFER for config IIO_SIMPLE_DUMMY_BUFFER.
 > 
-> As these patches are independent from the other ones, I guess it
-> can either be applied via IIO or via docs tree, whatever works
-> best for the doc and IIO maintainers.
-> So, I should leave such decision to Jonathan & Jonathan ;-)
+> Fixes: 738f6ba11800 ("iio: dummy: iio_simple_dummy_buffer: use triggered buffer core calls")
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 
-Either works for me, but on basis I got here first.
+Thanks,
 
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Applied to the fixes-togreg branch of iio.git.
 
-Jon, if you'd prefer I picked these up, then let me know.
+Jonathan
 
-Thanks!
-
+> ---
+>  drivers/iio/dummy/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> Mauro Carvalho Chehab (2):
->   iio: ABI: sysfs-bus-iio: fix a typo
->   iio: ABI: sysfs-bus-iio: avoid a warning when doc is built
-> 
->  Documentation/ABI/testing/sysfs-bus-iio | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+> diff --git a/drivers/iio/dummy/Kconfig b/drivers/iio/dummy/Kconfig
+> index 5c5c2f8c55f3..1f46cb9e51b7 100644
+> --- a/drivers/iio/dummy/Kconfig
+> +++ b/drivers/iio/dummy/Kconfig
+> @@ -34,6 +34,7 @@ config IIO_SIMPLE_DUMMY_BUFFER
+>  	select IIO_BUFFER
+>  	select IIO_TRIGGER
+>  	select IIO_KFIFO_BUF
+> +	select IIO_TRIGGERED_BUFFER
+>  	help
+>  	  Add buffered data capture to the simple dummy driver.
+>  
 > 
 

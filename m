@@ -2,32 +2,30 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F2B2391D5D
-	for <lists+linux-iio@lfdr.de>; Wed, 26 May 2021 18:54:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E62CF391D62
+	for <lists+linux-iio@lfdr.de>; Wed, 26 May 2021 18:57:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233565AbhEZQzr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 26 May 2021 12:55:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44944 "EHLO mail.kernel.org"
+        id S233619AbhEZQ7Q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 26 May 2021 12:59:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45308 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233550AbhEZQzq (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 26 May 2021 12:55:46 -0400
+        id S233550AbhEZQ7P (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 26 May 2021 12:59:15 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 75A21613C9;
-        Wed, 26 May 2021 16:54:13 +0000 (UTC)
-Date:   Wed, 26 May 2021 17:55:41 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 2794F613D7;
+        Wed, 26 May 2021 16:57:40 +0000 (UTC)
+Date:   Wed, 26 May 2021 17:59:08 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Andy Shevchenko <andy@infradead.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jeremy Cline <jeremy@jcline.org>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 2/9] iio: accel: bmc150: Don't make the remove
- function of the second accelerometer unregister itself
-Message-ID: <20210526175541.35db2461@jic23-huawei>
-In-Reply-To: <20210523170103.176958-3-hdegoede@redhat.com>
-References: <20210523170103.176958-1-hdegoede@redhat.com>
-        <20210523170103.176958-3-hdegoede@redhat.com>
+To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        "Jonathan Corbet" <corbet@lwn.net>, linux-kernel@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH 0/2] doc: add a couple fixups for IIO ABI files
+Message-ID: <20210526175908.42db03a0@jic23-huawei>
+In-Reply-To: <cover.1621944866.git.mchehab+huawei@kernel.org>
+References: <cover.1621944866.git.mchehab+huawei@kernel.org>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -36,91 +34,35 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 23 May 2021 19:00:56 +0200
-Hans de Goede <hdegoede@redhat.com> wrote:
+On Tue, 25 May 2021 14:23:51 +0200
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
 
-> On machines with dual accelerometers described in a single ACPI fwnode,
-> the bmc150_accel_probe() instantiates a second i2c-client for the second
-> accelerometer.
+> Patch 1 was already submitted as patch 10/10 on this series:
+> 	https://lore.kernel.org/linux-doc/87wnrtnpko.fsf@meer.lwn.net/
 > 
-> A pointer to this manually instantiated second i2c-client is stored
-> inside the iio_dev's private-data through bmc150_set_second_device(),
-> so that the i2c-client can be unregistered from bmc150_accel_remove().
+> However, it generated a new warning, due to a separate issue.
 > 
-> Before this commit bmc150_set_second_device() took only 1 argument so it
-> would store the pointer in private-data of the iio_dev belonging to the
-> manually instantiated i2c-client, leading to the bmc150_accel_remove()
-> call for the second_dev trying to unregister *itself* while it was
-> being removed, leading to a deadlock and rmmod hanging.
+> So, resend it together with a warning fix patch.
 > 
-> Change bmc150_set_second_device() to take 2 arguments: 1. The i2c-client
-> which is instantiating the second i2c-client for the 2nd accelerometer and
-> 2. The second-device pointer itself (which also is an i2c-client).
-> 
-> This will store the second_device pointer in the private data of the
-> iio_dev belonging to the (ACPI instantiated) i2c-client for the first
-> accelerometer and will make bmc150_accel_remove() unregister the
-> second_device i2c-client when called for the first client,
-> avoiding the deadlock.
-> 
-> Fixes: 5bfb3a4bd8f6 ("iio: accel: bmc150: Check for a second ACPI device for BOSC0200")
-> Cc: Jeremy Cline <jeremy@jcline.org>
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Patches 1 and 2 applied to the fixes-togreg branch of iio.git and marked for stable.
-The rest will have to wait for now.
+> As these patches are independent from the other ones, I guess it
+> can either be applied via IIO or via docs tree, whatever works
+> best for the doc and IIO maintainers.
+> So, I should leave such decision to Jonathan & Jonathan ;-)
 
-Thanks,
+Either works for me, but on basis I got here first.
 
-Jonathan
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-> ---
->  drivers/iio/accel/bmc150-accel-core.c | 4 ++--
->  drivers/iio/accel/bmc150-accel-i2c.c  | 2 +-
->  drivers/iio/accel/bmc150-accel.h      | 2 +-
->  3 files changed, 4 insertions(+), 4 deletions(-)
+Jon, if you'd prefer I picked these up, then let me know.
+
+Thanks!
+
 > 
-> diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
-> index 3a3f67930165..8ff358c37a81 100644
-> --- a/drivers/iio/accel/bmc150-accel-core.c
-> +++ b/drivers/iio/accel/bmc150-accel-core.c
-> @@ -1815,11 +1815,11 @@ struct i2c_client *bmc150_get_second_device(struct i2c_client *client)
->  }
->  EXPORT_SYMBOL_GPL(bmc150_get_second_device);
->  
-> -void bmc150_set_second_device(struct i2c_client *client)
-> +void bmc150_set_second_device(struct i2c_client *client, struct i2c_client *second_dev)
->  {
->  	struct bmc150_accel_data *data = iio_priv(i2c_get_clientdata(client));
->  
-> -	data->second_device = client;
-> +	data->second_device = second_dev;
->  }
->  EXPORT_SYMBOL_GPL(bmc150_set_second_device);
->  
-> diff --git a/drivers/iio/accel/bmc150-accel-i2c.c b/drivers/iio/accel/bmc150-accel-i2c.c
-> index 69f709319484..2afaae0294ee 100644
-> --- a/drivers/iio/accel/bmc150-accel-i2c.c
-> +++ b/drivers/iio/accel/bmc150-accel-i2c.c
-> @@ -70,7 +70,7 @@ static int bmc150_accel_probe(struct i2c_client *client,
->  
->  		second_dev = i2c_acpi_new_device(&client->dev, 1, &board_info);
->  		if (!IS_ERR(second_dev))
-> -			bmc150_set_second_device(second_dev);
-> +			bmc150_set_second_device(client, second_dev);
->  	}
->  #endif
->  
-> diff --git a/drivers/iio/accel/bmc150-accel.h b/drivers/iio/accel/bmc150-accel.h
-> index 6024f15b9700..e30c1698f6fb 100644
-> --- a/drivers/iio/accel/bmc150-accel.h
-> +++ b/drivers/iio/accel/bmc150-accel.h
-> @@ -18,7 +18,7 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
->  			    const char *name, bool block_supported);
->  int bmc150_accel_core_remove(struct device *dev);
->  struct i2c_client *bmc150_get_second_device(struct i2c_client *second_device);
-> -void bmc150_set_second_device(struct i2c_client *second_device);
-> +void bmc150_set_second_device(struct i2c_client *client, struct i2c_client *second_dev);
->  extern const struct dev_pm_ops bmc150_accel_pm_ops;
->  extern const struct regmap_config bmc150_regmap_conf;
->  
+> Mauro Carvalho Chehab (2):
+>   iio: ABI: sysfs-bus-iio: fix a typo
+>   iio: ABI: sysfs-bus-iio: avoid a warning when doc is built
+> 
+>  Documentation/ABI/testing/sysfs-bus-iio | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
 

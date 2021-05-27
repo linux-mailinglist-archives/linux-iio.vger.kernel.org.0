@@ -2,73 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C5E1D39337F
-	for <lists+linux-iio@lfdr.de>; Thu, 27 May 2021 18:17:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B61E393381
+	for <lists+linux-iio@lfdr.de>; Thu, 27 May 2021 18:17:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236325AbhE0QSM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 27 May 2021 12:18:12 -0400
-Received: from ms.lwn.net ([45.79.88.28]:48300 "EHLO ms.lwn.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236119AbhE0QRw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 27 May 2021 12:17:52 -0400
-X-Greylist: delayed 423 seconds by postgrey-1.27 at vger.kernel.org; Thu, 27 May 2021 12:17:52 EDT
-Received: from localhost (unknown [IPv6:2601:281:8300:104d::5f6])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ms.lwn.net (Postfix) with ESMTPSA id C28A02B7;
-        Thu, 27 May 2021 16:09:14 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net C28A02B7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-        t=1622131754; bh=SHD3f2phNx3RQy0BeoJkPi5F8ovNBRDQqpw2shszU+c=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=nW/vDELVdwjFjxZ7Ho+auafF7LPov1jpZI4DERbqsJkSwLGUxF3paV8KaJQhxr2Ef
-         I2Zev7p1O7YnJgc6NtZ41RFYCKRpjjUr+jSK8Ot5geMd0xptK+owkq0OKzWqSNIrjn
-         4Mdt6pSQEi6rXqxE33rD/+xjuoj255pp+XMVJAJtHBbfMeSbWMLoaYQO5AxRyOQumk
-         UesCVTzq4DQBdEo+x8SN30IY9TqIh8BNW4VnTPu2Od9rDlI20jYn4dV5p+eRlscVfP
-         HL9/1yXbGifkclso2Ssbzutg+uVnjEhrgtZffTRpn3XsJgKaAwLsZrzo9cj6SToyLd
-         LJO/EzoBVbciw==
-From:   Jonathan Corbet <corbet@lwn.net>
+        id S236352AbhE0QTI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 27 May 2021 12:19:08 -0400
+Received: from smtprelay0117.hostedemail.com ([216.40.44.117]:36432 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S235283AbhE0QTE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 May 2021 12:19:04 -0400
+Received: from omf14.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay05.hostedemail.com (Postfix) with ESMTP id 7B4A21812870E;
+        Thu, 27 May 2021 16:17:28 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf14.hostedemail.com (Postfix) with ESMTPA id 840D8268E46;
+        Thu, 27 May 2021 16:17:26 +0000 (UTC)
+Message-ID: <644a711e4d2639a23bfc50dffa180ad184a4acb1.camel@perches.com>
+Subject: Re: [PATCH] iio: si1133: fix format string warnings
+From:   Joe Perches <joe@perches.com>
 To:     Jonathan Cameron <jic23@kernel.org>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH 0/2] doc: add a couple fixups for IIO ABI files
-In-Reply-To: <20210526175908.42db03a0@jic23-huawei>
-References: <cover.1621944866.git.mchehab+huawei@kernel.org>
- <20210526175908.42db03a0@jic23-huawei>
-Date:   Thu, 27 May 2021 10:09:14 -0600
-Message-ID: <87zgwg2m6t.fsf@meer.lwn.net>
+        Nathan Chancellor <nathan@kernel.org>
+Cc:     Arnd Bergmann <arnd@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Maxime =?ISO-8859-1?Q?Roussin-B=E9langer?= 
+        <maxime.roussinbelanger@gmail.com>,
+        Jean-Francois Dagenais <jeff.dagenais@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        clang-built-linux@googlegroups.com
+Date:   Thu, 27 May 2021 09:17:24 -0700
+In-Reply-To: <20210516103628.2cf899a0@jic23-huawei>
+References: <20210514135927.2926482-1-arnd@kernel.org>
+         <7afc367b-8103-9d48-1bfe-d505d86553b9@kernel.org>
+         <20210516103628.2cf899a0@jic23-huawei>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.38.1-1 
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.39
+X-Stat-Signature: qdkk4frfin6s4b3oqc9zzfiayxtbnk1i
+X-Rspamd-Server: rspamout02
+X-Rspamd-Queue-Id: 840D8268E46
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX1+ozl0XL3trtk2YILrXGbz44hU+4X9/M6Q=
+X-HE-Tag: 1622132246-824994
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Jonathan Cameron <jic23@kernel.org> writes:
+On Sun, 2021-05-16 at 10:36 +0100, Jonathan Cameron wrote:
+> On Fri, 14 May 2021 10:45:02 -0700
+> Nathan Chancellor <nathan@kernel.org> wrote:
+> > On 5/14/2021 6:59 AM, Arnd Bergmann wrote:
+> > > From: Arnd Bergmann <arnd@arndb.de>
+> > > 
+> > > clang complains about multiple instances of printing an integer
+> > > using the %hhx format string:
+> > > 
+> > > drivers/iio/light/si1133.c:982:4: error: format specifies type 'unsigned char' but the argument has type 'unsigned int' [-Werror,-Wformat]
+> > >                   part_id, rev_id, mfr_id);
+> > >                   ^~~~~~~
+> > > 
+> > > Print them as a normal integer instead, leaving the "#02"
+> > > length modifier.
+[]
+> > > diff --git a/drivers/iio/light/si1133.c b/drivers/iio/light/si1133.c
+[]
+> > > @@ -978,11 +978,11 @@ static int si1133_validate_ids(struct iio_dev *iio_dev)
+> > >   		return err;
+> > >   
+> > > 
+> > >   	dev_info(&iio_dev->dev,
+> > > -		 "Device ID part %#02hhx rev %#02hhx mfr %#02hhx\n",
+> > > +		 "Device ID part %#02x rev %#02x mfr %#02x\n",
+> > >   		 part_id, rev_id, mfr_id);
+> > >   	if (part_id != SI1133_PART_ID) {
+> > >   		dev_err(&iio_dev->dev,
+> > > -			"Part ID mismatch got %#02hhx, expected %#02x\n",
+> > > +			"Part ID mismatch got %#02x, expected %#02x\n",
 
-> On Tue, 25 May 2021 14:23:51 +0200
-> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
->
->> Patch 1 was already submitted as patch 10/10 on this series:
->> 	https://lore.kernel.org/linux-doc/87wnrtnpko.fsf@meer.lwn.net/
->> 
->> However, it generated a new warning, due to a separate issue.
->> 
->> So, resend it together with a warning fix patch.
->> 
->> As these patches are independent from the other ones, I guess it
->> can either be applied via IIO or via docs tree, whatever works
->> best for the doc and IIO maintainers.
->> So, I should leave such decision to Jonathan & Jonathan ;-)
->
-> Either works for me, but on basis I got here first.
->
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> Jon, if you'd prefer I picked these up, then let me know.
+which is almost certainly wrong.
+the length specification includes the # which is already 2 bytes.
 
-I've applied them, thanks; I took the liberty of fixing the spelling of
-"specify" in the second one :)
+Likely these should be 0x%02x
 
-jon
+> > >   			part_id, SI1133_PART_ID);
+
+

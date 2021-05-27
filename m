@@ -2,110 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 81808392A17
-	for <lists+linux-iio@lfdr.de>; Thu, 27 May 2021 10:50:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 771F7392A2D
+	for <lists+linux-iio@lfdr.de>; Thu, 27 May 2021 11:02:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235554AbhE0Iw3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 27 May 2021 04:52:29 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:3095 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235553AbhE0IwV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 May 2021 04:52:21 -0400
-Received: from fraeml706-chm.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4FrLsJ5wbCz6S1N3;
-        Thu, 27 May 2021 16:41:56 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml706-chm.china.huawei.com (10.206.15.55) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Thu, 27 May 2021 10:50:47 +0200
-Received: from localhost (10.52.126.22) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2176.2; Thu, 27 May
- 2021 09:50:47 +0100
-Date:   Thu, 27 May 2021 09:48:56 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     <Eugen.Hristev@microchip.com>
-CC:     <jic23@kernel.org>, <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 01/11] iio: adc: at91-sama5d2: Fix buffer alignment in
- iio_push_to_buffers_with_timestamp()
-Message-ID: <20210527094856.00003d70@Huawei.com>
-In-Reply-To: <0384e41b-a995-d9aa-c077-b71917eca45c@microchip.com>
-References: <20210501171352.512953-1-jic23@kernel.org>
-        <20210501171352.512953-2-jic23@kernel.org>
-        <0384e41b-a995-d9aa-c077-b71917eca45c@microchip.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
+        id S235621AbhE0JEV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 27 May 2021 05:04:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58158 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235392AbhE0JEV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 May 2021 05:04:21 -0400
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8A4BC061574
+        for <linux-iio@vger.kernel.org>; Thu, 27 May 2021 02:02:47 -0700 (PDT)
+Received: by mail-pf1-x42d.google.com with SMTP id y202so77692pfc.6
+        for <linux-iio@vger.kernel.org>; Thu, 27 May 2021 02:02:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Lg5mjycYP/5scMLoo/p3Ae/uXE06nE41QzGpsxXvYW4=;
+        b=EuS5KbT6JOKDxcWe55Eadh50Cc3fU4NkRzbJREOBvFMrxAptRkHmbkuBDtC60sHv2p
+         QphFPkQ4oA52wQc8LpXTzln5b3Fkl7NoRklFthT6UrtEP4nWsfB0FJkPVG6XC/ujSIhQ
+         gfn7gGkJTA7ZkaZzjvhwzon2YMnFDA1vS454VqkX4L1WL0gn8CUWkVHl31Swzs1dGAF6
+         h1wJ57CQKIwMwb1ImZv+8ra6WqjCfsTenzABYHNm4huzFL2pNQzvat4LLkd2aiCSMavX
+         Pru+mnkLQllRSvlFVO2mLSZv8zEd9fVrZ1h/7J5Ur1mDkytqRc+fadRdx0aL5e9wUPs+
+         OkfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Lg5mjycYP/5scMLoo/p3Ae/uXE06nE41QzGpsxXvYW4=;
+        b=aXLpahm7+CwmhiGd9P36ZTE7Hd+vcmfR36djGJ4uvmsWO+MxgUwhnF7Kp3sgcxpbYw
+         ti0DDSWsOlbwrQ9q+8v2VkQvYQqNQaQujNI0qtDOk3DH8j8nhA1LJpZhotbXX3Xkflha
+         epB86+L42bjziHIwny/wWCyGNwe4YpeOymbXuHG4KycuRy/UgSvtsLU5jQzfx2x2lh3v
+         2NQkWS3Fs6q22LtkiouABKlwaCqGoQC09FcGAElJKHD6i81Q3tVLaoPOWoXquh0T7t8S
+         XIz8FE3YQFkL5znvCpLvyiq6+uom9mh0rMxPO4HM+rBJlptVUOuYrMWn25/5PWLUB3hk
+         CuMQ==
+X-Gm-Message-State: AOAM531uKRke1YP50ThDZgDmRgfOt1Ywom+OAWLwpOFOsza4D7hr0Awc
+        XaFC52CmfoCSSyQVnxzwCnELiK+1V4eXUdXFu4U=
+X-Google-Smtp-Source: ABdhPJyIiCMLk+yTzallS7vxcBZZtFp5Dsh+4KvQuqMPhDwmo5qj4ETiMfF/JaaQKJVHjBYJc/ZKYas01mVWgQLO2D8=
+X-Received: by 2002:a63:5158:: with SMTP id r24mr2735561pgl.41.1622106167262;
+ Thu, 27 May 2021 02:02:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.126.22]
-X-ClientProxiedBy: lhreml706-chm.china.huawei.com (10.201.108.55) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+References: <08a77a5c-9399-e615-f2df-3251756ed890@freedom.nl>
+In-Reply-To: <08a77a5c-9399-e615-f2df-3251756ed890@freedom.nl>
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+Date:   Thu, 27 May 2021 12:02:35 +0300
+Message-ID: <CA+U=Dsq23-y7OBuc6+YCVwpUARNO-PBCDh4Mnaqpe51k=M8Dtw@mail.gmail.com>
+Subject: Re: active_scan_mask
+To:     Henk <iio-developer@freedom.nl>
+Cc:     linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 26 May 2021 17:23:11 +0000
-<Eugen.Hristev@microchip.com> wrote:
+On Wed, May 26, 2021 at 11:18 PM Henk <iio-developer@freedom.nl> wrote:
+>
+> Dear all,
+>
+> I created a custom IIO device in FPGA which in fact contains a bunch of
+> ADC channels which I can acquire and stream to disk. I use analog
+> devices' libiio and specifically their iio_readdev application together
+> with my custom FPGA design and custom iio kernel driver.
+>
+> Question: what mechanism is updating the indio_dev->active_scan_mask field.
 
-> On 5/1/21 8:13 PM, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > To make code more readable, use a structure to express the channel
-> > layout and ensure the timestamp is 8 byte aligned.
-> > 
-> > Found during an audit of all calls of this function.
-> > 
-> > Fixes: 5e1a1da0f8c9 ("iio: adc: at91-sama5d2_adc: add hw trigger and buffer support")
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Cc: Eugen Hristev <eugen.hristev@microchip.com>
-> > ---
-> >   drivers/iio/adc/at91-sama5d2_adc.c | 3 ++-
-> >   1 file changed, 2 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-> > index a7826f097b95..d356b515df09 100644
-> > --- a/drivers/iio/adc/at91-sama5d2_adc.c
-> > +++ b/drivers/iio/adc/at91-sama5d2_adc.c
-> > @@ -403,7 +403,8 @@ struct at91_adc_state {
-> >          struct at91_adc_dma             dma_st;
-> >          struct at91_adc_touch           touch_st;
-> >          struct iio_dev                  *indio_dev;
-> > -       u16                             buffer[AT91_BUFFER_MAX_HWORDS];
-> > +       /* Ensure naturally aligned timestamp */
-> > +       u16                             buffer[AT91_BUFFER_MAX_HWORDS] __aligned(8);  
-> 
-> Hello Jonathan,
-> 
-> I am preparing to change this buffer to a dynamically allocated 
-> buffer... because we want to support several versions of the ADC with 
-> this driver, having an arbitrary number of channels..
-> 
-> You think it's possible to have this alignment when I move to a 
-> devm_kzalloc call ?
+That should be happening in drivers/iio/industrialio-buffer.c in the
+iio_enable_buffers() function.
+The channels get enabled by writing via sysfs in
+/sys/bus/iiio/devices/iio:deviceX/scan_elements  in the _en files.
 
-Hmm. You should be fine, but looking through the docs, guaranteed alignment for
-devm_kmalloc is unsigned long long.  Sounds worryingly vague, but c99 (which kernel
-uses) guarantees at least 64 bits so that's fine.
+libiio typically does this manipulation of files for you
 
-However, unless your maximum size is very large, I'd be cynical and just leave it
-where it is.  Chances are it won't actually make any difference to the real amount
-of memory allocated for at91_adc_state and it'll make your code simpler.
+>
+> With the iio_readdev application I can add command arguments where I can
+> activate the channels that I want to retrieve (voltage0 voltage1
+> ...etc). When I use 8 channels as command argument in iio_readdev then
+> the active_scan_mask seems to be updated with the enabled channels. When
+> adding even more channels the field is extended. However, when trying to
+> acquire new data and dropping some of the channel arguments then the
+> active_scan_mask field does not seem to revert back to the less enabled
+> (or requested) channels.
+>
+> So.. I am searching which mechanisms updates that field with the aim to
+> fix that bug.
 
-No one minds a buffer being too big :)
+so, are you using an Analog Devices kernel?
+or is this a vanilla mainline kernel? and which version?
+ADI has some custom patches that deal with this some scanmask manipulation;
+is this being reproduced purely with libiio? and which version of libiio?
+steps to reproduce?
 
-Jonathan
+i'm still not sure if the issue is in kernel or in libiio;
 
-> 
-> Thanks,
-> Eugen
-> 
-> >          /*
-> >           * lock to prevent concurrent 'single conversion' requests through
-> >           * sysfs.
-> > --
-> > 2.31.1
-> >   
-> 
-
+>
+> Any help is appreciated.
+>
+> Kind regards
+>
+> Henk
+>

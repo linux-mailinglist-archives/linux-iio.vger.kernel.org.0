@@ -2,91 +2,106 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B61E393381
-	for <lists+linux-iio@lfdr.de>; Thu, 27 May 2021 18:17:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 507A7393717
+	for <lists+linux-iio@lfdr.de>; Thu, 27 May 2021 22:23:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236352AbhE0QTI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 27 May 2021 12:19:08 -0400
-Received: from smtprelay0117.hostedemail.com ([216.40.44.117]:36432 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S235283AbhE0QTE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 May 2021 12:19:04 -0400
-Received: from omf14.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay05.hostedemail.com (Postfix) with ESMTP id 7B4A21812870E;
-        Thu, 27 May 2021 16:17:28 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf14.hostedemail.com (Postfix) with ESMTPA id 840D8268E46;
-        Thu, 27 May 2021 16:17:26 +0000 (UTC)
-Message-ID: <644a711e4d2639a23bfc50dffa180ad184a4acb1.camel@perches.com>
-Subject: Re: [PATCH] iio: si1133: fix format string warnings
-From:   Joe Perches <joe@perches.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>
-Cc:     Arnd Bergmann <arnd@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Maxime =?ISO-8859-1?Q?Roussin-B=E9langer?= 
-        <maxime.roussinbelanger@gmail.com>,
-        Jean-Francois Dagenais <jeff.dagenais@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        clang-built-linux@googlegroups.com
-Date:   Thu, 27 May 2021 09:17:24 -0700
-In-Reply-To: <20210516103628.2cf899a0@jic23-huawei>
-References: <20210514135927.2926482-1-arnd@kernel.org>
-         <7afc367b-8103-9d48-1bfe-d505d86553b9@kernel.org>
-         <20210516103628.2cf899a0@jic23-huawei>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.38.1-1 
+        id S235957AbhE0UZU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 27 May 2021 16:25:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41352 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236501AbhE0UZL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 27 May 2021 16:25:11 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8A30E613CC;
+        Thu, 27 May 2021 20:23:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1622147017;
+        bh=cb3jt8nhfjvJuxgiaw2svdE299MPdHIy5rcv+d11iYI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=GiHznEruEg9ySCtBN/2heqSWqyYtvsyYPczx075KqbNFwXEEotDtZRidcu+niHbXI
+         dIt2VqNals1oUhBFt6F9CWC96UcOHGeAGxsZgQWW0YZCXNaNfosV6gPks4ccRVAmcx
+         pBWxWrHWwKuQnnEA1FnHCKZfRF2oVcoOYzJ65uMP8ac66daaE5ektcGQyRqS8h81Dh
+         n2IKvrya9ltOSviRvGtANzAShJVqpjQAWxlt7uU/zOSm+IEWrBlIlcfSlm7o+KIXwB
+         KBCJJ8YMA8mqHxBv4ovxzv4AGai5a9f5Vfs+KZ/WyWpS0wtdCYTcymBGsfVqowJDk0
+         43+tbp3+P/19w==
+Date:   Thu, 27 May 2021 22:23:34 +0200
+From:   Wolfram Sang <wsa@kernel.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-i2c@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Tom Rix <trix@redhat.com>, Sean Nyekjaer <sean@geanix.com>
+Subject: Re: [PATCH] i2c: core: Add stub for i2c_verify_client() if
+ !CONFIG_I2C
+Message-ID: <YK//xmqZCZRT1VVD@kunai>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        linux-i2c@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Tom Rix <trix@redhat.com>, Sean Nyekjaer <sean@geanix.com>
+References: <20210526174436.2208277-1-jic23@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.39
-X-Stat-Signature: qdkk4frfin6s4b3oqc9zzfiayxtbnk1i
-X-Rspamd-Server: rspamout02
-X-Rspamd-Queue-Id: 840D8268E46
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX1+ozl0XL3trtk2YILrXGbz44hU+4X9/M6Q=
-X-HE-Tag: 1622132246-824994
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="FvCZ/2o9yGuPX0OU"
+Content-Disposition: inline
+In-Reply-To: <20210526174436.2208277-1-jic23@kernel.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 2021-05-16 at 10:36 +0100, Jonathan Cameron wrote:
-> On Fri, 14 May 2021 10:45:02 -0700
-> Nathan Chancellor <nathan@kernel.org> wrote:
-> > On 5/14/2021 6:59 AM, Arnd Bergmann wrote:
-> > > From: Arnd Bergmann <arnd@arndb.de>
-> > > 
-> > > clang complains about multiple instances of printing an integer
-> > > using the %hhx format string:
-> > > 
-> > > drivers/iio/light/si1133.c:982:4: error: format specifies type 'unsigned char' but the argument has type 'unsigned int' [-Werror,-Wformat]
-> > >                   part_id, rev_id, mfr_id);
-> > >                   ^~~~~~~
-> > > 
-> > > Print them as a normal integer instead, leaving the "#02"
-> > > length modifier.
-[]
-> > > diff --git a/drivers/iio/light/si1133.c b/drivers/iio/light/si1133.c
-[]
-> > > @@ -978,11 +978,11 @@ static int si1133_validate_ids(struct iio_dev *iio_dev)
-> > >   		return err;
-> > >   
-> > > 
-> > >   	dev_info(&iio_dev->dev,
-> > > -		 "Device ID part %#02hhx rev %#02hhx mfr %#02hhx\n",
-> > > +		 "Device ID part %#02x rev %#02x mfr %#02x\n",
-> > >   		 part_id, rev_id, mfr_id);
-> > >   	if (part_id != SI1133_PART_ID) {
-> > >   		dev_err(&iio_dev->dev,
-> > > -			"Part ID mismatch got %#02hhx, expected %#02x\n",
-> > > +			"Part ID mismatch got %#02x, expected %#02x\n",
 
-which is almost certainly wrong.
-the length specification includes the # which is already 2 bytes.
+--FvCZ/2o9yGuPX0OU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Likely these should be 0x%02x
+Hi Jonathan,
 
-> > >   			part_id, SI1133_PART_ID);
+> Fixes: 68068fad0e1c ("iio: accel: fxls8962af: fix errata bug E3 - I2C bur=
+st reads")
+> Cc: Sean Nyekjaer <sean@geanix.com>
+> Cc: Wolfram Sang <wsa@kernel.org>
+> ---
+>=20
+> Note the broken patch is only in the IIO/togreg branch at the moment.
+
+Then the fixes tag should be removed. It is only for upstream commits.
+It means we will have a merge dependency the next cycle, so I will send
+my pull request early.
+
+>=20
+>  include/linux/i2c.h | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>=20
+> diff --git a/include/linux/i2c.h b/include/linux/i2c.h
+> index e8f2ac8c9c3d..aa52738b9c46 100644
+> --- a/include/linux/i2c.h
+> +++ b/include/linux/i2c.h
+> @@ -343,7 +343,14 @@ struct i2c_client {
+>  };
+>  #define to_i2c_client(d) container_of(d, struct i2c_client, dev)
+> =20
+> +#if IS_ENABLED(CONFIG_I2C)
+
+Hmm, can't we move this into an already existing IS_ENABLED block?
 
 
+--FvCZ/2o9yGuPX0OU
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmCv/8YACgkQFA3kzBSg
+KbZRyQ//cfgNMHzWq42WIf+cvU/nm0jhy3nvc4stw+mnFUf3rbcCQlXptlv8Nyus
+0KD63wFONyhXAHjmxQ8DxSInAeNNn7QajATAsjjHPg3QQAalIQIXvpOTtFZaa+25
+OTARmc+l0iFhoY4uu1HBk6J8EzEhFxlgYIZXevU2usF0kkdz4xvxuZzke93hqERN
+Dl6BrCrYnkzU5hzsBjclBhZiz3yaYCfGzQlemLCMpq/hWJmD5jeYkXA6mXdiwRgX
+EgT7A5MXr5LCdoTkw1faMQ3uuWOtR0NGszIt5vxqc7u9GtsLrxY6WcEiXUI2Qf1c
+3Fzp/jJwUZoOQiOMQF3RmEF7IfQgkQquOPuGcSr2STwGiS/ktKJriMccOZSDxJ8Q
+/FZdm7MmKwNuuHcisujykxRC/OkoOmSsHZ3Qzv78HnyehG17jOo9GgzIVt3Omrwz
+rOXzG7xMQtlafsJ1bURD5p4kDVyysF3Ctj3JtjYlIxHD0Q6Y2v6xAWzf/n719zYA
+M1/MkhxKduIDmxy09RV6M3hmN9qiD8Yu0iOEAv6+C0GohMhEYOZRuuG2T0NzkJCQ
+Nlm1RbBWeKSL3oUGJxAAYzqiWXwM1f3r8W/bQxW1yaxLKyhnVeOS0m6neRDLzgKg
+TD82QNyISZDBx5vSGhtZ/HoaRUNzHzjxN7xMm/0c+KrikxBPcWw=
+=JZs8
+-----END PGP SIGNATURE-----
+
+--FvCZ/2o9yGuPX0OU--

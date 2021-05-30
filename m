@@ -2,59 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C75FA394ED5
-	for <lists+linux-iio@lfdr.de>; Sun, 30 May 2021 02:59:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD9A9394ED7
+	for <lists+linux-iio@lfdr.de>; Sun, 30 May 2021 02:59:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229814AbhE3BBX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 29 May 2021 21:01:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60120 "EHLO
+        id S229763AbhE3BBZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 29 May 2021 21:01:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229751AbhE3BBS (ORCPT
+        with ESMTP id S229711AbhE3BBS (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Sat, 29 May 2021 21:01:18 -0400
-Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8E13C061342;
-        Sat, 29 May 2021 17:59:38 -0700 (PDT)
-Received: by mail-qt1-x835.google.com with SMTP id a15so5592695qta.0;
-        Sat, 29 May 2021 17:59:38 -0700 (PDT)
+Received: from mail-qt1-x836.google.com (mail-qt1-x836.google.com [IPv6:2607:f8b0:4864:20::836])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4D1FC061349;
+        Sat, 29 May 2021 17:59:39 -0700 (PDT)
+Received: by mail-qt1-x836.google.com with SMTP id c15so5551032qte.6;
+        Sat, 29 May 2021 17:59:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=eM/AgXZ1tPcK96JeOBgvMwuUfYGi+k7+FBTbEFk9D58=;
-        b=lore6e0w8lcgK/ddDTsUw/KlFvUGRtmIVDQUbxzSnSzwPcBHMzOEGMZ8E5Qx+YqHZu
-         4BNGIbQkFCAZ/Gvq+j7q8KYsxhtGa2MlqVMudmZfgDyaSkHG1e65+4e10SUgt899xwut
-         YUof2vQ0PwJrmcN5lLs1RlXQ6V0i/3XMf4jMLEbjHRpL6gALnKtiALBKhjx6aqXWW6nw
-         NdfbxbYQp8xUyJZG2qYYiBNUUolNAPh09RR6dlNrNOLahrE4XGV1Ya/DNvlRTybXAWR7
-         hmFmdRGRZ2b/jJVRo3VIqPpBAQAQBAnnVOR45EC33KejtM+X2z0JrduBUxc8giLLjPlZ
-         2fjw==
+        bh=tKiBv8SqRWswr8z7Bsl/7/WuL9D2vpQOGyxVKImo6UE=;
+        b=YD4MojyU5VsvDpuAE927XF5te4GbhcoFFrPKaT7XLIQ+jgV2pu5Stn4oRNMs9Folpl
+         D8Ci35CJBYSGwj5Z3FUxzlEfQe0jKAG7+3fLsZiD4xoUvjY+gi4mZfh8DSwKx+C04WlH
+         ZhGcRMJkOpGQ55O48xFaLJbaP0BciQ1xDAMufHWJLmdarKq2j+dKSx+QWjs5Dtd1X+li
+         wkdEMjveCtrk2X6OXbjcBQHzYqI3mRNQNtzLkn4WhHfc/6DSJHYUelmOiI4DtpyOjsuH
+         kw4uXOwP+fgmc6kpw+Put3FYqO6VryQPD5syJY82QBsuyBcqxx/dpzTtI6G9iMmqamQf
+         cdDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=eM/AgXZ1tPcK96JeOBgvMwuUfYGi+k7+FBTbEFk9D58=;
-        b=XLAZ448bu4MkZagBM9kwsa6D3jOUGYgvM4OaGTHblRXOF5nW3Yiq8lNmC2zD0vbWED
-         dZ1RbTm3UkZcsD/ABv4yYfKxu7gs1W8nKw+sNY09DXpVOFT7mCfmi5sWv0IAFwjNhWhw
-         4W5J+cucbbPNKjeS9m2HUnTM37YKpeALNuwyr5UJzHgGUsFsa6wuAnIcR/lYv7l0hczd
-         /B9phhr0oyOTGsbQJ6qAfeFecbXUmsOhdWgpyinYrI3dAOCSpdfEohnemea1aUjGt4gt
-         7UAzI/oXgF6Zt2i4lJMGTzPm17qLyE+hLRwxPrscCvsER54wHu6NFs/TrHWO/Zr28HwS
-         vC+g==
-X-Gm-Message-State: AOAM530AoghnLF/JegLKWJ3hLIJOh+jrgDV7asQREzkIXDGLgAI28Ziv
-        LtkJ3uwLlnW7m39DGjBLR0s=
-X-Google-Smtp-Source: ABdhPJzH5XlOvgyiyEsIZqThTCzzZPHjjp8y/2r2CJk1MmLYPxCBXh6PKen/90roKrOR9vU2KpS+Eg==
-X-Received: by 2002:a05:622a:449:: with SMTP id o9mr9643408qtx.145.1622336377945;
-        Sat, 29 May 2021 17:59:37 -0700 (PDT)
+        bh=tKiBv8SqRWswr8z7Bsl/7/WuL9D2vpQOGyxVKImo6UE=;
+        b=qqdiLqkWj1GznetlnMT8bAtN0XtxkNnYsMxsS+FNJlj99WfXuxSYJXF0b+Ok9pbS/9
+         Xhj2A1X3GNXEbg10ip6zDiaPyvdwYwhLtTvGHaNDa3FjsM4rAuSKcO730TkuXdjnqLjM
+         Sw72OUqD+L2Ow4qf/7WEYQG/qsMsMhZ03mZNEFcTT6XyqhqPk3Nageq0uQU7eQ9xfxMC
+         zKMixj8lJqWRfE1QOSaL6lGKOjbi2SuAT+zt+13+p8S7542P3yy4PYrAfKCZiqYFbCBH
+         T1upaE2tN0T9PzvC3WwRWVGyWB3MDXDEHRDswMPODjVleTcnwMjJgoiVNQCS/ExoAvZX
+         A1iw==
+X-Gm-Message-State: AOAM533vnyOx7ZdryQbFgJV5meincBuBj9vbLRq2/bhQDPDeTLJhy2sL
+        +f+6PqVQoKsZeKoiygJv0zY=
+X-Google-Smtp-Source: ABdhPJyoKDTAs8PrRuRQCDpoLPMkOr3GOLt6qxRAAEx6R4vsnAgOv91qMLEcUhoiNFxqgBu8vmrj4A==
+X-Received: by 2002:ac8:6699:: with SMTP id d25mr9502077qtp.326.1622336378921;
+        Sat, 29 May 2021 17:59:38 -0700 (PDT)
 Received: from shaak.xiphos.ca (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
-        by smtp.gmail.com with ESMTPSA id z1sm6382601qki.47.2021.05.29.17.59.37
+        by smtp.gmail.com with ESMTPSA id z1sm6382601qki.47.2021.05.29.17.59.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 May 2021 17:59:37 -0700 (PDT)
+        Sat, 29 May 2021 17:59:38 -0700 (PDT)
 From:   Liam Beguin <liambeguin@gmail.com>
 To:     liambeguin@gmail.com, peda@axentia.se, jic23@kernel.org,
         lars@metafoo.de, pmeerw@pmeerw.net
 Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org, robh+dt@kernel.org
-Subject: [PATCH v1 8/9] dt-bindings: iio: afe: add binding for temperature-sense-current
-Date:   Sat, 29 May 2021 20:59:16 -0400
-Message-Id: <20210530005917.20953-9-liambeguin@gmail.com>
+Subject: [PATCH v1 9/9] dt-bindings: iio: afe: add binding for temperature-sense-amplifier
+Date:   Sat, 29 May 2021 20:59:17 -0400
+Message-Id: <20210530005917.20953-10-liambeguin@gmail.com>
 X-Mailer: git-send-email 2.30.1.489.g328c10930387
 In-Reply-To: <20210530005917.20953-1-liambeguin@gmail.com>
 References: <20210530005917.20953-1-liambeguin@gmail.com>
@@ -67,42 +67,41 @@ X-Mailing-List: linux-iio@vger.kernel.org
 From: Liam Beguin <lvb@xiphos.com>
 
 An ADC is often used to measure other quantities indirectly. This
-binding describe one cases, the measurement of a temperature through
-a current sense amplifier (such as an AD590) and a sense resistor.
+binding describe one cases, the measurement of a temperature through a
+voltage sense amplifier such as the LTC2997.
 
 Signed-off-by: Liam Beguin <lvb@xiphos.com>
 ---
- .../iio/afe/temperature-sense-current.yaml    | 61 +++++++++++++++++++
+ .../iio/afe/temperature-sense-amplifier.yaml  | 55 +++++++++++++++++++
  MAINTAINERS                                   |  1 +
- 2 files changed, 62 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/afe/temperature-sense-current.yaml
+ 2 files changed, 56 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/afe/temperature-sense-amplifier.yaml
 
-diff --git a/Documentation/devicetree/bindings/iio/afe/temperature-sense-current.yaml b/Documentation/devicetree/bindings/iio/afe/temperature-sense-current.yaml
+diff --git a/Documentation/devicetree/bindings/iio/afe/temperature-sense-amplifier.yaml b/Documentation/devicetree/bindings/iio/afe/temperature-sense-amplifier.yaml
 new file mode 100644
-index 000000000000..1bac74486102
+index 000000000000..015413cbffbc
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/afe/temperature-sense-current.yaml
-@@ -0,0 +1,61 @@
++++ b/Documentation/devicetree/bindings/iio/afe/temperature-sense-amplifier.yaml
+@@ -0,0 +1,55 @@
 +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/afe/temperature-sense-current.yaml#
++$id: http://devicetree.org/schemas/iio/afe/temperature-sense-amplifier.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Temperature Sense Current
++title: Temperature Sense Amplifier
 +
 +maintainers:
 +  - Liam Beguin <lvb@xiphos.com>
 +
 +description: |
-+  When an io-channel measures the output voltage for a temperature current
-+  sense amplifier such as the AD950, the interesting measurement is almost
-+  always the corresponding temperature, not the voltage output.
-+  This binding describes such a circuit.
++  When an io-channel measures the output voltage of a temperature IC such as
++  the LTC2997, the interesting measurement is almost always the corresponding
++  temperature, not the voltage output. This binding describes such a circuit.
 +
 +properties:
 +  compatible:
-+    const: temperature-sense-current
++    const: temperature-sense-amplifier
 +
 +  io-channels:
 +    maxItems: 1
@@ -112,12 +111,9 @@ index 000000000000..1bac74486102
 +  '#io-channel-cells':
 +    const: 1
 +
-+  sense-resistor-ohms:
-+    description: The sense resistance.
-+
-+  alpha-micro-amps-per-degree:
++  alpha-micro-volts-per-degree:
 +    description: |
-+      Linear output current gain of the temperature IC.
++      Output voltage gain of the temperature IC.
 +
 +  use-kelvin-scale:
 +    type: boolean
@@ -128,34 +124,32 @@ index 000000000000..1bac74486102
 +required:
 +  - compatible
 +  - io-channels
-+  - sense-resistor-ohms
-+  - alpha-micro-amps-per-degree
++  - alpha-micro-volts-per-degree
 +
 +examples:
 +  - |
-+    ad590: iio-rescale0 {
-+        compatible = "temperature-sense-current";
++    znq_temp: iio-rescale0 {
++        compatible = "temperature-sense-amplifier";
 +        #io-channel-cells = <1>;
-+        io-channels = <&temp_adc 2>;
++        io-channels = <&temp_adc 3>;
 +
-+        sense-resistor-ohms = <8060>;
 +        use-kelvin-scale;
-+        alpha-micro-amps-per-degree = <1>;
++        alpha-micro-volts-per-degree = <4000>;
 +    };
 +
 +...
 diff --git a/MAINTAINERS b/MAINTAINERS
-index a7279af85adb..0eb7fcd94b66 100644
+index 0eb7fcd94b66..f224bd8e6125 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
 @@ -8721,6 +8721,7 @@ L:	linux-iio@vger.kernel.org
  S:	Maintained
  F:	Documentation/devicetree/bindings/iio/afe/current-sense-amplifier.yaml
  F:	Documentation/devicetree/bindings/iio/afe/current-sense-shunt.yaml
-+F:	Documentation/devicetree/bindings/iio/afe/temperature-sense-current.yaml
++F:	Documentation/devicetree/bindings/iio/afe/temperature-sense-amplifier.yaml
+ F:	Documentation/devicetree/bindings/iio/afe/temperature-sense-current.yaml
  F:	Documentation/devicetree/bindings/iio/afe/temperature-sense-rtd.yaml
  F:	Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
- F:	drivers/iio/afe/iio-rescale.c
 -- 
 2.30.1.489.g328c10930387
 

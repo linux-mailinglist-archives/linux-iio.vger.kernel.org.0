@@ -2,59 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BA03394ECB
-	for <lists+linux-iio@lfdr.de>; Sun, 30 May 2021 02:59:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C65A0394ED1
+	for <lists+linux-iio@lfdr.de>; Sun, 30 May 2021 02:59:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229744AbhE3BBR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 29 May 2021 21:01:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60070 "EHLO
+        id S229710AbhE3BBU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 29 May 2021 21:01:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229706AbhE3BBM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 29 May 2021 21:01:12 -0400
-Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D69D6C06174A;
-        Sat, 29 May 2021 17:59:33 -0700 (PDT)
-Received: by mail-qk1-x732.google.com with SMTP id q10so7994211qkc.5;
-        Sat, 29 May 2021 17:59:33 -0700 (PDT)
+        with ESMTP id S229736AbhE3BBQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 29 May 2021 21:01:16 -0400
+Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com [IPv6:2607:f8b0:4864:20::733])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3519C06138A;
+        Sat, 29 May 2021 17:59:36 -0700 (PDT)
+Received: by mail-qk1-x733.google.com with SMTP id j184so8012629qkd.6;
+        Sat, 29 May 2021 17:59:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=QUHjbP246dWqX0f+av17blUVb8XRzL1XnP4Qjksj4tw=;
-        b=TPzH9mySirtZo0UOY3fVTknLDskhUhDUaLa4TopqQbW1PEVbcZwDhghaam3HxNGJpO
-         pSzGytnqE4H47WieKX+Mq0QX+mvi+NZ+JpG2RhSJokNV6xy3g7VC9Mqi5p5Dkj913Akq
-         SXXpO8OWzIZaj6m2xGJ9nAMQwC/m86VgOsugPAojeXt0CfC8hvJ9qqDZzWKWl3o3QJ9U
-         HcEPnb9WTrkJA+YR+Zva7EYe1zhBA7PrnLXGedEHqX7scz/4SZcrRqcGhx8Qn/yapwJE
-         k0dpvLSVugxHF0v51NzevPQQRtBsFwuf0QGGNoqszofw+6Z6VrAwfrp3RvM/eSz5nfxr
-         QNxg==
+        bh=JnqLIa5mgKuFptyC1mSB5xtRSuUDg8keZCubojCgino=;
+        b=oG56CJKepdRVk3v0PioJss3qcfbcczF3d5fGoelHQ/1iyKFD1zjyL31WBNt5KwO3/u
+         +LIBr6rHLrygxTJ3/2uaRH1+qvxI3/8kueceHkR03F8jspX2tv7qoWALPFipZviITkUB
+         Qg7fieio+GTFOy9mjX47axtxFZSpl5qjHLz/61NyUH6jyBd1tLzS02OZx9OTK+lSGJeU
+         YyItC2XhKS8xJuWSuUhmO9hPocGbjeqYDvmN0avBCW0OPbaVM9tgWKss/DHSKxuZvk+n
+         QRJu45+NG9Nj5o0ALck7VYfZoNDKFlufHenbHRSR94NcyfB1+KJ/8rMka46E4NQzKUnq
+         sS6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=QUHjbP246dWqX0f+av17blUVb8XRzL1XnP4Qjksj4tw=;
-        b=jZQOejDKvOdtcm9/VkaxUCoIqlSjsO9dvfcm1a6Ba/k78EJrD6QoyLBZOAr0nHbi5U
-         0FHU4dxvn5s4BLhINkw7Q3hEAlKdFljMv488x4pp2LBu063bnYoImCf+90+pmmtOm8DO
-         TNZWaitbHDZr381WCzu8d/vsmsOELJxReFhggnW+9ZQRdzyh+Exr61nIsQgrsPuPbAX2
-         kUwJq1lZR0uW07ui/+bhbTXSy9UJjRRKOJ4mLnvG0fv79FaE3bUP3x3HIiz0cn81DKox
-         sz9JIdMuTcsiWiPMmLVQFP6WXho3e3jK2sLYAEzZCW8AXHmUfImIBenbG4g93ZkVjX/h
-         uU7A==
-X-Gm-Message-State: AOAM530lmXJh/mOLDHjqYRSXCb7ycesTHIc3TCSYElZXgOoxgXmf0Y4y
-        /jeHbfosep42IzQGL3sAsDw=
-X-Google-Smtp-Source: ABdhPJwg/hQW8qohDDXP3LEPpiBEVLTGEoytjks9ZSIvF4x4FkmIHBTqJ4FC6t/2OsmDe2cLq4OweA==
-X-Received: by 2002:a05:620a:133b:: with SMTP id p27mr10305729qkj.354.1622336373078;
-        Sat, 29 May 2021 17:59:33 -0700 (PDT)
+        bh=JnqLIa5mgKuFptyC1mSB5xtRSuUDg8keZCubojCgino=;
+        b=OrT97QQ6Ad5bjZMDFaqdrrIBeHOEh+cPuex4tkT6xAhUg+Hwr79KEN4xXDqSMD2v0b
+         T/4zTzdlkPxaJox2c1ANAHoUeJQVTr+T5iASwt9fFkN44KFUo2nnWXtC3hRI8u0p0vK6
+         KwmgZre2eabrPAudHOVI+fDwPeoCURxTdKtru5VvQxgGBUQc9O3lc8wK6cBC/lkX207Q
+         n8EuDnmtbzXt6Qsan1fYRuQkPpUrtnA7ofw6lt/SxXu4+GXCqcIXx0JfjYG8mMuG/03U
+         34D2D7FIEYITReoysm6Hbz6KgzPXxJ3iWMCAyZ+l3E/ka0CUux2mqbZnfCHRNobVqISt
+         d80Q==
+X-Gm-Message-State: AOAM532knZK+1vdV9S8zD4mzGcTBoGnKz8fECH+jF6hBM6xuWwet1cif
+        tiCJGSNxtjTT486dHnpzJqs6hHKH1EKmrg==
+X-Google-Smtp-Source: ABdhPJwH/NP0PT2T46ua+79svieDA/IJph0YsCTXUYTw44bpEi7tTFN7JqElyrSLnBBAfEBDggidOQ==
+X-Received: by 2002:a37:8f05:: with SMTP id r5mr5058764qkd.26.1622336374207;
+        Sat, 29 May 2021 17:59:34 -0700 (PDT)
 Received: from shaak.xiphos.ca (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
-        by smtp.gmail.com with ESMTPSA id z1sm6382601qki.47.2021.05.29.17.59.32
+        by smtp.gmail.com with ESMTPSA id z1sm6382601qki.47.2021.05.29.17.59.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 May 2021 17:59:32 -0700 (PDT)
+        Sat, 29 May 2021 17:59:33 -0700 (PDT)
 From:   Liam Beguin <liambeguin@gmail.com>
 To:     liambeguin@gmail.com, peda@axentia.se, jic23@kernel.org,
         lars@metafoo.de, pmeerw@pmeerw.net
 Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org, robh+dt@kernel.org
-Subject: [PATCH v1 5/9] iio: afe: rescale: add support for temperature sensors
-Date:   Sat, 29 May 2021 20:59:13 -0400
-Message-Id: <20210530005917.20953-6-liambeguin@gmail.com>
+Subject: [PATCH v1 6/9] dt-bindings: iio: afe: update MAINTAINERS file
+Date:   Sat, 29 May 2021 20:59:14 -0400
+Message-Id: <20210530005917.20953-7-liambeguin@gmail.com>
 X-Mailer: git-send-email 2.30.1.489.g328c10930387
 In-Reply-To: <20210530005917.20953-1-liambeguin@gmail.com>
 References: <20210530005917.20953-1-liambeguin@gmail.com>
@@ -66,192 +66,31 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Liam Beguin <lvb@xiphos.com>
 
-Add support for various linear temperature sensors.
-
-temperature-sense-rtd is used when the measured temperature is a
-function of the sensor's resistance (like RTD sensors).
-
-temperature-sense-current is used when the measured temperature is a
-function of the sensor's output current (like the AD590)
-
-temperature-sense-amplifier is used when the measured temperature is a
-function of the sensor's voltage (like the LTC2997)
+The IIO Analog Front End devicetree bindings files have been update to
+yaml. Make sure the MAINTAINERS file matches the tree.
 
 Signed-off-by: Liam Beguin <lvb@xiphos.com>
 ---
- drivers/iio/afe/iio-rescale.c | 141 ++++++++++++++++++++++++++++++++++
- 1 file changed, 141 insertions(+)
+ MAINTAINERS | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/afe/iio-rescale.c b/drivers/iio/afe/iio-rescale.c
-index 3bd1f11f21db..eb53d833bf7c 100644
---- a/drivers/iio/afe/iio-rescale.c
-+++ b/drivers/iio/afe/iio-rescale.c
-@@ -222,10 +222,133 @@ static int rescale_voltage_divider_props(struct device *dev,
- 	return 0;
- }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 9450e052f1b1..d3ab0ccc34ab 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -8719,9 +8719,9 @@ IIO UNIT CONVERTER
+ M:	Peter Rosin <peda@axentia.se>
+ L:	linux-iio@vger.kernel.org
+ S:	Maintained
+-F:	Documentation/devicetree/bindings/iio/afe/current-sense-amplifier.txt
+-F:	Documentation/devicetree/bindings/iio/afe/current-sense-shunt.txt
+-F:	Documentation/devicetree/bindings/iio/afe/voltage-divider.txt
++F:	Documentation/devicetree/bindings/iio/afe/current-sense-amplifier.yaml
++F:	Documentation/devicetree/bindings/iio/afe/current-sense-shunt.yaml
++F:	Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
+ F:	drivers/iio/afe/iio-rescale.c
  
-+static int rescale_temp_sense_rtd_props(struct device *dev,
-+					struct rescale *rescale)
-+{
-+	u32 factor;
-+	u32 alpha;
-+	u32 iexc;
-+	u32 tmp;
-+	int ret;
-+	u32 r0;
-+
-+	ret = device_property_read_u32(dev, "excitation-current-microamp",
-+				       &iexc);
-+	if (ret) {
-+		dev_err(dev, "failed to read excitation-current-microamp: %d\n",
-+			ret);
-+		return ret;
-+	}
-+
-+	ret = device_property_read_u32(dev, "alpha-micro-ohms-per-ohm-celsius",
-+				       &alpha);
-+	if (ret) {
-+		dev_err(dev, "failed to read alpha-micro-ohms-per-celsius: %d\n",
-+			ret);
-+		return ret;
-+	}
-+
-+	ret = device_property_read_u32(dev, "r-naught-ohms", &r0);
-+	if (ret) {
-+		dev_err(dev, "failed to read r-naught-ohms: %d\n", ret);
-+		return ret;
-+	}
-+
-+	/*
-+	 * The transfer function:
-+	 *
-+	 *	- V(T) = R(T) * iexc
-+	 *	- R(T) = r0 * (1 + alpha * T)
-+	 *
-+	 *	T = 1 / (alpha * r0 * iexc) * (V - r0 * iexc)
-+	 */
-+	tmp = r0 * iexc * alpha / 1000000;
-+	factor = gcd(tmp, 1000000);
-+	rescale->numerator = 1000000 / factor;
-+	rescale->denominator = tmp / factor;
-+
-+	rescale->offset = -1 * ((r0 * iexc) / 1000);
-+
-+	return 0;
-+}
-+
-+static int rescale_temp_sense_current_props(struct device *dev,
-+					    struct rescale *rescale)
-+{
-+	u32 alpha;
-+	u32 sense;
-+	int ret;
-+
-+	ret = device_property_read_u32(dev, "sense-resistor-ohms", &sense);
-+	if (ret) {
-+		dev_err(dev, "failed to read the sense resistance: %d\n", ret);
-+		return ret;
-+	}
-+
-+	ret = device_property_read_u32(dev, "alpha-micro-amps-per-degree",
-+				       &alpha);
-+	if (ret) {
-+		dev_err(dev, "failed to read alpha-micro-amps-per-degree: %d\n",
-+			ret);
-+		return ret;
-+	}
-+
-+	/*
-+	 * The transfer function:
-+	 *
-+	 *	- V(K) = Rsense * Isense(K)
-+	 *	- K = Isense(K) / alpha
-+	 *	- C = K - 273.15
-+	 *
-+	 *	C = 1 / (Rsense * alpha) * (V - 273.15 * Rsense * alpha)
-+	 */
-+	rescale->numerator = 1000000;
-+	rescale->denominator = alpha * sense;
-+
-+	if (device_property_read_bool(dev, "use-kelvin-scale"))
-+		rescale->offset = -1 * ((27315 * alpha * sense) / 100000);
-+
-+	return 0;
-+}
-+
-+static int rescale_temp_sense_amplifier_props(struct device *dev,
-+					      struct rescale *rescale)
-+{
-+	u32 alpha;
-+	int ret;
-+
-+	ret = device_property_read_u32(dev, "alpha-micro-volts-per-degree",
-+				       &alpha);
-+	if (ret) {
-+		dev_err(dev, "failed to read alpha-micro-volts-per-degree: %d\n",
-+			ret);
-+		return ret;
-+	}
-+
-+	/*
-+	 * The transfer function:
-+	 *
-+	 *	- K = V(K) / alpha
-+	 *	- C = K - 273.15
-+	 *
-+	 *	C = 1 / (alpha) * (V - 273.15 * alpha)
-+	 */
-+	rescale->numerator = 1000000;
-+	rescale->denominator = alpha;
-+
-+	if (device_property_read_bool(dev, "use-kelvin-scale"))
-+		rescale->offset = -1 * ((27315 * alpha) / 100000);
-+
-+	return 0;
-+}
-+
- enum rescale_variant {
- 	CURRENT_SENSE_AMPLIFIER,
- 	CURRENT_SENSE_SHUNT,
- 	VOLTAGE_DIVIDER,
-+	TEMP_SENSE_RTD,
-+	TEMP_SENSE_CURRENT,
-+	TEMP_SENSE_AMPLIFIER,
- };
- 
- static const struct rescale_cfg rescale_cfg[] = {
-@@ -241,6 +364,18 @@ static const struct rescale_cfg rescale_cfg[] = {
- 		.type = IIO_VOLTAGE,
- 		.props = rescale_voltage_divider_props,
- 	},
-+	[TEMP_SENSE_RTD] = {
-+		.type = IIO_TEMP,
-+		.props = rescale_temp_sense_rtd_props,
-+	},
-+	[TEMP_SENSE_CURRENT] = {
-+		.type = IIO_TEMP,
-+		.props = rescale_temp_sense_current_props,
-+	},
-+	[TEMP_SENSE_AMPLIFIER] = {
-+		.type = IIO_TEMP,
-+		.props = rescale_temp_sense_amplifier_props,
-+	},
- };
- 
- static const struct of_device_id rescale_match[] = {
-@@ -250,6 +385,12 @@ static const struct of_device_id rescale_match[] = {
- 	  .data = &rescale_cfg[CURRENT_SENSE_SHUNT], },
- 	{ .compatible = "voltage-divider",
- 	  .data = &rescale_cfg[VOLTAGE_DIVIDER], },
-+	{ .compatible = "temperature-sense-rtd",
-+	  .data = &rescale_cfg[TEMP_SENSE_RTD], },
-+	{ .compatible = "temperature-sense-current",
-+	  .data = &rescale_cfg[TEMP_SENSE_CURRENT], },
-+	{ .compatible = "temperature-sense-amplifier",
-+	  .data = &rescale_cfg[TEMP_SENSE_AMPLIFIER], },
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, rescale_match);
+ IKANOS/ADI EAGLE ADSL USB DRIVER
 -- 
 2.30.1.489.g328c10930387
 

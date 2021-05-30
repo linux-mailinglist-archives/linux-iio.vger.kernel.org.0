@@ -2,60 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 14E16394EC1
-	for <lists+linux-iio@lfdr.de>; Sun, 30 May 2021 02:59:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5843394EBE
+	for <lists+linux-iio@lfdr.de>; Sun, 30 May 2021 02:59:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229644AbhE3BBH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 29 May 2021 21:01:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60042 "EHLO
+        id S229610AbhE3BBG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 29 May 2021 21:01:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229585AbhE3BBG (ORCPT
+        with ESMTP id S229555AbhE3BBG (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Sat, 29 May 2021 21:01:06 -0400
-Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F586C061574;
-        Sat, 29 May 2021 17:59:28 -0700 (PDT)
-Received: by mail-qk1-x72d.google.com with SMTP id h20so7992359qko.11;
-        Sat, 29 May 2021 17:59:28 -0700 (PDT)
+Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com [IPv6:2607:f8b0:4864:20::72e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BA6FC06174A;
+        Sat, 29 May 2021 17:59:29 -0700 (PDT)
+Received: by mail-qk1-x72e.google.com with SMTP id j189so8019851qkf.2;
+        Sat, 29 May 2021 17:59:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=P2CLZOqNCLOtkIGGc1vQejjtBTOblqWdJI35uJ6GHEM=;
-        b=oLj3OrVzAJeJTDNaIB9ap9f47u8UhfYH2tUtIPbay7NZ0dizDnt4cI6VZKSC+ftu3D
-         EwbrrHuIz5Az0Ory3xitFHeFAwoPIWZyZRuBSAuh2Cnlz5OzDfSZSsAsNb6//9mUDcGC
-         iqfFSODikqQ9TJL7HKIMzJWuQzZHaFe3BJoTi74J2gi0abSVrVSOvm+REPD6bbxJKVtb
-         6PKx/x7BsmncXPWcO9K1br04Zaj+6WtFuAqt+GEri5ZDmdcXDDjDt8u6+vVzSvZCmSRm
-         RqtZYRubEdGuoc+G96/0FLT0h1qu3R5jxUPiQcXmSUj84OCEXS68ZnlRXnBf/RXjfhRd
-         E+gQ==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=M+5j+Z5LbA7a2FIvAeMZE8bSlMINPxKMfuNuPFa97JU=;
+        b=fOybSCm/yYyrc8H3+/eQ7rt01iHz7k6s3hHW0sOq0QwceASTYe+oX3ljZ9YK/R18iR
+         7bb9ZB9/vhXRyvKg6eFL1p161fE9wChOVY/23GPNkakUHWRX+e8n/u+7yDPXA49DELAX
+         3L61NMvGDyt3+YGM0bnt2j0idBs12Me0tbHlSXctSSkIA+DIyZq3uO9jJqzNfgedDdNN
+         /OlIme4eVzN+yAPTcjILtMF6TPGEj0XD6wIoONNYuJYbeXy6ITjuGxd+UAhLx0af5WK3
+         GggSl6LBB1BTX7RanEq2r7LGo18S11MUIdfAa2G6R9pNehDFB5VK6K3II5r4yV/XZ+fG
+         wcSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=P2CLZOqNCLOtkIGGc1vQejjtBTOblqWdJI35uJ6GHEM=;
-        b=VYuXzDKbuGrdYzVBQIt2Sh0+MyLZaNRghxBX5+lrmYddX+4f2/SmaasQ5jEy0tByue
-         Ot9Jbmsn1McUqQcYBu673XyXDZ8LFqMh/nRRLepK94lR0dJ20Afg0rgfAzEhLx3GO9i/
-         XqSEYg0AIamsJmwd73CvkxDbf2tqKKUvfPGtrK+gl8okmS/oUhe6Y0JTjWWKXLGifGxm
-         Xcx8CcBgr5vuQJqyVt2Rb3TtU2hM0rJ1IwWhuAA6bXs5fKCe5vzXtwLlLeMNvTJg8Gz4
-         K2s3TiAkA7M5ENt/v/UvbcLDZvVTlehSe0/RFUGdI8mmWJUYOxKkXJIUnwAoSmT801j/
-         HIkg==
-X-Gm-Message-State: AOAM531ebUQht1ipbRe2oR7fgHEPqkAS9g5Dkh50z/WB1XUpvTww3hho
-        JnFje0blgv3NzUCS3HsoWzY=
-X-Google-Smtp-Source: ABdhPJy3qy2srNk3wMck8+qd9/IC+9becSiOJivle5PpHuILqSb6eoub8E5uMe4h4okvv6cOuGvwnA==
-X-Received: by 2002:a37:7844:: with SMTP id t65mr10546654qkc.429.1622336367456;
-        Sat, 29 May 2021 17:59:27 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=M+5j+Z5LbA7a2FIvAeMZE8bSlMINPxKMfuNuPFa97JU=;
+        b=DyPjo8YiHAVTUPTHO2qVRxe1cnZA9sNcr3yvatkyT399TFYqKxMlS8zOduE38naKEt
+         Is2tgloq3JSGNrrtowTpK6YtBfOJzYibgamCLD79IujJ92V82x+ncRv6q7yRXJZJ2xY8
+         Xd3q3XMBzA1W302JybZRtMYSwAU9t2aInru34kLnnwWyaY+Z3ObL9hElt17MUsjFrw+g
+         nXnK+mQNFt/9v1cksq3deBsZm8Jx0CTYMVFoIL4qUNyNf9NJZBnxZP+KBT1PFtDeWIRi
+         9ITRrZNi4QrrDErPXO7Kct9VBy4pqSZjWqNxqTb1njh9q09u/ovrQwrO2GN3qLCvm5cz
+         wfHw==
+X-Gm-Message-State: AOAM533NWi+MPdUkCPwY4zHsa0uGwVPSSVVkWOAq1vcPOhqdI+//cgRD
+        UQoVetIUiiYavlBQC/s9xOE=
+X-Google-Smtp-Source: ABdhPJwsWQi6t8e9B+89hQGrErNBIH8mw8IDv9SLAbroW2HTVVaV3V+A6P2Mvr/ZA9eSh/2e8aPSyw==
+X-Received: by 2002:a05:620a:12f2:: with SMTP id f18mr10696137qkl.122.1622336368566;
+        Sat, 29 May 2021 17:59:28 -0700 (PDT)
 Received: from shaak.xiphos.ca (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
-        by smtp.gmail.com with ESMTPSA id z1sm6382601qki.47.2021.05.29.17.59.26
+        by smtp.gmail.com with ESMTPSA id z1sm6382601qki.47.2021.05.29.17.59.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 May 2021 17:59:27 -0700 (PDT)
+        Sat, 29 May 2021 17:59:28 -0700 (PDT)
 From:   Liam Beguin <liambeguin@gmail.com>
 To:     liambeguin@gmail.com, peda@axentia.se, jic23@kernel.org,
         lars@metafoo.de, pmeerw@pmeerw.net
 Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org, robh+dt@kernel.org
-Subject: [PATCH v1 0/9] iio: afe: add temperature rescaling support
-Date:   Sat, 29 May 2021 20:59:08 -0400
-Message-Id: <20210530005917.20953-1-liambeguin@gmail.com>
+Subject: [PATCH v1 1/9] iio: inkern: always apply scale requested by consumer
+Date:   Sat, 29 May 2021 20:59:09 -0400
+Message-Id: <20210530005917.20953-2-liambeguin@gmail.com>
 X-Mailer: git-send-email 2.30.1.489.g328c10930387
+In-Reply-To: <20210530005917.20953-1-liambeguin@gmail.com>
+References: <20210530005917.20953-1-liambeguin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -64,55 +66,38 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Liam Beguin <lvb@xiphos.com>
 
-Add temperature rescaling support to the IIO Analog Front End driver.
+When a consumer calls iio_read_channel_processed() and no scaling is
+available on the channel, it's assumed that the scale is one and the raw
+value is returned as expected.
 
-This series adds support for three kinds of temperature front end
-circuits:
-- temperature-sense-rtd for which the resistance is proportional to the
-  temperature
-- temperature-sense-current for which the current is proportional to the
-  temperature
-- temperature-sense-amplifier for which the voltage is proportional to
-  the temperature
+On the other hand, if the consumer calls iio_convert_raw_to_processed()
+the scaling factor requested by the consumer is not applied.
+This for example causes the consumer to process mV when expecting uV.
 
-At first I tried to use iio_convert_raw_to_processed() to get more
-precision out of processed values but ran into issues when one of my
-ADCs didn't provide a scale. I tried to address this in first patch.
+Make sure to always apply the scaling factor requested by the consumer.
 
-When adding offset support to iio-rescale, I also noticed that
-iio_read_channel_processed() assumes that the offset is always an
-integer which I tried to address in the second patch.
-If it makes sense to add support for fractional offsets, I could give it
-a try in another series.
+Signed-off-by: Liam Beguin <lvb@xiphos.com>
+---
+ drivers/iio/inkern.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-Related to: https://patchwork.kernel.org/project/linux-iio/list/?series=483087
-
-Thanks for your time
-
-Liam Beguin (9):
-  iio: inkern: always apply scale requested by consumer
-  iio: inkern: error out on unsupported offset type
-  iio: afe: rescale: use core to get processed value
-  iio: afe: rescale: add offset support
-  iio: afe: rescale: add support for temperature sensors
-  dt-bindings: iio: afe: update MAINTAINERS file
-  dt-bindings: iio: afe: add binding for temperature-sense-rtd
-  dt-bindings: iio: afe: add binding for temperature-sense-current
-  dt-bindings: iio: afe: add binding for temperature-sense-amplifier
-
- .../iio/afe/temperature-sense-amplifier.yaml  |  55 +++++
- .../iio/afe/temperature-sense-current.yaml    |  61 ++++++
- .../iio/afe/temperature-sense-rtd.yaml        |  65 ++++++
- MAINTAINERS                                   |   9 +-
- drivers/iio/afe/iio-rescale.c                 | 190 +++++++++++++++---
- drivers/iio/inkern.c                          |  12 +-
- 6 files changed, 354 insertions(+), 38 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/iio/afe/temperature-sense-amplifier.yaml
- create mode 100644 Documentation/devicetree/bindings/iio/afe/temperature-sense-current.yaml
- create mode 100644 Documentation/devicetree/bindings/iio/afe/temperature-sense-rtd.yaml
-
-
-base-commit: 9f4ad9e425a1d3b6a34617b8ea226d56a119a717
+diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+index db77a2d4a56b..4b6a8e11116a 100644
+--- a/drivers/iio/inkern.c
++++ b/drivers/iio/inkern.c
+@@ -601,11 +601,7 @@ static int iio_convert_raw_to_processed_unlocked(struct iio_channel *chan,
+ 	scale_type = iio_channel_read(chan, &scale_val, &scale_val2,
+ 					IIO_CHAN_INFO_SCALE);
+ 	if (scale_type < 0) {
+-		/*
+-		 * Just pass raw values as processed if no scaling is
+-		 * available.
+-		 */
+-		*processed = raw;
++		*processed = raw * scale;
+ 		return 0;
+ 	}
+ 
 -- 
 2.30.1.489.g328c10930387
 

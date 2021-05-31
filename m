@@ -2,130 +2,157 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C21A7395E0F
-	for <lists+linux-iio@lfdr.de>; Mon, 31 May 2021 15:52:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6835E395EB4
+	for <lists+linux-iio@lfdr.de>; Mon, 31 May 2021 16:00:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231823AbhEaNxw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 31 May 2021 09:53:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34278 "EHLO
+        id S231950AbhEaOCc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 31 May 2021 10:02:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232010AbhEaNvd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 May 2021 09:51:33 -0400
-Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A149C0610F0;
-        Mon, 31 May 2021 06:31:52 -0700 (PDT)
-Received: by mail-qv1-xf31.google.com with SMTP id 5so5530106qvk.0;
-        Mon, 31 May 2021 06:31:52 -0700 (PDT)
+        with ESMTP id S233022AbhEaOAK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 May 2021 10:00:10 -0400
+Received: from mail-qv1-xf2e.google.com (mail-qv1-xf2e.google.com [IPv6:2607:f8b0:4864:20::f2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83903C06137F;
+        Mon, 31 May 2021 06:36:58 -0700 (PDT)
+Received: by mail-qv1-xf2e.google.com with SMTP id u13so1769214qvt.7;
+        Mon, 31 May 2021 06:36:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:content-transfer-encoding:date:message-id:cc:subject
          :from:to:references:in-reply-to;
-        bh=OnDIUFyOX09LueOMLXguitQrR2khWTAPtxOM12rfEY8=;
-        b=fRTnbf43AwoS+szL4BdFMBgLNrRZ0Ws8/g3iDNuhYXNpPlDFXvkP0FT39SxOizp/sb
-         qr5LBftcQDsm4hJ+ilW5TH+suVQTtyAhUcGF/FNbpFvhFIEFoyJ5+ThRCwuI+ofz9dwb
-         FTNG16CAF+x0PYmpSIwTtwkeCF3YCg9lLYXQISwR7+VL+1Hfn7JAwGGdLvopUR0QSdsw
-         uZ7QcJwRE4KxleNjGJqjmzyaBWIDuf+x/kDPukOfpwaNoa9iUKx+onhl9nwTCTBf7DfD
-         wz+vdCeObzvc5CDXt1ufizC9Q3+17h+pMOYH1qBrZncbjJWN2eFpKO4NZ/4Kh/kvv4df
-         Geug==
+        bh=Ubdjxd4xLO/bMSsRXMlc/f+cavJirKnWXXDG8pw3VZg=;
+        b=Hn/G0YcYBaopoP+bkODCY7Xc+LDfDY8/JARg/hlRoqIKxv4BtiBd28Aczyk4eRK2qS
+         /asrPYto/imLkR9leLWplLsWs2PtcSJKp9iZiLdNWOSY3SKBt0ct6nd8qf1av9cJ5Xgr
+         +7fHBneQFs+RCM/G0cxiXzd7P0uvYKVy6mRXBujOeHsDy98FlzrzoHdL3qfLg916a62h
+         MaJkQJwHNNFPzZlISWACRxEbOYS0KtoqKdlDn3xUJQvU6L2w82+rCSeIf/yc098lEknv
+         wtnr9OXeiE2BpdnSh3SjBf0DlCZ3A+zDgmFgcFR6Rl/y7ULxNPCe20GNrzTRYqwkzFBI
+         rVuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:content-transfer-encoding:date
          :message-id:cc:subject:from:to:references:in-reply-to;
-        bh=OnDIUFyOX09LueOMLXguitQrR2khWTAPtxOM12rfEY8=;
-        b=f2V4nrqFXl805c1l31/TW8bDxuc9o0TauS0+JzAZtCRCUetIqe4vq+WIKUBhv+tUz+
-         zXrJy4IsKFcWKCgYxrnl73insQXsQw5vB0Fxxr8oHuB1ROXRsEHtvtv6Fmsm/XRghjME
-         ClnedAE8zLSBRUK8sjK4dZ5fY6VK8FCJI/80fQQKZZLYoZLpE+SzDu99ZLzsKF6L8p7S
-         VIwioX3DkXpr/9eY8ednvBBAtcYg9m/npXhuYTKbTgghOFAva06WztAz7rzsY7DHd0eg
-         4X8vTN5r9x/5fLuRs3SB2JOCw54/1qyma1160Ii6D8RiuodlT9Ku2fjw3HDCnR+ztGIX
-         uoWA==
-X-Gm-Message-State: AOAM530ETEkKEUpagtav8CTYEd1FUfPJXlK7BG1MliIH61/v1jfTfohC
-        9OyavE50isTVgk9ezP+wydvcRC3ce8WPmg==
-X-Google-Smtp-Source: ABdhPJxnTWnTn/Rz7jx70DYMb3UJHB6DLgwI34KAIQ6nOsgpE/n2WKEC2N0XhkGZc+ErUUNt3j5Xzg==
-X-Received: by 2002:a05:6214:b0b:: with SMTP id u11mr17089481qvj.9.1622467910918;
-        Mon, 31 May 2021 06:31:50 -0700 (PDT)
+        bh=Ubdjxd4xLO/bMSsRXMlc/f+cavJirKnWXXDG8pw3VZg=;
+        b=cgAXugz5z+fPsQ6WY9Z8Q7dnDk4T+VkthzYqMJe93XIHzuUbGXFX0BpcyUHJk2esDR
+         vHGOfT9akqxUshG1V3z3jghXva2SbaUxwGZt8BrNm0MVDC0+2tkW5Ts16XSU2pqj1mj3
+         P3pSaMKwMXZMdVs15j7Kvey1135BP4LJzPKaaYKX7TahM9N6Ua0ZSH1e24jNc0eLrpow
+         t+HQhI3W18ihJVyuQ9XDJU5orLCxoTLEJHB3YJyuhAWa5ikjaaDZSgsAN+BiFEIXAQC3
+         AUVWE7GfKKkx84IAIEfUOWyIa4lHNOrWnzGU/bkai7xpeTswNZ84czjU/c5w8jzouj9R
+         DK3w==
+X-Gm-Message-State: AOAM532EL+a2CsN87zsfxDMHXleBFvTAc/V+3uBjufcJnv/f0jJPa1Vg
+        EiigsipfdS4TuqKlZKiRo8s=
+X-Google-Smtp-Source: ABdhPJx0ySdMobnVV3yZlpTYeWj9KuRlzRFeq6H1W/371j4yI7Mk6TcfY4mXd+Od9YaD05m4iUB9EA==
+X-Received: by 2002:a05:6214:e4d:: with SMTP id o13mr3533618qvc.19.1622468217437;
+        Mon, 31 May 2021 06:36:57 -0700 (PDT)
 Received: from localhost (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
-        by smtp.gmail.com with ESMTPSA id h6sm8260817qta.74.2021.05.31.06.31.49
+        by smtp.gmail.com with ESMTPSA id n81sm3338846qke.16.2021.05.31.06.36.56
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 31 May 2021 06:31:50 -0700 (PDT)
+        Mon, 31 May 2021 06:36:56 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 31 May 2021 09:31:49 -0400
-Message-Id: <CBRGVFX9GJMZ.22AK6P7RNXMES@shaak>
+Date:   Mon, 31 May 2021 09:36:56 -0400
+Message-Id: <CBRGZCQWCG6S.676W3VCPMMUH@shaak>
 Cc:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
-Subject: Re: [PATCH v1 2/9] iio: inkern: error out on unsupported offset
- type
+Subject: Re: [PATCH v1 4/9] iio: afe: rescale: add offset support
 From:   "Liam Beguin" <liambeguin@gmail.com>
 To:     "Peter Rosin" <peda@axentia.se>, <jic23@kernel.org>,
         <lars@metafoo.de>, <pmeerw@pmeerw.net>
 References: <20210530005917.20953-1-liambeguin@gmail.com>
- <20210530005917.20953-3-liambeguin@gmail.com>
- <7e6e7e30-80b6-adfd-abda-7c9ac5333a47@axentia.se>
-In-Reply-To: <7e6e7e30-80b6-adfd-abda-7c9ac5333a47@axentia.se>
+ <20210530005917.20953-5-liambeguin@gmail.com>
+ <0769aaae-8925-d943-e57d-c787d560a8dc@axentia.se>
+In-Reply-To: <0769aaae-8925-d943-e57d-c787d560a8dc@axentia.se>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 Hi Peter,
 
-On Mon May 31, 2021 at 5:45 AM EDT, Peter Rosin wrote:
+On Mon May 31, 2021 at 4:52 AM EDT, Peter Rosin wrote:
 > Hi!
+>
+> Thanks for the patch!
 >
 > On 2021-05-30 02:59, Liam Beguin wrote:
 > > From: Liam Beguin <lvb@xiphos.com>
 > >=20
-> > iio_convert_raw_to_processed_unlocked() assumes the offset is an
-> > integer. Make that clear to the consumer by returning an error when an
-> > unsupported offset type is detected.
-> >=20
-> > Signed-off-by: Liam Beguin <lvb@xiphos.com>
-> > ---
-> >  drivers/iio/inkern.c | 6 +++++-
-> >  1 file changed, 5 insertions(+), 1 deletion(-)
-> >=20
-> > diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-> > index 4b6a8e11116a..dede4536d499 100644
-> > --- a/drivers/iio/inkern.c
-> > +++ b/drivers/iio/inkern.c
-> > @@ -595,8 +595,12 @@ static int iio_convert_raw_to_processed_unlocked(s=
-truct iio_channel *chan,
-> >  	int ret;
-> > =20
-> >  	ret =3D iio_channel_read(chan, &offset, NULL, IIO_CHAN_INFO_OFFSET);
-> > -	if (ret >=3D 0)
-> > +	if (ret =3D=3D IIO_VAL_INT) {
-> >  		raw64 +=3D offset;
-> > +	} else if (ret >=3D 0) {
-> > +		dev_err(&chan->indio_dev->dev, "unsupported offset type");
-> > +		return -EINVAL;
-> > +	}
-> > =20
-> >  	scale_type =3D iio_channel_read(chan, &scale_val, &scale_val2,
-> >  					IIO_CHAN_INFO_SCALE);
-> >=20
+> > This is a preparatory change required for the addition of temperature
+> > sensing front ends.
 >
-> This breaks the implicit truncation that happens for drivers that have
-> offsets of type IIO_VAL_INT_PLUS_{MICRO_DB,MICRO,NANO}
->
-> Implicit truncation might be more appropriate than an error?
->
-> However, to error out on fractional offsets etc still seem appropriate,
-> but
-> there are corner cases where the existing code did the right thing. E.g.
-> a denominator of one or a fractional-log2 of zero, but a big denominator
-> and
-> a smaller numerator would also just result in a relatively harmless
-> truncation.
->
-> I don't know if it's really right to just break that?
+> I think this is too simplistic. I think that if the upstream iio-dev has
+> an offset, it should be dealt with (i.e. be rescaled). The rescale
+> driver
+> cannot ignore such an upstream offset and then throw in some other
+> unrelated offset of its own. That would be thoroughly confusing.
 
-Apologies for missing these. You're right that this change shouldn't
-break what used to work implicitly. I'll rework this.
+I'm not sure I fully understand. The upstream offset should be dealt
+with when calling iio_read_channel_processed().  That was my main
+motivation behind using the IIO core to get a processed value.
+
+>
+> Also, I see no reason of expose an offset channel if there is no offset.
+
+You're right, I'll add conditions to only expose an offset when
+required.
 
 Liam
 
 >
 > Cheers,
 > Peter
+>
+> > Signed-off-by: Liam Beguin <lvb@xiphos.com>
+> > ---
+> >  drivers/iio/afe/iio-rescale.c | 12 ++++++++++--
+> >  1 file changed, 10 insertions(+), 2 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/afe/iio-rescale.c b/drivers/iio/afe/iio-rescal=
+e.c
+> > index 4d0813b274d1..3bd1f11f21db 100644
+> > --- a/drivers/iio/afe/iio-rescale.c
+> > +++ b/drivers/iio/afe/iio-rescale.c
+> > @@ -31,6 +31,7 @@ struct rescale {
+> >  	struct iio_chan_spec_ext_info *ext_info;
+> >  	s32 numerator;
+> >  	s32 denominator;
+> > +	s32 offset;
+> >  };
+> > =20
+> >  static int rescale_read_raw(struct iio_dev *indio_dev,
+> > @@ -52,6 +53,10 @@ static int rescale_read_raw(struct iio_dev *indio_de=
+v,
+> >  		*val2 =3D rescale->denominator;
+> > =20
+> >  		return IIO_VAL_FRACTIONAL;
+> > +	case IIO_CHAN_INFO_OFFSET:
+> > +		*val =3D rescale->offset;
+> > +
+> > +		return IIO_VAL_INT;
+> >  	default:
+> >  		return -EINVAL;
+> >  	}
+> > @@ -119,8 +124,10 @@ static int rescale_configure_channel(struct device=
+ *dev,
+> >  		return -EINVAL;
+> >  	}
+> > =20
+> > -	chan->info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |
+> > -		BIT(IIO_CHAN_INFO_SCALE);
+> > +	chan->info_mask_separate =3D
+> > +		BIT(IIO_CHAN_INFO_RAW) |
+> > +		BIT(IIO_CHAN_INFO_SCALE) |
+> > +		BIT(IIO_CHAN_INFO_OFFSET);
+> > =20
+> >  	if (iio_channel_has_available(schan, IIO_CHAN_INFO_RAW))
+> >  		chan->info_mask_separate_available |=3D BIT(IIO_CHAN_INFO_RAW);
+> > @@ -280,6 +287,7 @@ static int rescale_probe(struct platform_device *pd=
+ev)
+> >  	rescale->cfg =3D of_device_get_match_data(dev);
+> >  	rescale->numerator =3D 1;
+> >  	rescale->denominator =3D 1;
+> > +	rescale->offset =3D 0;
+> > =20
+> >  	ret =3D rescale->cfg->props(dev, rescale);
+> >  	if (ret)
+> >=20
 

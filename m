@@ -2,103 +2,108 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 38565395FDB
-	for <lists+linux-iio@lfdr.de>; Mon, 31 May 2021 16:15:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC99E3962BF
+	for <lists+linux-iio@lfdr.de>; Mon, 31 May 2021 16:59:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233156AbhEaOQt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 31 May 2021 10:16:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40208 "EHLO
+        id S232307AbhEaPAw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 31 May 2021 11:00:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233631AbhEaOOf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 May 2021 10:14:35 -0400
-Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com [IPv6:2607:f8b0:4864:20::734])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21455C061574;
-        Mon, 31 May 2021 06:41:26 -0700 (PDT)
-Received: by mail-qk1-x734.google.com with SMTP id c124so6445315qkd.8;
-        Mon, 31 May 2021 06:41:26 -0700 (PDT)
+        with ESMTP id S234358AbhEaO7U (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 May 2021 10:59:20 -0400
+Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A4B9C061236;
+        Mon, 31 May 2021 07:03:26 -0700 (PDT)
+Received: by mail-qt1-x829.google.com with SMTP id d12so2372172qtq.4;
+        Mon, 31 May 2021 07:03:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:content-transfer-encoding:date:message-id:from:to:cc
-         :subject:references:in-reply-to;
-        bh=XnIBaAJk34SkGPoBRAYrEmSzR77d9Lb1dvFbEISw98E=;
-        b=RaqoFaQs26hbcut6UFNR3n7Y8G5hnJJ9ifDHdcFfkZIiY/NoKJCoaO5yvf90dyE/60
-         CTF12bT3oTfR8L6g0zLO0ZP5hb+LK27eVWmpcxABMU8a3yVGQYtyv7FgBn18MvNwJ3XM
-         wgtAn0V0zuEcMXqzkoxOVjZ48KZaoSJmQ4hkl1DzzwlDxbQlJb2lL3HF9GMqjrW8tG9u
-         YfGiD6uT+ovoYOjk+kWlu0bq5NKswn0p/xdSiAHRHwoGojN3U60vBIHyVIBVe6Zp+uw/
-         I5xLoOwoKAuPaKLpJaj6OvMfDZHrvrxMP4bKCDVE5KE2lfoNntaRJCtOdIiFOoFraBxp
-         Kbug==
+        h=mime-version:content-transfer-encoding:date:message-id:to:cc
+         :subject:from:references:in-reply-to;
+        bh=y2MDXnI/OIKxWHEtIFBSOW9PzSGP8Ug1F4tSdphQJdg=;
+        b=GvykXANtw8VwODfnhDd6eSNqTgmVMHdl2GChtd7P16iokl17GMuiHXlIXL5Zn5lZ6P
+         pnXeemIIAHCuI7bxM8HQeoVQ5e+oikH+1ezUR7DSewH4BnqPDrshCeADClbB/xdtT373
+         xQIoOmgNQClnWxioQq2EzG+wp27jqt8NqaJzY4gbGatDlSmScYVs9hcgG66TG0h1phE4
+         Lc7cRjnx40NYIFCn6I1sakLsjsJt7N6EF+Wb82T1hTU3Ge6QBp/QJLCl+rDyrt+z3GGf
+         yyzgQl4brupNSv306IoKOWVybk54BQ/fLwWsWj7WI/r0ZURxx8B6EaP3OaZ1zYAwLONH
+         iCIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:content-transfer-encoding:date
-         :message-id:from:to:cc:subject:references:in-reply-to;
-        bh=XnIBaAJk34SkGPoBRAYrEmSzR77d9Lb1dvFbEISw98E=;
-        b=g+UgO1FtBSMdi2yl5caiV9TeZ7A/9MR9TPuVmI9QhDnfTjEd0mgMSOZ5DCcVLLrVFf
-         MVQqgjjmArBgzkTOpR4GprDj13S7vT9hvXnwVdetMER1HS82lhbECRSDRjnxx/7QzTrQ
-         fYqVFSF0clrR+GbcEeq5l27AwO3Z9x2/pSA5pRmH7jIdlpK9+fqKjpbxmpnsJuqbbQwc
-         akpkptpGxuVR9VkFj/AyyICbs77ZPlEHmzsyHwYI9uy4TZoOoDKp/GPYsaQFRx1WSvM4
-         O3aksEtAJmtLPLOSFYALp7oseXw9B2zxlFeGAH19rke+mP7N4xojCnAZXRzVYCTqhqZ2
-         SBpw==
-X-Gm-Message-State: AOAM530A2/ZXh4/VA568igfr4o6YJmFQfL4UNQLOmH5G1v5h1nrR6n2k
-        w33t7FOofPhHUyJJrzWQ/tg=
-X-Google-Smtp-Source: ABdhPJyBkCtf73OguHkU1IGu+i8ZUpuogY4xTBiCsmDv7zS2uScmDJWndQ33sLV71HFky6UbXd18Cw==
-X-Received: by 2002:a05:620a:240c:: with SMTP id d12mr16704188qkn.190.1622468485359;
-        Mon, 31 May 2021 06:41:25 -0700 (PDT)
+         :message-id:to:cc:subject:from:references:in-reply-to;
+        bh=y2MDXnI/OIKxWHEtIFBSOW9PzSGP8Ug1F4tSdphQJdg=;
+        b=WhFgR3lvokpUH8l9sSIXpqX3axEnZ6h3OeVXLq2clyfz8LZcF9VW0Y8z1LmuMF+gyb
+         D6Vt3gcH7haDPj6OiaRP57ol8attJ3ApFU++3FX6xj/KiOcZhelTBJgG1oXPlO3FW8Jf
+         Oq+nBEQ6QHvjti5fr/ThaoCZGOJVw6Mlp9mWvIKM+IWisFvEbPdxU1BSeU1lxuMfmPKv
+         c1ykvMuOKLVOVOQhvVE+jB3NtDE3U/NVl2o8B4cPgdsQXmknA7CVhvNPZadytttfZoZW
+         YUfZzpSVbi8icFGe7e1MfRdcemGUBnuu9lB3JsDVQHniTsD/ctf8I9D6M879MUgGCyn2
+         TklQ==
+X-Gm-Message-State: AOAM531vMD9k8Dhsx2dxM3KXDeWy4PTBkKAV0kUORXvANfbSgu/nFeRh
+        8RYACg3AFrpes643ERv0Z9g=
+X-Google-Smtp-Source: ABdhPJyimULmdTkrROg5WHI4lKMoCvfT1Ruqp4XVScUneBYoC1x3sQxiHKGLicO9OVy0EtaMiZTKWA==
+X-Received: by 2002:ac8:1483:: with SMTP id l3mr14900526qtj.142.1622469805558;
+        Mon, 31 May 2021 07:03:25 -0700 (PDT)
 Received: from localhost (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
-        by smtp.gmail.com with ESMTPSA id f15sm8488007qtg.25.2021.05.31.06.41.24
+        by smtp.gmail.com with ESMTPSA id 7sm9086249qtu.38.2021.05.31.07.03.24
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 31 May 2021 06:41:24 -0700 (PDT)
+        Mon, 31 May 2021 07:03:24 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 31 May 2021 09:41:24 -0400
-Message-Id: <CBRH2RWDHKFD.20XDGCMHA282F@shaak>
-From:   "Liam Beguin" <liambeguin@gmail.com>
+Date:   Mon, 31 May 2021 10:03:23 -0400
+Message-Id: <CBRHJM8ANOSE.2Q5C1FVQS5QOA@shaak>
 To:     "Peter Rosin" <peda@axentia.se>, <jic23@kernel.org>,
         <lars@metafoo.de>, <pmeerw@pmeerw.net>
 Cc:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
-Subject: Re: [PATCH v1 8/9] dt-bindings: iio: afe: add binding for
- temperature-sense-current
+Subject: Re: [PATCH v1 9/9] dt-bindings: iio: afe: add binding for
+ temperature-sense-amplifier
+From:   "Liam Beguin" <liambeguin@gmail.com>
 References: <20210530005917.20953-1-liambeguin@gmail.com>
- <20210530005917.20953-9-liambeguin@gmail.com>
- <9f38ad0a-0a08-458d-b721-f4d424cecc6d@axentia.se>
- <fe79916e-8ea8-5059-fd68-0e0ec621a2e1@axentia.se>
-In-Reply-To: <fe79916e-8ea8-5059-fd68-0e0ec621a2e1@axentia.se>
+ <20210530005917.20953-10-liambeguin@gmail.com>
+ <0286de71-1b04-0956-be4e-f38573c6fea2@axentia.se>
+In-Reply-To: <0286de71-1b04-0956-be4e-f38573c6fea2@axentia.se>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 Hi Peter,
 
-On Mon May 31, 2021 at 4:58 AM EDT, Peter Rosin wrote:
+On Mon May 31, 2021 at 3:32 AM EDT, Peter Rosin wrote:
+> Hi!
 >
->
-> On 2021-05-31 09:28, Peter Rosin wrote:
-> >> +  use-kelvin-scale:
-> >> +    type: boolean
-> >> +    description: |
-> >> +      Boolean indicating if alpha uses Kelvin degrees instead of Cels=
-ius.
+> On 2021-05-30 02:59, Liam Beguin wrote:
+> > From: Liam Beguin <lvb@xiphos.com>
 > >=20
-> > It's "kelvin", not "Kelvin degrees", and it's "degrees Celsius".
+> > An ADC is often used to measure other quantities indirectly. This
+> > binding describe one cases, the measurement of a temperature through a
+> > voltage sense amplifier such as the LTC2997.
+> >=20
+> > Signed-off-by: Liam Beguin <lvb@xiphos.com>
+>
+> What's the significant difference between this and the RTD binding? Does
+> not both simply scale/offset a voltage to a temperature?
+>
 
-I'll rephrase the description base on your comment.
+The way I looked at it was one binding per sensor type (resistance
+driven, current driven, and voltage driven).
 
-I also thought of using alpha-micro-amps-per-degree-celsius and
-alpha-micro-amps-kelvin instead. I don't know if that would be better.
+Thinking about it more, these three bindings could be factorized into
+one if the user is required to enter parameters "by hand".
 
-Thanks,
+These could become something like:
+- sense-gain-mult
+- sense-gain-div
+- sense-offset
+
+I like the idea of having the "datasheet parameters" in the devicetree,
+but this would be a lot more versatile.
+
+What do you think?
+
+Cheers,
 Liam
 
-> >=20
-> > But what exactly is this property for? We always want degrees Celsius, =
-don't we,
-> > and any offset can be handled...with an offset. No?
->
-> Ahh, I hit send too soon. I now see that you calculate the offset in the
-> driver
-> instead of requiring the devicetree author to do it "by hand".
->
 > Cheers,
 > Peter
 

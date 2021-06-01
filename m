@@ -2,39 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D23CE39781F
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Jun 2021 18:34:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B38B9397843
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Jun 2021 18:43:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233657AbhFAQgQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 1 Jun 2021 12:36:16 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:3126 "EHLO
+        id S233698AbhFAQpP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 1 Jun 2021 12:45:15 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:3127 "EHLO
         frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230288AbhFAQgO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Jun 2021 12:36:14 -0400
-Received: from fraeml734-chm.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Fvcr142PZz6J8tl;
-        Wed,  2 Jun 2021 00:22:09 +0800 (CST)
+        with ESMTP id S232490AbhFAQpP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Jun 2021 12:45:15 -0400
+Received: from fraeml709-chm.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Fvd6F3rKXz6V03Q;
+        Wed,  2 Jun 2021 00:34:29 +0800 (CST)
 Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml734-chm.china.huawei.com (10.206.15.215) with Microsoft SMTP Server
+ fraeml709-chm.china.huawei.com (10.206.15.37) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Tue, 1 Jun 2021 18:34:31 +0200
+ 15.1.2176.2; Tue, 1 Jun 2021 18:43:32 +0200
 Received: from localhost (10.52.121.71) by lhreml710-chm.china.huawei.com
  (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Tue, 1 Jun 2021
- 17:34:30 +0100
-Date:   Tue, 1 Jun 2021 17:34:24 +0100
+ 17:43:31 +0100
+Date:   Tue, 1 Jun 2021 17:43:25 +0100
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To:     Liam Beguin <liambeguin@gmail.com>
 CC:     <peda@axentia.se>, <jic23@kernel.org>, <lars@metafoo.de>,
         <pmeerw@pmeerw.net>, <linux-kernel@vger.kernel.org>,
         <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <robh+dt@kernel.org>
-Subject: Re: [PATCH v1 5/9] iio: afe: rescale: add support for temperature
- sensors
-Message-ID: <20210601173424.00001ce8@Huawei.com>
-In-Reply-To: <20210530005917.20953-6-liambeguin@gmail.com>
+Subject: Re: [PATCH v1 7/9] dt-bindings: iio: afe: add binding for
+ temperature-sense-rtd
+Message-ID: <20210601174325.00000ca2@Huawei.com>
+In-Reply-To: <20210530005917.20953-8-liambeguin@gmail.com>
 References: <20210530005917.20953-1-liambeguin@gmail.com>
-        <20210530005917.20953-6-liambeguin@gmail.com>
+        <20210530005917.20953-8-liambeguin@gmail.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
 MIME-Version: 1.0
@@ -48,210 +48,112 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 29 May 2021 20:59:13 -0400
+On Sat, 29 May 2021 20:59:15 -0400
 Liam Beguin <liambeguin@gmail.com> wrote:
 
 > From: Liam Beguin <lvb@xiphos.com>
 > 
-> Add support for various linear temperature sensors.
-> 
-> temperature-sense-rtd is used when the measured temperature is a
-> function of the sensor's resistance (like RTD sensors).
-> 
-> temperature-sense-current is used when the measured temperature is a
-> function of the sensor's output current (like the AD590)
-> 
-> temperature-sense-amplifier is used when the measured temperature is a
-> function of the sensor's voltage (like the LTC2997)
+> An ADC is often used to measure other quantities indirectly. This
+> binding describe one cases, the measurement of a temperature through
+> the voltage across an RTD resistor such as a PT1000.
 > 
 > Signed-off-by: Liam Beguin <lvb@xiphos.com>
-Hi Liam,
 
-Comments in here follow through from the bindings.
+Just one nit pick inline.
 
-Jonathan
+Hmm. these devices use some 'special' units for their coefficients.
+Ah well, guess we copy the industry standard.
 
 > ---
->  drivers/iio/afe/iio-rescale.c | 141 ++++++++++++++++++++++++++++++++++
->  1 file changed, 141 insertions(+)
+>  .../iio/afe/temperature-sense-rtd.yaml        | 65 +++++++++++++++++++
+>  MAINTAINERS                                   |  1 +
+>  2 files changed, 66 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/afe/temperature-sense-rtd.yaml
 > 
-> diff --git a/drivers/iio/afe/iio-rescale.c b/drivers/iio/afe/iio-rescale.c
-> index 3bd1f11f21db..eb53d833bf7c 100644
-> --- a/drivers/iio/afe/iio-rescale.c
-> +++ b/drivers/iio/afe/iio-rescale.c
-> @@ -222,10 +222,133 @@ static int rescale_voltage_divider_props(struct device *dev,
->  	return 0;
->  }
+> diff --git a/Documentation/devicetree/bindings/iio/afe/temperature-sense-rtd.yaml b/Documentation/devicetree/bindings/iio/afe/temperature-sense-rtd.yaml
+> new file mode 100644
+> index 000000000000..4798eda6e533
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/afe/temperature-sense-rtd.yaml
+> @@ -0,0 +1,65 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/afe/temperature-sense-rtd.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Temperature Sense RTD
+> +
+> +maintainers:
+> +  - Liam Beguin <lvb@xiphos.com>
+> +
+> +description: |
+> +  When an io-channel measures the output voltage across an RTD such as a
+> +  PT1000, the interesting measurement is almost always the corresponding
+> +  temperature, not the voltage output. This binding describes such a circuit.
+> +
+> +properties:
+> +  compatible:
+> +    const: temperature-sense-rtd
+> +
+> +  io-channels:
+> +    maxItems: 1
+> +    description: |
+> +      Channel node of a voltage io-channel.
+> +
+> +  '#io-channel-cells':
+> +    const: 1
+> +
+> +  excitation-current-microamp:
+> +    description: The current fed through the RTD sensor.
+> +
+> +  alpha-micro-ohms-per-ohm-celsius:
+> +    description: |
+> +      Linear approximation of the resistance versus temperature relationship
+> +      between 0 and 100 degrees Celsius.
+> +
+> +      Pure platinum has an alpha of 3925. Industry standards such as IEC60751
+> +      and ASTM E-1137 specify an alpha of 3850.
+> +
+> +  r-naught-ohms:
+> +    description: |
+> +      Resistance of the sensor at 0 degrees Celsius.
+> +      Common values are 100 for PT100 and 1000 for PT1000.
+> +
+> +additionalProperties: false
+> +required:
+> +  - compatible
+> +  - io-channels
+> +  - excitation-current-microamp
+> +  - alpha-micro-ohms-per-ohm-celsius
+> +  - r-naught-ohms
+> +
+> +examples:
+> +  - |
+> +    pt1000_1: iio-rescale0 {
+> +        compatible = "temperature-sense-rtd";
+> +        #io-channel-cells = <1>;
+> +        io-channels = <&temp_adc1 0>;
+> +
+> +        excitation-current-microamp = <1000>;
+> +        alpha-micro-ohms-per-ohm-celsius = <3908>;
+> +        r-naught-ohms = <1000>;
+> +    };
+> +
+
+Drop this blank line.  Doesn't add anything ;)
+
+> +...
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index d3ab0ccc34ab..a7279af85adb 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -8721,6 +8721,7 @@ L:	linux-iio@vger.kernel.org
+>  S:	Maintained
+>  F:	Documentation/devicetree/bindings/iio/afe/current-sense-amplifier.yaml
+>  F:	Documentation/devicetree/bindings/iio/afe/current-sense-shunt.yaml
+> +F:	Documentation/devicetree/bindings/iio/afe/temperature-sense-rtd.yaml
+>  F:	Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
+>  F:	drivers/iio/afe/iio-rescale.c
 >  
-> +static int rescale_temp_sense_rtd_props(struct device *dev,
-> +					struct rescale *rescale)
-> +{
-> +	u32 factor;
-> +	u32 alpha;
-> +	u32 iexc;
-> +	u32 tmp;
-> +	int ret;
-> +	u32 r0;
-> +
-> +	ret = device_property_read_u32(dev, "excitation-current-microamp",
-> +				       &iexc);
-> +	if (ret) {
-> +		dev_err(dev, "failed to read excitation-current-microamp: %d\n",
-> +			ret);
-> +		return ret;
-> +	}
-> +
-> +	ret = device_property_read_u32(dev, "alpha-micro-ohms-per-ohm-celsius",
-> +				       &alpha);
-> +	if (ret) {
-> +		dev_err(dev, "failed to read alpha-micro-ohms-per-celsius: %d\n",
-> +			ret);
-> +		return ret;
-> +	}
-> +
-> +	ret = device_property_read_u32(dev, "r-naught-ohms", &r0);
-> +	if (ret) {
-> +		dev_err(dev, "failed to read r-naught-ohms: %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	/*
-> +	 * The transfer function:
-> +	 *
-> +	 *	- V(T) = R(T) * iexc
-> +	 *	- R(T) = r0 * (1 + alpha * T)
-> +	 *
-> +	 *	T = 1 / (alpha * r0 * iexc) * (V - r0 * iexc)
-> +	 */
-> +	tmp = r0 * iexc * alpha / 1000000;
-> +	factor = gcd(tmp, 1000000);
-> +	rescale->numerator = 1000000 / factor;
-> +	rescale->denominator = tmp / factor;
-> +
-> +	rescale->offset = -1 * ((r0 * iexc) / 1000);
-> +
-> +	return 0;
-> +}
-> +
-> +static int rescale_temp_sense_current_props(struct device *dev,
-> +					    struct rescale *rescale)
-> +{
-> +	u32 alpha;
-> +	u32 sense;
-> +	int ret;
-> +
-> +	ret = device_property_read_u32(dev, "sense-resistor-ohms", &sense);
-> +	if (ret) {
-> +		dev_err(dev, "failed to read the sense resistance: %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	ret = device_property_read_u32(dev, "alpha-micro-amps-per-degree",
-> +				       &alpha);
-> +	if (ret) {
-> +		dev_err(dev, "failed to read alpha-micro-amps-per-degree: %d\n",
-> +			ret);
-> +		return ret;
-> +	}
-> +
-> +	/*
-> +	 * The transfer function:
-> +	 *
-> +	 *	- V(K) = Rsense * Isense(K)
-> +	 *	- K = Isense(K) / alpha
-> +	 *	- C = K - 273.15
-> +	 *
-> +	 *	C = 1 / (Rsense * alpha) * (V - 273.15 * Rsense * alpha)
-> +	 */
-> +	rescale->numerator = 1000000;
-> +	rescale->denominator = alpha * sense;
-> +
-> +	if (device_property_read_bool(dev, "use-kelvin-scale"))
-> +		rescale->offset = -1 * ((27315 * alpha * sense) / 100000);
-
-As below. Generic offset, not this specific one please ;)
-
-> +
-> +	return 0;
-> +}
-> +
-> +static int rescale_temp_sense_amplifier_props(struct device *dev,
-> +					      struct rescale *rescale)
-> +{
-> +	u32 alpha;
-> +	int ret;
-> +
-> +	ret = device_property_read_u32(dev, "alpha-micro-volts-per-degree",
-> +				       &alpha);
-> +	if (ret) {
-> +		dev_err(dev, "failed to read alpha-micro-volts-per-degree: %d\n",
-> +			ret);
-> +		return ret;
-> +	}
-> +
-> +	/*
-> +	 * The transfer function:
-> +	 *
-> +	 *	- K = V(K) / alpha
-> +	 *	- C = K - 273.15
-> +	 *
-> +	 *	C = 1 / (alpha) * (V - 273.15 * alpha)
-> +	 */
-> +	rescale->numerator = 1000000;
-> +	rescale->denominator = alpha;
-> +
-> +	if (device_property_read_bool(dev, "use-kelvin-scale"))
-
-As mentioned later, stick to celcius + an explicit offset.
-
-There will be devices that have their own offset which doesn't happen to
-be -273.15
-
-> +		rescale->offset = -1 * ((27315 * alpha) / 100000);
-> +
-> +	return 0;
-> +}
-> +
->  enum rescale_variant {
->  	CURRENT_SENSE_AMPLIFIER,
->  	CURRENT_SENSE_SHUNT,
->  	VOLTAGE_DIVIDER,
-> +	TEMP_SENSE_RTD,
-> +	TEMP_SENSE_CURRENT,
-> +	TEMP_SENSE_AMPLIFIER,
->  };
->  
->  static const struct rescale_cfg rescale_cfg[] = {
-> @@ -241,6 +364,18 @@ static const struct rescale_cfg rescale_cfg[] = {
->  		.type = IIO_VOLTAGE,
->  		.props = rescale_voltage_divider_props,
->  	},
-> +	[TEMP_SENSE_RTD] = {
-> +		.type = IIO_TEMP,
-> +		.props = rescale_temp_sense_rtd_props,
-> +	},
-> +	[TEMP_SENSE_CURRENT] = {
-> +		.type = IIO_TEMP,
-> +		.props = rescale_temp_sense_current_props,
-> +	},
-> +	[TEMP_SENSE_AMPLIFIER] = {
-> +		.type = IIO_TEMP,
-> +		.props = rescale_temp_sense_amplifier_props,
-> +	},
->  };
->  
->  static const struct of_device_id rescale_match[] = {
-> @@ -250,6 +385,12 @@ static const struct of_device_id rescale_match[] = {
->  	  .data = &rescale_cfg[CURRENT_SENSE_SHUNT], },
->  	{ .compatible = "voltage-divider",
->  	  .data = &rescale_cfg[VOLTAGE_DIVIDER], },
-> +	{ .compatible = "temperature-sense-rtd",
-> +	  .data = &rescale_cfg[TEMP_SENSE_RTD], },
-> +	{ .compatible = "temperature-sense-current",
-> +	  .data = &rescale_cfg[TEMP_SENSE_CURRENT], },
-> +	{ .compatible = "temperature-sense-amplifier",
-> +	  .data = &rescale_cfg[TEMP_SENSE_AMPLIFIER], },
->  	{ /* sentinel */ }
->  };
->  MODULE_DEVICE_TABLE(of, rescale_match);
 

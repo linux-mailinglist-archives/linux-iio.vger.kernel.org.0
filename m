@@ -2,61 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE081398F0B
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Jun 2021 17:43:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96B72398EE9
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Jun 2021 17:43:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232499AbhFBPpT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 2 Jun 2021 11:45:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46832 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232376AbhFBPpG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        id S232380AbhFBPpG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Wed, 2 Jun 2021 11:45:06 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7867E6140C;
+Received: from mail.kernel.org ([198.145.29.99]:46714 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232091AbhFBPpF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 2 Jun 2021 11:45:05 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 5FA5461401;
         Wed,  2 Jun 2021 15:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
         s=k20201202; t=1622648602;
-        bh=0MELa+vkFf8qciInEiANCeWuJgsCWdc+iIN4XgabBlU=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Ow5ucdX+cLyyshfYKKgUmaN7u1vT8JE6wpcqUKxTUm3f4VAqfL+vN/ipg7eINBHcs
-         5myl1FE98NtMXFFNDejrwHifMf/IbOWqgFNtE+klnW+5/PCO4dWEcwpTfDeeVN6Ckn
-         JvczV9Y13kiuvQ2CanTKQdGdOzLB1jTQO4uU50i8/+hZ241IyBQ7yZ1+WRb4p5SFpk
-         EUvYoaJtuDfi/UdKVyvZWcnoFLquBLPz4d3uwoHmZIEwE+ahs53PrxMsQovuDF6qo9
-         sI0gAHsVnC3iacI5pyrpN+81xksmA46ctCWF+HtJhVLTBaKuRBj1aOhgCo0bi3Z0n0
-         AK5H0lWSJ7oUA==
+        bh=jQfc6V+5fIkfWn3ixgZGKTZVxT9URXQOJEGGW29C1m4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=cW8iZculuT9ve8BWFUusvOE7xAIyan7hKimqg1HaHDpxQ6FPqQDqyttnKnfP92XYT
+         tLNuzV1zDBZ9pzLonEiy8WzjqZsKzNdc8X8c51wup5aodAGsZLSEJPwVlVtLgrxlWM
+         Tl8qobESCWsbGC/+AsUSHgXB69bA3PdlYyWIKbz6FIy+Dd2/XBga581WJx8jzsVrKW
+         m/Ui/joAfznbjaiN0wP2AdKV4K8h1tVrajw5xoCs3WS2+qHLKnfPgGlhFiZi1H0IJ+
+         ncqxLGBCpUhHD+pBfCalRu5gO7F3bkDyAXt0RK/z2cNUJob6dTfX6iRUCM4V4gblIb
+         kgo0uTLd1UlcQ==
 Received: by mail.kernel.org with local (Exim 4.94.2)
         (envelope-from <mchehab@kernel.org>)
-        id 1loT1b-006XbY-6u; Wed, 02 Jun 2021 17:43:19 +0200
+        id 1loT1b-006Xbv-Fw; Wed, 02 Jun 2021 17:43:19 +0200
 From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
 Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Jakub Kicinski <kuba@kernel.org>,
+        "Jonathan Corbet" <corbet@lwn.net>,
         Jonathan Cameron <jic23@kernel.org>,
-        Keerthy <j-keerthy@ti.com>, Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
-        Mark Brown <broonie@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Peter Rosin <peda@axentia.se>,
-        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Wolfgang Grandegger <wg@grandegger.com>,
-        devicetree@vger.kernel.org, dmaengine@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-can@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-usb@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH 00/12] Fix broken docs references at next-20210602
-Date:   Wed,  2 Jun 2021 17:43:06 +0200
-Message-Id: <cover.1622648507.git.mchehab+huawei@kernel.org>
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 06/12] dt-bindings: iio: io-channel-mux.yaml: fix a typo
+Date:   Wed,  2 Jun 2021 17:43:12 +0200
+Message-Id: <ab0d1f89cf64ff4904155c92e1895763fb0bf173.1622648507.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <cover.1622648507.git.mchehab+huawei@kernel.org>
+References: <cover.1622648507.git.mchehab+huawei@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab@kernel.org>
@@ -64,43 +48,30 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-There are some broken references at today's linux-next with regards
-to files inside Documentation/.
+The file name: Documentation/device-tree/bindings/mux/mux-controller.yaml
+should be, instead: Documentation/devicetree/bindings/mux/mux-controller.yaml.
 
-Address them.
+Update its cross-reference accordingly.
 
-Mauro Carvalho Chehab (12):
-  dt-bindings: power: supply: cpcap-battery: update cpcap-battery.yaml
-    reference
-  dt-bindings: power: supply: cpcap-charger: update cpcap-charger.yaml
-    reference
-  dt-bindings: soc: ti: update sci-pm-domain.yaml references
-  dt-bindings: clock: update ti,sci-clk.yaml references
-  dt-bindings: reset: update ti,sci-reset.yaml references
-  dt-bindings: iio: io-channel-mux.yaml: fix a typo
-  docs: accounting: update delay-accounting.rst reference
-  MAINTAINERS: update faraday,ftrtc010.yaml reference
-  MAINTAINERS: update marvell,armada-3700-utmi-phy.yaml reference
-  MAINTAINERS: update ti,omap-gpio.yaml reference
-  MAINTAINERS: update ti,sci.yaml reference
-  MAINTAINERS: update nxp,imx8-jpeg.yaml reference
+Fixes: a66cec598f49 ("dt-bindings: iio: multiplexer: Convert io-channel-mux bindings to DT schema")
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+---
+ .../devicetree/bindings/iio/multiplexer/io-channel-mux.yaml     | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- Documentation/admin-guide/sysctl/kernel.rst      |  2 +-
- .../devicetree/bindings/dma/ti-edma.txt          |  4 ++--
- .../devicetree/bindings/gpio/gpio-davinci.txt    |  2 +-
- .../devicetree/bindings/i2c/i2c-davinci.txt      |  4 ++--
- .../bindings/iio/multiplexer/io-channel-mux.yaml |  2 +-
- .../devicetree/bindings/mfd/motorola-cpcap.txt   |  4 ++--
- .../devicetree/bindings/mmc/ti-omap-hsmmc.txt    |  4 ++--
- .../devicetree/bindings/net/can/c_can.txt        |  4 ++--
- .../bindings/remoteproc/ti,keystone-rproc.txt    |  4 ++--
- .../devicetree/bindings/spi/spi-davinci.txt      |  2 +-
- .../devicetree/bindings/usb/ti,j721e-usb.yaml    |  2 +-
- .../bindings/usb/ti,keystone-dwc3.yaml           |  2 +-
- MAINTAINERS                                      | 16 ++++++++--------
- 13 files changed, 26 insertions(+), 26 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/iio/multiplexer/io-channel-mux.yaml b/Documentation/devicetree/bindings/iio/multiplexer/io-channel-mux.yaml
+index 37382b85f2b8..f37586702489 100644
+--- a/Documentation/devicetree/bindings/iio/multiplexer/io-channel-mux.yaml
++++ b/Documentation/devicetree/bindings/iio/multiplexer/io-channel-mux.yaml
+@@ -17,7 +17,7 @@ description: |
+   created. The number of this io-channel is the same as the index into the list
+   of strings in the channels property, and also matches the mux controller
+   state. The mux controller state is described in
+-  Documentation/device-tree/bindings/mux/mux-controller.yaml
++  Documentation/devicetree/bindings/mux/mux-controller.yaml
+ 
+ properties:
+ 
 -- 
 2.31.1
-
 

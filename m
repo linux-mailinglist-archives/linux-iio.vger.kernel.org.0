@@ -2,168 +2,210 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 986EF3992DA
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Jun 2021 20:51:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D84D53992E8
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Jun 2021 20:53:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229467AbhFBSwz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 2 Jun 2021 14:52:55 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:16916 "EHLO
-        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229552AbhFBSwz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Jun 2021 14:52:55 -0400
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 152IWhEq029765;
-        Wed, 2 Jun 2021 14:51:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=aN4TsVtV/nxjKMcDwrd8pmxLdOG4qt7R1DnbN4mnzh4=;
- b=bNrqo7vNusslJQsy6kkn3tDXIrUC7q4efBEmwykkPShaHwlr+ZLQXV7l44gkIkEX2dFF
- TRyFliGMVdYlRKVA5+KcauT0Cg0eU1TsW2j6cpJo/syX8iFVmTu/hD5vt3X4YsDYnaJb
- EyStjdOOH6UYFkpCUkRRQNtY5unuFDn0SvotRogBMyb2jciCGD7RAk/UaTJoHDaZ7aRR
- 6GwUa+01hCb7rttlwrNHLXmuHkD2zlTBifQIz95kcA8hb1Yaf6K9iZ3K0nUtIVf/Ls4e
- 3TyuiVmBhbfHwkClB0Wj1QD+A+lLWRW3kMDmMeCFDWXflzRVf23W7uePHStprGo6x6qa CQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 38xewas6vy-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 02 Jun 2021 14:50:59 -0400
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 152IXSOP032104;
-        Wed, 2 Jun 2021 14:50:59 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 38xewas6vf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 02 Jun 2021 14:50:59 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
-        by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 152IlHQU011733;
-        Wed, 2 Jun 2021 18:50:58 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com [9.57.198.29])
-        by ppma02dal.us.ibm.com with ESMTP id 38ud89t7ch-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 02 Jun 2021 18:50:58 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com [9.57.199.111])
-        by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 152Iov6g18088264
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 2 Jun 2021 18:50:57 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 9EF84AC09B;
-        Wed,  2 Jun 2021 18:50:42 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id C6341AC064;
-        Wed,  2 Jun 2021 18:50:41 +0000 (GMT)
-Received: from [9.211.138.111] (unknown [9.211.138.111])
-        by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
-        Wed,  2 Jun 2021 18:50:41 +0000 (GMT)
-Subject: Re: Regarding Pressure sensors for atmospheric, station, and
- barometric pressures.
-To:     Guenter Roeck <groeck@google.com>
+        id S229607AbhFBSzL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 2 Jun 2021 14:55:11 -0400
+Received: from mail-ej1-f43.google.com ([209.85.218.43]:36665 "EHLO
+        mail-ej1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229468AbhFBSzK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Jun 2021 14:55:10 -0400
+Received: by mail-ej1-f43.google.com with SMTP id a11so4667551ejf.3
+        for <linux-iio@vger.kernel.org>; Wed, 02 Jun 2021 11:53:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DCITROV0s5RuVFdaBSxMnRiqySCChHb5W4JCWEuT3Z4=;
+        b=IDeCwgD5gWq0zSriB9TldoUdWex8cViFUC47pT1kiucVTjEa4zYz1DTNSICtgG5/SS
+         jArll/wY9CuhnZ3xKl+QBE8TlhfmuE35bPiroi01r9jk56lFxZt5bXXwVvoOijhIPfMQ
+         CSlmP0LKetiafywH29Etk0rP6yEBmOqPq6+suqU5apOWY/L7eH+Cgf9y8FbnrkLK0pYn
+         rss9cIJztjyErpZjpsMbtcnl5uyN1AJGXG9lv+e3fTbZ/eVpsGS+z3PtRFI8gQiOckxn
+         V5mIEwWpSdUa3nySKV04jAe7d3of5GLD5PLWEBdGFUdYKBpuw4lSiF7OLda2ItqJsou2
+         gsaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DCITROV0s5RuVFdaBSxMnRiqySCChHb5W4JCWEuT3Z4=;
+        b=Mg91GHv/hTv2xk90oL+SKCiAQvxmKtGkJhi6xT0v+eSzaOucD+9YSjW9lEk1whQ5cX
+         d2gRTKMgKwpJ9KaP3uccoeeWXmF8fuyiNIbwIxQN5Cva+kmGoQzvlgnzvZFEMsDQ/2Bz
+         vbC4R7YXPjRlAZdWIYd2K+sdtLJ635IEH0YNuslPz5q/juyI4RnyeBMg/OdGOqdJaDGv
+         BFFmr0y6AjzUVnMBYQpVxnppNHGG40ws+PQa5zN6kw7ofR7ow8gVruskbQlhA132nitm
+         EJ2Qm8UT6Y4qcMWRnvD1PMGBxlZ8wvOT6O9F4l2XZ5285dFPa4or4XNeIMWyf9whF1zn
+         63xA==
+X-Gm-Message-State: AOAM533lGZtRLeHQTckvc3QllUhxxANKRNmnmid6GGC9J/b2IqF/2nfH
+        Gxv92yeKprKMWlhz+dj/13GetBXNTakg5XhzTDlqIg==
+X-Google-Smtp-Source: ABdhPJzs1OgN36+b+vvLp3/dlnTaTJT0RIRBzXwxuydeXtQf9+0B61uyzGw3LkF82CCOhZ5RumJ5+r64QXcz89PZYhs=
+X-Received: by 2002:a17:906:68ca:: with SMTP id y10mr35919328ejr.318.1622659933090;
+ Wed, 02 Jun 2021 11:52:13 -0700 (PDT)
+MIME-Version: 1.0
+References: <7a1dcde4-25df-ceee-a481-4a2f4afcf5bf@linux.vnet.ibm.com> <f1add89a-853d-2ddd-b07e-6345eb54e72b@linux.vnet.ibm.com>
+In-Reply-To: <f1add89a-853d-2ddd-b07e-6345eb54e72b@linux.vnet.ibm.com>
+From:   Guenter Roeck <groeck@google.com>
+Date:   Wed, 2 Jun 2021 11:52:02 -0700
+Message-ID: <CABXOdTcdkXzmi9qWWZapY19Z7-DsnXsz-yBWbaBqwhLrJpTDVw@mail.gmail.com>
+Subject: Re: Seeking your opinion on ways to report both Altitude and Pressure
+ sensors for the DPS310 as well as Temperature from dbus-sensors.
+To:     Bruce Mitchell <bruce.mitchell@linux.vnet.ibm.com>
 Cc:     Guenter Roeck <linux@roeck-us.net>,
         Guenter Roeck <groeck@chromium.org>,
         linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
         Milton Miller II <miltonm@us.ibm.com>,
         Eddie James <eajames@linux.ibm.com>
-References: <9681d2a6-c820-c5a0-2cc1-e0b7fc808dae@linux.vnet.ibm.com>
- <ca1268bd-8134-352f-bfc1-665abfa7f42c@linux.vnet.ibm.com>
- <CABXOdTegoRVC_3Ks8sTnbhZaGmGXLu_w47Dx5BydLLkGX8Au3A@mail.gmail.com>
-From:   Bruce Mitchell <bruce.mitchell@linux.vnet.ibm.com>
-Message-ID: <698068d1-a2b2-d8e1-5d8a-9d5ba251b8ff@linux.vnet.ibm.com>
-Date:   Wed, 2 Jun 2021 11:50:40 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.2
-In-Reply-To: <CABXOdTegoRVC_3Ks8sTnbhZaGmGXLu_w47Dx5BydLLkGX8Au3A@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: bBPhvg8ag-5Ga3s-Kk6ZmUlo7Yy6AM2z
-X-Proofpoint-ORIG-GUID: praqjvYFTATicJBq1ON0iMoMWMOSXJKF
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
-MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
- definitions=2021-06-02_10:2021-06-02,2021-06-02 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
- mlxlogscore=999 spamscore=0 priorityscore=1501 impostorscore=0
- adultscore=0 phishscore=0 malwarescore=0 suspectscore=0 clxscore=1015
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2106020118
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 6/2/2021 11:41, Guenter Roeck wrote:
-> Hi Bruce,
-> 
-> On Wed, Jun 2, 2021 at 11:14 AM Bruce Mitchell
-> <bruce.mitchell@linux.vnet.ibm.com> wrote:
->>
->> Hello Guenter,
->>
->> I've been asked to expand the To list to include you and hwmon.
->>
->> In reference to:
->> https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-bus-iio
->>
->> There is this section:
->>
->> What:           /sys/bus/iio/devices/iio:deviceX/in_pressureY_raw
->> What:           /sys/bus/iio/devices/iio:deviceX/in_pressure_raw
->> KernelVersion:  3.8
->> Contact:        linux-iio@vger.kernel.org
->> Description:
->>                  Raw pressure measurement from channel Y. Units after
->>                  application of scale and offset are kilopascal.
->>
->> What:           /sys/bus/iio/devices/iio:deviceX/in_pressureY_input
->> What:           /sys/bus/iio/devices/iio:deviceX/in_pressure_input
->> KernelVersion:  3.8
->> Contact:        linux-iio@vger.kernel.org
->> Description:
->>                  Scaled pressure measurement from channel Y, in kilopascal.
->>
->> What:           /sys/bus/iio/devices/iio:deviceX/in_humidityrelative_raw
->> KernelVersion:  3.14
->> Contact:        linux-iio@vger.kernel.org
->> Description:
->>                  Raw humidity measurement of air. Units after application of
->>                  scale and offset are milli percent.
->>
->> What:           /sys/bus/iio/devices/iio:deviceX/in_humidityrelative_input
->> KernelVersion:  3.14
->> Contact:        linux-iio@vger.kernel.org
->> Description:
->>                  Scaled humidity measurement in milli percent.
->>
->> Nowhere do I find the unit kilopascal used in atmospheric pressure.
->> To stick with International System of Units and its Prefixes
->> https://en.wikipedia.org/wiki/International_System_of_Units#Prefixes
->>
->> The standard unit for used in atmospheric pressure measurements or
->> readings is the hectopascal (hPa), in meteorology, for atmospheric
->> pressure, the modern equivalent of the traditional millibar.
->>
->> What would it take to make this change to the standard for
->> https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-bus-iio ?
->>
-> 
-> The short answer is "you don't". The ABI states that pressure is reported in
-> kilopascal, not in hectopascal. We can't change the ABI because existing
-> user space code depends on it. Changing it would be equivalent to changing
-> the ABI for, say, temperature from degrees C to degrees F, or Kelvin.
-> 
-> Quite frankly I don't see your problem. 1 kilopascal = 10 hectopascal. Take
-> the reported number and multiply by 10. What am I missing ?
-> 
-> Obviously I _am_ missing the entire discussion so far, so my response may
-> be  completely off track. If so, my apologies for the noise.
-> 
-> Thanks,
-> Guenter
-> 
+Hi,
 
-Thank you Guenter, I don't have a problem scaling, as you suggest.
-But if I don't ask I know I have a guaranteed NO.  I feel it is better 
-to ask now and know the answer and deal with it appropriately.
+On Wed, Jun 2, 2021 at 11:18 AM Bruce Mitchell
+<bruce.mitchell@linux.vnet.ibm.com> wrote:
+>
+> Forwarded to an expanded the To and Cc Lists.
+>
+> On 6/2/2021 09:21, Ed Tanous wrote:
+> > On Wed, Jun 2, 2021 at 9:14 AM Bruce Mitchell
+> > <bruce.mitchell@linux.vnet.ibm.com> wrote:
+> >>
+> >> On 6/2/2021 09:03, Ed Tanous wrote:
+> >>> On Wed, Jun 2, 2021 at 8:58 AM Bruce Mitchell
+> >>> <bruce.mitchell@linux.vnet.ibm.com> wrote:
+> >>>>
+> >>>> On 6/2/2021 08:39, Ed Tanous wrote:
+> >>>>> On Tue, Jun 1, 2021 at 8:43 AM Bruce Mitchell
+> >>>>> <bruce.mitchell@linux.vnet.ibm.com> wrote:
+> >>>>>>
+> >>>>>> Hello Ed,
+> >>>>>>
+> >>>>>> It has been suggest I seeking your opinion on ways to report both
+> >>>>>> Altitude and Pressure sensors for the DPS310 as well as Temperature from
+> >>>>>> dbus-sensors before going to far down the road.  Thus that is what I am
+> >>>>>> attempting to do in the email, others on the mailing list input is
+> >>>>>> desirable as well.
+> >>>>>
+> >>>>> Thanks for discussing this before getting too far along.  I haven't
+> >>>>> worked on any systems with physical pressure sensors, but I'm excited
+> >>>>> to see new things get added.
+> >>>>>
+> >>>>>>
+> >>>>>> As I see it, Altitude and Pressure are different in that
+> >>>>>>         1) Altitude is computed base off of essentially a policy
+> >>>>>
+> >>>>> I have no idea what this means.....   In what way is altitude a
+> >>>>> "policy"?  Can you elaborate a little?
+> >>>>>
+> >>>>
+> >>>> I view a mechanism is something like update a FLASH part with
+> >>>> an image provided.
+> >>>>
+> >>>> I view a policy is what decides if the the update of the FLASH part
+> >>>> with the specific image is allowed.
+> >>>>
+> >>>> I the case if Pressure and Temperature I view them as mechanism,
+> >>>> merely a simple reading and possibly some well defined computations
+> >>>> that are universal.
+> >>>>
+> >>>> With Altitude computed from Pressure there are several ways to
+> >>>> compute the Altitude and they are not universal.  So I see it as
+> >>>> a policy of which Pressure to Altitude model is chosen and why.
+> >>>
+> >>> Sounds like I interpreted your intention correctly. (I think).
+> >>
+> >> I believe you did.
+> >>
+> >>>
+> >>>>
+> >>>>>>         2) Pressures is a read measurement which is a mechanism
+> >>>>>>         3) Temperature is a read measurement which is also a mechanism
+> >>>>>
+> >>>>> I'm really struggling with the above to understand what you're getting
+> >>>>> after, so if I go down the wrong path, please forgive me.
+> >>>>>
+> >>>>> I think what you're saying is that altitude is calculated based on
+> >>>>> pressure + some transfer function to determine an altitude?  And that
+> >>>>> transfer function might be fungible depending on the platform?
+> >>>>>
+> >>>>> If I got the above right (big if) I would probably expect a new
+> >>>>> pressure sensor type to be added that reports a pressure sensor, then
+> >>>>> we'd put the transform code in something that looks a lot like CFM
+> >>>>> sensor (which oddly enough has a hardcoded 0 for altitude in its
+> >>>>> algorithm for systems without pressure sensors).  Considering how
+> >>>>> related a pressure sensor is to altitude, I could see putting them in
+> >>>>> the same application if you wanted;  It might simplify the code some.
+> >>>>>
+> >>>>>
+> >>>>> I think overall a better picture of what you're wanting to accomplish
+> >>>>> would be a good place to start, then we can iterate from there on what
+> >>>>> pieces we need that are new.
+> >>>>
+> >>>> I have Temperature, Pressure, possibly Humidity sensors all which are
+> >>>> variables to different models to compute Altitude from.  I do not have a
+> >>>> true Altitude sensor.
+> >>>
+> >>> This sounds exactly like the CFM sensor, and Exit air temp sensor;
+> >>> Most systems don't have exit air temp sensors, but they have input
+> >>> power and individual fan speeds, which can be put into models to
+> >>> determine CFM and ultimately exit air temperature.  I would expect
+> >>> Altitude to do something very similar in code (although with a
+> >>> completely different algorithm).
+> >>>
+> >>
+> >> So the DPS310 has 2 sensors in it a Pressure and a Temperature sensor.
+> >> Do I create a Pressure reading and a Temperature reading for the DPS310
+> >> and then add Altitude to it as well?
+> >>
+> >> Or do I create 3 separate things,  one for each Pressure, Temperature,
+> >> and Altitude?
+> >
+> > Assuming in this case "things" are intended to mean "entity manager
+> > exposes records" you would create one config record for the DPS310
+> > itself (which would in turn create 2 sensors).  This is one "record"
+> > because physically it's one part, and can't be separated, similar to a
+> > TMP421.  After that, I would create another config record for the
+> > "Here's the math to combine these into an altitude".  It might just be
+> > a type and a name, depending on how many inputs go into the transfer
+> > function to convert pressure+temperature into an altitude.
+> >
+> > If the math to combine into an altitude isn't system specific, I could
+> > be convinced that the math should go into a single record within the
+> > DPS310 exposes and have that live in the daemon itself, but I don't
+> > have enough detail on how these are usually deployed to know that.
+> >
+>
+> I prefer the the 2 record solution, it keeps the DPS310 self-contained.
+> And keeps the Altitude self-contained, to the models can evolve and
+> change; also if every a true altitude sensor were created it would help
+> keep better abstraction from the DPS310.
+>
+> >>
+> >> Also I believe I should be looking to the CFM sensor and Exit air
+> >> temperature sensor as reference examples.
+> >>
+> >>>>
+> >>>> I am being asked to provide Altitude.
+> >>>>
+> >>>> Personally I believe the desired feature is how much cooling a parcel of
+> >>>> air per unit of time.  Thus I would think air Temperature, Humidity, and
+> >>>> Density (probably compute-able from Pressure, but I have not checked on
+> >>>> the specifics) would be the important factors.
+> >>
+>
 
--- 
-Bruce
+Again, I am obviously missing the entire discussion leading to this point, so
+my response may just be noise. If so, my apologies. Anyway, here is my $0.02:
 
+Altitude can not be measured on its own with a sensor. It can, for example. be
+estimated from air pressure (maybe taking other information or sensors into
+account), or it can be provided (calculated) using GPS. Therefore, "altitude"
+measurements don't belong into the kernel but need to be calculated in user
+space from information which may or may not be provided by the kernel.
+How to do that is outside the scope of kernel development.
+
+A kernel driver for DPS310 should report pressure and temperature data,
+not anything else that may be derived from it.
+
+Thanks,
+Guenter

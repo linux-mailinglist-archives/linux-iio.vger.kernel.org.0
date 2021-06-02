@@ -2,130 +2,728 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BFD2398CAD
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Jun 2021 16:25:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18309398D31
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Jun 2021 16:36:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229894AbhFBO0n (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 2 Jun 2021 10:26:43 -0400
-Received: from mail-pj1-f50.google.com ([209.85.216.50]:43918 "EHLO
-        mail-pj1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229667AbhFBO0m (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Jun 2021 10:26:42 -0400
-Received: by mail-pj1-f50.google.com with SMTP id l10-20020a17090a150ab0290162974722f2so1892160pja.2
-        for <linux-iio@vger.kernel.org>; Wed, 02 Jun 2021 07:24:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=vxjNoFRnVQzEvnaa4Od1YyaZ4C0NbV3WZkG41+0F7ME=;
-        b=nnyqEnfYqZtlJVqBKPym26EqhFv4ZwFAt1KwO2Ibhj7lscFcWUrz27rhUKlZ3/pPPq
-         fxyRnOovQkxbs7c2PBsTnbIi/EY0m68NkKNGxopMLia+RZ+oP904k9orOnkbUQu7Bmp3
-         DsW0AoZgiWnCAoKA2lGsMo7gp93NI3ywiTViEA8aitBTDsZyYmUlz5Z5G1tLXxw2hpiY
-         eA47vg+uiH4c5y7KehSZi3OFgNA5EWUKbgxyMLBCLcaAlcjFyry+PIvqNhos041wIqtC
-         nd04bUMfFYdZmSkwdroS7XhZRxFQh1Te1JBXr5pxv8M3P4gfdlVxZXZHtqLtSlG+iuqU
-         hIaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=vxjNoFRnVQzEvnaa4Od1YyaZ4C0NbV3WZkG41+0F7ME=;
-        b=TOJ54WjpbUvnH1i1HZfJdpop3n60/D9zdTmUI0JCscup/U7W0OHLFK2mf2ckt0V7I8
-         4dTerZESftQnmy+E2u4H7BzCMTbwVXWRJ6CZ2vcz7stxw97S2I0LnRlcP9NriEe5tcnv
-         rhKmhcD7dHfwuTzZmmFu0ZetlWXnWISRGoTUTmgy/VY/G8JlAB4kPfkAA6IwqJTqLONf
-         4KxjD+EqUOWf3QKdNAHT4kKZXAqoSNoR021zUtvqdm4Q5pXUWubt3yqmqm27Lccz4gxk
-         9fhGcFczOM2ohtVMFWZsJyDo3eAocu8qvIMXsLG/ZaTxAf1Agtx8Y1zM6v8M2rtB1ZHL
-         8fRg==
-X-Gm-Message-State: AOAM531UnW1IIDoJv5SA8K9qMODHjH0opurw50OhESnFEokSrTgMeMES
-        4dlNTHxcJ+f96IcKCll4vou+BMtNeIbFDw==
-X-Google-Smtp-Source: ABdhPJx+TtlXRhntd4S0dNqOvhEKHY9yWhMRoUAs9emDwXeQAJcbWuJU/o7w8IbCfCIopFzqU+N7fw==
-X-Received: by 2002:a17:90a:aa94:: with SMTP id l20mr5838527pjq.125.1622643829896;
-        Wed, 02 Jun 2021 07:23:49 -0700 (PDT)
-Received: from shinobu ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id q18sm4789968pfj.5.2021.06.02.07.23.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Jun 2021 07:23:49 -0700 (PDT)
-Date:   Wed, 2 Jun 2021 23:23:44 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Cc:     linux-iio@vger.kernel.org, Felipe Balbi <balbi@kernel.org>,
-        Raymond Tan <raymond.tan@intel.com>
-Subject: Re: [PATCH v3] counter: Add support for Intel Quadrature Encoder
- Peripheral
-Message-ID: <YLeUcMWM7pSRIFhO@shinobu>
-References: <20210527135838.3853285-1-jarkko.nikula@linux.intel.com>
- <YLcDJ+ZI1fXRpFRe@shinobu>
- <d9dc416f-100f-3fb8-d250-3aed8ca8f10b@linux.intel.com>
+        id S230411AbhFBOij (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 2 Jun 2021 10:38:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40692 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230246AbhFBOij (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Jun 2021 10:38:39 -0400
+X-Greylist: delayed 474 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 02 Jun 2021 07:36:56 PDT
+Received: from ns.pmeerw.net (ns.pmeerw.net [IPv6:2001:1b60:2:23:1033:103:0:1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 323CFC061574
+        for <linux-iio@vger.kernel.org>; Wed,  2 Jun 2021 07:36:56 -0700 (PDT)
+Received: by ns.pmeerw.net (Postfix, from userid 1000)
+        id 6099FE053D; Wed,  2 Jun 2021 16:28:58 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pmeerw.net; s=mail;
+        t=1622644138; bh=4xfCsokbCn/hZoRfOUUqil9WToLv0p1ccBtPacTFgbY=;
+        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+        b=eFoxIE6At3RMACPilg/De7Qh8KByOKl3tszmxR3BCjUv1IBaavlQ1Whlt+bXHCgMF
+         hprm0etKMfBsYBXg8tIqVs9xHpGJ9mks+7fZrh7yNbNo03cms6PcE9ARdhbJVGTSON
+         yA2v5EB4v32FMdqUq8bbCYHVrdYBGIkovfQTquVc=
+Received: from localhost (localhost [127.0.0.1])
+        by ns.pmeerw.net (Postfix) with ESMTP id 50232E03F6;
+        Wed,  2 Jun 2021 16:28:58 +0200 (CEST)
+Date:   Wed, 2 Jun 2021 16:28:58 +0200 (CEST)
+From:   Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+To:     Christoph Fritz <chf.fritz@googlemail.com>
+cc:     Jonathan Cameron <jic23@kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH 1/2] iio: light: Add support for Intersil isl76683
+ sensor
+In-Reply-To: <20210602134512.193186-2-chf.fritz@googlemail.com>
+Message-ID: <65b21011-17d6-5e5b-fc1d-caa14a919a30@pmeerw.net>
+References: <20210602134512.193186-1-chf.fritz@googlemail.com> <20210602134512.193186-2-chf.fritz@googlemail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="oMdAczc/ZUz0nEcS"
-Content-Disposition: inline
-In-Reply-To: <d9dc416f-100f-3fb8-d250-3aed8ca8f10b@linux.intel.com>
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---oMdAczc/ZUz0nEcS
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> This patch adds support for Intersil isl76683 light sensor.
 
-On Wed, Jun 02, 2021 at 02:41:29PM +0300, Jarkko Nikula wrote:
-> Hi
->=20
-> On 6/2/21 7:03 AM, William Breathitt Gray wrote:
-> > On Thu, May 27, 2021 at 04:58:38PM +0300, Jarkko Nikula wrote:
-> >>   Documentation/ABI/testing/sysfs-bus-counter |   9 +
-> >>   drivers/counter/Kconfig                     |  10 +
-> >>   drivers/counter/Makefile                    |   1 +
-> >>   drivers/counter/intel-qep.c                 | 546 ++++++++++++++++++=
-++
-> >>   4 files changed, 566 insertions(+)
-> >>   create mode 100644 drivers/counter/intel-qep.c
-> >=20
-> > Hi Jarkko,
-> >=20
-> > I noticed the intel-qep.c file is missing an entry in the MAINTAINERS
-> > file. Would you be able to resubmit this patch with a proper entry added
-> > to MAINTAINERS so that users have the relevant contact info to reach the
-> > maintainers of this driver? You can keep my Signed-off tag on as well so
-> > that we know the code has already been reviewed.
-> >=20
-> Ah, added now. I sent the update and didn't dare to add your signature=20
-> due the sidenote below :-)
->=20
-> Sidenote, to my understanding Signed-off-by requires patch went through=
-=20
-> that person and Acked-by is used when maintainer accepts the patch but=20
-> another person commits it with his/her Signed-off-by.
->=20
-> Jarkko
+nice, minor comments below
+ 
+> Signed-off-by: Christoph Fritz <chf.fritz@googlemail.com>
+> ---
+>  drivers/iio/light/Kconfig    |  12 +
+>  drivers/iio/light/Makefile   |   1 +
+>  drivers/iio/light/isl76683.c | 604 +++++++++++++++++++++++++++++++++++
+>  3 files changed, 617 insertions(+)
+>  create mode 100644 drivers/iio/light/isl76683.c
+> 
+> diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
+> index 917f9becf9c7..822e519728a0 100644
+> --- a/drivers/iio/light/Kconfig
+> +++ b/drivers/iio/light/Kconfig
+> @@ -253,6 +253,18 @@ config ISL29125
+>  	  To compile this driver as a module, choose M here: the module will be
+>  	  called isl29125.
+>  
+> +config ISL76683
+> +	tristate "Intersil ISL76683 light sensor"
+> +	depends on I2C
+> +	select IIO_BUFFER
+> +	select IIO_TRIGGERED_BUFFER
+> +	help
+> +	  Say Y here if you want to build a driver for the Intersil ISL76683
+> +	  light sensor for I2C.
+> +
+> +	  To compile this driver as a module, choose M here: the module will be
+> +	  called isl76683.
+> +
+>  config HID_SENSOR_ALS
+>  	depends on HID_SENSOR_HUB
+>  	select IIO_BUFFER
+> diff --git a/drivers/iio/light/Makefile b/drivers/iio/light/Makefile
+> index ea376deaca54..cde09577e2c1 100644
+> --- a/drivers/iio/light/Makefile
+> +++ b/drivers/iio/light/Makefile
+> @@ -28,6 +28,7 @@ obj-$(CONFIG_IQS621_ALS)	+= iqs621-als.o
+>  obj-$(CONFIG_SENSORS_ISL29018)	+= isl29018.o
+>  obj-$(CONFIG_SENSORS_ISL29028)	+= isl29028.o
+>  obj-$(CONFIG_ISL29125)		+= isl29125.o
+> +obj-$(CONFIG_ISL76683)		+= isl76683.o
+>  obj-$(CONFIG_JSA1212)		+= jsa1212.o
+>  obj-$(CONFIG_SENSORS_LM3533)	+= lm3533-als.o
+>  obj-$(CONFIG_LTR501)		+= ltr501.o
+> diff --git a/drivers/iio/light/isl76683.c b/drivers/iio/light/isl76683.c
+> new file mode 100644
+> index 000000000000..8f10b69841b9
+> --- /dev/null
+> +++ b/drivers/iio/light/isl76683.c
+> @@ -0,0 +1,604 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +#include <linux/module.h>
+> +#include <linux/i2c.h>
+> +#include <linux/pm_runtime.h>
+> +#include <linux/regmap.h>
+> +#include <linux/util_macros.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/sysfs.h>
+> +#include <linux/iio/buffer.h>
+> +#include <linux/iio/trigger.h>
+> +#include <linux/iio/trigger_consumer.h>
+> +#include <linux/iio/triggered_buffer.h>
+> +
+> +#define ISL76683_REG_CMD		0x00
+> +#define ISL76683_REG_CTRL		0x01
+> +#define ISL76683_REG_THR_HI		0x02
+> +#define ISL76683_REG_THR_LO		0x03
+> +#define ISL76683_REG_SENSOR_LSB		0x04
+> +#define ISL76683_REG_SENSOR_MSB		0x05
+> +#define ISL76683_REG_CLEAR_INT		0x40
+> +#define ISL76683_REGMAP_MAX		0x40
+> +
+> +#define ISL76683_CMD_ENABLE		BIT(7)
+> +#define ISL76683_CMD_PWRDWN		BIT(6)
+> +#define ISL76683_PHOTOD_SHFT		2
+> +#define ISL76683_PHOTOD_MASK		GENMASK(3, ISL76683_PHOTOD_SHFT)
+> +#define ISL76683_INTPERS_MASK		0x3
+> +#define ISL76683_LUXRANGE_SHFT		2
+> +#define ISL76683_LUXRANGE_MASK		(0x3 << ISL76683_LUXRANGE_SHFT)
+> +#define ISL76683_LUXRANGE_STR		"1000 4000 16000 64000"
+> +#define ISL76683_RESOLUTION_SHFT	0
+> +#define ISL76683_RESOLUTION_MASK	(0x3 << ISL76683_RESOLUTION_SHFT)
+> +
+> +enum isl76683_dmode {
+> +	ISL76683_DIODE_0 = 0,
+> +	ISL76683_DIODE_IR,
+> +	ISL76683_DIODE_DIFF,
+> +};
+> +
+> +enum isl76683_lux_range {
+> +	ISL76683_LUX_1000 = 0,
+> +	ISL76683_LUX_4000,
+> +	ISL76683_LUX_16000,
+> +	ISL76683_LUX_64000,
+> +};
+> +
+> +enum isl76683_resolution {
+> +	ISL76683_RES_16 = 0,
+> +	ISL76683_RES_12,
+> +	ISL76683_RES_8,
+> +	ISL76683_RES_4,
+> +};
+> +
+> +static const int isl76683_lux_ranges_available[] = {
+> +	1000, 4000, 16000, 64000};
+> +
+> +#define ISL76683_LUX_RANGE_DEFAULT	ISL76683_LUX_1000
+> +#define ISL76683_DIODE_DEFAULT		ISL76683_DIODE_0
+> +#define ISL76683_RESOLUTION_DEFAULT	ISL76683_RES_16
+> +#define ISL76683_INTPERS_DEFAULT	0x0
+> +#define ISL76683_THR_DEFAULT		0x7f
+> +
+> +struct isl76683_chip {
+> +	enum isl76683_lux_range		luxrange;
+> +	enum isl76683_dmode		photodiode;
+> +	struct i2c_client		*client;
+> +	struct regmap			*rmp;
+> +	struct completion		irq_complete;
+> +	struct iio_trigger		*trig;
+> +	bool				trig_enabled;
+> +	struct mutex			lock;
+> +	s64				time_ns;
+> +};
+> +
+> +static bool isl76683_readable_reg(struct device *dev, unsigned int reg)
+> +{
+> +	switch (reg) {
+> +	case ISL76683_REG_CMD:
+> +	case ISL76683_REG_CTRL:
+> +	case ISL76683_REG_THR_HI:
+> +	case ISL76683_REG_THR_LO:
+> +	case ISL76683_REG_SENSOR_LSB:
+> +	case ISL76683_REG_SENSOR_MSB:
+> +	case ISL76683_REG_CLEAR_INT:
+> +		return true;
+> +	default:
+> +		return false;
+> +	}
+> +}
+> +
+> +static bool isl76683_writeable_reg(struct device *dev, unsigned int reg)
+> +{
+> +	switch (reg) {
+> +	case ISL76683_REG_CMD:
+> +	case ISL76683_REG_CTRL:
+> +	case ISL76683_REG_THR_HI:
+> +	case ISL76683_REG_THR_LO:
+> +		return true;
+> +	default:
+> +		return false;
+> +	}
+> +}
+> +
+> +static bool isl76683_is_volatile_reg(struct device *dev, unsigned int reg)
+> +{
+> +	switch (reg) {
+> +	case ISL76683_REG_SENSOR_LSB:
+> +	case ISL76683_REG_SENSOR_MSB:
+> +	case ISL76683_REG_CLEAR_INT:
+> +		return true;
+> +	default:
+> +		return false;
+> +	}
+> +}
+> +
+> +static const struct regmap_config isl76683_regmap_config = {
+> +	.reg_bits = 8,
+> +	.val_bits = 8,
+> +	.max_register = ISL76683_REGMAP_MAX,
+> +	.readable_reg = isl76683_readable_reg,
+> +	.writeable_reg = isl76683_writeable_reg,
+> +	.volatile_reg = isl76683_is_volatile_reg,
+> +	.cache_type = REGCACHE_RBTREE,
+> +};
+> +
+> +static int isl76683_get_sensordata(struct isl76683_chip *chip, int *val)
+> +{
+> +	unsigned int sensor_data;
 
-Is that so? I'm not really sure myself of the particular nuances -- I
-wonder if there's an explanation somewhere in the Documentation files,
-or if someone else can explain it more in-depth. Regardless you've made
-all the changes I've requested so here's my Ack for your troubles. :-)
+variable not needed, directly assign to *val?
 
-Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+> +	__le16 sensor_raw;
+> +	int ret;
+> +
+> +	ret = regmap_bulk_read(chip->rmp, ISL76683_REG_SENSOR_LSB,
+> +				&sensor_raw, sizeof(sensor_raw));
+> +	if (ret)
+> +		return ret;
+> +
+> +	sensor_data = le16_to_cpu(sensor_raw);
+> +
+> +	*val = sensor_data;
+> +
+> +	return 0;
+> +}
+> +
+> +static inline int isl76683_start_measurement(struct isl76683_chip *chip)
 
---oMdAczc/ZUz0nEcS
-Content-Type: application/pgp-signature; name="signature.asc"
+that's the only inline function, probably not need to mark explicitly
 
------BEGIN PGP SIGNATURE-----
+> +{
+> +	int dummy;
+> +
+> +	/* dummy read is clearing irq and triggers new measurement */
+> +	return regmap_read(chip->rmp, ISL76683_REG_CLEAR_INT, &dummy);
+> +}
+> +
+> +static int isl76683_singleshot_conversion(struct isl76683_chip *chip, int *val)
+> +{
+> +	long timeout;
+> +	int ret;
+> +
+> +	ret = isl76683_start_measurement(chip);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	/* wait for measurement to complete */
+> +	timeout = wait_for_completion_interruptible_timeout(
+> +			&chip->irq_complete,
+> +			msecs_to_jiffies(5000));
+> +	if (timeout == 0) {
+> +		dev_err(&chip->client->dev, "measurement timed out\n");
+> +		return -ETIMEDOUT;
+> +	} else if (timeout < 0) {
+> +		dev_err(&chip->client->dev, "wait for measurement failed\n");
+> +		return -EINTR;
+> +	}
+> +
+> +	ret = isl76683_get_sensordata(chip, val);
+> +	if (ret) {
+> +		dev_err(&chip->client->dev, "%s: Error %d reading lux\n",
+> +				__func__, ret);
+> +		return ret;
+> +	}
+> +
+> +	return IIO_VAL_INT;
+> +}
+> +
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmC3lHAACgkQhvpINdm7
-VJLUgg//cNCtuxaVXurps0OUiMDHQD+aaZ5GPptazgiFl9qKt6yvdwFNw9mrcA1u
-TWrOq4dreZOiigm0DNJXqxAxgJUzAyfq0okaqIYpSKtOxLNa1zI0A2dgOdT37CSs
-DwCcL+w+fqIWajwnls1DCk5dVtykchnpJEkTzus9cDhxsaJuyPJlUnRIcZTCMoNx
-Bf+xc9oCwKuBeRBmykyk9TTRBXhbI/swuMBLli7msKtq+Kwo/iH9XwO47zd+dXUb
-4rdqR6j/vBb5hzRZnX43jkkWIUeRlhNCXnux51Tj5oiNAk07XUBn38EWTJQmhha5
-Iij6GFoJqbjXVg4UzjaCnbkY2HcUHEpLZouzfhuLxb3JeuMgSnX7KMYSqdonuoSK
-bD3pSmibxoeU9+TNsazEGBA/HxDfgVD3FVWFClLG+IWrJDRiOQQAk5o97QkZx1f4
-F+WKoY4hGLFlNT/5lC/yjiB7t7CPQDQ4KSxtEqPpmQjfJjhY3ue7MHRjfiw/jt+u
-gWRUsHjM/kFw/NLHY4c5nwBBpp5HjewTDsMoVOFSjq75TJJ5LkRjgOP/p6NtfcIi
-8r3gLdqnj1BApHrfyQxgSUmmGMsVzRuzLA3i+8FtdDHmeMjawUvJzy1ipB5cpbyM
-KY167EPk2sN8/VoGu02JrjPC5BpWLXM6r7+lFYGuSniud6C8jw8=
-=BbQK
------END PGP SIGNATURE-----
+avoid double newline
 
---oMdAczc/ZUz0nEcS--
+> +
+> +static int isl76683_set_config(struct isl76683_chip *chip)
+> +{
+> +	int dummy, ret;
+
+dummy could be in local scope below
+
+> +	bool changed;
+> +
+> +	ret = regmap_update_bits(chip->rmp, ISL76683_REG_CTRL,
+> +				ISL76683_LUXRANGE_MASK | ISL76683_INTPERS_MASK,
+> +				(chip->luxrange << ISL76683_LUXRANGE_SHFT) |
+> +				ISL76683_INTPERS_DEFAULT);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = regmap_update_bits_check(chip->rmp, ISL76683_REG_CMD,
+> +				ISL76683_PHOTOD_MASK | ISL76683_RESOLUTION_MASK,
+> +				(chip->photodiode << ISL76683_PHOTOD_SHFT) |
+> +				ISL76683_RESOLUTION_DEFAULT, &changed);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	/* to get sane result after changing diode, dummy read is necessary */
+> +	if (changed) {
+> +		ret = isl76683_singleshot_conversion(chip, &dummy);
+> +		if (ret < 0)
+> +			return ret;
+> +	}
+> +
+> +	ret = regmap_write(chip->rmp, ISL76683_REG_THR_HI,
+> +				ISL76683_THR_DEFAULT);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return regmap_write(chip->rmp, ISL76683_REG_THR_LO,
+> +				ISL76683_THR_DEFAULT);
+> +}
+> +
+> +static int isl76683_power(struct isl76683_chip *chip, bool on)
+> +{
+> +	int ret;
+> +
+> +	ret = regmap_update_bits(chip->rmp, ISL76683_REG_CMD,
+> +				ISL76683_CMD_ENABLE | ISL76683_CMD_PWRDWN,
+> +				0x0);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = regmap_update_bits(chip->rmp, ISL76683_REG_CMD,
+> +				ISL76683_CMD_ENABLE | ISL76683_CMD_PWRDWN,
+> +				on ? ISL76683_CMD_ENABLE : ISL76683_CMD_PWRDWN);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return on ? isl76683_set_config(chip) : 0;
+> +}
+> +
+> +static void isl76683_power_disable(void *data)
+> +{
+> +	struct isl76683_chip *chip = data;
+> +
+> +	isl76683_power(chip, false);
+> +}
+> +
+> +static int isl76683_reset(struct isl76683_chip *chip)
+> +{
+> +	int ret;
+> +
+> +	ret = isl76683_power(chip, false);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return isl76683_power(chip, true);
+> +}
+> +
+> +static irqreturn_t isl76683_interrupt_handler(int irq, void *private)
+> +{
+> +	struct iio_dev *indio_dev = private;
+> +	struct isl76683_chip *chip = iio_priv(indio_dev);
+> +
+> +	chip->time_ns = iio_get_time_ns(indio_dev);
+> +
+> +	if (chip->trig_enabled)
+> +		iio_trigger_poll(chip->trig);
+> +
+> +	if (!completion_done(&chip->irq_complete))
+> +		complete(&chip->irq_complete);
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static irqreturn_t isl76683_trigger_handler(int irq, void *p)
+> +{
+> +	struct iio_poll_func *pf = p;
+> +	struct iio_dev *indio_dev = pf->indio_dev;
+> +	struct isl76683_chip *chip = iio_priv(indio_dev);
+> +	struct {
+> +		__le16 sensor;
+> +		s64 ts __aligned(8);
+> +	} scan;
+> +	int ret;
+> +
+> +	mutex_lock(&chip->lock);
+> +	ret = regmap_bulk_read(chip->rmp, ISL76683_REG_SENSOR_LSB,
+> +			       (u8 *)&scan.sensor, sizeof(scan.sensor));
+> +	if (ret)
+> +		goto done;
+> +
+> +	iio_push_to_buffers_with_timestamp(indio_dev, &scan, chip->time_ns);
+> +
+> +	ret = isl76683_start_measurement(chip);
+> +	if (ret < 0)
+> +		goto done;
+> +
+> +done:
+> +	mutex_unlock(&chip->lock);
+> +	iio_trigger_notify_done(indio_dev->trig);
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static int isl76683_buffer_preenable(struct iio_dev *indio_dev)
+> +{
+> +	struct isl76683_chip *chip = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	if (test_bit(2, indio_dev->active_scan_mask))
+> +		chip->photodiode = ISL76683_DIODE_DIFF;
+> +	else if (test_bit(1, indio_dev->active_scan_mask))
+> +		chip->photodiode = ISL76683_DIODE_IR;
+> +	else
+> +		chip->photodiode = ISL76683_DIODE_0;
+> +
+> +	ret = isl76683_set_config(chip);
+
+just 
+return isl76683_set_config(chip);
+no need for ret
+
+> +
+> +	return ret;
+> +}
+> +
+> +static const struct iio_buffer_setup_ops isl76683_buffer_setup_ops = {
+> +	.preenable = &isl76683_buffer_preenable,
+> +	.validate_scan_mask = &iio_validate_scan_mask_onehot,
+> +};
+> +
+> +static int isl76683_read_raw(struct iio_dev *indio_dev,
+> +			     struct iio_chan_spec const *chan,
+> +			     int *val, int *val2, long mask)
+> +{
+> +	struct isl76683_chip *chip = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		ret = iio_device_claim_direct_mode(indio_dev);
+> +		if (ret)
+> +			return ret;
+> +		switch (chan->channel2) {
+> +		case IIO_MOD_LIGHT_BOTH:
+> +			chip->photodiode = ISL76683_DIODE_DIFF;
+> +			break;
+> +		case IIO_MOD_LIGHT_IR:
+> +			chip->photodiode = ISL76683_DIODE_IR;
+> +			break;
+> +		default:
+> +			chip->photodiode = ISL76683_DIODE_0;
+> +		}
+> +		ret = isl76683_set_config(chip);
+> +		if (ret) {
+> +			iio_device_release_direct_mode(indio_dev);
+> +			return ret;
+> +		}
+> +		ret = isl76683_singleshot_conversion(chip, val);
+
+shouldn't this be mutex to not interfere with config changes?
+
+> +		iio_device_release_direct_mode(indio_dev);
+> +		return ret;
+> +	case IIO_CHAN_INFO_SCALE:
+> +		*val = isl76683_lux_ranges_available[chip->luxrange];
+> +		return IIO_VAL_INT;
+> +	}
+> +
+> +	return -EINVAL;
+> +}
+> +
+> +static int isl76683_write_raw(struct iio_dev *indio_dev,
+> +			     struct iio_chan_spec const *chan,
+> +			     int val, int val2, long mask)
+> +{
+> +	struct isl76683_chip *chip = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_SCALE:
+> +		mutex_lock(&chip->lock);
+> +		chip->luxrange = find_closest(val,
+> +			isl76683_lux_ranges_available,
+> +			ARRAY_SIZE(isl76683_lux_ranges_available));
+> +		ret = isl76683_set_config(chip);
+> +		mutex_unlock(&chip->lock);
+> +		return ret;
+> +	}
+> +
+> +	return -EINVAL;
+> +}
+> +
+> +static IIO_CONST_ATTR(in_illuminance_scale_available,
+> +		ISL76683_LUXRANGE_STR);
+> +
+> +static struct attribute *isl76683_attributes[] = {
+> +	&iio_const_attr_in_illuminance_scale_available.dev_attr.attr,
+> +	NULL
+> +};
+> +
+> +static const struct attribute_group isl76683_attribute_group = {
+> +	.attrs = isl76683_attributes,
+> +};
+> +
+> +#define ISL76683_CHANNEL(_ch2, _si) { \
+> +	.type = IIO_LIGHT, \
+> +	.modified = 1, \
+> +	.channel2 = _ch2, \
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
+> +	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE), \
+> +	.scan_index = _si, \
+> +	.scan_type = { \
+> +		.sign = 'u', \
+> +		.realbits = 16, \
+> +		.storagebits = 16, \
+> +		.endianness = IIO_LE, \
+> +	}, \
+> +}
+> +
+> +static const struct iio_chan_spec isl76683_channels[] = {
+> +	{
+> +		.type = IIO_LIGHT,
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+> +		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),
+> +		.scan_index = 0,
+> +		.scan_type = {
+> +			.sign = 'u',
+> +			.realbits = 16,
+> +			.storagebits = 16,
+> +			.endianness = IIO_LE,
+> +		},
+> +	},
+> +	ISL76683_CHANNEL(IIO_MOD_LIGHT_IR, 1),
+> +	ISL76683_CHANNEL(IIO_MOD_LIGHT_BOTH, 2),
+> +	IIO_CHAN_SOFT_TIMESTAMP(3),
+> +};
+> +
+> +static const struct iio_info isl76683_info = {
+> +	.read_raw = isl76683_read_raw,
+> +	.write_raw = isl76683_write_raw,
+> +	.attrs = &isl76683_attribute_group,
+> +};
+> +
+> +static int isl76683_set_trigger_state(struct iio_trigger *trig, bool enable)
+> +{
+> +	struct isl76683_chip *chip = iio_trigger_get_drvdata(trig);
+> +	int ret;
+> +
+> +	if (enable) {
+> +		chip->trig_enabled = true;
+> +		ret = isl76683_start_measurement(chip);
+> +		if (ret < 0)
+> +			return ret;
+> +	} else
+> +		chip->trig_enabled = false;
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct iio_trigger_ops isl76683_trigger_ops = {
+> +	.set_trigger_state = isl76683_set_trigger_state,
+> +	.validate_device = iio_trigger_validate_own_device,
+> +};
+> +
+> +static int isl76683_probe(struct i2c_client *client)
+> +{
+> +	struct device *dev = &client->dev;
+> +	struct isl76683_chip *chip;
+> +	struct iio_dev *indio_dev;
+> +	int v, ret;
+> +
+> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*chip));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	chip = iio_priv(indio_dev);
+> +	i2c_set_clientdata(client, indio_dev);
+> +	chip->client = client;
+> +
+> +	chip->luxrange = ISL76683_LUX_RANGE_DEFAULT;
+> +	chip->photodiode = ISL76683_DIODE_DEFAULT;
+> +
+> +	chip->rmp = devm_regmap_init_i2c(client, &isl76683_regmap_config);
+> +	if (IS_ERR(chip->rmp)) {
+> +		ret = PTR_ERR(chip->rmp);
+> +		dev_err(dev, "%s: Error %d initializing regmap\n",
+> +			__func__, ret);
+> +		return ret;
+> +	}
+> +
+> +	mutex_init(&chip->lock);
+> +	init_completion(&chip->irq_complete);
+> +
+> +	if (!client->irq) {
+> +		dev_err(dev, "no interrupt configured\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	indio_dev->dev.parent = dev;
+> +	indio_dev->info = &isl76683_info;
+> +	indio_dev->channels = isl76683_channels;
+> +	indio_dev->num_channels = ARRAY_SIZE(isl76683_channels);
+> +	indio_dev->name = chip->client->name;
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +
+> +	chip->trig_enabled = false;
+> +	chip->trig = devm_iio_trigger_alloc(dev, "%s-dev%d",
+> +			indio_dev->name, indio_dev->id);
+> +	if (!chip->trig)
+> +		return -ENOMEM;
+> +
+> +	chip->trig->ops = &isl76683_trigger_ops;
+> +	chip->trig->dev.parent = dev;
+> +	iio_trigger_set_drvdata(chip->trig, chip);
+> +
+> +	ret = devm_request_irq(dev, client->irq,
+> +			isl76683_interrupt_handler,
+> +			IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
+> +			"isl76683_event", indio_dev);
+> +	if (ret) {
+> +		dev_err(dev, "irq request error\n");
+> +		return ret;
+> +	}
+> +
+> +	ret = devm_iio_trigger_register(dev, chip->trig);
+> +	if (ret) {
+> +		dev_err(dev, "iio_trigger register error\n");
+> +		return ret;
+> +	}
+> +
+> +	ret = isl76683_reset(chip);
+> +	if (ret) {
+> +		dev_err(dev, "reset failed\n");
+> +		return ret;
+> +	}
+> +
+> +	ret = isl76683_get_sensordata(chip, &v);
+> +	if (ret) {
+> +		dev_err(dev, "initial dummy readout failed\n");
+> +		return ret;
+> +	}
+> +
+> +	ret = devm_add_action_or_reset(dev, isl76683_power_disable, chip);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
+> +			&isl76683_trigger_handler, &isl76683_buffer_setup_ops);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = devm_iio_device_register(dev, indio_dev);
+> +	if (ret) {
+> +		dev_err(dev, "%s(): iio registration failed with error %d\n",
+> +			__func__, ret);
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +static int __maybe_unused isl76683_suspend(struct device *dev)
+> +{
+> +	struct isl76683_chip *chip =
+> +		iio_priv(i2c_get_clientdata(to_i2c_client(dev)));
+> +	int ret;
+> +
+> +	mutex_lock(&chip->lock);
+> +	ret = isl76683_power(chip, false);
+> +	regcache_mark_dirty(chip->rmp);
+> +	mutex_unlock(&chip->lock);
+> +
+> +	return ret;
+> +}
+> +
+> +static int __maybe_unused isl76683_resume(struct device *dev)
+> +{
+> +	struct isl76683_chip *chip =
+> +		iio_priv(i2c_get_clientdata(to_i2c_client(dev)));
+> +	int ret;
+> +
+> +	mutex_lock(&chip->lock);
+> +	ret = isl76683_power(chip, true);
+> +	mutex_unlock(&chip->lock);
+> +
+> +	return ret;
+> +}
+> +
+> +static SIMPLE_DEV_PM_OPS(isl76683_pm_ops, isl76683_suspend, isl76683_resume);
+> +
+> +static const struct of_device_id isl76683_of_match[] = {
+> +	{ .compatible = "isil,isl76683", },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(of, isl76683_of_match);
+> +
+> +static const struct i2c_device_id isl76683_id[] = {
+> +	{"isl76683", 0},
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(i2c, isl76683_id);
+> +
+> +static struct i2c_driver isl76683_driver = {
+> +	.driver  = {
+> +		.name = "isl76683",
+> +		.of_match_table = isl76683_of_match,
+> +		.pm = &isl76683_pm_ops,
+> +	},
+> +	.probe_new = isl76683_probe,
+> +	.id_table = isl76683_id,
+> +};
+> +module_i2c_driver(isl76683_driver);
+> +
+> +MODULE_AUTHOR("Christoph Fritz <chf.fritz@googlemail.com>");
+> +MODULE_DESCRIPTION("ISL76683 Ambient Light Sensor driver");
+> +MODULE_LICENSE("GPL");
+> 
+
+-- 
+
+Peter Meerwald-Stadler
+Mobile: +43 664 24 44 418

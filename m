@@ -2,27 +2,27 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B3C2F39AA76
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Jun 2021 20:50:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBA8839AA77
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Jun 2021 20:50:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229620AbhFCSwQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 3 Jun 2021 14:52:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55846 "EHLO mail.kernel.org"
+        id S229661AbhFCSwT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 3 Jun 2021 14:52:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55864 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229576AbhFCSwQ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 3 Jun 2021 14:52:16 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 01369613D2;
-        Thu,  3 Jun 2021 18:50:28 +0000 (UTC)
+        id S229576AbhFCSwT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 3 Jun 2021 14:52:19 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0F3CD613F1;
+        Thu,  3 Jun 2021 18:50:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1622746231;
-        bh=PhJQosXdxrQ+g+QKSnUNc5H/3QGVWLm1R+9Uf9sdBFo=;
-        h=From:To:Cc:Subject:Date:From;
-        b=jnzc+VjTKHraNlwnGvfHEK8nyiSPv4BR5ZFYtfFdN7y+DOyYDps20JRrWTFD1c57l
-         ziIUluc2MDT0lO/w8PhGp1oO5/sSQBssVqSV31jDQmGxbcE9p1tk6qR2qZT1smXMOk
-         Zj4pxR2FGsv70L8T0OkBeiXhf6mJnHdwV0dRyFkmTUsrDtNz1m0ni4DEO7QwREtpdi
-         RB3dEsHvkac1VD53c9MczG7wfRD1Xed3CpfLNig6u6pLvuWHx09is3h3pBQRiMi5ql
-         mYzIsXgmO698eqVW82Bqk1bUSvyXwb+/5qx0W4syvpgaNWmSlfA5t5VrHhC4qMx0r+
-         ABn+4MK0PWXyA==
+        s=k20201202; t=1622746234;
+        bh=6Pwqv0iNwUYmFpY6hX3hg/TaL0TAVQ7gDEULkh8bNA8=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=pwUxr78iJ2ZMzl1Jp4uL+WXZaE+2ZLXpLs6G1dXXPdz6W160qBS5GC0Gzt0vnRiPS
+         6qmr0C9UPZMDWsfZbEejrxCJrmCrUYTTlNSya8/S69tb2xr89GAq7BlKyyv7UCoQgj
+         +fX44T0DptO1/bOMcNEpWA1CrfnRR2l7bRbDvQ3NpNe8CXe1BoLEzuXQT8Y7mveGkb
+         PAy8wTgrunSoH7bMdmQZQrLSZbfgnkHrUrqGHaA2UI+8rKkKCezOY9SEAok2qWTZbV
+         os+nXRK39cKcOV2gkraKpYRfXNcOaKpdO3aRN4043CzRxBuXizgD0C0Sk/JQn4BJIh
+         Cbfy0hzJSm/Yg==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
@@ -30,10 +30,12 @@ Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Alexandru Ardelean <aardelean@deviqon.com>,
         Shawn Guo <shawnguo@kernel.org>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 0/5] iio: accel: mma9551/mma9553 Cleanup and update
-Date:   Thu,  3 Jun 2021 19:52:02 +0100
-Message-Id: <20210603185207.3646368-1-jic23@kernel.org>
+Subject: [PATCH v2 1/5] iio: accel: mma9551/mma9553: Drop explicit ACPI match support
+Date:   Thu,  3 Jun 2021 19:52:03 +0100
+Message-Id: <20210603185207.3646368-2-jic23@kernel.org>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20210603185207.3646368-1-jic23@kernel.org>
+References: <20210603185207.3646368-1-jic23@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -42,39 +44,128 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-v2: mma9551: Drop the gpio based irq support as not known to be used
-    and adds complexity which is nice to get rid of.
+The IDs look highly suspicious as they are just the part numbers in
+capitals, so lets drop these if no one screams.
 
-This series came about because I was looking to write a dt-binding for these
-two (currently missing entirely) and I discovered the mma9551 driver in
-particular was doing some unusual things.
+Note:
+- MMA is registered PNP ID for Micromedia AG (not a part of Freescale)
+- Googling doesn't show any results for such ACPI _HID to be present
+  in the wild
 
-Note however, I've only tested the fwnode_irq_get() patch using a hacked
-up version of QEMU and stubbing out some error paths because I'm too
-lazy to emulate it properly ;)
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Acked-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Reviewed-by: Alexandru Ardelean <aardelean@deviqon.com>
+---
+ drivers/iio/accel/mma9551.c | 21 ---------------------
+ drivers/iio/accel/mma9553.c | 21 ---------------------
+ 2 files changed, 42 deletions(-)
 
-The ACPI entries seem unlikely, but please shout if anyone knows of
-them being used in the wild.
-
-It would be particularly helpful if anyone who has either of these
-parts could both give this a spin and let me know so I can ask
-for testing in future.
-
-Thanks,
-
-Jonathan
-
-Jonathan Cameron (5):
-  iio: accel: mma9551/mma9553: Drop explicit ACPI match support
-  iio: accel: mma9551/mma9553: Simplify pm logic
-  iio: accel: mma9551: Add support to get irqs directly from fwnode
-  iio: accel: mma9551: Use devm managed functions to tidy up probe()
-  iio: accel: mma9553: Use devm managed functions to tidy up probe()
-
- drivers/iio/accel/mma9551.c | 151 ++++++++++++------------------------
- drivers/iio/accel/mma9553.c | 121 +++++++++--------------------
- 2 files changed, 85 insertions(+), 187 deletions(-)
-
+diff --git a/drivers/iio/accel/mma9551.c b/drivers/iio/accel/mma9551.c
+index 4c359fb05480..2b74f67536a3 100644
+--- a/drivers/iio/accel/mma9551.c
++++ b/drivers/iio/accel/mma9551.c
+@@ -435,17 +435,6 @@ static int mma9551_gpio_probe(struct iio_dev *indio_dev)
+ 	return 0;
+ }
+ 
+-static const char *mma9551_match_acpi_device(struct device *dev)
+-{
+-	const struct acpi_device_id *id;
+-
+-	id = acpi_match_device(dev->driver->acpi_match_table, dev);
+-	if (!id)
+-		return NULL;
+-
+-	return dev_name(dev);
+-}
+-
+ static int mma9551_probe(struct i2c_client *client,
+ 			 const struct i2c_device_id *id)
+ {
+@@ -464,8 +453,6 @@ static int mma9551_probe(struct i2c_client *client,
+ 
+ 	if (id)
+ 		name = id->name;
+-	else if (ACPI_HANDLE(&client->dev))
+-		name = mma9551_match_acpi_device(&client->dev);
+ 
+ 	ret = mma9551_init(data);
+ 	if (ret < 0)
+@@ -591,13 +578,6 @@ static const struct dev_pm_ops mma9551_pm_ops = {
+ 			   mma9551_runtime_resume, NULL)
+ };
+ 
+-static const struct acpi_device_id mma9551_acpi_match[] = {
+-	{"MMA9551", 0},
+-	{},
+-};
+-
+-MODULE_DEVICE_TABLE(acpi, mma9551_acpi_match);
+-
+ static const struct i2c_device_id mma9551_id[] = {
+ 	{"mma9551", 0},
+ 	{}
+@@ -608,7 +588,6 @@ MODULE_DEVICE_TABLE(i2c, mma9551_id);
+ static struct i2c_driver mma9551_driver = {
+ 	.driver = {
+ 		   .name = MMA9551_DRV_NAME,
+-		   .acpi_match_table = ACPI_PTR(mma9551_acpi_match),
+ 		   .pm = &mma9551_pm_ops,
+ 		   },
+ 	.probe = mma9551_probe,
+diff --git a/drivers/iio/accel/mma9553.c b/drivers/iio/accel/mma9553.c
+index ba3ecb3b57dc..32c9a79ebfec 100644
+--- a/drivers/iio/accel/mma9553.c
++++ b/drivers/iio/accel/mma9553.c
+@@ -1062,17 +1062,6 @@ static irqreturn_t mma9553_event_handler(int irq, void *private)
+ 	return IRQ_HANDLED;
+ }
+ 
+-static const char *mma9553_match_acpi_device(struct device *dev)
+-{
+-	const struct acpi_device_id *id;
+-
+-	id = acpi_match_device(dev->driver->acpi_match_table, dev);
+-	if (!id)
+-		return NULL;
+-
+-	return dev_name(dev);
+-}
+-
+ static int mma9553_probe(struct i2c_client *client,
+ 			 const struct i2c_device_id *id)
+ {
+@@ -1091,8 +1080,6 @@ static int mma9553_probe(struct i2c_client *client,
+ 
+ 	if (id)
+ 		name = id->name;
+-	else if (ACPI_HANDLE(&client->dev))
+-		name = mma9553_match_acpi_device(&client->dev);
+ 	else
+ 		return -ENOSYS;
+ 
+@@ -1230,13 +1217,6 @@ static const struct dev_pm_ops mma9553_pm_ops = {
+ 			   mma9553_runtime_resume, NULL)
+ };
+ 
+-static const struct acpi_device_id mma9553_acpi_match[] = {
+-	{"MMA9553", 0},
+-	{},
+-};
+-
+-MODULE_DEVICE_TABLE(acpi, mma9553_acpi_match);
+-
+ static const struct i2c_device_id mma9553_id[] = {
+ 	{"mma9553", 0},
+ 	{},
+@@ -1247,7 +1227,6 @@ MODULE_DEVICE_TABLE(i2c, mma9553_id);
+ static struct i2c_driver mma9553_driver = {
+ 	.driver = {
+ 		   .name = MMA9553_DRV_NAME,
+-		   .acpi_match_table = ACPI_PTR(mma9553_acpi_match),
+ 		   .pm = &mma9553_pm_ops,
+ 		   },
+ 	.probe = mma9553_probe,
 -- 
 2.31.1
 

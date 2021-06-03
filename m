@@ -2,97 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DDA7B39AB20
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Jun 2021 21:55:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D92539AB4C
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Jun 2021 22:00:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229617AbhFCT5k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 3 Jun 2021 15:57:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36284 "EHLO mail.kernel.org"
+        id S230109AbhFCUC1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 3 Jun 2021 16:02:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37486 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229576AbhFCT5j (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 3 Jun 2021 15:57:39 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3EB63613D7;
-        Thu,  3 Jun 2021 19:55:54 +0000 (UTC)
+        id S230078AbhFCUC1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 3 Jun 2021 16:02:27 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id E5E226140A;
+        Thu,  3 Jun 2021 20:00:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1622750154;
-        bh=wToVNaalatmvkeF4a0pEx+2+hpUvxECj872XBgCP9ao=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=LYedhApN5twPasZy7vPD7LCJhJxr7ZHRHBXadxLjz+5AeHcWcSqwj+NDhz3C4mNcf
-         as120QMw/xodKhQReqOOBnxWTP7IBLY0opEnnBEGzTMVSSlfeZlzqSeVfUH1efc8hj
-         Geev6IP9x9kc2IRwGHEVYAoggynNx3CFRMhvzqmpAK78cgt/88/WBJhoKOinfOXvUY
-         FVIGKlDRVTIwC6BonnXu2JyIQcTpbRdml2AqF3gJHCxltuhxvTZInPsoF1Br132YqH
-         3uK6IfLATHVDt2qaZNhWd1vLYTqjD0glTqPsu0igHO0ugloRmxyA9enpeDOhrZHxJX
-         IWH+//FcgUETg==
-Date:   Thu, 3 Jun 2021 21:55:51 +0200
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Tom Rix <trix@redhat.com>, Sean Nyekjaer <sean@geanix.com>
-Subject: Re: [PATCH] i2c: core: Add stub for i2c_verify_client() if
- !CONFIG_I2C
-Message-ID: <YLkzx7TD/BFu/CAQ@kunai>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Tom Rix <trix@redhat.com>, Sean Nyekjaer <sean@geanix.com>
-References: <20210603165835.3594557-1-jic23@kernel.org>
+        s=k20201202; t=1622750441;
+        bh=bL91cu6ogtTyGxRPIZri6Ql+FCiu+SF6QSQHbM1zYpU=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Tr2eRL2ruuI3sDRg5RflhkOkyV9mFTujf1VRSwWuWzGKIhZvbVCaAxYpgxsOn967z
+         NSAD7IYMIoOO8cgexRa8htj5TMa5JoT3Wkv0szF26PJNQMzsXvJWAGYrsny6UgxWOB
+         0DSG8won1tshR1VxRhArAz/SO25OQjYrnL5dyQS242aahuCLuEtgIYx6YTOuGDajz0
+         VHL9LXHRxKII0rPps4b8g2l1RYIZFPwbgL/Xx11gmnvOpzM53mf3Uy04x4VbkhOV+Z
+         glYdnkCOfixzeKFSHUpB7CAwyKWxHMoZF81Ql2bUy103FcIKpKZNrY/s3wN0K43mHs
+         i4TDGELShuacg==
+Received: by mail-ej1-f51.google.com with SMTP id a11so10323612ejf.3;
+        Thu, 03 Jun 2021 13:00:41 -0700 (PDT)
+X-Gm-Message-State: AOAM532vyxjdQayA5RHN/BZ3eSM5VLUqqhLnZp8Z0LjUv6v41+SWwB5I
+        gzz1Ys23MifmIGCwdrRsLZQ4Ow6jF77dUPl5Hg==
+X-Google-Smtp-Source: ABdhPJw+IpYqfuukI2sJnNmANmuAWrENFVxO3xUzzlu0fu/6+LhA82SGF/btdHtPoNYDNnkITP5uV0NhDBINu7IILPI=
+X-Received: by 2002:a17:906:1d0a:: with SMTP id n10mr868094ejh.341.1622750440433;
+ Thu, 03 Jun 2021 13:00:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="dz+WGjEBIkYe/uPr"
-Content-Disposition: inline
-In-Reply-To: <20210603165835.3594557-1-jic23@kernel.org>
+References: <cover.1622648507.git.mchehab+huawei@kernel.org>
+In-Reply-To: <cover.1622648507.git.mchehab+huawei@kernel.org>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Thu, 3 Jun 2021 15:00:29 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqKLwfgj1khYFxTykjaYPjbNRd=Ajr-bfEnNYY0cu0Z18A@mail.gmail.com>
+Message-ID: <CAL_JsqKLwfgj1khYFxTykjaYPjbNRd=Ajr-bfEnNYY0cu0Z18A@mail.gmail.com>
+Subject: Re: [PATCH 00/12] Fix broken docs references at next-20210602
+To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Keerthy <j-keerthy@ti.com>, Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        Mark Brown <broonie@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        Peter Rosin <peda@axentia.se>,
+        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Wolfgang Grandegger <wg@grandegger.com>,
+        devicetree@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-can@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-usb@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Wed, Jun 2, 2021 at 10:43 AM Mauro Carvalho Chehab
+<mchehab+huawei@kernel.org> wrote:
+>
+> There are some broken references at today's linux-next with regards
+> to files inside Documentation/.
+>
+> Address them.
 
---dz+WGjEBIkYe/uPr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I've finally added this to my automated checks, so now anyone that
+breaks this on binding schema patches should get notified (with the
+exception of patches not Cc'ed to the DT list).
 
-On Thu, Jun 03, 2021 at 05:58:35PM +0100, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->=20
-> If I2C is not compiled, there is no way we should see a call to
-> i2c_verify_client() on a device that is an i2c client. As such,
-> provide a stub to return NULL to resolve an associated build failure.
->=20
-> The build is failing with this link error
-> ld: fxls8962af-core.o: in function `fxls8962af_fifo_transfer':
-> fxls8962af-core.c: undefined reference to `i2c_verify_client'
->=20
-> Reported-by: Tom Rix <trix@redhat.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Fixes: 68068fad0e1c ("iio: accel: fxls8962af: fix errata bug E3 - I2C bur=
-st reads")
-> Reviewed-by: Sean Nyekjaer <sean@geanix.com>
-> Cc: Wolfram Sang <wsa@kernel.org>
-
-Thanks for doing this!
-
-Acked-by: Wolfram Sang <wsa@kernel.org>
-
-
---dz+WGjEBIkYe/uPr
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmC5M8MACgkQFA3kzBSg
-KbYvYg/8CgDrnQbsrXXS+Eo2pyPEnAa26lV+3nalK9Xi66wSndm3ttLbUJgApROS
-f+30mhlXngGoXj3l66pPP3kelu3gpYeA+PSkoLcoM+aEY0sOXM4jzW1M98T4yMSS
-Tshfyw3LqIzemIJGz7RIQuuqdeQu80qW9DecxgtueuGu5vbHDcqbvsHePc90SUqt
-CVmm+P/e7EQx+ePZfR+PVTd1qLAmz2IKemcnHQAR60mqH5J5sSO9tA9OvZS07rmP
-zrUuwpMWN/qFEmkUhpg1tdGt3UB1FrzY8pfMI14uBG0FbY9iSWhEwwVcIcC0Er64
-ZeLxjAICgpAS4MSQAGnNR7OYtZ2qjB3vuQo/1b4mECYWGF6utWj1If8NYh+uqP73
-sjBKepOB1vFHcRfJs+wKd58WlRqs8sED+KOClO/Rs9DERqqZHbhnfXgw0MH9h2cr
-WvoK3TA+LHY32I/QsE7RpjM9oQwhEYyK2g5yTIiVKj58ChzE1LQ293PLtqiF1MJU
-GDm5GLXF9TPr/gUKlOsU3ftXEAgMh3A8Y64bOc8pdXKvtlkGQ00A09tUz8Z++rqQ
-K//a+waeHQ+TjArEMgfNC3CZMUOfD8oZZegp8VjbmzkCXVP9cIUytBs6NJDQgDZE
-8QqXOtjy1lfvaR+dT3DgmL7VacMzW5c/nsXlwA0BOn/Wws8294M=
-=qY1l
------END PGP SIGNATURE-----
-
---dz+WGjEBIkYe/uPr--
+Rob

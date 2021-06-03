@@ -2,178 +2,70 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1443039AA7B
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Jun 2021 20:50:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C9CD39AA85
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Jun 2021 20:54:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229758AbhFCSw2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 3 Jun 2021 14:52:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55924 "EHLO mail.kernel.org"
+        id S229640AbhFCS4B (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 3 Jun 2021 14:56:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56428 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229629AbhFCSw2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 3 Jun 2021 14:52:28 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8DAED613F4;
-        Thu,  3 Jun 2021 18:50:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1622746243;
-        bh=EvbEma45i3jMfOlwDGtL7DgVE0KUvsXK7aDvJjVSTZQ=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EMs4R4zLdw7UtqXAAcTX6SGue+KTcZTbyRB4yw8T2l5a9q/cAeRUkLFU9EW7pTJ3q
-         ODDWNP7sjfvzlLYIOKtNRcrZBSuwU7VmgFGlmYIN4JZeJGlBrVAIyhEMQJRZemuiGA
-         3G0rP8oY4SK8LWUW3IdCpsTXNvnQjAmunK/ETKBbhQ+gYkkCd6wQOI7bN47svdrTjf
-         r+22KEEKri3T4I5qzIbZkNZVeT2vJE/8Z61aWxZ+HC78uFyXsZRkHcFswhgst3LH9g
-         MaCSae6MkjNBV8hq+1D/FRPPw+E2GwpkAljrw3+NqgZYYfwpzrgeAWly3tSSUy+Xwx
-         fb6sj8DQXhN5A==
+        id S229576AbhFCS4A (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 3 Jun 2021 14:56:00 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5628B613EE;
+        Thu,  3 Jun 2021 18:54:13 +0000 (UTC)
+Date:   Thu, 3 Jun 2021 19:55:56 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 5/5] iio: accel: mma9553: Use devm managed functions to tidy up probe()
-Date:   Thu,  3 Jun 2021 19:52:07 +0100
-Message-Id: <20210603185207.3646368-6-jic23@kernel.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210603185207.3646368-1-jic23@kernel.org>
-References: <20210603185207.3646368-1-jic23@kernel.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     linux-iio@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Sean Nyekjaer <sean.nyekjaer@prevas.dk>,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH v2] dt-bindings:iio:dac:ad5755: txt to yaml format
+ conversion.
+Message-ID: <20210603195556.73d5c984@jic23-huawei>
+In-Reply-To: <20210503171445.GA2030945@robh.at.kernel.org>
+References: <20210424173015.534941-1-jic23@kernel.org>
+        <20210503171445.GA2030945@robh.at.kernel.org>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Mon, 3 May 2021 12:14:45 -0500
+Rob Herring <robh@kernel.org> wrote:
 
-The error handling in here left runtime pm enabled, and didn't do the
-same steps as occurred in remove.  Moving over to fully devm_ managed
-makes it harder to get this stuff wrong, so let's do that.
+> On Sat, 24 Apr 2021 18:30:15 +0100, Jonathan Cameron wrote:
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > Straight forward conversion.  Only fiddly bit is the XOR of
+> > spi-cpol and spi-cpha.
+> > 
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Cc: Sean Nyekjaer <sean.nyekjaer@prevas.dk>
+> > Link: https://lore.kernel.org/r/20201031184854.745828-40-jic23@kernel.org
+> > ---
+> > This has been in a few different series, so version numbering is a bit
+> > scrambled.  Let's just call it v2.
+> > V2:
+> > * Drop unnecessary refs where units in naming
+> > * Drop unnecessary brackets in child node naming
+> > 
+> >  .../devicetree/bindings/iio/dac/ad5755.txt    | 124 -------------
+> >  .../bindings/iio/dac/adi,ad5755.yaml          | 169 ++++++++++++++++++
+> >  2 files changed, 169 insertions(+), 124 deletions(-)
+> >   
+> 
+> Reviewed-by: Rob Herring <robh@kernel.org>
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Alexandru Ardelean <aardelean@deviqon.com>
----
- drivers/iio/accel/mma9553.c | 70 ++++++++++++++++++++-----------------
- 1 file changed, 37 insertions(+), 33 deletions(-)
+The applied message for this one seems to be missing.
+Anyhow for anyone curious, applied some time back.
 
-diff --git a/drivers/iio/accel/mma9553.c b/drivers/iio/accel/mma9553.c
-index dc2a3316c1a3..14a9d5fedc06 100644
---- a/drivers/iio/accel/mma9553.c
-+++ b/drivers/iio/accel/mma9553.c
-@@ -375,6 +375,15 @@ static int mma9553_conf_gpio(struct mma9553_data *data)
- 	return 0;
- }
- 
-+static void mma9553_disable_cb(void *_data)
-+{
-+	struct mma9553_data *data = _data;
-+
-+	mutex_lock(&data->mutex);
-+	mma9551_set_device_state(data->client, false);
-+	mutex_unlock(&data->mutex);
-+}
-+
- static int mma9553_init(struct mma9553_data *data)
- {
- 	int ret;
-@@ -430,7 +439,11 @@ static int mma9553_init(struct mma9553_data *data)
- 		return ret;
- 	}
- 
--	return mma9551_set_device_state(data->client, true);
-+	ret = mma9551_set_device_state(data->client, true);
-+	if (ret)
-+		return ret;
-+
-+	return devm_add_action_or_reset(&data->client->dev, mma9553_disable_cb, data);
- }
- 
- static int mma9553_read_status_word(struct mma9553_data *data, u16 reg,
-@@ -1062,6 +1075,16 @@ static irqreturn_t mma9553_event_handler(int irq, void *private)
- 	return IRQ_HANDLED;
- }
- 
-+static void mma9553_rpm_set_susp(void *d)
-+{
-+	pm_runtime_set_suspended(d);
-+}
-+
-+static void mma9553_rpm_disable(void *d)
-+{
-+	pm_runtime_disable(d);
-+}
-+
- static int mma9553_probe(struct i2c_client *client,
- 			 const struct i2c_device_id *id)
- {
-@@ -1105,48 +1128,30 @@ static int mma9553_probe(struct i2c_client *client,
- 		if (ret < 0) {
- 			dev_err(&client->dev, "request irq %d failed\n",
- 				client->irq);
--			goto out_poweroff;
-+			return ret;
- 		}
- 	}
- 
- 	ret = pm_runtime_set_active(&client->dev);
- 	if (ret < 0)
--		goto out_poweroff;
-+		return ret;
-+
-+	ret = devm_add_action_or_reset(&client->dev, mma9553_rpm_set_susp,
-+				       &client->dev);
-+	if (ret)
-+		return ret;
- 
- 	pm_runtime_enable(&client->dev);
-+	ret = devm_add_action_or_reset(&client->dev, mma9553_rpm_disable,
-+				       &client->dev);
-+	if (ret)
-+		return ret;
-+
- 	pm_runtime_set_autosuspend_delay(&client->dev,
- 					 MMA9551_AUTO_SUSPEND_DELAY_MS);
- 	pm_runtime_use_autosuspend(&client->dev);
- 
--	ret = iio_device_register(indio_dev);
--	if (ret < 0) {
--		dev_err(&client->dev, "unable to register iio device\n");
--		goto out_poweroff;
--	}
--
--	dev_dbg(&indio_dev->dev, "Registered device %s\n", name);
--	return 0;
--
--out_poweroff:
--	mma9551_set_device_state(client, false);
--	return ret;
--}
--
--static int mma9553_remove(struct i2c_client *client)
--{
--	struct iio_dev *indio_dev = i2c_get_clientdata(client);
--	struct mma9553_data *data = iio_priv(indio_dev);
--
--	iio_device_unregister(indio_dev);
--
--	pm_runtime_disable(&client->dev);
--	pm_runtime_set_suspended(&client->dev);
--
--	mutex_lock(&data->mutex);
--	mma9551_set_device_state(data->client, false);
--	mutex_unlock(&data->mutex);
--
--	return 0;
-+	return devm_iio_device_register(&client->dev, indio_dev);
- }
- 
- static __maybe_unused int mma9553_runtime_suspend(struct device *dev)
-@@ -1200,7 +1205,6 @@ static struct i2c_driver mma9553_driver = {
- 		   .pm = &mma9553_pm_ops,
- 		   },
- 	.probe = mma9553_probe,
--	.remove = mma9553_remove,
- 	.id_table = mma9553_id,
- };
- 
--- 
-2.31.1
+Thanks,
 
+Jonathan

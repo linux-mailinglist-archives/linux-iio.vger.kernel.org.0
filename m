@@ -2,87 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BA6D39A9BA
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Jun 2021 20:05:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E58F39A9B5
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Jun 2021 20:05:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230049AbhFCSHX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 3 Jun 2021 14:07:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46280 "EHLO mail.kernel.org"
+        id S229916AbhFCSHW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 3 Jun 2021 14:07:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46294 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230443AbhFCSGz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        id S230412AbhFCSGz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
         Thu, 3 Jun 2021 14:06:55 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1BF15611ED;
-        Thu,  3 Jun 2021 18:04:39 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 91CCE61168;
+        Thu,  3 Jun 2021 18:04:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1622743482;
-        bh=GiWzfqYEzX2F0/jFV2TExFGPGu9sc/IZ3x02HUPS5/Q=;
+        s=k20201202; t=1622743486;
+        bh=hsvluWMjRK9V+JojbfAuZixzXGd2ri/U860X/FrZ+a0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EPza7oWfxszpZxXWBBAWxDmI3Sq5Uv1q/kNMAnEnDqwsysCTzKv2djKe8glZNFjzI
-         97AuxH1mM2fpE+3a1JUfFDeQHq5kDo9nS3aMCg5+Qs2OABDuWGpCQ+uzzHQof2sW2b
-         IARIjUF4sOe0UGQha5HXlpiZO2EYJq7DH/8w2shMLPSAFk7mRNpLxzQuznOOhu18xg
-         IKK4Unfaz6+U2X4evg3vo9hZn4cpghPsVBbwmr3iL/IVW1TkN2lizAAtPnosuaOW/z
-         wFbCrQGuADFERTp6ZFUOZUaCuTxXRgU3UPJwVjttzAEgz1FBnK+xhocu7KDilSqbqS
-         5RTGx5t5iPhQw==
+        b=IE7FqO7Fu72Bd9vN8PmJ1EKFBI/ypeC0tZLSFIIUKxRu4oXBFA48ZUVmFHxxPmVFR
+         waO2yTJywSd8nGJfCdYHe04Qt8W446isgq40Oh7zdC3NDopfw7wMiA4Fn1rYyEdPDm
+         6QZi7Z4Jy/fxwtr1RIOq/7C+hoQmkMIEn6pufj+wySHHDui9ufnQMprKsUN8Lc0i+L
+         7j0rYBwurb+atjA37LFpwizhtVScYuedmwgbjpV87n1szI21f1a8F+MAKftU8MYqUU
+         lMIdvMYh3Hr1jtoiPvbFsWeyvXWAXZiMk0feBOgVbyfDya/CPLCmT/nvGQ+7qtTErY
+         ZC7HMfdx4NQ2w==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Arnd Bergmann <arnd@kernel.org>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Joe Perches <joe@perches.com>, Arnd Bergmann <arnd@arndb.de>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 1/4] iio: si1133: fix format string warnings
-Date:   Thu,  3 Jun 2021 19:06:09 +0100
-Message-Id: <20210603180612.3635250-2-jic23@kernel.org>
+        Joe Perches <joe@perches.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        =?UTF-8?q?Maxime=20Roussin-B=C3=A9langer?= 
+        <maxime.roussinbelanger@gmail.com>,
+        Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH v2 2/4] iio: light: si1133: Drop remaining uses of %hhx format string.
+Date:   Thu,  3 Jun 2021 19:06:10 +0100
+Message-Id: <20210603180612.3635250-3-jic23@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210603180612.3635250-1-jic23@kernel.org>
 References: <20210603180612.3635250-1-jic23@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-clang complains about multiple instances of printing an integer
-using the %hhx format string:
-
-drivers/iio/light/si1133.c:982:4: error: format specifies type 'unsigned char' but the argument has type 'unsigned int' [-Werror,-Wformat]
-                 part_id, rev_id, mfr_id);
-                 ^~~~~~~
-
-Print them as a normal integer instead, leaving the "#02"
-length modifier.
+Since:
+commit cbacb5ab0aa0 ("docs: printk-formats: Stop encouraging use of
+unnecessary %h[xudi] and %hh[xudi]")
+use of these format strings has been discouraged.
 
 Use the 0x02x form as the length specifier when used with # includes
 the 0x prefix and is very unlikely to be what was intended by the author.
 
-Fixes: e01e7eaf37d8 ("iio: light: introduce si1133")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Cc: Nathan Chancellor <nathan@kernel.org>
+As there are not that many in IIO, this is part of an effort to clear
+them out so we don't have any instances that might get copied into
+new drivers.
+
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Maxime Roussin-Bélanger <maxime.roussinbelanger@gmail.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
 ---
- drivers/iio/light/si1133.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/light/si1133.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/iio/light/si1133.c b/drivers/iio/light/si1133.c
-index c280b4195003..0accea7090ee 100644
+index 0accea7090ee..f8c9b2cc322e 100644
 --- a/drivers/iio/light/si1133.c
 +++ b/drivers/iio/light/si1133.c
-@@ -978,11 +978,11 @@ static int si1133_validate_ids(struct iio_dev *iio_dev)
- 		return err;
+@@ -352,22 +352,22 @@ static int si1133_parse_response_err(struct device *dev, u32 resp, u8 cmd)
  
- 	dev_info(&iio_dev->dev,
--		 "Device ID part %#02hhx rev %#02hhx mfr %#02hhx\n",
-+		 "Device ID part 0x%02x rev 0x%02x mfr 0x%02x\n",
- 		 part_id, rev_id, mfr_id);
- 	if (part_id != SI1133_PART_ID) {
- 		dev_err(&iio_dev->dev,
--			"Part ID mismatch got %#02hhx, expected %#02x\n",
-+			"Part ID mismatch got 0x%02x, expected 0x%02x\n",
- 			part_id, SI1133_PART_ID);
- 		return -ENODEV;
+ 	switch (resp) {
+ 	case SI1133_ERR_OUTPUT_BUFFER_OVERFLOW:
+-		dev_warn(dev, "Output buffer overflow: %#02hhx\n", cmd);
++		dev_warn(dev, "Output buffer overflow: 0x%02x\n", cmd);
+ 		return -EOVERFLOW;
+ 	case SI1133_ERR_SATURATION_ADC_OR_OVERFLOW_ACCUMULATION:
+-		dev_warn(dev, "Saturation of the ADC or overflow of accumulation: %#02hhx\n",
++		dev_warn(dev, "Saturation of the ADC or overflow of accumulation: 0x%02x\n",
+ 			 cmd);
+ 		return -EOVERFLOW;
+ 	case SI1133_ERR_INVALID_LOCATION_CMD:
+ 		dev_warn(dev,
+-			 "Parameter access to an invalid location: %#02hhx\n",
++			 "Parameter access to an invalid location: 0x%02x\n",
+ 			 cmd);
+ 		return -EINVAL;
+ 	case SI1133_ERR_INVALID_CMD:
+-		dev_warn(dev, "Invalid command %#02hhx\n", cmd);
++		dev_warn(dev, "Invalid command 0x%02x\n", cmd);
+ 		return -EINVAL;
+ 	default:
+-		dev_warn(dev, "Unknown error %#02hhx\n", cmd);
++		dev_warn(dev, "Unknown error 0x%02x\n", cmd);
+ 		return -EINVAL;
  	}
+ }
+@@ -400,7 +400,7 @@ static int si1133_command(struct si1133_data *data, u8 cmd)
+ 
+ 	err = regmap_write(data->regmap, SI1133_REG_COMMAND, cmd);
+ 	if (err) {
+-		dev_warn(dev, "Failed to write command %#02hhx, ret=%d\n", cmd,
++		dev_warn(dev, "Failed to write command 0x%02x, ret=%d\n", cmd,
+ 			 err);
+ 		goto out;
+ 	}
+@@ -425,7 +425,7 @@ static int si1133_command(struct si1133_data *data, u8 cmd)
+ 					       SI1133_CMD_TIMEOUT_MS * 1000);
+ 		if (err) {
+ 			dev_warn(dev,
+-				 "Failed to read command %#02hhx, ret=%d\n",
++				 "Failed to read command 0x%02x, ret=%d\n",
+ 				 cmd, err);
+ 			goto out;
+ 		}
 -- 
 2.31.1
 

@@ -2,44 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E58F39A9B5
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Jun 2021 20:05:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79D6B39A9B8
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Jun 2021 20:05:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229916AbhFCSHW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 3 Jun 2021 14:07:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46294 "EHLO mail.kernel.org"
+        id S229894AbhFCSHX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 3 Jun 2021 14:07:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46306 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230412AbhFCSGz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        id S230414AbhFCSGz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
         Thu, 3 Jun 2021 14:06:55 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 91CCE61168;
-        Thu,  3 Jun 2021 18:04:43 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 12D29613F3;
+        Thu,  3 Jun 2021 18:04:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1622743486;
-        bh=hsvluWMjRK9V+JojbfAuZixzXGd2ri/U860X/FrZ+a0=;
+        s=k20201202; t=1622743489;
+        bh=5gkUpB1HmKpVb9n8exFBH8wL/MEoltrA/LPiGOV6pDk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IE7FqO7Fu72Bd9vN8PmJ1EKFBI/ypeC0tZLSFIIUKxRu4oXBFA48ZUVmFHxxPmVFR
-         waO2yTJywSd8nGJfCdYHe04Qt8W446isgq40Oh7zdC3NDopfw7wMiA4Fn1rYyEdPDm
-         6QZi7Z4Jy/fxwtr1RIOq/7C+hoQmkMIEn6pufj+wySHHDui9ufnQMprKsUN8Lc0i+L
-         7j0rYBwurb+atjA37LFpwizhtVScYuedmwgbjpV87n1szI21f1a8F+MAKftU8MYqUU
-         lMIdvMYh3Hr1jtoiPvbFsWeyvXWAXZiMk0feBOgVbyfDya/CPLCmT/nvGQ+7qtTErY
-         ZC7HMfdx4NQ2w==
+        b=mtW81ksRtyTGC0+AgYyWLMxHH+G4cOItOLCNzmIm88gJ2bSB3OqpOa4lZAUP5hI91
+         15nry/7Jwh1OtTVWrmZ2yuGCl6fsnWw4DU0cZnz3mjFTlXJnixRlkvPmxtyk7RG7JW
+         zCfSiy5AdjTOAEEk+AG0P9gFP4zb8n8fWdNjwhMa2b9xDIRdlUHj2ypl6DXjgdL9vb
+         s/4aOrlhSldnLHqDoo0vJFb/TxYUv3qt4A7tnD2Dy5upUg4fPOCdSY5q8YsSM+OBXg
+         5vK2aOgKDjATgS6ClwdLSQ5P/7MEVXIwBv+4KyKEF1QC7lNovNexkWEeWaW8n4uDBg
+         81t65S1AFsBeQ==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Arnd Bergmann <arnd@kernel.org>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
         Joe Perches <joe@perches.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        =?UTF-8?q?Maxime=20Roussin-B=C3=A9langer?= 
-        <maxime.roussinbelanger@gmail.com>,
         Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH v2 2/4] iio: light: si1133: Drop remaining uses of %hhx format string.
-Date:   Thu,  3 Jun 2021 19:06:10 +0100
-Message-Id: <20210603180612.3635250-3-jic23@kernel.org>
+Subject: [PATCH v2 3/4] iio: imu: inv_mpu6050: Drop use of %hhx format string.
+Date:   Thu,  3 Jun 2021 19:06:11 +0100
+Message-Id: <20210603180612.3635250-4-jic23@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210603180612.3635250-1-jic23@kernel.org>
 References: <20210603180612.3635250-1-jic23@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
@@ -55,66 +52,37 @@ use of these format strings has been discouraged.
 Use the 0x02x form as the length specifier when used with # includes
 the 0x prefix and is very unlikely to be what was intended by the author.
 
-As there are not that many in IIO, this is part of an effort to clear
-them out so we don't have any instances that might get copied into
-new drivers.
+Part of a series removing all uses from IIO in the interestings of
+avoiding providing bad examples for people to copy.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Maxime Roussin-Bélanger <maxime.roussinbelanger@gmail.com>
 Cc: Nathan Chancellor <nathan@kernel.org>
 ---
- drivers/iio/light/si1133.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/light/si1133.c b/drivers/iio/light/si1133.c
-index 0accea7090ee..f8c9b2cc322e 100644
---- a/drivers/iio/light/si1133.c
-+++ b/drivers/iio/light/si1133.c
-@@ -352,22 +352,22 @@ static int si1133_parse_response_err(struct device *dev, u32 resp, u8 cmd)
- 
- 	switch (resp) {
- 	case SI1133_ERR_OUTPUT_BUFFER_OVERFLOW:
--		dev_warn(dev, "Output buffer overflow: %#02hhx\n", cmd);
-+		dev_warn(dev, "Output buffer overflow: 0x%02x\n", cmd);
- 		return -EOVERFLOW;
- 	case SI1133_ERR_SATURATION_ADC_OR_OVERFLOW_ACCUMULATION:
--		dev_warn(dev, "Saturation of the ADC or overflow of accumulation: %#02hhx\n",
-+		dev_warn(dev, "Saturation of the ADC or overflow of accumulation: 0x%02x\n",
- 			 cmd);
- 		return -EOVERFLOW;
- 	case SI1133_ERR_INVALID_LOCATION_CMD:
- 		dev_warn(dev,
--			 "Parameter access to an invalid location: %#02hhx\n",
-+			 "Parameter access to an invalid location: 0x%02x\n",
- 			 cmd);
- 		return -EINVAL;
- 	case SI1133_ERR_INVALID_CMD:
--		dev_warn(dev, "Invalid command %#02hhx\n", cmd);
-+		dev_warn(dev, "Invalid command 0x%02x\n", cmd);
- 		return -EINVAL;
- 	default:
--		dev_warn(dev, "Unknown error %#02hhx\n", cmd);
-+		dev_warn(dev, "Unknown error 0x%02x\n", cmd);
- 		return -EINVAL;
- 	}
- }
-@@ -400,7 +400,7 @@ static int si1133_command(struct si1133_data *data, u8 cmd)
- 
- 	err = regmap_write(data->regmap, SI1133_REG_COMMAND, cmd);
- 	if (err) {
--		dev_warn(dev, "Failed to write command %#02hhx, ret=%d\n", cmd,
-+		dev_warn(dev, "Failed to write command 0x%02x, ret=%d\n", cmd,
- 			 err);
- 		goto out;
- 	}
-@@ -425,7 +425,7 @@ static int si1133_command(struct si1133_data *data, u8 cmd)
- 					       SI1133_CMD_TIMEOUT_MS * 1000);
- 		if (err) {
- 			dev_warn(dev,
--				 "Failed to read command %#02hhx, ret=%d\n",
-+				 "Failed to read command 0x%02x, ret=%d\n",
- 				 cmd, err);
- 			goto out;
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+index 64704b55f6eb..b7254d9e0fe2 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+@@ -1314,8 +1314,7 @@ static int inv_check_and_setup_chip(struct inv_mpu6050_state *st)
+ 		for (i = 0; i < INV_NUM_PARTS; ++i) {
+ 			if (regval == hw_info[i].whoami) {
+ 				dev_warn(regmap_get_device(st->map),
+-					"whoami mismatch got %#02x (%s)"
+-					"expected %#02hhx (%s)\n",
++					"whoami mismatch got 0x%02x (%s) expected 0x%02x (%s)\n",
+ 					regval, hw_info[i].name,
+ 					st->hw->whoami, st->hw->name);
+ 				break;
+@@ -1323,7 +1322,7 @@ static int inv_check_and_setup_chip(struct inv_mpu6050_state *st)
+ 		}
+ 		if (i >= INV_NUM_PARTS) {
+ 			dev_err(regmap_get_device(st->map),
+-				"invalid whoami %#02x expected %#02hhx (%s)\n",
++				"invalid whoami 0x%02x expected 0x%02x (%s)\n",
+ 				regval, st->hw->whoami, st->hw->name);
+ 			return -ENODEV;
  		}
 -- 
 2.31.1

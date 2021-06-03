@@ -2,38 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C7DBD399EE4
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Jun 2021 12:25:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4DF5399FBC
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Jun 2021 13:24:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229640AbhFCK1X (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 3 Jun 2021 06:27:23 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:3137 "EHLO
+        id S229754AbhFCL0Y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 3 Jun 2021 07:26:24 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:3138 "EHLO
         frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229610AbhFCK1W (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Jun 2021 06:27:22 -0400
-Received: from fraeml743-chm.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Fwhd66DSHz6L6JM;
-        Thu,  3 Jun 2021 18:16:26 +0800 (CST)
+        with ESMTP id S229697AbhFCL0Y (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Jun 2021 07:26:24 -0400
+Received: from fraeml715-chm.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4FwjsQ0W5sz6J9TD;
+        Thu,  3 Jun 2021 19:12:10 +0800 (CST)
 Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml743-chm.china.huawei.com (10.206.15.224) with Microsoft SMTP Server
+ fraeml715-chm.china.huawei.com (10.206.15.34) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Thu, 3 Jun 2021 12:25:33 +0200
+ 15.1.2176.2; Thu, 3 Jun 2021 13:24:37 +0200
 Received: from localhost (10.52.126.9) by lhreml710-chm.china.huawei.com
  (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Thu, 3 Jun 2021
- 11:25:32 +0100
-Date:   Thu, 3 Jun 2021 11:25:31 +0100
+ 12:24:37 +0100
+Date:   Thu, 3 Jun 2021 12:24:36 +0100
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Christoph Fritz <chf.fritz@googlemail.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>, <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 2/2] dt-bindings: iio: light: add isl76683 light
- bindings
-Message-ID: <20210603112531.00007622@Huawei.com>
-In-Reply-To: <20210602134512.193186-3-chf.fritz@googlemail.com>
-References: <20210602134512.193186-1-chf.fritz@googlemail.com>
-        <20210602134512.193186-3-chf.fritz@googlemail.com>
+To:     Wolfram Sang <wsa@kernel.org>
+CC:     Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
+        <linux-i2c@vger.kernel.org>, Tom Rix <trix@redhat.com>,
+        Sean Nyekjaer <sean@geanix.com>
+Subject: Re: [PATCH] i2c: core: Add stub for i2c_verify_client() if
+ !CONFIG_I2C
+Message-ID: <20210603122436.00003539@Huawei.com>
+In-Reply-To: <YK//xmqZCZRT1VVD@kunai>
+References: <20210526174436.2208277-1-jic23@kernel.org>
+        <YK//xmqZCZRT1VVD@kunai>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
 MIME-Version: 1.0
@@ -47,83 +47,70 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed,  2 Jun 2021 15:45:12 +0200
-Christoph Fritz <chf.fritz@googlemail.com> wrote:
+On Thu, 27 May 2021 22:23:34 +0200
+Wolfram Sang <wsa@kernel.org> wrote:
 
-> This patch adds documentation of device tree bindings for Intersil
-> isl76683 light sensor.
+> Hi Jonathan,
 > 
-> Signed-off-by: Christoph Fritz <chf.fritz@googlemail.com>
-Hi Christoph,
+> > Fixes: 68068fad0e1c ("iio: accel: fxls8962af: fix errata bug E3 - I2C burst reads")
+> > Cc: Sean Nyekjaer <sean@geanix.com>
+> > Cc: Wolfram Sang <wsa@kernel.org>
+> > ---
+> > 
+> > Note the broken patch is only in the IIO/togreg branch at the moment.  
+> 
+> Then the fixes tag should be removed. It is only for upstream commits.
 
-One trivial comment inline. As mentioned in the driver review it might
-be nice to relax the requirement for the irq if we can sensibly
-do so.  Far too common for people to not wire it up for simple sensors.
+Ok, so that is there because my assumption was that mostly like I'd take
+this patch through IIO, in which case it's directly valid and necessary
+for backport information purposes.  I'm guessing this one is unlikely to
+cause merge conflicts given how localized it is...
+
+You would do an immutable branch that I can pull into IIO. I'd really like
+to avoid rebasing the IIO tree unless absolutely necessary as people are
+working on top if it.
+ 
+> It means we will have a merge dependency the next cycle, so I will send
+> my pull request early.
+
+Doesn't work.  There is a high chance the original patch will get ported
+back to earlier kernels and there is no reference to let anyone know they
+also need this one to avoid potential build issues on the stable kernel.
+
+So, if you want to take this through I2C, the path forwards would be.
+1) You take this one through I2C
+2) I apply the original fix (which #ifdefs the relevant code out in the
+   driver).
+3) Once (1) is in mainline next cycle, I can revert (2) on the basis
+   it is no longer necessary.
+
+I'm fine with doing it this way as it avoids any cross dependencies.
+
+> 
+> > 
+> >  include/linux/i2c.h | 7 +++++++
+> >  1 file changed, 7 insertions(+)
+> > 
+> > diff --git a/include/linux/i2c.h b/include/linux/i2c.h
+> > index e8f2ac8c9c3d..aa52738b9c46 100644
+> > --- a/include/linux/i2c.h
+> > +++ b/include/linux/i2c.h
+> > @@ -343,7 +343,14 @@ struct i2c_client {
+> >  };
+> >  #define to_i2c_client(d) container_of(d, struct i2c_client, dev)
+> >  
+> > +#if IS_ENABLED(CONFIG_I2C)  
+> 
+> Hmm, can't we move this into an already existing IS_ENABLED block?
+
+There aren't any similar #if / #else blocks for CONFIG_I2C in i2c.h
+so it seemed neater to just add one around this individual element
+and not destroy the general organization of the file.
 
 Jonathan
 
-> ---
->  .../bindings/iio/light/isil,isl76683.yaml     | 48 +++++++++++++++++++
->  1 file changed, 48 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/light/isil,isl76683.yaml
+
+
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/light/isil,isl76683.yaml b/Documentation/devicetree/bindings/iio/light/isil,isl76683.yaml
-> new file mode 100644
-> index 000000000000..3e802a29892b
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/light/isil,isl76683.yaml
-> @@ -0,0 +1,48 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/light/isil,isil76683.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Intersil isl76683 ambient light sensor
-> +
-> +maintainers:
-> +  - Christoph Fritz <chf.fritz@googlemail.com>
-> +
-> +description: |
-> +  https://www.intersil.com/content/dam/Intersil/documents/isl7/isl76683.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - isil,isl76683
-
-Unless you are expecting to add new devices sharing this binding, perhaps
-       const: isil,isl77683
-is more appropriate.
-
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        isl76683@74 {
-> +            compatible = "isil,isl76683";
-> +            reg = <0x74>;
-> +            interrupt-parent = <&gpio2>;
-> +            interrupts = <20 IRQ_TYPE_FALLING>;
-> +        };
-> +    };
-> +...
+> 
 

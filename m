@@ -2,83 +2,169 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B4A939BE3E
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Jun 2021 19:12:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5045E39C22C
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Jun 2021 23:17:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229864AbhFDROk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 4 Jun 2021 13:14:40 -0400
-Received: from mail-pj1-f46.google.com ([209.85.216.46]:34362 "EHLO
-        mail-pj1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229929AbhFDROj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Jun 2021 13:14:39 -0400
-Received: by mail-pj1-f46.google.com with SMTP id g6-20020a17090adac6b029015d1a9a6f1aso5453844pjx.1
-        for <linux-iio@vger.kernel.org>; Fri, 04 Jun 2021 10:12:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=w95F0TCzLeYUyJx3fu+VSCdsjxDSdgbGCbx8wXZTDEI=;
-        b=VIA2rHpv6cRmQcM/egQjIxPZXzRu0rQqtvtf29M5D7IN8+/HKmi17GDnFtHDg66rV2
-         nzeC7Jsw7Z+oojwuSNuvGaER/BJ8U96Vckx52yQy9rj8a0Qi2CcYrCviYB8WCk8hr9ri
-         T8pQg4zscXsgnQtv3n/Ej8TQhZ0l1WE9lrSYlP8ARlTFajefOWag+jrn49iiRNSkp2v4
-         vU3KrtYn7QSRSLd8UvczPksE2SMpsmMo6lRq0HgIwQL1x3Mlp5ovioGBqq+HQYgu02fR
-         l6RnHd0uwSmboAcSVxB/mFTsqU/MqAqh+IwWh0zyZEVQmBQ/V8ip6LCcu42g9slARS5i
-         d/Jw==
+        id S229916AbhFDVSw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 4 Jun 2021 17:18:52 -0400
+Received: from mail-ot1-f48.google.com ([209.85.210.48]:42912 "EHLO
+        mail-ot1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229665AbhFDVSw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Jun 2021 17:18:52 -0400
+Received: by mail-ot1-f48.google.com with SMTP id w23-20020a9d5a970000b02903d0ef989477so6000956oth.9;
+        Fri, 04 Jun 2021 14:17:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=w95F0TCzLeYUyJx3fu+VSCdsjxDSdgbGCbx8wXZTDEI=;
-        b=reweycWelDucjynUlkcXmpU7bKmOvePkpMyBL693su0c5nptviHwjM8BdI2pvll8uQ
-         9mSJPaBFwhvZ/pAzKNuqIjKrMwsfTCzQvBU7TuVPZJQ1dKSHrb3FZZstNlepguxXs06b
-         KOGpeUXIuA8jrNOzborpeaOYl7k7Ttyg7+ZDNN12xGkKH2xoHJz4kks5W8DqYF37my7T
-         S4iIANhcQTMgSdOqMokQbWqVIKpRuA3bLFttCYxQo/he7onpUho1hs28l/L4cSTRKBp8
-         hBxWkiPnmVqwou5J70Oa59QrlhwHWGl8AGZWToodddiErUwqAP25GymSuc+koHsONzb8
-         Ko/A==
-X-Gm-Message-State: AOAM531tHHmi++XyUoxKVbMD+CvbnNkTuIAFB0hU2Q1ZdkxV2yo9cZKq
-        F+SyIzKwIL303FEbW9G33y0whs5yeK4DvGR6vtQ=
-X-Google-Smtp-Source: ABdhPJxOuZAOYPtMCADejI1WZ9Gktdda5aA7z+qVJjL2RWlSeweHmZFjjdEphk6fXtZkCTd72TGelJvnmfmvvjRhQ14=
-X-Received: by 2002:a17:90a:80c5:: with SMTP id k5mr18122832pjw.129.1622826701448;
- Fri, 04 Jun 2021 10:11:41 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=MG5KxgxX2V167Mxk01FiCjyeRCj/anSLT1f7uYJ6gGc=;
+        b=eVhxq1nW+nMTogWSjAGeKX9j2oFOXBNvjChav6ynKJRF8fbCIWH15inah+qiPBEve+
+         uaLyC+shF3aOpqn65X/jXxK05VEHXNAUbsI9FFxVcx2jRfZbSytkuTarKrT6pdiLsyE6
+         A7hW6CJ+dyPAExkdkBE9FVrXhnxZTlJMcC/AAwXqB/JpGrJigVHSlyDo4bVeczSAEAwA
+         TJYX8QzC2BPqGxwKZ2ek1V6i/8B3b17ePU7fsDbTSI/nCgVs3eR+hwbXhox8bsvHF5vP
+         n8zKCZk/BxTjEwQVTwAXy8JnCaA3totosBOoQXbd3344Mkfq7gqompR8xHIq4Sv3cc3q
+         vyBQ==
+X-Gm-Message-State: AOAM53162vGHNgvU/ToVi/XiajK6gkPqpv8inGOzj6i3Uh3fsr8ML31u
+        +RYonwszNPZvJ8osims+zg==
+X-Google-Smtp-Source: ABdhPJzgiyxpTp9buLL/uBcm5ExFupjA7/fgJketo2exschqxCHyZdbZ5cx6LZ8V3NJLSEEC4CSNAQ==
+X-Received: by 2002:a05:6830:1518:: with SMTP id k24mr5131330otp.40.1622841424250;
+        Fri, 04 Jun 2021 14:17:04 -0700 (PDT)
+Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id x24sm712328otq.34.2021.06.04.14.17.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Jun 2021 14:17:03 -0700 (PDT)
+Received: (nullmailer pid 3933507 invoked by uid 1000);
+        Fri, 04 Jun 2021 21:17:02 -0000
+Date:   Fri, 4 Jun 2021 16:17:02 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Liam Beguin <liambeguin@gmail.com>
+Cc:     peda@axentia.se, jic23@kernel.org, lars@metafoo.de,
+        pmeerw@pmeerw.net, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v1 7/9] dt-bindings: iio: afe: add binding for
+ temperature-sense-rtd
+Message-ID: <20210604211702.GA3925041@robh.at.kernel.org>
+References: <20210530005917.20953-1-liambeguin@gmail.com>
+ <20210530005917.20953-8-liambeguin@gmail.com>
 MIME-Version: 1.0
-References: <YLDbdN688C0xBgMn@mwanda> <20210603173842.5d2b1004@jic23-huawei>
-In-Reply-To: <20210603173842.5d2b1004@jic23-huawei>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 4 Jun 2021 20:11:25 +0300
-Message-ID: <CAHp75VfdEBm4H17KcNB0zwOEVnTiLbGpDG=bPzo1HWbKmrg4Uw@mail.gmail.com>
-Subject: Re: [bug report] staging:iio:sca3000 extract old event handling and
- move to poll for events from buffer
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>, jic23@cam.ac.uk,
-        linux-iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210530005917.20953-8-liambeguin@gmail.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Jun 3, 2021 at 7:38 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> On Fri, 28 May 2021 15:00:52 +0300
-> Dan Carpenter <dan.carpenter@oracle.com> wrote:
+On Sat, May 29, 2021 at 08:59:15PM -0400, Liam Beguin wrote:
+> From: Liam Beguin <lvb@xiphos.com>
+> 
+> An ADC is often used to measure other quantities indirectly. This
+> binding describe one cases, the measurement of a temperature through
+> the voltage across an RTD resistor such as a PT1000.
+> 
+> Signed-off-by: Liam Beguin <lvb@xiphos.com>
+> ---
+>  .../iio/afe/temperature-sense-rtd.yaml        | 65 +++++++++++++++++++
+>  MAINTAINERS                                   |  1 +
+>  2 files changed, 66 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/afe/temperature-sense-rtd.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/afe/temperature-sense-rtd.yaml b/Documentation/devicetree/bindings/iio/afe/temperature-sense-rtd.yaml
+> new file mode 100644
+> index 000000000000..4798eda6e533
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/afe/temperature-sense-rtd.yaml
+> @@ -0,0 +1,65 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/afe/temperature-sense-rtd.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Temperature Sense RTD
+> +
+> +maintainers:
+> +  - Liam Beguin <lvb@xiphos.com>
+> +
+> +description: |
+> +  When an io-channel measures the output voltage across an RTD such as a
 
-...
+What's an RTD? Not defined anywhere here.
 
-> >    733                          *val = (be16_to_cpup((__be16 *)st->rx) >> 3) & 0x1FFF;
-> >    734                          *val = ((*val) << (sizeof(*val) * 8 - 13)) >>
-> >                                                   ^^^^^^^^^^^^^^^^^^^^^^^
-> >    735                                  (sizeof(*val) * 8 - 13);
-> >                                         ^^^^^^^^^^^^^^^^^^^^^^^
-> >
-> > This code works, but it relies on undefined behavior of left shift
-> > overflow and it's very unsatisfying.  Pretty sure there is a UBSan
-> > warning for this at runtime.
->
-> Thanks Dan.  Looks like a slightly odd variant on open coded sign_extend32()
-> Should be fine to replace with
->
-> *val = sign_extend32(*val, 13);
+> +  PT1000, the interesting measurement is almost always the corresponding
+> +  temperature, not the voltage output. This binding describes such a circuit.
+> +
+> +properties:
+> +  compatible:
+> +    const: temperature-sense-rtd
+> +
+> +  io-channels:
+> +    maxItems: 1
+> +    description: |
+> +      Channel node of a voltage io-channel.
+> +
+> +  '#io-channel-cells':
+> +    const: 1
 
-Oh, indeed.
+Doesn't this belong in the provider?
 
--- 
-With Best Regards,
-Andy Shevchenko
+> +
+> +  excitation-current-microamp:
+> +    description: The current fed through the RTD sensor.
+> +
+> +  alpha-micro-ohms-per-ohm-celsius:
+> +    description: |
+> +      Linear approximation of the resistance versus temperature relationship
+> +      between 0 and 100 degrees Celsius.
+> +
+> +      Pure platinum has an alpha of 3925. Industry standards such as IEC60751
+> +      and ASTM E-1137 specify an alpha of 3850.
+
+Is there a max and min value?
+
+> +
+> +  r-naught-ohms:
+> +    description: |
+> +      Resistance of the sensor at 0 degrees Celsius.
+> +      Common values are 100 for PT100 and 1000 for PT1000.
+
+max or min?
+
+> +
+> +additionalProperties: false
+
+blank line here.
+
+> +required:
+> +  - compatible
+> +  - io-channels
+> +  - excitation-current-microamp
+> +  - alpha-micro-ohms-per-ohm-celsius
+> +  - r-naught-ohms
+> +
+> +examples:
+> +  - |
+> +    pt1000_1: iio-rescale0 {
+> +        compatible = "temperature-sense-rtd";
+> +        #io-channel-cells = <1>;
+> +        io-channels = <&temp_adc1 0>;
+> +
+> +        excitation-current-microamp = <1000>;
+> +        alpha-micro-ohms-per-ohm-celsius = <3908>;
+> +        r-naught-ohms = <1000>;
+> +    };
+> +
+> +...
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index d3ab0ccc34ab..a7279af85adb 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -8721,6 +8721,7 @@ L:	linux-iio@vger.kernel.org
+>  S:	Maintained
+>  F:	Documentation/devicetree/bindings/iio/afe/current-sense-amplifier.yaml
+>  F:	Documentation/devicetree/bindings/iio/afe/current-sense-shunt.yaml
+> +F:	Documentation/devicetree/bindings/iio/afe/temperature-sense-rtd.yaml
+>  F:	Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
+>  F:	drivers/iio/afe/iio-rescale.c
+>  
+> -- 
+> 2.30.1.489.g328c10930387

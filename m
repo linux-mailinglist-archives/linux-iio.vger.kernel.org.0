@@ -2,39 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5468E39E1D3
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Jun 2021 18:16:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CBA839E253
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Jun 2021 18:17:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231497AbhFGQOU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Jun 2021 12:14:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47404 "EHLO mail.kernel.org"
+        id S232040AbhFGQQU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 7 Jun 2021 12:16:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50068 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231217AbhFGQOQ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 7 Jun 2021 12:14:16 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7D1AC6136D;
-        Mon,  7 Jun 2021 16:12:24 +0000 (UTC)
+        id S231630AbhFGQPT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 7 Jun 2021 12:15:19 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8AFDD61416;
+        Mon,  7 Jun 2021 16:13:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623082345;
+        s=k20201202; t=1623082406;
         bh=gWJ1yRLZGxnhleLBM3oUql+Jg14/ZcrDxag8D74fKKA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qvcrCsm+JuDoTf/p9Hw8YrrshhK0eVPGgMfWTZNYB/G8/H278DHHe0k8Ccb12VE/J
-         Uoy8FZ2Yl5i4x0pmX7Ow7UjpNHIQAPwAcb2cCilOkp2S7f/9azx7R4Dax/knlbye7o
-         6ZtqxGNs9DJCok3SJZKCCrrP5ij/2RoYk3Z/edbm0qoH1eTZvA1VCf3Qqdwc+ICqwD
-         gqFMsHYfEinqTttGksfLv8I6CdU+vTbh6+L5ggWhOv4Xj0PUHTM6oMCoRLTuPu/W86
-         tEtI89GPZjUcqg7nBaIAXlsHME21O5ldCdP7P8zsgTpGdqyZXhA+JCPYa15lF7UK7l
-         EftorNTCALItw==
+        b=oaLUrKNgIy1lw/Tx2+4/KuTlNaiy7Qm2jSB/e+RGbEdjQtBf9ZOqBdWTXa6OL4sgZ
+         /qCVwCMbHCcG+9rWPp9jlt/xu7562OdTkme1P/VZbZiH6Z0xE0d4lLq8z7P+hQx8qj
+         Y/CcixWey7HhCaJuZrFOxgbc25Kza2uiPWCYU9ZiSAZxp3xKC31jV6WuEC5I30o75y
+         Pb6DzlcRpULXycbOtJMWSzPXy3CcnGsJsxvNXHCclsDl0qzhoDa/Xw0rJFiLjAdD7m
+         n5Zv2UcsZ1OE6wE9Azm3ZqvPZKZZxDqkegn8Kr2RBw2trtYaISRMV9JdwHEG31dw7u
+         q5l6E4YcKWZlQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>,
         linux-input@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.12 07/49] HID: hid-sensor-hub: Return error for hid_set_field() failure
-Date:   Mon,  7 Jun 2021 12:11:33 -0400
-Message-Id: <20210607161215.3583176-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 05/39] HID: hid-sensor-hub: Return error for hid_set_field() failure
+Date:   Mon,  7 Jun 2021 12:12:44 -0400
+Message-Id: <20210607161318.3583636-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210607161215.3583176-1-sashal@kernel.org>
-References: <20210607161215.3583176-1-sashal@kernel.org>
+In-Reply-To: <20210607161318.3583636-1-sashal@kernel.org>
+References: <20210607161318.3583636-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore

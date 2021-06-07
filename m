@@ -2,39 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 14C3E39E3F9
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Jun 2021 18:40:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 449B039E3FC
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Jun 2021 18:40:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233730AbhFGQ2i (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Jun 2021 12:28:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59844 "EHLO mail.kernel.org"
+        id S233891AbhFGQ2j (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 7 Jun 2021 12:28:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33510 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233707AbhFGQYV (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 7 Jun 2021 12:24:21 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 499B961463;
-        Mon,  7 Jun 2021 16:15:46 +0000 (UTC)
+        id S234002AbhFGQZF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 7 Jun 2021 12:25:05 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1F99E61945;
+        Mon,  7 Jun 2021 16:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623082547;
-        bh=mmoRBbN8jbnNMclRxAC+IJf3w21VBf1HJgDECfgzels=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rM35i3tKfAiXEACKF6w7pVRoRDAEuMwIdR1JKVAuPnOLRDqip49570ufyL9fJvIvD
-         KXj3ournKVF5y8t6KYqwx3Po0VWkMy/8qC85bMTEDQsOeJ379isSMQkVgbV7fHNwxv
-         7It1+N9R5joP8USkIoSbxgMmv/G1BHXUnm9cWMsJ92o11Sn0KAhYMj2irVZy7HsAgm
-         qKsyAA88AX7JVvCXErQsND+gET9QP/QxmSXdGEdsHK2wd4GHGuUSRFp3KBAumLw4Ck
-         2JcT6vX4HiqTsTsqIgZoTy7OutybwVpyjeQyRpSVOlmXYO1ROuZ79FZaepaOsy8+PG
-         8t9LiYmApaBOg==
+        s=k20201202; t=1623082568;
+        bh=MK2RLPG3XOilwa4pmuYUNOPAOn+IIYnUet178azp21g=;
+        h=From:To:Cc:Subject:Date:From;
+        b=g6AwI73Bt7k0M2HVzE6EY/YUa/WVh3PJK1nmwz5cwQCTxjEwuEfqT/G/gtgJEsglJ
+         IscsTYRrNk76ZwUUSmJbhoIbQPcVAoZ91MplVQZcBl79jSL1/DY85rFKkt2oUc9NaG
+         rmG+2ScoW5c85okJZzs1Ubf3uPEHoa3yuQKleIuYKJEJfTYz89RijSzEmwJcIyfWYO
+         EW0Y0KC+JD0zgogSYn54SoVN3w0M187eSzsUrLKvxj8NbfRmS5zicC/S0Du2tNxNlH
+         6khz+YwguDTdNpamGXpmhXQqKlrx+UTAOKx7rW8EMYIei3UriewaoroQFHxgxiTuwX
+         6Vn4Giu9FIpxg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>,
         linux-input@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 02/15] HID: hid-sensor-hub: Return error for hid_set_field() failure
-Date:   Mon,  7 Jun 2021 12:15:30 -0400
-Message-Id: <20210607161543.3584778-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 01/14] HID: hid-sensor-hub: Return error for hid_set_field() failure
+Date:   Mon,  7 Jun 2021 12:15:52 -0400
+Message-Id: <20210607161605.3584954-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210607161543.3584778-1-sashal@kernel.org>
-References: <20210607161543.3584778-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -59,10 +57,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 9 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/hid/hid-sensor-hub.c b/drivers/hid/hid-sensor-hub.c
-index 7001f07ca399..4ea18f07c65b 100644
+index 83e45d5801a9..ce4e9b34af98 100644
 --- a/drivers/hid/hid-sensor-hub.c
 +++ b/drivers/hid/hid-sensor-hub.c
-@@ -223,16 +223,21 @@ int sensor_hub_set_feature(struct hid_sensor_hub_device *hsdev, u32 report_id,
+@@ -222,16 +222,21 @@ int sensor_hub_set_feature(struct hid_sensor_hub_device *hsdev, u32 report_id,
  	buffer_size = buffer_size / sizeof(__s32);
  	if (buffer_size) {
  		for (i = 0; i < buffer_size; ++i) {

@@ -2,160 +2,136 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CF6839C942
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Jun 2021 16:56:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFA1039DA47
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Jun 2021 12:53:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229931AbhFEO6p (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 5 Jun 2021 10:58:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46808 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229930AbhFEO6p (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 5 Jun 2021 10:58:45 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4EFF9613AC;
-        Sat,  5 Jun 2021 14:56:55 +0000 (UTC)
-Date:   Sat, 5 Jun 2021 15:58:42 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Liam Beguin <liambeguin@gmail.com>, peda@axentia.se,
-        lars@metafoo.de, pmeerw@pmeerw.net, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v1 7/9] dt-bindings: iio: afe: add binding for
- temperature-sense-rtd
-Message-ID: <20210605155842.036edd94@jic23-huawei>
-In-Reply-To: <20210604211702.GA3925041@robh.at.kernel.org>
-References: <20210530005917.20953-1-liambeguin@gmail.com>
-        <20210530005917.20953-8-liambeguin@gmail.com>
-        <20210604211702.GA3925041@robh.at.kernel.org>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S230246AbhFGKzk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 7 Jun 2021 06:55:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33280 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230131AbhFGKzk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Jun 2021 06:55:40 -0400
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0C71C061766
+        for <linux-iio@vger.kernel.org>; Mon,  7 Jun 2021 03:53:32 -0700 (PDT)
+Received: by mail-pg1-x52a.google.com with SMTP id y12so1672179pgk.6
+        for <linux-iio@vger.kernel.org>; Mon, 07 Jun 2021 03:53:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=VmvQivWgCvf1XcD00QD1FbgJfSji+9MZ2Mhw1jPm9pk=;
+        b=N/XzVCdEqluO1n9+8K3MplJgjDAA+5lKr5JIUKmxhog1km34ClSZZpOb85wcoLfxKs
+         oD7V/PEhrerYSMks8qN1i9INHk33HcVDQwSyiCAiaB2gair6v8IJYQbmVcUxphBqQTkc
+         E+0ofVhvHsD8crlPBGw2R68Hc8atkCv7v+wfxyeJY72Abis4DG+qZ81nObmTa63zNCf7
+         Klqd6aYLESYpkQV63seV2MmQV75S8B+wgv8S8xghVAHCQWgSAIebm+YYpjrTCvtb/eok
+         jQynwhjAMl28yLPOGthipWDJF9qEej/3MhXr7NnRIRd9fsSeQIAMtfGBOj1iVQf90Azq
+         UUNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=VmvQivWgCvf1XcD00QD1FbgJfSji+9MZ2Mhw1jPm9pk=;
+        b=DLuBRmPBSP3mB90zDuqG8gjmyUjoM4VNmJsNC62Dz/260eS7SdwxkKZFJQqhNHd6bS
+         nHgsOWdIjWJr0k8dhpLwkts/HTOPP5M6DWFA924rb1ioLrJ7uulDoWDi4X4IUQTFb9Wl
+         qCWp971zB4mvMiGhREMEyy34ichuFY9vggN3QMQhP2bcTkMT8KHbP34ywE9ExmR1NKx8
+         APyYs2Oa8pFdArBFxR8olcuO9hr4PdCZd5HVzQolnXGJg9NwBQqIwOK7wpaeYdhP9zhW
+         hcLHNjxpIe8Ux5nHaJ9JKDyEMxyLgc+LOZuCl3/Op5RQDRl+u1mNSjiaaEl2lS7AC+P1
+         fArQ==
+X-Gm-Message-State: AOAM530m+OGZsH7ZMVDKQ2xw7fY+Al5DelUp/9z9Ps3ug4TI6zOMKBCX
+        fz1xjQ28IPLx0hg+Y8lDRSnH0NeLOZ2LyHyOtrfpGKmcQguiMw==
+X-Google-Smtp-Source: ABdhPJzV5e1W1CZIEoOvtqi3sPzKbIAt8Wx4IofGbnUOhOCkgVF10v7u3D/RMtigCwB8ip90Zy2BQHG4Sy/SPPmJSAE=
+X-Received: by 2002:a65:63ce:: with SMTP id n14mr17118335pgv.273.1623063212198;
+ Mon, 07 Jun 2021 03:53:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <08a77a5c-9399-e615-f2df-3251756ed890@freedom.nl>
+ <CA+U=Dsq23-y7OBuc6+YCVwpUARNO-PBCDh4Mnaqpe51k=M8Dtw@mail.gmail.com> <46567041-1dbf-2b00-3500-011fd722e2fc@freedom.nl>
+In-Reply-To: <46567041-1dbf-2b00-3500-011fd722e2fc@freedom.nl>
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+Date:   Mon, 7 Jun 2021 13:53:20 +0300
+Message-ID: <CA+U=Dsp6GqpkTm1RVQdw3S_RF+4jHabM9SNyjD1vhY3qq3gKkw@mail.gmail.com>
+Subject: Re: active_scan_mask
+To:     Henk Medenblik <iio-developer@freedom.nl>
+Cc:     linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 4 Jun 2021 16:17:02 -0500
-Rob Herring <robh@kernel.org> wrote:
+On Thu, May 27, 2021 at 1:06 PM Henk Medenblik <iio-developer@freedom.nl> wrote:
+>
+> Dear Alexandru,
+>
+> > That should be happening in drivers/iio/industrialio-buffer.c in the
+> > iio_enable_buffers() function.
+> > The channels get enabled by writing via sysfs in
+> > /sys/bus/iiio/devices/iio:deviceX/scan_elements  in the _en files.
+> >
+> > libiio typically does this manipulation of files for you
+>
+> I thought so too and I can confirm that when I switch back to less
+> channels that the others are disabled. However the scanmask is not updated.
+>
+> See some logging here trying to debug:
+>
+> Session 1, read 8 channels:
+>
+> iio_readdev -b 262144 -s 1024 iio:device0 voltage0 voltage1 voltage2
+> voltage3 voltage4 voltage5 voltage6 voltage7 > /mnt/test6.bin
+> 8 active channels
+> [  513.529510] acq_buffer_preenable
+> [  513.529521] active scan mask: 0x000000FF
+> [  513.558286] acq_buffer_postenable
+> [  513.716868] acq_buffer_predisable
+>
+> Session 2, read 16 channels:
+>
+> iio_readdev -b 262144 -s 1024 iio:device0 voltage0 voltage1 voltage2
+> voltage3 voltage4 voltage5 voltage6 voltage7 voltage8 voltage9 voltage10
+> voltage11 voltage12 voltage13 voltage14 voltage15 > /mnt/test6.bin
+> 16 active channels
+> [  523.834056] acq_buffer_preenable
+> [  523.834067] active scan mask: 0x0000FFFF
+> [  523.880440] acq_buffer_postenable
+> [  524.041383] acq_buffer_predisable
+>
+>
+> Session3 ,  read 8 channels again:
+>
+> iio_readdev -b 262144 -s 1024 iio:device0 voltage0 voltage1 voltage2
+> voltage3 voltage4 voltage5 voltage6 voltage7 > /mnt/test6.bin
+> 8 active channels
+> [  532.002019] acq_buffer_preenable
+> [  532.002030] active scan mask: 0x0000FFFF
+> [  532.048375] onr_acq_buffer_postenable
+> [  532.131081] onr_acq_buffer_predisable
+>
+>
+> > so, are you using an Analog Devices kernel?
+> > or is this a vanilla mainline kernel? and which version?
+> > ADI has some custom patches that deal with this some scanmask manipulation;
+> > is this being reproduced purely with libiio? and which version of libiio?
+> > steps to reproduce?
+> >
+> > i'm still not sure if the issue is in kernel or in libiio;
+> >
+> Yes I am using a adi 4.14 kernel, git tag adi-4.14.0  15e1a16477
+>
+> For iio_readdev I am currently using the v0.21 zerocopy checkout
 
-> On Sat, May 29, 2021 at 08:59:15PM -0400, Liam Beguin wrote:
-> > From: Liam Beguin <lvb@xiphos.com>
-> > 
-> > An ADC is often used to measure other quantities indirectly. This
-> > binding describe one cases, the measurement of a temperature through
-> > the voltage across an RTD resistor such as a PT1000.
-> > 
-> > Signed-off-by: Liam Beguin <lvb@xiphos.com>
-> > ---
-> >  .../iio/afe/temperature-sense-rtd.yaml        | 65 +++++++++++++++++++
-> >  MAINTAINERS                                   |  1 +
-> >  2 files changed, 66 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/iio/afe/temperature-sense-rtd.yaml
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/afe/temperature-sense-rtd.yaml b/Documentation/devicetree/bindings/iio/afe/temperature-sense-rtd.yaml
-> > new file mode 100644
-> > index 000000000000..4798eda6e533
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/afe/temperature-sense-rtd.yaml
-> > @@ -0,0 +1,65 @@
-> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/afe/temperature-sense-rtd.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Temperature Sense RTD
-> > +
-> > +maintainers:
-> > +  - Liam Beguin <lvb@xiphos.com>
-> > +
-> > +description: |
-> > +  When an io-channel measures the output voltage across an RTD such as a  
-> 
-> What's an RTD? Not defined anywhere here.
-> 
-> > +  PT1000, the interesting measurement is almost always the corresponding
-> > +  temperature, not the voltage output. This binding describes such a circuit.
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: temperature-sense-rtd
-> > +
-> > +  io-channels:
-> > +    maxItems: 1
-> > +    description: |
-> > +      Channel node of a voltage io-channel.
-> > +
-> > +  '#io-channel-cells':
-> > +    const: 1  
-> 
-> Doesn't this belong in the provider?
+Hmm, so the "zerocopy" branch isn't  at v0.21.
+It's something much older [ ~6 years ? ].
+Though the kernel active scan mask is unrelated to libiio, since
+iio_readdev is being used in different sessions.
 
-Potentially this could in turn also be a provider if wired up to iio-hwmon or
-similar.  Certainly an option for a temperature sensor.
+The 4.14 version of the kernel, isn't quite new.
+There was some recent fix with regards to active scan-mask computation.
+But I am not sure if it's related to this.
 
-> 
-> > +
-> > +  excitation-current-microamp:
-> > +    description: The current fed through the RTD sensor.
-> > +
-> > +  alpha-micro-ohms-per-ohm-celsius:
-> > +    description: |
-> > +      Linear approximation of the resistance versus temperature relationship
-> > +      between 0 and 100 degrees Celsius.
-> > +
-> > +      Pure platinum has an alpha of 3925. Industry standards such as IEC60751
-> > +      and ASTM E-1137 specify an alpha of 3850.  
-> 
-> Is there a max and min value?
-> 
-> > +
-> > +  r-naught-ohms:
-> > +    description: |
-> > +      Resistance of the sensor at 0 degrees Celsius.
-> > +      Common values are 100 for PT100 and 1000 for PT1000.  
-> 
-> max or min?
-> 
-> > +
-> > +additionalProperties: false  
-> 
-> blank line here.
-> 
-> > +required:
-> > +  - compatible
-> > +  - io-channels
-> > +  - excitation-current-microamp
-> > +  - alpha-micro-ohms-per-ohm-celsius
-> > +  - r-naught-ohms
-> > +
-> > +examples:
-> > +  - |
-> > +    pt1000_1: iio-rescale0 {
-> > +        compatible = "temperature-sense-rtd";
-> > +        #io-channel-cells = <1>;
-> > +        io-channels = <&temp_adc1 0>;
-> > +
-> > +        excitation-current-microamp = <1000>;
-> > +        alpha-micro-ohms-per-ohm-celsius = <3908>;
-> > +        r-naught-ohms = <1000>;
-> > +    };
-> > +
-> > +...
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index d3ab0ccc34ab..a7279af85adb 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -8721,6 +8721,7 @@ L:	linux-iio@vger.kernel.org
-> >  S:	Maintained
-> >  F:	Documentation/devicetree/bindings/iio/afe/current-sense-amplifier.yaml
-> >  F:	Documentation/devicetree/bindings/iio/afe/current-sense-shunt.yaml
-> > +F:	Documentation/devicetree/bindings/iio/afe/temperature-sense-rtd.yaml
-> >  F:	Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
-> >  F:	drivers/iio/afe/iio-rescale.c
-> >  
-> > -- 
-> > 2.30.1.489.g328c10930387  
+Will try to make some time to do some testing on this.
 
+
+>
+> Henk
+>
+>

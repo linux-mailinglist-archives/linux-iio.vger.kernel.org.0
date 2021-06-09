@@ -2,21 +2,21 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 21E513A18B8
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Jun 2021 17:10:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E22BC3A18F3
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Jun 2021 17:15:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231934AbhFIPMn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 9 Jun 2021 11:12:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42476 "EHLO mail.kernel.org"
+        id S230349AbhFIPRt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 9 Jun 2021 11:17:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45578 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231643AbhFIPMn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 9 Jun 2021 11:12:43 -0400
+        id S230222AbhFIPRt (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 9 Jun 2021 11:17:49 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0DB866128A;
-        Wed,  9 Jun 2021 15:10:43 +0000 (UTC)
-Date:   Wed, 9 Jun 2021 16:12:36 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 51D0E6128A;
+        Wed,  9 Jun 2021 15:15:50 +0000 (UTC)
+Date:   Wed, 9 Jun 2021 16:17:42 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     William Breathitt Gray <vilhelm.gray@gmail.com>
 Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
@@ -28,12 +28,12 @@ Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
         fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
         alexandre.torgue@st.com, o.rempel@pengutronix.de,
         jarkko.nikula@linux.intel.com
-Subject: Re: [PATCH v11 04/33] counter: 104-quad-8: Return error when
- invalid mode during ceiling_write
-Message-ID: <20210609161236.52b2d99f@jic23-huawei>
-In-Reply-To: <538122752d61df30dd450276b87df606a17ac4c7.1623201081.git.vilhelm.gray@gmail.com>
+Subject: Re: [PATCH v11 05/33] counter: 104-quad-8: Annotate hardware config
+ module parameter
+Message-ID: <20210609161742.14df9b1d@jic23-huawei>
+In-Reply-To: <97ce79878a26809f0b15b2eac9a86ca39e0ecd74.1623201081.git.vilhelm.gray@gmail.com>
 References: <cover.1623201081.git.vilhelm.gray@gmail.com>
-        <538122752d61df30dd450276b87df606a17ac4c7.1623201081.git.vilhelm.gray@gmail.com>
+        <97ce79878a26809f0b15b2eac9a86ca39e0ecd74.1623201081.git.vilhelm.gray@gmail.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,49 +42,55 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed,  9 Jun 2021 10:31:07 +0900
+On Wed,  9 Jun 2021 10:31:08 +0900
 William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
 
-> The 104-QUAD-8 only has two count modes where a ceiling value makes
-> sense: Range Limit and Modulo-N. Outside of these two modes, setting a
-> ceiling value is an invalid operation -- so let's report it as such by
-> returning -EINVAL.
+> When the kernel is running in secure boot mode, we lock down the kernel to
+> prevent userspace from modifying the running kernel image.  Whilst this
+> includes prohibiting access to things like /dev/mem, it must also prevent
+> access by means of configuring driver modules in such a way as to cause a
+> device to access or modify the kernel image.
 > 
-> Fixes: fc069262261c ("counter: 104-quad-8: Add lock guards - generic interface")
+> To this end, annotate module_param* statements that refer to hardware
+> configuration and indicate for future reference what type of parameter they
+> specify.  The parameter parser in the core sees this information and can
+> skip such parameters with an error message if the kernel is locked down.
+> The module initialisation then runs as normal, but just sees whatever the
+> default values for those parameters is.
+> 
+> Note that we do still need to do the module initialisation because some
+> drivers have viable defaults set in case parameters aren't specified and
+> some drivers support automatic configuration (e.g. PNP or PCI) in addition
+> to manually coded parameters.
+> 
+> This patch annotates the 104-QUAD-8 driver.
+> 
 > Acked-by: Syed Nayyar Waris <syednwaris@gmail.com>
 > Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+As this has no dependency on patch 4, I've applied it.
 
-We seem to have some inconsistency in the driver about whether
-we hold the priv->lock when calling quad8_preset_register_set()
+Applied to the togreg branch of iio.git and pushed out as testing for
+the autobuilders to poke at it.
 
-Can we look to make that consistent?
+Thanks,
+
+Jonathan
 
 > ---
->  drivers/counter/104-quad-8.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+>  drivers/counter/104-quad-8.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 > diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
-> index 4bb9abffae48..233a3acc1377 100644
+> index 233a3acc1377..0fd61cc82d30 100644
 > --- a/drivers/counter/104-quad-8.c
 > +++ b/drivers/counter/104-quad-8.c
-> @@ -714,13 +714,14 @@ static ssize_t quad8_count_ceiling_write(struct counter_device *counter,
->  	switch (priv->count_mode[count->id]) {
->  	case 1:
->  	case 3:
-> +		mutex_unlock(&priv->lock);
-
-Probably swap this line and the next one...]
-
->  		quad8_preset_register_set(priv, count->id, ceiling);
-> -		break;
-> +		return len;
->  	}
+> @@ -21,7 +21,7 @@
 >  
->  	mutex_unlock(&priv->lock);
+>  static unsigned int base[max_num_isa_dev(QUAD8_EXTENT)];
+>  static unsigned int num_quad8;
+> -module_param_array(base, uint, &num_quad8, 0);
+> +module_param_hw_array(base, uint, ioport, &num_quad8, 0);
+>  MODULE_PARM_DESC(base, "ACCES 104-QUAD-8 base addresses");
 >  
-> -	return len;
-> +	return -EINVAL;
->  }
->  
->  static ssize_t quad8_count_preset_enable_read(struct counter_device *counter,
+>  #define QUAD8_NUM_COUNTERS 8
 

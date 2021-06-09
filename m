@@ -2,145 +2,165 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB9933A1E4B
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Jun 2021 22:50:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA9593A1F21
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Jun 2021 23:40:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229542AbhFIUwS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 9 Jun 2021 16:52:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41714 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229527AbhFIUwR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 9 Jun 2021 16:52:17 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 02DF86054E;
-        Wed,  9 Jun 2021 20:50:20 +0000 (UTC)
-Date:   Wed, 9 Jun 2021 21:52:14 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Liam Beguin <liambeguin@gmail.com>
-Cc:     peda@axentia.se, lars@metafoo.de, pmeerw@pmeerw.net,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, robh+dt@kernel.org
-Subject: Re: [PATCH v2 8/8] dt-bindings: iio: afe: add binding for
- temperature-sense-amplifier
-Message-ID: <20210609215214.7e3be504@jic23-huawei>
-In-Reply-To: <20210607144718.1724413-9-liambeguin@gmail.com>
+        id S229689AbhFIVmp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 9 Jun 2021 17:42:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49640 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229517AbhFIVmo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Jun 2021 17:42:44 -0400
+Received: from mail-qt1-x832.google.com (mail-qt1-x832.google.com [IPv6:2607:f8b0:4864:20::832])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA733C061574;
+        Wed,  9 Jun 2021 14:40:49 -0700 (PDT)
+Received: by mail-qt1-x832.google.com with SMTP id v6so10392819qta.9;
+        Wed, 09 Jun 2021 14:40:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:content-transfer-encoding:date:message-id:cc:subject
+         :from:to:references:in-reply-to;
+        bh=o8vwUO7Ou0SgF4Om1A9WkjLzG/3i2I3KgZqP/A+BMr4=;
+        b=PsvTkPLQ5cdcBDnfUiKTgBdw87hHptYfJ6GtPhP2MX2gm8J/RvJAswXOaDwkgb9UJG
+         V1yLtvXUJx8sktb6olS6FaArqtG9/s6KE4KLheHy+QXH6y4czXuZ9cpNW0CFbqKmLRhf
+         EChfI37H/SttSSPVVnNpxP8B1cgXpGbO86YwwJRu7dMSJZzTqIN3PBvofRq2ikT9ScCf
+         TxkU6Grgv+F6PNqKTHuGcjkUgmkx5MA17GBcPMIA3JXR2gjjM7C/qfRruq0d7ilkC4YQ
+         lvsfCYrbl42x9cZC1dj618v4zkccgp/QbUNQdKYaBTGynCZOyB/l1LK+sDJYvJvSq7i+
+         O7ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:content-transfer-encoding:date
+         :message-id:cc:subject:from:to:references:in-reply-to;
+        bh=o8vwUO7Ou0SgF4Om1A9WkjLzG/3i2I3KgZqP/A+BMr4=;
+        b=bMJiOiAamdX6PhA6SqCGzUBbUNpQQaMyvSi9BEmNBOo0+HdpElDjltD55xijjACJHa
+         dYDGtFExGGAFCLEBL5/PEq0PDYYOa8lKyX8anRkELLnAYjf7codSOlt5BxnJEXRfavf5
+         RXgFdERARn6TNzJCrdjLg9IMt6j2UlMuRmXTovgmAoMcVkP1kF4TUuS7A1gP2CFcdply
+         8Lx71eIsGM78AHzR3VOCvhg1JlBSL0NaNRyiW1sFwu+7x7mA7Iftg33FXLMRooy0c2mK
+         PAIBHi/+U9RcURSbsCeOmc1IprC5HkH5/W9o5CBnKB+DXT0+Dg6Ov17wbIxwhRrTmEvz
+         D5bQ==
+X-Gm-Message-State: AOAM533yu10QjXV3VgM/kqhU0e7Il+Y58SHzebJcjGx6yjxM5R2ITJbY
+        UV/QWdxMV96ybrRfuNnI0Y3TyXJ/cb74dg==
+X-Google-Smtp-Source: ABdhPJwHUm1XsyfAT9wCerB7Q4IQcXqz676XhNQYVAtK/LZkcYofVoeSBMrvAsbpRLSSQpETinInbg==
+X-Received: by 2002:ac8:5c48:: with SMTP id j8mr2103460qtj.154.1623274848979;
+        Wed, 09 Jun 2021 14:40:48 -0700 (PDT)
+Received: from localhost (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
+        by smtp.gmail.com with ESMTPSA id j62sm924497qkf.125.2021.06.09.14.40.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Jun 2021 14:40:48 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Wed, 09 Jun 2021 17:40:47 -0400
+Message-Id: <CBZEWQ0YIIEC.3A2WESVVMHPJM@shaak>
+Cc:     <peda@axentia.se>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
+Subject: Re: [PATCH v2 3/8] iio: inkern: error out on unsupported offset
+ type
+From:   "Liam Beguin" <liambeguin@gmail.com>
+To:     "Jonathan Cameron" <jic23@kernel.org>
 References: <20210607144718.1724413-1-liambeguin@gmail.com>
-        <20210607144718.1724413-9-liambeguin@gmail.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+ <20210607144718.1724413-4-liambeguin@gmail.com>
+ <20210609212850.008d7f84@jic23-huawei>
+In-Reply-To: <20210609212850.008d7f84@jic23-huawei>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon,  7 Jun 2021 10:47:18 -0400
-Liam Beguin <liambeguin@gmail.com> wrote:
+Hi Jonathan,
 
-> From: Liam Beguin <lvb@xiphos.com>
-> 
-> An ADC is often used to measure other quantities indirectly. This
-> binding describe such a use case, the measurement of a temperature
-> through an analog front end connected to a voltage channel.
-> 
-> Signed-off-by: Liam Beguin <lvb@xiphos.com>
-> ---
->  .../iio/afe/temperature-sense-amplifier.yaml  | 57 +++++++++++++++++++
->  MAINTAINERS                                   |  1 +
->  2 files changed, 58 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/afe/temperature-sense-amplifier.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/afe/temperature-sense-amplifier.yaml b/Documentation/devicetree/bindings/iio/afe/temperature-sense-amplifier.yaml
-> new file mode 100644
-> index 000000000000..08f97f052a91
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/afe/temperature-sense-amplifier.yaml
-> @@ -0,0 +1,57 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/afe/temperature-sense-amplifier.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Temperature Sense Amplifier
-> +
-> +maintainers:
-> +  - Liam Beguin <lvb@xiphos.com>
-> +
-> +description: |
-> +  When an io-channel measures the output voltage of a temperature analog front
-> +  end such as an RTD (resistance thermometer) or a temperature to current
-> +  sensor, the interesting measurement is almost always the corresponding
-> +  temperature, not the voltage output. This binding describes such a circuit.
+On Wed Jun 9, 2021 at 4:28 PM EDT, Jonathan Cameron wrote:
+> On Mon, 7 Jun 2021 10:47:13 -0400
+> Liam Beguin <liambeguin@gmail.com> wrote:
+>
+> > From: Liam Beguin <lvb@xiphos.com>
+> >=20
+> > iio_convert_raw_to_processed_unlocked() assumes the offset is an
+> > integer.
+> > Make that clear to the consumer by returning an error on unsupported
+> > offset types without breaking valid implicit truncations.
+> >=20
+> > Signed-off-by: Liam Beguin <lvb@xiphos.com>
+> > ---
+> >  drivers/iio/inkern.c | 34 +++++++++++++++++++++++++++++-----
+> >  1 file changed, 29 insertions(+), 5 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+> > index b69027690ed5..0b5667f22b1d 100644
+> > --- a/drivers/iio/inkern.c
+> > +++ b/drivers/iio/inkern.c
+> > @@ -578,13 +578,37 @@ EXPORT_SYMBOL_GPL(iio_read_channel_average_raw);
+> >  static int iio_convert_raw_to_processed_unlocked(struct iio_channel *c=
+han,
+> >  	int raw, int *processed, unsigned int scale)
+> >  {
+> > -	int scale_type, scale_val, scale_val2, offset;
+> > +	int scale_type, scale_val, scale_val2;
+> > +	int offset_type, offset_val, offset_val2;
+> >  	s64 raw64 =3D raw;
+> > -	int ret;
+> > =20
+> > -	ret =3D iio_channel_read(chan, &offset, NULL, IIO_CHAN_INFO_OFFSET);
+> > -	if (ret >=3D 0)
+> > -		raw64 +=3D offset;
+> > +	offset_type =3D iio_channel_read(chan, &offset_val, &offset_val2,
+> > +				       IIO_CHAN_INFO_OFFSET);
+> > +	if (offset_type >=3D 0) {
+> > +		switch (offset_type) {
+> > +		case IIO_VAL_INT:
+> > +			break;
+> > +		case IIO_VAL_INT_PLUS_MICRO:
+> > +			if (offset_val2 > 1000)
+>
+> What's the logic behind this one? > 1000000
+> would be an interesting corner case, though I'm not sure we've ever
+> explicitly disallowed it before.
+>
+> Why are we at 1000th of that for the check?
+>
 
-Perhaps add something about this only covering the linear cases...
+For these the idea was to go with one milli of precision.
+I don't know if that's a good criteria but I wanted to start with
+something. Do you have any suggestions?
 
-> +
-> +properties:
-> +  compatible:
-> +    const: temperature-sense-amplifier
-> +
-> +  io-channels:
-> +    maxItems: 1
-> +    description: |
-> +      Channel node of a voltage io-channel.
-> +
-> +  '#io-channel-cells':
-> +    const: 1
-> +
-> +  sense-gain-mult:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: Amplifier gain multiplier. The default is <1>.
-> +
-> +  sense-gain-div:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: Amplifier gain divider. The default is <1>.
-> +
-> +  sense-offset-millicelsius:
-> +    description: Amplifier offset. The default is <0>.
+> > +				return -EINVAL;
+> > +			break;
+> > +		case IIO_VAL_INT_PLUS_NANO:
+> > +			if (offset_val2 > 1000000)
+>
+> Similar this is a bit odd.
+>
+> > +				return -EINVAL;
+> > +		case IIO_VAL_FRACTIONAL:
+> > +			if (offset_val2 !=3D 1)
+> > +				return -EINVAL;
+>
+> We could be more flexible on this, but I don't recall any
+> channels using this so far.
+>
+> > +			break;
+> > +		case IIO_VAL_FRACTIONAL_LOG2:
+> > +			if (offset_val2)
+> > +				return -EINVAL;
+>
+> Same in this case.
+>
 
-Whilst it may seem obvious I'd like to see a statement of
-how these are used somewhere in here.
+For these two cases, I went with what Peter suggested in the previous
+version, to not break on valid implicit truncations.
 
-   temp_celcius = voltage * gain-mult / gain-div + offset
+What would be a good precision criteria for all offset types?
 
-Mainly because those familiar with the IIO usage of offset
-would expect
-(voltage + offset) * gain-mult/gain-div 
+> > +			break;
+> > +		default:
+> > +			return -EINVAL;
+> > +		}
+> > +
+> > +		raw64 +=3D offset_val;
+> > +	}
+> > =20
+> >  	scale_type =3D iio_channel_read(chan, &scale_val, &scale_val2,
+> >  					IIO_CHAN_INFO_SCALE);
 
-which doesn't make sense for this device but might leave
-people confused!
-
-> +
-> +additionalProperties: false
-> +required:
-> +  - compatible
-> +  - io-channels
-> +
-> +examples:
-> +  - |
-> +    pt1000_1: temperature-sensor {
-> +        compatible = "temperature-sense-amplifier";
-> +        #io-channel-cells = <1>;
-> +        io-channels = <&temp_adc 3>;
-> +
-> +        sense-gain-mult = <1000000>;
-> +        sense-gain-div = <3908>;
-> +        sense-offset-millicelsius = <(-255885)>;
-> +    };
-> +...
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index e679d422b472..4f7b4ee9f19b 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -8887,6 +8887,7 @@ L:	linux-iio@vger.kernel.org
->  S:	Maintained
->  F:	Documentation/devicetree/bindings/iio/afe/current-sense-amplifier.yaml
->  F:	Documentation/devicetree/bindings/iio/afe/current-sense-shunt.yaml
-> +F:	Documentation/devicetree/bindings/iio/afe/temperature-sense-amplifier.yaml
->  F:	Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
->  F:	drivers/iio/afe/iio-rescale.c
->  
-
+Thanks for looking at this,
+Liam

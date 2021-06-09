@@ -2,76 +2,92 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A2AB3A1973
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Jun 2021 17:26:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E9673A1986
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Jun 2021 17:28:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234362AbhFIP20 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 9 Jun 2021 11:28:26 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53152 "EHLO mail.kernel.org"
+        id S234654AbhFIPav (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 9 Jun 2021 11:30:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54624 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233681AbhFIP2Z (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 9 Jun 2021 11:28:25 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 618D060E0B;
-        Wed,  9 Jun 2021 15:26:26 +0000 (UTC)
-Date:   Wed, 9 Jun 2021 16:28:19 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
-        a.fatoum@pengutronix.de, kamel.bouhara@bootlin.com,
-        gwendal@chromium.org, alexandre.belloni@bootlin.com,
-        david@lechnology.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        syednwaris@gmail.com, patrick.havelange@essensium.com,
-        fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@st.com, o.rempel@pengutronix.de,
-        jarkko.nikula@linux.intel.com
-Subject: Re: [PATCH v11 13/33] counter: ftm-quaddec: Add const qualifier for
- actions_list array
-Message-ID: <20210609162819.3b466e32@jic23-huawei>
-In-Reply-To: <db1df2021efb1b98e6d1a50787be5a52a1896574.1623201081.git.vilhelm.gray@gmail.com>
-References: <cover.1623201081.git.vilhelm.gray@gmail.com>
-        <db1df2021efb1b98e6d1a50787be5a52a1896574.1623201081.git.vilhelm.gray@gmail.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S234585AbhFIPau (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 9 Jun 2021 11:30:50 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D93EE61359;
+        Wed,  9 Jun 2021 15:28:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1623252536;
+        bh=qRPWuZFnlZra/nOQj2iUcxyLVgfnFbxZyn2aT2yANC0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=hJgK+FoTTs2x1+rNlWLwCb/70pfmFGvPZ/PPruV3Qh/0ntoWg9RnrVLkqEPaElU+c
+         bncW6NVMN2vypED4d4a0o2zxvlDY5RZKZrj/VakeDY3eOLr1qgnHB+DOxIhY9o3ghn
+         QnKhi2j3EEng9HsVLucBTSmTB0hFYuI2toX/utE3BoglPA7fUp92ogqBkad33vsS1b
+         T0+EXAMlq3dvghF5Nk6UCH4TD9Dbopnmc55WOEX3PtaUMmZrKLebXrxCma38YbpyZB
+         Mlqy1A5s3Rh9QJFfqAExRnFdGmMp3eVivLqTv9x4XWwcQum9Xon3gXPkEWn6poY2sX
+         cXEYIRDOiRCZw==
+Date:   Wed, 9 Jun 2021 08:28:55 -0700
+From:   Nathan Chancellor <nathan@kernel.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Joe Perches <joe@perches.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v2 3/4] iio: imu: inv_mpu6050: Drop use of %hhx format
+ string.
+Message-ID: <YMDeN/Y/hfSExVOX@Ryzen-9-3900X>
+References: <20210603180612.3635250-1-jic23@kernel.org>
+ <20210603180612.3635250-4-jic23@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210603180612.3635250-4-jic23@kernel.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed,  9 Jun 2021 10:31:16 +0900
-William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
-
-> The struct counter_synapse actions_list member expects a const enum
-> counter_synapse_action array. This patch adds the const qualifier to the
-> ftm_quaddec_synapse_actions to match actions_list.
+On Thu, Jun 03, 2021 at 07:06:11PM +0100, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> Cc: Patrick Havelange <patrick.havelange@essensium.com>
-> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-Applied.
+> Since:
+> commit cbacb5ab0aa0 ("docs: printk-formats: Stop encouraging use of
+> unnecessary %h[xudi] and %hh[xudi]")
+> use of these format strings has been discouraged.
+> 
+> Use the 0x02x form as the length specifier when used with # includes
+> the 0x prefix and is very unlikely to be what was intended by the author.
+> 
+> Part of a series removing all uses from IIO in the interestings of
+> avoiding providing bad examples for people to copy.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Nathan Chancellor <nathan@kernel.org>
 
-Thanks,
-
-Jonathan
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
 
 > ---
->  drivers/counter/ftm-quaddec.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/counter/ftm-quaddec.c b/drivers/counter/ftm-quaddec.c
-> index c2b3fdfd8b77..9371532406ca 100644
-> --- a/drivers/counter/ftm-quaddec.c
-> +++ b/drivers/counter/ftm-quaddec.c
-> @@ -162,7 +162,7 @@ enum ftm_quaddec_synapse_action {
->  	FTM_QUADDEC_SYNAPSE_ACTION_BOTH_EDGES,
->  };
->  
-> -static enum counter_synapse_action ftm_quaddec_synapse_actions[] = {
-> +static const enum counter_synapse_action ftm_quaddec_synapse_actions[] = {
->  	[FTM_QUADDEC_SYNAPSE_ACTION_BOTH_EDGES] =
->  	COUNTER_SYNAPSE_ACTION_BOTH_EDGES
->  };
-
+> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> index 64704b55f6eb..b7254d9e0fe2 100644
+> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> @@ -1314,8 +1314,7 @@ static int inv_check_and_setup_chip(struct inv_mpu6050_state *st)
+>  		for (i = 0; i < INV_NUM_PARTS; ++i) {
+>  			if (regval == hw_info[i].whoami) {
+>  				dev_warn(regmap_get_device(st->map),
+> -					"whoami mismatch got %#02x (%s)"
+> -					"expected %#02hhx (%s)\n",
+> +					"whoami mismatch got 0x%02x (%s) expected 0x%02x (%s)\n",
+>  					regval, hw_info[i].name,
+>  					st->hw->whoami, st->hw->name);
+>  				break;
+> @@ -1323,7 +1322,7 @@ static int inv_check_and_setup_chip(struct inv_mpu6050_state *st)
+>  		}
+>  		if (i >= INV_NUM_PARTS) {
+>  			dev_err(regmap_get_device(st->map),
+> -				"invalid whoami %#02x expected %#02hhx (%s)\n",
+> +				"invalid whoami 0x%02x expected 0x%02x (%s)\n",
+>  				regval, st->hw->whoami, st->hw->name);
+>  			return -ENODEV;
+>  		}
+> -- 
+> 2.31.1

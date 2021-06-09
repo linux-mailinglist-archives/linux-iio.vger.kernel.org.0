@@ -2,51 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E5F33A0944
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Jun 2021 03:33:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4BDB3A0969
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Jun 2021 03:34:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235895AbhFIBff (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 8 Jun 2021 21:35:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36754 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235884AbhFIBfc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Jun 2021 21:35:32 -0400
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10395C06178B;
-        Tue,  8 Jun 2021 18:33:28 -0700 (PDT)
-Received: by mail-pj1-x102e.google.com with SMTP id mp5-20020a17090b1905b029016dd057935fso423093pjb.5;
-        Tue, 08 Jun 2021 18:33:28 -0700 (PDT)
+        id S235650AbhFIBgj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 8 Jun 2021 21:36:39 -0400
+Received: from mail-pl1-f178.google.com ([209.85.214.178]:42757 "EHLO
+        mail-pl1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236006AbhFIBgi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Jun 2021 21:36:38 -0400
+Received: by mail-pl1-f178.google.com with SMTP id v13so11685076ple.9;
+        Tue, 08 Jun 2021 18:34:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=ahZ4wxqYj8/PnnRsg7CFwjhhCPg4bzL3Iu0oZpPEJNk=;
-        b=FDGW5jjxYBl+kKCMS9YTEBDfvxM/0VEtfXATZc65wdNzQmz8UuqkfM92rH3MvullfZ
-         eB5WKaO5LuVHMljirIylzAwLp9/nfS0xZWORRdMtt6pYXfQI8IivrXpxvuF0O0BUw3U2
-         LvSH8ZAih2PPwFckAIrX+kB13eUfDC1T7vvIy6WJCQWp63cwhuvS7x0Asuwg376kMHVB
-         rbrbN0W5Y5rlz/6ye1H1NVBfthjnzKENF5EPMvlUTUeRYIeZeWlX/rD1w/6ClzzKc/ot
-         y37OGiw/oZeRMKi9TCaw4T/W/NtGZNjhZZ/kRZPKEZnbI2ZWAWyFPug/lajfXFt3kILP
-         bxAg==
+        bh=OA5u6SJNK+s6oS+KIo8wUe9rkDbx6noCrm5mbnVV26Q=;
+        b=t5sxJ1MAHxmqdS803zvW9Bc9ytt4EUQkB/MtGvpZ4GDQklGyUWuxj1/4RO1OxH2UTh
+         TT0Zl9zbGRa64y7SHP0FbInNIkKi90lOwMT/2x46LyBqSIv+Q7K8nJ3/2XBhOjxUtbB0
+         Qpz/EnHY+qi8m34N5ZJLiW4dh4ar48u705JT+Xrop61bxNLIBYqLorYG1PNmEvO+aC8m
+         knENULK78Nr5Hf2Z5ZV8YR9ebsWnsjbFo9EF7ACDDfkXsZSqojqOntg0gdsgUc21Rl1h
+         G8UaVAteLegWkiqkjWtffuoS99dc3G+wWHs1IKReFflbb/q07/J9PCAI3UFNgKCIMdNk
+         aBqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=ahZ4wxqYj8/PnnRsg7CFwjhhCPg4bzL3Iu0oZpPEJNk=;
-        b=CkK5dzhaYNNSTSROL6haYOSerRaczpnFKHgCLUBbTDrpESTg7HS6/eD7aYIYlqB59D
-         0Peeb/sXxXkpjhpLMXCYrtUWjjIHxc488xvt3a0C5KZR1AWNKoysttfztiBfryGR2MuF
-         V+3tgtgupE/hQ0vFqz+N9+ZggGc5CyrYLgWHVQGIhUcnmHYEnqqhlVmaBN+lfTxZii2z
-         5DkKoXmQNN99uBmpS8GRBit1xCxEZZaEjbNrDuXIG6A5JxYy5wu8+vDcLr2xTkbgHOXu
-         jFlO/vyDoiLCL3Gd6nah1WaMvJ6dATFySUPODEHOE9Mkbs3Nf2Fr+FdN68JC0uCE+dNV
-         sbZg==
-X-Gm-Message-State: AOAM530cNffjsDoM9ih4brq4+P0ZM4wF1Y1Cyz/iZXK5sqq+VEMHvKN/
-        YFZhi37kPxGGe7hAtvtHUf0=
-X-Google-Smtp-Source: ABdhPJxU1XV1SNYwMQaNecIVUytIlu6/3AGUsvUMd4zVgD9V/R+wygJf4LJ8zXkl5C6XA7pShIvWtg==
-X-Received: by 2002:a17:902:d694:b029:103:ec01:12d5 with SMTP id v20-20020a170902d694b0290103ec0112d5mr2979637ply.19.1623202407675;
-        Tue, 08 Jun 2021 18:33:27 -0700 (PDT)
+        bh=OA5u6SJNK+s6oS+KIo8wUe9rkDbx6noCrm5mbnVV26Q=;
+        b=UmzH19E3GatQRI9qLQ9EmUSPIxvrE4cGMXe8VFRrAInYdHpLGjEgI9QkF6LgwZKJ3D
+         b/9gxdgcksM44jJPvJmmleyAt8sdrAH+llimLNGbYiyxOVB6q54133mAcTzm7bSfqZf8
+         usBKr6+7YCW7ny/s2gs/NbcZshXgvYkUoAw1GeyKboUFN/+Y+sKTNLtqk64BOV4FMR5R
+         8zIdbFZLKC64MpqsAnwL2BQVK4JfnpmD6QMey5xnqA2UTySYQJmEsxfiq0pPCmn5sxC+
+         kdv6rkNEnbaWQIRA3lWWq1m9QPyPQPSBCEyKhTK2NAld3KIKlf73Ed5o1PK9nCbDwRSH
+         OVUA==
+X-Gm-Message-State: AOAM5328Js0qe4YYlzduMAxj9dSfDfJiKBVrHjXXLeOzet8HHFV+bgUM
+        2WhPLSvks6idSDM7c+PcIDI=
+X-Google-Smtp-Source: ABdhPJzOX1QfGFsgNbJdkNatPZQBiutpv1h03G3EVGcDc+K8siHkuOlBJWelslwucoRLQs+gHCwCeQ==
+X-Received: by 2002:a17:90b:8d6:: with SMTP id ds22mr29638127pjb.54.1623202412891;
+        Tue, 08 Jun 2021 18:33:32 -0700 (PDT)
 Received: from localhost.localdomain ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id v14sm12659815pgl.86.2021.06.08.18.33.22
+        by smtp.gmail.com with ESMTPSA id v14sm12659815pgl.86.2021.06.08.18.33.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Jun 2021 18:33:27 -0700 (PDT)
+        Tue, 08 Jun 2021 18:33:32 -0700 (PDT)
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     jic23@kernel.org
 Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
@@ -58,11 +55,10 @@ Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
         fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
         alexandre.torgue@st.com, o.rempel@pengutronix.de,
         jarkko.nikula@linux.intel.com,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Subject: [PATCH v11 19/33] counter: Standardize to ERANGE for limit exceeded errors
-Date:   Wed,  9 Jun 2021 10:31:22 +0900
-Message-Id: <c5dbcd525d1c04c474fc3988ded9b509eb12ac9e.1623201081.git.vilhelm.gray@gmail.com>
+        William Breathitt Gray <vilhelm.gray@gmail.com>
+Subject: [PATCH v11 20/33] counter: Rename counter_signal_value to counter_signal_level
+Date:   Wed,  9 Jun 2021 10:31:23 +0900
+Message-Id: <6751025f2f1a9ea87fac9563ecb58eec22bb27a5.1623201081.git.vilhelm.gray@gmail.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <cover.1623201081.git.vilhelm.gray@gmail.com>
 References: <cover.1623201081.git.vilhelm.gray@gmail.com>
@@ -72,95 +68,158 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-ERANGE is a semantically better error code to return when an argument
-value falls outside the supported limit range of a device.
+Signal values will always be levels so let's be explicit it about it to
+make the intent of the code clear.
 
-Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@st.com>
+Cc: Kamel Bouhara <kamel.bouhara@bootlin.com>
 Acked-by: Syed Nayyar Waris <syednwaris@gmail.com>
 Reviewed-by: David Lechner <david@lechnology.com>
-Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 ---
- drivers/counter/104-quad-8.c        | 6 +++---
- drivers/counter/intel-qep.c         | 2 +-
- drivers/counter/interrupt-cnt.c     | 3 +++
- drivers/counter/stm32-lptimer-cnt.c | 2 +-
- 4 files changed, 8 insertions(+), 5 deletions(-)
+ drivers/counter/104-quad-8.c            |  5 +++--
+ drivers/counter/counter.c               | 12 ++++++------
+ drivers/counter/interrupt-cnt.c         |  4 ++--
+ drivers/counter/microchip-tcb-capture.c |  4 ++--
+ include/linux/counter.h                 | 12 ++++++------
+ 5 files changed, 19 insertions(+), 18 deletions(-)
 
 diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
-index b7d6c1c43655..0409b1771fd9 100644
+index 0409b1771fd9..fb0f021c0751 100644
 --- a/drivers/counter/104-quad-8.c
 +++ b/drivers/counter/104-quad-8.c
-@@ -154,7 +154,7 @@ static int quad8_count_write(struct counter_device *counter,
+@@ -97,7 +97,8 @@ struct quad8 {
+ #define QUAD8_CMR_QUADRATURE_X4 0x18
  
- 	/* Only 24-bit values are supported */
- 	if (val > 0xFFFFFF)
--		return -EINVAL;
-+		return -ERANGE;
- 
- 	mutex_lock(&priv->lock);
- 
-@@ -669,7 +669,7 @@ static ssize_t quad8_count_preset_write(struct counter_device *counter,
- 
- 	/* Only 24-bit values are supported */
- 	if (preset > 0xFFFFFF)
--		return -EINVAL;
-+		return -ERANGE;
- 
- 	mutex_lock(&priv->lock);
- 
-@@ -714,7 +714,7 @@ static ssize_t quad8_count_ceiling_write(struct counter_device *counter,
- 
- 	/* Only 24-bit values are supported */
- 	if (ceiling > 0xFFFFFF)
--		return -EINVAL;
-+		return -ERANGE;
- 
- 	mutex_lock(&priv->lock);
- 
-diff --git a/drivers/counter/intel-qep.c b/drivers/counter/intel-qep.c
-index ab10ba33f46a..7b4eb8ff8348 100644
---- a/drivers/counter/intel-qep.c
-+++ b/drivers/counter/intel-qep.c
-@@ -320,7 +320,7 @@ static ssize_t spike_filter_ns_write(struct counter_device *counter,
- 	}
- 
- 	if (length > INTEL_QEPFLT_MAX_COUNT(length))
--		return -EINVAL;
-+		return -ERANGE;
- 
- 	mutex_lock(&qep->lock);
- 	if (qep->enabled) {
-diff --git a/drivers/counter/interrupt-cnt.c b/drivers/counter/interrupt-cnt.c
-index 0e07607f2cd3..f27dea317965 100644
---- a/drivers/counter/interrupt-cnt.c
-+++ b/drivers/counter/interrupt-cnt.c
-@@ -107,6 +107,9 @@ static int interrupt_cnt_write(struct counter_device *counter,
+ static int quad8_signal_read(struct counter_device *counter,
+-	struct counter_signal *signal, enum counter_signal_value *val)
++			     struct counter_signal *signal,
++			     enum counter_signal_level *level)
  {
- 	struct interrupt_cnt_priv *priv = counter->priv;
+ 	const struct quad8 *const priv = counter->priv;
+ 	unsigned int state;
+@@ -109,7 +110,7 @@ static int quad8_signal_read(struct counter_device *counter,
+ 	state = inb(priv->base + QUAD8_REG_INDEX_INPUT_LEVELS)
+ 		& BIT(signal->id - 16);
  
-+	if (val != (typeof(priv->count.counter))val)
-+		return -ERANGE;
-+
- 	atomic_set(&priv->count, val);
+-	*val = (state) ? COUNTER_SIGNAL_HIGH : COUNTER_SIGNAL_LOW;
++	*level = (state) ? COUNTER_SIGNAL_LEVEL_HIGH : COUNTER_SIGNAL_LEVEL_LOW;
  
  	return 0;
-diff --git a/drivers/counter/stm32-lptimer-cnt.c b/drivers/counter/stm32-lptimer-cnt.c
-index 78f383b77bd2..49aeb9e393f3 100644
---- a/drivers/counter/stm32-lptimer-cnt.c
-+++ b/drivers/counter/stm32-lptimer-cnt.c
-@@ -283,7 +283,7 @@ static ssize_t stm32_lptim_cnt_ceiling_write(struct counter_device *counter,
+ }
+diff --git a/drivers/counter/counter.c b/drivers/counter/counter.c
+index 6a683d086008..cb92673552b5 100644
+--- a/drivers/counter/counter.c
++++ b/drivers/counter/counter.c
+@@ -289,9 +289,9 @@ struct counter_signal_unit {
+ 	struct counter_signal *signal;
+ };
+ 
+-static const char *const counter_signal_value_str[] = {
+-	[COUNTER_SIGNAL_LOW] = "low",
+-	[COUNTER_SIGNAL_HIGH] = "high"
++static const char *const counter_signal_level_str[] = {
++	[COUNTER_SIGNAL_LEVEL_LOW] = "low",
++	[COUNTER_SIGNAL_LEVEL_HIGH] = "high"
+ };
+ 
+ static ssize_t counter_signal_show(struct device *dev,
+@@ -302,13 +302,13 @@ static ssize_t counter_signal_show(struct device *dev,
+ 	const struct counter_signal_unit *const component = devattr->component;
+ 	struct counter_signal *const signal = component->signal;
+ 	int err;
+-	enum counter_signal_value val;
++	enum counter_signal_level level;
+ 
+-	err = counter->ops->signal_read(counter, signal, &val);
++	err = counter->ops->signal_read(counter, signal, &level);
+ 	if (err)
+ 		return err;
+ 
+-	return sprintf(buf, "%s\n", counter_signal_value_str[val]);
++	return sprintf(buf, "%s\n", counter_signal_level_str[level]);
+ }
+ 
+ struct counter_name_unit {
+diff --git a/drivers/counter/interrupt-cnt.c b/drivers/counter/interrupt-cnt.c
+index f27dea317965..cce579c1c6ae 100644
+--- a/drivers/counter/interrupt-cnt.c
++++ b/drivers/counter/interrupt-cnt.c
+@@ -130,7 +130,7 @@ static int interrupt_cnt_function_get(struct counter_device *counter,
+ 
+ static int interrupt_cnt_signal_read(struct counter_device *counter,
+ 				     struct counter_signal *signal,
+-				     enum counter_signal_value *val)
++				     enum counter_signal_level *level)
+ {
+ 	struct interrupt_cnt_priv *priv = counter->priv;
+ 	int ret;
+@@ -142,7 +142,7 @@ static int interrupt_cnt_signal_read(struct counter_device *counter,
+ 	if (ret < 0)
  		return ret;
  
- 	if (ceiling > STM32_LPTIM_MAX_ARR)
--		return -EINVAL;
-+		return -ERANGE;
+-	*val = ret ? COUNTER_SIGNAL_HIGH : COUNTER_SIGNAL_LOW;
++	*level = ret ? COUNTER_SIGNAL_LEVEL_HIGH : COUNTER_SIGNAL_LEVEL_LOW;
  
- 	priv->ceiling = ceiling;
+ 	return 0;
+ }
+diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/microchip-tcb-capture.c
+index 0c9a61962911..6be3adf74114 100644
+--- a/drivers/counter/microchip-tcb-capture.c
++++ b/drivers/counter/microchip-tcb-capture.c
+@@ -158,7 +158,7 @@ static int mchp_tc_count_function_set(struct counter_device *counter,
  
+ static int mchp_tc_count_signal_read(struct counter_device *counter,
+ 				     struct counter_signal *signal,
+-				     enum counter_signal_value *val)
++				     enum counter_signal_level *lvl)
+ {
+ 	struct mchp_tc_data *const priv = counter->priv;
+ 	bool sigstatus;
+@@ -171,7 +171,7 @@ static int mchp_tc_count_signal_read(struct counter_device *counter,
+ 	else
+ 		sigstatus = (sr & ATMEL_TC_MTIOA);
+ 
+-	*val = sigstatus ? COUNTER_SIGNAL_HIGH : COUNTER_SIGNAL_LOW;
++	*lvl = sigstatus ? COUNTER_SIGNAL_LEVEL_HIGH : COUNTER_SIGNAL_LEVEL_LOW;
+ 
+ 	return 0;
+ }
+diff --git a/include/linux/counter.h b/include/linux/counter.h
+index 9dbd5df4cd34..79f5dcaf6ba0 100644
+--- a/include/linux/counter.h
++++ b/include/linux/counter.h
+@@ -290,16 +290,16 @@ struct counter_device_state {
+ 	const struct attribute_group **groups;
+ };
+ 
+-enum counter_signal_value {
+-	COUNTER_SIGNAL_LOW = 0,
+-	COUNTER_SIGNAL_HIGH
++enum counter_signal_level {
++	COUNTER_SIGNAL_LEVEL_LOW,
++	COUNTER_SIGNAL_LEVEL_HIGH,
+ };
+ 
+ /**
+  * struct counter_ops - Callbacks from driver
+  * @signal_read:	optional read callback for Signal attribute. The read
+- *			value of the respective Signal should be passed back via
+- *			the val parameter.
++ *			level of the respective Signal should be passed back via
++ *			the level parameter.
+  * @count_read:		optional read callback for Count attribute. The read
+  *			value of the respective Count should be passed back via
+  *			the val parameter.
+@@ -324,7 +324,7 @@ enum counter_signal_value {
+ struct counter_ops {
+ 	int (*signal_read)(struct counter_device *counter,
+ 			   struct counter_signal *signal,
+-			   enum counter_signal_value *val);
++			   enum counter_signal_level *level);
+ 	int (*count_read)(struct counter_device *counter,
+ 			  struct counter_count *count, unsigned long *val);
+ 	int (*count_write)(struct counter_device *counter,
 -- 
 2.32.0
 

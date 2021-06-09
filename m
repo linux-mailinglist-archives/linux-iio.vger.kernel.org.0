@@ -2,48 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D361A3A093B
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Jun 2021 03:33:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0ECC13A0917
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Jun 2021 03:32:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235821AbhFIBfY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 8 Jun 2021 21:35:24 -0400
-Received: from mail-pj1-f43.google.com ([209.85.216.43]:44993 "EHLO
-        mail-pj1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235809AbhFIBfW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Jun 2021 21:35:22 -0400
-Received: by mail-pj1-f43.google.com with SMTP id h12-20020a17090aa88cb029016400fd8ad8so412061pjq.3;
-        Tue, 08 Jun 2021 18:33:15 -0700 (PDT)
+        id S235460AbhFIBeX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 8 Jun 2021 21:34:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36502 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235458AbhFIBeX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Jun 2021 21:34:23 -0400
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E8AAC061574;
+        Tue,  8 Jun 2021 18:32:20 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id x10so11682864plg.3;
+        Tue, 08 Jun 2021 18:32:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=53F3JLy2efE/MBSv+u+hdtt2UsFBNaGfSp4/xOndCJw=;
-        b=m8NgwwBQVj+jiOSgp/qosMdniUSNKbEihuaHW84YK4n9ISHj3p6eAH3wIijol8CUmh
-         k3wtBdLYgwJCdaFrYTPzeEsfQEkRAAIloFRJ0Sx/vYTGIY+B/zxkUMh19sS9ieeAqE2n
-         sj0F+OZvJC5hhI2EM6bvsroDIrY3Auoz3JZyWzpzuc+HciWeuIcXFSe7YGclcC3ESDNk
-         pnzjomO6GPuXSgUii5ZNOBSo1wDYmz06NRFK7KEI40Lv51VGF4mhD1t624cUaenHvZrw
-         0GH3TSRk2/IW6oYUsVIxopQoUUKkXYvBGnNVSgFQ75Bd58+NsUu8byQp3tFnbnwYsGMz
-         O20w==
+        bh=rzSSFM9eA7D/nASKgieKIKXoM9U+od0SIxRVo0RKwbs=;
+        b=T37gis28MP075rqTyRhAlrTWtsa3kDZQh1r47qcKH0NNEVSompkKpN5d7z8GDHGHqz
+         VlzszmEKm7FtBv5XEJH6XDp+8+BIkZl9JCTA/fGHu1WoypHkO74bmkZTclWCEZBtW9yZ
+         RTN3tIBQXoILSRugZw5mxdymx8R0xy0U4naAciR4tfkPoTv3MC07yhkHoM9ISpDKs1Zj
+         b79JYllFGL0YAt8EiQHH8IrZSiVflGpAvEUehWNlEgSu8pP0tkSDXz5LGr5kHL9L3cqf
+         j9195/L44+nURGJQoYjms3Rp9Uiqd1IVCETmsf/WEUSFnzOYR5HQOXmnHvoexyiSpXPF
+         QHUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=53F3JLy2efE/MBSv+u+hdtt2UsFBNaGfSp4/xOndCJw=;
-        b=h0visBmJTpFo+P4fxw5Ta1bW6Fidv5x1Ddt6OXj19Kq2pKmuCxBGvambJU7YZpZskH
-         IFXhzEkBmIHPgfiM/x3tR6KqGwcvZXWd/ZEqcqNh608nt1cKgdXk9+sjwvV5c/BrjnYA
-         wRekqmg6pHUAjbPMidlVPch2BbN5o0MIjEbYC888AnNNe88zrgPOYnaeklAS7uIP3/I1
-         xRfoDUj4OIjqY9CNRBStpkvNKlZrfrirUWs6vJW0aKJbcbuPDZbtARaCADixfTqpqMZT
-         aG4fQWvruT6zV/K6W9Bv2DncaPnfBsM+gflzfe94WGt7gakjtpMhfw25PVVw72f6Wa9y
-         1KRw==
-X-Gm-Message-State: AOAM531qa0T1vbD6fEo50nLzF3c486LdaSe72BgmY35+UtZCe/MdJgI9
-        La+lylJv/k8Nn5dXxDywI2Y=
-X-Google-Smtp-Source: ABdhPJxlALKo8z10rInZn6MEjc+0Tt+aSv/JtpP5OOw76asrvljiGTcoZp64CRIKQeDsuyxCbelwOA==
-X-Received: by 2002:a17:90b:1888:: with SMTP id mn8mr8046509pjb.179.1623202334944;
-        Tue, 08 Jun 2021 18:32:14 -0700 (PDT)
+        bh=rzSSFM9eA7D/nASKgieKIKXoM9U+od0SIxRVo0RKwbs=;
+        b=EhWSj0lSPLPmbRNOrQPPuSXYZtiua3u/mLs9E0Go/4xJYVVhRg0BPOFOZAq6F90wYx
+         gNeitqloMx7hcqFwvWgFF0gRofZhxjy8gyvpWjPF9eenHdq1PNLCcuamJRwNKk6wnITF
+         h9Pt8mBO0/xck6JXzwuG7hQyusPY7hBU6HgytTl9SZuP4mqR8c9/mv0Q9oP96bGEJ835
+         HHdBmTWr/Vn/qp0fhBFf5rN8iRIgrOPbCKM4v3YY8dG5MRhE0D40HMHUngRRYgvZdWWG
+         20thKhhwGuBtdAwqzsAjCz4KUYdpITdF7l42Jx2e4DiBZhM9MGhXRPPAxLkANjh+FBqe
+         rBRQ==
+X-Gm-Message-State: AOAM5325bhlCl90JQNnerHJ/mwT4YaseIVngH7rYSodHXNHuEHCvGRnf
+        M/djmCX3bI+DtGhyZkWGN7g=
+X-Google-Smtp-Source: ABdhPJzHx8m37RAm6th5rtYK4N+44f3lBAKH9sGXux1cR9nBP9hDBHSt90KBliON8+mHPJtsukB/tw==
+X-Received: by 2002:a17:90a:e541:: with SMTP id ei1mr28850129pjb.189.1623202339993;
+        Tue, 08 Jun 2021 18:32:19 -0700 (PDT)
 Received: from localhost.localdomain ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id v14sm12659815pgl.86.2021.06.08.18.32.10
+        by smtp.gmail.com with ESMTPSA id v14sm12659815pgl.86.2021.06.08.18.32.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Jun 2021 18:32:14 -0700 (PDT)
+        Tue, 08 Jun 2021 18:32:19 -0700 (PDT)
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     jic23@kernel.org
 Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
@@ -56,9 +59,9 @@ Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
         alexandre.torgue@st.com, o.rempel@pengutronix.de,
         jarkko.nikula@linux.intel.com,
         William Breathitt Gray <vilhelm.gray@gmail.com>
-Subject: [PATCH v11 05/33] counter: 104-quad-8: Annotate hardware config module parameter
-Date:   Wed,  9 Jun 2021 10:31:08 +0900
-Message-Id: <97ce79878a26809f0b15b2eac9a86ca39e0ecd74.1623201081.git.vilhelm.gray@gmail.com>
+Subject: [PATCH v11 06/33] counter: 104-quad-8: Add const qualifiers for quad8_preset_register_set
+Date:   Wed,  9 Jun 2021 10:31:09 +0900
+Message-Id: <050f1b518eeae8e3683f7d6d11f3219a137adf48.1623201081.git.vilhelm.gray@gmail.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <cover.1623201081.git.vilhelm.gray@gmail.com>
 References: <cover.1623201081.git.vilhelm.gray@gmail.com>
@@ -68,45 +71,30 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-When the kernel is running in secure boot mode, we lock down the kernel to
-prevent userspace from modifying the running kernel image.  Whilst this
-includes prohibiting access to things like /dev/mem, it must also prevent
-access by means of configuring driver modules in such a way as to cause a
-device to access or modify the kernel image.
-
-To this end, annotate module_param* statements that refer to hardware
-configuration and indicate for future reference what type of parameter they
-specify.  The parameter parser in the core sees this information and can
-skip such parameters with an error message if the kernel is locked down.
-The module initialisation then runs as normal, but just sees whatever the
-default values for those parameters is.
-
-Note that we do still need to do the module initialisation because some
-drivers have viable defaults set in case parameters aren't specified and
-some drivers support automatic configuration (e.g. PNP or PCI) in addition
-to manually coded parameters.
-
-This patch annotates the 104-QUAD-8 driver.
+Add some safety by qualifying the quad8_preset_register_set() function
+parameters as const.
 
 Acked-by: Syed Nayyar Waris <syednwaris@gmail.com>
 Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 ---
- drivers/counter/104-quad-8.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/counter/104-quad-8.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
-index 233a3acc1377..0fd61cc82d30 100644
+index 0fd61cc82d30..51fba8cf9c2a 100644
 --- a/drivers/counter/104-quad-8.c
 +++ b/drivers/counter/104-quad-8.c
-@@ -21,7 +21,7 @@
+@@ -632,8 +632,8 @@ static ssize_t quad8_count_preset_read(struct counter_device *counter,
+ 	return sprintf(buf, "%u\n", priv->preset[count->id]);
+ }
  
- static unsigned int base[max_num_isa_dev(QUAD8_EXTENT)];
- static unsigned int num_quad8;
--module_param_array(base, uint, &num_quad8, 0);
-+module_param_hw_array(base, uint, ioport, &num_quad8, 0);
- MODULE_PARM_DESC(base, "ACCES 104-QUAD-8 base addresses");
- 
- #define QUAD8_NUM_COUNTERS 8
+-static void quad8_preset_register_set(struct quad8 *priv, int id,
+-				      unsigned int preset)
++static void quad8_preset_register_set(struct quad8 *const priv, const int id,
++				      const unsigned int preset)
+ {
+ 	const unsigned int base_offset = priv->base + 2 * id;
+ 	int i;
 -- 
 2.32.0
 

@@ -2,119 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 61C4D3A1DF5
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Jun 2021 22:08:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C22A83A1DFD
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Jun 2021 22:10:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229678AbhFIUKn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 9 Jun 2021 16:10:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51332 "EHLO mail.kernel.org"
+        id S229797AbhFIUMn convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Wed, 9 Jun 2021 16:12:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52550 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229578AbhFIUKn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 9 Jun 2021 16:10:43 -0400
+        id S229659AbhFIUMn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 9 Jun 2021 16:12:43 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 11D116139A;
-        Wed,  9 Jun 2021 20:08:46 +0000 (UTC)
-Date:   Wed, 9 Jun 2021 21:10:40 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 2F40861249;
+        Wed,  9 Jun 2021 20:10:46 +0000 (UTC)
+Date:   Wed, 9 Jun 2021 21:12:41 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <aardelean@deviqon.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        nuno.sa@analog.com
-Subject: Re: [PATCH] iio: imu: remove unused private data assigned with
+To:     Alexandru Ardelean <ardeleanalex@gmail.com>
+Cc:     Alexandru Lazar <alazar@startmail.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: adc: remove unused private data assigned with
  spi_set_drvdata()
-Message-ID: <20210609211040.56df2934@jic23-huawei>
-In-Reply-To: <20210513122512.93187-1-aardelean@deviqon.com>
-References: <20210513122512.93187-1-aardelean@deviqon.com>
+Message-ID: <20210609211241.28ddd3a2@jic23-huawei>
+In-Reply-To: <20210513155552.12f64241@jic23-huawei>
+References: <20210513111035.77950-1-aardelean@deviqon.com>
+        <a31b6d94-24cc-6f01-dc36-90c0001ea396@startmail.com>
+        <CA+U=DsrSjQa-iL5FHyiwXN=Hv72jd5b99tzcNoO97ckXgiuGzA@mail.gmail.com>
+        <20210513155552.12f64241@jic23-huawei>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 13 May 2021 15:25:12 +0300
-Alexandru Ardelean <aardelean@deviqon.com> wrote:
+On Thu, 13 May 2021 15:55:52 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> These were usually used before the conversion to devm_ functions, so that
-> the remove hook would be able to retrieve the pointer and do cleanups on
-> remove.
-> When the conversion happened, they should have been removed, but were
-> omitted.
+> On Thu, 13 May 2021 15:14:57 +0300
+> Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
 > 
-> Some drivers were copied from drivers that fit the criteria described
-> above. In any case, in order to prevent more drivers from being used as
-> example (and have spi_set_drvdata() needlessly set), this change removes it
-> from the IIO IMU group.
+> > On Thu, May 13, 2021 at 3:06 PM Alexandru Lazar <alazar@startmail.com> wrote:  
+> > >
+> > >    
+> > > > Some drivers were copied from drivers that fit the criteria described
+> > > > above. In any case, in order to prevent more drivers from being used as
+> > > > example (and have spi_set_drvdata() needlessly set), this change removes it
+> > > > from the IIO ADC group.    
+> > >
+> > > Oh yeah, I'm pretty sure that's how I ended up adding it in the max1241
+> > > code, too. Code monkey presents humble apologies :-).    
+> > 
+> > Well, I also added one in the AD9467 driver in the same manner.
+> > So  ¯\_(ツ)_/¯
+> >   
+> All look correct to me. I'll let this sit on the list for a few days before
+> picking it up.
+Applied thanks.
 > 
-> Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
-Hohum. I missed this one due to an error in my colour coding scheme
-that had it having dependencies. Oops.
-
-Applied to the togreg branch of iio.git and pushed out as testing
-for 0-day to poke at.
-
-Thanks,
-
-Jonathan
-
-> ---
->  drivers/iio/imu/adis16400.c | 2 --
->  drivers/iio/imu/adis16460.c | 2 --
->  drivers/iio/imu/adis16475.c | 1 -
->  drivers/iio/imu/adis16480.c | 2 --
->  4 files changed, 7 deletions(-)
+> Thanks,
 > 
-> diff --git a/drivers/iio/imu/adis16400.c b/drivers/iio/imu/adis16400.c
-> index cb8d3ffab6fc..109b2360a54e 100644
-> --- a/drivers/iio/imu/adis16400.c
-> +++ b/drivers/iio/imu/adis16400.c
-> @@ -1164,8 +1164,6 @@ static int adis16400_probe(struct spi_device *spi)
->  		return -ENOMEM;
->  
->  	st = iio_priv(indio_dev);
-> -	/* this is only used for removal purposes */
-> -	spi_set_drvdata(spi, indio_dev);
->  
->  	/* setup the industrialio driver allocated elements */
->  	st->variant = &adis16400_chips[spi_get_device_id(spi)->driver_data];
-> diff --git a/drivers/iio/imu/adis16460.c b/drivers/iio/imu/adis16460.c
-> index 73bf45e859b8..068d98780383 100644
-> --- a/drivers/iio/imu/adis16460.c
-> +++ b/drivers/iio/imu/adis16460.c
-> @@ -388,8 +388,6 @@ static int adis16460_probe(struct spi_device *spi)
->  	if (indio_dev == NULL)
->  		return -ENOMEM;
->  
-> -	spi_set_drvdata(spi, indio_dev);
-> -
->  	st = iio_priv(indio_dev);
->  
->  	st->chip_info = &adis16460_chip_info;
-> diff --git a/drivers/iio/imu/adis16475.c b/drivers/iio/imu/adis16475.c
-> index 5654c0c15426..90aec3c9dbcb 100644
-> --- a/drivers/iio/imu/adis16475.c
-> +++ b/drivers/iio/imu/adis16475.c
-> @@ -1329,7 +1329,6 @@ static int adis16475_probe(struct spi_device *spi)
->  		return -ENOMEM;
->  
->  	st = iio_priv(indio_dev);
-> -	spi_set_drvdata(spi, indio_dev);
->  
->  	st->info = device_get_match_data(&spi->dev);
->  	if (!st->info)
-> diff --git a/drivers/iio/imu/adis16480.c b/drivers/iio/imu/adis16480.c
-> index f81b86690b76..c7dd1150780d 100644
-> --- a/drivers/iio/imu/adis16480.c
-> +++ b/drivers/iio/imu/adis16480.c
-> @@ -1279,8 +1279,6 @@ static int adis16480_probe(struct spi_device *spi)
->  	if (indio_dev == NULL)
->  		return -ENOMEM;
->  
-> -	spi_set_drvdata(spi, indio_dev);
-> -
->  	st = iio_priv(indio_dev);
->  
->  	st->chip_info = &adis16480_chip_info[id->driver_data];
+> Jonathan
+> 
+> > >
+> > > All the best,
+> > > Alex    
+> 
 

@@ -2,48 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CC323A0934
+	by mail.lfdr.de (Postfix) with ESMTP id 9705B3A0935
 	for <lists+linux-iio@lfdr.de>; Wed,  9 Jun 2021 03:33:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235782AbhFIBfP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 8 Jun 2021 21:35:15 -0400
-Received: from mail-pl1-f175.google.com ([209.85.214.175]:46973 "EHLO
-        mail-pl1-f175.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235689AbhFIBfN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Jun 2021 21:35:13 -0400
-Received: by mail-pl1-f175.google.com with SMTP id e1so11670169pld.13;
-        Tue, 08 Jun 2021 18:33:04 -0700 (PDT)
+        id S235723AbhFIBfQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 8 Jun 2021 21:35:16 -0400
+Received: from mail-pj1-f42.google.com ([209.85.216.42]:40640 "EHLO
+        mail-pj1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235425AbhFIBfO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Jun 2021 21:35:14 -0400
+Received: by mail-pj1-f42.google.com with SMTP id mp5-20020a17090b1905b029016dd057935fso421667pjb.5;
+        Tue, 08 Jun 2021 18:33:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=M+ymk8l7sDsxacyxiiHwx/yDAi9ouIx2opOlllHKJGo=;
-        b=rETqv+/5v6VexoVTKEiL4+p0jOdC7Wugt1hqCAt26ZVIK7eVr04itPS5S98u10CUXF
-         wCkbpBcx9jkH79pTdTSzBVjyOJEfQ5NLFbGORbm8Y7AaQsp1Q7bXGgU3cMyrGT+eCDYL
-         imKFwJoBJNIx5fhuK8Z2yq8c+s51ZpZ5Kw59BjOOrlrGdwlb4TiDX2smFWRAyDgStNtA
-         47prT7DrHcjDa+gAa/4ZAnEiaTx0jI6CvN6ahwbOL1YxljGe7y2WHNA+zOy23wfaRbGr
-         8GxN9l65KStBtx/mxg8fAw27c3TPkr+JHUJVAafW72CxDvSoNxBtxoM+rAzoCKdbbAST
-         sIWA==
+        bh=lTRFeIgR82VeMe8p5ZV3YrTNSoJ/Vz3X3Xth8hi5pHc=;
+        b=d88eVXQHjZEx5iTzxcmgkdsv5Un4KkQr0n6ujS4RIBMRD5XkCaIXCL3LJRk7odZqBg
+         /zrNJNxhsvfAjllevEXrdb1qmfTPgLaUFjr2qr8U3ohs1aWbk+OtfXih+kMbXkoTEvvx
+         vnUxJg4xhyQAIDKobIctpCAMwBsSHNJPNtRKvVJZMfp9HgJGYnQvTkFWlOKTrrbnUnoa
+         z1SYyKhbgMvRk8jJgg0U8JHN3ekBNc9NiT6RMbZjzRYSbvc2w4K49T0MoOQEVkI1PsIW
+         Cg3i6Du2w5pbi79pLVelGkUnXC6NCn4qaT0uBYfmQchZv0sEy11f8JGrxbdkNaa1NZFl
+         EkpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=M+ymk8l7sDsxacyxiiHwx/yDAi9ouIx2opOlllHKJGo=;
-        b=Z5Ccdz/NO9uMeiKq/SWaDv1QDbQqOzWVwSQLX+G5EylglhDjbwY0MMje8VhtjGlw6Q
-         6qdk227lccvh/9SSS90UxHnZ1qBApYauTCKVeqygl8/IwHNgaRhETmvnY3B4Ljtb8VzG
-         /jQktUNDZoF/vCLGQryJlOoBwPDo7a1gbaBveEn58jtZLsYWRnHQMGGqF16H7h/PTak6
-         jRDYLfMPLQW5MaBF8a6FjeTLMsqHY9rIXbHr94ut3wrFrWx/4PJp1T0Fzzt/f5/gxZJ1
-         keVS1bvRWcPULqMMNSXntcpVQGxC/v3hUSy8Y59MrH/5x5LSh1Ex4McqU2rc+VpBIAIN
-         0FdQ==
-X-Gm-Message-State: AOAM533ucywt9m98kLwGZIjU7IvD/gxUpMa/sS0eR2FB6qY5oKqMabVF
-        mDEKsiQUyRtxYZYP9Z1S5dQ=
-X-Google-Smtp-Source: ABdhPJzksTcPTip/Mhf4JXMjYM+qZ6M24lezTlxsHVdN8I2e98HWcnQmfJCDEEdD2+XO7nVchRUGpQ==
-X-Received: by 2002:a17:90a:a098:: with SMTP id r24mr7872954pjp.120.1623202324568;
-        Tue, 08 Jun 2021 18:32:04 -0700 (PDT)
+        bh=lTRFeIgR82VeMe8p5ZV3YrTNSoJ/Vz3X3Xth8hi5pHc=;
+        b=Wxr7Opfo7vc/TAbs72BBHZhSYwsEU9IIXgBkMvtSDEehIhp061Nenzi0nUneJVJ0UM
+         roPqPcMhZk433tU8xsLU2VdRyhRTQdg59onA9N/r8GWPzDcEQGMxb8lvmQkrdML6Lgtz
+         OZRhfvpnDZ0CGimM9iHPfbtvxJt1bGTLS0WwPGnFC0BMu7uKc9FLRRZ/S/Jw9mdPduiN
+         hRaVCayPbtlK4DbH8yO6fEYga9setQruvzPMr+y78wB7pnKsK/QSLJh13IsxmYngeSst
+         76NZSugjPrzOHcKhA3GE0L7qePsiPst7fqIcRYVfZpqJISgyPTUjCvwhdz0VAjvFRtfs
+         pBEw==
+X-Gm-Message-State: AOAM533fOF/Pcti8jFDrebykt1t/DGDZ0ItHsycS5JsIXxCyGMk9Cflx
+        XoPc2ONCkYfKF0wCdra5+hg=
+X-Google-Smtp-Source: ABdhPJzPu5Gr1EwWZENCd+j8st+EGD4Hf76QJujQeDnYFUm9cK8D0kOhZrmGzApp0MmU3GDly7pDZw==
+X-Received: by 2002:a17:90b:8d6:: with SMTP id ds22mr29632911pjb.54.1623202329876;
+        Tue, 08 Jun 2021 18:32:09 -0700 (PDT)
 Received: from localhost.localdomain ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id v14sm12659815pgl.86.2021.06.08.18.31.59
+        by smtp.gmail.com with ESMTPSA id v14sm12659815pgl.86.2021.06.08.18.32.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Jun 2021 18:32:04 -0700 (PDT)
+        Tue, 08 Jun 2021 18:32:09 -0700 (PDT)
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     jic23@kernel.org
 Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
@@ -56,9 +56,9 @@ Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
         alexandre.torgue@st.com, o.rempel@pengutronix.de,
         jarkko.nikula@linux.intel.com,
         William Breathitt Gray <vilhelm.gray@gmail.com>
-Subject: [PATCH v11 03/33] counter: 104-quad-8: Remove pointless comment
-Date:   Wed,  9 Jun 2021 10:31:06 +0900
-Message-Id: <77e9f3daa091d0ad0ee56b8973705dd03db85dd4.1623201081.git.vilhelm.gray@gmail.com>
+Subject: [PATCH v11 04/33] counter: 104-quad-8: Return error when invalid mode during ceiling_write
+Date:   Wed,  9 Jun 2021 10:31:07 +0900
+Message-Id: <538122752d61df30dd450276b87df606a17ac4c7.1623201081.git.vilhelm.gray@gmail.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <cover.1623201081.git.vilhelm.gray@gmail.com>
 References: <cover.1623201081.git.vilhelm.gray@gmail.com>
@@ -68,27 +68,39 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-It is obvious that devm_counter_register() is used to register a Counter
-device, so a comment stating such is pointless here.
+The 104-QUAD-8 only has two count modes where a ceiling value makes
+sense: Range Limit and Modulo-N. Outside of these two modes, setting a
+ceiling value is an invalid operation -- so let's report it as such by
+returning -EINVAL.
 
+Fixes: fc069262261c ("counter: 104-quad-8: Add lock guards - generic interface")
 Acked-by: Syed Nayyar Waris <syednwaris@gmail.com>
 Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 ---
- drivers/counter/104-quad-8.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/counter/104-quad-8.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
-index 9691f8612be8..4bb9abffae48 100644
+index 4bb9abffae48..233a3acc1377 100644
 --- a/drivers/counter/104-quad-8.c
 +++ b/drivers/counter/104-quad-8.c
-@@ -1082,7 +1082,6 @@ static int quad8_probe(struct device *dev, unsigned int id)
- 	/* Enable all counters */
- 	outb(QUAD8_CHAN_OP_ENABLE_COUNTERS, base[id] + QUAD8_REG_CHAN_OP);
+@@ -714,13 +714,14 @@ static ssize_t quad8_count_ceiling_write(struct counter_device *counter,
+ 	switch (priv->count_mode[count->id]) {
+ 	case 1:
+ 	case 3:
++		mutex_unlock(&priv->lock);
+ 		quad8_preset_register_set(priv, count->id, ceiling);
+-		break;
++		return len;
+ 	}
  
--	/* Register Counter device */
- 	return devm_counter_register(dev, &priv->counter);
+ 	mutex_unlock(&priv->lock);
+ 
+-	return len;
++	return -EINVAL;
  }
  
+ static ssize_t quad8_count_preset_enable_read(struct counter_device *counter,
 -- 
 2.32.0
 

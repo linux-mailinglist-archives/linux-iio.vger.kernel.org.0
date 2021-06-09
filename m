@@ -2,53 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D5C63A10EB
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Jun 2021 12:49:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 874523A1558
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Jun 2021 15:19:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236314AbhFIKQb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 9 Jun 2021 06:16:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41362 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234217AbhFIKQb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 9 Jun 2021 06:16:31 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id CA76B6128A;
-        Wed,  9 Jun 2021 10:14:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1623233662;
-        bh=Hc5RVB21B6PTjPWPFAXn7IjcR5qTkCIyOiAuhY9meYA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=WlOKsAN1U+txPeC1lMmoj1Y2i3PS6u7lB+mqaayM0Za4oZkn+XNcf1HbDjnm98tMA
-         XPQ3FB62O+z5l1JbwzqkW15bIjasM6OG4UkgfQ9MvNiCvhNwkwq3NHmFdxA+8MHqCh
-         K+buAyspFxfP4bWlmPLELvourFvH/DZf0KGsemXs=
-Date:   Wed, 9 Jun 2021 12:12:48 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org
-Subject: Re: [PULL] 1st set of IIO new device support, features and cleanups
- for 5.14
-Message-ID: <YMCUINJTQGoP8UsF@kroah.com>
-References: <20210608173258.5d648bec@jic23-huawei>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210608173258.5d648bec@jic23-huawei>
+        id S233890AbhFINV0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 9 Jun 2021 09:21:26 -0400
+Received: from flippie-beckerswealth-sa.xyz ([62.173.147.2]:48796 "EHLO
+        host.flippie-beckerswealth-sa.xyz" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232952AbhFINV0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Jun 2021 09:21:26 -0400
+X-Greylist: delayed 3074 seconds by postgrey-1.27 at vger.kernel.org; Wed, 09 Jun 2021 09:21:26 EDT
+Received: from flippie-beckerswealth-sa.xyz (ec2-3-131-99-163.us-east-2.compute.amazonaws.com [3.131.99.163])
+        by host.flippie-beckerswealth-sa.xyz (Postfix) with ESMTPA id A76393120A3F
+        for <linux-iio@vger.kernel.org>; Wed,  9 Jun 2021 15:10:27 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippie-beckerswealth-sa.xyz A76393120A3F
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=flippie-beckerswealth-sa.xyz; s=default; t=1623240629;
+        bh=h0ivQLrZuUWuyEKz/TWb+FP9AASpHhVqOsJtRcwKQV4=;
+        h=Reply-To:From:To:Subject:Date:From;
+        b=LaruSz1SnwgyuA4uYfKdOkRi/FsphTJoAjnnC+l90zvLleuE0jVQZE8eRI+a+/E53
+         c/NVJzqkOaqY+6EdrkrQQmTOVu074sznhf+IlBj2tGPjaUdhrWnUQyDd5MJbxhoVWS
+         +u/JSRd+Ea/ddh9esxt5qu5C9nKp0TgX1AU7ZcEM=
+DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippie-beckerswealth-sa.xyz A76393120A3F
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=flippie-beckerswealth-sa.xyz; s=default; t=1623240629;
+        bh=h0ivQLrZuUWuyEKz/TWb+FP9AASpHhVqOsJtRcwKQV4=;
+        h=Reply-To:From:To:Subject:Date:From;
+        b=LaruSz1SnwgyuA4uYfKdOkRi/FsphTJoAjnnC+l90zvLleuE0jVQZE8eRI+a+/E53
+         c/NVJzqkOaqY+6EdrkrQQmTOVu074sznhf+IlBj2tGPjaUdhrWnUQyDd5MJbxhoVWS
+         +u/JSRd+Ea/ddh9esxt5qu5C9nKp0TgX1AU7ZcEM=
+Reply-To: jmasuku40@flippiebeckerwealthservices.com
+From:   Jotham Masuku <jmasuku40@flippie-beckerswealth-sa.xyz>
+To:     linux-iio@vger.kernel.org
+Subject: Proposal
+Date:   09 Jun 2021 12:10:27 +0000
+Message-ID: <20210609121027.F2B0B15CFDAE1CDB@flippie-beckerswealth-sa.xyz>
+Mime-Version: 1.0
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jun 08, 2021 at 05:32:58PM +0100, Jonathan Cameron wrote:
-> The following changes since commit d8218b0de51f36f01ed67731ccf174059a33bb1e:
-> 
->   Merge 5.13-rc2 into staging-next (2021-05-17 09:47:44 +0200)
-> 
-> are available in the Git repository at:
-> 
->   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-5.14a
-> 
-> for you to fetch changes up to 41340965b4f8055f975f73e1e3d23eff8038f013:
-> 
->   Merge branch 'ib-iio-i2c-5.13rc1' into togreg Adds a stub needed to resolve a build conflict for the fxls8962af driver. (2021-06-07 09:20:02 +0100)
+Hello there,
 
-Pulled and pushed out, thanks.
+I hope this message finds you in good spirits especially during=20
+this challenging time of coronavirus pandemic. I hope you and=20
+your family are well and keeping safe. Anyway, I am Jotham=20
+Masuku, a broker working with Flippiebecker Wealth. I got your=20
+contact (along with few other contacts) through an online=20
+business directory and I thought I should contact you to see if=20
+you are interested in this opportunity. I am contacting you=20
+because one of my high profile clients is interested in investing=20
+abroad and has asked me to look for individuals and companies=20
+with interesting business ideas and projects that he can invest=20
+in. He wants to invest a substantial amount of asset abroad.
 
-greg k-h
+Please kindly respond back to this email if you are interested in=20
+this opportunity. Once I receive your response, I will give you=20
+more details and we can plan a strategy that will be beneficial=20
+to all parties.
+
+Best regards
+
+J Masuku
+Flippiebecker Wealth

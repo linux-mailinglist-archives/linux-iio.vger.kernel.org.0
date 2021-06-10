@@ -2,86 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 88A373A2BFB
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jun 2021 14:52:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4DFB3A2C0C
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jun 2021 14:54:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230247AbhFJMyI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Jun 2021 08:54:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52052 "EHLO
+        id S230267AbhFJM4C (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Jun 2021 08:56:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230136AbhFJMyI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Jun 2021 08:54:08 -0400
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0113AC061760;
-        Thu, 10 Jun 2021 05:52:03 -0700 (PDT)
-Received: by mail-pj1-x102a.google.com with SMTP id go18-20020a17090b03d2b029016e4ae973f7so2674876pjb.0;
-        Thu, 10 Jun 2021 05:52:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Bk4fyyDAhmMtxrINDtAEvw1F97XWKPoUARJY7fMalVw=;
-        b=k+e3MP6iz1iQjsiVg9C6dsTnnLrbQrAKKMfK3fc56GSovOZwZzouoMB5p7wAVuaLpX
-         SXYGslSaHsipKd1D3aV4Go5vS611hppkRR6GjRR5wNjmOXKf4pOz+CowbzHYVxq+oI2b
-         G7VX6zrHfDLjHxCW+tpqmBvJmMbUI8PQeKV4fMYPx6m/9iNX4cW+XSAwYyqoWIiMyRDG
-         ryO7ocQlJJGum5SHnyoNH1GhpQEeGmN+trs8U9jeI9nOVuBGw0m54S/Mp4y8l7Odudiu
-         rHSGZKQxJ1F3d0xPFuJKkQGGuZek0vkhqJ+J2Ksn2snc/lyupojhvFKcbFWtabU+2Umq
-         a3Bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Bk4fyyDAhmMtxrINDtAEvw1F97XWKPoUARJY7fMalVw=;
-        b=K/dt8O+elbGZV8xnHorFxy/I9KMg+/+RIdHmVfn03ivmbEg8v66foEA8//bkA79bNF
-         L6Th/39vv/2Gu9dELoqwK4IgkdsSmD/5HoHxy0nLBpayr2cQwtNAKJf3ItHVJGx9tjzP
-         30oubJSGn04m48KIbio0ZGkQg4kpCGQ+neBp5BjZH3WXU8DAMUDVYVQT9JOQedyADBO+
-         AszkDoqIC9T+vcjZjRWuyxj5TIRBPZXcEaEwhvU1pB0qtK+X5ypffKFZT5XedvggXda+
-         f4G9hutNRBQnOf5oe1CjjxOyFvrQDzn5udKIwIMqcb/GK0xr0FzuU9p476cEgOewRd4e
-         TpYg==
-X-Gm-Message-State: AOAM532YzOBoQhJLV5VGchEubNAA149gJADy9z6S6ax9IOc2P+9OtfQ2
-        BfHL+jjcs12gdcrrT0rTHrQUG3/lzemUnKQ65RM=
-X-Google-Smtp-Source: ABdhPJzD9Myv22FijPkPjOvvWXNDMFdKRdnoIRawi3+2jOqJp4IVsG0jKfnMbiYZfZKMk3FkUQe1WcAroGbqYIR5vOg=
-X-Received: by 2002:a17:90a:80c5:: with SMTP id k5mr3285421pjw.129.1623329522542;
- Thu, 10 Jun 2021 05:52:02 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210610122126.50504-1-stephan@gerhold.net> <20210610122126.50504-7-stephan@gerhold.net>
-In-Reply-To: <20210610122126.50504-7-stephan@gerhold.net>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 10 Jun 2021 15:51:46 +0300
-Message-ID: <CAHp75VdutqFuhTnZsi79ZgcVcL+o7M1k+cOFUKRB_vUUXiWJgA@mail.gmail.com>
-Subject: Re: [PATCH v2 6/9] iio: accel: bmc150: Add device IDs for BMA253
-To:     Stephan Gerhold <stephan@gerhold.net>
+        with ESMTP id S230035AbhFJM4C (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Jun 2021 08:56:02 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BC2FC061574
+        for <linux-iio@vger.kernel.org>; Thu, 10 Jun 2021 05:54:06 -0700 (PDT)
+Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=bjornoya.blackshift.org)
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <mkl@pengutronix.de>)
+        id 1lrKCC-00032B-IF
+        for linux-iio@vger.kernel.org; Thu, 10 Jun 2021 14:54:04 +0200
+Received: from dspam.blackshift.org (localhost [127.0.0.1])
+        by bjornoya.blackshift.org (Postfix) with SMTP id 79B4F63840F
+        for <linux-iio@vger.kernel.org>; Thu, 10 Jun 2021 12:54:02 +0000 (UTC)
+Received: from hardanger.blackshift.org (unknown [172.20.34.65])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by bjornoya.blackshift.org (Postfix) with ESMTPS id 4A0D3638400;
+        Thu, 10 Jun 2021 12:54:01 +0000 (UTC)
+Received: from blackshift.org (localhost [::1])
+        by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 72cfa48c;
+        Thu, 10 Jun 2021 12:54:00 +0000 (UTC)
+From:   Marc Kleine-Budde <mkl@pengutronix.de>
+To:     linux-iio@vger.kernel.org
 Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Bastien Nocera <hadess@hadess.net>,
-        Hans de Goede <hdegoede@redhat.com>,
-        ~postmarketos/upstreaming@lists.sr.ht
-Content-Type: text/plain; charset="UTF-8"
+        Lars-Peter Clausen <lars@metafoo.de>, kernel@pengutronix.de
+Subject: [PATCH 1/4] iio: ltr501: fix regmap, initialization of ltr559, endianness and mark structs as const
+Date:   Thu, 10 Jun 2021 14:53:54 +0200
+Message-Id: <20210610125358.2096497-1-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Jun 10, 2021 at 3:24 PM Stephan Gerhold <stephan@gerhold.net> wrote:
-> BMA253 is mostly like BMA255 and has exactly the same register layout
-> as used by the bmc150-accel driver as far I can tell. Making it work
-> is as simple as adding new device IDs for it since it has the same
-> chip_id = 0xFA (250) as BMA255 and others.
+Hello,
 
-...
+here are 3 bug-files (probably stable material) and 1 enhancement for
+the ltr501 driver.
 
-> -               .name = "BMC150/BMI055/BMA255",
+regards,
+Marc
 
-Somehow this is unsorted.
 
-> +               .name = "BMC150/BMI055/BMA253/BMA255",
 
-So does this.
-
---
-With Best Regards,
-Andy Shevchenko

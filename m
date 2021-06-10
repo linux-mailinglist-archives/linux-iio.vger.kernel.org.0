@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 639CB3A2D61
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jun 2021 15:46:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B22B3A2D66
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jun 2021 15:46:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231180AbhFJNsZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Jun 2021 09:48:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36326 "EHLO
+        id S231272AbhFJNs0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Jun 2021 09:48:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231146AbhFJNsY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Jun 2021 09:48:24 -0400
+        with ESMTP id S230346AbhFJNs0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Jun 2021 09:48:26 -0400
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C09FBC061574
-        for <linux-iio@vger.kernel.org>; Thu, 10 Jun 2021 06:46:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC13BC061574
+        for <linux-iio@vger.kernel.org>; Thu, 10 Jun 2021 06:46:29 -0700 (PDT)
 Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=bjornoya.blackshift.org)
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <mkl@pengutronix.de>)
-        id 1lrL0t-0002WI-4o
-        for linux-iio@vger.kernel.org; Thu, 10 Jun 2021 15:46:27 +0200
+        id 1lrL0u-0002aN-AD
+        for linux-iio@vger.kernel.org; Thu, 10 Jun 2021 15:46:28 +0200
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-        by bjornoya.blackshift.org (Postfix) with SMTP id D46E463850D
-        for <linux-iio@vger.kernel.org>; Thu, 10 Jun 2021 13:46:24 +0000 (UTC)
+        by bjornoya.blackshift.org (Postfix) with SMTP id 4A244638516
+        for <linux-iio@vger.kernel.org>; Thu, 10 Jun 2021 13:46:27 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (Client did not present a certificate)
-        by bjornoya.blackshift.org (Postfix) with ESMTPS id BD7026384F6;
+        by bjornoya.blackshift.org (Postfix) with ESMTPS id D91F56384F8;
         Thu, 10 Jun 2021 13:46:22 +0000 (UTC)
 Received: from blackshift.org (localhost [::1])
-        by hardanger.blackshift.org (OpenSMTPD) with ESMTP id f2436399;
+        by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 53fa84ef;
         Thu, 10 Jun 2021 13:46:22 +0000 (UTC)
 From:   Marc Kleine-Budde <mkl@pengutronix.de>
 To:     linux-iio@vger.kernel.org
@@ -39,9 +39,9 @@ Cc:     Jonathan Cameron <jic23@kernel.org>,
         Oliver Lang <Oliver.Lang@gossenmetrawatt.com>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
         Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH v2 2/4] iio: ltr501: ltr559: fix initialization of LTR501_ALS_CONTR
-Date:   Thu, 10 Jun 2021 15:46:17 +0200
-Message-Id: <20210610134619.2101372-3-mkl@pengutronix.de>
+Subject: [PATCH v2 3/4] iio: ltr501: ltr501_read_ps(): add missing endianness conversion
+Date:   Thu, 10 Jun 2021 15:46:18 +0200
+Message-Id: <20210610134619.2101372-4-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210610134619.2101372-1-mkl@pengutronix.de>
 References: <20210610134619.2101372-1-mkl@pengutronix.de>
@@ -57,34 +57,47 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Oliver Lang <Oliver.Lang@gossenmetrawatt.com>
 
-The ltr559 chip uses only the lowest bit of the ALS_CONTR register to
-configure between active and stand-by mode. In the original driver
-BIT(1) is used, which does a software reset instead.
+The PS ADC Channel data is spread over 2 registers in little-endian
+form. This patch adds the missing endianness conversion.
 
-This patch fixes the problem by using BIT(0) as als_mode_active for
-the ltr559 chip.
-
-Fixes: 8592a7eefa54 ("iio: ltr501: Add support for ltr559 chip")
+Fixes: 2690be905123 ("iio: Add Lite-On ltr501 ambient light / proximity sensor driver")
 Signed-off-by: Oliver Lang <Oliver.Lang@gossenmetrawatt.com>
 Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/iio/light/ltr501.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes since v1:
+- move endianness conversion ltr501_read_ps()
+
+ drivers/iio/light/ltr501.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/iio/light/ltr501.c b/drivers/iio/light/ltr501.c
-index 0ed3392a33cf..79898b72fe73 100644
+index 79898b72fe73..74ed2d88a3ed 100644
 --- a/drivers/iio/light/ltr501.c
 +++ b/drivers/iio/light/ltr501.c
-@@ -1208,7 +1208,7 @@ static struct ltr501_chip_info ltr501_chip_info_tbl[] = {
- 		.als_gain_tbl_size = ARRAY_SIZE(ltr559_als_gain_tbl),
- 		.ps_gain = ltr559_ps_gain_tbl,
- 		.ps_gain_tbl_size = ARRAY_SIZE(ltr559_ps_gain_tbl),
--		.als_mode_active = BIT(1),
-+		.als_mode_active = BIT(0),
- 		.als_gain_mask = BIT(2) | BIT(3) | BIT(4),
- 		.als_gain_shift = 2,
- 		.info = &ltr501_info,
+@@ -409,18 +409,19 @@ static int ltr501_read_als(const struct ltr501_data *data, __le16 buf[2])
+ 
+ static int ltr501_read_ps(const struct ltr501_data *data)
+ {
+-	int ret, status;
++	__le16 status;
++	int ret;
+ 
+ 	ret = ltr501_drdy(data, LTR501_STATUS_PS_RDY);
+ 	if (ret < 0)
+ 		return ret;
+ 
+ 	ret = regmap_bulk_read(data->regmap, LTR501_PS_DATA,
+-			       &status, 2);
++			       &status, sizeof(status));
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return status;
++	return le16_to_cpu(status);
+ }
+ 
+ static int ltr501_read_intr_prst(const struct ltr501_data *data,
 -- 
 2.30.2
 

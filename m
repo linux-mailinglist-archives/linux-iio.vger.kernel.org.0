@@ -2,81 +2,131 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D80A3A2C41
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jun 2021 14:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E2733A2C55
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jun 2021 15:01:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230272AbhFJNBN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Jun 2021 09:01:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53656 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230247AbhFJNBE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Jun 2021 09:01:04 -0400
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CC37C061574;
-        Thu, 10 Jun 2021 05:59:08 -0700 (PDT)
-Received: by mail-pf1-x432.google.com with SMTP id k15so1557136pfp.6;
-        Thu, 10 Jun 2021 05:59:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=kZv55UI1lotbt6zxOJeYG+FLk45h3yJ74p2M096WCtA=;
-        b=U5+g07bCY5xpjLYOIJ95c7kfKcGWVCukCh/hkexG2hfL8FpBgSB2XB8hPvcoWyzQs6
-         os0gvieM9b0xaQO9vUMjxpBrTVs8ZIw3qa2i3t1VYFGaucT+heTHWAUEC+S92Jseeuy0
-         oaRMs2pljiVgfpiDW6SVLfmtwmW8CLEheAZYFgJO1wPY4vEHxJ7W199QenpeogQ01hV3
-         bsROdqbznE8iyA41F1p0rUYUmBZb3jyQgqhA8dNQD87SY5uxD1lnqGJEUpjymBvoCjze
-         rlx1x/mzU7lwHMIH02MNxW5KCU19eKlsFHcrvV3w/e/ZzqV5WissAfj1LnNB9v1YI5Uz
-         FyTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=kZv55UI1lotbt6zxOJeYG+FLk45h3yJ74p2M096WCtA=;
-        b=ti3wBWLL3ARZCLsSyCNDe4JxqN4A2yXplPVKt3w/D0Y49V2rXB6CXCt0KM/pkBbIUR
-         QPjt3JRH4GhDyZso5S+l9xfaUh9ww24/4F56QRj3R3AzeVJ0N0i3Xbuf3d56DykB4nKd
-         OKzqyyMI/tUwZ84wIhnXhTk2j5H9W/dk9kSyUqHDYmw9rLm+pI2NkvJr0r851mPNvxkx
-         Cr+zIpKI1pKVSKW80NrhMOILKymek0a+OBwrQWXadRjpOSiOzBJiPauSmwqLfJ/MfPp2
-         JfP6e2QVOXmfgPvpisEJZ9Z7ENRFEgHSohuvZqVzeSHbFqe3vsraYzZAbrZwl7F4+JE0
-         0tNg==
-X-Gm-Message-State: AOAM532T37Msae4dwLhYLe43r29nFvlcVNk8eLijRQ9zx9jAbQayzGqt
-        yzeYVD6fjMBl2SEm1IpcPFnOHK6O1H6D+YbMr5k=
-X-Google-Smtp-Source: ABdhPJxo0dArsVVa15jkG0z2+o8+BBtD16pdCH9utQQm9Rioi2HgsM5klfnl10H0RraA/MDpcBijswWHv4naDqeCFVE=
-X-Received: by 2002:a63:b507:: with SMTP id y7mr4905365pge.74.1623329947859;
- Thu, 10 Jun 2021 05:59:07 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210610124556.34507-1-paul@crapouillou.net> <20210610124556.34507-2-paul@crapouillou.net>
-In-Reply-To: <20210610124556.34507-2-paul@crapouillou.net>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 10 Jun 2021 15:58:51 +0300
-Message-ID: <CAHp75VfR5jjMjDhFRvtT01EbuSTwDBi3HERDKi306mRK22+Fnw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] iio: core: Support removing extended name in
- attribute filename
-To:     Paul Cercueil <paul@crapouillou.net>
+        id S230035AbhFJNDD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Jun 2021 09:03:03 -0400
+Received: from mo4-p03-ob.smtp.rzone.de ([85.215.255.100]:9383 "EHLO
+        mo4-p03-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231133AbhFJNC7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Jun 2021 09:02:59 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1623330057; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=KrSsON5uT1FtPXkvwp6dMEUOsejS4rCADVo+pVkw2xeLbk2FOxVTRVR7r7Y3zESPxE
+    gJtKaD0sxbMurZCvcoWkjpFytd4IduDKD/HZGr6HNVhTsEs16vy6MrxCNvtNZ5OlF57v
+    6oOx94I3pQwp2LgX61feRUswMYwKv8UJ3I6KrUZSL4J2mp6XLmAN3Mgdm7ds4AD518jf
+    PcmpqB1EA5a+P7tnMgbX7w41vcr4kx2pp0DJgvL4A68JMnTiyTF0Q2ZS0V9ghWLxW952
+    RtJbslJxlR02+9lW+yl7TrjLTBx/u7tbKm4AAIej0z9N7CLD1W3vBOEdO+pKIi6vFyNM
+    yA7g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1623330057;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=sWxhDLVjSdcZ2UQfDvOUeM8ckKd6tdu1RXGe2b5SbxA=;
+    b=EYYMmZ/tfmHP0l+Z0vXHSDg3jx/Y32XMdAwYefQZHhWwxN09BkS+wiumHwK+THAk6h
+    HP0NOG1MSSCUcByK0zVGxsPZPmATfLZuXxG7NLoKxbNp++cxlcxKQf4IZ1OfPAEjAxnT
+    BixW1Uul/6mIQOJMihoC3q2uztkI6SyeCUkvR7H980C/iD76oAnrsWtKkTAm41uQ0x3s
+    1l/jhTHRiX9ZS/pFD03k+rAFIDc5xeKGGJEW8oTyhgHjVrBToNkBKjhb6sMQ2o09ncfe
+    RBZUGyyZEWrr1LUEwboBN/+3ugjECWI2AKtn22o0zYM3HM1T5nzxVuGtRldF1xUSLHlK
+    Em6g==
+ARC-Authentication-Results: i=1; strato.com;
+    dkim=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1623330057;
+    s=strato-dkim-0002; d=gerhold.net;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=sWxhDLVjSdcZ2UQfDvOUeM8ckKd6tdu1RXGe2b5SbxA=;
+    b=H2jrjcHXgiGUpEexIxYEfL3LUzAVtY12sPAr57SrHQpp0L4FKIDyKIhNhlHFNqz0t9
+    xasZpjHn3Rr2GGQywa+wuJvn+oO9RskoCFM7LbsTmwisA5zA66wLRFVePMJsVbmqu37B
+    x4Rg9xNbi0lupI/jAf9dYdKuqjJ66aQQyqPeM9BBhzo07NRzSHO5EpxMGSgwyl4vtCLc
+    zVXfQ3BRIIZA5VZdvVXU9f4zZ1+dxEzNJL/KGujroPI08DpTizCcCfMdE/OtlCi8vi52
+    HNhB/+W1GOJjIAYp2wvfzBIObzYQPPoILG7hDXU8cL5sDquLq+m/c/2aodJKb3G12cUh
+    ic/w==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u26zEodhPgRDZ8nxIc/BaYo="
+X-RZG-CLASS-ID: mo00
+Received: from gerhold.net
+    by smtp.strato.de (RZmta 47.27.2 DYNA|AUTH)
+    with ESMTPSA id y01375x5AD0vuGE
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Thu, 10 Jun 2021 15:00:57 +0200 (CEST)
+Date:   Thu, 10 Jun 2021 15:00:52 +0200
+From:   Stephan Gerhold <stephan@gerhold.net>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <michael.hennerich@analog.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
         linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        devicetree <devicetree@vger.kernel.org>,
+        Bastien Nocera <hadess@hadess.net>,
+        Hans de Goede <hdegoede@redhat.com>,
+        ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH v2 4/9] iio: accel: bmc150: Sort all chip names
+ alphabetically / by chip ID
+Message-ID: <YMINBHXM4ZmZMblL@gerhold.net>
+References: <20210610122126.50504-1-stephan@gerhold.net>
+ <20210610122126.50504-5-stephan@gerhold.net>
+ <CAHp75Vee9+RU8zRH-QtoKmw4K-O-SjiGnpxJRnYT2Aat3qKtfw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHp75Vee9+RU8zRH-QtoKmw4K-O-SjiGnpxJRnYT2Aat3qKtfw@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Jun 10, 2021 at 3:47 PM Paul Cercueil <paul@crapouillou.net> wrote:
->
-> By default, when a channel has an extended name, it will appear in the
-> filename of channel attributes. E.g. if the extended name is "aux", the
-> filename of a "sample_rate" attribute will be something like:
-> in_voltage0_aux_sample_rate
->
-> Add a mechanism to disable this feature. This will be used to add a
-> "extended_name" channel attribute.
+On Thu, Jun 10, 2021 at 03:50:25PM +0300, Andy Shevchenko wrote:
+> On Thu, Jun 10, 2021 at 3:24 PM Stephan Gerhold <stephan@gerhold.net> wrote:
+> >
+> > Right now all the device IDs are listed in seemingly random order,
+> > make this consistent by ordering those alphabetically. Also, order
+> > bmc150_accel_chip_info_tbl by chip ID for the same reason.
+> 
+> Thanks!
+> My comments below, after addressing them,
+> Reviewed-by: Andy Shevchenko <andy.shevhcenko@gmail.com>
+> 
+> ...
+> 
+> >         select BMC150_ACCEL_SPI if SPI
+> >         help
+> >           Say yes here to build support for the following Bosch accelerometers:
+> > -         BMC150, BMI055, BMA250E, BMA222E, BMA255, BMA280.
+> > +         BMA222, BMA222E, BMA250E, BMA255, BMA280, BMC150, BMI055.
+> 
+> Thanks!
+> 
+> > -         This is a combo module with both accelerometer and magnetometer.
+> 
+> > +         BMC150 is a combo module with both accelerometer and magnetometer.
+> 
+> BMC150 is only one from the list. Previous message applies to all
+> listed components, so is this not true anymore for the rest?
+> Or all the rest is not a combo? Please, clarify that in the commit
+> message, or if this is a wrong change, drop it.
+> 
 
-I'm afraid, NAK. Otherwise, please put an explanation that clearly
-shows that it will be no ABI breakage.
-I.o.w. users for the existing drivers and devices will always get
-those attributes at the same platform configuration(s).
+I stumbled on that sentence when making the changes and it definitely
+does not apply to the BMA* variants. Those are accelerometer only.
 
--- 
-With Best Regards,
-Andy Shevchenko
+As far I can tell the prefix in the chip name says which kind of sensors
+are included, i.e.
+
+  - BMC150: accelerometer + magnetometer
+  - BMA*:   only accelerometer
+
+I'm not familiar with BMI055 but funnily the datasheet suggests it's
+
+  - BMI055: accelerometer + gyroscope
+
+So for BMI055 the previous message is wrong too. I guess I need to do
+yet another commit in v3 to make the Kconfig option more clear for all
+the sensor variants. :)
+
+Thanks!
+Stephan

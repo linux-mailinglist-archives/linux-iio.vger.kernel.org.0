@@ -2,253 +2,195 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 93AA83A3504
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jun 2021 22:42:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4292B3A35CF
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jun 2021 23:24:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230083AbhFJUoO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Jun 2021 16:44:14 -0400
-Received: from mail-eopbgr40117.outbound.protection.outlook.com ([40.107.4.117]:25918
-        "EHLO EUR03-DB5-obe.outbound.protection.outlook.com"
+        id S230155AbhFJVZ7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Jun 2021 17:25:59 -0400
+Received: from mail-eopbgr70101.outbound.protection.outlook.com ([40.107.7.101]:35841
+        "EHLO EUR04-HE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S230353AbhFJUoN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 10 Jun 2021 16:44:13 -0400
+        id S230117AbhFJVZ6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 10 Jun 2021 17:25:58 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=oSwgvWWFzzKWbsS5/OvIe9+wafKJv5OuF9yq2/xLGeFBKpYtgl/TvqZpcqDQ6/M2pWtjE30y76p8gmaRxFo9abOkQs1TNgf1gDrsYh6h5/bOz/1oVNcJurheVhzSuSreGE5sDf1y/9+y1XwX8kUc2NQ6t3ikWyRawmh8H156oyYLERWX54PA+DkwSeilY58EsFHFs79w+KOd1d8r9qKxftLjQ2gcdqpeAxwcUWolyYeCU9V6gS4yC8BNDUog6ORY+20Qh025fBDr64N3sfHHGTrnAuDVHCXd0FmIiz+HhtrAxggrnawKX7VSHPMz86F9XroL+B5hq+k3Bk0+WL4X4w==
+ b=K52R0DUczGB1N0zNjENZeB+sMj49JIGo1I6Kx9gQl1hlTWUgAePM411izsK/8Wur7ISdj58NuavD/6f/O/CJvp74q0xSqqXjCYSRs39T/tH3FHNICO+ud3kbG6WUpXZVnhB4qDMV2Xe32ow/A4XYBN9Nb0CqEETSe3eVDoEajARpDo/BFHSKMb7QjCDyK4clzyxtoDNna4BFe0rpzofIgRFH5gj52aN2FtBemNoIZU2AFKrCIGPTpjVqJmFpN8VFMr3jnNd3CYcaLcmiPsLC2wGpjfNaEluhL3M3eeK0pbQkwmOUu8b+ShDdyCmgRhXPyHl8+rYIjFiTg+1BsZLvQg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=z5vSUTGPfhaep9EpuM5TaExfLoWaZPLuxUtP1m6nBgY=;
- b=Vwkda68rXzvQRlg9yZEV9QdiUVI9DOfk7dnOswYWbtG6vW7X+ssp1tkj/zcyy7ysVokgapPMM8WnvpbNARWtDOZrU9IAALv0S7PZkmdNBhkJncf44BRupaG8zvldjSg5XVBF5b+/9maU4fTJ4Fv8aS3kvXOiGmFXrX6SjLMiDAFRCSf4mywyvaAVMxCSb557nxcyg8//2F1V+7+5AY/xxesQi7G8Gn5kg0OKtqkE1oqh3ghCB2MlpthuS+TT/oKaNPAIgbsnflsvuxV5LaRRouBkGtTJ+1mreuKiOugnNlS5yzvDLzNZZCuxEaFxPup9jSy7dwAjQDxCFXqYjU+Jhw==
+ bh=bcD4NDBDuUG613uAbTCBnO7Tav9MAuBzfuL3XzedFU0=;
+ b=Z7X0jcDPLdS0AAoXC4Uhff4027Mk6QuDSuYWHHCJKsDWyIE0+y+kYXi596bk3MhG1TkfdCMqQr/+da6EBSIwLBwDjeSwThf7OBlmsRQooJadPZyHKIg6NcrKSxWmD7Q7ga4v9/9PwHvxX4kOW4IVkqJMpjX9wpz3cw9WZX1UJMZd9+ZQTz8N4cvUEMxu5yPqeN/MbCibA5x2Hx1LlnEWULzz8czkJmaC7bfzmIWK0S2Fli0sbk6FlLxnr/N1Bm7ywtBE1aZxtfcx5T9O/yuamP2SILCxVC0TTPi2ArfjSGg5pFRUBAf1awvlHo8Z8Kte+B1JBL7RA44J0Sq5lZIfLA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=axentia.se; dmarc=pass action=none header.from=axentia.se;
  dkim=pass header.d=axentia.se; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axentia.se;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=z5vSUTGPfhaep9EpuM5TaExfLoWaZPLuxUtP1m6nBgY=;
- b=DytHbxhX0DBiummk7oqPUj4M97XUnLUv45PD154K4TgQhfPYf1M46mz/PmmtJRY82YZ9ecWymTMvBHquQH/Jo6NL8hhw9nm+t2xMoO3o1wdctM/EIHIJR/Y1Du5dRZtihUv+qHIL87WQwQOLsXBk7rHwV+I3pH1FGBH8iyAFzlk=
+ bh=bcD4NDBDuUG613uAbTCBnO7Tav9MAuBzfuL3XzedFU0=;
+ b=lCBpisx/t0Dh09O3fawRFgoG4iCCFuM1GD4eRYzwVyjcFDT2Sp8DeNlk97yy2/DG8l8dwE3IGjfFmJ5YuLakZ/oHLh4B/AJm8lTz1LtSfw7/SKrBwSh6pI7Yrmx4EZLNjaQ/OzyPqT3zWD7xiVHTY4/BcrL/uwuA5NuoosZP3gI=
 Authentication-Results: kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=none action=none header.from=axentia.se;
 Received: from DB8PR02MB5482.eurprd02.prod.outlook.com (2603:10a6:10:eb::29)
- by DBAPR02MB6261.eurprd02.prod.outlook.com (2603:10a6:10:193::15) with
+ by DB6PR02MB3061.eurprd02.prod.outlook.com (2603:10a6:6:1e::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4195.24; Thu, 10 Jun
- 2021 20:42:14 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4219.22; Thu, 10 Jun
+ 2021 21:23:59 +0000
 Received: from DB8PR02MB5482.eurprd02.prod.outlook.com
  ([fe80::d47d:ca8c:4fe6:3908]) by DB8PR02MB5482.eurprd02.prod.outlook.com
  ([fe80::d47d:ca8c:4fe6:3908%3]) with mapi id 15.20.4219.022; Thu, 10 Jun 2021
- 20:42:14 +0000
-Subject: Re: [PATCH v2 3/8] iio: inkern: error out on unsupported offset type
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-        Liam Beguin <liambeguin@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>, lars@metafoo.de,
-        pmeerw@pmeerw.net, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        robh+dt@kernel.org
+ 21:23:59 +0000
+Subject: Re: [PATCH v2 7/8] iio: afe: rescale: add temperature sensor support
+To:     Liam Beguin <liambeguin@gmail.com>, jic23@kernel.org,
+        lars@metafoo.de, pmeerw@pmeerw.net
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, robh+dt@kernel.org
 References: <20210607144718.1724413-1-liambeguin@gmail.com>
- <20210607144718.1724413-4-liambeguin@gmail.com>
- <20210609212850.008d7f84@jic23-huawei> <CBZEWQ0YIIEC.3A2WESVVMHPJM@shaak>
- <20210610100655.000010ff@Huawei.com>
+ <20210607144718.1724413-8-liambeguin@gmail.com>
 From:   Peter Rosin <peda@axentia.se>
 Organization: Axentia Technologies AB
-Message-ID: <4f8352d0-09a8-8c93-fd05-ad7b50f3cb52@axentia.se>
-Date:   Thu, 10 Jun 2021 22:42:11 +0200
+Message-ID: <f431687a-0cd5-a2b8-2294-7e4dace91b24@axentia.se>
+Date:   Thu, 10 Jun 2021 23:23:49 +0200
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.10.1
-In-Reply-To: <20210610100655.000010ff@Huawei.com>
+In-Reply-To: <20210607144718.1724413-8-liambeguin@gmail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: sv-SE
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [85.229.94.233]
-X-ClientProxiedBy: AM6PR04CA0011.eurprd04.prod.outlook.com
- (2603:10a6:20b:92::24) To DB8PR02MB5482.eurprd02.prod.outlook.com
- (2603:10a6:10:eb::29)
+X-ClientProxiedBy: BEXP281CA0002.DEUP281.PROD.OUTLOOK.COM (2603:10a6:b10::12)
+ To DB8PR02MB5482.eurprd02.prod.outlook.com (2603:10a6:10:eb::29)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.13.3] (85.229.94.233) by AM6PR04CA0011.eurprd04.prod.outlook.com (2603:10a6:20b:92::24) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4219.20 via Frontend Transport; Thu, 10 Jun 2021 20:42:13 +0000
+Received: from [192.168.13.3] (85.229.94.233) by BEXP281CA0002.DEUP281.PROD.OUTLOOK.COM (2603:10a6:b10::12) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.9 via Frontend Transport; Thu, 10 Jun 2021 21:23:58 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 9bd718c1-2458-4ba9-19a6-08d92c503a9f
-X-MS-TrafficTypeDiagnostic: DBAPR02MB6261:
-X-Microsoft-Antispam-PRVS: <DBAPR02MB6261D13B321786774C7EF748BC359@DBAPR02MB6261.eurprd02.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
+X-MS-Office365-Filtering-Correlation-Id: 1bd3daa4-c05d-4a05-a0be-08d92c560f68
+X-MS-TrafficTypeDiagnostic: DB6PR02MB3061:
+X-Microsoft-Antispam-PRVS: <DB6PR02MB30616DCDA3CF859EAB1A9E36BC359@DB6PR02MB3061.eurprd02.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:5516;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: XidCtPDBcaCSTn8HnXbsjufyAGt2tU/UAVzuJA1PXRTNfcoz4N6VrLNeN3zTtph+bY4oAVGfaG1siAj6fmW1eLXkMnlTEAWnQsZA3JJjDTOcRcq4cGmlZrq7Ku7QllaqqutgduM1g8dED9iEEhvTCqI5iNA0EMa4Xc3i/kcr29LlGis9B17O8AEl+0SmlYFekDApw2XhFapScWkZKHD3g/Nm4L8SKJpArNU9bGfYq/0HBKSCjWnx323VuUeb24hVQS1rTvbwzUanA9X3mPr/eL7KTRl6HlipVXL+CGUscFRkfquCRxVXl6cuet7Op2fnOQ/UY00xtmq+xpvGo/Cy8qs+7zaXOvV++Fce8JWlpyfJ9C6S3h6ubeDGkXHcDCeSbkctL+vWEBd/57cpa4iHHMd6pLJH7szPuNbxcGFetModBkZarTGmYDHUvgRISmfYG7aNd2+PvOU5RH6SZHPzhsksqhQBL1D8EgxxkTc2WVl3xJT9baxQCNVsbfkppb5IN3kXFfYasGuMiYv19XIIaVKrrsp+NSmj6zECmfP/y/bg7gXzs7ZZknSLrn5gWfntNXRoZ3rDHg0e4fUJ/TJKrg9jglkCTHZZ9cmsJjAjfqJN9AnB8rNhbR3N9YfkaMmjGCknCB1qONiu57+KpPRjlBpLJ3XD/rGC/8ZNEdytxnEmCQkT4tlfb3Z6qX+sfOOJ
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR02MB5482.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(396003)(136003)(39830400003)(346002)(366004)(376002)(110136005)(26005)(5660300002)(186003)(16526019)(956004)(8676002)(31696002)(36916002)(53546011)(8936002)(16576012)(31686004)(86362001)(6486002)(4326008)(478600001)(66556008)(83380400001)(316002)(38100700002)(2616005)(66476007)(2906002)(66946007)(36756003)(43740500002)(45980500001);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: Xom/8QJh1KCB4gkFer7b3Y/STpH8Kapi7D/ICt/2LvufjRyhWPuzD930peIeu0Hm+ZVVi+png89r6SUWpA7imQ+Isaf2p/Z8NO9M0zFHw+h5DzldsM6mWsQTUXVahLAG/0lRBB7Jf1V8eKB0lsSdF1LwsvS/Qe7HIZ854Ie1DyBnjVpCjplmbx2o4vJ4oBt7ZDWGzuchHIgg86FJOfjse7V9gubMlj5D7WS7vxfnCXl3mwxL4qdT4X35JETzwrfckXm8qn+ptF4sLG3fK0YhaVn+ycLAIJ82Z0gIYBFwvedVulExoyfPe0CxxJDVLsaFDAxMEbLbWQ2JpIxnVYJkuHRS323jYcbSSwVbLxNQBnqhP6UPMOsCoX2coe1s1EOQXlZZLFDXGnVqppl+WbWMgZT30DZmlU4audT+PotfMeaOmkdkKmHO2MnwrkDqXyda+ZRmq+VtnehmL6kMApOvAPX9O7574dKLe3hEnJqLz3OYfPk1YjPgHins936TGYD/ysGYkVow2R5HepJjWA8cNtAWZGHoRDSVO37BjwoRRpcKeqtRJivbvAmxfMVtllWNzUROBPEg90RiSFSvid6GviqRXTNYQtw8MS+NjMUtWHDNL9yGOCIyZfC0uYaW1J9WuMifLS0C5yXrvSc2IQnh0P3J0dEHlQgv5ml4yCIPlDRo99aII8AO1ZTo4YVdEEoA
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR02MB5482.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(396003)(376002)(346002)(39830400003)(366004)(136003)(86362001)(6666004)(2906002)(36756003)(5660300002)(6486002)(16526019)(956004)(2616005)(31696002)(26005)(4326008)(478600001)(8676002)(53546011)(8936002)(66946007)(66556008)(66476007)(38100700002)(316002)(16576012)(186003)(31686004)(36916002)(45980500001)(43740500002);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dzdsQ0RmMXlhQzVVcVk2T2tBdUQ5c3B5UWtiM0xqZFJrRmJPMGoyc1BDajRa?=
- =?utf-8?B?a09yM3dybm9PS09qa0FSbGM3R01rcXc3MVhNaWtCVDUrT2VzWWVXd09EdHUw?=
- =?utf-8?B?aHpNT3g4Z2I0NXhReVpCcytCaW16QkloRXRUVy9wclo3WkszbUlOeHpFZnpR?=
- =?utf-8?B?R3dCQjJkdWtKbUVRbzJpL1RYNlRlazk1OUNRbkJvTGd1SGlpSWc2SVJ4a0tz?=
- =?utf-8?B?dkxlZFBFRDlzSVZCT2NkL3dkMUg5NUdBdStaMnZUSkFXMUU5YWh1bE5zbFhI?=
- =?utf-8?B?NlZsMUJrSTBjTldCU0cwcmVUOHAyN3dQWWRTejZNOWl6dWVGZWhtVDBydjBx?=
- =?utf-8?B?d3lZaVdQMUdSZEZMYnNycW16WFdSTXdhR3JMZWpGdG9SZTVCMlIyOU52U0Nx?=
- =?utf-8?B?dk9MMWQxVkkrK2pha3dWY3ZWSGZxS0RiM2tneDJWbTN0c3JMU2lkSnZZZVFS?=
- =?utf-8?B?Nk9KTWRMa1p4N0M3Z0svWlJSeGo1WEhWdmVjeU5LOC90bnRsd04vUWlIa0pi?=
- =?utf-8?B?MjNscmNNTmtZOTBrYXRVNzFFcy9hOTZqaGZBbjBJc3lTM3ZEeWJDZHNzNTM2?=
- =?utf-8?B?cVpKdTcySlZhZ005SEdTSVlRRjNJcTFHV3dpQlN0VlJVbTZpZ2Q5RFJuZk5F?=
- =?utf-8?B?cWozWUtMNHJCdHZ2TDNuQ2dmZFVLTVE1aGVzdWlydHBuOGZmeVo4L1RqQkYr?=
- =?utf-8?B?amdvSUhMSENKY0JhMkNEZmViTWd1Mjc2dFBWaFR3QlF2ejFDaWlUeWxaZW1K?=
- =?utf-8?B?aVYwRFpPejV2MHFtZzhEdVBZMWFiUU42elRIdXg2SXQ4UTdPR1hTRW83aFRu?=
- =?utf-8?B?WlpWd3pmV2hiQVRRNnVldlkycXBGQkNYeHRhaVNianRxQ0RkeUdnTDg0eUVR?=
- =?utf-8?B?NU8waVFXdDNZcWFDVy9qWGRTRmNQYXN1QWNnMTI3b3BGMThJOXgwVldLUjg5?=
- =?utf-8?B?bFZkL0FDdW1yLzh3RGxDNzNkS0lvZ1dmK1E5TklKd05QS2IzNHRJYks2Uy9P?=
- =?utf-8?B?b0pHRUExSlNZYzZvcDlJZkExRXVVMVpIK2dsWVdyQ3U1VE8yNzhwTEJnYTJh?=
- =?utf-8?B?MHBIcmI2WHhJTGJvQjFOUFBuMURPdkhuaGQ5c1FOSkp3VEF4M0dvQVBsYlc2?=
- =?utf-8?B?Y28reWxmWmNqWndvSkdWVmxBTXNvUXJOR1l4V21xdmJTN0NuMjlIYmtwMmpC?=
- =?utf-8?B?TzlMVDYxY1ExVG1RZmRkWHFIMXpCMzU4VEFEQ1ZIVW1CeUdHL1VCS3ZMcjh0?=
- =?utf-8?B?SmNjQUdOM0JKWjZRR3pvazVTaHhUK1E1NjZrYWs3Nzl6b09TYW8zRGhiSEN1?=
- =?utf-8?B?UDZGNUladXZVK3F6MlQ2d1NDdWRNc29qVUFDYi94czZNTHYvQytobjVMSzZS?=
- =?utf-8?B?SlRFTXA0amRKY2lHYVJVVEt2bVpueDQ4aXpzYU5LdStLRXIrNlZrQThta3ls?=
- =?utf-8?B?aGIxV05JUWNyZ1NqRTdVRGp0SkhuZVlJR1dmQ0F0aGNRaG16WERJUmk3anRv?=
- =?utf-8?B?ZExiK29VWHFDUHFUeUNQRmFSWHZLTHY3dXJKUGl1cHdPS2xEeTB6YnlaQnAy?=
- =?utf-8?B?VWRaeHpyRU53UnVpaWVZVWs0azhBSzNhM3BVZHNMYzJZd0xiM1VaVXdJSExK?=
- =?utf-8?B?cytXQW5PVWFkcmxaUEtyVUQ2aStlYjhWOHR0TGRjcGNmUVdiTzJvanl1eTJj?=
- =?utf-8?B?WU5rSHB3ZGZCY3VuWDhhVkk4bDNWMCtaUmJNZlZpc1BjWDhmVzBrMWFmSWxS?=
- =?utf-8?Q?O2uK+rh7phXdMBbeMKxfQjTgzkbjVfMVbH38gUx?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dnVWUmxIdDdwSnJlMmlJN1psZFMzeCtyRGhWK0xoWUZJcXpBcVhRS2M3dlR2?=
+ =?utf-8?B?VGwyb0JYTjVMbHk4QThzK0JpakVvY3JodGw2UFp3aEoyUEJnQXd4dTdmbytF?=
+ =?utf-8?B?RHBWdjlHYVZyVHREanh4cy84d0g2Uyt6Q3dFMWhKUm03aUdLZ2RPN0QyWE5h?=
+ =?utf-8?B?RWZTem1UU2xtcGV4ZnFsVEtWcnV1VlNrQWEvV3gxaWM4TzZpMTEwQzZ2UXRh?=
+ =?utf-8?B?SzQzLy9ONisrdjhiaWxGTERrS3UwTmxXbDRHam84R1JSNGZWeWZKSG9URi8v?=
+ =?utf-8?B?S0wrN2Q3MXVxTVAvT0ZKL0ZWZGp4Wk1ZTEtFK3RMQWRvZVVMVTdhRnpvQ3lG?=
+ =?utf-8?B?TkREZXkvTjlzRTlCUE1YZmY3c2FEWUJJWm93M1prWjJnTTBrNVM5QmVmSjhl?=
+ =?utf-8?B?dGhjVXlCQWpaQWk0UG83SVlSVEp3dHRuQkFVaUQrUS9UTk5yczBWMnppMkl3?=
+ =?utf-8?B?aDd6YlJZV0wvMndCclVlU1FYY0F0Y0dLS0F1ZksrNi9lNSs1TnBDMXl5ajRp?=
+ =?utf-8?B?Q3BaZjhySW5aKyt5MnQ4NjdPYzhsdDVaMUhnSzlzRGxOUSt2N1kyWUQvcWpS?=
+ =?utf-8?B?OTd0YkFiaEQvRTduaFpEc0p5eXRSYVM4WUJJSW5EMlA2Q0IvWXlPdnNyQmhh?=
+ =?utf-8?B?Uk1QbnQrb2V2c1RKWXdxd1Qrek5kTEViN29HZndTeEhLb0tmUTVZZWlXQldu?=
+ =?utf-8?B?VTRvVU1KVnhjdnJQU09nOXZyTzZTdFBuMnV6ampkOXQrZklBallnYUhYYWMv?=
+ =?utf-8?B?UjVLalpjTHphdktsOVZ4YjljcjJGUVZteDZtcFhPWFIxNlQ5azFpM1Axcnpz?=
+ =?utf-8?B?bVgyZ2RZNmx6aTc4dUd5dGR2RDZGS0J4TEJQM3hhT0RaK0FrZnZJTWV6N2h5?=
+ =?utf-8?B?ZUdmZjRFVis2UGxqVVh2QnpFUmlxYnRFYmNxc2dPczVXa3VKRkJNc24wcmNC?=
+ =?utf-8?B?bjNUbzRRSHVkYytRelNET0pTMEFHbHY2YndBWi9DdjFMSUI3RGo3LzlKdW5j?=
+ =?utf-8?B?aUIzY1ZBK3dxd2l5anpua3puWko4K1d0V0JWT1VVekd4ZjlXUW9OR3VsZVJJ?=
+ =?utf-8?B?dWV5eXppVHNscWViWXZ4bEZEMndvTkdzZ3ZuUXhEL3BGOGx6ZmpoK0x0ZjhE?=
+ =?utf-8?B?UXc0MmtpNW00Ylk4WjVXL0VNeDNWdkpxVzJPVjUzYXJFNnRnN0hGbzdFWmR2?=
+ =?utf-8?B?Sml6Z3JydE11S0Y0M241WHBJbG5JU21DcERMVlkzNEI2czIxeGtCUzFaZU15?=
+ =?utf-8?B?N3NHQVBDZVlWMWgrL0VibnNpTkNVMW9yeWc0c0hNL1N6aDVnSzdoc2xnYTZu?=
+ =?utf-8?B?NWVDTWNiWTlsR3JQOGxncERJUUNtd243ZHdjTzVmcGI5OXlXU1hjL1JTcDVn?=
+ =?utf-8?B?Z1kzRUhrUmxHdDJwdFBobWMraDBpejBJWEd4em5PUTkwTzFabnVTdkRzNkZt?=
+ =?utf-8?B?bmpCK2hlblgweHhzRE9JdHVZc2d3ZWVHNzZUazRDVkVpajNKb25xQ1VaZmVr?=
+ =?utf-8?B?b3B1dHM5VENwVUNpbE13T3U1OXA2OHBLZjJXQkhWZDRBT3hvMFFTaEk1elBP?=
+ =?utf-8?B?UVZjN2d3SWpacXlUNlhJNVdHUXlyamprcHBjcElKRTNoS0xSdERyU2YxNjBt?=
+ =?utf-8?B?bkJNVzQwNngwTXp6a1p5SWkrSE9ISzRzb1dyUG5TR2xYMHhPaGUydHBkV2ZB?=
+ =?utf-8?B?VlF2RXNBc0RDWjRFVnN1ZnVmWE9QblU0WnlXby9qWk0ydmN0aCs1WUU3NXZm?=
+ =?utf-8?Q?zkm0b3jqvz6NjyOLqRjSH4v4djh+CphLkwaoXfc?=
 X-OriginatorOrg: axentia.se
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9bd718c1-2458-4ba9-19a6-08d92c503a9f
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1bd3daa4-c05d-4a05-a0be-08d92c560f68
 X-MS-Exchange-CrossTenant-AuthSource: DB8PR02MB5482.eurprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2021 20:42:14.3766
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2021 21:23:58.9179
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4ee68585-03e1-4785-942a-df9c1871a234
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: c43PV54HSAni9MJ1zaAp8W6+q9xVr2nvxrpKe0oWoCFVJkyCOgoWW8T7GAjhVNlk
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR02MB6261
+X-MS-Exchange-CrossTenant-UserPrincipalName: WP/0yAICrAPzyG+7hDKvyjEV9v0cWu4vZKaHDsQtBKLz6OGEYiclCw/haXDn6wr4
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB6PR02MB3061
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 Hi!
 
-On 2021-06-10 11:06, Jonathan Cameron wrote:
-> On Wed, 09 Jun 2021 17:40:47 -0400
-> "Liam Beguin" <liambeguin@gmail.com> wrote:
+On 2021-06-07 16:47, Liam Beguin wrote:
+> From: Liam Beguin <lvb@xiphos.com>
 > 
->> Hi Jonathan,
->>
->> On Wed Jun 9, 2021 at 4:28 PM EDT, Jonathan Cameron wrote:
->>> On Mon, 7 Jun 2021 10:47:13 -0400
->>> Liam Beguin <liambeguin@gmail.com> wrote:
->>>  
->>>> From: Liam Beguin <lvb@xiphos.com>
->>>>
->>>> iio_convert_raw_to_processed_unlocked() assumes the offset is an
->>>> integer.
->>>> Make that clear to the consumer by returning an error on unsupported
->>>> offset types without breaking valid implicit truncations.
->>>>
->>>> Signed-off-by: Liam Beguin <lvb@xiphos.com>
->>>> ---
->>>>  drivers/iio/inkern.c | 34 +++++++++++++++++++++++++++++-----
->>>>  1 file changed, 29 insertions(+), 5 deletions(-)
->>>>
->>>> diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
->>>> index b69027690ed5..0b5667f22b1d 100644
->>>> --- a/drivers/iio/inkern.c
->>>> +++ b/drivers/iio/inkern.c
->>>> @@ -578,13 +578,37 @@ EXPORT_SYMBOL_GPL(iio_read_channel_average_raw);
->>>>  static int iio_convert_raw_to_processed_unlocked(struct iio_channel *chan,
->>>>  	int raw, int *processed, unsigned int scale)
->>>>  {
->>>> -	int scale_type, scale_val, scale_val2, offset;
->>>> +	int scale_type, scale_val, scale_val2;
->>>> +	int offset_type, offset_val, offset_val2;
->>>>  	s64 raw64 = raw;
->>>> -	int ret;
->>>>  
->>>> -	ret = iio_channel_read(chan, &offset, NULL, IIO_CHAN_INFO_OFFSET);
->>>> -	if (ret >= 0)
->>>> -		raw64 += offset;
->>>> +	offset_type = iio_channel_read(chan, &offset_val, &offset_val2,
->>>> +				       IIO_CHAN_INFO_OFFSET);
->>>> +	if (offset_type >= 0) {
->>>> +		switch (offset_type) {
->>>> +		case IIO_VAL_INT:
->>>> +			break;
->>>> +		case IIO_VAL_INT_PLUS_MICRO:
->>>> +			if (offset_val2 > 1000)  
->>>
->>> What's the logic behind this one? > 1000000
->>> would be an interesting corner case, though I'm not sure we've ever
->>> explicitly disallowed it before.
->>>
->>> Why are we at 1000th of that for the check?
->>>  
->>
->> For these the idea was to go with one milli of precision.
->> I don't know if that's a good criteria but I wanted to start with
->> something. Do you have any suggestions?
->>
->>>> +				return -EINVAL;
->>>> +			break;
->>>> +		case IIO_VAL_INT_PLUS_NANO:
->>>> +			if (offset_val2 > 1000000)  
->>>
->>> Similar this is a bit odd.
->>>  
->>>> +				return -EINVAL;
->>>> +		case IIO_VAL_FRACTIONAL:
->>>> +			if (offset_val2 != 1)
->>>> +				return -EINVAL;  
->>>
->>> We could be more flexible on this, but I don't recall any
->>> channels using this so far.
->>>  
->>>> +			break;
->>>> +		case IIO_VAL_FRACTIONAL_LOG2:
->>>> +			if (offset_val2)
->>>> +				return -EINVAL;  
->>>
->>> Same in this case.
->>>  
->>
->> For these two cases, I went with what Peter suggested in the previous
->> version, to not break on valid implicit truncations.
->>
->> What would be a good precision criteria for all offset types?
+> Add support for linear temperature sensors. This is meant to work with
+> different kinds of analog front ends such as RTDs (resistance
+> thermometers), voltage IC sensors (like the LTC2997), and current IC
+> sensors (see AD590).
 > 
-> @Peter, what were your thoughts on this.
+> Signed-off-by: Liam Beguin <lvb@xiphos.com>
+> ---
+>  drivers/iio/afe/iio-rescale.c | 25 +++++++++++++++++++++++++
+>  1 file changed, 25 insertions(+)
 > 
-> I was thinking we'd just not worry about how much truncation was happening
-> and just silently eat it.
+> diff --git a/drivers/iio/afe/iio-rescale.c b/drivers/iio/afe/iio-rescale.c
+> index 3d445c76dbb2..9e3c7e2b47cd 100644
+> --- a/drivers/iio/afe/iio-rescale.c
+> +++ b/drivers/iio/afe/iio-rescale.c
+> @@ -272,10 +272,29 @@ static int rescale_voltage_divider_props(struct device *dev,
+>  	return 0;
+>  }
+>  
+> +static int rescale_temp_sense_amplifier_props(struct device *dev,
+> +					      struct rescale *rescale)
+> +{
+> +	s32 gain_mult = 1;
+> +	s32 gain_div = 1;
+> +	s32 offset = 0;
+> +
+> +	device_property_read_u32(dev, "sense-gain-mult", &gain_mult);
+> +	device_property_read_u32(dev, "sense-gain-div", &gain_div);
+> +	device_property_read_u32(dev, "sense-offset-millicelsius", &offset);
+> +
+> +	rescale->numerator = gain_mult;
+> +	rescale->denominator = gain_div;
+> +	rescale->offset = offset * gain_div / gain_mult;
 
-For the "integer-plus" formats, that was my thinking too. Previously that
-was exactly what was happeneing, and v1 randomly broke any user that relied
-on 42.424242 being truncated to 42. This is still the case with this v2, as
-v2 is allowing only a very slim set of truncations. I meant that this new
-code needs to allow all truncations, just as before. Anything short of that
-must have a much better description of why it is safe to all of a sudden
-disallow truncation. I.e. such a change needs to come with traces of an
-audit of how this function is used, and why changing the semantics will not
-cause regressions.
-
-For IIO_VAL_FRACTIONAL and IIO_VAL_FRACTIONAL_LOG2, it seems correct to
-error out if the denominator isn't 1, because relying on using an offset of
-e.g. 187 for a IIO_VAL_FRACTIONAL of 187/169 is not at all healthy.
-
-Both erroring out and doing a best effort calculation for these fractional
-cases with denominator != 1 would be ok by me, because they are plain and
-simple severly broken at the moment.
+This should be done with 64-bit math, no? After all, An offset of
+approximately 300000 is not unexpected, and that's quite big to
+scale with 32-bit math.
 
 Cheers,
 Peter
 
-> J
->>
->>>> +			break;
->>>> +		default:
->>>> +			return -EINVAL;
->>>> +		}
->>>> +
->>>> +		raw64 += offset_val;
->>>> +	}
->>>>  
->>>>  	scale_type = iio_channel_read(chan, &scale_val, &scale_val2,
->>>>  					IIO_CHAN_INFO_SCALE);  
->>
->> Thanks for looking at this,
->> Liam
+> +
+> +	return 0;
+> +}
+> +
+>  enum rescale_variant {
+>  	CURRENT_SENSE_AMPLIFIER,
+>  	CURRENT_SENSE_SHUNT,
+>  	VOLTAGE_DIVIDER,
+> +	TEMP_SENSE_AMPLIFIER,
+>  };
+>  
+>  static const struct rescale_cfg rescale_cfg[] = {
+> @@ -291,6 +310,10 @@ static const struct rescale_cfg rescale_cfg[] = {
+>  		.type = IIO_VOLTAGE,
+>  		.props = rescale_voltage_divider_props,
+>  	},
+> +	[TEMP_SENSE_AMPLIFIER] = {
+> +		.type = IIO_TEMP,
+> +		.props = rescale_temp_sense_amplifier_props,
+> +	},
+>  };
+>  
+>  static const struct of_device_id rescale_match[] = {
+> @@ -300,6 +323,8 @@ static const struct of_device_id rescale_match[] = {
+>  	  .data = &rescale_cfg[CURRENT_SENSE_SHUNT], },
+>  	{ .compatible = "voltage-divider",
+>  	  .data = &rescale_cfg[VOLTAGE_DIVIDER], },
+> +	{ .compatible = "temperature-sense-amplifier",
+> +	  .data = &rescale_cfg[TEMP_SENSE_AMPLIFIER], },
+>  	{ /* sentinel */ }
+>  };
+>  MODULE_DEVICE_TABLE(of, rescale_match);
 > 

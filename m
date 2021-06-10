@@ -2,124 +2,152 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 43DEC3A292F
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jun 2021 12:17:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E45973A294F
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jun 2021 12:25:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230289AbhFJKTR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Jun 2021 06:19:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:52926 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230264AbhFJKTJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Jun 2021 06:19:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1623320233;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=2SmBM62v3Il6KXY0QbpUItrrqJPXImttrBSOaiO/rBo=;
-        b=TaH95TZ9pMa2/TD4w+kitgQSuTPHSen+a939VinjxJvgmwSem4OrPsuh+CHL1El8aD4S5f
-        K7sySC/QQclcE222QWmOBrjlbc4HOYZuMqbWA/uPs+dm5ng6+8E0RREe+F3I0pL8LHYlxC
-        4z6zobWxamVRUJR0uDM+fba1C0UQrd8=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-556-TxccKHv0O4q3vUGj1l37qA-1; Thu, 10 Jun 2021 06:17:12 -0400
-X-MC-Unique: TxccKHv0O4q3vUGj1l37qA-1
-Received: by mail-ej1-f70.google.com with SMTP id 16-20020a1709063010b029037417ca2d43so8821229ejz.5
-        for <linux-iio@vger.kernel.org>; Thu, 10 Jun 2021 03:17:11 -0700 (PDT)
+        id S229966AbhFJK1j (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Jun 2021 06:27:39 -0400
+Received: from mail-pg1-f169.google.com ([209.85.215.169]:38785 "EHLO
+        mail-pg1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229935AbhFJK1j (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Jun 2021 06:27:39 -0400
+Received: by mail-pg1-f169.google.com with SMTP id t17so5656225pga.5;
+        Thu, 10 Jun 2021 03:25:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=cj+MPWIUrXgB6pYKg9OatCm8cIlTwFg6Vxp4HjwB8Ng=;
+        b=fhdMZvTVKl1M9ad8PFG2EF1PPwmqR5dv+xAVxxVJ23pj9DWXOOQN9jZ9RAMlH2Z9r7
+         hSElsUonwUHCehtMzFBNdaQgc9vraX7uTqvRupb9GDdCOoi1HREtCqHqkSlnJZah28OD
+         edgOfaNFBEx4pNwdJqibhEqWhCjuLZfdL1F8enYnAiHVLTVcL+5bBZJ0wfY1MelDFMJ+
+         6CUeCjCcwskykurCuz8gx8m2JBZc3yl0NeeNmCy69oiQr9B6cT2Uo6QkjUCu9cKvSgDa
+         SDzOFKwW+nzRKBGrXGF0TeXasI8YldB4Lz8TqFCa/3fy/Ol9OCNHVlF69Bdf0YSw59Yr
+         HG2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=2SmBM62v3Il6KXY0QbpUItrrqJPXImttrBSOaiO/rBo=;
-        b=UxQO8AU3lNZ39nwvquTfMh6MZ4rHxdGtmmudAB2ZOOuz99Fe5yiJVvoK3I6j6An3Lc
-         CA779wrTmJdRzAJXYVIW6pmBqcs0AbcwvCg5UBfE+9b7IQm8t6lOzuWXeRowsf2KXp/E
-         Bgm2oFSpE8DOp6ia/NKEmo+Fm/mYl5+fIIsN4QuCU4OCiVWucJQlncjwM9MUaFzMlb4M
-         ERIFweTXLBVUY+UsJIqFEvIqR+/QJp6tIKlTrYtxUSFtVXKnurF16tk+I/D83BK3tyA5
-         GTlSFquVSQVVkFA3rY3NAmwIsR3pCuArCEuwS48yUTV3r5giZIFYl2ramjeyxAlKwsgB
-         67hA==
-X-Gm-Message-State: AOAM532IE7abX5gbFHu36kBE20wH/pBVlD/CMdDbRISSBFOi2OxDtQ8+
-        JzIEQkC4W9Jx5EupCpdv49UlepJySYH50vm4Ldgh8QZ1a4TaMnnDT/0PSWFl801HzL/pcPB/baH
-        IfE7TOFCEYW08pJWI3g6i
-X-Received: by 2002:a17:906:71d2:: with SMTP id i18mr3884334ejk.373.1623320230965;
-        Thu, 10 Jun 2021 03:17:10 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwrQA+kKsgr6fr2KewqmA0iEMph7XjlRsSLu0gvadrf9O7FIZ9msAhDuu0jftNju1Qps/cDuw==
-X-Received: by 2002:a17:906:71d2:: with SMTP id i18mr3884317ejk.373.1623320230819;
-        Thu, 10 Jun 2021 03:17:10 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id bh3sm852904ejb.19.2021.06.10.03.17.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Jun 2021 03:17:10 -0700 (PDT)
-Subject: Re: [PATCH 0/6] iio: accel: bmc150: Add support for BMA253/BMA254
-To:     Stephan Gerhold <stephan@gerhold.net>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=cj+MPWIUrXgB6pYKg9OatCm8cIlTwFg6Vxp4HjwB8Ng=;
+        b=tYbezOjVdz8AOjh3dC3DxZkRoyN9CvYpMh6mb5S0haIOhmQFEbQnCMAUNK0kV8ALvN
+         ERTFF4g4Z0G/SBUYVMxzovmiBlRV1EGuR5YWMTXANvFLis8iUTN3P2wycNoewzab4/yY
+         +HoIwszPi7ltpCB68Am6VHm0pPN84gUdXJ1HarM14KQ8wolPIqW2xzx9YNZ7reTxzZz4
+         QPJw8Nrhj6uZwrLELrhw3SKXMPVkaBi8aApVUnVTlhH8lyTRhEDmD88RE8bnTqBiljqa
+         egepsZ/qLBugCRvt+yTVqdZ5Js2zEsvHSAklqs1K9D2eFHBcKNC8dVd6VZfHkWXsYfrG
+         QRSw==
+X-Gm-Message-State: AOAM530g9ZOK0DRaiMJxmtBAXbw8eUP3hIOTQcgv/gYa6tHGsZvLIKHk
+        0BdpQvb3b2pVDDPzq2LQlx9NaXmna2BObBalzr5YYlaK3Ac=
+X-Google-Smtp-Source: ABdhPJyF8M3M2S9wofAFgiKnc4T3Kuh1ghy6YAb669U/WssdcbVrXkQZBv6D2QzHV9IBa6bAoPAmi9BeWeKP5H3zU/w=
+X-Received: by 2002:a63:79c3:: with SMTP id u186mr4266834pgc.203.1623320683220;
+ Thu, 10 Jun 2021 03:24:43 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210610095300.3613-1-stephan@gerhold.net> <20210610095300.3613-2-stephan@gerhold.net>
+In-Reply-To: <20210610095300.3613-2-stephan@gerhold.net>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 10 Jun 2021 13:24:27 +0300
+Message-ID: <CAHp75Ve_uDeNM+TPEDc-w6tV+rSoF1sAPXo5rKjqC2+3vjDgHQ@mail.gmail.com>
+Subject: Re: [PATCH 1/6] iio: accel: bmc150: Drop misleading/duplicate chip identifiers
+To:     Stephan Gerhold <stephan@gerhold.net>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Linus Walleij <linus.walleij@linaro.org>,
-        Peter Meerwald <pmeerw@pmeerw.net>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, Bastien Nocera <hadess@hadess.net>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Bastien Nocera <hadess@hadess.net>,
         Laurentiu Palcu <laurentiu.palcu@intel.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-References: <20210610095300.3613-1-stephan@gerhold.net>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <40d1ab0a-420a-f650-1eec-1f228e9ecee6@redhat.com>
-Date:   Thu, 10 Jun 2021 12:17:09 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
-MIME-Version: 1.0
-In-Reply-To: <20210610095300.3613-1-stephan@gerhold.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        Hans de Goede <hdegoede@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+On Thu, Jun 10, 2021 at 12:56 PM Stephan Gerhold <stephan@gerhold.net> wrote:
+>
+> Commit 0ad4bf370176 ("iio:accel:bmc150-accel: Use the chip ID to detect
+> sensor variant") stopped using the I2C/ACPI match data to look up the
+> bmc150_accel_chip_info. However, the bmc150_accel_chip_info_tbl remained
+> as-is, with multiple entries with the same chip_id (e.g. 0xFA for
+> BMC150/BMI055/BMA255). This is redundant now because actually the driver
+> will always select the first entry with a matching chip_id.
+>
+> So even if a device probes e.g. with BMA0255 it will end up using the
+> chip_info for BMC150. And in general that's fine for now, the entries
+> for BMC150/BMI055/BMA255 were exactly the same anyway (except for the
+> name, which is replaced with the more accurate one later).
+>
+> But in this case it's misleading because it suggests that one should
+> add even more entries with the same chip_id when adding support for
+> new variants. Let's make that more clear by removing the enum with
+> the chip identifiers entirely and instead have only one entry per
+> chip_id.
+>
+> Note that we may need to bring back some mechanism to differentiate
+> between different chips with the same chip_id in the future.
+> For example, BMA250 (currently supported by the bma180 driver) has the
+> same chip_id = 0x03 as BMA222 even though they have different channel
+> sizes (8 bits vs 10 bits). But in any case, that mechanism would
+> need to look quite different from what we have right now.
 
-On 6/10/21 11:52 AM, Stephan Gerhold wrote:
-> The Bosch BMA253 accelerometer is very similar to both BMA254 and BMA255.
-> The current situation is very confusing: BMA254 is supported by the bma180
-> driver, but BMA255 is supported by the bmc150-accel driver.
-> 
-> It turns out the bma180 and bmc150-accel drivers have quite some overlap,
-> and BMA253/BMA254 would be a bit better supported in bmc150
-> (which has support for the motion trigger/interrupt).
-> 
-> This series adds BMA253 support to bmc150-accel and also moves BMA254
-> over to bmc150, removing some unnecessary code from the bma180 driver.
-> 
-> I asked Linus Walleij to test these patches on BMA254 a while ago
-> and he suggested that I already add his Reviewed-by.
-> 
-> Stephan Gerhold (6):
->   iio: accel: bmc150: Drop misleading/duplicate chip identifiers
->   dt-bindings: iio: accel: bma255: Document bosch,bma253
->   iio: accel: bmc150: Add device IDs for BMA253
->   dt-bindings: iio: bma255: Allow multiple interrupts
->   dt-bindings: iio: accel: bma180/bma255: Move bma254 to bma255 schema
->   iio: accel: bma180/bmc150: Move BMA254 to bmc150-accel driver
+...
 
-Thanks, the entire series looks good to me:
+>  static const struct bmc150_accel_chip_info bmc150_accel_chip_info_tbl[] = {
 
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Perhaps sort this by chip_id value?
 
-for the series.
+...
 
-Regards,
+>  static const struct acpi_device_id bmc150_accel_acpi_match[] = {
+> -       {"BSBA0150",    bmc150},
+> -       {"BMC150A",     bmc150},
+> -       {"BMI055A",     bmi055},
+> -       {"BMA0255",     bma255},
+> -       {"BMA250E",     bma250e},
+> -       {"BMA222",      bma222},
+> -       {"BMA222E",     bma222e},
+> -       {"BMA0280",     bma280},
+> +       {"BSBA0150"},
+> +       {"BMC150A"},
+> +       {"BMI055A"},
+> +       {"BMA0255"},
+> +       {"BMA250E"},
+> +       {"BMA222"},
+> +       {"BMA222E"},
+> +       {"BMA0280"},
+>         {"BOSC0200"},
+>         {"DUAL250E"},
 
-Hans
+I have noticed during review patch 3 that the arrays are unsorted, can
+we at the same time sort them by ID, please?
 
-> 
->  .../bindings/iio/accel/bosch,bma180.yaml      |  3 +-
->  .../bindings/iio/accel/bosch,bma255.yaml      |  9 +-
->  drivers/iio/accel/Kconfig                     |  6 +-
->  drivers/iio/accel/bma180.c                    | 91 +++----------------
->  drivers/iio/accel/bmc150-accel-core.c         | 36 ++------
->  drivers/iio/accel/bmc150-accel-i2c.c          | 34 ++++---
->  drivers/iio/accel/bmc150-accel-spi.c          | 31 ++++---
->  drivers/iio/accel/bmc150-accel.h              | 10 --
->  8 files changed, 67 insertions(+), 153 deletions(-)
-> 
+...
 
+>  static const struct i2c_device_id bmc150_accel_id[] = {
+
+Ditto.
+
+>         {}
+>  };
+
+...
+
+>  static const struct acpi_device_id bmc150_accel_acpi_match[] = {
+
+Ditto.
+
+>         { },
+>  };
+
+...
+
+>  static const struct spi_device_id bmc150_accel_id[] = {
+
+Ditto.
+
+>         {}
+>  };
+
+-- 
+With Best Regards,
+Andy Shevchenko

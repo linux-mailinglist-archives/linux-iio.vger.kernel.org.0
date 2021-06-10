@@ -2,56 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 889153A21DA
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jun 2021 03:30:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FC243A21EA
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jun 2021 03:37:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229634AbhFJBcw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 9 Jun 2021 21:32:52 -0400
-Received: from mail-pg1-f175.google.com ([209.85.215.175]:34759 "EHLO
-        mail-pg1-f175.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229557AbhFJBcw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Jun 2021 21:32:52 -0400
-Received: by mail-pg1-f175.google.com with SMTP id l1so21249555pgm.1;
-        Wed, 09 Jun 2021 18:30:57 -0700 (PDT)
+        id S229557AbhFJBjK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 9 Jun 2021 21:39:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45144 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229507AbhFJBjK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Jun 2021 21:39:10 -0400
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CECAC061574;
+        Wed,  9 Jun 2021 18:37:01 -0700 (PDT)
+Received: by mail-pf1-x435.google.com with SMTP id x73so243251pfc.8;
+        Wed, 09 Jun 2021 18:37:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=04JQUBj5ojtPgamHPjVaFmIunywue518T+c+n9FraKc=;
-        b=pq+yZjguSpqkV/6RKRqOXHV4/j1clvSjJFb50W4sJMya4++9w2S7o+RIrl34XrPEfH
-         yWHMCw0IyPK7wVE5sepswVWZw5bUtSrpBf1Jx8UVY5mJLhgLFjYrwSJSJINVWThoNpYa
-         lUwtZD+zaW3Fhazr8Zl6lvCxxKiyQOT8spRXVzWw2PSIiRYstidRw5OjNrn4wyRlyW/y
-         u6iW5+Pi3EjVefWQXjwPsjbwzatKn1nd3ovZP9+/mwaK20+m51MywH1iGXNdxxxfoV+T
-         c600JiDCYauKvdL4kEHRf+3KVkHb739CeERa7WtHob3pTxGSw72J0CPiW6LC40zoyCY/
-         IS4g==
+        bh=0D9NMWJTej053t447eIPNR0Qklez1ed8b2jcSOvvdes=;
+        b=NUsN/F7tXiK21ga7MhoXMSQLca9QR16Q/e7wwMPykRvyv6gqXjYETS8olVF8gLt+lw
+         G/5KhrIutjANeYKZzVrcirzu4OYN36lqmgy522uGlRPSSywUnOtOwLwKxxpCgou8K2y/
+         hzZmnmothERUPg828a0xIXXl3oyKPY2rOXbNRpCUBc84CSRgSvT539uTzzzQQ1WzhvRr
+         7r+T22X4siZafcHH+70o2qcY2iHtvzPlYOM9GUy/xZ6TmTePWIbwO/oh28ITh/o7XTwk
+         aoRFkxjSJcd+b/CZICR3Nj+XXRqyNxRlSzhxeoY5SIbOW1P16KjGC2UOCxBpWOLPL83I
+         3f4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=04JQUBj5ojtPgamHPjVaFmIunywue518T+c+n9FraKc=;
-        b=gyTVmlQWswvyV5Z8Kw361XvglLMionskT1n/21L/u6aPq8aqV+nuZb3sfYggw86w+L
-         srJGwgLG6nvgprAIEy2CVjdF5OoIYfFGw5sGgndoBQMf/i99TcQdVqP7RQXc2/IL+0fq
-         zuKOWoczWD2mwxkH3reEsvHZiQxqr8t6N4drOeVKbP4ihbEt3lL0mhwUKcxLHMZEUXp9
-         8rranGD6bm/Ft1Ljjr9c7/lfMqeO6+I2DdadULMyPyhLmvuIZkthxpCfIazaVFBlVxxt
-         /ioKLGzCtfthDkdCvUvfhMtOdqZe6oCVYC87XlQsZI1ZtDPQ9vXSU5HOurFS9CW/wAnT
-         /xCw==
-X-Gm-Message-State: AOAM5328APvDGpRdL4w0xEJ7FVE0bs/flmn/xrVWZF9bBDq3S3xmdXeP
-        /oCrUkhGyEx7eUgZj8bySx0=
-X-Google-Smtp-Source: ABdhPJxQZRnUnOuLeBHoJ0EgR9cfbWnwbyCBeKqcENQjPhDF8qbc36iBxieuEvq6YQjLI+FdL/fSJw==
-X-Received: by 2002:a05:6a00:1a88:b029:2ea:548:5ed4 with SMTP id e8-20020a056a001a88b02902ea05485ed4mr523658pfv.47.1623288596641;
-        Wed, 09 Jun 2021 18:29:56 -0700 (PDT)
+        bh=0D9NMWJTej053t447eIPNR0Qklez1ed8b2jcSOvvdes=;
+        b=ByGxiPUnL1oirA0uuk9Nlo8aQx7KJ1usPZpC2k+VSz0LSc+QX5A/nxhBVVJQ/M/ZZV
+         B8l18J2fOAV0JgakwnBeoR8OBqncgmzoSrjOQ1gy8L1hniRSdtqDvxw31rgxu+2B4rdD
+         cpDALTqbCDSb57hJuHQ2yUdqj6J58qHA+SewvUjxZjK/yg4tknw0zR9E7Pv5oPixj8en
+         pk/FkxpAXTNDEX7JNBSngj62evZSLi6o302nG/r2aZoN6xIIbiIEVis6PQ9qmXpwOJfp
+         zDmjMpLBb9ktmCHumx57DxD/m6eerPrfyzwgkisvC9nUDkINFQxFJsVSyZiKfyV9jgVp
+         lxlg==
+X-Gm-Message-State: AOAM532CFx1NMy8tC6cKlI6WM9rm0MrkYPpWebrM7Jok4v2GkQZFeT8h
+        tSfseTASRFmD1JAd+9rsBXU=
+X-Google-Smtp-Source: ABdhPJy+vh3dS9ZcvT9Niyzh7n9FP0Rl4ErnxE0G+a8F8CQviyw6gQUQZSTsrLu2JtVq3vM5Upjs1A==
+X-Received: by 2002:a05:6a00:148e:b029:2ec:398a:16db with SMTP id v14-20020a056a00148eb02902ec398a16dbmr587135pfu.74.1623289020979;
+        Wed, 09 Jun 2021 18:37:00 -0700 (PDT)
 Received: from localhost.localdomain ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id d12sm633856pfo.113.2021.06.09.18.29.54
+        by smtp.gmail.com with ESMTPSA id s24sm6101533pju.9.2021.06.09.18.36.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Jun 2021 18:29:56 -0700 (PDT)
+        Wed, 09 Jun 2021 18:37:00 -0700 (PDT)
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     jic23@kernel.org
+To:     jic23@kernel.org, linux@rempel-privat.de
 Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel@pengutronix.de,
         William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Syed Nayyar Waris <syednwaris@gmail.com>
-Subject: [PATCH] counter: 104-quad-8: Return error when invalid mode during ceiling_write
-Date:   Thu, 10 Jun 2021 10:29:23 +0900
-Message-Id: <20210610012923.146727-1-vilhelm.gray@gmail.com>
+        Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: [PATCH] counter: interrupt-cnt: Add const qualifier for actions_list array
+Date:   Thu, 10 Jun 2021 10:36:42 +0900
+Message-Id: <20210610013642.149961-1-vilhelm.gray@gmail.com>
 X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -59,38 +63,41 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The 104-QUAD-8 only has two count modes where a ceiling value makes
-sense: Range Limit and Modulo-N. Outside of these two modes, setting a
-ceiling value is an invalid operation -- so let's report it as such by
-returning -EINVAL.
+The struct counter_synapse actions_list member expects a const enum
+counter_synapse_action array. This patch renames
+interrupt_cnt_synapse_actionss to interrupt_cnt_synapse_actions and adds
+a const qualifier to match actions_list.
 
-Fixes: fc069262261c ("counter: 104-quad-8: Add lock guards - generic interface")
-Cc: Syed Nayyar Waris <syednwaris@gmail.com>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 ---
- drivers/counter/104-quad-8.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/counter/interrupt-cnt.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
-index 09a9a77cce06..81f9642777fb 100644
---- a/drivers/counter/104-quad-8.c
-+++ b/drivers/counter/104-quad-8.c
-@@ -715,12 +715,13 @@ static ssize_t quad8_count_ceiling_write(struct counter_device *counter,
- 	case 1:
- 	case 3:
- 		quad8_preset_register_set(priv, count->id, ceiling);
--		break;
-+		mutex_unlock(&priv->lock);
-+		return len;
- 	}
+diff --git a/drivers/counter/interrupt-cnt.c b/drivers/counter/interrupt-cnt.c
+index 827d785e19b4..5df7cd13d4c7 100644
+--- a/drivers/counter/interrupt-cnt.c
++++ b/drivers/counter/interrupt-cnt.c
+@@ -77,7 +77,7 @@ static const struct counter_count_ext interrupt_cnt_ext[] = {
+ 	},
+ };
  
- 	mutex_unlock(&priv->lock);
+-static enum counter_synapse_action interrupt_cnt_synapse_actionss[] = {
++static const enum counter_synapse_action interrupt_cnt_synapse_actions[] = {
+ 	COUNTER_SYNAPSE_ACTION_RISING_EDGE,
+ };
  
--	return len;
-+	return -EINVAL;
- }
+@@ -194,8 +194,8 @@ static int interrupt_cnt_probe(struct platform_device *pdev)
+ 	priv->counter.signals = &priv->signals;
+ 	priv->counter.num_signals = 1;
  
- static ssize_t quad8_count_preset_enable_read(struct counter_device *counter,
+-	priv->synapses.actions_list = interrupt_cnt_synapse_actionss;
+-	priv->synapses.num_actions = ARRAY_SIZE(interrupt_cnt_synapse_actionss);
++	priv->synapses.actions_list = interrupt_cnt_synapse_actions;
++	priv->synapses.num_actions = ARRAY_SIZE(interrupt_cnt_synapse_actions);
+ 	priv->synapses.signal = &priv->signals;
+ 
+ 	priv->cnts.name = "Channel 0 Count";
 -- 
 2.32.0
 

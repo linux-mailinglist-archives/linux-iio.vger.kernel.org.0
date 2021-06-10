@@ -2,60 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82E563A2CD2
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jun 2021 15:22:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B8603A2CDB
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jun 2021 15:24:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230113AbhFJNX6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Jun 2021 09:23:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58762 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230084AbhFJNX5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Jun 2021 09:23:57 -0400
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36CD7C061574
-        for <linux-iio@vger.kernel.org>; Thu, 10 Jun 2021 06:21:47 -0700 (PDT)
-Received: by mail-pj1-x1032.google.com with SMTP id h12-20020a17090aa88cb029016400fd8ad8so3824536pjq.3
-        for <linux-iio@vger.kernel.org>; Thu, 10 Jun 2021 06:21:47 -0700 (PDT)
+        id S230387AbhFJN0R (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Jun 2021 09:26:17 -0400
+Received: from mail-pj1-f43.google.com ([209.85.216.43]:55947 "EHLO
+        mail-pj1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230238AbhFJN0R (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Jun 2021 09:26:17 -0400
+Received: by mail-pj1-f43.google.com with SMTP id k7so3645280pjf.5
+        for <linux-iio@vger.kernel.org>; Thu, 10 Jun 2021 06:24:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=F1XJFBMeXVeHZ7AKL1UreYF1aa8QOuuBTKiXp7Ri7OM=;
-        b=Qucg8/3R8AQjpHcNktnrKokRzoAQ6gtwX8P0IdzfcdfuXTTiBXvcCLHZlGafEJA8/T
-         l3Q8p/0kKJ3o9FwUEKM61nZ/VbNzgjxu5prD2eqlQiA83Fu+fMTUFeGV5u1+O/+NxcVJ
-         EqjtKwXGJjDN6XgeU1mH+N54PdpcZeqqv3OKehi855S43Zx34BQgv6E6wsevCXHLxTMX
-         9njdLex1BQl2wFKY8u++SoeoIDYvKUiKzr2GkFmYvyJNVRUGspaZHyR6nIj9Q4h+pkId
-         5V25pxkbyQ4uunIWXaZSGDFP70Yjv8OcmjdKmyXCrf1sCEnieXfs2KJ91rLZf9DbtKMC
-         SxcA==
+        bh=Bk2i3yoW5ftIn8onxSnXFaa82I00B/NbfBOXojsnTfM=;
+        b=rOXb3B7XsOQkLNB23qYelCSWiO9kRtRiDheLP67NEOKPYuM+pOVVsfz9ez3nOLzttS
+         BvxvoQuhS/H4Q0ycOQRfc+mlIK6BdVysphRCfUHkhhumuHCBaRbo+XQ2XnxClLMSlPxI
+         u+L7aTAPJbVUABjvdBZBjqdnP3MncQaLptQhpsocRkD+j55k+nnh9wPLh+ewx5onAqon
+         W0ZiQ4OGusv0MZASdv7cQvmhe8y9j0g3BxmfHqzvTOWqGZ7NQO9koPTRKXEfSkhG/Fzx
+         JheYgdSi1b8WcDKFnm2/MJX8uKhOKkVbzeWs8Nc4nott5sEJob5ch913FRtI14Q3Zm09
+         cRkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=F1XJFBMeXVeHZ7AKL1UreYF1aa8QOuuBTKiXp7Ri7OM=;
-        b=ESB2kgBJMkkLXZnO9SpvcvjJbtv1+ufqL0rW4Nyt1sFBSFw/m3iGKZrJauiKRRGPZT
-         VDVIkDR8jzbm8ikpaSh7FzHhyr8XIMr53As6JRAcJL7mh9hgl3MxJco80Gu8qplihp33
-         q6WHplssOEz5KFHZGE8iB20LxEvlaK8RAMSmuCL5SNZKCj3AVyKcG4ZTh9UvXHGYELcL
-         NAoyP7gwv5MRh6OUsGz+1yY5DveE9OdC5FLU734iuBAgD8iirYAMoU/CB9zynNRMZkPL
-         tOjBaxs/23THbm6bYyBqv5UZIxQxavxx83a6Z1OgoSpRCVsBr0VFqdweIuMXUO9F8ten
-         y4ng==
-X-Gm-Message-State: AOAM530au4iqPmx4hOPVi77nCH94/GbIqjNysLma8sPp2dnYtagxTCL9
-        jFU6IyJIJjKPsUQ4wGkfBgz5ijfais2ohbScc1w=
-X-Google-Smtp-Source: ABdhPJxbVh+iKQtw5pA90bMwEvuYwJ/ALDEULmTKgHzlxjdWBW8kIINlRCDXu+pL/NcpgQEt/VzKS13DwKU4ufuCtAA=
-X-Received: by 2002:a17:90b:818:: with SMTP id bk24mr3411784pjb.228.1623331306740;
- Thu, 10 Jun 2021 06:21:46 -0700 (PDT)
+        bh=Bk2i3yoW5ftIn8onxSnXFaa82I00B/NbfBOXojsnTfM=;
+        b=d0h/6XbqRJNBtnYIAYhpW4IAKTkae/corYTsZGz+xV1MLcum15eqDkJ5MLs9fShUMs
+         ONSUSuaZwYItPDp0dd8K+RzBL+9PKjXjnwKzTDiVYC39+NVXR2tdJn0SZoGEKHbe7Lnx
+         sEdhUEnHtzBoGPqMo8/H1WcxsASbI0WnTyCqm58nnfmS6s4QGJ36a9YhsqHW0+MSKV6j
+         +ljqXsOnEgEy357xylNBmObkOo+WTyNc3+5lrIF6aJjYRoddBb8y7Ur/8a5vR9znK5v3
+         6Y5nt/PbmDfHFK1Qfu4CibGdxYAp7dY1rPMZr2H0/EA+9jyCRU7BiTM67/sFdhPykUte
+         6dwg==
+X-Gm-Message-State: AOAM532ipC/F3+WEshvH/JmacMcs8DmF+Kq/Y9JYipyeFNxI71YGky0k
+        GhkivFB6s0rhp/wVJneLaopi+we0RCTcl74NegU=
+X-Google-Smtp-Source: ABdhPJy7ajQ6PYggTMSq34Gfbv36uxpMHaZ4CmFD85+aWOjN1IOij7pJggdk3Cb03dJAUcXTx6DKaSWFSv7FnYCZ+AY=
+X-Received: by 2002:a17:902:b190:b029:105:cb55:3a7a with SMTP id
+ s16-20020a170902b190b0290105cb553a7amr4991333plr.17.1623331385693; Thu, 10
+ Jun 2021 06:23:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210610125358.2096497-1-mkl@pengutronix.de> <20210610125358.2096497-4-mkl@pengutronix.de>
-In-Reply-To: <20210610125358.2096497-4-mkl@pengutronix.de>
+References: <20210610125358.2096497-1-mkl@pengutronix.de>
+In-Reply-To: <20210610125358.2096497-1-mkl@pengutronix.de>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 10 Jun 2021 16:21:30 +0300
-Message-ID: <CAHp75Ve=bp=iHKeHmSb8MzfMt=tP+gsgG0GTwxhQV_ej_+BqPA@mail.gmail.com>
-Subject: Re: [PATCH 3/4] iio: ltr501: ltr501_read_ps(): add missing endianness conversion
+Date:   Thu, 10 Jun 2021 16:22:49 +0300
+Message-ID: <CAHp75VffrayzwN+uTTdZBgMQ=G04Tbfi=PypFZ8AB6qwy3HTTg@mail.gmail.com>
+Subject: Re: [PATCH 1/4] iio: ltr501: fix regmap, initialization of ltr559,
+ endianness and mark structs as const
 To:     Marc Kleine-Budde <mkl@pengutronix.de>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Oliver Lang <Oliver.Lang@gossenmetrawatt.com>
+        Sascha Hauer <kernel@pengutronix.de>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
@@ -63,82 +61,16 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Thu, Jun 10, 2021 at 3:55 PM Marc Kleine-Budde <mkl@pengutronix.de> wrote:
 >
-> From: Oliver Lang <Oliver.Lang@gossenmetrawatt.com>
+> Hello,
 >
-> The PS ADC Channel data is spread over 2 registers in little-endian
-> form. This patch adds the missing endianness conversion.
->
-> Fixes: 2690be905123 ("iio: Add Lite-On ltr501 ambient light / proximity sensor driver")
-> Signed-off-by: Oliver Lang <Oliver.Lang@gossenmetrawatt.com>
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-> ---
->  drivers/iio/light/ltr501.c | 16 ++++++----------
->  1 file changed, 6 insertions(+), 10 deletions(-)
->
-> diff --git a/drivers/iio/light/ltr501.c b/drivers/iio/light/ltr501.c
-> index 79898b72fe73..0e3f97ef3cdd 100644
-> --- a/drivers/iio/light/ltr501.c
-> +++ b/drivers/iio/light/ltr501.c
-> @@ -407,20 +407,16 @@ static int ltr501_read_als(const struct ltr501_data *data, __le16 buf[2])
->                                 buf, 2 * sizeof(__le16));
->  }
->
-> -static int ltr501_read_ps(const struct ltr501_data *data)
-> +static int ltr501_read_ps(const struct ltr501_data *data, __le16 *buf)
->  {
-> -       int ret, status;
-> +       int ret;
->
->         ret = ltr501_drdy(data, LTR501_STATUS_PS_RDY);
->         if (ret < 0)
->                 return ret;
->
-> -       ret = regmap_bulk_read(data->regmap, LTR501_PS_DATA,
-> -                              &status, 2);
-> -       if (ret < 0)
-> -               return ret;
-> -
-> -       return status;
-> +       return regmap_bulk_read(data->regmap, LTR501_PS_DATA,
-> +                               buf, sizeof(__le16));
+> here are 3 bug-files (probably stable material) and 1 enhancement for
+> the ltr501 driver.
 
-This is slightly weird since we pass a pointer to a buffer of one
-element (buffer can be longer, but here it's always one element is in
-use). The original code is better (initially). Also making caller to
-do endiannes conversion each time is not good. What I suggest is to
-leave the caller as is and change here only the followng
+After addressing comment to patch 3, feel free to add
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+to the entire series.
 
-int status ==> __le16 status;
-
-       ret = regmap_bulk_read(data->regmap, LTR501_PS_DATA, &status,
-sizeof(status));
-
-...
-
-return le16_to_cpu(status);
-
->  }
->
->  static int ltr501_read_intr_prst(const struct ltr501_data *data,
-> @@ -668,11 +664,11 @@ static int ltr501_read_raw(struct iio_dev *indio_dev,
->                         break;
->                 case IIO_PROXIMITY:
->                         mutex_lock(&data->lock_ps);
-> -                       ret = ltr501_read_ps(data);
-> +                       ret = ltr501_read_ps(data, buf);
->                         mutex_unlock(&data->lock_ps);
->                         if (ret < 0)
->                                 break;
-> -                       *val = ret & LTR501_PS_DATA_MASK;
-> +                       *val = le16_to_cpu(buf[0]) & LTR501_PS_DATA_MASK;
->                         ret = IIO_VAL_INT;
->                         break;
->                 default:
-> --
-> 2.30.2
->
->
-
+Thanks for fixing the issues!
 
 -- 
 With Best Regards,

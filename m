@@ -2,80 +2,119 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 69E8E3A47F2
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Jun 2021 19:36:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B87C53A4802
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Jun 2021 19:41:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230361AbhFKRh5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Jun 2021 13:37:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38086 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229480AbhFKRh4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 11 Jun 2021 13:37:56 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 292F960E0C;
-        Fri, 11 Jun 2021 17:35:47 +0000 (UTC)
-Date:   Fri, 11 Jun 2021 18:37:43 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     trix@redhat.com
-Cc:     robh+dt@kernel.org, tsbogend@alpha.franken.de, lars@metafoo.de,
-        tomas.winkler@intel.com, arnd@arndb.de, gregkh@linuxfoundation.org,
-        nbd@nbd.name, lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
-        kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        matthias.bgg@gmail.com, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@foss.st.com, apw@canonical.com, joe@perches.com,
-        dwaipayanray1@gmail.com, lukas.bulwahn@gmail.com,
-        chenhuacai@kernel.org, jiaxun.yang@flygoat.com,
-        zhangqing@loongson.cn, jbhayana@google.com, sean.wang@mediatek.com,
-        shayne.chen@mediatek.com, Soul.Huang@mediatek.com,
-        shorne@gmail.com, gsomlo@gmail.com,
-        pczarnecki@internships.antmicro.com, mholenko@antmicro.com,
-        davidgow@google.com, devicetree@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH 5/7] iio/scmi: fix spelling of SPDX tag
-Message-ID: <20210611183743.6f65100f@jic23-huawei>
-In-Reply-To: <20210610214438.3161140-7-trix@redhat.com>
-References: <20210610214438.3161140-1-trix@redhat.com>
-        <20210610214438.3161140-7-trix@redhat.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S229548AbhFKRm5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Jun 2021 13:42:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40632 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229480AbhFKRm5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Jun 2021 13:42:57 -0400
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B699C0617AF
+        for <linux-iio@vger.kernel.org>; Fri, 11 Jun 2021 10:40:59 -0700 (PDT)
+Received: by mail-pj1-x1030.google.com with SMTP id 22-20020a17090a0c16b0290164a5354ad0so6262515pjs.2
+        for <linux-iio@vger.kernel.org>; Fri, 11 Jun 2021 10:40:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=wKUquuYsoz8hbClx1strrxWJbTmhdlgRdx/Ra2/om9Y=;
+        b=qIhnZk9rGcJ35Xa3WuB2cWTxkQF/bkAZL68XhmQRYubX3wMLfO1+IvQtE4u3OMBbb6
+         eFPciGncgftSdUHDTgpi8wi995UMey4sltXjZSqNYYcVGW/d/03hnHSY4lNY4V0f/Q79
+         9W6Mdx5qRqFZTZJ5poYpyOptKGQUMvHpW6KYmo/nTXS6GG423046OPitmSp3rwfWqO8h
+         bcll9/Y4dbhlma5z7ulBfG9HpRChPsz50lCpqHewbeNVu0OhgsD3Niijnnb6kKYuhoEz
+         0UI+qezni+prCNfogm6lHGhk5y8ZIWPyBABY2/4kyg7rgd6G8wnpvq9SEatY2c5zyQMb
+         9XDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=wKUquuYsoz8hbClx1strrxWJbTmhdlgRdx/Ra2/om9Y=;
+        b=ey3MVHHcxyuYf/iMla1LSiJHNGDruyfRR9RtsboSbrrwHofk/96Ame4IrurRr/P1BW
+         HJk7Nbf38d//CFGev09ND0XgawLMnKUi85ulRSi6eMlaRMYA09hQnsjJzdN1o81n8Kqq
+         Wrw2Ui5wSnbMSSkLLXWuLamw08uItyYckDpx/dphdhQ0mO+ju/+FIqBqcXmiSQG+JUld
+         ienfKxQil3WH2j0I730rVGsO27AwSs7fMmjQkkJIZbXrSXYew2fMDQkzSTW6OhtFe+Ts
+         EfW2WuLUiHh+ziUl/FGDOn3mOeSA9lr/ijJsNmfug76SbfwJd4uBvHOJNcy7f8DxK94D
+         v4JQ==
+X-Gm-Message-State: AOAM531IYlLXr8P4SaV0ZyDAkV42LfpdPw/UQdqqnPAMlOegI7cAMu/c
+        58fDRhj7WlN2O+EBZwBmUUGIKIkEgpsqoO5U6c0=
+X-Google-Smtp-Source: ABdhPJzNd63LGmJ6PoY7zhZu7RJKUWOdhBGBnnsXR/7Bxv1mOsXhymietERVd/zW32uEWlj1GlJ/hjKyGE4BW8Ik3GM=
+X-Received: by 2002:a17:902:d305:b029:10d:c8a3:657f with SMTP id
+ b5-20020a170902d305b029010dc8a3657fmr4907527plc.0.1623433258598; Fri, 11 Jun
+ 2021 10:40:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20210611152614.109361-1-jic23@kernel.org> <20210611152614.109361-3-jic23@kernel.org>
+In-Reply-To: <20210611152614.109361-3-jic23@kernel.org>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 11 Jun 2021 20:40:42 +0300
+Message-ID: <CAHp75VfwbCsHXxN6tnsA6acj0cKnQQuX0_SPY_fiSbsYgMpz2A@mail.gmail.com>
+Subject: Re: [PATCH 2/7] staging:iio:addac:adt7316: Cleanup includes
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Nuno Sa <Nuno.Sa@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 10 Jun 2021 14:44:36 -0700
-trix@redhat.com wrote:
-
-> From: Tom Rix <trix@redhat.com>
-> 
-> checkpatch looks for SPDX-License-Identifier.
-> Remove the extra spaces.
-> 
-> Signed-off-by: Tom Rix <trix@redhat.com>
-Applied this one to the togreg branch of iio.git (initially pushed out as testing
-to let 0-day have first poke at it).  Thanks,
-
-Jonathan
-
+On Fri, Jun 11, 2021 at 6:25 PM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
+> Result of consideration of the output of the include-what-you-use
+> tool.  Also a forwards definition of device to avoid any
+> ordering of headers issues.
+>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > ---
->  drivers/iio/common/scmi_sensors/Makefile | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/common/scmi_sensors/Makefile b/drivers/iio/common/scmi_sensors/Makefile
-> index f13140a2575a4..645e0fce1a739 100644
-> --- a/drivers/iio/common/scmi_sensors/Makefile
-> +++ b/drivers/iio/common/scmi_sensors/Makefile
-> @@ -1,4 +1,4 @@
-> -# SPDX - License - Identifier : GPL - 2.0 - only
-> +# SPDX-License-Identifier: GPL-2.0-only
->  #
->  # Makefile for the IIO over SCMI
->  #
+>  drivers/staging/iio/addac/adt7316.c | 5 -----
+>  drivers/staging/iio/addac/adt7316.h | 1 +
+>  2 files changed, 1 insertion(+), 5 deletions(-)
+>
+> diff --git a/drivers/staging/iio/addac/adt7316.c b/drivers/staging/iio/addac/adt7316.c
+> index ccbafcaaf27e..e81791ee182f 100644
+> --- a/drivers/staging/iio/addac/adt7316.c
+> +++ b/drivers/staging/iio/addac/adt7316.c
+> @@ -8,14 +8,9 @@
+>  #include <linux/interrupt.h>
+>  #include <linux/gpio/consumer.h>
+>  #include <linux/irq.h>
+> -#include <linux/workqueue.h>
+>  #include <linux/device.h>
+>  #include <linux/kernel.h>
+> -#include <linux/slab.h>
+>  #include <linux/sysfs.h>
+> -#include <linux/list.h>
+> -#include <linux/i2c.h>
+> -#include <linux/rtc.h>
+>  #include <linux/module.h>
+>
+>  #include <linux/iio/iio.h>
+> diff --git a/drivers/staging/iio/addac/adt7316.h b/drivers/staging/iio/addac/adt7316.h
+> index 8c2a92ae7157..a1f6324ead59 100644
+> --- a/drivers/staging/iio/addac/adt7316.h
+> +++ b/drivers/staging/iio/addac/adt7316.h
+> @@ -10,6 +10,7 @@
+>
+>  #include <linux/types.h>
+>  #include <linux/pm.h>
 
++ blank line?
+
+> +struct device;
+>
+>  #define ADT7316_REG_MAX_ADDR           0x3F
+>
+> --
+> 2.31.1
+>
+
+
+-- 
+With Best Regards,
+Andy Shevchenko

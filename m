@@ -2,32 +2,33 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2A5E3A4841
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Jun 2021 20:00:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AB363A4844
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Jun 2021 20:03:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229572AbhFKSCj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Jun 2021 14:02:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41668 "EHLO mail.kernel.org"
+        id S230393AbhFKSFM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Jun 2021 14:05:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42398 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229965AbhFKSCh (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 11 Jun 2021 14:02:37 -0400
+        id S230350AbhFKSFH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 11 Jun 2021 14:05:07 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1438F61357;
-        Fri, 11 Jun 2021 18:00:36 +0000 (UTC)
-Date:   Fri, 11 Jun 2021 19:02:31 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 7847261411;
+        Fri, 11 Jun 2021 18:03:08 +0000 (UTC)
+Date:   Fri, 11 Jun 2021 19:05:03 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Oleksij Rempel <o.rempel@pengutronix.de>
-Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
-        linux@rempel-privat.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel@pengutronix.de
-Subject: Re: [PATCH] counter: interrupt-cnt: Add const qualifier for
- actions_list array
-Message-ID: <20210611190231.57adf09f@jic23-huawei>
-In-Reply-To: <20210610032347.wb4wcwr37p7qn7j7@pengutronix.de>
-References: <20210610013642.149961-1-vilhelm.gray@gmail.com>
-        <20210610032347.wb4wcwr37p7qn7j7@pengutronix.de>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Chris Lesiak <chris.lesiak@licor.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] iio: humidity: hdc100x: Add margin to the conversion
+ time
+Message-ID: <20210611190503.0cdda724@jic23-huawei>
+In-Reply-To: <CAHp75VdBHdqFDqnZc2Ow2Muc_fHk_PZuSqEXMJcxJE6_YEL8gw@mail.gmail.com>
+References: <20210610104136.00002e4e@Huawei.com>
+        <20210610134432.1752842-1-chris.lesiak@licor.com>
+        <CAHp75VdBHdqFDqnZc2Ow2Muc_fHk_PZuSqEXMJcxJE6_YEL8gw@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -36,63 +37,69 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 10 Jun 2021 05:23:47 +0200
-Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+On Thu, 10 Jun 2021 16:55:20 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> Hi William,
+> On Thu, Jun 10, 2021 at 4:47 PM Chris Lesiak <chris.lesiak@licor.com> wrote:
+> >
+> > The datasheets have the following note for the conversion time
+> > specification: "This parameter is specified by design and/or
+> > characterization and it is not tested in production."
+> >
+> > Parts have been seen that require more time to do 14-bit conversions for
+> > the relative humidity channel.  The result is ENXIO due to the address
+> > phase of a transfer not getting an ACK.
+> >
+> > Delay an additional 1 ms per conversion to allow for additional margin.  
 > 
-> On Thu, Jun 10, 2021 at 10:36:42AM +0900, William Breathitt Gray wrote:
-> > The struct counter_synapse actions_list member expects a const enum
-> > counter_synapse_action array. This patch renames
-> > interrupt_cnt_synapse_actionss to interrupt_cnt_synapse_actions and adds
-> > a const qualifier to match actions_list.
-> > 
-> > Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-> > Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>  
+> This is crucial and not so visible in the code, see below.
 > 
-> Reviewed-by: <o.rempel@pengutronix.de>
-Applied to the togreg branch of iio.git and pushed out as testing for 0-day
-to see if it can find anything we missed.
+> > Fixes: 4839367d99e3 ("iio: humidity: add HDC100x support")
+> > Signed-off-by: Chris Lesiak <chris.lesiak@licor.com>
+Small process note.
 
-Thanks,
+For IIO at least, please don't send new versions of patches as replies
+to earlier series.  Whilst it doesn't matter that much here, for large
+series it can get very confusing and runs the risk of be picking up
+the wrong patch versions.
+
+A new thread is much easier to deal with.
 
 Jonathan
 
-> 
-> thank you!
-> 
 > > ---
-> >  drivers/counter/interrupt-cnt.c | 6 +++---
-> >  1 file changed, 3 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/counter/interrupt-cnt.c b/drivers/counter/interrupt-cnt.c
-> > index 827d785e19b4..5df7cd13d4c7 100644
-> > --- a/drivers/counter/interrupt-cnt.c
-> > +++ b/drivers/counter/interrupt-cnt.c
-> > @@ -77,7 +77,7 @@ static const struct counter_count_ext interrupt_cnt_ext[] = {
-> >  	},
-> >  };
-> >  
-> > -static enum counter_synapse_action interrupt_cnt_synapse_actionss[] = {
-> > +static const enum counter_synapse_action interrupt_cnt_synapse_actions[] = {
-> >  	COUNTER_SYNAPSE_ACTION_RISING_EDGE,
-> >  };
-> >  
-> > @@ -194,8 +194,8 @@ static int interrupt_cnt_probe(struct platform_device *pdev)
-> >  	priv->counter.signals = &priv->signals;
-> >  	priv->counter.num_signals = 1;
-> >  
-> > -	priv->synapses.actions_list = interrupt_cnt_synapse_actionss;
-> > -	priv->synapses.num_actions = ARRAY_SIZE(interrupt_cnt_synapse_actionss);
-> > +	priv->synapses.actions_list = interrupt_cnt_synapse_actions;
-> > +	priv->synapses.num_actions = ARRAY_SIZE(interrupt_cnt_synapse_actions);
-> >  	priv->synapses.signal = &priv->signals;
-> >  
-> >  	priv->cnts.name = "Channel 0 Count";
-> > -- 
-> > 2.32.0
-> > 
-> > 
-> >   
+> >  drivers/iio/humidity/hdc100x.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
+> > index 2a957f19048e..91790aa8beeb 100644
+> > --- a/drivers/iio/humidity/hdc100x.c
+> > +++ b/drivers/iio/humidity/hdc100x.c
+> > @@ -166,7 +166,7 @@ static int hdc100x_get_measurement(struct hdc100x_data *data,
+> >                                    struct iio_chan_spec const *chan)
+> >  {
+> >         struct i2c_client *client = data->client;
+> > -       int delay = data->adc_int_us[chan->address];
+> > +       int delay = data->adc_int_us[chan->address] + 1000;  
+> 
+> + 1 * USEC_PER_MSEC;
+> 
+> >         int ret;
+> >         __be16 val;
+> >
+> > @@ -316,7 +316,7 @@ static irqreturn_t hdc100x_trigger_handler(int irq, void *p)
+> >         struct iio_dev *indio_dev = pf->indio_dev;
+> >         struct hdc100x_data *data = iio_priv(indio_dev);
+> >         struct i2c_client *client = data->client;
+> > -       int delay = data->adc_int_us[0] + data->adc_int_us[1];
+> > +       int delay = data->adc_int_us[0] + data->adc_int_us[1] + 2000;  
+> 
+> + 2 * USEC_PER_MSEC
+> 
+> >         int ret;
+> >
+> >         /* dual read starts at temp register */  
+> 
+> Above might require to add #include <vdso/time64.h>.
 > 
 

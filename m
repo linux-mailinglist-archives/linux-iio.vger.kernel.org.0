@@ -2,119 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50A1D3A4A2F
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Jun 2021 22:38:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AAA03A4AC3
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Jun 2021 23:48:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229951AbhFKUkv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Jun 2021 16:40:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51692 "EHLO
+        id S230035AbhFKVuz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Jun 2021 17:50:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229540AbhFKUkv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Jun 2021 16:40:51 -0400
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC557C061574;
-        Fri, 11 Jun 2021 13:38:42 -0700 (PDT)
-Received: by mail-pj1-x1035.google.com with SMTP id h16so6333780pjv.2;
-        Fri, 11 Jun 2021 13:38:42 -0700 (PDT)
+        with ESMTP id S229777AbhFKVuy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Jun 2021 17:50:54 -0400
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB713C061574
+        for <linux-iio@vger.kernel.org>; Fri, 11 Jun 2021 14:48:55 -0700 (PDT)
+Received: by mail-lj1-x22d.google.com with SMTP id r14so11453747ljd.10
+        for <linux-iio@vger.kernel.org>; Fri, 11 Jun 2021 14:48:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=9KuDiR0/afvizS4hj5Loo8cboTWM7MdUw0YpF4dlIWg=;
-        b=e4OQoZbapGBsd95gfs4ae/RGRxzuezrU1OD20VjNZ+lKu4GxF+x99x2e53E8snHBK6
-         ig/LOzry5seJ8nfXzMZIMt7/EQjtmm3CWfQgDbkg72fk5BZrzApvbOnZpgPGTB1NpIfv
-         uXVHas6DXCpm9VXaajj7YO/CP70/8LkJRmN9HOSmQWN8m4j0RAa19Zz8Sndpke/Rh6n9
-         uf7z8L7fC2NgMlioRgSfs/78sHpJBjUqgBajwR1JDFXP1bfDbSl5qGEMbtT4cLBq2Lkt
-         90Tqa6Oadb2agJvehPwbyGu1EmgwOZ4s5gnAAUQrczA0CsZq5A7ku/Rt7FHSP3M1Dfmy
-         Zsqg==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=PD9oxdAhW8JoQLtMzcwKRmdqmEvyn8PD2SQ4GYyH4BY=;
+        b=fE1X5cLYpLTQw873Lx4yLJyTgyk8VTt6ZPMyp2fyQMwWsYhjR2Pk5xm9eY6L52iSr5
+         z0FYaJNZhDhD3ctDO3mEv/BR24b0hdNaUVnkEiUBeNLw6qt7eD+Uw9eXvIAcsbasyupO
+         xTA1lwZawGf3ANVm0qbiYZuqt3M+X65rzp5XQ8Up/L9VZi10GBNcE6xhDUFoZ12uskjf
+         olr+M85cJkrY+uNoo6fJgCqpGY+/MES0OYRfYod1XQ04easIIoiiFYvnO7fa7z70JrdN
+         1omYM95kV6YwWBHxraMhOTCdly7BkYnxBkPhEpkY6KmPhP6pQromKb+ZGijo+HAxF1GF
+         YTgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=9KuDiR0/afvizS4hj5Loo8cboTWM7MdUw0YpF4dlIWg=;
-        b=jtHrJa8UB/T3n9VpZ43erZ8hXujYQJeFdTaTs6g28L8IRsY4iH+FbgfYFc4XfpdwFP
-         skbaEnlTt232drwA5F7IUr1wLMLsiM1V2mLOHBp8oYhIPmfBfnPTc+2qXt4ym13yTGSR
-         BXMsd8+8GPzsKumgsWLh0BVLXYdnEvzk3Qt0+E6l9gvWh57ocIqfYRl8A5Iv0X4ch9mO
-         2HfNaOLEv08UcJ8MzqbTKhnmu7ALAVJX7doxcVpAkmjxBTQftwjA+05CXrGIWTqlc/Au
-         2RiG7ASfmgHQbBYkT6C1b5RU9AqOcTUABZK9aNxwgB3ripB0vq1w4J2rH/E8U++f1J1c
-         X8qw==
-X-Gm-Message-State: AOAM531lT1dMeUxvWo/4y8e8sRqNm75HLxcwDESxP8/4KNI4dpoSt5U1
-        1GeH+MUUyD1PmZmFNUCIUCs=
-X-Google-Smtp-Source: ABdhPJxLceusjx4BsvK+pZ5JF8d1cmFw4KqrcEPZXtIyorMmdM28WNXXW5VjmcskR1gznU91dg5x+w==
-X-Received: by 2002:a17:90a:8804:: with SMTP id s4mr6227626pjn.200.1623443922151;
-        Fri, 11 Jun 2021 13:38:42 -0700 (PDT)
-Received: from localhost (g151.115-65-219.ppp.wakwak.ne.jp. [115.65.219.151])
-        by smtp.gmail.com with ESMTPSA id i128sm5690754pfc.142.2021.06.11.13.38.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Jun 2021 13:38:41 -0700 (PDT)
-Date:   Sat, 12 Jun 2021 05:38:39 +0900
-From:   Stafford Horne <shorne@gmail.com>
-To:     trix@redhat.com
-Cc:     robh+dt@kernel.org, tsbogend@alpha.franken.de, jic23@kernel.org,
-        lars@metafoo.de, tomas.winkler@intel.com, arnd@arndb.de,
-        gregkh@linuxfoundation.org, nbd@nbd.name,
-        lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
-        kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        matthias.bgg@gmail.com, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@foss.st.com, apw@canonical.com, joe@perches.com,
-        dwaipayanray1@gmail.com, lukas.bulwahn@gmail.com,
-        chenhuacai@kernel.org, jiaxun.yang@flygoat.com,
-        zhangqing@loongson.cn, jbhayana@google.com, sean.wang@mediatek.com,
-        shayne.chen@mediatek.com, Soul.Huang@mediatek.com,
-        gsomlo@gmail.com, pczarnecki@internships.antmicro.com,
-        mholenko@antmicro.com, davidgow@google.com,
-        devicetree@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH 3/7] drivers/soc/litex: fix spelling of SPDX tag
-Message-ID: <YMPJPO9S9wiM5B23@antec>
-References: <20210610214438.3161140-1-trix@redhat.com>
- <20210610214438.3161140-5-trix@redhat.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=PD9oxdAhW8JoQLtMzcwKRmdqmEvyn8PD2SQ4GYyH4BY=;
+        b=ZJRj2u0xvMQg1cK9Ub4KOsGUSuoPxUKFREAru4465RVA0VL1BIE6c8LpcAvB+e/NEV
+         CBN+6mZMwhnPzMB7x+CPuxknF6L30z/xiywJUlJmVIWBDGlAKfBcvKhPOUzW4F8olHbs
+         uqaj4KzptgnYO7Ph8m+6O99PW2CCwV0v96rZDuqjBdD65uecIuE2WKuPbdqdjnGj1SFO
+         lM9cQWVITpKio+/FmiaiKubyttD6Od4uh8Mpe6g1yYe5df06Hblz/r5N8LFTY4RXQIkc
+         c9EnPY7tzEL8Iw2fskzGhHZbP41kb+OpC2y2Vb3j6XvUClthJzWQguK4QCXIbbAOvaCd
+         IBHg==
+X-Gm-Message-State: AOAM530naMQezGfRFg1V6XaaYLAkcwmzVf8po7TCnScXRF1AqcjEyN4Z
+        UVqFRx7k0pTH9RJOFgFjNQ+VZLfwzjAUfij1CKPOn9Hkk/Y=
+X-Google-Smtp-Source: ABdhPJycpkLvy3W1ZemM69qJagLw176NAZD3e7ctON9FCX9x54QXXo735KAGJNUqs5PWirlXSxQQQ7u/rtvIOjP2FGg=
+X-Received: by 2002:a05:651c:1057:: with SMTP id x23mr4391073ljm.467.1623448134076;
+ Fri, 11 Jun 2021 14:48:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210610214438.3161140-5-trix@redhat.com>
+References: <20210611171355.202903-1-jic23@kernel.org> <20210611171355.202903-3-jic23@kernel.org>
+In-Reply-To: <20210611171355.202903-3-jic23@kernel.org>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Fri, 11 Jun 2021 23:48:42 +0200
+Message-ID: <CACRpkdaBc1oJ3AeBwgDEQ=oTNHUw2itaSVm-bi+yNAV2j05=4w@mail.gmail.com>
+Subject: Re: [PATCH 02/12] iio:accel:bma180: Use generic device properties.
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Jonathan Bakker <xc-racer2@live.ca>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Jun 10, 2021 at 02:44:34PM -0700, trix@redhat.com wrote:
-> From: Tom Rix <trix@redhat.com>
-> 
-> checkpatch looks for SPDX-License-Identifier.
-> So change the '_' to '-'
-> 
-> Signed-off-by: Tom Rix <trix@redhat.com>
+On Fri, Jun 11, 2021 at 7:12 PM Jonathan Cameron <jic23@kernel.org> wrote:
 
-Acked-by: Stafford Horne <shorne@gmail.com>
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
+> Whilst doing header cleanup I noticed this driver makes very superficial
+> use of of_* interfaces.  Hence move to the generic firmware forms.
+>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Jonathan Bakker <xc-racer2@live.ca>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
 
-> ---
->  drivers/soc/litex/Kconfig  | 2 +-
->  drivers/soc/litex/Makefile | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/soc/litex/Kconfig b/drivers/soc/litex/Kconfig
-> index e7011d665b151..c03b1f816cc08 100644
-> --- a/drivers/soc/litex/Kconfig
-> +++ b/drivers/soc/litex/Kconfig
-> @@ -1,4 +1,4 @@
-> -# SPDX-License_Identifier: GPL-2.0
-> +# SPDX-License-Identifier: GPL-2.0
->  
->  menu "Enable LiteX SoC Builder specific drivers"
->  
-> diff --git a/drivers/soc/litex/Makefile b/drivers/soc/litex/Makefile
-> index 98ff7325b1c07..aeae1f4165a70 100644
-> --- a/drivers/soc/litex/Makefile
-> +++ b/drivers/soc/litex/Makefile
-> @@ -1,3 +1,3 @@
-> -# SPDX-License_Identifier: GPL-2.0
-> +# SPDX-License-Identifier: GPL-2.0
->  
->  obj-$(CONFIG_LITEX_SOC_CONTROLLER)	+= litex_soc_ctrl.o
-> -- 
-> 2.26.3
-> 
+Looks correct!
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+
+Yours,
+Linus Walleij

@@ -2,155 +2,167 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF2483A496A
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Jun 2021 21:21:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F4003A497B
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Jun 2021 21:37:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231272AbhFKTXs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Jun 2021 15:23:48 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.52]:14322 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231254AbhFKTXs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Jun 2021 15:23:48 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1623439305; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=C14f4ImV4YIKUwwLO8flA0EpUUJxp4JFVSxX3+y2oBfeUgJhj3li4GR5ngVZHptAdh
-    G4QjxcCNGyLeSByTCZndIi/WiLItgnnZ3XCGbrQD2ophFYUEzwuKnWgvR3jtwH3MQqOG
-    oLWxte4QMNbPokJxAsZe4Bb+p55weKbU13VDRh5CpQxlI9CA0fgwe362HiHHBw4/AYJQ
-    kHFaeLYW2l0qVC8r+bycKgOOa8nXuMmJtvPTA6WW5uHdbzCvLfyPzL2HEf2UMY24st4u
-    FcWTBEwhMTfcqlwzTwsoY4pKt5QttjAJbhuEexUILTrVXb2CuSdseqxFrIv/PuZOwVe7
-    +ZAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1623439304;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=XsT2mc5sUNn8Z5nl+P3PORvjty7kJiP/+u9qOCuo8Uw=;
-    b=huXIG/DCfLvcgW5spaBRHWaS8a+IXdXI1KwKPW6/1UsK91AplTfGpm/J0+at9KvmPG
-    mccXd+T6hcU1w4jeL2xV+/MZCyOC5mmb5E1AXv2kO8+lkW89XuTuFY8Cy56JG1vVITUA
-    WcPVOYgF+woX+f3tBCJV3Vd9lwtODO1Iv81coj0VTYbT+XTEwhwSXxR2lcuLZvhC6kkG
-    BvEgCDUV4nYpADU+rHy/aJWC7Wso1XCLZPNgXMroEokoTgCGpoc9vhOb+1JrEzZmDuHc
-    wr1/p7ryNp8LEOchmumuyS7Vvcpvzo7mTEI8CvH7Enzc5hqrIova1Fz3xClwRA7bJpZs
-    0DFw==
-ARC-Authentication-Results: i=1; strato.com;
-    dkim=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1623439304;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=XsT2mc5sUNn8Z5nl+P3PORvjty7kJiP/+u9qOCuo8Uw=;
-    b=fWRrB8pipPj+4rySyyivK5vx9/lLeh785L5jqbSkriImPhYaKefw9BYyCVObrOSu4d
-    cOCihF5yMDhdsoYrBamGotDZbC79xYcijKEA5BtxIh5Zl78qkCpPWXQnKenZk3giArLE
-    k8l8eH4W0kuM7QLRcZVXOKC7Ydk+ZDuCYrP3s2iZhpoMVFcIR6bQGxGT45+Tey8VkdHL
-    2VMg2Zf2lvlAqyZ0oLDLk827QeeiZnsY9bODax81FCNP+f7AwWsQ3x2rnglT3hbPxA0y
-    X2+5X+VZSiwFAicS6IArjzb3YhJ2BI2JpfqIZs7yDI14zO7hLXlAG2Y7drfC3rASeo06
-    uwkA==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u26zEodhPgRDZ8nwIc3GBg=="
-X-RZG-CLASS-ID: mo00
-Received: from gerhold.net
-    by smtp.strato.de (RZmta 47.27.2 DYNA|AUTH)
-    with ESMTPSA id y01375x5BJLi2vZ
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Fri, 11 Jun 2021 21:21:44 +0200 (CEST)
-Date:   Fri, 11 Jun 2021 21:21:39 +0200
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Peter Meerwald <pmeerw@pmeerw.net>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, Bastien Nocera <hadess@hadess.net>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v3 08/10] dt-bindings: iio: bma255: Allow multiple
- interrupts
-Message-ID: <YMO3w92OEuLJTWcl@gerhold.net>
-References: <20210611080903.14384-1-stephan@gerhold.net>
- <20210611080903.14384-9-stephan@gerhold.net>
- <20210611185941.3487efc6@jic23-huawei>
- <YMOphuXSoODIVX06@gerhold.net>
- <20210611192639.587838ea@jic23-huawei>
+        id S229777AbhFKTjY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Jun 2021 15:39:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38126 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229633AbhFKTjY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Jun 2021 15:39:24 -0400
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 587C5C061574
+        for <linux-iio@vger.kernel.org>; Fri, 11 Jun 2021 12:37:10 -0700 (PDT)
+Received: by mail-pl1-x62a.google.com with SMTP id 69so3336652plc.5
+        for <linux-iio@vger.kernel.org>; Fri, 11 Jun 2021 12:37:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=9ubhhqaZh5PyOIZ1mVEqUbjrrypqVHIa7lr604MY/XA=;
+        b=IlUmf/57bEDs3ALVORmkV4aqYnVxAGCELMuSL4QLqmaM+K3wH9LUE16OgwkegCuHIe
+         yWcrw/fEEnAFa6o9+Z2PMgDExfDsjBjULM+duCavFOnytIrHuMEL4bqysw0RJu9lQNaf
+         ufRJZEeqMfZFyBWBDVBiDQb4T5PePve4JnkxzRB6bRIRyJ6DXG6OCTJ9A84CI7wG4u+N
+         dv2YFMmHAvFuFeBdfFf93iZhnTeFunJDBPRJsMlNvB6W2tzRLPUgz0TCatFo7S26XaLz
+         4UdIhuiIQ3KGz9IYR57rEMnzKE00jRrTXlZWsat/eUwGnJZAMIV8NWmH2qH9fl/jMO9X
+         Yptw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=9ubhhqaZh5PyOIZ1mVEqUbjrrypqVHIa7lr604MY/XA=;
+        b=bGWMmHmytJbXVkNB6Q+Qy0W79gMpHxnMRZlBtbmGuu/85KYEQFTJvu79LyetnSbkgw
+         LYdvXkjocdn6Qebzf8ajPXe45YxMyu7FZBLdL8qFqh9oPTVCb6E3OjUl5+Mqxw8wvKzE
+         5HhHkVifsidlvOAaiZbUR7pcyjBxoWb5qo8mV/o79wdWD2SPUWVDBo134jI+JPH7vyoh
+         GEvwkGJvtnRZr0h+TjB7M4paAsqRFq89OgbhfdaWhsGbvhy82kdpBlMEpBVlguzy6qhh
+         N1J/apw0gdTF1vC/+U2W9CUsESr2bQXJ4LP8aAeJq3m7y1TgCjWG6BreCTdj53geFFsk
+         mI2A==
+X-Gm-Message-State: AOAM532SCYDj1zoDct2VMhVpznEDl9axmyPH3cgdXPxgpgn9F44G2lXh
+        piH0gk/chjkuIXdguydf6mgTvv2OAfRP4PISCV4=
+X-Google-Smtp-Source: ABdhPJwAul8dbI2bPJ3dykLSAQZZiDKLdWZ3BT6JIjoPRq9PKgo2EyyKkBPDi7PntM1URuV0+uPwBmQoRirQI5OzXRc=
+X-Received: by 2002:a17:90a:80c5:: with SMTP id k5mr10735051pjw.129.1623440228315;
+ Fri, 11 Jun 2021 12:37:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210611192639.587838ea@jic23-huawei>
+References: <20210611171355.202903-1-jic23@kernel.org> <CAHp75VdXBQ6FryYrizD=Aw1PPWpLw=2wE-z3vyvwT1A7Ks-Rsw@mail.gmail.com>
+ <20210611192303.755392d1@jic23-huawei> <CAHp75Vf4DkjGPyneWbOqY-8SC=iSn2V1C3-Vm-batF8wCq=eCw@mail.gmail.com>
+ <20210611201903.751cdaf0@jic23-huawei>
+In-Reply-To: <20210611201903.751cdaf0@jic23-huawei>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 11 Jun 2021 22:36:52 +0300
+Message-ID: <CAHp75Vfs0GdijtzU=Akw6Am1Cp2fO1=46kt0awBOWVeCAAK=nA@mail.gmail.com>
+Subject: Re: [PATCH 00/12] iio:accel: Header Cleanups.
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Aleksei Mamlin <mamlinav@gmail.com>,
+        Dan Robertson <dan@dlrobertson.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Harinath Nampally <harinath922@gmail.com>,
+        Jelle van der Waa <jelle@vdwaa.nl>,
+        Jonathan Bakker <xc-racer2@live.ca>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        Sean Nyekjaer <sean@geanix.com>,
+        Tomas Melin <tomas.melin@vaisala.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jun 11, 2021 at 07:26:39PM +0100, Jonathan Cameron wrote:
-> On Fri, 11 Jun 2021 20:21:05 +0200
-> Stephan Gerhold <stephan@gerhold.net> wrote:
-> 
-> > On Fri, Jun 11, 2021 at 06:59:41PM +0100, Jonathan Cameron wrote:
-> > > On Fri, 11 Jun 2021 10:09:01 +0200
-> > > Stephan Gerhold <stephan@gerhold.net> wrote:
-> > >   
-> > > > BMA253 has two interrupt pins (INT1 and INT2) that can be configured
-> > > > independently. At the moment the bmc150-accel driver does not make use
-> > > > of them but it might be able to in the future, so it's useful to already
-> > > > specify all available interrupts in the device tree.
-> > > > 
-> > > > Set maxItems: 2 for interrupts to allow specifying a second one.
-> > > > This is necessary as preparation to move the bosch,bma254 compatible
-> > > > from bosch,bma180.yaml to bosch,bma255.yaml since bma180 allows two
-> > > > interrupts, but BMA254 is better supported by the bmc150-accel driver.
-> > > > 
-> > > > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> > > > Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-> > > > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > > > Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
-> > > > ---
-> > > >  .../devicetree/bindings/iio/accel/bosch,bma255.yaml        | 7 ++++++-
-> > > >  1 file changed, 6 insertions(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/Documentation/devicetree/bindings/iio/accel/bosch,bma255.yaml b/Documentation/devicetree/bindings/iio/accel/bosch,bma255.yaml
-> > > > index 8afb0fe8ef5c..65b299a5619b 100644
-> > > > --- a/Documentation/devicetree/bindings/iio/accel/bosch,bma255.yaml
-> > > > +++ b/Documentation/devicetree/bindings/iio/accel/bosch,bma255.yaml
-> > > > @@ -32,7 +32,12 @@ properties:
-> > > >    vddio-supply: true
-> > > >  
-> > > >    interrupts:
-> > > > -    maxItems: 1
-> > > > +    minItems: 1
-> > > > +    maxItems: 2
-> > > > +    description: |
-> > > > +      The first interrupt listed must be the one connected to the INT1 pin,
-> > > > +      the second (optional) interrupt listed must be the one connected to the
-> > > > +      INT2 pin (if available).  
-> > > 
-> > > As this is a direct copy from the bma180 binding and we are moving devices
-> > > from one to the other, we need to support this as the default.
-> > > Longer term, from the bma253 datasheet, it look looks the two pins are equally
-> > > capable so if we get a board where only the int2 pin is connected then we will
-> > > need to use interrupt-names to distinguish the two (as we do in other drivers).
-> > >   
-> > 
-> > This kind of sounds like a strange board layout in general. But what's
-> > worse is that for some reason even Bosch thought this is a "good" idea
-> > so they released the BMC156 [1]. It works just like the BMC150 but has
-> > only a single interrupt pin. One would expect that would be INT1,
-> > but nope, it's INT2 of course. :-)
-> > 
-> > I have a device with BMC156 where this is the case, so I guess I need to
-> > make bmc150-accel use INT2 somehow (without specifying INT1). It might
-> > be easiest if we treat this the same way as the case that you mentioned,
-> > i.e. everyone with BMC156 would specify the interrupt-names explicitly
-> > to have a consistent meaning of the device tree.
-> 
-> That will really confuse people who think they just have one interrupt so
-> why do they need the name!  You'll have to special case that delight in
-> the driver.
-> 
+On Fri, Jun 11, 2021 at 10:17 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> On Fri, 11 Jun 2021 21:35:06 +0300
+> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> > On Fri, Jun 11, 2021 at 9:21 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> > > On Fri, 11 Jun 2021 20:48:08 +0300
+> > > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-Okay, good that we discussed this before then. :)
-I was unsure if it would be better to special case it for BMC156 *or*
-add support for the interrupt-names, but perhaps I'm just going to do
-*both* then. (Special case it for BMC156, look at interrupt-names for
-all others.)
+...
 
-Thanks!
-Stephan
+> > But I understand you and not insisting that you have to go with it. My
+> > point is that...
+> >
+> > > I 'could' just drop the kernel.h where added on the basis we were clearly
+> > > getting it indirectly. I've not included a whole bunch of other suggestions
+> > > on that basis.
+> >
+> > (Which is probably not a good idea, because explicit in this case is
+> > better than implicit, i.e. kernel.h is not guaranteed to be included
+> > by other headers and I have long standing work to actually make sure
+> > that most of the headers won't require kernel.h!)
+>
+> I think I was unclear, what I was proposing was not to touch includes of
+> kernel.h at all. So not make anything worse, but also not make it any better.
+> Where added in this set, kernel.h was for things directly in kernel.h,
+> not the files it includes.
+
+Ah, that's good! That was my main point of worry.
+
+> > > Note I didn't include a whole bunch of other headers on the basis
+> > > they were a bit more esoteric.
+> > >
+> > > To give an idea of how noisy this is here's the output another file...
+> >
+> > ...the tool simply doesn't know anything about kernel and header
+> > guarantees. That's why it tries play dumb.
+> >
+> > If you would like to continue with this, please drop the removal of
+> > the headers that are not guaranteed to be included by others
+> > (excluding kernel.h from the equation).
+>
+> This is where the confusion lies... I haven't done that (subject to bugs
+> of course)
+>
+> > Otherwise it will become
+> > someone else's problem to _reinstantiate_ all those headers, and since
+> > I already had a headache with panic.h, I won't repeat it. Still no tag
+> > from me, although no explicit NAK (actually opposite, no explicit ACK
+> > because of the dependencies), you just really need to spend more time
+> > on this.
+>
+> I've not removed any headers on the basis they were guaranteed to be
+> included by others. The tool assumes the opposite model - everything
+> should be explicitly included directly in the file where it's used.
+> For some files it lists 50+ headers.
+> These patches are very conservative on that front.
+>
+> What I haven't done is included everything under the sun that wasn't
+> already included.  e.g. I've not included
+> linux/device/driver.h on the basis it is definitely included by
+> linux/device.h and that seems very unlikely to change.
+>
+> There are some corner cases that are more interesting - such as whether
+> we can rely on interrupt.h always including irqreturn.h.  Plenty of IIO
+> drivers don't call anything in interrupt.h because of various wrappers but
+> do use the return values. So in this case we could switch many of them
+> to the more specific header, but I haven't done that yet.
+
+I guess you may consider a guarantee there.
+
+Actually what kernel header mess misses right now is the list of those
+guarantees.
+
+But you see there cases like
+
+using dev_err() and struct device * in the same C file, what do you include?
+
+Temptation is to go with device.h, but I would go with
+
+#include <linux/dev_printk.h>
+
+struct device;
+
+Not sure if that tool can handle this kind of use.
+
+> So, in short, the headers for which includes are removed in this series are
+> not used at all in the files in question (unless I messed up of course!).
+
+Cool! So, let bots and other people have more time on eyeballing this.
+Will see how it goes.
+
+-- 
+With Best Regards,
+Andy Shevchenko

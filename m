@@ -2,57 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5503F3A3DC4
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Jun 2021 10:11:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40AC23A3DC9
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Jun 2021 10:11:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230321AbhFKINw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Jun 2021 04:13:52 -0400
-Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.80]:34236 "EHLO
+        id S230370AbhFKINx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Jun 2021 04:13:53 -0400
+Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.82]:14489 "EHLO
         mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230288AbhFKINw (ORCPT
+        with ESMTP id S229480AbhFKINw (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Jun 2021 04:13:52 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1623399109; cv=none;
+ARC-Seal: i=1; a=rsa-sha256; t=1623399110; cv=none;
     d=strato.com; s=strato-dkim-0002;
-    b=hrrA/pwHqupDXYbKHPwmHFE515HDRNUQLQGiLiun8y2aF/kpCtw01qKb6xixgRa5t8
-    dT3wdWiU+29UPSWf/ODZtVSWF3DqVQXFzeg1jQWrpiuuW8bYhEZHI42ymi6yyjD7SHXG
-    AHfc62Eez4f/7vojLa/tI2ijfS/0jSEksn3Fk/1Lqo/ZNkeQemis4lCNx+qF1pUSod7j
-    LQ6fQsufUg283aQU2QRMMGKTiBdWsTAKcK++WeXGl2VrdXoUlFLcb1PiTsAUMUksxcCx
-    OgE2jy6Pkbzi7zJQM7+4pkyYE769p/JesgJJ/WQ9uknIsiKcdgFngaz5moXd7HWc96ra
-    EPIg==
+    b=rJa0CXJtOpSU3lL0pYynb+ui++EASJ1G6AmKy0260etToyFvutnyoZaZF4zUS7uBXh
+    J9gcTevKK1Sq6Azox6FB3TwhooJzc0zdsKp7l2OgHWWEZ164timtd/QSjW55nV19pfOd
+    MlmoQg5KrjxroDv6EiLOairmLkqtmbHA0j5kwC0a16+pMy1T6GEvCJrIT6HQk4oC8u/U
+    YvB40/AExeaNAznJA8nSZ9WQ3CPn74oL+TxrYwfyIUyJ0AEevVVCqpmTciQsIlspVLca
+    Dytk4kbaTzwHR+nCm/LCWwJl00YSuwGQmkCLoUFfKqhJpEdTVE52mQKiFn43kZTzSruU
+    NntQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1623399109;
     s=strato-dkim-0002; d=strato.com;
     h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
     From:Subject:Sender;
-    bh=N255HoRwbQK6GgNYri2591dhE/OLkqcb75P2f4BWQ3w=;
-    b=BRL+zvS5YLo00apseEtDmXzWRZFmecKTjp2OjBtdFfa0CMNHA8rCxVu8bT+0aXGunp
-    vSFZ+kqx+9viH8Tktq8f1GTh11cbVOzq9a7GvIP4pzVyzMxOzMtvcqJ4JqZmbAPGnOJu
-    xr8LIyf/aOmwZEr81+8cVy6X354hE/987dJ7E1ctD8k/hvRUNhqkko2iodIt8wVF4XIP
-    fD2/UBwR5LySj2VHykF+kBo8s0ep3lOYejenjtvqxgCNWmF+qynPnXIw/m3/7avOBBSV
-    yHI/MS2mD8ATezph+I/R0kyG0w687pYZzGn0Bgd0xxvOtC7ZQUkocTz0BpB23ZFv9MJ8
-    22Ow==
+    bh=XVO1Fa7dnQ7VmFIdDutm31MOJ1IonHZYQtHo+zuFpGo=;
+    b=rKUhzoIaxmJBanuFKZUWjGpvtTbekcInLHmty4aYVv7Vh4UVSLeWJ3J7Qy97iJ25TH
+    vOa5to0AxURw1BohGZM5yMBeTl5pl9HnGRaK4JT2iWANHqYpCbJ8+Xhr2nZMqNOzowtX
+    DxXUH4VSj+ffrGfB1L9wj2SW+RLR0EWIpJHrDA2dbWdfEEVwcZ80cOtefv8peHn2znZI
+    KzviYnZqk2goLdSbL+J0kd6elDJZjP4Vkf8372qct3EshMICwo30y7cCLlawJ91sNn6o
+    YZJGOAx2fjH9q1BjtACYOHfuWdqT8k3iMwRpcBsW1eKq5Jf5kKMLfXyVWY303rL0Zbya
+    qq3w==
 ARC-Authentication-Results: i=1; strato.com;
     dkim=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1623399109;
     s=strato-dkim-0002; d=gerhold.net;
     h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
     From:Subject:Sender;
-    bh=N255HoRwbQK6GgNYri2591dhE/OLkqcb75P2f4BWQ3w=;
-    b=GyhaRSF8ur9VQWtxOKwGRMA85R1qcfABVJpiF3FT+67tJp7vLwFAlNrz1AWMiWwfaZ
-    rrPgpIepAeT3eY1oHYMXACISpoI2HqmuVLczsxNDjUfq3wIoqrMc2xuSmvBhl3IrYtx4
-    WSbQII05nFy3G6jU1TezFvZCc0nRHt1xPrWq1B55NR6ntAgZAuHwKHdB4sWEMbVTdfR+
-    73KZxg4NWYTM6m5e529p8HZ4S34K4FeceCpvwnpm2gt5t8aNHkNSXurqYcGDj5o+70Dm
-    XqPzub124WkalrcrouIr4wIMC9GTG3RA6yS4NWodyi0/dZyTL0aVo1s1mMiPuH2tHeuE
-    gdzA==
+    bh=XVO1Fa7dnQ7VmFIdDutm31MOJ1IonHZYQtHo+zuFpGo=;
+    b=hzaE7+q1J1josNiE/mHK7Cmt6L8/UInr+uIPhqOjo1jEZqi0dprB9M0BX11v9XQ8Yh
+    gpb7/AWMX8qYdZ/xlDTunQk8Ajfuc4DC+Wu74QmXUuvTjkt+KEYA+/NxmMBESXth4SvB
+    L5VaO858V8rlVi0aDlUBxuHGUkWplXKjZbl1RgbozB5XDxPZhogmqayO86AzdvcFgBfo
+    TkrEIFqad8eLbR1yARrjoqEkYHSwRXq3k8mw7vOcXrh/Bq1F559eY8OiOELNvia4odmS
+    92Bc7B9kDMzvIyBYsghBCt3kRiK3wkPLUyhTglpF+cc0mtBHglWmJo8zfYY27GVyhBtV
+    wOQw==
 Authentication-Results: strato.com;
     dkim=none
 X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVORvLd4SsytBXS7IYBkLahKxA6m6PrPw="
 X-RZG-CLASS-ID: mo00
 Received: from droid..
     by smtp.strato.de (RZmta 47.27.2 DYNA|AUTH)
-    with ESMTPSA id y01375x5B8Bm02d
+    with ESMTPSA id y01375x5B8Bn02e
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-    Fri, 11 Jun 2021 10:11:48 +0200 (CEST)
+    Fri, 11 Jun 2021 10:11:49 +0200 (CEST)
 From:   Stephan Gerhold <stephan@gerhold.net>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
@@ -64,9 +64,9 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
         ~postmarketos/upstreaming@lists.sr.ht,
         Stephan Gerhold <stephan@gerhold.net>
-Subject: [PATCH v3 01/10] iio: accel: bmc150: Fix bma222 scale unit
-Date:   Fri, 11 Jun 2021 10:08:54 +0200
-Message-Id: <20210611080903.14384-2-stephan@gerhold.net>
+Subject: [PATCH v3 02/10] iio: accel: bmc150: Clarify combo modules in Kconfig
+Date:   Fri, 11 Jun 2021 10:08:55 +0200
+Message-Id: <20210611080903.14384-3-stephan@gerhold.net>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210611080903.14384-1-stephan@gerhold.net>
 References: <20210611080903.14384-1-stephan@gerhold.net>
@@ -76,45 +76,43 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-According to sysfs-bus-iio documentation the unit for accelerometer
-values after applying scale/offset should be m/s^2, not g, which explains
-why the scale values for the other variants in bmc150-accel do not match
-exactly the values given in the datasheet.
+The Kconfig option currently says that all Bosch accelerometers
+supported by the bmc150-accel driver are combo chips with both
+accelerometer and magnetometer. This is wrong: actually only BMC150
+is such a combo. The BMA* variants only contain an accelerometer
+and the BMI055 actually is a accelerometer + gyroscope combo.
 
-To get the correct values, we need to multiply the BMA222 scale values
-by g = 9.80665 m/s^2.
+Clarify this in the help text and also make the list of supported
+variants complete and sorted for consistency.
 
-Fixes: a1a210bf29a1 ("iio: accel: bmc150-accel: Add support for BMA222")
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 ---
-Added this patch in v2 to avoid conflicts later in case this
-should be backported to a stable kernel.
+New patch in v3 after discussion in
+[PATCH v2 4/9] iio: accel: bmc150: Sort all chip names alphabetically / by chip ID
 ---
- drivers/iio/accel/bmc150-accel-core.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/iio/accel/Kconfig | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
-index a3d08d713362..a80ee0fdabc5 100644
---- a/drivers/iio/accel/bmc150-accel-core.c
-+++ b/drivers/iio/accel/bmc150-accel-core.c
-@@ -1145,11 +1145,12 @@ static const struct bmc150_accel_chip_info bmc150_accel_chip_info_tbl[] = {
- 		/*
- 		 * The datasheet page 17 says:
- 		 * 15.6, 31.3, 62.5 and 125 mg per LSB.
-+		 * IIO unit is m/s^2 so multiply by g = 9.80665 m/s^2.
- 		 */
--		.scale_table = { {156000, BMC150_ACCEL_DEF_RANGE_2G},
--				 {313000, BMC150_ACCEL_DEF_RANGE_4G},
--				 {625000, BMC150_ACCEL_DEF_RANGE_8G},
--				 {1250000, BMC150_ACCEL_DEF_RANGE_16G} },
-+		.scale_table = { {152984, BMC150_ACCEL_DEF_RANGE_2G},
-+				 {306948, BMC150_ACCEL_DEF_RANGE_4G},
-+				 {612916, BMC150_ACCEL_DEF_RANGE_8G},
-+				 {1225831, BMC150_ACCEL_DEF_RANGE_16G} },
- 	},
- 	[bma222e] = {
- 		.name = "BMA222E",
+diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
+index 17f6bdcf1db3..cbca6ab7da88 100644
+--- a/drivers/iio/accel/Kconfig
++++ b/drivers/iio/accel/Kconfig
+@@ -143,9 +143,12 @@ config BMC150_ACCEL
+ 	select BMC150_ACCEL_SPI if SPI
+ 	help
+ 	  Say yes here to build support for the following Bosch accelerometers:
+-	  BMC150, BMI055, BMA250E, BMA222E, BMA255, BMA280.
++	  BMA222, BMA222E, BMA250E, BMA255, BMA280, BMC150, BMI055.
++
++	  Note that some of these are combo modules:
++	    - BMC150: accelerometer and magnetometer
++	    - BMI055: accelerometer and gyroscope
+ 
+-	  This is a combo module with both accelerometer and magnetometer.
+ 	  This driver is only implementing accelerometer part, which has
+ 	  its own address and register map.
+ 
 -- 
 2.32.0
 

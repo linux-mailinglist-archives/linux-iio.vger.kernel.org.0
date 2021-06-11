@@ -2,87 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 915393A4794
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Jun 2021 19:12:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F32BA3A47D1
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Jun 2021 19:21:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231455AbhFKRO0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Jun 2021 13:14:26 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60642 "EHLO mail.kernel.org"
+        id S230440AbhFKRXi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Jun 2021 13:23:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34468 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231477AbhFKROY (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 11 Jun 2021 13:14:24 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6E7DD613E9;
-        Fri, 11 Jun 2021 17:12:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623431545;
-        bh=+Y4ZKYWEP6DpEAC0SgA+8Jzd8tB7DWOTVozyLj61PwI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PEYFkt5laAm3tnF0TSIUdRlJdIr4A1IiHwqnCv9LtkoV6xvVv9BPDldkuaPePT009
-         z+Zjgsu2p6bYr4lPUBKCQQrSlL1F2TvdTPKhikH/d2xpuc4DlfICGePDlFkOQii7mq
-         hB7IsoLc5Mgu61kTKT4+7FP3kWkCBUpNWrnjb7zlNyoAkCPLral71LMlUSB4wKqVrq
-         eH25QZ8HNvJsAosD/Tg0RHUP1dHhnGrigslCRaxzCaKhkyvykKIk8bygCrLEU15E76
-         d1npzhGBBKA527pT7nlrOmlDAC5DxDLNNFZ5Rzf4P96q6DbuHJBWpbTcCh/WEDVsUZ
-         cHbTBrCMyOytA==
+        id S229540AbhFKRXi (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 11 Jun 2021 13:23:38 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A6BF061040;
+        Fri, 11 Jun 2021 17:21:39 +0000 (UTC)
+Date:   Fri, 11 Jun 2021 18:23:34 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 12/12] iio:accel:sensortek drivers: Add some includes
-Date:   Fri, 11 Jun 2021 18:13:54 +0100
-Message-Id: <20210611171355.202903-13-jic23@kernel.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210611171355.202903-1-jic23@kernel.org>
-References: <20210611171355.202903-1-jic23@kernel.org>
+To:     Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org,
+        William Breathitt Gray <vilhelm.gray@gmail.com>
+Subject: Re: [PATCH 1/2] counter: intel-qep: Mark PM callbacks with
+ __maybe_unused
+Message-ID: <20210611182334.61133958@jic23-huawei>
+In-Reply-To: <20210611115558.796338-1-jarkko.nikula@linux.intel.com>
+References: <20210611115558.796338-1-jarkko.nikula@linux.intel.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Fri, 11 Jun 2021 14:55:57 +0300
+Jarkko Nikula <jarkko.nikula@linux.intel.com> wrote:
 
-Based on consideration of the output of the include-what-you-use tool.
-Include a few more headers for things directly used in these files.
-Note that there are no hard rules for when to include a header directly
-vs rely on it coming in via another include.  This is an attempt
-to improve consistency on this decision in IIO.
+> Remove CONFIG_PM ifdef and mark PM callbacks with __maybe_unused.
+> 
+> Suggested-by: Jonathan Cameron <jic23@kernel.org>
+> Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/iio/accel/stk8312.c  | 3 +++
- drivers/iio/accel/stk8ba50.c | 2 ++
- 2 files changed, 5 insertions(+)
+Both applied to the togreg branch of iio.git and pushed out
+as testing to let 0-day poke at them.
 
-diff --git a/drivers/iio/accel/stk8312.c b/drivers/iio/accel/stk8312.c
-index 43c621d0f11e..1f4cab0e31bf 100644
---- a/drivers/iio/accel/stk8312.c
-+++ b/drivers/iio/accel/stk8312.c
-@@ -7,10 +7,13 @@
-  * IIO driver for STK8312; 7-bit I2C address: 0x3D.
-  */
- 
-+#include <linux/device.h>
- #include <linux/i2c.h>
- #include <linux/interrupt.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/mutex.h>
- #include <linux/delay.h>
- #include <linux/iio/buffer.h>
- #include <linux/iio/iio.h>
-diff --git a/drivers/iio/accel/stk8ba50.c b/drivers/iio/accel/stk8ba50.c
-index e137a34b5c9a..9049f1a5ace4 100644
---- a/drivers/iio/accel/stk8ba50.c
-+++ b/drivers/iio/accel/stk8ba50.c
-@@ -12,6 +12,8 @@
- #include <linux/interrupt.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/mutex.h>
- #include <linux/iio/buffer.h>
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
--- 
-2.31.1
+William, if you want to give feedback on these, still time for
+me to add tags etc. They just seem trivial enough its not worth
+wasting your time :)
+
+Jonathan
+
+
+> ---
+>  drivers/counter/intel-qep.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/counter/intel-qep.c b/drivers/counter/intel-qep.c
+> index ab10ba33f46a..a8d3dccecc0f 100644
+> --- a/drivers/counter/intel-qep.c
+> +++ b/drivers/counter/intel-qep.c
+> @@ -473,8 +473,7 @@ static void intel_qep_remove(struct pci_dev *pci)
+>  	intel_qep_writel(qep, INTEL_QEPCON, 0);
+>  }
+>  
+> -#ifdef CONFIG_PM
+> -static int intel_qep_suspend(struct device *dev)
+> +static int __maybe_unused intel_qep_suspend(struct device *dev)
+>  {
+>  	struct pci_dev *pdev = container_of(dev, struct pci_dev, dev);
+>  	struct intel_qep *qep = pci_get_drvdata(pdev);
+> @@ -486,7 +485,7 @@ static int intel_qep_suspend(struct device *dev)
+>  	return 0;
+>  }
+>  
+> -static int intel_qep_resume(struct device *dev)
+> +static int __maybe_unused intel_qep_resume(struct device *dev)
+>  {
+>  	struct pci_dev *pdev = container_of(dev, struct pci_dev, dev);
+>  	struct intel_qep *qep = pci_get_drvdata(pdev);
+> @@ -512,7 +511,6 @@ static int intel_qep_resume(struct device *dev)
+>  
+>  	return 0;
+>  }
+> -#endif
+>  
+>  static UNIVERSAL_DEV_PM_OPS(intel_qep_pm_ops,
+>  			    intel_qep_suspend, intel_qep_resume, NULL);
 

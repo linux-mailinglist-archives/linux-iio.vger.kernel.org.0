@@ -2,71 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A5BEF3A4186
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Jun 2021 13:56:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 326333A43F8
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Jun 2021 16:21:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231189AbhFKL6c (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Jun 2021 07:58:32 -0400
-Received: from mga04.intel.com ([192.55.52.120]:42829 "EHLO mga04.intel.com"
+        id S231626AbhFKOXN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Jun 2021 10:23:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48634 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230370AbhFKL6c (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 11 Jun 2021 07:58:32 -0400
-IronPort-SDR: FYvBz6ckFAYK+sECU54mWvfZ5a7LYGSfoe5kj3jTrZlvM+Au7GOD7irpg6kivpVP2EfND1nvr9
- jqPMSmzWwFvA==
-X-IronPort-AV: E=McAfee;i="6200,9189,10011"; a="203678411"
-X-IronPort-AV: E=Sophos;i="5.83,265,1616482800"; 
-   d="scan'208";a="203678411"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2021 04:56:33 -0700
-IronPort-SDR: VytPuLx7S5jT9Gd6FUOK49layMI54pZNwQvbX1kBvCfwsDxWZDkknOLBSOCn64yZ4CIzq6yVKV
- gHPxdcIEWVFA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.83,265,1616482800"; 
-   d="scan'208";a="553387383"
-Received: from unknown (HELO [10.237.72.51]) ([10.237.72.51])
-  by fmsmga001.fm.intel.com with ESMTP; 11 Jun 2021 04:56:31 -0700
-Subject: Re: [PATCH v4] counter: Add support for Intel Quadrature Encoder
- Peripheral
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        Raymond Tan <raymond.tan@intel.com>
-References: <20210602113259.158674-1-jarkko.nikula@linux.intel.com>
- <20210603171233.37009042@jic23-huawei>
-From:   Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Message-ID: <6d554842-8c28-c38b-58cd-9312cf71a419@linux.intel.com>
-Date:   Fri, 11 Jun 2021 14:56:30 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
+        id S231180AbhFKOXN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 11 Jun 2021 10:23:13 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6A54361249;
+        Fri, 11 Jun 2021 14:21:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1623421275;
+        bh=OeF3ldj+rUhKR2/T5fYFD/rp/bRkG3K2w1Q0z1uPw8Q=;
+        h=From:To:Cc:Subject:Date:From;
+        b=OupZiZHZOId/g4+K73sUSaOJfqKsMyb5rZ/DRQaaI6tDAdDNo0oCiqCtZM4pzSi92
+         Dr6D9p6jvtgOW3QhIguBWdgmKBT7UBwRN9XKgtx5UV6bSuq4M04NO+wjDrAry5je9h
+         fl0rsjxky2TmaMiH5LqnMTHczRR87ZLsXfr/WLBd4MSDhE6G8ylNWf0uoFYbfze0fW
+         z1bEojQWQQ+x3iIC7zswkDH2v5UiTw98Vt4SeRBwkjR4H5nqXT6aoQnCs23OTMEX7F
+         h1Dxe5jqmSO91Ha0JRifN8hxKHhUz6PhbZlslIIKKiQAiShWbjC+uILinLnmClclBL
+         5Q7OgyvzPv9LA==
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org
+Cc:     Jean Delvare <jdelvare@suse.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH] hwmon: (ntc_thermistor) Drop unused headers.
+Date:   Fri, 11 Jun 2021 15:22:57 +0100
+Message-Id: <20210611142257.103094-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-In-Reply-To: <20210603171233.37009042@jic23-huawei>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 6/3/21 7:12 PM, Jonathan Cameron wrote:
-> On Wed,  2 Jun 2021 14:32:59 +0300
-> Jarkko Nikula <jarkko.nikula@linux.intel.com> wrote:
->> +static int intel_qep_suspend(struct device *dev)
->> +{
->> +	struct pci_dev *pdev = container_of(dev, struct pci_dev, dev);
-> 
-> to_pci_dev()
-> Though if all you are doing is using it to then get the drvdata
-> avoid the round trip.  There have been a few patch sets tidying this up
-> in recent years and good not to add the noise of having that happen here.
-> 
-> struct intel_qep *qep = dev_get_drvdata(dev);
-> 
-Now I remember, I got this dev_get_drvdata() idea here earlier but 
-implemented it first to another driver and Uwe had a good point about 
-kind of layer violation of relying dev_get_drvdata() to return what 
-pci_set_drvdata() set:
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-https://www.spinics.net/lists/linux-pwm/msg15325.html
+The IIO usage in this driver is purely consumer so it should only
+be including linux/iio/consumer.h  Whilst here drop pm_runtime.h
+as there is no runtime power management in the driver.
 
-Jarkko
+Found using include-what-you-use and manual inspection of the
+suggestions.
+
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Guenter Roeck <linux@roeck-us.net>
+---
+ drivers/hwmon/ntc_thermistor.c | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/drivers/hwmon/ntc_thermistor.c b/drivers/hwmon/ntc_thermistor.c
+index 8587189c7f15..18fd6f12ca16 100644
+--- a/drivers/hwmon/ntc_thermistor.c
++++ b/drivers/hwmon/ntc_thermistor.c
+@@ -8,7 +8,6 @@
+ 
+ #include <linux/slab.h>
+ #include <linux/module.h>
+-#include <linux/pm_runtime.h>
+ #include <linux/math64.h>
+ #include <linux/platform_device.h>
+ #include <linux/err.h>
+@@ -17,9 +16,6 @@
+ 
+ #include <linux/platform_data/ntc_thermistor.h>
+ 
+-#include <linux/iio/iio.h>
+-#include <linux/iio/machine.h>
+-#include <linux/iio/driver.h>
+ #include <linux/iio/consumer.h>
+ 
+ #include <linux/hwmon.h>
+-- 
+2.31.1
+

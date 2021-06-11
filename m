@@ -2,76 +2,202 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE9A63A48C6
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Jun 2021 20:38:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B8623A48CC
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Jun 2021 20:41:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230382AbhFKSkR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Jun 2021 14:40:17 -0400
-Received: from mail-pg1-f181.google.com ([209.85.215.181]:34657 "EHLO
-        mail-pg1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229969AbhFKSkQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Jun 2021 14:40:16 -0400
-Received: by mail-pg1-f181.google.com with SMTP id l1so3173260pgm.1
-        for <linux-iio@vger.kernel.org>; Fri, 11 Jun 2021 11:38:04 -0700 (PDT)
+        id S230017AbhFKSn5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Jun 2021 14:43:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54100 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229942AbhFKSn4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Jun 2021 14:43:56 -0400
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB99DC061574
+        for <linux-iio@vger.kernel.org>; Fri, 11 Jun 2021 11:41:58 -0700 (PDT)
+Received: by mail-pf1-x42a.google.com with SMTP id k15so5156756pfp.6
+        for <linux-iio@vger.kernel.org>; Fri, 11 Jun 2021 11:41:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=5k8bn0sFTUYQb035TWpM6wj6EEiLNqlGHTKkbNBxXCo=;
-        b=Uj8XTqZG1pmXThrcwxqG+VG5/XOwAScExxjBW1QgRiC7H7XixsaTKMa27fQXiF5YFy
-         4t6kWOrMU6XyMx35JaF6jI+R49FesAlMe/ptAYCDdm2k5KbeIa09MKDVNaXsv/uKjrnb
-         iivyu+WuxdEU+PrIQADWMkxxwvd79IfQ3IcZ0fNYscRNpUmmqbl0qGdPRuV/CIhPQELx
-         xGuGfblnaVYoVnreusTPUtV2anu6E0dc6SlrSK32sLuIX2VnvT7qyz38NzofwLhAXD59
-         xRcUsXSDxxCcHWVZC0Ghex2pTBNZqUYc875rPwLGxJDmlRTOLMpCR7NIDoijUdstAje6
-         IYmw==
+        bh=rGOzAnlhk0ZIelemS9uSPP3pYbH4PCf3ofr1SpRFaxc=;
+        b=S1H9iCcd17Sv9WUyTnWWzcrDP0ak+4ZpAyWU+qU2hq4DW0fgHr/Y8LOGgHeatE5xnk
+         ZpBv26+V4tWnPc9DRFXfU5hXSOijyUoAFCZO4U6NqhbGgVHlwmvU4XgXYqiblnIjiVnD
+         7254G3nwqBBxDwjXs5sn7HRXa1jhoQQX++epNa3aiYPBkKUtDwyPaLSaZcc2noY0Srd6
+         B9ZxSXwLwZDAp3EVMAOyUp64JrMsPD2vV6/BXnh9mnKk4hX9l7ah13Rge/bqMex40Ovc
+         enMuqvFhZRL0Xc9noR/ctwYMIY66RFRsKk49HK9tfDIvG1N/HaWbKqgepQyvjpo09vNt
+         +6/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=5k8bn0sFTUYQb035TWpM6wj6EEiLNqlGHTKkbNBxXCo=;
-        b=py9x5wuccMHs++RxCchFlWlds2KDgb/2N8WLQocCHS1zQeo62PPSJZiu/wtaF3OC4J
-         hDw8WZQ0nj4Qe/CFsG+fLIUquSqUrrq5TWlJt9mqTniKtPYtqQnN3XSfMOakHftKaqcq
-         f4EMmIicaRuuFPKpqWI0dJmFt9wQmX92vj3rTEEFNUC8AlCNx84q0DzXbpS5cXWmkEqZ
-         /hy4ryyLx5D2/0NlrmZtXtUdCpZQSkmUV0qRl0msEKO4IzNp31kVVmnIxiwrCuaX5Njm
-         fn2A7IXNkHYc2gs9vOXEfWoS1wnqYxCsCMkto/jESKElV5m9GKy9DJmnjghmEJriOT6k
-         r+yA==
-X-Gm-Message-State: AOAM5311KZMnlDW5+70rl+xRrxaWsDPhF7eXosspLKG7UA4brQaX7WyW
-        NXPFSyAmhXuvhje/zwsaRzs98Vd0UXSlKB5ebnU=
-X-Google-Smtp-Source: ABdhPJzk0Ihjd3S4rODFzMYV7hiarXbTnBZSIWGB2Ilkh2YDoNnWN9dEpb92YQHw2HiDHrtrlPV09syhfJPWNX77Yhk=
-X-Received: by 2002:a62:e404:0:b029:2ee:f086:726f with SMTP id
- r4-20020a62e4040000b02902eef086726fmr9495575pfh.7.1623436624451; Fri, 11 Jun
- 2021 11:37:04 -0700 (PDT)
+        bh=rGOzAnlhk0ZIelemS9uSPP3pYbH4PCf3ofr1SpRFaxc=;
+        b=mHJZE6Dmw9Wc/bwV3MspJgq43UlQu20FxOPdbU98awpSllAdo3sy0QPR4JGrb0Duco
+         NIp2kX5htlAu56yT6dgVcxu0qGYWwYJ7fHInWDRDYSWR9enOVku8rVJRt5vEq5eEczNo
+         BBJldaCqqNwGSPUUiGOGkHZOj+4IxSx/JeVmC0jX/nm+fs8ySDT3179+oZr66ybWmQZW
+         5AgWQiyUKA0lQ0voXF0szuB2DRukf6JT/slmdcNJFtdSaMFisQWc7X4RtM/zQAxAUkmv
+         npnPxkn7cFhgk/sNaj6mXQwKK7iOv2vmVijZEc3HpsgxYNKPqBWzKsEu4MQVzSEAqE+S
+         wxpQ==
+X-Gm-Message-State: AOAM532Gc8v8M6eiO4r6wWd+UONHMAVKaEGE2yQZoo/F0Q93ehhmpXgE
+        XQDPoZxzAZPvFBfqXfcfhuXFacjzNC9Rj1S8uE4=
+X-Google-Smtp-Source: ABdhPJyH14rxspsLccuvzaYLghU79Af2iEYrziMmOwKuAV9a2cLmn93XFiSRsaUCSvvxIUilOhe6sBc/JecD8+8GzpM=
+X-Received: by 2002:a05:6a00:a1e:b029:2e2:89d8:5c87 with SMTP id
+ p30-20020a056a000a1eb02902e289d85c87mr9680926pfh.73.1623436917806; Fri, 11
+ Jun 2021 11:41:57 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210611152614.109361-1-jic23@kernel.org> <CAHp75VfN93-B-UYCEMfxym-_XS_Edr+G07P6xO+83+gkMeC1LQ@mail.gmail.com>
- <20210611191403.14d676a9@jic23-huawei>
-In-Reply-To: <20210611191403.14d676a9@jic23-huawei>
+References: <20210611182442.1971-1-stephan@gerhold.net>
+In-Reply-To: <20210611182442.1971-1-stephan@gerhold.net>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 11 Jun 2021 21:36:48 +0300
-Message-ID: <CAHp75Vfvtyg+uXDhDte5w==eaaW-P4+8J8ac2kL2GYAbFrB3sA@mail.gmail.com>
-Subject: Re: [PATCH 0/7] staging:iio: Header cleanup
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Nuno Sa <Nuno.Sa@analog.com>,
+Date:   Fri, 11 Jun 2021 21:41:41 +0300
+Message-ID: <CAHp75Ve2G=YNL+s8zu2vT7nN+onyzUXL0ysRNBvebeP36Rnhag@mail.gmail.com>
+Subject: Re: [PATCH] iio: accel: bmc150: Use more consistent and accurate
+ scale values
+To:     Stephan Gerhold <stephan@gerhold.net>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        ~postmarketos/upstreaming@lists.sr.ht
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jun 11, 2021 at 9:12 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> On Fri, 11 Jun 2021 20:45:03 +0300
-> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > On Fri, Jun 11, 2021 at 6:25 PM Jonathan Cameron <jic23@kernel.org> wrote:
+On Fri, Jun 11, 2021 at 9:27 PM Stephan Gerhold <stephan@gerhold.net> wrote:
+>
+> It is quite strange that BMA222 and BMA222E have very close, yet
+> subtly different values in their scale tables. Comparing the datasheets
+> this is simply because the "Resolution" for the different measurement
+> ranges are documented with different precision.
+>
+> For example, for +-2g the BMA222 datasheet [1] suggests a resolution
+> of 15.6 mg/LSB, while the BMA222E datasheet [2] suggests 15.63 mg/LSB.
+>
+> Actually, there is no need to rely on the resolution given by the Bosch
+> datasheets. The resolution and scale can be calculated more consistently
+> and accurately using the range (e.g. +-2g) and the channel size (e.g. 8 bits).
+>
+> Distributing 4g (-2g to 2g) over 8 bits results in an exact resolution
+> of (4g / 2^8) = 15.625 mg/LSB which is the same value as in both datasheets,
+> just slightly more accurate. Multiplying g = 9.80665 m/s^2 we get a more
+> accurate value for the IIO scale table.
+>
+> Generalizing this we can calculate the scale tables more accurately using
+> (range / 2^bits) * g * 10^6 (because of IIO_VAL_INT_PLUS_MICRO).
+>
+> Document this and make the scale tables more consistent and accurate
+> for all the variants using that formula. Now the scale tables for
+> BMA222 and BMA222E are consistent and probably slightly more accurate.
 
-...
+Oh, oh, one more HW vendor to blame for not being mathematically precise!
+We already had the very same issue in Intel and AMD documentation :-)
 
-> The reason for kernel.h includes when being added is almost always ARRAY_SIZE
-> or container_of as you identified.
+In full support of such fixes!
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gnail.com>
 
-Give me some time. I will cook a couple of patches for ya to test
-(splitting those from kernel.h).
+> [1]: https://media.digikey.com/pdf/Data%20Sheets/Bosch/BMA222.pdf
+> [2]: https://www.mouser.com/datasheet/2/783/BST-BMA222E-DS004-06-1021076.pdf
+>
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+> ---
+>  drivers/iio/accel/bmc150-accel-core.c | 46 ++++++++++++++-------------
+>  1 file changed, 24 insertions(+), 22 deletions(-)
+>
+> diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
+> index 43aecd4bf3a4..5ce384ebe6c7 100644
+> --- a/drivers/iio/accel/bmc150-accel-core.c
+> +++ b/drivers/iio/accel/bmc150-accel-core.c
+> @@ -1088,19 +1088,21 @@ static const struct iio_chan_spec bmc150_accel_channels[] =
+>  static const struct iio_chan_spec bma280_accel_channels[] =
+>         BMC150_ACCEL_CHANNELS(14);
+>
+> +/*
+> + * The range for the Bosch sensors is typically +-2g/4g/8g/16g, distributed
+> + * over the amount of bits (see above). The scale table can be calculated using
+> + *     (range / 2^bits) * g = (range / 2^bits) * 9.80665 m/s^2
+> + * e.g. for +-2g and 12 bits: (4 / 2^12) * 9.80665 m/s^2 = 0.0095768... m/s^2
+> + * Multiply 10^6 and round to get the values listed below.
+> + */
+>  static const struct bmc150_accel_chip_info bmc150_accel_chip_info_tbl[] = {
+>         {
+>                 .name = "BMA222",
+>                 .chip_id = 0x03,
+>                 .channels = bma222e_accel_channels,
+>                 .num_channels = ARRAY_SIZE(bma222e_accel_channels),
+> -               /*
+> -                * The datasheet page 17 says:
+> -                * 15.6, 31.3, 62.5 and 125 mg per LSB.
+> -                * IIO unit is m/s^2 so multiply by g = 9.80665 m/s^2.
+> -                */
+> -               .scale_table = { {152984, BMC150_ACCEL_DEF_RANGE_2G},
+> -                                {306948, BMC150_ACCEL_DEF_RANGE_4G},
+> +               .scale_table = { {153229, BMC150_ACCEL_DEF_RANGE_2G},
+> +                                {306458, BMC150_ACCEL_DEF_RANGE_4G},
+>                                  {612916, BMC150_ACCEL_DEF_RANGE_8G},
+>                                  {1225831, BMC150_ACCEL_DEF_RANGE_16G} },
+>         },
+> @@ -1109,9 +1111,9 @@ static const struct bmc150_accel_chip_info bmc150_accel_chip_info_tbl[] = {
+>                 .chip_id = 0xF8,
+>                 .channels = bma222e_accel_channels,
+>                 .num_channels = ARRAY_SIZE(bma222e_accel_channels),
+> -               .scale_table = { {153277, BMC150_ACCEL_DEF_RANGE_2G},
+> -                                {306457, BMC150_ACCEL_DEF_RANGE_4G},
+> -                                {612915, BMC150_ACCEL_DEF_RANGE_8G},
+> +               .scale_table = { {153229, BMC150_ACCEL_DEF_RANGE_2G},
+> +                                {306458, BMC150_ACCEL_DEF_RANGE_4G},
+> +                                {612916, BMC150_ACCEL_DEF_RANGE_8G},
+>                                  {1225831, BMC150_ACCEL_DEF_RANGE_16G} },
+>         },
+>         {
+> @@ -1119,30 +1121,30 @@ static const struct bmc150_accel_chip_info bmc150_accel_chip_info_tbl[] = {
+>                 .chip_id = 0xF9,
+>                 .channels = bma250e_accel_channels,
+>                 .num_channels = ARRAY_SIZE(bma250e_accel_channels),
+> -               .scale_table = { {38344, BMC150_ACCEL_DEF_RANGE_2G},
+> -                                {76590, BMC150_ACCEL_DEF_RANGE_4G},
+> -                                {153277, BMC150_ACCEL_DEF_RANGE_8G},
+> -                                {306457, BMC150_ACCEL_DEF_RANGE_16G} },
+> +               .scale_table = { {38307, BMC150_ACCEL_DEF_RANGE_2G},
+> +                                {76614, BMC150_ACCEL_DEF_RANGE_4G},
+> +                                {153229, BMC150_ACCEL_DEF_RANGE_8G},
+> +                                {306458, BMC150_ACCEL_DEF_RANGE_16G} },
+>         },
+>         {
+>                 .name = "BMA253/BMA254/BMA255/BMC150/BMI055",
+>                 .chip_id = 0xFA,
+>                 .channels = bmc150_accel_channels,
+>                 .num_channels = ARRAY_SIZE(bmc150_accel_channels),
+> -               .scale_table = { {9610, BMC150_ACCEL_DEF_RANGE_2G},
+> -                                {19122, BMC150_ACCEL_DEF_RANGE_4G},
+> -                                {38344, BMC150_ACCEL_DEF_RANGE_8G},
+> -                                {76590, BMC150_ACCEL_DEF_RANGE_16G} },
+> +               .scale_table = { {9577, BMC150_ACCEL_DEF_RANGE_2G},
+> +                                {19154, BMC150_ACCEL_DEF_RANGE_4G},
+> +                                {38307, BMC150_ACCEL_DEF_RANGE_8G},
+> +                                {76614, BMC150_ACCEL_DEF_RANGE_16G} },
+>         },
+>         {
+>                 .name = "BMA280",
+>                 .chip_id = 0xFB,
+>                 .channels = bma280_accel_channels,
+>                 .num_channels = ARRAY_SIZE(bma280_accel_channels),
+> -               .scale_table = { {2392, BMC150_ACCEL_DEF_RANGE_2G},
+> -                                {4785, BMC150_ACCEL_DEF_RANGE_4G},
+> -                                {9581, BMC150_ACCEL_DEF_RANGE_8G},
+> -                                {19152, BMC150_ACCEL_DEF_RANGE_16G} },
+> +               .scale_table = { {2394, BMC150_ACCEL_DEF_RANGE_2G},
+> +                                {4788, BMC150_ACCEL_DEF_RANGE_4G},
+> +                                {9577, BMC150_ACCEL_DEF_RANGE_8G},
+> +                                {19154, BMC150_ACCEL_DEF_RANGE_16G} },
+>         },
+>  };
+>
+> --
+> 2.32.0
+>
+
 
 -- 
 With Best Regards,

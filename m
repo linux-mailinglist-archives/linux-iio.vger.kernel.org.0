@@ -2,195 +2,126 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DD9E3A48A5
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Jun 2021 20:28:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 405643A4897
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Jun 2021 20:24:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229937AbhFKS36 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Jun 2021 14:29:58 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.52]:35252 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229814AbhFKS36 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Jun 2021 14:29:58 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1623436075; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=igPW7lQGUuQRWmFTJtQvDwkSnkC/EvgJg6R/P0n5HSaObz5ewrTZLzH3yEkkx/O6a4
-    ZRr9n5udOo69bniIpU9aKYkVSi8G0nkfmQt69PE6QIClvW4Zxm2CGHsdPu5/L9GmPxxn
-    E/wTwCRkeH0CI5cx6aAdQtxbgB3DkiGmnFid288nxu7kn8f47Mxe6xBkaRqk+VqrVwj5
-    pX+pbBGytCT9oJ6kJ8BwBVbYqReVrsaJM3IbuGKZkEvFrZaPtqH3dLM10kReGRl3iLac
-    P+PktyieVm2hxxH6K98T/3FGQZYm9qNnUXPi8xQR8FXMVBSw6TZpngMmE2Sa/PXUm8JF
-    yBKQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1623436075;
-    s=strato-dkim-0002; d=strato.com;
-    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=1KirUKRlkIwbATC5H+deJHDf5dhhOMKA19Bn9NBavm8=;
-    b=NmWiwhQcF/4VBKhivtmJjiCIbLu1TqijXtE7YKgCD/iYvaPor1nyo2C/wrSW+f+UcU
-    dAziJkFQljr+z49OALlM6xR5Uc0HAu5WVBdyeV9Hn7ynqdHxKCL0WinnvFEOIIJOd7DT
-    pxS3ZwsHTGNc0X52Ef4A1XBP9REScEZRn1eMe2uyAneqXfqorpL4jeYYo7Z5r1U8Z2M+
-    lL7/eZc/jShJCc16SRk0Vg9j+Fn5CZV3tv9ctxKy+8BiRrU1Hwj+C0HpQlha3HxHU8Rn
-    +v6XQI6Dd54DQuClztSAqBCvE8NGpWqqi00dJpNQCy3rUWE35oQrarLxZLDsRgqnXxqq
-    qlKQ==
-ARC-Authentication-Results: i=1; strato.com;
-    dkim=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1623436075;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=1KirUKRlkIwbATC5H+deJHDf5dhhOMKA19Bn9NBavm8=;
-    b=QJonljpdWkWepNL4o3J2Aap88YXks3TYC8gdayZhflfAZr+oLAhveihLh1keK1o99A
-    PIUNlDzLJUrjM7XCaaYboN2eAIXg9k9Bvu5HwO1yeYEZ3aspbth9a99O7mtVUNYSwphZ
-    SMdKxuFIEG4OBhZKLEt9Cf60TgxQ1h75FPTe1bGqPAvHDeVRFMIoYpDU2hk96eg7BoLW
-    VkrB0PCVreLkCDYaCwL1JMV6k2SeoqZNO2LdyB/8dRI3KuCAh2BSfIx7EXBtYE7g1DJn
-    lu3z+F2BtLOPQv8Og+fI530xTe7zNjMoWOHAnrE24YEJDewdXQcg9Oyst8YT9ZQqkWYL
-    AX8g==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVORvLd4SsytBXS7IYBkLahKxA6m6PrPw="
-X-RZG-CLASS-ID: mo00
-Received: from droid..
-    by smtp.strato.de (RZmta 47.27.2 DYNA|AUTH)
-    with ESMTPSA id y01375x5BIRs2oo
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Fri, 11 Jun 2021 20:27:54 +0200 (CEST)
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Jonathan Cameron <jic23@kernel.org>
+        id S230232AbhFKS0q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Jun 2021 14:26:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46616 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229753AbhFKS0q (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 11 Jun 2021 14:26:46 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 20348613C6;
+        Fri, 11 Jun 2021 18:24:44 +0000 (UTC)
+Date:   Fri, 11 Jun 2021 19:26:39 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Stephan Gerhold <stephan@gerhold.net>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
         Linus Walleij <linus.walleij@linaro.org>,
-        linux-iio@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>,
+        Peter Meerwald <pmeerw@pmeerw.net>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, Bastien Nocera <hadess@hadess.net>,
+        Hans de Goede <hdegoede@redhat.com>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Stephan Gerhold <stephan@gerhold.net>
-Subject: [PATCH] iio: accel: bmc150: Use more consistent and accurate scale values
-Date:   Fri, 11 Jun 2021 20:24:42 +0200
-Message-Id: <20210611182442.1971-1-stephan@gerhold.net>
-X-Mailer: git-send-email 2.32.0
+        ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH v3 08/10] dt-bindings: iio: bma255: Allow multiple
+ interrupts
+Message-ID: <20210611192639.587838ea@jic23-huawei>
+In-Reply-To: <YMOphuXSoODIVX06@gerhold.net>
+References: <20210611080903.14384-1-stephan@gerhold.net>
+        <20210611080903.14384-9-stephan@gerhold.net>
+        <20210611185941.3487efc6@jic23-huawei>
+        <YMOphuXSoODIVX06@gerhold.net>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-It is quite strange that BMA222 and BMA222E have very close, yet
-subtly different values in their scale tables. Comparing the datasheets
-this is simply because the "Resolution" for the different measurement
-ranges are documented with different precision.
+On Fri, 11 Jun 2021 20:21:05 +0200
+Stephan Gerhold <stephan@gerhold.net> wrote:
 
-For example, for +-2g the BMA222 datasheet [1] suggests a resolution
-of 15.6 mg/LSB, while the BMA222E datasheet [2] suggests 15.63 mg/LSB.
+> On Fri, Jun 11, 2021 at 06:59:41PM +0100, Jonathan Cameron wrote:
+> > On Fri, 11 Jun 2021 10:09:01 +0200
+> > Stephan Gerhold <stephan@gerhold.net> wrote:
+> >   
+> > > BMA253 has two interrupt pins (INT1 and INT2) that can be configured
+> > > independently. At the moment the bmc150-accel driver does not make use
+> > > of them but it might be able to in the future, so it's useful to already
+> > > specify all available interrupts in the device tree.
+> > > 
+> > > Set maxItems: 2 for interrupts to allow specifying a second one.
+> > > This is necessary as preparation to move the bosch,bma254 compatible
+> > > from bosch,bma180.yaml to bosch,bma255.yaml since bma180 allows two
+> > > interrupts, but BMA254 is better supported by the bmc150-accel driver.
+> > > 
+> > > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> > > Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+> > > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > > Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+> > > ---
+> > >  .../devicetree/bindings/iio/accel/bosch,bma255.yaml        | 7 ++++++-
+> > >  1 file changed, 6 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/Documentation/devicetree/bindings/iio/accel/bosch,bma255.yaml b/Documentation/devicetree/bindings/iio/accel/bosch,bma255.yaml
+> > > index 8afb0fe8ef5c..65b299a5619b 100644
+> > > --- a/Documentation/devicetree/bindings/iio/accel/bosch,bma255.yaml
+> > > +++ b/Documentation/devicetree/bindings/iio/accel/bosch,bma255.yaml
+> > > @@ -32,7 +32,12 @@ properties:
+> > >    vddio-supply: true
+> > >  
+> > >    interrupts:
+> > > -    maxItems: 1
+> > > +    minItems: 1
+> > > +    maxItems: 2
+> > > +    description: |
+> > > +      The first interrupt listed must be the one connected to the INT1 pin,
+> > > +      the second (optional) interrupt listed must be the one connected to the
+> > > +      INT2 pin (if available).  
+> > 
+> > As this is a direct copy from the bma180 binding and we are moving devices
+> > from one to the other, we need to support this as the default.
+> > Longer term, from the bma253 datasheet, it look looks the two pins are equally
+> > capable so if we get a board where only the int2 pin is connected then we will
+> > need to use interrupt-names to distinguish the two (as we do in other drivers).
+> >   
+> 
+> This kind of sounds like a strange board layout in general. But what's
+> worse is that for some reason even Bosch thought this is a "good" idea
+> so they released the BMC156 [1]. It works just like the BMC150 but has
+> only a single interrupt pin. One would expect that would be INT1,
+> but nope, it's INT2 of course. :-)
+> 
+> I have a device with BMC156 where this is the case, so I guess I need to
+> make bmc150-accel use INT2 somehow (without specifying INT1). It might
+> be easiest if we treat this the same way as the case that you mentioned,
+> i.e. everyone with BMC156 would specify the interrupt-names explicitly
+> to have a consistent meaning of the device tree.
 
-Actually, there is no need to rely on the resolution given by the Bosch
-datasheets. The resolution and scale can be calculated more consistently
-and accurately using the range (e.g. +-2g) and the channel size (e.g. 8 bits).
+That will really confuse people who think they just have one interrupt so
+why do they need the name!  You'll have to special case that delight in
+the driver.
 
-Distributing 4g (-2g to 2g) over 8 bits results in an exact resolution
-of (4g / 2^8) = 15.625 mg/LSB which is the same value as in both datasheets,
-just slightly more accurate. Multiplying g = 9.80665 m/s^2 we get a more
-accurate value for the IIO scale table.
+> 
+> [1]: https://www.mouser.de/datasheet/2/783/BST-BMC156-DS000-1509546.pdf
+> 
+> > Another thing to note is that we don't have to have separate binding docs just
+> > because we have separate drivers. At somepoint we might want to consider just
+> > fusing the two docs.
+> >    
+> 
+> Good point! I might do that together with the BMC156 changes. :)
 
-Generalizing this we can calculate the scale tables more accurately using
-(range / 2^bits) * g * 10^6 (because of IIO_VAL_INT_PLUS_MICRO).
+Great.  Best of all you can drop me as maintainer the combined binding ;)
 
-Document this and make the scale tables more consistent and accurate
-for all the variants using that formula. Now the scale tables for
-BMA222 and BMA222E are consistent and probably slightly more accurate.
+Jonathan
 
-[1]: https://media.digikey.com/pdf/Data%20Sheets/Bosch/BMA222.pdf
-[2]: https://www.mouser.com/datasheet/2/783/BST-BMA222E-DS004-06-1021076.pdf
-
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
----
- drivers/iio/accel/bmc150-accel-core.c | 46 ++++++++++++++-------------
- 1 file changed, 24 insertions(+), 22 deletions(-)
-
-diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
-index 43aecd4bf3a4..5ce384ebe6c7 100644
---- a/drivers/iio/accel/bmc150-accel-core.c
-+++ b/drivers/iio/accel/bmc150-accel-core.c
-@@ -1088,19 +1088,21 @@ static const struct iio_chan_spec bmc150_accel_channels[] =
- static const struct iio_chan_spec bma280_accel_channels[] =
- 	BMC150_ACCEL_CHANNELS(14);
- 
-+/*
-+ * The range for the Bosch sensors is typically +-2g/4g/8g/16g, distributed
-+ * over the amount of bits (see above). The scale table can be calculated using
-+ *     (range / 2^bits) * g = (range / 2^bits) * 9.80665 m/s^2
-+ * e.g. for +-2g and 12 bits: (4 / 2^12) * 9.80665 m/s^2 = 0.0095768... m/s^2
-+ * Multiply 10^6 and round to get the values listed below.
-+ */
- static const struct bmc150_accel_chip_info bmc150_accel_chip_info_tbl[] = {
- 	{
- 		.name = "BMA222",
- 		.chip_id = 0x03,
- 		.channels = bma222e_accel_channels,
- 		.num_channels = ARRAY_SIZE(bma222e_accel_channels),
--		/*
--		 * The datasheet page 17 says:
--		 * 15.6, 31.3, 62.5 and 125 mg per LSB.
--		 * IIO unit is m/s^2 so multiply by g = 9.80665 m/s^2.
--		 */
--		.scale_table = { {152984, BMC150_ACCEL_DEF_RANGE_2G},
--				 {306948, BMC150_ACCEL_DEF_RANGE_4G},
-+		.scale_table = { {153229, BMC150_ACCEL_DEF_RANGE_2G},
-+				 {306458, BMC150_ACCEL_DEF_RANGE_4G},
- 				 {612916, BMC150_ACCEL_DEF_RANGE_8G},
- 				 {1225831, BMC150_ACCEL_DEF_RANGE_16G} },
- 	},
-@@ -1109,9 +1111,9 @@ static const struct bmc150_accel_chip_info bmc150_accel_chip_info_tbl[] = {
- 		.chip_id = 0xF8,
- 		.channels = bma222e_accel_channels,
- 		.num_channels = ARRAY_SIZE(bma222e_accel_channels),
--		.scale_table = { {153277, BMC150_ACCEL_DEF_RANGE_2G},
--				 {306457, BMC150_ACCEL_DEF_RANGE_4G},
--				 {612915, BMC150_ACCEL_DEF_RANGE_8G},
-+		.scale_table = { {153229, BMC150_ACCEL_DEF_RANGE_2G},
-+				 {306458, BMC150_ACCEL_DEF_RANGE_4G},
-+				 {612916, BMC150_ACCEL_DEF_RANGE_8G},
- 				 {1225831, BMC150_ACCEL_DEF_RANGE_16G} },
- 	},
- 	{
-@@ -1119,30 +1121,30 @@ static const struct bmc150_accel_chip_info bmc150_accel_chip_info_tbl[] = {
- 		.chip_id = 0xF9,
- 		.channels = bma250e_accel_channels,
- 		.num_channels = ARRAY_SIZE(bma250e_accel_channels),
--		.scale_table = { {38344, BMC150_ACCEL_DEF_RANGE_2G},
--				 {76590, BMC150_ACCEL_DEF_RANGE_4G},
--				 {153277, BMC150_ACCEL_DEF_RANGE_8G},
--				 {306457, BMC150_ACCEL_DEF_RANGE_16G} },
-+		.scale_table = { {38307, BMC150_ACCEL_DEF_RANGE_2G},
-+				 {76614, BMC150_ACCEL_DEF_RANGE_4G},
-+				 {153229, BMC150_ACCEL_DEF_RANGE_8G},
-+				 {306458, BMC150_ACCEL_DEF_RANGE_16G} },
- 	},
- 	{
- 		.name = "BMA253/BMA254/BMA255/BMC150/BMI055",
- 		.chip_id = 0xFA,
- 		.channels = bmc150_accel_channels,
- 		.num_channels = ARRAY_SIZE(bmc150_accel_channels),
--		.scale_table = { {9610, BMC150_ACCEL_DEF_RANGE_2G},
--				 {19122, BMC150_ACCEL_DEF_RANGE_4G},
--				 {38344, BMC150_ACCEL_DEF_RANGE_8G},
--				 {76590, BMC150_ACCEL_DEF_RANGE_16G} },
-+		.scale_table = { {9577, BMC150_ACCEL_DEF_RANGE_2G},
-+				 {19154, BMC150_ACCEL_DEF_RANGE_4G},
-+				 {38307, BMC150_ACCEL_DEF_RANGE_8G},
-+				 {76614, BMC150_ACCEL_DEF_RANGE_16G} },
- 	},
- 	{
- 		.name = "BMA280",
- 		.chip_id = 0xFB,
- 		.channels = bma280_accel_channels,
- 		.num_channels = ARRAY_SIZE(bma280_accel_channels),
--		.scale_table = { {2392, BMC150_ACCEL_DEF_RANGE_2G},
--				 {4785, BMC150_ACCEL_DEF_RANGE_4G},
--				 {9581, BMC150_ACCEL_DEF_RANGE_8G},
--				 {19152, BMC150_ACCEL_DEF_RANGE_16G} },
-+		.scale_table = { {2394, BMC150_ACCEL_DEF_RANGE_2G},
-+				 {4788, BMC150_ACCEL_DEF_RANGE_4G},
-+				 {9577, BMC150_ACCEL_DEF_RANGE_8G},
-+				 {19154, BMC150_ACCEL_DEF_RANGE_16G} },
- 	},
- };
- 
--- 
-2.32.0
+> 
+> Thanks!
+> Stephan
 

@@ -2,154 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 016993A4BC9
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Jun 2021 02:46:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DC773A4EA7
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Jun 2021 14:28:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229584AbhFLAsA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Jun 2021 20:48:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48938 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230356AbhFLAsA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Jun 2021 20:48:00 -0400
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39E2FC061574
-        for <linux-iio@vger.kernel.org>; Fri, 11 Jun 2021 17:45:46 -0700 (PDT)
-Received: by mail-pj1-x1031.google.com with SMTP id k22-20020a17090aef16b0290163512accedso8073514pjz.0
-        for <linux-iio@vger.kernel.org>; Fri, 11 Jun 2021 17:45:46 -0700 (PDT)
+        id S230526AbhFLMaH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 12 Jun 2021 08:30:07 -0400
+Received: from mail-oi1-f175.google.com ([209.85.167.175]:37376 "EHLO
+        mail-oi1-f175.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230191AbhFLMaG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Jun 2021 08:30:06 -0400
+Received: by mail-oi1-f175.google.com with SMTP id h9so8932712oih.4;
+        Sat, 12 Jun 2021 05:27:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=8JXYjRTwgmumkaPzJmtu0OBRj16JRGY+E0Hv05te5os=;
-        b=tZMJdlY4ojCMu32NGJUUafWfZ+pQbifXoLhNuwT1u+qnZ2iFTHyvGVOEuPE+ExzVq6
-         ngDnVOLswYBKEf5v52OLYr8FXHh+Sf+uLISkZAeVqQiUyGAhACyz/+gWY/q1IbjLtXC0
-         w755aUjiihWRXmhkUkSIZm6q+NRHLlJTR70+aFMmxITl3rHwG2RjaWOidcq/VSU5r6ZZ
-         PeC2OvAOkp9bjNzUIoDaES+L83tzgYVgjXiTEge0gPLyiurVWsYWkTQYCL1nX1FmcZ6V
-         LzHiUr8+mn8unJ7DsmfBcc+hdGei/pJUW8YUS5IPwkn1JCjJbTkE7+RVGMopNQyb8jvr
-         zhDg==
+        bh=HE18N15sbHAWuCNxwS8MJ4Z91CDwDRXGuQ4CjcS6FYc=;
+        b=u3IF3pA1zyTsfE3c6bWThAeN7o3zmBIDV3cyNZPQGKpPS7pIuyFjkO5en3QYwlGtSS
+         +3WJVXCjgcBkPTt0sM+hFBDQX5lsnH3P9H80c7nzCOrHwDO8APIxhakWHu41n9ew20xh
+         r0CAhNjmuObaOLISWMfpBV7QbCn7mvwqI4n/QvXln25mlN4v/cTUsCspDC/dEoQcg6Yu
+         LD2lfOHcWLgZKBJ67q7J5pBOSPLaBR0/oLLftXCvXeZgiqO/vhbs1ihO+71cxUSTZ/Mh
+         tNKHSDVGMgypnUWC1eAWLyZsr3cigJwFkzSguFwQZgsUJI4eCGzpGaonVdrA06kfdxsE
+         lw8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=8JXYjRTwgmumkaPzJmtu0OBRj16JRGY+E0Hv05te5os=;
-        b=m1fVondd9cJOHQPz+jeAApImVDPga0VyuD5jlmzIRkUAJ5/WNBIIIn2GubI1uCRi6W
-         j5kVrrjB31sGPun2pz1+t66QaQpvkHM8u6PL/cAAYSPfdmLhFV0XXuuzeOVwOXtqQCSX
-         /DEJRJ+Td8XQebMZAfWJuqHMHjfhTldCgy0aeh0RTvSVMy6zvUlJY/MhPZmUL1zmiXxm
-         octQAABhr+hQvKlVZR75Uqb+itSaZzXaDLoRQmLGOKjlXGAeADAMl06rljnG5QgGtBa7
-         Wnzj5hVzE/3SXJNKhAicMm6XEzWZMR0lHx1sJhqH2hk4X74wZwSnYbx2sLJUO9T9Nbor
-         K64A==
-X-Gm-Message-State: AOAM530MQvAmlbY/ffqYvaQND+41Zq+7dSHQ5W9Q1/o1Tyr64fCsYvf3
-        VQxSmEliaKI697mU4LbRyvk=
-X-Google-Smtp-Source: ABdhPJzF6V647TvGDw+NYcEgxTTuEiUWhr1uMGERdgAF2YQ3B2wyQDDhrtWta2BduMaja4mV+nNpig==
-X-Received: by 2002:a17:902:edcf:b029:10c:768:b657 with SMTP id q15-20020a170902edcfb029010c0768b657mr6342610plk.56.1623458745777;
-        Fri, 11 Jun 2021 17:45:45 -0700 (PDT)
-Received: from shinobu ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id a23sm5954695pff.43.2021.06.11.17.45.43
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=HE18N15sbHAWuCNxwS8MJ4Z91CDwDRXGuQ4CjcS6FYc=;
+        b=g9zP1sgAgLb0Yv7zZRHurxOVmV7Yvs22DpxR2jP662A6T+dAM2poW4Vlw4CCP95vzc
+         DQeaGI/BQVgmWp/NtycUGThvjG6TzKxSkjcDwvdblFgCZtHzPgs4aK4YZSSWtfqKco0P
+         WWqyyeJ+QUKsYNIhmQEfQ9zqZTPDK6eHAyshl03e/jDvVR5rvyf7MSJ5VqSksuw5x/Pa
+         iwfKYjJVhlkrBuO5GohKp2activ1usoHx0OyL8KXwV9S2FlusAgnGVhbzbF5wY6T62WH
+         2Kakb1fZrVjwEhDQQ3fS3XQRsNub2rGeaFG6docYHgK6s8MGBF82pLCKPXe+EWck/rTO
+         MMtA==
+X-Gm-Message-State: AOAM5311Sr7E67PLpBydyX3uKVYYaZzVIS5eiVsewfZDiVrCveBrbZ6A
+        GWeXPc+a8YWlhGbH4iZnXcA=
+X-Google-Smtp-Source: ABdhPJzQBf1fp5rBJ0YZfU6ENkp4jGsM8qGr9gsTZ84SduUWFNi0VKNMbqNdZJsu9ERNH6CfQZdPkA==
+X-Received: by 2002:aca:4482:: with SMTP id r124mr5355527oia.153.1623500811604;
+        Sat, 12 Jun 2021 05:26:51 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id k18sm2017730otj.42.2021.06.12.05.26.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Jun 2021 17:45:45 -0700 (PDT)
-Date:   Sat, 12 Jun 2021 09:45:41 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+        Sat, 12 Jun 2021 05:26:50 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Sat, 12 Jun 2021 05:26:49 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH 1/2] counter: intel-qep: Mark PM callbacks with
- __maybe_unused
-Message-ID: <YMQDtZ7o0MRvVdb9@shinobu>
-References: <20210611115558.796338-1-jarkko.nikula@linux.intel.com>
- <20210611182334.61133958@jic23-huawei>
+Cc:     linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
+        Jean Delvare <jdelvare@suse.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH] hwmon: (ntc_thermistor) Drop unused headers.
+Message-ID: <20210612122649.GA318728@roeck-us.net>
+References: <20210611142257.103094-1-jic23@kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="EIbE59nRuE1B+iKS"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210611182334.61133958@jic23-huawei>
+In-Reply-To: <20210611142257.103094-1-jic23@kernel.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Fri, Jun 11, 2021 at 03:22:57PM +0100, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> The IIO usage in this driver is purely consumer so it should only
+> be including linux/iio/consumer.h  Whilst here drop pm_runtime.h
+> as there is no runtime power management in the driver.
+> 
+> Found using include-what-you-use and manual inspection of the
+> suggestions.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Guenter Roeck <linux@roeck-us.net>
 
---EIbE59nRuE1B+iKS
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied.
 
-On Fri, Jun 11, 2021 at 06:23:34PM +0100, Jonathan Cameron wrote:
-> On Fri, 11 Jun 2021 14:55:57 +0300
-> Jarkko Nikula <jarkko.nikula@linux.intel.com> wrote:
->=20
-> > Remove CONFIG_PM ifdef and mark PM callbacks with __maybe_unused.
-> >=20
-> > Suggested-by: Jonathan Cameron <jic23@kernel.org>
-> > Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
->=20
-> Both applied to the togreg branch of iio.git and pushed out
-> as testing to let 0-day poke at them.
->=20
-> William, if you want to give feedback on these, still time for
-> me to add tags etc. They just seem trivial enough its not worth
-> wasting your time :)
->=20
-> Jonathan
+Thanks,
+Guenter
 
-Yes, these are pretty trivial and both look good to me. Feel free to add
-my Ack to both patches if there's still time.
-
-Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-
-> > ---
-> >  drivers/counter/intel-qep.c | 6 ++----
-> >  1 file changed, 2 insertions(+), 4 deletions(-)
-> >=20
-> > diff --git a/drivers/counter/intel-qep.c b/drivers/counter/intel-qep.c
-> > index ab10ba33f46a..a8d3dccecc0f 100644
-> > --- a/drivers/counter/intel-qep.c
-> > +++ b/drivers/counter/intel-qep.c
-> > @@ -473,8 +473,7 @@ static void intel_qep_remove(struct pci_dev *pci)
-> >  	intel_qep_writel(qep, INTEL_QEPCON, 0);
-> >  }
-> > =20
-> > -#ifdef CONFIG_PM
-> > -static int intel_qep_suspend(struct device *dev)
-> > +static int __maybe_unused intel_qep_suspend(struct device *dev)
-> >  {
-> >  	struct pci_dev *pdev =3D container_of(dev, struct pci_dev, dev);
-> >  	struct intel_qep *qep =3D pci_get_drvdata(pdev);
-> > @@ -486,7 +485,7 @@ static int intel_qep_suspend(struct device *dev)
-> >  	return 0;
-> >  }
-> > =20
-> > -static int intel_qep_resume(struct device *dev)
-> > +static int __maybe_unused intel_qep_resume(struct device *dev)
-> >  {
-> >  	struct pci_dev *pdev =3D container_of(dev, struct pci_dev, dev);
-> >  	struct intel_qep *qep =3D pci_get_drvdata(pdev);
-> > @@ -512,7 +511,6 @@ static int intel_qep_resume(struct device *dev)
-> > =20
-> >  	return 0;
-> >  }
-> > -#endif
-> > =20
-> >  static UNIVERSAL_DEV_PM_OPS(intel_qep_pm_ops,
-> >  			    intel_qep_suspend, intel_qep_resume, NULL);
->=20
-
---EIbE59nRuE1B+iKS
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmDEA50ACgkQhvpINdm7
-VJIYfRAA0AqX93eYEWVxN4wHtl2xKAbhNVJ1as4ieu6MQ7sYbFAPNjeaIwxPfwgH
-fPMP+EmpCbpvdtSkzGa0/xBUSei4hN3+Ab4pYLNAIuMYqIqgmr3r9oaAKTvwT4UI
-XecBymOgTKYpR6xsSF/GF9DbiwDXqT8uCB4XlJy5bKp7rXeyCGYb9ZNqh9cCm8/z
-hdISQ1cFB9X9HsRjOYUJ7SnzZkAtEg874oZaaypSpl1AxouNfpRXIrMQsMycZMaI
-mMvTbDgxCR+m06kKZDJ8hHUJI+lK37q2FNX3d14ftbprP/CL61ypPv4NHtsTuSo4
-z9V93QcjoMxKz0t/rAgsorZ90+FQXvC7c3QLflX69mDFJ0QHOUcNNsMUYoX0dda0
-qty2NjShbJflIxT+wdWke2D1TJN9sJj5sVWPsxYDmnev/N+e0vK4KLdsBRQCS2i/
-fN6NoTkX6WSRW7XQOmK7otFjpedCrgJXHODtm1VEaxUocaCBLL6vs0jcSFI+fTb1
-zrtgnsmhbV3ZjYEi4N9YyzD+PXKY/+3U5jNaQEcPcL98YaNbAP9wffyYY3AIvF0U
-YIIK3KbhsRGUqJQrNRRt91PL0jHQWCvcRHYyYmiOo+ia1OgGSEtsKOq+uXYvipV+
-ojY1pYSqwvhMZyamRrVFntW4dB7PGyR82cgGUvq0TExwWQRLKlU=
-=CdfL
------END PGP SIGNATURE-----
-
---EIbE59nRuE1B+iKS--
+> ---
+>  drivers/hwmon/ntc_thermistor.c | 4 ----
+>  1 file changed, 4 deletions(-)
+> 
+> diff --git a/drivers/hwmon/ntc_thermistor.c b/drivers/hwmon/ntc_thermistor.c
+> index 8587189c7f15..18fd6f12ca16 100644
+> --- a/drivers/hwmon/ntc_thermistor.c
+> +++ b/drivers/hwmon/ntc_thermistor.c
+> @@ -8,7 +8,6 @@
+>  
+>  #include <linux/slab.h>
+>  #include <linux/module.h>
+> -#include <linux/pm_runtime.h>
+>  #include <linux/math64.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/err.h>
+> @@ -17,9 +16,6 @@
+>  
+>  #include <linux/platform_data/ntc_thermistor.h>
+>  
+> -#include <linux/iio/iio.h>
+> -#include <linux/iio/machine.h>
+> -#include <linux/iio/driver.h>
+>  #include <linux/iio/consumer.h>
+>  
+>  #include <linux/hwmon.h>

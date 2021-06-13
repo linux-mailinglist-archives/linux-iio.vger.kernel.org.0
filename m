@@ -2,34 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E79933A595A
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Jun 2021 17:21:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06A843A595B
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Jun 2021 17:21:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231940AbhFMPXW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 13 Jun 2021 11:23:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:32772 "EHLO mail.kernel.org"
+        id S231941AbhFMPXX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Jun 2021 11:23:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:32782 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231934AbhFMPXU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 13 Jun 2021 11:23:20 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8934F61285;
-        Sun, 13 Jun 2021 15:21:18 +0000 (UTC)
+        id S231844AbhFMPXW (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 13 Jun 2021 11:23:22 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 61A116120E;
+        Sun, 13 Jun 2021 15:21:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623597679;
-        bh=EmaCDSVuN2EoRAgJ0f5x0SnwmyPJnN+RJlYUj4Gez84=;
+        s=k20201202; t=1623597681;
+        bh=3/7ZH7g1j1rFfoo5SRi/tmpWpYw4Vi9sb+xRO6Uci58=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ApSagRJ7Rhhqq2ed2xs6eSsMeRoO9pL5r+A7DbGs/kMuxoaL47jK8uVi9rPeMwZKr
-         si4VXiyHelaE6P8TxkJU/tHEjFloSZd/m9NI+5dbpUrXd++0SSSu4qLMA/vs7IFNlO
-         pEOxotJyXlgUp6YR+4XBY1EzzGlXWlQoLp1355y1wle7JA4U8+YrI3r+cYP/8nfMkY
-         uf2RucmVcdWGa9HWdR2hFm5FY6EolkaUUAwTWGqTZvierOAgogMYOSEamQMnoDPrRH
-         Evu2B6bpPG17AqEJrCsGEC+LRTdZeHnHW6o6jbdNrqitE51KXP9luZZM5fu0To4qcf
-         91YXGVPa3INFg==
+        b=JoOJrOew9U83dlBDsQTytPuU/9pm33vp0uZaq8DSBjW3Sz8WGTd6B7V/QwBAyOEFv
+         48vjvUOEy1kRGE70gjasUnwJmEXwwncHplZIvZ8/01HxqFglnJHNw/tt/eZYzUCvNO
+         0/iL/0FGTg78csNVjCfRB22wEOul0zO8pP6j1yU8FQ5bAlqVttSsGmaZH5/uls6yqR
+         XzmTc/9H4l8x7sJzVEqsyFdkH+YCP3T8K0UZlP79BKiYrIY00+iomv7twlTQ2qD78C
+         yHmEb36xwYwbQeaUjqZOO/4M7P/W+A+BE2dtxoYYWmxkL/BEaGRGs/TjKS7vlS0hf0
+         fCJB3lbNycvug==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Song Qiang <songqiang1304521@gmail.com>
-Subject: [PATCH RESEND 5/8] iio: magn: rm3100: Fix alignment of buffer in iio_push_to_buffers_with_timestamp()
-Date:   Sun, 13 Jun 2021 16:22:58 +0100
-Message-Id: <20210613152301.571002-6-jic23@kernel.org>
+        Mathieu Othacehe <m.othacehe@gmail.com>
+Subject: [PATCH RESEND 6/8] iio: light: vcnl4000: Fix buffer alignment in iio_push_to_buffers_with_timestamp()
+Date:   Sun, 13 Jun 2021 16:22:59 +0100
+Message-Id: <20210613152301.571002-7-jic23@kernel.org>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210613152301.571002-1-jic23@kernel.org>
 References: <20210613152301.571002-1-jic23@kernel.org>
@@ -45,30 +45,32 @@ Add __aligned(8) to ensure the buffer passed to
 iio_push_to_buffers_with_timestamp() is suitable for the naturally
 aligned timestamp that will be inserted.
 
-Here an explicit structure is not used, because this buffer is used in
-a non-trivial way for data repacking.
+Here an explicit structure is not used, because the holes would
+necessitate the addition of an explict memset(), to avoid a kernel
+data leak, making for a less minimal fix.
 
-Fixes: 121354b2eceb ("iio: magnetometer: Add driver support for PNI RM3100")
+Found during an audit of all callers of iio_push_to_buffers_with_timestamp()
+
+Fixes: 8fe78d5261e7 ("iio: vcnl4000: Add buffer support for VCNL4010/20.")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Song Qiang <songqiang1304521@gmail.com>
+Cc: Mathieu Othacehe <m.othacehe@gmail.com>
 ---
- drivers/iio/magnetometer/rm3100-core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iio/light/vcnl4000.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/magnetometer/rm3100-core.c b/drivers/iio/magnetometer/rm3100-core.c
-index 4df5887fd04c..13914273c999 100644
---- a/drivers/iio/magnetometer/rm3100-core.c
-+++ b/drivers/iio/magnetometer/rm3100-core.c
-@@ -78,7 +78,8 @@ struct rm3100_data {
- 	bool use_interrupt;
- 	int conversion_time;
- 	int scale;
--	u8 buffer[RM3100_SCAN_BYTES];
-+	/* Ensure naturally aligned timestamp */
-+	u8 buffer[RM3100_SCAN_BYTES] __aligned(8);
- 	struct iio_trigger *drdy_trig;
- 
- 	/*
+diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+index 01772327a947..e02e92bc2928 100644
+--- a/drivers/iio/light/vcnl4000.c
++++ b/drivers/iio/light/vcnl4000.c
+@@ -908,7 +908,7 @@ static irqreturn_t vcnl4010_trigger_handler(int irq, void *p)
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct vcnl4000_data *data = iio_priv(indio_dev);
+ 	const unsigned long *active_scan_mask = indio_dev->active_scan_mask;
+-	u16 buffer[8] = {0}; /* 1x16-bit + ts */
++	u16 buffer[8] __aligned(8) = {0}; /* 1x16-bit + naturally aligned ts */
+ 	bool data_read = false;
+ 	unsigned long isr;
+ 	int val = 0;
 -- 
 2.32.0
 

@@ -2,34 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C3383A595C
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Jun 2021 17:21:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B6C83A595D
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Jun 2021 17:21:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231948AbhFMPXY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 13 Jun 2021 11:23:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:32790 "EHLO mail.kernel.org"
+        id S231949AbhFMPX0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Jun 2021 11:23:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:32798 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231934AbhFMPXY (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 13 Jun 2021 11:23:24 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 096C061357;
-        Sun, 13 Jun 2021 15:21:21 +0000 (UTC)
+        id S231844AbhFMPX0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 13 Jun 2021 11:23:26 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id BE63E61358;
+        Sun, 13 Jun 2021 15:21:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623597683;
-        bh=PF1US0c7Wsh9C/4TzIRkm0l7hg4wgena7Kc0Y2kWV9g=;
+        s=k20201202; t=1623597685;
+        bh=OsP7Jyl45mX+TaPWmlosk3K0gqYWkdCUU08UScKj36s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GkGfo7UeO0Q6FlseiBRAcnxlQ3JLo7/8pOAxuAk8zSOoKCf7AVcojoAOGNnTblDkZ
-         G9pqrFx9R7NUlyd3YHICuTJEWqfwAWMPEChvZ9oMBPYXsDFSOYQ/5omDnq4lqjpM5+
-         zEl/rdiT9Rpphh00m845iJXk59O+aaDSP31zXCqnnc89hNiJsi6Kcm2uIMAwN4ByD2
-         a3WTismLKlpwU+DzHVUgOknqlkc21RBNNSgD8M+e6fgUWno2ZF85crGw5HbRTY4pAN
-         LgtouDx52gpbWpbFsmELHl2fNA+v5k6xD0vIA8maVu5mlLivCX37E9l3KTorHZ6PAP
-         etx4W1xNboFjw==
+        b=O+Ekdxn0PVUVWVWnbUNxc1++APw0a+dVOoogrN/H392WFqXceAdC5BA2BX6QnHSvy
+         G4MIFx7nJ7I0ST5spjEkohFzOdIRemPO78NlgtrHopcGWpSmeWZFGZj1eqEUU3hs4W
+         64Zb1NS4flStvvpHmuLttQRlC+cVm7wynIhiw6BW9eshuBbtqIcXDqilHnrud3zQUQ
+         FLfetqsP4KgP3IjamEvyNeaKL3CVedIbJ3UUhW0RVBj0BAdSkBAUWjdNg6/rLfb1HX
+         iBRWXfqMOArkhsyGYv8z2aubaMar3qffjSTSftMS89QPrKVKaYDjaODnvD/8Hhc8IK
+         qHH7ARXsN5YcA==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Parthiban Nallathambi <pn@denx.de>
-Subject: [PATCH RESEND 7/8] iio: light: vcnl4035: Fix buffer alignment in iio_push_to_buffers_with_timestamp()
-Date:   Sun, 13 Jun 2021 16:23:00 +0100
-Message-Id: <20210613152301.571002-8-jic23@kernel.org>
+        Mathieu Othacehe <m.othacehe@gmail.com>
+Subject: [PATCH RESEND 8/8] iio: prox: isl29501: Fix buffer alignment in iio_push_to_buffers_with_timestamp()
+Date:   Sun, 13 Jun 2021 16:23:01 +0100
+Message-Id: <20210613152301.571002-9-jic23@kernel.org>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210613152301.571002-1-jic23@kernel.org>
 References: <20210613152301.571002-1-jic23@kernel.org>
@@ -46,30 +46,29 @@ iio_push_to_buffers_with_timestamp() is suitable for the naturally
 aligned timestamp that will be inserted.
 
 Here an explicit structure is not used, because the holes would
-necessitate the addition of an explict memset(), to avoid a potential
-kernel data leak, making for a less minimal fix.
+necessitate the addition of an explict memset(), to avoid a kernel
+data leak, making for a less minimal fix.
 
-Fixes: 55707294c4eb ("iio: light: Add support for vishay vcnl40352")
+Fixes: 1c28799257bc ("iio: light: isl29501: Add support for the ISL29501 ToF sensor.")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Parthiban Nallathambi <pn@denx.de>
+Cc: Mathieu Othacehe <m.othacehe@gmail.com>
 ---
- drivers/iio/light/vcnl4035.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iio/proximity/isl29501.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/light/vcnl4035.c b/drivers/iio/light/vcnl4035.c
-index fd2f181b16db..0db306ee910e 100644
---- a/drivers/iio/light/vcnl4035.c
-+++ b/drivers/iio/light/vcnl4035.c
-@@ -102,7 +102,8 @@ static irqreturn_t vcnl4035_trigger_consumer_handler(int irq, void *p)
- 	struct iio_poll_func *pf = p;
+diff --git a/drivers/iio/proximity/isl29501.c b/drivers/iio/proximity/isl29501.c
+index 90e76451c972..5b6ea783795d 100644
+--- a/drivers/iio/proximity/isl29501.c
++++ b/drivers/iio/proximity/isl29501.c
+@@ -938,7 +938,7 @@ static irqreturn_t isl29501_trigger_handler(int irq, void *p)
  	struct iio_dev *indio_dev = pf->indio_dev;
- 	struct vcnl4035_data *data = iio_priv(indio_dev);
--	u8 buffer[ALIGN(sizeof(u16), sizeof(s64)) + sizeof(s64)];
-+	/* Ensure naturally aligned timestamp */
-+	u8 buffer[ALIGN(sizeof(u16), sizeof(s64)) + sizeof(s64)]  __aligned(8);
- 	int ret;
+ 	struct isl29501_private *isl29501 = iio_priv(indio_dev);
+ 	const unsigned long *active_mask = indio_dev->active_scan_mask;
+-	u32 buffer[4] = {}; /* 1x16-bit + ts */
++	u32 buffer[4] __aligned(8) = {}; /* 1x16-bit + naturally aligned ts */
  
- 	ret = regmap_read(data->regmap, VCNL4035_ALS_DATA, (int *)buffer);
+ 	if (test_bit(ISL29501_DISTANCE_SCAN_INDEX, active_mask))
+ 		isl29501_register_read(isl29501, REG_DISTANCE, buffer);
 -- 
 2.32.0
 

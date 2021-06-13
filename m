@@ -2,27 +2,27 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02D0A3A5938
+	by mail.lfdr.de (Postfix) with ESMTP id 4B49A3A593A
 	for <lists+linux-iio@lfdr.de>; Sun, 13 Jun 2021 17:08:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231844AbhFMPKv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S231782AbhFMPKv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Sun, 13 Jun 2021 11:10:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59538 "EHLO mail.kernel.org"
+Received: from mail.kernel.org ([198.145.29.99]:59596 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231782AbhFMPKu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 13 Jun 2021 11:10:50 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6DAA661285;
-        Sun, 13 Jun 2021 15:08:44 +0000 (UTC)
+        id S231841AbhFMPKv (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 13 Jun 2021 11:10:51 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 995376128A;
+        Sun, 13 Jun 2021 15:08:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623596926;
-        bh=KVrdJaAQ5hLeF6HsSxPKqs8ME0ny2DG/KFMmusvANTo=;
-        h=From:To:Cc:Subject:Date:From;
-        b=NFGELbjL3xQ5YnhI48FWwXw8w8rLwnMiCYH2H145n0+nBC9j6iZmYvxTM8qDclJHz
-         qadvc/PZLNSfI5Isir7coDmZLswtH0wyNsJU1S4gY9SH4BN4OvwgbBl97erQjINp0C
-         p2ndF2uPutxEBMd3pBVRFoVVKuqimWNca2rA53boHv43lONSSfLvkMbM8Nan9jGb+8
-         /OejCNerYWU9QyAnXyoCtDAut4xW18kT0QExqFRx7bhypUl6gq6sVDQ51dngbIAZu8
-         59Q7NEnDv84bk/xIBYabAf1J1wGRSTiV2bfblc44NbFkPdrwinX2TMqqBY5a1p/O4+
-         ytYrt0dWH+7dA==
+        s=k20201202; t=1623596929;
+        bh=TftDME3258diEPPsF5wBkvYXL7CwJi11GQ4g7EHXE28=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=nTmzIc0vP6dSWnukkuLtzGPlmDxAu5yqzVmnB+D7FyfvRky55GOFQ0eUugOcQTUZH
+         WhDXsJ5kG91GkuWXVfLbm3GcRtosg99Us7oOPLCmIsau15uOkYC8YBIm5YjOm4x5f/
+         PK+8brVU2SKXeOpq9siGaP/SszPgipkc//6kv+tfcrPpd+7qFxTLvr1kyUXQ5ZXYsN
+         WGQdICoVphs4GPn9T3B/eHUFn/deNMPTER135gt86OTzdt4q+dcmYoRdX7Vnf2ROrr
+         kXncA+aFRnLm1V9bx9RNnM67zaa7qX8re8vjWLZr3t/tQ0qf/cdGzlI0CGrfQPYqNe
+         67lh+rlt8YELA==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
@@ -30,12 +30,13 @@ To:     linux-iio@vger.kernel.org,
 Cc:     Linus Walleij <linus.walleij@linaro.org>,
         Jan Kiszka <jan.kiszka@siemens.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 0/4] IIO: Alignment fixes part 4 - bounce buffers for the hard cases.
-Date:   Sun, 13 Jun 2021 16:10:35 +0100
-Message-Id: <20210613151039.569883-1-jic23@kernel.org>
+Subject: [PATCH v2 1/4] iio: core: Introduce iio_push_to_buffers_with_ts_unaligned()
+Date:   Sun, 13 Jun 2021 16:10:36 +0100
+Message-Id: <20210613151039.569883-2-jic23@kernel.org>
 X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20210613151039.569883-1-jic23@kernel.org>
+References: <20210613151039.569883-1-jic23@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
@@ -43,104 +44,119 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Thanks to Andy and Nuno for reviews.
+Whilst it is almost always possible to arrange for scan data to be
+read directly into a buffer that is suitable for passing to
+iio_push_to_buffers_with_timestamp(), there are a few places where
+leading data needs to be skipped over.
 
-Chances since V1/RFC:
-* Renamed the function to iio_push_to_buffer_with_ts_unaligned()
-* Fixed the various bugs people pointed out.
-* Used more standard realloc handling to be more 'obviously' correct.
-* Added some additional comments on the sizing of the copy to explain why
-  it is a conservative estimate and may copy more than strictly necessary.
+For these cases introduce a function that will allocate an appropriate
+sized and aligned bounce buffer (if not already allocated) and copy
+the unaligned data into that before calling
+iio_push_to_buffers_with_timestamp() on the bounce buffer.
+We tie the lifespace of this buffer to that of the iio_dev.dev
+which should ensure no memory leaks occur.
 
-A few things we discussed I didn't do (for now)...
-
-I decided against adding explicit bounce buffer allocation calls for now,
-though I'm open to doing that in future if we find doing the somewhat hidden
-realloc to be a problem.
-
-I haven't computed a more precise data_sz as I don't thing the benefits
-of a more precise copy or not passing the size, make it worth the slight
-reduction in complexity for the callers.  Again, open to revisiting this
-in future!
-
-I tested it by hacking the dummy driver to shift it's data by one
-byte and call iio_push_to_buffers_with_ts_unaligned().
-
-Strictly a hack. I definitely don't want to move this driver over to this
-new interface as it might encourage inappropriate use.
-
-diff --git a/drivers/iio/dummy/iio_simple_dummy_buffer.c b/drivers/iio/dummy/iio_simple_dummy_buffer.c
-index 59aa60d4ca37..b47af7df8efc 100644
---- a/drivers/iio/dummy/iio_simple_dummy_buffer.c
-+++ b/drivers/iio/dummy/iio_simple_dummy_buffer.c
-@@ -19,6 +19,7 @@
- #include <linux/iio/buffer.h>
- #include <linux/iio/trigger_consumer.h>
- #include <linux/iio/triggered_buffer.h>
-+#include <asm/unaligned.h>
- 
- #include "iio_simple_dummy.h"
- 
-@@ -78,12 +79,13 @@ static irqreturn_t iio_simple_dummy_trigger_h(int irq, void *p)
-                        j = find_next_bit(indio_dev->active_scan_mask,
-                                          indio_dev->masklength, j);
-                        /* random access read from the 'device' */
--                       data[i] = fakedata[j];
-+//                     data[i] = fakedata[j];
-+                       put_unaligned_le16(fakedata[j], ((u8 *)(&data[i])) + 1);
-                        len += 2;
-                }
-        }
- 
--       iio_push_to_buffers_with_timestamp(indio_dev, data,
-+       iio_push_to_buffers_with_ts_unaligned(indio_dev, ((u8 *)(data)) + 1, indio_dev->scan_bytes - 8,
-                                           iio_get_time_ns(indio_dev));
-
-
-v1 description:
-
-I finally got around to do a manual audit of all the calls to
-iio_push_to_buffers_with_timestamp() which has the somewhat odd requirements
-of:
-1. 8 byte alignment of the provided buffer.
-2. space for an 8 byte naturally aligned timestamp to be inserted at the
-   end.
-
-Unfortunately there were rather a lot of these left, but time to bite the bullet
-and clean them up.
-
-As discussed previous in
-https://lore.kernel.org/linux-iio/20200920112742.170751-1-jic23@kernel.org/
-it is not easy to fix the alignment issue without requiring a bounce buffer.
-This final part of the 4 sets of fixes is concerned with the cases where
-bounce buffers are the proposed solutions.
-
-In these cases we have hardware that reads a prefix that we wish to
-drop. That makes it hard to directly read the data into the correct location.
-
-Rather than implementing bouce buffers in each case, this set provides some
-magic in the core to handle them via a new function.
-iio_push_to_buffers_with_ts_na() - non aligned
-
-Note this is totally untested as I don't have suitable hardware or emulation.
-I can fake something up in the dummy driver or via QEMU but I definitely want
-both eyes and testing on this series!
-
-Jonathan Cameron (4):
-  iio: core: Introduce iio_push_to_buffers_with_ts_unaligned()
-  iio: adc: ti-adc108s102: Fix alignment of buffer pushed to iio
-    buffers.
-  iio: gyro: mpu3050: Fix alignment and size issues with buffers.
-  iio: imu: adis16400: Fix buffer alignment requirements.
-
- drivers/iio/adc/ti-adc108s102.c   | 11 ++++----
- drivers/iio/gyro/mpu3050-core.c   | 24 ++++++++--------
- drivers/iio/imu/adis16400.c       | 20 ++++++++++----
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
  drivers/iio/industrialio-buffer.c | 46 +++++++++++++++++++++++++++++++
  include/linux/iio/buffer.h        |  4 +++
  include/linux/iio/iio-opaque.h    |  4 +++
- 6 files changed, 86 insertions(+), 23 deletions(-)
+ 3 files changed, 54 insertions(+)
 
+diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+index fdd623407b96..5241b5a5c6c0 100644
+--- a/drivers/iio/industrialio-buffer.c
++++ b/drivers/iio/industrialio-buffer.c
+@@ -1730,6 +1730,52 @@ int iio_push_to_buffers(struct iio_dev *indio_dev, const void *data)
+ }
+ EXPORT_SYMBOL_GPL(iio_push_to_buffers);
+ 
++/**
++ * iio_push_to_buffers_with_ts_unaligned() - push to registered buffer,
++ *    no alignment or space requirements.
++ * @indio_dev:		iio_dev structure for device.
++ * @data:		channel data excluding the timestamp.
++ * @data_sz:		size of data.
++ * @timestamp:		timestamp for the sample data.
++ *
++ * This special variant of iio_push_to_buffers_with_timestamp() does
++ * not require space for the timestamp, or 8 byte alignment of data.
++ * It does however require an allocation on first call and additional
++ * copies on all calls, so should be avoided if possible.
++ */
++int iio_push_to_buffers_with_ts_unaligned(struct iio_dev *indio_dev,
++					  const void *data,
++					  size_t data_sz,
++					  int64_t timestamp)
++{
++	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
++
++	/*
++	 * Conservative estimate - we can always safely copy the minimum
++	 * of either the data provided or the length of the destination buffer.
++	 * This relaxed limit allows the calling drivers to be lax about
++	 * tracking the size of the data they are pushing, at the cost of
++	 * unnecessary copying of padding.
++	 */
++	data_sz = min_t(size_t, indio_dev->scan_bytes, data_sz);
++	if (iio_dev_opaque->bounce_buffer_size !=  indio_dev->scan_bytes) {
++		void *bb;
++
++		bb = devm_krealloc(&indio_dev->dev,
++				   iio_dev_opaque->bounce_buffer,
++				   indio_dev->scan_bytes, GFP_KERNEL);
++		if (!bb)
++			return -ENOMEM;
++		iio_dev_opaque->bounce_buffer = bb;
++		iio_dev_opaque->bounce_buffer_size = indio_dev->scan_bytes;
++	}
++	memcpy(iio_dev_opaque->bounce_buffer, data, data_sz);
++	return iio_push_to_buffers_with_timestamp(indio_dev,
++						  iio_dev_opaque->bounce_buffer,
++						  timestamp);
++}
++EXPORT_SYMBOL_GPL(iio_push_to_buffers_with_ts_unaligned);
++
+ /**
+  * iio_buffer_release() - Free a buffer's resources
+  * @ref: Pointer to the kref embedded in the iio_buffer struct
+diff --git a/include/linux/iio/buffer.h b/include/linux/iio/buffer.h
+index b6928ac5c63d..451379a3984a 100644
+--- a/include/linux/iio/buffer.h
++++ b/include/linux/iio/buffer.h
+@@ -38,6 +38,10 @@ static inline int iio_push_to_buffers_with_timestamp(struct iio_dev *indio_dev,
+ 	return iio_push_to_buffers(indio_dev, data);
+ }
+ 
++int iio_push_to_buffers_with_ts_unaligned(struct iio_dev *indio_dev,
++					  const void *data, size_t data_sz,
++					  int64_t timestamp);
++
+ bool iio_validate_scan_mask_onehot(struct iio_dev *indio_dev,
+ 				   const unsigned long *mask);
+ 
+diff --git a/include/linux/iio/iio-opaque.h b/include/linux/iio/iio-opaque.h
+index c9504e9da571..2be12b7b5dc5 100644
+--- a/include/linux/iio/iio-opaque.h
++++ b/include/linux/iio/iio-opaque.h
+@@ -23,6 +23,8 @@
+  * @groupcounter:		index of next attribute group
+  * @legacy_scan_el_group:	attribute group for legacy scan elements attribute group
+  * @legacy_buffer_group:	attribute group for legacy buffer attributes group
++ * @bounce_buffer:		for devices that call iio_push_to_buffers_with_timestamp_unaligned()
++ * @bounce_buffer_size:		size of currently allocate bounce buffer
+  * @scan_index_timestamp:	cache of the index to the timestamp
+  * @clock_id:			timestamping clock posix identifier
+  * @chrdev:			associated character device
+@@ -50,6 +52,8 @@ struct iio_dev_opaque {
+ 	int				groupcounter;
+ 	struct attribute_group		legacy_scan_el_group;
+ 	struct attribute_group		legacy_buffer_group;
++	void				*bounce_buffer;
++	size_t				bounce_buffer_size;
+ 
+ 	unsigned int			scan_index_timestamp;
+ 	clockid_t			clock_id;
 -- 
 2.32.0
 

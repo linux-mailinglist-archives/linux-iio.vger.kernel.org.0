@@ -2,27 +2,27 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E86BE3A593B
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Jun 2021 17:08:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08D0F3A593C
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Jun 2021 17:08:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231852AbhFMPKw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 13 Jun 2021 11:10:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59646 "EHLO mail.kernel.org"
+        id S231858AbhFMPK4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Jun 2021 11:10:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59696 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231841AbhFMPKw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 13 Jun 2021 11:10:52 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7904361354;
-        Sun, 13 Jun 2021 15:08:49 +0000 (UTC)
+        id S231841AbhFMPKz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 13 Jun 2021 11:10:55 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0DBAF611C0;
+        Sun, 13 Jun 2021 15:08:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623596931;
-        bh=evQspTvNNzcemrt8Qfvezi2VvurRJB1NS3HL5Yx6//0=;
+        s=k20201202; t=1623596934;
+        bh=NuLD9nXi+L3dTsAfhpzZdAOEKP0d7QlNkroYcf+j7lQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UHzUsIa9V64wW8yIFuoW2lgcUZysLRmXV+6KS03mK6dPCNtIM5Q4SFYWQduFZ1nqb
-         ZS7zdWGiaEdr0de2D6ZQVYvPH70OfkioNhOaHpGci7lR97j/o7chYV2hzFRd41my0+
-         q/irdFSZLvHw76Z0t+9vqPIcCN5PnOz7BxtD0mMn/AGXRwAoqIiJ4L+loaW+0PKWQk
-         SM0d1a/SH8LsWKPk0rKKe6CO/FR86RB0GaEWZVEVeN/67tjrqd/NilBUGD7bkeMx/A
-         3y3XfOeidOxFPFCADIjwKPSg94npl0p7V0DDEXGx2eQjrJzXJC64RR3StYetTf6lP/
-         DxYPlQF2Te7sw==
+        b=WCgLBfjWd9syT9jMuHK64PNqfW9hOBPEvdhCtx0AT0YQ170p2eR1FGlQQVaDXQf/4
+         EdWl4XxUrNYI19uqzKF0DeGzAD0/+kTUOHMJWL0RoqudFNTYSEsulrarHyI7VSqEmP
+         sXmBc2yS8JUvsui5nFhXHNdbIEE9dzmUbFMYfpXlUn9zzezqgmw+/Q9oR1eAn79AJV
+         WS9b1CTpgBeJyME9mKDu2T/swjxhFkAQaRnh5JogQL3tLyk26lXhUs9RxBgNY5P7cL
+         4SoGqBNX79zXoM+K2mceBOhxAJ16m87/PEkc1N/08HnXOXt2ZOpCwqJwF/5PxhS7hr
+         Z37zD/wC/i68g==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
@@ -30,9 +30,9 @@ To:     linux-iio@vger.kernel.org,
 Cc:     Linus Walleij <linus.walleij@linaro.org>,
         Jan Kiszka <jan.kiszka@siemens.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 2/4] iio: adc: ti-adc108s102: Fix alignment of buffer pushed to iio buffers.
-Date:   Sun, 13 Jun 2021 16:10:37 +0100
-Message-Id: <20210613151039.569883-3-jic23@kernel.org>
+Subject: [PATCH v2 3/4] iio: gyro: mpu3050: Fix alignment and size issues with buffers.
+Date:   Sun, 13 Jun 2021 16:10:38 +0100
+Message-Id: <20210613151039.569883-4-jic23@kernel.org>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210613151039.569883-1-jic23@kernel.org>
 References: <20210613151039.569883-1-jic23@kernel.org>
@@ -44,54 +44,80 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Use the newly introduce iio_push_to_buffers_with_ts_unaligned() function
-to ensure a bounce buffer is used to provide the required alignment and
-space padding needed by the IIO core which requires the timestamp
-is naturally aligned.  There will be a performance cost to this change
-but it will ensure the driver works on platforms that do not support
-unaligned 8 byte assignments, and with consumer drivers that may
-assume natural alignment of the timestamp.
+Fix a set of closely related issues.
+1. When using fifo_values() there was not enough space for the timestamp to
+   be inserted by iio_push_to_buffers_with_timestamp()
+2. fifo_values() did not meet the alignment requirement of
+   iio_push_to_buffers_with_timestamp()
+3. hw_values did not meet the alignment requirement either.
 
-Issue found as part of an audit of all calls to
-iio_push_to_buffers_with_timestamp()
+1 and 2 fixed by using new iio_push_to_buffers_with_ts_unaligned() which has
+no alignment or space padding requirements.
+3 fixed by introducing a structure that makes the space and alignment
+requirements explicit.
 
-Fixes: 7e87d11c9bda ("iio: adc: Add support for TI ADC108S102 and ADC128S102")
+Fixes: 3904b28efb2c ("iio: gyro: Add driver for the MPU-3050 gyroscope")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Jan Kiszka <jan.kiszka@siemens.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/iio/adc/ti-adc108s102.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/iio/gyro/mpu3050-core.c | 24 +++++++++++-------------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/iio/adc/ti-adc108s102.c b/drivers/iio/adc/ti-adc108s102.c
-index db902aef2abe..c8e48881c37f 100644
---- a/drivers/iio/adc/ti-adc108s102.c
-+++ b/drivers/iio/adc/ti-adc108s102.c
-@@ -75,9 +75,9 @@ struct adc108s102_state {
- 	 *  rx_buf: |XX|R0|R1|R2|R3|R4|R5|R6|R7|tt|tt|tt|tt|
- 	 *
- 	 *  tx_buf: 8 channel read commands, plus 1 dummy command
--	 *  rx_buf: 1 dummy response, 8 channel responses, plus 64-bit timestamp
-+	 *  rx_buf: 1 dummy response, 8 channel responses
- 	 */
--	__be16				rx_buf[13] ____cacheline_aligned;
-+	__be16				rx_buf[9] ____cacheline_aligned;
- 	__be16				tx_buf[9] ____cacheline_aligned;
- };
+diff --git a/drivers/iio/gyro/mpu3050-core.c b/drivers/iio/gyro/mpu3050-core.c
+index 3225de1f023b..ea387efab62d 100644
+--- a/drivers/iio/gyro/mpu3050-core.c
++++ b/drivers/iio/gyro/mpu3050-core.c
+@@ -471,13 +471,10 @@ static irqreturn_t mpu3050_trigger_handler(int irq, void *p)
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct mpu3050 *mpu3050 = iio_priv(indio_dev);
+ 	int ret;
+-	/*
+-	 * Temperature 1*16 bits
+-	 * Three axes 3*16 bits
+-	 * Timestamp 64 bits (4*16 bits)
+-	 * Sum total 8*16 bits
+-	 */
+-	__be16 hw_values[8];
++	struct {
++		__be16 chans[4];
++		s64 timestamp __aligned(8);
++	} scan;
+ 	s64 timestamp;
+ 	unsigned int datums_from_fifo = 0;
  
-@@ -149,9 +149,10 @@ static irqreturn_t adc108s102_trigger_handler(int irq, void *p)
- 		goto out_notify;
+@@ -572,9 +569,10 @@ static irqreturn_t mpu3050_trigger_handler(int irq, void *p)
+ 				fifo_values[4]);
  
- 	/* Skip the dummy response in the first slot */
--	iio_push_to_buffers_with_timestamp(indio_dev,
--					   (u8 *)&st->rx_buf[1],
--					   iio_get_time_ns(indio_dev));
-+	iio_push_to_buffers_with_ts_unaligned(indio_dev,
-+					      &st->rx_buf[1],
-+					      st->ring_xfer.len - sizeof(st->rx_buf[1]),
-+					      iio_get_time_ns(indio_dev));
+ 			/* Index past the footer (fifo_values[0]) and push */
+-			iio_push_to_buffers_with_timestamp(indio_dev,
+-							   &fifo_values[1],
+-							   timestamp);
++			iio_push_to_buffers_with_ts_unaligned(indio_dev,
++							      &fifo_values[1],
++							      sizeof(__be16) * 4,
++							      timestamp);
  
- out_notify:
- 	iio_trigger_notify_done(indio_dev->trig);
+ 			fifocnt -= toread;
+ 			datums_from_fifo++;
+@@ -632,15 +630,15 @@ static irqreturn_t mpu3050_trigger_handler(int irq, void *p)
+ 		goto out_trigger_unlock;
+ 	}
+ 
+-	ret = regmap_bulk_read(mpu3050->map, MPU3050_TEMP_H, &hw_values,
+-			       sizeof(hw_values));
++	ret = regmap_bulk_read(mpu3050->map, MPU3050_TEMP_H, scan.chans,
++			       sizeof(scan.chans));
+ 	if (ret) {
+ 		dev_err(mpu3050->dev,
+ 			"error reading axis data\n");
+ 		goto out_trigger_unlock;
+ 	}
+ 
+-	iio_push_to_buffers_with_timestamp(indio_dev, hw_values, timestamp);
++	iio_push_to_buffers_with_timestamp(indio_dev, &scan, timestamp);
+ 
+ out_trigger_unlock:
+ 	mutex_unlock(&mpu3050->lock);
 -- 
 2.32.0
 

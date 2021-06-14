@@ -2,87 +2,100 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 93C463A5CA3
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Jun 2021 07:57:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D28A43A5D86
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Jun 2021 09:16:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229811AbhFNF7Z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 14 Jun 2021 01:59:25 -0400
-Received: from first.geanix.com ([116.203.34.67]:48554 "EHLO first.geanix.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229696AbhFNF7Z (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 14 Jun 2021 01:59:25 -0400
-Received: from skn-laptop (unknown [185.233.254.173])
-        by first.geanix.com (Postfix) with ESMTPSA id D69214C243E;
-        Mon, 14 Jun 2021 05:57:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1623650240; bh=GVQ17txVyp1XatiX0bVNk3xO9ZBTR3YXqbKfy3qnRsM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To;
-        b=QrocGVzWP4hfrBxb6L5EQGRuHcZY5vOtSP9uDfen2MMTfYwFZKSweObycY0FSsWHF
-         AWloTDbusg36kPYhgjpg7qlVJCacaXCYkJypHOYb/6gT1MEiEUglgEolCgWkQwRQNB
-         OKKdgNU4yrZd6f2Ttim/hbd5jHjnqTE+7DRRQFVe8IiLTr5wPULe14USwkpISEkk0t
-         VaT+NFlq/cIWbTYNWlwzyGvF6cPbos7jhCxFrBbC0y/SWD2EEKSHNIpkJD9NrqUMfh
-         p3tSNnopEhIjAqOyJvwJToPTuQGjZDmEgejkmiaknMZp/W3PdULyad+l6ltj0E+AHa
-         B1h4KwcefEYig==
-Date:   Mon, 14 Jun 2021 07:57:19 +0200
-From:   Sean Nyekjaer <sean@geanix.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 06/12] iio:accel:fxls8962af: Add a few missing includes.
-Message-ID: <20210614055719.iee2wyhlt4awbyxr@skn-laptop>
-References: <20210611171355.202903-1-jic23@kernel.org>
- <20210611171355.202903-7-jic23@kernel.org>
+        id S232475AbhFNHSS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 14 Jun 2021 03:18:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45428 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232096AbhFNHSR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Jun 2021 03:18:17 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50193C061756
+        for <linux-iio@vger.kernel.org>; Mon, 14 Jun 2021 00:16:14 -0700 (PDT)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1lsgog-0000BB-Lg; Mon, 14 Jun 2021 09:15:26 +0200
+Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1lsgoe-0005Jf-D8; Mon, 14 Jun 2021 09:15:24 +0200
+Date:   Mon, 14 Jun 2021 09:15:21 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Nikita Shubin <nikita.shubin@maquefel.me>,
+        Vinod Koul <vkoul@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, dmaengine@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-pwm@vger.kernel.org, linux-spi@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/7] Prepare EP93xx drivers for Common Clock Framework
+Message-ID: <20210614071521.bv6tc5d27tj3yvlv@pengutronix.de>
+References: <20210613233041.128961-1-alexander.sverdlin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="tzksnyblxledsl3b"
 Content-Disposition: inline
-In-Reply-To: <20210611171355.202903-7-jic23@kernel.org>
-X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
-        autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on 93bd6fdb21b5
+In-Reply-To: <20210613233041.128961-1-alexander.sverdlin@gmail.com>
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jun 11, 2021 at 06:13:48PM +0100, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> Based on consideration of the output of the include-what-you-use tool.
-> Note that in this driver the main reason to do this is to ensure
-> consistency across IIO.
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Sean Nyekjaer <sean@geanix.com>
 
-Reviewed-by: Sean Nyekjaer <sean@geanix.com>
+--tzksnyblxledsl3b
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> ---
->  drivers/iio/accel/fxls8962af-core.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
-> index 078d87865fde..6882f082d581 100644
-> --- a/drivers/iio/accel/fxls8962af-core.c
-> +++ b/drivers/iio/accel/fxls8962af-core.c
-> @@ -15,16 +15,17 @@
->  #include <linux/bits.h>
->  #include <linux/bitfield.h>
->  #include <linux/i2c.h>
-> +#include <linux/interrupt.h>
->  #include <linux/module.h>
->  #include <linux/of_irq.h>
->  #include <linux/pm_runtime.h>
-> +#include <linux/property.h>
->  #include <linux/regulator/consumer.h>
->  #include <linux/regmap.h>
->  
->  #include <linux/iio/buffer.h>
->  #include <linux/iio/iio.h>
->  #include <linux/iio/kfifo_buf.h>
-> -#include <linux/iio/sysfs.h>
->  
->  #include "fxls8962af.h"
->  
-> -- 
-> 2.31.1
-> 
+On Mon, Jun 14, 2021 at 01:30:34AM +0200, Alexander Sverdlin wrote:
+> Nikita posted a patch converting EP93xx to use Common Clock Framework. It
+> turns out some cleanup is necessary in the EP93xx drivers to avoid
+> "Enabling unprepared" clock warnings.
+>=20
+> Patches with stack traces in the commit messages are tested on EP9302.
+
+One thing to note is: ep93xx currently doesn't provide a clk_prepare
+function, this isn't a problem though because include/linux/clk.h
+provides a dummy if CONFIG_HAVE_CLK_PREPARE isn't defined. So as ep93xx
+doesn't define this symbol the changes here effectively only add a
+might_sleep.
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--tzksnyblxledsl3b
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmDHAgYACgkQwfwUeK3K
+7Anz4wf/fZ6UpIbiQ9trvkqr6Bj6ontdmEdjh7ZjZkt/uCGHoWMQ1h2blpmdMD/z
+wzcscbTaQkBDOdRPlWqqRB77EOqy7TdJe7vKeGygZflhyBx6so3Yk+Jf9NhZ73sY
+WpFRQP5v/utpk7qmx7SXBdlJG3mkWmIujPAJd56OX6RwFped6Bqh+bpRv+jMKhHv
+KLWyqkKehDsDd9EQtPokkcgnhvFo584TGv3oWUFi0AtPTgVXCSSNCiIxkR8BKLhs
+/pwCZo/rdneUeHPZpvBsR2AAVefwMmCQphi9CA4JaCsxGkA6Hfa5c1YBpsPXKnSZ
+aL6XNpm9fn67SU0C3GhW4R4lGjRoMQ==
+=giTe
+-----END PGP SIGNATURE-----
+
+--tzksnyblxledsl3b--

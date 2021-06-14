@@ -2,155 +2,344 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 551683A68D6
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Jun 2021 16:18:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 922BD3A6B94
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Jun 2021 18:24:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232890AbhFNOUr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 14 Jun 2021 10:20:47 -0400
-Received: from mail-sn1anam02on2139.outbound.protection.outlook.com ([40.107.96.139]:5633
-        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S232809AbhFNOUr (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 14 Jun 2021 10:20:47 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XvTyKt9aMNoZvdsqGBE9N+N4wOQMtA1c2IojFlWUxTgtyMPK+paklUook545tfOMpEbOGr572jiSHbbOs7KrzUYdDWsczFpfVOZCY8OmXoeCCSU7llv0iPf2/i+O5XbWyHzNMNsgdqcBZGUiyqQ0tfSfc++JdFPOR9m++GRNa7P7pf/j02XabjHjHzGNeFScOt/6FcfRagG7QIESYAKEpiH6TiPLfPjTjpvOLh6H25JGHPyRUTIkARAkzMWyi6PJuYMiQTYqjay0b7zg8+GFcwT2a6D4ukx38PGJxzuJOI06f8RNqvoABkgbmbfUnKsDTv0fYNZ6y1k9bEy2IFKYhg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wGdGP15G0/Yx0YAScpsPWwkHCYPP6vXxTL0IbPZz0cc=;
- b=DTUlA9pcH3zrB3tPmIKz0Y5Je2TQRDIuIr1oz9jRtcLVJU+Mu9GnFZj0Cg9K1dzXZ9lS8dUu6zXh39Yj5NzeWobccDzVxjtjMYTzlq4RV8Xhv/LOdeKyuNEm2V5auueJfqNEoIt+3jO1DMqNpSWun2LIgAQv81BTc6UGLYiBZzjBC2Qcy+nHeTVn3wPp0l7swS6oC1QgUVezywYU7S0NW6pxJA9yPTsRJKET0K5bEn+zYSHL3b27tOaptK1jWYQDjTeBolLCi3MidF6SNlV/qO4DrydrcJ1aeToqzk46xE9VtyhF60nsnOigXXKhckmYwXUbq98p/zccS/9B4PC05g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=licor.com; dmarc=pass action=none header.from=licor.com;
- dkim=pass header.d=licor.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=licor.onmicrosoft.com;
- s=selector2-licor-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wGdGP15G0/Yx0YAScpsPWwkHCYPP6vXxTL0IbPZz0cc=;
- b=ecH6rD/JpiTMq87t+QK2css2TtOjWrm1Y5TeUBv6oRh32UvcFyxxdZDQCKp6mnB22Y0fB099YXcvHvtZkdJ7SxJDeCBK+YwNkT0LwjOrWH2w0lIQ0YoTQr4Q3J4z2iv5qooDUOq7FkgDhJ27fxFoUOIPdCr/SwTEqIHdcTfF63o=
-Authentication-Results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=licor.com;
-Received: from SN2PR0801MB2223.namprd08.prod.outlook.com
- (2603:10b6:804:11::21) by SN6PR08MB4573.namprd08.prod.outlook.com
- (2603:10b6:805:9c::13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4219.25; Mon, 14 Jun
- 2021 14:18:40 +0000
-Received: from SN2PR0801MB2223.namprd08.prod.outlook.com
- ([fe80::2429:8693:e618:f534]) by SN2PR0801MB2223.namprd08.prod.outlook.com
- ([fe80::2429:8693:e618:f534%6]) with mapi id 15.20.4219.025; Mon, 14 Jun 2021
- 14:18:40 +0000
-From:   Chris Lesiak <chris.lesiak@licor.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Chris Lesiak <chris.lesiak@licor.com>
-Subject: [PATCH v3] iio: humidity: hdc100x: Add margin to the conversion time
-Date:   Mon, 14 Jun 2021 09:18:20 -0500
-Message-Id: <20210614141820.2034827-1-chris.lesiak@licor.com>
-X-Mailer: git-send-email 2.26.2
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [2607:da00:300:7::2]
-X-ClientProxiedBy: CH0PR03CA0056.namprd03.prod.outlook.com
- (2603:10b6:610:b3::31) To SN2PR0801MB2223.namprd08.prod.outlook.com
- (2603:10b6:804:11::21)
+        id S234533AbhFNQ0g (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 14 Jun 2021 12:26:36 -0400
+Received: from mga07.intel.com ([134.134.136.100]:44517 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233044AbhFNQ0f (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 14 Jun 2021 12:26:35 -0400
+IronPort-SDR: GeFWEb1AC/hOjiaIcA7CxHZJjmms+Ajpfk/5tSRU9etZvih/NB2dY9NtCh8YLsoUqit0kuPuTG
+ BaOZTlTj/meA==
+X-IronPort-AV: E=McAfee;i="6200,9189,10015"; a="269688728"
+X-IronPort-AV: E=Sophos;i="5.83,273,1616482800"; 
+   d="scan'208";a="269688728"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2021 09:24:30 -0700
+IronPort-SDR: dIwh2W3ARmNyx6AJ0UHIsyOPuPNEjNbpUF3eQ6JlTPBILqeqwgStO+iUx5EYWuiUsak1ZeCDpO
+ usDMYicED5xQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.83,273,1616482800"; 
+   d="scan'208";a="487451518"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga002.fm.intel.com with ESMTP; 14 Jun 2021 09:24:27 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 66E12128; Mon, 14 Jun 2021 19:24:51 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Ye Xiang <xiang.ye@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-rtc@vger.kernel.org
+Cc:     Jiri Kosina <jikos@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH v2 1/1] iio: hid-sensors: lighten exported symbols by moving to IIO_HID namespace
+Date:   Mon, 14 Jun 2021 19:24:47 +0300
+Message-Id: <20210614162447.5392-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from bee.local (2607:da00:300:7::2) by CH0PR03CA0056.namprd03.prod.outlook.com (2603:10b6:610:b3::31) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4219.20 via Frontend Transport; Mon, 14 Jun 2021 14:18:39 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: f20ae6b2-3c76-4402-9bb7-08d92f3f4eee
-X-MS-TrafficTypeDiagnostic: SN6PR08MB4573:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <SN6PR08MB45739611F03E3CB645BFFAD69A319@SN6PR08MB4573.namprd08.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:7219;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: R2jvgSfnC+8Kh4o/9CUi/9vflaM60GVxToTPS2ztZ2RgsLtpb5zCpT6tudf+Ejk8WeTdRMDqc1yaBW9VXwteBWuoLApVpW+jG34DjEILEnLikhkuB+dU3HjxNK0C6muG1bHUqdpcB5ORxa8MaFqwb9crVmqThKcjPRlfNdR2NI6nHJd9pThjBbWi8G8JSFAacSFhsLkhfblxy5nQSj0RYb9kv8ACZ8b+GYXAQuiAsr7UkldNhfYAPj9LxifGS0JTYeOdAQ0ZohSekphdfIs4ZJEIg426mi9fRVGhFLh3TrbNurAJmtj53HDp+Nfajj9j5VJUIdVyJNA8+4mS0knbryjFngsOMPBko7DMmarlZc+AnyAxHraZYV1OdmfNNrKrsYWrStxctjGW2KYrUFxcvLSrmnmQdVOceHrIRAFpI9aKft3jNzeHRgwykBTNyJUCyBY7iTEJiPuBPWxocmivUuF2XR79mU9mgCr/vtZU0I/ebIFY0Nvd+TEQyDrZi4JAipVZzBtr27paRFCokkqf2hcHCiBORLoXrxv9h+FyCiHv09ZE5Xm2oy0ZVLbtt94GarnK+PigIfU0WJfK+5LgdYxs0JhgVe8e2DpTlmyWyXI=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN2PR0801MB2223.namprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(136003)(39850400004)(396003)(376002)(366004)(478600001)(5660300002)(52116002)(8936002)(8676002)(66946007)(86362001)(2616005)(83380400001)(36756003)(6916009)(316002)(107886003)(1076003)(44832011)(6666004)(66556008)(66476007)(186003)(16526019)(38100700002)(6506007)(6486002)(4326008)(6512007)(2906002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?SLykHxm8hWTJuoCELX9xIbvjje1GAtkYecnxWMMll3pCw4tp2cBH49kKvkfu?=
- =?us-ascii?Q?3qWKocX1FcFCn1MJhh5/lhldn97IA9qy/+GKNAedPukpPBugnRb682fKHBbt?=
- =?us-ascii?Q?1JxBgo8IjpPYslhaHM9cbsrP1rgoIYvGPYrQrUxl+qx/NgD2KwNHi3c8iwNH?=
- =?us-ascii?Q?YVfwgEKhxqd1mp7+uhoR8lLZSvuCwttGi9jeTip/Eofg4+1W9tVPGt5MuuQJ?=
- =?us-ascii?Q?rxQUgt4uXZJmTjMnFwMzrqzSt/jiPkH3YmQHQ2LnYdib+DSs1m/jboiZeEzK?=
- =?us-ascii?Q?MzSJMrPnVOVZ0fKaikEVciKMGpUyY6m5XDAYg/XK54HrQh7DQD+CYYhQNzrv?=
- =?us-ascii?Q?nu+nrSvPX+iIMxT/nwkl5lr7u9b6m/b6TT0Ka3hp/AWKRvzl2TSlTBmAUwh6?=
- =?us-ascii?Q?XtuZPgYsyterdbohi/7C+lU4y7Izc9l+ohS6zz4jhzFqTXOlz8lRMNJcx/F3?=
- =?us-ascii?Q?fhM7mbpyq3F7zaELhJKDOusrYNY8m73uel964K6kgcQJpTLq4L54HXB+cT3+?=
- =?us-ascii?Q?ZPGBIGVhw2IK8x6vMuaSykYtBJqKaJN8X7ZSlv0FTq9eqMrRkYy5kU3hrnnu?=
- =?us-ascii?Q?hMfO1+PAP+RVftdV70+DoLvX5gYVcWNrGeVtmiekWcy3ylQonulN/KvgkJYD?=
- =?us-ascii?Q?PoCfraoSR9k4VCKSNjARp1ZowPdkiYkBWD2UhfidN+BvPGMLZJQD6IuQCNJp?=
- =?us-ascii?Q?mds7ETOYp80T5rJsiLOXtrcWFy3yNPuxyV5JR9jiK+zy+U013czN7QwzP/RK?=
- =?us-ascii?Q?PJY6kRk/dRGspqBGpaXuZc7sSzm9eMIb5HCvhCytPBZFr5ZToDYog23h14lV?=
- =?us-ascii?Q?9jkEiIikFHWdM5bVLm3moWEJX/Co5IKEFEQSzwqiL2Rq4wgy/PMJPvHdm6LB?=
- =?us-ascii?Q?OIbPGyrgJ4Iyv7Ei9RMgtnPTSbOAXqcTGG8MMfqSAEUmDDsNOi1aoNbX2e8r?=
- =?us-ascii?Q?uAubc+TdH/r9hTY0WEC2XdlEsNdyAbFVkmazSK7AA+q/W5PlWQhuuUU6Nq+n?=
- =?us-ascii?Q?MfKnVc6VKnBzTx3smXIB8dsevndXCccoRZK8YY9VUwL9oEyEEyDYqwbrqIxy?=
- =?us-ascii?Q?3iy9hUMUCNSRcUeCPuioAyBACj9ixrdShAOI02svMROEqSx/cOWtG459B84r?=
- =?us-ascii?Q?WaO1q3/BRHu6ST0D4Pv8Ms8qs1go/IEjZIbpWrJBb/M2dzLDzUvkZZYqWpJ0?=
- =?us-ascii?Q?3Tf+5+B8H74row5QcP+oh3Uy0chI8IUHtPzMNCg5CyF4QPxBbV1wgFHeMk6t?=
- =?us-ascii?Q?zGJ3YXXvp80eyDtORo/9QEr93dsY4eklQ4Mx/WtYsqXh1/27vwItS01PLJCD?=
- =?us-ascii?Q?7dYXxmWbJauANNHl7M46bcRZASeKl6Ka7TIDrDN9/K2TfA=3D=3D?=
-X-OriginatorOrg: licor.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f20ae6b2-3c76-4402-9bb7-08d92f3f4eee
-X-MS-Exchange-CrossTenant-AuthSource: SN2PR0801MB2223.namprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jun 2021 14:18:40.5790
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 48c70abd-da5a-4c6c-86cb-5e003ca01574
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: b+LXiaIcjSCSqhyJqOwXHRq93WgjLjrgvUGuNwxOSEQKgnpKzrYX3fXhUQu+xRkGoy1PBk/vW1Ix+XnbzrnBIA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR08MB4573
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The datasheets have the following note for the conversion time
-specification: "This parameter is specified by design and/or
-characterization and it is not tested in production."
+A namespace for exported symbols makes clear who is a provider
+and who is a consumer of the certain resources. Besides that,
+it doesn't pollute the common namespace.
 
-Parts have been seen that require more time to do 14-bit conversions for
-the relative humidity channel.  The result is ENXIO due to the address
-phase of a transfer not getting an ACK.
-
-Delay an additional 1 ms per conversion to allow for additional margin.
-
-Fixes: 4839367d99e3 ("iio: humidity: add HDC100x support")
-Signed-off-by: Chris Lesiak <chris.lesiak@licor.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/iio/humidity/hdc100x.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+v2: updated RTC HID sensor driver as well (Jonathan)
+ drivers/iio/accel/hid-sensor-accel-3d.c       |  1 +
+ .../hid-sensors/hid-sensor-attributes.c       | 26 +++++++++----------
+ .../common/hid-sensors/hid-sensor-trigger.c   |  9 ++++---
+ drivers/iio/gyro/hid-sensor-gyro-3d.c         |  1 +
+ drivers/iio/humidity/hid-sensor-humidity.c    |  1 +
+ drivers/iio/light/hid-sensor-als.c            |  1 +
+ drivers/iio/light/hid-sensor-prox.c           |  1 +
+ drivers/iio/magnetometer/hid-sensor-magn-3d.c |  1 +
+ drivers/iio/orientation/hid-sensor-incl-3d.c  |  1 +
+ drivers/iio/orientation/hid-sensor-rotation.c |  1 +
+ .../position/hid-sensor-custom-intel-hinge.c  |  1 +
+ drivers/iio/pressure/hid-sensor-press.c       |  1 +
+ .../iio/temperature/hid-sensor-temperature.c  |  1 +
+ drivers/rtc/rtc-hid-sensor-time.c             |  1 +
+ 14 files changed, 30 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
-index 2a957f19048e..9e0fce917ce4 100644
---- a/drivers/iio/humidity/hdc100x.c
-+++ b/drivers/iio/humidity/hdc100x.c
-@@ -25,6 +25,8 @@
- #include <linux/iio/trigger_consumer.h>
- #include <linux/iio/triggered_buffer.h>
+diff --git a/drivers/iio/accel/hid-sensor-accel-3d.c b/drivers/iio/accel/hid-sensor-accel-3d.c
+index 27f47e1c251e..bcafca7b2eac 100644
+--- a/drivers/iio/accel/hid-sensor-accel-3d.c
++++ b/drivers/iio/accel/hid-sensor-accel-3d.c
+@@ -465,3 +465,4 @@ module_platform_driver(hid_accel_3d_platform_driver);
+ MODULE_DESCRIPTION("HID Sensor Accel 3D");
+ MODULE_AUTHOR("Srinivas Pandruvada <srinivas.pandruvada@intel.com>");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(IIO_HID);
+diff --git a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+index cb52b4fd6bf7..a81a0b206af6 100644
+--- a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
++++ b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+@@ -176,7 +176,7 @@ s32 hid_sensor_read_poll_value(struct hid_sensor_common *st)
  
-+#include <linux/time.h>
-+
- #define HDC100X_REG_TEMP			0x00
- #define HDC100X_REG_HUMIDITY			0x01
+ 	return value;
+ }
+-EXPORT_SYMBOL(hid_sensor_read_poll_value);
++EXPORT_SYMBOL_NS(hid_sensor_read_poll_value, IIO_HID_ATTRIBUTES);
  
-@@ -166,7 +168,7 @@ static int hdc100x_get_measurement(struct hdc100x_data *data,
- 				   struct iio_chan_spec const *chan)
+ int hid_sensor_read_samp_freq_value(struct hid_sensor_common *st,
+ 				int *val1, int *val2)
+@@ -203,7 +203,7 @@ int hid_sensor_read_samp_freq_value(struct hid_sensor_common *st,
+ 
+ 	return IIO_VAL_INT_PLUS_MICRO;
+ }
+-EXPORT_SYMBOL(hid_sensor_read_samp_freq_value);
++EXPORT_SYMBOL_NS(hid_sensor_read_samp_freq_value, IIO_HID);
+ 
+ int hid_sensor_write_samp_freq_value(struct hid_sensor_common *st,
+ 				int val1, int val2)
+@@ -238,7 +238,7 @@ int hid_sensor_write_samp_freq_value(struct hid_sensor_common *st,
+ 
+ 	return 0;
+ }
+-EXPORT_SYMBOL(hid_sensor_write_samp_freq_value);
++EXPORT_SYMBOL_NS(hid_sensor_write_samp_freq_value, IIO_HID);
+ 
+ int hid_sensor_read_raw_hyst_value(struct hid_sensor_common *st,
+ 				int *val1, int *val2)
+@@ -261,7 +261,7 @@ int hid_sensor_read_raw_hyst_value(struct hid_sensor_common *st,
+ 
+ 	return IIO_VAL_INT_PLUS_MICRO;
+ }
+-EXPORT_SYMBOL(hid_sensor_read_raw_hyst_value);
++EXPORT_SYMBOL_NS(hid_sensor_read_raw_hyst_value, IIO_HID);
+ 
+ int hid_sensor_read_raw_hyst_rel_value(struct hid_sensor_common *st, int *val1,
+ 				       int *val2)
+@@ -283,7 +283,7 @@ int hid_sensor_read_raw_hyst_rel_value(struct hid_sensor_common *st, int *val1,
+ 
+ 	return IIO_VAL_INT_PLUS_MICRO;
+ }
+-EXPORT_SYMBOL(hid_sensor_read_raw_hyst_rel_value);
++EXPORT_SYMBOL_NS(hid_sensor_read_raw_hyst_rel_value, IIO_HID);
+ 
+ 
+ int hid_sensor_write_raw_hyst_value(struct hid_sensor_common *st,
+@@ -315,7 +315,7 @@ int hid_sensor_write_raw_hyst_value(struct hid_sensor_common *st,
+ 
+ 	return 0;
+ }
+-EXPORT_SYMBOL(hid_sensor_write_raw_hyst_value);
++EXPORT_SYMBOL_NS(hid_sensor_write_raw_hyst_value, IIO_HID);
+ 
+ int hid_sensor_write_raw_hyst_rel_value(struct hid_sensor_common *st,
+ 					int val1, int val2)
+@@ -346,7 +346,7 @@ int hid_sensor_write_raw_hyst_rel_value(struct hid_sensor_common *st,
+ 
+ 	return 0;
+ }
+-EXPORT_SYMBOL(hid_sensor_write_raw_hyst_rel_value);
++EXPORT_SYMBOL_NS(hid_sensor_write_raw_hyst_rel_value, IIO_HID);
+ 
+ /*
+  * This fuction applies the unit exponent to the scale.
+@@ -430,14 +430,14 @@ int hid_sensor_format_scale(u32 usage_id,
+ 
+ 	return IIO_VAL_INT_PLUS_NANO;
+ }
+-EXPORT_SYMBOL(hid_sensor_format_scale);
++EXPORT_SYMBOL_NS(hid_sensor_format_scale, IIO_HID);
+ 
+ int64_t hid_sensor_convert_timestamp(struct hid_sensor_common *st,
+ 				     int64_t raw_value)
  {
- 	struct i2c_client *client = data->client;
--	int delay = data->adc_int_us[chan->address];
-+	int delay = data->adc_int_us[chan->address] + 1*USEC_PER_MSEC;
- 	int ret;
- 	__be16 val;
+ 	return st->timestamp_ns_scale * raw_value;
+ }
+-EXPORT_SYMBOL(hid_sensor_convert_timestamp);
++EXPORT_SYMBOL_NS(hid_sensor_convert_timestamp, IIO_HID);
  
-@@ -316,7 +318,7 @@ static irqreturn_t hdc100x_trigger_handler(int irq, void *p)
- 	struct iio_dev *indio_dev = pf->indio_dev;
- 	struct hdc100x_data *data = iio_priv(indio_dev);
- 	struct i2c_client *client = data->client;
--	int delay = data->adc_int_us[0] + data->adc_int_us[1];
-+	int delay = data->adc_int_us[0] + data->adc_int_us[1] + 2*USEC_PER_MSEC;
- 	int ret;
+ static
+ int hid_sensor_get_reporting_interval(struct hid_sensor_hub_device *hsdev,
+@@ -484,7 +484,7 @@ int hid_sensor_get_report_latency(struct hid_sensor_common *st)
  
- 	/* dual read starts at temp register */
+ 	return value;
+ }
+-EXPORT_SYMBOL(hid_sensor_get_report_latency);
++EXPORT_SYMBOL_NS(hid_sensor_get_report_latency, IIO_HID_ATTRIBUTES);
+ 
+ int hid_sensor_set_report_latency(struct hid_sensor_common *st, int latency_ms)
+ {
+@@ -492,13 +492,13 @@ int hid_sensor_set_report_latency(struct hid_sensor_common *st, int latency_ms)
+ 				      st->report_latency.index,
+ 				      sizeof(latency_ms), &latency_ms);
+ }
+-EXPORT_SYMBOL(hid_sensor_set_report_latency);
++EXPORT_SYMBOL_NS(hid_sensor_set_report_latency, IIO_HID_ATTRIBUTES);
+ 
+ bool hid_sensor_batch_mode_supported(struct hid_sensor_common *st)
+ {
+ 	return st->report_latency.index > 0 && st->report_latency.report_id > 0;
+ }
+-EXPORT_SYMBOL(hid_sensor_batch_mode_supported);
++EXPORT_SYMBOL_NS(hid_sensor_batch_mode_supported, IIO_HID_ATTRIBUTES);
+ 
+ int hid_sensor_parse_common_attributes(struct hid_sensor_hub_device *hsdev,
+ 					u32 usage_id,
+@@ -590,7 +590,7 @@ int hid_sensor_parse_common_attributes(struct hid_sensor_hub_device *hsdev,
+ 
+ 	return 0;
+ }
+-EXPORT_SYMBOL(hid_sensor_parse_common_attributes);
++EXPORT_SYMBOL_NS(hid_sensor_parse_common_attributes, IIO_HID);
+ 
+ MODULE_AUTHOR("Srinivas Pandruvada <srinivas.pandruvada@intel.com>");
+ MODULE_DESCRIPTION("HID Sensor common attribute processing");
+diff --git a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
+index c06537e106e9..60e85d675387 100644
+--- a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
++++ b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
+@@ -150,7 +150,7 @@ static int _hid_sensor_power_state(struct hid_sensor_common *st, bool state)
+ 
+ 	return 0;
+ }
+-EXPORT_SYMBOL(hid_sensor_power_state);
++EXPORT_SYMBOL_NS(hid_sensor_power_state, IIO_HID);
+ 
+ int hid_sensor_power_state(struct hid_sensor_common *st, bool state)
+ {
+@@ -225,7 +225,7 @@ void hid_sensor_remove_trigger(struct iio_dev *indio_dev,
+ 	iio_trigger_free(attrb->trigger);
+ 	iio_triggered_buffer_cleanup(indio_dev);
+ }
+-EXPORT_SYMBOL(hid_sensor_remove_trigger);
++EXPORT_SYMBOL_NS(hid_sensor_remove_trigger, IIO_HID);
+ 
+ static const struct iio_trigger_ops hid_sensor_trigger_ops = {
+ 	.set_trigger_state = &hid_sensor_data_rdy_trigger_set_state,
+@@ -291,7 +291,7 @@ int hid_sensor_setup_trigger(struct iio_dev *indio_dev, const char *name,
+ 	iio_triggered_buffer_cleanup(indio_dev);
+ 	return ret;
+ }
+-EXPORT_SYMBOL(hid_sensor_setup_trigger);
++EXPORT_SYMBOL_NS(hid_sensor_setup_trigger, IIO_HID);
+ 
+ static int __maybe_unused hid_sensor_suspend(struct device *dev)
+ {
+@@ -321,8 +321,9 @@ const struct dev_pm_ops hid_sensor_pm_ops = {
+ 	SET_RUNTIME_PM_OPS(hid_sensor_suspend,
+ 			   hid_sensor_runtime_resume, NULL)
+ };
+-EXPORT_SYMBOL(hid_sensor_pm_ops);
++EXPORT_SYMBOL_NS(hid_sensor_pm_ops, IIO_HID);
+ 
+ MODULE_AUTHOR("Srinivas Pandruvada <srinivas.pandruvada@intel.com>");
+ MODULE_DESCRIPTION("HID Sensor trigger processing");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(IIO_HID_ATTRIBUTES);
+diff --git a/drivers/iio/gyro/hid-sensor-gyro-3d.c b/drivers/iio/gyro/hid-sensor-gyro-3d.c
+index dad26ee4fd1f..2ed2a8effb86 100644
+--- a/drivers/iio/gyro/hid-sensor-gyro-3d.c
++++ b/drivers/iio/gyro/hid-sensor-gyro-3d.c
+@@ -400,3 +400,4 @@ module_platform_driver(hid_gyro_3d_platform_driver);
+ MODULE_DESCRIPTION("HID Sensor Gyroscope 3D");
+ MODULE_AUTHOR("Srinivas Pandruvada <srinivas.pandruvada@intel.com>");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(IIO_HID);
+diff --git a/drivers/iio/humidity/hid-sensor-humidity.c b/drivers/iio/humidity/hid-sensor-humidity.c
+index 74383abc0d44..8a9091d71d2a 100644
+--- a/drivers/iio/humidity/hid-sensor-humidity.c
++++ b/drivers/iio/humidity/hid-sensor-humidity.c
+@@ -295,3 +295,4 @@ module_platform_driver(hid_humidity_platform_driver);
+ MODULE_DESCRIPTION("HID Environmental humidity sensor");
+ MODULE_AUTHOR("Song Hongyan <hongyan.song@intel.com>");
+ MODULE_LICENSE("GPL v2");
++MODULE_IMPORT_NS(IIO_HID);
+diff --git a/drivers/iio/light/hid-sensor-als.c b/drivers/iio/light/hid-sensor-als.c
+index 85c8a05b73cb..a63d577493e2 100644
+--- a/drivers/iio/light/hid-sensor-als.c
++++ b/drivers/iio/light/hid-sensor-als.c
+@@ -392,3 +392,4 @@ module_platform_driver(hid_als_platform_driver);
+ MODULE_DESCRIPTION("HID Sensor ALS");
+ MODULE_AUTHOR("Srinivas Pandruvada <srinivas.pandruvada@intel.com>");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(IIO_HID);
+diff --git a/drivers/iio/light/hid-sensor-prox.c b/drivers/iio/light/hid-sensor-prox.c
+index 17d167c3d595..99de268563d6 100644
+--- a/drivers/iio/light/hid-sensor-prox.c
++++ b/drivers/iio/light/hid-sensor-prox.c
+@@ -350,3 +350,4 @@ module_platform_driver(hid_prox_platform_driver);
+ MODULE_DESCRIPTION("HID Sensor Proximity");
+ MODULE_AUTHOR("Archana Patni <archana.patni@intel.com>");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(IIO_HID);
+diff --git a/drivers/iio/magnetometer/hid-sensor-magn-3d.c b/drivers/iio/magnetometer/hid-sensor-magn-3d.c
+index b78691523dd4..a66f9e933628 100644
+--- a/drivers/iio/magnetometer/hid-sensor-magn-3d.c
++++ b/drivers/iio/magnetometer/hid-sensor-magn-3d.c
+@@ -587,3 +587,4 @@ module_platform_driver(hid_magn_3d_platform_driver);
+ MODULE_DESCRIPTION("HID Sensor Magnetometer 3D");
+ MODULE_AUTHOR("Srinivas Pandruvada <srinivas.pandruvada@intel.com>");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(IIO_HID);
+diff --git a/drivers/iio/orientation/hid-sensor-incl-3d.c b/drivers/iio/orientation/hid-sensor-incl-3d.c
+index 7af48d336285..cc905b0fa835 100644
+--- a/drivers/iio/orientation/hid-sensor-incl-3d.c
++++ b/drivers/iio/orientation/hid-sensor-incl-3d.c
+@@ -425,3 +425,4 @@ module_platform_driver(hid_incl_3d_platform_driver);
+ MODULE_DESCRIPTION("HID Sensor Inclinometer 3D");
+ MODULE_AUTHOR("Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(IIO_HID);
+diff --git a/drivers/iio/orientation/hid-sensor-rotation.c b/drivers/iio/orientation/hid-sensor-rotation.c
+index cf7f57a47681..6570bfd22035 100644
+--- a/drivers/iio/orientation/hid-sensor-rotation.c
++++ b/drivers/iio/orientation/hid-sensor-rotation.c
+@@ -373,3 +373,4 @@ module_platform_driver(hid_dev_rot_platform_driver);
+ MODULE_DESCRIPTION("HID Sensor Device Rotation");
+ MODULE_AUTHOR("Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(IIO_HID);
+diff --git a/drivers/iio/position/hid-sensor-custom-intel-hinge.c b/drivers/iio/position/hid-sensor-custom-intel-hinge.c
+index 738b5f4626ce..4478ad9387c5 100644
+--- a/drivers/iio/position/hid-sensor-custom-intel-hinge.c
++++ b/drivers/iio/position/hid-sensor-custom-intel-hinge.c
+@@ -376,3 +376,4 @@ module_platform_driver(hid_hinge_platform_driver);
+ MODULE_DESCRIPTION("HID Sensor INTEL Hinge");
+ MODULE_AUTHOR("Ye Xiang <xiang.ye@intel.com>");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(IIO_HID);
+diff --git a/drivers/iio/pressure/hid-sensor-press.c b/drivers/iio/pressure/hid-sensor-press.c
+index c416d261e3e3..79b3399e4095 100644
+--- a/drivers/iio/pressure/hid-sensor-press.c
++++ b/drivers/iio/pressure/hid-sensor-press.c
+@@ -357,3 +357,4 @@ module_platform_driver(hid_press_platform_driver);
+ MODULE_DESCRIPTION("HID Sensor Pressure");
+ MODULE_AUTHOR("Archana Patni <archana.patni@intel.com>");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(IIO_HID);
+diff --git a/drivers/iio/temperature/hid-sensor-temperature.c b/drivers/iio/temperature/hid-sensor-temperature.c
+index dc534ed784c3..21aa952b9f6d 100644
+--- a/drivers/iio/temperature/hid-sensor-temperature.c
++++ b/drivers/iio/temperature/hid-sensor-temperature.c
+@@ -291,3 +291,4 @@ module_platform_driver(hid_temperature_platform_driver);
+ MODULE_DESCRIPTION("HID Environmental temperature sensor");
+ MODULE_AUTHOR("Song Hongyan <hongyan.song@intel.com>");
+ MODULE_LICENSE("GPL v2");
++MODULE_IMPORT_NS(IIO_HID);
+diff --git a/drivers/rtc/rtc-hid-sensor-time.c b/drivers/rtc/rtc-hid-sensor-time.c
+index 47cd12db2356..16fdefafec5d 100644
+--- a/drivers/rtc/rtc-hid-sensor-time.c
++++ b/drivers/rtc/rtc-hid-sensor-time.c
+@@ -328,3 +328,4 @@ module_platform_driver(hid_time_platform_driver);
+ MODULE_DESCRIPTION("HID Sensor Time");
+ MODULE_AUTHOR("Alexander Holler <holler@ahsoftware.de>");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(IIO_HID);
 -- 
-2.26.2
+2.30.2
 

@@ -2,37 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 36E933A8905
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Jun 2021 20:59:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECDA93A890D
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Jun 2021 21:01:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229957AbhFOTBw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Jun 2021 15:01:52 -0400
-Received: from mga06.intel.com ([134.134.136.31]:32983 "EHLO mga06.intel.com"
+        id S230001AbhFOTDR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Jun 2021 15:03:17 -0400
+Received: from mga01.intel.com ([192.55.52.88]:61976 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229749AbhFOTBw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 15 Jun 2021 15:01:52 -0400
-IronPort-SDR: A6enz0nQc4g0orvMdNDSglvufpLXP9rxiGRC3Uz1lVGSj3GE84vDSPv4kS5xTw/4Z5lltrEck4
- 6XNnWSCuqFaA==
-X-IronPort-AV: E=McAfee;i="6200,9189,10016"; a="267200862"
+        id S229749AbhFOTDR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 15 Jun 2021 15:03:17 -0400
+IronPort-SDR: R7cWrsb04GQQFH/gv9KZhPaUWPyB+PAPImMtHR+0772MV+4ZKQkqYn8IYJn18tWDsv72lnVqHR
+ +bdKvhLvKnHA==
+X-IronPort-AV: E=McAfee;i="6200,9189,10016"; a="227533806"
 X-IronPort-AV: E=Sophos;i="5.83,276,1616482800"; 
-   d="scan'208";a="267200862"
+   d="scan'208";a="227533806"
 Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2021 11:59:45 -0700
-IronPort-SDR: DLY6cTYLm/d5JLdoxy8HwHrte1hh6kMSVLkk6w9YxDTEjqKLxnFW7pPqMQZgmqrOUO1apOKTdN
- KFx6TSbffbqg==
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2021 12:01:11 -0700
+IronPort-SDR: +XVHQDZgJ0MkKfFAZAc58KcJNTstMDkY50S5SV1xID9AVuk2dOse2QhTmVAb8pbmmulh3tz2b7
+ HEk3GQOE/mBg==
 X-IronPort-AV: E=Sophos;i="5.83,276,1616482800"; 
-   d="scan'208";a="471738694"
+   d="scan'208";a="471739208"
 Received: from scha1-mobl1.amr.corp.intel.com ([10.209.8.199])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2021 11:59:45 -0700
-Message-ID: <513b9a637987c0c4152a47cd3190a27c34fc8ef2.camel@linux.intel.com>
-Subject: Re: [PATCH] HID: intel-ish-hid: use async resume function
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2021 12:01:11 -0700
+Message-ID: <2b575429da7b4194ece93b6444f34a10d28e20cf.camel@linux.intel.com>
+Subject: Re: [PATCH] iio: hid-sensors: Update header includes
 From:   Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-To:     Ye Xiang <xiang.ye@intel.com>, jikos@kernel.org, jic23@kernel.org
-Cc:     linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Tue, 15 Jun 2021 11:59:44 -0700
-In-Reply-To: <20210613032507.7474-1-xiang.ye@intel.com>
-References: <20210613032507.7474-1-xiang.ye@intel.com>
+To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Jiri Kosina <jikos@kernel.org>
+Date:   Tue, 15 Jun 2021 12:01:10 -0700
+In-Reply-To: <20210608205510.4033887-1-jic23@kernel.org>
+References: <20210608205510.4033887-1-jic23@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.36.4-0ubuntu1 
 MIME-Version: 1.0
@@ -41,162 +41,296 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 2021-06-13 at 11:25 +0800, Ye Xiang wrote:
-> ISH IPC driver uses asynchronous workqueue to do resume now, but
-> there is
-> a potential timing issue: when child devices resume before bus
-> driver, it
-> will cause child devices resume failed and cannot be recovered until
-> reboot. The current implementation in this case do wait for IPC to
-> resume
-> but fail to accommodate for a case when there is no ISH reboot and
-> soft
-> resume is taking time. This issue is apparent on Tiger Lake platform
-> with
-> 5.11.13 kernel when doing suspend to idle then resume(s0ix) test. To
-> resolve this issue, we change ISHTP HID client to use asynchronous
-> resume
-> callback too. In the asynchronous resume callback, it waits for the
-> ISHTP
-> resume done event, and then notify ISHTP HID client link ready.
+On Tue, 2021-06-08 at 21:55 +0100, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> Signed-off-by: Ye Xiang <xiang.ye@intel.com>
+> General driver churn doesn't always include updates of header
+> includes.
+> Manual review of the output of the include-what-you-use checker lead
+> to the
+> following cleanup. Hopefuly this brings things back to a good state
+> for the
+> hid-sensor drivers.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Jiri Kosina <jikos@kernel.org>
+> Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
 > ---
->  drivers/hid/intel-ish-hid/ishtp-hid-client.c | 15 +++++++++-
->  drivers/hid/intel-ish-hid/ishtp-hid.h        |  1 +
->  drivers/hid/intel-ish-hid/ishtp/bus.c        | 29 +++++++++++++++---
-> --
->  include/linux/intel-ish-client-if.h          |  2 ++
->  4 files changed, 39 insertions(+), 8 deletions(-)
+>  drivers/iio/accel/hid-sensor-accel-3d.c                | 5 +----
+>  drivers/iio/common/hid-sensors/hid-sensor-attributes.c | 6 ------
+>  drivers/iio/common/hid-sensors/hid-sensor-trigger.c    | 5 +----
+>  drivers/iio/common/hid-sensors/hid-sensor-trigger.h    | 3 +++
+>  drivers/iio/gyro/hid-sensor-gyro-3d.c                  | 5 +----
+>  drivers/iio/humidity/hid-sensor-humidity.c             | 1 +
+>  drivers/iio/light/hid-sensor-als.c                     | 5 +----
+>  drivers/iio/light/hid-sensor-prox.c                    | 5 +----
+>  drivers/iio/magnetometer/hid-sensor-magn-3d.c          | 6 +-----
+>  drivers/iio/orientation/hid-sensor-incl-3d.c           | 5 +----
+>  drivers/iio/orientation/hid-sensor-rotation.c          | 4 +---
+>  drivers/iio/position/hid-sensor-custom-intel-hinge.c   | 2 ++
+>  drivers/iio/pressure/hid-sensor-press.c                | 5 +----
+>  drivers/iio/temperature/hid-sensor-temperature.c       | 1 +
+>  14 files changed, 16 insertions(+), 42 deletions(-)
 > 
-> diff --git a/drivers/hid/intel-ish-hid/ishtp-hid-client.c
-> b/drivers/hid/intel-ish-hid/ishtp-hid-client.c
-> index 7167412d89d9..9d53e85fdef3 100644
-> --- a/drivers/hid/intel-ish-hid/ishtp-hid-client.c
-> +++ b/drivers/hid/intel-ish-hid/ishtp-hid-client.c
-> @@ -779,6 +779,17 @@ static void hid_ishtp_cl_reset_handler(struct
-> work_struct *work)
->  	}
->  }
+> diff --git a/drivers/iio/accel/hid-sensor-accel-3d.c
+> b/drivers/iio/accel/hid-sensor-accel-3d.c
+> index 27f47e1c251e..b4fa53dc447a 100644
+> --- a/drivers/iio/accel/hid-sensor-accel-3d.c
+> +++ b/drivers/iio/accel/hid-sensor-accel-3d.c
+> @@ -6,13 +6,10 @@
+>  #include <linux/device.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/module.h>
+> -#include <linux/interrupt.h>
+> -#include <linux/irq.h>
+> +#include <linux/mod_devicetable.h>
+>  #include <linux/slab.h>
+> -#include <linux/delay.h>
+>  #include <linux/hid-sensor-hub.h>
+>  #include <linux/iio/iio.h>
+> -#include <linux/iio/sysfs.h>
+>  #include <linux/iio/buffer.h>
+>  #include "../common/hid-sensors/hid-sensor-trigger.h"
 >  
-> +static void hid_ishtp_cl_resume_handler(struct work_struct *work)
-> +{
-> +	struct ishtp_cl_data *client_data = container_of(work, struct
-> ishtp_cl_data, resume_work);
-> +	struct ishtp_cl *hid_ishtp_cl = client_data->hid_ishtp_cl;
+> diff --git a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+> b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+> index cb52b4fd6bf7..eb6a9012c899 100644
+> --- a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+> +++ b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+> @@ -3,18 +3,12 @@
+>   * HID Sensors Driver
+>   * Copyright (c) 2012, Intel Corporation.
+>   */
+> -#include <linux/device.h>
+> -#include <linux/platform_device.h>
+>  #include <linux/module.h>
+> -#include <linux/interrupt.h>
+> -#include <linux/irq.h>
+>  #include <linux/kernel.h>
+> -#include <linux/slab.h>
+>  #include <linux/time.h>
+>  
+>  #include <linux/hid-sensor-hub.h>
+>  #include <linux/iio/iio.h>
+> -#include <linux/iio/sysfs.h>
+>  
+>  #define HZ_PER_MHZ	1000000L
+>  
+> diff --git a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
+> b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
+> index c06537e106e9..4918e2c8f6d5 100644
+> --- a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
+> +++ b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
+> @@ -6,16 +6,13 @@
+>  #include <linux/device.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/module.h>
+> -#include <linux/interrupt.h>
+> -#include <linux/irq.h>
+> -#include <linux/slab.h>
+>  #include <linux/delay.h>
+>  #include <linux/hid-sensor-hub.h>
+> +#include <linux/workqueue.h>
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/trigger.h>
+>  #include <linux/iio/triggered_buffer.h>
+>  #include <linux/iio/trigger_consumer.h>
+> -#include <linux/iio/buffer.h>
+>  #include <linux/iio/sysfs.h>
+>  #include "hid-sensor-trigger.h"
+>  
+> diff --git a/drivers/iio/common/hid-sensors/hid-sensor-trigger.h
+> b/drivers/iio/common/hid-sensors/hid-sensor-trigger.h
+> index bb45cc89e551..f94fca4f1edf 100644
+> --- a/drivers/iio/common/hid-sensors/hid-sensor-trigger.h
+> +++ b/drivers/iio/common/hid-sensors/hid-sensor-trigger.h
+> @@ -9,6 +9,9 @@
+>  #include <linux/pm.h>
+>  #include <linux/pm_runtime.h>
+>  
+> +struct hid_sensor_common;
+> +struct iio_dev;
 > +
-> +	if (ishtp_wait_resume(ishtp_get_ishtp_device(hid_ishtp_cl))) {
-> +		client_data->suspended = false;
-> +		wake_up_interruptible(&client_data->ishtp_resume_wait);
-> +	}
-> +}
-> +
->  void (*hid_print_trace)(void *unused, const char *format, ...);
+>  extern const struct dev_pm_ops hid_sensor_pm_ops;
 >  
->  /**
-> @@ -817,6 +828,8 @@ static int hid_ishtp_cl_probe(struct
-> ishtp_cl_device *cl_device)
->  	init_waitqueue_head(&client_data->ishtp_resume_wait);
+>  int hid_sensor_setup_trigger(struct iio_dev *indio_dev, const char
+> *name,
+> diff --git a/drivers/iio/gyro/hid-sensor-gyro-3d.c
+> b/drivers/iio/gyro/hid-sensor-gyro-3d.c
+> index dad26ee4fd1f..a8f59ed802f4 100644
+> --- a/drivers/iio/gyro/hid-sensor-gyro-3d.c
+> +++ b/drivers/iio/gyro/hid-sensor-gyro-3d.c
+> @@ -6,13 +6,10 @@
+>  #include <linux/device.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/module.h>
+> -#include <linux/interrupt.h>
+> -#include <linux/irq.h>
+> +#include <linux/mod_devicetable.h>
+>  #include <linux/slab.h>
+> -#include <linux/delay.h>
+>  #include <linux/hid-sensor-hub.h>
+>  #include <linux/iio/iio.h>
+> -#include <linux/iio/sysfs.h>
+>  #include <linux/iio/buffer.h>
+>  #include "../common/hid-sensors/hid-sensor-trigger.h"
 >  
->  	INIT_WORK(&client_data->work, hid_ishtp_cl_reset_handler);
-> +	INIT_WORK(&client_data->resume_work,
-> hid_ishtp_cl_resume_handler);
-> +
+> diff --git a/drivers/iio/humidity/hid-sensor-humidity.c
+> b/drivers/iio/humidity/hid-sensor-humidity.c
+> index 74383abc0d44..64fe6752ec16 100644
+> --- a/drivers/iio/humidity/hid-sensor-humidity.c
+> +++ b/drivers/iio/humidity/hid-sensor-humidity.c
+> @@ -8,6 +8,7 @@
+>  #include <linux/iio/buffer.h>
+>  #include <linux/iio/iio.h>
+>  #include <linux/module.h>
+> +#include <linux/mod_devicetable.h>
+>  #include <linux/platform_device.h>
 >  
->  	hid_print_trace = ishtp_trace_callback(cl_device);
+>  #include "hid-sensor-trigger.h"
+> diff --git a/drivers/iio/light/hid-sensor-als.c
+> b/drivers/iio/light/hid-sensor-als.c
+> index 85c8a05b73cb..cddd8d448372 100644
+> --- a/drivers/iio/light/hid-sensor-als.c
+> +++ b/drivers/iio/light/hid-sensor-als.c
+> @@ -6,13 +6,10 @@
+>  #include <linux/device.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/module.h>
+> -#include <linux/interrupt.h>
+> -#include <linux/irq.h>
+> +#include <linux/mod_devicetable.h>
+>  #include <linux/slab.h>
+> -#include <linux/delay.h>
+>  #include <linux/hid-sensor-hub.h>
+>  #include <linux/iio/iio.h>
+> -#include <linux/iio/sysfs.h>
+>  #include <linux/iio/buffer.h>
+>  #include "../common/hid-sensors/hid-sensor-trigger.h"
 >  
-> @@ -918,7 +931,7 @@ static int hid_ishtp_cl_resume(struct device
-> *device)
+> diff --git a/drivers/iio/light/hid-sensor-prox.c
+> b/drivers/iio/light/hid-sensor-prox.c
+> index 17d167c3d595..e02cc6cdf44a 100644
+> --- a/drivers/iio/light/hid-sensor-prox.c
+> +++ b/drivers/iio/light/hid-sensor-prox.c
+> @@ -6,13 +6,10 @@
+>  #include <linux/device.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/module.h>
+> -#include <linux/interrupt.h>
+> -#include <linux/irq.h>
+> +#include <linux/mod_devicetable.h>
+>  #include <linux/slab.h>
+> -#include <linux/delay.h>
+>  #include <linux/hid-sensor-hub.h>
+>  #include <linux/iio/iio.h>
+> -#include <linux/iio/sysfs.h>
+>  #include <linux/iio/buffer.h>
+>  #include "../common/hid-sensors/hid-sensor-trigger.h"
 >  
->  	hid_ishtp_trace(client_data, "%s hid_ishtp_cl %p\n", __func__,
->  			hid_ishtp_cl);
-> -	client_data->suspended = false;
-> +	schedule_work(&client_data->resume_work);
->  	return 0;
->  }
+> diff --git a/drivers/iio/magnetometer/hid-sensor-magn-3d.c
+> b/drivers/iio/magnetometer/hid-sensor-magn-3d.c
+> index b78691523dd4..e42352c3221d 100644
+> --- a/drivers/iio/magnetometer/hid-sensor-magn-3d.c
+> +++ b/drivers/iio/magnetometer/hid-sensor-magn-3d.c
+> @@ -6,13 +6,9 @@
+>  #include <linux/device.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/module.h>
+> -#include <linux/interrupt.h>
+> -#include <linux/irq.h>
+> -#include <linux/slab.h>
+> -#include <linux/delay.h>
+> +#include <linux/mod_devicetable.h>
+>  #include <linux/hid-sensor-hub.h>
+>  #include <linux/iio/iio.h>
+> -#include <linux/iio/sysfs.h>
+>  #include <linux/iio/buffer.h>
+>  #include "../common/hid-sensors/hid-sensor-trigger.h"
 >  
-> diff --git a/drivers/hid/intel-ish-hid/ishtp-hid.h
-> b/drivers/hid/intel-ish-hid/ishtp-hid.h
-> index 5ffd0da3cf1f..e5fa753fe92f 100644
-> --- a/drivers/hid/intel-ish-hid/ishtp-hid.h
-> +++ b/drivers/hid/intel-ish-hid/ishtp-hid.h
-> @@ -140,6 +140,7 @@ struct ishtp_cl_data {
->  	int multi_packet_cnt;
+> diff --git a/drivers/iio/orientation/hid-sensor-incl-3d.c
+> b/drivers/iio/orientation/hid-sensor-incl-3d.c
+> index 7af48d336285..9a7fa7e07522 100644
+> --- a/drivers/iio/orientation/hid-sensor-incl-3d.c
+> +++ b/drivers/iio/orientation/hid-sensor-incl-3d.c
+> @@ -7,13 +7,10 @@
+>  #include <linux/device.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/module.h>
+> -#include <linux/interrupt.h>
+> -#include <linux/irq.h>
+> +#include <linux/mod_devicetable.h>
+>  #include <linux/slab.h>
+> -#include <linux/delay.h>
+>  #include <linux/hid-sensor-hub.h>
+>  #include <linux/iio/iio.h>
+> -#include <linux/iio/sysfs.h>
+>  #include <linux/iio/buffer.h>
+>  #include "../common/hid-sensors/hid-sensor-trigger.h"
 >  
->  	struct work_struct work;
-> +	struct work_struct resume_work;
->  	struct ishtp_cl_device *cl_device;
->  };
+> diff --git a/drivers/iio/orientation/hid-sensor-rotation.c
+> b/drivers/iio/orientation/hid-sensor-rotation.c
+> index cf7f57a47681..8c1cb63c754c 100644
+> --- a/drivers/iio/orientation/hid-sensor-rotation.c
+> +++ b/drivers/iio/orientation/hid-sensor-rotation.c
+> @@ -7,9 +7,7 @@
+>  #include <linux/device.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/module.h>
+> -#include <linux/interrupt.h>
+> -#include <linux/irq.h>
+> -#include <linux/slab.h>
+> +#include <linux/mod_devicetable.h>
+>  #include <linux/hid-sensor-hub.h>
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/sysfs.h>
+> diff --git a/drivers/iio/position/hid-sensor-custom-intel-hinge.c
+> b/drivers/iio/position/hid-sensor-custom-intel-hinge.c
+> index 738b5f4626ce..8d90637ec1b6 100644
+> --- a/drivers/iio/position/hid-sensor-custom-intel-hinge.c
+> +++ b/drivers/iio/position/hid-sensor-custom-intel-hinge.c
+> @@ -7,6 +7,8 @@
+>  #include <linux/iio/buffer.h>
+>  #include <linux/iio/iio.h>
+>  #include <linux/platform_device.h>
+> +#include <linux/module.h>
+> +#include <linux/mod_devicetable.h>
 >  
-> diff --git a/drivers/hid/intel-ish-hid/ishtp/bus.c
-> b/drivers/hid/intel-ish-hid/ishtp/bus.c
-> index 0d6465f0eaa8..ead6c8f32759 100644
-> --- a/drivers/hid/intel-ish-hid/ishtp/bus.c
-> +++ b/drivers/hid/intel-ish-hid/ishtp/bus.c
-> @@ -329,13 +329,6 @@ static int ishtp_cl_device_resume(struct device
-> *dev)
->  	if (!device)
->  		return 0;
+>  #include "../common/hid-sensors/hid-sensor-trigger.h"
 >  
-> -	/*
-> -	 * When ISH needs hard reset, it is done asynchrnously, hence
-> bus
-> -	 * resume will  be called before full ISH resume
-> -	 */
-> -	if (device->ishtp_dev->resume_flag)
-> -		return 0;
-> -
->  	driver = to_ishtp_cl_driver(dev->driver);
->  	if (driver && driver->driver.pm) {
->  		if (driver->driver.pm->resume)
-> @@ -863,6 +856,28 @@ struct device *ishtp_device(struct
-> ishtp_cl_device *device)
->  }
->  EXPORT_SYMBOL(ishtp_device);
+> diff --git a/drivers/iio/pressure/hid-sensor-press.c
+> b/drivers/iio/pressure/hid-sensor-press.c
+> index c416d261e3e3..f30a26b8ab38 100644
+> --- a/drivers/iio/pressure/hid-sensor-press.c
+> +++ b/drivers/iio/pressure/hid-sensor-press.c
+> @@ -6,13 +6,10 @@
+>  #include <linux/device.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/module.h>
+> -#include <linux/interrupt.h>
+> -#include <linux/irq.h>
+> +#include <linux/mod_devicetable.h>
+>  #include <linux/slab.h>
+> -#include <linux/delay.h>
+>  #include <linux/hid-sensor-hub.h>
+>  #include <linux/iio/iio.h>
+> -#include <linux/iio/sysfs.h>
+>  #include <linux/iio/buffer.h>
+>  #include "../common/hid-sensors/hid-sensor-trigger.h"
 >  
-> +/**
-> + * ishtp_wait_resume() - Wait for IPC resume
-> + *
-> + * Wait for IPC resume
-> + *
-> + * Return: resume complete or not
-> + */
-> +bool ishtp_wait_resume(struct ishtp_device *dev)
-> +{
-> +	/* 50ms to get resume response */
-> +	#define WAIT_FOR_RESUME_ACK_MS		50
-> +
-> +	/* Waiting to get resume response */
-> +	if (dev->resume_flag)
-> +		wait_event_interruptible_timeout(dev->resume_wait,
-> +						 !dev->resume_flag,
-> +						 msecs_to_jiffies(WAIT_
-> FOR_RESUME_ACK_MS));
-> +
-> +	return (!dev->resume_flag);
-> +}
-> +EXPORT_SYMBOL_GPL(ishtp_wait_resume);
-> +
->  /**
->   * ishtp_get_pci_device() - Return PCI device dev pointer
->   * This interface is used to return PCI device pointer
-> diff --git a/include/linux/intel-ish-client-if.h
-> b/include/linux/intel-ish-client-if.h
-> index 1153e0030133..ec3a6ccbece4 100644
-> --- a/include/linux/intel-ish-client-if.h
-> +++ b/include/linux/intel-ish-client-if.h
-> @@ -76,6 +76,8 @@ int ishtp_register_event_cb(struct ishtp_cl_device
-> *device,
+> diff --git a/drivers/iio/temperature/hid-sensor-temperature.c
+> b/drivers/iio/temperature/hid-sensor-temperature.c
+> index dc534ed784c3..be102632c4ae 100644
+> --- a/drivers/iio/temperature/hid-sensor-temperature.c
+> +++ b/drivers/iio/temperature/hid-sensor-temperature.c
+> @@ -8,6 +8,7 @@
+>  #include <linux/iio/buffer.h>
+>  #include <linux/iio/iio.h>
+>  #include <linux/module.h>
+> +#include <linux/mod_devicetable.h>
+>  #include <linux/platform_device.h>
 >  
->  /* Get the device * from ishtp device instance */
->  struct device *ishtp_device(struct ishtp_cl_device *cl_device);
-> +/* wait for IPC resume */
-> +bool ishtp_wait_resume(struct ishtp_device *dev);
->  /* Trace interface for clients */
->  void *ishtp_trace_callback(struct ishtp_cl_device *cl_device);
->  /* Get device pointer of PCI device for DMA acces */
-> 
-> base-commit: f5711311bfa1abcc64c6dd1e912666a8c0b29a1a
+>  #include "../common/hid-sensors/hid-sensor-trigger.h"
 

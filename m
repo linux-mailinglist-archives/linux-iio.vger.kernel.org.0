@@ -2,127 +2,201 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 207B73A7F01
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Jun 2021 15:16:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36E933A8905
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Jun 2021 20:59:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230268AbhFONSi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Jun 2021 09:18:38 -0400
-Received: from www381.your-server.de ([78.46.137.84]:56122 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230179AbhFONSi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Jun 2021 09:18:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=1W66/H3s5teygc09wl/WulwH9FbiheGuWC5Ppmmimvs=; b=WCYNX9hfx3J7n3ysa0Vyy7/8ir
-        is7s6b91MDKlgOdyb4+seYHyMAWvBkTthTgNOiOIBlnO46RuKjP+UEMCgp8+TGmtAp2QTCQ/uu6wZ
-        HjHW7iRCVuMYE1XRpNFtj5V5KNj2MbgnnWNX8vSKhlO1ygxrFY2cAMly3a8cAVfhYOJPfWSCO9kRA
-        IIZUhd6k7fGDiDsFXqanRtSV/7e324IUxeiC7M94rajDpsXYT349grSVD6aXHrpUVuyOflFLf3Lhl
-        S0sPSzB8yTy2Y/djF5EFQZXdI4QLfyBEOi6o4Si8vYy095RV1wUOtNUjNJ+m61l2mIMy86Ex2Y6o5
-        OHGaFOfQ==;
-Received: from sslproxy06.your-server.de ([78.46.172.3])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1lt8vg-000D9G-HI; Tue, 15 Jun 2021 15:16:32 +0200
-Received: from [2001:a61:2bdf:6601:9e5c:8eff:fe01:8578]
-        by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1lt8vg-0004et-BX; Tue, 15 Jun 2021 15:16:32 +0200
-Subject: Re: [PATCH 01/12] iio:accel:adxl372: Cleanup includes
-To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-References: <20210611171355.202903-1-jic23@kernel.org>
- <20210611171355.202903-2-jic23@kernel.org>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <86b0811c-d3fc-d87e-adb1-71046d4a9c36@metafoo.de>
-Date:   Tue, 15 Jun 2021 15:16:32 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
+        id S229957AbhFOTBw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Jun 2021 15:01:52 -0400
+Received: from mga06.intel.com ([134.134.136.31]:32983 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229749AbhFOTBw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 15 Jun 2021 15:01:52 -0400
+IronPort-SDR: A6enz0nQc4g0orvMdNDSglvufpLXP9rxiGRC3Uz1lVGSj3GE84vDSPv4kS5xTw/4Z5lltrEck4
+ 6XNnWSCuqFaA==
+X-IronPort-AV: E=McAfee;i="6200,9189,10016"; a="267200862"
+X-IronPort-AV: E=Sophos;i="5.83,276,1616482800"; 
+   d="scan'208";a="267200862"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2021 11:59:45 -0700
+IronPort-SDR: DLY6cTYLm/d5JLdoxy8HwHrte1hh6kMSVLkk6w9YxDTEjqKLxnFW7pPqMQZgmqrOUO1apOKTdN
+ KFx6TSbffbqg==
+X-IronPort-AV: E=Sophos;i="5.83,276,1616482800"; 
+   d="scan'208";a="471738694"
+Received: from scha1-mobl1.amr.corp.intel.com ([10.209.8.199])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2021 11:59:45 -0700
+Message-ID: <513b9a637987c0c4152a47cd3190a27c34fc8ef2.camel@linux.intel.com>
+Subject: Re: [PATCH] HID: intel-ish-hid: use async resume function
+From:   Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+To:     Ye Xiang <xiang.ye@intel.com>, jikos@kernel.org, jic23@kernel.org
+Cc:     linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Tue, 15 Jun 2021 11:59:44 -0700
+In-Reply-To: <20210613032507.7474-1-xiang.ye@intel.com>
+References: <20210613032507.7474-1-xiang.ye@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.4-0ubuntu1 
 MIME-Version: 1.0
-In-Reply-To: <20210611171355.202903-2-jic23@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.103.2/26202/Tue Jun 15 13:21:24 2021)
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 6/11/21 7:13 PM, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> Based on consideration of the output of include-what-you-use.
-> Drop some unused headers and include others that should probably be
-> there based on direct use.  Also a few forward definitions to avoid
-> any potential future include ordering issues.
->
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: Michael Hennerich <Michael.Hennerich@analog.com>
-
-
-Acked-by:  Lars-Peter Clausen <lars@metafoo.de>
-
-Thanks.
+On Sun, 2021-06-13 at 11:25 +0800, Ye Xiang wrote:
+> ISH IPC driver uses asynchronous workqueue to do resume now, but
+> there is
+> a potential timing issue: when child devices resume before bus
+> driver, it
+> will cause child devices resume failed and cannot be recovered until
+> reboot. The current implementation in this case do wait for IPC to
+> resume
+> but fail to accommodate for a case when there is no ISH reboot and
+> soft
+> resume is taking time. This issue is apparent on Tiger Lake platform
+> with
+> 5.11.13 kernel when doing suspend to idle then resume(s0ix) test. To
+> resolve this issue, we change ISHTP HID client to use asynchronous
+> resume
+> callback too. In the asynchronous resume callback, it waits for the
+> ISHTP
+> resume done event, and then notify ISHTP HID client link ready.
+> 
+> Signed-off-by: Ye Xiang <xiang.ye@intel.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
 > ---
->   drivers/iio/accel/adxl372.c     | 4 ++--
->   drivers/iio/accel/adxl372.h     | 2 ++
->   drivers/iio/accel/adxl372_spi.c | 3 +--
->   3 files changed, 5 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/iio/accel/adxl372.c b/drivers/iio/accel/adxl372.c
-> index fc9592407717..c679cb9f3ed1 100644
-> --- a/drivers/iio/accel/adxl372.c
-> +++ b/drivers/iio/accel/adxl372.c
-> @@ -6,12 +6,12 @@
->    */
->   
->   #include <linux/bitfield.h>
-> +#include <linux/bitmap.h>
->   #include <linux/bitops.h>
->   #include <linux/interrupt.h>
-> -#include <linux/irq.h>
->   #include <linux/module.h>
-> +#include <linux/mutex.h>
->   #include <linux/regmap.h>
-> -#include <linux/spi/spi.h>
->   
->   #include <linux/iio/iio.h>
->   #include <linux/iio/sysfs.h>
-> diff --git a/drivers/iio/accel/adxl372.h b/drivers/iio/accel/adxl372.h
-> index 80a0aa9714fc..86bf8955d60c 100644
-> --- a/drivers/iio/accel/adxl372.h
-> +++ b/drivers/iio/accel/adxl372.h
-> @@ -9,6 +9,8 @@
->   #define _ADXL372_H_
->   
->   #define ADXL372_REVID	0x03
-> +struct device;
-> +struct regmap;
->   
->   int adxl372_probe(struct device *dev, struct regmap *regmap,
->   		  int irq, const char *name);
-> diff --git a/drivers/iio/accel/adxl372_spi.c b/drivers/iio/accel/adxl372_spi.c
-> index 1f1352fee99a..927379f9b497 100644
-> --- a/drivers/iio/accel/adxl372_spi.c
-> +++ b/drivers/iio/accel/adxl372_spi.c
-> @@ -6,9 +6,8 @@
->    */
->   
->   #include <linux/module.h>
-> +#include <linux/mod_devicetable.h>
->   #include <linux/regmap.h>
-> -#include <linux/of.h>
-> -#include <linux/of_device.h>
->   #include <linux/spi/spi.h>
->   
->   #include "adxl372.h"
-
+>  drivers/hid/intel-ish-hid/ishtp-hid-client.c | 15 +++++++++-
+>  drivers/hid/intel-ish-hid/ishtp-hid.h        |  1 +
+>  drivers/hid/intel-ish-hid/ishtp/bus.c        | 29 +++++++++++++++---
+> --
+>  include/linux/intel-ish-client-if.h          |  2 ++
+>  4 files changed, 39 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/hid/intel-ish-hid/ishtp-hid-client.c
+> b/drivers/hid/intel-ish-hid/ishtp-hid-client.c
+> index 7167412d89d9..9d53e85fdef3 100644
+> --- a/drivers/hid/intel-ish-hid/ishtp-hid-client.c
+> +++ b/drivers/hid/intel-ish-hid/ishtp-hid-client.c
+> @@ -779,6 +779,17 @@ static void hid_ishtp_cl_reset_handler(struct
+> work_struct *work)
+>  	}
+>  }
+>  
+> +static void hid_ishtp_cl_resume_handler(struct work_struct *work)
+> +{
+> +	struct ishtp_cl_data *client_data = container_of(work, struct
+> ishtp_cl_data, resume_work);
+> +	struct ishtp_cl *hid_ishtp_cl = client_data->hid_ishtp_cl;
+> +
+> +	if (ishtp_wait_resume(ishtp_get_ishtp_device(hid_ishtp_cl))) {
+> +		client_data->suspended = false;
+> +		wake_up_interruptible(&client_data->ishtp_resume_wait);
+> +	}
+> +}
+> +
+>  void (*hid_print_trace)(void *unused, const char *format, ...);
+>  
+>  /**
+> @@ -817,6 +828,8 @@ static int hid_ishtp_cl_probe(struct
+> ishtp_cl_device *cl_device)
+>  	init_waitqueue_head(&client_data->ishtp_resume_wait);
+>  
+>  	INIT_WORK(&client_data->work, hid_ishtp_cl_reset_handler);
+> +	INIT_WORK(&client_data->resume_work,
+> hid_ishtp_cl_resume_handler);
+> +
+>  
+>  	hid_print_trace = ishtp_trace_callback(cl_device);
+>  
+> @@ -918,7 +931,7 @@ static int hid_ishtp_cl_resume(struct device
+> *device)
+>  
+>  	hid_ishtp_trace(client_data, "%s hid_ishtp_cl %p\n", __func__,
+>  			hid_ishtp_cl);
+> -	client_data->suspended = false;
+> +	schedule_work(&client_data->resume_work);
+>  	return 0;
+>  }
+>  
+> diff --git a/drivers/hid/intel-ish-hid/ishtp-hid.h
+> b/drivers/hid/intel-ish-hid/ishtp-hid.h
+> index 5ffd0da3cf1f..e5fa753fe92f 100644
+> --- a/drivers/hid/intel-ish-hid/ishtp-hid.h
+> +++ b/drivers/hid/intel-ish-hid/ishtp-hid.h
+> @@ -140,6 +140,7 @@ struct ishtp_cl_data {
+>  	int multi_packet_cnt;
+>  
+>  	struct work_struct work;
+> +	struct work_struct resume_work;
+>  	struct ishtp_cl_device *cl_device;
+>  };
+>  
+> diff --git a/drivers/hid/intel-ish-hid/ishtp/bus.c
+> b/drivers/hid/intel-ish-hid/ishtp/bus.c
+> index 0d6465f0eaa8..ead6c8f32759 100644
+> --- a/drivers/hid/intel-ish-hid/ishtp/bus.c
+> +++ b/drivers/hid/intel-ish-hid/ishtp/bus.c
+> @@ -329,13 +329,6 @@ static int ishtp_cl_device_resume(struct device
+> *dev)
+>  	if (!device)
+>  		return 0;
+>  
+> -	/*
+> -	 * When ISH needs hard reset, it is done asynchrnously, hence
+> bus
+> -	 * resume will  be called before full ISH resume
+> -	 */
+> -	if (device->ishtp_dev->resume_flag)
+> -		return 0;
+> -
+>  	driver = to_ishtp_cl_driver(dev->driver);
+>  	if (driver && driver->driver.pm) {
+>  		if (driver->driver.pm->resume)
+> @@ -863,6 +856,28 @@ struct device *ishtp_device(struct
+> ishtp_cl_device *device)
+>  }
+>  EXPORT_SYMBOL(ishtp_device);
+>  
+> +/**
+> + * ishtp_wait_resume() - Wait for IPC resume
+> + *
+> + * Wait for IPC resume
+> + *
+> + * Return: resume complete or not
+> + */
+> +bool ishtp_wait_resume(struct ishtp_device *dev)
+> +{
+> +	/* 50ms to get resume response */
+> +	#define WAIT_FOR_RESUME_ACK_MS		50
+> +
+> +	/* Waiting to get resume response */
+> +	if (dev->resume_flag)
+> +		wait_event_interruptible_timeout(dev->resume_wait,
+> +						 !dev->resume_flag,
+> +						 msecs_to_jiffies(WAIT_
+> FOR_RESUME_ACK_MS));
+> +
+> +	return (!dev->resume_flag);
+> +}
+> +EXPORT_SYMBOL_GPL(ishtp_wait_resume);
+> +
+>  /**
+>   * ishtp_get_pci_device() - Return PCI device dev pointer
+>   * This interface is used to return PCI device pointer
+> diff --git a/include/linux/intel-ish-client-if.h
+> b/include/linux/intel-ish-client-if.h
+> index 1153e0030133..ec3a6ccbece4 100644
+> --- a/include/linux/intel-ish-client-if.h
+> +++ b/include/linux/intel-ish-client-if.h
+> @@ -76,6 +76,8 @@ int ishtp_register_event_cb(struct ishtp_cl_device
+> *device,
+>  
+>  /* Get the device * from ishtp device instance */
+>  struct device *ishtp_device(struct ishtp_cl_device *cl_device);
+> +/* wait for IPC resume */
+> +bool ishtp_wait_resume(struct ishtp_device *dev);
+>  /* Trace interface for clients */
+>  void *ishtp_trace_callback(struct ishtp_cl_device *cl_device);
+>  /* Get device pointer of PCI device for DMA acces */
+> 
+> base-commit: f5711311bfa1abcc64c6dd1e912666a8c0b29a1a
 

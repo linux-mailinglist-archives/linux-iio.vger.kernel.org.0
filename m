@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79E4C3A9526
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Jun 2021 10:37:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 122273A952C
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Jun 2021 10:38:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231389AbhFPIjz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 16 Jun 2021 04:39:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57930 "EHLO
+        id S231318AbhFPIkg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 16 Jun 2021 04:40:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231336AbhFPIjy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Jun 2021 04:39:54 -0400
-Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8F24C061574
-        for <linux-iio@vger.kernel.org>; Wed, 16 Jun 2021 01:37:48 -0700 (PDT)
-Received: by mail-lj1-x22f.google.com with SMTP id s22so2689957ljg.5
-        for <linux-iio@vger.kernel.org>; Wed, 16 Jun 2021 01:37:48 -0700 (PDT)
+        with ESMTP id S231589AbhFPIkf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Jun 2021 04:40:35 -0400
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07E6CC06175F
+        for <linux-iio@vger.kernel.org>; Wed, 16 Jun 2021 01:38:29 -0700 (PDT)
+Received: by mail-lf1-x12f.google.com with SMTP id p17so2973439lfc.6
+        for <linux-iio@vger.kernel.org>; Wed, 16 Jun 2021 01:38:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=QJAc8B1lD7Sm5QPOtcUYZkUpiddw4Ax/wj4Rau0Ixfg=;
-        b=qvu43AOLgb3xHnM0yXAUrjFaCzKTcpte7hy9TbY39f5F7QzZ+wiTPUmavQMpx+Rt5R
-         45g7i68kXrjq53DeA4k7zOhUGKPahmopZKU6RqXDfO+rcsj5B1xwLjwMpAHCkhu3eEby
-         53qMKhYFGsFMJ/qHD/OyZ2e3+4xcFXjqL4f9uSlbQxC56dx18Lahm3U8atB60kgX6sif
-         EqYAUsWW8YdBB38HoPBiiP7BhjvjZ8mWG34htxZzmS+FZ68Eze0+llgFpBggaJfGNLxm
-         S9B78k6IYF+bpKFfw7mjvqJqrA0SdS7fd3H/EByu9Fs8yoTpFn1xPbTmeZ/qRocYSzK2
-         L6/A==
+        bh=g/rrUBRBKr4+tIfljhgk6uKWo9IRMgLxxsoOB9I8YGI=;
+        b=QYGc2XXGDuQT8k39pSCunL/cqnKQ4dae501GTofBf0roPJEm83xUKWTiW5EN3K4biQ
+         Xb+9+mDa/5GMPvPjUTjlCYEbTmcz2x5gZhL1tDtNq+0FcKb7AYPD1R8t7/CH80W+ax5T
+         gbm4VWsurXzothvPvZW10287TGFQYCWAt1GtJDahhVW9PfSAQjeH/u/UfpffzgxlyDq7
+         T8SGNJdpKEUz9CVGMbWZKkRQm0uuuK1+wwHgCIGWJ4CiNX6K7Wi5huA7ljOi28E2zDsC
+         ZMReRZVT23gS4JPlk1OqT0nn78Ox7MoQMUg8eW9DiryxL7CFc+XlmA5AmJ3znrrqI8wV
+         8xcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=QJAc8B1lD7Sm5QPOtcUYZkUpiddw4Ax/wj4Rau0Ixfg=;
-        b=kNnNgo0oe0RkqrfN7eqFI+jS/LMhqNgQxuv7tJGJXZcTK19p1ZgS4BIKnekiuzWoI2
-         F73OgT7fscAEU76UEuWk/4N8Fg5gxrqY3FtVxUKOtD3VbjDI1QYNh06CiIMQIrfKUzQ5
-         1apbeZ5n1rBJWeUIzazygDqZXYkCySOz3Y2jFYCcDSac2nSNlh2nszT9Jtb81mmpsQXW
-         AT6f7QUGbjhIDxFSeA3SxhKbfo649ee0Znb5MGXmuJAMog6wjeDeJnlaUvjVLEtauywe
-         B5fp/pwQZ8YkJGWS1PIDs3BEuAoouUxja9kVnrqCd86xmJbjcSEzvdS7U4R0H5LasNso
-         kq6g==
-X-Gm-Message-State: AOAM530fI7tOvuLEqfDv5PC5/DToynBxNooakh71dZ06RUDorsQFPeHT
-        zi/7nd4q1140C5d+S9UEy/aTP/7sp6uEpuHy3i+awQ==
-X-Google-Smtp-Source: ABdhPJyGIIdMSJ7t5SYz1eX75j4utxyINk0hmhiwDZUkZw41Hdi0Yqko84xoZfLmn+D4f2IStcf6VQ88KZ/LjsmVKlE=
-X-Received: by 2002:a2e:9483:: with SMTP id c3mr3514844ljh.273.1623832667026;
- Wed, 16 Jun 2021 01:37:47 -0700 (PDT)
+        bh=g/rrUBRBKr4+tIfljhgk6uKWo9IRMgLxxsoOB9I8YGI=;
+        b=sqXmDSH0C+XkrYRg/i7soK4SD1v6yAUZ+jVFdiArmPPC+lWgV2v4br324jbleYix1z
+         6nT0dEQTlXllgYLfsGTWDsl03kFTG6RO2nA26wxh1hiV/tToey5macHjUZJlPwiVmnV2
+         pT403blDnA6sAOgEh5E2/nvU7etTbYvjYuJe0AW2HesvL9e0M4r3oks7EzoLVqtRhCm4
+         UKSoAmd3/lk4WFERtKhEJQby6A/0/oiMiNUfYtoM0h473v/eHbvrjVewR6W4m5fU1DX4
+         FIv/iVCs0TwuGdUNcykkzTBb0pimIifFZS627nsinTk+5A/sga3O7LGMe+2HNB2jaDTc
+         c2Ow==
+X-Gm-Message-State: AOAM531Y9aumMlHFKMStfj9UuGCAmvmoeS5BtHMQRn/9VNCpK7DW1mRk
+        /EtqJkq0JPM5zLMuoPgvLMqh8T/uvJhE32IMWR7M6Q==
+X-Google-Smtp-Source: ABdhPJzV8rcxUyxYn8NVP3dd+mKcvzZFOcNT17YroYdYGlp71gmpX2hIgMkExGRpBrdNAGn4haW5sKD6K0oc9a5jmsU=
+X-Received: by 2002:ac2:4c8f:: with SMTP id d15mr2787448lfl.157.1623832707400;
+ Wed, 16 Jun 2021 01:38:27 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210614163150.7774-1-stephan@gerhold.net> <20210614163150.7774-2-stephan@gerhold.net>
-In-Reply-To: <20210614163150.7774-2-stephan@gerhold.net>
+References: <20210614163150.7774-1-stephan@gerhold.net> <20210614163150.7774-3-stephan@gerhold.net>
+In-Reply-To: <20210614163150.7774-3-stephan@gerhold.net>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 16 Jun 2021 10:37:36 +0200
-Message-ID: <CACRpkdYPz4JOWgzynVzAmJXH1MWAXjvH16k_kwi0KqGE9_NnSQ@mail.gmail.com>
-Subject: Re: [PATCH 1/3] dt-bindings: iio: accel: bma255: Fix interrupt type
+Date:   Wed, 16 Jun 2021 10:38:16 +0200
+Message-ID: <CACRpkdYSpf32bR4MZ4ZdMA+-tR5=OC-HXhEOP9x1ihxcDseZug@mail.gmail.com>
+Subject: Re: [PATCH 2/3] dt-bindings: iio: accel: bma255: Sort compatibles
 To:     Stephan Gerhold <stephan@gerhold.net>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -66,38 +66,12 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Mon, Jun 14, 2021 at 6:34 PM Stephan Gerhold <stephan@gerhold.net> wrote:
 
-> Bosch accelerometers similar to BMA255 are initially configured to
-> emit an active-high interrupt signal. This is currently not re-configured
-> in the bmc150-accel driver so the interrupt should most certainly be
-> IRQ_TYPE_EDGE_RISING (or potentially IRQ_TYPE_LEVEL_HIGH).
-> (Unless there is some kind of inverter installed on the board...)
+> Similar to recent rework in the bmc150-accel driver, sort the compatible
+> list in the DT schema so there is a consistent order.
 >
-> At the moment the bmc150-accel driver forcefully requests the IRQ
-> using IRQF_TRIGGER_RISING, which means that the IRQ type is currently
-> ignored in all existing device trees.
->
-> Fixes: 6259551 ("iio: accel: bmc150-accel: Add DT bindings")
-> Cc: Linus Walleij <linus.walleij@linaro.org>
 > Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-
-> However:
->   1. We need to fix up several broken device trees first (I found
->      IRQ_TYPE_LEVEL_LOW in some device trees).
-
-Oh this situation... Some are mine I bet (I can fix those,
-just poke me with something sharp.)
-
->   2. Similarly, I'm not sure if this might break some ACPI devices
->      in case they have the wrong IRQ type listed?
-
-I never figured this out but Andy and maybe Bastien Nocera
-knows more about this.
-
-> As a first step this patch just fixes the documentation.
-
-Fair enough, it makes things better.
 
 Yours,
 Linus Walleij

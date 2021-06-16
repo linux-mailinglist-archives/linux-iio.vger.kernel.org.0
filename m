@@ -2,82 +2,68 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A3CF83A9D95
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Jun 2021 16:29:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F4DC3A9D01
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Jun 2021 16:08:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233668AbhFPObK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 16 Jun 2021 10:31:10 -0400
-Received: from aibo.runbox.com ([91.220.196.211]:53210 "EHLO aibo.runbox.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232408AbhFPObK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 16 Jun 2021 10:31:10 -0400
-X-Greylist: delayed 3636 seconds by postgrey-1.27 at vger.kernel.org; Wed, 16 Jun 2021 10:31:10 EDT
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbx.email;
-         s=selector1; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From;
-        bh=oBkW26nHbIAk/9SaFxkSIezH97IsiGDnuTBNiewivCQ=; b=r7hhtn8j+tBKG1wkOqD/5V3S/i
-        IZ7aAQOMjOs5GiNzpIRKT34ohay5WUyB8gBna9GEemcddYgRzcj76K1V+HVM2WQl0zgTKl7GJ+2lo
-        XlfXpEaZz+WmIN1De9rHQU9d0EMUdFjC46NeO87f6LJ4rg6xnMpfJl9lhAuXrzQBrlPXdM3ciw3GN
-        XjIQ17yQaUe/06nVa/QKWI6mKtZrcnD99EoqKo64ip6XKlkuBjxniokzFqk0FGgngyulcashyNo3a
-        PAb81jO8HpDqKUUGTMQYepwrz6ZJq6i/tz/KhTZ4WGiS58nWrC0rV+R+Klp8smelR7jRP0X+HuqqQ
-        K+GfD7ng==;
-Received: from [10.9.9.72] (helo=submission01.runbox)
-        by mailtransmit02.runbox with esmtp (Exim 4.86_2)
-        (envelope-from <detegr@rbx.email>)
-        id 1ltVaj-0005ao-HH; Wed, 16 Jun 2021 15:28:25 +0200
-Received: by submission01.runbox with esmtpsa  [Authenticated alias (932193)]  (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.90_1)
-        id 1ltVaM-0003oX-GH; Wed, 16 Jun 2021 15:28:02 +0200
-From:   =?UTF-8?q?Antti=20Ker=C3=A4nen?= <detegr@rbx.email>
-To:     linux-iio@vger.kernel.org
-Cc:     =?UTF-8?q?Antti=20Ker=C3=A4nen?= <detegr@rbx.email>,
-        Hannu Hartikainen <hannu@hrtk.in>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Nuno Sa <nuno.sa@analog.com>,
+        id S233817AbhFPOKm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 16 Jun 2021 10:10:42 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:3251 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233731AbhFPOKm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Jun 2021 10:10:42 -0400
+Received: from fraeml735-chm.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4G4msp663Fz6JBQF;
+        Wed, 16 Jun 2021 21:55:26 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml735-chm.china.huawei.com (10.206.15.216) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Wed, 16 Jun 2021 16:08:34 +0200
+Received: from localhost (10.52.123.249) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Wed, 16 Jun
+ 2021 15:08:33 +0100
+Date:   Wed, 16 Jun 2021 15:08:26 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Brendan Higgins <brendanhiggins@google.com>
+CC:     David Gow <davidgow@google.com>,
+        Daniel Latypov <dlatypov@google.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
         Jonathan Cameron <jic23@kernel.org>,
-        linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] iio: adis: set GPIO reset pin direction
-Date:   Wed, 16 Jun 2021 16:25:13 +0300
-Message-Id: <20210616132512.634123-1-detegr@rbx.email>
-X-Mailer: git-send-email 2.31.1
+        Lars-Peter Clausen <lars@metafoo.de>,
+        KUnit Development <kunit-dev@googlegroups.com>,
+        "open list:KERNEL SELFTEST FRAMEWORK\" <linux-kselftest@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-iio@vger.kernel.org"@domain.invalid
+Subject: Re: [PATCH v2 05/10] iio: Remove a cast in iio-test-format which is
+ no longer required
+Message-ID: <20210616150826.00001cd7@Huawei.com>
+In-Reply-To: <CAFd5g44Eboz-=6LFQJ93sPVt53GQ60MGBUPyacKUj=0cFTJr0A@mail.gmail.com>
+References: <20210513193204.816681-1-davidgow@google.com>
+        <20210513193204.816681-5-davidgow@google.com>
+        <CAFd5g44Eboz-=6LFQJ93sPVt53GQ60MGBUPyacKUj=0cFTJr0A@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.52.123.249]
+X-ClientProxiedBy: lhreml750-chm.china.huawei.com (10.201.108.200) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Use GPIOD_OUT_LOW instead of GPIOD_ASIS as the reset pin needs to be an
-active low output pin.
+On Tue, 15 Jun 2021 13:14:44 -0700
+Brendan Higgins <brendanhiggins@google.com> wrote:
 
-Suggested-by: Hannu Hartikainen <hannu@hrtk.in>
-Signed-off-by: Antti Keränen <detegr@rbx.email>
----
-The documentation of GPIO consumer interface states:
+> On Thu, May 13, 2021 at 12:36 PM David Gow <davidgow@google.com> wrote:
+> >
+> > KUnit's EXPECT macros no longer typecheck as stringently, so casting the
+> > result of strcmp() is now unnecessary.
+> >
+> > Signed-off-by: David Gow <davidgow@google.com>  
+> 
+> Reviewed-by: Brendan Higgins <brendanhiggins@google.com>
 
-Be aware that there is no default direction for GPIOs. Therefore,
-**using a GPIO without setting its direction first is illegal and will
-result in undefined behavior!**
+Seems sensible
 
-Therefore the direction of the reset GPIO pin should be set as output.
-
- drivers/iio/imu/adis.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/iio/imu/adis.c b/drivers/iio/imu/adis.c
-index 319b64b2fd88..7f13b3763732 100644
---- a/drivers/iio/imu/adis.c
-+++ b/drivers/iio/imu/adis.c
-@@ -415,7 +415,7 @@ int __adis_initial_startup(struct adis *adis)
- 	int ret;
- 
- 	/* check if the device has rst pin low */
--	gpio = devm_gpiod_get_optional(&adis->spi->dev, "reset", GPIOD_ASIS);
-+	gpio = devm_gpiod_get_optional(&adis->spi->dev, "reset", GPIOD_OUT_LOW);
- 	if (IS_ERR(gpio))
- 		return PTR_ERR(gpio);
- 
--- 
-2.31.1
-
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>

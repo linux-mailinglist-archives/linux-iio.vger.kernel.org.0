@@ -2,30 +2,33 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9806B3A9AA1
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Jun 2021 14:41:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 062E03A9AAB
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Jun 2021 14:43:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230269AbhFPMnm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 16 Jun 2021 08:43:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52194 "EHLO mail.kernel.org"
+        id S230197AbhFPMpt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 16 Jun 2021 08:45:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52744 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230197AbhFPMnm (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 16 Jun 2021 08:43:42 -0400
+        id S232628AbhFPMpn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 16 Jun 2021 08:45:43 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D582061078;
-        Wed, 16 Jun 2021 12:41:33 +0000 (UTC)
-Date:   Wed, 16 Jun 2021 13:43:35 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id DFCD061166;
+        Wed, 16 Jun 2021 12:43:34 +0000 (UTC)
+Date:   Wed, 16 Jun 2021 13:45:36 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Chris Lesiak <chris.lesiak@licor.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Matt Ranostay <matt.ranostay@konsulko.com>
-Subject: Re: [PATCH v3] iio: humidity: hdc100x: Add margin to the conversion
- time
-Message-ID: <20210616134335.76715e55@jic23-huawei>
-In-Reply-To: <20210614141820.2034827-1-chris.lesiak@licor.com>
-References: <20210614141820.2034827-1-chris.lesiak@licor.com>
+To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc:     linux-iio@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
+Subject: Re: [PATCH v2 1/6] iio: imu: mpu6050: Balance runtime pm + use
+ pm_runtime_resume_and_get()
+Message-ID: <20210616134536.47095845@jic23-huawei>
+In-Reply-To: <20210616091523.03e17b0b@coco.lan>
+References: <20210516162103.1332291-1-jic23@kernel.org>
+        <20210516162103.1332291-2-jic23@kernel.org>
+        <20210616091523.03e17b0b@coco.lan>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -34,59 +37,124 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 14 Jun 2021 09:18:20 -0500
-Chris Lesiak <chris.lesiak@licor.com> wrote:
+On Wed, 16 Jun 2021 09:15:23 +0200
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
 
-> The datasheets have the following note for the conversion time
-> specification: "This parameter is specified by design and/or
-> characterization and it is not tested in production."
+> Em Sun, 16 May 2021 17:20:58 +0100
+> Jonathan Cameron <jic23@kernel.org> escreveu:
 > 
-> Parts have been seen that require more time to do 14-bit conversions for
-> the relative humidity channel.  The result is ENXIO due to the address
-> phase of a transfer not getting an ACK.
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > Remove an unblanced pm_runtime_put_sync_suspend() call
+> > in inv_pu_pm_disable().  Not this call is not a bug, because the runtime
+> > pm core will not allow the reference counter to go negative.  It is
+> > however confusing and serves no purpose.
+> > 
+> > pm_runtime_resume_and_get() case found using coccicheck script under
+> > review at:
+> > https://lore.kernel.org/lkml/20210427141946.2478411-1-Julia.Lawall@inria.fr/
+> > 
+> > pm_runtime_resume_and_get() returns <= 0 only so simplify related checks
+> > to bring this more inline with nearby calls.
+> > 
+> > This is a prequel to taking a closer look at the runtime pm in IIO drivers
+> > in general.
+> > 
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Cc: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>  
 > 
-> Delay an additional 1 ms per conversion to allow for additional margin.
+> LGTM.
 > 
-> Fixes: 4839367d99e3 ("iio: humidity: add HDC100x support")
-> Signed-off-by: Chris Lesiak <chris.lesiak@licor.com>
+> Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Thanks!
 
-+CC Matt as this is one of his drivers.
+Applied to the togreg branch of iio.git and pushed out as testing for
+0-day to see if it can find anything we missed.
 
-Looks good to me.
+Jonathan
 
-> ---
->  drivers/iio/humidity/hdc100x.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
-> index 2a957f19048e..9e0fce917ce4 100644
-> --- a/drivers/iio/humidity/hdc100x.c
-> +++ b/drivers/iio/humidity/hdc100x.c
-> @@ -25,6 +25,8 @@
->  #include <linux/iio/trigger_consumer.h>
->  #include <linux/iio/triggered_buffer.h>
->  
-> +#include <linux/time.h>
-> +
->  #define HDC100X_REG_TEMP			0x00
->  #define HDC100X_REG_HUMIDITY			0x01
->  
-> @@ -166,7 +168,7 @@ static int hdc100x_get_measurement(struct hdc100x_data *data,
->  				   struct iio_chan_spec const *chan)
->  {
->  	struct i2c_client *client = data->client;
-> -	int delay = data->adc_int_us[chan->address];
-> +	int delay = data->adc_int_us[chan->address] + 1*USEC_PER_MSEC;
->  	int ret;
->  	__be16 val;
->  
-> @@ -316,7 +318,7 @@ static irqreturn_t hdc100x_trigger_handler(int irq, void *p)
->  	struct iio_dev *indio_dev = pf->indio_dev;
->  	struct hdc100x_data *data = iio_priv(indio_dev);
->  	struct i2c_client *client = data->client;
-> -	int delay = data->adc_int_us[0] + data->adc_int_us[1];
-> +	int delay = data->adc_int_us[0] + data->adc_int_us[1] + 2*USEC_PER_MSEC;
->  	int ret;
->  
->  	/* dual read starts at temp register */
+> 
+> > ---
+> >  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c    | 19 ++++++-------------
+> >  drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c |  6 ++----
+> >  2 files changed, 8 insertions(+), 17 deletions(-)
+> > 
+> > diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> > index 6244a07048df..4cae3765e327 100644
+> > --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> > +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> > @@ -570,11 +570,9 @@ static int inv_mpu6050_read_channel_data(struct iio_dev *indio_dev,
+> >  	freq_hz = INV_MPU6050_DIVIDER_TO_FIFO_RATE(st->chip_config.divider);
+> >  	period_us = 1000000 / freq_hz;
+> >  
+> > -	result = pm_runtime_get_sync(pdev);
+> > -	if (result < 0) {
+> > -		pm_runtime_put_noidle(pdev);
+> > +	result = pm_runtime_resume_and_get(pdev);
+> > +	if (result)
+> >  		return result;
+> > -	}
+> >  
+> >  	switch (chan->type) {
+> >  	case IIO_ANGL_VEL:
+> > @@ -812,11 +810,9 @@ static int inv_mpu6050_write_raw(struct iio_dev *indio_dev,
+> >  		return result;
+> >  
+> >  	mutex_lock(&st->lock);
+> > -	result = pm_runtime_get_sync(pdev);
+> > -	if (result < 0) {
+> > -		pm_runtime_put_noidle(pdev);
+> > +	result = pm_runtime_resume_and_get(pdev);
+> > +	if (result)
+> >  		goto error_write_raw_unlock;
+> > -	}
+> >  
+> >  	switch (mask) {
+> >  	case IIO_CHAN_INFO_SCALE:
+> > @@ -930,11 +926,9 @@ inv_mpu6050_fifo_rate_store(struct device *dev, struct device_attribute *attr,
+> >  		result = 0;
+> >  		goto fifo_rate_fail_unlock;
+> >  	}
+> > -	result = pm_runtime_get_sync(pdev);
+> > -	if (result < 0) {
+> > -		pm_runtime_put_noidle(pdev);
+> > +	result = pm_runtime_resume_and_get(pdev);
+> > +	if (result)
+> >  		goto fifo_rate_fail_unlock;
+> > -	}
+> >  
+> >  	result = regmap_write(st->map, st->reg->sample_rate_div, d);
+> >  	if (result)
+> > @@ -1422,7 +1416,6 @@ static void inv_mpu_pm_disable(void *data)
+> >  {
+> >  	struct device *dev = data;
+> >  
+> > -	pm_runtime_put_sync_suspend(dev);
+> >  	pm_runtime_disable(dev);
+> >  }
+> >  
+> > diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+> > index e21ba778595a..2d0e8cdd4848 100644
+> > --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+> > +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+> > @@ -173,11 +173,9 @@ static int inv_mpu6050_set_enable(struct iio_dev *indio_dev, bool enable)
+> >  
+> >  	if (enable) {
+> >  		scan = inv_scan_query(indio_dev);
+> > -		result = pm_runtime_get_sync(pdev);
+> > -		if (result < 0) {
+> > -			pm_runtime_put_noidle(pdev);
+> > +		result = pm_runtime_resume_and_get(pdev);
+> > +		if (result)
+> >  			return result;
+> > -		}
+> >  		/*
+> >  		 * In case autosuspend didn't trigger, turn off first not
+> >  		 * required sensors.  
+> 
+> 
+> 
+> Thanks,
+> Mauro
 

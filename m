@@ -2,39 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A716A3A9399
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Jun 2021 09:16:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCD483A93A7
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Jun 2021 09:18:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231316AbhFPHSt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 16 Jun 2021 03:18:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41020 "EHLO mail.kernel.org"
+        id S231245AbhFPHUw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 16 Jun 2021 03:20:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41760 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231517AbhFPHSs (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 16 Jun 2021 03:18:48 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 969206008E;
-        Wed, 16 Jun 2021 07:16:41 +0000 (UTC)
+        id S231239AbhFPHUw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 16 Jun 2021 03:20:52 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B15096135C;
+        Wed, 16 Jun 2021 07:18:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623827803;
-        bh=CO984FBzRO6laPWFsznPykgnj+CcVDcJ40dnwknMv4g=;
+        s=k20201202; t=1623827926;
+        bh=9F/86IalsbzNEi75w7Fi2yYj6JuvACRRZTWGov9fwwE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Hy4cE/RZaOzClB8MTeIHPiMNNnOGRbQZ/98B6ArFuBfXvPrOx1oVBOVvGnvn1tUQv
-         yzdNJKH8xdOkI6T5aGC8khtWfiXKlSVr2jgWnS+TM8j/XXslykCTJXp0cHINYU+iRI
-         M62xJUT9+UqKm7s/BG7hzVV6oE7eugvTZRRi7c2zRSBXXrfFm0FaFGFPV0HzTDxsdX
-         5vhtLFhPyJjm3EL5f2zFQA3TNEo9t0qzCCxbGA2j0PMjwmHDbhpXWlbMyG4FSvT0Vp
-         yKA1Q0mseHyd/CMuSWKRN23YXHo7JcrwHIvU2zG5703yVMRAeXu42WUUKQrYcRnKKt
-         rrkjeMLHUOAvw==
-Date:   Wed, 16 Jun 2021 09:16:38 +0200
+        b=iQaxyMpl1mAOGR0sOnEh028elJ0vzmjNbpJLEScCGAQW1n1wec0CRO2UferN1JrRd
+         mmDoFis1w9hGSxCGtMaw8Z9bQ9PQGHX3vya38jQ0aoc5gfy5L0KgANzmXpTvke8W34
+         OAEsQcv0mPE4Z9aR+5y9dyyTaXc5ygWw4u3QgGqucaH3zHLFFYpPzpXY7aiEH90dxT
+         /xutfnnMd4K+gzumYMoSJuyymwpSN7uAf0Oc6yqZ3hvHhSf+/bJC8rIWbwVbULgLDd
+         0jOqLHE1o8khQV7MZbI1I/bYqbI4Wyk6BQdHvXcfhsa/PkUKuEzLgmlIwXbx02kd3v
+         h1J0CQa+j2Hkw==
+Date:   Wed, 16 Jun 2021 09:18:42 +0200
 From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio@vger.kernel.org,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
-Subject: Re: [PATCH v2 6/6] iio: pressure: icp10100: Balance runtime pm +
- use pm_runtime_resume_and_get()
-Message-ID: <20210616091638.76127362@coco.lan>
-In-Reply-To: <20210516162103.1332291-7-jic23@kernel.org>
+        Matt Ranostay <matt.ranostay@konsulko.com>
+Subject: Re: [PATCH v2 4/6] iio: prox: pulsed-light-v2: Fix misbalance
+ runtime pm in error path
+Message-ID: <20210616091842.7caae83e@coco.lan>
+In-Reply-To: <20210516162103.1332291-5-jic23@kernel.org>
 References: <20210516162103.1332291-1-jic23@kernel.org>
-        <20210516162103.1332291-7-jic23@kernel.org>
+        <20210516162103.1332291-5-jic23@kernel.org>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -43,53 +43,48 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Em Sun, 16 May 2021 17:21:03 +0100
+Em Sun, 16 May 2021 17:21:01 +0100
 Jonathan Cameron <jic23@kernel.org> escreveu:
 
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> The devm_ handled runtime pm disable calls pm_runtime_put_sync_suspend()
-> which isn't balancing a matching get call.  It isn't a bug as such,
-> because the runtime pm core doesn't decrement the reference count below
-> zero, but it is missleading so let's drop it.
+> There is one path in which we don't do a runtime pm put and so
+> leave the device enabled for ever more.
 > 
-> Using pm_runtime_resume_and_get() new call makes it easy to handle
-> failures in resume as it doesn't hold a reference count if it exits
-> with an error.
-> 
+> Reported-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> Fixes: 4ac4e086fd8c ("iio: pulsedlight-lidar-lite: add runtime PM")
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
+> Cc: Matt Ranostay <matt.ranostay@konsulko.com>
 
-LGTM.
+I was unable to apply it on the top of next-20210615, although
+the patch looks good to me.
 
 Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
 > ---
->  drivers/iio/pressure/icp10100.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+>  drivers/iio/proximity/pulsedlight-lidar-lite-v2.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/pressure/icp10100.c b/drivers/iio/pressure/icp10100.c
-> index 48759fc4bf18..af4621eaa6b5 100644
-> --- a/drivers/iio/pressure/icp10100.c
-> +++ b/drivers/iio/pressure/icp10100.c
-> @@ -250,7 +250,9 @@ static int icp10100_get_measures(struct icp10100_state *st,
->  	__be16 measures[3];
->  	int ret;
+> diff --git a/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c b/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c
+> index 822a68ae5e03..ecaeb1e11007 100644
+> --- a/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c
+> +++ b/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c
+> @@ -164,7 +164,7 @@ static int lidar_get_measurement(struct lidar_data *data, u16 *reg)
+>  	ret = lidar_write_control(data, LIDAR_REG_CONTROL_ACQUIRE);
+>  	if (ret < 0) {
+>  		dev_err(&client->dev, "cannot send start measurement command");
+> -		return ret;
+> +		goto err;
+>  	}
 >  
-> -	pm_runtime_get_sync(&st->client->dev);
-> +	ret = pm_runtime_resume_and_get(&st->client->dev);
-> +	if (ret < 0)
-> +		return ret;
->  
->  	mutex_lock(&st->lock);
->  	cmd = &icp10100_cmd_measure[st->mode];
-> @@ -525,7 +527,6 @@ static void icp10100_pm_disable(void *data)
->  {
->  	struct device *dev = data;
->  
-> -	pm_runtime_put_sync_suspend(dev);
->  	pm_runtime_disable(dev);
->  }
+>  	while (tries--) {
+> @@ -188,6 +188,7 @@ static int lidar_get_measurement(struct lidar_data *data, u16 *reg)
+>  		}
+>  		ret = -EIO;
+>  	}
+> +err:
+>  	pm_runtime_mark_last_busy(&client->dev);
+>  	pm_runtime_put_autosuspend(&client->dev);
 >  
 
 

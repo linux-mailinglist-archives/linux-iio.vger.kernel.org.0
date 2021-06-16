@@ -2,29 +2,22 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FFC83A990E
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Jun 2021 13:23:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE0383A9A49
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Jun 2021 14:27:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230457AbhFPLZ5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 16 Jun 2021 07:25:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34764 "EHLO mail.kernel.org"
+        id S232920AbhFPM3x (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 16 Jun 2021 08:29:53 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48688 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229502AbhFPLZ4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 16 Jun 2021 07:25:56 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 854F3610A3;
-        Wed, 16 Jun 2021 11:23:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623842630;
-        bh=g6CqKpNssfWZS4xgbu0WGWsz163g70EJdFAHWCTqK4k=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=eYOCzbD/nX7TWuCbm9XrKjA3/oTWm6M6tGglF53tP+LfRTkhTPg1lEcDPvvAN/5kv
-         TpvEmqiPZ7ocHODbT9grKxc7NCB9VgrVl5YOqLOQs+v6Kmqa7P27AT2DsuVumcXYkn
-         eJYr041l67RPIFdp43ga8cCd2GQztUYPutlltYe5nYtMJCzctQKO4NL2j7qqOOCFRj
-         QdLcPChjteGN9a8JLCTkIlykZ+sdRwpOO4/ddsFo3rRz1Dpf4rPGW9k2oiGGRGX0We
-         SLcaxoqprWifV2sk+hu7OHqudgTBgIM3MyHKAAHwlixdjjdUdOXboI5HAplwQ0Iijd
-         cu+AgqnqLHKjQ==
-Date:   Wed, 16 Jun 2021 12:23:30 +0100
-From:   Mark Brown <broonie@kernel.org>
+        id S232637AbhFPM3l (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 16 Jun 2021 08:29:41 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id BBA8561369;
+        Wed, 16 Jun 2021 12:27:07 +0000 (UTC)
+Date:   Wed, 16 Jun 2021 13:29:08 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
 To:     Rob Herring <robh@kernel.org>
 Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-ide@vger.kernel.org, linux-clk@vger.kernel.org,
@@ -47,7 +40,6 @@ Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Daniel Vetter <daniel@ffwll.ch>, Vinod Koul <vkoul@kernel.org>,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>,
         Kamal Dasu <kdasu.kdev@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Thomas Gleixner <tglx@linutronix.de>,
         Marc Zyngier <maz@kernel.org>, Joerg Roedel <joro@8bytes.org>,
@@ -64,7 +56,7 @@ Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Bjorn Helgaas <bhelgaas@google.com>,
         Kishon Vijay Abraham I <kishon@ti.com>,
         Linus Walleij <linus.walleij@linaro.org>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
         <u.kleine-koenig@pengutronix.de>, Lee Jones <lee.jones@linaro.org>,
         Ohad Ben-Cohen <ohad@wizery.com>,
         Mathieu Poirier <mathieu.poirier@linaro.org>,
@@ -75,50 +67,45 @@ Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Alessandro Zummo <a.zummo@towertech.it>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mark Brown <broonie@kernel.org>,
         Zhang Rui <rui.zhang@intel.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         Wim Van Sebroeck <wim@linux-watchdog.org>,
         Guenter Roeck <linux@roeck-us.net>
 Subject: Re: [PATCH] dt-bindings: Drop redundant minItems/maxItems
-Message-ID: <20210616112330.GA6418@sirena.org.uk>
-References: <20210615191543.1043414-1-robh@kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="45Z9DzgjV8m4Oswq"
-Content-Disposition: inline
+Message-ID: <20210616132908.76a780b8@jic23-huawei>
 In-Reply-To: <20210615191543.1043414-1-robh@kernel.org>
-X-Cookie: Revenge is a form of nostalgia.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20210615191543.1043414-1-robh@kernel.org>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Tue, 15 Jun 2021 13:15:43 -0600
+Rob Herring <robh@kernel.org> wrote:
 
---45Z9DzgjV8m4Oswq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Tue, Jun 15, 2021 at 01:15:43PM -0600, Rob Herring wrote:
 > If a property has an 'items' list, then a 'minItems' or 'maxItems' with the
 > same size as the list is redundant and can be dropped. Note that is DT
 > schema specific behavior and not standard json-schema behavior. The tooling
 > will fixup the final schema adding any unspecified minItems/maxItems.
+> 
+> This condition is partially checked with the meta-schema already, but
+> only if both 'minItems' and 'maxItems' are equal to the 'items' length.
+> An improved meta-schema is pending.
+> 
 
-Acked-by: Mark Brown <broonie@kernel.org>
+...
 
---45Z9DzgjV8m4Oswq
-Content-Type: application/pgp-signature; name="signature.asc"
+>  .../devicetree/bindings/iio/adc/amlogic,meson-saradc.yaml   | 1 -
 
------BEGIN PGP SIGNATURE-----
+For this one, the fact it overrides maxItems elsewhere makes this a little
+bit odd.  I guess we can get used to it being implicit.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmDJ3y8ACgkQJNaLcl1U
-h9Ac0wf/WFBwvLz68FdAbuGM6JaAVtj45x3dKG5mcCVhDjM9pWq37W7dh2WVOmud
-k/ZhAI8WJni++qhNgTpWx5KNYWv7CezEiO3chs59PI3WF8rHTlWmiJDhQKQDDZNv
-JhvaSLDPwUaqSCB9Xu6ig804/2ucfzH6InVeCVKXBwTWybMqgTzdbH8JPRmwzUSV
-zC8N/oZNAxV9xFHjybuA2tx/GepXnBC89tySI6RfgzD+TpxrKVILAKfDi6Q9omrc
-bfiQD+8wZVng2UO520jPulyhnLJf79DYzb7AFiMfYJNib8OMH6hLfixqhZXKhcVg
-5tNkJeyp8UZUf1UiAr9jVR9VyjR45g==
-=hlC7
------END PGP SIGNATURE-----
+>  .../devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml     | 2 --
 
---45Z9DzgjV8m4Oswq--
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+

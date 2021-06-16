@@ -2,35 +2,33 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A7E23A9C8B
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Jun 2021 15:49:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8BAC3A9CCE
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Jun 2021 15:59:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233365AbhFPNvV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 16 Jun 2021 09:51:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45326 "EHLO mail.kernel.org"
+        id S233578AbhFPOBn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 16 Jun 2021 10:01:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48224 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233162AbhFPNvU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 16 Jun 2021 09:51:20 -0400
+        id S229722AbhFPOBk (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 16 Jun 2021 10:01:40 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 84A5A61241;
-        Wed, 16 Jun 2021 13:49:10 +0000 (UTC)
-Date:   Wed, 16 Jun 2021 14:51:10 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 6673B6115B;
+        Wed, 16 Jun 2021 13:59:32 +0000 (UTC)
+Date:   Wed, 16 Jun 2021 15:01:33 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Stephan Gerhold <stephan@gerhold.net>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH] iio: accel: bmc150: Use more consistent and accurate
- scale values
-Message-ID: <20210616145110.4280ba43@jic23-huawei>
-In-Reply-To: <CAHp75Ve2G=YNL+s8zu2vT7nN+onyzUXL0ysRNBvebeP36Rnhag@mail.gmail.com>
-References: <20210611182442.1971-1-stephan@gerhold.net>
-        <CAHp75Ve2G=YNL+s8zu2vT7nN+onyzUXL0ysRNBvebeP36Rnhag@mail.gmail.com>
+To:     Frank Zago <frank@zago.net>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Peter Meerwald <pmeerw@pmeerw.net>
+Subject: Re: [PATCH 2/2] iio: light: tcs3472: do not free unallocated IRQ
+Message-ID: <20210616150133.39fcd3f7@jic23-huawei>
+In-Reply-To: <20210427182300.331bda00@jic23-huawei>
+References: <20210427022017.19314-1-frank@zago.net>
+        <20210427022017.19314-2-frank@zago.net>
+        <20210427182300.331bda00@jic23-huawei>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -39,154 +37,111 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 11 Jun 2021 21:41:41 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Tue, 27 Apr 2021 18:23:00 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> On Fri, Jun 11, 2021 at 9:27 PM Stephan Gerhold <stephan@gerhold.net> wrote:
-> >
-> > It is quite strange that BMA222 and BMA222E have very close, yet
-> > subtly different values in their scale tables. Comparing the datasheets
-> > this is simply because the "Resolution" for the different measurement
-> > ranges are documented with different precision.
-> >
-> > For example, for +-2g the BMA222 datasheet [1] suggests a resolution
-> > of 15.6 mg/LSB, while the BMA222E datasheet [2] suggests 15.63 mg/LSB.
-> >
-> > Actually, there is no need to rely on the resolution given by the Bosch
-> > datasheets. The resolution and scale can be calculated more consistently
-> > and accurately using the range (e.g. +-2g) and the channel size (e.g. 8 bits).
-> >
-> > Distributing 4g (-2g to 2g) over 8 bits results in an exact resolution
-> > of (4g / 2^8) = 15.625 mg/LSB which is the same value as in both datasheets,
-> > just slightly more accurate. Multiplying g = 9.80665 m/s^2 we get a more
-> > accurate value for the IIO scale table.
-> >
-> > Generalizing this we can calculate the scale tables more accurately using
-> > (range / 2^bits) * g * 10^6 (because of IIO_VAL_INT_PLUS_MICRO).
-> >
-> > Document this and make the scale tables more consistent and accurate
-> > for all the variants using that formula. Now the scale tables for
-> > BMA222 and BMA222E are consistent and probably slightly more accurate.  
+> On Mon, 26 Apr 2021 21:20:17 -0500
+> Frank Zago <frank@zago.net> wrote:
 > 
-> Oh, oh, one more HW vendor to blame for not being mathematically precise!
-> We already had the very same issue in Intel and AMD documentation :-)
+> > From: frank zago <frank@zago.net>
+> > 
+> > Allocating an IRQ is conditional to the IRQ existence, but freeing it
+> > was not. If no IRQ was allocate, the driver would still try to free
+> > IRQ 0. Add the missing checks.
+> > 
+> > This fixes the following trace when the driver is removed:
+> > 
+> > [  100.667788] Trying to free already-free IRQ 0
+> > [  100.667793] WARNING: CPU: 0 PID: 2315 at kernel/irq/manage.c:1826 free_irq+0x1fd/0x370
+> > [  100.667804] Modules linked in: tcs3472(-) industrialio_triggered_buffer kfifo_buf industrialio ch341_buses binfmt_misc snd_hda_codec_realtek snd_hda_codec_generic ledtrig_audio snd_hda_codec_hdmi snd_hda_intel snd_intel_dspcfg snd_hda_codec snd_hwdep snd_hda_core wmi_bmof snd_pcm snd_seq rapl input_leds snd_timer snd_seq_device snd k10temp ccp soundcore wmi mac_hid sch_fq_codel parport_pc ppdev lp parport ip_tables x_tables autofs4 dm_crypt hid_generic usbhid hid radeon i2c_algo_bit drm_ttm_helper ttm drm_kms_helper syscopyarea sysfillrect sysimgblt fb_sys_fops cec rc_core drm crct10dif_pclmul crc32_pclmul ghash_clmulni_intel aesni_intel crypto_simd r8169 cryptd ahci i2c_piix4 xhci_pci realtek libahci xhci_pci_renesas gpio_amdpt gpio_generic
+> > [  100.667874] CPU: 0 PID: 2315 Comm: rmmod Not tainted 5.12.0+ #29
+> > [  100.667878] ...
+> > [  100.667881] RIP: 0010:free_irq+0x1fd/0x370
+> > [  100.667887] Code: e8 c8 d8 1b 00 48 83 c4 10 4c 89 f8 5b 41 5c 41 5d 41 5e 41 5f 5d c3 8b 75 d0 48 c7 c7 40 8b 36 93 4c 89 4d c8 e8 d1 2c a2 00 <0f> 0b 4c 8b 4d c8 4c 89 f7 4c 89 ce e8 72 c7 a8 00 49 8b 47 40 48
+> > [  100.667891] RSP: 0018:ffff9f44813b7d88 EFLAGS: 00010082
+> > [  100.667895] RAX: 0000000000000000 RBX: ffff8e50caf47800 RCX: ffff8e53cea185c8
+> > [  100.667897] RDX: 00000000ffffffd8 RSI: 0000000000000027 RDI: ffff8e53cea185c0
+> > [  100.667900] RBP: ffff9f44813b7dc0 R08: 0000000000000000 R09: ffff9f44813b7b50
+> > [  100.667902] R10: ffff9f44813b7b48 R11: ffffffff93b53848 R12: ffff8e50c0125080
+> > [  100.667903] R13: ffff8e50c0136f60 R14: ffff8e50c0136ea4 R15: ffff8e50c0136e00
+> > [  100.667906] FS:  00007fa28b899540(0000) GS:ffff8e53cea00000(0000) knlGS:0000000000000000
+> > [  100.667909] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > [  100.667911] CR2: 0000561851777818 CR3: 000000010633a000 CR4: 00000000003506f0
+> > [  100.667914] Call Trace:
+> > [  100.667920]  tcs3472_remove+0x3a/0x90 [tcs3472]
+> > [  100.667927]  i2c_device_remove+0x2b/0xa0
+> > [  100.667934]  __device_release_driver+0x181/0x240
+> > [  100.667940]  driver_detach+0xd5/0x120
+> > [  100.667944]  bus_remove_driver+0x5c/0xe0
+> > [  100.667947]  driver_unregister+0x31/0x50
+> > [  100.667951]  i2c_del_driver+0x46/0x70
+> > [  100.667955]  tcs3472_driver_exit+0x10/0x5dd [tcs3472]
+> > [  100.667960]  __do_sys_delete_module.constprop.0+0x183/0x290
+> > [  100.667965]  ? exit_to_user_mode_prepare+0x37/0x1c0
+> > [  100.667971]  __x64_sys_delete_module+0x12/0x20
+> > [  100.667974]  do_syscall_64+0x40/0xb0
+> > [  100.667981]  entry_SYSCALL_64_after_hwframe+0x44/0xae
+> > [  100.667985] RIP: 0033:0x7fa28b9dbceb
+> > [  100.667989] Code: 73 01 c3 48 8b 0d 7d 91 0c 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 b0 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 4d 91 0c 00 f7 d8 64 89 01 48
+> > [  100.667992] RSP: 002b:00007ffe02ea7068 EFLAGS: 00000206 ORIG_RAX: 00000000000000b0
+> > [  100.667995] RAX: ffffffffffffffda RBX: 000056185176d750 RCX: 00007fa28b9dbceb
+> > [  100.667997] RDX: 000000000000000a RSI: 0000000000000800 RDI: 000056185176d7b8
+> > [  100.667999] RBP: 00007ffe02ea70c8 R08: 0000000000000000 R09: 0000000000000000
+> > [  100.668001] R10: 00007fa28ba56ac0 R11: 0000000000000206 R12: 00007ffe02ea72a0
+> > [  100.668003] R13: 00007ffe02ea8807 R14: 000056185176d2a0 R15: 000056185176d750
+> > [  100.668007] ---[ end trace b21b0811931d933c ]---
+> > 
+> > Signed-off-by: frank zago <frank@zago.net>  
 > 
-> In full support of such fixes!
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gnail.com>
+> Looks correct to me. +CC Peter in case he wants to take a look.
 > 
-> > [1]: https://media.digikey.com/pdf/Data%20Sheets/Bosch/BMA222.pdf
-> > [2]: https://www.mouser.com/datasheet/2/783/BST-BMA222E-DS004-06-1021076.pdf
-> >
-> > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> > Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+> This is going to wait for a week or so anyway because next lot of fixes
+> will only go out towards the end of the merge window or just after rc1.
+> 
+> Thanks
+> 
+Frank,
 
-Given these sensors are very inaccurate at the best of times
-(bma222 is +- 100mg) this is unlikely to have any meaningful effect.
-But consistency is good so I've applied it anyway :)
+Thank for the reminder. I had indeed lost track of this one.
 
-Applied to the togreg branch of iio.git and pushed out
-as testing to see if 0-day is in a spiteful mood.
+Anyhow, now  applied to the togreg branch of iio.git as yet again we
+are on the edge of a merge window, but this time we can just add this
+to the last set of IIO patches to be lined up for that merge window.
+
+Applied to the togreg branch of iio.git.
+
+Thanks,
 
 Jonathan
 
-
-
+> Jonathan
 > > ---
-> >  drivers/iio/accel/bmc150-accel-core.c | 46 ++++++++++++++-------------
-> >  1 file changed, 24 insertions(+), 22 deletions(-)
-> >
-> > diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
-> > index 43aecd4bf3a4..5ce384ebe6c7 100644
-> > --- a/drivers/iio/accel/bmc150-accel-core.c
-> > +++ b/drivers/iio/accel/bmc150-accel-core.c
-> > @@ -1088,19 +1088,21 @@ static const struct iio_chan_spec bmc150_accel_channels[] =
-> >  static const struct iio_chan_spec bma280_accel_channels[] =
-> >         BMC150_ACCEL_CHANNELS(14);
-> >
-> > +/*
-> > + * The range for the Bosch sensors is typically +-2g/4g/8g/16g, distributed
-> > + * over the amount of bits (see above). The scale table can be calculated using
-> > + *     (range / 2^bits) * g = (range / 2^bits) * 9.80665 m/s^2
-> > + * e.g. for +-2g and 12 bits: (4 / 2^12) * 9.80665 m/s^2 = 0.0095768... m/s^2
-> > + * Multiply 10^6 and round to get the values listed below.
-> > + */
-> >  static const struct bmc150_accel_chip_info bmc150_accel_chip_info_tbl[] = {
-> >         {
-> >                 .name = "BMA222",
-> >                 .chip_id = 0x03,
-> >                 .channels = bma222e_accel_channels,
-> >                 .num_channels = ARRAY_SIZE(bma222e_accel_channels),
-> > -               /*
-> > -                * The datasheet page 17 says:
-> > -                * 15.6, 31.3, 62.5 and 125 mg per LSB.
-> > -                * IIO unit is m/s^2 so multiply by g = 9.80665 m/s^2.
-> > -                */
-> > -               .scale_table = { {152984, BMC150_ACCEL_DEF_RANGE_2G},
-> > -                                {306948, BMC150_ACCEL_DEF_RANGE_4G},
-> > +               .scale_table = { {153229, BMC150_ACCEL_DEF_RANGE_2G},
-> > +                                {306458, BMC150_ACCEL_DEF_RANGE_4G},
-> >                                  {612916, BMC150_ACCEL_DEF_RANGE_8G},
-> >                                  {1225831, BMC150_ACCEL_DEF_RANGE_16G} },
-> >         },
-> > @@ -1109,9 +1111,9 @@ static const struct bmc150_accel_chip_info bmc150_accel_chip_info_tbl[] = {
-> >                 .chip_id = 0xF8,
-> >                 .channels = bma222e_accel_channels,
-> >                 .num_channels = ARRAY_SIZE(bma222e_accel_channels),
-> > -               .scale_table = { {153277, BMC150_ACCEL_DEF_RANGE_2G},
-> > -                                {306457, BMC150_ACCEL_DEF_RANGE_4G},
-> > -                                {612915, BMC150_ACCEL_DEF_RANGE_8G},
-> > +               .scale_table = { {153229, BMC150_ACCEL_DEF_RANGE_2G},
-> > +                                {306458, BMC150_ACCEL_DEF_RANGE_4G},
-> > +                                {612916, BMC150_ACCEL_DEF_RANGE_8G},
-> >                                  {1225831, BMC150_ACCEL_DEF_RANGE_16G} },
-> >         },
-> >         {
-> > @@ -1119,30 +1121,30 @@ static const struct bmc150_accel_chip_info bmc150_accel_chip_info_tbl[] = {
-> >                 .chip_id = 0xF9,
-> >                 .channels = bma250e_accel_channels,
-> >                 .num_channels = ARRAY_SIZE(bma250e_accel_channels),
-> > -               .scale_table = { {38344, BMC150_ACCEL_DEF_RANGE_2G},
-> > -                                {76590, BMC150_ACCEL_DEF_RANGE_4G},
-> > -                                {153277, BMC150_ACCEL_DEF_RANGE_8G},
-> > -                                {306457, BMC150_ACCEL_DEF_RANGE_16G} },
-> > +               .scale_table = { {38307, BMC150_ACCEL_DEF_RANGE_2G},
-> > +                                {76614, BMC150_ACCEL_DEF_RANGE_4G},
-> > +                                {153229, BMC150_ACCEL_DEF_RANGE_8G},
-> > +                                {306458, BMC150_ACCEL_DEF_RANGE_16G} },
-> >         },
-> >         {
-> >                 .name = "BMA253/BMA254/BMA255/BMC150/BMI055",
-> >                 .chip_id = 0xFA,
-> >                 .channels = bmc150_accel_channels,
-> >                 .num_channels = ARRAY_SIZE(bmc150_accel_channels),
-> > -               .scale_table = { {9610, BMC150_ACCEL_DEF_RANGE_2G},
-> > -                                {19122, BMC150_ACCEL_DEF_RANGE_4G},
-> > -                                {38344, BMC150_ACCEL_DEF_RANGE_8G},
-> > -                                {76590, BMC150_ACCEL_DEF_RANGE_16G} },
-> > +               .scale_table = { {9577, BMC150_ACCEL_DEF_RANGE_2G},
-> > +                                {19154, BMC150_ACCEL_DEF_RANGE_4G},
-> > +                                {38307, BMC150_ACCEL_DEF_RANGE_8G},
-> > +                                {76614, BMC150_ACCEL_DEF_RANGE_16G} },
-> >         },
-> >         {
-> >                 .name = "BMA280",
-> >                 .chip_id = 0xFB,
-> >                 .channels = bma280_accel_channels,
-> >                 .num_channels = ARRAY_SIZE(bma280_accel_channels),
-> > -               .scale_table = { {2392, BMC150_ACCEL_DEF_RANGE_2G},
-> > -                                {4785, BMC150_ACCEL_DEF_RANGE_4G},
-> > -                                {9581, BMC150_ACCEL_DEF_RANGE_8G},
-> > -                                {19152, BMC150_ACCEL_DEF_RANGE_16G} },
-> > +               .scale_table = { {2394, BMC150_ACCEL_DEF_RANGE_2G},
-> > +                                {4788, BMC150_ACCEL_DEF_RANGE_4G},
-> > +                                {9577, BMC150_ACCEL_DEF_RANGE_8G},
-> > +                                {19154, BMC150_ACCEL_DEF_RANGE_16G} },
-> >         },
-> >  };
-> >
-> > --
-> > 2.32.0
+> >  drivers/iio/light/tcs3472.c | 6 ++++--
+> >  1 file changed, 4 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/iio/light/tcs3472.c b/drivers/iio/light/tcs3472.c
+> > index a0dc447aeb68..b41068492338 100644
+> > --- a/drivers/iio/light/tcs3472.c
+> > +++ b/drivers/iio/light/tcs3472.c
+> > @@ -531,7 +531,8 @@ static int tcs3472_probe(struct i2c_client *client,
+> >  	return 0;
 > >  
-> 
+> >  free_irq:
+> > -	free_irq(client->irq, indio_dev);
+> > +	if (client->irq)
+> > +		free_irq(client->irq, indio_dev);
+> >  buffer_cleanup:
+> >  	iio_triggered_buffer_cleanup(indio_dev);
+> >  	return ret;
+> > @@ -559,7 +560,8 @@ static int tcs3472_remove(struct i2c_client *client)
+> >  	struct iio_dev *indio_dev = i2c_get_clientdata(client);
+> >  
+> >  	iio_device_unregister(indio_dev);
+> > -	free_irq(client->irq, indio_dev);
+> > +	if (client->irq)
+> > +		free_irq(client->irq, indio_dev);
+> >  	iio_triggered_buffer_cleanup(indio_dev);
+> >  	tcs3472_powerdown(iio_priv(indio_dev));
+> >    
 > 
 

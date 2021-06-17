@@ -2,151 +2,183 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 936383AAF4F
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Jun 2021 11:08:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD2E93AAF6E
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Jun 2021 11:15:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230507AbhFQJKV convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Thu, 17 Jun 2021 05:10:21 -0400
-Received: from relay8-d.mail.gandi.net ([217.70.183.201]:46393 "EHLO
-        relay8-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230473AbhFQJKU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Jun 2021 05:10:20 -0400
-Received: (Authenticated sender: paul@opendingux.net)
-        by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 5B3051BF208;
-        Thu, 17 Jun 2021 09:08:09 +0000 (UTC)
-Date:   Thu, 17 Jun 2021 10:08:02 +0100
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH v2 2/2] iio: core: Support reading extended name as label
-To:     Alexandru Ardelean <ardeleanalex@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Message-Id: <ED9UUQ.EDOA8S56T8BP@crapouillou.net>
-In-Reply-To: <CA+U=DsrP6+Zjnca8Sqd0jAi9a4aDqAV4suJZc95ayqm7K0+mCw@mail.gmail.com>
-References: <20210616155706.17444-1-paul@crapouillou.net>
-        <20210616155706.17444-3-paul@crapouillou.net>
-        <CA+U=DsrP6+Zjnca8Sqd0jAi9a4aDqAV4suJZc95ayqm7K0+mCw@mail.gmail.com>
-X-Mailer: geary/40.0
+        id S231555AbhFQJRL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 17 Jun 2021 05:17:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49670 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231531AbhFQJRJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Jun 2021 05:17:09 -0400
+Received: from mail-vs1-xe2d.google.com (mail-vs1-xe2d.google.com [IPv6:2607:f8b0:4864:20::e2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 479B6C061760
+        for <linux-iio@vger.kernel.org>; Thu, 17 Jun 2021 02:15:02 -0700 (PDT)
+Received: by mail-vs1-xe2d.google.com with SMTP id j15so2604978vsf.2
+        for <linux-iio@vger.kernel.org>; Thu, 17 Jun 2021 02:15:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=NiiU6fiVLbE4syulfvGQUEnbQNZvmtFPXY1KRGZ4VKs=;
+        b=tspUddDmWP1nXGb8dYzDapkXukDhtaQZ8yVoZQOykE4MszNmnQ2Jc7pAu3v7qBcemT
+         UyLs98rU9nEy8e3wRIJkxsl8g3L8Eb/AvQODxlfCIA8Y+SqSVtbG2msAYvDIZFEizfbY
+         20UD8As6h7+oRqO/LBfp1JKzos5qS4bIZn22juJCAEEZOMhbhqM1f/S6KCbcFkkK35Tr
+         P7laFgsJQmqhNYip+ALRHKPPvbOtIHBYtRpZR/hgm9hpO06Ne5Y1MzvmGVRytTLSpocX
+         +CLKqhQk6OUYMP0R+b/JJQ4/QkH+6e5JGgp8Hm8OfSHuZ6CIo4hVwTpj+jWWd51a3cq+
+         7N8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=NiiU6fiVLbE4syulfvGQUEnbQNZvmtFPXY1KRGZ4VKs=;
+        b=NI3QaBMmZNFgOozyYpJjAz0Meg7wdUfHPpjwqceGwRgamIc12sQbY0J9dVuLWdepZn
+         6c7BRNnTZn1ELonioDuKOyxyeKhIbcrGIHxil5yFjMrW+Hp6Xa/i7SaBbXWRGHx3BeHw
+         ohfC0r10IUSoXciPNkRiy8aNuyCViyE1HJvOiu96KaPkqYCQngszuZtZ4j3KUvXpDIBS
+         3FX8XS6Op6vTSobiDwvwbu0S2W0GrKit/cikWBziQbX3vvEX/UCQfYplDL+oKKIhJO+k
+         Bv8j1flkVe+N3uG1clD/WgzKbhMM5nsHT+6M21LJ/FV60PfX3hWkRJTa1tGjfnWy2tqp
+         ogsw==
+X-Gm-Message-State: AOAM533Ny6vgRFFYuGtegfqQzNrqLom8Z9no1pb4uO5gMhSUpcrF8et5
+        h8K32o6fKuu6raqgJRfDeuSl+cK/GrsbaJIm6/oXsQ==
+X-Google-Smtp-Source: ABdhPJyDDRUn2syWiuy8XigFtL3iDYKz59Ub/6ekAvgFfmAY9tRuxX/nulbHrrDC8J99+RHvCUQeMQ9XnjKDaURJSR4=
+X-Received: by 2002:a05:6102:2159:: with SMTP id h25mr3349328vsg.19.1623921301368;
+ Thu, 17 Jun 2021 02:15:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Transfer-Encoding: 8BIT
+References: <20210615191543.1043414-1-robh@kernel.org>
+In-Reply-To: <20210615191543.1043414-1-robh@kernel.org>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 17 Jun 2021 11:14:25 +0200
+Message-ID: <CAPDyKFrY4UOO5CbZ8Bj7AH2+3Wo1PRpUv+Zs96tub=MzGuGrrQ@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: Drop redundant minItems/maxItems
+To:     Rob Herring <robh@kernel.org>
+Cc:     DTML <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-ide@vger.kernel.org, linux-clk <linux-clk@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-crypto@vger.kernel.org,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        dmaengine@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-iio@vger.kernel.org, alsa-devel@alsa-project.org,
+        "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>, Joerg
+        Roedel <joro@8bytes.org>," <iommu@lists.linux-foundation.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>, linux-can@vger.kernel.org,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        linux-phy@lists.infradead.org,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-pwm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-spi@vger.kernel.org, Linux PM <linux-pm@vger.kernel.org>,
+        Linux USB List <linux-usb@vger.kernel.org>,
+        linux-watchdog@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, Vinod Koul <vkoul@kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Kamal Dasu <kdasu.kdev@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Wolfgang Grandegger <wg@grandegger.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Lee Jones <lee.jones@linaro.org>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mark Brown <broonie@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Alexandru,
+On Tue, 15 Jun 2021 at 21:15, Rob Herring <robh@kernel.org> wrote:
+>
+> If a property has an 'items' list, then a 'minItems' or 'maxItems' with t=
+he
+> same size as the list is redundant and can be dropped. Note that is DT
+> schema specific behavior and not standard json-schema behavior. The tooli=
+ng
+> will fixup the final schema adding any unspecified minItems/maxItems.
+>
+> This condition is partially checked with the meta-schema already, but
+> only if both 'minItems' and 'maxItems' are equal to the 'items' length.
+> An improved meta-schema is pending.
+>
+> Cc: Jens Axboe <axboe@kernel.dk>
+> Cc: Stephen Boyd <sboyd@kernel.org>
+> Cc: Herbert Xu <herbert@gondor.apana.org.au>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: David Airlie <airlied@linux.ie>
+> Cc: Daniel Vetter <daniel@ffwll.ch>
+> Cc: Vinod Koul <vkoul@kernel.org>
+> Cc: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> Cc: Kamal Dasu <kdasu.kdev@gmail.com>
+> Cc: Jonathan Cameron <jic23@kernel.org>
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Marc Zyngier <maz@kernel.org>
+> Cc: Joerg Roedel <joro@8bytes.org>
+> Cc: Jassi Brar <jassisinghbrar@gmail.com>
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Cc: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+> Cc: Ulf Hansson <ulf.hansson@linaro.org>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Wolfgang Grandegger <wg@grandegger.com>
+> Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+> Cc: Andrew Lunn <andrew@lunn.ch>
+> Cc: Vivien Didelot <vivien.didelot@gmail.com>
+> Cc: Vladimir Oltean <olteanv@gmail.com>
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: Kishon Vijay Abraham I <kishon@ti.com>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: "Uwe Kleine-K=C3=B6nig" <u.kleine-koenig@pengutronix.de>
+> Cc: Lee Jones <lee.jones@linaro.org>
+> Cc: Ohad Ben-Cohen <ohad@wizery.com>
+> Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
+> Cc: Philipp Zabel <p.zabel@pengutronix.de>
+> Cc: Paul Walmsley <paul.walmsley@sifive.com>
+> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+> Cc: Albert Ou <aou@eecs.berkeley.edu>
+> Cc: Alessandro Zummo <a.zummo@towertech.it>
+> Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Zhang Rui <rui.zhang@intel.com>
+> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+> Cc: Wim Van Sebroeck <wim@linux-watchdog.org>
+> Cc: Guenter Roeck <linux@roeck-us.net>
+> Signed-off-by: Rob Herring <robh@kernel.org>
 
-Le jeu., juin 17 2021 at 10:22:35 +0300, Alexandru Ardelean 
-<ardeleanalex@gmail.com> a écrit :
-> On Wed, Jun 16, 2021 at 7:00 PM Paul Cercueil <paul@crapouillou.net> 
-> wrote:
->> 
->>  The point of this new change is to make the IIO tree actually 
->> parsable.
->> 
->>  Before, given this attribute as a filename:
->>  in_voltage0_aux_sample_rate
->> 
->>  Userspace had no way to know if the attribute name was
->>  "aux_sample_rate" with no extended name, or "sample_rate" with 
->> "aux" as
->>  the extended name, or just "rate" with "aux_sample" as the extended
->>  name.
->> 
->>  This was somewhat possible to deduce when there was more than one
->>  attribute present for a given channel, e.g:
->>  in_voltage0_aux_sample_rate
->>  in_voltage0_aux_frequency
->> 
->>  There, it was possible to deduce that "aux" was the extended name. 
->> But
->>  even with more than one attribute, this wasn't very robust, as two
->>  attributes starting with the same prefix (e.g. "sample_rate" and
->>  "sample_size") would result in the first part of the prefix being
->>  interpreted as being part of the extended name.
->> 
->>  To address the issue, knowing that channels will never have both a 
->> label
->>  and an extended name, set the channel's label to the extended name.
->>  In this case, the label's attribute will also have the extended 
->> name in
->>  its filename, but we can live with that - userspace can open
->>  in_voltage0_<prefix>_label and verify that it returns <prefix> to 
->> obtain
->>  the extended name.
->> 
-> 
-> The best way would have been for all drivers [using extend_name] to
-> implement their own read_label hook.
+Acked-by: Ulf Hansson <ulf.hansson@linaro.org> # for MMC
 
-Let's agree to disagree :)
+[...]
 
-> But this can work fine as well [as the other method would add some 
-> duplication].
-> 
->>  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
->>  ---
->>   drivers/iio/industrialio-core.c | 10 +++++++---
->>   1 file changed, 7 insertions(+), 3 deletions(-)
->> 
->>  diff --git a/drivers/iio/industrialio-core.c 
->> b/drivers/iio/industrialio-core.c
->>  index 81f40dab778a..9b37e96538c2 100644
->>  --- a/drivers/iio/industrialio-core.c
->>  +++ b/drivers/iio/industrialio-core.c
->>  @@ -717,8 +717,12 @@ static ssize_t iio_read_channel_label(struct 
->> device *dev,
->>          struct iio_dev *indio_dev = dev_to_iio_dev(dev);
->>          struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
->> 
->>  -       if (!indio_dev->info->read_label)
->>  -               return -EINVAL;
->>  +       if (!indio_dev->info->read_label) {
->>  +               if (this_attr->c->extend_name)
->>  +                       return sprintf(buf, "%s\n", 
->> this_attr->c->extend_name);
->>  +               else
-> 
-> nitpick: else statement has no effect
-> 
-> well, this block could be reworked a bit as:
-> 
-> ----------------------------------------------------
-> if (indio_dev->info->read_label)
->    return indio_dev->info->read_label(indio_dev, this_attr->c, buf);
-> 
-> if (this_attr->c->extend_name)
->     return sprintf(buf, "%s\n", this_attr->c->extend_name);
-> 
-> return -EINVAL;
-> ----------------------------------------------------
-
-I generally prefer to make the diff as small as possible so that the 
-changes are more obvious. But this does look better.
-
--Paul
-
-> 
->>  +                       return -EINVAL;
->>  +       }
->> 
->>          return indio_dev->info->read_label(indio_dev, this_attr->c, 
->> buf);
->>   }
->>  @@ -1160,7 +1164,7 @@ static int 
->> iio_device_add_channel_label(struct iio_dev *indio_dev,
->>          struct iio_dev_opaque *iio_dev_opaque = 
->> to_iio_dev_opaque(indio_dev);
->>          int ret;
->> 
->>  -       if (!indio_dev->info->read_label)
->>  +       if (!indio_dev->info->read_label && !chan->extend_name)
->>                  return 0;
->> 
->>          ret = __iio_add_chan_devattr("label",
->>  --
->>  2.30.2
->> 
-
-
+Kind regards
+Uffe

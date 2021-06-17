@@ -2,79 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 39C1F3B458D
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Jun 2021 16:28:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFC2E3B506F
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Jun 2021 01:06:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230172AbhFYObQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 25 Jun 2021 10:31:16 -0400
-Received: from mga09.intel.com ([134.134.136.24]:65243 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230088AbhFYObQ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 25 Jun 2021 10:31:16 -0400
-IronPort-SDR: qlC6po9CBhwhhMKA4xt9NFOi6eKkP41mNd5IVNs6VsVWdm50Wu5efUce2OvLyBtQiw9l0or+//
- n5hnhEkDtNwg==
-X-IronPort-AV: E=McAfee;i="6200,9189,10026"; a="207613937"
-X-IronPort-AV: E=Sophos;i="5.83,299,1616482800"; 
-   d="scan'208";a="207613937"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2021 07:28:54 -0700
-IronPort-SDR: WNAtepcf9idkm4AAbzyigIodSHEissUxezIBiZis8HmDzBHjtSpRVQgtbeTpSiZxAJtAeFwJDR
- OkO2lcDW3iGQ==
-X-IronPort-AV: E=Sophos;i="5.83,299,1616482800"; 
-   d="scan'208";a="642645656"
-Received: from sye-mobl.amr.corp.intel.com ([10.212.236.130])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2021 07:28:53 -0700
-Message-ID: <5069e4c3d8f88d4a72155bf3d15282cbba8e7429.camel@linux.intel.com>
-Subject: Re: [PATCH] HID: intel-ish-hid: use async resume function
-From:   srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To:     Jiri Kosina <jikos@kernel.org>, Ye Xiang <xiang.ye@intel.com>
-Cc:     jic23@kernel.org, linux-input@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Fri, 25 Jun 2021 07:28:52 -0700
-In-Reply-To: <nycvar.YFH.7.76.2106251412250.18969@cbobk.fhfr.pm>
-References: <20210613032507.7474-1-xiang.ye@intel.com>
-         <nycvar.YFH.7.76.2106251412250.18969@cbobk.fhfr.pm>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        id S230192AbhFZXI0 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Sat, 26 Jun 2021 19:08:26 -0400
+Received: from [210.180.118.67] ([210.180.118.67]:47310 "EHLO blank.cafe24.com"
+        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S230180AbhFZXIZ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 26 Jun 2021 19:08:25 -0400
+Received: from IP-130-143.dataclub.eu (ip-130-143.dataclub.info [84.38.130.143] (may be forged))
+        (authenticated bits=0)
+        by blank.cafe24.com (8.14.7/8.14.7) with ESMTP id 15H5Y1Oj001813
+        for <linux-iio@vger.kernel.org>; Thu, 17 Jun 2021 14:34:43 +0900
+Message-Id: <202106170534.15H5Y1Oj001813@blank.cafe24.com>
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: BUSINESS LOAN/PROJECT FUNDING...67
+To:     linux-iio@vger.kernel.org
+From:   "Smith Green" <ssbinvestmentsllc@citromail.hu>
+Date:   Thu, 17 Jun 2021 08:34:36 +0300
+Reply-To: ssbinvestmentsllc@citromail.hu
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 2021-06-25 at 14:12 +0200, Jiri Kosina wrote:
-> On Sun, 13 Jun 2021, Ye Xiang wrote:
-> 
-> > ISH IPC driver uses asynchronous workqueue to do resume now, but
-> > there is
-> > a potential timing issue: when child devices resume before bus
-> > driver, it
-> > will cause child devices resume failed and cannot be recovered
-> > until
-> > reboot. The current implementation in this case do wait for IPC to
-> > resume
-> > but fail to accommodate for a case when there is no ISH reboot and
-> > soft
-> > resume is taking time. This issue is apparent on Tiger Lake
-> > platform with
-> > 5.11.13 kernel when doing suspend to idle then resume(s0ix) test.
-> > To
-> > resolve this issue, we change ISHTP HID client to use asynchronous
-> > resume
-> > callback too. In the asynchronous resume callback, it waits for the
-> > ISHTP
-> > resume done event, and then notify ISHTP HID client link ready.
-> > 
-> > Signed-off-by: Ye Xiang <xiang.ye@intel.com>
-> 
-> Srinivas, can I please get your Ack for this one?
-Done.
+Dear Sir/Madam,
 
-Thanks,
-Srinivas
+Our Investors are based in the middle east with a profound track record. We invite you to take advantage of our investment loan program to fund your existing or intending projects. We offer a straight or convertible loan investment program for projects with high-returns and payback prospects without the usual rigid procedures of conventional lenders.
+ 
+Kindly forward a copy of your Executive business summary for our review: info@ssbinvestmentsllc.us
 
-> 
-> Thanks,
-> 
-
-
+ 
+Best Regards.
+Smith Green
+E:info@ssbinvestmentsllc.us
+International investment broker

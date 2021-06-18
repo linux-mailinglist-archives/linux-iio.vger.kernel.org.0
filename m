@@ -2,99 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D5233ACB06
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Jun 2021 14:32:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E9F83AD0D3
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Jun 2021 18:59:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232389AbhFRMds (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Jun 2021 08:33:48 -0400
-Received: from aposti.net ([89.234.176.197]:41166 "EHLO aposti.net"
+        id S230409AbhFRRB4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Jun 2021 13:01:56 -0400
+Received: from mga12.intel.com ([192.55.52.136]:45736 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234529AbhFRMda (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 18 Jun 2021 08:33:30 -0400
-From:   Paul Cercueil <paul@crapouillou.net>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v3 2/2] iio: core: Support reading extended name as label
-Date:   Fri, 18 Jun 2021 13:30:05 +0100
-Message-Id: <20210618123005.49867-3-paul@crapouillou.net>
-In-Reply-To: <20210618123005.49867-1-paul@crapouillou.net>
-References: <20210618123005.49867-1-paul@crapouillou.net>
+        id S230335AbhFRRB4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 18 Jun 2021 13:01:56 -0400
+IronPort-SDR: mt1bUqdGvuaawjdUtaR/2f4Hl392k4rJsSTtoZYKd+Uz6tcKw0YV09uiLm3BNP/tOj1WWV+3Oc
+ EUTaIq7VAwfA==
+X-IronPort-AV: E=McAfee;i="6200,9189,10019"; a="186277871"
+X-IronPort-AV: E=Sophos;i="5.83,284,1616482800"; 
+   d="scan'208";a="186277871"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2021 09:59:46 -0700
+IronPort-SDR: Ve4kXqUB54zYU7EiOPuCf/LyDItuWJd1I+nKIx2INVKQa4XQHq3NcyFQx2CqVXukEtm8otCmAW
+ NhNqWx/CQGBQ==
+X-IronPort-AV: E=Sophos;i="5.83,284,1616482800"; 
+   d="scan'208";a="453206785"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2021 09:59:45 -0700
+Received: from andy by smile with local (Exim 4.94.2)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1luHqI-003dml-Kn; Fri, 18 Jun 2021 19:59:42 +0300
+Date:   Fri, 18 Jun 2021 19:59:42 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     kernel test robot <lkp@intel.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Subject: Re: [BUILD SUCCESS WITH WARNING] LAST PATCH: [PATCH v1 1/1]
+ kernel.h: Split out kstrtox() and simple_strtox() to a separate header
+Message-ID: <YMzQ/i0k0FqbUKPq@smile.fi.intel.com>
+References: <60ca9d95.dsuYBSgiVnYDvfis%lkp@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <60ca9d95.dsuYBSgiVnYDvfis%lkp@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The point of this new change is to make the IIO tree actually parsable.
+JFYI
 
-Before, given this attribute as a filename:
-in_voltage0_aux_sample_rate
+On Thu, Jun 17, 2021 at 08:55:49AM +0800, kernel test robot wrote:
+> url:    https://github.com/0day-ci/linux/commits/Andy-Shevchenko/kernel-h-Split-out-kstrtox-and-simple_strtox-to-a-separate-header/20210616-203318
+> base:   git://git.linux-nfs.org/projects/trondmy/linux-nfs.git linux-next
+> 
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch]
+> 
+> 
+> Warning ids grouped by kconfigs:
+> 
+> clang_recent_errors
+> `-- x86_64-randconfig-b001-20210616
+>     `-- drivers-iio-chemical-scd30_core.c:iwyu:warning:superfluous-include-linux-string.h
 
-Userspace had no way to know if the attribute name was
-"aux_sample_rate" with no extended name, or "sample_rate" with "aux" as
-the extended name, or just "rate" with "aux_sample" as the extended
-name.
-
-This was somewhat possible to deduce when there was more than one
-attribute present for a given channel, e.g:
-in_voltage0_aux_sample_rate
-in_voltage0_aux_frequency
-
-There, it was possible to deduce that "aux" was the extended name. But
-even with more than one attribute, this wasn't very robust, as two
-attributes starting with the same prefix (e.g. "sample_rate" and
-"sample_size") would result in the first part of the prefix being
-interpreted as being part of the extended name.
-
-To address the issue, knowing that channels will never have both a label
-and an extended name, set the channel's label to the extended name.
-In this case, the label's attribute will also have the extended name in
-its filename, but we can live with that - userspace can open
-in_voltage0_<prefix>_label and verify that it returns <prefix> to obtain
-the extended name.
-
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
----
-
-Notes:
-    v3: Refactor code to make it look better
-
- drivers/iio/industrialio-core.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index 81f40dab778a..a19938b0c3a6 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -717,10 +717,13 @@ static ssize_t iio_read_channel_label(struct device *dev,
- 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
- 	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
- 
--	if (!indio_dev->info->read_label)
--		return -EINVAL;
-+	if (indio_dev->info->read_label)
-+		return indio_dev->info->read_label(indio_dev, this_attr->c, buf);
-+
-+	if (this_attr->c->extend_name)
-+		return sprintf(buf, "%s\n", this_attr->c->extend_name);
- 
--	return indio_dev->info->read_label(indio_dev, this_attr->c, buf);
-+	return -EINVAL;
- }
- 
- static ssize_t iio_read_channel_info(struct device *dev,
-@@ -1160,7 +1163,7 @@ static int iio_device_add_channel_label(struct iio_dev *indio_dev,
- 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
- 	int ret;
- 
--	if (!indio_dev->info->read_label)
-+	if (!indio_dev->info->read_label && !chan->extend_name)
- 		return 0;
- 
- 	ret = __iio_add_chan_devattr("label",
 -- 
-2.30.2
+With Best Regards,
+Andy Shevchenko
+
 

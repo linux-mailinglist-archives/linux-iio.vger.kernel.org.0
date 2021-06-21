@@ -2,69 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B6063AE68F
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Jun 2021 11:54:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 316633AEB16
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Jun 2021 16:21:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230291AbhFUJ4v (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 21 Jun 2021 05:56:51 -0400
-Received: from elvis.franken.de ([193.175.24.41]:40952 "EHLO elvis.franken.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229663AbhFUJ4u (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 21 Jun 2021 05:56:50 -0400
-Received: from uucp (helo=alpha)
-        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-        id 1lvGd7-000490-01; Mon, 21 Jun 2021 11:54:09 +0200
-Received: by alpha.franken.de (Postfix, from userid 1000)
-        id 7E0F4C071C; Mon, 21 Jun 2021 11:46:02 +0200 (CEST)
-Date:   Mon, 21 Jun 2021 11:46:02 +0200
-From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To:     trix@redhat.com
-Cc:     robh+dt@kernel.org, jic23@kernel.org, lars@metafoo.de,
-        tomas.winkler@intel.com, arnd@arndb.de, gregkh@linuxfoundation.org,
-        nbd@nbd.name, lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
-        kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        matthias.bgg@gmail.com, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@foss.st.com, apw@canonical.com, joe@perches.com,
-        dwaipayanray1@gmail.com, lukas.bulwahn@gmail.com,
-        chenhuacai@kernel.org, jiaxun.yang@flygoat.com,
-        zhangqing@loongson.cn, jbhayana@google.com, sean.wang@mediatek.com,
-        shayne.chen@mediatek.com, Soul.Huang@mediatek.com,
-        shorne@gmail.com, gsomlo@gmail.com,
-        pczarnecki@internships.antmicro.com, mholenko@antmicro.com,
-        davidgow@google.com, devicetree@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH 4/7] MIPS: Loongson64: fix spelling of SPDX tag
-Message-ID: <20210621094602.GB4425@alpha.franken.de>
-References: <20210610214438.3161140-1-trix@redhat.com>
- <20210610214438.3161140-6-trix@redhat.com>
+        id S229940AbhFUOXx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 21 Jun 2021 10:23:53 -0400
+Received: from mta-02.yadro.com ([89.207.88.252]:43648 "EHLO mta-01.yadro.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S229789AbhFUOXw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 21 Jun 2021 10:23:52 -0400
+Received: from localhost (unknown [127.0.0.1])
+        by mta-01.yadro.com (Postfix) with ESMTP id 7DF8E412C3;
+        Mon, 21 Jun 2021 14:21:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
+        content-type:content-type:content-transfer-encoding:mime-version
+        :x-mailer:message-id:date:date:subject:subject:from:from
+        :received:received:received; s=mta-01; t=1624285296; x=
+        1626099697; bh=h8+eEPaoUxnAdB0gPVSo6u84hnAc7ViMaUL6pINX9nY=; b=u
+        9RKXNVqb54ZEf5XQZkLok7uEIxFnfhD79L55wYWfU3+2bYbd6T8ggAtRJ5k2gmmU
+        ophJPKql9m9UtGMwRYV9u9DB3HwPcZeGQino3GSEaO0sFVGPnh++X5eRzrAxCIKV
+        IODmQtv0nf7huGavXdpm9vK5WlMfZvdkV5YUhWiwHY=
+X-Virus-Scanned: amavisd-new at yadro.com
+Received: from mta-01.yadro.com ([127.0.0.1])
+        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id X-3pUdky9wGY; Mon, 21 Jun 2021 17:21:36 +0300 (MSK)
+Received: from T-EXCH-03.corp.yadro.com (t-exch-03.corp.yadro.com [172.17.100.103])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mta-01.yadro.com (Postfix) with ESMTPS id F2F5341203;
+        Mon, 21 Jun 2021 17:21:35 +0300 (MSK)
+Received: from localhost.yadro.com (10.199.0.93) by T-EXCH-03.corp.yadro.com
+ (172.17.100.103) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Mon, 21
+ Jun 2021 17:21:35 +0300
+From:   Ivan Mikhaylov <i.mikhaylov@yadro.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+CC:     Ivan Mikhaylov <i.mikhaylov@yadro.com>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
+Subject: [PATCH v2 0/2] add periodic mode, threshold options
+Date:   Mon, 21 Jun 2021 17:30:49 +0300
+Message-ID: <20210621143051.200800-1-i.mikhaylov@yadro.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210610214438.3161140-6-trix@redhat.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.199.0.93]
+X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
+ T-EXCH-03.corp.yadro.com (172.17.100.103)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Jun 10, 2021 at 02:44:35PM -0700, trix@redhat.com wrote:
-> From: Tom Rix <trix@redhat.com>
-> 
-> checkpatch looks for SPDX-License-Identifier.
-> So change the '_' to '-'
-> 
-> Signed-off-by: Tom Rix <trix@redhat.com>
-> ---
->  arch/mips/boot/dts/loongson/Makefile | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+Add periodic mode enablement, high/low threshold options.
 
-applied to mips-next.
+Changes from v1:
+ 1. Remove changes for hwmon driver and changes affecting
+vcnl3020 data structure.
+ 2. Add enable/disable periodic mode functions.
 
-Thomas.
+Ivan Mikhaylov (2):
+  iio: proximity: vcnl3020: add periodic mode
+  iio: proximity: vcnl3020: add threshold options
+
+ drivers/iio/proximity/vcnl3020.c | 306 ++++++++++++++++++++++++++++++-
+ 1 file changed, 304 insertions(+), 2 deletions(-)
 
 -- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+2.31.1
+

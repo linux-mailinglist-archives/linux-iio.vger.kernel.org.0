@@ -2,175 +2,147 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C9603B0613
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Jun 2021 15:43:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A45E83B0B86
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Jun 2021 19:36:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230521AbhFVNqK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Jun 2021 09:46:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37118 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229988AbhFVNqJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 22 Jun 2021 09:46:09 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id BC2F861353;
-        Tue, 22 Jun 2021 13:43:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1624369432;
-        bh=NqFXh1RzaIB7T3yUivBhV+3jLDLAyj/zzCtWY0JA0SQ=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=n2C4l95B/w+7fm3Hy/W1ls3BjWTgUnPkeMWPcJwuHNhjALViq36NSNRvf1J+UxXwT
-         W1of8Zg2OiipKGz+JaQJVEN0Rymz9BqpYAiOBzmrtdT5/mgiDbEVBsHlr3gDk+TOBO
-         Fe7qpiKq+UgUir5JlR9fsJDRZtySIEJhB36NWX9yf5t0mO64+Z1mYCq7ew8ZAwg0KI
-         F5hwQr8sPPDgEGs9UTcylTzkdsRMaQyTccf/acpKJhxDJxKtULLFNQYEsUOGj4MJxK
-         B3a0hJqzs9FjH4X1uUrkMDUidT5NSByby5xfUTkfYV6nW2261SSjbz6fXsdgEAv5QU
-         qCbHec6qB4IfA==
-Received: by mail-ed1-f48.google.com with SMTP id t3so23726766edc.7;
-        Tue, 22 Jun 2021 06:43:52 -0700 (PDT)
-X-Gm-Message-State: AOAM530naL8j0CKzvJfrllBmASUFsX2bsI1GjGzC0mAXDpPnd7e/OVpX
-        4EDZT2wnXe4JGzDS7JIUEAN3Ta5uIGiYDz5J5Q==
-X-Google-Smtp-Source: ABdhPJzR0Ub3ZgSNkr3MEhjSHq6x9DynzmvMX7quMzOS1boijoDJs7nsAsYPAJuJ3rupM/aSXMVZuLXS4ayPZR+vCGA=
-X-Received: by 2002:a05:6402:ca2:: with SMTP id cn2mr2897976edb.62.1624369431373;
- Tue, 22 Jun 2021 06:43:51 -0700 (PDT)
+        id S231579AbhFVRim (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Jun 2021 13:38:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60798 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230338AbhFVRim (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Jun 2021 13:38:42 -0400
+Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com [IPv6:2607:f8b0:4864:20::72c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B638C061574;
+        Tue, 22 Jun 2021 10:36:26 -0700 (PDT)
+Received: by mail-qk1-x72c.google.com with SMTP id o6so6232601qkh.4;
+        Tue, 22 Jun 2021 10:36:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=zStx7piADl+l65PWbMM4TKMoh0TDURz0qm5Waha0vmI=;
+        b=EQa7eNyCLAAOs5+jWSbYSfFEl2PFlhs9NTX3v0a1jFPg02gG5WsmP3S4rsKxM13xeq
+         E9s3D0k93HlKuEwEzp1UcvcyDG7QesjYnAQb5gew1OThq7+1pBfR4lioOFtyMHaWp7wo
+         fywIS/sjD8sVblFsAuclySmoJiosSwzMBnNRi2YTYItKJwkcsfQ+vVrdnQh1gQk0I9Jl
+         cNBKeaJJFh4KuVBOUXP04y8ZIzIjviuIBNowSgUZWXGftDSDs5aGKG9PuvLrubIfpXpe
+         b+h8Ttp4uMCc13ceqPISTSzjBmdhAlnUFX71Z8RlldzTT2gflNC9BcXrIXHsCw0nYGh8
+         AAow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=zStx7piADl+l65PWbMM4TKMoh0TDURz0qm5Waha0vmI=;
+        b=HCTCXfb05kZEAwv6tTRI9/UoUdAhT+pWAdAIl6OTOBExs5nhzsOLKoxC37hhy0GWsD
+         lDof3rgf/WzEGgt197+suHyQdn+AKI7tneswqi+y9dqcKGAPzmCAub+SLQsy41yFCIux
+         K54v2vLtwQP6b/+Bq8v3BZWTbPU9MOqlQznDKDahGT1+irVhra4yesujpwBLXGm0PJG4
+         YufmNr4MMkVIVEX++KeoNlieCcH4CsEQH0iDWx88lsQp3r/D2Iei3fPLtaeRUHcDQAyS
+         9On4kZPXNtlBXySm4mF558AbCakZ1dccSevaSc3goF2UHBE31bjiD3/m/dWqyi3W1TLq
+         mCgQ==
+X-Gm-Message-State: AOAM530rcIpJTQ27SOa2sTBYhkQRDMHjLsS2TaPGQtVqIC4glQJh/1o/
+        pz0TNfzVtAQeA/SPzs+X6DM=
+X-Google-Smtp-Source: ABdhPJyW3LjIo8WfhP56QAdoS4/dFxorrsN76q4vDPWRo1b1SeCOBjhkB0yyXm8gZeDLZgMVzH8gjw==
+X-Received: by 2002:a37:6703:: with SMTP id b3mr5591932qkc.107.1624383384943;
+        Tue, 22 Jun 2021 10:36:24 -0700 (PDT)
+Received: from marsc.168.1.7 ([2804:30c:933:eb00:4f35:a781:9a0c:3ae7])
+        by smtp.gmail.com with ESMTPSA id q3sm1874521qkn.15.2021.06.22.10.36.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Jun 2021 10:36:24 -0700 (PDT)
+Date:   Tue, 22 Jun 2021 14:36:17 -0300
+From:   Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Michael.Hennerich@analog.com, lars@metafoo.de,
+        devicetree@vger.kernel.org, Nuno Sa <Nuno.Sa@analog.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 00/17] iio:adc:ad7280a Cleanup and proposed staging
+ graduation.
+Message-ID: <YNIfkaRZtWIXPbAj@marsc.168.1.7>
+References: <20210614113507.897732-1-jic23@kernel.org>
 MIME-Version: 1.0
-References: <20210615191543.1043414-1-robh@kernel.org> <CAMuHMdUGXu8yj3JWKwM8mt7axkrzGMiowC1t0PHrbpxRCBME3w@mail.gmail.com>
-In-Reply-To: <CAMuHMdUGXu8yj3JWKwM8mt7axkrzGMiowC1t0PHrbpxRCBME3w@mail.gmail.com>
-From:   Rob Herring <robh@kernel.org>
-Date:   Tue, 22 Jun 2021 07:43:37 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqJ8jjkufTAmoFHuqpWB0bMUfCCkUR-pFFa2MoyeGzgBvA@mail.gmail.com>
-Message-ID: <CAL_JsqJ8jjkufTAmoFHuqpWB0bMUfCCkUR-pFFa2MoyeGzgBvA@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: Drop redundant minItems/maxItems
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" 
-        <linux-ide@vger.kernel.org>, linux-clk <linux-clk@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        dmaengine <dmaengine@vger.kernel.org>,
-        Linux I2C <linux-i2c@vger.kernel.org>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
-        Linux IOMMU <iommu@lists.linux-foundation.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>, linux-can@vger.kernel.org,
-        linux-pci <linux-pci@vger.kernel.org>,
-        linux-phy@lists.infradead.org,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Linux PWM List <linux-pwm@vger.kernel.org>,
-        "open list:REMOTE PROCESSOR (REMOTEPROC) SUBSYSTEM" 
-        <linux-remoteproc@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        "open list:REAL TIME CLOCK (RTC) SUBSYSTEM" 
-        <linux-rtc@vger.kernel.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        USB list <linux-usb@vger.kernel.org>,
-        Linux Watchdog Mailing List <linux-watchdog@vger.kernel.org>,
-        Jens Axboe <axboe@kernel.dk>, Stephen Boyd <sboyd@kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, Vinod Koul <vkoul@kernel.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Kamal Dasu <kdasu.kdev@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-        Jassi Brar <jassisinghbrar@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Wolfgang Grandegger <wg@grandegger.com>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Lee Jones <lee.jones@linaro.org>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mark Brown <broonie@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Guenter Roeck <linux@roeck-us.net>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210614113507.897732-1-jic23@kernel.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jun 22, 2021 at 2:17 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
->
-> Hi Rob,
->
-> On Tue, Jun 15, 2021 at 9:16 PM Rob Herring <robh@kernel.org> wrote:
-> > If a property has an 'items' list, then a 'minItems' or 'maxItems' with the
-> > same size as the list is redundant and can be dropped. Note that is DT
-> > schema specific behavior and not standard json-schema behavior. The tooling
-> > will fixup the final schema adding any unspecified minItems/maxItems.
-> >
-> > This condition is partially checked with the meta-schema already, but
-> > only if both 'minItems' and 'maxItems' are equal to the 'items' length.
-> > An improved meta-schema is pending.
->
-> > Signed-off-by: Rob Herring <robh@kernel.org>
->
-> > --- a/Documentation/devicetree/bindings/net/stm32-dwmac.yaml
-> > +++ b/Documentation/devicetree/bindings/net/stm32-dwmac.yaml
-> > @@ -46,7 +46,6 @@ properties:
-> >
-> >    clocks:
-> >      minItems: 3
-> > -    maxItems: 5
-> >      items:
-> >        - description: GMAC main clock
-> >        - description: MAC TX clock
->
-> While resolving the conflict with commit fea99822914039c6
-> ("dt-bindings: net: document ptp_ref clk in dwmac") in soc/for-next,
-> I noticed the following construct for clock-names:
->
->   clock-names:
->     minItems: 3
->     maxItems: 6
->     contains:
->       enum:
->         - stmmaceth
->         - mac-clk-tx
->         - mac-clk-rx
->         - ethstp
->         - eth-ck
->         - ptp_ref
->
-> Should this use items instead of enum, and drop maxItems, or is this
-> a valid construct to support specifying the clocks in random order?
-> If the latter, it does mean that the order of clock-names may not
-> match the order of the clock descriptions.
+Hey Jonathan,
 
-'contains' is true if one or more entries match the strings. So it is
-really saying one of these is required. That's not really much of a
-constraint. There's 'minContains' and 'maxContains' in newer
-json-schema versions (not yet supported) that could add some
-constraints if there has to be at least N entries from contains. An
-'items' schema (as opposed to a list) would say all items have to
-match one of the strings. I'm sure that's too strict.
+On 06/14, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> Hi All,
+> 
+> This one proved an interesting diversion.
+> 
+> Work done against a somewhat hacked up QEMU emulation of 3 daisy chained
+> ad7280a devices (18 channels).  Note that the emulation isn't complete
+> but does do chaining, CRC, and readout of channels etc in a fashion that
+> worked with the original driver (up to the bug in patch 1) and continues
+> to work with the updated version. I've not intention to upstream the
+> emulation (as would need to make it more completed and flexible), but
+> happy to share it with anyone who is interested.
 
-TLDR: clocks for this binding are a mess and the above is probably all
-we can do here.
+I'm interested in seeing your device emulation with QEMU.
+I was looking at the ad7150 emulation you shared earlier this year but had
+some trouble getting the i2c slave created.
 
-Rob
+Being able to see it running, I may feel more confident to provide a review
+for this set :)
+
+Regards,
+
+Marcelo
+> 
+> I briefly flirted with posting a patch to just drop the driver entirely,
+> but the part is still available and it looked like fun + isn't going
+> to greatly impact maintainability of the subsystem long term so is low
+> cost even if it goes obsolete sometime soonish.
+> 
+> There are lots of things we could do after this set to improved the driver
+> and make things more flexible, but it should basically 'just work'
+> 
+> Anyhow, as normal for staging graduations, last patch has rename detection
+> turned off so that people can easily see what I am proposing we move
+> out of staging.
+> 
+> Jonathan Cameron (17):
+>   staging:iio:adc:ad7280a: Fix handing of device address bit reversing.
+>   staging:iio:adc:ad7280a: Register define cleanup.
+>   staging:iio:adc:ad7280a: rename _read() to _read_reg()
+>   staging:iio:adc:ad7280a: Split buff[2] into tx and rx parts
+>   staging:iio:adc:ad7280a: Use bitfield ops to managed fields in
+>     transfers.
+>   staging:iio:adc:ad7280a: Switch to standard event control
+>   staging:iio:adc:ad7280a: Standardize extended ABI naming
+>   staging:iio:adc:ad7280a: Drop unused timestamp channel.
+>   staging:iio:adc:ad7280a: Trivial comment formatting cleanup
+>   staging:iio:adc:ad7280a: Make oversampling_ratio a runtime control
+>   staging:iio:adc:ad7280a: Cleanup includes
+>   staging:iio:ad7280a: Reflect optionality of irq in ABI
+>   staging:iio:adc:ad7280a: Use a local dev pointer to avoid &spi->dev
+>   staging:iio:adc:ad7280a: Use device properties to replace platform
+>     data.
+>   dt-bindings:iio:adc:ad7280a: Add binding
+>   iio:adc:ad7280a: Document ABI for cell balance switches
+>   iio:adc:ad7280a: Move out of staging
+> 
+>  .../ABI/testing/sysfs-bus-iio-adc-ad7280a     |   14 +
+>  .../bindings/iio/adc/adi,ad7280a.yaml         |   87 ++
+>  drivers/iio/adc/Kconfig                       |   11 +
+>  drivers/iio/adc/Makefile                      |    1 +
+>  drivers/iio/adc/ad7280a.c                     | 1116 +++++++++++++++++
+>  drivers/staging/iio/adc/Kconfig               |   11 -
+>  drivers/staging/iio/adc/Makefile              |    1 -
+>  drivers/staging/iio/adc/ad7280a.c             | 1044 ---------------
+>  drivers/staging/iio/adc/ad7280a.h             |   37 -
+>  9 files changed, 1229 insertions(+), 1093 deletions(-)
+>  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-ad7280a
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7280a.yaml
+>  create mode 100644 drivers/iio/adc/ad7280a.c
+>  delete mode 100644 drivers/staging/iio/adc/ad7280a.c
+>  delete mode 100644 drivers/staging/iio/adc/ad7280a.h
+> 
+> -- 
+> 2.32.0
+> 

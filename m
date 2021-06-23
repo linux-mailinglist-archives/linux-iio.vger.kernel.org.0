@@ -2,67 +2,142 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 216A03B0FDD
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Jun 2021 00:09:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96CC63B15FB
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Jun 2021 10:38:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229625AbhFVWLS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Jun 2021 18:11:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37968 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229612AbhFVWLR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Jun 2021 18:11:17 -0400
-Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78E03C061574
-        for <linux-iio@vger.kernel.org>; Tue, 22 Jun 2021 15:09:00 -0700 (PDT)
-Received: by mail-pg1-x52e.google.com with SMTP id n12so9480553pgs.13
-        for <linux-iio@vger.kernel.org>; Tue, 22 Jun 2021 15:09:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=xLGoQIPZIFDXjr1i49vy3wnndvak3AtM/1fURFoYTto=;
-        b=CP1STCjXoYm4b9O1e87XFyCrFTw7N5lxUFNwOGo2a0u96TREDbULKb/RTzzdwqOvlj
-         79i+7Qj9aqoXYwWtk27RLuXYhNQYr/zCL9UfKEJ2MOrGKntnAuom2VOuUgJjgPnHspio
-         xU51Ik9IoPvBdngrRTErDIo1mtoPnfPdwG4ZLdwN1M5uZqQIwLBSgj5H1Wm+FellnOmR
-         oOz0JzueUDS62MDoK8PA+WtEm9F9wlmVVGJ4wI/fvNfx9mbPg6RnKz5Srex9MsGvTsUt
-         gi8Tj+egqdq1HGrHkSh4lGY5khvmS4CIE9RuseOVVP15ybBLszErawItaZ1fkfkZz783
-         pHtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=xLGoQIPZIFDXjr1i49vy3wnndvak3AtM/1fURFoYTto=;
-        b=nrYz87BXs9agnstTwCQxm0ai1jv4/FdVh+98IiW/eIFXiSRPSlR7UXN+7dF8n02DG6
-         e3zOsyZHGsClzupeL8ddgWtNZw6NdF3cQSDHKQ3uPSfxbUSQi47+dirqyqfkmGJnutKN
-         74q533voA3hHmBbZdr8+IvP/jt3cYRYl47n/a5WnLJUs3I3LfOcCs2inYS7EA8tuRoVx
-         ysNRjUJy1srMW3rb3tjss138FCyk69Ve6Svz4Uz0YDqWKFdh/JAnh/faXb7EOEUoJ3WO
-         s3hZhl71v0P/m3DpGTKXglKP4dPkrpaKUF/beCgJv+kS6kfe5MG+Cg89co8XIkcC0frm
-         eJjw==
-X-Gm-Message-State: AOAM530BZ183F1zjmEOGXNBjY0l9DmFbfllkkw5Z8RvuZ3Uju1c5zriD
-        2V+bmz1gNpgY31oKnAU+/x2HVD6ddYC+VXiLxDw=
-X-Google-Smtp-Source: ABdhPJxTqW0rhpC1r2v2KujLlT4ZGpcd/ILEgWYr2IPTYxL8hc5ryWBLdIi+tDy6XPt7LmLGeDh6GU/KntG0wUaUaag=
-X-Received: by 2002:aa7:9384:0:b029:2cc:5e38:933a with SMTP id
- t4-20020aa793840000b02902cc5e38933amr5732473pfe.81.1624399740109; Tue, 22 Jun
- 2021 15:09:00 -0700 (PDT)
+        id S229954AbhFWIkP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Jun 2021 04:40:15 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:3302 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229833AbhFWIkL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Jun 2021 04:40:11 -0400
+Received: from fraeml735-chm.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4G8xGY0qJJz6H7Vw;
+        Wed, 23 Jun 2021 16:27:49 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml735-chm.china.huawei.com (10.206.15.216) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Wed, 23 Jun 2021 10:37:51 +0200
+Received: from localhost (10.47.69.138) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Wed, 23 Jun
+ 2021 09:37:50 +0100
+Date:   Wed, 23 Jun 2021 09:37:41 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+CC:     Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
+        "Rob Herring" <robh+dt@kernel.org>, <Michael.Hennerich@analog.com>,
+        <lars@metafoo.de>, <devicetree@vger.kernel.org>,
+        Nuno Sa <Nuno.Sa@analog.com>
+Subject: Re: [PATCH 00/17] iio:adc:ad7280a Cleanup and proposed staging
+ graduation.
+Message-ID: <20210623093741.00007d1d@Huawei.com>
+In-Reply-To: <YNIfkaRZtWIXPbAj@marsc.168.1.7>
+References: <20210614113507.897732-1-jic23@kernel.org>
+        <YNIfkaRZtWIXPbAj@marsc.168.1.7>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:68c:0:0:0:0 with HTTP; Tue, 22 Jun 2021 15:08:59
- -0700 (PDT)
-Reply-To: Bill.Chantal.Lawrence20@europe.com
-From:   "Mrs. bill Chantal" <ddcxghnj@gmail.com>
-Date:   Wed, 23 Jun 2021 00:08:59 +0200
-Message-ID: <CAD06UGuNX-a2+rJq5Vmh_VqYU2Xo6=8OTMCmnf7ZQ90kS6EgQg@mail.gmail.com>
-Subject: atm visa card compensated
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.69.138]
+X-ClientProxiedBy: lhreml746-chm.china.huawei.com (10.201.108.196) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Dear Friend
+On Tue, 22 Jun 2021 14:36:17 -0300
+Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
 
-You have been compensated with the sum of 4.4 million dollars in this
-united nation the payment will be Issue into atm visa card and send to
-you from the Santander bank we need your address passport and your
-whatsapp number.
-Thanks
+> Hey Jonathan,
+> 
+> On 06/14, Jonathan Cameron wrote:
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > Hi All,
+> > 
+> > This one proved an interesting diversion.
+> > 
+> > Work done against a somewhat hacked up QEMU emulation of 3 daisy chained
+> > ad7280a devices (18 channels).  Note that the emulation isn't complete
+> > but does do chaining, CRC, and readout of channels etc in a fashion that
+> > worked with the original driver (up to the bug in patch 1) and continues
+> > to work with the updated version. I've not intention to upstream the
+> > emulation (as would need to make it more completed and flexible), but
+> > happy to share it with anyone who is interested.  
+> 
+> I'm interested in seeing your device emulation with QEMU.
+> I was looking at the ad7150 emulation you shared earlier this year but had
+> some trouble getting the i2c slave created.
 
-Mrs. bill Chantal
+Sure.  Let me do a bit of tidying up they I'll push a suitable branch out.
+(probably will still have lots of stuff missing!)
+
+Might take a little while to get to this though.
+
+> 
+> Being able to see it running, I may feel more confident to provide a review
+> for this set :)
+
+:)
+
+> 
+> Regards,
+> 
+> Marcelo
+> > 
+> > I briefly flirted with posting a patch to just drop the driver entirely,
+> > but the part is still available and it looked like fun + isn't going
+> > to greatly impact maintainability of the subsystem long term so is low
+> > cost even if it goes obsolete sometime soonish.
+> > 
+> > There are lots of things we could do after this set to improved the driver
+> > and make things more flexible, but it should basically 'just work'
+> > 
+> > Anyhow, as normal for staging graduations, last patch has rename detection
+> > turned off so that people can easily see what I am proposing we move
+> > out of staging.
+> > 
+> > Jonathan Cameron (17):
+> >   staging:iio:adc:ad7280a: Fix handing of device address bit reversing.
+> >   staging:iio:adc:ad7280a: Register define cleanup.
+> >   staging:iio:adc:ad7280a: rename _read() to _read_reg()
+> >   staging:iio:adc:ad7280a: Split buff[2] into tx and rx parts
+> >   staging:iio:adc:ad7280a: Use bitfield ops to managed fields in
+> >     transfers.
+> >   staging:iio:adc:ad7280a: Switch to standard event control
+> >   staging:iio:adc:ad7280a: Standardize extended ABI naming
+> >   staging:iio:adc:ad7280a: Drop unused timestamp channel.
+> >   staging:iio:adc:ad7280a: Trivial comment formatting cleanup
+> >   staging:iio:adc:ad7280a: Make oversampling_ratio a runtime control
+> >   staging:iio:adc:ad7280a: Cleanup includes
+> >   staging:iio:ad7280a: Reflect optionality of irq in ABI
+> >   staging:iio:adc:ad7280a: Use a local dev pointer to avoid &spi->dev
+> >   staging:iio:adc:ad7280a: Use device properties to replace platform
+> >     data.
+> >   dt-bindings:iio:adc:ad7280a: Add binding
+> >   iio:adc:ad7280a: Document ABI for cell balance switches
+> >   iio:adc:ad7280a: Move out of staging
+> > 
+> >  .../ABI/testing/sysfs-bus-iio-adc-ad7280a     |   14 +
+> >  .../bindings/iio/adc/adi,ad7280a.yaml         |   87 ++
+> >  drivers/iio/adc/Kconfig                       |   11 +
+> >  drivers/iio/adc/Makefile                      |    1 +
+> >  drivers/iio/adc/ad7280a.c                     | 1116 +++++++++++++++++
+> >  drivers/staging/iio/adc/Kconfig               |   11 -
+> >  drivers/staging/iio/adc/Makefile              |    1 -
+> >  drivers/staging/iio/adc/ad7280a.c             | 1044 ---------------
+> >  drivers/staging/iio/adc/ad7280a.h             |   37 -
+> >  9 files changed, 1229 insertions(+), 1093 deletions(-)
+> >  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-ad7280a
+> >  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7280a.yaml
+> >  create mode 100644 drivers/iio/adc/ad7280a.c
+> >  delete mode 100644 drivers/staging/iio/adc/ad7280a.c
+> >  delete mode 100644 drivers/staging/iio/adc/ad7280a.h
+> > 
+> > -- 
+> > 2.32.0
+> >   
+

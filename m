@@ -2,111 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B32D3B2C94
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Jun 2021 12:40:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9BA43B2D6E
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Jun 2021 13:13:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232084AbhFXKmT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 24 Jun 2021 06:42:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48062 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230008AbhFXKmT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Jun 2021 06:42:19 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C79DEC061574;
-        Thu, 24 Jun 2021 03:40:00 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id c5so4792726pfv.8;
-        Thu, 24 Jun 2021 03:40:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=v2nueDFN3sIUezwAZTq4ZWYAx08fjXKv4iNtaPXarDA=;
-        b=mhmJm3rC5l98CLp97BJhCX6M5px6gRr0k5qBRMbEmQMmZs//HLTPQ1IAHBYs8TlzWC
-         XDgyddHepQofYbWc/+LAEXMIihPPX8XQ0uoC54Kqfbg/S1thl+NkJpK1nJ3jXZSdP67D
-         QXoxcD+Rc8A1izn5yZrr00MK9OASLRpLickqFT5tXH10RGq1lTYxHketHxBnH5/lTGmf
-         V3bmxsmwzWZImT8+Dr2NPBKxOdP6zVQC/TYW0URB+aN93d4DplGReIVJ/3Y16PcK/izY
-         yO6P8lDtmc7QCWp4Fp6RAe2dbzpeDcCs0kFLpagRSsDVZa4wgOybzyiO1qj3EZZ3P8TX
-         md2g==
+        id S232118AbhFXLQL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 24 Jun 2021 07:16:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:41469 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232227AbhFXLQK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Jun 2021 07:16:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1624533231;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=GQbQQeIrRdDv283QxkkrMQqh6kQDdmhKMptxE1wKs5Q=;
+        b=d+fX4qNGjIVjaLJiK5+MRR6ftmf+WLW32LA6IvvLh/o1kpE1W0t6zzDrJGjMSfzXTbePF3
+        jnK5DqCyFp7mQQPTL/l4v5XjDwdaFK7IODBRWrgDiNIyQBzvHKaa9GLRChRsozLFX/GD9b
+        Tkvpyoxntx+I6932sjiOjYjCc+wSfog=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-408-ubsZjiDoP9SqD8m-wJrEcw-1; Thu, 24 Jun 2021 07:13:49 -0400
+X-MC-Unique: ubsZjiDoP9SqD8m-wJrEcw-1
+Received: by mail-wr1-f72.google.com with SMTP id v9-20020a5d4a490000b029011a86baa40cso2070948wrs.7
+        for <linux-iio@vger.kernel.org>; Thu, 24 Jun 2021 04:13:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=v2nueDFN3sIUezwAZTq4ZWYAx08fjXKv4iNtaPXarDA=;
-        b=kNg3IQxVglrbOkrXKpe530plUo7SO/8kZFinjOW5B9b3yghWTas1dN5+QS6IAjpN5Z
-         BCE8Bu8j7KVErjmEPIpzpoqANH02TsWW+D7M6ywhoIqRmSTyWLPYBdQfXDSfVetLLltF
-         ImYCJ6D7KbhF6Yj0d/mf9DSr84vYMGEtIImW6kC5702aucZQ8PhIx+GP2uvxLoqA6UPJ
-         QuXBel3guvvjYTioMjjxlePFxEYJI7WQx95w/Wx6dYbMYVLWHFJLj4AfnBQyAo7kdNUb
-         BsTfK4bk3GjM7+TaiKY9oyfyNDEguucKB67pxeofl0peKkFZZ+qWejGXSSmMmwcwZ9At
-         XIFA==
-X-Gm-Message-State: AOAM532Fu2NdT6g1wMNsR8X9KN3eOpsq2d9oFzcKrIVpKFHHlaXx4Glc
-        I7VI/qflb+V0706rI/JBTsdDEgkfHBKQbz4gQOg=
-X-Google-Smtp-Source: ABdhPJwPOnctZ3dJHDJ4KduItbbDZUCLsUq5ipRDaV8PWp32E7mzKYiwf16T6sdcPH7NzadTMdXGGcOPkeb0JF99vK8=
-X-Received: by 2002:a63:fd16:: with SMTP id d22mr4168264pgh.203.1624531200201;
- Thu, 24 Jun 2021 03:40:00 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210624100046.1037159-1-nsaenzju@redhat.com>
-In-Reply-To: <20210624100046.1037159-1-nsaenzju@redhat.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 24 Jun 2021 13:39:23 +0300
-Message-ID: <CAHp75VcG-0L+qG5JirWH21bnpVwRv_wfjM6Sfd2pJrq4-OqJ0Q@mail.gmail.com>
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=GQbQQeIrRdDv283QxkkrMQqh6kQDdmhKMptxE1wKs5Q=;
+        b=QGOpxQ15Ih/IyeJWqzX0IdTws7TNRTlsPEdzz6beBv/7uEpbMaLY5eXvAGJ3z8Y63U
+         2THpnRP+COlBhb+HBn1Oz7bysE8dfRleFcjKrdf5IucsGkeiAryQjc4ciUnXyVQMiCwO
+         VmsC1EoBDUq+tdAVj68c9j7aS7ItBGN80LhemZzFxltwjxF0t7OFBxR2PBHse7AwsT58
+         Po7wyAxfrObjEgsBLdb6uib1lBiAX3BfwP6i74aiTLrMa7c2YrH2d+U1s8hSjuP8xdJV
+         t1vPgXG8Zv1emD8FWvUo9y6TtXCKhaxs716le98Nvi9KsmncQOFn3+aVEESToBNiKN9j
+         dDKQ==
+X-Gm-Message-State: AOAM531OYk7xAwtDqNt4xqkCNtBc9B/LDxV5R9cmxY+whJqi5/p2S2W9
+        yDIwg9k7beWZHU6BzFFgl3b5/+pT7sxfxtRZ+S78CysZXyBljw/2mhO3Gz9rqFRJZ+G/sKmMyib
+        K941FxeOwLeYyPYRq29Hr
+X-Received: by 2002:adf:a2d1:: with SMTP id t17mr3840774wra.74.1624533228386;
+        Thu, 24 Jun 2021 04:13:48 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwSnSI2gHRoJbdKSxlynk+kdGKf1GaZhZAlelWhFkUglT+nA21yQy20pZ9W2Ucqey8KT3Gh/Q==
+X-Received: by 2002:adf:a2d1:: with SMTP id t17mr3840758wra.74.1624533228196;
+        Thu, 24 Jun 2021 04:13:48 -0700 (PDT)
+Received: from ?IPv6:2a0c:5a80:3d14:2800:933d:abfc:d8e4:637f? ([2a0c:5a80:3d14:2800:933d:abfc:d8e4:637f])
+        by smtp.gmail.com with ESMTPSA id z3sm8173497wmi.29.2021.06.24.04.13.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Jun 2021 04:13:47 -0700 (PDT)
+Message-ID: <3974817ea942f616b77450914aa23b181b062d87.camel@redhat.com>
 Subject: Re: [PATCH] iio: chemical: atlas-sensor: Avoid using irq_work
-To:     Nicolas Saenz Julienne <nsaenzju@redhat.com>
+From:   Nicolas Saenz Julienne <nsaenzju@redhat.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         linux-iio <linux-iio@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Matt Ranostay <matt.ranostay@konsulko.com>
+Date:   Thu, 24 Jun 2021 13:13:47 +0200
+In-Reply-To: <CAHp75VcG-0L+qG5JirWH21bnpVwRv_wfjM6Sfd2pJrq4-OqJ0Q@mail.gmail.com>
+References: <20210624100046.1037159-1-nsaenzju@redhat.com>
+         <CAHp75VcG-0L+qG5JirWH21bnpVwRv_wfjM6Sfd2pJrq4-OqJ0Q@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.40.0 (3.40.0-1.fc34) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Jun 24, 2021 at 1:01 PM Nicolas Saenz Julienne
-<nsaenzju@redhat.com> wrote:
->
-> The atlas sensor driver currently registers a threaded IRQ handler whose
-> sole responsibility is to trigger an irq_work which will in turn run
-> iio_trigger_poll() in IRQ context.
->
-> This seems overkill given the fact that there already was a opportunity
+Hi Andy, thanks for the review.
 
-an opportunity
+On Thu, 2021-06-24 at 13:39 +0300, Andy Shevchenko wrote:
+> On Thu, Jun 24, 2021 at 1:01 PM Nicolas Saenz Julienne
+> <nsaenzju@redhat.com> wrote:
+> > 
+> > The atlas sensor driver currently registers a threaded IRQ handler whose
+> > sole responsibility is to trigger an irq_work which will in turn run
+> > iio_trigger_poll() in IRQ context.
+> > 
+> > This seems overkill given the fact that there already was a opportunity
+> 
+> an opportunity
 
-> to run iio_trigger_poll() in IRQ context in the top half of the IRQ
-> handler. So make use of it, ultimately avoiding a context switch, an
-> IPI, and reducing latency.
+Thanks, noted.
 
-...
+> > @@ -474,7 +465,7 @@ static irqreturn_t atlas_interrupt_handler(int irq, void *private)
+> >         struct iio_dev *indio_dev = private;
+> >         struct atlas_data *data = iio_priv(indio_dev);
+> > 
+> > -       irq_work_queue(&data->work);
+> > +       iio_trigger_poll(data->trig);
+> 
+> Have you considered dropping atlas_interrupt_trigger_ops() altogether?
 
-> @@ -474,7 +465,7 @@ static irqreturn_t atlas_interrupt_handler(int irq, void *private)
->         struct iio_dev *indio_dev = private;
->         struct atlas_data *data = iio_priv(indio_dev);
->
-> -       irq_work_queue(&data->work);
-> +       iio_trigger_poll(data->trig);
+Not really, but it makes sense as a separate patch. I'll take care of it.
 
-Have you considered dropping atlas_interrupt_trigger_ops() altogether?
+> 
+> >         if (client->irq > 0) {
+> >                 /* interrupt pin toggles on new conversion */
+> >                 ret = devm_request_threaded_irq(&client->dev, client->irq,
+> 
+> > -                               NULL, atlas_interrupt_handler,
+> > +                               atlas_interrupt_handler, NULL,
+> 
+> So, you move it from threaded IRQ to be a hard IRQ handler (we have a
+> separate call for this).
 
->         return IRQ_HANDLED;
+Noted.
 
-...
+> Can you guarantee that handling of those events will be fast enough?
 
->         if (client->irq > 0) {
->                 /* interrupt pin toggles on new conversion */
->                 ret = devm_request_threaded_irq(&client->dev, client->irq,
-
-> -                               NULL, atlas_interrupt_handler,
-> +                               atlas_interrupt_handler, NULL,
-
-So, you move it from threaded IRQ to be a hard IRQ handler (we have a
-separate call for this).
-Can you guarantee that handling of those events will be fast enough?
-
->                                 IRQF_TRIGGER_RISING |
->                                 IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
->                                 "atlas_irq",
-
+Do you mean the events triggered in iio_trigger_poll()? If so the amount of
+time spent in IRQ context is going to be the same regardless of whether it's
+handled through atlas' IRQ or later in irq_work IPI (or softirq context on some
+weird platforms).
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Nicolás Sáenz
+

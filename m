@@ -2,160 +2,163 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A4CE3B4535
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Jun 2021 16:02:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFD823B4536
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Jun 2021 16:02:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229700AbhFYOEW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 25 Jun 2021 10:04:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51280 "EHLO
+        id S231527AbhFYOEY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 25 Jun 2021 10:04:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229573AbhFYOEV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Jun 2021 10:04:21 -0400
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07CD0C061766
-        for <linux-iio@vger.kernel.org>; Fri, 25 Jun 2021 07:02:01 -0700 (PDT)
-Received: by mail-ed1-x531.google.com with SMTP id c7so13539498edn.6
-        for <linux-iio@vger.kernel.org>; Fri, 25 Jun 2021 07:02:00 -0700 (PDT)
+        with ESMTP id S230114AbhFYOEX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Jun 2021 10:04:23 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BD25C061766
+        for <linux-iio@vger.kernel.org>; Fri, 25 Jun 2021 07:02:02 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id bg14so15249328ejb.9
+        for <linux-iio@vger.kernel.org>; Fri, 25 Jun 2021 07:02:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=deviqon.com; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=z+KMbze32Ri6x52TPJK4QM4wxVfroiCmkS67qVQBUE4=;
-        b=YGYUui9WFUDmI+j+Sb9qMHMQ20BKewTTNR3O6qy3UpLr6U7t0zXQUoYKyteFgXhgkb
-         1AUaxQpsD1E0OCYS7eIFg3vhok2ubkg2YWOfMA8NSQ3apMJ/enCVdyPFrr9Zc9EDPlcQ
-         3s5qQCPQWkRifKuTCcBBL1hcjerEm4JG0gymiPbLST+SiOyc+LqtNpyOHgi8EB/j9Xgm
-         pWj7TcKoEzDR+BszEw0Z5UJbzOUGANWcjHqBSOOctrQU1gX+jfBW6C5BYYKW5wXPw5xU
-         xITMLa+1dWni/ccYBJaC4wikE+2UOqFkku6bk05Newy7ncXXbsn6fm5fehRFtQVRcqQ5
-         X/sA==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=D1tsMvDAeuRYczhDgVUkekdSjLDiyIzg0pQFMOQgYwE=;
+        b=USDJkxqNofnXE1O9aVxZ2a0KZfneORrPKVeXjdKXYnGUruc9otkm3oF7JI+punj3Dr
+         PbD5yqeoc5mwE6fxs2HShcb4dNHkt6hDqvI6KBv76WUWDf5Q6KV5J+j1JQSRlKzfaa75
+         9UKuh524GKV40adPXM5eKskCd8H1/UFjltCW46l1UawkrSas2EpYPSGUUBxqc/v4086A
+         sNxyGbNNRxU/omf83drSmMmMN55S2tV5VTG1rUIYQ15aEpFRhtHD6sIVC5K1yKPvBfk3
+         gxUvIXrbr/Vh5Szu9f8k0jTdp4fvkwc1ZHTP9hYxC+S3Xun2jwUosazOdAjxDPURe79x
+         NXEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=z+KMbze32Ri6x52TPJK4QM4wxVfroiCmkS67qVQBUE4=;
-        b=jP6GYDVT6oYgGN/U/RxqWqFIL12ox6qcA3sDzF+xcdx1H+flfuolHp9IIdT3A7gucZ
-         L0dDEpqz2e1bg4mXpjq/81COvZ8RI1qvYWnV73Gt6gwkrsCYkmSsGvl7aid3F70o2KYc
-         vkScH+mcCLCL0UU/79QOFY7RkVQmAPUrsifNAozuBQahlLPwis3F18EUM6SD0zR6+5Jc
-         mqOjetyb70hViyyJNLU7KSGq4hxcWFQ7thqR4UCGT10ROB+1cBBzuyMutBM98dT83nm0
-         BKVidc03xUDV8GiKeIIjSCIOzMxwyhALJJa+gRyHQtGEOKac5OmV89ljOsgIv0HBM7XI
-         O+pA==
-X-Gm-Message-State: AOAM531zyDx5tSkwkMVNnK+YqvTNNWJ5d6b04nKVRhxittL0TJ/xejgL
-        kjKQk8XY770WIiQ6lFyIL7XK8hGFvo4oqtPW
-X-Google-Smtp-Source: ABdhPJyxNVPSI5D8gDTcai9x/u0+YfMQvhIDVqYK+Mo8+2uvN7ZVL43Lyx5ntksPcwk66ZPxVbveiw==
-X-Received: by 2002:a05:6402:849:: with SMTP id b9mr6663053edz.270.1624629719342;
-        Fri, 25 Jun 2021 07:01:59 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=D1tsMvDAeuRYczhDgVUkekdSjLDiyIzg0pQFMOQgYwE=;
+        b=a8ugTcQhcF0xwMYgQ03BBBN4suefZingU7TtwcH+FNbQqErq5DtsEig6Q1WlGCSMq1
+         adisryptC9jtkgwb7y6n/YwTy3lqVN6yrFlRCA5MMQdQozDYx2FtTHFAQOdR0YyNhlg4
+         nhNILBBXHVjtp15W9UTIMEENg+/vzF5hP/+1VSHrLHNGWvALNfx1vx5pXk+eExo7K3Gw
+         ywH4WF1R4D1XzoS8ZnLabv1IT3vcOHxVS7P3iRnpcNlw/+xjHcmmxBELVpQHVJYsWZph
+         X/Uhsyj98dtRbUlYbC2IHfXxydUsvcMQIRBOba8tv9e5SI1SEm9bgH2AsmhFp25H/Vh+
+         DjiQ==
+X-Gm-Message-State: AOAM532pTnWbeFiBzlE547PYttUH0IAYwmJ9gAh5ZYNqHiZrNFqYN54J
+        OAtJ/RLRn64pxMw/rn6dw+qyIBjmYDPyJrKb
+X-Google-Smtp-Source: ABdhPJw+7UXY5n7f8Utlr/NO8COcUPMZqLn2DvnPK4SgD9CtKDtIGgFdQKNUGUdVd7f62pNtSBumlw==
+X-Received: by 2002:a17:907:9813:: with SMTP id ji19mr11118539ejc.318.1624629720334;
+        Fri, 25 Jun 2021 07:02:00 -0700 (PDT)
 Received: from neptune.. ([5.2.193.191])
-        by smtp.gmail.com with ESMTPSA id g23sm2767853ejh.116.2021.06.25.07.01.58
+        by smtp.gmail.com with ESMTPSA id g23sm2767853ejh.116.2021.06.25.07.01.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Jun 2021 07:01:58 -0700 (PDT)
+        Fri, 25 Jun 2021 07:01:59 -0700 (PDT)
 From:   Alexandru Ardelean <aardelean@deviqon.com>
 To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc:     jic23@kernel.org, Alexandru Ardelean <aardelean@deviqon.com>
-Subject: [PATCH 1/2] iio: accel: bma220: convert probe to device-managed functions
-Date:   Fri, 25 Jun 2021 17:01:36 +0300
-Message-Id: <20210625140137.362282-1-aardelean@deviqon.com>
+Subject: [PATCH 2/2] iio: accel: bma220: make suspend state setting more robust
+Date:   Fri, 25 Jun 2021 17:01:37 +0300
+Message-Id: <20210625140137.362282-2-aardelean@deviqon.com>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20210625140137.362282-1-aardelean@deviqon.com>
+References: <20210625140137.362282-1-aardelean@deviqon.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This change converts the driver to use devm_iio_triggered_buffer_setup()
-and devm_iio_device_register() for initializing and registering the IIO
-device.
+The datasheet mentions that the suspend mode is toggled by reading the
+suspend register. The reading returns value 0xFF if the system was in
+suspend mode, otherwise it returns value 0x00.
 
-The bma220_deinit() is converted into a callback for a
-devm_add_action_or_reset() hook, so that the device is put in stand-by when
-the driver gets uninitialized.
-The return value of the bma220_deinit() function isn't used as it does not
-add any value. On the error path of the probe function, this can just
-override the actual error with -EBUSY, or can even return 0 (no error), on
-the error path.
+The bma220_deinit() function does up to 2 reads, in case the device was in
+suspend mode, which suggests a level of paranoia that makes the logic in
+bma220_suspend() and bma220_resume() look insufficient.
+
+This change implements a bma220_power() function which does up to 2 reads
+of the suspend register to make sure that the chip enters a desired
+(suspended or normal) mode.
+
+If the transition fails, then -EBUSY is returned.
+
+Since only a reference to SPI device is required, we can remove the
+spi_set_drvdata() call and get the SPI device object from the base device
+object in the suspend/resume routines.
 
 Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
 ---
- drivers/iio/accel/bma220_spi.c | 44 +++++++++-------------------------
- 1 file changed, 11 insertions(+), 33 deletions(-)
+ drivers/iio/accel/bma220_spi.c | 41 ++++++++++++++++++++++++----------
+ 1 file changed, 29 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/iio/accel/bma220_spi.c b/drivers/iio/accel/bma220_spi.c
-index 0622c7936499..0095931a11f8 100644
+index 0095931a11f8..bc4c626e454d 100644
 --- a/drivers/iio/accel/bma220_spi.c
 +++ b/drivers/iio/accel/bma220_spi.c
-@@ -218,20 +218,14 @@ static int bma220_init(struct spi_device *spi)
+@@ -218,14 +218,33 @@ static int bma220_init(struct spi_device *spi)
  	return 0;
  }
  
--static int bma220_deinit(struct spi_device *spi)
-+static void bma220_deinit(void *spi)
+-static void bma220_deinit(void *spi)
++static int bma220_power(struct spi_device *spi, bool up)
  {
- 	int ret;
+-	int ret;
++	int i, ret;
++
++	/**
++	 * The chip can be suspended/woken up by a simple register read.
++	 * So, we need up to 2 register reads of the suspend register
++	 * to make sure that the device is in the desired state.
++	 */
++	for (i = 0; i < 2; i++) {
++		ret = bma220_read_reg(spi, BMA220_REG_SUSPEND);
++		if (ret < 0)
++			return ret;
  
- 	/* Make sure the chip is powered off */
- 	ret = bma220_read_reg(spi, BMA220_REG_SUSPEND);
- 	if (ret == BMA220_SUSPEND_SLEEP)
--		ret = bma220_read_reg(spi, BMA220_REG_SUSPEND);
--	if (ret < 0)
--		return ret;
+-	/* Make sure the chip is powered off */
+-	ret = bma220_read_reg(spi, BMA220_REG_SUSPEND);
 -	if (ret == BMA220_SUSPEND_SLEEP)
--		return -EBUSY;
--
--	return 0;
-+		bma220_read_reg(spi, BMA220_REG_SUSPEND);
+-		bma220_read_reg(spi, BMA220_REG_SUSPEND);
++		if (up && ret == BMA220_SUSPEND_SLEEP)
++			return 0;
++
++		if (!up && ret == BMA220_SUSPEND_WAKE)
++			return 0;
++	}
++
++	return -EBUSY;
++}
++
++static void bma220_deinit(void *spi)
++{
++	bma220_power(spi, false);
  }
  
  static int bma220_probe(struct spi_device *spi)
-@@ -262,34 +256,19 @@ static int bma220_probe(struct spi_device *spi)
- 	if (ret)
- 		return ret;
+@@ -242,7 +261,6 @@ static int bma220_probe(struct spi_device *spi)
  
--	ret = iio_triggered_buffer_setup(indio_dev, iio_pollfunc_store_time,
--					 bma220_trigger_handler, NULL);
--	if (ret < 0) {
--		dev_err(&spi->dev, "iio triggered buffer setup failed\n");
--		goto err_suspend;
--	}
-+	ret = devm_add_action_or_reset(&spi->dev, bma220_deinit, spi);
-+	if (ret)
-+		return ret;
+ 	data = iio_priv(indio_dev);
+ 	data->spi_device = spi;
+-	spi_set_drvdata(spi, indio_dev);
+ 	mutex_init(&data->lock);
  
--	ret = iio_device_register(indio_dev);
-+	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
-+					      iio_pollfunc_store_time,
-+					      bma220_trigger_handler, NULL);
- 	if (ret < 0) {
--		dev_err(&spi->dev, "iio_device_register failed\n");
--		iio_triggered_buffer_cleanup(indio_dev);
--		goto err_suspend;
-+		dev_err(&spi->dev, "iio triggered buffer setup failed\n");
-+		return ret;
- 	}
- 
--	return 0;
--
--err_suspend:
--	return bma220_deinit(spi);
--}
--
--static int bma220_remove(struct spi_device *spi)
--{
--	struct iio_dev *indio_dev = spi_get_drvdata(spi);
--
--	iio_device_unregister(indio_dev);
--	iio_triggered_buffer_cleanup(indio_dev);
--
--	return bma220_deinit(spi);
-+	return devm_iio_device_register(&spi->dev, indio_dev);
- }
+ 	indio_dev->info = &bma220_info;
+@@ -273,17 +291,16 @@ static int bma220_probe(struct spi_device *spi)
  
  static __maybe_unused int bma220_suspend(struct device *dev)
-@@ -326,7 +305,6 @@ static struct spi_driver bma220_driver = {
- 		.acpi_match_table = bma220_acpi_id,
- 	},
- 	.probe =            bma220_probe,
--	.remove =           bma220_remove,
- 	.id_table =         bma220_spi_id,
- };
- module_spi_driver(bma220_driver);
+ {
+-	struct bma220_data *data = iio_priv(dev_get_drvdata(dev));
++	struct spi_device *spi = to_spi_device(dev);
+ 
+-	/* The chip can be suspended/woken up by a simple register read. */
+-	return bma220_read_reg(data->spi_device, BMA220_REG_SUSPEND);
++	return bma220_power(spi, false);
+ }
+ 
+ static __maybe_unused int bma220_resume(struct device *dev)
+ {
+-	struct bma220_data *data = iio_priv(dev_get_drvdata(dev));
++	struct spi_device *spi = to_spi_device(dev);
+ 
+-	return bma220_read_reg(data->spi_device, BMA220_REG_SUSPEND);
++	return bma220_power(spi, true);
+ }
+ static SIMPLE_DEV_PM_OPS(bma220_pm_ops, bma220_suspend, bma220_resume);
+ 
 -- 
 2.31.1
 

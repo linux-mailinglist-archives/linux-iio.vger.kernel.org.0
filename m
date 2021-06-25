@@ -2,163 +2,200 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFD823B4536
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Jun 2021 16:02:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C12A63B458B
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Jun 2021 16:28:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231527AbhFYOEY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 25 Jun 2021 10:04:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51288 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230114AbhFYOEX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Jun 2021 10:04:23 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BD25C061766
-        for <linux-iio@vger.kernel.org>; Fri, 25 Jun 2021 07:02:02 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id bg14so15249328ejb.9
-        for <linux-iio@vger.kernel.org>; Fri, 25 Jun 2021 07:02:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=deviqon.com; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=D1tsMvDAeuRYczhDgVUkekdSjLDiyIzg0pQFMOQgYwE=;
-        b=USDJkxqNofnXE1O9aVxZ2a0KZfneORrPKVeXjdKXYnGUruc9otkm3oF7JI+punj3Dr
-         PbD5yqeoc5mwE6fxs2HShcb4dNHkt6hDqvI6KBv76WUWDf5Q6KV5J+j1JQSRlKzfaa75
-         9UKuh524GKV40adPXM5eKskCd8H1/UFjltCW46l1UawkrSas2EpYPSGUUBxqc/v4086A
-         sNxyGbNNRxU/omf83drSmMmMN55S2tV5VTG1rUIYQ15aEpFRhtHD6sIVC5K1yKPvBfk3
-         gxUvIXrbr/Vh5Szu9f8k0jTdp4fvkwc1ZHTP9hYxC+S3Xun2jwUosazOdAjxDPURe79x
-         NXEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=D1tsMvDAeuRYczhDgVUkekdSjLDiyIzg0pQFMOQgYwE=;
-        b=a8ugTcQhcF0xwMYgQ03BBBN4suefZingU7TtwcH+FNbQqErq5DtsEig6Q1WlGCSMq1
-         adisryptC9jtkgwb7y6n/YwTy3lqVN6yrFlRCA5MMQdQozDYx2FtTHFAQOdR0YyNhlg4
-         nhNILBBXHVjtp15W9UTIMEENg+/vzF5hP/+1VSHrLHNGWvALNfx1vx5pXk+eExo7K3Gw
-         ywH4WF1R4D1XzoS8ZnLabv1IT3vcOHxVS7P3iRnpcNlw/+xjHcmmxBELVpQHVJYsWZph
-         X/Uhsyj98dtRbUlYbC2IHfXxydUsvcMQIRBOba8tv9e5SI1SEm9bgH2AsmhFp25H/Vh+
-         DjiQ==
-X-Gm-Message-State: AOAM532pTnWbeFiBzlE547PYttUH0IAYwmJ9gAh5ZYNqHiZrNFqYN54J
-        OAtJ/RLRn64pxMw/rn6dw+qyIBjmYDPyJrKb
-X-Google-Smtp-Source: ABdhPJw+7UXY5n7f8Utlr/NO8COcUPMZqLn2DvnPK4SgD9CtKDtIGgFdQKNUGUdVd7f62pNtSBumlw==
-X-Received: by 2002:a17:907:9813:: with SMTP id ji19mr11118539ejc.318.1624629720334;
-        Fri, 25 Jun 2021 07:02:00 -0700 (PDT)
-Received: from neptune.. ([5.2.193.191])
-        by smtp.gmail.com with ESMTPSA id g23sm2767853ejh.116.2021.06.25.07.01.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Jun 2021 07:01:59 -0700 (PDT)
-From:   Alexandru Ardelean <aardelean@deviqon.com>
-To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     jic23@kernel.org, Alexandru Ardelean <aardelean@deviqon.com>
-Subject: [PATCH 2/2] iio: accel: bma220: make suspend state setting more robust
-Date:   Fri, 25 Jun 2021 17:01:37 +0300
-Message-Id: <20210625140137.362282-2-aardelean@deviqon.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210625140137.362282-1-aardelean@deviqon.com>
-References: <20210625140137.362282-1-aardelean@deviqon.com>
+        id S231749AbhFYOar (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 25 Jun 2021 10:30:47 -0400
+Received: from mga06.intel.com ([134.134.136.31]:49377 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230172AbhFYOan (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 25 Jun 2021 10:30:43 -0400
+IronPort-SDR: wP63qIrp9SVdVYHlmv+1v/r+I+v7eLanZggcmERWQnRVgefMXjAJ2wWjj6ddFEl+rLbHkmPZz9
+ IOo+OvDs9M+g==
+X-IronPort-AV: E=McAfee;i="6200,9189,10026"; a="268808002"
+X-IronPort-AV: E=Sophos;i="5.83,299,1616482800"; 
+   d="scan'208";a="268808002"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2021 07:28:21 -0700
+IronPort-SDR: /knVAkJOmAt3/sXzklYKmKXpEUlAnb9/uuov9omjalvfYKIrJdKhMUcrj40RA8lgoeWIk9Mfif
+ 1NO3qzbCDxhg==
+X-IronPort-AV: E=Sophos;i="5.83,299,1616482800"; 
+   d="scan'208";a="488202890"
+Received: from sye-mobl.amr.corp.intel.com ([10.212.236.130])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2021 07:28:21 -0700
+Message-ID: <8a6188886bfa39b9b960adefbe02cda9a74fc19e.camel@linux.intel.com>
+Subject: Re: [PATCH] HID: intel-ish-hid: use async resume function
+From:   srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+To:     Ye Xiang <xiang.ye@intel.com>, jikos@kernel.org, jic23@kernel.org
+Cc:     linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Fri, 25 Jun 2021 07:28:21 -0700
+In-Reply-To: <20210613032507.7474-1-xiang.ye@intel.com>
+References: <20210613032507.7474-1-xiang.ye@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The datasheet mentions that the suspend mode is toggled by reading the
-suspend register. The reading returns value 0xFF if the system was in
-suspend mode, otherwise it returns value 0x00.
+On Sun, 2021-06-13 at 11:25 +0800, Ye Xiang wrote:
+> ISH IPC driver uses asynchronous workqueue to do resume now, but there
+> is
+> a potential timing issue: when child devices resume before bus driver,
+> it
+> will cause child devices resume failed and cannot be recovered until
+> reboot. The current implementation in this case do wait for IPC to
+> resume
+> but fail to accommodate for a case when there is no ISH reboot and soft
+> resume is taking time. This issue is apparent on Tiger Lake platform
+> with
+> 5.11.13 kernel when doing suspend to idle then resume(s0ix) test. To
+> resolve this issue, we change ISHTP HID client to use asynchronous
+> resume
+> callback too. In the asynchronous resume callback, it waits for the
+> ISHTP
+> resume done event, and then notify ISHTP HID client link ready.
+> 
+> Signed-off-by: Ye Xiang <xiang.ye@intel.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-The bma220_deinit() function does up to 2 reads, in case the device was in
-suspend mode, which suggests a level of paranoia that makes the logic in
-bma220_suspend() and bma220_resume() look insufficient.
+> ---
+>  drivers/hid/intel-ish-hid/ishtp-hid-client.c | 15 +++++++++-
+>  drivers/hid/intel-ish-hid/ishtp-hid.h        |  1 +
+>  drivers/hid/intel-ish-hid/ishtp/bus.c        | 29 +++++++++++++++-----
+>  include/linux/intel-ish-client-if.h          |  2 ++
+>  4 files changed, 39 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/hid/intel-ish-hid/ishtp-hid-client.c
+> b/drivers/hid/intel-ish-hid/ishtp-hid-client.c
+> index 7167412d89d9..9d53e85fdef3 100644
+> --- a/drivers/hid/intel-ish-hid/ishtp-hid-client.c
+> +++ b/drivers/hid/intel-ish-hid/ishtp-hid-client.c
+> @@ -779,6 +779,17 @@ static void hid_ishtp_cl_reset_handler(struct
+> work_struct *work)
+>         }
+>  }
+>  
+> +static void hid_ishtp_cl_resume_handler(struct work_struct *work)
+> +{
+> +       struct ishtp_cl_data *client_data = container_of(work, struct
+> ishtp_cl_data, resume_work);
+> +       struct ishtp_cl *hid_ishtp_cl = client_data->hid_ishtp_cl;
+> +
+> +       if (ishtp_wait_resume(ishtp_get_ishtp_device(hid_ishtp_cl))) {
+> +               client_data->suspended = false;
+> +               wake_up_interruptible(&client_data->ishtp_resume_wait);
+> +       }
+> +}
+> +
+>  void (*hid_print_trace)(void *unused, const char *format, ...);
+>  
+>  /**
+> @@ -817,6 +828,8 @@ static int hid_ishtp_cl_probe(struct
+> ishtp_cl_device *cl_device)
+>         init_waitqueue_head(&client_data->ishtp_resume_wait);
+>  
+>         INIT_WORK(&client_data->work, hid_ishtp_cl_reset_handler);
+> +       INIT_WORK(&client_data->resume_work,
+> hid_ishtp_cl_resume_handler);
+> +
+>  
+>         hid_print_trace = ishtp_trace_callback(cl_device);
+>  
+> @@ -918,7 +931,7 @@ static int hid_ishtp_cl_resume(struct device
+> *device)
+>  
+>         hid_ishtp_trace(client_data, "%s hid_ishtp_cl %p\n", __func__,
+>                         hid_ishtp_cl);
+> -       client_data->suspended = false;
+> +       schedule_work(&client_data->resume_work);
+>         return 0;
+>  }
+>  
+> diff --git a/drivers/hid/intel-ish-hid/ishtp-hid.h b/drivers/hid/intel-
+> ish-hid/ishtp-hid.h
+> index 5ffd0da3cf1f..e5fa753fe92f 100644
+> --- a/drivers/hid/intel-ish-hid/ishtp-hid.h
+> +++ b/drivers/hid/intel-ish-hid/ishtp-hid.h
+> @@ -140,6 +140,7 @@ struct ishtp_cl_data {
+>         int multi_packet_cnt;
+>  
+>         struct work_struct work;
+> +       struct work_struct resume_work;
+>         struct ishtp_cl_device *cl_device;
+>  };
+>  
+> diff --git a/drivers/hid/intel-ish-hid/ishtp/bus.c b/drivers/hid/intel-
+> ish-hid/ishtp/bus.c
+> index 0d6465f0eaa8..ead6c8f32759 100644
+> --- a/drivers/hid/intel-ish-hid/ishtp/bus.c
+> +++ b/drivers/hid/intel-ish-hid/ishtp/bus.c
+> @@ -329,13 +329,6 @@ static int ishtp_cl_device_resume(struct device
+> *dev)
+>         if (!device)
+>                 return 0;
+>  
+> -       /*
+> -        * When ISH needs hard reset, it is done asynchrnously, hence
+> bus
+> -        * resume will  be called before full ISH resume
+> -        */
+> -       if (device->ishtp_dev->resume_flag)
+> -               return 0;
+> -
+>         driver = to_ishtp_cl_driver(dev->driver);
+>         if (driver && driver->driver.pm) {
+>                 if (driver->driver.pm->resume)
+> @@ -863,6 +856,28 @@ struct device *ishtp_device(struct ishtp_cl_device
+> *device)
+>  }
+>  EXPORT_SYMBOL(ishtp_device);
+>  
+> +/**
+> + * ishtp_wait_resume() - Wait for IPC resume
+> + *
+> + * Wait for IPC resume
+> + *
+> + * Return: resume complete or not
+> + */
+> +bool ishtp_wait_resume(struct ishtp_device *dev)
+> +{
+> +       /* 50ms to get resume response */
+> +       #define WAIT_FOR_RESUME_ACK_MS          50
+> +
+> +       /* Waiting to get resume response */
+> +       if (dev->resume_flag)
+> +               wait_event_interruptible_timeout(dev->resume_wait,
+> +                                                !dev->resume_flag,
+> +                                               
+> msecs_to_jiffies(WAIT_FOR_RESUME_ACK_MS));
+> +
+> +       return (!dev->resume_flag);
+> +}
+> +EXPORT_SYMBOL_GPL(ishtp_wait_resume);
+> +
+>  /**
+>   * ishtp_get_pci_device() - Return PCI device dev pointer
+>   * This interface is used to return PCI device pointer
+> diff --git a/include/linux/intel-ish-client-if.h b/include/linux/intel-
+> ish-client-if.h
+> index 1153e0030133..ec3a6ccbece4 100644
+> --- a/include/linux/intel-ish-client-if.h
+> +++ b/include/linux/intel-ish-client-if.h
+> @@ -76,6 +76,8 @@ int ishtp_register_event_cb(struct ishtp_cl_device
+> *device,
+>  
+>  /* Get the device * from ishtp device instance */
+>  struct device *ishtp_device(struct ishtp_cl_device *cl_device);
+> +/* wait for IPC resume */
+> +bool ishtp_wait_resume(struct ishtp_device *dev);
+>  /* Trace interface for clients */
+>  void *ishtp_trace_callback(struct ishtp_cl_device *cl_device);
+>  /* Get device pointer of PCI device for DMA acces */
+> 
+> base-commit: f5711311bfa1abcc64c6dd1e912666a8c0b29a1a
 
-This change implements a bma220_power() function which does up to 2 reads
-of the suspend register to make sure that the chip enters a desired
-(suspended or normal) mode.
-
-If the transition fails, then -EBUSY is returned.
-
-Since only a reference to SPI device is required, we can remove the
-spi_set_drvdata() call and get the SPI device object from the base device
-object in the suspend/resume routines.
-
-Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
----
- drivers/iio/accel/bma220_spi.c | 41 ++++++++++++++++++++++++----------
- 1 file changed, 29 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/iio/accel/bma220_spi.c b/drivers/iio/accel/bma220_spi.c
-index 0095931a11f8..bc4c626e454d 100644
---- a/drivers/iio/accel/bma220_spi.c
-+++ b/drivers/iio/accel/bma220_spi.c
-@@ -218,14 +218,33 @@ static int bma220_init(struct spi_device *spi)
- 	return 0;
- }
- 
--static void bma220_deinit(void *spi)
-+static int bma220_power(struct spi_device *spi, bool up)
- {
--	int ret;
-+	int i, ret;
-+
-+	/**
-+	 * The chip can be suspended/woken up by a simple register read.
-+	 * So, we need up to 2 register reads of the suspend register
-+	 * to make sure that the device is in the desired state.
-+	 */
-+	for (i = 0; i < 2; i++) {
-+		ret = bma220_read_reg(spi, BMA220_REG_SUSPEND);
-+		if (ret < 0)
-+			return ret;
- 
--	/* Make sure the chip is powered off */
--	ret = bma220_read_reg(spi, BMA220_REG_SUSPEND);
--	if (ret == BMA220_SUSPEND_SLEEP)
--		bma220_read_reg(spi, BMA220_REG_SUSPEND);
-+		if (up && ret == BMA220_SUSPEND_SLEEP)
-+			return 0;
-+
-+		if (!up && ret == BMA220_SUSPEND_WAKE)
-+			return 0;
-+	}
-+
-+	return -EBUSY;
-+}
-+
-+static void bma220_deinit(void *spi)
-+{
-+	bma220_power(spi, false);
- }
- 
- static int bma220_probe(struct spi_device *spi)
-@@ -242,7 +261,6 @@ static int bma220_probe(struct spi_device *spi)
- 
- 	data = iio_priv(indio_dev);
- 	data->spi_device = spi;
--	spi_set_drvdata(spi, indio_dev);
- 	mutex_init(&data->lock);
- 
- 	indio_dev->info = &bma220_info;
-@@ -273,17 +291,16 @@ static int bma220_probe(struct spi_device *spi)
- 
- static __maybe_unused int bma220_suspend(struct device *dev)
- {
--	struct bma220_data *data = iio_priv(dev_get_drvdata(dev));
-+	struct spi_device *spi = to_spi_device(dev);
- 
--	/* The chip can be suspended/woken up by a simple register read. */
--	return bma220_read_reg(data->spi_device, BMA220_REG_SUSPEND);
-+	return bma220_power(spi, false);
- }
- 
- static __maybe_unused int bma220_resume(struct device *dev)
- {
--	struct bma220_data *data = iio_priv(dev_get_drvdata(dev));
-+	struct spi_device *spi = to_spi_device(dev);
- 
--	return bma220_read_reg(data->spi_device, BMA220_REG_SUSPEND);
-+	return bma220_power(spi, true);
- }
- static SIMPLE_DEV_PM_OPS(bma220_pm_ops, bma220_suspend, bma220_resume);
- 
--- 
-2.31.1
 

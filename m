@@ -2,242 +2,187 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E8FE13B3CF2
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Jun 2021 08:59:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DC4F3B3DD8
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Jun 2021 09:44:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230004AbhFYHBz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 25 Jun 2021 03:01:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40070 "EHLO
+        id S229902AbhFYHqZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 25 Jun 2021 03:46:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229974AbhFYHBy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Jun 2021 03:01:54 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF9F8C061756
-        for <linux-iio@vger.kernel.org>; Thu, 24 Jun 2021 23:59:33 -0700 (PDT)
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1lwfoD-0007c2-8u; Fri, 25 Jun 2021 08:59:25 +0200
-Received: from ore by dude.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1lwfoC-0002BY-16; Fri, 25 Jun 2021 08:59:24 +0200
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
-To:     Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        David Jander <david@protonic.nl>,
-        Robin van der Gracht <robin@protonic.nl>,
-        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH v1 2/2] iio: adc: tsc2046: fix sleeping in atomic context warning and a deadlock after iio_trigger_poll() call
-Date:   Fri, 25 Jun 2021 08:59:22 +0200
-Message-Id: <20210625065922.8310-2-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210625065922.8310-1-o.rempel@pengutronix.de>
-References: <20210625065922.8310-1-o.rempel@pengutronix.de>
+        with ESMTP id S229772AbhFYHqZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Jun 2021 03:46:25 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3420EC061756
+        for <linux-iio@vger.kernel.org>; Fri, 25 Jun 2021 00:44:04 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id i24so12141494edx.4
+        for <linux-iio@vger.kernel.org>; Fri, 25 Jun 2021 00:44:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=deviqon.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=0oSVleYVjbJ0iAd6D04N2IadYoidHNoFrcmT8l8IGEo=;
+        b=IgOpAYl4F5RE1hLnxr9LfWgzygYiRzQBELuycEavw1ixs6p97ue1GFZT/FxYEzVgnZ
+         OTsIuRuGjw+007BDnex5YYxdiaEC0DfkoELnJWqGOUf3/CRtOC1JiJvwk5+Gw6GLjKPa
+         hB9ZolGEptFiB2gGRkLyu79fBFwDHemb7FlU4jEWVDxIW+pOSFN5rfvV23bI5QXzmO3d
+         y2Krzh9QYLPX7Vw3NocUywZv6hSIYOJVoolAinGp8OEcgIYS7nSfPUhgRG+d7lbz8buF
+         dc4Crl+vYALtYWx3Fqtoyz0K2liU6xh6BA5ScqFpfuT9hBihSeGYJa1NIRvqVBM1uSYN
+         UPNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=0oSVleYVjbJ0iAd6D04N2IadYoidHNoFrcmT8l8IGEo=;
+        b=lgsXh1ZixzFe0ricUia6BpHgPSzpY4mWECwMA8A/KJrUJZvOGi+h5XpR1QW6TGAfPq
+         dD6pnR4UqjSgSY/u0tWrnmdwz+wzb+auxTwsEETct/ZXaDgvmv5+GOPGY9fgCLnN4/Wq
+         rVXhCaI6u/sJ1QnQpJs2P5IhkC6ezmAfzk4KCAm3UELCOgzw4bsjS7oTcob7xN7BjSC4
+         /5lJNer69gO5L3CmABUdekLjUrUpUFT5uF4UQs8HqswHo423+XbsY4ToVn3x2GbL4u55
+         aZnTV6ycG8kWzHUfRay0EPu0ppXUy8+zmB8+ut58FtmgoZi8WWUH547MJRSOB0ORmdtC
+         vNdA==
+X-Gm-Message-State: AOAM532rND/t/t+qADsWWb18KMQTIwTC6aI64NErOETSaQJmyoHeYD06
+        KBmZwojTqndI2iStY/sR5eGILnlV9Q4iNJmpLeo=
+X-Google-Smtp-Source: ABdhPJyYrBWE8qukWNfXA7mG/1kJPWEPVuNcDjy9Vqsju5EwUDJS9aU+F2sWtVIhyKHPk6mtpjdkOg==
+X-Received: by 2002:a05:6402:120b:: with SMTP id c11mr12832968edw.209.1624607042538;
+        Fri, 25 Jun 2021 00:44:02 -0700 (PDT)
+Received: from neptune.. ([5.2.193.191])
+        by smtp.gmail.com with ESMTPSA id x17sm3472471edr.88.2021.06.25.00.44.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Jun 2021 00:44:02 -0700 (PDT)
+From:   Alexandru Ardelean <aardelean@deviqon.com>
+To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     jic23@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+        Alexandru Ardelean <aardelean@deviqon.com>
+Subject: [PATCH] iio: adc: fsl-imx25-gcq: initialize regulators as needed
+Date:   Fri, 25 Jun 2021 10:43:25 +0300
+Message-Id: <20210625074325.9237-1-aardelean@deviqon.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-If iio_trigger_poll() is called after IRQ was disabled, we will call
-reenable_trigger() directly from hard IRQ or hrtimer context instead of
-IRQ thread. In this case we will run in to multiple issue as sleeping in atomic
-context and a deadlock.
+The driver tries to initialize all possible regulators from the DT, then
+match the external regulators with each channel and then release all unused
+regulators.
 
-To avoid this issue, rework the trigger to use state machine. All state
-changes are done over the hrtimer, so it allows us to drop fsleep() and
-avoid the deadlock.
+We can change the logic a bit to initialize regulators only when at least
+one channel needs them.
 
-Fixes: 9374e8f5a38d ("iio: adc: add ADC driver for the TI TSC2046 controller")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+This change creates a mx25_gcq_ext_regulator_setup() function that is
+called only for the external regulators. If there's already a reference to
+an external regulator, the function will just exit early with no error.
+
+This way, the driver doesn't need to keep any track of these regulators
+during init.
+
+Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
 ---
- drivers/iio/adc/ti-tsc2046.c | 102 ++++++++++++++++++++---------------
- 1 file changed, 58 insertions(+), 44 deletions(-)
+ drivers/iio/adc/fsl-imx25-gcq.c | 57 ++++++++++++++++-----------------
+ 1 file changed, 28 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/iio/adc/ti-tsc2046.c b/drivers/iio/adc/ti-tsc2046.c
-index d84ae6b008c1..91f6bd5effe7 100644
---- a/drivers/iio/adc/ti-tsc2046.c
-+++ b/drivers/iio/adc/ti-tsc2046.c
-@@ -123,14 +123,21 @@ struct tsc2046_adc_ch_cfg {
- 	unsigned int oversampling_ratio;
+diff --git a/drivers/iio/adc/fsl-imx25-gcq.c b/drivers/iio/adc/fsl-imx25-gcq.c
+index ab5139e911c3..31776f80f847 100644
+--- a/drivers/iio/adc/fsl-imx25-gcq.c
++++ b/drivers/iio/adc/fsl-imx25-gcq.c
+@@ -172,13 +172,37 @@ static const struct regmap_config mx25_gcq_regconfig = {
+ 	.reg_stride = 4,
  };
  
-+enum tsc2046_state {
-+	TSC2046_STATE_STANDBY,
-+	TSC2046_STATE_ENABLE_IRQ_POLL,
-+	TSC2046_STATE_POLL,
-+	TSC2046_STATE_ENABLE_IRQ,
-+};
++static int mx25_gcq_ext_regulator_setup(struct device *dev,
++					struct mx25_gcq_priv *priv, u32 refp)
++{
++	char reg_name[12];
++	int ret;
 +
- struct tsc2046_adc_priv {
- 	struct spi_device *spi;
- 	const struct tsc2046_adc_dcfg *dcfg;
- 
- 	struct iio_trigger *trig;
- 	struct hrtimer trig_timer;
--	spinlock_t trig_lock;
--	unsigned int trig_more_count;
-+	enum tsc2046_state state;
-+	spinlock_t state_lock;
- 
- 	struct spi_transfer xfer;
- 	struct spi_message msg;
-@@ -411,21 +418,47 @@ static const struct iio_info tsc2046_adc_info = {
- 	.update_scan_mode = tsc2046_adc_update_scan_mode,
- };
- 
--static enum hrtimer_restart tsc2046_adc_trig_more(struct hrtimer *hrtimer)
-+static enum hrtimer_restart tsc2046_adc_timer(struct hrtimer *hrtimer)
- {
- 	struct tsc2046_adc_priv *priv = container_of(hrtimer,
- 						     struct tsc2046_adc_priv,
- 						     trig_timer);
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&priv->trig_lock, flags);
--
--	disable_irq_nosync(priv->spi->irq);
--
--	priv->trig_more_count++;
--	iio_trigger_poll(priv->trig);
--
--	spin_unlock_irqrestore(&priv->trig_lock, flags);
-+	spin_lock_irqsave(&priv->state_lock, flags);
-+	switch (priv->state) {
-+	case TSC2046_STATE_ENABLE_IRQ_POLL:
-+		/*
-+		 * IRQ handler called iio_trigger_poll() to sample ADC.
-+		 * Here we
-+		 * - re-enable IRQs
-+		 * - start hrtimer for timeout if no IRQ will occur
-+		 */
-+		priv->state = TSC2046_STATE_POLL;
-+		enable_irq(priv->spi->irq);
-+		hrtimer_start(&priv->trig_timer,
-+			      ns_to_ktime(priv->scan_interval_us *
-+					  NSEC_PER_USEC),
-+			      HRTIMER_MODE_REL_SOFT);
-+		break;
-+	case TSC2046_STATE_POLL:
-+		disable_irq_nosync(priv->spi->irq);
-+		priv->state = TSC2046_STATE_ENABLE_IRQ;
-+		/* iio_trigger_poll() starts hrtimer */
-+		iio_trigger_poll(priv->trig);
-+		break;
-+	case TSC2046_STATE_ENABLE_IRQ:
-+		priv->state = TSC2046_STATE_STANDBY;
-+		enable_irq(priv->spi->irq);
-+		break;
-+	case TSC2046_STATE_STANDBY:
-+		fallthrough;
-+	default:
-+		dev_warn(&priv->spi->dev, "Got unexpected state: %i\n",
-+			 priv->state);
-+		break;
++	if (priv->vref[refp])
++		return 0;
++
++	ret = snprintf(reg_name, sizeof(reg_name), "vref-%s",
++		       mx25_gcq_refp_names[refp]);
++	if (ret < 0)
++		return ret;
++
++	priv->vref[refp] = devm_regulator_get_optional(dev, reg_name);
++	if (IS_ERR(priv->vref[refp])) {
++		dev_err(dev,
++			"Error, trying to use external voltage reference without a %s regulator.",
++			reg_name);
++		return PTR_ERR(priv->vref[refp]);
 +	}
-+	spin_unlock_irqrestore(&priv->state_lock, flags);
- 
- 	return HRTIMER_NORESTART;
- }
-@@ -434,16 +467,17 @@ static irqreturn_t tsc2046_adc_irq(int irq, void *dev_id)
++
++	return 0;
++}
++
+ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
+ 			       struct mx25_gcq_priv *priv)
  {
- 	struct iio_dev *indio_dev = dev_id;
- 	struct tsc2046_adc_priv *priv = iio_priv(indio_dev);
--
--	spin_lock(&priv->trig_lock);
-+	unsigned long flags;
- 
- 	hrtimer_try_to_cancel(&priv->trig_timer);
- 
--	priv->trig_more_count = 0;
-+	spin_lock_irqsave(&priv->state_lock, flags);
- 	disable_irq_nosync(priv->spi->irq);
--	iio_trigger_poll(priv->trig);
-+	priv->state = TSC2046_STATE_ENABLE_IRQ_POLL;
- 
--	spin_unlock(&priv->trig_lock);
-+	/* iio_trigger_poll() starts hrtimer */
-+	iio_trigger_poll(priv->trig);
-+	spin_unlock_irqrestore(&priv->state_lock, flags);
- 
- 	return IRQ_HANDLED;
- }
-@@ -452,37 +486,16 @@ static void tsc2046_adc_reenable_trigger(struct iio_trigger *trig)
- {
- 	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
- 	struct tsc2046_adc_priv *priv = iio_priv(indio_dev);
--	unsigned long flags;
--	int delta;
-+	ktime_t tim;
+ 	struct device_node *np = pdev->dev.of_node;
+ 	struct device_node *child;
+ 	struct device *dev = &pdev->dev;
+-	unsigned int refp_used[4] = {};
+ 	int ret, i;
  
  	/*
- 	 * We can sample it as fast as we can, but usually we do not need so
- 	 * many samples. Reduce the sample rate for default (touchscreen) use
- 	 * case.
--	 * Currently we do not need a highly precise sample rate. It is enough
--	 * to have calculated numbers.
--	 */
--	delta = priv->scan_interval_us - priv->time_per_scan_us;
--	if (delta > 0)
--		fsleep(delta);
--
--	spin_lock_irqsave(&priv->trig_lock, flags);
--
+@@ -194,19 +218,6 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
+ 			     MX25_ADCQ_CFG_IN(i) |
+ 			     MX25_ADCQ_CFG_REFN_NGND2);
+ 
 -	/*
--	 * We need to trigger at least one extra sample to detect state
--	 * difference on ADC side.
- 	 */
--	if (!priv->trig_more_count) {
--		int timeout_ms = DIV_ROUND_UP(priv->scan_interval_us,
--					      USEC_PER_MSEC);
+-	 * First get all regulators to store them in channel_vref_mv if
+-	 * necessary. Later we use that information for proper IIO scale
+-	 * information.
+-	 */
+-	priv->vref[MX25_ADC_REFP_INT] = NULL;
+-	priv->vref[MX25_ADC_REFP_EXT] =
+-		devm_regulator_get_optional(&pdev->dev, "vref-ext");
+-	priv->vref[MX25_ADC_REFP_XP] =
+-		devm_regulator_get_optional(&pdev->dev, "vref-xp");
+-	priv->vref[MX25_ADC_REFP_YP] =
+-		devm_regulator_get_optional(&pdev->dev, "vref-yp");
 -
--		hrtimer_start(&priv->trig_timer, ms_to_ktime(timeout_ms),
--			      HRTIMER_MODE_REL_SOFT);
+ 	for_each_child_of_node(np, child) {
+ 		u32 reg;
+ 		u32 refp = MX25_ADCQ_CFG_REFP_INT;
+@@ -233,11 +244,10 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
+ 		case MX25_ADC_REFP_EXT:
+ 		case MX25_ADC_REFP_XP:
+ 		case MX25_ADC_REFP_YP:
+-			if (IS_ERR(priv->vref[refp])) {
+-				dev_err(dev, "Error, trying to use external voltage reference without a vref-%s regulator.",
+-					mx25_gcq_refp_names[refp]);
++			ret = mx25_gcq_ext_regulator_setup(&pdev->dev, priv, refp);
++			if (ret) {
+ 				of_node_put(child);
+-				return PTR_ERR(priv->vref[refp]);
++				return ret;
+ 			}
+ 			priv->channel_vref_mv[reg] =
+ 				regulator_get_voltage(priv->vref[refp]);
+@@ -253,8 +263,6 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
+ 			return -EINVAL;
+ 		}
+ 
+-		++refp_used[refp];
+-
+ 		/*
+ 		 * Shift the read values to the correct positions within the
+ 		 * register.
+@@ -285,15 +293,6 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
+ 	regmap_write(priv->regs, MX25_ADCQ_CR,
+ 		     MX25_ADCQ_CR_PDMSK | MX25_ADCQ_CR_QSM_FQS);
+ 
+-	/* Remove unused regulators */
+-	for (i = 0; i != 4; ++i) {
+-		if (!refp_used[i]) {
+-			if (!IS_ERR_OR_NULL(priv->vref[i]))
+-				devm_regulator_put(priv->vref[i]);
+-			priv->vref[i] = NULL;
+-		}
 -	}
 -
--	enable_irq(priv->spi->irq);
--
--	spin_unlock_irqrestore(&priv->trig_lock, flags);
-+	tim = ns_to_ktime((priv->scan_interval_us - priv->time_per_scan_us) *
-+			  NSEC_PER_USEC);
-+	hrtimer_start(&priv->trig_timer, tim, HRTIMER_MODE_REL_SOFT);
+ 	return 0;
  }
  
- static int tsc2046_adc_set_trigger_state(struct iio_trigger *trig, bool enable)
-@@ -493,8 +506,8 @@ static int tsc2046_adc_set_trigger_state(struct iio_trigger *trig, bool enable)
- 	if (enable) {
- 		enable_irq(priv->spi->irq);
- 	} else {
-+		hrtimer_cancel(&priv->trig_timer);
- 		disable_irq(priv->spi->irq);
--		hrtimer_try_to_cancel(&priv->trig_timer);
- 	}
- 
- 	return 0;
-@@ -668,10 +681,11 @@ static int tsc2046_adc_probe(struct spi_device *spi)
- 	iio_trigger_set_drvdata(trig, indio_dev);
- 	trig->ops = &tsc2046_adc_trigger_ops;
- 
--	spin_lock_init(&priv->trig_lock);
-+	spin_lock_init(&priv->state_lock);
-+	priv->state = TSC2046_STATE_STANDBY;
- 	hrtimer_init(&priv->trig_timer, CLOCK_MONOTONIC,
- 		     HRTIMER_MODE_REL_SOFT);
--	priv->trig_timer.function = tsc2046_adc_trig_more;
-+	priv->trig_timer.function = tsc2046_adc_timer;
- 
- 	ret = devm_iio_trigger_register(dev, trig);
- 	if (ret) {
 -- 
-2.29.2
+2.31.1
 

@@ -2,34 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D8783B5449
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Jun 2021 18:30:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5721A3B544B
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Jun 2021 18:30:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231280AbhF0QdS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Jun 2021 12:33:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45330 "EHLO mail.kernel.org"
+        id S231272AbhF0QdU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Jun 2021 12:33:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45386 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231272AbhF0QdR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 27 Jun 2021 12:33:17 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id ED31F61AC0;
-        Sun, 27 Jun 2021 16:30:51 +0000 (UTC)
+        id S231288AbhF0QdU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 27 Jun 2021 12:33:20 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 68E3E619F1;
+        Sun, 27 Jun 2021 16:30:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1624811453;
-        bh=e+5por/x6H1B9nYsnTR4ERVYy05CrPHFtL6c7o+YNK4=;
+        s=k20201202; t=1624811456;
+        bh=b5DcIJGaJZtvQooeD30lASG5zHHRlCd4zNzKyFkCOvM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=h/bAUfU3McnwuFfkS+tBojxE/uU5kvGKcYoYkaGTh+4kkdfagVLimG5ZReQRmGfVt
-         DQIckka7uc0dooIqITCWts4Bhpqq/zdh/HGQIK3R5am5u6uhHKp/I16CnRFqcynaMQ
-         vPBtlsTrob+U3usZtxJeORFPT3sM2VQxNFX/E/BLeNZl+JLsn+BbiA4oqmaHtIQLt3
-         1K1PQ5uUaXabz29gO887A1BKZQ0IxxbfPoRvK9Ef86eaWGuK9Sx1ONAlxMEC4k12ua
-         IdllCrH+gckgxK22ngU+TXJjY8Y1UqEqNBKpxqNMspEoq0w4XWI6PY77k8rncMmbNK
-         UjdcsTRfT/aEg==
+        b=dVU8rfx8Pg9990qLiCR9o0isxszadpOKPLrppjE+9Lr6fDL7SH2tLC+URNAytYxfN
+         vDSOfGGb5Ygf+sRjO7EZ7QDrlhu5RQnE47HrHJifJElvaH/lrDdNWCcq4bdvOcH5iw
+         RNTAii/rjBdBck/7drG7lNvznhEZtXI4IDkz3ODu0js+h7JEGGmKXT08DS4T07j/js
+         1EAjxZIcDcfPP++A9jOxIY5hxgN69OfNO698+5F4DRbMdkN+E3UU7DeiwiQt8rSSwN
+         Ex9uLLGtdJcEVuS1YEj9WQ9ZHqLFvyolep46wXakrsjmLBZHJ+hUq1NnpVP+S6Y5QQ
+         JXFx0taBRl/bQ==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         devicetree@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 08/15] iio: dac: ad5624r: Fix incorrect handling of an optional regulator.
-Date:   Sun, 27 Jun 2021 17:32:37 +0100
-Message-Id: <20210627163244.1090296-9-jic23@kernel.org>
+Subject: [PATCH 09/15] dt-bindings: iio: dac: ad5624r: Add missing binding document
+Date:   Sun, 27 Jun 2021 17:32:38 +0100
+Message-Id: <20210627163244.1090296-10-jic23@kernel.org>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210627163244.1090296-1-jic23@kernel.org>
 References: <20210627163244.1090296-1-jic23@kernel.org>
@@ -41,58 +41,69 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-The naming of the regulator is problematic.  VCC is usually a supply
-voltage whereas these devices have a separate VREF pin.
-
-Secondly, the regulator core might have provided a stub regulator if
-a real regulator wasn't provided. That would in turn have failed to
-provide a voltage when queried. So reality was that there was no way
-to use the internal reference.
-
-In order to avoid breaking any dts out in the wild, make sure to fallback
-to the original vcc naming if vref is not available.
+Simple binding, with optional vref.
+Note that the Linux driver does support vcc-supply for historical
+reasons, but lets not let that get into any bindings that are checked
+going forwards.  Hence I have deliberately not documented it.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/dac/ad5624r_spi.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ .../bindings/iio/dac/adi,ad5624r.yaml         | 47 +++++++++++++++++++
+ 1 file changed, 47 insertions(+)
 
-diff --git a/drivers/iio/dac/ad5624r_spi.c b/drivers/iio/dac/ad5624r_spi.c
-index 9bde86982912..b4888c8c14a2 100644
---- a/drivers/iio/dac/ad5624r_spi.c
-+++ b/drivers/iio/dac/ad5624r_spi.c
-@@ -229,7 +229,7 @@ static int ad5624r_probe(struct spi_device *spi)
- 	if (!indio_dev)
- 		return -ENOMEM;
- 	st = iio_priv(indio_dev);
--	st->reg = devm_regulator_get(&spi->dev, "vcc");
-+	st->reg = devm_regulator_get_optional(&spi->dev, "vref");
- 	if (!IS_ERR(st->reg)) {
- 		ret = regulator_enable(st->reg);
- 		if (ret)
-@@ -240,6 +240,22 @@ static int ad5624r_probe(struct spi_device *spi)
- 			goto error_disable_reg;
- 
- 		voltage_uv = ret;
-+	} else {
-+		if (PTR_ERR(st->reg) != -ENODEV) {
-+			return PTR_ERR(st->reg);
-+		/* Backwards compatibility. This naming is not correct */
-+		st->reg = devm_regulator_get_optional(&spi->dev, "vcc");
-+		if (!IS_ERR(st->reg)) {
-+			ret = regulator_enable(st->reg);
-+			if (ret)
-+				return ret;
+diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5624r.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5624r.yaml
+new file mode 100644
+index 000000000000..330383b85eeb
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5624r.yaml
+@@ -0,0 +1,47 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/dac/adi,ad5624r.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+			ret = regulator_get_voltage(st->reg);
-+			if (ret < 0)
-+				goto error_disable_reg;
++title: Analog Devices AD5624r and similar DACs
 +
-+			voltage_uv = ret;
-+		}
- 	}
- 
- 	spi_set_drvdata(spi, indio_dev);
++maintainers:
++  - Jonathan Cameron <jic23@kernel.org>
++
++properties:
++  compatible:
++    enum:
++      - adi,ad5624r3
++      - adi,ad5644r3
++      - adi,ad5664r3
++      - adi,ad5624r5
++      - adi,ad5644r5
++      - adi,ad5664r5
++
++  reg:
++    maxItems: 1
++
++  spi-max-frequency: true
++
++  vref-supply:
++    description: If not present, internal reference will be used.
++
++additionalProperties: false
++
++required:
++  - compatible
++  - reg
++
++examples:
++  - |
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++        dac@0 {
++            reg = <0>;
++            compatible = "adi,ad5624r3";
++            vref-supply = <&vref>;
++        };
++    };
++...
 -- 
 2.32.0
 

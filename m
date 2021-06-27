@@ -2,40 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 095613B543A
+	by mail.lfdr.de (Postfix) with ESMTP id 51F533B543B
 	for <lists+linux-iio@lfdr.de>; Sun, 27 Jun 2021 18:30:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230309AbhF0Qc4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Jun 2021 12:32:56 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44892 "EHLO mail.kernel.org"
+        id S230505AbhF0Qc7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Jun 2021 12:32:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44964 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230315AbhF0Qc4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 27 Jun 2021 12:32:56 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D022B619AD;
-        Sun, 27 Jun 2021 16:30:28 +0000 (UTC)
+        id S230315AbhF0Qc6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 27 Jun 2021 12:32:58 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9C663619EE;
+        Sun, 27 Jun 2021 16:30:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1624811432;
-        bh=hAqoMyIjld/9XyVgLYMid4q9oUOLRkUb/H2AT2cKqk0=;
-        h=From:To:Cc:Subject:Date:From;
-        b=eOR1a1hctKsnkHfb92XU/NQOaf7C9bX4NqR7GZnOnxl3rYO//dQ9Wgx3plP7s5mAL
-         C2pFXpVd2mmgv3tdgqvB0q+EL2vUiSgYmJf+MOLl41kEhugZq5RvDKptBLNRiYBPOG
-         dsDHCgQn1N+HHkZAsHiA/r013I+aPQnRceiIRuTagFekWIT2jahXI8SR7pOsOk+c1N
-         PcXzx8h2Vs085Ux/CQm/4V1/j2nJJ4204Mi2JPwtGDEQJzuhFaifqhEMqQDiv/M46P
-         n87CQnhs0rmxljZsaVIm9bjryhCJzB7XTtFXP//1PgxHs3LTOGZyl4Je2EiuIdQ+Lb
-         Mha3j/Dxzssug==
+        s=k20201202; t=1624811434;
+        bh=hBOyjKv+0wVWVYHNsRiFNDZRxA1uNPRZ6ksWzHUapDI=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=OFITp9rcZywJFDDSlHRCUT09TQelQxNKYPqnLVsCBzHYlgFJRwdpybTH0/t3a9muB
+         99Ue1Tzw/V8tStO23WL6JS/12p1PTPf4gbQUpFseMNGRIfe0zYPOapWQo8aIvsYLEB
+         l+4RoG1hqOwQLKLl0okfQCYJFiEAre8Bv6KU5ShtUMLzC9HT8f/J77rKZwcGNM5+mM
+         zklwzyiUJH0vWdhXVVPFBPFbFMghIeVgCrn+pD+HLY8F6bNu69JNHMdGW7M4li5o7H
+         KZLtXDpieMdP4qmpMDQb0pBE4fYLyFmt9B1fnuFMnHw1bDfp0RutdbaJotSTsD/u4G
+         MzRBIuPOI2buA==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         devicetree@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Ricardo Ribalda <ribalda@kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>,
-        Michael Welling <mwelling@ieee.org>
-Subject: [PATCH 00/15] dt-bindings: iio: dac: Add most missing binding documents.
-Date:   Sun, 27 Jun 2021 17:32:29 +0100
-Message-Id: <20210627163244.1090296-1-jic23@kernel.org>
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH 01/15] dt-bindings: iio: dac: adi,ad5421: Add missing binding document.
+Date:   Sun, 27 Jun 2021 17:32:30 +0100
+Message-Id: <20210627163244.1090296-2-jic23@kernel.org>
 X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20210627163244.1090296-1-jic23@kernel.org>
+References: <20210627163244.1090296-1-jic23@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -44,101 +42,82 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-We have quite a few drivers in IIO that date back to the days of platform
-data.  Many of them either worked out of the box with device tree
-due to the spi core using the spi_device_id to match against
-device tree compatibles, or were updated to use newer interfaces in the
-intervening years.  As such, they mostly 'work' with device tree but
-can have some slightly odd quirks (particularly around naming of supplies).
-As we have no way of knowing what is out in the wild, we need to support
-these interesting bits of regulator naming.
+This is documented what is currently the case.  There are a number
+of things that could be added, but I don't feel the binding elements
+are obvious enough to document without a driver implementation to
+verify they are good choices.
 
-I would ultimately like all such bindings to be documented both to facilitate
-automated check of device trees and to make things easier for people trying
-to write device tree files using these devices.
+These include
+* Range
+* Regulators, both input and potentially output (if the loop being
+  driven is ever described).
 
-This series fills in the majority of the absent bindings for DACs.
-There are some outstanding
-* max517 - some platform data configuration needs porting over to device tree.
-* m62332 - this passes a consumer mapping in as platform data and will need
-  careful porting over the dt way of doing that.
+I've listed Lars and myself as maintainers of the binding, but if
+anyone else wants to be added they would be most welcome!
 
-There is one 'fixlet' in here for the driver to deal with a case were the
-code was intended to allow the presence of a regulator to dictate whether
-an internal reference was used, but did not use the optional regulator
-get.
-
-I've mostly nominated maintainers based on original authorship + where
-I was feeling guilty or couldn't find anyone still active I've listed myself.
-
-I got bored half way through of producing brief descriptions of
-the devices so stopped doing so. If anyone wants to provide one for these
-parts I'm happy to add it!
-
-Future series will cover the c. 40 bindings that I've identified as missing
-for other types of devices.  I've also kept notes of easy cleanups in
-drivers spotted whilst working these out, so will probably follow up with
-those soon as well.
-
-Note I haven't tested all of these so there may well be errors or elements
-I've missed.
-
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Ricardo Ribalda <ribalda@kernel.org>
-Cc: Michael Hennerich <michael.hennerich@analog.com>
-Cc: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
-Cc: Michael Welling <mwelling@ieee.org>
+---
+ .../bindings/iio/dac/adi,ad5421.yaml          | 51 +++++++++++++++++++
+ 1 file changed, 51 insertions(+)
 
-Jonathan Cameron (15):
-  dt-bindings: iio: dac: adi,ad5421: Add missing binding document.
-  dt-bindings: iio: dac: adi,ad5064: Document bindings for many
-    different DACs
-  dt-bindings: iio: dac: adi,ad5360: Add missing binding document
-  dt-bindings: iio: dac: ad5380: Add missing binding document
-  dt-bindings: iio: dac: ad5446: Add missing binding document
-  dt-bindings: iio: dac: ad5449: Add missing binding document.
-  dt-bindings: iio: dac: ad5504: Add missing binding document
-  iio: dac: ad5624r: Fix incorrect handling of an optional regulator.
-  dt-bindings: iio: dac: ad5624r: Add missing binding document
-  dt-bindings: iio: dac: ad5686 and ad5696: Add missing binding
-    document.
-  dt-bindings: iio: dac: ad5761: Add missing binding doc.
-  dt-bindings: iio: dac: adi,ad5764: Add missing binding document
-  dt-bindings: iio: dac: adi,ad5791: Add missing bindings document
-  dt-bindings: iio: dac: adi,ad8801: Add missing binding document.
-  dt-bindings: iio: dac: microchip,mcp4922: Add missing binding document
-
- .../bindings/iio/dac/adi,ad5064.yaml          | 268 ++++++++++++++++++
- .../bindings/iio/dac/adi,ad5360.yaml          |  79 ++++++
- .../bindings/iio/dac/adi,ad5380.yaml          |  70 +++++
- .../bindings/iio/dac/adi,ad5421.yaml          |  51 ++++
- .../bindings/iio/dac/adi,ad5446.yaml          | 105 +++++++
- .../bindings/iio/dac/adi,ad5449.yaml          |  97 +++++++
- .../bindings/iio/dac/adi,ad5504.yaml          |  50 ++++
- .../bindings/iio/dac/adi,ad5624r.yaml         |  47 +++
- .../bindings/iio/dac/adi,ad5686.yaml          |  75 +++++
- .../bindings/iio/dac/adi,ad5761.yaml          |  60 ++++
- .../bindings/iio/dac/adi,ad5764.yaml          |  62 ++++
- .../bindings/iio/dac/adi,ad5791.yaml          |  52 ++++
- .../bindings/iio/dac/adi,ad8801.yaml          |  60 ++++
- .../bindings/iio/dac/microchip,mcp4922.yaml   |  46 +++
- drivers/iio/dac/ad5624r_spi.c                 |  18 +-
- 15 files changed, 1139 insertions(+), 1 deletion(-)
- create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad5064.yaml
- create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad5360.yaml
- create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad5380.yaml
- create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad5421.yaml
- create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad5446.yaml
- create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad5449.yaml
- create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad5504.yaml
- create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad5624r.yaml
- create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml
- create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad5761.yaml
- create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad5764.yaml
- create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml
- create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad8801.yaml
- create mode 100644 Documentation/devicetree/bindings/iio/dac/microchip,mcp4922.yaml
-
+diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5421.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5421.yaml
+new file mode 100644
+index 000000000000..188f656617e3
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5421.yaml
+@@ -0,0 +1,51 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/dac/adi,ad5421.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Analog Devices AD5421 DAC
++
++maintainers:
++  - Lars-Peter Clausen <lars@metafoo.de>
++  - Jonathan Cameron <jic23@kernel.org>
++
++description: |
++  AD5421 is designed for us in loop-powered, 4 mA to 20 mA smart transmitter
++  applications. It provides a 16-bit DAC, current amplifier, voltage regulator
++  to drive the loop and a voltage reference.
++
++properties:
++  compatible:
++    const: adi,ad5421
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++    description: Fault signal.
++
++  spi-max-frequency: true
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        dac@0 {
++            compatible = "adi,ad5421";
++            reg = <0>;
++            spi-max-frequency = <30000000>;
++            interrupts = <55 IRQ_TYPE_LEVEL_HIGH>;
++        };
++    };
++...
 -- 
 2.32.0
 

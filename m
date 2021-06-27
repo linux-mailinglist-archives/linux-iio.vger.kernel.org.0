@@ -2,34 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1AC13B5447
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Jun 2021 18:30:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D8783B5449
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Jun 2021 18:30:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231243AbhF0QdP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Jun 2021 12:33:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45290 "EHLO mail.kernel.org"
+        id S231280AbhF0QdS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Jun 2021 12:33:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45330 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230315AbhF0QdP (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 27 Jun 2021 12:33:15 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 490F661A1D;
-        Sun, 27 Jun 2021 16:30:49 +0000 (UTC)
+        id S231272AbhF0QdR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 27 Jun 2021 12:33:17 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id ED31F61AC0;
+        Sun, 27 Jun 2021 16:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1624811451;
-        bh=HfMjNfSq0JGtXaPncbMa0LA4Gsa76nqTdhYAm6Yy0nM=;
+        s=k20201202; t=1624811453;
+        bh=e+5por/x6H1B9nYsnTR4ERVYy05CrPHFtL6c7o+YNK4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NPamKmaAGR2E4MSEitB8Yk2nodEmnXBCxyfpEXLF5ESW8VPPj9LJju/92EorE5nns
-         qRcpFztBPj0mFkECQGNBlyVVYJynf1co19LzXDEksEBqSzrqUhE9HSEz8xeo9344sE
-         VQqTT7Fd6F0dVx8ba4iqvY3lAkgP3JgLkq+Hms1yuEKSyjyiTWstRxth1oX1UJalXE
-         iuX3nmTT0qu87fE8xPxr/Qg1s43ysW3/J8zsXMk/inrMhJ+wKKHVgnCwPHUTbZJEcP
-         FZpnu4hiBdhyvxLIGg4/hpp0x/JP4OdQhGbQ03SKeqFGTAGa9AnUEH/sUtXW3AVEsT
-         xJ49mUdgHxwFA==
+        b=h/bAUfU3McnwuFfkS+tBojxE/uU5kvGKcYoYkaGTh+4kkdfagVLimG5ZReQRmGfVt
+         DQIckka7uc0dooIqITCWts4Bhpqq/zdh/HGQIK3R5am5u6uhHKp/I16CnRFqcynaMQ
+         vPBtlsTrob+U3usZtxJeORFPT3sM2VQxNFX/E/BLeNZl+JLsn+BbiA4oqmaHtIQLt3
+         1K1PQ5uUaXabz29gO887A1BKZQ0IxxbfPoRvK9Ef86eaWGuK9Sx1ONAlxMEC4k12ua
+         IdllCrH+gckgxK22ngU+TXJjY8Y1UqEqNBKpxqNMspEoq0w4XWI6PY77k8rncMmbNK
+         UjdcsTRfT/aEg==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         devicetree@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 07/15] dt-bindings: iio: dac: ad5504: Add missing binding document
-Date:   Sun, 27 Jun 2021 17:32:36 +0100
-Message-Id: <20210627163244.1090296-8-jic23@kernel.org>
+Subject: [PATCH 08/15] iio: dac: ad5624r: Fix incorrect handling of an optional regulator.
+Date:   Sun, 27 Jun 2021 17:32:37 +0100
+Message-Id: <20210627163244.1090296-9-jic23@kernel.org>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210627163244.1090296-1-jic23@kernel.org>
 References: <20210627163244.1090296-1-jic23@kernel.org>
@@ -41,69 +41,58 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Binding for this high voltage DAC with temperature event signal.
+The naming of the regulator is problematic.  VCC is usually a supply
+voltage whereas these devices have a separate VREF pin.
+
+Secondly, the regulator core might have provided a stub regulator if
+a real regulator wasn't provided. That would in turn have failed to
+provide a voltage when queried. So reality was that there was no way
+to use the internal reference.
+
+In order to avoid breaking any dts out in the wild, make sure to fallback
+to the original vcc naming if vref is not available.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- .../bindings/iio/dac/adi,ad5504.yaml          | 50 +++++++++++++++++++
- 1 file changed, 50 insertions(+)
+ drivers/iio/dac/ad5624r_spi.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5504.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5504.yaml
-new file mode 100644
-index 000000000000..9c2c038683b4
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5504.yaml
-@@ -0,0 +1,50 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/dac/adi,ad5504.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/drivers/iio/dac/ad5624r_spi.c b/drivers/iio/dac/ad5624r_spi.c
+index 9bde86982912..b4888c8c14a2 100644
+--- a/drivers/iio/dac/ad5624r_spi.c
++++ b/drivers/iio/dac/ad5624r_spi.c
+@@ -229,7 +229,7 @@ static int ad5624r_probe(struct spi_device *spi)
+ 	if (!indio_dev)
+ 		return -ENOMEM;
+ 	st = iio_priv(indio_dev);
+-	st->reg = devm_regulator_get(&spi->dev, "vcc");
++	st->reg = devm_regulator_get_optional(&spi->dev, "vref");
+ 	if (!IS_ERR(st->reg)) {
+ 		ret = regulator_enable(st->reg);
+ 		if (ret)
+@@ -240,6 +240,22 @@ static int ad5624r_probe(struct spi_device *spi)
+ 			goto error_disable_reg;
+ 
+ 		voltage_uv = ret;
++	} else {
++		if (PTR_ERR(st->reg) != -ENODEV) {
++			return PTR_ERR(st->reg);
++		/* Backwards compatibility. This naming is not correct */
++		st->reg = devm_regulator_get_optional(&spi->dev, "vcc");
++		if (!IS_ERR(st->reg)) {
++			ret = regulator_enable(st->reg);
++			if (ret)
++				return ret;
 +
-+title: Analog Devices AD5501 and AD5504 DACs
++			ret = regulator_get_voltage(st->reg);
++			if (ret < 0)
++				goto error_disable_reg;
 +
-+maintainers:
-+  - Lars-Peter Clausen <lars@metafoo.de>
-+  - Jonathan Cameron <jic23@kernel.org>
-+
-+description:
-+  High voltage (up to 60V) DACs with temperature sensor alarm function
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,ad5501
-+      - adi,ad5504
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    description: Used for temperature alarm.
-+    maxItems: 1
-+
-+  vcc-supply: true
-+
-+additionalProperties: false
-+
-+required:
-+  - compatible
-+  - reg
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        dac@0 {
-+            reg = <0>;
-+            compatible = "adi,ad5504";
-+            vcc-supply = <&dac_vcc>;
-+            interrupts = <55 IRQ_TYPE_EDGE_FALLING>;
-+        };
-+    };
-+...
++			voltage_uv = ret;
++		}
+ 	}
+ 
+ 	spi_set_drvdata(spi, indio_dev);
 -- 
 2.32.0
 

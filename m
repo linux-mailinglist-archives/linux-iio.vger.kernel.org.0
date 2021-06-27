@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E7563B5441
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Jun 2021 18:30:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38AE33B5443
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Jun 2021 18:30:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231211AbhF0QdH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Jun 2021 12:33:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45134 "EHLO mail.kernel.org"
+        id S231239AbhF0QdK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Jun 2021 12:33:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45186 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230315AbhF0QdH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 27 Jun 2021 12:33:07 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 2ECFE61A2D;
-        Sun, 27 Jun 2021 16:30:40 +0000 (UTC)
+        id S231243AbhF0QdK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 27 Jun 2021 12:33:10 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id F0534619AD;
+        Sun, 27 Jun 2021 16:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1624811443;
-        bh=PKZiWZrL67AoGNS72wk1iWGHrdyCelWkrNOmmL2JyZ8=;
+        s=k20201202; t=1624811446;
+        bh=o6mqFqi+WqcWA3TRryRMSDXpaSBg5G6W9BVGpW6lxXU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dEYmZK9Fs2OXco0U7CS30fOxEzZ8gQwPfJpJFGu/vGS66mJZRDYDSi3YfQ/t9FTK7
-         Ggudc6Coavof6ZnvSUfCvg7hzW5eE1MedmR5ZLzIU4yOUemHIaSvd0b5+PpUy5VV8D
-         yrJ0thh7cNwOI9S4UnhVCrgMO8Jro4pVHTDAWvPzJcBMseuAiQix4QdrISojo4gqYE
-         uTpferjSBQB95JIVtofIovSkEiMRFy4JUpxdNJ2k1OfVovRXb2Hf61mQVsZH3bGtci
-         GubseYuni+eImItL5Kgggf3c4D1MGojBhCTVpGX+ynj2rH6/AKKADHlC5kJsA2g/aN
-         mSX5Ae5jXSwlg==
+        b=mO0XnykA3KX/4yqBpTuRFrhjNBKZnf7/VAYhTXt5cCTibu+DpvpCm9CajqbZqTPDm
+         ts7TeM1f1Bk67iN1QjDdUZsxLyv4/LKdSrH/RIyqY0aDSHQKQRE4HA3HkbzDIcEEim
+         sghS2iEAsc823g5RDn/9CJUs1o2cKrFByRZmXFDmcolRSCGly1/GvEeOTUvGD/cM8D
+         VmUxCbCGCOxVR4tX7NUmlvAEq3QB/ie/powMO97KZ9og+zf5RebbsFPi0Us+dROIr7
+         ZmxffHqYWXIHjkCQZoFj5Fh7YdEsqa0v3TU+zYxJijIHImtQx3aV6KHOsPMkeTBYWc
+         2gEEJ0AUlSrnw==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         devicetree@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH 04/15] dt-bindings: iio: dac: ad5380: Add missing binding document
-Date:   Sun, 27 Jun 2021 17:32:33 +0100
-Message-Id: <20210627163244.1090296-5-jic23@kernel.org>
+Subject: [PATCH 05/15] dt-bindings: iio: dac: ad5446: Add missing binding document
+Date:   Sun, 27 Jun 2021 17:32:34 +0100
+Message-Id: <20210627163244.1090296-6-jic23@kernel.org>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210627163244.1090296-1-jic23@kernel.org>
 References: <20210627163244.1090296-1-jic23@kernel.org>
@@ -42,60 +42,83 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-A simple binding for this particular DAC familly.
+Binding is a little stricter than the Linux driver.
+
+It requires vcc-supply to be present for devices that don't have
+an internal reference, whereas the driver just prints a message and
+carries on.  Given this means that it is impossible to establish
+a scaling of the output channel, let us make it required in the binding
+schema.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>
 ---
- .../bindings/iio/dac/adi,ad5380.yaml          | 70 +++++++++++++++++++
- 1 file changed, 70 insertions(+)
+ .../bindings/iio/dac/adi,ad5446.yaml          | 105 ++++++++++++++++++
+ 1 file changed, 105 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5380.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5380.yaml
+diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5446.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5446.yaml
 new file mode 100644
-index 000000000000..d599b418a020
+index 000000000000..e0a0def20c8c
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5380.yaml
-@@ -0,0 +1,70 @@
++++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5446.yaml
+@@ -0,0 +1,105 @@
 +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/dac/adi,ad5380.yaml#
++$id: http://devicetree.org/schemas/iio/dac/adi,ad5446.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Analog Devices AD5380 and similar DACs
++title: Single channel DACs similar to the AD5446
 +
 +maintainers:
 +  - Lars-Peter Clausen <lars@metafoo.de>
 +  - Jonathan Cameron <jic23@kernel.org>
 +
-+description: |
-+  DAC devices supporting both SPI and I2C interfaces.
 +properties:
 +  compatible:
-+    enum:
-+      - adi,ad5380-3
-+      - adi,ad5380-5
-+      - adi,ad5381-3
-+      - adi,ad5381-5
-+      - adi,ad5382-3
-+      - adi,ad5382-5
-+      - adi,ad5383-3
-+      - adi,ad5383-5
-+      - adi,ad5384-3
-+      - adi,ad5384-5
-+      - adi,ad5390-3
-+      - adi,ad5390-5
-+      - adi,ad5391-3
-+      - adi,ad5391-5
-+      - adi,ad5392-3
-+      - adi,ad5392-5
++    oneOf:
++      - description: I2C devices
++        enum:
++          - adi,ad5602
++          - adi,ad5612
++          - adi,ad5622
++      - description: SPI devices
++        enum:
++          - adi,ad5300
++          - adi,ad5310
++          - adi,ad5320
++          - adi,ad5444
++          - adi,ad5446
++          - adi,ad5450
++          - adi,ad5451
++          - adi,ad5452
++          - adi,ad5453
++          - adi,ad5512a
++          - adi,ad5541a
++          - adi,ad5542a
++          - adi,ad5543
++          - adi,ad5553
++          - adi,ad5600
++          - adi,ad5601
++          - adi,ad5611
++          - adi,ad5621
++          - adi,ad5641
++          - adi,ad5620-2500
++          - adi,ad5620-1250
++          - adi,ad5640-2500
++          - adi,ad5640-1250
++          - adi,ad5660-2500
++          - adi,ad5660-1250
++          - adi,ad5662
++          - ti,dac081s101
++          - ti,dac101s101
++          - ti,dac121s101
++          - ti,dac7512
 +
 +  reg:
 +    maxItems: 1
 +
-+  vref-supply:
-+    description:
-+      If not supplied devices will use internal regulators.
++  vcc-supply: true
 +
 +  spi-max-frequency: true
 +
@@ -105,25 +128,43 @@ index 000000000000..d599b418a020
 +  - compatible
 +  - reg
 +
++# Ensure the scaling can be established for devices with no internal reference.
++allOf:
++  - if:
++      not:
++        properties:
++          compatible:
++            contains:
++              enum:
++                - adi,ad5620-2500
++                - adi,ad5620-1250
++                - adi,ad5640-2500
++                - adi,ad5640-1250
++                - adi,ad5660-2500
++                - adi,ad5660-1250
++    then:
++      required:
++        - vcc-supply
++
 +examples:
 +  - |
 +    spi {
 +        #address-cells = <1>;
 +        #size-cells = <0>;
 +        dac@0 {
-+           reg = <0>;
-+           compatible = "adi,ad5390-5";
-+           vref-supply = <&dacvref>;
++            reg = <0>;
++            compatible = "adi,ad5620-2500";
 +        };
 +    };
 +  - |
 +    i2c {
-+       #address-cells = <1>;
-+       #size-cells = <0>;
-+       dac@42 {
-+          reg = <0x42>;
-+          compatible = "adi,ad5380-3";
-+       };
++        #address-cells = <1>;
++        #size-cells = <0>;
++        dac@42 {
++            reg = <0x42>;
++            compatible = "adi,ad5602";
++            vcc-supply = <&vcc_dac>;
++        };
 +    };
 +...
 -- 

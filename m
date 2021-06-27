@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F2BE3B543D
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Jun 2021 18:30:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACCEE3B543F
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Jun 2021 18:30:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231139AbhF0QdC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Jun 2021 12:33:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45028 "EHLO mail.kernel.org"
+        id S231143AbhF0QdF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Jun 2021 12:33:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45090 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230315AbhF0QdB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 27 Jun 2021 12:33:01 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7E091619D1;
-        Sun, 27 Jun 2021 16:30:35 +0000 (UTC)
+        id S230315AbhF0QdE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 27 Jun 2021 12:33:04 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6EE1E619F1;
+        Sun, 27 Jun 2021 16:30:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1624811437;
-        bh=6qrzyIL+AHe8VrjfusUVVvYznEz+S6YYi1btIDS1pdQ=;
+        s=k20201202; t=1624811440;
+        bh=xRdqalZ8E+dwdFxyZIJWwbxFhbSG/NZbYezfc0DgEyo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RTT4eztm8ZG7w8y3lr1QWBkPgNKQ7ZuisJH/2krg95wh+PaBYIcNKhDKB6lcUQZ8Q
-         00Yecrx8qk2aHermyF8sxpIKR+yu7L+HJKINt2nuhISrEk0kpzHuhysiRJgiPRcTeG
-         BXYhQ/TheTx6B+I3sJshIRepRnoUJlZIQv9YHqOwLGZzbpzZ8hgYt28Bwd68kDQD8b
-         Z5DfkmCsXtpWhn0HZ6Af4Vktp9VaFgfBKDxd1qHJiwnQIoMzgsHRxyWrWgQsAndYG0
-         xvb35YnzEpXgQ1/0o48u1zQRcIuDns++dNCBx2YoGbRWYBLRRQjUW0H8yNQKN18g6L
-         5KM9vquSsefMg==
+        b=XGuhtJgsfqZpnG0+HVCziy7hYYy0KP/BcX6f2dU7l/Ws5JkNiqewo3WF5+zGXnfmd
+         6krv3zOQenfBM/Lnjwsl8X/RCeZ7GDeAZAWP3vRu8ikQyB65DKS2iC1SmsKzu/8/zh
+         r1dkN488m5bGqm0fCyPmtOmS3mJCAyFiGiWbMjucRGlQEGKzQY+mXMDXfhUgGQcvWB
+         XHfMpqKU4qr5mQYv/EHfJXAw1I+ABu4GN1YcwLLMcu4MJcW1bbopiCardDcn5k6QTX
+         EwkaPMR7vXMKFITo0pI64XcCNXQ1y7grC9CU49WOY2cfQsDd83vmb2Fef+qHUcnsra
+         PNp2YCTbSgi/Q==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         devicetree@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH 02/15] dt-bindings: iio: dac: adi,ad5064: Document bindings for many different DACs
-Date:   Sun, 27 Jun 2021 17:32:31 +0100
-Message-Id: <20210627163244.1090296-3-jic23@kernel.org>
+Subject: [PATCH 03/15] dt-bindings: iio: dac: adi,ad5360: Add missing binding document
+Date:   Sun, 27 Jun 2021 17:32:32 +0100
+Message-Id: <20210627163244.1090296-4-jic23@kernel.org>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210627163244.1090296-1-jic23@kernel.org>
 References: <20210627163244.1090296-1-jic23@kernel.org>
@@ -42,121 +42,51 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Note this is documenting bindings that have effectively existing ever
-since this driver was merged. The naming conventions for the ADI
-parts are inconsistent on the data sheets which has lead to a mixture
-of -X and -reference voltage part naming.  We could attempt to clean this
-up, but as we are stuck supporting the existing binding it is probably
-not worthwhile.
+Bindings for the family of many channel DACs.  Fairly straight forward
+with just a differing number of voltage references (an extra one
+for the 40 channel ad4371)
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>
 ---
- .../bindings/iio/dac/adi,ad5064.yaml          | 268 ++++++++++++++++++
- 1 file changed, 268 insertions(+)
+ .../bindings/iio/dac/adi,ad5360.yaml          | 79 +++++++++++++++++++
+ 1 file changed, 79 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5064.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5064.yaml
+diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5360.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5360.yaml
 new file mode 100644
-index 000000000000..05ed4e0ec364
+index 000000000000..0d8fb56f4b09
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5064.yaml
-@@ -0,0 +1,268 @@
++++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5360.yaml
+@@ -0,0 +1,79 @@
 +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/dac/adi,ad5064.yaml#
++$id: http://devicetree.org/schemas/iio/dac/adi,ad5360.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Analog Devices AD5064 and similar DACs
++title: Analog Devices AD5360 and similar DACs
 +
 +maintainers:
 +  - Lars-Peter Clausen <lars@metafoo.de>
 +  - Jonathan Cameron <jic23@kernel.org>
 +
-+description: |
-+   A range of similar DAC devices with between 1 and 12 channels. Some parts
-+   have internal references, others require a single shared external reference
-+   and the remainder have a separate reference pin for each DAC.
-+
 +properties:
 +  compatible:
-+    oneOf:
-+      - description: I2C devics
-+        enum:
-+          - adi,ad5024
-+          - adi,ad5025
-+          - adi,ad5044
-+          - adi,ad5045
-+          - adi,ad5064
-+          - adi,ad5064-1
-+          - adi,ad5065
-+          - adi,ad5628-1
-+          - adi,ad5628-2
-+          - adi,ad5648-1
-+          - adi,ad5648-2
-+          - adi,ad5666-1
-+          - adi,ad5666-2
-+          - adi,ad5668-1
-+          - adi,ad5668-2
-+          - adi,ad5668-3
-+      - description: SPI devices
-+        enum:
-+          - adi,ad5625
-+          - adi,ad5625r-1v25
-+          - adi,ad5625r-2v5
-+          - adi,ad5627
-+          - adi,ad5627r-1v25
-+          - adi,ad5627r-2v5
-+          - adi,ad5629-1
-+          - adi,ad5629-2
-+          - adi,ad5629-3
-+          - adi,ad5645r-1v25
-+          - adi,ad5645r-2v5
-+          - adi,ad5665
-+          - adi,ad5665r-1v25
-+          - adi,ad5665r-2v5
-+          - adi,ad5667
-+          - adi,ad5667r-1v25
-+          - adi,ad5667r-2v5
-+          - adi,ad5669-1
-+          - adi,ad5669-2
-+          - adi,ad5669-3
-+          - lltc,ltc2606
-+          - lltc,ltc2607
-+          - lltc,ltc2609
-+          - lltc,ltc2616
-+          - lltc,ltc2617
-+          - lltc,ltc2619
-+          - lltc,ltc2626
-+          - lltc,ltc2627
-+          - lltc,ltc2629
-+          - lltc,ltc2631-l12
-+          - lltc,ltc2631-h12
-+          - lltc,ltc2631-l10
-+          - lltc,ltc2631-h10
-+          - lltc,ltc2631-l8
-+          - lltc,ltc2631-h8
-+          - lltc,ltc2633-l12
-+          - lltc,ltc2633-h12
-+          - lltc,ltc2633-l10
-+          - lltc,ltc2633-h10
-+          - lltc,ltc2633-l8
-+          - lltc,ltc2633-h8
-+          - lltc,ltc2635-l12
-+          - lltc,ltc2635-h12
-+          - lltc,ltc2635-l10
-+          - lltc,ltc2635-h10
-+          - lltc,ltc2635-l8
-+          - lltc,ltc2635-h8
++    enum:
++      - adi,ad5360
++      - adi,ad5361
++      - adi,ad5363
++      - adi,ad5370
++      - adi,ad5371
++      - adi,ad5372
++      - adi,ad5373
 +
 +  reg:
 +    maxItems: 1
 +
-+  vrefA-supply: true
-+  vrefB-supply: true
-+  vrefC-supply: true
-+  vrefD-supply: true
-+  vref-supply: true
++  vref0-supply: true
++  vref1-supply: true
++  vref2-supply: true
 +
 +  spi-max-frequency: true
 +
@@ -165,135 +95,33 @@ index 000000000000..05ed4e0ec364
 +required:
 +  - compatible
 +  - reg
++  - vref0-supply
++  - vref1-supply
 +
 +allOf:
-+  - # Shared external vref, no internal reference
-+    if:
++  - if:
 +      properties:
 +        compatible:
 +          contains:
 +            enum:
-+              - adi,ad5064-1
-+              - adi,ad5625
-+              - adi,ad5627
-+              - adi,ad5665
-+              - adi,ad5667
-+              - lltc,ltc2606
-+              - lltc,ltc2607
-+              - lltc,ltc2616
-+              - lltc,ltc2617
-+              - lltc,ltc2626
-+              - lltc,ltc2627
++              - adi,ad5360
++              - adi,ad5361
++              - adi,ad5363
++              - adi,ad5370
++              - adi,ad5372
++              - adi,ad5373
 +    then:
 +      properties:
-+        vref-supply: true
-+        vrefA-supply: false
-+        vrefB-supply: false
-+        vrefC-supply: false
-+        vrefD-supply: false
-+      required:
-+        - vref-supply
-+  - # Shared external vref, internal reference available
-+    if:
++        vref2-supply: false
++  - if:
 +      properties:
 +        compatible:
 +          contains:
 +            enum:
-+              - adi,ad5625r-1v25
-+              - adi,ad5625r-2v5
-+              - adi,ad5627r-1v25
-+              - adi,ad5627r-2v5
-+              - adi,ad5628-1
-+              - adi,ad5628-2
-+              - adi,ad5629-1
-+              - adi,ad5629-2
-+              - adi,ad5629-3
-+              - adi,ad5645r-1v25
-+              - adi,ad5645r-2v5
-+              - adi,ad5647r-1v25
-+              - adi,ad5647r-2v5
-+              - adi,ad5648-1
-+              - adi,ad5648-2
-+              - adi,ad5665r-1v25
-+              - adi,ad5665r-2v5
-+              - adi,ad5666-1
-+              - adi,ad5666-2
-+              - adi,ad5667r-1v25
-+              - adi,ad5667r-2v5
-+              - adi,ad5668-1
-+              - adi,ad5668-2
-+              - adi,ad5668-3
-+              - adi,ad5669-1
-+              - adi,ad5669-2
-+              - adi,ad5669-3
-+              - lltc,ltc2631-l12
-+              - lltc,ltc2631-h12
-+              - lltc,ltc2631-l10
-+              - lltc,ltc2631-h10
-+              - lltc,ltc2631-l8
-+              - lltc,ltc2631-h8
-+              - lltc,ltc2633-l12
-+              - lltc,ltc2633-h12
-+              - lltc,ltc2633-l10
-+              - lltc,ltc2633-h10
-+              - lltc,ltc2633-l8
-+              - lltc,ltc2633-h8
-+              - lltc,ltc2635-l12
-+              - lltc,ltc2635-h12
-+              - lltc,ltc2635-l10
-+              - lltc,ltc2635-h10
-+              - lltc,ltc2635-l8
-+              - lltc,ltc2635-h8
-+    then:
-+      properties:
-+        vref-supply: true
-+        vrefA-supply: false
-+        vrefB-supply: false
-+        vrefC-supply: false
-+        vrefD-supply: false
-+  - # 4 input devices, separate vrefs, no internal reference
-+    if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - adi,ad5024
-+              - adi,ad5044
-+              - adi,ad5064
-+              - lltc,ltc2609
-+              - lltc,ltc2619
-+              - lltc,ltc2629
-+    then:
-+      properties:
-+        vrefA-supply: true
-+        vrefB-supply: true
-+        vrefC-supply: true
-+        vrefD-supply: true
-+        vref-supply: false
-+      required:
-+        - vrefA-supply
-+        - vrefB-supply
-+        - vrefC-supply
-+        - vrefD-supply
-+  - # 2 input devices, separate vrefs, no internal reference
-+    if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - adi,ad5025
-+              - adi,ad5045
-+              - adi,ad5065
-+    then:
-+      properties:
-+        vrefA-supply: true
-+        vrefB-supply: true
-+        vrefC-supply: false
-+        vrefD-supply: false
-+        vref-supply: false
-+      required:
-+        - vrefA-supply
-+        - vrefB-supply
++              - adi,ad5371
++      then:
++        required:
++          - vref2-supply
 +
 +examples:
 +  - |
@@ -302,30 +130,10 @@ index 000000000000..05ed4e0ec364
 +        #size-cells = <0>;
 +        dac@0 {
 +            reg = <0>;
-+            compatible = "adi,ad5625";
-+            vref-supply = <&dac_vref>;
-+        };
-+    };
-+  - |
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        dac@0 {
-+            reg = <0>;
-+            compatible = "adi,ad5625r-1v25";
-+        };
-+    };
-+  - |
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        dac@42 {
-+            reg = <0x42>;
-+            compatible = "adi,ad5024";
-+            vrefA-supply = <&dac_vref>;
-+            vrefB-supply = <&dac_vref>;
-+            vrefC-supply = <&dac_vref2>;
-+            vrefD-supply = <&dac_vref2>;
++            compatible = "adi,ad5371";
++            vref0-supply = <&dac_vref0>;
++            vref1-supply = <&dac_vref1>;
++            vref2-supply = <&dac_vref2>;
 +        };
 +    };
 +...

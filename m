@@ -2,109 +2,143 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C5B93B5D82
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Jun 2021 14:03:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C9C93B5F4C
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Jun 2021 15:44:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232514AbhF1MFo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Jun 2021 08:05:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59940 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232608AbhF1MFn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Jun 2021 08:05:43 -0400
-Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4817DC061574;
-        Mon, 28 Jun 2021 05:03:17 -0700 (PDT)
-Received: by mail-pg1-x52b.google.com with SMTP id d12so15270037pgd.9;
-        Mon, 28 Jun 2021 05:03:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=hC95X8dILV4yUsxnWcqyaUSRLR/4KhkkqpuXQlMJ+os=;
-        b=j/1qnIN05R1GrGDHQLT945i6wPcIK8UlPXIPynREbRgcev1CYX2vV3PdaSuMf/fkFk
-         5cqvLfoq5LYsQxXfM7WQ0FhWh/GEM4zDYp5YUE+qMxSxIVkZ7BKnlyGaKE/bSRaOvHBg
-         TBZ0p8k4IY1hA9bUBHOp66D2kooiwq9RIKp0v+M+UCECYePx1BGSp6UWwbcxRdr1vGBU
-         YhrN7Hyf6PH/SHx5y8fvtG5Q53KD9JWDK6pJ02iF3Cy0+B3mLGowTZUmWFnuQlP3f7Nx
-         +XjgCAXiaMUgzXVlCRGJGktRvkV7Bp51kBbOk6qaMNw6n64Vu4Jj8gRaEQVLEsn/xxNv
-         kMUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=hC95X8dILV4yUsxnWcqyaUSRLR/4KhkkqpuXQlMJ+os=;
-        b=RnPTzM1taTLl4W5n+cIexpiXT28ml9J8lJs3VAWL6VH+n5K193xCj1EQARZQ0jY4lA
-         4ML/VaJaSIzavDrc6svh8wD3wkAqLI43AVbXvFFRhgRBcrkuBW+eE9HhMZlevHPW7IqS
-         tMWgGeAhV3YbKX9IILxu2iONOl250J+LcsWC9WHPJTff8TWXI2nfODpyi9SQJXJyxfZ/
-         uZeqbhcqL+HQlhu4w/yda75TxHJnX+VY7LU3NVJwbhL3l3rv7xHoyyUauWIS9h+p0Lnd
-         T4di5v1ifT1xbKisBDy/r+BcEhefhgzgiP7/ouB6PmuhlU/O02WGODi5ZVUfKNhD6E+Z
-         n7Tg==
-X-Gm-Message-State: AOAM530bKDNQSI/J+Esjde5p2KKiwTUl4Sk75mK+Wt2nz1A/62hHj37v
-        s/TSKrT/y5a/1TvHm38Lf7LFxCQWQVU1TZaOFo8=
-X-Google-Smtp-Source: ABdhPJyAv9znER5hh/JOnKHGaD1NRGWHP3IrFfiODa8IXBazHOnTNyl7L/0rKn7rdXQ7fCvZ/iGF6s9IOTuD8HfB+dg=
-X-Received: by 2002:a63:f609:: with SMTP id m9mr1004059pgh.74.1624881796677;
- Mon, 28 Jun 2021 05:03:16 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210625235532.19575-1-dipenp@nvidia.com> <CAHp75Vf4TKjtC7cLNape4r+hE-AWnbxtbww2ofCcHQJf9zyh-g@mail.gmail.com>
- <CACRpkdbXE2A98P0_juA9PNEKTo89FcgywYmnqJSC5bV+Vox=Fw@mail.gmail.com>
-In-Reply-To: <CACRpkdbXE2A98P0_juA9PNEKTo89FcgywYmnqJSC5bV+Vox=Fw@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 28 Jun 2021 15:02:39 +0300
-Message-ID: <CAHp75Vcv3BsQ87bnnYK07npQsp3GU4JC1k+iXUw2uuGbSKBQNg@mail.gmail.com>
-Subject: Re: [RFC 00/11] Intro to Hardware timestamping engine
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Ye Xiang <xiang.ye@intel.com>, Drew Fustini <drew@beagleboard.org>,
-        Sandeep Singh <sandeep.singh@amd.com>,
-        Dipen Patel <dipenp@nvidia.com>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jon Hunter <jonathanh@nvidia.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Kent Gibson <warthog618@gmail.com>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Documentation List <linux-doc@vger.kernel.org>,
+        id S232126AbhF1Nqr convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 28 Jun 2021 09:46:47 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:3327 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232058AbhF1Nqr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Jun 2021 09:46:47 -0400
+Received: from fraeml708-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4GD7ld52cCz6L4tQ;
+        Mon, 28 Jun 2021 21:30:37 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml708-chm.china.huawei.com (10.206.15.36) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Mon, 28 Jun 2021 15:44:19 +0200
+Received: from localhost (10.47.24.170) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Mon, 28 Jun
+ 2021 14:44:18 +0100
+Date:   Mon, 28 Jun 2021 14:44:07 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     "Sa, Nuno" <Nuno.Sa@analog.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "Lars-Peter Clausen" <lars@metafoo.de>,
+        Ricardo Ribalda <ribalda@kernel.org>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>,
+        Michael Welling <mwelling@ieee.org>
+Subject: Re: [PATCH 00/15] dt-bindings: iio: dac: Add most missing binding
+ documents.
+Message-ID: <20210628144407.0000084e@Huawei.com>
+In-Reply-To: <PH0PR03MB6366F34DC0B3D7EB7A56B6A499039@PH0PR03MB6366.namprd03.prod.outlook.com>
+References: <20210627163244.1090296-1-jic23@kernel.org>
+        <PH0PR03MB6366F34DC0B3D7EB7A56B6A499039@PH0PR03MB6366.namprd03.prod.outlook.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.47.24.170]
+X-ClientProxiedBy: lhreml717-chm.china.huawei.com (10.201.108.68) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jun 27, 2021 at 5:41 PM Linus Walleij <linus.walleij@linaro.org> wrote:
-> On Sun, Jun 27, 2021 at 3:08 PM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
->
-> > > To summarize upstream discussion:
-> > > - It was heavily favoured by Linus and Kent to extend GPIOLIB and supporting
-> > > GPIO drivers to add HTE functionality and I agreed to experiment with it.
-> >
-> > I guess this series should include more people from different
-> > companies, especially documentation parts. This may be used by
-> > different hardware and quite different vendors. Developing a framework
-> > like this for only one vendor is no go in general.
->
-> I forwarded patch 00 to the IIO list and Jonathan Cameron,
-> and let's page Ye Xiang who made a bunch of contributions
-> from Intel's side to IIO directly. (Hi Ye, please check this concept
-> if you have time!)
->
-> The actually most important target group would be people
-> doing things like sensor fusion where a common timebase is
-> important, I don't know who does really, but Sandeep Singh from
-> AMD has contributed the AMD Sensor Fusion hub in
-> drivers/hid/amd-sfh-hid and might know a few things about this
-> though I don't think SFH would need this directly.
-> https://en.wikipedia.org/wiki/Sensor_fusion
->
-> Also Paging Drew Fustini, who knows a lot of maker and tinker
-> people, he might know a bit about this or know someone who
-> knows.
+On Mon, 28 Jun 2021 07:09:18 +0000
+"Sa, Nuno" <Nuno.Sa@analog.com> wrote:
 
-Thank you!
+> Hi Jonathan,
+> 
+> > -----Original Message-----
+> > From: Jonathan Cameron <jic23@kernel.org>
+> > Sent: Sunday, June 27, 2021 6:32 PM
+> > To: linux-iio@vger.kernel.org; Rob Herring <robh+dt@kernel.org>;
+> > devicetree@vger.kernel.org
+> > Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>; Lars-Peter
+> > Clausen <lars@metafoo.de>; Ricardo Ribalda <ribalda@kernel.org>;
+> > Hennerich, Michael <Michael.Hennerich@analog.com>; Gwenhael
+> > Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>; Michael
+> > Welling <mwelling@ieee.org>
+> > Subject: [PATCH 00/15] dt-bindings: iio: dac: Add most missing binding
+> > documents.
+> > 
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > We have quite a few drivers in IIO that date back to the days of
+> > platform
+> > data.  Many of them either worked out of the box with device tree
+> > due to the spi core using the spi_device_id to match against
+> > device tree compatibles, or were updated to use newer interfaces in
+> > the
+> > intervening years.  As such, they mostly 'work' with device tree but
+> > can have some slightly odd quirks (particularly around naming of
+> > supplies).
+> > As we have no way of knowing what is out in the wild, we need to
+> > support
+> > these interesting bits of regulator naming.
+> > 
+> > I would ultimately like all such bindings to be documented both to
+> > facilitate
+> > automated check of device trees and to make things easier for people
+> > trying
+> > to write device tree files using these devices.
+> > 
+> > This series fills in the majority of the absent bindings for DACs.
+> > There are some outstanding
+> > * max517 - some platform data configuration needs porting over to
+> > device tree.
+> > * m62332 - this passes a consumer mapping in as platform data and will
+> > need
+> >   careful porting over the dt way of doing that.
+> > 
+> > There is one 'fixlet' in here for the driver to deal with a case were the
+> > code was intended to allow the presence of a regulator to dictate
+> > whether
+> > an internal reference was used, but did not use the optional regulator
+> > get.
+> > 
+> > I've mostly nominated maintainers based on original authorship +
+> > where
+> > I was feeling guilty or couldn't find anyone still active I've listed myself.
+> > 
+> > I got bored half way through of producing brief descriptions of
+> > the devices so stopped doing so. If anyone wants to provide one for
+> > these
+> > parts I'm happy to add it!
+> > 
+> > Future series will cover the c. 40 bindings that I've identified as missing
+> > for other types of devices.  I've also kept notes of easy cleanups in
+> > drivers spotted whilst working these out, so will probably follow up
+> > with
+> > those soon as well.
+> > 
+> > Note I haven't tested all of these so there may well be errors or
+> > elements
+> > I've missed.
+> >   
+> 
+> LGTM... Just wondering if we could not add the adi,ad5421 directly into
+> the trivial-devices yaml as it looks to be the only one without any odd
+> regulator name?
 
--- 
-With Best Regards,
-Andy Shevchenko
+We could, but would probably end up pulling it out again.  As noted in
+that patch description there is a bunch of stuff the binding doesn't currently
+support that would make sense to add if anyone actually needs it.
+
+Hmm. I guess it's a question of whether we think anyone will ever care :)
+
+Jonathan
+> 
+> Anyways, feel free to add:
+> 
+> Acked-by: Nuno Sá <nuno.sa@analog.com>
+

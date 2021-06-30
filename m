@@ -2,58 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C65A3B8229
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Jun 2021 14:30:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82CE83B82C5
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Jun 2021 15:17:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234637AbhF3MdU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 30 Jun 2021 08:33:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56368 "EHLO
+        id S234853AbhF3NUD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 30 Jun 2021 09:20:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234520AbhF3MdU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 30 Jun 2021 08:33:20 -0400
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B248C061766
-        for <linux-iio@vger.kernel.org>; Wed, 30 Jun 2021 05:30:50 -0700 (PDT)
-Received: by mail-ed1-x52c.google.com with SMTP id i24so3001814edx.4
-        for <linux-iio@vger.kernel.org>; Wed, 30 Jun 2021 05:30:50 -0700 (PDT)
+        with ESMTP id S234806AbhF3NUB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 30 Jun 2021 09:20:01 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 392ABC061766
+        for <linux-iio@vger.kernel.org>; Wed, 30 Jun 2021 06:17:31 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id nd37so4187168ejc.3
+        for <linux-iio@vger.kernel.org>; Wed, 30 Jun 2021 06:17:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=deviqon.com; s=google;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=Y/NiruVedtLXXcwtmHdL7yKXuqcEb3kTC2VwZHt24F0=;
-        b=lyRAmwLNmZQr8elDlzNE/ZwhMZVeTVx3L4Y+rrM5hwdWMI7XJ8U8rbAbEVOGx3vFPx
-         JHECnhq7sz6axmuGyvPo35D3LfXqsI7qSbRAHmon/VMT03wtt/fsZacWoCqY14gexFvG
-         CBNzTQP0I5UG+FcgeIxCiF0KA19VA1vNlinRsEujWMMqK4jqiPidB+ofkBwngwUkMUlk
-         GXD8nqUrbY8tGi5QAt2szudgY9psIto5gbubGqQotaFqndHFtth7k5HCYi/4/6abpF3R
-         aNnq0WSpaaFK3OqZwYfYD3aIl3FHbbY8ZTjyT+udPOAsS4eIvtfSetKZ11KX/HUXiQf9
-         0ytA==
+        bh=xiTb0xD8le1nLQtDW6IFqKE9RONZcsoN+E9Y8GN3Uak=;
+        b=ouYycHezo0GkOlzma46gP0wox4xgLOqMBUPFAjGWmz6jR9FV03kFcQUzmutNsgVU2I
+         eCjzXZRIoVxF/4NXBwkAIfphL00xvSG7pvwNC1bB1Jvn8L/NPAcLXdsrpQC84mPsDScc
+         nYQqsu/oNUwv9ocJhjUXs7SuULNIz+BLL1SP6WpqStQew1sPU5mZ7+l6Zopgau0+9Zh2
+         AMo6jhK9ee0cbm8O8pz1fNJyQscjFUIO+UAzCvjLB1VgshsGKWE4gez98Xz/yfTSBZgl
+         vLhMY11GK9yxv3bz8vIfd9P1A8zU3gm/aPR0PbTEwFgPZYxgeA00KvG6yEMQBnrR8zxh
+         Ba9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=Y/NiruVedtLXXcwtmHdL7yKXuqcEb3kTC2VwZHt24F0=;
-        b=hNgOkidOyTquAYYU3ZdxTrB8YrwHkYp5ZMnY5B8ySt+rk9Y3A/3d86k3c4/8/2ymBS
-         muctHuZctBdX1y5W4/l04s0K2oodjGR4SFkfXIg2ZMcz2Ll/WjNakQqujGJ/DeOrVcMM
-         qCQdLZvNi3y+8vXOlbW5JaM1cT2ik7iDF5ylX9iSgTyyHfwx7iVLYM9pUoIED8IVVWsS
-         r9VC4hSxbt5MTueK19c9AZfvRxtgf+Fnn9RhIILY8BipXVaRWFLLGCP69Dif1gFRcS4G
-         XYzxAbpV6Xul3vAZe79TfXyp+Y+gfBb/ZHp3zMUu7vnbwQdA0/Vr8/sY8bGu6sXz6lTg
-         e+Qg==
-X-Gm-Message-State: AOAM532br4lmxVVJwyFcLJEF/0e5qRPRBHa3IE2w+hO8yZ+ZOz/Gb8oL
-        uofoq81bJADcURu60tm38CcGPhTk22RDlbv2
-X-Google-Smtp-Source: ABdhPJxueKb4to0PneFmftPCn0BqxSotcbL/q0VxIKaL1Q5nKdNH4gFy7Hwx7rPfI71HMU1G86vpFA==
-X-Received: by 2002:a05:6402:40c3:: with SMTP id z3mr45126000edb.375.1625056248847;
-        Wed, 30 Jun 2021 05:30:48 -0700 (PDT)
+        bh=xiTb0xD8le1nLQtDW6IFqKE9RONZcsoN+E9Y8GN3Uak=;
+        b=kmD4UOKojLPmb9TlwsmFHqvE7SEBaqptqzgns3I9rZkmmlRb9YBav9wUpGXHQj3O5V
+         mKR0gJf5feCVsRhHIzxq0cx772W28SapT5egnDqVmDJj8OGAUSbXTr1WCuUpDHKvyjeb
+         lfuBFiNntFgcV9yf9w4NPNbLF8wQuw9vrZDHy6WrsdDHskWotsiSWZItdtsqZw6yKZZf
+         xb5u6RWQLKecoGpo58pbwWR4tnzT9BZzttym+Fi8hVl3epi14BK2Ko06QJrJVSXaNCRp
+         htWgVHEgv9NIqEzrVxNBW4t0IRgYqBm1Y2RXAUra9q1ssC/5NCoRSPIqGQ9WgbLNvONq
+         FLSw==
+X-Gm-Message-State: AOAM532To9SrF89VCEyGLiQokfRQcpmh638cmux3jSnzpOzA5mBhWNpZ
+        giRnXRI7xWlGXNiJVonQ49NfXCQWfqIkrXQD
+X-Google-Smtp-Source: ABdhPJwqLnHfx4Dc0iEwF0a1zdqrchPCQxBKN1WprVuk/qHh4jQ4fFBfzqlr7q8Vw/RS6vWt4RllQQ==
+X-Received: by 2002:a17:906:cb81:: with SMTP id mf1mr36138317ejb.199.1625059049450;
+        Wed, 30 Jun 2021 06:17:29 -0700 (PDT)
 Received: from neptune.. ([5.2.193.191])
-        by smtp.gmail.com with ESMTPSA id u21sm11079046edv.20.2021.06.30.05.30.47
+        by smtp.gmail.com with ESMTPSA id md14sm39511ejb.125.2021.06.30.06.17.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Jun 2021 05:30:48 -0700 (PDT)
+        Wed, 30 Jun 2021 06:17:29 -0700 (PDT)
 From:   Alexandru Ardelean <aardelean@deviqon.com>
 To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     jic23@kernel.org, srinivas.pandruvada@linux.intel.com,
-        jikos@kernel.org, Alexandru Ardelean <aardelean@deviqon.com>
-Subject: [PATCH] iio: hid-sensors: bind IIO channels alloc to device object
-Date:   Wed, 30 Jun 2021 15:30:29 +0300
-Message-Id: <20210630123029.759609-1-aardelean@deviqon.com>
+Cc:     jic23@kernel.org, Alexandru Ardelean <aardelean@deviqon.com>
+Subject: [PATCH 1/2] iio: proximity: rfd77402: use i2c_client for rfd77402_{init,powerdown}()
+Date:   Wed, 30 Jun 2021 16:16:35 +0300
+Message-Id: <20210630131636.1563148-1-aardelean@deviqon.com>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -61,323 +60,233 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Some HID drivers use devm_kmemdup() already to clone the template IIO
-channels information and update it.
-However, there are still some drivers that kmemdup() and kfree() the
-channels.
+These 2 functions only do I2C reads/writes and don't require any of the
+private data of the driver.
 
-This change converts them to use devm_kmemdup() and bind the life-time of
-this allocated object to the parent device object (in these drivers).
+They're also used in the PM suspend/resume part of the driver.
+
+Converting them to take an i2c_client object as parameter simplifies things
+a bit (especially in the suspend/resume) as the driver mostly needs the
+reference for i2c_client, so no need to jump through hoops to get it from
+the private data (as was done in many places).
+
+The rfd77402_measure() function has also been converted to take an
+i2c_client object, since it also does only I2C ops.
 
 Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
 ---
- drivers/iio/accel/hid-sensor-accel-3d.c      | 10 ++++------
- drivers/iio/gyro/hid-sensor-gyro-3d.c        | 11 ++++-------
- drivers/iio/light/hid-sensor-als.c           | 11 ++++-------
- drivers/iio/light/hid-sensor-prox.c          | 11 ++++-------
- drivers/iio/orientation/hid-sensor-incl-3d.c | 11 ++++-------
- drivers/iio/pressure/hid-sensor-press.c      | 11 ++++-------
- 6 files changed, 24 insertions(+), 41 deletions(-)
+ drivers/iio/proximity/rfd77402.c | 60 ++++++++++++++------------------
+ 1 file changed, 27 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/iio/accel/hid-sensor-accel-3d.c b/drivers/iio/accel/hid-sensor-accel-3d.c
-index 55cdca818b3b..a2def6f9380a 100644
---- a/drivers/iio/accel/hid-sensor-accel-3d.c
-+++ b/drivers/iio/accel/hid-sensor-accel-3d.c
-@@ -367,7 +367,8 @@ static int hid_accel_3d_probe(struct platform_device *pdev)
- 		dev_err(&pdev->dev, "failed to setup common attributes\n");
+diff --git a/drivers/iio/proximity/rfd77402.c b/drivers/iio/proximity/rfd77402.c
+index 7a0472323f17..f349526421f3 100644
+--- a/drivers/iio/proximity/rfd77402.c
++++ b/drivers/iio/proximity/rfd77402.c
+@@ -90,18 +90,18 @@ static const struct iio_chan_spec rfd77402_channels[] = {
+ 	},
+ };
+ 
+-static int rfd77402_set_state(struct rfd77402_data *data, u8 state, u16 check)
++static int rfd77402_set_state(struct i2c_client *client, u8 state, u16 check)
+ {
+ 	int ret;
+ 
+-	ret = i2c_smbus_write_byte_data(data->client, RFD77402_CMD_R,
++	ret = i2c_smbus_write_byte_data(client, RFD77402_CMD_R,
+ 					state | RFD77402_CMD_VALID);
+ 	if (ret < 0)
  		return ret;
- 	}
--	indio_dev->channels = kmemdup(channel_spec, channel_size, GFP_KERNEL);
-+	indio_dev->channels = devm_kmemdup(&pdev->dev, channel_spec,
-+					   channel_size, GFP_KERNEL);
  
- 	if (!indio_dev->channels) {
- 		dev_err(&pdev->dev, "failed to duplicate channels\n");
-@@ -378,7 +379,7 @@ static int hid_accel_3d_probe(struct platform_device *pdev)
- 				hsdev->usage, accel_state);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to setup attributes\n");
--		goto error_free_dev_mem;
-+		return ret;
+ 	usleep_range(10000, 20000);
+ 
+-	ret = i2c_smbus_read_word_data(data->client, RFD77402_STATUS_R);
++	ret = i2c_smbus_read_word_data(client, RFD77402_STATUS_R);
+ 	if (ret < 0)
+ 		return ret;
+ 	if ((ret & RFD77402_STATUS_PM_MASK) != check)
+@@ -110,24 +110,24 @@ static int rfd77402_set_state(struct rfd77402_data *data, u8 state, u16 check)
+ 	return 0;
+ }
+ 
+-static int rfd77402_measure(struct rfd77402_data *data)
++static int rfd77402_measure(struct i2c_client *client)
+ {
+ 	int ret;
+ 	int tries = 10;
+ 
+-	ret = rfd77402_set_state(data, RFD77402_CMD_MCPU_ON,
++	ret = rfd77402_set_state(client, RFD77402_CMD_MCPU_ON,
+ 				 RFD77402_STATUS_MCPU_ON);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = i2c_smbus_write_byte_data(data->client, RFD77402_CMD_R,
++	ret = i2c_smbus_write_byte_data(client, RFD77402_CMD_R,
+ 					RFD77402_CMD_SINGLE |
+ 					RFD77402_CMD_VALID);
+ 	if (ret < 0)
+ 		goto err;
+ 
+ 	while (tries-- > 0) {
+-		ret = i2c_smbus_read_byte_data(data->client, RFD77402_ICSR);
++		ret = i2c_smbus_read_byte_data(client, RFD77402_ICSR);
+ 		if (ret < 0)
+ 			goto err;
+ 		if (ret & RFD77402_ICSR_RESULT)
+@@ -140,7 +140,7 @@ static int rfd77402_measure(struct rfd77402_data *data)
+ 		goto err;
  	}
  
- 	indio_dev->info = &accel_3d_info;
-@@ -391,7 +392,7 @@ static int hid_accel_3d_probe(struct platform_device *pdev)
- 					&accel_state->common_attributes);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "trigger setup failed\n");
--		goto error_free_dev_mem;
-+		return ret;
+-	ret = i2c_smbus_read_word_data(data->client, RFD77402_RESULT_R);
++	ret = i2c_smbus_read_word_data(client, RFD77402_RESULT_R);
+ 	if (ret < 0)
+ 		goto err;
+ 
+@@ -153,7 +153,7 @@ static int rfd77402_measure(struct rfd77402_data *data)
+ 	return (ret & RFD77402_RESULT_DIST_MASK) >> 2;
+ 
+ err:
+-	rfd77402_set_state(data, RFD77402_CMD_MCPU_OFF,
++	rfd77402_set_state(client, RFD77402_CMD_MCPU_OFF,
+ 			   RFD77402_STATUS_MCPU_OFF);
+ 	return ret;
+ }
+@@ -168,7 +168,7 @@ static int rfd77402_read_raw(struct iio_dev *indio_dev,
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+ 		mutex_lock(&data->lock);
+-		ret = rfd77402_measure(data);
++		ret = rfd77402_measure(data->client);
+ 		mutex_unlock(&data->lock);
+ 		if (ret < 0)
+ 			return ret;
+@@ -188,23 +188,23 @@ static const struct iio_info rfd77402_info = {
+ 	.read_raw = rfd77402_read_raw,
+ };
+ 
+-static int rfd77402_init(struct rfd77402_data *data)
++static int rfd77402_init(struct i2c_client *client)
+ {
+ 	int ret, i;
+ 
+-	ret = rfd77402_set_state(data, RFD77402_CMD_STANDBY,
++	ret = rfd77402_set_state(client, RFD77402_CMD_STANDBY,
+ 				 RFD77402_STATUS_STANDBY);
+ 	if (ret < 0)
+ 		return ret;
+ 
+ 	/* configure INT pad as push-pull, active low */
+-	ret = i2c_smbus_write_byte_data(data->client, RFD77402_ICSR,
++	ret = i2c_smbus_write_byte_data(client, RFD77402_ICSR,
+ 					RFD77402_ICSR_INT_MODE);
+ 	if (ret < 0)
+ 		return ret;
+ 
+ 	/* I2C configuration */
+-	ret = i2c_smbus_write_word_data(data->client, RFD77402_I2C_INIT_CFG,
++	ret = i2c_smbus_write_word_data(client, RFD77402_I2C_INIT_CFG,
+ 					RFD77402_I2C_ADDR_INCR |
+ 					RFD77402_I2C_DATA_INCR |
+ 					RFD77402_I2C_HOST_DEBUG	|
+@@ -213,42 +213,42 @@ static int rfd77402_init(struct rfd77402_data *data)
+ 		return ret;
+ 
+ 	/* set initialization */
+-	ret = i2c_smbus_write_word_data(data->client, RFD77402_PMU_CFG, 0x0500);
++	ret = i2c_smbus_write_word_data(client, RFD77402_PMU_CFG, 0x0500);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = rfd77402_set_state(data, RFD77402_CMD_MCPU_OFF,
++	ret = rfd77402_set_state(client, RFD77402_CMD_MCPU_OFF,
+ 				 RFD77402_STATUS_MCPU_OFF);
+ 	if (ret < 0)
+ 		return ret;
+ 
+ 	/* set initialization */
+-	ret = i2c_smbus_write_word_data(data->client, RFD77402_PMU_CFG, 0x0600);
++	ret = i2c_smbus_write_word_data(client, RFD77402_PMU_CFG, 0x0600);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = rfd77402_set_state(data, RFD77402_CMD_MCPU_ON,
++	ret = rfd77402_set_state(client, RFD77402_CMD_MCPU_ON,
+ 				 RFD77402_STATUS_MCPU_ON);
+ 	if (ret < 0)
+ 		return ret;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(rf77402_tof_config); i++) {
+-		ret = i2c_smbus_write_word_data(data->client,
++		ret = i2c_smbus_write_word_data(client,
+ 						rf77402_tof_config[i].reg,
+ 						rf77402_tof_config[i].val);
+ 		if (ret < 0)
+ 			return ret;
  	}
  
- 	ret = iio_device_register(indio_dev);
-@@ -416,8 +417,6 @@ static int hid_accel_3d_probe(struct platform_device *pdev)
- 	iio_device_unregister(indio_dev);
- error_remove_trigger:
- 	hid_sensor_remove_trigger(indio_dev, &accel_state->common_attributes);
--error_free_dev_mem:
--	kfree(indio_dev->channels);
+-	ret = rfd77402_set_state(data, RFD77402_CMD_STANDBY,
++	ret = rfd77402_set_state(client, RFD77402_CMD_STANDBY,
+ 				 RFD77402_STATUS_STANDBY);
+ 
  	return ret;
  }
  
-@@ -431,7 +430,6 @@ static int hid_accel_3d_remove(struct platform_device *pdev)
- 	sensor_hub_remove_callback(hsdev, hsdev->usage);
- 	iio_device_unregister(indio_dev);
- 	hid_sensor_remove_trigger(indio_dev, &accel_state->common_attributes);
--	kfree(indio_dev->channels);
- 
- 	return 0;
+-static int rfd77402_powerdown(struct rfd77402_data *data)
++static int rfd77402_powerdown(struct i2c_client *client)
+ {
+-	return rfd77402_set_state(data, RFD77402_CMD_STANDBY,
++	return rfd77402_set_state(client, RFD77402_CMD_STANDBY,
+ 				  RFD77402_STATUS_STANDBY);
  }
-diff --git a/drivers/iio/gyro/hid-sensor-gyro-3d.c b/drivers/iio/gyro/hid-sensor-gyro-3d.c
-index bc63c2a34c5e..8f0ad022c7f1 100644
---- a/drivers/iio/gyro/hid-sensor-gyro-3d.c
-+++ b/drivers/iio/gyro/hid-sensor-gyro-3d.c
-@@ -303,8 +303,8 @@ static int hid_gyro_3d_probe(struct platform_device *pdev)
+ 
+@@ -280,7 +280,7 @@ static int rfd77402_probe(struct i2c_client *client,
+ 	indio_dev->name = RFD77402_DRV_NAME;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 
+-	ret = rfd77402_init(data);
++	ret = rfd77402_init(client);
+ 	if (ret < 0)
  		return ret;
- 	}
  
--	indio_dev->channels = kmemdup(gyro_3d_channels,
--				      sizeof(gyro_3d_channels), GFP_KERNEL);
-+	indio_dev->channels = devm_kmemdup(&pdev->dev, gyro_3d_channels,
-+					   sizeof(gyro_3d_channels), GFP_KERNEL);
- 	if (!indio_dev->channels) {
- 		dev_err(&pdev->dev, "failed to duplicate channels\n");
- 		return -ENOMEM;
-@@ -315,7 +315,7 @@ static int hid_gyro_3d_probe(struct platform_device *pdev)
- 				   HID_USAGE_SENSOR_GYRO_3D, gyro_state);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to setup attributes\n");
--		goto error_free_dev_mem;
-+		return ret;
- 	}
+@@ -291,7 +291,7 @@ static int rfd77402_probe(struct i2c_client *client,
+ 	return 0;
  
- 	indio_dev->num_channels = ARRAY_SIZE(gyro_3d_channels);
-@@ -329,7 +329,7 @@ static int hid_gyro_3d_probe(struct platform_device *pdev)
- 					&gyro_state->common_attributes);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "trigger setup failed\n");
--		goto error_free_dev_mem;
-+		return ret;
- 	}
- 
- 	ret = iio_device_register(indio_dev);
-@@ -354,8 +354,6 @@ static int hid_gyro_3d_probe(struct platform_device *pdev)
- 	iio_device_unregister(indio_dev);
- error_remove_trigger:
- 	hid_sensor_remove_trigger(indio_dev, &gyro_state->common_attributes);
--error_free_dev_mem:
--	kfree(indio_dev->channels);
+ err_powerdown:
+-	rfd77402_powerdown(data);
++	rfd77402_powerdown(client);
  	return ret;
  }
  
-@@ -369,7 +367,6 @@ static int hid_gyro_3d_remove(struct platform_device *pdev)
- 	sensor_hub_remove_callback(hsdev, HID_USAGE_SENSOR_GYRO_3D);
+@@ -300,7 +300,7 @@ static int rfd77402_remove(struct i2c_client *client)
+ 	struct iio_dev *indio_dev = i2c_get_clientdata(client);
+ 
  	iio_device_unregister(indio_dev);
- 	hid_sensor_remove_trigger(indio_dev, &gyro_state->common_attributes);
--	kfree(indio_dev->channels);
+-	rfd77402_powerdown(iio_priv(indio_dev));
++	rfd77402_powerdown(client);
  
  	return 0;
  }
-diff --git a/drivers/iio/light/hid-sensor-als.c b/drivers/iio/light/hid-sensor-als.c
-index 2ff252c75c03..5a1a625d8d16 100644
---- a/drivers/iio/light/hid-sensor-als.c
-+++ b/drivers/iio/light/hid-sensor-als.c
-@@ -294,8 +294,8 @@ static int hid_als_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
--	indio_dev->channels = kmemdup(als_channels,
--				      sizeof(als_channels), GFP_KERNEL);
-+	indio_dev->channels = devm_kmemdup(&pdev->dev, als_channels,
-+					   sizeof(als_channels), GFP_KERNEL);
- 	if (!indio_dev->channels) {
- 		dev_err(&pdev->dev, "failed to duplicate channels\n");
- 		return -ENOMEM;
-@@ -306,7 +306,7 @@ static int hid_als_probe(struct platform_device *pdev)
- 			       HID_USAGE_SENSOR_ALS, als_state);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to setup attributes\n");
--		goto error_free_dev_mem;
-+		return ret;
- 	}
- 
- 	indio_dev->num_channels =
-@@ -321,7 +321,7 @@ static int hid_als_probe(struct platform_device *pdev)
- 				&als_state->common_attributes);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "trigger setup failed\n");
--		goto error_free_dev_mem;
-+		return ret;
- 	}
- 
- 	ret = iio_device_register(indio_dev);
-@@ -346,8 +346,6 @@ static int hid_als_probe(struct platform_device *pdev)
- 	iio_device_unregister(indio_dev);
- error_remove_trigger:
- 	hid_sensor_remove_trigger(indio_dev, &als_state->common_attributes);
--error_free_dev_mem:
--	kfree(indio_dev->channels);
- 	return ret;
+@@ -308,18 +308,12 @@ static int rfd77402_remove(struct i2c_client *client)
+ #ifdef CONFIG_PM_SLEEP
+ static int rfd77402_suspend(struct device *dev)
+ {
+-	struct rfd77402_data *data = iio_priv(i2c_get_clientdata(
+-				     to_i2c_client(dev)));
+-
+-	return rfd77402_powerdown(data);
++	return rfd77402_powerdown(to_i2c_client(dev));
  }
  
-@@ -361,7 +359,6 @@ static int hid_als_remove(struct platform_device *pdev)
- 	sensor_hub_remove_callback(hsdev, HID_USAGE_SENSOR_ALS);
- 	iio_device_unregister(indio_dev);
- 	hid_sensor_remove_trigger(indio_dev, &als_state->common_attributes);
--	kfree(indio_dev->channels);
- 
- 	return 0;
+ static int rfd77402_resume(struct device *dev)
+ {
+-	struct rfd77402_data *data = iio_priv(i2c_get_clientdata(
+-				     to_i2c_client(dev)));
+-
+-	return rfd77402_init(data);
++	return rfd77402_init(to_i2c_client(dev));
  }
-diff --git a/drivers/iio/light/hid-sensor-prox.c b/drivers/iio/light/hid-sensor-prox.c
-index 1621530f5f61..f10fa2abfe72 100644
---- a/drivers/iio/light/hid-sensor-prox.c
-+++ b/drivers/iio/light/hid-sensor-prox.c
-@@ -253,8 +253,8 @@ static int hid_prox_probe(struct platform_device *pdev)
- 		return ret;
- 	}
+ #endif
  
--	indio_dev->channels = kmemdup(prox_channels, sizeof(prox_channels),
--				      GFP_KERNEL);
-+	indio_dev->channels = devm_kmemdup(&pdev->dev, prox_channels,
-+					   sizeof(prox_channels), GFP_KERNEL);
- 	if (!indio_dev->channels) {
- 		dev_err(&pdev->dev, "failed to duplicate channels\n");
- 		return -ENOMEM;
-@@ -265,7 +265,7 @@ static int hid_prox_probe(struct platform_device *pdev)
- 				HID_USAGE_SENSOR_PROX, prox_state);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to setup attributes\n");
--		goto error_free_dev_mem;
-+		return ret;
- 	}
- 
- 	indio_dev->num_channels = ARRAY_SIZE(prox_channels);
-@@ -279,7 +279,7 @@ static int hid_prox_probe(struct platform_device *pdev)
- 				&prox_state->common_attributes);
- 	if (ret) {
- 		dev_err(&pdev->dev, "trigger setup failed\n");
--		goto error_free_dev_mem;
-+		return ret;
- 	}
- 
- 	ret = iio_device_register(indio_dev);
-@@ -304,8 +304,6 @@ static int hid_prox_probe(struct platform_device *pdev)
- 	iio_device_unregister(indio_dev);
- error_remove_trigger:
- 	hid_sensor_remove_trigger(indio_dev, &prox_state->common_attributes);
--error_free_dev_mem:
--	kfree(indio_dev->channels);
- 	return ret;
- }
- 
-@@ -319,7 +317,6 @@ static int hid_prox_remove(struct platform_device *pdev)
- 	sensor_hub_remove_callback(hsdev, HID_USAGE_SENSOR_PROX);
- 	iio_device_unregister(indio_dev);
- 	hid_sensor_remove_trigger(indio_dev, &prox_state->common_attributes);
--	kfree(indio_dev->channels);
- 
- 	return 0;
- }
-diff --git a/drivers/iio/orientation/hid-sensor-incl-3d.c b/drivers/iio/orientation/hid-sensor-incl-3d.c
-index c0079e2c8807..ba5b581d5b25 100644
---- a/drivers/iio/orientation/hid-sensor-incl-3d.c
-+++ b/drivers/iio/orientation/hid-sensor-incl-3d.c
-@@ -326,8 +326,8 @@ static int hid_incl_3d_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
--	indio_dev->channels = kmemdup(incl_3d_channels,
--				      sizeof(incl_3d_channels), GFP_KERNEL);
-+	indio_dev->channels = devm_kmemdup(&pdev->dev, incl_3d_channels,
-+					   sizeof(incl_3d_channels), GFP_KERNEL);
- 	if (!indio_dev->channels) {
- 		dev_err(&pdev->dev, "failed to duplicate channels\n");
- 		return -ENOMEM;
-@@ -339,7 +339,7 @@ static int hid_incl_3d_probe(struct platform_device *pdev)
- 				   incl_state);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to setup attributes\n");
--		goto error_free_dev_mem;
-+		return ret;
- 	}
- 
- 	indio_dev->num_channels = ARRAY_SIZE(incl_3d_channels);
-@@ -353,7 +353,7 @@ static int hid_incl_3d_probe(struct platform_device *pdev)
- 					&incl_state->common_attributes);
- 	if (ret) {
- 		dev_err(&pdev->dev, "trigger setup failed\n");
--		goto error_free_dev_mem;
-+		return ret;
- 	}
- 
- 	ret = iio_device_register(indio_dev);
-@@ -379,8 +379,6 @@ static int hid_incl_3d_probe(struct platform_device *pdev)
- 	iio_device_unregister(indio_dev);
- error_remove_trigger:
- 	hid_sensor_remove_trigger(indio_dev, &incl_state->common_attributes);
--error_free_dev_mem:
--	kfree(indio_dev->channels);
- 	return ret;
- }
- 
-@@ -394,7 +392,6 @@ static int hid_incl_3d_remove(struct platform_device *pdev)
- 	sensor_hub_remove_callback(hsdev, HID_USAGE_SENSOR_INCLINOMETER_3D);
- 	iio_device_unregister(indio_dev);
- 	hid_sensor_remove_trigger(indio_dev, &incl_state->common_attributes);
--	kfree(indio_dev->channels);
- 
- 	return 0;
- }
-diff --git a/drivers/iio/pressure/hid-sensor-press.c b/drivers/iio/pressure/hid-sensor-press.c
-index 10c52b8df2ba..dcd593c426b4 100644
---- a/drivers/iio/pressure/hid-sensor-press.c
-+++ b/drivers/iio/pressure/hid-sensor-press.c
-@@ -259,8 +259,8 @@ static int hid_press_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
--	indio_dev->channels = kmemdup(press_channels, sizeof(press_channels),
--				      GFP_KERNEL);
-+	indio_dev->channels = devm_kmemdup(&pdev->dev, press_channels,
-+					   sizeof(press_channels), GFP_KERNEL);
- 	if (!indio_dev->channels) {
- 		dev_err(&pdev->dev, "failed to duplicate channels\n");
- 		return -ENOMEM;
-@@ -271,7 +271,7 @@ static int hid_press_probe(struct platform_device *pdev)
- 				 HID_USAGE_SENSOR_PRESSURE, press_state);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to setup attributes\n");
--		goto error_free_dev_mem;
-+		return ret;
- 	}
- 
- 	indio_dev->num_channels =
-@@ -286,7 +286,7 @@ static int hid_press_probe(struct platform_device *pdev)
- 				&press_state->common_attributes);
- 	if (ret) {
- 		dev_err(&pdev->dev, "trigger setup failed\n");
--		goto error_free_dev_mem;
-+		return ret;
- 	}
- 
- 	ret = iio_device_register(indio_dev);
-@@ -311,8 +311,6 @@ static int hid_press_probe(struct platform_device *pdev)
- 	iio_device_unregister(indio_dev);
- error_remove_trigger:
- 	hid_sensor_remove_trigger(indio_dev, &press_state->common_attributes);
--error_free_dev_mem:
--	kfree(indio_dev->channels);
- 	return ret;
- }
- 
-@@ -326,7 +324,6 @@ static int hid_press_remove(struct platform_device *pdev)
- 	sensor_hub_remove_callback(hsdev, HID_USAGE_SENSOR_PRESSURE);
- 	iio_device_unregister(indio_dev);
- 	hid_sensor_remove_trigger(indio_dev, &press_state->common_attributes);
--	kfree(indio_dev->channels);
- 
- 	return 0;
- }
 -- 
 2.31.1
 

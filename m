@@ -2,607 +2,734 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D53AF3B7A38
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Jun 2021 00:03:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF8D83B7F24
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Jun 2021 10:38:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235231AbhF2WGV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 29 Jun 2021 18:06:21 -0400
-Received: from relmlor1.renesas.com ([210.160.252.171]:61189 "EHLO
-        relmlie5.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S234958AbhF2WGS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Jun 2021 18:06:18 -0400
-X-IronPort-AV: E=Sophos;i="5.83,310,1616425200"; 
-   d="scan'208";a="85915417"
-Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie5.idc.renesas.com with ESMTP; 30 Jun 2021 07:03:49 +0900
-Received: from localhost.localdomain (unknown [10.226.36.204])
-        by relmlir5.idc.renesas.com (Postfix) with ESMTP id 27FEA40108F3;
-        Wed, 30 Jun 2021 07:03:46 +0900 (JST)
-From:   Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-To:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        Rob Herring <robh+dt@kernel.org>,
+        id S233291AbhF3Ikr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 30 Jun 2021 04:40:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60642 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232831AbhF3Ikq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 30 Jun 2021 04:40:46 -0400
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41C81C061756;
+        Wed, 30 Jun 2021 01:38:17 -0700 (PDT)
+Received: by mail-pg1-x534.google.com with SMTP id u14so1526206pga.11;
+        Wed, 30 Jun 2021 01:38:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=kVZ6MO39i91rgDbPBGIigJFKWN2FhN70V1+xGsePjn4=;
+        b=O2jpiyWA484HlaD15fR+cMguAcXOYzSiWvdGt6JW576BosRWZBB9+SAiQEm4bNbRf1
+         CIRzxlqIC4EAlQHfkV6wNYO+ng8aR2fQO1M++e0rIdLpvOHxOaeqTmLgiczI578XmczC
+         BOKBagSnauQPgqAvTQvsF8V6YB77YXo/8np8YdL3+VU6gPcZ496DKtoR3Qnu0nwiobBd
+         2zlq8MWzC5VTtq5SaAcaoGOH8F3tiGBekh59CtyYLiW/N7+Y+iDYtTxLk4csEygdvV6b
+         qP9Df/quMwltu/A9YQhU09/J9aq5/G2Egg6u+rWr17cMJ31Q59S3+W5aUMuMlSPukT9R
+         rAAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=kVZ6MO39i91rgDbPBGIigJFKWN2FhN70V1+xGsePjn4=;
+        b=WDTn/XNNgZyp2BBsixTiI/PXwo3ShbNCttmMETxmYEb80tSebagsE8uBsEullwwROc
+         y6KEH60CX888ZpSQdgaRyPO8x6UV516tIhAU1nzYl76rYdAgN1edS9WgUAqcPbI/ALIQ
+         Ihcp8YitF4S5OH0HoXU6tpRUe7166ubKttUcuMpa6irUYLhFPD21Oy/lcBneSyA/WKA0
+         wKRBLzIR+C5PLDkyDn9M1SAvJErpmt2zXigU1PFor6zFrdh5MFerztl9mfzTD6Q19Gkp
+         4XRTRA+Bhv+DtYVfmO2HtAcWcuNWiJR+BBPGBYOOe/K+XlnkmerkDJl3GzomVvnYfPbD
+         gckg==
+X-Gm-Message-State: AOAM533KNVyuahCwfeGX1RxDElK3WLb+k0Lf9mM44YtG4XAwptK7TQ4g
+        w04BUykatk4ayS0TCILiM/6hP3ePG4YXpWf3qRo=
+X-Google-Smtp-Source: ABdhPJwwbtS6Mu+z1VNXsZOMv8PmlvAUwo0+5v5qdJj4/cIqGbFNF/5QF6bgJnVfheddeR7k91tgDBZuWygo/VMh3Fs=
+X-Received: by 2002:a05:6a00:a1e:b029:30e:f6eb:c30b with SMTP id
+ p30-20020a056a000a1eb029030ef6ebc30bmr5785922pfh.72.1625042296708; Wed, 30
+ Jun 2021 01:38:16 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210629142308.25868-1-antoniu.miclaus@analog.com> <20210629142308.25868-2-antoniu.miclaus@analog.com>
+In-Reply-To: <20210629142308.25868-2-antoniu.miclaus@analog.com>
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+Date:   Wed, 30 Jun 2021 11:38:04 +0300
+Message-ID: <CA+U=Dsq6kJjqgPUrZ3SE3+gpGN0e6Lh40dMKTvWs-zOPGN=rOQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] iio: frequency: adrf6780: add support for ADRF6780
+To:     Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Philipp Zabel <p.zabel@pengutronix.de>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        Prabhakar <prabhakar.csengg@gmail.com>,
-        Biju Das <biju.das.jz@bp.renesas.com>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: [PATCH 2/2] iio: adc: Add driver for Renesas RZ/G2L A/D converter
-Date:   Tue, 29 Jun 2021 23:03:28 +0100
-Message-Id: <20210629220328.13366-3-prabhakar.mahadev-lad.rj@bp.renesas.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210629220328.13366-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-References: <20210629220328.13366-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+        devicetree <devicetree@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add ADC driver support for Renesas RZ/G2L A/D converter in SW
-trigger mode.
+On Tue, Jun 29, 2021 at 5:25 PM Antoniu Miclaus
+<antoniu.miclaus@analog.com> wrote:
+>
+> Add support for the ADRF6780 microwave upconverter.
 
-A/D Converter block is a successive approximation analog-to-digital
-converter with a 12-bit accuracy and supports a maximum of 8 input
-channels.
+Hey,
 
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
----
- MAINTAINERS                 |   8 +
- drivers/iio/adc/Kconfig     |  10 +
- drivers/iio/adc/Makefile    |   1 +
- drivers/iio/adc/rzg2l_adc.c | 489 ++++++++++++++++++++++++++++++++++++
- 4 files changed, 508 insertions(+)
- create mode 100644 drivers/iio/adc/rzg2l_adc.c
+A few comments inline.
+The description of the commit could have a bit more information.
+Maybe a short description of the chip (typically I'd adapt something
+from the datasheet).
+And maybe a link to the datasheet.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 81e1edeceae4..bee4c3847e01 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -15622,6 +15622,14 @@ L:	linux-renesas-soc@vger.kernel.org
- S:	Maintained
- F:	drivers/phy/renesas/phy-rcar-gen3-usb*.c
- 
-+RENESAS RZ/G2L A/D DRIVER
-+M:	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-+L:	linux-iio@vger.kernel.org
-+L:	linux-renesas-soc@vger.kernel.org
-+S:	Supported
-+F:	Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
-+F:	drivers/iio/adc/rzg2l_adc.c
-+
- RESET CONTROLLER FRAMEWORK
- M:	Philipp Zabel <p.zabel@pengutronix.de>
- S:	Maintained
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index c7946c439612..9408cbf97acc 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -887,6 +887,16 @@ config ROCKCHIP_SARADC
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called rockchip_saradc.
- 
-+config RZG2L_ADC
-+	tristate "Renesas RZ/G2L ADC driver"
-+	depends on ARCH_R9A07G044 || COMPILE_TEST
-+	help
-+	  Say yes here to build support for the ADC found in Renesas
-+	  RZ/G2L family.
-+
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called rzg2l_adc.
-+
- config SC27XX_ADC
- 	tristate "Spreadtrum SC27xx series PMICs ADC"
- 	depends on MFD_SC27XX_PMIC || COMPILE_TEST
-diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-index a226657d19c0..d92bcc9c5fbb 100644
---- a/drivers/iio/adc/Makefile
-+++ b/drivers/iio/adc/Makefile
-@@ -82,6 +82,7 @@ obj-$(CONFIG_QCOM_PM8XXX_XOADC) += qcom-pm8xxx-xoadc.o
- obj-$(CONFIG_RCAR_GYRO_ADC) += rcar-gyroadc.o
- obj-$(CONFIG_RN5T618_ADC) += rn5t618-adc.o
- obj-$(CONFIG_ROCKCHIP_SARADC) += rockchip_saradc.o
-+obj-$(CONFIG_RZG2L_ADC) += rzg2l_adc.o
- obj-$(CONFIG_SC27XX_ADC) += sc27xx_adc.o
- obj-$(CONFIG_SPEAR_ADC) += spear_adc.o
- obj-$(CONFIG_STX104) += stx104.o
-diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
-new file mode 100644
-index 000000000000..1c58eb8ae1ec
---- /dev/null
-+++ b/drivers/iio/adc/rzg2l_adc.c
-@@ -0,0 +1,489 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * RZ/G2L A/D Converter driver
-+ *
-+ *  Copyright (c) 2021 Renesas Electronics Europe GmbH
-+ *
-+ * Author: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-+ */
-+
-+#include <linux/clk.h>
-+#include <linux/completion.h>
-+#include <linux/delay.h>
-+#include <linux/iio/iio.h>
-+#include <linux/interrupt.h>
-+#include <linux/io.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/of_device.h>
-+#include <linux/platform_device.h>
-+#include <linux/reset.h>
-+
-+#define ADM(n)			((n) * 0x4)
-+#define ADM0_ADCE		BIT(0)
-+#define ADM0_ADBSY		BIT(1)
-+#define ADM0_PWDWNB		BIT(2)
-+#define ADM0_SRESB		BIT(15)
-+#define ADM1_TRG		BIT(0)
-+#define ADM1_MS			BIT(2)
-+#define ADM1_BS			BIT(4)
-+#define ADM1_EGA_CLEAR		~GENMASK(13, 12)
-+#define ADM2_CHSEL_CLEAR	~GENMASK(7, 0)
-+#define ADM3_ADSMP		0x578
-+#define ADM3_ADCMP		(0xe << 16)
-+#define ADM3_ADIL_CLEAR		~GENMASK(31, 24)
-+
-+#define ADINT			0x20
-+#define ADINT_CH_CLEAR		~GENMASK(7, 0)
-+#define ADINT_CSEEN		BIT(16)
-+#define ADINT_INTS		BIT(31)
-+#define ADSTS			0x24
-+#define ADINT_INTST_MASK	GENMASK(7, 0)
-+#define ADSTS_CSEST		BIT(16)
-+#define ADIVC			0x28
-+#define ADIVC_DIVADC_CLEAR	~GENMASK(8, 0)
-+#define ADIVC_DIVADC_4		0x4
-+#define ADFIL			0x2c
-+#define ADCR(n)			(0x30 + ((n) * 0x4))
-+#define ADCR_AD_MASK		GENMASK(11, 0)
-+
-+#define ADC_MAX_CHANNELS	8
-+#define ADC_CHN_MASK		0x7
-+#define ADC_TIMEOUT		usecs_to_jiffies(1 * 4)
-+
-+enum trigger_mode {
-+	SW_TRIGGER = 0,
-+	SYNC_TRIGGER,
-+	ASYNC_TRIGGER,
-+};
-+
-+struct rzg2l_adc_data {
-+	const struct iio_chan_spec *channels;
-+	u8 num_channels;
-+	u8 trigger;
-+};
-+
-+struct rzg2l_adc {
-+	void __iomem *base;
-+	struct clk *pclk;
-+	struct clk *adclk;
-+	struct reset_control *presetn;
-+	struct reset_control *adrstn;
-+	struct completion completion;
-+	const struct rzg2l_adc_data *data;
-+	bool adc_disabled; /* protected with mlock mutex from indio_dev */
-+	u16 last_val[ADC_MAX_CHANNELS];
-+};
-+
-+static unsigned int rzg2l_adc_readl(struct rzg2l_adc *adc, u32 reg)
-+{
-+	return readl(adc->base + reg);
-+}
-+
-+static void rzg2l_adc_writel(struct rzg2l_adc *adc, unsigned int reg, u32 val)
-+{
-+	writel(val, adc->base + reg);
-+}
-+
-+static int rzg2l_adc_adclk(struct rzg2l_adc *adc, bool prepare)
-+{
-+	if (prepare)
-+		return clk_prepare_enable(adc->adclk);
-+
-+	clk_disable_unprepare(adc->adclk);
-+	return 0;
-+}
-+
-+static void rzg2l_adc_pwr(struct rzg2l_adc *adc, bool on)
-+{
-+	u32 reg;
-+
-+	reg = rzg2l_adc_readl(adc, ADM(0));
-+	if (on)
-+		reg |= ADM0_PWDWNB;
-+	else
-+		reg &= ~ADM0_PWDWNB;
-+	rzg2l_adc_writel(adc, ADM(0), reg);
-+	udelay(2);
-+}
-+
-+static void rzg2l_adc_conversion(struct rzg2l_adc *adc, bool start)
-+{
-+	int timeout = 5;
-+	u32 reg;
-+
-+	/* stop A/D conversion */
-+	reg = rzg2l_adc_readl(adc, ADM(0));
-+	if (start)
-+		reg |= ADM0_ADCE;
-+	else
-+		reg &= ~ADM0_ADCE;
-+	rzg2l_adc_writel(adc, ADM(0), reg);
-+
-+	if (start)
-+		return;
-+
-+	do {
-+		usleep_range(100, 200);
-+		reg = rzg2l_adc_readl(adc, ADM(0));
-+		timeout--;
-+		if (!timeout) {
-+			pr_err("%s stopping ADC timed out\n", __func__);
-+			break;
-+		}
-+	} while (((reg & ADM0_ADBSY) || (reg & ADM0_ADCE)));
-+}
-+
-+static int rzg2l_adc_read_raw(struct iio_dev *indio_dev,
-+			      struct iio_chan_spec const *chan,
-+			      int *val, int *val2, long mask)
-+{
-+	struct rzg2l_adc *adc = iio_priv(indio_dev);
-+	u32 reg;
-+	int ret;
-+	u8 ch;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		mutex_lock(&indio_dev->mlock);
-+
-+		if (adc->adc_disabled) {
-+			mutex_unlock(&indio_dev->mlock);
-+			return -EBUSY;
-+		}
-+
-+		if (rzg2l_adc_readl(adc, ADM(0)) & ADM0_ADBSY) {
-+			mutex_unlock(&indio_dev->mlock);
-+			return -EBUSY;
-+		}
-+
-+		ch = chan->channel & ADC_CHN_MASK;
-+		/* SW trigger */
-+		reg = rzg2l_adc_readl(adc, ADM(1));
-+		reg &= ADM1_EGA_CLEAR;
-+		reg &= ~ADM1_BS;
-+		reg |= ADM1_MS;
-+		reg &= ~ADM1_TRG;
-+		rzg2l_adc_writel(adc, ADM(1), reg);
-+
-+		/* select channel */
-+		reg = rzg2l_adc_readl(adc, ADM(2));
-+		reg &= ADM2_CHSEL_CLEAR;
-+		reg |= BIT(ch);
-+		rzg2l_adc_writel(adc, ADM(2), reg);
-+
-+		reg = rzg2l_adc_readl(adc, ADM(3));
-+		reg &= ADM3_ADIL_CLEAR;
-+		reg |= ADM3_ADCMP;
-+		reg |= ADM3_ADSMP;
-+		rzg2l_adc_writel(adc, ADM(3), reg);
-+
-+		reg = rzg2l_adc_readl(adc, ADIVC);
-+		reg &= ADIVC_DIVADC_CLEAR;
-+		reg |= ADIVC_DIVADC_4;
-+		rzg2l_adc_writel(adc, ADIVC, reg);
-+
-+		reg = rzg2l_adc_readl(adc, ADINT);
-+		reg &= ~ADINT_INTS;
-+		reg &= ADINT_CH_CLEAR;
-+		reg |= ADINT_CSEEN;
-+		reg |= BIT(ch);
-+		rzg2l_adc_writel(adc, ADINT, reg);
-+
-+		rzg2l_adc_pwr(adc, true);
-+
-+		ret = rzg2l_adc_adclk(adc, true);
-+		if (ret) {
-+			rzg2l_adc_pwr(adc, false);
-+			mutex_unlock(&indio_dev->mlock);
-+			return -EINVAL;
-+		}
-+
-+		reinit_completion(&adc->completion);
-+
-+		rzg2l_adc_conversion(adc, true);
-+
-+		if (!wait_for_completion_timeout(&adc->completion, ADC_TIMEOUT)) {
-+			reg &= ADINT_CH_CLEAR;
-+			rzg2l_adc_writel(adc, ADINT, reg);
-+			rzg2l_adc_conversion(adc, false);
-+			rzg2l_adc_adclk(adc, false);
-+			rzg2l_adc_pwr(adc, false);
-+			mutex_unlock(&indio_dev->mlock);
-+			return -ETIMEDOUT;
-+		}
-+
-+		*val = adc->last_val[ch];
-+		rzg2l_adc_conversion(adc, false);
-+		rzg2l_adc_adclk(adc, false);
-+		rzg2l_adc_pwr(adc, false);
-+		mutex_unlock(&indio_dev->mlock);
-+		return IIO_VAL_INT;
-+
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static irqreturn_t rzg2l_adc_isr(int irq, void *dev_id)
-+{
-+	struct rzg2l_adc *adc = (struct rzg2l_adc *)dev_id;
-+	u8 intst;
-+	u32 reg;
-+	u8 i;
-+
-+	reg = rzg2l_adc_readl(adc, ADSTS);
-+	if (reg & ADSTS_CSEST) {
-+		rzg2l_adc_writel(adc, ADSTS, reg);
-+		return IRQ_HANDLED;
-+	}
-+
-+	intst = reg & ADINT_INTST_MASK;
-+	if (!intst)
-+		return IRQ_HANDLED;
-+
-+	for (i = 0; i < ADC_MAX_CHANNELS; i++) {
-+		if (intst & BIT(i))
-+			adc->last_val[i] = rzg2l_adc_readl(adc, ADCR(i)) & ADCR_AD_MASK;
-+	}
-+
-+	rzg2l_adc_writel(adc, ADSTS, reg);
-+
-+	complete(&adc->completion);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static const struct iio_info rzg2l_adc_iio_info = {
-+	.read_raw = rzg2l_adc_read_raw,
-+};
-+
-+static const char * const rzg2l_adc_channel_name[] = {
-+	"adc0",
-+	"adc1",
-+	"adc2",
-+	"adc3",
-+	"adc4",
-+	"adc5",
-+	"adc6",
-+	"adc7",
-+};
-+
-+static int rzg2l_adc_parse_of(struct platform_device *pdev, struct rzg2l_adc *adc)
-+{
-+	struct device_node *node = pdev->dev.of_node;
-+	struct iio_chan_spec *chan_array;
-+	u8 channels[ADC_MAX_CHANNELS];
-+	struct rzg2l_adc_data *data;
-+	int num_channels;
-+	int ret;
-+	u8 i;
-+
-+	data = devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
-+	if (!data)
-+		return -ENOMEM;
-+
-+	num_channels = of_property_count_u8_elems(node, "renesas-rzg2l,adc-channels");
-+	if (num_channels <= 0 || num_channels > ADC_MAX_CHANNELS)
-+		return -EINVAL;
-+
-+	ret = of_property_read_u8_array(node, "renesas-rzg2l,adc-channels",
-+					channels, num_channels);
-+	if (ret)
-+		return ret;
-+
-+	chan_array = devm_kcalloc(&pdev->dev, num_channels, sizeof(*chan_array),
-+				  GFP_KERNEL);
-+	if (!chan_array)
-+		return -ENOMEM;
-+
-+	for (i = 0; i < num_channels; i++) {
-+		chan_array[i].type = IIO_VOLTAGE;
-+		chan_array[i].indexed = 1;
-+		chan_array[i].channel = channels[i];
-+		chan_array[i].info_mask_separate = BIT(IIO_CHAN_INFO_RAW);
-+		chan_array[i].info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE);
-+		chan_array[i].datasheet_name = rzg2l_adc_channel_name[i];
-+	}
-+
-+	ret = of_property_read_u8(node, "renesas-rzg2l,adc-trigger-mode",
-+				  &data->trigger);
-+	if (ret)
-+		data->trigger = SW_TRIGGER;
-+
-+	/* we support SW_TRIGGER as of now */
-+	if (data->trigger != SW_TRIGGER)
-+		return -EINVAL;
-+
-+	data->num_channels = num_channels;
-+	data->channels = chan_array;
-+	adc->data = data;
-+
-+	return 0;
-+}
-+
-+static int rzg2l_adc_sw_reset(struct rzg2l_adc *adc)
-+{
-+	int timeout = 5;
-+	u32 val;
-+
-+	val = rzg2l_adc_readl(adc, ADM(0));
-+	val |= ADM0_SRESB;
-+	rzg2l_adc_writel(adc, ADM(0), val);
-+
-+	while (!(rzg2l_adc_readl(adc, ADM(0)) & ADM0_SRESB)) {
-+		if (!timeout)
-+			return -EINVAL;
-+		timeout--;
-+		usleep_range(100, 200);
-+	}
-+
-+	return 0;
-+}
-+
-+static int rzg2l_adc_probe(struct platform_device *pdev)
-+{
-+	struct iio_dev *indio_dev;
-+	struct rzg2l_adc *adc;
-+	int ret;
-+	int irq;
-+
-+	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*adc));
-+	if (!indio_dev) {
-+		dev_err(&pdev->dev, "failed allocating iio device\n");
-+		return -ENOMEM;
-+	}
-+
-+	adc = iio_priv(indio_dev);
-+	if (!adc)
-+		return -ENOMEM;
-+
-+	ret = rzg2l_adc_parse_of(pdev, adc);
-+	if (ret)
-+		return -ENOMEM;
-+
-+	adc->base = devm_platform_ioremap_resource(pdev, 0);
-+	if (IS_ERR(adc->base)) {
-+		dev_err(&pdev->dev, "missing mem resource");
-+		return PTR_ERR(adc->base);
-+	}
-+
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0) {
-+		dev_err(&pdev->dev, "no irq resource\n");
-+		return irq;
-+	}
-+
-+	adc->pclk = devm_clk_get(&pdev->dev, "pclk");
-+	if (IS_ERR(adc->pclk)) {
-+		dev_err(&pdev->dev, "Failed to get pclk");
-+		return PTR_ERR(adc->pclk);
-+	}
-+
-+	adc->adclk = devm_clk_get(&pdev->dev, "adclk");
-+	if (IS_ERR(adc->adclk)) {
-+		dev_err(&pdev->dev, "Failed to get adclk");
-+		return PTR_ERR(adc->adclk);
-+	}
-+
-+	adc->adrstn = devm_reset_control_get_exclusive(&pdev->dev, "adrst-n");
-+	if (IS_ERR(adc->adrstn)) {
-+		dev_err(&pdev->dev, "failed to get adrstn\n");
-+		return PTR_ERR(adc->adrstn);
-+	}
-+
-+	adc->presetn = devm_reset_control_get_exclusive(&pdev->dev, "presetn");
-+	if (IS_ERR(adc->presetn)) {
-+		dev_err(&pdev->dev, "failed to get presetn\n");
-+		return PTR_ERR(adc->presetn);
-+	}
-+
-+	ret = reset_control_deassert(adc->adrstn);
-+	if (ret)
-+		return ret;
-+
-+	ret = reset_control_deassert(adc->presetn);
-+	if (ret)
-+		goto assert_adrstn;
-+
-+	ret = clk_prepare_enable(adc->pclk);
-+	if (ret)
-+		goto assert_presetn;
-+
-+	ret = rzg2l_adc_sw_reset(adc);
-+	if (ret)
-+		goto unprepare_pclk;
-+
-+	init_completion(&adc->completion);
-+
-+	platform_set_drvdata(pdev, indio_dev);
-+
-+	ret = devm_request_irq(&pdev->dev, irq, rzg2l_adc_isr,
-+			       0, dev_name(&pdev->dev), adc);
-+	if (ret < 0)
-+		goto unprepare_pclk;
-+
-+	adc->adc_disabled = false;
-+	indio_dev->name = dev_name(&pdev->dev);
-+	indio_dev->dev.parent = &pdev->dev;
-+	indio_dev->dev.of_node = pdev->dev.of_node;
-+	indio_dev->info = &rzg2l_adc_iio_info;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->channels = adc->data->channels;
-+	indio_dev->num_channels = adc->data->num_channels;
-+
-+	ret = iio_device_register(indio_dev);
-+	if (ret)
-+		goto unprepare_pclk;
-+
-+	return 0;
-+
-+unprepare_pclk:
-+	clk_disable_unprepare(adc->pclk);
-+assert_presetn:
-+	reset_control_assert(adc->presetn);
-+assert_adrstn:
-+	reset_control_assert(adc->adrstn);
-+	return ret;
-+}
-+
-+static int rzg2l_adc_remove(struct platform_device *pdev)
-+{
-+	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
-+	struct rzg2l_adc *adc = iio_priv(indio_dev);
-+
-+	mutex_lock(&indio_dev->mlock);
-+	adc->adc_disabled = true;
-+	mutex_unlock(&indio_dev->mlock);
-+
-+	iio_device_unregister(indio_dev);
-+
-+	clk_disable_unprepare(adc->pclk);
-+	reset_control_assert(adc->presetn);
-+	reset_control_assert(adc->adrstn);
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id rzg2l_adc_match[] = {
-+	{
-+		.compatible = "renesas,rzg2l-adc",
-+	},
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, rzg2l_adc_match);
-+
-+static struct platform_driver rzg2l_adc_driver = {
-+	.probe		= rzg2l_adc_probe,
-+	.remove		= rzg2l_adc_remove,
-+	.driver		= {
-+		.name	= "rzg2l-adc",
-+		.of_match_table = rzg2l_adc_match,
-+	},
-+};
-+
-+module_platform_driver(rzg2l_adc_driver);
-+
-+MODULE_AUTHOR("Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>");
-+MODULE_DESCRIPTION("Renesas RZ/G2L ADC driver");
-+MODULE_LICENSE("GPL v2");
--- 
-2.17.1
+>
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> ---
+>  drivers/iio/frequency/Kconfig    |  13 +
+>  drivers/iio/frequency/Makefile   |   1 +
+>  drivers/iio/frequency/adrf6780.c | 534 +++++++++++++++++++++++++++++++
+>  3 files changed, 548 insertions(+)
+>  create mode 100644 drivers/iio/frequency/adrf6780.c
+>
+> diff --git a/drivers/iio/frequency/Kconfig b/drivers/iio/frequency/Kconfig
+> index 240b81502512..fc9751c48f59 100644
+> --- a/drivers/iio/frequency/Kconfig
+> +++ b/drivers/iio/frequency/Kconfig
+> @@ -49,5 +49,18 @@ config ADF4371
+>
+>           To compile this driver as a module, choose M here: the
+>           module will be called adf4371.
+> +
+> +config ADRF6780
+> +        tristate "Analog Devices ADRF6780 Microwave Upconverter"
+> +        depends on SPI
+> +        depends on COMMON_CLK
+> +        depends on OF
+> +        help
+> +          Say yes here to build support for Analog Devices ADRF6780
+> +          5.9 GHz to 23.6 GHz, Wideband, Microwave Upconverter.
+> +
+> +          To compile this driver as a module, choose M here: the
+> +          module will be called adrf6780.
+> +
+>  endmenu
+>  endmenu
+> diff --git a/drivers/iio/frequency/Makefile b/drivers/iio/frequency/Makefile
+> index 518b1e50caef..ae3136c79202 100644
+> --- a/drivers/iio/frequency/Makefile
+> +++ b/drivers/iio/frequency/Makefile
+> @@ -7,3 +7,4 @@
+>  obj-$(CONFIG_AD9523) += ad9523.o
+>  obj-$(CONFIG_ADF4350) += adf4350.o
+>  obj-$(CONFIG_ADF4371) += adf4371.o
+> +obj-$(CONFIG_ADRF6780) += adrf6780.o
+> diff --git a/drivers/iio/frequency/adrf6780.c b/drivers/iio/frequency/adrf6780.c
+> new file mode 100644
+> index 000000000000..c492c4e4adf1
+> --- /dev/null
+> +++ b/drivers/iio/frequency/adrf6780.c
+> @@ -0,0 +1,534 @@
+> +// SPDX-License-Identifier: GPL-2.0+
 
+about the licensing;
+
+SPDX-License-Identifier: GPL-2.0+    ==   MODULE_LICENSE("GPL v2");
+SPDX-License-Identifier: GPL-2.0    ==   MODULE_LICENSE("GPL v2");
+
+I usually don't care about this licensing details, but it seems to be
+important elsewhere.
+
+> +/*
+> + * ADRF6780 driver
+
+This could be   "Analog Devices ADRF6780 driver"
+
+> + *
+> + * Copyright 2021 Analog Devices Inc.
+> + */
+> +
+> +#include <linux/bitfield.h>
+> +#include <linux/bits.h>
+> +#include <linux/clk.h>
+> +#include <linux/clkdev.h>
+> +#include <linux/clk-provider.h>
+> +#include <linux/delay.h>
+> +#include <linux/device.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/module.h>
+> +#include <linux/regmap.h>
+> +#include <linux/spi/spi.h>
+
+Not all these headers look used.
+For one thing, regmap.h doesn't look used at all.
+Maybe trim the list.
+
+> +
+> +/* ADRF6780 Register Map */
+> +#define ADRF6780_REG_CONTROL                   0x00
+> +#define ADRF6780_REG_ALARM_READBACK            0x01
+> +#define ADRF6780_REG_ALARM_MASKS               0x02
+> +#define ADRF6780_REG_ENABLE                    0x03
+> +#define ADRF6780_REG_LINEARIZE                 0x04
+> +#define ADRF6780_REG_LO_PATH                   0x05
+> +#define ADRF6780_REG_ADC_CONTROL               0x06
+> +#define ADRF6780_REG_ADC_OUTPUT                        0x0C
+> +
+> +/* ADRF6780_REG_CONTROL Map */
+> +#define ADRF6780_PARITY_EN_MSK                 BIT(15)
+> +#define ADRF6780_PARITY_EN(x)                  FIELD_PREP(ADRF6780_PARITY_EN_MSK, x)
+> +#define ADRF6780_SOFT_RESET_MSK                        BIT(14)
+> +#define ADRF6780_SOFT_RESET(x)                 FIELD_PREP(ADRF6780_SOFT_RESET_MSK, x)
+> +#define ADRF6780_CHIP_ID_MSK                   GENMASK(11, 4)
+> +#define ADRF6780_CHIP_ID                       0xA
+> +#define ADRF6780_CHIP_REVISION_MSK             GENMASK(3, 0)
+> +#define ADRF6780_CHIP_REVISION(x)              FIELD_PREP(ADRF6780_CHIP_REVISION_MSK, x)
+> +
+> +/* ADRF6780_REG_ALARM_READBACK Map */
+> +#define ADRF6780_PARITY_ERROR_MSK              BIT(15)
+> +#define ADRF6780_PARITY_ERROR(x)               FIELD_PREP(ADRF6780_PARITY_ERROR_MSK, x)
+> +#define ADRF6780_TOO_FEW_ERRORS_MSK            BIT(14)
+> +#define ADRF6780_TOO_FEW_ERRORS(x)             FIELD_PREP(ADRF6780_TOO_FEW_ERRORS_MSK, x)
+> +#define ADRF6780_TOO_MANY_ERRORS_MSK           BIT(13)
+> +#define ADRF6780_TOO_MANY_ERRORS(x)            FIELD_PREP(ADRF6780_TOO_MANY_ERRORS_MSK, x)
+> +#define ADRF6780_ADDRESS_RANGE_ERROR_MSK       BIT(12)
+> +#define ADRF6780_ADDRESS_RANGE_ERROR(x)                FIELD_PREP(ADRF6780_ADDRESS_RANGE_ERROR_MSK, x)
+> +
+> +/* ADRF6780_REG_ENABLE Map */
+> +#define ADRF6780_VGA_BUFFER_EN_MSK             BIT(8)
+> +#define ADRF6780_VGA_BUFFER_EN(x)              FIELD_PREP(ADRF6780_VGA_BUFFER_EN_MSK, x)
+> +#define ADRF6780_DETECTOR_EN_MSK               BIT(7)
+> +#define ADRF6780_DETECTOR_EN(x)                        FIELD_PREP(ADRF6780_DETECTOR_EN_MSK, x)
+> +#define ADRF6780_LO_BUFFER_EN_MSK              BIT(6)
+> +#define ADRF6780_LO_BUFFER_EN(x)               FIELD_PREP(ADRF6780_LO_BUFFER_EN_MSK, x)
+> +#define ADRF6780_IF_MODE_EN_MSK                        BIT(5)
+> +#define ADRF6780_IF_MODE_EN(x)                 FIELD_PREP(ADRF6780_IF_MODE_EN_MSK, x)
+> +#define ADRF6780_IQ_MODE_EN_MSK                        BIT(4)
+> +#define ADRF6780_IQ_MODE_EN(x)                 FIELD_PREP(ADRF6780_IQ_MODE_EN_MSK, x)
+> +#define ADRF6780_LO_X2_EN_MSK                  BIT(3)
+> +#define ADRF6780_LO_X2_EN(x)                   FIELD_PREP(ADRF6780_LO_X2_EN_MSK, x)
+> +#define ADRF6780_LO_PPF_EN_MSK                 BIT(2)
+> +#define ADRF6780_LO_PPF_EN(x)                  FIELD_PREP(ADRF6780_LO_PPF_EN_MSK, x)
+> +#define ADRF6780_LO_EN_MSK                     BIT(1)
+> +#define ADRF6780_LO_EN(x)                      FIELD_PREP(ADRF6780_LO_EN_MSK, x)
+> +#define ADRF6780_UC_BIAS_EN_MSK                        BIT(0)
+> +#define ADRF6780_UC_BIAS_EN(x)                 FIELD_PREP(ADRF6780_UC_BIAS_EN_MSK, x)
+> +
+> +/* ADRF6780_REG_LINEARIZE Map */
+> +#define ADRF6780_RDAC_LINEARIZE_MSK            GENMASK(7, 0)
+> +#define ADRF6780_RDAC_LINEARIZE(x)             FIELD_PREP(ADRF6780_RDAC_LINEARIZE_MSK, x)
+> +
+> +/* ADRF6780_REG_LO_PATH Map */
+> +#define ADRF6780_LO_SIDEBAND_MSK               BIT(10)
+> +#define ADRF6780_LO_SIDEBAND(x)                        FIELD_PREP(ADRF6780_LO_SIDEBAND_MSK, x)
+> +#define ADRF6780_Q_PATH_PHASE_ACCURACY_MSK     GENMASK(7, 4)
+> +#define ADRF6780_Q_PATH_PHASE_ACCURACY(x)      FIELD_PREP(ADRF6780_Q_PATH_PHASE_ACCURACY_MSK, x)
+> +#define ADRF6780_I_PATH_PHASE_ACCURACY_MSK     GENMASK(3, 0)
+> +#define ADRF6780_I_PATH_PHASE_ACCURACY(x)      FIELD_PREP(ADRF6780_I_PATH_PHASE_ACCURACY_MSK, x)
+> +
+> +/* ADRF6780_REG_ADC_CONTROL Map */
+> +#define ADRF6780_VDET_OUTPUT_SELECT_MSK                BIT(3)
+> +#define ADRF6780_VDET_OUTPUT_SELECT(x)         FIELD_PREP(ADRF6780_VDET_OUTPUT_SELECT_MSK, x)
+> +#define ADRF6780_ADC_START_MSK                 BIT(2)
+> +#define ADRF6780_ADC_START(x)                  FIELD_PREP(ADRF6780_ADC_START_MSK, x)
+> +#define ADRF6780_ADC_EN_MSK                    BIT(1)
+> +#define ADRF6780_ADC_EN(x)                     FIELD_PREP(ADRF6780_ADC_EN_MSK, x)
+> +#define ADRF6780_ADC_CLOCK_EN_MSK              BIT(0)
+> +#define ADRF6780_ADC_CLOCK_EN(x)               FIELD_PREP(ADRF6780_ADC_CLOCK_EN_MSK, x)
+> +
+> +/* ADRF6780_REG_ADC_OUTPUT Map */
+> +#define ADRF6780_ADC_STATUS_MSK                        BIT(8)
+> +#define ADRF6780_ADC_STATUS(x)                 FIELD_PREP(ADRF6780_ADC_STATUS_MSK, x)
+> +#define ADRF6780_ADC_VALUE_MSK                 GENMASK(7, 0)
+> +#define ADRF6780_ADC_VALUE(x)                  FIELD_PREP(ADRF6780_ADC_VALUE_MSK, x)
+
+The indentation for the bit-values doesn't look consistent in all places.
+
+> +
+> +enum supported_parts {
+> +       ADRF6780,
+> +};
+
+This enum doesn't seem used anywhere
+
+> +
+> +struct adrf6780_dev {
+> +       struct spi_device       *spi;
+> +       struct clk              *clkin;
+> +       /* Protect against concurrent accesses to the device */
+> +       struct mutex            lock;
+> +       bool                    parity_en;
+
+Maybe remove this parity check.
+There are many drivers that support some form of simple error
+checking, but in the kernel this is typically left up to the SPI
+framework.
+So, I'd just disable the error checking entirely.
+
+> +       bool                    vga_buff_en;
+> +       bool                    det_en;
+> +       bool                    lo_buff_en;
+> +       bool                    if_mode_en;
+> +       bool                    iq_mode_en;
+> +       bool                    lo_x2_en;
+> +       bool                    lo_ppf_en;
+> +       bool                    lo_en;
+> +       bool                    uc_bias_en;
+> +       bool                    lo_sideband;
+> +       bool                    vdet_out_en;
+> +};
+> +
+> +static int adrf6780_spi_read(struct adrf6780_dev *dev, unsigned int reg,
+> +                             unsigned int *val)
+> +{
+> +       int ret;
+> +       unsigned int cnt, temp;
+> +       struct spi_transfer t = {0};
+> +       u8 data[3];
+> +
+> +       data[0] = 0x80 | (reg << 1);
+> +       data[1] = 0x0;
+> +       data[2] = 0x0;
+> +
+> +       t.rx_buf = &data[0];
+> +       t.tx_buf = &data[0];
+> +       t.len = 3;
+> +
+> +       ret = spi_sync_transfer(dev->spi, &t, 1);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       temp = ((data[0] | 0x80 | (reg << 1)) << 16) |
+> +               (data[1] << 8) | data[2];
+> +
+> +       if (dev->parity_en) {
+> +               cnt = hweight_long(temp);
+> +               if (!(cnt % 2))
+> +                       return -EINVAL;
+> +       }
+> +
+> +       *val = (temp >> 1) & 0xFFFF;
+> +
+> +       return ret;
+> +}
+> +
+> +static int adrf6780_spi_write(struct adrf6780_dev *dev,
+> +                                     unsigned int reg,
+> +                                     unsigned int val)
+> +{
+> +       unsigned int cnt;
+> +       u8 data[3];
+> +
+> +       val = (val << 1);
+> +
+> +       if (dev->parity_en) {
+> +               cnt = hweight_long((reg << 17) | val);
+> +               if (cnt % 2 == 0)
+> +                       val |= 0x1;
+> +       }
+> +
+> +       data[0] = (reg << 1) | (val >> 16);
+> +       data[1] = val >> 8;
+> +       data[2] = val;
+> +
+> +       return spi_write(dev->spi, &data[0], 3);
+> +}
+> +
+> +static int __adrf6780_spi_update_bits(struct adrf6780_dev *dev, unsigned int reg,
+> +                              unsigned int mask, unsigned int val)
+> +{
+> +       int ret;
+> +       unsigned int data, temp;
+> +
+> +       ret = adrf6780_spi_read(dev, reg, &data);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       temp = (data & ~mask) | (val & mask);
+> +
+> +       return adrf6780_spi_write(dev, reg, temp);
+> +}
+> +
+> +static int adrf6780_spi_update_bits(struct adrf6780_dev *dev, unsigned int reg,
+> +                              unsigned int mask, unsigned int val)
+> +{
+> +       int ret;
+> +
+> +       mutex_lock(&dev->lock);
+> +       ret = __adrf6780_spi_update_bits(dev, reg, mask, val);
+> +       mutex_unlock(&dev->lock);
+> +       return ret;
+> +}
+> +
+> +static int adrf6780_read_raw(struct iio_dev *indio_dev,
+> +                           struct iio_chan_spec const *chan,
+> +                           int *val, int *val2, long info)
+> +{
+> +       struct adrf6780_dev *dev = iio_priv(indio_dev);
+> +       unsigned int data;
+> +       int ret;
+> +
+> +       switch (info) {
+> +       case IIO_CHAN_INFO_RAW:
+> +               mutex_lock(&dev->lock);
+> +
+> +               ret = __adrf6780_spi_update_bits(dev, ADRF6780_REG_ENABLE,
+> +                                               ADRF6780_DETECTOR_EN_MSK,
+> +                                               ADRF6780_DETECTOR_EN(1));
+
+The detector seems to be enabled here regardless of the 'det_en' value.
+And it doesn't seem to put the value back to a 'det_en' state.
+
+But the question is, if it would make sense to always enable the detector?
+In any case enabling the detector in IIO_CHAN_INFO_RAW doesn't look
+like a good idea.
+
+> +               if (ret < 0)
+> +                       goto exit;
+> +
+> +               ret = __adrf6780_spi_update_bits(dev, ADRF6780_REG_ADC_CONTROL,
+> +                                               ADRF6780_ADC_EN_MSK,
+> +                                               ADRF6780_ADC_EN(1));
+> +               if (ret < 0)
+> +                       goto exit;
+> +
+> +               ret = __adrf6780_spi_update_bits(dev, ADRF6780_REG_ADC_CONTROL,
+> +                                               ADRF6780_ADC_CLOCK_EN_MSK,
+> +                                               ADRF6780_ADC_CLOCK_EN(1));
+> +               if (ret < 0)
+> +                       goto exit;
+> +
+> +               ret = __adrf6780_spi_update_bits(dev, ADRF6780_REG_ADC_CONTROL,
+> +                                               ADRF6780_ADC_START_MSK,
+> +                                               ADRF6780_ADC_START(1));
+> +               if (ret < 0)
+> +                       goto exit;
+
+This looks like 3 SPI operations on the same register.
+Would it work to group them in a single operation?
+
+> +
+> +               usleep_range(200, 250);
+> +
+> +               ret = adrf6780_spi_read(dev, ADRF6780_REG_ADC_OUTPUT, &data);
+> +               if (ret < 0)
+> +                       goto exit;
+> +
+> +               if (!(data & ADRF6780_ADC_STATUS_MSK)) {
+> +                       ret = -EINVAL;
+> +                       goto exit;
+> +               }
+> +
+> +               ret = __adrf6780_spi_update_bits(dev, ADRF6780_REG_ADC_CONTROL,
+> +                                               ADRF6780_ADC_START_MSK,
+> +                                               ADRF6780_ADC_START(0));
+> +               if (ret < 0)
+> +                       goto exit;
+> +
+> +               ret = adrf6780_spi_read(dev, ADRF6780_REG_ADC_OUTPUT, &data);
+> +               if (ret < 0)
+> +                       goto exit;
+> +
+> +               mutex_unlock(&dev->lock);
+> +
+> +               *val = data & ADRF6780_ADC_VALUE_MSK;
+> +
+> +               return IIO_VAL_INT;
+> +exit:
+> +               mutex_unlock(&dev->lock);
+> +               return ret;
+> +       case IIO_CHAN_INFO_SCALE:
+> +               ret = adrf6780_spi_read(dev, ADRF6780_REG_LINEARIZE, &data);
+> +               if (ret < 0)
+> +                       return ret;
+> +
+> +               *val = data & ADRF6780_RDAC_LINEARIZE_MSK;
+> +
+> +               return IIO_VAL_INT;
+> +       case IIO_CHAN_INFO_PHASE:
+> +               ret = adrf6780_spi_read(dev, ADRF6780_REG_LO_PATH, &data);
+> +               if (ret < 0)
+> +                       return ret;
+> +
+> +               if (chan->channel2 == IIO_MOD_I)
+> +                       *val = data & ADRF6780_I_PATH_PHASE_ACCURACY_MSK;
+> +               else
+> +                       *val = (data & ADRF6780_Q_PATH_PHASE_ACCURACY_MSK) >> 4;
+> +
+> +               return IIO_VAL_INT;
+> +       default:
+> +               return -EINVAL;
+> +       }
+> +}
+> +
+> +static int adrf6780_write_raw(struct iio_dev *indio_dev,
+> +                            struct iio_chan_spec const *chan,
+> +                            int val, int val2, long info)
+> +{
+> +       struct adrf6780_dev *dev = iio_priv(indio_dev);
+> +       int ret;
+> +
+> +       switch (info) {
+> +       case IIO_CHAN_INFO_SCALE:
+> +               return adrf6780_spi_write(dev, ADRF6780_REG_LINEARIZE, val);
+> +       case IIO_CHAN_INFO_PHASE:
+> +               if (chan->channel2 == IIO_MOD_I)
+> +                       ret = adrf6780_spi_update_bits(dev, ADRF6780_REG_LO_PATH,
+> +                                                       ADRF6780_I_PATH_PHASE_ACCURACY_MSK,
+> +                                                       ADRF6780_I_PATH_PHASE_ACCURACY(val));
+> +               else
+> +                       ret = adrf6780_spi_update_bits(dev, ADRF6780_REG_LO_PATH,
+> +                                                       ADRF6780_Q_PATH_PHASE_ACCURACY_MSK,
+> +                                                       ADRF6780_Q_PATH_PHASE_ACCURACY(val));
+> +               return ret;
+> +       default:
+> +               return -EINVAL;
+> +       }
+> +}
+> +
+> +static int adrf6780_reg_access(struct iio_dev *indio_dev,
+> +                               unsigned int reg,
+> +                               unsigned int write_val,
+> +                               unsigned int *read_val)
+> +{
+> +       struct adrf6780_dev *dev = iio_priv(indio_dev);
+> +
+> +       if (read_val)
+> +               return adrf6780_spi_read(dev, reg, read_val);
+> +       else
+> +               return adrf6780_spi_write(dev, reg, write_val);
+> +}
+> +
+> +static const struct iio_info adrf6780_info = {
+> +       .read_raw = adrf6780_read_raw,
+> +       .write_raw = adrf6780_write_raw,
+> +       .debugfs_reg_access = &adrf6780_reg_access,
+> +};
+> +
+> +#define ADRF6780_CHAN(_channel) {                      \
+> +       .type = IIO_VOLTAGE,                            \
+> +       .output = 1,                                    \
+> +       .indexed = 1,                                   \
+> +       .channel = _channel,                            \
+> +       .info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |  \
+> +               BIT(IIO_CHAN_INFO_SCALE)                \
+> +}
+> +
+> +#define ADRF6780_CHAN_IQ(_channel, rf_comp) {                  \
+> +       .type = IIO_ALTVOLTAGE,                                 \
+> +       .modified = 1,                                          \
+> +       .output = 1,                                            \
+> +       .indexed = 1,                                           \
+> +       .channel2 = IIO_MOD_##rf_comp,                          \
+> +       .channel = _channel,                                    \
+> +       .info_mask_separate = BIT(IIO_CHAN_INFO_PHASE)          \
+> +}
+> +
+> +static const struct iio_chan_spec adrf6780_channels[] = {
+> +       ADRF6780_CHAN(0),
+> +       ADRF6780_CHAN_IQ(0, I),
+> +       ADRF6780_CHAN_IQ(0, Q),
+> +};
+> +
+> +static int adrf6780_init(struct adrf6780_dev *dev)
+> +{
+> +       int ret;
+> +       unsigned int chip_id, enable_reg, enable_reg_msk;
+> +       struct spi_device *spi = dev->spi;
+> +       bool temp_parity = dev->parity_en;
+> +
+> +       dev->parity_en = false;
+> +
+> +       /* Perform a software reset */
+> +       ret = __adrf6780_spi_update_bits(dev, ADRF6780_REG_CONTROL,
+> +                                ADRF6780_SOFT_RESET_MSK,
+> +                                ADRF6780_SOFT_RESET(1));
+> +       if (ret < 0) {
+> +               dev_err(&spi->dev, "ADRF6780 SPI software reset failed.\n");
+> +               return ret;
+> +       }
+> +
+> +       ret = __adrf6780_spi_update_bits(dev, ADRF6780_REG_CONTROL,
+> +                                ADRF6780_SOFT_RESET_MSK,
+> +                                ADRF6780_SOFT_RESET(0));
+> +       if (ret < 0) {
+> +               dev_err(&spi->dev, "ADRF6780 SPI software reset disable failed.\n");
+> +               return ret;
+> +       }
+
+I'd create a adrf6780_reset() function.
+The driver has a reset pin, which [optionally] can be implemented [now
+or later].
+Typically, these resets are implemented is:
+
+if (gpio)
+   gpio_reset()
+  return
+
+software_reset()
+
+
+> +
+> +       ret = __adrf6780_spi_update_bits(dev, ADRF6780_REG_CONTROL,
+> +                                ADRF6780_PARITY_EN_MSK,
+> +                                ADRF6780_PARITY_EN(temp_parity));
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       dev->parity_en = temp_parity;
+> +
+> +       ret = adrf6780_spi_read(dev, ADRF6780_REG_CONTROL, &chip_id);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       chip_id = (chip_id & ADRF6780_CHIP_ID_MSK) >> 4;
+> +       if (chip_id != ADRF6780_CHIP_ID) {
+> +               dev_err(&spi->dev, "ADRF6780 Invalid Chip ID.\n");
+> +               return -EINVAL;
+> +       }
+> +
+> +       enable_reg_msk = ADRF6780_VGA_BUFFER_EN_MSK |
+> +                       ADRF6780_DETECTOR_EN_MSK |
+> +                       ADRF6780_LO_BUFFER_EN_MSK |
+> +                       ADRF6780_IF_MODE_EN_MSK |
+> +                       ADRF6780_IQ_MODE_EN_MSK |
+> +                       ADRF6780_LO_X2_EN_MSK |
+> +                       ADRF6780_LO_PPF_EN_MSK |
+> +                       ADRF6780_LO_EN_MSK |
+> +                       ADRF6780_UC_BIAS_EN_MSK;
+> +
+> +       enable_reg = ADRF6780_VGA_BUFFER_EN(dev->vga_buff_en) |
+> +                       ADRF6780_DETECTOR_EN(dev->det_en) |
+> +                       ADRF6780_LO_BUFFER_EN(dev->lo_buff_en) |
+> +                       ADRF6780_IF_MODE_EN(dev->if_mode_en) |
+> +                       ADRF6780_IQ_MODE_EN(dev->iq_mode_en) |
+> +                       ADRF6780_LO_X2_EN(dev->lo_x2_en) |
+> +                       ADRF6780_LO_PPF_EN(dev->lo_ppf_en) |
+> +                       ADRF6780_LO_EN(dev->lo_en) |
+> +                       ADRF6780_UC_BIAS_EN(dev->uc_bias_en);
+> +
+> +       ret = __adrf6780_spi_update_bits(dev, ADRF6780_REG_ENABLE, enable_reg_msk, enable_reg);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       ret = __adrf6780_spi_update_bits(dev, ADRF6780_REG_LO_PATH,
+> +                                               ADRF6780_LO_SIDEBAND_MSK,
+> +                                               ADRF6780_LO_SIDEBAND(dev->lo_sideband));
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       return __adrf6780_spi_update_bits(dev, ADRF6780_REG_ADC_CONTROL,
+> +                                               ADRF6780_VDET_OUTPUT_SELECT_MSK,
+> +                                               ADRF6780_VDET_OUTPUT_SELECT(dev->vdet_out_en));
+> +}
+> +
+> +static void adrf6780_clk_disable(void *data)
+> +{
+> +       clk_disable_unprepare(data);
+> +}
+> +
+> +static int adrf6780_dt_parse(struct adrf6780_dev *dev)
+> +{
+> +       struct spi_device *spi = dev->spi;
+> +
+> +       dev->parity_en = of_property_read_bool(spi->dev.of_node, "adi,parity-en");
+> +       dev->vga_buff_en = of_property_read_bool(spi->dev.of_node, "adi,vga-buff-en");
+> +       dev->det_en = of_property_read_bool(spi->dev.of_node, "adi,det-en");
+> +       dev->lo_buff_en = of_property_read_bool(spi->dev.of_node, "adi,lo-buff-en");
+> +       dev->if_mode_en = of_property_read_bool(spi->dev.of_node, "adi,if-mode-en");
+> +       dev->iq_mode_en = of_property_read_bool(spi->dev.of_node, "adi,iq-mode-en");
+> +       dev->lo_x2_en = of_property_read_bool(spi->dev.of_node, "adi,lo-x2-en");
+> +       dev->lo_ppf_en = of_property_read_bool(spi->dev.of_node, "adi,lo-ppf-en");
+> +       dev->lo_en = of_property_read_bool(spi->dev.of_node, "adi,lo-en");
+> +       dev->uc_bias_en = of_property_read_bool(spi->dev.of_node, "adi,uc-bias-en");
+> +       dev->lo_sideband = of_property_read_bool(spi->dev.of_node, "adi,lo-sideband");
+> +       dev->vdet_out_en = of_property_read_bool(spi->dev.of_node, "adi,vdet-out-en");
+
+I'm not sure this is the best way to control these from the DT.
+So, the parity can be disabled/removed.
+Maybe the detector can always be enabled.
+
+The others may make sense to be enabled.
+
+> +
+> +       dev->clkin = devm_clk_get(&spi->dev, "lo_in");
+> +       if (IS_ERR(dev->clkin))
+> +               return PTR_ERR(dev->clkin);
+
+Initializing a clock in the adrf6780_dt_parse() function is weird.
+Mabe move this to the main probe function.
+
+> +
+> +       return 0;
+> +}
+> +
+> +static int adrf6780_probe(struct spi_device *spi)
+> +{
+> +       struct iio_dev *indio_dev;
+> +       struct adrf6780_dev *dev;
+> +       int ret;
+> +
+> +       indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*dev));
+> +       if (!indio_dev)
+> +               return -ENOMEM;
+> +
+> +       dev = iio_priv(indio_dev);
+> +
+> +       indio_dev->dev.parent = &spi->dev;
+
+this assignment can be removed in the upstream version of this driver;
+the assignment is done inside  devm_iio_device_alloc()
+
+
+> +       indio_dev->info = &adrf6780_info;
+> +       indio_dev->name = "adrf6780";
+> +       indio_dev->channels = adrf6780_channels;
+> +       indio_dev->num_channels = ARRAY_SIZE(adrf6780_channels);
+> +
+> +       dev->spi = spi;
+> +
+> +       ret = adrf6780_dt_parse(dev);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       ret = clk_prepare_enable(dev->clkin);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       ret = devm_add_action_or_reset(&spi->dev, adrf6780_clk_disable, dev->clkin);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       mutex_init(&dev->lock);
+> +
+> +       ret = adrf6780_init(dev);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       return devm_iio_device_register(&spi->dev, indio_dev);
+> +}
+> +
+> +static const struct spi_device_id adrf6780_id[] = {
+> +       { "adrf6780", ADRF6780 },
+> +       {}
+> +};
+> +MODULE_DEVICE_TABLE(spi, adrf6780_id);
+> +
+> +static const struct of_device_id adrf6780_of_match[] = {
+> +       { .compatible = "adi,adrf6780" },
+> +       {},
+
+you can remove the comma from this null terminator
+
+> +};
+> +MODULE_DEVICE_TABLE(of, adrf6780_of_match);
+> +
+> +static struct spi_driver adrf6780_driver = {
+> +       .driver = {
+> +               .name = "adrf6780",
+> +               .of_match_table = adrf6780_of_match,
+> +       },
+> +       .probe = adrf6780_probe,
+> +       .id_table = adrf6780_id,
+> +};
+> +module_spi_driver(adrf6780_driver);
+> +
+> +MODULE_AUTHOR("Antoniu Miclaus <antoniu.miclaus@analog.com");
+> +MODULE_DESCRIPTION("Analog Devices ADRF6780");
+> +MODULE_LICENSE("GPL v2");
+> --
+> 2.32.0
+>

@@ -2,84 +2,226 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 356BC3B97CD
-	for <lists+linux-iio@lfdr.de>; Thu,  1 Jul 2021 22:51:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DDBC3B97DD
+	for <lists+linux-iio@lfdr.de>; Thu,  1 Jul 2021 22:58:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234176AbhGAUxm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 1 Jul 2021 16:53:42 -0400
-Received: from mail-il1-f180.google.com ([209.85.166.180]:44600 "EHLO
-        mail-il1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234175AbhGAUxl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 1 Jul 2021 16:53:41 -0400
-Received: by mail-il1-f180.google.com with SMTP id f12so1425558ils.11;
-        Thu, 01 Jul 2021 13:51:09 -0700 (PDT)
+        id S234290AbhGAVA4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 1 Jul 2021 17:00:56 -0400
+Received: from mail-il1-f175.google.com ([209.85.166.175]:39498 "EHLO
+        mail-il1-f175.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233217AbhGAVAz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 1 Jul 2021 17:00:55 -0400
+Received: by mail-il1-f175.google.com with SMTP id o10so7756997ils.6;
+        Thu, 01 Jul 2021 13:58:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=NipVMUD4AP/oBRzH6hOs82IXgQLck6ND+VgxW1x2fao=;
-        b=i23w40X6FN9c5rysQXeuO8heCsudGMZYXWlUufHc5ROUleIo7yagWCU/OWSyW0uZtQ
-         G8IjebUgxT0BuvqPon6wq3gkXDXp3xP5x8nQ8eWiCafWT0XF7uOEgrN6v0i/mtq3eHUG
-         jy/zRNjfw+AIX9XWVQN8fcO3TTXRUXTb8XKzn+s6VxPMJf+QVhmkHoKhBA+n65ArHrY1
-         1HFiKnIoBHYr1jYknfczOMEArRK+ZtwivAqNKI3qfuJgDIIa/xY8Ee/cO48pgcWDsfkv
-         vDQiZlriTC4s91DlZaYZCI2qCho2AJyEv+73TsQLR8xAzMkGBnVvq6/2pBFySzIfe6oq
-         bgFQ==
-X-Gm-Message-State: AOAM5330udU6VRjQ69oF74Ec540ZnXBlrvtiJEf8IblRckPBk/v7W80E
-        xVHNPEWjSkh9AHLB4Xpy9Q==
-X-Google-Smtp-Source: ABdhPJz1a6iDLhND1/k7nuQxxOfbn+7VdVawF4rSi9HdKdgHYo4uOWS4JwsVA3R8V5i/1llhr06LWQ==
-X-Received: by 2002:a92:d209:: with SMTP id y9mr923348ily.143.1625172668561;
-        Thu, 01 Jul 2021 13:51:08 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=2zgru6MXd5SLDqd7wCexHPvv0BJAK0xYITph2LIZkqk=;
+        b=YakfgHUJ5lf+43H2C6hDwrY754yU8as/YhEm4SeRg00sTqGyDF71Y36vGTXyPcVhOR
+         XcpS5j+q5ySTjIEyLyLyM/itj+wg05U4x0NToZlyJIgNWeFggXnLX7Sv72GXXyGlIPuo
+         D99WtvR+r9zWQ+egCIG2R03nqn7t4G5uz3p0S4Ki5CaPu/sZsf2ZctYnqibSqe92i/Rh
+         2jJ/NG+lPyFQOBHvEuUNgyt4zzoPxvE2D8t7Nnn7shYkEsXt+0Xr39pk2aq4agMYrf8/
+         ce0TF6EFU7n5HhLMCLXuPfwCm1TSHkovvOj3Nt7qmJu8/9zurlMxcJb97lfmybWXGyW1
+         iTDQ==
+X-Gm-Message-State: AOAM532tA9PfhLFwr56DdnEUVbVSOUR4y0pQdUG5Qy0t4zL0wGHfvAGu
+        sRtOHCt690Lcm5IYlI408K5QHkNAPw==
+X-Google-Smtp-Source: ABdhPJwW8911boFOGNQfh4nPrBd7wObIw3u3HGnQK8FcHUewDKuBkE/Uszk0UQIzs+feZmwzyCth5A==
+X-Received: by 2002:a92:2a0a:: with SMTP id r10mr991312ile.274.1625173104539;
+        Thu, 01 Jul 2021 13:58:24 -0700 (PDT)
 Received: from robh.at.kernel.org ([64.188.179.248])
-        by smtp.gmail.com with ESMTPSA id d10sm597106ilc.71.2021.07.01.13.51.06
+        by smtp.gmail.com with ESMTPSA id p6sm564839ilg.68.2021.07.01.13.58.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Jul 2021 13:51:07 -0700 (PDT)
-Received: (nullmailer pid 2908607 invoked by uid 1000);
-        Thu, 01 Jul 2021 20:51:01 -0000
+        Thu, 01 Jul 2021 13:58:23 -0700 (PDT)
+Received: (nullmailer pid 2920053 invoked by uid 1000);
+        Thu, 01 Jul 2021 20:58:19 -0000
+Date:   Thu, 1 Jul 2021 14:58:19 -0600
 From:   Rob Herring <robh@kernel.org>
 To:     Antoniu Miclaus <antoniu.miclaus@analog.com>
 Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, jic23@kernel.org, robh+dt@kernel.org
-In-Reply-To: <20210701141648.131776-1-antoniu.miclaus@analog.com>
-References: <20210701141648.131776-1-antoniu.miclaus@analog.com>
+        jic23@kernel.org, devicetree@vger.kernel.org
 Subject: Re: [PATCH v3] dt-bindings: iio: frequency: add adrf6780 doc
-Date:   Thu, 01 Jul 2021 14:51:01 -0600
-Message-Id: <1625172661.975476.2908606.nullmailer@robh.at.kernel.org>
+Message-ID: <20210701205819.GA2912677@robh.at.kernel.org>
+References: <20210701141648.131776-1-antoniu.miclaus@analog.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210701141648.131776-1-antoniu.miclaus@analog.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 01 Jul 2021 17:16:48 +0300, Antoniu Miclaus wrote:
+On Thu, Jul 01, 2021 at 05:16:48PM +0300, Antoniu Miclaus wrote:
 > Add device tree bindings for the ADRF6780 Upconverter.
 > 
 > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
 > ---
-> v3: remove `adi,parity-en` from example after latest changes in v2
+> v3: remove `adi,parity-en` from example after latest changes in v2 
 >  .../bindings/iio/frequency/adi,adrf6780.yaml  | 122 ++++++++++++++++++
 >  1 file changed, 122 insertions(+)
 >  create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,adrf6780.yaml
 > 
+> diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,adrf6780.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,adrf6780.yaml
+> new file mode 100644
+> index 000000000000..b191d98bf778
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/frequency/adi,adrf6780.yaml
+> @@ -0,0 +1,122 @@
+> +# SPDX-License-Identifier: GPL-2.0
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+Dual license new bindings: (GPL-2.0-only OR BSD-2-Clause)
 
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/iio/frequency/adi,adrf6780.yaml:10:1: [warning] wrong indentation: expected 2 but found 0 (indentation)
-./Documentation/devicetree/bindings/iio/frequency/adi,adrf6780.yaml:101:1: [warning] wrong indentation: expected 2 but found 0 (indentation)
-./Documentation/devicetree/bindings/iio/frequency/adi,adrf6780.yaml:109:1: [warning] wrong indentation: expected 2 but found 0 (indentation)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/frequency/adi,adrf6780.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: ADRF6780 Microwave Upconverter
+> +
+> +maintainers:
+> +- Antoniu Miclaus <antoniu.miclaus@analog.com>
+> +
+> +description: |
+> +   wideband, microwave upconverter optimized for point to point microwave
 
-dtschema/dtc warnings/errors:
-\ndoc reference errors (make refcheckdocs):
+Wideband
 
-See https://patchwork.ozlabs.org/patch/1499584
+> +   radio designs operating in the 5.9 GHz to 23.6 GHz frequency range.
 
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
+blank line
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
+> +   https://www.analog.com/en/products/adrf6780.html
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,adrf6780
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  spi-max-frequency:
+> +    maximum: 1000000
+> +
+> +  clocks:
+> +    description:
+> +      Definition of the external clock (see clock/clock-bindings.txt)
 
-pip3 install dtschema --upgrade
+Drop the reference.
 
-Please check and re-submit.
+> +    minItems: 1
+> +
+> +  clock-names:
+> +    description:
+> +      Must be "lo_in"
 
+Looks like a constraint...
+
+clock-names:
+  items:
+    - const: lo_in
+
+> +    maxItems: 1
+> +
+> +  clock-output-names:
+> +    maxItems: 1
+> +
+> +  adi,vga-buff-en:
+> +    description:
+> +      VGA Buffer Enable.
+> +    type: boolean
+> +
+> +  adi,lo-buff-en:
+> +    description:
+> +      LO Buffer Enable.
+> +    type: boolean
+> +
+> +  adi,if-mode-en:
+> +    description:
+> +      IF Mode Enable.
+> +    type: boolean
+> +
+> +  adi,iq-mode-en:
+> +    description:
+> +      IQ Mode Enable.
+> +    type: boolean
+> +
+> +  adi,lo-x2-en:
+> +    description:
+> +      LO x2 Enable.
+> +    type: boolean
+> +
+> +  adi,lo-ppf-en:
+> +    description:
+> +      LO x1 Enable.
+> +    type: boolean
+> +
+> +  adi,lo-en:
+> +    description:
+> +      LO Enable.
+> +    type: boolean
+
+Do the other adi,lo-* properties depend on this one? If so, add 
+'dependencies' schema.
+
+Any other property dependencies or mutual exclusion?
+
+> +
+> +  adi,uc-bias-en:
+> +    description:
+> +      UC Bias Enable.
+> +    type: boolean
+> +
+> +  adi,lo-sideband:
+> +    description:
+> +      Switch to the Other LO Sideband.
+> +    type: boolean
+> +
+> +  adi,vdet-out-en:
+> +    description:
+> +      VDET Output Select Enable.
+> +    type: boolean
+> +
+
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+
+No child nodes, what are these for?
+
+> +
+> +  '#clock-cells':
+> +    const: 0
+> +
+> +required:
+> +- compatible
+> +- reg
+> +- clocks
+> +- clock-names
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +- |
+> +    spi {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +      adrf6780@0{
+
+space              ^
+
+> +        compatible = "adi,adrf6780";
+> +        reg = <0>;
+> +        spi-max-frequency = <1000000>;
+> +        clocks = <&adrf6780_lo>;
+> +        clock-names = "lo_in";
+> +      };
+> +    };
+> +...
+> +
+> -- 
+> 2.32.0
+> 
+> 

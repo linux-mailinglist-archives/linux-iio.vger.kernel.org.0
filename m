@@ -2,141 +2,99 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CBB4B3B82C6
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Jun 2021 15:17:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1B7A3B8B79
+	for <lists+linux-iio@lfdr.de>; Thu,  1 Jul 2021 03:00:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234806AbhF3NUE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 30 Jun 2021 09:20:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38622 "EHLO
+        id S238252AbhGABDT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 30 Jun 2021 21:03:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234841AbhF3NUC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 30 Jun 2021 09:20:02 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24C42C061768
-        for <linux-iio@vger.kernel.org>; Wed, 30 Jun 2021 06:17:32 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id o5so4162882ejy.7
-        for <linux-iio@vger.kernel.org>; Wed, 30 Jun 2021 06:17:32 -0700 (PDT)
+        with ESMTP id S232066AbhGABDS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 30 Jun 2021 21:03:18 -0400
+Received: from mail-qv1-xf33.google.com (mail-qv1-xf33.google.com [IPv6:2607:f8b0:4864:20::f33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19268C061756;
+        Wed, 30 Jun 2021 18:00:48 -0700 (PDT)
+Received: by mail-qv1-xf33.google.com with SMTP id dj3so2127771qvb.11;
+        Wed, 30 Jun 2021 18:00:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=deviqon.com; s=google;
+        d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=XH4RKf95uj0XGgjr7ofqfjtHRyfEBIs1/NXlXnVrwYI=;
-        b=ax2et6Fq3SGMp+nmQS31Tgr4Z7CKWxguDv2PSQ03cdoudNQkw3+6hYf4ABbioe94/5
-         ykmaOBtoqURlgq3vRWFLbjr9r+YYCfuCG7wKxmQI7+1PV/6cFJW9OYDnobz4fUj0IqYF
-         gURDBI970v7SoJPEXTAeVpm7aXwVZIY1Wp+cNetyzch9aBb5qfr4N5NAN6zPK4TlqpyM
-         AdN0Mbsg2P0ex+Mbt3zTdj6PLGqlxZyBz6Dqqhm8S8+1eROIQ1aaA4B2xEhGRotz/vBb
-         z14RF+79DIPx4uTAZ/l9ZQpFQI52HVxxqNQTazelQhbj9lpGRzLE8Qj2pfIPCHN4gqnu
-         lFkg==
+        bh=aLIjEv3Y3XGxT5C/sRBa0wIugXh2Hwubx4IA7LHkqcs=;
+        b=abeBQ7HDze70AzrZWLTyi/x0HPTwfGhKphNcgOT8r7VAkeLghAo2c5uxwnmmWMLZAY
+         AGd2TI8mW6gja4AjQeqnzq5pDS8fVVUvHXfLvGtTB1MvlNpSKrfLyWdB2FLAbcVQNJ5f
+         ZWyJhcRBaqOWrU6DxLVPOc58Tud1NCer9EjcWTzwnxFGZPrVi4GJhNZSIsYJ2ZQwtVdd
+         3RDXjKz7oD0nd2iMjWrjuhpxdm7Jhtcab2a40eSzUF1DtqRVVoL1yEI3Xilb4VxfLZ7f
+         uAXvN5RNVJxQ4T3XxQRrjwc6AKY02TmQQ0eojkVwEr0hpmoUgRk9H4q5kIHkvE6/FzRD
+         XyaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=XH4RKf95uj0XGgjr7ofqfjtHRyfEBIs1/NXlXnVrwYI=;
-        b=Zjw3FCCPSyUJPynMY/ppIGcnv/cBKqSF107YIrNKHs1IDfvjb2ZIQxtDrAmu8x1obP
-         SQksPkWeuZ8x5vClf5aWFtfPws8PPJdheG33EjfOAU8kTeAkDZjKycp6w6Z+X3PCEvcS
-         wMK8xkzmKlQ8Nwvd3N8fqEU11PxNgJHjmfmO/5k7I6VJ2FT4zI8DmEOzZX47cZVjAfAG
-         c+uDZUNSmQ1l3Z5VSCxiVpwNJic1Kw2RA/gbrunO3rboe0m6STgGckYDXkZeMvSC2K+z
-         6Hf6+W21MWrPtglhFSxvYKBwq3YLtz2lsTJpPCumh3srJ1pDKxAcC3snGumM5pMWdt3w
-         CdvA==
-X-Gm-Message-State: AOAM533l3KqIWufl4q1hqGwp4NcbuMg03rwJsRZyKMIlWZidJgTa/WR9
-        EynArroihNt5ikMB1v1I5hnY6xy6WSWUd+Ju
-X-Google-Smtp-Source: ABdhPJyGQ0J8ACUJhNNJ8MLetWxk0lXprsnPX+MhLU9yn8pn9wm9bA4xIV972M6LjqIPKrMrWHgPdw==
-X-Received: by 2002:a17:907:2da6:: with SMTP id gt38mr34186045ejc.528.1625059050398;
-        Wed, 30 Jun 2021 06:17:30 -0700 (PDT)
-Received: from neptune.. ([5.2.193.191])
-        by smtp.gmail.com with ESMTPSA id md14sm39511ejb.125.2021.06.30.06.17.29
+        bh=aLIjEv3Y3XGxT5C/sRBa0wIugXh2Hwubx4IA7LHkqcs=;
+        b=eumO9YpWvc0qGdP2Vv20ukSKPbYb1zViaecDIEnZItwqdTvDIOB/kVhfkg+nfzgYrF
+         jbisWcr8b+KE3ls7CRMKLqMTCK8ASgQPl63mEn6QeuM5UtCKMBgdNZM2MUqXNaeSHULZ
+         5bJaiyv/Lh+ga6wdjwfc4Iq+RLpjlclkt0ew/tfzuxbXy2S5tEzAQHZyPCFHEsu6+2wm
+         ugWxGnWSQHXhIM1uvYuo0DhvSbLW7e9od2DWkAaZkcllbYxQFP1v//f2knD/1yhNxXuN
+         5gwROEKdgDdLVSc2Tw++4pQYe5SETtFtv9kQQ1w6Z/gjnRceithbtLBKij9SC7Zj2Q2s
+         KBQw==
+X-Gm-Message-State: AOAM533yLVVKqrCK2C7l3SL/ZwlGGoiItW6dpC8qnphDnHpvopGa787D
+        +zje0kdg5Qq1LYzJeieSerk=
+X-Google-Smtp-Source: ABdhPJwSNrLpc8fuZVizpnNA/xDQxi4rl4wrIH4nvKcCWOhUShh+Y868e9ZGVwNzR8Rad3/CQtQ7yw==
+X-Received: by 2002:a0c:9e49:: with SMTP id z9mr39578031qve.52.1625101247172;
+        Wed, 30 Jun 2021 18:00:47 -0700 (PDT)
+Received: from shaak.xiphos.ca (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
+        by smtp.gmail.com with ESMTPSA id l127sm14087782qkc.64.2021.06.30.18.00.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Jun 2021 06:17:30 -0700 (PDT)
-From:   Alexandru Ardelean <aardelean@deviqon.com>
-To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     jic23@kernel.org, Alexandru Ardelean <aardelean@deviqon.com>
-Subject: [PATCH 2/2] iio: proximity: rfd77402: convert probe to device-managed functions
-Date:   Wed, 30 Jun 2021 16:16:36 +0300
-Message-Id: <20210630131636.1563148-2-aardelean@deviqon.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210630131636.1563148-1-aardelean@deviqon.com>
-References: <20210630131636.1563148-1-aardelean@deviqon.com>
+        Wed, 30 Jun 2021 18:00:46 -0700 (PDT)
+From:   Liam Beguin <liambeguin@gmail.com>
+To:     liambeguin@gmail.com, peda@axentia.se, jic23@kernel.org,
+        lars@metafoo.de, pmeerw@pmeerw.net
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, robh+dt@kernel.org
+Subject: [PATCH v3 01/10] iio: inkern: apply consumer scale on IIO_VAL_INT cases
+Date:   Wed, 30 Jun 2021 21:00:25 -0400
+Message-Id: <20210701010034.303088-2-liambeguin@gmail.com>
+X-Mailer: git-send-email 2.30.1.489.g328c10930387
+In-Reply-To: <20210701010034.303088-1-liambeguin@gmail.com>
+References: <20210701010034.303088-1-liambeguin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This change converts the probe hook to register the IIO device with
-devm_iio_device_register() and register a hook with
-devm_add_action_or_reset() to put the device in powerdown when the driver
-gets unloaded.
+From: Liam Beguin <lvb@xiphos.com>
 
-Since the PM suspend/resume functions need only a reference to the
-i2c_client object (which can be obtained from the base device object), the
-i2c_set_clientdata() call can be removed.
+When a consumer calls iio_read_channel_processed() and the channel has
+an integer scale, the scale channel scale is applied and the processed
+value is returned as expected.
 
-Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
+On the other hand, if the consumer calls iio_convert_raw_to_processed()
+the scaling factor requested by the consumer is not applied.
+
+This for example causes the consumer to process mV when expecting uV.
+Make sure to always apply the scaling factor requested by the consumer.
+
+Fixes: 48e44ce0f881 ("iio:inkern: Add function to read the processed value")
+Signed-off-by: Liam Beguin <lvb@xiphos.com>
 ---
- drivers/iio/proximity/rfd77402.c | 27 ++++++++-------------------
- 1 file changed, 8 insertions(+), 19 deletions(-)
+ drivers/iio/inkern.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/proximity/rfd77402.c b/drivers/iio/proximity/rfd77402.c
-index f349526421f3..8c06d02139b6 100644
---- a/drivers/iio/proximity/rfd77402.c
-+++ b/drivers/iio/proximity/rfd77402.c
-@@ -252,6 +252,11 @@ static int rfd77402_powerdown(struct i2c_client *client)
- 				  RFD77402_STATUS_STANDBY);
- }
+diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+index 391a3380a1d1..b752fe5818e7 100644
+--- a/drivers/iio/inkern.c
++++ b/drivers/iio/inkern.c
+@@ -599,7 +599,7 @@ static int iio_convert_raw_to_processed_unlocked(struct iio_channel *chan,
  
-+static void rfd77402_disable(void *client)
-+{
-+	rfd77402_powerdown(client);
-+}
-+
- static int rfd77402_probe(struct i2c_client *client,
- 			  const struct i2c_device_id *id)
- {
-@@ -270,7 +275,6 @@ static int rfd77402_probe(struct i2c_client *client,
- 		return -ENOMEM;
- 
- 	data = iio_priv(indio_dev);
--	i2c_set_clientdata(client, indio_dev);
- 	data->client = client;
- 	mutex_init(&data->lock);
- 
-@@ -284,25 +288,11 @@ static int rfd77402_probe(struct i2c_client *client,
- 	if (ret < 0)
- 		return ret;
- 
--	ret = iio_device_register(indio_dev);
-+	ret = devm_add_action_or_reset(&client->dev, rfd77402_disable, client);
- 	if (ret)
--		goto err_powerdown;
--
--	return 0;
--
--err_powerdown:
--	rfd77402_powerdown(client);
--	return ret;
--}
--
--static int rfd77402_remove(struct i2c_client *client)
--{
--	struct iio_dev *indio_dev = i2c_get_clientdata(client);
--
--	iio_device_unregister(indio_dev);
--	rfd77402_powerdown(client);
-+		return ret;
- 
--	return 0;
-+	return devm_iio_device_register(&client->dev, indio_dev);
- }
- 
- #ifdef CONFIG_PM_SLEEP
-@@ -331,7 +321,6 @@ static struct i2c_driver rfd77402_driver = {
- 		.pm     = &rfd77402_pm_ops,
- 	},
- 	.probe  = rfd77402_probe,
--	.remove = rfd77402_remove,
- 	.id_table = rfd77402_id,
- };
- 
+ 	switch (scale_type) {
+ 	case IIO_VAL_INT:
+-		*processed = raw64 * scale_val;
++		*processed = raw64 * scale_val * scale;
+ 		break;
+ 	case IIO_VAL_INT_PLUS_MICRO:
+ 		if (scale_val2 < 0)
 -- 
-2.31.1
+2.30.1.489.g328c10930387
 

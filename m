@@ -2,78 +2,86 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD18A3B92C7
-	for <lists+linux-iio@lfdr.de>; Thu,  1 Jul 2021 16:04:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A21193B92A2
+	for <lists+linux-iio@lfdr.de>; Thu,  1 Jul 2021 16:02:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233509AbhGAOGe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 1 Jul 2021 10:06:34 -0400
-Received: from mail-il1-f179.google.com ([209.85.166.179]:45833 "EHLO
-        mail-il1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232631AbhGAOGc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 1 Jul 2021 10:06:32 -0400
-Received: by mail-il1-f179.google.com with SMTP id b5so6432705ilc.12;
-        Thu, 01 Jul 2021 07:04:00 -0700 (PDT)
+        id S232772AbhGAOF0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 1 Jul 2021 10:05:26 -0400
+Received: from mail-io1-f51.google.com ([209.85.166.51]:36616 "EHLO
+        mail-io1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232545AbhGAOFZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 1 Jul 2021 10:05:25 -0400
+Received: by mail-io1-f51.google.com with SMTP id u7so5467118ion.3;
+        Thu, 01 Jul 2021 07:02:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
          :message-id;
-        bh=wbT8Ks1SNmRLlWkzxeU8xdlQA5u/+Yl10JWaWVZb/dQ=;
-        b=XDokCOVNy1sl7UFa44Vwo4YBOQD4rG4FTAf+0i7et9/aqI9j6ayOyHtN1qw8iX+WhJ
-         p5/PnAkYexrrC/nr8kb7pqyzaGxdcLPKh8pKsheO7SJDkBBlXBncfHke1NnPIYi8ubWD
-         ExEgKL/gg8LuPR6vf7tDI6W+dhAUazkU+ui/UBMMr0Ti8O8jGVfSsSjk4jAajBXua5yV
-         JikpNpZXy8xalFOoD+ukKcWZSa6w/DwKq1ntLxglIj/0qKriguZz2wA09LboKikmjK7f
-         nl3ItbmL2h22Isf4rhjT8IGbBOM63Hezg0yST2reKOmkFwfz7cC7x0QtDfFnGhsahoty
-         5j1g==
-X-Gm-Message-State: AOAM533jmrPDEFseWaOO8ngPjR8mhbvHHrDQRN0gg3GWEcMnJgCriCH3
-        pmd9W8eDD6UtftklaFqCh91V4eTZUg==
-X-Google-Smtp-Source: ABdhPJx71za0MYqLZLGjIKph+dBsSeZJNQ43Mf4e2arjbbbCoz00zF0285z+YR4s9PRr63GczYPUfg==
-X-Received: by 2002:a05:6e02:ee2:: with SMTP id j2mr23739395ilk.63.1625148240363;
-        Thu, 01 Jul 2021 07:04:00 -0700 (PDT)
+        bh=mYpWVNkGyyi4+D5Ik3YO8omc3O/tZSWPuO0UlaNpdPE=;
+        b=fAyOVUOcDZSHW58wbxWqW4TAvfLBRU1bsMUNfnY0MSfezl5MchfUJDGivQZnKuVZ1F
+         KitXSDgjX9siYDAEbS7dVfLq5FBKO0t3/nVlKqTg4dypm5+qc2HZ4773O+Q2fR3T1KyA
+         2vq6Nvh2rcpOZqN72dcQyT7xdC/Au2KJ8U4XBBwQ/eefMYD4IajNyGwb7lQutfC0A4Ml
+         n0v8OqeBR+RrEn9xlqaP7/mAqE9Jf8YQ1NmJ0DHDra4LJsmUFi9N2elsboSHfnEFKlku
+         QZJRacqtwKLxPffOeCUFI1lAvfEGeNlq98vzn+R9TW4q6iE3yTdMlpeDiRlQpjqQnrpD
+         l/XA==
+X-Gm-Message-State: AOAM532DMQohQZVFricciUpOwNLlBqjJc8DnoscA1zPUr5TPevWuUkXU
+        v5Vj/HHuULfeRfg7bEzsCw==
+X-Google-Smtp-Source: ABdhPJxvLXDtYCaeHE5BU26+kYkT3YksThGWXzGZkcTWU32ai4Ma0FLwraS4S2gZj5vctoN26xJltA==
+X-Received: by 2002:a05:6602:1846:: with SMTP id d6mr12160079ioi.111.1625148175051;
+        Thu, 01 Jul 2021 07:02:55 -0700 (PDT)
 Received: from robh.at.kernel.org ([64.188.179.248])
-        by smtp.gmail.com with ESMTPSA id g14sm14460934ioo.19.2021.07.01.07.03.56
+        by smtp.gmail.com with ESMTPSA id m12sm32206iln.43.2021.07.01.07.02.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Jul 2021 07:03:58 -0700 (PDT)
-Received: (nullmailer pid 2278716 invoked by uid 1000);
+        Thu, 01 Jul 2021 07:02:54 -0700 (PDT)
+Received: (nullmailer pid 2278702 invoked by uid 1000);
         Thu, 01 Jul 2021 14:02:43 -0000
 From:   Rob Herring <robh@kernel.org>
-To:     Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc:     devicetree@vger.kernel.org, jic23@kernel.org,
-        linux-iio@vger.kernel.org, robh+dt@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210701112803.75815-2-antoniu.miclaus@analog.com>
-References: <20210701112803.75815-1-antoniu.miclaus@analog.com> <20210701112803.75815-2-antoniu.miclaus@analog.com>
-Subject: Re: [PATCH v2 2/2] dt-bindings: iio: frequency: add adrf6780 doc
+To:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Cc:     Philipp Zabel <p.zabel@pengutronix.de>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        Prabhakar <prabhakar.csengg@gmail.com>,
+        linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org
+In-Reply-To: <20210629220328.13366-2-prabhakar.mahadev-lad.rj@bp.renesas.com>
+References: <20210629220328.13366-1-prabhakar.mahadev-lad.rj@bp.renesas.com> <20210629220328.13366-2-prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: Add binding documentation for Renesas RZ/G2L A/D converter
 Date:   Thu, 01 Jul 2021 08:02:43 -0600
-Message-Id: <1625148163.622224.2278715.nullmailer@robh.at.kernel.org>
+Message-Id: <1625148163.546497.2278701.nullmailer@robh.at.kernel.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 01 Jul 2021 14:28:03 +0300, Antoniu Miclaus wrote:
-> Add device tree bindings for the ADRF6780 Upconverter.
+On Tue, 29 Jun 2021 23:03:27 +0100, Lad Prabhakar wrote:
+> Add binding documentation for Renesas RZ/G2L A/D converter block.
 > 
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
 > ---
-> v2: remove `det-en` and `parity-en` from device tree
->  .../bindings/iio/frequency/adi,adrf6780.yaml  | 123 ++++++++++++++++++
->  1 file changed, 123 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,adrf6780.yaml
+>  .../bindings/iio/adc/renesas,rzg2l-adc.yaml   | 121 ++++++++++++++++++
+>  1 file changed, 121 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
 > 
 
 My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
 on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
 yamllint warnings/errors:
-./Documentation/devicetree/bindings/iio/frequency/adi,adrf6780.yaml:10:1: [warning] wrong indentation: expected 2 but found 0 (indentation)
-./Documentation/devicetree/bindings/iio/frequency/adi,adrf6780.yaml:101:1: [warning] wrong indentation: expected 2 but found 0 (indentation)
-./Documentation/devicetree/bindings/iio/frequency/adi,adrf6780.yaml:109:1: [warning] wrong indentation: expected 2 but found 0 (indentation)
 
 dtschema/dtc warnings/errors:
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/frequency/adi,adrf6780.example.dt.yaml: adrf6780@0: 'adi,parity-en' does not match any of the regexes: 'pinctrl-[0-9]+'
-	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/frequency/adi,adrf6780.yaml
+Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.example.dts:19:18: fatal error: dt-bindings/clock/r9a07g044-cpg.h: No such file or directory
+   19 |         #include <dt-bindings/clock/r9a07g044-cpg.h>
+      |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+make[1]: *** [scripts/Makefile.lib:380: Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.example.dt.yaml] Error 1
+make[1]: *** Waiting for unfinished jobs....
+make: *** [Makefile:1416: dt_binding_check] Error 2
 \ndoc reference errors (make refcheckdocs):
 
-See https://patchwork.ozlabs.org/patch/1499502
+See https://patchwork.ozlabs.org/patch/1498675
 
 This check can fail if there are any dependencies. The base for a patch
 series is generally the most recent rc1.

@@ -2,96 +2,548 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8ADE3BA93D
-	for <lists+linux-iio@lfdr.de>; Sat,  3 Jul 2021 17:30:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EC5B3BA946
+	for <lists+linux-iio@lfdr.de>; Sat,  3 Jul 2021 17:46:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229865AbhGCPce (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 3 Jul 2021 11:32:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58150 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229598AbhGCPce (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 3 Jul 2021 11:32:34 -0400
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C9A0C061762;
-        Sat,  3 Jul 2021 08:29:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=QABguMzP1/VumBvVHw70jOoK+BIUazJP6EF/sOlcL/c=; b=npD23N6p0GJrBNRRLPAmj8uzUr
-        URbfIkwPhkAPTv8LVCXhfP2Q8vAHRrTc3XepN21DEU/vL+SJSxxtQabOZHYLgaI1bA9JVkJObC+A5
-        7oIUx2KTa5jNqn/tQi8Xb58etTlKeW/eQWMA3kRJolh9qp50PPC24PcTJ9jT1d9Nwryk=;
-Received: from p200300ccff37da001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff37:da00:1a3d:a2ff:febf:d33a] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1lzhaW-000084-5L; Sat, 03 Jul 2021 17:29:48 +0200
-Date:   Sat, 3 Jul 2021 17:29:47 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     kernel test robot <lkp@intel.com>
-Cc:     lee.jones@linaro.org, robh+dt@kernel.org, jic23@kernel.org,
-        lars@metafoo.de, sre@kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-pm@vger.kernel.org, kbuild-all@lists.01.org
-Subject: Re: [PATCH 4/4] power: supply: rn5t618: Add voltage_now property
-Message-ID: <20210703172947.60e456a1@aktux>
-In-Reply-To: <202107032203.CYwEkIW0-lkp@intel.com>
-References: <20210703084224.31623-5-andreas@kemnade.info>
-        <202107032203.CYwEkIW0-lkp@intel.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S229876AbhGCPsj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 3 Jul 2021 11:48:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37956 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229818AbhGCPsj (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 3 Jul 2021 11:48:39 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 124AB6144E;
+        Sat,  3 Jul 2021 15:46:03 +0000 (UTC)
+Date:   Sat, 3 Jul 2021 16:48:26 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Navin Sankar Velliangiri <navin@linumiz.com>
+Cc:     lars@metafoo.de, pmeerw@pmeerw.net, linux-iio@vger.kernel.org
+Subject: Re: [PATCH 1/2] iio: temperature: Add MAX31865 RTD Support
+Message-ID: <20210703164826.5b97ba27@jic23-huawei>
+In-Reply-To: <20210703095806.220880-1-navin@linumiz.com>
+References: <20210703095806.220880-1-navin@linumiz.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Score: -1.0 (-)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+On Sat,  3 Jul 2021 15:28:06 +0530
+Navin Sankar Velliangiri <navin@linumiz.com> wrote:
 
-oh, I forgot to add some depends IIO in the Makefile. I will wait some
-days for human reviewers before spinning a v2.
+> This patch adds support for Maxim MAX31865 RTD temperature
+> sensor support.
+> 
+> More information can be found in:
+> https://datasheets.maximintegrated.com/en/ds/MAX31865.pdf
+> 
+> Signed-off-by: Navin Sankar Velliangiri <navin@linumiz.com>
 
-Regards,
-Andreas
+Hi Navin,
 
-On Sat, 3 Jul 2021 22:35:27 +0800
-kernel test robot <lkp@intel.com> wrote:
+Biggest comment here is that userspace ABI needs documentation.
+You define a few new things in here, and it is tricky to review that
+without the docs.  As such, we may well have more comments on those once
+those Docs are available.
 
-> Hi Andreas,
-> 
-> Thank you for the patch! Yet something to improve:
-> 
-> [auto build test ERROR on power-supply/for-next]
-> [also build test ERROR on next-20210701]
-> [cannot apply to lee-mfd/for-mfd-next iio/togreg robh/for-next v5.13]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch]
-> 
-> url:    https://github.com/0day-ci/linux/commits/Andreas-Kemnade/mfd-rn5t618-Extend-ADC-support/20210703-164312
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/sre/linux-power-supply.git for-next
-> config: i386-randconfig-m031-20210702 (attached as .config)
-> compiler: gcc-9 (Debian 9.3.0-22) 9.3.0
-> reproduce (this is a W=1 build):
->         # https://github.com/0day-ci/linux/commit/99953e2eb9d653eb8bc74eb482cef7c9fb4e69d7
->         git remote add linux-review https://github.com/0day-ci/linux
->         git fetch --no-tags linux-review Andreas-Kemnade/mfd-rn5t618-Extend-ADC-support/20210703-164312
->         git checkout 99953e2eb9d653eb8bc74eb482cef7c9fb4e69d7
->         # save the attached .config to linux build tree
->         make W=1 ARCH=i386 
-> 
-> If you fix the issue, kindly add following tag as appropriate
-> Reported-by: kernel test robot <lkp@intel.com>
-> 
-> All errors (new ones prefixed by >>, old ones prefixed by <<):
-> 
-> >> ERROR: modpost: "devm_iio_channel_get" [drivers/power/supply/rn5t618_power.ko] undefined!
-> >> ERROR: modpost: "iio_read_channel_processed" [drivers/power/supply/rn5t618_power.ko] undefined!  
-> 
+Otherwise, various minor comments inline.
+
 > ---
-> 0-DAY CI Kernel Test Service, Intel Corporation
-> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+>  drivers/iio/temperature/Kconfig    |  10 +
+>  drivers/iio/temperature/Makefile   |   1 +
+>  drivers/iio/temperature/max31865.c | 325 +++++++++++++++++++++++++++++
+>  3 files changed, 336 insertions(+)
+>  create mode 100644 drivers/iio/temperature/max31865.c
+> 
+> diff --git a/drivers/iio/temperature/Kconfig b/drivers/iio/temperature/Kconfig
+> index 4df60082c1fa..c9412abca069 100644
+> --- a/drivers/iio/temperature/Kconfig
+> +++ b/drivers/iio/temperature/Kconfig
+> @@ -128,4 +128,14 @@ config MAX31856
+>  	  This driver can also be built as a module.  If so, the module
+>  	  will be called max31856.
+>  
+> +config MAX31865
+> +	tristate "MAX31865 RTD to Digital converter"
+> +	depends on SPI
+> +	help
+> +	  If you say yes here you get support for MAX31865
+> +	  thermocouple sensor chip connected via SPI.
+> +
+> +	  This driver can also be build as a module. If so, the module
+> +	  will be called max31865.
+> +
+>  endmenu
+> diff --git a/drivers/iio/temperature/Makefile b/drivers/iio/temperature/Makefile
+> index 90c113115422..a8f3187258dc 100644
+> --- a/drivers/iio/temperature/Makefile
+> +++ b/drivers/iio/temperature/Makefile
+> @@ -8,6 +8,7 @@ obj-$(CONFIG_LTC2983) += ltc2983.o
+>  obj-$(CONFIG_HID_SENSOR_TEMP) += hid-sensor-temperature.o
+>  obj-$(CONFIG_MAXIM_THERMOCOUPLE) += maxim_thermocouple.o
+>  obj-$(CONFIG_MAX31856) += max31856.o
+> +obj-$(CONFIG_MAX31865) += max31865.o
+>  obj-$(CONFIG_MLX90614) += mlx90614.o
+>  obj-$(CONFIG_MLX90632) += mlx90632.o
+>  obj-$(CONFIG_TMP006) += tmp006.o
+> diff --git a/drivers/iio/temperature/max31865.c b/drivers/iio/temperature/max31865.c
+> new file mode 100644
+> index 000000000000..581c46b12eee
+> --- /dev/null
+> +++ b/drivers/iio/temperature/max31865.c
+> @@ -0,0 +1,325 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +
+> +/*
+> + * Copyright (c) Linumiz 2021
+> + *
+> + * max31865.c - Maxim MAX31865 RTD-to-Digital Converter sensor driver
+> + *
+> + * Author: Navin Sankar Velliangiri <navin@linumiz.com>
+> + */
+> +
+> +#include <linux/ctype.h>
+> +#include <linux/delay.h>
+> +#include <linux/err.h>
+> +#include <linux/init.h>
+> +#include <linux/module.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/sysfs.h>
+> +#include <linux/spi/spi.h>
+> +#include <linux/util_macros.h>
+
+why?  Check the others are used.
+
+> +#include <asm/unaligned.h>
+> +
+> +/*
+> + * The MSB of the register value determines whether the following byte will
+> + * be written or read. If it is 0, read will follow and if it is 1, write
+> + * will follow.
+> + */
+> +#define MAX31865_RD_WR_BIT			BIT(7)
+> +
+> +#define MAX31865_CFG_VBIAS			BIT(7)
+> +#define MAX31865_CFG_1SHOT			BIT(5)
+> +#define MAX31865_3WIRE_RTD			BIT(4)
+> +#define MAX31865_FAULT_STATUS_CLEAR		BIT(1)
+> +#define MAX31865_FILTER_50HZ			BIT(0)
+> +
+> +/* The MAX31865 registers */
+> +#define MAX31865_CFG_REG			0x00
+> +#define MAX31865_RTD_MSB			0x01
+> +#define MAX31865_FAULT_STATUS			0x07
+> +
+> +#define MAX31865_FAULT_OVUV			BIT(2)
+> +
+> +static const struct iio_chan_spec max31865_channels[] = {
+> +	{	/* RTD Temperature */
+> +		.type = IIO_TEMP,
+> +		.info_mask_separate =
+> +			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE)
+> +	},
+> +};
+> +
+> +struct max31865_data {
+> +	struct spi_device *spi;
+> +	bool filter_50hz;
+> +	bool no_of_wires;
+> +};
+> +
+> +static int max31865_read(struct max31865_data *data, u8 reg,
+> +			 u8 val[], unsigned int read_size)
+> +{
+> +	return spi_write_then_read(data->spi, &reg, 1, val, read_size);
+> +}
+> +
+> +static int max31865_write(struct max31865_data *data, u8 reg,
+> +			  unsigned int val)
+> +{
+> +	u8 buf[2];
+> +
+> +	buf[0] = reg | (MAX31865_RD_WR_BIT);
+
+Brackets not needed.
+
+Also can just have it as...
+
+	u8 buf[2] = {
+		reg | MAX...,
+		val
+};
+> +	buf[1] = val;
+> +
+> +	return spi_write(data->spi, buf, 2);
+
+spi_write() directly calls spi_sync_transfer() which in turn calls spi_sync() and
+that requires dma safe buffers.  For a buffer to dma safe it need to be in a
+cacheline not shared with other data.  That basically means you can use a buffer
+on the stack.
+
+Take a look at the use of __cacheline_aligned in IIO drivers to allow
+us to put this in the iio_priv() structure
+(we go through a dance in the core to ensure that space is itself always
+aligned to a cacheline).
+
+Another fairly clean way around this is to call spi_write_then_read with 0 length
+read.  That function uses bounce buffers to avoid any DMA issues.
+
+Wolfram gave a good talk on this a few years back:
+https://www.youtube.com/watch?v=JDwaMClvV-s
+
+Having once run into this problem it is extremely hard to debug as we all love
+extremely rare data corruption!
+
+> +}
+> +
+> +static int enable_bias(struct max31865_data *data, bool enable)
+prefix all functions with max31865 as it makes it obvious what is driver
+local an what is a generic call.
+
+Also, a function that has an enable parameter should have a name that
+reflects that.
+
+	max31865_set_bias_enable or something like that.
+
+> +{
+> +	u8 cfg;
+> +	int ret;
+> +
+> +	ret = max31865_read(data, MAX31865_CFG_REG, &cfg, sizeof(cfg));
+
+As below, feels like a cache definitely makes sense for this!
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (enable)
+> +		cfg |= MAX31865_CFG_VBIAS;
+> +	else
+> +		cfg &= ~MAX31865_CFG_VBIAS;
+> +
+> +	ret = max31865_write(data, MAX31865_CFG_REG, cfg);
+
+return max... 
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	return 0;
+> +}
+> +
+> +static int max31865_rtd_read(struct max31865_data *data, int *val)
+> +{
+> +	int ret;
+> +	u8 cfg, rtd_val[2];
+> +
+> +	/* Enable BIAS to start the conversion */
+> +	ret = enable_bias(data, true);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* wait 10.5ms before initiating the conversion */
+> +	msleep(11);
+
+No need for first version of this driver, but perhaps consider doing runtime
+pm for this as a future patch.  That way we can avoid the sleep if
+we are doing repeated reads (perhaps to do oversampling) but still get the
+power benefit if we are reading at lower frequency.
+If it doesn't matter for your application, then we can wait until someone
+else cares (if ever!)
+
+> +
+> +	ret = max31865_read(data, MAX31865_CFG_REG, &cfg, sizeof(cfg));
+
+Seems like something we should probably be caching? Nice to cut down on
+transfers in the one remotely hot path in the driver.
+One option would be to use regmap, but if this is the only register where
+that makes sense, then perhaps just implement a cache for it in this driver.
+Superficially it feels like you can build the content of cfg from things
+you are already caching anyway.
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	cfg |= MAX31865_CFG_1SHOT | MAX31865_FAULT_STATUS_CLEAR;
+> +
+> +	ret = max31865_write(data, MAX31865_CFG_REG, cfg);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (data->filter_50hz) {
+> +		/* 50Hz filter mode requires 62.5ms to complete */
+> +		msleep(63);
+> +	} else {
+> +		/* 60Hz filter mode requires 52ms to complete */
+> +		msleep(52);
+> +	}
+> +
+> +	ret = max31865_read(data, MAX31865_RTD_MSB, rtd_val, sizeof(rtd_val));
+> +	if (ret)
+> +		return ret;
+> +
+> +	*val = (rtd_val[0] << 8 | rtd_val[1]) >> 1;
+
+*val = be16_to_cpup(rtd_val) >> 1;
+
+> +
+> +	/* disable bias */
+
+Name function such that this is obvious and drop the comment.
+Comment bit rot in a way that well named functions don't :)
+
+> +	ret = enable_bias(data, false);
+
+return enable_bias(data, false)
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	return 0;
+> +}
+> +
+> +static int max31865_read_raw(struct iio_dev *indio_dev,
+> +			     struct iio_chan_spec const *chan,
+> +			     int *val, int *val2, long mask)
+> +{
+> +	struct max31865_data *data = iio_priv(indio_dev);
+> +	int ret = 0;
+
+Always set so no need to initialize.
+
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		ret = max31865_rtd_read(data, val);
+
+Nothing stops multiple simultaneous reads of the sysfs attribute.
+As such, I think you need a mutex to protect the device state
+when doing reads.
+
+> +		if (ret)
+> +			return ret;
+> +		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_SCALE:
+> +		/* Temp. Data resolution is 0.03125 */
+
+give a unit "degrees centigrade"
+
+> +		*val = 31;
+> +		*val2 = 250000; /* 1000 * 0.03125 */
+> +		return IIO_VAL_INT_PLUS_MICRO;
+> +	default:
+> +		ret = -EINVAL;
+
+		return -EINVAL; and drop the return below as
+we won't be able to get to it.
+
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +static int max31865_init(struct max31865_data *data)
+> +{
+> +	int ret;
+> +	u8 cfg = 0;
+> +
+> +	if (data->no_of_wires)
+> +		/* 3-wire RTD connection */
+> +		cfg |= MAX31865_3WIRE_RTD;
+> +
+> +	if (data->filter_50hz)
+> +		/* 50Hz noise rejection filter */
+> +		cfg |= MAX31865_FILTER_50HZ;
+
+filter_50hz is controlled from userspace, yet this init is only
+called on probe.  Hence I can't see how changing this to 60Hz via
+sysfs has any impact.
+
+> +
+> +	ret = max31865_write(data, MAX31865_CFG_REG, cfg);
+
+return max31865_....
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	return 0;
+> +}
+> +
+> +static ssize_t show_fault(struct device *dev, u8 faultbit, char *buf)
+> +{
+> +	int ret;
+> +	bool fault;
+> +	u8 reg_val;
+> +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> +	struct max31865_data *data = iio_priv(indio_dev);
+> +
+> +	ret = max31865_read(data, MAX31865_FAULT_STATUS, &reg_val, 1);
+> +	if (ret)
+> +		return ret;
+> +
+> +	fault = reg_val & faultbit;
+> +
+> +	return sprintf(buf, "%d\n", fault);
+> +}
+> +
+> +static ssize_t show_fault_ovuv(struct device *dev,
+> +			      struct device_attribute *attr,
+> +			      char *buf)
+> +{
+> +	return show_fault(dev, MAX31865_FAULT_OVUV, buf);
+> +}
+> +
+> +static ssize_t show_filter(struct device *dev,
+> +			   struct device_attribute *attr,
+> +			   char *buf)
+> +{
+> +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> +	struct max31865_data *data = iio_priv(indio_dev);
+> +
+> +	return sprintf(buf, "%d\n", data->filter_50hz ? 50 : 60);
+> +}
+> +
+> +static ssize_t set_filter(struct device *dev,
+> +			  struct device_attribute *attr,
+> +			  const char *buf,
+> +			  size_t len)
+> +{
+> +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> +	struct max31865_data *data = iio_priv(indio_dev);
+> +	unsigned int freq;
+> +	int ret;
+> +
+> +	ret = kstrtouint(buf, 10, &freq);
+> +	if (ret)
+> +		return ret;
+> +
+> +	switch (freq) {
+> +	case 50:
+> +		data->filter_50hz = true;
+> +		break;
+> +	case 60:
+> +		data->filter_50hz = false;
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +	return len;
+> +}
+> +
+> +static IIO_DEVICE_ATTR(fault_ovuv, 0444, show_fault_ovuv, NULL, 0);
+> +static IIO_DEVICE_ATTR(in_temp_filter_notch_frequency, 0644,
+> +		    show_filter, set_filter, 0);
+> +
+> +static struct attribute *max31865_attributes[] = {
+> +	&iio_dev_attr_fault_ovuv.dev_attr.attr,
+> +	&iio_dev_attr_in_temp_filter_notch_frequency.dev_attr.attr,
+
+This defines new ABI.  All ABI must be documented in
+Documentation/ABI/testing/sysfs-bus-iio-*
+
+It will make it a lot easier to discuss if we have docs on what
+these are.  Notch frequency is fine to support and indeed is
+a sensible thing to add to the IIO core. The naming you have
+also fits well with the existing filter ABI.
+I would like to see an _available though.   
+
+So could you define a new entry in iio_chan_info_enum include/linux/iio/types.h
+and provide relevant strings in places where those are looked up. 
+Do that as a precursor patch to this one, then use that new infrastructure
+to implement this.
+
+The fault one is a bit more controversial.  Fault conditions tend to
+be annoyingly device specific, so we've never really defined a universal
+ABI for them.
+
+Where possible, mapping to IIO events at least keeps things within the
+defined ABI, but I'm not sure if that can be sensibly done here.
+
+> +	NULL,
+> +};
+> +
+> +static const struct attribute_group max31865_group = {
+> +	.attrs = max31865_attributes,
+> +};
+> +
+> +static const struct iio_info max31865_info = {
+> +	.read_raw = max31865_read_raw,
+> +	.attrs = &max31865_group,
+> +};
+> +
+> +static int max31865_probe(struct spi_device *spi)
+> +{
+> +	const struct spi_device_id *id = spi_get_device_id(spi);
+> +	struct iio_dev *indio_dev;
+> +	struct max31865_data *data;
+> +	int ret;
+> +
+> +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*data));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	data = iio_priv(indio_dev);
+> +	data->spi = spi;
+> +	data->filter_50hz = false;
+> +	data->no_of_wires = 0;
+
+Rename that variable, as 0 wires is unlikely to make much sense.
+Also, given it's a choice between two values, it would be
+more intuitive to set this in an if/else statement below.
+
+> +
+> +	spi_set_drvdata(spi, indio_dev);
+
+Not used so drop this.
+
+> +
+> +	indio_dev->info = &max31865_info;
+> +	indio_dev->name = id->name;
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->channels = max31865_channels;
+> +	indio_dev->num_channels = ARRAY_SIZE(max31865_channels);
+> +
+> +	if (of_property_read_bool(spi->dev.of_node, "maxim,no-of-wires"))
+> +		data->no_of_wires = 1;
+> +
+> +	ret = max31865_init(data);
+> +	if (ret) {
+> +		dev_err(&spi->dev, "error: Failed to configure max31865\n");
+> +		return ret;
+> +	}
+> +
+> +	return devm_iio_device_register(&spi->dev, indio_dev);
+> +}
+> +
+> +static const struct spi_device_id max31865_id[] = {
+> +	{ "max31865", 0 },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(spi, max31865_id);
+> +
+> +static const struct of_device_id max31865_of_match[] = {
+> +	{ .compatible = "maxim,max31865" },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(of, max31865_of_match);
+> +
+> +static struct spi_driver max31865_driver = {
+> +	.driver = {
+> +		.name	= "max31865",
+> +		.of_match_table = max31865_of_match,
+> +	},
+> +	.probe = max31865_probe,
+> +	.id_table = max31865_id,
+> +};
+> +module_spi_driver(max31865_driver);
+> +
+> +MODULE_AUTHOR("Navin Sankar Velliangiri <navin@linumiz.com>");
+> +MODULE_DESCRIPTION("Maxim MAX31865 RTD-to-Digital Converter sensor driver");
+> +MODULE_LICENSE("GPL v2");
 

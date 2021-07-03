@@ -2,93 +2,68 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E1F53BA65E
-	for <lists+linux-iio@lfdr.de>; Sat,  3 Jul 2021 02:03:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18DAE3BA7D4
+	for <lists+linux-iio@lfdr.de>; Sat,  3 Jul 2021 10:42:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230056AbhGCAGL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 2 Jul 2021 20:06:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55702 "EHLO
+        id S229975AbhGCIpQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 3 Jul 2021 04:45:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230048AbhGCAGL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 2 Jul 2021 20:06:11 -0400
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3931C061764
-        for <linux-iio@vger.kernel.org>; Fri,  2 Jul 2021 17:03:38 -0700 (PDT)
-Received: by mail-pl1-x642.google.com with SMTP id m15so1932650plx.7
-        for <linux-iio@vger.kernel.org>; Fri, 02 Jul 2021 17:03:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=psPAB9NqHofPPQuOtyDnz2jywzmWciM0sLALrIheAbI=;
-        b=nQ5RWbBiVa5x7/3ZACioRIzCHcb5MLK6aEfLf1YCeXDZKh4EVO+srXI0fOf3bFLxcL
-         im2XKCQIiFgVg9Igbj3EfCpg8QFRjT743M9NogM8LD7pgmQEw09dspC6qG3ZI9UKGbxq
-         wldb1Fu1xcSFqC0pKYJuS3Lov4Rv4d5khihds4HmyAm3SUmBjtePpsJUoFBhsieT1hlY
-         AJHuncVDQ75u/NMSbAFk6VzgVwQeLMTP1P/1sJ1quDDH3enjXoA/0HewLA7RAfA0flYc
-         Mayz9g0l8j/XAYpyyhk9WuEW9U4kkeFY5q5z3ZyaKzB0WoWMs65uVuR1wXxDGSXvqLAZ
-         Jh1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=psPAB9NqHofPPQuOtyDnz2jywzmWciM0sLALrIheAbI=;
-        b=ZvRkAiqGoMSecmEO5Bsz9p+J/aH483C9ppC3JVvAz8JFSQUH5hxoGX8MmGgQYq84+V
-         xu2nVkPiwEIafaFdQik+K1/e09pKTZWxR4SsJNpFdnYN5Wunc5y38y5LR2bivfcnwpMI
-         n9VWEtDKfY1S7g3MElfL0Rbvnxf8e3axOQKwa94ZpuPr7fgME0wbMAedEnvrwZVc+qAE
-         zqSpjYTfck3tCeEp9RLIBmUoK/rZEPODSYSKTRB5xUwqorV0yhs9NMTolPEpl/cIO6O1
-         hSgX9t/Wy70IhDeWx9p9DK/hEf8m+A9wkjoIdZFwGgBbI/ii+3VKZHvHiuTICoh+Ujuu
-         fb6g==
-X-Gm-Message-State: AOAM530RzDkIFBeUI0J3LH1lvtspeAMRjyKbSNpmMEKHztM5b+HrnLAj
-        BLng0eWotd/QMm8dI4CswdWptn7TUNwMTnukEDo=
-X-Google-Smtp-Source: ABdhPJwy0JoEqSpyHkIArJifWVTklqCu2gzj2oXRwMChpcN5DFGzH+UuvEWu8Ym9h/catjNVa68utb2reOnafeLD1oI=
-X-Received: by 2002:a17:90b:1284:: with SMTP id fw4mr2126592pjb.74.1625270618162;
- Fri, 02 Jul 2021 17:03:38 -0700 (PDT)
+        with ESMTP id S229829AbhGCIpQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 3 Jul 2021 04:45:16 -0400
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8002DC061764;
+        Sat,  3 Jul 2021 01:42:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=ygQ/dHoI16d9t9CiCap4vqQ0iOswu0jckuAtsh9qAn0=; b=Ogm1pWu5ATnJNwGnM//rPJXFwT
+        jhvozEeKfD6Czi4uacoca1Njk9q4muTn3j5H422KVyNQxHtE1obu2qV1x/ID6JfOO7HqwuYHlJ8Gi
+        9M3pVn0asYwCzKR6WFooGY9vx3JbiHEXmuDI5X76Faow3I3GeK4Kl8UmSLwB5rUznhbc=;
+Received: from p200300ccff37da001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff37:da00:1a3d:a2ff:febf:d33a] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1lzbES-0006NR-OJ; Sat, 03 Jul 2021 10:42:36 +0200
+Received: from andi by aktux with local (Exim 4.92)
+        (envelope-from <andreas@kemnade.info>)
+        id 1lzbES-0008Gw-7s; Sat, 03 Jul 2021 10:42:36 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     lee.jones@linaro.org, robh+dt@kernel.org, jic23@kernel.org,
+        lars@metafoo.de, sre@kernel.org, andreas@kemnade.info,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-pm@vger.kernel.org,
+        leonard.crestez@nxp.com, letux-kernel@openphoenux.org
+Subject: [PATCH 0/4] mfd: rn5t618: Extend ADC support
+Date:   Sat,  3 Jul 2021 10:42:20 +0200
+Message-Id: <20210703084224.31623-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Reply-To: patzengu@outlook.com
-Sender: aminukabore774@gmail.com
-Received: by 2002:a17:90a:5888:0:0:0:0 with HTTP; Fri, 2 Jul 2021 17:03:37
- -0700 (PDT)
-From:   "P. Zengu" <rm2568590@gmail.com>
-Date:   Sat, 3 Jul 2021 02:03:37 +0200
-X-Google-Sender-Auth: WjgXZ4Kk-POTha9fyw7dc2vW3Fc
-Message-ID: <CANm+=4fT4VLQjTYSC4b=QvdQrP6uj1KgWGaUmDjEPB-4FvTCew@mail.gmail.com>
-Subject: i need your co-operation
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -1.0 (-)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Add devicetree support so that consumers can reference the channels
+via devicetree, especially the power subdevice can make use of that
+to provide voltage_now properties.
+
+Andreas Kemnade (4):
+  dt-bindings: mfd: ricoh,rn5t618: ADC related nodes and properties
+  mfd: rn5t618: Add of compatibles for ADC and power
+  iio: rn5t618: Add devicetree support
+  power: supply: rn5t618: Add voltage_now property
+
+ .../bindings/mfd/ricoh,rn5t618.yaml           | 53 ++++++++++++++++++
+ drivers/iio/adc/rn5t618-adc.c                 | 14 ++++-
+ drivers/mfd/rn5t618.c                         |  6 +-
+ drivers/power/supply/rn5t618_power.c          | 56 +++++++++++++++++++
+ 4 files changed, 126 insertions(+), 3 deletions(-)
+
 -- 
-Dear Friend,
+2.30.2
 
-I am Mr.Patrice Zengu ,from Burkina Faso and i am the new bank telex
-manager of our bank here in Africa.
-
-I have the opportunity to transfer the sum of US$ 10.5Million to your
-bank account which i personally placed on an Escrow account without a
-name.
-
-I must tell you that after revision of files both old and new as the
-new telex manager ,i discovered that if these funds remains here
-without transferring it offshore,it will be lawfully recovered
-andmoved to the  Government of Burkina Faso treasury as an abandoned
-funds without any name.
-
-I want to let you know that a Burkinabe cannot stand as the depositor
-of these US dollars  since we are not allowed to operate on foreign
-currrency.I do not intend to work  and stay in Africa till the rest of
-my life.
-
-Moreso,i will not want my bank to know about these funds and if they
-happens to know probably,the funds will be moved to the Burkina Faso
-Government public treasury as an abandoned funds.
-
-I will furnish you with more details of this transfer and how it ca
-nbe perfectly and legally executed without any hitch since i am now in
-control.
-
-I am waiting to hear from you urgently to proceed.
-
-
-Yours sincerely,
-Mr.Patrice Zengu.

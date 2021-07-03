@@ -2,132 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 470ED3BA90F
-	for <lists+linux-iio@lfdr.de>; Sat,  3 Jul 2021 16:53:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8ADE3BA93D
+	for <lists+linux-iio@lfdr.de>; Sat,  3 Jul 2021 17:30:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229598AbhGCO4Y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 3 Jul 2021 10:56:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56662 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229562AbhGCO4X (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 3 Jul 2021 10:56:23 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8035161930;
-        Sat,  3 Jul 2021 14:53:48 +0000 (UTC)
-Date:   Sat, 3 Jul 2021 15:56:11 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Navin Sankar Velliangiri <navin@linumiz.com>
-Cc:     lars@metafoo.de, pmeerw@pmeerw.net, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 2/2] dt-bindings: iio: temperature: add MAXIM max31865
- support
-Message-ID: <20210703155611.2971eea8@jic23-huawei>
-In-Reply-To: <20210703095954.221281-1-navin@linumiz.com>
-References: <20210703095954.221281-1-navin@linumiz.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S229865AbhGCPce (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 3 Jul 2021 11:32:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58150 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229598AbhGCPce (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 3 Jul 2021 11:32:34 -0400
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C9A0C061762;
+        Sat,  3 Jul 2021 08:29:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:Content-Type:
+        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=QABguMzP1/VumBvVHw70jOoK+BIUazJP6EF/sOlcL/c=; b=npD23N6p0GJrBNRRLPAmj8uzUr
+        URbfIkwPhkAPTv8LVCXhfP2Q8vAHRrTc3XepN21DEU/vL+SJSxxtQabOZHYLgaI1bA9JVkJObC+A5
+        7oIUx2KTa5jNqn/tQi8Xb58etTlKeW/eQWMA3kRJolh9qp50PPC24PcTJ9jT1d9Nwryk=;
+Received: from p200300ccff37da001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff37:da00:1a3d:a2ff:febf:d33a] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1lzhaW-000084-5L; Sat, 03 Jul 2021 17:29:48 +0200
+Date:   Sat, 3 Jul 2021 17:29:47 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     kernel test robot <lkp@intel.com>
+Cc:     lee.jones@linaro.org, robh+dt@kernel.org, jic23@kernel.org,
+        lars@metafoo.de, sre@kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-pm@vger.kernel.org, kbuild-all@lists.01.org
+Subject: Re: [PATCH 4/4] power: supply: rn5t618: Add voltage_now property
+Message-ID: <20210703172947.60e456a1@aktux>
+In-Reply-To: <202107032203.CYwEkIW0-lkp@intel.com>
+References: <20210703084224.31623-5-andreas@kemnade.info>
+        <202107032203.CYwEkIW0-lkp@intel.com>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Spam-Score: -1.0 (-)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat,  3 Jul 2021 15:29:54 +0530
-Navin Sankar Velliangiri <navin@linumiz.com> wrote:
+Hi,
 
-> Add DT bindings for MAXIM max31865 RTD sensor.
+oh, I forgot to add some depends IIO in the Makefile. I will wait some
+days for human reviewers before spinning a v2.
+
+Regards,
+Andreas
+
+On Sat, 3 Jul 2021 22:35:27 +0800
+kernel test robot <lkp@intel.com> wrote:
+
+> Hi Andreas,
 > 
-> Signed-off-by: Navin Sankar Velliangiri <navin@linumiz.com>
-
-Hi Navin,
-
-Welcome to IIO!
-
-A few comments inline.
-
-Thanks,
-
-Jonathan
-
+> Thank you for the patch! Yet something to improve:
+> 
+> [auto build test ERROR on power-supply/for-next]
+> [also build test ERROR on next-20210701]
+> [cannot apply to lee-mfd/for-mfd-next iio/togreg robh/for-next v5.13]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch]
+> 
+> url:    https://github.com/0day-ci/linux/commits/Andreas-Kemnade/mfd-rn5t618-Extend-ADC-support/20210703-164312
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/sre/linux-power-supply.git for-next
+> config: i386-randconfig-m031-20210702 (attached as .config)
+> compiler: gcc-9 (Debian 9.3.0-22) 9.3.0
+> reproduce (this is a W=1 build):
+>         # https://github.com/0day-ci/linux/commit/99953e2eb9d653eb8bc74eb482cef7c9fb4e69d7
+>         git remote add linux-review https://github.com/0day-ci/linux
+>         git fetch --no-tags linux-review Andreas-Kemnade/mfd-rn5t618-Extend-ADC-support/20210703-164312
+>         git checkout 99953e2eb9d653eb8bc74eb482cef7c9fb4e69d7
+>         # save the attached .config to linux build tree
+>         make W=1 ARCH=i386 
+> 
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+> 
+> All errors (new ones prefixed by >>, old ones prefixed by <<):
+> 
+> >> ERROR: modpost: "devm_iio_channel_get" [drivers/power/supply/rn5t618_power.ko] undefined!
+> >> ERROR: modpost: "iio_read_channel_processed" [drivers/power/supply/rn5t618_power.ko] undefined!  
+> 
 > ---
->  .../iio/temperature/maxim,max31865.yaml       | 52 +++++++++++++++++++
->  1 file changed, 52 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/temperature/maxim,max31865.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/temperature/maxim,max31865.yaml b/Documentation/devicetree/bindings/iio/temperature/maxim,max31865.yaml
-> new file mode 100644
-> index 000000000000..9efadea514e1
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/temperature/maxim,max31865.yaml
-> @@ -0,0 +1,52 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/temperature/maxim,max31865.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Maxim MAX31865 RTD-to-Digital Converter.
-
-Good to spell out RTD: Restance temperature detector
-
-> +
-> +maintainers:
-> +  - Navin Sankar Velliangiri <navin@linumiz.com>
-> +
-> +description: |
-> +  https://datasheets.maximintegrated.com/en/ds/MAX31865.pdf
-> +
-> +properties:
-> +  compatible:
-> +    const: maxim,max31865
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  maxim,no-of-wires:
-> +    description:
-> +      Setting this property enables 3-wire config. Else
-> +      2-wire or 4-wire.
-> +    type: boolean
-
-Either make this take a the value 2, 3 or 4 (my preference)
-or potentially rename it as maxim,3-wire.
-
-Whilst we can expect people to look at the binding docs if they need details, we
-still want someone glancing at a dts file to know what the binding means and
-that isn't true for this parameter as current defined.
-
-> +
-> +  spi-max-frequency: true
-> +  spi-cpha: true
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - spi-cpha
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    spi {
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
-> +
-> +	temp_sensor@0 {
-> +		compatible = "maxim,max31865";
-> +		reg = <0>;
-> +		spi-max-frequency = <400000>;
-> +		spi-cpha;
-> +		maxim,no-of-wires;
-> +	};
-
-Some tabs in here, which means that a dt-schema check would have failed I think.
-Please make sure you fix those up and run the tests as described in
-Documentation/devicetree/bindings/writing-schema.rst
-before sending v2.
-
-> +    };
-> +...
+> 0-DAY CI Kernel Test Service, Intel Corporation
+> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
 

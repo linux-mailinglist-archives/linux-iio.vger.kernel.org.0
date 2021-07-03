@@ -2,146 +2,109 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E0FC93BA9E4
-	for <lists+linux-iio@lfdr.de>; Sat,  3 Jul 2021 19:47:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4C283BA9EF
+	for <lists+linux-iio@lfdr.de>; Sat,  3 Jul 2021 20:03:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229481AbhGCRuV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 3 Jul 2021 13:50:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56118 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229473AbhGCRuU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 3 Jul 2021 13:50:20 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 95AE761930;
-        Sat,  3 Jul 2021 17:47:44 +0000 (UTC)
-Date:   Sat, 3 Jul 2021 18:50:07 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <aardelean@deviqon.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        pmeerw@pmeerw.net
-Subject: Re: [PATCH] iio: light: adjd_s311: convert to device-managed
- functions
-Message-ID: <20210703185007.2c2283f4@jic23-huawei>
-In-Reply-To: <20210628135132.73682-1-aardelean@deviqon.com>
-References: <20210628135132.73682-1-aardelean@deviqon.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S229481AbhGCSGL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 3 Jul 2021 14:06:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35050 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229473AbhGCSGK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 3 Jul 2021 14:06:10 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEB20C061764
+        for <linux-iio@vger.kernel.org>; Sat,  3 Jul 2021 11:03:35 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id c28so970635lfp.11
+        for <linux-iio@vger.kernel.org>; Sat, 03 Jul 2021 11:03:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=lkG7FoGck9kTQYYCK9VBgV6NTpLq1d+LGAixBAuDGEQ=;
+        b=Mgw4GqLUtxNo3IQGhg1g7nl0lJmGt/3FvFengwHC591qG1nvPVoix8DbTBifbHU/KP
+         d+jqx5eaGYQt4HrKXz6Fla3i3Ho0JylSwWUz7cdsdpLUVR28U5Ug7IkkcCZbqyTvlsv0
+         QkHvN9j+NeVl3T/TPY6g7mAF89RPV8u2/FVFyCZlttQewCgA79j8ONXYutDrSSJZHQTJ
+         jOtRSR0bOxtnlNaP3nFyrDpjkpnifD7PcdOR5dIs637HqJYfMw6rc8VDRw0GU1XuCcrd
+         Vt4J4F/XDAG2ST5s2DIspOzuGbWZDO0ZxtgpP6nksLwy4umZ8SR787uzJN15EnXsUUf+
+         /Gsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=lkG7FoGck9kTQYYCK9VBgV6NTpLq1d+LGAixBAuDGEQ=;
+        b=C9BKgiqxKyMzGi7h4fFCJTEYxUzP5LrLx8zywHxGOQVQz8eSQgovpCwdKe5j6Scq3Z
+         VYaiS4E6ZJOMSucISXsXsvRUww/AU95AeRXNGr2YGZPU+LkVOiCPOUgglr+nzCcoEBDU
+         Avk9njjop3rIz8d6WKUycWKn8wom1A5vblhknwSvX3ejTI5v76eRsSjRU42+oZzT+AIo
+         7WnhXDXiF3EUBxOdTD7K+Ttu90NrfIEdr7ZjHyzQfMUq634Cb2LULrEPB3SocVKAx5aC
+         fSwJX2rjhaGCdqmjFEVQ6xR4pLLet6HXhJGK/aao2w9O3uN624nv0tHGvzQoZaqzV9mU
+         XR/Q==
+X-Gm-Message-State: AOAM531ryjx+BIROVnDdyo7J3UWCU3L1NdKlD9rsOmZLWWGNpdxdLLJL
+        3ljmRph7rSuS1N/OLM94r+KbFg==
+X-Google-Smtp-Source: ABdhPJy7bqqI0Hue0UbrUieyCUVG0NR1+PQEG/tbPWotbqHgrLAdPgsRYqPzlP3zL6h7KACLfeMUSg==
+X-Received: by 2002:a05:6512:1582:: with SMTP id bp2mr4192696lfb.483.1625335414009;
+        Sat, 03 Jul 2021 11:03:34 -0700 (PDT)
+Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
+        by smtp.gmail.com with ESMTPSA id t12sm594232lfg.148.2021.07.03.11.03.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 03 Jul 2021 11:03:33 -0700 (PDT)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Peter Rosin <peda@axentia.se>,
+        Chris Lesiak <chris.lesiak@licor.com>,
+        linux-iio@vger.kernel.org
+Subject: [PATCH] hwmon: (ntc_thermistor): Use library interpolation
+Date:   Sat,  3 Jul 2021 20:01:31 +0200
+Message-Id: <20210703180131.4036589-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 28 Jun 2021 16:51:32 +0300
-Alexandru Ardelean <aardelean@deviqon.com> wrote:
+The kernel has a helper function for linear interpolation so
+use it. It incidentally makes the code easier to read as well.
 
-> This one is a little easier to convert to device-managed, now with the
-> devm_krealloc() function.
-> 
-> The other iio_triggered_buffer_setup() and iio_device_register() can be
-> converted to their devm_ variants. And devm_krealloc() can be used to
-> (re)alloc the buffer. When the driver unloads, this will also be free'd.
-> 
-> Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
-> ---
->  drivers/iio/light/adjd_s311.c | 34 +++++-----------------------------
->  1 file changed, 5 insertions(+), 29 deletions(-)
-> 
-> diff --git a/drivers/iio/light/adjd_s311.c b/drivers/iio/light/adjd_s311.c
-> index 17dac8d0e11d..19d60d6986a1 100644
-> --- a/drivers/iio/light/adjd_s311.c
-> +++ b/drivers/iio/light/adjd_s311.c
-> @@ -230,8 +230,8 @@ static int adjd_s311_update_scan_mode(struct iio_dev *indio_dev,
->  {
->  	struct adjd_s311_data *data = iio_priv(indio_dev);
->  
-> -	kfree(data->buffer);
-> -	data->buffer = kmalloc(indio_dev->scan_bytes, GFP_KERNEL);
-> +	data->buffer = devm_krealloc(indio_dev->dev.parent, data->buffer,
-> +				     indio_dev->scan_bytes, GFP_KERNEL);
-I got some complaints about exactly this trick in a review recently so I'll
-pass them on.
+Cc: Peter Rosin <peda@axentia.se>
+Cc: Chris Lesiak <chris.lesiak@licor.com>
+Cc: linux-iio@vger.kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ drivers/hwmon/ntc_thermistor.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-Whilst devm_krealloc() usage like this won't lose the original reference, its
-not what people expect from a realloc() case, so to not confuse people it is
-better to do a dance where you use a local variable, then only set data->buffer
-to it once we know the realloc succeeded.
-
-That avoids this looking like the anti-pattern it would be if that were a normal
-realloc in which case you would just have leaked the original allocation.
-
-More interestingly, why are we bothering with resizing the buffer dependent on what
-is enabled?  Can't we just allocate a 128 byte buffer and not bother changing it
-as we really aren't wasting that much space?  Just embed it in the adjd_s311_data
-structure directly and don't worry about the allocations.  Will need to be
-aligned(8) though to avoid the push_to_buffer_with_timestamp() issue.
-Using something like
-
-struct {
-	s16 chans[4];
-	s64 ts __aligned(8); /* I hate x86 32 bit */
-} scan;
-
-Inside the priv structure should work nicely.
-
-
->  	if (data->buffer == NULL)
->  		return -ENOMEM;
->  
-> @@ -256,7 +256,6 @@ static int adjd_s311_probe(struct i2c_client *client,
->  		return -ENOMEM;
->  
->  	data = iio_priv(indio_dev);
-> -	i2c_set_clientdata(client, indio_dev);
->  	data->client = client;
->  
->  	indio_dev->info = &adjd_s311_info;
-> @@ -265,34 +264,12 @@ static int adjd_s311_probe(struct i2c_client *client,
->  	indio_dev->num_channels = ARRAY_SIZE(adjd_s311_channels);
->  	indio_dev->modes = INDIO_DIRECT_MODE;
->  
-> -	err = iio_triggered_buffer_setup(indio_dev, NULL,
-> -		adjd_s311_trigger_handler, NULL);
-> +	err = devm_iio_triggered_buffer_setup(&client->dev, indio_dev, NULL,
-> +					      adjd_s311_trigger_handler, NULL);
->  	if (err < 0)
->  		return err;
->  
-> -	err = iio_device_register(indio_dev);
-> -	if (err)
-> -		goto exit_unreg_buffer;
-> -
-> -	dev_info(&client->dev, "ADJD-S311 color sensor registered\n");
-> -
-> -	return 0;
-> -
-> -exit_unreg_buffer:
-> -	iio_triggered_buffer_cleanup(indio_dev);
-> -	return err;
-> -}
-> -
-> -static int adjd_s311_remove(struct i2c_client *client)
-> -{
-> -	struct iio_dev *indio_dev = i2c_get_clientdata(client);
-> -	struct adjd_s311_data *data = iio_priv(indio_dev);
-> -
-> -	iio_device_unregister(indio_dev);
-> -	iio_triggered_buffer_cleanup(indio_dev);
-> -	kfree(data->buffer);
-> -
-> -	return 0;
-> +	return devm_iio_device_register(&client->dev, indio_dev);
->  }
->  
->  static const struct i2c_device_id adjd_s311_id[] = {
-> @@ -306,7 +283,6 @@ static struct i2c_driver adjd_s311_driver = {
->  		.name	= ADJD_S311_DRV_NAME,
->  	},
->  	.probe		= adjd_s311_probe,
-> -	.remove		= adjd_s311_remove,
->  	.id_table	= adjd_s311_id,
->  };
->  module_i2c_driver(adjd_s311_driver);
+diff --git a/drivers/hwmon/ntc_thermistor.c b/drivers/hwmon/ntc_thermistor.c
+index 8587189c7f15..61bd0e074ec9 100644
+--- a/drivers/hwmon/ntc_thermistor.c
++++ b/drivers/hwmon/ntc_thermistor.c
+@@ -14,6 +14,7 @@
+ #include <linux/err.h>
+ #include <linux/of.h>
+ #include <linux/of_device.h>
++#include <linux/fixp-arith.h>
+ 
+ #include <linux/platform_data/ntc_thermistor.h>
+ 
+@@ -557,10 +558,12 @@ static int get_temp_mc(struct ntc_data *data, unsigned int ohm)
+ 		/* Unable to use linear approximation */
+ 		temp = data->comp[low].temp_c * 1000;
+ 	} else {
+-		temp = data->comp[low].temp_c * 1000 +
+-			((data->comp[high].temp_c - data->comp[low].temp_c) *
+-			 1000 * ((int)ohm - (int)data->comp[low].ohm)) /
+-			((int)data->comp[high].ohm - (int)data->comp[low].ohm);
++		temp = fixp_linear_interpolate(data->comp[low].ohm,
++					       data->comp[low].temp_c,
++					       data->comp[high].ohm,
++					       data->comp[high].temp_c,
++					       ohm);
++		temp *= 1000;
+ 	}
+ 	return temp;
+ }
+-- 
+2.31.1
 

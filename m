@@ -2,175 +2,290 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 60AA13BAE34
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Jul 2021 20:03:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E43193BAE37
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Jul 2021 20:05:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229713AbhGDSGa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 4 Jul 2021 14:06:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35668 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229649AbhGDSG3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Jul 2021 14:06:29 -0400
-Received: from mail-qt1-x836.google.com (mail-qt1-x836.google.com [IPv6:2607:f8b0:4864:20::836])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46DB7C061574;
-        Sun,  4 Jul 2021 11:03:54 -0700 (PDT)
-Received: by mail-qt1-x836.google.com with SMTP id y9so10693541qtx.9;
-        Sun, 04 Jul 2021 11:03:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:content-transfer-encoding:date:message-id:cc:subject
-         :from:to:references:in-reply-to;
-        bh=kH+2+z6bp9mCEzwdOoqJHzOsDTJvzIhbBl/Spavl6Z8=;
-        b=iJJMsn73sRp3fblvCzaSri5qJ7lq3iY2GFDZcJ+M0LZAzX1DX36VaUpdYhuNCdRYhL
-         qIiuF/tnICTsFAsHH2M8tHv6BSDYNZNfY1I85+qnoIO981nR1SHRT+1dJt5CBd2IqcKm
-         qEAdmXn7aemOeIfR+/7GonoAFM2M5hgTdeRmiiG13XVpmrYuW1TPE172EySL3fibNlvX
-         JEp4pmlymlhelS3plMdZc/Nnrl04d7WyggdLNtGtadSbRAfyePdw0jFac3p+Y2fk+Zjg
-         o9Ihu90SDm/IaF7+SPspvl3/HAU+3NP7vCQvJFekZPNSukwoXybTLA5BYi2OrtpYnfib
-         Cs6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:content-transfer-encoding:date
-         :message-id:cc:subject:from:to:references:in-reply-to;
-        bh=kH+2+z6bp9mCEzwdOoqJHzOsDTJvzIhbBl/Spavl6Z8=;
-        b=RcGSavoZBNaxnVEThGxBdTvCzGrGYGk1MrTYB9lyfnFVjS+/qrkYeaobphAyOq2c54
-         X7wjoCy9GbDGyTZ0BcJBiAJOuONSNhOC1qZyC2MFEMlYmXy1fCrF7QyI2tLIv137pYsF
-         lt+KZAv4QtrW55HlyX+FXgICmRuxv0vJ1QjBTy0g14EyRJ0F+/WUDtMzSi30015hFkPB
-         tNc2sSb1lchy+kUhwVUS2Vcirqp2iwfrFEe6gFfZFjjt/MzOeufYMIhKx8o8IIhRVYLC
-         PBL4ipB4uYwWn13esrSzTV41VPBdptW0bCTYWUEnGHZ96g3S+a8AsmyR2uKGeJnEWSPI
-         Irqg==
-X-Gm-Message-State: AOAM532e2bzb4fTEtmVHd89NhG1X8aM9Is7D3+5oOYrzH0AKIacCz59s
-        d/f3CNFy77Z9/EJt3qXm0tw=
-X-Google-Smtp-Source: ABdhPJw+r5KJc+NXmocsDxn0LpNLvrGDLwtoLSWdp+GS42u50cM/5H4Y03a+EK80EQPShoK+e1RgzA==
-X-Received: by 2002:a05:622a:170a:: with SMTP id h10mr9347927qtk.276.1625421833445;
-        Sun, 04 Jul 2021 11:03:53 -0700 (PDT)
-Received: from localhost (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
-        by smtp.gmail.com with ESMTPSA id s65sm1802586qkd.66.2021.07.04.11.03.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 04 Jul 2021 11:03:52 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Sun, 04 Jul 2021 14:03:51 -0400
-Message-Id: <CCKJY96Q4FYN.3DIC7GLU3C8QN@shaak>
-Cc:     <peda@axentia.se>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
-        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
-Subject: Re: [PATCH v3 03/10] iio: inkern: make a best effort on offset
- calculation
-From:   "Liam Beguin" <liambeguin@gmail.com>
-To:     "Jonathan Cameron" <jic23@kernel.org>
-References: <20210701010034.303088-1-liambeguin@gmail.com>
- <20210701010034.303088-4-liambeguin@gmail.com>
- <20210704172643.074cf8c6@jic23-huawei>
-In-Reply-To: <20210704172643.074cf8c6@jic23-huawei>
+        id S229649AbhGDSI0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 4 Jul 2021 14:08:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57138 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229645AbhGDSIZ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 4 Jul 2021 14:08:25 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E043A61248;
+        Sun,  4 Jul 2021 18:05:46 +0000 (UTC)
+Date:   Sun, 4 Jul 2021 19:08:10 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
+Cc:     <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
+        <git-dev@xilinx.com>, <michal.simek@xilinx.com>,
+        <pmeerw@pmeerw.net>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH v6 3/4] dt-bindings: iio: adc: Add Xilinx AMS binding
+ documentation
+Message-ID: <20210704190810.004a531f@jic23-huawei>
+In-Reply-To: <20210624182939.12881-4-anand.ashok.dumbre@xilinx.com>
+References: <20210624182939.12881-1-anand.ashok.dumbre@xilinx.com>
+        <20210624182939.12881-4-anand.ashok.dumbre@xilinx.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun Jul 4, 2021 at 12:26 PM EDT, Jonathan Cameron wrote:
-> On Wed, 30 Jun 2021 21:00:27 -0400
-> Liam Beguin <liambeguin@gmail.com> wrote:
->
-> > From: Liam Beguin <lvb@xiphos.com>
-> >=20
-> > iio_convert_raw_to_processed_unlocked() assumes the offset is an
-> > integer. Make a best effort to get a valid offset value for fractional
-> > cases without breaking implicit truncations.
-> >=20
-> > Fixes: 48e44ce0f881 ("iio:inkern: Add function to read the processed va=
-lue")
-> > Signed-off-by: Liam Beguin <lvb@xiphos.com>
+On Thu, 24 Jun 2021 19:29:38 +0100
+Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com> wrote:
 
-Hi Jonathan,
+> Xilinx AMS have several ADC channels that can be used for measurement of
+> different voltages and temperatures. Document the same in the bindings.
+> 
+> Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
 
-Thanks for taking the time to review this again.
+Definitely some fiddly bits in here, but it looks fine to me.
+It's odd enough that I'll be relying on Rob taking a look though :)
 
-> Looks good, but a few really minor comments / questions inline.
->
-> Thanks,
->
-> Jonathan
->
-> > ---
-> >  drivers/iio/inkern.c | 36 +++++++++++++++++++++++++++++++-----
-> >  1 file changed, 31 insertions(+), 5 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-> > index b69027690ed5..e1712c1099c5 100644
-> > --- a/drivers/iio/inkern.c
-> > +++ b/drivers/iio/inkern.c
-> > @@ -578,13 +578,39 @@ EXPORT_SYMBOL_GPL(iio_read_channel_average_raw);
-> >  static int iio_convert_raw_to_processed_unlocked(struct iio_channel *c=
-han,
-> >  	int raw, int *processed, unsigned int scale)
-> >  {
-> > -	int scale_type, scale_val, scale_val2, offset;
-> > +	int scale_type, scale_val, scale_val2;
-> > +	int offset_type, offset_val, offset_val2;
-> >  	s64 raw64 =3D raw;
-> > -	int ret;
-> > +	int tmp;
-> > =20
-> > -	ret =3D iio_channel_read(chan, &offset, NULL, IIO_CHAN_INFO_OFFSET);
-> > -	if (ret >=3D 0)
-> > -		raw64 +=3D offset;
-> > +	offset_type =3D iio_channel_read(chan, &offset_val, &offset_val2,
-> > +				       IIO_CHAN_INFO_OFFSET);
-> > +	if (offset_type >=3D 0) {
-> > +		switch (offset_type) {
-> > +		case IIO_VAL_INT:
-> > +			break;
-> > +		case IIO_VAL_INT_PLUS_MICRO:
-> > +			fallthrough;
->
-> I'm fairly sure you don't need to mark fallthroughs in the case where
-> there is nothing in the case statement at all. That case is assumed
-> to be deliberate by the various static checkers. I am seeing a few
-> examples as you have it here in kernel, but it certainly isn't
-> particularly common
-> so I'm assuming those where the result of people falsely thinking it was
-> necessary
-> or the outcomes of code changes in the surrounding code.
->
 
-I thought it was always required with `-Wimplicit-fallthrough`.
-Building without it gives no warnings, and after looking into it a
-little, I found a bugzilla thread[1] that confirms what you're saying.
-Thanks for pointing that out.
-
-[1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D7652
-
-> > +		case IIO_VAL_INT_PLUS_NANO:
-> > +			/*
-> > +			 * Both IIO_VAL_INT_PLUS_MICRO and IIO_VAL_INT_PLUS_NANO
-> > +			 * implicitely truncate the offset to it's integer form.
-> > +			 */
-> > +			break;
-> > +		case IIO_VAL_FRACTIONAL:
-> > +			tmp =3D offset_val / offset_val2;
-> > +			offset_val =3D tmp;
->
-> What benefit do we get from the local variable?
-> offset_val /=3D offset_val2; would be alternative.
->
-
-Apologies for that, will fix!
-
-Thanks,
-Liam
-
-> > +			break;
-> > +		case IIO_VAL_FRACTIONAL_LOG2:
-> > +			tmp =3D offset_val / (1 << offset_val2);
-> > +			offset_val =3D tmp;
-> > +			break;
-> > +		default:
-> > +			return -EINVAL;
-> > +		}
-> > +
-> > +		raw64 +=3D offset_val;
-> > +	}
-> > =20
-> >  	scale_type =3D iio_channel_read(chan, &scale_val, &scale_val2,
-> >  					IIO_CHAN_INFO_SCALE);
+> ---
+>  .../bindings/iio/adc/xlnx,zynqmp-ams.yaml     | 228 ++++++++++++++++++
+>  1 file changed, 228 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml b/Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml
+> new file mode 100644
+> index 000000000000..a065ddd55d38
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml
+> @@ -0,0 +1,228 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/xlnx,zynqmp-ams.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Xilinx Zynq Ultrascale AMS controller
+> +
+> +maintainers:
+> +  - Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
+> +
+> +description: |
+> +  The AMS (Analog Monitoring System) includes an ADC as well as on-chip sensors
+> +  that can be used to sample external voltages and monitor on-die operating
+> +  conditions, such as temperature and supply voltage levels.
+> +  The AMS has two SYSMON blocks which are PL (Programmable Logic) SYSMON and
+> +  PS (Processing System) SYSMON.
+> +  All designs should have AMS registers, but PS and PL are optional. The
+> +  AMS controller can work with only PS, only PL and both PS and PL
+> +  configurations. Please specify registers according to your design. Devicetree
+> +  should always have AMS module property. Providing PS & PL module is optional.
+> +
+> +  AMS Channel Details
+> +  ```````````````````
+> +  Sysmon Block  |Channel|                       Details                                 |Measurement
+> +                |Number |                                                               |Type
+> +  ---------------------------------------------------------------------------------------------------------
+> +  AMS CTRL      |0      |System PLLs voltage measurement, VCC_PSPLL.                    |Voltage
+> +                |1      |Battery voltage measurement, VCC_PSBATT.                       |Voltage
+> +                |2      |PL Internal voltage measurement, VCCINT.                       |Voltage
+> +                |3      |Block RAM voltage measurement, VCCBRAM.                        |Voltage
+> +                |4      |PL Aux voltage measurement, VCCAUX.                            |Voltage
+> +                |5      |Voltage measurement for six DDR I/O PLLs, VCC_PSDDR_PLL.       |Voltage
+> +                |6      |VCC_PSINTFP_DDR voltage measurement.                           |Voltage
+> +  ---------------------------------------------------------------------------------------------------------
+> +  PS Sysmon     |7      |LPD temperature measurement.                                   |Temperature
+> +                |8      |FPD temperature measurement (REMOTE).                          |Temperature
+> +                |9      |VCC PS LPD voltage measurement (supply1).                      |Voltage
+> +                |10     |VCC PS FPD voltage measurement (supply2).                      |Voltage
+> +                |11     |PS Aux voltage reference (supply3).                            |Voltage
+> +                |12     |DDR I/O VCC voltage measurement.                               |Voltage
+> +                |13     |PS IO Bank 503 voltage measurement (supply5).                  |Voltage
+> +                |14     |PS IO Bank 500 voltage measurement (supply6).                  |Voltage
+> +                |15     |VCCO_PSIO1 voltage measurement.                                |Voltage
+> +                |16     |VCCO_PSIO2 voltage measurement.                                |Voltage
+> +                |17     |VCC_PS_GTR voltage measurement (VPS_MGTRAVCC).                 |Voltage
+> +                |18     |VTT_PS_GTR voltage measurement (VPS_MGTRAVTT).                 |Voltage
+> +                |19     |VCC_PSADC voltage measurement.                                 |Voltage
+> +  ---------------------------------------------------------------------------------------------------------
+> +  PL Sysmon     |20     |PL temperature measurement.                                    |Temperature
+> +                |21     |PL Internal voltage measurement, VCCINT.                       |Voltage
+> +                |22     |PL Auxiliary voltage measurement, VCCAUX.                      |Voltage
+> +                |23     |ADC Reference P+ voltage measurement.                          |Voltage
+> +                |24     |ADC Reference N- voltage measurement.                          |Voltage
+> +                |25     |PL Block RAM voltage measurement, VCCBRAM.                     |Voltage
+> +                |26     |LPD Internal voltage measurement, VCC_PSINTLP (supply4).       |Voltage
+> +                |27     |FPD Internal voltage measurement, VCC_PSINTFP (supply5).       |Voltage
+> +                |28     |PS Auxiliary voltage measurement (supply6).                    |Voltage
+> +                |29     |PL VCCADC voltage measurement (vccams).                        |Voltage
+> +                |30     |Differential analog input signal voltage measurment.           |Voltage
+> +                |31     |VUser0 voltage measurement (supply7).                          |Voltage
+> +                |32     |VUser1 voltage measurement (supply8).                          |Voltage
+> +                |33     |VUser2 voltage measurement (supply9).                          |Voltage
+> +                |34     |VUser3 voltage measurement (supply10).                         |Voltage
+> +                |35     |Auxiliary ch 0 voltage measurement (VAux0).                    |Voltage
+> +                |36     |Auxiliary ch 1 voltage measurement (VAux1).                    |Voltage
+> +                |37     |Auxiliary ch 2 voltage measurement (VAux2).                    |Voltage
+> +                |38     |Auxiliary ch 3 voltage measurement (VAux3).                    |Voltage
+> +                |39     |Auxiliary ch 4 voltage measurement (VAux4).                    |Voltage
+> +                |40     |Auxiliary ch 5 voltage measurement (VAux5).                    |Voltage
+> +                |41     |Auxiliary ch 6 voltage measurement (VAux6).                    |Voltage
+> +                |42     |Auxiliary ch 7 voltage measurement (VAux7).                    |Voltage
+> +                |43     |Auxiliary ch 8 voltage measurement (VAux8).                    |Voltage
+> +                |44     |Auxiliary ch 9 voltage measurement (VAux9).                    |Voltage
+> +                |45     |Auxiliary ch 10 voltage measurement (VAux10).                  |Voltage
+> +                |46     |Auxiliary ch 11 voltage measurement (VAux11).                  |Voltage
+> +                |47     |Auxiliary ch 12 voltage measurement (VAux12).                  |Voltage
+> +                |48     |Auxiliary ch 13 voltage measurement (VAux13).                  |Voltage
+> +                |49     |Auxiliary ch 14 voltage measurement (VAux14).                  |Voltage
+> +                |50     |Auxiliary ch 15 voltage measurement (VAux15).                  |Voltage
+> +  --------------------------------------------------------------------------------------------------------
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - xlnx,zynqmp-ams
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  reg:
+> +    description: AMS Controller register space
+> +    maxItems: 1
+> +
+> +  ranges:
+> +    description:
+> +      Maps the child address space for PS and/or PL.
+> +    maxItems: 1
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 1
+> +
+> +  '#io-channel-cells':
+> +    const: 1
+> +
+> +patternProperties:
+> +  "^ams-ps@0,400$":
+> +    type: object
+> +    description: |
+> +      PS (Processing System) SYSMON is memory mapped to PS. This block has
+> +      built-in alarm generation logic that is used to interrupt the processor
+> +      based on condition set.
+> +
+> +    properties:
+> +      compatible:
+> +        enum:
+> +          - xlnx,zynqmp-ams-ps
+> +
+> +      reg:
+> +        description: Register Space for PS-SYSMON
+> +        maxItems: 1
+> +
+> +    required:
+> +      - compatible
+> +      - reg
+> +
+> +    additionalProperties: false
+> +
+> +  "^ams-pl@400,400$":
+> +    type: object
+> +    description:
+> +      PL-SYSMON is capable of monitoring off chip voltage and temperature.
+> +      PL-SYSMON block has DRP, JTAG and I2C interface to enable monitoring
+> +      from external master. Out of this interface currently only DRP is
+> +      supported. This block has alarm generation logic that is used to
+> +      interrupt the processor based on condition set.
+> +
+> +    properties:
+> +      compatible:
+> +        items:
+> +          - enum:
+> +              - xlnx,zynqmp-ams-pl
+> +
+> +      reg:
+> +        description: Register Space for PL-SYSMON.
+> +        maxItems: 1
+> +
+> +      '#address-cells':
+> +        const: 1
+> +
+> +      '#size-cells':
+> +        const: 0
+> +
+> +    patternProperties:
+> +      "^channel@([2-4][0-9]|50)$":
+> +        type: object
+> +        description:
+> +          Describes the external channels connected.
+> +
+> +        properties:
+> +          reg:
+> +            description:
+> +              Pair of pins the channel is connected to. This value is
+> +              same as Channel Number for a particular channel.
+> +            minimum: 20
+> +            maximum: 50
+> +
+> +          xlnx,bipolar:
+> +            $ref: /schemas/types.yaml#/definitions/flag
+> +            type: boolean
+> +            description:
+> +              If the set channel is used in bipolar mode.
+> +
+> +        required:
+> +          - reg
+> +
+> +        additionalProperties: false
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - ranges
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    bus {
+> +        #address-cells = <2>;
+> +        #size-cells = <2>;
+> +
+> +        xilinx_ams: ams@ffa50000 {
+> +            compatible = "xlnx,zynqmp-ams";
+> +            interrupt-parent = <&gic>;
+> +            interrupts = <0 56 4>;
+> +            reg = <0x0 0xffa50000 0x0 0x800>;
+> +            #address-cells = <1>;
+> +            #size-cells = <1>;
+> +            #io-channel-cells = <1>;
+> +            ranges = <0 0 0xffa50800 0x800>;
+> +
+> +            ams_ps: ams-ps@0,400 {
+> +                compatible = "xlnx,zynqmp-ams-ps";
+> +                reg = <0 0x400>;
+> +            };
+> +
+> +            ams_pl: ams-pl@400,400 {
+> +                compatible = "xlnx,zynqmp-ams-pl";
+> +                reg = <0x400 0x400>;
+> +                #address-cells = <1>;
+> +                #size-cells = <0>;
+> +                channel@30 {
+> +                    reg = <30>;
+> +                    xlnx,bipolar;
+> +                };
+> +                channel@31 {
+> +                    reg = <31>;
+> +                };
+> +                channel@38 {
+> +                    reg = <38>;
+> +                    xlnx,bipolar;
+> +                };
+> +            };
+> +        };
+> +    };
 

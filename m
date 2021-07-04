@@ -2,169 +2,175 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 92AE53BAE23
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Jul 2021 19:59:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60AA13BAE34
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Jul 2021 20:03:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229689AbhGDSCM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 4 Jul 2021 14:02:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54758 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229636AbhGDSCM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 4 Jul 2021 14:02:12 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 772146128D;
-        Sun,  4 Jul 2021 17:59:35 +0000 (UTC)
-Date:   Sun, 4 Jul 2021 19:01:58 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <aardelean@deviqon.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        shawnguo@kernel.org, s.hauer@pengutronix.de
-Subject: Re: [PATCH] iio: adc: fsl-imx25-gcq: initialize regulators as
- needed
-Message-ID: <20210704190158.6676ab99@jic23-huawei>
-In-Reply-To: <20210625074325.9237-1-aardelean@deviqon.com>
-References: <20210625074325.9237-1-aardelean@deviqon.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        id S229713AbhGDSGa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 4 Jul 2021 14:06:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35668 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229649AbhGDSG3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Jul 2021 14:06:29 -0400
+Received: from mail-qt1-x836.google.com (mail-qt1-x836.google.com [IPv6:2607:f8b0:4864:20::836])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46DB7C061574;
+        Sun,  4 Jul 2021 11:03:54 -0700 (PDT)
+Received: by mail-qt1-x836.google.com with SMTP id y9so10693541qtx.9;
+        Sun, 04 Jul 2021 11:03:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:content-transfer-encoding:date:message-id:cc:subject
+         :from:to:references:in-reply-to;
+        bh=kH+2+z6bp9mCEzwdOoqJHzOsDTJvzIhbBl/Spavl6Z8=;
+        b=iJJMsn73sRp3fblvCzaSri5qJ7lq3iY2GFDZcJ+M0LZAzX1DX36VaUpdYhuNCdRYhL
+         qIiuF/tnICTsFAsHH2M8tHv6BSDYNZNfY1I85+qnoIO981nR1SHRT+1dJt5CBd2IqcKm
+         qEAdmXn7aemOeIfR+/7GonoAFM2M5hgTdeRmiiG13XVpmrYuW1TPE172EySL3fibNlvX
+         JEp4pmlymlhelS3plMdZc/Nnrl04d7WyggdLNtGtadSbRAfyePdw0jFac3p+Y2fk+Zjg
+         o9Ihu90SDm/IaF7+SPspvl3/HAU+3NP7vCQvJFekZPNSukwoXybTLA5BYi2OrtpYnfib
+         Cs6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:content-transfer-encoding:date
+         :message-id:cc:subject:from:to:references:in-reply-to;
+        bh=kH+2+z6bp9mCEzwdOoqJHzOsDTJvzIhbBl/Spavl6Z8=;
+        b=RcGSavoZBNaxnVEThGxBdTvCzGrGYGk1MrTYB9lyfnFVjS+/qrkYeaobphAyOq2c54
+         X7wjoCy9GbDGyTZ0BcJBiAJOuONSNhOC1qZyC2MFEMlYmXy1fCrF7QyI2tLIv137pYsF
+         lt+KZAv4QtrW55HlyX+FXgICmRuxv0vJ1QjBTy0g14EyRJ0F+/WUDtMzSi30015hFkPB
+         tNc2sSb1lchy+kUhwVUS2Vcirqp2iwfrFEe6gFfZFjjt/MzOeufYMIhKx8o8IIhRVYLC
+         PBL4ipB4uYwWn13esrSzTV41VPBdptW0bCTYWUEnGHZ96g3S+a8AsmyR2uKGeJnEWSPI
+         Irqg==
+X-Gm-Message-State: AOAM532e2bzb4fTEtmVHd89NhG1X8aM9Is7D3+5oOYrzH0AKIacCz59s
+        d/f3CNFy77Z9/EJt3qXm0tw=
+X-Google-Smtp-Source: ABdhPJw+r5KJc+NXmocsDxn0LpNLvrGDLwtoLSWdp+GS42u50cM/5H4Y03a+EK80EQPShoK+e1RgzA==
+X-Received: by 2002:a05:622a:170a:: with SMTP id h10mr9347927qtk.276.1625421833445;
+        Sun, 04 Jul 2021 11:03:53 -0700 (PDT)
+Received: from localhost (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
+        by smtp.gmail.com with ESMTPSA id s65sm1802586qkd.66.2021.07.04.11.03.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 04 Jul 2021 11:03:52 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Sun, 04 Jul 2021 14:03:51 -0400
+Message-Id: <CCKJY96Q4FYN.3DIC7GLU3C8QN@shaak>
+Cc:     <peda@axentia.se>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
+Subject: Re: [PATCH v3 03/10] iio: inkern: make a best effort on offset
+ calculation
+From:   "Liam Beguin" <liambeguin@gmail.com>
+To:     "Jonathan Cameron" <jic23@kernel.org>
+References: <20210701010034.303088-1-liambeguin@gmail.com>
+ <20210701010034.303088-4-liambeguin@gmail.com>
+ <20210704172643.074cf8c6@jic23-huawei>
+In-Reply-To: <20210704172643.074cf8c6@jic23-huawei>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 25 Jun 2021 10:43:25 +0300
-Alexandru Ardelean <aardelean@deviqon.com> wrote:
+On Sun Jul 4, 2021 at 12:26 PM EDT, Jonathan Cameron wrote:
+> On Wed, 30 Jun 2021 21:00:27 -0400
+> Liam Beguin <liambeguin@gmail.com> wrote:
+>
+> > From: Liam Beguin <lvb@xiphos.com>
+> >=20
+> > iio_convert_raw_to_processed_unlocked() assumes the offset is an
+> > integer. Make a best effort to get a valid offset value for fractional
+> > cases without breaking implicit truncations.
+> >=20
+> > Fixes: 48e44ce0f881 ("iio:inkern: Add function to read the processed va=
+lue")
+> > Signed-off-by: Liam Beguin <lvb@xiphos.com>
 
-> The driver tries to initialize all possible regulators from the DT, then
-> match the external regulators with each channel and then release all unused
-> regulators.
-> 
-> We can change the logic a bit to initialize regulators only when at least
-> one channel needs them.
-> 
-> This change creates a mx25_gcq_ext_regulator_setup() function that is
-> called only for the external regulators. If there's already a reference to
-> an external regulator, the function will just exit early with no error.
-> 
-> This way, the driver doesn't need to keep any track of these regulators
-> during init.
-> 
-> Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
+Hi Jonathan,
 
-whilst I agree this is a bit cleaner, I definitely want to see review from
-those more familiar with the device before I take it!
+Thanks for taking the time to review this again.
+
+> Looks good, but a few really minor comments / questions inline.
+>
+> Thanks,
+>
+> Jonathan
+>
+> > ---
+> >  drivers/iio/inkern.c | 36 +++++++++++++++++++++++++++++++-----
+> >  1 file changed, 31 insertions(+), 5 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+> > index b69027690ed5..e1712c1099c5 100644
+> > --- a/drivers/iio/inkern.c
+> > +++ b/drivers/iio/inkern.c
+> > @@ -578,13 +578,39 @@ EXPORT_SYMBOL_GPL(iio_read_channel_average_raw);
+> >  static int iio_convert_raw_to_processed_unlocked(struct iio_channel *c=
+han,
+> >  	int raw, int *processed, unsigned int scale)
+> >  {
+> > -	int scale_type, scale_val, scale_val2, offset;
+> > +	int scale_type, scale_val, scale_val2;
+> > +	int offset_type, offset_val, offset_val2;
+> >  	s64 raw64 =3D raw;
+> > -	int ret;
+> > +	int tmp;
+> > =20
+> > -	ret =3D iio_channel_read(chan, &offset, NULL, IIO_CHAN_INFO_OFFSET);
+> > -	if (ret >=3D 0)
+> > -		raw64 +=3D offset;
+> > +	offset_type =3D iio_channel_read(chan, &offset_val, &offset_val2,
+> > +				       IIO_CHAN_INFO_OFFSET);
+> > +	if (offset_type >=3D 0) {
+> > +		switch (offset_type) {
+> > +		case IIO_VAL_INT:
+> > +			break;
+> > +		case IIO_VAL_INT_PLUS_MICRO:
+> > +			fallthrough;
+>
+> I'm fairly sure you don't need to mark fallthroughs in the case where
+> there is nothing in the case statement at all. That case is assumed
+> to be deliberate by the various static checkers. I am seeing a few
+> examples as you have it here in kernel, but it certainly isn't
+> particularly common
+> so I'm assuming those where the result of people falsely thinking it was
+> necessary
+> or the outcomes of code changes in the surrounding code.
+>
+
+I thought it was always required with `-Wimplicit-fallthrough`.
+Building without it gives no warnings, and after looking into it a
+little, I found a bugzilla thread[1] that confirms what you're saying.
+Thanks for pointing that out.
+
+[1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D7652
+
+> > +		case IIO_VAL_INT_PLUS_NANO:
+> > +			/*
+> > +			 * Both IIO_VAL_INT_PLUS_MICRO and IIO_VAL_INT_PLUS_NANO
+> > +			 * implicitely truncate the offset to it's integer form.
+> > +			 */
+> > +			break;
+> > +		case IIO_VAL_FRACTIONAL:
+> > +			tmp =3D offset_val / offset_val2;
+> > +			offset_val =3D tmp;
+>
+> What benefit do we get from the local variable?
+> offset_val /=3D offset_val2; would be alternative.
+>
+
+Apologies for that, will fix!
 
 Thanks,
+Liam
 
-Jonathan
-
-> ---
->  drivers/iio/adc/fsl-imx25-gcq.c | 57 ++++++++++++++++-----------------
->  1 file changed, 28 insertions(+), 29 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/fsl-imx25-gcq.c b/drivers/iio/adc/fsl-imx25-gcq.c
-> index ab5139e911c3..31776f80f847 100644
-> --- a/drivers/iio/adc/fsl-imx25-gcq.c
-> +++ b/drivers/iio/adc/fsl-imx25-gcq.c
-> @@ -172,13 +172,37 @@ static const struct regmap_config mx25_gcq_regconfig = {
->  	.reg_stride = 4,
->  };
->  
-> +static int mx25_gcq_ext_regulator_setup(struct device *dev,
-> +					struct mx25_gcq_priv *priv, u32 refp)
-> +{
-> +	char reg_name[12];
-> +	int ret;
-> +
-> +	if (priv->vref[refp])
-> +		return 0;
-> +
-> +	ret = snprintf(reg_name, sizeof(reg_name), "vref-%s",
-> +		       mx25_gcq_refp_names[refp]);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	priv->vref[refp] = devm_regulator_get_optional(dev, reg_name);
-> +	if (IS_ERR(priv->vref[refp])) {
-> +		dev_err(dev,
-> +			"Error, trying to use external voltage reference without a %s regulator.",
-> +			reg_name);
-> +		return PTR_ERR(priv->vref[refp]);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
->  			       struct mx25_gcq_priv *priv)
->  {
->  	struct device_node *np = pdev->dev.of_node;
->  	struct device_node *child;
->  	struct device *dev = &pdev->dev;
-> -	unsigned int refp_used[4] = {};
->  	int ret, i;
->  
->  	/*
-> @@ -194,19 +218,6 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
->  			     MX25_ADCQ_CFG_IN(i) |
->  			     MX25_ADCQ_CFG_REFN_NGND2);
->  
-> -	/*
-> -	 * First get all regulators to store them in channel_vref_mv if
-> -	 * necessary. Later we use that information for proper IIO scale
-> -	 * information.
-> -	 */
-> -	priv->vref[MX25_ADC_REFP_INT] = NULL;
-> -	priv->vref[MX25_ADC_REFP_EXT] =
-> -		devm_regulator_get_optional(&pdev->dev, "vref-ext");
-> -	priv->vref[MX25_ADC_REFP_XP] =
-> -		devm_regulator_get_optional(&pdev->dev, "vref-xp");
-> -	priv->vref[MX25_ADC_REFP_YP] =
-> -		devm_regulator_get_optional(&pdev->dev, "vref-yp");
-> -
->  	for_each_child_of_node(np, child) {
->  		u32 reg;
->  		u32 refp = MX25_ADCQ_CFG_REFP_INT;
-> @@ -233,11 +244,10 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
->  		case MX25_ADC_REFP_EXT:
->  		case MX25_ADC_REFP_XP:
->  		case MX25_ADC_REFP_YP:
-> -			if (IS_ERR(priv->vref[refp])) {
-> -				dev_err(dev, "Error, trying to use external voltage reference without a vref-%s regulator.",
-> -					mx25_gcq_refp_names[refp]);
-> +			ret = mx25_gcq_ext_regulator_setup(&pdev->dev, priv, refp);
-> +			if (ret) {
->  				of_node_put(child);
-> -				return PTR_ERR(priv->vref[refp]);
-> +				return ret;
->  			}
->  			priv->channel_vref_mv[reg] =
->  				regulator_get_voltage(priv->vref[refp]);
-> @@ -253,8 +263,6 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
->  			return -EINVAL;
->  		}
->  
-> -		++refp_used[refp];
-> -
->  		/*
->  		 * Shift the read values to the correct positions within the
->  		 * register.
-> @@ -285,15 +293,6 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
->  	regmap_write(priv->regs, MX25_ADCQ_CR,
->  		     MX25_ADCQ_CR_PDMSK | MX25_ADCQ_CR_QSM_FQS);
->  
-> -	/* Remove unused regulators */
-> -	for (i = 0; i != 4; ++i) {
-> -		if (!refp_used[i]) {
-> -			if (!IS_ERR_OR_NULL(priv->vref[i]))
-> -				devm_regulator_put(priv->vref[i]);
-> -			priv->vref[i] = NULL;
-> -		}
-> -	}
-> -
->  	return 0;
->  }
->  
+> > +			break;
+> > +		case IIO_VAL_FRACTIONAL_LOG2:
+> > +			tmp =3D offset_val / (1 << offset_val2);
+> > +			offset_val =3D tmp;
+> > +			break;
+> > +		default:
+> > +			return -EINVAL;
+> > +		}
+> > +
+> > +		raw64 +=3D offset_val;
+> > +	}
+> > =20
+> >  	scale_type =3D iio_channel_read(chan, &scale_val, &scale_val2,
+> >  					IIO_CHAN_INFO_SCALE);
 

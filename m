@@ -2,84 +2,298 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 483173BB4ED
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Jul 2021 03:26:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B971C3BB601
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Jul 2021 05:54:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229865AbhGEB25 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 4 Jul 2021 21:28:57 -0400
-Received: from lucky1.263xmail.com ([211.157.147.133]:34646 "EHLO
-        lucky1.263xmail.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229808AbhGEB24 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Jul 2021 21:28:56 -0400
-Received: from localhost (unknown [192.168.167.13])
-        by lucky1.263xmail.com (Postfix) with ESMTP id 30100D5944;
-        Mon,  5 Jul 2021 09:26:19 +0800 (CST)
-X-MAIL-GRAY: 0
-X-MAIL-DELIVERY: 1
-X-ADDR-CHECKED4: 1
-X-SKE-CHECKED: 1
-X-ANTISPAM-LEVEL: 2
-Received: from xxm-vm.localdomain (unknown [58.22.7.114])
-        by smtp.263.net (postfix) whith ESMTP id P30156T139873811932928S1625448376209259_;
-        Mon, 05 Jul 2021 09:26:18 +0800 (CST)
-X-IP-DOMAINF: 1
-X-UNIQUE-TAG: <c362687bbb3d7b6ecdde6e56187c314d>
-X-RL-SENDER: xxm@rock-chips.com
-X-SENDER: xxm@rock-chips.com
-X-LOGIN-NAME: xxm@rock-chips.com
-X-FST-TO: jic23@kernel.org
-X-RCPT-COUNT: 10
-X-SENDER-IP: 58.22.7.114
-X-ATTACHMENT-NUM: 0
-X-System-Flag: 0
-From:   Simon Xue <xxm@rock-chips.com>
+        id S229787AbhGED53 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 4 Jul 2021 23:57:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51846 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229743AbhGED52 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Jul 2021 23:57:28 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A1B5C061574
+        for <linux-iio@vger.kernel.org>; Sun,  4 Jul 2021 20:54:52 -0700 (PDT)
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1m0Fgv-0000hO-Ip; Mon, 05 Jul 2021 05:54:41 +0200
+Received: from ore by pty.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ore@pengutronix.de>)
+        id 1m0Fgu-0007lf-6g; Mon, 05 Jul 2021 05:54:40 +0200
+Date:   Mon, 5 Jul 2021 05:54:40 +0200
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
-        robh+dt@kernel.org, Johan Jonker <jbx6244@gmail.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+Cc:     Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        David Jander <david@protonic.nl>,
+        Robin van der Gracht <robin@protonic.nl>,
+        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, Simon Xue <xxm@rock-chips.com>
-Subject: [PATCH] arm64: dts: rockchip: add saradc node for rk3568.dtsi
-Date:   Mon,  5 Jul 2021 09:26:10 +0800
-Message-Id: <20210705012610.3831-1-xxm@rock-chips.com>
-X-Mailer: git-send-email 2.25.1
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: Re: [PATCH v1 2/2] iio: adc: tsc2046: fix sleeping in atomic context
+ warning and a deadlock after iio_trigger_poll() call
+Message-ID: <20210705035440.35iualr6kkg22n56@pengutronix.de>
+References: <20210625065922.8310-1-o.rempel@pengutronix.de>
+ <20210625065922.8310-2-o.rempel@pengutronix.de>
+ <20210704185710.07789b8f@jic23-huawei>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20210704185710.07789b8f@jic23-huawei>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-IRC:  #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 05:46:02 up 214 days, 17:52, 35 users,  load average: 0.05, 0.05,
+ 0.00
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Signed-off-by: Simon Xue <xxm@rock-chips.com>
----
- arch/arm64/boot/dts/rockchip/rk3568.dtsi | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+Hi Jonathan,
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568.dtsi b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-index d225e6a45d5c..16621ecbb876 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-@@ -525,6 +525,18 @@ uart9: serial@fe6d0000 {
- 		status = "disabled";
- 	};
- 
-+	saradc: saradc@fe720000 {
-+		compatible = "rockchip,rk3568-saradc", "rockchip,rk3399-saradc";
-+		reg = <0x0 0xfe720000 0x0 0x100>;
-+		interrupts = <GIC_SPI 93 IRQ_TYPE_LEVEL_HIGH>;
-+		clocks = <&cru CLK_SARADC>, <&cru PCLK_SARADC>;
-+		clock-names = "saradc", "apb_pclk";
-+		resets = <&cru SRST_P_SARADC>;
-+		reset-names = "saradc-apb";
-+		#io-channel-cells = <1>;
-+		status = "disabled";
-+	};
-+
- 	pinctrl: pinctrl {
- 		compatible = "rockchip,rk3568-pinctrl";
- 		rockchip,grf = <&grf>;
+On Sun, Jul 04, 2021 at 06:57:10PM +0100, Jonathan Cameron wrote:
+> On Fri, 25 Jun 2021 08:59:22 +0200
+> Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+> 
+> > If iio_trigger_poll() is called after IRQ was disabled, we will call
+> > reenable_trigger() directly from hard IRQ or hrtimer context instead of
+> > IRQ thread. In this case we will run in to multiple issue as sleeping in atomic
+> > context and a deadlock.
+> 
+> Hmm. This sounds like a problem that might bite us in other circumstances.
+> 
+> So do I have the basic issue right in thinking we have a race between
+> calling iio_trigger_poll() and having no devices still using that trigger?
+> Thus we end up with all of trig->subirqs not being enabled.
+> 
+> There was a previous discussion that the calls to iio_trigger_notify_done() in
+> iio_trigger_poll() are only meant to decrement the counter, as the assumption
+> was that the calls via threads would always happen later.  Unfortunately this
+> is all clearly a little bit racy and I suspect not many of the reenable() callbacks
+> are safe if they are called in interrupt context.
+> 
+> Perhaps an alternative would be to schedule the reenable() if we hit it from
+> that path thus ensuring it doesn't happen in a place where we can't sleep?
+> 
+> Would something like that solve your problem?
+
+Yes :)
+
+> I'd do it by having a new function
+> 
+> iio_trigger_notify_done_schedule() that uses a work struct to call
+> trig->ops->reenable(trig) from a context that can sleep.
+> 
+> It's a rare corner case so I don't really care that in theory we might have
+> a device that was safe to reenable the trigger without sleeping.  That makes
+> it easier to just have one path for this which allows sleeping.
+
+Yes.
+
+Regards,
+Oleksij
+
+> 
+> > 
+> > To avoid this issue, rework the trigger to use state machine. All state
+> > changes are done over the hrtimer, so it allows us to drop fsleep() and
+> > avoid the deadlock.
+> > 
+> > Fixes: 9374e8f5a38d ("iio: adc: add ADC driver for the TI TSC2046 controller")
+> > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> > ---
+> >  drivers/iio/adc/ti-tsc2046.c | 102 ++++++++++++++++++++---------------
+> >  1 file changed, 58 insertions(+), 44 deletions(-)
+> > 
+> > diff --git a/drivers/iio/adc/ti-tsc2046.c b/drivers/iio/adc/ti-tsc2046.c
+> > index d84ae6b008c1..91f6bd5effe7 100644
+> > --- a/drivers/iio/adc/ti-tsc2046.c
+> > +++ b/drivers/iio/adc/ti-tsc2046.c
+> > @@ -123,14 +123,21 @@ struct tsc2046_adc_ch_cfg {
+> >  	unsigned int oversampling_ratio;
+> >  };
+> >  
+> > +enum tsc2046_state {
+> > +	TSC2046_STATE_STANDBY,
+> > +	TSC2046_STATE_ENABLE_IRQ_POLL,
+> > +	TSC2046_STATE_POLL,
+> > +	TSC2046_STATE_ENABLE_IRQ,
+> > +};
+> > +
+> >  struct tsc2046_adc_priv {
+> >  	struct spi_device *spi;
+> >  	const struct tsc2046_adc_dcfg *dcfg;
+> >  
+> >  	struct iio_trigger *trig;
+> >  	struct hrtimer trig_timer;
+> > -	spinlock_t trig_lock;
+> > -	unsigned int trig_more_count;
+> > +	enum tsc2046_state state;
+> > +	spinlock_t state_lock;
+> >  
+> >  	struct spi_transfer xfer;
+> >  	struct spi_message msg;
+> > @@ -411,21 +418,47 @@ static const struct iio_info tsc2046_adc_info = {
+> >  	.update_scan_mode = tsc2046_adc_update_scan_mode,
+> >  };
+> >  
+> > -static enum hrtimer_restart tsc2046_adc_trig_more(struct hrtimer *hrtimer)
+> > +static enum hrtimer_restart tsc2046_adc_timer(struct hrtimer *hrtimer)
+> >  {
+> >  	struct tsc2046_adc_priv *priv = container_of(hrtimer,
+> >  						     struct tsc2046_adc_priv,
+> >  						     trig_timer);
+> >  	unsigned long flags;
+> >  
+> > -	spin_lock_irqsave(&priv->trig_lock, flags);
+> > -
+> > -	disable_irq_nosync(priv->spi->irq);
+> > -
+> > -	priv->trig_more_count++;
+> > -	iio_trigger_poll(priv->trig);
+> > -
+> > -	spin_unlock_irqrestore(&priv->trig_lock, flags);
+> > +	spin_lock_irqsave(&priv->state_lock, flags);
+> > +	switch (priv->state) {
+> > +	case TSC2046_STATE_ENABLE_IRQ_POLL:
+> > +		/*
+> > +		 * IRQ handler called iio_trigger_poll() to sample ADC.
+> > +		 * Here we
+> > +		 * - re-enable IRQs
+> > +		 * - start hrtimer for timeout if no IRQ will occur
+> > +		 */
+> > +		priv->state = TSC2046_STATE_POLL;
+> > +		enable_irq(priv->spi->irq);
+> > +		hrtimer_start(&priv->trig_timer,
+> > +			      ns_to_ktime(priv->scan_interval_us *
+> > +					  NSEC_PER_USEC),
+> > +			      HRTIMER_MODE_REL_SOFT);
+> > +		break;
+> > +	case TSC2046_STATE_POLL:
+> > +		disable_irq_nosync(priv->spi->irq);
+> > +		priv->state = TSC2046_STATE_ENABLE_IRQ;
+> > +		/* iio_trigger_poll() starts hrtimer */
+> > +		iio_trigger_poll(priv->trig);
+> > +		break;
+> > +	case TSC2046_STATE_ENABLE_IRQ:
+> > +		priv->state = TSC2046_STATE_STANDBY;
+> > +		enable_irq(priv->spi->irq);
+> > +		break;
+> > +	case TSC2046_STATE_STANDBY:
+> > +		fallthrough;
+> > +	default:
+> > +		dev_warn(&priv->spi->dev, "Got unexpected state: %i\n",
+> > +			 priv->state);
+> > +		break;
+> > +	}
+> > +	spin_unlock_irqrestore(&priv->state_lock, flags);
+> >  
+> >  	return HRTIMER_NORESTART;
+> >  }
+> > @@ -434,16 +467,17 @@ static irqreturn_t tsc2046_adc_irq(int irq, void *dev_id)
+> >  {
+> >  	struct iio_dev *indio_dev = dev_id;
+> >  	struct tsc2046_adc_priv *priv = iio_priv(indio_dev);
+> > -
+> > -	spin_lock(&priv->trig_lock);
+> > +	unsigned long flags;
+> >  
+> >  	hrtimer_try_to_cancel(&priv->trig_timer);
+> >  
+> > -	priv->trig_more_count = 0;
+> > +	spin_lock_irqsave(&priv->state_lock, flags);
+> >  	disable_irq_nosync(priv->spi->irq);
+> > -	iio_trigger_poll(priv->trig);
+> > +	priv->state = TSC2046_STATE_ENABLE_IRQ_POLL;
+> >  
+> > -	spin_unlock(&priv->trig_lock);
+> > +	/* iio_trigger_poll() starts hrtimer */
+> > +	iio_trigger_poll(priv->trig);
+> > +	spin_unlock_irqrestore(&priv->state_lock, flags);
+> >  
+> >  	return IRQ_HANDLED;
+> >  }
+> > @@ -452,37 +486,16 @@ static void tsc2046_adc_reenable_trigger(struct iio_trigger *trig)
+> >  {
+> >  	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
+> >  	struct tsc2046_adc_priv *priv = iio_priv(indio_dev);
+> > -	unsigned long flags;
+> > -	int delta;
+> > +	ktime_t tim;
+> >  
+> >  	/*
+> >  	 * We can sample it as fast as we can, but usually we do not need so
+> >  	 * many samples. Reduce the sample rate for default (touchscreen) use
+> >  	 * case.
+> > -	 * Currently we do not need a highly precise sample rate. It is enough
+> > -	 * to have calculated numbers.
+> > -	 */
+> > -	delta = priv->scan_interval_us - priv->time_per_scan_us;
+> > -	if (delta > 0)
+> > -		fsleep(delta);
+> > -
+> > -	spin_lock_irqsave(&priv->trig_lock, flags);
+> > -
+> > -	/*
+> > -	 * We need to trigger at least one extra sample to detect state
+> > -	 * difference on ADC side.
+> >  	 */
+> > -	if (!priv->trig_more_count) {
+> > -		int timeout_ms = DIV_ROUND_UP(priv->scan_interval_us,
+> > -					      USEC_PER_MSEC);
+> > -
+> > -		hrtimer_start(&priv->trig_timer, ms_to_ktime(timeout_ms),
+> > -			      HRTIMER_MODE_REL_SOFT);
+> > -	}
+> > -
+> > -	enable_irq(priv->spi->irq);
+> > -
+> > -	spin_unlock_irqrestore(&priv->trig_lock, flags);
+> > +	tim = ns_to_ktime((priv->scan_interval_us - priv->time_per_scan_us) *
+> > +			  NSEC_PER_USEC);
+> > +	hrtimer_start(&priv->trig_timer, tim, HRTIMER_MODE_REL_SOFT);
+> >  }
+> >  
+> >  static int tsc2046_adc_set_trigger_state(struct iio_trigger *trig, bool enable)
+> > @@ -493,8 +506,8 @@ static int tsc2046_adc_set_trigger_state(struct iio_trigger *trig, bool enable)
+> >  	if (enable) {
+> >  		enable_irq(priv->spi->irq);
+> >  	} else {
+> > +		hrtimer_cancel(&priv->trig_timer);
+> >  		disable_irq(priv->spi->irq);
+> > -		hrtimer_try_to_cancel(&priv->trig_timer);
+> >  	}
+> >  
+> >  	return 0;
+> > @@ -668,10 +681,11 @@ static int tsc2046_adc_probe(struct spi_device *spi)
+> >  	iio_trigger_set_drvdata(trig, indio_dev);
+> >  	trig->ops = &tsc2046_adc_trigger_ops;
+> >  
+> > -	spin_lock_init(&priv->trig_lock);
+> > +	spin_lock_init(&priv->state_lock);
+> > +	priv->state = TSC2046_STATE_STANDBY;
+> >  	hrtimer_init(&priv->trig_timer, CLOCK_MONOTONIC,
+> >  		     HRTIMER_MODE_REL_SOFT);
+> > -	priv->trig_timer.function = tsc2046_adc_trig_more;
+> > +	priv->trig_timer.function = tsc2046_adc_timer;
+> >  
+> >  	ret = devm_iio_trigger_register(dev, trig);
+> >  	if (ret) {
+> 
+> 
+
 -- 
-2.25.1
-
-
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |

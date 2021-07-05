@@ -2,177 +2,242 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 060513BBC44
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Jul 2021 13:37:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 427EC3BBEAE
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Jul 2021 17:11:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231309AbhGELjg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 5 Jul 2021 07:39:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42620 "EHLO
+        id S231535AbhGEPOX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 5 Jul 2021 11:14:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231279AbhGELjf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Jul 2021 07:39:35 -0400
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96AB3C061574;
-        Mon,  5 Jul 2021 04:36:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-        Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=hBQwvrRZMyyx+hqSIGn7N5kouJhnwb/IRRG3Wnr0q7U=; b=d7gjOkIrTI1LRRGHNSJuK7RFq+
-        f77lSBRyfJ6FqYttw7uDgx0ZlQWxj+lD/Gw7VqFUfaN+6kQICUkcODzTXlgTWDdtmlwU54PqFXupF
-        0ibqeVoSkdep5Sgq2hRCTg8iJK2VTk2m4QbTZ4rOaoraOa5nA7Z2mJR7vn9aIGUewpKs=;
-Received: from p200300ccff0e44001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff0e:4400:1a3d:a2ff:febf:d33a] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1m0MuE-0007D4-S9; Mon, 05 Jul 2021 13:36:55 +0200
-Received: from andi by aktux with local (Exim 4.92)
-        (envelope-from <andreas@kemnade.info>)
-        id 1m0MuE-0007XT-KK; Mon, 05 Jul 2021 13:36:54 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     jic23@kernel.org, lars@metafoo.de, sre@kernel.org,
-        andreas@kemnade.info, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        letux-kernel@openphoenux.org
-Cc:     kernel test robot <lkp@intel.com>
-Subject: [PATCH v2 2/2] power: supply: rn5t618: Add voltage_now property
-Date:   Mon,  5 Jul 2021 13:36:37 +0200
-Message-Id: <20210705113637.28908-3-andreas@kemnade.info>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210705113637.28908-1-andreas@kemnade.info>
-References: <20210705113637.28908-1-andreas@kemnade.info>
+        with ESMTP id S231502AbhGEPOX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Jul 2021 11:14:23 -0400
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D03CC061574
+        for <linux-iio@vger.kernel.org>; Mon,  5 Jul 2021 08:11:45 -0700 (PDT)
+Received: by mail-yb1-xb32.google.com with SMTP id g19so29546984ybe.11
+        for <linux-iio@vger.kernel.org>; Mon, 05 Jul 2021 08:11:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=HbK+v2A7ovZ2i0kAiaFiaahWJoqPi1jCjwXfEvn6YNs=;
+        b=IyO4lKiQKCCEExhyBT7JGw4n1yBYpCPdnjVwE//wqYf0IYenBItvUpx/E/rDE3fXvo
+         OkUXlpiwHclFb/p0kWJPqFV9qgPoK5x3DDuJcR3Afi/r7xuIs0QcNUvTktlcdXQHa6iI
+         HX4ak0XvPbRw4jHsoGWv6lLZMnqZIuz7VUA0B4ywnybZFzvSvBxIYySvGFoYgMI74tN1
+         fkX6G+XaFCbBH3cmHXV8zdDVxYE4WT/CVNOUHlCvCVVYJzNmJ9+jKcniwaWaM5B1fpuG
+         K4h+DrAmHWhP9Hvxs6Hz4jNANVs+K6/tnoe1xBgJP6POHpsnkT2Z5pwxfAB2cqS3OkUK
+         pdGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=HbK+v2A7ovZ2i0kAiaFiaahWJoqPi1jCjwXfEvn6YNs=;
+        b=Fs5f7fCoYjrTnlhU2uR/HYkOPJ/HJSvYx49ZcI9y6XGivQWUOWD7i01xMW/xhYTcDI
+         bPn2U4/UDKZ72Wls1kyBxU2ykKUh2BUHCeAGqAaRsaSa57G+aY1hM9MRonRUcmvztsTy
+         5hUmvRJ8/QhAGO0Hmc6XurHRUre5GDOs2MRUydSQtP0GkmdE959OTAJFoquICzRnJVyI
+         bAqVf0hPJRcboPe+YwOaDNZ6tEpKBp03Q7/7SUv1yo3xHY9X8SLsHrXAv6p3hQQrVswa
+         SMbewSLqWC4FIQke/RPd4u7Ad7mvrQ6J/SOVfeVXMn5fBW96NXG0ouPjqAihv+WCzHhI
+         yqng==
+X-Gm-Message-State: AOAM532lAiNtHakQAQF9Sfl6vChWqWCw70Qf2qnTcmviEYn9GlIaeag1
+        JyPYTdgUuDNF9XTrZSvfnp9fjOQKIkIMBd/kCchi/DiILqgOrQ==
+X-Google-Smtp-Source: ABdhPJzoB5R8Rr6zMKBIlRRcExkmV7bRtB3ZNjiZyYEFxXxFF51I6M//jQ3nuDAjJ8pC7SVHUTfzDqA9uFuzVIA3koE=
+X-Received: by 2002:a25:7786:: with SMTP id s128mr18615737ybc.354.1625497903988;
+ Mon, 05 Jul 2021 08:11:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -1.0 (-)
+From:   Lotfi FEJRI <fejri.lotfi@gmail.com>
+Date:   Mon, 5 Jul 2021 17:11:32 +0200
+Message-ID: <CAH-J=mcHGBY0cDFpv5H53xPEghP6qoMuQVomVH907mmcoL2O8g@mail.gmail.com>
+Subject: Question about BMI160 drivers (Xilinx)
+To:     linux-iio@vger.kernel.org
+Content-Type: multipart/mixed; boundary="00000000000026993c05c661b936"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Read voltage_now via IIO and provide the property.
+--00000000000026993c05c661b936
+Content-Type: text/plain; charset="UTF-8"
 
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-Reported-by: kernel test robot <lkp@intel.com>
----
-Changes in v2:
-- different error handling needed for iio_map usage
-- fix dependencies in Kconfig
+Hello,
 
- drivers/power/supply/Kconfig         |  2 ++
- drivers/power/supply/rn5t618_power.c | 40 ++++++++++++++++++++++++++++
- 2 files changed, 42 insertions(+)
+I am trying to run your BMI160 (available on the Xilinx github) on the
+Xilinx ZedBoard, through I2C.
+I'm able to build the drivers with Petalinux (v2019.1) and to run
+(modprobe ***.ko) them without issues on the ZedBoard:
 
-diff --git a/drivers/power/supply/Kconfig b/drivers/power/supply/Kconfig
-index e696364126f1..b2910d950929 100644
---- a/drivers/power/supply/Kconfig
-+++ b/drivers/power/supply/Kconfig
-@@ -790,6 +790,8 @@ config CHARGER_WILCO
- config RN5T618_POWER
- 	tristate "RN5T618 charger/fuel gauge support"
- 	depends on MFD_RN5T618
-+	depends on RN5T618_ADC
-+	depends on IIO
- 	help
- 	  Say Y here to have support for RN5T618 PMIC family fuel gauge and charger.
- 	  This driver can also be built as a module. If so, the module will be
-diff --git a/drivers/power/supply/rn5t618_power.c b/drivers/power/supply/rn5t618_power.c
-index 819061918b2a..bca3fd86c14d 100644
---- a/drivers/power/supply/rn5t618_power.c
-+++ b/drivers/power/supply/rn5t618_power.c
-@@ -9,10 +9,12 @@
- #include <linux/device.h>
- #include <linux/bitops.h>
- #include <linux/errno.h>
-+#include <linux/iio/consumer.h>
- #include <linux/init.h>
- #include <linux/interrupt.h>
- #include <linux/module.h>
- #include <linux/mfd/rn5t618.h>
-+#include <linux/of_device.h>
- #include <linux/platform_device.h>
- #include <linux/power_supply.h>
- #include <linux/regmap.h>
-@@ -64,6 +66,8 @@ struct rn5t618_power_info {
- 	struct power_supply *battery;
- 	struct power_supply *usb;
- 	struct power_supply *adp;
-+	struct iio_channel *channel_vusb;
-+	struct iio_channel *channel_vadp;
- 	int irq;
- };
- 
-@@ -77,6 +81,7 @@ static enum power_supply_usb_type rn5t618_usb_types[] = {
- static enum power_supply_property rn5t618_usb_props[] = {
- 	/* input current limit is not very accurate */
- 	POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT,
-+	POWER_SUPPLY_PROP_VOLTAGE_NOW,
- 	POWER_SUPPLY_PROP_STATUS,
- 	POWER_SUPPLY_PROP_USB_TYPE,
- 	POWER_SUPPLY_PROP_ONLINE,
-@@ -85,6 +90,7 @@ static enum power_supply_property rn5t618_usb_props[] = {
- static enum power_supply_property rn5t618_adp_props[] = {
- 	/* input current limit is not very accurate */
- 	POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT,
-+	POWER_SUPPLY_PROP_VOLTAGE_NOW,
- 	POWER_SUPPLY_PROP_STATUS,
- 	POWER_SUPPLY_PROP_ONLINE,
- };
-@@ -464,6 +470,16 @@ static int rn5t618_adp_get_property(struct power_supply *psy,
- 
- 		val->intval = FROM_CUR_REG(regval);
- 		break;
-+	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-+		if (!info->channel_vadp)
-+			return -ENODATA;
-+
-+		ret = iio_read_channel_processed(info->channel_vadp, &val->intval);
-+		if (ret < 0)
-+			return ret;
-+
-+		val->intval *= 1000;
-+		break;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -589,6 +605,16 @@ static int rn5t618_usb_get_property(struct power_supply *psy,
- 			val->intval = FROM_CUR_REG(regval);
- 		}
- 		break;
-+	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-+		if (!info->channel_vusb)
-+			return -ENODATA;
-+
-+		ret = iio_read_channel_processed(info->channel_vusb, &val->intval);
-+		if (ret < 0)
-+			return ret;
-+
-+		val->intval *= 1000;
-+		break;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -711,6 +737,20 @@ static int rn5t618_power_probe(struct platform_device *pdev)
- 
- 	platform_set_drvdata(pdev, info);
- 
-+	info->channel_vusb = devm_iio_channel_get(&pdev->dev, "vusb");
-+	if (IS_ERR(info->channel_vusb)) {
-+		if (PTR_ERR(info->channel_vusb) == -ENODEV)
-+			return -EPROBE_DEFER;
-+		return PTR_ERR(info->channel_vusb);
-+	}
-+
-+	info->channel_vadp = devm_iio_channel_get(&pdev->dev, "vadp");
-+	if (IS_ERR(info->channel_vadp)) {
-+		if (PTR_ERR(info->channel_vadp) == -ENODEV)
-+			return -EPROBE_DEFER;
-+		return PTR_ERR(info->channel_vadp);
-+	}
-+
- 	ret = regmap_read(info->rn5t618->regmap, RN5T618_CONTROL, &v);
- 	if (ret)
- 		return ret;
--- 
-2.30.2
+- bmi160_core.ko
+- bmi160_i2c.ko
+- bmi160_spi.ko
 
+
+
+here is the device-tree I added for the sensor:
+
+
+
+
+When I run "i2cdetect -y -r 0" I can see that the device and the i2c
+interface is recognized. I can see "UU" inside 0x68 (which seems to be
+the I2C address), nothing more than this.
+
+My question is: How is it possible to read and save the data in a txt
+file? I don't see which function I have to call to read the data.
+The only one related to getting the data is "bmi160_get_data" from
+bmi160_core.c but I don't know how to call this function...
+
+Please, can you help me on this?
+
+Thank you!
+
+Kind regards,
+
+Lotfi
+
+--00000000000026993c05c661b936
+Content-Type: image/png; name="image.png"
+Content-Disposition: attachment; filename="image.png"
+Content-Transfer-Encoding: base64
+Content-ID: <f_kqqrams90>
+X-Attachment-Id: f_kqqrams90
+
+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
+--00000000000026993c05c661b936--

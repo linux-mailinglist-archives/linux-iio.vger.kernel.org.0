@@ -2,41 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EC313BB953
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Jul 2021 10:30:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 566883BB956
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Jul 2021 10:31:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230157AbhGEIct (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 5 Jul 2021 04:32:49 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:3353 "EHLO
+        id S230121AbhGEIeY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 5 Jul 2021 04:34:24 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:3354 "EHLO
         frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230085AbhGEIcr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Jul 2021 04:32:47 -0400
-Received: from fraeml743-chm.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4GJJZR218rz6G8Bq;
-        Mon,  5 Jul 2021 16:22:07 +0800 (CST)
+        with ESMTP id S230085AbhGEIeX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Jul 2021 04:34:23 -0400
+Received: from fraeml711-chm.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4GJJTP1dRRz6H8Lx;
+        Mon,  5 Jul 2021 16:17:45 +0800 (CST)
 Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml743-chm.china.huawei.com (10.206.15.224) with Microsoft SMTP Server
+ fraeml711-chm.china.huawei.com (10.206.15.60) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Mon, 5 Jul 2021 10:30:08 +0200
+ 15.1.2176.2; Mon, 5 Jul 2021 10:31:45 +0200
 Received: from localhost (10.47.85.51) by lhreml710-chm.china.huawei.com
  (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Mon, 5 Jul 2021
- 09:30:07 +0100
-Date:   Mon, 5 Jul 2021 09:29:49 +0100
+ 09:31:45 +0100
+Date:   Mon, 5 Jul 2021 09:31:29 +0100
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Liam Beguin <liambeguin@gmail.com>
-CC:     Jonathan Cameron <jic23@kernel.org>, <peda@axentia.se>,
-        <lars@metafoo.de>, <pmeerw@pmeerw.net>,
+To:     Lee Jones <lee.jones@linaro.org>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        Andreas Kemnade <andreas@kemnade.info>, <robh+dt@kernel.org>,
+        <lars@metafoo.de>, <sre@kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
-Subject: Re: [PATCH v3 04/10] iio: afe: rescale: reduce risk of integer
- overflow
-Message-ID: <20210705092949.000060b1@Huawei.com>
-In-Reply-To: <CCKX5239AEWI.3T3JF9PXHIESQ@shaak>
-References: <20210701010034.303088-1-liambeguin@gmail.com>
-        <20210701010034.303088-5-liambeguin@gmail.com>
-        <20210704173639.622371bf@jic23-huawei>
-        <CCKX5239AEWI.3T3JF9PXHIESQ@shaak>
+        <linux-pm@vger.kernel.org>, <leonard.crestez@nxp.com>,
+        <letux-kernel@openphoenux.org>
+Subject: Re: [PATCH 2/4] mfd: rn5t618: Add of compatibles for ADC and power
+Message-ID: <20210705093129.00005aab@Huawei.com>
+In-Reply-To: <YOK2aKYU6TK1GO7H@dell>
+References: <20210703084224.31623-1-andreas@kemnade.info>
+        <20210703084224.31623-3-andreas@kemnade.info>
+        <20210703170405.60828c57@jic23-huawei>
+        <YOK2aKYU6TK1GO7H@dell>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
 MIME-Version: 1.0
@@ -50,91 +51,49 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 05 Jul 2021 00:23:59 -0400
-"Liam Beguin" <liambeguin@gmail.com> wrote:
+On Mon, 5 Jul 2021 08:36:08 +0100
+Lee Jones <lee.jones@linaro.org> wrote:
 
-> On Sun Jul 4, 2021 at 12:36 PM EDT, Jonathan Cameron wrote:
-> > On Wed, 30 Jun 2021 21:00:28 -0400
-> > Liam Beguin <liambeguin@gmail.com> wrote:
-> >  
-> > > From: Liam Beguin <lvb@xiphos.com>
+> On Sat, 03 Jul 2021, Jonathan Cameron wrote:
+> 
+> > On Sat,  3 Jul 2021 10:42:22 +0200
+> > Andreas Kemnade <andreas@kemnade.info> wrote:
+> >   
+> > > This allows having devicetree nodes for the subdevices.
 > > > 
-> > > Reduce the risk of integer overflow by doing the scale calculation with
-> > > 64bit integers and looking for a Greatest Common Divider for both parts
-> > > of the fractional value.
-> > > 
-> > > Signed-off-by: Liam Beguin <lvb@xiphos.com>
+> > > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
 > > > ---
-> > >  drivers/iio/afe/iio-rescale.c | 10 +++++++---
-> > >  1 file changed, 7 insertions(+), 3 deletions(-)
+> > >  drivers/mfd/rn5t618.c | 6 ++++--
+> > >  1 file changed, 4 insertions(+), 2 deletions(-)
 > > > 
-> > > diff --git a/drivers/iio/afe/iio-rescale.c b/drivers/iio/afe/iio-rescale.c
-> > > index 774eb3044edd..98bcb5d418d6 100644
-> > > --- a/drivers/iio/afe/iio-rescale.c
-> > > +++ b/drivers/iio/afe/iio-rescale.c
-> > > @@ -39,7 +39,8 @@ static int rescale_read_raw(struct iio_dev *indio_dev,
-> > >  			    int *val, int *val2, long mask)
-> > >  {
-> > >  	struct rescale *rescale = iio_priv(indio_dev);
-> > > -	unsigned long long tmp;
-> > > +	s64 tmp, tmp2;
-> > > +	u32 factor;
-> > >  	int ret;
+> > > diff --git a/drivers/mfd/rn5t618.c b/drivers/mfd/rn5t618.c
+> > > index 384acb459427..b916c7471ca3 100644
+> > > --- a/drivers/mfd/rn5t618.c
+> > > +++ b/drivers/mfd/rn5t618.c
+> > > @@ -24,8 +24,10 @@ static const struct mfd_cell rn5t618_cells[] = {
+> > >  };
 > > >  
-> > >  	switch (mask) {
-> > > @@ -67,8 +68,11 @@ static int rescale_read_raw(struct iio_dev *indio_dev,
-> > >  		}
-> > >  		switch (ret) {
-> > >  		case IIO_VAL_FRACTIONAL:
-> > > -			*val *= rescale->numerator;
-> > > -			*val2 *= rescale->denominator;
-> > > +			tmp = (s64)*val * rescale->numerator;
-> > > +			tmp2 = (s64)*val2 * rescale->denominator;
-> > > +			factor = gcd(tmp, tmp2);  
-> >
-> > Hmm. I wonder if there are cases where this doesn't work and we end up
-> > truncating because the gcd is say 1. If all of val, val2,
-> > rescale->numerator,
-> > rescale->denominator are primes and the rescale values are moderately
-> > large
-> > then that might happen. We probably need a fallback position. Perhaps
-> > check tmp / factor and temp2/factor will fit in an int. If not, shift
-> > them until
-> > they do even if we have to dump some precision to do so.
-> >  
+> > >  static const struct mfd_cell rc5t619_cells[] = {
+> > > -	{ .name = "rn5t618-adc" },
+> > > -	{ .name = "rn5t618-power" },
+> > > +	{ .name = "rn5t618-adc",
+> > > +	  .of_compatible = "ricoh,rc5t619-adc" },  
+> > 
+> > Odd to have a name of 618 and a compatible of 619.  Why?
+> > Definitely deserves a comment if this is necessary for some reason!  
 > 
-> I see what you mean. If we want to do that I guess it would also apply
-> to other areas of the driver.
+> Actually this is the norm.  We have lots of drivers named after the
+> *first* device they supported before expansion.
 
-Certainly possible.  It's a bit obscure so may not have occurred to anyone
-on previous reviews :(
+Ah. I'd missed that this cells array is specific to the 5t619, though if
+the driver is the same I'd also expect it to be needed for the 5t618 entry.
 
 > 
-> > This stuff is getting fiddly enough we might want to figure out some
-> > self tests
-> > that exercise the various cases.
-> >  
-> 
-> I never implemented kernel self tests before, I guess it should follow
-> the example of drivers/iio/test/iio-test-format.c?
-> 
-> Would you be okay to add this in a follow up series?
-
-Yes, that's fine.
-
-> 
-> > > +			*val = tmp / factor;
-> > > +			*val2 = tmp2 / factor;  
-> >
-> > This is doing 64 bit numbers divided by 32 bit ones. Doesn't that
-> > require
-> > use of do_div() etc on 32 bit platforms?
-> >  
-> 
-> Apologies for that mistake, will fix.
-> 
-> > >  			return ret;
-> > >  		case IIO_VAL_INT:
-> > >  			*val *= rescale->numerator;  
+> > > +	{ .name = "rn5t618-power",
+> > > +	  .of_compatible = "ricoh,rc5t619-power" },
+> > >  	{ .name = "rn5t618-regulator" },
+> > >  	{ .name = "rc5t619-rtc" },
+> > >  	{ .name = "rn5t618-wdt" },  
+> >   
 > 
 

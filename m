@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32A723BB8CA
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Jul 2021 10:20:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07B5E3BB8CF
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Jul 2021 10:20:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230185AbhGEIWo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 5 Jul 2021 04:22:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54134 "EHLO
+        id S230241AbhGEIWu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 5 Jul 2021 04:22:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230208AbhGEIWm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Jul 2021 04:22:42 -0400
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FA54C0613DB;
-        Mon,  5 Jul 2021 01:20:06 -0700 (PDT)
-Received: by mail-pl1-x635.google.com with SMTP id e17so514030plh.8;
-        Mon, 05 Jul 2021 01:20:06 -0700 (PDT)
+        with ESMTP id S230038AbhGEIWs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Jul 2021 04:22:48 -0400
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99A3DC061762;
+        Mon,  5 Jul 2021 01:20:11 -0700 (PDT)
+Received: by mail-pj1-x102b.google.com with SMTP id cx9-20020a17090afd89b0290170a3e085edso11354302pjb.0;
+        Mon, 05 Jul 2021 01:20:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=A67nL6VY5QuqzX4d9vtFWwhex7SYuitKz1DcH71mkPY=;
-        b=V02DqOs7FO+Rxpaao17rnMSfpXkDn6hELLAi7trWMki59XCnOCqkYlX9nRQJNi4npP
-         3DtNib8TrNIXhXHRQX2aBymxlx+ll+ScUHP9Aduqdt7J+pe1Y31hCLiXFxSZRz/J/nf6
-         R5p+FoyA7JI/DNd+ZdgIhs10Ctf3yhm/p/FGCjWIo3qGRuaX/QJlJNRlVvisrT6zszI/
-         v3VRPpFDGMRXz4DWlY6mvrO/25VCgox8JIyqVB742v6k9w1VLBqteHdMIUo3H8/RERRs
-         UHAQ0F81hTVdTt3YyIef7ZG1b4zsKa7LKxyPW4EOKsl/n5HZC5maOESwT+6PpKUhpBzZ
-         w9Bw==
+        bh=o8Aoh9kpAZGn2mM/3p/CEiOQACzWzUhkq+U7pGOzSQ4=;
+        b=OuOEf2Eh7t3o7o4J11OEIcu4IEZVkoKwKiTmTKnA5BzB6YJ4t++LPu9vfvJjgov3UN
+         kN1gLPaJIUjEcF6FGynNwrSoKogzQIiREASsCqJ/LYwyjd0rIBz91dTm69RXImTIelCW
+         Uu7TUhPaocbB6xvnddnfKh3YPPUPjGjM+cAaWCjCVGEzqoV0lJtp42fVT4MLbqx+hG5j
+         tC81RBR8bl0KztyL+X1oKxgfCHg58pVYob6rwReIb21M83ANeG7gU1jxzJOSNCExqZbJ
+         6sGSQV42NsjWKIRAPXtryHdsgpS62VB0VsVvs3+fYQrdotG7Ef1b+5ysTOWO0VJViBsV
+         PMKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=A67nL6VY5QuqzX4d9vtFWwhex7SYuitKz1DcH71mkPY=;
-        b=X6a9Bm2iopeWD3dyApfTa+aiSafsrfNA33OIH8O1SX1NMbS6SNuKaAP3npGb28yTZU
-         BGV35UmSIeLdxVJzFEvidcl1J2hPNbuIWIjYLMo1SFHjt/U9uKBw/JVxFoL6o7BJgBQO
-         PeOG+FAo72jNOk3WZrtJwwMjnNHl14gLfQX244iXktMsgmqcbTTF7WTqUEPAAADJi/dq
-         i7nfVNfEASoGu96Kf+pBlhBBsnD9jB2JaBPHf4dMVJcx0wrTkaZ6NQXwklKiHIamkAe/
-         aUPa8yC9U290jQ5VUChRGt6ONJgP0wrRlJDXjDUQeQWjXIc6tg+pOcGjxLySpcQ5S9h5
-         8KQg==
-X-Gm-Message-State: AOAM531W3F3cHk/p6MRjKUX6canp14niMRgmDStyBYBlJ2PcvtFCS/ca
-        Qx39Ozifo/L8ZgCYKF+6gBs=
-X-Google-Smtp-Source: ABdhPJy7ASUjr1Me3ibXp+zSB7NGG5pLHoVFw5uw43je2IpvW2bBPLUVl+JXYKpYZibCK5ljuf1Mtg==
-X-Received: by 2002:a17:90b:103:: with SMTP id p3mr14172079pjz.217.1625473205641;
-        Mon, 05 Jul 2021 01:20:05 -0700 (PDT)
+        bh=o8Aoh9kpAZGn2mM/3p/CEiOQACzWzUhkq+U7pGOzSQ4=;
+        b=cNdeCUXu98lnHdnFQ+VfDOp4yjhHalP2eofKOtyctaodcZSpDEvKyxVcWqSuxc1Niw
+         ekzcXaK+Y0kJuWmGcu0Z1PXod9C5oxRbRC6vhCeHdur8Ir1NDtSOCZJ3TjjRKU4ak5Ow
+         5q6bIvtp5TPf/UHzax+Np71CGQpJvZ7ZwC+fGSqGjBkrSt/OJPeCW6riGPw2acUef5H9
+         ZOJQDaFdNMzWuOkY5B4wD2dvoiXq1SHGP9L8TURySbr+Q9osDA60GcTJ/GKllQTqLltc
+         fO2F71UGOMkP0k+yydTHgEiS7GAzn3iN7Im1ac4CGdd4ogFPgwwcxnK3al4y2zL5dfzj
+         UFlA==
+X-Gm-Message-State: AOAM530wiibXgV13lDQ9Si1eeUf29kX5WaLpI6aFMVtGyy6rAR/y4W7U
+        Z3/TAhPI/Xsb2Aaci9m9Kko=
+X-Google-Smtp-Source: ABdhPJw09frGTEbknOhzRR+nQCL90ZGIey5C8BakjKCbokongNRwT8lm8qTm3yddOeueQxu3e7yzog==
+X-Received: by 2002:a17:902:eac6:b029:128:d5ed:4d06 with SMTP id p6-20020a170902eac6b0290128d5ed4d06mr11596150pld.77.1625473210948;
+        Mon, 05 Jul 2021 01:20:10 -0700 (PDT)
 Received: from localhost.localdomain ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id y11sm12209986pfo.160.2021.07.05.01.20.01
+        by smtp.gmail.com with ESMTPSA id y11sm12209986pfo.160.2021.07.05.01.20.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jul 2021 01:20:05 -0700 (PDT)
+        Mon, 05 Jul 2021 01:20:10 -0700 (PDT)
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     jic23@kernel.org
 Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
@@ -59,318 +59,165 @@ Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
         alexandre.torgue@st.com, o.rempel@pengutronix.de,
         jarkko.nikula@linux.intel.com,
         William Breathitt Gray <vilhelm.gray@gmail.com>
-Subject: [PATCH v12 08/17] docs: counter: Update to reflect sysfs internalization
-Date:   Mon,  5 Jul 2021 17:18:56 +0900
-Message-Id: <3e0a3f7a32bba0f56f5830ff1548ef417e63880e.1625471640.git.vilhelm.gray@gmail.com>
+Subject: [PATCH v12 09/17] counter: Move counter enums to uapi header
+Date:   Mon,  5 Jul 2021 17:18:57 +0900
+Message-Id: <2891870283e591a57b58fb0e47bb226c5fa0f7c9.1625471640.git.vilhelm.gray@gmail.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <cover.1625471640.git.vilhelm.gray@gmail.com>
 References: <cover.1625471640.git.vilhelm.gray@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The Counter subsystem architecture and driver implementations have
-changed in order to handle Counter sysfs interactions in a more
-consistent way. This patch updates the Generic Counter interface
-documentation to reflect the changes.
+This is in preparation for a subsequent patch implementing a character
+device interface for the Counter subsystem.
 
+Reviewed-by: David Lechner <david@lechnology.com>
 Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 ---
- Documentation/ABI/testing/sysfs-bus-counter  |   9 +-
- Documentation/driver-api/generic-counter.rst | 243 ++++++++++++++-----
- 2 files changed, 185 insertions(+), 67 deletions(-)
+ MAINTAINERS                  |  1 +
+ include/linux/counter.h      | 42 +--------------------------
+ include/uapi/linux/counter.h | 56 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 58 insertions(+), 41 deletions(-)
+ create mode 100644 include/uapi/linux/counter.h
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-counter b/Documentation/ABI/testing/sysfs-bus-counter
-index 20fe5afd4f9e..dee79b606847 100644
---- a/Documentation/ABI/testing/sysfs-bus-counter
-+++ b/Documentation/ABI/testing/sysfs-bus-counter
-@@ -286,7 +286,14 @@ What:		/sys/bus/counter/devices/counterX/signalY/signal
- KernelVersion:	5.2
- Contact:	linux-iio@vger.kernel.org
- Description:
--		Signal data of Signal Y represented as a string.
-+		Signal level state of Signal Y. The following signal level
-+		states are available:
-+
-+		low:
-+			Low level state.
-+
-+		high:
-+			High level state.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2cac15216ba9..5de4d2164844 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4687,6 +4687,7 @@ F:	Documentation/ABI/testing/sysfs-bus-counter
+ F:	Documentation/driver-api/generic-counter.rst
+ F:	drivers/counter/
+ F:	include/linux/counter.h
++F:	include/uapi/linux/counter.h
  
- What:		/sys/bus/counter/devices/counterX/signalY/synchronous_mode
- KernelVersion:	5.2
-diff --git a/Documentation/driver-api/generic-counter.rst b/Documentation/driver-api/generic-counter.rst
-index 64fe7db080e5..f6397218aa4c 100644
---- a/Documentation/driver-api/generic-counter.rst
-+++ b/Documentation/driver-api/generic-counter.rst
-@@ -250,8 +250,8 @@ for defining a counter device.
- .. kernel-doc:: drivers/counter/counter.c
-    :export:
+ CP2615 I2C DRIVER
+ M:	Bence Csókás <bence98@sch.bme.hu>
+diff --git a/include/linux/counter.h b/include/linux/counter.h
+index e7fd6d81a929..eee85db8e332 100644
+--- a/include/linux/counter.h
++++ b/include/linux/counter.h
+@@ -9,6 +9,7 @@
+ #include <linux/device.h>
+ #include <linux/kernel.h>
+ #include <linux/types.h>
++#include <uapi/linux/counter.h>
  
--Implementation
--==============
-+Driver Implementation
-+=====================
+ struct counter_device;
+ struct counter_count;
+@@ -27,47 +28,6 @@ enum counter_comp_type {
+ 	COUNTER_COMP_COUNT_MODE,
+ };
  
- To support a counter device, a driver must first allocate the available
- Counter Signals via counter_signal structures. These Signals should
-@@ -267,25 +267,61 @@ respective counter_count structure. These counter_count structures are
- set to the counts array member of an allocated counter_device structure
- before the Counter is registered to the system.
- 
--Driver callbacks should be provided to the counter_device structure via
--a constant counter_ops structure in order to communicate with the
--device: to read and write various Signals and Counts, and to set and get
--the "action mode" and "function mode" for various Synapses and Counts
--respectively.
-+Driver callbacks must be provided to the counter_device structure in
-+order to communicate with the device: to read and write various Signals
-+and Counts, and to set and get the "action mode" and "function mode" for
-+various Synapses and Counts respectively.
- 
- A defined counter_device structure may be registered to the system by
- passing it to the counter_register function, and unregistered by passing
- it to the counter_unregister function. Similarly, the
--devm_counter_register and devm_counter_unregister functions may be used
--if device memory-managed registration is desired.
+-enum counter_scope {
+-	COUNTER_SCOPE_DEVICE,
+-	COUNTER_SCOPE_SIGNAL,
+-	COUNTER_SCOPE_COUNT,
+-};
 -
--Extension sysfs attributes can be created for auxiliary functionality
--and data by passing in defined counter_device_ext, counter_count_ext,
--and counter_signal_ext structures. In these cases, the
--counter_device_ext structure is used for global/miscellaneous exposure
--and configuration of the respective Counter device, while the
--counter_count_ext and counter_signal_ext structures allow for auxiliary
--exposure and configuration of a specific Count or Signal respectively.
-+devm_counter_register function may be used if device memory-managed
-+registration is desired.
-+
-+The struct counter_comp structure is used to define counter extensions
-+for Signals, Synapses, and Counts.
-+
-+The "type" member specifies the type of high-level data (e.g. BOOL,
-+COUNT_DIRECTION, etc.) handled by this extension. The "``*_read``" and
-+"``*_write``" members can then be set by the counter device driver with
-+callbacks to handle that data using native C data types (i.e. u8, u64,
-+etc.).
-+
-+Convenience macros such as ``COUNTER_COMP_COUNT_U64`` are provided for
-+use by driver authors. In particular, driver authors are expected to use
-+the provided macros for standard Counter subsystem attributes in order
-+to maintain a consistent interface for userspace. For example, a counter
-+device driver may define several standard attributes like so::
-+
-+        struct counter_comp count_ext[] = {
-+                COUNTER_COMP_DIRECTION(count_direction_read),
-+                COUNTER_COMP_ENABLE(count_enable_read, count_enable_write),
-+                COUNTER_COMP_CEILING(count_ceiling_read, count_ceiling_write),
-+        };
-+
-+This makes it simple to see, add, and modify the attributes that are
-+supported by this driver ("direction", "enable", and "ceiling") and to
-+maintain this code without getting lost in a web of struct braces.
-+
-+Callbacks must match the function type expected for the respective
-+component or extension. These function types are defined in the struct
-+counter_comp structure as the "``*_read``" and "``*_write``" union
-+members.
-+
-+The corresponding callback prototypes for the extensions mentioned in
-+the previous example above would be::
-+
-+        int count_direction_read(struct counter_device *counter,
-+                                 struct counter_count *count,
-+                                 enum counter_count_direction *direction);
-+        int count_enable_read(struct counter_device *counter,
-+                              struct counter_count *count, u8 *enable);
-+        int count_enable_write(struct counter_device *counter,
-+                               struct counter_count *count, u8 enable);
-+        int count_ceiling_read(struct counter_device *counter,
-+                               struct counter_count *count, u64 *ceiling);
-+        int count_ceiling_write(struct counter_device *counter,
-+                                struct counter_count *count, u64 ceiling);
- 
- Determining the type of extension to create is a matter of scope.
- 
-@@ -313,52 +349,127 @@ Determining the type of extension to create is a matter of scope.
-   chip overheated via a device extension called "error_overtemp":
-   /sys/bus/counter/devices/counterX/error_overtemp
- 
--Architecture
--============
+-enum counter_count_direction {
+-	COUNTER_COUNT_DIRECTION_FORWARD,
+-	COUNTER_COUNT_DIRECTION_BACKWARD,
+-};
 -
--When the Generic Counter interface counter module is loaded, the
--counter_init function is called which registers a bus_type named
--"counter" to the system. Subsequently, when the module is unloaded, the
--counter_exit function is called which unregisters the bus_type named
--"counter" from the system.
+-enum counter_count_mode {
+-	COUNTER_COUNT_MODE_NORMAL,
+-	COUNTER_COUNT_MODE_RANGE_LIMIT,
+-	COUNTER_COUNT_MODE_NON_RECYCLE,
+-	COUNTER_COUNT_MODE_MODULO_N,
+-};
 -
--Counter devices are registered to the system via the counter_register
--function, and later removed via the counter_unregister function. The
--counter_register function establishes a unique ID for the Counter
--device and creates a respective sysfs directory, where X is the
--mentioned unique ID:
+-enum counter_function {
+-	COUNTER_FUNCTION_INCREASE,
+-	COUNTER_FUNCTION_DECREASE,
+-	COUNTER_FUNCTION_PULSE_DIRECTION,
+-	COUNTER_FUNCTION_QUADRATURE_X1_A,
+-	COUNTER_FUNCTION_QUADRATURE_X1_B,
+-	COUNTER_FUNCTION_QUADRATURE_X2_A,
+-	COUNTER_FUNCTION_QUADRATURE_X2_B,
+-	COUNTER_FUNCTION_QUADRATURE_X4,
+-};
 -
--    /sys/bus/counter/devices/counterX
+-enum counter_signal_level {
+-	COUNTER_SIGNAL_LEVEL_LOW,
+-	COUNTER_SIGNAL_LEVEL_HIGH,
+-};
 -
--Sysfs attributes are created within the counterX directory to expose
--functionality, configurations, and data relating to the Counts, Signals,
--and Synapses of the Counter device, as well as options and information
--for the Counter device itself.
+-enum counter_synapse_action {
+-	COUNTER_SYNAPSE_ACTION_NONE,
+-	COUNTER_SYNAPSE_ACTION_RISING_EDGE,
+-	COUNTER_SYNAPSE_ACTION_FALLING_EDGE,
+-	COUNTER_SYNAPSE_ACTION_BOTH_EDGES,
+-};
 -
--Each Signal has a directory created to house its relevant sysfs
--attributes, where Y is the unique ID of the respective Signal:
--
--    /sys/bus/counter/devices/counterX/signalY
--
--Similarly, each Count has a directory created to house its relevant
--sysfs attributes, where Y is the unique ID of the respective Count:
--
--    /sys/bus/counter/devices/counterX/countY
--
--For a more detailed breakdown of the available Generic Counter interface
--sysfs attributes, please refer to the
--Documentation/ABI/testing/sysfs-bus-counter file.
--
--The Signals and Counts associated with the Counter device are registered
--to the system as well by the counter_register function. The
--signal_read/signal_write driver callbacks are associated with their
--respective Signal attributes, while the count_read/count_write and
--function_get/function_set driver callbacks are associated with their
--respective Count attributes; similarly, the same is true for the
--action_get/action_set driver callbacks and their respective Synapse
--attributes. If a driver callback is left undefined, then the respective
--read/write permission is left disabled for the relevant attributes.
--
--Similarly, extension sysfs attributes are created for the defined
--counter_device_ext, counter_count_ext, and counter_signal_ext
--structures that are passed in.
-+Subsystem Architecture
-+======================
+ /**
+  * struct counter_comp - Counter component node
+  * @type:		Counter component data type
+diff --git a/include/uapi/linux/counter.h b/include/uapi/linux/counter.h
+new file mode 100644
+index 000000000000..6113938a6044
+--- /dev/null
++++ b/include/uapi/linux/counter.h
+@@ -0,0 +1,56 @@
++/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
++/*
++ * Userspace ABI for Counter character devices
++ * Copyright (C) 2020 William Breathitt Gray
++ */
++#ifndef _UAPI_COUNTER_H_
++#define _UAPI_COUNTER_H_
 +
-+Counter drivers pass and take data natively (i.e. ``u8``, ``u64``, etc.)
-+and the shared counter module handles the translation between the sysfs
-+interface. This guarantees a standard userspace interface for all
-+counter drivers, and enables a Generic Counter chrdev interface via a
-+generalized device driver ABI.
++/* Component scope definitions */
++enum counter_scope {
++	COUNTER_SCOPE_DEVICE,
++	COUNTER_SCOPE_SIGNAL,
++	COUNTER_SCOPE_COUNT,
++};
 +
-+A high-level view of how a count value is passed down from a counter
-+driver is exemplified by the following. The driver callbacks are first
-+registered to the Counter core component for use by the Counter
-+userspace interface components::
++/* Count direction values */
++enum counter_count_direction {
++	COUNTER_COUNT_DIRECTION_FORWARD,
++	COUNTER_COUNT_DIRECTION_BACKWARD,
++};
 +
-+        Driver callbacks registration:
-+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+                        +----------------------------+
-+                        | Counter device driver      |
-+                        +----------------------------+
-+                        | Processes data from device |
-+                        +----------------------------+
-+                                |
-+                         -------------------
-+                        / driver callbacks /
-+                        -------------------
-+                                |
-+                                V
-+                        +----------------------+
-+                        | Counter core         |
-+                        +----------------------+
-+                        | Routes device driver |
-+                        | callbacks to the     |
-+                        | userspace interfaces |
-+                        +----------------------+
-+                                |
-+                         -------------------
-+                        / driver callbacks /
-+                        -------------------
-+                                |
-+                +---------------+
-+                |
-+                V
-+        +--------------------+
-+        | Counter sysfs      |
-+        +--------------------+
-+        | Translates to the  |
-+        | standard Counter   |
-+        | sysfs output       |
-+        +--------------------+
++/* Count mode values */
++enum counter_count_mode {
++	COUNTER_COUNT_MODE_NORMAL,
++	COUNTER_COUNT_MODE_RANGE_LIMIT,
++	COUNTER_COUNT_MODE_NON_RECYCLE,
++	COUNTER_COUNT_MODE_MODULO_N,
++};
 +
-+Thereafter, data can be transferred directly between the Counter device
-+driver and Counter userspace interface::
++/* Count function values */
++enum counter_function {
++	COUNTER_FUNCTION_INCREASE,
++	COUNTER_FUNCTION_DECREASE,
++	COUNTER_FUNCTION_PULSE_DIRECTION,
++	COUNTER_FUNCTION_QUADRATURE_X1_A,
++	COUNTER_FUNCTION_QUADRATURE_X1_B,
++	COUNTER_FUNCTION_QUADRATURE_X2_A,
++	COUNTER_FUNCTION_QUADRATURE_X2_B,
++	COUNTER_FUNCTION_QUADRATURE_X4,
++};
 +
-+        Count data request:
-+        ~~~~~~~~~~~~~~~~~~~
-+                         ----------------------
-+                        / Counter device       \
-+                        +----------------------+
-+                        | Count register: 0x28 |
-+                        +----------------------+
-+                                |
-+                         -----------------
-+                        / raw count data /
-+                        -----------------
-+                                |
-+                                V
-+                        +----------------------------+
-+                        | Counter device driver      |
-+                        +----------------------------+
-+                        | Processes data from device |
-+                        |----------------------------|
-+                        | Type: u64                  |
-+                        | Value: 42                  |
-+                        +----------------------------+
-+                                |
-+                         ----------
-+                        / u64     /
-+                        ----------
-+                                |
-+                +---------------+
-+                |
-+                V
-+        +--------------------+
-+        | Counter sysfs      |
-+        +--------------------+
-+        | Translates to the  |
-+        | standard Counter   |
-+        | sysfs output       |
-+        |--------------------|
-+        | Type: const char * |
-+        | Value: "42"        |
-+        +--------------------+
-+                |
-+         ---------------
-+        / const char * /
-+        ---------------
-+                |
-+                V
-+        +--------------------------------------------------+
-+        | `/sys/bus/counter/devices/counterX/countY/count` |
-+        +--------------------------------------------------+
-+        \ Count: "42"                                      /
-+         --------------------------------------------------
++/* Signal values */
++enum counter_signal_level {
++	COUNTER_SIGNAL_LEVEL_LOW,
++	COUNTER_SIGNAL_LEVEL_HIGH,
++};
 +
-+There are three primary components involved:
++/* Action mode values */
++enum counter_synapse_action {
++	COUNTER_SYNAPSE_ACTION_NONE,
++	COUNTER_SYNAPSE_ACTION_RISING_EDGE,
++	COUNTER_SYNAPSE_ACTION_FALLING_EDGE,
++	COUNTER_SYNAPSE_ACTION_BOTH_EDGES,
++};
 +
-+Counter device driver
-+---------------------
-+Communicates with the hardware device to read/write data; e.g. counter
-+drivers for quadrature encoders, timers, etc.
-+
-+Counter core
-+------------
-+Registers the counter device driver to the system so that the respective
-+callbacks are called during userspace interaction.
-+
-+Counter sysfs
-+-------------
-+Translates counter data to the standard Counter sysfs interface format
-+and vice versa.
-+
-+Please refer to the ``Documentation/ABI/testing/sysfs-bus-counter`` file
-+for a detailed breakdown of the available Generic Counter interface
-+sysfs attributes.
++#endif /* _UAPI_COUNTER_H_ */
 -- 
 2.32.0
 

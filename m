@@ -2,59 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 21A503BDB14
+	by mail.lfdr.de (Postfix) with ESMTP id D31C13BDB16
 	for <lists+linux-iio@lfdr.de>; Tue,  6 Jul 2021 18:10:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230150AbhGFQMk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 6 Jul 2021 12:12:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54784 "EHLO
+        id S230164AbhGFQMl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 6 Jul 2021 12:12:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230111AbhGFQMc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Jul 2021 12:12:32 -0400
+        with ESMTP id S229823AbhGFQMd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Jul 2021 12:12:33 -0400
 Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92478C061762;
-        Tue,  6 Jul 2021 09:09:52 -0700 (PDT)
-Received: by mail-qk1-x735.google.com with SMTP id s4so1998867qkm.13;
-        Tue, 06 Jul 2021 09:09:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94CC8C061764;
+        Tue,  6 Jul 2021 09:09:53 -0700 (PDT)
+Received: by mail-qk1-x735.google.com with SMTP id j13so20645061qka.8;
+        Tue, 06 Jul 2021 09:09:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=zhQeMelYWNMHpFAMGtlyl1sUbg34IFFWmo4FOYtEzaY=;
-        b=e0hCouqsW64PHJjeDsZcvlMX0fF+yG2B4GOys0Gnr2fBJpupvojuz8dY/Q9A8679FY
-         S8MHosmBnXJ7UrYak1JL3q/DuhWU2au4hTL9YhQUv5PtyVnu+MLTFfhrAiKcCO9Vxthi
-         u4rmSR8D5nakvZ2g1Wah9RqVN+Y0Uppn5wAxKYrEwBHTU3hDEOjmsdkFzUiQ9yI2qnK5
-         3ZemMJbto7Bu23LdOwROmHXKF9pUXluFI35j5Y8h4yEI8gjVHGB5k1DsVN+El1QWsLFs
-         uEc2nEkgluTOYBL/S4jRmPM0sMrWVoAChqyAntF/quXozIGHLoTHCq4UUloX6SksXTQ0
-         hlew==
+        bh=9cfCi3940j+E1XFUEFlGplq5sdXS0Te+rNKenVvXq0k=;
+        b=DyI9mxi46V88tQr/5lyRvGEJ8aiN7vSzI2ROIKBXswK/ZY6aP4nT2vEtR9664zMD7U
+         OJD+qKo3neRbSgvkP0XpC5dp8BS/lyP1C6q96oTfqUW8CW0oQVto4xvDjQgeL67C8aPK
+         EvqwdixV2eu1+MruhMQzpBehLypLJWhHQM7V0glQQlEMpwe+FUjZLj1WzyO5NfYjnZ8U
+         hg31rrkVHD2WipWAwt8hsEl+s3eN9pdo1rq9c0mTgWxVDoY2xeM6fvBLuLlM5EgKBNcd
+         qQZ+Zjo55/mEXXF3BJDDvm2vM1ptChqgyTmSwEoreggZp/rftVEMNYjbaqxn3efPM8LW
+         eygA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=zhQeMelYWNMHpFAMGtlyl1sUbg34IFFWmo4FOYtEzaY=;
-        b=KTUEh6CZuAT3nXrgYfYgsRCOiIBnwE6vvD5WcqBK77lGjIW0lpBZT2ywj16PBaoud2
-         YISDNRkjj5OrXvHGX3iieDaFazmyTzf8xMeAPTxr3iOumq53Me2ciAmxfFyesRcYMYbt
-         ssA9c2nUvQTgGkyeclsBht4mZUD78uq2OkC+yGYGMgYeJ+5245vA0Q9RZ4PzRl+mBnF0
-         0pgd3LxKZtXH1R3BJVyJ3j8E4JKdSv0RRgDLnDwgwm+hcV7ilahmq0RHBjcnwmCHESG3
-         gSBeKwPIaSgtC8z9891GlwIBw5CF5w5K16c2rMxHnKbYPfS1rRd6I1DttqdoneT7rmvJ
-         ibuQ==
-X-Gm-Message-State: AOAM531Ty97NOorWBCfK0MXeYIkSQDPlex4A6fCNBA12pjovYrVZbHK5
-        FLlac9/bpbCoKiHu1HwHcX4=
-X-Google-Smtp-Source: ABdhPJzdxZQwbe9P4qh/yzdn8sxRTWBkNFxFgn/AxzjugkpgplSlI+nloIU4RnToC1ARVEBZMz4H/g==
-X-Received: by 2002:a37:a688:: with SMTP id p130mr4641361qke.257.1625587791818;
-        Tue, 06 Jul 2021 09:09:51 -0700 (PDT)
+        bh=9cfCi3940j+E1XFUEFlGplq5sdXS0Te+rNKenVvXq0k=;
+        b=pSdWbMG+EsJCaqrOxFKNqkMVQ995GwIRoQ7+18NgX3Uq3KU7cr3usUSf85QFoq2nyI
+         cJtTZLn6wV4JdPDsYKMx0UXgAE7weYV00PEMd5RXsfnOXWDPvuT4SMTrCV+d3vxLFwrP
+         NwpJAVTKGkckIS7oKJNvbKKWWYcpzcpK5FEWYSHQ23OHFpsCE3sQjedecfNfJ5OfzMXh
+         LWYSHZU83cnOkWJpuAtu8y87tkqR/XXGV1CtAVUvcWalNKVQV6giB+Wf11Y6pNlBg9L1
+         iSYlIdjOUV0W/+hV3pz4qG+yMGaf4BuSPdYoJrOlmPaYF9nroyrbJ93uENgHgA/5S5t2
+         EH0g==
+X-Gm-Message-State: AOAM5338T9zokr/FLRlyTGtAtnJeuIZyrPRcFecuTlZzOSmZxQkDuiie
+        vmZvARVN9c8X0HyGTkV08g0=
+X-Google-Smtp-Source: ABdhPJwSNm2Uphnihsj7vmsjwY9Ss0ji9df/7RLuQBcMDCTFVnmXzGbwkB0WSkTLLNpWhPqE1AE9bg==
+X-Received: by 2002:a37:9bd4:: with SMTP id d203mr20569785qke.474.1625587792848;
+        Tue, 06 Jul 2021 09:09:52 -0700 (PDT)
 Received: from shaak.xiphos.ca (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
-        by smtp.gmail.com with ESMTPSA id n64sm6995371qkd.79.2021.07.06.09.09.50
+        by smtp.gmail.com with ESMTPSA id n64sm6995371qkd.79.2021.07.06.09.09.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jul 2021 09:09:51 -0700 (PDT)
+        Tue, 06 Jul 2021 09:09:52 -0700 (PDT)
 From:   Liam Beguin <liambeguin@gmail.com>
 To:     liambeguin@gmail.com, peda@axentia.se, jic23@kernel.org,
         lars@metafoo.de, pmeerw@pmeerw.net
 Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org, robh+dt@kernel.org
-Subject: [PATCH v4 03/10] iio: inkern: make a best effort on offset calculation
-Date:   Tue,  6 Jul 2021 12:09:35 -0400
-Message-Id: <20210706160942.3181474-4-liambeguin@gmail.com>
+Subject: [PATCH v4 04/10] iio: afe: rescale: reduce risk of integer overflow
+Date:   Tue,  6 Jul 2021 12:09:36 -0400
+Message-Id: <20210706160942.3181474-5-liambeguin@gmail.com>
 X-Mailer: git-send-email 2.30.1.489.g328c10930387
 In-Reply-To: <20210706160942.3181474-1-liambeguin@gmail.com>
 References: <20210706160942.3181474-1-liambeguin@gmail.com>
@@ -66,61 +66,45 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Liam Beguin <lvb@xiphos.com>
 
-iio_convert_raw_to_processed_unlocked() assumes the offset is an
-integer. Make a best effort to get a valid offset value for fractional
-cases without breaking implicit truncations.
+Reduce the risk of integer overflow by doing the scale calculation with
+64bit integers and looking for a Greatest Common Divider for both parts
+of the fractional value.
 
-Fixes: 48e44ce0f881 ("iio:inkern: Add function to read the processed value")
 Signed-off-by: Liam Beguin <lvb@xiphos.com>
 ---
- drivers/iio/inkern.c | 32 +++++++++++++++++++++++++++-----
- 1 file changed, 27 insertions(+), 5 deletions(-)
+ drivers/iio/afe/iio-rescale.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-index b69027690ed5..5e74d8983874 100644
---- a/drivers/iio/inkern.c
-+++ b/drivers/iio/inkern.c
-@@ -578,13 +578,35 @@ EXPORT_SYMBOL_GPL(iio_read_channel_average_raw);
- static int iio_convert_raw_to_processed_unlocked(struct iio_channel *chan,
- 	int raw, int *processed, unsigned int scale)
+diff --git a/drivers/iio/afe/iio-rescale.c b/drivers/iio/afe/iio-rescale.c
+index 774eb3044edd..ba3bdcc69b16 100644
+--- a/drivers/iio/afe/iio-rescale.c
++++ b/drivers/iio/afe/iio-rescale.c
+@@ -39,7 +39,8 @@ static int rescale_read_raw(struct iio_dev *indio_dev,
+ 			    int *val, int *val2, long mask)
  {
--	int scale_type, scale_val, scale_val2, offset;
-+	int scale_type, scale_val, scale_val2;
-+	int offset_type, offset_val, offset_val2;
- 	s64 raw64 = raw;
--	int ret;
+ 	struct rescale *rescale = iio_priv(indio_dev);
+-	unsigned long long tmp;
++	s64 tmp, tmp2;
++	u32 factor;
+ 	int ret;
  
--	ret = iio_channel_read(chan, &offset, NULL, IIO_CHAN_INFO_OFFSET);
--	if (ret >= 0)
--		raw64 += offset;
-+	offset_type = iio_channel_read(chan, &offset_val, &offset_val2,
-+				       IIO_CHAN_INFO_OFFSET);
-+	if (offset_type >= 0) {
-+		switch (offset_type) {
-+		case IIO_VAL_INT:
-+			break;
-+		case IIO_VAL_INT_PLUS_MICRO:
-+		case IIO_VAL_INT_PLUS_NANO:
-+			/*
-+			 * Both IIO_VAL_INT_PLUS_MICRO and IIO_VAL_INT_PLUS_NANO
-+			 * implicitely truncate the offset to it's integer form.
-+			 */
-+			break;
-+		case IIO_VAL_FRACTIONAL:
-+			offset_val /= offset_val2;
-+			break;
-+		case IIO_VAL_FRACTIONAL_LOG2:
-+			offset_val /= (1 << offset_val2);
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+
-+		raw64 += offset_val;
-+	}
- 
- 	scale_type = iio_channel_read(chan, &scale_val, &scale_val2,
- 					IIO_CHAN_INFO_SCALE);
+ 	switch (mask) {
+@@ -67,8 +68,13 @@ static int rescale_read_raw(struct iio_dev *indio_dev,
+ 		}
+ 		switch (ret) {
+ 		case IIO_VAL_FRACTIONAL:
+-			*val *= rescale->numerator;
+-			*val2 *= rescale->denominator;
++			tmp = (s64)*val * rescale->numerator;
++			tmp2 = (s64)*val2 * rescale->denominator;
++			factor = gcd(tmp, tmp2);
++			do_div(tmp, factor);
++			*val = tmp;
++			do_div(tmp2, factor);
++			*val2 = tmp2;
+ 			return ret;
+ 		case IIO_VAL_INT:
+ 			*val *= rescale->numerator;
 -- 
 2.30.1.489.g328c10930387
 

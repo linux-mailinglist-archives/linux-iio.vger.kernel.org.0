@@ -2,210 +2,506 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CB903BE485
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Jul 2021 10:37:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E7253BE4CE
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Jul 2021 10:56:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230145AbhGGIjs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 7 Jul 2021 04:39:48 -0400
-Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:21064 "EHLO
-        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230109AbhGGIjr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 7 Jul 2021 04:39:47 -0400
-Received: from pps.filterd (m0167090.ppops.net [127.0.0.1])
-        by mx0b-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 1678V7eN026148;
-        Wed, 7 Jul 2021 04:36:49 -0400
-Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2171.outbound.protection.outlook.com [104.47.55.171])
-        by mx0b-00128a01.pphosted.com with ESMTP id 39masxdcmc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 07 Jul 2021 04:36:48 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=O4M4AfTe7qSULDGGxU/ybHQm+/R/jGKCI7+hj+ze7Co0O66V++oyN7cgzAJTdf22sNIX7faK2E7X8ZH0fYmmtTu86YMPu6afxIxNKcqAITRouLf3hg5v3x2ob4RVA4sdf+qXhzNdWwkjlV4iH4ggkQaBG92BUAj1P/DzKq6+tXIDIfvqZW8TJ7nEmpZo6fPw9mW6N8yj8dkT5ZHuiOm5eZaqds8wX5L+jqNE6cZ33VRB1asKUfuSlmdlGVuGEX4ctPhyRomdr1H5A0RLG5FUYTXhUscqlK84FPGAdLugcrceRy4b6fH+1BWo6XklnZQMY0f1mcV1qtyftioYcNyvyQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Bt8M/X9eYoP+9giOJI1WPA9tdZ0OzG1Pbbos0hOSQpA=;
- b=JZIOaNxiXKIq0wKYKf93a7lx9zqR70IRxiMXPz3egsfJnPTJrjNNUbjwmoMtQ9SOOG/JwQiEr1ZgpAvxD9Wx92eqUcrJ+e8Dm67vYWNctbcC8qPH3UBegEYwdaqFX6tgQRj4MIryBMms25Ga6A6cL1Ie3BG42x1O82Ej+L4udz+jEzrKWglyoxtRDlD6x6OM/fr6+16Ybcy7/eH0nqzJNXgYl7UOPO2fw4WW0F3rUTZbI4GZYGONH9JuhVpGu+us3/68Qabv01sQDaE97l9o6A1XW85ySAFGhe5u2oSpb6zv819A5MNO0JYCt/vG+O3FPxM5atebAAwcDzMaFHNh+w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Bt8M/X9eYoP+9giOJI1WPA9tdZ0OzG1Pbbos0hOSQpA=;
- b=nNkD5N1uE/6HFJxP+7Ttncup1xBru7rSQffGC24gN7Y84cg3fOwkSwl8EECSmqyhLSACh8eXHm0/7OCnkrT+ipNEH9PyNbwzgMdfMEL33FuuwIac8hX1fd+e3o/pStXH6fJF+1vDey7feX96wuZYrRqiSFPHp9RA9onvBEboxfU=
-Received: from PH0PR03MB6366.namprd03.prod.outlook.com (2603:10b6:510:ab::22)
- by PH0PR03MB6284.namprd03.prod.outlook.com (2603:10b6:510:e4::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4287.23; Wed, 7 Jul
- 2021 08:36:47 +0000
-Received: from PH0PR03MB6366.namprd03.prod.outlook.com
- ([fe80::4b7:376:c5f2:3891]) by PH0PR03MB6366.namprd03.prod.outlook.com
- ([fe80::4b7:376:c5f2:3891%3]) with mapi id 15.20.4242.023; Wed, 7 Jul 2021
- 08:36:47 +0000
-From:   "Sa, Nuno" <Nuno.Sa@analog.com>
-To:     =?utf-8?B?QW50dGkgS2Vyw6RuZW4=?= <detegr@rbx.email>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-CC:     Hannu Hartikainen <hannu@hrtk.in>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: RE: [RESEND PATCH] iio: adis: set GPIO reset pin direction
-Thread-Topic: [RESEND PATCH] iio: adis: set GPIO reset pin direction
-Thread-Index: AQHXcklvdTRDzb/7JkGBcbv7kuO7Zas3MR5Q
-Date:   Wed, 7 Jul 2021 08:36:47 +0000
-Message-ID: <PH0PR03MB63661EDEE130924514602A84991A9@PH0PR03MB6366.namprd03.prod.outlook.com>
-References: <20210706092922.v555jjvxbyv52ifw@haukka.localdomain>
-In-Reply-To: <20210706092922.v555jjvxbyv52ifw@haukka.localdomain>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: =?utf-8?B?UEcxbGRHRStQR0YwSUc1dFBTSmliMlI1TG5SNGRDSWdjRDBpWXpwY2RYTmxj?=
- =?utf-8?B?bk5jYm5OaFhHRndjR1JoZEdGY2NtOWhiV2x1WjF3d09XUTRORGxpTmkwek1t?=
- =?utf-8?B?UXpMVFJoTkRBdE9EVmxaUzAyWWpnMFltRXlPV1V6TldKY2JYTm5jMXh0YzJj?=
- =?utf-8?B?dE56VXlZalExTnpNdFpHVm1aUzB4TVdWaUxUaGlObVl0Wm1NM056YzBNakZt?=
- =?utf-8?B?WTJGbFhHRnRaUzEwWlhOMFhEYzFNbUkwTlRjMUxXUmxabVV0TVRGbFlpMDRZ?=
- =?utf-8?B?alptTFdaak56YzNOREl4Wm1OaFpXSnZaSGt1ZEhoMElpQnplajBpTVRnME5T?=
- =?utf-8?B?SWdkRDBpTVRNeU56QXhNakEyTURRek9UVTJNVFUySWlCb1BTSnpkVXcwZFho?=
- =?utf-8?B?R05WWkJUM1ZNZVhsWmVXMVRPRXRyUlVObWVGRTlJaUJwWkQwaUlpQmliRDBp?=
- =?utf-8?B?TUNJZ1ltODlJakVpSUdOcFBTSmpRVUZCUVVWU1NGVXhVbE5TVlVaT1EyZFZR?=
- =?utf-8?B?VUZKV1VSQlFVTTRSVFJSTTBNelVGaEJVWHBYZUZwcFVUVkRWazFFVG1KR2JV?=
- =?utf-8?B?cEVhMHBWZDBaQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCU0VG?=
- =?utf-8?B?QlFVRkJWMEYzUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJSVUZC?=
- =?utf-8?B?VVVGQ1FVRkJRVUpQV1VkalowRkJRVUZCUVVGQlFVRkJRVUZCUVVvMFFVRkJR?=
- =?utf-8?B?bWhCUjFGQllWRkNaa0ZJVFVGYVVVSnFRVWhWUVdOblFteEJSamhCWTBGQ2VV?=
- =?utf-8?B?RkhPRUZoWjBKc1FVZE5RV1JCUW5wQlJqaEJXbWRDYUVGSGQwRmpkMEpzUVVZ?=
- =?utf-8?B?NFFWcG5RblpCU0UxQllWRkNNRUZIYTBGa1owSnNRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkZRVUZCUVVGQlFVRkJRV2RCUVVG?=
- =?utf-8?B?QlFVRnVaMEZCUVVkRlFWcEJRbkJCUmpoQlkzZENiRUZIVFVGa1VVSjVRVWRW?=
- =?utf-8?B?UVZoM1FuZEJTRWxCWW5kQ2NVRkhWVUZaZDBJd1FVaE5RVmgzUWpCQlIydEJX?=
- =?utf-8?B?bEZDZVVGRVJVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCVVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVOQlFVRkJRVUZEWlVGQlFVRlpVVUpyUVVkclFWaDNRbnBCUjFWQldY?=
- =?utf-8?B?ZENNVUZJU1VGYVVVSm1RVWhCUVdOblFuWkJSMjlCV2xGQ2FrRklVVUZqZDBK?=
- =?utf-8?B?bVFVaFJRV0ZSUW14QlNFbEJUV2RCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFrRkJRVUZCUVVGQlFVRkpRVUZCUVVGQlNqUkJRVUZDYUVGSVNVRmhVVUpv?=
- =?utf-8?B?UVVZNFFWcEJRbkJCUjAxQlpFRkNjRUZIT0VGaVowSm9RVWhKUVdWUlFtWkJT?=
- =?utf-8?B?RkZCWVZGQ2JFRklTVUZOVVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVVZCUVVGQlFVRkJRVUZCWjBGQlFVRkJRVzVuUVVGQlIw?=
- =?utf-8?B?VkJZMmRDY0VGSFJVRllkMEpyUVVkclFWbDNRakJCUjJ0QlluZENkVUZIUlVG?=
- =?utf-8?B?alowSTFRVVk0UVdSQlFuQkJSMVZCWTJkQmVVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGUlFVRkJRVUZCUVVGQlEwRkJRVUZC?=
- =?utf-8?B?UVVFOUlpOCtQQzl0WlhSaFBnPT0=?=
-x-dg-rorf: true
-authentication-results: rbx.email; dkim=none (message not signed)
- header.d=none;rbx.email; dmarc=none action=none header.from=analog.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 378ada6a-3856-4104-0b2f-08d941225bc0
-x-ms-traffictypediagnostic: PH0PR03MB6284:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <PH0PR03MB628441155F4B3F2FB3102901991A9@PH0PR03MB6284.namprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8273;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: qb0bV9HqDsDhxD+N+we1kEwSvrmnXU/DrGl+hZ9sOGzUuxowFzCZnc9B08gupA2cl2zp39+7SkloijSMWdASSj3XjzqcPh4CqgH6AUhOhceU0wiRXA9qxEW/eMhiQlxkXMOFv0qUfVnxZFJU2lFpzr7jmiQl/ylBr10l6EZCDvrjqRgsjZqor8j+kWFKHeicxHSEVBg3Jfjk+ffBQMPzbqFX5/gZ2S/MDQhUWe/F3geXcrzcIZN1wxybpRi+phS24EqhxJeneVzvF0kSBSclLm638lxXzbrCgkn1xjSBP9gn6AnEmld/9OxcbWX1mLeN+QptXcCqmMZauQ5qDQYQ495lt68Q9POn5vj7EjcFmSZn4xYeB9+NzcetNmc/YOHH5IKj7V4p91qfhPMEfYpxhGap8fixJ6dDu7EhHJn1z67fuOJITAd925vtZrVJODAqGbe8nafCXCF+BrzT3V3fmrt6T0xwhh8j6wHUE1nA5wzcS/MT0pNH3uttyslxy24k84JcAX2XLHp6U4Vlg9LOJdH8KhLf0Soclr/et+KLmZ8g/maFf2qhuhMwjIBjFDW6zi/+v1osdxT2Oc0E6pNUKV9WVZtoSf1HqhhDPO2qxUUFCLGHQabfaAw3KXX1IAlJkU3yFRDwm9oNOvIG8Z0hMw==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR03MB6366.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(346002)(39860400002)(376002)(136003)(366004)(55016002)(9686003)(186003)(66574015)(64756008)(38100700002)(83380400001)(66946007)(86362001)(122000001)(478600001)(7696005)(8676002)(4326008)(53546011)(6506007)(76116006)(8936002)(66446008)(2906002)(66556008)(71200400001)(66476007)(316002)(5660300002)(52536014)(110136005)(33656002)(54906003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?UHFMQm5oQU9nM25RT05lREdNUlFKSGNjWWtaS1U1NXZKTDlmRm9SSVdOZUxx?=
- =?utf-8?B?YmUxYVpmOVBmbXZZNjlJOWRWTWpVOG5GZFhGU3N6UGtQY2JiM2EzQng1V2lz?=
- =?utf-8?B?RmtITEpCV3djaXlCVHg4RTZPL3Q5d242VmtGbVRXVTVNcVltUE82MWFoT3dG?=
- =?utf-8?B?MDF6UVp0Wm81UmdkNzcwVm0yc1laTGV1SWtOZitOWHV5QXE3ZTJDZWg1WEty?=
- =?utf-8?B?NDVtZmE5WnBQQlkwTjRzOE16UG40d1d5S3l0Q3lVdm4vZWVwTjFhci9pQkhr?=
- =?utf-8?B?VXlPQmJZRHIvYVpkdXhjQ0tFM0tPMlJ6ejNOMStQdzNSeDNiUHhmS2p2U3lh?=
- =?utf-8?B?U25OY2k3b3VjR3BCOStBeHU0eEdxcWtYQ0tuOU5tTG5tYk00cnIxUktXTDha?=
- =?utf-8?B?QXVSbk5kc3dENmRhaE91K0krR1RxbjZ6NGR1U3FIN0pLZW44V2R1MW5GbmRI?=
- =?utf-8?B?WTNOcm1vRnpXQkxUd2FIeEY5dmFuVzZweGEwTm9saXJvNXdiZ2Y5aG9tQi81?=
- =?utf-8?B?MVE4TUFhbzlZak00TFU0VWU5dXl1ZFl3SFdoNFl1Yklhb2V2RkFGaEdNdnJK?=
- =?utf-8?B?UlczMjlyZzR4TFhMcTVxbDlUWVQ4UGZ0dG5qeE9NUGpPR3I2ZERlYWZFVlFW?=
- =?utf-8?B?a3F0VDRNemFkb1hUV3lkNDJMOVhYVy92blBRcy9VTXR5bzdRTlVzN0hMUjMr?=
- =?utf-8?B?NEsvZFBjU2JuSU1oVGxnU2prc3BQbllCMW1RaDdjdXpqejVRSElZeE5XRXhX?=
- =?utf-8?B?eEhJd3RQSTMwVnFJbTVPVVlJbkh1bGNZVFhRUC91T0dLSmNDaFdBRkZWd3ZW?=
- =?utf-8?B?T0QvTXk0RzZkTkpac1gzUWo3dWNQVGZQMTRjalh4MXhuUlRuZWxnV0gwVUwz?=
- =?utf-8?B?aENzeFBpREdCdzZrZUdNME5hMDhabWloUWVDMUJ3SFdScVJsWFFacFM2OTNK?=
- =?utf-8?B?RnVEVHpEcHhQWnQvMDNSbFNyMkxLc2pZSEhWdzNXTkp4bmZ0TVhIb1Q1Skxm?=
- =?utf-8?B?amR2eTZZbEFwRUJudVBVazJha3h6MjBTcjVMOEJtQTlQbDFPNzJSL0lGejho?=
- =?utf-8?B?c29RN2kyTkJCcjBXWDJSMy9Ca1N5UFpqeUxoc3NiYXhBTGlicG5yZXlCcEgr?=
- =?utf-8?B?TU1OZmdoVWdqeU5wc21XckhHdFVldDc5NDB3VlE1elQ2NWJhRHF4ektqb1pN?=
- =?utf-8?B?RXMrbjdsbjVodjVGVm9CaExMb0FZellKTGhFcjJWdHRQZUVqT3l3NTd1STRo?=
- =?utf-8?B?Ti9mT1JlNzAvRU1jRGcyL3g0SVdjbmxkbWV6L0ZNK2ZtaFlTamhqekJmKzZi?=
- =?utf-8?B?aThBSVFjL2RPWEFsNzFrUWY1U1hZTkt4TmJlNzBNVUFxaWJZTG9sMFBsd0lT?=
- =?utf-8?B?S01SUVJNVi90a002SWwzMWZWQ3IzYTdLQTNRVGZralZVUXpFYTgzTTV5TDgy?=
- =?utf-8?B?c2UwWWZyNnVSa0ZGMkI4N001TkhXNVQ2N1daSWZSRFRSOVphS0RBN2FhNURX?=
- =?utf-8?B?Q1gwcUJDUFFjOWVWVi9vR3RKUEZSRkVRSEVjazNacVg3RG9XRTBab0lIQWRj?=
- =?utf-8?B?bU9tT0Z4MWpmN0xNeWhsc042TExiRzdaMWxaZnd2MktXWnlhYy85Y3NmSU41?=
- =?utf-8?B?MVRkZzdoZ3BHckxsUmF0eXgzckxlLzE5ZElZWUtITXhIaXJlZnorTHhVaUFp?=
- =?utf-8?B?K1FXWUo0RDVxdHNmNTBDUFpxeDBDNTA5T1c1M1U5WFZFd3BpNmw2K2VuMVh3?=
- =?utf-8?B?bmJQcnBjK1N2bWFZcUN0R0djeVFRVHJpQVNySnB2TXF6UHo0d1crN3NGemE4?=
- =?utf-8?B?b094aWJtYnIrazNrQnNFL0xsZ1lTU3VTS3JCU2lIcXozUmdNSi9NZzdOMG9i?=
- =?utf-8?Q?11rw+xQk5clm0?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S230476AbhGGI7e convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Wed, 7 Jul 2021 04:59:34 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:3371 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230145AbhGGI7e (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 7 Jul 2021 04:59:34 -0400
+Received: from fraeml735-chm.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4GKY1474CLz6J68Z;
+        Wed,  7 Jul 2021 16:46:00 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml735-chm.china.huawei.com (10.206.15.216) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Wed, 7 Jul 2021 10:56:47 +0200
+Received: from localhost (10.47.89.60) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Wed, 7 Jul 2021
+ 09:56:46 +0100
+Date:   Wed, 7 Jul 2021 09:56:29 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     "Sa, Nuno" <Nuno.Sa@analog.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>
+Subject: Re: [PATCH v4 1/2] iio: frequency: adrf6780: add support for
+ ADRF6780
+Message-ID: <20210707095629.00004bb8@Huawei.com>
+In-Reply-To: <PH0PR03MB6366BC5E806B18A8889EDDE9991A9@PH0PR03MB6366.namprd03.prod.outlook.com>
+References: <20210702111239.174189-1-antoniu.miclaus@analog.com>
+        <20210703175716.7864358a@jic23-huawei>
+        <PH0PR03MB63667CCA2691D4A43F28041E991C9@PH0PR03MB6366.namprd03.prod.outlook.com>
+        <20210706100405.00001507@Huawei.com>
+        <PH0PR03MB6366190FBDC12B1AD1CCBC43991B9@PH0PR03MB6366.namprd03.prod.outlook.com>
+        <PH0PR03MB6366BC5E806B18A8889EDDE9991A9@PH0PR03MB6366.namprd03.prod.outlook.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR03MB6366.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 378ada6a-3856-4104-0b2f-08d941225bc0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Jul 2021 08:36:47.2526
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: XN7ekw4+aJaPx0XS+Zunud0C2wQLbgufTqOOYk9YijwkptHY4QATmUiL7+GZel+7OG8HAYO97SrbRwlivJh4Hw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR03MB6284
-X-Proofpoint-GUID: CyqxtTvlg-5BlU5XZeAbSON5NtdlhsfZ
-X-Proofpoint-ORIG-GUID: CyqxtTvlg-5BlU5XZeAbSON5NtdlhsfZ
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
- definitions=2021-07-07_05:2021-07-06,2021-07-07 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- spamscore=0 impostorscore=0 phishscore=0 mlxlogscore=999 clxscore=1011
- mlxscore=0 adultscore=0 malwarescore=0 priorityscore=1501 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2107070050
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.47.89.60]
+X-ClientProxiedBy: lhreml742-chm.china.huawei.com (10.201.108.192) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-DQo+IEZyb206IEFudHRpIEtlcsOkbmVuIDxkZXRlZ3JAcmJ4LmVtYWlsPg0KPiBTZW50OiBUdWVz
-ZGF5LCBKdWx5IDYsIDIwMjEgMTE6MjkgQU0NCj4gVG86IGxpbnV4LWlpb0B2Z2VyLmtlcm5lbC5v
-cmcNCj4gQ2M6IEFudHRpIEtlcsOkbmVuIDxkZXRlZ3JAcmJ4LmVtYWlsPjsgSGFubnUgSGFydGlr
-YWluZW4NCj4gPGhhbm51QGhydGsuaW4+OyBMYXJzLVBldGVyIENsYXVzZW4gPGxhcnNAbWV0YWZv
-by5kZT47IEhlbm5lcmljaCwNCj4gTWljaGFlbCA8TWljaGFlbC5IZW5uZXJpY2hAYW5hbG9nLmNv
-bT47IFNhLCBOdW5vDQo+IDxOdW5vLlNhQGFuYWxvZy5jb20+OyBKb25hdGhhbiBDYW1lcm9uIDxq
-aWMyM0BrZXJuZWwub3JnPg0KPiBTdWJqZWN0OiBbUkVTRU5EIFBBVENIXSBpaW86IGFkaXM6IHNl
-dCBHUElPIHJlc2V0IHBpbiBkaXJlY3Rpb24NCj4gDQo+IFVzZSBHUElPRF9PVVRfTE9XIGluc3Rl
-YWQgb2YgR1BJT0RfQVNJUyBhcyB0aGUgcmVzZXQgcGluIG5lZWRzDQo+IHRvIGJlIGFuDQo+IGFj
-dGl2ZSBsb3cgb3V0cHV0IHBpbi4NCj4gDQo+IFN1Z2dlc3RlZC1ieTogSGFubnUgSGFydGlrYWlu
-ZW4gPGhhbm51QGhydGsuaW4+DQo+IFNpZ25lZC1vZmYtYnk6IEFudHRpIEtlcsOkbmVuIDxkZXRl
-Z3JAcmJ4LmVtYWlsPg0KPiAtLS0NCj4gVGhlIGRvY3VtZW50YXRpb24gb2YgR1BJTyBjb25zdW1l
-ciBpbnRlcmZhY2Ugc3RhdGVzOg0KPiANCj4gQmUgYXdhcmUgdGhhdCB0aGVyZSBpcyBubyBkZWZh
-dWx0IGRpcmVjdGlvbiBmb3IgR1BJT3MuIFRoZXJlZm9yZSwNCj4gKip1c2luZyBhIEdQSU8gd2l0
-aG91dCBzZXR0aW5nIGl0cyBkaXJlY3Rpb24gZmlyc3QgaXMgaWxsZWdhbCBhbmQgd2lsbA0KPiBy
-ZXN1bHQgaW4gdW5kZWZpbmVkIGJlaGF2aW9yISoqDQo+IA0KPiBUaGVyZWZvcmUgdGhlIGRpcmVj
-dGlvbiBvZiB0aGUgcmVzZXQgR1BJTyBwaW4gc2hvdWxkIGJlIHNldCBhcyBvdXRwdXQuDQo+IA0K
-PiAgZHJpdmVycy9paW8vaW11L2FkaXMuYyB8IDIgKy0NCj4gIDEgZmlsZSBjaGFuZ2VkLCAxIGlu
-c2VydGlvbigrKSwgMSBkZWxldGlvbigtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaWlv
-L2ltdS9hZGlzLmMgYi9kcml2ZXJzL2lpby9pbXUvYWRpcy5jDQo+IGluZGV4IDMxOWI2NGIyZmQ4
-OC4uN2YxM2IzNzYzNzMyIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL2lpby9pbXUvYWRpcy5jDQo+
-ICsrKyBiL2RyaXZlcnMvaWlvL2ltdS9hZGlzLmMNCj4gQEAgLTQxNSw3ICs0MTUsNyBAQCBpbnQg
-X19hZGlzX2luaXRpYWxfc3RhcnR1cChzdHJ1Y3QgYWRpcyAqYWRpcykNCj4gIAlpbnQgcmV0Ow0K
-PiANCj4gIAkvKiBjaGVjayBpZiB0aGUgZGV2aWNlIGhhcyByc3QgcGluIGxvdyAqLw0KPiAtCWdw
-aW8gPSBkZXZtX2dwaW9kX2dldF9vcHRpb25hbCgmYWRpcy0+c3BpLT5kZXYsICJyZXNldCIsDQo+
-IEdQSU9EX0FTSVMpOw0KPiArCWdwaW8gPSBkZXZtX2dwaW9kX2dldF9vcHRpb25hbCgmYWRpcy0+
-c3BpLT5kZXYsICJyZXNldCIsDQo+IEdQSU9EX09VVF9MT1cpOw0KPiAgCWlmIChJU19FUlIoZ3Bp
-bykpDQo+ICAJCXJldHVybiBQVFJfRVJSKGdwaW8pOw0KPiANCg0KSGksDQoNClRoYW5rcyBmb3Ig
-dGhlIHBhdGNoLiBGb3JjaW5nIHRoZSBkZXZpY2UgcmVzZXQgd2FzIGludGVudGlvbmFsDQoodGh1
-cyB0aGUgR1BJT19BU0lTKS4gQnV0IHdoYXQgTGFycyBpcyBzdWdnZXN0aW5nIGlzIGEgZ29vZCBp
-ZGVhDQphbmQgYSBuZWF0IGltcHJvdmVtZW50IGhlcmUuDQoNCi0gTnVubyBTw6ENCg0K
+On Wed, 7 Jul 2021 08:26:59 +0000
+"Sa, Nuno" <Nuno.Sa@analog.com> wrote:
+
+> > From: Sa, Nuno <Nuno.Sa@analog.com>
+> > Sent: Tuesday, July 6, 2021 12:23 PM
+> > To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+> > Cc: Jonathan Cameron <jic23@kernel.org>; Miclaus, Antoniu
+> > <Antoniu.Miclaus@analog.com>; linux-iio@vger.kernel.org; linux-
+> > kernel@vger.kernel.org; devicetree@vger.kernel.org;
+> > robh+dt@kernel.org
+> > Subject: RE: [PATCH v4 1/2] iio: frequency: adrf6780: add support for
+> > ADRF6780
+> > 
+> > 
+> >   
+> > > From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+> > > Sent: Tuesday, July 6, 2021 11:04 AM
+> > > To: Sa, Nuno <Nuno.Sa@analog.com>
+> > > Cc: Jonathan Cameron <jic23@kernel.org>; Miclaus, Antoniu
+> > > <Antoniu.Miclaus@analog.com>; linux-iio@vger.kernel.org; linux-
+> > > kernel@vger.kernel.org; devicetree@vger.kernel.org;
+> > > robh+dt@kernel.org
+> > > Subject: Re: [PATCH v4 1/2] iio: frequency: adrf6780: add support for
+> > > ADRF6780
+> > >
+> > > On Mon, 5 Jul 2021 10:18:51 +0000
+> > > "Sa, Nuno" <Nuno.Sa@analog.com> wrote:
+> > >  
+> > > > > -----Original Message-----
+> > > > > From: Jonathan Cameron <jic23@kernel.org>
+> > > > > Sent: Saturday, July 3, 2021 6:57 PM
+> > > > > To: Miclaus, Antoniu <Antoniu.Miclaus@analog.com>
+> > > > > Cc: linux-iio@vger.kernel.org; linux-kernel@vger.kernel.org;
+> > > > > devicetree@vger.kernel.org; robh+dt@kernel.org
+> > > > > Subject: Re: [PATCH v4 1/2] iio: frequency: adrf6780: add support  
+> > > for  
+> > > > > ADRF6780
+> > > > >
+> > > > > On Fri, 2 Jul 2021 14:12:38 +0300
+> > > > > Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
+> > > > >  
+> > > > > > The ADRF6780 is a silicon germanium (SiGe) design, wideband,
+> > > > > > microwave upconverter optimized for point to point microwave
+> > > > > > radio designs operating in the 5.9 GHz to 23.6 GHz frequency
+> > > > > > range.
+> > > > > >
+> > > > > > Datasheet:
+> > > > > > https://www.analog.com/media/en/technical-  
+> > > documentation/data-  
+> > > > > sheets/ADRF6780.pdf  
+> > > > > >
+> > > > > > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>  
+> > > > >
+> > > > > Hi Antoniu,
+> > > > >
+> > > > > Frequency drivers are fairly unusual so if you could add a listing of
+> > > > > the attributes in sysfs that would be great (it's nice practice  
+> > anyway  
+> > > but  
+> > > > > I don't insist on it!)
+> > > > >
+> > > > > Various fairly minor comments inline.
+> > > > >
+> > > > > Thanks,
+> > > > >
+> > > > > Jonathan
+> > > > >
+> > > > >  
+> > > > > > ---
+> > > > > >  changes in v4:
+> > > > > >   - change license to: GPL-2.0-only
+> > > > > >  drivers/iio/frequency/Kconfig    |  13 +
+> > > > > >  drivers/iio/frequency/Makefile   |   1 +
+> > > > > >  drivers/iio/frequency/adrf6780.c | 498  
+> > > > > +++++++++++++++++++++++++++++++  
+> > > > > >  3 files changed, 512 insertions(+)
+> > > > > >  create mode 100644 drivers/iio/frequency/adrf6780.c
+> > > > > >
+> > > > > > diff --git a/drivers/iio/frequency/Kconfig  
+> > > > > b/drivers/iio/frequency/Kconfig  
+> > > > > > index 240b81502512..fc9751c48f59 100644
+> > > > > > --- a/drivers/iio/frequency/Kconfig
+> > > > > > +++ b/drivers/iio/frequency/Kconfig
+> > > > > > @@ -49,5 +49,18 @@ config ADF4371
+> > > > > >
+> > > > > >  	  To compile this driver as a module, choose M here:  
+> > the  
+> > > > > >  	  module will be called adf4371.
+> > > > > > +
+> > > > > > +config ADRF6780
+> > > > > > +        tristate "Analog Devices ADRF6780 Microwave  
+> > Upconverter"  
+> > > > > > +        depends on SPI
+> > > > > > +        depends on COMMON_CLK
+> > > > > > +        depends on OF  
+> > > > >
+> > > > > Why?  Pretty much everything seems to have defaults if not  
+> > > provided  
+> > > > > via OF.
+> > > > > I've asked for the generic firmware functions anyway, so you can  
+> > > drop  
+> > > > > this
+> > > > > for that reason if nothing else!
+> > > > >  
+> > > > > > +        help
+> > > > > > +          Say yes here to build support for Analog Devices  
+> > ADRF6780  
+> > > > > > +          5.9 GHz to 23.6 GHz, Wideband, Microwave Upconverter.
+> > > > > > +
+> > > > > > +          To compile this driver as a module, choose M here: the
+> > > > > > +          module will be called adrf6780.
+> > > > > > +
+> > > > > >  endmenu
+> > > > > >  endmenu
+> > > > > > diff --git a/drivers/iio/frequency/Makefile  
+> > > > > b/drivers/iio/frequency/Makefile  
+> > > > > > index 518b1e50caef..ae3136c79202 100644
+> > > > > > --- a/drivers/iio/frequency/Makefile
+> > > > > > +++ b/drivers/iio/frequency/Makefile
+> > > > > > @@ -7,3 +7,4 @@
+> > > > > >  obj-$(CONFIG_AD9523) += ad9523.o
+> > > > > >  obj-$(CONFIG_ADF4350) += adf4350.o
+> > > > > >  obj-$(CONFIG_ADF4371) += adf4371.o
+> > > > > > +obj-$(CONFIG_ADRF6780) += adrf6780.o
+> > > > > > diff --git a/drivers/iio/frequency/adrf6780.c  
+> > > > > b/drivers/iio/frequency/adrf6780.c  
+> > > > > > new file mode 100644
+> > > > > > index 000000000000..472a66f90c7f
+> > > > > > --- /dev/null
+> > > > > > +++ b/drivers/iio/frequency/adrf6780.c
+> > > > > > @@ -0,0 +1,498 @@
+> > > > > > +// SPDX-License-Identifier: GPL-2.0-only
+> > > > > > +/*
+> > > > > > + * ADRF6780 driver
+> > > > > > + *
+> > > > > > + * Copyright 2021 Analog Devices Inc.
+> > > > > > + */
+> > > > > > +
+> > > > > > +#include <linux/bitfield.h>
+> > > > > > +#include <linux/bits.h>
+> > > > > > +#include <linux/clk.h>
+> > > > > > +#include <linux/clkdev.h>
+> > > > > > +#include <linux/clk-provider.h>
+> > > > > > +#include <linux/delay.h>
+> > > > > > +#include <linux/device.h>
+> > > > > > +#include <linux/iio/iio.h>
+> > > > > > +#include <linux/module.h>  
+> > > > >
+> > > > > #include <linux/mod_devicetable.h>
+> > > > >  
+> > > > > > +#include <linux/spi/spi.h>
+> > > > > > +
+> > > > > > +/* ADRF6780 Register Map */
+> > > > > > +#define ADRF6780_REG_CONTROL			0x00
+> > > > > > +#define ADRF6780_REG_ALARM_READBACK		0x01
+> > > > > > +#define ADRF6780_REG_ALARM_MASKS		0x02
+> > > > > > +#define ADRF6780_REG_ENABLE			0x03
+> > > > > > +#define ADRF6780_REG_LINEARIZE			0x04
+> > > > > > +#define ADRF6780_REG_LO_PATH			0x05
+> > > > > > +#define ADRF6780_REG_ADC_CONTROL		0x06
+> > > > > > +#define ADRF6780_REG_ADC_OUTPUT  
+> > 	0x0C  
+> > > > > > +
+> > > > > > +/* ADRF6780_REG_CONTROL Map */
+> > > > > > +#define ADRF6780_PARITY_EN_MSK			BIT(15)
+> > > > > > +#define ADRF6780_PARITY_EN(x)  
+> > > > > 	FIELD_PREP(ADRF6780_PARITY_EN_MSK, x)  
+> > > > > > +#define ADRF6780_SOFT_RESET_MSK  
+> > 	BIT(14)  
+> > > > > > +#define ADRF6780_SOFT_RESET(x)  
+> > > > > 	FIELD_PREP(ADRF6780_SOFT_RESET_MSK, x)  
+> > > > > > +#define ADRF6780_CHIP_ID_MSK  
+> > > 	GENMASK(11, 4)  
+> > > > > > +#define ADRF6780_CHIP_ID			0xA
+> > > > > > +#define ADRF6780_CHIP_REVISION_MSK  
+> > > 	GENMASK(3, 0)  
+> > > > > > +#define ADRF6780_CHIP_REVISION(x)  
+> > > > > 	FIELD_PREP(ADRF6780_CHIP_REVISION_MSK, x)  
+> > > > > > +
+> > > > > > +/* ADRF6780_REG_ALARM_READBACK Map */
+> > > > > > +#define ADRF6780_PARITY_ERROR_MSK		BIT(15)
+> > > > > > +#define ADRF6780_PARITY_ERROR(x)  
+> > > > > 	FIELD_PREP(ADRF6780_PARITY_ERROR_MSK, x)  
+> > > > > > +#define ADRF6780_TOO_FEW_ERRORS_MSK		BIT(14)
+> > > > > > +#define ADRF6780_TOO_FEW_ERRORS(x)  
+> > > > > 	FIELD_PREP(ADRF6780_TOO_FEW_ERRORS_MSK, x)  
+> > > > > > +#define ADRF6780_TOO_MANY_ERRORS_MSK  
+> > 	BIT(13)  
+> > > > > > +#define ADRF6780_TOO_MANY_ERRORS(x)  
+> > > > > 	FIELD_PREP(ADRF6780_TOO_MANY_ERRORS_MSK, x)  
+> > > > > > +#define ADRF6780_ADDRESS_RANGE_ERROR_MSK	BIT(12)
+> > > > > > +#define ADRF6780_ADDRESS_RANGE_ERROR(x)  
+> > > > > 	FIELD_PREP(ADRF6780_ADDRESS_RANGE_ERROR_MSK, x)  
+> > > > > > +
+> > > > > > +/* ADRF6780_REG_ENABLE Map */
+> > > > > > +#define ADRF6780_VGA_BUFFER_EN_MSK		BIT(8)
+> > > > > > +#define ADRF6780_VGA_BUFFER_EN(x)  
+> > > > > 	FIELD_PREP(ADRF6780_VGA_BUFFER_EN_MSK, x)  
+> > > > > > +#define ADRF6780_DETECTOR_EN_MSK		BIT(7)
+> > > > > > +#define ADRF6780_DETECTOR_EN(x)  
+> > > > > 	FIELD_PREP(ADRF6780_DETECTOR_EN_MSK, x)  
+> > > > > > +#define ADRF6780_LO_BUFFER_EN_MSK		BIT(6)
+> > > > > > +#define ADRF6780_LO_BUFFER_EN(x)  
+> > > > > 	FIELD_PREP(ADRF6780_LO_BUFFER_EN_MSK, x)  
+> > > > > > +#define ADRF6780_IF_MODE_EN_MSK  
+> > 	BIT(5)  
+> > > > > > +#define ADRF6780_IF_MODE_EN(x)  
+> > > > > 	FIELD_PREP(ADRF6780_IF_MODE_EN_MSK, x)  
+> > > > > > +#define ADRF6780_IQ_MODE_EN_MSK  
+> > > 	BIT(4)  
+> > > > > > +#define ADRF6780_IQ_MODE_EN(x)  
+> > > > > 	FIELD_PREP(ADRF6780_IQ_MODE_EN_MSK, x)  
+> > > > > > +#define ADRF6780_LO_X2_EN_MSK			BIT(3)
+> > > > > > +#define ADRF6780_LO_X2_EN(x)  
+> > > > > 	FIELD_PREP(ADRF6780_LO_X2_EN_MSK, x)  
+> > > > > > +#define ADRF6780_LO_PPF_EN_MSK			BIT(2)
+> > > > > > +#define ADRF6780_LO_PPF_EN(x)  
+> > > > > 	FIELD_PREP(ADRF6780_LO_PPF_EN_MSK, x)  
+> > > > > > +#define ADRF6780_LO_EN_MSK			BIT(1)
+> > > > > > +#define ADRF6780_LO_EN(x)  
+> > > > > 	FIELD_PREP(ADRF6780_LO_EN_MSK, x)  
+> > > > > > +#define ADRF6780_UC_BIAS_EN_MSK  
+> > 	BIT(0)  
+> > > > > > +#define ADRF6780_UC_BIAS_EN(x)  
+> > > > > 	FIELD_PREP(ADRF6780_UC_BIAS_EN_MSK, x)  
+> > > > > > +
+> > > > > > +/* ADRF6780_REG_LINEARIZE Map */
+> > > > > > +#define ADRF6780_RDAC_LINEARIZE_MSK  
+> > > 	GENMASK(7, 0)  
+> > > > > > +#define ADRF6780_RDAC_LINEARIZE(x)  
+> > > > > 	FIELD_PREP(ADRF6780_RDAC_LINEARIZE_MSK, x)  
+> > > > > > +
+> > > > > > +/* ADRF6780_REG_LO_PATH Map */
+> > > > > > +#define ADRF6780_LO_SIDEBAND_MSK		BIT(10)
+> > > > > > +#define ADRF6780_LO_SIDEBAND(x)  
+> > > > > 	FIELD_PREP(ADRF6780_LO_SIDEBAND_MSK, x)  
+> > > > > > +#define ADRF6780_Q_PATH_PHASE_ACCURACY_MSK  
+> > > > > 	GENMASK(7, 4)  
+> > > > > > +#define ADRF6780_Q_PATH_PHASE_ACCURACY(x)  
+> > > > > 	FIELD_PREP(ADRF6780_Q_PATH_PHASE_ACCURACY_MSK, x)  
+> > > > > > +#define ADRF6780_I_PATH_PHASE_ACCURACY_MSK  
+> > > > > 	GENMASK(3, 0)  
+> > > > > > +#define ADRF6780_I_PATH_PHASE_ACCURACY(x)  
+> > > > > 	FIELD_PREP(ADRF6780_I_PATH_PHASE_ACCURACY_MSK, x)  
+> > > > > > +
+> > > > > > +/* ADRF6780_REG_ADC_CONTROL Map */
+> > > > > > +#define ADRF6780_VDET_OUTPUT_SELECT_MSK  
+> > > 	BIT(3)  
+> > > > > > +#define ADRF6780_VDET_OUTPUT_SELECT(x)  
+> > > > > 	FIELD_PREP(ADRF6780_VDET_OUTPUT_SELECT_MSK, x)  
+> > > > > > +#define ADRF6780_ADC_START_MSK			BIT(2)
+> > > > > > +#define ADRF6780_ADC_START(x)  
+> > > > > 	FIELD_PREP(ADRF6780_ADC_START_MSK, x)  
+> > > > > > +#define ADRF6780_ADC_EN_MSK			BIT(1)
+> > > > > > +#define ADRF6780_ADC_EN(x)  
+> > > > > 	FIELD_PREP(ADRF6780_ADC_EN_MSK, x)  
+> > > > > > +#define ADRF6780_ADC_CLOCK_EN_MSK		BIT(0)
+> > > > > > +#define ADRF6780_ADC_CLOCK_EN(x)  
+> > > > > 	FIELD_PREP(ADRF6780_ADC_CLOCK_EN_MSK, x)  
+> > > > > > +
+> > > > > > +/* ADRF6780_REG_ADC_OUTPUT Map */
+> > > > > > +#define ADRF6780_ADC_STATUS_MSK  
+> > 	BIT(8)  
+> > > > > > +#define ADRF6780_ADC_STATUS(x)  
+> > > > > 	FIELD_PREP(ADRF6780_ADC_STATUS_MSK, x)  
+> > > > > > +#define ADRF6780_ADC_VALUE_MSK  
+> > > > > 	GENMASK(7, 0)  
+> > > > > > +#define ADRF6780_ADC_VALUE(x)  
+> > > > > 	FIELD_PREP(ADRF6780_ADC_VALUE_MSK, x)
+> > > > >
+> > > > > Not used.  In general, just use FIELD_PREP / FIELD_GET inline  
+> > > rather  
+> > > > > than having extra
+> > > > > macros like these. That approach is simpler for reviewers to  
+> > follow.  
+> > > > >  
+> > > > > > +
+> > > > > > +struct adrf6780_dev {
+> > > > > > +	struct spi_device	*spi;
+> > > > > > +	struct clk		*clkin;
+> > > > > > +	/* Protect against concurrent accesses to the device */
+> > > > > > +	struct mutex		lock;
+> > > > > > +	bool			vga_buff_en;
+> > > > > > +	bool			lo_buff_en;
+> > > > > > +	bool			if_mode_en;
+> > > > > > +	bool			iq_mode_en;
+> > > > > > +	bool			lo_x2_en;
+> > > > > > +	bool			lo_ppf_en;
+> > > > > > +	bool			lo_en;
+> > > > > > +	bool			uc_bias_en;
+> > > > > > +	bool			lo_sideband;
+> > > > > > +	bool			vdet_out_en;
+> > > > > > +};
+> > > > > > +
+> > > > > > +static int adrf6780_spi_read(struct adrf6780_dev *dev,  
+> > > unsigned int  
+> > > > > reg,  
+> > > > > > +			      unsigned int *val)
+> > > > > > +{
+> > > > > > +	int ret;
+> > > > > > +	unsigned int temp;
+> > > > > > +	struct spi_transfer t = {0};
+> > > > > > +	u8 data[3];
+> > > > > > +
+> > > > > > +	data[0] = 0x80 | (reg << 1);
+> > > > > > +	data[1] = 0x0;
+> > > > > > +	data[2] = 0x0;
+> > > > > > +
+> > > > > > +	t.rx_buf = &data[0];
+> > > > > > +	t.tx_buf = &data[0];
+> > > > > > +	t.len = 3;
+> > > > > > +
+> > > > > > +	ret = spi_sync_transfer(dev->spi, &t, 1);  
+> > > > >
+> > > > > data needs to be dma safe.
+> > > > >  
+> > > > > > +	if (ret < 0)
+> > > > > > +		return ret;
+> > > > > > +
+> > > > > > +	temp = ((data[0] | 0x80 | (reg << 1)) << 16) |
+> > > > > > +		(data[1] << 8) | data[2];  
+> > > > >
+> > > > > Ouch. That's a bit nasty, but why are you writing the reg into
+> > > > > it?  Looks like a get_unaligned_be24() >> 1 and a 16bit mask.
+> > > > > (use GENMASK(15, 0) for that to make it apparent what is  
+> > > happening.  
+> > > > >  
+> > > > > > +
+> > > > > > +	*val = (temp >> 1) & 0xFFFF;
+> > > > > > +
+> > > > > > +	return ret;
+> > > > > > +}
+> > > > > > +
+> > > > > > +static int adrf6780_spi_write(struct adrf6780_dev *dev,
+> > > > > > +				      unsigned int reg,
+> > > > > > +				      unsigned int val)
+> > > > > > +{
+> > > > > > +	u8 data[3];
+> > > > > > +
+> > > > > > +	val = (val << 1);
+> > > > > > +
+> > > > > > +	data[0] = (reg << 1) | (val >> 16);
+> > > > > > +	data[1] = val >> 8;
+> > > > > > +	data[2] = val;  
+> > > > >
+> > > > > An opportunity for
+> > > > > put_unaligned_be24() with a value of (I think)
+> > > > >
+> > > > > (val << 1) | (reg << 17)
+> > > > >
+> > > > >  
+> > > > > > +
+> > > > > > +	return spi_write(dev->spi, &data[0], 3);  
+> > > > >
+> > > > > Needs a dma safe buffer, which basically means it can't be on the
+> > > > > stack.
+> > > > > Lots of ways of handling that, but look for __cacheline_aligned in  
+> > > IIO  
+> > > > > drivers
+> > > > > to see the one we probably use mostly commonly in IIO drivers.  
+> > > >
+> > > > Hi Jonathan,
+> > > >
+> > > > This is something I wanted to ask for some time so I will take the  
+> > > opportunity here :).  
+> > > > Is this something you prefer just not to risk at all and make it an  
+> > hard  
+> > > requirement  
+> > > > (which is fair)? ...  
+> > >
+> > > Yes, I think we need to keep this as a hard requirement.
+> > > There are drivers out there which we missed this on in the past, and
+> > > I'm not necessarily
+> > > going to take the time to go through them all as this can be hard to
+> > > spot, but lets not
+> > > introduce any more potential problems.
+> > >  
+> > 
+> > I see. That makes sense and it's fair :). The only annoying (but not too
+> > annoying :)) is that
+> > making the data/buffer global forces you to use a lock in cases you
+> > potentially would
+> > not have too (just using local buffers). But that's life, better play safe :)
+> >   
+> > > >
+> > > > I'm asking this because, tbh, I would be very surprised if any spi/i2c  
+> > > controller out there  
+> > > > is using dma for a 3byte transfer. I guess the overhead of setting it  
+> > up  
+> > > is probably not  
+> > > > worth it...  
+> > >
+> > > There are (I believe) a few i2c and spi controllers out there that don't
+> > > do anything other
+> > > than DMA.  Wolfram mentioned one of those in his talk on adding
+> > > DMA support to i2c.  
+> > 
+> > Hmm, I see...
+> >   
+> > > Also, the reference in the file below to the wonderful case of USB to
+> > > i2c bridges that always
+> > > require DMA safe buffers.  
+> > 
+> > Indeed it does.
+> >   
+> 
+> Hi Jonathan,
+> 
+> Just for closure, I also realized that the pattern in IIO looks to be to use
+> DMA safe buffers only on the tx side. For instance in the IMU lib [1],
+> only the tx buffer is safe (well, I think there's problem with this as
+> I believe all spi transfers buffers should be properly aligned which won't
+> be the case in the IMU lib). Is there any reason for this? AFAICT, we should
+> also take care with rx buffers or am I missing something?
+Ah.  So this is a fun corner :)
+
+The reason cache line corruption can occur is as follows.
+1. DMA starts, typically involving some tx and rx usage by the device.
+   This flushes the CPU caches for the relevant lines. 
+... whilst DMA is not completed ...
+2. The host software pulls the line into it's cache and updates something (say a flag
+   elsewhere in that cacheline).
+3. Cacheline is evicted from the CPU cache causing a write back.
+4. Device then writes back the stuff it had cached locally which is allowed to include data
+   it wasn't accessing in the same cache line.  Boom, it just overwrote the flag we updated
+   with an older value.  Basically this is a performance optimization / simplification
+   the DMA engine is allowed to make.  Note I believe they are 'technically' allowed to
+   write back to the RX buffers as well, though not sure what devices do this for i2c/spi.
+
+So, why do we only need to force one of the buffers to the start of a cacheline?
+
+What we are actually doing, is not keeping the buffer in it's own cacheline, but rather
+making sure nothing else is in the same cacheline (so there is no race as above).
+(it's easier to move the buffer, than to ensure everything else is moved out of the cache
+line it happens to be in!)
+There is a safe assumption here that the DMA device can't corrupt it's own data as that
+would be crazy :)
+
+Hence, pushing the first buffer to the start of a line, allows the second one to be
+after it in the same line (it's not a problem if it takes multiple lines)
+
+One more subtlety is why we can be sure nothing else ends up after the buffers.
+That's by construction.  The allocations IIO does for those iio_priv structures should
+always get padded out to at least the end of the cacheline.
+(IIRC, not looked at this code for many years!)
+
+> 
+> [1]: https://elixir.bootlin.com/linux/latest/source/include/linux/iio/imu/adis.h#L129
+> 
+> - Nuno Sá
+

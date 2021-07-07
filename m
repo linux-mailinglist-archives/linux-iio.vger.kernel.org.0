@@ -2,197 +2,130 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D5B13BDB1D
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Jul 2021 18:10:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29B2C3BE046
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Jul 2021 02:28:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230207AbhGFQMn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 6 Jul 2021 12:12:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54840 "EHLO
+        id S230018AbhGGAbY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 6 Jul 2021 20:31:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230157AbhGFQMl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Jul 2021 12:12:41 -0400
-Received: from mail-qv1-xf2e.google.com (mail-qv1-xf2e.google.com [IPv6:2607:f8b0:4864:20::f2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66903C0613E6;
-        Tue,  6 Jul 2021 09:09:59 -0700 (PDT)
-Received: by mail-qv1-xf2e.google.com with SMTP id cz7so6424129qvb.9;
-        Tue, 06 Jul 2021 09:09:59 -0700 (PDT)
+        with ESMTP id S229834AbhGGAbX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Jul 2021 20:31:23 -0400
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6201C061574;
+        Tue,  6 Jul 2021 17:28:43 -0700 (PDT)
+Received: by mail-pj1-x1036.google.com with SMTP id mn20-20020a17090b1894b02901707fc074e8so2532876pjb.0;
+        Tue, 06 Jul 2021 17:28:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=38gNgVCGdXWK7a3Ll4EpO6MNFOAWFuNGKoxsxeutofU=;
-        b=KUu3/z23XigRBfcZ+IG20t/DAhg0dnUkIbXzoXl11zTfE4nt6shBqdJ5f2WEarPqer
-         flnEp6Bjq0asBMhO+fj4OJGh9oGKttFCVfEOfejmW1CQ4fmdvdTOxnTwBpsp9n5X962h
-         pTWXMwjBbDwiy/xBgPithW4Suv79Tb990FCxL/awwzfhZRvB/xD4ZSA0EU6n+HJOb1zf
-         kNMP0lk1102zSS763t+/eXaxzpUEXKSJWhXKHsuVvj7d0oNpe2P6Kb0rz7Tlj5XUj5Ip
-         9aF8oN0CEzTzmXFwUILi0YCGpHKBxFdgmHaJftPT1B1KlpS1q0PPt+1bP2/2fQPj+noh
-         jECg==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=wgMqBY62hL/9zc2/Y9RJScdFpoJ7MDAsy5QSUueWpmQ=;
+        b=cDMJD5q1dceLz4P4a4N1PWPbj3mpKCyHl+kpmuFvBSFCLjxJhTu83hIsv9j0g7WNjt
+         Ha5rraiLkj9M2ZepNiX9oUxJ7OcOz0tSY00XoutscCtagvsbYk6MI5/YILSNojz/bqF2
+         1Qrsm4Kj0OnJpFvdCLLfxL1LDXLpu5ximyhL/IgMUmUrLn70Di23tlAKRml1sYMZlnWG
+         oUcvZ4oRK2y0K8XEg509UdXAZftNPlIGd3cFjof+q3/5KnF1Htm88ueE4LAzrq8uhPYW
+         4vfFEidyMKlJ3qumCNjW62GIxYmZ5ECj+csgHpDGiadmWY3zozzKRWRT7xOqxj/7NVQ0
+         ko3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=38gNgVCGdXWK7a3Ll4EpO6MNFOAWFuNGKoxsxeutofU=;
-        b=dpAWTJ8jo7GU/8+fTXoLgnR8RpM7b7Y4ebterLQpS0NThVfimEx7aAjx6G9rtavOc6
-         FO/kWizyTU/nfr0iWCnzymZVdMroTq+XxSSTw5lE8xq+HdsDDpst2VLV/gAmsP9Z0h/t
-         njiD8tcrlVqdDwuoMGhuIbKsOtePVrO2oePak2TB6eWhDtmsXFwAky7LZPXLGi7BTQ0F
-         GWuYFllYLFl11YiiKCph3g2UUH66QbPus8Zd4Aw4Sv82RamgdEM+Nab3mrla+vwpHAPX
-         pW3f9r10Pb/fPklRbQmdv3hOzxxXXyByMuOe6UThboufBBDMkDYqbmTN1YqUeFytZP3H
-         65dw==
-X-Gm-Message-State: AOAM532h4iqpioNczy7QKi/7n7r3nhpZJmel0JdbEGoftURjvwlDw909
-        cjq6J2HkE5w2RQIgU7gpP0g=
-X-Google-Smtp-Source: ABdhPJw6ckwglMmg611576TJqIy8AEw6bxIX32H6R+mdPkS41MgGAMvON2hkDgX4YecMarFFiScslQ==
-X-Received: by 2002:ad4:5012:: with SMTP id s18mr19056714qvo.42.1625587798632;
-        Tue, 06 Jul 2021 09:09:58 -0700 (PDT)
-Received: from shaak.xiphos.ca (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
-        by smtp.gmail.com with ESMTPSA id n64sm6995371qkd.79.2021.07.06.09.09.57
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=wgMqBY62hL/9zc2/Y9RJScdFpoJ7MDAsy5QSUueWpmQ=;
+        b=M71qsPpVmmBIPDPE6eieRAQ1r3vcSRv8P5//CZMPjtKSfkV+EPoMZvIPHfhPERDEVK
+         VeF8FEg6vKF7a8xl0+0iZBxIwLolMa9y7SNWYb+sbukiBcB4nBhJ1iD5ZASIMASRwdZu
+         E/mm44VzqkzmcAMQ+Z94MVobOGwROnViva52rOyN/6iF3jEm9In1Szzv1/PxQ5MyM1Fx
+         jUKP+LuJkrAY3VsuiIy00S6Tfcc4xNphH+x0xr2ljtyyuC5nA24C3jD2z49i9v9H9cZ/
+         lTouQ+RmUHkGRKmlqmrMpUqZC5/iAlwT51JpKmuO8XU4fXd/BNNpydS2Evr37oIZBPiW
+         Qdfg==
+X-Gm-Message-State: AOAM5326MfEQA1MyU4QG2NTKCxftiqaiYopH5/kajr88TmM9K31aCO4W
+        d72Fjb60jPDCmYU66fp4aqM=
+X-Google-Smtp-Source: ABdhPJwyOfj2zNPpVkjW7izeLTHLXWRgoCKm6b8nqpc4pgmLX5lWGHIprfF5CJaY5N2CsLka8JsAxw==
+X-Received: by 2002:a17:90a:e7c4:: with SMTP id kb4mr2943529pjb.43.1625617723085;
+        Tue, 06 Jul 2021 17:28:43 -0700 (PDT)
+Received: from shinobu ([156.146.35.76])
+        by smtp.gmail.com with ESMTPSA id j6sm16042192pji.23.2021.07.06.17.28.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jul 2021 09:09:58 -0700 (PDT)
-From:   Liam Beguin <liambeguin@gmail.com>
-To:     liambeguin@gmail.com, peda@axentia.se, jic23@kernel.org,
-        lars@metafoo.de, pmeerw@pmeerw.net
-Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, robh+dt@kernel.org
-Subject: [PATCH v4 10/10] dt-bindings: iio: afe: add bindings for temperature transducers
-Date:   Tue,  6 Jul 2021 12:09:42 -0400
-Message-Id: <20210706160942.3181474-11-liambeguin@gmail.com>
-X-Mailer: git-send-email 2.30.1.489.g328c10930387
-In-Reply-To: <20210706160942.3181474-1-liambeguin@gmail.com>
-References: <20210706160942.3181474-1-liambeguin@gmail.com>
+        Tue, 06 Jul 2021 17:28:42 -0700 (PDT)
+Date:   Wed, 7 Jul 2021 09:28:35 +0900
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Cc:     jic23@kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+        kernel@pengutronix.de, a.fatoum@pengutronix.de,
+        kamel.bouhara@bootlin.com, gwendal@chromium.org,
+        alexandre.belloni@bootlin.com, david@lechnology.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
+        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com,
+        o.rempel@pengutronix.de
+Subject: Re: [PATCH v12 00/17] Introduce the Counter character device
+ interface
+Message-ID: <YOT1M1qcfHC2PpuF@shinobu>
+References: <cover.1625471640.git.vilhelm.gray@gmail.com>
+ <5bdd9ee6-86af-3bcc-43ff-418fd1a2e3e8@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="9KoXz8sgYVDVTxwl"
+Content-Disposition: inline
+In-Reply-To: <5bdd9ee6-86af-3bcc-43ff-418fd1a2e3e8@linux.intel.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Liam Beguin <lvb@xiphos.com>
 
-An ADC is often used to measure other quantities indirectly.
-This binding describe one case, the measurement of a temperature
-through a temperature transducer (either voltage or current).
+--9KoXz8sgYVDVTxwl
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Liam Beguin <lvb@xiphos.com>
----
- .../iio/afe/temperature-transducer.yaml       | 111 ++++++++++++++++++
- 1 file changed, 111 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml
+On Tue, Jul 06, 2021 at 02:40:01PM +0300, Jarkko Nikula wrote:
+> Hi
+>=20
+> On 7/5/21 11:18 AM, William Breathitt Gray wrote:
+> > To summarize the main points of this patchset: there are no changes to
+> > the existing Counter sysfs userspace interface; a Counter character
+> > device interface is introduced that allows Counter events and associated
+> > data to be read() by userspace; the events_configure() and
+> > watch_validate() driver callbacks are introduced to support Counter
+> > events; and IRQ support is added to the 104-QUAD-8 driver, serving as an
+> > example of how to support the new Counter events functionality.
+> >=20
+> I quickly tested this set on top of linux-next next-20210706 and didn't=
+=20
+> see any issue with intel-qep.c. However I noticed two mutex issues in=20
+> patch 15/17. Perhaps visible due the CONFIG_DEBUG_MUTEXES=3Dy etc. I have=
+ on.
+>=20
+> I'll be out of office next few weeks so cannot test if you have a new=20
+> version meanwhile but wanted to share no show stopper from intel-qep.c=20
+> and those two mutex warnings.
+>=20
+> Jarkko
 
-diff --git a/Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml b/Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml
-new file mode 100644
-index 000000000000..b5a4fbfe75e4
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml
-@@ -0,0 +1,111 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/afe/temperature-transducer.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Temperature Transducer
-+
-+maintainers:
-+  - Liam Beguin <lvb@xiphos.com>
-+
-+description: |
-+  A temperature transducer is a device that converts a thermal quantity
-+  into any other physical quantity. This binding applies to temperature to
-+  voltage (like the LTC2997), and temperature to current (like the AD590)
-+  linear transducers.
-+  In both cases these are assumed to be connected to a voltage ADC.
-+
-+  When an io-channel measures the output voltage of a temperature analog front
-+  end such as a temperature transducer, the interesting measurement is almost
-+  always the corresponding temperature, not the voltage output. This binding
-+  describes such a circuit.
-+
-+  The general transfer function here is (using SI units)
-+    V(T) = Rsense * Isense(T)
-+    T = (Isense(T) / alpha) + offset
-+    T = 1 / (Rsense * alpha) * (V + offset * Rsense * alpha)
-+
-+  When using a temperature to voltage transducer, Rsense is set to 1.
-+
-+  The following circuits show a temperature to current and a temperature to
-+  voltage transducer that can be used with this binding.
-+
-+           VCC
-+          -----
-+            |
-+        +---+---+
-+        | AD590 |                               VCC
-+        +---+---+                              -----
-+            |                                    |
-+            V proportional to T             +----+----+
-+            |                          D+ --+         |
-+            +---- Vout                      | LTC2997 +--- Vout
-+            |                          D- --+         |
-+        +---+----+                          +---------+
-+        | Rsense |                               |
-+        +---+----+                             -----
-+            |                                   GND
-+          -----
-+           GND
-+
-+properties:
-+  compatible:
-+    const: temperature-transducer
-+
-+  io-channels:
-+    maxItems: 1
-+    description: |
-+      Channel node of a voltage io-channel.
-+
-+  '#io-channel-cells':
-+    const: 0
-+
-+  sense-offset-millicelsius:
-+    description: |
-+      Temperature offset. The default is <0>.
-+      This offset is commonly used to convert from Kelvins to degrees Celsius.
-+      In that case, sense-offset-millicelsius would be set to <(-273150)>.
-+
-+  sense-resistor-ohms:
-+    description: |
-+      The sense resistor. Defaults to <1>.
-+      Set sense-resistor-ohms to <1> when using a temperature to voltage
-+      transducer.
-+
-+  alpha-ppm-per-celsius:
-+    description: |
-+      Sometimes referred to as output gain, slope, or temperature coefficient.
-+
-+      alpha is expressed in parts per million which can be micro-amps per
-+      degrees Celsius or micro-volts per degrees Celsius. The is the main
-+      characteristic of a temperature transducer and should be stated in the
-+      datasheet.
-+
-+additionalProperties: false
-+required:
-+  - compatible
-+  - io-channels
-+  - alpha-ppm-per-celsius
-+
-+examples:
-+  - |
-+    ad950: temperature-sensor-0 {
-+        compatible = "temperature-transducer";
-+        #io-channel-cells = <0>;
-+        io-channels = <&temp_adc 3>;
-+
-+        sense-offset-millicelsius = <(-273150)>; /* Kelvin to degrees Celsius */
-+        sense-resistor-ohms = <8060>;
-+        alpha-ppm-per-celsius = <1>; /* 1 uA/K */
-+    };
-+  - |
-+    znq_tmp: temperature-sensor-1 {
-+        compatible = "temperature-transducer";
-+        #io-channel-cells = <0>;
-+        io-channels = <&temp_adc 2>;
-+
-+        sense-offset-millicelsius = <(-273150)>; /* Kelvin to degrees Celsius */
-+        alpha-ppm-per-celsius = <4000>; /* 4 mV/K */
-+    };
-+...
--- 
-2.30.1.489.g328c10930387
+Thanks, these seem pretty straightforward to fix so I'll wait a week or
+so to see if any other issues pop up before making a v13 submission.
 
+William Breathitt Gray
+
+--9KoXz8sgYVDVTxwl
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmDk9TMACgkQhvpINdm7
+VJL/+A/8DfP+wFOuOhzB4lVMNXXWQgDSk/bZskGmbS2ZZLobkAQ260t+W1F8L7vj
+q9ghHKWyLScDZ6EnRxY+1CdtT4eYXUcDeqJ0H0uLROcluzVYgBw7ZiJdt1nrEjmz
+abeflZ2T0hz1/fsX5zfUDRE2gdjjhdK/92iMmdiYXhOav8y3LyaAhmlN6d5Vqob4
+NwPZlf46LbvG3N0ExnT0ZP2B8q0LDJBXdxJbe4QoHY8239xFfins+2AhdhHAGfE6
+nAszv/Bq1igVzQ04M+MbvMbVf6zPlyphAudOa9pi5+up2fB/dBGVIE5hrZ4LHlQn
+chEpoCZ5/ZI3ZuEN3OoFuiiCDdbT06Pvn71x7Fm5Oio51JkFa8AysnEbGTr9k/NX
+9/FERGf+fQBSGou1XO1ujPFLtZxwYyvUE/a/Kw2AdLDVLBoQ6AqF3m6s/wP/vGlE
+tbrqdNkucZ9tMWJQGCM/528XztqDayILvKSkTS+RwkoBdv9G3HzKejW8EOkneTEp
+/5QAODb+TuvGMtvFyDuKxHkbZ1WA3ps6mgwguS5BaUkcnatur8s8JBT/IRR9WUxn
+5PLXV6+HGVoTu6Z179l2D7msc2iXwiETZEZjdVkMIrmQ+xgb+MhUUHeyZX4FLD+s
+pYmZ10G+ccSpXQucUP0hKygdkXjX7ZwTB1oT+9EG4t5aYu3e/FY=
+=xXkJ
+-----END PGP SIGNATURE-----
+
+--9KoXz8sgYVDVTxwl--

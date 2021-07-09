@@ -2,46 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A6D03C20B7
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Jul 2021 10:20:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 141413C20BD
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Jul 2021 10:23:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231403AbhGIIWr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 9 Jul 2021 04:22:47 -0400
-Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:40592 "EHLO
-        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231361AbhGIIWr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 9 Jul 2021 04:22:47 -0400
-Received: from pps.filterd (m0167090.ppops.net [127.0.0.1])
-        by mx0b-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 1698BdK4007222;
-        Fri, 9 Jul 2021 04:19:50 -0400
-Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2173.outbound.protection.outlook.com [104.47.57.173])
-        by mx0b-00128a01.pphosted.com with ESMTP id 39nywamdjt-1
+        id S231430AbhGII0E (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 9 Jul 2021 04:26:04 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:38358 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231347AbhGII0D (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 9 Jul 2021 04:26:03 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 1698B9NP004712;
+        Fri, 9 Jul 2021 04:23:07 -0400
+Received: from nam04-bn8-obe.outbound.protection.outlook.com (mail-bn8nam08lp2042.outbound.protection.outlook.com [104.47.74.42])
+        by mx0a-00128a01.pphosted.com with ESMTP id 39p8udjr1s-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 09 Jul 2021 04:19:50 -0400
+        Fri, 09 Jul 2021 04:23:07 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=d2GDZMhgzelciqvCMrmKAGnkpmUVibtkFj5MIwVIUsBB3plHa5o1gpRcndAz3X+9UkNY5+iQqikunGsPGgNDhE4UU7aRQCmpBe/Rh3JkoawK4gCoQjIWoRdT7jQbxXx+nDwj7tO3fx/saXTQm2FjdIjDEJK7Zw6ppo36uCGAYtVwq0/LWGZykeL4s5DnBqMFrVWg5VuDS5aaVzhY9wBPBMfX77MT+OGBAuoOpmD+XZI87HhSb2DJF9l704LZLDUFrmrC8ajtoidmaLmzEQ5sl9HiRnIKL3XOcbfOkH5t985i/zNvyMClWcikAs/tlMRCcnq0irnqle5fTfUymobcPQ==
+ b=D/bbp6RP1p3HNQhsYC9VgpXhO1qP+3orA/SiKF70kTsza+Gs7VQ1RTH/ut9CaOHY2gCTAgcp/d/5+R5th2/hw0i6AFlRhjbNU+jxiHjN3Mq9xw+IVyzlqu4c415YpAhUlxj+d2bNf+K3OVvFFZc8L/n/D4os8Mq0YSm7j2fo2FTYg3IKjFGPOv2839eYYJtXnnQnap2315CpE1xZ1J/JWucH0ma3Cq+dW11CIZHOPLpGCkwiESnoZveGwNMMd0emPl7VWVK9NXsZQd/gAcFwQODypVEdeZry8dgGGppPC5gPxKtPOmLCvjmc5xMMY8xVDVcW4AE5MZY2HOUPHYXfVg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AG6E6/MVwtgan4KF3lcSKVnhxa/SpGycFhStnXxXJM4=;
- b=MWkweW41p/BM2QAW0wQRqneFVGJSiJefoZtDYqEytDqafKk1Wl5qDbgZYiFIjX7I7vRW/Mr0tcQ4k66a3SScfVNeaBy9btzNU+KCTYu/Lgk90Wi4+QiZ4rFwaAgSn8mbt8UTVheptulX0pwEdANpkM0kxGiWuGmC/zboL7uC+Irsd8c8s9I0dFTvExOzj3o6tS9YSNGDuHLdX+uNYaF1HSVdHKEgUAgQZOW/WBqTAQLakO3oZcXS69m1QOrxXqmiMxhyduQ1xkAjj92sM2u3gpm3CsoOlzSpEoBpL1jzMB44CmIKXW6G5Oqf9wzNh1gSVXHEOUL0p88y0wVZ0FdZ7A==
+ bh=5Lwb9QZ00bluK49xKH9Vrg5JCRnY/7EC3HNqqbF9GVk=;
+ b=oBWtjsOhN6oIowBXQIVrBWSlwA19RlOa4h8tEKnp7lkJnGps7uNxHY8WBTE02nTd2vkD/UzHmP0plhXbBTJc17VuIfmQUfOJm2L9o34SMIdMj2R6slFu4WPmQBGvO23Et1n/w+S5Y5hjRuwY/ESPaCQwVQFxdkxf39rPr3c2lQk8Kny7eIofOQqdVYG2tG5AqIcWOIvf2NQs4MDcLjw//sy/1ZCtnvSq3CjiHU48VM6xd4IpFM54pXbHE8eyLC3o8fTMHvtU//WTGVx3w21+E3mOrN5YCMx2moyedQb6G4w3KZG+VRxPQw8tkEqMnQCEciuoNjAL7Sb/K3cRIIKg4g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
  dkim=pass header.d=analog.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AG6E6/MVwtgan4KF3lcSKVnhxa/SpGycFhStnXxXJM4=;
- b=2dHC69mY2b3lbeuQG0MhE8lgucp3HuZrXCUEtopWBn7M5OzIgwE9BHK4hHyep//py17hWZwMF+Gc/vfD1AA6xU95gkqiHL0FsKJd38iudqrfzqK746VvOxUUmqxKi5osvJVOoSs/iZDgclqe2Ril5wgYGkNf0mMvdvMJ2xmZVwE=
+ bh=5Lwb9QZ00bluK49xKH9Vrg5JCRnY/7EC3HNqqbF9GVk=;
+ b=2hJqB8rocGCzfrCNgBH7sNQUYZtFGC0lAsUzk5GhM8Yjgn0AHRSC5AfP5Itz0TpoE1uJC93O58JP/PRqQT8MepHDS9ckH+Mvhv3rZGDnDFLi3q73bxTOf8nyBnFD0OpNkd4KI/89+38CVRKRS6dRUVcusK917oQ3oechGcG8oJg=
 Received: from PH0PR03MB6366.namprd03.prod.outlook.com (2603:10b6:510:ab::22)
- by PH0PR03MB5815.namprd03.prod.outlook.com (2603:10b6:510:37::21) with
+ by PH0PR03MB5750.namprd03.prod.outlook.com (2603:10b6:510:31::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.20; Fri, 9 Jul
- 2021 08:19:47 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.22; Fri, 9 Jul
+ 2021 08:23:05 +0000
 Received: from PH0PR03MB6366.namprd03.prod.outlook.com
  ([fe80::4b7:376:c5f2:3891]) by PH0PR03MB6366.namprd03.prod.outlook.com
  ([fe80::4b7:376:c5f2:3891%3]) with mapi id 15.20.4242.023; Fri, 9 Jul 2021
- 08:19:47 +0000
+ 08:23:05 +0000
 From:   "Sa, Nuno" <Nuno.Sa@analog.com>
 To:     Liam Beguin <liambeguin@gmail.com>,
         "lars@metafoo.de" <lars@metafoo.de>,
@@ -53,122 +53,119 @@ CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
         "robh+dt@kernel.org" <robh+dt@kernel.org>
-Subject: RE: [PATCH v1 2/4] iio: adc: ad7949: fix spi messages on non 14-bit
- controllers
-Thread-Topic: [PATCH v1 2/4] iio: adc: ad7949: fix spi messages on non 14-bit
- controllers
-Thread-Index: AQHXdFTvHL08lM5IPE+ISakQqzqQaas6TQwA
-Date:   Fri, 9 Jul 2021 08:19:47 +0000
-Message-ID: <PH0PR03MB63662890FF4545AAF45E026199189@PH0PR03MB6366.namprd03.prod.outlook.com>
+Subject: RE: [PATCH v1 3/4] iio: adc: ad7949: add support for internal vref
+Thread-Topic: [PATCH v1 3/4] iio: adc: ad7949: add support for internal vref
+Thread-Index: AQHXdFTvvGOrg2VPB0ms5nxkbdI4qKs6Tbqg
+Date:   Fri, 9 Jul 2021 08:23:05 +0000
+Message-ID: <PH0PR03MB636680DD9F9530464FEBB7C399189@PH0PR03MB6366.namprd03.prod.outlook.com>
 References: <20210708235618.1541335-1-liambeguin@gmail.com>
- <20210708235618.1541335-3-liambeguin@gmail.com>
-In-Reply-To: <20210708235618.1541335-3-liambeguin@gmail.com>
+ <20210708235618.1541335-4-liambeguin@gmail.com>
+In-Reply-To: <20210708235618.1541335-4-liambeguin@gmail.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-dg-ref: =?us-ascii?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcbnNhXGFwcGRh?=
- =?us-ascii?Q?dGFccm9hbWluZ1wwOWQ4NDliNi0zMmQzLTRhNDAtODVlZS02Yjg0YmEyOWUz?=
- =?us-ascii?Q?NWJcbXNnc1xtc2ctNmFiYmFkMDItZTA4ZS0xMWViLThiNzEtZmM3Nzc0MjFm?=
- =?us-ascii?Q?Y2FlXGFtZS10ZXN0XDZhYmJhZDA0LWUwOGUtMTFlYi04YjcxLWZjNzc3NDIx?=
- =?us-ascii?Q?ZmNhZWJvZHkudHh0IiBzej0iNTg1NSIgdD0iMTMyNzAyOTIzODU1NTk0Mzcw?=
- =?us-ascii?Q?IiBoPSJFbk5aSWpJZ3E3L3FpZDNocjQyY3BaSUoxL009IiBpZD0iIiBibD0i?=
- =?us-ascii?Q?MCIgYm89IjEiIGNpPSJjQUFBQUVSSFUxUlNSVUZOQ2dVQUFJWURBQUNDZ3hF?=
- =?us-ascii?Q?dG0zVFhBUXoxRERZL2JNWnFEUFVNTmo5c3htb0ZBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBSEFBQUFBV0F3QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBRUFB?=
- =?us-ascii?Q?UUFCQUFBQUJPWUdjZ0FBQUFBQUFBQUFBQUFBQUo0QUFBQmhBR1FBYVFCZkFI?=
- =?us-ascii?Q?TUFaUUJqQUhVQWNnQmxBRjhBY0FCeUFHOEFhZ0JsQUdNQWRBQnpBRjhBWmdC?=
- =?us-ascii?Q?aEFHd0Fjd0JsQUY4QVpnQnZBSE1BYVFCMEFHa0FkZ0JsQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFFQUFB?=
- =?us-ascii?Q?QUFBQUFBQWdBQUFBQUFuZ0FBQUdFQVpBQnBBRjhBY3dCbEFHTUFkUUJ5QUdV?=
- =?us-ascii?Q?QVh3QndBSElBYndCcUFHVUFZd0IwQUhNQVh3QjBBR2tBWlFCeUFERUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBUUFBQUFBQUFBQUNBQUFBQUFD?=
- =?us-ascii?Q?ZUFBQUFZUUJrQUdrQVh3QnpBR1VBWXdCMUFISUFaUUJmQUhBQWNnQnZBR29B?=
- =?us-ascii?Q?WlFCakFIUUFjd0JmQUhRQWFRQmxBSElBTWdBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQkFBQUFBQUFBQUFJQUFBQUFBSjRBQUFCaEFISUFhUUJo?=
- =?us-ascii?Q?QUY4QVpBQnBBR01BZEFCcEFHOEFiZ0JoQUhJQWVRQmZBSFFBYVFCbEFISUFN?=
- =?us-ascii?Q?UUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUVB?=
- =?us-ascii?Q?QUFBQUFBQUFBZ0FBQUFBQW5nQUFBR0VBY2dCcEFHRUFYd0JrQUdrQVl3QjBB?=
- =?us-ascii?Q?R2tBYndCdUFHRUFjZ0I1QUY4QWRBQnBBR1VBY2dBeUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFRQUFBQUFBQUFBQ0FBQUFB?=
- =?us-ascii?Q?QUE9Ii8+PC9tZXRhPg=3D=3D?=
+x-dg-ref: =?iso-8859-1?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcbnNhXGFwcG?=
+ =?iso-8859-1?Q?RhdGFccm9hbWluZ1wwOWQ4NDliNi0zMmQzLTRhNDAtODVlZS02Yjg0YmEy?=
+ =?iso-8859-1?Q?OWUzNWJcbXNnc1xtc2ctZTEyOGQ5MTQtZTA4ZS0xMWViLThiNzEtZmM3Nz?=
+ =?iso-8859-1?Q?c0MjFmY2FlXGFtZS10ZXN0XGUxMjhkOTE2LWUwOGUtMTFlYi04YjcxLWZj?=
+ =?iso-8859-1?Q?Nzc3NDIxZmNhZWJvZHkudHh0IiBzej0iNjc5OSIgdD0iMTMyNzAyOTI1OD?=
+ =?iso-8859-1?Q?QyNjUzMzQ1IiBoPSJ6QUVidlh5dG40eXZibGFoTzExeEFsSHJhRHM9IiBp?=
+ =?iso-8859-1?Q?ZD0iIiBibD0iMCIgYm89IjEiIGNpPSJjQUFBQUVSSFUxUlNSVUZOQ2dVQU?=
+ =?iso-8859-1?Q?FJWURBQUNob0lHam0zVFhBVnlQaGxtRk5LVGZYSStHV1lVMHBOOEZBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBSEFBQUFBV0F3QUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBRUFBUUFCQUFBQUJPWUdjZ0FBQUFBQUFBQUFBQUFBQUo0?=
+ =?iso-8859-1?Q?QUFBQmhBR1FBYVFCZkFITUFaUUJqQUhVQWNnQmxBRjhBY0FCeUFHOEFhZ0?=
+ =?iso-8859-1?Q?JsQUdNQWRBQnpBRjhBWmdCaEFHd0Fjd0JsQUY4QVpnQnZBSE1BYVFCMEFH?=
+ =?iso-8859-1?Q?a0FkZ0JsQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFFQUFBQUFBQUFBQWdBQUFBQUFuZ0FBQUdFQV?=
+ =?iso-8859-1?Q?pBQnBBRjhBY3dCbEFHTUFkUUJ5QUdVQVh3QndBSElBYndCcUFHVUFZd0Iw?=
+ =?iso-8859-1?Q?QUhNQVh3QjBBR2tBWlFCeUFERUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBUUFBQUFBQUFBQUNBQUFBQUFDZUFBQUFZUUJrQUdrQVh3?=
+ =?iso-8859-1?Q?QnpBR1VBWXdCMUFISUFaUUJmQUhBQWNnQnZBR29BWlFCakFIUUFjd0JmQU?=
+ =?iso-8859-1?Q?hRQWFRQmxBSElBTWdBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQkFBQUFBQUFBQUFJQUFBQUFBSjRBQUFCaEFISUFhUUJoQUY4QVpBQn?=
+ =?iso-8859-1?Q?BBR01BZEFCcEFHOEFiZ0JoQUhJQWVRQmZBSFFBYVFCbEFISUFNUUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUVBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBZ0FBQUFBQW5nQUFBR0VBY2dCcEFHRUFYd0JrQUdrQVl3QjBB?=
+ =?iso-8859-1?Q?R2tBYndCdUFHRUFjZ0I1QUY4QWRBQnBBR1VBY2dBeUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFRQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?Q0FBQUFBQUE9Ii8+PC9tZXRhPg=3D=3D?=
 x-dg-rorf: true
 authentication-results: gmail.com; dkim=none (message not signed)
  header.d=none;gmail.com; dmarc=none action=none header.from=analog.com;
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 3e9ea61f-97bc-46e0-caf0-08d942b250a7
-x-ms-traffictypediagnostic: PH0PR03MB5815:
+x-ms-office365-filtering-correlation-id: 257808ad-f18e-43e4-8e12-08d942b2c6e6
+x-ms-traffictypediagnostic: PH0PR03MB5750:
 x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <PH0PR03MB58154EE2E0F4977357C99E4A99189@PH0PR03MB5815.namprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:5516;
+x-microsoft-antispam-prvs: <PH0PR03MB5750587A5AC2B004A47C6ABC99189@PH0PR03MB5750.namprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: Buhoc8fMIaaHqtfgjkDqcjEfb7dN55bUIosoegQBuV3luZTR8iqRaV47zzi35AzzLdtypDvCtWKqQyvanhWVOj21AT23FcUEoqtJ6Gawf/UxOeZ6wY0CSO7+BJaIpY7O/UJLr5TVj8OUpblKlbceyt+fo2GWo9lrUPc5oZfeYKhbiZV5qvrf3FSLpijSajc+wnS1NG/eSKCpYyDU+WVgkCUwGrH8AML5MaWMZTn7445kuD7CCse3pGce2RAM7pgi2ss9awxcOt/Gm/Iz9prcPrup9pTA/FnLABZ6QgdsOQe3/PPC8N753Ni6+nsw48XBPPCtNUwAGswr19fn3uzC2sTqrLfVMFPJdbxg9VDTIFCuBJnNopp4mQCrA99YeyAbRlb94dwxYyhLyD1rDzIXB31crzNow+MddqlbPtL5qHMuk1aZjIUhxBAhB8ImllECnEzw6B/+TKLgvqZp7GzTSSUjhg+RQfX62ngm3FS0PW9NjuG06ETRPVI2NGOAz+Ebi68Np96uTvXObbzWnQsKp1QJBaO+uvmmPNvvn1zrAEQWG0Qr4UJZpIbn+pLnU42AIpqnq6vtsw31fZLcTtobHT/sriTxzHjN+NumHbDSvEiY0RCIfV7Sru+FBWhezYaXgBRQgWUzSXz3PjOI2LZZ/A==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR03MB6366.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(346002)(366004)(376002)(39860400002)(396003)(4326008)(316002)(53546011)(52536014)(6506007)(8676002)(110136005)(83380400001)(71200400001)(33656002)(9686003)(186003)(86362001)(122000001)(66476007)(55016002)(54906003)(5660300002)(8936002)(2906002)(7696005)(76116006)(66946007)(15650500001)(66556008)(38100700002)(64756008)(66446008)(478600001);DIR:OUT;SFP:1101;
+x-microsoft-antispam-message-info: 0qcBd/hFySBVKpUfKncq29PKgyVggWyUOa+UvgVIlGSJzw+v2FN09jb4nVO73+D/gVBwelsSZl4QGgnjn5EtKx8Zfqr2powVdI8E6ApR84myWtkKFmHIePJ/WYZhZ014ZDLV1QOOyY3C7y/S7xNyNw2O8N5rBXc+4Tjf/8RPTAxBRAEJpcoYADgEOkSf7ESopEwXf4Adjh/M6Ai9iHlYnL4ltMmXkKr0Z5iLu2xDiQ1BZpw0ftuCpElH3aQ8T+4cp/Tkscsv+1+Gj+oVG39ChEnat1CRFlXhubbXwzj/kmRWE73Ee/5wu/Z486qZRRiDmFlGzqam/eR+gMnkrZpu7mwsjKK8K0/6lqpKfrC5YsADUyXjy8e8JDd78GLIg+vz4d6RLuR+WC/g/bo7EXD9CEWtFebru+siSxp+qLqcO1d97xqjzY2hkBOPpKdkYxeGCnjUv2fQD6m4oBMJgnZPScnkq46hFprJuQ/YiKUPfLttnkLG6LLvqt/sAiq+nOv0J/Yq3Bi3uq5HDesumQ51IFccDLthfl1Yeybxfn2YaY/McgJ+fPQXkdkI3l9+1vMRLtosyLRbEOqMvejBnXCFnOBdXVzU7JEdeFw8j94zG1lTBsFbK827OYkBf2Big0HVceYe4DSyrDh85P7vsZ6O2w==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR03MB6366.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(396003)(366004)(39860400002)(136003)(376002)(6506007)(186003)(33656002)(478600001)(122000001)(54906003)(76116006)(38100700002)(8936002)(53546011)(8676002)(71200400001)(86362001)(5660300002)(4326008)(66946007)(66556008)(110136005)(83380400001)(7696005)(316002)(66446008)(64756008)(66476007)(52536014)(9686003)(2906002)(55016002);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?FuwfMGZnN4CtBvQ7lgNx2v3aSqYyyZIk+UD13L1OgNy4iy08C5dq5sn7A9er?=
- =?us-ascii?Q?omyJfb+l7YBO7Zz9isBl46OshRCIJs4DWNdi1gO78XD3YmzWy9oOWSzsq5g2?=
- =?us-ascii?Q?U6+Xytb5woSIuliMszMS5RIJHnP2ClR3Z/Il4irrbIXUNV852VIAjGG5MmPp?=
- =?us-ascii?Q?E0NlDlUNkftI4J+55gH8+nl8W88e9MeeT9Xh7tfUAHeEY+zhUUV5EnC0jZCo?=
- =?us-ascii?Q?F+vqa6JGbZ63wKitasmslIc9v387ivnky6pTpe4S9c5X62gN3D7j8575WuDX?=
- =?us-ascii?Q?57BMac/ow/G3SRX1SlLqhOVPdqczlGtiEwewXv7kOIN9whp3hoHuGOepNTik?=
- =?us-ascii?Q?ujezi0Yce4iEku4m1H8GTYwisdWsRrVS285Rk6dKacd53PcNjlgydPktXUam?=
- =?us-ascii?Q?ei2xuN7b55fre72EnJxNpjRX7e/wBcfITbnCXUjOTQUQL7DvWLk4s5/JwGG2?=
- =?us-ascii?Q?8/l6AK9mDM0NhRKIaVAEEl27wCQATiixQyAZlUQmNupRwyxQpwM2N7R8/M1j?=
- =?us-ascii?Q?j87rQJdmeGpzG9LLUjXBwVcZvQSuHlmPRqEQygvRwBxOUUWZT36LONnYrIi6?=
- =?us-ascii?Q?+Aq/B4O8ps/ibGLJdouHYHjdaHt6yOKYH+FbKGc5fHNvs25iQiFhD2esrTJ5?=
- =?us-ascii?Q?5MDXeU0Emzh4Qm8jDCNqeUOAe/Y0B9CViaez9WGRwx/V6NY0ttC8XgtG6WUY?=
- =?us-ascii?Q?VlyDV4YxAlPNzOZPVwBoNfr5Y53JpBTY7gL2pgBLPlSg1gxbFtpZIqLSx2hK?=
- =?us-ascii?Q?EBjUl0732u5YJ7Rd2pqAbhjXCj3FlfQ5RoZarrlobVLYTPIt31P1wvE81UFm?=
- =?us-ascii?Q?CtZK7rnkd5jY9GOvxXh2bXhgOxWZ+i5kxnGGJQwKpGU6T/f+ZgP8PSssq+n7?=
- =?us-ascii?Q?4BJxmcKeLwr/UetBRWZKcz6UCvAhNi/R/W5ItHxBMyxOm6zfXqkxkEqetUKS?=
- =?us-ascii?Q?H8WGgC3aJ7P0OSHL72n4X/LOGlWt5BL5k9/mwYP9u5yOO8O0iycmHdAeR6Pe?=
- =?us-ascii?Q?mO5lFIJg6oLv/+BqQUwYUJQGlBMRwAv6VlgVzcOzMao+Ik/qrdZHorM90/Mh?=
- =?us-ascii?Q?3a8jKeCHdQUyH/0aprRrFj4+v7/uE4bPaHcL90WOTYTP6t1TsB4sls4eREov?=
- =?us-ascii?Q?rP5jq6WlIbG0zVmLhRcjmg/hkRpM1Ds8wBW/AvKp0NvlrZNnqW2uRYyqaKcn?=
- =?us-ascii?Q?UJrxOqOExPdPPd1HCcb47WKi9M4//uRn5CqghDRKbBt5B+MGCpg/HuifrgYi?=
- =?us-ascii?Q?I6RTL1NbhC9bOEoK4YwIfczjWiUArtWJuoAOMrh1pg+OFDjg55ZuuW3E9Hzl?=
- =?us-ascii?Q?SROKK8eMYRsrNpfyQUdYG/ytXgIpmULzvlCSI+NYOhM1GXlCsLdj2iro5BFo?=
- =?us-ascii?Q?ZCEy5IQVF1twzpvROIXwKFeVB/oq?=
-Content-Type: text/plain; charset="us-ascii"
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?aHGlQkP+GkzQQ9KTSiDZoSX4S70Wvqhx8XQcWOiHgWCU78Y6e7JHzGy8PF?=
+ =?iso-8859-1?Q?D5yUIzF7QjXxKaDchi9rkKUkXtkTm3Pbe6ifCqeKJDuNO28PQxSR61f1fS?=
+ =?iso-8859-1?Q?5G+nKDryMLF5ud5LXkAni7d5BflSb1vU8HK98Ds/asHR3gWW56dl9B55ji?=
+ =?iso-8859-1?Q?Qjacc2ORJjE35v9+O/ggmkW87FWY3BBUPif6RMSID13M20Kf0dbUy6w0qC?=
+ =?iso-8859-1?Q?/K++tCOw+2CueAlDBi7lSyyfCqOsrAs72VC84D5EXJDSQFhmMjADuLsSvC?=
+ =?iso-8859-1?Q?jkn++O+ZibEhQ0thNBTNxM7mI0OtrCKTsW3msVz51+XAM7/3aKGXO8shJo?=
+ =?iso-8859-1?Q?Jz5Axf2+SSrS/s+MoeAaqgYUBNf/tR+qvate5S+ZpXjjsS5HFT8n6Y8DYp?=
+ =?iso-8859-1?Q?JyNHRadAUFdHs+/U2ECSW7wtBr21qINSTo/wIfbQa4XQ4GAuDRr0jBprhj?=
+ =?iso-8859-1?Q?JoUZ/YWL+xlrDVyufyddcS0z6FUpJrf4w49sdmvyLmbviy1xi4is2gvt7O?=
+ =?iso-8859-1?Q?XAwdtHG3Ejsd9Udaczd6GD3cc72PYVQ0FVLip3aSZTMH92xq4UAOqHcLTc?=
+ =?iso-8859-1?Q?lR7TKeUrcQYSFkW/C14IYgsTteHkqRdgiwu9DFU9n/C/9/8BUg3CFnxR3h?=
+ =?iso-8859-1?Q?9wC0dCysyAaYIFwAsSMBSN1IJGUEogtaYqf55pwK97iJfSqrYHG9MnAeJi?=
+ =?iso-8859-1?Q?3po1HAmtM7i3hCAc7V0S9tg+XD37nzVVRIQ2YI6oce+oI978kyeJ83uu82?=
+ =?iso-8859-1?Q?otjbBOohgBt2b7y7IP39aZU2x4BK6+1RgBOPEeeHxy7W1FKdo4Vp/cKNWn?=
+ =?iso-8859-1?Q?uiLpE13A6chHaii3OQYuPbCLFFutBCwumfTHqIwESgyAngKOtTZ6nPtIWX?=
+ =?iso-8859-1?Q?liwv8UckbItmAllmMOUuYMejXZqBfWYMm+gI2y67Js2mLrmfRforUNB21x?=
+ =?iso-8859-1?Q?LkhpJnhNmHXGYIf+hvoXyofzNvODG/H4NrVG3CtvgXRFh02Lx5DatQ5ZHm?=
+ =?iso-8859-1?Q?Id3QzvHYNIAYcMimeSNE9OycXQ3SOyS2DMpUuGssw9q5w6frPSToGt1DQb?=
+ =?iso-8859-1?Q?G8FmJtqcUTZf33XBc3erK1a5SKvQA2wI5coNJ3PFWRrOEfvxxL41G31iSx?=
+ =?iso-8859-1?Q?JIFzZHID+X+Xyy6q3T0g2xC2Ts8rFQQ1YFoWcSGBhlEZb2LxV+YvS5I/0K?=
+ =?iso-8859-1?Q?dRebtdV9vzvg57a8TNCMlvOZvJ3b67N28nhbLsOE+DDY1tAP5Hw+a+CVR7?=
+ =?iso-8859-1?Q?ZVPDzj5qToIGdCx08u636Je5Sbe9+loX3rQxkptIG3mvBn+fIelSM4QWzr?=
+ =?iso-8859-1?Q?WDCdv0gZHrsiY0xQ1q6fwPIiMEEP8SrBdr2goqL0hy0Ni0vHQJ1iLqDvNY?=
+ =?iso-8859-1?Q?9wJM4mF2yOD0K9HdcDvrOAVnK7g0D+2poIbmxC8o9ui2jjldRS26ODsYJ/?=
+ =?iso-8859-1?Q?08VGZurziQjETCHK?=
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: analog.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: PH0PR03MB6366.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3e9ea61f-97bc-46e0-caf0-08d942b250a7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jul 2021 08:19:47.3256
+X-MS-Exchange-CrossTenant-Network-Message-Id: 257808ad-f18e-43e4-8e12-08d942b2c6e6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jul 2021 08:23:05.7041
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: +Vr1i9ZqO7i6weYsAOsI2D/G33ZNEmqPXnmOVUK6TOVcVYOYBg3L1R7bqD+RP43DT4cwMaM6UM3cTUaEypj7Rg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR03MB5815
-X-Proofpoint-ORIG-GUID: sxlMpVb0ls5dz5EAJqfk4C9rNuPJ7plI
-X-Proofpoint-GUID: sxlMpVb0ls5dz5EAJqfk4C9rNuPJ7plI
+X-MS-Exchange-CrossTenant-userprincipalname: vsbd01+2Z3kECCBWDiRV30wHTwXnLV/J56xI18yCjSeb9iOPkxVdX6QooiMmvBllEEy06J4xopILtysra0TR5Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR03MB5750
+X-Proofpoint-ORIG-GUID: VFHvzckyoA09YE9s5Y3TOjNls_U5EMek
+X-Proofpoint-GUID: VFHvzckyoA09YE9s5Y3TOjNls_U5EMek
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
  definitions=2021-07-09_04:2021-07-09,2021-07-09 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
- bulkscore=0 mlxlogscore=999 priorityscore=1501 lowpriorityscore=0
- suspectscore=0 clxscore=1015 mlxscore=0 spamscore=0 impostorscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
+ mlxlogscore=999 priorityscore=1501 adultscore=0 lowpriorityscore=0
+ bulkscore=0 malwarescore=0 mlxscore=0 spamscore=0 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2104190000 definitions=main-2107090041
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
-
-> -----Original Message-----
 > From: Liam Beguin <liambeguin@gmail.com>
 > Sent: Friday, July 9, 2021 1:56 AM
 > To: liambeguin@gmail.com; lars@metafoo.de; Hennerich, Michael
@@ -176,176 +173,202 @@ X-Mailing-List: linux-iio@vger.kernel.org
 > antoine.couret@essensium.com
 > Cc: linux-kernel@vger.kernel.org; linux-iio@vger.kernel.org;
 > devicetree@vger.kernel.org; robh+dt@kernel.org
-> Subject: [PATCH v1 2/4] iio: adc: ad7949: fix spi messages on non 14-bit
-> controllers
+> Subject: [PATCH v1 3/4] iio: adc: ad7949: add support for internal vref
 >=20
 > [External]
 >=20
 > From: Liam Beguin <lvb@xiphos.com>
 >=20
-> This driver supports devices with 14-bit and 16-bit sample sizes.
-> This is not always handled properly by spi controllers and can fail. To
-> work around this limitation, pad samples to 16-bit and split the sample
-> into two 8-bit messages in the event that only 8-bit messages are
-> supported by the controller.
+> Add support for selecting a custom reference voltage from the
+> devicetree. If an external source is used, a vref regulator should be
+> defined in the devicetree.
 >=20
 > Signed-off-by: Liam Beguin <lvb@xiphos.com>
 > ---
->  drivers/iio/adc/ad7949.c | 67
-> ++++++++++++++++++++++++++++++++++------
->  1 file changed, 58 insertions(+), 9 deletions(-)
+>  drivers/iio/adc/ad7949.c | 84
+> +++++++++++++++++++++++++++++++++-------
+>  1 file changed, 69 insertions(+), 15 deletions(-)
 >=20
 > diff --git a/drivers/iio/adc/ad7949.c b/drivers/iio/adc/ad7949.c
-> index 93aacf4f680b..bbc6b56330a3 100644
+> index bbc6b56330a3..3c1293922d2e 100644
 > --- a/drivers/iio/adc/ad7949.c
 > +++ b/drivers/iio/adc/ad7949.c
-> @@ -11,6 +11,7 @@
->  #include <linux/module.h>
->  #include <linux/regulator/consumer.h>
->  #include <linux/spi/spi.h>
-> +#include <linux/bitfield.h>
+> @@ -31,6 +31,7 @@
+>  #define AD7949_CFG_VAL_BW_FULL			1
+>  #define AD7949_CFG_VAL_BW_QUARTER		0
+>  #define AD7949_CFG_BIT_REF		GENMASK(5, 3)
+> +#define AD7949_CFG_VAL_REF_EXTERNAL		BIT(1)
+>  #define AD7949_CFG_BIT_SEQ		GENMASK(2, 1)
+>  #define AD7949_CFG_BIT_RBN		BIT(0)
 >=20
->  #define AD7949_MASK_TOTAL		GENMASK(13, 0)
->  #define AD7949_CFG_REG_SIZE_BITS	14
-> @@ -57,6 +58,7 @@ static const struct ad7949_adc_spec
+> @@ -40,6 +41,33 @@ enum {
+>  	ID_AD7689,
+>  };
+>=20
+> +/**
+> + * enum ad7949_ref - Reference selection
+> + *
+> + * AD7949_REF_INT_2500:     Internal reference and temperature
+> sensor enabled.
+> + *                          Vref=3D2.5V, buffered output
+> + * AD7949_REF_INT_4096:     Internal reference and temperature
+> sensor enabled.
+> + *                          Vref=3D4.096V, buffered output
+> + * AD7949_REF_EXT_TEMP:     Use external reference, temperature
+> sensor enabled.
+> + *                          Internal buffer disabled
+> + * AD7949_REF_EXT_TEMP_BUF: Use external reference, internal
+> buffer and
+> + *                          temperature sensor enabled.
+> + * AD7949_REF_RSRV_4:       Do not use
+> + * AD7949_REF_RSRV_5:       Do not use
+> + * AD7949_REF_EXT:          Use external reference, internal buffer and
+> + *                          temperature sensor disabled.
+> + * AD7949_REF_EXT_BUF:      Use external reference, internal buffer
+> enabled.
+> + *                          Internal reference and temperature sensor di=
+sabled.
+> + */
+> +enum ad7949_ref {
+> +	AD7949_REF_INT_2500 =3D 0,
+> +	AD7949_REF_INT_4096,
+> +	AD7949_REF_EXT_TEMP,
+> +	AD7949_REF_EXT_TEMP_BUF,
+> +	AD7949_REF_EXT =3D 6,
+> +	AD7949_REF_EXT_BUF,
+> +};
+> +
+>  struct ad7949_adc_spec {
+>  	u8 num_channels;
+>  	u8 resolution;
+> @@ -55,6 +83,7 @@ static const struct ad7949_adc_spec
 > ad7949_adc_spec[] =3D {
+>   * struct ad7949_adc_chip - AD ADC chip
+>   * @lock: protects write sequences
+>   * @vref: regulator generating Vref
+> + * @refsel: reference selection
 >   * @indio_dev: reference to iio structure
 >   * @spi: reference to spi structure
 >   * @resolution: resolution of the chip
-> + * @bits_per_word: number of bits per SPI word
->   * @cfg: copy of the configuration register
->   * @current_channel: current channel in use
->   * @buffer: buffer to send / receive data to / from device
-> @@ -67,28 +69,59 @@ struct ad7949_adc_chip {
+> @@ -66,6 +95,7 @@ static const struct ad7949_adc_spec
+> ad7949_adc_spec[] =3D {
+>  struct ad7949_adc_chip {
+>  	struct mutex lock;
+>  	struct regulator *vref;
+> +	enum ad7949_ref refsel;
 >  	struct iio_dev *indio_dev;
 >  	struct spi_device *spi;
 >  	u8 resolution;
-> +	u8 bits_per_word;
->  	u16 cfg;
->  	unsigned int current_channel;
-> -	u16 buffer ____cacheline_aligned;
-> +	union {
-> +		__be16 buffer;
-> +		u8 buf8[2];
-> +	} ____cacheline_aligned;
->  };
+> @@ -241,12 +271,28 @@ static int ad7949_spi_read_raw(struct iio_dev
+> *indio_dev,
+>  		return IIO_VAL_INT;
 >=20
-> +static void ad7949_set_bits_per_word(struct ad7949_adc_chip
-> *ad7949_adc)
-> +{
-> +	u32 adc_mask =3D SPI_BPW_MASK(ad7949_adc->resolution);
-> +	u32 bpw =3D adc_mask & ad7949_adc->spi->controller-
-> >bits_per_word_mask;
+>  	case IIO_CHAN_INFO_SCALE:
+> -		ret =3D regulator_get_voltage(ad7949_adc->vref);
+> -		if (ret < 0)
+> -			return ret;
+> +		switch (ad7949_adc->refsel) {
+> +		case AD7949_REF_INT_2500:
+> +			*val =3D 2500;
+> +			break;
+> +		case AD7949_REF_INT_4096:
+> +			*val =3D 4096;
+> +			break;
+> +		case AD7949_REF_EXT_TEMP:
+> +		case AD7949_REF_EXT_TEMP_BUF:
+> +		case AD7949_REF_EXT:
+> +		case AD7949_REF_EXT_BUF:
+> +			ret =3D regulator_get_voltage(ad7949_adc-
+> >vref);
+> +			if (ret < 0)
+> +				return ret;
 > +
-> +	if (bpw =3D=3D adc_mask)
-> +		ad7949_adc->bits_per_word =3D ad7949_adc-
-> >resolution;
-> +	else if (bpw =3D=3D SPI_BPW_MASK(16))
-> +		ad7949_adc->bits_per_word =3D 16;
-> +	else
-> +		ad7949_adc->bits_per_word =3D 8;
-> +}
-> +
->  static int ad7949_spi_write_cfg(struct ad7949_adc_chip *ad7949_adc,
-> u16 val,
->  				u16 mask)
+> +			/* convert value back to mV */
+> +			*val =3D ret / 1000;
+> +			break;
+> +		}
+>=20
+> -		*val =3D ret / 5000;
+> -		return IIO_VAL_INT;
+> +		*val2 =3D (1 << ad7949_adc->resolution) - 1;
+> +		return IIO_VAL_FRACTIONAL;
+>  	}
+>=20
+>  	return -EINVAL;
+> @@ -285,7 +331,7 @@ static int ad7949_spi_init(struct
+> ad7949_adc_chip *ad7949_adc)
+>  		FIELD_PREP(AD7949_CFG_BIT_INCC,
+> AD7949_CFG_VAL_INCC_UNIPOLAR_GND) |
+>  		FIELD_PREP(AD7949_CFG_BIT_INX, ad7949_adc-
+> >current_channel) |
+>  		FIELD_PREP(AD7949_CFG_BIT_BW,
+> AD7949_CFG_VAL_BW_FULL) |
+> -		FIELD_PREP(AD7949_CFG_BIT_REF,
+> AD7949_REF_EXT_BUF) |
+> +		FIELD_PREP(AD7949_CFG_BIT_REF, ad7949_adc-
+> >refsel) |
+>  		FIELD_PREP(AD7949_CFG_BIT_SEQ, 0x0) |
+>  		FIELD_PREP(AD7949_CFG_BIT_RBN, 1);
+>=20
+> @@ -304,6 +350,7 @@ static int ad7949_spi_init(struct
+> ad7949_adc_chip *ad7949_adc)
+>  static int ad7949_spi_probe(struct spi_device *spi)
 >  {
->  	int ret;
-> -	int bits_per_word =3D ad7949_adc->resolution;
-> -	int shift =3D bits_per_word - AD7949_CFG_REG_SIZE_BITS;
->  	struct spi_message msg;
->  	struct spi_transfer tx[] =3D {
->  		{
->  			.tx_buf =3D &ad7949_adc->buffer,
->  			.len =3D 2,
-> -			.bits_per_word =3D bits_per_word,
-> +			.bits_per_word =3D ad7949_adc->bits_per_word,
->  		},
->  	};
->=20
-> +	ad7949_adc->buffer =3D 0;
->  	ad7949_adc->cfg =3D (val & mask) | (ad7949_adc->cfg & ~mask);
-> -	ad7949_adc->buffer =3D ad7949_adc->cfg << shift;
-> +
-> +	switch (ad7949_adc->bits_per_word) {
-> +	case 16:
-> +		ad7949_adc->buffer =3D ad7949_adc->cfg << 2;
-> +		break;
-> +	case 14:
-> +		ad7949_adc->buffer =3D ad7949_adc->cfg;
-> +		break;
-> +	case 8:
-> +		/* Pack 14-bit value into 2 bytes, MSB first */
-> +		ad7949_adc->buf8[0] =3D FIELD_GET(GENMASK(13, 6),
-> ad7949_adc->cfg);
-> +		ad7949_adc->buf8[1] =3D FIELD_GET(GENMASK(5, 0),
-> ad7949_adc->cfg);
-> +		ad7949_adc->buf8[1] =3D ad7949_adc->buf8[1] << 2;
-> +		break;
-> +	}
-
-Honestly I didn't went through the driver but just a question... Are we
-sure that 'ad7949_adc->resolution' will have something valid (8, 14, 16)?
-A default statement is always a nice to have :).
-=20
->  	spi_message_init_with_transfers(&msg, tx, 1);
->  	ret =3D spi_sync(ad7949_adc->spi, &msg);
->=20
-> @@ -105,14 +138,12 @@ static int ad7949_spi_read_channel(struct
-> ad7949_adc_chip *ad7949_adc, int *val,
->  {
->  	int ret;
->  	int i;
-> -	int bits_per_word =3D ad7949_adc->resolution;
-> -	int mask =3D GENMASK(ad7949_adc->resolution - 1, 0);
->  	struct spi_message msg;
->  	struct spi_transfer tx[] =3D {
->  		{
->  			.rx_buf =3D &ad7949_adc->buffer,
->  			.len =3D 2,
-> -			.bits_per_word =3D bits_per_word,
-> +			.bits_per_word =3D ad7949_adc->bits_per_word,
->  		},
->  	};
->=20
-> @@ -147,7 +178,24 @@ static int ad7949_spi_read_channel(struct
-> ad7949_adc_chip *ad7949_adc, int *val,
->=20
->  	ad7949_adc->current_channel =3D channel;
->=20
-> -	*val =3D ad7949_adc->buffer & mask;
-> +	switch (ad7949_adc->bits_per_word) {
-> +	case 16:
-> +		*val =3D ad7949_adc->buffer;
-> +		/* Shift-out padding bits */
-> +		if (ad7949_adc->resolution =3D=3D 14)
-> +			*val =3D *val >> 2;
-> +		break;
-> +	case 14:
-> +		*val =3D ad7949_adc->buffer & GENMASK(13, 0);
-> +		break;
-> +	case 8:
-> +		/* Convert byte array to u16, MSB first */
-> +		*val =3D (ad7949_adc->buf8[0] << 8) | ad7949_adc-
-> >buf8[1];
-> +		/* Shift-out padding bits */
-> +		if (ad7949_adc->resolution =3D=3D 14)
-> +			*val =3D *val >> 2;
-> +		break;
-> +	}
->=20
->  	return 0;
->  }
-> @@ -280,6 +328,7 @@ static int ad7949_spi_probe(struct spi_device
+>  	struct device *dev =3D &spi->dev;
+> +	struct device_node *np =3D dev->of_node;
+>  	const struct ad7949_adc_spec *spec;
+>  	struct ad7949_adc_chip *ad7949_adc;
+>  	struct iio_dev *indio_dev;
+> @@ -315,6 +362,7 @@ static int ad7949_spi_probe(struct spi_device
 > *spi)
->  	spec =3D &ad7949_adc_spec[spi_get_device_id(spi)-
-> >driver_data];
->  	indio_dev->num_channels =3D spec->num_channels;
->  	ad7949_adc->resolution =3D spec->resolution;
-> +	ad7949_set_bits_per_word(ad7949_adc);
+>  		return -ENOMEM;
+>  	}
 >=20
->  	ad7949_adc->vref =3D devm_regulator_get(dev, "vref");
->  	if (IS_ERR(ad7949_adc->vref)) {
+> +	indio_dev->dev.of_node =3D np;
+
+Why doing this? The IIO core will do it for us at register time.
+
+>  	indio_dev->info =3D &ad7949_spi_info;
+>  	indio_dev->name =3D spi_get_device_id(spi)->name;
+>  	indio_dev->modes =3D INDIO_DIRECT_MODE;
+> @@ -330,16 +378,22 @@ static int ad7949_spi_probe(struct spi_device
+> *spi)
+>  	ad7949_adc->resolution =3D spec->resolution;
+>  	ad7949_set_bits_per_word(ad7949_adc);
+>=20
+> -	ad7949_adc->vref =3D devm_regulator_get(dev, "vref");
+> -	if (IS_ERR(ad7949_adc->vref)) {
+> -		dev_err(dev, "fail to request regulator\n");
+> -		return PTR_ERR(ad7949_adc->vref);
+> -	}
+> +	/* Set default devicetree parameters */
+> +	ad7949_adc->refsel =3D AD7949_REF_EXT_BUF;
+> +	of_property_read_u32(np, "adi,reference-select",
+> &ad7949_adc->refsel);
+
+In case the property is given, we should make sure we get a valid
+value and error out if not...
+
+- Nuno S=E1
+> -	ret =3D regulator_enable(ad7949_adc->vref);
+> -	if (ret < 0) {
+> -		dev_err(dev, "fail to enable regulator\n");
+> -		return ret;
+> +	if (ad7949_adc->refsel & AD7949_CFG_VAL_REF_EXTERNAL) {
+> +		ad7949_adc->vref =3D devm_regulator_get(dev, "vref");
+> +		if (IS_ERR(ad7949_adc->vref)) {
+> +			dev_err(dev, "fail to request regulator\n");
+> +			return PTR_ERR(ad7949_adc->vref);
+> +		}
+> +
+> +		ret =3D regulator_enable(ad7949_adc->vref);
+> +		if (ret < 0) {
+> +			dev_err(dev, "fail to enable regulator\n");
+> +			return ret;
+> +		}
+>  	}
+>=20
+>  	mutex_init(&ad7949_adc->lock);
 > --
 > 2.30.1.489.g328c10930387
 

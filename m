@@ -2,172 +2,163 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE3A03C277D
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Jul 2021 18:24:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C80D23C278C
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Jul 2021 18:29:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229487AbhGIQ1J (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 9 Jul 2021 12:27:09 -0400
-Received: from mail-eopbgr00106.outbound.protection.outlook.com ([40.107.0.106]:1248
-        "EHLO EUR02-AM5-obe.outbound.protection.outlook.com"
+        id S229546AbhGIQcE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 9 Jul 2021 12:32:04 -0400
+Received: from mail-db8eur05on2111.outbound.protection.outlook.com ([40.107.20.111]:50657
+        "EHLO EUR05-DB8-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229459AbhGIQ1I (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 9 Jul 2021 12:27:08 -0400
+        id S229499AbhGIQcE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 9 Jul 2021 12:32:04 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BqnrhV+UhSOo3ziBqSPkd1AQ+ZtoJ9kazjXn/x9Eg/3LEGt3zW5lwOcoVHgEhkpGiwd0ttif4YG8w09FyoS1wP/IHL21O3OpcKHHmlGc8NKS23yrwaAnLwzcKPj+FZjzaN20z5dL6X+EwQhVJEPaom/jOWQwpcLnCvhQtLGKT9u9ThzIgijA2ja1fgH5MxeUQ2O6Fp3rRanTOjf/zrG/iWT1+G9hBqVTvBpiec78JlSPF5XlXWhbZDYAs1gFiY4tqdLW3byLiKfMP9hlMySarfQSSFAQtzjIFmv0PojHEXZxpqrUH24SWA3j8xSzuujjacUPnMifFAQzy1Kr09yNkA==
+ b=AFnHC+yI6x8NPs8af/Z4rncatKZcUrTUd6V1MlhMeIMrvmkJBdWNy4/X5i/nl4/yOwSXCmmbH1cr/+hB+3jKTrOq9M6cf/ouespnM4z+XJb1wPWZMBNDO7Qegi1Bb/AvKAn2mbyWrt7pBbBe79M9c2xhyqzBuxUJ/vQk/VdgGMzJi3BohLZfbuxkHD1PJxvO3t8wEhN0M7JYjnrt9rebfwT2q1R8502Rr85TNC8nAiyAfaCIUXbcQoxEzE/jC0eSOkF+spRHYszudNgfJTrye6q6q5nMPsDO98WKsKX7irpLcjjGtk5sl8hE6EpumJ97l/KrQ6y+ZzYmLbFzQJB5/g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EEz8GlVXGOfxqhxm6e/QkFiDH2qJ9OWMp5VYbZ6fHOU=;
- b=X21460WB09JeDnWV3ME7Zw+AVhjfvkzsIaARVz/Ol6tl8epfNAMQRw9FT6TFNHg6zyHRJbSyG6MbtWcaeD3q5+PiaAJS5CTEgDzK6v/D4H8+Sk8gtNSE4QbcA+ICpyzl0UsT29tchGEncgWAdPZdIUfd3pjVZdVR7UwegVRBwvBe4i7bkK9kEIL4A9aFqdKxTyqwc5Kh+A9sUV2dhUvAd35MBrtAPgLQ0b8vtnLvljkxjNNwmhoBamZvSxisMdzIjSVqyusSiqY8kOikMPjjAH9gQdqWug5KuhnLn4gI1RKSlrExAgtEBt3eXCPwyw9JAkIr9n1M/zwmNI82MSE5Vw==
+ bh=ejALi1zsewUDtHuma1NuX/spxNrbNsw4vrH5Yrl8HBI=;
+ b=L9ctXWXX70TmuxI91bvvq8YU48UGd3mVyAHkQF/6Jnj9kOT820Y4U7PynfO7SZE99KD9FM+yLTXyrIZA46asiCMRhoKIEMpCjhtleoyI5UG1QsT4VSjw1fqmSLqAFI2b/jtRpScx5TG5pSECWZ3/E1WjnRGKgCai2U0yfVAdHw310Ma22VfvZ3qAROHugbHDCzUnVHewvI6Qke4BDUvEqi0ofhbYEBlp+oe6kmdBDDSV7soaqbMAMDuHSCZW9N+pWm7E7VVwMjD9Hi5APAb6fge7ZyTRhbSFush1JeLPYV4j/CU5Zmw/Tv9YULYw7BhrAsmalAATUHN4bIwgnUsV7w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=axentia.se; dmarc=pass action=none header.from=axentia.se;
  dkim=pass header.d=axentia.se; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axentia.se;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EEz8GlVXGOfxqhxm6e/QkFiDH2qJ9OWMp5VYbZ6fHOU=;
- b=cjhbGOP3CbIMeH8WNu9IgEnZWbBDhK85LLWf8jAKZCrz3q3/L6kqOxwX9VbGC/buROcM0Iv9kr+JLu3R82NheY2uqb9N/dIY2Jx8lsgnZ/4nsboUU+APRHugzHCiYB6k81AcnxDGCmWJZ4rqhpYD6SY62TW/i5UKgeRHtY3gzLI=
+ bh=ejALi1zsewUDtHuma1NuX/spxNrbNsw4vrH5Yrl8HBI=;
+ b=JBN8+EHbk+ZFdk0XZG6dQUTS1IHZX6qauIfU61+0eJO5AJccVNhQBq8oBWQIzA3X1PSTO6XS5SCTe/358PsLGCZi9dWbxLgvaMdC/QV2BfakaVy9XqO7B7CT64M5JkCqfZc+IjBdf3O6P//t//+GcpOdavPIk4rlS2KomWtV30U=
 Authentication-Results: kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=none action=none header.from=axentia.se;
 Received: from DB8PR02MB5482.eurprd02.prod.outlook.com (2603:10a6:10:eb::29)
- by DB7PR02MB3818.eurprd02.prod.outlook.com (2603:10a6:5:b::24) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4308.22; Fri, 9 Jul 2021 16:24:22 +0000
+ by DB9PR02MB6571.eurprd02.prod.outlook.com (2603:10a6:10:210::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.19; Fri, 9 Jul
+ 2021 16:29:18 +0000
 Received: from DB8PR02MB5482.eurprd02.prod.outlook.com
  ([fe80::14ca:a41:2218:3578]) by DB8PR02MB5482.eurprd02.prod.outlook.com
  ([fe80::14ca:a41:2218:3578%6]) with mapi id 15.20.4287.023; Fri, 9 Jul 2021
- 16:24:22 +0000
-Subject: Re: [PATCH v4 04/10] iio: afe: rescale: reduce risk of integer
- overflow
+ 16:29:18 +0000
+Subject: Re: [PATCH v4 05/10] iio: afe: rescale: add INT_PLUS_{MICRO,NANO}
+ support
 To:     Liam Beguin <liambeguin@gmail.com>, jic23@kernel.org,
         lars@metafoo.de, pmeerw@pmeerw.net
 Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org, robh+dt@kernel.org
 References: <20210706160942.3181474-1-liambeguin@gmail.com>
- <20210706160942.3181474-5-liambeguin@gmail.com>
+ <20210706160942.3181474-6-liambeguin@gmail.com>
 From:   Peter Rosin <peda@axentia.se>
 Organization: Axentia Technologies AB
-Message-ID: <13409f37-ecd4-5afb-e1ca-59f1f1f805b8@axentia.se>
-Date:   Fri, 9 Jul 2021 18:24:20 +0200
+Message-ID: <4be51a74-9913-291a-9dac-422ac23da3ea@axentia.se>
+Date:   Fri, 9 Jul 2021 18:29:15 +0200
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
-In-Reply-To: <20210706160942.3181474-5-liambeguin@gmail.com>
+In-Reply-To: <20210706160942.3181474-6-liambeguin@gmail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: sv-SE
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AM6P191CA0038.EURP191.PROD.OUTLOOK.COM
- (2603:10a6:209:7f::15) To DB8PR02MB5482.eurprd02.prod.outlook.com
+X-ClientProxiedBy: HE1PR09CA0056.eurprd09.prod.outlook.com
+ (2603:10a6:7:3c::24) To DB8PR02MB5482.eurprd02.prod.outlook.com
  (2603:10a6:10:eb::29)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.13.3] (85.229.94.233) by AM6P191CA0038.EURP191.PROD.OUTLOOK.COM (2603:10a6:209:7f::15) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.20 via Frontend Transport; Fri, 9 Jul 2021 16:24:21 +0000
+Received: from [192.168.13.3] (85.229.94.233) by HE1PR09CA0056.eurprd09.prod.outlook.com (2603:10a6:7:3c::24) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.19 via Frontend Transport; Fri, 9 Jul 2021 16:29:17 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 87b3e6ab-e711-4875-1b0a-08d942f60267
-X-MS-TrafficTypeDiagnostic: DB7PR02MB3818:
-X-Microsoft-Antispam-PRVS: <DB7PR02MB3818650B0BD14B8325C3CACABC189@DB7PR02MB3818.eurprd02.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:5236;
+X-MS-Office365-Filtering-Correlation-Id: cd6abad5-5ed5-454e-240d-08d942f6b33d
+X-MS-TrafficTypeDiagnostic: DB9PR02MB6571:
+X-Microsoft-Antispam-PRVS: <DB9PR02MB6571F5C1042C69BC3C70DDD0BC189@DB9PR02MB6571.eurprd02.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:3513;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: PZqB1svluEiGR2u87WhG4g+eKUdu5Ex6XMUGN8I2PrQ9YUiM6YTEkJ1+MzP7d2MNxGUkaZtZHidZ7RjTkxjd5f7wNZ1QV0iPJ1uWtSDWkSpVpg6IgSmohcb30RcqqFFsP0+Dd6eL2+D4XQb+e7RBh43ISC4JaVxypGsD4BPH5+t5QJ2e4XcLTfPwP/0MWaRy4yGnVuElEqEZgSot2x1nHIpE5mZFlbCYPibnFWMgITaBO9Nk6oM1/Q5fUI5qhsDU4SXepJjr7LBodzuoEdu6Umzm1OPnTIgRCAz+B0lUQO8iqINLRcGnW1b+6gZhrRLFconKINBY7W6XVI6pRD/C9hxmqpoZdrHEbAEMXPh5IwEuBsKjVNA/5TYumVoeOOvbcaFoGyLSW220gkXWFN0TxqBIM0uqRAR/GD7uE8aa78lofBR3XHa+TEsT5Jo8goGEPhBhwjoA1EqUHwQkO+6TR0zGr4P8PKRsf/P7fx3/RoT1FXM1hq/aNgdquqo66C4xCTdqa/mLDDCG6fK4BOb7wXVqZ9+gbYOIUO9MZ5EMaf9Okf1R3rPblQm94faQa3pkuzBg+9qCQ7wt3eW+vugjG34GipGNZQ+konwvm4Nm1HJcp/eMyJtyt6QEvSVuIa4Z3w6zi/900fw+Wn61o86+n5e2zdQ2/IXBOjYovlkuj7pxEgfRXYbIMRtkJO9oeXvJWYpVvuMyv1DFg+maMoeEtrRt6xoa0mwr9otdoZ7JD9g=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR02MB5482.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(136003)(396003)(376002)(39830400003)(346002)(366004)(31686004)(6486002)(86362001)(66946007)(316002)(26005)(31696002)(5660300002)(16576012)(478600001)(2906002)(36916002)(36756003)(38100700002)(53546011)(8676002)(186003)(66476007)(66556008)(4326008)(8936002)(83380400001)(2616005)(956004)(45980500001)(43740500002);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: sw2Rf6aDccxYT1a7/kC9BrNIrbdD+eE8CPeduz3ZYl9G1yuFJQi3jvJXEYGVY10lVQJ8fHrvm8Cq/nhAUqHA63VV6niVsxgxZO6+uv5iofD/aD8xtRdMEaduwxSNiBs1K8tEDnJPqUjVZkxt3ryq2mVbtMYHFZ42tEVZIt3nBSW/UWuMornNojkWJRTuvIcjgdHbjDUc9r1sUMjGpWRzaj3iUqvEjE/zKB7M/mxJDdGlvhGa9UGM8yx5VmNT54JExabDZH+hMR3yo+fe3R8ga33N0U66sKNAfr9xHtKHtppb9XApJllhMqOnHvKgyCfqe8vBdD43BBryoCywgDuw1jExHPnQDX9wyPLjXODWqtungh44uAW8dEYAKk3X9Iv4xA3d9CiBoIjOjllT9MkO1ZVqBM/ZqXeEP6GmapfYU8vDvWAIEcepv/rUdqGUni8s/w5vr6R1FRuAiJjBPjyvForlvbzlP8aB6r6mK/5OEXzY7X+eG/NiY13vNfjPsMjH1r1/550IjsPnPQ0RcQKuIoGTNhKN9B9+aKbNJMtgqKxFDgyK5RzAlMWYYi0dz5gaXHvva/4g+LvoqyzqWnQJDwk608j9kqELfvuf0AuFvtxQaEhJUk3Btg8e/fQHbfE1HwoShs52avQFtreRrcv/8Mub5llzxJ/L7MjsTsYBkls6z0MOGgf1Nwwvr1gJFi4y6SDqSnC/mvoKmu0IdP/mxqWpR5LvkeaL2upBIZ5Vq3g=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR02MB5482.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(376002)(346002)(396003)(366004)(136003)(39830400003)(2616005)(53546011)(8936002)(956004)(31696002)(186003)(5660300002)(8676002)(4326008)(86362001)(36916002)(38100700002)(478600001)(316002)(16576012)(66476007)(66556008)(66946007)(6486002)(31686004)(26005)(36756003)(2906002)(43740500002)(45980500001);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cUpDT2taUkRra3RoZTMzNVFOYkdja0g3a3BhUHIydVJYZ0FqbGd4RUtPNVYx?=
- =?utf-8?B?Q0JoSytxS0pkRDEwVHZmS1RrUzBySVlyRFFrYkVlbWRvblJjdGhXSlNXck5i?=
- =?utf-8?B?N0p3V0hYemlSSUd1TDBVVFRRcUtYa0tZYXNVWUMycTJwQnFHYlhHVllDS0RP?=
- =?utf-8?B?R1lrM0VjWmliUUZqQlVzcWI5UEJRRVdDUXJMS0lwdkRvUVZJN241MWZWeWJX?=
- =?utf-8?B?MFdOV1VQbTBmWEZmbVdKT1JjbGoxcmM2aTNPMlFLZEZDOWF1c3hCRVk4ZTRH?=
- =?utf-8?B?aW05NlJ2RFd1TjJVRm80dkVUQ3dOTzMwYnp1b0R3aHg5R3lzNTh0cERtQ2Ey?=
- =?utf-8?B?UUM5MjhEcU9WSHgyOVViN3hRM1dZdjk0ZlpyT090MnM3dWdnYmpZQm8xZnNo?=
- =?utf-8?B?V29QZmRvOTcwY3F2WFVQWTlhZVFtOEg0YjJ4NExpVkZoNTU0M2ltekdJWDNr?=
- =?utf-8?B?WGJBWjZUekE4UVlkeVBPa25ZdkNKWFFTbGVOOEhiQmxyR2tjYjVuMzV6WUxp?=
- =?utf-8?B?RU80THNaUnRMZW94YWFUNjVLZTZoWTZCeGJEYkhxR3ZrbmlhbUM1dzNJOW1t?=
- =?utf-8?B?V1VoMTAzaW5ka0F5c2lIT0oxVVdmTWQ2VWJyd0lkcWJ1MmorZ3dLdHhrVVVS?=
- =?utf-8?B?QU9OUDBoMUlFM1hNUitEOE1BZVYycE01OTBGZlAxQUJyRGZuYmpEc0VPczV0?=
- =?utf-8?B?dXBKZnAxYTZUaUQzQ1QxODloOTlLazR6Vmx5ckgvMHl4MXBDTW13VGNUTFBO?=
- =?utf-8?B?OEJYbm96TFh2Z3gxdjQvb2paYTQ1QTE2Q29UaFd2by9GSmRTSGlMV1ltMG4z?=
- =?utf-8?B?Qm9jaWwrMWNTcWl1SExwcFczM2ZwY3l5cUNiWlhVQlR3NzFRekJiZTRqY3Mv?=
- =?utf-8?B?aUNFSE4yOTY1TytSRVpTZkFxWHJaSGQ4MDRvcENNa2RDL2huVXQ1dHFtOHZ6?=
- =?utf-8?B?SWtGYUsvTTZCcmhYTFgxYXprN0R6ZzRFRlNDaytYL2xhcGlOTlQ3N1RvUy9O?=
- =?utf-8?B?SmRvZXNNcjNYMnR1TXFLY1d3OGV4bDRZMXlZU0RZeWR0N3pSMjZqRmdjQXRQ?=
- =?utf-8?B?Q0Vnc3htOS9DeU8yWlI4dUdBR2NEeEdCVFQ2ZVRuenFMMmF1OGE5c1VGR1lE?=
- =?utf-8?B?SmNxbFMzYUxzZEhzc3Exc3FHWXdQWEpFSHd6MUJ6eXVpTFQrK3k5NVBrZkgx?=
- =?utf-8?B?SDdGRzBHck5DRVpSRG5PN0NDYXRwMitrTW0zOHF1TWNOY2MxZkc0L2MvM0Za?=
- =?utf-8?B?Z3Z6VlgvUmM4UWx2WW84dlNLMHREK1VqQkQ3ZS90QlBsNWphVHdaOHNvSXQ5?=
- =?utf-8?B?K1JnY08rY253SnRXTzA0cUtXcVN6VTNLNEJGVHIwbW16Mkd4dERwZ1M1VTZh?=
- =?utf-8?B?bzExUG52Q0QvdjZ4U3gvMVBCd0xVR2RYaENzc2ZtOTVNZFZoUzlPYy9jNjdY?=
- =?utf-8?B?MXpJUHh3S2tVeit6dWtJcDZxb1JFYk80OXphR3RFeEN0WmhscUZpVkt6ZytZ?=
- =?utf-8?B?a0ZWaW1nRDJ4WkxTN2I1Y2xJaGI1NzkvZE5sRXhybktIb3Y1cTNyTHNmT2xH?=
- =?utf-8?B?QkNjWTNTY1RkMlVPV3VQRnBmRmtBK05BNHRTb1k1RkY1S1p1aytMRGpES2E3?=
- =?utf-8?B?WkwvL2xKN21iMzBENGUwa1A2UURWT011QkxjVFh3SzJTWE8xRGhzeVJtWkMz?=
- =?utf-8?B?Q1ZrK2J2NkU0SmNYQWZTSDluTEE4VGMyOGRPR1hialN5ci93MFJhckZCY2J4?=
- =?utf-8?Q?Buvf86fhB55zb+55OMBYjeasnbBglHx/zBXZVd4?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eVhRaVI2Z2w2eWpKV1dZRnlTYVF1WXFXS21ZOXU1R3FUbUxvbU96R2JmY1h5?=
+ =?utf-8?B?U3NRQ01xN0pmQmNxcHNJenptamFSM1VoVFlqYWJ3a2dIQlp4RFB6N3BaQUlS?=
+ =?utf-8?B?REZtYTNEN0FyQ1BQcncxejNzek1MK01aYkxpaENBVjhIMG5xUElRSVlZNUt1?=
+ =?utf-8?B?eEdDcmFuQkZYSmFTUEg4TUtEclB3T1lRdmZ3S0xNdlVsbTNGcjdLYW5iNWFD?=
+ =?utf-8?B?RkVDeXRwMCtYVTF2a3JveHBpYTFHcXFuNzA3RFYzWFVLWm1UTkl2UkJMS2NO?=
+ =?utf-8?B?NUJNZG40UGJROXBnOGx6OGh1aUFTQms2S0hJNzVYcXFJYnFXclpVOXBMd2M3?=
+ =?utf-8?B?dDlETytRYWRZWGhlN3lmR3o1MmRaNThRMEtnUjRtekNKQ3hsSUo4MHhpM2RH?=
+ =?utf-8?B?SGxTcTJhbjFZQndsWCtINHd1WHFGbUNJdHJ0ZUJCd1ZBc3NKNWl4M0w1cCtP?=
+ =?utf-8?B?bGFDSFJ6R1U1V1R0MHFmNHZSM1BGUzgxOUlmbGR4YWRZT0x5MzNNYjUyb2hX?=
+ =?utf-8?B?bkpwcWw2dXlCOXRWZFJOOUZyTU5mQnFFWG1uMlVWVGNtb1FEaXRCN0hyTVpv?=
+ =?utf-8?B?cFhLVERqbDhsMVgvdzEyV2JjeVVRY0JVbk9YSWNWYjZScDRoSEJRQlJZY0Rq?=
+ =?utf-8?B?NUdWSVpxS1VIcy9NaWZpUDM0aE9LblYrMm9qNzlpUUMxZnB5emxBSFh2ZkZq?=
+ =?utf-8?B?c0poeXkwT0hnTjk1V1FFYndSREFOdnc2S0xYSFRGOUc0aGZRTFN6cWQyaU81?=
+ =?utf-8?B?cjljNDhnVmZYbU5tdnZleVJXWWJpdjVFL1Erd1pvemJzL3BwM2x2TFljdDN1?=
+ =?utf-8?B?ejJFUUQ5S1VZTVYvWWdCRk0zdlVmZWRLa2FQbjlwTHZzWDhVZytlcUYwdEkz?=
+ =?utf-8?B?NVBocUJ4aS85bzhPSGxyZGRsUVRjUjh4VTVoSlF3K0VrSzE3R2lRTmJiWXlL?=
+ =?utf-8?B?cXc2enVDZGsrRzR5RjFzS2thNzV4bGlHS3JORUVPeDgyOUpGV0p2NGwwZkFH?=
+ =?utf-8?B?aWpZZ3dFcStmOHZXRXNYV2hkQTZiVDQwTUltZkJUd0pTT3A2QkVFVHhrVkRO?=
+ =?utf-8?B?eFJ4d1FuOG45L2M2MHBDRlRrZG1CTkZUWi9keEFXUC94VFBGWkx3SUl5Nldj?=
+ =?utf-8?B?RXBRNXZIU0IvTUN0bzQveWFxOWdUTDlJTWV1cWY0WXZock5PTmtjU29PMk9m?=
+ =?utf-8?B?ditCZEY0WDFyTnE4UFNnV1FzcDJFTE8vK1R4d2I4MGdHbmRXNDFJaEJTdGww?=
+ =?utf-8?B?b1o1dEJpSXpLdEhoSy91MjFlK3N1cW9YK0k4Z01vMnNwclV3R2tqakp4cHpI?=
+ =?utf-8?B?cDlHMGpYYzZpMHFJN09nV2hhc0QxVE14R1F5QkJQd2RSVEpTRmU1V1NxcmMr?=
+ =?utf-8?B?bzY0SVhwdWo1Z210cWhwczdvUmUxNVk3UjVQNkpycVM0bTd1SmRYQ2xRZnJv?=
+ =?utf-8?B?dk5aa013TnFmK29iQ0pMcTM5dzJaUndZTkQxWlR1MTBXb01mMXdWMXE4Q2Vj?=
+ =?utf-8?B?U29EM0JzbFZ6K0xnd3RWbTJpYzYwTCtMRVBCbWNHeENZTXlLSEdncHlCOEw5?=
+ =?utf-8?B?enl4R1AvdFhHVXVPOGJvajh5Q3VJVGJ6OXVaV0liRE14d2wwYWJxQjBFZFV5?=
+ =?utf-8?B?SlJJa2RCL2hKT09LMUw2SGJPcGJyakxJMWZmQ3VpRVQwYkxTTHVCdHZ3SUds?=
+ =?utf-8?B?MkFROFZ4WlhGTXVUckkwMGFLTUhNL0wweEh6aVE2M0JqMnRBc2hjaXIxSStj?=
+ =?utf-8?Q?/Sn0u/VyUu++OexMDkAnOZZiQHIB9qo92uUZCKj?=
 X-OriginatorOrg: axentia.se
-X-MS-Exchange-CrossTenant-Network-Message-Id: 87b3e6ab-e711-4875-1b0a-08d942f60267
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd6abad5-5ed5-454e-240d-08d942f6b33d
 X-MS-Exchange-CrossTenant-AuthSource: DB8PR02MB5482.eurprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2021 16:24:22.0914
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2021 16:29:18.7101
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4ee68585-03e1-4785-942a-df9c1871a234
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QOn9mtNAXHMu/4AJy+cqJpnHFdMdC2h5m5EoZUJNDet0S/43+qQ4RwjiyRdeO2Og
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR02MB3818
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3tKxWXzj9dFr1K3zDSWjjlGafoVmeHm4Q2pnUK8N0EXOjEb59L1aQagcB6Yc0vxi
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR02MB6571
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
+
 On 2021-07-06 18:09, Liam Beguin wrote:
 > From: Liam Beguin <lvb@xiphos.com>
 > 
-> Reduce the risk of integer overflow by doing the scale calculation with
-> 64bit integers and looking for a Greatest Common Divider for both parts
-> of the fractional value.
+> Add IIO_VAL_INT_PLUS_{NANO,MICRO} scaling support.
+> Scale the integer part and the decimal parts individually and keep the
+> original scaling type.
 > 
 > Signed-off-by: Liam Beguin <lvb@xiphos.com>
 > ---
->  drivers/iio/afe/iio-rescale.c | 12 +++++++++---
->  1 file changed, 9 insertions(+), 3 deletions(-)
+>  drivers/iio/afe/iio-rescale.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 > 
 > diff --git a/drivers/iio/afe/iio-rescale.c b/drivers/iio/afe/iio-rescale.c
-> index 774eb3044edd..ba3bdcc69b16 100644
+> index ba3bdcc69b16..1d0e24145d87 100644
 > --- a/drivers/iio/afe/iio-rescale.c
 > +++ b/drivers/iio/afe/iio-rescale.c
-> @@ -39,7 +39,8 @@ static int rescale_read_raw(struct iio_dev *indio_dev,
->  			    int *val, int *val2, long mask)
->  {
->  	struct rescale *rescale = iio_priv(indio_dev);
-> -	unsigned long long tmp;
-> +	s64 tmp, tmp2;
-> +	u32 factor;
->  	int ret;
->  
->  	switch (mask) {
-> @@ -67,8 +68,13 @@ static int rescale_read_raw(struct iio_dev *indio_dev,
->  		}
->  		switch (ret) {
->  		case IIO_VAL_FRACTIONAL:
-> -			*val *= rescale->numerator;
-> -			*val2 *= rescale->denominator;
+> @@ -89,7 +89,15 @@ static int rescale_read_raw(struct iio_dev *indio_dev,
+>  			do_div(tmp, 1000000000LL);
+>  			*val = tmp;
+>  			return ret;
+> +		case IIO_VAL_INT_PLUS_NANO:
+> +		case IIO_VAL_INT_PLUS_MICRO:
 > +			tmp = (s64)*val * rescale->numerator;
-> +			tmp2 = (s64)*val2 * rescale->denominator;
-> +			factor = gcd(tmp, tmp2);
+> +			*val = div_s64(tmp, rescale->denominator);
+> +			tmp = (s64)*val2 * rescale->numerator;
+> +			*val2 = div_s64(tmp, rescale->denominator);
 
 Hi!
 
-gcd() isn't exactly free. I do not think it is suitable to call it for each
-and every value. So, if you really need it, then it should only be used
-when there is an actual overflow (or if there is a high risk if that's
-somehow easier).
+You are losing precision, and you are not mormalising after the calculation.
+I think it's better to not even attempt this given that the results can be
+really poor.
 
 Cheers,
 Peter
 
-> +			do_div(tmp, factor);
-> +			*val = tmp;
-> +			do_div(tmp2, factor);
-> +			*val2 = tmp2;
->  			return ret;
->  		case IIO_VAL_INT:
->  			*val *= rescale->numerator;
+> +			return ret;
+>  		default:
+> +			dev_err(&indio_dev->dev, "unsupported type %d\n", ret);
+>  			return -EOPNOTSUPP;
+>  		}
+>  	default:
 > 

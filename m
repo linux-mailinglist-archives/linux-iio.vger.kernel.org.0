@@ -2,291 +2,183 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 079403C263F
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Jul 2021 16:49:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F18BA3C271C
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Jul 2021 17:59:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232064AbhGIOv7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 9 Jul 2021 10:51:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36716 "EHLO
+        id S232345AbhGIQBx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 9 Jul 2021 12:01:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232023AbhGIOv7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 9 Jul 2021 10:51:59 -0400
-Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E4E5C0613DD;
-        Fri,  9 Jul 2021 07:49:14 -0700 (PDT)
-Received: by mail-qv1-xf32.google.com with SMTP id j14so4626742qvu.6;
-        Fri, 09 Jul 2021 07:49:14 -0700 (PDT)
+        with ESMTP id S231976AbhGIQBx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 9 Jul 2021 12:01:53 -0400
+Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84CE1C0613DD;
+        Fri,  9 Jul 2021 08:59:08 -0700 (PDT)
+Received: by mail-qk1-x72d.google.com with SMTP id a6so9777883qka.4;
+        Fri, 09 Jul 2021 08:59:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:content-transfer-encoding:date:message-id:subject:from
-         :to:cc:references:in-reply-to;
-        bh=S5FnNN/ilVQc8VhlQdbYMm8szHMxHYg08Uof2Apu8X0=;
-        b=nV/UEXDxaHzCi2A8P9gqYbbuD1ZfphVOfR0HBzimNZf+RgYC8z3zac+7d1ZOmPeLJq
-         KetdSQ7Q+Lorre4mGg/a/4K7jDO4z408tc5SxzpgHh0uyij0VBDzUbcMDMyHTfOlojeY
-         LePmlqEd5sKoPc3Pzp9v1VzbDQincSz8q0Ny4IsCGDVtAdeeEvn59Qx6+O2rdaWbKgSz
-         exUvJXiXd2QPo7SlXgdNPzJWNrsvK5yBXL0GkLCvbdcW/qNZJcUrK5yxEa3WH3qFTLOm
-         iFB9ja23Jqybk3xhE6N+RmrYsm28UDOF9wmWbM0RyrkdUzFxI4ynDlp88JrX+qMVuZk4
-         jNyQ==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=tK+I5RHS1YygozWxqvUSHNwquD7VoFu/LPzuY2ZG3Ic=;
+        b=p9psLWGc2dCEc1CKGSZRT9uQF6DBiehnWK/QQlPmgaWmRgBtDdsVfFuwwG0/10up4z
+         NYvWIwIkBia/bIho4rp1/+JXf3lW3MSl6GiCbh98oY+7luxhfeUKr+M7Ghyz2WAaU7uw
+         Y233YXKRXvmuMUe3aNK0rlcsb7V/awZUG6BC9JZFuvo1/HYI6RN8/tyOMjWjWltAsjkD
+         TBCAjwG2qHV5ygZyiBtzfCCFDnyPnLvWhYDYrlyvE3iQrhBWS2sFPKdEmTMosfb5dMBd
+         INiNI1rr7ghyyLSXfazjDUy1AmyxUiZA+Blxu+TddvY0PPIK/m1g5QzvLOZb5t+iOJTv
+         FrEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:content-transfer-encoding:date
-         :message-id:subject:from:to:cc:references:in-reply-to;
-        bh=S5FnNN/ilVQc8VhlQdbYMm8szHMxHYg08Uof2Apu8X0=;
-        b=FzxZzcYgi+WWE4NVUGa8+AdS5XNo8s+bp0tKyyMTMOwilO+qKAUzzIFAFfItLkxIk3
-         4mlXSX7IEUOxyYshAxNZNb3tApS1+2nM4upbIqnaEar+3LRx4cVl/yx+zTtR3jLV3E/y
-         zipxuezD5dzPS3qfuqOaGNr2Ra+NvtD+HAI2oy7ka9BpPCKxecrZpPU5vXzBzM6v/f0N
-         bOJ7DGLXdlKuHwJDlLjBhXgpDGQpmxNAFrIaPd0BY4c6x4VpDpa31jiJB56bYVNLznBE
-         yuiV5qb9+gGwaDbcUN3NzHYzazeIx3ayktfSGeFUC1I4V9OoGNWawmaZM1czVBtv8rO6
-         Q8Ew==
-X-Gm-Message-State: AOAM531QK6hf1lfKo7FFeb+UYRyfJpdlhXZuIUCEj80s3WUQIf/iVGU6
-        sj/6Y3F/PXU2il34UkbVbt4=
-X-Google-Smtp-Source: ABdhPJwp8A8F/KqcCE3EpZc6hQ5UuF4QCOeJfrKSZpSKK2WcOFlQ7g7uz1JaV7LI5drRMtBNiJ+ARw==
-X-Received: by 2002:a05:6214:2a4a:: with SMTP id jf10mr36869107qvb.13.1625842153816;
-        Fri, 09 Jul 2021 07:49:13 -0700 (PDT)
-Received: from localhost (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
-        by smtp.gmail.com with ESMTPSA id w2sm2550197qkm.65.2021.07.09.07.49.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Jul 2021 07:49:13 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Fri, 09 Jul 2021 10:49:12 -0400
-Message-Id: <CCOOXXRLLCT3.1HI9ZOJ2UT9W1@shaak>
-Subject: RE: [PATCH v1 3/4] iio: adc: ad7949: add support for internal vref
-From:   "Liam Beguin" <liambeguin@gmail.com>
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "charles-antoine.couret@essensium.com" 
-        <charles-antoine.couret@essensium.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>
-References: <20210708235618.1541335-1-liambeguin@gmail.com>
- <20210708235618.1541335-4-liambeguin@gmail.com>
- <PH0PR03MB636680DD9F9530464FEBB7C399189@PH0PR03MB6366.namprd03.prod.outlook.com>
-In-Reply-To: <PH0PR03MB636680DD9F9530464FEBB7C399189@PH0PR03MB6366.namprd03.prod.outlook.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=tK+I5RHS1YygozWxqvUSHNwquD7VoFu/LPzuY2ZG3Ic=;
+        b=SPr6lgIfoSUZxwyhWdoFZAqajYhgdIQOtNYGjatmt73YmwSetKvrouT/w9NGPpfD9F
+         II11RFZ2wX3vqXXbBAo5DePqg+7c0pE3Cwkh3Nocub51+ObuPY/SJGAsC6lLz5vaCx1d
+         V42VIV0Soc8xlcXA1FK45cjg7zrWJxhsf9o0BvUGEzqgl1F7C05/ft3rn0JBzfGtMnjE
+         F34iBnFZVUg/LJaO/rQzP5DpT17Ig8wUtoTHWcoIEepEQVfRt0pncBGkAgNMAEPn9CAV
+         /FQE/UkyNBNB7Rrs1x7uN3SUUdj+k3+Fk42ERrhKDovs3DtvR7NwJIRD4IKLqSVCj0YY
+         LGiQ==
+X-Gm-Message-State: AOAM530U/6hum4og+5khy5ZqJ3fyTDhDg3Co1Ay17UakLfoABlvALs31
+        9lmUswETeacv/E6eMCkDhMU=
+X-Google-Smtp-Source: ABdhPJzgP3rpJQifQUhdn0Vh3DFETPfm83LWomPhLSVlb9nNpdhh32/Oy8mFTF7Sj8xorQyIK/6QEA==
+X-Received: by 2002:a37:2ec1:: with SMTP id u184mr38086189qkh.500.1625846347505;
+        Fri, 09 Jul 2021 08:59:07 -0700 (PDT)
+Received: from shaak.xiphos.ca (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
+        by smtp.gmail.com with ESMTPSA id x15sm2606071qkm.66.2021.07.09.08.59.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Jul 2021 08:59:07 -0700 (PDT)
+From:   Liam Beguin <liambeguin@gmail.com>
+To:     liambeguin@gmail.com, lars@metafoo.de,
+        Michael.Hennerich@analog.com, jic23@kernel.org,
+        charles-antoine.couret@essensium.com, Nuno.Sa@analog.com
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, robh+dt@kernel.org
+Subject: [PATCH v1 0/4] AD7949 Fixes
+Date:   Fri,  9 Jul 2021 11:58:52 -0400
+Message-Id: <20210709155856.1732245-1-liambeguin@gmail.com>
+X-Mailer: git-send-email 2.30.1.489.g328c10930387
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri Jul 9, 2021 at 4:23 AM EDT, Sa, Nuno wrote:
-> > From: Liam Beguin <liambeguin@gmail.com>
-> > Sent: Friday, July 9, 2021 1:56 AM
-> > To: liambeguin@gmail.com; lars@metafoo.de; Hennerich, Michael
-> > <Michael.Hennerich@analog.com>; jic23@kernel.org; charles-
-> > antoine.couret@essensium.com
-> > Cc: linux-kernel@vger.kernel.org; linux-iio@vger.kernel.org;
-> > devicetree@vger.kernel.org; robh+dt@kernel.org
-> > Subject: [PATCH v1 3/4] iio: adc: ad7949: add support for internal vref
-> >=20
-> > [External]
-> >=20
-> > From: Liam Beguin <lvb@xiphos.com>
-> >=20
-> > Add support for selecting a custom reference voltage from the
-> > devicetree. If an external source is used, a vref regulator should be
-> > defined in the devicetree.
-> >=20
-> > Signed-off-by: Liam Beguin <lvb@xiphos.com>
-> > ---
-> >  drivers/iio/adc/ad7949.c | 84
-> > +++++++++++++++++++++++++++++++++-------
-> >  1 file changed, 69 insertions(+), 15 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/adc/ad7949.c b/drivers/iio/adc/ad7949.c
-> > index bbc6b56330a3..3c1293922d2e 100644
-> > --- a/drivers/iio/adc/ad7949.c
-> > +++ b/drivers/iio/adc/ad7949.c
-> > @@ -31,6 +31,7 @@
-> >  #define AD7949_CFG_VAL_BW_FULL			1
-> >  #define AD7949_CFG_VAL_BW_QUARTER		0
-> >  #define AD7949_CFG_BIT_REF		GENMASK(5, 3)
-> > +#define AD7949_CFG_VAL_REF_EXTERNAL		BIT(1)
-> >  #define AD7949_CFG_BIT_SEQ		GENMASK(2, 1)
-> >  #define AD7949_CFG_BIT_RBN		BIT(0)
-> >=20
-> > @@ -40,6 +41,33 @@ enum {
-> >  	ID_AD7689,
-> >  };
-> >=20
-> > +/**
-> > + * enum ad7949_ref - Reference selection
-> > + *
-> > + * AD7949_REF_INT_2500:     Internal reference and temperature
-> > sensor enabled.
-> > + *                          Vref=3D2.5V, buffered output
-> > + * AD7949_REF_INT_4096:     Internal reference and temperature
-> > sensor enabled.
-> > + *                          Vref=3D4.096V, buffered output
-> > + * AD7949_REF_EXT_TEMP:     Use external reference, temperature
-> > sensor enabled.
-> > + *                          Internal buffer disabled
-> > + * AD7949_REF_EXT_TEMP_BUF: Use external reference, internal
-> > buffer and
-> > + *                          temperature sensor enabled.
-> > + * AD7949_REF_RSRV_4:       Do not use
-> > + * AD7949_REF_RSRV_5:       Do not use
-> > + * AD7949_REF_EXT:          Use external reference, internal buffer an=
-d
-> > + *                          temperature sensor disabled.
-> > + * AD7949_REF_EXT_BUF:      Use external reference, internal buffer
-> > enabled.
-> > + *                          Internal reference and temperature sensor =
-disabled.
-> > + */
-> > +enum ad7949_ref {
-> > +	AD7949_REF_INT_2500 =3D 0,
-> > +	AD7949_REF_INT_4096,
-> > +	AD7949_REF_EXT_TEMP,
-> > +	AD7949_REF_EXT_TEMP_BUF,
-> > +	AD7949_REF_EXT =3D 6,
-> > +	AD7949_REF_EXT_BUF,
-> > +};
-> > +
-> >  struct ad7949_adc_spec {
-> >  	u8 num_channels;
-> >  	u8 resolution;
-> > @@ -55,6 +83,7 @@ static const struct ad7949_adc_spec
-> > ad7949_adc_spec[] =3D {
-> >   * struct ad7949_adc_chip - AD ADC chip
-> >   * @lock: protects write sequences
-> >   * @vref: regulator generating Vref
-> > + * @refsel: reference selection
-> >   * @indio_dev: reference to iio structure
-> >   * @spi: reference to spi structure
-> >   * @resolution: resolution of the chip
-> > @@ -66,6 +95,7 @@ static const struct ad7949_adc_spec
-> > ad7949_adc_spec[] =3D {
-> >  struct ad7949_adc_chip {
-> >  	struct mutex lock;
-> >  	struct regulator *vref;
-> > +	enum ad7949_ref refsel;
-> >  	struct iio_dev *indio_dev;
-> >  	struct spi_device *spi;
-> >  	u8 resolution;
-> > @@ -241,12 +271,28 @@ static int ad7949_spi_read_raw(struct iio_dev
-> > *indio_dev,
-> >  		return IIO_VAL_INT;
-> >=20
-> >  	case IIO_CHAN_INFO_SCALE:
-> > -		ret =3D regulator_get_voltage(ad7949_adc->vref);
-> > -		if (ret < 0)
-> > -			return ret;
-> > +		switch (ad7949_adc->refsel) {
-> > +		case AD7949_REF_INT_2500:
-> > +			*val =3D 2500;
-> > +			break;
-> > +		case AD7949_REF_INT_4096:
-> > +			*val =3D 4096;
-> > +			break;
-> > +		case AD7949_REF_EXT_TEMP:
-> > +		case AD7949_REF_EXT_TEMP_BUF:
-> > +		case AD7949_REF_EXT:
-> > +		case AD7949_REF_EXT_BUF:
-> > +			ret =3D regulator_get_voltage(ad7949_adc-
-> > >vref);
-> > +			if (ret < 0)
-> > +				return ret;
-> > +
-> > +			/* convert value back to mV */
-> > +			*val =3D ret / 1000;
-> > +			break;
-> > +		}
-> >=20
-> > -		*val =3D ret / 5000;
-> > -		return IIO_VAL_INT;
-> > +		*val2 =3D (1 << ad7949_adc->resolution) - 1;
-> > +		return IIO_VAL_FRACTIONAL;
-> >  	}
-> >=20
-> >  	return -EINVAL;
-> > @@ -285,7 +331,7 @@ static int ad7949_spi_init(struct
-> > ad7949_adc_chip *ad7949_adc)
-> >  		FIELD_PREP(AD7949_CFG_BIT_INCC,
-> > AD7949_CFG_VAL_INCC_UNIPOLAR_GND) |
-> >  		FIELD_PREP(AD7949_CFG_BIT_INX, ad7949_adc-
-> > >current_channel) |
-> >  		FIELD_PREP(AD7949_CFG_BIT_BW,
-> > AD7949_CFG_VAL_BW_FULL) |
-> > -		FIELD_PREP(AD7949_CFG_BIT_REF,
-> > AD7949_REF_EXT_BUF) |
-> > +		FIELD_PREP(AD7949_CFG_BIT_REF, ad7949_adc-
-> > >refsel) |
-> >  		FIELD_PREP(AD7949_CFG_BIT_SEQ, 0x0) |
-> >  		FIELD_PREP(AD7949_CFG_BIT_RBN, 1);
-> >=20
-> > @@ -304,6 +350,7 @@ static int ad7949_spi_init(struct
-> > ad7949_adc_chip *ad7949_adc)
-> >  static int ad7949_spi_probe(struct spi_device *spi)
-> >  {
-> >  	struct device *dev =3D &spi->dev;
-> > +	struct device_node *np =3D dev->of_node;
-> >  	const struct ad7949_adc_spec *spec;
-> >  	struct ad7949_adc_chip *ad7949_adc;
-> >  	struct iio_dev *indio_dev;
-> > @@ -315,6 +362,7 @@ static int ad7949_spi_probe(struct spi_device
-> > *spi)
-> >  		return -ENOMEM;
-> >  	}
-> >=20
-> > +	indio_dev->dev.of_node =3D np;
->
-> Why doing this? The IIO core will do it for us at register time.
+While working on another series[1] I ran into issues where my SPI
+controller would fail to handle 14-bit and 16-bit SPI messages. This
+addresses that issue and adds support for selecting a different voltage
+reference source from the devicetree.
 
-Sorry about that, will drop.
+This is base on a series[2] that seems to not have made it all the way,
+and was tested on an ad7689.
 
->
-> >  	indio_dev->info =3D &ad7949_spi_info;
-> >  	indio_dev->name =3D spi_get_device_id(spi)->name;
-> >  	indio_dev->modes =3D INDIO_DIRECT_MODE;
-> > @@ -330,16 +378,22 @@ static int ad7949_spi_probe(struct spi_device
-> > *spi)
-> >  	ad7949_adc->resolution =3D spec->resolution;
-> >  	ad7949_set_bits_per_word(ad7949_adc);
-> >=20
-> > -	ad7949_adc->vref =3D devm_regulator_get(dev, "vref");
-> > -	if (IS_ERR(ad7949_adc->vref)) {
-> > -		dev_err(dev, "fail to request regulator\n");
-> > -		return PTR_ERR(ad7949_adc->vref);
-> > -	}
-> > +	/* Set default devicetree parameters */
-> > +	ad7949_adc->refsel =3D AD7949_REF_EXT_BUF;
-> > +	of_property_read_u32(np, "adi,reference-select",
-> > &ad7949_adc->refsel);
->
-> In case the property is given, we should make sure we get a valid
-> value and error out if not...
->
+[1] https://patchwork.kernel.org/project/linux-iio/list/?series=511545
+[2] https://patchwork.kernel.org/project/linux-iio/list/?series=116971&state=%2A&archive=both
 
-I thought it would be handled later on when processing the sample, but
-it's not really and it's better to fail early. I'll add that to v2.
+Changes since v1:
+- add default case in read/write size cases
+- drop of_node change as the core already takes care of it
+- check dt user input in probe
+- move description at the top of dt-binding definition
+- drop AllOf block in dt-binding
 
-Thanks,
+Thanks for your time,
 Liam
 
-> - Nuno S=C3=A1
-> > -	ret =3D regulator_enable(ad7949_adc->vref);
-> > -	if (ret < 0) {
-> > -		dev_err(dev, "fail to enable regulator\n");
-> > -		return ret;
-> > +	if (ad7949_adc->refsel & AD7949_CFG_VAL_REF_EXTERNAL) {
-> > +		ad7949_adc->vref =3D devm_regulator_get(dev, "vref");
-> > +		if (IS_ERR(ad7949_adc->vref)) {
-> > +			dev_err(dev, "fail to request regulator\n");
-> > +			return PTR_ERR(ad7949_adc->vref);
-> > +		}
-> > +
-> > +		ret =3D regulator_enable(ad7949_adc->vref);
-> > +		if (ret < 0) {
-> > +			dev_err(dev, "fail to enable regulator\n");
-> > +			return ret;
-> > +		}
-> >  	}
-> >=20
-> >  	mutex_init(&ad7949_adc->lock);
-> > --
-> > 2.30.1.489.g328c10930387
+Liam Beguin (4):
+  iio: adc: ad7949: define and use bitfield names
+  iio: adc: ad7949: fix spi messages on non 14-bit controllers
+  iio: adc: ad7949: add support for internal vref
+  dt-bindings: iio: adc: ad7949: add adi,reference-source
+
+ .../bindings/iio/adc/adi,ad7949.yaml          |  21 ++
+ drivers/iio/adc/ad7949.c                      | 201 +++++++++++++++---
+ 2 files changed, 192 insertions(+), 30 deletions(-)
+
+Range-diff against v1:
+-:  ------------ > 1:  b8577e93229f iio: adc: ad7949: define and use bitfield names
+1:  86bab3bedcf8 ! 2:  a8468391e3d0 iio: adc: ad7949: fix spi messages on non 14-bit controllers
+    @@ drivers/iio/adc/ad7949.c: struct ad7949_adc_chip {
+     +		ad7949_adc->buffer = ad7949_adc->cfg;
+     +		break;
+     +	case 8:
+    ++	default:
+     +		/* Pack 14-bit value into 2 bytes, MSB first */
+     +		ad7949_adc->buf8[0] = FIELD_GET(GENMASK(13, 6), ad7949_adc->cfg);
+     +		ad7949_adc->buf8[1] = FIELD_GET(GENMASK(5, 0), ad7949_adc->cfg);
+    @@ drivers/iio/adc/ad7949.c: static int ad7949_spi_read_channel(struct ad7949_adc_c
+     +		*val = ad7949_adc->buffer & GENMASK(13, 0);
+     +		break;
+     +	case 8:
+    ++	default:
+     +		/* Convert byte array to u16, MSB first */
+     +		*val = (ad7949_adc->buf8[0] << 8) | ad7949_adc->buf8[1];
+     +		/* Shift-out padding bits */
+2:  5f4dbdd51e1f ! 3:  4b0c11c9a748 iio: adc: ad7949: add support for internal vref
+    @@ drivers/iio/adc/ad7949.c: static int ad7949_spi_init(struct ad7949_adc_chip *ad7
+      	const struct ad7949_adc_spec *spec;
+      	struct ad7949_adc_chip *ad7949_adc;
+      	struct iio_dev *indio_dev;
+    -@@ drivers/iio/adc/ad7949.c: static int ad7949_spi_probe(struct spi_device *spi)
+    - 		return -ENOMEM;
+    - 	}
+    - 
+    -+	indio_dev->dev.of_node = np;
+    - 	indio_dev->info = &ad7949_spi_info;
+    - 	indio_dev->name = spi_get_device_id(spi)->name;
+    - 	indio_dev->modes = INDIO_DIRECT_MODE;
+     @@ drivers/iio/adc/ad7949.c: static int ad7949_spi_probe(struct spi_device *spi)
+      	ad7949_adc->resolution = spec->resolution;
+      	ad7949_set_bits_per_word(ad7949_adc);
+    @@ drivers/iio/adc/ad7949.c: static int ad7949_spi_probe(struct spi_device *spi)
+     -	if (IS_ERR(ad7949_adc->vref)) {
+     -		dev_err(dev, "fail to request regulator\n");
+     -		return PTR_ERR(ad7949_adc->vref);
+    --	}
+     +	/* Set default devicetree parameters */
+     +	ad7949_adc->refsel = AD7949_REF_EXT_BUF;
+     +	of_property_read_u32(np, "adi,reference-select", &ad7949_adc->refsel);
+    ++	switch (ad7949_adc->refsel) {
+    ++	case AD7949_REF_INT_2500:
+    ++	case AD7949_REF_INT_4096:
+    ++	case AD7949_REF_EXT_TEMP:
+    ++	case AD7949_REF_EXT_TEMP_BUF:
+    ++	case AD7949_REF_EXT:
+    ++	case AD7949_REF_EXT_BUF:
+    ++		break;
+    ++	default:
+    ++		dev_err(dev, "invalid adi,reference-select value (%d)\n",
+    ++			ad7949_adc->refsel);
+    ++		return -EINVAL;
+    + 	}
+      
+     -	ret = regulator_enable(ad7949_adc->vref);
+     -	if (ret < 0) {
+3:  99367ba6e5f9 ! 4:  a3b6a6ef15fd dt-bindings: iio: adc: ad7949: add adi,reference-source
+    @@ Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml: properties:
+          const: 1
+      
+     +  adi,reference-select:
+    -+    allOf:
+    -+      - $ref: /schemas/types.yaml#/definitions/uint32
+    -+      - enum: [0, 1, 2, 3, 6, 7]
+    -+
+    -+    default: 7
+     +    description: |
+     +      Select the reference voltage source to use when converting samples.
+     +      Acceptable values are:
+    @@ Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml: properties:
+     +           disabled.
+     +      - 7: Use external reference, internal buffer enabled.
+     +           Internal reference and temperature sensor disabled.
+    ++
+    ++    $ref: /schemas/types.yaml#/definitions/uint32
+    ++    enum: [0, 1, 2, 3, 6, 7]
+    ++    default: 7
+     +
+      required:
+        - compatible
+
+base-commit: 6cbb3aa0f9d5d23221df787cf36f74d3866fdb78
+-- 
+2.30.1.489.g328c10930387
 

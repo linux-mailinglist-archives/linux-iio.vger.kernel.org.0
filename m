@@ -2,164 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 335CF3C35E2
-	for <lists+linux-iio@lfdr.de>; Sat, 10 Jul 2021 19:45:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C45EC3C35F3
+	for <lists+linux-iio@lfdr.de>; Sat, 10 Jul 2021 19:54:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231241AbhGJRsc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 10 Jul 2021 13:48:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54120 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229846AbhGJRsb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 10 Jul 2021 13:48:31 -0400
-Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 082DDC0613DD;
-        Sat, 10 Jul 2021 10:45:44 -0700 (PDT)
-Received: by mail-qv1-xf34.google.com with SMTP id j14so6212095qvu.6;
-        Sat, 10 Jul 2021 10:45:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:content-transfer-encoding:date:message-id:from:to:cc
-         :subject:references:in-reply-to;
-        bh=sW9hZja3xQYTQGPj+6uAtbSZMYkpOa8syLZTN1hyNWA=;
-        b=l+idCI0aRPJOkC41EHdwZME3sL9B2PrRibbecoP3Ug1v4iyVplD6bvnPCWq+JGxJRI
-         uN9gVu4ES2JgRqxg+ttzKCyt52xiUJIgHp+b0xfyllHDjB5GQoJydmmFjKRBEOl/sd7N
-         NkjVkEaZW/c22jQC/vu/Vdso+3M7jxVF2rJmE6ve55NAaFG5bkPbe2dGjFJZkFfaEqkD
-         hnE1PtnYLbv4TSERPW5MKeRhpdfSVJcfABgxQnH/i9IXA7eQDdeqR+m5egjnesr1B4GD
-         uwHQ2KcVJ51Rn95rb66KSDYPoM/xAkyHQjf5TtelTaDSucrL7Qiwki6LQ8lTjC9y7gb6
-         gDaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:content-transfer-encoding:date
-         :message-id:from:to:cc:subject:references:in-reply-to;
-        bh=sW9hZja3xQYTQGPj+6uAtbSZMYkpOa8syLZTN1hyNWA=;
-        b=Q8zZGfFQPzcrwjkCMaDg0JhnrvU52qPLQ79P7G0k8smsUU9dngr5BOG2G0sumno62V
-         BjTwRYfvqpU+61Oz2Mjk0QJT3DLjOVM0ghE+YLyC7Bqwe7H9OUvF2HFa/4S9Xem2uaAG
-         wR2Kk7Gy8ubLmBRU+jCC0RdExm4wXGDhiWQOLFa+Vg3kxZj6j3NXHpAWvK8fjd8LrTVo
-         PLUHe7yaQRQFrS0ApCH8LtDUSYYasVUM5uyBdaxDP9mi/G+/DqoPROBeQi8GAfr/fa/w
-         2EvVETWSWTK33+FiMvSKw2XW+Jp3RpZzdbeuHMpAuKCt0905gRFmmDpkkQ7xFXgKvntE
-         PXnw==
-X-Gm-Message-State: AOAM531QLNFlfU6RvZIPIDd/jUVqYD/Rdr83AYEXd0JLbK/a2Lh938S2
-        SE2wraS8IsO7bFY4vrzSkOrgL8O3LxnkyQ==
-X-Google-Smtp-Source: ABdhPJwyK/XfRyUOImaBHnO2b1uhIV9hHSRSnLVMKw43iuRXnfmhFBGZ5S0Mx2h7G1/J825AhHTTMw==
-X-Received: by 2002:a05:6214:172:: with SMTP id y18mr16067392qvs.14.1625939144124;
-        Sat, 10 Jul 2021 10:45:44 -0700 (PDT)
-Received: from localhost (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
-        by smtp.gmail.com with ESMTPSA id n64sm4167120qkd.79.2021.07.10.10.45.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 10 Jul 2021 10:45:43 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Sat, 10 Jul 2021 13:45:42 -0400
-Message-Id: <CCPNBMAIVJTV.3U5M70O21GDZ4@shaak>
-From:   "Liam Beguin" <liambeguin@gmail.com>
-To:     "Peter Rosin" <peda@axentia.se>, <jic23@kernel.org>,
-        <lars@metafoo.de>, <pmeerw@pmeerw.net>
-Cc:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
-Subject: Re: [PATCH v4 05/10] iio: afe: rescale: add INT_PLUS_{MICRO,NANO}
- support
-References: <20210706160942.3181474-1-liambeguin@gmail.com>
- <20210706160942.3181474-6-liambeguin@gmail.com>
- <4be51a74-9913-291a-9dac-422ac23da3ea@axentia.se>
- <CCOUX814CQ6U.XY2CIQKFE00V@shaak>
- <353ceae9-ad7a-3175-d764-a9e590d3e8d3@axentia.se>
-In-Reply-To: <353ceae9-ad7a-3175-d764-a9e590d3e8d3@axentia.se>
+        id S229614AbhGJR4u (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 10 Jul 2021 13:56:50 -0400
+Received: from vern.gendns.com ([98.142.107.122]:38772 "EHLO vern.gendns.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229551AbhGJR4u (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 10 Jul 2021 13:56:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:References:Cc:To:From:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=/Am0uhBAEXHiTgENkWsIrhc4uV4GJPpvn66MI5SePOo=; b=CiU+TKI7eo3mcppV0+grIy+B5u
+        DqJZFdNCcSQt4IeCv7CmdSltFxiMB+/148PKt8QttcMNsitS9cOCm1k7VA3NmZgTi1DWVfGNS6quZ
+        lEQ0md6oL08VAS4RZwcBUYzYhsxKhDEIRly64+d2RcO6z+aXalY/svt7hPSvDHq3RLe6To17uEDHt
+        0MhsFppUfxmXrw6FYbFJZ3YKHT7idoneijCb+hnZSjSHV55saXmVl4Hrgu63R96RZdEJmCFiGac/O
+        vUiGjXxqY6ZnwxLME2hIFUA9b/v068Te5tSyA08S3OP9nzXWQjrjqYeWPvUy9oORn8zLRIzMHRKZU
+        L6Q8glwQ==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:47624 helo=[192.168.0.134])
+        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <david@lechnology.com>)
+        id 1m2HAe-00GsEC-IC; Sat, 10 Jul 2021 13:53:59 -0400
+Subject: Re: [PATCH v12 15/17] counter: Implement events_queue_size sysfs
+ attribute
+From:   David Lechner <david@lechnology.com>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Cc:     jic23@kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+        kernel@pengutronix.de, a.fatoum@pengutronix.de,
+        kamel.bouhara@bootlin.com, gwendal@chromium.org,
+        alexandre.belloni@bootlin.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        syednwaris@gmail.com, patrick.havelange@essensium.com,
+        fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@st.com, o.rempel@pengutronix.de
+References: <cover.1625471640.git.vilhelm.gray@gmail.com>
+ <e298043c880b350a42bdc40452376a3708bf533b.1625471640.git.vilhelm.gray@gmail.com>
+ <1a624011-0b43-ac42-be53-a42f81923e5a@linux.intel.com>
+ <YOl1frCrophjhk7y@shinobu>
+ <fbf1ba4c-412b-fe22-0e79-76e968a00fb4@lechnology.com>
+ <76cc7f77-a59c-86ef-8df9-65b877356b32@lechnology.com>
+Message-ID: <f1c57abc-cb68-c00c-3037-dc53c0adab1a@lechnology.com>
+Date:   Sat, 10 Jul 2021 12:53:54 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
+MIME-Version: 1.0
+In-Reply-To: <76cc7f77-a59c-86ef-8df9-65b877356b32@lechnology.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat Jul 10, 2021 at 4:14 AM EDT, Peter Rosin wrote:
->
->
-> On 2021-07-09 21:30, Liam Beguin wrote:
-> > On Fri Jul 9, 2021 at 12:29 PM EDT, Peter Rosin wrote:
-> >>
-> >>
-> >> On 2021-07-06 18:09, Liam Beguin wrote:
-> >>> From: Liam Beguin <lvb@xiphos.com>
-> >>>
-> >>> Add IIO_VAL_INT_PLUS_{NANO,MICRO} scaling support.
-> >>> Scale the integer part and the decimal parts individually and keep th=
-e
-> >>> original scaling type.
-> >>>
-> >>> Signed-off-by: Liam Beguin <lvb@xiphos.com>
-> >>> ---
-> >>>  drivers/iio/afe/iio-rescale.c | 8 ++++++++
-> >>>  1 file changed, 8 insertions(+)
-> >>>
-> >>> diff --git a/drivers/iio/afe/iio-rescale.c b/drivers/iio/afe/iio-resc=
-ale.c
-> >>> index ba3bdcc69b16..1d0e24145d87 100644
-> >>> --- a/drivers/iio/afe/iio-rescale.c
-> >>> +++ b/drivers/iio/afe/iio-rescale.c
-> >>> @@ -89,7 +89,15 @@ static int rescale_read_raw(struct iio_dev *indio_=
-dev,
-> >>>  			do_div(tmp, 1000000000LL);
-> >>>  			*val =3D tmp;
-> >>>  			return ret;
-> >>> +		case IIO_VAL_INT_PLUS_NANO:
-> >>> +		case IIO_VAL_INT_PLUS_MICRO:
-> >>> +			tmp =3D (s64)*val * rescale->numerator;
-> >>> +			*val =3D div_s64(tmp, rescale->denominator);
-> >>> +			tmp =3D (s64)*val2 * rescale->numerator;
-> >>> +			*val2 =3D div_s64(tmp, rescale->denominator);
-> >>
-> >=20
-> > Hi Peter,
-> >=20
-> >> Hi!
-> >>
-> >> You are losing precision, and you are not mormalising after the
-> >> calculation.
-> >=20
-> > Can you elaborate a little on what you mean here?
-> >=20
-> > Do you mean that I should make sure that *val2, the PLUS_{NANO,MICRO}
-> > part, doesn't contain an integer part? And if so transfer that part bac=
-k
-> > to *val?
+On 7/10/21 11:08 AM, David Lechner wrote:
+> On 7/10/21 10:43 AM, David Lechner wrote:
+>> On 7/10/21 5:25 AM, William Breathitt Gray wrote:
+>>>> and after that
+>>>>
+>>>> [   16.564403] ================================================
+>>>> [   16.570725] WARNING: lock held when returning to user space!
+>>>> [   16.577044] 5.13.0-next-20210706+ #4 Not tainted
+>>>> [   16.582198] ------------------------------------------------
+>>>> [   16.588507] cat/331 is leaving the kernel with locks still held!
+>>>> [   16.595214] 1 lock held by cat/331:
+>>>> [   16.599103]  #0: ffff888102bb3630
+>>>> (&counter->chrdev_lock){+.+.}-{3:3}, at: counter_chrdev_open+0x21/0x60
+>>>> [counter]
+>>>>
+>>>> Jarkko
+>>> I'm not sure how to resolve this warning. The purpose of this lock is to
+>>> limit chrdev to a single open at a time. To accomplish this I grab this
+>>> lock in counter_chrdev_open() and hold it until counter_chrdev_release()
+>>> is called. Is there a better way to accomplish this?
+>>
+>> How about using an atomic flag, e.g test_and_set_bit()?
+> 
+> Another option could be to rethink it at a higher level and avoid the
+> need for a lock (and sysfs attribute) altogether. For example, would it
+> work to (re)allocate the kfifo buffer in the COUNTER_ENABLE_EVENTS_IOCTL
+> callback and add a parameter to that ioctl to specify the buffer size
+> (with units of events rather than bytes)?
+> 
 
-Hi Peter,
-
->
-> Yes. On 32-bit, you will easily wrap, especially for PLUS_NANO. You'd
-> only need a scale factor of 10 or so and a fractional part above .5 to
-> hit the roof (10 * 500000000 > 2^32).
->
-
-Right, That makes sense!
-
-> But I also mean that you are losing precision when you are scaling
-> the integer part and the fractional part separately. That deserves
-> at least a comment, but ideally it should be handled correctly.
->
-
-Oh got it! Apologies, How did I miss that...
-
-All things considered, it might make sense to also implement the
-test case Jonathan mentioned [1]. I'll look into it.
-
-[1] https://lore.kernel.org/linux-devicetree/20210704173639.622371bf@jic23-=
-huawei/
-
-> >> I think it's better to not even attempt this given that the results ca=
-n
-> >> be
-> >> really poor.
-> >=20
-> > Unfortunatelly, I'm kinda stuck with this as some of my ADC use these
-> > types.
->
-> Ok. Crap. :-)
-
-Can't agree more :-)
-
-Thanks,
-Liam
-
->
-> Cheers,
-> Peter
-
+Thinking about it a bit more, this probably isn't a good suggestion.
+It would create issues with being able to start reading from the chrdev
+before enabling events.

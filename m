@@ -2,87 +2,164 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 72F903C35D4
-	for <lists+linux-iio@lfdr.de>; Sat, 10 Jul 2021 19:32:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 335CF3C35E2
+	for <lists+linux-iio@lfdr.de>; Sat, 10 Jul 2021 19:45:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229716AbhGJRfl convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sat, 10 Jul 2021 13:35:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47124 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229490AbhGJRfl (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 10 Jul 2021 13:35:41 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 46D5B61279;
-        Sat, 10 Jul 2021 17:32:52 +0000 (UTC)
-Date:   Sat, 10 Jul 2021 18:35:25 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Antti =?UTF-8?B?S2Vyw6RuZW4=?= <detegr@rbx.email>
-Cc:     linux-iio@vger.kernel.org, Hannu Hartikainen <hannu@hrtk.in>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Nuno Sa <nuno.sa@analog.com>,
-        linux-kernel@vger.kernel.org (open list)
-Subject: Re: [PATCH v2] iio: adis: set GPIO reset pin direction
-Message-ID: <20210710183525.0684bd90@jic23-huawei>
-In-Reply-To: <20210708095425.13295-1-detegr@rbx.email>
-References: <60e5ac8c.1c69fb81.c69f0.abab@mx.google.com>
-        <20210708095425.13295-1-detegr@rbx.email>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
+        id S231241AbhGJRsc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 10 Jul 2021 13:48:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54120 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229846AbhGJRsb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 10 Jul 2021 13:48:31 -0400
+Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 082DDC0613DD;
+        Sat, 10 Jul 2021 10:45:44 -0700 (PDT)
+Received: by mail-qv1-xf34.google.com with SMTP id j14so6212095qvu.6;
+        Sat, 10 Jul 2021 10:45:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:content-transfer-encoding:date:message-id:from:to:cc
+         :subject:references:in-reply-to;
+        bh=sW9hZja3xQYTQGPj+6uAtbSZMYkpOa8syLZTN1hyNWA=;
+        b=l+idCI0aRPJOkC41EHdwZME3sL9B2PrRibbecoP3Ug1v4iyVplD6bvnPCWq+JGxJRI
+         uN9gVu4ES2JgRqxg+ttzKCyt52xiUJIgHp+b0xfyllHDjB5GQoJydmmFjKRBEOl/sd7N
+         NkjVkEaZW/c22jQC/vu/Vdso+3M7jxVF2rJmE6ve55NAaFG5bkPbe2dGjFJZkFfaEqkD
+         hnE1PtnYLbv4TSERPW5MKeRhpdfSVJcfABgxQnH/i9IXA7eQDdeqR+m5egjnesr1B4GD
+         uwHQ2KcVJ51Rn95rb66KSDYPoM/xAkyHQjf5TtelTaDSucrL7Qiwki6LQ8lTjC9y7gb6
+         gDaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:content-transfer-encoding:date
+         :message-id:from:to:cc:subject:references:in-reply-to;
+        bh=sW9hZja3xQYTQGPj+6uAtbSZMYkpOa8syLZTN1hyNWA=;
+        b=Q8zZGfFQPzcrwjkCMaDg0JhnrvU52qPLQ79P7G0k8smsUU9dngr5BOG2G0sumno62V
+         BjTwRYfvqpU+61Oz2Mjk0QJT3DLjOVM0ghE+YLyC7Bqwe7H9OUvF2HFa/4S9Xem2uaAG
+         wR2Kk7Gy8ubLmBRU+jCC0RdExm4wXGDhiWQOLFa+Vg3kxZj6j3NXHpAWvK8fjd8LrTVo
+         PLUHe7yaQRQFrS0ApCH8LtDUSYYasVUM5uyBdaxDP9mi/G+/DqoPROBeQi8GAfr/fa/w
+         2EvVETWSWTK33+FiMvSKw2XW+Jp3RpZzdbeuHMpAuKCt0905gRFmmDpkkQ7xFXgKvntE
+         PXnw==
+X-Gm-Message-State: AOAM531QLNFlfU6RvZIPIDd/jUVqYD/Rdr83AYEXd0JLbK/a2Lh938S2
+        SE2wraS8IsO7bFY4vrzSkOrgL8O3LxnkyQ==
+X-Google-Smtp-Source: ABdhPJwyK/XfRyUOImaBHnO2b1uhIV9hHSRSnLVMKw43iuRXnfmhFBGZ5S0Mx2h7G1/J825AhHTTMw==
+X-Received: by 2002:a05:6214:172:: with SMTP id y18mr16067392qvs.14.1625939144124;
+        Sat, 10 Jul 2021 10:45:44 -0700 (PDT)
+Received: from localhost (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
+        by smtp.gmail.com with ESMTPSA id n64sm4167120qkd.79.2021.07.10.10.45.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 10 Jul 2021 10:45:43 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Date:   Sat, 10 Jul 2021 13:45:42 -0400
+Message-Id: <CCPNBMAIVJTV.3U5M70O21GDZ4@shaak>
+From:   "Liam Beguin" <liambeguin@gmail.com>
+To:     "Peter Rosin" <peda@axentia.se>, <jic23@kernel.org>,
+        <lars@metafoo.de>, <pmeerw@pmeerw.net>
+Cc:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
+Subject: Re: [PATCH v4 05/10] iio: afe: rescale: add INT_PLUS_{MICRO,NANO}
+ support
+References: <20210706160942.3181474-1-liambeguin@gmail.com>
+ <20210706160942.3181474-6-liambeguin@gmail.com>
+ <4be51a74-9913-291a-9dac-422ac23da3ea@axentia.se>
+ <CCOUX814CQ6U.XY2CIQKFE00V@shaak>
+ <353ceae9-ad7a-3175-d764-a9e590d3e8d3@axentia.se>
+In-Reply-To: <353ceae9-ad7a-3175-d764-a9e590d3e8d3@axentia.se>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu,  8 Jul 2021 12:54:29 +0300
-Antti Keränen <detegr@rbx.email> wrote:
+On Sat Jul 10, 2021 at 4:14 AM EDT, Peter Rosin wrote:
+>
+>
+> On 2021-07-09 21:30, Liam Beguin wrote:
+> > On Fri Jul 9, 2021 at 12:29 PM EDT, Peter Rosin wrote:
+> >>
+> >>
+> >> On 2021-07-06 18:09, Liam Beguin wrote:
+> >>> From: Liam Beguin <lvb@xiphos.com>
+> >>>
+> >>> Add IIO_VAL_INT_PLUS_{NANO,MICRO} scaling support.
+> >>> Scale the integer part and the decimal parts individually and keep th=
+e
+> >>> original scaling type.
+> >>>
+> >>> Signed-off-by: Liam Beguin <lvb@xiphos.com>
+> >>> ---
+> >>>  drivers/iio/afe/iio-rescale.c | 8 ++++++++
+> >>>  1 file changed, 8 insertions(+)
+> >>>
+> >>> diff --git a/drivers/iio/afe/iio-rescale.c b/drivers/iio/afe/iio-resc=
+ale.c
+> >>> index ba3bdcc69b16..1d0e24145d87 100644
+> >>> --- a/drivers/iio/afe/iio-rescale.c
+> >>> +++ b/drivers/iio/afe/iio-rescale.c
+> >>> @@ -89,7 +89,15 @@ static int rescale_read_raw(struct iio_dev *indio_=
+dev,
+> >>>  			do_div(tmp, 1000000000LL);
+> >>>  			*val =3D tmp;
+> >>>  			return ret;
+> >>> +		case IIO_VAL_INT_PLUS_NANO:
+> >>> +		case IIO_VAL_INT_PLUS_MICRO:
+> >>> +			tmp =3D (s64)*val * rescale->numerator;
+> >>> +			*val =3D div_s64(tmp, rescale->denominator);
+> >>> +			tmp =3D (s64)*val2 * rescale->numerator;
+> >>> +			*val2 =3D div_s64(tmp, rescale->denominator);
+> >>
+> >=20
+> > Hi Peter,
+> >=20
+> >> Hi!
+> >>
+> >> You are losing precision, and you are not mormalising after the
+> >> calculation.
+> >=20
+> > Can you elaborate a little on what you mean here?
+> >=20
+> > Do you mean that I should make sure that *val2, the PLUS_{NANO,MICRO}
+> > part, doesn't contain an integer part? And if so transfer that part bac=
+k
+> > to *val?
 
-> Set reset pin direction to output as the reset pin needs to be an active
-> low output pin.
-> 
-> Co-developed-by: Hannu Hartikainen <hannu@hrtk.in>
-> Signed-off-by: Hannu Hartikainen <hannu@hrtk.in>
-> Signed-off-by: Antti Keränen <detegr@rbx.email>
+Hi Peter,
 
-Hi Antti,
+>
+> Yes. On 32-bit, you will easily wrap, especially for PLUS_NANO. You'd
+> only need a scale factor of 10 or so and a fractional part above .5 to
+> hit the roof (10 * 500000000 > 2^32).
+>
 
-For future reference (in IIO anyway as not all maintainers agree on this!)
-please don't send a v2 in reply to v1.  It gets lots if anyone is using
-a threaded email client as it's buried deep.  If I'd not been following
-the discussion I'd probably have missed this.
+Right, That makes sense!
 
-Seems correct to me, but will leave on list a few more days as rc1 isn't
-out yet so I don't have a good based to start collecting fixes on a the
-moment.
+> But I also mean that you are losing precision when you are scaling
+> the integer part and the fractional part separately. That deserves
+> at least a comment, but ideally it should be handled correctly.
+>
 
-Jonathan
+Oh got it! Apologies, How did I miss that...
 
-> ---
-> Removed unnecessary toggling of the pin as requested by Lars-Peter. I
-> missed out on the conversation, but I agree this is better.
-> 
->  drivers/iio/imu/adis.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/imu/adis.c b/drivers/iio/imu/adis.c
-> index 319b64b2fd88..f8b7837d8b8f 100644
-> --- a/drivers/iio/imu/adis.c
-> +++ b/drivers/iio/imu/adis.c
-> @@ -415,12 +415,11 @@ int __adis_initial_startup(struct adis *adis)
->  	int ret;
->  
->  	/* check if the device has rst pin low */
-> -	gpio = devm_gpiod_get_optional(&adis->spi->dev, "reset", GPIOD_ASIS);
-> +	gpio = devm_gpiod_get_optional(&adis->spi->dev, "reset", GPIOD_OUT_HIGH);
->  	if (IS_ERR(gpio))
->  		return PTR_ERR(gpio);
->  
->  	if (gpio) {
-> -		gpiod_set_value_cansleep(gpio, 1);
->  		msleep(10);
->  		/* bring device out of reset */
->  		gpiod_set_value_cansleep(gpio, 0);
+All things considered, it might make sense to also implement the
+test case Jonathan mentioned [1]. I'll look into it.
+
+[1] https://lore.kernel.org/linux-devicetree/20210704173639.622371bf@jic23-=
+huawei/
+
+> >> I think it's better to not even attempt this given that the results ca=
+n
+> >> be
+> >> really poor.
+> >=20
+> > Unfortunatelly, I'm kinda stuck with this as some of my ADC use these
+> > types.
+>
+> Ok. Crap. :-)
+
+Can't agree more :-)
+
+Thanks,
+Liam
+
+>
+> Cheers,
+> Peter
 

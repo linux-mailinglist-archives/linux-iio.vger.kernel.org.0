@@ -2,191 +2,130 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3B213C341E
-	for <lists+linux-iio@lfdr.de>; Sat, 10 Jul 2021 12:26:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8D103C3476
+	for <lists+linux-iio@lfdr.de>; Sat, 10 Jul 2021 14:18:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230443AbhGJK1z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 10 Jul 2021 06:27:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42964 "EHLO
+        id S232601AbhGJMV0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 10 Jul 2021 08:21:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232456AbhGJK1z (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 10 Jul 2021 06:27:55 -0400
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8B17C0613DD;
-        Sat, 10 Jul 2021 03:25:10 -0700 (PDT)
-Received: by mail-pl1-x630.google.com with SMTP id o4so6381665plg.1;
-        Sat, 10 Jul 2021 03:25:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=s3K7cyJqM4WJugi4DmW1RD2TxhgR0DsWB9WQsLATqDc=;
-        b=ZGFHnsYRUwQe5Ay7MfHDsNZfSvN/VTHWfQ94xs6Wozy8q0UU39EFODLjxHxUrTz222
-         HUrJqsvW3W9qzqDnWuCfiliQDTFpLZEbJRf5bKPMIeVu/QcGXV1ymctouEv/Tug16M6+
-         UupJ7OpN4uMc9u6BmXzWoPoi7X+F3mZ+tMxi307Z5Tkq0iDgcOwou7U2862lBK2tN4DD
-         8WVObLr7uUQ8p2qrHT54mE5mSb/EbjBWIDGgyXvsrD7XvL3CA0OeauuDXIXkRmzUOHq5
-         d51kBTWHsClyLimYIMhpUcg3WAXVhRflMfDPZqodE3RL3335wad2vTsnd/Hr5txTY586
-         rWkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=s3K7cyJqM4WJugi4DmW1RD2TxhgR0DsWB9WQsLATqDc=;
-        b=TAh3wtbs2SmZsz+HicgXAR6UhS8XFgoPTfuW0pvC16tRPkmXzVupMDF1Z+BsenTAkV
-         ZaO2EE+jFlXCu+m0epD0Na5JV+E0NqEEKmk0wYxJa/kn2eYhlVuiVfayyPHLOqLWrx0J
-         TmlVHLr+Iv0C2JgWewUvPyNa9zooz2T8H4FKrBZTuw8zOtewn0v7rpptr7LGMU4Qhs4U
-         rhKv7Z6ottoKVkhP2CUrApkdFO6N0oz+OueSeAF+e46Yrd/l2tvQLOmpgiEkpKUn8Vw0
-         jvV4orS+kwQLjnFdjUP0novDHWeRafSoHHsSBLFpLeUnbEx2BqnkVyrXFB23h656kHaK
-         RBrw==
-X-Gm-Message-State: AOAM532vsAbNYvqKITSaRyMBlDn3qJ5FMh3IrteZEBXskwJVeenC5kF4
-        nojSnX7ICazDcG36b9ZbKRo=
-X-Google-Smtp-Source: ABdhPJxhut2gmoBN83bbMurV/qFa/FqRd+/9jUgBNIuzHsCcfe8rBuc7cj1+VcYwB0vmpv3WahbU/A==
-X-Received: by 2002:a17:902:a983:b029:129:c270:9222 with SMTP id bh3-20020a170902a983b0290129c2709222mr17267265plb.78.1625912710273;
-        Sat, 10 Jul 2021 03:25:10 -0700 (PDT)
-Received: from shinobu ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id g3sm15258021pjl.17.2021.07.10.03.25.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Jul 2021 03:25:09 -0700 (PDT)
-Date:   Sat, 10 Jul 2021 19:25:02 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Cc:     jic23@kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-        kernel@pengutronix.de, a.fatoum@pengutronix.de,
-        kamel.bouhara@bootlin.com, gwendal@chromium.org,
-        alexandre.belloni@bootlin.com, david@lechnology.com,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
-        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
-        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com,
-        o.rempel@pengutronix.de
-Subject: Re: [PATCH v12 15/17] counter: Implement events_queue_size sysfs
- attribute
-Message-ID: <YOl1frCrophjhk7y@shinobu>
-References: <cover.1625471640.git.vilhelm.gray@gmail.com>
- <e298043c880b350a42bdc40452376a3708bf533b.1625471640.git.vilhelm.gray@gmail.com>
- <1a624011-0b43-ac42-be53-a42f81923e5a@linux.intel.com>
+        with ESMTP id S231303AbhGJMV0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 10 Jul 2021 08:21:26 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3488C0613DD
+        for <linux-iio@vger.kernel.org>; Sat, 10 Jul 2021 05:18:40 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1m2BwD-0003GP-T0; Sat, 10 Jul 2021 14:18:29 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1m2BwC-0004UQ-FK; Sat, 10 Jul 2021 14:18:28 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1m2BwC-0003do-Du; Sat, 10 Jul 2021 14:18:28 +0200
+Date:   Sat, 10 Jul 2021 14:18:15 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     David Lechner <david@lechnology.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "kernel@pengutronix.de Mark Brown" <broonie@kernel.org>,
+        linux-spi@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: ti-ads7950: Ensure CS is deasserted after
+ reading channels
+Message-ID: <20210710121815.yxaylkhessvjbtkf@pengutronix.de>
+References: <20210709101110.1814294-1-u.kleine-koenig@pengutronix.de>
+ <00b3dd46-48ba-3d40-36dd-79372a956085@lechnology.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="/692ujiEW8lbLS+a"
+        protocol="application/pgp-signature"; boundary="73zfog3io22pmbly"
 Content-Disposition: inline
-In-Reply-To: <1a624011-0b43-ac42-be53-a42f81923e5a@linux.intel.com>
+In-Reply-To: <00b3dd46-48ba-3d40-36dd-79372a956085@lechnology.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---/692ujiEW8lbLS+a
-Content-Type: text/plain; charset=utf-8
+--73zfog3io22pmbly
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 06, 2021 at 02:40:13PM +0300, Jarkko Nikula wrote:
-> Hi
->=20
-> On 7/5/21 11:19 AM, William Breathitt Gray wrote:
-> > The events_queue_size sysfs attribute provides a way for users to
-> > dynamically configure the Counter events queue size for the Counter
-> > character device interface. The size is in number of struct
-> > counter_event data structures. The number of elements will be rounded-up
-> > to a power of 2 due to a requirement of the kfifo_alloc function called
-> > during reallocation of the queue.
+Hello,
+
+Cc +=3D Mark + linux-spi
+
+On Fri, Jul 09, 2021 at 11:39:48AM -0500, David Lechner wrote:
+> On 7/9/21 5:11 AM, Uwe Kleine-K=F6nig wrote:
+> > The ADS7950 requires that CS is deasserted after each SPI word. Before
+> > commit e2540da86ef8 ("iio: adc: ti-ads7950: use SPI_CS_WORD to reduce
+> > CPU usage") the driver used a message with one spi transfer per channel
+> > where each but the last one had .cs_change set to enforce a CS toggle.
+> > This was wrongly translated into a message with a single transfer and
+> > .cs_change set which results in a CS toggle after each word but the
+> > last which corrupts the first adc conversion of all readouts after the
+> > first readout.
 > >=20
-> ...
-> > diff --git a/drivers/counter/counter-chrdev.c b/drivers/counter/counter=
--chrdev.c
-> > index 92805b1f65b8..13644c87d02a 100644
-> > --- a/drivers/counter/counter-chrdev.c
-> > +++ b/drivers/counter/counter-chrdev.c
-> > @@ -323,6 +323,9 @@ static int counter_chrdev_open(struct inode *inode,=
- struct file *filp)
-> >   							    typeof(*counter),
-> >   							    chrdev);
-> >  =20
-> > +	if (!mutex_trylock(&counter->chrdev_lock))
-> > +		return -EBUSY;
-> > +
-> >   	get_device(&counter->dev);
-> >   	filp->private_data =3D counter;
-> >  =20
-> > @@ -339,6 +342,7 @@ static int counter_chrdev_release(struct inode *ino=
-de, struct file *filp)
-> >   		return err;
-> >  =20
-> >   	put_device(&counter->dev);
-> > +	mutex_unlock(&counter->chrdev_lock);
-> >  =20
-> >   	return 0;
-> >   }
+> > Fixes: e2540da86ef8 ("iio: adc: ti-ads7950: use SPI_CS_WORD to reduce C=
+PU usage")
+> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> > ---
+> >   drivers/iio/adc/ti-ads7950.c | 1 -
+> >   1 file changed, 1 deletion(-)
+> >=20
+> > diff --git a/drivers/iio/adc/ti-ads7950.c b/drivers/iio/adc/ti-ads7950.c
+> > index 2383eacada87..a2b83f0bd526 100644
+> > --- a/drivers/iio/adc/ti-ads7950.c
+> > +++ b/drivers/iio/adc/ti-ads7950.c
+> > @@ -568,7 +568,6 @@ static int ti_ads7950_probe(struct spi_device *spi)
+> >   	st->ring_xfer.tx_buf =3D &st->tx_buf[0];
+> >   	st->ring_xfer.rx_buf =3D &st->rx_buf[0];
+> >   	/* len will be set later */
+> > -	st->ring_xfer.cs_change =3D true;
+> >   	spi_message_add_tail(&st->ring_xfer, &st->ring_msg);
+> >=20
 >=20
-> I got two separate mutex warnings from counter_chrdev_open() by doing=20
-> blind "cat /dev/counter0". First one due mutex being uninitialized:
->=20
-> [  441.057342] DEBUG_LOCKS_WARN_ON(lock->magic !=3D lock)
-> [  441.057355] WARNING: CPU: 2 PID: 366 at kernel/locking/mutex.c:1416=20
-> mutex_trylock+0xf2/0x130
-> ...
-> [  441.217331] Call Trace:
-> [  441.220062]  counter_chrdev_open+0x21/0x60 [counter]
-> ...
->=20
-> which I fixed trivially by (please be free to use it)
->=20
-> --- a/drivers/counter/counter-chrdev.c
-> +++ b/drivers/counter/counter-chrdev.c
-> @@ -364,6 +364,7 @@ int counter_chrdev_add(struct counter_device *const=
-=20
-> counter)
->          spin_lock_init(&counter->events_list_lock);
->          init_waitqueue_head(&counter->events_wait);
->          mutex_init(&counter->events_lock);
-> +       mutex_init(&counter->chrdev_lock);
->=20
->          /* Initialize character device */
->          cdev_init(&counter->chrdev, &counter_fops);
+> Yes, it seems like the SPI_CS_WORD flag should have replaced this (it's
+> been too long, I can't remember if it was intentional). And removing it
+> doesn't seem to break anything for me.
 
-Thanks, I'll add this line in.
+If it's not broken for you without my patch, your spi bus driver doesn't
+honor .cs_change in the last transfer. Out of interest: Which bus are
+you using? I wonder if the driver should refuse the request if it cannot
+honer .cs_change?! (spi-imx does honor it only if gpios are used as chip
+select, the native chip selects cannot do that.)
 
-> and after that
->=20
-> [   16.564403] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D
-> [   16.570725] WARNING: lock held when returning to user space!
-> [   16.577044] 5.13.0-next-20210706+ #4 Not tainted
-> [   16.582198] ------------------------------------------------
-> [   16.588507] cat/331 is leaving the kernel with locks still held!
-> [   16.595214] 1 lock held by cat/331:
-> [   16.599103]  #0: ffff888102bb3630=20
-> (&counter->chrdev_lock){+.+.}-{3:3}, at: counter_chrdev_open+0x21/0x60=20
-> [counter]
->=20
-> Jarkko
+> Reviewed-by: David Lechner <david@lechnology.com>
+> Tested-by: David Lechner <david@lechnology.com>
 
-I'm not sure how to resolve this warning. The purpose of this lock is to
-limit chrdev to a single open at a time. To accomplish this I grab this
-lock in counter_chrdev_open() and hold it until counter_chrdev_release()
-is called. Is there a better way to accomplish this?
+Thanks
 
-William Breathitt Gray
+Best regards
+Uwe
 
---/692ujiEW8lbLS+a
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--73zfog3io22pmbly
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmDpdX4ACgkQhvpINdm7
-VJKdXg/+OTmIvRWcp6QRPVGTj4u5tXyU4dpSBNvwJhze9Dtx5IstS63x3eqVCdx9
-pnzK7cfLGkCjzUS3tzjbYH/qebQ83C0awJeACn44zELCH0afP3jpN0Ewz6rYAAkn
-IPNiUKtgebR8nADn5x5QiFnk0EA8SNAs6SvqDsO8NntuRmLEKgWTTOLGVLhntqaM
-kOzwcjjyuv68CGvT8tc85ahJJ+7AaCSBLKBgOvPRid1GXOyX3LhN+GLVJGUbA+BG
-HxpDBQ3rNEsIy0B8/v+XnlEscZM98BhhuLOPxpvoxZC/t1DWBMTqtfFLHM3v/qjx
-aAupXfSmlYEidyspSWUzDHMKGWgpnMYmXd/X4fkFJy8BS/9aW+gr8emzdt/mVeuL
-qz3MdcRD8+5DbBFTHH4jl/y/kaeZ9ztvnBG6Z3kGrnKkWWSDS+Ppu8R2YfuMvrtT
-R3+c15C/QIc12pbpFx6OwJu9AssyYDWkQbgodIL8AUWU7F8lKXdB6n8arjuzHeYm
-v4yQWQIPJ6Uv3g1Xt/KW71EEXQsHQJscC/NJU5VsKV2vxpiZLlyY1pQYz23wRVJB
-iJ1OhTONcWwexJc3VLTv7yW1DTtesAnQHSOIHsRsWCDQJlZfVDgOg9koj0x89v1L
-cGPfwuf8U9Nvq8sig2UMKqcoKuq2Js6gHZmV3DL8LF9PG4OGpwA=
-=bdED
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmDpj/8ACgkQwfwUeK3K
+7AnfNgf/R21gAbiYoQ0fucfTRkiSt3xmC8nFtIHlVPB0UenEhPtedW/SSfOreJ6k
+60JL0r2h2dN6m64YOsFHCTTZaV80wyeK5tCz0myj38CEFRfrd9/Ki4xIrqoo0PT2
+jOnxGUMWg3lv5/WN4iFKetkHRCT0Vei3erlWPXP9Jr/MDEhm03tvw1aGaOcob8x6
+emLiZWTZb7jjb6/6cpDmT6bFYxGmEuZD7Q+hY3fvvxjzhFLdXzdBf/LY3P7aGguR
+i+GL3n8eSD75GC+shptQIJYNPBm7pzd91SMS9yLw/suX90ckfYewwiz50zONjD4M
+stEGrKIoapkYT+wxBoUBilM0IAvMdg==
+=JweO
 -----END PGP SIGNATURE-----
 
---/692ujiEW8lbLS+a--
+--73zfog3io22pmbly--

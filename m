@@ -2,150 +2,92 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BFB803C3573
-	for <lists+linux-iio@lfdr.de>; Sat, 10 Jul 2021 18:06:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AEEF3C3580
+	for <lists+linux-iio@lfdr.de>; Sat, 10 Jul 2021 18:20:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231888AbhGJQIz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 10 Jul 2021 12:08:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37744 "EHLO mail.kernel.org"
+        id S229490AbhGJQXj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 10 Jul 2021 12:23:39 -0400
+Received: from vern.gendns.com ([98.142.107.122]:58526 "EHLO vern.gendns.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230325AbhGJQIz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 10 Jul 2021 12:08:55 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D65BB61249;
-        Sat, 10 Jul 2021 16:06:06 +0000 (UTC)
-Date:   Sat, 10 Jul 2021 17:08:37 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Liam Beguin <liambeguin@gmail.com>
-Cc:     lars@metafoo.de, Michael.Hennerich@analog.com,
-        charles-antoine.couret@essensium.com, Nuno.Sa@analog.com,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, robh+dt@kernel.org
-Subject: Re: [PATCH v2 1/4] iio: adc: ad7949: define and use bitfield names
-Message-ID: <20210710170837.263d6b1a@jic23-huawei>
-In-Reply-To: <20210709155856.1732245-2-liambeguin@gmail.com>
-References: <20210709155856.1732245-1-liambeguin@gmail.com>
-        <20210709155856.1732245-2-liambeguin@gmail.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S229452AbhGJQXi (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 10 Jul 2021 12:23:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=ojyIBwloAwMN6eYxqUMzZGXJG9Wtq+1qb9RbHTEv0ks=; b=D5orH/qmYnTHFv9PZnhKELEg1v
+        kBSwdw3LQ1+4fczyjKmkhtc4JCNSTCL2CE7/mRck/3Av+HWFn/LDBMCyi8kuEgbqVmPssgmZVEzP6
+        TRnqYIoi5NdgWVTWn1zOHSgbAmUf8uH4kIdMg6W6r4M0CMx0xsyqrqEZV7k75EanUU+OsdvqfLiY2
+        qZRCElDSt12DRF3MWNC5XjGMWDCYVaLM3sPDATLhB6zhaL9ZrrH2ZILIxz/rGQwEJhBxv/7vRIq1C
+        iTHzfIHWbxFKN0Nd7Vq7gvZ+FOrrVa48QdCf3RL1poxdeZpSpFLSiUvkzRkrl3hQh5tRamLrEZ5Uk
+        7jQ10yWg==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:46202 helo=[192.168.0.134])
+        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <david@lechnology.com>)
+        id 1m2FiV-00GbOP-2s; Sat, 10 Jul 2021 12:20:50 -0400
+Subject: Re: [PATCH v12 13/17] counter: Implement signalZ_action_component_id
+ sysfs attribute
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>, jic23@kernel.org
+Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
+        a.fatoum@pengutronix.de, kamel.bouhara@bootlin.com,
+        gwendal@chromium.org, alexandre.belloni@bootlin.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
+        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com,
+        o.rempel@pengutronix.de, jarkko.nikula@linux.intel.com,
+        Dan Carpenter <dan.carpenter@oracle.com>
+References: <cover.1625471640.git.vilhelm.gray@gmail.com>
+ <472b3f1cce1bbfedd2031cdb70d0348f3802e821.1625471640.git.vilhelm.gray@gmail.com>
+From:   David Lechner <david@lechnology.com>
+Message-ID: <a9bc17fa-2ba0-027c-2ad8-99e4e6a03b2a@lechnology.com>
+Date:   Sat, 10 Jul 2021 11:20:45 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <472b3f1cce1bbfedd2031cdb70d0348f3802e821.1625471640.git.vilhelm.gray@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri,  9 Jul 2021 11:58:53 -0400
-Liam Beguin <liambeguin@gmail.com> wrote:
-
-> From: Liam Beguin <lvb@xiphos.com>
+On 7/5/21 3:19 AM, William Breathitt Gray wrote:
+> The Generic Counter chrdev interface expects users to supply component
+> IDs in order to select Synapses for requests. In order for users to know
+> what component ID belongs to which Synapse this information must be
+> exposed. The signalZ_action_component_id attribute provides a way for
+> users to discover what component ID belongs to the respective Synapse.
 > 
-> Replace raw configuration register values by using FIELD_PREP and
-> defines to improve readability.
-> 
-> Signed-off-by: Liam Beguin <lvb@xiphos.com>
-
-Ideally fixes should come before any refactors / cleanups like this one.
-That reduces the burden if people want to backport them.
-
-In this particular case I'm guessing no one ran into the issues the
-following patches deal with so we can just take these in the order
-you have here.
-
-Otherwise, good cleanup.  A few minor comments inline, mostly as a result
-of some less than ideal name choices on the datasheet.
-
+> Cc: David Lechner <david@lechnology.com>
+> Cc: Gwendal Grignou <gwendal@chromium.org>
+> Cc: Dan Carpenter <dan.carpenter@oracle.com>
+> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 > ---
->  drivers/iio/adc/ad7949.c | 38 +++++++++++++++++++++++++++++++-------
->  1 file changed, 31 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ad7949.c b/drivers/iio/adc/ad7949.c
-> index 1b4b3203e428..93aacf4f680b 100644
-> --- a/drivers/iio/adc/ad7949.c
-> +++ b/drivers/iio/adc/ad7949.c
-> @@ -12,12 +12,27 @@
->  #include <linux/regulator/consumer.h>
->  #include <linux/spi/spi.h>
->  
-> -#define AD7949_MASK_CHANNEL_SEL		GENMASK(9, 7)
->  #define AD7949_MASK_TOTAL		GENMASK(13, 0)
-> -#define AD7949_OFFSET_CHANNEL_SEL	7
-> -#define AD7949_CFG_READ_BACK		0x1
->  #define AD7949_CFG_REG_SIZE_BITS	14
->  
-> +#define AD7949_CFG_BIT_CFG		BIT(13)
 
-Even though that's the name on the datasheet it is silly!
+I like this better than having to scrape the number from the
+attribute name.
 
-I would have just one define called
-AD7949_CFG_VAL_OVERWRITE BIT(13)
+Reviewed-by: David Lechner <david@lechnology.com>
 
-It's common to do that for single flags where
-FIELD_PREP(AD7949_CFG_VAL_OVERWRITE, 1) for example has an
-obvious meaning for the 1.
+> +	/* Allocate Counter attribute */
+> +	counter_attr = devm_kzalloc(dev, sizeof(*counter_attr), GFP_KERNEL);
 
-> +#define AD7949_CFG_VAL_CFG_OVERWRITE		1
-> +#define AD7949_CFG_VAL_CFG_KEEP			0
-> +#define AD7949_CFG_BIT_INCC		GENMASK(12, 10)
-> +#define AD7949_CFG_VAL_INCC_UNIPOLAR_GND	7
-> +#define AD7949_CFG_VAL_INCC_UNIPOLAR_COMM	6
-> +#define AD7949_CFG_VAL_INCC_UNIPOLAR_DIFF	4
-> +#define AD7949_CFG_VAL_INCC_TEMP		3
-> +#define AD7949_CFG_VAL_INCC_BIPOLAR		2
-> +#define AD7949_CFG_VAL_INCC_BIPOLAR_DIFF	0
-> +#define AD7949_CFG_BIT_INX		GENMASK(9, 7)
-
-This is rather non obvious abbreviation. _INx would be clearer
-perhaps, but then we'd get someone fixing the camel case...
-Given it would be good to match the datasheet, keep the name
-but add a comment to say this is the input channel select.
-
-> +#define AD7949_CFG_BIT_BW		BIT(6)
-
-As above, I'd suggest just defining AD7949_CFG_VAL_BW_FULL BIT(6)
-then it's either full or not depending on a 0 or 1 write.
-
-> +#define AD7949_CFG_VAL_BW_FULL			1
-> +#define AD7949_CFG_VAL_BW_QUARTER		0
-> +#define AD7949_CFG_BIT_REF		GENMASK(5, 3)
-> +#define AD7949_CFG_BIT_SEQ		GENMASK(2, 1)
-> +#define AD7949_CFG_BIT_RBN		BIT(0)
-> +
->  enum {
->  	ID_AD7949 = 0,
->  	ID_AD7682,
-> @@ -109,8 +124,8 @@ static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
->  	 */
->  	for (i = 0; i < 2; i++) {
->  		ret = ad7949_spi_write_cfg(ad7949_adc,
-> -					   channel << AD7949_OFFSET_CHANNEL_SEL,
-> -					   AD7949_MASK_CHANNEL_SEL);
-> +					   FIELD_PREP(AD7949_CFG_BIT_INX, channel),
-> +					   AD7949_CFG_BIT_INX);
->  		if (ret)
->  			return ret;
->  		if (channel == ad7949_adc->current_channel)
-> @@ -214,10 +229,19 @@ static int ad7949_spi_init(struct ad7949_adc_chip *ad7949_adc)
->  {
->  	int ret;
->  	int val;
-> +	u16 cfg;
->  
-> -	/* Sequencer disabled, CFG readback disabled, IN0 as default channel */
->  	ad7949_adc->current_channel = 0;
-> -	ret = ad7949_spi_write_cfg(ad7949_adc, 0x3C79, AD7949_MASK_TOTAL);
-> +
-> +	cfg = FIELD_PREP(AD7949_CFG_BIT_CFG, AD7949_CFG_VAL_CFG_OVERWRITE) |
-> +		FIELD_PREP(AD7949_CFG_BIT_INCC, AD7949_CFG_VAL_INCC_UNIPOLAR_GND) |
-> +		FIELD_PREP(AD7949_CFG_BIT_INX, ad7949_adc->current_channel) |
-> +		FIELD_PREP(AD7949_CFG_BIT_BW, AD7949_CFG_VAL_BW_FULL) |
-> +		FIELD_PREP(AD7949_CFG_BIT_REF, AD7949_REF_EXT_BUF) |
-> +		FIELD_PREP(AD7949_CFG_BIT_SEQ, 0x0) |
-> +		FIELD_PREP(AD7949_CFG_BIT_RBN, 1);
-> +
-> +	ret = ad7949_spi_write_cfg(ad7949_adc, cfg, AD7949_MASK_TOTAL);
->  
->  	/*
->  	 * Do two dummy conversions to apply the first configuration setting.
+nit: Comments like this are redundant and can be omitted. All 3 words
+in the comment are literally (abbreviated) in the next line of code so
+it doesn't add any new/useful information.
 

@@ -2,199 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E5B7C3C35A2
-	for <lists+linux-iio@lfdr.de>; Sat, 10 Jul 2021 19:16:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 417A23C35AB
+	for <lists+linux-iio@lfdr.de>; Sat, 10 Jul 2021 19:16:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229542AbhGJQ43 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 10 Jul 2021 12:56:29 -0400
-Received: from vern.gendns.com ([98.142.107.122]:32804 "EHLO vern.gendns.com"
+        id S229846AbhGJRAU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 10 Jul 2021 13:00:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44514 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229500AbhGJQ42 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 10 Jul 2021 12:56:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=vYGqf2Kf/srtKQ51k3zl5iWB5A8pjKDlW1+mmgwYypc=; b=WLZSRLeBxg7eHz/DVWKdwJk6t0
-        lepVtlgzjM2TRkTPbxa57mtKsrt/dnutLjwn15RUXeUQCdcTQKYGIEkSHg/z/KNqEYVCQ6s3IVh+Y
-        sSFv5IkvF4blBNucBXhgySvgdgaK+eVmOnbjk3FhIiuIsUPbvi/3xq8KamMLa0E3N2oDCLO5Cpwna
-        CcLtYbsq4vNUp/vr5WJAZ352fH/8uvZKQdcpLGxZYxi/uukS4aiUrKyiqJ8gbV6JB1VGP0s4PB7W6
-        jWG5Ul1Pl2XZZAkJ9IdFtGtf0gHSlmJizMdnnw9KuUje7LmsGGa+O1USG8EY9ex9S6sj4esHVagq+
-        nVP5aIcQ==;
-Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:46724 helo=[192.168.0.134])
-        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.94.2)
-        (envelope-from <david@lechnology.com>)
-        id 1m2GEH-00GhKU-9F; Sat, 10 Jul 2021 12:53:40 -0400
-Subject: Re: [PATCH v12 12/17] tools/counter: Create Counter tools
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>, jic23@kernel.org
-Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
-        a.fatoum@pengutronix.de, kamel.bouhara@bootlin.com,
-        gwendal@chromium.org, alexandre.belloni@bootlin.com,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
-        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
-        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com,
-        o.rempel@pengutronix.de, jarkko.nikula@linux.intel.com,
-        Pavel Machek <pavel@ucw.cz>
-References: <cover.1625471640.git.vilhelm.gray@gmail.com>
- <e97aa3e529f54d5651df7edcc1b43a8157d9e9c3.1625471640.git.vilhelm.gray@gmail.com>
-From:   David Lechner <david@lechnology.com>
-Message-ID: <343a2bd3-38b7-7462-bc52-d3f6493bede0@lechnology.com>
-Date:   Sat, 10 Jul 2021 11:53:35 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S229551AbhGJRAS (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 10 Jul 2021 13:00:18 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 63FE561208;
+        Sat, 10 Jul 2021 16:57:30 +0000 (UTC)
+Date:   Sat, 10 Jul 2021 18:00:01 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Liam Beguin <liambeguin@gmail.com>
+Cc:     lars@metafoo.de, Michael.Hennerich@analog.com,
+        charles-antoine.couret@essensium.com, Nuno.Sa@analog.com,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, robh+dt@kernel.org
+Subject: Re: [PATCH v2 4/4] dt-bindings: iio: adc: ad7949: add
+ adi,reference-source
+Message-ID: <20210710180001.051f7367@jic23-huawei>
+In-Reply-To: <20210709155856.1732245-5-liambeguin@gmail.com>
+References: <20210709155856.1732245-1-liambeguin@gmail.com>
+        <20210709155856.1732245-5-liambeguin@gmail.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <e97aa3e529f54d5651df7edcc1b43a8157d9e9c3.1625471640.git.vilhelm.gray@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - vern.gendns.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lechnology.com
-X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 7/5/21 3:19 AM, William Breathitt Gray wrote:
-> This creates an example Counter program under tools/counter/*
-> to exemplify the Counter character device interface.
+On Fri,  9 Jul 2021 11:58:56 -0400
+Liam Beguin <liambeguin@gmail.com> wrote:
+
+> From: Liam Beguin <lvb@xiphos.com>
 > 
-> Cc: Pavel Machek <pavel@ucw.cz>
-> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+> Add bindings documentation for the adi,reference-source property.
+> This property is required to properly configure the ADC sample request
+> based on which reference source should be used for the calculation.
+
+Should this be per channel? That will effect some of what I say below...
+
+> 
+> Signed-off-by: Liam Beguin <lvb@xiphos.com>
 > ---
-
-
-> --- a/tools/Makefile
-> +++ b/tools/Makefile
-> @@ -12,6 +12,7 @@ help:
->   	@echo '  acpi                   - ACPI tools'
->   	@echo '  bpf                    - misc BPF tools'
->   	@echo '  cgroup                 - cgroup tools'
-> +	@echo '  counter                - Counter tools'
-
-nit: other descriptions start with lower case letter, so to be
-consistent, this should too
-
-
-> --- /dev/null
-> +++ b/tools/counter/counter_example.c
-> @@ -0,0 +1,95 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/* Counter - example userspace application
-> + *
-> + * The userspace application opens /dev/counter0, configures the
-> + * COUNTER_EVENT_INDEX event channel 0 to gather Count 0 count and Count
-> + * 1 count, and prints out the data as it becomes available on the
-> + * character device node.
-> + *
-> + * Copyright (C) 2021 William Breathitt Gray
-> + */
-> +#include <errno.h>
-> +#include <fcntl.h>
-> +#include <linux/counter.h>
-> +#include <stdio.h>
-> +#include <string.h>
-> +#include <sys/ioctl.h>
-> +#include <unistd.h>
-> +
-> +struct counter_watch watches[2] = {
-
-nit: this can be static
-
-> +	{
-> +		/* Component data: Count 0 count */
-> +		.component.type = COUNTER_COMPONENT_COUNT,
-> +		.component.scope = COUNTER_SCOPE_COUNT,
-> +		.component.parent = 0,
-> +		/* Event type: Index */
-> +		.event = COUNTER_EVENT_INDEX,
-> +		/* Device event channel 0 */
-> +		.channel = 0,
-> +	},
-> +	{
-> +		/* Component data: Count 1 count */
-> +		.component.type = COUNTER_COMPONENT_COUNT,
-> +		.component.scope = COUNTER_SCOPE_COUNT,
-> +		.component.parent = 1,
-> +		/* Event type: Index */
-> +		.event = COUNTER_EVENT_INDEX,
-> +		/* Device event channel 0 */
-> +		.channel = 0,
-> +	},
-> +};
-> +
-> +int main(void)
-> +{
-> +	int fd;
-> +	int ret;
-> +	struct counter_event event_data[2];
-> +
-> +	fd = open("/dev/counter0", O_RDWR);
-> +	if (fd == -1) {
-> +		perror("Unable to open /dev/counter0");
-> +		return -errno;
-
-errno is no longer valid after calling perror(). Since this
-is example code, we can just return 1 instead (exit codes
-positive number between 0 and 255 so -1 would be 255).
-
-> +	}
-> +
-> +	ret = ioctl(fd, COUNTER_ADD_WATCH_IOCTL, watches);
-> +	if (ret == -1) {
-> +		perror("Error adding watches[0]");
-> +		return -errno;
-> +	}
-> +	ret = ioctl(fd, COUNTER_ADD_WATCH_IOCTL, watches + 1);
-> +	if (ret == -1) {
-> +		perror("Error adding watches[1]");
-> +		return -errno;
-> +	}
-> +	ret = ioctl(fd, COUNTER_ENABLE_EVENTS_IOCTL);
-> +	if (ret == -1) {
-> +		perror("Error enabling events");
-> +		return -errno;
-> +	}
-> +
-> +	for (;;) {
-> +		ret = read(fd, event_data, sizeof(event_data));
-> +		if (ret == -1) {
-> +			perror("Failed to read event data");
-> +			return -errno;
-> +		}
-> +
-> +		if (ret != sizeof(event_data)) {
-> +			fprintf(stderr, "Failed to read event data\n");
-> +			return -EIO;
-> +		}
-> +
-> +		printf("Timestamp 0: %llu\tCount 0: %llu\n"
-> +		       "Error Message 0: %s\n"
-> +		       "Timestamp 1: %llu\tCount 1: %llu\n"
-> +		       "Error Message 1: %s\n",
-> +		       (unsigned long long)event_data[0].timestamp,
-> +		       (unsigned long long)event_data[0].value,
-> +		       strerror(event_data[0].status),
-> +		       (unsigned long long)event_data[1].timestamp,
-> +		       (unsigned long long)event_data[1].value,
-> +		       strerror(event_data[1].status));
-> +	}
-
-Aren't the Count 0 and Count 1 events independent? Why should we expect to
-always get both events at the same time in the same order?
-
-> +
-> +	return 0;
-> +}
+>  .../bindings/iio/adc/adi,ad7949.yaml          | 21 +++++++++++++++++++
+>  1 file changed, 21 insertions(+)
 > 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml
+> index 9b56bd4d5510..eae3121cad01 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml
+> @@ -35,6 +35,27 @@ properties:
+>    "#io-channel-cells":
+>      const: 1
+>  
+> +  adi,reference-select:
+
+This is one field in the register, but it's not one thing, so lets break it up
+in DT.  We should do this both to make for more readable dts files and to
+enforce the requirements on regulators...
+
+> +    description: |
+> +      Select the reference voltage source to use when converting samples.
+> +      Acceptable values are:
+> +      - 0: Internal reference and temperature sensor enabled.
+> +           Vref=2.5V, buffered output
+> +      - 1: Internal reference and temperature sensor enabled.
+> +           Vref=4.096V, buffered output
+> +      - 2: Use external reference, temperature sensor enabled.
+> +           Internal buffer disabled
+> +      - 3: Use external reference, internal buffer and temperature sensor
+> +           enabled.
+> +      - 6: Use external reference, internal buffer and temperature sensor
+> +           disabled.
+> +      - 7: Use external reference, internal buffer enabled.
+> +           Internal reference and temperature sensor disabled.
+
+So question 1 is whether to use an external or internal reference.
+Normally we'd make the coarse decision of whether to use an external reference
+by whether there is a regulator provided.  That won't work so well if we make
+this per channel.
+
+Question 2, assuming internal reference, what voltage?  Those should take
+an actual voltage (probably in mV and match against an enum of the two possible values).
+Binding should check to make sure this isn't specified as well as saying we
+are using an external refernce.
+
+Question 3, assuming external reference, is temperature sensor enabled?
+- actually dumb question, but why would anyone not want this enabled?  Maybe turn it
+off in runtime pm, but in general if you've fitted a chip with a temperature sensor
+you at least sometimes want to measure temperature!  So my gut feeling is don't
+allow this to be controlled (effectively drop cases 6 and 7 above as being
+unlikely to be of interest to anyone)
+
+Question 4, Is the internal buffer enabled when using and external reference.
+This one is interesting.   We could just expose it in general, but I wonder
+if we can do something that reflects how it is used.  From the various figures in
+the datasheet this seems to be coupled to whether the external reference is on
+pin REF_IN or pin REF.  If that's the case can we have two optional regs only
+one of which should be supplied?  However, this gets more fiddly because
+the default right now is vref-supply actually being connected to the vrefin connection.
+That's annoying as it stops us using the obvious naming...
+Hence I think we can have
+vref-supply (actually connected to vrefin) and vref-unbuffered-supply
+
+
+
+> +
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    enum: [0, 1, 2, 3, 6, 7]
+> +    default: 7
+> +
+>  required:
+>    - compatible
+>    - reg
 

@@ -2,280 +2,606 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F8253C3BDC
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Jul 2021 13:28:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AAE93C3BF1
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Jul 2021 13:40:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232024AbhGKLbH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 11 Jul 2021 07:31:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58942 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231567AbhGKLbH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 11 Jul 2021 07:31:07 -0400
-Received: from mail-ua1-x92a.google.com (mail-ua1-x92a.google.com [IPv6:2607:f8b0:4864:20::92a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD436C0613DD;
-        Sun, 11 Jul 2021 04:28:20 -0700 (PDT)
-Received: by mail-ua1-x92a.google.com with SMTP id 109so1453398uar.10;
-        Sun, 11 Jul 2021 04:28:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=2UbdQq4lzRnyLqpnoKRSKm5CIBGEvXxu2D17blGP0rc=;
-        b=uZO275xN/xrbBY/7UUArNmoCsAwrZGS9wg9y7eVGgpV7a3h2KA794rjOITby78slb3
-         kk/o6kwBR4DF9m+u76fTJW2UzfgQQv7R7p6rjJ/5uhkYGP4ywLvbd/aVfq1pYTMhavl0
-         xYxzOXpePRViDIGKb5y4VA+AN1+RfZtp2gkqHX4YFetudLxMorwL0xLn610Pfjn1f5zH
-         aTfMixTPHU52Nj1BpRHOkKHLpnpIDw2BLGx+Ndz31IMFP+reL+o9al5Wg546PoL/tEGj
-         42zkH9BYvc3dy3o60lTTZYEnMcSBFtwwEN50xPEj3Xe4NPbQkgblk9XG6t67wffNNDCH
-         axQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=2UbdQq4lzRnyLqpnoKRSKm5CIBGEvXxu2D17blGP0rc=;
-        b=E8MyPgxWXyGvePirIU3HubiH+Wbc2561nhngEvTK+UN5feOlt03Ij4xt3jo0DC1a/V
-         Z7gsWmBGoV/98k2H4hDj8HcSgTVBOqotn6o59Mo/o5QkSryH/+Xs96uiNPEcnXqSS7OR
-         H98ak30JgugDsxwHLeLnCYuzp1MqYhuibV0LLRN7QlgdlKQ6bft+lm1erq5CYTXejZvw
-         t7nDHSShr5TwLZl0wsCiAo0jy4ps0vk6xVsUQYt6+zY9QkvM0lfXFyTAvS9U6dg1A3DS
-         9GcJhhLaQafH5RnRjppdFE9LZVddDlr6RIria2V2DYN0dxLdbph4HgyMubuSDqYVoGeh
-         Gezg==
-X-Gm-Message-State: AOAM5335zkyS7oK8mevuwEPdNkZVGRiA/qG49qOJLSBzUgFtO/9OeoN0
-        ALIQZSnWOQTk+5LiBZiW4ME=
-X-Google-Smtp-Source: ABdhPJyfXiuANdIugYW/0ijyHB9PsLd9AbrGVY8e174gPdjELQV0JHTLolVn9IfYR+kXf3ROujFpgA==
-X-Received: by 2002:ab0:d97:: with SMTP id i23mr11710027uak.61.1626002899806;
-        Sun, 11 Jul 2021 04:28:19 -0700 (PDT)
-Received: from shinobu ([193.27.12.133])
-        by smtp.gmail.com with ESMTPSA id m16sm1558726vkm.47.2021.07.11.04.28.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Jul 2021 04:28:19 -0700 (PDT)
-Date:   Sun, 11 Jul 2021 20:28:11 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     David Lechner <david@lechnology.com>
-Cc:     jic23@kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-        kernel@pengutronix.de, a.fatoum@pengutronix.de,
-        kamel.bouhara@bootlin.com, gwendal@chromium.org,
-        alexandre.belloni@bootlin.com, linux-iio@vger.kernel.org,
+        id S232376AbhGKLm5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 11 Jul 2021 07:42:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46518 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229688AbhGKLm5 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 11 Jul 2021 07:42:57 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 576B861220;
+        Sun, 11 Jul 2021 11:40:04 +0000 (UTC)
+Date:   Sun, 11 Jul 2021 12:42:20 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
+        a.fatoum@pengutronix.de, kamel.bouhara@bootlin.com,
+        gwendal@chromium.org, alexandre.belloni@bootlin.com,
+        david@lechnology.com, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         syednwaris@gmail.com, patrick.havelange@essensium.com,
         fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
         alexandre.torgue@st.com, o.rempel@pengutronix.de,
-        jarkko.nikula@linux.intel.com, Pavel Machek <pavel@ucw.cz>
-Subject: Re: [PATCH v12 12/17] tools/counter: Create Counter tools
-Message-ID: <YOrVy7Ba117s1maQ@shinobu>
+        jarkko.nikula@linux.intel.com,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Subject: Re: [PATCH v12 06/17] counter: Internalize sysfs interface code
+Message-ID: <20210711124220.0a601741@jic23-huawei>
+In-Reply-To: <834dadaa68af74c703f19f8ddcca5512dd1d177e.1625471640.git.vilhelm.gray@gmail.com>
 References: <cover.1625471640.git.vilhelm.gray@gmail.com>
- <e97aa3e529f54d5651df7edcc1b43a8157d9e9c3.1625471640.git.vilhelm.gray@gmail.com>
- <343a2bd3-38b7-7462-bc52-d3f6493bede0@lechnology.com>
+        <834dadaa68af74c703f19f8ddcca5512dd1d177e.1625471640.git.vilhelm.gray@gmail.com>
+X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="PD3Ct3y1jwnkQ/rs"
-Content-Disposition: inline
-In-Reply-To: <343a2bd3-38b7-7462-bc52-d3f6493bede0@lechnology.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Mon,  5 Jul 2021 17:18:54 +0900
+William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
 
---PD3Ct3y1jwnkQ/rs
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> This is a reimplementation of the Generic Counter driver interface.
+> There are no modifications to the Counter subsystem userspace interface,
+> so existing userspace applications should continue to run seamlessly.
+> 
+> The purpose of this patch is to internalize the sysfs interface code
+> among the various counter drivers into a shared module. Counter drivers
+> pass and take data natively (i.e. u8, u64, etc.) and the shared counter
+> module handles the translation between the sysfs interface and the
+> device drivers. This guarantees a standard userspace interface for all
+> counter drivers, and helps generalize the Generic Counter driver ABI in
+> order to support the Generic Counter chrdev interface (introduced in a
+> subsequent patch) without significant changes to the existing counter
+> drivers.
+> 
+> Note, Counter device registration is the same as before: drivers
+> populate a struct counter_device with components and callbacks, then
+> pass the structure to the devm_counter_register function. However,
+> what's different now is how the Counter subsystem code handles this
+> registration internally.
+> 
+> Whereas before callbacks would interact directly with sysfs data, this
+> interaction is now abstracted and instead callbacks interact with native
+> C data types. The counter_comp structure forms the basis for Counter
+> extensions.
+> 
+> The counter-sysfs.c file contains the code to parse through the
+> counter_device structure and register the requested components and
+> extensions. Attributes are created and populated based on type, with
+> respective translation functions to handle the mapping between sysfs and
+> the counter driver callbacks.
+> 
+> The translation performed for each attribute is straightforward: the
+> attribute type and data is parsed from the counter_attribute structure,
+> the respective counter driver read/write callback is called, and sysfs
+> I/O is handled before or after the driver read/write function is called.
+> 
+> Cc: Syed Nayyar Waris <syednwaris@gmail.com>
+> Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+> Cc: Patrick Havelange <patrick.havelange@essensium.com>
+> Cc: Kamel Bouhara <kamel.bouhara@bootlin.com>
+> Cc: Fabrice Gasnier <fabrice.gasnier@st.com>
+> Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+> Cc: Alexandre Torgue <alexandre.torgue@st.com>
+> Cc: Dan Carpenter <dan.carpenter@oracle.com>
+> Reviewed-by: David Lechner <david@lechnology.com>
+> Tested-by: David Lechner <david@lechnology.com>
+> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 
-On Sat, Jul 10, 2021 at 11:53:35AM -0500, David Lechner wrote:
-> On 7/5/21 3:19 AM, William Breathitt Gray wrote:
-> > This creates an example Counter program under tools/counter/*
-> > to exemplify the Counter character device interface.
-> >=20
-> > Cc: Pavel Machek <pavel@ucw.cz>
-> > Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-> > ---
->=20
->=20
-> > --- a/tools/Makefile
-> > +++ b/tools/Makefile
-> > @@ -12,6 +12,7 @@ help:
-> >   	@echo '  acpi                   - ACPI tools'
-> >   	@echo '  bpf                    - misc BPF tools'
-> >   	@echo '  cgroup                 - cgroup tools'
-> > +	@echo '  counter                - Counter tools'
->=20
-> nit: other descriptions start with lower case letter, so to be
-> consistent, this should too
+Hi William,
 
-Ack.
+There is some type confusion going on in the stm32_lptim driver that should
+be cleaned up.
 
-> > --- /dev/null
-> > +++ b/tools/counter/counter_example.c
-> > @@ -0,0 +1,95 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only
-> > +/* Counter - example userspace application
-> > + *
-> > + * The userspace application opens /dev/counter0, configures the
-> > + * COUNTER_EVENT_INDEX event channel 0 to gather Count 0 count and Cou=
-nt
-> > + * 1 count, and prints out the data as it becomes available on the
-> > + * character device node.
-> > + *
-> > + * Copyright (C) 2021 William Breathitt Gray
-> > + */
-> > +#include <errno.h>
-> > +#include <fcntl.h>
-> > +#include <linux/counter.h>
-> > +#include <stdio.h>
-> > +#include <string.h>
-> > +#include <sys/ioctl.h>
-> > +#include <unistd.h>
-> > +
-> > +struct counter_watch watches[2] =3D {
->=20
-> nit: this can be static
+A few other minor things but basically looks good to me so I probably won't
+look through this one again for v13 unless some discussion starts!
 
-Ack.
+One to note is that Andy just moved the kstrtoxx definitions to a new header,
+so we should include that where they are used going forwards.  Can do that
+as a cleanup later though given you probably don't want to rebase this on
+a mid merge window state.
 
-> > +	{
-> > +		/* Component data: Count 0 count */
-> > +		.component.type =3D COUNTER_COMPONENT_COUNT,
-> > +		.component.scope =3D COUNTER_SCOPE_COUNT,
-> > +		.component.parent =3D 0,
-> > +		/* Event type: Index */
-> > +		.event =3D COUNTER_EVENT_INDEX,
-> > +		/* Device event channel 0 */
-> > +		.channel =3D 0,
-> > +	},
-> > +	{
-> > +		/* Component data: Count 1 count */
-> > +		.component.type =3D COUNTER_COMPONENT_COUNT,
-> > +		.component.scope =3D COUNTER_SCOPE_COUNT,
-> > +		.component.parent =3D 1,
-> > +		/* Event type: Index */
-> > +		.event =3D COUNTER_EVENT_INDEX,
-> > +		/* Device event channel 0 */
-> > +		.channel =3D 0,
-> > +	},
-> > +};
-> > +
-> > +int main(void)
-> > +{
-> > +	int fd;
-> > +	int ret;
-> > +	struct counter_event event_data[2];
-> > +
-> > +	fd =3D open("/dev/counter0", O_RDWR);
-> > +	if (fd =3D=3D -1) {
-> > +		perror("Unable to open /dev/counter0");
-> > +		return -errno;
->=20
-> errno is no longer valid after calling perror(). Since this
-> is example code, we can just return 1 instead (exit codes
-> positive number between 0 and 255 so -1 would be 255).
+Jonathan
 
-Ack.
 
-> > +	}
-> > +
-> > +	ret =3D ioctl(fd, COUNTER_ADD_WATCH_IOCTL, watches);
-> > +	if (ret =3D=3D -1) {
-> > +		perror("Error adding watches[0]");
-> > +		return -errno;
-> > +	}
-> > +	ret =3D ioctl(fd, COUNTER_ADD_WATCH_IOCTL, watches + 1);
-> > +	if (ret =3D=3D -1) {
-> > +		perror("Error adding watches[1]");
-> > +		return -errno;
-> > +	}
-> > +	ret =3D ioctl(fd, COUNTER_ENABLE_EVENTS_IOCTL);
-> > +	if (ret =3D=3D -1) {
-> > +		perror("Error enabling events");
-> > +		return -errno;
-> > +	}
-> > +
-> > +	for (;;) {
-> > +		ret =3D read(fd, event_data, sizeof(event_data));
-> > +		if (ret =3D=3D -1) {
-> > +			perror("Failed to read event data");
-> > +			return -errno;
-> > +		}
-> > +
-> > +		if (ret !=3D sizeof(event_data)) {
-> > +			fprintf(stderr, "Failed to read event data\n");
-> > +			return -EIO;
-> > +		}
-> > +
-> > +		printf("Timestamp 0: %llu\tCount 0: %llu\n"
-> > +		       "Error Message 0: %s\n"
-> > +		       "Timestamp 1: %llu\tCount 1: %llu\n"
-> > +		       "Error Message 1: %s\n",
-> > +		       (unsigned long long)event_data[0].timestamp,
-> > +		       (unsigned long long)event_data[0].value,
-> > +		       strerror(event_data[0].status),
-> > +		       (unsigned long long)event_data[1].timestamp,
-> > +		       (unsigned long long)event_data[1].value,
-> > +		       strerror(event_data[1].status));
-> > +	}
->=20
-> Aren't the Count 0 and Count 1 events independent? Why should we expect to
-> always get both events at the same time in the same order?
+> ---
 
-Watch 0 and Watch 1 are both triggered by the same event: a
-COUNTER_EVENT_INDEX event on device event channel 0. If we had set
-channel to 1 for Watch 1, then we would have two independent events, but
-in this case both Watches have their respective channel set to 0.
+...
 
-To make the sequence of events clearer, here's a timeline:
+> diff --git a/drivers/counter/counter-sysfs.c b/drivers/counter/counter-sysfs.c
+> new file mode 100644
+> index 000000000000..07588130600a
+> --- /dev/null
+> +++ b/drivers/counter/counter-sysfs.c
 
-* The user configures the watch list via COUNTER_ADD_WATCH_IOCTL.
 
-* The watch list consists of Watch 0 and Watch 1. Watch 0 is configured
-  to report the Count 0 count, while Watch 1 is configured to report the
-  Count 1 count. Both watches are configured to trigger on the same
-  event (COUNTER_EVENT_INDEX on device event channel 0).
+...
 
-* The user enables Counter events via COUNTER_ENABLE_EVENTS_IOCTL.
+> +static ssize_t counter_comp_u8_show(struct device *dev,
+> +				    struct device_attribute *attr, char *buf)
+> +{
+> +	const struct counter_attribute *const a = to_counter_attribute(attr);
+> +	struct counter_device *const counter = dev_get_drvdata(dev);
+> +	int err;
+> +	u8 data = 0;
+> +
+> +	switch (a->scope) {
+> +	case COUNTER_SCOPE_DEVICE:
+> +		err = a->comp.device_u8_read(counter, &data);
+> +		break;
+> +	case COUNTER_SCOPE_SIGNAL:
+> +		err = a->comp.signal_u8_read(counter, a->parent, &data);
+> +		break;
+> +	case COUNTER_SCOPE_COUNT:
+> +		err = a->comp.count_u8_read(counter, a->parent, &data);
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +	if (err < 0)
+> +		return err;
+> +
+> +	if (a->comp.type == COUNTER_COMP_BOOL)
+> +		data = !!data;
 
-* The user calls read() from userspace and blocks until data is
-  available in the Counter events list kfifo; this corresponds to
-  wait_event_interruptible() in counter_chrdev_read().
+You have some drivers that do this internally then you replicate it here?
+An example is cable_fault in the quad 8.  That is not necessarily a
+problem, but perhaps a comment to say this one should be paranoia and
+expectation is drivers will deliver 0 or 1.
 
-* A COUNTER_EVENT_INDEX event occurs on device event channel 0.
+> +
+> +	return sprintf(buf, "%u\n", (unsigned int)data);
+> +}
+> +
 
-* All Watches in the watch list that are waiting for COUNTER_EVENT_INDEX
-  on device event channel 0 will now trigger; both Watch 0 and Watch 1
-  will trigger, one after the other.
 
-* A read operation is performed for the Count 0 count component; the
-  data is pushed to the Counter event list.
+...
 
-* A read operation is performed for the Count 1 count component; the
-  data is pushed to the Counter event list.
+> +static int counter_sysfs_attr_add(struct counter_device *const counter,
+> +				  struct counter_attribute_group *group)
 
-* Counter subsystem notifies that data is available in the Counter
-  events list kfifo; this corresponds to the wake_up_poll() in
-  counter_push_event().
+As below, group is a confusing name, so I'd prefix it with something.
 
-* The userspace read() call returns the Counter event list data.
+> +{
+> +	const enum counter_scope scope = COUNTER_SCOPE_DEVICE;
+> +	struct device *const dev = &counter->dev;
+> +	int err;
+> +	size_t i;
+> +
+> +	/* Add Signals sysfs attributes */
+> +	err = counter_sysfs_signals_add(counter, group);
+> +	if (err < 0)
+> +		return err;
+> +	group += counter->num_signals;
+> +
+> +	/* Add Counts sysfs attributes */
+> +	err = counter_sysfs_counts_add(counter, group);
+> +	if (err < 0)
+> +		return err;
+> +	group += counter->num_counts;
+> +
+> +	/* Create name attribute */
+> +	err = counter_name_attr_create(dev, group, counter->name);
+> +	if (err < 0)
+> +		return err;
+> +
+> +	/* Create num_signals attribute */
+> +	err = counter_attr_create(dev, group, &counter_num_signals_comp, scope,
+> +				  NULL);
+> +	if (err < 0)
+> +		return err;
+> +
+> +	/* Create num_counts attribute */
+> +	err = counter_attr_create(dev, group, &counter_num_counts_comp, scope,
+> +				  NULL);
+> +	if (err < 0)
+> +		return err;
+> +
+> +	/* Create an attribute for each extension */
+> +	for (i = 0; i < counter->num_ext; i++) {
+> +		err = counter_attr_create(dev, group, counter->ext + i, scope,
+> +					  NULL);
+> +		if (err < 0)
+> +			return err;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * counter_sysfs_add - Adds Counter sysfs attributes to the device structure
+> + * @counter:	Pointer to the Counter device structure
+> + *
+> + * Counter sysfs attributes are created and added to the respective device
+> + * structure for later registration to the system. Resource-managed memory
+> + * allocation is performed by this function, and this memory should be freed
+> + * when no longer needed (automatically by a device_unregister call, or
+> + * manually by a devres_release_all call).
+> + */
+> +int counter_sysfs_add(struct counter_device *const counter)
+> +{
+> +	struct device *const dev = &counter->dev;
+> +	const size_t num_groups = counter->num_signals + counter->num_counts + 1;
+> +	struct counter_attribute_group *groups;
 
-So in the counter_example.c reference code, we will always get both
-event data elements returned to the user at the same time (with the
-exception of errors which break early).
+Naming is a bit too similar to 'group' to lead to nice readable code.  Maybe
+cattr_groups or something like that?  groups and dev->groups not being the same
+thing is definitely confusing!
 
-William Breathitt Gray
+> +	size_t i, j;
+> +	int err;
+> +	struct attribute_group *group;
+> +	struct counter_attribute *p;
+> +
+> +	/* Allocate space for attribute groups (signals, counts, and ext) */
+> +	groups = devm_kcalloc(dev, num_groups, sizeof(*groups), GFP_KERNEL);
+> +	if (!groups)
+> +		return -ENOMEM;
+> +
+> +	/* Initialize attribute lists */
+> +	for (i = 0; i < num_groups; i++)
+> +		INIT_LIST_HEAD(&groups[i].attr_list);
+> +
+> +	/* Add Counter device sysfs attributes */
+> +	err = counter_sysfs_attr_add(counter, groups);
+> +	if (err < 0)
+> +		return err;
+> +
+> +	/* Allocate attribute groups for association with device */
+> +	dev->groups = devm_kcalloc(dev, num_groups + 1, sizeof(*dev->groups),
+> +				   GFP_KERNEL);
+> +	if (!dev->groups)
+> +		return -ENOMEM;
+> +
+> +	/* Prepare each group of attributes for association */
+> +	for (i = 0; i < num_groups; i++) {
+> +		/* Allocate space for attribute group */
+> +		group = devm_kzalloc(dev, sizeof(*group), GFP_KERNEL);
+> +		if (!group)
+> +			return -ENOMEM;
 
---PD3Ct3y1jwnkQ/rs
-Content-Type: application/pgp-signature; name="signature.asc"
+Slight nitpick, is I'd have been tempted to reduce the number of allocations
+by doing this as a single array allocation then use the groups within this
+loop.  Really trivial though!
 
------BEGIN PGP SIGNATURE-----
+> +		group->name = groups[i].name;
+> +
+> +		/* Allocate space for attribute pointers */
+> +		group->attrs = devm_kcalloc(dev, groups[i].num_attr + 1,
+> +					    sizeof(*group->attrs), GFP_KERNEL);
+> +		if (!group->attrs)
+> +			return -ENOMEM;
+> +
+> +		/* Add attribute pointers to attribute group */
+> +		j = 0;
+> +		list_for_each_entry(p, &groups[i].attr_list, l)
+> +			group->attrs[j++] = &p->dev_attr.attr;
+> +
+> +		/* Associate attribute group */
+> +		dev->groups[i] = group;
+> +	}
+> +
+> +	return 0;
+> +}
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmDq1boACgkQhvpINdm7
-VJK6HQ//dIi8jTzPIXeL6Knwf7G4fe8H9LQroDGDqCGexaFo0UpsuCsGaeJmXmrB
-pOiHPae9g2jiJU0z8z22nKjSogQEGf/gl5ZwoRTDjzNDh7cjxjgwdGSKne8ss4WX
-oC8bkBI9UQVzG6t6+aHP6+BLkNfhV/eeJYG0P/Oc33ydZ+UAgKNk97bZPdTy2eml
-Yh3f/EqqkDlKMRaQl6bKc/4rm4qtRmhG2bYAtmQb+rDj4J98zR5nXSm2J8j+cJw0
-cT8G91vBlpIZ5nj8fOHMkv67F/+/7xfYDOaKTxnx9jixnOUKj1z2hWZAjlGvYlbr
-KWqblaysowmOw4Lgi60oT4DGQ0yYbtkfh0J+9AUyi0OMRc9sih8Gzz6/+KPh6yIY
-eCNSaqjaJxVEh4j75OKFGj1+rWQrQyfu4voaGUxT17pEpQiKlUsidTU5VN23Apu2
-jdbDtYltreEVaT6X0AoDOankevkepDo5kTev9Ltv3Y7VOVCg/yqNeoG2x1AEnr7z
-xV30LUWv/ATDNp0NNT/BngzXxn0HG+gtcxFq8pBfmYUUFbj6scVWVGhcaM+VIipO
-Kc94JZ7ixz/nCo8nBJQ482I5vpQ8hqOfmW2KCPIOutqfpAf+jV/yx/IaTN4Lf//6
-YQAPl8tFXfuB61KoABX8JoIeHQ2j8b9vikHVN3D7TRZBAfTYiEs=
-=e6Uj
------END PGP SIGNATURE-----
 
---PD3Ct3y1jwnkQ/rs--
+
+...
+
+> diff --git a/drivers/counter/stm32-lptimer-cnt.c b/drivers/counter/stm32-lptimer-cnt.c
+> index 13656957c45f..aef78a4217b5 100644
+> --- a/drivers/counter/stm32-lptimer-cnt.c
+> +++ b/drivers/counter/stm32-lptimer-cnt.c
+> @@ -17,6 +17,7 @@
+>  #include <linux/module.h>
+>  #include <linux/pinctrl/consumer.h>
+>  #include <linux/platform_device.h>
+> +#include <linux/types.h>
+>  
+>  struct stm32_lptim_cnt {
+>  	struct counter_device counter;
+> @@ -130,32 +131,46 @@ static int stm32_lptim_setup(struct stm32_lptim_cnt *priv, int enable)
+>   * +---------+----------+----------+---------+----------+---------+
+>   */
+>  enum stm32_lptim_cnt_function {
+> -	STM32_LPTIM_COUNTER_INCREASE,
+> -	STM32_LPTIM_ENCODER_BOTH_EDGE,
+> +	STM32_LPTIM_COUNTER_INCREASE = COUNTER_FUNCTION_INCREASE,
+> +	STM32_LPTIM_ENCODER_BOTH_EDGE = COUNTER_FUNCTION_QUADRATURE_X4,
+>  };
+>  
+>  static const enum counter_function stm32_lptim_cnt_functions[] = {
+> -	[STM32_LPTIM_COUNTER_INCREASE] = COUNTER_FUNCTION_INCREASE,
+> -	[STM32_LPTIM_ENCODER_BOTH_EDGE] = COUNTER_FUNCTION_QUADRATURE_X4,
+> +	STM32_LPTIM_COUNTER_INCREASE,
+> +	STM32_LPTIM_ENCODER_BOTH_EDGE,
+>  };
+>  
+>  enum stm32_lptim_synapse_action {
+> +	/* Index must match with stm32_lptim_cnt_polarity[] (priv->polarity) */
+>  	STM32_LPTIM_SYNAPSE_ACTION_RISING_EDGE,
+>  	STM32_LPTIM_SYNAPSE_ACTION_FALLING_EDGE,
+>  	STM32_LPTIM_SYNAPSE_ACTION_BOTH_EDGES,
+>  	STM32_LPTIM_SYNAPSE_ACTION_NONE,
+>  };
+>  
+> -static const enum counter_synapse_action stm32_lptim_cnt_synapse_actions[] = {
+> -	/* Index must match with stm32_lptim_cnt_polarity[] (priv->polarity) */
+> +static const enum stm32_lptim_synapse_action stm32_lptim_c2l_actions_map[] = {
+> +	[COUNTER_SYNAPSE_ACTION_RISING_EDGE] = STM32_LPTIM_SYNAPSE_ACTION_RISING_EDGE,
+> +	[COUNTER_SYNAPSE_ACTION_FALLING_EDGE] = STM32_LPTIM_SYNAPSE_ACTION_FALLING_EDGE,
+> +	[COUNTER_SYNAPSE_ACTION_BOTH_EDGES] = STM32_LPTIM_SYNAPSE_ACTION_BOTH_EDGES,
+> +	[COUNTER_SYNAPSE_ACTION_NONE] = STM32_LPTIM_SYNAPSE_ACTION_NONE,
+> +};
+> +
+> +static const enum counter_synapse_action stm32_lptim_l2c_actions_map[] = {
+>  	[STM32_LPTIM_SYNAPSE_ACTION_RISING_EDGE] = COUNTER_SYNAPSE_ACTION_RISING_EDGE,
+>  	[STM32_LPTIM_SYNAPSE_ACTION_FALLING_EDGE] = COUNTER_SYNAPSE_ACTION_FALLING_EDGE,
+>  	[STM32_LPTIM_SYNAPSE_ACTION_BOTH_EDGES] = COUNTER_SYNAPSE_ACTION_BOTH_EDGES,
+>  	[STM32_LPTIM_SYNAPSE_ACTION_NONE] = COUNTER_SYNAPSE_ACTION_NONE,
+>  };
+>  
+> +static const enum counter_synapse_action stm32_lptim_cnt_synapse_actions[] = {
+> +	COUNTER_SYNAPSE_ACTION_RISING_EDGE,
+> +	COUNTER_SYNAPSE_ACTION_FALLING_EDGE,
+> +	COUNTER_SYNAPSE_ACTION_BOTH_EDGES,
+> +	COUNTER_SYNAPSE_ACTION_NONE,
+> +};
+> +
+>  static int stm32_lptim_cnt_read(struct counter_device *counter,
+> -				struct counter_count *count, unsigned long *val)
+> +				struct counter_count *count, u64 *val)
+>  {
+>  	struct stm32_lptim_cnt *const priv = counter->priv;
+>  	u32 cnt;
+> @@ -170,9 +185,9 @@ static int stm32_lptim_cnt_read(struct counter_device *counter,
+>  	return 0;
+>  }
+>  
+> -static int stm32_lptim_cnt_function_get(struct counter_device *counter,
+> -					struct counter_count *count,
+> -					size_t *function)
+> +static int stm32_lptim_cnt_function_read(struct counter_device *counter,
+> +					 struct counter_count *count,
+> +					 enum counter_function *function)
+>  {
+>  	struct stm32_lptim_cnt *const priv = counter->priv;
+>  
+> @@ -189,9 +204,9 @@ static int stm32_lptim_cnt_function_get(struct counter_device *counter,
+>  	return -EINVAL;
+>  }
+>  
+> -static int stm32_lptim_cnt_function_set(struct counter_device *counter,
+> -					struct counter_count *count,
+> -					size_t function)
+> +static int stm32_lptim_cnt_function_write(struct counter_device *counter,
+> +					  struct counter_count *count,
+> +					  enum counter_function function)
+
+As mentioned below, there is a bit of a mess of types here that you should clean up.
+
+>  {
+>  	struct stm32_lptim_cnt *const priv = counter->priv;
+>  
+> @@ -212,9 +227,9 @@ static int stm32_lptim_cnt_function_set(struct counter_device *counter,
+>  	}
+>  }
+>  
+> -static ssize_t stm32_lptim_cnt_enable_read(struct counter_device *counter,
+> -					   struct counter_count *count,
+> -					   void *private, char *buf)
+> +static int stm32_lptim_cnt_enable_read(struct counter_device *counter,
+> +				       struct counter_count *count,
+> +				       u8 *enable)
+>  {
+>  	struct stm32_lptim_cnt *const priv = counter->priv;
+>  	int ret;
+> @@ -223,22 +238,18 @@ static ssize_t stm32_lptim_cnt_enable_read(struct counter_device *counter,
+>  	if (ret < 0)
+>  		return ret;
+>  
+> -	return scnprintf(buf, PAGE_SIZE, "%u\n", ret);
+> +	*enable = ret;
+> +
+> +	return 0;
+>  }
+>  
+> -static ssize_t stm32_lptim_cnt_enable_write(struct counter_device *counter,
+> -					    struct counter_count *count,
+> -					    void *private,
+> -					    const char *buf, size_t len)
+> +static int stm32_lptim_cnt_enable_write(struct counter_device *counter,
+> +					struct counter_count *count,
+> +					u8 enable)
+>  {
+>  	struct stm32_lptim_cnt *const priv = counter->priv;
+> -	bool enable;
+>  	int ret;
+>  
+> -	ret = kstrtobool(buf, &enable);
+> -	if (ret)
+> -		return ret;
+> -
+>  	/* Check nobody uses the timer, or already disabled/enabled */
+>  	ret = stm32_lptim_is_enabled(priv);
+>  	if ((ret < 0) || (!ret && !enable))
+> @@ -254,65 +265,54 @@ static ssize_t stm32_lptim_cnt_enable_write(struct counter_device *counter,
+>  	if (ret)
+>  		return ret;
+>  
+> -	return len;
+> +	return 0;
+>  }
+>  
+> -static ssize_t stm32_lptim_cnt_ceiling_read(struct counter_device *counter,
+> -					    struct counter_count *count,
+> -					    void *private, char *buf)
+> +static int stm32_lptim_cnt_ceiling_read(struct counter_device *counter,
+> +					struct counter_count *count,
+> +					u64 *ceiling)
+>  {
+>  	struct stm32_lptim_cnt *const priv = counter->priv;
+>  
+> -	return snprintf(buf, PAGE_SIZE, "%u\n", priv->ceiling);
+> +	*ceiling = priv->ceiling;
+> +
+> +	return 0;
+>  }
+>  
+> -static ssize_t stm32_lptim_cnt_ceiling_write(struct counter_device *counter,
+> -					     struct counter_count *count,
+> -					     void *private,
+> -					     const char *buf, size_t len)
+> +static int stm32_lptim_cnt_ceiling_write(struct counter_device *counter,
+> +					 struct counter_count *count,
+> +					 u64 ceiling)
+>  {
+>  	struct stm32_lptim_cnt *const priv = counter->priv;
+> -	unsigned int ceiling;
+> -	int ret;
+>  
+>  	if (stm32_lptim_is_enabled(priv))
+>  		return -EBUSY;
+>  
+> -	ret = kstrtouint(buf, 0, &ceiling);
+> -	if (ret)
+> -		return ret;
+> -
+>  	if (ceiling > STM32_LPTIM_MAX_ARR)
+>  		return -ERANGE;
+>  
+>  	priv->ceiling = ceiling;
+>  
+> -	return len;
+> +	return 0;
+>  }
+>  
+> -static const struct counter_count_ext stm32_lptim_cnt_ext[] = {
+> -	{
+> -		.name = "enable",
+> -		.read = stm32_lptim_cnt_enable_read,
+> -		.write = stm32_lptim_cnt_enable_write
+> -	},
+> -	{
+> -		.name = "ceiling",
+> -		.read = stm32_lptim_cnt_ceiling_read,
+> -		.write = stm32_lptim_cnt_ceiling_write
+> -	},
+> +static struct counter_comp stm32_lptim_cnt_ext[] = {
+> +	COUNTER_COMP_ENABLE(stm32_lptim_cnt_enable_read,
+> +			    stm32_lptim_cnt_enable_write),
+> +	COUNTER_COMP_CEILING(stm32_lptim_cnt_ceiling_read,
+> +			     stm32_lptim_cnt_ceiling_write),
+>  };
+>  
+> -static int stm32_lptim_cnt_action_get(struct counter_device *counter,
+> -				      struct counter_count *count,
+> -				      struct counter_synapse *synapse,
+> -				      size_t *action)
+> +static int stm32_lptim_cnt_action_read(struct counter_device *counter,
+> +				       struct counter_count *count,
+> +				       struct counter_synapse *synapse,
+> +				       enum counter_synapse_action *action)
+>  {
+>  	struct stm32_lptim_cnt *const priv = counter->priv;
+> -	size_t function;
+> +	enum counter_function function;
+>  	int err;
+>  
+> -	err = stm32_lptim_cnt_function_get(counter, count, &function);
+> +	err = stm32_lptim_cnt_function_read(counter, count, &function);
+>  	if (err)
+>  		return err;
+>  
+> @@ -320,12 +320,12 @@ static int stm32_lptim_cnt_action_get(struct counter_device *counter,
+>  	case STM32_LPTIM_COUNTER_INCREASE:
+>  		/* LP Timer acts as up-counter on input 1 */
+>  		if (synapse->signal->id == count->synapses[0].signal->id)
+> -			*action = priv->polarity;
+> +			*action = stm32_lptim_l2c_actions_map[priv->polarity];
+>  		else
+> -			*action = STM32_LPTIM_SYNAPSE_ACTION_NONE;
+> +			*action = COUNTER_SYNAPSE_ACTION_NONE;
+>  		return 0;
+>  	case STM32_LPTIM_ENCODER_BOTH_EDGE:
+> -		*action = priv->polarity;
+> +		*action = stm32_lptim_l2c_actions_map[priv->polarity];
+>  		return 0;
+>  	default:
+>  		/* should never reach this path */
+> @@ -333,43 +333,39 @@ static int stm32_lptim_cnt_action_get(struct counter_device *counter,
+>  	}
+>  }
+>  
+> -static int stm32_lptim_cnt_action_set(struct counter_device *counter,
+> -				      struct counter_count *count,
+> -				      struct counter_synapse *synapse,
+> -				      size_t action)
+> +static int stm32_lptim_cnt_action_write(struct counter_device *counter,
+> +					struct counter_count *count,
+> +					struct counter_synapse *synapse,
+> +					enum counter_synapse_action action)
+>  {
+>  	struct stm32_lptim_cnt *const priv = counter->priv;
+> -	size_t function;
+> +	enum counter_function function;
+>  	int err;
+>  
+>  	if (stm32_lptim_is_enabled(priv))
+>  		return -EBUSY;
+>  
+> -	err = stm32_lptim_cnt_function_get(counter, count, &function);
+> +	err = stm32_lptim_cnt_function_read(counter, count, &function);
+>  	if (err)
+>  		return err;
+>  
+>  	/* only set polarity when in counter mode (on input 1) */
+> -	if (function == STM32_LPTIM_COUNTER_INCREASE
+> -	    && synapse->signal->id == count->synapses[0].signal->id) {
+> -		switch (action) {
+> -		case STM32_LPTIM_SYNAPSE_ACTION_RISING_EDGE:
+> -		case STM32_LPTIM_SYNAPSE_ACTION_FALLING_EDGE:
+> -		case STM32_LPTIM_SYNAPSE_ACTION_BOTH_EDGES:
+> -			priv->polarity = action;
+> -			return 0;
+> -		}
+> -	}
+> +	if ((enum stm32_lptim_cnt_function)function != STM32_LPTIM_COUNTER_INCREASE
+
+This bothers me a little. Why are you casting from enum counter_function to enum stm32_lptim_cnt_function?
+That function is indeed putting an enum stm32_lptim_cnt_function into function and it really shouldn't
+be.  Whilst the values of the enums are the same, it would be better to have explicit item by
+item conversion if that's necessary.  I 'think' you can just get rid of the
+enum stm32_lptim_cnt_function though and use the counter one throughout the driver.
+
+If you want to keep changes minimal, put a conversion function in place.
+
+> +	    || synapse->signal->id != count->synapses[0].signal->id
+> +	    || action == COUNTER_SYNAPSE_ACTION_NONE)
+> +		return -EINVAL;
+>  
+> -	return -EINVAL;
+> +	priv->polarity = stm32_lptim_c2l_actions_map[action];
+> +
+> +	return 0;
+>  }
+>  
+>  static const struct counter_ops stm32_lptim_cnt_ops = {
+>  	.count_read = stm32_lptim_cnt_read,
+> -	.function_get = stm32_lptim_cnt_function_get,
+> -	.function_set = stm32_lptim_cnt_function_set,
+> -	.action_get = stm32_lptim_cnt_action_get,
+> -	.action_set = stm32_lptim_cnt_action_set,
+> +	.function_read = stm32_lptim_cnt_function_read,
+> +	.function_write = stm32_lptim_cnt_function_write,
+> +	.action_read = stm32_lptim_cnt_action_read,
+> +	.action_write = stm32_lptim_cnt_action_write,
+>  };
+>  
+>  static struct counter_signal stm32_lptim_cnt_signals[] = {
+

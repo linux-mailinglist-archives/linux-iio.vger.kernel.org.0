@@ -2,54 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D7803C3D23
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Jul 2021 16:05:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A17433C3D37
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Jul 2021 16:08:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232880AbhGKOIa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 11 Jul 2021 10:08:30 -0400
-Received: from vern.gendns.com ([98.142.107.122]:37108 "EHLO vern.gendns.com"
+        id S232730AbhGKOLW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 11 Jul 2021 10:11:22 -0400
+Received: from vern.gendns.com ([98.142.107.122]:37378 "EHLO vern.gendns.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232907AbhGKOI3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 11 Jul 2021 10:08:29 -0400
+        id S232544AbhGKOLV (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 11 Jul 2021 10:11:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
         In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
         Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
         List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=opiyXzz03XSvATCVRQY9c1WK7Xfz/7xyqkaDVHpblnA=; b=fUrBhWtbCVrd2/MswDdJf3BmcI
-        gGdKTBwUzBrOarv9W9KDAElabrY2h4DzMS7WhUpPq0qqVdEICnlwj+hPFRRK2jDDWfg9xDV9FmASi
-        qlUIpSImfp56d28SrY+WB4CrhtDId+3+LGSVDPZmR5powvHKj0EDfGw5j+G1pz/d8mpjXw5y9HF5i
-        oRpK3aeSGWYPLHuP5Tk9HBl8+lDkw3IlkUJUa3qndZxMwyDQJORADABi2+cBXW3CsR1rKp8DJ6BzV
-        jQlJlfpCfsGsiO/bkNQmylp9UgcW34SykCbPyrhmuQQbrxGYJj48RkRFrdr7rlypLPMJIew1OpD29
-        4qdDwXDw==;
-Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:51930 helo=[192.168.0.134])
+        bh=SjKdPzzJwOkoEQ37ddBWCEPWtTZUjYn/71x1w88WbP0=; b=sXIu2lJx7Nb5MopNnoomv0l8qo
+        sSvv1bb7Wn8Uco3YNySuWhGH/eroDYKrWxiWxQrVeSysdmbf/R/mvhjWwnArocnZPR2i1ADXmIm8x
+        EFYGpgM7VVGhV9MCkmknXy+J5RaXglWmR0vJaSQzFX7plGTz+JzQ02B5z4gsGglyqJsO5Wg833sCu
+        XEYhAitYQDQTqZBY7n3JGSocSqHAt0gDkudEuyRHLHC/eDYvHxbpVSqjecbht4hn9SM4hNkRlZX9C
+        zGf2gjYEZCDJXUQxtHP6kZ725zTtXAv1ZaqEz/YzdMzOGb1Tf2y+7QxDBSDONT9wrozy1iTXnqVqf
+        aP+eOAag==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:51996 helo=[192.168.0.134])
         by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
         (Exim 4.94.2)
         (envelope-from <david@lechnology.com>)
-        id 1m2a5R-003hqX-91; Sun, 11 Jul 2021 10:05:38 -0400
-Subject: Re: [PATCH v12 12/17] tools/counter: Create Counter tools
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     jic23@kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-        kernel@pengutronix.de, a.fatoum@pengutronix.de,
-        kamel.bouhara@bootlin.com, gwendal@chromium.org,
-        alexandre.belloni@bootlin.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        syednwaris@gmail.com, patrick.havelange@essensium.com,
-        fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@st.com, o.rempel@pengutronix.de,
-        jarkko.nikula@linux.intel.com, Pavel Machek <pavel@ucw.cz>
+        id 1m2a8F-003idm-GK; Sun, 11 Jul 2021 10:08:32 -0400
+Subject: Re: [PATCH v12 14/17] counter: Implement *_component_id sysfs
+ attributes
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
+        linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
+        a.fatoum@pengutronix.de, kamel.bouhara@bootlin.com,
+        gwendal@chromium.org, alexandre.belloni@bootlin.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
+        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com,
+        o.rempel@pengutronix.de, jarkko.nikula@linux.intel.com,
+        Dan Carpenter <dan.carpenter@oracle.com>
 References: <cover.1625471640.git.vilhelm.gray@gmail.com>
- <e97aa3e529f54d5651df7edcc1b43a8157d9e9c3.1625471640.git.vilhelm.gray@gmail.com>
- <343a2bd3-38b7-7462-bc52-d3f6493bede0@lechnology.com>
- <YOrVy7Ba117s1maQ@shinobu>
+ <0e04a9e6455faf171e5dd7885676e55b5321b1ea.1625471640.git.vilhelm.gray@gmail.com>
+ <bd0313ce-22fa-0516-93a1-ff3a5cb1fdd1@lechnology.com>
+ <20210711142800.60e94cc7@jic23-huawei>
 From:   David Lechner <david@lechnology.com>
-Message-ID: <56fb48ac-335d-f112-6370-38ad35ad72f0@lechnology.com>
-Date:   Sun, 11 Jul 2021 09:05:32 -0500
+Message-ID: <72d6513c-c7fc-c53d-b750-ebd2e8f3b848@lechnology.com>
+Date:   Sun, 11 Jul 2021 09:08:29 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
 MIME-Version: 1.0
-In-Reply-To: <YOrVy7Ba117s1maQ@shinobu>
+In-Reply-To: <20210711142800.60e94cc7@jic23-huawei>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -67,101 +69,70 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 7/11/21 6:28 AM, William Breathitt Gray wrote:
-> On Sat, Jul 10, 2021 at 11:53:35AM -0500, David Lechner wrote:
+On 7/11/21 8:28 AM, Jonathan Cameron wrote:
+> On Sat, 10 Jul 2021 12:06:53 -0500
+> David Lechner <david@lechnology.com> wrote:
+> 
 >> On 7/5/21 3:19 AM, William Breathitt Gray wrote:
-
->>> +	{
->>> +		/* Component data: Count 0 count */
->>> +		.component.type = COUNTER_COMPONENT_COUNT,
->>> +		.component.scope = COUNTER_SCOPE_COUNT,
->>> +		.component.parent = 0,
->>> +		/* Event type: Index */
->>> +		.event = COUNTER_EVENT_INDEX,
->>> +		/* Device event channel 0 */
->>> +		.channel = 0,
->>> +	},
->>> +	{
->>> +		/* Component data: Count 1 count */
->>> +		.component.type = COUNTER_COMPONENT_COUNT,
->>> +		.component.scope = COUNTER_SCOPE_COUNT,
->>> +		.component.parent = 1,
->>> +		/* Event type: Index */
->>> +		.event = COUNTER_EVENT_INDEX,
->>> +		/* Device event channel 0 */
->>> +		.channel = 0,
->>> +	},
->>> +};
->>> +
->>> +int main(void)
->>> +{
->>> +	int fd;
->>> +	int ret;
->>> +	struct counter_event event_data[2];
->>> +
->>> +	fd = open("/dev/counter0", O_RDWR);
->>> +	if (fd == -1) {
->>> +		perror("Unable to open /dev/counter0");
->>> +		return -errno;
+>>> The Generic Counter chrdev interface expects users to supply component
+>>> IDs in order to select extensions for requests. In order for users to
+>>> know what component ID belongs to which extension this information must
+>>> be exposed. The *_component_id attribute provides a way for users to
+>>> discover what component ID belongs to which respective extension.
+>>>
+>>> Cc: David Lechner <david@lechnology.com>
+>>> Cc: Gwendal Grignou <gwendal@chromium.org>
+>>> Cc: Dan Carpenter <dan.carpenter@oracle.com>
+>>> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+>>> ---
+>>>    Documentation/ABI/testing/sysfs-bus-counter | 16 ++++++++++-
+>>>    drivers/counter/counter-sysfs.c             | 30 ++++++++++++++++-----
+>>>    2 files changed, 39 insertions(+), 7 deletions(-)
+>>>
+>>> diff --git a/Documentation/ABI/testing/sysfs-bus-counter b/Documentation/ABI/testing/sysfs-bus-counter
+>>> index 9809d8a47431..e0e99adb0ecc 100644
+>>> --- a/Documentation/ABI/testing/sysfs-bus-counter
+>>> +++ b/Documentation/ABI/testing/sysfs-bus-counter
+>>> @@ -203,12 +203,26 @@ Description:
+>>>    		both edges:
+>>>    			Any state transition.
+>>>    
+>>> +What:		/sys/bus/counter/devices/counterX/countY/ceiling_component_id
+>>> +What:		/sys/bus/counter/devices/counterX/countY/floor_component_id
+>>> +What:		/sys/bus/counter/devices/counterX/countY/count_mode_component_id
+>>> +What:		/sys/bus/counter/devices/counterX/countY/direction_component_id
+>>> +What:		/sys/bus/counter/devices/counterX/countY/enable_component_id
+>>> +What:		/sys/bus/counter/devices/counterX/countY/error_noise_component_id
+>>> +What:		/sys/bus/counter/devices/counterX/countY/prescaler_component_id
+>>> +What:		/sys/bus/counter/devices/counterX/countY/preset_component_id
+>>> +What:		/sys/bus/counter/devices/counterX/countY/preset_enable_component_id
+>>>    What:		/sys/bus/counter/devices/counterX/countY/signalZ_action_component_id
+>>> +What:		/sys/bus/counter/devices/counterX/signalY/cable_fault_component_id
+>>> +What:		/sys/bus/counter/devices/counterX/signalY/cable_fault_enable_component_id
+>>> +What:		/sys/bus/counter/devices/counterX/signalY/filter_clock_prescaler_component_id
+>>> +What:		/sys/bus/counter/devices/counterX/signalY/index_polarity_component_id
+>>> +What:		/sys/bus/counter/devices/counterX/signalY/synchronous_mode_component_id
 >>
->> errno is no longer valid after calling perror(). Since this
->> is example code, we can just return 1 instead (exit codes
->> positive number between 0 and 255 so -1 would be 255).
-> 
-> Ack.
-> 
->>> +	}
->>> +
->>> +	ret = ioctl(fd, COUNTER_ADD_WATCH_IOCTL, watches);
->>> +	if (ret == -1) {
->>> +		perror("Error adding watches[0]");
->>> +		return -errno;
->>> +	}
->>> +	ret = ioctl(fd, COUNTER_ADD_WATCH_IOCTL, watches + 1);
->>> +	if (ret == -1) {
->>> +		perror("Error adding watches[1]");
->>> +		return -errno;
->>> +	}
->>> +	ret = ioctl(fd, COUNTER_ENABLE_EVENTS_IOCTL);
->>> +	if (ret == -1) {
->>> +		perror("Error enabling events");
->>> +		return -errno;
->>> +	}
->>> +
->>> +	for (;;) {
->>> +		ret = read(fd, event_data, sizeof(event_data));
->>> +		if (ret == -1) {
->>> +			perror("Failed to read event data");
->>> +			return -errno;
->>> +		}
->>> +
->>> +		if (ret != sizeof(event_data)) {
->>> +			fprintf(stderr, "Failed to read event data\n");
->>> +			return -EIO;
->>> +		}
->>> +
->>> +		printf("Timestamp 0: %llu\tCount 0: %llu\n"
->>> +		       "Error Message 0: %s\n"
->>> +		       "Timestamp 1: %llu\tCount 1: %llu\n"
->>> +		       "Error Message 1: %s\n",
->>> +		       (unsigned long long)event_data[0].timestamp,
->>> +		       (unsigned long long)event_data[0].value,
->>> +		       strerror(event_data[0].status),
->>> +		       (unsigned long long)event_data[1].timestamp,
->>> +		       (unsigned long long)event_data[1].value,
->>> +		       strerror(event_data[1].status));
->>> +	}
+>> Could we just write a single line?
 >>
->> Aren't the Count 0 and Count 1 events independent? Why should we expect to
->> always get both events at the same time in the same order?
+>> What:		/sys/bus/counter/devices/counterX/signalY/<component>_component_id
 > 
-> Watch 0 and Watch 1 are both triggered by the same event: a
-> COUNTER_EVENT_INDEX event on device event channel 0. If we had set
-> channel to 1 for Watch 1, then we would have two independent events, but
-> in this case both Watches have their respective channel set to 0.
+> Not nice for grepping so I think it's better to call them out explicitly.
+> 
+> There has been a proposal to check this ABI doc against running kernels, and if we have
+> too many wild cards that becomes very difficult to do.
+> 
+> Jonathan
+> 
+>>
+>>>    KernelVersion:	5.15
 
-The thing that jumped out to me is that they have different parents.
-But I guess I forgot that the event itself always has a scope of
-device and that the component just says what value to record and
-is otherwise independent of the event.
+Makes sense. Do we start a new group of similar names with the same
+description for each kernel release that includes new attributes then?
 
+>>>    Contact:	linux-iio@vger.kernel.org
+>>>    Description:
+>>>    		Read-only attribute that indicates the component ID of the
+>>> -		respective Synapse of Count Y for Signal Z.
+>>> +		respective extension or Synapse.
+>>>    

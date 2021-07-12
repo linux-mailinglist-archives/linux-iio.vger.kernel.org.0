@@ -2,232 +2,227 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C13A43C5ADC
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Jul 2021 13:04:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02F433C5B0C
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Jul 2021 13:05:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232627AbhGLKk2 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Mon, 12 Jul 2021 06:40:28 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:3380 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232020AbhGLKkX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jul 2021 06:40:23 -0400
-Received: from fraeml736-chm.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4GNg0j6tm9z6GF6n;
-        Mon, 12 Jul 2021 18:26:29 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml736-chm.china.huawei.com (10.206.15.217) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Mon, 12 Jul 2021 12:37:32 +0200
-Received: from localhost (10.47.25.8) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Mon, 12 Jul
- 2021 11:37:31 +0100
-Date:   Mon, 12 Jul 2021 11:37:13 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH] iio: light: adjd_s311: convert to device-managed
- functions
-Message-ID: <20210712113713.000044da@Huawei.com>
-In-Reply-To: <PH0PR03MB6366FCE9E3F85195F881C88899159@PH0PR03MB6366.namprd03.prod.outlook.com>
-References: <20210628135132.73682-1-aardelean@deviqon.com>
-        <20210703185007.2c2283f4@jic23-huawei>
-        <CAASAkoYMaSuRnSWwtcoZVaGj+m6bDtu7ms2idHBtp5JFzDEp1g@mail.gmail.com>
-        <20210711112618.50c5bea1@jic23-huawei>
-        <PH0PR03MB6366FCE9E3F85195F881C88899159@PH0PR03MB6366.namprd03.prod.outlook.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
+        id S234925AbhGLKvZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Jul 2021 06:51:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34240 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234956AbhGLKvV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jul 2021 06:51:21 -0400
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48AE1C06139F;
+        Mon, 12 Jul 2021 03:48:25 -0700 (PDT)
+Received: by mail-pg1-x532.google.com with SMTP id t9so17805433pgn.4;
+        Mon, 12 Jul 2021 03:48:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=ESPXz5y1c2khlg1Rn0L9i5TuNerGKV1irqF9zD9bF5M=;
+        b=YLFo7K+Y5jNmz3M7zsM6opHRT/H1FDsq+SeD+U7kY0BOrONZ6GTK0Zu6dXJcbzhn4m
+         eAWls7qlyNxlKoydExwKxmwLMIyuz2uweBUogCV2Qz5VQxh7c+B52OBLDl9tgzk69ept
+         ubgwme4jvZMOYxm7s1soZwQtKTRkwkU7QTWCiuefmW/heZjJVOtPc+StMQCetsyKkDCr
+         lGirw8hTQzQIqH8OSy5HQQkoiviRFdVKm+EdVXz7heKsBHGfhibopwrX7IMNluCfx+up
+         5UcrLy6Sh0Olx/LfkvU+8vt10Nyn5sto2U1nitQDN/ngqj5lsOdsoYWsFvd2UXm+oQlt
+         Pfqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=ESPXz5y1c2khlg1Rn0L9i5TuNerGKV1irqF9zD9bF5M=;
+        b=atdgZQ1x1BsfgxBy0wrNWY3xVkPSmVYbWM2d5bGy70xCNXCxfw6R6RziQv/kQBL7BT
+         /oSoakKT3xHi9F7niAStbVgmrJBRDm0LR0Oo/BRZwL+Iiy7OMVE9BwJx8bkAqISNr+4O
+         5K6hO6hjJd3fzD7UTqUepkXERGCJgdOt0/tyKRWEw05J+6h6oIyhpsGMgYCbBhFexLw3
+         0cvas7VpOe0zzLAP8uwqU/KP3vqE3/XLINWBv2UHI1CpvNS6SwndEGVZqRhhEi8bm9Uu
+         MOGdnkiyz5Wno5QSl3b/tFFNyiHJj4xTYbqGbikyGmVMKzp0oAhQvPmdeSVlhD76QKWE
+         IGdw==
+X-Gm-Message-State: AOAM533ChREU6XPVIJJNGfQIVajBf5koIrDS0JNvLpRQX+5Iwhp1BSiG
+        zJ2sIry/750xrajXVzxPK2k=
+X-Google-Smtp-Source: ABdhPJwlgRt1pAolTWnhq4aL43Ac7wLCqMdkczwSCzNih0XOJ1UaeY22kjHwxod3K1Fi0SG+mXGs3w==
+X-Received: by 2002:a62:bd1a:0:b029:2fe:eaf8:8012 with SMTP id a26-20020a62bd1a0000b02902feeaf88012mr51314180pff.45.1626086904813;
+        Mon, 12 Jul 2021 03:48:24 -0700 (PDT)
+Received: from shinobu ([156.146.35.76])
+        by smtp.gmail.com with ESMTPSA id i8sm15269574pfo.154.2021.07.12.03.48.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jul 2021 03:48:24 -0700 (PDT)
+Date:   Mon, 12 Jul 2021 19:48:17 +0900
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
+        a.fatoum@pengutronix.de, kamel.bouhara@bootlin.com,
+        gwendal@chromium.org, alexandre.belloni@bootlin.com,
+        david@lechnology.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        syednwaris@gmail.com, patrick.havelange@essensium.com,
+        fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@st.com, o.rempel@pengutronix.de,
+        jarkko.nikula@linux.intel.com
+Subject: Re: [PATCH v12 00/17] Introduce the Counter character device
+ interface
+Message-ID: <YOwd8aL+K+U+9GXz@shinobu>
+References: <cover.1625471640.git.vilhelm.gray@gmail.com>
+ <20210711144828.795ca342@jic23-huawei>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [10.47.25.8]
-X-ClientProxiedBy: lhreml727-chm.china.huawei.com (10.201.108.78) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="4C9OArlWXnF+XzXG"
+Content-Disposition: inline
+In-Reply-To: <20210711144828.795ca342@jic23-huawei>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 12 Jul 2021 07:45:42 +0000
-"Sa, Nuno" <Nuno.Sa@analog.com> wrote:
 
-> > From: Jonathan Cameron <jic23@kernel.org>
-> > Sent: Sunday, July 11, 2021 12:26 PM
-> > To: Alexandru Ardelean <aardelean@deviqon.com>
-> > Cc: linux-iio <linux-iio@vger.kernel.org>; Linux Kernel Mailing List
-> > <linux-kernel@vger.kernel.org>; pmeerw@pmeerw.net
-> > Subject: Re: [PATCH] iio: light: adjd_s311: convert to device-managed
-> > functions
-> > 
-> > On Mon, 5 Jul 2021 09:38:21 +0300
-> > Alexandru Ardelean <aardelean@deviqon.com> wrote:
-> >   
-> > > On Sat, 3 Jul 2021 at 20:47, Jonathan Cameron <jic23@kernel.org>  
-> > wrote:  
-> > > >
-> > > > On Mon, 28 Jun 2021 16:51:32 +0300
-> > > > Alexandru Ardelean <aardelean@deviqon.com> wrote:
-> > > >  
-> > > > > This one is a little easier to convert to device-managed, now with  
-> > the  
-> > > > > devm_krealloc() function.
-> > > > >
-> > > > > The other iio_triggered_buffer_setup() and iio_device_register()  
-> > can be  
-> > > > > converted to their devm_ variants. And devm_krealloc() can be  
-> > used to  
-> > > > > (re)alloc the buffer. When the driver unloads, this will also be  
-> > free'd.  
-> > > > >
-> > > > > Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
-> > > > > ---
-> > > > >  drivers/iio/light/adjd_s311.c | 34 +++++-----------------------------
-> > > > >  1 file changed, 5 insertions(+), 29 deletions(-)
-> > > > >
-> > > > > diff --git a/drivers/iio/light/adjd_s311.c  
-> > b/drivers/iio/light/adjd_s311.c  
-> > > > > index 17dac8d0e11d..19d60d6986a1 100644
-> > > > > --- a/drivers/iio/light/adjd_s311.c
-> > > > > +++ b/drivers/iio/light/adjd_s311.c
-> > > > > @@ -230,8 +230,8 @@ static int  
-> > adjd_s311_update_scan_mode(struct iio_dev *indio_dev,  
-> > > > >  {
-> > > > >       struct adjd_s311_data *data = iio_priv(indio_dev);
-> > > > >
-> > > > > -     kfree(data->buffer);
-> > > > > -     data->buffer = kmalloc(indio_dev->scan_bytes,  
-> > GFP_KERNEL);  
-> > > > > +     data->buffer = devm_krealloc(indio_dev->dev.parent, data-  
-> > >buffer,  
-> > > > > +                                  indio_dev->scan_bytes, GFP_KERNEL);  
-> > > > I got some complaints about exactly this trick in a review recently  
-> > so I'll  
-> > > > pass them on.
-> > > >
-> > > > Whilst devm_krealloc() usage like this won't lose the original  
-> > reference, its  
-> > > > not what people expect from a realloc() case, so to not confuse  
-> > people it is  
-> > > > better to do a dance where you use a local variable, then only set  
-> > data->buffer  
-> > > > to it once we know the realloc succeeded.
-> > > >
-> > > > That avoids this looking like the anti-pattern it would be if that  
-> > were a normal  
-> > > > realloc in which case you would just have leaked the original  
-> > allocation.  
-> > > >
-> > > > More interestingly, why are we bothering with resizing the buffer  
-> > dependent on what  
-> > > > is enabled?  Can't we just allocate a 128 byte buffer and not bother  
-> > changing it  
-> > > > as we really aren't wasting that much space?  Just embed it in the  
-> > adjd_s311_data  
-> > > > structure directly and don't worry about the allocations.  Will need  
-> > to be  
-> > > > aligned(8) though to avoid the push_to_buffer_with_timestamp()  
-> > issue.  
-> > > > Using something like
-> > > >
-> > > > struct {
-> > > >         s16 chans[4];
-> > > >         s64 ts __aligned(8); /* I hate x86 32 bit */  
-> > >
-> > > do you want to me t also add this comment? :p
-> > > [just kidding]
-> > >  
-> > > > } scan;
-> > > >
-> > > > Inside the priv structure should work nicely.  
-> > >
-> > > i agree; will do it like this;
-> > > i hesitated a bit due to the inertia of converting things to devm_  
-> > 
-> > A long discussion on rust usage in linux diverted into the issues around
-> > devm.
-> > I 'believe' that we are fine in IIO after some work Lars did a long time
-> > back
-> > to make us resilient to unbinds whilst the chardev was open, but
-> > probably
-> > worth keeping an eye on that discussion.
-> > 
-> > https://urldefense.com/v3/__https://lore.kernel.org/ksummit/CANiq
-> > 72nkNrekzbxMci6vW02w=Q2L-
-> > SVTk_U4KN_LT8u_b=YPgw@mail.gmail.com/T/*m6db86a574237c22a3
-> > 2ecf49b596b3c2917967c5e__;Iw!!A3Ni8CS0y2Y!oeM8GJzKVXb8mYa1m
-> > VJNw5fI2adsFk3FKkFzbnqyuDkUMKVTKQ3OoT0cnXP5rA$
-> > 
-> > I'm a tiny bit nervous that there might be races where we are doing
-> > the devm_realloc.
-> > I 'think' we are fine, but the 'think' and 'believe' in these statements
-> > expresses
-> > a slight lack of certainty!
-> > 
-> > Jonathan
-> >   
-> 
-> Hi,
+--4C9OArlWXnF+XzXG
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-+CC Lars who might recall how this all works!
+On Sun, Jul 11, 2021 at 02:48:28PM +0100, Jonathan Cameron wrote:
+> On Mon,  5 Jul 2021 17:18:48 +0900
+> William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
+>=20
+> > Changes in v12:
+> >  - Move unlock to after register set in quad8_count_ceiling_write()
+> >  - Add locking protection to counter_set_event_node()
+> >  - Fix sparse warning by using {} instead of {0}
+> >  - Clean up and organize comments for clarity
+> >  - Reduce boilerplate by utilizing devm_add_action_or_reset()
+> >  - Use switch statements in ti_eqep_action_read() to make possible cases
+> >    more obvious
+> >=20
+> > I pulled out a lot of bits and pieces to their own patches; hopefully
+> > that makes reviewing this patchset much simpler than before. This
+> > patchset is also available on my personal git repo for convenience:
+> > https://gitlab.com/vilhelmgray/iio/-/tree/counter_chrdev_v12
+> >=20
+> > The patches preceding "counter: Internalize sysfs interface code" are
+> > primarily cleanup and fixes that can be picked up and applied now to the
+> > IIO tree if so desired. The "counter: Internalize sysfs interface code"
+> > patch as well may be considered for pickup because it is relatively safe
+> > and makes no changes to the userspace interface.
+> >=20
+> > To summarize the main points of this patchset: there are no changes to
+> > the existing Counter sysfs userspace interface; a Counter character
+> > device interface is introduced that allows Counter events and associated
+> > data to be read() by userspace; the events_configure() and
+> > watch_validate() driver callbacks are introduced to support Counter
+> > events; and IRQ support is added to the 104-QUAD-8 driver, serving as an
+> > example of how to support the new Counter events functionality.
+> >=20
+> > Something that should still be discussed: should the struct
+> > counter_event "status" member be 8 bits or 32 bits wide? This member
+> > will provide the return status (system error number) of an event
+> > operation.
+>=20
+> Hi william,
+>=20
+> I've looked through the lot and where I haven't commented, I had nothing
+> much to add to David's comments.
+>=20
+> I'm not planning to go through the whole thing again unless major changes
+> occur. Fingers crossed for v13.
+>=20
+> If it looks like there are still some unresolved issues after that, perha=
+ps
+> applying up to patch 8 or so makes sense to reduced the volume of code you
+> are carrying.  Let me know if you'd like me to do that.
+>=20
+> Thanks,
+>=20
+> Jonathan
 
-> 
-> It's the second thread where I see you mentioning this, so this I will take the
-> opportunity to also give a bit on though about this. I actually have in mind a RFC
-> (hopefully sending it out this week) for this as I think we might still have some 
-> issues with open chardevs and device unbinding.
-> 
-> What we have in [1] is not enough to make sure the whole thing is synchronized with
-> device unbinding... We still have the door open to races where we call 'iio_buffer_ready()'
-> or even 'rb->access->read()' after the device gets unbinded. Maybe we are lucky and
-> nothing bad really happens and we just error out in the next time 'read()' is done on
-> our fd. 
+Yes, much of the code has remained stable for some months now so I think
+we're pretty close. If we do need a v14, then applying up to patch 8
+would help me a lot (most of the merge conflicts I encounter when I
+rebase are due to the large subsystem refactor in patch 06).
 
-My understanding of that test is it was only intended to ensure a smooth exit 'after' the
-buffer pull down has occurred.  From vague memory rather than careful analysis, the
-reason it is needed is we only send the break out signal once for a given buffer,
-so we need to be sure that userspace doesn't call read() then ignore the error returned
-due to the buffer going away mid read and call read() again.  There may be races in the
-first time path though. In particularly I'm not sure the reference count on the buffer
-is raised during the read and it perhaps should be.
+William Breathitt Gray
 
+> >=20
+> > William Breathitt Gray (17):
+> >   counter: 104-quad-8: Return error when invalid mode during
+> >     ceiling_write
+> >   counter: Return error code on invalid modes
+> >   counter: Standardize to ERANGE for limit exceeded errors
+> >   counter: Rename counter_signal_value to counter_signal_level
+> >   counter: Rename counter_count_function to counter_function
+> >   counter: Internalize sysfs interface code
+> >   counter: Update counter.h comments to reflect sysfs internalization
+> >   docs: counter: Update to reflect sysfs internalization
+> >   counter: Move counter enums to uapi header
+> >   counter: Add character device interface
+> >   docs: counter: Document character device interface
+> >   tools/counter: Create Counter tools
+> >   counter: Implement signalZ_action_component_id sysfs attribute
+> >   counter: Implement *_component_id sysfs attributes
+> >   counter: Implement events_queue_size sysfs attribute
+> >   counter: 104-quad-8: Replace mutex with spinlock
+> >   counter: 104-quad-8: Add IRQ support for the ACCES 104-QUAD-8
+> >=20
+> >  Documentation/ABI/testing/sysfs-bus-counter   |   38 +-
+> >  Documentation/driver-api/generic-counter.rst  |  366 +++-
+> >  .../userspace-api/ioctl/ioctl-number.rst      |    1 +
+> >  MAINTAINERS                                   |    3 +-
+> >  drivers/counter/104-quad-8.c                  |  728 ++++----
+> >  drivers/counter/Kconfig                       |    6 +-
+> >  drivers/counter/Makefile                      |    1 +
+> >  drivers/counter/counter-chrdev.c              |  498 ++++++
+> >  drivers/counter/counter-chrdev.h              |   14 +
+> >  drivers/counter/counter-core.c                |  182 ++
+> >  drivers/counter/counter-sysfs.c               |  953 +++++++++++
+> >  drivers/counter/counter-sysfs.h               |   13 +
+> >  drivers/counter/counter.c                     | 1496 -----------------
+> >  drivers/counter/ftm-quaddec.c                 |   59 +-
+> >  drivers/counter/intel-qep.c                   |  150 +-
+> >  drivers/counter/interrupt-cnt.c               |   73 +-
+> >  drivers/counter/microchip-tcb-capture.c       |  103 +-
+> >  drivers/counter/stm32-lptimer-cnt.c           |  176 +-
+> >  drivers/counter/stm32-timer-cnt.c             |  147 +-
+> >  drivers/counter/ti-eqep.c                     |  205 ++-
+> >  include/linux/counter.h                       |  716 ++++----
+> >  include/linux/counter_enum.h                  |   45 -
+> >  include/uapi/linux/counter.h                  |  133 ++
+> >  tools/Makefile                                |   13 +-
+> >  tools/counter/Build                           |    1 +
+> >  tools/counter/Makefile                        |   53 +
+> >  tools/counter/counter_example.c               |   95 ++
+> >  27 files changed, 3501 insertions(+), 2767 deletions(-)
+> >  create mode 100644 drivers/counter/counter-chrdev.c
+> >  create mode 100644 drivers/counter/counter-chrdev.h
+> >  create mode 100644 drivers/counter/counter-core.c
+> >  create mode 100644 drivers/counter/counter-sysfs.c
+> >  create mode 100644 drivers/counter/counter-sysfs.h
+> >  delete mode 100644 drivers/counter/counter.c
+> >  delete mode 100644 include/linux/counter_enum.h
+> >  create mode 100644 include/uapi/linux/counter.h
+> >  create mode 100644 tools/counter/Build
+> >  create mode 100644 tools/counter/Makefile
+> >  create mode 100644 tools/counter/counter_example.c
+> >=20
+> >=20
+> > base-commit: 6cbb3aa0f9d5d23221df787cf36f74d3866fdb78
+>=20
 
-> However, during the possible race,  I think it's very likely that we end up touching
-> the same data structures concurrently. On some devices, we surely
-> (in theory and if all the stars align) have a path where 'iio_buffer_flush_hwfifo()' might
-> be called with 'indio_dev->info' already set to NULL...
+--4C9OArlWXnF+XzXG
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Yeah, the hwfifo stuff is more recent, it's definitely possible there is a race around that.
+-----BEGIN PGP SIGNATURE-----
 
-> 
-> IMO, the only way to have this fully in sync is to use the 'info_exist_lock' as it's done
-> in [2]. I think [2] was actually "fixed" when Alex sent his patches for multi buffer support...
-It's rather painful to take that lock. If we can make things safe with appropriate reference
-counting that's definitely preferable. 
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmDsHfEACgkQhvpINdm7
+VJLk+g//YfH/GBLnKtICCwZQ2UF4svFlAv69fbT+wssz23VkBOpKtx9UVvy+rsMo
+B4gkt3ipqYDwJC+tLMBl2KvXVqgrIlMP0vLOzEWz/PzKZinJMbRS1wMsuGPOWkxn
+PNZJ+rrcmsgQzTRoJlrx9szsEz4kGepvCpbrYmTxWaY/8RxeSNUMWPgOndrQ89Cp
+bFCRddrZ2tjEbuY+88OSBCAFzIvN1/fgXRxt6JhRBB79dEdtBz1xAIHZFBsLPWeC
+3eKYjOc5dUhuFlcEFLg9SiH317VbNF7SMzJUzWrIr+hBBms1eZvLJ8RQbu80FcPu
+T01R9iZcOiNFDbAsnhtUstF/8WrMwBeAEe0aIh70H/Pu9cCAtWucJEO87GrFmSfC
+iGZYZPlvaWXi55nU4aNbz3QViiLlu3JQV2L2fNTXSvvdWGFNgWXetu770CtbOXSE
+I23l6ixwWUnuRFEn/Dh2xbpDY3i41LQhVjXtuvxrVOusjjmB4uesuV3yyfvGYN37
+fvNWdiE8GBJ0DeLbIkwTUBUuhhRjJFF12qvNvtuJxZSDZ764uvqoTsKAqhWot9df
+16uF/hAD3dAOo6nSvCFqS8Nj+bB+E/YCbGuuRP5PyfVoOK5YikQ7gUU/SZMdO5tv
+M50D6TdabsoKWNrJTJgAqmfOWwMxq9I8yNY+MpPIDK4U+ykDoM8=
+=Ud8E
+-----END PGP SIGNATURE-----
 
-For ioctl's they are always slow path so the exist_lock route is fine.
-
-> Naturally, for the read case, we need to make sure we are not going to sleep with the
-> mutex held so we might need an unlock -> lock dance which is not that nice. But I'm
-> not really seeing another way. We also need to look at other file operations and also
-> for the events case to see if this is also a thing.
-> 
-> Naturally, I might be missing some subtlety and that's why I had this planned as RFC.
-> But since is mentioned here, I thought I could bring this up as in the end I might not
-> even need to send the patches :)
-Wise move :)
-
-I'd suggest that any fix in this space would ideally be accompanied by a confirmed race.
-Heavy use of sleeps can usually open one up enough to actually hit them in a few tries.
-
-Jonathan
-> 
-> [1]: https://elixir.bootlin.com/linux/latest/source/drivers/iio/industrialio-buffer.c#L117
-> [2]: https://elixir.bootlin.com/linux/latest/source/drivers/iio/industrialio-core.c#L1763
-> 
-> - Nuno Sá
-
+--4C9OArlWXnF+XzXG--

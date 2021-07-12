@@ -2,133 +2,109 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE18D3C5E58
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Jul 2021 16:28:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAD533C5E83
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Jul 2021 16:41:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235026AbhGLObN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Jul 2021 10:31:13 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:3389 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235017AbhGLObM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jul 2021 10:31:12 -0400
-Received: from fraeml737-chm.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4GNm3D6LL8z6BBQd;
-        Mon, 12 Jul 2021 22:14:00 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml737-chm.china.huawei.com (10.206.15.218) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Mon, 12 Jul 2021 16:28:21 +0200
-Received: from localhost (10.47.25.8) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Mon, 12 Jul
- 2021 15:28:20 +0100
-Date:   Mon, 12 Jul 2021 15:28:02 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Maxime Ripard <maxime@cerno.tech>
-CC:     Linus Walleij <linus.walleij@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        <linux-iio@vger.kernel.org>, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Peter Meerwald-Stadler" <pmeerw@pmeerw.net>,
-        <devicetree@vger.kernel.org>, "Rob Herring" <robh@kernel.org>
-Subject: Re: [PATCH] iio: st-sensors: Update ST Sensor bindings
-Message-ID: <20210712152802.00003de4@Huawei.com>
-In-Reply-To: <20210712141613.66hw4glnkqlw3n4d@gilmour>
-References: <20210412122331.1631643-1-linus.walleij@linaro.org>
-        <20210712130444.bois24oukqmxpg27@gilmour>
-        <20210712145639.00004604@Huawei.com>
-        <20210712141613.66hw4glnkqlw3n4d@gilmour>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
+        id S235158AbhGLOok (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Jul 2021 10:44:40 -0400
+Received: from mail-io1-f51.google.com ([209.85.166.51]:35359 "EHLO
+        mail-io1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231194AbhGLOok (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jul 2021 10:44:40 -0400
+Received: by mail-io1-f51.google.com with SMTP id d9so22931677ioo.2;
+        Mon, 12 Jul 2021 07:41:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=np4XRmePldXERnfmJAreepqhvPuNElEqZd5QybFo6Tg=;
+        b=TgrwANPo7DVZUf3xqW1umfvME2XeLDT8Pcrtd0KCuQcF0Rz7nSqXoAxmL5nmE8EgFV
+         LxNL1iXfYFgeo6gSNFyG5DSedWGJYU0pEN+H0vI1FNV9pld3QT9b/Yj0ggXL1yedHFPF
+         Yhjq33PCgwtvWmfwd3KMVr6o1bFltONUYqn5cQ6Kjo7gL29ZKWymve+xIxTLbaTtCBSC
+         zpZG+2/HF9tfWugxR0uu/YzONEecggT7IxWmJmtLIgWRpY6Ggl+xyjMK/9mzz8VBxwkJ
+         WfxoAP27TZajilTA9wbF77rtXpM9f+X4VovDY0L5+1HkVfBxCpmjbzeZoa8a64CyI6Wx
+         gLOg==
+X-Gm-Message-State: AOAM531aR+gjKjC/rly04ABVnT8lsnaG4Oz+MlHJ5myXGaDs07DORLTp
+        akd8pIISBgX4MfxfJzrK/w==
+X-Google-Smtp-Source: ABdhPJxCokjE/VRomn+BDqJ5WdQKFS5UCgSlYnnQqCUCie2z86GyxKcrojRFf3T7Qz+eeElUOqqAiA==
+X-Received: by 2002:a6b:3b08:: with SMTP id i8mr30784452ioa.153.1626100910569;
+        Mon, 12 Jul 2021 07:41:50 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.248])
+        by smtp.gmail.com with ESMTPSA id d8sm4951277ilq.88.2021.07.12.07.41.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jul 2021 07:41:49 -0700 (PDT)
+Received: (nullmailer pid 1894651 invoked by uid 1000);
+        Mon, 12 Jul 2021 14:41:47 -0000
+Date:   Mon, 12 Jul 2021 08:41:47 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Andreas Kemnade <andreas@kemnade.info>, lee.jones@linaro.org,
+        lars@metafoo.de, sre@kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-pm@vger.kernel.org, leonard.crestez@nxp.com,
+        letux-kernel@openphoenux.org
+Subject: Re: [PATCH 1/4] dt-bindings: mfd: ricoh,rn5t618: ADC related nodes
+ and properties
+Message-ID: <20210712144147.GA1886650@robh.at.kernel.org>
+References: <20210703084224.31623-1-andreas@kemnade.info>
+ <20210703084224.31623-2-andreas@kemnade.info>
+ <20210703170245.1d310342@jic23-huawei>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.25.8]
-X-ClientProxiedBy: lhreml727-chm.china.huawei.com (10.201.108.78) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210703170245.1d310342@jic23-huawei>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 12 Jul 2021 16:16:13 +0200
-Maxime Ripard <maxime@cerno.tech> wrote:
-
-> On Mon, Jul 12, 2021 at 02:56:39PM +0100, Jonathan Cameron wrote:
-> > On Mon, 12 Jul 2021 15:04:44 +0200
-> > Maxime Ripard <maxime@cerno.tech> wrote:
-> >   
-> > > Hi,
-> > > 
-> > > On Mon, Apr 12, 2021 at 02:23:31PM +0200, Linus Walleij wrote:  
-> > > > This adjusts the ST Sensor bindings with the more fine-grained
-> > > > syntax checks that were proposed late in the last kernel cycle
-> > > > and colliding with parallel work.
-> > > > 
-> > > > Cc: devicetree@vger.kernel.org
-> > > > Reviewed-by: Rob Herring <robh@kernel.org>
-> > > > Signed-off-by: Linus Walleij <linus.walleij@linaro.org>    
-> > > 
-> > > I'm not really sure of how I supposed to fix this, but this creates an
-> > > issue on the Pinephone
-> > > (arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.2.dts) that has a
-> > > LIS3MDL with only the DRDY pin routed and thus only has a single
-> > > interrupt in the DT.
-> > > 
-> > > One of the if condition in that patch enforces that there's two
-> > > interrupts for the LIS3MDL, but it's not really clear to me why after
-> > > looking at the datasheet?  
+On Sat, Jul 03, 2021 at 05:02:45PM +0100, Jonathan Cameron wrote:
+> On Sat,  3 Jul 2021 10:42:21 +0200
+> Andreas Kemnade <andreas@kemnade.info> wrote:
+> 
+> > Add ADC related nodes and properties. This will allow to wire
+> > up ADC channels to consumers, especially to measure input voltages
+> > by the power subdevice.
 > > 
-> > It shouldn't be enforcing that 2 are specified rather that 2 'might' be
-> > specified.  
-> 
-> But then you don't need that condition at all, it's already what is
-> being enforced by the main schema here:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/iio/st,st-sensors.yaml#n90
-
-Good point.  I'd argue that we should drop this entry infavour or explicit match
-on one of the others, but perhaps that gives an error?
-
-> 
-> > maxItems is set, but not minItems.   
-> 
-> Yeah, and if one is missing the other is added with the value of the
-> other.
-
-Gah.  Indeed, not good and needs fixing.
-
-> 
-> What the schema enforces currently is that (for the common part) the
-> interrupt list can be between 1 and 2 and then for a specific set of
-> compatibles (including the LIS3MDL) it has to be exactly 2.
-> 
-> Even the common part looks weird though, it says that it can handle up
-> to three interrupts but has maxItems: 2?
-
-That is indeed odd and I expect an omission on the assumption that the minItems
-from the general one would not be overridden. 
-
-@Linus?
-
-> 
-> > Driver wise, at the moment it looks like we only handle one interrupt.
-> > So to handle selection when two are possible and either 1 or 2 might
-> > be wired up we need to add interrupt names (with default order so we
-> > don't break anything before adding them to the binding).
+> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> > ---
+> >  .../bindings/mfd/ricoh,rn5t618.yaml           | 53 +++++++++++++++++++
+> >  1 file changed, 53 insertions(+)
 > > 
-> > Would that work for this device?  
+> > diff --git a/Documentation/devicetree/bindings/mfd/ricoh,rn5t618.yaml b/Documentation/devicetree/bindings/mfd/ricoh,rn5t618.yaml
+> > index 032a7fb0b4a7..185f87a14a54 100644
+> > --- a/Documentation/devicetree/bindings/mfd/ricoh,rn5t618.yaml
+> > +++ b/Documentation/devicetree/bindings/mfd/ricoh,rn5t618.yaml
+> > @@ -73,6 +73,48 @@ properties:
+> >      description: |
+> >        See Documentation/devicetree/bindings/power/power-controller.txt
+> >  
+> > +  adc:
+> > +    type: object
+> > +
+> > +    properties:
+> > +      compatible:
+> > +        enum:
+> > +          - ricoh,rn5t618-adc
+> > +          - ricoh,rc5t619-adc
+> > +
+> > +      "#io-channel-cells":
+> > +        const: 1
+> > +
+> > +    additionalProperties: false
+> > +
+> > +    required:
+> > +      - compatible
+> > +      - "#io-channel-cells"
 > 
-> I don't know the LIS3MDL to comment whether it makes sense or not, but
-> it looks like it's a single sensor so I'm not really sure why we'd need
-> more than one interrupt
-
-Looks like they are hard wired to specific functions.  Data ready does
-what it says on the tin, but the INT line is used for threshold events.
-Depending on the application a particular device is being used for, it
-might well make sense to only wire either one of them.
-
+> Strictly required?  If not used below (where it is optional)
+> then why do we require the ADC driver to provided the services?
 > 
-> Maxime
-> 
+> I don't mind you leave it as it is though if you prefer - it doesn't
+> do any harm!
 
+The device is either a provider or it is not regardless of whether 
+there's a consumer, so I prefer this to be required. Also, if a consumer 
+is in an overlay, then it is easier if we can rely on #io-channel-cells 
+being present already.
+
+Rob

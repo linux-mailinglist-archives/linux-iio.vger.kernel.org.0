@@ -2,221 +2,224 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82E713C617C
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Jul 2021 19:05:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F35F3C6264
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Jul 2021 20:08:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234179AbhGLRIP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Jul 2021 13:08:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36354 "EHLO
+        id S235760AbhGLSLO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Jul 2021 14:11:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233869AbhGLRIO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jul 2021 13:08:14 -0400
-Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com [IPv6:2607:f8b0:4864:20::733])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B57FC0613DD;
-        Mon, 12 Jul 2021 10:05:26 -0700 (PDT)
-Received: by mail-qk1-x733.google.com with SMTP id 77so16894108qkk.11;
-        Mon, 12 Jul 2021 10:05:26 -0700 (PDT)
+        with ESMTP id S230477AbhGLSLO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jul 2021 14:11:14 -0400
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 354E9C0613DD;
+        Mon, 12 Jul 2021 11:08:25 -0700 (PDT)
+Received: by mail-pj1-x102d.google.com with SMTP id oj10-20020a17090b4d8ab0290172f77377ebso505622pjb.0;
+        Mon, 12 Jul 2021 11:08:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:content-transfer-encoding:date:message-id:cc:subject
-         :from:to:references:in-reply-to;
-        bh=qW4vqa6NnfEq0ub2+w7VBcq1lWh4sV+Zl2mjOZ0rHKw=;
-        b=JIlgREPo/qGJuHW6y2IUEsJ8vXSOJ0Z03XbkP7R/RUmI0AoJN+Z0KVLI1WqmbJ6INE
-         sbSGJU69B4rc97mt8yz5eDY91M7B/uRFizkKY8My0IKNxwnopy0vVGJ/HByp3S8rYEhF
-         64AK9Mbx1I8oxN1SNHHfvu5vlbs2AxJAKcILk18i/AUdfumft3BZY0KT8aeAjMgWyRuf
-         nB69cEVAYm8UBwd35UZHZGBZ8qdzcBBEShHWK3LrrsDEHVxBqDy5FUmimI4Y9Vcrq8NV
-         5s6zpHW9KdecBStLlxiS0DzeIOmPHo1Nyn0t60DRj0obKM9wxUvHgrzP0mU56+prlQ50
-         wpzA==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=gbTiIYDwnSRaycek8BzkWNkickJLY09hCzQewdWq06g=;
+        b=nznOig5fwNxtcKpcN3/6YidTdr5sJ9YLOCQ6WboYBMI+npnzgBllgo60PysPXG0BYX
+         2t2ZTwR6bexNoxnzkn519PXN1g2BlGwpC0ShfixIjUoSYq7HNXBwjMIVsbgQCRevCemj
+         Ib9gEbZFA33V8M+yPFyUd1jQ8arxxiJ+RiJ7MVzdXQtbji28WGvASPo/pePFG174aK1O
+         03h1TCytAz+JR9I/hajDLm2nlq7ybq6jkD5AzK8uNXhjgwGQZgiijz1Sn3CJe6DLIicy
+         Fr11J3FfAiRZakNmHK9zOx8FbDjYwmr7XEWkJP51vGzbaumm19VNczACMwTh4kTPvFdt
+         UpEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:content-transfer-encoding:date
-         :message-id:cc:subject:from:to:references:in-reply-to;
-        bh=qW4vqa6NnfEq0ub2+w7VBcq1lWh4sV+Zl2mjOZ0rHKw=;
-        b=a1QBOaFgYrdObIpbUuVctORlFcnReQVz5p/XHbQcjECWUpiImU4fl+J3hXElf0MqcL
-         b4C57uzcGIK/vPyWClcrWO5nPMz3c3oYb8mkN+MbfwAf29sHZ0qP5KHPy1wxLObeM2fu
-         TFlnr1WFGeaf/stSoAIBiScwBRDoqjzKCqsIAtlR4EByZSAZp2b9RiWGLQST/hMfojDh
-         k3/AculRPQEgRIL6cJvrWMfAKvE/+B/J0xkqFSUkIvVzlxnyGBTve4H1MsM1ABT2KP2q
-         hNFEpZg5aCIwxQghYUpfaeuBYi3A8j5aGZ4r/tqrDYbBQ8GBz6SPJr10sC+AEPcN2MSk
-         95zw==
-X-Gm-Message-State: AOAM533AMYJrXcAlTouVzenr46fjzJZoPUbYHPVlbJmJw+L5PaHzHFFj
-        T+7YpTL1wwqlTz7aY8KC3ZA=
-X-Google-Smtp-Source: ABdhPJxMvILkCudEGp4iByocnGwNPm6xwP0S2sKOmh+OkKpC0mI85oIHD4p0I5bgaYFtcLCCdEZzog==
-X-Received: by 2002:a37:a2d4:: with SMTP id l203mr49010486qke.154.1626109525573;
-        Mon, 12 Jul 2021 10:05:25 -0700 (PDT)
-Received: from localhost (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
-        by smtp.gmail.com with ESMTPSA id b6sm5875606qtg.1.2021.07.12.10.05.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Jul 2021 10:05:25 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 12 Jul 2021 13:05:23 -0400
-Message-Id: <CCRBPUEYGCAC.CJ1Y3GDWQYYJ@shaak>
-Cc:     <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
-        <charles-antoine.couret@essensium.com>, <Nuno.Sa@analog.com>,
-        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
-Subject: Re: [PATCH v2 4/4] dt-bindings: iio: adc: ad7949: add
- adi,reference-source
-From:   "Liam Beguin" <liambeguin@gmail.com>
-To:     "Jonathan Cameron" <jic23@kernel.org>
-References: <20210709155856.1732245-1-liambeguin@gmail.com>
- <20210709155856.1732245-5-liambeguin@gmail.com>
- <20210710180001.051f7367@jic23-huawei>
-In-Reply-To: <20210710180001.051f7367@jic23-huawei>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=gbTiIYDwnSRaycek8BzkWNkickJLY09hCzQewdWq06g=;
+        b=bNqU84OjFq8lUH8O+801c17RLubZHp6P0YoqzM2R6oZRCXB37bJftMbuswGy57KRII
+         NxL44tsCf87WO3YJPYM3XTNqrWizza6AatL+0I7SE0vskZQhUWjhxWiC/Rhhg4+zNZrc
+         0bHbFbZAfVU61+xTtbJQXobtSSS240Gig5gcIO0P3Hg8Ejd2ShhxgNeSyYk6UuLMycAA
+         at9Ew8+suIesOToFyGcrH257oYPe3K8K63wdKZWFS98fkFKG6uum441uEgujd2a+JN2I
+         WlWjf4RKx4+WFCeFK7J5KH2d12iAzzplIyOht97Gv3IfYmW+hOOIDQx9btHjvmNbReAR
+         VOtA==
+X-Gm-Message-State: AOAM533ZGHVtM0BHzW7vFr0ZQ4825D1GKztOzoiRFhnZf7sJTtlmKv2y
+        8LwA3iChbgJ0l0nsS2yNTTQ=
+X-Google-Smtp-Source: ABdhPJy4qZUxXiKF6OSytusjkdkuB01I24Jonu7WrNPoA+9OAZ/j1HTFRSh69as7QCuYSLmWwIaX+A==
+X-Received: by 2002:a17:90b:3d4:: with SMTP id go20mr15205998pjb.170.1626113304727;
+        Mon, 12 Jul 2021 11:08:24 -0700 (PDT)
+Received: from marsc.168.1.7 ([2804:30c:b7d:3600:4da5:ab7e:d25a:f030])
+        by smtp.gmail.com with ESMTPSA id j2sm16625902pfj.168.2021.07.12.11.08.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jul 2021 11:08:24 -0700 (PDT)
+Date:   Mon, 12 Jul 2021 15:08:19 -0300
+From:   Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Michael.Hennerich@analog.com, lars@metafoo.de,
+        devicetree@vger.kernel.org, Nuno Sa <Nuno.Sa@analog.com>
+Subject: Re: [PATCH 00/17] iio:adc:ad7280a Cleanup and proposed staging
+ graduation.
+Message-ID: <YOyFE/yHrLQxKpkU@marsc.168.1.7>
+References: <20210614113507.897732-1-jic23@kernel.org>
+ <YNIfkaRZtWIXPbAj@marsc.168.1.7>
+ <20210623093741.00007d1d@Huawei.com>
+ <20210711155051.713c1207@jic23-huawei>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210711155051.713c1207@jic23-huawei>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+On 07/11, Jonathan Cameron wrote:
+> On Wed, 23 Jun 2021 09:37:41 +0100
+> Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+> 
+> > On Tue, 22 Jun 2021 14:36:17 -0300
+> > Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
+> > 
+> > > Hey Jonathan,
+> > > 
+> > > On 06/14, Jonathan Cameron wrote:  
+> > > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > > 
+> > > > Hi All,
+> > > > 
+> > > > This one proved an interesting diversion.
+> > > > 
+> > > > Work done against a somewhat hacked up QEMU emulation of 3 daisy chained
+> > > > ad7280a devices (18 channels).  Note that the emulation isn't complete
+> > > > but does do chaining, CRC, and readout of channels etc in a fashion that
+> > > > worked with the original driver (up to the bug in patch 1) and continues
+> > > > to work with the updated version. I've not intention to upstream the
+> > > > emulation (as would need to make it more completed and flexible), but
+> > > > happy to share it with anyone who is interested.    
+> > > 
+> > > I'm interested in seeing your device emulation with QEMU.
+> > > I was looking at the ad7150 emulation you shared earlier this year but had
+> > > some trouble getting the i2c slave created.  
+> > 
+> > Sure.  Let me do a bit of tidying up they I'll push a suitable branch out.
+> > (probably will still have lots of stuff missing!)
+> > 
+> > Might take a little while to get to this though.
+> 
+> I pretended to myself for a few weeks that I'd get around to tidying this up in
+> a remotely meaningful way.  That's clearly not happening so I pushed out the
+> untidy version with appropriate eats babies messages:
+> 
+> https://github.com/jic23/qemu/commits/ad7280a-hacks
 
-On Sat Jul 10, 2021 at 1:00 PM EDT, Jonathan Cameron wrote:
-> On Fri, 9 Jul 2021 11:58:56 -0400
-> Liam Beguin <liambeguin@gmail.com> wrote:
->
-> > From: Liam Beguin <lvb@xiphos.com>
-> >=20
-> > Add bindings documentation for the adi,reference-source property.
-> > This property is required to properly configure the ADC sample request
-> > based on which reference source should be used for the calculation.
->
-> Should this be per channel? That will effect some of what I say below...
->
+Thanks. I don't mind if it's not exactly tidy or elegant code provided I
+can understand whats going on and get it running.
 
-We could make it per channel. Ideally, I'd also like to add support for
-differential channels, so might as well add per channel configurations
-now.
+> 
+> Note there is loads of stuff that isn't implemented as it was developed alongside
+> this patch series to verify individual patches rather than with the intent of
+> actually emulating the device.
+> 
+OK, will be aware of that.
 
-> >=20
-> > Signed-off-by: Liam Beguin <lvb@xiphos.com>
-> > ---
-> >  .../bindings/iio/adc/adi,ad7949.yaml          | 21 +++++++++++++++++++
-> >  1 file changed, 21 insertions(+)
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml =
-b/Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml
-> > index 9b56bd4d5510..eae3121cad01 100644
-> > --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml
-> > @@ -35,6 +35,27 @@ properties:
-> >    "#io-channel-cells":
-> >      const: 1
-> > =20
-> > +  adi,reference-select:
->
-> This is one field in the register, but it's not one thing, so lets break
-> it up
-> in DT. We should do this both to make for more readable dts files and to
-> enforce the requirements on regulators...
->
-> > +    description: |
-> > +      Select the reference voltage source to use when converting sampl=
-es.
-> > +      Acceptable values are:
-> > +      - 0: Internal reference and temperature sensor enabled.
-> > +           Vref=3D2.5V, buffered output
-> > +      - 1: Internal reference and temperature sensor enabled.
-> > +           Vref=3D4.096V, buffered output
-> > +      - 2: Use external reference, temperature sensor enabled.
-> > +           Internal buffer disabled
-> > +      - 3: Use external reference, internal buffer and temperature sen=
-sor
-> > +           enabled.
-> > +      - 6: Use external reference, internal buffer and temperature sen=
-sor
-> > +           disabled.
-> > +      - 7: Use external reference, internal buffer enabled.
-> > +           Internal reference and temperature sensor disabled.
->
-> So question 1 is whether to use an external or internal reference.
-> Normally we'd make the coarse decision of whether to use an external
-> reference
-> by whether there is a regulator provided. That won't work so well if we
-> make
-> this per channel.
->
-> Question 2, assuming internal reference, what voltage? Those should take
-> an actual voltage (probably in mV and match against an enum of the two
-> possible values).
-> Binding should check to make sure this isn't specified as well as saying
-> we
-> are using an external refernce.
->
-> Question 3, assuming external reference, is temperature sensor enabled?
-> - actually dumb question, but why would anyone not want this enabled?
-> Maybe turn it
-> off in runtime pm, but in general if you've fitted a chip with a
-> temperature sensor
-> you at least sometimes want to measure temperature! So my gut feeling is
-> don't
-> allow this to be controlled (effectively drop cases 6 and 7 above as
-> being
-> unlikely to be of interest to anyone)
->
+> It's hard coded to 2 a chain of 3 ad7280a devices because that seemed to hit most possible
+> corner cases.
+> 
+> The top commit has the launch string I'm using.  You'll need a filesystem, but
+> you can probably use one of the convenient ones debian posts as nocloud cloud
+> images. 
+> 
+> There is some info on that on people.kernel.org/jic23 as I wrote up how to test
+> CXL stuff on ARM recently and gave guidance on easy ways to get a filesystem.
+> http://cdimage.debian.org/cdimage/cloud/sid/daily/20210702-691/debian-sid-nocloud-arm64-daily-20210702-691.qcow2
+> will probably work and is more recent than the one linked from that blog post. 
 
-I like your suggestion of breaking this down so far, it would look
-something like this:
+I was using a debian imgage created from following the instructions on a
+tutorial pointed by the QEMU docs.
+https://translatedcode.wordpress.com/2017/07/24/installing-debian-on-qemus-64-bit-arm-virt-board/
+Anyhow, I'll chance to the nocloud one if see things don't get working.
 
-	ad7949: adc@0 {
-		compatible =3D "adi,ad7949";
-		reg =3D <0>;
+> 
+> Give me a shout if you need more specific guidance than this very very rough guide!
 
-		vref-supply =3D <&vdd_supply>;
+Sure, let's see if I can get through it now. Otherwise ...
 
-		channel@0 {
-			adi,internal-ref-mv =3D <2500>;
-			reg =3D <0>;
-		};
+> 
+> I mentioned this thread in the diversion the rust on linux thread took into
+> use of QEMU to emulate devices which motivated me to stop being lazy and at least
+> post this hideous version.  Probably the most useful bit is how to get a working
+> spi device emulated on the arm virt machine as that is very handy for all manner
+> of testing.  One day someone might implement a large set of IIO device emulation
+> and bolt it into a CI...
 
-		channel@1 {
-			reg =3D <1>;
-			/*
-			 * defaults to vref-supply if defined or error
-			 * out
-			 */
-		};
-	};
+Agree, it's hard to get IIO drivers runtime tested because we often don't
+have the required hardware to do it. I think emulation would help us with
+that or, at least, would give us a little bit more confidence in our
+changes than just relying on sharp eyes and compile/static tests.
+Puching that into a CI would also be rather nice.
 
-> Question 4, Is the internal buffer enabled when using and external
-> reference.
-> This one is interesting. We could just expose it in general, but I
-> wonder
-> if we can do something that reflects how it is used. From the various
-> figures in
-> the datasheet this seems to be coupled to whether the external reference
-> is on
-> pin REF_IN or pin REF. If that's the case can we have two optional regs
-> only
-> one of which should be supplied? However, this gets more fiddly because
-> the default right now is vref-supply actually being connected to the
-> vrefin connection.
-> That's annoying as it stops us using the obvious naming...
-> Hence I think we can have
-> vref-supply (actually connected to vrefin) and vref-unbuffered-supply
->
-
-I really like the idea of using the same names as the datasheet
-(vref-supply and vrefin-supply), to infer the buffered state,
-but it's annoying (and confusing) that it's setup the other way
-right now.
-
-I wonder what happens if the reference is connected to refin and we're
-configured as unbuffered (and the other way around).
-I looked around and I might be able to test it on one setup I have where
-the external reference is connected to REF.
-
-If it's not a breaking change, would it be okay with you to follow the
-datasheet naming?
-
-Liam
-
->
->
-> > +
-> > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > +    enum: [0, 1, 2, 3, 6, 7]
-> > +    default: 7
-> > +
-> >  required:
-> >    - compatible
-> >    - reg
+> 
+> Jonathan
+> 
+> > 
+> > > 
+> > > Being able to see it running, I may feel more confident to provide a review
+> > > for this set :)  
+> > 
+> > :)
+> > 
+> > > 
+> > > Regards,
+> > > 
+> > > Marcelo  
+> > > > 
+> > > > I briefly flirted with posting a patch to just drop the driver entirely,
+> > > > but the part is still available and it looked like fun + isn't going
+> > > > to greatly impact maintainability of the subsystem long term so is low
+> > > > cost even if it goes obsolete sometime soonish.
+> > > > 
+> > > > There are lots of things we could do after this set to improved the driver
+> > > > and make things more flexible, but it should basically 'just work'
+> > > > 
+> > > > Anyhow, as normal for staging graduations, last patch has rename detection
+> > > > turned off so that people can easily see what I am proposing we move
+> > > > out of staging.
+> > > > 
+> > > > Jonathan Cameron (17):
+> > > >   staging:iio:adc:ad7280a: Fix handing of device address bit reversing.
+> > > >   staging:iio:adc:ad7280a: Register define cleanup.
+> > > >   staging:iio:adc:ad7280a: rename _read() to _read_reg()
+> > > >   staging:iio:adc:ad7280a: Split buff[2] into tx and rx parts
+> > > >   staging:iio:adc:ad7280a: Use bitfield ops to managed fields in
+> > > >     transfers.
+> > > >   staging:iio:adc:ad7280a: Switch to standard event control
+> > > >   staging:iio:adc:ad7280a: Standardize extended ABI naming
+> > > >   staging:iio:adc:ad7280a: Drop unused timestamp channel.
+> > > >   staging:iio:adc:ad7280a: Trivial comment formatting cleanup
+> > > >   staging:iio:adc:ad7280a: Make oversampling_ratio a runtime control
+> > > >   staging:iio:adc:ad7280a: Cleanup includes
+> > > >   staging:iio:ad7280a: Reflect optionality of irq in ABI
+> > > >   staging:iio:adc:ad7280a: Use a local dev pointer to avoid &spi->dev
+> > > >   staging:iio:adc:ad7280a: Use device properties to replace platform
+> > > >     data.
+> > > >   dt-bindings:iio:adc:ad7280a: Add binding
+> > > >   iio:adc:ad7280a: Document ABI for cell balance switches
+> > > >   iio:adc:ad7280a: Move out of staging
+> > > > 
+> > > >  .../ABI/testing/sysfs-bus-iio-adc-ad7280a     |   14 +
+> > > >  .../bindings/iio/adc/adi,ad7280a.yaml         |   87 ++
+> > > >  drivers/iio/adc/Kconfig                       |   11 +
+> > > >  drivers/iio/adc/Makefile                      |    1 +
+> > > >  drivers/iio/adc/ad7280a.c                     | 1116 +++++++++++++++++
+> > > >  drivers/staging/iio/adc/Kconfig               |   11 -
+> > > >  drivers/staging/iio/adc/Makefile              |    1 -
+> > > >  drivers/staging/iio/adc/ad7280a.c             | 1044 ---------------
+> > > >  drivers/staging/iio/adc/ad7280a.h             |   37 -
+> > > >  9 files changed, 1229 insertions(+), 1093 deletions(-)
+> > > >  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-ad7280a
+> > > >  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7280a.yaml
+> > > >  create mode 100644 drivers/iio/adc/ad7280a.c
+> > > >  delete mode 100644 drivers/staging/iio/adc/ad7280a.c
+> > > >  delete mode 100644 drivers/staging/iio/adc/ad7280a.h
+> > > > 
+> > > > -- 
+> > > > 2.32.0
+> > > >     
+> > 
+> 

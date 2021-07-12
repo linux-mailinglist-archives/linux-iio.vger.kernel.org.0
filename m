@@ -2,203 +2,221 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3A913C602D
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Jul 2021 18:12:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82E713C617C
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Jul 2021 19:05:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231968AbhGLQOt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Jul 2021 12:14:49 -0400
-Received: from mail-il1-f181.google.com ([209.85.166.181]:36580 "EHLO
-        mail-il1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231463AbhGLQOt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jul 2021 12:14:49 -0400
-Received: by mail-il1-f181.google.com with SMTP id j5so2511346ilk.3;
-        Mon, 12 Jul 2021 09:11:59 -0700 (PDT)
+        id S234179AbhGLRIP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Jul 2021 13:08:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36354 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233869AbhGLRIO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jul 2021 13:08:14 -0400
+Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com [IPv6:2607:f8b0:4864:20::733])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B57FC0613DD;
+        Mon, 12 Jul 2021 10:05:26 -0700 (PDT)
+Received: by mail-qk1-x733.google.com with SMTP id 77so16894108qkk.11;
+        Mon, 12 Jul 2021 10:05:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:content-transfer-encoding:date:message-id:cc:subject
+         :from:to:references:in-reply-to;
+        bh=qW4vqa6NnfEq0ub2+w7VBcq1lWh4sV+Zl2mjOZ0rHKw=;
+        b=JIlgREPo/qGJuHW6y2IUEsJ8vXSOJ0Z03XbkP7R/RUmI0AoJN+Z0KVLI1WqmbJ6INE
+         sbSGJU69B4rc97mt8yz5eDY91M7B/uRFizkKY8My0IKNxwnopy0vVGJ/HByp3S8rYEhF
+         64AK9Mbx1I8oxN1SNHHfvu5vlbs2AxJAKcILk18i/AUdfumft3BZY0KT8aeAjMgWyRuf
+         nB69cEVAYm8UBwd35UZHZGBZ8qdzcBBEShHWK3LrrsDEHVxBqDy5FUmimI4Y9Vcrq8NV
+         5s6zpHW9KdecBStLlxiS0DzeIOmPHo1Nyn0t60DRj0obKM9wxUvHgrzP0mU56+prlQ50
+         wpzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=9HMN5LJZVuVA0FOK0FGkM8nqyj4ld2XA2G0Cc8q6SD0=;
-        b=rXnWrTUHQLMDfQ3t+E8/EpEZTn4bcgscmBoQbBNe92o0p0lt+jihzfQwLDOwocRQS+
-         mFHrH+AVAefRQmv5M9EbTqIeN9GaSguVGAWP46c+alxH1E2iSs4noC9VnITi6YXDkUog
-         ZuzyLLO4I9Rcw7v71zD5zIeePmZyRmhodMjYOYWDG8ydZcc7bKaCJBeCkepMULDWTWbv
-         BhZC0E+oINNiVu5EsFN9kOlCTK+3NmWP1UwgASP6XcigBeO4C2ocQb5wt0CdEJZnqQHt
-         f3ko5oYwvjFReetOq1kYBMXEJUm1NPlgQqCVt4FskTJTe9BeM2tnuu4HNGzo8RTf6fSq
-         hDhw==
-X-Gm-Message-State: AOAM5320v8QZc6DkTsQM27h2Siwh3K3C9GdB49imZUUMFs245my7fS1K
-        U0cMGAVspCcUl4eYCKmfaQ==
-X-Google-Smtp-Source: ABdhPJzexgPf2jnfJFGtPKXhUglMRagL0lC++MIZgyNXUnpXfQx4WcWjb5+OQAj2GmyFY1KFtUj8cw==
-X-Received: by 2002:a05:6e02:602:: with SMTP id t2mr13857344ils.118.1626106318750;
-        Mon, 12 Jul 2021 09:11:58 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.248])
-        by smtp.gmail.com with ESMTPSA id l8sm8740446iok.26.2021.07.12.09.11.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jul 2021 09:11:58 -0700 (PDT)
-Received: (nullmailer pid 2034482 invoked by uid 1000);
-        Mon, 12 Jul 2021 16:11:56 -0000
-Date:   Mon, 12 Jul 2021 10:11:56 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Liam Beguin <liambeguin@gmail.com>
-Cc:     peda@axentia.se, jic23@kernel.org, lars@metafoo.de,
-        pmeerw@pmeerw.net, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 10/10] dt-bindings: iio: afe: add bindings for
- temperature transducers
-Message-ID: <20210712161156.GA2029104@robh.at.kernel.org>
-References: <20210706160942.3181474-1-liambeguin@gmail.com>
- <20210706160942.3181474-11-liambeguin@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210706160942.3181474-11-liambeguin@gmail.com>
+        h=x-gm-message-state:mime-version:content-transfer-encoding:date
+         :message-id:cc:subject:from:to:references:in-reply-to;
+        bh=qW4vqa6NnfEq0ub2+w7VBcq1lWh4sV+Zl2mjOZ0rHKw=;
+        b=a1QBOaFgYrdObIpbUuVctORlFcnReQVz5p/XHbQcjECWUpiImU4fl+J3hXElf0MqcL
+         b4C57uzcGIK/vPyWClcrWO5nPMz3c3oYb8mkN+MbfwAf29sHZ0qP5KHPy1wxLObeM2fu
+         TFlnr1WFGeaf/stSoAIBiScwBRDoqjzKCqsIAtlR4EByZSAZp2b9RiWGLQST/hMfojDh
+         k3/AculRPQEgRIL6cJvrWMfAKvE/+B/J0xkqFSUkIvVzlxnyGBTve4H1MsM1ABT2KP2q
+         hNFEpZg5aCIwxQghYUpfaeuBYi3A8j5aGZ4r/tqrDYbBQ8GBz6SPJr10sC+AEPcN2MSk
+         95zw==
+X-Gm-Message-State: AOAM533AMYJrXcAlTouVzenr46fjzJZoPUbYHPVlbJmJw+L5PaHzHFFj
+        T+7YpTL1wwqlTz7aY8KC3ZA=
+X-Google-Smtp-Source: ABdhPJxMvILkCudEGp4iByocnGwNPm6xwP0S2sKOmh+OkKpC0mI85oIHD4p0I5bgaYFtcLCCdEZzog==
+X-Received: by 2002:a37:a2d4:: with SMTP id l203mr49010486qke.154.1626109525573;
+        Mon, 12 Jul 2021 10:05:25 -0700 (PDT)
+Received: from localhost (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
+        by smtp.gmail.com with ESMTPSA id b6sm5875606qtg.1.2021.07.12.10.05.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 12 Jul 2021 10:05:25 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Mon, 12 Jul 2021 13:05:23 -0400
+Message-Id: <CCRBPUEYGCAC.CJ1Y3GDWQYYJ@shaak>
+Cc:     <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+        <charles-antoine.couret@essensium.com>, <Nuno.Sa@analog.com>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
+Subject: Re: [PATCH v2 4/4] dt-bindings: iio: adc: ad7949: add
+ adi,reference-source
+From:   "Liam Beguin" <liambeguin@gmail.com>
+To:     "Jonathan Cameron" <jic23@kernel.org>
+References: <20210709155856.1732245-1-liambeguin@gmail.com>
+ <20210709155856.1732245-5-liambeguin@gmail.com>
+ <20210710180001.051f7367@jic23-huawei>
+In-Reply-To: <20210710180001.051f7367@jic23-huawei>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jul 06, 2021 at 12:09:42PM -0400, Liam Beguin wrote:
-> From: Liam Beguin <lvb@xiphos.com>
-> 
-> An ADC is often used to measure other quantities indirectly.
-> This binding describe one case, the measurement of a temperature
-> through a temperature transducer (either voltage or current).
-> 
-> Signed-off-by: Liam Beguin <lvb@xiphos.com>
-> ---
->  .../iio/afe/temperature-transducer.yaml       | 111 ++++++++++++++++++
->  1 file changed, 111 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml b/Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml
-> new file mode 100644
-> index 000000000000..b5a4fbfe75e4
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml
-> @@ -0,0 +1,111 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/afe/temperature-transducer.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Temperature Transducer
-> +
-> +maintainers:
-> +  - Liam Beguin <lvb@xiphos.com>
-> +
-> +description: |
-> +  A temperature transducer is a device that converts a thermal quantity
-> +  into any other physical quantity. This binding applies to temperature to
-> +  voltage (like the LTC2997), and temperature to current (like the AD590)
-> +  linear transducers.
-> +  In both cases these are assumed to be connected to a voltage ADC.
-> +
-> +  When an io-channel measures the output voltage of a temperature analog front
-> +  end such as a temperature transducer, the interesting measurement is almost
-> +  always the corresponding temperature, not the voltage output. This binding
-> +  describes such a circuit.
-> +
-> +  The general transfer function here is (using SI units)
-> +    V(T) = Rsense * Isense(T)
-> +    T = (Isense(T) / alpha) + offset
-> +    T = 1 / (Rsense * alpha) * (V + offset * Rsense * alpha)
-> +
-> +  When using a temperature to voltage transducer, Rsense is set to 1.
-> +
-> +  The following circuits show a temperature to current and a temperature to
-> +  voltage transducer that can be used with this binding.
-> +
-> +           VCC
-> +          -----
-> +            |
-> +        +---+---+
-> +        | AD590 |                               VCC
-> +        +---+---+                              -----
-> +            |                                    |
-> +            V proportional to T             +----+----+
-> +            |                          D+ --+         |
-> +            +---- Vout                      | LTC2997 +--- Vout
-> +            |                          D- --+         |
-> +        +---+----+                          +---------+
-> +        | Rsense |                               |
-> +        +---+----+                             -----
-> +            |                                   GND
-> +          -----
-> +           GND
-> +
-> +properties:
-> +  compatible:
-> +    const: temperature-transducer
-> +
-> +  io-channels:
-> +    maxItems: 1
-> +    description: |
-> +      Channel node of a voltage io-channel.
-> +
-> +  '#io-channel-cells':
-> +    const: 0
+Hi Jonathan,
 
-This is a io-channel consumer and producer?
+On Sat Jul 10, 2021 at 1:00 PM EDT, Jonathan Cameron wrote:
+> On Fri, 9 Jul 2021 11:58:56 -0400
+> Liam Beguin <liambeguin@gmail.com> wrote:
+>
+> > From: Liam Beguin <lvb@xiphos.com>
+> >=20
+> > Add bindings documentation for the adi,reference-source property.
+> > This property is required to properly configure the ADC sample request
+> > based on which reference source should be used for the calculation.
+>
+> Should this be per channel? That will effect some of what I say below...
+>
 
-> +
-> +  sense-offset-millicelsius:
-> +    description: |
-> +      Temperature offset. The default is <0>.
-> +      This offset is commonly used to convert from Kelvins to degrees Celsius.
-> +      In that case, sense-offset-millicelsius would be set to <(-273150)>.
+We could make it per channel. Ideally, I'd also like to add support for
+differential channels, so might as well add per channel configurations
+now.
 
-default: 0
+> >=20
+> > Signed-off-by: Liam Beguin <lvb@xiphos.com>
+> > ---
+> >  .../bindings/iio/adc/adi,ad7949.yaml          | 21 +++++++++++++++++++
+> >  1 file changed, 21 insertions(+)
+> >=20
+> > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml =
+b/Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml
+> > index 9b56bd4d5510..eae3121cad01 100644
+> > --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml
+> > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml
+> > @@ -35,6 +35,27 @@ properties:
+> >    "#io-channel-cells":
+> >      const: 1
+> > =20
+> > +  adi,reference-select:
+>
+> This is one field in the register, but it's not one thing, so lets break
+> it up
+> in DT. We should do this both to make for more readable dts files and to
+> enforce the requirements on regulators...
+>
+> > +    description: |
+> > +      Select the reference voltage source to use when converting sampl=
+es.
+> > +      Acceptable values are:
+> > +      - 0: Internal reference and temperature sensor enabled.
+> > +           Vref=3D2.5V, buffered output
+> > +      - 1: Internal reference and temperature sensor enabled.
+> > +           Vref=3D4.096V, buffered output
+> > +      - 2: Use external reference, temperature sensor enabled.
+> > +           Internal buffer disabled
+> > +      - 3: Use external reference, internal buffer and temperature sen=
+sor
+> > +           enabled.
+> > +      - 6: Use external reference, internal buffer and temperature sen=
+sor
+> > +           disabled.
+> > +      - 7: Use external reference, internal buffer enabled.
+> > +           Internal reference and temperature sensor disabled.
+>
+> So question 1 is whether to use an external or internal reference.
+> Normally we'd make the coarse decision of whether to use an external
+> reference
+> by whether there is a regulator provided. That won't work so well if we
+> make
+> this per channel.
+>
+> Question 2, assuming internal reference, what voltage? Those should take
+> an actual voltage (probably in mV and match against an enum of the two
+> possible values).
+> Binding should check to make sure this isn't specified as well as saying
+> we
+> are using an external refernce.
+>
+> Question 3, assuming external reference, is temperature sensor enabled?
+> - actually dumb question, but why would anyone not want this enabled?
+> Maybe turn it
+> off in runtime pm, but in general if you've fitted a chip with a
+> temperature sensor
+> you at least sometimes want to measure temperature! So my gut feeling is
+> don't
+> allow this to be controlled (effectively drop cases 6 and 7 above as
+> being
+> unlikely to be of interest to anyone)
+>
 
-> +
-> +  sense-resistor-ohms:
-> +    description: |
-> +      The sense resistor. Defaults to <1>.
-> +      Set sense-resistor-ohms to <1> when using a temperature to voltage
-> +      transducer.
+I like your suggestion of breaking this down so far, it would look
+something like this:
 
-default: 1
+	ad7949: adc@0 {
+		compatible =3D "adi,ad7949";
+		reg =3D <0>;
 
-Though why would we set the value to 1 if the default is 1?
+		vref-supply =3D <&vdd_supply>;
 
-> +
-> +  alpha-ppm-per-celsius:
-> +    description: |
-> +      Sometimes referred to as output gain, slope, or temperature coefficient.
-> +
-> +      alpha is expressed in parts per million which can be micro-amps per
-> +      degrees Celsius or micro-volts per degrees Celsius. The is the main
-> +      characteristic of a temperature transducer and should be stated in the
-> +      datasheet.
-> +
-> +additionalProperties: false
+		channel@0 {
+			adi,internal-ref-mv =3D <2500>;
+			reg =3D <0>;
+		};
 
-Blank line here.
+		channel@1 {
+			reg =3D <1>;
+			/*
+			 * defaults to vref-supply if defined or error
+			 * out
+			 */
+		};
+	};
 
-> +required:
-> +  - compatible
-> +  - io-channels
-> +  - alpha-ppm-per-celsius
-> +
-> +examples:
-> +  - |
-> +    ad950: temperature-sensor-0 {
-> +        compatible = "temperature-transducer";
-> +        #io-channel-cells = <0>;
-> +        io-channels = <&temp_adc 3>;
-> +
-> +        sense-offset-millicelsius = <(-273150)>; /* Kelvin to degrees Celsius */
-> +        sense-resistor-ohms = <8060>;
-> +        alpha-ppm-per-celsius = <1>; /* 1 uA/K */
-> +    };
-> +  - |
-> +    znq_tmp: temperature-sensor-1 {
-> +        compatible = "temperature-transducer";
-> +        #io-channel-cells = <0>;
-> +        io-channels = <&temp_adc 2>;
-> +
-> +        sense-offset-millicelsius = <(-273150)>; /* Kelvin to degrees Celsius */
-> +        alpha-ppm-per-celsius = <4000>; /* 4 mV/K */
-> +    };
-> +...
-> -- 
-> 2.30.1.489.g328c10930387
-> 
-> 
+> Question 4, Is the internal buffer enabled when using and external
+> reference.
+> This one is interesting. We could just expose it in general, but I
+> wonder
+> if we can do something that reflects how it is used. From the various
+> figures in
+> the datasheet this seems to be coupled to whether the external reference
+> is on
+> pin REF_IN or pin REF. If that's the case can we have two optional regs
+> only
+> one of which should be supplied? However, this gets more fiddly because
+> the default right now is vref-supply actually being connected to the
+> vrefin connection.
+> That's annoying as it stops us using the obvious naming...
+> Hence I think we can have
+> vref-supply (actually connected to vrefin) and vref-unbuffered-supply
+>
+
+I really like the idea of using the same names as the datasheet
+(vref-supply and vrefin-supply), to infer the buffered state,
+but it's annoying (and confusing) that it's setup the other way
+right now.
+
+I wonder what happens if the reference is connected to refin and we're
+configured as unbuffered (and the other way around).
+I looked around and I might be able to test it on one setup I have where
+the external reference is connected to REF.
+
+If it's not a breaking change, would it be okay with you to follow the
+datasheet naming?
+
+Liam
+
+>
+>
+> > +
+> > +    $ref: /schemas/types.yaml#/definitions/uint32
+> > +    enum: [0, 1, 2, 3, 6, 7]
+> > +    default: 7
+> > +
+> >  required:
+> >    - compatible
+> >    - reg

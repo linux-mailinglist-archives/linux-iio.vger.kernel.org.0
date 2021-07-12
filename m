@@ -2,525 +2,232 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C490D3C5AD4
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Jul 2021 13:04:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C13A43C5ADC
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Jul 2021 13:04:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234305AbhGLKbv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Jul 2021 06:31:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57454 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234262AbhGLKbr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jul 2021 06:31:47 -0400
-Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3BE2C0613EF;
-        Mon, 12 Jul 2021 03:28:58 -0700 (PDT)
-Received: by mail-pg1-x529.google.com with SMTP id y17so17718959pgf.12;
-        Mon, 12 Jul 2021 03:28:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=icVP128FRhTwc04Dx6Fu5LBu2wGRba/XSIiSHpKc63Y=;
-        b=TZRc5CBM488TaG7WqWkQrFTIOT4L18m7ED3hYFwvDyzWXiDhAfxnvWi6fxq5jHwtZ/
-         uT/2qZBl4J+9UTrXX+oINJhVKi4GB7WxcuIxFt8DVqqtjwtqtCoUfuDfYsjKUMZXgh3d
-         dYt0D8kTErS1EB9olHRbPjDLYyVk6/onU1mi/N1lZSNan6FF20PdMA6nogVuuD3Eim07
-         2wi/Do4zG9lW8qAF2rDgjpbSEZQ1xPHWUT0wm5TJoWjWnXekvRFdrmp3ofL4i/8JXQST
-         dclmGKxTCAIqx4UCnns3bdD+XsBy4db7BH5plLSdJyWkdVO9+fk9Hh/9VD+mZZteB0MV
-         4d0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=icVP128FRhTwc04Dx6Fu5LBu2wGRba/XSIiSHpKc63Y=;
-        b=pOD8lknAQ3lJAJW8UClI2Puop4wxzVsJK50R6WE8hqUfzEXuHT127bX/gobMWmnDlb
-         gVoVwPnBoZnMjdWKHQhrV/X4bn3d+XgRihQ8Ko6mDqkmc/XeVnGyqPzta20RpPktNZHk
-         NJo5VWNQrDshui4wIt3FzvGmSugTx9g8VWgmc3bzl+WaABjLc8uJIbHqXeGjeVYEPcoZ
-         0jFM27KjWFVuG/9VyoB7lDSikxk7TzaCTkOswDZyRh6GBymyfBCQQnDq8HC6pGxowRIu
-         RdM1S2lO5Iap1auLSl53rMIwjlPd03HXskOaK9JEMhpkKp/jGkPqcS14EW8CVvdMOAgi
-         WpQw==
-X-Gm-Message-State: AOAM531tFjxyi3uJl6fdXWy2wY4yscVRHmDdLYZDXGaGlQO3ErgNPlW8
-        lTcTHmdNJ8C1VBZ4hkapPts=
-X-Google-Smtp-Source: ABdhPJwvRGEtreBo1VyF3Tno2m4kV1b/KCw0/t2jXqGilrublW9lLrTGXnRWo6TJ32XLhHU96o9Ybg==
-X-Received: by 2002:a62:78cd:0:b029:327:de34:ad60 with SMTP id t196-20020a6278cd0000b0290327de34ad60mr23836420pfc.18.1626085738407;
-        Mon, 12 Jul 2021 03:28:58 -0700 (PDT)
-Received: from shinobu ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id s15sm15282693pfw.207.2021.07.12.03.28.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jul 2021 03:28:57 -0700 (PDT)
-Date:   Mon, 12 Jul 2021 19:28:51 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
-        a.fatoum@pengutronix.de, kamel.bouhara@bootlin.com,
-        gwendal@chromium.org, alexandre.belloni@bootlin.com,
-        david@lechnology.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        syednwaris@gmail.com, patrick.havelange@essensium.com,
-        fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@st.com, o.rempel@pengutronix.de,
-        jarkko.nikula@linux.intel.com,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Subject: Re: [PATCH v12 10/17] counter: Add character device interface
-Message-ID: <YOwZY2MwoiIDsurL@shinobu>
-References: <cover.1625471640.git.vilhelm.gray@gmail.com>
- <10cf764604827dea1b842cfe7a3cd31ca8ef6539.1625471640.git.vilhelm.gray@gmail.com>
- <20210711132003.0e870bc2@jic23-huawei>
+        id S232627AbhGLKk2 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 12 Jul 2021 06:40:28 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:3380 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232020AbhGLKkX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jul 2021 06:40:23 -0400
+Received: from fraeml736-chm.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4GNg0j6tm9z6GF6n;
+        Mon, 12 Jul 2021 18:26:29 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml736-chm.china.huawei.com (10.206.15.217) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Mon, 12 Jul 2021 12:37:32 +0200
+Received: from localhost (10.47.25.8) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Mon, 12 Jul
+ 2021 11:37:31 +0100
+Date:   Mon, 12 Jul 2021 11:37:13 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     "Sa, Nuno" <Nuno.Sa@analog.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        Alexandru Ardelean <aardelean@deviqon.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH] iio: light: adjd_s311: convert to device-managed
+ functions
+Message-ID: <20210712113713.000044da@Huawei.com>
+In-Reply-To: <PH0PR03MB6366FCE9E3F85195F881C88899159@PH0PR03MB6366.namprd03.prod.outlook.com>
+References: <20210628135132.73682-1-aardelean@deviqon.com>
+        <20210703185007.2c2283f4@jic23-huawei>
+        <CAASAkoYMaSuRnSWwtcoZVaGj+m6bDtu7ms2idHBtp5JFzDEp1g@mail.gmail.com>
+        <20210711112618.50c5bea1@jic23-huawei>
+        <PH0PR03MB6366FCE9E3F85195F881C88899159@PH0PR03MB6366.namprd03.prod.outlook.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="N2bqDrynKc56ho0n"
-Content-Disposition: inline
-In-Reply-To: <20210711132003.0e870bc2@jic23-huawei>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.47.25.8]
+X-ClientProxiedBy: lhreml727-chm.china.huawei.com (10.201.108.78) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Mon, 12 Jul 2021 07:45:42 +0000
+"Sa, Nuno" <Nuno.Sa@analog.com> wrote:
 
---N2bqDrynKc56ho0n
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> > From: Jonathan Cameron <jic23@kernel.org>
+> > Sent: Sunday, July 11, 2021 12:26 PM
+> > To: Alexandru Ardelean <aardelean@deviqon.com>
+> > Cc: linux-iio <linux-iio@vger.kernel.org>; Linux Kernel Mailing List
+> > <linux-kernel@vger.kernel.org>; pmeerw@pmeerw.net
+> > Subject: Re: [PATCH] iio: light: adjd_s311: convert to device-managed
+> > functions
+> > 
+> > On Mon, 5 Jul 2021 09:38:21 +0300
+> > Alexandru Ardelean <aardelean@deviqon.com> wrote:
+> >   
+> > > On Sat, 3 Jul 2021 at 20:47, Jonathan Cameron <jic23@kernel.org>  
+> > wrote:  
+> > > >
+> > > > On Mon, 28 Jun 2021 16:51:32 +0300
+> > > > Alexandru Ardelean <aardelean@deviqon.com> wrote:
+> > > >  
+> > > > > This one is a little easier to convert to device-managed, now with  
+> > the  
+> > > > > devm_krealloc() function.
+> > > > >
+> > > > > The other iio_triggered_buffer_setup() and iio_device_register()  
+> > can be  
+> > > > > converted to their devm_ variants. And devm_krealloc() can be  
+> > used to  
+> > > > > (re)alloc the buffer. When the driver unloads, this will also be  
+> > free'd.  
+> > > > >
+> > > > > Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
+> > > > > ---
+> > > > >  drivers/iio/light/adjd_s311.c | 34 +++++-----------------------------
+> > > > >  1 file changed, 5 insertions(+), 29 deletions(-)
+> > > > >
+> > > > > diff --git a/drivers/iio/light/adjd_s311.c  
+> > b/drivers/iio/light/adjd_s311.c  
+> > > > > index 17dac8d0e11d..19d60d6986a1 100644
+> > > > > --- a/drivers/iio/light/adjd_s311.c
+> > > > > +++ b/drivers/iio/light/adjd_s311.c
+> > > > > @@ -230,8 +230,8 @@ static int  
+> > adjd_s311_update_scan_mode(struct iio_dev *indio_dev,  
+> > > > >  {
+> > > > >       struct adjd_s311_data *data = iio_priv(indio_dev);
+> > > > >
+> > > > > -     kfree(data->buffer);
+> > > > > -     data->buffer = kmalloc(indio_dev->scan_bytes,  
+> > GFP_KERNEL);  
+> > > > > +     data->buffer = devm_krealloc(indio_dev->dev.parent, data-  
+> > >buffer,  
+> > > > > +                                  indio_dev->scan_bytes, GFP_KERNEL);  
+> > > > I got some complaints about exactly this trick in a review recently  
+> > so I'll  
+> > > > pass them on.
+> > > >
+> > > > Whilst devm_krealloc() usage like this won't lose the original  
+> > reference, its  
+> > > > not what people expect from a realloc() case, so to not confuse  
+> > people it is  
+> > > > better to do a dance where you use a local variable, then only set  
+> > data->buffer  
+> > > > to it once we know the realloc succeeded.
+> > > >
+> > > > That avoids this looking like the anti-pattern it would be if that  
+> > were a normal  
+> > > > realloc in which case you would just have leaked the original  
+> > allocation.  
+> > > >
+> > > > More interestingly, why are we bothering with resizing the buffer  
+> > dependent on what  
+> > > > is enabled?  Can't we just allocate a 128 byte buffer and not bother  
+> > changing it  
+> > > > as we really aren't wasting that much space?  Just embed it in the  
+> > adjd_s311_data  
+> > > > structure directly and don't worry about the allocations.  Will need  
+> > to be  
+> > > > aligned(8) though to avoid the push_to_buffer_with_timestamp()  
+> > issue.  
+> > > > Using something like
+> > > >
+> > > > struct {
+> > > >         s16 chans[4];
+> > > >         s64 ts __aligned(8); /* I hate x86 32 bit */  
+> > >
+> > > do you want to me t also add this comment? :p
+> > > [just kidding]
+> > >  
+> > > > } scan;
+> > > >
+> > > > Inside the priv structure should work nicely.  
+> > >
+> > > i agree; will do it like this;
+> > > i hesitated a bit due to the inertia of converting things to devm_  
+> > 
+> > A long discussion on rust usage in linux diverted into the issues around
+> > devm.
+> > I 'believe' that we are fine in IIO after some work Lars did a long time
+> > back
+> > to make us resilient to unbinds whilst the chardev was open, but
+> > probably
+> > worth keeping an eye on that discussion.
+> > 
+> > https://urldefense.com/v3/__https://lore.kernel.org/ksummit/CANiq
+> > 72nkNrekzbxMci6vW02w=Q2L-
+> > SVTk_U4KN_LT8u_b=YPgw@mail.gmail.com/T/*m6db86a574237c22a3
+> > 2ecf49b596b3c2917967c5e__;Iw!!A3Ni8CS0y2Y!oeM8GJzKVXb8mYa1m
+> > VJNw5fI2adsFk3FKkFzbnqyuDkUMKVTKQ3OoT0cnXP5rA$
+> > 
+> > I'm a tiny bit nervous that there might be races where we are doing
+> > the devm_realloc.
+> > I 'think' we are fine, but the 'think' and 'believe' in these statements
+> > expresses
+> > a slight lack of certainty!
+> > 
+> > Jonathan
+> >   
+> 
+> Hi,
 
-On Sun, Jul 11, 2021 at 01:20:03PM +0100, Jonathan Cameron wrote:
-> On Mon,  5 Jul 2021 17:18:58 +0900
-> William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
->=20
-> > This patch introduces a character device interface for the Counter
-> > subsystem. Device data is exposed through standard character device read
-> > operations. Device data is gathered when a Counter event is pushed by
-> > the respective Counter device driver. Configuration is handled via ioctl
-> > operations on the respective Counter character device node.
-> >=20
-> > Cc: David Lechner <david@lechnology.com>
-> > Cc: Gwendal Grignou <gwendal@chromium.org>
-> > Cc: Dan Carpenter <dan.carpenter@oracle.com>
-> > Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-> > Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-> > ---
-> >  drivers/counter/Makefile         |   2 +-
-> >  drivers/counter/counter-chrdev.c | 494 +++++++++++++++++++++++++++++++
-> >  drivers/counter/counter-chrdev.h |  14 +
-> >  drivers/counter/counter-core.c   |  44 ++-
-> >  include/linux/counter.h          |  45 +++
-> >  include/uapi/linux/counter.h     |  77 +++++
-> >  6 files changed, 670 insertions(+), 6 deletions(-)
-> >  create mode 100644 drivers/counter/counter-chrdev.c
-> >  create mode 100644 drivers/counter/counter-chrdev.h
-> >=20
-> > diff --git a/drivers/counter/Makefile b/drivers/counter/Makefile
-> > index 1ab7e087fdc2..8fde6c100ebc 100644
-> > --- a/drivers/counter/Makefile
-> > +++ b/drivers/counter/Makefile
-> > @@ -4,7 +4,7 @@
-> >  #
-> > =20
-> >  obj-$(CONFIG_COUNTER) +=3D counter.o
-> > -counter-y :=3D counter-core.o counter-sysfs.o
-> > +counter-y :=3D counter-core.o counter-sysfs.o counter-chrdev.o
-> > =20
-> >  obj-$(CONFIG_104_QUAD_8)	+=3D 104-quad-8.o
-> >  obj-$(CONFIG_INTERRUPT_CNT)		+=3D interrupt-cnt.o
-> > diff --git a/drivers/counter/counter-chrdev.c b/drivers/counter/counter=
--chrdev.c
-> > new file mode 100644
-> > index 000000000000..92805b1f65b8
-> > --- /dev/null
-> > +++ b/drivers/counter/counter-chrdev.c
-> > @@ -0,0 +1,494 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * Generic Counter character device interface
-> > + * Copyright (C) 2020 William Breathitt Gray
-> > + */
-> > +
-> > +#include <linux/cdev.h>
-> > +#include <linux/counter.h>
-> > +#include <linux/err.h>
-> > +#include <linux/errno.h>
-> > +#include <linux/export.h>
-> > +#include <linux/fs.h>
-> > +#include <linux/kfifo.h>
-> > +#include <linux/list.h>
-> > +#include <linux/mutex.h>
-> > +#include <linux/nospec.h>
-> > +#include <linux/poll.h>
-> > +#include <linux/slab.h>
-> > +#include <linux/spinlock.h>
-> > +#include <linux/timekeeping.h>
-> > +#include <linux/types.h>
-> > +#include <linux/wait.h>
-> > +#include <linux/uaccess.h>
-> > +
-> > +#include "counter-chrdev.h"
-> > +
-> > +struct counter_comp_node {
-> > +	struct list_head l;
-> > +	struct counter_component component;
-> > +	struct counter_comp comp;
-> > +	void *parent;
-> > +};
-> > +
-> > +static ssize_t counter_chrdev_read(struct file *filp, char __user *buf,
-> > +				   size_t len, loff_t *f_ps)
-> > +{
-> > +	struct counter_device *const counter =3D filp->private_data;
-> > +	int err;
-> > +	unsigned int copied;
-> > +
-> > +	if (len < sizeof(struct counter_event))
-> > +		return -EINVAL;
->=20
-> There is a lot of discussion going on buried in a rust on linux thread
-> around the use of devm when chardevs are involved.  I'd kind of forgotten
-> that Lars-Peter Clausen did a lot of work to make IIO safe to these races
-> some time ago.  One of those elements was to make we dropped out quickly
-> from read functions if we were on the way 'down'.  Could you make sure to
-> run some tests to ensure we are safe with driver unbinds when the cdev is
-> still open?  Another part of that was to ensure a blocking read unblocks
-> when the device goes away (with an error of course!)  Some of this stuff
-> isn't 'necessary' for correctness, but it is desirable for device removal
-> to occur in finite time.
->=20
-> https://lore.kernel.org/ksummit/CANiq72nkNrekzbxMci6vW02w=3DQ2L-SVTk_U4KN=
-_LT8u_b=3DYPgw@mail.gmail.com/T/#m6db86a574237c22a32ecf49b596b3c2917967c5e
->=20
-> Note I want to take another look at the IIO code around this as well
-> just in case we missed anything that has come up in that discussion.
-> I think we are fine but maybe can move to more 'standard' code patterns
-> if those get formalised.=20
->=20
-> Anyhow, it's fiddly stuff, so make sure to test those cases.
->=20
-> Jonathan
++CC Lars who might recall how this all works!
 
-Thank you for the heads-up. It'll be a shame if all the simplification
-we got by using devm_* for counter-sysfs.c has to be undone, but I'll
-investigate this first and see if we're all right as we are now; I also
-suspect we are fine given how many times we've already tested these
-patchset revisions, but I'll run some deliberate tests for these
-particular cases just to be sure.
+> 
+> It's the second thread where I see you mentioning this, so this I will take the
+> opportunity to also give a bit on though about this. I actually have in mind a RFC
+> (hopefully sending it out this week) for this as I think we might still have some 
+> issues with open chardevs and device unbinding.
+> 
+> What we have in [1] is not enough to make sure the whole thing is synchronized with
+> device unbinding... We still have the door open to races where we call 'iio_buffer_ready()'
+> or even 'rb->access->read()' after the device gets unbinded. Maybe we are lucky and
+> nothing bad really happens and we just error out in the next time 'read()' is done on
+> our fd. 
 
-> > +
-> > +	do {
-> > +		if (kfifo_is_empty(&counter->events)) {
-> > +			if (filp->f_flags & O_NONBLOCK)
-> > +				return -EAGAIN;
-> > +
-> > +			err =3D wait_event_interruptible(counter->events_wait,
-> > +					!kfifo_is_empty(&counter->events));
-> > +			if (err < 0)
-> > +				return err;
-> > +		}
-> > +
-> > +		if (mutex_lock_interruptible(&counter->events_lock))
-> > +			return -ERESTARTSYS;
-> > +		err =3D kfifo_to_user(&counter->events, buf, len, &copied);
-> > +		mutex_unlock(&counter->events_lock);
-> > +		if (err < 0)
-> > +			return err;
-> > +	} while (!copied);
-> > +
-> > +	return copied;
-> > +}
-> > +
-> > +static __poll_t counter_chrdev_poll(struct file *filp,
-> > +				    struct poll_table_struct *pollt)
-> > +{
-> > +	struct counter_device *const counter =3D filp->private_data;
-> > +	__poll_t events =3D 0;
-> > +
-> > +	poll_wait(filp, &counter->events_wait, pollt);
-> > +
-> > +	if (!kfifo_is_empty(&counter->events))
-> > +		events =3D EPOLLIN | EPOLLRDNORM;
-> > +
-> > +	return events;
-> > +}
-> > +
-> > +static void counter_events_list_free(struct list_head *const events_li=
-st)
-> > +{
-> > +	struct counter_event_node *p, *n;
-> > +	struct counter_comp_node *q, *o;
-> > +
-> > +	list_for_each_entry_safe(p, n, events_list, l) {
-> > +		/* Free associated component nodes */
-> > +		list_for_each_entry_safe(q, o, &p->comp_list, l) {
-> > +			list_del(&q->l);
-> > +			kfree(q);
-> > +		}
-> > +
-> > +		/* Free event node */
-> > +		list_del(&p->l);
-> > +		kfree(p);
-> > +	}
-> > +}
-> > +
-> > +static int counter_set_event_node(struct counter_device *const counter,
-> > +				  struct counter_watch *const watch,
-> > +				  const struct counter_comp_node *const cfg)
-> > +{
-> > +	unsigned long flags;
-> > +	struct counter_event_node *event_node;
-> > +	int err =3D 0;
-> > +	struct counter_comp_node *comp_node;
-> > +
-> > +	spin_lock_irqsave(&counter->events_list_lock, flags);
-> > +
-> > +	/* Search for event in the list */
-> > +	list_for_each_entry(event_node, &counter->next_events_list, l)
-> > +		if (event_node->event =3D=3D watch->event &&
-> > +		    event_node->channel =3D=3D watch->channel)
-> > +			break;
-> > +
-> > +	/* If event is not already in the list */
-> > +	if (&event_node->l =3D=3D &counter->next_events_list) {
-> > +		/* Allocate new event node */
-> > +		event_node =3D kmalloc(sizeof(*event_node), GFP_ATOMIC);
-> > +		if (!event_node) {
-> > +			err =3D -ENOMEM;
-> > +			goto exit_early;
-> > +		}
-> > +
-> > +		/* Configure event node and add to the list */
-> > +		event_node->event =3D watch->event;
-> > +		event_node->channel =3D watch->channel;
-> > +		INIT_LIST_HEAD(&event_node->comp_list);
-> > +		list_add(&event_node->l, &counter->next_events_list);
-> > +	}
-> > +
-> > +	/* Check if component watch has already been set before */
-> > +	list_for_each_entry(comp_node, &event_node->comp_list, l)
-> > +		if (comp_node->parent =3D=3D cfg->parent &&
-> > +		    comp_node->comp.count_u8_read =3D=3D cfg->comp.count_u8_read) {
-> > +			err =3D -EINVAL;
-> > +			goto exit_early;
-> > +		}
-> > +
-> > +	/* Allocate component node */
-> > +	comp_node =3D kmalloc(sizeof(*comp_node), GFP_ATOMIC);
-> > +	if (!comp_node) {
-> > +		/* Free event node if no one else is watching */
-> > +		if (list_empty(&event_node->comp_list)) {
-> > +			list_del(&event_node->l);
-> > +			kfree(event_node);
-> > +		}
-> > +		err =3D -ENOMEM;
-> > +		goto exit_early;
-> > +	}
-> > +	*comp_node =3D *cfg;
-> > +
-> > +	/* Add component node to event node */
-> > +	list_add_tail(&comp_node->l, &event_node->comp_list);
-> > +
-> > +exit_early:
-> > +	spin_unlock_irqrestore(&counter->events_list_lock, flags);
-> > +
-> > +	return err;
-> > +}
-> > +
-> > +static int counter_disable_events(struct counter_device *const counter)
-> > +{
-> > +	unsigned long flags;
-> > +	int err =3D 0;
-> > +
-> > +	spin_lock_irqsave(&counter->events_list_lock, flags);
-> > +
-> > +	counter_events_list_free(&counter->events_list);
-> > +
-> > +	if (counter->ops->events_configure)
-> > +		err =3D counter->ops->events_configure(counter);
-> > +
-> > +	spin_unlock_irqrestore(&counter->events_list_lock, flags);
-> > +
-> > +	counter_events_list_free(&counter->next_events_list);
-> > +
-> > +	return err;
-> > +}
-> > +
-> > +static int counter_add_watch(struct counter_device *const counter,
-> > +			     const unsigned long arg)
-> > +{
-> > +	void __user *const uwatch =3D (void __user *)arg;
-> > +	struct counter_watch watch;
-> > +	struct counter_comp_node comp_node =3D {};
-> > +	size_t parent, id;
-> > +	struct counter_comp *ext;
-> > +	size_t num_ext;
-> > +	int err;
-> > +
-> > +	if (copy_from_user(&watch, uwatch, sizeof(watch)))
-> > +		return -EFAULT;
-> > +
-> > +	if (watch.component.type =3D=3D COUNTER_COMPONENT_NONE)
-> > +		goto no_component;
-> > +
-> > +	parent =3D watch.component.parent;
-> > +
-> > +	/* Configure parent component info for comp node */
-> > +	switch (watch.component.scope) {
-> > +	case COUNTER_SCOPE_DEVICE:
-> > +		ext =3D counter->ext;
-> > +		num_ext =3D counter->num_ext;
-> > +		break;
-> > +	case COUNTER_SCOPE_SIGNAL:
-> > +		if (parent >=3D counter->num_signals)
-> > +			return -EINVAL;
-> > +		parent =3D array_index_nospec(parent, counter->num_signals);
-> > +
-> > +		comp_node.parent =3D counter->signals + parent;
-> > +
-> > +		ext =3D counter->signals[parent].ext;
-> > +		num_ext =3D counter->signals[parent].num_ext;
-> > +		break;
-> > +	case COUNTER_SCOPE_COUNT:
-> > +		if (parent >=3D counter->num_counts)
-> > +			return -EINVAL;
-> > +		parent =3D array_index_nospec(parent, counter->num_counts);
-> > +
-> > +		comp_node.parent =3D counter->counts + parent;
-> > +
-> > +		ext =3D counter->counts[parent].ext;
-> > +		num_ext =3D counter->counts[parent].num_ext;
-> > +		break;
-> > +	default:
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	id =3D watch.component.id;
-> > +
-> > +	/* Configure component info for comp node */
-> > +	switch (watch.component.type) {
-> > +	case COUNTER_COMPONENT_SIGNAL:
-> > +		if (watch.component.scope !=3D COUNTER_SCOPE_SIGNAL)
-> > +			return -EINVAL;
-> > +
-> > +		comp_node.comp.type =3D COUNTER_COMP_SIGNAL_LEVEL;
-> > +		comp_node.comp.signal_u32_read =3D counter->ops->signal_read;
-> > +		break;
-> > +	case COUNTER_COMPONENT_COUNT:
-> > +		if (watch.component.scope !=3D COUNTER_SCOPE_COUNT)
-> > +			return -EINVAL;
-> > +
-> > +		comp_node.comp.type =3D COUNTER_COMP_U64;
-> > +		comp_node.comp.count_u64_read =3D counter->ops->count_read;
-> > +		break;
-> > +	case COUNTER_COMPONENT_FUNCTION:
-> > +		if (watch.component.scope !=3D COUNTER_SCOPE_COUNT)
-> > +			return -EINVAL;
-> > +
-> > +		comp_node.comp.type =3D COUNTER_COMP_FUNCTION;
-> > +		comp_node.comp.count_u32_read =3D counter->ops->function_read;
-> > +		break;
-> > +	case COUNTER_COMPONENT_SYNAPSE_ACTION:
-> > +		if (watch.component.scope !=3D COUNTER_SCOPE_COUNT)
-> > +			return -EINVAL;
-> > +		if (id >=3D counter->counts[parent].num_synapses)
-> > +			return -EINVAL;
-> > +		id =3D array_index_nospec(id, counter->counts[parent].num_synapses);
-> > +
-> > +		comp_node.comp.type =3D COUNTER_COMP_SYNAPSE_ACTION;
-> > +		comp_node.comp.action_read =3D counter->ops->action_read;
-> > +		comp_node.comp.priv =3D counter->counts[parent].synapses + id;
-> > +		break;
-> > +	case COUNTER_COMPONENT_EXTENSION:
-> > +		if (id >=3D num_ext)
-> > +			return -EINVAL;
-> > +		id =3D array_index_nospec(id, num_ext);
-> > +
-> > +		comp_node.comp =3D ext[id];
-> > +		break;
-> > +	default:
-> > +		return -EINVAL;
-> > +	}
-> > +	/* Check if any read callback is set; this is part of a union */
-> > +	if (!comp_node.comp.count_u8_read)
-> > +		return -EOPNOTSUPP;
-> > +
-> > +no_component:
-> > +	if (counter->ops->watch_validate) {
-> > +		err =3D counter->ops->watch_validate(counter, &watch);
-> > +		if (err < 0)
-> > +			return err;
-> > +	}
-> > +
-> > +	comp_node.component =3D watch.component;
-> > +
-> > +	return counter_set_event_node(counter, &watch, &comp_node);
-> > +}
-> > +
-> > +static long counter_chrdev_ioctl(struct file *filp, unsigned int cmd,
-> > +				 unsigned long arg)
-> > +{
-> > +	struct counter_device *const counter =3D filp->private_data;
-> > +	unsigned long flags;
-> > +	int err =3D 0;
-> > +
-> > +	switch (cmd) {
-> > +	case COUNTER_ADD_WATCH_IOCTL:
-> > +		return counter_add_watch(counter, arg);
-> > +	case COUNTER_ENABLE_EVENTS_IOCTL:
-> > +		spin_lock_irqsave(&counter->events_list_lock, flags);
-> > +
-> > +		counter_events_list_free(&counter->events_list);
-> > +		list_replace_init(&counter->next_events_list,
-> > +				  &counter->events_list);
-> > +
-> > +		if (counter->ops->events_configure)
-> > +			err =3D counter->ops->events_configure(counter);
-> > +
-> > +		spin_unlock_irqrestore(&counter->events_list_lock, flags);
-> > +		return err;
-> > +	case COUNTER_DISABLE_EVENTS_IOCTL:
-> > +		return counter_disable_events(counter);
-> > +	default:
-> > +		return -ENOIOCTLCMD;
-> > +	}
-> > +}
-> > +
-> > +static int counter_chrdev_open(struct inode *inode, struct file *filp)
-> > +{
-> > +	struct counter_device *const counter =3D container_of(inode->i_cdev,
-> > +							    typeof(*counter),
-> > +							    chrdev);
-> > +
->=20
-> What stops multiple simultaneous openings?  I'm going to assume this isn't
-> safe to those, or at least that crazy things could happen if you had it
-> open twice at the same time.
+My understanding of that test is it was only intended to ensure a smooth exit 'after' the
+buffer pull down has occurred.  From vague memory rather than careful analysis, the
+reason it is needed is we only send the break out signal once for a given buffer,
+so we need to be sure that userspace doesn't call read() then ignore the error returned
+due to the buffer going away mid read and call read() again.  There may be races in the
+first time path though. In particularly I'm not sure the reference count on the buffer
+is raised during the read and it perhaps should be.
 
-We're "safe" in the sense that there are locks protecting data access
-(no risk of dereferencing a NUll pointer, etc.), so I don't expect any
-crashes if there are multiple opens to the chrdev. However, I coded this
-with the expectation of a single open, so in such as scenario where we
-have multiple opens I suspect some data would be not appear, or maybe
-only appear partially, because the kfifo data is cleared when read.
 
-In patch 15 I deliberately restrict the chrdev to a single open via
-counter->chrdev_lock in order to support the events_queue_size sysfs
-attribute. I could move it to this patch, but it may not be necessary
-when both patches will likely be picked up together and we have no
-critical issues with opening twice here.
+> However, during the possible race,  I think it's very likely that we end up touching
+> the same data structures concurrently. On some devices, we surely
+> (in theory and if all the stars align) have a path where 'iio_buffer_flush_hwfifo()' might
+> be called with 'indio_dev->info' already set to NULL...
 
-William Breathitt Gray
+Yeah, the hwfifo stuff is more recent, it's definitely possible there is a race around that.
 
---N2bqDrynKc56ho0n
-Content-Type: application/pgp-signature; name="signature.asc"
+> 
+> IMO, the only way to have this fully in sync is to use the 'info_exist_lock' as it's done
+> in [2]. I think [2] was actually "fixed" when Alex sent his patches for multi buffer support...
+It's rather painful to take that lock. If we can make things safe with appropriate reference
+counting that's definitely preferable. 
 
------BEGIN PGP SIGNATURE-----
+For ioctl's they are always slow path so the exist_lock route is fine.
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmDsGVAACgkQhvpINdm7
-VJL7ohAAgonCcVx2Mp1eIsO6wo3c6txFIh08tE/gvzu4ckbKJxhO2GmZ62DW6gG4
-+VOVyYvwiaHlgLPGB7r1hv2QmEMxYB52r/AV05fpCtCziHy2MqihA4/NSwwVGSIs
-ts1PjR/V5NyFygyw6cn6iVont6/tG4FKUTLjUEiH8Yo2kZDPqzgyDRmIXeWL+QcO
-qy0gL2NgucBNMt5SzwHpBeOg1zh24J+FJqWmFH0cYR7RCvpQ7/h1rP/iMmOQJfAk
-ivM2Cyf0CyweHOZFaHLPw4DhaMzTvWPwaYu2E8tSRRA171IMbw3F9feu23dFzUaF
-8pQPwdxSvwALqd4kUt1J8a1yUZF8STJ++3vJXmafCEeGGbNmvVhocUzhFPmHmuVR
-e3qzQh499A69xqp8iXkQCa1R6RrywkGsFvq+H+KufHmOBjLjv19vWcAyrmkNzhGK
-w0o514iALb+ypgx0InKkeU3+/eYwejmKBK+oCAyH57/xohxwPC++N/QXCOzG9+fe
-Dp8a8H7vSVfZybuVTdmCCJVieNkSSNojyICMq089lolOuK5lexShdblSJkOzy78m
-NcbcSL2Tkn8xnk62KC+7zExQh5xhvMwwOG8YpyCNUYoFc3zbsOp12RomEc/bVeak
-Qz1pDejnXSqi/V+caTHKxd8vw2Ot1EAHZg1KaQmwh9jIaX/sSEI=
-=RCPx
------END PGP SIGNATURE-----
+> Naturally, for the read case, we need to make sure we are not going to sleep with the
+> mutex held so we might need an unlock -> lock dance which is not that nice. But I'm
+> not really seeing another way. We also need to look at other file operations and also
+> for the events case to see if this is also a thing.
+> 
+> Naturally, I might be missing some subtlety and that's why I had this planned as RFC.
+> But since is mentioned here, I thought I could bring this up as in the end I might not
+> even need to send the patches :)
+Wise move :)
 
---N2bqDrynKc56ho0n--
+I'd suggest that any fix in this space would ideally be accompanied by a confirmed race.
+Heavy use of sleeps can usually open one up enough to actually hit them in a few tries.
+
+Jonathan
+> 
+> [1]: https://elixir.bootlin.com/linux/latest/source/drivers/iio/industrialio-buffer.c#L117
+> [2]: https://elixir.bootlin.com/linux/latest/source/drivers/iio/industrialio-core.c#L1763
+> 
+> - Nuno Sá
+

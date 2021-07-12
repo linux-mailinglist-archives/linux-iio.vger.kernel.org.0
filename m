@@ -2,59 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B59BE3C3F40
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Jul 2021 22:42:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0F5C3C4115
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Jul 2021 03:44:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229758AbhGKUoz convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sun, 11 Jul 2021 16:44:55 -0400
-Received: from mail.07d05.mspz7.gob.ec ([186.46.59.139]:33740 "EHLO
-        mail.07d05.mspz7.gob.ec" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229544AbhGKUoz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 11 Jul 2021 16:44:55 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by mail.07d05.mspz7.gob.ec (Postfix) with ESMTP id A6BC818226A2;
-        Sun, 11 Jul 2021 14:36:52 -0500 (-05)
-Received: from mail.07d05.mspz7.gob.ec ([127.0.0.1])
-        by localhost (mail.07d05.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id HYW65h0etg7y; Sun, 11 Jul 2021 14:36:52 -0500 (-05)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.07d05.mspz7.gob.ec (Postfix) with ESMTP id DDCA01822685;
-        Sun, 11 Jul 2021 14:36:50 -0500 (-05)
-X-Virus-Scanned: amavisd-new at 07d05.mspz7.gob.ec
-Received: from mail.07d05.mspz7.gob.ec ([127.0.0.1])
-        by localhost (mail.07d05.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id KM-X75E1dID7; Sun, 11 Jul 2021 14:36:50 -0500 (-05)
-Received: from cris-PC.wifi (unknown [105.9.79.139])
-        by mail.07d05.mspz7.gob.ec (Postfix) with ESMTPSA id 3279C1822689;
-        Sun, 11 Jul 2021 14:36:40 -0500 (-05)
-Content-Type: text/plain; charset="utf-8"
+        id S229891AbhGLBrp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 11 Jul 2021 21:47:45 -0400
+Received: from lucky1.263xmail.com ([211.157.147.134]:43990 "EHLO
+        lucky1.263xmail.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229812AbhGLBro (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 11 Jul 2021 21:47:44 -0400
+Received: from localhost (unknown [192.168.167.32])
+        by lucky1.263xmail.com (Postfix) with ESMTP id C2676CF132;
+        Mon, 12 Jul 2021 09:44:49 +0800 (CST)
+X-MAIL-GRAY: 0
+X-MAIL-DELIVERY: 1
+X-ADDR-CHECKED4: 1
+X-SKE-CHECKED: 1
+X-ANTISPAM-LEVEL: 2
+Received: from xxm-vm.localdomain (unknown [58.22.7.114])
+        by smtp.263.net (postfix) whith ESMTP id P29909T139670828599040S1626054272143902_;
+        Mon, 12 Jul 2021 09:44:35 +0800 (CST)
+X-IP-DOMAINF: 1
+X-UNIQUE-TAG: <f3d5d0aa2d28905428bdf12c7118f134>
+X-RL-SENDER: xxm@rock-chips.com
+X-SENDER: xxm@rock-chips.com
+X-LOGIN-NAME: xxm@rock-chips.com
+X-FST-TO: jic23@kernel.org
+X-RCPT-COUNT: 10
+X-SENDER-IP: 58.22.7.114
+X-ATTACHMENT-NUM: 0
+X-System-Flag: 0
+From:   Simon Xue <xxm@rock-chips.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
+        robh+dt@kernel.org, Johan Jonker <jbx6244@gmail.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org, Simon Xue <xxm@rock-chips.com>
+Subject: [PATCH v2 1/2] dt-bindings: iio: adc: rockchip-saradc: add description for rk3568
+Date:   Mon, 12 Jul 2021 09:44:37 +0800
+Message-Id: <20210712014437.97427-1-xxm@rock-chips.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: spende von 2,000,000 euro
-To:     Recipients <maria.coronel@07d05.mspz7.gob.ec>
-From:   ''Michael Weirsky'' <maria.coronel@07d05.mspz7.gob.ec>
-Date:   Sun, 11 Jul 2021 21:36:31 +0200
-Reply-To: mikeweirskyspende@gmail.com
-Message-Id: <20210711193641.3279C1822689@mail.07d05.mspz7.gob.ec>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Lieber Freund,
+Add description for rk3568 saradc.
 
-Ich bin Herr Mike Weirsky, New Jersey, Vereinigte Staaten von Amerika, der Mega-Gewinner von $ 273million In Mega Millions Jackpot, spende ich an 5 zufällige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Mail nach einem Spinball ausgewählt.Ich habe den größten Teil meines Vermögens auf eine Reihe von Wohltätigkeitsorganisationen und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die Summe von € 2.000.000,00 an Sie als eine der ausgewählten 5 zu spenden, um meine Gewinne zu überprüfen.
-Das ist dein Spendencode: [MW530342019]
+Signed-off-by: Simon Xue <xxm@rock-chips.com>
+---
+ Documentation/devicetree/bindings/iio/adc/rockchip-saradc.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-www.youtube.com/watch?v=un8yRTmrYMY
+diff --git a/Documentation/devicetree/bindings/iio/adc/rockchip-saradc.yaml b/Documentation/devicetree/bindings/iio/adc/rockchip-saradc.yaml
+index 1bb76197787b..e512a14e41b4 100644
+--- a/Documentation/devicetree/bindings/iio/adc/rockchip-saradc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/rockchip-saradc.yaml
+@@ -20,6 +20,7 @@ properties:
+               - rockchip,px30-saradc
+               - rockchip,rk3308-saradc
+               - rockchip,rk3328-saradc
++              - rockchip,rk3568-saradc
+               - rockchip,rv1108-saradc
+           - const: rockchip,rk3399-saradc
+ 
+-- 
+2.25.1
 
 
-Antworten Sie mit dem SPENDE-CODE an diese 
 
-E-Mail:mikeweirskyspende@gmail.com
-
-
-Ich hoffe, Sie und Ihre Familie glücklich zu machen.
-
-Grüße
-Herr Mike Weirsky

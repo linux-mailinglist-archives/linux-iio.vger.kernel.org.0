@@ -2,107 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 20A5F3C4D3C
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Jul 2021 12:39:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F8603C4F49
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Jul 2021 12:43:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239998AbhGLHMY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Jul 2021 03:12:24 -0400
-Received: from gloria.sntech.de ([185.11.138.130]:55990 "EHLO gloria.sntech.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S243921AbhGLHGH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 12 Jul 2021 03:06:07 -0400
-Received: from ip5f5aa64a.dynamic.kabel-deutschland.de ([95.90.166.74] helo=diego.localnet)
-        by gloria.sntech.de with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <heiko@sntech.de>)
-        id 1m2pxp-0002Ud-R1; Mon, 12 Jul 2021 09:02:49 +0200
-From:   Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
-To:     Jonathan Cameron <jic23@kernel.org>, Simon Xue <xxm@rock-chips.com>
-Cc:     linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
-        robh+dt@kernel.org, Johan Jonker <jbx6244@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, Simon Xue <xxm@rock-chips.com>
-Subject: Re: [PATCH v2 2/2] iio: adc: rockchip_saradc: add support for rk3568 saradc
-Date:   Mon, 12 Jul 2021 09:02:48 +0200
-Message-ID: <3451680.Hrl0x5LGn1@diego>
-In-Reply-To: <20210712014507.97477-1-xxm@rock-chips.com>
-References: <20210712014437.97427-1-xxm@rock-chips.com> <20210712014507.97477-1-xxm@rock-chips.com>
+        id S240910AbhGLHYB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Jul 2021 03:24:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37980 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1343882AbhGLHUI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jul 2021 03:20:08 -0400
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52C10C025397;
+        Mon, 12 Jul 2021 00:11:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:Content-Type:
+        MIME-Version:References:In-Reply-To:Message-ID:Subject:To:From:Date:Sender:
+        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=4Ku+fho4Qa2ctqbzzklG68fzz9r2UqJK370+yapiLZc=; b=ag7kV+FXM4JBQH7e2//dT1ivFv
+        A59SAxXTXopPlbcEbf+RoxCFo0UquO5n03eZLpE4Gh+7KE/cDJfcUy5RtV3h/E1+WhRnqKkogLEBO
+        C61h1r1gvS0HVVVxIX3kSR8Be0J7H0+bx+WlSiyuKEq9WFAMZOHYYBKBFILR0vs5T8TI=;
+Received: from p200300ccff0a76001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff0a:7600:1a3d:a2ff:febf:d33a] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1m2q6E-0005aH-RK; Mon, 12 Jul 2021 09:11:30 +0200
+Date:   Mon, 12 Jul 2021 09:11:30 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     Jonathan Cameron <jic23@kernel.org>, lars@metafoo.de,
+        sre@kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        letux-kernel@openphoenux.org
+Subject: Re: [PATCH v2 2/2] power: supply: rn5t618: Add voltage_now property
+Message-ID: <20210712091130.2096cf23@aktux>
+In-Reply-To: <20210711112039.43c4af7b@jic23-huawei>
+References: <20210705113637.28908-1-andreas@kemnade.info>
+ <20210705113637.28908-3-andreas@kemnade.info>
+ <20210711112039.43c4af7b@jic23-huawei>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Score: -1.0 (-)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Am Montag, 12. Juli 2021, 03:45:07 CEST schrieb Simon Xue:
-> It is similar to other devices, but with 8 channels.
+On Sun, 11 Jul 2021 11:20:39 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
+
+> On Mon,  5 Jul 2021 13:36:37 +0200
+> Andreas Kemnade <andreas@kemnade.info> wrote:
 > 
-> Signed-off-by: Simon Xue <xxm@rock-chips.com>
-
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-
-
-If a previous version received such a Reviewed-by or similar
-please add them to subsequent new versions that you send.
-[Not needed here as I sent them again, but to keep in mind :-) ]
-
-Thanks
-Heiko
-
-> ---
->  drivers/iio/adc/rockchip_saradc.c | 22 +++++++++++++++++++++-
->  1 file changed, 21 insertions(+), 1 deletion(-)
+> > Read voltage_now via IIO and provide the property.
+> > 
+> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> > Reported-by: kernel test robot <lkp@intel.com>  
+> Huh?  Seems unlikely it pointed out that this patch was necessary in general.
+> If highlighting a particular fix in an earlier version, then state what it was
+> in the commit message. Note for fixes that get rolled into patches, it's
+> often just mentioned in the change log and we skip the tag because it can
+> cause confusion.
 > 
-> diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
-> index 12584f1631d8..f3eb8d2e50dc 100644
-> --- a/drivers/iio/adc/rockchip_saradc.c
-> +++ b/drivers/iio/adc/rockchip_saradc.c
-> @@ -35,7 +35,7 @@
->  #define SARADC_DLY_PU_SOC_MASK		0x3f
->  
->  #define SARADC_TIMEOUT			msecs_to_jiffies(100)
-> -#define SARADC_MAX_CHANNELS		6
-> +#define SARADC_MAX_CHANNELS		8
->  
->  struct rockchip_saradc_data {
->  	const struct iio_chan_spec	*channels;
-> @@ -192,6 +192,23 @@ static const struct rockchip_saradc_data rk3399_saradc_data = {
->  	.clk_rate = 1000000,
->  };
->  
-> +static const struct iio_chan_spec rockchip_rk3568_saradc_iio_channels[] = {
-> +	SARADC_CHANNEL(0, "adc0", 10),
-> +	SARADC_CHANNEL(1, "adc1", 10),
-> +	SARADC_CHANNEL(2, "adc2", 10),
-> +	SARADC_CHANNEL(3, "adc3", 10),
-> +	SARADC_CHANNEL(4, "adc4", 10),
-> +	SARADC_CHANNEL(5, "adc5", 10),
-> +	SARADC_CHANNEL(6, "adc6", 10),
-> +	SARADC_CHANNEL(7, "adc7", 10),
-> +};
-> +
-> +static const struct rockchip_saradc_data rk3568_saradc_data = {
-> +	.channels = rockchip_rk3568_saradc_iio_channels,
-> +	.num_channels = ARRAY_SIZE(rockchip_rk3568_saradc_iio_channels),
-> +	.clk_rate = 1000000,
-> +};
-> +
->  static const struct of_device_id rockchip_saradc_match[] = {
->  	{
->  		.compatible = "rockchip,saradc",
-> @@ -202,6 +219,9 @@ static const struct of_device_id rockchip_saradc_match[] = {
->  	}, {
->  		.compatible = "rockchip,rk3399-saradc",
->  		.data = &rk3399_saradc_data,
-> +	}, {
-> +		.compatible = "rockchip,rk3568-saradc",
-> +		.data = &rk3568_saradc_data,
->  	},
->  	{},
->  };
-> 
+The robot found a problem in v1 (missing depends on IIO). It is fixed
+now. The message from the bot tells to add a tag. It seems not to make
+sense. But probably the bot is also running on public branches (which
+will not be rebase) and uses the same message where it actually makes
+sense.
 
+I will send a v3 with that tag removed and the other comment addressed.
 
-
-
+Regards,
+Andreas

@@ -2,107 +2,209 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 81BCA3C6BF7
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Jul 2021 10:27:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 584E83C6D15
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Jul 2021 11:17:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234474AbhGMIaV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 13 Jul 2021 04:30:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45466 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234305AbhGMIaV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Jul 2021 04:30:21 -0400
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEDCEC0613DD
-        for <linux-iio@vger.kernel.org>; Tue, 13 Jul 2021 01:27:31 -0700 (PDT)
-Received: by mail-wr1-x42e.google.com with SMTP id a13so29312440wrf.10
-        for <linux-iio@vger.kernel.org>; Tue, 13 Jul 2021 01:27:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=JdIzo+ab8yZqCyfLG0HPkhJJ6bitQEDJ6d4nqk25OPQ=;
-        b=O+kRR/cmVS41VVx2Wakn3RdyNFwzpIoUGLOGubOc+/gPh6FPjVUq1uC5mJLyoSmmsw
-         MvgBdfjp93P+6S3AgtIUcIhWz3IX64CA28w1vxlucNXOjjAbNTJaTIwP2vGiGwwKGMX1
-         b31bomYcsNpAZXZ/POXNXE42CS90iLtefbH7Lh7Zm8eXoSNtATHK6f6A33Z45x00EjAg
-         2J++HZNb8K3LV57R0nI9rE2zIPxadBNhyyJkwziN8uWuiARRQEQSTE3hO7YekPxibugJ
-         C9BbNI4fZ2zEYhStmCyWQudMAc1XCLvFZcDZqIkUd4HaHfitb+Rwevcvh9j7a7+pQLht
-         zXqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=JdIzo+ab8yZqCyfLG0HPkhJJ6bitQEDJ6d4nqk25OPQ=;
-        b=N4UeBJsdmwTzDAEn3sz4Vb1AqrShMDnTZDZpAa27nvcMOjwsWpoh8bVEF95Trey4pI
-         EAU+00l6SJznDLSA/JvLpU/OuSn0F0sVTYqXdNujsmu8kAvzRinqyCjYqq9cc80Y+Rly
-         7Uqz9/YY+PHs+KxTwcbZobOJyaosk721cQxnMGhoJZn56p9HDhic8z4MjgAuazwx71dA
-         4u/kx6iNl5B3ZMYSWqv9b/l5TraYpvwB4qvrgNL2nVoe/rJkPTYNajHdPkUg0mKXhLd3
-         KZIPq9Bmf+/4qQOkhmBJzPQ/xXsPEy8L8c+2bWmsr3zShdds6cOhSllwZABlQzKayH9+
-         yakQ==
-X-Gm-Message-State: AOAM533Iuos1MQSuJLRj60XB5PFPmKuwDUnCJ19gqiHKY/ntKPnQS0KH
-        UQoBjPFJ6KTRiyVsbJodCflKTA==
-X-Google-Smtp-Source: ABdhPJxX61/8iSRjrv+VUN01zzjLCcUznSlAHWn/+AydT831LyyUV8RrgPGbBKxykNmuLCFeXdAmvQ==
-X-Received: by 2002:a5d:6da3:: with SMTP id u3mr4121510wrs.394.1626164850460;
-        Tue, 13 Jul 2021 01:27:30 -0700 (PDT)
-Received: from google.com ([109.180.115.218])
-        by smtp.gmail.com with ESMTPSA id n41sm1579655wms.26.2021.07.13.01.27.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jul 2021 01:27:29 -0700 (PDT)
-Date:   Tue, 13 Jul 2021 09:27:27 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     jic23@kernel.org, lars@metafoo.de, sre@kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, letux-kernel@openphoenux.org
-Subject: Re: [PATCH v3 0/2] mfd: rn5t618: Extend ADC support
-Message-ID: <YO1Ob18YsDdEMfuf@google.com>
-References: <20210712212111.18896-1-andreas@kemnade.info>
+        id S234397AbhGMJTx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 13 Jul 2021 05:19:53 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:3391 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234726AbhGMJTx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Jul 2021 05:19:53 -0400
+Received: from fraeml739-chm.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4GPF9J3xX8z6L7wy;
+        Tue, 13 Jul 2021 17:05:56 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml739-chm.china.huawei.com (10.206.15.220) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Tue, 13 Jul 2021 11:17:01 +0200
+Received: from localhost (10.47.87.34) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Tue, 13 Jul
+ 2021 10:17:00 +0100
+Date:   Tue, 13 Jul 2021 10:16:42 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Liam Beguin <liambeguin@gmail.com>
+CC:     Jonathan Cameron <jic23@kernel.org>, <lars@metafoo.de>,
+        <Michael.Hennerich@analog.com>,
+        <charles-antoine.couret@essensium.com>, <Nuno.Sa@analog.com>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
+Subject: Re: [PATCH v2 4/4] dt-bindings: iio: adc: ad7949: add
+ adi,reference-source
+Message-ID: <20210713101642.00001262@Huawei.com>
+In-Reply-To: <CCRBPUEYGCAC.CJ1Y3GDWQYYJ@shaak>
+References: <20210709155856.1732245-1-liambeguin@gmail.com>
+        <20210709155856.1732245-5-liambeguin@gmail.com>
+        <20210710180001.051f7367@jic23-huawei>
+        <CCRBPUEYGCAC.CJ1Y3GDWQYYJ@shaak>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210712212111.18896-1-andreas@kemnade.info>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.87.34]
+X-ClientProxiedBy: lhreml722-chm.china.huawei.com (10.201.108.73) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 12 Jul 2021, Andreas Kemnade wrote:
+On Mon, 12 Jul 2021 13:05:23 -0400
+"Liam Beguin" <liambeguin@gmail.com> wrote:
 
-> Add iio map to make voltage_now related channels accessible to power
-> driver.
+> Hi Jonathan,
 > 
-> Changes in v3:
-> - use scale functions
-> - add acks
+> On Sat Jul 10, 2021 at 1:00 PM EDT, Jonathan Cameron wrote:
+> > On Fri, 9 Jul 2021 11:58:56 -0400
+> > Liam Beguin <liambeguin@gmail.com> wrote:
+> >  
+> > > From: Liam Beguin <lvb@xiphos.com>
+> > > 
+> > > Add bindings documentation for the adi,reference-source property.
+> > > This property is required to properly configure the ADC sample request
+> > > based on which reference source should be used for the calculation.  
+> >
+> > Should this be per channel? That will effect some of what I say below...
+> >  
 > 
-> Changes in v2:
-> - use iio_map instead of devicetree to allow mapping which does not
->   block future extension by devicetree.
+> We could make it per channel. Ideally, I'd also like to add support for
+> differential channels, so might as well add per channel configurations
+> now.
 > 
+> > > 
+> > > Signed-off-by: Liam Beguin <lvb@xiphos.com>
+> > > ---
+> > >  .../bindings/iio/adc/adi,ad7949.yaml          | 21 +++++++++++++++++++
+> > >  1 file changed, 21 insertions(+)
+> > > 
+> > > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml
+> > > index 9b56bd4d5510..eae3121cad01 100644
+> > > --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml
+> > > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml
+> > > @@ -35,6 +35,27 @@ properties:
+> > >    "#io-channel-cells":
+> > >      const: 1
+> > >  
+> > > +  adi,reference-select:  
+> >
+> > This is one field in the register, but it's not one thing, so lets break
+> > it up
+> > in DT. We should do this both to make for more readable dts files and to
+> > enforce the requirements on regulators...
+> >  
+> > > +    description: |
+> > > +      Select the reference voltage source to use when converting samples.
+> > > +      Acceptable values are:
+> > > +      - 0: Internal reference and temperature sensor enabled.
+> > > +           Vref=2.5V, buffered output
+> > > +      - 1: Internal reference and temperature sensor enabled.
+> > > +           Vref=4.096V, buffered output
+> > > +      - 2: Use external reference, temperature sensor enabled.
+> > > +           Internal buffer disabled
+> > > +      - 3: Use external reference, internal buffer and temperature sensor
+> > > +           enabled.
+> > > +      - 6: Use external reference, internal buffer and temperature sensor
+> > > +           disabled.
+> > > +      - 7: Use external reference, internal buffer enabled.
+> > > +           Internal reference and temperature sensor disabled.  
+> >
+> > So question 1 is whether to use an external or internal reference.
+> > Normally we'd make the coarse decision of whether to use an external
+> > reference
+> > by whether there is a regulator provided. That won't work so well if we
+> > make
+> > this per channel.
+> >
+> > Question 2, assuming internal reference, what voltage? Those should take
+> > an actual voltage (probably in mV and match against an enum of the two
+> > possible values).
+> > Binding should check to make sure this isn't specified as well as saying
+> > we
+> > are using an external refernce.
+> >
+> > Question 3, assuming external reference, is temperature sensor enabled?
+> > - actually dumb question, but why would anyone not want this enabled?
+> > Maybe turn it
+> > off in runtime pm, but in general if you've fitted a chip with a
+> > temperature sensor
+> > you at least sometimes want to measure temperature! So my gut feeling is
+> > don't
+> > allow this to be controlled (effectively drop cases 6 and 7 above as
+> > being
+> > unlikely to be of interest to anyone)
+> >  
 > 
-> *** BLURB HERE ***
-
-Doh!
-
-> Andreas Kemnade (2):
->   iio: adc: rn5t618: Add iio map
->   power: supply: rn5t618: Add voltage_now property
+> I like your suggestion of breaking this down so far, it would look
+> something like this:
 > 
->  drivers/iio/adc/rn5t618-adc.c        | 23 +++++++++++++++++
->  drivers/power/supply/Kconfig         |  2 ++
->  drivers/power/supply/rn5t618_power.c | 38 ++++++++++++++++++++++++++++
->  3 files changed, 63 insertions(+)
+> 	ad7949: adc@0 {
+> 		compatible = "adi,ad7949";
+> 		reg = <0>;
+> 
+> 		vref-supply = <&vdd_supply>;
+> 
+> 		channel@0 {
+> 			adi,internal-ref-mv = <2500>;
+> 			reg = <0>;
+> 		};
+> 
+> 		channel@1 {
+> 			reg = <1>;
+> 			/*
+> 			 * defaults to vref-supply if defined or error
+> 			 * out
+> 			 */
+> 		};
+> 	};
+> 
+> > Question 4, Is the internal buffer enabled when using and external
+> > reference.
+> > This one is interesting. We could just expose it in general, but I
+> > wonder
+> > if we can do something that reflects how it is used. From the various
+> > figures in
+> > the datasheet this seems to be coupled to whether the external reference
+> > is on
+> > pin REF_IN or pin REF. If that's the case can we have two optional regs
+> > only
+> > one of which should be supplied? However, this gets more fiddly because
+> > the default right now is vref-supply actually being connected to the
+> > vrefin connection.
+> > That's annoying as it stops us using the obvious naming...
+> > Hence I think we can have
+> > vref-supply (actually connected to vrefin) and vref-unbuffered-supply
+> >  
+> 
+> I really like the idea of using the same names as the datasheet
+> (vref-supply and vrefin-supply), to infer the buffered state,
+> but it's annoying (and confusing) that it's setup the other way
+> right now.
+> 
+> I wonder what happens if the reference is connected to refin and we're
+> configured as unbuffered (and the other way around).
+> I looked around and I might be able to test it on one setup I have where
+> the external reference is connected to REF.
+> 
+> If it's not a breaking change, would it be okay with you to follow the
+> datasheet naming?
 
-Not sure I get this.
+Absolutely. If we can get away with fixing that it would be great.
 
-Firstly, the cover-letter is marked as MFD, but no MFD changes occur.
-Secondly, I am only in receipt of the 0th patch which seems odd.  IMHO
-patch sets should be sent threaded and all parties should see
-discussion on all patches regardless of whether they maintain them or
-not, since the overall conversation is often useful/relevant to all.
+Jonathan
 
--- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+> 
+> Liam
+> 
+> >
+> >  
+> > > +
+> > > +    $ref: /schemas/types.yaml#/definitions/uint32
+> > > +    enum: [0, 1, 2, 3, 6, 7]
+> > > +    default: 7
+> > > +
+> > >  required:
+> > >    - compatible
+> > >    - reg  
+

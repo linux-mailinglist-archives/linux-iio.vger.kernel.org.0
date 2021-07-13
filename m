@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CAEF33C6DFB
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Jul 2021 11:55:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0B0C3C6E01
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Jul 2021 11:55:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235601AbhGMJ5w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 13 Jul 2021 05:57:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37918 "EHLO
+        id S235631AbhGMJ55 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 13 Jul 2021 05:57:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235592AbhGMJ5w (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Jul 2021 05:57:52 -0400
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 425DCC0613DD;
-        Tue, 13 Jul 2021 02:55:02 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id o201so14013420pfd.1;
-        Tue, 13 Jul 2021 02:55:02 -0700 (PDT)
+        with ESMTP id S235632AbhGMJ55 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Jul 2021 05:57:57 -0400
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 709B9C0613DD;
+        Tue, 13 Jul 2021 02:55:07 -0700 (PDT)
+Received: by mail-pl1-x62e.google.com with SMTP id h1so10825554plf.6;
+        Tue, 13 Jul 2021 02:55:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=gWjLrUHBiLSo33bWGjicMkKY6TK3RrLryAVl43qJWWE=;
-        b=POBRJFxcN2v8dWroVk7UINXfSAA3ELwRmTDuXOb81+CzLxsSXoPd/FbwflwrRRiQFl
-         skst+uvIpQYyGpOpqXKO0cGj7zLYyV7DySuxO3XV78xjnzyyakt3r2rzvt41NdiFbJWf
-         HEhXFiITo50LxunLCZOY+ptk4/PF8gRaVB7V+JxgPjxjNATNWHxbKe2JeGJgeBCwa/t2
-         0Q0kiH9FFLgM8VAl0MRga9BgSX7RhVHKj75vTHI1PsuZau+UDu9GwtK0zBr6VSdeJD/+
-         BR+mFoHras6XRSFQ40AWlPvyCPOmYe51/OBY4OtNclGtyHMV+Ay6p9Olhwt9KWKEdF2B
-         XFKA==
+        bh=HeByZWfWDzFovzvjp6wXVFR3lWTc9L7uXKk6mjE/Rik=;
+        b=bV29LA+EGVeIqj+7VWOVEzBOMMQCH6Hn6LcwS2WX9B1jXNxzsr7ITPuNWY0M1T6EqY
+         Cq4pPESRDSDaET2FyGTjzh4EZTRCm8Jw5d7G82mhbF2ILTu+9+G8Yy3eAC1nEwQjgxFh
+         WPvIbTzGecxVOg6TRy01dksOaCZXXhEn8049laRuDR42gVuQRMxUSaebTNIlBhvpH7GL
+         hYMTMA0bGTR8OeYEN/TbwuifrZAdV8IJYZCdQlwsfxPtRORTwPE1pGD8G9jKs8SmZj1t
+         mdh4rvFBYxeiFK6z4XQTcixZL16yeBEVp9xYApmKlcCbxTqCkEeJrxYMd9ja44rezlc1
+         A8Uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=gWjLrUHBiLSo33bWGjicMkKY6TK3RrLryAVl43qJWWE=;
-        b=n915gkN4aJ0grS23Tn5yeto91KQGjAGpDd8qecknH3qQiFkYVeHbt99YoVdvpL8LvV
-         eCR6x8ZeSqDV9kbjP8g1/JeeJLiP9aEgitKTZw9jwIxeWCbwQhiPlWuq2oQ2g9E2gdiM
-         7GDt8Z15xp/nawr5TFvyLigKOHZUe7mfbcNWeDaXKcGmVwLaaIdQufZjQlqmM53xnEcR
-         oKDbmQlwqUC/OUojfhDk8rekDxVedWoTX/GJ9ptNnOkY+5DGix/aolQR4HbQ4YQiDUXK
-         zxmZ+ur0jLgdCEMKfh0L5sQeupDai72uI3WiPAfOaWG8S8vKmJqbsbcpr30hIVbkOede
-         kTVA==
-X-Gm-Message-State: AOAM532CtuUQnnxMEQH/eI6ejV1hjYqm/2EDCbsj4laVZS5+2TSVKKkQ
-        e4LjiiIHDB5NGkJTyS9P0gs=
-X-Google-Smtp-Source: ABdhPJxHZ4bdBYrcOXBls+u/zUk8LYHEBtv5ijVOofd2p5c1gibDWG+URMgApG7KCLv1D0XA+tLbOg==
-X-Received: by 2002:a63:1252:: with SMTP id 18mr2599232pgs.126.1626170101855;
-        Tue, 13 Jul 2021 02:55:01 -0700 (PDT)
+        bh=HeByZWfWDzFovzvjp6wXVFR3lWTc9L7uXKk6mjE/Rik=;
+        b=qCxmqWVUUAV4f/imh9Zt/EqyKnzF/mo1b8A7qyt1gYmZZ+bd7zSsauj6ll/hyHtVnP
+         V0tUWh7YNcmqWjEJkqCChikpjddmobcu6SvpeCIJHIAF+ZiyzF8QYEIcvCK0ITZczF6S
+         /0sueysjNN3+fvcJW9YvDfF8MQEejvQvVmbll+viaiBx7aSUOa1YpXwRj3w0DKCP7omB
+         9QVmKFysTWW9XlWA/gZGv6isNuFrhThG4//6SMBGWluh3iYuC5MGPEKi2bK129Kq6LkU
+         OUwyoJZtvD4Llfemn2seK3EVuiPCUaNwiQypGdCiKU1VULFjX1H7qMhz6N9JS8ZcZ9pH
+         xLqQ==
+X-Gm-Message-State: AOAM532Skkt8EX0obbudxSP3GANz2skv0/YoqZUZzOWldaXQ2+mUdoNj
+        MRdk/6QFsc79sYzOD3NiIPA=
+X-Google-Smtp-Source: ABdhPJwbRJ4k2R/+Da38jB64gAi9TZWd2thhM85bJeIV/CNV1fzhwfUjs/BiE3CSoA6yfzAp+nipDw==
+X-Received: by 2002:a17:90a:6d89:: with SMTP id a9mr18678430pjk.194.1626170106960;
+        Tue, 13 Jul 2021 02:55:06 -0700 (PDT)
 Received: from localhost.localdomain ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id f6sm18153854pfj.28.2021.07.13.02.54.57
+        by smtp.gmail.com with ESMTPSA id f6sm18153854pfj.28.2021.07.13.02.55.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jul 2021 02:55:01 -0700 (PDT)
+        Tue, 13 Jul 2021 02:55:06 -0700 (PDT)
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     jic23@kernel.org
 Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
@@ -59,9 +59,9 @@ Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
         alexandre.torgue@st.com, o.rempel@pengutronix.de,
         jarkko.nikula@linux.intel.com,
         William Breathitt Gray <vilhelm.gray@gmail.com>
-Subject: [PATCH v13 15/17] counter: Implement events_queue_size sysfs attribute
-Date:   Tue, 13 Jul 2021 18:53:19 +0900
-Message-Id: <7ec39add7db353b4e8d1c53f52b356007364ad14.1626165765.git.vilhelm.gray@gmail.com>
+Subject: [PATCH v13 16/17] counter: 104-quad-8: Replace mutex with spinlock
+Date:   Tue, 13 Jul 2021 18:53:20 +0900
+Message-Id: <84ee735564be49fc1bcc55985f47e34a78ad3287.1626165765.git.vilhelm.gray@gmail.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <cover.1626165764.git.vilhelm.gray@gmail.com>
 References: <cover.1626165764.git.vilhelm.gray@gmail.com>
@@ -71,180 +71,414 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The events_queue_size sysfs attribute provides a way for users to
-dynamically configure the Counter events queue size for the Counter
-character device interface. The size is in number of struct
-counter_event data structures. The number of elements will be rounded-up
-to a power of 2 due to a requirement of the kfifo_alloc function called
-during reallocation of the queue.
+This patch replaces the mutex I/O lock with a spinlock. This is in
+preparation for a subsequent patch adding IRQ support for 104-QUAD-8
+devices; we can't sleep in an interrupt context, so we'll need to use a
+spinlock instead.
 
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Syed Nayyar Waris <syednwaris@gmail.com>
 Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 ---
- Documentation/ABI/testing/sysfs-bus-counter |  8 ++++
- drivers/counter/counter-chrdev.c            |  6 +++
- drivers/counter/counter-sysfs.c             | 45 +++++++++++++++++++++
- include/linux/counter.h                     |  2 +
- 4 files changed, 61 insertions(+)
+ drivers/counter/104-quad-8.c | 90 +++++++++++++++++++++---------------
+ 1 file changed, 53 insertions(+), 37 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-counter b/Documentation/ABI/testing/sysfs-bus-counter
-index e0e99adb0ecc..84ebb1ed28ed 100644
---- a/Documentation/ABI/testing/sysfs-bus-counter
-+++ b/Documentation/ABI/testing/sysfs-bus-counter
-@@ -233,6 +233,14 @@ Description:
- 		shorter or equal to configured value are ignored. Value 0 means
- 		filter is disabled.
+diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
+index d1161c27c488..a56751bf1e9b 100644
+--- a/drivers/counter/104-quad-8.c
++++ b/drivers/counter/104-quad-8.c
+@@ -16,6 +16,7 @@
+ #include <linux/module.h>
+ #include <linux/moduleparam.h>
+ #include <linux/types.h>
++#include <linux/spinlock.h>
  
-+What:		/sys/bus/counter/devices/counterX/events_queue_size
-+KernelVersion:	5.15
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Size of the Counter events queue in number of struct
-+		counter_event data structures. The number of elements will be
-+		rounded-up to a power of 2.
-+
- What:		/sys/bus/counter/devices/counterX/name
- KernelVersion:	5.2
- Contact:	linux-iio@vger.kernel.org
-diff --git a/drivers/counter/counter-chrdev.c b/drivers/counter/counter-chrdev.c
-index d5af82d3c04b..cf94e8f1c4ea 100644
---- a/drivers/counter/counter-chrdev.c
-+++ b/drivers/counter/counter-chrdev.c
-@@ -3,6 +3,7 @@
-  * Generic Counter character device interface
-  * Copyright (C) 2020 William Breathitt Gray
+ #define QUAD8_EXTENT 32
+ 
+@@ -28,6 +29,7 @@ MODULE_PARM_DESC(base, "ACCES 104-QUAD-8 base addresses");
+ 
+ /**
+  * struct quad8 - device private data structure
++ * @lock:		lock to prevent clobbering device states during R/W ops
+  * @counter:		instance of the counter_device
+  * @fck_prescaler:	array of filter clock prescaler configurations
+  * @preset:		array of preset values
+@@ -42,7 +44,7 @@ MODULE_PARM_DESC(base, "ACCES 104-QUAD-8 base addresses");
+  * @base:		base port address of the device
   */
-+#include <linux/bitops.h>
- #include <linux/cdev.h>
- #include <linux/counter.h>
- #include <linux/err.h>
-@@ -336,6 +337,9 @@ static int counter_chrdev_open(struct inode *inode, struct file *filp)
- 							    typeof(*counter),
- 							    chrdev);
+ struct quad8 {
+-	struct mutex lock;
++	spinlock_t lock;
+ 	struct counter_device counter;
+ 	unsigned int fck_prescaler[QUAD8_NUM_COUNTERS];
+ 	unsigned int preset[QUAD8_NUM_COUNTERS];
+@@ -123,6 +125,7 @@ static int quad8_count_read(struct counter_device *counter,
+ 	unsigned int flags;
+ 	unsigned int borrow;
+ 	unsigned int carry;
++	unsigned long irqflags;
+ 	int i;
  
-+	if (test_and_set_bit_lock(0, counter->chrdev_lock))
-+		return -EBUSY;
-+
- 	get_device(&counter->dev);
- 	filp->private_data = counter;
+ 	flags = inb(base_offset + 1);
+@@ -132,7 +135,7 @@ static int quad8_count_read(struct counter_device *counter,
+ 	/* Borrow XOR Carry effectively doubles count range */
+ 	*val = (unsigned long)(borrow ^ carry) << 24;
  
-@@ -352,6 +356,7 @@ static int counter_chrdev_release(struct inode *inode, struct file *filp)
- 		return err;
+-	mutex_lock(&priv->lock);
++	spin_lock_irqsave(&priv->lock, irqflags);
  
- 	put_device(&counter->dev);
-+	clear_bit_unlock(0, counter->chrdev_lock);
+ 	/* Reset Byte Pointer; transfer Counter to Output Latch */
+ 	outb(QUAD8_CTR_RLD | QUAD8_RLD_RESET_BP | QUAD8_RLD_CNTR_OUT,
+@@ -141,7 +144,7 @@ static int quad8_count_read(struct counter_device *counter,
+ 	for (i = 0; i < 3; i++)
+ 		*val |= (unsigned long)inb(base_offset) << (8 * i);
+ 
+-	mutex_unlock(&priv->lock);
++	spin_unlock_irqrestore(&priv->lock, irqflags);
  
  	return 0;
  }
-@@ -376,6 +381,7 @@ int counter_chrdev_add(struct counter_device *const counter)
- 	mutex_init(&counter->events_lock);
- 
- 	/* Initialize character device */
-+	clear_bit(0, counter->chrdev_lock);
- 	cdev_init(&counter->chrdev, &counter_fops);
- 
- 	/* Allocate Counter events queue */
-diff --git a/drivers/counter/counter-sysfs.c b/drivers/counter/counter-sysfs.c
-index df1d75e0d7b8..d2d6495f73c5 100644
---- a/drivers/counter/counter-sysfs.c
-+++ b/drivers/counter/counter-sysfs.c
-@@ -3,11 +3,13 @@
-  * Generic Counter sysfs interface
-  * Copyright (C) 2020 William Breathitt Gray
-  */
-+#include <linux/bitops.h>
- #include <linux/counter.h>
- #include <linux/device.h>
- #include <linux/err.h>
- #include <linux/gfp.h>
- #include <linux/kernel.h>
-+#include <linux/kfifo.h>
- #include <linux/kstrtox.h>
- #include <linux/list.h>
- #include <linux/string.h>
-@@ -785,12 +787,49 @@ static int counter_num_counts_read(struct counter_device *counter, u8 *val)
- 	return 0;
- }
- 
-+static int counter_events_queue_size_read(struct counter_device *counter,
-+					  u64 *val)
-+{
-+	*val = kfifo_size(&counter->events);
-+	return 0;
-+}
-+
-+static int counter_events_queue_size_write(struct counter_device *counter,
-+					   u64 val)
-+{
-+	DECLARE_KFIFO_PTR(events, struct counter_event);
-+	int err = 0;
-+
-+	/* Verify chrdev is not currently being used */
-+	if (test_and_set_bit_lock(0, counter->chrdev_lock))
-+		return -EBUSY;
-+
-+	/* Allocate new events queue */
-+	err = kfifo_alloc(&events, val, GFP_KERNEL);
-+	if (err)
-+		goto exit_early;
-+
-+	/* Swap in new events queue */
-+	kfifo_free(&counter->events);
-+	counter->events.kfifo = events.kfifo;
-+
-+exit_early:
-+	clear_bit_unlock(0, counter->chrdev_lock);
-+
-+	return err;
-+}
-+
- static struct counter_comp counter_num_signals_comp =
- 	COUNTER_COMP_DEVICE_U8("num_signals", counter_num_signals_read, NULL);
- 
- static struct counter_comp counter_num_counts_comp =
- 	COUNTER_COMP_DEVICE_U8("num_counts", counter_num_counts_read, NULL);
- 
-+static struct counter_comp counter_events_queue_size_comp =
-+	COUNTER_COMP_DEVICE_U64("events_queue_size",
-+				counter_events_queue_size_read,
-+				counter_events_queue_size_write);
-+
- static int counter_sysfs_attr_add(struct counter_device *const counter,
- 				  struct counter_attribute_group *cattr_group)
+@@ -151,13 +154,14 @@ static int quad8_count_write(struct counter_device *counter,
  {
-@@ -829,6 +868,12 @@ static int counter_sysfs_attr_add(struct counter_device *const counter,
- 	if (err < 0)
- 		return err;
+ 	struct quad8 *const priv = counter->priv;
+ 	const int base_offset = priv->base + 2 * count->id;
++	unsigned long irqflags;
+ 	int i;
  
-+	/* Create events_queue_size attribute */
-+	err = counter_attr_create(dev, cattr_group,
-+				  &counter_events_queue_size_comp, scope, NULL);
-+	if (err < 0)
-+		return err;
-+
- 	/* Create an attribute for each extension */
- 	for (i = 0; i < counter->num_ext; i++) {
- 		ext = &counter->ext[i];
-diff --git a/include/linux/counter.h b/include/linux/counter.h
-index 895d60a238a9..bfd96fa1f7fe 100644
---- a/include/linux/counter.h
-+++ b/include/linux/counter.h
-@@ -297,6 +297,7 @@ struct counter_ops {
-  * @events:		queue of detected Counter events
-  * @events_wait:	wait queue to allow blocking reads of Counter events
-  * @events_lock:	lock to protect Counter events queue read operations
-+ * @chrdev_lock:	lock to limit chrdev to a single open at a time
-  */
- struct counter_device {
- 	const char *name;
-@@ -323,6 +324,7 @@ struct counter_device {
- 	DECLARE_KFIFO_PTR(events, struct counter_event);
- 	wait_queue_head_t events_wait;
- 	struct mutex events_lock;
-+	DECLARE_BITMAP(chrdev_lock, 1);
- };
+ 	/* Only 24-bit values are supported */
+ 	if (val > 0xFFFFFF)
+ 		return -ERANGE;
  
- int counter_register(struct counter_device *const counter);
+-	mutex_lock(&priv->lock);
++	spin_lock_irqsave(&priv->lock, irqflags);
+ 
+ 	/* Reset Byte Pointer */
+ 	outb(QUAD8_CTR_RLD | QUAD8_RLD_RESET_BP, base_offset + 1);
+@@ -182,7 +186,7 @@ static int quad8_count_write(struct counter_device *counter,
+ 	/* Reset Error flag */
+ 	outb(QUAD8_CTR_RLD | QUAD8_RLD_RESET_E, base_offset + 1);
+ 
+-	mutex_unlock(&priv->lock);
++	spin_unlock_irqrestore(&priv->lock, irqflags);
+ 
+ 	return 0;
+ }
+@@ -200,8 +204,9 @@ static int quad8_function_read(struct counter_device *counter,
+ {
+ 	struct quad8 *const priv = counter->priv;
+ 	const int id = count->id;
++	unsigned long irqflags;
+ 
+-	mutex_lock(&priv->lock);
++	spin_lock_irqsave(&priv->lock, irqflags);
+ 
+ 	if (priv->quadrature_mode[id])
+ 		switch (priv->quadrature_scale[id]) {
+@@ -218,7 +223,7 @@ static int quad8_function_read(struct counter_device *counter,
+ 	else
+ 		*function = COUNTER_FUNCTION_PULSE_DIRECTION;
+ 
+-	mutex_unlock(&priv->lock);
++	spin_unlock_irqrestore(&priv->lock, irqflags);
+ 
+ 	return 0;
+ }
+@@ -233,10 +238,11 @@ static int quad8_function_write(struct counter_device *counter,
+ 	unsigned int *const scale = priv->quadrature_scale + id;
+ 	unsigned int *const synchronous_mode = priv->synchronous_mode + id;
+ 	const int base_offset = priv->base + 2 * id + 1;
++	unsigned long irqflags;
+ 	unsigned int mode_cfg;
+ 	unsigned int idr_cfg;
+ 
+-	mutex_lock(&priv->lock);
++	spin_lock_irqsave(&priv->lock, irqflags);
+ 
+ 	mode_cfg = priv->count_mode[id] << 1;
+ 	idr_cfg = priv->index_polarity[id] << 1;
+@@ -271,7 +277,7 @@ static int quad8_function_write(struct counter_device *counter,
+ 			break;
+ 		default:
+ 			/* should never reach this path */
+-			mutex_unlock(&priv->lock);
++			spin_unlock_irqrestore(&priv->lock, irqflags);
+ 			return -EINVAL;
+ 		}
+ 	}
+@@ -279,7 +285,7 @@ static int quad8_function_write(struct counter_device *counter,
+ 	/* Load mode configuration to Counter Mode Register */
+ 	outb(QUAD8_CTR_CMR | mode_cfg, base_offset);
+ 
+-	mutex_unlock(&priv->lock);
++	spin_unlock_irqrestore(&priv->lock, irqflags);
+ 
+ 	return 0;
+ }
+@@ -405,9 +411,10 @@ static int quad8_index_polarity_set(struct counter_device *counter,
+ 	struct quad8 *const priv = counter->priv;
+ 	const size_t channel_id = signal->id - 16;
+ 	const int base_offset = priv->base + 2 * channel_id + 1;
++	unsigned long irqflags;
+ 	unsigned int idr_cfg = index_polarity << 1;
+ 
+-	mutex_lock(&priv->lock);
++	spin_lock_irqsave(&priv->lock, irqflags);
+ 
+ 	idr_cfg |= priv->synchronous_mode[channel_id];
+ 
+@@ -416,7 +423,7 @@ static int quad8_index_polarity_set(struct counter_device *counter,
+ 	/* Load Index Control configuration to Index Control Register */
+ 	outb(QUAD8_CTR_IDR | idr_cfg, base_offset);
+ 
+-	mutex_unlock(&priv->lock);
++	spin_unlock_irqrestore(&priv->lock, irqflags);
+ 
+ 	return 0;
+ }
+@@ -445,15 +452,16 @@ static int quad8_synchronous_mode_set(struct counter_device *counter,
+ 	struct quad8 *const priv = counter->priv;
+ 	const size_t channel_id = signal->id - 16;
+ 	const int base_offset = priv->base + 2 * channel_id + 1;
++	unsigned long irqflags;
+ 	unsigned int idr_cfg = synchronous_mode;
+ 
+-	mutex_lock(&priv->lock);
++	spin_lock_irqsave(&priv->lock, irqflags);
+ 
+ 	idr_cfg |= priv->index_polarity[channel_id] << 1;
+ 
+ 	/* Index function must be non-synchronous in non-quadrature mode */
+ 	if (synchronous_mode && !priv->quadrature_mode[channel_id]) {
+-		mutex_unlock(&priv->lock);
++		spin_unlock_irqrestore(&priv->lock, irqflags);
+ 		return -EINVAL;
+ 	}
+ 
+@@ -462,7 +470,7 @@ static int quad8_synchronous_mode_set(struct counter_device *counter,
+ 	/* Load Index Control configuration to Index Control Register */
+ 	outb(QUAD8_CTR_IDR | idr_cfg, base_offset);
+ 
+-	mutex_unlock(&priv->lock);
++	spin_unlock_irqrestore(&priv->lock, irqflags);
+ 
+ 	return 0;
+ }
+@@ -509,6 +517,7 @@ static int quad8_count_mode_write(struct counter_device *counter,
+ 	unsigned int count_mode;
+ 	unsigned int mode_cfg;
+ 	const int base_offset = priv->base + 2 * count->id + 1;
++	unsigned long irqflags;
+ 
+ 	/* Map Generic Counter count mode to 104-QUAD-8 count mode */
+ 	switch (cnt_mode) {
+@@ -529,7 +538,7 @@ static int quad8_count_mode_write(struct counter_device *counter,
+ 		return -EINVAL;
+ 	}
+ 
+-	mutex_lock(&priv->lock);
++	spin_lock_irqsave(&priv->lock, irqflags);
+ 
+ 	priv->count_mode[count->id] = count_mode;
+ 
+@@ -543,7 +552,7 @@ static int quad8_count_mode_write(struct counter_device *counter,
+ 	/* Load mode configuration to Counter Mode Register */
+ 	outb(QUAD8_CTR_CMR | mode_cfg, base_offset);
+ 
+-	mutex_unlock(&priv->lock);
++	spin_unlock_irqrestore(&priv->lock, irqflags);
+ 
+ 	return 0;
+ }
+@@ -563,9 +572,10 @@ static int quad8_count_enable_write(struct counter_device *counter,
+ {
+ 	struct quad8 *const priv = counter->priv;
+ 	const int base_offset = priv->base + 2 * count->id;
++	unsigned long irqflags;
+ 	unsigned int ior_cfg;
+ 
+-	mutex_lock(&priv->lock);
++	spin_lock_irqsave(&priv->lock, irqflags);
+ 
+ 	priv->ab_enable[count->id] = enable;
+ 
+@@ -574,7 +584,7 @@ static int quad8_count_enable_write(struct counter_device *counter,
+ 	/* Load I/O control configuration */
+ 	outb(QUAD8_CTR_IOR | ior_cfg, base_offset + 1);
+ 
+-	mutex_unlock(&priv->lock);
++	spin_unlock_irqrestore(&priv->lock, irqflags);
+ 
+ 	return 0;
+ }
+@@ -625,16 +635,17 @@ static int quad8_count_preset_write(struct counter_device *counter,
+ 				    struct counter_count *count, u64 preset)
+ {
+ 	struct quad8 *const priv = counter->priv;
++	unsigned long irqflags;
+ 
+ 	/* Only 24-bit values are supported */
+ 	if (preset > 0xFFFFFF)
+ 		return -ERANGE;
+ 
+-	mutex_lock(&priv->lock);
++	spin_lock_irqsave(&priv->lock, irqflags);
+ 
+ 	quad8_preset_register_set(priv, count->id, preset);
+ 
+-	mutex_unlock(&priv->lock);
++	spin_unlock_irqrestore(&priv->lock, irqflags);
+ 
+ 	return 0;
+ }
+@@ -643,8 +654,9 @@ static int quad8_count_ceiling_read(struct counter_device *counter,
+ 				    struct counter_count *count, u64 *ceiling)
+ {
+ 	struct quad8 *const priv = counter->priv;
++	unsigned long irqflags;
+ 
+-	mutex_lock(&priv->lock);
++	spin_lock_irqsave(&priv->lock, irqflags);
+ 
+ 	/* Range Limit and Modulo-N count modes use preset value as ceiling */
+ 	switch (priv->count_mode[count->id]) {
+@@ -658,7 +670,7 @@ static int quad8_count_ceiling_read(struct counter_device *counter,
+ 		break;
+ 	}
+ 
+-	mutex_unlock(&priv->lock);
++	spin_unlock_irqrestore(&priv->lock, irqflags);
+ 
+ 	return 0;
+ }
+@@ -667,23 +679,24 @@ static int quad8_count_ceiling_write(struct counter_device *counter,
+ 				     struct counter_count *count, u64 ceiling)
+ {
+ 	struct quad8 *const priv = counter->priv;
++	unsigned long irqflags;
+ 
+ 	/* Only 24-bit values are supported */
+ 	if (ceiling > 0xFFFFFF)
+ 		return -ERANGE;
+ 
+-	mutex_lock(&priv->lock);
++	spin_lock_irqsave(&priv->lock, irqflags);
+ 
+ 	/* Range Limit and Modulo-N count modes use preset value as ceiling */
+ 	switch (priv->count_mode[count->id]) {
+ 	case 1:
+ 	case 3:
+ 		quad8_preset_register_set(priv, count->id, ceiling);
+-		mutex_unlock(&priv->lock);
++		spin_unlock_irqrestore(&priv->lock, irqflags);
+ 		return 0;
+ 	}
+ 
+-	mutex_unlock(&priv->lock);
++	spin_unlock_irqrestore(&priv->lock, irqflags);
+ 
+ 	return -EINVAL;
+ }
+@@ -705,12 +718,13 @@ static int quad8_count_preset_enable_write(struct counter_device *counter,
+ {
+ 	struct quad8 *const priv = counter->priv;
+ 	const int base_offset = priv->base + 2 * count->id + 1;
++	unsigned long irqflags;
+ 	unsigned int ior_cfg;
+ 
+ 	/* Preset enable is active low in Input/Output Control register */
+ 	preset_enable = !preset_enable;
+ 
+-	mutex_lock(&priv->lock);
++	spin_lock_irqsave(&priv->lock, irqflags);
+ 
+ 	priv->preset_enable[count->id] = preset_enable;
+ 
+@@ -719,7 +733,7 @@ static int quad8_count_preset_enable_write(struct counter_device *counter,
+ 	/* Load I/O control configuration to Input / Output Control Register */
+ 	outb(QUAD8_CTR_IOR | ior_cfg, base_offset);
+ 
+-	mutex_unlock(&priv->lock);
++	spin_unlock_irqrestore(&priv->lock, irqflags);
+ 
+ 	return 0;
+ }
+@@ -730,22 +744,23 @@ static int quad8_signal_cable_fault_read(struct counter_device *counter,
+ {
+ 	struct quad8 *const priv = counter->priv;
+ 	const size_t channel_id = signal->id / 2;
++	unsigned long irqflags;
+ 	bool disabled;
+ 	unsigned int status;
+ 
+-	mutex_lock(&priv->lock);
++	spin_lock_irqsave(&priv->lock, irqflags);
+ 
+ 	disabled = !(priv->cable_fault_enable & BIT(channel_id));
+ 
+ 	if (disabled) {
+-		mutex_unlock(&priv->lock);
++		spin_unlock_irqrestore(&priv->lock, irqflags);
+ 		return -EINVAL;
+ 	}
+ 
+ 	/* Logic 0 = cable fault */
+ 	status = inb(priv->base + QUAD8_DIFF_ENCODER_CABLE_STATUS);
+ 
+-	mutex_unlock(&priv->lock);
++	spin_unlock_irqrestore(&priv->lock, irqflags);
+ 
+ 	/* Mask respective channel and invert logic */
+ 	*cable_fault = !(status & BIT(channel_id));
+@@ -771,9 +786,10 @@ static int quad8_signal_cable_fault_enable_write(struct counter_device *counter,
+ {
+ 	struct quad8 *const priv = counter->priv;
+ 	const size_t channel_id = signal->id / 2;
++	unsigned long irqflags;
+ 	unsigned int cable_fault_enable;
+ 
+-	mutex_lock(&priv->lock);
++	spin_lock_irqsave(&priv->lock, irqflags);
+ 
+ 	if (enable)
+ 		priv->cable_fault_enable |= BIT(channel_id);
+@@ -785,7 +801,7 @@ static int quad8_signal_cable_fault_enable_write(struct counter_device *counter,
+ 
+ 	outb(cable_fault_enable, priv->base + QUAD8_DIFF_ENCODER_CABLE_STATUS);
+ 
+-	mutex_unlock(&priv->lock);
++	spin_unlock_irqrestore(&priv->lock, irqflags);
+ 
+ 	return 0;
+ }
+@@ -808,8 +824,9 @@ static int quad8_signal_fck_prescaler_write(struct counter_device *counter,
+ 	struct quad8 *const priv = counter->priv;
+ 	const size_t channel_id = signal->id / 2;
+ 	const int base_offset = priv->base + 2 * channel_id;
++	unsigned long irqflags;
+ 
+-	mutex_lock(&priv->lock);
++	spin_lock_irqsave(&priv->lock, irqflags);
+ 
+ 	priv->fck_prescaler[channel_id] = prescaler;
+ 
+@@ -821,7 +838,7 @@ static int quad8_signal_fck_prescaler_write(struct counter_device *counter,
+ 	outb(QUAD8_CTR_RLD | QUAD8_RLD_RESET_BP | QUAD8_RLD_PRESET_PSC,
+ 	     base_offset + 1);
+ 
+-	mutex_unlock(&priv->lock);
++	spin_unlock_irqrestore(&priv->lock, irqflags);
+ 
+ 	return 0;
+ }
+@@ -990,8 +1007,7 @@ static int quad8_probe(struct device *dev, unsigned int id)
+ 	priv->counter.priv = priv;
+ 	priv->base = base[id];
+ 
+-	/* Initialize mutex */
+-	mutex_init(&priv->lock);
++	spin_lock_init(&priv->lock);
+ 
+ 	/* Reset all counters and disable interrupt function */
+ 	outb(QUAD8_CHAN_OP_RESET_COUNTERS, base[id] + QUAD8_REG_CHAN_OP);
 -- 
 2.32.0
 

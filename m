@@ -2,59 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DBF533C962E
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Jul 2021 05:13:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C3683C9630
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Jul 2021 05:13:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233030AbhGODPc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 14 Jul 2021 23:15:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39142 "EHLO
+        id S233173AbhGODPd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 14 Jul 2021 23:15:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232770AbhGODPb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Jul 2021 23:15:31 -0400
-Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com [IPv6:2607:f8b0:4864:20::72c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56624C06175F;
-        Wed, 14 Jul 2021 20:12:38 -0700 (PDT)
-Received: by mail-qk1-x72c.google.com with SMTP id 201so3809957qkj.13;
-        Wed, 14 Jul 2021 20:12:38 -0700 (PDT)
+        with ESMTP id S233057AbhGODPc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Jul 2021 23:15:32 -0400
+Received: from mail-qk1-x72f.google.com (mail-qk1-x72f.google.com [IPv6:2607:f8b0:4864:20::72f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44183C061760;
+        Wed, 14 Jul 2021 20:12:39 -0700 (PDT)
+Received: by mail-qk1-x72f.google.com with SMTP id 23so3871139qke.0;
+        Wed, 14 Jul 2021 20:12:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=aLIjEv3Y3XGxT5C/sRBa0wIugXh2Hwubx4IA7LHkqcs=;
-        b=SXLG1AME+jZDiQqShuO4lpIRMS9uk2FqeRX8KwMynZa6qHxraMumJPtoE+KOcoEP27
-         NRfaF7avW9GRpi8uoPHBWsBXJSWkVnbzh38md12tnZkYiFFZ0iL39lb4BJMmqds7ZGXi
-         ZMK9MKhO9oLyO4TCmN2+gqGPfzG/8OGOUhm/6RFPwtUpvdANj1ybGpU63OttTGhWq1B4
-         bHBXcTL3u9YoHJxYCV+21PEq8pYW4vEhCeFpCT2GYFp86f5s4MhCK5iuXBlTkPyhsGq3
-         zliP96Y36O0OL+3YOfSkt3eCoWvnwo+++ctA9DHqbMrWkBRSByCFdYqmfDyB1OFzm3+h
-         eZWw==
+        bh=OKwbA7CkZ/dV0H/nAmt5zTOn4ixRO23QkLcRozVJn9c=;
+        b=h5DRdorl/Cv+oBCaUXejlaBxd8o0gxonA1RPHhSv+DJ4AKfOKupLmfbs6sYjhtUUT3
+         61jvAcuMFZb4vv+n8Hf8E+hmc6GgmPkg7MpzYVYwfNb8zUIXsCTNS7GZdUmMF+nLViLu
+         OLotoUm+H/N5hMyiNJfEZtpukayfpqCWqU9CO6gbWK8vERYzIq3vDoaHNRdjAoCGnX8A
+         HvIMwphtM0ku6CqgdhDesgMw+VoTYISpdGgbOZZXC6W/fkZQBa9sR2DL+ZuXcGx3TDnd
+         zVClW7wKEg0b2QvVqNO5routjGZamDaRPol60JwRRosXsp01NMbsfTAf+yOndTsWcqzD
+         InXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=aLIjEv3Y3XGxT5C/sRBa0wIugXh2Hwubx4IA7LHkqcs=;
-        b=hFZXwBxRWmsXJQkXmnuvusTVp6sSdQOoInID5hteDy5LfCLJ4cTEdTbquD5IntXiUk
-         PRFpPEBD5duzRYtHfGB0ULQjAAsG5r01YhJTE0fQ6wLyzSXh+jtskDS1tfWNFHIHaKKd
-         Xj42vGh6RUmJRAsIQrrXzJlG+vOTlEZYgCkwdrASeyYhGmDgJ4fpSPLBCzkXvWI4DQfR
-         5HyFtcJqsJOge2j0mnxhkHk23wUcyEJGzCMAFO4MyPXs117MABnC82CeNgchP4QVCD5e
-         wVvu7Agh8FMETMRaP4PtKCc86OJLuc+gZK9MXFk/zm+Nx/c1KyLbtQOmKN3EMGgLohwx
-         ZXqw==
-X-Gm-Message-State: AOAM530TU6BN4qoIrLKhJSnPSGw1TUv0LOGtSUeR0zr2FqekH3BiOvk9
-        9LCtL/ore6fnKpsZ783tzTE=
-X-Google-Smtp-Source: ABdhPJw4L1G9mU41qAAtvtnmbgrKFIwht/EEvVq66G/8c7BnBFneE+CvHdRnYhVkpVQRk03F0KcXqw==
-X-Received: by 2002:a37:b983:: with SMTP id j125mr1435238qkf.482.1626318757409;
-        Wed, 14 Jul 2021 20:12:37 -0700 (PDT)
+        bh=OKwbA7CkZ/dV0H/nAmt5zTOn4ixRO23QkLcRozVJn9c=;
+        b=XGL+0FyiIzju5mlVLmbfwaxHkEA/KCbhMMv6lGM0yi1cshpKcVKgR0tQFw/ZuSwDil
+         D0pKkRCiTk5+EFuImrANqzdDUQaW6oOcvuiwTnkHCD73b/I6ymqFiKa2FSXOmileX/OV
+         h7GleKy3sg20LGM7sNNAC8jgd3tOMhjVQO8o6TaVoIReZQYpY9UUM2OvipDpJ5wwKJX/
+         yCfKhwNoeAurcsg1wmJrcJLspDHzbbAEhTojoG11GHL1ik3FcJiGNgW23JSwDS0UHyQK
+         v9yGnybO3HL0JzHoy6l89xFX+Rov4tGomYEYKszV36/urKJDFMu3BhI3UK1yF2G5XyuE
+         TvNA==
+X-Gm-Message-State: AOAM533DYTKe1hY6R+rvCc9zLCuxi275xmeUZG1k3R3NnmivueXx0xfX
+        Xkipzo4KDa+NOxf1+7bhWQc=
+X-Google-Smtp-Source: ABdhPJybJtHNP8AsTErA+fNnk3JfPtodx7D32j58h2ivpHuFUOJIZ1jYFVRvoa/3Nqku4ZC7aaaZ1A==
+X-Received: by 2002:a37:43c9:: with SMTP id q192mr1472077qka.470.1626318758486;
+        Wed, 14 Jul 2021 20:12:38 -0700 (PDT)
 Received: from shaak.. (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
-        by smtp.gmail.com with ESMTPSA id t125sm1932847qkf.41.2021.07.14.20.12.36
+        by smtp.gmail.com with ESMTPSA id t125sm1932847qkf.41.2021.07.14.20.12.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jul 2021 20:12:37 -0700 (PDT)
+        Wed, 14 Jul 2021 20:12:38 -0700 (PDT)
 From:   Liam Beguin <liambeguin@gmail.com>
 To:     liambeguin@gmail.com, peda@axentia.se, jic23@kernel.org,
         lars@metafoo.de, pmeerw@pmeerw.net
 Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org, robh+dt@kernel.org
-Subject: [PATCH v5 01/10] iio: inkern: apply consumer scale on IIO_VAL_INT cases
-Date:   Wed, 14 Jul 2021 23:12:06 -0400
-Message-Id: <20210715031215.1534938-2-liambeguin@gmail.com>
+Subject: [PATCH v5 02/10] iio: inkern: apply consumer scale when no channel scale is available
+Date:   Wed, 14 Jul 2021 23:12:07 -0400
+Message-Id: <20210715031215.1534938-3-liambeguin@gmail.com>
 X-Mailer: git-send-email 2.30.1.489.g328c10930387
 In-Reply-To: <20210715031215.1534938-1-liambeguin@gmail.com>
 References: <20210715031215.1534938-1-liambeguin@gmail.com>
@@ -66,9 +66,9 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Liam Beguin <lvb@xiphos.com>
 
-When a consumer calls iio_read_channel_processed() and the channel has
-an integer scale, the scale channel scale is applied and the processed
-value is returned as expected.
+When a consumer calls iio_read_channel_processed() and no channel scale
+is available, it's assumed that the scale is one and the raw value is
+returned as expected.
 
 On the other hand, if the consumer calls iio_convert_raw_to_processed()
 the scaling factor requested by the consumer is not applied.
@@ -76,25 +76,30 @@ the scaling factor requested by the consumer is not applied.
 This for example causes the consumer to process mV when expecting uV.
 Make sure to always apply the scaling factor requested by the consumer.
 
-Fixes: 48e44ce0f881 ("iio:inkern: Add function to read the processed value")
+Fixes: adc8ec5ff183 ("iio: inkern: pass through raw values if no scaling")
 Signed-off-by: Liam Beguin <lvb@xiphos.com>
 ---
- drivers/iio/inkern.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/inkern.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-index 391a3380a1d1..b752fe5818e7 100644
+index b752fe5818e7..b69027690ed5 100644
 --- a/drivers/iio/inkern.c
 +++ b/drivers/iio/inkern.c
-@@ -599,7 +599,7 @@ static int iio_convert_raw_to_processed_unlocked(struct iio_channel *chan,
+@@ -590,10 +590,10 @@ static int iio_convert_raw_to_processed_unlocked(struct iio_channel *chan,
+ 					IIO_CHAN_INFO_SCALE);
+ 	if (scale_type < 0) {
+ 		/*
+-		 * Just pass raw values as processed if no scaling is
+-		 * available.
++		 * If no channel scaling is available apply consumer scale to
++		 * raw value and return.
+ 		 */
+-		*processed = raw;
++		*processed = raw * scale;
+ 		return 0;
+ 	}
  
- 	switch (scale_type) {
- 	case IIO_VAL_INT:
--		*processed = raw64 * scale_val;
-+		*processed = raw64 * scale_val * scale;
- 		break;
- 	case IIO_VAL_INT_PLUS_MICRO:
- 		if (scale_val2 < 0)
 -- 
 2.30.1.489.g328c10930387
 

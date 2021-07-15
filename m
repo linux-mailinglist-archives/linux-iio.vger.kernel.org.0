@@ -2,198 +2,139 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E04A3C9DEE
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Jul 2021 13:43:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF8FC3C9E84
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Jul 2021 14:22:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229673AbhGOLps (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 15 Jul 2021 07:45:48 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:63164 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229506AbhGOLps (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 15 Jul 2021 07:45:48 -0400
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 16FBa1u3011560;
-        Thu, 15 Jul 2021 07:42:54 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 39smkepdeg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 15 Jul 2021 07:42:54 -0400
-Received: from SCSQMBX11.ad.analog.com (SCSQMBX11.ad.analog.com [10.77.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 16FBgqEW002973
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 15 Jul 2021 07:42:53 -0400
-Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by SCSQMBX11.ad.analog.com
- (10.77.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.858.5; Thu, 15 Jul 2021
- 04:42:51 -0700
-Received: from zeus.spd.analog.com (10.66.68.11) by scsqmbx10.ad.analog.com
- (10.77.17.5) with Microsoft SMTP Server id 15.2.858.5 via Frontend Transport;
- Thu, 15 Jul 2021 04:42:51 -0700
-Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.134])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 16FBglsP004227;
-        Thu, 15 Jul 2021 07:42:49 -0400
-From:   Antoniu Miclaus <antoniu.miclaus@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <jic23@kernel.org>, <devicetree@vger.kernel.org>
-CC:     Antoniu Miclaus <antoniu.miclaus@analog.com>,
-        Rob Herring <robh@kernel.org>
-Subject: [PATCH v5 2/2] dt-bindings: iio: frequency: add adrf6780 doc
-Date:   Thu, 15 Jul 2021 14:36:45 +0300
-Message-ID: <20210715113645.44851-2-antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210715113645.44851-1-antoniu.miclaus@analog.com>
-References: <20210715113645.44851-1-antoniu.miclaus@analog.com>
+        id S236905AbhGOMYy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 15 Jul 2021 08:24:54 -0400
+Received: from out5-smtp.messagingengine.com ([66.111.4.29]:33507 "EHLO
+        out5-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S236901AbhGOMYy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 15 Jul 2021 08:24:54 -0400
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+        by mailout.nyi.internal (Postfix) with ESMTP id D907E5C0158;
+        Thu, 15 Jul 2021 08:22:00 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute1.internal (MEProxy); Thu, 15 Jul 2021 08:22:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cerno.tech; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm3; bh=PDg43YNU05OfmkuqqhbhAq/PESd
+        1UoKkb4yl2APa8Jk=; b=TcR2ibaCdt8O3Zp6B+r5oshUQpksUXkdIaD17qK2Jgc
+        7PeeJPty7FrIWCMJOrUkqMeCv9xXlmPSWrNWDK5a7MnNavcGVKvjUUHYpmqP83jw
+        ldgtoIGZb2Ew49WQzbVtVz/nvWteQPtLYjvgkx3smhDhu6Nm9CeUyubTk0dFfYev
+        Qi6jgrKY0pSWicynhPaPMvRU6pjEy/CGagj61f6opWWwPOm2v6jUJWmeX+IrPeSz
+        WdZDLTqKWHywUjKdM3PUNzw002bJjUXYMRIDYnZJ6d7qKs6d0JcpPenfdFZjj1z1
+        wYfhCQXCHD+1YqIyxOqcpuHDSj+UwJtSaZytkFPvSQQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=PDg43Y
+        NU05OfmkuqqhbhAq/PESd1UoKkb4yl2APa8Jk=; b=SOIDxMbuhtSNvf+gJNv283
+        w4zObdevBN/1PWmuKiqUayk6mu+TAhiMWaz6TFipRWZiFajtrOJY5oMYzp65CPjy
+        xK3cFQsFjsxKCBOtqctMuoRn5V6wNNSLfmmxjRFwsIpJAcXP2zdeU//xEUMNx16z
+        khlbL97Hl+qxBAOpMjmr3awyuUbtQTnoEJqd125jrzgTWEAGaw/k9rcuXz1ldw/d
+        +Qgjxguaj+EOAtNHuLT62UkUaLqXmrIwYMcvKYqXlVjXBUwzfRjKMHk8+qadc7y4
+        ZU/p2979zdRYDjm6UCGsAuWUhL0ecnNKu00oEM/4a852m1nx+6pER9zQTuC1KIWw
+        ==
+X-ME-Sender: <xms:aCjwYFI8HaC74DRItn9enZe6kWdQ1AoZNbsRbmGd4CJPusymfgMRuA>
+    <xme:aCjwYBJ3MnDIvYt-QsKd64xe9fxTrtjM5MH5rHYLTOm-2kVoeMBWWkpNEuyKTsH5_
+    65hmJ_5FaJP1EO0DT8>
+X-ME-Received: <xmr:aCjwYNs2b3ThL8ILyQn1BSgG-0XHGyMHVC6olVmGsBGMomS33K1s9HZKNtquy0y9vTtGQy9HVx7bhYVYmSISyluQXkKNT7DJ5Dca>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrvddtgdefgecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvuffkfhggtggujgesghdtreertddtvdenucfhrhhomhepofgrgihimhgv
+    ucftihhprghrugcuoehmrgigihhmvgestggvrhhnohdrthgvtghhqeenucggtffrrghtth
+    gvrhhnpeelkeeghefhuddtleejgfeljeffheffgfeijefhgfeufefhtdevteegheeiheeg
+    udenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmrg
+    igihhmvgestggvrhhnohdrthgvtghh
+X-ME-Proxy: <xmx:aCjwYGaJaj8NRExqRSq515kc8Xk1pHz-JZnIbq_G7c5xmF13V7S63w>
+    <xmx:aCjwYMboGRKtzCbY9o-y0OT0WpJ75qz6sIbd2aAvT6clrWCT-oq3rA>
+    <xmx:aCjwYKCcmMcaTuAFAMxkWm88i-jv9Ig3NuuaryH8vI1XeWPEBJYS8w>
+    <xmx:aCjwYM7pT4gAEVszhxjlAnW-fkXrW8MlImAe8cXwdvifaa7dgPWbEw>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 15 Jul 2021 08:21:59 -0400 (EDT)
+Date:   Thu, 15 Jul 2021 14:21:57 +0200
+From:   Maxime Ripard <maxime@cerno.tech>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH] iio: st-sensors: Update ST Sensor bindings
+Message-ID: <20210715122157.ws7rg67ebypzup4f@gilmour>
+References: <20210412122331.1631643-1-linus.walleij@linaro.org>
+ <20210712130444.bois24oukqmxpg27@gilmour>
+ <20210712145639.00004604@Huawei.com>
+ <20210712141613.66hw4glnkqlw3n4d@gilmour>
+ <CACRpkdZqth9kYEaCr=C88=EbhEy+r5V1vPXOPKNky5HeP7QxPg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: gsAaeQGpMtAfDPeu14GPFUZk9sv6GJjA
-X-Proofpoint-ORIG-GUID: gsAaeQGpMtAfDPeu14GPFUZk9sv6GJjA
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
- definitions=2021-07-15_07:2021-07-14,2021-07-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
- mlxscore=0 lowpriorityscore=0 mlxlogscore=999 clxscore=1011 malwarescore=0
- suspectscore=0 bulkscore=0 impostorscore=0 priorityscore=1501 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
- definitions=main-2107150084
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="jvow46iqgknp7rle"
+Content-Disposition: inline
+In-Reply-To: <CACRpkdZqth9kYEaCr=C88=EbhEy+r5V1vPXOPKNky5HeP7QxPg@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add device tree bindings for the ADRF6780 Upconverter.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
----
- .../bindings/iio/frequency/adi,adrf6780.yaml  | 119 ++++++++++++++++++
- 1 file changed, 119 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,adrf6780.yaml
+--jvow46iqgknp7rle
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,adrf6780.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,adrf6780.yaml
-new file mode 100644
-index 000000000000..65cb3bee4aca
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/frequency/adi,adrf6780.yaml
-@@ -0,0 +1,119 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/frequency/adi,adrf6780.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: ADRF6780 Microwave Upconverter
-+
-+maintainers:
-+  - Antoniu Miclaus <antoniu.miclaus@analog.com>
-+
-+description: |
-+   Wideband, microwave upconverter optimized for point to point microwave
-+   radio designs operating in the 5.9 GHz to 23.6 GHz frequency range.
-+
-+   https://www.analog.com/en/products/adrf6780.html
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,adrf6780
-+
-+  reg:
-+    maxItems: 1
-+
-+  spi-max-frequency:
-+    maximum: 1000000
-+
-+  clocks:
-+    description:
-+      Definition of the external clock.
-+    minItems: 1
-+
-+  clock-names:
-+    items:
-+      - const: lo_in
-+
-+  clock-output-names:
-+    maxItems: 1
-+
-+  adi,vga-buff-en:
-+    description:
-+      VGA Buffer Enable.
-+    type: boolean
-+
-+  adi,lo-buff-en:
-+    description:
-+      LO Buffer Enable.
-+    type: boolean
-+
-+  adi,if-mode-en:
-+    description:
-+      IF Mode Enable.
-+    type: boolean
-+
-+  adi,iq-mode-en:
-+    description:
-+      IQ Mode Enable.
-+    type: boolean
-+
-+  adi,lo-x2-en:
-+    description:
-+      LO x2 Enable.
-+    type: boolean
-+
-+  adi,lo-ppf-en:
-+    description:
-+      LO x1 Enable.
-+    type: boolean
-+
-+  adi,lo-en:
-+    description:
-+      LO Enable.
-+    type: boolean
-+
-+  adi,uc-bias-en:
-+    description:
-+      UC Bias Enable.
-+    type: boolean
-+
-+  adi,lo-sideband:
-+    description:
-+      Switch to the Other LO Sideband.
-+    type: boolean
-+
-+  adi,vdet-out-en:
-+    description:
-+      VDET Output Select Enable.
-+    type: boolean
-+
-+  '#clock-cells':
-+    const: 0
-+
-+dependencies:
-+  adi,lo-x2-en: [ "adi,lo-en" ]
-+  adi,lo-ppf-en: [ "adi,lo-en" ]
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - clock-names
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    spi {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+      adrf6780@0 {
-+        compatible = "adi,adrf6780";
-+        reg = <0>;
-+        spi-max-frequency = <1000000>;
-+        clocks = <&adrf6780_lo>;
-+        clock-names = "lo_in";
-+      };
-+    };
-+...
--- 
-2.32.0
+On Wed, Jul 14, 2021 at 10:26:39AM +0200, Linus Walleij wrote:
+> On Mon, Jul 12, 2021 at 4:16 PM Maxime Ripard <maxime@cerno.tech> wrote:
+>=20
+> > > maxItems is set, but not minItems.
+> >
+> > Yeah, and if one is missing the other is added with the value of the
+> > other.
+> >
+> > What the schema enforces currently is that (for the common part) the
+> > interrupt list can be between 1 and 2 and then for a specific set of
+> > compatibles (including the LIS3MDL) it has to be exactly 2.
+>=20
+> maxItems is not an intuitive naming to what it does so it creates
+> bugs like this :/
 
+I mean, it's complicated. Both minItems and maxItems are required for
+all the items in the schema spec. In order to reduce the boilerplate,
+the tooling will add the other if one is missing, which can lead to
+things like this indeed.
+
+But the alternative is not really to just optionally use minItems, it's
+to have to always specify it, in all the schemas.
+
+> Can you fix so it works with your PinePhone DTS and send a patch?
+> Perhaps also add as an example so it doesn't happen again?
+
+Yeah, I can definitely do that, I'm not really sure what makes sense for
+the driver at this point though.
+
+> > Even the common part looks weird though, it says that it can handle up
+> > to three interrupts but has maxItems: 2?
+>=20
+> Maybe just drop maxItems for now?
+
+Dropping minItems and maxItems on interrupts will enforce that there's
+only one interrupt, which isn't want we want either
+
+Maxime
+
+--jvow46iqgknp7rle
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCYPAoZQAKCRDj7w1vZxhR
+xReKAQDu6O7p+bIwRjtIRz/tJmSwtS/GbHAUzfLQE8DmSzJhawEAtwDo0CN7ivMh
+kT1F3h+oLAejsnZi2XbNhPBFrRfI3go=
+=h2Ne
+-----END PGP SIGNATURE-----
+
+--jvow46iqgknp7rle--

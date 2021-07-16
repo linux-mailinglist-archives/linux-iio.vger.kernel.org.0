@@ -2,71 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D82B3CB52E
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Jul 2021 11:30:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FB213CB575
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Jul 2021 11:49:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231490AbhGPJWk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 16 Jul 2021 05:22:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57038 "EHLO
+        id S234034AbhGPJwh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 16 Jul 2021 05:52:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231886AbhGPJWj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Jul 2021 05:22:39 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4169C06175F;
-        Fri, 16 Jul 2021 02:19:43 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id a127so8397528pfa.10;
-        Fri, 16 Jul 2021 02:19:43 -0700 (PDT)
+        with ESMTP id S233986AbhGPJwh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Jul 2021 05:52:37 -0400
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92D78C06175F;
+        Fri, 16 Jul 2021 02:49:41 -0700 (PDT)
+Received: by mail-pl1-x634.google.com with SMTP id v14so5049437plg.9;
+        Fri, 16 Jul 2021 02:49:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:reply-to:from:date:message-id
          :subject:to:cc;
-        bh=I6EOkZlKA6CqR4vf+tKZO75Xy0O5qyO6l8kSx38oX8k=;
-        b=UJ3iHayZhKn+h3JfJgY2UIfQpbbLrqQgYS6KzMIUAEe0hN5FqI7tuHZLVagwiGNNbt
-         3JTA2qxg8z6vuh0uRoLY3WJ/2lPKF626mTkBnlD5okxQM9JCbCaXPMv0twAnccKFA5Y+
-         Vb4QNHCOSNSksCGEdBRsUAQYMoChBqqIXycUyiF8o5x3ue3adb4JztxVpUdZVRYsFyRx
-         fVF/CqXsJcQjBKafdoN9vAOEn2fD6YojWvc4WNPZrEcrQD7lZLtfFKCS8oVRJhsJiboj
-         Wt0+vnOnRPnsTKXE1X732BS9CT/dVaJX6srECqgwI5IO83sqwswzAgElT4eGReyjuJEH
-         GLBg==
+        bh=Mvr/wwKVrjboa6o0yglLW+35mMy9dSspYfEOzac+NZA=;
+        b=pjNQZMoyd5QXWTNblTr4veBGGHb0PjTWPmSr5T9JfabMuXFrYxluNn2BgetgRTl7oN
+         urxFmxz8Mkn3FE59a6QJCzFsBSRi1DtB9nHDrpTXnT++V6hNMbq1Yu+hDBtZugaxSMCd
+         3bvReuT3VbKavNSiLgpOTjrC9RbHyHJr3d1ePHwG+zOIJigf4Npib8bu9GBRKt/CTd0A
+         Nq2pDnyT9b8joTi0OSSd1tQ2br3F6aoxE5zgE+TU4xoVbLPObC2TkFy3bsVf65F6/Ipt
+         xoYQFCmOR99DHVeXn6Wzh9Lv4ECQft+GQZ9xB1Ik6QsOLzC63HYOzRFahfSgYGel1nU2
+         raHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
          :from:date:message-id:subject:to:cc;
-        bh=I6EOkZlKA6CqR4vf+tKZO75Xy0O5qyO6l8kSx38oX8k=;
-        b=MG3KfpKk5pKEVjPzO3R2wrLpDFAR8r1lK3ZgNS/xNrUqrNg2YK3Ef0kKtUoBkwbqVp
-         +1aDU0H0Ul6vm1PRci8r4LJNnS2KQyScdQ1Qwe8IX1kYmgw08W9IDsuFjhAQT3Z5VrVW
-         k9HeBjtyO6riLBuyUTpDcKJk7naal1Yoyw5sgf9TUvQ2Eezwju4pxaHJczobY8LjKjS6
-         pbKw8Tpye8hasZsTM4Y816v9CYGvX93GT+kt8NqEy5kQfC1bL1xMA6UzyHkmS1O3Q2II
-         +4YNIYRpXh+TveXpeGSzTelMgyptKg097Uu+gm1BSahnrwNgFNID4lS8nhd8etEO6Tez
-         +YUA==
-X-Gm-Message-State: AOAM532u6ZENDzhxb/aSz5Pm28J0G6/ImNO3WZTzqrrIrnNdFZhGReC6
-        wYA8A99aOmBSEbaTZvPWm7bfvO+VxnKEXuE/o1LQkLrDdxUI7A==
-X-Google-Smtp-Source: ABdhPJz+1hPHltO+F7H5Agd9lq/luNwj+IYejCY0j8RmZQSwelyDAG1tTd5sgjKSDIupofP6r06cGW9NQ5VvLC4v6iY=
-X-Received: by 2002:a63:5946:: with SMTP id j6mr9219667pgm.0.1626427183305;
- Fri, 16 Jul 2021 02:19:43 -0700 (PDT)
+        bh=Mvr/wwKVrjboa6o0yglLW+35mMy9dSspYfEOzac+NZA=;
+        b=ZTEdILXgIwDLgUWPD8kpExdW6S1uA0hTx26b4LvamjPb6sH3xbgp1qIzaeBRHSkrEj
+         y/pmlKADd31UMqgGbosKaepopXWJyyR6I3Wlklw5VJ3UthPr/kdARonmgiuvrpnl9lYO
+         IcYEek2XvlDks2HWKt5VZHFs8Az/fxx2ME+GyYxwfV5IhMGG7YvbmAvSlL87Rxd6jt2D
+         UzLS32aAbNRVLkDJTeqGLjKwYVME6iquvfAC4aFe1Cn51uVjnT/35pfKk9K/cEawc9Rg
+         Ps0dRv1q+j43kqSRi9xo0h+J41D2zah29JCstTExxqszGNZVVQmwVw7vcWCK+MPS/ndX
+         FTsQ==
+X-Gm-Message-State: AOAM531Ah/3f7TtDC6eMByxLsoMSgu8TMNhvSUE7UIfY4ZrVCu/0Pi7x
+        aHrh/mgnvfOrX0Ig/jO+g/Zfndez1o7R2ieqWHk=
+X-Google-Smtp-Source: ABdhPJy7fYYDz9+szgIQ0dDnPEZc8rJIUgbE4joaZV271EldT+BksT6KC/31EOvhUm5gRF5LPDjC82Y7B3H65Acy0dk=
+X-Received: by 2002:a17:90a:c283:: with SMTP id f3mr8917606pjt.138.1626428980873;
+ Fri, 16 Jul 2021 02:49:40 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210715141742.15072-1-andrea.merello@gmail.com>
- <20210715141742.15072-3-andrea.merello@gmail.com> <CAHp75Vf_Og2wjRy2j0gC37DgR0x9B_F5iSUj8VOtWkhWjgiOag@mail.gmail.com>
-In-Reply-To: <CAHp75Vf_Og2wjRy2j0gC37DgR0x9B_F5iSUj8VOtWkhWjgiOag@mail.gmail.com>
+ <20210715141742.15072-3-andrea.merello@gmail.com> <CA+U=DsrpCb0XW-M4KyZvLpCdMmntgCN+kd8HnS2RotWK-GD-OA@mail.gmail.com>
+In-Reply-To: <CA+U=DsrpCb0XW-M4KyZvLpCdMmntgCN+kd8HnS2RotWK-GD-OA@mail.gmail.com>
 Reply-To: andrea.merello@gmail.com
 From:   Andrea Merello <andrea.merello@gmail.com>
-Date:   Fri, 16 Jul 2021 11:19:31 +0200
-Message-ID: <CAN8YU5NKGLO6a4wqaW07NAU-OdsdBohoXzMCBcskaFsCRtrGhw@mail.gmail.com>
+Date:   Fri, 16 Jul 2021 11:49:29 +0200
+Message-ID: <CAN8YU5OMcUCwsTOpig3uDnwe=sD_EVNN4wOvds_O=_spXsFE=A@mail.gmail.com>
 Subject: Re: [PATCH 2/4] iio: imu: add Bosch Sensortec BNO055 core driver
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+To:     Alexandru Ardelean <ardeleanalex@gmail.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Matt Ranostay <matt.ranostay@konsulko.com>,
-        andriy.shevchenko@linux.intel.com,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-iio@vger.kernel.org, Andrea Merello <andrea.merello@iit.it>
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        vlad.dogaru@intel.com, LKML <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Andrea Merello <andrea.merello@iit.it>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Il giorno gio 15 lug 2021 alle ore 18:50 Andy Shevchenko
-<andy.shevchenko@gmail.com> ha scritto:
+Il giorno ven 16 lug 2021 alle ore 09:24 Alexandru Ardelean
+<ardeleanalex@gmail.com> ha scritto:
 >
 > On Thu, Jul 15, 2021 at 5:21 PM Andrea Merello <andrea.merello@gmail.com> wrote:
 > >
@@ -74,6 +75,31 @@ Il giorno gio 15 lug 2021 alle ore 18:50 Andy Shevchenko
 > > can be connected via both serial and I2C busses; separate patches will
 > > add support for them.
 > >
+>
+> Hey,
+>
+> I tried to comment on the ones that Andy did not touch.
+> I had a little trouble following all the locking.
+> I'm not sure if I missed anything.
+
+Hi,
+
+Well, indeed (unless I did some mistake, which is very possible), here
+the lock is simply around every access to the IMU. This is because
+there are places (e.g. in_calibration_data_show() ) in which we switch
+the IMU to configuration mode, we do something, and then we switch the
+IMU back to normal operation mode. The lock prevent any other access
+to the IMU during these procedures. The very same lock also guarantees
+serialization for all IMU operations that comes in behalf of
+userspace.
+
+Note that putting the lock at a lower lever (e.g. in register access
+functions) wouldn't suffice because of the configuration mode swich
+said above.
+
+> My notes are inline.
+>
+>
 > > The driver supports "AMG" (Accelerometer, Magnetometer, Gyroscope) mode,
 > > that provides raw data from the said internal sensors, and a couple of
 > > "fusion" modes (i.e. the IMU also do calculations in order to provide
@@ -83,9 +109,7 @@ Il giorno gio 15 lug 2021 alle ore 18:50 Andy Shevchenko
 > > refinements done by the IMU), but certain settings such as low pass
 > > filters cut-off frequency and sensors ranges are fixed, while in AMG mode
 > > they can be customized; this is why AMG mode can still be interesting.
->
-> ...
->
+> >
 > > Signed-off-by: Andrea Merello <andrea.merello@iit.it>
 > > Cc: Andrea Merello <andrea.merello@gmail.com>
 > > Cc: Rob Herring <robh+dt@kernel.org>
@@ -94,44 +118,75 @@ Il giorno gio 15 lug 2021 alle ore 18:50 Andy Shevchenko
 > > Cc: Vlad Dogaru <vlad.dogaru@intel.com>
 > > Cc: linux-kernel@vger.kernel.org
 > > Cc: linux-iio@vger.kernel.org
->
-> Instead of polluting commit messages with this, use --to and --cc
-> parameters. You may utilize my script [1] which finds automatically to
-> whom to send (of course it allows manually to add more).
->
-> [1]: https://github.com/andy-shev/home-bin-tools/blob/master/ge2maintainer.sh
-
-I thought it was a good & widespread practice, sorry. Will drop from
-future series respin.
-
-> ...
->
+> > ---
+> >  drivers/iio/imu/Kconfig         |    1 +
+> >  drivers/iio/imu/Makefile        |    1 +
+> >  drivers/iio/imu/bno055/Kconfig  |    7 +
+> >  drivers/iio/imu/bno055/Makefile |    6 +
+> >  drivers/iio/imu/bno055/bno055.c | 1361 +++++++++++++++++++++++++++++++
+> >  drivers/iio/imu/bno055/bno055.h |   12 +
+> >  6 files changed, 1388 insertions(+)
+> >  create mode 100644 drivers/iio/imu/bno055/Kconfig
+> >  create mode 100644 drivers/iio/imu/bno055/Makefile
+> >  create mode 100644 drivers/iio/imu/bno055/bno055.c
+> >  create mode 100644 drivers/iio/imu/bno055/bno055.h
+> >
+> > diff --git a/drivers/iio/imu/Kconfig b/drivers/iio/imu/Kconfig
+> > index 001ca2c3ff95..f1d7d4b5e222 100644
+> > --- a/drivers/iio/imu/Kconfig
+> > +++ b/drivers/iio/imu/Kconfig
+> > @@ -52,6 +52,7 @@ config ADIS16480
+> >           ADIS16485, ADIS16488 inertial sensors.
+> >
+> >  source "drivers/iio/imu/bmi160/Kconfig"
+> > +source "drivers/iio/imu/bno055/Kconfig"
+> >
+> >  config FXOS8700
+> >         tristate
+> > diff --git a/drivers/iio/imu/Makefile b/drivers/iio/imu/Makefile
+> > index c82748096c77..6eb612034722 100644
+> > --- a/drivers/iio/imu/Makefile
+> > +++ b/drivers/iio/imu/Makefile
+> > @@ -15,6 +15,7 @@ adis_lib-$(CONFIG_IIO_ADIS_LIB_BUFFER) += adis_buffer.o
+> >  obj-$(CONFIG_IIO_ADIS_LIB) += adis_lib.o
+> >
+> >  obj-y += bmi160/
+> > +obj-y += bno055/
+> >
+> >  obj-$(CONFIG_FXOS8700) += fxos8700_core.o
+> >  obj-$(CONFIG_FXOS8700_I2C) += fxos8700_i2c.o
+> > diff --git a/drivers/iio/imu/bno055/Kconfig b/drivers/iio/imu/bno055/Kconfig
+> > new file mode 100644
+> > index 000000000000..2bfed8df4554
+> > --- /dev/null
+> > +++ b/drivers/iio/imu/bno055/Kconfig
+> > @@ -0,0 +1,7 @@
 > > +# SPDX-License-Identifier: GPL-2.0-only
 > > +#
 > > +# driver for Bosh bmo055
->
-> Driver
->
-> Point of this comment actually is ..?
-
-IMO None :) I just saw other drivers do have a comment like this one,
-so I did the same.. I'll drop these also.
-
-> ...
->
+> > +#
+> > +
+> > +config BOSH_BNO055_IIO
+> > +       tristate
+> > diff --git a/drivers/iio/imu/bno055/Makefile b/drivers/iio/imu/bno055/Makefile
+> > new file mode 100644
+> > index 000000000000..15c5ddf8d648
+> > --- /dev/null
+> > +++ b/drivers/iio/imu/bno055/Makefile
+> > @@ -0,0 +1,6 @@
+> > +# SPDX-License-Identifier: GPL-2.0
+> > +#
 > > +# Makefile for bosh bno055
->
-> Ditto.
->
-> ...
->
+> > +#
+> > +
+> > +obj-$(CONFIG_BOSH_BNO055_IIO) += bno055.o
+> > diff --git a/drivers/iio/imu/bno055/bno055.c b/drivers/iio/imu/bno055/bno055.c
+> > new file mode 100644
+> > index 000000000000..888a88bb13d5
+> > --- /dev/null
+> > +++ b/drivers/iio/imu/bno055/bno055.c
+> > @@ -0,0 +1,1361 @@
 > > +// SPDX-License-Identifier: GPL-2.0-or-later
->
-> Is it the correct one, looking at the portions taken from other drivers?
-
-Looks like cut-n-paste mistake, sorry; I need to drop "or-later" part.
-Thanks for pointing this out.
-
 > > +/*
 > > + * IIO driver for Bosh BNO055 IMU
 > > + *
@@ -146,96 +201,128 @@ Thanks for pointing this out.
 > > + *     Copyright (c) 2016, Intel Corporation.
 > > + *     Copyright (c) 2019, Martin Kelly.
 > > + */
->
-> ...
->
+> > +
 > > +#include <linux/clk.h>
 > > +#include <linux/firmware.h>
 > > +#include <linux/gpio/consumer.h>
->
 > > +#include <linux/iio/iio.h>
 > > +#include <linux/iio/triggered_buffer.h>
 > > +#include <linux/iio/trigger_consumer.h>
 > > +#include <linux/iio/buffer.h>
 > > +#include <linux/iio/sysfs.h>
->
-> Can you move this group to...
->
 > > +#include <linux/irq.h>
 > > +#include <linux/module.h>
 > > +#include <linux/mutex.h>
 > > +#include <linux/regmap.h>
 > > +#include <linux/util_macros.h>
->
-> ...be here?
-
-OK
-
+> > +
 > > +#include "bno055.h"
->
-> ...
->
+> > +
+> > +#define BNO055_FW_NAME "bno055-caldata"
+> > +#define BNO055_FW_EXT ".dat"
+> > +
+> > +/* common registers */
+> > +#define BNO055_PAGESEL_REG             0x7
+> > +
+> > +/* page 0 registers */
+> > +#define BNO055_CHIP_ID_REG             0x0
+> > +#define BNO055_CHIP_ID_MAGIC 0xA0
+> > +#define BNO055_SW_REV_LSB_REG          0x4
+> > +#define BNO055_SW_REV_MSB_REG          0x5
+> > +#define BNO055_ACC_DATA_X_LSB_REG      0x8
+> > +#define BNO055_ACC_DATA_Y_LSB_REG      0xA
+> > +#define BNO055_ACC_DATA_Z_LSB_REG      0xC
+> > +#define BNO055_MAG_DATA_X_LSB_REG      0xE
+> > +#define BNO055_MAG_DATA_Y_LSB_REG      0x10
+> > +#define BNO055_MAG_DATA_Z_LSB_REG      0x12
+> > +#define BNO055_GYR_DATA_X_LSB_REG      0x14
+> > +#define BNO055_GYR_DATA_Y_LSB_REG      0x16
+> > +#define BNO055_GYR_DATA_Z_LSB_REG      0x18
+> > +#define BNO055_EUL_DATA_X_LSB_REG      0x1A
+> > +#define BNO055_EUL_DATA_Y_LSB_REG      0x1C
+> > +#define BNO055_EUL_DATA_Z_LSB_REG      0x1E
+> > +#define BNO055_QUAT_DATA_W_LSB_REG     0x20
+> > +#define BNO055_LIA_DATA_X_LSB_REG      0x28
+> > +#define BNO055_LIA_DATA_Y_LSB_REG      0x2A
+> > +#define BNO055_LIA_DATA_Z_LSB_REG      0x2C
+> > +#define BNO055_GRAVITY_DATA_X_LSB_REG  0x2E
+> > +#define BNO055_GRAVITY_DATA_Y_LSB_REG  0x30
+> > +#define BNO055_GRAVITY_DATA_Z_LSB_REG  0x32
+> > +#define BNO055_TEMP_REG                        0x34
+> > +#define BNO055_CALIB_STAT_REG          0x35
 > > +#define BNO055_CALIB_STAT_MASK 3
->
-> GENMASK()
-
-OK
-
-> ...
->
+> > +#define BNO055_CALIB_STAT_MAGN_SHIFT 0
+> > +#define BNO055_CALIB_STAT_ACCEL_SHIFT 2
+> > +#define BNO055_CALIB_STAT_GYRO_SHIFT 4
+> > +#define BNO055_CALIB_STAT_SYS_SHIFT 6
+> > +#define BNO055_SYS_TRIGGER_REG         0x3F
+> > +#define BNO055_SYS_TRIGGER_RST_INT BIT(6)
+> > +#define BNO055_SYS_TRIGGER_CLK_SEL BIT(7)
+> > +#define BNO055_OPR_MODE_REG            0x3D
+> > +#define BNO055_OPR_MODE_CONFIG 0x0
+> > +#define BNO055_OPR_MODE_AMG 0x7
+> > +#define BNO055_OPR_MODE_FUSION_FMC_OFF 0xB
+> > +#define BNO055_OPR_MODE_FUSION 0xC
+> > +#define BNO055_UNIT_SEL_REG            0x3B
 > > +#define BNO055_UNIT_SEL_ANDROID BIT(7)
->
-> Android? What does this mean?
-
-Sensors support the so-called "Android" and "Windows" modes. They
-differs about pitch direction (CW vs CCW). I'd like to stick close to
-the datasheet names, but I can add a comment here.
-
-> ...
->
+> > +#define BNO055_CALDATA_START           0x55
+> > +#define BNO055_CALDATA_END             0x6A
 > > +#define BNO055_CALDATA_LEN (BNO055_CALDATA_END - BNO055_CALDATA_START + 1)
->
-> Can you put just a plain number?
-
-OK
-
-> ...
->
+> > +
+> > +/*
+> > + * The difference in address between the register that contains the
+> > + * value and the register that contains the offset.  This applies for
+> > + * accel, gyro and magn channels.
+> > + */
+> > +#define BNO055_REG_OFFSET_ADDR         0x4D
+> > +
+> > +/* page 1 registers */
+> > +#define PG1(x) ((x) | 0x80)
+> > +#define BNO055_ACC_CONFIG_REG          PG1(0x8)
 > > +#define BNO055_ACC_CONFIG_LPF_MASK 0x1C
->
-> GENMASK() here and everywhere where it makes sense.
-
-OK.
-
-> ...
->
+> > +#define BNO055_ACC_CONFIG_LPF_SHIFT 0x2
+> > +#define BNO055_ACC_CONFIG_RANGE_MASK 0x3
+> > +#define BNO055_ACC_CONFIG_RANGE_SHIFT 0x0
+> > +#define BNO055_MAG_CONFIG_REG          PG1(0x9)
+> > +#define BNO055_MAG_CONFIG_HIGHACCURACY 0x18
+> > +#define BNO055_MAG_CONFIG_ODR_MASK 0x7
+> > +#define BNO055_MAG_CONFIG_ODR_SHIFT 0
+> > +#define BNO055_GYR_CONFIG_REG          PG1(0xA)
+> > +#define BNO055_GYR_CONFIG_RANGE_MASK 0x7
+> > +#define BNO055_GYR_CONFIG_RANGE_SHIFT 0
+> > +#define BNO055_GYR_CONFIG_LPF_MASK 0x38
+> > +#define BNO055_GYR_CONFIG_LPF_SHIFT 3
+> > +#define BNO055_INT_MSK                 PG1(0xF)
+> > +#define BNO055_INT_EN                  PG1(0x10)
+> > +#define BNO055_INT_ACC_BSX_DRDY BIT(0)
+> > +#define BNO055_INT_MAG_DRDY BIT(1)
+> > +#define BNO055_INT_GYR_DRDY BIT(4)
+> > +#define BNO055_UID_REG                 PG1(0x50)
 > > +#define BNO055_UID_LEN (0xF)
->
-> Useless parentheses. If the LEN is a plain number, use decimal, if
-> it's limited by register width, use the form of (BIT(x) - 1). In such
-> a case it's easy to see how many bits are used for it.
-
-It's byte number, defined by how many 8-bits registers make up the
-UID. I'll go for a decimal and I'll drop the parentheses.
-
-> ...
->
+> > +
+> > +static const int bno055_mag_odr_vals[] = {2, 6, 8, 10, 15, 20, 25, 30};
+> > +static const int bno055_acc_lpf_vals[] = {781, 1563, 3125, 6250,
+> > +                                           12500, 25000, 50000, 100000};
+> > +static const int bno055_acc_ranges[] = {2, 4, 8, 16};
+> > +static const int bno055_gyr_lpf_vals[] = {523, 230, 116, 47, 23, 12, 64, 32};
+> > +static const int bno055_gyr_ranges[] = {2000, 1000, 500, 250, 125};
+> > +
+> > +struct bno055_priv {
+> > +       struct regmap *regmap;
+> > +       struct device *dev;
+> > +       struct clk *clk;
+> > +       int operation_mode;
+> > +       int xfer_burst_break_thr;
+> > +       struct mutex lock;
+> > +       u8 uid[BNO055_UID_LEN];
+> > +};
+> > +
+> > +static int find_closest_unsorted(int val, const int arr[], int len)
+> > +{
 > > +       int i;
 > > +       int best_idx, best_delta, delta;
 > > +       int first = 1;
->
-> Use reversed xmas tree order.
-
-Looks like the kernel code is plenty of declarations in random order,
-neither I can find any clue about this in coding-style.rst. Where does
-this come from?
-
-If that's mandatory then I'll do. If that's about a mere preference,
-then I honestly prefer to put all declaration-plus-initialization
-after all declarations-olny (but I can use reversed xmas tree order
-inside each block, if you want).
-
->
+> > +
 > > +       for (i = 0; i < len; i++) {
 > > +               delta = abs(arr[i] - val);
 > > +               if (first || delta < best_delta) {
@@ -244,65 +331,109 @@ inside each block, if you want).
 > > +               }
 > > +               first = 0;
 > > +       }
->
-> I think I saw this kind of snippet for the 100th time. Can it be
-> factored out to some helper and used by everyone?
-
-I can try to macroize this function and move it to util_macros.h
-
-> ...
->
+> > +
+> > +       return best_idx;
+> > +}
+> > +
+> > +static bool bno055_regmap_volatile(struct device *dev, unsigned int reg)
+> > +{
 > > +       if ((reg >= 0x8 && reg <= 0x3A) ||
->
-> Use names instead of values here and in similar places elsewhere.
-
-When I wrote this, I was actually unsure about which is best :) Do you
-have a strong opinion on this?
-
-My point:
-Most of this is just about register areas, which are bounded by
-addresses - register meaning is of no interest here. Using numerical
-addresses here IMO is a little advantageous because it is at least
-clear which is the greatest number, and it is less prone to swapping
-by mistake start/end registers vrt greater-than/lesser-than comparison
-operators.
-
-It's still true that when comparing address against a specific
-register address (e.g. reg == BNO055_MAG_CONFIG_REG) there is no
-advantage in using numerical addresses, and it can be better to use
-names (because e.g. you simply know that specific register is
-volatile).
-
 > > +           /* when in fusion mode, config is updated by chip */
 > > +           reg == BNO055_MAG_CONFIG_REG ||
 > > +           reg == BNO055_ACC_CONFIG_REG ||
 > > +           reg == BNO055_GYR_CONFIG_REG ||
 > > +           (reg >= BNO055_CALDATA_START && reg <= BNO055_CALDATA_END))
->
-> Please, split this to 3 or more conditionals that are easier to read
-> (logically separated).
-> Same comment to the rest of the similar functions.
-
-Do you mean splitting into separate if statements? OK.
-
-> ...
->
+> > +               return true;
+> > +       return false;
+> > +}
+> > +
+> > +static bool bno055_regmap_readable(struct device *dev, unsigned int reg)
+> > +{
+> > +       if ((reg <= 0x7F && reg >= 0x6B) ||
+> > +           reg == 0x3C ||
+> > +           (reg <= PG1(0x7F) && reg >= PG1(0x60)) ||
+> > +           (reg <= PG1(0x4F) && reg >= PG1(0x20)) ||
+> > +           reg == PG1(0xE) ||
+> > +           (reg <= PG1(0x6) && reg >= PG1(0x0)))
+> > +               return false;
+> > +       return true;
+> > +}
+> > +
+> > +static bool bno055_regmap_writeable(struct device *dev, unsigned int reg)
+> > +{
+> > +       if ((!bno055_regmap_readable(dev, reg)) ||
+> > +           (reg <= 0x3A && reg >= 0x8) ||
+> > +           reg <= 0x6 ||
+> > +           (reg <= PG1(0x5F) && reg >= PG1(0x50)))
+> > +               return false;
+> > +       return true;
+> > +}
+> > +
+> > +static const struct regmap_range_cfg bno055_regmap_ranges[] = {
+> > +       {
+> > +               .range_min = 0,
+> > +               .range_max = 0x7f * 2,
+> > +               .selector_reg = BNO055_PAGESEL_REG,
 > > +               .selector_mask = 0xff,
->
-> GENMASK() ?
-
-OK
-
-> ...
->
+> > +               .selector_shift = 0,
+> > +               .window_start = 0,
+> > +               .window_len = 0x80
+> > +       },
+> > +};
+> > +
+> > +const struct regmap_config bno055_regmap_config = {
+> > +       .name      = "bno055",
+> > +       .reg_bits  = 8,
+> > +       .val_bits  = 8,
+> > +       .ranges = bno055_regmap_ranges,
+> > +       .num_ranges = 1,
+> > +       .volatile_reg = bno055_regmap_volatile,
+> > +       .max_register = 0x80 * 2,
+> > +       .writeable_reg = bno055_regmap_writeable,
+> > +       .readable_reg = bno055_regmap_readable,
+> > +       .cache_type = REGCACHE_RBTREE,
+> > +};
+> > +EXPORT_SYMBOL_GPL(bno055_regmap_config);
+> > +
+> > +static int bno055_reg_read(struct bno055_priv *priv,
+> > +                          unsigned int reg, unsigned int *val)
+> > +{
+> > +       int res = regmap_read(priv->regmap, reg, val);
+> > +
 > > +       if (res && res != -ERESTARTSYS) {
->
-> Shouldn't RESTARTSYS be handled on a regmap level?
-
-Can you please elaborate on this?
-
-> ...
->
+> > +               dev_err(priv->dev, "Regmap read error. adr: 0x%x, res: %d",
+> > +                       reg,  res);
+> > +       }
+> > +
+> > +       return res;
+> > +}
+> > +
+> > +static int bno055_reg_write(struct bno055_priv *priv,
+> > +                           unsigned int reg, unsigned int val)
+> > +{
+> > +       int res = regmap_write(priv->regmap, reg, val);
+> > +
+> > +       if (res && res != -ERESTARTSYS) {
+> > +               dev_err(priv->dev, "Regmap write error. adr: 0x%x, res: %d",
+> > +                       reg,  res);
+> > +       }
+> > +
+> > +       return res;
+> > +}
+> > +
+> > +static int bno055_reg_update_bits(struct bno055_priv *priv, unsigned int reg,
+> > +                                 unsigned int mask, unsigned int val)
+> > +{
+> > +       int res = regmap_update_bits(priv->regmap, reg, mask, val);
+> > +
+> > +       if (res && res != -ERESTARTSYS) {
+> > +               dev_err(priv->dev, "Regmap update_bits  error. adr: 0x%x, res: %d",
+> > +                       reg,  res);
+> > +       }
+> > +
+> > +       return res;
+> > +}
+> > +
 > > +/* must be called in configuration mode */
 > > +int bno055_calibration_load(struct bno055_priv *priv, const struct firmware *fw)
 > > +{
@@ -317,14 +448,7 @@ Can you please elaborate on this?
 > > +               return -ENOMEM;
 > > +
 > > +       memcpy(buf, fw->data, fw->size);
->
-> kmemdup() ?
-
-Ah, OK
-
->
 > > +       buf[fw->size] = '\0';
->
 > > +       for (i = 0; i < BNO055_CALDATA_LEN; i++) {
 > > +               ret = sscanf(buf + tot_read, "%x%n",
 > > +                            &tmp, &read);
@@ -335,15 +459,6 @@ Ah, OK
 > > +               cal[i] = tmp;
 > > +               tot_read += read;
 > > +       }
->
-> Sounds like NIH hex2bin().
-
-Indeed.. I've failed to find out this helper. Looking at the code it
-seems it wouldn't work as drop-in replacement here, because of spaces
-in the HEX string. But I might just decide to format the HEX string
-without spaces in order to being able to use hex2bin().
-
->
 > > +       dev_dbg(priv->dev, "loading cal data: %*ph", BNO055_CALDATA_LEN, cal);
 > > +       ret = regmap_bulk_write(priv->regmap, BNO055_CALDATA_START,
 > > +                               cal, BNO055_CALDATA_LEN);
@@ -351,114 +466,667 @@ without spaces in order to being able to use hex2bin().
 > > +       kfree(buf);
 > > +       return ret;
 > > +}
+> > +
+> > +static int bno055_init(struct bno055_priv *priv, const struct firmware *caldata)
+> > +{
+> > +       int res;
+> > +
+> > +       res = bno055_reg_write(priv, BNO055_SYS_TRIGGER_REG,
+> > +                              (priv->clk ? BNO055_SYS_TRIGGER_CLK_SEL : 0) |
+> > +                              BNO055_SYS_TRIGGER_RST_INT);
+> > +       if (res)
+> > +               return res;
+> > +
+> > +       msleep(100);
+> > +       res = bno055_reg_write(priv, BNO055_OPR_MODE_REG,
+> > +                              BNO055_OPR_MODE_CONFIG);
+> > +       if (res)
+> > +               return res;
+> > +
+> > +       /* use standard SI units */
+> > +       res = bno055_reg_write(priv, BNO055_UNIT_SEL_REG,
+> > +                              BNO055_UNIT_SEL_ANDROID);
+> > +       if (res)
+> > +               return res;
+> > +
+> > +       if (caldata) {
+> > +               res = bno055_calibration_load(priv, caldata);
+> > +               if (res)
+> > +                       dev_warn(priv->dev, "failed to load calibration data with error %d",
+> > +                                res);
+> > +       }
+> > +
+> > +       /*
+> > +        * Start in fusion mode (all data available), but with magnetometer auto
+> > +        * calibration switched off, in order not to overwrite magnetometer
+> > +        * calibration data in case one want to keep it untouched.
+> > +        */
+> > +       priv->operation_mode = BNO055_OPR_MODE_FUSION_FMC_OFF;
+> > +       return bno055_reg_write(priv, BNO055_OPR_MODE_REG,
+> > +                               priv->operation_mode);
+> > +}
+> > +
+> > +static void bno055_uninit(void *arg)
+> > +{
+> > +       struct bno055_priv *priv = arg;
+> > +
+> > +       bno055_reg_write(priv, BNO055_INT_EN, 0);
+> > +
+> > +       clk_disable_unprepare(priv->clk);
 >
-> ...
+> devm_add_action_or_reset() callbacks should be used as one-per-each uninit;
+> it's one of the rules for their usage; it also took me a while to get this;
 >
+> so, you would do:
+>
+> ..................
+> static void bno055_clk_disable(void *clk)
+> {
+>        clk_disable_unprepare(clk)
+> }
+>
+> static void bno055_uninit(void *priv)
+> {
+>       bno055_reg_write(priv, BNO055_INT_EN, 0);
+> }
+>
+> .........................
+>
+> ret = clk_prepare_enable(priv->clk);
+> if (ret)
+>    return ret;
+> // also make sure to check return code for clk_prepare_enable
+>
+> ret = devm_add_action_or_reset(dev, bno055_clk_disable, priv->clk)
+> if (ret)
+>     return ret;
+>
+> ............
+>
+> res = bno055_init(priv, caldata);
+> if (res)
+>   return res;
+>
+> ret = devm_add_action_or_reset(dev, bno055_uninit, priv)
+> if (ret)
+>     return ret;
+>
+> Right now, as  bno055_uninit()  does both, which is not recommended,
+> as devm_ uninit actions should mirror the init actions (but in
+> reverse).
+>
+
+Ah, thank you for the explanation; I wasn't aware of this. I'll do this way.
+
+>
+>
+> > +}
+> > +
+> > +#define BNO055_CHANNEL(_type, _axis, _index, _address, _sep, _sh) {    \
+> > +       .address = _address,                                            \
+> > +       .type = _type,                                                  \
+> > +       .modified = 1,                                                  \
+> > +       .channel2 = IIO_MOD_##_axis,                                    \
+> > +       .info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | (_sep),          \
+> > +       .info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) | (_sh),   \
+> > +       .scan_index = _index,                                           \
+> > +       .scan_type = {                                                  \
+> > +               .sign = 's',                                            \
+> > +               .realbits = 16,                                         \
+> > +               .storagebits = 16,                                      \
+> > +               .endianness = IIO_LE,                                   \
+> > +               .repeat = IIO_MOD_##_axis == IIO_MOD_QUATERNION ? 4 : 0 \
+> > +       },                                                              \
+> > +}
+> > +
+> > +/* scan indexes follow DATA register order */
+> > +enum bmi160_scan_axis {
+> > +       BNO055_SCAN_ACCEL_X,
+> > +       BNO055_SCAN_ACCEL_Y,
+> > +       BNO055_SCAN_ACCEL_Z,
+> > +       BNO055_SCAN_MAGN_X,
+> > +       BNO055_SCAN_MAGN_Y,
+> > +       BNO055_SCAN_MAGN_Z,
+> > +       BNO055_SCAN_GYRO_X,
+> > +       BNO055_SCAN_GYRO_Y,
+> > +       BNO055_SCAN_GYRO_Z,
+> > +       BNO055_SCAN_HEADING,
+> > +       BNO055_SCAN_ROLL,
+> > +       BNO055_SCAN_PITCH,
+> > +       BNO055_SCAN_QUATERNION,
+> > +       BNO055_SCAN_LIA_X,
+> > +       BNO055_SCAN_LIA_Y,
+> > +       BNO055_SCAN_LIA_Z,
+> > +       BNO055_SCAN_GRAVITY_X,
+> > +       BNO055_SCAN_GRAVITY_Y,
+> > +       BNO055_SCAN_GRAVITY_Z,
+> > +       BNO055_SCAN_TIMESTAMP,
+> > +};
+> > +
+> > +static const struct iio_chan_spec bno055_channels[] = {
+> > +       /* accelerometer */
+> > +       BNO055_CHANNEL(IIO_ACCEL, X, BNO055_SCAN_ACCEL_X,
+> > +                      BNO055_ACC_DATA_X_LSB_REG, BIT(IIO_CHAN_INFO_OFFSET),
+> > +                      BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY)),
+> > +       BNO055_CHANNEL(IIO_ACCEL, Y, BNO055_SCAN_ACCEL_Y,
+> > +                      BNO055_ACC_DATA_Y_LSB_REG, BIT(IIO_CHAN_INFO_OFFSET),
+> > +                      BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY)),
+> > +       BNO055_CHANNEL(IIO_ACCEL, Z, BNO055_SCAN_ACCEL_Z,
+> > +                      BNO055_ACC_DATA_Z_LSB_REG, BIT(IIO_CHAN_INFO_OFFSET),
+> > +                      BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY)),
+> > +       /* gyroscope */
+> > +       BNO055_CHANNEL(IIO_ANGL_VEL, X, BNO055_SCAN_GYRO_X,
+> > +                      BNO055_GYR_DATA_X_LSB_REG, BIT(IIO_CHAN_INFO_OFFSET),
+> > +                      BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY)),
+> > +       BNO055_CHANNEL(IIO_ANGL_VEL, Y, BNO055_SCAN_GYRO_Y,
+> > +                      BNO055_GYR_DATA_Y_LSB_REG, BIT(IIO_CHAN_INFO_OFFSET),
+> > +                      BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY)),
+> > +       BNO055_CHANNEL(IIO_ANGL_VEL, Z, BNO055_SCAN_GYRO_Z,
+> > +                      BNO055_GYR_DATA_Z_LSB_REG, BIT(IIO_CHAN_INFO_OFFSET),
+> > +                      BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY)),
+> > +       /* magnetometer */
+> > +       BNO055_CHANNEL(IIO_MAGN, X, BNO055_SCAN_MAGN_X,
+> > +                      BNO055_MAG_DATA_X_LSB_REG, BIT(IIO_CHAN_INFO_OFFSET),
+> > +                      BIT(IIO_CHAN_INFO_SAMP_FREQ)),
+> > +       BNO055_CHANNEL(IIO_MAGN, Y, BNO055_SCAN_MAGN_Y,
+> > +                      BNO055_MAG_DATA_Y_LSB_REG, BIT(IIO_CHAN_INFO_OFFSET),
+> > +                      BIT(IIO_CHAN_INFO_SAMP_FREQ)),
+> > +       BNO055_CHANNEL(IIO_MAGN, Z, BNO055_SCAN_MAGN_Z,
+> > +                      BNO055_MAG_DATA_Z_LSB_REG, BIT(IIO_CHAN_INFO_OFFSET),
+> > +                      BIT(IIO_CHAN_INFO_SAMP_FREQ)),
+> > +       /* euler angle */
+> > +       BNO055_CHANNEL(IIO_ROT, X, BNO055_SCAN_HEADING,
+> > +                      BNO055_EUL_DATA_X_LSB_REG, 0, 0),
+> > +       BNO055_CHANNEL(IIO_ROT, Y, BNO055_SCAN_ROLL,
+> > +                      BNO055_EUL_DATA_Y_LSB_REG, 0, 0),
+> > +       BNO055_CHANNEL(IIO_ROT, Z, BNO055_SCAN_PITCH,
+> > +                      BNO055_EUL_DATA_Z_LSB_REG, 0, 0),
+> > +       /* quaternion */
+> > +       BNO055_CHANNEL(IIO_ROT, QUATERNION, BNO055_SCAN_QUATERNION,
+> > +                      BNO055_QUAT_DATA_W_LSB_REG, 0, 0),
+> > +
+> > +       /* linear acceleration */
+> > +       BNO055_CHANNEL(IIO_ACCEL, ACCEL_LINEAR_X, BNO055_SCAN_LIA_X,
+> > +                      BNO055_LIA_DATA_X_LSB_REG, 0, 0),
+> > +       BNO055_CHANNEL(IIO_ACCEL, ACCEL_LINEAR_Y, BNO055_SCAN_LIA_Y,
+> > +                      BNO055_LIA_DATA_Y_LSB_REG, 0, 0),
+> > +       BNO055_CHANNEL(IIO_ACCEL, ACCEL_LINEAR_Z, BNO055_SCAN_LIA_Z,
+> > +                      BNO055_LIA_DATA_Z_LSB_REG, 0, 0),
+> > +
+> > +       /* gravity vector */
+> > +       BNO055_CHANNEL(IIO_GRAVITY, X, BNO055_SCAN_GRAVITY_X,
+> > +                      BNO055_GRAVITY_DATA_X_LSB_REG, 0, 0),
+> > +       BNO055_CHANNEL(IIO_GRAVITY, Y, BNO055_SCAN_GRAVITY_Y,
+> > +                      BNO055_GRAVITY_DATA_Y_LSB_REG, 0, 0),
+> > +       BNO055_CHANNEL(IIO_GRAVITY, Z, BNO055_SCAN_GRAVITY_Z,
+> > +                      BNO055_GRAVITY_DATA_Z_LSB_REG, 0, 0),
+> > +
+> > +       {
+> > +               .type = IIO_TEMP,
+> > +               .info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
+> > +               .scan_index = -1
+> > +       },
+> > +       IIO_CHAN_SOFT_TIMESTAMP(BNO055_SCAN_TIMESTAMP),
+> > +};
+> > +
+> > +static int bno055_get_regmask(struct bno055_priv *priv, int *val, int *val2,
+> > +                             int reg, int mask, int shift,
+> > +                             const int tbl[], int k)
+> > +{
+> > +       int hwval, idx;
 > > +       int ret = bno055_reg_read(priv, reg, &hwval);
 > > +
 > > +       if (ret)
 > > +               return ret;
->
-> In all cases (esp. when resource allocations are involved) better to use
->
-> int ret;
->
-> ret = func();
-> if (foo)
->   return ret;
-
-OK (assuming you meant if(ret) actually)
-
-> ...
->
+> > +       if (val2)
+> > +               *val2 = 0;
+> > +       idx = (hwval & mask) >> shift;
+> > +       *val = tbl[idx] / k;
+> > +
+> > +       if (k == 1)
+> > +               return IIO_VAL_INT;
+> > +
+> > +       *val2 = (tbl[idx] % k) * 10000;
+> > +       return IIO_VAL_INT_PLUS_MICRO;
+> > +}
+> > +
+> > +static int bno055_set_regmask(struct bno055_priv *priv, int val, int val2,
+> > +                             int reg, int mask, int shift,
+> > +                             const int table[], int table_len, int k)
+> > +
+> > +{
+> > +       int ret;
+> > +       int hwval = find_closest_unsorted(val * k + val2 / 10000,
+> > +                                         table, table_len);
+> > +       /*
+> > +        * The closest value the HW supports is only one in fusion mode,
+> > +        * and it is autoselected, so don't do anything, just return OK,
+> > +        * as the closest possible value has been (virtually) selected
+> > +        */
+> > +       if (priv->operation_mode != BNO055_OPR_MODE_AMG)
+> > +               return 0;
+> > +
 > > +       dev_dbg(priv->dev, "WR config - reg, mask, val: 0x%x, 0x%x, 0x%x",
 > > +               reg, mask, hwval);
+> > +
+> > +       ret = bno055_reg_write(priv, BNO055_OPR_MODE_REG,
+> > +                              BNO055_OPR_MODE_CONFIG);
+> > +       if (ret)
+> > +               return ret;
+> > +
+> > +       ret = bno055_reg_update_bits(priv, reg, mask, hwval << shift);
+> > +
+> > +       if (ret)
+> > +               return ret;
+> > +
+> > +       return bno055_reg_write(priv, BNO055_OPR_MODE_REG,
+> > +                               BNO055_OPR_MODE_AMG);
+> > +       return 0;
 >
-> Why? Enable regmap trace events for this and drop these unneeded prints.
+> this return 0 statement looks unreachable;
+> i wonder if the compiler would have caught this
 
-Good point. Going to drop it.
+Right. Surprisingly, my compiler doesn't complain; I also would have
+expected a warning to be spitted.
 
-> ...
->
+> > +}
+> > +
+> > +#define bno055_get_mag_odr(p, v, v2) \
+> > +       bno055_get_regmask(p, v, v2, \
+> > +                          BNO055_MAG_CONFIG_REG, BNO055_MAG_CONFIG_ODR_MASK, \
+> > +                          BNO055_MAG_CONFIG_ODR_SHIFT, bno055_mag_odr_vals, 1)
+> > +
+> > +#define bno055_set_mag_odr(p, v, v2) \
+> > +       bno055_set_regmask(p, v, v2, \
+> > +                          BNO055_MAG_CONFIG_REG, BNO055_MAG_CONFIG_ODR_MASK, \
+> > +                          BNO055_MAG_CONFIG_ODR_SHIFT, \
+> > +                          bno055_mag_odr_vals, \
+> > +                          ARRAY_SIZE(bno055_mag_odr_vals), 1)
+> > +
+> > +#define bno055_get_acc_lpf(p, v, v2) \
+> > +       bno055_get_regmask(p, v, v2, \
+> > +                          BNO055_ACC_CONFIG_REG, BNO055_ACC_CONFIG_LPF_MASK, \
+> > +                          BNO055_ACC_CONFIG_LPF_SHIFT, \
+> > +                          bno055_acc_lpf_vals, 100)
+> > +
+> > +#define bno055_set_acc_lpf(p, v, v2) \
+> > +       bno055_set_regmask(p, v, v2, \
+> > +                          BNO055_ACC_CONFIG_REG, BNO055_ACC_CONFIG_LPF_MASK, \
+> > +                          BNO055_ACC_CONFIG_LPF_SHIFT, \
+> > +                          bno055_acc_lpf_vals, \
+> > +                          ARRAY_SIZE(bno055_acc_lpf_vals), 100)
+> > +
+> > +#define bno055_get_acc_range(p, v, v2) \
+> > +       bno055_get_regmask(priv, v, v2, \
+> > +                          BNO055_ACC_CONFIG_REG, \
+> > +                          BNO055_ACC_CONFIG_RANGE_MASK, \
+> > +                          BNO055_ACC_CONFIG_RANGE_SHIFT, bno055_acc_ranges, 1)
+> > +
+> > +#define bno055_set_acc_range(p, v, v2) \
+> > +       bno055_set_regmask(p, v, v2, \
+> > +                          BNO055_ACC_CONFIG_REG, \
+> > +                          BNO055_ACC_CONFIG_RANGE_MASK,  \
+> > +                          BNO055_ACC_CONFIG_RANGE_SHIFT, \
+> > +                          bno055_acc_ranges, ARRAY_SIZE(bno055_acc_ranges), 1)
+> > +
+> > +#define bno055_get_gyr_lpf(p, v, v2) \
+> > +       bno055_get_regmask(p, v, v2, \
+> > +                          BNO055_GYR_CONFIG_REG, BNO055_GYR_CONFIG_LPF_MASK, \
+> > +                          BNO055_GYR_CONFIG_LPF_SHIFT, bno055_gyr_lpf_vals, 1)
+> > +
+> > +#define bno055_set_gyr_lpf(p, v, v2) \
+> > +       bno055_set_regmask(p, v, v2, \
+> > +                          BNO055_GYR_CONFIG_REG, BNO055_GYR_CONFIG_LPF_MASK, \
+> > +                          BNO055_GYR_CONFIG_LPF_SHIFT, \
+> > +                          bno055_gyr_lpf_vals, \
+> > +                          ARRAY_SIZE(bno055_gyr_lpf_vals), 1)
+> > +
+> > +#define bno055_get_gyr_range(p, v, v2) \
+> > +       bno055_get_regmask(p, v, v2, \
+> > +                          BNO055_GYR_CONFIG_REG, \
+> > +                          BNO055_GYR_CONFIG_RANGE_MASK,  \
+> > +                          BNO055_GYR_CONFIG_RANGE_SHIFT, \
+> > +                          bno055_gyr_ranges, 1)
+> > +
+> > +#define bno055_set_gyr_range(p, v, v2) \
+> > +       bno055_set_regmask(p, v, v2, \
+> > +                          BNO055_GYR_CONFIG_REG, \
+> > +                          BNO055_GYR_CONFIG_RANGE_MASK, \
+> > +                          BNO055_GYR_CONFIG_RANGE_SHIFT, \
+> > +                          bno055_gyr_ranges, ARRAY_SIZE(bno055_gyr_ranges), 1)
+> > +
+> > +static int bno055_read_simple_chan(struct iio_dev *indio_dev,
+> > +                                  struct iio_chan_spec const *chan,
+> > +                                  int *val, int *val2, long mask)
+> > +{
+> > +       struct bno055_priv *priv = iio_priv(indio_dev);
 > > +       __le16 raw_val;
->
+> > +       int ret;
+> > +
+> > +       switch (mask) {
+> > +       case IIO_CHAN_INFO_RAW:
 > > +               ret = regmap_bulk_read(priv->regmap, chan->address,
 > > +                                      &raw_val, 2);
->
-> sizeof(raw_val)
->
-> and everywhere where similar cases are.
-
-OK
-
 > > +               if (ret < 0)
 > > +                       return ret;
->
-> ...
->
+> > +               *val = (s16)le16_to_cpu(raw_val);
+> > +               *val2 = 0;
+> > +               return IIO_VAL_INT;
+> > +       case IIO_CHAN_INFO_OFFSET:
+> > +               if (priv->operation_mode != BNO055_OPR_MODE_AMG) {
+> > +                       *val = 0;
+> > +               } else {
+> > +                       ret = regmap_bulk_read(priv->regmap,
+> > +                                              chan->address +
+> > +                                              BNO055_REG_OFFSET_ADDR,
+> > +                                              &raw_val, 2);
+> > +                       if (ret < 0)
+> > +                               return ret;
+> > +                       *val = -(s16)le16_to_cpu(raw_val);
+> > +               }
+> > +               *val2 = 0;
+> > +               return IIO_VAL_INT;
+> > +       case IIO_CHAN_INFO_SCALE:
+> > +               *val = 1;
+> > +               switch (chan->type) {
+> > +               case IIO_GRAVITY:
+> > +                       /* Table 3-35: 1 m/s^2 = 100 LSB */
+> > +               case IIO_ACCEL:
+> > +                       /* Table 3-17: 1 m/s^2 = 100 LSB */
+> > +                       *val2 = 100;
+> > +                       break;
+> > +               case IIO_MAGN:
+> > +                       /*
+> > +                        * Table 3-19: 1 uT = 16 LSB.  But we need
+> > +                        * Gauss: 1G = 0.1 uT.
+> > +                        */
+> > +                       *val2 = 160;
+> > +                       break;
+> > +               case IIO_ANGL_VEL:
+> > +                       /* Table 3-22: 1 Rps = 900 LSB */
+> > +                       *val2 = 900;
+> > +                       break;
+> > +               case IIO_ROT:
+> > +                       /* Table 3-28: 1 degree = 16 LSB */
+> > +                       *val2 = 16;
+> > +                       break;
+> > +               default:
+> > +                       return -EINVAL;
+> > +               }
+> > +               return IIO_VAL_FRACTIONAL;
+> > +       default:
+> > +               return -EINVAL;
+> > +
 > > +       case IIO_CHAN_INFO_SAMP_FREQ:
 > > +               if (chan->type == IIO_MAGN)
 > > +                       return bno055_get_mag_odr(priv, val, val2);
 > > +               else
 > > +                       return -EINVAL;
->
-> Use usual pattern
->
->   if (!cond)
->    return ERRNO;
->   ...
->   return bar;
->
-
-OK
-
->
->
+> > +
+> > +       case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+> > +               switch (chan->type) {
+> > +               case IIO_ANGL_VEL:
+> > +                       return bno055_get_gyr_lpf(priv, val, val2);
+> > +               case IIO_ACCEL:
+> > +                       return bno055_get_acc_lpf(priv, val, val2);
+> > +               default:
+> > +                       return -EINVAL;
+> > +               }
+> > +       }
+> > +}
+> > +
+> > +static int bno055_read_temp_chan(struct iio_dev *indio_dev, int *val)
+> > +{
+> > +       struct bno055_priv *priv = iio_priv(indio_dev);
+> > +       unsigned int raw_val;
+> > +       int ret;
+> > +
+> > +       ret = regmap_read(priv->regmap, BNO055_TEMP_REG, &raw_val);
+> > +       if (ret < 0)
+> > +               return ret;
+> > +
+> > +       /*
+> > +        * Tables 3-36 and 3-37: one byte of priv, signed, 1 LSB = 1C.
+> > +        * ABI wants milliC.
+> > +        */
+> > +       *val = raw_val * 1000;
+> > +
+> > +       return IIO_VAL_INT;
+> > +}
+> > +
+> > +static int bno055_read_quaternion(struct iio_dev *indio_dev,
+> > +                                 struct iio_chan_spec const *chan,
+> > +                                 int size, int *vals, int *val_len,
+> > +                                 long mask)
+> > +{
+> > +       struct bno055_priv *priv = iio_priv(indio_dev);
+> > +       __le16 raw_vals[4];
+> > +       int i, ret;
+> > +
+> > +       switch (mask) {
+> > +       case IIO_CHAN_INFO_RAW:
+> > +               if (size < 4)
+> > +                       return -EINVAL;
+> > +               ret = regmap_bulk_read(priv->regmap,
+> > +                                      BNO055_QUAT_DATA_W_LSB_REG,
+> > +                                      raw_vals, sizeof(raw_vals));
+> > +               if (ret < 0)
+> > +                       return ret;
 > > +               for (i = 0; i < 4; i++)
 > > +                       vals[i] = (s16)le16_to_cpu(raw_vals[i]);
->
-> Extract this to be a helper like there are for u32 and u64.
-
-Could you please point me to those helpers? I don't know what you are
-referring to.
-
-> ...
->
+> > +               *val_len = 4;
+> > +               return IIO_VAL_INT_MULTIPLE;
+> > +       case IIO_CHAN_INFO_SCALE:
+> > +               /* Table 3-31: 1 quaternion = 2^14 LSB */
+> > +               if (size < 2)
+> > +                       return -EINVAL;
+> > +               vals[0] = 1;
 > > +               vals[1] = 1 << 14;
+> > +               return IIO_VAL_FRACTIONAL;
+> > +       default:
+> > +               return -EINVAL;
+> > +       }
+> > +}
+> > +
+> > +static int _bno055_read_raw_multi(struct iio_dev *indio_dev,
+> > +                                 struct iio_chan_spec const *chan,
+> > +                                 int size, int *vals, int *val_len,
+> > +                                 long mask)
+> > +{
+> > +       switch (chan->type) {
+> > +       case IIO_MAGN:
+> > +       case IIO_ACCEL:
+> > +       case IIO_ANGL_VEL:
+> > +       case IIO_GRAVITY:
+> > +               if (size < 2)
+> > +                       return -EINVAL;
+> > +               *val_len = 2;
+> > +               return bno055_read_simple_chan(indio_dev, chan,
+> > +                                              &vals[0], &vals[1],
+> > +                                              mask);
+> > +
+> > +       case IIO_TEMP:
+> > +               *val_len = 1;
+> > +               return bno055_read_temp_chan(indio_dev, &vals[0]);
+> > +
+> > +       case IIO_ROT:
+> > +               /*
+> > +                * Rotation is exposed as either a quaternion or three
+> > +                * Euler angles.
+> > +                */
+> > +               if (chan->channel2 == IIO_MOD_QUATERNION)
+> > +                       return bno055_read_quaternion(indio_dev, chan,
+> > +                                                     size, vals,
+> > +                                                     val_len, mask);
+> > +               if (size < 2)
+> > +                       return -EINVAL;
+> > +               *val_len = 2;
+> > +               return bno055_read_simple_chan(indio_dev, chan,
+> > +                                              &vals[0], &vals[1],
+> > +                                              mask);
+> > +       default:
+> > +               return -EINVAL;
+> > +       }
+> > +}
+> > +
+> > +static int bno055_read_raw_multi(struct iio_dev *indio_dev,
+> > +                                struct iio_chan_spec const *chan,
+> > +                                int size, int *vals, int *val_len,
+> > +                                long mask)
+> > +{
+> > +       int ret;
+> > +       struct bno055_priv *priv = iio_priv(indio_dev);
+> > +
+> > +       mutex_lock(&priv->lock);
+> > +       ret = _bno055_read_raw_multi(indio_dev, chan, size,
+> > +                                    vals, val_len, mask);
+> > +       mutex_unlock(&priv->lock);
+> > +       return ret;
+> > +}
+> > +
+> > +static int _bno055_write_raw(struct iio_dev *iio_dev,
+> > +                            struct iio_chan_spec const *chan,
+> > +                            int val, int val2, long mask)
+> > +{
+> > +       struct bno055_priv *priv = iio_priv(iio_dev);
+> > +
+> > +       switch (chan->type) {
+> > +       case IIO_MAGN:
+> > +               switch (mask) {
+> > +               case IIO_CHAN_INFO_SAMP_FREQ:
+> > +                       return bno055_set_mag_odr(priv, val, val2);
+> > +
+> > +               default:
+> > +                       return -EINVAL;
+> > +               }
+> > +               break;
 >
-> BIT(14) But still magic.
+> This break looks unreachable.
 
-Why magic? there is a comment a few line above explaining this - maybe
-I can move it a couple of LOCs below. And BTW conceptually it is about
-math (2^14), it has nothing to do with BITs.
+I'll drop it.
 
-> ...
+> > +       case IIO_ACCEL:
+> > +               switch (mask) {
+> > +               case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+> > +                       return bno055_set_acc_lpf(priv, val, val2);
+> > +
+> > +               default:
+> > +                       return -EINVAL;
+> > +               }
+> > +       case IIO_ANGL_VEL:
 > > +               switch (mask) {
 > > +               case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
 > > +                       return bno055_set_gyr_lpf(priv, val, val2);
->
-> default?
-
-Ah, right.
-
 > > +               }
 >
-> ...
+> this looks like an implicit switch-case fall-through;
+> sometimes the compiler complains about these
+
+Here it doesn't, but I agree that it isn't so good-looking. I'd add
+the default also for IIO_ANGL_VEL case.
+
+> > +       default:
+> > +               return -EINVAL;
+> > +       }
+> > +
+> > +       return 0;
 >
+> This return also looks unreachable.
+
+Indeed.. I'll drop it.
+
+> > +}
+> > +
+> > +static int bno055_write_raw(struct iio_dev *iio_dev,
+> > +                           struct iio_chan_spec const *chan,
+> > +                           int val, int val2, long mask)
+> > +{
+> > +       int ret;
+> > +       struct bno055_priv *priv = iio_priv(iio_dev);
+> > +
+> > +       mutex_lock(&priv->lock);
+> > +       ret = _bno055_write_raw(iio_dev, chan, val, val2, mask);
+> > +       mutex_unlock(&priv->lock);
+> > +
+> > +       return ret;
+> > +}
+> > +
+> > +static ssize_t in_magn_sampling_frequency_available_show(struct device *dev,
+> > +                                                        struct device_attribute *attr,
+> > +                                                        char *buf)
+> > +{
 > > +       struct bno055_priv *priv = iio_priv(dev_to_iio_dev(dev));
 > > +
 > > +       return scnprintf(buf, PAGE_SIZE, "%s\n",
 > > +                        (priv->operation_mode != BNO055_OPR_MODE_AMG) ? "20" :
 > > +                        "2 6 8 10 15 20 25 30");
->
-> IIO core should do this, besides the fact that it must use sysfs_emit().
-> Ditto for the similar.
-
-Ok for sysfs_emit(), thanks. But what do you mean with "IIO core
-should do this"? Can you please elaborate?
-
-> ...
->
+> > +}
+> > +
+> > +static ssize_t in_accel_range_available_show(struct device *dev,
+> > +                                            struct device_attribute *attr,
+> > +                                            char *buf)
+> > +{
+> > +       struct bno055_priv *priv = iio_priv(dev_to_iio_dev(dev));
+> > +
+> > +       return scnprintf(buf, PAGE_SIZE, "%s\n",
+> > +                        (priv->operation_mode != BNO055_OPR_MODE_AMG) ? "4" :
+> > +                        "2 4 8 16");
+> > +}
+> > +
+> > +static ssize_t
+> > +in_accel_filter_low_pass_3db_frequency_available_show(struct device *dev,
+> > +                                                     struct device_attribute *attr,
+> > +                                                     char *buf)
+> > +{
+> > +       struct bno055_priv *priv = iio_priv(dev_to_iio_dev(dev));
+> > +
+> > +       return scnprintf(buf, PAGE_SIZE, "%s\n",
+> > +                        (priv->operation_mode != BNO055_OPR_MODE_AMG) ? "62.5" :
+> > +                        "7.81 15.63 31.25 62.5 125 250 500 1000");
+> > +}
+> > +
+> > +static ssize_t in_anglvel_range_available_show(struct device *dev,
+> > +                                              struct device_attribute *attr,
+> > +                                              char *buf)
+> > +{
+> > +       struct bno055_priv *priv = iio_priv(dev_to_iio_dev(dev));
+> > +
+> > +       return scnprintf(buf, PAGE_SIZE, "%s\n",
+> > +                        (priv->operation_mode != BNO055_OPR_MODE_AMG) ? "2000" :
+> > +                        "125 250 500 1000 2000");
+> > +}
+> > +
+> > +static ssize_t
+> > +in_anglvel_filter_low_pass_3db_frequency_available_show(struct device *dev,
+> > +                                                       struct device_attribute *attr,
+> > +                                                       char *buf)
+> > +{
+> > +       struct bno055_priv *priv = iio_priv(dev_to_iio_dev(dev));
+> > +
+> > +       return scnprintf(buf, PAGE_SIZE, "%s\n",
+> > +                        (priv->operation_mode != BNO055_OPR_MODE_AMG) ? "32" :
+> > +                         "12 23 47 32 64 116 230 523");
+> > +}
+> > +
+> > +static ssize_t bno055_operation_mode_show(struct device *dev,
+> > +                                         struct device_attribute *attr,
+> > +                                         char *buf)
+> > +{
+> > +       struct bno055_priv *priv = iio_priv(dev_to_iio_dev(dev));
+> > +
+> > +       return scnprintf(buf, PAGE_SIZE, "%s\n",
+> > +                        (priv->operation_mode == BNO055_OPR_MODE_AMG) ? "amg" :
+> > +                        (priv->operation_mode == BNO055_OPR_MODE_FUSION) ?
+> > +                        "fusion" : "fusion_fmc_off");
+> > +}
+> > +
+> > +static ssize_t bno055_operation_mode_store(struct device *dev,
+> > +                                          struct device_attribute *attr,
+> > +                                          const char *buf, size_t len)
+> > +{
+> > +       int res;
+> > +       struct bno055_priv *priv = iio_priv(dev_to_iio_dev(dev));
+> > +
 > > +       if (sysfs_streq(buf, "amg"))
 > > +               priv->operation_mode = BNO055_OPR_MODE_AMG;
 > > +       else if (sysfs_streq(buf, "fusion"))
@@ -467,46 +1135,142 @@ should do this"? Can you please elaborate?
 > > +               priv->operation_mode = BNO055_OPR_MODE_FUSION_FMC_OFF;
 > > +       else
 > > +               return -EINVAL;
->
-> Wondering if you may use sysfs_match_string().
-
-Ah, yes. I'll probably need a local array for the various
-BNO055_OPR_MODE_* and then I can index it with sysfs_match_string()
-return value.
-
-> ...
->
+> > +
+> > +       mutex_lock(&priv->lock);
+> > +       res = bno055_reg_write(priv, BNO055_OPR_MODE_REG,
+> > +                              BNO055_OPR_MODE_CONFIG);
+> > +       if (res) {
+> > +               mutex_unlock(&priv->lock);
+> > +               return res;
+> > +       }
+> > +
+> > +       res = bno055_reg_write(priv, BNO055_OPR_MODE_REG, priv->operation_mode);
+> > +       mutex_unlock(&priv->lock);
+> > +
 > > +       return res ? res : len;
->
-> ret, res, ... Be consistent!
-
-Sure; you're right
-
-> Besides that the form
->
->   return ret ?: len;
->
-> is shorter and better.
->
-
-OK
-
-> ...
->
->
+> > +}
+> > +
+> > +static ssize_t bno055_in_accel_range_show(struct device *dev,
+> > +                                         struct device_attribute *attr,
+> > +                                         char *buf)
+> > +{
+> > +       int val;
+> > +       struct bno055_priv *priv = iio_priv(dev_to_iio_dev(dev));
+> > +
+> > +       int res = bno055_get_acc_range(priv, &val, NULL);
+> > +
+> > +       if (res < 0)
+> > +               return res;
+> > +
+> > +       return scnprintf(buf, PAGE_SIZE, "%d\n", val);
+> > +}
+> > +
+> > +static ssize_t bno055_in_accel_range_store(struct device *dev,
+> > +                                          struct device_attribute *attr,
+> > +                                          const char *buf, size_t len)
+> > +{
+> > +       int ret;
+> > +       unsigned long val;
+> > +       struct bno055_priv *priv = iio_priv(dev_to_iio_dev(dev));
+> > +
+> > +       ret = kstrtoul(buf, 10, &val);
+> > +       if (ret)
+> > +               return ret;
+> > +
+> > +       mutex_lock(&priv->lock);
+> > +       ret = bno055_set_acc_range(priv, val, 0);
+> > +       mutex_unlock(&priv->lock);
+> > +
+> > +       return ret ? ret : len;
+> > +}
+> > +
+> > +static ssize_t bno055_in_gyr_range_show(struct device *dev,
+> > +                                       struct device_attribute *attr,
+> > +                                       char *buf)
+> > +{
+> > +       int val;
+> > +       struct bno055_priv *priv = iio_priv(dev_to_iio_dev(dev));
+> > +       int res = bno055_get_gyr_range(priv, &val, NULL);
+> > +
+> > +       if (res < 0)
+> > +               return res;
+> > +
+> > +       return scnprintf(buf, PAGE_SIZE, "%d\n", val);
+> > +}
+> > +
+> > +static ssize_t bno055_in_gyr_range_store(struct device *dev,
+> > +                                        struct device_attribute *attr,
+> > +                                        const char *buf, size_t len)
+> > +{
+> > +       int ret;
+> > +       unsigned long val;
+> > +       struct bno055_priv *priv = iio_priv(dev_to_iio_dev(dev));
+> > +
+> > +       ret = kstrtoul(buf, 10, &val);
+> > +       if (ret)
+> > +               return ret;
+> > +
+> > +       mutex_lock(&priv->lock);
+> > +       ret = bno055_set_gyr_range(priv, val, 0);
+> > +       mutex_unlock(&priv->lock);
+> > +
+> > +       return ret ? ret : len;
+> > +}
+> > +
+> > +static ssize_t bno055_get_calib_status(struct device *dev, char *buf, int which)
+> > +{
+> > +       int val;
+> > +       int ret;
+> > +       const char *calib_str;
 > > +       static const char * const calib_status[] = {"bad", "barely enough",
 > > +                                                  "fair", "good"};
->
-> Please use better indentation
->
->     static char ... foo[] = {
->         { a, b, c, d, }
->     };
->
-
-OK, but why nested parentheses?
-
->
+> > +       struct bno055_priv *priv = iio_priv(dev_to_iio_dev(dev));
+> > +
+> > +       if (priv->operation_mode == BNO055_OPR_MODE_AMG ||
+> > +           (priv->operation_mode == BNO055_OPR_MODE_FUSION_FMC_OFF &&
+> > +            which == BNO055_CALIB_STAT_MAGN_SHIFT)) {
+> > +               calib_str = "idle";
+> > +       } else {
+> > +               mutex_lock(&priv->lock);
+> > +               ret = bno055_reg_read(priv, BNO055_CALIB_STAT_REG, &val);
+> > +               mutex_unlock(&priv->lock);
+> > +
+> > +               if (ret)
+> > +                       return -EIO;
+> > +
+> > +               val = (val >> which) & BNO055_CALIB_STAT_MASK;
+> > +               calib_str = calib_status[val];
+> > +       }
+> > +
+> > +       return scnprintf(buf, PAGE_SIZE, "%s\n", calib_str);
+> > +}
+> > +
+> > +static ssize_t in_calibration_data_show(struct device *dev,
+> > +                                       struct device_attribute *attr,
+> > +                                       char *buf)
+> > +{
+> > +       int ret;
+> > +       int size;
+> > +       int i;
+> > +       u8 data[BNO055_CALDATA_LEN];
+> > +       struct bno055_priv *priv = iio_priv(dev_to_iio_dev(dev));
+> > +
+> > +       mutex_lock(&priv->lock);
+> > +       ret = bno055_reg_write(priv, BNO055_OPR_MODE_REG,
+> > +                              BNO055_OPR_MODE_CONFIG);
+> > +       if (ret)
+> > +               goto unlock;
+> > +
+> > +       ret = regmap_bulk_read(priv->regmap, BNO055_CALDATA_START, data,
+> > +                              BNO055_CALDATA_LEN);
+> > +       if (ret)
+> > +               goto unlock;
+> > +
+> > +       ret = bno055_reg_write(priv, BNO055_OPR_MODE_REG, priv->operation_mode);
+> > +       mutex_unlock(&priv->lock);
+> > +       if (ret)
+> > +               return ret;
+> > +
 > > +       for (size = 0, i = 0; i < BNO055_CALDATA_LEN; i++) {
 > > +               ret = scnprintf(buf + size,
 > > +                               PAGE_SIZE - size, "%02x%c", data[i],
@@ -515,157 +1279,199 @@ OK, but why nested parentheses?
 > > +                       return ret;
 > > +               size += ret;
 > > +       }
->
-> And if it's more than 4/3 kBytes (binary)?
-
-It's few bytes long (binary)
-
-> Isn't it better to use the request_firmware() interface or something similar?
-
-No: I already use request_firmware() for getting the initial
-calibration data (if any), but the IMU sometimes (re)calibrates. This
-function is for getting current IMU calibration, so we need to read it
-from registers (especially you want to get it the 1st time, in order
-to create the calibration file that request_firmware() will fetch next
-time you boot).
-
-> If IIO doesn't provide the common attributes for this it probably
-> should and it has to be a binary one.
-
-I couldn't find anything for it. I wasn't sure whether exposing
-calibration data using IIO attribute is something that other drivers
-might need to do, hence whether it could make sense to make it generic
-or not.. I wasn't even sure that an IIO attribute is the right place
-to expose it, indeed :)
-
-> ...
->
+> > +
+> > +       return size;
+> > +unlock:
+> > +       mutex_unlock(&priv->lock);
+> > +       return ret;
+> > +}
+> > +
+> > +static ssize_t in_autocalibration_status_sys_show(struct device *dev,
+> > +                                                 struct device_attribute *a,
+> > +                                                 char *buf)
+> > +{
+> > +       return bno055_get_calib_status(dev, buf, BNO055_CALIB_STAT_SYS_SHIFT);
+> > +}
+> > +
+> > +static ssize_t in_autocalibration_status_accel_show(struct device *dev,
+> > +                                                   struct device_attribute *a,
+> > +                                                   char *buf)
+> > +{
+> > +       return bno055_get_calib_status(dev, buf, BNO055_CALIB_STAT_ACCEL_SHIFT);
+> > +}
+> > +
+> > +static ssize_t in_autocalibration_status_gyro_show(struct device *dev,
+> > +                                                  struct device_attribute *a,
+> > +                                                  char *buf)
+> > +{
+> > +       return bno055_get_calib_status(dev, buf, BNO055_CALIB_STAT_GYRO_SHIFT);
+> > +}
+> > +
+> > +static ssize_t in_autocalibration_status_magn_show(struct device *dev,
+> > +                                                  struct device_attribute *a,
+> > +                                                  char *buf)
+> > +{
+> > +       return bno055_get_calib_status(dev, buf, BNO055_CALIB_STAT_MAGN_SHIFT);
+> > +}
+> > +
 > > +static IIO_DEVICE_ATTR_RO(in_magn_sampling_frequency_available,
 > > +                         0);
->
-> Definitely one line.
-
-OK
-
-> ...
->
->
+> > +
+> > +static IIO_DEVICE_ATTR(operation_mode, 0644,
+> > +                      bno055_operation_mode_show,
+> > +                      bno055_operation_mode_store, 0);
+> > +
+> > +static IIO_CONST_ATTR(operation_mode_available,
+> > +                     "amg fusion fusion_fmc_off");
+> > +
+> > +static IIO_DEVICE_ATTR(in_accel_range, 0644,
+> > +                      bno055_in_accel_range_show,
+> > +                      bno055_in_accel_range_store, 0);
+> > +
+> > +static IIO_DEVICE_ATTR_RO(in_accel_range_available, 0);
+> > +static IIO_DEVICE_ATTR_RO(in_accel_filter_low_pass_3db_frequency_available, 0);
+> > +
+> > +static IIO_DEVICE_ATTR(in_anglvel_range, 0644,
+> > +                      bno055_in_gyr_range_show,
+> > +                      bno055_in_gyr_range_store, 0);
+> > +
+> > +static IIO_DEVICE_ATTR_RO(in_anglvel_range_available, 0);
+> > +static IIO_DEVICE_ATTR_RO(in_anglvel_filter_low_pass_3db_frequency_available, 0);
+> > +
+> > +static IIO_DEVICE_ATTR_RO(in_autocalibration_status_sys, 0);
+> > +static IIO_DEVICE_ATTR_RO(in_autocalibration_status_accel, 0);
+> > +static IIO_DEVICE_ATTR_RO(in_autocalibration_status_gyro, 0);
+> > +static IIO_DEVICE_ATTR_RO(in_autocalibration_status_magn, 0);
+> > +static IIO_DEVICE_ATTR_RO(in_calibration_data, 0);
+> > +
+> > +static struct attribute *bno055_attrs[] = {
+> > +       &iio_dev_attr_in_magn_sampling_frequency_available.dev_attr.attr,
+> > +       &iio_dev_attr_in_accel_range_available.dev_attr.attr,
+> > +       &iio_dev_attr_in_accel_range.dev_attr.attr,
+> > +       &iio_dev_attr_in_accel_filter_low_pass_3db_frequency_available.dev_attr.attr,
+> > +       &iio_dev_attr_in_anglvel_range_available.dev_attr.attr,
+> > +       &iio_dev_attr_in_anglvel_range.dev_attr.attr,
+> > +       &iio_dev_attr_in_anglvel_filter_low_pass_3db_frequency_available.dev_attr.attr,
+> > +       &iio_const_attr_operation_mode_available.dev_attr.attr,
+> > +       &iio_dev_attr_operation_mode.dev_attr.attr,
+> > +       &iio_dev_attr_in_autocalibration_status_sys.dev_attr.attr,
+> > +       &iio_dev_attr_in_autocalibration_status_accel.dev_attr.attr,
 > > +       &iio_dev_attr_in_autocalibration_status_gyro.dev_attr.attr,
 > > +       &iio_dev_attr_in_autocalibration_status_magn.dev_attr.attr,
 > > +       &iio_dev_attr_in_calibration_data.dev_attr.attr,
 > > +       NULL,
->
-> No comma for terminator line.
-
-OK
-
-> ...
->
+> > +};
+> > +
+> > +static const struct attribute_group bno055_attrs_group = {
+> > +       .attrs = bno055_attrs,
+> > +};
+> > +
+> > +static const struct iio_info bno055_info = {
+> > +       .read_raw_multi = bno055_read_raw_multi,
+> > +       .write_raw = bno055_write_raw,
+> > +       .attrs = &bno055_attrs_group,
+> > +};
+> > +
 > > +/*
 > > + * Reads len samples from the HW, stores them in buf starting from buf_idx,
 > > + * and applies mask to cull (skip) unneeded samples.
 > > + * Updates buf_idx incrementing with the number of stored samples.
 > > + * Samples from HW are xferred into buf, then in-place copy on buf is
->
-> transferred
-
-OK
-
 > > + * performed in order to cull samples that need to be skipped.
 > > + * This avoids copies of the first samples until we hit the 1st sample to skip,
 > > + * and also avoids having an extra bounce buffer.
 > > + * buf must be able to contain len elements inspite of how many samples we are
->
-> in spite of
-
-OK
-
 > > + * going to cull.
 > > + */
->
-> ...
->
->
+> > +static int bno055_scan_xfer(struct bno055_priv *priv,
+> > +                           int start_ch, int len, unsigned long mask,
+> > +                           __le16 *buf, int *buf_idx)
+> > +{
+> > +       int buf_base = *buf_idx;
+> > +       const int base = BNO055_ACC_DATA_X_LSB_REG;
+> > +       int ret;
+> > +       int i, j, n;
+> > +       __le16 *dst, *src;
+> > +       bool quat_in_read = false;
+> > +       int offs_fixup = 0;
+> > +       int xfer_len = len;
+> > +
 > > +       /* All chans are made up 1 16bit sample, except for quaternion
->
-> 16-bit
-
-OK
-
->
-> Multi-line comment style. And be consistent!
-
-OK
-
 > > +        * that is made up 4 16-bit values.
 > > +        * For us the quaternion CH is just like 4 regular CHs.
 > > +        * If out read starts past the quaternion make sure to adjust the
 > > +        * starting offset; if the quaternion is contained in our scan then
 > > +        * make sure to adjust the read len.
->
-> Your lines here like a drunk person. use the space more monotonically.
-
-Do you mean: Assuming you are sticking to the old 80-cols-long lines
-(which is still do, unless in few cases), then some lines still have
-room for more words, and you could reflow the text ?
-
 > > +        */
->
-> ...
->
+> > +       if (start_ch > BNO055_SCAN_QUATERNION) {
+> > +               start_ch += 3;
+> > +       } else if ((start_ch <= BNO055_SCAN_QUATERNION) &&
+> > +                ((start_ch + len) > BNO055_SCAN_QUATERNION)) {
+> > +               quat_in_read = true;
+> > +               xfer_len += 3;
+> > +       }
+> > +
+> > +       ret = regmap_bulk_read(priv->regmap,
+> > +                              base + start_ch * sizeof(__le16),
+> > +                              buf + buf_base,
+> > +                              xfer_len * sizeof(__le16));
+> > +       if (ret)
+> > +               return ret;
+> > +
+> > +       for_each_set_bit(i, &mask, len) {
+> > +               if (quat_in_read && ((start_ch + i) > BNO055_SCAN_QUATERNION))
+> > +                       offs_fixup = 3;
+> > +
+> > +               dst = buf + *buf_idx;
+> > +               src = buf + buf_base + offs_fixup + i;
+> > +
 > > +               n = ((start_ch + i) == BNO055_SCAN_QUATERNION) ? 4 : 1;
->
-> Too many parentheses.
-
-OK
-
-> ...
->
+> > +
+> > +               if (dst != src) {
 > > +                       for (j = 0; j < n; j++)
 > > +                               dst[j] = src[j];
->
-> NIH memcpy()
-
-Right.
-
-> ...
->
+> > +               }
+> > +
+> > +               *buf_idx += n;
+> > +       }
+> > +       return 0;
+> > +}
+> > +
+> > +static irqreturn_t bno055_trigger_handler(int irq, void *p)
+> > +{
+> > +       struct iio_poll_func *pf = p;
+> > +       struct iio_dev *iio_dev = pf->indio_dev;
+> > +       struct bno055_priv *priv = iio_priv(iio_dev);
+> > +       struct {
 > > +               __le16 chans[(BNO055_GRAVITY_DATA_Z_LSB_REG -
 > > +                             BNO055_ACC_DATA_X_LSB_REG) / 2];
->
-> Can you define separately what's inside square brackets?
-
-OK
-
-> ...
->
+> > +               s64 timestamp __aligned(8);
+> > +       } buf;
+> > +       bool thr_hit;
+> > +       int quat;
+> > +       int ret;
+> > +       int start, end, xfer_start, next = 0;
+> > +       int buf_idx = 0;
+> > +       bool finish = false;
+> > +       unsigned long mask;
+> > +
+> > +       /* we have less than 32 chs, all masks fit in an ulong */
+> > +       start = find_first_bit(iio_dev->active_scan_mask, iio_dev->masklength);
+> > +       xfer_start = start;
+> > +       if (start == iio_dev->masklength)
+> > +               goto done;
+> > +
+> > +       mutex_lock(&priv->lock);
 > > +       while (!finish) {
 > > +               end = find_next_zero_bit(iio_dev->active_scan_mask,
 > > +                                        iio_dev->masklength, start);
 > > +               if (end == iio_dev->masklength) {
 > > +                       finish = true;
->
-> NIH for_each_clear_bit().
-
-Not sure it is convenient to use for_each_clear_bit(): Here we're
-searching for contiguous blocks of set-bits, and we only want indexes
-of first and last set-bit in a block; alternate calls to
-find_next_zero_bit() and find_next_bit() seem appropriate here to me.
-
-Do you have in mind a better/simpler implementation using or_each_clear_bit() ?
-
-
 > > +               } else {
 > > +                       next = find_next_bit(iio_dev->active_scan_mask,
 > > +                                            iio_dev->masklength, end);
 > > +                       if (next == iio_dev->masklength) {
 > > +                               finish = true;
->
-> Ditto.
-
-see above.
-
->
 > > +                       } else {
 > > +                               quat = ((next > BNO055_SCAN_QUATERNION) &&
 > > +                                       (end <= BNO055_SCAN_QUATERNION)) ? 3 : 0;
@@ -685,115 +1491,151 @@ see above.
 > > +               }
 > > +               start = next;
 > > +       }
->
-> ...
->
+> > +       iio_push_to_buffers_with_timestamp(iio_dev, &buf, pf->timestamp);
+> > +done:
+> > +       mutex_unlock(&priv->lock);
+> > +       iio_trigger_notify_done(iio_dev->trig);
+> > +       return IRQ_HANDLED;
+> > +}
+> > +
+> > +int bno055_probe(struct device *dev, struct regmap *regmap, int irq,
+> > +                int xfer_burst_break_thr)
+> > +{
+> > +       int ver, rev;
+> > +       int res;
+> > +       unsigned int val;
+> > +       struct gpio_desc *rst;
+> > +       struct iio_dev *iio_dev;
+> > +       struct bno055_priv *priv;
 > > +       /* base name + separator + UID + ext + zero */
 > > +       char fw_name_buf[sizeof(BNO055_FW_NAME BNO055_FW_EXT) +
 > > +                        BNO055_UID_LEN * 2 + 1 + 1];
->
-> Perhaps devm_kasprintf()?
-
-Wouldn't this keep the buffer allocated until the device is removed?
-We just need this buffer while probing.
-
-> ...
->
+> > +       const struct firmware *caldata;
+> > +
+> > +       iio_dev = devm_iio_device_alloc(dev, sizeof(*priv));
+> > +       if (!iio_dev)
+> > +               return -ENOMEM;
+> > +
+> > +       iio_dev->name = "bno055";
+> > +       priv = iio_priv(iio_dev);
 > > +       memset(priv, 0, sizeof(*priv));
->
-> Why?!
-
-IIRC a leftover from a time in which nothing worked and I was doubting
-about priv being really zeroed at allocation time. Will remove..
-
-> ...
->
+> > +       mutex_init(&priv->lock);
+> > +       priv->regmap = regmap;
+> > +       priv->dev = dev;
+> > +       priv->xfer_burst_break_thr = xfer_burst_break_thr;
+> > +       rst = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
 > > +       if (IS_ERR(rst) && (PTR_ERR(rst) != -EPROBE_DEFER)) {
 > > +               dev_err(dev, "Failed to get reset GPIO");
 > > +               return PTR_ERR(rst);
 > > +       }
->
->   if (IS_ERR(...))
->     return dev_err_probe(...);
-
-Sure; I never saw this before, but it looks good.
-
-> ...
->
+> > +
+> > +       priv->clk = devm_clk_get_optional(dev, "clk");
 > > +       if (IS_ERR(priv->clk) && (PTR_ERR(priv->clk) != -EPROBE_DEFER)) {
 > > +               dev_err(dev, "Failed to get CLK");
 > > +               return PTR_ERR(priv->clk);
 > > +       }
->
-> Ditto.
-
-Sure
-
-> ...
->
+> > +
 > > +       clk_prepare_enable(priv->clk);
->
-> Missed clk_disabled_unprepare() from all below error paths.
-> Use devm_add_action_or_reset() approach.
-
-I indeed use devm_add_action_or_reset(), and clock is disabled and
-unprepared in its action callback (but snooping in Alexandru's
-comments in next mail I see there is still something to be addressed
-about this).
-
-> ...
->
+> > +
+> > +       if (rst) {
+> > +               usleep_range(5000, 10000);
+> > +               gpiod_set_value_cansleep(rst, 0);
+> > +               usleep_range(650000, 750000);
+> > +       }
+> > +
+> > +       res = devm_add_action_or_reset(dev, bno055_uninit, priv);
+> > +       if (res)
+> > +               return res;
+> > +
+> > +       res = bno055_reg_read(priv, BNO055_CHIP_ID_REG, &val);
+> > +       if (res)
+> > +               return res;
+> > +
+> > +       if (val != BNO055_CHIP_ID_MAGIC) {
+> > +               dev_err(dev, "Unrecognized chip ID 0x%x", val);
+> > +               return -ENODEV;
+> > +       }
 > > +       dev_dbg(dev, "Found BMO055 chip");
->
-> Useless noise and LOC.
-
-Will drop it.
-
-> ...
->
+> > +
+> > +       res = regmap_bulk_read(priv->regmap, BNO055_UID_REG,
+> > +                              priv->uid, BNO055_UID_LEN);
+> > +       if (res)
+> > +               return res;
+> > +
 > > +       dev_info(dev, "unique ID: %*ph", BNO055_UID_LEN, priv->uid);
->
-> Can it be printed somewhere together with firmware revision?
-
-Yes, I can group those two prints.
-
-> ...
->
+> > +
+> > +       /*
+> > +        * This has nothing to do with the IMU firmware, this is for sensor
+> > +        * calibration data.
+> > +        */
 > > +       sprintf(fw_name_buf, BNO055_FW_NAME "-%*phN" BNO055_FW_EXT,
->
-> Simply define a format string as FW_FMT somewhere above and use it here.
-
-OK (but BNO055_FW_NAME and BNO055_FW_EXT contribute to build up two
-different strings, so they will not go away, rather they will be used
-in both FW_FMT and the other one definitions)
-
 > > +               BNO055_UID_LEN, priv->uid);
->
-> ...
->
+> > +       res = request_firmware(&caldata, fw_name_buf, dev);
+> > +       if (res)
+> > +               res = request_firmware(&caldata,
+> > +                                      BNO055_FW_NAME BNO055_FW_EXT, dev);
+> > +
+> > +       if (res) {
 > > +               dev_notice(dev, "Failed to load calibration data firmware file; this has nothing to do with IMU main firmware.");
 > > +               dev_notice(dev, "You can calibrate your IMU (look for 'in_autocalibration_status*' files in sysfs) and then copy 'in_calibration_data' to your firmware file");
->
-> '\n' exists on purpose.
-
-Ah, I initially did that, but IIRC I saw a bad-looking indentation or
-something like that in my kernel log while using "\n".. Then I just
-forgot about this.. I'll try again with "\n"..
-
-> ...
->
+> > +               caldata = NULL;
+> > +       }
+> > +
+> > +       res = bno055_init(priv, caldata);
+> > +       if (res)
+> > +               return res;
+> > +
+> > +       if (caldata)
+> > +               release_firmware(caldata);
+> > +
+> > +       res = regmap_read(priv->regmap,
+> > +                         BNO055_SW_REV_LSB_REG, &rev);
+> > +       if (res)
+> > +               return res;
+> > +
+> > +       res = regmap_read(priv->regmap,
+> > +                         BNO055_SW_REV_MSB_REG, &ver);
+> > +       if (res)
+> > +               return res;
+> > +
+> > +       dev_info(dev, "Firmware version %x.%x", ver, rev);
+> > +
+> > +       iio_dev->channels = bno055_channels;
+> > +       iio_dev->num_channels = ARRAY_SIZE(bno055_channels);
+> > +       iio_dev->info = &bno055_info;
+> > +       iio_dev->modes = INDIO_DIRECT_MODE;
+> > +
+> > +       res = devm_iio_triggered_buffer_setup(dev, iio_dev,
+> > +                                             iio_pollfunc_store_time,
+> > +                                             bno055_trigger_handler, NULL);
+> > +       if (res)
+> > +               return res;
+> > +
+> > +       return devm_iio_device_register(dev, iio_dev);
+> > +}
+> > +EXPORT_SYMBOL_GPL(bno055_probe);
+> > +
+> > +MODULE_AUTHOR("Andrea Merello <andrea.merello@iit.it>");
+> > +MODULE_DESCRIPTION("Bosch BNO055 driver");
+> > +MODULE_LICENSE("GPL v2");
+> > diff --git a/drivers/iio/imu/bno055/bno055.h b/drivers/iio/imu/bno055/bno055.h
+> > new file mode 100644
+> > index 000000000000..163ab8068e7c
+> > --- /dev/null
+> > +++ b/drivers/iio/imu/bno055/bno055.h
+> > @@ -0,0 +1,12 @@
+> > +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> > +#ifndef __BNO055_H__
+> > +#define __BNO055_H__
+> > +
 > > +#include <linux/device.h>
->
-> No user of this.
-
-Will drop this
-
 > > +#include <linux/regmap.h>
 > > +
 > > +int bno055_probe(struct device *dev, struct regmap *regmap, int irq,
 > > +                int xfer_burst_break_thr);
 > > +extern const struct regmap_config bno055_regmap_config;
->
-> --
-> With Best Regards,
-> Andy Shevchenko
+> > +
+> > +#endif
+> > --
+> > 2.17.1
+> >

@@ -2,339 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5873D3CB76E
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Jul 2021 14:39:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6C613CB926
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Jul 2021 16:54:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232554AbhGPMmQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 16 Jul 2021 08:42:16 -0400
-Received: from mga18.intel.com ([134.134.136.126]:52873 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238678AbhGPMmQ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 16 Jul 2021 08:42:16 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10046"; a="197987569"
-X-IronPort-AV: E=Sophos;i="5.84,244,1620716400"; 
-   d="scan'208";a="197987569"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2021 05:39:17 -0700
-X-IronPort-AV: E=Sophos;i="5.84,244,1620716400"; 
-   d="scan'208";a="573653461"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2021 05:39:15 -0700
-Received: from andy by smile with local (Exim 4.94.2)
-        (envelope-from <andy.shevchenko@gmail.com>)
-        id 1m4N7U-00EE5o-Ug; Fri, 16 Jul 2021 15:39:08 +0300
-Date:   Fri, 16 Jul 2021 15:39:08 +0300
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-To:     Andrea Merello <andrea.merello@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-iio@vger.kernel.org, Andrea Merello <andrea.merello@iit.it>
-Subject: Re: [PATCH 2/4] iio: imu: add Bosch Sensortec BNO055 core driver
-Message-ID: <YPF97IvnlUDtIHar@smile.fi.intel.com>
-References: <20210715141742.15072-1-andrea.merello@gmail.com>
- <20210715141742.15072-3-andrea.merello@gmail.com>
- <CAHp75Vf_Og2wjRy2j0gC37DgR0x9B_F5iSUj8VOtWkhWjgiOag@mail.gmail.com>
- <CAN8YU5NKGLO6a4wqaW07NAU-OdsdBohoXzMCBcskaFsCRtrGhw@mail.gmail.com>
+        id S240625AbhGPO45 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 16 Jul 2021 10:56:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48042 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240459AbhGPO44 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Jul 2021 10:56:56 -0400
+Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C2E5C06175F;
+        Fri, 16 Jul 2021 07:54:02 -0700 (PDT)
+Received: by mail-pg1-x535.google.com with SMTP id o4so5577736pgs.6;
+        Fri, 16 Jul 2021 07:54:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=cDFHDauT3RJ9MLsKNJdQMhfJiWSb2KAxAbOMS927HhU=;
+        b=KpBBrYJ3ymii565DyMrXFfKsQTCqKhgJ+ot1+aN4qxdxBK1RgZcyUNeEKf5HYAq/gM
+         7ckGW5Le4rwCAqb9JS/DyU3laIhdKGc8RpRopxtxsEx1QRr3Q60nKFyRmtBKZJzuOsK7
+         ZZ/EBmSEdAo9YiXW33WGXCJWp83mN/BCwOZsHK9E0ZIwIXTu+XpymmS8+6tkpwmGn3SR
+         /Rk4gCDCHw4hdQdTZCF4KXc9JfzUPEpdH7u5YzGlYocJ3Jmx1B5466LEmMl1UTgLqRWK
+         s3J2Z16zq4PqMAPv5aOjj7cpGfsog+c5BHrZWUihbAk8Ai37KdJ6ZAfysU5AkWCbQCSc
+         5HVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=cDFHDauT3RJ9MLsKNJdQMhfJiWSb2KAxAbOMS927HhU=;
+        b=mxmMu4OyymU4hE0NOaEXh6YqmVBt8+y2hFcqucxBMD6KT4nNrpUGXWpJjYtHlmZ0BP
+         2j6Lhegrtzr+nP4jAmvPQxVPDUr7d8SzY6rto9NZ/FDPlKLsXM+LtwVJ4e++ju7FLO7d
+         vRCWeIYenQvmjQwG3OUMA/KDwMAU9txIarijXs91/QRKIth9rKwHI6AbwL0xM/SzfwXy
+         /IVwWpNTLf1qC83KhjeNU3oOPMqgLYMw8sUWxyJCUrE+xIb/zJ4tqOcS8ErH9pzwnpJZ
+         yOoMpP6eBVAnOdnt5BevLQTc/IIB5pw+6dHSGM5/nqX0BRfcUJwq7y2sDvSFkXRUjqjF
+         EuNw==
+X-Gm-Message-State: AOAM530HOpiiV6+0n5wA/OYPysGxsaJVrBuZ8ArrRZPT9YS26OcINrJu
+        sRIqnnuKZ0CWHu4KCQEXBFyJ/fvj/ClIZnFveUo=
+X-Google-Smtp-Source: ABdhPJwrnQLDM3CmbO7oL7frLjtutRJ3EBFjW/GxP0M9L+KriSV2r931SlxV2mYrZkeBvx+vwLNZJ/TaszKF41ugmNs=
+X-Received: by 2002:a65:434a:: with SMTP id k10mr10456163pgq.4.1626447241433;
+ Fri, 16 Jul 2021 07:54:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAN8YU5NKGLO6a4wqaW07NAU-OdsdBohoXzMCBcskaFsCRtrGhw@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20210716114210.141560-1-antoniu.miclaus@analog.com>
+In-Reply-To: <20210716114210.141560-1-antoniu.miclaus@analog.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 16 Jul 2021 17:53:22 +0300
+Message-ID: <CAHp75VcNhJrp4YGZQu1ZB2J4ARtuT2T2p-72H1qn4F+KtZDVoQ@mail.gmail.com>
+Subject: Re: [PATCH v6 1/2] iio: frequency: adrf6780: add support for ADRF6780
+To:     Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        jic23@kernel.org, devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jul 16, 2021 at 11:19:31AM +0200, Andrea Merello wrote:
-> Il giorno gio 15 lug 2021 alle ore 18:50 Andy Shevchenko
-> <andy.shevchenko@gmail.com> ha scritto:
-> > On Thu, Jul 15, 2021 at 5:21 PM Andrea Merello <andrea.merello@gmail.com> wrote:
+On Fri, Jul 16, 2021 at 2:43 PM Antoniu Miclaus
+<antoniu.miclaus@analog.com> wrote:
+>
+> The ADRF6780 is a silicon germanium (SiGe) design, wideband,
+> microwave upconverter optimized for point to point microwave
+> radio designs operating in the 5.9 GHz to 23.6 GHz frequency
+> range.
+
+> Datasheet:
+> https://www.analog.com/media/en/technical-documentation/data-sheets/ADRF6780.pdf
+
+Is it one line? If not, please put on one line and drop below the
+blank line so it will go as a tag.
+
+>
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+
+First question is why not to use the regmap API (I have heard it has
+gained support of 17 bit)?
 
 ...
 
-> > > Cc: linux-kernel@vger.kernel.org
-> > > Cc: linux-iio@vger.kernel.org
-> >
-> > Instead of polluting commit messages with this, use --to and --cc
-> > parameters. You may utilize my script [1] which finds automatically to
-> > whom to send (of course it allows manually to add more).
-> >
-> > [1]: https://github.com/andy-shev/home-bin-tools/blob/master/ge2maintainer.sh
-> 
-> I thought it was a good & widespread practice, sorry. Will drop from
-> future series respin.
+> +        depends on COMMON_CLK
 
-It's good to notify people who either maintainer or involved enough. Putting
-mailing lists into Cc explicitly is not good practice.
+Is it mandatory for any function inside the device?
 
 ...
 
-> > > +#define BNO055_UNIT_SEL_ANDROID BIT(7)
-> >
-> > Android? What does this mean?
-> 
-> Sensors support the so-called "Android" and "Windows" modes. They
-> differs about pitch direction (CW vs CCW). I'd like to stick close to
-> the datasheet names, but I can add a comment here.
+> +static int adrf6780_spi_read(struct adrf6780_dev *dev, unsigned int reg,
+> +                             unsigned int *val)
+> +{
+> +       int ret;
+> +       struct spi_transfer t = {0};
 
-Keeping as in the data sheet is okay, but since it's very confusing naming,
-the comment in the is a must.
+> +       dev->data[0] = 0x80 | (reg << 1);
 
-...
+This 0x80 I guess is pretty much standard and regmap SPI supports it.
 
-> > Useless parentheses. If the LEN is a plain number, use decimal, if
-> > it's limited by register width, use the form of (BIT(x) - 1). In such
-> > a case it's easy to see how many bits are used for it.
-> 
-> It's byte number, defined by how many 8-bits registers make up the
-> UID. I'll go for a decimal and I'll drop the parentheses.
-
-15 seems the right one then?
-
-...
-
-> > > +       int i;
-> > > +       int best_idx, best_delta, delta;
-> > > +       int first = 1;
-> >
-> > Use reversed xmas tree order.
-> 
-> Looks like the kernel code is plenty of declarations in random order,
-> neither I can find any clue about this in coding-style.rst. Where does
-> this come from?
-
-Easier to read. Just from practice and wishes of several maintainers.
-
-> If that's mandatory then I'll do. If that's about a mere preference,
-> then I honestly prefer to put all declaration-plus-initialization
-> after all declarations-olny (but I can use reversed xmas tree order
-> inside each block, if you want).
-
-I'm not a maintainer here, but for the record I do not like this style at all.
+> +       dev->data[1] = 0x0;
+> +       dev->data[2] = 0x0;
+> +
+> +       t.rx_buf = &dev->data[0];
+> +       t.tx_buf = &dev->data[0];
+> +       t.len = 3;
+> +
+> +       ret = spi_sync_transfer(dev->spi, &t, 1);
+> +       if (ret)
+> +               return ret;
+> +
+> +       *val = (get_unaligned_be24(&dev->data[0]) >> 1) & GENMASK(15, 0);
+> +
+> +       return ret;
+> +}
 
 ...
 
-> > > +       if ((reg >= 0x8 && reg <= 0x3A) ||
-> >
-> > Use names instead of values here and in similar places elsewhere.
-> 
-> When I wrote this, I was actually unsure about which is best :) Do you
-> have a strong opinion on this?
-> 
-> My point:
-> Most of this is just about register areas, which are bounded by
-> addresses - register meaning is of no interest here. Using numerical
-> addresses here IMO is a little advantageous because it is at least
-> clear which is the greatest number, and it is less prone to swapping
-> by mistake start/end registers vrt greater-than/lesser-than comparison
-> operators.
-> 
-> It's still true that when comparing address against a specific
-> register address (e.g. reg == BNO055_MAG_CONFIG_REG) there is no
-> advantage in using numerical addresses, and it can be better to use
-> names (because e.g. you simply know that specific register is
-> volatile).
+> +       usleep_range(200, 250);
 
-Try your best here. Magic numbers in general are not good.
-
-...
-
-> > > +           /* when in fusion mode, config is updated by chip */
-> > > +           reg == BNO055_MAG_CONFIG_REG ||
-> > > +           reg == BNO055_ACC_CONFIG_REG ||
-> > > +           reg == BNO055_GYR_CONFIG_REG ||
-> > > +           (reg >= BNO055_CALDATA_START && reg <= BNO055_CALDATA_END))
-> >
-> > Please, split this to 3 or more conditionals that are easier to read
-> > (logically separated).
-> > Same comment to the rest of the similar functions.
-> 
-> Do you mean splitting into separate if statements? OK.
-
-Yes. Several if:s.
-
-...
-
-> > > +       if (res && res != -ERESTARTSYS) {
-> >
-> > Shouldn't RESTARTSYS be handled on a regmap level?
-> 
-> Can you please elaborate on this?
-
-I meant if you need to take care about this it seems to me that it has to be
-thought of on regmap level. I.o.w. what is the rationale behind this additional
-check?
-
-...
-
-> > Sounds like NIH hex2bin().
-> 
-> Indeed.. I've failed to find out this helper. Looking at the code it
-> seems it wouldn't work as drop-in replacement here, because of spaces
-> in the HEX string. But I might just decide to format the HEX string
-> without spaces in order to being able to use hex2bin().
-
-I'm not even sure why it's in ASCII instead being directly binary file.
-
-...
-
-> > > +               for (i = 0; i < 4; i++)
-> > > +                       vals[i] = (s16)le16_to_cpu(raw_vals[i]);
-> >
-> > Extract this to be a helper like there are for u32 and u64.
-> 
-> Could you please point me to those helpers? I don't know what you are
-> referring to.
-
-Read include/linux/byteorder/generic.h to the end.
-
-...
-
-> > > +               vals[1] = 1 << 14;
-> >
-> > BIT(14) But still magic.
-> 
-> Why magic? there is a comment a few line above explaining this - maybe
-> I can move it a couple of LOCs below. And BTW conceptually it is about
-> math (2^14), it has nothing to do with BITs.
-
-I see. Up to you then.
-
-...
-
-> > IIO core should do this, besides the fact that it must use sysfs_emit().
-> > Ditto for the similar.
-> 
-> Ok for sysfs_emit(), thanks. But what do you mean with "IIO core
-> should do this"? Can you please elaborate?
-
-I believe that IIO has a generic method to print tables via sysfs. AFAIR it is
-done via "_avail".
-
-...
-
-> > > +       static const char * const calib_status[] = {"bad", "barely enough",
-> > > +                                                  "fair", "good"};
-> >
-> > Please use better indentation
-> >
-> >     static char ... foo[] = {
-> >         { a, b, c, d, }
-> >     };
-> 
-> OK, but why nested parentheses?
-
-In this case is not needed, just typed as more often seen pattern :)
-
-...
-
-> > Isn't it better to use the request_firmware() interface or something similar?
-> 
-> No: I already use request_firmware() for getting the initial
-> calibration data (if any), but the IMU sometimes (re)calibrates. This
-> function is for getting current IMU calibration, so we need to read it
-> from registers (especially you want to get it the 1st time, in order
-> to create the calibration file that request_firmware() will fetch next
-> time you boot).
-> 
-> > If IIO doesn't provide the common attributes for this it probably
-> > should and it has to be a binary one.
-> 
-> I couldn't find anything for it. I wasn't sure whether exposing
-> calibration data using IIO attribute is something that other drivers
-> might need to do, hence whether it could make sense to make it generic
-> or not.. I wasn't even sure that an IIO attribute is the right place
-> to expose it, indeed :)
-
-Okay, this is for maintainers to decide.
-
-...
-
-> > > +        * that is made up 4 16-bit values.
-> > > +        * For us the quaternion CH is just like 4 regular CHs.
-> > > +        * If out read starts past the quaternion make sure to adjust the
-> > > +        * starting offset; if the quaternion is contained in our scan then
-> > > +        * make sure to adjust the read len.
-> >
-> > Your lines here like a drunk person. use the space more monotonically.
-> 
-> Do you mean: Assuming you are sticking to the old 80-cols-long lines
-> (which is still do, unless in few cases), then some lines still have
-> room for more words, and you could reflow the text ?
-
-Yes.
-
-...
-
-> > > +       while (!finish) {
-> > > +               end = find_next_zero_bit(iio_dev->active_scan_mask,
-> > > +                                        iio_dev->masklength, start);
-> > > +               if (end == iio_dev->masklength) {
-> > > +                       finish = true;
-> >
-> > NIH for_each_clear_bit().
-> 
-> Not sure it is convenient to use for_each_clear_bit(): Here we're
-> searching for contiguous blocks of set-bits, and we only want indexes
-> of first and last set-bit in a block; alternate calls to
-> find_next_zero_bit() and find_next_bit() seem appropriate here to me.
-> 
-> Do you have in mind a better/simpler implementation using or_each_clear_bit() ?
-
-bitmap_find_next_zero_area(buf, len, pos, n, mask)	Find bit free area
-bitmap_find_next_zero_area_off(buf, len, pos, n, mask, mask_off)
-bitmap_next_clear_region(map, &start, &end, nbits)	Find next clear region
-bitmap_next_set_region(map, &start, &end, nbits)	Find next set region
-bitmap_for_each_clear_region(map, rs, re, start, end)	Iterate over all clear regions
-bitmap_for_each_set_region(map, rs, re, start, end)
-
-...
-
-> > > +       /* base name + separator + UID + ext + zero */
-> > > +       char fw_name_buf[sizeof(BNO055_FW_NAME BNO055_FW_EXT) +
-> > > +                        BNO055_UID_LEN * 2 + 1 + 1];
-> >
-> > Perhaps devm_kasprintf()?
-> 
-> Wouldn't this keep the buffer allocated until the device is removed?
-> We just need this buffer while probing.
-
-You free to call devm_kfree() when appropriate.
-
-...
-
-> > > +       sprintf(fw_name_buf, BNO055_FW_NAME "-%*phN" BNO055_FW_EXT,
-> >
-> > Simply define a format string as FW_FMT somewhere above and use it here.
-> 
-> OK (but BNO055_FW_NAME and BNO055_FW_EXT contribute to build up two
-> different strings, so they will not go away, rather they will be used
-> in both FW_FMT and the other one definitions)
-
-#define _FW_FMT \
-	_FW_NAME "..." _FW_EXT
-
-?
-
-> > > +               BNO055_UID_LEN, priv->uid);
-
-...
-
-> > > +#include <linux/device.h>
-> >
-> > No user of this.
-> 
-> Will drop this
-
-I think you will need to replace it with a forward declaration.
-
-> > > +int bno055_probe(struct device *dev, struct regmap *regmap, int irq,
-> > > +                int xfer_burst_break_thr);
+Needs a comment.
 
 -- 
 With Best Regards,
 Andy Shevchenko
-
-

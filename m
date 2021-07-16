@@ -2,122 +2,235 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B6C613CB926
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Jul 2021 16:54:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8C9D3CBA0D
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Jul 2021 17:45:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240625AbhGPO45 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 16 Jul 2021 10:56:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48042 "EHLO
+        id S233725AbhGPPsi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 16 Jul 2021 11:48:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240459AbhGPO44 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Jul 2021 10:56:56 -0400
-Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C2E5C06175F;
-        Fri, 16 Jul 2021 07:54:02 -0700 (PDT)
-Received: by mail-pg1-x535.google.com with SMTP id o4so5577736pgs.6;
-        Fri, 16 Jul 2021 07:54:02 -0700 (PDT)
+        with ESMTP id S233204AbhGPPsh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Jul 2021 11:48:37 -0400
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F340AC06175F;
+        Fri, 16 Jul 2021 08:45:41 -0700 (PDT)
+Received: by mail-yb1-xb2f.google.com with SMTP id v189so15548518ybg.3;
+        Fri, 16 Jul 2021 08:45:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=cDFHDauT3RJ9MLsKNJdQMhfJiWSb2KAxAbOMS927HhU=;
-        b=KpBBrYJ3ymii565DyMrXFfKsQTCqKhgJ+ot1+aN4qxdxBK1RgZcyUNeEKf5HYAq/gM
-         7ckGW5Le4rwCAqb9JS/DyU3laIhdKGc8RpRopxtxsEx1QRr3Q60nKFyRmtBKZJzuOsK7
-         ZZ/EBmSEdAo9YiXW33WGXCJWp83mN/BCwOZsHK9E0ZIwIXTu+XpymmS8+6tkpwmGn3SR
-         /Rk4gCDCHw4hdQdTZCF4KXc9JfzUPEpdH7u5YzGlYocJ3Jmx1B5466LEmMl1UTgLqRWK
-         s3J2Z16zq4PqMAPv5aOjj7cpGfsog+c5BHrZWUihbAk8Ai37KdJ6ZAfysU5AkWCbQCSc
-         5HVQ==
+        bh=TmGtfXcEfmcsiInayOUzlaiGBIdzTctRIERqciUlYfQ=;
+        b=UYcObK6xebXx84OK9OBDF+mSaXR0uEj7xkWvn/A2OdPkTN9rvA46hyJuUXmKajH2P2
+         uCPT5QmgXQmctAJZcYefcni/UK0ygJzUFdbNjDl4UDll7tyrJTyk7xBP4ZrgyWEeIk0p
+         Yc6IYrT1EQFmXyVLPMnO1IFdptb/9x9VqtQmHjMTjLRYdRiCJTKAWKXrPSx6TsJOVtmW
+         969cykFUf33yVYzxehT+9wtOeHqcb517N/Au/66SZfrl3lb+mmylkDqzlgCBpGoSUBuH
+         O06XzApUdzrwl/ahV7lO3IPw74A1qlXn8UYX63GbkyavCanuj0I5A/FfS0hyuSMQKFG/
+         +YOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=cDFHDauT3RJ9MLsKNJdQMhfJiWSb2KAxAbOMS927HhU=;
-        b=mxmMu4OyymU4hE0NOaEXh6YqmVBt8+y2hFcqucxBMD6KT4nNrpUGXWpJjYtHlmZ0BP
-         2j6Lhegrtzr+nP4jAmvPQxVPDUr7d8SzY6rto9NZ/FDPlKLsXM+LtwVJ4e++ju7FLO7d
-         vRCWeIYenQvmjQwG3OUMA/KDwMAU9txIarijXs91/QRKIth9rKwHI6AbwL0xM/SzfwXy
-         /IVwWpNTLf1qC83KhjeNU3oOPMqgLYMw8sUWxyJCUrE+xIb/zJ4tqOcS8ErH9pzwnpJZ
-         yOoMpP6eBVAnOdnt5BevLQTc/IIB5pw+6dHSGM5/nqX0BRfcUJwq7y2sDvSFkXRUjqjF
-         EuNw==
-X-Gm-Message-State: AOAM530HOpiiV6+0n5wA/OYPysGxsaJVrBuZ8ArrRZPT9YS26OcINrJu
-        sRIqnnuKZ0CWHu4KCQEXBFyJ/fvj/ClIZnFveUo=
-X-Google-Smtp-Source: ABdhPJwrnQLDM3CmbO7oL7frLjtutRJ3EBFjW/GxP0M9L+KriSV2r931SlxV2mYrZkeBvx+vwLNZJ/TaszKF41ugmNs=
-X-Received: by 2002:a65:434a:: with SMTP id k10mr10456163pgq.4.1626447241433;
- Fri, 16 Jul 2021 07:54:01 -0700 (PDT)
+        bh=TmGtfXcEfmcsiInayOUzlaiGBIdzTctRIERqciUlYfQ=;
+        b=ffqPJTDzG8feIgKjHdqjUsSOjGJ6/pv/iTv31p7qpNNqhxgv8mgYe2PgxQuHO/cFeR
+         c/iwdnUG8ZSwqfVzUc7Qrm4XiO80qKvV4uuxqiXIgAOONHzebwPVvg+18Qk3nu/zAeDg
+         vwmp+IPxTK8+H/SV4sho2+scbC2UZZr4kDzvHDFqYqbgGfBC0siFOqp4hMzM4N8Z7e2P
+         RInKkI+OtnbvMw7vB53CgyZppM1zHM/NEONahXJIMfteNtRsWB6cLhDoGMkzaPZDtP9o
+         G+mq3ZeC7Nb71HFeTKm/zLAJ5wxWTdAOA3Qo0LNqrBTFYGkXpg2Ng1LYZ1vm09azvPev
+         wLFA==
+X-Gm-Message-State: AOAM533rwMSw60X+HrHiEHQHI+KOQ8QcrpfVhnfZEMwqywMdGy0n4cHo
+        JMGi1y0piJB7Qu2f4YtOrAUewdRyVVureiQ4j7s=
+X-Google-Smtp-Source: ABdhPJzyn+hl0ew3lgHkxm3zSEBg9oc36NeD+Kvi8UXGU3WZM9dFhT2w2do1eHSIqBugU5+hKZR5C9DfxJAfOZ8aSxc=
+X-Received: by 2002:a5b:94d:: with SMTP id x13mr12700690ybq.47.1626450341186;
+ Fri, 16 Jul 2021 08:45:41 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210716114210.141560-1-antoniu.miclaus@analog.com>
-In-Reply-To: <20210716114210.141560-1-antoniu.miclaus@analog.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 16 Jul 2021 17:53:22 +0300
-Message-ID: <CAHp75VcNhJrp4YGZQu1ZB2J4ARtuT2T2p-72H1qn4F+KtZDVoQ@mail.gmail.com>
-Subject: Re: [PATCH v6 1/2] iio: frequency: adrf6780: add support for ADRF6780
-To:     Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        jic23@kernel.org, devicetree@vger.kernel.org
+References: <20210629220328.13366-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <20210629220328.13366-2-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <20210703181937.510ec0fa@jic23-huawei> <CA+V-a8uzeepfd+8Wfd2n2EXeXQ9QJZhR+X8j29Y7DGNu8+aH+g@mail.gmail.com>
+ <20210714133913.000075a6@Huawei.com> <CA+V-a8spDa5PiGzp6-4mHTEMfQYJ5NnQ44vwgdtu_sfVG5OO5Q@mail.gmail.com>
+ <20210715140232.0000408c@Huawei.com>
+In-Reply-To: <20210715140232.0000408c@Huawei.com>
+From:   "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
+Date:   Fri, 16 Jul 2021 16:45:14 +0100
+Message-ID: <CA+V-a8s8MGg1k0-v_3iMi-uCq4JO=j2bUTeQQ4T1qwaYz2VrAw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: Add binding documentation for
+ Renesas RZ/G2L A/D converter
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Rob Herring <robh+dt@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jul 16, 2021 at 2:43 PM Antoniu Miclaus
-<antoniu.miclaus@analog.com> wrote:
+Hi Jonathan,
+
+On Thu, Jul 15, 2021 at 2:02 PM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
 >
-> The ADRF6780 is a silicon germanium (SiGe) design, wideband,
-> microwave upconverter optimized for point to point microwave
-> radio designs operating in the 5.9 GHz to 23.6 GHz frequency
-> range.
-
-> Datasheet:
-> https://www.analog.com/media/en/technical-documentation/data-sheets/ADRF6780.pdf
-
-Is it one line? If not, please put on one line and drop below the
-blank line so it will go as a tag.
-
+> On Wed, 14 Jul 2021 19:24:27 +0100
+> "Lad, Prabhakar" <prabhakar.csengg@gmail.com> wrote:
 >
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> > Hi Jonathan,
+> >
+> > On Wed, Jul 14, 2021 at 1:39 PM Jonathan Cameron
+> > <Jonathan.Cameron@huawei.com> wrote:
+> > >
+> > > On Wed, 14 Jul 2021 10:11:49 +0100
+> > > "Lad, Prabhakar" <prabhakar.csengg@gmail.com> wrote:
+> > >
+> > > > Hi Jonathan,
+> > > >
+> > > > Thank you for the review.
+> > > >
+> > > > On Sat, Jul 3, 2021 at 6:17 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> > > > >
+> > > > > On Tue, 29 Jun 2021 23:03:27 +0100
+> > > > > Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com> wrote:
+> > > > >
+> > > > > > Add binding documentation for Renesas RZ/G2L A/D converter block.
+> > > > > >
+> > > > > > Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> > > > > > Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
+> > > > > Hi,
+> > > > >
+> > > > > See inline
+> > > > >
+> > > > > Jonathan
+> > > > >
+> > > > > > ---
+> > > > > >  .../bindings/iio/adc/renesas,rzg2l-adc.yaml   | 121 ++++++++++++++++++
+> > > > > >  1 file changed, 121 insertions(+)
+> > > > > >  create mode 100644 Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
+> > > > > >
+> > > > > > diff --git a/Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml b/Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
+> > > > > > new file mode 100644
+> > > > > > index 000000000000..db935d6d59eb
+> > > > > > --- /dev/null
+> > > > > > +++ b/Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
+> > > > > > @@ -0,0 +1,121 @@
+> > > > > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > > > > > +%YAML 1.2
+> > > > > > +---
+> > > > > > +$id: http://devicetree.org/schemas/iio/adc/renesas,rzg2l-adc.yaml#
+> > > > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > > > > +
+> > > > > > +title: Renesas RZ/G2L ADC
+> > > > > > +
+> > > > > > +maintainers:
+> > > > > > +  - Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> > > > > > +
+> > > > > > +description: |
+> > > > > > +  A/D Converter block is a successive approximation analog-to-digital converter
+> > > > > > +  with a 12-bit accuracy. Up to eight analog input channels can be selected.
+> > > > > > +  Conversions can be performed in single or repeat mode. Result of the ADC is
+> > > > > > +  stored in a 32-bit data register corresponding to each channel.
+> > > > > > +
+> > > > > > +properties:
+> > > > > > +  compatible:
+> > > > > > +    oneOf:
+> > > > > > +      - items:
+> > > > > > +          - enum:
+> > > > > > +              - renesas,r9a07g044-adc   # RZ/G2{L,LC}
+> > > > > > +          - const: renesas,rzg2l-adc
+> > > > > > +
+> > > > > > +  reg:
+> > > > > > +    maxItems: 1
+> > > > > > +
+> > > > > > +  interrupts:
+> > > > > > +    maxItems: 1
+> > > > > > +
+> > > > > > +  clocks:
+> > > > > > +    items:
+> > > > > > +      - description: converter clock
+> > > > > > +      - description: peripheral clock
+> > > > > > +
+> > > > > > +  clock-names:
+> > > > > > +    items:
+> > > > > > +      - const: adclk
+> > > > > > +      - const: pclk
+> > > > > > +
+> > > > > > +  power-domains:
+> > > > > > +    maxItems: 1
+> > > > > > +
+> > > > > > +  resets:
+> > > > > > +    maxItems: 2
+> > > > > > +
+> > > > > > +  reset-names:
+> > > > > > +    items:
+> > > > > > +      - const: presetn
+> > > > > > +      - const: adrst-n
+> > > > > > +
+> > > > > > +  renesas-rzg2l,adc-trigger-mode:
+> > > > > > +    $ref: /schemas/types.yaml#/definitions/uint8
+> > > > > > +    description: Trigger mode for A/D converter
+> > > > > > +    enum:
+> > > > > > +      - 0 # Software trigger mode (Defaults)
+> > > > > > +      - 1 # Asynchronous trigger using ADC_TRG trigger input pin
+> > > > > > +      - 2 # Synchronous trigger (Trigger from MTU3a/GPT)
+> > > > >
+> > > > > Is this a function of the board in some fashion?  If not it sounds like
+> > > > > something that should be in control of userspace.  Normally we'd
+> > > > > do that by having the driver register some iio_triggers and depending
+> > > > > on which one is selected do the equivalent of what you have here.
+> > > > >
+> > > > Agreed for Asynchronous and Synchronous triggers. WRT Software trigger
+> > > > should this be registered as a  iio_triggers too or read_raw()
+> > > > callback (with IIO_CHAN_INFO_RAW case)  should be treated as Software
+> > > > trigger?
+> > > >
+> > >
+> > > Normally we'd use an external trigger to provide the software trigger
+> > > (plus as you say sysfs reads will map to this functionality).
+> > >
+> > > Something like the sysfs trigger or the hrtimer one would get used, though
+> > > also fine to use the dataready trigger from a different device (if you want
+> > > approximately synced dta.
+> > >
+> > We can live with syfs reads for now for SW triggers. Coming back to HW
+> > triggers I responded too quickly!. I am now trying to implement a gpio
+> > based HW trigger i.e. to kick adc conversion start but I couldn't find
+> > any drivers doing that. I looked at iio-trig-interrupt.c which
+> > registers irq based triggers, so something similar needs to be
+> > implemented in the adc driver? If that is the case the gpio has to be
+> > passed via to DT and use gpio_to_irq to register the handler. Or is it
+> > that I am missing something here ?
+>
+> Ok, I'm not really following the usecase for this. Is the thought that you'll
+> get lower latency / jitter triggering via a gpio rather than using a
+> bus write to the device (though on an integrated ADC I can't see why that would
+> be the case)?
+>
+Sorry for the confusion. ADC_TRIG I was referring to automatically
+triggers  ADC conversion depending on the edges (whatever its is
+configured to). The external triggers can be handled by iio_trigger as
+you pointed out earlier!
 
-First question is why not to use the regmap API (I have heard it has
-gained support of 17 bit)?
+> If so, then what is actually setting the gpio?  Something is ultimately
+> acting as the real trigger.  A common model would be an hrtimer trigger
+> for example.   If you then want to wire the driver up to capture on demand
+> using the gpio (to reduce latency) that's fine, but the gpio itself is
+> never a trigger in the sense of an IIO trigger (rather than a trigger
+> to the ADC itself).  In that case, have the trigger handler set the
+> the gpio and wait for data capture to finish.  Quite a few drivers
+> do this as some devices can only start sampling on an external pin being
+> set.  E.g. adc/ad7606.c
+>
+> The iio-trig-interrupt is about using an external interrupt to trigger
+> a capture initialized by a register write or similar, it's not a direct
+> hardware capture signal.
+>
+thanks for the explanation, I realized it now.
 
-...
-
-> +        depends on COMMON_CLK
-
-Is it mandatory for any function inside the device?
-
-...
-
-> +static int adrf6780_spi_read(struct adrf6780_dev *dev, unsigned int reg,
-> +                             unsigned int *val)
-> +{
-> +       int ret;
-> +       struct spi_transfer t = {0};
-
-> +       dev->data[0] = 0x80 | (reg << 1);
-
-This 0x80 I guess is pretty much standard and regmap SPI supports it.
-
-> +       dev->data[1] = 0x0;
-> +       dev->data[2] = 0x0;
-> +
-> +       t.rx_buf = &dev->data[0];
-> +       t.tx_buf = &dev->data[0];
-> +       t.len = 3;
-> +
-> +       ret = spi_sync_transfer(dev->spi, &t, 1);
-> +       if (ret)
-> +               return ret;
-> +
-> +       *val = (get_unaligned_be24(&dev->data[0]) >> 1) & GENMASK(15, 0);
-> +
-> +       return ret;
-> +}
-
-...
-
-> +       usleep_range(200, 250);
-
-Needs a comment.
-
--- 
-With Best Regards,
-Andy Shevchenko
+Cheers,
+Prabhakar

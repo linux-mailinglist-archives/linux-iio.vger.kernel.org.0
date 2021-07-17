@@ -2,30 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B13C3CC532
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Jul 2021 20:10:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CC463CC53B
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Jul 2021 20:17:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233441AbhGQSNq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 17 Jul 2021 14:13:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58516 "EHLO mail.kernel.org"
+        id S234042AbhGQSUF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 17 Jul 2021 14:20:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35628 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233280AbhGQSNq (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 17 Jul 2021 14:13:46 -0400
+        id S233441AbhGQSUF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 17 Jul 2021 14:20:05 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1832B6113D;
-        Sat, 17 Jul 2021 18:10:47 +0000 (UTC)
-Date:   Sat, 17 Jul 2021 19:13:11 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 60EE761153;
+        Sat, 17 Jul 2021 18:17:07 +0000 (UTC)
+Date:   Sat, 17 Jul 2021 19:19:30 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Alexandru Ardelean <aardelean@deviqon.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] iio: accel: bma220: convert probe to device-managed
- functions
-Message-ID: <20210717191311.6e408054@jic23-huawei>
-In-Reply-To: <20210704180817.3160e83f@jic23-huawei>
-References: <20210625140137.362282-1-aardelean@deviqon.com>
-        <20210704180817.3160e83f@jic23-huawei>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        pmeerw@pmeerw.net
+Subject: Re: [PATCH 2/2] iio: temperature: tmp006: make sure the chip is
+ powered up in probe
+Message-ID: <20210717191930.256a2cca@jic23-huawei>
+In-Reply-To: <20210624081924.15897-2-aardelean@deviqon.com>
+References: <20210624081924.15897-1-aardelean@deviqon.com>
+        <20210624081924.15897-2-aardelean@deviqon.com>
 X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -34,127 +35,99 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 4 Jul 2021 18:08:17 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Thu, 24 Jun 2021 11:19:24 +0300
+Alexandru Ardelean <aardelean@deviqon.com> wrote:
 
-> On Fri, 25 Jun 2021 17:01:36 +0300
-> Alexandru Ardelean <aardelean@deviqon.com> wrote:
+> When the device is probed, there's no guarantee that the device is not in
+> power-down mode. This can happen if the driver is unregistered and
+> re-probed.
 > 
-> > This change converts the driver to use devm_iio_triggered_buffer_setup()
-> > and devm_iio_device_register() for initializing and registering the IIO
-> > device.
-> > 
-> > The bma220_deinit() is converted into a callback for a
-> > devm_add_action_or_reset() hook, so that the device is put in stand-by when
-> > the driver gets uninitialized.
-> > The return value of the bma220_deinit() function isn't used as it does not
-> > add any value. On the error path of the probe function, this can just
-> > override the actual error with -EBUSY, or can even return 0 (no error), on
-> > the error path.
-> > 
-> > Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>  
-> Hmm. That return on the error path issue in probe is almost worth a backported
-> fix, but meh, it's been there for ages so unless anyone shouts, let us assume
-> it never bit anyone.
+> To make sure this doesn't happen, the value of the TMP006_CONFIG register
+> (which is read in the probe function and stored in the device's private
+> data) is being checked to see if the MOD bits have the correct value.
 > 
-> Otherwise, this looks fine.  I'm not going to comment on all the similar
-> devm patches you have on list unless I have something I want changed.
-> I'll pick them all up in a week or two once we are well into the new cycle.
+> This is a fix for a somewhat-rare corner case. As it stands, this doesn't
+> look like a high priority to go into the Fixes route.
 > 
-> thanks,
-> 
-> Jonathan
+> Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
+This one 'looks' right and as it's been on the list a while I'll apply it.
+Would be great if anyone can test it though!
 
-Both applied to the togreg branch of iio.git and pushed out as testing for
-0-day to poke at them and see if we missed anything.
+Series applied.
 
 Thanks,
 
 Jonathan
 
+> ---
+>  drivers/iio/temperature/tmp006.c | 33 +++++++++++++++++++++-----------
+>  1 file changed, 22 insertions(+), 11 deletions(-)
 > 
-> > ---
-> >  drivers/iio/accel/bma220_spi.c | 44 +++++++++-------------------------
-> >  1 file changed, 11 insertions(+), 33 deletions(-)
-> > 
-> > diff --git a/drivers/iio/accel/bma220_spi.c b/drivers/iio/accel/bma220_spi.c
-> > index 0622c7936499..0095931a11f8 100644
-> > --- a/drivers/iio/accel/bma220_spi.c
-> > +++ b/drivers/iio/accel/bma220_spi.c
-> > @@ -218,20 +218,14 @@ static int bma220_init(struct spi_device *spi)
-> >  	return 0;
-> >  }
-> >  
-> > -static int bma220_deinit(struct spi_device *spi)
-> > +static void bma220_deinit(void *spi)
-> >  {
-> >  	int ret;
-> >  
-> >  	/* Make sure the chip is powered off */
-> >  	ret = bma220_read_reg(spi, BMA220_REG_SUSPEND);
-> >  	if (ret == BMA220_SUSPEND_SLEEP)
-> > -		ret = bma220_read_reg(spi, BMA220_REG_SUSPEND);
-> > -	if (ret < 0)
-> > -		return ret;
-> > -	if (ret == BMA220_SUSPEND_SLEEP)
-> > -		return -EBUSY;
-> > -
-> > -	return 0;
-> > +		bma220_read_reg(spi, BMA220_REG_SUSPEND);
-> >  }
-> >  
-> >  static int bma220_probe(struct spi_device *spi)
-> > @@ -262,34 +256,19 @@ static int bma220_probe(struct spi_device *spi)
-> >  	if (ret)
-> >  		return ret;
-> >  
-> > -	ret = iio_triggered_buffer_setup(indio_dev, iio_pollfunc_store_time,
-> > -					 bma220_trigger_handler, NULL);
-> > -	if (ret < 0) {
-> > -		dev_err(&spi->dev, "iio triggered buffer setup failed\n");
-> > -		goto err_suspend;
-> > -	}
-> > +	ret = devm_add_action_or_reset(&spi->dev, bma220_deinit, spi);
-> > +	if (ret)
-> > +		return ret;
-> >  
-> > -	ret = iio_device_register(indio_dev);
-> > +	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
-> > +					      iio_pollfunc_store_time,
-> > +					      bma220_trigger_handler, NULL);
-> >  	if (ret < 0) {
-> > -		dev_err(&spi->dev, "iio_device_register failed\n");
-> > -		iio_triggered_buffer_cleanup(indio_dev);
-> > -		goto err_suspend;
-> > +		dev_err(&spi->dev, "iio triggered buffer setup failed\n");
-> > +		return ret;
-> >  	}
-> >  
-> > -	return 0;
-> > -
-> > -err_suspend:
-> > -	return bma220_deinit(spi);
-> > -}
-> > -
-> > -static int bma220_remove(struct spi_device *spi)
-> > -{
-> > -	struct iio_dev *indio_dev = spi_get_drvdata(spi);
-> > -
-> > -	iio_device_unregister(indio_dev);
-> > -	iio_triggered_buffer_cleanup(indio_dev);
-> > -
-> > -	return bma220_deinit(spi);
-> > +	return devm_iio_device_register(&spi->dev, indio_dev);
-> >  }
-> >  
-> >  static __maybe_unused int bma220_suspend(struct device *dev)
-> > @@ -326,7 +305,6 @@ static struct spi_driver bma220_driver = {
-> >  		.acpi_match_table = bma220_acpi_id,
-> >  	},
-> >  	.probe =            bma220_probe,
-> > -	.remove =           bma220_remove,
-> >  	.id_table =         bma220_spi_id,
-> >  };
-> >  module_spi_driver(bma220_driver);  
-> 
+> diff --git a/drivers/iio/temperature/tmp006.c b/drivers/iio/temperature/tmp006.c
+> index db1ac6029c27..e4943a0bc9aa 100644
+> --- a/drivers/iio/temperature/tmp006.c
+> +++ b/drivers/iio/temperature/tmp006.c
+> @@ -193,15 +193,23 @@ static bool tmp006_check_identification(struct i2c_client *client)
+>  	return mid == TMP006_MANUFACTURER_MAGIC && did == TMP006_DEVICE_MAGIC;
+>  }
+>  
+> -static int tmp006_powerdown(struct tmp006_data *data)
+> +static int tmp006_power(struct device *dev, bool up)
+>  {
+> +	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+> +	struct tmp006_data *data = iio_priv(indio_dev);
+> +
+> +	if (up)
+> +		data->config |= TMP006_CONFIG_MOD_MASK;
+> +	else
+> +		data->config &= ~TMP006_CONFIG_MOD_MASK;
+> +
+>  	return i2c_smbus_write_word_swapped(data->client, TMP006_CONFIG,
+> -		data->config & ~TMP006_CONFIG_MOD_MASK);
+> +		data->config);
+>  }
+>  
+> -static void tmp006_powerdown_cleanup(void *data)
+> +static void tmp006_powerdown_cleanup(void *dev)
+>  {
+> -	tmp006_powerdown(data);
+> +	tmp006_power(dev, false);
+>  }
+>  
+>  static int tmp006_probe(struct i2c_client *client,
+> @@ -239,7 +247,14 @@ static int tmp006_probe(struct i2c_client *client,
+>  		return ret;
+>  	data->config = ret;
+>  
+> -	ret = devm_add_action(&client->dev, tmp006_powerdown_cleanup, data);
+> +	if ((ret & TMP006_CONFIG_MOD_MASK) != TMP006_CONFIG_MOD_MASK) {
+> +		ret = tmp006_power(&client->dev, true);
+> +		if (ret < 0)
+> +			return ret;
+> +	}
+> +
+> +	ret = devm_add_action_or_reset(&client->dev, tmp006_powerdown_cleanup,
+> +				       &client->dev);
+>  	if (ret < 0)
+>  		return ret;
+>  
+> @@ -249,16 +264,12 @@ static int tmp006_probe(struct i2c_client *client,
+>  #ifdef CONFIG_PM_SLEEP
+>  static int tmp006_suspend(struct device *dev)
+>  {
+> -	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+> -	return tmp006_powerdown(iio_priv(indio_dev));
+> +	return tmp006_power(dev, false);
+>  }
+>  
+>  static int tmp006_resume(struct device *dev)
+>  {
+> -	struct tmp006_data *data = iio_priv(i2c_get_clientdata(
+> -		to_i2c_client(dev)));
+> -	return i2c_smbus_write_word_swapped(data->client, TMP006_CONFIG,
+> -		data->config | TMP006_CONFIG_MOD_MASK);
+> +	return tmp006_power(dev, true);
+>  }
+>  #endif
+>  
 

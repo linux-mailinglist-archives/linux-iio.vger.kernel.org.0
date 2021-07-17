@@ -2,170 +2,159 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8561C3CC531
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Jul 2021 20:09:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B13C3CC532
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Jul 2021 20:10:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233429AbhGQSLy convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sat, 17 Jul 2021 14:11:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56854 "EHLO mail.kernel.org"
+        id S233441AbhGQSNq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 17 Jul 2021 14:13:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58516 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233280AbhGQSLy (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 17 Jul 2021 14:11:54 -0400
+        id S233280AbhGQSNq (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 17 Jul 2021 14:13:46 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6A71D6113D;
-        Sat, 17 Jul 2021 18:08:54 +0000 (UTC)
-Date:   Sat, 17 Jul 2021 19:11:16 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 1832B6113D;
+        Sat, 17 Jul 2021 18:10:47 +0000 (UTC)
+Date:   Sat, 17 Jul 2021 19:13:11 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Ricardo Ribalda <ribalda@kernel.org>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>,
-        Michael Welling <mwelling@ieee.org>
-Subject: Re: [PATCH 00/15] dt-bindings: iio: dac: Add most missing binding
- documents.
-Message-ID: <20210717191116.4fc3af96@jic23-huawei>
-In-Reply-To: <PH0PR03MB63666D9D4DD53EBB08462B1599029@PH0PR03MB6366.namprd03.prod.outlook.com>
-References: <20210627163244.1090296-1-jic23@kernel.org>
-        <PH0PR03MB6366F34DC0B3D7EB7A56B6A499039@PH0PR03MB6366.namprd03.prod.outlook.com>
-        <20210628144407.0000084e@Huawei.com>
-        <PH0PR03MB63666D9D4DD53EBB08462B1599029@PH0PR03MB6366.namprd03.prod.outlook.com>
+To:     Alexandru Ardelean <aardelean@deviqon.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] iio: accel: bma220: convert probe to device-managed
+ functions
+Message-ID: <20210717191311.6e408054@jic23-huawei>
+In-Reply-To: <20210704180817.3160e83f@jic23-huawei>
+References: <20210625140137.362282-1-aardelean@deviqon.com>
+        <20210704180817.3160e83f@jic23-huawei>
 X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 29 Jun 2021 08:28:30 +0000
-"Sa, Nuno" <Nuno.Sa@analog.com> wrote:
+On Sun, 4 Jul 2021 18:08:17 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> > From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-> > Sent: Monday, June 28, 2021 3:44 PM
-> > To: Sa, Nuno <Nuno.Sa@analog.com>
-> > Cc: Jonathan Cameron <jic23@kernel.org>; linux-iio@vger.kernel.org;
-> > Rob Herring <robh+dt@kernel.org>; devicetree@vger.kernel.org;
-> > Lars-Peter Clausen <lars@metafoo.de>; Ricardo Ribalda
-> > <ribalda@kernel.org>; Hennerich, Michael
-> > <Michael.Hennerich@analog.com>; Gwenhael Goavec-Merou
-> > <gwenhael.goavec-merou@trabucayre.com>; Michael Welling
-> > <mwelling@ieee.org>
-> > Subject: Re: [PATCH 00/15] dt-bindings: iio: dac: Add most missing
-> > binding documents.
-> > 
-> > [External]
-> > 
-> > On Mon, 28 Jun 2021 07:09:18 +0000
-> > "Sa, Nuno" <Nuno.Sa@analog.com> wrote:
-> >   
-> > > Hi Jonathan,
-> > >  
-> > > > -----Original Message-----
-> > > > From: Jonathan Cameron <jic23@kernel.org>
-> > > > Sent: Sunday, June 27, 2021 6:32 PM
-> > > > To: linux-iio@vger.kernel.org; Rob Herring <robh+dt@kernel.org>;
-> > > > devicetree@vger.kernel.org
-> > > > Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>; Lars-  
-> > Peter  
-> > > > Clausen <lars@metafoo.de>; Ricardo Ribalda  
-> > <ribalda@kernel.org>;  
-> > > > Hennerich, Michael <Michael.Hennerich@analog.com>; Gwenhael
-> > > > Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>;  
-> > Michael  
-> > > > Welling <mwelling@ieee.org>
-> > > > Subject: [PATCH 00/15] dt-bindings: iio: dac: Add most missing  
-> > binding  
-> > > > documents.
-> > > >
-> > > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > >
-> > > > We have quite a few drivers in IIO that date back to the days of
-> > > > platform
-> > > > data.  Many of them either worked out of the box with device tree
-> > > > due to the spi core using the spi_device_id to match against
-> > > > device tree compatibles, or were updated to use newer interfaces  
-> > in  
-> > > > the
-> > > > intervening years.  As such, they mostly 'work' with device tree but
-> > > > can have some slightly odd quirks (particularly around naming of
-> > > > supplies).
-> > > > As we have no way of knowing what is out in the wild, we need to
-> > > > support
-> > > > these interesting bits of regulator naming.
-> > > >
-> > > > I would ultimately like all such bindings to be documented both to
-> > > > facilitate
-> > > > automated check of device trees and to make things easier for  
-> > people  
-> > > > trying
-> > > > to write device tree files using these devices.
-> > > >
-> > > > This series fills in the majority of the absent bindings for DACs.
-> > > > There are some outstanding
-> > > > * max517 - some platform data configuration needs porting over to
-> > > > device tree.
-> > > > * m62332 - this passes a consumer mapping in as platform data and  
-> > will  
-> > > > need
-> > > >   careful porting over the dt way of doing that.
-> > > >
-> > > > There is one 'fixlet' in here for the driver to deal with a case were  
-> > the  
-> > > > code was intended to allow the presence of a regulator to dictate
-> > > > whether
-> > > > an internal reference was used, but did not use the optional  
-> > regulator  
-> > > > get.
-> > > >
-> > > > I've mostly nominated maintainers based on original authorship +
-> > > > where
-> > > > I was feeling guilty or couldn't find anyone still active I've listed  
-> > myself.  
-> > > >
-> > > > I got bored half way through of producing brief descriptions of
-> > > > the devices so stopped doing so. If anyone wants to provide one  
-> > for  
-> > > > these
-> > > > parts I'm happy to add it!
-> > > >
-> > > > Future series will cover the c. 40 bindings that I've identified as  
-> > missing  
-> > > > for other types of devices.  I've also kept notes of easy cleanups in
-> > > > drivers spotted whilst working these out, so will probably follow up
-> > > > with
-> > > > those soon as well.
-> > > >
-> > > > Note I haven't tested all of these so there may well be errors or
-> > > > elements
-> > > > I've missed.
-> > > >  
-> > >
-> > > LGTM... Just wondering if we could not add the adi,ad5421 directly  
-> > into  
-> > > the trivial-devices yaml as it looks to be the only one without any odd
-> > > regulator name?  
-> > 
-> > We could, but would probably end up pulling it out again.  As noted in
-> > that patch description there is a bunch of stuff the binding doesn't
-> > currently
-> > support that would make sense to add if anyone actually needs it.  
+> On Fri, 25 Jun 2021 17:01:36 +0300
+> Alexandru Ardelean <aardelean@deviqon.com> wrote:
 > 
-> Fair enough :)
+> > This change converts the driver to use devm_iio_triggered_buffer_setup()
+> > and devm_iio_device_register() for initializing and registering the IIO
+> > device.
+> > 
+> > The bma220_deinit() is converted into a callback for a
+> > devm_add_action_or_reset() hook, so that the device is put in stand-by when
+> > the driver gets uninitialized.
+> > The return value of the bma220_deinit() function isn't used as it does not
+> > add any value. On the error path of the probe function, this can just
+> > override the actual error with -EBUSY, or can even return 0 (no error), on
+> > the error path.
+> > 
+> > Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>  
+> Hmm. That return on the error path issue in probe is almost worth a backported
+> fix, but meh, it's been there for ages so unless anyone shouts, let us assume
+> it never bit anyone.
 > 
-> - Nuno Sá
+> Otherwise, this looks fine.  I'm not going to comment on all the similar
+> devm patches you have on list unless I have something I want changed.
+> I'll pick them all up in a week or two once we are well into the new cycle.
 > 
-Applied all except patch 5 where something odd happened with the test scripts
-that needs another look.
+> thanks,
+> 
+> Jonathan
+
+Both applied to the togreg branch of iio.git and pushed out as testing for
+0-day to poke at them and see if we missed anything.
 
 Thanks,
 
 Jonathan
 
+> 
+> > ---
+> >  drivers/iio/accel/bma220_spi.c | 44 +++++++++-------------------------
+> >  1 file changed, 11 insertions(+), 33 deletions(-)
+> > 
+> > diff --git a/drivers/iio/accel/bma220_spi.c b/drivers/iio/accel/bma220_spi.c
+> > index 0622c7936499..0095931a11f8 100644
+> > --- a/drivers/iio/accel/bma220_spi.c
+> > +++ b/drivers/iio/accel/bma220_spi.c
+> > @@ -218,20 +218,14 @@ static int bma220_init(struct spi_device *spi)
+> >  	return 0;
+> >  }
+> >  
+> > -static int bma220_deinit(struct spi_device *spi)
+> > +static void bma220_deinit(void *spi)
+> >  {
+> >  	int ret;
+> >  
+> >  	/* Make sure the chip is powered off */
+> >  	ret = bma220_read_reg(spi, BMA220_REG_SUSPEND);
+> >  	if (ret == BMA220_SUSPEND_SLEEP)
+> > -		ret = bma220_read_reg(spi, BMA220_REG_SUSPEND);
+> > -	if (ret < 0)
+> > -		return ret;
+> > -	if (ret == BMA220_SUSPEND_SLEEP)
+> > -		return -EBUSY;
+> > -
+> > -	return 0;
+> > +		bma220_read_reg(spi, BMA220_REG_SUSPEND);
+> >  }
+> >  
+> >  static int bma220_probe(struct spi_device *spi)
+> > @@ -262,34 +256,19 @@ static int bma220_probe(struct spi_device *spi)
+> >  	if (ret)
+> >  		return ret;
+> >  
+> > -	ret = iio_triggered_buffer_setup(indio_dev, iio_pollfunc_store_time,
+> > -					 bma220_trigger_handler, NULL);
+> > -	if (ret < 0) {
+> > -		dev_err(&spi->dev, "iio triggered buffer setup failed\n");
+> > -		goto err_suspend;
+> > -	}
+> > +	ret = devm_add_action_or_reset(&spi->dev, bma220_deinit, spi);
+> > +	if (ret)
+> > +		return ret;
+> >  
+> > -	ret = iio_device_register(indio_dev);
+> > +	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
+> > +					      iio_pollfunc_store_time,
+> > +					      bma220_trigger_handler, NULL);
+> >  	if (ret < 0) {
+> > -		dev_err(&spi->dev, "iio_device_register failed\n");
+> > -		iio_triggered_buffer_cleanup(indio_dev);
+> > -		goto err_suspend;
+> > +		dev_err(&spi->dev, "iio triggered buffer setup failed\n");
+> > +		return ret;
+> >  	}
+> >  
+> > -	return 0;
+> > -
+> > -err_suspend:
+> > -	return bma220_deinit(spi);
+> > -}
+> > -
+> > -static int bma220_remove(struct spi_device *spi)
+> > -{
+> > -	struct iio_dev *indio_dev = spi_get_drvdata(spi);
+> > -
+> > -	iio_device_unregister(indio_dev);
+> > -	iio_triggered_buffer_cleanup(indio_dev);
+> > -
+> > -	return bma220_deinit(spi);
+> > +	return devm_iio_device_register(&spi->dev, indio_dev);
+> >  }
+> >  
+> >  static __maybe_unused int bma220_suspend(struct device *dev)
+> > @@ -326,7 +305,6 @@ static struct spi_driver bma220_driver = {
+> >  		.acpi_match_table = bma220_acpi_id,
+> >  	},
+> >  	.probe =            bma220_probe,
+> > -	.remove =           bma220_remove,
+> >  	.id_table =         bma220_spi_id,
+> >  };
+> >  module_spi_driver(bma220_driver);  
+> 
 

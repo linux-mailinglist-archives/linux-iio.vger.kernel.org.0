@@ -2,32 +2,30 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AA683CC9B8
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Jul 2021 17:12:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FBF63CC9B9
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Jul 2021 17:13:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233950AbhGRPPV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Jul 2021 11:15:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55782 "EHLO mail.kernel.org"
+        id S233951AbhGRPQu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Jul 2021 11:16:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55918 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232895AbhGRPPU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 18 Jul 2021 11:15:20 -0400
+        id S232895AbhGRPQu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 18 Jul 2021 11:16:50 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 371E1611AB;
-        Sun, 18 Jul 2021 15:12:19 +0000 (UTC)
-Date:   Sun, 18 Jul 2021 16:14:43 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 398A6611AB;
+        Sun, 18 Jul 2021 15:13:50 +0000 (UTC)
+Date:   Sun, 18 Jul 2021 16:16:12 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v2 0/5] iio: accel: mma9551/mma9553 Cleanup and update
-Message-ID: <20210718161443.72733cda@jic23-huawei>
-In-Reply-To: <20210603185207.3646368-1-jic23@kernel.org>
-References: <20210603185207.3646368-1-jic23@kernel.org>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Subject: Re: [PATCH] iio: accel: sca3000: Use sign_extend32() instead of
+ opencoding sign extension.
+Message-ID: <20210718161612.2b9ffb41@jic23-huawei>
+In-Reply-To: <20210603164729.3584702-1-jic23@kernel.org>
+References: <20210603164729.3584702-1-jic23@kernel.org>
 X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -36,52 +34,42 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu,  3 Jun 2021 19:52:02 +0100
+On Thu,  3 Jun 2021 17:47:29 +0100
 Jonathan Cameron <jic23@kernel.org> wrote:
 
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> Whilst nice to get rid of this non obvious code, this also clears a
+> static checker warning:
+> 
+> drivers/iio/accel/sca3000.c:734 sca3000_read_raw()
+> warn: no-op. '((*val) << 19) >> 19'
+> 
+> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Hi All,
-
-This is a series I'd appreciate some more eyes on if anyone has the time
-to spare!
+If someone could give this a quick sanity check that would be great.
 
 Thanks,
 
 Jonathan
 
+> ---
+>  drivers/iio/accel/sca3000.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 > 
-> v2: mma9551: Drop the gpio based irq support as not known to be used
->     and adds complexity which is nice to get rid of.
-> 
-> This series came about because I was looking to write a dt-binding for these
-> two (currently missing entirely) and I discovered the mma9551 driver in
-> particular was doing some unusual things.
-> 
-> Note however, I've only tested the fwnode_irq_get() patch using a hacked
-> up version of QEMU and stubbing out some error paths because I'm too
-> lazy to emulate it properly ;)
-> 
-> The ACPI entries seem unlikely, but please shout if anyone knows of
-> them being used in the wild.
-> 
-> It would be particularly helpful if anyone who has either of these
-> parts could both give this a spin and let me know so I can ask
-> for testing in future.
-> 
-> Thanks,
-> 
-> Jonathan
-> 
-> Jonathan Cameron (5):
->   iio: accel: mma9551/mma9553: Drop explicit ACPI match support
->   iio: accel: mma9551/mma9553: Simplify pm logic
->   iio: accel: mma9551: Add support to get irqs directly from fwnode
->   iio: accel: mma9551: Use devm managed functions to tidy up probe()
->   iio: accel: mma9553: Use devm managed functions to tidy up probe()
-> 
->  drivers/iio/accel/mma9551.c | 151 ++++++++++++------------------------
->  drivers/iio/accel/mma9553.c | 121 +++++++++--------------------
->  2 files changed, 85 insertions(+), 187 deletions(-)
-> 
+> diff --git a/drivers/iio/accel/sca3000.c b/drivers/iio/accel/sca3000.c
+> index cb753a43533c..0692ccb80293 100644
+> --- a/drivers/iio/accel/sca3000.c
+> +++ b/drivers/iio/accel/sca3000.c
+> @@ -731,8 +731,7 @@ static int sca3000_read_raw(struct iio_dev *indio_dev,
+>  				return ret;
+>  			}
+>  			*val = (be16_to_cpup((__be16 *)st->rx) >> 3) & 0x1FFF;
+> -			*val = ((*val) << (sizeof(*val) * 8 - 13)) >>
+> -				(sizeof(*val) * 8 - 13);
+> +			*val = sign_extend32(*val, 13);
+>  		} else {
+>  			/* get the temperature when available */
+>  			ret = sca3000_read_data_short(st,
 

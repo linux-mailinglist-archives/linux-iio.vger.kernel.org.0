@@ -2,31 +2,33 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF64A3CC9AA
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Jul 2021 16:50:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 523CD3CC9B1
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Jul 2021 16:53:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233931AbhGROw2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Jul 2021 10:52:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53560 "EHLO mail.kernel.org"
+        id S233869AbhGRO4g (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Jul 2021 10:56:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54056 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233869AbhGROw1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 18 Jul 2021 10:52:27 -0400
+        id S232895AbhGRO4f (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 18 Jul 2021 10:56:35 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0986E61001;
-        Sun, 18 Jul 2021 14:49:27 +0000 (UTC)
-Date:   Sun, 18 Jul 2021 15:51:52 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 53069610A5;
+        Sun, 18 Jul 2021 14:53:35 +0000 (UTC)
+Date:   Sun, 18 Jul 2021 15:55:59 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Chris Lesiak <chris.lesiak@licor.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Matt Ranostay <matt.ranostay@konsulko.com>
-Subject: Re: [PATCH v3] iio: humidity: hdc100x: Add margin to the conversion
- time
-Message-ID: <20210718155152.66f791bc@jic23-huawei>
-In-Reply-To: <20210616134335.76715e55@jic23-huawei>
-References: <20210614141820.2034827-1-chris.lesiak@licor.com>
-        <20210616134335.76715e55@jic23-huawei>
+To:     linux-iio@vger.kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Nuno Sa <Nuno.Sa@analog.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Jan Kiszka <jan.kiszka@siemens.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v2 0/4] IIO: Alignment fixes part 4 - bounce buffers for
+ the hard cases.
+Message-ID: <20210718155559.4eb7bf7a@jic23-huawei>
+In-Reply-To: <20210613151039.569883-1-jic23@kernel.org>
+References: <20210613151039.569883-1-jic23@kernel.org>
 X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -35,66 +37,117 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 16 Jun 2021 13:43:35 +0100
+On Sun, 13 Jun 2021 16:10:35 +0100
 Jonathan Cameron <jic23@kernel.org> wrote:
 
-> On Mon, 14 Jun 2021 09:18:20 -0500
-> Chris Lesiak <chris.lesiak@licor.com> wrote:
-> 
-> > The datasheets have the following note for the conversion time
-> > specification: "This parameter is specified by design and/or
-> > characterization and it is not tested in production."
-> > 
-> > Parts have been seen that require more time to do 14-bit conversions for
-> > the relative humidity channel.  The result is ENXIO due to the address
-> > phase of a transfer not getting an ACK.
-> > 
-> > Delay an additional 1 ms per conversion to allow for additional margin.
-> > 
-> > Fixes: 4839367d99e3 ("iio: humidity: add HDC100x support")
-> > Signed-off-by: Chris Lesiak <chris.lesiak@licor.com>  
-> 
-> +CC Matt as this is one of his drivers.
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Hi All,
 
-@Matt. Ping.
+If anyone has time to take a look at this, particularly the first patch which
+does the interesting stuff and patch 3 which I don't think has had any review
+yet that would be great.
+
+Thanks,
+
+Jonathan
 
 > 
-> Looks good to me.
+> Thanks to Andy and Nuno for reviews.
 > 
-> > ---
-> >  drivers/iio/humidity/hdc100x.c | 6 ++++--
-> >  1 file changed, 4 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
-> > index 2a957f19048e..9e0fce917ce4 100644
-> > --- a/drivers/iio/humidity/hdc100x.c
-> > +++ b/drivers/iio/humidity/hdc100x.c
-> > @@ -25,6 +25,8 @@
-> >  #include <linux/iio/trigger_consumer.h>
-> >  #include <linux/iio/triggered_buffer.h>
-> >  
-> > +#include <linux/time.h>
-> > +
-> >  #define HDC100X_REG_TEMP			0x00
-> >  #define HDC100X_REG_HUMIDITY			0x01
-> >  
-> > @@ -166,7 +168,7 @@ static int hdc100x_get_measurement(struct hdc100x_data *data,
-> >  				   struct iio_chan_spec const *chan)
-> >  {
-> >  	struct i2c_client *client = data->client;
-> > -	int delay = data->adc_int_us[chan->address];
-> > +	int delay = data->adc_int_us[chan->address] + 1*USEC_PER_MSEC;
-> >  	int ret;
-> >  	__be16 val;
-> >  
-> > @@ -316,7 +318,7 @@ static irqreturn_t hdc100x_trigger_handler(int irq, void *p)
-> >  	struct iio_dev *indio_dev = pf->indio_dev;
-> >  	struct hdc100x_data *data = iio_priv(indio_dev);
-> >  	struct i2c_client *client = data->client;
-> > -	int delay = data->adc_int_us[0] + data->adc_int_us[1];
-> > +	int delay = data->adc_int_us[0] + data->adc_int_us[1] + 2*USEC_PER_MSEC;
-> >  	int ret;
-> >  
-> >  	/* dual read starts at temp register */  
+> Chances since V1/RFC:
+> * Renamed the function to iio_push_to_buffer_with_ts_unaligned()
+> * Fixed the various bugs people pointed out.
+> * Used more standard realloc handling to be more 'obviously' correct.
+> * Added some additional comments on the sizing of the copy to explain why
+>   it is a conservative estimate and may copy more than strictly necessary.
+> 
+> A few things we discussed I didn't do (for now)...
+> 
+> I decided against adding explicit bounce buffer allocation calls for now,
+> though I'm open to doing that in future if we find doing the somewhat hidden
+> realloc to be a problem.
+> 
+> I haven't computed a more precise data_sz as I don't thing the benefits
+> of a more precise copy or not passing the size, make it worth the slight
+> reduction in complexity for the callers.  Again, open to revisiting this
+> in future!
+> 
+> I tested it by hacking the dummy driver to shift it's data by one
+> byte and call iio_push_to_buffers_with_ts_unaligned().
+> 
+> Strictly a hack. I definitely don't want to move this driver over to this
+> new interface as it might encourage inappropriate use.
+> 
+> diff --git a/drivers/iio/dummy/iio_simple_dummy_buffer.c b/drivers/iio/dummy/iio_simple_dummy_buffer.c
+> index 59aa60d4ca37..b47af7df8efc 100644
+> --- a/drivers/iio/dummy/iio_simple_dummy_buffer.c
+> +++ b/drivers/iio/dummy/iio_simple_dummy_buffer.c
+> @@ -19,6 +19,7 @@
+>  #include <linux/iio/buffer.h>
+>  #include <linux/iio/trigger_consumer.h>
+>  #include <linux/iio/triggered_buffer.h>
+> +#include <asm/unaligned.h>
+>  
+>  #include "iio_simple_dummy.h"
+>  
+> @@ -78,12 +79,13 @@ static irqreturn_t iio_simple_dummy_trigger_h(int irq, void *p)
+>                         j = find_next_bit(indio_dev->active_scan_mask,
+>                                           indio_dev->masklength, j);
+>                         /* random access read from the 'device' */
+> -                       data[i] = fakedata[j];
+> +//                     data[i] = fakedata[j];
+> +                       put_unaligned_le16(fakedata[j], ((u8 *)(&data[i])) + 1);
+>                         len += 2;
+>                 }
+>         }
+>  
+> -       iio_push_to_buffers_with_timestamp(indio_dev, data,
+> +       iio_push_to_buffers_with_ts_unaligned(indio_dev, ((u8 *)(data)) + 1, indio_dev->scan_bytes - 8,
+>                                            iio_get_time_ns(indio_dev));
+> 
+> 
+> v1 description:
+> 
+> I finally got around to do a manual audit of all the calls to
+> iio_push_to_buffers_with_timestamp() which has the somewhat odd requirements
+> of:
+> 1. 8 byte alignment of the provided buffer.
+> 2. space for an 8 byte naturally aligned timestamp to be inserted at the
+>    end.
+> 
+> Unfortunately there were rather a lot of these left, but time to bite the bullet
+> and clean them up.
+> 
+> As discussed previous in
+> https://lore.kernel.org/linux-iio/20200920112742.170751-1-jic23@kernel.org/
+> it is not easy to fix the alignment issue without requiring a bounce buffer.
+> This final part of the 4 sets of fixes is concerned with the cases where
+> bounce buffers are the proposed solutions.
+> 
+> In these cases we have hardware that reads a prefix that we wish to
+> drop. That makes it hard to directly read the data into the correct location.
+> 
+> Rather than implementing bouce buffers in each case, this set provides some
+> magic in the core to handle them via a new function.
+> iio_push_to_buffers_with_ts_na() - non aligned
+> 
+> Note this is totally untested as I don't have suitable hardware or emulation.
+> I can fake something up in the dummy driver or via QEMU but I definitely want
+> both eyes and testing on this series!
+> 
+> Jonathan Cameron (4):
+>   iio: core: Introduce iio_push_to_buffers_with_ts_unaligned()
+>   iio: adc: ti-adc108s102: Fix alignment of buffer pushed to iio
+>     buffers.
+>   iio: gyro: mpu3050: Fix alignment and size issues with buffers.
+>   iio: imu: adis16400: Fix buffer alignment requirements.
+> 
+>  drivers/iio/adc/ti-adc108s102.c   | 11 ++++----
+>  drivers/iio/gyro/mpu3050-core.c   | 24 ++++++++--------
+>  drivers/iio/imu/adis16400.c       | 20 ++++++++++----
+>  drivers/iio/industrialio-buffer.c | 46 +++++++++++++++++++++++++++++++
+>  include/linux/iio/buffer.h        |  4 +++
+>  include/linux/iio/iio-opaque.h    |  4 +++
+>  6 files changed, 86 insertions(+), 23 deletions(-)
 > 
 

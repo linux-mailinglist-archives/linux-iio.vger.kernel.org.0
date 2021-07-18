@@ -2,33 +2,33 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 523CD3CC9B1
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Jul 2021 16:53:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42D3D3CC9B5
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Jul 2021 17:07:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233869AbhGRO4g (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Jul 2021 10:56:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54056 "EHLO mail.kernel.org"
+        id S234004AbhGRPKb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Jul 2021 11:10:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55282 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232895AbhGRO4f (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 18 Jul 2021 10:56:35 -0400
+        id S232895AbhGRPKb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 18 Jul 2021 11:10:31 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 53069610A5;
-        Sun, 18 Jul 2021 14:53:35 +0000 (UTC)
-Date:   Sun, 18 Jul 2021 15:55:59 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 36FD761183;
+        Sun, 18 Jul 2021 15:07:30 +0000 (UTC)
+Date:   Sun, 18 Jul 2021 16:09:54 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Nuno Sa <Nuno.Sa@analog.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Jan Kiszka <jan.kiszka@siemens.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v2 0/4] IIO: Alignment fixes part 4 - bounce buffers for
- the hard cases.
-Message-ID: <20210718155559.4eb7bf7a@jic23-huawei>
-In-Reply-To: <20210613151039.569883-1-jic23@kernel.org>
-References: <20210613151039.569883-1-jic23@kernel.org>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Denis Ciocca <denis.ciocca@st.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Subject: Re: [PATCH] iio: st-sensors: Remove some unused includes and add
+ some that should be there
+Message-ID: <20210718160954.037c49fc@jic23-huawei>
+In-Reply-To: <CACRpkdYmToL445kE5A53+sRitFxsn5e7sn+PPiQiPv1OocDopA@mail.gmail.com>
+References: <20210608175149.4019289-1-jic23@kernel.org>
+        <CACRpkdYmToL445kE5A53+sRitFxsn5e7sn+PPiQiPv1OocDopA@mail.gmail.com>
 X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -37,117 +37,44 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 13 Jun 2021 16:10:35 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Wed, 9 Jun 2021 09:53:57 +0200
+Linus Walleij <linus.walleij@linaro.org> wrote:
 
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Hi All,
-
-If anyone has time to take a look at this, particularly the first patch which
-does the interesting stuff and patch 3 which I don't think has had any review
-yet that would be great.
+> On Tue, Jun 8, 2021 at 7:50 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> 
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >
+> > The st-sensors drivers have changed in structure over time, and includes
+> > have not always kept up with this.  Let's bring them back to nearer
+> > the ideal.
+> >
+> > Identified with the  include-what-you-use tool and careful checking of
+> > its suggestions.
+> >
+> > Note I haven't been particularly aggressive here, so this is just the
+> > cases where the include obviously isn't needed rather than the more
+> > subtle corners.
+> >
+> > Note I took the opportunity to add mod_devicetable.h as I generally
+> > prefer to see that when acpi or of match tables are present.
+> >
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Cc: Linus Walleij <linus.walleij@linaro.org>
+> > Cc: Denis Ciocca <denis.ciocca@st.com>
+> > Cc: Hans de Goede <hdegoede@redhat.com>  
+> 
+> Looks good to me.
+> Acked-by: Linus Walleij <linus.walleij@linaro.org>
+> 
+> Yours,
+> Linus Walleij
+This seems unaffected by the questions around kernel.h and the
+splitting that Andy is working on for that.  Hence applied to the togreg
+branch of iio.git and pushed out as testing to see if 0-day can find
+anything I missed.
 
 Thanks,
 
 Jonathan
 
-> 
-> Thanks to Andy and Nuno for reviews.
-> 
-> Chances since V1/RFC:
-> * Renamed the function to iio_push_to_buffer_with_ts_unaligned()
-> * Fixed the various bugs people pointed out.
-> * Used more standard realloc handling to be more 'obviously' correct.
-> * Added some additional comments on the sizing of the copy to explain why
->   it is a conservative estimate and may copy more than strictly necessary.
-> 
-> A few things we discussed I didn't do (for now)...
-> 
-> I decided against adding explicit bounce buffer allocation calls for now,
-> though I'm open to doing that in future if we find doing the somewhat hidden
-> realloc to be a problem.
-> 
-> I haven't computed a more precise data_sz as I don't thing the benefits
-> of a more precise copy or not passing the size, make it worth the slight
-> reduction in complexity for the callers.  Again, open to revisiting this
-> in future!
-> 
-> I tested it by hacking the dummy driver to shift it's data by one
-> byte and call iio_push_to_buffers_with_ts_unaligned().
-> 
-> Strictly a hack. I definitely don't want to move this driver over to this
-> new interface as it might encourage inappropriate use.
-> 
-> diff --git a/drivers/iio/dummy/iio_simple_dummy_buffer.c b/drivers/iio/dummy/iio_simple_dummy_buffer.c
-> index 59aa60d4ca37..b47af7df8efc 100644
-> --- a/drivers/iio/dummy/iio_simple_dummy_buffer.c
-> +++ b/drivers/iio/dummy/iio_simple_dummy_buffer.c
-> @@ -19,6 +19,7 @@
->  #include <linux/iio/buffer.h>
->  #include <linux/iio/trigger_consumer.h>
->  #include <linux/iio/triggered_buffer.h>
-> +#include <asm/unaligned.h>
->  
->  #include "iio_simple_dummy.h"
->  
-> @@ -78,12 +79,13 @@ static irqreturn_t iio_simple_dummy_trigger_h(int irq, void *p)
->                         j = find_next_bit(indio_dev->active_scan_mask,
->                                           indio_dev->masklength, j);
->                         /* random access read from the 'device' */
-> -                       data[i] = fakedata[j];
-> +//                     data[i] = fakedata[j];
-> +                       put_unaligned_le16(fakedata[j], ((u8 *)(&data[i])) + 1);
->                         len += 2;
->                 }
->         }
->  
-> -       iio_push_to_buffers_with_timestamp(indio_dev, data,
-> +       iio_push_to_buffers_with_ts_unaligned(indio_dev, ((u8 *)(data)) + 1, indio_dev->scan_bytes - 8,
->                                            iio_get_time_ns(indio_dev));
-> 
-> 
-> v1 description:
-> 
-> I finally got around to do a manual audit of all the calls to
-> iio_push_to_buffers_with_timestamp() which has the somewhat odd requirements
-> of:
-> 1. 8 byte alignment of the provided buffer.
-> 2. space for an 8 byte naturally aligned timestamp to be inserted at the
->    end.
-> 
-> Unfortunately there were rather a lot of these left, but time to bite the bullet
-> and clean them up.
-> 
-> As discussed previous in
-> https://lore.kernel.org/linux-iio/20200920112742.170751-1-jic23@kernel.org/
-> it is not easy to fix the alignment issue without requiring a bounce buffer.
-> This final part of the 4 sets of fixes is concerned with the cases where
-> bounce buffers are the proposed solutions.
-> 
-> In these cases we have hardware that reads a prefix that we wish to
-> drop. That makes it hard to directly read the data into the correct location.
-> 
-> Rather than implementing bouce buffers in each case, this set provides some
-> magic in the core to handle them via a new function.
-> iio_push_to_buffers_with_ts_na() - non aligned
-> 
-> Note this is totally untested as I don't have suitable hardware or emulation.
-> I can fake something up in the dummy driver or via QEMU but I definitely want
-> both eyes and testing on this series!
-> 
-> Jonathan Cameron (4):
->   iio: core: Introduce iio_push_to_buffers_with_ts_unaligned()
->   iio: adc: ti-adc108s102: Fix alignment of buffer pushed to iio
->     buffers.
->   iio: gyro: mpu3050: Fix alignment and size issues with buffers.
->   iio: imu: adis16400: Fix buffer alignment requirements.
-> 
->  drivers/iio/adc/ti-adc108s102.c   | 11 ++++----
->  drivers/iio/gyro/mpu3050-core.c   | 24 ++++++++--------
->  drivers/iio/imu/adis16400.c       | 20 ++++++++++----
->  drivers/iio/industrialio-buffer.c | 46 +++++++++++++++++++++++++++++++
->  include/linux/iio/buffer.h        |  4 +++
->  include/linux/iio/iio-opaque.h    |  4 +++
->  6 files changed, 86 insertions(+), 23 deletions(-)
-> 
 

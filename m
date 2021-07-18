@@ -2,128 +2,132 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D9253CCAF7
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Jul 2021 23:31:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D24A3CCB99
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jul 2021 01:38:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233313AbhGRVej (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Jul 2021 17:34:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58344 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233065AbhGRVej (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Jul 2021 17:34:39 -0400
-Received: from mail-il1-x12a.google.com (mail-il1-x12a.google.com [IPv6:2607:f8b0:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42E2FC061762
-        for <linux-iio@vger.kernel.org>; Sun, 18 Jul 2021 14:31:40 -0700 (PDT)
-Received: by mail-il1-x12a.google.com with SMTP id y6so14075811ilj.13
-        for <linux-iio@vger.kernel.org>; Sun, 18 Jul 2021 14:31:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ow7yd/6EUrynMpV9RE7C75DLtK0l6+jas8yJI3xp7nA=;
-        b=M46LF2jPXQUEqMWCQA1GJEDgHnFKPafk0j/m7OJpzIwXIXSeRamjQeBx6AezMOeN0g
-         IEreoVDKuzhzDPvO8dwW4w9RNjfMLFsLHmuM7cdzhQ5e9Y0zknjPlOTeC4VifadUxhHb
-         7rB5RdkrVyPtsfCKYPbOPa3mdXwk5Rz2f4IqQ=
+        id S232582AbhGRXla (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Jul 2021 19:41:30 -0400
+Received: from mx.ucr.edu ([138.23.62.67]:2044 "EHLO mx5.ucr.edu"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233676AbhGRXl2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 18 Jul 2021 19:41:28 -0400
+X-Greylist: delayed 425 seconds by postgrey-1.27 at vger.kernel.org; Sun, 18 Jul 2021 19:41:27 EDT
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=ucr.edu; i=@ucr.edu; q=dns/txt; s=selector3;
+  t=1626651510; x=1658187510;
+  h=mime-version:from:date:message-id:subject:to;
+  bh=eF6Rd98jNhxOdaSdl1REkhQ3PC3sjrP0IS5IWgzrbNw=;
+  b=NBXORp6+EwYdTuX/i+pRJJcmY1qHV02ZNUYAoPdXDwiHPsBgp2xGcT8u
+   DZCfCC3YX02JAwgv8PP7uD7VCjcqPMfzJqSflW4HFv2fWo4i6agSigby9
+   R//UEAQVYZI9LwdVEUdqkNRKw4ThoMyFgxcITa1zDXs2+nfab3+W2rpvT
+   oK57QR1dbFXyhrXqPJ0TLTvKkjdnsBphxmQsQZnfMDh+ASac5qdavD++p
+   Jzm6EQ/mJUMuaVR/pTd9Upuwow6s5CCw5tOgaaTqWvycWecIQCdCjBrr2
+   5Ikm8Ca7nbV78e4bVJtONxo0lLwNEYcR2qO4TefvVdi/Q+Lwm1o4mwvd8
+   w==;
+IronPort-SDR: sMWpUi+p0m4i0s4oU2z5XfDGK4BISULkWl4P5sIsKEifNtJSyhItZArhPz/gDKogsDr+ODR/2A
+ /KwnQYbOcW2iH8CXKqYcGLgOj8ihEG9uWxcqAnZmqb9JrgAmVazjWJONmJMP1EY3FTy8avd8zu
+ adUTHsPToVBJ57MjbuJDftOkUmKwbvTvjdWS2MEH8b8sY38cWyzcYWUiRyXdj+GCpVSdGOjcft
+ M6vCH0lsWu9EFAYEOnJDxf8VKrRgxYdsmQznAytDs+9Lm/CvY5PEZkCkqYvvdXAgFgOYLAhM7V
+ d2qJJ75OYs6bUYE+wkpZVuBq
+X-IPAS-Result: =?us-ascii?q?A2F4BgDpuPRgf8fSVdFagQmBWYN4hTSVCAGYOIF8AgkBA?=
+ =?us-ascii?q?QEPQQQBAYdXAiU1CA4CBAEBAQEDAgMBAQEBAQEDAQEGAQEBAQEBBQQBAQIQA?=
+ =?us-ascii?q?QGBDAtZC2OBT4F5BgQ9gjgpAYQFEQR4AwwCJgIkEgEFASIBNIVXBZoagQQ9i?=
+ =?us-ascii?q?zJ/M4EBiA8BCQ2BYxJ+KocKgmiEIYIpgUuCOIhQgmQEgiuBZW6DHgEBAZ8Nn?=
+ =?us-ascii?q?QkBBgKDChySP4t6K4Nji16XHZBThTWlIxAjgTkBghMzGiV/BmeBTEwBAgECA?=
+ =?us-ascii?q?QwCAQIBAgECAQIIAQECjigWjXABXCRnAgYLAQEDCYxHAQE?=
+IronPort-PHdr: A9a23:WSsTuhTnMWVr5PwgiQ1f6I8Oc9psoq2YAWYlg6HPa5pwe6iut67vI
+ FbYra00ygOTBcOBurkc2qKW6/mmBTVRp87Z8TgrS99lb1c9k8IYnggtUoauKHbQC7rUVRE8B
+ 9lIT1R//nu2YgB/Ecf6YEDO8DXptWZBUhrwOhBoKevrB4Xck9q41/yo+53Ufg5EmCexbal9I
+ RmosQndrNcajI9tJqotzhbCv39Ed/hLyW9yKl+fghLx6t2s8JJ/9ihbpu4s+dNHXajmZaozU
+ KZWDC4hM2A75c3rsQfMQA6S7XYCUWsYjwRFDRHd4B71Qpn+vC36tvFg2CaBJs35Uao0WTW54
+ Kh1ThLjlToKOCQ48GHTjcxwkb5brRe8rBFx34LYfIeYP+dlc6jDYd0VW3ZOXsdJVyxAHIy8a
+ ZcPD/EcNupctoXxukcCoQe7CQSqGejhyCJHhmXu0KI10+ovHwLI0hE+Ed0Sq3nUsMn5Ob0OX
+ eyp0KXFzzPOZO5W1zfn74jIdwgsrvONXbNxccrR1E4vHB7GgVWQs4PlPi6e2+MNsmma7+pvT
+ +Ovh3I7pwx/uTWv29sjipPTio0L11/E6Dx0zYAoLtK3VEB1e8SrEIdMty6ELYt2RNsvTmBst
+ Ssn1LAIt5C1cTUXxZon2RLTduKLfoyV7h/iW+icIzh1iGxkdb6hgxu+7UatxvH+W8e6zVpHo
+ DZIn93Cu30Lyhfd6dCHR+Nj8ku93TuDzQPe5+FeLUwqiKbXN4QtzqM0m5cXt0nIAzX4l1/sj
+ KCMc0Up4u2o6+P6bbr4vpKcLIp0ih3mMqQph8y/Hfw0MggQUGif/uSxzLjj8lf4QLVOl/E2i
+ qfZvI3DKcQVu6K0BwtY3pws6xa4CDem39AYkmcdIF1ZfxKHipDlO1DIIP/mEfeym0qgnCtvy
+ vzcPbDsAo/BImbenLv9Z7px9kpRxQ4rwdBa/Z1UC7UBIPzpWk/2sdzVFh84Mg20w+n9CdVxy
+ p8SVGyUD6+ELKzSq0WE6fwyLOmRfIMVoiryK+A55/7yin80gVsdfaiv3ZsKZ3G0B/VmI0SeY
+ Xf3nNcBHnkFvhAkQOzpllKCSzhTaGi2X64m4TE7Eo2mXs//QdWPh7qIwCeyGNV9b2VLEFeKW
+ SPqdo7eAN8PZTiUL8snlSYLA/zpa4Y7yRSzqEfZzbNuJemcri4evJvo1551z+LWhVc++GowR
+ +CUyXrId2xok3lAbDs/wbtypwQpzl6ZyoB9juBRG9tUof9EBENyDZPAwvYyLt3/QB3IetvMc
+ 0qvTtGrG3llVtc8zsURS154Fti4kVbF0jb8R/cwnqyKAZF82aXFwnX1JsA1n3PN07A8gl0nR
+ I1UKWj93IZw8gHSA8jClEDP0+6DcakM1SjB7mrL8W2Us1xVGFp5VajVVHYTfEaQsdPj6V7PZ
+ 6SyT78gN10FgcqDLLZaL9zoin1YS/r5ftfTeWS8nyG3Hxnb6KmLad/bencdwSKVOkgNkkhH7
+ GSGPAlmXnyJvmnESjFiCAS8MAvX7eBipSbjHQcPxAaQYhgkjuLtkiM=
+IronPort-HdrOrdr: A9a23:2ps0W6qjgA2c/PQAHmuFUP4aV5oieYIsimQD101hICG9E/bo8P
+ xG885rtiMc5AxwZJhCo7G90cu7MBHhHPdOiOF7AV7IZniChILHFvAH0WIg+VDd8u/FnNK1GZ
+ 0OT0G2MrGfMWRH
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="5.84,250,1620716400"; 
+   d="scan'208";a="226574504"
+Received: from mail-pf1-f199.google.com ([209.85.210.199])
+  by smtpmx5.ucr.edu with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 18 Jul 2021 16:31:23 -0700
+Received: by mail-pf1-f199.google.com with SMTP id x130-20020a627c880000b0290332acd337a6so9663297pfc.23
+        for <linux-iio@vger.kernel.org>; Sun, 18 Jul 2021 16:31:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ow7yd/6EUrynMpV9RE7C75DLtK0l6+jas8yJI3xp7nA=;
-        b=mtHLYT1PVLfwr0yo72ltFsXd3BkURfFdKzk1gYUG87K4Jdj2Zys20Bb6eVlxFQ/laS
-         ACXKluXO1zmc/+jekgtpUIl5pC4eX8MAaFq+ieeSh8P4cPDWXz/x3Gkpx/acJDAF00e6
-         fbAsizywgrODPw5/MQhvvaVw8bqBwu/hRL3dEuaTz6i8H4wgjyNcvu8Q52XLYEJ0qPP3
-         TiYXPRGZnc3uOHjmeaozlaCS97riPW/17XU0kJrL8kIkoMhzwuIUp9QgE0cXqesAsypd
-         ayJ5cuEquoByIMPotOVLiyDz0P3FWu4/Rui5w5HTUhwugSshjGSrdfKwBrpFcTlc4hXm
-         etqw==
-X-Gm-Message-State: AOAM531NAmpFf2iwtagU761UboRqdSSKu2/QVfmMDAr9x/FJczFdXwlN
-        j6o8HlWhCmIp3qlZYEkImhWl5UB8Cp4gyisiOWUu/Q==
-X-Google-Smtp-Source: ABdhPJwghGaCyhofCPCUPvO43wl6OmCztC95fJB9QhJBHJw32g7l8URTTePKqAz97E7EEj9n5OiidKZJxOgHf4ayC/4=
-X-Received: by 2002:a92:2010:: with SMTP id j16mr14254152ile.98.1626643899633;
- Sun, 18 Jul 2021 14:31:39 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=K9lKwslw844RDIyYN5dKJv7bJNld7FSUNLoakaytPQ8=;
+        b=KpQPqqwLTfXiNjvknkP2ibjsJhXelZqgkRzhfDsK9ivRJlErm1e6ErAZ9PHABWflVl
+         kJrw2SDViFhX2ExheVMA+FTJcgPv3POvM97crzTunRTSl+oksdGOZGu6I9U3rQZQhQwm
+         jvEyHtfllOMj3b2XV87gr5/q57er1L+sorY6IHHoh9Wj3IhnvmxMv3kbV/chExIrK78C
+         w17noNiA34ObetdAybh/6E2piBz1SfyZjgkbNy7T9F2bsFR/rxI0yIz0BX0aLoC2GpPx
+         MHIZO+y2emhNzQEWr9I/5MMAz/7V7YSywOO2qBbla1+fNrU5+DCeY2rUIkPEt1jGHAwH
+         u5yQ==
+X-Gm-Message-State: AOAM533WPp14kMQaGBxNm9ro8gadG2e3sjjno/yZs9GgAtuH9CaCry1R
+        9v0jJyU2Gv2S+IMoMAJ+4prr9FfrN9Ro4i8Xx+rYSi2N7gdIQjnWIFo61RuQNQ+YlI/1XZjg6MH
+        /1q1kDbB4X+ZMkDqSUIm6ZYN1g7tsMMsAAGVyjQ==
+X-Received: by 2002:a62:dd83:0:b029:2e8:e511:c32f with SMTP id w125-20020a62dd830000b02902e8e511c32fmr22628077pff.49.1626651082273;
+        Sun, 18 Jul 2021 16:31:22 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJy2XjMW3sI3Iy9y+v0EqS4dRn+KBgBk3SB6ID/jsCASxJafnoCwXeJw12ktvR4XWZ+qelO4kpSoMyOYtgezEqs=
+X-Received: by 2002:a62:dd83:0:b029:2e8:e511:c32f with SMTP id
+ w125-20020a62dd830000b02902e8e511c32fmr22628062pff.49.1626651082069; Sun, 18
+ Jul 2021 16:31:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210614141820.2034827-1-chris.lesiak@licor.com>
- <20210616134335.76715e55@jic23-huawei> <20210718155152.66f791bc@jic23-huawei>
-In-Reply-To: <20210718155152.66f791bc@jic23-huawei>
-From:   Matt Ranostay <matt.ranostay@konsulko.com>
-Date:   Sun, 18 Jul 2021 14:31:28 -0700
-Message-ID: <CAJCx=gnJJatCbrPiWh5cDkabNLN8PG3e55r_y8veFzPRBRbD_w@mail.gmail.com>
-Subject: Re: [PATCH v3] iio: humidity: hdc100x: Add margin to the conversion time
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Chris Lesiak <chris.lesiak@licor.com>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
+From:   Yizhuo Zhai <yzhai003@ucr.edu>
+Date:   Sun, 18 Jul 2021 16:31:11 -0700
+Message-ID: <CABvMjLS8jU2y3owRvsS-PyS5NUyRpQs6Xa_A+U5mfWUTKu3p4A@mail.gmail.com>
+Subject: Uninitialized Variable Use in drivers/iio/adc/stm32-dfsdm-adc.c
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        linux-iio@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jul 18, 2021 at 7:49 AM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Wed, 16 Jun 2021 13:43:35 +0100
-> Jonathan Cameron <jic23@kernel.org> wrote:
->
-> > On Mon, 14 Jun 2021 09:18:20 -0500
-> > Chris Lesiak <chris.lesiak@licor.com> wrote:
-> >
-> > > The datasheets have the following note for the conversion time
-> > > specification: "This parameter is specified by design and/or
-> > > characterization and it is not tested in production."
-> > >
-> > > Parts have been seen that require more time to do 14-bit conversions for
-> > > the relative humidity channel.  The result is ENXIO due to the address
-> > > phase of a transfer not getting an ACK.
-> > >
-> > > Delay an additional 1 ms per conversion to allow for additional margin.
-> > >
-> > > Fixes: 4839367d99e3 ("iio: humidity: add HDC100x support")
-> > > Signed-off-by: Chris Lesiak <chris.lesiak@licor.com>
-> >
-> > +CC Matt as this is one of his drivers.
->
-> @Matt. Ping.
->
-> >
-> > Looks good to me.
+Hi All:
+Inside function stm32_dfsdm_irq(), the variable "status", "int_en"
+could be uninitialized if the regmap_read() fails and returns an error
+code.  However, they are directly used in the later context to decide
+the control flow, which is potentially unsafe. However,
+stm32_dfsdm_irq() returns the type irqreturn_t and I could not return
+the error code directly. Could you please advise me here?
 
-Looks good to me as well.
+The related code:
 
-Acked-by: Matt Ranostay <matt.ranostay@konsulko.com>
+static irqreturn_t stm32_dfsdm_irq(int irq, void *arg) {
+    unsigned int status, int_en;
 
-> >
-> > > ---
-> > >  drivers/iio/humidity/hdc100x.c | 6 ++++--
-> > >  1 file changed, 4 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
-> > > index 2a957f19048e..9e0fce917ce4 100644
-> > > --- a/drivers/iio/humidity/hdc100x.c
-> > > +++ b/drivers/iio/humidity/hdc100x.c
-> > > @@ -25,6 +25,8 @@
-> > >  #include <linux/iio/trigger_consumer.h>
-> > >  #include <linux/iio/triggered_buffer.h>
-> > >
-> > > +#include <linux/time.h>
-> > > +
-> > >  #define HDC100X_REG_TEMP                   0x00
-> > >  #define HDC100X_REG_HUMIDITY                       0x01
-> > >
-> > > @@ -166,7 +168,7 @@ static int hdc100x_get_measurement(struct hdc100x_data *data,
-> > >                                struct iio_chan_spec const *chan)
-> > >  {
-> > >     struct i2c_client *client = data->client;
-> > > -   int delay = data->adc_int_us[chan->address];
-> > > +   int delay = data->adc_int_us[chan->address] + 1*USEC_PER_MSEC;
-> > >     int ret;
-> > >     __be16 val;
-> > >
-> > > @@ -316,7 +318,7 @@ static irqreturn_t hdc100x_trigger_handler(int irq, void *p)
-> > >     struct iio_dev *indio_dev = pf->indio_dev;
-> > >     struct hdc100x_data *data = iio_priv(indio_dev);
-> > >     struct i2c_client *client = data->client;
-> > > -   int delay = data->adc_int_us[0] + data->adc_int_us[1];
-> > > +   int delay = data->adc_int_us[0] + data->adc_int_us[1] + 2*USEC_PER_MSEC;
-> > >     int ret;
-> > >
-> > >     /* dual read starts at temp register */
-> >
->
+    regmap_read(regmap, DFSDM_ISR(adc->fl_id), &status);
+    regmap_read(regmap, DFSDM_CR2(adc->fl_id), &int_en);
+
+    if (status & DFSDM_ISR_REOCF_MASK) {}
+    if (status & DFSDM_ISR_ROVRF_MASK) {}
+}
+
+
+-- 
+Kind Regards,
+
+Yizhuo Zhai
+
+Computer Science, Graduate Student
+University of California, Riverside

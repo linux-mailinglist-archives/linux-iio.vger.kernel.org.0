@@ -2,109 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E28E33CC6DD
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Jul 2021 01:38:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE9F53CC990
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Jul 2021 16:27:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231174AbhGQXkq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 17 Jul 2021 19:40:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55892 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230502AbhGQXkc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 17 Jul 2021 19:40:32 -0400
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 991C0C061764;
-        Sat, 17 Jul 2021 16:37:33 -0700 (PDT)
-Received: by mail-wr1-x435.google.com with SMTP id f9so16497264wrq.11;
-        Sat, 17 Jul 2021 16:37:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=XT3dSBF1T+xb0vIDoCrx2w6ZTm5g1KZ+GveMuxTzekE=;
-        b=CtXz2OYi/GCxjfmSsp1YKE9LnoDSnkeBX/+cM0CqBTWLFyQ6l+6dF7g0GALhl5vFip
-         bB1RIaGem2FXKgNiq5DFd/DPWKamLAy953PR8qpNsuuHn+CCMqud62IDqI2tgLVcNVJL
-         pqiUeR/+krg7X5p1lecyAvFwM5jkR75NGg6E5w+CQb1NJ9sbUYwh+ep4qbz61fVvxMJp
-         TcSgS/GtSGwi5iDDi8i26O8rXG9dnoxKH7P/myimGPxHn9jsUFuERMigxDKxjx9wQWSW
-         v8eZgG05pDqFZaqWIbBJC5A9z6GV2VeemXuFYPhFjx3Pr9A3KDKuqhML1I7a9D5eavp+
-         fGEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=XT3dSBF1T+xb0vIDoCrx2w6ZTm5g1KZ+GveMuxTzekE=;
-        b=hzbXrzU3BQhDC+1ScPbhWHiKhEG/YrZexMXJkxL7iQFEMX/WESQnpYKpVCk2dYyVwQ
-         yYy1rSyz0J06A1cAeAJ0FNsfoBxNjkjiRZ3qOrd/L7vyRv2Uctdf68qm3KeXIpzkNr9A
-         wzc6pp+av0JlVgXVlMlGsG+5BG0eEBPdc6VIgWhxbd9NriiCqFUoFKba2Fqh4rxUQPdn
-         ngXfFr1gSB7dsXhXHxrJEtbYL/mGkFGdwm4nCF8hlHJtCzt6rKMhyv1CILA9upMaiLnb
-         xS3NHMEf+aUDgkA+D2PsnKFeb387ZfNyKBb+6hbrnXp2w4jeigt21lKDzuv4pvvn2ujk
-         QFuQ==
-X-Gm-Message-State: AOAM533P8fsNpJGCjpm4DODj3q8JJbJKwDiYv70owT1/CzAN0QNyEtcC
-        ZMRxIuEt2JQRPVwNGGLyJzo65fqa/yY=
-X-Google-Smtp-Source: ABdhPJyMHQezFPPUSmeL1JZrcqZFIjqXhH77/GR5QaHIt7RRb8WSy+hK7rcUeEv/o/KOCoaagS0qRw==
-X-Received: by 2002:a5d:5141:: with SMTP id u1mr21346802wrt.193.1626565052070;
-        Sat, 17 Jul 2021 16:37:32 -0700 (PDT)
-Received: from localhost.localdomain (dynamic-2a01-0c22-7602-4e00-f22f-74ff-fe21-0725.c22.pool.telefonica.de. [2a01:c22:7602:4e00:f22f:74ff:fe21:725])
-        by smtp.googlemail.com with ESMTPSA id q7sm12347527wmq.33.2021.07.17.16.37.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Jul 2021 16:37:31 -0700 (PDT)
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-To:     linux-iio@vger.kernel.org, linux-amlogic@lists.infradead.org
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        lars@metafoo.de, jic23@kernel.org,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Subject: [PATCH 3/3] iio: adc: meson-saradc: Fix indentation of arguments after a line-break
-Date:   Sun, 18 Jul 2021 01:37:18 +0200
-Message-Id: <20210717233718.332267-4-martin.blumenstingl@googlemail.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210717233718.332267-1-martin.blumenstingl@googlemail.com>
-References: <20210717233718.332267-1-martin.blumenstingl@googlemail.com>
+        id S233693AbhGROaL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Jul 2021 10:30:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46140 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232973AbhGROaL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 18 Jul 2021 10:30:11 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id F115D611AB;
+        Sun, 18 Jul 2021 14:27:11 +0000 (UTC)
+Date:   Sun, 18 Jul 2021 15:29:36 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Alexandru Ardelean <aardelean@deviqon.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Maury Anderson <maury.anderson@rockwellcollins.com>
+Subject: Re: [PATCH] iio: potentiometer: max5481: convert probe to
+ device-managed
+Message-ID: <20210718152936.3d4194e6@jic23-huawei>
+In-Reply-To: <20210624080641.9953-1-aardelean@deviqon.com>
+References: <20210624080641.9953-1-aardelean@deviqon.com>
+X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Align the function arguments after a line-break with the opening
-parenthesis on the previous line. No functional changes intended.
+On Thu, 24 Jun 2021 11:06:41 +0300
+Alexandru Ardelean <aardelean@deviqon.com> wrote:
 
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
----
- drivers/iio/adc/meson_saradc.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+> The change converts the probe function to use the
+> devm_iio_device_register() function.
+> 
+> Before calling that, we need to register an action to store the wiper back
+> to non-volatile memory when the device is de-registered.
+> 
+> We don't need to do this if the probe fails, because the only place where
+> the probe can fail now is devm_iio_device_register() and that shouldn't
+> create an IIO device (for userspace to poke at) if it fails.
+> 
+> Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
+Hi Alex,
 
-diff --git a/drivers/iio/adc/meson_saradc.c b/drivers/iio/adc/meson_saradc.c
-index b4e16f2e957f..705d5e11a54b 100644
---- a/drivers/iio/adc/meson_saradc.c
-+++ b/drivers/iio/adc/meson_saradc.c
-@@ -497,8 +497,8 @@ static int meson_sar_adc_lock(struct iio_dev *indio_dev)
- 	if (priv->param->has_bl30_integration) {
- 		/* prevent BL30 from using the SAR ADC while we are using it */
- 		regmap_update_bits(priv->regmap, MESON_SAR_ADC_DELAY,
--				MESON_SAR_ADC_DELAY_KERNEL_BUSY,
--				MESON_SAR_ADC_DELAY_KERNEL_BUSY);
-+				   MESON_SAR_ADC_DELAY_KERNEL_BUSY,
-+				   MESON_SAR_ADC_DELAY_KERNEL_BUSY);
- 
- 		/*
- 		 * wait until BL30 releases it's lock (so we can use the SAR
-@@ -525,7 +525,7 @@ static void meson_sar_adc_unlock(struct iio_dev *indio_dev)
- 	if (priv->param->has_bl30_integration)
- 		/* allow BL30 to use the SAR ADC again */
- 		regmap_update_bits(priv->regmap, MESON_SAR_ADC_DELAY,
--				MESON_SAR_ADC_DELAY_KERNEL_BUSY, 0);
-+				   MESON_SAR_ADC_DELAY_KERNEL_BUSY, 0);
- 
- 	mutex_unlock(&indio_dev->mlock);
- }
-@@ -791,7 +791,7 @@ static int meson_sar_adc_init(struct iio_dev *indio_dev)
- 	 * on the vendor driver), which we don't support at the moment.
- 	 */
- 	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG0,
--			MESON_SAR_ADC_REG0_ADC_TEMP_SEN_SEL, 0);
-+			   MESON_SAR_ADC_REG0_ADC_TEMP_SEN_SEL, 0);
- 
- 	/* disable all channels by default */
- 	regmap_write(priv->regmap, MESON_SAR_ADC_CHAN_LIST, 0x0);
--- 
-2.32.0
+This one took a little bit of thought because it's a bit unusual in that
+that wiper write back isn't technically unwinding anything so doesn't
+have an obvious match in probe.  However, as it logically wants to happen
+just after we've removed the userspace interfaces, I agree with your
+logic that it makes sense to do it with a devm triggered call.
+
+So, on that basis applied. 
+
++CC Maury on basis might still be about on that address and want to
+express a view on whether this makes sense.
+
+Jonathan
+
+> ---
+>  drivers/iio/potentiometer/max5481.c | 22 +++++++++-------------
+>  1 file changed, 9 insertions(+), 13 deletions(-)
+> 
+> diff --git a/drivers/iio/potentiometer/max5481.c b/drivers/iio/potentiometer/max5481.c
+> index 6e22b538091f..098d144a8fdd 100644
+> --- a/drivers/iio/potentiometer/max5481.c
+> +++ b/drivers/iio/potentiometer/max5481.c
+> @@ -125,6 +125,11 @@ static const struct of_device_id max5481_match[] = {
+>  };
+>  MODULE_DEVICE_TABLE(of, max5481_match);
+>  
+> +static void max5481_wiper_save(void *data)
+> +{
+> +	max5481_write_cmd(data, MAX5481_COPY_AB_TO_NV, 0);
+> +}
+> +
+>  static int max5481_probe(struct spi_device *spi)
+>  {
+>  	struct iio_dev *indio_dev;
+> @@ -136,7 +141,6 @@ static int max5481_probe(struct spi_device *spi)
+>  	if (!indio_dev)
+>  		return -ENOMEM;
+>  
+> -	spi_set_drvdata(spi, indio_dev);
+>  	data = iio_priv(indio_dev);
+>  
+>  	data->spi = spi;
+> @@ -158,18 +162,11 @@ static int max5481_probe(struct spi_device *spi)
+>  	if (ret < 0)
+>  		return ret;
+>  
+> -	return iio_device_register(indio_dev);
+> -}
+> -
+> -static int max5481_remove(struct spi_device *spi)
+> -{
+> -	struct iio_dev *indio_dev = spi_get_drvdata(spi);
+> -	struct max5481_data *data = iio_priv(indio_dev);
+> -
+> -	iio_device_unregister(indio_dev);
+> +	ret = devm_add_action(&spi->dev, max5481_wiper_save, data);
+> +	if (ret < 0)
+> +		return ret;
+>  
+> -	/* save wiper reg to NV reg */
+> -	return max5481_write_cmd(data, MAX5481_COPY_AB_TO_NV, 0);
+> +	return devm_iio_device_register(&spi->dev, indio_dev);
+>  }
+>  
+>  static const struct spi_device_id max5481_id_table[] = {
+> @@ -187,7 +184,6 @@ static struct spi_driver max5481_driver = {
+>  		.of_match_table = max5481_match,
+>  	},
+>  	.probe = max5481_probe,
+> -	.remove = max5481_remove,
+>  	.id_table = max5481_id_table,
+>  };
+>  
 

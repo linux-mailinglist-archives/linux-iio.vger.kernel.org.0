@@ -2,30 +2,29 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE9F53CC990
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Jul 2021 16:27:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED3B13CC995
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Jul 2021 16:30:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233693AbhGROaL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Jul 2021 10:30:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46140 "EHLO mail.kernel.org"
+        id S232895AbhGROdM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Jul 2021 10:33:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46590 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232973AbhGROaL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 18 Jul 2021 10:30:11 -0400
+        id S230307AbhGROdM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 18 Jul 2021 10:33:12 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F115D611AB;
-        Sun, 18 Jul 2021 14:27:11 +0000 (UTC)
-Date:   Sun, 18 Jul 2021 15:29:36 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 98A496100A;
+        Sun, 18 Jul 2021 14:30:12 +0000 (UTC)
+Date:   Sun, 18 Jul 2021 15:32:36 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Alexandru Ardelean <aardelean@deviqon.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Maury Anderson <maury.anderson@rockwellcollins.com>
-Subject: Re: [PATCH] iio: potentiometer: max5481: convert probe to
- device-managed
-Message-ID: <20210718152936.3d4194e6@jic23-huawei>
-In-Reply-To: <20210624080641.9953-1-aardelean@deviqon.com>
-References: <20210624080641.9953-1-aardelean@deviqon.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: light: tcs3414: convert probe to device-managed
+ routines
+Message-ID: <20210718153236.55e1b43a@jic23-huawei>
+In-Reply-To: <20210624080534.9209-1-aardelean@deviqon.com>
+References: <20210624080534.9209-1-aardelean@deviqon.com>
 X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -34,92 +33,108 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 24 Jun 2021 11:06:41 +0300
+On Thu, 24 Jun 2021 11:05:34 +0300
 Alexandru Ardelean <aardelean@deviqon.com> wrote:
 
-> The change converts the probe function to use the
-> devm_iio_device_register() function.
+> This change converts the driver to use only device-managed init routines in
+> the probe function of the driver.
 > 
-> Before calling that, we need to register an action to store the wiper back
-> to non-volatile memory when the device is de-registered.
+> This way, we no longer need the tcs3414_remove() hook.
+> We still need to keep the i2c_set_clientdata() call, as that's being used
+> for the PM routines.
 > 
-> We don't need to do this if the probe fails, because the only place where
-> the probe can fail now is devm_iio_device_register() and that shouldn't
-> create an IIO device (for userspace to poke at) if it fails.
+> And lastly, a devm_add_action_or_reset() hook is added to call the
+> powerdown handler when the chip is uninitialized or the probe fails.
 > 
 > Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
-Hi Alex,
-
-This one took a little bit of thought because it's a bit unusual in that
-that wiper write back isn't technically unwinding anything so doesn't
-have an obvious match in probe.  However, as it logically wants to happen
-just after we've removed the userspace interfaces, I agree with your
-logic that it makes sense to do it with a devm triggered call.
-
-So, on that basis applied. 
-
-+CC Maury on basis might still be about on that address and want to
-express a view on whether this makes sense.
-
-Jonathan
+Applied
 
 > ---
->  drivers/iio/potentiometer/max5481.c | 22 +++++++++-------------
->  1 file changed, 9 insertions(+), 13 deletions(-)
+>  drivers/iio/light/tcs3414.c | 48 +++++++++++++++----------------------
+>  1 file changed, 19 insertions(+), 29 deletions(-)
 > 
-> diff --git a/drivers/iio/potentiometer/max5481.c b/drivers/iio/potentiometer/max5481.c
-> index 6e22b538091f..098d144a8fdd 100644
-> --- a/drivers/iio/potentiometer/max5481.c
-> +++ b/drivers/iio/potentiometer/max5481.c
-> @@ -125,6 +125,11 @@ static const struct of_device_id max5481_match[] = {
+> diff --git a/drivers/iio/light/tcs3414.c b/drivers/iio/light/tcs3414.c
+> index 0593abd600ec..b87222141429 100644
+> --- a/drivers/iio/light/tcs3414.c
+> +++ b/drivers/iio/light/tcs3414.c
+> @@ -267,6 +267,18 @@ static const struct iio_buffer_setup_ops tcs3414_buffer_setup_ops = {
+>  	.predisable = tcs3414_buffer_predisable,
 >  };
->  MODULE_DEVICE_TABLE(of, max5481_match);
 >  
-> +static void max5481_wiper_save(void *data)
+> +static int tcs3414_powerdown(struct tcs3414_data *data)
 > +{
-> +	max5481_write_cmd(data, MAX5481_COPY_AB_TO_NV, 0);
+> +	return i2c_smbus_write_byte_data(data->client, TCS3414_CONTROL,
+> +		data->control & ~(TCS3414_CONTROL_POWER |
+> +		TCS3414_CONTROL_ADC_EN));
 > +}
 > +
->  static int max5481_probe(struct spi_device *spi)
+> +static void tcs3414_powerdown_cleanup(void *data)
+> +{
+> +	tcs3414_powerdown(data);
+> +}
+> +
+>  static int tcs3414_probe(struct i2c_client *client,
+>  			   const struct i2c_device_id *id)
 >  {
->  	struct iio_dev *indio_dev;
-> @@ -136,7 +141,6 @@ static int max5481_probe(struct spi_device *spi)
->  	if (!indio_dev)
->  		return -ENOMEM;
->  
-> -	spi_set_drvdata(spi, indio_dev);
->  	data = iio_priv(indio_dev);
->  
->  	data->spi = spi;
-> @@ -158,18 +162,11 @@ static int max5481_probe(struct spi_device *spi)
+> @@ -309,6 +321,11 @@ static int tcs3414_probe(struct i2c_client *client,
 >  	if (ret < 0)
 >  		return ret;
 >  
-> -	return iio_device_register(indio_dev);
-> -}
-> -
-> -static int max5481_remove(struct spi_device *spi)
-> -{
-> -	struct iio_dev *indio_dev = spi_get_drvdata(spi);
-> -	struct max5481_data *data = iio_priv(indio_dev);
-> -
-> -	iio_device_unregister(indio_dev);
-> +	ret = devm_add_action(&spi->dev, max5481_wiper_save, data);
+> +	ret = devm_add_action_or_reset(&client->dev, tcs3414_powerdown_cleanup,
+> +				       data);
 > +	if (ret < 0)
 > +		return ret;
+> +
+>  	data->timing = TCS3414_INTEG_12MS; /* free running */
+>  	ret = i2c_smbus_write_byte_data(data->client, TCS3414_TIMING,
+>  		data->timing);
+> @@ -320,38 +337,12 @@ static int tcs3414_probe(struct i2c_client *client,
+>  		return ret;
+>  	data->gain = ret;
 >  
-> -	/* save wiper reg to NV reg */
-> -	return max5481_write_cmd(data, MAX5481_COPY_AB_TO_NV, 0);
-> +	return devm_iio_device_register(&spi->dev, indio_dev);
+> -	ret = iio_triggered_buffer_setup(indio_dev, NULL,
+> +	ret = devm_iio_triggered_buffer_setup(&client->dev, indio_dev, NULL,
+>  		tcs3414_trigger_handler, &tcs3414_buffer_setup_ops);
+>  	if (ret < 0)
+>  		return ret;
+>  
+> -	ret = iio_device_register(indio_dev);
+> -	if (ret < 0)
+> -		goto buffer_cleanup;
+> -
+> -	return 0;
+> -
+> -buffer_cleanup:
+> -	iio_triggered_buffer_cleanup(indio_dev);
+> -	return ret;
+> -}
+> -
+> -static int tcs3414_powerdown(struct tcs3414_data *data)
+> -{
+> -	return i2c_smbus_write_byte_data(data->client, TCS3414_CONTROL,
+> -		data->control & ~(TCS3414_CONTROL_POWER |
+> -		TCS3414_CONTROL_ADC_EN));
+> -}
+> -
+> -static int tcs3414_remove(struct i2c_client *client)
+> -{
+> -	struct iio_dev *indio_dev = i2c_get_clientdata(client);
+> -
+> -	iio_device_unregister(indio_dev);
+> -	iio_triggered_buffer_cleanup(indio_dev);
+> -	tcs3414_powerdown(iio_priv(indio_dev));
+> -
+> -	return 0;
+> +	return devm_iio_device_register(&client->dev, indio_dev);
 >  }
 >  
->  static const struct spi_device_id max5481_id_table[] = {
-> @@ -187,7 +184,6 @@ static struct spi_driver max5481_driver = {
->  		.of_match_table = max5481_match,
+>  #ifdef CONFIG_PM_SLEEP
+> @@ -385,7 +376,6 @@ static struct i2c_driver tcs3414_driver = {
+>  		.pm	= &tcs3414_pm_ops,
 >  	},
->  	.probe = max5481_probe,
-> -	.remove = max5481_remove,
->  	.id_table = max5481_id_table,
+>  	.probe		= tcs3414_probe,
+> -	.remove		= tcs3414_remove,
+>  	.id_table	= tcs3414_id,
 >  };
->  
+>  module_i2c_driver(tcs3414_driver);
 

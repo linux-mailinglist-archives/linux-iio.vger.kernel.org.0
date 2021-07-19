@@ -2,236 +2,984 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DC0A3CD44B
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jul 2021 14:04:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 463B83CD450
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jul 2021 14:05:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236543AbhGSLYF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 19 Jul 2021 07:24:05 -0400
-Received: from mx0b-00105401.pphosted.com ([67.231.152.184]:22824 "EHLO
-        mx0b-00105401.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236839AbhGSLYD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Jul 2021 07:24:03 -0400
-X-Greylist: delayed 1803 seconds by postgrey-1.27 at vger.kernel.org; Mon, 19 Jul 2021 07:24:03 EDT
-Received: from pps.filterd (m0266029.ppops.net [127.0.0.1])
-        by mx0a-00105401.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 16JBUkhf021395;
-        Mon, 19 Jul 2021 11:34:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=collins.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=POD051818;
- bh=k0xXp4ZRXwL+3hnEta1oOFxa3ymJdM7mnmWkfPYGMzc=;
- b=YZBj/DPsYFoJdtmuIB+SZidV4qJr4uUduDdBBnLBhf7jD+VO0pKUwi3oSe9WZ2DkREZ7
- uGEGg9Pv+3ctfzxX8WOjFvvAFXmoxl6DeJ0josAxJD2Mct4hP7XjAMp0dCss4xDn2G2F
- WV3TzlMFjo2ptEZsw1wP9Set9TV84iQSk8F+6HfBCKMTMIDsIWfNyUTDciULlgs1xS6S
- 0vGm+EsIsifkblF9bIglgSFlhxO3CSFxJVleo5mEAvdAyeXiJvqtV9JPENtFDgIxS2vr
- gVP4TQaLNzHSC7v0rFgad4CT2LkV3G71NdKsatHWA3vdtWiFL7TrAE0OaAQAKh+9erf7 dw== 
-Received: from xmnpv39.utc.com ([167.17.255.19])
-        by mx0a-00105401.pphosted.com with ESMTP id 39unm9cfyg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 19 Jul 2021 11:34:35 +0000
-Received: from qusmna5k.utcapp.com (qusmna5k.utcapp.com [10.161.160.133])
-        by xmnpv39.utc.com (8.16.0.27/8.16.0.27) with ESMTPS id 16JBYYTv161309
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-        Mon, 19 Jul 2021 11:34:35 GMT
-Received: from UUSALE05.utcmail.com (UUSALE05.utcmail.com [10.220.35.15])
-        by qusmna5k.utcapp.com (8.16.1.2/8.16.1.2) with ESMTPS id 16JBYYUh018300
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-        Mon, 19 Jul 2021 11:34:34 GMT
-Received: from uusale2b.utcmail.com (10.220.63.21) by UUSALE05.utcmail.com
- (10.220.35.15) with Microsoft SMTP Server (TLS) id 15.0.1497.18; Mon, 19 Jul
- 2021 07:34:34 -0400
-Received: from uusale29.utcmail.com (10.220.63.19) by uusale2b.utcmail.com
- (10.220.63.21) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 19 Jul
- 2021 07:34:34 -0400
-Received: from USG02-BN3-obe.outbound.protection.office365.us (23.103.199.148)
- by uusale29.utcmail.com (10.220.63.19) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2 via Frontend Transport; Mon, 19 Jul 2021 07:34:33 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector5401; d=microsoft.com; cv=none;
- b=enclBXzb1eRPzfUME2iPjEHKnK5RFr7hKmdSi1UZQvZPOLBKNoe7n7pNsadUNScnkqttVIPWGVNXloa5YuizzvENyWpa8bhmarkH8it+p9TFQnPu7jtz+UWAVA/DJ1EGUYPBJ3c9Xdoec0C+H97My3ifElA+MV7g6XqrdYpHQqO7Px3VPHjpoEMIlIlSaaGheSsJut0YlcsrjCognowfDqVH4SzC1qrdfQv9k/li6aTMzUUoyb8NDfCF+tcxXI0SvxUJd/bHW0hgKXkZJSDKgaLMKf+EyX/xZxBUYxK0gndPVOhNqH1eLQMlQNfBDtZewzre0I2fmgB/4+7NNtfCqA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector5401;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=k0xXp4ZRXwL+3hnEta1oOFxa3ymJdM7mnmWkfPYGMzc=;
- b=AuQTCsqxgIJOv1sF01s6N/5KNlTFQm6LmfwRPefbK9sx91vExa/8mJc2I0Z00hJp793Ha7eRRezmboAtZLkqit38KyskSD45jJXP2al/RoCZks9Qr9nnxrfNjjjBsXkIyFd4KmSfzfave36FRGARBCOGIguHR+nOK8jJRYVdNWOxUIu5RpqJp+3fG9FebiUIG1h6Pjfc+KRfkuO0nZlsKVNvA/M1Vp1MqN+xwXvN4FjaWRAr/2gcozfSoPTWyIhEh/wqyHV2DxfT+14JZvnROdt8ae8odsZztlBnSbxOV8a6fkiBRaIFaJCCB0alfP8bbAVE9DvN/89mPPaXm91B2A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=collins.com; dmarc=pass action=none header.from=collins.com;
- dkim=pass header.d=collins.com; arc=none
+        id S236541AbhGSLZB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 19 Jul 2021 07:25:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45300 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236440AbhGSLZA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Jul 2021 07:25:00 -0400
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2A89C061574;
+        Mon, 19 Jul 2021 04:20:04 -0700 (PDT)
+Received: by mail-pf1-x435.google.com with SMTP id b12so16276897pfv.6;
+        Mon, 19 Jul 2021 05:05:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rtxusers.onmicrosoft.us; s=selector1-rtxusers-onmicrosoft-us;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=k0xXp4ZRXwL+3hnEta1oOFxa3ymJdM7mnmWkfPYGMzc=;
- b=JT2eXwz9fcdbxu4o/KPV4q4J1yb0iRBZYIZ/ACbdGSBt1FgwEX1KPh7VNMCY+ruoJnB1Uq1fNhKp1d9IZ+LAwRgEOfuJKgqfomMij8DXGuYuhJNFcdrNS0a/fzcHex7eI6OWbAmTR/sGxSQfSWIWsPrPGu87i/ypoeRsvC8wvW0=
-Received: from BN1P110MB0148.NAMP110.PROD.OUTLOOK.COM (23.103.23.27) by
- BN1P110MB0115.NAMP110.PROD.OUTLOOK.COM (23.103.22.26) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4331.22; Mon, 19 Jul 2021 11:34:33 +0000
-Received: from BN1P110MB0148.NAMP110.PROD.OUTLOOK.COM ([23.103.23.27]) by
- BN1P110MB0148.NAMP110.PROD.OUTLOOK.COM ([23.103.23.27]) with mapi id
- 15.20.4331.032; Mon, 19 Jul 2021 11:34:33 +0000
-From:   "Anderson, Maury J Collins" <Maury.Anderson@collins.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Alexandru Ardelean <aardelean@deviqon.com>
-CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] iio: potentiometer: max5481: convert probe to
- device-managed
-Thread-Topic: [PATCH] iio: potentiometer: max5481: convert probe to
- device-managed
-Thread-Index: AQHXe+EkJO36PEJgGkW/TleK9ljyh6tKKzHw
-Date:   Mon, 19 Jul 2021 11:34:33 +0000
-Message-ID: <BN1P110MB0148698C7F6716431F54E85A9FE19@BN1P110MB0148.NAMP110.PROD.OUTLOOK.COM>
-References: <20210624080641.9953-1-aardelean@deviqon.com>
- <20210718152936.3d4194e6@jic23-huawei>
-In-Reply-To: <20210718152936.3d4194e6@jic23-huawei>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=collins.com;
-x-originating-ip: [173.22.99.192]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 4405f877-105b-44c7-971b-08d94aa92e16
-x-ms-traffictypediagnostic: BN1P110MB0115:
-x-microsoft-antispam-prvs: <BN1P110MB0115E059881E9CD7E7BEC0069FE19@BN1P110MB0115.NAMP110.PROD.OUTLOOK.COM>
-x-ms-oob-tlc-oobclassifiers: OLM:8882;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: THRxa4eWkZtEmEMB20kdWLfnEW7g+RQmUoGwrYD2usbkBthZTpYsqcSm4Xw26iAwQmqtMAnntlm/4fceTYV/C4vvVDCdUJI0BI3bUeNJ+tmnmUvvJDUeUhq0sH8nKr+aoOC/XZUmEdSIXznMCifm+c3iXnzDyAGgkfdMBRnddmHBpeYVRoWa5LPLPNkBAeWJyU6/Bpj29SaHIWyz1UIpzJ8wc0oCrqSw+XUuZm1XR/2HrkKYSFoB66sErMMk11C8nphKF2NKGyOvt1/iVFw46xds/VfT4+2SfxW3o77zqxJEfZHGsbqQLdnReqN8LmLW8c4AqsjHuc/qGk2ADVmdzMkpjK20j2XYIqMZCLaB1Di8zOD3ZPC5yXvKBuwOeIRjG57jCsQlor/k0a3adIPDmoBRS9/VcTtaSB7SCxEEjGjIQ6Zf6W4pqWVntW7wh4hn9nIAaldrbsUBur6IGO/ViSJTDTF/3qsk7lTGLzTjUqeO+9FsMm5nredgIT9oO5+zyEN0FChTfdsyAhZjUj3qNz7HaKFRf55VN0Dr3fj9DEWYfhitaPLR2v8r7QDDs/BD+ASoZhjbNP4aupUt/tacF+b31/BBuGkQW1KbPdxdFl1vEiyxPyyJAm4I48bNwlzA
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN1P110MB0148.NAMP110.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(376002)(366004)(396003)(136003)(346002)(39860400002)(8936002)(33656002)(38100700002)(956004)(8676002)(64756008)(66556008)(2906002)(5660300002)(76116006)(66476007)(66446008)(66946007)(9686003)(52536014)(122000001)(26005)(316002)(110136005)(4326008)(54906003)(83380400001)(53546011)(55016002)(6506007)(86362001)(7696005)(71200400001)(186003)(478600001)(38070700004);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: 5kQlZAOsYnjgFyOnvkAUHOo+L2M8mYSgX16y+9XnU84fC5scl1PZrfKYjA4ffxmrDQbECnqAiTQSvCzRcigbGx/ZrD0o0B+hE4GpmxtzpaoIQlHnhrnCMRD4XpOM5jLzzmSDR8JRAVSTnfrhyTBHVPYHOpdXcwQ3AA40S/dCIRysNqI7Rdxo6Azbd+8+Un3BGY9nEm8tL/0cKk5gWzUqzbZFwEF/DMLNAQlOcjQr9FXBpHRKMofQPc0TVqRZFyyn+KW7Fs6pb6LyFFG4GeGr3CjZ4bhSYAmLQof/ON/QjoD6OMOh+MPJHVtoNNf5iDd6lJbZq5gAYkApJFu5MEeiF03suExXi5Ji5/w6nTAslRZ1hdLommUJnqDjNy3z9sGihpqTtUzJT0p1nJfDLKg+IFXcFQYFfYCoeqGOsE2ZJtHajdPo4pknt/DEPOPsUPMb8kuaRrRaq/LersPcHbZFJWS9ai4wWOJz7JS40m59TZsMFWu2kYGuXE1/vRCoPhA/7Hb3Lw7ieI5u8Kz0RKfuzVCr+leR6Z4Xgj4qBufUeYwbgs8b36HECgpA87SS2oeV6OzDmoisvt4Oq7fZEF2aNJ2iXNftRsdm4PCmNgmjn6fgxkf+VMWfOximU1cFNZkNTfd4awn2MA1BN7pxaazYgnuM5YuqV56JO5LstO+zYUqnPCNBxnCe6v+IudtycjUlvu9mbjWrzmD/kFTcktLsLQ==
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=yk3SU4tPR6+yFe9Nr0oo/7KyyR3iAlfKyGjyVOFUHu8=;
+        b=tCoL51VXBl2LHia6zLpRQcUA1lYRYF7vq0TIbUBkcKgmOLS0/DeDfL7FHB84s1242X
+         R+XYXlPI4R6Ag6LVMqIaB01LTK8ldbp45w1y/SwxCxKUcrvyBnyM6Dpd/blHcoAH/SrI
+         h+g/Vx58Pg8BJGuAWbxGuyrPPDVT6m/jCm8o1b6yds8bnfre2NrlON6G5dRUhuq/9gKW
+         2HdiRtb1SQQwCCvU0ZmRc62F9MxrNfom3ORHs1Wbkxsz2o8CrV57l48o4YZfhjjzZNMB
+         rxD66wnaWcwJcBq7bg4scVuHRtULJBcvD7HUsl0oxhlXT6NuQBVkwa8UeuZuEixvnZLw
+         yRAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=yk3SU4tPR6+yFe9Nr0oo/7KyyR3iAlfKyGjyVOFUHu8=;
+        b=Ul2afhjmcS2SujbV307UPehknkrd94I6mXy1MvqKBv4nlVrAoi4dinNWgevRoRkUVR
+         lJJu57Pq1PbMyrZOFuLzBmEqPuETm9OB+cogWuWsSZ2n4MzQaDawq8roMyXI42LqEoAJ
+         q8SsoKBoDpQV4yHyo3uZNLNYS+0zfMLTxqp4wMVAS9iQOELqtpjEvkZsR4nJKKfu39vy
+         wXe1fs5jlNwNIZexTZhTfFFE0qREfg+6NATvKKXyKoMIX2+DBzKz7qbyVFuAnnGzT8ly
+         MGSaYOBBIpV5QWisQ2G/etVxg+qqhPseywvI2t3+WJO5Pj9y99Uhd1475WYeDANWRD2m
+         qSaQ==
+X-Gm-Message-State: AOAM533pYe00P8UeNSzxaofMOR7tKhPRQwPY1BXGeDPVYWOpt0vPzUL9
+        VQfzk3Sf7aNR4u10t7Cy0Nf/jhkukhdEOuIfqY4=
+X-Google-Smtp-Source: ABdhPJxliDsIro1pBPx2GTy0+Iz98jdjJVbfhUuRAdqVoigF3K+QDODvhsJliFw0TWqvdMyLHy0OGKTwwXY7OMdeajY=
+X-Received: by 2002:a63:170b:: with SMTP id x11mr25211990pgl.253.1626696340048;
+ Mon, 19 Jul 2021 05:05:40 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BN1P110MB0148.NAMP110.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4405f877-105b-44c7-971b-08d94aa92e16
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Jul 2021 11:34:33.1627
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 7a18110d-ef9b-4274-acef-e62ab0fe28ed
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN1P110MB0115
-X-PassedThroughOnPremises: Yes
-X-OriginatorOrg: Collins.com
-X-Proofpoint-ORIG-GUID: 3H049p0sax8fPdVsVWIKHgm3RnuLUE0F
-X-Proofpoint-GUID: 3H049p0sax8fPdVsVWIKHgm3RnuLUE0F
-X-Proofpoint-Spam-Details: rule=outbound_default_notspam policy=outbound_default score=0
- lowpriorityscore=0 adultscore=0 malwarescore=0 bulkscore=0 mlxlogscore=999
- clxscore=1011 impostorscore=0 phishscore=0 priorityscore=1501
- suspectscore=0 mlxscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2104190000 definitions=main-2107190065
+References: <20210718175950.34728-1-puranjay12@gmail.com> <20210718175950.34728-3-puranjay12@gmail.com>
+In-Reply-To: <20210718175950.34728-3-puranjay12@gmail.com>
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+Date:   Mon, 19 Jul 2021 15:05:28 +0300
+Message-ID: <CA+U=Dsp078qs+nnzoZkYTwknw+j=6f=wwjV3y34qDaVAmNwV+A@mail.gmail.com>
+Subject: Re: [PATCH 2/2] iio: accel: Add driver support for ADXL355
+To:     Puranjay Mohan <puranjay12@gmail.com>
+Cc:     "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
+        Darius.Berghe@analog.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Jonathan and Alex,
+(
 
-This change makes sense to me.  Silly comment on my part.  The intent as I =
-recall was that the device would not "jump back to default" when the contro=
-lling system went through a reboot phase.
+On Sun, Jul 18, 2021 at 9:01 PM Puranjay Mohan <puranjay12@gmail.com> wrote:
+>
+> ADXL355 is 3-axis MEMS Accelerometer. It offers low noise density,
+> low 0g offset drift, low power with selectable measurement ranges.
+> It also features programmable high-pass and low-pass filters.
+>
 
-Thank you.
+Hey,
 
-Maury
+This looks pretty good.
+A few comments inline.
 
------Original Message-----
-From: Jonathan Cameron <jic23@kernel.org>=20
-Sent: Sunday, July 18, 2021 9:30 AM
-To: Alexandru Ardelean <aardelean@deviqon.com>
-Cc: linux-iio@vger.kernel.org; linux-kernel@vger.kernel.org; Anderson, Maur=
-y J Collins <Maury.Anderson@collins.com>
-Subject: Re: [PATCH] iio: potentiometer: max5481: convert probe to device-m=
-anaged
-
-On Thu, 24 Jun 2021 11:06:41 +0300
-Alexandru Ardelean <aardelean@deviqon.com> wrote:
-
-> The change converts the probe function to use the
-> devm_iio_device_register() function.
->=20
-> Before calling that, we need to register an action to store the wiper bac=
-k
-> to non-volatile memory when the device is de-registered.
->=20
-> We don't need to do this if the probe fails, because the only place where
-> the probe can fail now is devm_iio_device_register() and that shouldn't
-> create an IIO device (for userspace to poke at) if it fails.
->=20
-> Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
-Hi Alex,
-
-This one took a little bit of thought because it's a bit unusual in that
-that wiper write back isn't technically unwinding anything so doesn't
-have an obvious match in probe.  However, as it logically wants to happen
-just after we've removed the userspace interfaces, I agree with your
-logic that it makes sense to do it with a devm triggered call.
-
-So, on that basis applied.=20
-
-+CC Maury on basis might still be about on that address and want to
-express a view on whether this makes sense.
-
-Jonathan
-
+> Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/adxl354_adxl355.pdf
+> Signed-off-by: Puranjay Mohan <puranjay12@gmail.com>
 > ---
->  drivers/iio/potentiometer/max5481.c | 22 +++++++++-------------
->  1 file changed, 9 insertions(+), 13 deletions(-)
->=20
-> diff --git a/drivers/iio/potentiometer/max5481.c b/drivers/iio/potentiome=
-ter/max5481.c
-> index 6e22b538091f..098d144a8fdd 100644
-> --- a/drivers/iio/potentiometer/max5481.c
-> +++ b/drivers/iio/potentiometer/max5481.c
-> @@ -125,6 +125,11 @@ static const struct of_device_id max5481_match[] =3D=
- {
->  };
->  MODULE_DEVICE_TABLE(of, max5481_match);
-> =20
-> +static void max5481_wiper_save(void *data)
+>  MAINTAINERS                      |   7 +
+>  drivers/iio/accel/Kconfig        |  29 ++
+>  drivers/iio/accel/Makefile       |   3 +
+>  drivers/iio/accel/adxl355.h      |  83 +++++
+>  drivers/iio/accel/adxl355_core.c | 544 +++++++++++++++++++++++++++++++
+>  drivers/iio/accel/adxl355_i2c.c  |  63 ++++
+>  drivers/iio/accel/adxl355_spi.c  |  66 ++++
+>  7 files changed, 795 insertions(+)
+>  create mode 100644 drivers/iio/accel/adxl355.h
+>  create mode 100644 drivers/iio/accel/adxl355_core.c
+>  create mode 100644 drivers/iio/accel/adxl355_i2c.c
+>  create mode 100644 drivers/iio/accel/adxl355_spi.c
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index bd7aff0c1..461f2a192 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -586,6 +586,13 @@ W: http://ez.analog.com/community/linux-device-drivers
+>  F:     Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
+>  F:     drivers/input/misc/adxl34x.c
+>
+> +ADXL355 THREE-AXIS DIGITAL ACCELEROMETER DRIVER
+> +M:     Puranjay Mohan <puranjay12@gmail.com>
+> +L:     linux-iio@vger.kernel.org
+> +S:     Supported
+> +F:     drivers/iio/accel/adxl34x.c
+> +F:     Documentation/devicetree/bindings/iio/accel/adi,adxl355.yaml
+> +
+>  ADXL372 THREE-AXIS DIGITAL ACCELEROMETER DRIVER
+>  M:     Michael Hennerich <michael.hennerich@analog.com>
+>  S:     Supported
+> diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
+> index cceda3cec..9a65353a4 100644
+> --- a/drivers/iio/accel/Kconfig
+> +++ b/drivers/iio/accel/Kconfig
+> @@ -61,6 +61,35 @@ config ADXL345_SPI
+>           will be called adxl345_spi and you will also get adxl345_core
+>           for the core module.
+>
+> +config ADXL355
+> +       tristate
+> +
+> +config ADXL355_I2C
+> +       tristate "Analog Devices ADXL355 3-Axis Digital Accelerometer I2C Driver"
+> +       depends on I2C
+> +       select ADXL355
+> +       select REGMAP_I2C
+> +       help
+> +         Say Y here if you want to build support for the Analog Devices
+> +         ADXL355 3-axis digital accelerometer.
+> +
+> +         To compile this driver as a module, choose M here: the module
+> +         will be called adxl355_i2c and you will also get adxl355_core
+> +         for the core module.
+> +
+> +config ADXL355_SPI
+> +       tristate "Analog Devices ADXL355 3-Axis Digital Accelerometer SPI Driver"
+> +       depends on SPI
+> +       select ADXL355
+> +       select REGMAP_SPI
+> +       help
+> +         Say Y here if you want to build support for the Analog Devices
+> +         ADXL355 3-axis digital accelerometer.
+> +
+> +         To compile this driver as a module, choose M here: the module
+> +         will be called adxl355_spi and you will also get adxl355_core
+> +         for the core module.
+> +
+>  config ADXL372
+>         tristate
+>         select IIO_BUFFER
+> diff --git a/drivers/iio/accel/Makefile b/drivers/iio/accel/Makefile
+> index 32cd1342a..0e4721d2d 100644
+> --- a/drivers/iio/accel/Makefile
+> +++ b/drivers/iio/accel/Makefile
+> @@ -9,6 +9,9 @@ obj-$(CONFIG_ADIS16209) += adis16209.o
+>  obj-$(CONFIG_ADXL345) += adxl345_core.o
+>  obj-$(CONFIG_ADXL345_I2C) += adxl345_i2c.o
+>  obj-$(CONFIG_ADXL345_SPI) += adxl345_spi.o
+> +obj-$(CONFIG_ADXL355) += adxl355_core.o
+> +obj-$(CONFIG_ADXL355_I2C) += adxl355_i2c.o
+> +obj-$(CONFIG_ADXL355_SPI) += adxl355_spi.o
+>  obj-$(CONFIG_ADXL372) += adxl372.o
+>  obj-$(CONFIG_ADXL372_I2C) += adxl372_i2c.o
+>  obj-$(CONFIG_ADXL372_SPI) += adxl372_spi.o
+> diff --git a/drivers/iio/accel/adxl355.h b/drivers/iio/accel/adxl355.h
+> new file mode 100644
+> index 000000000..e52c294d8
+> --- /dev/null
+> +++ b/drivers/iio/accel/adxl355.h
+> @@ -0,0 +1,83 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * ADXL355 3-Axis Digital Accelerometer
+> + *
+> + * Copyright (c) 2021 Puranjay Mohan <puranjay12@gmail.com>
+> + */
+> +
+> +#ifndef _ADXL355_H_
+> +#define _ADXL355_H_
+> +
+> +#include <linux/regmap.h>
+> +
+> +/* ADXL355 Register Definitions */
+> +#define ADXL355_DEVID_AD       0x00
+> +#define ADXL355_DEVID_MST      0x01
+> +#define ADXL355_PARTID         0x02
+> +#define ADXL355_REVID          0x03
+> +#define ADXL355_STATUS         0x04
+> +#define ADXL355_FIFO_ENTRIES   0x05
+> +#define ADXL355_TEMP2          0x06
+> +#define ADXL355_XDATA3         0x08
+> +#define ADXL355_YDATA3         0x0B
+> +#define ADXL355_ZDATA3         0x0E
+> +#define ADXL355_FIFO_DATA      0x11
+> +#define ADXL355_OFFSET_X_H     0x1E
+> +#define ADXL355_OFFSET_Y_H     0x20
+> +#define ADXL355_OFFSET_Z_H     0x22
+> +#define ADXL355_ACT_EN         0x24
+> +#define ADXL355_ACT_THRESH_H   0x25
+> +#define ADXL355_ACT_THRESH_L   0x26
+> +#define ADXL355_ACT_COUNT      0x27
+> +#define ADXL355_FILTER         0x28
+> +#define ADXL355_FIFO_SAMPLES   0x29
+> +#define ADXL355_INT_MAP                0x2A
+> +#define ADXL355_SYNC           0x2B
+> +#define ADXL355_RANGE          0x2C
+> +#define ADXL355_POWER_CTL      0x2D
+> +#define ADXL355_SELF_TEST      0x2E
+> +#define ADXL355_RESET          0x2F
+> +
+> +#define ADXL355_DEVID_AD_VAL   0xAD
+> +#define ADXL355_DEVID_MST_VAL  0x1D
+> +#define ADXL355_PARTID_VAL     0xED
+> +#define ADXL355_REVID_VAL      0x01
+> +#define ADXL355_RESET_CODE     0x52
+> +
+> +#define ADXL355_POWER_CTL_MODE_MSK     GENMASK(1, 0)
+> +
+> +#define ADXL355_FILTER_ODR_MSK                 GENMASK(3, 0)
+> +#define ADXL355_FILTER_ODR_MODE(x)             ((x) & 0xF)
+> +#define ADXL355_FILTER_HPF_MSK                 GENMASK(6, 4)
+> +#define ADXL355_FILTER_HPF_MODE(x)             (((x) & 0x7) << 4)
+> +
+> +/*
+> + * The datasheet defines an intercept of 1885 LSB at 25 degC
+> + * and a slope of -9.05 LSB/C. The following formula can be used to find the
+> + * temperature:
+> + * Temp = ((RAW - 1885)/(-9.05)) + 25 but this doesn't follow the format of
+> + * the IIO which is Temp = (RAW + OFFSET) * SCALE. Hence using some rearranging
+> + * we get the scale as -110.49723 and offset as -2111.25
+> + */
+> +#define TEMP_SCALE_VAL -110
+> +#define TEMP_SCALE_VAL2 497238
+> +#define TEMP_OFFSET_VAL -2111
+> +#define TEMP_OFFSET_VAL2 250000
+> +
+> +/*
+> + * At +/- 2g with 20-bit resolution, scale is given in datasheet as
+> + * 3.9ug/LSB = 0.0000039 * 9.80665 = 0.00003824593 m/s^2
+> + */
+> +#define ADXL355_NSCALE 38245
+> +
+> +extern const struct regmap_range adxl355_read_reg_range[];
+> +
+> +extern const struct regmap_access_table adxl355_readable_regs_tbl;
+> +
+> +extern const struct regmap_range adxl355_write_reg_range[];
+> +
+> +extern const struct regmap_access_table adxl355_writeable_regs_tbl;
+> +
+> +int adxl355_core_probe(struct device *dev, struct regmap *regmap,
+> +                      const char *name);
+
+I would put most all these definitions in the core file, since they
+are mostly used there.
+I'd leave only what's shared between files here.
+i.e. adxl355_core_probe() and adxl355_{read,write}able_regs_tbl here
+Of course, that's my preference. The way it is done here is a fine as well.
+
+
+> +#endif /* _ADXL355_H_ */
+> diff --git a/drivers/iio/accel/adxl355_core.c b/drivers/iio/accel/adxl355_core.c
+> new file mode 100644
+> index 000000000..5fdd3c73e
+> --- /dev/null
+> +++ b/drivers/iio/accel/adxl355_core.c
+> @@ -0,0 +1,544 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * ADXL355 3-Axis Digital Accelerometer IIO core driver
+> + *
+> + * Copyright (c) 2021 Puranjay Mohan <puranjay12@gmail.com>
+> + *
+> + * Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/adxl354_adxl355.pdf
+> + */
+> +
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/sysfs.h>
+> +#include <linux/limits.h>
+> +#include <linux/math64.h>
+> +#include <linux/module.h>
+> +#include <linux/regmap.h>
+> +
+> +#include "adxl355.h"
+> +
+> +const struct regmap_range adxl355_read_reg_range[] = {
+> +       regmap_reg_range(ADXL355_DEVID_AD, ADXL355_FIFO_DATA),
+> +       regmap_reg_range(ADXL355_OFFSET_X_H, ADXL355_SELF_TEST)
+> +};
+> +EXPORT_SYMBOL_GPL(adxl355_read_reg_range);
+
+It does not look like this regmap definition is used outside of the
+core file, so maybe just keep it private/static for this file?
+
+> +
+> +const struct regmap_access_table adxl355_readable_regs_tbl = {
+> +       .yes_ranges = adxl355_read_reg_range,
+> +       .n_yes_ranges = ARRAY_SIZE(adxl355_read_reg_range),
+> +};
+> +EXPORT_SYMBOL_GPL(adxl355_readable_regs_tbl);
+> +
+> +const struct regmap_range adxl355_write_reg_range[] = {
+> +       regmap_reg_range(ADXL355_OFFSET_X_H, ADXL355_RESET)
+> +};
+> +EXPORT_SYMBOL_GPL(adxl355_write_reg_range);
+> +
+
+This doesn't look like it's used between files, so maybe keep it private?
+
+> +const struct regmap_access_table adxl355_writeable_regs_tbl = {
+> +       .yes_ranges = adxl355_write_reg_range,
+> +       .n_yes_ranges = ARRAY_SIZE(adxl355_write_reg_range),
+> +};
+> +EXPORT_SYMBOL_GPL(adxl355_writeable_regs_tbl);
+> +
+> +enum adxl355_op_mode {
+> +       ADXL355_MEASUREMENT,
+> +       ADXL355_STANDBY,
+> +       ADXL355_TEMP_OFF
+> +};
+> +
+> +enum adxl355_odr {
+> +       ADXL355_ODR_4000HZ,
+> +       ADXL355_ODR_2000HZ,
+> +       ADXL355_ODR_1000HZ,
+> +       ADXL355_ODR_500HZ,
+> +       ADXL355_ODR_250HZ,
+> +       ADXL355_ODR_125HZ,
+> +       ADXL355_ODR_62_5HZ,
+> +       ADXL355_ODR_31_25HZ,
+> +       ADXL355_ODR_15_625HZ,
+> +       ADXL355_ODR_7_813HZ,
+> +       ADXL355_ODR_3_906HZ
+> +};
+> +
+> +enum adxl355_hpf_3db {
+> +       ADXL355_HPF_OFF,
+> +       ADXL355_HPF_24_7,
+> +       ADXL355_HPF_6_2084,
+> +       ADXL355_HPF_1_5545,
+> +       ADXL355_HPF_0_3862,
+> +       ADXL355_HPF_0_0954,
+> +       ADXL355_HPF_0_0238
+> +};
+> +
+> +static const int adxl355_odr_table[][2] = {
+> +       [0] = {4000, 0},
+> +       [1] = {2000, 0},
+> +       [2] = {1000, 0},
+> +       [3] = {500, 0},
+> +       [4] = {250, 0},
+> +       [5] = {125, 0},
+> +       [6] = {62, 500000},
+> +       [7] = {31, 250000},
+> +       [8] = {15, 625000},
+> +       [9] = {7, 813000},
+> +       [10] = {3, 906000}
+> +};
+> +
+> +static int adxl355_hpf_3db_table[7][2] = {0};
+
+Maybe make this const as well?
+
+> +
+> +static const int adxl355_hpf_3db_multipliers[] = {
+> +       0,
+> +       247000,
+> +       62084,
+> +       15545,
+> +       3862,
+> +       954,
+> +       238
+> +};
+> +
+> +struct adxl355_data {
+> +       struct regmap *regmap;
+> +       struct device *dev;
+> +       struct mutex lock; /* lock to protect op_mode */
+> +       enum adxl355_op_mode op_mode;
+> +       enum adxl355_odr odr;
+> +       enum adxl355_hpf_3db hpf_3db;
+> +       int x_calibbias;
+> +       int y_calibbias;
+> +       int z_calibbias;
+> +};
+> +
+> +static int adxl355_set_op_mode(struct adxl355_data *data,
+> +                              enum adxl355_op_mode op_mode)
 > +{
-> +	max5481_write_cmd(data, MAX5481_COPY_AB_TO_NV, 0);
+> +       int ret;
+> +
+> +       if (data->op_mode == op_mode)
+> +               return 0;
+> +
+> +       ret = regmap_update_bits(data->regmap, ADXL355_POWER_CTL,
+> +                                ADXL355_POWER_CTL_MODE_MSK, op_mode);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       data->op_mode = op_mode;
+> +
+> +       return ret;
 > +}
 > +
->  static int max5481_probe(struct spi_device *spi)
->  {
->  	struct iio_dev *indio_dev;
-> @@ -136,7 +141,6 @@ static int max5481_probe(struct spi_device *spi)
->  	if (!indio_dev)
->  		return -ENOMEM;
-> =20
-> -	spi_set_drvdata(spi, indio_dev);
->  	data =3D iio_priv(indio_dev);
-> =20
->  	data->spi =3D spi;
-> @@ -158,18 +162,11 @@ static int max5481_probe(struct spi_device *spi)
->  	if (ret < 0)
->  		return ret;
-> =20
-> -	return iio_device_register(indio_dev);
-> -}
-> -
-> -static int max5481_remove(struct spi_device *spi)
-> -{
-> -	struct iio_dev *indio_dev =3D spi_get_drvdata(spi);
-> -	struct max5481_data *data =3D iio_priv(indio_dev);
-> -
-> -	iio_device_unregister(indio_dev);
-> +	ret =3D devm_add_action(&spi->dev, max5481_wiper_save, data);
-> +	if (ret < 0)
-> +		return ret;
-> =20
-> -	/* save wiper reg to NV reg */
-> -	return max5481_write_cmd(data, MAX5481_COPY_AB_TO_NV, 0);
-> +	return devm_iio_device_register(&spi->dev, indio_dev);
->  }
-> =20
->  static const struct spi_device_id max5481_id_table[] =3D {
-> @@ -187,7 +184,6 @@ static struct spi_driver max5481_driver =3D {
->  		.of_match_table =3D max5481_match,
->  	},
->  	.probe =3D max5481_probe,
-> -	.remove =3D max5481_remove,
->  	.id_table =3D max5481_id_table,
->  };
-> =20
+> +static void adxl355_fill_3db_frequency_table(struct adxl355_data *data)
+> +{
+> +       int i;
+> +       u64 rem;
+> +       u64 div;
+> +       u32 multiplier;
+> +       u64 odr = mul_u64_u32_shr(adxl355_odr_table[data->odr][0], 1000000, 0) +
+> +                                       adxl355_odr_table[data->odr][1];
+> +
+> +       for (i = 0; i < ARRAY_SIZE(adxl355_hpf_3db_multipliers); i++) {
+> +               multiplier = adxl355_hpf_3db_multipliers[i];
+> +               div = div64_u64_rem(mul_u64_u32_shr(odr, multiplier, 0),
+> +                                   100000000000000UL, &rem);
+> +
+> +               adxl355_hpf_3db_table[i][0] = div;
+> +               adxl355_hpf_3db_table[i][1] = div_u64(rem, 100000000);
+> +       }
+> +}
+> +
+> +static int adxl355_setup(struct adxl355_data *data)
+> +{
+> +       unsigned int regval;
+> +       int ret;
+> +
+> +       ret = regmap_read(data->regmap, ADXL355_DEVID_AD, &regval);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       if (regval != ADXL355_DEVID_AD_VAL) {
+> +               dev_err(data->dev, "Invalid ADI ID 0x%02x\n", regval);
+> +               return -ENODEV;
+> +       }
+> +
+> +       ret = regmap_read(data->regmap, ADXL355_DEVID_MST, &regval);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       if (regval != ADXL355_DEVID_MST_VAL) {
+> +               dev_err(data->dev, "Invalid MEMS ID 0x%02x\n", regval);
+> +               return -ENODEV;
+> +       }
+> +
+> +       ret = regmap_read(data->regmap, ADXL355_PARTID, &regval);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       if (regval != ADXL355_PARTID_VAL) {
+> +               dev_err(data->dev, "Invalid DEV ID 0x%02x\n", regval);
+> +               return -ENODEV;
+> +       }
+> +
+> +       /*
+> +        * Perform a software reset to make sure the device is in a consistent
+> +        * state after start up.
+> +        */
+> +       ret = regmap_write(data->regmap, ADXL355_RESET, ADXL355_RESET_CODE);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       adxl355_fill_3db_frequency_table(data);
+> +
+> +       return adxl355_set_op_mode(data, ADXL355_MEASUREMENT);
+> +}
+> +
+> +static int adxl355_get_temp_data(struct adxl355_data *data,
+> +                                u8 addr, __be16 *out)
+> +{
+> +       return regmap_bulk_read(data->regmap, addr, out, sizeof(*out));
+> +}
+> +
+> +static int adxl355_read_axis(struct adxl355_data *data, u8 addr)
+> +{
+> +       __be32 regval;
+> +       int ret;
+> +
+> +       ret = regmap_bulk_read(data->regmap, addr, &regval, 3);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       return be32_to_cpu(regval) >> 8;
+> +}
+> +
+> +static int adxl355_find_match(const int (*freq_tbl)[2], const int n,
+> +                             const int val, const int val2)
+> +{
+> +       int i;
+> +
+> +       for (i = 0; i < n; i++) {
+> +               if (freq_tbl[i][0] == val && freq_tbl[i][1] == val2)
+> +                       return i;
+> +       }
+> +
+> +       return -EINVAL;
+> +}
+> +
+> +static int adxl355_set_odr(struct adxl355_data *data,
+> +                          enum adxl355_odr odr)
+> +{
+> +       int ret = 0;
+> +
+> +       mutex_lock(&data->lock);
+> +
+> +       if (data->odr == odr)
+> +               goto out_unlock;
+> +
+> +       ret = adxl355_set_op_mode(data, ADXL355_STANDBY);
+> +       if (ret < 0)
+> +               goto out_unlock;
+> +
+> +       ret = regmap_update_bits(data->regmap, ADXL355_FILTER,
+> +                                ADXL355_FILTER_ODR_MSK,
+> +                                ADXL355_FILTER_ODR_MODE(odr));
+> +       if (!ret) {
+> +               data->odr = odr;
+> +               adxl355_fill_3db_frequency_table(data);
+> +       }
+> +
+> +out_unlock:
+> +       ret = adxl355_set_op_mode(data, ADXL355_MEASUREMENT);
+> +       mutex_unlock(&data->lock);
+> +       return ret;
+> +}
+> +
+> +static int adxl355_set_hpf_3db(struct adxl355_data *data,
+> +                              enum adxl355_hpf_3db hpf)
+> +{
+> +       int ret = 0;
+> +
+> +       mutex_lock(&data->lock);
+> +
+> +       if (data->hpf_3db == hpf)
+> +               goto out_unlock;
+> +
+> +       ret = adxl355_set_op_mode(data, ADXL355_STANDBY);
+> +       if (ret < 0)
+> +               goto out_unlock;
+> +
+> +       ret = regmap_update_bits(data->regmap, ADXL355_FILTER,
+> +                                ADXL355_FILTER_HPF_MSK,
+> +                                ADXL355_FILTER_HPF_MODE(hpf));
+> +       if (!ret)
+> +               data->hpf_3db = hpf;
+> +
+> +out_unlock:
+> +       ret = adxl355_set_op_mode(data, ADXL355_MEASUREMENT);
+> +       mutex_unlock(&data->lock);
+> +       return ret;
+> +}
+> +
+> +static int adxl355_set_calibbias(struct adxl355_data *data,
+> +                                int scan_index, int calibbias)
+> +{
+> +       int ret = 0;
+> +       __be16 reg = cpu_to_be16(calibbias);
+> +
+> +       mutex_lock(&data->lock);
+> +
+> +       ret = adxl355_set_op_mode(data, ADXL355_STANDBY);
+> +       if (ret < 0)
+> +               goto out_unlock;
+> +
+> +       switch (scan_index) {
+> +       case 0:
+> +               ret = regmap_bulk_write(data->regmap, ADXL355_OFFSET_X_H,
+> +                                       &reg, 2);
+> +               if (ret < 0)
+> +                       goto out_unlock;
+> +               data->x_calibbias = calibbias;
+> +               break;
+> +       case 1:
+> +               ret = regmap_bulk_write(data->regmap, ADXL355_OFFSET_Y_H,
+> +                                       &reg, 2);
+> +               if (ret < 0)
+> +                       goto out_unlock;
+> +               data->y_calibbias = calibbias;
+> +               break;
+> +       case 2:
+> +               ret = regmap_bulk_write(data->regmap, ADXL355_OFFSET_Z_H,
+> +                                       &reg, 2);
+> +               if (ret < 0)
+> +                       goto out_unlock;
+> +               data->z_calibbias = calibbias;
+> +               break;
+> +       default:
+> +               ret = -EINVAL;
+> +               break;
+> +       }
+> +
+> +out_unlock:
+> +       ret = adxl355_set_op_mode(data, ADXL355_MEASUREMENT);
+> +       mutex_unlock(&data->lock);
+> +       return ret;
+> +}
+> +
+> +static int adxl355_read_raw(struct iio_dev *indio_dev,
+> +                           struct iio_chan_spec const *chan,
+> +                           int *val, int *val2, long mask)
+> +{
+> +       struct adxl355_data *data = iio_priv(indio_dev);
+> +       int ret;
+> +       __be16 out;
+> +
+> +       switch (mask) {
+> +       case IIO_CHAN_INFO_RAW:
+> +               switch (chan->type) {
+> +               case IIO_TEMP:
+> +                       ret = adxl355_get_temp_data(data, chan->address, &out);
+> +                       if (ret < 0)
+> +                               break;
+> +                       *val = be16_to_cpu(out);
+> +                       ret = IIO_VAL_INT;
+> +                       break;
+> +
+> +               case IIO_ACCEL:
+> +                       ret = adxl355_read_axis(data, chan->address);
+> +                       if (ret < 0)
+> +                               break;
+> +                       *val = sign_extend32(ret >> (chan->scan_type.shift),
+> +                                            chan->scan_type.realbits - 1);
+> +                       ret = IIO_VAL_INT;
+> +                       break;
+> +
+> +               default:
+> +                       ret = -EINVAL;
+> +                       break;
+> +               }
+> +
+> +               return ret;
+> +       case IIO_CHAN_INFO_SCALE:
+> +               switch (chan->type) {
+> +               case IIO_TEMP:
+> +                       *val = TEMP_SCALE_VAL;
+> +                       *val2 = TEMP_SCALE_VAL2;
+> +                       return IIO_VAL_INT_PLUS_MICRO;
+> +               case IIO_ACCEL:
+> +                       *val = 0;
+> +                       *val2 = ADXL355_NSCALE;
+> +                       return IIO_VAL_INT_PLUS_NANO;
+> +               default:
+> +                       return -EINVAL;
+> +               }
+> +       case IIO_CHAN_INFO_OFFSET:
+> +               *val = TEMP_OFFSET_VAL;
+> +               *val2 = TEMP_OFFSET_VAL2;
+> +               return IIO_VAL_INT_PLUS_MICRO;
+> +       case IIO_CHAN_INFO_CALIBBIAS:
+> +               if (chan->scan_index == 0)
+> +                       *val = data->x_calibbias;
+> +               else if (chan->scan_index == 1)
+> +                       *val = data->y_calibbias;
+> +               else
+> +                       *val = data->z_calibbias;
+> +               *val = sign_extend32(*val, 15);
+> +               return IIO_VAL_INT;
+> +       case IIO_CHAN_INFO_SAMP_FREQ:
+> +               *val = adxl355_odr_table[data->odr][0];
+> +               *val2 = adxl355_odr_table[data->odr][1];
+> +               return IIO_VAL_INT_PLUS_MICRO;
+> +       case IIO_CHAN_INFO_HIGH_PASS_FILTER_3DB_FREQUENCY:
+> +               *val = adxl355_hpf_3db_table[data->hpf_3db][0];
+> +               *val2 = adxl355_hpf_3db_table[data->hpf_3db][1];
+> +               return IIO_VAL_INT_PLUS_MICRO;
+> +       }
+> +       return -EINVAL;
+> +}
+> +
+> +static int adxl355_write_raw(struct iio_dev *indio_dev,
+> +                            struct iio_chan_spec const *chan,
+> +                            int val, int val2, long mask)
+> +{
+> +       struct adxl355_data *data = iio_priv(indio_dev);
+> +       int odr_idx, hpf_idx, calibbias, ret;
+> +
+> +       switch (mask) {
+> +       case IIO_CHAN_INFO_SAMP_FREQ:
+> +               odr_idx = adxl355_find_match(adxl355_odr_table,
+> +                                            ARRAY_SIZE(adxl355_odr_table),
+> +                                            val, val2);
+> +               if (odr_idx < 0)
+> +                       return odr_idx;
+> +
+> +               return adxl355_set_odr(data, odr_idx);
+> +       case IIO_CHAN_INFO_HIGH_PASS_FILTER_3DB_FREQUENCY:
+> +               hpf_idx = adxl355_find_match(adxl355_hpf_3db_table,
+> +                                            ARRAY_SIZE(adxl355_hpf_3db_table),
+> +                                            val, val2);
+> +               if (hpf_idx < 0)
+> +                       return hpf_idx;
+> +
+> +               return adxl355_set_hpf_3db(data, hpf_idx);
+> +       case IIO_CHAN_INFO_CALIBBIAS:
+> +               calibbias = clamp_t(int, val, S16_MIN, S16_MAX);
+> +               ret = adxl355_set_calibbias(data, chan->scan_index, calibbias);
+> +
+> +               return ret;
 
+return adxl355_set_calibbias();    directly
+
+
+> +       default:
+> +               return -EINVAL;
+> +       }
+> +}
+> +
+> +static int adxl355_read_avail(struct iio_dev *indio_dev,
+> +                             struct iio_chan_spec const *chan,
+> +                             const int **vals, int *type, int *length,
+> +                             long mask)
+> +{
+> +       switch (mask) {
+> +       case IIO_CHAN_INFO_SAMP_FREQ:
+> +               *vals = (const int *)adxl355_odr_table;
+> +               *type = IIO_VAL_INT_PLUS_MICRO;
+> +               /* Values are stored in a 2D matrix */
+> +               *length = ARRAY_SIZE(adxl355_odr_table) * 2;
+> +
+> +               return IIO_AVAIL_LIST;
+> +       case IIO_CHAN_INFO_HIGH_PASS_FILTER_3DB_FREQUENCY:
+> +               *vals = (const int *)adxl355_hpf_3db_table;
+> +               *type = IIO_VAL_INT_PLUS_MICRO;
+> +               /* Values are stored in a 2D matrix */
+> +               *length = ARRAY_SIZE(adxl355_hpf_3db_table) * 2;
+> +
+> +               return IIO_AVAIL_LIST;
+> +       default:
+> +               return -EINVAL;
+> +       }
+> +}
+> +
+> +static const unsigned long adxl355_avail_scan_masks[] = {
+> +       GENMASK(3, 0),
+> +       0
+> +};
+> +
+> +static const struct iio_info adxl355_info = {
+> +       .read_raw       = adxl355_read_raw,
+> +       .write_raw      = adxl355_write_raw,
+> +       .read_avail     = &adxl355_read_avail
+> +};
+> +
+> +#define ADXL355_ACCEL_CHANNEL(index, reg, axis) {                      \
+> +       .type = IIO_ACCEL,                                              \
+> +       .address = reg,                                                 \
+> +       .modified = 1,                                                  \
+> +       .channel2 = IIO_MOD_##axis,                                     \
+> +       .info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |                  \
+> +                             BIT(IIO_CHAN_INFO_CALIBBIAS),             \
+> +       .info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |          \
+> +                                   BIT(IIO_CHAN_INFO_SAMP_FREQ) |      \
+> +               BIT(IIO_CHAN_INFO_HIGH_PASS_FILTER_3DB_FREQUENCY),      \
+> +       .info_mask_shared_by_type_available =                           \
+> +               BIT(IIO_CHAN_INFO_SAMP_FREQ) |                          \
+> +               BIT(IIO_CHAN_INFO_HIGH_PASS_FILTER_3DB_FREQUENCY),      \
+> +       .scan_index = index,                                            \
+> +       .scan_type = {                                                  \
+> +               .sign = 's',                                            \
+> +               .realbits = 20,                                         \
+> +               .storagebits = 32,                                      \
+> +               .shift = 4,                                             \
+> +               .endianness = IIO_BE,                                   \
+> +       }                                                               \
+> +}
+> +
+> +static const struct iio_chan_spec adxl355_channels[] = {
+> +       ADXL355_ACCEL_CHANNEL(0, ADXL355_XDATA3, X),
+> +       ADXL355_ACCEL_CHANNEL(1, ADXL355_YDATA3, Y),
+> +       ADXL355_ACCEL_CHANNEL(2, ADXL355_ZDATA3, Z),
+> +       {
+> +               .type = IIO_TEMP,
+> +               .address = ADXL355_TEMP2,
+> +               .info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> +                                     BIT(IIO_CHAN_INFO_SCALE) |
+> +                                     BIT(IIO_CHAN_INFO_OFFSET),
+> +               .scan_index = 3,
+> +               .scan_type = {
+> +                       .sign = 's',
+> +                       .realbits = 12,
+> +                       .storagebits = 16,
+> +                       .endianness = IIO_BE,
+> +               },
+> +       }
+> +};
+> +
+> +int adxl355_core_probe(struct device *dev, struct regmap *regmap,
+> +                      const char *name)
+> +{
+> +       struct adxl355_data *data;
+> +       struct iio_dev *indio_dev;
+> +       int ret;
+> +
+> +       indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
+> +       if (!indio_dev)
+> +               return -ENOMEM;
+> +
+> +       data = iio_priv(indio_dev);
+> +       data->regmap = regmap;
+> +       data->dev = dev;
+> +       data->op_mode = ADXL355_STANDBY;
+> +       mutex_init(&data->lock);
+> +
+> +       indio_dev->dev.parent = dev;
+
+This parent assignment can be removed.
+It's done in devm_iio_device_alloc()
+
+> +       indio_dev->name = name;
+> +       indio_dev->info = &adxl355_info;
+> +       indio_dev->modes = INDIO_DIRECT_MODE;
+> +       indio_dev->channels = adxl355_channels;
+> +       indio_dev->num_channels = ARRAY_SIZE(adxl355_channels);
+> +       indio_dev->available_scan_masks = adxl355_avail_scan_masks;
+> +
+> +       ret = adxl355_setup(data);
+> +       if (ret < 0) {
+> +               dev_err(dev, "ADXL355 setup failed\n");
+> +               return ret;
+> +       }
+> +
+> +       return devm_iio_device_register(dev, indio_dev);
+> +}
+> +EXPORT_SYMBOL_GPL(adxl355_core_probe);
+> +
+> +MODULE_AUTHOR("Puranjay Mohan <puranjay12@gmail.com>");
+> +MODULE_DESCRIPTION("ADXL355 3-Axis Digital Accelerometer core driver");
+> +MODULE_LICENSE("GPL v2");
+> diff --git a/drivers/iio/accel/adxl355_i2c.c b/drivers/iio/accel/adxl355_i2c.c
+> new file mode 100644
+> index 000000000..1c9764129
+> --- /dev/null
+> +++ b/drivers/iio/accel/adxl355_i2c.c
+> @@ -0,0 +1,63 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * ADXL355 3-Axis Digital Accelerometer I2C driver
+> + *
+> + * Copyright (c) 2021 Puranjay Mohan <puranjay12@gmail.com>
+> + */
+> +
+> +#include <linux/i2c.h>
+> +#include <linux/module.h>
+> +#include <linux/regmap.h>
+> +
+> +#include "adxl355.h"
+> +
+> +static const struct regmap_config adxl355_i2c_regmap_config = {
+> +       .reg_bits = 8,
+> +       .val_bits = 8,
+> +       .max_register = 0x2F,
+> +       .rd_table = &adxl355_readable_regs_tbl,
+> +       .wr_table = &adxl355_writeable_regs_tbl
+> +};
+> +
+> +static int adxl355_i2c_probe(struct i2c_client *client)
+> +{
+> +       struct regmap *regmap;
+> +
+> +       regmap = devm_regmap_init_i2c(client, &adxl355_i2c_regmap_config);
+> +       if (IS_ERR(regmap)) {
+> +               dev_err(&client->dev, "Error initializing i2c regmap: %ld\n",
+> +                       PTR_ERR(regmap));
+> +               return PTR_ERR(regmap);
+> +       }
+> +
+> +       return adxl355_core_probe(&client->dev, regmap, client->name);
+> +}
+> +
+> +static const struct i2c_device_id adxl355_i2c_id[] = {
+> +       { "adxl355", 0 },
+> +       { }
+> +};
+> +
+> +MODULE_DEVICE_TABLE(i2c, adxl355_i2c_id);
+> +
+> +static const struct of_device_id adxl355_of_match[] = {
+> +       { .compatible = "adi,adxl355" },
+> +       { },
+
+Comma can be removed.
+It's a null-terminator.
+
+> +};
+> +
+> +MODULE_DEVICE_TABLE(of, adxl355_of_match);
+> +
+> +static struct i2c_driver adxl355_i2c_driver = {
+> +       .driver = {
+> +               .name   = "adxl355_i2c",
+> +               .of_match_table = adxl355_of_match,
+> +       },
+> +       .probe_new      = adxl355_i2c_probe,
+> +       .id_table       = adxl355_i2c_id,
+> +};
+> +
+> +module_i2c_driver(adxl355_i2c_driver);
+> +
+> +MODULE_AUTHOR("Puranjay Mohan <puranjay12@gmail.com>");
+> +MODULE_DESCRIPTION("ADXL355 3-Axis Digital Accelerometer I2C driver");
+> +MODULE_LICENSE("GPL v2");
+> diff --git a/drivers/iio/accel/adxl355_spi.c b/drivers/iio/accel/adxl355_spi.c
+> new file mode 100644
+> index 000000000..ae02cbfad
+> --- /dev/null
+> +++ b/drivers/iio/accel/adxl355_spi.c
+> @@ -0,0 +1,66 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * ADXL355 3-Axis Digital Accelerometer SPI driver
+> + *
+> + * Copyright (c) 2021 Puranjay Mohan <puranjay12@gmail.com>
+> + */
+> +
+> +#include <linux/module.h>
+> +#include <linux/regmap.h>
+> +#include <linux/spi/spi.h>
+> +
+> +#include "adxl355.h"
+> +
+> +static const struct regmap_config adxl355_spi_regmap_config = {
+> +       .reg_bits = 7,
+> +       .pad_bits = 1,
+> +       .val_bits = 8,
+> +       .read_flag_mask = BIT(0),
+> +       .max_register = 0x2F,
+> +       .rd_table = &adxl355_readable_regs_tbl,
+> +       .wr_table = &adxl355_writeable_regs_tbl
+> +};
+> +
+> +static int adxl355_spi_probe(struct spi_device *spi)
+> +{
+> +       const struct spi_device_id *id = spi_get_device_id(spi);
+> +       struct regmap *regmap;
+> +
+> +       regmap = devm_regmap_init_spi(spi, &adxl355_spi_regmap_config);
+> +       if (IS_ERR(regmap)) {
+> +               dev_err(&spi->dev, "Error initializing spi regmap: %ld\n",
+> +                       PTR_ERR(regmap));
+> +               return PTR_ERR(regmap);
+> +       }
+> +
+> +       return adxl355_core_probe(&spi->dev, regmap, id->name);
+> +}
+> +
+> +static const struct spi_device_id adxl355_spi_id[] = {
+> +       { "adxl355", 0 },
+> +       { }
+> +};
+> +
+> +MODULE_DEVICE_TABLE(spi, adxl355_spi_id);
+> +
+> +static const struct of_device_id adxl355_of_match[] = {
+> +       { .compatible = "adi,adxl355" },
+> +       { },
+
+Comma can be removed.
+
+> +};
+> +
+> +MODULE_DEVICE_TABLE(of, adxl355_of_match);
+> +
+> +static struct spi_driver adxl355_spi_driver = {
+> +       .driver = {
+> +               .name   = "adxl355_spi",
+> +               .of_match_table = adxl355_of_match,
+> +       },
+> +       .probe          = adxl355_spi_probe,
+> +       .id_table       = adxl355_spi_id,
+> +};
+> +
+> +module_spi_driver(adxl355_spi_driver);
+> +
+> +MODULE_AUTHOR("Puranjay Mohan <puranjay12@gmail.com>");
+> +MODULE_DESCRIPTION("ADXL355 3-Axis Digital Accelerometer SPI driver");
+> +MODULE_LICENSE("GPL v2");
+> --
+> 2.30.1
+>

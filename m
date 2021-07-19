@@ -2,310 +2,190 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D727A3CDC3E
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jul 2021 17:32:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FA503CDC6D
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jul 2021 17:33:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243241AbhGSOvt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 19 Jul 2021 10:51:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37772 "EHLO
+        id S237406AbhGSOwY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 19 Jul 2021 10:52:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245715AbhGSOsK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Jul 2021 10:48:10 -0400
-Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB1C3C0A88D8;
-        Mon, 19 Jul 2021 07:37:20 -0700 (PDT)
-Received: by mail-pg1-x52e.google.com with SMTP id t9so19279886pgn.4;
-        Mon, 19 Jul 2021 08:07:46 -0700 (PDT)
+        with ESMTP id S239968AbhGSOuv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Jul 2021 10:50:51 -0400
+Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D63E6C0613B4;
+        Mon, 19 Jul 2021 07:45:45 -0700 (PDT)
+Received: by mail-qt1-x82c.google.com with SMTP id q15so8234014qtp.0;
+        Mon, 19 Jul 2021 08:15:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=PLz8EifVbvuejdzmJtsQlC2LwyXKUj5bie8PKGDaTRI=;
-        b=jFsUyKV2K1wTAVQBwzOydhwnvr5v1uXUAbXf7lj0+73sUmJG2OY7dy7iY1e5AZoWPZ
-         EmrYy+z0vQ0Vexjx6kuIL/AnQYOqGkRZtWqvmf/5LiU2HyH6DojT5JvNp8yyuk/iNLnO
-         6TAsHW8eHnJybfid2ZntyENRYePoSu62r2GZv1brZAlLr97VQIpTpgzwVnB4njuEzRGk
-         q5FJWy25snuwWntywi028USXiqYd9ZCLEaGkT11OU6Vup3T0SzJzoPzeqWSr27iueX9C
-         N05kTuCXMn8D34FFgOCBJ4ngg9vPrRhgy+TdrZEIqp6fh78tLB+EwEw5Q7KVKUcFsuG3
-         IN7Q==
+        h=mime-version:content-transfer-encoding:date:message-id:cc:subject
+         :from:to:references:in-reply-to;
+        bh=+qAeaJCZPqO/HVsIw3gOHNEnkqH/VbzFWNwRdJqpOrw=;
+        b=chGmklXFlHaJdMw7VL24uwTgk+Ncrr3GltNArjBTjhgv9aOKWl4unqCMqzXYS/GREU
+         af9olIRWxmV7LoIlqmiFvjNAHTj/y8iJFAgq2yPOTiW0yh6DIaORMpOdFgsYlpoN1yon
+         7Wok7/91K91OB14MIFrE9TGGmEnx9YP4izp71QNW2VOT1LXJDzzZKWkEyODra50k0A0q
+         gGsRJzvXzFCR8apLuXu08Iv99/uY39Ivjp5Mvw3bpr0Is9pidXWD+Ae2dXcRDIuE8gNz
+         YY2UWAXbNSFRKwa7Kt2nv0uGYYL5QsAGBSue1FYqnjCSw5wp64tE7o1MmeTtV7/HkrW8
+         Qwxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=PLz8EifVbvuejdzmJtsQlC2LwyXKUj5bie8PKGDaTRI=;
-        b=mbYZr53wgHbzvM2SysuhFRKOsD1aOnMIXuhpEojOFPP2JzkdIq1q+SBah/gy4Vb+HB
-         nPCctuRnOEjdFZYfbXYeZJPplCfmO5FnqgnZstuI6AVybmE0SKKL5RugxxydezNVKmAs
-         9aRkR6sXJdl/fEcyqoxcvL4u6fgEaYjyOIZaogqkkfO3pGZoDKyh2D8Seccx1qze0tVb
-         JLLYr7GfiD8I+ThXAnYQug+8SN8b0Nd8GyGKLKjpOJAjFWRmbB4KyCBJaMsZ/gWByY5N
-         Yk1ZJyMfkP0CyPdHGkxvc52rsla8nviaG7EqDDHwKKj6Xl6Y62NX7oUpqnI7EPmyzYqD
-         dXvA==
-X-Gm-Message-State: AOAM531IRJpl5YS0NquO+IJhuz3ZIZsstQY2vbwm6Mwi/cGuo9761nyh
-        86Onf49ihhr+8Mp/qqZvMFpTSf+Wp0PY6FmNfw0=
-X-Google-Smtp-Source: ABdhPJyo3jAOtys4kUeLLoWI1SOGRPb6q7moE1eOOLTCdJixkva3z5EXqAGjT43Rcr0oGuQAsbj87xDie8SXDULpAvA=
-X-Received: by 2002:a63:ae48:: with SMTP id e8mr4831838pgp.0.1626707265611;
- Mon, 19 Jul 2021 08:07:45 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210715141742.15072-1-andrea.merello@gmail.com>
- <20210715141742.15072-5-andrea.merello@gmail.com> <20210717165018.50a26629@jic23-huawei>
- <CAN8YU5M4+ZFNzLkGhP1w7Q80yKVBxAXqK=k6qYzpTYXj=+707w@mail.gmail.com>
- <YPVoTp3SPzL6LQ6X@smile.fi.intel.com> <CAN8YU5N9mktrxT6Tv67m=nh_Cnw0SYBq+bf5kUzpoWUAToJm+Q@mail.gmail.com>
- <YPWJCE55q04bUEuA@smile.fi.intel.com>
-In-Reply-To: <YPWJCE55q04bUEuA@smile.fi.intel.com>
-Reply-To: andrea.merello@gmail.com
-From:   Andrea Merello <andrea.merello@gmail.com>
-Date:   Mon, 19 Jul 2021 17:07:34 +0200
-Message-ID: <CAN8YU5P5XwdviNsh-rAHwx-Ay3nKoUZtcwc-At+PUpt4UKPReQ@mail.gmail.com>
-Subject: Re: [PATCH 4/4] iio: imu: add BNO055 serdev driver
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Andrea Merello <andrea.merello@iit.it>
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:mime-version:content-transfer-encoding:date
+         :message-id:cc:subject:from:to:references:in-reply-to;
+        bh=+qAeaJCZPqO/HVsIw3gOHNEnkqH/VbzFWNwRdJqpOrw=;
+        b=le8lJIgpQtBsqu+XODtYHmev0b64EGpz8mIm30doPUigWlq5ExmeM5b5Qzfws+78Sx
+         O8wnfE4ZqgRU8BIXbGbLa5ZDL8urMi70QYwEPhITDznOjb0tq9eOdkE7MovfbwwZ4KkJ
+         WsD6e/fjjflu/Cp/vlGLh5wDgZUS7J95/rlQTkFV4uKBhUbHb5CJFxaiFVXo0k4xDn7c
+         pftU0lFr76RbbwyDQxoeWaDmDF9RBrt9K5iGAxhwvRqbnsLHM9+9LgbO6FjhgRDTWgVf
+         VB5++f3JhNoHmwIHcCz8Vr6LrYZ8FKbh62e74iBftnTjjFwC+YZumxtICpNo6FgAcxGe
+         8z9Q==
+X-Gm-Message-State: AOAM533Lk1XAvgJ0vui4zISe3maqfOKLtb01YirsbbTBil9jogQ0hJkc
+        USyJPNfKwUfJeMdjBXcVbeIrADCAWoem7A==
+X-Google-Smtp-Source: ABdhPJzvJBDWHwyGheIS1L0esL3PE5kRH/FI+uyHcJkwi/3SpWvAKSx07TbBJLgsZmR3mewTpwJp4A==
+X-Received: by 2002:ac8:51cd:: with SMTP id d13mr22426827qtn.114.1626707731696;
+        Mon, 19 Jul 2021 08:15:31 -0700 (PDT)
+Received: from localhost (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
+        by smtp.gmail.com with ESMTPSA id c2sm8307508qkd.57.2021.07.19.08.15.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Jul 2021 08:15:31 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Mon, 19 Jul 2021 11:15:29 -0400
+Message-Id: <CCX7RIIHKCA3.246SJ5U1XSOJK@shaak>
+Cc:     <lars@metafoo.de>, <pmeerw@pmeerw.net>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
+Subject: Re: [PATCH v5 05/10] iio: afe: rescale: add INT_PLUS_{MICRO,NANO}
+ support
+From:   "Liam Beguin" <liambeguin@gmail.com>
+To:     "Peter Rosin" <peda@axentia.se>,
+        "Jonathan Cameron" <jic23@kernel.org>
+References: <20210715031215.1534938-1-liambeguin@gmail.com>
+ <20210715031215.1534938-6-liambeguin@gmail.com>
+ <8417f698-eef2-3311-625a-1ceb17d3e5b2@axentia.se>
+ <CCUT1ZDDWS1J.3CGKX5J1MNFOX@shaak> <20210717175551.20265ac4@jic23-huawei>
+ <CCWNYFYK095U.B3ZVEH0JYVLA@shaak>
+ <e6358b95-aaa8-dd66-079e-8ddec547c5a2@axentia.se>
+In-Reply-To: <e6358b95-aaa8-dd66-079e-8ddec547c5a2@axentia.se>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Il giorno lun 19 lug 2021 alle ore 16:15 Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> ha scritto:
->
-> On Mon, Jul 19, 2021 at 02:59:30PM +0200, Andrea Merello wrote:
-> > Il giorno lun 19 lug 2021 alle ore 13:56 Andy Shevchenko
-> > <andriy.shevchenko@linux.intel.com> ha scritto:
-> > >
-> > > On Mon, Jul 19, 2021 at 10:49:54AM +0200, Andrea Merello wrote:
-> > > > Il giorno sab 17 lug 2021 alle ore 17:48 Jonathan Cameron
-> > > > <jic23@kernel.org> ha scritto:
-> > > > > On Thu, 15 Jul 2021 16:17:42 +0200
-> > > > > Andrea Merello <andrea.merello@gmail.com> wrote:
->
-> ...
->
-> > > > > > +/*
-> > > > > > + * Register writes cmd have the following format
-> > > > > > + * +------+------+-----+-----+----- ... ----+
-> > > > > > + * | 0xAA | 0xOO | REG | LEN | payload[LEN] |
-> > > > > > + * +------+------+-----+-----+----- ... ----+
-> > > > > > + *
-> > > > > > + * Register write responses have the following format
-> > > > > > + * +------+----------+
-> > > > > > + * | 0xEE | ERROCODE |
-> > > > > > + * +------+----------+
-> > > > > > + *
-> > > > > > + * Register read have the following format
-> > > > > > + * +------+------+-----+-----+
-> > > > > > + * | 0xAA | 0xO1 | REG | LEN |
-> > > > > > + * +------+------+-----+-----+
-> > > > > > + *
-> > > > > > + * Successful register read response have the following format
-> > > > > > + * +------+-----+----- ... ----+
-> > > > > > + * | 0xBB | LEN | payload[LEN] |
-> > > > > > + * +------+-----+----- ... ----+
-> > > > > > + *
-> > > > > > + * Failed register read response have the following format
-> > > > > > + * +------+--------+
-> > > > > > + * | 0xEE | ERRCODE|  (ERRCODE always > 1)
-> > > > > > + * +------+--------+
-> > > > > > + *
-> > > > > > + * Error codes are
-> > > > > > + * 01: OK
-> > > > > > + * 02: read/write FAIL
-> > > > > > + * 04: invalid address
-> > > > > > + * 05: write on RO
-> > > > > > + * 06: wrong start byte
-> > > > > > + * 07: bus overrun
-> > > > > > + * 08: len too high
-> > > > > > + * 09: len too low
-> > > > > > + * 10: bus RX byte timeout (timeout is 30mS)
-> > > > > > + *
-> > > > > > + *
-> > > > > > + * **WORKAROUND ALERT**
-> > > > > > + *
-> > > > > > + * Serial communication seems very fragile: the BNO055 buffer seems to overflow
-> > > > > > + * very easy; BNO055 seems able to sink few bytes, then it needs a brief pause.
-> > > > > > + * On the other hand, it is also picky on timeout: if there is a pause > 30mS in
-> > > > > > + * between two bytes then the transaction fails (IMU internal RX FSM resets).
-> > > > > > + *
-> > > > > > + * BMU055 has been seen also failing to process commands in case we send them
-> > > > > > + * too close each other (or if it is somehow busy?)
-> > > > > > + *
-> > > > > > + * One idea would be to split data in chunks, and then wait 1-2mS between
-> > > > > > + * chunks (we hope not to exceed 30mS delay for any reason - which should
-> > > > > > + * be pretty a lot of time for us), and eventually retry in case the BNO055
-> > > > > > + * gets upset for any reason. This seems to work in avoiding the overflow
-> > > > > > + * errors, but indeed it seems slower than just perform a retry when an overflow
-> > > > > > + * error occur.
-> > > > > > + * In particular I saw these scenarios:
-> > > > > > + * 1) If we send 2 bytes per time, then the IMU never(?) overflows.
-> > > > > > + * 2) If we send 4 bytes per time (i.e. the full header), then the IMU could
-> > > > > > + *    overflow, but it seem to sink all 4 bytes, then it returns error.
-> > > > > > + * 3) If we send more than 4 bytes, the IMU could overflow, and I saw it sending
-> > > > > > + *    error after 4 bytes are sent; we have troubles in synchronizing again,
-> > > > > > + *    because we are still sending data, and the IMU interprets it as the 1st
-> > > > > > + *    byte of a new command.
-> > > > > > + *
-> > > > > > + * So, we workaround all this in the following way:
-> > > > > > + * In case of read we don't split the header but we rely on retries; This seems
-> > > > > > + * convenient for data read (where we TX only the hdr).
-> > > > > > + * For TX we split the transmission in 2-bytes chunks so that, we should not
-> > > > > > + * only avoid case 2 (which is still manageable), but we also hopefully avoid
-> > > > > > + * case 3, that would be by far worse.
-> > > > >
-> > > > > Nice docs and this sounds terrible!
-> > > >
-> > > > Indeed.. If anyone has nicer ideas, or is aware about better
-> > > > workaround, I would really love to know...
-> > >
-> > > This needs somebody to go thru data sheet and check for possibilities, what you
-> > > described above is not gonna fly. Okay, "in a robust way".
-> > >
-> > > I can't believe there is nothing in the communication protocol that may
-> > > increase a robustness.
-> >
-> > The serial protocol is both described in the datasheet and in an
-> > application note "BNO055UART interface". Both of them mention the fact
-> > that  the IMU could just fail in processing the commands and responds
-> > with a status message with the "overflow" error code. The application
-> > note says this can happen because of an internal IMU buffer clearing
-> > stuff not happening in time, and that you have to retry the command in
-> > such case (which works for read commands, because after the header the
-> > IMU will always respond with something).
-> >
-> > They say nothing about the fact that the IMU could decide to respond
-> > with an "overflow" status message when a write command is still being
-> > TXed, even if it is not finished yet, but this actually happens (seen
-> > at least after the 4-bytes header).
->
-> (1)
->
-> >
-> > I think there is not much other information about this in datasheet
-> > and application note. Besides, the message formats are also described
-> > the comments in bno055_sl.c
-> >
-> > Given that the IMU behaves like this, I could only see three possible
-> > workarounds for managing write commands:
-> > 1 - be quick enough on RX side in catching the IMU overflow status
-> > response before sending the next char, which seems unfeasible.
-> > 2 - be slow enough to let the IMU do its own stuff, which seems doable.
-> > 3 - let the mess happen and try to recover: when we get the IMU
-> > overflow error then we might still being TXing; in this case we stop
-> > and we wait for the IMU to complain for a malformed command, but I'm
-> > unsure how the IMU could handle this: it will refuse the wrong
-> > starting byte (unless our payload is 0xAA by chance), but then how
-> > many bytes does it throw away? How may (malformed) commands would it
-> > try to extract from a the garbage we TXed (how may complaints response
-> > would we receive and need to wait) ? And what if there is something in
-> > payload that resembles a valid command and got accepted? This seems
-> > worse than workaround #2
->
-> I believe the #3 is the right thing to do actually.
->
-> The payload is up to 128 bytes and speed is fixed. I believe that firmware has
-> internally the state of the input processing. OTOH the UART is duplex and what
-> you need in the driver is to have a callback that will read whatever the answer
-> from the sensor will be at the time it appears.
-
-I can add a reader thread that always process IMU data, but I doubt we
-can make assumptions on the fact it will be triggered in time to avoid
-to TX extra characters after IMU signals an overflow; this seems
-really a RT stuff, and it would even depends by the USART HW (think
-about USB-UART adaptors).
-
-So, how could we implement #3 dealing correctly with the issue about
-the IMU possiblly misinterpreting the bytes we might have already sent
-out? What's if they are a valid command by chance? The problem here is
-that this protocol has no any CRC or something like that to make sure
-garbage is really thrown away.
-
-> Also note that Linux is not an RTOS and you may end up, maybe rarely, in the
-> case which resembles the #3 while using workaround #2.
-
-Yes, in case we sleep more than 30mS we fail. I would say it's very
-unlikely, but that's true.
-
-Maybe if I add a reader thread to the workaround #2, considering we
-sleep every two bytes, then we can know about IMU errors - maybe still
-not before TXing any further data - but before we TX the bare minimum
-data amount in order to produce an unintentionally valid write command
-(should be 5 bytes).
-
-Anyway it seems to me that there is no perfectly robust way to deal
-with this IMU.. But, in real word scenarios, workaround #2 seem to
-work well enough.
-
-> On top of that you demolish the idea of using DMA with UART.
-
-True, but we really have no rush for write commands, so that it
-shouldn't be an issue indeed - and apart for the few bytes of the
-calibration data, that we might discuss about, all other writes are so
-short that DMA has probably no real advantage (OTOH read command
-doesn't have any extra sleep, so we are fine with reading the IMU
-measures).
-
-> (Btw, AN012 [1] says 100ms is the write timeout for the next byte,
->  and not 30ms.)
-
-Yes: there is an inconsistency here: the datasheet says 30mS, the AN
-says 100mS. We should then consider not to exceed 30mS.
-
-> As AN012 rightfully pointed out the UART is _async_ interface, so I believe (1)
-> is covered by this, meaning that error respond may appear _at any time_ on the
-> (host-side) Rx line.
-
-Ah, that is an interesting interpretation :)
-
-> My personal take away is never ever use UART for this kind (*) of
-> communications and this sensor specifically.
-
-Consider that this kind of devices are position dependant, e.g. you
-want to fix them on your arms, or on your robot feet, etc. I2C is
-electrically unsuitable for long off-board wires, while serial lines
-should be by far better in this case.
-
-> *) time-based IPCs are doomed by definition in non-RTOS environments with UART
->    hardware interface.
-
-We have to live with this :/ But indeed having sensors that measure
-real-world physical phenomena probably are a bit RT-ish anyway..
-
-> [1]: BST-BNO055-AN012-00 | Revision 1.0 | June 2015
->
-> > What I meant: given this IMU behaviour, if someone has a better idea
-> > about how to deal with it, I would listen :)
-> >
-> > > > > > + */
->
-> ...
->
-> > > > > > +/* Read operation overhead:
-> > > > > > + * 4 bytes req + 2byte resp hdr
-> > > > > > + * 6 bytes = 60 bit (considering 1start + 1stop bits).
-> > > > > > + * 60/115200 = ~520uS
-> > > > > > + * In 520uS we could read back about 34 bytes that means 3 samples, this means
-> > > > > > + * that in case of scattered read in which the gap is 3 samples or less it is
-> > > > > > + * still convenient to go for a burst.
-> > > > > > + * We have to take into account also IMU response time - IMU seems to be often
-> > > > > > + * reasonably quick to respond, but sometimes it seems to be in some "critical
-> > > > > > + * section" in which it delays handling of serial protocol.
-> > > > > > + * By experiment, it seems convenient to burst up to about 5/6-samples-long gap
-> > >
-> > > Missed perial and entire comment needs proper style and space occupation ratio.
-> >
-> > Perial? But OK: text reflow and I see the 1st line for multilne
->
-> Period.
-
-Ah, OK :)
-
-> > commend is not correct.
-> >
-> > > > > > + */
->
-> --
-> With Best Regards,
-> Andy Shevchenko
+On Mon Jul 19, 2021 at 4:31 AM EDT, Peter Rosin wrote:
 >
 >
+> On 2021-07-19 01:44, Liam Beguin wrote:
+> > On Sat Jul 17, 2021 at 12:55 PM EDT, Jonathan Cameron wrote:
+> >> On Fri, 16 Jul 2021 15:18:33 -0400
+> >> "Liam Beguin" <liambeguin@gmail.com> wrote:
+> >>
+> >>> On Thu Jul 15, 2021 at 5:48 AM EDT, Peter Rosin wrote:
+> >>>>
+> >>>> On 2021-07-15 05:12, Liam Beguin wrote: =20
+> >>>>> From: Liam Beguin <lvb@xiphos.com>
+> >>>>>
+> >>>>> Some ADCs use IIO_VAL_INT_PLUS_{NANO,MICRO} scale types.
+> >>>>> Add support for these to allow using the iio-rescaler with them.
+> >>>>>
+> >>>>> Signed-off-by: Liam Beguin <lvb@xiphos.com>
+> >>>>> ---
+> >>>>>  drivers/iio/afe/iio-rescale.c | 15 +++++++++++++++
+> >>>>>  1 file changed, 15 insertions(+)
+> >>>>>
+> >>>>> diff --git a/drivers/iio/afe/iio-rescale.c b/drivers/iio/afe/iio-re=
+scale.c
+> >>>>> index 4c3cfd4d5181..a2b220b5ba86 100644
+> >>>>> --- a/drivers/iio/afe/iio-rescale.c
+> >>>>> +++ b/drivers/iio/afe/iio-rescale.c
+> >>>>> @@ -92,7 +92,22 @@ static int rescale_read_raw(struct iio_dev *indi=
+o_dev,
+> >>>>>  			do_div(tmp, 1000000000LL);
+> >>>>>  			*val =3D tmp;
+> >>>>>  			return ret;
+> >>>>> +		case IIO_VAL_INT_PLUS_NANO:
+> >>>>> +			tmp =3D ((s64)*val * 1000000000LL + *val2) * rescale->numerator=
+;
+> >>>>> +			do_div(tmp, rescale->denominator);
+> >>>>> +
+> >>>>> +			*val =3D div_s64(tmp, 1000000000LL);
+> >>>>> +			*val2 =3D tmp - *val * 1000000000LL;
+> >>>>> +			return ret; =20
+> >>>>
+> >>>> This is too simplistic and prone to overflow. We need something like
+> >>>> this
+> >>>> (untested)
+> >>>>
+> >>>> tmp =3D (s64)*val * rescale->numerator;
+> >>>> rem =3D do_div(tmp, rescale->denominator);
+> >>>> *val =3D tmp;
+> >>>> tmp =3D ((s64)rem * 1000000000LL + (s64)*val2) * rescale->numerator;
+> >>>> do_div(tmp, rescale->denominator);
+> >>>> *val2 =3D tmp;
+> >>>>
+> >>>> Still not very safe with numerator and denominator both "large", but
+> >>>> much
+> >>>> better. And then we need normalizing the fraction part after the abo=
+ve,
+> >>>> of
+> >>>> course.
+> >>>> =20
+> >>>
+> >>> Understood, I'll test that.
+> >>>
+> >>>> And, of course, I'm not sure what *val =3D=3D -1 and *val2 =3D=3D 50=
+0000000
+> >>>> really
+> >>>> means. Is that -1.5 or -0.5? The above may very well need adjusting =
+for
+> >>>> negative values...
+> >>>> =20
+> >>>
+> >>> I would've assumed the correct answer is -1 + 500000000e-9 =3D -0.5
+> >>> but adding a test case to iio-test-format.c seems to return -1.5...
+> >>
+> >=20
+> > Hi Jonathan,
+> >=20
+> >> No. -1.5 is as intended, though the IIO_VAL_PLUS_MICRO is rather
+> >> confusing
+> >> naming :( We should perhaps add more documentation for that. Signs wer=
+e
+> >> always a bit of a pain with this two integer scheme for fixed point.
+> >>
+> >> The intent is to have moderately readable look up tables with the
+> >> problem that
+> >> we don't have a signed 0 available. Meh, maybe this decision a long ti=
+me
+> >> back wasn't a the right one, but it may be a pain to change now as too
+> >> many
+> >> drivers to check!
+> >>
+> >> 1, 0000000 =3D=3D 1
+> >> 0, 5000000 =3D=3D 0.5
+> >> 0, 0000000 =3D=3D 0
+> >> 0, -5000000 =3D=3D -0.5
+> >> -1, 5000000 =3D=3D -1.5
+> >>
+> >=20
+> > Understood, thanks for clearing that out.
+
+Hi Peter,
+
+>
+> I just realized that do_div assumes unsigned operands...
+>
+> :-(
+
+I noticed the same thing after adding the kunit tests.
+I added patches for that.
+
+For IIO_VAL_PLUS_{MICRO,NANO} specifically, I have something working but
+I like your approach better so I'll work on it a little more.
+
+Thanks,
+Liam
+
+>
+> Cheers,
+> Peter
+

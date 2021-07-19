@@ -2,96 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A9B873CD607
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jul 2021 15:47:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EBD73CD63A
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jul 2021 15:58:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240514AbhGSNG7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 19 Jul 2021 09:06:59 -0400
-Received: from mail-io1-f52.google.com ([209.85.166.52]:46874 "EHLO
-        mail-io1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240506AbhGSNG7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Jul 2021 09:06:59 -0400
-Received: by mail-io1-f52.google.com with SMTP id p186so19973899iod.13;
-        Mon, 19 Jul 2021 06:47:39 -0700 (PDT)
+        id S240717AbhGSNRX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 19 Jul 2021 09:17:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44768 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237309AbhGSNRX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Jul 2021 09:17:23 -0400
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AEABC061574
+        for <linux-iio@vger.kernel.org>; Mon, 19 Jul 2021 06:21:48 -0700 (PDT)
+Received: by mail-lf1-x12b.google.com with SMTP id i5so30355401lfe.2
+        for <linux-iio@vger.kernel.org>; Mon, 19 Jul 2021 06:58:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=xMR+FiaO8Rs1484UuuHPsjL4a0zU33jNG86OHueG8dc=;
+        b=DaNVkz69krx3VN/WiJvQDEG0lQ+qlxMGJuTe6ifmhDDowAfn/19Z7WUik2ipqjjYiI
+         kJfyjnf21aRZ5FRUpq29uYp/52meYcuHz2pawQkfrDgbkcagC8GNjPentpKkn8kVGqcz
+         6RqDRgGjnV6WeZVQnVpwUuQXeRnXHyk2BGTmSyTEL/bp0m0mM6aAH06VHMMfL8v29cnR
+         VWWoT6VP+NvWkeCnozTw6W+Nnmzf/y86hxo+zo++DdK+P+BuvSvCdRtvse/5ELvJ68B2
+         ObA8DiJ9PRd/JzAT/TXVlYh7ECFQumjDBuWBQ6hJ2x6VBUThfHbKjFFMaCiUWUnJTE22
+         K+vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=oFd3MlNUQRlX4N33x8e/4VBraKu1g4Ilixv0NOLhWz0=;
-        b=tWUKd6xysrGDBy2dKII1YaVf29RmEOJb53e/cUw/mGfcwHdx+4ueF6Z2t/alz4l/mO
-         nSxO66EH+cQa1tLXFUXzcaT83fgnctA9pqZQhQmQbnUEiSGzpTWpqbfp2MmSwlAzB+Xj
-         F9d9BiZ607cDGdqE9hL3RLpwM52SZGz6gVDvLvLFs5yFGcymEU5r24h+rkqRLH6EWvhK
-         pI+UbQPsHWWeMoZKFc7f7q7fDp9/C65dubuDyWtfGwirp9cyvXc5dhUWPSmAZWosNSB5
-         Kde+zlPgP1xZlpb0Ro0yQM96W4HYq6do9vShD+c3sh7rEelRnfM6yX9xDKHAFyDz8Sva
-         Gjpw==
-X-Gm-Message-State: AOAM530hcJW1fDQOkNRHM5uWgQaknvy6A7iFw3kP6zB2IuHK0YIreAWd
-        sWDMFyiKkUTOFFPWo0sJiw==
-X-Google-Smtp-Source: ABdhPJzPtqUoDpGjzuH0PNyDyTfPsZwsMzRCiGIw7vDzjRgE9t1FpcLTpQP+rirn7ZBjJymyYAfRgg==
-X-Received: by 2002:a5d:87d0:: with SMTP id q16mr19030655ios.109.1626702458777;
-        Mon, 19 Jul 2021 06:47:38 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.248])
-        by smtp.gmail.com with ESMTPSA id l9sm1974883ilv.31.2021.07.19.06.47.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jul 2021 06:47:38 -0700 (PDT)
-Received: (nullmailer pid 1811206 invoked by uid 1000);
-        Mon, 19 Jul 2021 13:47:28 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=xMR+FiaO8Rs1484UuuHPsjL4a0zU33jNG86OHueG8dc=;
+        b=nAc65qDZnRT0sXMkVr8FrH1ajXgEx1WB9gc6wetqehcWdIbFOfltrFpoqVVFAgFQYe
+         WcNQej9pISsznDFfeCDsaGUKJqAm2D51nur548mtvye1QeZPeBLclVp38KDRiTaNlS8d
+         hYKkagWbBMLa37AlQlLjjMV7cqKzOvEDwtdxogg2mY36y/+DQazv7Xt1EyFhBLwSIDMe
+         BIkvmSy7Qv0sUcV6iEkxnXk92bkLAek1UbKKmsvM6KrdfTtcxm9X9iu9PWvTHKJamZwM
+         hbuVukv4kLRXrhp5cyphADuEfq6wTW0M663zVc7qj3sE9xWKo5HhCuTsd+WDzRIoPNtN
+         wQsw==
+X-Gm-Message-State: AOAM533SL/bQtjqyGrCJtAxveKti7pDELP6H0GLhw5oP3tHcyyhnpaIq
+        Y9TWYjwOmSTosJ+XvSV3gCZQeYmrsFa9i1cqNjv25X2wfQk=
+X-Google-Smtp-Source: ABdhPJyaFX+ZGC8F2KDK2CyhH7RMO7NbFKuBkyf5i+PbLzyM2aPN7F4IIk6B9OeMq4gSa/FrWCNpVWfzTfk7Am49MkQ=
+X-Received: by 2002:a05:6512:3696:: with SMTP id d22mr18797582lfs.586.1626703081118;
+ Mon, 19 Jul 2021 06:58:01 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210719112156.27087-1-stephan@gerhold.net> <20210719112156.27087-2-stephan@gerhold.net>
+In-Reply-To: <20210719112156.27087-2-stephan@gerhold.net>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Mon, 19 Jul 2021 15:57:50 +0200
+Message-ID: <CACRpkdYtOvJ-37yTxaoZC63aBn56v4C41MC6HAD7_KgfWbbZgQ@mail.gmail.com>
+Subject: Re: [PATCH 1/4] dt-bindings: iio: accel: bma255: Add interrupt-names
+To:     Stephan Gerhold <stephan@gerhold.net>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        linux-clk@vger.kernel.org, Prabhakar <prabhakar.csengg@gmail.com>,
-        devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Biju Das <biju.das.jz@bp.renesas.com>,
-        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        Stephen Boyd <sboyd@kernel.org>, linux-iio@vger.kernel.org,
-        Alexandru Ardelean <aardelean@deviqon.com>
-In-Reply-To: <20210719085840.21842-2-prabhakar.mahadev-lad.rj@bp.renesas.com>
-References: <20210719085840.21842-1-prabhakar.mahadev-lad.rj@bp.renesas.com> <20210719085840.21842-2-prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: Re: [PATCH v2 1/4] dt-bindings: iio: adc: Add binding documentation for Renesas RZ/G2L A/D converter
-Date:   Mon, 19 Jul 2021 07:47:28 -0600
-Message-Id: <1626702448.448880.1811205.nullmailer@robh.at.kernel.org>
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS
+        <devicetree@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>, Andy
+        Shevchenko <andy.shevchenko@gmail.com>," 
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        Nikita Travkin <nikita@trvn.ru>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 19 Jul 2021 09:58:37 +0100, Lad Prabhakar wrote:
-> Add binding documentation for Renesas RZ/G2L A/D converter block.
-> 
-> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-> ---
->  .../bindings/iio/adc/renesas,rzg2l-adc.yaml   | 134 ++++++++++++++++++
->  1 file changed, 134 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
-> 
+On Mon, Jul 19, 2021 at 1:26 PM Stephan Gerhold <stephan@gerhold.net> wrote:
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+> The binding already allows specifying both interrupt pins, but there
+> is currently no way to describe a board where (for whatever reason)
+> only INT2 is connected. Make it possible to use "interrupt-names"
+> to make it explicit which interrupt pin is meant in the interrupts.
+>
+> Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 
-yamllint warnings/errors:
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-dtschema/dtc warnings/errors:
-Error: Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.example.dts:26.28-29 syntax error
-FATAL ERROR: Unable to parse input tree
-make[1]: *** [scripts/Makefile.lib:380: Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.example.dt.yaml] Error 1
-make[1]: *** Waiting for unfinished jobs....
-make: *** [Makefile:1418: dt_binding_check] Error 2
-\ndoc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/patch/1506856
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
-
+Yours,
+Linus Walleij

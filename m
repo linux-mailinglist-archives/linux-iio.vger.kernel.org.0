@@ -2,188 +2,148 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 770C63CCE8B
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jul 2021 09:33:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D17D23CCECD
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jul 2021 09:47:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234833AbhGSHgH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 19 Jul 2021 03:36:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49498 "EHLO
+        id S235008AbhGSHuU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 19 Jul 2021 03:50:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234770AbhGSHgH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Jul 2021 03:36:07 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFEC3C061762;
-        Mon, 19 Jul 2021 00:33:07 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id bu12so27158754ejb.0;
-        Mon, 19 Jul 2021 00:33:07 -0700 (PDT)
+        with ESMTP id S235084AbhGSHuO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Jul 2021 03:50:14 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F0D6C0613DB
+        for <linux-iio@vger.kernel.org>; Mon, 19 Jul 2021 00:47:14 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id dj21so22786679edb.0
+        for <linux-iio@vger.kernel.org>; Mon, 19 Jul 2021 00:47:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=TIm1TRm27OD8u584vFf5/FAIcFfcqCrDwZRKQMrp8+E=;
-        b=fcr3a2cvoZtesTmKOlpDO6qVC1rsr6D7gyDChuhqKjxKhzleCd2RwmD2uEOmKsaUk7
-         QergnofOQVv2TIIezGqEFtI93NU7BXxTIYlv5P50wesLHbQKR3Z9TCTGdqlwdL8Hc/Qc
-         c+QsRB8RKn0es6Tv1ss15vufchonedlFJC6kub6RjJVwqp6l/7WhSs+xV/Vle51mqiy4
-         fdlhfkYtEqEAlskJhZAFWXrpHQuxQmPfmRpj47b5on5tHREVbIsniPrtiYsUHhBpA0z2
-         keMnbgItkqxB/H8rxkhpvVHg/fw9CBQfohf4sMSfsc5Ix3ldQpkXJVoJfBo+QnB56TzA
-         EC5w==
+         :cc;
+        bh=FX5G7GXYgSuIZSzn7JC06isCYBNW34wfxtw6yOB40VA=;
+        b=Qn78KfjsRGsyatSjUSmRLiRY7bi8CO3pFOL84aLFlheelrMNXdkrp1n2LXPxl9Sv+G
+         +t5EHzj7gWxgJli/I7l/9m/RRs0qIycX/biSGZ1zwK67LUEagFGJ8VQqa8Om3jOQVv4s
+         x8d39pOlboCys0s3Kyb1FdPS9bj3MQOYgFQ5Gbk+cfEpviGqfhGEXNxcCNw9oiEFtvKF
+         uBgj8FzKzwv+cQq3+HtadK8RLsQSiO4r6fOYgZVuuzhTd4F/Suar1lK88dPzCmt36teF
+         z+fggpXzY3jFDkIhOKgF/pttkxHTb3n2QCI1Xf1+qa0yTiQ7dsOd4vsFpB8b3TOnVbaV
+         1mvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=TIm1TRm27OD8u584vFf5/FAIcFfcqCrDwZRKQMrp8+E=;
-        b=aQO/0bJw6t931K/Ks+kITSuXk0GcuU5UJR9V54xi8TrXkAxnoGx7C/+VRXTs8mf/0b
-         KRrZbvJJkMY/fHub/u3DqEWGGueV4rynuHMbIe9BsjCcdzJcOP8QgfBvBlVHPVrIQB17
-         0ryJinzSVnXlFJ9VmaKsiZI3nMBRe3//KCQSKDecaQdJz+qo4MvIZSCtOcmuniUIzpEm
-         q0s+QQydPyBU2K0mVsvrJP1jGy65dz5VoiPLRDQoC3WHfg3L3Pscyq6Vlm4XgyOaK6JA
-         JBcegCJ7wI/dVIn39XtfAvhZHrNWNQhJKgDJWntLBnKX+M3o4OiYFm8RPEaeDBTZ6HWg
-         nGZA==
-X-Gm-Message-State: AOAM533tsDy7jgjIvgDR3J1I9xyKq6tOPKdjTgMzT/9rMK7dX03g0PrT
-        kOuTvxRyYwd1yRbAIGJ8Q6PiJip0qWwvU8wl7S8=
-X-Google-Smtp-Source: ABdhPJwmTXjcuWz6XUSS0BDPVjIeCIAdcRFPcTqpRK8pezxFp1u2ZfSu+Yx2jZYHYe2UFOKq+wgv7dSkezK9726LGKk=
-X-Received: by 2002:a17:906:a202:: with SMTP id r2mr25521827ejy.398.1626679986549;
- Mon, 19 Jul 2021 00:33:06 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=FX5G7GXYgSuIZSzn7JC06isCYBNW34wfxtw6yOB40VA=;
+        b=jA0R4xLXz/g9GxmTB0xe2GUWNfVyXyDIAWnVaY9PrEfm0CqjFoA5cuDFvnZXpuQkln
+         ch+pXCir5a+VSBmSs3yy6h/7add7hbw2HjSACkXke7BAkxbV7XRxbkifc1ke2ad25G3U
+         JSbDY3XGrVuhqfjzcVggM/ZJg8vTCa08Urvy7/uKNjfJC88hAGIJs2Q1JEpDKrzAbA9z
+         SEjTwpZItsDIIUOqVPudRJwG/RoPLoZ+fkMHg7w1K2+5rcep5A0ttLLaRLrPUitd//oo
+         Pbq25RyTGOpF9RbseWGElk932PLLv7mQKofIv/zu+EPVsNclc7hmyX+j6ygJ+9502Cg1
+         nFOw==
+X-Gm-Message-State: AOAM531/SZISknLLSuHQMWQAC/maMiYX9wXxCGMfy2cZOZkGHnzC/x0T
+        39w/sDneL0o4GY5bHSvoLm2+wF/KhCC5z/S0jNo=
+X-Google-Smtp-Source: ABdhPJzNymUba5hVO5WFIBh68XxpLdNoGtX1CR+aPVlrpXI9skQQAAOWQlHfl35VCSsC23SF0CstAidSjoVjCDteT64=
+X-Received: by 2002:a05:6402:3089:: with SMTP id de9mr33153528edb.69.1626680833174;
+ Mon, 19 Jul 2021 00:47:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210718203746.7159-1-theobf@usp.br>
-In-Reply-To: <20210718203746.7159-1-theobf@usp.br>
+References: <CABvMjLS8jU2y3owRvsS-PyS5NUyRpQs6Xa_A+U5mfWUTKu3p4A@mail.gmail.com>
+In-Reply-To: <CABvMjLS8jU2y3owRvsS-PyS5NUyRpQs6Xa_A+U5mfWUTKu3p4A@mail.gmail.com>
 From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Mon, 19 Jul 2021 10:32:54 +0300
-Message-ID: <CA+U=DspWmrWWsQDFPLycS2y-=8Q7TSn5NYMVgbQ42FccAy0=pw@mail.gmail.com>
-Subject: Re: [PATCH] iio: dac: max5821: convert device register to device
- managed function
-To:     =?UTF-8?Q?Th=C3=A9o_Bor=C3=A9m_Fabris?= <theobf@usp.br>
+Date:   Mon, 19 Jul 2021 10:47:02 +0300
+Message-ID: <CA+U=Dspdc84enbfmkmY24O8fnN_6d0_enSAj0PR9w7M9CjE7xw@mail.gmail.com>
+Subject: Re: Uninitialized Variable Use in drivers/iio/adc/stm32-dfsdm-adc.c
+To:     Yizhuo Zhai <yzhai003@ucr.edu>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        linux-iio <linux-iio@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jul 18, 2021 at 11:42 PM Th=C3=A9o Bor=C3=A9m Fabris <theobf@usp.br=
-> wrote:
+On Mon, Jul 19, 2021 at 2:39 AM Yizhuo Zhai <yzhai003@ucr.edu> wrote:
 >
-> Add a device managed hook, via devm_add_action_or_reset() and
-> max5821_regulator_disable(), to disable voltage regulator on device
-> detach.
-> Replace iio_device_register() by devm_iio_device_register() and remove
-> the max5821_remove() function used to unregister the device and disable t=
-he
-> voltage regulator.
-> Remove i2c_set_clientdata() from the probe function, since
-> i2c_get_clientdata() is not used anymore.
+> Hi All:
+> Inside function stm32_dfsdm_irq(), the variable "status", "int_en"
+> could be uninitialized if the regmap_read() fails and returns an error
+> code.  However, they are directly used in the later context to decide
+> the control flow, which is potentially unsafe. However,
+> stm32_dfsdm_irq() returns the type irqreturn_t and I could not return
 
-Looks good overall.
-A few comments inline.
+Just curious: are you seeing any issues with these variables being
+uninitialized?
+
+> the error code directly. Could you please advise me here?
+
+The correct way to do it, would be:
+
+ret = regmap_read(regmap, DFSDM_ISR(adc->fl_id), &status);
+if (ret)
+    return IRQ_HANDLED;
+
+IRQ handlers should return one of
+enum irqreturn {
+    IRQ_NONE        = (0 << 0),
+    IRQ_HANDLED     = (1 << 0),
+    IRQ_WAKE_THREAD     = (1 << 1),
+};
+
+If you want to fully optimize/correct this, then it may be something like:
+
+        ret = regmap_read(regmap, DFSDM_ISR(adc->fl_id), &status);
+        if (ret)
+                return IRQ_HANDLED;
+
+        if (status & DFSDM_ISR_REOCF_MASK) {
+                /* Read the data register clean the IRQ status */
+                regmap_read(regmap, DFSDM_RDATAR(adc->fl_id), adc->buffer);
+
+// in this point, we could check for regmap_read(), but it won't make
+sense; we should call the complete() handler, either way
+
+                complete(&adc->completion);
+        }
+
+        if (status & DFSDM_ISR_ROVRF_MASK) {
+                ret = regmap_read(regmap, DFSDM_CR2(adc->fl_id), &int_en);
+                if (ret)
+                        return IRQ_HANDLED;
+                if (int_en & DFSDM_CR2_ROVRIE_MASK)
+                        dev_warn(&indio_dev->dev, "Overrun detected\n");
+                regmap_update_bits(regmap, DFSDM_ICR(adc->fl_id),
+                                   DFSDM_ICR_CLRROVRF_MASK,
+                                   DFSDM_ICR_CLRROVRF_MASK);
+
+// in this point, we could also check the ret code; but we still need
+to call IRQ_HANDLED anyway;
+        }
+
+
+Quite often, when regmap_read() returns errors, then something is
+seriously wrong in the system.
+Something else would usually fail or crash worse than this interrupt handler.
+That being said, properly handling regmap_read() here is a good idea.
 
 >
-> Signed-off-by: Th=C3=A9o Bor=C3=A9m Fabris <theobf@usp.br>
-> ---
->  drivers/iio/dac/max5821.c | 30 ++++++++++++++++--------------
->  1 file changed, 16 insertions(+), 14 deletions(-)
+> The related code:
 >
-> diff --git a/drivers/iio/dac/max5821.c b/drivers/iio/dac/max5821.c
-> index bd6e75699a63..44c04ae70b32 100644
-> --- a/drivers/iio/dac/max5821.c
-> +++ b/drivers/iio/dac/max5821.c
-> @@ -294,6 +294,13 @@ static const struct iio_info max5821_info =3D {
->         .write_raw =3D max5821_write_raw,
->  };
+> static irqreturn_t stm32_dfsdm_irq(int irq, void *arg) {
+>     unsigned int status, int_en;
 >
-> +static void max5821_regulator_disable(void *data)
-> +{
-> +       struct regulator *rdata =3D data;
-> +
-> +       regulator_disable(rdata);
-
-This can be simplified a bit:
-
-static void max5821_regulator_disable(void *reg)
-{
-      regulator_disable(reg);
-}
-
-I used to do explicit casting, but then I also figured that it's not necess=
-ary.
-
-> +}
-> +
->  static int max5821_probe(struct i2c_client *client,
->                         const struct i2c_device_id *id)
->  {
-> @@ -306,7 +313,6 @@ static int max5821_probe(struct i2c_client *client,
->         if (!indio_dev)
->                 return -ENOMEM;
->         data =3D iio_priv(indio_dev);
-> -       i2c_set_clientdata(client, indio_dev);
->         data->client =3D client;
->         mutex_init(&data->lock);
+>     regmap_read(regmap, DFSDM_ISR(adc->fl_id), &status);
+>     regmap_read(regmap, DFSDM_CR2(adc->fl_id), &int_en);
 >
-> @@ -331,6 +337,14 @@ static int max5821_probe(struct i2c_client *client,
->                 goto error_free_reg;
->         }
+>     if (status & DFSDM_ISR_REOCF_MASK) {}
+>     if (status & DFSDM_ISR_ROVRF_MASK) {}
+> }
 >
-> +       ret =3D devm_add_action_or_reset(&client->dev, max5821_regulator_=
-disable,
-> +                                      data->vref_reg);
-> +       if (ret) {
-> +               dev_err(&client->dev,
-> +                       "Failed to add action to managed regulator: %d\n"=
-, ret);
-> +               goto error_disable_reg;
-
-return ret;
-
-devm_add_action_or_reset() should call max5821_regulator_disable() in
-case of error
-
-> +       }
-> +
->         ret =3D regulator_get_voltage(data->vref_reg);
->         if (ret < 0) {
->                 dev_err(&client->dev,
-> @@ -346,7 +360,7 @@ static int max5821_probe(struct i2c_client *client,
->         indio_dev->modes =3D INDIO_DIRECT_MODE;
->         indio_dev->info =3D &max5821_info;
 >
-> -       return iio_device_register(indio_dev);
-> +       return devm_iio_device_register(&client->dev, indio_dev);
->
->  error_disable_reg:
-
-This entire goto block should be removed.
-The idea of using only devm_ functions is to not have these goto statements=
-.
-
->         regulator_disable(data->vref_reg);
-> @@ -356,17 +370,6 @@ static int max5821_probe(struct i2c_client *client,
->         return ret;
->  }
->
-> -static int max5821_remove(struct i2c_client *client)
-> -{
-> -       struct iio_dev *indio_dev =3D i2c_get_clientdata(client);
-> -       struct max5821_data *data =3D iio_priv(indio_dev);
-> -
-> -       iio_device_unregister(indio_dev);
-> -       regulator_disable(data->vref_reg);
-> -
-> -       return 0;
-> -}
-> -
->  static const struct i2c_device_id max5821_id[] =3D {
->         { "max5821", ID_MAX5821 },
->         { }
-> @@ -386,7 +389,6 @@ static struct i2c_driver max5821_driver =3D {
->                 .pm     =3D &max5821_pm_ops,
->         },
->         .probe          =3D max5821_probe,
-> -       .remove         =3D max5821_remove,
->         .id_table       =3D max5821_id,
->  };
->  module_i2c_driver(max5821_driver);
 > --
-> 2.20.1
+> Kind Regards,
 >
+> Yizhuo Zhai
+>
+> Computer Science, Graduate Student
+> University of California, Riverside

@@ -2,33 +2,33 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CCFFF3CD3E9
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jul 2021 13:31:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FD663CD3D3
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jul 2021 13:28:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236076AbhGSKtL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 19 Jul 2021 06:49:11 -0400
-Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.84]:30232 "EHLO
+        id S236364AbhGSKqR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 19 Jul 2021 06:46:17 -0400
+Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.81]:18584 "EHLO
         mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236541AbhGSKtI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Jul 2021 06:49:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1626694004;
+        with ESMTP id S236292AbhGSKqQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Jul 2021 06:46:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1626694005;
     s=strato-dkim-0002; d=gerhold.net;
     h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
     From:Subject:Sender;
-    bh=yqWNHaFT07H7dBsOX6TPZJo2FDypJbWmEZmGGz2Je2c=;
-    b=AVv2KyLphBJqig8oAt/QI+SG8cygY8sgsaLFduc1bhhZam5XyNJObBZAk1dM9GGxoc
-    qeqzUVMRaOH4IV/QiqYDAAaPkV4C+br+G/m0cPT5qkCn++wlpyZqDuQIl4/KWcsCCK6s
-    0H2l7wQffBNztdvebf+rRs20FWzDIK39iR3JZISyGSUSSo1om50q2GFMtGo00zdbS1H4
-    dDPCvYmHAhzIJc1ocetOL2DiwAYSiTip0K96nu3DAPm2naZCaCp64N8LdLE5JS3yY1sJ
-    TlJB1bgzaxZ8dBvPA6Xru6mS2mXbnUBCJuht50sJEBGoaHJbKHIITmcKPOLZjKM7czGn
-    QgAA==
+    bh=EU27wwecFrV7EsbZx1jhBFJBmbc5/vqkmCkJSV+r7Ck=;
+    b=S2g5VkkYR299BOPuhmDpesffWkYuj20tGzrs6UHkwNqQ+pW9mOqI4eDrrOcFtPBvee
+    mkDISePeWnp59CPLvspuxscxmXOzCxF7Ui4lwujL9BDjhnoFINrUO97KMTHuqUw3vFmK
+    AimvTGl6tspK4nF26746yO/vJk9JzabJQ0gWdirsDa2cgF8m1Pch5bONb+Xzl9X3aAcb
+    6lusYBwpTbkPfzxj1uk67b0Xt0RmQYbTsNSlnF4nmglMo1T5g87gWDghB451dHFTmnRs
+    YAjThHqnaU7vt3b5HYsbUQgAhzLuybTN+WDKeNcudogpiB8EL1az6a4f1acyk1leEOYE
+    Rt/Q==
 Authentication-Results: strato.com;
     dkim=none
 X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVORvLd4SsytBXS7IYBkLahKxB4m6O43/v"
 X-RZG-CLASS-ID: mo00
 Received: from droid..
     by smtp.strato.de (RZmta 47.28.1 DYNA|AUTH)
-    with ESMTPSA id g02a44x6JBQi27d
+    with ESMTPSA id g02a44x6JBQi27e
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
     Mon, 19 Jul 2021 13:26:44 +0200 (CEST)
@@ -43,9 +43,9 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         ~postmarketos/upstreaming@lists.sr.ht,
         Nikita Travkin <nikita@trvn.ru>,
         Stephan Gerhold <stephan@gerhold.net>
-Subject: [PATCH 2/4] dt-bindings: iio: accel: bma255: Add bosch,bmc156_accel
-Date:   Mon, 19 Jul 2021 13:21:54 +0200
-Message-Id: <20210719112156.27087-3-stephan@gerhold.net>
+Subject: [PATCH 3/4] iio: accel: bmc150: Make it possible to configure INT2 instead of INT1
+Date:   Mon, 19 Jul 2021 13:21:55 +0200
+Message-Id: <20210719112156.27087-4-stephan@gerhold.net>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210719112156.27087-1-stephan@gerhold.net>
 References: <20210719112156.27087-1-stephan@gerhold.net>
@@ -55,62 +55,165 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-BMC156 is very smilar to BMC150, but it has only one accelerometer
-interrupt pin. It would make sense if only INT1 was exposed but someone
-at Bosch was crazy and decided to only have an INT2 pin.
+Some Bosch accelerometers have two interrupt pins (INT1 and INT2).
+At the moment, the driver uses only the first one, which is fine for
+most situations. However, some boards might only have INT2 connected
+for some reason.
 
-In this case, it does not make sense if the first interrupt pin is
-treated as INT1 (since that pin does not exist). Add a note to the
-bindings that the first interrupt pin is treated as INT2 for BMC156.
+Add the necessary bits and configuration to set up INT2. Then try
+to detect this situation at least for device tree setups by checking
+if the first interrupt (the one picked by the I2C/SPI core) is actually
+named "INT2" using the interrupt-names property.
+
+of_irq_get_byname() returns either 0 or some error code in case
+the driver probed without device tree, so in all other cases we fall
+back to configuring INT1 as before.
 
 Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 ---
- .../bindings/iio/accel/bosch,bma255.yaml       | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/iio/accel/bmc150-accel-core.c | 71 ++++++++++++++++++++++-----
+ 1 file changed, 59 insertions(+), 12 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/accel/bosch,bma255.yaml b/Documentation/devicetree/bindings/iio/accel/bosch,bma255.yaml
-index 897a1d808ef5..f7848e4a7b29 100644
---- a/Documentation/devicetree/bindings/iio/accel/bosch,bma255.yaml
-+++ b/Documentation/devicetree/bindings/iio/accel/bosch,bma255.yaml
-@@ -26,6 +26,7 @@ properties:
-       - bosch,bma255
-       - bosch,bma280
-       - bosch,bmc150_accel
-+      - bosch,bmc156_accel
-       - bosch,bmi055_accel
+diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
+index 5ce384ebe6c7..8d3dd3c2bcc2 100644
+--- a/drivers/iio/accel/bmc150-accel-core.c
++++ b/drivers/iio/accel/bmc150-accel-core.c
+@@ -10,6 +10,7 @@
+ #include <linux/delay.h>
+ #include <linux/slab.h>
+ #include <linux/acpi.h>
++#include <linux/of_irq.h>
+ #include <linux/pm.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/iio/iio.h>
+@@ -57,12 +58,18 @@
+ #define BMC150_ACCEL_RESET_VAL			0xB6
  
-       # bma180 driver in Linux
-@@ -49,6 +50,9 @@ properties:
-       the second (optional) interrupt listed must be the one connected to the
-       INT2 pin (if available). The type should be IRQ_TYPE_EDGE_RISING.
+ #define BMC150_ACCEL_REG_INT_MAP_0		0x19
+-#define BMC150_ACCEL_INT_MAP_0_BIT_SLOPE	BIT(2)
++#define BMC150_ACCEL_INT_MAP_0_BIT_INT1_SLOPE	BIT(2)
  
-+      BMC156 does not have an INT1 pin, therefore the first interrupt pin is
-+      always treated as INT2.
+ #define BMC150_ACCEL_REG_INT_MAP_1		0x1A
+-#define BMC150_ACCEL_INT_MAP_1_BIT_DATA		BIT(0)
+-#define BMC150_ACCEL_INT_MAP_1_BIT_FWM		BIT(1)
+-#define BMC150_ACCEL_INT_MAP_1_BIT_FFULL	BIT(2)
++#define BMC150_ACCEL_INT_MAP_1_BIT_INT1_DATA	BIT(0)
++#define BMC150_ACCEL_INT_MAP_1_BIT_INT1_FWM	BIT(1)
++#define BMC150_ACCEL_INT_MAP_1_BIT_INT1_FFULL	BIT(2)
++#define BMC150_ACCEL_INT_MAP_1_BIT_INT2_FFULL	BIT(5)
++#define BMC150_ACCEL_INT_MAP_1_BIT_INT2_FWM	BIT(6)
++#define BMC150_ACCEL_INT_MAP_1_BIT_INT2_DATA	BIT(7)
 +
-   interrupt-names:
-     minItems: 1
-     maxItems: 2
-@@ -84,6 +88,20 @@ examples:
-             interrupt-names = "INT1";
-         };
-     };
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        accelerometer@10 {
-+            compatible = "bosch,bmc156_accel";
-+            reg = <0x10>;
-+            vddio-supply = <&vddio>;
-+            vdd-supply = <&vdd>;
-+            interrupts = <116 IRQ_TYPE_EDGE_RISING>;
-+            interrupt-names = "INT2";
-+        };
-+    };
-   - |
-     # include <dt-bindings/interrupt-controller/irq.h>
-     spi {
++#define BMC150_ACCEL_REG_INT_MAP_2		0x1B
++#define BMC150_ACCEL_INT_MAP_2_BIT_INT2_SLOPE	BIT(2)
+ 
+ #define BMC150_ACCEL_REG_INT_RST_LATCH		0x21
+ #define BMC150_ACCEL_INT_MODE_LATCH_RESET	0x80
+@@ -81,6 +88,7 @@
+ 
+ #define BMC150_ACCEL_REG_INT_OUT_CTRL		0x20
+ #define BMC150_ACCEL_INT_OUT_CTRL_INT1_LVL	BIT(0)
++#define BMC150_ACCEL_INT_OUT_CTRL_INT2_LVL	BIT(2)
+ 
+ #define BMC150_ACCEL_REG_INT_5			0x27
+ #define BMC150_ACCEL_SLOPE_DUR_MASK		0x03
+@@ -476,21 +484,24 @@ static bool bmc150_apply_acpi_orientation(struct device *dev,
+ }
+ #endif
+ 
+-static const struct bmc150_accel_interrupt_info {
++struct bmc150_accel_interrupt_info {
+ 	u8 map_reg;
+ 	u8 map_bitmask;
+ 	u8 en_reg;
+ 	u8 en_bitmask;
+-} bmc150_accel_interrupts[BMC150_ACCEL_INTERRUPTS] = {
++};
++
++static const struct bmc150_accel_interrupt_info
++bmc150_accel_interrupts_int1[BMC150_ACCEL_INTERRUPTS] = {
+ 	{ /* data ready interrupt */
+ 		.map_reg = BMC150_ACCEL_REG_INT_MAP_1,
+-		.map_bitmask = BMC150_ACCEL_INT_MAP_1_BIT_DATA,
++		.map_bitmask = BMC150_ACCEL_INT_MAP_1_BIT_INT1_DATA,
+ 		.en_reg = BMC150_ACCEL_REG_INT_EN_1,
+ 		.en_bitmask = BMC150_ACCEL_INT_EN_BIT_DATA_EN,
+ 	},
+ 	{  /* motion interrupt */
+ 		.map_reg = BMC150_ACCEL_REG_INT_MAP_0,
+-		.map_bitmask = BMC150_ACCEL_INT_MAP_0_BIT_SLOPE,
++		.map_bitmask = BMC150_ACCEL_INT_MAP_0_BIT_INT1_SLOPE,
+ 		.en_reg = BMC150_ACCEL_REG_INT_EN_0,
+ 		.en_bitmask =  BMC150_ACCEL_INT_EN_BIT_SLP_X |
+ 			BMC150_ACCEL_INT_EN_BIT_SLP_Y |
+@@ -498,19 +509,55 @@ static const struct bmc150_accel_interrupt_info {
+ 	},
+ 	{ /* fifo watermark interrupt */
+ 		.map_reg = BMC150_ACCEL_REG_INT_MAP_1,
+-		.map_bitmask = BMC150_ACCEL_INT_MAP_1_BIT_FWM,
++		.map_bitmask = BMC150_ACCEL_INT_MAP_1_BIT_INT1_FWM,
++		.en_reg = BMC150_ACCEL_REG_INT_EN_1,
++		.en_bitmask = BMC150_ACCEL_INT_EN_BIT_FWM_EN,
++	},
++};
++
++static const struct bmc150_accel_interrupt_info
++bmc150_accel_interrupts_int2[BMC150_ACCEL_INTERRUPTS] = {
++	{ /* data ready interrupt */
++		.map_reg = BMC150_ACCEL_REG_INT_MAP_1,
++		.map_bitmask = BMC150_ACCEL_INT_MAP_1_BIT_INT2_DATA,
++		.en_reg = BMC150_ACCEL_REG_INT_EN_1,
++		.en_bitmask = BMC150_ACCEL_INT_EN_BIT_DATA_EN,
++	},
++	{  /* motion interrupt */
++		.map_reg = BMC150_ACCEL_REG_INT_MAP_2,
++		.map_bitmask = BMC150_ACCEL_INT_MAP_2_BIT_INT2_SLOPE,
++		.en_reg = BMC150_ACCEL_REG_INT_EN_0,
++		.en_bitmask =  BMC150_ACCEL_INT_EN_BIT_SLP_X |
++			BMC150_ACCEL_INT_EN_BIT_SLP_Y |
++			BMC150_ACCEL_INT_EN_BIT_SLP_Z
++	},
++	{ /* fifo watermark interrupt */
++		.map_reg = BMC150_ACCEL_REG_INT_MAP_1,
++		.map_bitmask = BMC150_ACCEL_INT_MAP_1_BIT_INT2_FWM,
+ 		.en_reg = BMC150_ACCEL_REG_INT_EN_1,
+ 		.en_bitmask = BMC150_ACCEL_INT_EN_BIT_FWM_EN,
+ 	},
+ };
+ 
+ static void bmc150_accel_interrupts_setup(struct iio_dev *indio_dev,
+-					  struct bmc150_accel_data *data)
++					  struct bmc150_accel_data *data, int irq)
+ {
++	const struct bmc150_accel_interrupt_info *irq_info = NULL;
++	struct device *dev = regmap_get_device(data->regmap);
+ 	int i;
+ 
++	/*
++	 * For now we map all interrupts to the same output pin.
++	 * However, some boards may have just INT2 (and not INT1) connected,
++	 * so we try to detect which IRQ it is based on the interrupt-names.
++	 * Without interrupt-names, we assume the irq belongs to INT1.
++	 */
++	irq_info = bmc150_accel_interrupts_int1;
++	if (irq == of_irq_get_byname(dev->of_node, "INT2"))
++		irq_info = bmc150_accel_interrupts_int2;
++
+ 	for (i = 0; i < BMC150_ACCEL_INTERRUPTS; i++)
+-		data->interrupts[i].info = &bmc150_accel_interrupts[i];
++		data->interrupts[i].info = &irq_info[i];
+ }
+ 
+ static int bmc150_accel_set_interrupt(struct bmc150_accel_data *data, int i,
+@@ -1714,7 +1761,7 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
+ 			goto err_buffer_cleanup;
+ 		}
+ 
+-		bmc150_accel_interrupts_setup(indio_dev, data);
++		bmc150_accel_interrupts_setup(indio_dev, data, irq);
+ 
+ 		ret = bmc150_accel_triggers_setup(indio_dev, data);
+ 		if (ret)
 -- 
 2.32.0
 

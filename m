@@ -2,107 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 359ED3CD58F
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jul 2021 15:14:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9B873CD607
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jul 2021 15:47:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236973AbhGSMdX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 19 Jul 2021 08:33:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34016 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236855AbhGSMdX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Jul 2021 08:33:23 -0400
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52A86C061574;
-        Mon, 19 Jul 2021 05:34:08 -0700 (PDT)
-Received: by mail-pf1-x42d.google.com with SMTP id q10so16414488pfj.12;
-        Mon, 19 Jul 2021 06:14:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=HM1yQ9OZiA5BvPd15lf0pR2zhQOnuRWUNkrRFdXMxsM=;
-        b=fXJCTJJxQfPcxBpLQm+LniFYdC38w9KkzO9FucZHmRQstximGwq5wuEg3IBZGdcJMF
-         cVAlsT7qT4GQHGu3yhSeqnWGms5izzcRPn/vqyuv7Mem6rPkemTr70KPe2lFAnIOpyyy
-         +pyWHILG4SxC84mYYMDupxutl/IJH35Jbftcqv+3ZGF7qq/z/yu7adTLFkY7Ns8m+Kcd
-         8iBmZC3i84ritXh28wwitGfMX+8CTUJTJd1aarCUDuzn+amxWH8eVIw51zqIvhIm0mB7
-         HQ0YGzgIFwqwhwJDAPYuI4sE7f34E5gHjHBaxApGbj1fAjq/WWmTgimYeUubS3K3CTdr
-         LerQ==
+        id S240514AbhGSNG7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 19 Jul 2021 09:06:59 -0400
+Received: from mail-io1-f52.google.com ([209.85.166.52]:46874 "EHLO
+        mail-io1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240506AbhGSNG7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Jul 2021 09:06:59 -0400
+Received: by mail-io1-f52.google.com with SMTP id p186so19973899iod.13;
+        Mon, 19 Jul 2021 06:47:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=HM1yQ9OZiA5BvPd15lf0pR2zhQOnuRWUNkrRFdXMxsM=;
-        b=Q8GMwt463PBATBEGR7y3Kaewz6kgCyjtqTQvxztCkgQ++d5zAcdduWPfSnCtlZKBWE
-         kN/ITjFY2/0ZpxtM93+mQjJ/83jKYWC7mQDrCH8gITpasK2wMli2UFAP4qBqE3wc7M+S
-         NIdw3ZkYMREWUjwW7nxlQBXox19ANzxSY7U2oK9J2lZdO2YtJ5Z7bm2f2v7UmBlN0MuF
-         LTOpmRiPwm4xnesFJMuTSN59yu7ezDFSncAgq2Ye2e/xNYuDTiQzj0qvn3XxcE9G+QE3
-         Y64s8AHcY1QIaBV3CpwSgQh2mIwe742KNrSzxn8DqlWuyhatYTv6jppU7Vt0FlhiTs3b
-         JIuQ==
-X-Gm-Message-State: AOAM532/SQQSCMxprGFG0w0JBPjagJbk/e9pT0NrEC6kB7VtfPp1jWNr
-        TkNWdwafMs4+46yVn2yXSpkIot1L/dto5gz1zaQwRKTF89S5mA==
-X-Google-Smtp-Source: ABdhPJzN9FN7DueRz/7CHqmuooWBW9AAfmu/6lbvthCmrFO5HG8RT1G93HbXlfWmb4QCkOJ1OuJXjVbrqrFaPoGirPQ=
-X-Received: by 2002:a63:ae48:: with SMTP id e8mr4325241pgp.0.1626700441918;
- Mon, 19 Jul 2021 06:14:01 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210715141742.15072-1-andrea.merello@gmail.com>
- <20210715141742.15072-3-andrea.merello@gmail.com> <CAHp75Vf_Og2wjRy2j0gC37DgR0x9B_F5iSUj8VOtWkhWjgiOag@mail.gmail.com>
- <CAN8YU5MFMqh3wZo-yOOE8och3x089kYWjtrr83Jt8wCQTKFE8Q@mail.gmail.com> <YPVmgpmWkagk+ngf@smile.fi.intel.com>
-In-Reply-To: <YPVmgpmWkagk+ngf@smile.fi.intel.com>
-Reply-To: andrea.merello@gmail.com
-From:   Andrea Merello <andrea.merello@gmail.com>
-Date:   Mon, 19 Jul 2021 15:13:49 +0200
-Message-ID: <CAN8YU5Om5C0SrKpJ3h+OKF5FeJs_pW3kFDOVGsjyx1+zFtJjrw@mail.gmail.com>
-Subject: Re: [PATCH 2/4] iio: imu: add Bosch Sensortec BNO055 core driver
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=oFd3MlNUQRlX4N33x8e/4VBraKu1g4Ilixv0NOLhWz0=;
+        b=tWUKd6xysrGDBy2dKII1YaVf29RmEOJb53e/cUw/mGfcwHdx+4ueF6Z2t/alz4l/mO
+         nSxO66EH+cQa1tLXFUXzcaT83fgnctA9pqZQhQmQbnUEiSGzpTWpqbfp2MmSwlAzB+Xj
+         F9d9BiZ607cDGdqE9hL3RLpwM52SZGz6gVDvLvLFs5yFGcymEU5r24h+rkqRLH6EWvhK
+         pI+UbQPsHWWeMoZKFc7f7q7fDp9/C65dubuDyWtfGwirp9cyvXc5dhUWPSmAZWosNSB5
+         Kde+zlPgP1xZlpb0Ro0yQM96W4HYq6do9vShD+c3sh7rEelRnfM6yX9xDKHAFyDz8Sva
+         Gjpw==
+X-Gm-Message-State: AOAM530hcJW1fDQOkNRHM5uWgQaknvy6A7iFw3kP6zB2IuHK0YIreAWd
+        sWDMFyiKkUTOFFPWo0sJiw==
+X-Google-Smtp-Source: ABdhPJzPtqUoDpGjzuH0PNyDyTfPsZwsMzRCiGIw7vDzjRgE9t1FpcLTpQP+rirn7ZBjJymyYAfRgg==
+X-Received: by 2002:a5d:87d0:: with SMTP id q16mr19030655ios.109.1626702458777;
+        Mon, 19 Jul 2021 06:47:38 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.248])
+        by smtp.gmail.com with ESMTPSA id l9sm1974883ilv.31.2021.07.19.06.47.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Jul 2021 06:47:38 -0700 (PDT)
+Received: (nullmailer pid 1811206 invoked by uid 1000);
+        Mon, 19 Jul 2021 13:47:28 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
         Rob Herring <robh+dt@kernel.org>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Andrea Merello <andrea.merello@iit.it>
-Content-Type: text/plain; charset="UTF-8"
+        Magnus Damm <magnus.damm@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        linux-clk@vger.kernel.org, Prabhakar <prabhakar.csengg@gmail.com>,
+        devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        Stephen Boyd <sboyd@kernel.org>, linux-iio@vger.kernel.org,
+        Alexandru Ardelean <aardelean@deviqon.com>
+In-Reply-To: <20210719085840.21842-2-prabhakar.mahadev-lad.rj@bp.renesas.com>
+References: <20210719085840.21842-1-prabhakar.mahadev-lad.rj@bp.renesas.com> <20210719085840.21842-2-prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: Re: [PATCH v2 1/4] dt-bindings: iio: adc: Add binding documentation for Renesas RZ/G2L A/D converter
+Date:   Mon, 19 Jul 2021 07:47:28 -0600
+Message-Id: <1626702448.448880.1811205.nullmailer@robh.at.kernel.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Il giorno lun 19 lug 2021 alle ore 13:48 Andy Shevchenko
-<andy.shevchenko@gmail.com> ha scritto:
->
-> On Mon, Jul 19, 2021 at 11:02:07AM +0200, Andrea Merello wrote:
-> > Il giorno gio 15 lug 2021 alle ore 18:50 Andy Shevchenko
-> > <andy.shevchenko@gmail.com> ha scritto:
-> >
-> > >
-> > > > +/* must be called in configuration mode */
-> > > > +int bno055_calibration_load(struct bno055_priv *priv, const struct firmware *fw)
-> > > > +{
-> > > > +       int i;
-> > > > +       unsigned int tmp;
-> > > > +       u8 cal[BNO055_CALDATA_LEN];
-> > > > +       int read, tot_read = 0;
-> > > > +       int ret = 0;
-> > > > +       char *buf = kmalloc(fw->size + 1, GFP_KERNEL);
-> > > > +
-> > > > +       if (!buf)
-> > > > +               return -ENOMEM;
-> > > > +
-> > > > +       memcpy(buf, fw->data, fw->size);
-> > >
-> > > kmemdup() ?
-> > >
-> >
-> > As a second thought: no, the whole point of reallocating and copying
-> > here, is that we want to allocate an extra byte; kmemdup() will
-> > allocate and copy only the very same amount of memory
->
-> kmemdup_nul() then.
+On Mon, 19 Jul 2021 09:58:37 +0100, Lad Prabhakar wrote:
+> Add binding documentation for Renesas RZ/G2L A/D converter block.
+> 
+> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
+> ---
+>  .../bindings/iio/adc/renesas,rzg2l-adc.yaml   | 134 ++++++++++++++++++
+>  1 file changed, 134 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
+> 
 
-That's one seems suitable. Thank you.
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
->
-> --
-> With Best Regards,
-> Andy Shevchenko
->
->
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+Error: Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.example.dts:26.28-29 syntax error
+FATAL ERROR: Unable to parse input tree
+make[1]: *** [scripts/Makefile.lib:380: Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.example.dt.yaml] Error 1
+make[1]: *** Waiting for unfinished jobs....
+make: *** [Makefile:1418: dt_binding_check] Error 2
+\ndoc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/patch/1506856
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
+

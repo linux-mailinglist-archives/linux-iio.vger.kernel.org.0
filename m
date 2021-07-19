@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EBD73CD63A
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jul 2021 15:58:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 535C73CD640
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jul 2021 15:59:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240717AbhGSNRX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 19 Jul 2021 09:17:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44768 "EHLO
+        id S239421AbhGSNS3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 19 Jul 2021 09:18:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237309AbhGSNRX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Jul 2021 09:17:23 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AEABC061574
-        for <linux-iio@vger.kernel.org>; Mon, 19 Jul 2021 06:21:48 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id i5so30355401lfe.2
-        for <linux-iio@vger.kernel.org>; Mon, 19 Jul 2021 06:58:02 -0700 (PDT)
+        with ESMTP id S239491AbhGSNS2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Jul 2021 09:18:28 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61ABCC061574
+        for <linux-iio@vger.kernel.org>; Mon, 19 Jul 2021 06:22:58 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id 8so30295740lfp.9
+        for <linux-iio@vger.kernel.org>; Mon, 19 Jul 2021 06:59:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=xMR+FiaO8Rs1484UuuHPsjL4a0zU33jNG86OHueG8dc=;
-        b=DaNVkz69krx3VN/WiJvQDEG0lQ+qlxMGJuTe6ifmhDDowAfn/19Z7WUik2ipqjjYiI
-         kJfyjnf21aRZ5FRUpq29uYp/52meYcuHz2pawQkfrDgbkcagC8GNjPentpKkn8kVGqcz
-         6RqDRgGjnV6WeZVQnVpwUuQXeRnXHyk2BGTmSyTEL/bp0m0mM6aAH06VHMMfL8v29cnR
-         VWWoT6VP+NvWkeCnozTw6W+Nnmzf/y86hxo+zo++DdK+P+BuvSvCdRtvse/5ELvJ68B2
-         ObA8DiJ9PRd/JzAT/TXVlYh7ECFQumjDBuWBQ6hJ2x6VBUThfHbKjFFMaCiUWUnJTE22
-         K+vg==
+        bh=RyHuYZJtNqy7xvnUOr1zJeEMZoJLRMuwzjRF2sEn+zY=;
+        b=u13r3EXlFn0HG9Ezs7i6sct0hpfTmXnNLdS5AgfcgaKgkjFDKNZP3H4EFq7t4kAP8l
+         YlvD+xu0a8DmzFAZGUGvS+s1T1pfx9pWqrFKHwgAJHeqml46rGT5kR6jNmnySHObjJ4s
+         nf/BWwpgQXgH9+8LQkgf2I/GOsnqCZI8AVMYDHgBxEOVr0pjtueo1S2UfLjm452AOFll
+         lznvkuBdN4aUSNNauSJWeleGS+20aE01aZokJs0vnPrF8Cz0gd94XhWROLVLHTK5Qhto
+         EfvrUr+CmF2+hSAVVmQJR3P2RorXTUT4KvjbeJLXJtm+jtB9/B+OdlicELZlC6bTaomJ
+         Hr5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=xMR+FiaO8Rs1484UuuHPsjL4a0zU33jNG86OHueG8dc=;
-        b=nAc65qDZnRT0sXMkVr8FrH1ajXgEx1WB9gc6wetqehcWdIbFOfltrFpoqVVFAgFQYe
-         WcNQej9pISsznDFfeCDsaGUKJqAm2D51nur548mtvye1QeZPeBLclVp38KDRiTaNlS8d
-         hYKkagWbBMLa37AlQlLjjMV7cqKzOvEDwtdxogg2mY36y/+DQazv7Xt1EyFhBLwSIDMe
-         BIkvmSy7Qv0sUcV6iEkxnXk92bkLAek1UbKKmsvM6KrdfTtcxm9X9iu9PWvTHKJamZwM
-         hbuVukv4kLRXrhp5cyphADuEfq6wTW0M663zVc7qj3sE9xWKo5HhCuTsd+WDzRIoPNtN
-         wQsw==
-X-Gm-Message-State: AOAM533SL/bQtjqyGrCJtAxveKti7pDELP6H0GLhw5oP3tHcyyhnpaIq
-        Y9TWYjwOmSTosJ+XvSV3gCZQeYmrsFa9i1cqNjv25X2wfQk=
-X-Google-Smtp-Source: ABdhPJyaFX+ZGC8F2KDK2CyhH7RMO7NbFKuBkyf5i+PbLzyM2aPN7F4IIk6B9OeMq4gSa/FrWCNpVWfzTfk7Am49MkQ=
-X-Received: by 2002:a05:6512:3696:: with SMTP id d22mr18797582lfs.586.1626703081118;
- Mon, 19 Jul 2021 06:58:01 -0700 (PDT)
+        bh=RyHuYZJtNqy7xvnUOr1zJeEMZoJLRMuwzjRF2sEn+zY=;
+        b=WpTgQDDcmk8Y+gQ2nF4VBW1/B8zy83uriqIFsvI6Utlfv9zA368MgV1hLftUG2kJ/+
+         OEsUtvblGwQvaQO42q4ZFg+gZ8MbXx43321voWZSCrCoURJAINzHdG/nxy1yzeRzQI79
+         DGFyspjIEL9bXpQxs/yP/2wJYvjvF2RNkuIgwjdjMLR8OQ+ei93wR48kCxsC0KikQNJ8
+         h8diIjNcS0nfVwNPNCfOJnpvE/r80pZDSsLl+SLl/CBBa3rmtR5K5eX4qkhyrN68bBJL
+         zrucE5d+9mdNXbqgRWqGW8gVp7DiB/KCIo3fkfRGZJXR/D+TurVkgM+t6ecRZ0a0cRis
+         hKnw==
+X-Gm-Message-State: AOAM532e5Hjxr4/XOWxrZFy7NUT/MJZSkh7LFmHrD5OJ2Wz3Wcx9Ei6q
+        rHBQ7AQO/dgTW54DDmCl7MBQ2pQMhTjUUYRj5vO0SA==
+X-Google-Smtp-Source: ABdhPJxk2GK+StELK0+pej5qU1FAujzm7EwkYWB8T8lXNJIVUEGSd7Z9kv/1pts+oZPNJ4Hf4ppSNFJ+ljWA0TBU2Ik=
+X-Received: by 2002:a05:6512:b1d:: with SMTP id w29mr18277239lfu.291.1626703145578;
+ Mon, 19 Jul 2021 06:59:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210719112156.27087-1-stephan@gerhold.net> <20210719112156.27087-2-stephan@gerhold.net>
-In-Reply-To: <20210719112156.27087-2-stephan@gerhold.net>
+References: <20210719112156.27087-1-stephan@gerhold.net> <20210719112156.27087-3-stephan@gerhold.net>
+In-Reply-To: <20210719112156.27087-3-stephan@gerhold.net>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 19 Jul 2021 15:57:50 +0200
-Message-ID: <CACRpkdYtOvJ-37yTxaoZC63aBn56v4C41MC6HAD7_KgfWbbZgQ@mail.gmail.com>
-Subject: Re: [PATCH 1/4] dt-bindings: iio: accel: bma255: Add interrupt-names
+Date:   Mon, 19 Jul 2021 15:58:54 +0200
+Message-ID: <CACRpkdZpMyvBUFPL8k4Ay__WNozwHoLaAPmYX3zb4gJkpi5Q4g@mail.gmail.com>
+Subject: Re: [PATCH 2/4] dt-bindings: iio: accel: bma255: Add bosch,bmc156_accel
 To:     Stephan Gerhold <stephan@gerhold.net>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -70,10 +70,13 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Mon, Jul 19, 2021 at 1:26 PM Stephan Gerhold <stephan@gerhold.net> wrote:
 
-> The binding already allows specifying both interrupt pins, but there
-> is currently no way to describe a board where (for whatever reason)
-> only INT2 is connected. Make it possible to use "interrupt-names"
-> to make it explicit which interrupt pin is meant in the interrupts.
+> BMC156 is very smilar to BMC150, but it has only one accelerometer
+> interrupt pin. It would make sense if only INT1 was exposed but someone
+> at Bosch was crazy and decided to only have an INT2 pin.
+>
+> In this case, it does not make sense if the first interrupt pin is
+> treated as INT1 (since that pin does not exist). Add a note to the
+> bindings that the first interrupt pin is treated as INT2 for BMC156.
 >
 > Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 

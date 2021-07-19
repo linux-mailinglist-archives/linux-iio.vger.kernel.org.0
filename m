@@ -2,22 +2,22 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF30D3CCF92
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jul 2021 11:00:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1219E3CCF96
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jul 2021 11:00:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235366AbhGSISL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 19 Jul 2021 04:18:11 -0400
+        id S235455AbhGSISO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 19 Jul 2021 04:18:14 -0400
 Received: from relmlor1.renesas.com ([210.160.252.171]:14960 "EHLO
         relmlie5.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S235382AbhGSISL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Jul 2021 04:18:11 -0400
+        by vger.kernel.org with ESMTP id S235398AbhGSISN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Jul 2021 04:18:13 -0400
 X-IronPort-AV: E=Sophos;i="5.84,251,1620658800"; 
-   d="scan'208";a="88109128"
+   d="scan'208";a="88109134"
 Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie5.idc.renesas.com with ESMTP; 19 Jul 2021 17:58:49 +0900
+  by relmlie5.idc.renesas.com with ESMTP; 19 Jul 2021 17:58:52 +0900
 Received: from localhost.localdomain (unknown [10.226.36.204])
-        by relmlir5.idc.renesas.com (Postfix) with ESMTP id AF7D0400A881;
-        Mon, 19 Jul 2021 17:58:45 +0900 (JST)
+        by relmlir5.idc.renesas.com (Postfix) with ESMTP id 6A0494006DC9;
+        Mon, 19 Jul 2021 17:58:49 +0900 (JST)
 From:   Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 To:     Geert Uytterhoeven <geert+renesas@glider.be>,
         Rob Herring <robh+dt@kernel.org>,
@@ -34,50 +34,165 @@ Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         Prabhakar <prabhakar.csengg@gmail.com>,
         Biju Das <biju.das.jz@bp.renesas.com>,
         Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: [PATCH v2 0/4] Renesas RZ/G2L ADC driver support
-Date:   Mon, 19 Jul 2021 09:58:36 +0100
-Message-Id: <20210719085840.21842-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: [PATCH v2 1/4] dt-bindings: iio: adc: Add binding documentation for Renesas RZ/G2L A/D converter
+Date:   Mon, 19 Jul 2021 09:58:37 +0100
+Message-Id: <20210719085840.21842-2-prabhakar.mahadev-lad.rj@bp.renesas.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20210719085840.21842-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+References: <20210719085840.21842-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi All,
+Add binding documentation for Renesas RZ/G2L A/D converter block.
 
-This patch series adds ADC support for Renesas RZ/G2L family.
-
-Cheers,
-Prabhakar
-
-Changes for v2:
-* Update binding doc, dropped gpios/renesas-rzg2l,adc-trigger-mode
-  properties included channel property to represent each wired channel.
-* Fixed review comments pointed by Alexandru, implemented pm runtime
-  support, dropped mlock usage
-* Fixed review comments pointed by Jonathan, renamed the macros,
-  simplified the code.
-* Included clock and DT patches
-
-Lad Prabhakar (4):
-  dt-bindings: iio: adc: Add binding documentation for Renesas RZ/G2L
-    A/D converter
-  iio: adc: Add driver for Renesas RZ/G2L A/D converter
-  clk: renesas: r9a07g044-cpg: Add clock and reset entries for ADC
-  arm64: dts: renesas: r9a07g044: Add ADC node
-
- .../bindings/iio/adc/renesas,rzg2l-adc.yaml   | 134 +++++
- MAINTAINERS                                   |   8 +
- arch/arm64/boot/dts/renesas/r9a07g044.dtsi    |  42 ++
- drivers/clk/renesas/r9a07g044-cpg.c           |   6 +
- drivers/iio/adc/Kconfig                       |  10 +
- drivers/iio/adc/Makefile                      |   1 +
- drivers/iio/adc/rzg2l_adc.c                   | 545 ++++++++++++++++++
- 7 files changed, 746 insertions(+)
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
+---
+ .../bindings/iio/adc/renesas,rzg2l-adc.yaml   | 134 ++++++++++++++++++
+ 1 file changed, 134 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
- create mode 100644 drivers/iio/adc/rzg2l_adc.c
 
-
-base-commit: 2734d6c1b1a089fb593ef6a23d4b70903526fe0c
+diff --git a/Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml b/Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
+new file mode 100644
+index 000000000000..c80201d6a716
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
+@@ -0,0 +1,134 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/renesas,rzg2l-adc.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Renesas RZ/G2L ADC
++
++maintainers:
++  - Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
++
++description: |
++  A/D Converter block is a successive approximation analog-to-digital converter
++  with a 12-bit accuracy. Up to eight analog input channels can be selected.
++  Conversions can be performed in single or repeat mode. Result of the ADC is
++  stored in a 32-bit data register corresponding to each channel.
++
++properties:
++  compatible:
++    items:
++      - enum:
++          - renesas,r9a07g044-adc   # RZ/G2{L,LC}
++      - const: renesas,rzg2l-adc
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  clocks:
++    items:
++      - description: converter clock
++      - description: peripheral clock
++
++  clock-names:
++    items:
++      - const: adclk
++      - const: pclk
++
++  power-domains:
++    maxItems: 1
++
++  resets:
++    maxItems: 2
++
++  reset-names:
++    items:
++      - const: presetn
++      - const: adrst-n
++
++  '#address-cells':
++    const: 1
++
++  '#size-cells':
++    const: 0
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - clocks
++  - clock-names
++  - power-domains
++  - resets
++  - reset-names
++
++patternProperties:
++  "^channel@[0-7]$":
++    $ref: "adc.yaml"
++    type: object
++    description: |
++      Represents the external channels which are connected to the ADC.
++
++    properties:
++      reg:
++        description: |
++          The channel number. It can have up to 8 channels numbered from 0 to 7.
++        items:
++          - minimum: 0
++            maximum: 7
++
++    required:
++      - reg
++
++    additionalProperties: false
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/clock/r9a07g044-cpg.h>
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++
++    adc: adc@10059000 {
++      compatible = "renesas,r9a07g044-adc", "renesas,rzg2l-adc";
++      reg = <0x10059000 0x400>;
++      interrupts = <GIC_SPI 347 IRQ_TYPE_EDGE_RISING>;
++      clocks = <&cpg CPG_MOD R9A07G044_ADC_ADCLK>,
++               <&cpg CPG_MOD R9A07G044_ADC_PCLK>;
++      clock-names = "adclk", "pclk";
++      power-domains = <&cpg>;
++      resets = <&cpg R9A07G044_ADC_PRESETN>,
++               <&cpg R9A07G044_ADC_ADRST_N>;
++      reset-names = "presetn", "adrst-n";
++
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      channel@0 {
++        reg = <0>;
++      };
++      channel@1 {
++        reg = <1>;
++      };
++      channel@2 {
++        reg = <2>;
++      };
++      channel@3 {
++        reg = <3>;
++      };
++      channel@4 {
++        reg = <4>;
++      };
++      channel@5 {
++        reg = <5>;
++      };
++      channel@6 {
++        reg = <6>;
++      };
++      channel@7 {
++        reg = <7>;
++      };
++    };
 -- 
 2.17.1
 

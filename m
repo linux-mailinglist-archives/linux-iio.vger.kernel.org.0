@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FD663CD3D3
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jul 2021 13:28:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79E913CD3E8
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jul 2021 13:31:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236364AbhGSKqR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 19 Jul 2021 06:46:17 -0400
-Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.81]:18584 "EHLO
+        id S236402AbhGSKtH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 19 Jul 2021 06:49:07 -0400
+Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.84]:17872 "EHLO
         mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236292AbhGSKqQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Jul 2021 06:46:16 -0400
+        with ESMTP id S236076AbhGSKtG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Jul 2021 06:49:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1626694005;
     s=strato-dkim-0002; d=gerhold.net;
     h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
     From:Subject:Sender;
-    bh=EU27wwecFrV7EsbZx1jhBFJBmbc5/vqkmCkJSV+r7Ck=;
-    b=S2g5VkkYR299BOPuhmDpesffWkYuj20tGzrs6UHkwNqQ+pW9mOqI4eDrrOcFtPBvee
-    mkDISePeWnp59CPLvspuxscxmXOzCxF7Ui4lwujL9BDjhnoFINrUO97KMTHuqUw3vFmK
-    AimvTGl6tspK4nF26746yO/vJk9JzabJQ0gWdirsDa2cgF8m1Pch5bONb+Xzl9X3aAcb
-    6lusYBwpTbkPfzxj1uk67b0Xt0RmQYbTsNSlnF4nmglMo1T5g87gWDghB451dHFTmnRs
-    YAjThHqnaU7vt3b5HYsbUQgAhzLuybTN+WDKeNcudogpiB8EL1az6a4f1acyk1leEOYE
-    Rt/Q==
+    bh=Gtu2y7GjDTVVZaf5Ncb/pao4iGYfv4bYIAHz4qWdYc4=;
+    b=Ty6ii6oBH3tEfpbYlUzPlRmXu9pqO7lOB6ytPTiz54lpfALRWzekdbtCToRkTZruar
+    Rfp8Trd5ENVBNWydHMFeR4wOvDfN5HaFIxuL8HUexT5d6sZSJBSr6TiqBRDD3y2Y2mMt
+    o9HpRaJ1SycC+Ngk756xZhcHgQqhDI6lPDwJCKq2CFhGdKXUU9B3AZMn3avgFp9Kt8/7
+    9F4+BvcJZlHRrGkxUdDrdYT+ZaXXvu/2/UbCNfx/wJ3wbGpz9rf9oyPyZgRApH7Ki/mu
+    WJVcpDC61VdHPRE/EoA/vZLtduBxS9GUVL45WMbMYbHGOs/N02NJzObULX3ju4kiFjhk
+    TyFw==
 Authentication-Results: strato.com;
     dkim=none
 X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVORvLd4SsytBXS7IYBkLahKxB4m6O43/v"
 X-RZG-CLASS-ID: mo00
 Received: from droid..
     by smtp.strato.de (RZmta 47.28.1 DYNA|AUTH)
-    with ESMTPSA id g02a44x6JBQi27e
+    with ESMTPSA id g02a44x6JBQj27g
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-    Mon, 19 Jul 2021 13:26:44 +0200 (CEST)
+    Mon, 19 Jul 2021 13:26:45 +0200 (CEST)
 From:   Stephan Gerhold <stephan@gerhold.net>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
@@ -43,9 +43,9 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         ~postmarketos/upstreaming@lists.sr.ht,
         Nikita Travkin <nikita@trvn.ru>,
         Stephan Gerhold <stephan@gerhold.net>
-Subject: [PATCH 3/4] iio: accel: bmc150: Make it possible to configure INT2 instead of INT1
-Date:   Mon, 19 Jul 2021 13:21:55 +0200
-Message-Id: <20210719112156.27087-4-stephan@gerhold.net>
+Subject: [PATCH 4/4] iio: accel: bmc150: Add support for BMC156
+Date:   Mon, 19 Jul 2021 13:21:56 +0200
+Message-Id: <20210719112156.27087-5-stephan@gerhold.net>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210719112156.27087-1-stephan@gerhold.net>
 References: <20210719112156.27087-1-stephan@gerhold.net>
@@ -55,165 +55,203 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Some Bosch accelerometers have two interrupt pins (INT1 and INT2).
-At the moment, the driver uses only the first one, which is fine for
-most situations. However, some boards might only have INT2 connected
-for some reason.
+BMC156 is another accelerometer that works just fine with the bmc150-accel
+driver. It's very similar to BMC150 (also a accelerometer+magnetometer
+combo) but with only one accelerometer interrupt pin. It would make sense
+if only INT1 was exposed but someone at Bosch was crazy and decided to only
+have an INT2 pin.
 
-Add the necessary bits and configuration to set up INT2. Then try
-to detect this situation at least for device tree setups by checking
-if the first interrupt (the one picked by the I2C/SPI core) is actually
-named "INT2" using the interrupt-names property.
+Try to deal with this by making use of the INT2 support introduced
+in the previous commit and force using INT2 for BMC156. To detect
+that we need to bring up a simplified version of the previous type IDs.
 
-of_irq_get_byname() returns either 0 or some error code in case
-the driver probed without device tree, so in all other cases we fall
-back to configuring INT1 as before.
+Note that unlike the type IDs removed in commit c06a6aba6835
+("iio: accel: bmc150: Drop misleading/duplicate chip identifiers")
+here I only add one for the special case of BMC156. Everything else
+still happens by reading the CHIP_ID register since the chip type
+information often is not accurate in ACPI tables.
 
+Tested-by: Nikita Travkin <nikita@trvn.ru> # BMC156
 Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 ---
- drivers/iio/accel/bmc150-accel-core.c | 71 ++++++++++++++++++++++-----
- 1 file changed, 59 insertions(+), 12 deletions(-)
+ drivers/iio/accel/Kconfig             |  5 +++--
+ drivers/iio/accel/bmc150-accel-core.c |  8 +++++---
+ drivers/iio/accel/bmc150-accel-i2c.c  | 10 ++++++++--
+ drivers/iio/accel/bmc150-accel-spi.c  | 10 +++++++++-
+ drivers/iio/accel/bmc150-accel.h      |  9 ++++++++-
+ 5 files changed, 33 insertions(+), 9 deletions(-)
 
+diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
+index 0e56ace61103..2f0c0d512ae7 100644
+--- a/drivers/iio/accel/Kconfig
++++ b/drivers/iio/accel/Kconfig
+@@ -143,10 +143,11 @@ config BMC150_ACCEL
+ 	select BMC150_ACCEL_SPI if SPI
+ 	help
+ 	  Say yes here to build support for the following Bosch accelerometers:
+-	  BMA222, BMA222E, BMA250E, BMA253, BMA254, BMA255, BMA280, BMC150, BMI055.
++	  BMA222, BMA222E, BMA250E, BMA253, BMA254, BMA255, BMA280, BMC150, BMC156
++	  BMI055.
+ 
+ 	  Note that some of these are combo modules:
+-	    - BMC150: accelerometer and magnetometer
++	    - BMC150/BMC156: accelerometer and magnetometer
+ 	    - BMI055: accelerometer and gyroscope
+ 
+ 	  This driver is only implementing accelerometer part, which has
 diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
-index 5ce384ebe6c7..8d3dd3c2bcc2 100644
+index 8d3dd3c2bcc2..a5d321e878ef 100644
 --- a/drivers/iio/accel/bmc150-accel-core.c
 +++ b/drivers/iio/accel/bmc150-accel-core.c
-@@ -10,6 +10,7 @@
- #include <linux/delay.h>
- #include <linux/slab.h>
- #include <linux/acpi.h>
-+#include <linux/of_irq.h>
- #include <linux/pm.h>
- #include <linux/pm_runtime.h>
- #include <linux/iio/iio.h>
-@@ -57,12 +58,18 @@
- #define BMC150_ACCEL_RESET_VAL			0xB6
+@@ -553,7 +553,7 @@ static void bmc150_accel_interrupts_setup(struct iio_dev *indio_dev,
+ 	 * Without interrupt-names, we assume the irq belongs to INT1.
+ 	 */
+ 	irq_info = bmc150_accel_interrupts_int1;
+-	if (irq == of_irq_get_byname(dev->of_node, "INT2"))
++	if (data->type == BOSCH_BMC156 || irq == of_irq_get_byname(dev->of_node, "INT2"))
+ 		irq_info = bmc150_accel_interrupts_int2;
  
- #define BMC150_ACCEL_REG_INT_MAP_0		0x19
--#define BMC150_ACCEL_INT_MAP_0_BIT_SLOPE	BIT(2)
-+#define BMC150_ACCEL_INT_MAP_0_BIT_INT1_SLOPE	BIT(2)
- 
- #define BMC150_ACCEL_REG_INT_MAP_1		0x1A
--#define BMC150_ACCEL_INT_MAP_1_BIT_DATA		BIT(0)
--#define BMC150_ACCEL_INT_MAP_1_BIT_FWM		BIT(1)
--#define BMC150_ACCEL_INT_MAP_1_BIT_FFULL	BIT(2)
-+#define BMC150_ACCEL_INT_MAP_1_BIT_INT1_DATA	BIT(0)
-+#define BMC150_ACCEL_INT_MAP_1_BIT_INT1_FWM	BIT(1)
-+#define BMC150_ACCEL_INT_MAP_1_BIT_INT1_FFULL	BIT(2)
-+#define BMC150_ACCEL_INT_MAP_1_BIT_INT2_FFULL	BIT(5)
-+#define BMC150_ACCEL_INT_MAP_1_BIT_INT2_FWM	BIT(6)
-+#define BMC150_ACCEL_INT_MAP_1_BIT_INT2_DATA	BIT(7)
-+
-+#define BMC150_ACCEL_REG_INT_MAP_2		0x1B
-+#define BMC150_ACCEL_INT_MAP_2_BIT_INT2_SLOPE	BIT(2)
- 
- #define BMC150_ACCEL_REG_INT_RST_LATCH		0x21
- #define BMC150_ACCEL_INT_MODE_LATCH_RESET	0x80
-@@ -81,6 +88,7 @@
- 
- #define BMC150_ACCEL_REG_INT_OUT_CTRL		0x20
- #define BMC150_ACCEL_INT_OUT_CTRL_INT1_LVL	BIT(0)
-+#define BMC150_ACCEL_INT_OUT_CTRL_INT2_LVL	BIT(2)
- 
- #define BMC150_ACCEL_REG_INT_5			0x27
- #define BMC150_ACCEL_SLOPE_DUR_MASK		0x03
-@@ -476,21 +484,24 @@ static bool bmc150_apply_acpi_orientation(struct device *dev,
+ 	for (i = 0; i < BMC150_ACCEL_INTERRUPTS; i++)
+@@ -1174,7 +1174,7 @@ static const struct bmc150_accel_chip_info bmc150_accel_chip_info_tbl[] = {
+ 				 {306458, BMC150_ACCEL_DEF_RANGE_16G} },
+ 	},
+ 	{
+-		.name = "BMA253/BMA254/BMA255/BMC150/BMI055",
++		.name = "BMA253/BMA254/BMA255/BMC150/BMC156/BMI055",
+ 		.chip_id = 0xFA,
+ 		.channels = bmc150_accel_channels,
+ 		.num_channels = ARRAY_SIZE(bmc150_accel_channels),
+@@ -1661,7 +1661,8 @@ static int bmc150_accel_chip_init(struct bmc150_accel_data *data)
  }
- #endif
  
--static const struct bmc150_accel_interrupt_info {
-+struct bmc150_accel_interrupt_info {
- 	u8 map_reg;
- 	u8 map_bitmask;
- 	u8 en_reg;
- 	u8 en_bitmask;
--} bmc150_accel_interrupts[BMC150_ACCEL_INTERRUPTS] = {
+ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
+-			    const char *name, bool block_supported)
++			    enum bmc150_type type, const char *name,
++			    bool block_supported)
+ {
+ 	const struct attribute **fifo_attrs;
+ 	struct bmc150_accel_data *data;
+@@ -1676,6 +1677,7 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
+ 	dev_set_drvdata(dev, indio_dev);
+ 
+ 	data->regmap = regmap;
++	data->type = type;
+ 
+ 	if (!bmc150_apply_acpi_orientation(dev, &data->orientation)) {
+ 		ret = iio_read_mount_matrix(dev, &data->orientation);
+diff --git a/drivers/iio/accel/bmc150-accel-i2c.c b/drivers/iio/accel/bmc150-accel-i2c.c
+index 999495f0669d..88bd8a25f142 100644
+--- a/drivers/iio/accel/bmc150-accel-i2c.c
++++ b/drivers/iio/accel/bmc150-accel-i2c.c
+@@ -176,6 +176,7 @@ static int bmc150_accel_probe(struct i2c_client *client,
+ {
+ 	struct regmap *regmap;
+ 	const char *name = NULL;
++	enum bmc150_type type = BOSCH_UNKNOWN;
+ 	bool block_supported =
+ 		i2c_check_functionality(client->adapter, I2C_FUNC_I2C) ||
+ 		i2c_check_functionality(client->adapter,
+@@ -188,10 +189,13 @@ static int bmc150_accel_probe(struct i2c_client *client,
+ 		return PTR_ERR(regmap);
+ 	}
+ 
+-	if (id)
++	if (id) {
+ 		name = id->name;
++		type = id->driver_data;
++	}
+ 
+-	ret = bmc150_accel_core_probe(&client->dev, regmap, client->irq, name, block_supported);
++	ret = bmc150_accel_core_probe(&client->dev, regmap, client->irq,
++				      type, name, block_supported);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -236,6 +240,7 @@ static const struct i2c_device_id bmc150_accel_id[] = {
+ 	{"bma255"},
+ 	{"bma280"},
+ 	{"bmc150_accel"},
++	{"bmc156_accel", BOSCH_BMC156},
+ 	{"bmi055_accel"},
+ 	{}
+ };
+@@ -251,6 +256,7 @@ static const struct of_device_id bmc150_accel_of_match[] = {
+ 	{ .compatible = "bosch,bma255" },
+ 	{ .compatible = "bosch,bma280" },
+ 	{ .compatible = "bosch,bmc150_accel" },
++	{ .compatible = "bosch,bmc156_accel" },
+ 	{ .compatible = "bosch,bmi055_accel" },
+ 	{ },
+ };
+diff --git a/drivers/iio/accel/bmc150-accel-spi.c b/drivers/iio/accel/bmc150-accel-spi.c
+index 54b8c9c8068b..191e312dc91a 100644
+--- a/drivers/iio/accel/bmc150-accel-spi.c
++++ b/drivers/iio/accel/bmc150-accel-spi.c
+@@ -16,6 +16,8 @@
+ static int bmc150_accel_probe(struct spi_device *spi)
+ {
+ 	struct regmap *regmap;
++	const char *name = NULL;
++	enum bmc150_type type = BOSCH_UNKNOWN;
+ 	const struct spi_device_id *id = spi_get_device_id(spi);
+ 
+ 	regmap = devm_regmap_init_spi(spi, &bmc150_regmap_conf);
+@@ -24,7 +26,12 @@ static int bmc150_accel_probe(struct spi_device *spi)
+ 		return PTR_ERR(regmap);
+ 	}
+ 
+-	return bmc150_accel_core_probe(&spi->dev, regmap, spi->irq, id->name,
++	if (id) {
++		name = id->name;
++		type = id->driver_data;
++	}
++
++	return bmc150_accel_core_probe(&spi->dev, regmap, spi->irq, type, name,
+ 				       true);
+ }
+ 
+@@ -54,6 +61,7 @@ static const struct spi_device_id bmc150_accel_id[] = {
+ 	{"bma255"},
+ 	{"bma280"},
+ 	{"bmc150_accel"},
++	{"bmc156_accel", BOSCH_BMC156},
+ 	{"bmi055_accel"},
+ 	{}
+ };
+diff --git a/drivers/iio/accel/bmc150-accel.h b/drivers/iio/accel/bmc150-accel.h
+index 47121f070fe9..a3f4905e48a3 100644
+--- a/drivers/iio/accel/bmc150-accel.h
++++ b/drivers/iio/accel/bmc150-accel.h
+@@ -13,6 +13,11 @@ struct i2c_client;
+ struct bmc150_accel_chip_info;
+ struct bmc150_accel_interrupt_info;
+ 
++enum bmc150_type {
++	BOSCH_UNKNOWN,
++	BOSCH_BMC156,
 +};
 +
-+static const struct bmc150_accel_interrupt_info
-+bmc150_accel_interrupts_int1[BMC150_ACCEL_INTERRUPTS] = {
- 	{ /* data ready interrupt */
- 		.map_reg = BMC150_ACCEL_REG_INT_MAP_1,
--		.map_bitmask = BMC150_ACCEL_INT_MAP_1_BIT_DATA,
-+		.map_bitmask = BMC150_ACCEL_INT_MAP_1_BIT_INT1_DATA,
- 		.en_reg = BMC150_ACCEL_REG_INT_EN_1,
- 		.en_bitmask = BMC150_ACCEL_INT_EN_BIT_DATA_EN,
- 	},
- 	{  /* motion interrupt */
- 		.map_reg = BMC150_ACCEL_REG_INT_MAP_0,
--		.map_bitmask = BMC150_ACCEL_INT_MAP_0_BIT_SLOPE,
-+		.map_bitmask = BMC150_ACCEL_INT_MAP_0_BIT_INT1_SLOPE,
- 		.en_reg = BMC150_ACCEL_REG_INT_EN_0,
- 		.en_bitmask =  BMC150_ACCEL_INT_EN_BIT_SLP_X |
- 			BMC150_ACCEL_INT_EN_BIT_SLP_Y |
-@@ -498,19 +509,55 @@ static const struct bmc150_accel_interrupt_info {
- 	},
- 	{ /* fifo watermark interrupt */
- 		.map_reg = BMC150_ACCEL_REG_INT_MAP_1,
--		.map_bitmask = BMC150_ACCEL_INT_MAP_1_BIT_FWM,
-+		.map_bitmask = BMC150_ACCEL_INT_MAP_1_BIT_INT1_FWM,
-+		.en_reg = BMC150_ACCEL_REG_INT_EN_1,
-+		.en_bitmask = BMC150_ACCEL_INT_EN_BIT_FWM_EN,
-+	},
-+};
-+
-+static const struct bmc150_accel_interrupt_info
-+bmc150_accel_interrupts_int2[BMC150_ACCEL_INTERRUPTS] = {
-+	{ /* data ready interrupt */
-+		.map_reg = BMC150_ACCEL_REG_INT_MAP_1,
-+		.map_bitmask = BMC150_ACCEL_INT_MAP_1_BIT_INT2_DATA,
-+		.en_reg = BMC150_ACCEL_REG_INT_EN_1,
-+		.en_bitmask = BMC150_ACCEL_INT_EN_BIT_DATA_EN,
-+	},
-+	{  /* motion interrupt */
-+		.map_reg = BMC150_ACCEL_REG_INT_MAP_2,
-+		.map_bitmask = BMC150_ACCEL_INT_MAP_2_BIT_INT2_SLOPE,
-+		.en_reg = BMC150_ACCEL_REG_INT_EN_0,
-+		.en_bitmask =  BMC150_ACCEL_INT_EN_BIT_SLP_X |
-+			BMC150_ACCEL_INT_EN_BIT_SLP_Y |
-+			BMC150_ACCEL_INT_EN_BIT_SLP_Z
-+	},
-+	{ /* fifo watermark interrupt */
-+		.map_reg = BMC150_ACCEL_REG_INT_MAP_1,
-+		.map_bitmask = BMC150_ACCEL_INT_MAP_1_BIT_INT2_FWM,
- 		.en_reg = BMC150_ACCEL_REG_INT_EN_1,
- 		.en_bitmask = BMC150_ACCEL_INT_EN_BIT_FWM_EN,
- 	},
+ struct bmc150_accel_interrupt {
+ 	const struct bmc150_accel_interrupt_info *info;
+ 	atomic_t users;
+@@ -62,6 +67,7 @@ struct bmc150_accel_data {
+ 	int ev_enable_state;
+ 	int64_t timestamp, old_timestamp; /* Only used in hw fifo mode. */
+ 	const struct bmc150_accel_chip_info *chip_info;
++	enum bmc150_type type;
+ 	struct i2c_client *second_device;
+ 	void (*resume_callback)(struct device *dev);
+ 	struct delayed_work resume_work;
+@@ -69,7 +75,8 @@ struct bmc150_accel_data {
  };
  
- static void bmc150_accel_interrupts_setup(struct iio_dev *indio_dev,
--					  struct bmc150_accel_data *data)
-+					  struct bmc150_accel_data *data, int irq)
- {
-+	const struct bmc150_accel_interrupt_info *irq_info = NULL;
-+	struct device *dev = regmap_get_device(data->regmap);
- 	int i;
- 
-+	/*
-+	 * For now we map all interrupts to the same output pin.
-+	 * However, some boards may have just INT2 (and not INT1) connected,
-+	 * so we try to detect which IRQ it is based on the interrupt-names.
-+	 * Without interrupt-names, we assume the irq belongs to INT1.
-+	 */
-+	irq_info = bmc150_accel_interrupts_int1;
-+	if (irq == of_irq_get_byname(dev->of_node, "INT2"))
-+		irq_info = bmc150_accel_interrupts_int2;
-+
- 	for (i = 0; i < BMC150_ACCEL_INTERRUPTS; i++)
--		data->interrupts[i].info = &bmc150_accel_interrupts[i];
-+		data->interrupts[i].info = &irq_info[i];
- }
- 
- static int bmc150_accel_set_interrupt(struct bmc150_accel_data *data, int i,
-@@ -1714,7 +1761,7 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
- 			goto err_buffer_cleanup;
- 		}
- 
--		bmc150_accel_interrupts_setup(indio_dev, data);
-+		bmc150_accel_interrupts_setup(indio_dev, data, irq);
- 
- 		ret = bmc150_accel_triggers_setup(indio_dev, data);
- 		if (ret)
+ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
+-			    const char *name, bool block_supported);
++			    enum bmc150_type type, const char *name,
++			    bool block_supported);
+ int bmc150_accel_core_remove(struct device *dev);
+ extern const struct dev_pm_ops bmc150_accel_pm_ops;
+ extern const struct regmap_config bmc150_regmap_conf;
 -- 
 2.32.0
 

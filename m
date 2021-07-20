@@ -2,246 +2,282 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BBDD3CF53C
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Jul 2021 09:22:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 354D13CF55B
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Jul 2021 09:34:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230161AbhGTGmP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 20 Jul 2021 02:42:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58598 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229588AbhGTGmN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 20 Jul 2021 02:42:13 -0400
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1463C061574;
-        Tue, 20 Jul 2021 00:22:51 -0700 (PDT)
-Received: by mail-pf1-x434.google.com with SMTP id y4so18793374pfi.9;
-        Tue, 20 Jul 2021 00:22:51 -0700 (PDT)
+        id S234601AbhGTGxd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 20 Jul 2021 02:53:33 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:14328 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S234932AbhGTGxY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 20 Jul 2021 02:53:24 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 16K7Vqnu021149;
+        Tue, 20 Jul 2021 03:33:45 -0400
+Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2104.outbound.protection.outlook.com [104.47.55.104])
+        by mx0a-00128a01.pphosted.com with ESMTP id 39wfmqhsha-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 20 Jul 2021 03:33:45 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=PS110DcIw3DdPh5syZTa2kCfI3VdA5R2Y0arzEoreniVyYN0TGIWIL+q294e2/agH5MDQzrhW3pTn0KjtRwi3DGlRITo/YDUwp7KwfRrsoQ5m+F12KVXckCH/JXXa4FrYcBYDcXfZa2IjSb2ktgmDu0Y5A9PYbV6cE09lWKwmy/sYPQGm6QBAxSSicxmeZBF2IMdiM1kNKDGkEVeP9yjg/9n8IOfEGWADxfHA3KPAcAldw92GyJKdLU0l9j18xeqE4/iLnS4Hl9UPKeZl+LyYTbRk00CxKeEmACuR4xJr/lqh5732Wg2XdngYaqhUPQH7jvwo5M/E3EQrhYAAZFFKQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VCWYvBnh/DOzdtW30soDMM/+loA/6jmuwet31vRcplA=;
+ b=DOs72NVM6rq2bYqfOxm1YbIxRvZuT0HYukaIWpj1Rfw9CEF2NiZEJbS7EGE/NHw/ousQyXlIMsQlFpDu5pqztjLt1+TWx6ZZ32Np0XyQR+ti+W000HzpX8XNZDZpwbTB8F/wWM0yKbNSAJe5gHySjkBCxlB1Zhj1rtvHCcpHpBOkFnMHE2BEeR3nAVGFlFzmfwByeAJESv5l2tJcVVIstm5x70UVIi+LHduZblXpmugqqLvb7Kh2wkD2J9IJgTmmGmv5qN3lUOEIS+HSUwOqOkb+ZlalRGYqA/V7X4gdqnGUOjGVXMJ2EWlkAqmaA3PnI+un29GJcHxZagAFuNZNQw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=czroiAAHyiLricTn382zGuj+7ArxacObZ2z97treVVI=;
-        b=goqNHO/ywWkfysZY2Ks+Uc1jQVpnXfpQTB7jeSvjNiTLdN6fjlr5XYYL0Rv9J3N1RU
-         3I8zgMSlUytHmiRiVacZVIY4eP8kFDv3aDIeqJHcpjQZfa1KEDZjUMHG/AVkZRuywKEi
-         O7u1XkwgQw1IDhrPCRSBoprYXwEIqbKLmLdEofucdmPtonCT7woecUCc7RwDXpcsFjtD
-         PP1hQBUURa2pED9hS532pbi3lWJfsM3xNvimNWn7MSig1/xs1nhk+0DR/UAUaer7IynW
-         h9YRBRPuPO1m3u4O/vWpxZTfFObJVTK3FvPCeVcDG+OdlGPVwyTvrxMITMYRNsW98wTQ
-         oT9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=czroiAAHyiLricTn382zGuj+7ArxacObZ2z97treVVI=;
-        b=Y5AK5o6WQXcebsKdz/Yo17g4guqNaShBGQ2/0wwF0moGY6/aozXA6WSxY0ODLd2Ew2
-         4GZgaIWLI7CEe0Vdvn6JfHzxjPyR8ZQGcn2oLHKnfIcCzJsq2jbQjc9e2bM2t5hzjRag
-         6GXE8HOANqLTj/ag48kOJUjVeN1bXBP70zKILppQY+6/j24uAxdOP2PmPD/qMDkLDXXU
-         gwQZT4dpCdHAaevwKq55UJWWux+RslBFj9ake+5vahxiiyeX8a2ht7jaRjY2F5wN9L9P
-         YUUP42py6zBWcM7E7LVBDOdr0GcC+PHT6PBeKug2bNcho0uKe74byukAy3bCDj1IiAWs
-         w+4g==
-X-Gm-Message-State: AOAM530MSOHFKQ4BhrWQJEDQSb2WkUdi2hd67OszPrb18AwuoLcXIut/
-        BVQXosiNZXIE+W2dHSsFW79Df0fOvA5FpyJgs64=
-X-Google-Smtp-Source: ABdhPJwOtbGEmplIaAGdH14LMTrIabWM9ZPFl/u9J8RPc1XkXcIcK99bUvmxt7ivNiC0ACIPWB9EirkHeerOJYYMsHk=
-X-Received: by 2002:a63:170b:: with SMTP id x11mr29438326pgl.253.1626765771343;
- Tue, 20 Jul 2021 00:22:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210718203746.7159-1-theobf@usp.br> <CA+U=DspWmrWWsQDFPLycS2y-=8Q7TSn5NYMVgbQ42FccAy0=pw@mail.gmail.com>
- <CAD5vTa8gnQpZ8B4KQkA=-6Oo-YiN4J7pDp0HoUZgpHN99vJK_g@mail.gmail.com>
-In-Reply-To: <CAD5vTa8gnQpZ8B4KQkA=-6Oo-YiN4J7pDp0HoUZgpHN99vJK_g@mail.gmail.com>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Tue, 20 Jul 2021 10:22:40 +0300
-Message-ID: <CA+U=DsrU5iPBRexdUK3fx-PG3CbSoKouGWENVLJ5+h8L5-y_Og@mail.gmail.com>
-Subject: Re: [PATCH] iio: dac: max5821: convert device register to device
- managed function
-To:     =?UTF-8?Q?Th=C3=A9o_Bor=C3=A9m_Fabris?= <theobf@usp.br>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VCWYvBnh/DOzdtW30soDMM/+loA/6jmuwet31vRcplA=;
+ b=ytQlRYdU/uO96/QtSadWkUWpmiysN7uM2uPGrK7Sok4EbAz4B8QbXIa3aGt83wSGcOPpqCINO8qAPpiAH34QpjsLIEtjrGdHAqTA8mQPRZ3VoSDO3xR9IwKaBcfGq6TCKFjVWfp8OaW3/uWqGogyDDr0TuakQIwNAbXCMd66SmI=
+Received: from PH0PR03MB6366.namprd03.prod.outlook.com (2603:10b6:510:ab::22)
+ by PH0PR03MB5815.namprd03.prod.outlook.com (2603:10b6:510:37::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4331.21; Tue, 20 Jul
+ 2021 07:33:43 +0000
+Received: from PH0PR03MB6366.namprd03.prod.outlook.com
+ ([fe80::54ff:7b16:5fc7:38ca]) by PH0PR03MB6366.namprd03.prod.outlook.com
+ ([fe80::54ff:7b16:5fc7:38ca%4]) with mapi id 15.20.4331.034; Tue, 20 Jul 2021
+ 07:33:43 +0000
+From:   "Sa, Nuno" <Nuno.Sa@analog.com>
+To:     Alexandru Ardelean <ardeleanalex@gmail.com>,
+        =?utf-8?B?VGjDqW8gQm9yw6ltIEZhYnJpcw==?= <theobf@usp.br>
+CC:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         linux-iio <linux-iio@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: RE: [PATCH] iio: dac: max5821: convert device register to device
+ managed function
+Thread-Topic: [PATCH] iio: dac: max5821: convert device register to device
+ managed function
+Thread-Index: AQHXfBVZCG475yo5g0KpAA//glLux6tJ6GgAgACD2wCAAQudAIAAAq2w
+Date:   Tue, 20 Jul 2021 07:33:43 +0000
+Message-ID: <PH0PR03MB636618963E4DC31D935BEBC099E29@PH0PR03MB6366.namprd03.prod.outlook.com>
+References: <20210718203746.7159-1-theobf@usp.br>
+ <CA+U=DspWmrWWsQDFPLycS2y-=8Q7TSn5NYMVgbQ42FccAy0=pw@mail.gmail.com>
+ <CAD5vTa8gnQpZ8B4KQkA=-6Oo-YiN4J7pDp0HoUZgpHN99vJK_g@mail.gmail.com>
+ <CA+U=DsrU5iPBRexdUK3fx-PG3CbSoKouGWENVLJ5+h8L5-y_Og@mail.gmail.com>
+In-Reply-To: <CA+U=DsrU5iPBRexdUK3fx-PG3CbSoKouGWENVLJ5+h8L5-y_Og@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-dg-ref: =?utf-8?B?UEcxbGRHRStQR0YwSUc1dFBTSmliMlI1TG5SNGRDSWdjRDBpWXpwY2RYTmxj?=
+ =?utf-8?B?bk5jYm5OaFhHRndjR1JoZEdGY2NtOWhiV2x1WjF3d09XUTRORGxpTmkwek1t?=
+ =?utf-8?B?UXpMVFJoTkRBdE9EVmxaUzAyWWpnMFltRXlPV1V6TldKY2JYTm5jMXh0YzJj?=
+ =?utf-8?B?dFkyUTJabUZrTnpNdFpUa3lZeTB4TVdWaUxUaGlOelV0WlRSaU9UZGhOMk5q?=
+ =?utf-8?B?TnpFd1hHRnRaUzEwWlhOMFhHTmtObVpoWkRjMUxXVTVNbU10TVRGbFlpMDRZ?=
+ =?utf-8?B?amMxTFdVMFlqazNZVGRqWXpjeE1HSnZaSGt1ZEhoMElpQnplajBpTlRjeE5D?=
+ =?utf-8?B?SWdkRDBpTVRNeU56RXlOREF3TWpBNU56STFOamcxSWlCb1BTSTFiRXBaWkZS?=
+ =?utf-8?B?aEwyZFVPRXRwZDNwVk9GQm1hblpVVlRsRFVHTTlJaUJwWkQwaUlpQmliRDBp?=
+ =?utf-8?B?TUNJZ1ltODlJakVpSUdOcFBTSmpRVUZCUVVWU1NGVXhVbE5TVlVaT1EyZFZR?=
+ =?utf-8?B?VUZKV1VSQlFVUXhVMDF4VUU5WU0xaEJWM2g0WVhWeFZXeEtTRlZpU0VaeE5u?=
+ =?utf-8?B?QlRWV3RrVVVaQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCU0VG?=
+ =?utf-8?B?QlFVRkJWMEYzUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJSVUZC?=
+ =?utf-8?B?VVVGQ1FVRkJRVUpQV1VkalowRkJRVUZCUVVGQlFVRkJRVUZCUVVvMFFVRkJR?=
+ =?utf-8?B?bWhCUjFGQllWRkNaa0ZJVFVGYVVVSnFRVWhWUVdOblFteEJSamhCWTBGQ2VV?=
+ =?utf-8?B?RkhPRUZoWjBKc1FVZE5RV1JCUW5wQlJqaEJXbWRDYUVGSGQwRmpkMEpzUVVZ?=
+ =?utf-8?B?NFFWcG5RblpCU0UxQllWRkNNRUZIYTBGa1owSnNRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkZRVUZCUVVGQlFVRkJRV2RCUVVG?=
+ =?utf-8?B?QlFVRnVaMEZCUVVkRlFWcEJRbkJCUmpoQlkzZENiRUZIVFVGa1VVSjVRVWRW?=
+ =?utf-8?B?UVZoM1FuZEJTRWxCWW5kQ2NVRkhWVUZaZDBJd1FVaE5RVmgzUWpCQlIydEJX?=
+ =?utf-8?B?bEZDZVVGRVJVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCVVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVOQlFVRkJRVUZEWlVGQlFVRlpVVUpyUVVkclFWaDNRbnBCUjFWQldY?=
+ =?utf-8?B?ZENNVUZJU1VGYVVVSm1RVWhCUVdOblFuWkJSMjlCV2xGQ2FrRklVVUZqZDBK?=
+ =?utf-8?B?bVFVaFJRV0ZSUW14QlNFbEJUV2RCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFrRkJRVUZCUVVGQlFVRkpRVUZCUVVGQlNqUkJRVUZDYUVGSVNVRmhVVUpv?=
+ =?utf-8?B?UVVZNFFWcEJRbkJCUjAxQlpFRkNjRUZIT0VGaVowSm9RVWhKUVdWUlFtWkJT?=
+ =?utf-8?B?RkZCWVZGQ2JFRklTVUZOVVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVVZCUVVGQlFVRkJRVUZCWjBGQlFVRkJRVzVuUVVGQlIw?=
+ =?utf-8?B?VkJZMmRDY0VGSFJVRllkMEpyUVVkclFWbDNRakJCUjJ0QlluZENkVUZIUlVG?=
+ =?utf-8?B?alowSTFRVVk0UVdSQlFuQkJSMVZCWTJkQmVVRkJRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGUlFVRkJRVUZCUVVGQlEwRkJRVUZC?=
+ =?utf-8?B?UVVFOUlpOCtQQzl0WlhSaFBnPT0=?=
+x-dg-rorf: true
+authentication-results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=analog.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 8c1d0b46-2e59-470d-626f-08d94b50b3e0
+x-ms-traffictypediagnostic: PH0PR03MB5815:
+x-microsoft-antispam-prvs: <PH0PR03MB581584916D3E9C0694F8958399E29@PH0PR03MB5815.namprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:9508;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 9zgWNyOW+GIFAIdInOYbdYR7qWbyZFUPhvcS9XXh96939QYVk5Y+1SgzkaYNj3IYcOY0cP+rlMhXjL0cgwNJiLktejhb/BGcC2vK8qhZdjtnehWSMaf0LptyrCLpY5TvQJhWIx0HnSjz1c0stU7Kk47q2HDRRCadWUjwQAK7DxRiO8CEaqIRhbdXSLQ1jo6BlsIeFwvBNb/hc51Hhhcf8fU4ExMrnPruLHtrdPjfs3hOHp5Jftggf0ZuO6VK4wZjWHEamrE67BwRGsaEO4XowZKsUbHVZBsANVqj3kcLoHff3CofBlX386mV73pRCXdH9rtlqiCetaX1knix0UfCXpCeAYrGhrT6NbQaFKQl8pOVY8N9q5/JKAByk+O89Jkbxt6M3P6xOZbyOz6O70FPR6N1IH0qPeEm7q9EOy9qux1XEz1jCzLRg3BaxvVlfbryaiJWDjUc2x8Em0Zcmz0Y1xz7SRjQ2SJsh4sc65W9MMUl6ljzP+t5RH9cSitQ+O6AMn7zKawCkDgPb4GLvjLwrFpoEtOV8NC4TdImYBJDnTgypwdmK5kMDshA0EJBiCYDVWNS9ThU1d8EGoOfzvV4mUlMLjcZrKhX1ClKVQvSuZ4qaUBtYbmSquBzIh9O+XJzFByTr6fnOBoh6DMoRLdK6A5z+bBmwO5w4B4fpoJIDJCiAXhB3KQEeFpnRoNdUNKlqHunxCIRgDpBvmb1W5acin1bQE759YTV6pl84S2g88a4ht5XiOJV8R66wN1PecQPtBuRts1WB/zSOwfPzHSPmkj4PiY0C1MCq9VjYztVtGo=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR03MB6366.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39860400002)(376002)(346002)(366004)(396003)(136003)(9686003)(5660300002)(71200400001)(83380400001)(8936002)(122000001)(38100700002)(55016002)(8676002)(26005)(86362001)(2906002)(966005)(66446008)(64756008)(66574015)(66476007)(76116006)(66556008)(7696005)(53546011)(52536014)(54906003)(316002)(186003)(478600001)(33656002)(6506007)(4326008)(66946007)(110136005)(38070700004);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?ZTRUQTNvMUZwd3pFNDRCZ2NWSHlGOVNsZW4yQWsxQkpMN0tucmwra0R6UzRa?=
+ =?utf-8?B?QmN4ZFdpVEw1NEw0b01YeTFMRFRRNTZVMlp5UG9lZEdQZUxUV0UzcktEL3cy?=
+ =?utf-8?B?Qm5TZC9oSlZMZkdzcWxMeUw1Snp4U1ZkQnppbXoyU0g0VmVtZmRuR2lFTGJr?=
+ =?utf-8?B?MG4vRXllUjNtMmlYM1NsMitFZFNpTU1hbGtzNDcwd3g4K0tuZjhxNVVaaHRJ?=
+ =?utf-8?B?Um5yUkhDVGxzMm9wRDUvc0NxWUgreGFQbTVDNUtKWFdya2xyeExrd00xUVV2?=
+ =?utf-8?B?TkNPU0JvZjBBMzc0dStYQW8zOWxrb0ZBMk10dFlHZ216amppY2ZPbTJyTHpt?=
+ =?utf-8?B?QmhGZHUyS0xDck1hN2FaMkEwN2F0M0FrOS8yeUJjU202L1ZFTmErMVFXS2cv?=
+ =?utf-8?B?R3lCQURmZ0EyUTYvc1lxVXBjanFJdlFQTjZNQ1Npb2xYOHhCaVY5SktxUXZX?=
+ =?utf-8?B?WENoUFlSWjVSNkpFNmNOdEtXTExiS1c5SllQUHV0R2RBejVHNmRhSFMyK1I1?=
+ =?utf-8?B?VjBsMVVsR0pWSzEwSExsRXFySm5RYUJ4SGhEWHRQWklTemRCNWFRUC9kUWdN?=
+ =?utf-8?B?WHF6K3pzckpSd0d4cVJVTnRyYWFCOG11eVBNWENCRjU0MVlYdjY5VXM3bmlB?=
+ =?utf-8?B?Y0o2TjJ1STJRUVRGRU5KcDVBTDQ1VmcvNm5oVjJzSWpPMEk4OW1mOHcvbDNp?=
+ =?utf-8?B?Y24wN2tUUmp5c004RkFCK0krdk1uNTdoYmVUd05ZMERPVmgrdGx5aWE4Q1JD?=
+ =?utf-8?B?dHFOUTlPNmRyUUlxRzdyQXBPbGVpYlRCVjUwUzRjNkRZTjJldzRMTjVFTVpr?=
+ =?utf-8?B?OWRvUkFIUm9qVklTdnNhNTVRckM5bU13aTdpa3ZBY3hQN3J1RXFHa3FOMGJG?=
+ =?utf-8?B?eUNPeVI1ZGhGRHdFYjM5d3Vhd202SXM2azhsdnYwMGo3b0xvVGdnWWNpSGov?=
+ =?utf-8?B?M1J3SFFGdDlhWFN1T3pYcHVmQXRweWpEUWFrYmJjOGhuaTlDOEd2SmNIbWkr?=
+ =?utf-8?B?K0NXUzQzenRoUllsUlhWV1UzYmp0S0xveFJOZDlEL2tJSUl2UFRqaENFUWRi?=
+ =?utf-8?B?WlhGdmJPeCtjY3JDUUMyWlh2UC9NL3hUbjNRSWNwdGM4eUpkVVVZZ3dpZzZL?=
+ =?utf-8?B?ekdaaVZIdlU3cTU1ZEdjcnRRaW41RFc2TlA4cTZsbUM1STJXdWtHNmZWT0tR?=
+ =?utf-8?B?VEx3bk41SFpPbzNzWGhyZFpMOE1uYmJidmZSaTVwcEdsZ1BaK0hSd0pWSk8z?=
+ =?utf-8?B?UjdqUmcxa0xoVlNpUGExdHR6UFdVM2hrWHFGbW15NlZPakdrOXVIazc3MGd6?=
+ =?utf-8?B?TCtjOU9rK05xbEwzNThBSllZN1RFWHFDaXB1Tkd5WmFYVmdoVENSbVJ6cGo3?=
+ =?utf-8?B?enVPUWtlQi9TY0NhTWFOQ09SVmxFeVovNTZxMUc2S1pPczlPeFMzdFFDL211?=
+ =?utf-8?B?b2ZkUTR4T0NNdjdjWGlsejYrRC9lVVVNM1hjSnFscS9adFdsK3lyM2VJVTk3?=
+ =?utf-8?B?NnRCNUc5Qm5TZUJBUmpTNWhtNEVrdEMvSzdCZE0weHpSVEpKa0pZT1R4ZWd6?=
+ =?utf-8?B?UFlDMG9kWk00ZE4wNWoxaElSeVlEWEU4aWtxWDJMRGh4M3RraVRkZGNZTE1t?=
+ =?utf-8?B?Tlp6YTExZTY0bDFvZW5Sa1RGblUvOFR3SnlsRHVuWisrQWNZRnAwS3ZJN0Vr?=
+ =?utf-8?B?NGRnc2p3bXp4NExXcS9QRXlZcCtabWlWb2s3NEJEQ2JMWTA2dWdVdjhIUnVw?=
+ =?utf-8?Q?E8I/9PhLsxrqomTrqdlJOfGzoNy5CKGkRsR/gKF?=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR03MB6366.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8c1d0b46-2e59-470d-626f-08d94b50b3e0
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Jul 2021 07:33:43.5685
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: +Y5wduYRrwu2wTOmxKFr+DHm+uCpsmk+kkkmIbxJ2u849Tc8SOG7vx2Rl1DANUPXdVqtiDHqedj80eOGXHR6kA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR03MB5815
+X-Proofpoint-ORIG-GUID: ClFR3mjFZM-dzwt39cdlY0IEkSoes8b6
+X-Proofpoint-GUID: ClFR3mjFZM-dzwt39cdlY0IEkSoes8b6
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
+ definitions=2021-07-20_04:2021-07-19,2021-07-20 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ impostorscore=0 clxscore=1011 bulkscore=0 priorityscore=1501
+ malwarescore=0 mlxlogscore=999 mlxscore=0 adultscore=0 spamscore=0
+ lowpriorityscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2104190000 definitions=main-2107200043
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jul 19, 2021 at 6:25 PM Th=C3=A9o Bor=C3=A9m Fabris <theobf@usp.br>=
- wrote:
->
-> Hi, Alexandru.
->
-> Em seg., 19 de jul. de 2021 =C3=A0s 04:33, Alexandru Ardelean
-> <ardeleanalex@gmail.com> escreveu:
-> >
-> > On Sun, Jul 18, 2021 at 11:42 PM Th=C3=A9o Bor=C3=A9m Fabris <theobf@us=
-p.br> wrote:
-> > >
-> > > Add a device managed hook, via devm_add_action_or_reset() and
-> > > max5821_regulator_disable(), to disable voltage regulator on device
-> > > detach.
-> > > Replace iio_device_register() by devm_iio_device_register() and remov=
-e
-> > > the max5821_remove() function used to unregister the device and disab=
-le the
-> > > voltage regulator.
-> > > Remove i2c_set_clientdata() from the probe function, since
-> > > i2c_get_clientdata() is not used anymore.
-> >
-> > Looks good overall.
-> > A few comments inline.
-> >
-> > >
-> > > Signed-off-by: Th=C3=A9o Bor=C3=A9m Fabris <theobf@usp.br>
-> > > ---
-> > >  drivers/iio/dac/max5821.c | 30 ++++++++++++++++--------------
-> > >  1 file changed, 16 insertions(+), 14 deletions(-)
-> > >
-> > > diff --git a/drivers/iio/dac/max5821.c b/drivers/iio/dac/max5821.c
-> > > index bd6e75699a63..44c04ae70b32 100644
-> > > --- a/drivers/iio/dac/max5821.c
-> > > +++ b/drivers/iio/dac/max5821.c
-> > > @@ -294,6 +294,13 @@ static const struct iio_info max5821_info =3D {
-> > >         .write_raw =3D max5821_write_raw,
-> > >  };
-> > >
-> > > +static void max5821_regulator_disable(void *data)
-> > > +{
-> > > +       struct regulator *rdata =3D data;
-> > > +
-> > > +       regulator_disable(rdata);
-> >
-> > This can be simplified a bit:
-> >
-> > static void max5821_regulator_disable(void *reg)
-> > {
-> >       regulator_disable(reg);
-> > }
-> >
-> > I used to do explicit casting, but then I also figured that it's not ne=
-cessary.
-> >
-> Ok.
->
-> > > +}
-> > > +
-> > >  static int max5821_probe(struct i2c_client *client,
-> > >                         const struct i2c_device_id *id)
-> > >  {
-> > > @@ -306,7 +313,6 @@ static int max5821_probe(struct i2c_client *clien=
-t,
-> > >         if (!indio_dev)
-> > >                 return -ENOMEM;
-> > >         data =3D iio_priv(indio_dev);
-> > > -       i2c_set_clientdata(client, indio_dev);
-> > >         data->client =3D client;
-> > >         mutex_init(&data->lock);
-> > >
-> > > @@ -331,6 +337,14 @@ static int max5821_probe(struct i2c_client *clie=
-nt,
-> > >                 goto error_free_reg;
-> > >         }
-> > >
-> > > +       ret =3D devm_add_action_or_reset(&client->dev, max5821_regula=
-tor_disable,
-> > > +                                      data->vref_reg);
-> > > +       if (ret) {
-> > > +               dev_err(&client->dev,
-> > > +                       "Failed to add action to managed regulator: %=
-d\n", ret);
-> > > +               goto error_disable_reg;
-> >
-> > return ret;
-> >
-> > devm_add_action_or_reset() should call max5821_regulator_disable() in
-> > case of error
-> >
-> Ok.
->
-> > > +       }
-> > > +
-> > >         ret =3D regulator_get_voltage(data->vref_reg);
-> > >         if (ret < 0) {
-> > >                 dev_err(&client->dev,
-> > > @@ -346,7 +360,7 @@ static int max5821_probe(struct i2c_client *clien=
-t,
-> > >         indio_dev->modes =3D INDIO_DIRECT_MODE;
-> > >         indio_dev->info =3D &max5821_info;
-> > >
-> > > -       return iio_device_register(indio_dev);
-> > > +       return devm_iio_device_register(&client->dev, indio_dev);
-> > >
-> > >  error_disable_reg:
-> >
-> > This entire goto block should be removed.
-> > The idea of using only devm_ functions is to not have these goto statem=
-ents.
-> >
-> I thought the action added via devm_add_action (and devres_add) was calle=
-d only
-> on driver detach, thus the error_disable_reg label would be necessary
-> to handle the
-
-devm_add_action() yes
-this is devm_add_action_or_reset() which looks like this:
-
-static inline int devm_add_action_or_reset(struct device *dev,
-                       void (*action)(void *), void *data)
-{
-    int ret;
-
-    ret =3D devm_add_action(dev, action, data);
-    if (ret)
-        action(data);
-
-    return ret;
-}
-
-it can be found in "include/linux/device.h"
-
-> possible error on regulator_get_voltage. Could you please clarify for
-> me when does
-> a driver detach happen?
-
-a driver detach happens when:
-* the kmod is unloaded (assuming the driver is running as a kmod)
-* manually unbinding the driver from sysfs ;
-   a quick article about this [it's for USB, but other interfaces use
-   the same mechanism]:
-   https://lwn.net/Articles/143397/
-   there should be something under /sys/bus/spi/drivers/xxxx/unbind
-* when the system powers down (reboots)
-* maybe there is some other new method to do this [that I don't know about]
-
->
-> Thanks for your reply,
-> Th=C3=A9o
->
-> > >         regulator_disable(data->vref_reg);
-> > > @@ -356,17 +370,6 @@ static int max5821_probe(struct i2c_client *clie=
-nt,
-> > >         return ret;
-> > >  }
-> > >
-> > > -static int max5821_remove(struct i2c_client *client)
-> > > -{
-> > > -       struct iio_dev *indio_dev =3D i2c_get_clientdata(client);
-> > > -       struct max5821_data *data =3D iio_priv(indio_dev);
-> > > -
-> > > -       iio_device_unregister(indio_dev);
-> > > -       regulator_disable(data->vref_reg);
-> > > -
-> > > -       return 0;
-> > > -}
-> > > -
-> > >  static const struct i2c_device_id max5821_id[] =3D {
-> > >         { "max5821", ID_MAX5821 },
-> > >         { }
-> > > @@ -386,7 +389,6 @@ static struct i2c_driver max5821_driver =3D {
-> > >                 .pm     =3D &max5821_pm_ops,
-> > >         },
-> > >         .probe          =3D max5821_probe,
-> > > -       .remove         =3D max5821_remove,
-> > >         .id_table       =3D max5821_id,
-> > >  };
-> > >  module_i2c_driver(max5821_driver);
-> > > --
-> > > 2.20.1
-> > >
+DQo+IEZyb206IEFsZXhhbmRydSBBcmRlbGVhbiA8YXJkZWxlYW5hbGV4QGdtYWlsLmNvbT4NCj4g
+U2VudDogVHVlc2RheSwgSnVseSAyMCwgMjAyMSA5OjIzIEFNDQo+IFRvOiBUaMOpbyBCb3LDqW0g
+RmFicmlzIDx0aGVvYmZAdXNwLmJyPg0KPiBDYzogSm9uYXRoYW4gQ2FtZXJvbiA8amljMjNAa2Vy
+bmVsLm9yZz47IExhcnMtUGV0ZXIgQ2xhdXNlbg0KPiA8bGFyc0BtZXRhZm9vLmRlPjsgbGludXgt
+aWlvIDxsaW51eC1paW9Admdlci5rZXJuZWwub3JnPjsgTEtNTA0KPiA8bGludXgta2VybmVsQHZn
+ZXIua2VybmVsLm9yZz4NCj4gU3ViamVjdDogUmU6IFtQQVRDSF0gaWlvOiBkYWM6IG1heDU4MjE6
+IGNvbnZlcnQgZGV2aWNlIHJlZ2lzdGVyIHRvDQo+IGRldmljZSBtYW5hZ2VkIGZ1bmN0aW9uDQo+
+IA0KPiBPbiBNb24sIEp1bCAxOSwgMjAyMSBhdCA2OjI1IFBNIFRow6lvIEJvcsOpbSBGYWJyaXMg
+PHRoZW9iZkB1c3AuYnI+DQo+IHdyb3RlOg0KPiA+DQo+ID4gSGksIEFsZXhhbmRydS4NCj4gPg0K
+PiA+IEVtIHNlZy4sIDE5IGRlIGp1bC4gZGUgMjAyMSDDoHMgMDQ6MzMsIEFsZXhhbmRydSBBcmRl
+bGVhbg0KPiA+IDxhcmRlbGVhbmFsZXhAZ21haWwuY29tPiBlc2NyZXZldToNCj4gPiA+DQo+ID4g
+PiBPbiBTdW4sIEp1bCAxOCwgMjAyMSBhdCAxMTo0MiBQTSBUaMOpbyBCb3LDqW0gRmFicmlzDQo+
+IDx0aGVvYmZAdXNwLmJyPiB3cm90ZToNCj4gPiA+ID4NCj4gPiA+ID4gQWRkIGEgZGV2aWNlIG1h
+bmFnZWQgaG9vaywgdmlhIGRldm1fYWRkX2FjdGlvbl9vcl9yZXNldCgpDQo+IGFuZA0KPiA+ID4g
+PiBtYXg1ODIxX3JlZ3VsYXRvcl9kaXNhYmxlKCksIHRvIGRpc2FibGUgdm9sdGFnZSByZWd1bGF0
+b3Igb24NCj4gZGV2aWNlDQo+ID4gPiA+IGRldGFjaC4NCj4gPiA+ID4gUmVwbGFjZSBpaW9fZGV2
+aWNlX3JlZ2lzdGVyKCkgYnkgZGV2bV9paW9fZGV2aWNlX3JlZ2lzdGVyKCkgYW5kDQo+IHJlbW92
+ZQ0KPiA+ID4gPiB0aGUgbWF4NTgyMV9yZW1vdmUoKSBmdW5jdGlvbiB1c2VkIHRvIHVucmVnaXN0
+ZXIgdGhlIGRldmljZQ0KPiBhbmQgZGlzYWJsZSB0aGUNCj4gPiA+ID4gdm9sdGFnZSByZWd1bGF0
+b3IuDQo+ID4gPiA+IFJlbW92ZSBpMmNfc2V0X2NsaWVudGRhdGEoKSBmcm9tIHRoZSBwcm9iZSBm
+dW5jdGlvbiwgc2luY2UNCj4gPiA+ID4gaTJjX2dldF9jbGllbnRkYXRhKCkgaXMgbm90IHVzZWQg
+YW55bW9yZS4NCj4gPiA+DQo+ID4gPiBMb29rcyBnb29kIG92ZXJhbGwuDQo+ID4gPiBBIGZldyBj
+b21tZW50cyBpbmxpbmUuDQo+ID4gPg0KPiA+ID4gPg0KPiA+ID4gPiBTaWduZWQtb2ZmLWJ5OiBU
+aMOpbyBCb3LDqW0gRmFicmlzIDx0aGVvYmZAdXNwLmJyPg0KPiA+ID4gPiAtLS0NCj4gPiA+ID4g
+IGRyaXZlcnMvaWlvL2RhYy9tYXg1ODIxLmMgfCAzMCArKysrKysrKysrKysrKysrLS0tLS0tLS0t
+LS0tLS0NCj4gPiA+ID4gIDEgZmlsZSBjaGFuZ2VkLCAxNiBpbnNlcnRpb25zKCspLCAxNCBkZWxl
+dGlvbnMoLSkNCj4gPiA+ID4NCj4gPiA+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaWlvL2RhYy9t
+YXg1ODIxLmMNCj4gYi9kcml2ZXJzL2lpby9kYWMvbWF4NTgyMS5jDQo+ID4gPiA+IGluZGV4IGJk
+NmU3NTY5OWE2My4uNDRjMDRhZTcwYjMyIDEwMDY0NA0KPiA+ID4gPiAtLS0gYS9kcml2ZXJzL2lp
+by9kYWMvbWF4NTgyMS5jDQo+ID4gPiA+ICsrKyBiL2RyaXZlcnMvaWlvL2RhYy9tYXg1ODIxLmMN
+Cj4gPiA+ID4gQEAgLTI5NCw2ICsyOTQsMTMgQEAgc3RhdGljIGNvbnN0IHN0cnVjdCBpaW9faW5m
+byBtYXg1ODIxX2luZm8NCj4gPSB7DQo+ID4gPiA+ICAgICAgICAgLndyaXRlX3JhdyA9IG1heDU4
+MjFfd3JpdGVfcmF3LA0KPiA+ID4gPiAgfTsNCj4gPiA+ID4NCj4gPiA+ID4gK3N0YXRpYyB2b2lk
+IG1heDU4MjFfcmVndWxhdG9yX2Rpc2FibGUodm9pZCAqZGF0YSkNCj4gPiA+ID4gK3sNCj4gPiA+
+ID4gKyAgICAgICBzdHJ1Y3QgcmVndWxhdG9yICpyZGF0YSA9IGRhdGE7DQo+ID4gPiA+ICsNCj4g
+PiA+ID4gKyAgICAgICByZWd1bGF0b3JfZGlzYWJsZShyZGF0YSk7DQo+ID4gPg0KPiA+ID4gVGhp
+cyBjYW4gYmUgc2ltcGxpZmllZCBhIGJpdDoNCj4gPiA+DQo+ID4gPiBzdGF0aWMgdm9pZCBtYXg1
+ODIxX3JlZ3VsYXRvcl9kaXNhYmxlKHZvaWQgKnJlZykNCj4gPiA+IHsNCj4gPiA+ICAgICAgIHJl
+Z3VsYXRvcl9kaXNhYmxlKHJlZyk7DQo+ID4gPiB9DQo+ID4gPg0KPiA+ID4gSSB1c2VkIHRvIGRv
+IGV4cGxpY2l0IGNhc3RpbmcsIGJ1dCB0aGVuIEkgYWxzbyBmaWd1cmVkIHRoYXQgaXQncyBub3QN
+Cj4gbmVjZXNzYXJ5Lg0KPiA+ID4NCj4gPiBPay4NCj4gPg0KPiA+ID4gPiArfQ0KPiA+ID4gPiAr
+DQo+ID4gPiA+ICBzdGF0aWMgaW50IG1heDU4MjFfcHJvYmUoc3RydWN0IGkyY19jbGllbnQgKmNs
+aWVudCwNCj4gPiA+ID4gICAgICAgICAgICAgICAgICAgICAgICAgY29uc3Qgc3RydWN0IGkyY19k
+ZXZpY2VfaWQgKmlkKQ0KPiA+ID4gPiAgew0KPiA+ID4gPiBAQCAtMzA2LDcgKzMxMyw2IEBAIHN0
+YXRpYyBpbnQgbWF4NTgyMV9wcm9iZShzdHJ1Y3QgaTJjX2NsaWVudA0KPiAqY2xpZW50LA0KPiA+
+ID4gPiAgICAgICAgIGlmICghaW5kaW9fZGV2KQ0KPiA+ID4gPiAgICAgICAgICAgICAgICAgcmV0
+dXJuIC1FTk9NRU07DQo+ID4gPiA+ICAgICAgICAgZGF0YSA9IGlpb19wcml2KGluZGlvX2Rldik7
+DQo+ID4gPiA+IC0gICAgICAgaTJjX3NldF9jbGllbnRkYXRhKGNsaWVudCwgaW5kaW9fZGV2KTsN
+Cj4gPiA+ID4gICAgICAgICBkYXRhLT5jbGllbnQgPSBjbGllbnQ7DQo+ID4gPiA+ICAgICAgICAg
+bXV0ZXhfaW5pdCgmZGF0YS0+bG9jayk7DQo+ID4gPiA+DQo+ID4gPiA+IEBAIC0zMzEsNiArMzM3
+LDE0IEBAIHN0YXRpYyBpbnQgbWF4NTgyMV9wcm9iZShzdHJ1Y3QNCj4gaTJjX2NsaWVudCAqY2xp
+ZW50LA0KPiA+ID4gPiAgICAgICAgICAgICAgICAgZ290byBlcnJvcl9mcmVlX3JlZzsNCj4gPiA+
+ID4gICAgICAgICB9DQo+ID4gPiA+DQo+ID4gPiA+ICsgICAgICAgcmV0ID0gZGV2bV9hZGRfYWN0
+aW9uX29yX3Jlc2V0KCZjbGllbnQtPmRldiwNCj4gbWF4NTgyMV9yZWd1bGF0b3JfZGlzYWJsZSwN
+Cj4gPiA+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YS0+dnJl
+Zl9yZWcpOw0KPiA+ID4gPiArICAgICAgIGlmIChyZXQpIHsNCj4gPiA+ID4gKyAgICAgICAgICAg
+ICAgIGRldl9lcnIoJmNsaWVudC0+ZGV2LA0KPiA+ID4gPiArICAgICAgICAgICAgICAgICAgICAg
+ICAiRmFpbGVkIHRvIGFkZCBhY3Rpb24gdG8gbWFuYWdlZCByZWd1bGF0b3I6ICVkXG4iLA0KPiBy
+ZXQpOw0KPiA+ID4gPiArICAgICAgICAgICAgICAgZ290byBlcnJvcl9kaXNhYmxlX3JlZzsNCj4g
+PiA+DQo+ID4gPiByZXR1cm4gcmV0Ow0KPiA+ID4NCj4gPiA+IGRldm1fYWRkX2FjdGlvbl9vcl9y
+ZXNldCgpIHNob3VsZCBjYWxsDQo+IG1heDU4MjFfcmVndWxhdG9yX2Rpc2FibGUoKSBpbg0KPiA+
+ID4gY2FzZSBvZiBlcnJvcg0KPiA+ID4NCj4gPiBPay4NCj4gPg0KPiA+ID4gPiArICAgICAgIH0N
+Cj4gPiA+ID4gKw0KPiA+ID4gPiAgICAgICAgIHJldCA9IHJlZ3VsYXRvcl9nZXRfdm9sdGFnZShk
+YXRhLT52cmVmX3JlZyk7DQo+ID4gPiA+ICAgICAgICAgaWYgKHJldCA8IDApIHsNCj4gPiA+ID4g
+ICAgICAgICAgICAgICAgIGRldl9lcnIoJmNsaWVudC0+ZGV2LA0KPiA+ID4gPiBAQCAtMzQ2LDcg
+KzM2MCw3IEBAIHN0YXRpYyBpbnQgbWF4NTgyMV9wcm9iZShzdHJ1Y3QgaTJjX2NsaWVudA0KPiAq
+Y2xpZW50LA0KPiA+ID4gPiAgICAgICAgIGluZGlvX2Rldi0+bW9kZXMgPSBJTkRJT19ESVJFQ1Rf
+TU9ERTsNCj4gPiA+ID4gICAgICAgICBpbmRpb19kZXYtPmluZm8gPSAmbWF4NTgyMV9pbmZvOw0K
+PiA+ID4gPg0KPiA+ID4gPiAtICAgICAgIHJldHVybiBpaW9fZGV2aWNlX3JlZ2lzdGVyKGluZGlv
+X2Rldik7DQo+ID4gPiA+ICsgICAgICAgcmV0dXJuIGRldm1faWlvX2RldmljZV9yZWdpc3Rlcigm
+Y2xpZW50LT5kZXYsIGluZGlvX2Rldik7DQo+ID4gPiA+DQo+ID4gPiA+ICBlcnJvcl9kaXNhYmxl
+X3JlZzoNCj4gPiA+DQo+ID4gPiBUaGlzIGVudGlyZSBnb3RvIGJsb2NrIHNob3VsZCBiZSByZW1v
+dmVkLg0KPiA+ID4gVGhlIGlkZWEgb2YgdXNpbmcgb25seSBkZXZtXyBmdW5jdGlvbnMgaXMgdG8g
+bm90IGhhdmUgdGhlc2UgZ290bw0KPiBzdGF0ZW1lbnRzLg0KPiA+ID4NCj4gPiBJIHRob3VnaHQg
+dGhlIGFjdGlvbiBhZGRlZCB2aWEgZGV2bV9hZGRfYWN0aW9uIChhbmQgZGV2cmVzX2FkZCkNCj4g
+d2FzIGNhbGxlZCBvbmx5DQo+ID4gb24gZHJpdmVyIGRldGFjaCwgdGh1cyB0aGUgZXJyb3JfZGlz
+YWJsZV9yZWcgbGFiZWwgd291bGQgYmUNCj4gbmVjZXNzYXJ5DQo+ID4gdG8gaGFuZGxlIHRoZQ0K
+PiANCj4gZGV2bV9hZGRfYWN0aW9uKCkgeWVzDQo+IHRoaXMgaXMgZGV2bV9hZGRfYWN0aW9uX29y
+X3Jlc2V0KCkgd2hpY2ggbG9va3MgbGlrZSB0aGlzOg0KPiANCj4gc3RhdGljIGlubGluZSBpbnQg
+ZGV2bV9hZGRfYWN0aW9uX29yX3Jlc2V0KHN0cnVjdCBkZXZpY2UgKmRldiwNCj4gICAgICAgICAg
+ICAgICAgICAgICAgICB2b2lkICgqYWN0aW9uKSh2b2lkICopLCB2b2lkICpkYXRhKQ0KPiB7DQo+
+ICAgICBpbnQgcmV0Ow0KPiANCj4gICAgIHJldCA9IGRldm1fYWRkX2FjdGlvbihkZXYsIGFjdGlv
+biwgZGF0YSk7DQo+ICAgICBpZiAocmV0KQ0KPiAgICAgICAgIGFjdGlvbihkYXRhKTsNCj4gDQo+
+ICAgICByZXR1cm4gcmV0Ow0KPiB9DQo+IA0KPiBpdCBjYW4gYmUgZm91bmQgaW4gImluY2x1ZGUv
+bGludXgvZGV2aWNlLmgiDQo+IA0KPiA+IHBvc3NpYmxlIGVycm9yIG9uIHJlZ3VsYXRvcl9nZXRf
+dm9sdGFnZS4gQ291bGQgeW91IHBsZWFzZSBjbGFyaWZ5IGZvcg0KPiA+IG1lIHdoZW4gZG9lcw0K
+PiA+IGEgZHJpdmVyIGRldGFjaCBoYXBwZW4/DQo+IA0KPiBhIGRyaXZlciBkZXRhY2ggaGFwcGVu
+cyB3aGVuOg0KPiAqIHRoZSBrbW9kIGlzIHVubG9hZGVkIChhc3N1bWluZyB0aGUgZHJpdmVyIGlz
+IHJ1bm5pbmcgYXMgYSBrbW9kKQ0KPiAqIG1hbnVhbGx5IHVuYmluZGluZyB0aGUgZHJpdmVyIGZy
+b20gc3lzZnMgOw0KPiAgICBhIHF1aWNrIGFydGljbGUgYWJvdXQgdGhpcyBbaXQncyBmb3IgVVNC
+LCBidXQgb3RoZXIgaW50ZXJmYWNlcyB1c2UNCj4gICAgdGhlIHNhbWUgbWVjaGFuaXNtXToNCj4g
+DQo+IGh0dHBzOi8vdXJsZGVmZW5zZS5jb20vdjMvX19odHRwczovL2x3bi5uZXQvQXJ0aWNsZXMv
+MTQzMzk3L19fOyEhQQ0KPiAzTmk4Q1MweTJZIXJ3LQ0KPiBxeGlqVmxvaFpXQ0c5cV93V0ZQR0FT
+cVc3SldjZlM0OHVKU3dZOGNvS2lCUG9BOVowRzJXU0NaDQo+IGNsQ3ckDQo+ICAgIHRoZXJlIHNo
+b3VsZCBiZSBzb21ldGhpbmcgdW5kZXIgL3N5cy9idXMvc3BpL2RyaXZlcnMveHh4eC91bmJpbmQN
+Cj4gKiB3aGVuIHRoZSBzeXN0ZW0gcG93ZXJzIGRvd24gKHJlYm9vdHMpDQo+ICogbWF5YmUgdGhl
+cmUgaXMgc29tZSBvdGhlciBuZXcgbWV0aG9kIHRvIGRvIHRoaXMgW3RoYXQgSSBkb24ndCBrbm93
+DQo+IGFib3V0XQ0KDQpJZiB0aGUgZGV2aWNlIGdldCdzIGRlbGV0ZWQgd2l0aCAnZGV2aWNlX2Rl
+bCgpJy4uLg0KDQotIE51bm8gU8OhDQoNCg0K

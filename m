@@ -2,262 +2,325 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A1463D061A
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Jul 2021 02:18:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 293E83D0713
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Jul 2021 05:07:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230443AbhGTXb0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 20 Jul 2021 19:31:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32800 "EHLO
+        id S231401AbhGUC00 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 20 Jul 2021 22:26:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229669AbhGTXbV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 20 Jul 2021 19:31:21 -0400
-Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49CA0C061762
-        for <linux-iio@vger.kernel.org>; Tue, 20 Jul 2021 17:11:58 -0700 (PDT)
-Received: by mail-il1-x12d.google.com with SMTP id e13so874166ilc.1
-        for <linux-iio@vger.kernel.org>; Tue, 20 Jul 2021 17:11:58 -0700 (PDT)
+        with ESMTP id S231181AbhGUC0X (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 20 Jul 2021 22:26:23 -0400
+Received: from mail-qv1-xf2c.google.com (mail-qv1-xf2c.google.com [IPv6:2607:f8b0:4864:20::f2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 032D5C061574;
+        Tue, 20 Jul 2021 20:07:01 -0700 (PDT)
+Received: by mail-qv1-xf2c.google.com with SMTP id p10so295005qvk.7;
+        Tue, 20 Jul 2021 20:07:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=usp.br; s=usp-google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=yft8d0QKQYEK6jK1cRdXCSL3/Fc2IYBV0nFOZMJwK8M=;
-        b=mth2Xcw77G1fhqx5Z6yTnexgH++YcdpJkPxVeLiB2HaUCwihpVQJL+0e6ziFZcp7Tw
-         xmxbsdUrG9lXyAVamXp7i8cZEKGjKX7lN7k1Jx1k4J665LG1ubyclJC0mYyjEBvXU9Og
-         xqKC7bfhgl3yn3BRVZI8Mtj3crBqgU8g9pQnkIfCjiX6cWm3ZX4pR1vtF/P+t7EJw52R
-         Xw+14ovmIQyxfeLan2f5M5FB1JvoGt75i31qbLDbKz+KVCwjkMvWplYaeI/OpUAO8mvV
-         f1P50ps+izwc7xOgdbitpz5AyoqLAWaxFfpoWB+5n/GoGtrWXrEOCR6Vob/X4ddRqrX1
-         ZKCQ==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=fN5CTkvQXkjw5WGSVvn50DKuHpr1wkyz+M+sBy6PMDI=;
+        b=QKUTqeX8v8DvTeC01/tpLNVH/hFW8be8nZATyYUW+zXGcC4bPAFx4fuDNisvSw77pp
+         nsIrjmuNudQV8GZoi+5N4N//BQ2w/nrnNCEjXS1fFSefJQ1tQ4AqedHERqbii9nFDm+W
+         vn4CtZmqkZGpCJ+T2q2qOopi6CFPRJHEf5gsywwE5w1nBkQXduks8JzIxC35RGiZZi3O
+         gICdwO+UDvOE48tkiiIw1yzO4Nk2bgiI20JqO6M3M5RGO1rbSuGzASvKB04BhJxMQxdT
+         QmU1ZLEDIlDpgwOci2Dp1JUasl5a4ky4JfeEV9vd61SSwrczn1/Z/dFeum6XRzcdEgOl
+         TbnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=yft8d0QKQYEK6jK1cRdXCSL3/Fc2IYBV0nFOZMJwK8M=;
-        b=hLl3OIzanYdntJAgFOaDslQLXw7lAdmW35KrG6bxx0+UK4gPqdWI46tlSiTK8AOCiQ
-         4xel+/GDHNJZZSHnN3aKQXLaFrr3VA6sgaRcZCr74WhLzjjg8fSm7jH1MOk8Nz24FX09
-         jPTuITOrBYuJCvXzszUfKcPkb9Jbr/o4J8uO/QVvTkGv9uEflPWatiOyJLQCDZZA4Wvk
-         khoijU2cEf8UKXOI5CBcsGvPkvOMhHLmUbC6Qx4DZ8nNETUmfFOK9T06Cntq+sMEQlaC
-         Avx4V6juYuxM8yV7H5uNL2PjKm8mYZIsEHhxHSxaVot7i4HxUXonObyInzeMsdUvNcA1
-         lsLw==
-X-Gm-Message-State: AOAM5302CwMy19m1bQKmaQk5I1LcXnUqweZjDvAZYPG/+QkGmOxgXZMl
-        0Sd1WM6dQN/Kl1Fu5/Gbh0FYXLXssW2o7LBTbGc0rA==
-X-Google-Smtp-Source: ABdhPJxmLFhbRjnHDW9ZI2SSVXvHthrv4IHNOWF1JoW9PbC0D0Zo0xPkJ0Fn08z2T4wW3SPJNsv+X+G8pJ0uoiDYSsY=
-X-Received: by 2002:a05:6e02:d41:: with SMTP id h1mr21391622ilj.191.1626826317665;
- Tue, 20 Jul 2021 17:11:57 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=fN5CTkvQXkjw5WGSVvn50DKuHpr1wkyz+M+sBy6PMDI=;
+        b=BoA5NZy2CQyu3npYq1OMYGFg/o4T4l9elCU8m/yInMInhblrtmcU+cFgOnfq6wFV7y
+         dKJCd6mKBv0uybyr+7+6FYEqJZikOpusQYShvfjEkcU0anCHyWbdZprjk37DuGiPagIy
+         FEfQSfOAKjkYL9cdxGXAyk+EBtURI7TcgAhde+Wd/xEgf860DOnPb12SkUQjoRFl0VrJ
+         QHnUJF3tHtHgem3+M7OGus30X44hxJ4GD92aof8qzYNnadncRYdiz/06CGuZSlUIbpOT
+         CEhFCPFpIKmtBfJY0RhyajbWoDlo3oDhdljDpI9brd0GUGowi6mBmPxh2+XoXw24FMeR
+         10Vw==
+X-Gm-Message-State: AOAM532a9dHnim6ZnbcTVc7+GBTPkvP2auDYorRH0uvepGgTZGCamjYT
+        Np7oZQTX/worjRiybIQyA3XVtRljx9hp9w==
+X-Google-Smtp-Source: ABdhPJxMdocmgrApop/LEWW9vVz6cxxFNqCRal62AfFPJGKE1bZG77TeROL4P6JaQFEAB7dBOqBcAA==
+X-Received: by 2002:a05:6214:dad:: with SMTP id h13mr27124807qvh.26.1626836819732;
+        Tue, 20 Jul 2021 20:06:59 -0700 (PDT)
+Received: from shaak.xiphos.ca (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
+        by smtp.gmail.com with ESMTPSA id g76sm10561024qke.127.2021.07.20.20.06.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jul 2021 20:06:59 -0700 (PDT)
+From:   Liam Beguin <liambeguin@gmail.com>
+To:     liambeguin@gmail.com, peda@axentia.se, jic23@kernel.org,
+        lars@metafoo.de, pmeerw@pmeerw.net
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, robh+dt@kernel.org
+Subject: [PATCH v6 00/13] iio: afe: add temperature rescaling support
+Date:   Tue, 20 Jul 2021 23:06:00 -0400
+Message-Id: <20210721030613.3105327-1-liambeguin@gmail.com>
+X-Mailer: git-send-email 2.30.1.489.g328c10930387
 MIME-Version: 1.0
-References: <20210718203746.7159-1-theobf@usp.br> <CA+U=DspWmrWWsQDFPLycS2y-=8Q7TSn5NYMVgbQ42FccAy0=pw@mail.gmail.com>
- <CAD5vTa8gnQpZ8B4KQkA=-6Oo-YiN4J7pDp0HoUZgpHN99vJK_g@mail.gmail.com> <CA+U=DsrU5iPBRexdUK3fx-PG3CbSoKouGWENVLJ5+h8L5-y_Og@mail.gmail.com>
-In-Reply-To: <CA+U=DsrU5iPBRexdUK3fx-PG3CbSoKouGWENVLJ5+h8L5-y_Og@mail.gmail.com>
-From:   =?UTF-8?Q?Th=C3=A9o_Bor=C3=A9m_Fabris?= <theobf@usp.br>
-Date:   Tue, 20 Jul 2021 21:11:20 -0300
-Message-ID: <CAD5vTa_cR0da4qZ2JTB7G-QgZrSeZr3e8fp92S6WGMaCoUr15g@mail.gmail.com>
-Subject: Re: [PATCH] iio: dac: max5821: convert device register to device
- managed function
-To:     Alexandru Ardelean <ardeleanalex@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Em ter., 20 de jul. de 2021 =C3=A0s 04:22, Alexandru Ardelean
-<ardeleanalex@gmail.com> escreveu:
->
-> On Mon, Jul 19, 2021 at 6:25 PM Th=C3=A9o Bor=C3=A9m Fabris <theobf@usp.b=
-r> wrote:
-> >
-> > Hi, Alexandru.
-> >
-> > Em seg., 19 de jul. de 2021 =C3=A0s 04:33, Alexandru Ardelean
-> > <ardeleanalex@gmail.com> escreveu:
-> > >
-> > > On Sun, Jul 18, 2021 at 11:42 PM Th=C3=A9o Bor=C3=A9m Fabris <theobf@=
-usp.br> wrote:
-> > > >
-> > > > Add a device managed hook, via devm_add_action_or_reset() and
-> > > > max5821_regulator_disable(), to disable voltage regulator on device
-> > > > detach.
-> > > > Replace iio_device_register() by devm_iio_device_register() and rem=
-ove
-> > > > the max5821_remove() function used to unregister the device and dis=
-able the
-> > > > voltage regulator.
-> > > > Remove i2c_set_clientdata() from the probe function, since
-> > > > i2c_get_clientdata() is not used anymore.
-> > >
-> > > Looks good overall.
-> > > A few comments inline.
-> > >
-> > > >
-> > > > Signed-off-by: Th=C3=A9o Bor=C3=A9m Fabris <theobf@usp.br>
-> > > > ---
-> > > >  drivers/iio/dac/max5821.c | 30 ++++++++++++++++--------------
-> > > >  1 file changed, 16 insertions(+), 14 deletions(-)
-> > > >
-> > > > diff --git a/drivers/iio/dac/max5821.c b/drivers/iio/dac/max5821.c
-> > > > index bd6e75699a63..44c04ae70b32 100644
-> > > > --- a/drivers/iio/dac/max5821.c
-> > > > +++ b/drivers/iio/dac/max5821.c
-> > > > @@ -294,6 +294,13 @@ static const struct iio_info max5821_info =3D =
-{
-> > > >         .write_raw =3D max5821_write_raw,
-> > > >  };
-> > > >
-> > > > +static void max5821_regulator_disable(void *data)
-> > > > +{
-> > > > +       struct regulator *rdata =3D data;
-> > > > +
-> > > > +       regulator_disable(rdata);
-> > >
-> > > This can be simplified a bit:
-> > >
-> > > static void max5821_regulator_disable(void *reg)
-> > > {
-> > >       regulator_disable(reg);
-> > > }
-> > >
-> > > I used to do explicit casting, but then I also figured that it's not =
-necessary.
-> > >
-> > Ok.
-> >
-> > > > +}
-> > > > +
-> > > >  static int max5821_probe(struct i2c_client *client,
-> > > >                         const struct i2c_device_id *id)
-> > > >  {
-> > > > @@ -306,7 +313,6 @@ static int max5821_probe(struct i2c_client *cli=
-ent,
-> > > >         if (!indio_dev)
-> > > >                 return -ENOMEM;
-> > > >         data =3D iio_priv(indio_dev);
-> > > > -       i2c_set_clientdata(client, indio_dev);
-> > > >         data->client =3D client;
-> > > >         mutex_init(&data->lock);
-> > > >
-> > > > @@ -331,6 +337,14 @@ static int max5821_probe(struct i2c_client *cl=
-ient,
-> > > >                 goto error_free_reg;
-> > > >         }
-> > > >
-> > > > +       ret =3D devm_add_action_or_reset(&client->dev, max5821_regu=
-lator_disable,
-> > > > +                                      data->vref_reg);
-> > > > +       if (ret) {
-> > > > +               dev_err(&client->dev,
-> > > > +                       "Failed to add action to managed regulator:=
- %d\n", ret);
-> > > > +               goto error_disable_reg;
-> > >
-> > > return ret;
-> > >
-> > > devm_add_action_or_reset() should call max5821_regulator_disable() in
-> > > case of error
-> > >
-> > Ok.
-> >
-> > > > +       }
-> > > > +
-> > > >         ret =3D regulator_get_voltage(data->vref_reg);
-> > > >         if (ret < 0) {
-> > > >                 dev_err(&client->dev,
-> > > > @@ -346,7 +360,7 @@ static int max5821_probe(struct i2c_client *cli=
-ent,
-> > > >         indio_dev->modes =3D INDIO_DIRECT_MODE;
-> > > >         indio_dev->info =3D &max5821_info;
-> > > >
-> > > > -       return iio_device_register(indio_dev);
-> > > > +       return devm_iio_device_register(&client->dev, indio_dev);
-> > > >
-> > > >  error_disable_reg:
-> > >
-> > > This entire goto block should be removed.
-> > > The idea of using only devm_ functions is to not have these goto stat=
-ements.
-> > >
-> > I thought the action added via devm_add_action (and devres_add) was cal=
-led only
-> > on driver detach, thus the error_disable_reg label would be necessary
-> > to handle the
->
-> devm_add_action() yes
-> this is devm_add_action_or_reset() which looks like this:
->
-> static inline int devm_add_action_or_reset(struct device *dev,
->                        void (*action)(void *), void *data)
-> {
->     int ret;
->
->     ret =3D devm_add_action(dev, action, data);
->     if (ret)
->         action(data);
->
->     return ret;
-> }
->
-> it can be found in "include/linux/device.h"
->
-> > possible error on regulator_get_voltage. Could you please clarify for
-> > me when does
-> > a driver detach happen?
->
-> a driver detach happens when:
-> * the kmod is unloaded (assuming the driver is running as a kmod)
-> * manually unbinding the driver from sysfs ;
->    a quick article about this [it's for USB, but other interfaces use
->    the same mechanism]:
->    https://lwn.net/Articles/143397/
->    there should be something under /sys/bus/spi/drivers/xxxx/unbind
-> * when the system powers down (reboots)
-> * maybe there is some other new method to do this [that I don't know abou=
-t]
->
-Thank you so much.
+From: Liam Beguin <lvb@xiphos.com>
 
-So, should this goto error_disable_reg be replaced by
-"regulator_disable(.); return ret;"?
-ret =3D regulator_get_voltage(data->vref_reg);
-    if (ret < 0) {
-        dev_err(&client->dev,
-             "Failed to get voltage on regulator: %d\n", ret);
-        goto error_disable_reg;
-    }
+Add temperature rescaling support to the IIO Analog Front End driver.
 
-> >
-> > Thanks for your reply,
-> > Th=C3=A9o
-> >
-> > > >         regulator_disable(data->vref_reg);
-> > > > @@ -356,17 +370,6 @@ static int max5821_probe(struct i2c_client *cl=
-ient,
-> > > >         return ret;
-> > > >  }
-> > > >
-> > > > -static int max5821_remove(struct i2c_client *client)
-> > > > -{
-> > > > -       struct iio_dev *indio_dev =3D i2c_get_clientdata(client);
-> > > > -       struct max5821_data *data =3D iio_priv(indio_dev);
-> > > > -
-> > > > -       iio_device_unregister(indio_dev);
-> > > > -       regulator_disable(data->vref_reg);
-> > > > -
-> > > > -       return 0;
-> > > > -}
-> > > > -
-> > > >  static const struct i2c_device_id max5821_id[] =3D {
-> > > >         { "max5821", ID_MAX5821 },
-> > > >         { }
-> > > > @@ -386,7 +389,6 @@ static struct i2c_driver max5821_driver =3D {
-> > > >                 .pm     =3D &max5821_pm_ops,
-> > > >         },
-> > > >         .probe          =3D max5821_probe,
-> > > > -       .remove         =3D max5821_remove,
-> > > >         .id_table       =3D max5821_id,
-> > > >  };
-> > > >  module_i2c_driver(max5821_driver);
-> > > > --
-> > > > 2.20.1
-> > > >
+This series includes minor bug fixes and adds support for RTD temperature
+sensors as well as temperature transducers.
+
+At first I tried to use iio_convert_raw_to_processed() to get more
+precision out of processed values but ran into issues when one of my
+ADCs didn't provide a scale. I tried to address this in the first few
+patches.
+
+When adding offset support to iio-rescale, I also noticed that
+iio_read_channel_processed() assumes that the offset is always an
+integer which I tried to address in the third patch without breaking
+valid implicit truncations.
+
+As Jonathan suggested, I also started a Kunit test suite for the
+iio-rescale driver.
+Adding these test cases, I found that the IIO_VAL_FRACTIONAL_LOG2
+rescaling wasn't as precise as expected so I tried to fix that as well.
+
+Changes since v5:
+- add include/linux/iio/afe/rescale.h
+- expose functions use to process scale and offset
+- add basic iio-rescale kunit test cases
+- fix integer overflow case
+- improve precision for IIO_VAL_FRACTIONAL_LOG2
+
+Changes since v4:
+- only use gcd() when necessary in overflow mitigation
+- fix INT_PLUS_{MICRO,NANO} support
+- apply Reviewed-by
+- fix temperature-transducer bindings
+
+Changes since v3:
+- drop unnecessary fallthrough statements
+- drop redundant local variables in some calculations
+- fix s64 divisions on 32bit platforms by using do_div
+- add comment describing iio-rescaler offset calculation
+- drop unnecessary MAINTAINERS entry
+
+Changes since v2:
+- don't break implicit offset truncations
+- make a best effort to get a valid value for fractional types
+- drop return value change in iio_convert_raw_to_processed_unlocked()
+- don't rely on processed value for offset calculation
+- add INT_PLUS_{MICRO,NANO} support in iio-rescale
+- revert generic implementation in favor of temperature-sense-rtd and
+  temperature-transducer
+- add separate section to MAINTAINERS file
+
+Changes since v1:
+- rebase on latest iio `testing` branch
+- also apply consumer scale on integer channel scale types
+- don't break implicit truncation in processed channel offset
+  calculation
+- drop temperature AFE flavors in favor of a simpler generic
+  implementation
+
+Thanks for your time
+
+Liam Beguin (13):
+  iio: inkern: apply consumer scale on IIO_VAL_INT cases
+  iio: inkern: apply consumer scale when no channel scale is available
+  iio: inkern: make a best effort on offset calculation
+  iio: afe: rescale: expose scale processing function
+  iio: afe: rescale: add INT_PLUS_{MICRO,NANO} support
+  iio: afe: rescale: add offset support
+  iio: test: add basic tests for the iio-rescale driver
+  iio: afe: rescale: reduce risk of integer overflow
+  iio: afe: rescale: fix precision on fractional log scale
+  iio: afe: rescale: add RTD temperature sensor support
+  iio: afe: rescale: add temperature transducers
+  dt-bindings: iio: afe: add bindings for temperature-sense-rtd
+  dt-bindings: iio: afe: add bindings for temperature transducers
+
+ .../iio/afe/temperature-sense-rtd.yaml        | 101 ++++++
+ .../iio/afe/temperature-transducer.yaml       | 114 ++++++
+ drivers/iio/afe/iio-rescale.c                 | 242 +++++++++++--
+ drivers/iio/inkern.c                          |  40 +-
+ drivers/iio/test/Kconfig                      |  10 +
+ drivers/iio/test/Makefile                     |   1 +
+ drivers/iio/test/iio-test-rescale.c           | 342 ++++++++++++++++++
+ include/linux/iio/afe/rescale.h               |  34 ++
+ 8 files changed, 840 insertions(+), 44 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/afe/temperature-sense-rtd.yaml
+ create mode 100644 Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml
+ create mode 100644 drivers/iio/test/iio-test-rescale.c
+ create mode 100644 include/linux/iio/afe/rescale.h
+
+Range-diff against v5:
+ 1:  7b3e374eb7ad <  -:  ------------ iio: afe: rescale: reduce risk of integer overflow
+ 2:  1d334090e974 <  -:  ------------ iio: afe: rescale: add INT_PLUS_{MICRO,NANO} support
+ -:  ------------ >  1:  42a7a1047edc iio: inkern: apply consumer scale on IIO_VAL_INT cases
+ -:  ------------ >  2:  a1cd89fdad11 iio: inkern: apply consumer scale when no channel scale is available
+ -:  ------------ >  3:  ed0721fb6bd1 iio: inkern: make a best effort on offset calculation
+ -:  ------------ >  4:  f8fb78bb1112 iio: afe: rescale: expose scale processing function
+ -:  ------------ >  5:  16627ca44022 iio: afe: rescale: add INT_PLUS_{MICRO,NANO} support
+ 3:  61873203c140 !  6:  dec2a933fbf3 iio: afe: rescale: add offset support
+    @@ Commit message
+         Signed-off-by: Liam Beguin <lvb@xiphos.com>
+     
+      ## drivers/iio/afe/iio-rescale.c ##
+    -@@ drivers/iio/afe/iio-rescale.c: struct rescale {
+    - 	bool chan_processed;
+    - 	s32 numerator;
+    - 	s32 denominator;
+    -+	s32 offset;
+    - };
+    +@@ drivers/iio/afe/iio-rescale.c: int rescale_process_scale(struct rescale *rescale, int scale_type,
+    + 	}
+    + }
+      
+    ++int rescale_process_offset(struct rescale *rescale, int scale_type,
+    ++			   int scale, int scale2, int schan_off,
+    ++			   int *val, int *val2)
+    ++{
+    ++	s64 tmp, tmp2;
+    ++
+    ++	switch (scale_type) {
+    ++	case IIO_VAL_FRACTIONAL:
+    ++		tmp = (s64)rescale->offset * scale2;
+    ++		*val = div_s64(tmp, scale) + schan_off;
+    ++		return IIO_VAL_INT;
+    ++	case IIO_VAL_INT:
+    ++		*val = div_s64(rescale->offset, scale) + schan_off;
+    ++		return IIO_VAL_INT;
+    ++	case IIO_VAL_FRACTIONAL_LOG2:
+    ++		tmp = (s64)rescale->offset * (1 << scale2);
+    ++		*val = div_s64(tmp, scale) + schan_off;
+    ++		return IIO_VAL_INT;
+    ++	case IIO_VAL_INT_PLUS_NANO:
+    ++		tmp = (s64)rescale->offset * 1000000000;
+    ++		tmp2 = ((s64)scale * 1000000000L) + scale2;
+    ++		*val = div64_s64(tmp, tmp2) + schan_off;
+    ++		return IIO_VAL_INT;
+    ++	case IIO_VAL_INT_PLUS_MICRO:
+    ++		tmp = (s64)rescale->offset * 1000000L;
+    ++		tmp2 = ((s64)scale * 1000000L) + scale2;
+    ++		*val = div64_s64(tmp, tmp2) + schan_off;
+    ++		return IIO_VAL_INT;
+    ++	default:
+    ++		return -EOPNOTSUPP;
+    ++	}
+    ++}
+    ++
+      static int rescale_read_raw(struct iio_dev *indio_dev,
+    -@@ drivers/iio/afe/iio-rescale.c: static int rescale_read_raw(struct iio_dev *indio_dev,
+    + 			    struct iio_chan_spec const *chan,
+      			    int *val, int *val2, long mask)
+      {
+      	struct rescale *rescale = iio_priv(indio_dev);
+     +	int scale, scale2;
+     +	int schan_off = 0;
+    - 	s64 tmp, tmp2;
+    - 	u32 factor;
+      	int ret;
+    + 
+    + 	switch (mask) {
+     @@ drivers/iio/afe/iio-rescale.c: static int rescale_read_raw(struct iio_dev *indio_dev,
+    - 			dev_err(&indio_dev->dev, "unsupported type %d\n", ret);
+    - 			return -EOPNOTSUPP;
+    + 			ret = iio_read_channel_scale(rescale->source, val, val2);
+      		}
+    + 		return rescale_process_scale(rescale, ret, val, val2);
+     +	case IIO_CHAN_INFO_OFFSET:
+     +		/*
+     +		 * Processed channels are scaled 1-to-1 and source offset is
+    @@ drivers/iio/afe/iio-rescale.c: static int rescale_read_raw(struct iio_dev *indio
+     +		}
+     +
+     +		ret = iio_read_channel_scale(rescale->source, &scale, &scale2);
+    -+		switch (ret) {
+    -+		case IIO_VAL_FRACTIONAL:
+    -+			tmp = (s64)rescale->offset * scale2;
+    -+			*val = div_s64(tmp, scale) + schan_off;
+    -+			return IIO_VAL_INT;
+    -+		case IIO_VAL_INT:
+    -+			*val = div_s64(rescale->offset, scale) + schan_off;
+    -+			return IIO_VAL_INT;
+    -+		case IIO_VAL_FRACTIONAL_LOG2:
+    -+			tmp = (s64)rescale->offset * (1 << scale2);
+    -+			*val = div_s64(tmp, scale) + schan_off;
+    -+			return IIO_VAL_INT;
+    -+		case IIO_VAL_INT_PLUS_NANO:
+    -+			tmp = (s64)rescale->offset * 1000000000UL;
+    -+			tmp2 = ((s64)scale * 1000000000UL) + scale2;
+    -+			*val = div_s64(tmp, tmp2) + schan_off;
+    -+			return IIO_VAL_INT;
+    -+		case IIO_VAL_INT_PLUS_MICRO:
+    -+			tmp = (s64)rescale->offset * 1000000UL;
+    -+			tmp2 = ((s64)scale * 1000000UL) + scale2;
+    -+			*val = div_s64(tmp, tmp2) + schan_off;
+    -+			return IIO_VAL_INT;
+    -+		default:
+    -+			dev_err(&indio_dev->dev, "unsupported type %d\n", ret);
+    -+			return -EOPNOTSUPP;
+    -+		}
+    ++		return rescale_process_offset(rescale, ret, scale, scale2,
+    ++					      schan_off, val, val2);
+      	default:
+      		return -EINVAL;
+      	}
+    @@ drivers/iio/afe/iio-rescale.c: static int rescale_configure_channel(struct devic
+      		BIT(IIO_CHAN_INFO_SCALE);
+      
+     +	if (rescale->offset)
+    -+	    chan->info_mask_separate |= BIT(IIO_CHAN_INFO_OFFSET);
+    ++		chan->info_mask_separate |= BIT(IIO_CHAN_INFO_OFFSET);
+     +
+      	/*
+      	 * Using .read_avail() is fringe to begin with and makes no sense
+    @@ drivers/iio/afe/iio-rescale.c: static int rescale_probe(struct platform_device *
+      
+      	ret = rescale->cfg->props(dev, rescale);
+      	if (ret)
+    +
+    + ## include/linux/iio/afe/rescale.h ##
+    +@@ include/linux/iio/afe/rescale.h: struct rescale {
+    + 	bool chan_processed;
+    + 	s32 numerator;
+    + 	s32 denominator;
+    ++	s32 offset;
+    + };
+    + 
+    + int rescale_process_scale(struct rescale *rescale, int scale_type,
+    + 			  int *val, int *val2);
+    ++int rescale_process_offset(struct rescale *rescale, int scale_type,
+    ++			   int scale, int scale2, int schan_off,
+    ++			   int *val, int *val2);
+    + #endif /* __IIO_RESCALE_H__ */
+ -:  ------------ >  7:  60bd09555300 iio: test: add basic tests for the iio-rescale driver
+ -:  ------------ >  8:  f2f4af324d5d iio: afe: rescale: reduce risk of integer overflow
+ -:  ------------ >  9:  4a8d77501f32 iio: afe: rescale: fix precision on fractional log scale
+ 4:  4e6117b9c663 = 10:  2b6e4f47c974 iio: afe: rescale: add RTD temperature sensor support
+ 5:  bc647d45e293 = 11:  715e1877e30f iio: afe: rescale: add temperature transducers
+ 6:  570b418eed85 ! 12:  0bc8546f13e5 dt-bindings: iio: afe: add bindings for temperature-sense-rtd
+    @@ Documentation/devicetree/bindings/iio/afe/temperature-sense-rtd.yaml (new)
+     +title: Temperature Sense RTD
+     +
+     +maintainers:
+    -+  - Liam Beguin <lvb@xiphos.com>
+    ++  - Liam Beguin <liambeguin@gmail.com>
+     +
+     +description: |
+     +  RTDs (Resistance Temperature Detectors) are a kind of temperature sensors
+ 7:  3c44ea89754e ! 13:  4bc54afa3e94 dt-bindings: iio: afe: add bindings for temperature transducers
+    @@ Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml (new)
+     +title: Temperature Transducer
+     +
+     +maintainers:
+    -+  - Liam Beguin <lvb@xiphos.com>
+    ++  - Liam Beguin <liambeguin@gmail.com>
+     +
+     +description: |
+     +  A temperature transducer is a device that converts a thermal quantity
+
+base-commit: 6cbb3aa0f9d5d23221df787cf36f74d3866fdb78
+-- 
+2.30.1.489.g328c10930387
+

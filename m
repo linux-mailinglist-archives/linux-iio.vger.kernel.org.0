@@ -2,183 +2,262 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 99EAF3CFD01
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Jul 2021 17:07:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A1463D061A
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Jul 2021 02:18:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240053AbhGTO04 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 20 Jul 2021 10:26:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50872 "EHLO
+        id S230443AbhGTXb0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 20 Jul 2021 19:31:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240355AbhGTOZh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 20 Jul 2021 10:25:37 -0400
-Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66297C0613DB;
-        Tue, 20 Jul 2021 08:05:03 -0700 (PDT)
-Received: by mail-pg1-x52c.google.com with SMTP id 70so19394904pgh.2;
-        Tue, 20 Jul 2021 08:05:03 -0700 (PDT)
+        with ESMTP id S229669AbhGTXbV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 20 Jul 2021 19:31:21 -0400
+Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49CA0C061762
+        for <linux-iio@vger.kernel.org>; Tue, 20 Jul 2021 17:11:58 -0700 (PDT)
+Received: by mail-il1-x12d.google.com with SMTP id e13so874166ilc.1
+        for <linux-iio@vger.kernel.org>; Tue, 20 Jul 2021 17:11:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=usp.br; s=usp-google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=zTofV/w1u1zqupSScBuDhwvPxpe9jLm+00fbYmuCH3I=;
-        b=GsFhBOqy9i4opw8UehrI3XO5G0++mxG4jRYDN213tAqPDMsuYvPxBTePL0iVdWHfmj
-         uD9n4nJxap58kYBy/foqqlQOf5Tz+6z4y9Tj7YsZe2q0lfro5dmCgjmbbd7pIWJFX3WX
-         EYGdpBfxZ2ztwDpx93YbF10KhIEAGeRFxhUJ/IJ7NqDlG2Y2//xnNcXwAtUMqkgB5Aml
-         h0rbJxDJppi4NEIfckMcm06PsJucuyaHNbZGm5KSk980ouGNrerRPX8/x0iMR9Ry+084
-         95BK5pyI7GqlUjxMTzAhNSBPCqLAvNzPrnNV8DhW+eJ5/2fBuNesrx8PoCa2fL+ohiA7
-         XFWg==
+         :cc:content-transfer-encoding;
+        bh=yft8d0QKQYEK6jK1cRdXCSL3/Fc2IYBV0nFOZMJwK8M=;
+        b=mth2Xcw77G1fhqx5Z6yTnexgH++YcdpJkPxVeLiB2HaUCwihpVQJL+0e6ziFZcp7Tw
+         xmxbsdUrG9lXyAVamXp7i8cZEKGjKX7lN7k1Jx1k4J665LG1ubyclJC0mYyjEBvXU9Og
+         xqKC7bfhgl3yn3BRVZI8Mtj3crBqgU8g9pQnkIfCjiX6cWm3ZX4pR1vtF/P+t7EJw52R
+         Xw+14ovmIQyxfeLan2f5M5FB1JvoGt75i31qbLDbKz+KVCwjkMvWplYaeI/OpUAO8mvV
+         f1P50ps+izwc7xOgdbitpz5AyoqLAWaxFfpoWB+5n/GoGtrWXrEOCR6Vob/X4ddRqrX1
+         ZKCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zTofV/w1u1zqupSScBuDhwvPxpe9jLm+00fbYmuCH3I=;
-        b=QAtSXwuhrQ/L+BGy5c7LvL3cnPslO+2arHIKGWdc1Wyk+M6z1EdMkXXQauM/6UF2sT
-         vCthcMf8wZIU5Kq/GDWU3Z/0WiKzduv0d7G2cvwPIZBcClqNaxq+DV4SK8TEPVmLgau+
-         lVDmy7MChvJl0FsTJ16jQi/ef22fyk2U/42agoQVBX5ndk49gA7jn5nENOxfFvSPzRC0
-         SNLuBMyAlsXjNEZdaCpG2DqGBGSb2T0ljC5n60ebQkRYqBhsrmoa1cW7xpJ9biRB1IFR
-         6iTHlP3VyBBKDbOZX9DYjkF5Y4aDlkIsQbX5HLaRSWUI7ud9+4VP4YrYAGdqEwDm4OED
-         3HgQ==
-X-Gm-Message-State: AOAM533zEZs8b3+1PIlxi+mW8splOLr8dzwVJw+fZK6IEbnaqmbDrCyU
-        KNjuUcgzvPEWzrjrnX3B1cRQtHq20B6wFTEeYqE=
-X-Google-Smtp-Source: ABdhPJz4qPpoabdtDqQ1TSajcom54g6DSdMpm36JCONeSFjYE34GJyBTw0onY4q4xSWU60EhLjXJOfnYvTHz9/AvsoM=
-X-Received: by 2002:aa7:800b:0:b029:330:455f:57a8 with SMTP id
- j11-20020aa7800b0000b0290330455f57a8mr31307813pfi.7.1626793502828; Tue, 20
- Jul 2021 08:05:02 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=yft8d0QKQYEK6jK1cRdXCSL3/Fc2IYBV0nFOZMJwK8M=;
+        b=hLl3OIzanYdntJAgFOaDslQLXw7lAdmW35KrG6bxx0+UK4gPqdWI46tlSiTK8AOCiQ
+         4xel+/GDHNJZZSHnN3aKQXLaFrr3VA6sgaRcZCr74WhLzjjg8fSm7jH1MOk8Nz24FX09
+         jPTuITOrBYuJCvXzszUfKcPkb9Jbr/o4J8uO/QVvTkGv9uEflPWatiOyJLQCDZZA4Wvk
+         khoijU2cEf8UKXOI5CBcsGvPkvOMhHLmUbC6Qx4DZ8nNETUmfFOK9T06Cntq+sMEQlaC
+         Avx4V6juYuxM8yV7H5uNL2PjKm8mYZIsEHhxHSxaVot7i4HxUXonObyInzeMsdUvNcA1
+         lsLw==
+X-Gm-Message-State: AOAM5302CwMy19m1bQKmaQk5I1LcXnUqweZjDvAZYPG/+QkGmOxgXZMl
+        0Sd1WM6dQN/Kl1Fu5/Gbh0FYXLXssW2o7LBTbGc0rA==
+X-Google-Smtp-Source: ABdhPJxmLFhbRjnHDW9ZI2SSVXvHthrv4IHNOWF1JoW9PbC0D0Zo0xPkJ0Fn08z2T4wW3SPJNsv+X+G8pJ0uoiDYSsY=
+X-Received: by 2002:a05:6e02:d41:: with SMTP id h1mr21391622ilj.191.1626826317665;
+ Tue, 20 Jul 2021 17:11:57 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210719112156.27087-1-stephan@gerhold.net> <20210719112156.27087-4-stephan@gerhold.net>
- <CACRpkdYNqi0EDrtC3j=cu5cp17sEJ6_nf2KRn-hxCxgbTGhgXw@mail.gmail.com>
- <CAHp75VcsVFO2Oizpyeh53MNt2v9yD81vXp1xKCVX-U4zb-KTdg@mail.gmail.com>
- <YPWV537oN3gDpAQS@gerhold.net> <CAHp75Vdjotgi9RrmKQC4J_QQSYdRWwp+-8aHGkChx6VFLPDh-Q@mail.gmail.com>
- <YPW1xGtLyLNGKqjJ@gerhold.net> <CAHp75VcZDSL5u2bP_ZFySmk7cPkHRycyA-+gMqSVWCpgFXhn7Q@mail.gmail.com>
- <YPXGQxPPID1SHOUO@gerhold.net>
-In-Reply-To: <YPXGQxPPID1SHOUO@gerhold.net>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 20 Jul 2021 18:04:22 +0300
-Message-ID: <CAHp75Vf56+HpeGcdet61eeQyQfwFKx8x7vEc_G9NXStYy5Gsyw@mail.gmail.com>
-Subject: Re: [PATCH 3/4] iio: accel: bmc150: Make it possible to configure
- INT2 instead of INT1
-To:     Stephan Gerhold <stephan@gerhold.net>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+References: <20210718203746.7159-1-theobf@usp.br> <CA+U=DspWmrWWsQDFPLycS2y-=8Q7TSn5NYMVgbQ42FccAy0=pw@mail.gmail.com>
+ <CAD5vTa8gnQpZ8B4KQkA=-6Oo-YiN4J7pDp0HoUZgpHN99vJK_g@mail.gmail.com> <CA+U=DsrU5iPBRexdUK3fx-PG3CbSoKouGWENVLJ5+h8L5-y_Og@mail.gmail.com>
+In-Reply-To: <CA+U=DsrU5iPBRexdUK3fx-PG3CbSoKouGWENVLJ5+h8L5-y_Og@mail.gmail.com>
+From:   =?UTF-8?Q?Th=C3=A9o_Bor=C3=A9m_Fabris?= <theobf@usp.br>
+Date:   Tue, 20 Jul 2021 21:11:20 -0300
+Message-ID: <CAD5vTa_cR0da4qZ2JTB7G-QgZrSeZr3e8fp92S6WGMaCoUr15g@mail.gmail.com>
+Subject: Re: [PATCH] iio: dac: max5821: convert device register to device
+ managed function
+To:     Alexandru Ardelean <ardeleanalex@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
         linux-iio <linux-iio@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS
-        <devicetree@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>, Andy
-        Shevchenko <andy.shevchenko@gmail.com>," 
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        Nikita Travkin <nikita@trvn.ru>
+        LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jul 19, 2021 at 9:37 PM Stephan Gerhold <stephan@gerhold.net> wrote:
-> On Mon, Jul 19, 2021 at 09:05:48PM +0300, Andy Shevchenko wrote:
-> > On Mon, Jul 19, 2021 at 8:29 PM Stephan Gerhold <stephan@gerhold.net> wrote:
-> > > On Mon, Jul 19, 2021 at 07:19:05PM +0300, Andy Shevchenko wrote:
-> > > > On Mon, Jul 19, 2021 at 6:11 PM Stephan Gerhold <stephan@gerhold.net> wrote:
-> > > > > On Mon, Jul 19, 2021 at 06:01:01PM +0300, Andy Shevchenko wrote:
-> > > > > > On Mon, Jul 19, 2021 at 5:07 PM Linus Walleij <linus.walleij@linaro.org> wrote:
-> > > > > > > On Mon, Jul 19, 2021 at 1:26 PM Stephan Gerhold <stephan@gerhold.net> wrote:
-
-...
-
-> > > > > > > > +       irq_info = bmc150_accel_interrupts_int1;
-> > > > > > > > +       if (irq == of_irq_get_byname(dev->of_node, "INT2"))
-> > > > > > > > +               irq_info = bmc150_accel_interrupts_int2;
-> > > > > > >
-> > > > > > > This looks a bit DT-specific, but I don't see that ACPI has
-> > > > > > > named IRQs so I don't know what to do about it either.
-> > > > > >
-> > > > > > Yeah, we only have so far the (de facto) established way of naming
-> > > > > > GPIO based IRQs, and not IOxAPIC ones.
-> > > > > >
-> > > > > > > What does platform_get_irq_byname() do on ACPI systems?
-> > > > > >
-> > > > > > See above.
-> > > > > >
-> > > > > > > If there is no obvious fix I would leave it like this until the
-> > > > > > > first ACPI used needing this comes along, but I think maybe
-> > > > > > > Andy has suggestions.
-> > > > > >
-> > > > > > The platform_get_irq_byname() should do something similar that has
-> > > > > > been done in platform_get_irq() WRT ACPI.
-> > > > > > Here for sure the platform_get_irq_byname() or its optional variant
-> > > > > > should be used.
-> > > > >
-> > > > > I don't think there is a platform device here, we only have the
-> > > > > i2c_client or spi_device. That's why I didn't use
-> > > > > platform_get_irq_byname(). :)
-> > > > >
-> > > > > Is there something equivalent for I2C/SPI drivers?
-> > > >
-> > > > Not yet. You probably need to supply some code there to allow
-> > > > multi-IRQ devices (in resource provider agnostic way).
-> > > >
-> > > > You need to provide fwnode_get_irq_byname() to be similar with
-> > > > https://elixir.bootlin.com/linux/latest/source/drivers/base/property.c#L1010
-> > > >
-> > > > Then use it in the drivers.
-> > > >
-> > > > And/or integrate into frameworks somehow (something in between the
-> > > > lines: https://elixir.bootlin.com/linux/latest/source/drivers/i2c/i2c-core-base.c#L461).
-> > > >
-> > >
-> > > Well, I don't think anyone has an ACPI use case for this right now so
-> > > it's probably better if this is done by someone who actually needs this
-> > > and can test it somewhere. :)
-> > >
-> > > I actually just "copied" this approach from some other IIO drivers where
-> > > this is done similarly (and additionally checked the source code to make
-> > > sure this won't break anything for ACPI platforms).
-> >
-> > I see in today's Linux Next snapshot:
-> >
-> > drivers/iio/accel/fxls8962af-core.c:774:        irq =
-> > of_irq_get_byname(of_node, "INT2");
-> > drivers/iio/accel/mma8452.c:1616:               irq2 =
-> > of_irq_get_byname(client->dev.of_node, "INT2");
-> > drivers/iio/gyro/fxas21002c_core.c:834: irq1 = of_irq_get_byname(np, "INT1");
-> > drivers/iio/imu/adis16480.c:1265:               irq =
-> > of_irq_get_byname(of_node, adis16480_int_pin_names[i]);
-> > drivers/iio/imu/bmi160/bmi160_core.c:655:       irq =
-> > of_irq_get_byname(of_node, "INT1");
-> > drivers/iio/imu/bmi160/bmi160_core.c:661:       irq =
-> > of_irq_get_byname(of_node, "INT2");
-> >
-> > I believe we may stop distributing this and actually start using a
-> > common API. I don't want this to be spread again over all IIO. Btw, I
-> > have LSM9DS0, which supports two INT pins for IMU and currently it
-> > uses hard coded pin mapping.
-> >
+Em ter., 20 de jul. de 2021 =C3=A0s 04:22, Alexandru Ardelean
+<ardeleanalex@gmail.com> escreveu:
 >
-> Hm, I'm not quite sure how to implement this. Could you prepare a patch
-> that would implement such a common API? I would be happy to test it for
-> the device tree and make use of it in this patch.
+> On Mon, Jul 19, 2021 at 6:25 PM Th=C3=A9o Bor=C3=A9m Fabris <theobf@usp.b=
+r> wrote:
+> >
+> > Hi, Alexandru.
+> >
+> > Em seg., 19 de jul. de 2021 =C3=A0s 04:33, Alexandru Ardelean
+> > <ardeleanalex@gmail.com> escreveu:
+> > >
+> > > On Sun, Jul 18, 2021 at 11:42 PM Th=C3=A9o Bor=C3=A9m Fabris <theobf@=
+usp.br> wrote:
+> > > >
+> > > > Add a device managed hook, via devm_add_action_or_reset() and
+> > > > max5821_regulator_disable(), to disable voltage regulator on device
+> > > > detach.
+> > > > Replace iio_device_register() by devm_iio_device_register() and rem=
+ove
+> > > > the max5821_remove() function used to unregister the device and dis=
+able the
+> > > > voltage regulator.
+> > > > Remove i2c_set_clientdata() from the probe function, since
+> > > > i2c_get_clientdata() is not used anymore.
+> > >
+> > > Looks good overall.
+> > > A few comments inline.
+> > >
+> > > >
+> > > > Signed-off-by: Th=C3=A9o Bor=C3=A9m Fabris <theobf@usp.br>
+> > > > ---
+> > > >  drivers/iio/dac/max5821.c | 30 ++++++++++++++++--------------
+> > > >  1 file changed, 16 insertions(+), 14 deletions(-)
+> > > >
+> > > > diff --git a/drivers/iio/dac/max5821.c b/drivers/iio/dac/max5821.c
+> > > > index bd6e75699a63..44c04ae70b32 100644
+> > > > --- a/drivers/iio/dac/max5821.c
+> > > > +++ b/drivers/iio/dac/max5821.c
+> > > > @@ -294,6 +294,13 @@ static const struct iio_info max5821_info =3D =
+{
+> > > >         .write_raw =3D max5821_write_raw,
+> > > >  };
+> > > >
+> > > > +static void max5821_regulator_disable(void *data)
+> > > > +{
+> > > > +       struct regulator *rdata =3D data;
+> > > > +
+> > > > +       regulator_disable(rdata);
+> > >
+> > > This can be simplified a bit:
+> > >
+> > > static void max5821_regulator_disable(void *reg)
+> > > {
+> > >       regulator_disable(reg);
+> > > }
+> > >
+> > > I used to do explicit casting, but then I also figured that it's not =
+necessary.
+> > >
+> > Ok.
+> >
+> > > > +}
+> > > > +
+> > > >  static int max5821_probe(struct i2c_client *client,
+> > > >                         const struct i2c_device_id *id)
+> > > >  {
+> > > > @@ -306,7 +313,6 @@ static int max5821_probe(struct i2c_client *cli=
+ent,
+> > > >         if (!indio_dev)
+> > > >                 return -ENOMEM;
+> > > >         data =3D iio_priv(indio_dev);
+> > > > -       i2c_set_clientdata(client, indio_dev);
+> > > >         data->client =3D client;
+> > > >         mutex_init(&data->lock);
+> > > >
+> > > > @@ -331,6 +337,14 @@ static int max5821_probe(struct i2c_client *cl=
+ient,
+> > > >                 goto error_free_reg;
+> > > >         }
+> > > >
+> > > > +       ret =3D devm_add_action_or_reset(&client->dev, max5821_regu=
+lator_disable,
+> > > > +                                      data->vref_reg);
+> > > > +       if (ret) {
+> > > > +               dev_err(&client->dev,
+> > > > +                       "Failed to add action to managed regulator:=
+ %d\n", ret);
+> > > > +               goto error_disable_reg;
+> > >
+> > > return ret;
+> > >
+> > > devm_add_action_or_reset() should call max5821_regulator_disable() in
+> > > case of error
+> > >
+> > Ok.
+> >
+> > > > +       }
+> > > > +
+> > > >         ret =3D regulator_get_voltage(data->vref_reg);
+> > > >         if (ret < 0) {
+> > > >                 dev_err(&client->dev,
+> > > > @@ -346,7 +360,7 @@ static int max5821_probe(struct i2c_client *cli=
+ent,
+> > > >         indio_dev->modes =3D INDIO_DIRECT_MODE;
+> > > >         indio_dev->info =3D &max5821_info;
+> > > >
+> > > > -       return iio_device_register(indio_dev);
+> > > > +       return devm_iio_device_register(&client->dev, indio_dev);
+> > > >
+> > > >  error_disable_reg:
+> > >
+> > > This entire goto block should be removed.
+> > > The idea of using only devm_ functions is to not have these goto stat=
+ements.
+> > >
+> > I thought the action added via devm_add_action (and devres_add) was cal=
+led only
+> > on driver detach, thus the error_disable_reg label would be necessary
+> > to handle the
+>
+> devm_add_action() yes
+> this is devm_add_action_or_reset() which looks like this:
+>
+> static inline int devm_add_action_or_reset(struct device *dev,
+>                        void (*action)(void *), void *data)
+> {
+>     int ret;
+>
+>     ret =3D devm_add_action(dev, action, data);
+>     if (ret)
+>         action(data);
+>
+>     return ret;
+> }
+>
+> it can be found in "include/linux/device.h"
+>
+> > possible error on regulator_get_voltage. Could you please clarify for
+> > me when does
+> > a driver detach happen?
+>
+> a driver detach happens when:
+> * the kmod is unloaded (assuming the driver is running as a kmod)
+> * manually unbinding the driver from sysfs ;
+>    a quick article about this [it's for USB, but other interfaces use
+>    the same mechanism]:
+>    https://lwn.net/Articles/143397/
+>    there should be something under /sys/bus/spi/drivers/xxxx/unbind
+> * when the system powers down (reboots)
+> * maybe there is some other new method to do this [that I don't know abou=
+t]
+>
+Thank you so much.
 
-Unfortunately I have no time to fulfil the required process. The idea
-in general is like this:
+So, should this goto error_disable_reg be replaced by
+"regulator_disable(.); return ret;"?
+ret =3D regulator_get_voltage(data->vref_reg);
+    if (ret < 0) {
+        dev_err(&client->dev,
+             "Failed to get voltage on regulator: %d\n", ret);
+        goto error_disable_reg;
+    }
 
-if (is_of_node(...))
-  return of_irq_get_byname(...);
-if (is_acpi_node(...))
-  return acpi_gpio_irq_get_byname(...);
-
-Everything else is quite similar to fwnode_irq_get().
-
-> To be honest, I mainly implemented support for the interrupt-names
-> because Jonathan mentioned this would be nice to have [1] and it kind of
-> fit well together with the BMC156 patch that needs the INT2 support.
-> I actually just use the if (data->type == BOSCH_BMC156) part from
-> PATCH 4/4 which does not depend on of_irq_get_byname().
-
-Then I leave it to Jonathan and other maintainers.
-
-> [1]: https://lore.kernel.org/linux-iio/20210611185941.3487efc6@jic23-huawei/
-
--- 
-With Best Regards,
-Andy Shevchenko
+> >
+> > Thanks for your reply,
+> > Th=C3=A9o
+> >
+> > > >         regulator_disable(data->vref_reg);
+> > > > @@ -356,17 +370,6 @@ static int max5821_probe(struct i2c_client *cl=
+ient,
+> > > >         return ret;
+> > > >  }
+> > > >
+> > > > -static int max5821_remove(struct i2c_client *client)
+> > > > -{
+> > > > -       struct iio_dev *indio_dev =3D i2c_get_clientdata(client);
+> > > > -       struct max5821_data *data =3D iio_priv(indio_dev);
+> > > > -
+> > > > -       iio_device_unregister(indio_dev);
+> > > > -       regulator_disable(data->vref_reg);
+> > > > -
+> > > > -       return 0;
+> > > > -}
+> > > > -
+> > > >  static const struct i2c_device_id max5821_id[] =3D {
+> > > >         { "max5821", ID_MAX5821 },
+> > > >         { }
+> > > > @@ -386,7 +389,6 @@ static struct i2c_driver max5821_driver =3D {
+> > > >                 .pm     =3D &max5821_pm_ops,
+> > > >         },
+> > > >         .probe          =3D max5821_probe,
+> > > > -       .remove         =3D max5821_remove,
+> > > >         .id_table       =3D max5821_id,
+> > > >  };
+> > > >  module_i2c_driver(max5821_driver);
+> > > > --
+> > > > 2.20.1
+> > > >

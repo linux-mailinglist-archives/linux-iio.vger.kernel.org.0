@@ -2,93 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DF2F3D0CB7
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Jul 2021 13:09:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C8523D0CB9
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Jul 2021 13:09:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236712AbhGUJmV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 21 Jul 2021 05:42:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49540 "EHLO
+        id S231513AbhGUJmu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 21 Jul 2021 05:42:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238308AbhGUJMN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Jul 2021 05:12:13 -0400
-Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DB03C061574;
-        Wed, 21 Jul 2021 02:52:49 -0700 (PDT)
-Received: by mail-pg1-x52e.google.com with SMTP id i16so1348625pgi.9;
-        Wed, 21 Jul 2021 02:52:49 -0700 (PDT)
+        with ESMTP id S238317AbhGUJMU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Jul 2021 05:12:20 -0400
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87CFDC061762;
+        Wed, 21 Jul 2021 02:52:54 -0700 (PDT)
+Received: by mail-pj1-x1036.google.com with SMTP id g4-20020a17090ace84b029017554809f35so3666288pju.5;
+        Wed, 21 Jul 2021 02:52:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=m5gsUR2mP3O9xT2/PcV4HGNhJL6LNwgEDQIptmERAuY=;
-        b=mOgrtE9V0DrntKqst88F3+cIf+ojlrpv/wdXdfOHionBIbsDX51AgILMqfxHovuOmN
-         T8YxfXqO8/03M+LNrExayili3a8Yb1fU4oPKK9GBZ4Ich25nj0J46khgdep7GMNhn9Rl
-         jocniO9rJa2NCCLiZ6nJhS3CT9Vf/4Fd88oKYb5Q1ifLzIsckf9rYD2DBESuHnhOGJYZ
-         nmzeA4fuPTkrL/7VXTj4VTN5liKYUjgEe9rXAeFC2I1dcNjHXs9OQEO1QlV9XQlyPdrP
-         PqpXI8YvawFNXghhTBjvgvu3TIcG3QGj7NMfHM1nG5G5A0UdQulXrPoqFzhKHAYi9jMT
-         O4+w==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=E9H+LL07oPc0V9kmYs1nYHJkaHFr4pSCnkaHn51r1wo=;
+        b=XeggZt3LI6Rc3UlP1xo/yba/R0uYYWe4GxQ0UZUGqkcrlFgnI0UWFpulN9W1jSfkV5
+         kLdsMidSKl3pGNEzrP3Up1jFFfX8U0ifn2HwmMK/9GWWcqPaOC/5FOQMfgRuKYz63Nu0
+         RJzNRofh9Ci0RK0nOh/OLVo1m5aoZPLags0TChmYlCJyvBDE2Gr8JJ+ciOwokj2kFMIo
+         hWTx+8k4nuKFLISLj7qx/U4eRrDIuO347lUq28tSG73NJ6UlddwYZw+F+j5vIjXqKQbi
+         U7A0rCdrYiWnBWGXb/FNgoacXsI9pAE/5zrd7nfKvs5DVgI+ZbtlreJJKkO01BqT5v65
+         1PqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=m5gsUR2mP3O9xT2/PcV4HGNhJL6LNwgEDQIptmERAuY=;
-        b=QtyHhxcWU6Kb00wt8Dt2bftYDVsbBRyzjL8Fqkc3POCzkbcUq/onUmrL9Mg2Tg4OeQ
-         fMQMw4ycPOiLqhgYNTqmdeGdbV/KyHHCfh0os4xq7xh6bBhFCRBnydfqFfpIy7PaW2Bh
-         LPqPe3920H5f28slWnH0CFjWanCSQLCdi+MHL05lKsZf3OlUtegHNbQHwDE+h2YCjgMI
-         76ea5pDWE/AXCMRDpT9CYRXJJE1Wd3/5DDTrd6PibRHZiV81S5Ujg3NxjwshuSMl7szt
-         IId3uXhdsj4XxoSZZgFji2AL0gjwV8MSE+d41+6gMBFYRrVVMvFaKzudiyHjB8Lawff6
-         w8vA==
-X-Gm-Message-State: AOAM5328znZ0Qf+vVGNmHngZOpl1sSu1TjBTYDGZ6HXPSSDQi3EiODFg
-        zbn7seCVIuE4pi6yZphAHEyYaAJcOY9IpeaM
-X-Google-Smtp-Source: ABdhPJy33MRhyxTudRjyCy9o+ONGqqbqQnM0/K0br9JEIv+5JmqTd7yj/OPNhqOBoi2S6KeT7eDp8A==
-X-Received: by 2002:aa7:83d9:0:b029:2eb:b0ef:2a67 with SMTP id j25-20020aa783d90000b02902ebb0ef2a67mr35792830pfn.1.1626861168904;
-        Wed, 21 Jul 2021 02:52:48 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=E9H+LL07oPc0V9kmYs1nYHJkaHFr4pSCnkaHn51r1wo=;
+        b=cBQ9KKTbXssVehYAIOm2H8k8H/zRY3J4E+kUS3MvnfCoELKEhtuUp88k8UzXiAFBbx
+         BhSvqxsHFQwQ1q+RTekieC8p1XkahJODfQi+Zyw5I2BdqYCjw2hMBiWb/J04AK9Z6CaF
+         QAX09LD12nzpIUMleN0IYOTu7ODcVZKiwnhao290QpehJXbXYhjby9laPoRRSN8pCuH5
+         ysHQg99/S/QjZ8vVYXK1Q/7+BuAzBXoEbueQgRETdJIOxdJucZjCVqNn/MNRCyDS5FrZ
+         pS84kqTzHP88qyouToW0YDMHyAOWPClrH9ZsoI48nZXlbAqpFb/F9ln73RddZxtvVF9d
+         Ox4Q==
+X-Gm-Message-State: AOAM533wmKIlYWVtYgPES91gx6HOwjEfjB8oBeSoOjHx1VCOpdubdSn5
+        K7QXZtvh3yylAU/9b/sB5JE=
+X-Google-Smtp-Source: ABdhPJzpj4cxPtzz8Cg0RO9Pssmzu0ds4zpe1r/CXKMeGT+1DORoWeBQCXkMdsZBZZA1gEOr9IwBnA==
+X-Received: by 2002:a17:90b:10a:: with SMTP id p10mr33845299pjz.189.1626861174098;
+        Wed, 21 Jul 2021 02:52:54 -0700 (PDT)
 Received: from localhost.localdomain ([2409:4055:289:a04e:668d:a877:6739:60c0])
-        by smtp.googlemail.com with ESMTPSA id g18sm25752439pfi.199.2021.07.21.02.52.44
+        by smtp.googlemail.com with ESMTPSA id g18sm25752439pfi.199.2021.07.21.02.52.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Jul 2021 02:52:48 -0700 (PDT)
+        Wed, 21 Jul 2021 02:52:53 -0700 (PDT)
 From:   Puranjay Mohan <puranjay12@gmail.com>
 To:     Michael.Hennerich@analog.com, alexandru.ardelean@analog.com,
         jic23@kernel.org, devicetree@vger.kernel.org,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         lars@metafoo.de, Dragos.Bogdan@analog.com, Darius.Berghe@analog.com
 Cc:     Puranjay Mohan <puranjay12@gmail.com>
-Subject: [PATCH v1 0/2] iio: accel: add support for ADXL355
-Date:   Wed, 21 Jul 2021 15:22:33 +0530
-Message-Id: <20210721095235.218519-1-puranjay12@gmail.com>
+Subject: [PATCH v1 1/2] dt-bindings: iio: accel: Add ADXL355 in trivial-devices
+Date:   Wed, 21 Jul 2021 15:22:34 +0530
+Message-Id: <20210721095235.218519-2-puranjay12@gmail.com>
 X-Mailer: git-send-email 2.30.1
+In-Reply-To: <20210721095235.218519-1-puranjay12@gmail.com>
+References: <20210721095235.218519-1-puranjay12@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add the dt-bindings and the driver for ADXL355 3-axis MEMS Accelerometer.
+Add ADXL355, a 3-Axis MEMS Accelerometer into trivial-devices.yaml.
 
-Changes since v0:
-1. Move adxl355_hpf_3db_table to adxl355_data structure. This is done to make
-sure that each device gets its own table.
-2. Make local regmap definitions private to adxl355_core.c.
-3. Other minor coding style changes.
+Signed-off-by: Puranjay Mohan <puranjay12@gmail.com>
+---
+ Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Puranjay Mohan (2):
-  dt-bindings: iio: accel: Add ADXL355 in trivial-devices
-  iio: accel: Add driver support for ADXL355
-
- .../devicetree/bindings/trivial-devices.yaml  |   2 +
- MAINTAINERS                                   |   7 +
- drivers/iio/accel/Kconfig                     |  29 +
- drivers/iio/accel/Makefile                    |   3 +
- drivers/iio/accel/adxl355.h                   |  83 +++
- drivers/iio/accel/adxl355_core.c              | 541 ++++++++++++++++++
- drivers/iio/accel/adxl355_i2c.c               |  63 ++
- drivers/iio/accel/adxl355_spi.c               |  66 +++
- 8 files changed, 794 insertions(+)
- create mode 100644 drivers/iio/accel/adxl355.h
- create mode 100644 drivers/iio/accel/adxl355_core.c
- create mode 100644 drivers/iio/accel/adxl355_i2c.c
- create mode 100644 drivers/iio/accel/adxl355_spi.c
-
+diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+index 8341e9d23..0097d6e81 100644
+--- a/Documentation/devicetree/bindings/trivial-devices.yaml
++++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+@@ -41,6 +41,8 @@ properties:
+           - adi,adp5589
+             # +/-1C TDM Extended Temp Range I.C
+           - adi,adt7461
++            # ADXL355:- 3-Axis Low noise MEMS Accelerometer.
++          - adi,adxl355
+             # +/-1C TDM Extended Temp Range I.C
+           - adt7461
+             # AMS iAQ-Core VOC Sensor
 -- 
 2.30.1
 

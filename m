@@ -2,86 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BD0623D1684
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Jul 2021 20:42:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FE073D16FA
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Jul 2021 21:18:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237413AbhGUSAM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 21 Jul 2021 14:00:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37852 "EHLO mail.kernel.org"
+        id S232971AbhGUShT convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Wed, 21 Jul 2021 14:37:19 -0400
+Received: from aposti.net ([89.234.176.197]:51626 "EHLO aposti.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230269AbhGUSAL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 21 Jul 2021 14:00:11 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1341F61245;
-        Wed, 21 Jul 2021 18:40:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1626892848;
-        bh=fxLeBTcwtMJIq5IP6YeqeOIxzqsNUv8gWvGoGXAJrbY=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=PuBf9zUl9zaieOwjHvaSL3SVhSvoN7b/TIy7zskis+GdFB+eTVhcUlp+YO856DlQ1
-         xiERYgp1Xwg4YZ4Ces+NGVqkm85uCBlnsynF5qiEr/+SzibE2wktMyGg82uDLyhTXE
-         6CWGZT3YbIrXK3ynRTtPodQnczHPIZupIXt1VaIm+a8oJZfan2c9v7C8B5X/ONNoVV
-         r3tM2dGlUYgeAOfbusiswOarEFKLmRRiooz7K9eCSXVYpJxYKM8FhntzV2QV9EAksc
-         82teJ11dGhgiMOQSl9xLWJMj6OipTHP4BghDfZ0roi1SGSmhExu6oFVqImXPtLse9U
-         dlS/lZaP+rlqw==
-Received: by mail-wm1-f46.google.com with SMTP id u8-20020a7bcb080000b02901e44e9caa2aso1525129wmj.4;
-        Wed, 21 Jul 2021 11:40:47 -0700 (PDT)
-X-Gm-Message-State: AOAM533FHnZaDZ4d542ZTht9lLjQoFOL/79wkoemE7TQ95rPZg1oj328
-        b24IztKAiTlJRT7sf0Sg2ww/QmseuGMuDa8z2XM=
-X-Google-Smtp-Source: ABdhPJyapcX0UTSpkQnyUJxtKZP9YohAvMD132I/yNBSutw/CQX+i9Vgh62dwOdJNBBw/Q6obQMBD9Za3zCC73pL+dc=
-X-Received: by 2002:a1c:c90f:: with SMTP id f15mr5478526wmb.142.1626892846710;
- Wed, 21 Jul 2021 11:40:46 -0700 (PDT)
+        id S232419AbhGUShT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 21 Jul 2021 14:37:19 -0400
+Date:   Wed, 21 Jul 2021 20:17:45 +0100
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH 6/6] dt-bindings: iio/adc: ingenic: add the JZ4760(B) socs
+ to the sadc Documentation
+To:     citral23 <cbranchereau@gmail.com>
+Cc:     jic23@kernel.org, lars@metafoo.de, linux-mips@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        robh+dt@kernel.org, devicetree@vger.kernel.org, linux@roeck-us.net,
+        contact@artur-rojek.eu
+Message-Id: <L90MWQ.K24XQ4Q0L9XN@crapouillou.net>
+In-Reply-To: <20210721105317.36742-7-cbranchereau@gmail.com>
+References: <20210721105317.36742-1-cbranchereau@gmail.com>
+        <20210721105317.36742-7-cbranchereau@gmail.com>
 MIME-Version: 1.0
-References: <20210721151330.2176653-1-arnd@kernel.org> <CAHp75VeWSfBek+m6hQoc6G7wP+JNN-V3S0kfcGBESZLR+6QAxg@mail.gmail.com>
- <CAK8P3a0wU+yAm0X_URFVuM=GragqQnvz2Reto5e09fzqCVrUqQ@mail.gmail.com> <CAHp75VfQLGX4ir8XxMZBMkPaK2SoazJwr3axsk-5p1ok6uf6jg@mail.gmail.com>
-In-Reply-To: <CAHp75VfQLGX4ir8XxMZBMkPaK2SoazJwr3axsk-5p1ok6uf6jg@mail.gmail.com>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Wed, 21 Jul 2021 20:40:30 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a3SMGHvj2cywrPVQchJTmhvwq9ERsPDmV0E0K6zC0St5w@mail.gmail.com>
-Message-ID: <CAK8P3a3SMGHvj2cywrPVQchJTmhvwq9ERsPDmV0E0K6zC0St5w@mail.gmail.com>
-Subject: Re: [PATCH] iio: accel: fxls8962af: fix i2c dependency
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Sean Nyekjaer <sean@geanix.com>, Arnd Bergmann <arnd@arndb.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Tomas Melin <tomas.melin@vaisala.com>,
-        Mike Looijmans <mike.looijmans@topic.nl>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        linux-iio@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jul 21, 2021 at 7:34 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> On Wed, Jul 21, 2021 at 7:12 PM Arnd Bergmann <arnd@kernel.org> wrote:
-> > On Wed, Jul 21, 2021 at 5:52 PM Andy Shevchenko
-> > <andy.shevchenko@gmail.com> wrote:
-> > > On Wed, Jul 21, 2021 at 6:13 PM Arnd Bergmann <arnd@kernel.org> wrote:
->
-> ...
->
-> > > >  config FXLS8962AF
-> > > >         tristate
-> > > > +       depends on I2C || !I2C # cannot be built-in for modular I2C
-> > >
-> > > Can you enlighten me how this will not be a no-op?
-> >
-> > This part does nothing, it only causes a warning when FXLS8962AF
-> > gets selected =y when I2C=m.
->
-> This is something new to me. But shouldn't the other chunk guarantee
-> that warning won't happen?
+Hi Christophe,
 
-Correct, it works without that, but if that fails after something changes,
-this version would provide better diagnostics than the FXLS8962AF
-core driver causing a link failure, and I found it documents better
-why the other driver needs the dependency.
+Please always add a short description in your patches, even if all you 
+do is repeat the patch title.
 
-Let me know if you prefer me to resend the patch without this hunk.
 
-      Arnd
+Le mer., juil. 21 2021 at 12:53:17 +0200, citral23 
+<cbranchereau@gmail.com> a écrit :
+> Signed-off-by: citral23 <cbranchereau@gmail.com>
+> ---
+>  .../devicetree/bindings/iio/adc/ingenic,adc.yaml         | 9 
+> +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git 
+> a/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml 
+> b/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
+> index 433a3fb55a2e..1b423adba61d 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
+> @@ -23,6 +23,8 @@ properties:
+>      enum:
+>        - ingenic,jz4725b-adc
+>        - ingenic,jz4740-adc
+> +      - ingenic,jz4760-adc
+> +      - ingenic,jz4760b-adc
+>        - ingenic,jz4770-adc
+> 
+>    '#io-channel-cells':
+> @@ -43,6 +45,12 @@ properties:
+>    interrupts:
+>      maxItems: 1
+> 
+> +  ingenic,use-internal-divider:
+> +    description:
+> +      This property can be used to set VBAT_SEL in the JZ4760B CFG 
+> register
+> +      to sample the battery voltage from the internal divider. If 
+> absent, it
+> +      will sample the external divider.
+
+Please remove trailing spaces. And you don't need to describe internal 
+behaviour; you only need to explain the functionality in a user-facing 
+perspective. Something like:
+
+"If present, battery voltage is read from the VBAT_IR pin, which has an 
+internal /4 divider. If absent, it is read through the VBAT_ER pin, 
+which does not have such divider."
+
+You also don't specify the type of the property, please add "type: 
+boolean" before the description.
+
+There should also be a way to make sure that this property can only be 
+used with the JZ4760B SoC. So a dependency for this vendor property on 
+the "ingenic,jz4760b-adc" compatible string. But I'm honestly not sure 
+how to express that... Maybe Rob can help.
+
+> +
+>  required:
+>    - compatible
+>    - '#io-channel-cells'
+> @@ -53,6 +61,7 @@ required:
+> 
+>  additionalProperties: false
+> 
+> +
+
+Remove the extra newline.
+
+Cheers,
+-Paul
+
+>  examples:
+>    - |
+>      #include <dt-bindings/clock/jz4740-cgu.h>
+> --
+> 2.30.2
+> 
+
+

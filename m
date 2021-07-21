@@ -2,108 +2,86 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 316403D1661
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Jul 2021 20:30:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD0623D1684
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Jul 2021 20:42:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239099AbhGURsA convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Wed, 21 Jul 2021 13:48:00 -0400
-Received: from aposti.net ([89.234.176.197]:49002 "EHLO aposti.net"
+        id S237413AbhGUSAM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 21 Jul 2021 14:00:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37852 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239078AbhGURsA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 21 Jul 2021 13:48:00 -0400
-Date:   Wed, 21 Jul 2021 19:28:18 +0100
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH 5/6] iio/adc: ingenic: modify
-To:     citral23 <cbranchereau@gmail.com>
-Cc:     jic23@kernel.org, lars@metafoo.de, linux-mips@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        robh+dt@kernel.org, devicetree@vger.kernel.org, linux@roeck-us.net,
-        contact@artur-rojek.eu
-Message-Id: <6ZXLWQ.5R931M3PVWBF2@crapouillou.net>
-In-Reply-To: <20210721105317.36742-6-cbranchereau@gmail.com>
-References: <20210721105317.36742-1-cbranchereau@gmail.com>
-        <20210721105317.36742-6-cbranchereau@gmail.com>
+        id S230269AbhGUSAL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 21 Jul 2021 14:00:11 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1341F61245;
+        Wed, 21 Jul 2021 18:40:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1626892848;
+        bh=fxLeBTcwtMJIq5IP6YeqeOIxzqsNUv8gWvGoGXAJrbY=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=PuBf9zUl9zaieOwjHvaSL3SVhSvoN7b/TIy7zskis+GdFB+eTVhcUlp+YO856DlQ1
+         xiERYgp1Xwg4YZ4Ces+NGVqkm85uCBlnsynF5qiEr/+SzibE2wktMyGg82uDLyhTXE
+         6CWGZT3YbIrXK3ynRTtPodQnczHPIZupIXt1VaIm+a8oJZfan2c9v7C8B5X/ONNoVV
+         r3tM2dGlUYgeAOfbusiswOarEFKLmRRiooz7K9eCSXVYpJxYKM8FhntzV2QV9EAksc
+         82teJ11dGhgiMOQSl9xLWJMj6OipTHP4BghDfZ0roi1SGSmhExu6oFVqImXPtLse9U
+         dlS/lZaP+rlqw==
+Received: by mail-wm1-f46.google.com with SMTP id u8-20020a7bcb080000b02901e44e9caa2aso1525129wmj.4;
+        Wed, 21 Jul 2021 11:40:47 -0700 (PDT)
+X-Gm-Message-State: AOAM533FHnZaDZ4d542ZTht9lLjQoFOL/79wkoemE7TQ95rPZg1oj328
+        b24IztKAiTlJRT7sf0Sg2ww/QmseuGMuDa8z2XM=
+X-Google-Smtp-Source: ABdhPJyapcX0UTSpkQnyUJxtKZP9YohAvMD132I/yNBSutw/CQX+i9Vgh62dwOdJNBBw/Q6obQMBD9Za3zCC73pL+dc=
+X-Received: by 2002:a1c:c90f:: with SMTP id f15mr5478526wmb.142.1626892846710;
+ Wed, 21 Jul 2021 11:40:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Transfer-Encoding: 8BIT
+References: <20210721151330.2176653-1-arnd@kernel.org> <CAHp75VeWSfBek+m6hQoc6G7wP+JNN-V3S0kfcGBESZLR+6QAxg@mail.gmail.com>
+ <CAK8P3a0wU+yAm0X_URFVuM=GragqQnvz2Reto5e09fzqCVrUqQ@mail.gmail.com> <CAHp75VfQLGX4ir8XxMZBMkPaK2SoazJwr3axsk-5p1ok6uf6jg@mail.gmail.com>
+In-Reply-To: <CAHp75VfQLGX4ir8XxMZBMkPaK2SoazJwr3axsk-5p1ok6uf6jg@mail.gmail.com>
+From:   Arnd Bergmann <arnd@kernel.org>
+Date:   Wed, 21 Jul 2021 20:40:30 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a3SMGHvj2cywrPVQchJTmhvwq9ERsPDmV0E0K6zC0St5w@mail.gmail.com>
+Message-ID: <CAK8P3a3SMGHvj2cywrPVQchJTmhvwq9ERsPDmV0E0K6zC0St5w@mail.gmail.com>
+Subject: Re: [PATCH] iio: accel: fxls8962af: fix i2c dependency
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Sean Nyekjaer <sean@geanix.com>, Arnd Bergmann <arnd@arndb.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Tomas Melin <tomas.melin@vaisala.com>,
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        Alexandru Ardelean <aardelean@deviqon.com>,
+        linux-iio@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Christophe,
+On Wed, Jul 21, 2021 at 7:34 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+> On Wed, Jul 21, 2021 at 7:12 PM Arnd Bergmann <arnd@kernel.org> wrote:
+> > On Wed, Jul 21, 2021 at 5:52 PM Andy Shevchenko
+> > <andy.shevchenko@gmail.com> wrote:
+> > > On Wed, Jul 21, 2021 at 6:13 PM Arnd Bergmann <arnd@kernel.org> wrote:
+>
+> ...
+>
+> > > >  config FXLS8962AF
+> > > >         tristate
+> > > > +       depends on I2C || !I2C # cannot be built-in for modular I2C
+> > >
+> > > Can you enlighten me how this will not be a no-op?
+> >
+> > This part does nothing, it only causes a warning when FXLS8962AF
+> > gets selected =y when I2C=m.
+>
+> This is something new to me. But shouldn't the other chunk guarantee
+> that warning won't happen?
 
-Le mer., juil. 21 2021 at 12:53:16 +0200, citral23 
-<cbranchereau@gmail.com> a écrit :
-> The current code does not allow to set MD to 0 to sample AUX0, fix it 
-> for the JZ4760(B).
+Correct, it works without that, but if that fails after something changes,
+this version would provide better diagnostics than the FXLS8962AF
+core driver causing a link failure, and I found it documents better
+why the other driver needs the dependency.
 
-Well, then this should be merged with patch 3, because that means 
-JZ4760 support does not work without it.
+Let me know if you prefer me to resend the patch without this hunk.
 
-Also, concise commit messages are good, but "modify" is a bit too 
-concise ;)
-
-Cheers,
--Paul
-
-> Signed-off-by: citral23 <cbranchereau@gmail.com>
-> ---
->  drivers/iio/adc/ingenic-adc.c | 20 ++++++++++++++++----
->  1 file changed, 16 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ingenic-adc.c 
-> b/drivers/iio/adc/ingenic-adc.c
-> index 618150475421..1edaae439a32 100644
-> --- a/drivers/iio/adc/ingenic-adc.c
-> +++ b/drivers/iio/adc/ingenic-adc.c
-> @@ -632,7 +632,7 @@ static int ingenic_adc_read_chan_info_raw(struct 
-> iio_dev *iio_dev,
->  					  struct iio_chan_spec const *chan,
->  					  int *val)
->  {
-> -	int bit, ret, engine = (chan->channel == INGENIC_ADC_BATTERY);
-> +	int cmd, ret, engine = (chan->channel == INGENIC_ADC_BATTERY);
->  	struct ingenic_adc *adc = iio_priv(iio_dev);
-> 
->  	ret = clk_enable(adc->clk);
-> @@ -642,11 +642,22 @@ static int 
-> ingenic_adc_read_chan_info_raw(struct iio_dev *iio_dev,
->  		return ret;
->  	}
-> 
-> -	/* We cannot sample AUX/AUX2 in parallel. */
-> +	/* We cannot sample the aux channels in parallel. */
->  	mutex_lock(&adc->aux_lock);
->  	if (adc->soc_data->has_aux_md && engine == 0) {
-> -		bit = BIT(chan->channel == INGENIC_ADC_AUX2);
-> -		ingenic_adc_set_config(adc, JZ_ADC_REG_CFG_AUX_MD, bit);
-> +		switch (chan->channel) {
-> +		case INGENIC_ADC_AUX0:
-> +			cmd = 0;
-> +			break;
-> +		case INGENIC_ADC_AUX:
-> +			cmd = 1;
-> +			break;
-> +		case INGENIC_ADC_AUX2:
-> +			cmd = 2;
-> +			break;
-> +		}
-> +
-> +		ingenic_adc_set_config(adc, JZ_ADC_REG_CFG_AUX_MD, cmd);
->  	}
-> 
->  	ret = ingenic_adc_capture(adc, engine);
-> @@ -654,6 +665,7 @@ static int ingenic_adc_read_chan_info_raw(struct 
-> iio_dev *iio_dev,
->  		goto out;
-> 
->  	switch (chan->channel) {
-> +	case INGENIC_ADC_AUX0:
->  	case INGENIC_ADC_AUX:
->  	case INGENIC_ADC_AUX2:
->  		*val = readw(adc->base + JZ_ADC_REG_ADSDAT);
-> --
-> 2.30.2
-> 
-
-
+      Arnd

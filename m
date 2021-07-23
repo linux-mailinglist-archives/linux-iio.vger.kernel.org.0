@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B360E3D372D
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Jul 2021 10:58:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F27F3D3731
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Jul 2021 10:58:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231240AbhGWISE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Jul 2021 04:18:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43652 "EHLO
+        id S233096AbhGWISF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 23 Jul 2021 04:18:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229906AbhGWISD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Jul 2021 04:18:03 -0400
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FC5AC061757;
-        Fri, 23 Jul 2021 01:58:36 -0700 (PDT)
-Received: by mail-wr1-x42d.google.com with SMTP id q3so1597075wrx.0;
-        Fri, 23 Jul 2021 01:58:36 -0700 (PDT)
+        with ESMTP id S230299AbhGWISE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Jul 2021 04:18:04 -0400
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CC6EC061575;
+        Fri, 23 Jul 2021 01:58:37 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id m38-20020a05600c3b26b02902161fccabf1so3062964wms.2;
+        Fri, 23 Jul 2021 01:58:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=TFqPeTJizFnfUZM7Q40k9J0nA9MRhn5b8J6dQsSbkSU=;
-        b=JAWByEhHAkQv/lzD0WR5ne7Ev6FCgoRB56jWgTLjSI69EbqeUFU9vQnE19CibgPPn/
-         ZGny8yVpbkvdZ1wnPwhJ1VDzU6GXogq+6jh2h9UJa57Juv5Tu5GiiALFh4gyWt+VS50W
-         1GstGAvF5HGx4y2hhT5dqQSE8q+qMgmhvcGawTC82D33q/4/kUW2wx2kGKp7BaLqTvKn
-         UyecvklcVBjKQx1IolI6IPRK9TpkCCpShsP7HcWm+nmpyU4A0+az4b85qfNKGuavN/CS
-         1nRCwIbNmBpq6eJJR/4JwGh5dAj9DKzS1VEb3N4cCk+ZR6UTVvoVUB/4XxKXh6nEVMDo
-         HjJw==
+        bh=LOYS6lb1YTBxNzPbGghn1dFCSuBt5y4qx5FjzOqrB2U=;
+        b=OFJp59TijOVSJVGsghbtjcUqq4pOKTeS4befrO0MM/RIEHeFH25xRI14d/88pNsj79
+         qykkx+VoqJ8bUWNxULlvu5Icf+yikKNgfclUDQXUEQea27Hu/Le/yc5T/Fs/XwXLZ59M
+         BZhV1l127Q4NC3Ru/I31CprmpmBI4/benC5Sg7KqGnWLp7fLWqW2E/CTsAfBAi8o1mt8
+         Nzu47NfoAPrcXoKSJWuXFrzg7jo3AH2o+Z1CA4IfDX+321801ODvgyl5K83lv7co9pCc
+         gZr9A0k+rpxCchGsZvoR6ZsTm0dXAWBdeINBUqFu1NodfW1a7eADTw9LFb1gC9FtjkWp
+         fyag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=TFqPeTJizFnfUZM7Q40k9J0nA9MRhn5b8J6dQsSbkSU=;
-        b=BNUAnuApGZ3mlvjZLSrw8e8JJO6De/4CPe0qfY1PeRgEbmBR6LqgNpXyhuvgFB23xo
-         6SOZ70MhKCSan6xkwFE2wQlWqk9EkmcR9QvQ+mfk9bEiLibnsEX6BfyAs+BCW3oXCTVC
-         3fpF7YeWqj8b8DGith92xOPR//wVjg0LBoFPiZg1Szat69uZRLia1OYunx9ZGy5xf0dq
-         t2ZgihChsoXsHosWZQ0CXD19hVH9vcEryfMHu7BhIAmDTht3Nky9SbncKaZp6AggNMa3
-         8Al7d4YjJDgsoQcMY8EIjWJtAK5Ghjm4dgHLrN2GDzH73UMjNtk3fcI1GbS/u8Pk1Iw+
-         gz0Q==
-X-Gm-Message-State: AOAM530dKZ+Rc9Zi2gtDmKdflX/9RXfh3lRsjHgRUsBxpXGhgfXAYIuM
-        j6uPLZ5TP6lDpsSp4wsgLkOt1MQyD+/cmyKs
-X-Google-Smtp-Source: ABdhPJyyNG10iIo8RxseG38jkYxRJLgxywxuij/wB6xqXeJqlercNgez8+i2a+Umjon2bD7TyTFtEQ==
-X-Received: by 2002:a5d:434e:: with SMTP id u14mr4013143wrr.378.1627030715116;
-        Fri, 23 Jul 2021 01:58:35 -0700 (PDT)
+        bh=LOYS6lb1YTBxNzPbGghn1dFCSuBt5y4qx5FjzOqrB2U=;
+        b=WQt6bMFfu8hC4aTLTBbcmNldqbJVj1/tIHkcXwYLDZGRvCG1I5JuPT4p0L0bxo8RF1
+         RA+DzxizPRzZ7/tmkeXa3XmjjD2V4YW8y2A4DbXhsX3dig+W0BcUgYHh8IXQ/syRRLID
+         toC05Y1CfTuA+VA38UJiOJX8NXDbRH8E7YCh3QMrRYjFMvrhIOeQIQIaYzdXrT9wqY9e
+         9lTKf3XpsNXjfqp9uP0J7cpNMTG4L+Um3N6gCABqiKhsVMWGtD4G058bf8+8+06/EI8s
+         W/2614BPUo4iPQZyTZoIxoPaQJGHsCWyj8r5ZwAqUkddkitH2V6KJ9Ad02nKL8NVdQ4S
+         s9vg==
+X-Gm-Message-State: AOAM531770CZJdl7DUM5gqFLBBZa2v0jwyk6pyERyA5mMELXzKFEx3/l
+        EvSq9EPIA1Le2c18VKdf0SE=
+X-Google-Smtp-Source: ABdhPJwCcQarW7pQm5oVvORMkeVo4cevdIlJU6HrkHwuva73EOqS1LppTZdpkmmD+quIANNpfiT5lA==
+X-Received: by 2002:a7b:cd15:: with SMTP id f21mr3535067wmj.148.1627030716031;
+        Fri, 23 Jul 2021 01:58:36 -0700 (PDT)
 Received: from monk.home (astrasbourg-157-1-7-84.w90-40.abo.wanadoo.fr. [90.40.218.84])
-        by smtp.gmail.com with ESMTPSA id l23sm17503607wme.22.2021.07.23.01.58.34
+        by smtp.gmail.com with ESMTPSA id l23sm17503607wme.22.2021.07.23.01.58.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Jul 2021 01:58:34 -0700 (PDT)
+        Fri, 23 Jul 2021 01:58:35 -0700 (PDT)
 From:   Christophe Branchereau <cbranchereau@gmail.com>
 To:     paul@crapouillou.net
 Cc:     jic23@kernel.org, lars@metafoo.de, linux-mips@vger.kernel.org,
@@ -54,9 +54,9 @@ Cc:     jic23@kernel.org, lars@metafoo.de, linux-mips@vger.kernel.org,
         robh+dt@kernel.org, devicetree@vger.kernel.org, linux@roeck-us.net,
         contact@artur-rojek.eu,
         Christophe Branchereau <cbranchereau@gmail.com>
-Subject: [PATCH V2 1/5] iio/adc: ingenic: rename has_aux2 to has_aux_md
-Date:   Fri, 23 Jul 2021 10:58:09 +0200
-Message-Id: <20210723085813.1523934-2-cbranchereau@gmail.com>
+Subject: [PATCH V2 2/5]  dt-bindings: iio/adc: add an INGENIC_ADC_AUX0 entry
+Date:   Fri, 23 Jul 2021 10:58:10 +0200
+Message-Id: <20210723085813.1523934-3-cbranchereau@gmail.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210723085813.1523934-1-cbranchereau@gmail.com>
 References: <893d6165-0f12-d0da-44be-449a4ae96ac2@roeck-us.net>
@@ -67,67 +67,27 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The jz4760(b) socs have 3 aux channels.
+The JZ4760(B) socs have 3 AUX inputs, add an entry to prepare including
+the one named AUX in the sadc driver.
 
-The purpose of has_aux2 is to set the MD bits used to select
-the AUX channel to be sampled, not to describe the hardware.
-
-Rename it to a more appropriate name.
+Leaving the rest untouched as it's ABI.
 
 Signed-off-by: Christophe Branchereau <cbranchereau@gmail.com>
 ---
- drivers/iio/adc/ingenic-adc.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ include/dt-bindings/iio/adc/ingenic,adc.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/iio/adc/ingenic-adc.c b/drivers/iio/adc/ingenic-adc.c
-index 34c03a264f74..40f2d8c2cf72 100644
---- a/drivers/iio/adc/ingenic-adc.c
-+++ b/drivers/iio/adc/ingenic-adc.c
-@@ -92,7 +92,7 @@ struct ingenic_adc_soc_data {
- 	const int *battery_scale_avail;
- 	size_t battery_scale_avail_size;
- 	unsigned int battery_vref_mode: 1;
--	unsigned int has_aux2: 1;
-+	unsigned int has_aux_md: 1;
- 	const struct iio_chan_spec *channels;
- 	unsigned int num_channels;
- 	int (*init_clk_div)(struct device *dev, struct ingenic_adc *adc);
-@@ -506,7 +506,7 @@ static const struct ingenic_adc_soc_data jz4725b_adc_soc_data = {
- 	.battery_scale_avail = jz4725b_adc_battery_scale_avail,
- 	.battery_scale_avail_size = ARRAY_SIZE(jz4725b_adc_battery_scale_avail),
- 	.battery_vref_mode = true,
--	.has_aux2 = false,
-+	.has_aux_md = false,
- 	.channels = jz4740_channels,
- 	.num_channels = ARRAY_SIZE(jz4740_channels),
- 	.init_clk_div = jz4725b_adc_init_clk_div,
-@@ -520,7 +520,7 @@ static const struct ingenic_adc_soc_data jz4740_adc_soc_data = {
- 	.battery_scale_avail = jz4740_adc_battery_scale_avail,
- 	.battery_scale_avail_size = ARRAY_SIZE(jz4740_adc_battery_scale_avail),
- 	.battery_vref_mode = true,
--	.has_aux2 = false,
-+	.has_aux_md = false,
- 	.channels = jz4740_channels,
- 	.num_channels = ARRAY_SIZE(jz4740_channels),
- 	.init_clk_div = NULL, /* no ADCLK register on JZ4740 */
-@@ -534,7 +534,7 @@ static const struct ingenic_adc_soc_data jz4770_adc_soc_data = {
- 	.battery_scale_avail = jz4770_adc_battery_scale_avail,
- 	.battery_scale_avail_size = ARRAY_SIZE(jz4770_adc_battery_scale_avail),
- 	.battery_vref_mode = false,
--	.has_aux2 = true,
-+	.has_aux_md = true,
- 	.channels = jz4770_channels,
- 	.num_channels = ARRAY_SIZE(jz4770_channels),
- 	.init_clk_div = jz4770_adc_init_clk_div,
-@@ -581,7 +581,7 @@ static int ingenic_adc_read_chan_info_raw(struct iio_dev *iio_dev,
+diff --git a/include/dt-bindings/iio/adc/ingenic,adc.h b/include/dt-bindings/iio/adc/ingenic,adc.h
+index 4627a00e369e..a6ccc031635b 100644
+--- a/include/dt-bindings/iio/adc/ingenic,adc.h
++++ b/include/dt-bindings/iio/adc/ingenic,adc.h
+@@ -13,5 +13,6 @@
+ #define INGENIC_ADC_TOUCH_YN	6
+ #define INGENIC_ADC_TOUCH_XD	7
+ #define INGENIC_ADC_TOUCH_YD	8
++#define INGENIC_ADC_AUX0	9
  
- 	/* We cannot sample AUX/AUX2 in parallel. */
- 	mutex_lock(&adc->aux_lock);
--	if (adc->soc_data->has_aux2 && engine == 0) {
-+	if (adc->soc_data->has_aux_md && engine == 0) {
- 		bit = BIT(chan->channel == INGENIC_ADC_AUX2);
- 		ingenic_adc_set_config(adc, JZ_ADC_REG_CFG_AUX_MD, bit);
- 	}
+ #endif
 -- 
 2.30.2
 

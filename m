@@ -2,87 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9795D3D3F1E
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Jul 2021 19:48:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F8FB3D4049
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Jul 2021 20:31:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230172AbhGWRH0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Jul 2021 13:07:26 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49674 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230098AbhGWRHZ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 23 Jul 2021 13:07:25 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 38CD660EFD;
-        Fri, 23 Jul 2021 17:47:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1627062478;
-        bh=wAsX2Nk+nTgle1kPTUQiq6x5TqfTNwwyAmYsvPzwE04=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=BDEQH6Bsm11H6Hc13n07saNw1FLi/zd00LorhzeUQdBEmBaLMk74maF3DPOsHYQNV
-         r+5qo+rs18oU7qUOkCCRq0uY6UvHzqsu+Os/qyhLaYPKC4jwOf0rm4oChUYhDgOwCA
-         WwWhMllOzR5tHwCJbAUbz2kVxkVi3b0zxGwCMYlblqUqQWIgE5waU/wH7CFgPky1l5
-         07FVh0zdqgS4DowpOI24zZUGErIwHnnIunyY6DHIWXFwVHa1JiQgLRVKGXnb7lVBJb
-         k2DuZOGAKPgrYLdKoAiCcD1pht4ac+xaEmqnjUQqSB3MJ0fnSbrPg0xvCFpfD34xfq
-         5wunHoDJtxXUg==
-Date:   Fri, 23 Jul 2021 18:47:51 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     Puranjay Mohan <puranjay12@gmail.com>,
-        Michael.Hennerich@analog.com, alexandru.ardelean@analog.com,
-        jic23@kernel.org, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        lars@metafoo.de, Dragos.Bogdan@analog.com, Darius.Berghe@analog.com
-Subject: Re: [PATCH v2 2/2] iio: accel: Add driver support for ADXL355
-Message-ID: <20210723174751.GL5221@sirena.org.uk>
-References: <20210723184404.0000001d@Huawei.com>
+        id S229530AbhGWRuu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 23 Jul 2021 13:50:50 -0400
+Received: from perceval.ideasonboard.com ([213.167.242.64]:50942 "EHLO
+        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229455AbhGWRuu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Jul 2021 13:50:50 -0400
+Received: from pendragon.lan (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 834BD3F2;
+        Fri, 23 Jul 2021 20:31:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1627065082;
+        bh=9cOAh/2P+qeSwfNSWVrGse7yKV2nCRJMElqi0UIGA/A=;
+        h=From:To:Cc:Subject:Date:From;
+        b=sugqkOMQjVZPhKULQ9VO8eabhHrFIbiv5lJwEP23uECSW32pYMjtol1ZoPGtkLQwE
+         +RPf4IG1QYo+vAku4MjYo7139c6byIOm1eTLK0wWhOnKQudBbj/X+6yhi4DWKMb84m
+         fuJkPQJnSyEE5OVk5iWL0urI02A2nKqD0gJZjkHo=
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     linux-iio@vger.kernel.org
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Sean Nyekjaer <sean@geanix.com>, devicetree@vger.kernel.org,
+        Jose Cazarin <joseespiriki@gmail.com>,
+        linux-i2c@vger.kernel.org, Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH 0/2] iio: ti-dac5571: Add TI DAC081C081 support
+Date:   Fri, 23 Jul 2021 21:31:12 +0300
+Message-Id: <20210723183114.26017-1-laurent.pinchart@ideasonboard.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="rfwNdt5cNUUjB/69"
-Content-Disposition: inline
-In-Reply-To: <20210723184404.0000001d@Huawei.com>
-X-Cookie: Integrity has no need for rules.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hello,
 
---rfwNdt5cNUUjB/69
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This small patch series adds support for the TI DAC081C081 in the
+ti-dac5571 IIO driver. Patch 1/2 addresses the DT bindings, and patch
+2/2 the driver.
 
-On Fri, Jul 23, 2021 at 06:44:04PM +0100, Jonathan Cameron wrote:
-> Mark Brown <broonie@kernel.org> wrote:
+I've expanded the CC list to the I2C mailing list and Wolfram because I
+think the second patch may not be the best option. Instead of addressing
+this issue in all drivers, it wonder if it wouldn't be better for the
+I2C subsystem to handle this internally. One option would be to extend
+i2c_match_id to walk through the compatible values in case of an
+OF-based match, but I'm worried this could introduce regressions.
+Feedback would be welcome.
 
-> > > @Mark.  This has come up a few times recently.  Are we now safe to as=
-sume
-> > > that regmap will always copy data when used with SPI and hence we no
-> > > longer need to ensure DMA safe buffers?    =20
+The series could still be merged as-is in the meantime if desired.
 
-> > Only for single register I/O, I'd not assume that for things like raw
-> > I/O.
+Jose Cazarin (1):
+  iio: dac: dac5571: Fix chip id detection for OF devices
 
-> Thanks for the confirmation.  So in this driver that means we
-> need DMA safe buffers for the regmap_bulk_ calls.  Easiest approach
-> is probably to use a __cacheline_aligned buffer at the end of the
-> iio_priv() structure.
+Laurent Pinchart (1):
+  dt-bindings: iio: dac: ti,dac5571: Add TI DAC081C081 support
 
-Yeah, it might be fine depending on the bus/format type but it's not
-something you can generally assume.
+ .../bindings/iio/dac/ti,dac5571.yaml          | 24 ++++++++++-------
+ drivers/iio/dac/ti-dac5571.c                  | 27 ++++++++++++-------
+ 2 files changed, 31 insertions(+), 20 deletions(-)
 
---rfwNdt5cNUUjB/69
-Content-Type: application/pgp-signature; name="signature.asc"
+-- 
+Regards,
 
------BEGIN PGP SIGNATURE-----
+Laurent Pinchart
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmD7AMcACgkQJNaLcl1U
-h9CP+Qf+Lsc5GFkzeUzJpgvTvqmz/f+mVquFladiTHzq4Vd4lCSrD+l12g2lHQHQ
-bOgOkoGRi0M/NOCwetKglIQNwyUY8WtGY+I8GNpZL53wN//EjBVF29EyM6/huRxt
-W+tzv2euWk9Tzq6wKj9P8G7Sa0/kIune3KaxtXA8bmEheJ0OszZBLV3qkY3PYgTF
-8GWsGQCGkysrve98sTfQcjWyFsPNFgKhMsBQ6SPYYebK8xtFy9qIezumGkXuWQBw
-k0PFc9Lwz+X/ownmafloKIzZCmHkbpL87h+SBI6HS7BN6kLWFe1aVzuGDaqJy9HN
-e64jWE5y4GtlufUNHTpbWH7cfXLeMg==
-=PJ6s
------END PGP SIGNATURE-----
-
---rfwNdt5cNUUjB/69--

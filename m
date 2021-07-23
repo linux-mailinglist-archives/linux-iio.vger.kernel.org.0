@@ -2,44 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FB3A3D2D47
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Jul 2021 22:09:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C5113D3655
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Jul 2021 10:16:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230496AbhGVT3D (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 22 Jul 2021 15:29:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40416 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230451AbhGVT3C (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 22 Jul 2021 15:29:02 -0400
-Received: from 68-252-206-104.staticrdns.eonix.net (unknown [IPv6:2607:ff28:b005:2a:ec52:75ff:fe50:d321])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8E586C06175F;
-        Thu, 22 Jul 2021 13:09:36 -0700 (PDT)
-Received: from User (localhost [IPv6:::1])
-        by 68-252-206-104.staticrdns.eonix.net (Postfix) with SMTP id D84C38F1F50;
-        Mon, 19 Jul 2021 22:13:39 -0400 (EDT)
-Reply-To: <mrs_hannah@rediffmail.com>
-From:   "Mrs. Hajia Hannah Ahmed" <info@247vidz.com>
-Subject: Re: I WANT TO INVESTMENT IN YOUR COUNTRY?
-Date:   Tue, 20 Jul 2021 05:13:12 -0700
+        id S234189AbhGWHfX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 23 Jul 2021 03:35:23 -0400
+Received: from twspam01.aspeedtech.com ([211.20.114.71]:29940 "EHLO
+        twspam01.aspeedtech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234030AbhGWHfX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Jul 2021 03:35:23 -0400
+Received: from mail.aspeedtech.com ([192.168.0.24])
+        by twspam01.aspeedtech.com with ESMTP id 16N7x5gb041948;
+        Fri, 23 Jul 2021 15:59:05 +0800 (GMT-8)
+        (envelope-from billy_tsai@aspeedtech.com)
+Received: from BillyTsai-pc.aspeed.com (192.168.2.149) by TWMBX02.aspeed.com
+ (192.168.0.24) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Fri, 23 Jul
+ 2021 16:15:39 +0800
+From:   Billy Tsai <billy_tsai@aspeedtech.com>
+To:     <jic23@kernel.org>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
+        <robh+dt@kernel.org>, <joel@jms.id.au>, <andrew@aj.id.au>,
+        <p.zabel@pengutronix.de>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-aspeed@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>
+CC:     <BMC-SW@aspeedtech.com>
+Subject: [v2 0/8] Add support for ast2600 ADC
+Date:   Fri, 23 Jul 2021 16:16:13 +0800
+Message-ID: <20210723081621.29477-1-billy_tsai@aspeedtech.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-Id: <20210720021340.D84C38F1F50@68-252-206-104.staticrdns.eonix.net>
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [192.168.2.149]
+X-ClientProxiedBy: TWMBX02.aspeed.com (192.168.0.24) To TWMBX02.aspeed.com
+ (192.168.0.24)
+X-DNSRBL: 
+X-MAIL: twspam01.aspeedtech.com 16N7x5gb041948
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Attn:
- 
-I am Mrs. Hajia Hannah Ahmed I am a Widow and member of the contract award committee and 14 project allocation manager, of the Department of Minerals and Natural Resources in Syria;
- 
-Due to the war in Syria, I am in search of an agent or company to assist me to invest my fund  (USD$35Million) and subsequent investment in properties in your country. You will be required to. If you decide to render your service to me in this regard, 30% of the total sum of USD$35M will be given to you for your service. 
- 
-Yours Faithfully,
-Mrs. Hajia Hannah Ahmed
+This patch serials make aspeed_adc.c can support ast2600.
+In additional,
+patch #6 is used to improve the adc accurate 
+patch #7 is used to fix the clock issue in the original code.
+
+Changes since v1:
+dt-bindings:
+  - Fix the aspeed,adc.yaml check error.
+  - Add battery-sensing property.
+aspeed_adc.c:
+  - Change the init flow:
+    Clock and reference voltage setting should be completed before adc
+    engine enable.
+  - Change the default sampling rate to meet most user case.
+  - Add patch #8 to suppoert battery sensing mode.
+
+Billy Tsai (8):
+  dt-bindings: iio: adc: rename the aspeed adc yaml
+  dt-bindings: iio: adc: Binding ast2600 adc.
+  iio: adc: aspeed: completes the bitfield declare.
+  iio: adc: aspeed: Allow driver to support ast2600
+  iio: adc: aspeed: Add func to set sampling rate.
+  iio: adc: aspeed: Add compensation phase.
+  iio: adc: aspeed: Fix the calculate error of clock.
+  iio: adc: aspeed: Support battery sensing.
+
+ .../bindings/iio/adc/aspeed,adc.yaml          |  79 ++++
+ .../bindings/iio/adc/aspeed,ast2400-adc.yaml  |  55 ---
+ drivers/iio/adc/aspeed_adc.c                  | 376 ++++++++++++++----
+ 3 files changed, 385 insertions(+), 125 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/aspeed,adc.yaml
+ delete mode 100644 Documentation/devicetree/bindings/iio/adc/aspeed,ast2400-adc.yaml
+
+-- 
+2.25.1
+

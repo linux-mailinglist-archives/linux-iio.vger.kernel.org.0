@@ -2,36 +2,49 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C8DB53D4888
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Jul 2021 18:10:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BCCE3D488E
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Jul 2021 18:17:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229530AbhGXP3r (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 24 Jul 2021 11:29:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41642 "EHLO mail.kernel.org"
+        id S229648AbhGXPgv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 24 Jul 2021 11:36:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42254 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229461AbhGXP3r (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 24 Jul 2021 11:29:47 -0400
+        id S229461AbhGXPgv (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 24 Jul 2021 11:36:51 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6AC7160E91;
-        Sat, 24 Jul 2021 16:10:15 +0000 (UTC)
-Date:   Sat, 24 Jul 2021 17:12:46 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 6C8B860E53;
+        Sat, 24 Jul 2021 16:17:19 +0000 (UTC)
+Date:   Sat, 24 Jul 2021 17:19:51 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Stephan Gerhold <stephan@gerhold.net>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Stephan Gerhold <stephan@gerhold.net>,
         Linus Walleij <linus.walleij@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        Hans de Goede <hdegoede@redhat.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        ~postmarketos/upstreaming@lists.sr.ht,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS
+        <devicetree@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>, Andy
+        Shevchenko <andy.shevchenko@gmail.com>," 
+        <~postmarketos/upstreaming@lists.sr.ht>,
         Nikita Travkin <nikita@trvn.ru>
-Subject: Re: [PATCH 4/4] iio: accel: bmc150: Add support for BMC156
-Message-ID: <20210724171246.60c2b5be@jic23-huawei>
-In-Reply-To: <20210719112156.27087-5-stephan@gerhold.net>
+Subject: Re: [PATCH 3/4] iio: accel: bmc150: Make it possible to configure
+ INT2 instead of INT1
+Message-ID: <20210724171951.18b349b1@jic23-huawei>
+In-Reply-To: <CAHp75Vf56+HpeGcdet61eeQyQfwFKx8x7vEc_G9NXStYy5Gsyw@mail.gmail.com>
 References: <20210719112156.27087-1-stephan@gerhold.net>
-        <20210719112156.27087-5-stephan@gerhold.net>
+        <20210719112156.27087-4-stephan@gerhold.net>
+        <CACRpkdYNqi0EDrtC3j=cu5cp17sEJ6_nf2KRn-hxCxgbTGhgXw@mail.gmail.com>
+        <CAHp75VcsVFO2Oizpyeh53MNt2v9yD81vXp1xKCVX-U4zb-KTdg@mail.gmail.com>
+        <YPWV537oN3gDpAQS@gerhold.net>
+        <CAHp75Vdjotgi9RrmKQC4J_QQSYdRWwp+-8aHGkChx6VFLPDh-Q@mail.gmail.com>
+        <YPW1xGtLyLNGKqjJ@gerhold.net>
+        <CAHp75VcZDSL5u2bP_ZFySmk7cPkHRycyA-+gMqSVWCpgFXhn7Q@mail.gmail.com>
+        <YPXGQxPPID1SHOUO@gerhold.net>
+        <CAHp75Vf56+HpeGcdet61eeQyQfwFKx8x7vEc_G9NXStYy5Gsyw@mail.gmail.com>
 X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -40,220 +53,130 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 19 Jul 2021 13:21:56 +0200
-Stephan Gerhold <stephan@gerhold.net> wrote:
+On Tue, 20 Jul 2021 18:04:22 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> BMC156 is another accelerometer that works just fine with the bmc150-accel
-> driver. It's very similar to BMC150 (also a accelerometer+magnetometer
-> combo) but with only one accelerometer interrupt pin. It would make sense
-> if only INT1 was exposed but someone at Bosch was crazy and decided to only
-> have an INT2 pin.
+> On Mon, Jul 19, 2021 at 9:37 PM Stephan Gerhold <stephan@gerhold.net> wrote:
+> > On Mon, Jul 19, 2021 at 09:05:48PM +0300, Andy Shevchenko wrote:  
+> > > On Mon, Jul 19, 2021 at 8:29 PM Stephan Gerhold <stephan@gerhold.net> wrote:  
+> > > > On Mon, Jul 19, 2021 at 07:19:05PM +0300, Andy Shevchenko wrote:  
+> > > > > On Mon, Jul 19, 2021 at 6:11 PM Stephan Gerhold <stephan@gerhold.net> wrote:  
+> > > > > > On Mon, Jul 19, 2021 at 06:01:01PM +0300, Andy Shevchenko wrote:  
+> > > > > > > On Mon, Jul 19, 2021 at 5:07 PM Linus Walleij <linus.walleij@linaro.org> wrote:  
+> > > > > > > > On Mon, Jul 19, 2021 at 1:26 PM Stephan Gerhold <stephan@gerhold.net> wrote:  
 > 
-> Try to deal with this by making use of the INT2 support introduced
-> in the previous commit and force using INT2 for BMC156. To detect
-> that we need to bring up a simplified version of the previous type IDs.
+> ...
 > 
-> Note that unlike the type IDs removed in commit c06a6aba6835
-> ("iio: accel: bmc150: Drop misleading/duplicate chip identifiers")
-> here I only add one for the special case of BMC156. Everything else
-> still happens by reading the CHIP_ID register since the chip type
-> information often is not accurate in ACPI tables.
+> > > > > > > > > +       irq_info = bmc150_accel_interrupts_int1;
+> > > > > > > > > +       if (irq == of_irq_get_byname(dev->of_node, "INT2"))
+> > > > > > > > > +               irq_info = bmc150_accel_interrupts_int2;  
+> > > > > > > >
+> > > > > > > > This looks a bit DT-specific, but I don't see that ACPI has
+> > > > > > > > named IRQs so I don't know what to do about it either.  
+> > > > > > >
+> > > > > > > Yeah, we only have so far the (de facto) established way of naming
+> > > > > > > GPIO based IRQs, and not IOxAPIC ones.
+> > > > > > >  
+> > > > > > > > What does platform_get_irq_byname() do on ACPI systems?  
+> > > > > > >
+> > > > > > > See above.
+> > > > > > >  
+> > > > > > > > If there is no obvious fix I would leave it like this until the
+> > > > > > > > first ACPI used needing this comes along, but I think maybe
+> > > > > > > > Andy has suggestions.  
+> > > > > > >
+> > > > > > > The platform_get_irq_byname() should do something similar that has
+> > > > > > > been done in platform_get_irq() WRT ACPI.
+> > > > > > > Here for sure the platform_get_irq_byname() or its optional variant
+> > > > > > > should be used.  
+> > > > > >
+> > > > > > I don't think there is a platform device here, we only have the
+> > > > > > i2c_client or spi_device. That's why I didn't use
+> > > > > > platform_get_irq_byname(). :)
+> > > > > >
+> > > > > > Is there something equivalent for I2C/SPI drivers?  
+> > > > >
+> > > > > Not yet. You probably need to supply some code there to allow
+> > > > > multi-IRQ devices (in resource provider agnostic way).
+> > > > >
+> > > > > You need to provide fwnode_get_irq_byname() to be similar with
+> > > > > https://elixir.bootlin.com/linux/latest/source/drivers/base/property.c#L1010
+> > > > >
+> > > > > Then use it in the drivers.
+> > > > >
+> > > > > And/or integrate into frameworks somehow (something in between the
+> > > > > lines: https://elixir.bootlin.com/linux/latest/source/drivers/i2c/i2c-core-base.c#L461).
+> > > > >  
+> > > >
+> > > > Well, I don't think anyone has an ACPI use case for this right now so
+> > > > it's probably better if this is done by someone who actually needs this
+> > > > and can test it somewhere. :)
+> > > >
+> > > > I actually just "copied" this approach from some other IIO drivers where
+> > > > this is done similarly (and additionally checked the source code to make
+> > > > sure this won't break anything for ACPI platforms).  
+> > >
+> > > I see in today's Linux Next snapshot:
+> > >
+> > > drivers/iio/accel/fxls8962af-core.c:774:        irq =
+> > > of_irq_get_byname(of_node, "INT2");
+> > > drivers/iio/accel/mma8452.c:1616:               irq2 =
+> > > of_irq_get_byname(client->dev.of_node, "INT2");
+> > > drivers/iio/gyro/fxas21002c_core.c:834: irq1 = of_irq_get_byname(np, "INT1");
+> > > drivers/iio/imu/adis16480.c:1265:               irq =
+> > > of_irq_get_byname(of_node, adis16480_int_pin_names[i]);
+> > > drivers/iio/imu/bmi160/bmi160_core.c:655:       irq =
+> > > of_irq_get_byname(of_node, "INT1");
+> > > drivers/iio/imu/bmi160/bmi160_core.c:661:       irq =
+> > > of_irq_get_byname(of_node, "INT2");
+> > >
+> > > I believe we may stop distributing this and actually start using a
+> > > common API. I don't want this to be spread again over all IIO. Btw, I
+> > > have LSM9DS0, which supports two INT pins for IMU and currently it
+> > > uses hard coded pin mapping.
+> > >  
+> >
+> > Hm, I'm not quite sure how to implement this. Could you prepare a patch
+> > that would implement such a common API? I would be happy to test it for
+> > the device tree and make use of it in this patch.  
 > 
-> Tested-by: Nikita Travkin <nikita@trvn.ru> # BMC156
-> Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
-A few really minor things inline.
+> Unfortunately I have no time to fulfil the required process. The idea
+> in general is like this:
+> 
+> if (is_of_node(...))
+>   return of_irq_get_byname(...);
+> if (is_acpi_node(...))
+>   return acpi_gpio_irq_get_byname(...);
+> 
+> Everything else is quite similar to fwnode_irq_get().
+> 
+> > To be honest, I mainly implemented support for the interrupt-names
+> > because Jonathan mentioned this would be nice to have [1] and it kind of
+> > fit well together with the BMC156 patch that needs the INT2 support.
+> > I actually just use the if (data->type == BOSCH_BMC156) part from
+> > PATCH 4/4 which does not depend on of_irq_get_byname().  
+> 
+> Then I leave it to Jonathan and other maintainers.
+
+I'd be rather nervous about this one myself unless I have a test setup where
+I can poke all the paths.
+
+My current qemu hack setup doesn't do full enough ACPI so whilst I'd take a
+look at this myself it might take me a little while to hack in the ACPI tables needed
+to bring up a suitable bus on that device.
+
+I'll get to it if no one else does, but I'm not keen to block any
+drivers that just use the of route in the meantime. Should be easier to do
+a sweep of the ones Andy has highlighted + this one when we have the support
+ready.
+
+The patch looks fine to me otherwise.
 
 Thanks,
 
 Jonathan
 
-> ---
->  drivers/iio/accel/Kconfig             |  5 +++--
->  drivers/iio/accel/bmc150-accel-core.c |  8 +++++---
->  drivers/iio/accel/bmc150-accel-i2c.c  | 10 ++++++++--
->  drivers/iio/accel/bmc150-accel-spi.c  | 10 +++++++++-
->  drivers/iio/accel/bmc150-accel.h      |  9 ++++++++-
->  5 files changed, 33 insertions(+), 9 deletions(-)
 > 
-> diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
-> index 0e56ace61103..2f0c0d512ae7 100644
-> --- a/drivers/iio/accel/Kconfig
-> +++ b/drivers/iio/accel/Kconfig
-> @@ -143,10 +143,11 @@ config BMC150_ACCEL
->  	select BMC150_ACCEL_SPI if SPI
->  	help
->  	  Say yes here to build support for the following Bosch accelerometers:
-> -	  BMA222, BMA222E, BMA250E, BMA253, BMA254, BMA255, BMA280, BMC150, BMI055.
-> +	  BMA222, BMA222E, BMA250E, BMA253, BMA254, BMA255, BMA280, BMC150, BMC156
-> +	  BMI055.
->  
->  	  Note that some of these are combo modules:
-> -	    - BMC150: accelerometer and magnetometer
-> +	    - BMC150/BMC156: accelerometer and magnetometer
->  	    - BMI055: accelerometer and gyroscope
->  
->  	  This driver is only implementing accelerometer part, which has
-> diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
-> index 8d3dd3c2bcc2..a5d321e878ef 100644
-> --- a/drivers/iio/accel/bmc150-accel-core.c
-> +++ b/drivers/iio/accel/bmc150-accel-core.c
-> @@ -553,7 +553,7 @@ static void bmc150_accel_interrupts_setup(struct iio_dev *indio_dev,
->  	 * Without interrupt-names, we assume the irq belongs to INT1.
->  	 */
->  	irq_info = bmc150_accel_interrupts_int1;
-> -	if (irq == of_irq_get_byname(dev->of_node, "INT2"))
-> +	if (data->type == BOSCH_BMC156 || irq == of_irq_get_byname(dev->of_node, "INT2"))
-
-It is still preferred to keep line lengths under 80 chars unless it hurts
-readability to do so.  So please wrap this one.
-
->  		irq_info = bmc150_accel_interrupts_int2;
->  
->  	for (i = 0; i < BMC150_ACCEL_INTERRUPTS; i++)
-> @@ -1174,7 +1174,7 @@ static const struct bmc150_accel_chip_info bmc150_accel_chip_info_tbl[] = {
->  				 {306458, BMC150_ACCEL_DEF_RANGE_16G} },
->  	},
->  	{
-> -		.name = "BMA253/BMA254/BMA255/BMC150/BMI055",
-> +		.name = "BMA253/BMA254/BMA255/BMC150/BMC156/BMI055",
->  		.chip_id = 0xFA,
->  		.channels = bmc150_accel_channels,
->  		.num_channels = ARRAY_SIZE(bmc150_accel_channels),
-> @@ -1661,7 +1661,8 @@ static int bmc150_accel_chip_init(struct bmc150_accel_data *data)
->  }
->  
->  int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
-> -			    const char *name, bool block_supported)
-> +			    enum bmc150_type type, const char *name,
-> +			    bool block_supported)
->  {
->  	const struct attribute **fifo_attrs;
->  	struct bmc150_accel_data *data;
-> @@ -1676,6 +1677,7 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
->  	dev_set_drvdata(dev, indio_dev);
->  
->  	data->regmap = regmap;
-> +	data->type = type;
->  
->  	if (!bmc150_apply_acpi_orientation(dev, &data->orientation)) {
->  		ret = iio_read_mount_matrix(dev, &data->orientation);
-> diff --git a/drivers/iio/accel/bmc150-accel-i2c.c b/drivers/iio/accel/bmc150-accel-i2c.c
-> index 999495f0669d..88bd8a25f142 100644
-> --- a/drivers/iio/accel/bmc150-accel-i2c.c
-> +++ b/drivers/iio/accel/bmc150-accel-i2c.c
-> @@ -176,6 +176,7 @@ static int bmc150_accel_probe(struct i2c_client *client,
->  {
->  	struct regmap *regmap;
->  	const char *name = NULL;
-> +	enum bmc150_type type = BOSCH_UNKNOWN;
->  	bool block_supported =
->  		i2c_check_functionality(client->adapter, I2C_FUNC_I2C) ||
->  		i2c_check_functionality(client->adapter,
-> @@ -188,10 +189,13 @@ static int bmc150_accel_probe(struct i2c_client *client,
->  		return PTR_ERR(regmap);
->  	}
->  
-> -	if (id)
-> +	if (id) {
->  		name = id->name;
-> +		type = id->driver_data;
-> +	}
->  
-> -	ret = bmc150_accel_core_probe(&client->dev, regmap, client->irq, name, block_supported);
-> +	ret = bmc150_accel_core_probe(&client->dev, regmap, client->irq,
-> +				      type, name, block_supported);
->  	if (ret)
->  		return ret;
->  
-> @@ -236,6 +240,7 @@ static const struct i2c_device_id bmc150_accel_id[] = {
->  	{"bma255"},
->  	{"bma280"},
->  	{"bmc150_accel"},
-> +	{"bmc156_accel", BOSCH_BMC156},
->  	{"bmi055_accel"},
->  	{}
->  };
-> @@ -251,6 +256,7 @@ static const struct of_device_id bmc150_accel_of_match[] = {
->  	{ .compatible = "bosch,bma255" },
->  	{ .compatible = "bosch,bma280" },
->  	{ .compatible = "bosch,bmc150_accel" },
-> +	{ .compatible = "bosch,bmc156_accel" },
->  	{ .compatible = "bosch,bmi055_accel" },
->  	{ },
->  };
-> diff --git a/drivers/iio/accel/bmc150-accel-spi.c b/drivers/iio/accel/bmc150-accel-spi.c
-> index 54b8c9c8068b..191e312dc91a 100644
-> --- a/drivers/iio/accel/bmc150-accel-spi.c
-> +++ b/drivers/iio/accel/bmc150-accel-spi.c
-> @@ -16,6 +16,8 @@
->  static int bmc150_accel_probe(struct spi_device *spi)
->  {
->  	struct regmap *regmap;
-> +	const char *name = NULL;
-> +	enum bmc150_type type = BOSCH_UNKNOWN;
->  	const struct spi_device_id *id = spi_get_device_id(spi);
->  
->  	regmap = devm_regmap_init_spi(spi, &bmc150_regmap_conf);
-> @@ -24,7 +26,12 @@ static int bmc150_accel_probe(struct spi_device *spi)
->  		return PTR_ERR(regmap);
->  	}
->  
-> -	return bmc150_accel_core_probe(&spi->dev, regmap, spi->irq, id->name,
-> +	if (id) {
-> +		name = id->name;
-> +		type = id->driver_data;
-> +	}
-> +
-> +	return bmc150_accel_core_probe(&spi->dev, regmap, spi->irq, type, name,
->  				       true);
->  }
->  
-> @@ -54,6 +61,7 @@ static const struct spi_device_id bmc150_accel_id[] = {
->  	{"bma255"},
->  	{"bma280"},
->  	{"bmc150_accel"},
-> +	{"bmc156_accel", BOSCH_BMC156},
->  	{"bmi055_accel"},
->  	{}
->  };
-> diff --git a/drivers/iio/accel/bmc150-accel.h b/drivers/iio/accel/bmc150-accel.h
-> index 47121f070fe9..a3f4905e48a3 100644
-> --- a/drivers/iio/accel/bmc150-accel.h
-> +++ b/drivers/iio/accel/bmc150-accel.h
-> @@ -13,6 +13,11 @@ struct i2c_client;
->  struct bmc150_accel_chip_info;
->  struct bmc150_accel_interrupt_info;
->  
-> +enum bmc150_type {
-> +	BOSCH_UNKNOWN,
-> +	BOSCH_BMC156,
-Whilst we only need to distinguish this one at the moment, the unknown naming
-implies we don't know the type when often we actually do.
-
-Probably better to just have all the known device types in the enum and
-set in the id table.
-
-> +};
-> +
->  struct bmc150_accel_interrupt {
->  	const struct bmc150_accel_interrupt_info *info;
->  	atomic_t users;
-> @@ -62,6 +67,7 @@ struct bmc150_accel_data {
->  	int ev_enable_state;
->  	int64_t timestamp, old_timestamp; /* Only used in hw fifo mode. */
->  	const struct bmc150_accel_chip_info *chip_info;
-> +	enum bmc150_type type;
->  	struct i2c_client *second_device;
->  	void (*resume_callback)(struct device *dev);
->  	struct delayed_work resume_work;
-> @@ -69,7 +75,8 @@ struct bmc150_accel_data {
->  };
->  
->  int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
-> -			    const char *name, bool block_supported);
-> +			    enum bmc150_type type, const char *name,
-> +			    bool block_supported);
->  int bmc150_accel_core_remove(struct device *dev);
->  extern const struct dev_pm_ops bmc150_accel_pm_ops;
->  extern const struct regmap_config bmc150_regmap_conf;
+> > [1]: https://lore.kernel.org/linux-iio/20210611185941.3487efc6@jic23-huawei/  
+> 
 

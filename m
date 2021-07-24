@@ -2,33 +2,33 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 172923D4890
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Jul 2021 18:22:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 480A33D4894
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Jul 2021 18:24:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229655AbhGXPld (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 24 Jul 2021 11:41:33 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43740 "EHLO mail.kernel.org"
+        id S229667AbhGXPnl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 24 Jul 2021 11:43:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44932 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229461AbhGXPlc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 24 Jul 2021 11:41:32 -0400
+        id S229461AbhGXPnk (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 24 Jul 2021 11:43:40 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0A00B60E78;
-        Sat, 24 Jul 2021 16:22:00 +0000 (UTC)
-Date:   Sat, 24 Jul 2021 17:24:32 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 65E4860E92;
+        Sat, 24 Jul 2021 16:24:10 +0000 (UTC)
+Date:   Sat, 24 Jul 2021 17:26:42 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Billy Tsai <billy_tsai@aspeedtech.com>
-Cc:     <lars@metafoo.de>, <pmeerw@pmeerw.net>, <robh+dt@kernel.org>,
-        <joel@jms.id.au>, <andrew@aj.id.au>, <p.zabel@pengutronix.de>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-aspeed@lists.ozlabs.org>, <raltherr@google.com>,
-        <BMC-SW@aspeedtech.com>
-Subject: Re: [v1 0/7] Add support for ast2600 ADC
-Message-ID: <20210724172432.50478f0e@jic23-huawei>
-In-Reply-To: <20210719080607.28712-1-billy_tsai@aspeedtech.com>
-References: <20210719080607.28712-1-billy_tsai@aspeedtech.com>
+To:     "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>
+Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v6 1/2] iio: frequency: adrf6780: add support for
+ ADRF6780
+Message-ID: <20210724172642.27b4d8c0@jic23-huawei>
+In-Reply-To: <CY4PR03MB3399CAA3C32707CE3564A44B9BE29@CY4PR03MB3399.namprd03.prod.outlook.com>
+References: <20210716114210.141560-1-antoniu.miclaus@analog.com>
+        <20210717142623.45f96a22@jic23-huawei>
+        <CY4PR03MB3399CAA3C32707CE3564A44B9BE29@CY4PR03MB3399.namprd03.prod.outlook.com>
 X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -37,38 +37,40 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 19 Jul 2021 16:06:00 +0800
-Billy Tsai <billy_tsai@aspeedtech.com> wrote:
+On Tue, 20 Jul 2021 13:34:08 +0000
+"Miclaus, Antoniu" <Antoniu.Miclaus@analog.com> wrote:
 
-> This patch serials make aspeed_adc.c can support ast2600.
-> In additional,
-> patch #6 is used to improve the adc accurate and 
-> patch #7 is used to fix the clock issue in the original code.
+> Hello Jonathan,
+...
+> > > +
+> > > +	enable_reg = FIELD_PREP(ADRF6780_VGA_BUFFER_EN_MSK, dev-
+> > >vga_buff_en) |
+> > > +			FIELD_PREP(ADRF6780_DETECTOR_EN_MSK, 1) |
+> > > +			FIELD_PREP(ADRF6780_LO_BUFFER_EN_MSK, dev-
+> > >lo_buff_en) |
+> > > +			FIELD_PREP(ADRF6780_IF_MODE_EN_MSK, dev-
+> > >if_mode_en) |
+> > > +			FIELD_PREP(ADRF6780_IQ_MODE_EN_MSK, dev-
+> > >iq_mode_en) |
+> > > +			FIELD_PREP(ADRF6780_LO_X2_EN_MSK, dev-
+> > >lo_x2_en) |
+> > > +			FIELD_PREP(ADRF6780_LO_PPF_EN_MSK, dev-
+> > >lo_ppf_en) |
+> > > +			FIELD_PREP(ADRF6780_LO_EN_MSK, dev->lo_en) |
+> > > +			FIELD_PREP(ADRF6780_UC_BIAS_EN_MSK, dev-
+> > >uc_bias_en);  
+> > 
+> > Here we are probably turning on a bunch of stuff which will result in power
+> > usage.
+> > Would it be sensible to turn it off again in remove path?  (devm managed
+> > should be fine).  
 > 
-> Billy Tsai (7):
->   dt-bindings: iio: adc: rename the aspeed adc yaml
->   dt-bindings: iio: adc: Binding ast2600 adc.
->   iio: adc: aspeed: completes the bitfield declare.
->   iio: adc: aspeed: Allow driver to support ast2600
->   iio: adc: aspeed: Add func to set sampling rate.
->   iio: adc: aspeed: Add compensation phase.
->   iio: adc: aspeed: Fix the calculate error of clock.
+> Most of these attributes are enabled by default after device reset.
+> Taking into account this statement, is it still worth adding a 'custom' remove path?
 
-Hi Billy,
+Perhaps a nice to have if they save power.
+Got to love hardware that eats power until you load a driver!
 
-Small process note.  If you resend for some reason and the original series
-has no reply, it is helpful to people if you just send a reply yourself
-to say there is a v2. In the past I've occasionally applied wrong versions
-when someone does this!
-
-Thanks,
+Ah well,
 
 Jonathan
-
-> 
->  ...speed,ast2400-adc.yaml => aspeed,adc.yaml} |  23 +-
->  drivers/iio/adc/aspeed_adc.c                  | 313 ++++++++++++++----
->  2 files changed, 266 insertions(+), 70 deletions(-)
->  rename Documentation/devicetree/bindings/iio/adc/{aspeed,ast2400-adc.yaml => aspeed,adc.yaml} (53%)
-> 
-

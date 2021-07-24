@@ -2,143 +2,208 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 22B673D438F
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Jul 2021 02:07:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91FCC3D45F7
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Jul 2021 09:34:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233064AbhGWX0c (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Jul 2021 19:26:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53424 "EHLO
+        id S234505AbhGXGx2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 24 Jul 2021 02:53:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233059AbhGWX0c (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Jul 2021 19:26:32 -0400
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08E9CC061575;
-        Fri, 23 Jul 2021 17:07:04 -0700 (PDT)
-Received: from pendragon.lan (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 56BAB255;
-        Sat, 24 Jul 2021 02:07:00 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1627085220;
-        bh=xEo/CQNYqj63iAN2RCqLB7wwRY0GHrHZrfs6dVn81xY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JVkPaIT4nnD5aQLoEAsPbRiXFDC4KuQJcqJIC0cb9Rx/2FI6pY/yd705G0kkS7eev
-         ewFZXhCzU5Yha/JJYXef9QPS6t9NJoX8f3A8J2sYV4J5ZTr2cq2Xlb3s6PvEhV3KX8
-         DMeY1UW4UUSc4ECLHQ9V5A15hj923TQ2GPbAbgks=
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     linux-iio@vger.kernel.org
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Sean Nyekjaer <sean@geanix.com>, devicetree@vger.kernel.org,
-        Jose Cazarin <joseespiriki@gmail.com>,
-        linux-i2c@vger.kernel.org, Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH v1.1 2/2] iio: dac: dac5571: Fix chip id detection for OF devices
-Date:   Sat, 24 Jul 2021 03:06:54 +0300
-Message-Id: <20210724000654.23168-1-laurent.pinchart@ideasonboard.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210723183114.26017-3-laurent.pinchart@ideasonboard.com>
-References: <20210723183114.26017-3-laurent.pinchart@ideasonboard.com>
+        with ESMTP id S234287AbhGXGx2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 24 Jul 2021 02:53:28 -0400
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B20BC061575;
+        Sat, 24 Jul 2021 00:33:59 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id w12so4618962wro.13;
+        Sat, 24 Jul 2021 00:33:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=I99OKEyOyDu2QZ9o92w6nHM+PeQzOx9KbxGs8smmzwM=;
+        b=OTPkJG0ThpLSfE36PgXqezSsIzfWyH4WlE0UyzPVJyNe13MQKXfbC1ekZl5kWUHo2i
+         ZoywdLGFHcV9y+WcFt/lB66WgS2EsNAH13CcDzJjX93J+TdN+FJp3S0dn6Ee/gcQ3dQT
+         hTjEboZh4+3FBGdTnNQi3fthkz+i5w3HFPMgreggbReosUED9R9QhiQUii7Ijamu1v3E
+         v0+7EUPDVYn41XY7OoygRrA7pfjeK/0HF/U8Yz5k/yS9RsNjM5I4y5bSZ5IXrrLwrNeo
+         Yt2M3KIymc+hZZ9i7DfCrWOQVIFIuemb9FUWDh9K55+CuzK58cO7SUCISKgnm3XIWGbG
+         tAfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=I99OKEyOyDu2QZ9o92w6nHM+PeQzOx9KbxGs8smmzwM=;
+        b=l9GBX8+jIZNQDI35Q+NDUyLEQkRKIL1FZ3GMzBtQCsmIe3ZmBlgDH851nvaPvHgSy+
+         wP8WGj+xUctmiAkcLryfm+fhVTe23IkXs3lx6M0C8To8FUZjJz55qGd/kIPQgRuRxyeN
+         0lrpDnObKjQTlu72Ei7ofufcuYnK+gl4Pcl6qpOfCAPISfCqm7dDlsDmkFOrt63SaLV2
+         OwI1o81V1klJ1rlyUKiWniNndzfQzfr6oE7tFUYoU2h6NzrvMJijwNVnzl1JJe8BwgQ+
+         l+fDicJ50fgHs7+a6fmGVt8SepJ70DfQJ2mZwOW1mxR68tbMW/O61awJocaXor9EO76h
+         3ZbQ==
+X-Gm-Message-State: AOAM530hrsm8fdv4JML3dRKN+AQKF19uOaQ1mRSBdJS6W9FV2lQrKxul
+        UDcogUEvtQjDr5wDXppzww1FOaSHeblkJnUMiSt31Hwx2kReQ7/y
+X-Google-Smtp-Source: ABdhPJz4L7ngjDfI9huIL4szQJm/bxjfpDXTzfLi4mHdBnxRgDbDGmUNAyVr7zh/2VvIgbJUAUgJx/mR6dsVJWWlwsQ=
+X-Received: by 2002:adf:f512:: with SMTP id q18mr35736wro.305.1627112037765;
+ Sat, 24 Jul 2021 00:33:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <893d6165-0f12-d0da-44be-449a4ae96ac2@roeck-us.net>
+ <20210723085813.1523934-1-cbranchereau@gmail.com> <20210723085813.1523934-6-cbranchereau@gmail.com>
+ <20210723171657.00003d7f@Huawei.com>
+In-Reply-To: <20210723171657.00003d7f@Huawei.com>
+From:   Christophe Branchereau <cbranchereau@gmail.com>
+Date:   Sat, 24 Jul 2021 09:33:46 +0200
+Message-ID: <CAFsFa84mJpAk90W6rSYwZ9m-RCbu959_8HJ+1Dr3ScP2k9SbKw@mail.gmail.com>
+Subject: Re: [PATCH V2 5/5] dt-bindings: iio/adc: ingenic: add the JZ4760(B)
+ socs to the sadc Documentation
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc:     Paul Cercueil <paul@crapouillou.net>, jic23@kernel.org,
+        lars@metafoo.de, linux-mips@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        robh+dt@kernel.org, devicetree@vger.kernel.org, linux@roeck-us.net,
+        contact@artur-rojek.eu
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jose Cazarin <joseespiriki@gmail.com>
+Hello Johnathan, am I allowed to declare the property within the if
+block like this?
 
-When matching an OF device, the match mechanism tries all components of
-the compatible property. This can result with a device matched with a
-compatible string that isn't the first in the compatible list. For
-instance, with a compatible property set to
-
-    compatible = "ti,dac081c081", "ti,dac5571";
-
-the driver will match the second compatible string, as the first one
-isn't listed in the of_device_id table. The device will however be named
-"dac081c081" by the I2C core.
-
-This causes an issue when identifying the chip. The probe function
-receives a i2c_device_id that comes from the module's I2C device ID
-table. There is no entry in that table for "dac081c081", which results
-in a NULL pointer passed to the probe function.
-
-To fix this, add chip_id information in the data field of the OF device
-ID table, and retrieve it with of_device_get_match_data() for OF
-devices.
-
-Signed-off-by: Jose Cazarin <joseespiriki@gmail.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+# Copyright 2019-2020 Artur Rojek
+%YAML 1.2
 ---
-Changes since v1:
+$id: "http://devicetree.org/schemas/iio/adc/ingenic,adc.yaml#"
+$schema: "http://devicetree.org/meta-schemas/core.yaml#"
 
-- Include linux/of_device.h
----
- drivers/iio/dac/ti-dac5571.c | 28 ++++++++++++++++++----------
- 1 file changed, 18 insertions(+), 10 deletions(-)
+title: Ingenic JZ47xx ADC controller IIO bindings
 
-diff --git a/drivers/iio/dac/ti-dac5571.c b/drivers/iio/dac/ti-dac5571.c
-index 2a5ba1b08a1d..8ceb1b42b14e 100644
---- a/drivers/iio/dac/ti-dac5571.c
-+++ b/drivers/iio/dac/ti-dac5571.c
-@@ -19,6 +19,7 @@
- #include <linux/i2c.h>
- #include <linux/module.h>
- #include <linux/mod_devicetable.h>
-+#include <linux/of_device.h>
- #include <linux/regulator/consumer.h>
- 
- enum chip_id {
-@@ -311,6 +312,7 @@ static int dac5571_probe(struct i2c_client *client,
- 	const struct dac5571_spec *spec;
- 	struct dac5571_data *data;
- 	struct iio_dev *indio_dev;
-+	enum chip_id chip_id;
- 	int ret, i;
- 
- 	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-@@ -326,7 +328,13 @@ static int dac5571_probe(struct i2c_client *client,
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->channels = dac5571_channels;
- 
--	spec = &dac5571_spec[id->driver_data];
-+	if (dev->of_node)
-+		chip_id = (uintptr_t)of_device_get_match_data(dev);
-+	else
-+		chip_id = id->driver_data;
-+
-+	spec = &dac5571_spec[chip_id];
-+
- 	indio_dev->num_channels = spec->num_channels;
- 	data->spec = spec;
- 
-@@ -384,15 +392,15 @@ static int dac5571_remove(struct i2c_client *i2c)
- }
- 
- static const struct of_device_id dac5571_of_id[] = {
--	{.compatible = "ti,dac5571"},
--	{.compatible = "ti,dac6571"},
--	{.compatible = "ti,dac7571"},
--	{.compatible = "ti,dac5574"},
--	{.compatible = "ti,dac6574"},
--	{.compatible = "ti,dac7574"},
--	{.compatible = "ti,dac5573"},
--	{.compatible = "ti,dac6573"},
--	{.compatible = "ti,dac7573"},
-+	{.compatible = "ti,dac5571", .data = (void *)single_8bit},
-+	{.compatible = "ti,dac6571", .data = (void *)single_10bit},
-+	{.compatible = "ti,dac7571", .data = (void *)single_12bit},
-+	{.compatible = "ti,dac5574", .data = (void *)quad_8bit},
-+	{.compatible = "ti,dac6574", .data = (void *)quad_10bit},
-+	{.compatible = "ti,dac7574", .data = (void *)quad_12bit},
-+	{.compatible = "ti,dac5573", .data = (void *)quad_8bit},
-+	{.compatible = "ti,dac6573", .data = (void *)quad_10bit},
-+	{.compatible = "ti,dac7573", .data = (void *)quad_12bit},
- 	{}
- };
- MODULE_DEVICE_TABLE(of, dac5571_of_id);
--- 
-Regards,
+maintainers:
+  - Artur Rojek <contact@artur-rojek.eu>
 
-Laurent Pinchart
+description: >
+  Industrial I/O subsystem bindings for ADC controller found in
+  Ingenic JZ47xx SoCs.
 
+  ADC clients must use the format described in
+  https://github.com/devicetree-org/dt-schema/blob/master/schemas/iio/iio-consumer.yaml,
+  giving a phandle and IIO specifier pair ("io-channels") to the ADC controller.
+
+properties:
+  compatible:
+    enum:
+      - ingenic,jz4725b-adc
+      - ingenic,jz4740-adc
+      - ingenic,jz4760-adc
+      - ingenic,jz4760b-adc
+      - ingenic,jz4770-adc
+
+  '#io-channel-cells':
+    const: 1
+    description:
+      Must be set to <1> to indicate channels are selected by index.
+
+  reg:
+    maxItems: 1
+
+  clocks:
+    maxItems: 1
+
+  clock-names:
+    items:
+      - const: adc
+
+  interrupts:
+    maxItems: 1
+
+allOf:
+  - if:
+      properties:
+        compatible:
+          contains:
+            enum:
+              - ingenic,jz4760b-adc
+then:
+  properties:
+    ingenic,use-internal-divider:
+      description:
+        If present, battery voltage is read from the VBAT_IR pin, which has an
+        internal 1/4 divider. If absent, it is read through the VBAT_ER pin,
+        which does not have such a divider.
+      type: boolean
+
+required:
+  - compatible
+  - '#io-channel-cells'
+  - reg
+  - clocks
+  - clock-names
+  - interrupts
+
+additionalProperties: false
+
+examples:
+  - |
+    #include <dt-bindings/clock/jz4740-cgu.h>
+    #include <dt-bindings/iio/adc/ingenic,adc.h>
+
+    adc@10070000 {
+            compatible = "ingenic,jz4740-adc";
+            #io-channel-cells = <1>;
+
+            reg = <0x10070000 0x30>;
+
+            clocks = <&cgu JZ4740_CLK_ADC>;
+            clock-names = "adc";
+
+            interrupt-parent = <&intc>;
+            interrupts = <18>;
+    };
+
+On Fri, Jul 23, 2021 at 6:17 PM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
+>
+> On Fri, 23 Jul 2021 10:58:13 +0200
+> Christophe Branchereau <cbranchereau@gmail.com> wrote:
+>
+> > The jz4760b variant differs slightly from the jz4760, add a property to
+> > let users sample the internal divider if needed and document it.
+> >
+> > Signed-off-by: Christophe Branchereau <cbranchereau@gmail.com>
+> > ---
+> >  .../devicetree/bindings/iio/adc/ingenic,adc.yaml         | 9 +++++++++
+> >  1 file changed, 9 insertions(+)
+> >
+> > diff --git a/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml b/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
+> > index 433a3fb55a2e..0dc42959a64f 100644
+> > --- a/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
+> > +++ b/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
+> > @@ -23,6 +23,8 @@ properties:
+> >      enum:
+> >        - ingenic,jz4725b-adc
+> >        - ingenic,jz4740-adc
+> > +      - ingenic,jz4760-adc
+> > +      - ingenic,jz4760b-adc
+> >        - ingenic,jz4770-adc
+> >
+> >    '#io-channel-cells':
+> > @@ -43,6 +45,13 @@ properties:
+> >    interrupts:
+> >      maxItems: 1
+> >
+> > +  ingenic,use-internal-divider:
+> > +    description:
+> > +      This property can be used to set VBAT_SEL in the JZ4760B CFG register
+> > +      to sample the battery voltage from the internal divider. If absent, it
+> > +      will sample the external divider.
+> > +    type: boolean
+> > +
+> See reply to the v1 patch for hint on how to 'enforce' that this
+> only exists for the jz4760b
+>
+> Thanks,
+>
+> Jonathan
+>
+> >  required:
+> >    - compatible
+> >    - '#io-channel-cells'
+>

@@ -2,175 +2,111 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 713253D4F10
-	for <lists+linux-iio@lfdr.de>; Sun, 25 Jul 2021 19:22:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F7503D4FE7
+	for <lists+linux-iio@lfdr.de>; Sun, 25 Jul 2021 22:33:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231215AbhGYQmL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 25 Jul 2021 12:42:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42384 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230471AbhGYQmL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 25 Jul 2021 12:42:11 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C54D560F11;
-        Sun, 25 Jul 2021 17:22:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1627233761;
-        bh=+/+JajD0nSgC22Q1yPGXN6NloVUXraF/XWs0Zzp6ZfU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=s767uUtKzwwasysbNVDDOjyyzGTRuSKxTF4MBRnA+bpjcIN5gCZSHsA/waPO8uxH5
-         TJfYVgTNC2gFaZ89ke6fuRjrJSWQTI+Ox/7gQm/mgRbfmWgoQDKjQA2itPmQTT7IMV
-         Gb0EaFt9C1qpQFBnhXKzSZBlxZ5X4sUxAj/g1DZkSS4ggvoMYX3+jJ5dG9mX77d68K
-         RYNVJ8nKgWITtmKFhtGxn+2dDcbOmRNV3S/v1H7NMb4e/pQvxSBOYepGXPdOrrgQTd
-         mweQ0cQUiCLCQEda3Onp1gHXm2Vw1dQTv3XrXcNhGoLsFrf4t7OxF9BPiZyaAczX66
-         CLb5JWOoDLUng==
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        id S230116AbhGYTxT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 25 Jul 2021 15:53:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41996 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229661AbhGYTxT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 25 Jul 2021 15:53:19 -0400
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25640C061757
+        for <linux-iio@vger.kernel.org>; Sun, 25 Jul 2021 13:33:49 -0700 (PDT)
+Received: by mail-pl1-x62b.google.com with SMTP id e14so9222389plh.8
+        for <linux-iio@vger.kernel.org>; Sun, 25 Jul 2021 13:33:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=okugLEzlTny+fzrF2Q1ytbwzo6iSoRoq0kbMzA1eNts=;
+        b=An4ymJBEXfKS/Pft32azhmP7KpqnLdx4GWQmew2ex1OMsa61A31/R98Kgi+Ak3HTDQ
+         TWqc3ounA4whs7NKJePj64C1Y396A94qOLIUfuicdsJ/7J9ZgQcGpChF1uueiL2mDBFR
+         u3DWRcwpeWQ/Y86eSMPxDv8GBE4KcsBC8BywfPHYGULYAxdYwP3nMGbtQSvslCyj784x
+         KdFkqAgS26tnCqjU9bsCT3Rn63yNgJGsSOk5CCE/OlS+p/obNMwafGvFSxBo1RCgXt01
+         BQnK2WyfRNxwr79D4tx/a5YRh/r0BWXdnx8nRBpQ5wURAynvzLJ682AVRHo8UpRYa67/
+         +L2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=okugLEzlTny+fzrF2Q1ytbwzo6iSoRoq0kbMzA1eNts=;
+        b=DF9VpzAgVRk3c+Aa3OWwLv0pdi/4TW+c2tn8+C0BxXdKbI9UjW313eo8IcaGQDDcMo
+         f6g/BZAHgPt0ugBPiF7Z0i3F13J0VrdeEVZ0p1HVYY0s5O1UT1mi3ZnJ+ObsBqA8nfwq
+         8cKQOak2fkIt4sRTAGrzzW6RaeGjpZMixho+nxtaq1OAGcrneUITvzNWok7Pf26hwh3V
+         z5nlAHkoqJqv54aC8LpLgDNpcgiSSICvSmYEgPlJlqyhJo9cd4T4eht4b+go3VSSOQIR
+         p84EhHgt9CMHZEHTv2FOQopQFlUjQ0djR/Y8dIZj352s5jO1hrl/NXxl8rDH3VhxKFt8
+         Bmhg==
+X-Gm-Message-State: AOAM530pg/ie4CiAoZW85R1SA1CKTyDgB1fSIeIsTa339VVt26w1zQZv
+        b5NsfCqlwZXmkaDa/Ub1inUMiE7SwcUjvsOM1T0=
+X-Google-Smtp-Source: ABdhPJzYHTQttZutVxtX3A2Bgu4c32yVDm3ICGY99R5yGpkpRdxHucBc1VxNkjtBlMQbcSWuA+Q5BSIXam07Tk3gygI=
+X-Received: by 2002:a63:cf0a:: with SMTP id j10mr15242577pgg.4.1627245228719;
+ Sun, 25 Jul 2021 13:33:48 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210725172458.487343-1-jic23@kernel.org> <20210725172458.487343-3-jic23@kernel.org>
+In-Reply-To: <20210725172458.487343-3-jic23@kernel.org>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sun, 25 Jul 2021 23:33:12 +0300
+Message-ID: <CAHp75VcgMkPw8BudKkF9MN2ijjDuT=VRo3FivVcjEYsEY4L-0w@mail.gmail.com>
+Subject: Re: [PATCH 2/2] iio:adc:ad7124: Convert to fwnode handling of child
+ node parsing.
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         Alexandru Tachici <alexandru.tachici@analog.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 2/2] iio:adc:ad7124: Convert to fwnode handling of child node parsing.
-Date:   Sun, 25 Jul 2021 18:24:58 +0100
-Message-Id: <20210725172458.487343-3-jic23@kernel.org>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210725172458.487343-1-jic23@kernel.org>
-References: <20210725172458.487343-1-jic23@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Sun, Jul 25, 2021 at 8:22 PM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
+> Also use device_get_match_data() rather than of specific variant.
+> These changes enable use of this binding on ACPI platforms via PRP0001.
+> Whilst it's possible no one will ever do so, this is part of a general
+> effort to clear out examples from IIO that might be copied into new
+> drivers.
+>
+> It may appear that this change drops the check for status = disabled,
+> but in reality it does not because the of property code uses
+> of_get_next_available_child().  This driver may well fail to probe
+> if disabled is ever actually set though due to the need for
+> complete concurrent child nodes.  A future series might resolve
+> that restriction.
 
-Also use device_get_match_data() rather than of specific variant.
-These changes enable use of this binding on ACPI platforms via PRP0001.
-Whilst it's possible no one will ever do so, this is part of a general
-effort to clear out examples from IIO that might be copied into new
-drivers.
+Perhaps we need to have
 
-It may appear that this change drops the check for status = disabled,
-but in reality it does not because the of property code uses
-of_get_next_available_child().  This driver may well fail to probe
-if disabled is ever actually set though due to the need for
-complete concurrent child nodes.  A future series might resolve
-that restriction.
+...
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/iio/adc/ad7124.c | 35 ++++++++++++++++++-----------------
- 1 file changed, 18 insertions(+), 17 deletions(-)
+> +       device_for_each_child_node(dev, child)
+> +               st->num_channels++;
+> +
 
-diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index b2e49386d7dc..bbb9830e13c2 100644
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -14,7 +14,7 @@
- #include <linux/kernel.h>
- #include <linux/kfifo.h>
- #include <linux/module.h>
--#include <linux/of_device.h>
-+#include <linux/property.h>
- #include <linux/regulator/consumer.h>
- #include <linux/spi/spi.h>
- 
-@@ -733,18 +733,20 @@ static int ad7124_check_chip_id(struct ad7124_state *st)
- 	return 0;
- }
- 
--static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
--					  struct device_node *np)
-+static int ad7124_parse_channel_config(struct iio_dev *indio_dev,
-+				       struct device *dev)
- {
- 	struct ad7124_state *st = iio_priv(indio_dev);
- 	struct ad7124_channel_config *cfg;
- 	struct ad7124_channel *channels;
--	struct device_node *child;
-+	struct fwnode_handle *child;
- 	struct iio_chan_spec *chan;
- 	unsigned int ain[2], channel = 0, tmp;
- 	int ret;
- 
--	st->num_channels = of_get_available_child_count(np);
-+	device_for_each_child_node(dev, child)
-+		st->num_channels++;
-+
- 	if (!st->num_channels) {
- 		dev_err(indio_dev->dev.parent, "no channel children\n");
- 		return -ENODEV;
-@@ -764,9 +766,8 @@ static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
- 	indio_dev->num_channels = st->num_channels;
- 	st->channels = channels;
- 
--	for_each_available_child_of_node(np, child) {
--
--		ret = of_property_read_u32(child, "reg", &channel);
-+	device_for_each_child_node(dev, child) {
-+		ret = fwnode_property_read_u32(child, "reg", &channel);
- 		if (ret)
- 			goto err;
- 
-@@ -779,8 +780,8 @@ static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
- 
- 		cfg = &st->channels[channel].cfg;
- 
--		ret = of_property_read_u32_array(child, "diff-channels",
--						 ain, 2);
-+		ret = fwnode_property_read_u32_array(child, "diff-channels",
-+						     ain, 2);
- 		if (ret)
- 			goto err;
- 
-@@ -788,16 +789,16 @@ static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
- 		st->channels[channel].ain = AD7124_CHANNEL_AINP(ain[0]) |
- 						  AD7124_CHANNEL_AINM(ain[1]);
- 
--		cfg->bipolar = of_property_read_bool(child, "bipolar");
-+		cfg->bipolar = fwnode_property_read_bool(child, "bipolar");
- 
--		ret = of_property_read_u32(child, "adi,reference-select", &tmp);
-+		ret = fwnode_property_read_u32(child, "adi,reference-select", &tmp);
- 		if (ret)
- 			cfg->refsel = AD7124_INT_REF;
- 		else
- 			cfg->refsel = tmp;
- 
--		cfg->buf_positive = of_property_read_bool(child, "adi,buffered-positive");
--		cfg->buf_negative = of_property_read_bool(child, "adi,buffered-negative");
-+		cfg->buf_positive = fwnode_property_read_bool(child, "adi,buffered-positive");
-+		cfg->buf_negative = fwnode_property_read_bool(child, "adi,buffered-negative");
- 
- 		chan[channel] = ad7124_channel_template;
- 		chan[channel].address = channel;
-@@ -808,7 +809,7 @@ static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
- 
- 	return 0;
- err:
--	of_node_put(child);
-+	fwnode_handle_put(child);
- 
- 	return ret;
- }
-@@ -875,7 +876,7 @@ static int ad7124_probe(struct spi_device *spi)
- 	struct iio_dev *indio_dev;
- 	int i, ret;
- 
--	info = of_device_get_match_data(&spi->dev);
-+	info = device_get_match_data(&spi->dev);
- 	if (!info)
- 		return -ENODEV;
- 
-@@ -893,7 +894,7 @@ static int ad7124_probe(struct spi_device *spi)
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->info = &ad7124_info;
- 
--	ret = ad7124_of_parse_channel_config(indio_dev, spi->dev.of_node);
-+	ret = ad7124_parse_channel_config(indio_dev, &spi->dev);
- 	if (ret < 0)
- 		return ret;
- 
+device_get_child_node_count() ?
+
+...
+
+> -       for_each_available_child_of_node(np, child) {
+> +       device_for_each_child_node(dev, child) {
+
+Isn't this
+  fwnode_for_each_available_child_node()
+better to use?
+
+...
+
+So the gaps I see are
+  device_get_available_child_node_count()
+and
+  device_for_each_available_child_node()
+
+Both of them I think are easy to add and avoid possible breakage.
+
 -- 
-2.32.0
-
+With Best Regards,
+Andy Shevchenko

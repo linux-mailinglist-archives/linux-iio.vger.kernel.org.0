@@ -2,75 +2,68 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D1BA73D4E43
-	for <lists+linux-iio@lfdr.de>; Sun, 25 Jul 2021 17:19:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C770F3D4F0E
+	for <lists+linux-iio@lfdr.de>; Sun, 25 Jul 2021 19:22:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231215AbhGYOjB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 25 Jul 2021 10:39:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53264 "EHLO mail.kernel.org"
+        id S231219AbhGYQmF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 25 Jul 2021 12:42:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42312 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231208AbhGYOjA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 25 Jul 2021 10:39:00 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2109460F38;
-        Sun, 25 Jul 2021 15:19:28 +0000 (UTC)
-Date:   Sun, 25 Jul 2021 16:22:01 +0100
+        id S229545AbhGYQmF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 25 Jul 2021 12:42:05 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D79E160698;
+        Sun, 25 Jul 2021 17:22:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1627233755;
+        bh=bn1YvA29ZVIK2zKDMBx/XTa3nPLF3KkGhWnHFOyMlFc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=B9tn6IPBceSqLyitMDDrTZsh1JexnbzLWWIjRv3BBzm0zLDyBGCJSFrndT8iCv8R+
+         FOwU2oQdu+ltwX35yhIlV+35GggmQ6w2b1ObLWlNn3m+QAA1h9TKxF2hG4Y8wkk07k
+         upyj+2YSCRxYwQJUHkG7cMRZOJZZmsvaVZvtcaslwoeJbhkWtEqUORX8tu0uvKTUeJ
+         nqylmIDC8DzcfF3/POP0crXhOpDDZlbUfpcFvcq083xvu/WBvBmqe/XqKUlI+QZX9M
+         zxwD9N0CUnIoXcT+Hl9dGfFxMh/IRuaYoNW8NERbD45Mt1Ak9NPCWNkwruD93bqOgZ
+         ugUijSQIIYNfA==
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Christophe Branchereau <cbranchereau@gmail.com>
-Cc:     lars@metafoo.de, linux-mips@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        robh+dt@kernel.org, devicetree@vger.kernel.org, linux@roeck-us.net,
-        contact@artur-rojek.eu, paul@crapouillou.net
-Subject: Re: [PATCH v3 0/4] iio/adc: ingenic: add support for the JZ4760(B)
- Socs to the ingenic sadc driver
-Message-ID: <20210725162119.242ae17e@jic23-huawei>
-In-Reply-To: <20210724190449.221894-1-cbranchereau@gmail.com>
-References: <20210724190449.221894-1-cbranchereau@gmail.com>
-X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+To:     linux-iio@vger.kernel.org
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 0/2] iio:adc:ad7124: Convert to generic firmware handling
+Date:   Sun, 25 Jul 2021 18:24:56 +0100
+Message-Id: <20210725172458.487343-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 24 Jul 2021 21:04:44 +0200
-Christophe Branchereau <cbranchereau@gmail.com> wrote:
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-> This is a set of patches to add support to the JZ4760(B) socs found in numerous gaming handhelds and some
-> mp3 players to the ingenic-sadc driver.
-> 
-> Changelog for this v3:
-> - Minor formatting change in ingenic-adc.c to remain within 80 lines
-> - Correctly set the ingenic,use-internal-divider property in the Documentation so it cannot be used on other
-> socs than the jz4760b, and modify the description as requested.
-> 
-> Thanks to Paul and Jonathan for their help
+The fix was something noticed whilst editing adjacent code.
 
-You are welcome.
+Testing (minimal) done with hacked QEMU and a the device ID checks
+commented out. The driver handling of channel subnodes could be
+made more forgiving than it currently is, but this series doesn't
+attempt to change that and I'd be wary doing so without hardware.
 
-Other than Paul's question on the missing entry in patch 4, these look good to me.
-We should leave a bit of time for others to review but otherwise once that's
-resolved I'll pick them up.
+Andy pointed out we had a bunch of this of_ specific stuff still in IIO
+and it would be good to reduce this.  I'm not that bothered about
+cases tied directly to specific SoCs but for general SPI / I2C devices
+it would be nice if ACPI uses of PRP0001 worked for all of them and
+we ensure there are no 'bad' examples for people to base new drivers
+on.
 
-Thanks,
+Jonathan Cameron (2):
+  iio:adc:ad7124: Parse configuration into correct local config
+    structure.
+  iio:adc:ad7124: Convert to fwnode handling of child node parsing.
 
-Jonathan
+ drivers/iio/adc/ad7124.c | 38 ++++++++++++++++++++------------------
+ 1 file changed, 20 insertions(+), 18 deletions(-)
 
-> 
-> Christophe Branchereau (5):
->   iio/adc: ingenic: rename has_aux2 to has_aux_md
->   dt-bindings: iio/adc: add an INGENIC_ADC_AUX0 entry
->   iio/adc: ingenic: add JZ4760 support to the sadc driver
->   iio/adc: ingenic: add JZ4760B support to the sadc driver
->   dt-bindings: iio/adc: ingenic: add the JZ4760(B) socs to the sadc
->     Documentation
-> 
->  .../bindings/iio/adc/ingenic,adc.yaml         |  19 ++++
->  drivers/iio/adc/ingenic-adc.c                 | 101 ++++++++++++++++--
->  include/dt-bindings/iio/adc/ingenic,adc.h     |   1 +
->  3 files changed, 112 insertions(+), 9 deletions(-)
-> 
+-- 
+2.32.0
 

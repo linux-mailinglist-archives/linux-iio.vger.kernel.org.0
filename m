@@ -2,169 +2,115 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F1B53D4A99
-	for <lists+linux-iio@lfdr.de>; Sun, 25 Jul 2021 01:14:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D04193D4CCB
+	for <lists+linux-iio@lfdr.de>; Sun, 25 Jul 2021 11:14:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229831AbhGXWdx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 24 Jul 2021 18:33:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46164 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229573AbhGXWdw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 24 Jul 2021 18:33:52 -0400
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF338C061575;
-        Sat, 24 Jul 2021 16:14:23 -0700 (PDT)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 6AC96255;
-        Sun, 25 Jul 2021 01:14:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1627168459;
-        bh=r88xAdrjfzXdoiMkkqh9g2SZTk3/HDf6/u8QtHD8API=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Nic7BMs2Zy+fc94wMG4jR1dVQKgisByjECcTYS3H5kmkk3fFrouz1np4H5FxvZfYL
-         4meDj6/kBtiQ4J3a+V038SI/Z2GtRYJn5c7kHti24UKhgAy7VBJKriwIi6cEssagWJ
-         0JTLgkNS+4uDZPM1oC3vkiVg+JBjbzt52HugJt/w=
-Date:   Sun, 25 Jul 2021 02:14:15 +0300
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Sean Nyekjaer <sean@geanix.com>, devicetree@vger.kernel.org,
-        Jose Cazarin <joseespiriki@gmail.com>,
-        linux-i2c@vger.kernel.org, Wolfram Sang <wsa@kernel.org>
-Subject: Re: [PATCH v1.1 2/2] iio: dac: dac5571: Fix chip id detection for OF
- devices
-Message-ID: <YPyex1l0qLc2TTcF@pendragon.ideasonboard.com>
-References: <20210723183114.26017-3-laurent.pinchart@ideasonboard.com>
- <20210724000654.23168-1-laurent.pinchart@ideasonboard.com>
- <20210724154308.55afb03c@jic23-huawei>
+        id S230272AbhGYIeH convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Sun, 25 Jul 2021 04:34:07 -0400
+Received: from aposti.net ([89.234.176.197]:41052 "EHLO aposti.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229883AbhGYIeH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 25 Jul 2021 04:34:07 -0400
+Date:   Sun, 25 Jul 2021 10:14:26 +0100
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH v3 1/5] iio/adc: ingenic: rename has_aux2 to has_aux_md
+To:     Christophe Branchereau <cbranchereau@gmail.com>
+Cc:     jic23@kernel.org, lars@metafoo.de, linux-mips@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        robh+dt@kernel.org, devicetree@vger.kernel.org, linux@roeck-us.net,
+        contact@artur-rojek.eu
+Message-Id: <20NSWQ.3V5OK4JZMMRN@crapouillou.net>
+In-Reply-To: <20210724190449.221894-2-cbranchereau@gmail.com>
+References: <20210724190449.221894-1-cbranchereau@gmail.com>
+        <20210724190449.221894-2-cbranchereau@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210724154308.55afb03c@jic23-huawei>
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+Hi Christophe,
 
-On Sat, Jul 24, 2021 at 03:43:08PM +0100, Jonathan Cameron wrote:
-> On Sat, 24 Jul 2021 03:06:54 +0300 Laurent Pinchart wrote:
+Le sam., juil. 24 2021 at 21:04:45 +0200, Christophe Branchereau 
+<cbranchereau@gmail.com> a écrit :
+> The jz4760(b) socs have 3 aux channels.
 > 
-> > From: Jose Cazarin <joseespiriki@gmail.com>
-> > 
-> > When matching an OF device, the match mechanism tries all components of
-> > the compatible property. This can result with a device matched with a
-> > compatible string that isn't the first in the compatible list. For
-> > instance, with a compatible property set to
-> > 
-> >     compatible = "ti,dac081c081", "ti,dac5571";
-> > 
-> > the driver will match the second compatible string, as the first one
-> > isn't listed in the of_device_id table. The device will however be named
-> > "dac081c081" by the I2C core.
-> > 
-> > This causes an issue when identifying the chip. The probe function
-> > receives a i2c_device_id that comes from the module's I2C device ID
-> > table. There is no entry in that table for "dac081c081", which results
-> > in a NULL pointer passed to the probe function.
-> > 
-> > To fix this, add chip_id information in the data field of the OF device
-> > ID table, and retrieve it with of_device_get_match_data() for OF
-> > devices.
-> > 
-> > Signed-off-by: Jose Cazarin <joseespiriki@gmail.com>
-> > Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> The purpose of has_aux2 is to set the MD bits used to select
+> the AUX channel to be sampled, not to describe the hardware.
 > 
-> Interesting problem that I hadn't previously realised could happen.
+> Rename it to a more appropriate name.
 > 
-> One request though, can we use device_get_match_data() here rather than
-> the of specific version?  Include property.h as well for that.
-> 
-> That should allow the same issue with compatible to work correctly when
-> using PRP0001 based ACPI methods. 
-> https://elixir.bootlin.com/linux/v5.14-rc1/source/drivers/acpi/bus.c#L891
-> Will result in acpi_of_device_get_match_data() being called which will
-> match to the of_device_id table.
+> Signed-off-by: Christophe Branchereau <cbranchereau@gmail.com>
 
-Good point. I wasn't aware of PRP0001. I'll submit a v2 with this fixed,
-after giving a bit of time for additional review, if any (I'm in
-particular interested in whether this issue should be fixed in
-individual drivers or in the I2C core, as explained in the cover
-letter)).
+Reviewed-by: Paul Cercueil <paul@crapouillou.net>
 
-> > ---
-> > Changes since v1:
-> > 
-> > - Include linux/of_device.h
-> > ---
-> >  drivers/iio/dac/ti-dac5571.c | 28 ++++++++++++++++++----------
-> >  1 file changed, 18 insertions(+), 10 deletions(-)
-> > 
-> > diff --git a/drivers/iio/dac/ti-dac5571.c b/drivers/iio/dac/ti-dac5571.c
-> > index 2a5ba1b08a1d..8ceb1b42b14e 100644
-> > --- a/drivers/iio/dac/ti-dac5571.c
-> > +++ b/drivers/iio/dac/ti-dac5571.c
-> > @@ -19,6 +19,7 @@
-> >  #include <linux/i2c.h>
-> >  #include <linux/module.h>
-> >  #include <linux/mod_devicetable.h>
-> > +#include <linux/of_device.h>
-> >  #include <linux/regulator/consumer.h>
-> >  
-> >  enum chip_id {
-> > @@ -311,6 +312,7 @@ static int dac5571_probe(struct i2c_client *client,
-> >  	const struct dac5571_spec *spec;
-> >  	struct dac5571_data *data;
-> >  	struct iio_dev *indio_dev;
-> > +	enum chip_id chip_id;
-> >  	int ret, i;
-> >  
-> >  	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-> > @@ -326,7 +328,13 @@ static int dac5571_probe(struct i2c_client *client,
-> >  	indio_dev->modes = INDIO_DIRECT_MODE;
-> >  	indio_dev->channels = dac5571_channels;
-> >  
-> > -	spec = &dac5571_spec[id->driver_data];
-> > +	if (dev->of_node)
-> > +		chip_id = (uintptr_t)of_device_get_match_data(dev);
-> > +	else
-> > +		chip_id = id->driver_data;
-> > +
-> > +	spec = &dac5571_spec[chip_id];
-> > +
-> >  	indio_dev->num_channels = spec->num_channels;
-> >  	data->spec = spec;
-> >  
-> > @@ -384,15 +392,15 @@ static int dac5571_remove(struct i2c_client *i2c)
-> >  }
-> >  
-> >  static const struct of_device_id dac5571_of_id[] = {
-> > -	{.compatible = "ti,dac5571"},
-> > -	{.compatible = "ti,dac6571"},
-> > -	{.compatible = "ti,dac7571"},
-> > -	{.compatible = "ti,dac5574"},
-> > -	{.compatible = "ti,dac6574"},
-> > -	{.compatible = "ti,dac7574"},
-> > -	{.compatible = "ti,dac5573"},
-> > -	{.compatible = "ti,dac6573"},
-> > -	{.compatible = "ti,dac7573"},
-> > +	{.compatible = "ti,dac5571", .data = (void *)single_8bit},
-> > +	{.compatible = "ti,dac6571", .data = (void *)single_10bit},
-> > +	{.compatible = "ti,dac7571", .data = (void *)single_12bit},
-> > +	{.compatible = "ti,dac5574", .data = (void *)quad_8bit},
-> > +	{.compatible = "ti,dac6574", .data = (void *)quad_10bit},
-> > +	{.compatible = "ti,dac7574", .data = (void *)quad_12bit},
-> > +	{.compatible = "ti,dac5573", .data = (void *)quad_8bit},
-> > +	{.compatible = "ti,dac6573", .data = (void *)quad_10bit},
-> > +	{.compatible = "ti,dac7573", .data = (void *)quad_12bit},
-> >  	{}
-> >  };
-> >  MODULE_DEVICE_TABLE(of, dac5571_of_id);
+Cheers,
+-Paul
+
+> ---
+>  drivers/iio/adc/ingenic-adc.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ingenic-adc.c 
+> b/drivers/iio/adc/ingenic-adc.c
+> index 34c03a264f74..40f2d8c2cf72 100644
+> --- a/drivers/iio/adc/ingenic-adc.c
+> +++ b/drivers/iio/adc/ingenic-adc.c
+> @@ -92,7 +92,7 @@ struct ingenic_adc_soc_data {
+>  	const int *battery_scale_avail;
+>  	size_t battery_scale_avail_size;
+>  	unsigned int battery_vref_mode: 1;
+> -	unsigned int has_aux2: 1;
+> +	unsigned int has_aux_md: 1;
+>  	const struct iio_chan_spec *channels;
+>  	unsigned int num_channels;
+>  	int (*init_clk_div)(struct device *dev, struct ingenic_adc *adc);
+> @@ -506,7 +506,7 @@ static const struct ingenic_adc_soc_data 
+> jz4725b_adc_soc_data = {
+>  	.battery_scale_avail = jz4725b_adc_battery_scale_avail,
+>  	.battery_scale_avail_size = 
+> ARRAY_SIZE(jz4725b_adc_battery_scale_avail),
+>  	.battery_vref_mode = true,
+> -	.has_aux2 = false,
+> +	.has_aux_md = false,
+>  	.channels = jz4740_channels,
+>  	.num_channels = ARRAY_SIZE(jz4740_channels),
+>  	.init_clk_div = jz4725b_adc_init_clk_div,
+> @@ -520,7 +520,7 @@ static const struct ingenic_adc_soc_data 
+> jz4740_adc_soc_data = {
+>  	.battery_scale_avail = jz4740_adc_battery_scale_avail,
+>  	.battery_scale_avail_size = 
+> ARRAY_SIZE(jz4740_adc_battery_scale_avail),
+>  	.battery_vref_mode = true,
+> -	.has_aux2 = false,
+> +	.has_aux_md = false,
+>  	.channels = jz4740_channels,
+>  	.num_channels = ARRAY_SIZE(jz4740_channels),
+>  	.init_clk_div = NULL, /* no ADCLK register on JZ4740 */
+> @@ -534,7 +534,7 @@ static const struct ingenic_adc_soc_data 
+> jz4770_adc_soc_data = {
+>  	.battery_scale_avail = jz4770_adc_battery_scale_avail,
+>  	.battery_scale_avail_size = 
+> ARRAY_SIZE(jz4770_adc_battery_scale_avail),
+>  	.battery_vref_mode = false,
+> -	.has_aux2 = true,
+> +	.has_aux_md = true,
+>  	.channels = jz4770_channels,
+>  	.num_channels = ARRAY_SIZE(jz4770_channels),
+>  	.init_clk_div = jz4770_adc_init_clk_div,
+> @@ -581,7 +581,7 @@ static int ingenic_adc_read_chan_info_raw(struct 
+> iio_dev *iio_dev,
+> 
+>  	/* We cannot sample AUX/AUX2 in parallel. */
+>  	mutex_lock(&adc->aux_lock);
+> -	if (adc->soc_data->has_aux2 && engine == 0) {
+> +	if (adc->soc_data->has_aux_md && engine == 0) {
+>  		bit = BIT(chan->channel == INGENIC_ADC_AUX2);
+>  		ingenic_adc_set_config(adc, JZ_ADC_REG_CFG_AUX_MD, bit);
+>  	}
+> --
+> 2.30.2
 > 
 
--- 
-Regards,
 
-Laurent Pinchart

@@ -2,60 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A63F03D83FE
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Jul 2021 01:29:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4CA73D8402
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Jul 2021 01:29:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233729AbhG0X32 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 27 Jul 2021 19:29:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60376 "EHLO
+        id S233925AbhG0X3c (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 27 Jul 2021 19:29:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233686AbhG0X31 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Jul 2021 19:29:27 -0400
-Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C0D3C061757;
+        with ESMTP id S233258AbhG0X32 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Jul 2021 19:29:28 -0400
+Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00767C061760;
         Tue, 27 Jul 2021 16:29:26 -0700 (PDT)
-Received: by mail-qk1-x732.google.com with SMTP id t66so545047qkb.0;
+Received: by mail-qk1-x736.google.com with SMTP id 184so510220qkh.1;
         Tue, 27 Jul 2021 16:29:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=2RbNDDyjg8LeqN8Ur+WvNroKgulCjlo8nSzXgbnXYI8=;
-        b=vaRhEYQ39gDSfch3qn2iuLemkQaknmC+8zgyx/ubcS0n6ABBL1MNuf5dat8e1/gBSl
-         iRF9S0Qzq3puyKCzW+D9nIxSGc4ZbykIgk9NaiwtAca5Dctm842CnBqK0WFhQ7KEuvje
-         f9gc3/i2cirNMuOJyHB5VQxk9v/KNjB0ZIc70Y2NX9jf1Vw9bjKmw5eRHFPIB0F2Hbg7
-         Rq85B6rHf998IiK42ijaY02zdeNiO/BFcdSoS4zMaW/XMueoJP1mYrGKGwTGGOJAr38l
-         Jo9k3LJl+jAz28lHReUjXyo4Bhebcsyn9iDkBoP6czy0AhKXnb00c7M2E1C1cAPOErhP
-         nS7Q==
+        bh=Csc8wT/95G9747ozFthDCH/y0the7872d54YDDPRcbw=;
+        b=R8lSn+PkPn1WSVxtrB4LEJ7u2NOHgF3okdWNJ7xzOeyy+7P9UTaQvTDvHgOadoWXd+
+         TjrIpwi5jM/N2LoG24fvC2kAzzpO0ewfd8z04v3nyGbssOOgHD7FlJBUBe76gMsFkPsY
+         vj5fla4/G3G+z4DcMWna13jiFz+93+9GdDBojaaNVBHjty/oeMSCUb7pc1Vfnq2GyGKb
+         jq2XbnoDxnGX39jsIGyaRfuccYgoIIs8PS0+fu5lS6pOREKGOznsj96qpMMlEbT9X+md
+         oaCXrySgTc99/VnYmddL/5nMjfKfC7lv83cXA7Wh41DSseJhsDCHAyZtEevK9qOGBB0R
+         Er7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=2RbNDDyjg8LeqN8Ur+WvNroKgulCjlo8nSzXgbnXYI8=;
-        b=PkZ6ozXk26ss3Zz9YwXq+QHqfet6+X/rRJEI1fyGwfLQ/1pM/ge+yEi5TRhVP/ZrDP
-         nFUCrXxdbcx2/SQtcUpcX3WE91BQftVXo/oFckErDTToZp5rARSanSsoX4IiyPoUsIwZ
-         VL1nD/GOwyxQmqn0/iWaCwTHzVOsH9JbUHtk8ejOV3WeD7KMnWCEepi/qOqJcneGIwF9
-         mrl5uxVH+sBZXM12+fX5LhsCjwiD7LF+ANfIipWwBd3R9ar971ErAbXkxxw2Ze9GwjH/
-         nsT73sBwfrHITFbNsDgYUtZLLUOPOo7mV62UHseIH0a3Bs1tiTjTh/ebru6XRrVwWCwZ
-         bQ/Q==
-X-Gm-Message-State: AOAM531IXlXmP0DEhxYNvEVEiuxMhhswQ8IUanpMny8g/nPTSRxwJ+Tq
-        Uv35tVeUAh8h2d+av/HBiHE=
-X-Google-Smtp-Source: ABdhPJziiBME7bS4VSI257P/dcqtPtRil5PVxBI3EhYJoqfl8wyL+BwRllE5xhS2JrCn65tWsoi6Cg==
-X-Received: by 2002:a37:847:: with SMTP id 68mr25024897qki.112.1627428565270;
-        Tue, 27 Jul 2021 16:29:25 -0700 (PDT)
+        bh=Csc8wT/95G9747ozFthDCH/y0the7872d54YDDPRcbw=;
+        b=JXTvnHC7JOfhEgtzpMZyXbcf1h4fdtnz00KfUv+u7lrU09mRiH7SCS7BOT53CZD7LX
+         4iwklvYUfi7OtIMMKnVOQ1T4mErX9YlfgVwxVe0s22ICRWox/oRgsXXhVcbFDLMSJY7r
+         WTN/BSip3QOw0Dlu72U/ptQt1Cz7/TlKVBnJkDf7RXwqvqgrYTdRjBjuFLfcAPEEyXaX
+         diZ9t3tSsJeM16bofCemzCO4/FEJZEGuWSZ6XC4k5q4GKgsUAjFRQdSo5OH1r8bn7Nz/
+         XmwSHW3g+coKmxfhCmH5DfFVSRsaN1GZILszh/GUBP5dNWmVlCok0jJLoLbcLZxwNrXc
+         sNJw==
+X-Gm-Message-State: AOAM532b5/q7C49ESrNytHWEt8bMDap5AsddRBpBaPgIQ7c0r03lXEJR
+        ffBgvgTrPTqRyxmgZ2yqWA0=
+X-Google-Smtp-Source: ABdhPJzw3Glsh4KII0L97nq3gobiOH4Z1doCcqH+8rVV3Qtokh+NZCPlAx9NogU/F9cHuH3KOA5vRQ==
+X-Received: by 2002:a37:66d6:: with SMTP id a205mr24218043qkc.422.1627428566232;
+        Tue, 27 Jul 2021 16:29:26 -0700 (PDT)
 Received: from shaak.xiphos.ca (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
-        by smtp.gmail.com with ESMTPSA id p188sm2380514qka.114.2021.07.27.16.29.24
+        by smtp.gmail.com with ESMTPSA id p188sm2380514qka.114.2021.07.27.16.29.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Jul 2021 16:29:24 -0700 (PDT)
+        Tue, 27 Jul 2021 16:29:25 -0700 (PDT)
 From:   Liam Beguin <liambeguin@gmail.com>
 To:     liambeguin@gmail.com, lars@metafoo.de,
         Michael.Hennerich@analog.com, jic23@kernel.org,
         charles-antoine.couret@essensium.com, Nuno.Sa@analog.com
 Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org, robh+dt@kernel.org
-Subject: [PATCH v4 4/5] dt-bindings: iio: adc: ad7949: add per channel reference
-Date:   Tue, 27 Jul 2021 19:29:05 -0400
-Message-Id: <20210727232906.980769-5-liambeguin@gmail.com>
+Subject: [PATCH v4 5/5] iio: adc: ad7949: use devm managed functions
+Date:   Tue, 27 Jul 2021 19:29:06 -0400
+Message-Id: <20210727232906.980769-6-liambeguin@gmail.com>
 X-Mailer: git-send-email 2.30.1.489.g328c10930387
 In-Reply-To: <20210727232906.980769-1-liambeguin@gmail.com>
 References: <20210727232906.980769-1-liambeguin@gmail.com>
@@ -67,117 +67,65 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Liam Beguin <lvb@xiphos.com>
 
-Add bindings documentation describing per channel reference voltage
-selection.
-This adds the adi,internal-ref-microvolt property, and child nodes for
-each channel. This is required to properly configure the ADC sample
-request based on which reference source should be used for the
-calculation.
+Switch to devm_iio_device_register to finalize devm migration.
+This removes the use for iio_device_unregister() and since
+mutex_destroy() is not necessary here, remove it altogether.
 
 Signed-off-by: Liam Beguin <lvb@xiphos.com>
 ---
- .../bindings/iio/adc/adi,ad7949.yaml          | 69 +++++++++++++++++--
- 1 file changed, 65 insertions(+), 4 deletions(-)
+ drivers/iio/adc/ad7949.c | 25 +++----------------------
+ 1 file changed, 3 insertions(+), 22 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml
-index 9b56bd4d5510..893f72b8081e 100644
---- a/Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml
-@@ -26,19 +26,63 @@ properties:
-   reg:
-     maxItems: 1
+diff --git a/drivers/iio/adc/ad7949.c b/drivers/iio/adc/ad7949.c
+index eaea8f5e87d8..29a87a12e551 100644
+--- a/drivers/iio/adc/ad7949.c
++++ b/drivers/iio/adc/ad7949.c
+@@ -452,34 +452,16 @@ static int ad7949_spi_probe(struct spi_device *spi)
+ 	ret = ad7949_spi_init(ad7949_adc);
+ 	if (ret) {
+ 		dev_err(dev, "enable to init this device: %d\n", ret);
+-		goto err;
++		return ret;
+ 	}
  
-+  vrefin-supply:
-+    description:
-+      Buffered ADC reference voltage supply.
-+
-   vref-supply:
-     description:
--      ADC reference voltage supply
-+      Unbuffered ADC reference voltage supply.
+-	ret = iio_device_register(indio_dev);
+-	if (ret) {
++	ret = devm_iio_device_register(dev, indio_dev);
++	if (ret)
+ 		dev_err(dev, "fail to register iio device: %d\n", ret);
+-		goto err;
+-	}
+-
+-	return 0;
+-
+-err:
+-	mutex_destroy(&ad7949_adc->lock);
  
-   spi-max-frequency: true
+ 	return ret;
+ }
  
--  "#io-channel-cells":
-+  '#io-channel-cells':
-     const: 1
- 
-+  '#address-cells':
-+    const: 1
-+
-+  '#size-cells':
-+    const: 0
-+
- required:
-   - compatible
-   - reg
--  - vref-supply
-+
-+patternProperties:
-+  '^channel@([0-7])$':
-+    type: object
-+    description: |
-+      Represents the external channels which are connected to the ADC.
-+
-+    properties:
-+      reg:
-+        description: |
-+          The channel number.
-+          Up to 4 channels, numbered from 0 to 3 for adi,ad7682.
-+          Up to 8 channels, numbered from 0 to 7 for adi,ad7689 and adi,ad7949.
-+        items:
-+          minimum: 0
-+          maximum: 7
-+
-+      adi,internal-ref-microvolt:
-+        description: |
-+          Internal reference voltage selection in microvolts.
-+
-+          If no internal reference is specified, the channel will default to the
-+          external reference defined by vrefin-supply (or vref-supply).
-+          vrefin-supply will take precedence over vref-supply if both are defined.
-+
-+          If no supplies are defined, the reference selection will default to
-+          4096mV internal reference.
-+
-+        enum: [2500000, 4096000]
-+        default: 4096000
-+
-+    required:
-+      - reg
-+
-+    additionalProperties: false
- 
- additionalProperties: false
- 
-@@ -49,9 +93,26 @@ examples:
-         #size-cells = <0>;
- 
-         adc@0 {
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+
-             compatible = "adi,ad7949";
-             reg = <0>;
--            vref-supply = <&vdd_supply>;
-+            vrefin-supply = <&vdd_supply>;
-+
-+            channel@0 {
-+                adi,internal-ref-microvolt = <4096000>;
-+                reg = <0>;
-+            };
-+
-+            channel@1 {
-+                adi,internal-ref-microvolt = <2500000>;
-+                reg = <1>;
-+            };
-+
-+            channel@2 {
-+                reg = <2>;
-+            };
-         };
-     };
- ...
+-static int ad7949_spi_remove(struct spi_device *spi)
+-{
+-	struct iio_dev *indio_dev = spi_get_drvdata(spi);
+-	struct ad7949_adc_chip *ad7949_adc = iio_priv(indio_dev);
+-
+-	iio_device_unregister(indio_dev);
+-	mutex_destroy(&ad7949_adc->lock);
+-
+-	return 0;
+-}
+-
+ static const struct of_device_id ad7949_spi_of_id[] = {
+ 	{ .compatible = "adi,ad7949" },
+ 	{ .compatible = "adi,ad7682" },
+@@ -502,7 +484,6 @@ static struct spi_driver ad7949_spi_driver = {
+ 		.of_match_table	= ad7949_spi_of_id,
+ 	},
+ 	.probe	  = ad7949_spi_probe,
+-	.remove   = ad7949_spi_remove,
+ 	.id_table = ad7949_spi_id,
+ };
+ module_spi_driver(ad7949_spi_driver);
 -- 
 2.30.1.489.g328c10930387
 

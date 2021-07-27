@@ -2,116 +2,115 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B559C3D7786
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Jul 2021 15:52:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 826093D77BB
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Jul 2021 16:02:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232277AbhG0NwI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 27 Jul 2021 09:52:08 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:3503 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230500AbhG0NwI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Jul 2021 09:52:08 -0400
-Received: from fraeml708-chm.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4GYyfS0xVXz6J6LZ;
-        Tue, 27 Jul 2021 21:42:56 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml708-chm.china.huawei.com (10.206.15.36) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Tue, 27 Jul 2021 15:52:06 +0200
-Received: from localhost (10.47.8.150) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Tue, 27 Jul
- 2021 14:52:06 +0100
-Date:   Tue, 27 Jul 2021 14:51:41 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Michael Hennerich" <Michael.Hennerich@analog.com>,
-        Alexandru Tachici <alexandru.tachici@analog.com>
-Subject: Re: [PATCH 2/2] iio:adc:ad7124: Convert to fwnode handling of child
- node parsing.
-Message-ID: <20210727145141.0000230d@Huawei.com>
-In-Reply-To: <CAHp75VcgMkPw8BudKkF9MN2ijjDuT=VRo3FivVcjEYsEY4L-0w@mail.gmail.com>
-References: <20210725172458.487343-1-jic23@kernel.org>
-        <20210725172458.487343-3-jic23@kernel.org>
-        <CAHp75VcgMkPw8BudKkF9MN2ijjDuT=VRo3FivVcjEYsEY4L-0w@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
+        id S232185AbhG0OCK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 27 Jul 2021 10:02:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41928 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231223AbhG0OCI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Jul 2021 10:02:08 -0400
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A86EC061757;
+        Tue, 27 Jul 2021 07:02:08 -0700 (PDT)
+Received: by mail-pl1-x633.google.com with SMTP id i1so15859824plr.9;
+        Tue, 27 Jul 2021 07:02:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=MG0nAz3FF+ReTpCdyTI7WciKOtD3Jot25y+ByURqCXI=;
+        b=mHadje27Rek2f5KIEbEhqBrS0JeLoxsK0l50YWVVuKnf7MPIBlbXzaUVLO68NyhY8F
+         a3pIdfsMJXpkEjv0MoWicAsAD3Kmf4jMW2lM6paq7Ab07h+8QdqESzfmBySIMJJqCUii
+         MZ8qrDc86x/Xi67KbxhKkhzlv5J2KH+kiHpNPjq6vmZAt+lJwZldoZzW5FwVPKsikPIb
+         i3HG6zOX4SPC4UNAvNB656osTzdohO9KqmcVFv4KzPZnbery/Rzo/b57sGP0RBbxftqP
+         K04syYN+xtnerP0Yvq7MKQXzlApBvKlXMVNgHhgP15nbv6fsoDJUbuoAgV08hBqVWK/n
+         +hRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=MG0nAz3FF+ReTpCdyTI7WciKOtD3Jot25y+ByURqCXI=;
+        b=anMEjKsfPv1RWpBLAscIniT5nukN6SXZIEJSL32EAZHDAZebkXRKMfda0gUQCxJgz0
+         SN5eAZm6J5x71CQ8dx3ml9DTHen3h6GK8jiPY/XayXljSDCIh9BRrk2jj9Fy2cAL0iNM
+         mcrMER1gq687dBqRJrRAvT2PzCPDlG95/n5mURNkC+c1lOB6/ZQVFeckR6/+RKcnDtSY
+         yY+oJRmS1PYPePe98jaDhXK7pO0qEgGtGxvaDyeT2cw7mJYTSzKRE0Gsh2ikoyGPpk8K
+         w5d9AGGR2R4l/aYDc+5MFi6PbPZ5y4kSpx8+z3prFtnJyUosF9Un4+ciNv6OkbjfHnMA
+         ojEQ==
+X-Gm-Message-State: AOAM530uMaxJUxPBP8ch/gYEZK7iB4fmt9iJAf+XwM5zY5lPfCIJjPvX
+        t0we8mdKyL2xeI9I3ca1fBlIdcBRe1kkDA==
+X-Google-Smtp-Source: ABdhPJz4dnVEKSYd2KOAmoSpc0cDdgJhNJiyTVgP1qMvAiJd7ZHw0pq/Li6bdmmADTSgYm0af99d0A==
+X-Received: by 2002:a17:90a:ab07:: with SMTP id m7mr22139597pjq.27.1627394527979;
+        Tue, 27 Jul 2021 07:02:07 -0700 (PDT)
+Received: from localhost.localdomain ([49.156.66.102])
+        by smtp.googlemail.com with ESMTPSA id o8sm3071563pjm.21.2021.07.27.07.02.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Jul 2021 07:02:07 -0700 (PDT)
+From:   Puranjay Mohan <puranjay12@gmail.com>
+To:     Michael.Hennerich@analog.com, alexandru.ardelean@analog.com,
+        jic23@kernel.org, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        lars@metafoo.de, Dragos.Bogdan@analog.com, Darius.Berghe@analog.com
+Cc:     Puranjay Mohan <puranjay12@gmail.com>
+Subject: [PATCH v5 0/2] iio: accel: add support for ADXL355
+Date:   Tue, 27 Jul 2021 19:31:56 +0530
+Message-Id: <20210727140158.201188-1-puranjay12@gmail.com>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.8.150]
-X-ClientProxiedBy: lhreml745-chm.china.huawei.com (10.201.108.195) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 25 Jul 2021 23:33:12 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+Add the dt-bindings and the driver for ADXL355 3-axis MEMS Accelerometer.
 
-> On Sun, Jul 25, 2021 at 8:22 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> >
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >
-> > Also use device_get_match_data() rather than of specific variant.
-> > These changes enable use of this binding on ACPI platforms via PRP0001.
-> > Whilst it's possible no one will ever do so, this is part of a general
-> > effort to clear out examples from IIO that might be copied into new
-> > drivers.
-> >
-> > It may appear that this change drops the check for status = disabled,
-> > but in reality it does not because the of property code uses
-> > of_get_next_available_child().  This driver may well fail to probe
-> > if disabled is ever actually set though due to the need for
-> > complete concurrent child nodes.  A future series might resolve
-> > that restriction.  
-> 
-> Perhaps we need to have
-> 
-> ...
-> 
-> > +       device_for_each_child_node(dev, child)
-> > +               st->num_channels++;
-> > +  
-> 
-> device_get_child_node_count() ?
-> 
+Changes since v4:
+1. Fix errors reported by sparse.
 
-Gah. Not sure how I missed that one when looking for it...
+Changes since v3:
+1. Fix errors in yaml DT doc.
+2. Change SPDX-License-Identifier to GPL-2.0-only OR BSD-2-Clause
 
-> ...
-> 
-> > -       for_each_available_child_of_node(np, child) {
-> > +       device_for_each_child_node(dev, child) {  
-> 
-> Isn't this
->   fwnode_for_each_available_child_node()
-> better to use?
+Changes since v2:
+1. Add separate DT binding doc in yaml.
+2. Use ____cacheline_aligned buffer for regmap_bulk_read/write calls.
+3. Make code consistent by using same style in switch case.
+4. Use FIELD_PREP in place of custom macros.
+5. Make Kconfig description more informative.
 
-Given we would be extracting the fwnode just to call this
-loop, I'd say no, device version makes more sense..
+Changes since v1:
+1. Remove the declarations for static regmap structures from adxl355.h.
+This was missed in the v1 and caused errors.
+2. Make switch case statements consistent by directly returning from
+each case rather than saving the return in a variable.
+3. Some coding style changes.
 
-> 
-> ...
-> 
-> So the gaps I see are
->   device_get_available_child_node_count()
-> and
->   device_for_each_available_child_node()
+Changes since v0:
+1. Move adxl355_hpf_3db_table to adxl355_data structure. This is done to make
+sure that each device gets its own table.
+2. Make local regmap definitions private to adxl355_core.c.
+3. Other minor coding style changes.
 
-Do we then fix the fact that
-device_for_each_child_node() will call the _available() form
-for device tree?  That seems inconsistent currently and
-I was assuming that was deliberate...
+Puranjay Mohan (2):
+  dt-bindings: iio: accel: Add DT binding doc for ADXL355
+  iio: accel: Add driver support for ADXL355
 
-Jonathan
+ .../bindings/iio/accel/adi,adxl355.yaml       |  76 +++
+ MAINTAINERS                                   |   7 +
+ drivers/iio/accel/Kconfig                     |  29 +
+ drivers/iio/accel/Makefile                    |   3 +
+ drivers/iio/accel/adxl355.h                   |  77 +++
+ drivers/iio/accel/adxl355_core.c              | 542 ++++++++++++++++++
+ drivers/iio/accel/adxl355_i2c.c               |  63 ++
+ drivers/iio/accel/adxl355_spi.c               |  66 +++
+ 8 files changed, 863 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adxl355.yaml
+ create mode 100644 drivers/iio/accel/adxl355.h
+ create mode 100644 drivers/iio/accel/adxl355_core.c
+ create mode 100644 drivers/iio/accel/adxl355_i2c.c
+ create mode 100644 drivers/iio/accel/adxl355_spi.c
 
-
-> 
-> Both of them I think are easy to add and avoid possible breakage.
-> 
+-- 
+2.30.1
 

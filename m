@@ -2,60 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AE713D83FB
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Jul 2021 01:29:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EEFD3D83F7
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Jul 2021 01:29:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233680AbhG0X31 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S233605AbhG0X31 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Tue, 27 Jul 2021 19:29:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60360 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233248AbhG0X3Y (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Jul 2021 19:29:24 -0400
-Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com [IPv6:2607:f8b0:4864:20::734])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17620C061760;
-        Tue, 27 Jul 2021 16:29:23 -0700 (PDT)
-Received: by mail-qk1-x734.google.com with SMTP id t68so471203qkf.8;
-        Tue, 27 Jul 2021 16:29:23 -0700 (PDT)
+        with ESMTP id S233420AbhG0X3Z (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Jul 2021 19:29:25 -0400
+Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1569CC061764;
+        Tue, 27 Jul 2021 16:29:24 -0700 (PDT)
+Received: by mail-qk1-x735.google.com with SMTP id t68so471236qkf.8;
+        Tue, 27 Jul 2021 16:29:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=7ZvGxca2T5yVy2NGNqrtVScB3QVnEfEEyh0E6AQOPKc=;
-        b=T4bSUjbJmH2p0gAddGlgvEhJtTNXR2Mea0clf+LifO7K6E9IsyhSggGWlDMliWKbPL
-         zsJCbkPquUoc10yXignRvGwtpT11Y9K00F8UeEw6uWTbQgQu5lwUKgqLblEthdLVMVb4
-         TanawNWbPhUBHW5jrAC4awpiUqWYcElneL56ZjRWFj9JaF5lr1an/9u0v7GwbrINvHMu
-         pHT9QC+Nw5Youio1sLMabINgBbpvmZLG5o6jT0ml1bT6wa5uq3XWoIU/bFkHKt1pG26b
-         tgltoTCISuMZDhEQmPcY7Ajc2iMCnm8EiPoNUjUhK9XEhaI7J8jLMji2FzV9QRNDS0S8
-         G+zA==
+        bh=aXrlAfidCULyhP2C11Xrjur7fmsiuYHq0Us9S4wnzkQ=;
+        b=gIzyt668qkm1C+SQ12wfGDyG9bhQPELGz27s398YHVcbPusIriEZ7He1V76wkVB0kI
+         lrTNSNHCkBNKcaQSR66wGYA2/TACwIv+njZJntg9BcMANkzikPaQFIVe9znH/kn5de7a
+         eGLDjLp8FW89y9CEQOIrplgJH0xBCkVfoxV1o/tKPBFHkzAMe6t0wcYQqCl+L8Icvn4t
+         CzpsF9d7AAwfQQLg+mimXQdlwxovUu6WnX4P01MR7Bxmd4HvlgHTxqIXZ5WfwqX8GTgr
+         v+v2rOGVni5lmuUrjyOgGQXfPTKN3w/8hDLEsbis/OTYFcWdsUoJDMXJ97b7f8wmLfh2
+         Wyxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=7ZvGxca2T5yVy2NGNqrtVScB3QVnEfEEyh0E6AQOPKc=;
-        b=IvBx43l73y4vIczoi8Nj8Mr0Ccrhjy6pPGk4qaMmpboFD4SLDLy52Ug6d1mqAa/FeO
-         wS1WU0Cu3b9++DHbEZvLOe/VbJ1F6LTKfEcLAHH+N8jB8FcRoKkweJJUczhCp6r5Iol6
-         d1S/bma/MQJKNx9HRKcGM++Lg6dEdjMtDWfmqeEffcjGMeotcH/aQZFCspP17/NrmRlb
-         69qiVl6FIBBdCIR2zvTLJIbnsJ06TsnIa2XLVHtaaTRd3JkCrltZVrcKyDsvJDvnu2x7
-         f5HZ5T8FRasELOpbFnYYQnxYPsIpBdnq+tKMGSNhd4TwYgLBuObmnWVV2fiftO3WSvfc
-         qHhw==
-X-Gm-Message-State: AOAM530oOg7ChIzMa2ds2o7t5HR6RS2iKdKpCnUr7v6g3MMtjtDJQKA2
-        qr5hN+DKvPA6+zhpjM4zBc4=
-X-Google-Smtp-Source: ABdhPJySfU4EXVnLjVIgS2AmEhizcSCLA1KLOkkpQq34H/w73fwonxyoFsjzX2SrUijd0I6D02NG6Q==
-X-Received: by 2002:a37:ef05:: with SMTP id j5mr110877qkk.175.1627428562310;
-        Tue, 27 Jul 2021 16:29:22 -0700 (PDT)
+        bh=aXrlAfidCULyhP2C11Xrjur7fmsiuYHq0Us9S4wnzkQ=;
+        b=UXRNjU8qw9JZlIciRhSJFH1teIItsxeSaq5gRvZwG4tVLkOZaKIMMnFSi/1p11m1KW
+         7xCOwrOqozsUcsXARmtRBUDTa5kNhEjedaPBaTVSRSuDCbQRuLThzGJsjYKSzP8mJnM0
+         xYZTsJsphUPllEwNm/5wgDisv9s5100BEH8EaFt72y1bX779wVDBfhosz0Fw1en7eby/
+         HQVmYuYZMy+ifIJQJ6R26kev5KyA63WktOuuptQC2w4Z6Kl2kImPXlp5IVqqdlp3hf1j
+         /9tJB4n0cT6CCuPGziQq7hgkLL3Ud1tM+ihCwcjEMnlr8yGBntGaPplf3FKP7c/57zRw
+         BY0A==
+X-Gm-Message-State: AOAM531YTBd3OmgCPjpTkYr8BYMPX4kUeljMG9FAVU/VCNu4DDvZlgYJ
+        Q4cRwH6fEoD0io2BhD4eocc=
+X-Google-Smtp-Source: ABdhPJyzpYemZkEjJj0ZWcsM0ooRGuVjQq5r3foqRQ0j9iwfbH9uAKjAYpDPVk/SjlsdBvp/dZj88Q==
+X-Received: by 2002:a05:620a:4d5:: with SMTP id 21mr24466871qks.397.1627428563312;
+        Tue, 27 Jul 2021 16:29:23 -0700 (PDT)
 Received: from shaak.xiphos.ca (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
-        by smtp.gmail.com with ESMTPSA id p188sm2380514qka.114.2021.07.27.16.29.21
+        by smtp.gmail.com with ESMTPSA id p188sm2380514qka.114.2021.07.27.16.29.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Jul 2021 16:29:21 -0700 (PDT)
+        Tue, 27 Jul 2021 16:29:22 -0700 (PDT)
 From:   Liam Beguin <liambeguin@gmail.com>
 To:     liambeguin@gmail.com, lars@metafoo.de,
         Michael.Hennerich@analog.com, jic23@kernel.org,
         charles-antoine.couret@essensium.com, Nuno.Sa@analog.com
 Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org, robh+dt@kernel.org
-Subject: [PATCH v4 1/5] iio: adc: ad7949: define and use bitfield names
-Date:   Tue, 27 Jul 2021 19:29:02 -0400
-Message-Id: <20210727232906.980769-2-liambeguin@gmail.com>
+Subject: [PATCH v4 2/5] iio: adc: ad7949: fix spi messages on non 14-bit controllers
+Date:   Tue, 27 Jul 2021 19:29:03 -0400
+Message-Id: <20210727232906.980769-3-liambeguin@gmail.com>
 X-Mailer: git-send-email 2.30.1.489.g328c10930387
 In-Reply-To: <20210727232906.980769-1-liambeguin@gmail.com>
 References: <20210727232906.980769-1-liambeguin@gmail.com>
@@ -67,93 +67,146 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Liam Beguin <lvb@xiphos.com>
 
-Replace raw configuration register values by using FIELD_PREP and
-defines to improve readability.
+This driver supports devices with 14-bit and 16-bit sample sizes.
+This is not always handled properly by spi controllers and can fail. To
+work around this limitation, pad samples to 16-bit and split the sample
+into two 8-bit messages in the event that only 8-bit messages are
+supported by the controller.
 
 Signed-off-by: Liam Beguin <lvb@xiphos.com>
 ---
- drivers/iio/adc/ad7949.c | 50 +++++++++++++++++++++++++++++++++-------
- 1 file changed, 42 insertions(+), 8 deletions(-)
+ drivers/iio/adc/ad7949.c | 62 ++++++++++++++++++++++++++++++++++------
+ 1 file changed, 54 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/iio/adc/ad7949.c b/drivers/iio/adc/ad7949.c
-index 1b4b3203e428..0b549b8bd7a9 100644
+index 0b549b8bd7a9..f1702c54c8be 100644
 --- a/drivers/iio/adc/ad7949.c
 +++ b/drivers/iio/adc/ad7949.c
-@@ -11,12 +11,37 @@
- #include <linux/module.h>
- #include <linux/regulator/consumer.h>
- #include <linux/spi/spi.h>
-+#include <linux/bitfield.h>
- 
--#define AD7949_MASK_CHANNEL_SEL		GENMASK(9, 7)
- #define AD7949_MASK_TOTAL		GENMASK(13, 0)
--#define AD7949_OFFSET_CHANNEL_SEL	7
--#define AD7949_CFG_READ_BACK		0x1
--#define AD7949_CFG_REG_SIZE_BITS	14
-+
-+/* CFG: Configuration Update */
-+#define AD7949_CFG_BIT_OVERWRITE	BIT(13)
-+
-+/* INCC: Input Channel Configuration */
-+#define AD7949_CFG_BIT_INCC		GENMASK(12, 10)
-+#define AD7949_CFG_VAL_INCC_UNIPOLAR_GND	7
-+#define AD7949_CFG_VAL_INCC_UNIPOLAR_COMM	6
-+#define AD7949_CFG_VAL_INCC_UNIPOLAR_DIFF	4
-+#define AD7949_CFG_VAL_INCC_TEMP		3
-+#define AD7949_CFG_VAL_INCC_BIPOLAR		2
-+#define AD7949_CFG_VAL_INCC_BIPOLAR_DIFF	0
-+
-+/* INX: Input channel Selection in a binary fashion */
-+#define AD7949_CFG_BIT_INX		GENMASK(9, 7)
-+
-+/* BW: select bandwidth for low-pass filter. Full or Quarter */
-+#define AD7949_CFG_BIT_BW_FULL			BIT(6)
-+
-+/* REF: reference/buffer selection */
-+#define AD7949_CFG_BIT_REF		GENMASK(5, 3)
-+#define AD7949_CFG_VAL_REF_EXT_BUF		7
-+
-+/* SEQ: channel sequencer. Allows for scanning channels */
-+#define AD7949_CFG_BIT_SEQ		GENMASK(2, 1)
-+
-+/* RB: Read back the CFG register */
-+#define AD7949_CFG_BIT_RBN		BIT(0)
- 
- enum {
- 	ID_AD7949 = 0,
-@@ -109,8 +134,8 @@ static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
- 	 */
- 	for (i = 0; i < 2; i++) {
- 		ret = ad7949_spi_write_cfg(ad7949_adc,
--					   channel << AD7949_OFFSET_CHANNEL_SEL,
--					   AD7949_MASK_CHANNEL_SEL);
-+					   FIELD_PREP(AD7949_CFG_BIT_INX, channel),
-+					   AD7949_CFG_BIT_INX);
- 		if (ret)
- 			return ret;
- 		if (channel == ad7949_adc->current_channel)
-@@ -214,10 +239,19 @@ static int ad7949_spi_init(struct ad7949_adc_chip *ad7949_adc)
+@@ -67,6 +67,7 @@ static const struct ad7949_adc_spec ad7949_adc_spec[] = {
+  * @indio_dev: reference to iio structure
+  * @spi: reference to spi structure
+  * @resolution: resolution of the chip
++ * @bits_per_word: number of bits per SPI word
+  * @cfg: copy of the configuration register
+  * @current_channel: current channel in use
+  * @buffer: buffer to send / receive data to / from device
+@@ -77,6 +78,7 @@ struct ad7949_adc_chip {
+ 	struct iio_dev *indio_dev;
+ 	struct spi_device *spi;
+ 	u8 resolution;
++	u8 bits_per_word;
+ 	u16 cfg;
+ 	unsigned int current_channel;
+ 	u16 buffer ____cacheline_aligned;
+@@ -86,19 +88,34 @@ static int ad7949_spi_write_cfg(struct ad7949_adc_chip *ad7949_adc, u16 val,
+ 				u16 mask)
  {
  	int ret;
- 	int val;
-+	u16 cfg;
+-	int bits_per_word = ad7949_adc->resolution;
+-	int shift = bits_per_word - AD7949_CFG_REG_SIZE_BITS;
+ 	struct spi_message msg;
+ 	struct spi_transfer tx[] = {
+ 		{
+ 			.tx_buf = &ad7949_adc->buffer,
+ 			.len = 2,
+-			.bits_per_word = bits_per_word,
++			.bits_per_word = ad7949_adc->bits_per_word,
+ 		},
+ 	};
  
--	/* Sequencer disabled, CFG readback disabled, IN0 as default channel */
- 	ad7949_adc->current_channel = 0;
--	ret = ad7949_spi_write_cfg(ad7949_adc, 0x3C79, AD7949_MASK_TOTAL);
++	ad7949_adc->buffer = 0;
+ 	ad7949_adc->cfg = (val & mask) | (ad7949_adc->cfg & ~mask);
+-	ad7949_adc->buffer = ad7949_adc->cfg << shift;
 +
-+	cfg = FIELD_PREP(AD7949_CFG_BIT_OVERWRITE, 1) |
-+		FIELD_PREP(AD7949_CFG_BIT_INCC, AD7949_CFG_VAL_INCC_UNIPOLAR_GND) |
-+		FIELD_PREP(AD7949_CFG_BIT_INX, ad7949_adc->current_channel) |
-+		FIELD_PREP(AD7949_CFG_BIT_BW_FULL, 1) |
-+		FIELD_PREP(AD7949_CFG_BIT_REF, AD7949_CFG_VAL_REF_EXT_BUF) |
-+		FIELD_PREP(AD7949_CFG_BIT_SEQ, 0x0) |
-+		FIELD_PREP(AD7949_CFG_BIT_RBN, 1);
++	switch (ad7949_adc->bits_per_word) {
++	case 16:
++		ad7949_adc->buffer = ad7949_adc->cfg << 2;
++		break;
++	case 14:
++		ad7949_adc->buffer = ad7949_adc->cfg;
++		break;
++	case 8:
++		/* Here, type is big endian as it must be sent in two transfers */
++		ad7949_adc->buffer = (u16)cpu_to_be16(ad7949_adc->cfg << 2);
++		break;
++	default:
++		dev_err(&ad7949_adc->indio_dev->dev, "unsupported BPW\n");
++		return -EINVAL;
++	}
 +
-+	ret = ad7949_spi_write_cfg(ad7949_adc, cfg, AD7949_MASK_TOTAL);
+ 	spi_message_init_with_transfers(&msg, tx, 1);
+ 	ret = spi_sync(ad7949_adc->spi, &msg);
  
- 	/*
- 	 * Do two dummy conversions to apply the first configuration setting.
+@@ -115,14 +132,12 @@ static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
+ {
+ 	int ret;
+ 	int i;
+-	int bits_per_word = ad7949_adc->resolution;
+-	int mask = GENMASK(ad7949_adc->resolution - 1, 0);
+ 	struct spi_message msg;
+ 	struct spi_transfer tx[] = {
+ 		{
+ 			.rx_buf = &ad7949_adc->buffer,
+ 			.len = 2,
+-			.bits_per_word = bits_per_word,
++			.bits_per_word = ad7949_adc->bits_per_word,
+ 		},
+ 	};
+ 
+@@ -157,7 +172,25 @@ static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
+ 
+ 	ad7949_adc->current_channel = channel;
+ 
+-	*val = ad7949_adc->buffer & mask;
++	switch (ad7949_adc->bits_per_word) {
++	case 16:
++		*val = ad7949_adc->buffer;
++		/* Shift-out padding bits */
++		*val >>= 16 - ad7949_adc->resolution;
++		break;
++	case 14:
++		*val = ad7949_adc->buffer & GENMASK(13, 0);
++		break;
++	case 8:
++		/* Here, type is big endian as data was sent in two transfers */
++		*val = be16_to_cpu(ad7949_adc->buffer);
++		/* Shift-out padding bits */
++		*val >>= 16 - ad7949_adc->resolution;
++		break;
++	default:
++		dev_err(&ad7949_adc->indio_dev->dev, "unsupported BPW\n");
++		return -EINVAL;
++	}
+ 
+ 	return 0;
+ }
+@@ -265,6 +298,7 @@ static int ad7949_spi_init(struct ad7949_adc_chip *ad7949_adc)
+ 
+ static int ad7949_spi_probe(struct spi_device *spi)
+ {
++	u32 spi_ctrl_mask = spi->controller->bits_per_word_mask;
+ 	struct device *dev = &spi->dev;
+ 	const struct ad7949_adc_spec *spec;
+ 	struct ad7949_adc_chip *ad7949_adc;
+@@ -291,6 +325,18 @@ static int ad7949_spi_probe(struct spi_device *spi)
+ 	indio_dev->num_channels = spec->num_channels;
+ 	ad7949_adc->resolution = spec->resolution;
+ 
++	/* Set SPI bits per word */
++	if (spi_ctrl_mask & SPI_BPW_MASK(ad7949_adc->resolution)) {
++		ad7949_adc->bits_per_word = ad7949_adc->resolution;
++	} else if (spi_ctrl_mask == SPI_BPW_MASK(16)) {
++		ad7949_adc->bits_per_word = 16;
++	} else if (spi_ctrl_mask == SPI_BPW_MASK(8)) {
++		ad7949_adc->bits_per_word = 8;
++	} else {
++		dev_err(dev, "unable to find common BPW with spi controller\n");
++		return -EINVAL;
++	}
++
+ 	ad7949_adc->vref = devm_regulator_get(dev, "vref");
+ 	if (IS_ERR(ad7949_adc->vref)) {
+ 		dev_err(dev, "fail to request regulator\n");
 -- 
 2.30.1.489.g328c10930387
 

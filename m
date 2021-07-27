@@ -2,112 +2,159 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A6173D6DE4
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Jul 2021 07:16:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAECC3D6DE7
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Jul 2021 07:16:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235215AbhG0FQr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 27 Jul 2021 01:16:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34436 "EHLO
+        id S235257AbhG0FQv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 27 Jul 2021 01:16:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234923AbhG0FQq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Jul 2021 01:16:46 -0400
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 523ACC061757;
-        Mon, 26 Jul 2021 22:16:45 -0700 (PDT)
-Received: by mail-pj1-x1033.google.com with SMTP id b1-20020a17090a8001b029017700de3903so1976246pjn.1;
-        Mon, 26 Jul 2021 22:16:45 -0700 (PDT)
+        with ESMTP id S235237AbhG0FQt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Jul 2021 01:16:49 -0400
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FFA0C061757;
+        Mon, 26 Jul 2021 22:16:49 -0700 (PDT)
+Received: by mail-pl1-x62d.google.com with SMTP id d17so14409482plh.10;
+        Mon, 26 Jul 2021 22:16:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=ZKYFgBjjZwYmO/YYDavSQwhPmskL/iEGpl6anuA2AZE=;
-        b=iSGB8Yk6SY7cMvHQklOeef//X9ijee3KjIt1/NK1eh6KyY4d+PSJSapguDHoEL/sey
-         voVWNwcH4AMphup/tyAzSxT4ezuH3Pzrtl4W5Zlcc9bH2sh/i+/e6esiR4qH/7k8gg3G
-         T/2iiTepe38Ve6vqyVfHxXp1lftOjfo7vKTTHMFQIuJ/WVObEYAF81zMwMqYnfyINxR1
-         jMHIm61X2V1qQ0NQ6Nz86BJt3pIOa4LSvbnb81erUJ91FaxZbAfLFSJhBy1Q40BP9iFZ
-         9VQSPqZyt7wPogQnVte2gR0vOFUM6HvhG1jPDFhXdvPq0CO8CJYtrbB6AOgMb/Hj/JAA
-         zcvg==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=h2kTaN2ZN+1aitcGUZWKuCfydNUJBNibgDoSMPYfMtw=;
+        b=DL+7n5wZM9cNmgmgeb21atb7oVE9bdhQIgqUwIX4nqeJuug1wBbE3wCgMEg5tym6l5
+         SXHEAKyqrFAnAyRwEBtHSV99cqK/KVoJFP5izK77spQCYDXGox+28JJPDPrnAjKMFg3f
+         Q8tK+/mCAH/ooJUNAwOXYITRvG/EsYWOLkG8vPlUrAh6FOtAjer9igkeyR+BOtSpH49k
+         9CrrzzLs4T9IAMwedYjWalCkSTx28pc+xSHUcIMB5I3lWKLKikaAppnkpvGYW5Hmpo2P
+         5YfVYkaOOr+wN7CY2FkE4vUB+1tqOKxeUcDBF88qVLu2/mIfG35c2SISm/Rt9SUgrKPW
+         bgEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=ZKYFgBjjZwYmO/YYDavSQwhPmskL/iEGpl6anuA2AZE=;
-        b=XBsSK7DqLwmrN9OxiiSlcocznuSOkmKidi6j/7MiNA+xF6THxtL/5HxUAPtbL0YAE3
-         5p/dnwDIbcFTXyGdxHR+5YVbsWl8lVDwgdhLzvjDNHyA/QKSmTf6/Q4M87O266eXSveO
-         EQkOie/dBHqDXkM8rmP/IPOMWBAO1+i7wAMvTarIh4ruYJZoT+fioaS6U63bYeD1iF8U
-         NgZIN1dTLvhSTpuqBsx36hxC7ipvHQJYBYDjGWZwnUNcULDH6Do4ouw3hoCl0+aRsChw
-         XIehSqLGnrPwHOaCuVkKxOublnP0cFe1b/30ugKbfeNiy6clWnRGSh4ZSfv835o5nM1U
-         PtAg==
-X-Gm-Message-State: AOAM532WVVGrIhGSHjKKEOH3SR5Jw9rSmfBKdpez7uue8cf0y+9AuFf6
-        ubvqeiL8kM94qoOJ340FJMY=
-X-Google-Smtp-Source: ABdhPJyfzmDdbaen3mSXOnNDEdwKQGBuud2r53KZOFCsFenEvdjXOfAdreyB0ILQlwiQxtXqtwmNqw==
-X-Received: by 2002:a65:680c:: with SMTP id l12mr2805634pgt.122.1627363004734;
-        Mon, 26 Jul 2021 22:16:44 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=h2kTaN2ZN+1aitcGUZWKuCfydNUJBNibgDoSMPYfMtw=;
+        b=SdkwiMjpTsh+FDw94Aavwy/3uom6WHSj/FS7iBeLUtazHC0CnmoyDiokRp8bdZLnYc
+         H+DN7QAVd89BRKJDRF6POoVLT8d37D9e/066/nND3ct4Y0LAPQ/2T9CbcAkJzV6TmGhh
+         DfuI9yVOLo3FBa4W7Mwz6X7cvrZdU2MusWtnvv3kyXQhSP0lqo7vhxIOCd8TI3sDyGQq
+         uC/mPx26ZW2iJUvFDD29Tfygm5C4alDFmOQITRu976ulNHY9bv9Dwz2hp8iFNMgLNMSc
+         tNLQov3rF/NqwFB5HnR9ITnx+e6GO3WSu37N07NYn1nENgKt+soxOdu90hJHbyYoUlVL
+         BEfw==
+X-Gm-Message-State: AOAM532d1y6TXovaP0yMy9KlYA28F23jmxTT+8Xblm1aogojgtc16ZWG
+        8yGjQ/tnE9ZDCXaidpBkdvU=
+X-Google-Smtp-Source: ABdhPJxnsAwx2FXBqY4orcApj3VO1Xjf+6Zw8O5WMDjJX6yVooENlf9cQWHpH/9Nx/FL2KAz2tjoxg==
+X-Received: by 2002:a17:902:b093:b029:12c:843:b55a with SMTP id p19-20020a170902b093b029012c0843b55amr10578536plr.83.1627363008617;
+        Mon, 26 Jul 2021 22:16:48 -0700 (PDT)
 Received: from localhost.localdomain ([49.156.121.207])
-        by smtp.googlemail.com with ESMTPSA id k198sm1870787pfd.148.2021.07.26.22.16.41
+        by smtp.googlemail.com with ESMTPSA id k198sm1870787pfd.148.2021.07.26.22.16.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jul 2021 22:16:44 -0700 (PDT)
+        Mon, 26 Jul 2021 22:16:48 -0700 (PDT)
 From:   Puranjay Mohan <puranjay12@gmail.com>
 To:     Michael.Hennerich@analog.com, alexandru.ardelean@analog.com,
         jic23@kernel.org, devicetree@vger.kernel.org,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         lars@metafoo.de, Dragos.Bogdan@analog.com, Darius.Berghe@analog.com
 Cc:     Puranjay Mohan <puranjay12@gmail.com>
-Subject: [PATCH v4 0/2] iio: accel: add support for ADXL355
-Date:   Tue, 27 Jul 2021 10:46:25 +0530
-Message-Id: <20210727051627.12234-1-puranjay12@gmail.com>
+Subject: [PATCH v4 1/2] dt-bindings: iio: accel: Add DT binding doc for ADXL355
+Date:   Tue, 27 Jul 2021 10:46:26 +0530
+Message-Id: <20210727051627.12234-2-puranjay12@gmail.com>
 X-Mailer: git-send-email 2.30.1
+In-Reply-To: <20210727051627.12234-1-puranjay12@gmail.com>
+References: <20210727051627.12234-1-puranjay12@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add the dt-bindings and the driver for ADXL355 3-axis MEMS Accelerometer.
+Add devicetree binding document for ADXL355, a 3-Axis MEMS Accelerometer.
 
-Changes since v3:
-1. Fix errors in yaml DT doc.
-2. Change SPDX-License-Identifier to GPL-2.0-only OR BSD-2-Clause
-
-Changes since v2:
-1. Add separate DT binding doc in yaml.
-2. Use ____cacheline_aligned buffer for regmap_bulk_read/write calls.
-3. Make code consistent by using same style in switch case.
-4. Use FIELD_PREP in place of custom macros.
-5. Make Kconfig description more informative.
-
-Changes since v1:
-1. Remove the declarations for static regmap structures from adxl355.h.
-This was missed in the v1 and caused errors.
-2. Make switch case statements consistent by directly returning from
-each case rather than saving the return in a variable.
-3. Some coding style changes.
-
-Changes since v0:
-1. Move adxl355_hpf_3db_table to adxl355_data structure. This is done to make
-sure that each device gets its own table.
-2. Make local regmap definitions private to adxl355_core.c.
-3. Other minor coding style changes.
-
-Puranjay Mohan (2):
-  dt-bindings: iio: accel: Add DT binding doc for ADXL355
-  iio: accel: Add driver support for ADXL355
-
- .../bindings/iio/accel/adi,adxl355.yaml       |  76 +++
- MAINTAINERS                                   |   7 +
- drivers/iio/accel/Kconfig                     |  29 +
- drivers/iio/accel/Makefile                    |   3 +
- drivers/iio/accel/adxl355.h                   |  77 +++
- drivers/iio/accel/adxl355_core.c              | 545 ++++++++++++++++++
- drivers/iio/accel/adxl355_i2c.c               |  63 ++
- drivers/iio/accel/adxl355_spi.c               |  66 +++
- 8 files changed, 866 insertions(+)
+Signed-off-by: Puranjay Mohan <puranjay12@gmail.com>
+---
+ .../bindings/iio/accel/adi,adxl355.yaml       | 76 +++++++++++++++++++
+ 1 file changed, 76 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adxl355.yaml
- create mode 100644 drivers/iio/accel/adxl355.h
- create mode 100644 drivers/iio/accel/adxl355_core.c
- create mode 100644 drivers/iio/accel/adxl355_i2c.c
- create mode 100644 drivers/iio/accel/adxl355_spi.c
 
+diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adxl355.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adxl355.yaml
+new file mode 100644
+index 000000000..6e0652ce8
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl355.yaml
+@@ -0,0 +1,76 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/accel/adi,adxl355.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Analog Devices ADXL355 3-Axis, Low noise MEMS Accelerometer
++
++maintainers:
++  - Puranjay Mohan <puranjay12@gmail.com>
++
++description: |
++  Analog Devices ADXL355 3-Axis, Low noise MEMS Accelerometer that supports
++  both I2C & SPI interfaces
++    https://www.analog.com/en/products/adxl355.html
++
++properties:
++  compatible:
++    enum:
++      - adi,adxl355
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    minItems: 1
++    items:
++      - description: DRDY PIN
++      - description: INT1 PIN
++      - description: INT2 PIN
++
++  vdd-supply:
++    description: Regulator that provides power to the sensor
++
++  vddio-supply:
++    description: Regulator that provides power to the bus
++
++  spi-max-frequency: true
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++        #include <dt-bindings/gpio/gpio.h>
++        #include <dt-bindings/interrupt-controller/irq.h>
++        i2c0 {
++                #address-cells = <1>;
++                #size-cells = <0>;
++
++                /* Example for a I2C device node */
++                accelerometer@1d {
++                        compatible = "adi,adxl355";
++                        reg = <0x1d>;
++                        interrupt-parent = <&gpio>;
++                        interrupts = <25 IRQ_TYPE_EDGE_RISING>;
++                };
++        };
++  - |
++        #include <dt-bindings/gpio/gpio.h>
++        #include <dt-bindings/interrupt-controller/irq.h>
++        spi0 {
++                #address-cells = <1>;
++                #size-cells = <0>;
++
++                accelerometer@0 {
++                        compatible = "adi,adxl355";
++                        reg = <0>;
++                        spi-max-frequency = <1000000>;
++                        interrupt-parent = <&gpio>;
++                        interrupts = <25 IRQ_TYPE_EDGE_RISING>;
++                };
++        };
 -- 
 2.30.1
 

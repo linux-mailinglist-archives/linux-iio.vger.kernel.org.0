@@ -2,287 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 968973D7DB8
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Jul 2021 20:32:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23B253D7E6A
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Jul 2021 21:20:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231674AbhG0Sci (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 27 Jul 2021 14:32:38 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.53]:31094 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230005AbhG0Sc3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Jul 2021 14:32:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1627410737;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=HsnyKkwVuwBZ5dZmWdAzvHNmWsGSpO6mL4TmrrgnuPY=;
-    b=HPabScCGRZhykG9Xaj3Qq5xJNespzrGR8MuSIfzzhx8mTqm2O/A3oiOG+d/kajHLHF
-    W6M6fR//k/sTe1K8NcNgCEkgHuNhae0tyJTqhaAP4c2aSVzGNzqIxmTfBvSAz2CTw/lM
-    e91SbZMNjO+FpAv4UceL7AY9pxv5IMd06Gpup78TJ0uNjg/Xo8LJeAGII0KQDzkW4kjL
-    RWc8jj663jCsITMj/3v9Yo/d44Q7IYcjnBzfgp4h74KH0WLUowNo3Tef6izEqw107nyD
-    t9QIgFNeMgG08VyCkQ7VUb2YkTptbmb5nCwglc4ZgT6qgV9ZCjkWa2GcfXGoEZ7Ca13/
-    /YEA==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4paA8paM1A=="
-X-RZG-CLASS-ID: mo00
-Received: from gerhold.net
-    by smtp.strato.de (RZmta 47.28.1 DYNA|AUTH)
-    with ESMTPSA id g02a44x6RIWGr4c
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Tue, 27 Jul 2021 20:32:16 +0200 (CEST)
-Date:   Tue, 27 Jul 2021 20:32:12 +0200
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        Hans de Goede <hdegoede@redhat.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Nikita Travkin <nikita@trvn.ru>
-Subject: Re: [PATCH 4/4] iio: accel: bmc150: Add support for BMC156
-Message-ID: <YQBRLPyUc6+hXi0x@gerhold.net>
-References: <20210719112156.27087-1-stephan@gerhold.net>
- <20210719112156.27087-5-stephan@gerhold.net>
- <20210724171246.60c2b5be@jic23-huawei>
-MIME-Version: 1.0
+        id S232218AbhG0TU2 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Tue, 27 Jul 2021 15:20:28 -0400
+Received: from mail-wr1-f52.google.com ([209.85.221.52]:37844 "EHLO
+        mail-wr1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232078AbhG0TUZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Jul 2021 15:20:25 -0400
+Received: by mail-wr1-f52.google.com with SMTP id l4so16441986wrs.4
+        for <linux-iio@vger.kernel.org>; Tue, 27 Jul 2021 12:20:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:content-transfer-encoding:from:mime-version:date
+         :subject:message-id:to;
+        bh=avk7IuAa6fSD+99UB8FgBzV3nkJYhbaantOZrJM7o5c=;
+        b=G2gxZ+dcAPEmP2DU76UkuCw467AguLQ8AjUakLWslXzR6jLX9ejOf2RAH/phNUJeuB
+         tmW/XFhpyYmw0EiHoOoXxrfH3+GQtLUDLBkMejNnHGBjPKJdR8a/0xQMHKzuqvhHVFZa
+         OQkSMDoERvTmTgopmo6H55i63fRnRhYryBuCaK3aXSOMrLQPWGkPh5XQWpaW/PAJyv26
+         NZo9xTc7GH2s7jjlj7bSOlcJciMF7vFWE0YB7lifT9pXmtJuw5PbYpb360t57gaJuJLj
+         DP5wIi8nDbxv93dZqvJ0JqjYVRhHpg6z8sElBR2TPY4R6IZ5wf6nrceA/u7V10Yfgb9G
+         +aVQ==
+X-Gm-Message-State: AOAM5315NijpGy/6QJFFyZ44zsIbZ5Gnkgj97299urzuEceSoeBOA1fo
+        kjLi5erHfLDrqWXlcyiuYsMEmuqGDds=
+X-Google-Smtp-Source: ABdhPJzoRzdsyvKISWqp9faQ1gnYThAh9Fv6YatuAvmynyHtew2nz+CI4acigfACbLxKLC8+j6LQLQ==
+X-Received: by 2002:a5d:49c8:: with SMTP id t8mr2930529wrs.365.1627413622416;
+        Tue, 27 Jul 2021 12:20:22 -0700 (PDT)
+Received: from localhost.localdomain (cpc142184-mcam2-2-0-cust140.18-3.cable.virginm.net. [82.31.129.141])
+        by smtp.gmail.com with ESMTPSA id x8sm4262568wrt.93.2021.07.27.12.20.21
+        for <linux-iio@vger.kernel.org>
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Tue, 27 Jul 2021 12:20:22 -0700 (PDT)
+Received: from smtpclient.apple ([10.0.0.191])
+        by localhost.localdomain (8.14.3/8.14.3/Debian-9.4) with ESMTP id 16RJ091E012847
+        for <linux-iio@vger.kernel.org>; Tue, 27 Jul 2021 20:00:10 +0100
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210724171246.60c2b5be@jic23-huawei>
+Content-Transfer-Encoding: 8BIT
+From:   Patrick Regnouf <patrick@patricknet.net>
+Mime-Version: 1.0 (1.0)
+Date:   Tue, 27 Jul 2021 20:20:15 +0100
+Subject: Seeking documentation
+Message-Id: <48BB2335-FCEE-44F0-B771-02D065F3C54C@patricknet.net>
+To:     linux-iio@vger.kernel.org
+X-Mailer: iPhone Mail (18F72)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan!
+Hi,
 
-On Sat, Jul 24, 2021 at 05:12:46PM +0100, Jonathan Cameron wrote:
-> On Mon, 19 Jul 2021 13:21:56 +0200
-> Stephan Gerhold <stephan@gerhold.net> wrote:
-> 
-> > BMC156 is another accelerometer that works just fine with the bmc150-accel
-> > driver. It's very similar to BMC150 (also a accelerometer+magnetometer
-> > combo) but with only one accelerometer interrupt pin. It would make sense
-> > if only INT1 was exposed but someone at Bosch was crazy and decided to only
-> > have an INT2 pin.
-> > 
-> > Try to deal with this by making use of the INT2 support introduced
-> > in the previous commit and force using INT2 for BMC156. To detect
-> > that we need to bring up a simplified version of the previous type IDs.
-> > 
-> > Note that unlike the type IDs removed in commit c06a6aba6835
-> > ("iio: accel: bmc150: Drop misleading/duplicate chip identifiers")
-> > here I only add one for the special case of BMC156. Everything else
-> > still happens by reading the CHIP_ID register since the chip type
-> > information often is not accurate in ACPI tables.
-> > 
-> > Tested-by: Nikita Travkin <nikita@trvn.ru> # BMC156
-> > Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
-> A few really minor things inline.
-> 
-> Thanks,
-> 
-> Jonathan
-> 
-> > ---
-> >  drivers/iio/accel/Kconfig             |  5 +++--
-> >  drivers/iio/accel/bmc150-accel-core.c |  8 +++++---
-> >  drivers/iio/accel/bmc150-accel-i2c.c  | 10 ++++++++--
-> >  drivers/iio/accel/bmc150-accel-spi.c  | 10 +++++++++-
-> >  drivers/iio/accel/bmc150-accel.h      |  9 ++++++++-
-> >  5 files changed, 33 insertions(+), 9 deletions(-)
-> > 
-> > diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
-> > index 0e56ace61103..2f0c0d512ae7 100644
-> > --- a/drivers/iio/accel/Kconfig
-> > +++ b/drivers/iio/accel/Kconfig
-> > @@ -143,10 +143,11 @@ config BMC150_ACCEL
-> >  	select BMC150_ACCEL_SPI if SPI
-> >  	help
-> >  	  Say yes here to build support for the following Bosch accelerometers:
-> > -	  BMA222, BMA222E, BMA250E, BMA253, BMA254, BMA255, BMA280, BMC150, BMI055.
-> > +	  BMA222, BMA222E, BMA250E, BMA253, BMA254, BMA255, BMA280, BMC150, BMC156
-> > +	  BMI055.
-> >  
-> >  	  Note that some of these are combo modules:
-> > -	    - BMC150: accelerometer and magnetometer
-> > +	    - BMC150/BMC156: accelerometer and magnetometer
-> >  	    - BMI055: accelerometer and gyroscope
-> >  
-> >  	  This driver is only implementing accelerometer part, which has
-> > diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
-> > index 8d3dd3c2bcc2..a5d321e878ef 100644
-> > --- a/drivers/iio/accel/bmc150-accel-core.c
-> > +++ b/drivers/iio/accel/bmc150-accel-core.c
-> > @@ -553,7 +553,7 @@ static void bmc150_accel_interrupts_setup(struct iio_dev *indio_dev,
-> >  	 * Without interrupt-names, we assume the irq belongs to INT1.
-> >  	 */
-> >  	irq_info = bmc150_accel_interrupts_int1;
-> > -	if (irq == of_irq_get_byname(dev->of_node, "INT2"))
-> > +	if (data->type == BOSCH_BMC156 || irq == of_irq_get_byname(dev->of_node, "INT2"))
-> 
-> It is still preferred to keep line lengths under 80 chars unless it hurts
-> readability to do so.  So please wrap this one.
-> 
+New to libiio and cannot find any documentation and much less sample C programs to assign IRQ produced by an accelerometer to a user space program
 
-OK, will fix this in v2. :)
+In other words I need to write a daemon whose task is to be awaken by an IRQ (42 in my case) and write the event in a log file
 
-> >  		irq_info = bmc150_accel_interrupts_int2;
-> >  
-> >  	for (i = 0; i < BMC150_ACCEL_INTERRUPTS; i++)
-> > @@ -1174,7 +1174,7 @@ static const struct bmc150_accel_chip_info bmc150_accel_chip_info_tbl[] = {
-> >  				 {306458, BMC150_ACCEL_DEF_RANGE_16G} },
-> >  	},
-> >  	{
-> > -		.name = "BMA253/BMA254/BMA255/BMC150/BMI055",
-> > +		.name = "BMA253/BMA254/BMA255/BMC150/BMC156/BMI055",
-> >  		.chip_id = 0xFA,
-> >  		.channels = bmc150_accel_channels,
-> >  		.num_channels = ARRAY_SIZE(bmc150_accel_channels),
-> > @@ -1661,7 +1661,8 @@ static int bmc150_accel_chip_init(struct bmc150_accel_data *data)
-> >  }
-> >  
-> >  int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
-> > -			    const char *name, bool block_supported)
-> > +			    enum bmc150_type type, const char *name,
-> > +			    bool block_supported)
-> >  {
-> >  	const struct attribute **fifo_attrs;
-> >  	struct bmc150_accel_data *data;
-> > @@ -1676,6 +1677,7 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
-> >  	dev_set_drvdata(dev, indio_dev);
-> >  
-> >  	data->regmap = regmap;
-> > +	data->type = type;
-> >  
-> >  	if (!bmc150_apply_acpi_orientation(dev, &data->orientation)) {
-> >  		ret = iio_read_mount_matrix(dev, &data->orientation);
-> > diff --git a/drivers/iio/accel/bmc150-accel-i2c.c b/drivers/iio/accel/bmc150-accel-i2c.c
-> > index 999495f0669d..88bd8a25f142 100644
-> > --- a/drivers/iio/accel/bmc150-accel-i2c.c
-> > +++ b/drivers/iio/accel/bmc150-accel-i2c.c
-> > @@ -176,6 +176,7 @@ static int bmc150_accel_probe(struct i2c_client *client,
-> >  {
-> >  	struct regmap *regmap;
-> >  	const char *name = NULL;
-> > +	enum bmc150_type type = BOSCH_UNKNOWN;
-> >  	bool block_supported =
-> >  		i2c_check_functionality(client->adapter, I2C_FUNC_I2C) ||
-> >  		i2c_check_functionality(client->adapter,
-> > @@ -188,10 +189,13 @@ static int bmc150_accel_probe(struct i2c_client *client,
-> >  		return PTR_ERR(regmap);
-> >  	}
-> >  
-> > -	if (id)
-> > +	if (id) {
-> >  		name = id->name;
-> > +		type = id->driver_data;
-> > +	}
-> >  
-> > -	ret = bmc150_accel_core_probe(&client->dev, regmap, client->irq, name, block_supported);
-> > +	ret = bmc150_accel_core_probe(&client->dev, regmap, client->irq,
-> > +				      type, name, block_supported);
-> >  	if (ret)
-> >  		return ret;
-> >  
-> > @@ -236,6 +240,7 @@ static const struct i2c_device_id bmc150_accel_id[] = {
-> >  	{"bma255"},
-> >  	{"bma280"},
-> >  	{"bmc150_accel"},
-> > +	{"bmc156_accel", BOSCH_BMC156},
-> >  	{"bmi055_accel"},
-> >  	{}
-> >  };
-> > @@ -251,6 +256,7 @@ static const struct of_device_id bmc150_accel_of_match[] = {
-> >  	{ .compatible = "bosch,bma255" },
-> >  	{ .compatible = "bosch,bma280" },
-> >  	{ .compatible = "bosch,bmc150_accel" },
-> > +	{ .compatible = "bosch,bmc156_accel" },
-> >  	{ .compatible = "bosch,bmi055_accel" },
-> >  	{ },
-> >  };
-> > diff --git a/drivers/iio/accel/bmc150-accel-spi.c b/drivers/iio/accel/bmc150-accel-spi.c
-> > index 54b8c9c8068b..191e312dc91a 100644
-> > --- a/drivers/iio/accel/bmc150-accel-spi.c
-> > +++ b/drivers/iio/accel/bmc150-accel-spi.c
-> > @@ -16,6 +16,8 @@
-> >  static int bmc150_accel_probe(struct spi_device *spi)
-> >  {
-> >  	struct regmap *regmap;
-> > +	const char *name = NULL;
-> > +	enum bmc150_type type = BOSCH_UNKNOWN;
-> >  	const struct spi_device_id *id = spi_get_device_id(spi);
-> >  
-> >  	regmap = devm_regmap_init_spi(spi, &bmc150_regmap_conf);
-> > @@ -24,7 +26,12 @@ static int bmc150_accel_probe(struct spi_device *spi)
-> >  		return PTR_ERR(regmap);
-> >  	}
-> >  
-> > -	return bmc150_accel_core_probe(&spi->dev, regmap, spi->irq, id->name,
-> > +	if (id) {
-> > +		name = id->name;
-> > +		type = id->driver_data;
-> > +	}
-> > +
-> > +	return bmc150_accel_core_probe(&spi->dev, regmap, spi->irq, type, name,
-> >  				       true);
-> >  }
-> >  
-> > @@ -54,6 +61,7 @@ static const struct spi_device_id bmc150_accel_id[] = {
-> >  	{"bma255"},
-> >  	{"bma280"},
-> >  	{"bmc150_accel"},
-> > +	{"bmc156_accel", BOSCH_BMC156},
-> >  	{"bmi055_accel"},
-> >  	{}
-> >  };
-> > diff --git a/drivers/iio/accel/bmc150-accel.h b/drivers/iio/accel/bmc150-accel.h
-> > index 47121f070fe9..a3f4905e48a3 100644
-> > --- a/drivers/iio/accel/bmc150-accel.h
-> > +++ b/drivers/iio/accel/bmc150-accel.h
-> > @@ -13,6 +13,11 @@ struct i2c_client;
-> >  struct bmc150_accel_chip_info;
-> >  struct bmc150_accel_interrupt_info;
-> >  
-> > +enum bmc150_type {
-> > +	BOSCH_UNKNOWN,
-> > +	BOSCH_BMC156,
-> Whilst we only need to distinguish this one at the moment, the unknown naming
-> implies we don't know the type when often we actually do.
-> 
+I have already written code in that daemon that can  enumerate devices in the context and list channels etc..
 
-Hm, actually this is exactly what I want to imply! We do have seemingly
-obvious names listed in the ID tables, but unfortunately I don't think
-we can assume them to be accurate.
+I would really like to find sample C code that assign an IRQ to a device and basically is called in a function by the kernel. 
 
-The original reason why we no longer rely on the type implied by the ID
-is that there are some ACPI devices that specify an ID like "BMA250E"
-when they actually have a BMA222E, see commit 0ad4bf37017 [1]
-("iio:accel:bmc150-accel: Use the chip ID to detect sensor variant").
-
-And this was the motivation for my commit c06a6aba6835 [2]
-("iio: accel: bmc150: Drop misleading/duplicate chip identifiers").
-I removed them because they were not used. Also, we cannot make use of
-them in the general case because they are not reliable thanks to those
-ACPI devices.
-
-We could perhaps add it only for the of_device_ids. However, even there
-it's easy to specify some similar compatible only because Bosch has so
-many compatible parts. For example, the device where these BMC156
-changes were tested on was using "bosch,bmc150_accel" so far simply
-because this was working fine (without interrupts) and we weren't
-actually aware that it has a BMC156 instead of BMC150.
-
-Im my opinion, adding type information to all of them would imply that
-it can be used reliably, which is not the case unfortunately. Perhaps
-I should instead add a comment to this enum to make this more clear?
-
-What do you think?
-
-Thanks!
-Stephan
-
-[1]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=0ad4bf37017621e25fe157fa095fd8849779a873
-[2]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=c06a6aba6835946bcccb9909c98ec110949ea630
+/Patrick

@@ -2,40 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58D283D7762
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Jul 2021 15:47:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B559C3D7786
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Jul 2021 15:52:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237226AbhG0Nru (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 27 Jul 2021 09:47:50 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:3502 "EHLO
+        id S232277AbhG0NwI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 27 Jul 2021 09:52:08 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:3503 "EHLO
         frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237171AbhG0Nqw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Jul 2021 09:46:52 -0400
-Received: from fraeml710-chm.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4GYyPY75Bfz6BB29;
-        Tue, 27 Jul 2021 21:31:45 +0800 (CST)
+        with ESMTP id S230500AbhG0NwI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Jul 2021 09:52:08 -0400
+Received: from fraeml708-chm.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4GYyfS0xVXz6J6LZ;
+        Tue, 27 Jul 2021 21:42:56 +0800 (CST)
 Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml710-chm.china.huawei.com (10.206.15.59) with Microsoft SMTP Server
+ fraeml708-chm.china.huawei.com (10.206.15.36) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Tue, 27 Jul 2021 15:46:49 +0200
+ 15.1.2176.2; Tue, 27 Jul 2021 15:52:06 +0200
 Received: from localhost (10.47.8.150) by lhreml710-chm.china.huawei.com
  (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Tue, 27 Jul
- 2021 14:46:48 +0100
-Date:   Tue, 27 Jul 2021 14:46:22 +0100
+ 2021 14:52:06 +0100
+Date:   Tue, 27 Jul 2021 14:51:41 +0100
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     kernel test robot <lkp@intel.com>
-CC:     Puranjay Mohan <puranjay12@gmail.com>,
-        <Michael.Hennerich@analog.com>, <alexandru.ardelean@analog.com>,
-        <jic23@kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <lars@metafoo.de>, <Dragos.Bogdan@analog.com>,
-        <Darius.Berghe@analog.com>, <kbuild-all@lists.01.org>
-Subject: Re: [PATCH v4 2/2] iio: accel: Add driver support for ADXL355
-Message-ID: <20210727144622.00006d94@Huawei.com>
-In-Reply-To: <202107271937.8vfzyty1-lkp@intel.com>
-References: <20210727051627.12234-3-puranjay12@gmail.com>
-        <202107271937.8vfzyty1-lkp@intel.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "Michael Hennerich" <Michael.Hennerich@analog.com>,
+        Alexandru Tachici <alexandru.tachici@analog.com>
+Subject: Re: [PATCH 2/2] iio:adc:ad7124: Convert to fwnode handling of child
+ node parsing.
+Message-ID: <20210727145141.0000230d@Huawei.com>
+In-Reply-To: <CAHp75VcgMkPw8BudKkF9MN2ijjDuT=VRo3FivVcjEYsEY4L-0w@mail.gmail.com>
+References: <20210725172458.487343-1-jic23@kernel.org>
+        <20210725172458.487343-3-jic23@kernel.org>
+        <CAHp75VcgMkPw8BudKkF9MN2ijjDuT=VRo3FivVcjEYsEY4L-0w@mail.gmail.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
 MIME-Version: 1.0
@@ -49,257 +50,68 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 27 Jul 2021 19:45:46 +0800
-kernel test robot <lkp@intel.com> wrote:
+On Sun, 25 Jul 2021 23:33:12 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> Hi Puranjay,
+> On Sun, Jul 25, 2021 at 8:22 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >
+> > Also use device_get_match_data() rather than of specific variant.
+> > These changes enable use of this binding on ACPI platforms via PRP0001.
+> > Whilst it's possible no one will ever do so, this is part of a general
+> > effort to clear out examples from IIO that might be copied into new
+> > drivers.
+> >
+> > It may appear that this change drops the check for status = disabled,
+> > but in reality it does not because the of property code uses
+> > of_get_next_available_child().  This driver may well fail to probe
+> > if disabled is ever actually set though due to the need for
+> > complete concurrent child nodes.  A future series might resolve
+> > that restriction.  
 > 
-> I love your patch! Perhaps something to improve:
+> Perhaps we need to have
 > 
-> [auto build test WARNING on iio/togreg]
-> [also build test WARNING on linus/master v5.14-rc3 next-20210726]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch]
+> ...
 > 
-> url:    https://github.com/0day-ci/linux/commits/Puranjay-Mohan/iio-accel-add-support-for-ADXL355/20210727-131822
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-> config: openrisc-randconfig-s031-20210727 (attached as .config)
-> compiler: or1k-linux-gcc (GCC) 10.3.0
-> reproduce:
->         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
->         chmod +x ~/bin/make.cross
->         # apt-get install sparse
->         # sparse version: v0.6.3-341-g8af24329-dirty
->         # https://github.com/0day-ci/linux/commit/a0ad8ce87d3d3357c64f98bec48b75d07b961da8
->         git remote add linux-review https://github.com/0day-ci/linux
->         git fetch --no-tags linux-review Puranjay-Mohan/iio-accel-add-support-for-ADXL355/20210727-131822
->         git checkout a0ad8ce87d3d3357c64f98bec48b75d07b961da8
->         # save the attached .config to linux build tree
->         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-10.3.0 make.cross C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' ARCH=openrisc 
+> > +       device_for_each_child_node(dev, child)
+> > +               st->num_channels++;
+> > +  
 > 
-> If you fix the issue, kindly add following tag as appropriate
-> Reported-by: kernel test robot <lkp@intel.com>
+> device_get_child_node_count() ?
 > 
-> 
-> sparse warnings: (new ones prefixed by >>)
-> >> drivers/iio/accel/adxl355_core.c:204:16: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted __be32 [usertype] regval @@     got int @@  
->    drivers/iio/accel/adxl355_core.c:204:16: sparse:     expected restricted __be32 [usertype] regval
->    drivers/iio/accel/adxl355_core.c:204:16: sparse:     got int
-> >> drivers/iio/accel/adxl355_core.c:341:29: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted __be16 [usertype] out @@     got int @@  
->    drivers/iio/accel/adxl355_core.c:341:29: sparse:     expected restricted __be16 [usertype] out
->    drivers/iio/accel/adxl355_core.c:341:29: sparse:     got int
-> 
-> vim +204 drivers/iio/accel/adxl355_core.c
-> 
->    195	
->    196	static int adxl355_read_axis(struct adxl355_data *data, u8 addr)
->    197	{
->    198		__be32 regval;
->    199		int ret;
->    200	
->    201		ret = regmap_bulk_read(data->regmap, addr, data->transf_buf, 3);
->    202		if (ret < 0)
->    203			return ret;
->  > 204		regval = data->transf_buf[0] + (data->transf_buf[1] << 8)  
->    205					     + (data->transf_buf[2] << 16);
 
-Note that you can almost certainly use something like get_unaligned_be24(data->transf_buf)
-here, though current code is some mixture of hand unwinding the endianness
-and calling a standard function to do it.
+Gah. Not sure how I missed that one when looking for it...
 
->    206	
->    207		return be32_to_cpu(regval) >> 8;
->    208	}
->    209	
->    210	static int adxl355_find_match(const int (*freq_tbl)[2], const int n,
->    211				      const int val, const int val2)
->    212	{
->    213		int i;
->    214	
->    215		for (i = 0; i < n; i++) {
->    216			if (freq_tbl[i][0] == val && freq_tbl[i][1] == val2)
->    217				return i;
->    218		}
->    219	
->    220		return -EINVAL;
->    221	}
->    222	
->    223	static int adxl355_set_odr(struct adxl355_data *data,
->    224				   enum adxl355_odr odr)
->    225	{
->    226		int ret = 0;
->    227	
->    228		mutex_lock(&data->lock);
->    229	
->    230		if (data->odr == odr)
->    231			goto out_unlock;
->    232	
->    233		ret = adxl355_set_op_mode(data, ADXL355_STANDBY);
->    234		if (ret < 0)
->    235			goto out_unlock;
->    236	
->    237		ret = regmap_update_bits(data->regmap, ADXL355_FILTER,
->    238					 ADXL355_FILTER_ODR_MSK,
->    239					 FIELD_PREP(ADXL355_FILTER_ODR_MSK, odr));
->    240		if (ret < 0)
->    241			goto out_unlock;
->    242	
->    243		data->odr = odr;
->    244		adxl355_fill_3db_frequency_table(data);
->    245	
->    246	out_unlock:
->    247		ret = adxl355_set_op_mode(data, ADXL355_MEASUREMENT);
->    248		mutex_unlock(&data->lock);
->    249		return ret;
->    250	}
->    251	
->    252	static int adxl355_set_hpf_3db(struct adxl355_data *data,
->    253				       enum adxl355_hpf_3db hpf)
->    254	{
->    255		int ret = 0;
->    256	
->    257		mutex_lock(&data->lock);
->    258	
->    259		if (data->hpf_3db == hpf)
->    260			goto out_unlock;
->    261	
->    262		ret = adxl355_set_op_mode(data, ADXL355_STANDBY);
->    263		if (ret < 0)
->    264			goto out_unlock;
->    265	
->    266		ret = regmap_update_bits(data->regmap, ADXL355_FILTER,
->    267					 ADXL355_FILTER_HPF_MSK,
->    268					 FIELD_PREP(ADXL355_FILTER_HPF_MSK, hpf));
->    269		if (!ret)
->    270			data->hpf_3db = hpf;
->    271	
->    272	out_unlock:
->    273		ret = adxl355_set_op_mode(data, ADXL355_MEASUREMENT);
->    274		mutex_unlock(&data->lock);
->    275		return ret;
->    276	}
->    277	
->    278	static int adxl355_set_calibbias(struct adxl355_data *data,
->    279					 int channel2, int calibbias)
->    280	{
->    281		int ret = 0;
->    282	
->    283		data->transf_buf[0] = (calibbias >> 8) & 0xFF;
->    284		data->transf_buf[1] = calibbias & 0xFF;
->    285		data->transf_buf[2] = 0;
->    286	
->    287		mutex_lock(&data->lock);
->    288	
->    289		ret = adxl355_set_op_mode(data, ADXL355_STANDBY);
->    290		if (ret < 0)
->    291			goto out_unlock;
->    292	
->    293		switch (channel2) {
->    294		case IIO_MOD_X:
->    295			ret = regmap_bulk_write(data->regmap, ADXL355_OFFSET_X_H,
->    296						data->transf_buf, 2);
->    297			if (ret < 0)
->    298				goto out_unlock;
->    299			data->x_calibbias = calibbias;
->    300			break;
->    301		case IIO_MOD_Y:
->    302			ret = regmap_bulk_write(data->regmap, ADXL355_OFFSET_Y_H,
->    303						data->transf_buf, 2);
->    304			if (ret < 0)
->    305				goto out_unlock;
->    306			data->y_calibbias = calibbias;
->    307			break;
->    308		case IIO_MOD_Z:
->    309			ret = regmap_bulk_write(data->regmap, ADXL355_OFFSET_Z_H,
->    310						data->transf_buf, 2);
->    311			if (ret < 0)
->    312				goto out_unlock;
->    313			data->z_calibbias = calibbias;
->    314			break;
->    315		default:
->    316			ret = -EINVAL;
->    317			break;
->    318		}
->    319	
->    320	out_unlock:
->    321		ret = adxl355_set_op_mode(data, ADXL355_MEASUREMENT);
->    322		mutex_unlock(&data->lock);
->    323		return ret;
->    324	}
->    325	
->    326	static int adxl355_read_raw(struct iio_dev *indio_dev,
->    327				    struct iio_chan_spec const *chan,
->    328				    int *val, int *val2, long mask)
->    329	{
->    330		struct adxl355_data *data = iio_priv(indio_dev);
->    331		int ret;
->    332		__be16 out;
->    333	
->    334		switch (mask) {
->    335		case IIO_CHAN_INFO_RAW:
->    336			switch (chan->type) {
->    337			case IIO_TEMP:
->    338				ret = adxl355_get_temp_data(data, chan->address);
->    339				if (ret < 0)
->    340					return ret;
->  > 341				out = (data->transf_buf[1] << 8) + data->transf_buf[0];  
->    342				*val = be16_to_cpu(out);
->    343	
->    344				return IIO_VAL_INT;
->    345			case IIO_ACCEL:
->    346				ret = adxl355_read_axis(data, chan->address);
->    347				if (ret < 0)
->    348					return ret;
->    349				*val = sign_extend32(ret >> (chan->scan_type.shift),
->    350						     chan->scan_type.realbits - 1);
->    351				return IIO_VAL_INT;
->    352			default:
->    353				return -EINVAL;
->    354			}
->    355	
->    356		case IIO_CHAN_INFO_SCALE:
->    357			switch (chan->type) {
->    358			case IIO_TEMP:
->    359				*val = TEMP_SCALE_VAL;
->    360				*val2 = TEMP_SCALE_VAL2;
->    361				return IIO_VAL_INT_PLUS_MICRO;
->    362			case IIO_ACCEL:
->    363				*val = 0;
->    364				*val2 = ADXL355_NSCALE;
->    365				return IIO_VAL_INT_PLUS_NANO;
->    366			default:
->    367				return -EINVAL;
->    368			}
->    369		case IIO_CHAN_INFO_OFFSET:
->    370			*val = TEMP_OFFSET_VAL;
->    371			*val2 = TEMP_OFFSET_VAL2;
->    372			return IIO_VAL_INT_PLUS_MICRO;
->    373		case IIO_CHAN_INFO_CALIBBIAS:
->    374			if (chan->channel2 == IIO_MOD_X)
->    375				*val = data->x_calibbias;
->    376			else if (chan->channel2 == IIO_MOD_Y)
->    377				*val = data->y_calibbias;
->    378			else
->    379				*val = data->z_calibbias;
->    380			*val = sign_extend32(*val, 15);
->    381			return IIO_VAL_INT;
->    382		case IIO_CHAN_INFO_SAMP_FREQ:
->    383			*val = adxl355_odr_table[data->odr][0];
->    384			*val2 = adxl355_odr_table[data->odr][1];
->    385			return IIO_VAL_INT_PLUS_MICRO;
->    386		case IIO_CHAN_INFO_HIGH_PASS_FILTER_3DB_FREQUENCY:
->    387			*val = data->adxl355_hpf_3db_table[data->hpf_3db][0];
->    388			*val2 = data->adxl355_hpf_3db_table[data->hpf_3db][1];
->    389			return IIO_VAL_INT_PLUS_MICRO;
->    390		default:
->    391			return -EINVAL;
->    392		}
->    393	}
->    394	
+> ...
 > 
-> ---
-> 0-DAY CI Kernel Test Service, Intel Corporation
-> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> > -       for_each_available_child_of_node(np, child) {
+> > +       device_for_each_child_node(dev, child) {  
+> 
+> Isn't this
+>   fwnode_for_each_available_child_node()
+> better to use?
+
+Given we would be extracting the fwnode just to call this
+loop, I'd say no, device version makes more sense..
+
+> 
+> ...
+> 
+> So the gaps I see are
+>   device_get_available_child_node_count()
+> and
+>   device_for_each_available_child_node()
+
+Do we then fix the fact that
+device_for_each_child_node() will call the _available() form
+for device tree?  That seems inconsistent currently and
+I was assuming that was deliberate...
+
+Jonathan
+
+
+> 
+> Both of them I think are easy to add and avoid possible breakage.
 > 
 

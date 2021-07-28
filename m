@@ -2,128 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 909293D84A6
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Jul 2021 02:26:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 068023D87FC
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Jul 2021 08:34:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233041AbhG1A0r (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 27 Jul 2021 20:26:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44932 "EHLO
+        id S234122AbhG1Gem (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 28 Jul 2021 02:34:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232778AbhG1A0q (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Jul 2021 20:26:46 -0400
-Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C1C3C061757;
-        Tue, 27 Jul 2021 17:26:45 -0700 (PDT)
-Received: by mail-qk1-x735.google.com with SMTP id t68so589816qkf.8;
-        Tue, 27 Jul 2021 17:26:45 -0700 (PDT)
+        with ESMTP id S233989AbhG1Gem (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 28 Jul 2021 02:34:42 -0400
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FB7CC061757;
+        Tue, 27 Jul 2021 23:34:40 -0700 (PDT)
+Received: by mail-pj1-x1034.google.com with SMTP id mt6so3697786pjb.1;
+        Tue, 27 Jul 2021 23:34:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:content-transfer-encoding:date:message-id:subject:from
-         :to:cc:references:in-reply-to;
-        bh=1A91s7Te2XTyl2yRkF2IWoqCfdQ4Me6Q3qE2EpgjHdI=;
-        b=LKRG/+wKMTDkesuu00lkfu/zGXKF5+uU2nLHisI/26KcBSO/A/GVA1O8f1fBUJH5rK
-         U4MUpVLvOAmO0U5/IfkYi6QrFPl5p113RGat9ncHiSl+kBNW0/6b+bqWK5QqTZmdGHc6
-         dqs/jm0IuuEDE0fuzI8csw7yOTfsnT36+MW6+yyJoSGSxwsyXSQHr43OKHVY7d8iKlNw
-         VtG5cbBiN8+FZbT+Fe5F6oEwNqdeFGfhCobStdGVoDtPfYUdbuIiJVIra5E1IBYsDbFl
-         bdlbPMb9ww1yNFJqVyN61MRSC8puBYGy5dFm8SnuKOiheL2l4akeGXoT8Zrwz3FKRs19
-         PHNw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=9DmELG1+gVWEcdyY7//y7sI4pfR9zgU+WdxarmT6tSs=;
+        b=hBLsVbJHABv39fCJdwJEiFnBwz0SSVjEq5d8EfPYrxMbuO76MDzevoYSPDzoCIamOG
+         3b2SYrO3qIqajTHx8PMkqIep9+T0fuJD5M7AGznU5sh0lPg50i8plbdZfRwZpZT1f2Vb
+         mLW93MQc1zNOYNRC/CDSIcvnNTJqnB1sXQPCOG+WYBeHaT5hglHEij2EetI2LUr2HdIZ
+         lEgaH5Ou4CVaQgNSCWAtFlM47jR0s7AoaR+4BmFanBnVh16wopxkN7E4KLHqxUZmscIb
+         jpjhGF8RO3mX8UGqGPC7duOSdxzPV+WBY0M1adEpUAk/NYuAnfgfFvUX71WkgrvjMFs6
+         cflA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:content-transfer-encoding:date
-         :message-id:subject:from:to:cc:references:in-reply-to;
-        bh=1A91s7Te2XTyl2yRkF2IWoqCfdQ4Me6Q3qE2EpgjHdI=;
-        b=QlXqm82Vh6kYkgXAKDQOiP+xAo/+cz/KXmEdozif09A/xZfVV/uKq71xC1+ABFhx6r
-         DwhHft59QSuQiqMxC8BY6ZcopXxKbQ53pP8vm5Um9K18m705qYX/cZhzWZd2IorU0PpM
-         5XbWmxbfYpCXM0M9fEZQ9XhcZzYp1CEMvk8l4Uc1f8vnLMmsIIAAiTagMIEBE+dZnBfm
-         PihMRH10Bl1ISUAmd+F+31ubLGliwa/QBCDncB6rlwcxMJYuODrj2vPlcK0YyguGlD0P
-         CVMriETAO9dlbbUSn6dGkwZxbRyl8DB/mdcDoOnxQ9uqi5xGCEOlaJovbdnHKNLzpi2Q
-         ixWA==
-X-Gm-Message-State: AOAM5311He37pnni9LX8IEoApk63/l6j8kWf2E9ZnDaV1s15GVk8TN4X
-        YTEX3tlnu8d74klwTffmLjw=
-X-Google-Smtp-Source: ABdhPJyMMGFUcvCN6+XwH+nVJAu+SYgqo7VOgdghYiurl+vKYwt63xkYautuodh9DVpATVYo0yj1Kw==
-X-Received: by 2002:a37:b645:: with SMTP id g66mr25281110qkf.32.1627432004610;
-        Tue, 27 Jul 2021 17:26:44 -0700 (PDT)
-Received: from localhost (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
-        by smtp.gmail.com with ESMTPSA id h68sm2549762qkf.126.2021.07.27.17.26.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Jul 2021 17:26:44 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Tue, 27 Jul 2021 20:26:43 -0400
-Message-Id: <CD4CHX6R9QRI.2Q76MYJGTXNWK@shaak>
-Subject: Re: [PATCH v6 09/13] iio: afe: rescale: fix precision on fractional
- log scale
-From:   "Liam Beguin" <liambeguin@gmail.com>
-To:     "Peter Rosin" <peda@axentia.se>, <jic23@kernel.org>,
-        <lars@metafoo.de>, <pmeerw@pmeerw.net>
-Cc:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
-References: <20210721030613.3105327-1-liambeguin@gmail.com>
- <20210721030613.3105327-10-liambeguin@gmail.com>
- <d2dea8ea-5a31-0428-4eac-4e4315d07a42@axentia.se>
-In-Reply-To: <d2dea8ea-5a31-0428-4eac-4e4315d07a42@axentia.se>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=9DmELG1+gVWEcdyY7//y7sI4pfR9zgU+WdxarmT6tSs=;
+        b=RCJpjGNdcUe0HtsApimyBsN22RZYlnEFAWdiK33vwLzcRKRy42o8tM14UrfUvhMAAy
+         KgzgLgfPQ2vSfKDsqgRW/tsA9upw8GCut8gaUCLc5ATLslRYTt3wGNmn7V4nHqQF/CVy
+         wzjacbB5wRdfQw1OChqQLCerbaVTV0JTN7UVyunWy6wYA7b21wrxDQjW6/zeLphuQP4t
+         LKE9fO5BBaThiCxpIyxIaIYJ94wIgv6skAvyuq76QoLPMa4z3P8C1bcbPekuXBdJaVFF
+         mWmfbVoukxjKwOH64iDwUwJyBDueJJf/ZC9KoW7C/k4EPPzL1XMX5IDwligIOTtV3X7b
+         wGCw==
+X-Gm-Message-State: AOAM531jts/ZRw+dMVQ4XFNkY1LOsAG2/GTwT0lrvVhMw1VdMKOcJnOA
+        6NDKsgB+IUBf1gY+Uc0COvA=
+X-Google-Smtp-Source: ABdhPJykhAsaGkST3v8hKLOWZ/IR7hFeOoOoIE3eI+f3o7caP8nReZ9C3MrrsC0vwHF5ZUd9l23PeA==
+X-Received: by 2002:a62:3896:0:b029:33a:f41a:11a4 with SMTP id f144-20020a6238960000b029033af41a11a4mr27194404pfa.9.1627454079848;
+        Tue, 27 Jul 2021 23:34:39 -0700 (PDT)
+Received: from localhost.localdomain ([27.255.220.51])
+        by smtp.googlemail.com with ESMTPSA id e30sm6698882pga.63.2021.07.27.23.34.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Jul 2021 23:34:39 -0700 (PDT)
+From:   Puranjay Mohan <puranjay12@gmail.com>
+To:     Michael.Hennerich@analog.com, alexandru.ardelean@analog.com,
+        jic23@kernel.org, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        lars@metafoo.de, Dragos.Bogdan@analog.com, Darius.Berghe@analog.com
+Cc:     Puranjay Mohan <puranjay12@gmail.com>
+Subject: [PATCH v6 0/2] iio: accel: add support for ADXL355
+Date:   Wed, 28 Jul 2021 12:04:28 +0530
+Message-Id: <20210728063430.258199-1-puranjay12@gmail.com>
+X-Mailer: git-send-email 2.30.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri Jul 23, 2021 at 5:20 PM EDT, Peter Rosin wrote:
-> On 2021-07-21 05:06, Liam Beguin wrote:
-> > From: Liam Beguin <lvb@xiphos.com>
-> >=20
-> > The IIO_VAL_FRACTIONAL_LOG2 scale type doesn't return the expected
-> > scale. Update the case so that the rescaler returns a fractional type
-> > and a more precise scale.
-> >=20
-> > Signed-off-by: Liam Beguin <lvb@xiphos.com>
-> > ---
-> >  drivers/iio/afe/iio-rescale.c | 9 +++------
-> >  1 file changed, 3 insertions(+), 6 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/afe/iio-rescale.c b/drivers/iio/afe/iio-rescal=
-e.c
-> > index 35fa3b4e53e0..47cd4a6d9aca 100644
-> > --- a/drivers/iio/afe/iio-rescale.c
-> > +++ b/drivers/iio/afe/iio-rescale.c
-> > @@ -44,12 +44,9 @@ int rescale_process_scale(struct rescale *rescale, i=
-nt scale_type,
-> >  		*val2 =3D rescale->denominator;
-> >  		return IIO_VAL_FRACTIONAL;
-> >  	case IIO_VAL_FRACTIONAL_LOG2:
-> > -		tmp =3D *val * 1000000000LL;
-> > -		do_div(tmp, rescale->denominator);
-> > -		tmp *=3D rescale->numerator;
-> > -		do_div(tmp, 1000000000LL);
-> > -		*val =3D tmp;
-> > -		return scale_type;
-> > +		*val =3D rescale->numerator * *val;
-> > +		*val2 =3D rescale->denominator * (1 << *val2);
-> > +		return IIO_VAL_FRACTIONAL;
->
-> Hi!
+Add the dt-bindings and the driver for ADXL355 3-axis MEMS Accelerometer.
 
-Hi Peter,
+Changes since v5:
+1. Used get_unaligned_be24() and  get_unaligned_be16() to parse
+acceleration and temperature data. This solves sparse errors and also
+make the code more understandable.
 
->
-> I do not think this is an uncontested improvement. You have broken the
-> case
-> where *val2 is "large" before the scale factor is applied.
+Changes since v4:
+1. Fix errors reported by sparse.
 
-I was a little reluctant to add this change as I keep increasing the
-scope of this series, but since I added tests for all cases, I didn't
-want to leave this one out.
+Changes since v3:
+1. Fix errors in yaml DT doc.
+2. Change SPDX-License-Identifier to GPL-2.0-only OR BSD-2-Clause
 
-Would you rather I drop this patch and the test cases associated to it?
+Changes since v2:
+1. Add separate DT binding doc in yaml.
+2. Use ____cacheline_aligned buffer for regmap_bulk_read/write calls.
+3. Make code consistent by using same style in switch case.
+4. Use FIELD_PREP in place of custom macros.
+5. Make Kconfig description more informative.
 
-Thanks,
-Liam
+Changes since v1:
+1. Remove the declarations for static regmap structures from adxl355.h.
+This was missed in the v1 and caused errors.
+2. Make switch case statements consistent by directly returning from
+each case rather than saving the return in a variable.
+3. Some coding style changes.
 
->
-> Cheers,
-> Peter
->
-> >  	case IIO_VAL_INT_PLUS_NANO:
-> >  		tmp =3D ((s64)*val * 1000000000LL + *val2) * rescale->numerator;
-> >  		tmp =3D div_s64(tmp, rescale->denominator);
-> >=20
+Changes since v0:
+1. Move adxl355_hpf_3db_table to adxl355_data structure. This is done to make
+sure that each device gets its own table.
+2. Make local regmap definitions private to adxl355_core.c.
+3. Other minor coding style changes.
+
+Puranjay Mohan (2):
+  dt-bindings: iio: accel: Add DT binding doc for ADXL355
+  iio: accel: Add driver support for ADXL355
+
+ .../bindings/iio/accel/adi,adxl355.yaml       |  76 +++
+ MAINTAINERS                                   |   7 +
+ drivers/iio/accel/Kconfig                     |  29 +
+ drivers/iio/accel/Makefile                    |   3 +
+ drivers/iio/accel/adxl355.h                   |  77 +++
+ drivers/iio/accel/adxl355_core.c              | 542 ++++++++++++++++++
+ drivers/iio/accel/adxl355_i2c.c               |  63 ++
+ drivers/iio/accel/adxl355_spi.c               |  66 +++
+ 8 files changed, 863 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adxl355.yaml
+ create mode 100644 drivers/iio/accel/adxl355.h
+ create mode 100644 drivers/iio/accel/adxl355_core.c
+ create mode 100644 drivers/iio/accel/adxl355_i2c.c
+ create mode 100644 drivers/iio/accel/adxl355_spi.c
+
+-- 
+2.30.1
 

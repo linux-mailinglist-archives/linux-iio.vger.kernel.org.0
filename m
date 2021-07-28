@@ -2,192 +2,217 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 897B13D892C
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Jul 2021 09:58:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EA443D8A10
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Jul 2021 10:51:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234280AbhG1H6S (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 28 Jul 2021 03:58:18 -0400
-Received: from mail-eopbgr80094.outbound.protection.outlook.com ([40.107.8.94]:38102
-        "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233224AbhG1H6R (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 28 Jul 2021 03:58:17 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IJx2cWfgtAhLoaZpV7xuTYUjyfi2Yn63fkozr1XTVTeRuMFB90rLdwUgGqF4mYs7I757OEFfeNoeYmtxLlp+bVZPrhIQG2N5Hiuk5Gs3W0QszI+wFdkHusiz/SODaKOcGv52sFaL7AYmYl2Zio3SUH3EU7bCWZngCLuHY0kFxaFFU1jtYhGBGkY4YhS8a51IHydRTccouK3dAkCULddzbsh4FLOvwSRhoGc1+5hLezyB2eF2GeGr2KDJve7lioeTcuHYnqoGmNSu0+F0LdzDibRGYSGygbIIUom6id9im9+HtlxLkXmIQuo1JLyK/IVijJYxVw69oPXrc/3RUQn+tg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=T5czFYLYff7stftJiMyJeDbus7+nfTqxHqYtVv1xPNk=;
- b=ckH27oXyiR9eer7wJMhG6eEYyKp/ucv+ZFfHYNmJhvCMsl6aUVlMtwz4XgTRnz0TfIqKpN/JZvj/tLqKuZEiqt1eaO09bMT1vjUdKIiCjdNtOpTkhi+ZDbge1Rqy/8mrMVbroh60dKNnSY8WMYMdVINuR5f/x3NQfSmSQX6oS91R/OXk83DADBjBiZE8Tcgeuwt1kEl+PUBDFYGzFwn+Le/zgTX0SGiRbSIpHzYmN74la5pY+I9V9+DH/R/8wj6WkcoExPHg13Wl8SBjIT3CX64GdAfQakwpaV6Um64LEuPuh0aqIj3BhlkWY4AimiVWz+eWvJ0Q4DJ5Q9PeNWqhPg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=axentia.se; dmarc=pass action=none header.from=axentia.se;
- dkim=pass header.d=axentia.se; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axentia.se;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=T5czFYLYff7stftJiMyJeDbus7+nfTqxHqYtVv1xPNk=;
- b=iNhIZO+oqnfMGENw1Qa1cR+TczIV9+19YrcpDWGypMV2vNRrYjczlHjei0OgV439SY9hhlF2IQTu3Nvl7NfXD/okgUREWICzorApB+0dnwj+7afkcCAxMH1Og557zhsuR+taKz1dmlBn4gzjLaJ3ZL4jfzC+Quv4NLlO7aNAoCo=
-Authentication-Results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=axentia.se;
-Received: from DB8PR02MB5482.eurprd02.prod.outlook.com (2603:10a6:10:eb::29)
- by DB6PR0201MB2392.eurprd02.prod.outlook.com (2603:10a6:4:37::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4352.31; Wed, 28 Jul
- 2021 07:58:13 +0000
-Received: from DB8PR02MB5482.eurprd02.prod.outlook.com
- ([fe80::14ca:a41:2218:3578]) by DB8PR02MB5482.eurprd02.prod.outlook.com
- ([fe80::14ca:a41:2218:3578%6]) with mapi id 15.20.4352.031; Wed, 28 Jul 2021
- 07:58:13 +0000
-Subject: Re: [PATCH v6 09/13] iio: afe: rescale: fix precision on fractional
- log scale
-To:     Liam Beguin <liambeguin@gmail.com>, jic23@kernel.org,
-        lars@metafoo.de, pmeerw@pmeerw.net
-Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, robh+dt@kernel.org
-References: <20210721030613.3105327-1-liambeguin@gmail.com>
- <20210721030613.3105327-10-liambeguin@gmail.com>
- <d2dea8ea-5a31-0428-4eac-4e4315d07a42@axentia.se>
- <CD4CHX6R9QRI.2Q76MYJGTXNWK@shaak>
-From:   Peter Rosin <peda@axentia.se>
-Organization: Axentia Technologies AB
-Message-ID: <4e477a42-1cae-06f8-2778-fc734359d6f3@axentia.se>
-Date:   Wed, 28 Jul 2021 09:58:10 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
-In-Reply-To: <CD4CHX6R9QRI.2Q76MYJGTXNWK@shaak>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AM6P192CA0095.EURP192.PROD.OUTLOOK.COM
- (2603:10a6:209:8d::36) To DB8PR02MB5482.eurprd02.prod.outlook.com
- (2603:10a6:10:eb::29)
+        id S235384AbhG1Iv4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 28 Jul 2021 04:51:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45456 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234311AbhG1Ivz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 28 Jul 2021 04:51:55 -0400
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F054C061757;
+        Wed, 28 Jul 2021 01:51:53 -0700 (PDT)
+Received: by mail-pl1-x62e.google.com with SMTP id z3so519297plg.8;
+        Wed, 28 Jul 2021 01:51:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=d+TKoRbRA9b13s3E5XDsyBNlfB93JKDfM2toP4owP3k=;
+        b=KvUOaH9qSthpAAstRMpHeQGCcFTDN1NmIU/l+62WLAgXEC162dXCLUT1TpBhTbKIVb
+         pPTTyvNFJvbLXVAEsfUAAKapY8NJRvO+Oy93p7TqQLMKF2RIYxBJ+n65G+9qlbTBhJ7f
+         X6LAlEqpDNeb8SVtvINW1MlUlaVQalBmz26ET0zFPc2FAvAkrT7/L6ZjPQIEtDQh2iQt
+         tNKbNpOWld5sBvZCCiQ1sDCIl3uyYC3WlyfXoq/dfCTxIBkHJBCTc6D3WsJqTR5Gw8Ip
+         0fyJoloduJgE3BRYKW++w50GTwTi/HrhfXhpj018OhFCzrYFn52UHntUZRBqol+WxiWR
+         VX3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=d+TKoRbRA9b13s3E5XDsyBNlfB93JKDfM2toP4owP3k=;
+        b=bkwa37vww/Z6Q387KZbFoP7QrGLHEJHl6vpv7GnNIlrZ6J6DbKaPZUrShLSY2gvCWD
+         NBxY4fOeG+xrW9b2wZDBE5Jv+ge7VNMzqi3c26C8WyPhI24WDxdvLo8w4Lfb58vhQfge
+         7u0f+VYNC5u+6pQ3d3uKCTBLSG8G94RYz6x599nae50NG8rpKsZ2jV50+JH6WK+AIHzw
+         +kgN0F6raHNjZDhds4M1YEL6SC8d7qtS5VmhS+xH3Bgfve2Tf5Qn5pA8npnbECuDI4Dl
+         xzlW7oHvy7HD/NAQQiEgPGNh1I8UWrObagUJZRDTt7cXA4qKnCAL3YG+yxdGeHS5bLMi
+         tIqw==
+X-Gm-Message-State: AOAM530ZB3gBHwX1p4jbeqTq1cWnF+9u9/GiqC2zlrkjwsEw/ByIvkj6
+        8E1swECzyHbBwuNJ/WTfBjc=
+X-Google-Smtp-Source: ABdhPJyx0mJnNWFX+phIfQvzqfyvuOAsA6WOBgXvG2nP7/QmaG38jNjnfekSz8VLGi6qhLW6L6MVnw==
+X-Received: by 2002:a63:ae48:: with SMTP id e8mr28523370pgp.0.1627462312753;
+        Wed, 28 Jul 2021 01:51:52 -0700 (PDT)
+Received: from shinobu ([156.146.35.76])
+        by smtp.gmail.com with ESMTPSA id z11sm2180976pjq.13.2021.07.28.01.51.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Jul 2021 01:51:51 -0700 (PDT)
+Date:   Wed, 28 Jul 2021 17:51:45 +0900
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     jic23@kernel.org
+Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
+        a.fatoum@pengutronix.de, kamel.bouhara@bootlin.com,
+        gwendal@chromium.org, alexandre.belloni@bootlin.com,
+        david@lechnology.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        syednwaris@gmail.com, patrick.havelange@essensium.com,
+        fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@st.com, o.rempel@pengutronix.de,
+        jarkko.nikula@linux.intel.com
+Subject: Re: [PATCH v13 00/17] Introduce the Counter character device
+ interface
+Message-ID: <YQEaoYMGdvh0vgu5@shinobu>
+References: <cover.1626165764.git.vilhelm.gray@gmail.com>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.13.3] (85.229.94.233) by AM6P192CA0095.EURP192.PROD.OUTLOOK.COM (2603:10a6:209:8d::36) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4373.18 via Frontend Transport; Wed, 28 Jul 2021 07:58:12 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 8aa549de-6cfc-4b1b-cb26-08d9519d72d7
-X-MS-TrafficTypeDiagnostic: DB6PR0201MB2392:
-X-Microsoft-Antispam-PRVS: <DB6PR0201MB2392DA9506E0937AFE62D288BCEA9@DB6PR0201MB2392.eurprd02.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 7CMSPvzw783VTEkS5sKw/bTuBQGltm4mOvM7rPsQ3ni/axxDdrbbGIZ+ILA9W0kvlQLVlL9/i/R75i7RWyJr919LnMN9ObiDRb6jwdgDBHKGoZNmO1DmVqUoEoU6v/ZI8CYaIOlJ+NivkilO1wTqztSTB/L4TgNOVQf7FsEDGDP4i+4//LY+jn7SztQlNl/HSRSBgUsTYb4HF9Yr9K7CSfwuI3rqRsG7ExG2xIXBA/SIow9eAYeA//cpcwKfDWG4bro0r6B0KqQ4Jfy5KAXZ33NpnB/AFTsdvlEioOU+P2j9hX9j7er3Hvzkt5UBM/f1AFprtElXqm5j5MDst/p7jmjq478uOsQUvjHlyqO5y1XzOmsZEc4aZN1x9LnXJneVJ4QU48tkS9Ee2ad3zIPne3YZsS6GVWtaT8MkpiCL4cS0se3wUoSZp3mqO+/BG6OI3+/AIHCs+sRIo6JNP2YjHPsrUJMHIQ3lzgzNovEcu/vQ1HUhx023NK+T72wS3oqeRBSyqX7wqNhCDycdMNWy+C+KARQXkkzixJfmd2rYsIDe0e2g5+QuujlQb0gsz7qSnx7mD4PZCpkOruDt8ppuFFjoBhB7ddtZPNhc9ciK43wjGOA63nij34VXPfCCzGPwZH7fqGgVnKVx0tj9EO1H1mxzVgUGSkBAhXI5xD/87c69ibyBpXhGUIsuFTHDpNsoY4PQGBSJj+5DAM+W1jXNUZZusHjOSvkOnPN1EiCyhhw=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR02MB5482.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(136003)(346002)(376002)(396003)(39830400003)(83380400001)(36916002)(8936002)(8676002)(4326008)(66556008)(6486002)(2906002)(66946007)(316002)(38100700002)(66476007)(5660300002)(956004)(36756003)(2616005)(16576012)(478600001)(186003)(26005)(53546011)(31696002)(86362001)(31686004)(45980500001)(43740500002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dVVOOGxhOFBXaVo3cjc0Z0RYd0ZJWE9kbjNoWGdXMzhTOFhTWkhvNzRMTGxv?=
- =?utf-8?B?ajcwNnRnbytQcDhxZUJzUkFTUnlzYVpmTGVLYjlqQTR1ZjFvbENaRmcycjl3?=
- =?utf-8?B?bm1jSVgwa1laZWxZZWNsOXgyR1YxbDVvd3NXOFhkcjVIVStMakR0Q0tnNTIr?=
- =?utf-8?B?TEpEZlVCNzhtMGdvM0FCcEgrS3p0MUt2QStmdWZ6VVRGQkU3QnNKdzV5RVVt?=
- =?utf-8?B?Zkx2QjZ1dGlxMUs0QWVDdUhLV1ZCS3lXelFubTdqMnRPRkRjSjBZTW1NMEpG?=
- =?utf-8?B?K2hMcVp0eW1SNlZpU2U5QldiU25iRlE1Z3RRSUNjUVV3MnlmNEtBUHVQZmhQ?=
- =?utf-8?B?anZRa3BHNmZhcSt2QlFZZ3d0MGxDdHMzWGZkUzJlcXdja2NOcDN2U1I5M3hm?=
- =?utf-8?B?eHJPQThuSXczclNYNWJ0THdxVnlLMGtnVDNocm1OUVJra3Z5MXVScUZ1YSt1?=
- =?utf-8?B?a0JMK2lkc0FlRkNaalF6b1B1a2ZEYVpKYXBScWRMTERyRmFETG1rUElvV1hJ?=
- =?utf-8?B?RnkxalVzMk1uTlY1eTMwOHRVSmZFdzhGZFFGMi9wZWRPMjJkVTJTNlNmeFpw?=
- =?utf-8?B?T1JnQ2NGNlU5WnRESnIyWTN5R0dCdGVUdHhVRzFOLzBiQjlnL2hub0c1TFhJ?=
- =?utf-8?B?c0Jaa3FEdU8zMDBaUGRxRWlBYm9uR0tJeWswN0c3RkZoeVZlRlZDekFiQ0xO?=
- =?utf-8?B?ekZ3MHNFUDVpYklIN3lYVytMVlYxazBTMmpZUmo4c1Q4bnpSQTR6Q2k0SmhN?=
- =?utf-8?B?SE9rSXJ6QmZSTTl4dUhhcURVZzRhVnFTZE53b2JIdVZubXdTRzU2aW1KZVBC?=
- =?utf-8?B?UTFpZ1V3Q0NUM29OUTYzNWJFRW9IQ3duTVZPUWFPTURaOEw4ZkZ0QVNPVnJp?=
- =?utf-8?B?bVc2TUZtY29xWC9KUGVobC8xRGlqbW9IbkU2NnpVQlVDeEtsMnQ3M0V6dDJx?=
- =?utf-8?B?SGRqUWxtT3h2bVZFK1lLcGZPYVVmRGVTb292WXBkKzJzcFFNcVlDQ1hlenFJ?=
- =?utf-8?B?dzlwaVlmVDNNeWMwVGpZd2ZzdlNSazJNSS9rRzF5bEhyTkRnV2ZHSUNIYTFY?=
- =?utf-8?B?WVlWejVOQVJrZVR4TGV6ekFSc0ZLTmZCb3AyemxLd2ZjSmFjSnNCdzlZSzNj?=
- =?utf-8?B?Tjd6K0F0UnBwM1FxZ1Z3cGhmbHkrYUVmTlFYTERYb1VuaTVGbVBtVjcwaWJh?=
- =?utf-8?B?UnVXZm0yM3FoOVRtOVNNYzFqR0dsQk1kc2FtRGxOT1ZFL0RPWmZIdFBKSDZ3?=
- =?utf-8?B?S3k2MWN3b0RLWFF0ak40VFpoQTRNYmp1OW93TG5IbzVQbTByRzdHWVJZVUxp?=
- =?utf-8?B?OWR2bTZiNjlmWGxNMnpPSkt3RE1RZXgxZVBjTTZRNkhHSS94ZUl5aTFPZm5P?=
- =?utf-8?B?NVRreHo5bWh2VU5NeVNaSExyUGFPdCtNTHN5Z2JDeWlkYm4yVnB2TFlYVENa?=
- =?utf-8?B?enZkZmlLZDFxdFFISHRTNHJubFBTUGpENXlLVnQvWXZCaG92elRFSXZwdTR6?=
- =?utf-8?B?ZnBhdFJiZy9saHpabEhGVnpDTWZET0J6SzVKM2VYcG03UGtXa2F0b2l4ZUhN?=
- =?utf-8?B?eVBxVk1MSFczV2kxaGxQczY3YWViS1EwVWg3VzI3bmJJbU5scStHdGFlTU1H?=
- =?utf-8?B?anJVRStoNVY3Uno1YjVwRFRKZThvWG1ETFRHbVY1eEZxZ3NScEFkYlR1UmJh?=
- =?utf-8?B?L2FwdWpTYVREaXZVRjNQSmUwY3JGMWE0L3RwRjUwYkZzQS9CbE50ZEkzZ3BD?=
- =?utf-8?Q?QAKLWdYhNEGwB14pgq3eRLAix7fhZJb/b7xRGvt?=
-X-OriginatorOrg: axentia.se
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8aa549de-6cfc-4b1b-cb26-08d9519d72d7
-X-MS-Exchange-CrossTenant-AuthSource: DB8PR02MB5482.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2021 07:58:12.9485
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4ee68585-03e1-4785-942a-df9c1871a234
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: w9ZsifoP3yWof0/oz5JL2NBzT9Sj3ArSy1kqdnSeaAI1gnsaPniIqTF7VpZCKyG3
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB6PR0201MB2392
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="nBN+j+tbFwGEfQq0"
+Content-Disposition: inline
+In-Reply-To: <cover.1626165764.git.vilhelm.gray@gmail.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2021-07-28 02:26, Liam Beguin wrote:
-> On Fri Jul 23, 2021 at 5:20 PM EDT, Peter Rosin wrote:
->> On 2021-07-21 05:06, Liam Beguin wrote:
->>> From: Liam Beguin <lvb@xiphos.com>
->>>
->>> The IIO_VAL_FRACTIONAL_LOG2 scale type doesn't return the expected
->>> scale. Update the case so that the rescaler returns a fractional type
->>> and a more precise scale.
->>>
->>> Signed-off-by: Liam Beguin <lvb@xiphos.com>
->>> ---
->>>  drivers/iio/afe/iio-rescale.c | 9 +++------
->>>  1 file changed, 3 insertions(+), 6 deletions(-)
->>>
->>> diff --git a/drivers/iio/afe/iio-rescale.c b/drivers/iio/afe/iio-rescale.c
->>> index 35fa3b4e53e0..47cd4a6d9aca 100644
->>> --- a/drivers/iio/afe/iio-rescale.c
->>> +++ b/drivers/iio/afe/iio-rescale.c
->>> @@ -44,12 +44,9 @@ int rescale_process_scale(struct rescale *rescale, int scale_type,
->>>  		*val2 = rescale->denominator;
->>>  		return IIO_VAL_FRACTIONAL;
->>>  	case IIO_VAL_FRACTIONAL_LOG2:
->>> -		tmp = *val * 1000000000LL;
->>> -		do_div(tmp, rescale->denominator);
->>> -		tmp *= rescale->numerator;
->>> -		do_div(tmp, 1000000000LL);
->>> -		*val = tmp;
->>> -		return scale_type;
->>> +		*val = rescale->numerator * *val;
->>> +		*val2 = rescale->denominator * (1 << *val2);
->>> +		return IIO_VAL_FRACTIONAL;
->>
->> Hi!
-> 
-> Hi Peter,
-> 
->>
->> I do not think this is an uncontested improvement. You have broken the
->> case
->> where *val2 is "large" before the scale factor is applied.
-> 
-> I was a little reluctant to add this change as I keep increasing the
-> scope of this series, but since I added tests for all cases, I didn't
-> want to leave this one out.
 
-> Would you rather I drop this patch and the test cases associated to it?
+--nBN+j+tbFwGEfQq0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Why drop the tests? Are they doing any harm? Or are they testing exactly
-the problem situation that fail without this patch?
+On Tue, Jul 13, 2021 at 06:53:04PM +0900, William Breathitt Gray wrote:
+> Suppose I open the chrdev from a userspace application and keep it open,
+> but then remove the respective driver and Counter subsystem module from
+> my system. The devm_counter_release() and counter_exit() functions will
+> be called as expected; the counter_chrdev_release() function will not be
+> called yet, but that is expected because the chrdev is still open by
+> userspace. If I try to break out of my userspace application, I expect
+> counter_chrdev_release() to finally be called, but this does not happen.
+> Instead, my userspace application stalls and I see the following error
+> in my dmesg:
+>=20
+> [  172.859570] BUG: unable to handle page fault for address: ffffffffc09a=
+e298
+> [  172.859594] #PF: supervisor read access in kernel mode
+> [  172.859598] #PF: error_code(0x0000) - not-present page
+> [  172.859603] PGD 23615067 P4D 23615067 PUD 23617067 PMD 1029ad067 PTE 0
+> [  172.859623] Oops: 0000 [#1] SMP NOPTI
+> [  172.859629] CPU: 2 PID: 2485 Comm: counter_example Not tainted 5.13.0+=
+ #1
+> [  172.859640] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIO=
+S d55cb5a 04/01/2014
+> [  172.859645] RIP: 0010:filp_close+0x29/0x70
+> [  172.859662] Code: 90 0f 1f 44 00 00 55 48 89 e5 41 56 41 55 41 54 48 8=
+b 47 38 48 85 c0 0f 84 b7 40 86 00 48 8b 47 28 49 89 fc 49 89 f5 45 31 f6 <=
+48> 8b 40 78 48 85 c0 74 08 ff d0 0f 1f 00 41 89 c6 41 f6 44 24 45
+> [  172.859669] RSP: 0018:ffffad31c0ee7cb0 EFLAGS: 00010246
+> [  172.859675] RAX: ffffffffc09ae220 RBX: 0000000000000001 RCX: 000000000=
+0000001
+> [  172.859680] RDX: ffff9a43829708e0 RSI: ffff9a4382970840 RDI: ffff9a438=
+21f4f00
+> [  172.859684] RBP: ffffad31c0ee7cc8 R08: 0000000000000001 R09: 000000000=
+0000001
+> [  172.859687] R10: ffffffffffff4d00 R11: ffff9a43933c6e10 R12: ffff9a438=
+21f4f00
+> [  172.859691] R13: ffff9a4382970840 R14: 0000000000000000 R15: 000000000=
+0000003
+> [  172.859694] FS:  0000000000000000(0000) GS:ffff9a44b7d00000(0000) knlG=
+S:0000000000000000
+> [  172.859699] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [  172.859704] CR2: ffffffffc09ae298 CR3: 0000000023610001 CR4: 000000000=
+0370ee0
+> [  172.859713] Call Trace:
+> [  172.859730]  put_files_struct+0x73/0xd0
+> [  172.859738]  exit_files+0x49/0x50
+> [  172.859743]  do_exit+0x33b/0xa20
+> [  172.859751]  do_group_exit+0x3b/0xb0
+> [  172.859758]  get_signal+0x16f/0x8b0
+> [  172.859766]  ? _copy_to_user+0x20/0x30
+> [  172.859774]  ? put_timespec64+0x3d/0x60
+> [  172.859784]  arch_do_signal_or_restart+0xf3/0x850
+> [  172.859794]  ? hrtimer_nanosleep+0x9f/0x120
+> [  172.859802]  ? __hrtimer_init+0xd0/0xd0
+> [  172.859808]  exit_to_user_mode_prepare+0x122/0x1b0
+> [  172.859816]  syscall_exit_to_user_mode+0x27/0x50
+> [  172.859825]  do_syscall_64+0x48/0xc0
+> [  172.859831]  entry_SYSCALL_64_after_hwframe+0x44/0xae
+> [  172.859839] RIP: 0033:0x7f07f8b9951a
+> [  172.859850] Code: Unable to access opcode bytes at RIP 0x7f07f8b994f0.
+> [  172.859853] RSP: 002b:00007ffc0d12c230 EFLAGS: 00000246 ORIG_RAX: 0000=
+0000000000e6
+> [  172.859860] RAX: fffffffffffffdfc RBX: ffffffffffffff01 RCX: 00007f07f=
+8b9951a
+> [  172.859863] RDX: 00007ffc0d12c2b0 RSI: 0000000000000000 RDI: 000000000=
+0000000
+> [  172.859867] RBP: 0000000000000000 R08: 0000000000000000 R09: 00007ffc0=
+d12c1c6
+> [  172.859871] R10: 00007ffc0d12c2b0 R11: 0000000000000246 R12: 00007ffc0=
+d12c2b0
+> [  172.859874] R13: 00007ffc0d12c2b0 R14: 0000000000000000 R15: 000000000=
+0000000
+> [  172.859886] Modules linked in: intel_rapl_msr intel_rapl_common kvm_in=
+tel kvm crct10dif_pclmul crc32_pclmul ghash_clmulni_intel nls_iso8859_1 aes=
+ni_intel crypto_simd cryptd rapl drm_ttm_helper ttm uvcvideo drm_kms_helper=
+ videobuf2_vmalloc videobuf2_memops videobuf2_v4l2 videobuf2_common input_l=
+eds syscopyarea videodev sysfillrect sysimgblt fb_sys_fops cec rc_core joyd=
+ev mc drm serio_raw mac_hid qemu_fw_cfg sch_fq_codel msr parport_pc ppdev l=
+p parport virtio_rng ip_tables x_tables autofs4 hid_generic usbhid hid virt=
+io_net psmouse net_failover i2c_piix4 virtio_blk failover pata_acpi floppy =
+[last unloaded: counter]
+> [  172.859995] CR2: ffffffffc09ae298
+> [  172.860009] ---[ end trace e7d3d7da1a73b8f4 ]---
+> [  172.860013] RIP: 0010:filp_close+0x29/0x70
+> [  172.860021] Code: 90 0f 1f 44 00 00 55 48 89 e5 41 56 41 55 41 54 48 8=
+b 47 38 48 85 c0 0f 84 b7 40 86 00 48 8b 47 28 49 89 fc 49 89 f5 45 31 f6 <=
+48> 8b 40 78 48 85 c0 74 08 ff d0 0f 1f 00 41 89 c6 41 f6 44 24 45
+> [  172.860027] RSP: 0018:ffffad31c0ee7cb0 EFLAGS: 00010246
+> [  172.860031] RAX: ffffffffc09ae220 RBX: 0000000000000001 RCX: 000000000=
+0000001
+> [  172.860034] RDX: ffff9a43829708e0 RSI: ffff9a4382970840 RDI: ffff9a438=
+21f4f00
+> [  172.860038] RBP: ffffad31c0ee7cc8 R08: 0000000000000001 R09: 000000000=
+0000001
+> [  172.860041] R10: ffffffffffff4d00 R11: ffff9a43933c6e10 R12: ffff9a438=
+21f4f00
+> [  172.860044] R13: ffff9a4382970840 R14: 0000000000000000 R15: 000000000=
+0000003
+> [  172.860047] FS:  0000000000000000(0000) GS:ffff9a44b7d00000(0000) knlG=
+S:0000000000000000
+> [  172.860052] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [  172.860056] CR2: ffffffffc09ae298 CR3: 0000000023610001 CR4: 000000000=
+0370ee0
+> [  172.860073] Fixing recursive fault but reboot is needed!
+>=20
+> It looks like faults in filp_close() before counter_chrdev_release() is
+> called. Is this issue manifesting because counter_exit() was called
+> earlier while the chrdev was still open?
 
-In that case, I guess fix the tests to pass and preferably add tests
-for the *val2 is "large" situation (that this patch breaks) so that the
-next person trying to improve precision is made aware of the overflow
-problem. Does that make sense?
+After giving this some more thought I realized that once the counter
+module is unloaded, the counter_fops callbacks are lost and thus the
+fops for the chrdev are no longer be valid. This means that
+counter_chrdev_release will need to be called before the counter module
+is unloaded. How can I guarantee this if a userspace application may
+still have the chrdev indefinitely open? In counter_chrdev_remove(),
+should I walk through the open chrdevs and release each one?
 
-Cheers,
-Peter
+William Breathitt Gray
 
-> Thanks,
-> Liam
-> 
->>
->> Cheers,
->> Peter
->>
->>>  	case IIO_VAL_INT_PLUS_NANO:
->>>  		tmp = ((s64)*val * 1000000000LL + *val2) * rescale->numerator;
->>>  		tmp = div_s64(tmp, rescale->denominator);
->>>
-> 
+--nBN+j+tbFwGEfQq0
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmEBGqEACgkQhvpINdm7
+VJK61hAAwX6ZbCIqTphv+RPqSJYQLjl29hER5BUiwApvZiyLtZTthDW4QmozpLZP
+La5uZLLqeAIpdEXvMhuyrS50KRFwPNmCVckPM6NCXhSv5nNpFmgXzd44dGtstSWd
+t5djVKZQkjgoUyC2dL6K49E3cfjDIXL8Az5igoBz04rcr4hmMY/lOu64m8DEJGiC
+28j5h7tD3Xc1mvyn5H7l//XnCOZOx2lIbPN26tcg8sFGB8GrdD9MbsAwFaQCdwTr
+g4IDLk49NJKEeKM5Psyq24ZpqdN1psDNBbm6oYw8WjITwvQuNjrxTsZU9b1Gu42r
+jck0wEc2yJBDBUBKscFNpE/+kgadohVHPVCGLxT2/+Y7vUadMiJmLQYQsgW+b17e
+rYx5aDId8xBGlegsNKlYJSc6iI1Uf4BUHUzPT97QCW48Ni3dH6LWtcZoamdh3FSa
+1hsVCDcY/+clrNNRs1cdBNyeaPPI7szN3b3joDw97eglJ9yzyajW8+EtGwdIJUVG
+6BUgmFUiLRl/TlYyGw6FCKZO3OX5thj2TKp+0WXddBfgYwTIMrOQG2EQSKx2wxnb
+CjKQlHsugDMdtyEH3vgVv0kZHyFn7eKUYrnCfTPFX4I16jcsqaNynxqF/SQPwTwg
+EJJoBWJf92lhnNMHuN/e0w9XzZTO7dbx6bR7vV26sHLFScU+fqg=
+=QXPz
+-----END PGP SIGNATURE-----
+
+--nBN+j+tbFwGEfQq0--

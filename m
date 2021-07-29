@@ -2,94 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C9373D9A95
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Jul 2021 02:51:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 468F63D9F1B
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Jul 2021 10:03:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233178AbhG2AvG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 28 Jul 2021 20:51:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40018 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233149AbhG2AvG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 28 Jul 2021 20:51:06 -0400
-Received: from mail-oi1-x22d.google.com (mail-oi1-x22d.google.com [IPv6:2607:f8b0:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23A8BC061757
-        for <linux-iio@vger.kernel.org>; Wed, 28 Jul 2021 17:51:04 -0700 (PDT)
-Received: by mail-oi1-x22d.google.com with SMTP id o185so6105053oih.13
-        for <linux-iio@vger.kernel.org>; Wed, 28 Jul 2021 17:51:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=8yOAotqs60AuPI9trKzeCWPumi1YRDS9z5sw1kObCls=;
-        b=OiDBWRsLJ/f9py9c3qMqFhGn+269IueJ3UNk2NHSZ7OqGSC/Tln/tqWScOnHN4ZJVj
-         x00WheJ4bfNbLhocMw4xVvedpudGYU56ztSNULF+x3aSt+d0HVcWNKachaU8nIZ5GtMb
-         95kGJHlkjey6wCyQSAPpgFHilhsAJgyV1303ee4cOxKo5HZelRxs5QWqicRHeVhMYCJl
-         VI1uvQHrEZHYKWDqqWa+gBYJPYgwedWvKzS5bDJNXPsRBk/wIgM1dCfnVNtd8lqqSgKM
-         RYmpKCBudmBB0k1ZjswcpUYWXCrN8ld28WlNAJdm9As67i5sfD8Vwaqi3V4yA+45vkKm
-         KrIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=8yOAotqs60AuPI9trKzeCWPumi1YRDS9z5sw1kObCls=;
-        b=h6LGb+9/kEVjFL1hR4ZOCm0caEhOD1bN1i9kzs0n9a/G1nZouoN9HKOytNzpwRpCeo
-         pb9mfMCWC5ushzfBUUFxlHKvPbhv7MLo1EEVVMMFTA5nGE24+gPZiUhU1cCt6o4cPS6d
-         +c7wAjAivVSC/hUWPcjBwLC4HX/D1ISzIxCL2SPVNStd+uzct7gdaoDf9aotjCMnvxjn
-         JSbm6qdGTUmof/y0UKm4kl/btOIp5/k/oiw82rRTjhGo7zWXORxV/viw2738YZqALPCK
-         JW0XPIT1Ro2JQB1SZ5K8lHFJ2bA7bERxNg/jzpSWdOWiD7W0FJsusTKMps7zs5GZp0Hx
-         mqmA==
-X-Gm-Message-State: AOAM5337LAiRslSoWylCQZeWpkYrhdB7VMLlOlFaF8kag06A9qtkSz9h
-        cNxu2eeL+io6PVupJRWIkVQbJaRUnYm5yAuDWO4=
-X-Google-Smtp-Source: ABdhPJxoJcLgD2a8x6BKjNe5VYv+T6P4YIjskC5kCmwnTHokdYwhOeN6FQU+W7KlyuJb/8qChKmFqqJpFWsnjYLOLzE=
-X-Received: by 2002:a05:6808:140c:: with SMTP id w12mr8279367oiv.22.1627519863498;
- Wed, 28 Jul 2021 17:51:03 -0700 (PDT)
+        id S234256AbhG2IDK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 29 Jul 2021 04:03:10 -0400
+Received: from mailgw01.mediatek.com ([60.244.123.138]:58822 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S234686AbhG2ICy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 29 Jul 2021 04:02:54 -0400
+X-UUID: 1d30e5a2c3544b07bf44b3dda8486fcd-20210729
+X-UUID: 1d30e5a2c3544b07bf44b3dda8486fcd-20210729
+Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw01.mediatek.com
+        (envelope-from <hui.liu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 510656948; Thu, 29 Jul 2021 16:02:10 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Thu, 29 Jul 2021 16:02:08 +0800
+Received: from localhost.localdomain (10.17.3.153) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Thu, 29 Jul 2021 16:02:07 +0800
+From:   Hui Liu <hui.liu@mediatek.com>
+To:     <robh+dt@kernel.org>, <jic23@kernel.org>, <lars@metafoo.de>,
+        <pmeerw@pmeerw.net>
+CC:     <srv_heupstream@mediatek.com>, <hui.liu@mediatek.com>,
+        <zhiyong.tao@mediatek.com>, <chun-hung.wu@mediatek.com>,
+        <yingjoe.chen@mediatek.com>, <seiya.wang@mediatek.com>,
+        <matthias.bgg@gmail.com>, <s.hauer@pengutronix.de>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-iio@vger.kernel.org>, <linux-mediatek@lists.infradead.org>
+Subject: [PATCH v1 0/1] AUXADC: Mediatek auxadc driver
+Date:   Thu, 29 Jul 2021 16:01:34 +0800
+Message-ID: <20210729080135.17436-1-hui.liu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Reply-To: patzengu@outlook.com
-Sender: psantadio@gmail.com
-Received: by 2002:a9d:65d5:0:0:0:0:0 with HTTP; Wed, 28 Jul 2021 17:51:02
- -0700 (PDT)
-From:   "Mr. P. Z" <rm2568590@gmail.com>
-Date:   Thu, 29 Jul 2021 02:51:02 +0200
-X-Google-Sender-Auth: oypLB12PsGb6utQrMbQxA4ZZLlI
-Message-ID: <CAP2c95wcoNbGSJF4ZP=qrLw-5X8fYeEYzEtvEwwUciHhzJ9VaA@mail.gmail.com>
-Subject: i need your co-operation
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
--- 
+This series includes one patch:
+1.Add mutex_destroy when probe fail and remove device.
 
-My Dear Friend,
+Changes in patch v1:
+1. In probe function, move mutex_destroy to "err_power_off".
+2. In remove function, move mutex_destroy before "clk_disable_unprepare".
 
-I am Mr.Patrice Zengu ,from Burkina Faso and i am the new bank telex
-manager of our bank here in Africa.
+Hui Liu (1):
+  iio: mtk-auxadc: add mutex_destroy
 
-I have the opportunity to transfer the sum of US$ 10.5Million to your
-bank account which i personally placed on an Escrow account without a
-name.
+ drivers/iio/adc/mt6577_auxadc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-I must tell you that after revision of files both old and new as the
-new telex manager ,i discovered that if these funds remains here
-without transferring it offshore,it will be lawfully recovered and
-moved to the  Government of Burkina Faso treasury as an abandoned
-funds without any name.
-
-I want to let you know that a Burkinabe cannot stand as the depositor
-of these US dollars  since we are not allowed to operate on foreign
-currency. I do not intend to work  and stay in Africa till the rest of
-my life.
-
-More so,i will not want my bank to know about these funds and if they
-happens to know probably,the funds will be moved to the Burkina Faso
-Government public treasury as an abandoned funds.
-
-I will furnish you with more details of this transfer and how it can
-be perfectly and legally executed without any hitch since i am now in
-control.
-
-I am waiting to hear from you urgently to proceed.
+--
+2.18.0
 
 
-Yours sincerely,
-Mr.Patrice Zengu.

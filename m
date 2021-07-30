@@ -2,80 +2,166 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC3DF3DB45A
-	for <lists+linux-iio@lfdr.de>; Fri, 30 Jul 2021 09:17:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDBC73DB4FD
+	for <lists+linux-iio@lfdr.de>; Fri, 30 Jul 2021 10:22:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237558AbhG3HRG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 30 Jul 2021 03:17:06 -0400
-Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:56978
-        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230273AbhG3HRG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Jul 2021 03:17:06 -0400
-Received: from localhost (1.general.cking.uk.vpn [10.172.193.212])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id E40EE3F0FF;
-        Fri, 30 Jul 2021 07:16:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1627629420;
-        bh=Bxi4+gVVY7RYVNsZmSxbI2QT4hl08RVLKb5YuD0/vnA=;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type;
-        b=vnwdWLoh0qTfJ7WUGbqHFlZ7uh/kRdoDkKiiwU+I3APP6kLRUeVHqLmsoAx5iQUr/
-         5zWuyNteG+wmdDMTFvrVF0lCR11+h+Q+wWzKNo7TVwzNP4iwiAPouL49/XArnt03w/
-         9UTG1DXKX2DCa6tJmEkHHYsK3fZLxksNDXr6j/HtBUh/C/4PrDDxqGM7tp7Onny81m
-         WLQzpBYK2kUZpO/MW9LT98tke5QEcfKy/dGpEC7aCCj3q1PP3yf3ZAhZWR8x+6lZXf
-         zk+CdtTQw7W4VuSd9DTUJzAVbvfwinl8MgxvpV8VatoviEXYhmes3OYkftQueR3Gp9
-         mLaqOtPy13z/A==
-From:   Colin King <colin.king@canonical.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Lee Jones <lee.jones@linaro.org>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Pradeep Goudagunta <pgoudagunta@nvidia.com>,
-        Marek Belisko <marek@goldelico.com>, linux-iio@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: adc: Fix incorrect exit of for-loop
-Date:   Fri, 30 Jul 2021 08:16:51 +0100
-Message-Id: <20210730071651.17394-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.31.1
+        id S231816AbhG3IW0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 30 Jul 2021 04:22:26 -0400
+Received: from lotus.prowebdns.com ([81.19.181.157]:47341 "EHLO
+        lotus.prowebdns.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231411AbhG3IWZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Jul 2021 04:22:25 -0400
+X-Greylist: delayed 1128 seconds by postgrey-1.27 at vger.kernel.org; Fri, 30 Jul 2021 04:22:25 EDT
+Received: from [::1] (port=52386 helo=lotus.prowebdns.com)
+        by lotus.prowebdns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <patrick@patricknet.net>)
+        id 1m9NUR-00055M-HG; Fri, 30 Jul 2021 09:03:28 +0100
+Received: from [82.31.129.141] ([82.31.129.141]) by www.patricknet.net
+ (Horde Framework) with HTTPS; Fri, 30 Jul 2021 09:03:28 +0100
+Date:   Fri, 30 Jul 2021 09:03:28 +0100
+Message-ID: <20210730090328.Horde.UFBzdgjVdntkW8Y7kU-s71p@www.patricknet.net>
+From:   patrick@patricknet.net
+To:     Alexandru Ardelean <ardeleanalex@gmail.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>
+Subject: Re: IRQ related query
+References: <2B7BAE11-FF1D-4A3C-9E00-E3ACD280D66E@patricknet.net>
+ <CA+U=DsroXD3v85COsvXqB5xkVYTzayuEb-gWWF=-45+MhJyUfA@mail.gmail.com>
+In-Reply-To: <CA+U=DsroXD3v85COsvXqB5xkVYTzayuEb-gWWF=-45+MhJyUfA@mail.gmail.com>
+User-Agent: Horde Application Framework 5
+Content-Type: text/plain; charset=utf-8; format=flowed; DelSp=Yes
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - lotus.prowebdns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - patricknet.net
+X-Get-Message-Sender-Via: lotus.prowebdns.com: authenticated_id: patrick@patricknet.net
+X-Authenticated-Sender: lotus.prowebdns.com: patrick@patricknet.net
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Alex,
 
-Currently the for-loop that scans for the optimial adc_period iterates
-through all the possible adc_period levels because the exit logic in
-the loop is inverted. I believe the comparison should be swapped and
-the continue replaced with a break to exit the loop at the correct
-point.
+Thank you so very much for your help, I browsed most of that  
+litterature already and the kernel side of it is very much covered,  
+understood and assimilated.
 
-Addresses-Coverity: ("Continue has no effect")
-Fixes: e08e19c331fb ("iio:adc: add iio driver for Palmas (twl6035/7) gpadc")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/iio/adc/palmas_gpadc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+However my question is basically: How can I be alerted, for example  
+through a callback function, when an interruption occurs in the kernel  
+space and my daemon lives in userspace.
 
-diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_gpadc.c
-index 6ef09609be9f..f9c8385c72d3 100644
---- a/drivers/iio/adc/palmas_gpadc.c
-+++ b/drivers/iio/adc/palmas_gpadc.c
-@@ -664,8 +664,8 @@ static int palmas_adc_wakeup_configure(struct palmas_gpadc *adc)
- 
- 	adc_period = adc->auto_conversion_period;
- 	for (i = 0; i < 16; ++i) {
--		if (((1000 * (1 << i)) / 32) < adc_period)
--			continue;
-+		if (((1000 * (1 << i)) / 32) >= adc_period)
-+			break;
- 	}
- 	if (i > 0)
- 		i--;
--- 
-2.31.1
+IRQ Occuring -------> Upper half of the interrupt(put the timestamp in  
+the buffer) ---------> Lower half of the interrupt handler (read data  
+and adds the timestamp in the buffer) -----------> ???? userspace  
+daemon (async callback of some description) that will write a log on  
+the HD.
+
+I have everything up to the daemon part written and working, I seem to  
+understand that through libiio you can assign a trigger to a  
+particular channel or attribute but that is where I get stuck.
+
+Litterature on the libiio (most notably its wiki) has a chapter on  
+triggers that is 4 lines long ... not very helpful to say the least.
+
+iioinfo lists the devices present in the LSM6DSLTR (18 devices  
+including two triggers) and I have been unable to assign the triggers  
+to any device that they are not assigned to already (No such file or  
+directory) which I gather refer to the absence of the trigger  
+directory in the sysfs for that  particular device.
+
+I also gather that the sysfs directory is, of course, slave to the  
+kernel device tree and that the creation of that part of the device  
+tree is made as the driver is loaded.
+
+So there must be a way to alter that part of the sysfs filesystem by  
+asking the kernel driver to provision a device in the context to  
+implement the trigger directory so we can assign a trigger to it
+
+second part will be to slave that trigger to an actual IRQ (42 in my  
+case - as listed in /proc/interrupts) and be alerted in the  userspace  
+daemon when a thresold has been reached in terms of either  
+acceleration or vibration ...
+
+Well, this is the nuts and bolts of what I am trying to achieve. the  
+last part will be to write a few registers on the chip to configure  
+how and when IRQ will occur for any given integrated devices.
+
+Sorry to be such a pain but I thnk my problem lies in the passage of  
+information from kernel space (very well documented) to the userspace  
+(could not find reasonable documention and/or C code examples on how  
+to achieve this)
+
+Thnks again
+
+/Patrick
+
+
+
+
+
+
+
+
+
+Quoting Alexandru Ardelean <ardeleanalex@gmail.com>:
+
+> On Thu, Jul 29, 2021 at 3:54 PM Patrick Regnouf  
+> <patrick@patricknet.net> wrote:
+>>
+>> Hello,
+>>
+>
+> [I did not hit Reply All on my first email]
+>
+> Hey,
+>
+> For libiio in particular, it's on Github:
+> https://github.com/analogdevicesinc/libiio
+>
+> I think you could raise some questions as issues there.
+>
+> And there's also a wiki that can be browsed:
+> https://wiki.analog.com/resources/tools-software/linux-software/libiio
+> https://wiki.analog.com/resources/tools-software/linux-software/libiio_internals
+>
+> Now, regarding IIO events support in libiio, I am not sure [at point  
+> in time] whether support is implemented.
+>
+> But an example of getting events from IIO can be found here:
+> https://github.com/torvalds/linux/blob/master/tools/iio/iio_event_monitor.c
+>
+> The https://github.com/torvalds/linux/blob/master/tools/iio/  folder
+> in the kernel should offer some basic bits about accessing IIO
+> devices, and getting events [which can be driver IRQ events, or kernel
+> IIO polling]
+>
+> I was going to answer on the previous question that you raised, but I forgot.
+> Apologies. It's been a busy week.
+>
+> Alex
+>
+>> Please someone tell me whether this is the right mailing list to  
+>> ask questions related to actually using libiio or actually please  
+>> point me in the right direction
+>>
+>> To summarise I am looking for C source code that would capture an  
+>> IRQ emitted by an iio accelerometer (LSM6DSLTR) all of that using  
+>> libiio
+>>
+>> I have successfully implemented a program that can read the x, y  
+>> and z axis but that means polling constantly. Not an option…  the  
+>> iio_device_set_trigger however returns “no such file or directory “
+>>
+>> Thanks
+>>
+>> /Patrick
+
+
 

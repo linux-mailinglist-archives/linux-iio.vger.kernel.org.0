@@ -2,851 +2,555 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DAF93DC6BB
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Jul 2021 17:46:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 121B93DC6F8
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Jul 2021 18:36:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232704AbhGaPqH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 31 Jul 2021 11:46:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57516 "EHLO mail.kernel.org"
+        id S230338AbhGaQhA convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Sat, 31 Jul 2021 12:37:00 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39976 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229541AbhGaPqG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 31 Jul 2021 11:46:06 -0400
+        id S229685AbhGaQhA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 31 Jul 2021 12:37:00 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B4611603E7;
-        Sat, 31 Jul 2021 15:45:56 +0000 (UTC)
-Date:   Sat, 31 Jul 2021 16:48:35 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 35C3C6044F;
+        Sat, 31 Jul 2021 16:36:47 +0000 (UTC)
+Date:   Sat, 31 Jul 2021 17:39:28 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Puranjay Mohan <puranjay12@gmail.com>
-Cc:     Michael.Hennerich@analog.com, alexandru.ardelean@analog.com,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, lars@metafoo.de,
-        Dragos.Bogdan@analog.com, Darius.Berghe@analog.com
-Subject: Re: [PATCH v6 2/2] iio: accel: Add driver support for ADXL355
-Message-ID: <20210731164835.10e1f30d@jic23-huawei>
-In-Reply-To: <20210728063430.258199-3-puranjay12@gmail.com>
-References: <20210728063430.258199-1-puranjay12@gmail.com>
-        <20210728063430.258199-3-puranjay12@gmail.com>
+To:     Andreas Klinger <ak@it-klinger.de>
+Cc:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Jiri Kosina <trivial@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Chris Packham <chris.packham@alliedtelesis.co.nz>,
+        Slawomir Stepien <sst@poczta.fm>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Vadim Pasternak <vadimp@nvidia.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Tomasz Duszynski <tomasz.duszynski@octakon.com>
+Subject: Re: [PATCH 2/2] iio: chemical: Add driver support for sgp40
+Message-ID: <20210731173928.08d6812f@jic23-huawei>
+In-Reply-To: <20210727163517.GA3468@arbad>
+References: <20210727163517.GA3468@arbad>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 28 Jul 2021 12:04:30 +0530
-Puranjay Mohan <puranjay12@gmail.com> wrote:
+On Tue, 27 Jul 2021 18:35:19 +0200
+Andreas Klinger <ak@it-klinger.de> wrote:
 
-> ADXL355 is 3-axis MEMS Accelerometer. It offers low noise density,
-> low 0g offset drift, low power with selectable measurement ranges.
-> It also features programmable high-pass and low-pass filters.
+> sgp40 is a gas sensor used for measuring the air quality.
 > 
-> Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/adxl354_adxl355.pdf
-> Signed-off-by: Puranjay Mohan <puranjay12@gmail.com>
+> This driver is reading the raw resistance value which can be passed to
+> a userspace algorithm for further calculation.
+> 
+> The raw value is also used to calculate an estimated absolute voc index
+> in the range from 0 to 500. For this purpose the raw_mean value of the
+> resistance for which the index value is 250 might be set up as a
+> calibration step.
+> 
+> Compensation of relative humidity and temperature is supported and can
+> be used by writing to device attributes of the driver.
+> 
+> There is a predecesor sensor type (sgp30) already existing. This driver
+> module was not extended because the new sensor is quite different in its
+> i2c telegrams.
+> 
+> Signed-off-by: Andreas Klinger <ak@it-klinger.de>
 
-Hi Puranjan,
+Hi Andreas,
 
-Looks pretty good so comments below are fairly minor changes, many of which will make
-your life easier as you add more features to this driver, rather than strictly being required
-for what you have here.
+Non standard ABI in here, so we are missing documentation in Documentation/ABI/testing/sysfs-bus-iio-*
 
-If you are working on buffer + event support, feel free to send that with the next
-version of this as well. I might well pick up the first part of such a series, even if
-the other patches need further changes.  Given there can be some delay and we are in the
-holiday season you don't want to get stuck waiting for review of earlier patches!
+Otherwise a few suggestions inline.
 
 Thanks,
 
 Jonathan
 
+
 > ---
->  MAINTAINERS                      |   7 +
->  drivers/iio/accel/Kconfig        |  29 ++
->  drivers/iio/accel/Makefile       |   3 +
->  drivers/iio/accel/adxl355.h      |  77 +++++
->  drivers/iio/accel/adxl355_core.c | 542 +++++++++++++++++++++++++++++++
->  drivers/iio/accel/adxl355_i2c.c  |  63 ++++
->  drivers/iio/accel/adxl355_spi.c  |  66 ++++
->  7 files changed, 787 insertions(+)
->  create mode 100644 drivers/iio/accel/adxl355.h
->  create mode 100644 drivers/iio/accel/adxl355_core.c
->  create mode 100644 drivers/iio/accel/adxl355_i2c.c
->  create mode 100644 drivers/iio/accel/adxl355_spi.c
+>  MAINTAINERS                   |   5 +
+>  drivers/iio/chemical/Kconfig  |  11 +
+>  drivers/iio/chemical/Makefile |   1 +
+>  drivers/iio/chemical/sgp40.c  | 413 ++++++++++++++++++++++++++++++++++
+>  4 files changed, 430 insertions(+)
+>  create mode 100644 drivers/iio/chemical/sgp40.c
 > 
 > diff --git a/MAINTAINERS b/MAINTAINERS
-> index bd7aff0c1..461f2a192 100644
+> index 19135a9d778e..ed8aae16559d 100644
 > --- a/MAINTAINERS
 > +++ b/MAINTAINERS
-> @@ -586,6 +586,13 @@ W:	http://ez.analog.com/community/linux-device-drivers
->  F:	Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
->  F:	drivers/input/misc/adxl34x.c
+> @@ -16707,6 +16707,11 @@ F:	drivers/iio/chemical/scd30_core.c
+>  F:	drivers/iio/chemical/scd30_i2c.c
+>  F:	drivers/iio/chemical/scd30_serial.c
 >  
-> +ADXL355 THREE-AXIS DIGITAL ACCELEROMETER DRIVER
-> +M:	Puranjay Mohan <puranjay12@gmail.com>
-> +L:	linux-iio@vger.kernel.org
-> +S:	Supported
-> +F:	drivers/iio/accel/adxl34x.c
-> +F:	Documentation/devicetree/bindings/iio/accel/adi,adxl355.yaml
+> +SENSIRION SGP40 GAS SENSOR DRIVER
+> +M:	Andreas Klinger <ak@it-klinger.de>
+> +S:	Maintained
+> +F:	drivers/iio/chemical/sgp40.c
 > +
->  ADXL372 THREE-AXIS DIGITAL ACCELEROMETER DRIVER
->  M:	Michael Hennerich <michael.hennerich@analog.com>
->  S:	Supported
-> diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
-> index cceda3cec..d0c45c809 100644
-> --- a/drivers/iio/accel/Kconfig
-> +++ b/drivers/iio/accel/Kconfig
-> @@ -61,6 +61,35 @@ config ADXL345_SPI
->  	  will be called adxl345_spi and you will also get adxl345_core
->  	  for the core module.
+>  SENSIRION SPS30 AIR POLLUTION SENSOR DRIVER
+>  M:	Tomasz Duszynski <tduszyns@gmail.com>
+>  S:	Maintained
+> diff --git a/drivers/iio/chemical/Kconfig b/drivers/iio/chemical/Kconfig
+> index a4920646e9be..c03667e62732 100644
+> --- a/drivers/iio/chemical/Kconfig
+> +++ b/drivers/iio/chemical/Kconfig
+> @@ -131,6 +131,17 @@ config SENSIRION_SGP30
+>  	  To compile this driver as module, choose M here: the
+>  	  module will be called sgp30.
 >  
-> +config ADXL355
-> +	tristate
-> +
-> +config ADXL355_I2C
-> +	tristate "Analog Devices ADXL355 3-Axis Digital Accelerometer I2C Driver"
+> +config SENSIRION_SGP40
+> +	tristate "Sensirion SGP40 gas sensor"
 > +	depends on I2C
-> +	select ADXL355
-> +	select REGMAP_I2C
+> +	select CRC8
 > +	help
-> +	  Say Y here if you want to build i2c support for the Analog Devices
-> +	  ADXL355 3-axis digital accelerometer.
+> +	  Say Y here to build I2C interface to support Sensirion SGP40 gas
+> +	  sensor
 > +
-> +	  To compile this driver as a module, choose M here: the module
-> +	  will be called adxl355_i2c and you will also get adxl355_core
-> +	  for the core module.
+> +	  To compile this driver as module, choose M here: the
+> +	  module will be called sgp40.
 > +
-> +config ADXL355_SPI
-> +	tristate "Analog Devices ADXL355 3-Axis Digital Accelerometer SPI Driver"
-> +	depends on SPI
-> +	select ADXL355
-> +	select REGMAP_SPI
-> +	help
-> +	  Say Y here if you want to build spi support for the Analog Devices
-> +	  ADXL355 3-axis digital accelerometer.
-> +
-> +	  To compile this driver as a module, choose M here: the module
-> +	  will be called adxl355_spi and you will also get adxl355_core
-> +	  for the core module.
-> +
->  config ADXL372
+>  config SPS30
 >  	tristate
 >  	select IIO_BUFFER
-> diff --git a/drivers/iio/accel/Makefile b/drivers/iio/accel/Makefile
-> index 32cd1342a..0e4721d2d 100644
-> --- a/drivers/iio/accel/Makefile
-> +++ b/drivers/iio/accel/Makefile
-> @@ -9,6 +9,9 @@ obj-$(CONFIG_ADIS16209) += adis16209.o
->  obj-$(CONFIG_ADXL345) += adxl345_core.o
->  obj-$(CONFIG_ADXL345_I2C) += adxl345_i2c.o
->  obj-$(CONFIG_ADXL345_SPI) += adxl345_spi.o
-> +obj-$(CONFIG_ADXL355) += adxl355_core.o
-> +obj-$(CONFIG_ADXL355_I2C) += adxl355_i2c.o
-> +obj-$(CONFIG_ADXL355_SPI) += adxl355_spi.o
->  obj-$(CONFIG_ADXL372) += adxl372.o
->  obj-$(CONFIG_ADXL372_I2C) += adxl372_i2c.o
->  obj-$(CONFIG_ADXL372_SPI) += adxl372_spi.o
-> diff --git a/drivers/iio/accel/adxl355.h b/drivers/iio/accel/adxl355.h
+> diff --git a/drivers/iio/chemical/Makefile b/drivers/iio/chemical/Makefile
+> index 4898690cc155..d07af581f234 100644
+> --- a/drivers/iio/chemical/Makefile
+> +++ b/drivers/iio/chemical/Makefile
+> @@ -16,6 +16,7 @@ obj-$(CONFIG_SCD30_CORE) += scd30_core.o
+>  obj-$(CONFIG_SCD30_I2C) += scd30_i2c.o
+>  obj-$(CONFIG_SCD30_SERIAL) += scd30_serial.o
+>  obj-$(CONFIG_SENSIRION_SGP30)	+= sgp30.o
+> +obj-$(CONFIG_SENSIRION_SGP40)	+= sgp40.o
+>  obj-$(CONFIG_SPS30) += sps30.o
+>  obj-$(CONFIG_SPS30_I2C) += sps30_i2c.o
+>  obj-$(CONFIG_SPS30_SERIAL) += sps30_serial.o
+> diff --git a/drivers/iio/chemical/sgp40.c b/drivers/iio/chemical/sgp40.c
 > new file mode 100644
-> index 000000000..77d0d0a28
+> index 000000000000..7072c5f3c28d
 > --- /dev/null
-> +++ b/drivers/iio/accel/adxl355.h
-> @@ -0,0 +1,77 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +++ b/drivers/iio/chemical/sgp40.c
+> @@ -0,0 +1,413 @@
+> +// SPDX-License-Identifier: GPL-2.0+
 > +/*
-> + * ADXL355 3-Axis Digital Accelerometer
+> + * sgp40.c - Support for Sensirion SGP40 Gas Sensors
 > + *
-> + * Copyright (c) 2021 Puranjay Mohan <puranjay12@gmail.com>
-> + */
-> +
-> +#ifndef _ADXL355_H_
-> +#define _ADXL355_H_
-> +
-> +#include <linux/regmap.h>
-> +
-> +/* ADXL355 Register Definitions */
-> +#define ADXL355_DEVID_AD	0x00
-why are these register definitions in a header, I'd expect them to only be
-accessed from the main c file, so if that is true, move them to the top
-of that file.  The less we have in a header, the better!
-
-Also, you may want to consider using naming that makes it clear these
-are register addresses.  That makes it much more readable once you have
-fields, and masks etc defined as well.  At _REG postfix tends to
-work well for this.
-
-> +#define ADXL355_DEVID_MST	0x01
-> +#define ADXL355_PARTID		0x02
-> +#define ADXL355_REVID		0x03
-> +#define ADXL355_STATUS		0x04
-> +#define ADXL355_FIFO_ENTRIES	0x05
-> +#define ADXL355_TEMP2		0x06
-> +#define ADXL355_XDATA3		0x08
-> +#define ADXL355_YDATA3		0x0B
-> +#define ADXL355_ZDATA3		0x0E
-> +#define ADXL355_FIFO_DATA	0x11
-> +#define ADXL355_OFFSET_X_H	0x1E
-> +#define ADXL355_OFFSET_Y_H	0x20
-> +#define ADXL355_OFFSET_Z_H	0x22
-> +#define ADXL355_ACT_EN		0x24
-> +#define ADXL355_ACT_THRESH_H	0x25
-> +#define ADXL355_ACT_THRESH_L	0x26
-> +#define ADXL355_ACT_COUNT	0x27
-> +#define ADXL355_FILTER		0x28
-> +#define ADXL355_FIFO_SAMPLES	0x29
-> +#define ADXL355_INT_MAP		0x2A
-> +#define ADXL355_SYNC		0x2B
-> +#define ADXL355_RANGE		0x2C
-> +#define ADXL355_POWER_CTL	0x2D
-> +#define ADXL355_SELF_TEST	0x2E
-> +#define ADXL355_RESET		0x2F
-> +
-> +#define ADXL355_DEVID_AD_VAL	0xAD
-> +#define ADXL355_DEVID_MST_VAL	0x1D
-> +#define ADXL355_PARTID_VAL	0xED
-> +#define ADXL355_REVID_VAL	0x01
-
-REVID is unused and I'd like to 'hope' that it's never needed due to an
-compatibility problems.  As such I'd drop this define.
-
-> +#define ADXL355_RESET_CODE	0x52
-> +
-> +#define ADXL355_POWER_CTL_MODE_MSK	GENMASK(1, 0)
-> +
-> +#define ADXL355_FILTER_ODR_MSK			GENMASK(3, 0)
-> +#define ADXL355_FILTER_HPF_MSK			GENMASK(6, 4)
-Good to group the field defintions with the register defines.
-A nice option is to use both naming and indentation to make it clear
-what thigns are.  Eg. for these.
-
-#define ADXL355_FILTER_REG			0x28
-#define   ADXL355_FILTER_ODR_MSK		GENMASK(3, 0)
-#define   ADXL355_FILTER_HPF_MSK		GENMASK(6, 4)
-
-> +
-> +/*
-> + * The datasheet defines an intercept of 1885 LSB at 25 degC
-> + * and a slope of -9.05 LSB/C. The following formula can be used to find the
-> + * temperature:
-> + * Temp = ((RAW - 1885)/(-9.05)) + 25 but this doesn't follow the format of
-> + * the IIO which is Temp = (RAW + OFFSET) * SCALE. Hence using some rearranging
-> + * we get the scale as -110.49723 and offset as -2111.25
-> + */
-> +#define TEMP_SCALE_VAL -110
-> +#define TEMP_SCALE_VAL2 497238
-> +#define TEMP_OFFSET_VAL -2111
-> +#define TEMP_OFFSET_VAL2 250000
-> +
-> +/*
-> + * At +/- 2g with 20-bit resolution, scale is given in datasheet as
-> + * 3.9ug/LSB = 0.0000039 * 9.80665 = 0.00003824593 m/s^2
-> + */
-> +#define ADXL355_NSCALE	38245
-> +
-> +extern const struct regmap_access_table adxl355_readable_regs_tbl;
-> +
-> +extern const struct regmap_access_table adxl355_writeable_regs_tbl;
-> +
-> +int adxl355_core_probe(struct device *dev, struct regmap *regmap,
-> +		       const char *name);
-> +#endif /* _ADXL355_H_ */
-> diff --git a/drivers/iio/accel/adxl355_core.c b/drivers/iio/accel/adxl355_core.c
-> new file mode 100644
-> index 000000000..8556f286e
-> --- /dev/null
-> +++ b/drivers/iio/accel/adxl355_core.c
-> @@ -0,0 +1,542 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * ADXL355 3-Axis Digital Accelerometer IIO core driver
+> + * Copyright (C) 2021 Andreas Klinger <ak@it-klinger.de>
 > + *
-> + * Copyright (c) 2021 Puranjay Mohan <puranjay12@gmail.com>
+> + * I2C slave address: 0x59
 > + *
-> + * Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/adxl354_adxl355.pdf
+> + * Datasheets:
+> + * https://www.sensirion.com/file/datasheet_sgp40
+> + *
+> + * There are two functionalities supported:
+> + * 1) read raw logarithmic resistance value from sensor
+> + *    --> useful to pass it to the algorithm of the sensor vendor for
+> + *    measuring deteriorations and improvements of air quality.
+> + * 2) calculate an estimated absolute voc index (0 - 500 index points) for
+> + *    measuring the air quality.
+> + *    For this purpose the mean value of the resistance can be set up using
+> + *    a device attribute
+
+The info on that ABI also needs to be in ABI docs.  Is it effectively a calibration
+offset?  If so, we have calibbias which might be appropriate.
+
+> + *
+> + * Compensation of relative humidity and temperature can be used by device
+> + * attributes.
 > + */
 > +
-> +#include <asm/unaligned.h>
-> +#include <linux/bitfield.h>
+> +#include <linux/module.h>
 > +#include <linux/iio/iio.h>
 > +#include <linux/iio/sysfs.h>
+> +#include <linux/delay.h>
+> +#include <linux/mutex.h>
+> +#include <linux/i2c.h>
+> +#include <linux/crc8.h>
+> +
+> +#define SGP40_CRC8_POLYNOMIAL			0x31
+> +#define SGP40_CRC8_INIT				0xff
+> +
+> +static u8 sgp40_measure_raw_tg[] = {0x26, 0x0F};
 
-I don't think you use anything from iio/sysfs.h so drop that one.
+Only used in one place, I'd just put it down there directly.
 
-> +#include <linux/limits.h>
-> +#include <linux/math64.h>
-> +#include <linux/module.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/regmap.h>
 > +
-> +#include "adxl355.h"
+> +DECLARE_CRC8_TABLE(sgp40_crc8_table);
 > +
-> +static const struct regmap_range adxl355_read_reg_range[] = {
-> +	regmap_reg_range(ADXL355_DEVID_AD, ADXL355_FIFO_DATA),
-> +	regmap_reg_range(ADXL355_OFFSET_X_H, ADXL355_SELF_TEST)
+> +struct sgp40_data {
+> +	struct device		*dev;
+> +	struct i2c_client	*client;
+> +	int			rel_humidity;
+> +	int			temperature;
+> +	int			raw_mean;
+> +	struct mutex		lock;
 > +};
 > +
-> +const struct regmap_access_table adxl355_readable_regs_tbl = {
-> +	.yes_ranges = adxl355_read_reg_range,
-> +	.n_yes_ranges = ARRAY_SIZE(adxl355_read_reg_range),
-> +};
-> +EXPORT_SYMBOL_GPL(adxl355_readable_regs_tbl);
-> +
-> +static const struct regmap_range adxl355_write_reg_range[] = {
-> +	regmap_reg_range(ADXL355_OFFSET_X_H, ADXL355_RESET)
-> +};
-> +
-> +const struct regmap_access_table adxl355_writeable_regs_tbl = {
-> +	.yes_ranges = adxl355_write_reg_range,
-> +	.n_yes_ranges = ARRAY_SIZE(adxl355_write_reg_range),
-> +};
-> +EXPORT_SYMBOL_GPL(adxl355_writeable_regs_tbl);
-> +
-> +enum adxl355_op_mode {
-> +	ADXL355_MEASUREMENT,
-> +	ADXL355_STANDBY,
-> +	ADXL355_TEMP_OFF
+> +static const struct iio_chan_spec sgp40_channels[] = {
+> +	{
+> +		.type = IIO_CONCENTRATION,
+> +		.channel2 = IIO_MOD_VOC,
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
+> +	},
+> +	{
+> +		.type = IIO_RESISTANCE,
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+> +	},
 > +};
 > +
-> +enum adxl355_odr {
-> +	ADXL355_ODR_4000HZ,
-> +	ADXL355_ODR_2000HZ,
-> +	ADXL355_ODR_1000HZ,
-> +	ADXL355_ODR_500HZ,
-> +	ADXL355_ODR_250HZ,
-> +	ADXL355_ODR_125HZ,
-> +	ADXL355_ODR_62_5HZ,
-> +	ADXL355_ODR_31_25HZ,
-> +	ADXL355_ODR_15_625HZ,
-> +	ADXL355_ODR_7_813HZ,
-> +	ADXL355_ODR_3_906HZ
-> +};
+> +/*
+> + * calculate e^x where n is the exponent multiplied with 100
+> + *
+> + * use taylor approximation which is accurate enough for the purpose of
+> + * coming out with just 500 index points.
+> + */
+> +int sqp40_exp100(int n)
+> +{
+> +	int x, xn, y, z;
+> +	int s = 1;
 > +
-> +enum adxl355_hpf_3db {
-> +	ADXL355_HPF_OFF,
-> +	ADXL355_HPF_24_7,
-> +	ADXL355_HPF_6_2084,
-> +	ADXL355_HPF_1_5545,
-> +	ADXL355_HPF_0_3862,
-> +	ADXL355_HPF_0_0954,
-> +	ADXL355_HPF_0_0238
-> +};
+> +	if (n < 0) {
+> +		s = -1;
+> +		n *= -1;
+> +	}
 > +
-> +static const int adxl355_odr_table[][2] = {
-> +	[0] = {4000, 0},
-> +	[1] = {2000, 0},
-> +	[2] = {1000, 0},
-> +	[3] = {500, 0},
-> +	[4] = {250, 0},
-> +	[5] = {125, 0},
-> +	[6] = {62, 500000},
-> +	[7] = {31, 250000},
-> +	[8] = {15, 625000},
-> +	[9] = {7, 813000},
-> +	[10] = {3, 906000}
-> +};
+> +	x = n;
 > +
-> +static const int adxl355_hpf_3db_multipliers[] = {
-> +	0,
-> +	247000,
-> +	62084,
-> +	15545,
-> +	3862,
-> +	954,
-> +	238
-> +};
+> +	y = 100 + x;
+> +	xn = x * x;
+> +	y += xn / 2 / 100;
+> +	xn = x * x * x;
+> +	y += xn / 6 / 10000;
+> +	xn = x * x * x * x;
+> +	y += xn / 24 / 1000000;
 > +
-> +struct adxl355_data {
-> +	struct regmap *regmap;
-> +	struct device *dev;
-> +	struct mutex lock; /* lock to protect op_mode */
-> +	enum adxl355_op_mode op_mode;
-> +	enum adxl355_odr odr;
-> +	enum adxl355_hpf_3db hpf_3db;
-> +	int x_calibbias;
-> +	int y_calibbias;
-> +	int z_calibbias;
-> +	int adxl355_hpf_3db_table[7][2];
-> +	u8 transf_buf[3] ____cacheline_aligned;
-> +};
+> +	if (s == -1)
+> +		z = 10000 / y;
+> +	else
+> +		z = y;
 > +
-> +static int adxl355_set_op_mode(struct adxl355_data *data,
-> +			       enum adxl355_op_mode op_mode)
+> +	return z;
+> +}
+> +
+> +static int sgp40_calc_voc(struct sgp40_data *data, u16 raw, int *voc)
+> +{
+> +	int x;
+> +	int ex = 0;
+> +
+> +	/* we calculate in 100's */
+> +	x = ((int)raw - data->raw_mean) * 65 / 100;
+> +
+> +	/* voc = 500 / (1 + e^x) */
+> +	if (x < -800)
+> +		*voc = 500;
+> +	else if (x > 800)
+> +		*voc = 0;
+> +	else {
+> +		ex = sqp40_exp100(x);
+> +		*voc = 50000 / (100 + ex);
+
+Does it make sense to provide more precision by not returning a single integer?
+IIO_VAL_INT_PLUS_MICRO perhaps?
+
+> +	}
+> +
+> +	dev_dbg(data->dev, "raw: %d raw_mean: %d x: %d ex: %d voc: %d\n",
+> +						raw, data->raw_mean, x, ex, *voc);
+> +
+> +	return 0;
+> +}
+> +
+> +static int sgp40_measure_raw(struct sgp40_data *data, u16 *raw)
 > +{
 > +	int ret;
+> +	struct i2c_client *client = data->client;
+> +	u16 buf_be16; 
+
+If it is be, then use the big endian types.  Also run sparse over
+your code before submitting as it will complain about this.
+
+> +	u8 buf[3];
+> +	u8 tg[8];
+> +	u32 ticks;
+> +	u8 crc;
 > +
-> +	if (data->op_mode == op_mode)
-> +		return 0;
+> +	memcpy(tg, sgp40_measure_raw_tg, 2);
+
+It looks like this would benefit from a packed structure into which we
+can directly assign the various parts - something like
+
+struct {
+	u8 command[2];
+	__be16 rel_humidity_ticks;
+	u8 rht_crc;
+	__be16 temp_ticks;
+	u8 temp_crc;
+} __packed tg;
+
 > +
-> +	ret = regmap_update_bits(data->regmap, ADXL355_POWER_CTL,
-> +				 ADXL355_POWER_CTL_MODE_MSK, op_mode);
+> +	ticks = (data->rel_humidity / 10) * 65535 / 10000;
+> +	buf_be16 = cpu_to_be16((u16)ticks);
+
+It's not immediately obvious ticks won't overflow a u16, so may be best to
+use clamp() to ensure it doesn't.
+
+> +	memcpy(&tg[2], &buf_be16, 2);
+> +	tg[4] = crc8(sgp40_crc8_table, &tg[2], 2, SGP40_CRC8_INIT);
+> +
+> +	ticks = ((data->temperature + 45000) / 10) * 65535 / 17500;
+> +	buf_be16 = cpu_to_be16((u16)ticks);
+> +	memcpy(&tg[5], &buf_be16, 2);
+> +	tg[7] = crc8(sgp40_crc8_table, &tg[5], 2, SGP40_CRC8_INIT);
+> +
+> +	ret = i2c_master_send(client, (const char *)tg, sizeof(tg));
+> +	if (ret != sizeof(tg)) {
+> +		dev_warn(data->dev, "i2c_master_send ret: %d sizeof: %d\n", ret, sizeof(tg));
+> +		return -EIO;
+> +	}
+> +	msleep(30);
+> +
+> +	ret = i2c_master_recv(client, buf, sizeof(buf));
 > +	if (ret < 0)
 > +		return ret;
-> +
-> +	data->op_mode = op_mode;
-> +
-> +	return ret;
-> +}
-> +
-> +static void adxl355_fill_3db_frequency_table(struct adxl355_data *data)
-> +{
-> +	int i;
-> +	u64 rem;
-> +	u64 div;
-> +	u32 multiplier;
-> +	u64 odr = mul_u64_u32_shr(adxl355_odr_table[data->odr][0], 1000000, 0) +
-> +					adxl355_odr_table[data->odr][1];
-> +
-> +	for (i = 0; i < ARRAY_SIZE(adxl355_hpf_3db_multipliers); i++) {
-> +		multiplier = adxl355_hpf_3db_multipliers[i];
-> +		div = div64_u64_rem(mul_u64_u32_shr(odr, multiplier, 0),
-> +				    100000000000000UL, &rem);
-> +
-> +		data->adxl355_hpf_3db_table[i][0] = div;
-> +		data->adxl355_hpf_3db_table[i][1] = div_u64(rem, 100000000);
+> +	if (ret != sizeof(buf)) {
+> +		dev_warn(data->dev, "i2c_master_recv ret: %d sizeof: %d\n", ret, sizeof(buf));
+> +		return -EIO;
 > +	}
+> +
+> +	crc = crc8(sgp40_crc8_table, buf, 2, SGP40_CRC8_INIT);
+> +	if (crc != buf[2]) {
+> +		dev_err(data->dev, "CRC error while measure-raw\n");
+> +		return -EIO;
+> +	}
+> +
+> +	memcpy(&buf_be16, buf, sizeof(buf_be16));
+> +	*raw = be16_to_cpu(buf_be16);
+> +
+> +	return 0;
 > +}
 > +
-> +static int adxl355_setup(struct adxl355_data *data)
+> +static int sgp40_read_raw(struct iio_dev *indio_dev,
+> +			struct iio_chan_spec const *chan, int *val,
+> +			int *val2, long mask)
 > +{
-> +	unsigned int regval;
+> +	struct sgp40_data *data = iio_priv(indio_dev);
 > +	int ret;
-> +
-> +	ret = regmap_read(data->regmap, ADXL355_DEVID_AD, &regval);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (regval != ADXL355_DEVID_AD_VAL) {
-> +		dev_err(data->dev, "Invalid ADI ID 0x%02x\n", regval);
-> +		return -ENODEV;
-> +	}
-> +
-> +	ret = regmap_read(data->regmap, ADXL355_DEVID_MST, &regval);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (regval != ADXL355_DEVID_MST_VAL) {
-> +		dev_err(data->dev, "Invalid MEMS ID 0x%02x\n", regval);
-> +		return -ENODEV;
-> +	}
-> +
-> +	ret = regmap_read(data->regmap, ADXL355_PARTID, &regval);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (regval != ADXL355_PARTID_VAL) {
-> +		dev_err(data->dev, "Invalid DEV ID 0x%02x\n", regval);
-> +		return -ENODEV;
-> +	}
-> +
-> +	/*
-> +	 * Perform a software reset to make sure the device is in a consistent
-> +	 * state after start up.
-> +	 */
-> +	ret = regmap_write(data->regmap, ADXL355_RESET, ADXL355_RESET_CODE);
-> +	if (ret)
-> +		return ret;
-> +
-> +	adxl355_fill_3db_frequency_table(data);
-> +
-> +	return adxl355_set_op_mode(data, ADXL355_MEASUREMENT);
-> +}
-> +
-> +static int adxl355_get_temp_data(struct adxl355_data *data, u8 addr)
-> +{
-> +	return regmap_bulk_read(data->regmap, addr, data->transf_buf, 2);
-> +}
-> +
-> +static int adxl355_read_axis(struct adxl355_data *data, u8 addr)
-> +{
-> +	int ret;
-> +
-> +	ret = regmap_bulk_read(data->regmap, addr, data->transf_buf, 3);
-> +	if (ret < 0)
-
-currently the code is inconsistent on 
-if (ret) or if (ret < 0) for regmap calls.  I would prefer if (ret)
-throughout as that makes things consistent when you do
-return adxlset_op_mode() at the end of a function and any positive return
-(of which there aren't any) would be returned unlike in error paths above.
-
-> +		return ret;
-> +
-> +	return get_unaligned_be24(data->transf_buf);
-> +}
-> +
-> +static int adxl355_find_match(const int (*freq_tbl)[2], const int n,
-> +			      const int val, const int val2)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < n; i++) {
-> +		if (freq_tbl[i][0] == val && freq_tbl[i][1] == val2)
-> +			return i;
-> +	}
-> +
-> +	return -EINVAL;
-> +}
-> +
-> +static int adxl355_set_odr(struct adxl355_data *data,
-> +			   enum adxl355_odr odr)
-> +{
-> +	int ret = 0;
-> +
-> +	mutex_lock(&data->lock);
-> +
-> +	if (data->odr == odr)
-> +		goto out_unlock;
-> +
-> +	ret = adxl355_set_op_mode(data, ADXL355_STANDBY);
-> +	if (ret < 0)
-> +		goto out_unlock;
-> +
-> +	ret = regmap_update_bits(data->regmap, ADXL355_FILTER,
-> +				 ADXL355_FILTER_ODR_MSK,
-> +				 FIELD_PREP(ADXL355_FILTER_ODR_MSK, odr));
-> +	if (ret < 0)
-> +		goto out_unlock;
-> +
-> +	data->odr = odr;
-> +	adxl355_fill_3db_frequency_table(data);
-> +
-> +out_unlock:
-> +	ret = adxl355_set_op_mode(data, ADXL355_MEASUREMENT);
-> +	mutex_unlock(&data->lock);
-> +	return ret;
-> +}
-> +
-> +static int adxl355_set_hpf_3db(struct adxl355_data *data,
-> +			       enum adxl355_hpf_3db hpf)
-> +{
-> +	int ret = 0;
-> +
-> +	mutex_lock(&data->lock);
-> +
-> +	if (data->hpf_3db == hpf)
-> +		goto out_unlock;
-
-If we follow this goto, we have not yet changed the mode of the
-device, so we shouldn't change it back again.  I would suggest
-two labels to allow us to just unlock in this error case, but
-also do the op_mode change for the other cases.
-
-> +
-> +	ret = adxl355_set_op_mode(data, ADXL355_STANDBY);
-> +	if (ret < 0)
-> +		goto out_unlock;
-> +
-> +	ret = regmap_update_bits(data->regmap, ADXL355_FILTER,
-> +				 ADXL355_FILTER_HPF_MSK,
-> +				 FIELD_PREP(ADXL355_FILTER_HPF_MSK, hpf));
-> +	if (!ret)
-> +		data->hpf_3db = hpf;
-> +
-> +out_unlock:
-> +	ret = adxl355_set_op_mode(data, ADXL355_MEASUREMENT);
-> +	mutex_unlock(&data->lock);
-> +	return ret;
-> +}
-> +
-> +static int adxl355_set_calibbias(struct adxl355_data *data,
-> +				 int channel2, int calibbias)
-> +{
-> +	int ret = 0;
-> +
-> +	data->transf_buf[0] = (calibbias >> 8) & 0xFF;
-> +	data->transf_buf[1] = calibbias & 0xFF;
-
-One more case for put_unaligned_be16(). If you don't do it now, it'll get picked
-up by one of the people who really like clearing this stuff up the moment it goes
-upstream anyway.
-
-> +	data->transf_buf[2] = 0;
-> +
-> +	mutex_lock(&data->lock);
-> +
-> +	ret = adxl355_set_op_mode(data, ADXL355_STANDBY);
-> +	if (ret < 0)
-> +		goto out_unlock;
-> +
-> +	switch (channel2) {
-I mention below that you should consider using an enum in the chan->address field and having
-done that, use it to index into an array of structures that have the registers,
-plus you can also use it to index into
-data->calibbias[3].
-
-That changes this code to look something like
-enum adxl355_chans {
-	chan_x, chan_y, chan_z
-};
-struct adxl355_chan_info {
-	u8 data_reg;
-	u8 offset_reg;
-};
-
-static const struct adxl355_chan_info adxl355_chans[] = {
-	[chan_x] = {
-		...
-	},
-	[chan_y] = {...
-};
-
-	ret = regmap_bulk_write(data->regmap, adxl355_chan_info[chan].offset_reg,
-				data_trans_buf, 2);
-	if (ret < 0)
-		goto out_unlock;
-	data->calibbias[chan] = calibbias;
-	...
-
-So you move a lot of the information about the device into static tables rather
-than dynamic code.  Things tend to end up simpler that way.
-
-The case for this modification in this particular driver is lower than many because
-it only really has a couple of per channel registers, but I think it still worth doing
-(at least partly because other people may well copy your code in future!)
-
-> +	case IIO_MOD_X:
-> +		ret = regmap_bulk_write(data->regmap, ADXL355_OFFSET_X_H,
-> +					data->transf_buf, 2);
-> +		if (ret < 0)
-> +			goto out_unlock;
-> +		data->x_calibbias = calibbias;
-> +		break;
-> +	case IIO_MOD_Y:
-> +		ret = regmap_bulk_write(data->regmap, ADXL355_OFFSET_Y_H,
-> +					data->transf_buf, 2);
-> +		if (ret < 0)
-> +			goto out_unlock;
-> +		data->y_calibbias = calibbias;
-> +		break;
-> +	case IIO_MOD_Z:
-> +		ret = regmap_bulk_write(data->regmap, ADXL355_OFFSET_Z_H,
-> +					data->transf_buf, 2);
-> +		if (ret < 0)
-> +			goto out_unlock;
-> +		data->z_calibbias = calibbias;
-> +		break;
-> +	default:
-> +		ret = -EINVAL;
-> +		break;
-> +	}
-> +
-> +out_unlock:
-> +	ret = adxl355_set_op_mode(data, ADXL355_MEASUREMENT);
-> +	mutex_unlock(&data->lock);
-> +	return ret;
-> +}
-> +
-> +static int adxl355_read_raw(struct iio_dev *indio_dev,
-> +			    struct iio_chan_spec const *chan,
-> +			    int *val, int *val2, long mask)
-> +{
-> +	struct adxl355_data *data = iio_priv(indio_dev);
-> +	int ret;
+> +	u16 raw;
+> +	int voc;
 > +
 > +	switch (mask) {
 > +	case IIO_CHAN_INFO_RAW:
-> +		switch (chan->type) {
-> +		case IIO_TEMP:
-> +			ret = adxl355_get_temp_data(data, chan->address);
-> +			if (ret < 0)
-> +				return ret;
-> +			*val = get_unaligned_be16(data->transf_buf);
-> +
-> +			return IIO_VAL_INT;
-> +		case IIO_ACCEL:
-> +			ret = adxl355_read_axis(data, chan->address);
-> +			if (ret < 0)
-> +				return ret;
-> +			*val = sign_extend32(ret >> (chan->scan_type.shift),
-
-Drop the extra brackets.
-
-> +					     chan->scan_type.realbits - 1);
-> +			return IIO_VAL_INT;
-> +		default:
-> +			return -EINVAL;
+> +		mutex_lock(&data->lock);
+> +		ret = sgp40_measure_raw(data, &raw);
+> +		if (ret) {
+> +			mutex_unlock(&data->lock);
+> +			return ret;
 > +		}
-> +
-> +	case IIO_CHAN_INFO_SCALE:
-> +		switch (chan->type) {
-> +		case IIO_TEMP:
-> +			*val = TEMP_SCALE_VAL;
-> +			*val2 = TEMP_SCALE_VAL2;
-> +			return IIO_VAL_INT_PLUS_MICRO;
-> +		case IIO_ACCEL:
-> +			*val = 0;
-> +			*val2 = ADXL355_NSCALE;
-> +			return IIO_VAL_INT_PLUS_NANO;
-> +		default:
-> +			return -EINVAL;
+> +		*val = raw;
+> +		ret = IIO_VAL_INT;
+> +		mutex_unlock(&data->lock);
+> +		break;
+> +	case IIO_CHAN_INFO_PROCESSED:
+> +		mutex_lock(&data->lock);
+> +		ret = sgp40_measure_raw(data, &raw);
+> +		if (ret) {
+> +			mutex_unlock(&data->lock);
+> +			return ret;
 > +		}
-> +	case IIO_CHAN_INFO_OFFSET:
-> +		*val = TEMP_OFFSET_VAL;
-> +		*val2 = TEMP_OFFSET_VAL2;
-> +		return IIO_VAL_INT_PLUS_MICRO;
-> +	case IIO_CHAN_INFO_CALIBBIAS:
-> +		if (chan->channel2 == IIO_MOD_X)
-> +			*val = data->x_calibbias;
-> +		else if (chan->channel2 == IIO_MOD_Y)
-> +			*val = data->y_calibbias;
-> +		else
-> +			*val = data->z_calibbias;
+> +		ret = sgp40_calc_voc(data, raw, &voc);
+> +		if (ret) {
+> +			mutex_unlock(&data->lock);
+> +			return ret;
+> +		}
+> +		*val = voc;
+> +		ret = IIO_VAL_INT;
+> +		mutex_unlock(&data->lock);
 
-Whilst it is clearly more code, a switch statement would be
-better here as it would make it clear there are 3 valid options to
-pick between.
+You are holding the lock longer than needed - it would be good
+to reduce this, hopefully removing the need for unlocking separately
+in each of the error paths.
 
-> +		*val = sign_extend32(*val, 15);
-> +		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		*val = adxl355_odr_table[data->odr][0];
-> +		*val2 = adxl355_odr_table[data->odr][1];
-> +		return IIO_VAL_INT_PLUS_MICRO;
-> +	case IIO_CHAN_INFO_HIGH_PASS_FILTER_3DB_FREQUENCY:
-> +		*val = data->adxl355_hpf_3db_table[data->hpf_3db][0];
-> +		*val2 = data->adxl355_hpf_3db_table[data->hpf_3db][1];
-> +		return IIO_VAL_INT_PLUS_MICRO;
+> +		break;
 > +	default:
 > +		return -EINVAL;
 > +	}
+> +
+> +	return ret;
+
+Drop this as you can't get here.
+
 > +}
 > +
-> +static int adxl355_write_raw(struct iio_dev *indio_dev,
-> +			     struct iio_chan_spec const *chan,
-> +			     int val, int val2, long mask)
+> +static ssize_t rel_humidity_comp_store(struct device *dev,
+> +				       struct device_attribute *attr,
+> +				       const char *buf, size_t len)
 > +{
-> +	struct adxl355_data *data = iio_priv(indio_dev);
-> +	int odr_idx, hpf_idx, calibbias;
+> +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> +	struct sgp40_data *data = iio_priv(indio_dev);
+> +	int ret;
+> +	u32 val;
 > +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		odr_idx = adxl355_find_match(adxl355_odr_table,
-> +					     ARRAY_SIZE(adxl355_odr_table),
-> +					     val, val2);
-> +		if (odr_idx < 0)
-> +			return odr_idx;
+> +	ret = kstrtouint(buf, 10, &val);
+> +	if (ret)
+> +		return ret;
 > +
-> +		return adxl355_set_odr(data, odr_idx);
-> +	case IIO_CHAN_INFO_HIGH_PASS_FILTER_3DB_FREQUENCY:
-> +		hpf_idx = adxl355_find_match(data->adxl355_hpf_3db_table,
-> +					ARRAY_SIZE(data->adxl355_hpf_3db_table),
-> +					     val, val2);
-> +		if (hpf_idx < 0)
-> +			return hpf_idx;
-> +
-> +		return adxl355_set_hpf_3db(data, hpf_idx);
-> +	case IIO_CHAN_INFO_CALIBBIAS:
-> +		calibbias = clamp_t(int, val, S16_MIN, S16_MAX);
-> +
-> +		return adxl355_set_calibbias(data, chan->channel2, calibbias);
-> +	default:
+> +	if (val > 100000)
 > +		return -EINVAL;
-> +	}
+> +
+> +	mutex_lock(&data->lock);
+> +	data->rel_humidity = val;
+> +	mutex_unlock(&data->lock);
+> +
+> +	return len;
 > +}
 > +
-> +static int adxl355_read_avail(struct iio_dev *indio_dev,
-> +			      struct iio_chan_spec const *chan,
-> +			      const int **vals, int *type, int *length,
-> +			      long mask)
+> +static ssize_t rel_humidity_comp_show(struct device *dev,
+> +				      struct device_attribute *attr,
+> +				      char *buf)
 > +{
-> +	struct adxl355_data *data = iio_priv(indio_dev);
+> +	int ret;
+> +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> +	struct sgp40_data *data = iio_priv(indio_dev);
 > +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		*vals = (const int *)adxl355_odr_table;
-> +		*type = IIO_VAL_INT_PLUS_MICRO;
-> +		/* Values are stored in a 2D matrix */
-> +		*length = ARRAY_SIZE(adxl355_odr_table) * 2;
+> +	mutex_lock(&data->lock);
+> +	ret = snprintf(buf, PAGE_SIZE, "%d\n", data->rel_humidity);
+> +	mutex_unlock(&data->lock);
 > +
-> +		return IIO_AVAIL_LIST;
-> +	case IIO_CHAN_INFO_HIGH_PASS_FILTER_3DB_FREQUENCY:
-> +		*vals = (const int *)(data->adxl355_hpf_3db_table);
-
-Extra brackets not needed (see the equivalent for *vals above).
-
-> +		*type = IIO_VAL_INT_PLUS_MICRO;
-> +		/* Values are stored in a 2D matrix */
-> +		*length = ARRAY_SIZE(data->adxl355_hpf_3db_table) * 2;
+> +	return ret;
+> +}
 > +
-> +		return IIO_AVAIL_LIST;
-> +	default:
+> +static ssize_t temperature_comp_store(struct device *dev,
+> +				       struct device_attribute *attr,
+> +				       const char *buf, size_t len)
+> +{
+> +	int ret;
+> +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> +	struct sgp40_data *data = iio_priv(indio_dev);
+> +	int val;
+> +
+> +	ret = kstrtoint(buf, 10, &val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if ((val < -45000) || (val > 130000))
 > +		return -EINVAL;
-> +	}
+> +
+> +	mutex_lock(&data->lock);
+> +	data->temperature = val;
+> +	mutex_unlock(&data->lock);
+> +
+> +	return len;
 > +}
 > +
-> +static const unsigned long adxl355_avail_scan_masks[] = {
-> +	GENMASK(3, 0),
-> +	0
-> +};
-> +
-> +static const struct iio_info adxl355_info = {
-> +	.read_raw	= adxl355_read_raw,
-> +	.write_raw	= adxl355_write_raw,
-> +	.read_avail	= &adxl355_read_avail
-> +};
-> +
-> +#define ADXL355_ACCEL_CHANNEL(index, reg, axis) {			\
-> +	.type = IIO_ACCEL,						\
-> +	.address = reg,							\
-> +	.modified = 1,							\
-> +	.channel2 = IIO_MOD_##axis,					\
-> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |			\
-> +			      BIT(IIO_CHAN_INFO_CALIBBIAS),		\
-> +	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |		\
-> +				    BIT(IIO_CHAN_INFO_SAMP_FREQ) |	\
-> +		BIT(IIO_CHAN_INFO_HIGH_PASS_FILTER_3DB_FREQUENCY),	\
-> +	.info_mask_shared_by_type_available =				\
-> +		BIT(IIO_CHAN_INFO_SAMP_FREQ) |				\
-> +		BIT(IIO_CHAN_INFO_HIGH_PASS_FILTER_3DB_FREQUENCY),	\
-> +	.scan_index = index,						\
-> +	.scan_type = {							\
-> +		.sign = 's',						\
-> +		.realbits = 20,						\
-> +		.storagebits = 32,					\
-> +		.shift = 4,						\
-> +		.endianness = IIO_BE,					\
-> +	}								\
-> +}
-> +
-> +static const struct iio_chan_spec adxl355_channels[] = {
-> +	ADXL355_ACCEL_CHANNEL(0, ADXL355_XDATA3, X),
-
-Rather than directly using the data register, I would suggest some indirection.
-So instead use an enum value here, and then index into a static const array
-of structures that provide everything register specific.  That will give
-you a clean way to later support things like the per axis offsets,
-
-> +	ADXL355_ACCEL_CHANNEL(1, ADXL355_YDATA3, Y),
-> +	ADXL355_ACCEL_CHANNEL(2, ADXL355_ZDATA3, Z),
-> +	{
-> +		.type = IIO_TEMP,
-> +		.address = ADXL355_TEMP2,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> +				      BIT(IIO_CHAN_INFO_SCALE) |
-> +				      BIT(IIO_CHAN_INFO_OFFSET),
-> +		.scan_index = 3,
-
-Keep the introduction of scan_index for when you add buffer support.
-
-> +		.scan_type = {
-> +			.sign = 's',
-> +			.realbits = 12,
-> +			.storagebits = 16,
-> +			.endianness = IIO_BE,
-
-Given you do use some of the scan_type fields already, I guess keeping the
-rest isn't too bad..
-
-> +		},
-> +	}
-> +};
-> +
-> +int adxl355_core_probe(struct device *dev, struct regmap *regmap,
-> +		       const char *name)
+> +static ssize_t temperature_comp_show(struct device *dev,
+> +				      struct device_attribute *attr,
+> +				      char *buf)
 > +{
-> +	struct adxl355_data *data;
+> +	int ret;
+> +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> +	struct sgp40_data *data = iio_priv(indio_dev);
+> +
+> +	mutex_lock(&data->lock);
+> +	ret = snprintf(buf, PAGE_SIZE, "%d\n", data->temperature);
+> +	mutex_unlock(&data->lock);
+> +
+> +	return ret;
+> +}
+> +
+> +static ssize_t raw_mean_store(struct device *dev,
+> +				       struct device_attribute *attr,
+> +				       const char *buf, size_t len)
+> +{
+> +	int ret;
+> +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> +	struct sgp40_data *data = iio_priv(indio_dev);
+> +	u32 val;
+> +
+> +	ret = kstrtouint(buf, 10, &val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if ((val < 20000) || (val > 52768))
+> +		return -EINVAL;
+> +
+> +	mutex_lock(&data->lock);
+> +	data->raw_mean = val;
+
+Huh.  That is definitely not what I was expecting.  You are writing
+the mean?  That's odd. Docs needed.
+
+> +	mutex_unlock(&data->lock);
+> +
+> +	return len;
+> +}
+> +
+> +static ssize_t raw_mean_show(struct device *dev,
+> +				      struct device_attribute *attr,
+> +				      char *buf)
+> +{
+> +	int ret;
+> +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> +	struct sgp40_data *data = iio_priv(indio_dev);
+> +
+> +	mutex_lock(&data->lock);
+> +	ret = snprintf(buf, PAGE_SIZE, "%d\n", data->raw_mean);
+> +	mutex_unlock(&data->lock);
+> +
+> +	return ret;
+> +}
+> +
+> +static IIO_DEVICE_ATTR_RW(rel_humidity_comp, 0);
+> +static IIO_DEVICE_ATTR_RW(temperature_comp, 0);
+> +static IIO_DEVICE_ATTR_RW(raw_mean, 0);
+> +
+> +static struct attribute *sgp40_attrs[] = {
+> +	&iio_dev_attr_rel_humidity_comp.dev_attr.attr,
+> +	&iio_dev_attr_temperature_comp.dev_attr.attr,
+
+I'm somewhat guessing on what exactly these two are, but assuming they
+are meant as place you push in the temperature and relative humidity that
+then gets used in some calculations...
+
+To avoid adding ABI for these cases, what we have often done before
+is specified them as 'output' channels.  In some sense we are telling the
+sensor what the temperature is for example, so this mapping isn't too
+unexpected or unintuitive.  It's not perfect, but it's better than defining
+new ABI without clear units etc.
+
+> +	&iio_dev_attr_raw_mean.dev_attr.attr,
+
+We have *_mean_raw as standard (though not often used) ABI.
+Does that map to what you have here?
+You would need to add a channel specific line in the ABI docs though.
+
+> +	NULL
+> +};
+> +
+> +static const struct attribute_group sgp40_attr_group = {
+> +	.attrs = sgp40_attrs,
+> +};
+> +
+> +static const struct iio_info sgp40_info = {
+> +	.attrs		= &sgp40_attr_group,
+> +	.read_raw	= sgp40_read_raw,
+> +};
+> +
+> +static int sgp40_probe(struct i2c_client *client,
+> +		     const struct i2c_device_id *id)
+> +{
+> +	struct device *dev = &client->dev;
 > +	struct iio_dev *indio_dev;
+> +	struct sgp40_data *data;
 > +	int ret;
 > +
 > +	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
@@ -854,179 +558,71 @@ rest isn't too bad..
 > +		return -ENOMEM;
 > +
 > +	data = iio_priv(indio_dev);
-> +	data->regmap = regmap;
+> +	i2c_set_clientdata(client, indio_dev);
+
+Not used, so don't set it until it is used in some future patch.
+
+> +	data->client = client;
 > +	data->dev = dev;
-> +	data->op_mode = ADXL355_STANDBY;
+> +
+> +	crc8_populate_msb(sgp40_crc8_table, SGP40_CRC8_POLYNOMIAL);
+> +
 > +	mutex_init(&data->lock);
 > +
-> +	indio_dev->name = name;
-> +	indio_dev->info = &adxl355_info;
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->channels = adxl355_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(adxl355_channels);
-> +	indio_dev->available_scan_masks = adxl355_avail_scan_masks;
-
-Please leave introducing available_scan_masks until it can be part of the
-patch adding buffered support.  That way we'll know there are restrictions on it
-whilst reading that patch.
-
+> +	/* set default values */
+> +	data->rel_humidity = 50000;	/* 50 % */
+> +	data->temperature = 25000;	/* 25 °C */
+> +	data->raw_mean = 30000;		/* resistance raw value for voc index of 250 */
 > +
-> +	ret = adxl355_setup(data);
-> +	if (ret < 0) {
-> +		dev_err(dev, "ADXL355 setup failed\n");
+> +	indio_dev->info = &sgp40_info;
+> +	indio_dev->name = id->name;
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->channels = sgp40_channels;
+> +	indio_dev->num_channels = ARRAY_SIZE(sgp40_channels);
+> +
+> +	ret = devm_iio_device_register(dev, indio_dev);
+> +	if (ret) {
+> +		dev_err(dev, "failed to register iio device\n");
 > +		return ret;
 > +	}
-> +
-> +	return devm_iio_device_register(dev, indio_dev);
-> +}
-> +EXPORT_SYMBOL_GPL(adxl355_core_probe);
-> +
-> +MODULE_AUTHOR("Puranjay Mohan <puranjay12@gmail.com>");
-> +MODULE_DESCRIPTION("ADXL355 3-Axis Digital Accelerometer core driver");
-> +MODULE_LICENSE("GPL v2");
-> diff --git a/drivers/iio/accel/adxl355_i2c.c b/drivers/iio/accel/adxl355_i2c.c
-> new file mode 100644
-> index 000000000..6b84d8df2
-> --- /dev/null
-> +++ b/drivers/iio/accel/adxl355_i2c.c
-> @@ -0,0 +1,63 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * ADXL355 3-Axis Digital Accelerometer I2C driver
-> + *
-> + * Copyright (c) 2021 Puranjay Mohan <puranjay12@gmail.com>
-> + */
-> +
-> +#include <linux/i2c.h>
-> +#include <linux/module.h>
-> +#include <linux/regmap.h>
-> +
-> +#include "adxl355.h"
-> +
-> +static const struct regmap_config adxl355_i2c_regmap_config = {
-> +	.reg_bits = 8,
-> +	.val_bits = 8,
-> +	.max_register = 0x2F,
-> +	.rd_table = &adxl355_readable_regs_tbl,
-> +	.wr_table = &adxl355_writeable_regs_tbl
-> +};
-> +
-> +static int adxl355_i2c_probe(struct i2c_client *client)
-> +{
-> +	struct regmap *regmap;
-> +
-> +	regmap = devm_regmap_init_i2c(client, &adxl355_i2c_regmap_config);
-> +	if (IS_ERR(regmap)) {
-> +		dev_err(&client->dev, "Error initializing i2c regmap: %ld\n",
-> +			PTR_ERR(regmap));
-> +		return PTR_ERR(regmap);
-> +	}
-> +
-> +	return adxl355_core_probe(&client->dev, regmap, client->name);
-> +}
-> +
-> +static const struct i2c_device_id adxl355_i2c_id[] = {
-> +	{ "adxl355", 0 },
-> +	{ }
-> +};
-> +
-> +MODULE_DEVICE_TABLE(i2c, adxl355_i2c_id);
-> +
-> +static const struct of_device_id adxl355_of_match[] = {
-> +	{ .compatible = "adi,adxl355" },
-> +	{ }
-> +};
-> +
-> +MODULE_DEVICE_TABLE(of, adxl355_of_match);
-> +
-> +static struct i2c_driver adxl355_i2c_driver = {
-> +	.driver = {
-> +		.name	= "adxl355_i2c",
-> +		.of_match_table = adxl355_of_match,
-> +	},
-> +	.probe_new	= adxl355_i2c_probe,
-> +	.id_table	= adxl355_i2c_id,
-> +};
-> +
-> +module_i2c_driver(adxl355_i2c_driver);
-> +
-> +MODULE_AUTHOR("Puranjay Mohan <puranjay12@gmail.com>");
-> +MODULE_DESCRIPTION("ADXL355 3-Axis Digital Accelerometer I2C driver");
-> +MODULE_LICENSE("GPL v2");
-> diff --git a/drivers/iio/accel/adxl355_spi.c b/drivers/iio/accel/adxl355_spi.c
-> new file mode 100644
-> index 000000000..108d1b308
-> --- /dev/null
-> +++ b/drivers/iio/accel/adxl355_spi.c
-> @@ -0,0 +1,66 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * ADXL355 3-Axis Digital Accelerometer SPI driver
-> + *
-> + * Copyright (c) 2021 Puranjay Mohan <puranjay12@gmail.com>
-> + */
-> +
-> +#include <linux/module.h>
 
-Good to also include mod_devicetable.h in both the i2c and spi parts for
-the id tables.
+Given the device register will probably always be last so we aren't avoiding
+code churn with this structure, I would suggest you instead do
 
-> +#include <linux/regmap.h>
-> +#include <linux/spi/spi.h>
+	if (ret)
+		dev_err(dev,..)
+
+	return ret;
+
 > +
-> +#include "adxl355.h"
-> +
-> +static const struct regmap_config adxl355_spi_regmap_config = {
-> +	.reg_bits = 7,
-> +	.pad_bits = 1,
-> +	.val_bits = 8,
-> +	.read_flag_mask = BIT(0),
-> +	.max_register = 0x2F,
-> +	.rd_table = &adxl355_readable_regs_tbl,
-> +	.wr_table = &adxl355_writeable_regs_tbl
-> +};
-> +
-> +static int adxl355_spi_probe(struct spi_device *spi)
-> +{
-> +	const struct spi_device_id *id = spi_get_device_id(spi);
-> +	struct regmap *regmap;
-> +
-> +	regmap = devm_regmap_init_spi(spi, &adxl355_spi_regmap_config);
-> +	if (IS_ERR(regmap)) {
-> +		dev_err(&spi->dev, "Error initializing spi regmap: %ld\n",
-> +			PTR_ERR(regmap));
-> +		return PTR_ERR(regmap);
-> +	}
-> +
-> +	return adxl355_core_probe(&spi->dev, regmap, id->name);
+> +	return 0;
 > +}
 > +
-> +static const struct spi_device_id adxl355_spi_id[] = {
-> +	{ "adxl355", 0 },
+> +static const struct i2c_device_id sgp40_id[] = {
+> +	{ "sgp40" },
 > +	{ }
 > +};
 > +
-> +MODULE_DEVICE_TABLE(spi, adxl355_spi_id);
+> +MODULE_DEVICE_TABLE(i2c, sgp40_id);
 > +
-> +static const struct of_device_id adxl355_of_match[] = {
-> +	{ .compatible = "adi,adxl355" },
+> +static const struct of_device_id sgp40_dt_ids[] = {
+> +	{ .compatible = "sensirion,sgp40" },
 > +	{ }
 > +};
 > +
-> +MODULE_DEVICE_TABLE(of, adxl355_of_match);
+> +MODULE_DEVICE_TABLE(of, sgp40_dt_ids);
 > +
-> +static struct spi_driver adxl355_spi_driver = {
+> +static struct i2c_driver sgp40_driver = {
 > +	.driver = {
-> +		.name	= "adxl355_spi",
-> +		.of_match_table = adxl355_of_match,
+> +		.name = "sgp40",
+> +		.of_match_table = sgp40_dt_ids,
 > +	},
-> +	.probe		= adxl355_spi_probe,
-> +	.id_table	= adxl355_spi_id,
+> +	.probe = sgp40_probe,
+> +	.id_table = sgp40_id,
 > +};
+> +module_i2c_driver(sgp40_driver);
 > +
-> +module_spi_driver(adxl355_spi_driver);
-> +
-> +MODULE_AUTHOR("Puranjay Mohan <puranjay12@gmail.com>");
-> +MODULE_DESCRIPTION("ADXL355 3-Axis Digital Accelerometer SPI driver");
+> +MODULE_AUTHOR("Andreas Klinger <ak@it-klinger.de>");
+> +MODULE_DESCRIPTION("Sensirion SGP40 gas sensors");
 > +MODULE_LICENSE("GPL v2");
 

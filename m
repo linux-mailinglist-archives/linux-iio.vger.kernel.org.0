@@ -2,30 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DB2C3DC73A
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Jul 2021 19:37:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE2CD3DC780
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Jul 2021 19:45:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230477AbhGaRhx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 31 Jul 2021 13:37:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46256 "EHLO mail.kernel.org"
+        id S229953AbhGaRpV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 31 Jul 2021 13:45:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48566 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229475AbhGaRhx (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 31 Jul 2021 13:37:53 -0400
+        id S229475AbhGaRpV (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 31 Jul 2021 13:45:21 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AF4C860EE6;
-        Sat, 31 Jul 2021 17:37:45 +0000 (UTC)
-Date:   Sat, 31 Jul 2021 18:40:24 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 0E3DC60EE6;
+        Sat, 31 Jul 2021 17:45:11 +0000 (UTC)
+Date:   Sat, 31 Jul 2021 18:47:50 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <aardelean@deviqon.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        denis.ciocca@st.com
-Subject: Re: [PATCH 0/4] iio: st_sensors: convert probe functions to full
- devm
-Message-ID: <20210731184024.454ad962@jic23-huawei>
-In-Reply-To: <20210726071404.14529-1-aardelean@deviqon.com>
-References: <20210726071404.14529-1-aardelean@deviqon.com>
+To:     Peter Rosin <peda@axentia.se>
+Cc:     Liam Beguin <liambeguin@gmail.com>, lars@metafoo.de,
+        pmeerw@pmeerw.net, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        robh+dt@kernel.org
+Subject: Re: [PATCH v6 05/13] iio: afe: rescale: add INT_PLUS_{MICRO,NANO}
+ support
+Message-ID: <20210731184750.669af583@jic23-huawei>
+In-Reply-To: <18f749be-284f-3342-a6d2-b42aa39fc13a@axentia.se>
+References: <20210721030613.3105327-1-liambeguin@gmail.com>
+        <20210721030613.3105327-6-liambeguin@gmail.com>
+        <c9d77dc0-7f4c-0df0-cce1-8cb30074e115@axentia.se>
+        <CD4CE5OQT5TJ.2BFPBRYK7FCOW@shaak>
+        <18f749be-284f-3342-a6d2-b42aa39fc13a@axentia.se>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -34,69 +40,61 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 26 Jul 2021 10:14:00 +0300
-Alexandru Ardelean <aardelean@deviqon.com> wrote:
+On Wed, 28 Jul 2021 09:19:58 +0200
+Peter Rosin <peda@axentia.se> wrote:
 
-> Continuing from series:
->   https://lore.kernel.org/linux-iio/20210720074642.223293-1-aardelean@deviqon.com/
+> On 2021-07-28 02:21, Liam Beguin wrote:
+> > On Fri Jul 23, 2021 at 5:16 PM EDT, Peter Rosin wrote:  
+> >> On 2021-07-21 05:06, Liam Beguin wrote:  
+> >>> From: Liam Beguin <lvb@xiphos.com>
+> >>>
+> >>> Some ADCs use IIO_VAL_INT_PLUS_{NANO,MICRO} scale types.
+> >>> Add support for these to allow using the iio-rescaler with them.
+> >>>
+> >>> Signed-off-by: Liam Beguin <lvb@xiphos.com>
+> >>> ---
+> >>>  drivers/iio/afe/iio-rescale.c | 14 ++++++++++++++
+> >>>  1 file changed, 14 insertions(+)
+> >>>
+> >>> diff --git a/drivers/iio/afe/iio-rescale.c b/drivers/iio/afe/iio-rescale.c
+> >>> index d0669fd8eac5..2b73047365cc 100644
+> >>> --- a/drivers/iio/afe/iio-rescale.c
+> >>> +++ b/drivers/iio/afe/iio-rescale.c
+> >>> @@ -41,6 +41,20 @@ int rescale_process_scale(struct rescale *rescale, int scale_type,
+> >>>  		do_div(tmp, 1000000000LL);
+> >>>  		*val = tmp;
+> >>>  		return scale_type;
+> >>> +	case IIO_VAL_INT_PLUS_NANO:
+> >>> +		tmp = ((s64)*val * 1000000000LL + *val2) * rescale->numerator;
+> >>> +		tmp = div_s64(tmp, rescale->denominator);
+> >>> +
+> >>> +		*val = div_s64(tmp, 1000000000LL);
+> >>> +		*val2 = tmp - *val * 1000000000LL;
+> >>> +		return scale_type;  
+> > 
+> > Hi Peter,
+> >   
+> >>
+> >> Hi!
+> >>
+> >> My objection from v5 still stands. Did you forget or did you simply send
+> >> the
+> >> wrong patch?  
+> > 
+> > Apologies, again I didn't mean to make it seem like I ignored your comments.
+> > I tried your suggestion, but had issues when *val2 would overflow into
+> > the integer part.  
 > 
-> This goes a little further and converts all ST drivers using the st_common
-> bits to devm functions.
-> As mentioned by Jonathan, the devm unwind is often attached to
-> iio_dev->dev.parent, and something it's attached to some other pointer
-> which references the same device object.
-> 
-> In the last patch, that point is removed, to eliminate doubt about this
-> mix-n-match.
-> An alternative would be an assert/check somewhere to ensure that
-> 'iio_dev->dev.parent == adata->dev'. But I [personally] don't like it that
-> much.
-> 
-> As mentioned previously, I was also thinking of sending this set with the
-> previous one. But I am usually reserved to send large sets; also, because I
-> don't really like to review large sets [when I'm reviewing other people's
-> code].
+> Not saying anything about it not working does indeed make it seem like you
+> ignored it :-)  Or did I just miss where you said this? Anyway, no problem,
+> it can be a mess dealing with a string of commits when there are numerous
+> things to take care of between each iteration. And it's very easy to burn
+> out and just back away. Please don't do that!
 
-I'm fine with this, though I would like the reorder pulled out as as
-separate patch and moved to the front of the series. It's a good change
-in it's own right and will also make the rest of the series more 'obviously'
-correct as you'll always be stripping off the last thing done in remove.
+Just to add here, I'm really appreciating the two of you figuring this out
+between you and looking forward to getting the resulting improvements (particularly
+the tests!) in place.
 
-Otherwise, needs some time for others to take a look.
-
-thanks,
+Thanks,
 
 Jonathan
-
-> 
-> Alexandru Ardelean (4):
->   iio: st_sensors: remove st_sensors_deallocate_trigger() function
->   iio: st_sensors: remove st_sensors_power_disable() function
->   iio: st_sensors: remove all driver remove functions
->   iio: st_sensors: remove reference to parent device object on
->     st_sensor_data
-> 
->  drivers/iio/accel/st_accel_core.c             | 32 +++--------
->  drivers/iio/accel/st_accel_i2c.c              | 23 +-------
->  drivers/iio/accel/st_accel_spi.c              | 23 +-------
->  .../iio/common/st_sensors/st_sensors_core.c   | 34 ++++++------
->  .../iio/common/st_sensors/st_sensors_i2c.c    |  1 -
->  .../iio/common/st_sensors/st_sensors_spi.c    |  1 -
->  .../common/st_sensors/st_sensors_trigger.c    | 53 +++++++------------
->  drivers/iio/gyro/st_gyro_core.c               | 27 ++--------
->  drivers/iio/gyro/st_gyro_i2c.c                | 23 +-------
->  drivers/iio/gyro/st_gyro_spi.c                | 23 +-------
->  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0.h       |  1 -
->  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_core.c  | 17 +-----
->  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_i2c.c   |  6 ---
->  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c   |  6 ---
->  drivers/iio/magnetometer/st_magn_core.c       | 29 ++--------
->  drivers/iio/magnetometer/st_magn_i2c.c        | 23 +-------
->  drivers/iio/magnetometer/st_magn_spi.c        | 23 +-------
->  drivers/iio/pressure/st_pressure_core.c       | 27 ++--------
->  drivers/iio/pressure/st_pressure_i2c.c        | 23 +-------
->  drivers/iio/pressure/st_pressure_spi.c        | 23 +-------
->  include/linux/iio/common/st_sensors.h         | 13 -----
->  21 files changed, 60 insertions(+), 371 deletions(-)
-> 
-

@@ -2,29 +2,33 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 62FF93DC644
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Jul 2021 16:18:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E7343DC64B
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Jul 2021 16:26:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232770AbhGaOSf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 31 Jul 2021 10:18:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39452 "EHLO mail.kernel.org"
+        id S233110AbhGaO0v (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 31 Jul 2021 10:26:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41928 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232752AbhGaOSe (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 31 Jul 2021 10:18:34 -0400
+        id S232752AbhGaO0v (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 31 Jul 2021 10:26:51 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0EF3360F48;
-        Sat, 31 Jul 2021 14:18:25 +0000 (UTC)
-Date:   Sat, 31 Jul 2021 15:21:05 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id A296F60F3A;
+        Sat, 31 Jul 2021 14:26:41 +0000 (UTC)
+Date:   Sat, 31 Jul 2021 15:29:21 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Gwendal Grignou <gwendal@chromium.org>
-Cc:     lars@metafoo.de, swboyd@chromium.org, campello@chromium.org,
-        andy.shevchenko@gmail.com, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v5] iio: sx9310: Support ACPI property
-Message-ID: <20210731152105.3ce8cfd6@jic23-huawei>
-In-Reply-To: <20210728181757.187627-1-gwendal@chromium.org>
-References: <20210728181757.187627-1-gwendal@chromium.org>
+To:     Liam Beguin <liambeguin@gmail.com>
+Cc:     lars@metafoo.de, Michael.Hennerich@analog.com,
+        charles-antoine.couret@essensium.com, Nuno.Sa@analog.com,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, robh+dt@kernel.org
+Subject: Re: [PATCH v4 2/5] iio: adc: ad7949: fix spi messages on non 14-bit
+ controllers
+Message-ID: <20210731152921.2fcb53ab@jic23-huawei>
+In-Reply-To: <20210727232906.980769-3-liambeguin@gmail.com>
+References: <20210727232906.980769-1-liambeguin@gmail.com>
+        <20210727232906.980769-3-liambeguin@gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -33,174 +37,157 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 28 Jul 2021 11:17:57 -0700
-Gwendal Grignou <gwendal@chromium.org> wrote:
+On Tue, 27 Jul 2021 19:29:03 -0400
+Liam Beguin <liambeguin@gmail.com> wrote:
 
-> Use device_property_read_... to support both device tree and ACPI
-> bindings.
-> Simplify the logic for reading "combined-sensors" array, as we assume
-> it has been vetted at firmware build time.
+> From: Liam Beguin <lvb@xiphos.com>
+> 
+> This driver supports devices with 14-bit and 16-bit sample sizes.
+> This is not always handled properly by spi controllers and can fail. To
+> work around this limitation, pad samples to 16-bit and split the sample
+> into two 8-bit messages in the event that only 8-bit messages are
+> supported by the controller.
+> 
+> Signed-off-by: Liam Beguin <lvb@xiphos.com>
+> ---
+>  drivers/iio/adc/ad7949.c | 62 ++++++++++++++++++++++++++++++++++------
+>  1 file changed, 54 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ad7949.c b/drivers/iio/adc/ad7949.c
+> index 0b549b8bd7a9..f1702c54c8be 100644
+> --- a/drivers/iio/adc/ad7949.c
+> +++ b/drivers/iio/adc/ad7949.c
+> @@ -67,6 +67,7 @@ static const struct ad7949_adc_spec ad7949_adc_spec[] = {
+>   * @indio_dev: reference to iio structure
+>   * @spi: reference to spi structure
+>   * @resolution: resolution of the chip
+> + * @bits_per_word: number of bits per SPI word
+>   * @cfg: copy of the configuration register
+>   * @current_channel: current channel in use
+>   * @buffer: buffer to send / receive data to / from device
+> @@ -77,6 +78,7 @@ struct ad7949_adc_chip {
+>  	struct iio_dev *indio_dev;
+>  	struct spi_device *spi;
+>  	u8 resolution;
+> +	u8 bits_per_word;
+>  	u16 cfg;
+>  	unsigned int current_channel;
+>  	u16 buffer ____cacheline_aligned;
+> @@ -86,19 +88,34 @@ static int ad7949_spi_write_cfg(struct ad7949_adc_chip *ad7949_adc, u16 val,
+>  				u16 mask)
+>  {
+>  	int ret;
+> -	int bits_per_word = ad7949_adc->resolution;
+> -	int shift = bits_per_word - AD7949_CFG_REG_SIZE_BITS;
 
-I wondered a bit about this assumption.  Always dangerous to assume firmware
-writers will get this stuff right.  However, the result of them doing that
-here would be that you'd end up with some unexpected bits set and hence it
-would match none of the if/else branches.   That looks bad until you check
-what the default will be and it's a valid mode anyway so we are fine.
-
-So whilst my inclination would probably have been to not remove the check
-to make this a tiny bit easier to review, now I've gone to that effort
-I'll apply it as is.
-
-Applied to the togreg branch of iio.git and pushed out as testing for 0-day
-to poke at it and see if we missed anything.
-
-Thanks,
+The define for this was removed in patch 1.  I'll fix that up whilst applying by
+keeping it until this patch.  Please check build passes on intermediate points
+during a patch series as otherwise we may break bisectability and that's really
+annoying if you are bisecting!
 
 Jonathan
 
-
-
-> 
-> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-
-> ---
->  Changes since v4:
->    Separate the patch in 2, the fix for 5b19ca2c78a0 ("iio: sx9310: Set various settings from DT")
->    went in f0078ae704d9 ("iio: sx9310: Fix access to variable DT array")
->    Simplify decoding of "combined-sensors" array, assuming it formatted
->    properly when available.
->  Changes since v3:
->    Add "Fixes" comment in commit message
->    Fix the logic set COMBMODE register: when we know the DT property is
->    missing or incorrect, exit as soon as possible.
->  Changes since v2:
->    Add comment how the default array is used.
->    Add comment in commit message to indicate this CL fix an issue with
->      existing use of of_property_read_u32_array() when reading a variale
->      length array.
->  Changes since v1:
->    Use device_property_count_u32(...) instead of device_property_read_u32_array(..., NULL, 0)
-> 
->  drivers/iio/proximity/sx9310.c | 48 ++++++++++++----------------------
->  1 file changed, 16 insertions(+), 32 deletions(-)
-> 
-> diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
-> index 36d34e308e873..6708c3a7886e8 100644
-> --- a/drivers/iio/proximity/sx9310.c
-> +++ b/drivers/iio/proximity/sx9310.c
-> @@ -20,6 +20,7 @@
->  #include <linux/mod_devicetable.h>
->  #include <linux/module.h>
->  #include <linux/pm.h>
-> +#include <linux/property.h>
->  #include <linux/regmap.h>
->  #include <linux/regulator/consumer.h>
->  #include <linux/slab.h>
-> @@ -1223,10 +1224,9 @@ static int sx9310_init_compensation(struct iio_dev *indio_dev)
->  }
+>  	struct spi_message msg;
+>  	struct spi_transfer tx[] = {
+>  		{
+>  			.tx_buf = &ad7949_adc->buffer,
+>  			.len = 2,
+> -			.bits_per_word = bits_per_word,
+> +			.bits_per_word = ad7949_adc->bits_per_word,
+>  		},
+>  	};
 >  
->  static const struct sx9310_reg_default *
-> -sx9310_get_default_reg(struct sx9310_data *data, int idx,
-> +sx9310_get_default_reg(struct device *dev, int idx,
->  		       struct sx9310_reg_default *reg_def)
->  {
-> -	const struct device_node *np = data->client->dev.of_node;
->  	u32 combined[SX9310_NUM_CHANNELS];
->  	u32 start = 0, raw = 0, pos = 0;
->  	unsigned long comb_mask = 0;
-> @@ -1234,40 +1234,24 @@ sx9310_get_default_reg(struct sx9310_data *data, int idx,
->  	const char *res;
->  
->  	memcpy(reg_def, &sx9310_default_regs[idx], sizeof(*reg_def));
-> -	if (!np)
-> -		return reg_def;
-> -
->  	switch (reg_def->reg) {
->  	case SX9310_REG_PROX_CTRL2:
-> -		if (of_property_read_bool(np, "semtech,cs0-ground")) {
-> +		if (device_property_read_bool(dev, "semtech,cs0-ground")) {
->  			reg_def->def &= ~SX9310_REG_PROX_CTRL2_SHIELDEN_MASK;
->  			reg_def->def |= SX9310_REG_PROX_CTRL2_SHIELDEN_GROUND;
->  		}
->  
-> -		count = of_property_count_elems_of_size(np, "semtech,combined-sensors",
-> -							sizeof(u32));
-> -		if (count > 0 && count <= ARRAY_SIZE(combined)) {
-> -			ret = of_property_read_u32_array(np, "semtech,combined-sensors",
-> -							 combined, count);
-> -			if (ret)
-> -				break;
-> -		} else {
-> -			/*
-> -			 * Either the property does not exist in the DT or the
-> -			 * number of entries is incorrect.
-> -			 */
-> +		count = device_property_count_u32(dev, "semtech,combined-sensors");
-> +		if (count < 0 || count > ARRAY_SIZE(combined))
->  			break;
-> -		}
-> -		for (i = 0; i < count; i++) {
-> -			if (combined[i] >= SX9310_NUM_CHANNELS) {
-> -				/* Invalid sensor (invalid DT). */
-> -				break;
-> -			}
-> -			comb_mask |= BIT(combined[i]);
-> -		}
-> -		if (i < count)
-> +		ret = device_property_read_u32_array(dev, "semtech,combined-sensors",
-> +				combined, count);
-> +		if (ret)
->  			break;
->  
-> +		for (i = 0; i < count; i++)
-> +			comb_mask |= BIT(combined[i]);
+> +	ad7949_adc->buffer = 0;
+>  	ad7949_adc->cfg = (val & mask) | (ad7949_adc->cfg & ~mask);
+> -	ad7949_adc->buffer = ad7949_adc->cfg << shift;
 > +
->  		reg_def->def &= ~SX9310_REG_PROX_CTRL2_COMBMODE_MASK;
->  		if (comb_mask == (BIT(3) | BIT(2) | BIT(1) | BIT(0)))
->  			reg_def->def |= SX9310_REG_PROX_CTRL2_COMBMODE_CS0_CS1_CS2_CS3;
-> @@ -1280,7 +1264,7 @@ sx9310_get_default_reg(struct sx9310_data *data, int idx,
+> +	switch (ad7949_adc->bits_per_word) {
+> +	case 16:
+> +		ad7949_adc->buffer = ad7949_adc->cfg << 2;
+> +		break;
+> +	case 14:
+> +		ad7949_adc->buffer = ad7949_adc->cfg;
+> +		break;
+> +	case 8:
+> +		/* Here, type is big endian as it must be sent in two transfers */
+> +		ad7949_adc->buffer = (u16)cpu_to_be16(ad7949_adc->cfg << 2);
+> +		break;
+> +	default:
+> +		dev_err(&ad7949_adc->indio_dev->dev, "unsupported BPW\n");
+> +		return -EINVAL;
+> +	}
+> +
+>  	spi_message_init_with_transfers(&msg, tx, 1);
+>  	ret = spi_sync(ad7949_adc->spi, &msg);
 >  
->  		break;
->  	case SX9310_REG_PROX_CTRL4:
-> -		ret = of_property_read_string(np, "semtech,resolution", &res);
-> +		ret = device_property_read_string(dev, "semtech,resolution", &res);
->  		if (ret)
->  			break;
+> @@ -115,14 +132,12 @@ static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
+>  {
+>  	int ret;
+>  	int i;
+> -	int bits_per_word = ad7949_adc->resolution;
+> -	int mask = GENMASK(ad7949_adc->resolution - 1, 0);
+>  	struct spi_message msg;
+>  	struct spi_transfer tx[] = {
+>  		{
+>  			.rx_buf = &ad7949_adc->buffer,
+>  			.len = 2,
+> -			.bits_per_word = bits_per_word,
+> +			.bits_per_word = ad7949_adc->bits_per_word,
+>  		},
+>  	};
 >  
-> @@ -1304,7 +1288,7 @@ sx9310_get_default_reg(struct sx9310_data *data, int idx,
+> @@ -157,7 +172,25 @@ static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
 >  
->  		break;
->  	case SX9310_REG_PROX_CTRL5:
-> -		ret = of_property_read_u32(np, "semtech,startup-sensor", &start);
-> +		ret = device_property_read_u32(dev, "semtech,startup-sensor", &start);
->  		if (ret) {
->  			start = FIELD_GET(SX9310_REG_PROX_CTRL5_STARTUPSENS_MASK,
->  					  reg_def->def);
-> @@ -1314,7 +1298,7 @@ sx9310_get_default_reg(struct sx9310_data *data, int idx,
->  		reg_def->def |= FIELD_PREP(SX9310_REG_PROX_CTRL5_STARTUPSENS_MASK,
->  					   start);
+>  	ad7949_adc->current_channel = channel;
 >  
-> -		ret = of_property_read_u32(np, "semtech,proxraw-strength", &raw);
-> +		ret = device_property_read_u32(dev, "semtech,proxraw-strength", &raw);
->  		if (ret) {
->  			raw = FIELD_GET(SX9310_REG_PROX_CTRL5_RAWFILT_MASK,
->  					reg_def->def);
-> @@ -1327,7 +1311,7 @@ sx9310_get_default_reg(struct sx9310_data *data, int idx,
->  					   raw);
->  		break;
->  	case SX9310_REG_PROX_CTRL7:
-> -		ret = of_property_read_u32(np, "semtech,avg-pos-strength", &pos);
-> +		ret = device_property_read_u32(dev, "semtech,avg-pos-strength", &pos);
->  		if (ret)
->  			break;
+> -	*val = ad7949_adc->buffer & mask;
+> +	switch (ad7949_adc->bits_per_word) {
+> +	case 16:
+> +		*val = ad7949_adc->buffer;
+> +		/* Shift-out padding bits */
+> +		*val >>= 16 - ad7949_adc->resolution;
+> +		break;
+> +	case 14:
+> +		*val = ad7949_adc->buffer & GENMASK(13, 0);
+> +		break;
+> +	case 8:
+> +		/* Here, type is big endian as data was sent in two transfers */
+> +		*val = be16_to_cpu(ad7949_adc->buffer);
+> +		/* Shift-out padding bits */
+> +		*val >>= 16 - ad7949_adc->resolution;
+> +		break;
+> +	default:
+> +		dev_err(&ad7949_adc->indio_dev->dev, "unsupported BPW\n");
+> +		return -EINVAL;
+> +	}
 >  
-> @@ -1363,7 +1347,7 @@ static int sx9310_init_device(struct iio_dev *indio_dev)
+>  	return 0;
+>  }
+> @@ -265,6 +298,7 @@ static int ad7949_spi_init(struct ad7949_adc_chip *ad7949_adc)
 >  
->  	/* Program some sane defaults. */
->  	for (i = 0; i < ARRAY_SIZE(sx9310_default_regs); i++) {
-> -		initval = sx9310_get_default_reg(data, i, &tmp);
-> +		initval = sx9310_get_default_reg(&indio_dev->dev, i, &tmp);
->  		ret = regmap_write(data->regmap, initval->reg, initval->def);
->  		if (ret)
->  			return ret;
+>  static int ad7949_spi_probe(struct spi_device *spi)
+>  {
+> +	u32 spi_ctrl_mask = spi->controller->bits_per_word_mask;
+>  	struct device *dev = &spi->dev;
+>  	const struct ad7949_adc_spec *spec;
+>  	struct ad7949_adc_chip *ad7949_adc;
+> @@ -291,6 +325,18 @@ static int ad7949_spi_probe(struct spi_device *spi)
+>  	indio_dev->num_channels = spec->num_channels;
+>  	ad7949_adc->resolution = spec->resolution;
+>  
+> +	/* Set SPI bits per word */
+> +	if (spi_ctrl_mask & SPI_BPW_MASK(ad7949_adc->resolution)) {
+> +		ad7949_adc->bits_per_word = ad7949_adc->resolution;
+> +	} else if (spi_ctrl_mask == SPI_BPW_MASK(16)) {
+> +		ad7949_adc->bits_per_word = 16;
+> +	} else if (spi_ctrl_mask == SPI_BPW_MASK(8)) {
+> +		ad7949_adc->bits_per_word = 8;
+> +	} else {
+> +		dev_err(dev, "unable to find common BPW with spi controller\n");
+> +		return -EINVAL;
+> +	}
+> +
+>  	ad7949_adc->vref = devm_regulator_get(dev, "vref");
+>  	if (IS_ERR(ad7949_adc->vref)) {
+>  		dev_err(dev, "fail to request regulator\n");
 

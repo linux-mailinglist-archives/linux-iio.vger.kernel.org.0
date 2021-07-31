@@ -2,33 +2,33 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 20D943DC674
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Jul 2021 17:00:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA19B3DC67E
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Jul 2021 17:05:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233253AbhGaPAO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 31 Jul 2021 11:00:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48948 "EHLO mail.kernel.org"
+        id S233227AbhGaPFd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 31 Jul 2021 11:05:33 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49924 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233227AbhGaPAN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 31 Jul 2021 11:00:13 -0400
+        id S233192AbhGaPFc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 31 Jul 2021 11:05:32 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 09CE460F56;
-        Sat, 31 Jul 2021 15:00:03 +0000 (UTC)
-Date:   Sat, 31 Jul 2021 16:02:43 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 7D02C60F56;
+        Sat, 31 Jul 2021 15:05:22 +0000 (UTC)
+Date:   Sat, 31 Jul 2021 16:08:02 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Liam Beguin <liambeguin@gmail.com>
-Cc:     lars@metafoo.de, Michael.Hennerich@analog.com,
-        charles-antoine.couret@essensium.com, Nuno.Sa@analog.com,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, robh+dt@kernel.org
-Subject: Re: [PATCH v4 4/5] dt-bindings: iio: adc: ad7949: add per channel
- reference
-Message-ID: <20210731160243.662065ef@jic23-huawei>
-In-Reply-To: <20210727232906.980769-5-liambeguin@gmail.com>
-References: <20210727232906.980769-1-liambeguin@gmail.com>
-        <20210727232906.980769-5-liambeguin@gmail.com>
+To:     Puranjay Mohan <puranjay12@gmail.com>
+Cc:     Michael.Hennerich@analog.com, alexandru.ardelean@analog.com,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, lars@metafoo.de,
+        Dragos.Bogdan@analog.com, Darius.Berghe@analog.com
+Subject: Re: [PATCH v6 1/2] dt-bindings: iio: accel: Add DT binding doc for
+ ADXL355
+Message-ID: <20210731160802.6bcad833@jic23-huawei>
+In-Reply-To: <20210728063430.258199-2-puranjay12@gmail.com>
+References: <20210728063430.258199-1-puranjay12@gmail.com>
+        <20210728063430.258199-2-puranjay12@gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -37,125 +37,122 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 27 Jul 2021 19:29:05 -0400
-Liam Beguin <liambeguin@gmail.com> wrote:
+On Wed, 28 Jul 2021 12:04:29 +0530
+Puranjay Mohan <puranjay12@gmail.com> wrote:
 
-> From: Liam Beguin <lvb@xiphos.com>
+> Add devicetree binding document for ADXL355, a 3-Axis MEMS Accelerometer.
 > 
-> Add bindings documentation describing per channel reference voltage
-> selection.
-> This adds the adi,internal-ref-microvolt property, and child nodes for
-> each channel. This is required to properly configure the ADC sample
-> request based on which reference source should be used for the
-> calculation.
-> 
-> Signed-off-by: Liam Beguin <lvb@xiphos.com>
+> Signed-off-by: Puranjay Mohan <puranjay12@gmail.com>
+Hi Puranjay,
 
-I'm fine with this, but as it's a bit unusual, definitely want to give a
-little more time for Rob and others to take a look.
+Biggest comment in here is we should look to make the interrupt description
+more flexible. Board designers have an annoying habit of only wiring some
+of the interrupts and not always the ones we would expect.
 
 Jonathan
+
 > ---
->  .../bindings/iio/adc/adi,ad7949.yaml          | 69 +++++++++++++++++--
->  1 file changed, 65 insertions(+), 4 deletions(-)
+>  .../bindings/iio/accel/adi,adxl355.yaml       | 76 +++++++++++++++++++
+>  1 file changed, 76 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adxl355.yaml
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml
-> index 9b56bd4d5510..893f72b8081e 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml
-> @@ -26,19 +26,63 @@ properties:
->    reg:
->      maxItems: 1
->  
-> +  vrefin-supply:
-> +    description:
-> +      Buffered ADC reference voltage supply.
+> diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adxl355.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adxl355.yaml
+> new file mode 100644
+> index 000000000..6e0652ce8
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl355.yaml
+> @@ -0,0 +1,76 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/accel/adi,adxl355.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
->    vref-supply:
->      description:
-> -      ADC reference voltage supply
-> +      Unbuffered ADC reference voltage supply.
->  
->    spi-max-frequency: true
->  
-> -  "#io-channel-cells":
-> +  '#io-channel-cells':
->      const: 1
->  
-> +  '#address-cells':
-> +    const: 1
+> +title: Analog Devices ADXL355 3-Axis, Low noise MEMS Accelerometer
 > +
-> +  '#size-cells':
-> +    const: 0
+> +maintainers:
+> +  - Puranjay Mohan <puranjay12@gmail.com>
 > +
->  required:
->    - compatible
->    - reg
-> -  - vref-supply
+> +description: |
+> +  Analog Devices ADXL355 3-Axis, Low noise MEMS Accelerometer that supports
+> +  both I2C & SPI interfaces
+> +    https://www.analog.com/en/products/adxl355.html
 > +
-> +patternProperties:
-> +  '^channel@([0-7])$':
-> +    type: object
-> +    description: |
-> +      Represents the external channels which are connected to the ADC.
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,adxl355
 > +
-> +    properties:
-> +      reg:
-> +        description: |
-> +          The channel number.
-> +          Up to 4 channels, numbered from 0 to 3 for adi,ad7682.
-> +          Up to 8 channels, numbered from 0 to 7 for adi,ad7689 and adi,ad7949.
-> +        items:
-> +          minimum: 0
-> +          maximum: 7
+> +  reg:
+> +    maxItems: 1
 > +
-> +      adi,internal-ref-microvolt:
-> +        description: |
-> +          Internal reference voltage selection in microvolts.
+> +  interrupts:
+> +    minItems: 1
+> +    items:
+> +      - description: DRDY PIN
+> +      - description: INT1 PIN
+> +      - description: INT2 PIN
+
+Given there are 3 interrupts, and the device can work fine with only a subset
+actually wired up, the interrupt-names property should be used to allow
+the driver to figure out which ones are specified and we should allow
+any combination.
+ 
 > +
-> +          If no internal reference is specified, the channel will default to the
-> +          external reference defined by vrefin-supply (or vref-supply).
-> +          vrefin-supply will take precedence over vref-supply if both are defined.
+> +  vdd-supply:
+> +    description: Regulator that provides power to the sensor
 > +
-> +          If no supplies are defined, the reference selection will default to
-> +          4096mV internal reference.
+> +  vddio-supply:
+> +    description: Regulator that provides power to the bus
 > +
-> +        enum: [2500000, 4096000]
-> +        default: 4096000
+> +  spi-max-frequency: true
 > +
-> +    required:
-> +      - reg
+> +required:
+> +  - compatible
+> +  - reg
 > +
-> +    additionalProperties: false
->  
->  additionalProperties: false
->  
-> @@ -49,9 +93,26 @@ examples:
->          #size-cells = <0>;
->  
->          adc@0 {
-> +            #address-cells = <1>;
-> +            #size-cells = <0>;
+> +additionalProperties: false
 > +
->              compatible = "adi,ad7949";
->              reg = <0>;
-> -            vref-supply = <&vdd_supply>;
-> +            vrefin-supply = <&vdd_supply>;
+> +examples:
+> +  - |
+> +        #include <dt-bindings/gpio/gpio.h>
+> +        #include <dt-bindings/interrupt-controller/irq.h>
+> +        i2c0 {
+drop the 0 so just
+           i2c {
+
+What we are doing is indicating it's an i2c bus but we don't care what i2c
+bus as that's not the bit we are describing in this binding.
+
+> +                #address-cells = <1>;
+> +                #size-cells = <0>;
 > +
-> +            channel@0 {
-> +                adi,internal-ref-microvolt = <4096000>;
-> +                reg = <0>;
-> +            };
+> +                /* Example for a I2C device node */
+> +                accelerometer@1d {
+> +                        compatible = "adi,adxl355";
+> +                        reg = <0x1d>;
+> +                        interrupt-parent = <&gpio>;
+> +                        interrupts = <25 IRQ_TYPE_EDGE_RISING>;
+> +                };
+> +        };
+> +  - |
+> +        #include <dt-bindings/gpio/gpio.h>
+> +        #include <dt-bindings/interrupt-controller/irq.h>
+> +        spi0 {
+
+           spi {
+
+should be fine.
+
+> +                #address-cells = <1>;
+> +                #size-cells = <0>;
 > +
-> +            channel@1 {
-> +                adi,internal-ref-microvolt = <2500000>;
-> +                reg = <1>;
-> +            };
-> +
-> +            channel@2 {
-> +                reg = <2>;
-> +            };
->          };
->      };
->  ...
+> +                accelerometer@0 {
+> +                        compatible = "adi,adxl355";
+> +                        reg = <0>;
+> +                        spi-max-frequency = <1000000>;
+> +                        interrupt-parent = <&gpio>;
+> +                        interrupts = <25 IRQ_TYPE_EDGE_RISING>;
+> +                };
+> +        };
 

@@ -2,36 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE2CD3DC780
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Jul 2021 19:45:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B127E3DC784
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Jul 2021 19:49:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229953AbhGaRpV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 31 Jul 2021 13:45:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48566 "EHLO mail.kernel.org"
+        id S230408AbhGaRto (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 31 Jul 2021 13:49:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48888 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229475AbhGaRpV (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 31 Jul 2021 13:45:21 -0400
+        id S229830AbhGaRtn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 31 Jul 2021 13:49:43 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0E3DC60EE6;
-        Sat, 31 Jul 2021 17:45:11 +0000 (UTC)
-Date:   Sat, 31 Jul 2021 18:47:50 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 11CD661042;
+        Sat, 31 Jul 2021 17:49:31 +0000 (UTC)
+Date:   Sat, 31 Jul 2021 18:52:10 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Peter Rosin <peda@axentia.se>
-Cc:     Liam Beguin <liambeguin@gmail.com>, lars@metafoo.de,
-        pmeerw@pmeerw.net, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        robh+dt@kernel.org
-Subject: Re: [PATCH v6 05/13] iio: afe: rescale: add INT_PLUS_{MICRO,NANO}
- support
-Message-ID: <20210731184750.669af583@jic23-huawei>
-In-Reply-To: <18f749be-284f-3342-a6d2-b42aa39fc13a@axentia.se>
-References: <20210721030613.3105327-1-liambeguin@gmail.com>
-        <20210721030613.3105327-6-liambeguin@gmail.com>
-        <c9d77dc0-7f4c-0df0-cce1-8cb30074e115@axentia.se>
-        <CD4CE5OQT5TJ.2BFPBRYK7FCOW@shaak>
-        <18f749be-284f-3342-a6d2-b42aa39fc13a@axentia.se>
+To:     "hui.liu" <hui.liu@mediatek.com>
+Cc:     <robh+dt@kernel.org>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
+        <srv_heupstream@mediatek.com>, <zhiyong.tao@mediatek.com>,
+        <chun-hung.wu@mediatek.com>, <yingjoe.chen@mediatek.com>,
+        <seiya.wang@mediatek.com>, <matthias.bgg@gmail.com>,
+        <s.hauer@pengutronix.de>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-iio@vger.kernel.org>, <linux-mediatek@lists.infradead.org>
+Subject: Re: [PATCH] iio: mtk-auxadc: add mutex_destroy
+Message-ID: <20210731185210.7acb5f79@jic23-huawei>
+In-Reply-To: <1627300994.11261.11.camel@mhfsdcap03>
+References: <20210715093523.29844-1-hui.liu@mediatek.com>
+        <20210715093523.29844-2-hui.liu@mediatek.com>
+        <20210717174432.7e69e4e9@jic23-huawei>
+        <1627042875.27985.15.camel@mhfsdcap03>
+        <20210724183003.6f3bc1d5@jic23-huawei>
+        <1627300994.11261.11.camel@mhfsdcap03>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -40,61 +44,107 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 28 Jul 2021 09:19:58 +0200
-Peter Rosin <peda@axentia.se> wrote:
+On Mon, 26 Jul 2021 20:03:14 +0800
+hui.liu <hui.liu@mediatek.com> wrote:
 
-> On 2021-07-28 02:21, Liam Beguin wrote:
-> > On Fri Jul 23, 2021 at 5:16 PM EDT, Peter Rosin wrote:  
-> >> On 2021-07-21 05:06, Liam Beguin wrote:  
-> >>> From: Liam Beguin <lvb@xiphos.com>
-> >>>
-> >>> Some ADCs use IIO_VAL_INT_PLUS_{NANO,MICRO} scale types.
-> >>> Add support for these to allow using the iio-rescaler with them.
-> >>>
-> >>> Signed-off-by: Liam Beguin <lvb@xiphos.com>
-> >>> ---
-> >>>  drivers/iio/afe/iio-rescale.c | 14 ++++++++++++++
-> >>>  1 file changed, 14 insertions(+)
-> >>>
-> >>> diff --git a/drivers/iio/afe/iio-rescale.c b/drivers/iio/afe/iio-rescale.c
-> >>> index d0669fd8eac5..2b73047365cc 100644
-> >>> --- a/drivers/iio/afe/iio-rescale.c
-> >>> +++ b/drivers/iio/afe/iio-rescale.c
-> >>> @@ -41,6 +41,20 @@ int rescale_process_scale(struct rescale *rescale, int scale_type,
-> >>>  		do_div(tmp, 1000000000LL);
-> >>>  		*val = tmp;
-> >>>  		return scale_type;
-> >>> +	case IIO_VAL_INT_PLUS_NANO:
-> >>> +		tmp = ((s64)*val * 1000000000LL + *val2) * rescale->numerator;
-> >>> +		tmp = div_s64(tmp, rescale->denominator);
-> >>> +
-> >>> +		*val = div_s64(tmp, 1000000000LL);
-> >>> +		*val2 = tmp - *val * 1000000000LL;
-> >>> +		return scale_type;  
-> > 
-> > Hi Peter,
+> On Sat, 2021-07-24 at 18:30 +0100, Jonathan Cameron wrote:
+> > On Fri, 23 Jul 2021 20:21:15 +0800
+> > hui.liu <hui.liu@mediatek.com> wrote:
 > >   
-> >>
-> >> Hi!
-> >>
-> >> My objection from v5 still stands. Did you forget or did you simply send
-> >> the
-> >> wrong patch?  
+> > > On Sat, 2021-07-17 at 17:44 +0100, Jonathan Cameron wrote:  
+> > > > On Thu, 15 Jul 2021 17:35:23 +0800
+> > > > Hui Liu <hui.liu@mediatek.com> wrote:
+> > > >     
+> > > > > Add mutex_destroy when probe fail and remove device.
+> > > > > 
+> > > > > Signed-off-by: Hui Liu <hui.liu@mediatek.com>    
+> > > > Hi Hui Liu,
+> > > > 
+> > > > We very very rarely bother to call mutex_destroy().  The reason is
+> > > > that it is only a non noop in when mutex debugging is enabled and
+> > > > that is only useful if there is a plausible route in which it could
+> > > > be used after the mutex_destroy.   Given these are both at the ends
+> > > > of removal paths, I don't think this is useful.  That's why you will
+> > > > rarely find mutex_destroy() being called.
+> > > > 
+> > > > Thanks,
+> > > > 
+> > > > Jonathan    
+> > > 
+> > > Hi Jonathon,
+> > > 
+> > > I think this patch could assurance the integrity of code.
+> > > mutex_init will be called when driver probe. If driver probe fail or
+> > > device removed, mutex_destroy could set lock->magic to NULL.  
 > > 
-> > Apologies, again I didn't mean to make it seem like I ignored your comments.
-> > I tried your suggestion, but had issues when *val2 would overflow into
-> > the integer part.  
+> > I'm not seeing the use case here given the location doesn't leave
+> > a huge amount of code that could have such a bug.  There might have been
+> > something if we had any route to increment the reference count of the
+> > structure this mutex is ultimately embedded in and so have it outlast
+> > the remove function or error path. In this driver it looks like there is
+> > no such path.  Hence you are protecting against a automated
+> > cleanup of core code (nothing in the driver itself) which is obviously
+> > not going to try taking a driver specific mutex.
+> > 
+> > A few side notes:
+> > 
+> > You are calling it wrong place in remove. The ordering in remove
+> > should be the opposite of that in probe so the mutex_destroy should either
+> > be a few lines earlier, or you should have a comment there to say why you
+> > are doing it where you have chosen to do so.
+> > 
+> > The style of this probe is to do error handling in a block at the end.
+> > So this handling should be there, not in the if statement.
+> > 
+> > Jonathan
+> > 
+> >   
+> Hi Jonathon,
 > 
-> Not saying anything about it not working does indeed make it seem like you
-> ignored it :-)  Or did I just miss where you said this? Anyway, no problem,
-> it can be a mess dealing with a string of commits when there are numerous
-> things to take care of between each iteration. And it's very easy to burn
-> out and just back away. Please don't do that!
+> Base on your helpful opinion, We will to do two changes in patch v2.
+> 1. In probe: move mutex_destroy from the if statement to error handling
+> path(err_power_off).
+> 2. In remove: calling mutex_destroy right after iio_device_unregister.
+> 
+> Do we need some more change? Thanks.
+Ah. Sorry I missed this in the flood of emails during the week.
 
-Just to add here, I'm really appreciating the two of you figuring this out
-between you and looking forward to getting the resulting improvements (particularly
-the tests!) in place.
-
-Thanks,
+Anyhow, I've replied to the v1 posting.
 
 Jonathan
+
+> >   
+> > > 
+> > > Thanks.
+> > > Hui
+> > >   
+> > > >     
+> > > > > ---
+> > > > >  drivers/iio/adc/mt6577_auxadc.c | 2 ++
+> > > > >  1 file changed, 2 insertions(+)
+> > > > > 
+> > > > > diff --git a/drivers/iio/adc/mt6577_auxadc.c b/drivers/iio/adc/mt6577_auxadc.c
+> > > > > index 79c1dd68b909..d57243037ad6 100644
+> > > > > --- a/drivers/iio/adc/mt6577_auxadc.c
+> > > > > +++ b/drivers/iio/adc/mt6577_auxadc.c
+> > > > > @@ -289,6 +289,7 @@ static int mt6577_auxadc_probe(struct platform_device *pdev)
+> > > > >  	ret = iio_device_register(indio_dev);
+> > > > >  	if (ret < 0) {
+> > > > >  		dev_err(&pdev->dev, "failed to register iio device\n");
+> > > > > +		mutex_destroy(&adc_dev->lock);
+> > > > >  		goto err_power_off;
+> > > > >  	}
+> > > > >  
+> > > > > @@ -313,6 +314,7 @@ static int mt6577_auxadc_remove(struct platform_device *pdev)
+> > > > >  			      0, MT6577_AUXADC_PDN_EN);
+> > > > >  
+> > > > >  	clk_disable_unprepare(adc_dev->adc_clk);
+> > > > > +	mutex_destroy(&adc_dev->lock);
+> > > > >  
+> > > > >  	return 0;
+> > > > >  }    
+> > > >     
+> > >   
+> >   
+> 
+

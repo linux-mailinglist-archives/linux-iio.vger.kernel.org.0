@@ -2,137 +2,80 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ACC43DC2E2
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Jul 2021 05:22:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 163FF3DC625
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Jul 2021 15:45:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231418AbhGaDWg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 30 Jul 2021 23:22:36 -0400
-Received: from mga18.intel.com ([134.134.136.126]:37975 "EHLO mga18.intel.com"
+        id S233391AbhGaNpk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 31 Jul 2021 09:45:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42846 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231395AbhGaDWf (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 30 Jul 2021 23:22:35 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10061"; a="200408406"
-X-IronPort-AV: E=Sophos;i="5.84,283,1620716400"; 
-   d="scan'208";a="200408406"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2021 20:22:29 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.84,283,1620716400"; 
-   d="scan'208";a="439414699"
-Received: from host.sh.intel.com ([10.239.154.115])
-  by fmsmga007.fm.intel.com with ESMTP; 30 Jul 2021 20:22:27 -0700
-From:   Ye Xiang <xiang.ye@intel.com>
-To:     jikos@kernel.org, jic23@kernel.org,
-        srinivas.pandruvada@linux.intel.com
-Cc:     linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Ye Xiang <xiang.ye@intel.com>
-Subject: [PATCH] iio: hid-sensor-press: Add timestamp channel
-Date:   Sat, 31 Jul 2021 11:25:56 +0800
-Message-Id: <20210731032556.26813-1-xiang.ye@intel.com>
-X-Mailer: git-send-email 2.17.1
+        id S233367AbhGaNpV (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 31 Jul 2021 09:45:21 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B3C8E61042;
+        Sat, 31 Jul 2021 13:44:53 +0000 (UTC)
+Date:   Sat, 31 Jul 2021 14:47:32 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Lee Jones <lee.jones@linaro.org>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Pradeep Goudagunta <pgoudagunta@nvidia.com>,
+        Marek Belisko <marek@goldelico.com>, linux-iio@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: Fix incorrect exit of for-loop
+Message-ID: <20210731144732.57777e20@jic23-huawei>
+In-Reply-To: <20210730071651.17394-1-colin.king@canonical.com>
+References: <20210730071651.17394-1-colin.king@canonical.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Each sample has a timestamp field with this change. This timestamp may
-be from the sensor hub when present or local kernel timestamp. The
-unit of timestamp is nanosecond.
+On Fri, 30 Jul 2021 08:16:51 +0100
+Colin King <colin.king@canonical.com> wrote:
 
-Signed-off-by: Ye Xiang <xiang.ye@intel.com>
----
- drivers/iio/pressure/hid-sensor-press.c | 40 +++++++++++++++----------
- 1 file changed, 24 insertions(+), 16 deletions(-)
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Currently the for-loop that scans for the optimial adc_period iterates
+> through all the possible adc_period levels because the exit logic in
+> the loop is inverted. I believe the comparison should be swapped and
+> the continue replaced with a break to exit the loop at the correct
+> point.
+> 
+> Addresses-Coverity: ("Continue has no effect")
+> Fixes: e08e19c331fb ("iio:adc: add iio driver for Palmas (twl6035/7) gpadc")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+ouch.
 
-diff --git a/drivers/iio/pressure/hid-sensor-press.c b/drivers/iio/pressure/hid-sensor-press.c
-index c416d261e3e3..b365483bd09e 100644
---- a/drivers/iio/pressure/hid-sensor-press.c
-+++ b/drivers/iio/pressure/hid-sensor-press.c
-@@ -16,17 +16,24 @@
- #include <linux/iio/buffer.h>
- #include "../common/hid-sensors/hid-sensor-trigger.h"
- 
--#define CHANNEL_SCAN_INDEX_PRESSURE 0
-+enum {
-+	CHANNEL_SCAN_INDEX_PRESSURE,
-+	CHANNEL_SCAN_INDEX_TIMESTAMP,
-+};
- 
- struct press_state {
- 	struct hid_sensor_hub_callbacks callbacks;
- 	struct hid_sensor_common common_attributes;
- 	struct hid_sensor_hub_attribute_info press_attr;
--	u32 press_data;
-+	struct {
-+		u32 press_data;
-+		u64 timestamp __aligned(8);
-+	} scan;
- 	int scale_pre_decml;
- 	int scale_post_decml;
- 	int scale_precision;
- 	int value_offset;
-+	s64 timestamp;
- };
- 
- static const u32 press_sensitivity_addresses[] = {
-@@ -44,7 +51,9 @@ static const struct iio_chan_spec press_channels[] = {
- 		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
- 		BIT(IIO_CHAN_INFO_HYSTERESIS),
- 		.scan_index = CHANNEL_SCAN_INDEX_PRESSURE,
--	}
-+	},
-+	IIO_CHAN_SOFT_TIMESTAMP(CHANNEL_SCAN_INDEX_TIMESTAMP)
-+
- };
- 
- /* Adjust channel real bits based on report descriptor */
-@@ -157,14 +166,6 @@ static const struct iio_info press_info = {
- 	.write_raw = &press_write_raw,
- };
- 
--/* Function to push data to buffer */
--static void hid_sensor_push_data(struct iio_dev *indio_dev, const void *data,
--					int len)
--{
--	dev_dbg(&indio_dev->dev, "hid_sensor_push_data\n");
--	iio_push_to_buffers(indio_dev, data);
--}
--
- /* Callback handler to send event after all samples are received and captured */
- static int press_proc_event(struct hid_sensor_hub_device *hsdev,
- 				unsigned usage_id,
-@@ -174,10 +175,13 @@ static int press_proc_event(struct hid_sensor_hub_device *hsdev,
- 	struct press_state *press_state = iio_priv(indio_dev);
- 
- 	dev_dbg(&indio_dev->dev, "press_proc_event\n");
--	if (atomic_read(&press_state->common_attributes.data_ready))
--		hid_sensor_push_data(indio_dev,
--				&press_state->press_data,
--				sizeof(press_state->press_data));
-+	if (atomic_read(&press_state->common_attributes.data_ready)) {
-+		if (!press_state->timestamp)
-+			press_state->timestamp = iio_get_time_ns(indio_dev);
-+
-+		iio_push_to_buffers_with_timestamp(
-+			indio_dev, &press_state->scan, press_state->timestamp);
-+	}
- 
- 	return 0;
- }
-@@ -194,9 +198,13 @@ static int press_capture_sample(struct hid_sensor_hub_device *hsdev,
- 
- 	switch (usage_id) {
- 	case HID_USAGE_SENSOR_ATMOSPHERIC_PRESSURE:
--		press_state->press_data = *(u32 *)raw_data;
-+		press_state->scan.press_data = *(u32 *)raw_data;
- 		ret = 0;
- 		break;
-+	case HID_USAGE_SENSOR_TIME_TIMESTAMP:
-+		press_state->timestamp = hid_sensor_convert_timestamp(
-+			&press_state->common_attributes, *(s64 *)raw_data);
-+		break;
- 	default:
- 		break;
- 	}
--- 
-2.17.1
+Applied to the fixes togreg branch of iio.git and marked for stable.
+
+Thanks,
+
+Jonathan
+
+> ---
+>  drivers/iio/adc/palmas_gpadc.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_gpadc.c
+> index 6ef09609be9f..f9c8385c72d3 100644
+> --- a/drivers/iio/adc/palmas_gpadc.c
+> +++ b/drivers/iio/adc/palmas_gpadc.c
+> @@ -664,8 +664,8 @@ static int palmas_adc_wakeup_configure(struct palmas_gpadc *adc)
+>  
+>  	adc_period = adc->auto_conversion_period;
+>  	for (i = 0; i < 16; ++i) {
+> -		if (((1000 * (1 << i)) / 32) < adc_period)
+> -			continue;
+> +		if (((1000 * (1 << i)) / 32) >= adc_period)
+> +			break;
+>  	}
+>  	if (i > 0)
+>  		i--;
 

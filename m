@@ -2,40 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B127E3DC784
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Jul 2021 19:49:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 416403DC78A
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Jul 2021 19:58:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230408AbhGaRto (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 31 Jul 2021 13:49:44 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48888 "EHLO mail.kernel.org"
+        id S229707AbhGaR6f (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 31 Jul 2021 13:58:35 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50048 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229830AbhGaRtn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 31 Jul 2021 13:49:43 -0400
+        id S229475AbhGaR6e (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 31 Jul 2021 13:58:34 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 11CD661042;
-        Sat, 31 Jul 2021 17:49:31 +0000 (UTC)
-Date:   Sat, 31 Jul 2021 18:52:10 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 0D00360FE7;
+        Sat, 31 Jul 2021 17:58:24 +0000 (UTC)
+Date:   Sat, 31 Jul 2021 19:01:03 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "hui.liu" <hui.liu@mediatek.com>
-Cc:     <robh+dt@kernel.org>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
-        <srv_heupstream@mediatek.com>, <zhiyong.tao@mediatek.com>,
-        <chun-hung.wu@mediatek.com>, <yingjoe.chen@mediatek.com>,
-        <seiya.wang@mediatek.com>, <matthias.bgg@gmail.com>,
-        <s.hauer@pengutronix.de>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-iio@vger.kernel.org>, <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH] iio: mtk-auxadc: add mutex_destroy
-Message-ID: <20210731185210.7acb5f79@jic23-huawei>
-In-Reply-To: <1627300994.11261.11.camel@mhfsdcap03>
-References: <20210715093523.29844-1-hui.liu@mediatek.com>
-        <20210715093523.29844-2-hui.liu@mediatek.com>
-        <20210717174432.7e69e4e9@jic23-huawei>
-        <1627042875.27985.15.camel@mhfsdcap03>
-        <20210724183003.6f3bc1d5@jic23-huawei>
-        <1627300994.11261.11.camel@mhfsdcap03>
+To:     Andrea Merello <andrea.merello@gmail.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Andrea Merello <andrea.merello@iit.it>
+Subject: Re: [PATCH 2/4] iio: imu: add Bosch Sensortec BNO055 core driver
+Message-ID: <20210731190103.6e2a3d41@jic23-huawei>
+In-Reply-To: <CAN8YU5PcrR-xM5A=3jd50=UaY9wWDJZGBqajmvM8Te1Ly14Hew@mail.gmail.com>
+References: <20210715141742.15072-1-andrea.merello@gmail.com>
+        <20210715141742.15072-3-andrea.merello@gmail.com>
+        <20210717163236.1553fbfa@jic23-huawei>
+        <CAN8YU5NctVMPfNZn7ya-Jw7yE=NQDBq1aweWn0fX0Rp1p1P=aw@mail.gmail.com>
+        <20210724180823.692b203f@jic23-huawei>
+        <CAN8YU5PcrR-xM5A=3jd50=UaY9wWDJZGBqajmvM8Te1Ly14Hew@mail.gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -44,107 +43,110 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 26 Jul 2021 20:03:14 +0800
-hui.liu <hui.liu@mediatek.com> wrote:
+On Mon, 26 Jul 2021 16:36:49 +0200
+Andrea Merello <andrea.merello@gmail.com> wrote:
 
-> On Sat, 2021-07-24 at 18:30 +0100, Jonathan Cameron wrote:
-> > On Fri, 23 Jul 2021 20:21:15 +0800
-> > hui.liu <hui.liu@mediatek.com> wrote:
-> >   
-> > > On Sat, 2021-07-17 at 17:44 +0100, Jonathan Cameron wrote:  
-> > > > On Thu, 15 Jul 2021 17:35:23 +0800
-> > > > Hui Liu <hui.liu@mediatek.com> wrote:
-> > > >     
-> > > > > Add mutex_destroy when probe fail and remove device.
-> > > > > 
-> > > > > Signed-off-by: Hui Liu <hui.liu@mediatek.com>    
-> > > > Hi Hui Liu,
-> > > > 
-> > > > We very very rarely bother to call mutex_destroy().  The reason is
-> > > > that it is only a non noop in when mutex debugging is enabled and
-> > > > that is only useful if there is a plausible route in which it could
-> > > > be used after the mutex_destroy.   Given these are both at the ends
-> > > > of removal paths, I don't think this is useful.  That's why you will
-> > > > rarely find mutex_destroy() being called.
-> > > > 
-> > > > Thanks,
-> > > > 
-> > > > Jonathan    
-> > > 
-> > > Hi Jonathon,
-> > > 
-> > > I think this patch could assurance the integrity of code.
-> > > mutex_init will be called when driver probe. If driver probe fail or
-> > > device removed, mutex_destroy could set lock->magic to NULL.  
-> > 
-> > I'm not seeing the use case here given the location doesn't leave
-> > a huge amount of code that could have such a bug.  There might have been
-> > something if we had any route to increment the reference count of the
-> > structure this mutex is ultimately embedded in and so have it outlast
-> > the remove function or error path. In this driver it looks like there is
-> > no such path.  Hence you are protecting against a automated
-> > cleanup of core code (nothing in the driver itself) which is obviously
-> > not going to try taking a driver specific mutex.
-> > 
-> > A few side notes:
-> > 
-> > You are calling it wrong place in remove. The ordering in remove
-> > should be the opposite of that in probe so the mutex_destroy should either
-> > be a few lines earlier, or you should have a comment there to say why you
-> > are doing it where you have chosen to do so.
-> > 
-> > The style of this probe is to do error handling in a block at the end.
-> > So this handling should be there, not in the if statement.
-> > 
-> > Jonathan
-> > 
-> >   
-> Hi Jonathon,
+> just a few of in-line comment below; OK for all the rest of your
+> comment, thanks!
 > 
-> Base on your helpful opinion, We will to do two changes in patch v2.
-> 1. In probe: move mutex_destroy from the if statement to error handling
-> path(err_power_off).
-> 2. In remove: calling mutex_destroy right after iio_device_unregister.
+> > > > > +static int bno055_reg_write(struct bno055_priv *priv,
+> > > > > +                         unsigned int reg, unsigned int val)
+> > > > > +{
+> > > > > +     int res = regmap_write(priv->regmap, reg, val);
+> > > > > +
+> > > > > +     if (res && res != -ERESTARTSYS) {  
+> > > >
+> > > > I think Andy asked about these, so I won't repeat...
+> > > > Nice to get rid of those and just be able to make the regmap calls inline though...  
+> > >
+> > > Ok for inline. I've just answered in another mail to Andy's comments
+> > > for the rest.  
 > 
-> Do we need some more change? Thanks.
-Ah. Sorry I missed this in the flood of emails during the week.
+> Indeed, so far I couldn't understand what do you really mean. Should I
+> move those check+dev_err() inside the regmap core layer ?
 
-Anyhow, I've replied to the v1 posting.
+Better to move any necessary print to the caller of the reg_write() where any
+error message can often give more information.  Adding wrappers just to print
+an error message normally mostly serves to make the code a little harder to
+review.
+
+> 
+> > > > > +     /*
+> > > > > +      * Start in fusion mode (all data available), but with magnetometer auto
+> > > > > +      * calibration switched off, in order not to overwrite magnetometer
+> > > > > +      * calibration data in case one want to keep it untouched.  
+> > > >
+> > > > Why might you? good to have a default that is what people most commonly want...
+> > > > If there is a usecase for this then it may be better to have a 'disable autocalibration
+> > > > and manually reload a fixed calibration' path.  
+> > >
+> > > I'm not sure whether disabling autocalibration for magnetometer is
+> > > just a matter of saving some power, or whether this has the purpose of
+> > > carefully doing the calibration far from magnetic disturbances,
+> > > avoiding screwing the calibration every time you briefly pass by a
+> > > piece of iron. I think I found some clues for this second
+> > > interpretation poking on the internet, but I don't know whether they
+> > > were right.  
+> >
+> > It's possible if the calibration routines have much faster response than
+> > you'd normally expect.  
+> 
+> This HW function is called "Fast Magnetometer Calibration".. But I
+> don't know how fast is it..
+
+Nice  - got to love informative datasheets :)
+
+> 
+> 
+> > > > > +     &iio_dev_attr_in_accel_filter_low_pass_3db_frequency_available.dev_attr.attr,
+> > > > > +     &iio_dev_attr_in_anglvel_range_available.dev_attr.attr,  
+> > > >
+> > > > Hmm. Range typically maps to something else (normally scale, but these smart
+> > > > sensors can do weird things)  
+> > >
+> > > Here the scaling doesn't change, just the range. I *think* that by
+> > > changing range you also get better or worse precision.  
+> >
+> > oh goody.  Make sure the default is maximum range + when you document this
+> > we will have to be careful to make it clear we don't want this to be used in
+> > drivers where scale is an option.  Perhaps we just put it in a device
+> > specific ABI file.
+> >  
+> 
+> The default is to run the IMU with fusion mode enabled; in this mode
+> those parameters are locked by the HW to a given value (which is not
+> the maximum e.g. in case of accelerometer range).
+> 
+> If the user disables the fusion mode, then those parameters become
+> tweakable, but shouldn't they just remain at their previous values
+> (the one set by fusion mode), unless the user change also them?
+
+That makes sense to me.
+
+> 
+> I.o.w the only chance we have for assigning them a "default" value is
+> when the fusion is switched off, but this would mean that switching
+> off fusion mode also has a side effect on those values (which I'm
+> unsure if we really want to happen).
+
+Thanks for the explanation.  Ok. Fine to have the range here, but please
+sanity check we have appropriate ABI documentation in the main ABI doc
+Documentation/ABI/testing/sysfs-bus-iio.
+One thing to think about is how range would generalize.   These sensors are
+symmetric, but not all are - a range that is higher in postive than negative
+is definitely possible.  Perhaps we need to name it to make it clear we are
+talking magnitude here? 
+
+Ideally it should state something about range should be used only when it has no
+affect on scaling.  Hopefully we'll not get a device where it has an affect
+but it's non linear as that doesn't make any sense.  I'd imagine a range
+control in hardware either is proportional to the scale, or has no affect on
+it as here.
+
+Thanks,
 
 Jonathan
 
-> >   
-> > > 
-> > > Thanks.
-> > > Hui
-> > >   
-> > > >     
-> > > > > ---
-> > > > >  drivers/iio/adc/mt6577_auxadc.c | 2 ++
-> > > > >  1 file changed, 2 insertions(+)
-> > > > > 
-> > > > > diff --git a/drivers/iio/adc/mt6577_auxadc.c b/drivers/iio/adc/mt6577_auxadc.c
-> > > > > index 79c1dd68b909..d57243037ad6 100644
-> > > > > --- a/drivers/iio/adc/mt6577_auxadc.c
-> > > > > +++ b/drivers/iio/adc/mt6577_auxadc.c
-> > > > > @@ -289,6 +289,7 @@ static int mt6577_auxadc_probe(struct platform_device *pdev)
-> > > > >  	ret = iio_device_register(indio_dev);
-> > > > >  	if (ret < 0) {
-> > > > >  		dev_err(&pdev->dev, "failed to register iio device\n");
-> > > > > +		mutex_destroy(&adc_dev->lock);
-> > > > >  		goto err_power_off;
-> > > > >  	}
-> > > > >  
-> > > > > @@ -313,6 +314,7 @@ static int mt6577_auxadc_remove(struct platform_device *pdev)
-> > > > >  			      0, MT6577_AUXADC_PDN_EN);
-> > > > >  
-> > > > >  	clk_disable_unprepare(adc_dev->adc_clk);
-> > > > > +	mutex_destroy(&adc_dev->lock);
-> > > > >  
-> > > > >  	return 0;
-> > > > >  }    
-> > > >     
-> > >   
-> >   
 > 
+> Andrea
 

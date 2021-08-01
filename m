@@ -2,44 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A6213DCCC6
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Aug 2021 18:57:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 470153DCCCA
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Aug 2021 18:58:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229732AbhHAQ5T (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 1 Aug 2021 12:57:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45452 "EHLO mail.kernel.org"
+        id S229592AbhHAQ6p (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 Aug 2021 12:58:45 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45920 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229646AbhHAQ5T (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 1 Aug 2021 12:57:19 -0400
+        id S229575AbhHAQ6p (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 1 Aug 2021 12:58:45 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6521E610A5;
-        Sun,  1 Aug 2021 16:57:06 +0000 (UTC)
-Date:   Sun, 1 Aug 2021 17:59:47 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id A7B3960EB5;
+        Sun,  1 Aug 2021 16:58:31 +0000 (UTC)
+Date:   Sun, 1 Aug 2021 18:01:11 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
-Cc:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Rob Herring <robh+dt@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Biju Das <biju.das.jz@bp.renesas.com>
-Subject: Re: [PATCH v3 2/3] iio: adc: Add driver for Renesas RZ/G2L A/D
- converter
-Message-ID: <20210801175947.2b49878d@jic23-huawei>
-In-Reply-To: <CA+V-a8vMdFrrcw3iqbSzd4oN_x6CijOwYo7eSFuf8LhfB6SFRg@mail.gmail.com>
-References: <20210726182850.14328-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-        <20210726182850.14328-3-prabhakar.mahadev-lad.rj@bp.renesas.com>
-        <20210731181142.430c50f8@jic23-huawei>
-        <CA+V-a8vMdFrrcw3iqbSzd4oN_x6CijOwYo7eSFuf8LhfB6SFRg@mail.gmail.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Andreas Klinger <ak@it-klinger.de>, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Jiri Kosina <trivial@kernel.org>,
+        Chris Packham <chris.packham@alliedtelesis.co.nz>,
+        Slawomir Stepien <sst@poczta.fm>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Vadim Pasternak <vadimp@nvidia.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Tomasz Duszynski <tomasz.duszynski@octakon.com>
+Subject: Re: [PATCH 2/2] iio: chemical: Add driver support for sgp40
+Message-ID: <20210801180111.28a1c4d1@jic23-huawei>
+In-Reply-To: <42e31edc-445c-06ac-dd3a-80db1b439996@roeck-us.net>
+References: <20210727163517.GA3468@arbad>
+        <20210731173928.08d6812f@jic23-huawei>
+        <42e31edc-445c-06ac-dd3a-80db1b439996@roeck-us.net>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -48,110 +45,102 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 31 Jul 2021 19:31:52 +0100
-"Lad, Prabhakar" <prabhakar.csengg@gmail.com> wrote:
+On Sat, 31 Jul 2021 11:06:25 -0700
+Guenter Roeck <linux@roeck-us.net> wrote:
 
-> Hi Jonathan,
+> On 7/31/21 9:39 AM, Jonathan Cameron wrote:
+> > On Tue, 27 Jul 2021 18:35:19 +0200
+> > Andreas Klinger <ak@it-klinger.de> wrote:
+> >   
+> >> sgp40 is a gas sensor used for measuring the air quality.
+> >>
+> >> This driver is reading the raw resistance value which can be passed to
+> >> a userspace algorithm for further calculation.
+> >>
+> >> The raw value is also used to calculate an estimated absolute voc index
+> >> in the range from 0 to 500. For this purpose the raw_mean value of the
+> >> resistance for which the index value is 250 might be set up as a
+> >> calibration step.
+> >>
+> >> Compensation of relative humidity and temperature is supported and can
+> >> be used by writing to device attributes of the driver.
+> >>
+> >> There is a predecesor sensor type (sgp30) already existing. This driver
+> >> module was not extended because the new sensor is quite different in its
+> >> i2c telegrams.
+> >>
+> >> Signed-off-by: Andreas Klinger <ak@it-klinger.de>  
+> > 
+> > Hi Andreas,
+> > 
+> > Non standard ABI in here, so we are missing documentation in Documentation/ABI/testing/sysfs-bus-iio-*
+> > 
+> > Otherwise a few suggestions inline.
+> > 
+> > Thanks,
+> > 
+> > Jonathan
+> > 
+> >   
+> >> ---  
+> [ ... ]
 > 
-> Thank you for the review.
+> >> +static int sgp40_read_raw(struct iio_dev *indio_dev,
+> >> +			struct iio_chan_spec const *chan, int *val,
+> >> +			int *val2, long mask)
+> >> +{
+> >> +	struct sgp40_data *data = iio_priv(indio_dev);
+> >> +	int ret;
+> >> +	u16 raw;
+> >> +	int voc;
+> >> +
+> >> +	switch (mask) {
+> >> +	case IIO_CHAN_INFO_RAW:
+> >> +		mutex_lock(&data->lock);
+> >> +		ret = sgp40_measure_raw(data, &raw);
+> >> +		if (ret) {
+> >> +			mutex_unlock(&data->lock);
+> >> +			return ret;
+> >> +		}
+> >> +		*val = raw;
+> >> +		ret = IIO_VAL_INT;
+> >> +		mutex_unlock(&data->lock);
+> >> +		break;
+> >> +	case IIO_CHAN_INFO_PROCESSED:
+> >> +		mutex_lock(&data->lock);
+> >> +		ret = sgp40_measure_raw(data, &raw);
+> >> +		if (ret) {
+> >> +			mutex_unlock(&data->lock);
+> >> +			return ret;
+> >> +		}
+> >> +		ret = sgp40_calc_voc(data, raw, &voc);
+> >> +		if (ret) {
+> >> +			mutex_unlock(&data->lock);
+> >> +			return ret;
+> >> +		}
+> >> +		*val = voc;
+> >> +		ret = IIO_VAL_INT;
+> >> +		mutex_unlock(&data->lock);  
+> > 
+> > You are holding the lock longer than needed - it would be good
+> > to reduce this, hopefully removing the need for unlocking separately
+> > in each of the error paths.
+> >   
+> >> +		break;
+> >> +	default:
+> >> +		return -EINVAL;
+> >> +	}
+> >> +
+> >> +	return ret;  
+> > 
+> > Drop this as you can't get here.
+> >   
 > 
+> Are you sure ? I see several "break;" above.
 
-...
-
-> > > +#define DRIVER_NAME          "rzg2l-adc"  
-> >
-> > As only used in one place, just put it inline there so we don't need
-> > to go find if we want to know the value - I'm lazy.
-> >  
-> Its being used in two places
-> 1: indio_dev->name = DRIVER_NAME #In probe call
-> 2: .name = DRIVER_NAME # In platform_driver struct
-> 
-> Let me know if you want me to replace them inline and drop the above macro.
-
-oops.  Searching apparently failed me ;)  Fine as is.
-
-...
-
-
-> > > +static const struct iio_info rzg2l_adc_iio_info = {
-> > > +     .read_raw = rzg2l_adc_read_raw,
-> > > +     .read_label = rzg2l_adc_read_label,
-> > > +};
-> > > +
-> > > +static irqreturn_t rzg2l_adc_isr(int irq, void *dev_id)
-> > > +{
-> > > +     struct rzg2l_adc *adc = (struct rzg2l_adc *)dev_id;  
-> >
-> > No need for explicit cast from void * to another pointer type.
-> > This is always valid without in C.
-> >  
-> Agreed.
-> 
-> > > +     unsigned long intst;
-> > > +     u32 reg;
-> > > +     int ch;
-> > > +
-> > > +     reg = rzg2l_adc_readl(adc, RZG2L_ADSTS);
-> > > +
-> > > +     /* A/D conversion channel select error interrupt */
-> > > +     if (reg & RZG2L_ADSTS_CSEST) {
-> > > +             rzg2l_adc_writel(adc, RZG2L_ADSTS, reg);
-> > > +             return IRQ_HANDLED;
-> > > +     }
-> > > +
-> > > +     intst = reg & RZG2L_ADSTS_INTST_MASK;
-> > > +     if (!intst)
-> > > +             return IRQ_NONE;
-> > > +
-> > > +     for_each_set_bit(ch, &intst, RZG2L_ADC_MAX_CHANNELS) {
-> > > +             if (intst & BIT(ch))  
-> >
-> > I'm missing how this if can fail given we only end up in here when the bit is
-> > set.
-> >  
-> ADC has 8 channels RZG2L_ADSTS register bits [0:7] will be set to 1
-> when the given channel ADC conversion has been completed. So the above
-> if condition checks if the bit is set to 1 and then reads the
-> corresponding value of that channel.
-
-Just looking at the two lines of code above
-for_each_set_bit(ch, &intst, RZG2L_ADC_MAX_CHANNELS) 
-will only call the the next line if the bit is set.  E.g. It will only call
-it
-if (intst & BIT(ch))
-
-So you can only get into the body of the for loop if this bit is set and the
-condition is always true.  Hence drop 
-if (intst & BIT(ch)) 
+Doh! In that case, return directly where it has break above so we don't
+need to go see if anything else happens in those paths.
 
 > 
-> > > +                     adc->last_val[ch] = rzg2l_adc_readl(adc, RZG2L_ADCR(ch)) &
-> > > +                                         RZG2L_ADCR_AD_MASK;
-> > > +     }
-> > > +
-> > > +     /* clear the channel interrupt */
-> > > +     rzg2l_adc_writel(adc, RZG2L_ADSTS, reg);
-> > > +
-> > > +     complete(&adc->completion);
-> > > +
-> > > +     return IRQ_HANDLED;
-> > > +}
-> > > +
+> Guenter
 
-...
-
-> > > +
-> > > +     pm_runtime_enable(dev);  
-> >
-> > I think you also want to set the state to suspended to ensure the resume is
-> > called on get.
-> >  
-> pm_runtime_set_suspended() should only be called when runtime is
-> disabled or is it that I am missing something ?
-
-If you want the runtime pm code to assume your device is suspended initially
-then you set the state before you call pm_runtime_enable(dev).
-
-
-J

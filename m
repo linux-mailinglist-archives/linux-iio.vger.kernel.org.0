@@ -2,145 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 470153DCCCA
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Aug 2021 18:58:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 015193DCCD6
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Aug 2021 19:12:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229592AbhHAQ6p (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 1 Aug 2021 12:58:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45920 "EHLO mail.kernel.org"
+        id S229706AbhHARMb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 Aug 2021 13:12:31 -0400
+Received: from mout.gmx.net ([212.227.15.15]:42587 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229575AbhHAQ6p (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 1 Aug 2021 12:58:45 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A7B3960EB5;
-        Sun,  1 Aug 2021 16:58:31 +0000 (UTC)
-Date:   Sun, 1 Aug 2021 18:01:11 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Andreas Klinger <ak@it-klinger.de>, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Jiri Kosina <trivial@kernel.org>,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>,
-        Slawomir Stepien <sst@poczta.fm>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Vadim Pasternak <vadimp@nvidia.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Tomasz Duszynski <tomasz.duszynski@octakon.com>
-Subject: Re: [PATCH 2/2] iio: chemical: Add driver support for sgp40
-Message-ID: <20210801180111.28a1c4d1@jic23-huawei>
-In-Reply-To: <42e31edc-445c-06ac-dd3a-80db1b439996@roeck-us.net>
-References: <20210727163517.GA3468@arbad>
-        <20210731173928.08d6812f@jic23-huawei>
-        <42e31edc-445c-06ac-dd3a-80db1b439996@roeck-us.net>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        id S229680AbhHARMb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 1 Aug 2021 13:12:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1627837931;
+        bh=fMjtxvQOIw1SnIwi4nyIOF/OnCL2DunPqIBE+G3CAQM=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=lv68nNY7VyrmSlDpjwfqvCjEJRqKEkwAnOZics5nPZufrdor9jr0j9CpLj2OWKdL/
+         cD5tND8X52aYLw3VAmP8kvvRBAV0Z0ZjrWc6s2Ozt3xw2bDLvOg5/1MZVW+o+ugBxT
+         9rv/yBQdRdwppqaJPzSzyB/2AlTPIB3dB4lvxc0g=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from localhost.localdomain ([79.150.72.99]) by mail.gmx.net
+ (mrgmx004 [212.227.17.184]) with ESMTPSA (Nemesis) id
+ 1MAfUo-1mLHcI33c0-00B1h3; Sun, 01 Aug 2021 19:12:10 +0200
+From:   Len Baker <len.baker@gmx.com>
+To:     Kees Cook <keescook@chromium.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Len Baker <len.baker@gmx.com>, linux-hardening@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] drivers/iio: Remove all strcpy() uses in favor of strscpy()
+Date:   Sun,  1 Aug 2021 19:11:57 +0200
+Message-Id: <20210801171157.17858-1-len.baker@gmx.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:sANA7hqjWDJu1bKLfHEzEjh3NiMEYjyWglhBJmmkMx8uX8jnK6/
+ gkfz5XJMkK6TxNhKlOkSEdnAHoX/t2JSU8FQsLgVNfyzqVA4+HxtGCXwBMdCbDWSOnF6I0f
+ 4f1j3hRT1DbLnm42TqofQhr04QVK8KtJF+9IsyMpfMjlOsli3PXs8haw6vAMYMmBzZ2biFZ
+ j9rR8bFDNWcyAZ/zpjOTQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:GCBi1IHlMR8=:h5g2/+mr+7iOI9tAUL3Kw9
+ bIAWeRkCylDZH/miQTUhEb8m7x5cGRbQqWFV4x495wVT0AzZLHoszS4bFuBAfVUB4PwYIrm3o
+ OXMsq4W/x4sopv0g0uRX4jsEmQpi7cDQ6HUsiG5jDhMuRc6uJpZXLcXuUSBX8xLUxUXQWioHK
+ sSXPNu3LoHm31OBgFmywCO0QSfV/HDr0WRHkgRVS2lh/kJgJVfzw7+ZBI3Av1GsM8vTfhzGMH
+ w4kHfFRVM7eFwEu8mYsJWs8lluRoTP4erhAa++i8xRyFhLMrWTC6hvrdUiVce62CGxYxa/Bro
+ FBHzWXAHA3nHwix5DvNMrMaTRGAd5Ffwbsf1vBSc4hwHZvwgthWQ13/n4JFl50hbwSVz38IA6
+ qKGeE2R3v6ME/N++inkp7hXVUyTZFdTG1gcWYhH/C+JgKYZiyY6PuWVpVcj5nn8otGcbJTBJI
+ mzb4eOWA0oqSobFHvw6jdMdSaPig7pM9x8H0O52IbuM++9eHytXEw36AkPs+KnkR5FH4ydZp1
+ Wk3WBf59JCJKCbLKkjPHUACh/xJdlc1OjUXtc9sHLzjH+DUHXe3LW4+1y8uEjhwtIMnZNDEu8
+ jw7JdbXmA3SSjX5melX7SYjupxMagftDodvEi/rGgeOrSiPLXOtMPBcBPQVTzoUxtA8gLReeR
+ m63kRrclC1fTojr1SgoCyECNYgQ+CDFW6uRZLwM2rQggQ2NwRdnOKEdLnUO9KdAPp65gzLMfx
+ U4sAGoxz8DT1YZoZVUgy3BDcY8E8kajFSyBD9Y/WJ2NIZ5871GhmmNA9kgywlvzfeyH6hYxoj
+ WRzLTiXU+NNRlRRkc9/QgYm7oDGSFXBe1t7LipKqBaRpvVxQZk1+TXPcHZ0YIUkBl2sa/5MZM
+ jyGZ8xySTYFGa5ZDxAnUkNsKGEMslgOWCa3IBoLmQJ9TYqoVIGEgCBQH1EhCE/VpZ1GHuYsjM
+ O9CjLhwBcM3WRIxadbjMs30SPEJC9zYvI3FWXeWu4F/I6TO7U6jCBWy0841MqkWOepATz80tG
+ wN5UH2Or16fbmEORigSfFK1f4hveUsyjN1rcLnIIFLuju7V4Y7+i7+Bhn+U0ei9e+DiIxwEwt
+ sMWlfZAMmi8X04lo10TOKY6966rMfkm6IvX
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 31 Jul 2021 11:06:25 -0700
-Guenter Roeck <linux@roeck-us.net> wrote:
+strcpy() performs no bounds checking on the destination buffer. This
+could result in linear overflows beyond the end of the buffer, leading
+to all kinds of misbehaviors. The safe replacement is strscpy().
 
-> On 7/31/21 9:39 AM, Jonathan Cameron wrote:
-> > On Tue, 27 Jul 2021 18:35:19 +0200
-> > Andreas Klinger <ak@it-klinger.de> wrote:
-> >   
-> >> sgp40 is a gas sensor used for measuring the air quality.
-> >>
-> >> This driver is reading the raw resistance value which can be passed to
-> >> a userspace algorithm for further calculation.
-> >>
-> >> The raw value is also used to calculate an estimated absolute voc index
-> >> in the range from 0 to 500. For this purpose the raw_mean value of the
-> >> resistance for which the index value is 250 might be set up as a
-> >> calibration step.
-> >>
-> >> Compensation of relative humidity and temperature is supported and can
-> >> be used by writing to device attributes of the driver.
-> >>
-> >> There is a predecesor sensor type (sgp30) already existing. This driver
-> >> module was not extended because the new sensor is quite different in its
-> >> i2c telegrams.
-> >>
-> >> Signed-off-by: Andreas Klinger <ak@it-klinger.de>  
-> > 
-> > Hi Andreas,
-> > 
-> > Non standard ABI in here, so we are missing documentation in Documentation/ABI/testing/sysfs-bus-iio-*
-> > 
-> > Otherwise a few suggestions inline.
-> > 
-> > Thanks,
-> > 
-> > Jonathan
-> > 
-> >   
-> >> ---  
-> [ ... ]
-> 
-> >> +static int sgp40_read_raw(struct iio_dev *indio_dev,
-> >> +			struct iio_chan_spec const *chan, int *val,
-> >> +			int *val2, long mask)
-> >> +{
-> >> +	struct sgp40_data *data = iio_priv(indio_dev);
-> >> +	int ret;
-> >> +	u16 raw;
-> >> +	int voc;
-> >> +
-> >> +	switch (mask) {
-> >> +	case IIO_CHAN_INFO_RAW:
-> >> +		mutex_lock(&data->lock);
-> >> +		ret = sgp40_measure_raw(data, &raw);
-> >> +		if (ret) {
-> >> +			mutex_unlock(&data->lock);
-> >> +			return ret;
-> >> +		}
-> >> +		*val = raw;
-> >> +		ret = IIO_VAL_INT;
-> >> +		mutex_unlock(&data->lock);
-> >> +		break;
-> >> +	case IIO_CHAN_INFO_PROCESSED:
-> >> +		mutex_lock(&data->lock);
-> >> +		ret = sgp40_measure_raw(data, &raw);
-> >> +		if (ret) {
-> >> +			mutex_unlock(&data->lock);
-> >> +			return ret;
-> >> +		}
-> >> +		ret = sgp40_calc_voc(data, raw, &voc);
-> >> +		if (ret) {
-> >> +			mutex_unlock(&data->lock);
-> >> +			return ret;
-> >> +		}
-> >> +		*val = voc;
-> >> +		ret = IIO_VAL_INT;
-> >> +		mutex_unlock(&data->lock);  
-> > 
-> > You are holding the lock longer than needed - it would be good
-> > to reduce this, hopefully removing the need for unlocking separately
-> > in each of the error paths.
-> >   
-> >> +		break;
-> >> +	default:
-> >> +		return -EINVAL;
-> >> +	}
-> >> +
-> >> +	return ret;  
-> > 
-> > Drop this as you can't get here.
-> >   
-> 
-> Are you sure ? I see several "break;" above.
+Signed-off-by: Len Baker <len.baker@gmx.com>
+=2D--
+This is a task of the KSPP [1]
 
-Doh! In that case, return directly where it has break above so we don't
-need to go see if anything else happens in those paths.
+[1] https://github.com/KSPP/linux/issues/88
 
-> 
-> Guenter
+ drivers/iio/imu/inv_mpu6050/inv_mpu_magn.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_magn.c b/drivers/iio/imu/=
+inv_mpu6050/inv_mpu_magn.c
+index f282e9cc34c5..3a6aa1c4bf6c 100644
+=2D-- a/drivers/iio/imu/inv_mpu6050/inv_mpu_magn.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_magn.c
+@@ -264,6 +264,7 @@ int inv_mpu_magn_set_orient(struct inv_mpu6050_state *=
+st)
+ 	const char *orient;
+ 	char *str;
+ 	int i;
++	size_t n;
+
+ 	/* fill magnetometer orientation */
+ 	switch (st->chip_type) {
+@@ -282,17 +283,18 @@ int inv_mpu_magn_set_orient(struct inv_mpu6050_state=
+ *st)
+ 		for (i =3D 0; i < 3; ++i) {
+ 			orient =3D st->orientation.rotation[6 + i];
+ 			/* use length + 2 for adding minus sign if needed */
+-			str =3D devm_kzalloc(regmap_get_device(st->map),
+-					   strlen(orient) + 2, GFP_KERNEL);
++			n =3D strlen(orient) + 2;
++			str =3D devm_kzalloc(regmap_get_device(st->map), n,
++					   GFP_KERNEL);
+ 			if (str =3D=3D NULL)
+ 				return -ENOMEM;
+ 			if (strcmp(orient, "0") =3D=3D 0) {
+-				strcpy(str, orient);
++				strscpy(str, orient, n);
+ 			} else if (orient[0] =3D=3D '-') {
+-				strcpy(str, &orient[1]);
++				strscpy(str, &orient[1], n);
+ 			} else {
+ 				str[0] =3D '-';
+-				strcpy(&str[1], orient);
++				strscpy(&str[1], orient, n - 1);
+ 			}
+ 			st->magn_orient.rotation[6 + i] =3D str;
+ 		}
+=2D-
+2.25.1
 

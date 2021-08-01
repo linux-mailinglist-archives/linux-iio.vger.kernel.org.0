@@ -2,150 +2,156 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 719BC3DC98A
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Aug 2021 06:04:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A6213DCCC6
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Aug 2021 18:57:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229557AbhHAEE5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 1 Aug 2021 00:04:57 -0400
-Received: from gproxy6-pub.mail.unifiedlayer.com ([67.222.39.168]:40814 "EHLO
-        gproxy6-pub.mail.unifiedlayer.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229491AbhHAEE4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 Aug 2021 00:04:56 -0400
-X-Greylist: delayed 1234 seconds by postgrey-1.27 at vger.kernel.org; Sun, 01 Aug 2021 00:04:56 EDT
-Received: from cmgw12.mail.unifiedlayer.com (unknown [10.0.90.127])
-        by gproxy6.mail.unifiedlayer.com (Postfix) with ESMTP id 12B6A8028B73
-        for <linux-iio@vger.kernel.org>; Sun,  1 Aug 2021 03:44:14 +0000 (UTC)
-Received: from md-in-79.webhostbox.net ([43.225.55.182])
-        by cmsmtp with ESMTP
-        id A2OZm1HqaEV4rA2Obm9SB0; Sun, 01 Aug 2021 03:44:14 +0000
-X-Authority-Reason: nr=8
-X-Authority-Analysis: v=2.4 cv=LL6j/La9 c=1 sm=1 tr=0 ts=6106188e
- a=LfuyaZh/8e9VOkaVZk0aRw==:117 a=LfuyaZh/8e9VOkaVZk0aRw==:17
- a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19 a=MhDmnRu9jo8A:10:nop_rcvd_month_year
- a=oz0wMknONp8A:10:endurance_base64_authed_username_1 a=vU9dKmh3AAAA:8
- a=gEfo2CItAAAA:8 a=jtbBNqsHAAAA:8 a=-5KMCkUntxd5Z1t9gYsA:9
- a=rsP06fVo5MYu2ilr0aT5:22 a=sptkURWiP4Gy88Gu7hUp:22 a=RWaeYqt-Cn-VcsFsiLGo:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=linumiz.com
-        ; s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=/6ZBQoYXI8JJatNbjDef7ul9lkK5sk1BlHRVcmf31O4=; b=KBAmP0iYdC6hFKmPUMMdYbLBKE
-        nk38aySCFIu/HCMzHqOvlPvmYZa6VIWWpJsPuyyCBTWh8cz18zDVTEn20nLRgb2nbcj2BJQa1nCb2
-        WnyIAJ5zFCz237IbByWWAd0BQ0GfMN92rqBNFg7Z+UOF3SufY3qsTg7c4hvYkxCMqAtV60+4ROw2x
-        mRqaSIl38dWE9pYzoKTQOTJ+UthxLDJKfXCTq1ZY7/tSSR56P6h96qJlV3ce11+PATxTRj5ONyRW2
-        q1UUp6zd6LLd8G1D73dbhrER4L+ASYf6ncNqh8+kPxQdWp1NwfmF65LUU+ACxuNX7dvJnAUC1ZoaM
-        rbhovpYA==;
-Received: from [117.202.189.166] (port=53772 helo=localhost.localdomain)
-        by md-in-79.webhostbox.net with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <navin@linumiz.com>)
-        id 1mA2OX-00466J-NP; Sun, 01 Aug 2021 03:44:09 +0000
-From:   Navin Sankar Velliangiri <navin@linumiz.com>
-To:     jic23@kernel.org
-Cc:     lars@metafoo.de, pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
-        navin@linumiz.com
-Subject: [PATCH v2 2/2] dt-bindings: iio: temperature: add MAXIM max31865 support
-Date:   Sun,  1 Aug 2021 09:13:41 +0530
-Message-Id: <20210801034341.67953-2-navin@linumiz.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210801034341.67953-1-navin@linumiz.com>
-References: <20210801034341.67953-1-navin@linumiz.com>
+        id S229732AbhHAQ5T (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 Aug 2021 12:57:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45452 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229646AbhHAQ5T (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 1 Aug 2021 12:57:19 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6521E610A5;
+        Sun,  1 Aug 2021 16:57:06 +0000 (UTC)
+Date:   Sun, 1 Aug 2021 17:59:47 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
+Cc:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Rob Herring <robh+dt@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Alexandru Ardelean <aardelean@deviqon.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Biju Das <biju.das.jz@bp.renesas.com>
+Subject: Re: [PATCH v3 2/3] iio: adc: Add driver for Renesas RZ/G2L A/D
+ converter
+Message-ID: <20210801175947.2b49878d@jic23-huawei>
+In-Reply-To: <CA+V-a8vMdFrrcw3iqbSzd4oN_x6CijOwYo7eSFuf8LhfB6SFRg@mail.gmail.com>
+References: <20210726182850.14328-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+        <20210726182850.14328-3-prabhakar.mahadev-lad.rj@bp.renesas.com>
+        <20210731181142.430c50f8@jic23-huawei>
+        <CA+V-a8vMdFrrcw3iqbSzd4oN_x6CijOwYo7eSFuf8LhfB6SFRg@mail.gmail.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - md-in-79.webhostbox.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - linumiz.com
-X-BWhitelist: no
-X-Source-IP: 117.202.189.166
-X-Source-L: No
-X-Exim-ID: 1mA2OX-00466J-NP
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: (localhost.localdomain) [117.202.189.166]:53772
-X-Source-Auth: linumcmc
-X-Email-Count: 5
-X-Source-Cap: bGludW1jbWM7aG9zdGdhdG9yO21kLWluLTc5LndlYmhvc3Rib3gubmV0
-X-Local-Domain: yes
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add DT bindings for MAXIM max31865 RTD sensor.
+On Sat, 31 Jul 2021 19:31:52 +0100
+"Lad, Prabhakar" <prabhakar.csengg@gmail.com> wrote:
 
-Signed-off-by: Navin Sankar Velliangiri <navin@linumiz.com>
+> Hi Jonathan,
+> 
+> Thank you for the review.
+> 
 
-Note: Changes in v2:
-	-> Changed the name RTD to Resistance Temperature Detector
-	-> renamed maxim,no-of-wires to 3-wire
-	-> fixed code alignment for the example
----
- .../iio/temperature/maxim,max31865.yaml       | 52 +++++++++++++++++++
- 1 file changed, 52 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/temperature/maxim,max31865.yaml
+...
 
-diff --git a/Documentation/devicetree/bindings/iio/temperature/maxim,max31865.yaml b/Documentation/devicetree/bindings/iio/temperature/maxim,max31865.yaml
-new file mode 100644
-index 000000000000..13d288311cc6
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/temperature/maxim,max31865.yaml
-@@ -0,0 +1,52 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/temperature/maxim,max31865.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Maxim MAX31865 Resistance Temperature Detector.
-+
-+maintainers:
-+  - Navin Sankar Velliangiri <navin@linumiz.com>
-+
-+description: |
-+  https://datasheets.maximintegrated.com/en/ds/MAX31865.pdf
-+
-+properties:
-+  compatible:
-+    const: maxim,max31865
-+
-+  reg:
-+    maxItems: 1
-+
-+  maxim,3-wire:
-+    description:
-+      Setting this property enables 3-wire config. Else
-+      2-wire or 4-wire.
-+    type: boolean
-+
-+  spi-max-frequency: true
-+  spi-cpha: true
-+
-+required:
-+  - compatible
-+  - reg
-+  - spi-cpha
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    spi {
-+       #address-cells = <1>;
-+       #size-cells = <0>;
-+
-+       temp_sensor@0 {
-+         compatible = "maxim,max31865";
-+         reg = <0>;
-+         spi-max-frequency = <400000>;
-+         spi-cpha;
-+         maxim,3-wire;
-+       };
-+    };
-+...
--- 
-2.32.0
+> > > +#define DRIVER_NAME          "rzg2l-adc"  
+> >
+> > As only used in one place, just put it inline there so we don't need
+> > to go find if we want to know the value - I'm lazy.
+> >  
+> Its being used in two places
+> 1: indio_dev->name = DRIVER_NAME #In probe call
+> 2: .name = DRIVER_NAME # In platform_driver struct
+> 
+> Let me know if you want me to replace them inline and drop the above macro.
 
+oops.  Searching apparently failed me ;)  Fine as is.
+
+...
+
+
+> > > +static const struct iio_info rzg2l_adc_iio_info = {
+> > > +     .read_raw = rzg2l_adc_read_raw,
+> > > +     .read_label = rzg2l_adc_read_label,
+> > > +};
+> > > +
+> > > +static irqreturn_t rzg2l_adc_isr(int irq, void *dev_id)
+> > > +{
+> > > +     struct rzg2l_adc *adc = (struct rzg2l_adc *)dev_id;  
+> >
+> > No need for explicit cast from void * to another pointer type.
+> > This is always valid without in C.
+> >  
+> Agreed.
+> 
+> > > +     unsigned long intst;
+> > > +     u32 reg;
+> > > +     int ch;
+> > > +
+> > > +     reg = rzg2l_adc_readl(adc, RZG2L_ADSTS);
+> > > +
+> > > +     /* A/D conversion channel select error interrupt */
+> > > +     if (reg & RZG2L_ADSTS_CSEST) {
+> > > +             rzg2l_adc_writel(adc, RZG2L_ADSTS, reg);
+> > > +             return IRQ_HANDLED;
+> > > +     }
+> > > +
+> > > +     intst = reg & RZG2L_ADSTS_INTST_MASK;
+> > > +     if (!intst)
+> > > +             return IRQ_NONE;
+> > > +
+> > > +     for_each_set_bit(ch, &intst, RZG2L_ADC_MAX_CHANNELS) {
+> > > +             if (intst & BIT(ch))  
+> >
+> > I'm missing how this if can fail given we only end up in here when the bit is
+> > set.
+> >  
+> ADC has 8 channels RZG2L_ADSTS register bits [0:7] will be set to 1
+> when the given channel ADC conversion has been completed. So the above
+> if condition checks if the bit is set to 1 and then reads the
+> corresponding value of that channel.
+
+Just looking at the two lines of code above
+for_each_set_bit(ch, &intst, RZG2L_ADC_MAX_CHANNELS) 
+will only call the the next line if the bit is set.  E.g. It will only call
+it
+if (intst & BIT(ch))
+
+So you can only get into the body of the for loop if this bit is set and the
+condition is always true.  Hence drop 
+if (intst & BIT(ch)) 
+
+> 
+> > > +                     adc->last_val[ch] = rzg2l_adc_readl(adc, RZG2L_ADCR(ch)) &
+> > > +                                         RZG2L_ADCR_AD_MASK;
+> > > +     }
+> > > +
+> > > +     /* clear the channel interrupt */
+> > > +     rzg2l_adc_writel(adc, RZG2L_ADSTS, reg);
+> > > +
+> > > +     complete(&adc->completion);
+> > > +
+> > > +     return IRQ_HANDLED;
+> > > +}
+> > > +
+
+...
+
+> > > +
+> > > +     pm_runtime_enable(dev);  
+> >
+> > I think you also want to set the state to suspended to ensure the resume is
+> > called on get.
+> >  
+> pm_runtime_set_suspended() should only be called when runtime is
+> disabled or is it that I am missing something ?
+
+If you want the runtime pm code to assume your device is suspended initially
+then you set the state before you call pm_runtime_enable(dev).
+
+
+J

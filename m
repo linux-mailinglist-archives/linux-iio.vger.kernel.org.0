@@ -2,59 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 412353DCD6B
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Aug 2021 21:40:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D28C83DCD67
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Aug 2021 21:40:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231925AbhHATkk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 1 Aug 2021 15:40:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34928 "EHLO
+        id S232051AbhHATke (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 Aug 2021 15:40:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231785AbhHATkb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 Aug 2021 15:40:31 -0400
-Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28FF0C061799;
-        Sun,  1 Aug 2021 12:40:23 -0700 (PDT)
-Received: by mail-qt1-x831.google.com with SMTP id m11so10321970qtx.7;
-        Sun, 01 Aug 2021 12:40:23 -0700 (PDT)
+        with ESMTP id S231836AbhHATkc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 Aug 2021 15:40:32 -0400
+Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18207C0613D3;
+        Sun,  1 Aug 2021 12:40:24 -0700 (PDT)
+Received: by mail-qk1-x735.google.com with SMTP id k7so14726341qki.11;
+        Sun, 01 Aug 2021 12:40:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=R5EJ5Gnotkd7ffF8IJqFhFOyVW3BEMA9J80b/3joIJo=;
-        b=khCOP/CAZUFPUggKGpoFL2EBdz3UXIPUwp7FrRee7+IvmWLmGshoYcRazovwO/0bIR
-         HoVVLLjZqaZnBdkoaOuQ76mRFC4KxexnGYfaSw+oC52SbTccU1/FKYpYlO8Fgbnj+C++
-         JuJE9dB2OeIjVtyRm9X9MpCXDp7oChAmCTfgAGz5ce1jFEukaxLmYu2glBrLDygCGKXG
-         LJglGdScgDzRqSzMs1GLNfL56kchOsYVvKqoH1/PcYqNwVNd74LPAZEhpcDtpeOXsIT7
-         2xtkGIl8KSpMdVzsdI9O/G2QckA7KHiIYQadHVuZOv9XJ5X6NKrYC9B089B4kqMORwq6
-         C3xA==
+        bh=ia7RMXcuDJun2fDwzVlIawa2qDQplWBzZcO/n2ULYNU=;
+        b=XtG8c331aXAFHWjU41FzyHNp9YISwpzSfKqlNYD2aqjgdsPL2xntY/MmEFnIa4k5lh
+         zXKl/KCPUKbzLJzqR1M05Rce+iQ0tTLH0Nnp6PO9qfIvIALQnhHngOmNSruDGQys5y6U
+         5ZO3n6zx6FajqGj4gY5pOSH2TK6lqotwmbmRFAgVRYVy3sM0lPk7fcbLba5w5bOYQSPb
+         gfqdxCKxP0AAptr8biDgCOs7nr9DS6lgR0hkXQ3nVIGfr3OD/FTGrxrm4aWYDBmV3AI7
+         38AoB4jyW0CE9zWSFh0pZHWF+mDaxP8pu70oAfLeznmp5zte35Tg5BFYYvGvYqXlhuNx
+         gSqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=R5EJ5Gnotkd7ffF8IJqFhFOyVW3BEMA9J80b/3joIJo=;
-        b=AvEbb67VQ0wT9putbLrdlPjcZ98jUtQMsJIrN12cnwYZyY5uHMRu9shufWq8oNdVNa
-         8fjD5KOUU83ptCi5AIaID6t+X/1rm8dp2X5t0HYbW5eart3qO2s6oJMEReE558tA+Fcd
-         hOeyJWZM3KQ8QTNucR6qqr3ApdJSX9sByHJR+5Ot1B4SAHldJPVOFVEP01GMz91SvLHw
-         Du/D68YFjDZtA4WJUYMoZXtj53+LRxuAah5/AY9UGxV85lfoK+H1fyx1aut/fU9z6z99
-         Kb1nwlYZmW3Z2HjTBCYpoPAhwX2V8H1SH4WZT8+SKPbzEqT6GW4+v8Hj6vjf13DL3G3N
-         MG5A==
-X-Gm-Message-State: AOAM533DeHDrOjeci8UAnVx2tK64iup48EB2aB1qq2zWG+Rsk+392hQa
-        PEhvpZkgMc2Kin4WhkGIH+0=
-X-Google-Smtp-Source: ABdhPJyc3xX/ss1pVYBdk0wigqmT67Ms891lDBijJPr/6O0UQ+cBpw7QnOhPurWBb3LXEkHKvRXALQ==
-X-Received: by 2002:ac8:7545:: with SMTP id b5mr11272072qtr.297.1627846822332;
-        Sun, 01 Aug 2021 12:40:22 -0700 (PDT)
+        bh=ia7RMXcuDJun2fDwzVlIawa2qDQplWBzZcO/n2ULYNU=;
+        b=sZz/Ej3yXs01NWL3gQ0lKhhxSBjFMd1L2cAgqyEAPFSKmCGiWAOfY6c/+p9jWhQB8h
+         He481p/vgvXRL+FaLFyeNEJaNTEwZPJ+q3i6vzAiitXpKrXaiJfdd0BftMSIcgiStENN
+         nczbFX1fSUOVU5a9Dr01BNlT1T7PysKTAnZLJ5s3Mt+8tIRZ41gYAltZNNr7cRqvMtT5
+         Q4lbEH345r6BSCp2/pmg+Zoh17myEGY9wkEwj45vljbS1IwN/+JhwsDWN5xY163Zv7ax
+         OTu32iILj1Cz/w2KnodsJomtvofr+zqplZH9zVtUsHSq8qF/dC1yAjAOj7ykc9xDPmN3
+         O7oA==
+X-Gm-Message-State: AOAM531s/ZH7icaN2WJ2jDAKW7HFgx10Gh6A2gEcypPXVwY2WVAM4OhX
+        8xUJd0faMbGAO9lzN3ocJas=
+X-Google-Smtp-Source: ABdhPJwMBD/Z/a/+l7yLRWBNjfN7HM5cTgL9pAOUnYTkEFZqfTpDnPzG+QaPKEIZxQjnnWFMSM40Ig==
+X-Received: by 2002:a05:620a:6ac:: with SMTP id i12mr12763298qkh.198.1627846823318;
+        Sun, 01 Aug 2021 12:40:23 -0700 (PDT)
 Received: from shaak.. (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
-        by smtp.gmail.com with ESMTPSA id f10sm3621606qto.31.2021.08.01.12.40.21
+        by smtp.gmail.com with ESMTPSA id f10sm3621606qto.31.2021.08.01.12.40.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Aug 2021 12:40:21 -0700 (PDT)
+        Sun, 01 Aug 2021 12:40:22 -0700 (PDT)
 From:   Liam Beguin <liambeguin@gmail.com>
 To:     liambeguin@gmail.com, peda@axentia.se, jic23@kernel.org,
         lars@metafoo.de, pmeerw@pmeerw.net
 Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org, robh+dt@kernel.org
-Subject: [PATCH v7 12/13] dt-bindings: iio: afe: add bindings for temperature-sense-rtd
-Date:   Sun,  1 Aug 2021 15:39:59 -0400
-Message-Id: <20210801194000.3646303-13-liambeguin@gmail.com>
+Subject: [PATCH v7 13/13] dt-bindings: iio: afe: add bindings for temperature transducers
+Date:   Sun,  1 Aug 2021 15:40:00 -0400
+Message-Id: <20210801194000.3646303-14-liambeguin@gmail.com>
 X-Mailer: git-send-email 2.30.1.489.g328c10930387
 In-Reply-To: <20210801194000.3646303-1-liambeguin@gmail.com>
 References: <20210801194000.3646303-1-liambeguin@gmail.com>
@@ -66,72 +66,77 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Liam Beguin <lvb@xiphos.com>
 
-An ADC is often used to measure other quantities indirectly. This
-binding describe one case, the measurement of a temperature through the
-voltage across an RTD resistor such as a PT1000.
+An ADC is often used to measure other quantities indirectly.
+This binding describe one case, the measurement of a temperature
+through a temperature transducer (either voltage or current).
 
 Signed-off-by: Liam Beguin <lvb@xiphos.com>
 Reviewed-by: Rob Herring <robh@kernel.org>
 ---
- .../iio/afe/temperature-sense-rtd.yaml        | 101 ++++++++++++++++++
- 1 file changed, 101 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/afe/temperature-sense-rtd.yaml
+ .../iio/afe/temperature-transducer.yaml       | 114 ++++++++++++++++++
+ 1 file changed, 114 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml
 
-diff --git a/Documentation/devicetree/bindings/iio/afe/temperature-sense-rtd.yaml b/Documentation/devicetree/bindings/iio/afe/temperature-sense-rtd.yaml
+diff --git a/Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml b/Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml
 new file mode 100644
-index 000000000000..336ce96371db
+index 000000000000..cfbf5350db27
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/afe/temperature-sense-rtd.yaml
-@@ -0,0 +1,101 @@
++++ b/Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml
+@@ -0,0 +1,114 @@
 +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/afe/temperature-sense-rtd.yaml#
++$id: http://devicetree.org/schemas/iio/afe/temperature-transducer.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Temperature Sense RTD
++title: Temperature Transducer
 +
 +maintainers:
 +  - Liam Beguin <liambeguin@gmail.com>
 +
 +description: |
-+  RTDs (Resistance Temperature Detectors) are a kind of temperature sensors
-+  used to get a linear voltage to temperature reading within a give range
-+  (usually 0 to 100 degrees Celsius).
++  A temperature transducer is a device that converts a thermal quantity
++  into any other physical quantity. This binding applies to temperature to
++  voltage (like the LTC2997), and temperature to current (like the AD590)
++  linear transducers.
++  In both cases these are assumed to be connected to a voltage ADC.
 +
-+  When an io-channel measures the output voltage across an RTD such as a
-+  PT1000, the interesting measurement is almost always the corresponding
-+  temperature, not the voltage output. This binding describes such a circuit.
++  When an io-channel measures the output voltage of a temperature analog front
++  end such as a temperature transducer, the interesting measurement is almost
++  always the corresponding temperature, not the voltage output. This binding
++  describes such a circuit.
 +
 +  The general transfer function here is (using SI units)
++    V(T) = Rsense * Isense(T)
++    T = (Isense(T) / alpha) + offset
++    T = 1 / (Rsense * alpha) * (V + offset * Rsense * alpha)
 +
-+    V = R(T) * iexc
-+    R(T) = r0 * (1 + alpha * T)
-+    T = 1 / (alpha * r0 * iexc) * (V - r0 * iexc)
++  When using a temperature to voltage transducer, Rsense is set to 1.
 +
-+  The following circuit matches what's in the examples section.
++  The following circuits show a temperature to current and a temperature to
++  voltage transducer that can be used with this binding.
 +
-+           5V0
++           VCC
 +          -----
 +            |
-+        +---+----+
-+        |  R 5k  |
-+        +---+----+
-+            |
-+            V 1mA
-+            |
-+            +---- Vout
-+            |
-+        +---+----+
-+        | PT1000 |
-+        +---+----+
-+            |
++        +---+---+
++        | AD590 |                               VCC
++        +---+---+                              -----
++            |                                    |
++            V proportional to T             +----+----+
++            |                          D+ --+         |
++            +---- Vout                      | LTC2997 +--- Vout
++            |                          D- --+         |
++        +---+----+                          +---------+
++        | Rsense |                               |
++        +---+----+                             -----
++            |                                   GND
 +          -----
 +           GND
 +
 +properties:
 +  compatible:
-+    const: temperature-sense-rtd
++    const: temperature-transducer
 +
 +  io-channels:
 +    maxItems: 1
@@ -141,47 +146,55 @@ index 000000000000..336ce96371db
 +  '#io-channel-cells':
 +    const: 0
 +
-+  excitation-current-microamp:
-+    description: The current fed through the RTD sensor.
++  sense-offset-millicelsius:
++    description: |
++      Temperature offset.
++      This offset is commonly used to convert from Kelvins to degrees Celsius.
++      In that case, sense-offset-millicelsius would be set to <(-273150)>.
++    default: 0
++
++  sense-resistor-ohms:
++    description: |
++      The sense resistor.
++      By default sense-resistor-ohms cancels out the resistor making the
++      circuit behave like a temperature transducer.
++    default: 1
 +
 +  alpha-ppm-per-celsius:
 +    description: |
-+      alpha can also be expressed in micro-ohms per ohm Celsius. It's a linear
-+      approximation of the resistance versus temperature relationship
-+      between 0 and 100 degrees Celsius.
++      Sometimes referred to as output gain, slope, or temperature coefficient.
 +
-+      alpha = (R_100 - R_0) / (100 * R_0)
-+
-+      Where, R_100 is the resistance of the sensor at 100 degrees Celsius, and
-+      R_0 (or r-naught-ohms) is the resistance of the sensor at 0 degrees
-+      Celsius.
-+
-+      Pure platinum has an alpha of 3925. Industry standards such as IEC60751
-+      and ASTM E-1137 specify an alpha of 3850.
-+
-+  r-naught-ohms:
-+    description: |
-+      Resistance of the sensor at 0 degrees Celsius.
-+      Common values are 100 for PT100, 500 for PT500, and 1000 for PT1000
++      alpha is expressed in parts per million which can be micro-amps per
++      degrees Celsius or micro-volts per degrees Celsius. The is the main
++      characteristic of a temperature transducer and should be stated in the
++      datasheet.
 +
 +additionalProperties: false
++
 +required:
 +  - compatible
 +  - io-channels
-+  - excitation-current-microamp
 +  - alpha-ppm-per-celsius
-+  - r-naught-ohms
 +
 +examples:
 +  - |
-+    pt1000_1: temperature-sensor0 {
-+        compatible = "temperature-sense-rtd";
++    ad950: temperature-sensor-0 {
++        compatible = "temperature-transducer";
 +        #io-channel-cells = <0>;
-+        io-channels = <&temp_adc1 0>;
++        io-channels = <&temp_adc 3>;
 +
-+        excitation-current-microamp = <1000>; /* i = U/R = 5 / 5000 */
-+        alpha-ppm-per-celsius = <3908>;
-+        r-naught-ohms = <1000>;
++        sense-offset-millicelsius = <(-273150)>; /* Kelvin to degrees Celsius */
++        sense-resistor-ohms = <8060>;
++        alpha-ppm-per-celsius = <1>; /* 1 uA/K */
++    };
++  - |
++    znq_tmp: temperature-sensor-1 {
++        compatible = "temperature-transducer";
++        #io-channel-cells = <0>;
++        io-channels = <&temp_adc 2>;
++
++        sense-offset-millicelsius = <(-273150)>; /* Kelvin to degrees Celsius */
++        alpha-ppm-per-celsius = <4000>; /* 4 mV/K */
 +    };
 +...
 -- 

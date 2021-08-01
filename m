@@ -2,59 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC2103DCD51
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Aug 2021 21:40:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08E1F3DCD5B
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Aug 2021 21:40:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230230AbhHATkX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 1 Aug 2021 15:40:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34906 "EHLO
+        id S230347AbhHATka (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 Aug 2021 15:40:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230072AbhHATkW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 Aug 2021 15:40:22 -0400
-Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6160CC0613D5;
-        Sun,  1 Aug 2021 12:40:13 -0700 (PDT)
-Received: by mail-qk1-x735.google.com with SMTP id f22so14745158qke.10;
-        Sun, 01 Aug 2021 12:40:13 -0700 (PDT)
+        with ESMTP id S230225AbhHATkX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 Aug 2021 15:40:23 -0400
+Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60989C06175F;
+        Sun,  1 Aug 2021 12:40:14 -0700 (PDT)
+Received: by mail-qv1-xf31.google.com with SMTP id p38so7911721qvp.11;
+        Sun, 01 Aug 2021 12:40:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=OKwbA7CkZ/dV0H/nAmt5zTOn4ixRO23QkLcRozVJn9c=;
-        b=T/kLWJHDY0jlV2/QSYqw8Gnjdp52QUgg3dkG85+ktLA4udP18yHXZybVUi5bGh6fmI
-         ldB2NZyLo4NHENkwPrjk72jxSRRHecdEIzjFraS7a5mxNhKBUR3oDLL8RzeE+Mg1oBvb
-         Bx4XIt3AcQP6jKuGBdP7b3eaZ5OQ6adPHOMVP0+RaA1E2zhTGSle7c1GnPrfdtGVc5uM
-         U4i2ND0A68JYTPy/PZG1GoThJ6p6UbJ8FSHLfpENONNno/uBhL5DEoc0dIKhJd16Hru5
-         2kfAs5QrsxT1grKDh+4wJFCEweUFtkjHwhO9aAuICJw0bEkcGwSyMYPS3jmbF+HCkXZR
-         kW/g==
+        bh=zhQeMelYWNMHpFAMGtlyl1sUbg34IFFWmo4FOYtEzaY=;
+        b=l5Kb87vnrHyjiimiX1rx2Duk6q8wFU9ih6mRQNbq/BMzM0Z5Ulig0sQUeyQ82GzMHQ
+         8icw6LDh8AC4K0U1EC6/J16qwctiwWkJP9uwH8RflV/KRjKZa2Cv9vJfDrjQ6lOATUTG
+         nJwEGZvl1rbmvaKLzlOU8flUnfRurpF24v8KCScEIbvfwACLQLh+2Bgs52tCtnqWoydy
+         6fAWMtX7CqpaaGX8Gz3QT+lCMOGTQKTrQAqqkHeCTcmEYTMlTcz06cH71e1AolUYKKUO
+         pgOTtSSfvlwhmZxW+IlzSon07Voa3pQXFSLkCc6Z0UK0gtfElKhTkDdj3DYjzhVdvBwj
+         rHhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=OKwbA7CkZ/dV0H/nAmt5zTOn4ixRO23QkLcRozVJn9c=;
-        b=gE363wJnVzOhvme2Ngcjsl0o8xosvHHTabj0qv6Oca/eAYcC3/sa19UK7pzDKQPthd
-         aW2NsnZe8znSecsikIsL5ZCVdVV7hmIZavAPwjzc8BaayuvOZ+xuP9IFlcJplMxE5OYn
-         utp3vHGUGYog11+MI/dq6sT2OGVZ7XsSM4nBV8fvi+gUTvli20V3Fi5s+lMTxUHg4riP
-         tzywyhPLRwPi7VcQ32QQBfDbmk3gcIQkFq6gGbEevw6D2C1DIRuJ56y/h0ZW7rmtH2mG
-         l9jTXLA+wa96q27OSfm2aSdPux3Vtskiq53L68j5YqmjIfMjmzUFH7QwM2fJFd5ReRnD
-         aWNw==
-X-Gm-Message-State: AOAM533l2Pm/hXhxgpZNUoT5GJCm5rduYWOY824pXpRePFnacWW2cOh2
-        l1p5O/yE+AkUDTYEbOwjvu8=
-X-Google-Smtp-Source: ABdhPJxgcecg3IPXVMwIZfDGLFQYkke32fidqSRIig816CldvD095OsSVj8q7xyfZSPzAIOiVlsL8w==
-X-Received: by 2002:a05:620a:1001:: with SMTP id z1mr12329350qkj.204.1627846812598;
-        Sun, 01 Aug 2021 12:40:12 -0700 (PDT)
+        bh=zhQeMelYWNMHpFAMGtlyl1sUbg34IFFWmo4FOYtEzaY=;
+        b=Py/F+ZV6TbSOt53a3lKjtF84QO/S78C0mVTQEk/ysbMBePKZbKbOqsF+Hvph0rn56l
+         rpltrrq1hwNc7AfM5hPSPXWnLWsg5aDMj1ECD3MS3p/azYKG+vUzor3alMpYyeY0L7bi
+         Tm9Zed0NS25bB3J+gc1ktMQiZhDbpgK1ZQD9s6yf9NfzYNRfjbLh/UnNmhTptucayZyb
+         YajnZq6q18K2EdHH1IaJ1mRVJLWmMcIWFCcPrFMCQheCBqql7u9O57DLHt4gwZUyUsZy
+         LTWOepKsxOCZBj/35NzY0u0pVyECCWL8Bw2Fs07GQ4H2ZKasG7ElAtNA9Bi/Yl9pwNBJ
+         FFZQ==
+X-Gm-Message-State: AOAM532iQL04uyOILf/QOftQAKwHhR4AOeR0O7pBieLqAhSRkQcITXdv
+        qvC/hOF6gZqypkOLN8XsySCp9BZVSbaLHw==
+X-Google-Smtp-Source: ABdhPJwmVNiCFKDo7HlknpSdx1gyZIC9FQU9o3L/BdlZZN7gZF3gXesp4V/pXPBgKvGEBRX/irqwTQ==
+X-Received: by 2002:ad4:5ccc:: with SMTP id iu12mr12331806qvb.47.1627846813573;
+        Sun, 01 Aug 2021 12:40:13 -0700 (PDT)
 Received: from shaak.. (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
-        by smtp.gmail.com with ESMTPSA id f10sm3621606qto.31.2021.08.01.12.40.11
+        by smtp.gmail.com with ESMTPSA id f10sm3621606qto.31.2021.08.01.12.40.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Aug 2021 12:40:12 -0700 (PDT)
+        Sun, 01 Aug 2021 12:40:13 -0700 (PDT)
 From:   Liam Beguin <liambeguin@gmail.com>
 To:     liambeguin@gmail.com, peda@axentia.se, jic23@kernel.org,
         lars@metafoo.de, pmeerw@pmeerw.net
 Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org, robh+dt@kernel.org
-Subject: [PATCH v7 02/13] iio: inkern: apply consumer scale when no channel scale is available
-Date:   Sun,  1 Aug 2021 15:39:49 -0400
-Message-Id: <20210801194000.3646303-3-liambeguin@gmail.com>
+Subject: [PATCH v7 03/13] iio: inkern: make a best effort on offset calculation
+Date:   Sun,  1 Aug 2021 15:39:50 -0400
+Message-Id: <20210801194000.3646303-4-liambeguin@gmail.com>
 X-Mailer: git-send-email 2.30.1.489.g328c10930387
 In-Reply-To: <20210801194000.3646303-1-liambeguin@gmail.com>
 References: <20210801194000.3646303-1-liambeguin@gmail.com>
@@ -66,40 +66,61 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Liam Beguin <lvb@xiphos.com>
 
-When a consumer calls iio_read_channel_processed() and no channel scale
-is available, it's assumed that the scale is one and the raw value is
-returned as expected.
+iio_convert_raw_to_processed_unlocked() assumes the offset is an
+integer. Make a best effort to get a valid offset value for fractional
+cases without breaking implicit truncations.
 
-On the other hand, if the consumer calls iio_convert_raw_to_processed()
-the scaling factor requested by the consumer is not applied.
-
-This for example causes the consumer to process mV when expecting uV.
-Make sure to always apply the scaling factor requested by the consumer.
-
-Fixes: adc8ec5ff183 ("iio: inkern: pass through raw values if no scaling")
+Fixes: 48e44ce0f881 ("iio:inkern: Add function to read the processed value")
 Signed-off-by: Liam Beguin <lvb@xiphos.com>
 ---
- drivers/iio/inkern.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/iio/inkern.c | 32 +++++++++++++++++++++++++++-----
+ 1 file changed, 27 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-index b752fe5818e7..b69027690ed5 100644
+index b69027690ed5..5e74d8983874 100644
 --- a/drivers/iio/inkern.c
 +++ b/drivers/iio/inkern.c
-@@ -590,10 +590,10 @@ static int iio_convert_raw_to_processed_unlocked(struct iio_channel *chan,
- 					IIO_CHAN_INFO_SCALE);
- 	if (scale_type < 0) {
- 		/*
--		 * Just pass raw values as processed if no scaling is
--		 * available.
-+		 * If no channel scaling is available apply consumer scale to
-+		 * raw value and return.
- 		 */
--		*processed = raw;
-+		*processed = raw * scale;
- 		return 0;
- 	}
+@@ -578,13 +578,35 @@ EXPORT_SYMBOL_GPL(iio_read_channel_average_raw);
+ static int iio_convert_raw_to_processed_unlocked(struct iio_channel *chan,
+ 	int raw, int *processed, unsigned int scale)
+ {
+-	int scale_type, scale_val, scale_val2, offset;
++	int scale_type, scale_val, scale_val2;
++	int offset_type, offset_val, offset_val2;
+ 	s64 raw64 = raw;
+-	int ret;
  
+-	ret = iio_channel_read(chan, &offset, NULL, IIO_CHAN_INFO_OFFSET);
+-	if (ret >= 0)
+-		raw64 += offset;
++	offset_type = iio_channel_read(chan, &offset_val, &offset_val2,
++				       IIO_CHAN_INFO_OFFSET);
++	if (offset_type >= 0) {
++		switch (offset_type) {
++		case IIO_VAL_INT:
++			break;
++		case IIO_VAL_INT_PLUS_MICRO:
++		case IIO_VAL_INT_PLUS_NANO:
++			/*
++			 * Both IIO_VAL_INT_PLUS_MICRO and IIO_VAL_INT_PLUS_NANO
++			 * implicitely truncate the offset to it's integer form.
++			 */
++			break;
++		case IIO_VAL_FRACTIONAL:
++			offset_val /= offset_val2;
++			break;
++		case IIO_VAL_FRACTIONAL_LOG2:
++			offset_val /= (1 << offset_val2);
++			break;
++		default:
++			return -EINVAL;
++		}
++
++		raw64 += offset_val;
++	}
+ 
+ 	scale_type = iio_channel_read(chan, &scale_val, &scale_val2,
+ 					IIO_CHAN_INFO_SCALE);
 -- 
 2.30.1.489.g328c10930387
 

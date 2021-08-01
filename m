@@ -2,713 +2,443 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 622233DCD0F
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Aug 2021 20:09:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2679D3DCD4C
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Aug 2021 21:40:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229687AbhHASJm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 1 Aug 2021 14:09:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33542 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229497AbhHASJm (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 1 Aug 2021 14:09:42 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5082D60F36;
-        Sun,  1 Aug 2021 18:09:30 +0000 (UTC)
-Date:   Sun, 1 Aug 2021 19:12:10 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lucas Stankus <lucas.p.stankus@gmail.com>
-Cc:     lars@metafoo.de, Michael.Hennerich@analog.com, robh+dt@kernel.org,
-        Dragos.Bogdan@analog.com, Darius.Berghe@analog.com,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] iio: accel: Add driver support for ADXL313
-Message-ID: <20210801191210.19044c90@jic23-huawei>
-In-Reply-To: <8f13da2603ebede1c8c2d89f4ec2d9900a331250.1627709571.git.lucas.p.stankus@gmail.com>
-References: <cover.1627709571.git.lucas.p.stankus@gmail.com>
-        <8f13da2603ebede1c8c2d89f4ec2d9900a331250.1627709571.git.lucas.p.stankus@gmail.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        id S229680AbhHATkV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 Aug 2021 15:40:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34902 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229529AbhHATkV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 Aug 2021 15:40:21 -0400
+Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C357C06175F;
+        Sun,  1 Aug 2021 12:40:13 -0700 (PDT)
+Received: by mail-qk1-x72d.google.com with SMTP id c18so14763720qke.2;
+        Sun, 01 Aug 2021 12:40:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=TgAV2Tx4JaOgQ/w1ciFu9dSQbNnnPjfTyQHZyoR4mpA=;
+        b=bSP0TqxxGXlafUHs/FOi3TnFde5jWNTreSbRAg9SuYSQFafIkm1LjmeNJ8iXsRyOmy
+         sDLOegP2W2rXtpyyGeDR4UUnitZZozDL/fyxawiEDxOfWE36xBQyq4GESLQqW4XLajs6
+         A+OufPfZmux2bxbx2i46Qmyw2dQm9j5LE/4wRNyRNYYKDS7d3EOgKcfDN1dcY6EJXcbQ
+         ycXZishT43j1uP5IDdhT1MrVMtcxlnpOG2QR6kOVprjj3Dd2HtnFF2gj33zcAXacjJWy
+         ly5jAEBB0pDvHEC7wsiv9Sj5J++7fX/i4EIWBVQLIb7WyTo/objSUqmlEN8noKxGnCp8
+         WH2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=TgAV2Tx4JaOgQ/w1ciFu9dSQbNnnPjfTyQHZyoR4mpA=;
+        b=ninnGnq2lr5zcn615G0/ku0FBAmZ61JvqFInDFFf60XB+luK4b9SVWNrci4yJFKFHo
+         emHQnBkCMaZsXKWM6hd5HIMuqCzwmaUzlFwQsAnd2IVp7W/cdk1OXIvWlWmkWdeNwWwG
+         Xu6BJccO6D5psSleepEYMUVq+triQcSLksb70g1XX0hpLVPVHKbMN6UjVivAq6rFBWuD
+         KXwFSICQyNHPc34NjQYoLd12/mDCoipmbXXxlhGD/X3o+dVdlaUv1nXXMHDWu7RJldku
+         mt2BDDx0gnoLyjlTT7/o8LeDL/wikuUfrrql8MVsFtUm525vmz76kwBgXnaGcH0GG57c
+         0zRg==
+X-Gm-Message-State: AOAM531nv/pCanrgwY/cEAkLGhAgjKEKhrm40dJanzZdDzfiWB7tNiKE
+        vRGnBBLtu88asQ2CrFVcL58=
+X-Google-Smtp-Source: ABdhPJzoIPz5IF5ngHFbLiLyAEttvJOpzeTR0bpDyRreopKSaWxt4ALFmqLydFo0ndlJtFuN/nFcHg==
+X-Received: by 2002:a37:a6d2:: with SMTP id p201mr12617547qke.98.1627846810682;
+        Sun, 01 Aug 2021 12:40:10 -0700 (PDT)
+Received: from shaak.. (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
+        by smtp.gmail.com with ESMTPSA id f10sm3621606qto.31.2021.08.01.12.40.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Aug 2021 12:40:10 -0700 (PDT)
+From:   Liam Beguin <liambeguin@gmail.com>
+To:     liambeguin@gmail.com, peda@axentia.se, jic23@kernel.org,
+        lars@metafoo.de, pmeerw@pmeerw.net
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, robh+dt@kernel.org
+Subject: [PATCH v7 00/13] iio: afe: add temperature rescaling support
+Date:   Sun,  1 Aug 2021 15:39:47 -0400
+Message-Id: <20210801194000.3646303-1-liambeguin@gmail.com>
+X-Mailer: git-send-email 2.30.1.489.g328c10930387
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 31 Jul 2021 17:36:48 -0300
-Lucas Stankus <lucas.p.stankus@gmail.com> wrote:
+From: Liam Beguin <lvb@xiphos.com>
 
-> ADXL313 is a small, thin, low power, 3-axis accelerometer with high
-> resolution measurement up to +/-4g. It includes an integrated 32-level
-> FIFO and has activity and inactivity sensing capabilities.
-> 
-> Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ADXL313.pdf
-> 
-> Signed-off-by: Lucas Stankus <lucas.p.stankus@gmail.com>
+Add temperature rescaling support to the IIO Analog Front End driver.
 
-Very nice.  A few really minor things inline.
+This series includes minor bug fixes and adds support for RTD temperature
+sensors as well as temperature transducers.
 
-Jonathan
+At first I tried to use iio_convert_raw_to_processed() to get more
+precision out of processed values but ran into issues when one of my
+ADCs didn't provide a scale. I tried to address this in the first few
+patches.
 
-> ---
->  MAINTAINERS                      |   9 +
->  drivers/iio/accel/Kconfig        |  29 +++
->  drivers/iio/accel/Makefile       |   3 +
->  drivers/iio/accel/adxl313.h      |  60 ++++++
->  drivers/iio/accel/adxl313_core.c | 323 +++++++++++++++++++++++++++++++
->  drivers/iio/accel/adxl313_i2c.c  |  65 +++++++
->  drivers/iio/accel/adxl313_spi.c  |  74 +++++++
->  7 files changed, 563 insertions(+)
->  create mode 100644 drivers/iio/accel/adxl313.h
->  create mode 100644 drivers/iio/accel/adxl313_core.c
->  create mode 100644 drivers/iio/accel/adxl313_i2c.c
->  create mode 100644 drivers/iio/accel/adxl313_spi.c
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index a61f4f3b78a9..1fc88723e632 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -585,6 +585,15 @@ L:	platform-driver-x86@vger.kernel.org
->  S:	Maintained
->  F:	drivers/platform/x86/adv_swbutton.c
->  
-> +ADXL313 THREE-AXIS DIGITAL ACCELEROMETER DRIVER
-> +M:	Lucas Stankus <lucas.p.stankus@gmail.com>
-> +S:	Supported
-> +F:	Documentation/devicetree/bindings/iio/accel/adi,adxl313.yaml
-> +F:	drivers/iio/accel/adxl313.h
-> +F:	drivers/iio/accel/adxl313_core.c
-> +F:	drivers/iio/accel/adxl313_i2c.c
-> +F:	drivers/iio/accel/adxl313_spi.c
-> +
->  ADXL34X THREE-AXIS DIGITAL ACCELEROMETER DRIVER (ADXL345/ADXL346)
->  M:	Michael Hennerich <michael.hennerich@analog.com>
->  S:	Supported
-> diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
-> index 0e56ace61103..ae621532e716 100644
-> --- a/drivers/iio/accel/Kconfig
-> +++ b/drivers/iio/accel/Kconfig
-> @@ -30,6 +30,35 @@ config ADIS16209
->  	  To compile this driver as a module, say M here: the module will be
->  	  called adis16209.
->  
-> +config ADXL313
-> +	tristate
-> +
-> +config ADXL313_I2C
-> +	tristate "Analog Devices ADXL313 3-Axis Digital Accelerometer I2C Driver"
-> +	depends on I2C
-> +	select ADXL313
-> +	select REGMAP_I2C
-> +	help
-> +	  Say Y here if you want to build i2c support for the Analog Devices
-> +	  ADXL313 3-axis digital accelerometer.
-> +
-> +	  To compile this driver as a module, choose M here: the module
-> +	  will be called adxl313_i2c and you will also get adxl313_core
-> +	  for the core module.
-> +
-> +config ADXL313_SPI
-> +	tristate "Analog Devices ADXL313 3-Axis Digital Accelerometer SPI Driver"
-> +	depends on SPI
-> +	select ADXL313
-> +	select REGMAP_SPI
-> +	help
-> +	  Say Y here if you want to build spi support for the Analog Devices
-> +	  ADXL313 3-axis digital accelerometer.
-> +
-> +	  To compile this driver as a module, choose M here: the module
-> +	  will be called adxl313_spi and you will also get adxl313_core
-> +	  for the core module.
-> +
->  config ADXL345
->  	tristate
->  
-> diff --git a/drivers/iio/accel/Makefile b/drivers/iio/accel/Makefile
-> index 89280e823bcd..fadc92816e24 100644
-> --- a/drivers/iio/accel/Makefile
-> +++ b/drivers/iio/accel/Makefile
-> @@ -6,6 +6,9 @@
->  # When adding new entries keep the list in alphabetical order
->  obj-$(CONFIG_ADIS16201) += adis16201.o
->  obj-$(CONFIG_ADIS16209) += adis16209.o
-> +obj-$(CONFIG_ADXL313) += adxl313_core.o
-> +obj-$(CONFIG_ADXL313_I2C) += adxl313_i2c.o
-> +obj-$(CONFIG_ADXL313_SPI) += adxl313_spi.o
->  obj-$(CONFIG_ADXL345) += adxl345_core.o
->  obj-$(CONFIG_ADXL345_I2C) += adxl345_i2c.o
->  obj-$(CONFIG_ADXL345_SPI) += adxl345_spi.o
-> diff --git a/drivers/iio/accel/adxl313.h b/drivers/iio/accel/adxl313.h
-> new file mode 100644
-> index 000000000000..72f268e02a80
-> --- /dev/null
-> +++ b/drivers/iio/accel/adxl313.h
-> @@ -0,0 +1,60 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * ADXL313 3-Axis Digital Accelerometer
-> + *
-> + * Copyright (c) 2021 Lucas Stankus <lucas.p.stankus@gmail.com>
-> + */
-> +
-> +#ifndef _ADXL313_H_
-> +#define _ADXL313_H_
-> +
-> +/* ADXL313 register definitions */
+When adding offset support to iio-rescale, I also noticed that
+iio_read_channel_processed() assumes that the offset is always an
+integer which I tried to address in the third patch without breaking
+valid implicit truncations.
 
-If these are only used in the c file, push them down there. Better to
-keep what is in the header to absolute minimum.
-however I suggest below moving some of this so that won't be true any more,
-so maybe you do want to keep them here!
+As Jonathan suggested, I also started a Kunit test suite for the
+iio-rescale driver.
+Adding these test cases, I found that the IIO_VAL_FRACTIONAL_LOG2
+rescaling wasn't as precise as expected so I tried to fix that as well.
 
+Changes since v6:
+- rework IIO_VAL_INT_PLUS_{NANO,MICRO} based on Peter's suggestion
+- combine IIO_VAL_INT_PLUS_{NANO,MICRO} cases
+- add test cases for negative IIO_VAL_INT_PLUS_{NANO,MICRO} corner cases
+- force use of positive integers with gcd()
+- reduce risk of integer overflow in IIO_VAL_FRACTIONAL_LOG2
+- fix duplicate symbol build error
+- apply Reviewed-by
 
-> +#define ADXL313_REG_DEVID0		0x00
-> +#define ADXL313_REG_DEVID1		0x01
-> +#define ADXL313_REG_PARTID		0x02
-> +#define ADXL313_REG_XID			0x04
-> +#define ADXL313_REG_SOFT_RESET		0x18
-> +#define ADXL313_REG_OFS_AXIS(index)	(0x1E + (index))
-> +#define ADXL313_REG_THRESH_ACT		0x24
-> +#define ADXL313_REG_ACT_INACT_CTL	0x27
-> +#define ADXL313_REG_BW_RATE		0x2C
-> +#define ADXL313_REG_POWER_CTL		0x2D
-> +#define ADXL313_REG_INT_MAP		0x2F
-> +#define ADXL313_REG_DATA_FORMAT		0x31
-> +#define ADXL313_REG_DATAX		0x32
-> +#define ADXL313_REG_DATAY		0x34
-> +#define ADXL313_REG_DATAZ		0x36
-> +#define ADXL313_REG_FIFO_CTL		0x38
-> +#define ADXL313_REG_FIFO_STATUS		0x39
-> +
-> +#define ADXL313_DEVID0			0xAD
-> +#define ADXL313_DEVID1			0x1D
-> +#define ADXL313_PARTID			0xCB
-> +#define ADXL313_SOFT_RESET		0x52
-> +
-> +#define ADXL313_RATE_MSK		GENMASK(3, 0)
-> +#define ADXL313_RATE_BASE		6
-> +
-> +#define ADXL313_POWER_CTL_MSK		GENMASK(3, 2)
-> +#define ADXL313_MEASUREMENT_MODE	BIT(3)
-> +
-> +#define ADXL313_RANGE_MSK		GENMASK(1, 0)
-> +#define ADXL313_RANGE_4G		3
-> +
-> +#define ADXL313_FULL_RES		BIT(3)
-> +#define ADXL313_SPI_3WIRE		BIT(6)
-> +#define ADXL313_I2C_DISABLE		BIT(6)
-> +
-> +/*
-> + * Scale for any g range is given in datasheet as
-> + * 1024 LSB/g = 0.0009765625 * 9.80665 = 0.009576806640625 m/s^2
-> + */
-> +#define ADXL313_NSCALE 9576806
-> +
-> +extern const struct regmap_access_table adxl313_readable_regs_table;
-> +
-> +extern const struct regmap_access_table adxl313_writable_regs_table;
-> +
-> +int adxl313_core_probe(struct device *dev, struct regmap *regmap,
-> +		       const char *name);
-> +#endif /* _ADXL313_H_ */
-> diff --git a/drivers/iio/accel/adxl313_core.c b/drivers/iio/accel/adxl313_core.c
-> new file mode 100644
-> index 000000000000..76382ab4f0f4
-> --- /dev/null
-> +++ b/drivers/iio/accel/adxl313_core.c
-> @@ -0,0 +1,323 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * ADXL313 3-Axis Digital Accelerometer
-> + *
-> + * Copyright (c) 2021 Lucas Stankus <lucas.p.stankus@gmail.com>
-> + *
-> + * Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ADXL313.pdf
-> + */
-> +
-> +#include <linux/bitfield.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/module.h>
-> +#include <linux/regmap.h>
-> +
-> +#include "adxl313.h"
-> +
-> +const struct regmap_range adxl313_readable_reg_range[] = {
-> +	regmap_reg_range(ADXL313_REG_DEVID0, ADXL313_REG_XID),
-> +	regmap_reg_range(ADXL313_REG_SOFT_RESET, ADXL313_REG_SOFT_RESET),
-> +	regmap_reg_range(ADXL313_REG_OFS_AXIS(0), ADXL313_REG_OFS_AXIS(2)),
-> +	regmap_reg_range(ADXL313_REG_THRESH_ACT, ADXL313_REG_ACT_INACT_CTL),
-> +	regmap_reg_range(ADXL313_REG_BW_RATE, ADXL313_REG_FIFO_STATUS)
-> +};
-> +
-> +const struct regmap_access_table adxl313_readable_regs_table = {
-> +	.yes_ranges = adxl313_readable_reg_range,
-> +	.n_yes_ranges = ARRAY_SIZE(adxl313_readable_reg_range)
-> +};
-> +EXPORT_SYMBOL_GPL(adxl313_readable_regs_table);
-> +
-> +const struct regmap_range adxl313_writable_reg_range[] = {
-> +	regmap_reg_range(ADXL313_REG_SOFT_RESET, ADXL313_REG_SOFT_RESET),
-> +	regmap_reg_range(ADXL313_REG_OFS_AXIS(0), ADXL313_REG_OFS_AXIS(2)),
-> +	regmap_reg_range(ADXL313_REG_THRESH_ACT, ADXL313_REG_ACT_INACT_CTL),
-> +	regmap_reg_range(ADXL313_REG_BW_RATE, ADXL313_REG_INT_MAP),
-> +	regmap_reg_range(ADXL313_REG_DATA_FORMAT, ADXL313_REG_DATA_FORMAT),
-> +	regmap_reg_range(ADXL313_REG_FIFO_CTL, ADXL313_REG_FIFO_CTL)
-> +};
-> +
-> +const struct regmap_access_table adxl313_writable_regs_table = {
-> +	.yes_ranges = adxl313_writable_reg_range,
-> +	.n_yes_ranges = ARRAY_SIZE(adxl313_writable_reg_range)
-> +};
-> +EXPORT_SYMBOL_GPL(adxl313_writable_regs_table);
-> +
-> +struct adxl313_data {
-> +	struct regmap	*regmap;
-> +	struct mutex	lock; /* lock to protect transf_buf */
-> +	__le16		transf_buf ____cacheline_aligned;
-> +};
-> +
-> +static const int adxl313_odr_freqs[][2] = {
-> +	[0] = { 6, 250000 },
-> +	[1] = { 12, 500000 },
-> +	[2] = { 25, 0 },
-> +	[3] = { 50, 0 },
-> +	[4] = { 100, 0 },
-> +	[5] = { 200, 0 },
-> +	[6] = { 400, 0 },
-> +	[7] = { 800, 0 },
-> +	[8] = { 1600, 0 },
-> +	[9] = { 3200, 0 },
-> +};
-> +
-> +#define ADXL313_ACCEL_CHANNEL(index, addr, axis) {			\
-> +	.type = IIO_ACCEL,						\
-> +	.address = addr,						\
-> +	.modified = 1,							\
-> +	.channel2 = IIO_MOD_##axis,					\
-> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |			\
-> +			      BIT(IIO_CHAN_INFO_CALIBBIAS),		\
-> +	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |		\
-> +				    BIT(IIO_CHAN_INFO_SAMP_FREQ),	\
-> +	.info_mask_shared_by_type_available =				\
-> +		BIT(IIO_CHAN_INFO_SAMP_FREQ),				\
-> +	.scan_index = index,						\
-> +	.scan_type = {							\
-> +		.sign = 's',						\
-> +		.realbits = 13,						\
-> +		.storagebits = 16,					\
-> +		.endianness = IIO_LE,					\
-> +	},								\
-> +}
-> +
-> +static const struct iio_chan_spec adxl313_channels[] = {
-> +	ADXL313_ACCEL_CHANNEL(0, ADXL313_REG_DATAX, X),
-> +	ADXL313_ACCEL_CHANNEL(1, ADXL313_REG_DATAY, Y),
-> +	ADXL313_ACCEL_CHANNEL(2, ADXL313_REG_DATAZ, Z),
-> +};
-> +
-> +static int adxl313_set_odr(struct adxl313_data *data,
-> +			   unsigned int freq1, unsigned int freq2)
-> +{
-> +	unsigned int i;
-> +
-> +	for (i = 0; i < ARRAY_SIZE(adxl313_odr_freqs); i++) {
-> +		if (adxl313_odr_freqs[i][0] == freq1 &&
-> +		    adxl313_odr_freqs[i][1] == freq2)
-> +			break;
-> +	}
-> +
-> +	if (i == ARRAY_SIZE(adxl313_odr_freqs))
-> +		return -EINVAL;
-> +
-> +	return regmap_update_bits(data->regmap, ADXL313_REG_BW_RATE,
-> +				  ADXL313_RATE_MSK,
-> +				  FIELD_PREP(ADXL313_RATE_MSK,
-> +					     ADXL313_RATE_BASE + i));
-> +}
-> +
-> +static int adxl313_read_axis(struct adxl313_data *data,
-> +			     struct iio_chan_spec const *chan)
-> +{
-> +	int ret;
-> +
-> +	mutex_lock(&data->lock);
-> +
-> +	ret = regmap_bulk_read(data->regmap,
-> +			       chan->address,
-> +			       &data->transf_buf, 2);
-> +	if (ret)
-> +		goto unlock_ret;
-> +
-> +	ret = le16_to_cpu(data->transf_buf);
-> +
-> +unlock_ret:
-> +	mutex_unlock(&data->lock);
-> +	return ret;
-> +}
-> +
-> +static int adxl313_read_freq_avail(struct iio_dev *indio_dev,
-> +				   struct iio_chan_spec const *chan,
-> +				   const int **vals, int *type, int *length,
-> +				   long mask)
-> +{
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		*vals = (const int *)adxl313_odr_freqs;
-> +		*length = ARRAY_SIZE(adxl313_odr_freqs) * 2;
-> +		*type = IIO_VAL_INT_PLUS_MICRO;
-> +		return IIO_AVAIL_LIST;
-> +	}
-> +
-> +	return -EINVAL;
-> +}
-> +
-> +static int adxl313_read_raw(struct iio_dev *indio_dev,
-> +			    struct iio_chan_spec const *chan,
-> +			    int *val, int *val2, long mask)
-> +{
-> +	struct adxl313_data *data = iio_priv(indio_dev);
-> +	unsigned int regval;
-> +	int ret;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		ret = adxl313_read_axis(data, chan);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		*val = sign_extend32(ret, chan->scan_type.realbits - 1);
-> +		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_SCALE:
-> +		*val = 0;
-> +		*val2 = ADXL313_NSCALE;
-> +		return IIO_VAL_INT_PLUS_NANO;
-> +	case IIO_CHAN_INFO_CALIBBIAS:
-> +		ret = regmap_read(data->regmap,
-> +				  ADXL313_REG_OFS_AXIS(chan->scan_index),
-> +				  &regval);
-> +		if (ret)
-> +			return ret;
-> +
-> +		/*
-> +		 * 8-bit resolution at +/- 0.5g, that is 4x accel data scale
-> +		 * factor at full resolution
-> +		 */
-> +		*val = sign_extend32(regval, 7) * 4;
-> +		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		ret = regmap_read(data->regmap, ADXL313_REG_BW_RATE, &regval);
-> +		if (ret)
-> +			return ret;
-> +
-> +		ret = FIELD_GET(ADXL313_RATE_MSK, regval) - ADXL313_RATE_BASE;
-> +		*val = adxl313_odr_freqs[ret][0];
-> +		*val2 = adxl313_odr_freqs[ret][1];
-> +		return IIO_VAL_INT_PLUS_MICRO;
-> +	}
-> +
-> +	return -EINVAL;
-> +}
-> +
-> +static int adxl313_write_raw(struct iio_dev *indio_dev,
-> +			     struct iio_chan_spec const *chan,
-> +			     int val, int val2, long mask)
-> +{
-> +	struct adxl313_data *data = iio_priv(indio_dev);
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_CALIBBIAS:
-> +		/*
-> +		 * 8-bit resolution at +/- 0.5g, that is 4x accel data scale
-> +		 * factor at full resolution
-> +		 */
-> +		if (val > 127 * 4 || val < -128 * 4)
-> +			return -EINVAL;
-> +
-> +		return regmap_write(data->regmap,
-> +				    ADXL313_REG_OFS_AXIS(chan->scan_index),
-> +				    val / 4);
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		return adxl313_set_odr(data, val, val2);
-> +	}
-> +
-> +	return -EINVAL;
+Changes since v5:
+- add include/linux/iio/afe/rescale.h
+- expose functions use to process scale and offset
+- add basic iio-rescale kunit test cases
+- fix integer overflow case
+- improve precision for IIO_VAL_FRACTIONAL_LOG2
 
-Put this as a default in the case otherwise you might get warnings saying you
-don't handle all the possible values.
+Changes since v4:
+- only use gcd() when necessary in overflow mitigation
+- fix INT_PLUS_{MICRO,NANO} support
+- apply Reviewed-by
+- fix temperature-transducer bindings
 
-> +}
-> +
-> +static const struct iio_info adxl313_info = {
-> +	.read_raw	= adxl313_read_raw,
-> +	.write_raw	= adxl313_write_raw,
-> +	.read_avail	= adxl313_read_freq_avail
-> +};
-> +
-> +static int adxl313_setup(struct device *dev, struct adxl313_data *data)
-> +{
-> +	unsigned int regval;
-> +	int ret;
-> +
-> +	/* Ensures the device is in a consistent state after start up */
-> +	ret = regmap_write(data->regmap, ADXL313_REG_SOFT_RESET,
-> +			   ADXL313_SOFT_RESET);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (device_property_read_bool(dev, "spi-3wire")) {
+Changes since v3:
+- drop unnecessary fallthrough statements
+- drop redundant local variables in some calculations
+- fix s64 divisions on 32bit platforms by using do_div
+- add comment describing iio-rescaler offset calculation
+- drop unnecessary MAINTAINERS entry
 
-Rather odd to see spi specific stuff in here.  Perhaps provide a callback to
-common probe if it needs to be done at this point in bringing the device up.
-However, I think you can just do this before calling the common_probe()
+Changes since v2:
+- don't break implicit offset truncations
+- make a best effort to get a valid value for fractional types
+- drop return value change in iio_convert_raw_to_processed_unlocked()
+- don't rely on processed value for offset calculation
+- add INT_PLUS_{MICRO,NANO} support in iio-rescale
+- revert generic implementation in favor of temperature-sense-rtd and
+  temperature-transducer
+- add separate section to MAINTAINERS file
 
-> +		ret = regmap_write(data->regmap, ADXL313_REG_DATA_FORMAT,
-> +				   ADXL313_SPI_3WIRE);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	ret = regmap_read(data->regmap, ADXL313_REG_DEVID0, &regval);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (regval != ADXL313_DEVID0) {
-> +		dev_err(dev, "Invalid manufacturer ID: 0x%02x\n", regval);
-> +		return -ENODEV;
-> +	}
-> +
-> +	ret = regmap_read(data->regmap, ADXL313_REG_DEVID1, &regval);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (regval != ADXL313_DEVID1) {
-> +		dev_err(dev, "Invalid mems ID: 0x%02x\n", regval);
-> +		return -ENODEV;
-> +	}
-> +
-> +	ret = regmap_read(data->regmap, ADXL313_REG_PARTID, &regval);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (regval != ADXL313_PARTID) {
-> +		dev_err(dev, "Invalid device ID: 0x%02x\n", regval);
-> +		return -ENODEV;
-> +	}
-> +
-> +	/* Sets the range to +/- 4g */
-> +	ret = regmap_update_bits(data->regmap, ADXL313_REG_DATA_FORMAT,
-> +				 ADXL313_RANGE_MSK,
-> +				 FIELD_PREP(ADXL313_RANGE_MSK,
-> +					    ADXL313_RANGE_4G));
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Enables full resolution */
-> +	ret = regmap_update_bits(data->regmap, ADXL313_REG_DATA_FORMAT,
-> +				 ADXL313_FULL_RES, ADXL313_FULL_RES);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Enables measurement mode */
-> +	return regmap_update_bits(data->regmap, ADXL313_REG_POWER_CTL,
-> +				  ADXL313_POWER_CTL_MSK,
-> +				  ADXL313_MEASUREMENT_MODE);
-> +}
-> +
-> +int adxl313_core_probe(struct device *dev, struct regmap *regmap,
-> +		       const char *name)
-> +{
-> +	struct adxl313_data *data;
-> +	struct iio_dev *indio_dev;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	data = iio_priv(indio_dev);
-> +	data->regmap = regmap;
-> +	mutex_init(&data->lock);
-> +
-> +	indio_dev->name = name;
-> +	indio_dev->info = &adxl313_info;
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->channels = adxl313_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(adxl313_channels);
-> +
-> +	ret = adxl313_setup(dev, data);
-> +	if (ret) {
-> +		dev_err(dev, "ADXL313 setup failed\n");
-> +		return ret;
-> +	}
-> +
-> +	return devm_iio_device_register(dev, indio_dev);
-> +}
-> +EXPORT_SYMBOL_GPL(adxl313_core_probe);
-> +
-> +MODULE_AUTHOR("Lucas Stankus <lucas.p.stankus@gmail.com>");
-> +MODULE_DESCRIPTION("ADXL313 3-Axis Digital Accelerometer core driver");
-> +MODULE_LICENSE("GPL v2");
-> diff --git a/drivers/iio/accel/adxl313_i2c.c b/drivers/iio/accel/adxl313_i2c.c
-> new file mode 100644
-> index 000000000000..65050a2fbd38
-> --- /dev/null
-> +++ b/drivers/iio/accel/adxl313_i2c.c
-> @@ -0,0 +1,65 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * ADXL313 3-Axis Digital Accelerometer
-> + *
-> + * Copyright (c) 2021 Lucas Stankus <lucas.p.stankus@gmail.com>
-> + *
-> + * Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ADXL313.pdf
-> + */
-> +
-> +#include <linux/i2c.h>
-> +#include <linux/module.h>
-> +#include <linux/regmap.h>
-> +
-> +#include "adxl313.h"
-> +
-> +static const struct regmap_config adxl313_i2c_regmap_config = {
-> +	.reg_bits	= 8,
-> +	.val_bits	= 8,
-> +	.rd_table	= &adxl313_readable_regs_table,
-> +	.wr_table	= &adxl313_writable_regs_table,
-> +	.max_register	= 0x39
-> +};
-> +
-> +static int adxl313_i2c_probe(struct i2c_client *client)
-> +{
-> +	struct regmap *regmap;
-> +
-> +	regmap = devm_regmap_init_i2c(client, &adxl313_i2c_regmap_config);
-> +	if (IS_ERR(regmap)) {
-> +		dev_err(&client->dev, "Error initializing i2c regmap: %ld\n",
-> +			PTR_ERR(regmap));
-> +		return PTR_ERR(regmap);
-> +	}
-> +
-> +	return adxl313_core_probe(&client->dev, regmap, client->name);
-> +}
-> +
-> +static const struct i2c_device_id adxl313_i2c_id[] = {
-> +	{ "adxl313", 0 },
+Changes since v1:
+- rebase on latest iio `testing` branch
+- also apply consumer scale on integer channel scale types
+- don't break implicit truncation in processed channel offset
+  calculation
+- drop temperature AFE flavors in favor of a simpler generic
+  implementation
 
-No real need to set the data value if it's just going to be 0.
-	{ "adl313 },
-is fine.
+Thanks for your time
 
-> +	{ }
-> +};
-> +
-> +MODULE_DEVICE_TABLE(i2c, adxl313_i2c_id);
-> +
-> +static const struct of_device_id adxl313_of_match[] = {
-> +	{ .compatible = "adi,adxl313" },
-> +	{ },
-> +};
-> +
-> +MODULE_DEVICE_TABLE(of, adxl313_of_match);
-> +
-> +static struct i2c_driver adxl313_i2c_driver = {
-> +	.driver = {
-> +		.name	= "adxl313_i2c",
-> +		.of_match_table = adxl313_of_match,
-> +	},
-> +	.probe_new	= adxl313_i2c_probe,
-> +	.id_table	= adxl313_i2c_id,
-> +};
-> +
-> +module_i2c_driver(adxl313_i2c_driver);
-> +
-> +MODULE_AUTHOR("Lucas Stankus <lucas.p.stankus@gmail.com>");
-> +MODULE_DESCRIPTION("ADXL313 3-Axis Digital Accelerometer I2C driver");
-> +MODULE_LICENSE("GPL v2");
-> diff --git a/drivers/iio/accel/adxl313_spi.c b/drivers/iio/accel/adxl313_spi.c
-> new file mode 100644
-> index 000000000000..7c58c9ff8985
-> --- /dev/null
-> +++ b/drivers/iio/accel/adxl313_spi.c
-> @@ -0,0 +1,74 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * ADXL313 3-Axis Digital Accelerometer
-> + *
-> + * Copyright (c) 2021 Lucas Stankus <lucas.p.stankus@gmail.com>
-> + *
-> + * Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ADXL313.pdf
-> + */
-> +
-> +#include <linux/module.h>
-> +#include <linux/regmap.h>
-> +#include <linux/spi/spi.h>
-> +
-> +#include "adxl313.h"
-> +
-> +static const struct regmap_config adxl313_spi_regmap_config = {
-> +	.reg_bits	= 8,
-> +	.val_bits	= 8,
-> +	.rd_table	= &adxl313_readable_regs_table,
-> +	.wr_table	= &adxl313_writable_regs_table,
-> +	.max_register	= 0x39,
-> +	 /* Setting bits 7 and 6 enables multiple-byte read */
-> +	.read_flag_mask	= BIT(7) | BIT(6)
-> +};
-> +
-> +static int adxl313_spi_probe(struct spi_device *spi)
-> +{
-> +	const struct spi_device_id *id = spi_get_device_id(spi);
-> +	struct regmap *regmap;
-> +	int ret;
-> +
-> +	regmap = devm_regmap_init_spi(spi, &adxl313_spi_regmap_config);
-> +	if (IS_ERR(regmap)) {
-> +		dev_err(&spi->dev, "Error initializing spi regmap: %ld\n",
-> +			PTR_ERR(regmap));
-> +		return PTR_ERR(regmap);
-> +	}
-> +
-> +	ret = adxl313_core_probe(&spi->dev, regmap, id->name);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return regmap_update_bits(regmap, ADXL313_REG_POWER_CTL,
-> +				  ADXL313_I2C_DISABLE, ADXL313_I2C_DISABLE);
+Liam Beguin (13):
+  iio: inkern: apply consumer scale on IIO_VAL_INT cases
+  iio: inkern: apply consumer scale when no channel scale is available
+  iio: inkern: make a best effort on offset calculation
+  iio: afe: rescale: expose scale processing function
+  iio: afe: rescale: add INT_PLUS_{MICRO,NANO} support
+  iio: afe: rescale: add offset support
+  iio: afe: rescale: reduce risk of integer overflow
+  iio: afe: rescale: fix precision on fractional log scale
+  iio: test: add basic tests for the iio-rescale driver
+  iio: afe: rescale: add RTD temperature sensor support
+  iio: afe: rescale: add temperature transducers
+  dt-bindings: iio: afe: add bindings for temperature-sense-rtd
+  dt-bindings: iio: afe: add bindings for temperature transducers
 
-Why is this only done after the rest of probe?  Needs a comment perhaps.
-Normally I'd expect the core probe and hence exposure of the device
-to userspace etc to be the last thing done.
+ .../iio/afe/temperature-sense-rtd.yaml        | 101 ++++
+ .../iio/afe/temperature-transducer.yaml       | 114 +++++
+ drivers/iio/afe/iio-rescale.c                 | 271 ++++++++--
+ drivers/iio/inkern.c                          |  40 +-
+ drivers/iio/test/Kconfig                      |  10 +
+ drivers/iio/test/Makefile                     |   1 +
+ drivers/iio/test/iio-test-rescale.c           | 483 ++++++++++++++++++
+ include/linux/iio/afe/rescale.h               |  34 ++
+ 8 files changed, 1010 insertions(+), 44 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/afe/temperature-sense-rtd.yaml
+ create mode 100644 Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml
+ create mode 100644 drivers/iio/test/iio-test-rescale.c
+ create mode 100644 include/linux/iio/afe/rescale.h
 
-> +}
-> +
-> +static const struct spi_device_id adxl313_spi_id[] = {
-> +	{ "adxl313", 0 },
-> +	{ }
-> +};
-> +
-> +MODULE_DEVICE_TABLE(spi, adxl313_spi_id);
-> +
-> +static const struct of_device_id adxl313_of_match[] = {
-> +	{ .compatible = "adi,adxl313" },
-> +	{ },
-> +};
-> +
-> +MODULE_DEVICE_TABLE(of, adxl313_of_match);
-> +
-> +static struct spi_driver adxl313_spi_driver = {
-> +	.driver = {
-> +		.name	= "adxl313_spi",
-> +		.of_match_table = adxl313_of_match,
-> +	},
-> +	.probe		= adxl313_spi_probe,
-> +	.id_table	= adxl313_spi_id,
-> +};
-> +
-> +module_spi_driver(adxl313_spi_driver);
-> +
-> +MODULE_AUTHOR("Lucas Stankus <lucas.p.stankus@gmail.com>");
-> +MODULE_DESCRIPTION("ADXL313 3-Axis Digital Accelerometer SPI driver");
-> +MODULE_LICENSE("GPL v2");
+Range-diff against v6:
+ 1:  16627ca44022 <  -:  ------------ iio: afe: rescale: add INT_PLUS_{MICRO,NANO} support
+ -:  ------------ >  1:  42a7a1047edc iio: inkern: apply consumer scale on IIO_VAL_INT cases
+ -:  ------------ >  2:  a1cd89fdad11 iio: inkern: apply consumer scale when no channel scale is available
+ -:  ------------ >  3:  ed0721fb6bd1 iio: inkern: make a best effort on offset calculation
+ -:  ------------ >  4:  f8fb78bb1112 iio: afe: rescale: expose scale processing function
+ -:  ------------ >  5:  014363f5f703 iio: afe: rescale: add INT_PLUS_{MICRO,NANO} support
+ 2:  dec2a933fbf3 =  6:  e4e3bcd752dd iio: afe: rescale: add offset support
+ 4:  f2f4af324d5d !  7:  23efde61c576 iio: afe: rescale: reduce risk of integer overflow
+    @@ drivers/iio/afe/iio-rescale.c
+     -	unsigned long long tmp;
+     +	s64 tmp, tmp2;
+     +	u32 factor;
+    + 	u32 mult;
+    + 	u32 rem;
+    + 	u32 neg;
+      
+      	switch (scale_type) {
+      	case IIO_VAL_FRACTIONAL:
+    @@ drivers/iio/afe/iio-rescale.c
+     +		    check_mul_overflow(*val2, rescale->denominator, (s32 *)&tmp2)) {
+     +			tmp = (s64)*val * rescale->numerator;
+     +			tmp2 = (s64)*val2 * rescale->denominator;
+    -+			factor = gcd(tmp, tmp2);
+    ++			factor = gcd(abs(tmp), abs(tmp2));
+     +			tmp = div_s64(tmp, factor);
+     +			tmp2 = div_s64(tmp2, factor);
+     +		}
+ 5:  4a8d77501f32 !  8:  e16f69d61f09 iio: afe: rescale: fix precision on fractional log scale
+    @@ drivers/iio/afe/iio-rescale.c: int rescale_process_scale(struct rescale *rescale
+     -		do_div(tmp, rescale->denominator);
+     -		tmp *= rescale->numerator;
+     -		do_div(tmp, 1000000000LL);
+    --		*val = tmp;
+    ++		if (check_mul_overflow(*val, rescale->numerator, (s32 *)&tmp) ||
+    ++		    check_mul_overflow(rescale->denominator, (1 << *val2), (s32 *)&tmp2)) {
+    ++			tmp = (s64)*val * rescale->numerator;
+    ++			tmp2 = (s64)rescale->denominator * (1 << *val2);
+    ++			factor = gcd(abs(tmp), abs(tmp2));
+    ++			tmp = div_s64(tmp, factor);
+    ++			tmp2 = div_s64(tmp2, factor);
+    ++		}
+    + 		*val = tmp;
+     -		return scale_type;
+    -+		*val = rescale->numerator * *val;
+    -+		*val2 = rescale->denominator * (1 << *val2);
+    ++		*val2 = tmp2;
+     +		return IIO_VAL_FRACTIONAL;
+      	case IIO_VAL_INT_PLUS_NANO:
+    - 		tmp = ((s64)*val * 1000000000LL + *val2) * rescale->numerator;
+    - 		tmp = div_s64(tmp, rescale->denominator);
+    + 	case IIO_VAL_INT_PLUS_MICRO:
+    + 		if (scale_type == IIO_VAL_INT_PLUS_NANO)
+ 3:  60bd09555300 !  9:  88ad312c5a1b iio: test: add basic tests for the iio-rescale driver
+    @@ drivers/iio/test/Kconfig
+      # Keep in alphabetical order
+     +config IIO_RESCALE_KUNIT_TEST
+     +	bool "Test IIO rescale conversion functions"
+    -+	depends on KUNIT=y
+    ++	depends on KUNIT && !IIO_RESCALE
+     +	default KUNIT_ALL_TESTS
+     +	help
+     +	  If you want to run tests on the iio-rescale code say Y here.
+    @@ drivers/iio/test/iio-test-rescale.c (new)
+     +		.denominator = 8060,
+     +		.schan_scale_type = IIO_VAL_INT_PLUS_NANO,
+     +		.schan_val = 10,
+    ++		.schan_val2 = 123456,
+    ++		.expected = "1240.710106203\n",
+    ++	},
+    ++	{
+    ++		.name = "typical IIO_VAL_INT_PLUS_NANO, negative",
+    ++		.numerator = -1000000,
+    ++		.denominator = 8060,
+    ++		.schan_scale_type = IIO_VAL_INT_PLUS_NANO,
+    ++		.schan_val = 10,
+    ++		.schan_val2 = 123456,
+    ++		.expected = "-1240.710106203\n",
+    ++	},
+    ++	{
+    ++		.name = "typical IIO_VAL_INT_PLUS_MICRO, positive",
+    ++		.numerator = 1000000,
+    ++		.denominator = 8060,
+    ++		.schan_scale_type = IIO_VAL_INT_PLUS_MICRO,
+    ++		.schan_val = 10,
+    ++		.schan_val2 = 1234,
+    ++		.expected = "1240.847890\n",
+    ++	},
+    ++	{
+    ++		.name = "typical IIO_VAL_INT_PLUS_MICRO, negative",
+    ++		.numerator = -1000000,
+    ++		.denominator = 8060,
+    ++		.schan_scale_type = IIO_VAL_INT_PLUS_MICRO,
+    ++		.schan_val = 10,
+    ++		.schan_val2 = 1234,
+    ++		.expected = "-1240.847890\n",
+    ++	},
+    ++	/*
+    ++	 * INT_PLUS_{MICRO,NANO} positive/negative corner cases
+    ++	 */
+    ++	{
+    ++		.name = "typical IIO_VAL_INT_PLUS_NANO, negative schan",
+    ++		.numerator = 1000000,
+    ++		.denominator = 8060,
+    ++		.schan_scale_type = IIO_VAL_INT_PLUS_NANO,
+    ++		.schan_val = -10,
+    ++		.schan_val2 = 123456,
+    ++		.expected = "-1240.710106203\n",
+    ++	},
+    ++	{
+    ++		.name = "typical IIO_VAL_INT_PLUS_NANO, both negative",
+    ++		.numerator = -1000000,
+    ++		.denominator = 8060,
+    ++		.schan_scale_type = IIO_VAL_INT_PLUS_NANO,
+    ++		.schan_val = -10,
+    ++		.schan_val2 = 123456,
+    ++		.expected = "1240.710106203\n",
+    ++	},
+    ++	{
+    ++		.name = "typical IIO_VAL_INT_PLUS_NANO, 3 negative",
+    ++		.numerator = -1000000,
+    ++		.denominator = -8060,
+    ++		.schan_scale_type = IIO_VAL_INT_PLUS_NANO,
+    ++		.schan_val = -10,
+    ++		.schan_val2 = 123456,
+    ++		.expected = "-1240.710106203\n",
+    ++	},
+    ++	{
+    ++		.name = "typical IIO_VAL_INT_PLUS_NANO, 4 negative",
+    ++		.numerator = -1000000,
+    ++		.denominator = -8060,
+    ++		.schan_scale_type = IIO_VAL_INT_PLUS_NANO,
+    ++		.schan_val = -10,
+    ++		.schan_val2 = -123456,
+    ++		.expected = "-1240.710106203\n",
+    ++	},
+    ++	{
+    ++		.name = "typical IIO_VAL_INT_PLUS_NANO, negative, *val = 0",
+    ++		.numerator = 1,
+    ++		.denominator = -10,
+    ++		.schan_scale_type = IIO_VAL_INT_PLUS_NANO,
+    ++		.schan_val = 0,
+    ++		.schan_val2 = 123456789,
+    ++		.expected = "-0.012345678\n",
+    ++	},
+    ++	/*
+    ++	 * INT_PLUS_{MICRO,NANO} decimal part overflow
+    ++	 */
+    ++	{
+    ++		.name = "decimal overflow IIO_VAL_INT_PLUS_NANO, positive",
+    ++		.numerator = 1000000,
+    ++		.denominator = 8060,
+    ++		.schan_scale_type = IIO_VAL_INT_PLUS_NANO,
+    ++		.schan_val = 10,
+     +		.schan_val2 = 123456789,
+     +		.expected = "1256.012008560\n",
+     +	},
+     +	{
+    -+		.name = "typical IIO_VAL_INT_PLUS_NANO, negative",
+    ++		.name = "decimal overflow IIO_VAL_INT_PLUS_NANO, negative",
+     +		.numerator = -1000000,
+     +		.denominator = 8060,
+     +		.schan_scale_type = IIO_VAL_INT_PLUS_NANO,
+    @@ drivers/iio/test/iio-test-rescale.c (new)
+     +		.expected = "-1256.012008560\n",
+     +	},
+     +	{
+    -+		.name = "typical IIO_VAL_INT_PLUS_MICRO, positive",
+    ++		.name = "decimal overflow IIO_VAL_INT_PLUS_NANO, negative schan",
+    ++		.numerator = 1000000,
+    ++		.denominator = 8060,
+    ++		.schan_scale_type = IIO_VAL_INT_PLUS_NANO,
+    ++		.schan_val = -10,
+    ++		.schan_val2 = 123456789,
+    ++		.expected = "-1256.012008560\n",
+    ++	},
+    ++	{
+    ++		.name = "decimal overflow IIO_VAL_INT_PLUS_MICRO, positive",
+     +		.numerator = 1000000,
+     +		.denominator = 8060,
+     +		.schan_scale_type = IIO_VAL_INT_PLUS_MICRO,
+    @@ drivers/iio/test/iio-test-rescale.c (new)
+     +		.expected = "16557.914267\n",
+     +	},
+     +	{
+    -+		.name = "typical IIO_VAL_INT_PLUS_MICRO, negative",
+    ++		.name = "decimal overflow IIO_VAL_INT_PLUS_MICRO, negative",
+     +		.numerator = -1000000,
+     +		.denominator = 8060,
+     +		.schan_scale_type = IIO_VAL_INT_PLUS_MICRO,
+    @@ drivers/iio/test/iio-test-rescale.c (new)
+     +		.schan_val2 = 123456789,
+     +		.expected = "-16557.914267\n",
+     +	},
+    ++	{
+    ++		.name = "decimal overflow IIO_VAL_INT_PLUS_MICRO, negative schan",
+    ++		.numerator = 1000000,
+    ++		.denominator = 8060,
+    ++		.schan_scale_type = IIO_VAL_INT_PLUS_MICRO,
+    ++		.schan_val = -10,
+    ++		.schan_val2 = 123456789,
+    ++		.expected = "-16557.914267\n",
+    ++	},
+     +	/*
+     +	 * 32-bit overflow conditions
+     +	 */
+    @@ drivers/iio/test/iio-test-rescale.c (new)
+     +		.expected = "-214748364.700000000\n",
+     +	},
+     +	{
+    ++		.name = "overflow IIO_VAL_FRACTIONAL_LOG2, positive",
+    ++		.numerator = 0x7FFFFFFF,
+    ++		.denominator = 53,
+    ++		.schan_scale_type = IIO_VAL_FRACTIONAL_LOG2,
+    ++		.schan_val = 4096,
+    ++		.schan_val2 = 16,
+    ++		.expected = "2532409.961084905\n",
+    ++	},
+    ++	{
+    ++		.name = "overflow IIO_VAL_FRACTIONAL_LOG2, negative",
+    ++		.numerator = 0x7FFFFFFF,
+    ++		.denominator = 53,
+    ++		.schan_scale_type = IIO_VAL_FRACTIONAL_LOG2,
+    ++		.schan_val = -4096,
+    ++		.schan_val2 = 16,
+    ++		.expected = "-2532409.961084905\n",
+    ++	},
+    ++	{
+     +		.name = "overflow IIO_VAL_INT_PLUS_NANO, positive",
+     +		.numerator = 2,
+     +		.denominator = 20,
+    @@ drivers/iio/test/iio-test-rescale.c (new)
+     +		.expected = "-1.214748364\n",
+     +	},
+     +	{
+    ++		.name = "overflow IIO_VAL_INT_PLUS_NANO, negative schan",
+    ++		.numerator = 2,
+    ++		.denominator = 20,
+    ++		.schan_scale_type = IIO_VAL_INT_PLUS_NANO,
+    ++		.schan_val = -10,
+    ++		.schan_val2 = 0x7fffffff,
+    ++		.expected = "-1.214748364\n",
+    ++	},
+    ++	{
+     +		.name = "overflow IIO_VAL_INT_PLUS_MICRO, positive",
+     +		.numerator = 2,
+     +		.denominator = 20,
+    @@ drivers/iio/test/iio-test-rescale.c (new)
+     +		.schan_val2 = 0x7fffffff,
+     +		.expected = "-215.748364\n",
+     +	},
+    ++	{
+    ++		.name = "overflow IIO_VAL_INT_PLUS_MICRO, negative schan",
+    ++		.numerator = 2,
+    ++		.denominator = 20,
+    ++		.schan_scale_type = IIO_VAL_INT_PLUS_MICRO,
+    ++		.schan_val = -10,
+    ++		.schan_val2 = 0x7fffffff,
+    ++		.expected = "-215.748364\n",
+    ++	},
+     +};
+     +
+     +const struct rescale_tc_data offset_cases[] = {
+ 6:  2b6e4f47c974 = 10:  2c4a31e62c31 iio: afe: rescale: add RTD temperature sensor support
+ 7:  715e1877e30f = 11:  d1258a38d194 iio: afe: rescale: add temperature transducers
+ 8:  0bc8546f13e5 = 12:  01fa34bf5362 dt-bindings: iio: afe: add bindings for temperature-sense-rtd
+ 9:  4bc54afa3e94 ! 13:  107e61e09eec dt-bindings: iio: afe: add bindings for temperature transducers
+    @@ Commit message
+         through a temperature transducer (either voltage or current).
+     
+         Signed-off-by: Liam Beguin <lvb@xiphos.com>
+    +    Reviewed-by: Rob Herring <robh@kernel.org>
+     
+      ## Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml (new) ##
+     @@
+
+base-commit: 6cbb3aa0f9d5d23221df787cf36f74d3866fdb78
+-- 
+2.30.1.489.g328c10930387
 

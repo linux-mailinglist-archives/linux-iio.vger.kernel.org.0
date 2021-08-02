@@ -2,88 +2,128 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 195A43DCEA6
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Aug 2021 04:20:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 865283DCEB3
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Aug 2021 04:33:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231496AbhHBCUU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 1 Aug 2021 22:20:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43582 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230341AbhHBCUT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 Aug 2021 22:20:19 -0400
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31CCFC06175F
-        for <linux-iio@vger.kernel.org>; Sun,  1 Aug 2021 19:20:10 -0700 (PDT)
-Received: by mail-pl1-x631.google.com with SMTP id d1so18002953pll.1
-        for <linux-iio@vger.kernel.org>; Sun, 01 Aug 2021 19:20:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=to:from:subject:message-id:date:user-agent:mime-version
-         :content-transfer-encoding:content-language;
-        bh=GGk5TcfuiU7nc0cap9PAnor89zMyG+e4Gt9qGIGwNyU=;
-        b=ASB89XCDQGYt/MaShUWBL7nqYU16/8IcpqQo+R6XUbysTQ2822h9QsWauuHfHhtD3p
-         ve/F9kbhWDNowdZRBf/T3Jn/ORCTmRmGKxRbjP0tL49ysEeqltHc5Ng0lhYOCWHYFIZq
-         NogpOmPGhhATvGI62/obgz+HtDkOosr4KhsDQEtNqoPorAjsE4fVlrejFR/5q2FGb8SF
-         PEE2UFdgpRKgccv1iMCjHXwVVE0vH2KfakWQo4/P0xTJB+f25hFKXFpUMZYUTqtyicat
-         yj/djGVJPSoNWe81BCvbA6m18MlWcyV/siE5r299Ss5Ze78cxr0CrQw8Up12sIXCnT4Z
-         Oxfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:from:subject:message-id:date:user-agent
-         :mime-version:content-transfer-encoding:content-language;
-        bh=GGk5TcfuiU7nc0cap9PAnor89zMyG+e4Gt9qGIGwNyU=;
-        b=tbtKYRSYnphG3o2bbjPRWoTge6K7GVuARIOCAYJKTbFWmRMSyZd49o2VE1e0efYHWf
-         r2ExxKhy4u3k4FXhn/k6Li5QasXBvEy+lQTjbL3eLkJNkUanPrY6Zv5aaWgkPXnL1Xjp
-         KlU0DWif8zS664CHuO2TTfSBxOLH9gTfFX2H9zDYbNrFTKEVhQi+lXM+/cX9e4wFDsXS
-         yBfYtHmwpcyvMJOmyktknPxmKY61WekESW/MxiwTY7X+lk+IKdQo5UMgfNWyFm6aZmam
-         /iMbQq5VpfF99IIJBjw9h+brZO+FZ1B81NkMGxNKl0kgL9Li1+vZ7U7HTErQeQfiipTU
-         T47Q==
-X-Gm-Message-State: AOAM531AU8vZ5Ldv2IjepIOrFr9ZdmkHq5H4TgDrYQ96Ac7m1Ypueu5P
-        Zk2dCXH8nMvHwx6VIJ7unJbRNQLdX45Q4A==
-X-Google-Smtp-Source: ABdhPJy/jCNXOBP/6H1l9n6zyhd5VW3XUDcFi7MVzFCT0KfcGe8qMttuHkWMhTqTDuzQ8yDhlK9J2g==
-X-Received: by 2002:a05:6a00:1913:b029:32b:cec0:77e5 with SMTP id y19-20020a056a001913b029032bcec077e5mr14528044pfi.76.1627870809236;
-        Sun, 01 Aug 2021 19:20:09 -0700 (PDT)
-Received: from ?IPv6:2604:3d09:d79:6900::439b? ([2604:3d09:d79:6900::439b])
-        by smtp.gmail.com with ESMTPSA id x19sm5749864pgk.37.2021.08.01.19.20.08
-        for <linux-iio@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 01 Aug 2021 19:20:08 -0700 (PDT)
-To:     linux-iio@vger.kernel.org
-From:   Morgan Hager <morgan.hager1@gmail.com>
-Subject: ACPI Ambient Light Sensor Events
-Message-ID: <44033d8f-c387-49d5-30c9-79a45c3b1408@gmail.com>
-Date:   Sun, 1 Aug 2021 20:20:07 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+        id S229915AbhHBCde (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 Aug 2021 22:33:34 -0400
+Received: from cmccmta3.chinamobile.com ([221.176.66.81]:19885 "EHLO
+        cmccmta3.chinamobile.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229908AbhHBCde (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 Aug 2021 22:33:34 -0400
+Received: from spf.mail.chinamobile.com (unknown[172.16.121.15]) by rmmx-syy-dmz-app09-12009 (RichMail) with SMTP id 2ee961075917e6b-e0b59; Mon, 02 Aug 2021 10:31:52 +0800 (CST)
+X-RM-TRANSID: 2ee961075917e6b-e0b59
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG: 00000000
+Received: from [192.168.26.114] (unknown[10.42.68.12])
+        by rmsmtp-syy-appsvr08-12008 (RichMail) with SMTP id 2ee861075917908-5b6c1;
+        Mon, 02 Aug 2021 10:31:52 +0800 (CST)
+X-RM-TRANSID: 2ee861075917908-5b6c1
+Subject: Re: [PATCH] iio: adc: fsl-imx25-gcq: fix the right check and simplify
+ code
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     knaack.h@gmx.de, lars@metafoo.de, shawnguo@kernel.org,
+        s.hauer@pengutronix.de, festevam@gmail.com,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+References: <20210727125209.28248-1-tangbin@cmss.chinamobile.com>
+ <20210731174551.188aee79@jic23-huawei>
+From:   tangbin <tangbin@cmss.chinamobile.com>
+Message-ID: <b84ea3e4-5650-d6ac-36f6-98067b286b45@cmss.chinamobile.com>
+Date:   Mon, 2 Aug 2021 10:31:58 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <20210731174551.188aee79@jic23-huawei>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-I was thinking of extending the acpi-als driver to support reading the
-colour temperature, chromaticity, polling interval, and response
-table, but there's a problem with doing the response table through
-IIO; the table is variable-length, but it seems that IIO channels only
-support fixed-length samples (and the ACPI spec also does include a
-provision for an event to be sent if the response table changes, so it
-would be good to expose that to userspace rather than only allowing
-reading the table from a file).
+Hi Jonathan:
 
-As an alternative approach, I have written a driver for personal use
-which is not at all based on IIO and instead conveys events through
-the ACPI netlink socket and readings directly through sysfs nodes, at
-https://github.com/goose121/als_bus; this works fairly well, but it
-seems that the driver was specifically migrated from something similar
-to the IIO framework so that it would be compatible with other light
-sensors, and it seems inelegant to use a completely different
-interface for one property of a device.
+On 2021/8/1 0:45, Jonathan Cameron wrote:
+> On Tue, 27 Jul 2021 20:52:09 +0800
+> Tang Bin <tangbin@cmss.chinamobile.com> wrote:
+>
+>> For the function of platform_get_irq(), the example in platform.c is
+>> *		int irq = platform_get_irq(pdev, 0);
+>> *		if (irq < 0)
+>> *			return irq;
+>> So the return value of zero is unnecessary to check. And move it
+>> up to a little bit can simplify the code jump.
+>>
+>> Co-developed-by: Zhang Shengju <zhangshengju@cmss.chinamobile.com>
+>> Signed-off-by: Zhang Shengju <zhangshengju@cmss.chinamobile.com>
+>> Signed-off-by: Tang Bin <tangbin@cmss.chinamobile.com>
+> Hi,
+>
+> Logically it is better to keep the irq handling all together, so
+> I would prefer we didn't move it.
+Got it in this place.
+>
+> Also, platform_get_irq() is documented as never returning 0, so the current
+> code is not incorrect.  As such, this looks like noise unless there is
+> some plan to make use of the 0 return value?  What benefit do we get from
+> this change?
 
-Does anyone know of an elegant way these events could be exposed to
-userspace, preferably one which would fit into the current framework
-of the driver?
+Thanks for your reply, I think the benefit of this change maybe just 
+simplify the code.
 
-Thank you for your input,
-Morgan Hager
+Because the return value is never equal to 0, so the check in here is 
+redundant.
+
+We can make the patch like this:
+
+>> ---
+>>   drivers/iio/adc/fsl-imx25-gcq.c | 12 ++++--------
+>>   1 file changed, 4 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/drivers/iio/adc/fsl-imx25-gcq.c b/drivers/iio/adc/fsl-imx25-gcq.c
+>> index 8cb51cf7a..d28976f21 100644
+>> --- a/drivers/iio/adc/fsl-imx25-gcq.c
+>> +++ b/drivers/iio/adc/fsl-imx25-gcq.c
+>> @@ -320,6 +320,10 @@ static int mx25_gcq_probe(struct platform_device *pdev)
+>>   	if (ret)
+>>   		return ret;
+>>   
+>> +	priv->irq = platform_get_irq(pdev, 0);
+>> +	if (priv->irq < 0)
+>> +		return priv->irq;
+>> +
+>>   	for (i = 0; i != 4; ++i) {
+>>   		if (!priv->vref[i])
+>>   			continue;
+>> @@ -336,14 +340,6 @@ static int mx25_gcq_probe(struct platform_device *pdev)
+>>   		goto err_vref_disable;
+>>   	}
+>>   
+>> -	priv->irq = platform_get_irq(pdev, 0);
+>> -	if (priv->irq <= 0) {
+>> -		ret = priv->irq;
+>> -		if (!ret)
+>> -			ret = -ENXIO;
+>> -		goto err_clk_unprepare;
+>> -	}
+>> -
+
+	priv->irq = platform_get_irq(pdev, 0);
+	if (priv->irq < 0) {
+		ret = priv->irq;
+		goto err_clk_unprepare;
+	}
+
+     If you think this is ok, I will send V2 for you. If you think these 
+change is meaningless,
+
+just dropped this.
+
+Thanks
+
+Tang Bin
+
+
+
+

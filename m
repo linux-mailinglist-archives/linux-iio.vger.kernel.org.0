@@ -2,392 +2,308 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 87B723DD86C
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Aug 2021 15:51:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A1823DDADF
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Aug 2021 16:22:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234298AbhHBNwC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 2 Aug 2021 09:52:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38374 "EHLO
+        id S236220AbhHBOXG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 2 Aug 2021 10:23:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235049AbhHBNu6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Aug 2021 09:50:58 -0400
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCF12C06179E
-        for <linux-iio@vger.kernel.org>; Mon,  2 Aug 2021 06:49:25 -0700 (PDT)
-Received: by mail-pj1-x1030.google.com with SMTP id e2-20020a17090a4a02b029016f3020d867so35300pjh.3
-        for <linux-iio@vger.kernel.org>; Mon, 02 Aug 2021 06:49:25 -0700 (PDT)
+        with ESMTP id S236175AbhHBOW5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Aug 2021 10:22:57 -0400
+Received: from mail-qt1-x836.google.com (mail-qt1-x836.google.com [IPv6:2607:f8b0:4864:20::836])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45B8AC07720F;
+        Mon,  2 Aug 2021 07:10:49 -0700 (PDT)
+Received: by mail-qt1-x836.google.com with SMTP id d2so11687823qto.6;
+        Mon, 02 Aug 2021 07:10:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=58QRuKM1ak2bLmIsdv9/X+IspRU8Ucg8XiZTbklR97c=;
-        b=f5k/p4yaOEhl1Sx8KpvH/7YcoTBMHrDTErQNWb1wuJnYHUkUYvOWcXJi94z3QQyaF5
-         buRGJeeV9KBbwmHFAG1YcGyxmMsNr6SaB6/KNycGRbucLTzZR55FAL9tEPBf3gy2lqO/
-         lTAB/QGGVpZCY5DUEF2M+qX7R/aw15297D9bLxE9tVPirsJVnLF1ah5EzS7Ak/n/XBsp
-         l9EHsmRHOlCuVKiUnqKDvs66IHTZgVN5ghFivUQv9cAi7oZZxzMBsyX/t862dq+gD4Vz
-         Wd3UBvz9BbmvUwM8k+XkHYqeUHqHDB4bvxnXQ2gbU2uThPJzrz8kOrYiZZO6bAgMQZBL
-         4cbA==
+        h=mime-version:content-transfer-encoding:date:message-id:from:to:cc
+         :subject:references:in-reply-to;
+        bh=2X+kvVIkTXeU3G/rutGby/mSqVSEzt5UnQ7WKMI/d2I=;
+        b=Xv2UKFyUvbz+5h8eFQvVKZN36IG/7D4mrKmUQCy73IgqhpOtwtYtLZl3PP07PCRFg4
+         ctwlRebDWPg4r2+TxBOIibZjguq+pWw7AwqgQpu/egFKCK3udg0R4WYHG3pQb9lTbxuP
+         Rs4IbvJivNxX248IjAESaoh4nioL23y8kdZRW3Fsm2sTUvGnWqwKrZO5l0YZB85rzg0s
+         GoqYu/dQEGpGUgQMIayKaZWLLfgAkHG5nL7LKLBuPjvjwB7eEs8F9Gm4xtcFKplygcZN
+         le9O4r061wb4KEHMoiGefmluIhrkgXvJ/UT/TqXYUsEwbg935XPFMIIr+M39IKTWGmhB
+         6R/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=58QRuKM1ak2bLmIsdv9/X+IspRU8Ucg8XiZTbklR97c=;
-        b=DMxxjHh7YpyI1v5/LF3TnhANGB69oKcXLpXFsWXTgn9CsxXrFvY+RrBVi2WS4eutpZ
-         FBmQ3TcNlTqJhRT5H0f0cF+Sfy4IgiS6I7k1hES77GbBbpdRz7Ho49+K2l+xbLxs2wZd
-         e2GYwraL+jg7KUA++n5W+3TOYncdpiMoccjcNq4EE8W6njpcq9kmTMNG/f/+GcyyrFEw
-         YdmClqaLZIRh+v5OXmHzFMBy796ZXPoQqHuKqnexYpnSV9RAro9w/Xd0lDjJz5cj7VIX
-         fdA73e+000sD+Y6KKada2TuTfr10LCpsKTMSxx5OEaLtncSfmOU8m8DG6kvSXeNxfbVK
-         2IvQ==
-X-Gm-Message-State: AOAM533mFnTD3NJJG5Pr9wfg0PK09bZ3qxfUHki07p6fggYPGJ3iE3SR
-        urB45pG1jt7FJpVpUZtqisi+GwFZyUMQkDWb7ks=
-X-Google-Smtp-Source: ABdhPJx4o5DLarC3cscYQNHxeOFnYGAfjAuS97fD9UlAn3ES65Tkr+TD26KFpY+veRntfG1AnrhftMn7jwFztQ63dmU=
-X-Received: by 2002:a17:90a:f310:: with SMTP id ca16mr14810986pjb.181.1627912165401;
- Mon, 02 Aug 2021 06:49:25 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210802130441.972978-1-giometti@enneenne.com>
- <20210802130441.972978-2-giometti@enneenne.com> <CA+U=DsqHcrXWi5TF=6gsuU8f3muMThJG1BTNQXov1KWbsdGkFw@mail.gmail.com>
-In-Reply-To: <CA+U=DsqHcrXWi5TF=6gsuU8f3muMThJG1BTNQXov1KWbsdGkFw@mail.gmail.com>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Mon, 2 Aug 2021 16:49:14 +0300
-Message-ID: <CA+U=DspQBzHhPkXPjYXtkrDK=Vp8JFji-19E-C37WG2DMsxk+w@mail.gmail.com>
-Subject: Re: [PATCH 1/1] iio adc: add driver for Texas Instruments TLA2528 adc
-To:     Rodolfo Giometti <giometti@enneenne.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:mime-version:content-transfer-encoding:date
+         :message-id:from:to:cc:subject:references:in-reply-to;
+        bh=2X+kvVIkTXeU3G/rutGby/mSqVSEzt5UnQ7WKMI/d2I=;
+        b=IhngyNvYyT0b0BBM1MmeNGw1QTVGhECSxEt+6PN1PXT/Wh0Yo+FIjNK7yRzVyWWvx3
+         TDIrH+WNFIM1+6EEI9M3CDpM70XCmz66fkrKj487AXd829Pfiwsr08GqAszxvVmrkINs
+         ktuaE1vnAqGkeBkhT/MfxV0tJ3iPFRNXrKpB6jEKKGkLO/FcyqHsSY1t8fqxA+2hchc1
+         IuT+GfpQ/q+kyyZmMfeXKr5vgEIFcoD/vMDWXZsHdkYKroBYVPyPq4qGtuWvKg0Abpz1
+         MpVDJTg60niDi2RCcaex6djChunCczN1Jlx0I2DNKjgMyESvhweE3MSBmrVkdyjrKfUF
+         dRYg==
+X-Gm-Message-State: AOAM5305Xn6QDXKm8alNqM0jx39A8/zz/NSBrx41zNgqV8yCyAfCClqe
+        fmCvkN/6r/1kBbH/LMOFUmc=
+X-Google-Smtp-Source: ABdhPJz9VTtHXR8ZvRkE9nbzG8r6HlFBgzDOgT4z+BCx8yj0ke68eM7zetabzXbvrZ7pIsG23m423Q==
+X-Received: by 2002:a05:622a:2cc:: with SMTP id a12mr14339747qtx.115.1627913448421;
+        Mon, 02 Aug 2021 07:10:48 -0700 (PDT)
+Received: from localhost (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
+        by smtp.gmail.com with ESMTPSA id m19sm4617639qtx.84.2021.08.02.07.10.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Aug 2021 07:10:47 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Mon, 02 Aug 2021 10:10:46 -0400
+Message-Id: <CD935LAT054Y.3JBJYUHXE55WA@shaak>
+From:   "Liam Beguin" <liambeguin@gmail.com>
+To:     "Jonathan Cameron" <Jonathan.Cameron@huawei.com>
+Cc:     "Jonathan Cameron" <jic23@kernel.org>, <lars@metafoo.de>,
+        <Michael.Hennerich@analog.com>,
+        <charles-antoine.couret@essensium.com>, <Nuno.Sa@analog.com>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
+Subject: Re: [PATCH v4 2/5] iio: adc: ad7949: fix spi messages on non 14-bit
+ controllers
+References: <20210727232906.980769-1-liambeguin@gmail.com>
+ <20210727232906.980769-3-liambeguin@gmail.com>
+ <20210731152921.2fcb53ab@jic23-huawei>
+ <20210731155228.5cf77479@jic23-huawei> <CD8JT5A4TPLB.33HN2VCYJXKSS@shaak>
+ <20210802112013.00000ff4@Huawei.com>
+In-Reply-To: <20210802112013.00000ff4@Huawei.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Aug 2, 2021 at 4:37 PM Alexandru Ardelean
-<ardeleanalex@gmail.com> wrote:
+On Mon Aug 2, 2021 at 6:20 AM EDT, Jonathan Cameron wrote:
+> On Sun, 01 Aug 2021 19:01:10 -0400
+> "Liam Beguin" <liambeguin@gmail.com> wrote:
 >
-> On Mon, Aug 2, 2021 at 4:06 PM Rodolfo Giometti <giometti@enneenne.com> wrote:
-> >
-> > This adds a new driver for the TI TLA2528 ADC chip.
-> >
+> > On Sat Jul 31, 2021 at 10:52 AM EDT, Jonathan Cameron wrote:
+> > > On Sat, 31 Jul 2021 15:29:21 +0100
+> > > Jonathan Cameron <jic23@kernel.org> wrote:
+> > > =20
+> > > > On Tue, 27 Jul 2021 19:29:03 -0400
+> > > > Liam Beguin <liambeguin@gmail.com> wrote:
+> > > >  =20
+> > > > > From: Liam Beguin <lvb@xiphos.com>
+> > > > >=20
+> > > > > This driver supports devices with 14-bit and 16-bit sample sizes.
+> > > > > This is not always handled properly by spi controllers and can fa=
+il. To
+> > > > > work around this limitation, pad samples to 16-bit and split the =
+sample
+> > > > > into two 8-bit messages in the event that only 8-bit messages are
+> > > > > supported by the controller.
+> > > > >=20
+> > > > > Signed-off-by: Liam Beguin <lvb@xiphos.com>
+> > > > > ---
+> > > > >  drivers/iio/adc/ad7949.c | 62 ++++++++++++++++++++++++++++++++++=
+------
+> > > > >  1 file changed, 54 insertions(+), 8 deletions(-)
+> > > > >=20
+> > > > > diff --git a/drivers/iio/adc/ad7949.c b/drivers/iio/adc/ad7949.c
+> > > > > index 0b549b8bd7a9..f1702c54c8be 100644
+> > > > > --- a/drivers/iio/adc/ad7949.c
+> > > > > +++ b/drivers/iio/adc/ad7949.c
+> > > > > @@ -67,6 +67,7 @@ static const struct ad7949_adc_spec ad7949_adc_=
+spec[] =3D {
+> > > > >   * @indio_dev: reference to iio structure
+> > > > >   * @spi: reference to spi structure
+> > > > >   * @resolution: resolution of the chip
+> > > > > + * @bits_per_word: number of bits per SPI word
+> > > > >   * @cfg: copy of the configuration register
+> > > > >   * @current_channel: current channel in use
+> > > > >   * @buffer: buffer to send / receive data to / from device
+> > > > > @@ -77,6 +78,7 @@ struct ad7949_adc_chip {
+> > > > >  	struct iio_dev *indio_dev;
+> > > > >  	struct spi_device *spi;
+> > > > >  	u8 resolution;
+> > > > > +	u8 bits_per_word;
+> > > > >  	u16 cfg;
+> > > > >  	unsigned int current_channel;
+> > > > >  	u16 buffer ____cacheline_aligned;
+> > > > > @@ -86,19 +88,34 @@ static int ad7949_spi_write_cfg(struct ad7949=
+_adc_chip *ad7949_adc, u16 val,
+> > > > >  				u16 mask)
+> > > > >  {
+> > > > >  	int ret;
+> > > > > -	int bits_per_word =3D ad7949_adc->resolution;
+> > > > > -	int shift =3D bits_per_word - AD7949_CFG_REG_SIZE_BITS;   =20
+> > > >=20
+> > > > The define for this was removed in patch 1.  I'll fix that up whils=
+t applying by
+> > > > keeping it until this patch.  Please check build passes on intermed=
+iate points
+> > > > during a patch series as otherwise we may break bisectability and t=
+hat's really
+> > > > annoying if you are bisecting!
+> > > >=20
+> > > > Jonathan
+> > > >  =20
+> > > > >  	struct spi_message msg;
+> > > > >  	struct spi_transfer tx[] =3D {
+> > > > >  		{
+> > > > >  			.tx_buf =3D &ad7949_adc->buffer,
+> > > > >  			.len =3D 2,
+> > > > > -			.bits_per_word =3D bits_per_word,
+> > > > > +			.bits_per_word =3D ad7949_adc->bits_per_word,
+> > > > >  		},
+> > > > >  	};
+> > > > > =20
+> > > > > +	ad7949_adc->buffer =3D 0;
+> > > > >  	ad7949_adc->cfg =3D (val & mask) | (ad7949_adc->cfg & ~mask);
+> > > > > -	ad7949_adc->buffer =3D ad7949_adc->cfg << shift;
+> > > > > +
+> > > > > +	switch (ad7949_adc->bits_per_word) {
+> > > > > +	case 16:
+> > > > > +		ad7949_adc->buffer =3D ad7949_adc->cfg << 2;
+> > > > > +		break;
+> > > > > +	case 14:
+> > > > > +		ad7949_adc->buffer =3D ad7949_adc->cfg;
+> > > > > +		break;
+> > > > > +	case 8:
+> > > > > +		/* Here, type is big endian as it must be sent in two transfer=
+s */
+> > > > > +		ad7949_adc->buffer =3D (u16)cpu_to_be16(ad7949_adc->cfg << 2);=
+ =20
+> > >
+> > > Gah, I wasn't thinking clearly when I suggested this. Sparse warns on
+> > > the
+> > > endian conversion
+> > >
+> > > One option is to resort to ignoring the fact we know it's aligned and
+> > > use the put_unaligned_be16() and get_unaligned_be16 calls which spars=
+e
+> > > seems to be
+> > > happy with. Alternative would be to just have a be16 buffer after the
+> > > existing
+> > > one in the iio_priv structure. Then you will have to change the vario=
+us
+> > > users
+> > > of iio_priv()->buffer to point to the new value if we are doing 8 bit
+> > > transfers.
+> > >
+> > > Whilst more invasive, this second option is the one I'd suggest. =20
+> >=20
+> > Understood, I'll go with your suggestion.
+> >=20
+> > Out of curiosity, other that being more explicit, is there another
+> > we'd rather not use {get,put}_unaligned_be16()?
 >
-> Hey,
+> We know it is aligned (as u16) so on a big endian platform that happens
+> to not handle unaligned accesses we will now be doing work which
+> wouldn't
+> be needed if there was a get_aligned_be16() that was more relaxed about
+> types than cpu_to_be16() etc.
 >
-> The patch should include a V2 in the title.
+> So basically it looks odd and we will will be hiding that we are
+> smashing
+> data of potentially different ordering into the same structure field.
 
-Oh, apologies for the noise.
-I just noticed that the Changelog and V2 tags are in patch 0/1
+Got it! Thanks for the explanation.
+
+Liam
 
 >
-> > Signed-off-by: Rodolfo Giometti <giometti@enneenne.com>
-> > ---
-> >  drivers/iio/adc/Kconfig      |  10 ++
-> >  drivers/iio/adc/Makefile     |   1 +
-> >  drivers/iio/adc/ti-tla2528.c | 247 +++++++++++++++++++++++++++++++++++
-> >  3 files changed, 258 insertions(+)
-> >  create mode 100644 drivers/iio/adc/ti-tla2528.c
-> >
->
-> A changelog is a good idea here [in this place] :)
->
-> > diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> > index db0c8fb60515..f42e6d84c8f3 100644
-> > --- a/drivers/iio/adc/Kconfig
-> > +++ b/drivers/iio/adc/Kconfig
-> > @@ -1178,6 +1178,16 @@ config TI_AM335X_ADC
-> >           To compile this driver as a module, choose M here: the module will be
-> >           called ti_am335x_adc.
-> >
-> > +config TI_TLA2528
-> > +       tristate "Texas Instruments TLA2528 ADC driver"
-> > +       depends on I2C
-> > +       help
-> > +         Say yes here to build support for Texas Instruments TLA2528
-> > +         12-Bit 8-Channel ADC.
-> > +
-> > +         To compile this driver as a module, choose M here: the module will be
-> > +         called ti-tla2528.
-> > +
-> >  config TI_TLC4541
-> >         tristate "Texas Instruments TLC4541 ADC driver"
-> >         depends on SPI
-> > diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-> > index f70d877c555a..0bf287672838 100644
-> > --- a/drivers/iio/adc/Makefile
-> > +++ b/drivers/iio/adc/Makefile
-> > @@ -105,6 +105,7 @@ obj-$(CONFIG_TI_ADS8688) += ti-ads8688.o
-> >  obj-$(CONFIG_TI_ADS124S08) += ti-ads124s08.o
-> >  obj-$(CONFIG_TI_ADS131E08) += ti-ads131e08.o
-> >  obj-$(CONFIG_TI_AM335X_ADC) += ti_am335x_adc.o
-> > +obj-$(CONFIG_TI_TLA2528) += ti-tla2528.o
-> >  obj-$(CONFIG_TI_TLC4541) += ti-tlc4541.o
-> >  obj-$(CONFIG_TI_TSC2046) += ti-tsc2046.o
-> >  obj-$(CONFIG_TWL4030_MADC) += twl4030-madc.o
-> > diff --git a/drivers/iio/adc/ti-tla2528.c b/drivers/iio/adc/ti-tla2528.c
-> > new file mode 100644
-> > index 000000000000..5c362f846bae
-> > --- /dev/null
-> > +++ b/drivers/iio/adc/ti-tla2528.c
-> > @@ -0,0 +1,247 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * Driver for Texas Instruments TLA2528 ADC
-> > + *
-> > + * Copyright (C) 2020-2021 Rodolfo Giometti <giometti@enneenne.com>
-> > + */
-> > +
-> > +#include <linux/module.h>
-> > +#include <linux/i2c.h>
-> > +#include <linux/delay.h>
-> > +#include <linux/regulator/consumer.h>
-> > +#include <linux/of.h>
-> > +
-> > +#include <linux/iio/iio.h>
-> > +#include <linux/iio/sysfs.h>
-> > +
-> > +#define TLA2528_OP_READ_REG            0x10
-> > +#define TLA2528_OP_WRITE_REG           0x08
-> > +
-> > +#define TLA2528_GENERAL_CFG            0x01
-> > +#define TLA2528_GENERAL_CFG_CNVST      BIT(3)
-> > +#define TLA2528_DATA_CFG               0x02
-> > +#define TLA2528_DATA_CFG_APPEND_STATUS BIT(4)
-> > +#define TLA2528_DATA_CFG_FIX_PAT       BIT(7)
-> > +#define TLA2528_PIN_CFG                        0x05
-> > +#define TLA2528_SEQUENCE_CFG           0x10
-> > +#define TLA2528_CHANNEL_SEL            0x11
-> > +
-> > +struct tla2528_st {
-> > +       struct i2c_client *client;
-> > +       struct regulator *ref;
-> > +
-> > +       u8 last_read_channel;
-> > +};
-> > +
-> > +static s32 i2c_smbus_read_sample(const struct i2c_client *client)
-> > +{
-> > +       struct i2c_msg msg[1];
-> > +       u8 data[2];
-> > +       int ret;
-> > +
-> > +       msg[0].addr = client->addr;
-> > +       msg[0].flags = I2C_M_RD;
-> > +       msg[0].buf = (u8 *) &data;
-> > +       msg[0].len = 2;
-> > +
-> > +       ret = i2c_transfer(client->adapter, msg, 1);
-> > +       if (ret < 0)
-> > +               return ret;
-> > +
-> > +       return le16_to_cpu(data[1] | (data[0] << 8));
-> > +}
-> > +
-> > +static s32 i2c_smbus_write_reg(const struct i2c_client *client, u8 reg, u8 val)
-> > +{
-> > +       struct i2c_msg msg[1];
-> > +       u8 cmd[3] = {TLA2528_OP_WRITE_REG, reg, val};
-> > +
-> > +       msg[0].addr = client->addr;
-> > +       msg[0].flags = 0;
-> > +       msg[0].buf = cmd;
-> > +       msg[0].len = 3;
-> > +
-> > +       return i2c_transfer(client->adapter, msg, 1);
-> > +}
-> > +
-> > +static int tla2528_read(struct tla2528_st *st, u8 channel, int *val)
-> > +{
-> > +       struct i2c_client *client = st->client;
-> > +       int ret;
-> > +
-> > +       if (channel != st->last_read_channel) {
-> > +               ret = i2c_smbus_write_reg(st->client,
-> > +                                       TLA2528_CHANNEL_SEL, channel);
-> > +               if (ret < 0)
-> > +                       return ret;
-> > +
-> > +               st->last_read_channel = channel;
-> > +       }
-> > +
-> > +       /* Read ADC data (2 bytes) */
-> > +       ret = i2c_smbus_read_sample(client);
-> > +       if (ret < 0)  {
-> > +               dev_err(&client->dev, "i2c_master_recv failed\n");
-> > +               return ret;
-> > +       }
-> > +       *val = ret >> 4;
-> > +
-> > +       return 0;
-> > +}
-> > +
-> > +static int tla2528_read_raw(struct iio_dev *indio_dev,
-> > +                           struct iio_chan_spec const *chan,
-> > +                           int *val, int *val2, long mask)
-> > +{
-> > +       struct tla2528_st *st = iio_priv(indio_dev);
-> > +       int ret;
-> > +
-> > +       switch (mask) {
-> > +       case IIO_CHAN_INFO_RAW:
-> > +               mutex_lock(&indio_dev->mlock);
-> > +               ret = tla2528_read(st, chan->channel, val);
-> > +               mutex_unlock(&indio_dev->mlock);
-> > +               if (ret < 0)
-> > +                       return ret;
-> > +
-> > +               return IIO_VAL_INT;
-> > +
-> > +       case IIO_CHAN_INFO_SCALE:
-> > +               ret = regulator_get_voltage(st->ref);
-> > +               if (ret < 0)
-> > +                       return ret;
-> > +
-> > +               *val = ret / 1000;
-> > +               *val2 = 12;
-> > +
-> > +               return IIO_VAL_FRACTIONAL_LOG2;
-> > +
-> > +       default:
-> > +               return -EINVAL;
-> > +       }
-> > +}
-> > +
-> > +#define TLA2528_CHAN(_chan, _name) { \
-> > +       .type = IIO_VOLTAGE,                                    \
-> > +       .channel = (_chan),                                     \
-> > +       .info_mask_separate = BIT(IIO_CHAN_INFO_RAW),           \
-> > +       .info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),   \
-> > +       .datasheet_name = _name,                                \
-> > +       .indexed = 1,                                           \
-> > +}
-> > +
-> > +static const struct iio_chan_spec tla2528_channel[] = {
-> > +       TLA2528_CHAN(0, "AIN0"),
-> > +       TLA2528_CHAN(1, "AIN1"),
-> > +       TLA2528_CHAN(2, "AIN2"),
-> > +       TLA2528_CHAN(3, "AIN3"),
-> > +       TLA2528_CHAN(4, "AIN4"),
-> > +       TLA2528_CHAN(5, "AIN5"),
-> > +       TLA2528_CHAN(6, "AIN6"),
-> > +       TLA2528_CHAN(7, "AIN7"),
-> > +};
-> > +
-> > +static const struct iio_info tla2528_info = {
-> > +       .read_raw = tla2528_read_raw,
-> > +};
-> > +
-> > +static int tla2528_probe(struct i2c_client *client,
-> > +                        const struct i2c_device_id *id)
-> > +{
-> > +       struct iio_dev *indio_dev;
-> > +       struct tla2528_st *st;
-> > +       int ret;
-> > +
-> > +       if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C |
-> > +                                    I2C_FUNC_SMBUS_WRITE_BYTE))
-> > +               return -EOPNOTSUPP;
-> > +
-> > +       indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*st));
-> > +       if (!indio_dev)
-> > +               return -ENOMEM;
-> > +
-> > +       st = iio_priv(indio_dev);
-> > +       i2c_set_clientdata(client, indio_dev);
-> > +       st->client = client;
-> > +
-> > +       indio_dev->name = id->name;
-> > +       indio_dev->info = &tla2528_info;
-> > +       indio_dev->modes = INDIO_DIRECT_MODE;
-> > +       indio_dev->channels = tla2528_channel;
-> > +       indio_dev->num_channels = ARRAY_SIZE(tla2528_channel);
-> > +
-> > +       st->ref = devm_regulator_get(&client->dev, "vref");
-> > +       if (IS_ERR(st->ref))
-> > +               return PTR_ERR(st->ref);
-> > +
-> > +       ret = regulator_enable(st->ref);
-> > +       if (ret < 0)
-> > +               return ret;
-> > +
->
-> I was thinking about whether to mention this earlier.
-> But, an idea, is to do:
->
->         ret = devm_add_action_or_reset(&spi->dev, tla2528_reg_disable,
-> st->vref);
->         if (ret)
->                 return ret;
->
-> Then the i2c_set_clientdata() call can be removed, and the
-> tla2528_remove() hook as well.
-> A simple example can be seen in drivers/iio/adc/ti-ads8344.c
->
-> I'm not insisting on it. Since the driver is simple enough.
->
-> > +       /* Set all inputs as analog */
-> > +       ret = i2c_smbus_write_reg(st->client, TLA2528_PIN_CFG, 0x00);
-> > +       if (ret < 0)
-> > +               goto err_regulator_disable;
-> > +
-> > +       ret = i2c_smbus_write_reg(st->client, TLA2528_DATA_CFG,
-> > +                                 TLA2528_DATA_CFG_APPEND_STATUS);
-> > +       if (ret < 0)
-> > +               goto err_regulator_disable;
-> > +
-> > +       /* Set manual mode */
-> > +       ret = i2c_smbus_write_reg(st->client, TLA2528_SEQUENCE_CFG, 0x00);
-> > +       if (ret < 0)
-> > +               goto err_regulator_disable;
-> > +
-> > +       /* Init private data */
-> > +       st->last_read_channel = ~0;
-> > +
-> > +       ret = iio_device_register(indio_dev);
-> > +       if (ret < 0)
-> > +               goto err_regulator_disable;
-> > +
-> > +       return 0;
-> > +
-> > +err_regulator_disable:
-> > +       regulator_disable(st->ref);
-> > +
-> > +       return ret;
-> > +}
-> > +
-> > +static int tla2528_remove(struct i2c_client *client)
-> > +{
-> > +       struct iio_dev *indio_dev = i2c_get_clientdata(client);
-> > +       struct tla2528_st *st = iio_priv(indio_dev);
-> > +
-> > +       iio_device_unregister(indio_dev);
-> > +       regulator_disable(st->ref);
-> > +
-> > +       return 0;
-> > +}
-> > +
-> > +static const struct i2c_device_id tla2528_id[] = {
-> > +       { "tla2528", 0 },
-> > +       { }
-> > +};
-> > +MODULE_DEVICE_TABLE(i2c, tla2528_id);
-> > +
-> > +static const struct of_device_id tla2528_of_match[] = {
-> > +       { .compatible = "ti,tla2528", },
-> > +       { }
-> > +};
-> > +MODULE_DEVICE_TABLE(of, tla2528_of_match);
-> > +
-> > +static struct i2c_driver tla2528_driver = {
-> > +       .driver = {
-> > +               .name = "tla2528",
-> > +               .of_match_table = tla2528_of_match,
-> > +       },
-> > +       .probe = tla2528_probe,
-> > +       .remove = tla2528_remove,
-> > +       .id_table = tla2528_id,
-> > +};
-> > +module_i2c_driver(tla2528_driver);
-> > +
-> > +MODULE_AUTHOR("Rodolfo Giometti <giometti@enneenne.com>");
-> > +MODULE_DESCRIPTION("Texas Instruments TLA2528 ADC driver");
-> > +MODULE_LICENSE("GPL v2");
-> > --
-> > 2.25.1
-> >
+> >=20
+> > > Note that there will be no need to add an __cacheline_aligned marking=
+ to
+> > > this
+> > > new element because it will be in a cachline that is only used for DM=
+A
+> > > simply being
+> > > after the other buffer element which is force to start on a new
+> > > cacheline. =20
+> >=20
+> > Noted, Thanks for taking the time to explaining this.
+> >=20
+> > Liam
+> >=20
+> > >
+> > > Jonathan
+> > >   =20
+> > > > > +		break;
+> > > > > +	default:
+> > > > > +		dev_err(&ad7949_adc->indio_dev->dev, "unsupported BPW\n");
+> > > > > +		return -EINVAL;
+> > > > > +	}
+> > > > > +
+> > > > >  	spi_message_init_with_transfers(&msg, tx, 1);
+> > > > >  	ret =3D spi_sync(ad7949_adc->spi, &msg);
+> > > > > =20
+> > > > > @@ -115,14 +132,12 @@ static int ad7949_spi_read_channel(struct a=
+d7949_adc_chip *ad7949_adc, int *val,
+> > > > >  {
+> > > > >  	int ret;
+> > > > >  	int i;
+> > > > > -	int bits_per_word =3D ad7949_adc->resolution;
+> > > > > -	int mask =3D GENMASK(ad7949_adc->resolution - 1, 0);
+> > > > >  	struct spi_message msg;
+> > > > >  	struct spi_transfer tx[] =3D {
+> > > > >  		{
+> > > > >  			.rx_buf =3D &ad7949_adc->buffer,
+> > > > >  			.len =3D 2,
+> > > > > -			.bits_per_word =3D bits_per_word,
+> > > > > +			.bits_per_word =3D ad7949_adc->bits_per_word,
+> > > > >  		},
+> > > > >  	};
+> > > > > =20
+> > > > > @@ -157,7 +172,25 @@ static int ad7949_spi_read_channel(struct ad=
+7949_adc_chip *ad7949_adc, int *val,
+> > > > > =20
+> > > > >  	ad7949_adc->current_channel =3D channel;
+> > > > > =20
+> > > > > -	*val =3D ad7949_adc->buffer & mask;
+> > > > > +	switch (ad7949_adc->bits_per_word) {
+> > > > > +	case 16:
+> > > > > +		*val =3D ad7949_adc->buffer;
+> > > > > +		/* Shift-out padding bits */
+> > > > > +		*val >>=3D 16 - ad7949_adc->resolution;
+> > > > > +		break;
+> > > > > +	case 14:
+> > > > > +		*val =3D ad7949_adc->buffer & GENMASK(13, 0);
+> > > > > +		break;
+> > > > > +	case 8:
+> > > > > +		/* Here, type is big endian as data was sent in two transfers =
+*/
+> > > > > +		*val =3D be16_to_cpu(ad7949_adc->buffer);
+> > > > > +		/* Shift-out padding bits */
+> > > > > +		*val >>=3D 16 - ad7949_adc->resolution;
+> > > > > +		break;
+> > > > > +	default:
+> > > > > +		dev_err(&ad7949_adc->indio_dev->dev, "unsupported BPW\n");
+> > > > > +		return -EINVAL;
+> > > > > +	}
+> > > > > =20
+> > > > >  	return 0;
+> > > > >  }
+> > > > > @@ -265,6 +298,7 @@ static int ad7949_spi_init(struct ad7949_adc_=
+chip *ad7949_adc)
+> > > > > =20
+> > > > >  static int ad7949_spi_probe(struct spi_device *spi)
+> > > > >  {
+> > > > > +	u32 spi_ctrl_mask =3D spi->controller->bits_per_word_mask;
+> > > > >  	struct device *dev =3D &spi->dev;
+> > > > >  	const struct ad7949_adc_spec *spec;
+> > > > >  	struct ad7949_adc_chip *ad7949_adc;
+> > > > > @@ -291,6 +325,18 @@ static int ad7949_spi_probe(struct spi_devic=
+e *spi)
+> > > > >  	indio_dev->num_channels =3D spec->num_channels;
+> > > > >  	ad7949_adc->resolution =3D spec->resolution;
+> > > > > =20
+> > > > > +	/* Set SPI bits per word */
+> > > > > +	if (spi_ctrl_mask & SPI_BPW_MASK(ad7949_adc->resolution)) {
+> > > > > +		ad7949_adc->bits_per_word =3D ad7949_adc->resolution;
+> > > > > +	} else if (spi_ctrl_mask =3D=3D SPI_BPW_MASK(16)) {
+> > > > > +		ad7949_adc->bits_per_word =3D 16;
+> > > > > +	} else if (spi_ctrl_mask =3D=3D SPI_BPW_MASK(8)) {
+> > > > > +		ad7949_adc->bits_per_word =3D 8;
+> > > > > +	} else {
+> > > > > +		dev_err(dev, "unable to find common BPW with spi controller\n"=
+);
+> > > > > +		return -EINVAL;
+> > > > > +	}
+> > > > > +
+> > > > >  	ad7949_adc->vref =3D devm_regulator_get(dev, "vref");
+> > > > >  	if (IS_ERR(ad7949_adc->vref)) {
+> > > > >  		dev_err(dev, "fail to request regulator\n");   =20
+> > > >  =20
+> >=20
+

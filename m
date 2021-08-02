@@ -2,33 +2,33 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DFB453DDCEF
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Aug 2021 17:57:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1750E3DDCF1
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Aug 2021 17:57:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235254AbhHBP5b (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 2 Aug 2021 11:57:31 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.54]:36610 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235184AbhHBP5b (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Aug 2021 11:57:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1627919825;
+        id S235430AbhHBP5d (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 2 Aug 2021 11:57:33 -0400
+Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.81]:34595 "EHLO
+        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235429AbhHBP5d (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Aug 2021 11:57:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1627919826;
     s=strato-dkim-0002; d=gerhold.net;
     h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
     From:Subject:Sender;
-    bh=mLmbG7FaZcS5dOyweoPjyoCfYgTIacG4CENTQ8e5dZQ=;
-    b=T3L+d5Uq1lWjooRP/q/DGuIDrQ+n8GMb4c1ZDzVeSQX1OLpF/J0lIPoD+DUbDvW6s1
-    5bOH70ahywSTgde6PqmY1d5kPlLKHpAtfI/9a9YkYjA3NA9QAQXFD297y7e/i4otuA8h
-    Ou8DZLIHQNxf7U40dwHWKvTvhpO2iYkYjMZZxE77rPcL47gOOUbWN84A0fCtqMnBxXGM
-    5xD0ExcSzHHN285aFyaKF7/AR1D82D+7Nzazgorbo81z95FWCcV4UzAmsJAVm4GqBvKh
-    n2Em1F0+jeUuzbzs53I0RfcyI/DPC1fW6kZs3aA5HU5Baiz6nrRtBE6oq2uAQGWR1Cqg
-    lXCA==
+    bh=PBDUzAA2uZL8rx4T0qqlTZQwhvXnyhX6ulO6O6mtELA=;
+    b=DYI9hI9jUINOLNxFQnukJwn5zLmQEUfZTOVhSlTUDUMiOBkGUf6a+db2b7HgYX/XbQ
+    ybVLFqFQZZoJvzNZlZz06Wvx9Y2PyFH5tFr7xyBcGNAvRRulNH+yqlF44jyrGtf7cGUo
+    v40ZZoQFp4W1dFfgwkhzc9KxyJPPFNWsPun3ScZg7oSz2MVfirnEVcugpklfEFlk+/LP
+    YMZyhWe9XqydQQxQLsrRcpe3xIe+2pQMKVull2WdihHyIBFctlXR1bNmhlwdZ0iNL9QN
+    3dTE46V7J5N5RNTsvDHP8UzNws8kfotWLsTj+jhA4DVSmX8uJzctMRwj64MU+wIVDwlZ
+    Jjxg==
 Authentication-Results: strato.com;
     dkim=none
 X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVORvLd4SsytBXTbAOHjRHIhr0eF6M4Q=="
 X-RZG-CLASS-ID: mo00
 Received: from droid..
     by smtp.strato.de (RZmta 47.30.0 DYNA|AUTH)
-    with ESMTPSA id e095f1x72Fv52RD
+    with ESMTPSA id e095f1x72Fv52RE
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
     Mon, 2 Aug 2021 17:57:05 +0200 (CEST)
@@ -42,10 +42,11 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
         ~postmarketos/upstreaming@lists.sr.ht,
         Nikita Travkin <nikita@trvn.ru>,
-        Stephan Gerhold <stephan@gerhold.net>
-Subject: [PATCH v2 1/4] dt-bindings: iio: accel: bma255: Add interrupt-names
-Date:   Mon,  2 Aug 2021 17:56:54 +0200
-Message-Id: <20210802155657.102766-2-stephan@gerhold.net>
+        Stephan Gerhold <stephan@gerhold.net>,
+        Rob Herring <robh@kernel.org>
+Subject: [PATCH v2 2/4] dt-bindings: iio: accel: bma255: Add bosch,bmc156_accel
+Date:   Mon,  2 Aug 2021 17:56:55 +0200
+Message-Id: <20210802155657.102766-3-stephan@gerhold.net>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210802155657.102766-1-stephan@gerhold.net>
 References: <20210802155657.102766-1-stephan@gerhold.net>
@@ -55,56 +56,64 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The binding already allows specifying both interrupt pins, but there
-is currently no way to describe a board where (for whatever reason)
-only INT2 is connected. Make it possible to use "interrupt-names"
-to make it explicit which interrupt pin is meant in the interrupts.
+BMC156 is very smilar to BMC150, but it has only one accelerometer
+interrupt pin. It would make sense if only INT1 was exposed but someone
+at Bosch decided to only have an INT2 pin.
+
+In this case, it does not make sense if the first interrupt pin is
+treated as INT1 (since that pin does not exist). Add a note to the
+bindings that the first interrupt pin is treated as INT2 for BMC156.
 
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 ---
-Changes in v2:
-  - Add "Without interrupt-names, ..." to "interrupts" description
-    to clarify that ordering of interrupts can be relaxed if
-    interrupt-names is used.
----
- .../bindings/iio/accel/bosch,bma255.yaml         | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ .../bindings/iio/accel/bosch,bma255.yaml       | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
 diff --git a/Documentation/devicetree/bindings/iio/accel/bosch,bma255.yaml b/Documentation/devicetree/bindings/iio/accel/bosch,bma255.yaml
-index 5b35856b1942..253b2051d0b1 100644
+index 253b2051d0b1..478e75ae0885 100644
 --- a/Documentation/devicetree/bindings/iio/accel/bosch,bma255.yaml
 +++ b/Documentation/devicetree/bindings/iio/accel/bosch,bma255.yaml
-@@ -45,9 +45,18 @@ properties:
+@@ -26,6 +26,7 @@ properties:
+       - bosch,bma255
+       - bosch,bma280
+       - bosch,bmc150_accel
++      - bosch,bmc156_accel
+       - bosch,bmi055_accel
+ 
+       # bma180 driver in Linux
+@@ -50,6 +51,9 @@ properties:
+       the one connected to the INT2 pin (if available). The type should be
+       IRQ_TYPE_EDGE_RISING.
+ 
++      BMC156 does not have an INT1 pin, therefore the first interrupt pin is
++      always treated as INT2.
++
+   interrupt-names:
      minItems: 1
      maxItems: 2
-     description: |
--      The first interrupt listed must be the one connected to the INT1 pin,
--      the second (optional) interrupt listed must be the one connected to the
--      INT2 pin (if available). The type should be IRQ_TYPE_EDGE_RISING.
-+      Without interrupt-names, the first interrupt listed must be the one
-+      connected to the INT1 pin, the second (optional) interrupt listed must be
-+      the one connected to the INT2 pin (if available). The type should be
-+      IRQ_TYPE_EDGE_RISING.
-+
-+  interrupt-names:
-+    minItems: 1
-+    maxItems: 2
-+    items:
-+      enum:
-+        - INT1
-+        - INT2
- 
-   mount-matrix:
-     description: an optional 3x3 mounting rotation matrix.
-@@ -73,6 +82,7 @@ examples:
-             vddio-supply = <&vddio>;
-             vdd-supply = <&vdd>;
-             interrupts = <57 IRQ_TYPE_EDGE_RISING>;
-+            interrupt-names = "INT1";
+@@ -85,6 +89,20 @@ examples:
+             interrupt-names = "INT1";
          };
      };
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++        accelerometer@10 {
++            compatible = "bosch,bmc156_accel";
++            reg = <0x10>;
++            vddio-supply = <&vddio>;
++            vdd-supply = <&vdd>;
++            interrupts = <116 IRQ_TYPE_EDGE_RISING>;
++            interrupt-names = "INT2";
++        };
++    };
    - |
+     # include <dt-bindings/interrupt-controller/irq.h>
+     spi {
 -- 
 2.32.0
 

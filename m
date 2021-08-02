@@ -2,721 +2,512 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1666C3DD0EC
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Aug 2021 09:04:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BBC83DD104
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Aug 2021 09:12:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232479AbhHBHE1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 2 Aug 2021 03:04:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52566 "EHLO
+        id S232433AbhHBHM2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 2 Aug 2021 03:12:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229500AbhHBHE0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Aug 2021 03:04:26 -0400
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACBBDC06175F;
-        Mon,  2 Aug 2021 00:04:16 -0700 (PDT)
-Received: by mail-pl1-x636.google.com with SMTP id e21so18641133pla.5;
-        Mon, 02 Aug 2021 00:04:16 -0700 (PDT)
+        with ESMTP id S232216AbhHBHMW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Aug 2021 03:12:22 -0400
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E632FC06175F
+        for <linux-iio@vger.kernel.org>; Mon,  2 Aug 2021 00:12:12 -0700 (PDT)
+Received: by mail-pj1-x102b.google.com with SMTP id b1-20020a17090a8001b029017700de3903so18154352pjn.1
+        for <linux-iio@vger.kernel.org>; Mon, 02 Aug 2021 00:12:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=0E+0Jy3Axb4tCOZQZEVbdbocbXitf7/FhKWg2SlKkWs=;
-        b=Kd02El0WbulXdTwB1I6+99D8bXYkDdr/gqyRf+mIKIiCUz3sJ3uYnmzv0OYxW4luLJ
-         sRCHGaIKKdfNwStSXD0JNebSUj9yJnIUNLo3BuF5YCzB/cE+HSXqqh5D2ALgni934zZX
-         Icew6uotnwBnxxxUs99nx0iT10xN4LCXlgBwoVqD7O/WjkSMPyXeySyOvsXn44YK7Let
-         Yt6pALHSziCakKob9Cbs/QEi6orAKQhW+U9MG3YfFIPyl2M+UQ8vRIaIjwPl7J6UK3rA
-         ntR573VDq+su6/3I85/3ioVmV7DS//sLv+hfFQzsU5snKAVRoHDU59wODjICumckVJ0M
-         y6OQ==
+        bh=rSGWbbFuRedaEdyHysxeV1IP4YatfL/K7UHxptSqMq8=;
+        b=d8GCocRVSdHjh4nXPI+PqdClqXgDWX1asq1kRffmHK9uHUakFQimtLIba2jjgi4fxu
+         NGp4+kc/i84QqimetCqakCFsLc358eMookhk2TRzJiCmQpCNHPqRBqxvoYO115RklATS
+         wdywI8GjtUazGAjDLbZsYp6pDsliQzcSP+rcvfBaLjVvEHWb8avMW3c6Cbr7FMI4xXW2
+         kT1mcL73s4C2s5R5s0aHC5ahkaSM+7aQstZ5nXNF7sewFqVMr++Y68WiiV3C3cdaRGys
+         CVyw7M3zFmibM1AXWB2sONDsClatiw5r3hrXRgVzEWKQIWRshrsqu3mu/Ux+tFBrUJxh
+         zSpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=0E+0Jy3Axb4tCOZQZEVbdbocbXitf7/FhKWg2SlKkWs=;
-        b=ew38l7zmtg1GUDqhovkKOLerh1bYIW3Q8byY4AyvIvXsW9/4lGzvmpzO6N6gB+suk7
-         KauofEUz1WcDBymXfaVkicUivPN5ldgFERb2ukvED1i9zDLgIGkJYOtXtTAg2SZRcEqQ
-         dtT7bWTYnZsdQY3Kb2AAK0z1H+WmGH4p7OfHuMXxcAjZ/A5Djc8+Xir3ew1+DzK91pNG
-         wYRqQdqgJQH4GACI6RP5cEHXnLq1J2p5MH0FFsHjDW1xtn/wQBfkhlyT6TkS9X1OUWXW
-         oEvHJftaMxU6nS5vAwuzHOZiqtIS5P+7+4YbuMgoos7k2tGIXACxLV18y7UgUmsbvAGy
-         LsNQ==
-X-Gm-Message-State: AOAM533w6xosDidqvlfUMrUQS4C+kfFYnIqCcFDQRgz7tMvgz5GjUBD6
-        4x4JBMK8CUpedY26oOftkaL/xqrafygIIn2E0PA=
-X-Google-Smtp-Source: ABdhPJwPGupsyfM2+gaNi4BBcSgS+lClNI4/XBNbw8hHKZZ0pNfm/InnJ2XB3syGQdWVlLcN0W1lT+Wgv2lHhxru6/Y=
-X-Received: by 2002:a17:90a:3e03:: with SMTP id j3mr16004167pjc.19.1627887856177;
- Mon, 02 Aug 2021 00:04:16 -0700 (PDT)
+        bh=rSGWbbFuRedaEdyHysxeV1IP4YatfL/K7UHxptSqMq8=;
+        b=lJcXzf1er6yPNG8//WvB9XBFWKiRwtdEZQcjdkMweOMaP0WzlWVCcVDDZbSikf8DRv
+         HkNzvW0P3dIds0zcXWgSzzxZJMd7xifn1dzCJSyN7fFuswM+uaBq1dk+L+XUzCS8CNnR
+         IZk0SoOjyNo7s6OO3zvzyiHupnquLPSNSZNroV7deBC2pLDIJcFPhPM/d6vphE8ZE3db
+         dw5VmbhFLK5aZum67Mn9tQWlB281KDwyZC9sb90RWPk5cz0jh/Ff/QHlqiKUUK4VQsD5
+         YNPoR7lQuHbkzazQ2sinHHSBqwccjkTE6KnVhOTzC2wrriaFbIpJoU74Id6p8dil6zPi
+         +a6w==
+X-Gm-Message-State: AOAM530WpXL/Js5uXp48nzmUK8LB4OYF70eqVfUsfaa0MTXNjx5FoIBj
+        zfOwAmPnIUL71TpvvCd7fu5XI8znx9rz6iO33Ew=
+X-Google-Smtp-Source: ABdhPJxoSuZCu3vEitn2+ghjhTMOqbnX+5SeLRWSihnF89/mMMv7piQKFmLb7sgZGI2gsT8ryhTyFV1VX+MYTZfl57Q=
+X-Received: by 2002:a63:7209:: with SMTP id n9mr1567421pgc.253.1627888332321;
+ Mon, 02 Aug 2021 00:12:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1627709571.git.lucas.p.stankus@gmail.com> <8f13da2603ebede1c8c2d89f4ec2d9900a331250.1627709571.git.lucas.p.stankus@gmail.com>
-In-Reply-To: <8f13da2603ebede1c8c2d89f4ec2d9900a331250.1627709571.git.lucas.p.stankus@gmail.com>
+References: <20210801034341.67953-1-navin@linumiz.com>
+In-Reply-To: <20210801034341.67953-1-navin@linumiz.com>
 From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Mon, 2 Aug 2021 10:04:04 +0300
-Message-ID: <CA+U=DsqYH8ghQRiGnQDq9xdf325K-g3tfitwBSQOhPFup35YTg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] iio: accel: Add driver support for ADXL313
-To:     Lucas Stankus <lucas.p.stankus@gmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
-        "Berghe, Darius" <Darius.Berghe@analog.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
+Date:   Mon, 2 Aug 2021 10:12:00 +0300
+Message-ID: <CA+U=DsrmYJTJNgK52CQc6kiP0Fxe4sV+33f8ViV5ED2-5RmDXg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] iio: temperature: Add MAX31865 RTD Support
+To:     Navin Sankar Velliangiri <navin@linumiz.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio <linux-iio@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Jul 31, 2021 at 11:37 PM Lucas Stankus
-<lucas.p.stankus@gmail.com> wrote:
+On Sun, Aug 1, 2021 at 7:06 AM Navin Sankar Velliangiri
+<navin@linumiz.com> wrote:
 >
-> ADXL313 is a small, thin, low power, 3-axis accelerometer with high
-> resolution measurement up to +/-4g. It includes an integrated 32-level
-> FIFO and has activity and inactivity sensing capabilities.
+> This patch adds support for Maxim MAX31865 RTD temperature
+> sensor support.
 >
-
-I have just one small note to add on top of what Jonathan said, about
-the null terminator.
-Since this may be getting a V2, I thought it could go in.
-
-> Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ADXL313.pdf
+> More information can be found in:
+> https://datasheets.maximintegrated.com/en/ds/MAX31865.pdf
 >
-> Signed-off-by: Lucas Stankus <lucas.p.stankus@gmail.com>
+> Signed-off-by: Navin Sankar Velliangiri <navin@linumiz.com>
+>
+> Note: Changes in v2:
+>         -> removed unnecessary header #include <linux/util_macros.h>
+>         -> implemented mutex to protect the device state
+>         -> Added __cacheline_aligned buffer to hold the raw temperature data
+>         -> implemented separate function to enable_bias() & disable_bias()
+>         -> call max31865_init() func when updating the filter
+>         -> Added ABI documentation for reference & testing
+>         -> dropped spi_set_drvdata()
 > ---
->  MAINTAINERS                      |   9 +
->  drivers/iio/accel/Kconfig        |  29 +++
->  drivers/iio/accel/Makefile       |   3 +
->  drivers/iio/accel/adxl313.h      |  60 ++++++
->  drivers/iio/accel/adxl313_core.c | 323 +++++++++++++++++++++++++++++++
->  drivers/iio/accel/adxl313_i2c.c  |  65 +++++++
->  drivers/iio/accel/adxl313_spi.c  |  74 +++++++
->  7 files changed, 563 insertions(+)
->  create mode 100644 drivers/iio/accel/adxl313.h
->  create mode 100644 drivers/iio/accel/adxl313_core.c
->  create mode 100644 drivers/iio/accel/adxl313_i2c.c
->  create mode 100644 drivers/iio/accel/adxl313_spi.c
+>  .../sysfs-bus-iio-temperature-max31865        |  25 ++
+>  drivers/iio/temperature/Kconfig               |  10 +
+>  drivers/iio/temperature/Makefile              |   1 +
+>  drivers/iio/temperature/max31865.c            | 347 ++++++++++++++++++
+>  4 files changed, 383 insertions(+)
+>  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-temperature-max31865
+>  create mode 100644 drivers/iio/temperature/max31865.c
 >
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index a61f4f3b78a9..1fc88723e632 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -585,6 +585,15 @@ L: platform-driver-x86@vger.kernel.org
->  S:     Maintained
->  F:     drivers/platform/x86/adv_swbutton.c
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-temperature-max31865 b/Documentation/ABI/testing/sysfs-bus-iio-temperature-max31865
+> new file mode 100644
+> index 000000000000..7ca1e09b73f5
+> --- /dev/null
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio-temperature-max31865
+> @@ -0,0 +1,25 @@
+> +What:          /sys/bus/iio/devices/iio:deviceX/fault_ovuv
+> +KernelVersion: 5.11
+> +Contact:       linux-iio@vger.kernel.org
+> +Description:
+> +               Overvoltage or Undervoltage Input fault. The internal circuitry
+> +               is protected from excessive voltages applied to the thermocouple
+> +               cables at FORCE+, FORCE2, RTDIN+ & RTDIN-. This circuitry turn
+> +               off when the input voltage is negative or greater than VDD.
+> +
+> +               Reading returns either '1' or '0'
+> +
+> +               === =======================================================
+> +               '1' The input voltage is negative or greater than VDD.
+> +               '0' The input voltage is positive and less than VDD (normal
+> +                   state).
+> +               === =======================================================
+> +
+> +What:          /sys/bus/iio/devices/iio:deviceX/in_temp_filter_notch_frequency
+> +KernelVersion: 5.11
+> +Contact:       linux-iio@vger.kernel.org
+> +Description:
+> +               Notch frequency in Hz for a noise rejection filter. Used i.e for
+> +               line noise rejection.
+> +
+> +               Valid notch filter values are 50 Hz and 60 Hz.
+> diff --git a/drivers/iio/temperature/Kconfig b/drivers/iio/temperature/Kconfig
+> index 4df60082c1fa..c9412abca069 100644
+> --- a/drivers/iio/temperature/Kconfig
+> +++ b/drivers/iio/temperature/Kconfig
+> @@ -128,4 +128,14 @@ config MAX31856
+>           This driver can also be built as a module.  If so, the module
+>           will be called max31856.
 >
-> +ADXL313 THREE-AXIS DIGITAL ACCELEROMETER DRIVER
-> +M:     Lucas Stankus <lucas.p.stankus@gmail.com>
-> +S:     Supported
-> +F:     Documentation/devicetree/bindings/iio/accel/adi,adxl313.yaml
-> +F:     drivers/iio/accel/adxl313.h
-> +F:     drivers/iio/accel/adxl313_core.c
-> +F:     drivers/iio/accel/adxl313_i2c.c
-> +F:     drivers/iio/accel/adxl313_spi.c
-> +
->  ADXL34X THREE-AXIS DIGITAL ACCELEROMETER DRIVER (ADXL345/ADXL346)
->  M:     Michael Hennerich <michael.hennerich@analog.com>
->  S:     Supported
-> diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
-> index 0e56ace61103..ae621532e716 100644
-> --- a/drivers/iio/accel/Kconfig
-> +++ b/drivers/iio/accel/Kconfig
-> @@ -30,6 +30,35 @@ config ADIS16209
->           To compile this driver as a module, say M here: the module will be
->           called adis16209.
->
-> +config ADXL313
-> +       tristate
-> +
-> +config ADXL313_I2C
-> +       tristate "Analog Devices ADXL313 3-Axis Digital Accelerometer I2C Driver"
-> +       depends on I2C
-> +       select ADXL313
-> +       select REGMAP_I2C
-> +       help
-> +         Say Y here if you want to build i2c support for the Analog Devices
-> +         ADXL313 3-axis digital accelerometer.
-> +
-> +         To compile this driver as a module, choose M here: the module
-> +         will be called adxl313_i2c and you will also get adxl313_core
-> +         for the core module.
-> +
-> +config ADXL313_SPI
-> +       tristate "Analog Devices ADXL313 3-Axis Digital Accelerometer SPI Driver"
+> +config MAX31865
+> +       tristate "MAX31865 RTD to Digital converter"
 > +       depends on SPI
-> +       select ADXL313
-> +       select REGMAP_SPI
 > +       help
-> +         Say Y here if you want to build spi support for the Analog Devices
-> +         ADXL313 3-axis digital accelerometer.
+> +         If you say yes here you get support for MAX31865
+> +         thermocouple sensor chip connected via SPI.
 > +
-> +         To compile this driver as a module, choose M here: the module
-> +         will be called adxl313_spi and you will also get adxl313_core
-> +         for the core module.
+> +         This driver can also be build as a module. If so, the module
+> +         will be called max31865.
 > +
->  config ADXL345
->         tristate
->
-> diff --git a/drivers/iio/accel/Makefile b/drivers/iio/accel/Makefile
-> index 89280e823bcd..fadc92816e24 100644
-> --- a/drivers/iio/accel/Makefile
-> +++ b/drivers/iio/accel/Makefile
-> @@ -6,6 +6,9 @@
->  # When adding new entries keep the list in alphabetical order
->  obj-$(CONFIG_ADIS16201) += adis16201.o
->  obj-$(CONFIG_ADIS16209) += adis16209.o
-> +obj-$(CONFIG_ADXL313) += adxl313_core.o
-> +obj-$(CONFIG_ADXL313_I2C) += adxl313_i2c.o
-> +obj-$(CONFIG_ADXL313_SPI) += adxl313_spi.o
->  obj-$(CONFIG_ADXL345) += adxl345_core.o
->  obj-$(CONFIG_ADXL345_I2C) += adxl345_i2c.o
->  obj-$(CONFIG_ADXL345_SPI) += adxl345_spi.o
-> diff --git a/drivers/iio/accel/adxl313.h b/drivers/iio/accel/adxl313.h
+>  endmenu
+> diff --git a/drivers/iio/temperature/Makefile b/drivers/iio/temperature/Makefile
+> index 90c113115422..a8f3187258dc 100644
+> --- a/drivers/iio/temperature/Makefile
+> +++ b/drivers/iio/temperature/Makefile
+> @@ -8,6 +8,7 @@ obj-$(CONFIG_LTC2983) += ltc2983.o
+>  obj-$(CONFIG_HID_SENSOR_TEMP) += hid-sensor-temperature.o
+>  obj-$(CONFIG_MAXIM_THERMOCOUPLE) += maxim_thermocouple.o
+>  obj-$(CONFIG_MAX31856) += max31856.o
+> +obj-$(CONFIG_MAX31865) += max31865.o
+>  obj-$(CONFIG_MLX90614) += mlx90614.o
+>  obj-$(CONFIG_MLX90632) += mlx90632.o
+>  obj-$(CONFIG_TMP006) += tmp006.o
+> diff --git a/drivers/iio/temperature/max31865.c b/drivers/iio/temperature/max31865.c
 > new file mode 100644
-> index 000000000000..72f268e02a80
+> index 000000000000..9a6ee251bb3e
 > --- /dev/null
-> +++ b/drivers/iio/accel/adxl313.h
-> @@ -0,0 +1,60 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * ADXL313 3-Axis Digital Accelerometer
-> + *
-> + * Copyright (c) 2021 Lucas Stankus <lucas.p.stankus@gmail.com>
-> + */
-> +
-> +#ifndef _ADXL313_H_
-> +#define _ADXL313_H_
-> +
-> +/* ADXL313 register definitions */
-> +#define ADXL313_REG_DEVID0             0x00
-> +#define ADXL313_REG_DEVID1             0x01
-> +#define ADXL313_REG_PARTID             0x02
-> +#define ADXL313_REG_XID                        0x04
-> +#define ADXL313_REG_SOFT_RESET         0x18
-> +#define ADXL313_REG_OFS_AXIS(index)    (0x1E + (index))
-> +#define ADXL313_REG_THRESH_ACT         0x24
-> +#define ADXL313_REG_ACT_INACT_CTL      0x27
-> +#define ADXL313_REG_BW_RATE            0x2C
-> +#define ADXL313_REG_POWER_CTL          0x2D
-> +#define ADXL313_REG_INT_MAP            0x2F
-> +#define ADXL313_REG_DATA_FORMAT                0x31
-> +#define ADXL313_REG_DATAX              0x32
-> +#define ADXL313_REG_DATAY              0x34
-> +#define ADXL313_REG_DATAZ              0x36
-> +#define ADXL313_REG_FIFO_CTL           0x38
-> +#define ADXL313_REG_FIFO_STATUS                0x39
-> +
-> +#define ADXL313_DEVID0                 0xAD
-> +#define ADXL313_DEVID1                 0x1D
-> +#define ADXL313_PARTID                 0xCB
-> +#define ADXL313_SOFT_RESET             0x52
-> +
-> +#define ADXL313_RATE_MSK               GENMASK(3, 0)
-> +#define ADXL313_RATE_BASE              6
-> +
-> +#define ADXL313_POWER_CTL_MSK          GENMASK(3, 2)
-> +#define ADXL313_MEASUREMENT_MODE       BIT(3)
-> +
-> +#define ADXL313_RANGE_MSK              GENMASK(1, 0)
-> +#define ADXL313_RANGE_4G               3
-> +
-> +#define ADXL313_FULL_RES               BIT(3)
-> +#define ADXL313_SPI_3WIRE              BIT(6)
-> +#define ADXL313_I2C_DISABLE            BIT(6)
-> +
-> +/*
-> + * Scale for any g range is given in datasheet as
-> + * 1024 LSB/g = 0.0009765625 * 9.80665 = 0.009576806640625 m/s^2
-> + */
-> +#define ADXL313_NSCALE 9576806
-> +
-> +extern const struct regmap_access_table adxl313_readable_regs_table;
-> +
-> +extern const struct regmap_access_table adxl313_writable_regs_table;
-> +
-> +int adxl313_core_probe(struct device *dev, struct regmap *regmap,
-> +                      const char *name);
-> +#endif /* _ADXL313_H_ */
-> diff --git a/drivers/iio/accel/adxl313_core.c b/drivers/iio/accel/adxl313_core.c
-> new file mode 100644
-> index 000000000000..76382ab4f0f4
-> --- /dev/null
-> +++ b/drivers/iio/accel/adxl313_core.c
-> @@ -0,0 +1,323 @@
+> +++ b/drivers/iio/temperature/max31865.c
+> @@ -0,0 +1,347 @@
 > +// SPDX-License-Identifier: GPL-2.0-only
+> +
 > +/*
-> + * ADXL313 3-Axis Digital Accelerometer
+> + * Copyright (c) Linumiz 2021
 > + *
-> + * Copyright (c) 2021 Lucas Stankus <lucas.p.stankus@gmail.com>
+> + * max31865.c - Maxim MAX31865 RTD-to-Digital Converter sensor driver
 > + *
-> + * Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ADXL313.pdf
+> + * Author: Navin Sankar Velliangiri <navin@linumiz.com>
 > + */
 > +
-> +#include <linux/bitfield.h>
-> +#include <linux/iio/iio.h>
+> +#include <linux/ctype.h>
+> +#include <linux/delay.h>
+> +#include <linux/err.h>
+> +#include <linux/init.h>
 > +#include <linux/module.h>
-> +#include <linux/regmap.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/sysfs.h>
+> +#include <linux/spi/spi.h>
+> +#include <asm/unaligned.h>
 > +
-> +#include "adxl313.h"
+> +/*
+> + * The MSB of the register value determines whether the following byte will
+> + * be written or read. If it is 0, read will follow and if it is 1, write
+> + * will follow.
+> + */
+> +#define MAX31865_RD_WR_BIT                     BIT(7)
 > +
-> +const struct regmap_range adxl313_readable_reg_range[] = {
-> +       regmap_reg_range(ADXL313_REG_DEVID0, ADXL313_REG_XID),
-> +       regmap_reg_range(ADXL313_REG_SOFT_RESET, ADXL313_REG_SOFT_RESET),
-> +       regmap_reg_range(ADXL313_REG_OFS_AXIS(0), ADXL313_REG_OFS_AXIS(2)),
-> +       regmap_reg_range(ADXL313_REG_THRESH_ACT, ADXL313_REG_ACT_INACT_CTL),
-> +       regmap_reg_range(ADXL313_REG_BW_RATE, ADXL313_REG_FIFO_STATUS)
+> +#define MAX31865_CFG_VBIAS                     BIT(7)
+> +#define MAX31865_CFG_1SHOT                     BIT(5)
+> +#define MAX31865_3WIRE_RTD                     BIT(4)
+> +#define MAX31865_FAULT_STATUS_CLEAR            BIT(1)
+> +#define MAX31865_FILTER_50HZ                   BIT(0)
+> +
+> +/* The MAX31865 registers */
+> +#define MAX31865_CFG_REG                       0x00
+> +#define MAX31865_RTD_MSB                       0x01
+> +#define MAX31865_FAULT_STATUS                  0x07
+> +
+> +#define MAX31865_FAULT_OVUV                    BIT(2)
+> +
+> +static const struct iio_chan_spec max31865_channels[] = {
+> +       {       /* RTD Temperature */
+> +               .type = IIO_TEMP,
+> +               .info_mask_separate =
+> +                       BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE)
+> +       },
 > +};
 > +
-> +const struct regmap_access_table adxl313_readable_regs_table = {
-> +       .yes_ranges = adxl313_readable_reg_range,
-> +       .n_yes_ranges = ARRAY_SIZE(adxl313_readable_reg_range)
-> +};
-> +EXPORT_SYMBOL_GPL(adxl313_readable_regs_table);
-> +
-> +const struct regmap_range adxl313_writable_reg_range[] = {
-> +       regmap_reg_range(ADXL313_REG_SOFT_RESET, ADXL313_REG_SOFT_RESET),
-> +       regmap_reg_range(ADXL313_REG_OFS_AXIS(0), ADXL313_REG_OFS_AXIS(2)),
-> +       regmap_reg_range(ADXL313_REG_THRESH_ACT, ADXL313_REG_ACT_INACT_CTL),
-> +       regmap_reg_range(ADXL313_REG_BW_RATE, ADXL313_REG_INT_MAP),
-> +       regmap_reg_range(ADXL313_REG_DATA_FORMAT, ADXL313_REG_DATA_FORMAT),
-> +       regmap_reg_range(ADXL313_REG_FIFO_CTL, ADXL313_REG_FIFO_CTL)
+> +struct max31865_data {
+> +       struct spi_device *spi;
+> +       struct mutex lock;
+> +       u8 buf[2] ____cacheline_aligned;
+> +       bool filter_50hz;
+> +       bool three_wire;
 > +};
 > +
-> +const struct regmap_access_table adxl313_writable_regs_table = {
-> +       .yes_ranges = adxl313_writable_reg_range,
-> +       .n_yes_ranges = ARRAY_SIZE(adxl313_writable_reg_range)
-> +};
-> +EXPORT_SYMBOL_GPL(adxl313_writable_regs_table);
-> +
-> +struct adxl313_data {
-> +       struct regmap   *regmap;
-> +       struct mutex    lock; /* lock to protect transf_buf */
-> +       __le16          transf_buf ____cacheline_aligned;
-> +};
-> +
-> +static const int adxl313_odr_freqs[][2] = {
-> +       [0] = { 6, 250000 },
-> +       [1] = { 12, 500000 },
-> +       [2] = { 25, 0 },
-> +       [3] = { 50, 0 },
-> +       [4] = { 100, 0 },
-> +       [5] = { 200, 0 },
-> +       [6] = { 400, 0 },
-> +       [7] = { 800, 0 },
-> +       [8] = { 1600, 0 },
-> +       [9] = { 3200, 0 },
-> +};
-> +
-> +#define ADXL313_ACCEL_CHANNEL(index, addr, axis) {                     \
-> +       .type = IIO_ACCEL,                                              \
-> +       .address = addr,                                                \
-> +       .modified = 1,                                                  \
-> +       .channel2 = IIO_MOD_##axis,                                     \
-> +       .info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |                  \
-> +                             BIT(IIO_CHAN_INFO_CALIBBIAS),             \
-> +       .info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |          \
-> +                                   BIT(IIO_CHAN_INFO_SAMP_FREQ),       \
-> +       .info_mask_shared_by_type_available =                           \
-> +               BIT(IIO_CHAN_INFO_SAMP_FREQ),                           \
-> +       .scan_index = index,                                            \
-> +       .scan_type = {                                                  \
-> +               .sign = 's',                                            \
-> +               .realbits = 13,                                         \
-> +               .storagebits = 16,                                      \
-> +               .endianness = IIO_LE,                                   \
-> +       },                                                              \
+> +static int max31865_read(struct max31865_data *data, u8 reg,
+> +                        unsigned int read_size)
+> +{
+> +       return spi_write_then_read(data->spi, &reg, 1, data->buf, read_size);
 > +}
 > +
-> +static const struct iio_chan_spec adxl313_channels[] = {
-> +       ADXL313_ACCEL_CHANNEL(0, ADXL313_REG_DATAX, X),
-> +       ADXL313_ACCEL_CHANNEL(1, ADXL313_REG_DATAY, Y),
-> +       ADXL313_ACCEL_CHANNEL(2, ADXL313_REG_DATAZ, Z),
-> +};
-> +
-> +static int adxl313_set_odr(struct adxl313_data *data,
-> +                          unsigned int freq1, unsigned int freq2)
+> +static int max31865_write(struct max31865_data *data, size_t len)
 > +{
-> +       unsigned int i;
-> +
-> +       for (i = 0; i < ARRAY_SIZE(adxl313_odr_freqs); i++) {
-> +               if (adxl313_odr_freqs[i][0] == freq1 &&
-> +                   adxl313_odr_freqs[i][1] == freq2)
-> +                       break;
-> +       }
-> +
-> +       if (i == ARRAY_SIZE(adxl313_odr_freqs))
-> +               return -EINVAL;
-> +
-> +       return regmap_update_bits(data->regmap, ADXL313_REG_BW_RATE,
-> +                                 ADXL313_RATE_MSK,
-> +                                 FIELD_PREP(ADXL313_RATE_MSK,
-> +                                            ADXL313_RATE_BASE + i));
+> +       return spi_write(data->spi, data->buf, len);
 > +}
 > +
-> +static int adxl313_read_axis(struct adxl313_data *data,
-> +                            struct iio_chan_spec const *chan)
+> +static int enable_bias(struct max31865_data *data)
 > +{
+> +       u8 cfg;
 > +       int ret;
 > +
-> +       mutex_lock(&data->lock);
-> +
-> +       ret = regmap_bulk_read(data->regmap,
-> +                              chan->address,
-> +                              &data->transf_buf, 2);
+> +       ret = max31865_read(data, MAX31865_CFG_REG, 1);
 > +       if (ret)
-> +               goto unlock_ret;
+> +               return ret;
 > +
-> +       ret = le16_to_cpu(data->transf_buf);
+> +       cfg = data->buf[0];
 > +
-> +unlock_ret:
-> +       mutex_unlock(&data->lock);
-> +       return ret;
+> +       data->buf[0] = MAX31865_CFG_REG | MAX31865_RD_WR_BIT;
+> +       data->buf[1] = cfg | MAX31865_CFG_VBIAS;
+> +
+> +       return max31865_write(data, 2);
 > +}
 > +
-> +static int adxl313_read_freq_avail(struct iio_dev *indio_dev,
-> +                                  struct iio_chan_spec const *chan,
-> +                                  const int **vals, int *type, int *length,
-> +                                  long mask)
+> +static int disable_bias(struct max31865_data *data)
 > +{
-> +       switch (mask) {
-> +       case IIO_CHAN_INFO_SAMP_FREQ:
-> +               *vals = (const int *)adxl313_odr_freqs;
-> +               *length = ARRAY_SIZE(adxl313_odr_freqs) * 2;
-> +               *type = IIO_VAL_INT_PLUS_MICRO;
-> +               return IIO_AVAIL_LIST;
+> +       u8 cfg;
+> +       int ret;
+> +
+> +       ret = max31865_read(data, MAX31865_CFG_REG, 1);
+> +       if (ret)
+> +               return ret;
+> +
+> +       cfg = data->buf[0];
+> +       cfg &= ~MAX31865_CFG_VBIAS;
+> +
+> +       data->buf[0] = MAX31865_CFG_REG | MAX31865_RD_WR_BIT;
+> +       data->buf[1] = cfg;
+> +
+> +       return max31865_write(data, 2);
+> +}
+> +
+> +static int max31865_rtd_read(struct max31865_data *data, int *val)
+> +{
+> +       u8 reg;
+> +       int ret;
+> +
+> +       /* Enable BIAS to start the conversion */
+> +       ret = enable_bias(data);
+> +       if (ret)
+> +               return ret;
+> +
+> +       /* wait 10.5ms before initiating the conversion */
+> +       msleep(11);
+> +
+> +       ret = max31865_read(data, MAX31865_CFG_REG, 1);
+> +       if (ret)
+> +               return ret;
+> +
+> +       reg = data->buf[0];
+> +       reg |= MAX31865_CFG_1SHOT | MAX31865_FAULT_STATUS_CLEAR;
+> +       data->buf[0] = MAX31865_CFG_REG | MAX31865_RD_WR_BIT;
+> +       data->buf[1] = reg;
+> +
+> +       ret = max31865_write(data, 2);
+> +       if (ret)
+> +               return ret;
+> +
+> +       if (data->filter_50hz) {
+> +               /* 50Hz filter mode requires 62.5ms to complete */
+> +               msleep(63);
+> +       } else {
+> +               /* 60Hz filter mode requires 52ms to complete */
+> +               msleep(52);
 > +       }
 > +
-> +       return -EINVAL;
+> +       ret = max31865_read(data, MAX31865_RTD_MSB, 2);
+> +       if (ret)
+> +               return ret;
+> +
+> +       *val = (data->buf[0] << 8 | data->buf[1]) >> 1;
+> +
+> +       return disable_bias(data);
 > +}
 > +
-> +static int adxl313_read_raw(struct iio_dev *indio_dev,
-> +                           struct iio_chan_spec const *chan,
-> +                           int *val, int *val2, long mask)
+> +static int max31865_read_raw(struct iio_dev *indio_dev,
+> +                            struct iio_chan_spec const *chan,
+> +                            int *val, int *val2, long mask)
 > +{
-> +       struct adxl313_data *data = iio_priv(indio_dev);
-> +       unsigned int regval;
+> +       struct max31865_data *data = iio_priv(indio_dev);
 > +       int ret;
 > +
 > +       switch (mask) {
 > +       case IIO_CHAN_INFO_RAW:
-> +               ret = adxl313_read_axis(data, chan);
-> +               if (ret < 0)
+> +               mutex_lock(&data->lock);
+> +               ret = max31865_rtd_read(data, val);
+> +               mutex_unlock(&data->lock);
+> +               if (ret)
 > +                       return ret;
-> +
-> +               *val = sign_extend32(ret, chan->scan_type.realbits - 1);
 > +               return IIO_VAL_INT;
 > +       case IIO_CHAN_INFO_SCALE:
-> +               *val = 0;
-> +               *val2 = ADXL313_NSCALE;
-> +               return IIO_VAL_INT_PLUS_NANO;
-> +       case IIO_CHAN_INFO_CALIBBIAS:
-> +               ret = regmap_read(data->regmap,
-> +                                 ADXL313_REG_OFS_AXIS(chan->scan_index),
-> +                                 &regval);
-> +               if (ret)
-> +                       return ret;
-> +
-> +               /*
-> +                * 8-bit resolution at +/- 0.5g, that is 4x accel data scale
-> +                * factor at full resolution
-> +                */
-> +               *val = sign_extend32(regval, 7) * 4;
-> +               return IIO_VAL_INT;
-> +       case IIO_CHAN_INFO_SAMP_FREQ:
-> +               ret = regmap_read(data->regmap, ADXL313_REG_BW_RATE, &regval);
-> +               if (ret)
-> +                       return ret;
-> +
-> +               ret = FIELD_GET(ADXL313_RATE_MSK, regval) - ADXL313_RATE_BASE;
-> +               *val = adxl313_odr_freqs[ret][0];
-> +               *val2 = adxl313_odr_freqs[ret][1];
+> +               /* Temp. Data resolution is 0.03125 degree centigrade */
+> +               *val = 31;
+> +               *val2 = 250000; /* 1000 * 0.03125 */
 > +               return IIO_VAL_INT_PLUS_MICRO;
+> +       default:
+> +               return -EINVAL;
 > +       }
-> +
-> +       return -EINVAL;
 > +}
 > +
-> +static int adxl313_write_raw(struct iio_dev *indio_dev,
-> +                            struct iio_chan_spec const *chan,
-> +                            int val, int val2, long mask)
+> +static int max31865_init(struct max31865_data *data)
 > +{
-> +       struct adxl313_data *data = iio_priv(indio_dev);
+> +       u8 cfg;
+> +       int ret;
 > +
-> +       switch (mask) {
-> +       case IIO_CHAN_INFO_CALIBBIAS:
-> +               /*
-> +                * 8-bit resolution at +/- 0.5g, that is 4x accel data scale
-> +                * factor at full resolution
-> +                */
-> +               if (val > 127 * 4 || val < -128 * 4)
-> +                       return -EINVAL;
+> +       ret = max31865_read(data, MAX31865_CFG_REG, 1);
+> +       if (ret)
+> +               return ret;
 > +
-> +               return regmap_write(data->regmap,
-> +                                   ADXL313_REG_OFS_AXIS(chan->scan_index),
-> +                                   val / 4);
-> +       case IIO_CHAN_INFO_SAMP_FREQ:
-> +               return adxl313_set_odr(data, val, val2);
-> +       }
+> +       cfg = data->buf[0];
 > +
-> +       return -EINVAL;
+> +       if (data->three_wire)
+> +               /* 3-wire RTD connection */
+> +               cfg |= MAX31865_3WIRE_RTD;
+> +
+> +       if (data->filter_50hz)
+> +               /* 50Hz noise rejection filter */
+> +               cfg |= MAX31865_FILTER_50HZ;
+> +
+> +       data->buf[0] = MAX31865_CFG_REG | MAX31865_RD_WR_BIT;
+> +       data->buf[1] = cfg;
+> +
+> +       return max31865_write(data, 2);
 > +}
 > +
-> +static const struct iio_info adxl313_info = {
-> +       .read_raw       = adxl313_read_raw,
-> +       .write_raw      = adxl313_write_raw,
-> +       .read_avail     = adxl313_read_freq_avail
+> +static ssize_t show_fault(struct device *dev, u8 faultbit, char *buf)
+> +{
+> +       int ret;
+> +       bool fault;
+> +       struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> +       struct max31865_data *data = iio_priv(indio_dev);
+> +
+> +       ret = max31865_read(data, MAX31865_FAULT_STATUS, 1);
+> +       if (ret)
+> +               return ret;
+> +
+> +       fault = data->buf[0] & faultbit;
+> +
+> +       return sprintf(buf, "%d\n", fault);
+> +}
+> +
+> +static ssize_t show_fault_ovuv(struct device *dev,
+> +                             struct device_attribute *attr,
+> +                             char *buf)
+> +{
+> +       return show_fault(dev, MAX31865_FAULT_OVUV, buf);
+> +}
+> +
+> +static ssize_t show_filter(struct device *dev,
+> +                          struct device_attribute *attr,
+> +                          char *buf)
+> +{
+> +       struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> +       struct max31865_data *data = iio_priv(indio_dev);
+> +
+> +       return sprintf(buf, "%d\n", data->filter_50hz ? 50 : 60);
+> +}
+> +
+> +static ssize_t set_filter(struct device *dev,
+> +                         struct device_attribute *attr,
+> +                         const char *buf,
+> +                         size_t len)
+> +{
+> +       struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> +       struct max31865_data *data = iio_priv(indio_dev);
+> +       unsigned int freq;
+> +       int ret;
+> +
+> +       ret = kstrtouint(buf, 10, &freq);
+> +       if (ret)
+> +               return ret;
+> +
+> +       switch (freq) {
+> +       case 50:
+> +               data->filter_50hz = true;
+> +               break;
+> +       case 60:
+> +               data->filter_50hz = false;
+> +               break;
+> +       default:
+> +               return -EINVAL;
+> +       }
+> +
+> +       mutex_lock(&data->lock);
+> +       ret = max31865_init(data);
+> +       mutex_unlock(&data->lock);
+> +       if (ret)
+> +               return ret;
+> +
+> +       return len;
+> +}
+> +
+> +static IIO_DEVICE_ATTR(fault_ovuv, 0444, show_fault_ovuv, NULL, 0);
+> +static IIO_DEVICE_ATTR(in_temp_filter_notch_frequency, 0644,
+> +                   show_filter, set_filter, 0);
+> +
+> +static struct attribute *max31865_attributes[] = {
+> +       &iio_dev_attr_fault_ovuv.dev_attr.attr,
+> +       &iio_dev_attr_in_temp_filter_notch_frequency.dev_attr.attr,
+> +       NULL,
 > +};
 > +
-> +static int adxl313_setup(struct device *dev, struct adxl313_data *data)
+> +static const struct attribute_group max31865_group = {
+> +       .attrs = max31865_attributes,
+> +};
+> +
+> +static const struct iio_info max31865_info = {
+> +       .read_raw = max31865_read_raw,
+> +       .attrs = &max31865_group,
+> +};
+> +
+> +static int max31865_probe(struct spi_device *spi)
 > +{
-> +       unsigned int regval;
-> +       int ret;
-> +
-> +       /* Ensures the device is in a consistent state after start up */
-> +       ret = regmap_write(data->regmap, ADXL313_REG_SOFT_RESET,
-> +                          ADXL313_SOFT_RESET);
-> +       if (ret)
-> +               return ret;
-> +
-> +       if (device_property_read_bool(dev, "spi-3wire")) {
-> +               ret = regmap_write(data->regmap, ADXL313_REG_DATA_FORMAT,
-> +                                  ADXL313_SPI_3WIRE);
-> +               if (ret)
-> +                       return ret;
-> +       }
-> +
-> +       ret = regmap_read(data->regmap, ADXL313_REG_DEVID0, &regval);
-> +       if (ret)
-> +               return ret;
-> +
-> +       if (regval != ADXL313_DEVID0) {
-> +               dev_err(dev, "Invalid manufacturer ID: 0x%02x\n", regval);
-> +               return -ENODEV;
-> +       }
-> +
-> +       ret = regmap_read(data->regmap, ADXL313_REG_DEVID1, &regval);
-> +       if (ret)
-> +               return ret;
-> +
-> +       if (regval != ADXL313_DEVID1) {
-> +               dev_err(dev, "Invalid mems ID: 0x%02x\n", regval);
-> +               return -ENODEV;
-> +       }
-> +
-> +       ret = regmap_read(data->regmap, ADXL313_REG_PARTID, &regval);
-> +       if (ret)
-> +               return ret;
-> +
-> +       if (regval != ADXL313_PARTID) {
-> +               dev_err(dev, "Invalid device ID: 0x%02x\n", regval);
-> +               return -ENODEV;
-> +       }
-> +
-> +       /* Sets the range to +/- 4g */
-> +       ret = regmap_update_bits(data->regmap, ADXL313_REG_DATA_FORMAT,
-> +                                ADXL313_RANGE_MSK,
-> +                                FIELD_PREP(ADXL313_RANGE_MSK,
-> +                                           ADXL313_RANGE_4G));
-> +       if (ret)
-> +               return ret;
-> +
-> +       /* Enables full resolution */
-> +       ret = regmap_update_bits(data->regmap, ADXL313_REG_DATA_FORMAT,
-> +                                ADXL313_FULL_RES, ADXL313_FULL_RES);
-> +       if (ret)
-> +               return ret;
-> +
-> +       /* Enables measurement mode */
-> +       return regmap_update_bits(data->regmap, ADXL313_REG_POWER_CTL,
-> +                                 ADXL313_POWER_CTL_MSK,
-> +                                 ADXL313_MEASUREMENT_MODE);
-> +}
-> +
-> +int adxl313_core_probe(struct device *dev, struct regmap *regmap,
-> +                      const char *name)
-> +{
-> +       struct adxl313_data *data;
+> +       const struct spi_device_id *id = spi_get_device_id(spi);
 > +       struct iio_dev *indio_dev;
+> +       struct max31865_data *data;
 > +       int ret;
 > +
-> +       indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
+> +       indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*data));
 > +       if (!indio_dev)
 > +               return -ENOMEM;
 > +
 > +       data = iio_priv(indio_dev);
-> +       data->regmap = regmap;
+> +       data->spi = spi;
+> +       data->filter_50hz = false;
 > +       mutex_init(&data->lock);
 > +
-> +       indio_dev->name = name;
-> +       indio_dev->info = &adxl313_info;
+> +       indio_dev->info = &max31865_info;
+> +       indio_dev->name = id->name;
 > +       indio_dev->modes = INDIO_DIRECT_MODE;
-> +       indio_dev->channels = adxl313_channels;
-> +       indio_dev->num_channels = ARRAY_SIZE(adxl313_channels);
+> +       indio_dev->channels = max31865_channels;
+> +       indio_dev->num_channels = ARRAY_SIZE(max31865_channels);
 > +
-> +       ret = adxl313_setup(dev, data);
+> +       if (of_property_read_bool(spi->dev.of_node, "maxim,3-wire")) {
+> +               /* select 3 wire */
+> +               data->three_wire = 1;
+> +       } else {
+> +               /* select 2 or 4 wire */
+> +               data->three_wire = 0;
+> +       }
+> +
+> +       mutex_lock(&data->lock);
+> +       ret = max31865_init(data);
+> +       mutex_unlock(&data->lock);
+
+There aren't any changes for race-conditions here.
+There is no userspace access to the device yet (before
+devm_iio_device_register() is being called).
+So, the locking can be removed [here] in probe().
+
 > +       if (ret) {
-> +               dev_err(dev, "ADXL313 setup failed\n");
+> +               dev_err(&spi->dev, "error: Failed to configure max31865\n");
 > +               return ret;
 > +       }
 > +
-> +       return devm_iio_device_register(dev, indio_dev);
-> +}
-> +EXPORT_SYMBOL_GPL(adxl313_core_probe);
-> +
-> +MODULE_AUTHOR("Lucas Stankus <lucas.p.stankus@gmail.com>");
-> +MODULE_DESCRIPTION("ADXL313 3-Axis Digital Accelerometer core driver");
-> +MODULE_LICENSE("GPL v2");
-> diff --git a/drivers/iio/accel/adxl313_i2c.c b/drivers/iio/accel/adxl313_i2c.c
-> new file mode 100644
-> index 000000000000..65050a2fbd38
-> --- /dev/null
-> +++ b/drivers/iio/accel/adxl313_i2c.c
-> @@ -0,0 +1,65 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * ADXL313 3-Axis Digital Accelerometer
-> + *
-> + * Copyright (c) 2021 Lucas Stankus <lucas.p.stankus@gmail.com>
-> + *
-> + * Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ADXL313.pdf
-> + */
-> +
-> +#include <linux/i2c.h>
-> +#include <linux/module.h>
-> +#include <linux/regmap.h>
-> +
-> +#include "adxl313.h"
-> +
-> +static const struct regmap_config adxl313_i2c_regmap_config = {
-> +       .reg_bits       = 8,
-> +       .val_bits       = 8,
-> +       .rd_table       = &adxl313_readable_regs_table,
-> +       .wr_table       = &adxl313_writable_regs_table,
-> +       .max_register   = 0x39
-> +};
-> +
-> +static int adxl313_i2c_probe(struct i2c_client *client)
-> +{
-> +       struct regmap *regmap;
-> +
-> +       regmap = devm_regmap_init_i2c(client, &adxl313_i2c_regmap_config);
-> +       if (IS_ERR(regmap)) {
-> +               dev_err(&client->dev, "Error initializing i2c regmap: %ld\n",
-> +                       PTR_ERR(regmap));
-> +               return PTR_ERR(regmap);
-> +       }
-> +
-> +       return adxl313_core_probe(&client->dev, regmap, client->name);
+> +       return devm_iio_device_register(&spi->dev, indio_dev);
 > +}
 > +
-> +static const struct i2c_device_id adxl313_i2c_id[] = {
-> +       { "adxl313", 0 },
+> +static const struct spi_device_id max31865_id[] = {
+> +       { "max31865", 0 },
 > +       { }
 > +};
+> +MODULE_DEVICE_TABLE(spi, max31865_id);
 > +
-> +MODULE_DEVICE_TABLE(i2c, adxl313_i2c_id);
-> +
-> +static const struct of_device_id adxl313_of_match[] = {
-> +       { .compatible = "adi,adxl313" },
-> +       { },
-
-Since this may be getting a V2 anyway, maybe remove the comma from the
-null-terminators [where the case].
-
-> +};
-> +
-> +MODULE_DEVICE_TABLE(of, adxl313_of_match);
-> +
-> +static struct i2c_driver adxl313_i2c_driver = {
-> +       .driver = {
-> +               .name   = "adxl313_i2c",
-> +               .of_match_table = adxl313_of_match,
-> +       },
-> +       .probe_new      = adxl313_i2c_probe,
-> +       .id_table       = adxl313_i2c_id,
-> +};
-> +
-> +module_i2c_driver(adxl313_i2c_driver);
-> +
-> +MODULE_AUTHOR("Lucas Stankus <lucas.p.stankus@gmail.com>");
-> +MODULE_DESCRIPTION("ADXL313 3-Axis Digital Accelerometer I2C driver");
-> +MODULE_LICENSE("GPL v2");
-> diff --git a/drivers/iio/accel/adxl313_spi.c b/drivers/iio/accel/adxl313_spi.c
-> new file mode 100644
-> index 000000000000..7c58c9ff8985
-> --- /dev/null
-> +++ b/drivers/iio/accel/adxl313_spi.c
-> @@ -0,0 +1,74 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * ADXL313 3-Axis Digital Accelerometer
-> + *
-> + * Copyright (c) 2021 Lucas Stankus <lucas.p.stankus@gmail.com>
-> + *
-> + * Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ADXL313.pdf
-> + */
-> +
-> +#include <linux/module.h>
-> +#include <linux/regmap.h>
-> +#include <linux/spi/spi.h>
-> +
-> +#include "adxl313.h"
-> +
-> +static const struct regmap_config adxl313_spi_regmap_config = {
-> +       .reg_bits       = 8,
-> +       .val_bits       = 8,
-> +       .rd_table       = &adxl313_readable_regs_table,
-> +       .wr_table       = &adxl313_writable_regs_table,
-> +       .max_register   = 0x39,
-> +        /* Setting bits 7 and 6 enables multiple-byte read */
-> +       .read_flag_mask = BIT(7) | BIT(6)
-> +};
-> +
-> +static int adxl313_spi_probe(struct spi_device *spi)
-> +{
-> +       const struct spi_device_id *id = spi_get_device_id(spi);
-> +       struct regmap *regmap;
-> +       int ret;
-> +
-> +       regmap = devm_regmap_init_spi(spi, &adxl313_spi_regmap_config);
-> +       if (IS_ERR(regmap)) {
-> +               dev_err(&spi->dev, "Error initializing spi regmap: %ld\n",
-> +                       PTR_ERR(regmap));
-> +               return PTR_ERR(regmap);
-> +       }
-> +
-> +       ret = adxl313_core_probe(&spi->dev, regmap, id->name);
-> +       if (ret < 0)
-> +               return ret;
-> +
-> +       return regmap_update_bits(regmap, ADXL313_REG_POWER_CTL,
-> +                                 ADXL313_I2C_DISABLE, ADXL313_I2C_DISABLE);
-> +}
-> +
-> +static const struct spi_device_id adxl313_spi_id[] = {
-> +       { "adxl313", 0 },
+> +static const struct of_device_id max31865_of_match[] = {
+> +       { .compatible = "maxim,max31865" },
 > +       { }
 > +};
+> +MODULE_DEVICE_TABLE(of, max31865_of_match);
 > +
-> +MODULE_DEVICE_TABLE(spi, adxl313_spi_id);
-> +
-> +static const struct of_device_id adxl313_of_match[] = {
-> +       { .compatible = "adi,adxl313" },
-> +       { },
-> +};
-> +
-> +MODULE_DEVICE_TABLE(of, adxl313_of_match);
-> +
-> +static struct spi_driver adxl313_spi_driver = {
+> +static struct spi_driver max31865_driver = {
 > +       .driver = {
-> +               .name   = "adxl313_spi",
-> +               .of_match_table = adxl313_of_match,
+> +               .name   = "max31865",
+> +               .of_match_table = max31865_of_match,
 > +       },
-> +       .probe          = adxl313_spi_probe,
-> +       .id_table       = adxl313_spi_id,
+> +       .probe = max31865_probe,
+> +       .id_table = max31865_id,
 > +};
+> +module_spi_driver(max31865_driver);
 > +
-> +module_spi_driver(adxl313_spi_driver);
-> +
-> +MODULE_AUTHOR("Lucas Stankus <lucas.p.stankus@gmail.com>");
-> +MODULE_DESCRIPTION("ADXL313 3-Axis Digital Accelerometer SPI driver");
+> +MODULE_AUTHOR("Navin Sankar Velliangiri <navin@linumiz.com>");
+> +MODULE_DESCRIPTION("Maxim MAX31865 RTD-to-Digital Converter sensor driver");
 > +MODULE_LICENSE("GPL v2");
 > --
 > 2.32.0

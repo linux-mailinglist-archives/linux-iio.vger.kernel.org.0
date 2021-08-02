@@ -2,128 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 865283DCEB3
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Aug 2021 04:33:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F69D3DCF55
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Aug 2021 06:24:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229915AbhHBCde (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 1 Aug 2021 22:33:34 -0400
-Received: from cmccmta3.chinamobile.com ([221.176.66.81]:19885 "EHLO
-        cmccmta3.chinamobile.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229908AbhHBCde (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 Aug 2021 22:33:34 -0400
-Received: from spf.mail.chinamobile.com (unknown[172.16.121.15]) by rmmx-syy-dmz-app09-12009 (RichMail) with SMTP id 2ee961075917e6b-e0b59; Mon, 02 Aug 2021 10:31:52 +0800 (CST)
-X-RM-TRANSID: 2ee961075917e6b-e0b59
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG: 00000000
-Received: from [192.168.26.114] (unknown[10.42.68.12])
-        by rmsmtp-syy-appsvr08-12008 (RichMail) with SMTP id 2ee861075917908-5b6c1;
-        Mon, 02 Aug 2021 10:31:52 +0800 (CST)
-X-RM-TRANSID: 2ee861075917908-5b6c1
-Subject: Re: [PATCH] iio: adc: fsl-imx25-gcq: fix the right check and simplify
- code
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     knaack.h@gmx.de, lars@metafoo.de, shawnguo@kernel.org,
-        s.hauer@pengutronix.de, festevam@gmail.com,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-References: <20210727125209.28248-1-tangbin@cmss.chinamobile.com>
- <20210731174551.188aee79@jic23-huawei>
-From:   tangbin <tangbin@cmss.chinamobile.com>
-Message-ID: <b84ea3e4-5650-d6ac-36f6-98067b286b45@cmss.chinamobile.com>
-Date:   Mon, 2 Aug 2021 10:31:58 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S231901AbhHBEYV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 2 Aug 2021 00:24:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43662 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231898AbhHBEYU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Aug 2021 00:24:20 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F34DC061796
+        for <linux-iio@vger.kernel.org>; Sun,  1 Aug 2021 21:24:10 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id ec13so22150016edb.0
+        for <linux-iio@vger.kernel.org>; Sun, 01 Aug 2021 21:24:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=JbMtpdZj7sghISs4e5T5yryQDvERMuYalazmdQP0RcA=;
+        b=FtyL1jenxhHoD0FEqr0JzEzar9WxjQ0aFEwPIjOui/KxHqjdRIaWw+qc9fVrqT7/Dn
+         Pnh35Va41LybAL6U8YkeIBgROe6j/64zDWESXr3a3yRfbQQPGRB9fNiPFd+zLtRJzUIN
+         QuzzTY5SkBKHMhw3aNm828s4szNx+qezVfjbXBb1AnLosRqM3hZLsmXFs11UFe9XwQd0
+         8wSmR+hXWoecdn7C1dRJ3raMOO2OzRp8To/v4OIIenhLUR2Xi2bEwQKHQsPiMZ9RJ/f/
+         /P5G34L+RYG0gvY4mQKUVcv9jgYngramQoP+XViWVUuAojxufRmPTkFAnPt7xVda61k1
+         G8fw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=JbMtpdZj7sghISs4e5T5yryQDvERMuYalazmdQP0RcA=;
+        b=mSRYGfdRBxH3LgtxuH6rmnDLduIzzENmsNTg3FhsacTtxl/VYKcILBzbqEeeh+6ef8
+         i8GEDo5rbSyiDlJqAF+WM8zs3ghXomUE8agHCL80uDbLhpygseUyHGsmm8LXZUdgBEkO
+         Ksdz/KLnHkbwP4DeBhp6ADrckA5YN8y6KlCjRoUV3acXFSXH0oQHD7Jmed1+pcEmPocF
+         470nw6Bx3A0Y1DFUQCtd9Psrdj/zUIP2yryA+hJmU2xNsaNA35sV/cP5/g9cETgYXMNB
+         kb7NGHV8bxw/1RAyHj7Paso2Wc4e0ZS4+JmnZULSc+gvODcrOCybX+871Z1BBL7Tysx8
+         dnvw==
+X-Gm-Message-State: AOAM531V5Chg1XfSzFmyb37TdB/gcOb+718QHcL9l+Wm7dfLk/EpWZLX
+        yotw5gOFLXKfc3bPhpBcKFAH8PKXBZd5lcV92lQ=
+X-Google-Smtp-Source: ABdhPJzys5yCwXnLOHH4NsCIcKA9f726GMnAOsN9NLlhSmyZNb7UhzU0IEwJ6FYKksyg3UeOKVwrbLA6pAJm2hMlOV0=
+X-Received: by 2002:aa7:c0d1:: with SMTP id j17mr16890014edp.217.1627878249276;
+ Sun, 01 Aug 2021 21:24:09 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210731174551.188aee79@jic23-huawei>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Received: by 2002:a17:907:d0b:0:0:0:0 with HTTP; Sun, 1 Aug 2021 21:24:08
+ -0700 (PDT)
+Reply-To: ablahikazabl67@gmail.com
+From:   Abdoulahi Kazim <drwilliamcuthbert@gmail.com>
+Date:   Mon, 2 Aug 2021 05:24:08 +0100
+Message-ID: <CAKwBCXuzDf40zPCct3xg8L9LubxzXWgC230fQ80GXrmg_Yuttw@mail.gmail.com>
+Subject: More Authentic Information
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan:
+-- 
+Dear Partner,
 
-On 2021/8/1 0:45, Jonathan Cameron wrote:
-> On Tue, 27 Jul 2021 20:52:09 +0800
-> Tang Bin <tangbin@cmss.chinamobile.com> wrote:
->
->> For the function of platform_get_irq(), the example in platform.c is
->> *		int irq = platform_get_irq(pdev, 0);
->> *		if (irq < 0)
->> *			return irq;
->> So the return value of zero is unnecessary to check. And move it
->> up to a little bit can simplify the code jump.
->>
->> Co-developed-by: Zhang Shengju <zhangshengju@cmss.chinamobile.com>
->> Signed-off-by: Zhang Shengju <zhangshengju@cmss.chinamobile.com>
->> Signed-off-by: Tang Bin <tangbin@cmss.chinamobile.com>
-> Hi,
->
-> Logically it is better to keep the irq handling all together, so
-> I would prefer we didn't move it.
-Got it in this place.
->
-> Also, platform_get_irq() is documented as never returning 0, so the current
-> code is not incorrect.  As such, this looks like noise unless there is
-> some plan to make use of the 0 return value?  What benefit do we get from
-> this change?
+I am soliciting your partnership to relocate $12.5 Million to your
+country for investment on my behalf and you will be entitled to 30% of
+the sum once the transaction is successful made.
 
-Thanks for your reply, I think the benefit of this change maybe just 
-simplify the code.
+Please indicate your genuine interest if you are capable so that i
+will send you the authentic details and documents of the transaction
+in awareness with some of my fellow Directors in the bank.
 
-Because the return value is never equal to 0, so the check in here is 
-redundant.
-
-We can make the patch like this:
-
->> ---
->>   drivers/iio/adc/fsl-imx25-gcq.c | 12 ++++--------
->>   1 file changed, 4 insertions(+), 8 deletions(-)
->>
->> diff --git a/drivers/iio/adc/fsl-imx25-gcq.c b/drivers/iio/adc/fsl-imx25-gcq.c
->> index 8cb51cf7a..d28976f21 100644
->> --- a/drivers/iio/adc/fsl-imx25-gcq.c
->> +++ b/drivers/iio/adc/fsl-imx25-gcq.c
->> @@ -320,6 +320,10 @@ static int mx25_gcq_probe(struct platform_device *pdev)
->>   	if (ret)
->>   		return ret;
->>   
->> +	priv->irq = platform_get_irq(pdev, 0);
->> +	if (priv->irq < 0)
->> +		return priv->irq;
->> +
->>   	for (i = 0; i != 4; ++i) {
->>   		if (!priv->vref[i])
->>   			continue;
->> @@ -336,14 +340,6 @@ static int mx25_gcq_probe(struct platform_device *pdev)
->>   		goto err_vref_disable;
->>   	}
->>   
->> -	priv->irq = platform_get_irq(pdev, 0);
->> -	if (priv->irq <= 0) {
->> -		ret = priv->irq;
->> -		if (!ret)
->> -			ret = -ENXIO;
->> -		goto err_clk_unprepare;
->> -	}
->> -
-
-	priv->irq = platform_get_irq(pdev, 0);
-	if (priv->irq < 0) {
-		ret = priv->irq;
-		goto err_clk_unprepare;
-	}
-
-     If you think this is ok, I will send V2 for you. If you think these 
-change is meaningless,
-
-just dropped this.
-
-Thanks
-
-Tang Bin
+If you are interested, here is my private Email address:
+(ablahikazabl67@gmail.com)
+For more authentic and legit information.
 
 
-
-
+Regards :  Abdoulahi Kazim

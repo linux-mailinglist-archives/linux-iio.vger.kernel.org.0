@@ -2,111 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5125F3DF7E6
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Aug 2021 00:36:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 545CC3DF88B
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Aug 2021 01:35:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233200AbhHCWgL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 Aug 2021 18:36:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53212 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231770AbhHCWgL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 3 Aug 2021 18:36:11 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D3C4560525;
-        Tue,  3 Aug 2021 22:35:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1628030159;
-        bh=VLQDPuYtppmqHTWikIAl/LlTeEVdU62YKptNtZBvwDM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XiC4OcyA9vPRScT+26U/MPHk/PLw7cfWKDzQmhm7L/2ifrhJ/zeydraOBFfSielel
-         C9CoTPz9m8g5nHPqw5lV3cach9MFKoQo7P1BIrAUEWxt2n34NVbQ8Vq9y9Bk17olEn
-         YwLObrlxabk//+7InLHI/JB3MrRVuc6CLmVXUNAItfsddCLQfVMIBm5OTMNUIr0d2j
-         6rr6MddHbqKXUpTXihj8VOyu+VpdlXivyHd+uCltwAZVIFEkOJPzox3KYwl2CflZxe
-         PtulX27cIMv06Ar6mdPJO8Z5O1byM1L5d1FcFiP35VJWL3P8a4KAnMf4Mgm9Rzd4KU
-         G6lou/vcPBEZA==
-From:   Mark Brown <broonie@kernel.org>
-To:     Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Nikita Shubin <nikita.shubin@maquefel.me>
-Cc:     Mark Brown <broonie@kernel.org>,
-        "open list:PWM SUBSYSTEM" <linux-pwm@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Russell King <rmk+kernel@armlinux.org.uk>,
-        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
-        <alsa-devel@alsa-project.org>,
-        "open list:INPUT KEYBOARD, MOUSE, JOYSTICK , TOUCHSCREEN..." 
-        <linux-input@vger.kernel.org>, YiFei Zhu <yifeifz2@illinois.edu>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        "open list:FRAMEBUFFER LAYER" <dri-devel@lists.freedesktop.org>,
-        Mike Rapoport <rppt@kernel.org>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        "open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        "open list:DMA GENERIC OFFLOAD ENGINE SUBSYSTEM" 
-        <dmaengine@vger.kernel.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>
-Subject: Re: (subset) [PATCH v2 0/8] arm: ep93xx: CCF conversion
-Date:   Tue,  3 Aug 2021 23:35:30 +0100
-Message-Id: <162803013703.42391.16928190328940334025.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210726140001.24820-1-nikita.shubin@maquefel.me>
-References: <20210726115058.23729-1-nikita.shubin@maquefel.me> <20210726140001.24820-1-nikita.shubin@maquefel.me>
+        id S234191AbhHCXfP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Aug 2021 19:35:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50246 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231966AbhHCXfP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Aug 2021 19:35:15 -0400
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 495DFC06175F
+        for <linux-iio@vger.kernel.org>; Tue,  3 Aug 2021 16:35:03 -0700 (PDT)
+Received: by mail-lf1-x134.google.com with SMTP id h2so1350965lfu.4
+        for <linux-iio@vger.kernel.org>; Tue, 03 Aug 2021 16:35:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=OboK+DP1GLQ7qO1X6SFXHJeqsxmRJzLpz1cmFRfRtvg=;
+        b=STceXaC5PfzZq/z5cCZaqDSKX8eNoQ2p/qIKEt8D5BChje8N2mJqZfrVcp7obJ01FP
+         mldMZo6j87cICbQypMXnTk2SmPoMt3q5xG669bjhGQ8WxSqhyd/wfnwXq8DbGh753X/B
+         o7+6VHtZLsjsgt6AGtQmvvvoZzCeyuLvIPrIInG2w2RN7Ypr1DgebD3tJcXuMLWIb2RA
+         qgYBY6lbkp1BRWqHWC8+ZKkQRMmmdXY9Zc6Vx1tWykRE0Zkawy9z+8YAaQS4l7DJ/98J
+         pbodWBxEKltkBkDGLKlmeRbl0rJK5zG6GVxJF7OQxWkN9tF2zFfiJ06t7sJCZvGrCe4Z
+         d13A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=OboK+DP1GLQ7qO1X6SFXHJeqsxmRJzLpz1cmFRfRtvg=;
+        b=nNxsWsPzZRn04xnIwW6dnieZs9XdksvPI6GDRLDyUhhjZ056Dne3qJlNE/+2N+OSrM
+         9zQ3N7wzA+LtJAnAHNrX770gwmm5ZEQg6cQQQX6XRt1dNK9XAT4Y1cWPGcbwI8yE6U+Z
+         xesbJnUK640ZF8KaRv8TSK4I/FVBzl8zcAhFhcsRiWW2ZkWJABoKU6XIO1Cg5SUxFatb
+         DgNSpfzrJWHQRhLUbDD4QFZQt3yLK6ev4oZbo74JLTYnxRvI4POHrvQVhvvCJWP2MNGS
+         BybHqnjulfIo1ZdkaI5FJOZPJh/slVUQKxWFewttef1CzmKmgSzDoMkDFleB090LXg+2
+         iROg==
+X-Gm-Message-State: AOAM531VDLUogIudvy8gGEBHocwtrvB8F+UocRrM0ObBNtqGGIXoUGs8
+        iWTmPrgcFfoD9oQktO5n61IvMXPY3OAMJFTBFTVESw==
+X-Google-Smtp-Source: ABdhPJymjavPtkVqjxK9gWwdsr0cwgOPwoR9crWUlQrL7fb/5sa+YFl7A0NQ2p7gam0sNyYEnLxEs3r4HWOWYf4Xd5I=
+X-Received: by 2002:ac2:4c4c:: with SMTP id o12mr17755451lfk.157.1628033701692;
+ Tue, 03 Aug 2021 16:35:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20210802155657.102766-1-stephan@gerhold.net> <20210802155657.102766-4-stephan@gerhold.net>
+In-Reply-To: <20210802155657.102766-4-stephan@gerhold.net>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 4 Aug 2021 01:34:50 +0200
+Message-ID: <CACRpkdZO9_Z+3UCgKgGkERqV2aK=1GbdDEDzVaKt1ejzBmrG9A@mail.gmail.com>
+Subject: Re: [PATCH v2 3/4] iio: accel: bmc150: Make it possible to configure
+ INT2 instead of INT1
+To:     Stephan Gerhold <stephan@gerhold.net>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS
+        <devicetree@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>, Andy
+        Shevchenko <andy.shevchenko@gmail.com>," 
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        Nikita Travkin <nikita@trvn.ru>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 26 Jul 2021 16:59:48 +0300, Nikita Shubin wrote:
-> This series series of patches converts ep93xx to Common Clock Framework.
-> 
-> It consists of preparation patches to use clk_prepare_enable where it is
-> needed, instead of clk_enable used in ep93xx drivers prior to CCF and
-> a patch converting mach-ep93xx/clock.c to CCF.
-> 
-> Link: https://lore.kernel.org/patchwork/cover/1445563/
-> Link: https://lore.kernel.org/patchwork/patch/1435884/
-> 
-> [...]
+On Mon, Aug 2, 2021 at 5:57 PM Stephan Gerhold <stephan@gerhold.net> wrote:
 
-Applied to
+> Some Bosch accelerometers have two interrupt pins (INT1 and INT2).
+> At the moment, the driver uses only the first one, which is fine for
+> most situations. However, some boards might only have INT2 connected
+> for some reason.
+>
+> Add the necessary bits and configuration to set up INT2. Then try
+> to detect this situation at least for device tree setups by checking
+> if the first interrupt (the one picked by the I2C/SPI core) is actually
+> named "INT2" using the interrupt-names property.
+>
+> of_irq_get_byname() returns either 0 or some error code in case
+> the driver probed without device tree, so in all other cases we fall
+> back to configuring INT1 as before.
+>
+> Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Looks good
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-Thanks!
-
-[2/8] spi: spi-ep93xx: Prepare clock before using it
-      commit: 7c72dc56a631b87043e3c5838f5094db30d8c58d
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+Yours,
+Linus Walleij

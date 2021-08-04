@@ -2,19 +2,19 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 21C033E04A1
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Aug 2021 17:46:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C5953E04A7
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Aug 2021 17:46:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239178AbhHDPqd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 4 Aug 2021 11:46:33 -0400
-Received: from mout.kundenserver.de ([212.227.126.133]:47331 "EHLO
+        id S239210AbhHDPqv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 4 Aug 2021 11:46:51 -0400
+Received: from mout.kundenserver.de ([212.227.126.135]:56389 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239114AbhHDPqd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 Aug 2021 11:46:33 -0400
+        with ESMTP id S239114AbhHDPqu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 Aug 2021 11:46:50 -0400
 Received: from localhost ([31.220.117.74]) by mrelayeu.kundenserver.de
- (mreue011 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MFbFW-1mMo4q39oM-00HAZQ; Wed, 04 Aug 2021 17:45:30 +0200
-Date:   Wed, 4 Aug 2021 17:45:28 +0200
+ (mreue012 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1MlL5x-1msJTQ3krt-00lmxR; Wed, 04 Aug 2021 17:45:53 +0200
+Date:   Wed, 4 Aug 2021 17:45:50 +0200
 From:   Andreas Klinger <ak@it-klinger.de>
 To:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
         Rob Herring <robh+dt@kernel.org>,
@@ -30,63 +30,56 @@ Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Alexandru Ardelean <alexandru.ardelean@analog.com>,
         linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
         Tomasz Duszynski <tomasz.duszynski@octakon.com>
-Subject: [PATCH v2 0/2] iio: chemical: Add support for sgp40 gas sensor
-Message-ID: <20210804154526.GA3207@arbad>
+Subject: [PATCH v2 1/2] dt-bindings: iio: chemical: Add trivial DT binding
+ for sgp40
+Message-ID: <20210804154549.GA3223@arbad>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Provags-ID: V03:K1:h1Ad/GJR8B0E6z5jsKRm1/B98CL151ul96gdS5ZJNAowTXJZm/1
- IaA5vjeJsNWMdyxQAWPfHG/m+1Heq+YxmpjJ1GmhfGVHgquBU2zAmrB5jy1VqJ0BYLShpa5
- aqtPfEP8ssjHrA/VRs3dYIpSvhMLoQ1EZvS3TI9s0tXD3qMOA6BTZUrWXQXtYh2j23xXEVd
- E+HWkANUp6+OIryeGJv7A==
+X-Provags-ID: V03:K1:CrKk4+CxORokZ0dQnPDoLkZhQSIy79eAhrhmCbP4jWiq/4RmT0D
+ j++vDpnnsqQpILdizZJrPyVsKF17StHJYz8xmL9Ha2ZOsAUaL6cDL1RcflxGxfYK6dPQhIB
+ 5xHnGskA88HC21C2sY6FstrBYGHbvQJVxDB3tIGNPGrScROzlFNCGvBCYwXK1L6Nwh+6LI/
+ GdAWuMWY9GUe98mmsvelQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:FbfamShZD4I=:1RLz8ycCkdbfviYcUAmZbI
- SFvRmTvZWfKrDtmsR2d3JpfxDX5J/2XPgE2YUB1WcEITQkF3VkqRCfPNFZpHFaGI2Ton0RLw/
- snGi29zEhzs2ymxEUa+93aMK//vorQfUYq4Mhd7QLoF+uKcky1D5o+B6+AvZsgsM7HlrbuAJk
- uS/BWwDV9YCVPgpGh0ud0mgPSXA1ZO+X/dWj5rH8wwxA2qso+1gjXSHP6Ha3r0qqGQuCQ0zyZ
- 6e2E3sGLEzGPvQvgq6nTOaLGJtbU5QWtiepZghnPSVmtQWgYdqdFn6pQY/bTdXwMeQut+Up9d
- 2/p+axZi8dtrvhYQzNGOODyR2EBSvgLL/UCtZFTpIjW9ts6k+jqSc7x56bcClpmZTeWpy2VN3
- URY56ZwK2PmCw6A9EYMbCzKkeJ1eFgV5CMXLUoaYjksWqtI2Y9DMrtQGf6Gnp7fsALI/Gi5Ha
- zov0pBGMmcPJpOmIIGdEvddHVCPFx/ta5Au4+11jKr1nOCeZopH5ztcTgX15blP40AE41ROp2
- Um9p+41LdE2GPpnZQVTSExmR67rW54D5syfro9Xb6hCuvQi2MwsF8nHV2FhDZ1aZtj3U2fByr
- L9GMuCcVFz3suZHSTHd6MkvR8cNuAgsiAubO1DBn1epKiBHPowosZpQ3gucfH2R9lM5BP+5SQ
- 7PoPz4Mf6qrgw4sJkidNmprLQtn5avRMbBGQFLaPJhFzIf6flhW+Xqq/x6V3qGI2yoMS52sxQ
- 1OqSrTgQGwarQKSXH25YoMDuli/Jwi4ztn2to+2iOZ98ADwnxfXT1SZWPoJR7j1FC9ouWdpTM
- Pd1LmnlDzil/Y3XFkZQtRwnvEc9Ph3dsQ25nv4oR5C5aXBdS1yj58o9iJZ1P2YuasbEsJoG
+X-UI-Out-Filterresults: notjunk:1;V03:K0:zkV8I4A8ESU=:PgkqEc9D3JTp9FpcQ80kL3
+ 5u2JD4X7VpRjh9PUZGVzGbP51p6ddjujrLtrcSc/e8AjL/u/2gv/OZgftllLZ9AleCPaskzLe
+ uoYDo4sli50+5V7kN+uXuA8Hq6bxAASWJaXVHEiOq5tpo0G2Y6J3kznHRuFhYVO3j1ocxITIJ
+ xVwSyn6s7E91zE+ucQZU2Mtk/6u61KhFAwrvcP5oAQpDKfwuYhFPyLrHq/XOFN+lRSPYrbAtK
+ TzRlGyNTdp7pPO2e8Vl1rUWrXA3boOcNfMkjI9fy0QBFcz9SRU/mxJkW3K/3IORzl8mPqXFGe
+ CW2Zv5duY1CT2gfemjIlJi7e8EiluYDsOWmS0HY3vBVjVUjFB1AgReF82lQhWQU/kuNZfcRaU
+ KV8+gMqavWqOmTm0u71rUyQWJQvnBDf21dUhEAyo3komD59iLBDvjI+b8yBMq1VMpOSwS/chq
+ NY5AtNHLLONq8WqYlex0AjHnsDHcS2IMRguH3tJlFwUbztJQki9/uKr0hdqJ3b4YgAH0+DdaV
+ bFwvQ5JYiAdGJ673sSZ5sSLYi9Gp2405aI83atwU+fJ/ZR+QV9GG/qC3kJxbuXd7f+R0eOpRM
+ GVKKC01jBAsDOSo1Vk7CJYzh4BlPBrVizkUuIE2eeb759D1mvzkwlKL48U/E8tRFLpcYDJaDz
+ BgMgjbCuNvwGxMomCzCxxnJ8HpKAYvm4aKySyeZSvNStWjP2jxEGuZx4Lur2Bs+ghLWzCpghn
+ QzO8eZulbPAgrOzPl7CAZVh/0VygLsWDPHKb1fzCqirVA+ylMGanR2SW054lwGjKPArlduyIr
+ Bt7jZNSpbpAv1MsTldPPy2DBzXBQz4U7ogFrXBQs6HUMK8DgT/T9TuQuc0heYwBuVyeanq+
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patch set adds support for sensirion sgp40 gas sensor.
+Add devicetree binding for Sensirion sgp40 gas sensor to trivial
+devices.
 
-Many thanks for the in-depth reviews, especially of Jonathan who triggered
-some important improvements for v2:
-- provide more precision for voc value; this in turn triggered the folling
-  point:
-- rework of e^x calculation with an optimization on the interesting range
-  between e^(-6) and e^6
-- restructure use of endian types
-- use __packed structures for sent telegrams
-- optimize usage of mutex
-- optimize switch-cases
-- replace attributes by read_raw() and write_raw() values
-- add documentation in Documentation/ABI/testing/sysfs-bus-iio-sgp40 as
-  well as in the source code
+Acked-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Andreas Klinger <ak@it-klinger.de>
+---
+ Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Andreas Klinger (2):
-  dt-bindings: iio: chemical: Add trivial DT binding for sgp40
-  iio: chemical: Add driver support for sgp40
-
- .../ABI/testing/sysfs-bus-iio-chemical-sgp40  |  31 ++
- .../devicetree/bindings/trivial-devices.yaml  |   2 +
- MAINTAINERS                                   |   6 +
- drivers/iio/chemical/Kconfig                  |  11 +
- drivers/iio/chemical/Makefile                 |   1 +
- drivers/iio/chemical/sgp40.c                  | 372 ++++++++++++++++++
- 6 files changed, 423 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-chemical-sgp40
- create mode 100644 drivers/iio/chemical/sgp40.c
-
+diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+index 919a4bf03a5a..be313b6b4f81 100644
+--- a/Documentation/devicetree/bindings/trivial-devices.yaml
++++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+@@ -269,6 +269,8 @@ properties:
+           - sensirion,sgpc3
+             # Sensirion multi-pixel gas sensor with I2C interface
+           - sensirion,sgp30
++            # Sensirion gas sensor with I2C interface
++          - sensirion,sgp40
+             # Sensortek 3 axis accelerometer
+           - sensortek,stk8312
+             # Sensortek 3 axis accelerometer
 -- 
 2.20.1

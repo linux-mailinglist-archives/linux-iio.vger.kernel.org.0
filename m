@@ -2,173 +2,144 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A36C23E146F
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Aug 2021 14:07:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2150B3E1512
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Aug 2021 14:52:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239016AbhHEMHe convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Thu, 5 Aug 2021 08:07:34 -0400
-Received: from gloria.sntech.de ([185.11.138.130]:55882 "EHLO gloria.sntech.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232222AbhHEMHe (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 5 Aug 2021 08:07:34 -0400
-Received: from ip5f5aa64a.dynamic.kabel-deutschland.de ([95.90.166.74] helo=diego.localnet)
-        by gloria.sntech.de with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <heiko@sntech.de>)
-        id 1mBc9S-0006hh-QB; Thu, 05 Aug 2021 14:07:06 +0200
-From:   Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        David Wu <david.wu@rock-chips.com>
-Cc:     Simon Xue <xxm@rock-chips.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
-        robh+dt@kernel.org, Johan Jonker <jbx6244@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: rockchip_saradc: just get referenced voltage once at probe
-Date:   Thu, 05 Aug 2021 14:07:05 +0200
-Message-ID: <8912224.VV5PYv0bhD@diego>
-In-Reply-To: <8f5385a1-701c-4446-d238-90bee1c03675@rock-chips.com>
-References: <20210802090929.37970-1-xxm@rock-chips.com> <20210803135124.000072fe@Huawei.com> <8f5385a1-701c-4446-d238-90bee1c03675@rock-chips.com>
+        id S241506AbhHEMwl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 5 Aug 2021 08:52:41 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:3595 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232692AbhHEMwk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Aug 2021 08:52:40 -0400
+Received: from fraeml707-chm.china.huawei.com (unknown [172.18.147.207])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4GgT5g6n2jz6FFn8;
+        Thu,  5 Aug 2021 20:52:07 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml707-chm.china.huawei.com (10.206.15.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Thu, 5 Aug 2021 14:52:24 +0200
+Received: from localhost (10.47.74.155) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Thu, 5 Aug 2021
+ 13:52:23 +0100
+Date:   Thu, 5 Aug 2021 13:51:53 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+CC:     Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
+        "Rob Herring" <robh+dt@kernel.org>, <Michael.Hennerich@analog.com>,
+        <lars@metafoo.de>, <devicetree@vger.kernel.org>,
+        Nuno Sa <Nuno.Sa@analog.com>
+Subject: Re: [PATCH 00/17] iio:adc:ad7280a Cleanup and proposed staging
+ graduation.
+Message-ID: <20210805135153.00004133@Huawei.com>
+In-Reply-To: <YQtgZMWv5nfMgP8/@marsc.168.1.7>
+References: <20210614113507.897732-1-jic23@kernel.org>
+        <YNIfkaRZtWIXPbAj@marsc.168.1.7>
+        <20210623093741.00007d1d@Huawei.com>
+        <20210711155051.713c1207@jic23-huawei>
+        <YOyFE/yHrLQxKpkU@marsc.168.1.7>
+        <YQtgZMWv5nfMgP8/@marsc.168.1.7>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.74.155]
+X-ClientProxiedBy: lhreml736-chm.china.huawei.com (10.201.108.87) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi David,
+On Thu, 5 Aug 2021 00:52:04 -0300
+Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
 
-Am Donnerstag, 5. August 2021, 13:56:18 CEST schrieb David Wu:
-> Hi Jonathan,
+> [...]
 > 
-> 在 2021/8/3 下午8:51, Jonathan Cameron 写道:
-> > On Tue, 3 Aug 2021 11:09:47 +0800
-> > David Wu <david.wu@rock-chips.com> wrote:
+> > > 
+> > > Note there is loads of stuff that isn't implemented as it was developed alongside
+> > > this patch series to verify individual patches rather than with the intent of
+> > > actually emulating the device.
+> > >   
+> > OK, will be aware of that.
+> >   
+> > > It's hard coded to 2 a chain of 3 ad7280a devices because that seemed to hit most possible
+> > > corner cases.
+> > > 
+> > > The top commit has the launch string I'm using.  You'll need a filesystem, but
+> > > you can probably use one of the convenient ones debian posts as nocloud cloud
+> > > images. 
+> > > 
+> > > There is some info on that on people.kernel.org/jic23 as I wrote up how to test
+> > > CXL stuff on ARM recently and gave guidance on easy ways to get a filesystem.
+> > > http://cdimage.debian.org/cdimage/cloud/sid/daily/20210702-691/debian-sid-nocloud-arm64-daily-20210702-691.qcow2
+> > > will probably work and is more recent than the one linked from that blog post.   
 > > 
-> >> Hi Jonathan,
-> >>
-> >> 在 2021/8/2 下午6:42, Jonathan Cameron 写道:
-> >>> On Mon, 2 Aug 2021 17:09:29 +0800
-> >>> Simon Xue <xxm@rock-chips.com> wrote:
-> >>>    
-> >>>> From: David Wu <david.wu@rock-chips.com>
-> >>>>
-> >>>> The referenced voltage is not changed after initiation, so just only
-> >>>> get referenced voltage once.
-> >>> Hi David,
-> >>>
-> >>> Isn't this an external reference voltage?  If so how do you know
-> >>> it is not changed at runtime?  It might be unlikely and not happen
-> >>> on particular platforms, but that's not he same as saying it can never
-> >>> happen.  Clearly it's racey anyway if that does happen, but we definitely
-> >>> don't expect frequent voltage changes.
-> >>>    
-> >>
-> >> The current regulator is not changed and not subject to external
-> >> changes, this can reduce the getting voltage. Assuming that there will
-> >> be changes in the future, we then add the notify of the regulator, so
-> >> that the voltage change can be obtained.
+> > I was using a debian imgage created from following the instructions on a
+> > tutorial pointed by the QEMU docs.
+> > https://translatedcode.wordpress.com/2017/07/24/installing-debian-on-qemus-64-bit-arm-virt-board/
+> > Anyhow, I'll chance to the nocloud one if see things don't get working.
+> >   
+> > > 
+> > > Give me a shout if you need more specific guidance than this very very rough guide!  
 > > 
-> > If this patch added the notifier that would be a nice solution, but
-> > right now it potentially introduced a regression. You have made me a little curious...
-> > Are you seeing a significant cost to querying that regulator voltage?
-> > If so, I'd imagine it's a lack of caching in the regulator driver or similar.
-> > Scale readback via sysfs shouldn't be in a fast path anyway.
-> > 
-> > You can't depend on what boards today do, because someone with a board
-> > built tomorrow may well use an old kernel which supports the voltage
-> > changing, and then see a regression when they upgrade to the kernel
-> > containing this patch.
-> > 
+> > Sure, let's see if I can get through it now. Otherwise ...  
 > 
-> For all current chips, the expected voltage is a fixed voltage, and 
-> don't want to change it in any process.:-)
+> I've managed to get it running and see the emulated ad7280a working.
+> Still getting some trouble with the ad7150 emulation though.
+> I added a pull request with some comments about the ad7150 emulation on the
+> github repository. 
+
+Will take a look at some point.  Thanks.
+
+> Overall I don't think it was so hacky, I just wonder if it could have been
+> done more cleanly by passing a custom dtb in the launching string. The hacks
+> at virt.c are mostly to add the busses, add the device nodes, and connect
+> device gpio to interrupt lines. We could do it all by editing a dt, right?
+> Anyhow, thanks a lot for sharing this stuff.
+
+That's the alternative, though you also need to actually create the relevant
+devices.  The dtb stuff is lengthy but really simple to do, it's also somewhat
+resilient to other changes in how the virt model works (address changes etc).
+
+Given I was there anyway, it seemed easier to do it all in one place.
+ 
 > 
-> So, if the voltage here does not change, then it can be obtained once in 
-> probe(), which can save the time of each acquisition. For example, the 
-> voltage of this regulator is obtained through i2c, which will increase 
-> some consumption every time.
-
-Jonathans request was to not think about "all current chips" but the
-general case, and as Jonathan said, adding that regulator notifier you
-already mentioned would be the nicest solution.
-
-So I think the easiest way is to just add the voltage notifier to your patch
-to make everyone happy ;-) .
-
-
-Heiko
-
+> >   
+> > > 
+> > > I mentioned this thread in the diversion the rust on linux thread took into
+> > > use of QEMU to emulate devices which motivated me to stop being lazy and at least
+> > > post this hideous version.  Probably the most useful bit is how to get a working
+> > > spi device emulated on the arm virt machine as that is very handy for all manner
+> > > of testing.  One day someone might implement a large set of IIO device emulation
+> > > and bolt it into a CI...  
+> > 
+> > Agree, it's hard to get IIO drivers runtime tested because we often don't
+> > have the required hardware to do it. I think emulation would help us with
+> > that or, at least, would give us a little bit more confidence in our
+> > changes than just relying on sharp eyes and compile/static tests.
+> > Puching that into a CI would also be rather nice.
+> >   
+> > > 
+> > > Jonathan
+> > >   
+> > > >   
+> > > > > 
+> > > > > Being able to see it running, I may feel more confident to provide a review
+> > > > > for this set :)    
 > 
-> > Jonathan
-> > 
-> >>
-> >>> Jonathan
-> >>>    
-> >>>>
-> >>>> Signed-off-by: Simon Xue <xxm@rock-chips.com>
-> >>>> Signed-off-by: David Wu <david.wu@rock-chips.com>
-> >>>> ---
-> >>>>    drivers/iio/adc/rockchip_saradc.c | 16 +++++++++-------
-> >>>>    1 file changed, 9 insertions(+), 7 deletions(-)
-> >>>>
-> >>>> diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
-> >>>> index f3eb8d2e50dc..cd33c0b9d3eb 100644
-> >>>> --- a/drivers/iio/adc/rockchip_saradc.c
-> >>>> +++ b/drivers/iio/adc/rockchip_saradc.c
-> >>>> @@ -49,6 +49,7 @@ struct rockchip_saradc {
-> >>>>    	struct clk		*clk;
-> >>>>    	struct completion	completion;
-> >>>>    	struct regulator	*vref;
-> >>>> +	int			uv_vref;
-> >>>>    	struct reset_control	*reset;
-> >>>>    	const struct rockchip_saradc_data *data;
-> >>>>    	u16			last_val;
-> >>>> @@ -105,13 +106,7 @@ static int rockchip_saradc_read_raw(struct iio_dev *indio_dev,
-> >>>>    		mutex_unlock(&indio_dev->mlock);
-> >>>>    		return IIO_VAL_INT;
-> >>>>    	case IIO_CHAN_INFO_SCALE:
-> >>>> -		ret = regulator_get_voltage(info->vref);
-> >>>> -		if (ret < 0) {
-> >>>> -			dev_err(&indio_dev->dev, "failed to get voltage\n");
-> >>>> -			return ret;
-> >>>> -		}
-> >>>> -
-> >>>> -		*val = ret / 1000;
-> >>>> +		*val = info->uv_vref / 1000;
-> >>>>    		*val2 = chan->scan_type.realbits;
-> >>>>    		return IIO_VAL_FRACTIONAL_LOG2;
-> >>>>    	default:
-> >>>> @@ -410,6 +405,13 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
-> >>>>    		return ret;
-> >>>>    	}
-> >>>>    
-> >>>> +	info->uv_vref = regulator_get_voltage(info->vref);
-> >>>> +	if (info->uv_vref < 0) {
-> >>>> +		dev_err(&pdev->dev, "failed to get voltage\n");
-> >>>> +		ret = info->uv_vref;
-> >>>> +		return ret;
-> >>>> +	}
-> >>>> +
-> >>>>    	ret = clk_prepare_enable(info->pclk);
-> >>>>    	if (ret < 0) {
-> >>>>    		dev_err(&pdev->dev, "failed to enable pclk\n");
-> >>>
-> >>>
-> >>>
-> >>>    
-> >>
-> >>
-> > 
-> > 
-> > 
-> > 
+> Guess I've been too optimistic. The way things are going I may take a few
+> more weeks to have a closer look at all the patches. I'll try to make it
+> before the next merge window or give up otherwise. It's not reasonable to
+> ask you wait more since this set has been sitting on the list for so long.
+
+Don't worry about it.  Driver was in staging a long time. It can wait as
+long as we know it will move forwards eventually!
+
+Jonathan
+
 > 
 > 
-> 
-
-
-
+> [...]
 

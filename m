@@ -2,60 +2,70 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 54C0D3E2B67
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Aug 2021 15:31:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D59E43E2CB9
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Aug 2021 16:34:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344041AbhHFNbg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 6 Aug 2021 09:31:36 -0400
-Received: from mga06.intel.com ([134.134.136.31]:46349 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S244356AbhHFNbg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 6 Aug 2021 09:31:36 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10067"; a="275414100"
-X-IronPort-AV: E=Sophos;i="5.84,300,1620716400"; 
-   d="scan'208";a="275414100"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2021 06:31:19 -0700
-X-IronPort-AV: E=Sophos;i="5.84,300,1620716400"; 
-   d="scan'208";a="569751876"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2021 06:31:17 -0700
-Received: from andy by smile with local (Exim 4.94.2)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1mBzwN-005qAH-7G; Fri, 06 Aug 2021 16:31:11 +0300
-Date:   Fri, 6 Aug 2021 16:31:11 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Benson Leung <bleung@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        "Jason M ." <jason@montleon.com>
-Subject: Re: [PATCH v1 1/1] iio: cros_ec: Fix Kconfig dependency on
- CROS_EC_SENSORHUB
-Message-ID: <YQ05nyWFHf5coFOw@smile.fi.intel.com>
-References: <20210806130227.69473-1-andriy.shevchenko@linux.intel.com>
+        id S239972AbhHFOfB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 6 Aug 2021 10:35:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60398 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240403AbhHFOe7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 6 Aug 2021 10:34:59 -0400
+Received: from mail-il1-x133.google.com (mail-il1-x133.google.com [IPv6:2607:f8b0:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E16B0C0617B1
+        for <linux-iio@vger.kernel.org>; Fri,  6 Aug 2021 07:34:43 -0700 (PDT)
+Received: by mail-il1-x133.google.com with SMTP id c3so9129725ilh.3
+        for <linux-iio@vger.kernel.org>; Fri, 06 Aug 2021 07:34:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=/oMubRmlLM5EZ/UdY6Fj3wsfS2kyoMzN9ASXgZ3xneY=;
+        b=WwtirH+AN5QEGc+PsYDg7GPmicCeAO3NPEqhZC74A3+cGIN9TIFUSUQWVdp/dEeJ0X
+         ++0akNbjsW/3xJMMbrUcWsaDb/Yt8FhArvnBGhYYupKONjpXh07T85TTJ6z/R14UeK25
+         VfrKT4PbBRG9FpAA5mPltqAa33Oy6oNBbUHIMXxZ8Pb8DDymDVISOJ0z/+FU283l+PC4
+         CL/S0Mt/1jGAvk934eTBfkPJMYFqxNe9DmuvxRe6nTQgDgkYbQOxTC8k7gZ9Je0QkKHX
+         pj04+ieraICgLCEIDsM+PSxXHeP7MukFzwmFuXJEWjT/gtCn4i9C831/d3PQ2UrLasbD
+         Q6dQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=/oMubRmlLM5EZ/UdY6Fj3wsfS2kyoMzN9ASXgZ3xneY=;
+        b=OYLZywB3NPkKKYEN9X4KrFohRfLN90nVTttrfU0sxCkIeoVrrdjNBhSdb1SULkFkQx
+         Bnk0iIItaoKuL75njcpcg1yWH7wwnbNFQwU8oZL7CFTU7kDImBC6rvkP+vtpTJweUIFP
+         mWnG7evlVNTUemZET940HkwPBe7ST7KlEwH/FfPsC35FP0PSw5FQthoOk4RzEmct0+pW
+         w5wmeracre1mjVcB0D82Orp+YbQPH0myNVTnfEqHdq7qyCw8y8/yJQ3iQ9jQcHhyxNtt
+         rTgAbDmvZrezUHFnOSL25s25IZfdjhU7qX7wQjMg8i0nRydgCdw8XM2wXtL+dK+c926P
+         Fk5g==
+X-Gm-Message-State: AOAM532goUOdFuE9nSDgEHYqi6R8aBHP93sEenRzMdWacTNycC4/JGmS
+        81WwHD0eVId/4+yO5u42W9OhyvucFl8YoA4kztM=
+X-Google-Smtp-Source: ABdhPJxp5ET5L2YTA3wanMtEqCHLczOyx36yHFnFg6UZI0mLKFWZaADmnk+VVmvj6+SDnpgqRgA+ZQp8fhbmG7dX2Io=
+X-Received: by 2002:a92:d088:: with SMTP id h8mr67865ilh.165.1628260482824;
+ Fri, 06 Aug 2021 07:34:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210806130227.69473-1-andriy.shevchenko@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Received: by 2002:a02:6384:0:0:0:0:0 with HTTP; Fri, 6 Aug 2021 07:34:42 -0700 (PDT)
+Reply-To: mrmaxwellwatford@gmail.com
+From:   "Mr.Maxwell Watford" <matinmiller89@gmail.com>
+Date:   Fri, 6 Aug 2021 14:34:42 +0000
+Message-ID: <CABQ=EucNt8T50SyY_xMhf4eA-+FY+vTpH5-ztzQHBLq2ww-40w@mail.gmail.com>
+Subject: i need your reply
+To:     matinmiller89@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Aug 06, 2021 at 04:02:27PM +0300, Andy Shevchenko wrote:
-> When CONFIG_CROS_EC_SENSORHUB is set to m, the IIO_CROS_EC_SENSORS_CORE
-> can't be built-in.
+Greetings,
 
-> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=213979
+We are writing to you from Ecowas Finance Controller Office Lome Togo,
+because we have received a file from the Ministry of Finance Lome-
+Togo, concerning an Inherited Fund bearing your name on it, And after
+our verifications, we found out that the funds belong to you.
 
-Looking again into .config actually puzzles me, there shouldn't be build
-errors.
+It has been awarded and I will like to guide you to claim the funds.
+Please contact me at my private email address
+(mrmaxwellwatford@gmail.com) for more information and directive
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+I am looking forward to your urgent reply,
+Best regards
+Mr Maxwell Watford

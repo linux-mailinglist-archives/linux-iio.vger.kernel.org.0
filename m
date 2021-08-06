@@ -2,71 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A9DF23E2B2F
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Aug 2021 15:08:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54C0D3E2B67
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Aug 2021 15:31:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344004AbhHFNJM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 6 Aug 2021 09:09:12 -0400
-Received: from mga18.intel.com ([134.134.136.126]:14708 "EHLO mga18.intel.com"
+        id S1344041AbhHFNbg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 6 Aug 2021 09:31:36 -0400
+Received: from mga06.intel.com ([134.134.136.31]:46349 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1343976AbhHFNJJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 6 Aug 2021 09:09:09 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10067"; a="201549752"
+        id S244356AbhHFNbg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 6 Aug 2021 09:31:36 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10067"; a="275414100"
 X-IronPort-AV: E=Sophos;i="5.84,300,1620716400"; 
-   d="scan'208";a="201549752"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2021 06:08:52 -0700
-X-ExtLoop1: 1
+   d="scan'208";a="275414100"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2021 06:31:19 -0700
 X-IronPort-AV: E=Sophos;i="5.84,300,1620716400"; 
-   d="scan'208";a="467878389"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga008.jf.intel.com with ESMTP; 06 Aug 2021 06:08:49 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id A7DE1DE; Fri,  6 Aug 2021 16:02:29 +0300 (EEST)
+   d="scan'208";a="569751876"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2021 06:31:17 -0700
+Received: from andy by smile with local (Exim 4.94.2)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1mBzwN-005qAH-7G; Fri, 06 Aug 2021 16:31:11 +0300
+Date:   Fri, 6 Aug 2021 16:31:11 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Benson Leung <bleung@chromium.org>,
         Enric Balletbo i Serra <enric.balletbo@collabora.com>,
         Guenter Roeck <groeck@chromium.org>,
         "Jason M ." <jason@montleon.com>
-Subject: [PATCH v1 1/1] iio: cros_ec: Fix Kconfig dependency on CROS_EC_SENSORHUB
-Date:   Fri,  6 Aug 2021 16:02:27 +0300
-Message-Id: <20210806130227.69473-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
+Subject: Re: [PATCH v1 1/1] iio: cros_ec: Fix Kconfig dependency on
+ CROS_EC_SENSORHUB
+Message-ID: <YQ05nyWFHf5coFOw@smile.fi.intel.com>
+References: <20210806130227.69473-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210806130227.69473-1-andriy.shevchenko@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-When CONFIG_CROS_EC_SENSORHUB is set to m, the IIO_CROS_EC_SENSORS_CORE
-can't be built-in.
+On Fri, Aug 06, 2021 at 04:02:27PM +0300, Andy Shevchenko wrote:
+> When CONFIG_CROS_EC_SENSORHUB is set to m, the IIO_CROS_EC_SENSORS_CORE
+> can't be built-in.
 
-Fixes: 53067471188c ("iio / platform: cros_ec: Add cros-ec-sensorhub driver")
-BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=213979
-Reported-by: Jason M. <jason@montleon.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/iio/common/cros_ec_sensors/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=213979
 
-diff --git a/drivers/iio/common/cros_ec_sensors/Kconfig b/drivers/iio/common/cros_ec_sensors/Kconfig
-index fefad9572790..b0d67ceaed55 100644
---- a/drivers/iio/common/cros_ec_sensors/Kconfig
-+++ b/drivers/iio/common/cros_ec_sensors/Kconfig
-@@ -4,7 +4,8 @@
- #
- config IIO_CROS_EC_SENSORS_CORE
- 	tristate "ChromeOS EC Sensors Core"
--	depends on SYSFS && CROS_EC_SENSORHUB
-+	depends on CROS_EC_SENSORHUB=y || (CROS_EC_SENSORHUB=m && m)
-+	depends on SYSFS
- 	select IIO_BUFFER
- 	select IIO_TRIGGERED_BUFFER
- 	help
+Looking again into .config actually puzzles me, there shouldn't be build
+errors.
+
 -- 
-2.30.2
+With Best Regards,
+Andy Shevchenko
+
 

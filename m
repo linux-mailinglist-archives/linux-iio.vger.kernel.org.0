@@ -2,63 +2,83 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F1203E3459
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Aug 2021 11:30:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDC9C3E34DA
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Aug 2021 12:37:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231615AbhHGJbF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 7 Aug 2021 05:31:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55760 "EHLO
+        id S231839AbhHGKhx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 7 Aug 2021 06:37:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231613AbhHGJbF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 7 Aug 2021 05:31:05 -0400
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DCADC0613CF
-        for <linux-iio@vger.kernel.org>; Sat,  7 Aug 2021 02:30:47 -0700 (PDT)
-Received: by mail-ej1-x642.google.com with SMTP id hw6so19566975ejc.10
-        for <linux-iio@vger.kernel.org>; Sat, 07 Aug 2021 02:30:47 -0700 (PDT)
+        with ESMTP id S231834AbhHGKhu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 7 Aug 2021 06:37:50 -0400
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ED1DC0613CF;
+        Sat,  7 Aug 2021 03:37:33 -0700 (PDT)
+Received: by mail-pl1-x62c.google.com with SMTP id c16so10640377plh.7;
+        Sat, 07 Aug 2021 03:37:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=/b2+FxsIGAs9cSe64CoH7kVEIr1XESKqHrRJCImx39U=;
-        b=NxTF2UtD9psXxdtgq6xD+sE0RPznr6CTqUZ83I2OeXfiFTwEc2T1Bm203/3Amd44b6
-         WzSiVT0k3SxsWyo9Cn5S2K8zwxN2EzwNCsd732ixZL90CTQAinQfX/OmQhFj7mKuVqAG
-         5r8e0XF7lnE8JBttpvwKqGn8JwfocfN8eyO1zVVAKLG2FzKw0vs1014dCcQzu8Gllzna
-         o2G1h3ciPps8ZpFAqlx6NLNCfe48LPS9mZohFbMVLKeaha1am3/GLwSiFEUdIMfKw8Ax
-         Yi5z/WPuql5dLmKLIZYnzwyCE5xVHH4xCySNSuwG4myx7YYrc/cvTWPY0HN3sWvwCNHo
-         aeLw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=cOqop49TO9y4iKlVvaZlNAFE274ACz5k07MpZwKL26g=;
+        b=Bv3rSHN2iQk1YdtOZV+oPO7kNdI+98gUGdMBh0AkIr7PitjVuURcz5/0vDDB+3p2x4
+         tYzks2qCpGrhtPHMwfEu+N4pAZ56oYQ8euVtIKM6d8NJaRiWmV+YnUxbi+ExQcZ4pcPD
+         ikCzjnn7QJWqoOU7Av/VbazABcQ8VHBQq80u373HKqvoMTz5mOFVSBEE6vdZE+TR9fjd
+         6jAIaaSTuZPfuyUva2R4ElvjmcHItJEg34H+ds2EziQmN1sm3fImMI9gZNt8m7UJ4048
+         nqY+yQ0i606NKCO+leA0fvjRbOZm1hsUX3o1mDb7u2rRzveemXHSNrSirX8zPKZUDCbh
+         i2RQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=/b2+FxsIGAs9cSe64CoH7kVEIr1XESKqHrRJCImx39U=;
-        b=h2aaC/80XUs+NtfGvu08/Qrm+1efu6+OCz0DqOI9VZluHPUyDzZzg5tWePv7UxQh+I
-         syJCIcPnXtZmkefoWFKvGp2NjPCoRmTKTMVEPhN72zf2f1p1iuAgWlMLDQP59RkJlT2a
-         InPt0YvbTkuplezEvP/syWofTANCEwSKcwPPtbjHeqtyc/1xhqJfFZLlNrHz63FfUde4
-         uvb/sDtDrVJGfYX03SQ4JW3cceBVQxwByYfgKP7uKGs8Q+ndkuB+5KesKiXFgTeJQKYe
-         voVsfoSPQIMvgcFXboLxaosoqjHNBdOcewrQC7MdqYhFmuUwx6KFG8qLT26futdtjthM
-         TAYA==
-X-Gm-Message-State: AOAM530fUG/wJA4YlrRN+aMVscm8xmu9M9X1u96lqqd0MIXxYlWwvNM7
-        meCv3I3q1Xpb5mtG9fRaEQI10IRh6G2yE+l7xvY=
-X-Google-Smtp-Source: ABdhPJzSoYpYvFBYx+hwp1g1Df94iIzfWDrWgAFDJX69xN7Bg0AGilrNqdM+L2rLFGoGwHxt36J73Mw3PB4hjI+o/hk=
-X-Received: by 2002:a17:906:a195:: with SMTP id s21mr13592310ejy.181.1628328645899;
- Sat, 07 Aug 2021 02:30:45 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=cOqop49TO9y4iKlVvaZlNAFE274ACz5k07MpZwKL26g=;
+        b=GY3iPyrvRKewUYCeLtYdZicTSkaWflmyQV61UrvcMvlJrYti5sA4GvKOLxtaU2j5XW
+         gu2MeptcXDhI30ZOYoqLLeSnkjDVl5GukHvuGYKvKbYue25nm5u5dldTsXjnpML5com+
+         kaLybah7YCxgErcVp6H/6uWFkc9inzjAQLl29hKWjs1aL+S39ZGaihjsstIWyoSstFwN
+         GmHOZfaQ+uJCJ2Bk2QNNRfpb8ZE9Qf/b3qPMKGbE/KBWnngDkdWZeVGpGOYD4Mp9fx3i
+         DjIwF776jWEo39L00Hd64YhRKucv1YVWFOam+NiKDSgpe/UXcYiwtbCKt4lNT83Uz5dB
+         fe9Q==
+X-Gm-Message-State: AOAM532VVhwNOSz/0/t50GWSG2rzbsdxE7vh3namksbxIR2OZdgT2MKv
+        1+hBBVuEHxvzPRvX4BajgzBciAOXZeyFpsYnTdoP8V+y33w=
+X-Google-Smtp-Source: ABdhPJyZkbcJ7w1Xu92vuQiCpBzQFI/sjQ2dQTNJrwxePMa9aUSvWB445uc08XeRtyzX/MrA+0VvHZl0zuKpcrQnVLQ=
+X-Received: by 2002:a17:90b:33c5:: with SMTP id lk5mr26016485pjb.129.1628332652567;
+ Sat, 07 Aug 2021 03:37:32 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a54:2509:0:0:0:0:0 with HTTP; Sat, 7 Aug 2021 02:30:45 -0700 (PDT)
-Reply-To: mr.sulamanekante@gmail.com
-From:   sulaman Kante <justinalaboso2@gmail.com>
-Date:   Sat, 7 Aug 2021 11:30:45 +0200
-Message-ID: <CADPaY1BNGvSN04Zc10po82EumrSYD1ynJdt5bzYf5w5xJpSeqg@mail.gmail.com>
-Subject: Respected: Beneficiary: Private Massage
-To:     undisclosed-recipients:;
+References: <20210806105524.231838-1-xxm@rock-chips.com>
+In-Reply-To: <20210806105524.231838-1-xxm@rock-chips.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sat, 7 Aug 2021 13:36:56 +0300
+Message-ID: <CAHp75VcSMx3CPt9cgzdZ63xRrowm1H+Jpbhd5W74oeVBUY34WQ@mail.gmail.com>
+Subject: Re: [PATCH v2] iio: adc: rockchip_saradc: add voltage notifier so get
+ referenced voltage once at probe
+To:     Simon Xue <xxm@rock-chips.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Johan Jonker <jbx6244@gmail.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        David Wu <david.wu@rock-chips.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Good Day To You
+On Fri, Aug 6, 2021 at 6:24 PM Simon Xue <xxm@rock-chips.com> wrote:
+>
+> From: David Wu <david.wu@rock-chips.com>
+>
+> Add voltage notifier, no need to query regulator voltage for
+> every saradc read, just get regulator voltage once at probe.
+>
+> Signed-off-by: Simon Xue <xxm@rock-chips.com>
+> Signed-off-by: David Wu <david.wu@rock-chips.com>
 
-Please i need your kind Assistance. I will be very glad if you can
-assist me to receive this sum of ( $22. Million US dollars.) into your
-bank account for the benefit of our both families, reply me if you are
-ready to receive this fund.
-sulaman Kante
+The order of SoB tags seems wrong or Co-developed-by is missed.
+
+-- 
+With Best Regards,
+Andy Shevchenko

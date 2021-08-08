@@ -2,31 +2,33 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C79CE3E3AF8
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Aug 2021 17:01:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9B233E3AFB
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Aug 2021 17:03:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232036AbhHHPCK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 Aug 2021 11:02:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46594 "EHLO mail.kernel.org"
+        id S232062AbhHHPEE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 Aug 2021 11:04:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46892 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231414AbhHHPCJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 8 Aug 2021 11:02:09 -0400
+        id S231137AbhHHPEB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 8 Aug 2021 11:04:01 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4D31160F35;
-        Sun,  8 Aug 2021 15:01:48 +0000 (UTC)
-Date:   Sun, 8 Aug 2021 16:04:37 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 895416054E;
+        Sun,  8 Aug 2021 15:03:39 +0000 (UTC)
+Date:   Sun, 8 Aug 2021 16:06:28 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Puranjay Mohan <puranjay12@gmail.com>
 Cc:     Michael.Hennerich@analog.com, devicetree@vger.kernel.org,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        lars@metafoo.de, Dragos.Bogdan@analog.com, Darius.Berghe@analog.com
-Subject: Re: [PATCH v8 2/3] iio: accel: Add driver support for ADXL355
-Message-ID: <20210808160437.4cf3a280@jic23-huawei>
-In-Reply-To: <20210804140309.31468-3-puranjay12@gmail.com>
+        lars@metafoo.de, Dragos.Bogdan@analog.com,
+        Darius.Berghe@analog.com, robh+dt@kernel.org
+Subject: Re: [PATCH v8 1/3] dt-bindings: iio: accel: Add DT binding doc for
+ ADXL355
+Message-ID: <20210808160628.7b031948@jic23-huawei>
+In-Reply-To: <20210804140309.31468-2-puranjay12@gmail.com>
 References: <20210804140309.31468-1-puranjay12@gmail.com>
-        <20210804140309.31468-3-puranjay12@gmail.com>
+        <20210804140309.31468-2-puranjay12@gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -35,50 +37,118 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed,  4 Aug 2021 19:33:08 +0530
+On Wed,  4 Aug 2021 19:33:07 +0530
 Puranjay Mohan <puranjay12@gmail.com> wrote:
 
-> ADXL355 is 3-axis MEMS Accelerometer. It offers low noise density,
-> low 0g offset drift, low power with selectable measurement ranges.
-> It also features programmable high-pass and low-pass filters.
+> Add devicetree binding document for ADXL355, a 3-Axis MEMS Accelerometer.
 > 
-> Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/adxl354_adxl355.pdf
 > Signed-off-by: Puranjay Mohan <puranjay12@gmail.com>
-Hi Puranjay,
 
-One comment below, but it's a follow up on a discussion going on in the ADXL313 driver
-review. I might just make that change whilst applying this, or leave it for
-another day. Either way, no need for you to change anything unless you are
-doing a v9 for another reason.
+Looks good to me. I'll pick this up once Rob and anyone else interested
+has had time to take a look assuming they don't ask for any changes.
 
-...
+Thanks,
 
+Jonathan
+
+
+> ---
+>  .../bindings/iio/accel/adi,adxl355.yaml       | 88 +++++++++++++++++++
+>  1 file changed, 88 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adxl355.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adxl355.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adxl355.yaml
+> new file mode 100644
+> index 000000000..5da3fd5ad
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl355.yaml
+> @@ -0,0 +1,88 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/accel/adi,adxl355.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +/*
-> + * The datasheet defines an intercept of 1885 LSB at 25 degC
-> + * and a slope of -9.05 LSB/C. The following formula can be used to find the
-> + * temperature:
-> + * Temp = ((RAW - 1885)/(-9.05)) + 25 but this doesn't follow the format of
-> + * the IIO which is Temp = (RAW + OFFSET) * SCALE. Hence using some rearranging
-> + * we get the scale as -110.49723 and offset as -2111.25
-> + */
-> +#define TEMP_SCALE_VAL -110
-> +#define TEMP_SCALE_VAL2 497238
-> +#define TEMP_OFFSET_VAL -2111
-> +#define TEMP_OFFSET_VAL2 250000
+> +title: Analog Devices ADXL355 3-Axis, Low noise MEMS Accelerometer
 > +
-> +/*
-> + * At +/- 2g with 20-bit resolution, scale is given in datasheet as
-> + * 3.9ug/LSB = 0.0000039 * 9.80665 = 0.00003824593 m/s^2
-> + */
-> +#define ADXL355_NSCALE	38245
-
-This just came up in another review and wasn't something I've been picking
-up on in reviews before now.
-
-These scale defines would be better dropped and the values moved inline
-(along with the comments).  It avoids possible unit misunderstandings etc
-In short the key thing is, sometimes a number is just a number and
-using a define to give it a name is not always helpful, particularly if
-it's only used in one place in the code.
+> +maintainers:
+> +  - Puranjay Mohan <puranjay12@gmail.com>
+> +
+> +description: |
+> +  Analog Devices ADXL355 3-Axis, Low noise MEMS Accelerometer that supports
+> +  both I2C & SPI interfaces
+> +    https://www.analog.com/en/products/adxl355.html
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,adxl355
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    minItems: 1
+> +    maxItems: 3
+> +    description: |
+> +      Type should be IRQ_TYPE_LEVEL_HIGH.
+> +      Three configurable interrupt lines exist.
+> +
+> +  interrupt-names:
+> +    description: Specify which interrupt line is in use.
+> +    items:
+> +      enum:
+> +        - INT1
+> +        - INT2
+> +        - DRDY
+> +    minItems: 1
+> +    maxItems: 3
+> +
+> +  vdd-supply:
+> +    description: Regulator that provides power to the sensor
+> +
+> +  vddio-supply:
+> +    description: Regulator that provides power to the bus
+> +
+> +  spi-max-frequency: true
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +        #include <dt-bindings/gpio/gpio.h>
+> +        #include <dt-bindings/interrupt-controller/irq.h>
+> +        i2c {
+> +                #address-cells = <1>;
+> +                #size-cells = <0>;
+> +
+> +                /* Example for a I2C device node */
+> +                accelerometer@1d {
+> +                        compatible = "adi,adxl355";
+> +                        reg = <0x1d>;
+> +                        interrupt-parent = <&gpio>;
+> +                        interrupts = <25 IRQ_TYPE_EDGE_RISING>;
+> +                        interrupt-names = "DRDY";
+> +                };
+> +        };
+> +  - |
+> +        #include <dt-bindings/gpio/gpio.h>
+> +        #include <dt-bindings/interrupt-controller/irq.h>
+> +        spi {
+> +                #address-cells = <1>;
+> +                #size-cells = <0>;
+> +
+> +                accelerometer@0 {
+> +                        compatible = "adi,adxl355";
+> +                        reg = <0>;
+> +                        spi-max-frequency = <1000000>;
+> +                        interrupt-parent = <&gpio>;
+> +                        interrupts = <25 IRQ_TYPE_EDGE_RISING>;
+> +                        interrupt-names = "DRDY";
+> +                };
+> +        };
 

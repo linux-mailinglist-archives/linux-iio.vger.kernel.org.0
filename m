@@ -2,39 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B3B443E3ADB
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Aug 2021 16:42:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D13113E3AE6
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Aug 2021 16:49:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231270AbhHHOnO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 Aug 2021 10:43:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44910 "EHLO mail.kernel.org"
+        id S231825AbhHHOtY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 Aug 2021 10:49:24 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45456 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229923AbhHHOnN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 8 Aug 2021 10:43:13 -0400
+        id S231932AbhHHOtV (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 8 Aug 2021 10:49:21 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7ED1760F0F;
-        Sun,  8 Aug 2021 14:42:52 +0000 (UTC)
-Date:   Sun, 8 Aug 2021 15:45:41 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 217B360560;
+        Sun,  8 Aug 2021 14:48:59 +0000 (UTC)
+Date:   Sun, 8 Aug 2021 15:51:49 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Lucas Stankus <lucas.p.stankus@gmail.com>
-Cc:     Rob Herring <robh@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
-        "Berghe, Darius" <Darius.Berghe@analog.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: accel: Add binding
- documentation for ADXL313
-Message-ID: <20210808154541.276e6685@jic23-huawei>
-In-Reply-To: <CACKVXZB-XVYA8FSEucwktH88PBUUBXXjuARWOC02r8TzCzU8Mw@mail.gmail.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "Michael.Hennerich@analog.com" <Michael.Hennerich@analog.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "Dragos.Bogdan@analog.com" <Dragos.Bogdan@analog.com>,
+        "Darius.Berghe@analog.com" <Darius.Berghe@analog.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 2/2] iio: accel: Add driver support for ADXL313
+Message-ID: <20210808155149.1c435b88@jic23-huawei>
+In-Reply-To: <CACKVXZB5Fo02ZT58swZKoz9DxNUR9Mmx717nf1OiB+g6+T7hJw@mail.gmail.com>
 References: <cover.1628143857.git.lucas.p.stankus@gmail.com>
-        <ad64c93df8c43c66dcb64fe8ec0c0f6b91b3c697.1628143857.git.lucas.p.stankus@gmail.com>
-        <YQ16+AlpmxhVIBhE@robh.at.kernel.org>
-        <CACKVXZB-XVYA8FSEucwktH88PBUUBXXjuARWOC02r8TzCzU8Mw@mail.gmail.com>
+        <22ad63af54e6cfc9486d44d05ba3d2f7482c7b1e.1628143857.git.lucas.p.stankus@gmail.com>
+        <CAHp75Ve7avWpdnCioW6qdT21NqjK1TTW-nwFsz6x+0JLXsQH3Q@mail.gmail.com>
+        <CACKVXZB5Fo02ZT58swZKoz9DxNUR9Mmx717nf1OiB+g6+T7hJw@mail.gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -43,156 +43,87 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 6 Aug 2021 21:33:44 -0300
+On Fri, 6 Aug 2021 21:22:46 -0300
 Lucas Stankus <lucas.p.stankus@gmail.com> wrote:
 
-> On Fri, Aug 6, 2021 at 3:10 PM Rob Herring <robh@kernel.org> wrote:
+> On Fri, Aug 6, 2021 at 9:35 AM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
 > >
-> > On Thu, Aug 05, 2021 at 03:29:37AM -0300, Lucas Stankus wrote:  
-> > > Add device tree binding documentation for ADXL313 3-axis accelerometer.
-> > >
-> > > Signed-off-by: Lucas Stankus <lucas.p.stankus@gmail.com>
-> > > ---
-> > >  .../bindings/iio/accel/adi,adxl313.yaml       | 90 +++++++++++++++++++
-> > >  1 file changed, 90 insertions(+)
-> > >  create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adxl313.yaml
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adxl313.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adxl313.yaml
-> > > new file mode 100644
-> > > index 000000000000..fea03b6790f3
-> > > --- /dev/null
-> > > +++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl313.yaml
-> > > @@ -0,0 +1,90 @@
-> > > +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> > > +%YAML 1.2
-> > > +---
-> > > +$id: http://devicetree.org/schemas/iio/accel/adi,adxl313.yaml#
-> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > +
-> > > +title: Analog Devices ADXL313 3-Axis Digital Accelerometer
-> > > +
-> > > +maintainers:
-> > > +  - Lucas Stankus <lucas.p.stankus@gmail.com>
-> > > +
-> > > +description: |
-> > > +  Analog Devices ADXL313 3-Axis Digital Accelerometer that supports
-> > > +  both I2C & SPI interfaces.
-> > > +    https://www.analog.com/en/products/adxl313.html
-> > > +
-> > > +properties:
-> > > +  compatible:
-> > > +    enum:
-> > > +      - adi,adxl313
-> > > +
-> > > +  reg:
-> > > +    maxItems: 1
-> > > +
-> > > +  spi-3wire: true
-> > > +
-> > > +  spi-cpha: true
-> > > +
-> > > +  spi-cpol: true  
 > >
-> > These 3 generally shouldn't be needed, but can be set from the driver.
-> > If they are valid, is any combination of them really valid?
+> >
+> > On Thursday, August 5, 2021, Lucas Stankus <lucas.p.stankus@gmail.com> wrote:  
+> >>
+> >> ADXL313 is a small, thin, low power, 3-axis accelerometer with high
+> >> resolution measurement up to +/-4g. It includes an integrated 32-level
+> >> FIFO and has activity and inactivity sensing capabilities.
+> >>
+> >> Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ADXL313.pdf
+> >> Signed-off-by: Lucas Stankus <lucas.p.stankus@gmail.com>
+> >> ---
+> >>  MAINTAINERS                      |   9 +
+> >>  drivers/iio/accel/Kconfig        |  29 +++
+> >>  drivers/iio/accel/Makefile       |   3 +
+> >>  drivers/iio/accel/adxl313.h      |  63 ++++++
+> >>  drivers/iio/accel/adxl313_core.c | 321 +++++++++++++++++++++++++++++++
+> >>  drivers/iio/accel/adxl313_i2c.c  |  65 +++++++
+> >>  drivers/iio/accel/adxl313_spi.c  |  85 ++++++++
+> >>  7 files changed, 575 insertions(+)
+> >>  create mode 100644 drivers/iio/accel/adxl313.h
+> >>  create mode 100644 drivers/iio/accel/adxl313_core.c
+> >>  create mode 100644 drivers/iio/accel/adxl313_i2c.c
+> >>  create mode 100644 drivers/iio/accel/adxl313_spi.c
+> >>
+> >> diff --git a/MAINTAINERS b/MAINTAINERS
+> >> index a61f4f3b78a9..566055450b6b 100644
+> >> --- a/MAINTAINERS
+> >> +++ b/MAINTAINERS
+> >> @@ -585,6 +585,15 @@ L: platform-driver-x86@vger.kernel.org
+> >>  S:     Maintained
+> >>  F:     drivers/platform/x86/adv_swbutton.c
+> >>
+> >> +ADXL313 THREE-AXIS DIGITAL ACCELEROMETER DRIVER
+> >> +M:     Lucas Stankus <lucas.p.stankus@gmail.com>
+> >> +S:     Supported
+> >> +F:     Documentation/devicetree/bindings/iio/accel/adi,adxl313.yaml
+> >> +F:     drivers/iio/accel/adxl313.h
+> >> +F:     drivers/iio/accel/adxl313_core.c
+> >> +F:     drivers/iio/accel/adxl313_i2c.c
+> >> +F:     drivers/iio/accel/adxl313_spi.c  
+> >
+> >
+> >
+> > adxl313*?
 > >  
 > 
-> Only the 3wire is optional, both cpha and cpol are required for proper
-> spi connection.
+> Didn't know this would work, but I think I prefer the way it is now.
+> Are you proposing this as a suggestion or more of a change request?
 
-We've been round this one a few time, and last time we discussed the
-cases where you'd need these in DT (because of inverters on the bus)
-https://lore.kernel.org/linux-iio/20191204111231.GO1998@sirena.org.uk/
-conclusion was, that we don't want to put the burden on the dt files
-for those odd cases.  The equivalent for interrupt lines is interestingly
-different because in those cases the two-cell version includes the
-type of interrupt, so it makes little sense to push that down into the
-drivers as well.
+It's a bit neater and very unlikely we'll get a clash on that wild card
+in the long run, so I'd 'slightly' prefer this as well.
 
-Mind you I'm not 100% sure how we would retrofit a binding if necessary
-for the inverted cases.  Hope we don't hit one here :)
 
-As you note, 3wire is needed in the binding because it's optional.
+...
+
+>> +/*
+> >> + * Scale for any g range is given in datasheet as
+> >> + * 1024 LSB/g = 0.0009765625 * 9.80665 = 0.009576806640625 m/s^2
+> >> + */
+> >> +#define ADXL313_NSCALE 9576806  
+> >
+> >
+> >
+> > Is it in nanonewtons? Perhaps add a suffix _nN?
+> >  
+> 
+> It's actually in meters per second squared, so I couldn't come up with
+> a good suffix. Do you have any suggestions?
+
+Easy. Don't have a #define :)
+
+In all seriousness it isn't a 'magic' number, it's an actual real world
+value, so move the comment down to where it's used and put the number
+directly were it is needed.
+
 
 Jonathan
-
-
-> 
-> > > +
-> > > +  spi-max-frequency: true
-> > > +
-> > > +  vs-supply:
-> > > +    description: Regulator that supplies power to the accelerometer
-> > > +
-> > > +  vdd-supply:
-> > > +    description: Regulator that supplies the digital interface supply voltage
-> > > +
-> > > +  interrupts:
-> > > +    maxItems: 2  
-> >
-> > This means there must be 2 entries. If 1 is valid, you need 'minItems'.
-> >  
-> 
-> I'll add 'minItems' for the v3 then, thanks!
-> 
-> > > +
-> > > +  interrupt-names:
-> > > +    maxItems: 2  
-> >
-> > You need 'minItems' too to fix the error.
-> >  
-> 
-> Thank you again and sorry for not catching that error before submitting.
-> 
-> > > +    items:
-> > > +      enum:
-> > > +        - INT1
-> > > +        - INT2
-> > > +
-> > > +required:
-> > > +  - compatible
-> > > +  - reg
-> > > +
-> > > +additionalProperties: false
-> > > +
-> > > +examples:
-> > > +  - |
-> > > +    #include <dt-bindings/gpio/gpio.h>
-> > > +    #include <dt-bindings/interrupt-controller/irq.h>
-> > > +    i2c0 {
-> > > +        #address-cells = <1>;
-> > > +        #size-cells = <0>;
-> > > +
-> > > +        /* Example for a I2C device node */
-> > > +        accelerometer@53 {
-> > > +            compatible = "adi,adxl313";
-> > > +            reg = <0x53>;
-> > > +            interrupt-parent = <&gpio0>;
-> > > +            interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-> > > +            interrupt-names = "INT1";
-> > > +        };
-> > > +    };
-> > > +  - |
-> > > +    #include <dt-bindings/gpio/gpio.h>
-> > > +    #include <dt-bindings/interrupt-controller/irq.h>
-> > > +    spi {
-> > > +        #address-cells = <1>;
-> > > +        #size-cells = <0>;
-> > > +
-> > > +        /* Example for a SPI device node */
-> > > +        accelerometer@0 {
-> > > +            compatible = "adi,adxl313";
-> > > +            reg = <0>;
-> > > +            spi-max-frequency = <5000000>;
-> > > +            spi-cpol;
-> > > +            spi-cpha;
-> > > +            interrupt-parent = <&gpio0>;
-> > > +            interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-> > > +            interrupt-names = "INT1";
-> > > +        };
-> > > +    };
-> > > --
-> > > 2.32.0
-> > >
-> > >  
 

@@ -2,133 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE4323E3B43
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Aug 2021 18:05:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B3923E3B56
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Aug 2021 18:20:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231199AbhHHQF6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 Aug 2021 12:05:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38726 "EHLO mail.kernel.org"
+        id S230448AbhHHQUb convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Sun, 8 Aug 2021 12:20:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45114 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230049AbhHHQF6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 8 Aug 2021 12:05:58 -0400
+        id S230049AbhHHQUa (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 8 Aug 2021 12:20:30 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D085D60EE9;
-        Sun,  8 Aug 2021 16:05:37 +0000 (UTC)
-Date:   Sun, 8 Aug 2021 17:08:27 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 4322760F38;
+        Sun,  8 Aug 2021 16:20:07 +0000 (UTC)
+Date:   Sun, 8 Aug 2021 17:22:57 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Navin Sankar Velliangiri <navin@linumiz.com>
-Cc:     lars@metafoo.de, pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
-        ardeleanalex@gmail.com
-Subject: Re: [PATCH v3 2/2] dt-bindings: iio: temperature: add MAXIM
- max31865 support
-Message-ID: <20210808170827.54b4d3b1@jic23-huawei>
-In-Reply-To: <20210804154254.241118-2-navin@linumiz.com>
-References: <20210804154254.241118-1-navin@linumiz.com>
-        <20210804154254.241118-2-navin@linumiz.com>
+To:     Mugilraj Dhavachelvan <dmugil2000@gmail.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>, Dragos.Bogdan@analog.com,
+        Darius.Berghe@analog.com, Rob Herring <robh+dt@kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Chris Packham <chris.packham@alliedtelesis.co.nz>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH 2/2] iio: potentiometer: Add driver support for AD5110
+Message-ID: <20210808172257.59b13400@jic23-huawei>
+In-Reply-To: <66d670d6-0374-88ae-c4c1-efd60b54bbd2@gmail.com>
+References: <20210807050900.10075-1-dmugil2000@gmail.com>
+        <20210807050900.10075-3-dmugil2000@gmail.com>
+        <53306463-668e-e291-4539-caca2352ea05@metafoo.de>
+        <9b58fb0c-245d-795f-2124-6cc2020bc8c5@gmail.com>
+        <66d670d6-0374-88ae-c4c1-efd60b54bbd2@gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed,  4 Aug 2021 21:12:54 +0530
-Navin Sankar Velliangiri <navin@linumiz.com> wrote:
+On Sat, 7 Aug 2021 23:04:18 +0530
+Mugilraj Dhavachelvan <dmugil2000@gmail.com> wrote:
 
-> Add DT bindings for MAXIM max31865 RTD sensor.
+> Sorry some formatting issues happened in my previous mail.
 > 
-> Signed-off-by: Navin Sankar Velliangiri <navin@linumiz.com>
+> On 07/08/21 10:56 pm, Mugilraj Dhavachelvan wrote:
+> > 
+> > 
+> > On 07/08/21 5:41 pm, Lars-Peter Clausen wrote:  
+> >> On 8/7/21 7:08 AM, Mugilraj Dhavachelvan wrote:  
+> >>> The AD5110/AD5112/AD5114 provide a nonvolatile solution
+> >>> for 128-/64-/32-position adjustment applications, offering
+> >>> guaranteed low resistor tolerance errors of ±8% and up to
+> >>> ±6 mA current density.
+> >>>
+> >>> Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/AD5110_5112_5114.pdf
+> >>> Signed-off-by: Mugilraj Dhavachelvan <dmugil2000@gmail.com>  
+> >>
+> >> Thanks for the patch. This looks really good> 
+> >>  
+>
 
-dt-bindings need to be cc'd to the devicetree list and maintainers 
-so they can review them.
+...
 
-There has also been some recent discussion on having spi modes in
-bindings when the device only supports one option.  The preference
-is to instead have the driver enforce those by an spi_mode()
-call. (e.g. spi-cpha)
+> >>> +
+> >>> +static IIO_DEVICE_ATTR(wiper_pos_eeprom, 0644,
+> >>> +               ad5110_eeprom_read,
+> >>> +               ad5110_eeprom_write, 0);  
+> >> This is new custom ABI and needs to be documented  
 
-There are corner cases (usually involving some cheap level conversion)
-where this doesn't work, but in those cases the 'required' below wouldn't
-work either, so we leave them to be dealt with if they ever happen for
-a particular piece of hardware.
+We have existing similar ABI in dac/mcp4725 which is simply
+called store_eeprom
 
-Jonathan
+It's in the main docs
+Documentation/ABI/testing/sysfs-bus-iio as storing
+device configuration.  I'm guessing this device doesn't have
+other configuration so that description will work?
+
 
 > 
-> ---
+> > I'm not aware of this, fixed in v2.  
+> >>> +static int ad5110_write_raw(struct iio_dev *indio_dev,
+> >>> +                struct iio_chan_spec const *chan,
+> >>> +                int val, int val2, long mask)
+> >>> +{
+> >>> +    struct ad5110_data *data = iio_priv(indio_dev);
+> >>> +    int ret;
+> >>> +
+> >>> +    switch (mask) {
+> >>> +    case IIO_CHAN_INFO_RAW:
+> >>> +        if (val >= data->cfg->max_pos || val < 0)  
+> >> val == data->cfg->max_pos is a valid setting. Writing max_pos puts it in top-scale mode which gives maximum resistance.  
+> > Fixed in v2.  
+> >>> +            return -EINVAL;
+> >>> +
+> >>> +        return ad5110_write(data, AD5110_RDAC_WR, val << data->cfg->shift);
+> >>> +    case IIO_CHAN_INFO_ENABLE:
+> >>> +        if (val < 0 || val > 1)
+> >>> +            return -EINVAL;
+> >>> +        if (data->enable == val)
+> >>> +            return 0;
+> >>> +        ret = ad5110_write(data, AD5110_SHUTDOWN, val);  
+> >> Doesn't val have to be inverted to get the right behavior  
 > 
-> Note:
-> Changes in v2:
-> 	-> Changed the name RTD to Resistance Temperature Detector
-> 	-> renamed maxim,no-of-wires to 3-wire
-> 	-> fixed code alignment for the example  
-> 
-> Changes in v3:
-> 	-> Added more information about 3 wire RTD connection  
-> ---
->  .../iio/temperature/maxim,max31865.yaml       | 52 +++++++++++++++++++
->  1 file changed, 52 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/temperature/maxim,max31865.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/temperature/maxim,max31865.yaml b/Documentation/devicetree/bindings/iio/temperature/maxim,max31865.yaml
-> new file mode 100644
-> index 000000000000..aafb33b16549
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/temperature/maxim,max31865.yaml
-> @@ -0,0 +1,52 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/temperature/maxim,max31865.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Maxim MAX31865 Resistance Temperature Detector.
-> +
-> +maintainers:
-> +  - Navin Sankar Velliangiri <navin@linumiz.com>
-> +
-> +description: |
-> +  https://datasheets.maximintegrated.com/en/ds/MAX31865.pdf
-> +
-> +properties:
-> +  compatible:
-> +    const: maxim,max31865
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  maxim,3-wire:
-> +    description:
-> +      Identifies the number of wires used by the RTD. Setting this property
-> +      enables 3-wire RTD connection. Else 2-wire or 4-wire RTD connection.
-> +    type: boolean
-> +
-> +  spi-max-frequency: true
-> +  spi-cpha: true
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - spi-cpha
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    spi {
-> +       #address-cells = <1>;
-> +       #size-cells = <0>;
-> +
-> +       temp_sensor@0 {
-> +         compatible = "maxim,max31865";
-> +         reg = <0>;
-> +         spi-max-frequency = <400000>;
-> +         spi-cpha;
-> +         maxim,3-wire;
-> +       };
-> +    };
-> +...
+> > I just replicated the datasheet operation. 
+> > You mean,
+> >  1 - shutdown off
+> >  0 - shutdown on
+> > If yes, then the user won't get confused with the datasheet and the behavior of the driver?
+> > Or Is it work like this? But yeah even I like this change it's more convenient.  
+
+ABI has to be consistent and writing an enable attribute with 1 has to mean enabling it whatever
+approach the datasheet takes to describe things.  Most users don't read
+datasheets so interface needs to be intuitive.
+
+> >>> +        if (ret)
+> >>> +            return ret;
+> >>> +        data->enable = val;
+> >>> +        return 0;
+> >>> +    default:
+> >>> +        return -EINVAL;
+> >>> +    }
+> >>> +}  
+> >> [...]  
+> > Thanks for feedback!!
+> >   
 

@@ -2,223 +2,313 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D05893E3688
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Aug 2021 19:34:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 673423E37D7
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Aug 2021 03:57:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229512AbhHGRer (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 7 Aug 2021 13:34:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48240 "EHLO
+        id S229951AbhHHB5u (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 7 Aug 2021 21:57:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229464AbhHGRer (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 7 Aug 2021 13:34:47 -0400
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1203DC0613CF;
-        Sat,  7 Aug 2021 10:34:29 -0700 (PDT)
-Received: by mail-pj1-x1029.google.com with SMTP id mt6so21465002pjb.1;
-        Sat, 07 Aug 2021 10:34:29 -0700 (PDT)
+        with ESMTP id S229882AbhHHB5u (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 7 Aug 2021 21:57:50 -0400
+Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18DDDC061760;
+        Sat,  7 Aug 2021 18:57:31 -0700 (PDT)
+Received: by mail-qv1-xf29.google.com with SMTP id s11so7180817qvz.7;
+        Sat, 07 Aug 2021 18:57:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:from:to:references:message-id:date:user-agent:mime-version
-         :in-reply-to:content-language:content-transfer-encoding;
-        bh=t7bTmWC+qKcdA7NLxNga3iR1jXOFJu4plAdNWHvCPVI=;
-        b=F8BNco+mhTQsTGtrOwf56Dhl9Vt8RVfkmraKHXekG9wIj0hmPapd2zIY97e7bXKnCH
-         1+teFvBrR3KxrUKV6B3Lgo8p8LSvIEt49BmyXgTkabSv9oRg9h4drIrYIa+o9uPZBjwm
-         oYwIrpsBL5XFUtRcORlGfvQjclvOVPw5skljRFQVG9tmpxHY0Sj6ZPJnyY6hyrnYLQVF
-         4VxOSBfba+AfKR0FbcgrkKeoeq9S2RyTt0BkI9NP/Nte66X0GZtNbf/vQACHFvTCvohG
-         vj72MILcMOx1KKdCFAnEpVgUqtc5+RoxtE+Q+9p0qH1FvIqyOniRp5z47gr9R7hagp+5
-         2GrA==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=eWNxPiP1jfrKqmQ3qcfNiXA7SOGFgEh6fUX4gAfkBb8=;
+        b=nZPZrtm7wM8PJoYxSnv3bWUa5GoLv0BeBJOJnHw5QP1fpjMjBCugAOa0hFokDfDW9B
+         skqGLe6IWEu8mqXE//JOZdiIP3y7LG5DcQ5gCNEw3ZzmH8/YCZNrmpv7kaIacZMCJH65
+         XBiAQ7yHx0REzKGLyjacXNG7kenqhp9/ZdjFi1RK86rH4+jKytFAPPc0fieDyIRwx79d
+         dH6Csr84UyrmAufxw2GWsAr0eNL6/Awn/hBW6kLm83/yDRgRzxIpXMDRu6shfm3RKCse
+         thbXTksBzzyBIRz6TGrhHMVqoKF6VggiPcykkSDmTZXwsV7dAt6FCIq76Po4eigAgPfj
+         gCtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:to:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=t7bTmWC+qKcdA7NLxNga3iR1jXOFJu4plAdNWHvCPVI=;
-        b=I0H4O3lKMAV/rkcrQYPLEWFOhRY9IGOUIj+29O2GlzQdvebbjMoTXR33vrmXS8VRNc
-         1Mvzbrl6xy23deT2ZPoMxoYkPnVVCIN/Q/V7GiQUu9lzJr4OrmPm9sJdWoyEPEJPIQng
-         +68Gg4efqDUUreo9fxzeN8XqR7IsAi/0UjeelpJku6fjEIHUoz0df6Wtzu6v/zVylg5e
-         AWLX0QxT4d3WAe9J1a63QaYwetfnAxbN2hRjTDyFLfyfWQhmP+xqc/b4NDgYGIs57nfX
-         paOkzelCJ41fs4P/mVLs5L0T2q2cKw4t/wPuHXdT03wFttd6lKYuwcI8kPIqKp1RmFoO
-         bgEw==
-X-Gm-Message-State: AOAM532dYuQh86VBL9d5IuOidTeGcAreacJfiwYPsIEGy+vw9SxHCZjd
-        ChcJTRl14RnnIBX2l8AIimt6o4Shzq+W6UKo
-X-Google-Smtp-Source: ABdhPJzWwkIRetrjWGd8ubnR9rtch5yOyR+TTkBMXWEmVLnHgSM5Q5E2wF+RI//MFaY/KCtdyhTdOQ==
-X-Received: by 2002:a17:90a:9b13:: with SMTP id f19mr26345668pjp.224.1628357668107;
-        Sat, 07 Aug 2021 10:34:28 -0700 (PDT)
-Received: from ?IPv6:2409:4072:92:61e9:38ed:54e8:b166:da11? ([2409:4072:92:61e9:38ed:54e8:b166:da11])
-        by smtp.gmail.com with ESMTPSA id j128sm15255123pfd.38.2021.08.07.10.34.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 07 Aug 2021 10:34:27 -0700 (PDT)
-Subject: Re: [PATCH 2/2] iio: potentiometer: Add driver support for AD5110
-From:   Mugilraj Dhavachelvan <dmugil2000@gmail.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>, Dragos.Bogdan@analog.com,
-        Darius.Berghe@analog.com, Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org
-References: <20210807050900.10075-1-dmugil2000@gmail.com>
- <20210807050900.10075-3-dmugil2000@gmail.com>
- <53306463-668e-e291-4539-caca2352ea05@metafoo.de>
- <9b58fb0c-245d-795f-2124-6cc2020bc8c5@gmail.com>
-Message-ID: <66d670d6-0374-88ae-c4c1-efd60b54bbd2@gmail.com>
-Date:   Sat, 7 Aug 2021 23:04:18 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        bh=eWNxPiP1jfrKqmQ3qcfNiXA7SOGFgEh6fUX4gAfkBb8=;
+        b=muX9UUuIkT1PS2jBRUhbncbYa+cicnJqP/w52c7s+PKi58peftrOEcS3tVSR32+jk5
+         SKaNDN5upTVPgAroTQUnAnVs4//Q35UDBkUGsu7dNTFTr8YtmRLer6RIBkG0tVnbVxvm
+         SG6NxMDRk4/LDp0ZGhlKYXjZA1QJTlJrYk4hDD5hoQU51hVrRQ1XqrVtXanjZwQYhvM3
+         KP4G3Kgh7hOkNRMZVFePAZxDobs6EpbrSmKkq6PQTtOYR2DHNn+8zdGJlVSnue2jT5vQ
+         NTeTpVz9dWp2aU0NEpMU886wy8hHWZYZBi1Fl5Jb7CQPobDUUhmwz9JWxySVJ24tjv12
+         s+CA==
+X-Gm-Message-State: AOAM5319IBMsd9u7DRozzwg2ukxpH02bNEiajGOnpj36hMQNqjbBJfkz
+        YaU0l/IzCB6UV476D7M9HKs=
+X-Google-Smtp-Source: ABdhPJyn9wuwQBO0PHZ5CMZWt13+PLmSl74jjOLWO77MNEgHyyJqm2XQ6SQ7pwv8eRwp7tJ2MEO6MQ==
+X-Received: by 2002:a05:6214:2ce:: with SMTP id g14mr17847863qvu.46.1628387850076;
+        Sat, 07 Aug 2021 18:57:30 -0700 (PDT)
+Received: from shaak.xiphos.ca (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
+        by smtp.gmail.com with ESMTPSA id k24sm1569612qki.11.2021.08.07.18.57.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Aug 2021 18:57:29 -0700 (PDT)
+From:   Liam Beguin <liambeguin@gmail.com>
+To:     liambeguin@gmail.com, lars@metafoo.de,
+        Michael.Hennerich@analog.com, jic23@kernel.org,
+        charles-antoine.couret@essensium.com, Nuno.Sa@analog.com
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, robh+dt@kernel.org
+Subject: [PATCH v5 0/5] AD7949 Fixes
+Date:   Sat,  7 Aug 2021 21:56:54 -0400
+Message-Id: <20210808015659.2955443-1-liambeguin@gmail.com>
+X-Mailer: git-send-email 2.32.0.452.g940fe202adcb
 MIME-Version: 1.0
-In-Reply-To: <9b58fb0c-245d-795f-2124-6cc2020bc8c5@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Sorry some formatting issues happened in my previous mail.
+While working on another series[1] I ran into issues where my SPI
+controller would fail to handle 14-bit and 16-bit SPI messages. This
+addresses that issue and adds support for selecting a different voltage
+reference source from the devicetree.
 
-On 07/08/21 10:56 pm, Mugilraj Dhavachelvan wrote:
-> 
-> 
-> On 07/08/21 5:41 pm, Lars-Peter Clausen wrote:
->> On 8/7/21 7:08 AM, Mugilraj Dhavachelvan wrote:
->>> The AD5110/AD5112/AD5114 provide a nonvolatile solution
->>> for 128-/64-/32-position adjustment applications, offering
->>> guaranteed low resistor tolerance errors of ±8% and up to
->>> ±6 mA current density.
->>>
->>> Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/AD5110_5112_5114.pdf
->>> Signed-off-by: Mugilraj Dhavachelvan <dmugil2000@gmail.com>
->>
->> Thanks for the patch. This looks really good> 
->>
->>> [...]
->>>
->>> +static int ad5110_write(struct ad5110_data *data, u8 cmd, u8 val)
->>> +{
->>> +    int ret;
->>> +
->>> +    mutex_lock(&data->lock);
->>> +    data->buf[0] = cmd;
->>> +    data->buf[1] = val;
->>> +
->>> +    ret = i2c_master_send_dmasafe(data->client, data->buf, sizeof(data->buf));
->>> +    mutex_unlock(&data->lock);
->>
->> This returns the number of bytes written, which can be less then the number of bytes requested if there was an error. This should check if the right amount of bytes was written and return -EIO otherwise. Same for the other places that read/write from I2C.
-> 
-> Fixed in v2.
->>
->>> +
->>> +    return ret < 0 ? ret : 0;
->>> +}
->>> +
->>> +static int ad5110_resistor_tol(struct ad5110_data *data, u8 cmd, int val)
->>> +{
->>> +    int ret;
->>> +
->>> +    ret = ad5110_read(data, cmd, &val);
->>> +    if (ret)
->>> +        return ret;
->>> +
->>> +    data->tol = FIELD_GET(GENMASK(6, 3), val);
->>> +    data->tol = ((val & GENMASK(2, 0)) * 1000 / 8) + data->tol * 1000;
->>> +    data->tol = data->cfg->kohms * data->tol / 100;
->>
->> This is not wrong, but it can be implemented a bit simpler. The tolerance is encoded as a fixed point number, you don't have to treat them as two independent fields, but can treat it as one fixed point number.
->>
->>     data->tol = data->cfg->kohms * (val & GENMASK(6, 0)) * 1000 / 100 / 8;
->>
-> Great, Fixed in v2.
->>
->>> +    if (!(val & BIT(7)))
->>> +        data->tol *= -1;
->>> +
->>> +    return 0;
->>> +}
->>> +
->>> +static ssize_t ad5110_eeprom_read(struct device *dev,
->>> +                      struct device_attribute *attr,
->>> +                      char *buf)
->>> +{
->>> +    struct iio_dev *indio_dev = dev_to_iio_dev(dev);
->>> +    struct ad5110_data *data = iio_priv(indio_dev);
->>> +    int val = AD5110_WIPER_POS;
->>> +    int ret;
->>> +
->>> +    ret = ad5110_read(data, AD5110_EEPROM_RD, &val);
->>> +    if (ret)
->>> +        return ret;
->> Maybe apply shift to get consistent behavior with `raw`.
-> Fixed in v2.
->>> +
->>> +    return iio_format_value(buf, IIO_VAL_INT, 1, &val);
->>> +}
->>> +
->>> +static ssize_t ad5110_eeprom_write(struct device *dev,
->>> +                       struct device_attribute *attr,
->>> +                       const char *buf, size_t len)
->>> +{
->>> +    struct iio_dev *indio_dev = dev_to_iio_dev(dev);
->>> +    struct ad5110_data *data = iio_priv(indio_dev);
->>> +    int ret;
->>> +
->>> +    ret = ad5110_write(data, AD5110_EEPROM_WR, 0);
->>> +    if (ret) {
->>> +        dev_err(&data->client->dev, "RDAC to EEPROM write failed\n");
->>> +        return ret;
->>> +    }
->>> +    msleep(20);
->>> +
->>> +    return len;
->>> +}
->>> +
->>> +static IIO_DEVICE_ATTR(wiper_pos_eeprom, 0644,
->>> +               ad5110_eeprom_read,
->>> +               ad5110_eeprom_write, 0);
->> This is new custom ABI and needs to be documented
+V1 was base on a series[2] that seems to not have made it all the way,
+and was tested on an ad7689.
 
-> I'm not aware of this, fixed in v2.
->>> +static int ad5110_write_raw(struct iio_dev *indio_dev,
->>> +                struct iio_chan_spec const *chan,
->>> +                int val, int val2, long mask)
->>> +{
->>> +    struct ad5110_data *data = iio_priv(indio_dev);
->>> +    int ret;
->>> +
->>> +    switch (mask) {
->>> +    case IIO_CHAN_INFO_RAW:
->>> +        if (val >= data->cfg->max_pos || val < 0)
->> val == data->cfg->max_pos is a valid setting. Writing max_pos puts it in top-scale mode which gives maximum resistance.
-> Fixed in v2.
->>> +            return -EINVAL;
->>> +
->>> +        return ad5110_write(data, AD5110_RDAC_WR, val << data->cfg->shift);
->>> +    case IIO_CHAN_INFO_ENABLE:
->>> +        if (val < 0 || val > 1)
->>> +            return -EINVAL;
->>> +        if (data->enable == val)
->>> +            return 0;
->>> +        ret = ad5110_write(data, AD5110_SHUTDOWN, val);
->> Doesn't val have to be inverted to get the right behavior
+[1] https://patchwork.kernel.org/project/linux-iio/list/?series=511545
+[2] https://patchwork.kernel.org/project/linux-iio/list/?series=116971&state=%2A&archive=both
 
-> I just replicated the datasheet operation. 
-> You mean,
->  1 - shutdown off
->  0 - shutdown on
-> If yes, then the user won't get confused with the datasheet and the behavior of the driver?
-> Or Is it work like this? But yeah even I like this change it's more convenient.
->>> +        if (ret)
->>> +            return ret;
->>> +        data->enable = val;
->>> +        return 0;
->>> +    default:
->>> +        return -EINVAL;
->>> +    }
->>> +}
->> [...]
-> Thanks for feedback!!
-> 
+Changes since v4:
+- fix premature deletion of define
+- use separate be16 buffer for 8-bit transfers
+- switch to devm_regulator_get_optional()
+- fix vref setup
+- apply Reviewed-by
+
+Changes since v3:
+- use cpu_to_be16 and be16_to_cpu instead of manual conversion
+- use pointers to channel structures instead of copies
+- switch to generic device firmware property API
+- use standard unit suffix names (mV to microvolt)
+- switch to devm_iio_device_register() for additional cleanup
+
+Changes since v2:
+- add comments to ambiguous register names
+- fix be16 definition of the adc buffer
+- fix BPW logic
+- rework vref support
+  - support per channel vref selection
+  - infer reference select value based on DT parameters
+  - update dt-binding
+
+Changes since v1:
+- add default case in read/write size cases
+- drop of_node change as the core already takes care of it
+- check dt user input in probe
+- move description at the top of dt-binding definition
+- drop AllOf block in dt-binding
+
+Thanks for your time,
+Liam
+
+Liam Beguin (5):
+  iio: adc: ad7949: define and use bitfield names
+  iio: adc: ad7949: fix spi messages on non 14-bit controllers
+  iio: adc: ad7949: add support for internal vref
+  dt-bindings: iio: adc: ad7949: add per channel reference
+  iio: adc: ad7949: use devm managed functions
+
+ .../bindings/iio/adc/adi,ad7949.yaml          |  69 ++++-
+ drivers/iio/adc/ad7949.c                      | 281 ++++++++++++++----
+ 2 files changed, 291 insertions(+), 59 deletions(-)
+
+Range-diff against v4:
+1:  8760b368f971 ! 1:  a5c211185661 iio: adc: ad7949: define and use bitfield names
+    @@ drivers/iio/adc/ad7949.c
+      #define AD7949_MASK_TOTAL		GENMASK(13, 0)
+     -#define AD7949_OFFSET_CHANNEL_SEL	7
+     -#define AD7949_CFG_READ_BACK		0x1
+    --#define AD7949_CFG_REG_SIZE_BITS	14
+    -+
+    + #define AD7949_CFG_REG_SIZE_BITS	14
+    + 
+     +/* CFG: Configuration Update */
+     +#define AD7949_CFG_BIT_OVERWRITE	BIT(13)
+     +
+    @@ drivers/iio/adc/ad7949.c
+     +
+     +/* RB: Read back the CFG register */
+     +#define AD7949_CFG_BIT_RBN		BIT(0)
+    - 
+    ++
+      enum {
+      	ID_AD7949 = 0,
+    + 	ID_AD7682,
+     @@ drivers/iio/adc/ad7949.c: static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
+      	 */
+      	for (i = 0; i < 2; i++) {
+2:  7b1484f2fc4c ! 2:  df2f6df8f3d5 iio: adc: ad7949: fix spi messages on non 14-bit controllers
+    @@ Commit message
+         Signed-off-by: Liam Beguin <lvb@xiphos.com>
+     
+      ## drivers/iio/adc/ad7949.c ##
+    +@@
+    + #include <linux/bitfield.h>
+    + 
+    + #define AD7949_MASK_TOTAL		GENMASK(13, 0)
+    +-#define AD7949_CFG_REG_SIZE_BITS	14
+    + 
+    + /* CFG: Configuration Update */
+    + #define AD7949_CFG_BIT_OVERWRITE	BIT(13)
+     @@ drivers/iio/adc/ad7949.c: static const struct ad7949_adc_spec ad7949_adc_spec[] = {
+       * @indio_dev: reference to iio structure
+       * @spi: reference to spi structure
+    @@ drivers/iio/adc/ad7949.c: static const struct ad7949_adc_spec ad7949_adc_spec[]
+       * @cfg: copy of the configuration register
+       * @current_channel: current channel in use
+       * @buffer: buffer to send / receive data to / from device
+    ++ * @buf8b: be16 buffer to exchange data with the device in 8-bit transfers
+    +  */
+    + struct ad7949_adc_chip {
+    + 	struct mutex lock;
+     @@ drivers/iio/adc/ad7949.c: struct ad7949_adc_chip {
+      	struct iio_dev *indio_dev;
+      	struct spi_device *spi;
+    @@ drivers/iio/adc/ad7949.c: struct ad7949_adc_chip {
+      	u16 cfg;
+      	unsigned int current_channel;
+      	u16 buffer ____cacheline_aligned;
+    -@@ drivers/iio/adc/ad7949.c: static int ad7949_spi_write_cfg(struct ad7949_adc_chip *ad7949_adc, u16 val,
+    ++	__be16 buf8b;
+    + };
+    + 
+    + static int ad7949_spi_write_cfg(struct ad7949_adc_chip *ad7949_adc, u16 val,
+      				u16 mask)
+      {
+      	int ret;
+    @@ drivers/iio/adc/ad7949.c: static int ad7949_spi_write_cfg(struct ad7949_adc_chip
+      	struct spi_message msg;
+      	struct spi_transfer tx[] = {
+      		{
+    - 			.tx_buf = &ad7949_adc->buffer,
+    +-			.tx_buf = &ad7949_adc->buffer,
+      			.len = 2,
+     -			.bits_per_word = bits_per_word,
+     +			.bits_per_word = ad7949_adc->bits_per_word,
+      		},
+      	};
+      
+    -+	ad7949_adc->buffer = 0;
+      	ad7949_adc->cfg = (val & mask) | (ad7949_adc->cfg & ~mask);
+     -	ad7949_adc->buffer = ad7949_adc->cfg << shift;
+     +
+     +	switch (ad7949_adc->bits_per_word) {
+     +	case 16:
+    ++		tx[0].tx_buf = &ad7949_adc->buffer;
+     +		ad7949_adc->buffer = ad7949_adc->cfg << 2;
+     +		break;
+     +	case 14:
+    ++		tx[0].tx_buf = &ad7949_adc->buffer;
+     +		ad7949_adc->buffer = ad7949_adc->cfg;
+     +		break;
+     +	case 8:
+     +		/* Here, type is big endian as it must be sent in two transfers */
+    -+		ad7949_adc->buffer = (u16)cpu_to_be16(ad7949_adc->cfg << 2);
+    ++		tx[0].tx_buf = &ad7949_adc->buf8b;
+    ++		ad7949_adc->buf8b = cpu_to_be16(ad7949_adc->cfg << 2);
+     +		break;
+     +	default:
+     +		dev_err(&ad7949_adc->indio_dev->dev, "unsupported BPW\n");
+    @@ drivers/iio/adc/ad7949.c: static int ad7949_spi_read_channel(struct ad7949_adc_c
+      	struct spi_message msg;
+      	struct spi_transfer tx[] = {
+      		{
+    - 			.rx_buf = &ad7949_adc->buffer,
+    +-			.rx_buf = &ad7949_adc->buffer,
+      			.len = 2,
+     -			.bits_per_word = bits_per_word,
+     +			.bits_per_word = ad7949_adc->bits_per_word,
+      		},
+      	};
+      
+    ++	if (ad7949_adc->bits_per_word == 8)
+    ++		tx[0].rx_buf = &ad7949_adc->buf8b;
+    ++	else
+    ++		tx[0].rx_buf = &ad7949_adc->buffer;
+    ++
+    + 	/*
+    + 	 * 1: write CFG for sample N and read old data (sample N-2)
+    + 	 * 2: if CFG was not changed since sample N-1 then we'll get good data
+    +@@ drivers/iio/adc/ad7949.c: static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
+    + 	}
+    + 
+    + 	/* 3: write something and read actual data */
+    +-	ad7949_adc->buffer = 0;
+    + 	spi_message_init_with_transfers(&msg, tx, 1);
+    + 	ret = spi_sync(ad7949_adc->spi, &msg);
+    + 	if (ret)
+     @@ drivers/iio/adc/ad7949.c: static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
+      
+      	ad7949_adc->current_channel = channel;
+    @@ drivers/iio/adc/ad7949.c: static int ad7949_spi_read_channel(struct ad7949_adc_c
+     +		break;
+     +	case 8:
+     +		/* Here, type is big endian as data was sent in two transfers */
+    -+		*val = be16_to_cpu(ad7949_adc->buffer);
+    ++		*val = be16_to_cpu(ad7949_adc->buf8b);
+     +		/* Shift-out padding bits */
+     +		*val >>= 16 - ad7949_adc->resolution;
+     +		break;
+3:  41c4ab9c5e19 ! 3:  8a33618a4f90 iio: adc: ad7949: add support for internal vref
+    @@ drivers/iio/adc/ad7949.c: static int ad7949_spi_read_channel(struct ad7949_adc_c
+     +	struct ad7949_channel *ad7949_chan = &ad7949_adc->channels[channel];
+      	struct spi_transfer tx[] = {
+      		{
+    - 			.rx_buf = &ad7949_adc->buffer,
+    + 			.len = 2,
+     @@ drivers/iio/adc/ad7949.c: static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
+      	 */
+      	for (i = 0; i < 2; i++) {
+    @@ drivers/iio/adc/ad7949.c: static int ad7949_spi_probe(struct spi_device *spi)
+      
+     -	ad7949_adc->vref = devm_regulator_get(dev, "vref");
+     +	/* Setup external voltage ref, buffered? */
+    -+	ad7949_adc->vref = devm_regulator_get(dev, "vrefin");
+    ++	ad7949_adc->vref = devm_regulator_get_optional(dev, "vrefin");
+      	if (IS_ERR(ad7949_adc->vref)) {
+     -		dev_err(dev, "fail to request regulator\n");
+     -		return PTR_ERR(ad7949_adc->vref);
+    ++		ret = PTR_ERR(ad7949_adc->vref);
+    ++		if (ret != -ENODEV)
+    ++			return ret;
+     +		/* unbuffered? */
+    -+		ad7949_adc->vref = devm_regulator_get(dev, "vref");
+    ++		ad7949_adc->vref = devm_regulator_get_optional(dev, "vref");
+     +		if (IS_ERR(ad7949_adc->vref)) {
+    ++			ret = PTR_ERR(ad7949_adc->vref);
+    ++			if (ret != -ENODEV)
+    ++				return ret;
+     +			/* Internal then */
+     +			mode = AD7949_CFG_VAL_REF_INT_4096;
+    ++		} else {
+    ++			mode = AD7949_CFG_VAL_REF_EXT_TEMP;
+     +		}
+    -+		mode = AD7949_CFG_VAL_REF_EXT_TEMP;
+    ++	} else {
+    ++		mode = AD7949_CFG_VAL_REF_EXT_TEMP_BUF;
+      	}
+    -+	mode = AD7949_CFG_VAL_REF_EXT_TEMP_BUF;
+      
+     -	ret = regulator_enable(ad7949_adc->vref);
+     -	if (ret < 0) {
+4:  9cb48acbd05b ! 4:  7612ff29db6b dt-bindings: iio: adc: ad7949: add per channel reference
+    @@ Commit message
+         calculation.
+     
+         Signed-off-by: Liam Beguin <lvb@xiphos.com>
+    +    Reviewed-by: Rob Herring <robh@kernel.org>
+     
+      ## Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml ##
+     @@ Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml: properties:
+5:  c48eb017058c = 5:  74ee82caba57 iio: adc: ad7949: use devm managed functions
+
+base-commit: 6cbb3aa0f9d5d23221df787cf36f74d3866fdb78
+-- 
+2.32.0.452.g940fe202adcb
+

@@ -2,158 +2,68 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 978483E3D73
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Aug 2021 03:15:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 223783E3DE4
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Aug 2021 04:15:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231576AbhHIBP7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 Aug 2021 21:15:59 -0400
-Received: from lucky1.263xmail.com ([211.157.147.131]:40114 "EHLO
-        lucky1.263xmail.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232604AbhHIBP7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 Aug 2021 21:15:59 -0400
-Received: from localhost (unknown [192.168.167.70])
-        by lucky1.263xmail.com (Postfix) with ESMTP id C4BAAC27F9;
-        Mon,  9 Aug 2021 09:15:26 +0800 (CST)
-X-MAIL-GRAY: 0
-X-MAIL-DELIVERY: 1
-X-ADDR-CHECKED4: 1
-X-SKE-CHECKED: 1
-X-ANTISPAM-LEVEL: 2
-Received: from xxm-vm.localdomain (unknown [58.22.7.114])
-        by smtp.263.net (postfix) whith ESMTP id P4988T139771212945152S1628471718235274_;
-        Mon, 09 Aug 2021 09:15:21 +0800 (CST)
-X-IP-DOMAINF: 1
-X-UNIQUE-TAG: <bdbf839b9bdfbacf5240d607c3012c6c>
-X-RL-SENDER: xxm@rock-chips.com
-X-SENDER: xxm@rock-chips.com
-X-LOGIN-NAME: xxm@rock-chips.com
-X-FST-TO: jic23@kernel.org
-X-RCPT-COUNT: 11
-X-SENDER-IP: 58.22.7.114
-X-ATTACHMENT-NUM: 0
-X-System-Flag: 0
-From:   Simon Xue <xxm@rock-chips.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
-        robh+dt@kernel.org, Johan Jonker <jbx6244@gmail.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, David Wu <david.wu@rock-chips.com>,
-        Simon Xue <xxm@rock-chips.com>
-Subject: [PATCH v3] iio: adc: rockchip_saradc: add voltage notifier so get referenced voltage once at probe
-Date:   Mon,  9 Aug 2021 09:15:17 +0800
-Message-Id: <20210809011517.6374-1-xxm@rock-chips.com>
-X-Mailer: git-send-email 2.25.1
+        id S231542AbhHICP5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 Aug 2021 22:15:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47886 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231459AbhHICP5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 Aug 2021 22:15:57 -0400
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 680B6C0613D3
+        for <linux-iio@vger.kernel.org>; Sun,  8 Aug 2021 19:15:36 -0700 (PDT)
+Received: by mail-pj1-x1036.google.com with SMTP id oa17so705804pjb.1
+        for <linux-iio@vger.kernel.org>; Sun, 08 Aug 2021 19:15:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=klaK9JQkgGOZ1rR0mdV2HDGChy8hawc9TcfX3a12pjM=;
+        b=eox8AN1YMbk/BgOMANdkTTfg5BrRSZYXnyERY0VbQ8G4jfrFu47DdmoPyz2Go4EmDD
+         mmqvt93mDRzdd51yzbMWAGlbmwNalc6cPIxWx8CY5SeBhDM9MDRR/zNm5KoOfTviLjTD
+         SsCOnNQW0c7Q6TCDF3W7RcUAtOxbWSeLs637i5QIgfOw1tPJTQmBfriHDpfIRQ33gyXq
+         DrJg2zaYPeVcq6bm0kuQvrxdQTfV2pCcA59NHD1UkQB7SPFGdaI3lNv8667KppiBJhja
+         4WyGrd7iUgJWTCQP1hCejL2c5Y6g83QxB5i0NHxsJF4Y0HDfmnsMH5ZoGikwUe8bYUKT
+         sUWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=klaK9JQkgGOZ1rR0mdV2HDGChy8hawc9TcfX3a12pjM=;
+        b=RcLOek6X3mqYXR7QiwDvGTRjmEFwLE10OhiKXutx/mP7kzN7FF+800DA5UDmcdZS07
+         CyfUNucVnx0NKdgxLfvNSOlSYbL8pz4kgHJScQHQ7XvQi2kGeU4rbW0jz4jeINJ/IKUi
+         qA/LsnsVeZj8ajLl9VHy1m9uem2p3c3UfCND+CDTV8W18YZNK7JkX47M7/XIaPBoMYtl
+         vxGEjn/NOZB5EPGqq6ZYShBXl223W2HmLDuxYHuCXFYXNLHUHJe4KuE4LAYoIrA5eHlB
+         DTyW5/G23rbS4jEtGs6zRaLt0ZtrBgAgDZbqFIKN6P2R4OXinJhiyq0QWTtRVONxXTY1
+         Fk/w==
+X-Gm-Message-State: AOAM531lO236YBBHHzPzGrgTCP67x6aEBR82Uv8ntMQr1FDMCamHp7xn
+        3PXvVxbQEa+aVn1A6FX+P40/3oiAp74BklY7zqg=
+X-Google-Smtp-Source: ABdhPJw/BcU8NPGdkjZEMOpQkYvlVVcYsJ2A+w8OuIuXHS6pe8d2BzrTm2E3LGxonNklcg0eeyZsK/6MExBf0xNsLAk=
+X-Received: by 2002:a17:902:c40d:b029:12c:d68e:5b54 with SMTP id
+ k13-20020a170902c40db029012cd68e5b54mr16296697plk.44.1628475335833; Sun, 08
+ Aug 2021 19:15:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a17:90b:350b:0:0:0:0 with HTTP; Sun, 8 Aug 2021 19:15:35
+ -0700 (PDT)
+Reply-To: ms.lisahugh000@gmail.com
+From:   Ms Lisa Hugh <lisahugh531@gmail.com>
+Date:   Mon, 9 Aug 2021 04:15:35 +0200
+Message-ID: <CAFnQ+S7eF6o816jJ5129acgGLqbL4K8RRuL6Y1TxX3GmGeKXnQ@mail.gmail.com>
+Subject: WAITING MY FRIEND
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: David Wu <david.wu@rock-chips.com>
+Dear Friend,
 
-Add voltage notifier, no need to query regulator voltage for
-every saradc read, just get regulator voltage once at probe.
+I am Ms Lisa Hugh, work in the department of Audit and accounting
+manager here in the Bank.
 
-Signed-off-by: David Wu <david.wu@rock-chips.com>
-Signed-off-by: Simon Xue <xxm@rock-chips.com>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
----
- drivers/iio/adc/rockchip_saradc.c | 46 ++++++++++++++++++++++++++-----
- 1 file changed, 39 insertions(+), 7 deletions(-)
+Please do you get my last email confirmation, Quickly reply here (
+ms.lisahugh000@gmail.com )
 
-diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
-index f3eb8d2e50dc..33c7dd635eb9 100644
---- a/drivers/iio/adc/rockchip_saradc.c
-+++ b/drivers/iio/adc/rockchip_saradc.c
-@@ -49,10 +49,12 @@ struct rockchip_saradc {
- 	struct clk		*clk;
- 	struct completion	completion;
- 	struct regulator	*vref;
-+	int			uv_vref;
- 	struct reset_control	*reset;
- 	const struct rockchip_saradc_data *data;
- 	u16			last_val;
- 	const struct iio_chan_spec *last_chan;
-+	struct notifier_block nb;
- };
- 
- static void rockchip_saradc_power_down(struct rockchip_saradc *info)
-@@ -105,13 +107,7 @@ static int rockchip_saradc_read_raw(struct iio_dev *indio_dev,
- 		mutex_unlock(&indio_dev->mlock);
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SCALE:
--		ret = regulator_get_voltage(info->vref);
--		if (ret < 0) {
--			dev_err(&indio_dev->dev, "failed to get voltage\n");
--			return ret;
--		}
--
--		*val = ret / 1000;
-+		*val = info->uv_vref / 1000;
- 		*val2 = chan->scan_type.realbits;
- 		return IIO_VAL_FRACTIONAL_LOG2;
- 	default:
-@@ -298,6 +294,26 @@ static irqreturn_t rockchip_saradc_trigger_handler(int irq, void *p)
- 	return IRQ_HANDLED;
- }
- 
-+static int rockchip_saradc_volt_notify(struct notifier_block *nb,
-+						   unsigned long event,
-+						   void *data)
-+{
-+	struct rockchip_saradc *info =
-+			container_of(nb, struct rockchip_saradc, nb);
-+
-+	if (event & REGULATOR_EVENT_VOLTAGE_CHANGE)
-+		info->uv_vref = (unsigned long)data;
-+
-+	return NOTIFY_OK;
-+}
-+
-+static void rockchip_saradc_regulator_action(void *data)
-+{
-+	struct rockchip_saradc *info = data;
-+
-+	regulator_unregister_notifier(info->vref, &info->nb);
-+}
-+
- static int rockchip_saradc_probe(struct platform_device *pdev)
- {
- 	struct rockchip_saradc *info = NULL;
-@@ -410,6 +426,12 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
-+	ret = regulator_get_voltage(info->vref);
-+	if (ret < 0)
-+		return ret;
-+
-+	info->uv_vref = ret;
-+
- 	ret = clk_prepare_enable(info->pclk);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "failed to enable pclk\n");
-@@ -450,6 +472,16 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
-+	info->nb.notifier_call = rockchip_saradc_volt_notify;
-+	ret = regulator_register_notifier(info->vref, &info->nb);
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_add_action_or_reset(&pdev->dev,
-+				       rockchip_saradc_regulator_action, info);
-+	if (ret)
-+		return ret;
-+
- 	return devm_iio_device_register(&pdev->dev, indio_dev);
- }
- 
--- 
-2.25.1
-
-
-
+Thanks.
+Ms Lisa Hugh

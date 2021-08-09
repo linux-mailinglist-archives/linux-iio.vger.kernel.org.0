@@ -2,153 +2,161 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4068A3E4608
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Aug 2021 15:05:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33A313E4984
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Aug 2021 18:14:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234707AbhHINFY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 9 Aug 2021 09:05:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53850 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234778AbhHINFV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 9 Aug 2021 09:05:21 -0400
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C361C061796;
-        Mon,  9 Aug 2021 06:05:00 -0700 (PDT)
-Received: by mail-yb1-xb33.google.com with SMTP id j77so29337135ybj.3;
-        Mon, 09 Aug 2021 06:05:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=2hc21s6jA+fO3+n9I28OBHKaMgXfmcXARaC/ezel7U0=;
-        b=J1BqMh+wbNjwpR/syWDWFESR9pwlu3Os0JaBxi70t0BuUsU1bOuf0my9Z9tUA+sIHb
-         MotXFSzBF1Rw2OY7yvyPa43y0x3InFh/yiTcnN9ccYWKr1cRVTgldoEaZEsY/lE39xWr
-         Zvp6NJaW+3XrSu0oO/jOw6BfDcxDIgDy6+HRbVNq50h2Qet8JimxDSDQ0hwY4Yk7vflt
-         RyV9y7VwKAC89CLsEsn5Avgs2g6kfWn+BvdOedNii7GKoUJXby02wPMm7dk7JvAKL72m
-         0qQ2jMnGUDW9Q3XMUlmgUe80kDLLrrR0+IdvlLTaRPLWOfV4KJINpM0MXJ4QIYONLCiy
-         d+Hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=2hc21s6jA+fO3+n9I28OBHKaMgXfmcXARaC/ezel7U0=;
-        b=nm4EJ24EDmALbu2rK9VmYbHWSLFQ8a+2MAnNxEP+19GiuL+T5vQC679ed7oa7uCSrC
-         mdblrzCAGNW7/l2n/dQGNOSB8HONjbmldMSvPWUw6aMQiVsHhygHb1v4CDMjKwwkFMwu
-         eptu3NuNvwWLwdFV3MheFNeaw/hc68YPKcVq7Za3yRdaXM2wDxChiiPw1I1n0jtVSi01
-         C5sEIlyEQIdjcHGEvcB8WDWP5QWCfi9MGn3W+9z1vWb5ycPsUQ1bTwp0CZXjR8YdPlPU
-         l6A39KVju24jFH8rmSpKFNXDMusSL5IWfAS0e0TrvyaM2I+TMfKFel+VjqewBcZtShF+
-         ZWIw==
-X-Gm-Message-State: AOAM531SDibcQJhnfplcRJy5E+i80ynXuJ0Ani8k1XfAFfeIh+jLuQda
-        gVvkzmilAQHEuj8KL4sfozPsRddNQZbo44VQQ+w=
-X-Google-Smtp-Source: ABdhPJwyXKyZS3tNvTA2B27dDqszt7alD3bvW8pIxu61Mple5XW1ExfZwH38ixLJlslu7lPnDGL56Ihq3Sy3LnFfzyE=
-X-Received: by 2002:a25:ba44:: with SMTP id z4mr30401399ybj.476.1628514299333;
- Mon, 09 Aug 2021 06:04:59 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210804202118.25745-1-prabhakar.mahadev-lad.rj@bp.renesas.com> <20210808180143.6b3dc882@jic23-huawei>
-In-Reply-To: <20210808180143.6b3dc882@jic23-huawei>
-From:   "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
-Date:   Mon, 9 Aug 2021 14:04:33 +0100
-Message-ID: <CA+V-a8v0P-Xds51o9yDq0W67rfpAmCt=y=8S8BRWz=mkXLvtHw@mail.gmail.com>
-Subject: Re: [PATCH v4 0/3] Renesas RZ/G2L ADC driver support
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Cc:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Rob Herring <robh+dt@kernel.org>,
+        id S229488AbhHIQPM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 9 Aug 2021 12:15:12 -0400
+Received: from mout.gmx.net ([212.227.15.18]:41453 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229456AbhHIQPM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 9 Aug 2021 12:15:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1628525673;
+        bh=kXrKblaZ6CNYHnepl9Y8P+zAjCJhII6lv5A6I+8gfu8=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
+        b=E1qz8619oknic+0M+CK8i2jhImlE40g45IgOmp6G+fWfGBVCsizP0Z2/CJ9Fn1Ne0
+         Q5sOVQs1ZWAaZ8YOHbu5A9xpZJSSNp0ESUkF5inEWGgEdJfpJDQCeuys03+LCl2fCU
+         XnFBqo0XRdvQy3YiSkwUiQfIwZovDTUnkdOTAtyU=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from titan ([79.150.72.99]) by mail.gmx.net (mrgmx005
+ [212.227.17.184]) with ESMTPSA (Nemesis) id 1M9nxn-1m9X1Y0Ulx-005qGA; Mon, 09
+ Aug 2021 18:14:33 +0200
+Date:   Mon, 9 Aug 2021 18:14:22 +0200
+From:   Len Baker <len.baker@gmx.com>
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Len Baker <len.baker@gmx.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
+        Kees Cook <keescook@chromium.org>,
+        linux-hardening@vger.kernel.org,
         linux-iio <linux-iio@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Biju Das <biju.das.jz@bp.renesas.com>
-Content-Type: text/plain; charset="UTF-8"
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] drivers/iio: Remove all strcpy() uses in favor of
+ strscpy()
+Message-ID: <20210809161422.GA2619@titan>
+References: <20210807152225.9403-1-len.baker@gmx.com>
+ <20210808172503.5187cd24@jic23-huawei>
+ <CAHp75VfSX-7UqH9Lbr_GxQRY3dGjGo7H8++kBdrrSds1p6nB1Q@mail.gmail.com>
+ <20210809102131.000021eb@Huawei.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210809102131.000021eb@Huawei.com>
+X-Provags-ID: V03:K1:JDBAWEA04QKyxXvnanhW35lkIvCUd2zrRIULromQ+zDfoiNARFp
+ YMwUD2qwYZvHrtAI1DfvYFOHILplrlq/LPbuebE5J0wbpL+x9pP/WtuzCJs6bzhPnicdWBW
+ VKHbhEnnZXUC4GdSwyzxA10/W6WGOZlqy42CgcQ4+2C8lPqViHqbXKHNe4rtZZKuGiJ1yK5
+ IJ8YF8L5V4DTNDFnspkoA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:pbFVuiJtVnA=:HMUtu7bOW3YYjyChEVQY4L
+ rb7ZMJUhQCKBAFhmgFT8548TxQOvuz4grKRCfplZQIglgOCWklhANPNEnQ9fIzo9jdGFRWH7f
+ +AplbnYCSpdetF4icjLUWgwNHws2Brd9PI3Fbe/j48GNX2jybiCqVFhM6E8W5leMabQEmrsTx
+ rDj2wFq9kzGVzWUoNpwhIshrnp1AzCjeOrnXctkUXVIgyOKR+lqdy6oWZpsYAU/vvtIu8G3NF
+ yiwTX84EBjUWH+JU7M4Up3kFq27udfTFURrX25o95WKfk4JRTb6BTuUnVwC2YRdAfJ8/+PhbK
+ VS3wkJ65zU9jIeHEWzRFThprhxT5IVsQGPwzep0mE/rs1FNjIMBSm2sM/8+Ndyd66x5txNftn
+ i9rwDO3XNCqRLZQr5S30qbcHvusvpEqL9ZpBye7EYdlEgXJvo8NXsPrQC7eyrI54LeCfnVrk/
+ veX/HiVyFe37ikZ4ag5c87EclrRwykwcvIaS3fpL2tGq5MHTyVHKhShJ51+tCzHGuOLu/buT5
+ Z74Q60lp4HFe6/K+AtCH6msCNo0LH1x8AX7wCpj2M8kV81jQNdXUDN/zPS7gyVPho2s94QCZv
+ /r8lxW6VCTDdEpzRyT8jgosQV5NRFHMTxRZvmSFhwtjW0jQ6Zr4GuR7rRRVj0v1dyYRbmxqHh
+ Lb3r3IPcly7u+rWoEctxk5ryeHxmaJiELOCmApOLy3svPrroVrONqaSH0/gdbullf7RxCxqdb
+ hbzb0h5f5h3SBvWfDwesijOAxjkGvKOxJJ5jg3mz1K5i1W0qYA0++ybVwhGxh/828XCstA25H
+ a+TiEB7vgU3JMQFqmBGHSEhNLbX6CRrP24bWKhLIXcj5m2xFjIW4Bz0XNT8HRpRjM+/elRhK5
+ bPtXT5oPDPX2R3PdQqKV2SlMjWwC1odoZeX2hpX181pp635RvPoyYfFRQDB2AagcPkHgkF7ja
+ dj+VRi4so5qgIVn5fpCZwydGhdzHF4+bDwjwWe5DQkTO+5lgK7Hx4AaGghCQfx77RRPekJLDz
+ hw196c0E4y1vyM3Tp41k7O940pJ1FkuIKcwaevWt4Tqv3wlBHV5Xd8Nf8R3XeuIBxEd6vX36K
+ B6+Br3tg2YJBwWrLAByi+jyDq+nwvsReZ2ipwBxfMdSWaPhFgmMXlaJ4A==
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+Hi,
 
-On Sun, Aug 8, 2021 at 5:58 PM Jonathan Cameron <jic23@kernel.org> wrote:
+On Mon, Aug 09, 2021 at 10:21:31AM +0100, Jonathan Cameron wrote:
+> On Sun, 8 Aug 2021 22:00:34 +0300
+> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 >
-> On Wed,  4 Aug 2021 21:21:15 +0100
-> Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com> wrote:
->
-> > Hi All,
+> > On Sun, Aug 8, 2021 at 7:25 PM Jonathan Cameron <jic23@kernel.org> wro=
+te:
+> > >
+> > > On Sat,  7 Aug 2021 17:22:25 +0200
+> > > Len Baker <len.baker@gmx.com> wrote:
+> > >
+> > > > strcpy() performs no bounds checking on the destination buffer. Th=
+is
+> > > > could result in linear overflows beyond the end of the buffer, lea=
+ding
+> > > > to all kinds of misbehaviors. The safe replacement is strscpy().
+> > > >
+> > > > This patch is an effort to clean up the proliferation of str*()
+> > > > functions in the kernel and a previous step in the path to remove
+> > > > the strcpy function from the kernel entirely [1].
+> > > >
+> > > > [1] https://github.com/KSPP/linux/issues/88
+> > > >
+> > > > Signed-off-by: Len Baker <len.baker@gmx.com>
+> > > Applied to the togreg branch of iio.git and pushed out as testing
+> > > so 0-day can poke at it and see if we missed anything.
 > >
-> > This patch series adds ADC support for Renesas RZ/G2L family.
+> > Isn't it too early? Or am I missing something (see below)?
 > >
-> > Patches apply on top of v5.14-rc2.
-> Hi Lad, I'm fine with this, but need to pull my tree forwards
-> to include the header that is only in rc2.
+> > ...
+> >
+> > > >                       /* use length + 2 for adding minus sign if n=
+eeded */
+> > > > -                     str =3D devm_kzalloc(regmap_get_device(st->m=
+ap),
+> > > > -                                        strlen(orient) + 2, GFP_K=
+ERNEL);
+> > > > +                     n =3D strlen(orient) + 2;
+> > > > +                     str =3D devm_kzalloc(regmap_get_device(st->m=
+ap), n,
+> > > > +                                        GFP_KERNEL);
+> > > >                       if (str =3D=3D NULL)
+> > > >                               return -ENOMEM;
+> > > >                       if (strcmp(orient, "0") =3D=3D 0) {
+> > > > -                             strcpy(str, orient);
+> > > > +                             strscpy(str, orient, n);
+> > > >                       } else if (orient[0] =3D=3D '-') {
+> > > > -                             strcpy(str, &orient[1]);
+> > > > +                             strscpy(str, &orient[1], n);
+> > > >                       } else {
+> > > >                               str[0] =3D '-';
+> > > > -                             strcpy(&str[1], orient);
+> > > > +                             strscpy(&str[1], orient, n - 1);
+> >
+> > Why n-1?
 >
-> I'll probably do that later in the week then pick up patches 1 and 2.
+> n is the total length and this is printing from [1], so n - 1 is remaini=
+ng
+> space.
 >
-Thanks.
+> >
+> > > >                       }
+> >
+> > As far as I understood the logic, it  inverts the sign except the case
+> > when it equals 0.
+> >
+> > I have a question here, why can't we always use +/-?
+> > Why can't 0 be prefixed with a sign?
+>
+> Technically a userspace ABI change, but I agree it should be fairly
+> harmless unless someone is rolling their own string handling routines.
 
-Geert could you please pick patch 3/3.
+I personally don't like the idea of zero having a sign. It's my opinion.
+But if you prefer it I have no problem.
 
-Cheers,
-Prabhakar
+> >
+> > If the above can be used, we may simplify this code.
+> >
+> > Len, I think this task may be considered simple, but I recommend
+> > thinking about each case and finding a way to simplify it more.
+>
+Andy, is what I try to do ;) Thanks for the advise.
 
-> Thanks,
->
-> Jonathan
-> >
-> > Cheers,
-> > Prabhakar
-> >
-> > Changes for v4:
-> > * Fixed registering action to assert resets on failure/remove
-> >   as reported by Philip.
-> > * Fixed review comments suggested by Jonathan.
-> > * Included RB tag from Rob for patch 1/3
-> > * Note DTS patch applies on top of https://git.kernel.org/pub/scm/
-> >   linux/kernel/git/geert/renesas-devel.git/log/
-> >   ?h=renesas-arm-dt-for-v5.15
-> >
-> > Changes for v3 (as requested by Jonathan):
-> > * Made use of FIELD_PREP()
-> > * Renamed _CLEAR to _MASK and inverted inline as required
-> > * Moved |= pair's on same lines
-> > * Made use of sysfs_emit() while reading the labels
-> > * Used for_each_bit_set() in rzg2l_adc_isr()
-> > * Renamed rzg2l_adc_parse_of() -> rzg2l_adc_parse_properties()
-> > * Used devm_add_action_or_reset() for asserting the reset signals and
-> >   disabling pm_runtime and eventually removing remove() callback
-> > * Added comments in isr handler for channel select interrupt
-> > * Moved enabling/disabling of pclk during hw init in rzg2l_adc_hw_init()
-> > * Dropped clock patch 3/4 (https://lore.kernel.org/patchwork/patch/1462152/)
-> >   from previous series as its queued up in renesas-clk-for-v5.15
-> >
-> > Changes for v2:
-> > * Update binding doc, dropped gpios/renesas-rzg2l,adc-trigger-mode
-> >   properties included channel property to represent each wired channel.
-> > * Fixed review comments pointed by Alexandru, implemented pm runtime
-> >   support, dropped mlock usage
-> > * Fixed review comments pointed by Jonathan, renamed the macros,
-> >   simplified the code.
-> > * Included clock and DT patches
-> >
-> > v1: https://patchwork.kernel.org/project/linux-renesas-soc/cover/
-> >     20210629220328.13366-1-prabhakar.mahadev-lad.rj@bp.renesas.com/
-> >
-> > Lad Prabhakar (3):
-> >   dt-bindings: iio: adc: Add binding documentation for Renesas RZ/G2L
-> >     A/D converter
-> >   iio: adc: Add driver for Renesas RZ/G2L A/D converter
-> >   arm64: dts: renesas: r9a07g044: Add ADC node
-> >
-> >  .../bindings/iio/adc/renesas,rzg2l-adc.yaml   | 134 ++++
-> >  MAINTAINERS                                   |   8 +
-> >  arch/arm64/boot/dts/renesas/r9a07g044.dtsi    |  42 ++
-> >  drivers/iio/adc/Kconfig                       |  10 +
-> >  drivers/iio/adc/Makefile                      |   1 +
-> >  drivers/iio/adc/rzg2l_adc.c                   | 600 ++++++++++++++++++
-> >  6 files changed, 795 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
-> >  create mode 100644 drivers/iio/adc/rzg2l_adc.c
-> >
->
+> It could be a little simpler doing this, so 'maybe' worth doing.
+
+Ok, I will send a new version if there are no objections.
+
+Regards,
+Len

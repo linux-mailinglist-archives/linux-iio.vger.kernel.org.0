@@ -2,97 +2,158 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 559A83E3D0F
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Aug 2021 00:46:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 978483E3D73
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Aug 2021 03:15:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230175AbhHHWrR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 Aug 2021 18:47:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59134 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230024AbhHHWrQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 Aug 2021 18:47:16 -0400
-Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03406C061760;
-        Sun,  8 Aug 2021 15:46:57 -0700 (PDT)
-Received: by mail-qk1-x732.google.com with SMTP id 14so16454232qkc.4;
-        Sun, 08 Aug 2021 15:46:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:content-transfer-encoding:date:message-id:cc:subject
-         :from:to:references:in-reply-to;
-        bh=6bBUCBVv60+hM0/H5Rtd/L5AKWv2adqcsOGUpCsjuyc=;
-        b=HMGOI4Ncqv1ddlpnnOcm6t1cN6sg+GIC3TJN+Wa3NgdU6Cp2lIWOG/Ahz+ahBub2IX
-         0F8GMRVl8f1bS/+GLTti0fu11NhY/4A57QfA+RvzmQVD/vNHUD/crfnbuVMFAb308xdf
-         SSyJpDe5X8txAWJliRFW024XPzLEc4bndQRJXleOWNsPoS76QcvLyqcU2wGMrDT1txEx
-         JEZVcz7N7Ebxii4pDE/6eTa4hz1/Vaeu9mZ5mhCygjeOaZDVLK/cRboljOvmrZKqZFp1
-         1F9QPGE2VDHNPPqJdO81fq63/MkErAqjxB2SVusH/asIzQlJ/4L1ZHDgdCf7X8Hoe+Ht
-         cOJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:content-transfer-encoding:date
-         :message-id:cc:subject:from:to:references:in-reply-to;
-        bh=6bBUCBVv60+hM0/H5Rtd/L5AKWv2adqcsOGUpCsjuyc=;
-        b=kSGOiB2KsKHF3LmykNehiKUSWuq4Ijf+mL1NgKdD9uuC5DNBagCi5VKuqQHRsI9NfE
-         5ZkbzFB2WF03BX/sztr4aU7Xc+k3j0Xd8P0R4HY7Hgzr+kSJ4jtowWC2shKyTmuwj089
-         4+FdfU3qQ5ac0v9YLCD4EmaBKeaG41vGhYalR3PEqlu8xi7l6WP9VecA8i0QZgPOcbqk
-         +bUbIJIIJ+PqM9ZWjzsT8aEffEUBNob4LgwKtlZWpYmmTjPbFi8Q1G1aU/AwAd46Ac2v
-         e2/Ue5lbMdNqwLu1BGTEczqFMHEaLdQWJ78cQkZu6wc6xBhTDFX1eIIuQg7XWtv60X5H
-         4lxA==
-X-Gm-Message-State: AOAM531MrnZXhWyjCNbjANczTCHhBlcrsk3sdiDWz8w5yaqd1/YOTDdH
-        9a0Z45k8CrgJnqSo5ch/ens=
-X-Google-Smtp-Source: ABdhPJziQjftXzeaNG8ptrIxiQ/nGjUlKrBx4LLbAmM2BkhHRb40pYaOphN1iD6yLL8M7vOICn2H2g==
-X-Received: by 2002:a37:b6c1:: with SMTP id g184mr20030069qkf.270.1628462816203;
-        Sun, 08 Aug 2021 15:46:56 -0700 (PDT)
-Received: from localhost (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
-        by smtp.gmail.com with ESMTPSA id j5sm8363362qki.80.2021.08.08.15.46.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 08 Aug 2021 15:46:55 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Sun, 08 Aug 2021 18:46:54 -0400
-Message-Id: <CDEHW1G78JUJ.CQG08OEMNYLQ@shaak>
-Cc:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
-Subject: Re: [PATCH v5 1/5] iio: adc: ad7949: define and use bitfield names
-From:   "Liam Beguin" <liambeguin@gmail.com>
-To:     "Joe Perches" <joe@perches.com>, <lars@metafoo.de>,
-        <Michael.Hennerich@analog.com>, <jic23@kernel.org>,
-        <charles-antoine.couret@essensium.com>, <Nuno.Sa@analog.com>
-References: <20210808015659.2955443-1-liambeguin@gmail.com>
- <20210808015659.2955443-2-liambeguin@gmail.com>
- <b52eb842e1c681b88dbffba262075957b9741262.camel@perches.com>
-In-Reply-To: <b52eb842e1c681b88dbffba262075957b9741262.camel@perches.com>
+        id S231576AbhHIBP7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 Aug 2021 21:15:59 -0400
+Received: from lucky1.263xmail.com ([211.157.147.131]:40114 "EHLO
+        lucky1.263xmail.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232604AbhHIBP7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 Aug 2021 21:15:59 -0400
+Received: from localhost (unknown [192.168.167.70])
+        by lucky1.263xmail.com (Postfix) with ESMTP id C4BAAC27F9;
+        Mon,  9 Aug 2021 09:15:26 +0800 (CST)
+X-MAIL-GRAY: 0
+X-MAIL-DELIVERY: 1
+X-ADDR-CHECKED4: 1
+X-SKE-CHECKED: 1
+X-ANTISPAM-LEVEL: 2
+Received: from xxm-vm.localdomain (unknown [58.22.7.114])
+        by smtp.263.net (postfix) whith ESMTP id P4988T139771212945152S1628471718235274_;
+        Mon, 09 Aug 2021 09:15:21 +0800 (CST)
+X-IP-DOMAINF: 1
+X-UNIQUE-TAG: <bdbf839b9bdfbacf5240d607c3012c6c>
+X-RL-SENDER: xxm@rock-chips.com
+X-SENDER: xxm@rock-chips.com
+X-LOGIN-NAME: xxm@rock-chips.com
+X-FST-TO: jic23@kernel.org
+X-RCPT-COUNT: 11
+X-SENDER-IP: 58.22.7.114
+X-ATTACHMENT-NUM: 0
+X-System-Flag: 0
+From:   Simon Xue <xxm@rock-chips.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
+        robh+dt@kernel.org, Johan Jonker <jbx6244@gmail.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org, David Wu <david.wu@rock-chips.com>,
+        Simon Xue <xxm@rock-chips.com>
+Subject: [PATCH v3] iio: adc: rockchip_saradc: add voltage notifier so get referenced voltage once at probe
+Date:   Mon,  9 Aug 2021 09:15:17 +0800
+Message-Id: <20210809011517.6374-1-xxm@rock-chips.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun Aug 8, 2021 at 12:51 PM EDT, Joe Perches wrote:
-> On Sat, 2021-08-07 at 21:56 -0400, Liam Beguin wrote:
-> > Replace raw configuration register values by using FIELD_PREP and
-> > defines to improve readability.
-> []
-> > diff --git a/drivers/iio/adc/ad7949.c b/drivers/iio/adc/ad7949.c
-> []
-> +#define AD7949_CFG_BIT_INCC GENMASK(12, 10)
->
+From: David Wu <david.wu@rock-chips.com>
 
-Hi Joe,
+Add voltage notifier, no need to query regulator voltage for
+every saradc read, just get regulator voltage once at probe.
 
-> I think the naming is a bit confusing as it appears as if
-> these bitfield ranges are single bits.
+Signed-off-by: David Wu <david.wu@rock-chips.com>
+Signed-off-by: Simon Xue <xxm@rock-chips.com>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+---
+ drivers/iio/adc/rockchip_saradc.c | 46 ++++++++++++++++++++++++++-----
+ 1 file changed, 39 insertions(+), 7 deletions(-)
 
-That makes sense.
-Would AD7949_CFG_BITS_* be good enough?
+diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
+index f3eb8d2e50dc..33c7dd635eb9 100644
+--- a/drivers/iio/adc/rockchip_saradc.c
++++ b/drivers/iio/adc/rockchip_saradc.c
+@@ -49,10 +49,12 @@ struct rockchip_saradc {
+ 	struct clk		*clk;
+ 	struct completion	completion;
+ 	struct regulator	*vref;
++	int			uv_vref;
+ 	struct reset_control	*reset;
+ 	const struct rockchip_saradc_data *data;
+ 	u16			last_val;
+ 	const struct iio_chan_spec *last_chan;
++	struct notifier_block nb;
+ };
+ 
+ static void rockchip_saradc_power_down(struct rockchip_saradc *info)
+@@ -105,13 +107,7 @@ static int rockchip_saradc_read_raw(struct iio_dev *indio_dev,
+ 		mutex_unlock(&indio_dev->mlock);
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SCALE:
+-		ret = regulator_get_voltage(info->vref);
+-		if (ret < 0) {
+-			dev_err(&indio_dev->dev, "failed to get voltage\n");
+-			return ret;
+-		}
+-
+-		*val = ret / 1000;
++		*val = info->uv_vref / 1000;
+ 		*val2 = chan->scan_type.realbits;
+ 		return IIO_VAL_FRACTIONAL_LOG2;
+ 	default:
+@@ -298,6 +294,26 @@ static irqreturn_t rockchip_saradc_trigger_handler(int irq, void *p)
+ 	return IRQ_HANDLED;
+ }
+ 
++static int rockchip_saradc_volt_notify(struct notifier_block *nb,
++						   unsigned long event,
++						   void *data)
++{
++	struct rockchip_saradc *info =
++			container_of(nb, struct rockchip_saradc, nb);
++
++	if (event & REGULATOR_EVENT_VOLTAGE_CHANGE)
++		info->uv_vref = (unsigned long)data;
++
++	return NOTIFY_OK;
++}
++
++static void rockchip_saradc_regulator_action(void *data)
++{
++	struct rockchip_saradc *info = data;
++
++	regulator_unregister_notifier(info->vref, &info->nb);
++}
++
+ static int rockchip_saradc_probe(struct platform_device *pdev)
+ {
+ 	struct rockchip_saradc *info = NULL;
+@@ -410,6 +426,12 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
+ 
++	ret = regulator_get_voltage(info->vref);
++	if (ret < 0)
++		return ret;
++
++	info->uv_vref = ret;
++
+ 	ret = clk_prepare_enable(info->pclk);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "failed to enable pclk\n");
+@@ -450,6 +472,16 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
+ 
++	info->nb.notifier_call = rockchip_saradc_volt_notify;
++	ret = regulator_register_notifier(info->vref, &info->nb);
++	if (ret)
++		return ret;
++
++	ret = devm_add_action_or_reset(&pdev->dev,
++				       rockchip_saradc_regulator_action, info);
++	if (ret)
++		return ret;
++
+ 	return devm_iio_device_register(&pdev->dev, indio_dev);
+ }
+ 
+-- 
+2.25.1
 
-Thanks,
-Liam
 
->
-> > +/* REF: reference/buffer selection */
-> > +#define AD7949_CFG_BIT_REF		GENMASK(5, 3)
-> []
-> > +/* SEQ: channel sequencer. Allows for scanning channels */
-> > +#define AD7949_CFG_BIT_SEQ		GENMASK(2, 1)
-> >=20
 

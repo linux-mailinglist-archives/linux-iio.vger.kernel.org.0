@@ -2,178 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E69203E836D
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Aug 2021 21:10:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBA393E83DF
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Aug 2021 21:46:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231236AbhHJTLO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 Aug 2021 15:11:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45374 "EHLO
+        id S230295AbhHJTqm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 Aug 2021 15:46:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230295AbhHJTLO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Aug 2021 15:11:14 -0400
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF921C0613C1;
-        Tue, 10 Aug 2021 12:10:51 -0700 (PDT)
-Received: by mail-pj1-x102d.google.com with SMTP id a8so34480145pjk.4;
-        Tue, 10 Aug 2021 12:10:51 -0700 (PDT)
+        with ESMTP id S229585AbhHJTql (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Aug 2021 15:46:41 -0400
+Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BCA6C0613C1;
+        Tue, 10 Aug 2021 12:46:19 -0700 (PDT)
+Received: by mail-qv1-xf29.google.com with SMTP id bl13so5788037qvb.5;
+        Tue, 10 Aug 2021 12:46:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Da6wJReHrcDQVkAOyF8U8ePTmkNSaOtjDSMcilTlogI=;
-        b=bENRq13kLVFXXCOudAOcCBTiLmab3hXnEYDyyOE4/7yUMmI5Gqtpqb86oeUQJjIANf
-         YlNdfNN1D6ubHdNT7+sZNhjk0+WSGCI9Rb/u5OIrD4PqONCCtNG01tUPCea3qWhU24Y3
-         qxhWraoQ1fmE8B3W0CInFhE+uRJS9RlHCuKuooD1hc5UPoPHTYZQugKi6+576bs0Jn8O
-         /dnAw3IDOYKfOz577zguCtF2J2aekTsN5PL7X/CZEk1hUDzdkJURPXaiXp1pkLx2XIuw
-         2N1lTq4oMG9248pGvV10Ja5QZDPedjkXmStUgBLiIHgol0ACIPxfSYDw+uBe4DGiGdiO
-         6u3A==
+        h=mime-version:content-transfer-encoding:date:message-id:subject:from
+         :to:cc:references:in-reply-to;
+        bh=7uKhEd6eOX5t2b+eg1FPghI/jUcRjPOp/WnfQQyxxWY=;
+        b=Cf5gKsRwjqoQHx9oIyDJAKGUxUbuOLczqOVlcz9xPxDXx80ilyxeI0Zb6rqIrBoAL2
+         T48RQCZIhT5Fxz53eDY6a1DzGL10RBlx5i7eln1OKUeNnFRt6R1Pf6c7ydwoxgq+s+SQ
+         YqEYYgWW6Fi2PTqMj+g7X1tlcTa5eCv+K2UP5vZw9/WlRv4wkmsLaZjclYXR1S5Fln7R
+         yDQDPkgCoJvl6Dgtqcg2YH8lwWXK4Nnkrs69XlHWHXh72G9bETAY+PWXOigcGCSxxsYA
+         VWU5aRyTx9FG46i3e1Lk4Mz2DTLeA7luZLLX59RBf2pYmGRrrxfnnNHPW/ccfPhqJx90
+         qtXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Da6wJReHrcDQVkAOyF8U8ePTmkNSaOtjDSMcilTlogI=;
-        b=O7VVO8Sc7S25rRhQGP00iCN+d/KebszARzXILJm2DKIi7rmUGCyXWKxsGWT/izPrS4
-         Pz2+PkC/d8shH6t7/oECrCVJGf8ppvGj3aXheSDChCRPyV6vTMVp7q8ee8tjZ7X+RnUW
-         /1mLXsIRPeZJ/4q7qgzYn8tbrgPxv+Ao6LSdjymP7HGsAXwUlZ/CAyLT+eiXAgYFxF6R
-         wT4YBq9gx8UO91yDUpmRKBb5gzEk3DWSD6pYAujRDm81YPSL1nrsGr+vbuDGQGfpsAYn
-         uoICrQtjscKkHIO6+YtdvJPtWMGOVrYWA60J1puxuacxods9A9+L36E1wvvGeTssYDa2
-         dg0A==
-X-Gm-Message-State: AOAM533TkO3foo1E9s9Hu8UoDHGLgThCAd8lCnNXDvVJLWjuBKFw8Lwv
-        bb0BYy+X7SUo+5qx6d5mm6et0tlxckamjbmLDws=
-X-Google-Smtp-Source: ABdhPJw+QY86a1jAG3g5wjYzpU661Tfv80JIv4dffIBdFIqES0J1ZHpRwK48oi+6xDGteNZHLNbK6w5uDM0TXfOte2k=
-X-Received: by 2002:a63:cf0a:: with SMTP id j10mr1157469pgg.4.1628622651293;
- Tue, 10 Aug 2021 12:10:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210810184536.34443-1-puranjay12@gmail.com> <20210810184536.34443-3-puranjay12@gmail.com>
-In-Reply-To: <20210810184536.34443-3-puranjay12@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 10 Aug 2021 22:10:14 +0300
-Message-ID: <CAHp75Vf9zbGn-MoP2sd2Fv+bCPZtidCm4RrNKY+QUv1Vnb3PHA@mail.gmail.com>
-Subject: Re: [PATCH v10 2/2] iio: accel: Add driver support for ADXL355
-To:     Puranjay Mohan <puranjay12@gmail.com>
-Cc:     Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
-        Darius <Darius.Berghe@analog.com>
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:mime-version:content-transfer-encoding:date
+         :message-id:subject:from:to:cc:references:in-reply-to;
+        bh=7uKhEd6eOX5t2b+eg1FPghI/jUcRjPOp/WnfQQyxxWY=;
+        b=YQUPvOhjAS4qAzI1OnX8gvvl17gU/gNFcpewI2gu2GePxOZBJBSJPGgVngwFHwfywl
+         M1GM8N6Hob9/RZOZbGmspTiP+UJKMuZacd49Swt0L1UH3dl5Z9Rj7IgKbPtiGC9JQng5
+         KxLxnuZ/M4kqlcUgb1Fd5wrWuxW/+q3RbBwFdsyYG6Vp91TdC6QjLEN1aRehOju6RQMb
+         E11OrwIMvDNBwxnX8ePewmFQxUo0vRcRTWmDbSkDlbka05F+HlEx3e99KbMU4f0TLnHV
+         EgA0KDPdAXTEOet/fbHcQzubUtgrXDHljOKtPq5saeDlRLtGr/1OHupx71pEYW1N/rwI
+         CxSw==
+X-Gm-Message-State: AOAM532S58wXVA5WZU9GTZx9tJ945s96QE/xTjk6pXzq6+krwqmSMklN
+        XIlQNFaOb/+XOAyj9STzPLE=
+X-Google-Smtp-Source: ABdhPJwAAxuvIqF3lzOesrPoEyxuMuaQHzyagNGW6nN0Zo4K+lcCE+lWTZGz/KFNAp0UNnbacp4tXw==
+X-Received: by 2002:ad4:4dc5:: with SMTP id cw5mr6748758qvb.62.1628624778573;
+        Tue, 10 Aug 2021 12:46:18 -0700 (PDT)
+Received: from localhost (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
+        by smtp.gmail.com with ESMTPSA id b22sm3257166qtr.2.2021.08.10.12.46.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Aug 2021 12:46:17 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Tue, 10 Aug 2021 15:46:16 -0400
+Message-Id: <CDG3ATRV00VV.57ZPL3OPU5N4@shaak>
+Subject: Re: [PATCH v5 3/5] iio: adc: ad7949: add support for internal vref
+From:   "Liam Beguin" <liambeguin@gmail.com>
+To:     "Andy Shevchenko" <andy.shevchenko@gmail.com>
+Cc:     "Jonathan Cameron" <jic23@kernel.org>, <lars@metafoo.de>,
+        <Michael.Hennerich@analog.com>,
+        <charles-antoine.couret@essensium.com>, <Nuno.Sa@analog.com>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
+References: <20210808015659.2955443-1-liambeguin@gmail.com>
+ <20210808015659.2955443-4-liambeguin@gmail.com>
+ <20210808173630.5c384a4b@jic23-huawei> <CDEHT583QT0A.2QAXX9AC2FMLO@shaak>
+ <CAHp75Vc3o-RrHD_wt_CfJY3P8hoRhJkdiRRySFS_O_7VdtJTQA@mail.gmail.com>
+In-Reply-To: <CAHp75Vc3o-RrHD_wt_CfJY3P8hoRhJkdiRRySFS_O_7VdtJTQA@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Aug 10, 2021 at 9:45 PM Puranjay Mohan <puranjay12@gmail.com> wrote:
+On Tue Aug 10, 2021 at 8:15 AM EDT, Andy Shevchenko wrote:
+> On Mon, Aug 9, 2021 at 1:50 AM Liam Beguin <liambeguin@gmail.com> wrote:
+> > On Sun Aug 8, 2021 at 12:36 PM EDT, Jonathan Cameron wrote:
+> > > On Sat, 7 Aug 2021 21:56:57 -0400
+> >         ret =3D fwnode_property_read_u32(child, "adi,internal-ref-micro=
+volt", &tmp);
+> >         if (ret =3D=3D -EINVAL && mode & AD7949_CFG_VAL_REF_EXTERNAL) {
+> >                 continue;
 >
-> ADXL355 is a 3-axis MEMS Accelerometer. It offers low noise density,
-> low 0g offset drift, low power with selectable measurement ranges.
-> It also features programmable high-pass and low-pass filters.
+> >         } else if (ret < 0) {
+>
 
-Thanks for an update. Seems some of the comments left unaddressed.
+Hi Andy,
 
-...
+> Side note, redundant 'else'
 
-> +#include <linux/device.h>
+Are you asking to add an 'else' statement?
 
-No need. There is no user for that.
-A forward declaration is enough.
+because, unless I'm mistaken, in this case ret can have other negative valu=
+es
+that we want to catch with this 'else if'.
 
-> +#include <linux/regmap.h>
+Thanks for your time,
+Liam
 
-...
+>
+> >                 dev_err(dev, "invalid voltage reference in %pfw\n", chi=
+ld);
+> >                 fwnode_handle_put(child);
+> >                 return ret;
+> >         }
+>
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
 
-> +       u32 multiplier;
-> +       u64 div;
-> +       u64 odr;
-> +       u64 rem;
-
-div and rem seems of the same nature, you may put them on one line.
-
-
-> +       int i;
-> +
-> +       odr = mul_u64_u32_shr(adxl355_odr_table[data->odr][0], 1000000, 0) +
-> +                             adxl355_odr_table[data->odr][1];
-> +
-> +       for (i = 0; i < ARRAY_SIZE(adxl355_hpf_3db_multipliers); i++) {
-> +               multiplier = adxl355_hpf_3db_multipliers[i];
-> +               div = div64_u64_rem(mul_u64_u32_shr(odr, multiplier, 0),
-> +                                   100000000000000UL, &rem);
-> +
-> +               data->adxl355_hpf_3db_table[i][0] = div;
-> +               data->adxl355_hpf_3db_table[i][1] = div_u64(rem, 100000000);
-> +       }
-
-Here, I didn't get if those powers-of-two are some kind of units?
-If no, we may have locally defined SI prefexes for them.
-
-> +}
-
-...
-
-> +static int adxl355_set_hpf_3db(struct adxl355_data *data,
-> +                              enum adxl355_hpf_3db hpf)
-> +{
-> +       int ret = 0;
-> +
-> +       mutex_lock(&data->lock);
-> +
-> +       if (data->hpf_3db == hpf)
-
-> +               goto unlock;
-
-This...
-
-> +       ret = adxl355_set_op_mode(data, ADXL355_STANDBY);
-> +       if (ret < 0)
-> +               goto out_unlock;
-
-...and this are kinda easy to confuse. Please, give them better names.
-
-> +       ret = regmap_update_bits(data->regmap, ADXL355_FILTER_REG,
-> +                                ADXL355_FILTER_HPF_MSK,
-> +                                FIELD_PREP(ADXL355_FILTER_HPF_MSK, hpf));
-> +       if (!ret)
-> +               data->hpf_3db = hpf;
-> +
-> +out_unlock:
-> +       ret = adxl355_set_op_mode(data, ADXL355_MEASUREMENT);
-> +unlock:
-> +       mutex_unlock(&data->lock);
-> +       return ret;
-> +}
-> +
-> +static int adxl355_set_calibbias(struct adxl355_data *data,
-> +                                enum adxl355_chans chan, int calibbias)
-> +{
-
-> +       int ret = 0;
-
-Redundant assignment.
-
-...
-
-> +out_unlock:
-
-And as per above function, this one does more than simple unlock.
-
-> +       ret = adxl355_set_op_mode(data, ADXL355_MEASUREMENT);
-> +       mutex_unlock(&data->lock);
-> +       return ret;
-> +}
-
-...
-
-> +static const struct iio_info adxl355_info = {
-> +       .read_raw       = adxl355_read_raw,
-> +       .write_raw      = adxl355_write_raw,
-> +       .read_avail     = &adxl355_read_avail
-
-+ comma.
-
-> +};
-
--- 
-With Best Regards,
-Andy Shevchenko

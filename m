@@ -2,98 +2,83 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FA053E59B1
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Aug 2021 14:11:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 434D73E59B8
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Aug 2021 14:16:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240493AbhHJMMA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 Aug 2021 08:12:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59706 "EHLO
+        id S240440AbhHJMQf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 Aug 2021 08:16:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240492AbhHJMMA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Aug 2021 08:12:00 -0400
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1353C0613D3;
-        Tue, 10 Aug 2021 05:11:38 -0700 (PDT)
-Received: by mail-pj1-x102c.google.com with SMTP id fa24-20020a17090af0d8b0290178bfa69d97so5058872pjb.0;
-        Tue, 10 Aug 2021 05:11:38 -0700 (PDT)
+        with ESMTP id S240385AbhHJMQf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Aug 2021 08:16:35 -0400
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EC9AC0613D3;
+        Tue, 10 Aug 2021 05:16:13 -0700 (PDT)
+Received: by mail-pl1-x62d.google.com with SMTP id d17so20692922plr.12;
+        Tue, 10 Aug 2021 05:16:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=GPJdbMwthIpOx7h1CPyZc0tnb+DSHC0iqh0tr2rSRyw=;
-        b=heeobiThWwJocCp2/RgvSvqY/qOe2lp5nQKleqQsJu6VXfyEzFYXPBh7MXru4EeB16
-         Z5W7EsuRMm6sUMb79N7lehx75cps3CCvvzWZJgaoZaLf2+aH0AyfUjNKLGYmPc3AVBy6
-         tQQsVdikPxmrLMCzKnZy30SwbjSG3YlPic7I102HrpElG2NwrujG5Z9gS8zP7w625Rpl
-         opGaZz4PC9ucOygUwE9FnUSohBzBNVEUQ8e5jK4RQZdt/FN4H+o0SXfgVP/pXsrtOQrc
-         U24o9fj50gC6J8XLNMmQKSbnSy4sLTgdQu+5u02l0qorqZcqdMjRARSN2BSVCDi0xpal
-         V9gg==
+        bh=R2SAom+K3xjq+elR9A4m6RnGt39/xLthbnTdTanpHn4=;
+        b=MO4y78cwlP3HlTDYWsUl7zPYe6e3Y6MG4yHvEC2GfpNcCvN98gbxYivkNSCmv95blc
+         NRfhMMej7c79A9+1Tsnj7Gs1Uweo1zemDFsFUVob5lAX84yE381jnRBRySTw2WCB94Gw
+         i3vFUs1yUEl0Bcl8oa5b+8Zrod09eJnIo41FFtF3GUi36GK22ryvDeEXVKCplBQFpA+X
+         SRWuhJTH0b6LIrR7GchlM/3tKQyxkPM/rDpZ1BcVHa0Tgq8XPwGm2sZtOd1dn6nhB4Fr
+         Md2IF+FOQ+s3aqO/ZLb0j+h2OGpKWS133JGMvLorhP8zD6kQ+PejR7dL/ammFW/f9ZOX
+         iurQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=GPJdbMwthIpOx7h1CPyZc0tnb+DSHC0iqh0tr2rSRyw=;
-        b=af1/pZCVW6V1ihPvAfeciICuXAGPl5HOr1Rm95ecOl3sPVif0JeKYTMEGWUZ/fUCvJ
-         i8sPP6HCaZuLb7gc308ro+RsMrlwuFbYRsgXLa22+g5Qs4cThSlM7ogkL4jvtTAjmDry
-         bNm2aDLi62Y7tleQMqAcm3xRrqX4s58fBK4GQTeW+sVngf6Hp4RqAkuG6x2PAFroO2P+
-         lsTO7eFmMQnbW0NIrs5yYEPrfcAxnK/bn/mF/Gvj4hS86vGxva2vNcyEtDawD0LXSnTV
-         DpKZEln6NH3vs651rQNaG9U101FUpVvHoeQiVpbU3TlvA/Jz1XCpfttJ6R0WkEysaCr9
-         aXdg==
-X-Gm-Message-State: AOAM531L1Zuo9sKI5HCNqeAI22EVk5S9J6Qm7GSQNDGTxHGC5xlVFuR8
-        sNx72mae6c/xlivM/Fb4lletpOCTWzNd1iKGYo8=
-X-Google-Smtp-Source: ABdhPJzu15/RgIyPXZVn6z7GWWPFJvOByJpZKsKfipdgvGLTiDSJ+bNENKtMNFh2unu9Brzz84RTp6+Q41GKcZsVijE=
-X-Received: by 2002:a17:90a:604e:: with SMTP id h14mr1585585pjm.181.1628597498005;
- Tue, 10 Aug 2021 05:11:38 -0700 (PDT)
+        bh=R2SAom+K3xjq+elR9A4m6RnGt39/xLthbnTdTanpHn4=;
+        b=gea2woMrEdvJr4Im///ZcxiLfnHjUxly/WZ/RlFTQXbDgJnmro6mpmW70tE+IQpTdu
+         ioeICDbFi6l8aT5f/+YcaYv0JHFdfwNZBN2tave3VaZesj4BZrszf80XE+/kEgztdS55
+         nR0iIeTgnZM5OUZqY1dYt5XT+5AZlb+4NR5wcyqm255FL5KxJuDaW9b+QlkDhZ7hcUrH
+         vKlcVrH9HlsGwWqR/GozAFFF3PlIDL/duV1+GgVcY2pM1g6NpcpEwAvoMSkgGY8nN7eq
+         Mvn+tNMlHcIt1+s74uaLvRylHugliP55kZN7ujs8jtv74w5swNaiR+qklMPbxqoetji9
+         FQYw==
+X-Gm-Message-State: AOAM531FtRAIvVYgmbR8vzmHvRwaVs65rW8wfJ8nDQxamRN0oidvh2w3
+        NtojJ6atlPoY4RmUsKLRAGgbcteN/a0eRaRqAe8=
+X-Google-Smtp-Source: ABdhPJziQkMUi2pJ8MxSHmab5wsEcIv1K6XRsXT+/7zhdllwdZnOe5vGfcUG4Cf+MUVglMCiAuuIvloG6RkqDbJDi9M=
+X-Received: by 2002:aa7:868c:0:b029:3bc:e2ca:4e2f with SMTP id
+ d12-20020aa7868c0000b02903bce2ca4e2fmr29256171pfo.73.1628597772939; Tue, 10
+ Aug 2021 05:16:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210807152225.9403-1-len.baker@gmx.com> <20210808172503.5187cd24@jic23-huawei>
- <CAHp75VfSX-7UqH9Lbr_GxQRY3dGjGo7H8++kBdrrSds1p6nB1Q@mail.gmail.com>
- <20210809102131.000021eb@Huawei.com> <20210809161422.GA2619@titan> <CAHp75VfyJ1zSmgenn3V-2tF-X9uZJ1tByyJfJOydXZSV1as3GA@mail.gmail.com>
-In-Reply-To: <CAHp75VfyJ1zSmgenn3V-2tF-X9uZJ1tByyJfJOydXZSV1as3GA@mail.gmail.com>
+References: <20210808015659.2955443-1-liambeguin@gmail.com>
+ <20210808015659.2955443-4-liambeguin@gmail.com> <20210808173630.5c384a4b@jic23-huawei>
+ <CDEHT583QT0A.2QAXX9AC2FMLO@shaak>
+In-Reply-To: <CDEHT583QT0A.2QAXX9AC2FMLO@shaak>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 10 Aug 2021 15:11:01 +0300
-Message-ID: <CAHp75VeAf_GYcF--=wXJmJZPr1YHn_gLFAFGHwsMCDX7Mxs5zw@mail.gmail.com>
-Subject: Re: [PATCH v2] drivers/iio: Remove all strcpy() uses in favor of strscpy()
-To:     Len Baker <len.baker@gmx.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Kees Cook <keescook@chromium.org>,
-        linux-hardening@vger.kernel.org,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date:   Tue, 10 Aug 2021 15:15:36 +0300
+Message-ID: <CAHp75Vc3o-RrHD_wt_CfJY3P8hoRhJkdiRRySFS_O_7VdtJTQA@mail.gmail.com>
+Subject: Re: [PATCH v5 3/5] iio: adc: ad7949: add support for internal vref
+To:     Liam Beguin <liambeguin@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>, lars@metafoo.de,
+        Michael.Hennerich@analog.com, charles-antoine.couret@essensium.com,
+        Nuno.Sa@analog.com, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        robh+dt@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Aug 10, 2021 at 3:06 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> On Mon, Aug 9, 2021 at 7:14 PM Len Baker <len.baker@gmx.com> wrote:
+On Mon, Aug 9, 2021 at 1:50 AM Liam Beguin <liambeguin@gmail.com> wrote:
+> On Sun Aug 8, 2021 at 12:36 PM EDT, Jonathan Cameron wrote:
+> > On Sat, 7 Aug 2021 21:56:57 -0400
+>         ret = fwnode_property_read_u32(child, "adi,internal-ref-microvolt", &tmp);
+>         if (ret == -EINVAL && mode & AD7949_CFG_VAL_REF_EXTERNAL) {
+>                 continue;
 
+>         } else if (ret < 0) {
 
+Side note, redundant 'else'
 
-> Even if we leave the logic as is, this might be better
->
-> if (orient[0] == '-')
->    str = devm_kstrdup(dev, orient + 1, GFP_KERNEL);
-
-> else if (orient[0] != '0' || orient[1] != '\0')
->    str = devm_kasprintf(dev, GFP_KERNEL, "-%s", orient);
-> else
->    str = devm_kstrdup(dev, orient, GFP_KERNEL);
-
-Or these two swapped for better reading
-
- else if (orient[0] == '0' **&& orient[1] == '\0')
-    str = devm_kstrdup(dev, orient, GFP_KERNEL);
-else
-    str = devm_kasprintf(dev, GFP_KERNEL, "-%s", orient);
-
-And with a comment added that we negate the result according to the
-rules: 1) drop leading '-' (minus); 2) leave 0 as is; add leading '-'
-(minus).
-
-> if (!str)
->    return -ENOMEM;
-
+>                 dev_err(dev, "invalid voltage reference in %pfw\n", child);
+>                 fwnode_handle_put(child);
+>                 return ret;
+>         }
 
 
 -- 

@@ -2,90 +2,216 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A1A83E5A20
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Aug 2021 14:40:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2E533E5A63
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Aug 2021 14:50:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238837AbhHJMkL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 Aug 2021 08:40:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37836 "EHLO
+        id S240853AbhHJMuw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 Aug 2021 08:50:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240681AbhHJMkL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Aug 2021 08:40:11 -0400
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B0CAC061798;
-        Tue, 10 Aug 2021 05:39:49 -0700 (PDT)
-Received: by mail-pl1-x635.google.com with SMTP id d1so20815367pll.1;
-        Tue, 10 Aug 2021 05:39:49 -0700 (PDT)
+        with ESMTP id S240849AbhHJMuv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Aug 2021 08:50:51 -0400
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B80DC0613D3;
+        Tue, 10 Aug 2021 05:50:29 -0700 (PDT)
+Received: by mail-pj1-x1035.google.com with SMTP id u21-20020a17090a8915b02901782c36f543so4156225pjn.4;
+        Tue, 10 Aug 2021 05:50:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=9I0CnBRBS69h5ISxkRVZTJz/oVJGT//9peAin9G2oR0=;
-        b=a5N2tYoMh+j84y+bIgz6oG01D0K5QDRWLaZg+31ztimX+GfRHjZQ4sQRrB4p6SLitX
-         V14TEE1gTejVfsq+PrL8uLIUrThO8ZrC1MJaRfl4d14PtPvooc6U4SvcOrj3i3Au0kbp
-         2aeH5rSg3XSlATKMIGZv0Ttpeotyjb27motXWF8ldnl2GeHEiX2GQhUGwcztpMX1GjH7
-         kGsQhdNhUXqny360/iN+y4B9/j0m5yvO0Af/32a9i+KthjiHgAlKIe+SHUMArSizkcdD
-         X/2q9P3pI2IqNV8oKdZxNg8mewu7YEDGPwVXuNiqQO6HHSmjWtrZjwwQxOGAxgO50b3F
-         Ojrg==
+         :cc:content-transfer-encoding;
+        bh=JJJ/oLxgNHBZEDzCWs8ydO8BoNOUNRkg/djNHlTwyhc=;
+        b=RqbzGJ2EljHTfkynsVwTFsWP+yfheO6qjj+QZRbcjoczrxOg9RjpyuhrAGPzGtxldK
+         ISmCzYtzvg7kSnEBnrAElNCOYoyzDeiyo4B9B0QvBMMp2/9QB/PiKYDzKMdqtfDk2uzY
+         thSb2TfQHmYRpFKn3KRf0e84AhVMg0Am8MMgtsVABnR2+tCBh5JIYgPVdUYSlbfx9y22
+         e9e+r31LgDJ/qB3dPLkWsP/DsLnLEV2ByUuOsvW69n5Ml5ffVch6GMlh/7WdjXM6L46X
+         4RzZt6+fC0KscmhuJiJ/rUgPOS3ImWVgByXyhUn/uOd4PGERKbV4xUUsAFuswSOOt7zi
+         2hAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=9I0CnBRBS69h5ISxkRVZTJz/oVJGT//9peAin9G2oR0=;
-        b=pk4GfiEYWIMxyVZAY5/xkc0ln8nSbNOR1m/68jYdt4dkSnKX8QScrTkXgNiPyN7oiZ
-         qEq3L+bu1Jx0Zj+OEUxHQjd1VYMgeEnJXusMxng2oEFXc5b30KxQh1Kq2uVve3ShuG1c
-         qaDD2T0rvaFZucaZrP+8DTF7PAe8JWkf4iOXqmgo0IEuYRxIqeKKQDu5SDB7Q61f6+ji
-         gs0YYk2uO80JU+aXPnCvYYIYYiGWljlt8eOTJw/4ulbLHiBEbIVbRmb9mfR+lb9W5ieh
-         Pyf16XI9Zh/km83PaqEAXPsoBmrzR+hVN/srh++7FJEyUYPf4Bkc8ODmfraaAmdYdwTn
-         4OHw==
-X-Gm-Message-State: AOAM531FAzt2wTxZEBtqQ4o49PVHVvLF7HBLQWmqSy1XTWLcSn55UX1L
-        yh5sKnywobuwUgAYLF/5BKad/epFf4aUVKqkz5M=
-X-Google-Smtp-Source: ABdhPJxknJ/8yapgV7DOjdk/q25wwmvoANXzbC6kDa/PQf+uy3zUoNRhkS3S+e2JHbl0/P9EcODlDqlWmWx5mWKH2ls=
-X-Received: by 2002:a17:90a:604e:: with SMTP id h14mr1710147pjm.181.1628599188576;
- Tue, 10 Aug 2021 05:39:48 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=JJJ/oLxgNHBZEDzCWs8ydO8BoNOUNRkg/djNHlTwyhc=;
+        b=W38T4TB/vlWZhfnFir5rCa0ESFxpy0zCHmNwmofnRxpCMCu7wM/etLHbDOT7T8IWYS
+         xtbq3hRLM2612o2ml3lNF2FVy2LLP6fA/99+O7rEmpajY/HgoR9ZErZhhsDE6ejla4F2
+         xk8pzJxykOUGF7MVkVnGxALLo+MP8kQPdBa8DDTCIZyMyIEo06Zk/dgDHDBJSd/S4BkV
+         noMXqsKLkFChVtjQdrJncrnpKgCjUzSG0vtUvelVC6Rs/WFKe6ziXgVnA2m0JL+7Opes
+         Pr5ue4IdtY8XpbUU5xP1yhy00ByNZRpUhGNH9Ybjc7H19yJaX1rVp5ONgYlEgMw/9b9H
+         bejg==
+X-Gm-Message-State: AOAM532eBGwuSGGzqY77MmKnIHTUhWrOXKSYoqUztJBwrl1gNZ0rAINJ
+        aN89KLrVjdeRAsmd9U0ByvLvvNdPInjNsXwZSfc=
+X-Google-Smtp-Source: ABdhPJyuuMMo1FhyD5wrm8N87cZTcufEtPEUN1sR8i/+DEeTcGemBSlQjNrFRXZ63zQTjAcPKKqvbyiSSuL7ffC3mqM=
+X-Received: by 2002:a17:902:b713:b029:12b:b249:693f with SMTP id
+ d19-20020a170902b713b029012bb249693fmr11178496pls.17.1628599828711; Tue, 10
+ Aug 2021 05:50:28 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210809080729.57029-1-puranjay12@gmail.com> <20210809080729.57029-3-puranjay12@gmail.com>
- <20210809205141.193d24dc@jic23-huawei>
-In-Reply-To: <20210809205141.193d24dc@jic23-huawei>
+References: <20210809075745.160042-1-dmugil2000@gmail.com> <20210809075745.160042-3-dmugil2000@gmail.com>
+In-Reply-To: <20210809075745.160042-3-dmugil2000@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 10 Aug 2021 15:39:11 +0300
-Message-ID: <CAHp75Ve=fnib8YzVH_5LySgQDiWCxNzsJYBBLtB68GrSOCT9SQ@mail.gmail.com>
-Subject: Re: [RESEND PATCH v9 2/2] iio: accel: Add driver support for ADXL355
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Puranjay Mohan <puranjay12@gmail.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+Date:   Tue, 10 Aug 2021 15:49:52 +0300
+Message-ID: <CAHp75Ve=D1d5wFZgNseP=wGpteEkZHnmAi7j9ykKC+u_NrR5xw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] iio: potentiometer: Add driver support for AD5110
+To:     Mugilraj Dhavachelvan <dmugil2000@gmail.com>
+Cc:     "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
+        Darius <Darius.Berghe@analog.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
-        Darius <Darius.Berghe@analog.com>
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Chris Packham <chris.packham@alliedtelesis.co.nz>,
+        Slawomir Stepien <sst@poczta.fm>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Aug 9, 2021 at 11:56 PM Jonathan Cameron <jic23@kernel.org> wrote:
+On Mon, Aug 9, 2021 at 10:59 AM Mugilraj Dhavachelvan
+<dmugil2000@gmail.com> wrote:
 >
-> On Mon,  9 Aug 2021 13:37:29 +0530
-> Puranjay Mohan <puranjay12@gmail.com> wrote:
->
-> > ADXL355 is 3-axis MEMS Accelerometer. It offers low noise density,
-> > low 0g offset drift, low power with selectable measurement ranges.
-> > It also features programmable high-pass and low-pass filters.
-> >
-> > Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/adxl354_adxl355.pdf
-> > Signed-off-by: Puranjay Mohan <puranjay12@gmail.com>
->
-> One odd formatting thing below (tab where it should be a space)
-> that I can fix whilst applying if you don't have other reasons to
-> do a v10.
->
-> Otherwise, looks good to me.
+> The AD5110/AD5112/AD5114 provide a nonvolatile solution
+> for 128-/64-/32-position adjustment applications, offering
+> guaranteed low resistor tolerance errors of =C2=B18% and up to
+> =C2=B16 mA current density.
 
-I just reviewed a previous "v9" and I have quite a few comments I
-think can be addressed.
+...
 
--- 
+> +/*
+> + * Analog Devices AD5110 digital potentiometer driver
+> + *
+> + * Copyright (C) 2021 Mugilraj Dhavachelvan <dmugil2000@gmail.com>
+> + *
+> + * Datasheet: https://www.analog.com/media/en/technical-documentation/da=
+ta-sheets/AD5110_5112_5114.pdf
+
+> + *
+
+Redundant blank line.
+
+> + */
+
+...
+
+> +#define WIPER_RESISTANCE       70
+
+Missed prefix?
+
+...
+
+> +static const struct iio_chan_spec ad5110_channels[] =3D {
+> +       {
+> +               .type =3D IIO_RESISTANCE,
+> +               .output =3D 1,
+> +               .info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_=
+CHAN_INFO_OFFSET) |
+> +                                       BIT(IIO_CHAN_INFO_SCALE) | BIT(II=
+O_CHAN_INFO_ENABLE),
+> +       }
+
++ comma.
+
+> +};
+
+...
+
+> +       ret =3D i2c_master_send_dmasafe(data->client, data->buf, sizeof(d=
+ata->buf));
+> +       if (ret !=3D sizeof(data->buf)) {
+
+> +               ret =3D -EIO;
+
+Shadowed error code when ret < 0.
+
+> +               goto error;
+> +       }
+
+...
+
+> +       ret =3D i2c_master_send_dmasafe(data->client, data->buf, sizeof(d=
+ata->buf));
+> +       if (ret !=3D sizeof(data->buf))
+> +               ret =3D -EIO;
+
+Ditto.
+
+> +       mutex_unlock(&data->lock);
+> +
+> +       return ret < 0 ? ret : 0;
+> +}
+
+...
+
+> +       data->tol =3D data->cfg->kohms * (val & GENMASK(6, 0)) * 10 / 8;
+> +       if (!(val & BIT(7)))
+> +               data->tol *=3D -1;
+
+Shouldn't you simple use corresponding sign_extend*()?
+
+...
+
+> +       ret =3D ad5110_write(data, AD5110_EEPROM_WR, 0);
+> +       if (ret) {
+> +               dev_err(&data->client->dev, "RDAC to EEPROM write failed\=
+n");
+> +               return ret;
+> +       }
+
+
+> +       msleep(20);
+
+Each long sleeps like this must be explained.
+
+...
+
+> +static IIO_DEVICE_ATTR(store_eeprom, 0644,
+> +                      ad5110_eeprom_read,
+> +                      ad5110_eeprom_write, 0);
+
+IIO_DEVICE_ATTR_RW() ?
+
+...
+
+> +static struct attribute *ad5110_attributes[] =3D {
+> +       &iio_dev_attr_store_eeprom.dev_attr.attr,
+> +       NULL,
+
+No comma for a terminator line.
+
+> +};
+
+...
+
+> +       data->cfg =3D device_get_match_data(dev);
+
+> +       if (!data->cfg)
+> +               data->cfg =3D &ad5110_cfg[i2c_match_id(ad5110_id, client)=
+->driver_data];
+
+Not sure this is not a dead code since you are using ->probe_new().
+
+...
+
+> +static struct i2c_driver ad5110_driver =3D {
+> +       .driver =3D {
+> +               .name   =3D "ad5110",
+> +               .of_match_table =3D ad5110_of_match,
+> +       },
+> +       .probe_new      =3D ad5110_probe,
+> +       .id_table       =3D ad5110_id,
+> +};
+
+> +
+
+Redundant blank line.
+
+> +module_i2c_driver(ad5110_driver);
+
+--=20
 With Best Regards,
 Andy Shevchenko

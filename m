@@ -2,91 +2,187 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E4D43E9588
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Aug 2021 18:07:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 537523E95B5
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Aug 2021 18:16:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229588AbhHKQHs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 11 Aug 2021 12:07:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53020 "EHLO
+        id S229484AbhHKQQc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 11 Aug 2021 12:16:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229481AbhHKQHr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 11 Aug 2021 12:07:47 -0400
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BE00C061765;
-        Wed, 11 Aug 2021 09:07:24 -0700 (PDT)
-Received: by mail-pl1-x62f.google.com with SMTP id u15so1159430ple.2;
-        Wed, 11 Aug 2021 09:07:24 -0700 (PDT)
+        with ESMTP id S229488AbhHKQQc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 11 Aug 2021 12:16:32 -0400
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3F51C061765
+        for <linux-iio@vger.kernel.org>; Wed, 11 Aug 2021 09:16:08 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id f3so3345926plg.3
+        for <linux-iio@vger.kernel.org>; Wed, 11 Aug 2021 09:16:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=KffArpOyUib3xLvmma0gw4eoYf5u08GOHiGqQNefyKY=;
-        b=HPsATQBC1TxP9YXDvO6/HpnceepixH7+UmUBemM9O8th0lKUu49VkCwyUE7hgiKJu+
-         E1iB419oPuAm3guuO9cghFv2L5raN/td2TeRpx8iWqYlB8ywGC7lulfVrCfIzTtYgb9+
-         MuIW3p2ylatMLkI/DzZAxcCcacf6cU7voMhmWY+fGW/Jz+DlqTUZ9Ol7crc//34rGb3z
-         nGCYRTyyJt4n2ndvZkeSY32nfSc8EjljyrDblJ9asrt2s17SgPkWVeXs9U9XsYHhLpX9
-         It0+K+mdbanfy+JZ79Rgb7JcHhAiMr4T4hk9bED+aVJ15CHQ6vK5lEMicRCC5Sr04DiG
-         2ZlA==
+         :cc:content-transfer-encoding;
+        bh=im19tzjiWVYQXLLVlA7WWvG77k0EDKaCUCQfQ3S9ku8=;
+        b=a7GvZtApA21CRmU82sRy/yz86mdsXtr8WMpj6OL3EynAw1Idq5pc3SX41jm2fet2/R
+         wKuBFlzdtlCJ9vb0BLE3X6hcd2Pvj00Rp18u6Mhyi1zkpJr4bpRhyOKYMPVLPKupTS00
+         oRr60NGArJk/ZFe4EY5Q903hZDakXgGzcck0iboEMH/hnibEkttEk96XYamXonoDeQjn
+         /iaad0O8EoSSoqP3ldKEMLqsVCR55NCw32xAL8R7cj6oI6NLJXefyPgTWq6AHKPdBIHw
+         V3N1r031XgfnVFngUa6LS+lxM6miuCavE6rdklJwjPHAf4qG6MAWk1RUrt+NzbKYzPeT
+         GI3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=KffArpOyUib3xLvmma0gw4eoYf5u08GOHiGqQNefyKY=;
-        b=TFMm101y16MTRkM1ztaLpyNkb4gBRKtT7PAmWSWjuHjGa+Ooi/RPrZdppqCnQ95DDh
-         sKlxJKDm+Zx2pb0tWWTc6VDxL2tmoD/TZ8AnIxY6H19gfsFDzQ5HrOi+rJb7UELE9a4l
-         NhhG1J+2rlGH66VZHMowkDuBEpBJccImWP7Dnxr2j+Srz4saCUgWr0Qmbe3mhid4oYNs
-         h/rdrzcqsrPGfLLKvmt/16tbHHx/CFZvYg6LTKz1ERfPPFob+lwPnzHszh7Bq6Pvgi88
-         kji1Sa2afDcPjsjEGOBHmLdlIfqKisq2GTjROHfHhcd3gGs7d7IitoT4XPy09O/23vsy
-         VLcw==
-X-Gm-Message-State: AOAM531yrmRZkDmEchEh35eMmC7QHO6o6HzqF+camIMlYjEujgcyUMad
-        jtLnpx5kLmD3sZbT/YTId7HPSl/kMPqnXf5tkmg=
-X-Google-Smtp-Source: ABdhPJxT/bamFNOzxnUwiKPLoYVj6shFGLY6RHKownLvpNsQtzfsSR4MoEDaHdyJpn6tl9YNSsIMvQ8w5e31/7xAJIE=
-X-Received: by 2002:a17:902:e786:b029:12d:2a7:365f with SMTP id
- cp6-20020a170902e786b029012d02a7365fmr4813354plb.21.1628698043540; Wed, 11
- Aug 2021 09:07:23 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=im19tzjiWVYQXLLVlA7WWvG77k0EDKaCUCQfQ3S9ku8=;
+        b=XCDiXrShBXgRNsX6qiuLzrP4a/r9zL3vAgZpOWVcwc2HD1cU1UQ7mT/IV0j0Z8YTY7
+         XEQyc/r0d1/JKun3bzmRrd5yGAbUA3WVlTN11aAHuWr9I81i81020yRaL3TpCjYIMnsQ
+         irYhxMnb2kLhFINjKxx+KnAo2ikZFv18SrnaemLg2KiH1H74s4Edsv6QCdMx7XoYgXbl
+         A40EVTp4rGBEBN+yeO2Sf8L7M0V49fQs4qtYxYQjPM4Cl8YQMxnbFtfyQAu3o9gSZ2aY
+         ozRsILQvhNSiWeWfudnwUdr3bAehYhpYhPnzL572/EvOZLxc8N2czHtk4PRIafq1m6/E
+         7vWA==
+X-Gm-Message-State: AOAM5317N4I552GF+Xbmfzn6jdxOMzIdux0760f7uQ6gRk20XCob4c7/
+        9WFGZfNhZ8EyHtTjHVRF3A7jjoMVMmbDB+ReSmg=
+X-Google-Smtp-Source: ABdhPJz0lwCAF+YpVFmHLk4FG2vGKy6KLR7RFPyH3ykLrI3fQQ1Ki/AGttET5dgvvBHKDxZtYUKQ2NucTP1eu1FLHqA=
+X-Received: by 2002:aa7:860e:0:b029:3bd:7e49:7a14 with SMTP id
+ p14-20020aa7860e0000b02903bd7e497a14mr35411454pfn.40.1628698568287; Wed, 11
+ Aug 2021 09:16:08 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210809075745.160042-1-dmugil2000@gmail.com> <20210809075745.160042-3-dmugil2000@gmail.com>
- <CAHp75Ve=D1d5wFZgNseP=wGpteEkZHnmAi7j9ykKC+u_NrR5xw@mail.gmail.com> <013bcb79-c496-44d8-2e93-57eb57834ee0@metafoo.de>
-In-Reply-To: <013bcb79-c496-44d8-2e93-57eb57834ee0@metafoo.de>
+References: <20210811133220.190264-1-nuno.sa@analog.com> <20210811133220.190264-2-nuno.sa@analog.com>
+In-Reply-To: <20210811133220.190264-2-nuno.sa@analog.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 11 Aug 2021 19:06:43 +0300
-Message-ID: <CAHp75VcvA=dDOJXSFzgz69JVgbez4Lz27EGOEF7JWUehyrwQrA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] iio: potentiometer: Add driver support for AD5110
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Mugilraj Dhavachelvan <dmugil2000@gmail.com>,
-        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
-        Darius <Darius.Berghe@analog.com>,
-        Rob Herring <robh+dt@kernel.org>,
+Date:   Wed, 11 Aug 2021 19:15:28 +0300
+Message-ID: <CAHp75Vfp_u9mbnUzcBXdv_RmFu9m4JK0=R5us6j3bquG4HzRvQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] iio: ltc2983: fix device probe
+To:     =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>,
-        Slawomir Stepien <sst@poczta.fm>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Drew Fustini <drew@pdp7.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Aug 11, 2021 at 11:15 AM Lars-Peter Clausen <lars@metafoo.de> wrote:
-> On 8/10/21 2:49 PM, Andy Shevchenko wrote:
-> >
-> >> +       data->tol = data->cfg->kohms * (val & GENMASK(6, 0)) * 10 / 8;
-> >> +       if (!(val & BIT(7)))
-> >> +               data->tol *= -1;
-> > Shouldn't you simple use corresponding sign_extend*()?
-> The data is encoded a sign-magnitude. sign_extend() works for two's
-> complement numbers.
+On Wed, Aug 11, 2021 at 4:32 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 
-Good catch!
-I'm wondering if it's a good idea to have a sign_magnitude_to_int()
-helper or so?
+Thanks for an update, my comments below.
+Depending on Jonathan's wishes it may or may not require a v3.
+If you address the minor issues I commented on, take mine
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
--- 
+> There is no reason to assume that the irq rising edge (indicating that
+> the device start up phase is done) will happen after we request the irq.
+> If the device is already up by the time we request it, the call to
+> 'wait_for_completion_timeout()' will timeout and we will fail the device
+> probe even though there's nothing wrong.
+
+> This patch fixes it by just polling the status register until we get the
+
+This patch fixes --> Fix
+
+(see Submitting Patches for details of this requirement)
+
+> indication that the device is up and running. As a side effect of this
+> fix, requesting the irq is also moved to after the setup function.
+
+In entire message irq --> IRQ
+
+> Fixes: f110f3188e563 ("iio: temperature: Add support for LTC2983")
+> Reported-by: Drew Fustini <drew@pdp7.com>
+> Reviewed-by: Drew Fustini <drew@pdp7.com>
+> Tested-by: Drew Fustini <drew@pdp7.com>
+
+You may save a line by unifying Reported and Tested with Reported-and-teste=
+d.
+"Reviewed" is usually a different story.
+
+> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> ---
+>  drivers/iio/temperature/ltc2983.c | 30 ++++++++++++++----------------
+>  1 file changed, 14 insertions(+), 16 deletions(-)
+>
+> diff --git a/drivers/iio/temperature/ltc2983.c b/drivers/iio/temperature/=
+ltc2983.c
+> index 3b5ba26d7d86..657eb8cb4be4 100644
+> --- a/drivers/iio/temperature/ltc2983.c
+> +++ b/drivers/iio/temperature/ltc2983.c
+> @@ -89,6 +89,8 @@
+>
+>  #define        LTC2983_STATUS_START_MASK       BIT(7)
+>  #define        LTC2983_STATUS_START(x)         FIELD_PREP(LTC2983_STATUS=
+_START_MASK, x)
+> +#define        LTC2983_STATUS_UP_MASK          GENMASK(7, 6)
+> +#define        LTC2983_STATUS_UP(reg)          FIELD_GET(LTC2983_STATUS_=
+UP_MASK, reg)
+>
+>  #define        LTC2983_STATUS_CHAN_SEL_MASK    GENMASK(4, 0)
+>  #define        LTC2983_STATUS_CHAN_SEL(x) \
+> @@ -1362,17 +1364,16 @@ static int ltc2983_parse_dt(struct ltc2983_data *=
+st)
+>
+>  static int ltc2983_setup(struct ltc2983_data *st, bool assign_iio)
+>  {
+> -       u32 iio_chan_t =3D 0, iio_chan_v =3D 0, chan, iio_idx =3D 0;
+
+> +       u32 iio_chan_t =3D 0, iio_chan_v =3D 0, chan, iio_idx =3D 0, stat=
+us =3D 0;
+
+No need to assign 0 at least to the status.
+
+>         int ret;
+> -       unsigned long time;
+> -
+> -       /* make sure the device is up */
+> -       time =3D wait_for_completion_timeout(&st->completion,
+> -                                           msecs_to_jiffies(250));
+>
+> -       if (!time) {
+> +       /* make sure the device is up: start bit (7) is 0 and done bit (6=
+) is 1 */
+> +       ret =3D regmap_read_poll_timeout(st->regmap, LTC2983_STATUS_REG, =
+status,
+> +                                      LTC2983_STATUS_UP(status) =3D=3D 1=
+, 25000,
+> +                                      25000 * 10);
+> +       if (ret) {
+>                 dev_err(&st->spi->dev, "Device startup timed out\n");
+> -               return -ETIMEDOUT;
+> +               return ret;
+>         }
+>
+>         st->iio_chan =3D devm_kzalloc(&st->spi->dev,
+> @@ -1492,10 +1493,11 @@ static int ltc2983_probe(struct spi_device *spi)
+>         ret =3D ltc2983_parse_dt(st);
+>         if (ret)
+>                 return ret;
+> -       /*
+> -        * let's request the irq now so it is used to sync the device
+> -        * startup in ltc2983_setup()
+> -        */
+> +
+> +       ret =3D ltc2983_setup(st, true);
+> +       if (ret)
+> +               return ret;
+> +
+>         ret =3D devm_request_irq(&spi->dev, spi->irq, ltc2983_irq_handler=
+,
+>                                IRQF_TRIGGER_RISING, name, st);
+>         if (ret) {
+> @@ -1503,10 +1505,6 @@ static int ltc2983_probe(struct spi_device *spi)
+>                 return ret;
+>         }
+>
+> -       ret =3D ltc2983_setup(st, true);
+> -       if (ret)
+> -               return ret;
+> -
+>         indio_dev->name =3D name;
+>         indio_dev->num_channels =3D st->iio_channels;
+>         indio_dev->channels =3D st->iio_chan;
+> --
+> 2.32.0
+>
+
+
+--=20
 With Best Regards,
 Andy Shevchenko

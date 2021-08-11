@@ -2,125 +2,140 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E1E0B3E8AC3
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Aug 2021 09:06:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD4B13E8AD0
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Aug 2021 09:10:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234971AbhHKHGl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 11 Aug 2021 03:06:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37304 "EHLO
+        id S235250AbhHKHLQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 11 Aug 2021 03:11:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235491AbhHKHGl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 11 Aug 2021 03:06:41 -0400
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9900C061765;
-        Wed, 11 Aug 2021 00:06:17 -0700 (PDT)
-Received: by mail-pj1-x1034.google.com with SMTP id g12-20020a17090a7d0cb0290178f80de3d8so3074962pjl.2;
-        Wed, 11 Aug 2021 00:06:17 -0700 (PDT)
+        with ESMTP id S235119AbhHKHLP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 11 Aug 2021 03:11:15 -0400
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 780EFC061765;
+        Wed, 11 Aug 2021 00:10:52 -0700 (PDT)
+Received: by mail-lf1-x134.google.com with SMTP id y34so3576733lfa.8;
+        Wed, 11 Aug 2021 00:10:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=UvcgK0+rQdblk0xtTCyiUYf9oJ8OzcTny0hyRS8C02A=;
-        b=UZ/PRojWKXnWpO1OGqce9RHvhChvopo2iBq56x4sMiuiQ1+itve2g5JDEulc28YJjs
-         6vUIFouSplyRPuTyNZtRHK79pJx+eUNjRy/adoh3dVbjI6rTvD9lvocwy5AFziWOW0NT
-         Kp4fn3ZTjydQ2/rGsn3WnrM0J0tO5DTPs3DmUrtZkgRaFEGKq68CIa0nFocvjlywsyDJ
-         29r8BF1w30xXq02Q1bYcV6iMZ9MbeueS7l7mS0amfxauUkJtveHpRzd0FT0jHXVdmsxO
-         7GKErXZoViIVKim1KHzeYr+AsZLDGtAPIZNDdYYtH58DDD1rJGfzVH6Z3N4KWd+z0qhO
-         yAtg==
+         :cc;
+        bh=YNOXr6gzd+fqJpCwsyne4QPv5njjHsYeJ33t/NJz//g=;
+        b=Iu/qQ7BSrvV6jOV5E/kWloIvWNBX1Dm+1T3YQZaMaUz5xfhQA+JymnLBSikIBlmMl7
+         lJOZHQs23oO+mY9DRGT5TskG9k3R7Ltg3Zk+3nSsTzlfBOlHv1uGS6YCjNz+X5JQNyht
+         lnI4rZgIe8BUy4S+A/4LIVBwW5viSmdd/hl0cAdAm+OnjHAwS6wpL7o7/EqKQMQRMpkd
+         /kzWBcWrtd6pet8RfU2aI2BRRbbhh+M6O9Cuo/Xl2VWRjNx7azbFJ7hRWZ85fZI+pCCu
+         7iQ3dEc194Eo9rlrEFndgKGTlPVmh4/HmwtwVt/TCcW0nlQuJj+rLVwFBAy2iqODoTHf
+         ZmQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=UvcgK0+rQdblk0xtTCyiUYf9oJ8OzcTny0hyRS8C02A=;
-        b=tlnjY8v6OLOUtKEytTaZZL58H/p+FKFv79wCXDXQ4KsXZY3z3d0G3LD0mbold3NfQ1
-         6za/jfp5evX9Rze7flGoBYEzDGjk1U8zgMboImVI4nKSMLnhAoNNGUix3doTQJWOWmBS
-         0qkrOrbuzfPtgxTP3IkCOfe+JyNCWoUUN+fHex6QWK4giq05s1IdKtMC15ByaDRafBrd
-         Ai/PP9aLvD9ZpqlY/wMp5sfWP+k1fSGBZfnTK8E45SSL9iw3StOZ+J9tW+WcyrDFKDWx
-         NqXii1cQWNrAlE5uGa7hc06VXDDC1zZk+knfPxrY67NTu1tKuwB5STXxE/J363DvaWlX
-         6bgg==
-X-Gm-Message-State: AOAM532Z7pfvgrrjWJIumveQ5mYszNXeWvcU4NFOhjQJRrpd617YPN1l
-        2Z3DjmIBK193rtb41Wc+jHWvsbbJCrCUI/YtVCM=
-X-Google-Smtp-Source: ABdhPJw8Ou1BGfhDjoe6vcxMI+DwbaCEw/05yQ6K3jNYq6PWm+pMx9D0aZCIrvpqvwcz91wM0n3HovAXgijz3rU61so=
-X-Received: by 2002:a17:90b:33c5:: with SMTP id lk5mr9260109pjb.129.1628665577419;
- Wed, 11 Aug 2021 00:06:17 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=YNOXr6gzd+fqJpCwsyne4QPv5njjHsYeJ33t/NJz//g=;
+        b=hjriDpvUPaKJhPNkfZdf7rCkDTHDJslyRqJgeAjEmrCbgzJzNCqC81GO5iCw2WcBoW
+         nMMPXDcY95125IwhRSxbtJif9Ib1IbiMMktomLypTAIf3pWeSq52P3MzXMcsDRV8EWUF
+         Tb1hjQLr2j7VFW785LKs8Qla+HpjTmgtcgF17uUB0aP8STPNSGP8o9IMI7LRqdmSznBW
+         owec7KNOmmPXuqMABHjWfy8tt2IUjPtuEPjiWdMbciIeGKby7tz2VOkv0aOdgeQ9Eltu
+         HEE9Vg56LkyluVcu5vyS3B1nSFZBoCydxoGDwQU46ne7fkFgegyQx+wQkhLCgsAhnsr8
+         mgVw==
+X-Gm-Message-State: AOAM533hN2vpASk/M+Fms2ED00wTqZ873tC97hRQnf02DZ3BIzL4oj8I
+        A5LC6xXsneEffeXdMhDeGnH5mjZn0OvQzgVHWUA=
+X-Google-Smtp-Source: ABdhPJwLNEUIEP0BqRl99scaraURy5c+0sWgr6fX5WMrnYlA5rf2EP/d6BREs+ZzGYinthmdFT9DF22pMR5AW9D3T7c=
+X-Received: by 2002:ac2:4c13:: with SMTP id t19mr24490681lfq.450.1628665850749;
+ Wed, 11 Aug 2021 00:10:50 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210809075745.160042-1-dmugil2000@gmail.com> <20210809075745.160042-3-dmugil2000@gmail.com>
- <CAHp75Ve=D1d5wFZgNseP=wGpteEkZHnmAi7j9ykKC+u_NrR5xw@mail.gmail.com>
- <20210811054558.GA3826@mugil-Nitro-AN515-52> <CAHp75VfaeEzodmPPmxxDoScPQzE2+5D_czEHfF0pq6oOVh-6nw@mail.gmail.com>
-In-Reply-To: <CAHp75VfaeEzodmPPmxxDoScPQzE2+5D_czEHfF0pq6oOVh-6nw@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 11 Aug 2021 10:05:41 +0300
-Message-ID: <CAHp75VdqM+XVCkkE+GXCytBUqgT5QLNq5=68KOzfs92t-Vb7ww@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] iio: potentiometer: Add driver support for AD5110
-To:     Mugilraj Dhavachelvan <dmugil2000@gmail.com>
-Cc:     "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
-        Darius <Darius.Berghe@analog.com>,
-        Rob Herring <robh+dt@kernel.org>,
+References: <20210811051938.111191-1-puranjay12@gmail.com> <20210811051938.111191-3-puranjay12@gmail.com>
+ <CAHp75VeWSwk7g+HUQ21cRKFDBdHKv4M4mTjv6Ng5DnZz-ugj2Q@mail.gmail.com>
+In-Reply-To: <CAHp75VeWSwk7g+HUQ21cRKFDBdHKv4M4mTjv6Ng5DnZz-ugj2Q@mail.gmail.com>
+From:   Puranjay Mohan <puranjay12@gmail.com>
+Date:   Wed, 11 Aug 2021 12:40:39 +0530
+Message-ID: <CANk7y0i2ki2omXqpwHob4UhjrwYBiTX3z2D_BEDi3pLgCAENPQ@mail.gmail.com>
+Subject: Re: [PATCH v11 2/2] iio: accel: Add driver support for ADXL355
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Michael Hennerich <Michael.Hennerich@analog.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>,
-        Slawomir Stepien <sst@poczta.fm>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
         devicetree <devicetree@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
+        Darius <Darius.Berghe@analog.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Aug 11, 2021 at 10:03 AM Andy Shevchenko
+On Wed, Aug 11, 2021 at 12:25 PM Andy Shevchenko
 <andy.shevchenko@gmail.com> wrote:
-> On Wed, Aug 11, 2021 at 8:46 AM Mugilraj Dhavachelvan
-> <dmugil2000@gmail.com> wrote:
-> > On Tue, Aug 10, 2021 at 03:49:52PM +0300, Andy Shevchenko wrote:
-> > > On Mon, Aug 9, 2021 at 10:59 AM Mugilraj Dhavachelvan
-> > > <dmugil2000@gmail.com> wrote:
+>
+> On Wed, Aug 11, 2021 at 8:19 AM Puranjay Mohan <puranjay12@gmail.com> wrote:
+> >
+> > ADXL355 is a 3-axis MEMS Accelerometer. It offers low noise density,
+> > low 0g offset drift, low power with selectable measurement ranges.
+> > It also features programmable high-pass and low-pass filters.
+>
+> Thanks for an update! My comments below.
+> After addressing, feel free to add
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 >
 > ...
 >
-> > > > +       data->tol =3D data->cfg->kohms * (val & GENMASK(6, 0)) * 10=
- / 8;
-> > > > +       if (!(val & BIT(7)))
-> > > > +               data->tol *=3D -1;
-> > >
-> > > Shouldn't you simple use corresponding sign_extend*()?
-> > >
-> > I'm not able see any sign_extend for 16 bit. Is there any other way?
+> > +#ifndef _ADXL355_H_
+> > +#define _ADXL355_H_
+> > +
+> > +#include <linux/regmap.h>
 >
-> So, then add it in bitops.h the same way it's done for s32 and s64.
-
-In case you are afraid that this will delay patches and you are in a
-hurry, you may define it locally (but in the very same way, so
-somebody can make it generic). Nevertheless, I think this one can be
-added directly to the generic header, it will definitely have more
-than one user.
-
+> What I meant here is you need to add a forward declaration, i.e.
+>
+> struct device;
+okay, I will add this.
+>
+> line.
+>
+> > +extern const struct regmap_access_table adxl355_readable_regs_tbl;
+> > +extern const struct regmap_access_table adxl355_writeable_regs_tbl;
+> > +
+> > +int adxl355_core_probe(struct device *dev, struct regmap *regmap,
+> > +                      const char *name);
+> > +
+> > +#endif /* _ADXL355_H_ */
+>
 > ...
 >
-> > > > +       if (!data->cfg)
-> > > > +               data->cfg =3D &ad5110_cfg[i2c_match_id(ad5110_id, c=
-lient)->driver_data];
-> > >
-> > > Not sure this is not a dead code since you are using ->probe_new().
-> > >
-> > Even I'm suspecting that and also removing id_table. But I'm not sure o=
-f
-> > it so just left as it is.
+> > +#define MEGA(x) ((x) * 1000000)
+> > +#define TERA(x) ((x) * 1000000000000UL)
 >
-> I=C2=B2C ID table is good to have without direct use, but ->probe_new() i=
-s
-> called if and only if there is a compatible string or ACPI ID match.
-> In such case data->cfg may be NULL if and only if the corresponding
-> table missed it, but this will be a bug anyway, so the above code will
-> rather hide the bug. Hence, please remove it.
+> What I meant is to define just constants. It will be easier to move
+> this to a global space (I have a patch, btw, but it may be applied
+> later). So, just
+>
+> #define MEGA  1000000UL
+> #define TERA 1000000000000UUL
+will change in v12
+>
+> And note that the second one should have a ULL suffix.
+>
+> ...
+>
+> > +       ret = regmap_bulk_write(data->regmap,
+> > +                               adxl355_chans[chan].offset_reg,
+> > +                               data->transf_buf, 2);
+>
+> ARRAY_SIZE() ?
+ARRAY SIZE is 3, but here we need to transfer 2 bytes only.
+>
+> > +       if (ret)
+> > +               goto set_opmode_unlock;
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
 
 
 
---=20
-With Best Regards,
-Andy Shevchenko
+-- 
+Thanks and Regards
+
+Yours Truly,
+
+Puranjay Mohan

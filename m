@@ -2,218 +2,783 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 710543EA060
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Aug 2021 10:14:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D05333EA345
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Aug 2021 13:06:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234860AbhHLIOp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 12 Aug 2021 04:14:45 -0400
-Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:23456 "EHLO
-        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234573AbhHLIOp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Aug 2021 04:14:45 -0400
-Received: from pps.filterd (m0167090.ppops.net [127.0.0.1])
-        by mx0b-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 17C85V8S028063;
-        Thu, 12 Aug 2021 04:14:07 -0400
-Received: from nam02-bn1-obe.outbound.protection.outlook.com (mail-bn1nam07lp2047.outbound.protection.outlook.com [104.47.51.47])
-        by mx0b-00128a01.pphosted.com with ESMTP id 3ac8k04849-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 12 Aug 2021 04:14:07 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CQ2jUr6wqUd/HsBztxV4j7Vgf/AhZtgcD4Bg3Z2DTGh2do7Oe4XypCWSWRLXUb9DkySqPWmixzz5Jc50jMJRuqzmkrrX2gXMY/B9gVsy/HIXaSbpg19TI3vzkE0FelAHxe7X3NpguV4QBxxkgJTxDIST6Um/EAMQ68b9+zIMUN1Ywz0JIK3R5UHs/0qTWT+ReomBUlbjOWujNGNPrGywuEzeC9JgmsQaGIYNHHy3SP5VKyLX/qznmlNz/B0DqaISFG+FnykkW0xbCYX5DWA9EqLBGDFfIbgc4odHJ4n8sWAWE0Uxz5WCCrGNoQtT8EgfsxPfmwTLH/mDul54Bemnrw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sKceWp14Xh23qWNaPRvxeVej5KB+knxYbKzZbUXOarw=;
- b=jpPlvukscxxh+PjnRQq8Ds7BZvHFNMrfF5pmG+MxNRcVMb8yHfpGBgNIUhMfa/JD3/WEWi5CIwzHY8DCKTtJm0WUTfrqZT7mSdMo7XoTs/wjloCazJww4ohPO89bglGE/p+D8OxVAXEYqem8wrDIyDkhGSxKALN0ZOjZ5+yKUkcfJHH7nICg584FPmUmtbCQdMWX+BVCdnaOVcQXESogdEqzVG9qYJhS7Ale+1FdrPNjIv3p4MCKAPAlFoFKcEIp/WIjUmja/7gCn02brmt/jBbBh0JGPvvaH+qvxV6v3bpyy5faAHvLfMB3ol6PLPJ2ZrbtId545/jpoSfr/Oz6jg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
+        id S236673AbhHLLHA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 12 Aug 2021 07:07:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58134 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236646AbhHLLG6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Aug 2021 07:06:58 -0400
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06A8FC061765;
+        Thu, 12 Aug 2021 04:06:33 -0700 (PDT)
+Received: by mail-pj1-x102e.google.com with SMTP id cp15-20020a17090afb8fb029017891959dcbso14586949pjb.2;
+        Thu, 12 Aug 2021 04:06:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sKceWp14Xh23qWNaPRvxeVej5KB+knxYbKzZbUXOarw=;
- b=Q/XZjOxJTitfcs2Jab46TwzcDYAdwYDME7F6gsnWdPiEuWRxsgXpu0duY/ZBAUPPbDB0v8xy2VlnM5Vyw4o/4Wbjyd6XC8bKkyHLMFMd2Uj+mYUuIwNwUJSm8N+uuOWyU3e5QSaH/ckS6DUAp1nNHeOMJwnsR4NsGfeu8nWP1bI=
-Received: from PH0PR03MB6366.namprd03.prod.outlook.com (2603:10b6:510:ab::22)
- by PH0PR03MB6299.namprd03.prod.outlook.com (2603:10b6:510:d7::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4415.16; Thu, 12 Aug
- 2021 08:14:06 +0000
-Received: from PH0PR03MB6366.namprd03.prod.outlook.com
- ([fe80::650f:685d:44ee:2304]) by PH0PR03MB6366.namprd03.prod.outlook.com
- ([fe80::650f:685d:44ee:2304%6]) with mapi id 15.20.4415.017; Thu, 12 Aug 2021
- 08:14:06 +0000
-From:   "Sa, Nuno" <Nuno.Sa@analog.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>
-CC:     linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: RE: [PATCH] iio: ad5770r: make devicetree property reading consistent
-Thread-Topic: [PATCH] iio: ad5770r: make devicetree property reading
- consistent
-Thread-Index: AQHXjoTpWS49/XePMUytpStcxW5zfKtud/2AgAD4urCAAANBAIAAEosw
-Date:   Thu, 12 Aug 2021 08:14:05 +0000
-Message-ID: <PH0PR03MB636647F75955CF0C5E6D5A3D99F99@PH0PR03MB6366.namprd03.prod.outlook.com>
-References: <20210811074827.21889-1-nuno.sa@analog.com>
- <CAHp75VeLfxyLG-zTdVVnwB+PR2v=LW-PcvM4ZkEoLq+Ht0-iCg@mail.gmail.com>
- <PH0PR03MB6366283246B9D4925BFA444C99F99@PH0PR03MB6366.namprd03.prod.outlook.com>
- <CAHp75VeZLKN0C_+PopKfYtPMqEzGLd4paSKYnrHr1B2Y1Nk9=w@mail.gmail.com>
-In-Reply-To: <CAHp75VeZLKN0C_+PopKfYtPMqEzGLd4paSKYnrHr1B2Y1Nk9=w@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: =?utf-8?B?UEcxbGRHRStQR0YwSUc1dFBTSmliMlI1TG5SNGRDSWdjRDBpWXpwY2RYTmxj?=
- =?utf-8?B?bk5jYm5OaFhHRndjR1JoZEdGY2NtOWhiV2x1WjF3d09XUTRORGxpTmkwek1t?=
- =?utf-8?B?UXpMVFJoTkRBdE9EVmxaUzAyWWpnMFltRXlPV1V6TldKY2JYTm5jMXh0YzJj?=
- =?utf-8?B?dE5EQmtZMlJqTXpjdFptSTBOUzB4TVdWaUxUaGlPRFV0WlRSaU9UZGhOMk5q?=
- =?utf-8?B?TnpFd1hHRnRaUzEwWlhOMFhEUXdaR05rWXpNNUxXWmlORFV0TVRGbFlpMDRZ?=
- =?utf-8?B?amcxTFdVMFlqazNZVGRqWXpjeE1HSnZaSGt1ZEhoMElpQnplajBpTWpFeE5T?=
- =?utf-8?B?SWdkRDBpTVRNeU56TXlNamsyTkRNME5qWXpORGMxSWlCb1BTSjRXVU5hTTFw?=
- =?utf-8?B?bWRHTlpPVmcyVUU1S1UyY3dObGh4WjBwUk5UQTlJaUJwWkQwaUlpQmliRDBp?=
- =?utf-8?B?TUNJZ1ltODlJakVpSUdOcFBTSmpRVUZCUVVWU1NGVXhVbE5TVlVaT1EyZFZR?=
- =?utf-8?B?VUZKV1VSQlFVRjZkMFJWUkZWdkwxaEJWVlJhVkVNM1NYWjZSbnBTVG14TlRI?=
- =?utf-8?B?TnBMMDFZVFVaQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCU0VG?=
- =?utf-8?B?QlFVRkJWMEYzUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJSVUZC?=
- =?utf-8?B?VVVGQ1FVRkJRVUpQV1VkalowRkJRVUZCUVVGQlFVRkJRVUZCUVVvMFFVRkJR?=
- =?utf-8?B?bWhCUjFGQllWRkNaa0ZJVFVGYVVVSnFRVWhWUVdOblFteEJSamhCWTBGQ2VV?=
- =?utf-8?B?RkhPRUZoWjBKc1FVZE5RV1JCUW5wQlJqaEJXbWRDYUVGSGQwRmpkMEpzUVVZ?=
- =?utf-8?B?NFFWcG5RblpCU0UxQllWRkNNRUZIYTBGa1owSnNRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkZRVUZCUVVGQlFVRkJRV2RCUVVG?=
- =?utf-8?B?QlFVRnVaMEZCUVVkRlFWcEJRbkJCUmpoQlkzZENiRUZIVFVGa1VVSjVRVWRW?=
- =?utf-8?B?UVZoM1FuZEJTRWxCWW5kQ2NVRkhWVUZaZDBJd1FVaE5RVmgzUWpCQlIydEJX?=
- =?utf-8?B?bEZDZVVGRVJVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCVVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVOQlFVRkJRVUZEWlVGQlFVRlpVVUpyUVVkclFWaDNRbnBCUjFWQldY?=
- =?utf-8?B?ZENNVUZJU1VGYVVVSm1RVWhCUVdOblFuWkJSMjlCV2xGQ2FrRklVVUZqZDBK?=
- =?utf-8?B?bVFVaFJRV0ZSUW14QlNFbEJUV2RCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFrRkJRVUZCUVVGQlFVRkpRVUZCUVVGQlNqUkJRVUZDYUVGSVNVRmhVVUpv?=
- =?utf-8?B?UVVZNFFWcEJRbkJCUjAxQlpFRkNjRUZIT0VGaVowSm9RVWhKUVdWUlFtWkJT?=
- =?utf-8?B?RkZCWVZGQ2JFRklTVUZOVVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVVZCUVVGQlFVRkJRVUZCWjBGQlFVRkJRVzVuUVVGQlIw?=
- =?utf-8?B?VkJZMmRDY0VGSFJVRllkMEpyUVVkclFWbDNRakJCUjJ0QlluZENkVUZIUlVG?=
- =?utf-8?B?alowSTFRVVk0UVdSQlFuQkJSMVZCWTJkQmVVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGUlFVRkJRVUZCUVVGQlEwRkJRVUZC?=
- =?utf-8?B?UVVFOUlpOCtQQzl0WlhSaFBnPT0=?=
-x-dg-rorf: true
-authentication-results: gmail.com; dkim=none (message not signed)
- header.d=none;gmail.com; dmarc=none action=none header.from=analog.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 8651bc3c-da1d-4d6f-8808-08d95d692743
-x-ms-traffictypediagnostic: PH0PR03MB6299:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <PH0PR03MB629971FAD5DD55403831E2EF99F99@PH0PR03MB6299.namprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6790;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: Sd4UDYZ9xMptyGWWE9jllp3kd/BA399Tyk+XKXGUahFnR956geUNw5iUuODcGrqPEohKZgGVX6F4ORR6WfK6fcs+ZWUPBJj92XRqjrbc4NmLuAwOD6djOPOdNpKwvS/eMEW9a0uJvFLeJWPWXWkoXlUysQmO1bEzOeVVc9btOx2A3m68LPv/EDj1mOjIpbL/FXQl2LMWWyBBmwsadzs6bi/LGm5n3akQ4zqLhOZTQYh8Zgfh9wPqk8H8UGO7DjBlXOr/ZIJ5y55zcYaATl/W4bqz35dIu7qHz0c6Geu+gpu56ukyTJeccTrOMivxjNq94JhbKzvLvqSm9HlMxgHMj6FssfiSDI5+NUt8H8wAOcH26xA3t7F4YMNMviX5U0COZUEujDcPl2n+yALkfQhKBBmY7YiClCxH5cabVdizETIfXDfbNltWF54XKMtuaUdXjPVkZdf+yYj2cN94IqqUaK80L4Lb/oby4ATZ6yrj+eBRg9RcTmB4U1bNiZaEoo2YRHpt8s0aE0/RgtkYTQpnegwwTMLRIk1XhneCelT/MbgB//zBbbg1J1BWyNLpGiKWumu5rv0EWl7uo3ZvcfIL1UwBU1mF7VT2w6JD/I5qwpCOB73U2oDjE7uK2EMKvoPFJR4o64ZPCpq3i2jRtm53ib5RKfMl3qf1+4sd9oMVO7MV/RiihQgdeX2fyNNikJpo7gS5yZw5TviybUp++CqCrA==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR03MB6366.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(396003)(346002)(136003)(366004)(39860400002)(8936002)(478600001)(52536014)(316002)(38100700002)(54906003)(2906002)(33656002)(7696005)(53546011)(110136005)(6506007)(5660300002)(26005)(8676002)(122000001)(9686003)(186003)(71200400001)(55016002)(83380400001)(76116006)(66476007)(66556008)(66446008)(38070700005)(66946007)(86362001)(4326008)(64756008);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?NWovVUpsb21LWHZTSFVNZGx3V1NWS1dvTVdnc2pyVXE1T1JSZ2h3bnRzSUpr?=
- =?utf-8?B?ZlVPdU9UTE83dmNPV3hZZk9JVkRlbFcyd1dBOFltTFd0NHl3Ymp4TXdlTjRu?=
- =?utf-8?B?VnVCMEYwL1JWTVBtVlViODlrZUdQdm5ld0RwRS9SQmk2djdxY0pUTjJKWVhL?=
- =?utf-8?B?eWo1Y05zd3ZBbTlzQkwwdHhsUHJ3OHROUXFFV3JpRHhlNmxBbnp3a1hmRm5y?=
- =?utf-8?B?dWl5aW5BbXRZTjVXZEVDY1JRWWZkRTJrOUhPeVBnRkFPRUtZZnp2Q2R4UG9V?=
- =?utf-8?B?WUt3aGh3SHFCV1NEUDVjRGhzcDBDd0M2TmthMjZ0b1RONXZYVWE3ZVREWkRP?=
- =?utf-8?B?QVAyUEs1Mmxza01TM2Z0ZGw4L2J0d3U1NC9sb3Z3UEI5YmRIUWZHWkRUTER5?=
- =?utf-8?B?NDVvSVVoWEZIWEhqNVVIcEVsamVnNnZDSUJRdlpLMnE1a0NhWFFrUVZTWXJW?=
- =?utf-8?B?RHZiNml5ZGZOZ3B1QVlTZWdRZkh1ZGxVKzJXNHRkTkVpZDNBL0Y3dExVZG05?=
- =?utf-8?B?NHcxcUxwRENzZGQvMmRwNlJXR1d6V09DWEQza2lNUzhDQmVIaWRvVUdKTUwr?=
- =?utf-8?B?NmE2S2o3WFYxaGpNYXBJMkR6dDI2dzJNRm1jbTlQbXRsem1VdGJMRkJZemVv?=
- =?utf-8?B?RitUbkR5bkwvcjl5cWFHWGd4WHdaMDBxM01JRFFkSk5iVTlrMHR6WmxuaWpS?=
- =?utf-8?B?SWc1blN5djJPczl5Z1kxajFZdHlpcGlRWGhPNitCWitwOW9nSURJTlZBcUtn?=
- =?utf-8?B?ZzMzN1haYWI1cWtDU0ovMXI0YzVEVlpHSDV6WEFmcU51MHRwV1hVY1BzME1L?=
- =?utf-8?B?YXJNUVEwOEhGTjUxdEZNY0FOVUpwOUJRY3plZU8wbE1HRWs1OFhjMGtHWFo3?=
- =?utf-8?B?bEpTM1hwd0NLRDNMVHc3bjRUWHlmOHpUdk56c09HRmlvUHNYMVdySjB6dkRk?=
- =?utf-8?B?QXRtUVRMVnk0d1ZmS1hsbmFpVWdiS1RnZFFubUg0M2RKUlNVbGltb1l5OGUw?=
- =?utf-8?B?ejY5TVVZNC9HOUY1dTFtRFFpaTFTcFZCcHVJbXlQWmdiQVpUV1JjZEkxbEVw?=
- =?utf-8?B?a1hnS2ZVUUptTHlXb0FESGJCOFI1Q1lKMUtjK2twK1lmNkNWTnd0V0lRS2R4?=
- =?utf-8?B?R2o2RVVEaTB3QWluWmplV2xtMU9qWjVIRWd6b0FwN0x1VTRjdjlRN3NQNFJW?=
- =?utf-8?B?bWhvTWh1b01mWHBRcUR6czE4MlBWTlR1QzRJemY0TGVMbjZQUitsM1pkS2lk?=
- =?utf-8?B?YUdsTmIrQ2dpMkVMZXNHVXlNS2pST01WQmpXNWEveTgrc0hDWDNQSHFjM0lw?=
- =?utf-8?B?eUt5N0pRK2JUR2I1M0VRMVhzR1hjZDdoYUpQSGhHSk9lWUtKSURBRVhEdGlt?=
- =?utf-8?B?dkY0ZjJyNjU3b2t5K1pyb2hBT1hPME9QNUtYVkxyNTJSdTFFcWFQOEZOWFNZ?=
- =?utf-8?B?Tlk3NTdOVWg0Y0ZwMlFwMXVWK1dUREUyemgxWkVBcDQwdUQ4NG44QXcyMHpV?=
- =?utf-8?B?TVBLZkdVU0pGWmNWeFlNSGdJK2R0amtUcjBlWk90M1BtNjUyWVZnaVE2OGVp?=
- =?utf-8?B?ZnJCWUpoandxTXhyZkZQdUtaa04wZi9VTHh1RFBoYjlnV1dKVmlXWHlicFZw?=
- =?utf-8?B?bVBud01LOElDSnpOd2FCOURqSURBSURlY3A2anFkZnFDWTE4NmNPOGhrVzRz?=
- =?utf-8?B?NE10V1RmWm5BWjhXdE5RRUNpZ2UzU0h6MlVJZ0Z5b2J4UVdXZURNeXRpN3hv?=
- =?utf-8?Q?DOUAww1WTg/FfGKD4WpQp1htLBptLteRLlDsBax?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=WywJPCTvWc4JbAv1mfFRQnQq2a28TsXMakaGzekDFmg=;
+        b=Q2Y7NYm+j/czILvj1T2sipfIHy928xpcpRSj7mTi4a1nr9p5iXjhLtZPhwnWFn5Fk9
+         3nLEziZ6vms7JAbn0Dwg1SKaimR2ZAyUB32XG1IhsZlAiKAVOMt1wMOnZTFIiHPSBNPX
+         CH5FFlUwllmtNYcbXBcIBn8hOkJmXlTsxlMDydABvCg+qsZ7CjPvJtsVVe73lqKhCslP
+         ZZHyo32jWTfdScKFH4NlLrs60+HSojDbN40+awdKjxoZNtkelEg2qXPuahmuo3QQlQah
+         0fKnTDom7S46hQFpaoQ6amdc9Fwe0zV9StegQMRD+MUcrS4dhdG5W5AbC1HwlfSqakAt
+         KwYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=WywJPCTvWc4JbAv1mfFRQnQq2a28TsXMakaGzekDFmg=;
+        b=R8vcrhm7Dn/UgH8N0y2hgLqChEyz6MrfpkzZIYxHtRpshsemb3b104/7IJQVyrzOWY
+         bKCgGdbr2S0TRwtJpYHyVT8o2DjHRnpBsY9CZb7uMGRmRthqWZQxK0x8F6TfgTRmKs5z
+         O4V+NFTQG6ZrspnWUDS/LlfPOdP62i9C9r2Z6238dzkJgUAA4svSGAeK8Np2g5nakYNi
+         H7d9zgfW8Um6goPqgNzRtRZhvuAxWAU6NJAsutBJcLuVz6lL98CX9W/xgtX1aMhuhP+p
+         NzPpIrFH51sQUnkl5ro9VuAQW9wOCatROCFhxwO+KVKenY9FTtdy6pTyQSGJX0Hxkvex
+         ebRQ==
+X-Gm-Message-State: AOAM532OCXXAENwRupdgCSvynDTAedV3c7bmjKvQXYQ/OQDbNLy/dCfJ
+        kBl4iVYRC/J0636v0Dc5Yy0n4woIUzraNCQV5yA=
+X-Google-Smtp-Source: ABdhPJy4Sh1JOYmZXYuh/zEZua4NDY0ST40JGPgFDnCed9LegYGrIedT8fsof2thF3UNreSfXfNFK5lqjaUJBGBE5xI=
+X-Received: by 2002:a17:90a:604e:: with SMTP id h14mr12757803pjm.181.1628766392531;
+ Thu, 12 Aug 2021 04:06:32 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR03MB6366.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8651bc3c-da1d-4d6f-8808-08d95d692743
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Aug 2021 08:14:05.9301
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: lc8ZO97ZXa4A5KwohFYQp2v3cu8e/tzZNgcIa1AS1CzSzRra5mOxZZCn6eC9pUmPA/8kFm402413yHvq/5r4PA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR03MB6299
-X-Proofpoint-GUID: 6tWZyZasGTG2hZ7fwNAKEDt1Yf2583Db
-X-Proofpoint-ORIG-GUID: 6tWZyZasGTG2hZ7fwNAKEDt1Yf2583Db
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
- definitions=2021-08-12_02:2021-08-11,2021-08-12 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 mlxscore=0
- phishscore=0 priorityscore=1501 adultscore=0 malwarescore=0
- lowpriorityscore=0 spamscore=0 mlxlogscore=999 bulkscore=0 impostorscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2107140000 definitions=main-2108120053
+References: <cover.1628713039.git.lucas.p.stankus@gmail.com> <69f3b83eaf31d657cdb522839dc0102384d50681.1628713039.git.lucas.p.stankus@gmail.com>
+In-Reply-To: <69f3b83eaf31d657cdb522839dc0102384d50681.1628713039.git.lucas.p.stankus@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 12 Aug 2021 14:05:52 +0300
+Message-ID: <CAHp75VeTWmegWR6viGOV=QYxTFnPcntG6pdKn=rVyvniHGTAog@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] iio: accel: Add driver support for ADXL313
+To:     Lucas Stankus <lucas.p.stankus@gmail.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
+        Darius <Darius.Berghe@analog.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQW5keSBTaGV2Y2hlbmtv
-IDxhbmR5LnNoZXZjaGVua29AZ21haWwuY29tPg0KPiBTZW50OiBUaHVyc2RheSwgQXVndXN0IDEy
-LCAyMDIxIDk6MDYgQU0NCj4gVG86IFNhLCBOdW5vIDxOdW5vLlNhQGFuYWxvZy5jb20+DQo+IENj
-OiBsaW51eC1paW8gPGxpbnV4LWlpb0B2Z2VyLmtlcm5lbC5vcmc+OyBKb25hdGhhbiBDYW1lcm9u
-DQo+IDxqaWMyM0BrZXJuZWwub3JnPjsgSGVubmVyaWNoLCBNaWNoYWVsDQo+IDxNaWNoYWVsLkhl
-bm5lcmljaEBhbmFsb2cuY29tPjsgTGFycy1QZXRlciBDbGF1c2VuDQo+IDxsYXJzQG1ldGFmb28u
-ZGU+DQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0hdIGlpbzogYWQ1NzcwcjogbWFrZSBkZXZpY2V0cmVl
-IHByb3BlcnR5IHJlYWRpbmcNCj4gY29uc2lzdGVudA0KPiANCj4gDQo+IA0KPiBPbiBUaHVyc2Rh
-eSwgQXVndXN0IDEyLCAyMDIxLCBTYSwgTnVubyA8TnVuby5TYUBhbmFsb2cuY29tDQo+IDxtYWls
-dG86TnVuby5TYUBhbmFsb2cuY29tPiA+IHdyb3RlOg0KPiANCj4gDQo+IAk+IEZyb206IEFuZHkg
-U2hldmNoZW5rbyA8YW5keS5zaGV2Y2hlbmtvQGdtYWlsLmNvbQ0KPiA8bWFpbHRvOmFuZHkuc2hl
-dmNoZW5rb0BnbWFpbC5jb20+ID4NCj4gCT4gU2VudDogV2VkbmVzZGF5LCBBdWd1c3QgMTEsIDIw
-MjEgNjowNCBQTQ0KPiAJPiBUbzogU2EsIE51bm8gPE51bm8uU2FAYW5hbG9nLmNvbQ0KPiA8bWFp
-bHRvOk51bm8uU2FAYW5hbG9nLmNvbT4gPg0KPiAJPiBDYzogbGludXgtaWlvIDxsaW51eC1paW9A
-dmdlci5rZXJuZWwub3JnIDxtYWlsdG86bGludXgtDQo+IGlpb0B2Z2VyLmtlcm5lbC5vcmc+ID47
-IEpvbmF0aGFuIENhbWVyb24NCj4gCT4gPGppYzIzQGtlcm5lbC5vcmcgPG1haWx0bzpqaWMyM0Br
-ZXJuZWwub3JnPiA+OyBIZW5uZXJpY2gsDQo+IE1pY2hhZWwNCj4gCT4gPE1pY2hhZWwuSGVubmVy
-aWNoQGFuYWxvZy5jb20NCj4gPG1haWx0bzpNaWNoYWVsLkhlbm5lcmljaEBhbmFsb2cuY29tPiA+
-OyBMYXJzLVBldGVyIENsYXVzZW4NCj4gCT4gPGxhcnNAbWV0YWZvby5kZSA8bWFpbHRvOmxhcnNA
-bWV0YWZvby5kZT4gPg0KPiAJPiBTdWJqZWN0OiBSZTogW1BBVENIXSBpaW86IGFkNTc3MHI6IG1h
-a2UgZGV2aWNldHJlZSBwcm9wZXJ0eQ0KPiByZWFkaW5nDQo+IAk+IGNvbnNpc3RlbnQNCj4gCT4N
-Cj4gCT4gT24gV2VkLCBBdWcgMTEsIDIwMjEgYXQgMTA6NDYgQU0gTnVubyBTw6ENCj4gPG51bm8u
-c2FAYW5hbG9nLmNvbSA8bWFpbHRvOm51bm8uc2FAYW5hbG9nLmNvbT4gPg0KPiAJPiB3cm90ZToN
-Cj4gCT4gPg0KPiAJPiA+IFRoZSBiaW5kaW5ncyBmaWxlIGZvciB0aGlzIGRyaXZlciBpcyBkZWZp
-bmluZyB0aGUgcHJvcGVydHkgYXMNCj4gJ3JlZycgYnV0DQo+IAk+ID4gdGhlIGRyaXZlciB3YXMg
-cmVhZGluZyBpdCB3aXRoIHRoZSAnbnVtJyBuYW1lLiBUaGlzIHBhdGNoZXMNCj4gbWFrZXMNCj4g
-CT4gdGhlDQo+IAk+DQo+IAk+ICJUaGlzIHBhdGNoZXMgbWFrZXMgdGhlLi4uIiAtLT4gIk1ha2Ug
-dGhlLi4uIg0KPiAJPg0KPiAJPiA+IGRyaXZlciBjb25zaXN0ZW50IHdpdGggd2hhdCBpcyBkZWZp
-bmVkIGluIHRoZSBiaW5kaW5ncy4NCj4gCT4NCj4gCT4gV2hpbGUgaXQgc2VlbXMgb2theSwgaXQg
-bWF5IGJlIG5vdyBhIGNoaWNrZW4tZWdnIGlzc3VlDQo+IChzb21lYm9keQ0KPiAJPiBjcmVhdGVk
-IGEgRFQgd2l0aCAibnVtIiBwcm9wZXJ0eSkuDQo+IAk+DQo+IA0KPiAJQXJnaGgsIEkgc2VlLiBX
-ZWxsLCBtYXliZSBsZXQncyBnbyB0aGUgb3RoZXIgd2F5IGFyb3VuZCBhbmQNCj4gY2hhbmdlIHRo
-ZQ0KPiAJYmluZGluZ3MgZG9jIHRvICdudW0nPw0KPiANCj4gDQo+IE5vdCBzdXJlLCBsaWtlIEkg
-c2FpZCBpdOKAmXMgYSBjaGlja2VuLWVnZyBpc3N1ZS4gQ29uc3VsdCB3aXRoIFJvYiBwZXJoYXBz
-Pw0KDQpIaSBSb2IsDQoNCkNvdWxkIHlvdSBnaXZlIHlvdXIgaW5wdXQgb24gdGhpcyBvbmU/DQoN
-ClRoYW5rcyENCi0gTnVubyBTw6EgDQoNCg==
+On Thu, Aug 12, 2021 at 12:19 AM Lucas Stankus
+<lucas.p.stankus@gmail.com> wrote:
+>
+> ADXL313 is a small, thin, low power, 3-axis accelerometer with high
+> resolution measurement up to +/-4g. It includes an integrated 32-level
+> FIFO and has activity and inactivity sensing capabilities.
+
+Thanks for an update, my comments below.
+After addressing them, feel free to add
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+
+> Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ADXL313.pdf
+> Signed-off-by: Lucas Stankus <lucas.p.stankus@gmail.com>
+> Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
+> ---
+>  MAINTAINERS                      |   6 +
+>  drivers/iio/accel/Kconfig        |  29 +++
+>  drivers/iio/accel/Makefile       |   3 +
+>  drivers/iio/accel/adxl313.h      |  57 ++++++
+>  drivers/iio/accel/adxl313_core.c | 331 +++++++++++++++++++++++++++++++
+>  drivers/iio/accel/adxl313_i2c.c  |  65 ++++++
+>  drivers/iio/accel/adxl313_spi.c  |  91 +++++++++
+>  7 files changed, 582 insertions(+)
+>  create mode 100644 drivers/iio/accel/adxl313.h
+>  create mode 100644 drivers/iio/accel/adxl313_core.c
+>  create mode 100644 drivers/iio/accel/adxl313_i2c.c
+>  create mode 100644 drivers/iio/accel/adxl313_spi.c
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index d0464b83b5b5..b2ada8ca1453 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -585,6 +585,12 @@ L: platform-driver-x86@vger.kernel.org
+>  S:     Maintained
+>  F:     drivers/platform/x86/adv_swbutton.c
+>
+> +ADXL313 THREE-AXIS DIGITAL ACCELEROMETER DRIVER
+> +M:     Lucas Stankus <lucas.p.stankus@gmail.com>
+> +S:     Supported
+> +F:     Documentation/devicetree/bindings/iio/accel/adi,adxl313.yaml
+> +F:     drivers/iio/accel/adxl313*
+> +
+>  ADXL34X THREE-AXIS DIGITAL ACCELEROMETER DRIVER (ADXL345/ADXL346)
+>  M:     Michael Hennerich <michael.hennerich@analog.com>
+>  S:     Supported
+> diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
+> index 2f0c0d512ae7..fb8349a88cd3 100644
+> --- a/drivers/iio/accel/Kconfig
+> +++ b/drivers/iio/accel/Kconfig
+> @@ -30,6 +30,35 @@ config ADIS16209
+>           To compile this driver as a module, say M here: the module will be
+>           called adis16209.
+>
+> +config ADXL313
+> +       tristate
+> +
+> +config ADXL313_I2C
+> +       tristate "Analog Devices ADXL313 3-Axis Digital Accelerometer I2C Driver"
+> +       depends on I2C
+> +       select ADXL313
+> +       select REGMAP_I2C
+> +       help
+> +         Say Y here if you want to build i2c support for the Analog Devices
+> +         ADXL313 3-axis digital accelerometer.
+> +
+> +         To compile this driver as a module, choose M here: the module
+> +         will be called adxl313_i2c and you will also get adxl313_core
+> +         for the core module.
+> +
+> +config ADXL313_SPI
+> +       tristate "Analog Devices ADXL313 3-Axis Digital Accelerometer SPI Driver"
+> +       depends on SPI
+> +       select ADXL313
+> +       select REGMAP_SPI
+> +       help
+> +         Say Y here if you want to build spi support for the Analog Devices
+> +         ADXL313 3-axis digital accelerometer.
+> +
+> +         To compile this driver as a module, choose M here: the module
+> +         will be called adxl313_spi and you will also get adxl313_core
+> +         for the core module.
+> +
+>  config ADXL345
+>         tristate
+>
+> diff --git a/drivers/iio/accel/Makefile b/drivers/iio/accel/Makefile
+> index 89280e823bcd..fadc92816e24 100644
+> --- a/drivers/iio/accel/Makefile
+> +++ b/drivers/iio/accel/Makefile
+> @@ -6,6 +6,9 @@
+>  # When adding new entries keep the list in alphabetical order
+>  obj-$(CONFIG_ADIS16201) += adis16201.o
+>  obj-$(CONFIG_ADIS16209) += adis16209.o
+> +obj-$(CONFIG_ADXL313) += adxl313_core.o
+> +obj-$(CONFIG_ADXL313_I2C) += adxl313_i2c.o
+> +obj-$(CONFIG_ADXL313_SPI) += adxl313_spi.o
+>  obj-$(CONFIG_ADXL345) += adxl345_core.o
+>  obj-$(CONFIG_ADXL345_I2C) += adxl345_i2c.o
+>  obj-$(CONFIG_ADXL345_SPI) += adxl345_spi.o
+> diff --git a/drivers/iio/accel/adxl313.h b/drivers/iio/accel/adxl313.h
+> new file mode 100644
+> index 000000000000..c170b5236988
+> --- /dev/null
+> +++ b/drivers/iio/accel/adxl313.h
+> @@ -0,0 +1,57 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * ADXL313 3-Axis Digital Accelerometer
+> + *
+> + * Copyright (c) 2021 Lucas Stankus <lucas.p.stankus@gmail.com>
+> + */
+> +
+> +#ifndef _ADXL313_H_
+> +#define _ADXL313_H_
+> +
+> +/* ADXL313 register definitions */
+> +#define ADXL313_REG_DEVID0             0x00
+> +#define ADXL313_REG_DEVID1             0x01
+> +#define ADXL313_REG_PARTID             0x02
+> +#define ADXL313_REG_XID                        0x04
+> +#define ADXL313_REG_SOFT_RESET         0x18
+> +#define ADXL313_REG_OFS_AXIS(index)    (0x1E + (index))
+> +#define ADXL313_REG_THRESH_ACT         0x24
+> +#define ADXL313_REG_ACT_INACT_CTL      0x27
+> +#define ADXL313_REG_BW_RATE            0x2C
+> +#define ADXL313_REG_POWER_CTL          0x2D
+> +#define ADXL313_REG_INT_MAP            0x2F
+> +#define ADXL313_REG_DATA_FORMAT                0x31
+> +#define ADXL313_REG_DATAX              0x32
+> +#define ADXL313_REG_DATAY              0x34
+> +#define ADXL313_REG_DATAZ              0x36
+> +#define ADXL313_REG_FIFO_CTL           0x38
+> +#define ADXL313_REG_FIFO_STATUS                0x39
+> +
+> +#define ADXL313_DEVID0                 0xAD
+> +#define ADXL313_DEVID1                 0x1D
+> +#define ADXL313_PARTID                 0xCB
+> +#define ADXL313_SOFT_RESET             0x52
+> +
+> +#define ADXL313_RATE_MSK               GENMASK(3, 0)
+> +#define ADXL313_RATE_BASE              6
+> +
+> +#define ADXL313_POWER_CTL_MSK          GENMASK(3, 2)
+> +#define ADXL313_MEASUREMENT_MODE       BIT(3)
+> +
+> +#define ADXL313_RANGE_MSK              GENMASK(1, 0)
+> +#define ADXL313_RANGE_4G               3
+> +
+> +#define ADXL313_FULL_RES               BIT(3)
+> +#define ADXL313_SPI_3WIRE              BIT(6)
+> +#define ADXL313_I2C_DISABLE            BIT(6)
+> +
+> +extern const struct regmap_access_table adxl313_readable_regs_table;
+> +
+> +extern const struct regmap_access_table adxl313_writable_regs_table;
+> +
+> +int adxl313_core_probe(struct device *dev,
+> +                      struct regmap *regmap,
+> +                      const char *name,
+
+> +                      int (*interface_specific_setup)(struct device *,
+> +                                                      struct regmap *));
+
+I think it's quite a long name for an internal function. At least
+"specific" word may be dropped, but I will go even for "interface"
+drop and explaining this parameter in the kernel doc of the probe()
+function/
+
+> +#endif /* _ADXL313_H_ */
+> diff --git a/drivers/iio/accel/adxl313_core.c b/drivers/iio/accel/adxl313_core.c
+> new file mode 100644
+> index 000000000000..8f3d4f5281c4
+> --- /dev/null
+> +++ b/drivers/iio/accel/adxl313_core.c
+> @@ -0,0 +1,331 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * ADXL313 3-Axis Digital Accelerometer
+> + *
+> + * Copyright (c) 2021 Lucas Stankus <lucas.p.stankus@gmail.com>
+> + *
+> + * Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ADXL313.pdf
+> + */
+> +
+> +#include <linux/bitfield.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/module.h>
+> +#include <linux/regmap.h>
+> +
+> +#include "adxl313.h"
+> +
+> +const struct regmap_range adxl313_readable_reg_range[] = {
+> +       regmap_reg_range(ADXL313_REG_DEVID0, ADXL313_REG_XID),
+> +       regmap_reg_range(ADXL313_REG_SOFT_RESET, ADXL313_REG_SOFT_RESET),
+> +       regmap_reg_range(ADXL313_REG_OFS_AXIS(0), ADXL313_REG_OFS_AXIS(2)),
+> +       regmap_reg_range(ADXL313_REG_THRESH_ACT, ADXL313_REG_ACT_INACT_CTL),
+> +       regmap_reg_range(ADXL313_REG_BW_RATE, ADXL313_REG_FIFO_STATUS)
+
++ comma (the rule of thumb is to check all similar code pieces even if
+you got a comment only once)
+
+> +};
+> +
+> +const struct regmap_access_table adxl313_readable_regs_table = {
+> +       .yes_ranges = adxl313_readable_reg_range,
+> +       .n_yes_ranges = ARRAY_SIZE(adxl313_readable_reg_range)
+
++ Comma
+
+> +};
+> +EXPORT_SYMBOL_GPL(adxl313_readable_regs_table);
+> +
+> +const struct regmap_range adxl313_writable_reg_range[] = {
+> +       regmap_reg_range(ADXL313_REG_SOFT_RESET, ADXL313_REG_SOFT_RESET),
+> +       regmap_reg_range(ADXL313_REG_OFS_AXIS(0), ADXL313_REG_OFS_AXIS(2)),
+> +       regmap_reg_range(ADXL313_REG_THRESH_ACT, ADXL313_REG_ACT_INACT_CTL),
+> +       regmap_reg_range(ADXL313_REG_BW_RATE, ADXL313_REG_INT_MAP),
+> +       regmap_reg_range(ADXL313_REG_DATA_FORMAT, ADXL313_REG_DATA_FORMAT),
+> +       regmap_reg_range(ADXL313_REG_FIFO_CTL, ADXL313_REG_FIFO_CTL)
+
+Ditto.
+
+> +};
+> +
+> +const struct regmap_access_table adxl313_writable_regs_table = {
+> +       .yes_ranges = adxl313_writable_reg_range,
+> +       .n_yes_ranges = ARRAY_SIZE(adxl313_writable_reg_range)
+
+Ditto.
+
+
+> +};
+> +EXPORT_SYMBOL_GPL(adxl313_writable_regs_table);
+> +
+> +struct adxl313_data {
+> +       struct regmap   *regmap;
+> +       struct mutex    lock; /* lock to protect transf_buf */
+> +       __le16          transf_buf ____cacheline_aligned;
+> +};
+> +
+> +static const int adxl313_odr_freqs[][2] = {
+> +       [0] = { 6, 250000 },
+> +       [1] = { 12, 500000 },
+> +       [2] = { 25, 0 },
+> +       [3] = { 50, 0 },
+> +       [4] = { 100, 0 },
+> +       [5] = { 200, 0 },
+> +       [6] = { 400, 0 },
+> +       [7] = { 800, 0 },
+> +       [8] = { 1600, 0 },
+> +       [9] = { 3200, 0 },
+> +};
+> +
+> +#define ADXL313_ACCEL_CHANNEL(index, addr, axis) {                     \
+> +       .type = IIO_ACCEL,                                              \
+> +       .address = addr,                                                \
+> +       .modified = 1,                                                  \
+> +       .channel2 = IIO_MOD_##axis,                                     \
+> +       .info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |                  \
+> +                             BIT(IIO_CHAN_INFO_CALIBBIAS),             \
+> +       .info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |          \
+> +                                   BIT(IIO_CHAN_INFO_SAMP_FREQ),       \
+> +       .info_mask_shared_by_type_available =                           \
+> +               BIT(IIO_CHAN_INFO_SAMP_FREQ),                           \
+> +       .scan_index = index,                                            \
+> +       .scan_type = {                                                  \
+> +               .sign = 's',                                            \
+> +               .realbits = 13,                                         \
+> +               .storagebits = 16,                                      \
+> +               .endianness = IIO_LE,                                   \
+> +       },                                                              \
+> +}
+> +
+> +static const struct iio_chan_spec adxl313_channels[] = {
+> +       ADXL313_ACCEL_CHANNEL(0, ADXL313_REG_DATAX, X),
+> +       ADXL313_ACCEL_CHANNEL(1, ADXL313_REG_DATAY, Y),
+> +       ADXL313_ACCEL_CHANNEL(2, ADXL313_REG_DATAZ, Z),
+> +};
+> +
+> +static int adxl313_set_odr(struct adxl313_data *data,
+> +                          unsigned int freq1, unsigned int freq2)
+> +{
+> +       unsigned int i;
+> +
+> +       for (i = 0; i < ARRAY_SIZE(adxl313_odr_freqs); i++) {
+> +               if (adxl313_odr_freqs[i][0] == freq1 &&
+> +                   adxl313_odr_freqs[i][1] == freq2)
+> +                       break;
+> +       }
+> +
+> +       if (i == ARRAY_SIZE(adxl313_odr_freqs))
+> +               return -EINVAL;
+> +
+> +       return regmap_update_bits(data->regmap, ADXL313_REG_BW_RATE,
+> +                                 ADXL313_RATE_MSK,
+
+> +                                 FIELD_PREP(ADXL313_RATE_MSK,
+> +                                            ADXL313_RATE_BASE + i));
+
+One line?
+
+> +}
+> +
+> +static int adxl313_read_axis(struct adxl313_data *data,
+> +                            struct iio_chan_spec const *chan)
+> +{
+> +       int ret;
+> +
+> +       mutex_lock(&data->lock);
+> +
+> +       ret = regmap_bulk_read(data->regmap,
+> +                              chan->address,
+> +                              &data->transf_buf, 2);
+> +       if (ret)
+> +               goto unlock_ret;
+> +
+> +       ret = le16_to_cpu(data->transf_buf);
+> +
+> +unlock_ret:
+> +       mutex_unlock(&data->lock);
+> +       return ret;
+> +}
+> +
+> +static int adxl313_read_freq_avail(struct iio_dev *indio_dev,
+> +                                  struct iio_chan_spec const *chan,
+> +                                  const int **vals, int *type, int *length,
+> +                                  long mask)
+> +{
+> +       switch (mask) {
+> +       case IIO_CHAN_INFO_SAMP_FREQ:
+> +               *vals = (const int *)adxl313_odr_freqs;
+> +               *length = ARRAY_SIZE(adxl313_odr_freqs) * 2;
+> +               *type = IIO_VAL_INT_PLUS_MICRO;
+> +               return IIO_AVAIL_LIST;
+> +       default:
+> +               return -EINVAL;
+> +       }
+> +}
+> +
+> +static int adxl313_read_raw(struct iio_dev *indio_dev,
+> +                           struct iio_chan_spec const *chan,
+> +                           int *val, int *val2, long mask)
+> +{
+> +       struct adxl313_data *data = iio_priv(indio_dev);
+> +       unsigned int regval;
+> +       int ret;
+> +
+> +       switch (mask) {
+> +       case IIO_CHAN_INFO_RAW:
+> +               ret = adxl313_read_axis(data, chan);
+> +               if (ret < 0)
+> +                       return ret;
+> +
+> +               *val = sign_extend32(ret, chan->scan_type.realbits - 1);
+> +               return IIO_VAL_INT;
+> +       case IIO_CHAN_INFO_SCALE:
+> +               /*
+> +                * Scale for any g range is given in datasheet as
+> +                * 1024 LSB/g = 0.0009765625 * 9.80665 = 0.009576806640625 m/s^2
+> +                */
+> +               *val = 0;
+> +               *val2 = 9576806;
+> +               return IIO_VAL_INT_PLUS_NANO;
+> +       case IIO_CHAN_INFO_CALIBBIAS:
+> +               ret = regmap_read(data->regmap,
+> +                                 ADXL313_REG_OFS_AXIS(chan->scan_index),
+> +                                 &regval);
+> +               if (ret)
+> +                       return ret;
+> +
+> +               /*
+> +                * 8-bit resolution at +/- 0.5g, that is 4x accel data scale
+> +                * factor at full resolution
+> +                */
+> +               *val = sign_extend32(regval, 7) * 4;
+> +               return IIO_VAL_INT;
+> +       case IIO_CHAN_INFO_SAMP_FREQ:
+> +               ret = regmap_read(data->regmap, ADXL313_REG_BW_RATE, &regval);
+> +               if (ret)
+> +                       return ret;
+> +
+> +               ret = FIELD_GET(ADXL313_RATE_MSK, regval) - ADXL313_RATE_BASE;
+> +               *val = adxl313_odr_freqs[ret][0];
+> +               *val2 = adxl313_odr_freqs[ret][1];
+> +               return IIO_VAL_INT_PLUS_MICRO;
+> +       default:
+> +               return -EINVAL;
+> +       }
+> +}
+> +
+> +static int adxl313_write_raw(struct iio_dev *indio_dev,
+> +                            struct iio_chan_spec const *chan,
+> +                            int val, int val2, long mask)
+> +{
+> +       struct adxl313_data *data = iio_priv(indio_dev);
+> +
+> +       switch (mask) {
+> +       case IIO_CHAN_INFO_CALIBBIAS:
+> +               /*
+> +                * 8-bit resolution at +/- 0.5g, that is 4x accel data scale
+> +                * factor at full resolution
+> +                */
+> +               if (clamp_val(val, -128 * 4, 127 * 4) != val)
+> +                       return -EINVAL;
+> +
+> +               return regmap_write(data->regmap,
+> +                                   ADXL313_REG_OFS_AXIS(chan->scan_index),
+> +                                   val / 4);
+> +       case IIO_CHAN_INFO_SAMP_FREQ:
+> +               return adxl313_set_odr(data, val, val2);
+> +       default:
+> +               return -EINVAL;
+> +       }
+> +}
+> +
+> +static const struct iio_info adxl313_info = {
+> +       .read_raw       = adxl313_read_raw,
+> +       .write_raw      = adxl313_write_raw,
+> +       .read_avail     = adxl313_read_freq_avail
+
++ Comma
+
+> +};
+> +
+> +static int adxl313_setup(struct device *dev, struct adxl313_data *data,
+> +                        int (*interface_specific_setup)(struct device *,
+> +                                                        struct regmap *))
+
+Same comment against nameing, "setup" would be enough here.
+
+> +{
+> +       unsigned int regval;
+> +       int ret;
+> +
+> +       /* Ensures the device is in a consistent state after start up */
+> +       ret = regmap_write(data->regmap, ADXL313_REG_SOFT_RESET,
+> +                          ADXL313_SOFT_RESET);
+> +       if (ret)
+> +               return ret;
+> +
+> +       if (interface_specific_setup) {
+> +               ret = interface_specific_setup(dev, data->regmap);
+> +               if (ret)
+> +                       return ret;
+> +       }
+> +
+> +       ret = regmap_read(data->regmap, ADXL313_REG_DEVID0, &regval);
+> +       if (ret)
+> +               return ret;
+> +
+> +       if (regval != ADXL313_DEVID0) {
+> +               dev_err(dev, "Invalid manufacturer ID: 0x%02x\n", regval);
+> +               return -ENODEV;
+> +       }
+> +
+> +       ret = regmap_read(data->regmap, ADXL313_REG_DEVID1, &regval);
+> +       if (ret)
+> +               return ret;
+> +
+> +       if (regval != ADXL313_DEVID1) {
+> +               dev_err(dev, "Invalid mems ID: 0x%02x\n", regval);
+> +               return -ENODEV;
+> +       }
+> +
+> +       ret = regmap_read(data->regmap, ADXL313_REG_PARTID, &regval);
+> +       if (ret)
+> +               return ret;
+> +
+> +       if (regval != ADXL313_PARTID) {
+> +               dev_err(dev, "Invalid device ID: 0x%02x\n", regval);
+> +               return -ENODEV;
+> +       }
+> +
+> +       /* Sets the range to +/- 4g */
+> +       ret = regmap_update_bits(data->regmap, ADXL313_REG_DATA_FORMAT,
+> +                                ADXL313_RANGE_MSK,
+> +                                FIELD_PREP(ADXL313_RANGE_MSK,
+> +                                           ADXL313_RANGE_4G));
+> +       if (ret)
+> +               return ret;
+> +
+> +       /* Enables full resolution */
+> +       ret = regmap_update_bits(data->regmap, ADXL313_REG_DATA_FORMAT,
+> +                                ADXL313_FULL_RES, ADXL313_FULL_RES);
+> +       if (ret)
+> +               return ret;
+> +
+> +       /* Enables measurement mode */
+> +       return regmap_update_bits(data->regmap, ADXL313_REG_POWER_CTL,
+> +                                 ADXL313_POWER_CTL_MSK,
+> +                                 ADXL313_MEASUREMENT_MODE);
+> +}
+
+Provide a kernel doc for the probe()
+
+> +int adxl313_core_probe(struct device *dev,
+> +                      struct regmap *regmap,
+> +                      const char *name,
+> +                      int (*interface_specific_setup)(struct device *,
+> +                                                      struct regmap *))
+
+Ditto for the "setup" name.
+
+> +{
+> +       struct adxl313_data *data;
+> +       struct iio_dev *indio_dev;
+> +       int ret;
+> +
+> +       indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
+> +       if (!indio_dev)
+> +               return -ENOMEM;
+> +
+> +       data = iio_priv(indio_dev);
+> +       data->regmap = regmap;
+> +       mutex_init(&data->lock);
+> +
+> +       indio_dev->name = name;
+> +       indio_dev->info = &adxl313_info;
+> +       indio_dev->modes = INDIO_DIRECT_MODE;
+> +       indio_dev->channels = adxl313_channels;
+> +       indio_dev->num_channels = ARRAY_SIZE(adxl313_channels);
+> +
+> +       ret = adxl313_setup(dev, data, interface_specific_setup);
+> +       if (ret) {
+> +               dev_err(dev, "ADXL313 setup failed\n");
+> +               return ret;
+> +       }
+> +
+> +       return devm_iio_device_register(dev, indio_dev);
+> +}
+> +EXPORT_SYMBOL_GPL(adxl313_core_probe);
+> +
+> +MODULE_AUTHOR("Lucas Stankus <lucas.p.stankus@gmail.com>");
+> +MODULE_DESCRIPTION("ADXL313 3-Axis Digital Accelerometer core driver");
+> +MODULE_LICENSE("GPL v2");
+> diff --git a/drivers/iio/accel/adxl313_i2c.c b/drivers/iio/accel/adxl313_i2c.c
+> new file mode 100644
+> index 000000000000..517c6f1c43ad
+> --- /dev/null
+> +++ b/drivers/iio/accel/adxl313_i2c.c
+> @@ -0,0 +1,65 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * ADXL313 3-Axis Digital Accelerometer
+> + *
+> + * Copyright (c) 2021 Lucas Stankus <lucas.p.stankus@gmail.com>
+> + *
+> + * Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ADXL313.pdf
+> + */
+> +
+> +#include <linux/i2c.h>
+> +#include <linux/module.h>
+> +#include <linux/regmap.h>
+> +
+> +#include "adxl313.h"
+> +
+> +static const struct regmap_config adxl313_i2c_regmap_config = {
+> +       .reg_bits       = 8,
+> +       .val_bits       = 8,
+> +       .rd_table       = &adxl313_readable_regs_table,
+> +       .wr_table       = &adxl313_writable_regs_table,
+> +       .max_register   = 0x39,
+> +};
+> +
+> +static int adxl313_i2c_probe(struct i2c_client *client)
+> +{
+> +       struct regmap *regmap;
+> +
+> +       regmap = devm_regmap_init_i2c(client, &adxl313_i2c_regmap_config);
+> +       if (IS_ERR(regmap)) {
+> +               dev_err(&client->dev, "Error initializing i2c regmap: %ld\n",
+> +                       PTR_ERR(regmap));
+> +               return PTR_ERR(regmap);
+> +       }
+> +
+> +       return adxl313_core_probe(&client->dev, regmap, client->name, NULL);
+> +}
+> +
+> +static const struct i2c_device_id adxl313_i2c_id[] = {
+> +       { "adxl313" },
+> +       { }
+> +};
+> +
+> +MODULE_DEVICE_TABLE(i2c, adxl313_i2c_id);
+> +
+> +static const struct of_device_id adxl313_of_match[] = {
+> +       { .compatible = "adi,adxl313" },
+> +       { }
+> +};
+> +
+> +MODULE_DEVICE_TABLE(of, adxl313_of_match);
+> +
+> +static struct i2c_driver adxl313_i2c_driver = {
+> +       .driver = {
+> +               .name   = "adxl313_i2c",
+> +               .of_match_table = adxl313_of_match,
+> +       },
+> +       .probe_new      = adxl313_i2c_probe,
+> +       .id_table       = adxl313_i2c_id
+
++ Comma
+
+> +};
+> +
+> +module_i2c_driver(adxl313_i2c_driver);
+> +
+> +MODULE_AUTHOR("Lucas Stankus <lucas.p.stankus@gmail.com>");
+> +MODULE_DESCRIPTION("ADXL313 3-Axis Digital Accelerometer I2C driver");
+> +MODULE_LICENSE("GPL v2");
+> diff --git a/drivers/iio/accel/adxl313_spi.c b/drivers/iio/accel/adxl313_spi.c
+> new file mode 100644
+> index 000000000000..4d625b1753a5
+> --- /dev/null
+> +++ b/drivers/iio/accel/adxl313_spi.c
+> @@ -0,0 +1,91 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * ADXL313 3-Axis Digital Accelerometer
+> + *
+> + * Copyright (c) 2021 Lucas Stankus <lucas.p.stankus@gmail.com>
+> + *
+> + * Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ADXL313.pdf
+> + */
+> +
+> +#include <linux/module.h>
+> +#include <linux/regmap.h>
+> +#include <linux/spi/spi.h>
+> +
+> +#include "adxl313.h"
+> +
+> +static const struct regmap_config adxl313_spi_regmap_config = {
+> +       .reg_bits       = 8,
+> +       .val_bits       = 8,
+> +       .rd_table       = &adxl313_readable_regs_table,
+> +       .wr_table       = &adxl313_writable_regs_table,
+> +       .max_register   = 0x39,
+> +        /* Setting bits 7 and 6 enables multiple-byte read */
+> +       .read_flag_mask = BIT(7) | BIT(6),
+> +};
+> +
+> +static int adxl313_spi_setup(struct device *dev, struct regmap *regmap)
+> +{
+> +       struct spi_device *spi = container_of(dev, struct spi_device, dev);
+> +       int ret;
+> +
+> +       if (spi->mode & SPI_3WIRE) {
+> +               ret = regmap_write(regmap, ADXL313_REG_DATA_FORMAT,
+> +                                  ADXL313_SPI_3WIRE);
+> +               if (ret)
+> +                       return ret;
+> +       }
+> +
+> +       return regmap_update_bits(regmap, ADXL313_REG_POWER_CTL,
+> +                                 ADXL313_I2C_DISABLE, ADXL313_I2C_DISABLE);
+> +}
+> +
+> +static int adxl313_spi_probe(struct spi_device *spi)
+> +{
+> +       const struct spi_device_id *id = spi_get_device_id(spi);
+> +       struct regmap *regmap;
+> +       int ret;
+> +
+> +       spi->mode |= SPI_MODE_3;
+> +       ret = spi_setup(spi);
+> +       if (ret)
+> +               return ret;
+> +
+> +       regmap = devm_regmap_init_spi(spi, &adxl313_spi_regmap_config);
+> +       if (IS_ERR(regmap)) {
+> +               dev_err(&spi->dev, "Error initializing spi regmap: %ld\n",
+> +                       PTR_ERR(regmap));
+> +               return PTR_ERR(regmap);
+> +       }
+> +
+> +       return adxl313_core_probe(&spi->dev, regmap, id->name,
+> +                                 &adxl313_spi_setup);
+> +}
+> +
+> +static const struct spi_device_id adxl313_spi_id[] = {
+> +       { "adxl313" },
+> +       { }
+> +};
+> +
+> +MODULE_DEVICE_TABLE(spi, adxl313_spi_id);
+> +
+> +static const struct of_device_id adxl313_of_match[] = {
+> +       { .compatible = "adi,adxl313" },
+> +       { }
+> +};
+> +
+> +MODULE_DEVICE_TABLE(of, adxl313_of_match);
+> +
+> +static struct spi_driver adxl313_spi_driver = {
+> +       .driver = {
+> +               .name   = "adxl313_spi",
+> +               .of_match_table = adxl313_of_match,
+> +       },
+> +       .probe          = adxl313_spi_probe,
+> +       .id_table       = adxl313_spi_id
+
++ Comma
+
+> +};
+> +
+> +module_spi_driver(adxl313_spi_driver);
+> +
+> +MODULE_AUTHOR("Lucas Stankus <lucas.p.stankus@gmail.com>");
+> +MODULE_DESCRIPTION("ADXL313 3-Axis Digital Accelerometer SPI driver");
+> +MODULE_LICENSE("GPL v2");
+> --
+> 2.32.0
+>
+
+
+--
+With Best Regards,
+Andy Shevchenko

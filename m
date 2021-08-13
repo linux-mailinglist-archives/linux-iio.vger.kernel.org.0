@@ -2,83 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC0383EB4A8
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Aug 2021 13:41:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4604F3EB9A6
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Aug 2021 18:00:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240042AbhHMLmG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 13 Aug 2021 07:42:06 -0400
-Received: from aposti.net ([89.234.176.197]:46710 "EHLO aposti.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239938AbhHMLmF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 13 Aug 2021 07:42:05 -0400
-Date:   Fri, 13 Aug 2021 13:41:26 +0200
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: IIO, dmabuf, io_uring
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Christian =?iso-8859-1?b?S/ZuaWc=?= <christian.koenig@amd.com>,
-        Christoph Hellwig <hch@lst.de>
-Cc:     linux-iio@vger.kernel.org, io-uring@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>
-Message-Id: <2H0SXQ.2KIK2PBVRFWH2@crapouillou.net>
+        id S241389AbhHMQAh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 Aug 2021 12:00:37 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:57626 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241382AbhHMQAg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Aug 2021 12:00:36 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: sre)
+        with ESMTPSA id 8B2581F44986
+Received: by earth.universe (Postfix, from userid 1000)
+        id 647943C0C99; Fri, 13 Aug 2021 18:00:06 +0200 (CEST)
+Date:   Fri, 13 Aug 2021 18:00:06 +0200
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     Andreas Kemnade <andreas@kemnade.info>
+Cc:     jic23@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        letux-kernel@openphoenux.org
+Subject: Re: [PATCH v3 0/2] mfd: rn5t618: Extend ADC support
+Message-ID: <20210813160006.r4anec2g5vv73mao@earth.universe>
+References: <20210712212111.18896-1-andreas@kemnade.info>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="2n5xgpexbbwyfdgu"
+Content-Disposition: inline
+In-Reply-To: <20210712212111.18896-1-andreas@kemnade.info>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+
+--2n5xgpexbbwyfdgu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
 Hi,
 
-A few months ago we (ADI) tried to upstream the interface we use with 
-our high-speed ADCs and DACs. It is a system with custom ioctls on the 
-iio device node to dequeue and enqueue buffers (allocated with 
-dma_alloc_coherent), that can then be mmap'd by userspace applications. 
-Anyway, it was ultimately denied entry [1]; this API was okay in ~2014 
-when it was designed but it feels like re-inventing the wheel in 2021.
+On Mon, Jul 12, 2021 at 11:21:09PM +0200, Andreas Kemnade wrote:
+> Add iio map to make voltage_now related channels accessible to power
+> driver.
+>=20
+> Changes in v3:
+> - use scale functions
+> - add acks
+>=20
+> Changes in v2:
+> - use iio_map instead of devicetree to allow mapping which does not
+>   block future extension by devicetree.
 
-Back to the drawing table, and we'd like to design something that we 
-can actually upstream. This high-speed interface looks awfully similar 
-to DMABUF, so we may try to implement a DMABUF interface for IIO, 
-unless someone has a better idea.
+Thanks, queued.
 
-Our first usecase is, we want userspace applications to be able to 
-dequeue buffers of samples (from ADCs), and/or enqueue buffers of 
-samples (for DACs), and to be able to manipulate them (mmapped 
-buffers). With a DMABUF interface, I guess the userspace application 
-would dequeue a dma buffer from the driver, mmap it, read/write the 
-data, unmap it, then enqueue it to the IIO driver again so that it can 
-be disposed of. Does that sound sane?
+-- Sebastian
 
-Our second usecase is - and that's where things get tricky - to be able 
-to stream the samples to another computer for processing, over Ethernet 
-or USB. Our typical setup is a high-speed ADC/DAC on a dev board with a 
-FPGA and a weak soft-core or low-power CPU; processing the data in-situ 
-is not an option. Copying the data from one buffer to another is not an 
-option either (way too slow), so we absolutely want zero-copy.
+> *** BLURB HERE ***
 
-Usual userspace zero-copy techniques (vmsplice+splice, MSG_ZEROCOPY 
-etc) don't really work with mmapped kernel buffers allocated for DMA 
-[2] and/or have a huge overhead, so the way I see it, we would also 
-need DMABUF support in both the Ethernet stack and USB (functionfs) 
-stack. However, as far as I understood, DMABUF is mostly a DRM/V4L2 
-thing, so I am really not sure we have the right idea here.
+:)
 
-And finally, there is the new kid in town, io_uring. I am not very 
-literate about the topic, but it does not seem to be able to handle DMA 
-buffers (yet?). The idea that we could dequeue a buffer of samples from 
-the IIO device and send it over the network in one single syscall is 
-appealing, though.
+> Andreas Kemnade (2):
+>   iio: adc: rn5t618: Add iio map
+>   power: supply: rn5t618: Add voltage_now property
+>=20
+>  drivers/iio/adc/rn5t618-adc.c        | 23 +++++++++++++++++
+>  drivers/power/supply/Kconfig         |  2 ++
+>  drivers/power/supply/rn5t618_power.c | 38 ++++++++++++++++++++++++++++
+>  3 files changed, 63 insertions(+)
+>=20
+> --=20
+> 2.30.2
+>=20
 
-Any thoughts? Feedback would be greatly appreciated.
+--2n5xgpexbbwyfdgu
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Cheers,
--Paul
+-----BEGIN PGP SIGNATURE-----
 
-[1]: 
-https://lore.kernel.org/linux-iio/20210217073638.21681-1-alexandru.ardelean@analog.com/T/#m6b853addb77959c55e078fbb06828db33d4bf3d7
-[2]: 
-https://newbedev.com/zero-copy-user-space-tcp-send-of-dma-mmap-coherent-mapped-memory
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmEWlwYACgkQ2O7X88g7
++ppMJA/7B8DgrZ1oaXrWqWSByzip+PLtC1Xov6eDVPZC6o/sGihnJcYewrhCR10x
+fwRV3sY/aj4/M1vOoiJF3CHHSg57gzLx8cNXi+a7tz5KY/cHcg2NCx4E9J4zffNy
+d1i6rmRYhuDCxvGAvko0kz59nW1UwDEd5NLl+QaFPazoKnwPgTlOPSMR3NfFGWFm
+FbJyt6Q2ZfiGptfyXBeNFEyfLbg0nIEE34RNbClhhKz+37kt91wgDvTFvieEGAxd
+cQGL/wKoBWfytjZc5kDN4o/SZRQSRQXdv6ercuj+3yvVcRASnqlR43wo75vTOsZZ
+MBFLOSFei0e7KOY2yAov4zKlOvJj4Y3CfdqkU3GgQI6qxzh1crzqOfnmb8oItVPE
+jOVVKmb43ctd1w6dSTvqEq6lZTuQma8kSfq9EdUdzHfKjpqhFClY3c5+KK2QYcQR
++DMNUJGRIge9JrXk3E3b6PpFA/xjsjJ/Of1qJ7+Ap2I5eogd75idaGhh3wDxmH6J
+Ps3U0pSV3QtXV/6bHn+tX2AEXvdl1PdemDCDJVoLByuzBUDqaL43qubwDdjlE+Ex
+cfGBNsaoK4FQgh13H9ILibQQxsyxGK611XGDrM0l493Ly9K3ln1I6Gcmg3PRWBUn
+13sphZ9c/wgAR6PRiMml7SmboBA9173iUgK2Qnt/rKIKDAxGCHU=
+=F8VB
+-----END PGP SIGNATURE-----
 
-
+--2n5xgpexbbwyfdgu--

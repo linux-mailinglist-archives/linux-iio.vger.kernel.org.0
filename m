@@ -2,46 +2,109 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7342C3EC411
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Aug 2021 19:17:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01F9B3EC444
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Aug 2021 19:56:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238785AbhHNRSG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 14 Aug 2021 13:18:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37686 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238809AbhHNRSF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 14 Aug 2021 13:18:05 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B9C8960E97
-        for <linux-iio@vger.kernel.org>; Sat, 14 Aug 2021 17:17:31 +0000 (UTC)
-Date:   Sat, 14 Aug 2021 18:20:28 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org
-Subject: Vacation 18-26th August, very slightly early IIO cut off for 5.15
- as a result.
-Message-ID: <20210814182028.5908db08@jic23-huawei>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        id S238841AbhHNR5B (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 14 Aug 2021 13:57:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37714 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231137AbhHNR5A (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 Aug 2021 13:57:00 -0400
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BC23C061764;
+        Sat, 14 Aug 2021 10:56:32 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id u15so569817plg.13;
+        Sat, 14 Aug 2021 10:56:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=cs6oaPPljTB0+S+sPjJM9MtEY7KAmNyX9Kmkft2EBOk=;
+        b=auBm+DwETbmdnf9jS5r3/nRRLZ6dderzen1M1VtP9EvFVNeVZ+DBFvC0VEIxJz3iuU
+         8l8gY8vTi1wG4DvgMYY4ZULxpzDsvWzKFthOIPBLmYXFbaNNk5lkhJ9fVEcWSRPvuC24
+         FF+AkusJPfNx5i2l6AQk0lJCZShh+z4S3tlfY+nu0YmLjQPibs2VyaukngCXZfkOf/No
+         xwrUQ7aO2eq3zuqab/xPGhg+RWvq9B75BkeILpHe6jcHAZ9lgtJSr8qwl1YR5WRnk2ZC
+         i4TWF6iSR4VzeBV2j3/61sMZqjMm1rUD0SuAdUEilXP66FoAnw3isFDYNUCm0W616eiX
+         ofdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=cs6oaPPljTB0+S+sPjJM9MtEY7KAmNyX9Kmkft2EBOk=;
+        b=Op7a5zWZaZ2/OF/6sPHpLbBly/tf2ctjCMixKe8wylYqiw639O3oDaxPxMn9NFOrUu
+         BsS3pj9CngcuSl9xT6nCiiM1H7JAyYcQt+2Oy2861n9WJxYN4hzQcBwVY2FBFOkRjbr+
+         DXelH69C2fzRpAFCay74Cq9TNkmSJHGDqZ3GzEOkOI1arIIJBn6zh4BlFMQec92FMsd+
+         IOFZhBCOS8AwDJoKfc9DmjjT4sZDSXWb3bAmBnmkHX0I97++CqB4297urVzk69rYw2x+
+         KTteSETZSd0uDRNOBupC1F27i68DdcodGsIUdgbRGoMWps3zQPjW9LNSMhwi/Do0Th6J
+         LTeg==
+X-Gm-Message-State: AOAM533tkyK9K9JopMaIFcuO0OQ6NDqCM01HAnWBZ1rVshmuBgL9XO1E
+        MCFbzW2oQWCa8JvSAKTTeOE=
+X-Google-Smtp-Source: ABdhPJza6zQ5SXSPH8L5SUcy077tZ6Y1AFseIkpXjdhBlTOwKmG4EHXy97qMeGXM7SyNH/w2pR1J0g==
+X-Received: by 2002:a62:7e41:0:b029:3e0:9c3f:ab50 with SMTP id z62-20020a627e410000b02903e09c3fab50mr7956500pfc.57.1628963791526;
+        Sat, 14 Aug 2021 10:56:31 -0700 (PDT)
+Received: from localhost.localdomain ([2409:4072:6293:2348:f0eb:567b:5544:c735])
+        by smtp.googlemail.com with ESMTPSA id q26sm6305380pff.174.2021.08.14.10.56.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 14 Aug 2021 10:56:30 -0700 (PDT)
+From:   Mugilraj Dhavachelvan <dmugil2000@gmail.com>
+To:     Dragos.Bogdan@analog.com, Darius.Berghe@analog.com,
+        Rob Herring <robh+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Mugilraj Dhavachelvan <dmugil2000@gmail.com>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Chris Packham <chris.packham@alliedtelesis.co.nz>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org
+Subject: [PATCH v3 0/2] iio: potentiometer: Add driver support for AD5110
+Date:   Sat, 14 Aug 2021 23:25:38 +0530
+Message-Id: <20210814175607.48399-1-dmugil2000@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi All,
+Add dt-bindings and driver support for AD5110, a Nonvolatile 
+Digital Potentiometer.
 
-I'll be on vacation with limited internet from Wednesday.
-This means the 'theoretical' cut off date for IIO for 5.15 is pulled forwards
-a few days. It would have been late this week anyway and sometimes I cut off
-earlier than that without giving warning :)
-For reference, IIO cuts off at least a week before a likely merge window opening,
-so typically before rc6.
+Changes since v2:
+ - Drop Redundant blank lines
+ - Add missed prefix name
+ - Add comma to non terminator line
+ - Add missed error code return when ret < 0
+ - Explanation for msleep(20)
+ - Change to IIO_DEVICE_ATTR_RW()
+ - Remove comma for terminator line
+ - Drop data->cfg dead code since I'm using probe_new()
 
-I'm not sure yet whether I will do a second pull request before the 18th, though
-I have a few things lined up so I'll go with 'probably'.
+Changes since v1: 
+ - Drop 'shared_by_type' since it's a single channel
+ - Add error check for i2c read/write data bytes
+ - Simplified calculation for tolerance
+ - Add shift for eeprom wiper pos read
+ - Change new custom ABI to existing ABI 
+ - Allow top-scale mode by writting max_pos to val 
 
-Thanks,
+Mugilraj Dhavachelvan (2):
+  dt-bindings: iio: potentiometer: Add AD5110 in trivial-devices
+  iio: potentiometer: Add driver support for AD5110
 
-Jonathan
+ .../devicetree/bindings/trivial-devices.yaml  |   2 +
+ MAINTAINERS                                   |   6 +
+ drivers/iio/potentiometer/Kconfig             |  10 +
+ drivers/iio/potentiometer/Makefile            |   1 +
+ drivers/iio/potentiometer/ad5110.c            | 345 ++++++++++++++++++
+ 5 files changed, 364 insertions(+)
+ create mode 100644 drivers/iio/potentiometer/ad5110.c
+
+-- 
+2.25.1
+

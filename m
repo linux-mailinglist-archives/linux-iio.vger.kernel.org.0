@@ -2,79 +2,85 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E31D63ECA51
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Aug 2021 18:55:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F9F43ECA56
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Aug 2021 18:58:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229493AbhHOQzd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Aug 2021 12:55:33 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42998 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229453AbhHOQzd (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 15 Aug 2021 12:55:33 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 152A561208;
-        Sun, 15 Aug 2021 16:54:57 +0000 (UTC)
-Date:   Sun, 15 Aug 2021 17:57:56 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
-        a.fatoum@pengutronix.de, kamel.bouhara@bootlin.com,
-        gwendal@chromium.org, alexandre.belloni@bootlin.com,
-        david@lechnology.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        syednwaris@gmail.com, patrick.havelange@essensium.com,
-        fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@st.com, o.rempel@pengutronix.de,
-        jarkko.nikula@linux.intel.com,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Subject: Re: [PATCH v15 09/13] counter: Implement
- signalZ_action_component_id sysfs attribute
-Message-ID: <20210815175756.5e627c3d@jic23-huawei>
-In-Reply-To: <d72159ab7ebfe607d86c0ab472979e8eca6f16a0.1628511445.git.vilhelm.gray@gmail.com>
-References: <cover.1628511445.git.vilhelm.gray@gmail.com>
-        <d72159ab7ebfe607d86c0ab472979e8eca6f16a0.1628511445.git.vilhelm.gray@gmail.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        id S229554AbhHOQ6h (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Aug 2021 12:58:37 -0400
+Received: from smtprelay0215.hostedemail.com ([216.40.44.215]:39992 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S229453AbhHOQ6h (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 Aug 2021 12:58:37 -0400
+Received: from omf12.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay08.hostedemail.com (Postfix) with ESMTP id 8B330182CED28;
+        Sun, 15 Aug 2021 16:58:06 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf12.hostedemail.com (Postfix) with ESMTPA id 2BD2B24023A;
+        Sun, 15 Aug 2021 16:58:04 +0000 (UTC)
+Message-ID: <eb51990402a466821b855092a3fa2171b5a98bcf.camel@perches.com>
+Subject: Re: [PATCH v4] drivers/iio: Remove all strcpy() uses
+From:   Joe Perches <joe@perches.com>
+To:     Len Baker <len.baker@gmx.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        David Laight <David.Laight@aculab.com>,
+        Kees Cook <keescook@chromium.org>,
+        linux-hardening@vger.kernel.org,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date:   Sun, 15 Aug 2021 09:58:02 -0700
+In-Reply-To: <20210815163639.GA97260@titan>
+References: <20210814135509.4500-1-len.baker@gmx.com>
+         <CAHp75VdBuQTzCbz1CJciSA1+UOw0ZmJKAh8u2cbr5eDLSsRJEw@mail.gmail.com>
+         <c08cfa8b6bbf07e1860d7dc93739e71ff5f4c0c4.camel@perches.com>
+         <20210815163639.GA97260@titan>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.40.0-1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspamout04
+X-Rspamd-Queue-Id: 2BD2B24023A
+X-Stat-Signature: fk3nqhj5ocpdb55rwicp5umkayeqgrc5
+X-Spam-Status: No, score=0.35
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX190y5nwdIZ6qcrkev8JWWtvpp12SQYyul8=
+X-HE-Tag: 1629046684-898282
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon,  9 Aug 2021 21:37:34 +0900
-William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
+On Sun, 2021-08-15 at 18:36 +0200, Len Baker wrote:
+> Hi Joe,
 
-> The Generic Counter chrdev interface expects users to supply component
-> IDs in order to select Synapses for requests. In order for users to know
-> what component ID belongs to which Synapse this information must be
-> exposed. The signalZ_action_component_id attribute provides a way for
-> users to discover what component ID belongs to the respective Synapse.
+Hello Len.
+
+Don't take this advice too seriously, it's just bikeshedding
+but it seems to me an unexpected use of a strcmp equivalent
+in a non performance sensitive path.
+ 
+> On Sun, Aug 15, 2021 at 08:06:45AM -0700, Joe Perches wrote:
+[]
+> > bikeshed:
+> > 
+> > I think this change is less intelligible than the original strcmp.
 > 
-> Cc: Gwendal Grignou <gwendal@chromium.org>
-> Cc: Dan Carpenter <dan.carpenter@oracle.com>
-> Reviewed-by: David Lechner <david@lechnology.com>
-> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-> ---
+> So, if I understand correctly you suggest to change the above line for:
+>                               else if (strcmp(orient, "0") == 0)
 
->  Contact:	linux-iio@vger.kernel.org
-> diff --git a/drivers/counter/counter-sysfs.c b/drivers/counter/counter-sysfs.c
-> index dbb507c9da11..11bef9f8190f 100644
-> --- a/drivers/counter/counter-sysfs.c
-> +++ b/drivers/counter/counter-sysfs.c
-> @@ -393,7 +393,6 @@ static int counter_avail_attr_create(struct device *const dev,
->  	struct counter_attribute *counter_attr;
->  	struct device_attribute *dev_attr;
->  
-> -	/* Allocate Counter attribute */
+Yes.
 
-Trivial, but this is an unrelated change and shouldn't be in this patch (it's just noise).
+In kernel sources it's about 2:1 in favor of '!strcmp()' over 'strcmp() == 0'
 
->  	counter_attr = devm_kzalloc(dev, sizeof(*counter_attr), GFP_KERNEL);
->  	if (!counter_attr)
->  		return -ENOMEM;
-> @@ -535,6 +534,46 @@ static int counter_name_attr_create(struct device *const dev,
->  	return 0;
->  }
->  
+$ git grep -P '\!\s*strcmp\b' | wc -l
+3457
+$ git grep -P '\bstrcmp\s*\([^\)]+\)\s*==\s*0\b' | wc -l
+1719
+
+And it's your choice to use one or the other or just your V4 patch.
+
+btw, according to godbolt:
+
+gcc -O2 doesn't call strcmp and produces the same object code as your
+byte comparisons.  clang 11 calls strcmp regardless of optimization level.
+
+

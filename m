@@ -2,60 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 94F263ECB70
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Aug 2021 23:34:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CCE23ECB6C
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Aug 2021 23:34:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232596AbhHOVfN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Aug 2021 17:35:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60152 "EHLO
+        id S233376AbhHOVfM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Aug 2021 17:35:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233163AbhHOVfK (ORCPT
+        with ESMTP id S233150AbhHOVfK (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Sun, 15 Aug 2021 17:35:10 -0400
-Received: from mail-qk1-x72f.google.com (mail-qk1-x72f.google.com [IPv6:2607:f8b0:4864:20::72f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2847FC0617AD;
-        Sun, 15 Aug 2021 14:33:55 -0700 (PDT)
-Received: by mail-qk1-x72f.google.com with SMTP id 14so17142209qkc.4;
-        Sun, 15 Aug 2021 14:33:55 -0700 (PDT)
+Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19262C0612AD;
+        Sun, 15 Aug 2021 14:33:56 -0700 (PDT)
+Received: by mail-qt1-x82d.google.com with SMTP id r21so4836549qtw.11;
+        Sun, 15 Aug 2021 14:33:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=akWBcTk8iG2/Pm6gSYx+n7TqdBeVOUN/cYKvBNShGiU=;
-        b=kZEoSf+wl9l7QQgRqoq1ib2239DT0T1iikJr+24crnCW3p7sUVk3L77njPfIxBA/+t
-         gcFnfk7pHMN6Jg279zfM66gonnM9Efcnpc7zo/45pobh9K5rXjdjOxKR2d7AQcylspHu
-         Po/rQCccpWsY78KUQ7vzd+Jwh82OAkMOOxbIDmU2yr/Tfq7tvLuIzSim4AaSpE8hSO0C
-         9yqXZ66gURXFYMu8az28yyqb6S0DvhFBGjnDhLiJBcLqU0Mf0RufQiinPbT8kJcfl2l/
-         UoiHn6rQSEYvE3Huow+nIRNDmiy+iUwY1YcvWNelDSoKPFnSS6s0COVZ9jMX4Nt57LG/
-         juxg==
+        bh=AvJsB1BkWZx9lTAEPjdxbCIvMQFklGOpCGlQcz/H3is=;
+        b=h+buDFz8UwV9gLQcWkGJMxpI7jiKb/AYbi6I+JdZ9PsR2wvN6CGSvW1psN6MuQMxKn
+         qOaCU/aW1U1Jv7xPcTbIE1x4hWsOoxKXGvPgeTM6+sojJIQZGmOPOQTbVbD3Nq4c8bTW
+         ya8hSeSi6yhVd3bRU3ZDxQdAfGTkPArvtf5nJ/63F5/veiRSD6hcbZl4cwUusD2y9Rwm
+         shouYmUG8R5gzZfpnShqQK73o6GXnfQx8nobgCIpo06XK3VXQFayUAiL5ReTjn/wTZZd
+         qds4PUVrqLLX+76Q6O4htujDwTd0hC4phvPcCYR9gFMs1WPDgLif9sVOLQQBAxBFP3ZT
+         GMYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=akWBcTk8iG2/Pm6gSYx+n7TqdBeVOUN/cYKvBNShGiU=;
-        b=HpRT8iBzrEdwbbTRKggO0Og1e2HI6AQ3x2s33ohnMUEFvGmzVmmxkvrhyG8W6tKfnz
-         Hrjspcvt1VMJq/OYAzNp+APfNUcyJdMERgh0br8q+yufP9pdB3J5rP1u9D1iDKgijgM0
-         Q+sMVEyeJp0t84ZDlIlMMr3NF9E5APSckX2SsIWQ+ChFAtXzOsxYiWkaYnKNkRfBRGD3
-         C8I3EsV5TG49aHwA7m+tDJ8Bmxp5pM0spFVlRezBOSH0QZy7DSGpZVnz1pH2ASM869Ls
-         22BrvgM5VZHxdgkmZ2gtxyhkVSKImiWdwFuWOwrBZ39gOjsFrwfmKlHF+8APJOu5jLQm
-         q0iA==
-X-Gm-Message-State: AOAM532151x/gNRl4ZF9CmtWdBA2tWOrM6d1DVutC2YOlGOAzcUwYTXU
-        xlJ3b5j0XL59xjBVPqfuc3k=
-X-Google-Smtp-Source: ABdhPJyZrvCFvIgMphyVXNN7+t3wBhusuGwJ2f3GvKfhi1tPrJa2PuuabhRs4oi4hhTxYYCbmE9KOA==
-X-Received: by 2002:a05:620a:1584:: with SMTP id d4mr12583799qkk.416.1629063234315;
-        Sun, 15 Aug 2021 14:33:54 -0700 (PDT)
+        bh=AvJsB1BkWZx9lTAEPjdxbCIvMQFklGOpCGlQcz/H3is=;
+        b=ZEPyt23TCCPfJ7B5eConAJKFpdUkRXdwHvKC+koJAih8GpgSt6boGekH/X8MCcY5D0
+         32X2qKPmv3SpIIU4urTUsi7XxoJ0Mr3+n9lpfz8qsqNEiml99cuyNWalTBKIGLk1LRqU
+         2J6eUKXTHLKvtlyIWgyrqVh0h0VOziR9nliA/4JqklOlPpxyXuL7Zuf5I/RveBx9YGQk
+         An9kU6ZdFmBusj07BBim3CKsXIP6GK2bPhFPWvfaD7PEqQ8r2Fx8dSWjgCdsG+37KyjS
+         WotAWbd5/x27Mio8uWR5Re1RrQOF4vQKkWllCiou51f1+J3jQERXGTxECAjpFlJXQAhj
+         QcpA==
+X-Gm-Message-State: AOAM532MhAyX/cvJPL75t7+fnB3hK4z15gXSmehydxZAfp3LgbJPvCQa
+        SflFpIRmUcEcD8pDxyvSgxs=
+X-Google-Smtp-Source: ABdhPJz16QratxfqStXTmCsCYXjOptWzAeNqPjf1vNy2iNTysbFsjlzK9gq5vjBRdl4yCi5G2LGgOA==
+X-Received: by 2002:ac8:5984:: with SMTP id e4mr11409562qte.228.1629063235277;
+        Sun, 15 Aug 2021 14:33:55 -0700 (PDT)
 Received: from shaak.xiphos.ca (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
-        by smtp.gmail.com with ESMTPSA id u19sm3870988qtx.48.2021.08.15.14.33.53
+        by smtp.gmail.com with ESMTPSA id u19sm3870988qtx.48.2021.08.15.14.33.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Aug 2021 14:33:53 -0700 (PDT)
+        Sun, 15 Aug 2021 14:33:54 -0700 (PDT)
 From:   Liam Beguin <liambeguin@gmail.com>
 To:     liambeguin@gmail.com, lars@metafoo.de,
         Michael.Hennerich@analog.com, jic23@kernel.org,
         charles-antoine.couret@essensium.com, Nuno.Sa@analog.com
 Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org, robh+dt@kernel.org
-Subject: [PATCH v6 2/5] iio: adc: ad7949: fix spi messages on non 14-bit controllers
-Date:   Sun, 15 Aug 2021 17:33:06 -0400
-Message-Id: <20210815213309.2847711-3-liambeguin@gmail.com>
+Subject: [PATCH v6 3/5] iio: adc: ad7949: add vref selection support
+Date:   Sun, 15 Aug 2021 17:33:07 -0400
+Message-Id: <20210815213309.2847711-4-liambeguin@gmail.com>
 X-Mailer: git-send-email 2.32.0.452.g940fe202adcb
 In-Reply-To: <20210815213309.2847711-1-liambeguin@gmail.com>
 References: <20210815213309.2847711-1-liambeguin@gmail.com>
@@ -67,179 +67,194 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Liam Beguin <lvb@xiphos.com>
 
-This driver supports devices with 14-bit and 16-bit sample sizes.
-This implies different SPI transfer lengths which are not always handled
-properly by some SPI controllers.
+Add support for selecting the voltage reference from the devicetree.
 
-To work around this limitation, define a big endian buffer used to split
-the buffer into two 8-bit messages in the event that the controller
-doesn't support 14-bit or 16-bit transfers.
-A separate buffer is introduced here to avoid performing operations on
-types of different endianness.
+This change is required to get valid readings with all three
+vref hardware configurations supported by the ADC.
 
-Since all transfers use the same bits_per_word value, move that logic to
-the probe function, and let transfers default to the value defined in
-the struct spi_device.
+For instance if the ADC isn't provided with an external reference,
+the sample request must specify an internal voltage reference to get a
+valid reading.
 
 Signed-off-by: Liam Beguin <lvb@xiphos.com>
 ---
- drivers/iio/adc/ad7949.c | 86 +++++++++++++++++++++++++++-------------
- 1 file changed, 58 insertions(+), 28 deletions(-)
+ drivers/iio/adc/ad7949.c | 96 +++++++++++++++++++++++++++++++++-------
+ 1 file changed, 80 insertions(+), 16 deletions(-)
 
 diff --git a/drivers/iio/adc/ad7949.c b/drivers/iio/adc/ad7949.c
-index adc4487a7d56..a263d0fcec75 100644
+index a263d0fcec75..5168d687687d 100644
 --- a/drivers/iio/adc/ad7949.c
 +++ b/drivers/iio/adc/ad7949.c
-@@ -14,7 +14,6 @@
- #include <linux/bitfield.h>
+@@ -35,7 +35,11 @@
  
- #define AD7949_CFG_MASK_TOTAL		GENMASK(13, 0)
--#define AD7949_CFG_REG_SIZE_BITS	14
+ /* REF: reference/buffer selection */
+ #define AD7949_CFG_MASK_REF		GENMASK(5, 3)
+-#define AD7949_CFG_VAL_REF_EXT_BUF		7
++#define AD7949_CFG_VAL_REF_EXT_TEMP_BUF		3
++#define AD7949_CFG_VAL_REF_EXT_TEMP		2
++#define AD7949_CFG_VAL_REF_INT_4096		1
++#define AD7949_CFG_VAL_REF_INT_2500		0
++#define AD7949_CFG_VAL_REF_EXTERNAL		BIT(1)
  
- /* CFG: Configuration Update */
- #define AD7949_CFG_MASK_OVERWRITE	BIT(13)
-@@ -71,6 +70,7 @@ static const struct ad7949_adc_spec ad7949_adc_spec[] = {
+ /* SEQ: channel sequencer. Allows for scanning channels */
+ #define AD7949_CFG_MASK_SEQ		GENMASK(2, 1)
+@@ -66,6 +70,7 @@ static const struct ad7949_adc_spec ad7949_adc_spec[] = {
+  * @vref: regulator generating Vref
+  * @indio_dev: reference to iio structure
+  * @spi: reference to spi structure
++ * @refsel: reference selection
+  * @resolution: resolution of the chip
   * @cfg: copy of the configuration register
   * @current_channel: current channel in use
-  * @buffer: buffer to send / receive data to / from device
-+ * @buf8b: be16 buffer to exchange data with the device in 8-bit transfers
-  */
- struct ad7949_adc_chip {
- 	struct mutex lock;
-@@ -81,27 +81,34 @@ struct ad7949_adc_chip {
+@@ -77,6 +82,7 @@ struct ad7949_adc_chip {
+ 	struct regulator *vref;
+ 	struct iio_dev *indio_dev;
+ 	struct spi_device *spi;
++	u32 refsel;
+ 	u8 resolution;
  	u16 cfg;
  	unsigned int current_channel;
- 	u16 buffer ____cacheline_aligned;
-+	__be16 buf8b;
- };
+@@ -221,12 +227,26 @@ static int ad7949_spi_read_raw(struct iio_dev *indio_dev,
+ 		return IIO_VAL_INT;
  
- static int ad7949_spi_write_cfg(struct ad7949_adc_chip *ad7949_adc, u16 val,
- 				u16 mask)
- {
- 	int ret;
--	int bits_per_word = ad7949_adc->resolution;
--	int shift = bits_per_word - AD7949_CFG_REG_SIZE_BITS;
--	struct spi_message msg;
--	struct spi_transfer tx[] = {
--		{
--			.tx_buf = &ad7949_adc->buffer,
--			.len = 2,
--			.bits_per_word = bits_per_word,
--		},
--	};
- 
- 	ad7949_adc->cfg = (val & mask) | (ad7949_adc->cfg & ~mask);
--	ad7949_adc->buffer = ad7949_adc->cfg << shift;
--	spi_message_init_with_transfers(&msg, tx, 1);
--	ret = spi_sync(ad7949_adc->spi, &msg);
+ 	case IIO_CHAN_INFO_SCALE:
+-		ret = regulator_get_voltage(ad7949_adc->vref);
+-		if (ret < 0)
+-			return ret;
++		switch (ad7949_adc->refsel) {
++		case AD7949_CFG_VAL_REF_INT_2500:
++			*val = 2500;
++			break;
++		case AD7949_CFG_VAL_REF_INT_4096:
++			*val = 4096;
++			break;
++		case AD7949_CFG_VAL_REF_EXT_TEMP:
++		case AD7949_CFG_VAL_REF_EXT_TEMP_BUF:
++			ret = regulator_get_voltage(ad7949_adc->vref);
++			if (ret < 0)
++				return ret;
 +
-+	switch (ad7949_adc->spi->bits_per_word) {
-+	case 16:
-+		ad7949_adc->buffer = ad7949_adc->cfg << 2;
-+		ret = spi_write(ad7949_adc->spi, &ad7949_adc->buffer, 2);
-+		break;
-+	case 14:
-+		ad7949_adc->buffer = ad7949_adc->cfg;
-+		ret = spi_write(ad7949_adc->spi, &ad7949_adc->buffer, 2);
-+		break;
-+	case 8:
-+		/* Here, type is big endian as it must be sent in two transfers */
-+		ad7949_adc->buf8b = cpu_to_be16(ad7949_adc->cfg << 2);
-+		ret = spi_write(ad7949_adc->spi, &ad7949_adc->buf8b, 2);
-+		break;
-+	default:
-+		dev_err(&ad7949_adc->indio_dev->dev, "unsupported BPW\n");
-+		return -EINVAL;
-+	}
++			/* convert value back to mV */
++			*val = ret / 1000;
++			break;
++		}
  
- 	/*
- 	 * This delay is to avoid a new request before the required time to
-@@ -116,16 +123,6 @@ static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
- {
- 	int ret;
- 	int i;
--	int bits_per_word = ad7949_adc->resolution;
--	int mask = GENMASK(ad7949_adc->resolution - 1, 0);
--	struct spi_message msg;
--	struct spi_transfer tx[] = {
--		{
--			.rx_buf = &ad7949_adc->buffer,
--			.len = 2,
--			.bits_per_word = bits_per_word,
--		},
--	};
- 
- 	/*
- 	 * 1: write CFG for sample N and read old data (sample N-2)
-@@ -144,9 +141,11 @@ static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
+-		*val = ret / 5000;
+-		return IIO_VAL_INT;
++		*val2 = (1 << ad7949_adc->resolution) - 1;
++		return IIO_VAL_FRACTIONAL;
  	}
  
- 	/* 3: write something and read actual data */
--	ad7949_adc->buffer = 0;
--	spi_message_init_with_transfers(&msg, tx, 1);
--	ret = spi_sync(ad7949_adc->spi, &msg);
-+	if (ad7949_adc->spi->bits_per_word == 8)
-+		ret = spi_read(ad7949_adc->spi, &ad7949_adc->buf8b, 2);
-+	else
-+		ret = spi_read(ad7949_adc->spi, &ad7949_adc->buffer, 2);
+ 	return -EINVAL;
+@@ -265,7 +285,7 @@ static int ad7949_spi_init(struct ad7949_adc_chip *ad7949_adc)
+ 		FIELD_PREP(AD7949_CFG_MASK_INCC, AD7949_CFG_VAL_INCC_UNIPOLAR_GND) |
+ 		FIELD_PREP(AD7949_CFG_MASK_INX, ad7949_adc->current_channel) |
+ 		FIELD_PREP(AD7949_CFG_MASK_BW_FULL, 1) |
+-		FIELD_PREP(AD7949_CFG_MASK_REF, AD7949_CFG_VAL_REF_EXT_BUF) |
++		FIELD_PREP(AD7949_CFG_MASK_REF, ad7949_adc->refsel) |
+ 		FIELD_PREP(AD7949_CFG_MASK_SEQ, 0x0) |
+ 		FIELD_PREP(AD7949_CFG_MASK_RBN, 1);
+ 
+@@ -281,6 +301,11 @@ static int ad7949_spi_init(struct ad7949_adc_chip *ad7949_adc)
+ 	return ret;
+ }
+ 
++static void ad7949_disable_reg(void *reg)
++{
++	regulator_disable(reg);
++}
 +
- 	if (ret)
- 		return ret;
+ static int ad7949_spi_probe(struct spi_device *spi)
+ {
+ 	u32 spi_ctrl_mask = spi->controller->bits_per_word_mask;
+@@ -288,6 +313,7 @@ static int ad7949_spi_probe(struct spi_device *spi)
+ 	const struct ad7949_adc_spec *spec;
+ 	struct ad7949_adc_chip *ad7949_adc;
+ 	struct iio_dev *indio_dev;
++	u32 tmp;
+ 	int ret;
  
-@@ -158,7 +157,25 @@ static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
+ 	indio_dev = devm_iio_device_alloc(dev, sizeof(*ad7949_adc));
+@@ -322,16 +348,56 @@ static int ad7949_spi_probe(struct spi_device *spi)
+ 		return -EINVAL;
+ 	}
  
- 	ad7949_adc->current_channel = channel;
- 
--	*val = ad7949_adc->buffer & mask;
-+	switch (ad7949_adc->spi->bits_per_word) {
-+	case 16:
-+		*val = ad7949_adc->buffer;
-+		/* Shift-out padding bits */
-+		*val >>= 16 - ad7949_adc->resolution;
+-	ad7949_adc->vref = devm_regulator_get(dev, "vref");
++	/* Setup internal voltage reference */
++	tmp = 4096000;
++	ret = device_property_read_u32(dev, "adi,internal-ref-microvolt", &tmp);
++	if (ret < 0 && ret != -EINVAL) {
++		dev_err(dev, "invalid value for adi,internal-ref-microvolt\n");
++		return ret;
++	}
++
++	switch (tmp) {
++	case 2500000:
++		ad7949_adc->refsel = AD7949_CFG_VAL_REF_INT_2500;
 +		break;
-+	case 14:
-+		*val = ad7949_adc->buffer & GENMASK(13, 0);
-+		break;
-+	case 8:
-+		/* Here, type is big endian as data was sent in two transfers */
-+		*val = be16_to_cpu(ad7949_adc->buf8b);
-+		/* Shift-out padding bits */
-+		*val >>= 16 - ad7949_adc->resolution;
++	case 4096000:
++		ad7949_adc->refsel = AD7949_CFG_VAL_REF_INT_4096;
 +		break;
 +	default:
-+		dev_err(&ad7949_adc->indio_dev->dev, "unsupported BPW\n");
++		dev_err(dev, "unsupported internal voltage reference\n");
 +		return -EINVAL;
 +	}
++
++	/* Setup external voltage reference, buffered? */
++	ad7949_adc->vref = devm_regulator_get_optional(dev, "vrefin");
+ 	if (IS_ERR(ad7949_adc->vref)) {
+-		dev_err(dev, "fail to request regulator\n");
+-		return PTR_ERR(ad7949_adc->vref);
++		ret = PTR_ERR(ad7949_adc->vref);
++		if (ret != -ENODEV)
++			return ret;
++		/* unbuffered? */
++		ad7949_adc->vref = devm_regulator_get_optional(dev, "vref");
++		if (IS_ERR(ad7949_adc->vref)) {
++			ret = PTR_ERR(ad7949_adc->vref);
++			if (ret != -ENODEV)
++				return ret;
++		} else {
++			ad7949_adc->refsel = AD7949_CFG_VAL_REF_EXT_TEMP;
++		}
++	} else {
++		ad7949_adc->refsel = AD7949_CFG_VAL_REF_EXT_TEMP_BUF;
+ 	}
+ 
+-	ret = regulator_enable(ad7949_adc->vref);
+-	if (ret < 0) {
+-		dev_err(dev, "fail to enable regulator\n");
+-		return ret;
++	if (ad7949_adc->refsel & AD7949_CFG_VAL_REF_EXTERNAL) {
++		ret = regulator_enable(ad7949_adc->vref);
++		if (ret < 0) {
++			dev_err(dev, "fail to enable regulator\n");
++			return ret;
++		}
++
++		ret = devm_add_action_or_reset(dev, ad7949_disable_reg,
++					       ad7949_adc->vref);
++		if (ret)
++			return ret;
+ 	}
+ 
+ 	mutex_init(&ad7949_adc->lock);
+@@ -352,7 +418,6 @@ static int ad7949_spi_probe(struct spi_device *spi)
+ 
+ err:
+ 	mutex_destroy(&ad7949_adc->lock);
+-	regulator_disable(ad7949_adc->vref);
+ 
+ 	return ret;
+ }
+@@ -364,7 +429,6 @@ static int ad7949_spi_remove(struct spi_device *spi)
+ 
+ 	iio_device_unregister(indio_dev);
+ 	mutex_destroy(&ad7949_adc->lock);
+-	regulator_disable(ad7949_adc->vref);
  
  	return 0;
  }
-@@ -266,6 +283,7 @@ static int ad7949_spi_init(struct ad7949_adc_chip *ad7949_adc)
- 
- static int ad7949_spi_probe(struct spi_device *spi)
- {
-+	u32 spi_ctrl_mask = spi->controller->bits_per_word_mask;
- 	struct device *dev = &spi->dev;
- 	const struct ad7949_adc_spec *spec;
- 	struct ad7949_adc_chip *ad7949_adc;
-@@ -292,6 +310,18 @@ static int ad7949_spi_probe(struct spi_device *spi)
- 	indio_dev->num_channels = spec->num_channels;
- 	ad7949_adc->resolution = spec->resolution;
- 
-+	/* Set SPI bits per word */
-+	if (spi_ctrl_mask & SPI_BPW_MASK(ad7949_adc->resolution)) {
-+		spi->bits_per_word = ad7949_adc->resolution;
-+	} else if (spi_ctrl_mask == SPI_BPW_MASK(16)) {
-+		spi->bits_per_word = 16;
-+	} else if (spi_ctrl_mask == SPI_BPW_MASK(8)) {
-+		spi->bits_per_word = 8;
-+	} else {
-+		dev_err(dev, "unable to find common BPW with spi controller\n");
-+		return -EINVAL;
-+	}
-+
- 	ad7949_adc->vref = devm_regulator_get(dev, "vref");
- 	if (IS_ERR(ad7949_adc->vref)) {
- 		dev_err(dev, "fail to request regulator\n");
 -- 
 2.32.0.452.g940fe202adcb
 

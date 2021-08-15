@@ -2,67 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C5483EC509
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Aug 2021 22:33:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A8113EC6CA
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Aug 2021 05:02:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230354AbhHNUdp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 14 Aug 2021 16:33:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44194 "EHLO
+        id S230079AbhHODCw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 14 Aug 2021 23:02:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229489AbhHNUdp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 Aug 2021 16:33:45 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A340C061764;
-        Sat, 14 Aug 2021 13:33:16 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id c129-20020a1c35870000b02902e6b6135279so7614455wma.0;
-        Sat, 14 Aug 2021 13:33:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:from:mime-version:content-transfer-encoding
-         :content-description:subject:to:date:reply-to;
-        bh=5NTJSky9UX3JbuB9riY3wCYfXDpCwy2c7hzO0kF4AHA=;
-        b=E+b4K5O9ZzudpXierzrILoNTAmbC3it/2IQzBLA6YvYnV6R1l+qWfsm9YoXy+GfvKt
-         gAO/fDHHM6oCG8qYKGvEka5MFojDRXXA4E6poLrj9SUua/baE2c+aOfKv//U/xGGNJVO
-         JvKdD1nE4/zuwtHjXbFc8SM9TVSDRQ0LtqpdnKYvDNlZnlf8A4qIlL/OqX3Eb0/KMhl4
-         1CscM01suWm6hlXnHJmRJIeTSM325bu16VIq2+rprDNxHMTMhpiSFpJpy0VpJsdKR6Ze
-         p3960hktHz2iFpT8rGL3Q5okHXDUsr2uq+/SX8yfwO/ezXjA+NGsDkEUjBqNexa2KEz4
-         Gp/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:from:mime-version
-         :content-transfer-encoding:content-description:subject:to:date
-         :reply-to;
-        bh=5NTJSky9UX3JbuB9riY3wCYfXDpCwy2c7hzO0kF4AHA=;
-        b=SPzn8Ic7+f9RjyLFsi+g3BrZJI/FARgtfRuUjGCWJn7DI8lHPQFGmByL0BPqq00ql8
-         v3YBcYaFzNLVInP1uCQA8DgatBzhbFwSN2tecfHq7QGFyz+bMFrIpgl3wgJ/2n82ic6r
-         FqCjJ90fLs1C5Wtmc9DgIzxX40VeZuykiYVJguJG3BkNZsU4gn0F26YkFraPHQxRwtXV
-         EL5zuzbvQd4VVNy7cqhZJxIbvMt/JN+YahILcSMihDyA/VTKzBszlDvKpZqmFc1nhDrS
-         odAGQjkgzMuNGzVJxvcMHyvC7WOzGxKxHb4AFRw+gcPgHQiXuacq7zALEwQY+rDkENjl
-         NWZg==
-X-Gm-Message-State: AOAM530ZqXcpMSOA0TJgEsFs14lCbbJZAqQrETugSyPq3KkgJpjL95F7
-        aJx5vv590nTwYb/X1UT8k7k=
-X-Google-Smtp-Source: ABdhPJw0BY3y+nunbTaB9kulaRhYn+lqhQVcGiMWEN009Vp3bk4L1ITHu3VUN1ZkJDatugFKvJ6omg==
-X-Received: by 2002:a7b:c74c:: with SMTP id w12mr8141673wmk.113.1628973195170;
-        Sat, 14 Aug 2021 13:33:15 -0700 (PDT)
-Received: from [192.168.1.70] ([102.64.221.122])
-        by smtp.gmail.com with ESMTPSA id e17sm5604100wrs.78.2021.08.14.13.33.10
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Sat, 14 Aug 2021 13:33:14 -0700 (PDT)
-Message-ID: <6118288a.1c69fb81.4ddf7.f232@mx.google.com>
-From:   Vanina curth <curtisvani0028@gmail.com>
-X-Google-Original-From: Vanina curth
-Content-Type: text/plain; charset="iso-8859-1"
+        with ESMTP id S229453AbhHODCw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 Aug 2021 23:02:52 -0400
+X-Greylist: delayed 1841 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 14 Aug 2021 20:02:22 PDT
+Received: from challenge-bot.com (challenge-bot.com [IPv6:2602:fffa:fff:108a:0:16:3e15:92b8])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DEA1C061764;
+        Sat, 14 Aug 2021 20:02:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=challenge-bot.com; s=20180430; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=o6zS1SnTsY8NxtD8X4Qurgu+HNtIJy+wL0A4Qwnfq6M=; b=jCjeo0/KS6VBY8f/cIpGZFXSB1
+        Lp+S9sLL6LtLQUDT3ZdTtRCgQg4t+JFmpNv+kjNibBdYIfClN4WldO/256iyqkAeLQjccqnm1LD98
+        F54rj5IdFYA2UsVGXLCPBgnRyzSzGJjsJly8l6jJ+57ouRCQ0kcsnqFKV6ER/NCIuqIw=;
+Received: from ozzloy by challenge-bot.com with local (Exim 4.92)
+        (envelope-from <ozzloy@challenge-bot.com>)
+        id 1mF5vs-0003RC-Oo; Sat, 14 Aug 2021 19:31:28 -0700
+From:   daniel watson <ozzloy@challenge-bot.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-kernel@vger.kernel.org
+Cc:     daniel watson <ozzloy@challenge-bot.com>
+Subject: [PATCH] staging:iio:ade7854 surround complex defines in parentheses
+Date:   Sat, 14 Aug 2021 19:31:15 -0700
+Message-Id: <20210815023115.13016-1-ozzloy@challenge-bot.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Sir,
-To:     Recipients <Vanina@vger.kernel.org>
-Date:   Sat, 14 Aug 2021 20:33:00 +0000
-Reply-To: curtisvani9008@gmail.com
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-How are you? I'm Vanina. I'm interested to know you and I would like to kno=
-w more about you and establish relationship with you. i will wait for your =
-response. thank you.
+Error found by checkpatch.pl
+
+Signed-off-by: daniel watson <ozzloy@challenge-bot.com>
+---
+ drivers/staging/iio/meter/ade7854.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/staging/iio/meter/ade7854.h b/drivers/staging/iio/meter/ade7854.h
+index a51e6e3183d38..afb13e21002e1 100644
+--- a/drivers/staging/iio/meter/ade7854.h
++++ b/drivers/staging/iio/meter/ade7854.h
+@@ -139,9 +139,9 @@
+ #define ADE7854_MAX_RX    7
+ #define ADE7854_STARTUP_DELAY 1000
+ 
+-#define ADE7854_SPI_SLOW	(u32)(300 * 1000)
+-#define ADE7854_SPI_BURST	(u32)(1000 * 1000)
+-#define ADE7854_SPI_FAST	(u32)(2000 * 1000)
++#define ADE7854_SPI_SLOW	((u32)(300 * 1000))
++#define ADE7854_SPI_BURST	((u32)(1000 * 1000))
++#define ADE7854_SPI_FAST	((u32)(2000 * 1000))
+ 
+ /**
+  * struct ade7854_state - device instance specific data
+-- 
+2.30.2
+

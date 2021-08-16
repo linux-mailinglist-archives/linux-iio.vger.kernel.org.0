@@ -2,236 +2,452 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 834503ECB9D
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Aug 2021 00:14:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B56B93ECFA7
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Aug 2021 09:48:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230295AbhHOWPF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Aug 2021 18:15:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41846 "EHLO
+        id S234413AbhHPHtA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Aug 2021 03:49:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229582AbhHOWPF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 Aug 2021 18:15:05 -0400
-Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F086EC061764;
-        Sun, 15 Aug 2021 15:14:34 -0700 (PDT)
-Received: by mail-qt1-x82c.google.com with SMTP id l24so12918551qtj.4;
-        Sun, 15 Aug 2021 15:14:34 -0700 (PDT)
+        with ESMTP id S234043AbhHPHtA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Aug 2021 03:49:00 -0400
+Received: from mail-vs1-xe2f.google.com (mail-vs1-xe2f.google.com [IPv6:2607:f8b0:4864:20::e2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F354FC0613C1
+        for <linux-iio@vger.kernel.org>; Mon, 16 Aug 2021 00:48:28 -0700 (PDT)
+Received: by mail-vs1-xe2f.google.com with SMTP id l22so10162955vsi.1
+        for <linux-iio@vger.kernel.org>; Mon, 16 Aug 2021 00:48:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:content-transfer-encoding:date:message-id:to:cc
-         :subject:from:references:in-reply-to;
-        bh=UhqKtGQIi5V3cQyOb7CAhpL/IkmmRLLPBGpSwieBIOo=;
-        b=dOoxizpZ8c1lltj2PyHaYqNG7uJ245e0PazEiWcr/RZx7ZtCH2ZGg0SJ/iz6O3H1Bh
-         PqUXE86P90YfAmNve0YpP5JPBh+lCs9AacIXpfh6YYeZqksgbfmQx93yxyjCRt76V2ZU
-         01V8Y5sIIfDGWTr7LVrSrb73xeXvSjhsE4DKYL2MScsEk/CK7BmUjMHw0hL7+gydfjOg
-         VbTXL+GtBCGqbaOI2JTtzDHqET5K5GVyZkquIBF7zkcXVoYk/dQX5N22b/1d/EaZHvW/
-         x+b2umqy9OWrIPLL4dyz3Abxim3J9US2k3ohneDCmykP+EFG9AvWb4wCiAnAzDXDh2eW
-         Jyaw==
+        d=deviqon.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=cnZfn/AOksPTDwn6vTx+nMUzsCcqo75FfKdHjwSoewg=;
+        b=PZTUBGq371PVF6hScXNRtMfRg4n4tFR9jnT/hRqU0eSr94+IJq/0FXDPwIT0zEl2Cy
+         CZvTZ7pf8Ghl324D+a0iiXuG07atv5izzwdW5bo8ygWIEc6BAkTsQ5YO5r7ntMD1eRsK
+         EknQ3/SB2YByeAjy5F4bltQLUZE5flZmMURv+OdM+Drb3Q52uenuqglt6Ua0n8FDS2Z1
+         9/D95Yc7ktcKVp++8q6U8lh3WZgbDmpccodzB815vvxLnfl90n3aWqR+B26VJObOlHrT
+         qrTXpwIdqOx8u767nYIcsMQkh8sZsla4W7y1mhoPR9qDd6Mcu/+pXEbIo+5TjfbUzsZA
+         OvdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:content-transfer-encoding:date
-         :message-id:to:cc:subject:from:references:in-reply-to;
-        bh=UhqKtGQIi5V3cQyOb7CAhpL/IkmmRLLPBGpSwieBIOo=;
-        b=AF5NzYg2wrm4sbZIla65ix0GjYBfSXzzLzmFN9PLVJYXu55hZ5jL4t9cdsuzxTJACL
-         ZCYrw2LAt1XKLyZLlIV8oqP4U69zAinKFgje8fA5CDyp+zHE/Mw4CwuZxTybvuNi07FI
-         IWKCnRFfUATS9U1+LfVze5vamfwtNNKDaBj5k3osDiwPpNczNz/gad7Z1l21cNvgafjs
-         x5KYKIMLogp6EaW222DzfhabBCEX4oxLl8tYrMJusxtPi5bLfFmoMpCUxzhaSd0S+3/T
-         ZeGGCoIhg+g/tSXfpZGd1j/NyGYVz5iBg1pKy4B07NyUv7rj1qDEgk2DT1tg5wyDlY2A
-         ak/A==
-X-Gm-Message-State: AOAM532XFVHRMc64dPtbyOMc86zmd0oZMpIO1ge5R0B8R33YQZ+ACGFq
-        EKVEqBC1ywHUMY93sjKxdgI=
-X-Google-Smtp-Source: ABdhPJwOyIehI2jizBdOw62AIy1vWn5nLx/sze9ncx/ODNOxlfTQf+lK5YX5nvg8CT/CQEbz408cOg==
-X-Received: by 2002:a05:622a:3c6:: with SMTP id k6mr11362074qtx.29.1629065673962;
-        Sun, 15 Aug 2021 15:14:33 -0700 (PDT)
-Received: from localhost (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
-        by smtp.gmail.com with ESMTPSA id m19sm3905608qtx.84.2021.08.15.15.14.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 15 Aug 2021 15:14:33 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Sun, 15 Aug 2021 18:14:32 -0400
-Message-Id: <CDKFL2EUNDL5.3RT3OOLRJFRGC@shaak>
-To:     "Peter Rosin" <peda@axentia.se>, <jic23@kernel.org>,
-        <lars@metafoo.de>, <pmeerw@pmeerw.net>
-Cc:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
-Subject: Re: [PATCH v7 08/13] iio: afe: rescale: fix precision on fractional
- log scale
-From:   "Liam Beguin" <liambeguin@gmail.com>
-References: <20210801194000.3646303-1-liambeguin@gmail.com>
- <20210801194000.3646303-9-liambeguin@gmail.com>
- <3be0f8d4-eea3-9959-b12d-e28ddae9e23f@axentia.se>
-In-Reply-To: <3be0f8d4-eea3-9959-b12d-e28ddae9e23f@axentia.se>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=cnZfn/AOksPTDwn6vTx+nMUzsCcqo75FfKdHjwSoewg=;
+        b=PHhj6wAG8UIMCpa4VK9M1y1sw0saAYmzzxcMWY6I0Utq28hoynE4A9LF64v02cSI1H
+         JsbfJ//zRI7zxETbSEcB5pnYUmgUHxgmpwWgUxY6rHxsUCDJ567TO2cspSeDjV+JvbAW
+         7PHB39i+/1qvtBVa8AnXcVl7GOgZteDx27x68rpPI4QpbUgaY1cVSd6gZKWYii2KZfEI
+         pBzoryxQefWtfN5MTdEprZhWiCbypYFRPcBsunuyCuJjZQDC9TWn5k6PVXyfVZwl1wCW
+         OCEyflgdu1JiJK2RzZCg3Iwmjy2jNiaAYBlNKUDp5xuhSRnUX2FVIAaD+rQ9+zxh13+0
+         xXOA==
+X-Gm-Message-State: AOAM531yuzNyjbliF3v2l09FyPtos9wFbiGTyCGOBFymmH7kfyibYMVK
+        FWu9zVOlhy05sNCqymQe0qjKGU3E0ftH2Tpqr7ak3w==
+X-Google-Smtp-Source: ABdhPJxAiZGhbtt2UXfobPUE7N//yiC4iv2XNU3Uc6yEIfDHW8Gyx1PIJTe8d2hroqDG8b5Gwwpri856nieDNc8m9io=
+X-Received: by 2002:a05:6102:222f:: with SMTP id d15mr2771845vsb.16.1629100108038;
+ Mon, 16 Aug 2021 00:48:28 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210726071404.14529-1-aardelean@deviqon.com> <20210726071404.14529-3-aardelean@deviqon.com>
+ <20210731183707.20bf8e00@jic23-huawei> <CAASAkoatK69RFyj3Sc1USv70RMBCcOF1rVd-XyensawuoLra5Q@mail.gmail.com>
+In-Reply-To: <CAASAkoatK69RFyj3Sc1USv70RMBCcOF1rVd-XyensawuoLra5Q@mail.gmail.com>
+From:   Alexandru Ardelean <aardelean@deviqon.com>
+Date:   Mon, 16 Aug 2021 10:48:16 +0300
+Message-ID: <CAASAkoaB4t1zpqF4aUCSybga1_S9vs57udzijCB107gOyOwOvQ@mail.gmail.com>
+Subject: Re: [PATCH 2/4] iio: st_sensors: remove st_sensors_power_disable() function
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        denis.ciocca@st.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon Aug 2, 2021 at 5:17 AM EDT, Peter Rosin wrote:
-> On 2021-08-01 21:39, Liam Beguin wrote:
-> > From: Liam Beguin <lvb@xiphos.com>
-> >=20
-> > The IIO_VAL_FRACTIONAL_LOG2 scale type doesn't return the expected
-> > scale. Update the case so that the rescaler returns a fractional type
-> > and a more precise scale.
-> >=20
-> > Signed-off-by: Liam Beguin <lvb@xiphos.com>
-> > ---
-> >  drivers/iio/afe/iio-rescale.c | 15 ++++++++++-----
-> >  1 file changed, 10 insertions(+), 5 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/afe/iio-rescale.c b/drivers/iio/afe/iio-rescal=
-e.c
-> > index abd7ad73d1ce..e37a9766080c 100644
-> > --- a/drivers/iio/afe/iio-rescale.c
-> > +++ b/drivers/iio/afe/iio-rescale.c
-> > @@ -47,12 +47,17 @@ int rescale_process_scale(struct rescale *rescale, =
-int scale_type,
-> >  		*val2 =3D rescale->denominator;
-> >  		return IIO_VAL_FRACTIONAL;
-> >  	case IIO_VAL_FRACTIONAL_LOG2:
-> > -		tmp =3D *val * 1000000000LL;
-> > -		do_div(tmp, rescale->denominator);
-> > -		tmp *=3D rescale->numerator;
-> > -		do_div(tmp, 1000000000LL);
-> > +		if (check_mul_overflow(*val, rescale->numerator, (s32 *)&tmp) ||
-> > +		    check_mul_overflow(rescale->denominator, (1 << *val2), (s32 *)&t=
-mp2)) {
-> > +			tmp =3D (s64)*val * rescale->numerator;
-> > +			tmp2 =3D (s64)rescale->denominator * (1 << *val2);
-> > +			factor =3D gcd(abs(tmp), abs(tmp2));
-> > +			tmp =3D div_s64(tmp, factor);
-> > +			tmp2 =3D div_s64(tmp2, factor);
+On Mon, 2 Aug 2021 at 10:30, Alexandru Ardelean <aardelean@deviqon.com> wrote:
+>
+> On Sat, 31 Jul 2021 at 20:34, Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > On Mon, 26 Jul 2021 10:14:02 +0300
+> > Alexandru Ardelean <aardelean@deviqon.com> wrote:
+> >
+> > > This change converts the st_sensors_power_enable() function to use
+> > > devm_add_action_or_reset() handlers to register regulator_disable hooks for
+> > > when the drivers get unloaded.
+> > >
+> > > The parent device of the IIO device object is used. This is based on the
+> > > assumption that all other devm_ calls in the ST sensors use this reference.
+> > >
+> > > This makes the st_sensors_power_disable() un-needed.
+> > > Removing this also changes unload order a bit, as all ST drivers would call
+> > > st_sensors_power_disable() first and iio_device_unregister() after that.
+> >
+> > Huh.  So currently the drivers turn the power off before calling
+> > iio_device_unregister()?
+> >
+> > That's a bad idea (turn off power when userspace is still available)
+> > and looks like a bug fix to me.  Perhaps the reorder should be pulled out as
+> > a precursor patch in case anyone wants to backport it?
+> >
+> > (note I initially thought you were going the other way and was just writing
+> >  a rant about breaking the order when I realised you were fixing it ;)
 
-Hi Peter,
+I'm seeing a bit of a clash with this patch [by Andy from April 2021]:
 
-Apologies for the delay, I got caught up on some other work.
+https://lore.kernel.org/linux-devicetree/20210414195454.84183-4-andriy.shevchenko@linux.intel.com/
+
+I can do the fix commits, but they will be short-lived, since they
+will be applied on 5.13 and onwards.
+We'd need maybe another set for the LTS kernels.
+
+So, how should we proceed here?
+I think I'll do the fix commits anyway for this set.
+
+Thanks
+Alex
 
 >
-> The case I really worry about is when trying to get an exact result by
-> using
-> gcd() really doesn't improve the situation, and the only way to avoid
-> overflow
-> is to reduce the precision. A perhaps contrived example:
+> Probably the best advantage of devm_ functions .
+> Not needing to care about un-init order.
 >
-> scale numerator 1,220,703,125 i.e. 5 ^ 13
-> scale denominator 1,162,261,467 i.e. 3 ^ 19
-> *val 1,129,900,996 i.e. 7 ^ 10 * 2 ^ 2
-> *val2 2 i.e. value =3D 7 ^ 10
+> I hated debugging driver crashes when they were unloaded, usually
+> because the driver gets into a weird state.
 >
-> Then you get overflow for both the calls to check_mul_overflow(). But
-> when gcd()
-> returns 1 (or something too small) the overflow is "returned" as-is.
-
-I was aware of the issue when gcd() returns 1 and thought it would be
-unlikely enough to not be an issue, but as you pointed out there's also
-cases where it returns something that's not good enough to take care of
-the overflow. This is unfortunately more likely to happen, and makes it
-impossible to ignore.
-
+> I'll send a V2 with the re-order fixes in the front.
 >
-> With the old code you get something that is at least not completely
-> wrong, just
-> not as accurate as is perhaps possible:
-> *val 1,186,715,480
-> *val2 2
-> Or 1,186,715,480 / 2^2 =3D 296,678,870.
->
-> With this patch the above makes you attempt to return the fraction:
-> *val 1,379,273,676,757,812,500
-> *val2 4,649,045,868
-> Or 296,678,870.443403528 (or something like that, not 100% sure about
-> all the
-> fractional digits, but they are not really important for my argument)
->
-> While the latter is more correct, truncation to 32-bit clobbers the
-> result so
-> in reality this is returned:
-> *val -281,918,188
-> *val2 354,078,572
-> Or -0.796202341
->
-> So, while it might seem unlucky that gcd() will not find a big enough
-> factor,
-> it is certainly possible. And I also worry that when this happens it
-> will only
-> happen once in a while, and that the resulting bad values might be
-> extremely
-> unexpected and difficult to track down. Things that happen once in a
-> blue moon
-> are simply not fun to debug.
->
-> I.e. I worry that small islands of input will cause failures. With the
-> old code
-> there are no such islands. The scale factor alone determines the
-> precision, and
-> if you get poor precision you get poor precision throughout the range.
-> And any
-> problem will therefore be "stable" and much easier to debug for
-> "innocent" 3rd
-> party users that may not even be aware that the rescaler is involved at
-> all.
-
-I agree with you, that such islands are a bad thing that might cause a
-lot of pain, and it's probably not worth it just to gain a few digits of
-precision (that can sometimes be irrelevant).
-
-I'll drop this change and will update the test cases to take into
-account an error margin.
-
->
-> This is also an issue I have with patch 7/13, but there the only thing
-> that is
-> sacrificed is CPU cycles. But nonetheless, I'm dubious if patch 7/13 is
-> wise
-> precisely because it might cause issues that are intermittent and
-> therefore
-> difficult to debug.
-
-Again, I agree with you, patch 7/13 has the same limitations,
-unfortunately, I did run into an overflow while testing this on a real
-setup.
-
->
-> Also, changing the calculation so that you get more precision whenever
-> that is
-> possible feels dangerous. I fear linearity breaks and that bigger input
-> cause
-> smaller output due to rounding if the bigger value has to be rounded
-> down, but
-> that this isn't done carefully enough. I.e. attempting to return an
-> exact
-> fraction and only falling back to the old code when that is not possible
-> is
-> still not safe since the old code isn't careful enough about rounding. I
-> think
-> it is really important that bigger input cause bigger (or equal) output.
-> Otherwise you might trigger instability in feedback loops should a
-> rescaler be
-> involved in a some regulator function.
-
-I see what you mean here, and it's a good point I hadn't considered.
-
-To address some of these concerns, I was thinking of using consecutive
-right shifts instead of gcd(), but that seems like the wrong way to go
-given that we're working with signed integers.
-
-For 7/13, I'll look into approximating like you did here originally.
-
-Thanks,
-Liam
-
->
-> Cheers,
-> Peter
->
-> > +		}
-> >  		*val =3D tmp;
-> > -		return scale_type;
-> > +		*val2 =3D tmp2;
-> > +		return IIO_VAL_FRACTIONAL;
-> >  	case IIO_VAL_INT_PLUS_NANO:
-> >  	case IIO_VAL_INT_PLUS_MICRO:
-> >  		if (scale_type =3D=3D IIO_VAL_INT_PLUS_NANO)
-> >=20
-
+> >
+> > >
+> > > Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
+> > > ---
+> > >  drivers/iio/accel/st_accel_i2c.c              | 13 +------
+> > >  drivers/iio/accel/st_accel_spi.c              | 13 +------
+> > >  .../iio/common/st_sensors/st_sensors_core.c   | 34 ++++++++-----------
+> > >  drivers/iio/gyro/st_gyro_i2c.c                | 13 +------
+> > >  drivers/iio/gyro/st_gyro_spi.c                | 13 +------
+> > >  drivers/iio/magnetometer/st_magn_i2c.c        | 13 +------
+> > >  drivers/iio/magnetometer/st_magn_spi.c        | 13 +------
+> > >  drivers/iio/pressure/st_pressure_i2c.c        | 13 +------
+> > >  drivers/iio/pressure/st_pressure_spi.c        | 13 +------
+> > >  include/linux/iio/common/st_sensors.h         |  2 --
+> > >  10 files changed, 23 insertions(+), 117 deletions(-)
+> > >
+> > > diff --git a/drivers/iio/accel/st_accel_i2c.c b/drivers/iio/accel/st_accel_i2c.c
+> > > index f711756e41e3..b377575efc41 100644
+> > > --- a/drivers/iio/accel/st_accel_i2c.c
+> > > +++ b/drivers/iio/accel/st_accel_i2c.c
+> > > @@ -177,24 +177,13 @@ static int st_accel_i2c_probe(struct i2c_client *client)
+> > >       if (ret)
+> > >               return ret;
+> > >
+> > > -     ret = st_accel_common_probe(indio_dev);
+> > > -     if (ret < 0)
+> > > -             goto st_accel_power_off;
+> > > -
+> > > -     return 0;
+> > > -
+> > > -st_accel_power_off:
+> > > -     st_sensors_power_disable(indio_dev);
+> > > -
+> > > -     return ret;
+> > > +     return st_accel_common_probe(indio_dev);
+> > >  }
+> > >
+> > >  static int st_accel_i2c_remove(struct i2c_client *client)
+> > >  {
+> > >       struct iio_dev *indio_dev = i2c_get_clientdata(client);
+> > >
+> > > -     st_sensors_power_disable(indio_dev);
+> > > -
+> > >       st_accel_common_remove(indio_dev);
+> > >
+> > >       return 0;
+> > > diff --git a/drivers/iio/accel/st_accel_spi.c b/drivers/iio/accel/st_accel_spi.c
+> > > index bb45d9ff95b8..4ca87e73bdb3 100644
+> > > --- a/drivers/iio/accel/st_accel_spi.c
+> > > +++ b/drivers/iio/accel/st_accel_spi.c
+> > > @@ -127,24 +127,13 @@ static int st_accel_spi_probe(struct spi_device *spi)
+> > >       if (err)
+> > >               return err;
+> > >
+> > > -     err = st_accel_common_probe(indio_dev);
+> > > -     if (err < 0)
+> > > -             goto st_accel_power_off;
+> > > -
+> > > -     return 0;
+> > > -
+> > > -st_accel_power_off:
+> > > -     st_sensors_power_disable(indio_dev);
+> > > -
+> > > -     return err;
+> > > +     return st_accel_common_probe(indio_dev);
+> > >  }
+> > >
+> > >  static int st_accel_spi_remove(struct spi_device *spi)
+> > >  {
+> > >       struct iio_dev *indio_dev = spi_get_drvdata(spi);
+> > >
+> > > -     st_sensors_power_disable(indio_dev);
+> > > -
+> > >       st_accel_common_remove(indio_dev);
+> > >
+> > >       return 0;
+> > > diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c b/drivers/iio/common/st_sensors/st_sensors_core.c
+> > > index 0bbb090b108c..a5a140de9a23 100644
+> > > --- a/drivers/iio/common/st_sensors/st_sensors_core.c
+> > > +++ b/drivers/iio/common/st_sensors/st_sensors_core.c
+> > > @@ -215,13 +215,19 @@ int st_sensors_set_axis_enable(struct iio_dev *indio_dev, u8 axis_enable)
+> > >  }
+> > >  EXPORT_SYMBOL(st_sensors_set_axis_enable);
+> > >
+> > > +static void st_reg_disable(void *reg)
+> > > +{
+> > > +     regulator_disable(reg);
+> > > +}
+> > > +
+> > >  int st_sensors_power_enable(struct iio_dev *indio_dev)
+> > >  {
+> > >       struct st_sensor_data *pdata = iio_priv(indio_dev);
+> > > +     struct device *parent = indio_dev->dev.parent;
+> > >       int err;
+> > >
+> > >       /* Regulators not mandatory, but if requested we should enable them. */
+> > > -     pdata->vdd = devm_regulator_get(indio_dev->dev.parent, "vdd");
+> > > +     pdata->vdd = devm_regulator_get(parent, "vdd");
+> > >       if (IS_ERR(pdata->vdd)) {
+> > >               dev_err(&indio_dev->dev, "unable to get Vdd supply\n");
+> > >               return PTR_ERR(pdata->vdd);
+> > > @@ -233,36 +239,26 @@ int st_sensors_power_enable(struct iio_dev *indio_dev)
+> > >               return err;
+> > >       }
+> > >
+> > > -     pdata->vdd_io = devm_regulator_get(indio_dev->dev.parent, "vddio");
+> > > +     err = devm_add_action_or_reset(parent, st_reg_disable, pdata->vdd);
+> > > +     if (err)
+> > > +             return err;
+> > > +
+> > > +     pdata->vdd_io = devm_regulator_get(parent, "vddio");
+> > >       if (IS_ERR(pdata->vdd_io)) {
+> > >               dev_err(&indio_dev->dev, "unable to get Vdd_IO supply\n");
+> > > -             err = PTR_ERR(pdata->vdd_io);
+> > > -             goto st_sensors_disable_vdd;
+> > > +             return PTR_ERR(pdata->vdd_io);
+> > >       }
+> > >       err = regulator_enable(pdata->vdd_io);
+> > >       if (err != 0) {
+> > >               dev_warn(&indio_dev->dev,
+> > >                        "Failed to enable specified Vdd_IO supply\n");
+> > > -             goto st_sensors_disable_vdd;
+> > > +             return err;
+> > >       }
+> > >
+> > > -     return 0;
+> > > -
+> > > -st_sensors_disable_vdd:
+> > > -     regulator_disable(pdata->vdd);
+> > > -     return err;
+> > > +     return devm_add_action_or_reset(parent, st_reg_disable, pdata->vdd_io);
+> > >  }
+> > >  EXPORT_SYMBOL(st_sensors_power_enable);
+> > >
+> > > -void st_sensors_power_disable(struct iio_dev *indio_dev)
+> > > -{
+> > > -     struct st_sensor_data *pdata = iio_priv(indio_dev);
+> > > -
+> > > -     regulator_disable(pdata->vdd);
+> > > -     regulator_disable(pdata->vdd_io);
+> > > -}
+> > > -EXPORT_SYMBOL(st_sensors_power_disable);
+> > > -
+> > >  static int st_sensors_set_drdy_int_pin(struct iio_dev *indio_dev,
+> > >                                       struct st_sensors_platform_data *pdata)
+> > >  {
+> > > diff --git a/drivers/iio/gyro/st_gyro_i2c.c b/drivers/iio/gyro/st_gyro_i2c.c
+> > > index 3ef86e16ee65..0bd80dfd389f 100644
+> > > --- a/drivers/iio/gyro/st_gyro_i2c.c
+> > > +++ b/drivers/iio/gyro/st_gyro_i2c.c
+> > > @@ -90,24 +90,13 @@ static int st_gyro_i2c_probe(struct i2c_client *client,
+> > >       if (err)
+> > >               return err;
+> > >
+> > > -     err = st_gyro_common_probe(indio_dev);
+> > > -     if (err < 0)
+> > > -             goto st_gyro_power_off;
+> > > -
+> > > -     return 0;
+> > > -
+> > > -st_gyro_power_off:
+> > > -     st_sensors_power_disable(indio_dev);
+> > > -
+> > > -     return err;
+> > > +     return st_gyro_common_probe(indio_dev);
+> > >  }
+> > >
+> > >  static int st_gyro_i2c_remove(struct i2c_client *client)
+> > >  {
+> > >       struct iio_dev *indio_dev = i2c_get_clientdata(client);
+> > >
+> > > -     st_sensors_power_disable(indio_dev);
+> > > -
+> > >       st_gyro_common_remove(indio_dev);
+> > >
+> > >       return 0;
+> > > diff --git a/drivers/iio/gyro/st_gyro_spi.c b/drivers/iio/gyro/st_gyro_spi.c
+> > > index 41d835493347..f74b09fa5cde 100644
+> > > --- a/drivers/iio/gyro/st_gyro_spi.c
+> > > +++ b/drivers/iio/gyro/st_gyro_spi.c
+> > > @@ -94,24 +94,13 @@ static int st_gyro_spi_probe(struct spi_device *spi)
+> > >       if (err)
+> > >               return err;
+> > >
+> > > -     err = st_gyro_common_probe(indio_dev);
+> > > -     if (err < 0)
+> > > -             goto st_gyro_power_off;
+> > > -
+> > > -     return 0;
+> > > -
+> > > -st_gyro_power_off:
+> > > -     st_sensors_power_disable(indio_dev);
+> > > -
+> > > -     return err;
+> > > +     return st_gyro_common_probe(indio_dev);
+> > >  }
+> > >
+> > >  static int st_gyro_spi_remove(struct spi_device *spi)
+> > >  {
+> > >       struct iio_dev *indio_dev = spi_get_drvdata(spi);
+> > >
+> > > -     st_sensors_power_disable(indio_dev);
+> > > -
+> > >       st_gyro_common_remove(indio_dev);
+> > >
+> > >       return 0;
+> > > diff --git a/drivers/iio/magnetometer/st_magn_i2c.c b/drivers/iio/magnetometer/st_magn_i2c.c
+> > > index 2dfe4ee99591..0a5117dffcf4 100644
+> > > --- a/drivers/iio/magnetometer/st_magn_i2c.c
+> > > +++ b/drivers/iio/magnetometer/st_magn_i2c.c
+> > > @@ -86,24 +86,13 @@ static int st_magn_i2c_probe(struct i2c_client *client,
+> > >       if (err)
+> > >               return err;
+> > >
+> > > -     err = st_magn_common_probe(indio_dev);
+> > > -     if (err < 0)
+> > > -             goto st_magn_power_off;
+> > > -
+> > > -     return 0;
+> > > -
+> > > -st_magn_power_off:
+> > > -     st_sensors_power_disable(indio_dev);
+> > > -
+> > > -     return err;
+> > > +     return st_magn_common_probe(indio_dev);
+> > >  }
+> > >
+> > >  static int st_magn_i2c_remove(struct i2c_client *client)
+> > >  {
+> > >       struct iio_dev *indio_dev = i2c_get_clientdata(client);
+> > >
+> > > -     st_sensors_power_disable(indio_dev);
+> > > -
+> > >       st_magn_common_remove(indio_dev);
+> > >
+> > >       return 0;
+> > > diff --git a/drivers/iio/magnetometer/st_magn_spi.c b/drivers/iio/magnetometer/st_magn_spi.c
+> > > index fba978796395..1f3bf02b24e0 100644
+> > > --- a/drivers/iio/magnetometer/st_magn_spi.c
+> > > +++ b/drivers/iio/magnetometer/st_magn_spi.c
+> > > @@ -80,24 +80,13 @@ static int st_magn_spi_probe(struct spi_device *spi)
+> > >       if (err)
+> > >               return err;
+> > >
+> > > -     err = st_magn_common_probe(indio_dev);
+> > > -     if (err < 0)
+> > > -             goto st_magn_power_off;
+> > > -
+> > > -     return 0;
+> > > -
+> > > -st_magn_power_off:
+> > > -     st_sensors_power_disable(indio_dev);
+> > > -
+> > > -     return err;
+> > > +     return st_magn_common_probe(indio_dev);
+> > >  }
+> > >
+> > >  static int st_magn_spi_remove(struct spi_device *spi)
+> > >  {
+> > >       struct iio_dev *indio_dev = spi_get_drvdata(spi);
+> > >
+> > > -     st_sensors_power_disable(indio_dev);
+> > > -
+> > >       st_magn_common_remove(indio_dev);
+> > >
+> > >       return 0;
+> > > diff --git a/drivers/iio/pressure/st_pressure_i2c.c b/drivers/iio/pressure/st_pressure_i2c.c
+> > > index 52fa98f24478..afeeab485c0d 100644
+> > > --- a/drivers/iio/pressure/st_pressure_i2c.c
+> > > +++ b/drivers/iio/pressure/st_pressure_i2c.c
+> > > @@ -103,24 +103,13 @@ static int st_press_i2c_probe(struct i2c_client *client,
+> > >       if (ret)
+> > >               return ret;
+> > >
+> > > -     ret = st_press_common_probe(indio_dev);
+> > > -     if (ret < 0)
+> > > -             goto st_press_power_off;
+> > > -
+> > > -     return 0;
+> > > -
+> > > -st_press_power_off:
+> > > -     st_sensors_power_disable(indio_dev);
+> > > -
+> > > -     return ret;
+> > > +     return st_press_common_probe(indio_dev);
+> > >  }
+> > >
+> > >  static int st_press_i2c_remove(struct i2c_client *client)
+> > >  {
+> > >       struct iio_dev *indio_dev = i2c_get_clientdata(client);
+> > >
+> > > -     st_sensors_power_disable(indio_dev);
+> > > -
+> > >       st_press_common_remove(indio_dev);
+> > >
+> > >       return 0;
+> > > diff --git a/drivers/iio/pressure/st_pressure_spi.c b/drivers/iio/pressure/st_pressure_spi.c
+> > > index ee393df54cee..834ad6d40a70 100644
+> > > --- a/drivers/iio/pressure/st_pressure_spi.c
+> > > +++ b/drivers/iio/pressure/st_pressure_spi.c
+> > > @@ -86,24 +86,13 @@ static int st_press_spi_probe(struct spi_device *spi)
+> > >       if (err)
+> > >               return err;
+> > >
+> > > -     err = st_press_common_probe(indio_dev);
+> > > -     if (err < 0)
+> > > -             goto st_press_power_off;
+> > > -
+> > > -     return 0;
+> > > -
+> > > -st_press_power_off:
+> > > -     st_sensors_power_disable(indio_dev);
+> > > -
+> > > -     return err;
+> > > +     return st_press_common_probe(indio_dev);
+> > >  }
+> > >
+> > >  static int st_press_spi_remove(struct spi_device *spi)
+> > >  {
+> > >       struct iio_dev *indio_dev = spi_get_drvdata(spi);
+> > >
+> > > -     st_sensors_power_disable(indio_dev);
+> > > -
+> > >       st_press_common_remove(indio_dev);
+> > >
+> > >       return 0;
+> > > diff --git a/include/linux/iio/common/st_sensors.h b/include/linux/iio/common/st_sensors.h
+> > > index e74b55244f35..fc90c202d15e 100644
+> > > --- a/include/linux/iio/common/st_sensors.h
+> > > +++ b/include/linux/iio/common/st_sensors.h
+> > > @@ -293,8 +293,6 @@ int st_sensors_set_axis_enable(struct iio_dev *indio_dev, u8 axis_enable);
+> > >
+> > >  int st_sensors_power_enable(struct iio_dev *indio_dev);
+> > >
+> > > -void st_sensors_power_disable(struct iio_dev *indio_dev);
+> > > -
+> > >  int st_sensors_debugfs_reg_access(struct iio_dev *indio_dev,
+> > >                                 unsigned reg, unsigned writeval,
+> > >                                 unsigned *readval);
+> >

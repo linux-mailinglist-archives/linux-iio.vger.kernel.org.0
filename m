@@ -2,116 +2,162 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74B683ED790
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Aug 2021 15:37:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F110B3ED961
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Aug 2021 17:01:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237060AbhHPNhf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Aug 2021 09:37:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51798 "EHLO
+        id S232528AbhHPPCR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Aug 2021 11:02:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240145AbhHPNhM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Aug 2021 09:37:12 -0400
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E40E6C03402C;
-        Mon, 16 Aug 2021 06:13:38 -0700 (PDT)
-Received: by mail-pj1-x102a.google.com with SMTP id j12-20020a17090aeb0c00b00179530520b3so11875538pjz.0;
-        Mon, 16 Aug 2021 06:13:38 -0700 (PDT)
+        with ESMTP id S232385AbhHPPCQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Aug 2021 11:02:16 -0400
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6E5CC0613CF
+        for <linux-iio@vger.kernel.org>; Mon, 16 Aug 2021 08:01:44 -0700 (PDT)
+Received: by mail-wm1-x334.google.com with SMTP id l7-20020a1c2507000000b002e6be5d86b3so164019wml.3
+        for <linux-iio@vger.kernel.org>; Mon, 16 Aug 2021 08:01:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=/pA1pAvAiNe/l0P1Vz8nn+khgB1MLduCxo2hSicfh7Q=;
-        b=CZTJ9/tr6sTzcdg62crIK6nxhx5RjmcKkPytcvB4Ebqx9DZ7zpMU38A777/0mvBOdI
-         AOEKtBayrZRUO8zegV04pY36A1zgUU/EipY1j7kps9R296PLf/TwigOqAGYiH8xu5WsP
-         24RgNmlhHIWeFpAs0+pI4deYlBHhRmrG8ObIXI6CfyWgYVi8EpDmaVFjfdNJBCQwBMmL
-         C+tf6vxmK/4HbkMd048VVMhB5NtbYguSuVVFjEuNWEHuzgYVKkC6nmfNzD25Mccvsuby
-         I4mRKOu1L3QDiUFWdvPP6yuimmEmMnxt3wZTu1QbnplbpMy/liJ2e6S8nzXqJnggp2xV
-         NyVQ==
+        d=ffwll.ch; s=google;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=EIvyFOw8mvTuFM5hQZVVCU0qrPNdbh5I2Bj4X1kA7WQ=;
+        b=gaIEOtqqYuS833blYihl+7Iw8shk8qt6AL+mzGViyi8f8QC+lwDDgt2IPH0q/+dU1H
+         7bt+Sommo3MR9FY/VLoTpOo31XeUdpFogGaA5qZ+DqMM99khdni6FgnfyUVd+TFjIo38
+         JMiVpBCDkbCHGobEnCzL8wiQge+z3+GJsAPmo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=/pA1pAvAiNe/l0P1Vz8nn+khgB1MLduCxo2hSicfh7Q=;
-        b=fu69OhiiO0SkZyJYMVs8VeMap9BTwv8uvStndUOYlx2JQm0fOiTAeuHnaKj1iAPvce
-         zRN1QzpF8Keuk4gku9UXjISu2sJ7lit00HZmrA0XaVCn12xKgjagoliAoFA3mF+r6QZd
-         t7jk/f7q0FGyGkgvAjisXFuRdxFiDrm/mGIk7v4WRjevo2ClZ7jpLDhdHep70oli32TR
-         /VZj7NPOIEIiEDjnqy9AcHeP97Yk4EuuaSP99zTzrccsDPxFllAzdlpts/1l2erRetTk
-         Yfj7guORgzQg+RAWMLprsU8o4odM4SrlQ7lKIrTPwv85FfieGdsCuFkmgYgNtJVpjIhd
-         v4YQ==
-X-Gm-Message-State: AOAM531QNMNfvb4M/27QhC/El+EyGYmy2AeimpV2xmh8VqF2QnO0BDO2
-        Oh7MQJq2Fv20QFO7NSXBi9JlP/r/tcHJaxdv8v4=
-X-Google-Smtp-Source: ABdhPJzrrvGuRDtlnqguqb2PrJrbfQYk6NHpdJItrUVBfSO7Q5bRj/jQzca8pvwZ4l3G7jI0m+BOSlPdEe/am7/vGkc=
-X-Received: by 2002:a65:5ccd:: with SMTP id b13mr16007694pgt.203.1629119618351;
- Mon, 16 Aug 2021 06:13:38 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210815213309.2847711-1-liambeguin@gmail.com>
- <20210815213309.2847711-4-liambeguin@gmail.com> <CAHp75Vd-AfmwMyYyy5ygwmvGfwZLh9VwvBEzSwW3fc99jxFpnQ@mail.gmail.com>
- <CDKXZBW1JDOD.1ZXIT12Y3WK5B@shaak> <CAHp75VdC8GFmV-uOHPQpv5q=q0ZwSKFXW6gOL-hK6N4_qS1YJw@mail.gmail.com>
- <CDKYL1RFEMBA.2VURZKBX9F3S@shaak>
-In-Reply-To: <CDKYL1RFEMBA.2VURZKBX9F3S@shaak>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 16 Aug 2021 16:12:58 +0300
-Message-ID: <CAHp75VcUhgpxUE4h3YgYaGAsvHstBzSo9QDwe+D4t264uj_21A@mail.gmail.com>
-Subject: Re: [PATCH v6 3/5] iio: adc: ad7949: add vref selection support
-To:     Liam Beguin <liambeguin@gmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to;
+        bh=EIvyFOw8mvTuFM5hQZVVCU0qrPNdbh5I2Bj4X1kA7WQ=;
+        b=iMa1FjipMomQHbm+ugCKeDoDaa9d9Aiw9oGKt1eQMPJfXlNO5MlWHSKKiqxLGAEY2S
+         uB/Vyb4SnN8v2WOQnd0t91htDZpVkq45USDbN6xqUGapQC5xEYXb4ikMlVgO6LnKsLdT
+         DStf1rWPgJqOHg+Kl+juqqiQ3O0h3nYVGYUqMBkL7hiNya5eI57KZpmPDsuXy4JXv3zk
+         +BndRTUXFqmMj8KmD+Bm+FK+wnfrp/k4OpQ5ENsZZ1B8Zgle4Ok9roVdqS+hQ1aVDteN
+         r6nz/vC6sL+s6SJYydK7yAwj1seH7fmNB6kDVCqTj+fVrs0IzWAnJCt2rFi49OQUr927
+         MDIw==
+X-Gm-Message-State: AOAM531ce7493p9rNoHWZvrhkOh7Wqq2IJstIurZ7VqTMbHvpXBJKr3Z
+        RCk4m0iNgraJAxapF4y9iGlGlA==
+X-Google-Smtp-Source: ABdhPJzDF9KrfED8TEN39f2b9tbP/JkFe6bbQZq2+vcczHGvaS+YoEUQW9Mj8qPAjLla1rzX+sS+zA==
+X-Received: by 2002:a1c:9ace:: with SMTP id c197mr15858085wme.170.1629126103289;
+        Mon, 16 Aug 2021 08:01:43 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+        by smtp.gmail.com with ESMTPSA id y3sm11936525wma.32.2021.08.16.08.01.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Aug 2021 08:01:42 -0700 (PDT)
+Date:   Mon, 16 Aug 2021 17:01:40 +0200
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Paul Cercueil <paul@crapouillou.net>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Charles-Antoine Couret <charles-antoine.couret@essensium.com>,
-        =?UTF-8?B?TnVubyBTw6E=?= <Nuno.Sa@analog.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        io-uring@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        linux-media@vger.kernel.org
+Subject: Re: [Linaro-mm-sig] IIO, dmabuf, io_uring
+Message-ID: <YRp91OUTpjpw7rnE@phenom.ffwll.local>
+Mail-Followup-To: Christoph Hellwig <hch@lst.de>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        io-uring@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        linux-media@vger.kernel.org
+References: <2H0SXQ.2KIK2PBVRFWH2@crapouillou.net>
+ <20210814073019.GC21175@lst.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210814073019.GC21175@lst.de>
+X-Operating-System: Linux phenom 5.10.0-7-amd64 
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Aug 16, 2021 at 4:07 PM Liam Beguin <liambeguin@gmail.com> wrote:
-> On Mon Aug 16, 2021 at 8:48 AM EDT, Andy Shevchenko wrote:
-> > On Mon, Aug 16, 2021 at 3:39 PM Liam Beguin <liambeguin@gmail.com>
-> > wrote:
-> > > On Mon Aug 16, 2021 at 4:04 AM EDT, Andy Shevchenko wrote:
-> > > > On Mon, Aug 16, 2021 at 12:35 AM Liam Beguin <liambeguin@gmail.com>
-> > > > wrote:
-
-...
-
-> > > > > +       tmp = 4096000;
-> > > > > +       ret = device_property_read_u32(dev, "adi,internal-ref-microvolt", &tmp);
-> > > >
-> > > > > +       if (ret < 0 && ret != -EINVAL) {
-> > >
-> > > Hi Andy,
-> > >
-> > > >
-> > > > What does this check (second part) is supposed to mean?
-> > > > The first part will make it mandatory, is it the goal?
-> > > >
-> > >
-> > > device_property_read_u32() will return -EINVAL if the property isn't
-> > > found in the devicetree.
-> > >
-> > > This checks for errors when the property is defined while keeping it
-> > > optional.
+On Sat, Aug 14, 2021 at 09:30:19AM +0200, Christoph Hellwig wrote:
+> On Fri, Aug 13, 2021 at 01:41:26PM +0200, Paul Cercueil wrote:
+> > Hi,
 > >
-> > Don't assign and don't check the error code of the API. As simply as
-> > that.
->
-> I'm not against getting rid of it, but I was asked to check for these
-> errors in earlier revisions of the patch.
+> > A few months ago we (ADI) tried to upstream the interface we use with our 
+> > high-speed ADCs and DACs. It is a system with custom ioctls on the iio 
+> > device node to dequeue and enqueue buffers (allocated with 
+> > dma_alloc_coherent), that can then be mmap'd by userspace applications. 
+> > Anyway, it was ultimately denied entry [1]; this API was okay in ~2014 when 
+> > it was designed but it feels like re-inventing the wheel in 2021.
+> >
+> > Back to the drawing table, and we'd like to design something that we can 
+> > actually upstream. This high-speed interface looks awfully similar to 
+> > DMABUF, so we may try to implement a DMABUF interface for IIO, unless 
+> > someone has a better idea.
+> 
+> To me this does sound a lot like a dma buf use case.  The interesting
+> question to me is how to signal arrival of new data, or readyness to
+> consume more data.  I suspect that people that are actually using
+> dmabuf heavily at the moment (dri/media folks) might be able to chime
+> in a little more on that.
 
-Okay, I leave it to you, guys, to decide, just note that the usual
-pattern for optional stuff
-a) either check for (!ret);
-b) or ignore the returned value completely.
+One option is to just block in userspace (on poll, or an ioctl, or
+whatever) and then latch the next stage in the pipeline. That's what media
+does right now (because the dma-fence proposal never got anywhere).
 
-> > > > > +               dev_err(dev, "invalid value for adi,internal-ref-microvolt\n");
-> > > > > +               return ret;
-> > > > > +       }
+In drm we use dma_fences to tie up the stages, and the current
+recommendation for uapi is to use the drm_syncobj container (not the
+sync_file container, that was a bit an awkward iteration on that problem).
+With that you can tie together all the pipeline stages within the kernel
+(and at least sometimes directly in hw).
 
+The downside is (well imo it's not a downside, but some people see it as
+hta) that once you use dma-fence dri-devel folks really consider your
+stuff a gpu driver and expect all the gpu driver review/merge criteria to
+be fulfilled. Specifically about the userspace side too:
+
+https://dri.freedesktop.org/docs/drm/gpu/drm-uapi.html#open-source-userspace-requirements
+
+At least one driver is trying to play some very clever games here and
+that's not a solid way to make friends ...
+-Daniel
+
+> 
+> > Our first usecase is, we want userspace applications to be able to dequeue 
+> > buffers of samples (from ADCs), and/or enqueue buffers of samples (for 
+> > DACs), and to be able to manipulate them (mmapped buffers). With a DMABUF 
+> > interface, I guess the userspace application would dequeue a dma buffer 
+> > from the driver, mmap it, read/write the data, unmap it, then enqueue it to 
+> > the IIO driver again so that it can be disposed of. Does that sound sane?
+> >
+> > Our second usecase is - and that's where things get tricky - to be able to 
+> > stream the samples to another computer for processing, over Ethernet or 
+> > USB. Our typical setup is a high-speed ADC/DAC on a dev board with a FPGA 
+> > and a weak soft-core or low-power CPU; processing the data in-situ is not 
+> > an option. Copying the data from one buffer to another is not an option 
+> > either (way too slow), so we absolutely want zero-copy.
+> >
+> > Usual userspace zero-copy techniques (vmsplice+splice, MSG_ZEROCOPY etc) 
+> > don't really work with mmapped kernel buffers allocated for DMA [2] and/or 
+> > have a huge overhead, so the way I see it, we would also need DMABUF 
+> > support in both the Ethernet stack and USB (functionfs) stack. However, as 
+> > far as I understood, DMABUF is mostly a DRM/V4L2 thing, so I am really not 
+> > sure we have the right idea here.
+> >
+> > And finally, there is the new kid in town, io_uring. I am not very literate 
+> > about the topic, but it does not seem to be able to handle DMA buffers 
+> > (yet?). The idea that we could dequeue a buffer of samples from the IIO 
+> > device and send it over the network in one single syscall is appealing, 
+> > though.
+> 
+> Think of io_uring really just as an async syscall layer.  It doesn't
+> replace DMA buffers, but can be used as a different and for some
+> workloads more efficient way to dispatch syscalls.
+> _______________________________________________
+> Linaro-mm-sig mailing list
+> Linaro-mm-sig@lists.linaro.org
+> https://lists.linaro.org/mailman/listinfo/linaro-mm-sig
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch

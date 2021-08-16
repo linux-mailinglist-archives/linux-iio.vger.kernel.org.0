@@ -2,94 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C0C73ED001
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Aug 2021 10:11:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 410623ED041
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Aug 2021 10:30:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234672AbhHPILe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Aug 2021 04:11:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33310 "EHLO
+        id S234580AbhHPIan (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Aug 2021 04:30:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234704AbhHPILe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Aug 2021 04:11:34 -0400
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90AA4C061764
-        for <linux-iio@vger.kernel.org>; Mon, 16 Aug 2021 01:11:01 -0700 (PDT)
-Received: by mail-pj1-x1035.google.com with SMTP id w14so25185354pjh.5
-        for <linux-iio@vger.kernel.org>; Mon, 16 Aug 2021 01:11:01 -0700 (PDT)
+        with ESMTP id S234456AbhHPIam (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Aug 2021 04:30:42 -0400
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A6E9C0613C1
+        for <linux-iio@vger.kernel.org>; Mon, 16 Aug 2021 01:30:11 -0700 (PDT)
+Received: by mail-ed1-x542.google.com with SMTP id i22so6411631edq.11
+        for <linux-iio@vger.kernel.org>; Mon, 16 Aug 2021 01:30:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=RQn1mgnV4gtLAM9j6sf14FjLG1wGtocO/k50ZLRmUY4=;
-        b=BYNFSqvlVj4LG6Sd9puyQov9UePSoFRljxg6Vj0tPXTvX7XITzyMqiMePyBoMg19Vk
-         qoOl9wyHXiGeSepcZDYFQ1fFeWnDBILj7QFtZSJ+jHUA0a0YeSzPU29zRsPWHsiOVZMD
-         wdz7HHOhD4HEWhoV77eOrfAoeL2fG01rnGG6gACtOX7w86pjfuBfGld/7qFhClWFNzpw
-         IdCYbmx7O5z/yXHV26bHQMFQNEIRM9MZFA5ej6hBxemM2PB/75fGXiOsO8M8T1xoFMJD
-         dr8bRzqoKikYu0lmdzJjqK1HZYHrFuAYEOJ1tynajCus4ttzfJRTWNKWKIh07NBE4s4a
-         vXLw==
+        d=deviqon.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=sguei1c/h61zjHr2lg83Dxlja5iaCKAVm3XBX1DjStw=;
+        b=dHn+G6xxvhjTJifDvs/b0ZOJ29t0Kr/9D85CGF/SuaJgqAHCDdnvGGLLBwZqwvB+ee
+         77CIv07LyQt2yaZQlx26MsSr/YTmh8XODzLSCWWi6+dkr1um5xqFH9S+te3+J1BKFxBh
+         FQ/4+BpZZRykTOSxKELdqn4Pgq4wUH7HmOO15Ru1fxg93xVqlvttTfT846uOnVx39ssK
+         bvXLKsK2rSLOKoS2JRSZDfNqL1HePDtzx5vgy0PoLtFD5illQIQf0utm2jSuxjemQYfG
+         qlwSnhcmV8ovtTjR+EIKrauz25czwdhf0dzpMmEc5lE+FdyqGskXhjVBk+CxvybuYGn+
+         eUHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=RQn1mgnV4gtLAM9j6sf14FjLG1wGtocO/k50ZLRmUY4=;
-        b=Eog5A2+g/QZiTbfgspAlWGulEi0KtA9VDPuQ/L36F0PHL1JGipVB+15v9SwZVwRuOQ
-         isjhnDtk2Z14jRvWvZND/+4fmwexDrsWJeIBH+0yxKdFb/9qyjlaNYFrZvAtnsBVl3o9
-         +b2Tg8yR8ZR/SMX1/acR88C6/7vwskgQantjvQqMqXW2YpAyZ//+yzKzMxPel4eF1IMu
-         Ol5TaExJpb14vAdgLUKUWM14x0R0DCGmtPVOXuoeoLAeOd/LWE1JfEslJ+u3ykGn43as
-         OnoE/I/oWmOxaubZgP1+yaxweVoFlniX60R7RXEK26AShf894+Xp/YqVnhUY/gvcAJGz
-         RXgQ==
-X-Gm-Message-State: AOAM530O3QkpIKdtYNCMYcmrFYUCvZhf0DScL45OmuM92ygmWGzkViVa
-        bNpfLj3hjAk3t1FzmY1R3Cf/jRoH7lEDN1KhBig=
-X-Google-Smtp-Source: ABdhPJyQuZL27qgPpFys/XvhdXJyThmj7GoDkEkYkfu/tgnLo7YBK48evShjLVG2aE3ZOk5ruA0HYKq37NJu+z0LTjs=
-X-Received: by 2002:a17:90b:33c5:: with SMTP id lk5mr16136672pjb.129.1629101461558;
- Mon, 16 Aug 2021 01:11:01 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=sguei1c/h61zjHr2lg83Dxlja5iaCKAVm3XBX1DjStw=;
+        b=VRT8MAFTkQG0vjNjitFCUX2hp94Wh/bViANSALoGQUPgmMzNdG97rwU7h5CvVWH30b
+         ur9skrpSW631OdAUbAvM3ac2tVymfV8tUiQ52bea8FLw9zAcdxYNCatdezdchSO+hj3H
+         gDwAVFPeB8zJc0Fln55HoB1HbIUP/Ig0pyrvv77ZhvCxC+PQ0DScs+5OefgcvgXX6He7
+         09KMRDjhTidUz5HOQGFbNg/mCv4gQP26u1K4yKRq/o5ecNtFoSEDhaPg3UK/O8x2XIvb
+         NsceHp1WW1GqlseNpJzImHf6sgbhLWNMS9+czT1r8UfVqznu41965OZvUrIrFx73Fc4a
+         LCXg==
+X-Gm-Message-State: AOAM532dbSXtYOzGblh47W9Exsdox2ifKVd/dCppuaJp2ZbP0eZ/ono6
+        Ir8eqrYgMAESTVEbKPPtFGoXEGRWxC+KYU+H
+X-Google-Smtp-Source: ABdhPJz9vtplg3RDLAOkBIVgz2gWX8LPgMckWpmXk2GFQO0/L3k96Gex/nn/LNdDu6yCS1LNpVU3Kg==
+X-Received: by 2002:aa7:c585:: with SMTP id g5mr18704540edq.340.1629102610043;
+        Mon, 16 Aug 2021 01:30:10 -0700 (PDT)
+Received: from neptune.. ([5.2.193.191])
+        by smtp.gmail.com with ESMTPSA id q30sm4516878edi.84.2021.08.16.01.30.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Aug 2021 01:30:09 -0700 (PDT)
+From:   Alexandru Ardelean <aardelean@deviqon.com>
+To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     denis.ciocca@st.com, jic23@kernel.org,
+        Alexandru Ardelean <aardelean@deviqon.com>
+Subject: [PATCH v2 0/5] iio: st_sensors: convert probe functions to full devm
+Date:   Mon, 16 Aug 2021 11:28:31 +0300
+Message-Id: <20210816082836.67511-1-aardelean@deviqon.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-References: <20210811074827.21889-1-nuno.sa@analog.com> <CAHp75VeLfxyLG-zTdVVnwB+PR2v=LW-PcvM4ZkEoLq+Ht0-iCg@mail.gmail.com>
- <PH0PR03MB6366283246B9D4925BFA444C99F99@PH0PR03MB6366.namprd03.prod.outlook.com>
- <CAHp75VeZLKN0C_+PopKfYtPMqEzGLd4paSKYnrHr1B2Y1Nk9=w@mail.gmail.com>
- <PH0PR03MB636647F75955CF0C5E6D5A3D99F99@PH0PR03MB6366.namprd03.prod.outlook.com>
- <CAL_Jsq+V0++aO8cTcd3A-nBiG_X4wzJ+ZXWnXeRMPb=2QYOUhw@mail.gmail.com>
- <PH0PR03MB63662507607DD7E06995B7EE99FA9@PH0PR03MB6366.namprd03.prod.outlook.com>
- <CAHp75Ve=C62FmC20qkLsMVFkc-rbhHqmY2StDtrYqG0=mjtcTw@mail.gmail.com>
- <PH0PR03MB63665918437E96CAF35B7CD799FA9@PH0PR03MB6366.namprd03.prod.outlook.com>
- <20210814170204.387bf394@jic23-huawei> <PH0PR03MB6366A5DE7A67BE19759E929499FD9@PH0PR03MB6366.namprd03.prod.outlook.com>
-In-Reply-To: <PH0PR03MB6366A5DE7A67BE19759E929499FD9@PH0PR03MB6366.namprd03.prod.outlook.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 16 Aug 2021 11:10:22 +0300
-Message-ID: <CAHp75VcMG9F33y0YrNrGc=weFZkZ6m7h6_tkjY=ygxPOnagXZg@mail.gmail.com>
-Subject: Re: [PATCH] iio: ad5770r: make devicetree property reading consistent
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Aug 16, 2021 at 10:54 AM Sa, Nuno <Nuno.Sa@analog.com> wrote:
+Changelog v1 - v2:
+* https://lore.kernel.org/linux-iio/20210726071404.14529-1-aardelean@deviqon.com/
+* added patch 'iio: st_sensors: disable regulators after device unregistration'
+  - splits the regulator disable fix in a separate patch
 
-...
+Alexandru Ardelean (5):
+  iio: st_sensors: disable regulators after device unregistration
+  iio: st_sensors: remove st_sensors_deallocate_trigger() function
+  iio: st_sensors: remove st_sensors_power_disable() function
+  iio: st_sensors: remove all driver remove functions
+  iio: st_sensors: remove reference to parent device object on
+    st_sensor_data
 
-> Well, It seems we need to go through the support both 'num' and 'reg'
-> route... I did some git blaming and it turns out 'num' was actually supported
-> in the bindings [1]. After some time it was replaced by 'reg' [2] leaving the
-> driver unchanged... I guess we have a significant window of time here
-> where someone could deploy a *validated* devicetree using 'num'...
-> If no objections, on v2 I will just try to get 'reg' and if not present, fallback
-> to 'num' before erroring out.
-
-Ouch, thanks for digging this out!
-
-So, it means the following:
-1) add "num" as _obsolete_ property to DT bindings
-2) add support of "reg" to the driver
-
-> [1]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=ea52c21268e68cfdc1aabe686b154d73d8bf4d7e
-> [2]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=2cf3818f18b26992ff20a730df46e08e2485fd67
+ drivers/iio/accel/st_accel_core.c             | 32 +++--------
+ drivers/iio/accel/st_accel_i2c.c              | 23 +-------
+ drivers/iio/accel/st_accel_spi.c              | 23 +-------
+ .../iio/common/st_sensors/st_sensors_core.c   | 34 ++++++------
+ .../iio/common/st_sensors/st_sensors_i2c.c    |  1 -
+ .../iio/common/st_sensors/st_sensors_spi.c    |  1 -
+ .../common/st_sensors/st_sensors_trigger.c    | 53 +++++++------------
+ drivers/iio/gyro/st_gyro_core.c               | 27 ++--------
+ drivers/iio/gyro/st_gyro_i2c.c                | 23 +-------
+ drivers/iio/gyro/st_gyro_spi.c                | 23 +-------
+ drivers/iio/imu/st_lsm9ds0/st_lsm9ds0.h       |  1 -
+ drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_core.c  | 17 +-----
+ drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_i2c.c   |  6 ---
+ drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c   |  6 ---
+ drivers/iio/magnetometer/st_magn_core.c       | 29 ++--------
+ drivers/iio/magnetometer/st_magn_i2c.c        | 23 +-------
+ drivers/iio/magnetometer/st_magn_spi.c        | 23 +-------
+ drivers/iio/pressure/st_pressure_core.c       | 27 ++--------
+ drivers/iio/pressure/st_pressure_i2c.c        | 23 +-------
+ drivers/iio/pressure/st_pressure_spi.c        | 23 +-------
+ include/linux/iio/common/st_sensors.h         | 13 -----
+ 21 files changed, 60 insertions(+), 371 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.31.1
+

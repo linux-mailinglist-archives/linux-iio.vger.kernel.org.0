@@ -2,164 +2,121 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56E183ED3D2
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Aug 2021 14:19:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A8AF3ED41C
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Aug 2021 14:40:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233115AbhHPMTx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Aug 2021 08:19:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40836 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233062AbhHPMTw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 16 Aug 2021 08:19:52 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6F37663250
-        for <linux-iio@vger.kernel.org>; Mon, 16 Aug 2021 12:19:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1629116361;
-        bh=fkwYtGzcGjNX2Kcon/vEUYpEYIRH2QcItHqEfXQT3FU=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=G/PLBbS+mAlicy1+899urPvkA6QL3lVeEOgotL4S9gUe+g20e45f3M2RHA3Ajg/a4
-         qgeGbFvJKrkvgogMfL+XsJcbZ15xgTtoopnpTqM06TW4Ah2cD59t6PtBJN+/qzADYO
-         vFHQ5GVQ3ufVrHuNWjSSVGMwZvG/Z1ISyTLxOwT78lftCXBcIIUMdMlv3lbwubqV98
-         m63BBoSPWKes6YhMvLd4akDu/mVgeY4D45+IBNg99HI/7nI4ASuFd5KI99IwpIbAB2
-         44WnmGSljWfJjhghAKYU+Ic2Wj4ODtBffhgZBpJzdu+WUIg9R7LPdFcAuuNbQ5z93z
-         Egyx8/XSIslog==
-Received: by mail-ej1-f42.google.com with SMTP id h9so31398516ejs.4
-        for <linux-iio@vger.kernel.org>; Mon, 16 Aug 2021 05:19:21 -0700 (PDT)
-X-Gm-Message-State: AOAM533JVyx2mGbt4lB3Z7I5WTNXVFV/B8HSveA0ku3urPi1buPrX9Lk
-        kz6ZMNR8nbBK8z+X8HN7FRkGrNrapQ9DvR5KuA==
-X-Google-Smtp-Source: ABdhPJyIjvR+iXUBhFE0KqW1I+Yagbvw71KG/FihP4ibB+cX9eY/O2BvqsYMG2RZ5SYZiW6RowcXjSeR+yPUG+5aTq0=
-X-Received: by 2002:a17:906:519:: with SMTP id j25mr15278274eja.525.1629116360014;
- Mon, 16 Aug 2021 05:19:20 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210811074827.21889-1-nuno.sa@analog.com> <CAHp75VeLfxyLG-zTdVVnwB+PR2v=LW-PcvM4ZkEoLq+Ht0-iCg@mail.gmail.com>
- <PH0PR03MB6366283246B9D4925BFA444C99F99@PH0PR03MB6366.namprd03.prod.outlook.com>
- <CAHp75VeZLKN0C_+PopKfYtPMqEzGLd4paSKYnrHr1B2Y1Nk9=w@mail.gmail.com>
- <PH0PR03MB636647F75955CF0C5E6D5A3D99F99@PH0PR03MB6366.namprd03.prod.outlook.com>
- <CAL_Jsq+V0++aO8cTcd3A-nBiG_X4wzJ+ZXWnXeRMPb=2QYOUhw@mail.gmail.com>
- <PH0PR03MB63662507607DD7E06995B7EE99FA9@PH0PR03MB6366.namprd03.prod.outlook.com>
- <CAHp75Ve=C62FmC20qkLsMVFkc-rbhHqmY2StDtrYqG0=mjtcTw@mail.gmail.com>
- <PH0PR03MB63665918437E96CAF35B7CD799FA9@PH0PR03MB6366.namprd03.prod.outlook.com>
- <20210814170204.387bf394@jic23-huawei> <PH0PR03MB6366A5DE7A67BE19759E929499FD9@PH0PR03MB6366.namprd03.prod.outlook.com>
-In-Reply-To: <PH0PR03MB6366A5DE7A67BE19759E929499FD9@PH0PR03MB6366.namprd03.prod.outlook.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Mon, 16 Aug 2021 07:19:08 -0500
-X-Gmail-Original-Message-ID: <CAL_Jsq+joQaYrWNj4sHk4XtTnLurb8vjHrnp2L0yQr3gAJGdLQ@mail.gmail.com>
-Message-ID: <CAL_Jsq+joQaYrWNj4sHk4XtTnLurb8vjHrnp2L0yQr3gAJGdLQ@mail.gmail.com>
-Subject: Re: [PATCH] iio: ad5770r: make devicetree property reading consistent
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Content-Type: text/plain; charset="UTF-8"
+        id S232496AbhHPMlA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Aug 2021 08:41:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38788 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231769AbhHPMkG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Aug 2021 08:40:06 -0400
+Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com [IPv6:2607:f8b0:4864:20::72e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E653C061796;
+        Mon, 16 Aug 2021 05:39:32 -0700 (PDT)
+Received: by mail-qk1-x72e.google.com with SMTP id n11so14005384qkk.1;
+        Mon, 16 Aug 2021 05:39:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:content-transfer-encoding:date:message-id:cc:subject
+         :from:to:references:in-reply-to;
+        bh=5AngW8YnH2bBvvJ2iUVtLSJUllib7jnVTIimPTcWaRY=;
+        b=KcBKXBC4VncaPthNtFvRbNGsY2mjuh8fT49RoRjs4sZlA0N35uGAXEguwPjyYgm+VL
+         LOk5qQyDY3k+GL9SvbS4/ZC5fyuwQTxwCiFOzu/Dgd/oqb+n4iRTy8LjJ3W2ux+dN4np
+         9xvSvDCBroDw1DSagCytU/W28HaJa+FbY8jbzif8ey+sNGOmV8PV/LOOFPP/IgjAWuiz
+         TEGY1OolnpW3N9KQscv5+yh+KxXKKOaExcnX9Xs09zxFuRc23Z4DDn19Fd/fzmanGHe3
+         Ajdv2nG2I9uAgiEFLsVuPqN52cxbsg3QsCVTkL3D98y5W3prFKYhGSj+GfOBQ0Ipll8s
+         7P+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:content-transfer-encoding:date
+         :message-id:cc:subject:from:to:references:in-reply-to;
+        bh=5AngW8YnH2bBvvJ2iUVtLSJUllib7jnVTIimPTcWaRY=;
+        b=a8wukj5ImwNRsFBJXrdLXyih6zrgZoKyvNO+DhJOUQOV+xp4HnhpHvzZNZwCcTN1qi
+         8YvuqBpX9lF6Jb2jb5YYRPh6TFDwnOg58dF0iBN6V8Ofr4YgyyCEzTzasq16IcKXIfMO
+         nu9BTB3yCdhSJwuCSgMej3hfIBz22YHzO01B4r2ZcvxhVRFrZr1P97Re6EbfnUOvRJfm
+         RQE9tjcox7YxuMEsHGka17zKnrHQTJ0HALzTOsWM68nalN95fTPn15uLAIgUj4XGPSn2
+         RlXAt6Sep9JhJh7dl7NIW/wG8fXcQaoQw1F24SKTQO8Chqs0R2EZXP8jsWfK5jqmuiud
+         4nqA==
+X-Gm-Message-State: AOAM531LpwEQ0ikn5MEqEQduL5INgEQ9QlVy1PstvqxcWalLyWx1D/Z+
+        1GMTDP/NlQXVXk9lAKgANI8=
+X-Google-Smtp-Source: ABdhPJxG9zATTGdIZbGWnZXkrXcXYG+ALQRYRS5Q7pNocY8rLsBZ2LDWIYAbFg5NrkFUSjxGwDnrbQ==
+X-Received: by 2002:a05:620a:f91:: with SMTP id b17mr15627824qkn.107.1629117571707;
+        Mon, 16 Aug 2021 05:39:31 -0700 (PDT)
+Received: from localhost (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
+        by smtp.gmail.com with ESMTPSA id l14sm4754286qtj.26.2021.08.16.05.39.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Aug 2021 05:39:31 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Mon, 16 Aug 2021 08:39:30 -0400
+Message-Id: <CDKXZBW1JDOD.1ZXIT12Y3WK5B@shaak>
+Cc:     "Lars-Peter Clausen" <lars@metafoo.de>,
+        "Michael Hennerich" <Michael.Hennerich@analog.com>,
+        "Jonathan Cameron" <jic23@kernel.org>,
+        "Charles-Antoine Couret" <charles-antoine.couret@essensium.com>,
+        =?utf-8?q?Nuno_S=C3=A1?= <Nuno.Sa@analog.com>,
+        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
+        "linux-iio" <linux-iio@vger.kernel.org>,
+        "devicetree" <devicetree@vger.kernel.org>,
+        "Rob Herring" <robh+dt@kernel.org>
+Subject: Re: [PATCH v6 3/5] iio: adc: ad7949: add vref selection support
+From:   "Liam Beguin" <liambeguin@gmail.com>
+To:     "Andy Shevchenko" <andy.shevchenko@gmail.com>
+References: <20210815213309.2847711-1-liambeguin@gmail.com>
+ <20210815213309.2847711-4-liambeguin@gmail.com>
+ <CAHp75Vd-AfmwMyYyy5ygwmvGfwZLh9VwvBEzSwW3fc99jxFpnQ@mail.gmail.com>
+In-Reply-To: <CAHp75Vd-AfmwMyYyy5ygwmvGfwZLh9VwvBEzSwW3fc99jxFpnQ@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Aug 16, 2021 at 2:54 AM Sa, Nuno <Nuno.Sa@analog.com> wrote:
+On Mon Aug 16, 2021 at 4:04 AM EDT, Andy Shevchenko wrote:
+> On Mon, Aug 16, 2021 at 12:35 AM Liam Beguin <liambeguin@gmail.com>
+> wrote:
+> >
+> > From: Liam Beguin <lvb@xiphos.com>
+> >
+> > Add support for selecting the voltage reference from the devicetree.
+> >
+> > This change is required to get valid readings with all three
+> > vref hardware configurations supported by the ADC.
+> >
+> > For instance if the ADC isn't provided with an external reference,
+> > the sample request must specify an internal voltage reference to get a
+> > valid reading.
 >
+> ...
 >
+> > +       /* Setup internal voltage reference */
+> > +       tmp =3D 4096000;
+> > +       ret =3D device_property_read_u32(dev, "adi,internal-ref-microvo=
+lt", &tmp);
 >
-> > -----Original Message-----
-> > From: Jonathan Cameron <jic23@kernel.org>
-> > Sent: Saturday, August 14, 2021 6:04 PM
-> > To: Sa, Nuno <Nuno.Sa@analog.com>
-> > Cc: Andy Shevchenko <andy.shevchenko@gmail.com>; Rob Herring
-> > <robh+dt@kernel.org>; linux-iio <linux-iio@vger.kernel.org>;
-> > Hennerich, Michael <Michael.Hennerich@analog.com>; Lars-Peter
-> > Clausen <lars@metafoo.de>
-> > Subject: Re: [PATCH] iio: ad5770r: make devicetree property reading
-> > consistent
-> >
-> > [External]
-> >
-> > On Fri, 13 Aug 2021 10:05:17 +0000
-> > "Sa, Nuno" <Nuno.Sa@analog.com> wrote:
-> >
-> > > > -----Original Message-----
-> > > > From: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > > > Sent: Friday, August 13, 2021 10:05 AM
-> > > > To: Sa, Nuno <Nuno.Sa@analog.com>
-> > > > Cc: Rob Herring <robh+dt@kernel.org>; linux-iio <linux-
-> > > > iio@vger.kernel.org>; Jonathan Cameron <jic23@kernel.org>;
-> > > > Hennerich, Michael <Michael.Hennerich@analog.com>; Lars-Peter
-> > > > Clausen <lars@metafoo.de>
-> > > > Subject: Re: [PATCH] iio: ad5770r: make devicetree property
-> > reading
-> > > > consistent
-> > > >
-> > > > On Fri, Aug 13, 2021 at 10:47 AM Sa, Nuno <Nuno.Sa@analog.com>
-> > > > wrote:
-> > > > > > From: Rob Herring <robh+dt@kernel.org>
-> > > > > > Sent: Thursday, August 12, 2021 5:11 PM
-> > > > > > On Thu, Aug 12, 2021 at 3:14 AM Sa, Nuno
-> > <Nuno.Sa@analog.com>
-> > > > > > wrote:
-> > > >
-> > > > ...
-> > > >
-> > > > > > > Could you give your input on this one?
-> > > > > >
-> > > > > > There's no context, but I'm assuming this is in channel nodes.
-> > Keep
-> > > > >
-> > > > > Sorry about that. Your assumption is correct, the binding is for a
-> > > > channel
-> > > > > node [1]. The driver just get's it as 'num' [2] which is not
-> > consistent.
-> > > > > Naively, I just though changing the driver to use reg would be
-> > > > enough
-> > > > > but Andy nicely raised the question of someone being already
-> > relying
-> > > > > on 'num'...
-> > > > >
-> > > > > > the binding 'reg' and make the driver support both if needed.
-> > > > > > Considering the author of the binding also changed the binding
-> > > > from
-> > > > > > num to reg shortly after adding the binding, I don't think 'num'
-> > > > > > support is needed. If someone used 'num' and didn't run
-> > > > validation,
-> > > > > > well, that's their problem.
-> > > > > >
-> > > > >
-> > > > > So I guess the solution here is just to change the driver to support
-> > > > both
-> > > > > reg and num.
-> > > >
-> > > > As far as I got Rob's answer, if the binding never had the 'num',
-> > > > dropping it from the driver is what we want now (actually your
-> > > > original patch) and users, who are 'too much clever' :-) should have
-> > > > had run validation for their DTs before production.
-> > > >
-> > > > Taking this into account, I'm fine with the patch (but update a
-> > commit
-> > > > message to summarize this discussion)
-> > > > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > > >
-> > >
-> > > You're right...
-> > > Jonathan, do you want a v2 with an updated commit message?
-> >
-> > Please do. Also please add a fixes tag given we are treating it
-> > as a fix.  If we discover someone is using the num variant then
-> > we'll just have to support both values as a fix to the fix.
-> > Not ideal, but as observed, hopefully people are validating the
-> > DTs (which basically means no one is using this in production or
-> > it would have been pointed out before).
-> >
+> > +       if (ret < 0 && ret !=3D -EINVAL) {
+
+Hi Andy,
+
 >
-> Well, It seems we need to go through the support both 'num' and 'reg'
-> route... I did some git blaming and it turns out 'num' was actually supported
-> in the bindings [1]. After some time it was replaced by 'reg' [2] leaving the
-> driver unchanged... I guess we have a significant window of time here
-> where someone could deploy a *validated* devicetree using 'num'...
+> What does this check (second part) is supposed to mean?
+> The first part will make it mandatory, is it the goal?
+>
 
-No there wasn't. Both commits landed in v5.7.
+device_property_read_u32() will return -EINVAL if the property isn't
+found in the devicetree.
 
-> If no objections, on v2 I will just try to get 'reg' and if not present, fallback
-> to 'num' before erroring out.
+This checks for errors when the property is defined while keeping it
+optional.
 
-Unless a user turns up and complains, then I say drop 'num'.
+Liam
 
-Rob
+> > +               dev_err(dev, "invalid value for adi,internal-ref-microv=
+olt\n");
+> > +               return ret;
+> > +       }
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
+

@@ -2,121 +2,164 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 188613ED251
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Aug 2021 12:49:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56E183ED3D2
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Aug 2021 14:19:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235957AbhHPKtp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Aug 2021 06:49:45 -0400
-Received: from twspam01.aspeedtech.com ([211.20.114.71]:24939 "EHLO
-        twspam01.aspeedtech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235956AbhHPKto (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Aug 2021 06:49:44 -0400
-Received: from mail.aspeedtech.com ([192.168.0.24])
-        by twspam01.aspeedtech.com with ESMTP id 17GAUOsM044052;
-        Mon, 16 Aug 2021 18:30:24 +0800 (GMT-8)
-        (envelope-from billy_tsai@aspeedtech.com)
-Received: from BillyTsai-pc.aspeed.com (192.168.2.149) by TWMBX02.aspeed.com
- (192.168.0.24) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 16 Aug
- 2021 18:48:29 +0800
-From:   Billy Tsai <billy_tsai@aspeedtech.com>
-To:     <jic23@kernel.org>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
-        <robh+dt@kernel.org>, <joel@jms.id.au>, <andrew@aj.id.au>,
-        <p.zabel@pengutronix.de>, <lgirdwood@gmail.com>,
-        <broonie@kernel.org>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-aspeed@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>
-CC:     <BMC-SW@aspeedtech.com>
-Subject: [v3 11/15] iio: adc: aspeed: Fix the calculate error of clock.
-Date:   Mon, 16 Aug 2021 18:48:42 +0800
-Message-ID: <20210816104846.13155-12-billy_tsai@aspeedtech.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210816104846.13155-1-billy_tsai@aspeedtech.com>
-References: <20210816104846.13155-1-billy_tsai@aspeedtech.com>
+        id S233115AbhHPMTx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Aug 2021 08:19:53 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40836 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233062AbhHPMTw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 16 Aug 2021 08:19:52 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6F37663250
+        for <linux-iio@vger.kernel.org>; Mon, 16 Aug 2021 12:19:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1629116361;
+        bh=fkwYtGzcGjNX2Kcon/vEUYpEYIRH2QcItHqEfXQT3FU=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=G/PLBbS+mAlicy1+899urPvkA6QL3lVeEOgotL4S9gUe+g20e45f3M2RHA3Ajg/a4
+         qgeGbFvJKrkvgogMfL+XsJcbZ15xgTtoopnpTqM06TW4Ah2cD59t6PtBJN+/qzADYO
+         vFHQ5GVQ3ufVrHuNWjSSVGMwZvG/Z1ISyTLxOwT78lftCXBcIIUMdMlv3lbwubqV98
+         m63BBoSPWKes6YhMvLd4akDu/mVgeY4D45+IBNg99HI/7nI4ASuFd5KI99IwpIbAB2
+         44WnmGSljWfJjhghAKYU+Ic2Wj4ODtBffhgZBpJzdu+WUIg9R7LPdFcAuuNbQ5z93z
+         Egyx8/XSIslog==
+Received: by mail-ej1-f42.google.com with SMTP id h9so31398516ejs.4
+        for <linux-iio@vger.kernel.org>; Mon, 16 Aug 2021 05:19:21 -0700 (PDT)
+X-Gm-Message-State: AOAM533JVyx2mGbt4lB3Z7I5WTNXVFV/B8HSveA0ku3urPi1buPrX9Lk
+        kz6ZMNR8nbBK8z+X8HN7FRkGrNrapQ9DvR5KuA==
+X-Google-Smtp-Source: ABdhPJyIjvR+iXUBhFE0KqW1I+Yagbvw71KG/FihP4ibB+cX9eY/O2BvqsYMG2RZ5SYZiW6RowcXjSeR+yPUG+5aTq0=
+X-Received: by 2002:a17:906:519:: with SMTP id j25mr15278274eja.525.1629116360014;
+ Mon, 16 Aug 2021 05:19:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [192.168.2.149]
-X-ClientProxiedBy: TWMBX02.aspeed.com (192.168.0.24) To TWMBX02.aspeed.com
- (192.168.0.24)
-X-DNSRBL: 
-X-MAIL: twspam01.aspeedtech.com 17GAUOsM044052
+References: <20210811074827.21889-1-nuno.sa@analog.com> <CAHp75VeLfxyLG-zTdVVnwB+PR2v=LW-PcvM4ZkEoLq+Ht0-iCg@mail.gmail.com>
+ <PH0PR03MB6366283246B9D4925BFA444C99F99@PH0PR03MB6366.namprd03.prod.outlook.com>
+ <CAHp75VeZLKN0C_+PopKfYtPMqEzGLd4paSKYnrHr1B2Y1Nk9=w@mail.gmail.com>
+ <PH0PR03MB636647F75955CF0C5E6D5A3D99F99@PH0PR03MB6366.namprd03.prod.outlook.com>
+ <CAL_Jsq+V0++aO8cTcd3A-nBiG_X4wzJ+ZXWnXeRMPb=2QYOUhw@mail.gmail.com>
+ <PH0PR03MB63662507607DD7E06995B7EE99FA9@PH0PR03MB6366.namprd03.prod.outlook.com>
+ <CAHp75Ve=C62FmC20qkLsMVFkc-rbhHqmY2StDtrYqG0=mjtcTw@mail.gmail.com>
+ <PH0PR03MB63665918437E96CAF35B7CD799FA9@PH0PR03MB6366.namprd03.prod.outlook.com>
+ <20210814170204.387bf394@jic23-huawei> <PH0PR03MB6366A5DE7A67BE19759E929499FD9@PH0PR03MB6366.namprd03.prod.outlook.com>
+In-Reply-To: <PH0PR03MB6366A5DE7A67BE19759E929499FD9@PH0PR03MB6366.namprd03.prod.outlook.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Mon, 16 Aug 2021 07:19:08 -0500
+X-Gmail-Original-Message-ID: <CAL_Jsq+joQaYrWNj4sHk4XtTnLurb8vjHrnp2L0yQr3gAJGdLQ@mail.gmail.com>
+Message-ID: <CAL_Jsq+joQaYrWNj4sHk4XtTnLurb8vjHrnp2L0yQr3gAJGdLQ@mail.gmail.com>
+Subject: Re: [PATCH] iio: ad5770r: make devicetree property reading consistent
+To:     "Sa, Nuno" <Nuno.Sa@analog.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The adc clcok formula is
-ast2400/2500:
-ADC clock period = PCLK * 2 * (ADC0C[31:17] + 1) * (ADC0C[9:0] + 1)
-ast2600:
-ADC clock period = PCLK * 2 * (ADC0C[15:0] + 1)
-They all have one fixed divided 2 and the legacy driver didn't handle it.
-This patch register the fixed factory clock device as the parent of adc
-clock scaler to fix this issue.
+On Mon, Aug 16, 2021 at 2:54 AM Sa, Nuno <Nuno.Sa@analog.com> wrote:
+>
+>
+>
+> > -----Original Message-----
+> > From: Jonathan Cameron <jic23@kernel.org>
+> > Sent: Saturday, August 14, 2021 6:04 PM
+> > To: Sa, Nuno <Nuno.Sa@analog.com>
+> > Cc: Andy Shevchenko <andy.shevchenko@gmail.com>; Rob Herring
+> > <robh+dt@kernel.org>; linux-iio <linux-iio@vger.kernel.org>;
+> > Hennerich, Michael <Michael.Hennerich@analog.com>; Lars-Peter
+> > Clausen <lars@metafoo.de>
+> > Subject: Re: [PATCH] iio: ad5770r: make devicetree property reading
+> > consistent
+> >
+> > [External]
+> >
+> > On Fri, 13 Aug 2021 10:05:17 +0000
+> > "Sa, Nuno" <Nuno.Sa@analog.com> wrote:
+> >
+> > > > -----Original Message-----
+> > > > From: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > > > Sent: Friday, August 13, 2021 10:05 AM
+> > > > To: Sa, Nuno <Nuno.Sa@analog.com>
+> > > > Cc: Rob Herring <robh+dt@kernel.org>; linux-iio <linux-
+> > > > iio@vger.kernel.org>; Jonathan Cameron <jic23@kernel.org>;
+> > > > Hennerich, Michael <Michael.Hennerich@analog.com>; Lars-Peter
+> > > > Clausen <lars@metafoo.de>
+> > > > Subject: Re: [PATCH] iio: ad5770r: make devicetree property
+> > reading
+> > > > consistent
+> > > >
+> > > > On Fri, Aug 13, 2021 at 10:47 AM Sa, Nuno <Nuno.Sa@analog.com>
+> > > > wrote:
+> > > > > > From: Rob Herring <robh+dt@kernel.org>
+> > > > > > Sent: Thursday, August 12, 2021 5:11 PM
+> > > > > > On Thu, Aug 12, 2021 at 3:14 AM Sa, Nuno
+> > <Nuno.Sa@analog.com>
+> > > > > > wrote:
+> > > >
+> > > > ...
+> > > >
+> > > > > > > Could you give your input on this one?
+> > > > > >
+> > > > > > There's no context, but I'm assuming this is in channel nodes.
+> > Keep
+> > > > >
+> > > > > Sorry about that. Your assumption is correct, the binding is for a
+> > > > channel
+> > > > > node [1]. The driver just get's it as 'num' [2] which is not
+> > consistent.
+> > > > > Naively, I just though changing the driver to use reg would be
+> > > > enough
+> > > > > but Andy nicely raised the question of someone being already
+> > relying
+> > > > > on 'num'...
+> > > > >
+> > > > > > the binding 'reg' and make the driver support both if needed.
+> > > > > > Considering the author of the binding also changed the binding
+> > > > from
+> > > > > > num to reg shortly after adding the binding, I don't think 'num'
+> > > > > > support is needed. If someone used 'num' and didn't run
+> > > > validation,
+> > > > > > well, that's their problem.
+> > > > > >
+> > > > >
+> > > > > So I guess the solution here is just to change the driver to support
+> > > > both
+> > > > > reg and num.
+> > > >
+> > > > As far as I got Rob's answer, if the binding never had the 'num',
+> > > > dropping it from the driver is what we want now (actually your
+> > > > original patch) and users, who are 'too much clever' :-) should have
+> > > > had run validation for their DTs before production.
+> > > >
+> > > > Taking this into account, I'm fine with the patch (but update a
+> > commit
+> > > > message to summarize this discussion)
+> > > > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > > >
+> > >
+> > > You're right...
+> > > Jonathan, do you want a v2 with an updated commit message?
+> >
+> > Please do. Also please add a fixes tag given we are treating it
+> > as a fix.  If we discover someone is using the num variant then
+> > we'll just have to support both values as a fix to the fix.
+> > Not ideal, but as observed, hopefully people are validating the
+> > DTs (which basically means no one is using this in production or
+> > it would have been pointed out before).
+> >
+>
+> Well, It seems we need to go through the support both 'num' and 'reg'
+> route... I did some git blaming and it turns out 'num' was actually supported
+> in the bindings [1]. After some time it was replaced by 'reg' [2] leaving the
+> driver unchanged... I guess we have a significant window of time here
+> where someone could deploy a *validated* devicetree using 'num'...
 
-Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
----
- drivers/iio/adc/aspeed_adc.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+No there wasn't. Both commits landed in v5.7.
 
-diff --git a/drivers/iio/adc/aspeed_adc.c b/drivers/iio/adc/aspeed_adc.c
-index ea3e9a52fcc9..8fe7da1a651f 100644
---- a/drivers/iio/adc/aspeed_adc.c
-+++ b/drivers/iio/adc/aspeed_adc.c
-@@ -4,6 +4,12 @@
-  *
-  * Copyright (C) 2017 Google, Inc.
-  * Copyright (C) 2021 Aspeed Technology Inc.
-+ *
-+ * ADC clock formula:
-+ * Ast2400/Ast2500:
-+ * clock period = period of PCLK * 2 * (ADC0C[31:17] + 1) * (ADC0C[9:0] + 1)
-+ * Ast2600:
-+ * clock period = period of PCLK * 2 * (ADC0C[15:0] + 1)
-  */
- 
- #include <linux/clk.h>
-@@ -77,6 +83,7 @@ struct aspeed_adc_data {
- 	struct regulator	*regulator;
- 	void __iomem		*base;
- 	spinlock_t		clk_lock;
-+	struct clk_hw		*fixed_div_clk;
- 	struct clk_hw		*clk_prescaler;
- 	struct clk_hw		*clk_scaler;
- 	struct reset_control	*rst;
-@@ -196,6 +203,13 @@ static void aspeed_adc_unregister_divider(void *data)
- 	clk_hw_unregister_divider(clk);
- }
- 
-+static void aspeed_adc_unregister_fixed_divider(void *data)
-+{
-+	struct clk_hw *clk = data;
-+
-+	clk_hw_unregister_fixed_factor(clk);
-+}
-+
- static void aspeed_adc_reset_assert(void *data)
- {
- 	struct reset_control *rst = data;
-@@ -312,6 +326,18 @@ static int aspeed_adc_probe(struct platform_device *pdev)
- 	/* Register ADC clock prescaler with source specified by device tree. */
- 	spin_lock_init(&data->clk_lock);
- 	snprintf(clk_parent_name, 32, of_clk_get_parent_name(pdev->dev.of_node, 0));
-+	snprintf(clk_name, 32, "%s-fixed-div", data->model_data->model_name);
-+	data->fixed_div_clk = clk_hw_register_fixed_factor(
-+		&pdev->dev, clk_name, clk_parent_name, 0, 1, 2);
-+	if (IS_ERR(data->fixed_div_clk))
-+		return PTR_ERR(data->fixed_div_clk);
-+
-+	ret = devm_add_action_or_reset(data->dev,
-+				       aspeed_adc_unregister_fixed_divider,
-+				       data->clk_prescaler);
-+	if (ret)
-+		return ret;
-+	snprintf(clk_parent_name, 32, clk_name);
- 	if (data->model_data->need_prescaler) {
- 		snprintf(clk_name, 32, "%s-prescaler",
- 			 data->model_data->model_name);
--- 
-2.25.1
+> If no objections, on v2 I will just try to get 'reg' and if not present, fallback
+> to 'num' before erroring out.
 
+Unless a user turns up and complains, then I say drop 'num'.
+
+Rob

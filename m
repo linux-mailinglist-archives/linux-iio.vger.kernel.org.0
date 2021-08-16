@@ -2,111 +2,114 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DDB403ED0DE
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Aug 2021 11:09:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8ECD33ED0ED
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Aug 2021 11:20:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234721AbhHPJKP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Aug 2021 05:10:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46926 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233053AbhHPJKP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Aug 2021 05:10:15 -0400
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B706C061764;
-        Mon, 16 Aug 2021 02:09:44 -0700 (PDT)
-Received: by mail-pj1-x102b.google.com with SMTP id hv22-20020a17090ae416b0290178c579e424so26405826pjb.3;
-        Mon, 16 Aug 2021 02:09:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=VPGedwvnCei+6xmV2jyY7egHgphSukXbhhMKxVkL/KM=;
-        b=sYF9vOyRt5AZCqqykOv3ZbYGe/cETGsqJ2Sc82f8ExNAXrlyyYtQsHLDbC0SlVJw+O
-         XpERn2Dy7GsYa1BrUsnF29TV47vchrb+jRMKSEcQf+b/ZdbXtOIAV90K8/VnTYPMscMB
-         a9IAapXx7+R05LYHTbi4DXmf3iDNkBFd8Brhqu7II6NiRfWeUb6kGoMGzCa97VoM4rKr
-         JYCtiyBVfJzEF4AIOzAVxEpKfG6YaEJUneCjvswA/U/HNJRgfsjD6Ih5f+fOLAoi5T4a
-         DCVOK5WbIY7cotZKMnNDjoT26AazmMjX0YSgRINaJ2RneLVYDd8KIYwYMQw0Nq2OjkAI
-         9ZOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VPGedwvnCei+6xmV2jyY7egHgphSukXbhhMKxVkL/KM=;
-        b=S/0Zi2ufaXlTfzRBeXoESug1+VzonXkJ8WtVtERWsESH3I/x/u3RLsq3KSsB0Umq7T
-         8awH1c+LKoiJymowS691G5YfE4P3ArnASAWCB/8t3SMAcqrdEkh7mlPw9IcA9oBQe7Cg
-         W2trTZaXZWYBHz5esjkAljiaDVSEASeyOeuPb2It1GESIMhMbU2tCiKeiF9a4s89Lxf6
-         g88xFM6OkvCvA2m3hUiV0HJjjuESEjAE2aJcadj2KzgZJ0kPMAVJac+9vh/nrij/MBTw
-         15jVktwY2QzER7F+eUn7EUCSR5We7B3SrVHi0GsXcZw+Expb4a5jVQnx2gf4ehY62hUI
-         3suQ==
-X-Gm-Message-State: AOAM530Iah5SM7grPWS3M3eV1DUKzppKK3bDw0XdeFckpxzfU+IXMRnq
-        yET0YuVUF7jliPXThVf7eaB/ofboFweB99mfMFo=
-X-Google-Smtp-Source: ABdhPJw+wb22Sx2hYIVb5pjxjPajLnJeqs42mh+QxbOEDRjTujJScmbcVUOHpinYq7T463VfkskGvMQDKHt3rYWXDvw=
-X-Received: by 2002:a63:cf0a:: with SMTP id j10mr15211364pgg.4.1629104983812;
- Mon, 16 Aug 2021 02:09:43 -0700 (PDT)
+        id S235307AbhHPJVI convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 16 Aug 2021 05:21:08 -0400
+Received: from aposti.net ([89.234.176.197]:50528 "EHLO aposti.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235163AbhHPJVI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 16 Aug 2021 05:21:08 -0400
+Date:   Mon, 16 Aug 2021 11:20:25 +0200
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: IIO, dmabuf, io_uring
+To:     Pavel Begunkov <asml.silence@gmail.com>,
+        Jonathan Lemon <jonathan.lemon@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Christian =?iso-8859-1?b?S/ZuaWc=?= <christian.koenig@amd.com>,
+        Christoph Hellwig <hch@lst.de>, linux-iio@vger.kernel.org,
+        io-uring@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>
+Message-Id: <1YDXXQ.FDQ4R2DPJ42F@crapouillou.net>
+In-Reply-To: <a343b14f-6b7e-e377-9ae0-871e23b70453@gmail.com>
+References: <2H0SXQ.2KIK2PBVRFWH2@crapouillou.net>
+        <a343b14f-6b7e-e377-9ae0-871e23b70453@gmail.com>
 MIME-Version: 1.0
-References: <20210816082836.67511-1-aardelean@deviqon.com>
-In-Reply-To: <20210816082836.67511-1-aardelean@deviqon.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 16 Aug 2021 12:09:04 +0300
-Message-ID: <CAHp75VecnBiMLie2ki7--c9YgiZrknhLb-TSOjSAVKXy+ZpxYQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/5] iio: st_sensors: convert probe functions to full devm
-To:     Alexandru Ardelean <aardelean@deviqon.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Denis Ciocca <denis.ciocca@st.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Aug 16, 2021 at 11:30 AM Alexandru Ardelean
-<aardelean@deviqon.com> wrote:
->
-> Changelog v1 - v2:
-> * https://lore.kernel.org/linux-iio/20210726071404.14529-1-aardelean@deviqon.com/
-> * added patch 'iio: st_sensors: disable regulators after device unregistration'
->   - splits the regulator disable fix in a separate patch
+Hi,
 
-Entire series makes sense to me, thanks!
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Le ven., août 13 2021 at 18:20:19 +0100, Pavel Begunkov 
+<asml.silence@gmail.com> a écrit :
+> Hi Paul,
+> 
+> On 8/13/21 12:41 PM, Paul Cercueil wrote:
+>>  Hi,
+>> 
+>>  A few months ago we (ADI) tried to upstream the interface we use 
+>> with our high-speed ADCs and DACs. It is a system with custom ioctls 
+>> on the iio device node to dequeue and enqueue buffers (allocated 
+>> with dma_alloc_coherent), that can then be mmap'd by userspace 
+>> applications. Anyway, it was ultimately denied entry [1]; this API 
+>> was okay in ~2014 when it was designed but it feels like 
+>> re-inventing the wheel in 2021.
+>> 
+>>  Back to the drawing table, and we'd like to design something that 
+>> we can actually upstream. This high-speed interface looks awfully 
+>> similar to DMABUF, so we may try to implement a DMABUF interface for 
+>> IIO, unless someone has a better idea.
+>> 
+>>  Our first usecase is, we want userspace applications to be able to 
+>> dequeue buffers of samples (from ADCs), and/or enqueue buffers of 
+>> samples (for DACs), and to be able to manipulate them (mmapped 
+>> buffers). With a DMABUF interface, I guess the userspace application 
+>> would dequeue a dma buffer from the driver, mmap it, read/write the 
+>> data, unmap it, then enqueue it to the IIO driver again so that it 
+>> can be disposed of. Does that sound sane?
+>> 
+>>  Our second usecase is - and that's where things get tricky - to be 
+>> able to stream the samples to another computer for processing, over 
+>> Ethernet or USB. Our typical setup is a high-speed ADC/DAC on a dev 
+>> board with a FPGA and a weak soft-core or low-power CPU; processing 
+>> the data in-situ is not an option. Copying the data from one buffer 
+>> to another is not an option either (way too slow), so we absolutely 
+>> want zero-copy.
+>> 
+>>  Usual userspace zero-copy techniques (vmsplice+splice, MSG_ZEROCOPY 
+>> etc) don't really work with mmapped kernel buffers allocated for DMA 
+>> [2] and/or have a huge overhead, so the way I see it, we would also 
+>> need DMABUF support in both the Ethernet stack and USB (functionfs) 
+>> stack. However, as far as I understood, DMABUF is mostly a DRM/V4L2 
+>> thing, so I am really not sure we have the right idea here.
+>> 
+>>  And finally, there is the new kid in town, io_uring. I am not very 
+>> literate about the topic, but it does not seem to be able to handle 
+>> DMA buffers (yet?). The idea that we could dequeue a buffer of 
+>> samples from the IIO device and send it over the network in one 
+>> single syscall is appealing, though.
+> 
+> You might be interested to look up zctap, previously a.k.a netgpu.
 
-> Alexandru Ardelean (5):
->   iio: st_sensors: disable regulators after device unregistration
->   iio: st_sensors: remove st_sensors_deallocate_trigger() function
->   iio: st_sensors: remove st_sensors_power_disable() function
->   iio: st_sensors: remove all driver remove functions
->   iio: st_sensors: remove reference to parent device object on
->     st_sensor_data
->
->  drivers/iio/accel/st_accel_core.c             | 32 +++--------
->  drivers/iio/accel/st_accel_i2c.c              | 23 +-------
->  drivers/iio/accel/st_accel_spi.c              | 23 +-------
->  .../iio/common/st_sensors/st_sensors_core.c   | 34 ++++++------
->  .../iio/common/st_sensors/st_sensors_i2c.c    |  1 -
->  .../iio/common/st_sensors/st_sensors_spi.c    |  1 -
->  .../common/st_sensors/st_sensors_trigger.c    | 53 +++++++------------
->  drivers/iio/gyro/st_gyro_core.c               | 27 ++--------
->  drivers/iio/gyro/st_gyro_i2c.c                | 23 +-------
->  drivers/iio/gyro/st_gyro_spi.c                | 23 +-------
->  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0.h       |  1 -
->  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_core.c  | 17 +-----
->  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_i2c.c   |  6 ---
->  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c   |  6 ---
->  drivers/iio/magnetometer/st_magn_core.c       | 29 ++--------
->  drivers/iio/magnetometer/st_magn_i2c.c        | 23 +-------
->  drivers/iio/magnetometer/st_magn_spi.c        | 23 +-------
->  drivers/iio/pressure/st_pressure_core.c       | 27 ++--------
->  drivers/iio/pressure/st_pressure_i2c.c        | 23 +-------
->  drivers/iio/pressure/st_pressure_spi.c        | 23 +-------
->  include/linux/iio/common/st_sensors.h         | 13 -----
->  21 files changed, 60 insertions(+), 371 deletions(-)
->
+CCing Jonathan (Lemon) then.
+
+Jonathan: Am I right that zctap supports importing/exporting dmabufs? 
+Because that would solve half of my problem.
+
+Cheers,
+-Paul
+
+> For io_uring, it's work in progress as well.
+> 
+>> 
+>>  Any thoughts? Feedback would be greatly appreciated.
+>> 
+>>  Cheers,
+>>  -Paul
+>> 
+>>  [1]: 
+>> https://lore.kernel.org/linux-iio/20210217073638.21681-1-alexandru.ardelean@analog.com/T/#m6b853addb77959c55e078fbb06828db33d4bf3d7
+>>  [2]: 
+>> https://newbedev.com/zero-copy-user-space-tcp-send-of-dma-mmap-coherent-mapped-memory
+> 
 > --
-> 2.31.1
->
+> Pavel Begunkov
 
 
--- 
-With Best Regards,
-Andy Shevchenko

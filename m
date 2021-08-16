@@ -2,18 +2,18 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C81763ED242
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Aug 2021 12:48:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37AE73ED24D
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Aug 2021 12:49:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235841AbhHPKtA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Aug 2021 06:49:00 -0400
-Received: from twspam01.aspeedtech.com ([211.20.114.71]:60047 "EHLO
+        id S235894AbhHPKtm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Aug 2021 06:49:42 -0400
+Received: from twspam01.aspeedtech.com ([211.20.114.71]:55570 "EHLO
         twspam01.aspeedtech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235795AbhHPKtA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Aug 2021 06:49:00 -0400
+        with ESMTP id S235883AbhHPKtl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Aug 2021 06:49:41 -0400
 Received: from mail.aspeedtech.com ([192.168.0.24])
-        by twspam01.aspeedtech.com with ESMTP id 17GAUMO7044039;
-        Mon, 16 Aug 2021 18:30:22 +0800 (GMT-8)
+        by twspam01.aspeedtech.com with ESMTP id 17GAUMO8044039;
+        Mon, 16 Aug 2021 18:30:23 +0800 (GMT-8)
         (envelope-from billy_tsai@aspeedtech.com)
 Received: from BillyTsai-pc.aspeed.com (192.168.2.149) by TWMBX02.aspeed.com
  (192.168.0.24) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 16 Aug
@@ -27,9 +27,9 @@ To:     <jic23@kernel.org>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-aspeed@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>
 CC:     <BMC-SW@aspeedtech.com>
-Subject: [v3 03/15] iio: adc: aspeed: set driver data when adc probe.
-Date:   Mon, 16 Aug 2021 18:48:34 +0800
-Message-ID: <20210816104846.13155-4-billy_tsai@aspeedtech.com>
+Subject: [v3 04/15] iio: adc: aspeed: Keep model data to driver data.
+Date:   Mon, 16 Aug 2021 18:48:35 +0800
+Message-ID: <20210816104846.13155-5-billy_tsai@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210816104846.13155-1-billy_tsai@aspeedtech.com>
 References: <20210816104846.13155-1-billy_tsai@aspeedtech.com>
@@ -40,30 +40,102 @@ X-Originating-IP: [192.168.2.149]
 X-ClientProxiedBy: TWMBX02.aspeed.com (192.168.0.24) To TWMBX02.aspeed.com
  (192.168.0.24)
 X-DNSRBL: 
-X-MAIL: twspam01.aspeedtech.com 17GAUMO7044039
+X-MAIL: twspam01.aspeedtech.com 17GAUMO8044039
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Fix the issue when adc remove will get the null driver data.
+Keep the model data pointer to driver data for reducing the usage of
+of_device_get_match_data().
 
 Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
 ---
- drivers/iio/adc/aspeed_adc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/adc/aspeed_adc.c | 20 +++++++-------------
+ 1 file changed, 7 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/iio/adc/aspeed_adc.c b/drivers/iio/adc/aspeed_adc.c
-index 7010d56ac3b9..20462cf659e4 100644
+index 20462cf659e4..d85aa31ee3b1 100644
 --- a/drivers/iio/adc/aspeed_adc.c
 +++ b/drivers/iio/adc/aspeed_adc.c
-@@ -201,6 +201,7 @@ static int aspeed_adc_probe(struct platform_device *pdev)
+@@ -69,6 +69,7 @@ struct aspeed_adc_model_data {
+ 
+ struct aspeed_adc_data {
+ 	struct device		*dev;
++	const struct aspeed_adc_model_data *model_data;
+ 	void __iomem		*base;
+ 	spinlock_t		clk_lock;
+ 	struct clk_hw		*clk_prescaler;
+@@ -110,8 +111,6 @@ static int aspeed_adc_read_raw(struct iio_dev *indio_dev,
+ 			       int *val, int *val2, long mask)
+ {
+ 	struct aspeed_adc_data *data = iio_priv(indio_dev);
+-	const struct aspeed_adc_model_data *model_data =
+-			of_device_get_match_data(data->dev);
+ 
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+@@ -119,7 +118,7 @@ static int aspeed_adc_read_raw(struct iio_dev *indio_dev,
+ 		return IIO_VAL_INT;
+ 
+ 	case IIO_CHAN_INFO_SCALE:
+-		*val = model_data->vref_voltage;
++		*val = data->model_data->vref_voltage;
+ 		*val2 = ASPEED_RESOLUTION_BITS;
+ 		return IIO_VAL_FRACTIONAL_LOG2;
+ 
+@@ -138,13 +137,11 @@ static int aspeed_adc_write_raw(struct iio_dev *indio_dev,
+ 				int val, int val2, long mask)
+ {
+ 	struct aspeed_adc_data *data = iio_priv(indio_dev);
+-	const struct aspeed_adc_model_data *model_data =
+-			of_device_get_match_data(data->dev);
+ 
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+-		if (val < model_data->min_sampling_rate ||
+-			val > model_data->max_sampling_rate)
++		if (val < data->model_data->min_sampling_rate ||
++			val > data->model_data->max_sampling_rate)
+ 			return -EINVAL;
+ 
+ 		clk_set_rate(data->clk_scaler->clk,
+@@ -190,7 +187,6 @@ static int aspeed_adc_probe(struct platform_device *pdev)
+ {
+ 	struct iio_dev *indio_dev;
+ 	struct aspeed_adc_data *data;
+-	const struct aspeed_adc_model_data *model_data;
+ 	const char *clk_parent_name;
+ 	int ret;
+ 	u32 adc_engine_control_reg_val;
+@@ -201,6 +197,7 @@ static int aspeed_adc_probe(struct platform_device *pdev)
  
  	data = iio_priv(indio_dev);
  	data->dev = &pdev->dev;
-+	platform_set_drvdata(pdev, indio_dev);
++	data->model_data = of_device_get_match_data(&pdev->dev);
+ 	platform_set_drvdata(pdev, indio_dev);
  
  	data->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(data->base))
+@@ -241,9 +238,7 @@ static int aspeed_adc_probe(struct platform_device *pdev)
+ 	}
+ 	reset_control_deassert(data->rst);
+ 
+-	model_data = of_device_get_match_data(&pdev->dev);
+-
+-	if (model_data->wait_init_sequence) {
++	if (data->model_data->wait_init_sequence) {
+ 		/* Enable engine in normal mode. */
+ 		writel(FIELD_PREP(ASPEED_ADC_OP_MODE,
+ 				  ASPEED_ADC_OP_MODE_NORMAL) |
+@@ -273,8 +268,7 @@ static int aspeed_adc_probe(struct platform_device *pdev)
+ 	writel(adc_engine_control_reg_val,
+ 	       data->base + ASPEED_REG_ENGINE_CONTROL);
+ 
+-	model_data = of_device_get_match_data(&pdev->dev);
+-	indio_dev->name = model_data->model_name;
++	indio_dev->name = data->model_data->model_name;
+ 	indio_dev->info = &aspeed_adc_iio_info;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 	indio_dev->channels = aspeed_adc_iio_channels;
 -- 
 2.25.1
 

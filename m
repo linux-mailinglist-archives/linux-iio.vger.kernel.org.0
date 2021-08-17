@@ -2,97 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FEEC3EEEF3
-	for <lists+linux-iio@lfdr.de>; Tue, 17 Aug 2021 17:09:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B5BD3EEF83
+	for <lists+linux-iio@lfdr.de>; Tue, 17 Aug 2021 17:52:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237063AbhHQPKb convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Tue, 17 Aug 2021 11:10:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33174 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237052AbhHQPKa (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 17 Aug 2021 11:10:30 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F127A61073;
-        Tue, 17 Aug 2021 15:09:56 +0000 (UTC)
-Date:   Tue, 17 Aug 2021 16:12:58 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
-Subject: [PULL] 2nd set of new IIO device support, cleanups and fixes for
- the 5.15 cycle.
-Message-ID: <20210817161258.2e015e20@jic23-huawei>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        id S240342AbhHQPxM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 17 Aug 2021 11:53:12 -0400
+Received: from relay12.mail.gandi.net ([217.70.178.232]:38847 "EHLO
+        relay12.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240412AbhHQPt6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Aug 2021 11:49:58 -0400
+Received: (Authenticated sender: jacopo@jmondi.org)
+        by relay12.mail.gandi.net (Postfix) with ESMTPSA id 1A854200003;
+        Tue, 17 Aug 2021 15:49:12 +0000 (UTC)
+From:   Jacopo Mondi <jacopo@jmondi.org>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Matt Ranostay <matt.ranostay@konsulko.com>
+Cc:     Jacopo Mondi <jacopo@jmondi.org>, linux-iio@vger.kernel.org
+Subject: [PATCH 0/2] iio: chemical: Add Senseair Sunrise CO2 sensor
+Date:   Tue, 17 Aug 2021 17:49:49 +0200
+Message-Id: <20210817154951.50208-1-jacopo@jmondi.org>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The following changes since commit f805ef1ce5d695c260986fdf2e28f5d6c98cf3a8:
+Hello,
+   this is a small driver for the Senseair Sunrise 006-0-0007 CO2
+sensor.
 
-  Merge tag 'iio-for-5.15a' of https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio into staging-next (2021-08-15 08:32:07 +0200)
+The driver supports continuous reads of temperature and CO2 concentration
+through two dedicated IIO channels.
 
-are available in the Git repository at:
+While the driver is rather simple I'm not sure calibration is handled in
+the correct way. In this version, at probe time, a check on the general
+error register is made to verify if a calibration cycle is required.
+The calibration takes a time in the order of a few seconds, and currently
+can only happen at probe time.
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-5.15b
+Is there a mechanism available in the IIO framework to expose a trigger to have
+userspace decide when the calibration has to happen ? In my understanding IIO
+triggers are meant to trigger read events, using them for calibration purpose
+seems not the right thing to do, or am I mistaken ?
 
-for you to fetch changes up to d484c21bacfa8bd2fa9fc26393ec59108f508c4c:
+Thanks
+  j
 
-  iio: adc: Add driver for Renesas RZ/G2L A/D converter (2021-08-15 17:03:13 +0100)
+Jacopo Mondi (2):
+  dt-bindings: iio: chemical: Document senseair,sunrise CO2 sensor
+  iio: chemical: Add Senseair Sunrise 006-0-007 driver
 
-----------------------------------------------------------------
-2nd set of new IIO device support and cleanups for the 5.15 cycle.
+ .../iio/chemical/senseair,sunrise.yaml        |  51 +++
+ .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
+ MAINTAINERS                                   |   6 +
+ drivers/iio/chemical/Kconfig                  |  10 +
+ drivers/iio/chemical/Makefile                 |   1 +
+ drivers/iio/chemical/sunrise.c                | 310 ++++++++++++++++++
+ 6 files changed, 380 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/chemical/senseair,sunrise.yaml
+ create mode 100644 drivers/iio/chemical/sunrise.c
 
-A small pull request to pick up a few new drivers and some cleanup
-and fix patches.
+--
+2.32.0
 
-New device support
-* ad5110 non-volatile digital potentiometer
-  - New driver
-* renesas rzl/gl2 12-bit / 8 channel ADC block
-  - New driver and bindings
-
-Minor or late breaking fixes and cleanups
-* ltc2983
-  - Fix a false assumption of initial interrupt during probe().
-* hp03
-  - Use devm_* to simplify probe and allow the remove function to be dropped.
-* rockchip_saradc
-  - Use a regulator notifier to reduce overheads of querying the scale.
-
-----------------------------------------------------------------
-David Wu (1):
-      iio: adc: rockchip_saradc: add voltage notifier so get referenced voltage once at probe
-
-Lad Prabhakar (2):
-      dt-bindings: iio: adc: Add binding documentation for Renesas RZ/G2L A/D converter
-      iio: adc: Add driver for Renesas RZ/G2L A/D converter
-
-Mugilraj Dhavachelvan (2):
-      dt-bindings: iio: potentiometer: Add AD5110 in trivial-devices
-      iio: potentiometer: Add driver support for AD5110
-
-Nuno Sá (1):
-      iio: ltc2983: fix device probe
-
-Théo Borém Fabris (1):
-      iio: pressure: hp03: update device probe to register with devm functions
-
- .../bindings/iio/adc/renesas,rzg2l-adc.yaml        | 134 +++++
- .../devicetree/bindings/trivial-devices.yaml       |   2 +
- MAINTAINERS                                        |  14 +
- drivers/iio/adc/Kconfig                            |  10 +
- drivers/iio/adc/Makefile                           |   1 +
- drivers/iio/adc/rockchip_saradc.c                  |  47 +-
- drivers/iio/adc/rzg2l_adc.c                        | 600 +++++++++++++++++++++
- drivers/iio/potentiometer/Kconfig                  |  10 +
- drivers/iio/potentiometer/Makefile                 |   1 +
- drivers/iio/potentiometer/ad5110.c                 | 344 ++++++++++++
- drivers/iio/pressure/hp03.c                        |  36 +-
- drivers/iio/temperature/ltc2983.c                  |  30 +-
- 12 files changed, 1177 insertions(+), 52 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
- create mode 100644 drivers/iio/adc/rzg2l_adc.c
- create mode 100644 drivers/iio/potentiometer/ad5110.c

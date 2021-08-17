@@ -2,82 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 472643EF319
-	for <lists+linux-iio@lfdr.de>; Tue, 17 Aug 2021 22:11:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53EC33EF43C
+	for <lists+linux-iio@lfdr.de>; Tue, 17 Aug 2021 22:49:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233869AbhHQUMY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 17 Aug 2021 16:12:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50854 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229466AbhHQUMX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Aug 2021 16:12:23 -0400
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 814EDC0613CF
-        for <linux-iio@vger.kernel.org>; Tue, 17 Aug 2021 13:11:49 -0700 (PDT)
-Received: by mail-lf1-x12c.google.com with SMTP id p38so43852167lfa.0
-        for <linux-iio@vger.kernel.org>; Tue, 17 Aug 2021 13:11:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0ECUnJRdGhvZQ5vTa9e0gW3gLFpsPXzyagk4LktRcpA=;
-        b=DTYC3ua7EePGe9OrsXz3+MkXNeZUErzxrswujVRS1A4/P0Ri3b58vvLqpMBCkEL40Y
-         yAcgAAeTGUl3HdER8NO7xg0ji5zrv9uIYE5cvhXecmAMOaUFMxC/XvxiNRyaRUulqKfc
-         MwrTek+xPSuQUq5u3qQ8BQ1X/XlHeXk5vqa2acgT+w3FlIFi9XInUc1+LTKnMlCs2KrW
-         41u1c55x2SjUzBf5emHA41ryOhhiZLpfqIgxNKwEo778gtRZm7Ks+qaUe4Ofzl4SzIzv
-         eNpxJu4jj0muaxLoUuv4WWbbN82Fv8SERSVj+LSSnUA9c3JKafuLABoPe1WKHVIjY13l
-         iIZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0ECUnJRdGhvZQ5vTa9e0gW3gLFpsPXzyagk4LktRcpA=;
-        b=NR61gskjVDOw4oCUwAILZ4wZOlsj++nhu8y3B6/s7na7/w1Vn9fTa0MMc05p9MhSJx
-         9tfg6+4wIrYw0nBYWZ11jmfYILrRL0oH2p3TYaXMVNRHKa7C7dxbOA2zNJMqxS9qbdfQ
-         c/yiVCJSCWBIIWZqC7rw4d9EY3aHYdPoTn7vR1X7Cj946+4NkVm6BslDm6OpDcFyiPPl
-         03bV5iT34zmggv/ncahephhiLGDjLLzbi1gyQVPODwMrAebhGvByWNomEgszHiPMhT+F
-         bfu3Q0ykgkBOQ9Whae23B4Hkt6r+HAO7D4hQFZhS77UOlm5bf5SmKyPHba6hQdiHXBXj
-         XkHQ==
-X-Gm-Message-State: AOAM532MUp+nzrgZ4JWV0xDfK/l07+SVnK8HGYk5EMOMo/C3prXtPiEj
-        af3gW1rToAji7/SU25qwmSgEQU/ZEZym8eWI5g7TfQ==
-X-Google-Smtp-Source: ABdhPJxFwsBPGC+jBiacultIR42jboGDCaeK4IJ7HxVey6ekxIJCHv7HR8bP2YzM0B+ofhdgnZC6Be8jJqpMM39s550=
-X-Received: by 2002:a05:6512:3250:: with SMTP id c16mr3551573lfr.465.1629231107903;
- Tue, 17 Aug 2021 13:11:47 -0700 (PDT)
+        id S234715AbhHQUo6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 17 Aug 2021 16:44:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48672 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234827AbhHQUo5 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 17 Aug 2021 16:44:57 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 974DD6023E;
+        Tue, 17 Aug 2021 20:44:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1629233063;
+        bh=jenxdlwuv8KbA36CMOiq/pND/A9001wiHZjzZzHp/hg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=NYdDSPH+gVMmcxOQ4wmF37Mv7S75mRIVyHQmostdPYhw037RtFvUPDkUwBhD9GpbZ
+         NbKvoqziNO/eiZIPED/Mu9nXWr2ENJubPFuzgtraw/hIErooayo3DumdrsnlJDYdHY
+         2iANWmhBQqWgsg/zOPRjN9lPyfv6E4v7XJuwA1a0i2eyFPq8n7i7uXSUJTi2K1GpGR
+         OW3faYxdnZ3n3cukLA41Us0cO1396UC+ioTwXoAMIEI98sf2CpONDZCRHcEtiZdoes
+         HLcZp9rWpwE/k53r2kNfEinQyt30zTq16H1Rhysw/wWsK/5aT06eKl9Mm7JNqjAKVm
+         Kysgs/+WBnlxw==
+Date:   Tue, 17 Aug 2021 22:44:20 +0200
+From:   Wolfram Sang <wsa@kernel.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Sean Nyekjaer <sean@geanix.com>, devicetree@vger.kernel.org,
+        Jose Cazarin <joseespiriki@gmail.com>,
+        linux-i2c@vger.kernel.org
+Subject: Re: [PATCH v1.1 2/2] iio: dac: dac5571: Fix chip id detection for OF
+ devices
+Message-ID: <YRwfpOuyVEstwsza@kunai>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>, Sean Nyekjaer <sean@geanix.com>,
+        devicetree@vger.kernel.org, Jose Cazarin <joseespiriki@gmail.com>,
+        linux-i2c@vger.kernel.org
+References: <20210723183114.26017-3-laurent.pinchart@ideasonboard.com>
+ <20210724000654.23168-1-laurent.pinchart@ideasonboard.com>
+ <20210724154308.55afb03c@jic23-huawei>
 MIME-Version: 1.0
-References: <20210817081330.9645-1-lukas.bulwahn@gmail.com>
-In-Reply-To: <20210817081330.9645-1-lukas.bulwahn@gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 17 Aug 2021 22:11:36 +0200
-Message-ID: <CACRpkdaemTruXS3PTz3z_hpkvBYvi802dF6VBDq+fLEyxZStrQ@mail.gmail.com>
-Subject: Re: [PATCH] iio: gyro: remove dead config dependencies on INPUT_MPU3050
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="bSLA9Xlk/h7hJBea"
+Content-Disposition: inline
+In-Reply-To: <20210724154308.55afb03c@jic23-huawei>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Aug 17, 2021 at 10:13 AM Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
 
-> Commit b1fe0cf06f92 ("Input: delete MPU3050 driver") deletes the superseded
-> MPU3050 driver and its corresponding config INPUT_MPU3050.
->
-> The dependencies on the superseding driver in ./drivers/iio/gyro/Kconfig
-> to ensure that the two drivers are not built into the same kernel is a dead
-> dependency and not required anymore.
->
-> So, remove those config dependencies on INPUT_MPU3050 for MPU3050_I2C.
->
-> This issue was detected with ./scripts/checkkconfigsymbols.py.
->
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+--bSLA9Xlk/h7hJBea
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Oops my leftover.
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-Yours,
-Linus Walleij
+> > When matching an OF device, the match mechanism tries all components of
+> > the compatible property. This can result with a device matched with a
+> > compatible string that isn't the first in the compatible list. For
+> > instance, with a compatible property set to
+> >=20
+> >     compatible =3D "ti,dac081c081", "ti,dac5571";
+> >=20
+> > the driver will match the second compatible string, as the first one
+> > isn't listed in the of_device_id table. The device will however be named
+> > "dac081c081" by the I2C core.
+> >=20
+> > This causes an issue when identifying the chip. The probe function
+> > receives a i2c_device_id that comes from the module's I2C device ID
+> > table. There is no entry in that table for "dac081c081", which results
+> > in a NULL pointer passed to the probe function.
+> >=20
+> > To fix this, add chip_id information in the data field of the OF device
+> > ID table, and retrieve it with of_device_get_match_data() for OF
+> > devices.
+> >=20
+> > Signed-off-by: Jose Cazarin <joseespiriki@gmail.com>
+> > Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+>=20
+> Interesting problem that I hadn't previously realised could happen.
+>=20
+> One request though, can we use device_get_match_data() here rather than
+> the of specific version?  Include property.h as well for that.
+>=20
+> That should allow the same issue with compatible to work correctly when
+> using PRP0001 based ACPI methods.=20
+> https://elixir.bootlin.com/linux/v5.14-rc1/source/drivers/acpi/bus.c#L891
+> Will result in acpi_of_device_get_match_data() being called which will
+> match to the of_device_id table.
+
+Couldn't you use the "new" probe_new() callback instead which will drop
+the i2c_device_id? Kieran was interested in such conversions IIRC.
+
+
+--bSLA9Xlk/h7hJBea
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmEcH6AACgkQFA3kzBSg
+Kbah8w/+NkTSt52U4e5c47zS8FCRLjUAvqttde7RahDWQf2aLgXeeN8u4EYLKXrU
+9hW5saYFQYH1jvpqTnJbDXDqqf2+LDbUGIauJo3K2WYKXRQdzK0yPoJRErSnB3jl
+K9jexLleJmloXSO2lz5u+Cgfbu2aiZ1b9+09JOcXBi4nchIGdMynBoC5ZoTNDjPw
+5/e7T8o7tcdRpIkbgcOZB5a20+HeH3f7TnGnKslTiXj0PylrmRUgloYAJWbi9mFI
+A1QIN+jMaIEN373015vx/CfUrgB1EMgSX5Xo8VPb6GBXOf3KNGRSk4Lxr4ib2i+U
+uZdfEGVFt4g2eheSyRIT4B0OkDcye3xVjTu4imX7q6nnP+IUymWONFi9vLWtl8O/
+eE4+ubpSct5d37jR9v6/LzpH9i8v3HE1UcnQmXpaft++i6caeoMZiDWiebviKdsT
+8O+c+GuOk8oDxu79KOtuDaBc68aPKMkJFeQMMPKGKQ91pgE6I9aZsShXIbl2X8tU
+j5ONhZ+nGxvWUhNsdj8QtskpAb3bE+2SkEa7JCBg/pKF6v+6aqleCv/jxOJuWChW
+OekZKDAzZMQvv4pOJTuASeLAu8+0Z7I1ZXAVKwx/b3+Q4KXezdXjQBvc3O+ppC+b
+rpOdjkJB9X4KbnnRDVC9PJKfJNhEPeVVngunzZw4a/MHkQsMIiY=
+=vjMH
+-----END PGP SIGNATURE-----
+
+--bSLA9Xlk/h7hJBea--

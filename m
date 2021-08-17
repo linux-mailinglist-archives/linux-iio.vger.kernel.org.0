@@ -2,98 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 378593EF448
-	for <lists+linux-iio@lfdr.de>; Tue, 17 Aug 2021 22:58:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 927403EF4AB
+	for <lists+linux-iio@lfdr.de>; Tue, 17 Aug 2021 23:10:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230433AbhHQU64 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 17 Aug 2021 16:58:56 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53310 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229531AbhHQU64 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 17 Aug 2021 16:58:56 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 497DB61008;
-        Tue, 17 Aug 2021 20:58:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1629233903;
-        bh=MULqZqcbkPPEtj1jxiY9GUQcWI+Q7NvPV6i8gA9vkMo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=KqsoF1A96McXQaUBBSDoE58EYMTnnwSO80gtLPeFDipsXz6SsmYBqidgo5ixQ7Qyy
-         +pDd4vYp1u+D6I5eS6jseqdQIOWHE6Y7svPFGLgNgbUbPa0UVnH+T2p9h1Xc1gpl0s
-         SUtj8kV2vHRQ28y82jUdVjwQBTYdVv1KP7bYApAnJDWCAzUz6pDIrusPIeTNkRGMoA
-         gOqdaGnDceqfvPgbWVrX27SurYdXOQAfj+D+cCXHbpDJH3ls8/1DBp5sAWfuRURENX
-         wWZKHIX60vLTyjfuWOYRAu6qa7pizZnvNHO9F/Q9X5Fm3klg3B3mEy8tx2lfdQ7TbH
-         JLM5C25o3Zi3A==
-Date:   Tue, 17 Aug 2021 22:58:19 +0200
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Sean Nyekjaer <sean@geanix.com>, devicetree@vger.kernel.org,
-        Jose Cazarin <joseespiriki@gmail.com>,
-        linux-i2c@vger.kernel.org
-Subject: Re: [PATCH v1.1 2/2] iio: dac: dac5571: Fix chip id detection for OF
- devices
-Message-ID: <YRwi62E4xYcMyyFi@kunai>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>, Sean Nyekjaer <sean@geanix.com>,
-        devicetree@vger.kernel.org, Jose Cazarin <joseespiriki@gmail.com>,
-        linux-i2c@vger.kernel.org
-References: <20210723183114.26017-3-laurent.pinchart@ideasonboard.com>
- <20210724000654.23168-1-laurent.pinchart@ideasonboard.com>
- <20210724154308.55afb03c@jic23-huawei>
- <YRwfpOuyVEstwsza@kunai>
- <YRwhej9Hz00qnvlQ@pendragon.ideasonboard.com>
+        id S232937AbhHQVKw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 17 Aug 2021 17:10:52 -0400
+Received: from mail-oi1-f169.google.com ([209.85.167.169]:45705 "EHLO
+        mail-oi1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232909AbhHQVKw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Aug 2021 17:10:52 -0400
+Received: by mail-oi1-f169.google.com with SMTP id o20so1114105oiw.12;
+        Tue, 17 Aug 2021 14:10:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=CTgAmphwn1ois5hk55721DjpVa/iUWBOuHd03LxTkuI=;
+        b=ZOcrqW4ezSW4DUG9aBS0k+fgtEzsOG5Ix/PL6ZP/F14vyJ0buIn9HPrdOJw1Ga33CN
+         aRKYMXIDfBxwhUUFlh2yld2tAUvHXY1jG67JjvrqtyFuG/mRwQlmQP0aZF34xFEAbTwa
+         4tns1FVH6Bckw9XYQXvsz5gEk0zz/CZvW+qFj8qDgG2MBiEMNjlIeBtWvtcP04YqRKL7
+         94joExLy8cR+hOX52dYl5b4uBJigSv11DYv3I6MTG743LESQ923RE91TOS1C/1Pt8umm
+         pJKJ7ED+NUHkfFc9QUZGp4WZ4KfjjGzo4qL03soes9IMPi0Gk6BPOcPEs6MVJhq84JzY
+         cImw==
+X-Gm-Message-State: AOAM532WSL/hirLU7X1NXweT2YnoX+6ytTa5L5EHfayvf5tc3sAVyEfJ
+        FX3MTP1/hY/Oh1E6I5BfMQ==
+X-Google-Smtp-Source: ABdhPJx++Rc1EBvfd+6pazZap11v9ifQAF3Fq1/XdEIekbI/RB092ivcdK5zyZaRny/3CY02mBYkMw==
+X-Received: by 2002:a05:6808:1415:: with SMTP id w21mr4115989oiv.140.1629234618442;
+        Tue, 17 Aug 2021 14:10:18 -0700 (PDT)
+Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id l16sm615679ota.55.2021.08.17.14.10.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Aug 2021 14:10:17 -0700 (PDT)
+Received: (nullmailer pid 844799 invoked by uid 1000);
+        Tue, 17 Aug 2021 21:10:17 -0000
+Date:   Tue, 17 Aug 2021 16:10:17 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Puranjay Mohan <puranjay12@gmail.com>
+Cc:     devicetree@vger.kernel.org, Dragos.Bogdan@analog.com,
+        lars@metafoo.de, jic23@kernel.org, Darius.Berghe@analog.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Michael.Hennerich@analog.com, andy.shevchenko@gmail.com
+Subject: Re: [PATCH v12 1/2] dt-bindings: iio: accel: Add DT binding doc for
+ ADXL355
+Message-ID: <YRwluQS5Zr11ngE4@robh.at.kernel.org>
+References: <20210811073027.124619-1-puranjay12@gmail.com>
+ <20210811073027.124619-2-puranjay12@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="yoYTdBSMoMh3ORUv"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YRwhej9Hz00qnvlQ@pendragon.ideasonboard.com>
+In-Reply-To: <20210811073027.124619-2-puranjay12@gmail.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Wed, 11 Aug 2021 13:00:26 +0530, Puranjay Mohan wrote:
+> Add devicetree binding document for ADXL355, a 3-Axis MEMS Accelerometer.
+> 
+> Signed-off-by: Puranjay Mohan <puranjay12@gmail.com>
+> ---
+>  .../bindings/iio/accel/adi,adxl355.yaml       | 88 +++++++++++++++++++
+>  1 file changed, 88 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adxl355.yaml
+> 
 
---yoYTdBSMoMh3ORUv
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-
-> > Couldn't you use the "new" probe_new() callback instead which will drop
-> > the i2c_device_id? Kieran was interested in such conversions IIRC.
->=20
-> It's a bit unrelated to this patch, but I can add another patch to the
-> series.
->=20
-> While I have your attention, there's a question for you in the cover
-> letter :-) Could you please have a look ?
-
-? This was the answer to that question. Unless I misunderstood.
-
-
-
---yoYTdBSMoMh3ORUv
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmEcIusACgkQFA3kzBSg
-KbZ9bQ/8CTFmW2r/gvHCgQHXKxWam/yxiTxYWOOxpV7x+TIYRv+a7APvCequ7nvH
-HunE1bWdmx4VFloBIX5Dc79nUDpInBM/+sRdkUc6JUt1vz8jvQzbzf/ms5x4VZWB
-dnTd01p3CRzImMp7vvjNHQq434piYyonjwDNRo3OlIGXbjGBoCbmX/O6PxKiR7X0
-yQ9fzGEyJeXr5u0CJt46sTRR9PeSEzH67D/Gxd9SXpT/kSL3ZTalPIyeZVecnvpt
-AUBPsGU8JwAuxjN13fSOrdeEdFmc5v9yM+Ia34ZbyP3u7uZZ49/jib7pe1lVkjTQ
-1B7AJmRBuEGGMRoGh589CZnbJeq/IUc6lK6lgdsAnnTki1VLEU4ttiqDSIaVVtvJ
-t8iznRZ9nELeztWrQ7RTu2rOFY6G0fF/emnqoqJgZqNaIxOk+BNsihC9RXNVRF8Y
-ioKVbPA7UeYqr1Zam5pJ/rLdjSiacxX4JOKeB0SOzBi9AG/QSKb/+7P5VF2TB5LR
-3yfqIrDMYDrfmAwLfahQ+Ok0LitC2eEpE32A4cTpscd4TrZWDrcoeD2axI6/ofen
-WqBZ4T7aPqIEirlQEw2qxmjq7K24ALSvS0Jpv6WCtkNlOQWQtyfv2Az/feZnp1rB
-pirrNXtTYB1FwVRpkn3HPE+VF0TyIpLHuq++E/dbG/v/P53WWQg=
-=eY49
------END PGP SIGNATURE-----
-
---yoYTdBSMoMh3ORUv--
+Reviewed-by: Rob Herring <robh@kernel.org>

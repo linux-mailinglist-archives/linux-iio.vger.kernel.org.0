@@ -2,76 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 72AA43EE20F
-	for <lists+linux-iio@lfdr.de>; Tue, 17 Aug 2021 03:25:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6C263EE5B6
+	for <lists+linux-iio@lfdr.de>; Tue, 17 Aug 2021 06:30:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235652AbhHQB0M (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Aug 2021 21:26:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46870 "EHLO
+        id S231549AbhHQEbT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 17 Aug 2021 00:31:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235351AbhHQB0L (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Aug 2021 21:26:11 -0400
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41D0BC061796
-        for <linux-iio@vger.kernel.org>; Mon, 16 Aug 2021 18:25:39 -0700 (PDT)
-Received: by mail-yb1-xb34.google.com with SMTP id w17so36395448ybl.11
-        for <linux-iio@vger.kernel.org>; Mon, 16 Aug 2021 18:25:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=iELgCLbQqv5tFsHgMTPz+ef0nc8wwD8GBHZ8BVFl4tE=;
-        b=pshFSEX5hG0P1wFr7rkSxtmqyGxRXvE61FQuPXDo7vRTqFmv9YgK/CQ15Z9meXeik5
-         nPTN57kpHDXQmSuGtXbZMGanV2zRX/Te9qjRY69Bf2Ipc9yHdTSbL0GpLb76Ds2oHk90
-         cTwmOlBaiJ5e8fPWctUKCR4HMdp41S47qQSxtYeKBuCIPQS+32T/z7RmH+Y87brrKXlf
-         BcEULn5zD+KhsdMs+i2lbStluRSwq4RX7AoPYAHajk5ALSK6kwcEVX+olFIIAoM8FN/V
-         P3RYGTRqoVuxASwyn129i5NMEBTkkEAi4ai42sOArorMd6DCTuiFNhn+lrAph8PCaIdR
-         FZtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=iELgCLbQqv5tFsHgMTPz+ef0nc8wwD8GBHZ8BVFl4tE=;
-        b=NVWkI2DPKqmqPWLpHtmAgibf4QQ0iLNfqfK2her9r0GqmWGOdQnoLNAJrTDfVdl4Ok
-         tRqC+vTflGrzLkCtxtPOlEKj/MojBB9kY6sG9ihbOeUL9Z3dMKqWCcbqE997u7Wu/kv5
-         xazVUk7h+yi1x341AXDL8IDPlqX6MfXQxNWkIlb9GZ8wAJGxlW6A+M+VHAhKckF8lqYr
-         L6SP9qVy+z62Foka2bOBI0ECWs5g46UaU+zE97H3XvwAFw+VD9qwhXjupdNcGu+1DaAA
-         ZTh3jZX7OPM60CoZGAR1kBAgtGSeUK+RlU24z+irueBUTfLtfiCUttj56Gl7hq5GnXzj
-         OQmg==
-X-Gm-Message-State: AOAM532X389icIgvBxt+7Z3bPAoAuWOBUrrMjDRrzdF4q96802kwim5B
-        QntCdny4mb/sCnRKjSWhXRfmjyS5j2qwpVT5YE4=
-X-Google-Smtp-Source: ABdhPJzVe7/0QIP7d9Wp2b410OgLcORKnGWwWYybgaCsajCANRP2FgP62pi+pD8W+++a9lkMLpAvoiDknRJKirEFGhA=
-X-Received: by 2002:a25:a4e5:: with SMTP id g92mr1194348ybi.327.1629163538513;
- Mon, 16 Aug 2021 18:25:38 -0700 (PDT)
+        with ESMTP id S230073AbhHQEbS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Aug 2021 00:31:18 -0400
+Received: from challenge-bot.com (challenge-bot.com [IPv6:2602:fffa:fff:108a:0:16:3e15:92b8])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BA30C061764;
+        Mon, 16 Aug 2021 21:30:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=challenge-bot.com; s=20180430; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=80wuYmqec+tkN81Ry5/hAJbtjz7ZSJszLbUYJbgNwnc=; b=RMLTzz8heejfvkbtBduZvmdqg
+        S9yiMzEJiTPyJW7XTmDP8mzwAl6/i99oxuw5iDkQw5udghxROT+R3DANsuX4z+AtiYFt6YF/7RJc4
+        S6rTHDZdRo2xCYMCjxOQsYfmkX9ipcDO2TpadfNQXveV+GQA35NPchXc1VcB0lQ6C9EDQ=;
+Received: from ozzloy by challenge-bot.com with local (Exim 4.92)
+        (envelope-from <ozzloy@challenge-bot.com>)
+        id 1mFqkI-0004Om-NX; Mon, 16 Aug 2021 21:30:38 -0700
+Date:   Mon, 16 Aug 2021 21:30:38 -0700
+From:   daniel watson <ozzloy@challenge-bot.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] staging:iio:ade7854 surround complex defines in
+ parentheses
+Message-ID: <20210817043038.GA9492@challenge-bot.com>
+References: <20210815023115.13016-1-ozzloy@challenge-bot.com>
+ <YRizb/FGfYpGbpJy@kroah.com>
 MIME-Version: 1.0
-Received: by 2002:a05:7000:5e1b:0:0:0:0 with HTTP; Mon, 16 Aug 2021 18:25:38
- -0700 (PDT)
-Reply-To: charleswjacksonjr94@outlook.com
-From:   "Charles w.jackson" <powellilluminati666@gmail.com>
-Date:   Mon, 16 Aug 2021 18:25:38 -0700
-Message-ID: <CAC=uWm5Y0MmV0o6ABTZL2cowaHUa7o=4iQeVGVEQ5n_3XZ_vFQ@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YRizb/FGfYpGbpJy@kroah.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
---=20
-Hallo lieber Beg=C3=BCnstigter
 
-Eine Million zweihunderttausend Dollar (1.200.000.000,00 USD) wurden gespen=
-det
-Charles.w.jackson mit einem Power Ball-Jackpot von 344,6 Millionen
-US-Dollar, den er
-in den USA gewonnen. Gehen Sie zur=C3=BCck, um weitere Informationen zu
-Anspr=C3=BCchen zu erhalten:
-charleswjacksonjr94@outlook.com.
+If this is a false positive from checkpatch, I can submit it as an
+example to the checkpatch maintainers.  Do you think I should?
 
-    Es wurde festgestellt, dass, wenn Sie diese E-Mail in Ihrem Spam
-finden, es bitte wissen
-Es wird durch ein schwaches Netzwerk verursacht, das auf Ihre Antwort warte=
-t
+On Sun, Aug 15, 2021 at 08:25:51AM +0200, Greg Kroah-Hartman wrote:
+> On Sat, Aug 14, 2021 at 07:31:15PM -0700, daniel watson wrote:
+> > Error found by checkpatch.pl
+> 
+> What error?
 
-Herr Charles.w.jackson.
+$ git checkout 36a21d5172 drivers/staging/iio/meter/ade7854.h # before
+Updated 1 path from 638ccd1543654
+
+$ ./scripts/checkpatch.pl --terse --types COMPLEX_MACRO \
+drivers/staging/iio/meter/ade7854.h
+drivers/staging/iio/meter/ade7854.h:142: ERROR: Macros with complex
+values should be enclosed in parentheses
+drivers/staging/iio/meter/ade7854.h:143: ERROR: Macros with complex
+values should be enclosed in parentheses
+drivers/staging/iio/meter/ade7854.h:144: ERROR: Macros with complex
+values should be enclosed in parentheses
+total: 3 errors, 0 warnings, 0 checks, 173 lines checked
+
+$ git checkout 143b51a80978 drivers/staging/iio/meter/ade7854.h # after
+Updated 1 path from 21c208a36476a
+
+$ ./scripts/checkpatch.pl --terse --types COMPLEX_MACRO \
+drivers/staging/iio/meter/ade7854.h
+
+$
+
+
+> > Signed-off-by: daniel watson <ozzloy@challenge-bot.com>
+> 
+> Capitalize your name?
+
+I can remake this patch with my name capitalized if the patch is worth
+remaking.  I'll be sure to capitalize in future sign-off lines for
+Linux.
+
+
+> This is not a real change that is needed, just look at the code to
+> verify that.
+
+Agreed, this is not a huge change.
+
+I thought small changes were acceptable, if they get rid of errors from
+checkpatch.  I got that impression from this video
+
+Write and Submit your first Linux kernel Patch
+https://youtu.be/LLBrBBImJt4
+
+At around 15 minutes, you create a patch which removes curly braces
+from an if-else.  That seemed comparable to the change in this
+patch.  That video was posted over a decade ago, so I would understand
+if things are different now.
+
+> 
+> thanks,
+> 
+> greg k-h
+
+You're welcome!  Thank you too, that was a super fast response!  I am
+happy to get a direct response from you!
+

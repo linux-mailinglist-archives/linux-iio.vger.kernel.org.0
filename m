@@ -2,73 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 28CEC3EF4C8
-	for <lists+linux-iio@lfdr.de>; Tue, 17 Aug 2021 23:20:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 416F83EF4D8
+	for <lists+linux-iio@lfdr.de>; Tue, 17 Aug 2021 23:22:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233214AbhHQVUp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 17 Aug 2021 17:20:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38426 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230515AbhHQVUp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Aug 2021 17:20:45 -0400
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 749F2C061764;
-        Tue, 17 Aug 2021 14:20:11 -0700 (PDT)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id E21A62C5;
-        Tue, 17 Aug 2021 23:20:09 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1629235210;
-        bh=h5ACte+IYkCtcopGlqXw02CqacNi0HiPaCVWx3i1Baw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=wg+D7Whx7l0hPHEu5uotr47+W1S//1wOLYXYTpLJy53s5o1Cm8wiOl209zN7Nnpe3
-         PrpEjpP+mhcS7wrOeL+aCYIhgb5Tm0BoQ/YtFyb1US3D7kqk0zhQ9+V84rStnvEcfJ
-         o39SwTKp+bWLPwScnsFOD5Bv+Q9zmbBI17Ktt7PQ=
-Date:   Wed, 18 Aug 2021 00:20:02 +0300
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Wolfram Sang <wsa@kernel.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Sean Nyekjaer <sean@geanix.com>, devicetree@vger.kernel.org,
-        Jose Cazarin <joseespiriki@gmail.com>,
-        linux-i2c@vger.kernel.org
-Subject: Re: [PATCH v1.1 2/2] iio: dac: dac5571: Fix chip id detection for OF
- devices
-Message-ID: <YRwoAgie/mDDunn9@pendragon.ideasonboard.com>
-References: <20210723183114.26017-3-laurent.pinchart@ideasonboard.com>
- <20210724000654.23168-1-laurent.pinchart@ideasonboard.com>
- <20210724154308.55afb03c@jic23-huawei>
- <YRwfpOuyVEstwsza@kunai>
- <YRwhej9Hz00qnvlQ@pendragon.ideasonboard.com>
- <YRwi62E4xYcMyyFi@kunai>
+        id S234163AbhHQVXX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 17 Aug 2021 17:23:23 -0400
+Received: from mail-ot1-f45.google.com ([209.85.210.45]:43910 "EHLO
+        mail-ot1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230515AbhHQVXW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Aug 2021 17:23:22 -0400
+Received: by mail-ot1-f45.google.com with SMTP id x10-20020a056830408a00b004f26cead745so108838ott.10;
+        Tue, 17 Aug 2021 14:22:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=RxfsUNxQuHFeeinSXfwnppOEjR6lGfxHD88QKCCSZ40=;
+        b=ZyRV22PkX7qVooZv3DSpszE8wx+3gyeP7HU9CFcAP0lCjKHD5gd5/knPBFvsS973uK
+         HQmOOVKh2Cq7Y/zuAI1qIqnusi93HxYDEi31xZS9vpqGSC8sP2y+t+rMUWGNZldAzabR
+         KUUgmvo2bsYUMG748iB8gXzEo4hexXrTXcU2quP/UD98j8XXZfbjxubkNNkg+huk2Oan
+         uujzgRYlPcydRt/4D2IbsuGe7q/UKUKTW6tHksZeScBLR7hhx18ahuyI3jzcPSaHv1Eb
+         0ixCF/YADDOCv+SZOznSwRU144c9Rz0ueCzrDOOoYY1xLZR9hJqIK0PuM8S36F21yXBH
+         AH1w==
+X-Gm-Message-State: AOAM53309f+ig9LL8E9FqOnFkeLWgTu6lJp4H7lZkHY0YBMnz5M48EPz
+        HyaD3EOgFh0ySGNXX295yA==
+X-Google-Smtp-Source: ABdhPJwZ1XEH427kTOCof94GE7pPcfSIOvX5lcwYwNfkKoDKIPvm6zfYAh2JbL+pudnaUVZ34mRucQ==
+X-Received: by 2002:a9d:222:: with SMTP id 31mr4286176otb.79.1629235368840;
+        Tue, 17 Aug 2021 14:22:48 -0700 (PDT)
+Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id j125sm747897oif.53.2021.08.17.14.22.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Aug 2021 14:22:48 -0700 (PDT)
+Received: (nullmailer pid 863469 invoked by uid 1000);
+        Tue, 17 Aug 2021 21:22:47 -0000
+Date:   Tue, 17 Aug 2021 16:22:47 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Lucas Stankus <lucas.p.stankus@gmail.com>
+Cc:     Michael.Hennerich@analog.com, linux-iio@vger.kernel.org,
+        Dragos.Bogdan@analog.com, Darius.Berghe@analog.com,
+        devicetree@vger.kernel.org, lars@metafoo.de, jic23@kernel.org,
+        linux-kernel@vger.kernel.org, robh+dt@kernel.org
+Subject: Re: [PATCH v3 1/2] dt-bindings: iio: accel: Add binding
+ documentation for ADXL313
+Message-ID: <YRwop9HL/moXSdsa@robh.at.kernel.org>
+References: <cover.1628713039.git.lucas.p.stankus@gmail.com>
+ <1b468b9d4b22f2715ff7e8de868614e533cf1f2a.1628713039.git.lucas.p.stankus@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YRwi62E4xYcMyyFi@kunai>
+In-Reply-To: <1b468b9d4b22f2715ff7e8de868614e533cf1f2a.1628713039.git.lucas.p.stankus@gmail.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Aug 17, 2021 at 10:58:19PM +0200, Wolfram Sang wrote:
+On Wed, 11 Aug 2021 18:17:07 -0300, Lucas Stankus wrote:
+> Add device tree binding documentation for ADXL313 3-axis accelerometer.
 > 
-> > > Couldn't you use the "new" probe_new() callback instead which will drop
-> > > the i2c_device_id? Kieran was interested in such conversions IIRC.
-> > 
-> > It's a bit unrelated to this patch, but I can add another patch to the
-> > series.
-> > 
-> > While I have your attention, there's a question for you in the cover
-> > letter :-) Could you please have a look ?
+> Signed-off-by: Lucas Stankus <lucas.p.stankus@gmail.com>
+> ---
+>  .../bindings/iio/accel/adi,adxl313.yaml       | 86 +++++++++++++++++++
+>  1 file changed, 86 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adxl313.yaml
 > 
-> ? This was the answer to that question. Unless I misunderstood.
 
-My point is that this patch shouldn't be needed. I'd like if the I2C
-core could get the driver data from the i2c_device_id table instead of
-duplicating it in the of_device_id. This isn't possible today as
-i2c_match_id() doesn't have the fallback mechanism that OF matching has.
-
--- 
-Regards,
-
-Laurent Pinchart
+Reviewed-by: Rob Herring <robh@kernel.org>

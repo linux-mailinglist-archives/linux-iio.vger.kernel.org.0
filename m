@@ -2,58 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6EE03F0158
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Aug 2021 12:10:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F30D43F0183
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Aug 2021 12:19:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233635AbhHRKKk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Aug 2021 06:10:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45948 "EHLO
+        id S233798AbhHRKUI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Aug 2021 06:20:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233302AbhHRKKk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Aug 2021 06:10:40 -0400
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4687C061764
-        for <linux-iio@vger.kernel.org>; Wed, 18 Aug 2021 03:10:05 -0700 (PDT)
-Received: by mail-pl1-x631.google.com with SMTP id q2so1454701plr.11
-        for <linux-iio@vger.kernel.org>; Wed, 18 Aug 2021 03:10:05 -0700 (PDT)
+        with ESMTP id S233864AbhHRKUB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Aug 2021 06:20:01 -0400
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0EC7C06179A
+        for <linux-iio@vger.kernel.org>; Wed, 18 Aug 2021 03:19:23 -0700 (PDT)
+Received: by mail-pg1-x534.google.com with SMTP id y23so1751520pgi.7
+        for <linux-iio@vger.kernel.org>; Wed, 18 Aug 2021 03:19:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=UQgzKsT+OypRap9xoc5KjAxY+4qy+e7aPAFuNdSXi6Y=;
-        b=r62gedh0CTDdbKEThV/tkJMzOzB1PghfNm7kI3Yu3CLNIw25KUEbpGkdtUQeyGA8KY
-         2YKLS9BWOHtB/TXt/bbYyUjFJs/83lY9rrRmVPpsmXvDdDALdfIVdYyl8oMH2/4NusBx
-         uTDepmgATFCQwuP8SIpsOEpg/zWoaUZozyYAqWMeeAb0nP1DwRtGMSolQZMCY5CPNQz1
-         tcu5w+m9YUqe392uU5l0fsIDNb3hd//zgUWmRHOdsVBtnAev+nhKUGk69Ry7Q0EFaDBf
-         xaDsOzOSo272KvBAkVPbIpip3780ztDRoJ6gCdRgURkUog5NydnMhAwdBl2x2jfkT8Ae
-         JgRw==
+        bh=O/0AmWJ2zZ9jBOUKiBYokfwpQ0K25nIbKKNBnHZRFQ4=;
+        b=UMAa8Q1DHk6z2OzI/1bDWuF/sm85HCg5YHHil3lDzeANeUjIofTkQHcUDoqJgAqeC3
+         uq8CnLn8t5a8VRVlM6iPsmOmis/0XQ9uXkEJ5vNEYSgiunFGwpLOTNe3zPWkxEAjZ3Ep
+         ZIJmsY7RHaNISMkEyBcscTtdpEBloyfd0NfdvKY/Nf+/xSzPH8XrrHjkvV4SZHw/ScCT
+         yx/gfmUwYW+z0T1KZGy2bEY8gb1x9//p2DTDXuvoou98aQA2imV4qXs3jTqFBGmmIBt5
+         Jim4zWfLdXZxAi8lhLEgUQ9uL7uKoEdOGnZ5MHN+kDGEMbRfAC0H/TNknYNJ802xaDiR
+         GJpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=UQgzKsT+OypRap9xoc5KjAxY+4qy+e7aPAFuNdSXi6Y=;
-        b=ugMht62vUnjjeIl0KDKGwklxs1HlSUzthEoxujxW4uqmMpNxxKqeA389oDJGU3u1Tg
-         yGnbph35WmDIAxRyJyWKH5PwMEcDBSMHhcquYYZVG9LG8v58YOLlgvQH7mjy9PweOCHY
-         119GPiGF1YJFy8IqGY9pth58zJzUQWxQHZifb0jStoFvwgWjKRR1OnaynAeBaCmJBg7F
-         +XR1TzjQe/2YunY7LuXPwkcIa+FluffoANBTOX/Kb4A0owJK371eT+CXhTveVF0ppRMs
-         DZT5koEMZzjfbCWiRgvWEu8LDV3Cmbx+vH4XjrrDSck5GJflyuN8cPptcmjB2FgPSKcU
-         eVSA==
-X-Gm-Message-State: AOAM533jRNCln4Tj3H5mRogMKHQag4HEGtfYr31QTm9PFVc345/1LDEa
-        OQ5bR1KQFlGCS3BGB7XlfTsi9Vnq5p+NQG4W/zM=
-X-Google-Smtp-Source: ABdhPJzUlT2xJh3Oltp9+Ssqfl6PHwl13CmHBi1y9IliNpiHjfgZMgvtC0S42mrLAXveAERwC6p2ubhuhU1rX+FZ97M=
-X-Received: by 2002:a17:90a:cf18:: with SMTP id h24mr8601097pju.228.1629281405354;
- Wed, 18 Aug 2021 03:10:05 -0700 (PDT)
+        bh=O/0AmWJ2zZ9jBOUKiBYokfwpQ0K25nIbKKNBnHZRFQ4=;
+        b=MdnSGGtwnOfJOHwE0b4cEQ6VBOqq/c9TynXhmWqeMZzlG43Qwk404lW4wSFtNf9jlk
+         1Oj1B+efyZ1No1C3VIbr5i2VPBdHOM3zF66tb9SgFk5ZCsPvd3y8MIl6+OrSmc03EAFx
+         wXBFc1QVZz8I0CBqbXX+wI28QDW8JDWtAFlym8MSpAxowcNEd4IshnunnPOBhzkbauTr
+         qOpZqdm/qAA98XjZ1N8uu5wVWdYC7qWea2yOZurYlAIrg0b24jLAPSj7xq8X1jgclaXn
+         A1GEKExnkyHcZ1GJv8lcTuxw1487E3wpo1ofV3hTYmrYr6+B0T2eFZZsuBC1jrhEtMay
+         BXhQ==
+X-Gm-Message-State: AOAM5338CeYcMyhcZHb3e7l2a4Zx5xy0aocj27Fe/KiktwgliL3ryyEp
+        p3Wf8nIiECee2UXe/C5Etw2pC/UuLIh8kFoOcxY=
+X-Google-Smtp-Source: ABdhPJwW32NVPTbN6HfUGf3bcV/Wb6uAd0Ws+pIIoG/bq53OOueIr7okogFmq2yCOJAhonO279WzAv8yO5uUEmo935k=
+X-Received: by 2002:a65:45c3:: with SMTP id m3mr8237777pgr.203.1629281963179;
+ Wed, 18 Aug 2021 03:19:23 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210818092741.2114155-1-sean@geanix.com>
-In-Reply-To: <20210818092741.2114155-1-sean@geanix.com>
+References: <20210818092741.2114155-1-sean@geanix.com> <20210818092741.2114155-2-sean@geanix.com>
+In-Reply-To: <20210818092741.2114155-2-sean@geanix.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 18 Aug 2021 13:09:28 +0300
-Message-ID: <CAHp75VdAE=NAgE5yTOo-6Zf+96R1noOAGGrmr8t3vqZMo06Oqw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] iio: accel: fxls8962af: add threshold event handling
+Date:   Wed, 18 Aug 2021 13:18:46 +0300
+Message-ID: <CAHp75VfymQu1dP6ku027B0psAHzWcfPcaGmJjJukCrafw91ihg@mail.gmail.com>
+Subject: Re: [PATCH 2/2] iio: accel: fxls8962af: add wake on event
 To:     Sean Nyekjaer <sean@geanix.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-iio@vger.kernel.org
+        linux-iio <linux-iio@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
@@ -61,147 +61,52 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Wed, Aug 18, 2021 at 12:29 PM Sean Nyekjaer <sean@geanix.com> wrote:
 >
-> Add event channels that controls the creation of motion events.
+> This add ways for the SoC to wake from accelerometer wake events.
 
-'channel' or 'control' decide which one should be plural.
+adds
 
-> +static int fxls8962af_event_setup(struct fxls8962af_data *data, int state)
+> In the suspend function we skip disabling the sensor if wakeup-source
+> and events are activated.
+> If the buffer is enabled it will be deactivated before suspend, as the
+> buffer is quite small.
+
+"..., because it is..."
+Or what are you saying here?
+
+...
+
+> +       if (dev_fwnode(dev) && device_property_read_bool(dev, "wakeup-source"))
+
+dev_fwnode() is redundant.
+
+> +               device_init_wakeup(dev, true);
+
+...
+
+> +static int __maybe_unused fxls8962af_suspend(struct device *dev)
 > +{
-> +       int ret;
+> +       struct iio_dev *indio_dev = dev_get_drvdata(dev);
+> +       struct fxls8962af_data *data = iio_priv(indio_dev);
 > +
-> +       /* Enable wakeup interrupt */
-> +       ret = regmap_update_bits(data->regmap, FXLS8962AF_INT_EN,
-> +                                FXLS8962AF_INT_EN_SDCD_OT_EN,
-> +                                state ? FXLS8962AF_INT_EN_SDCD_OT_EN : 0);
-> +
-> +       return ret;
-
-Redundant ret. Besides that use simply
-
-int mask = FXLS8962AF_INT_EN_SDCD_OT_EN;
-int value = state ? mask : 0;
-
-return regmap(..., mask, value);
-
-> +}
-
-...
-
-> +       ret = regmap_bulk_read(data->regmap, FXLS8962AF_SDCD_UTHS_LSB,
-> +                              &raw_val, (chan->scan_type.storagebits / 8));
-
-Too many parentheses.
-Check also the rest of the code for all comments I have given in this email.
-
-> +       if (ret)
-> +               return ret;
-
-...
-
-> +       if (val < 0 || val > 2047)
-> +               return -EINVAL;
-
-Can be performed as (val >> 11), but the above is more explicit I think.
-
-...
-
-> +       /* Add the same value to the lower-threshold register with a reversed sign */
-> +       data->lower_thres = (-val & 0x80000000) >> 20 | (val & 0x7FF);
-> +       data->upper_thres = (val & 0x80000000) >> 20 | (val & 0x7FF);
-
-Why is it so complicated?
-
-Wouldn't lower = -val & GENMASK(10, 0); work?
-The upper, btw, has a dead code.
-
-...
-
-> +       ret = regmap_bulk_write(data->regmap, FXLS8962AF_SDCD_LTHS_LSB,
-> +                               &data->lower_thres, (chan->scan_type.storagebits / 8));
-
-Missed error check.
-
-> +       ret = regmap_bulk_write(data->regmap, FXLS8962AF_SDCD_UTHS_LSB,
-> +                               &data->upper_thres, (chan->scan_type.storagebits / 8));
-
-Ditto.
-
-> +       if (is_active)
-> +               ret = fxls8962af_active(data);
-> +
-> +       return ret;
-
-...
-
-> +       switch (chan->channel2) {
-> +       case IIO_MOD_X:
-> +               ret = FXLS8962AF_SDCD_CONFIG1_X_OT_EN & data->enable_event;
-> +               break;
-> +       case IIO_MOD_Y:
-> +               ret = FXLS8962AF_SDCD_CONFIG1_Y_OT_EN & data->enable_event;
-> +               break;
-> +       case IIO_MOD_Z:
-> +               ret = FXLS8962AF_SDCD_CONFIG1_Z_OT_EN & data->enable_event;
-> +               break;
-> +       default:
-> +               return -EINVAL;
-> +       }
 > +
 
-> +       return !!ret;
+One blank line is enough.
 
-This is strange.
-
-...
-
-> +       ret = regmap_write(data->regmap, FXLS8962AF_SDCD_CONFIG2, enable_event > 0 ? 0xC0 : 0x00);
-
-Redundant ' > 0'
-
-> +       if (ret)
-> +               return ret;
-
-...
-
-> +       if (data->enable_event > 0) {
-
-Ditto.
-
-> +               fxls8962af_active(data);
-> +               ret = fxls8962af_power_on(data);
+> +       if (device_may_wakeup(dev) && data->enable_event) {
+> +               enable_irq_wake(data->irq);
+> +
+> +               /*
+> +                * Disable buffer, as the buffer is so small the device will wake
+> +                * almost immediately.
+> +                */
+> +               if (iio_buffer_enabled(indio_dev))
+> +                       fxls8962af_buffer_predisable(indio_dev);
 > +       } else {
-> +               if (!iio_buffer_enabled(indio_dev))
-> +                       ret = fxls8962af_power_off(data);
+> +               fxls8962af_runtime_suspend(dev);
 > +       }
-
-...
-
-> +static const struct iio_event_spec fxls8962af_event = {
-> +       .type = IIO_EV_TYPE_THRESH,
-> +       .dir = IIO_EV_DIR_EITHER,
-> +       .mask_separate = BIT(IIO_EV_INFO_VALUE) |
-> +                        BIT(IIO_EV_INFO_ENABLE)
-
-+ comma
-
-> +};
-
-...
-
-> +       if (data->enable_event == 0)
-
-if (!enable_event)
-
-> +               fxls8962af_power_off(data);
-
-...
-
-> +       ret = regmap_read(data->regmap, FXLS8962AF_SDCD_INT_SRC1, &reg);
-> +       if (ret | (reg < 0))
-
-This is weird and shadows an actual error.
-
-> +               return -EINVAL;
+> +
+> +       return 0;
+> +}
 
 -- 
 With Best Regards,

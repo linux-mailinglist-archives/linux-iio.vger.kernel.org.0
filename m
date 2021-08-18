@@ -2,112 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F30D43F0183
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Aug 2021 12:19:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62F453F0249
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Aug 2021 13:11:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233798AbhHRKUI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Aug 2021 06:20:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48040 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233864AbhHRKUB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Aug 2021 06:20:01 -0400
-Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0EC7C06179A
-        for <linux-iio@vger.kernel.org>; Wed, 18 Aug 2021 03:19:23 -0700 (PDT)
-Received: by mail-pg1-x534.google.com with SMTP id y23so1751520pgi.7
-        for <linux-iio@vger.kernel.org>; Wed, 18 Aug 2021 03:19:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=O/0AmWJ2zZ9jBOUKiBYokfwpQ0K25nIbKKNBnHZRFQ4=;
-        b=UMAa8Q1DHk6z2OzI/1bDWuF/sm85HCg5YHHil3lDzeANeUjIofTkQHcUDoqJgAqeC3
-         uq8CnLn8t5a8VRVlM6iPsmOmis/0XQ9uXkEJ5vNEYSgiunFGwpLOTNe3zPWkxEAjZ3Ep
-         ZIJmsY7RHaNISMkEyBcscTtdpEBloyfd0NfdvKY/Nf+/xSzPH8XrrHjkvV4SZHw/ScCT
-         yx/gfmUwYW+z0T1KZGy2bEY8gb1x9//p2DTDXuvoou98aQA2imV4qXs3jTqFBGmmIBt5
-         Jim4zWfLdXZxAi8lhLEgUQ9uL7uKoEdOGnZ5MHN+kDGEMbRfAC0H/TNknYNJ802xaDiR
-         GJpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=O/0AmWJ2zZ9jBOUKiBYokfwpQ0K25nIbKKNBnHZRFQ4=;
-        b=MdnSGGtwnOfJOHwE0b4cEQ6VBOqq/c9TynXhmWqeMZzlG43Qwk404lW4wSFtNf9jlk
-         1Oj1B+efyZ1No1C3VIbr5i2VPBdHOM3zF66tb9SgFk5ZCsPvd3y8MIl6+OrSmc03EAFx
-         wXBFc1QVZz8I0CBqbXX+wI28QDW8JDWtAFlym8MSpAxowcNEd4IshnunnPOBhzkbauTr
-         qOpZqdm/qAA98XjZ1N8uu5wVWdYC7qWea2yOZurYlAIrg0b24jLAPSj7xq8X1jgclaXn
-         A1GEKExnkyHcZ1GJv8lcTuxw1487E3wpo1ofV3hTYmrYr6+B0T2eFZZsuBC1jrhEtMay
-         BXhQ==
-X-Gm-Message-State: AOAM5338CeYcMyhcZHb3e7l2a4Zx5xy0aocj27Fe/KiktwgliL3ryyEp
-        p3Wf8nIiECee2UXe/C5Etw2pC/UuLIh8kFoOcxY=
-X-Google-Smtp-Source: ABdhPJwW32NVPTbN6HfUGf3bcV/Wb6uAd0Ws+pIIoG/bq53OOueIr7okogFmq2yCOJAhonO279WzAv8yO5uUEmo935k=
-X-Received: by 2002:a65:45c3:: with SMTP id m3mr8237777pgr.203.1629281963179;
- Wed, 18 Aug 2021 03:19:23 -0700 (PDT)
+        id S233722AbhHRLMR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Aug 2021 07:12:17 -0400
+Received: from relay3-d.mail.gandi.net ([217.70.183.195]:36347 "EHLO
+        relay3-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235166AbhHRLMQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Aug 2021 07:12:16 -0400
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id A23EF60002;
+        Wed, 18 Aug 2021 11:11:39 +0000 (UTC)
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        linux-iio@vger.kernel.org, <linux-kernel@vger.kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 00/16] Bring software triggers support to MAX1027-like ADCs
+Date:   Wed, 18 Aug 2021 13:11:23 +0200
+Message-Id: <20210818111139.330636-1-miquel.raynal@bootlin.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-References: <20210818092741.2114155-1-sean@geanix.com> <20210818092741.2114155-2-sean@geanix.com>
-In-Reply-To: <20210818092741.2114155-2-sean@geanix.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 18 Aug 2021 13:18:46 +0300
-Message-ID: <CAHp75VfymQu1dP6ku027B0psAHzWcfPcaGmJjJukCrafw91ihg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] iio: accel: fxls8962af: add wake on event
-To:     Sean Nyekjaer <sean@geanix.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Aug 18, 2021 at 12:29 PM Sean Nyekjaer <sean@geanix.com> wrote:
->
-> This add ways for the SoC to wake from accelerometer wake events.
+Until now the max1027.c driver, which handles 10-bit devices (max10xx)
+and 12-bit devices (max12xx), only supported hardware triggers. When a
+hardware trigger is not wired it is very convenient to trigger periodic
+conversions with timers or on userspace demand with a sysfs
+trigger. Overall, when several values are needed at the same time using
+triggers and buffers improves quite a lot the performances.
 
-adds
+This series starts with two small fixes, then does a bit of
+cleaning/code reorganization before actually adding support for software
+triggers.
 
-> In the suspend function we skip disabling the sensor if wakeup-source
-> and events are activated.
-> If the buffer is enabled it will be deactivated before suspend, as the
-> buffer is quite small.
+This series has been developed and tested on a custom board with a 4.14
+kernel. I then rebased the series on top of a mainline kernel
+(v5.14-rc1) but unfortunately after quite some time debugging it I was
+unable to get all the necessary blocks running in order to properly test
+it. Anyway, there was very little changes in that series when rebasing
+it from v4.14 to v5.14-rc1 so I am pretty confident it will smoothly
+work with a more recent kernel.
 
-"..., because it is..."
-Or what are you saying here?
+How to test sysfs triggers:
+    echo 0 > /sys/bus/iio/devices/iio_sysfs_trigger/add_trigger
+    cat /sys/bus/iio/devices/iio_sysfs_trigger/trigger0/name > \
+        /sys/bus/iio/devices/iio:device0/trigger/current_trigger
+    echo 1 > /sys/bus/iio/devices/iio:device0/scan_elements/in_voltageX_en
+    echo 1 > /sys/bus/iio/devices/iio:device0/scan_elements/in_voltageY_en
+    echo 1 > /sys/bus/iio/devices/iio:device0/buffer/enable
+    cat /dev/iio\:device0 > /tmp/data &
+    echo 1 > /sys/bus/iio/devices/trigger0/trigger_now
+    od -t x1 /tmp/data
 
-...
+Cheers,
+Miquèl
 
-> +       if (dev_fwnode(dev) && device_property_read_bool(dev, "wakeup-source"))
+Miquel Raynal (16):
+  iio: adc: max1027: Fix wrong shift with 12-bit devices
+  iio: adc: max1027: Fix the number of max1X31 channels
+  iio: adc: max1027: Push only the requested samples
+  iio: adc: max1027: Lower conversion time
+  iio: adc: max1027: Drop extra warning message
+  iio: adc: max1027: Rename a helper
+  iio: adc: max1027: Create a helper to configure the trigger
+  iio: adc: max1027: Explain better how the trigger state gets changed
+  iio: adc: max1027: Create a helper to configure the channels to scan
+  iio: adc: max1027: Prevent single channel accesses during buffer reads
+  iio: adc: max1027: Separate the IRQ handler from the read logic
+  iio: adc: max1027: Introduce an end of conversion helper
+  iio: adc: max1027: Prepare re-using the EOC interrupt
+  iio: adc: max1027: Consolidate the end of conversion helper
+  iio: adc: max1027: Support software triggers
+  iio: adc: max1027: Enable software triggers to be used without IRQ
 
-dev_fwnode() is redundant.
-
-> +               device_init_wakeup(dev, true);
-
-...
-
-> +static int __maybe_unused fxls8962af_suspend(struct device *dev)
-> +{
-> +       struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> +       struct fxls8962af_data *data = iio_priv(indio_dev);
-> +
-> +
-
-One blank line is enough.
-
-> +       if (device_may_wakeup(dev) && data->enable_event) {
-> +               enable_irq_wake(data->irq);
-> +
-> +               /*
-> +                * Disable buffer, as the buffer is so small the device will wake
-> +                * almost immediately.
-> +                */
-> +               if (iio_buffer_enabled(indio_dev))
-> +                       fxls8962af_buffer_predisable(indio_dev);
-> +       } else {
-> +               fxls8962af_runtime_suspend(dev);
-> +       }
-> +
-> +       return 0;
-> +}
+ drivers/iio/adc/max1027.c | 236 ++++++++++++++++++++++++++++----------
+ 1 file changed, 177 insertions(+), 59 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.27.0
+

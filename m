@@ -2,113 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EF613F5E7C
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Aug 2021 14:59:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3DB03F63C1
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Aug 2021 18:57:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236952AbhHXNAL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 24 Aug 2021 09:00:11 -0400
-Received: from first.geanix.com ([116.203.34.67]:37278 "EHLO first.geanix.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236910AbhHXNAL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 24 Aug 2021 09:00:11 -0400
-Received: from skn-laptop (unknown [185.17.218.86])
-        by first.geanix.com (Postfix) with ESMTPSA id 86910440F4E;
-        Tue, 24 Aug 2021 12:59:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1629809965; bh=IpuyqW3nFGzrvA6myjD6qcMlcb4Gw3WjLyCuiQql5O8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To;
-        b=MyQv+yHI+mFJVbVOm7WPuL6RwS5gEjW8yTdhJ/z/V81audt8sj9AlxcIKlsXTSKPA
-         vgmdfpNlyOXZ7DWLk+HUueaDcZAJ33rjNYWWAsf4DMa8TNp63/h4qHJJPzpY1uXPUq
-         tMnT29bNSwNcL2gnum2Z/8UJTdJ4BNIWUxvHOHoQjHKfQSsiWbCpK/DwYWewPf5Mca
-         TutLBEWU0VctM/BDyMb/QqOJwKsquOEQI95hOir2pODA/hNWGLDxqmV53joxQ00X5h
-         XC8BgrZPB4YCjBYED++g25Ira1J7xuaLzVGd5+46hPYBQr6T9a4uqCtWz3ZQKyHqcW
-         wrgfHqZXzXDzQ==
-Date:   Tue, 24 Aug 2021 14:59:24 +0200
-From:   Sean Nyekjaer <sean@geanix.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-iio <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] iio: accel: fxls8962af: add threshold event
- handling
-Message-ID: <20210824125924.7z3ufe6zdvgdb7am@skn-laptop>
-References: <20210824113709.1834195-1-sean@geanix.com>
- <CAHp75VeMzs+xyksGB8Kcnr-09a740eoWYmEJQHgbhMNVbuzAwA@mail.gmail.com>
- <20210824123245.z5o452x5s5m2wcyx@skn-laptop>
- <CAHp75VcfcAyjSuX=xrVcWdLbDVpoOT2_NKsMmKmRwagL1EZ=Og@mail.gmail.com>
+        id S237947AbhHXQ6G (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 24 Aug 2021 12:58:06 -0400
+Received: from mail-ot1-f43.google.com ([209.85.210.43]:37837 "EHLO
+        mail-ot1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234334AbhHXQ5f (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Aug 2021 12:57:35 -0400
+Received: by mail-ot1-f43.google.com with SMTP id i3-20020a056830210300b0051af5666070so38110590otc.4;
+        Tue, 24 Aug 2021 09:56:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=C7txPjPjbsp8XuclaI5qbJQ3gQnsw2SWCgSeRaywFZQ=;
+        b=iK0W/8PnK9hFYuFlFcy4yOhQKan4jlYuto9nlV1RRWFYp6V6lpSdUivvG7atz1qPr1
+         eKGPZSuqJlE5CfaPzPIahN9mM3HfFzmp3o9XQdGSjDYzrz/Gc+jIHcfJ4terBWz312ID
+         jLeWV4T+3C7LPgjYfz8sP5eKHMwMF8xk5rjDFBYYc1MfR3kjJZqoyxDHnEdljegmV9k2
+         5YIDqq6ujvTdrbStSPv43m08DFgX/9JPj4i56zngz7nyn/tgRHFNNwj+A0F4Hsgm0Zej
+         /eejXMKkFlIduNvE3o28F1p7Jmm9RbQJFU9jU+3/VO12c31r6xC2IcuVunVG5rHmmHaO
+         bsew==
+X-Gm-Message-State: AOAM532fkw7A/AatSQ8jEB6Syglo8K2wVzmp/rEDUgGXll0RAcwCSs6V
+        H3btaeXmNouAga5VK9e9HA==
+X-Google-Smtp-Source: ABdhPJzkiNL6iSxtcJl9nTdq2oHs5KYVn1yCRary5Wk5G/v93BTTPpM9RS39MpM82OuagU7zLghLfw==
+X-Received: by 2002:a05:6830:156:: with SMTP id j22mr25337495otp.75.1629824211300;
+        Tue, 24 Aug 2021 09:56:51 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id n13sm2971351otr.11.2021.08.24.09.56.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Aug 2021 09:56:50 -0700 (PDT)
+Received: (nullmailer pid 622951 invoked by uid 1000);
+        Tue, 24 Aug 2021 16:56:49 -0000
+Date:   Tue, 24 Aug 2021 11:56:49 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Navin Sankar Velliangiri <navin@linumiz.com>
+Cc:     ardeleanalex@gmail.com, jic23@kernel.org, lars@metafoo.de,
+        pmeerw@pmeerw.net, devicetree@vger.kernel.org, robh+dt@kernel.org,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH v4 2/2] dt-bindings: iio: temperature: add MAXIM max31865
+ support
+Message-ID: <YSUk0eiz0ETc1J8W@robh.at.kernel.org>
+References: <20210824050650.72619-1-navin@linumiz.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHp75VcfcAyjSuX=xrVcWdLbDVpoOT2_NKsMmKmRwagL1EZ=Og@mail.gmail.com>
-X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
-        autolearn=disabled version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on 13e2a5895688
+In-Reply-To: <20210824050650.72619-1-navin@linumiz.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Aug 24, 2021 at 03:42:58PM +0300, Andy Shevchenko wrote:
-> On Tue, Aug 24, 2021 at 3:32 PM Sean Nyekjaer <sean@geanix.com> wrote:
-> > On Tue, Aug 24, 2021 at 03:15:28PM +0300, Andy Shevchenko wrote:
-> > > On Tue, Aug 24, 2021 at 2:38 PM Sean Nyekjaer <sean@geanix.com> wrote:
+On Tue, 24 Aug 2021 10:36:50 +0530, Navin Sankar Velliangiri wrote:
+> Add DT bindings for MAXIM max31865 RTD sensor.
 > 
-> ...
+> Signed-off-by: Navin Sankar Velliangiri <navin@linumiz.com>
 > 
-> > > > +       /*
-> > > > +        * Add the same value to the lower-threshold register with a reversed sign
-> > > > +        * in 2-complement 12 bit format.
-> > > > +        */
-> > > > +       data->lower_thres = (~val & GENMASK(11, 0)) + 1;
-> > >
-> > > This looks suspicious.
-> > >
-> > > 0 => 0xfff + 1 => 0x1000. Is it what is wanted?
-> > > I thought that -val & mask is what you need.
-> > >
-> > > Can you explain more in the comment (maybe with examples) on what is
-> > > coming and what is expected?
-> >
-> > It's a bit messy I know :)
-> >
-> > Some examples:
-> > val = 0 => upper = 0x0, lower = 0x0
-> > val = 500 => upper = 0x1F4, lower = 0xe0c
-> > val = 1000 => upper = 0x3e8, lower = 0xc18
-> >
-> > Guess it could work if we special case val = 0...
-> >
-> > It doesn't even makes sense to write 0 to this register as noise would
-> > trigger events.
-> >
-> > > > +       data->upper_thres = val & GENMASK(10, 0);
+> ---
+> Note:
+> Changes in v2:
+> 	-> Changed the name RTD to Resistance Temperature Detector
+> 	-> renamed maxim,no-of-wires to 3-wire
+> 	-> fixed code alignment for the example
 > 
-> So, I just tested all three and with '-' (minus) it works, while your
-> code is buggy :-)
+> Changes in v3:
+> 	-> Added more information about 3 wire RTD connection
+> ---
+>  .../iio/temperature/maxim,max31865.yaml       | 52 +++++++++++++++++++
+>  1 file changed, 52 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/temperature/maxim,max31865.yaml
+> 
 
-Agree, just tested with:
-
----
-#include <stdio.h>
-
-int main() {
-	signed int lower_thres, upper_thres, lower, upper;
-
-	int val;
-
-	for (val = 0; val <= 1000; val+=500) {
-		lower = -val & 0xFFF;
-		upper = val & 0x7FF;
-
-		printf("val %d, upper 0x%x, lower 0x%x\n", val, upper, lower);
-	}
-}
----
-
-val 0, upper 0x0, lower 0x0
-val 500, upper 0x1f4, lower 0xe0c
-val 1000, upper 0x3e8, lower 0xc18
-
-Thanks :)
-
-/Sean
+Reviewed-by: Rob Herring <robh@kernel.org>

@@ -2,190 +2,180 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5165E3F5DB3
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Aug 2021 14:13:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5919D3F5DBE
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Aug 2021 14:16:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236907AbhHXMNw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 24 Aug 2021 08:13:52 -0400
-Received: from mail-ot1-f48.google.com ([209.85.210.48]:38609 "EHLO
-        mail-ot1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236676AbhHXMNv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Aug 2021 08:13:51 -0400
-Received: by mail-ot1-f48.google.com with SMTP id i8-20020a056830402800b0051afc3e373aso34121337ots.5;
-        Tue, 24 Aug 2021 05:13:07 -0700 (PDT)
+        id S236983AbhHXMQy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 24 Aug 2021 08:16:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46174 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236676AbhHXMQw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Aug 2021 08:16:52 -0400
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51EF9C061757
+        for <linux-iio@vger.kernel.org>; Tue, 24 Aug 2021 05:16:08 -0700 (PDT)
+Received: by mail-pg1-x52e.google.com with SMTP id k24so19596215pgh.8
+        for <linux-iio@vger.kernel.org>; Tue, 24 Aug 2021 05:16:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=rfkPQDRQPY89UjZwFD8p2mGydRy98CMfz8jPGMPOoxQ=;
+        b=k8Vu2W/1zwCKq6YEHKIj20okc11qBNKCkZUffz0tqBT73Yezc++wW2AWWHzoDl/LLi
+         r76iH+F9xgs4QIe930XErWMfmpZgK7SC/Ys+4hBYVLnwsEhiWG3AFvJcYHXvfeM1BdHB
+         sth0LqT37lvBobV/OKyNtBjKhgWzdBeIiDMVs/zIZrVZxEhImPhTXYN954jYAMR7qgGU
+         wUDMt/9VWsdK6TakZP1QrJghks5sG5KfZ/wjd1YanIVJlBD8+5hO1WasoL86Yjv2Naz/
+         PDhLg4cp//iu1XFgDbwiBIDLwpo39tnbCn1Mu00BbFErPWtqOOTC6w5pn9bAH5rAr0Ef
+         s3jw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=ucW5ESnazpnHopEpKtJXSrUkYd/hKt6rzSaH/p9OLnU=;
-        b=QMmYisvFZCfC6pHaAo2REGXtoD0WNe58uC9nSKS8+RXFPK6d1Mx5P99y+TDcq6ciYN
-         rcpYWqT8RgsnkS6esvdSR5cvhCGrrmqX5ZsKgDRxZ/MsNCZ0wc1qjNSHJft1S2M7FrDJ
-         N1PW+ccAOaMjc16N/dP7mFtYjMhJgwO0DVBOVet+mUbaUsx3hXs4HO9/d4YC3FdM/8Nq
-         C8OiPbd3YH2gWk9gpiqVwZ/VwwRGuUwzkMw1P3LLe6/ldmNnsaNRlynglWlXnQ/R8Pdd
-         ufmUBxICKUpE1kXZ9NvVZ8v3lLJn1KDU7R1dwuSnyCOIASUEKuv8+83W1ICGSjfwLQad
-         UdfQ==
-X-Gm-Message-State: AOAM533hMsrbJjqyp1GCWLb/Z+VH2oHhnWlYk88QmJTDzeUi7aaY2N4+
-        +yubsiWQ2Z2eTbHwIEyhlQ==
-X-Google-Smtp-Source: ABdhPJwmL7fV+UFqhUhlvO56wKUhjbk2HWg/fnimn1UVUMQplLSBAYfIBSxvjbqmY8uN0GSWWUxrkA==
-X-Received: by 2002:a05:6808:10c8:: with SMTP id s8mr2565522ois.6.1629807186746;
-        Tue, 24 Aug 2021 05:13:06 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id 97sm4553510otv.26.2021.08.24.05.13.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Aug 2021 05:13:05 -0700 (PDT)
-Received: (nullmailer pid 21234 invoked by uid 1000);
-        Tue, 24 Aug 2021 12:13:04 -0000
-Date:   Tue, 24 Aug 2021 07:13:04 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Billy Tsai <billy_tsai@aspeedtech.com>
-Cc:     jic23@kernel.org, lars@metafoo.de, pmeerw@pmeerw.net,
-        joel@jms.id.au, andrew@aj.id.au, p.zabel@pengutronix.de,
-        lgirdwood@gmail.com, broonie@kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        BMC-SW@aspeedtech.com
-Subject: Re: [v4 01/15] dt-bindings: iio: adc: Add ast2600-adc bindings
-Message-ID: <YSTiUPQa+HYSA63t@robh.at.kernel.org>
-References: <20210823070240.12600-1-billy_tsai@aspeedtech.com>
- <20210823070240.12600-2-billy_tsai@aspeedtech.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=rfkPQDRQPY89UjZwFD8p2mGydRy98CMfz8jPGMPOoxQ=;
+        b=U4ZeMVwh0w+yaPEUqYQTgbHku/wdz0T5PLr4r6fY65dNHdcISghVjO8M3tKqfbxCUW
+         4cnyK436J72QBG+nbGK80Wf+sJsACSrNlquqfEp3V5KFzrAZj4T1ZxK9gm0z0c1VZ6oA
+         bMIKBKQlmLiwKIn1wmS2ixb+TwnJXofEIwxmwCMM6N3uvuIwUDRhWl4I1VFZksZEctii
+         agsoH+hOIjScOeBgmF9eL/NwALKV8+0LM0iWENsnCV28/utNzzZJ65FQL0PR5SCZ1Ber
+         GElCGYhIg2lpx8N51yl0fWFu8cBMkFy12+4NY35sydqmtOBoqNHDFFcrqf6MYfDMLn3P
+         66Uw==
+X-Gm-Message-State: AOAM5319uqhTbLi2vieaF802r3N3axgumRD2y+5Qsv06x6JaegAqWqH8
+        KZ3/xBM1iIK4jOv45Ejlw9LYJHr7EJpL1qQC8vA=
+X-Google-Smtp-Source: ABdhPJyvLQRMLT2cEDieei8Eb+i/ALRZQcSO46dnPaaqaxLCHAY/LsNaehLWtiAFznXPDR8sGZNlwxzmeLp4YclxjQ8=
+X-Received: by 2002:a63:4464:: with SMTP id t36mr4862019pgk.4.1629807367682;
+ Tue, 24 Aug 2021 05:16:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210823070240.12600-2-billy_tsai@aspeedtech.com>
+References: <20210824113709.1834195-1-sean@geanix.com>
+In-Reply-To: <20210824113709.1834195-1-sean@geanix.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 24 Aug 2021 15:15:28 +0300
+Message-ID: <CAHp75VeMzs+xyksGB8Kcnr-09a740eoWYmEJQHgbhMNVbuzAwA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] iio: accel: fxls8962af: add threshold event handling
+To:     Sean Nyekjaer <sean@geanix.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Aug 23, 2021 at 03:02:26PM +0800, Billy Tsai wrote:
-> Add device tree bindings document for the aspeed ast2600 adc device
-> driver.
-> 
-> Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
-> ---
->  .../bindings/iio/adc/aspeed,ast2600-adc.yaml  | 97 +++++++++++++++++++
->  1 file changed, 97 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/aspeed,ast2600-adc.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/aspeed,ast2600-adc.yaml b/Documentation/devicetree/bindings/iio/adc/aspeed,ast2600-adc.yaml
-> new file mode 100644
-> index 000000000000..248cda7d91e9
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/aspeed,ast2600-adc.yaml
-> @@ -0,0 +1,97 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/aspeed,ast2600-adc.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: ADC that forms part of an ASPEED server management processor.
-> +
-> +maintainers:
-> +  - Billy Tsai <billy_tsai@aspeedtech.com>
-> +
-> +description: |
-> +  • 10-bits resolution for 16 voltage channels.
-> +  • The device split into two individual engine and each contains 8 voltage
-> +  channels.
-> +  • Channel scanning can be non-continuous.
-> +  • Programmable ADC clock frequency.
-> +  • Programmable upper and lower threshold for each channels.
-> +  • Interrupt when larger or less than threshold for each channels.
-> +  • Support hysteresis for each channels.
-> +  • Built-in a compensating method.
-> +  • Built-in a register to trim internal reference voltage.
-> +  • Internal or External reference voltage.
-> +  • Support 2 Internal reference voltage 1.2v or 2.5v.
-> +  • Integrate dividing circuit for battery sensing.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - aspeed,ast2600-adc0
-> +      - aspeed,ast2600-adc1
+On Tue, Aug 24, 2021 at 2:38 PM Sean Nyekjaer <sean@geanix.com> wrote:
 
-What's the difference between 0 and 1?
+...
 
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    description:
-> +      Input clock used to derive the sample clock. Expected to be the
-> +      SoC's APB clock.
+> Do we have some helper functions to do the 12 bit 2-complement numbers?
 
-How many clocks?
+Probably not, look around where sign_extend32() is defined. More on this below.
 
-> +
-> +  resets:
-> +    maxItems: 1
-> +
-> +  "#io-channel-cells":
-> +    const: 1
-> +
-> +  vref-supply:
-> +    description:
-> +      The external regulator supply ADC reference voltage.
-> +
-> +  aspeed,int_vref_mv:
+...
 
-Don't use '_' in property names.
+> +       return regmap_update_bits(data->regmap, FXLS8962AF_INT_EN,
+> +                                mask,
+> +                                value);
 
-Use standard unit suffixes as defined in property-units.yaml.
+One line?
 
-> +    $ref: /schemas/types.yaml#/definitions/uint32
+...
 
-And then you can drop this.
+> +       /*
+> +        * Add the same value to the lower-threshold register with a reversed sign
+> +        * in 2-complement 12 bit format.
+> +        */
+> +       data->lower_thres = (~val & GENMASK(11, 0)) + 1;
 
-> +    enum: [1200, 2500]
-> +    description:
-> +      ADC internal reference voltage in millivolts.
+This looks suspicious.
+
+0 => 0xfff + 1 => 0x1000. Is it what is wanted?
+I thought that -val & mask is what you need.
+
+Can you explain more in the comment (maybe with examples) on what is
+coming and what is expected?
+
+> +       data->upper_thres = val & GENMASK(10, 0);
+
+...
+
+> +       is_active = fxls8962af_is_active(data);
+> +       if (is_active) {
+> +               ret = fxls8962af_standby(data);
+> +               if (ret)
+> +                       return ret;
+> +       }
 > +
-> +  aspeed,battery-sensing:
-> +    type: boolean
-> +    description:
-> +      Inform the driver that last channel will be used to sensor battery.
+> +       ret = regmap_bulk_write(data->regmap, FXLS8962AF_SDCD_LTHS_LSB,
+> +                               &data->lower_thres, chan->scan_type.storagebits / 8);
+> +       if (ret)
+> +               return ret;
 > +
-> +  aspeed,trim-data-valid:
-> +    type: boolean
-> +    description: |
-> +      The ADC reference voltage can be calibrated to obtain the trimming
-> +      data which will be stored in otp. This property informs the driver that
-> +      the data store in the otp is valid.
+> +       ret = regmap_bulk_write(data->regmap, FXLS8962AF_SDCD_UTHS_LSB,
+> +                               &data->upper_thres, chan->scan_type.storagebits / 8);
+> +       if (ret)
+> +               return ret;
 > +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - clocks
-> +  - resets
-> +  - "#io-channel-cells"
+> +       if (is_active)
+> +               ret = fxls8962af_active(data);
+
+I would rewrite it with a helper
+
+if (..._is_active(...)) {
+  ret = ..._standby(...);
+  ...
+  ret = _set_thresholds(...);
+  ...
+  ret = _active(...);
+} else {
+  ret = _set_thresholds(...);
+}
+return ret;
+
+or something closer to it.
+
+> +       return ret;
+> +}
+
+...
+
+> +       int ret;
+
+Useless
+
+> +       if (type != IIO_EV_TYPE_THRESH)
+> +               return -EINVAL;
 > +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/clock/ast2600-clock.h>
-> +    adc0: adc@1e6e9000 {
-> +        compatible = "aspeed,ast2600-adc0";
-> +        reg = <0x1e6e9000 0x100>;
-> +        clocks = <&syscon ASPEED_CLK_APB2>;
-> +        resets = <&syscon ASPEED_RESET_ADC>;
-> +        #io-channel-cells = <1>;
-> +        aspeed,int_vref_mv = <2500>;
-> +    };
-> +    adc1: adc@1e6e9100 {
-> +        compatible = "aspeed,ast2600-adc1";
-> +        reg = <0x1e6e9100 0x100>;
-> +        clocks = <&syscon ASPEED_CLK_APB2>;
-> +        resets = <&syscon ASPEED_RESET_ADC>;
-> +        #io-channel-cells = <1>;
-> +        aspeed,int_vref_mv = <2500>;
-> +    };
-> +...
-> -- 
-> 2.25.1
-> 
-> 
+> +       switch (chan->channel2) {
+> +       case IIO_MOD_X:
+> +               ret = FXLS8962AF_SDCD_CONFIG1_X_OT_EN & data->enable_event;
+> +               break;
+> +       case IIO_MOD_Y:
+> +               ret = FXLS8962AF_SDCD_CONFIG1_Y_OT_EN & data->enable_event;
+> +               break;
+> +       case IIO_MOD_Z:
+> +               ret = FXLS8962AF_SDCD_CONFIG1_Z_OT_EN & data->enable_event;
+> +               break;
+> +       default:
+> +               return -EINVAL;
+> +       }
+
+> +       return ret;
+
+Just return directly from the cases.
+
+...
+
+> +       ret = regmap_write(data->regmap, FXLS8962AF_SDCD_CONFIG2, enable_event ? 0xC0 : 0x00);
+
+0xc0
+
+> +       if (ret)
+> +               return ret;
+
+....
+
+> +       .mask_separate = BIT(IIO_EV_INFO_VALUE) |
+> +                        BIT(IIO_EV_INFO_ENABLE),
+
+One line?
+
+-- 
+With Best Regards,
+Andy Shevchenko

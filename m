@@ -2,79 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C8993F5DFB
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Aug 2021 14:28:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8214F3F5E06
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Aug 2021 14:32:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237248AbhHXM2u (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 24 Aug 2021 08:28:50 -0400
-Received: from mail-oo1-f49.google.com ([209.85.161.49]:35328 "EHLO
-        mail-oo1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230132AbhHXM2u (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Aug 2021 08:28:50 -0400
-Received: by mail-oo1-f49.google.com with SMTP id o17-20020a4a64110000b0290263e1ba7ff9so6433633ooc.2;
-        Tue, 24 Aug 2021 05:28:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=uytETCdTYH7zYm638OpCPQhienPtJvPvpm9AsV+41jY=;
-        b=c1iPdCljf5IiS4o5TO+YT5qAvofrSxBjrGMe+YKWgIP7IL5Cyd21fMh4dYogllnIuo
-         j6VvRjZp6uzlNubed+cQnsV7KSGMDSBt77HsKfaLk8Su5FOayXcaOfU2ttbsuxzTGB6d
-         wtPbtDQzUDGe+89+hpAsiybg/LdzmWfvgeOJ5yE0OvWbFqBGvzC/bcJyT2PEope0Xg/O
-         pjD8x1MjnQBTbIJUwdfpWXW1t0x7obe105ksNKfvPVs2X8rcGUArNvtrZ+Bk2lndp7bB
-         R0741ZO0AIRz0lZ3lbSRoKwX0LTXYgRULGPgZ0OaNFSPUhM0N8+NSTOHckn6Fh4AtZkJ
-         XQnQ==
-X-Gm-Message-State: AOAM532XVxuCpGwWqjyOtmKOqYWQzZNQPA8BIw8cVYzpE9ECJ/JxXaPC
-        AZ4vMXCD3zHTkZgi4AxhJg==
-X-Google-Smtp-Source: ABdhPJyUiS/ppMDAOP2s9nFPC4Ys3GDxLfh08N/rOFcCLdJi0T2d/kGnruFHvZ0NuJoO3QUBnJEA7Q==
-X-Received: by 2002:a4a:3e58:: with SMTP id t85mr29684525oot.81.1629808086143;
-        Tue, 24 Aug 2021 05:28:06 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id f17sm3176408otl.24.2021.08.24.05.28.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Aug 2021 05:28:05 -0700 (PDT)
-Received: (nullmailer pid 58470 invoked by uid 1000);
-        Tue, 24 Aug 2021 12:28:04 -0000
-Date:   Tue, 24 Aug 2021 07:28:04 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Jacopo Mondi <jacopo@jmondi.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        devicetree@vger.kernel.org, Magnus Damm <magnus.damm@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v3 1/3] dt-bindings: iio: chemical: Document
- senseair,sunrise CO2 sensor
-Message-ID: <YSTl1Ku9jZnDLL21@robh.at.kernel.org>
-References: <20210822184927.94673-1-jacopo@jmondi.org>
- <20210822184927.94673-2-jacopo@jmondi.org>
+        id S237296AbhHXMdd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 24 Aug 2021 08:33:33 -0400
+Received: from first.geanix.com ([116.203.34.67]:37276 "EHLO first.geanix.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237175AbhHXMdc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 24 Aug 2021 08:33:32 -0400
+Received: from skn-laptop (unknown [185.17.218.86])
+        by first.geanix.com (Postfix) with ESMTPSA id 83078440F5D;
+        Tue, 24 Aug 2021 12:32:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
+        t=1629808366; bh=jhnO480Cc6mGF2xnqHwZ8lNOlITVllVmhuET/7Kvi8s=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To;
+        b=My3r7H3i8d6ZiRcDnFWXU9zn+Y5UyQ37XqepWjUeDw10Fk1hYxAyr9EW8E7r/Wtrq
+         H/znu1Etv/lvo9QYUrtpa6vDmZ4tj+7tOgfFNTQ7iq/DLzm0s3c8hWdfefTpgvqDxa
+         YZvdlRj74V7Kc+1iTxQ7u5dehKkX+PIWEqktLUEUY8PW6lBiaHDAUiIzO+FFCQPKBS
+         V7AnDhVktPxTwDLTrBs4b67CvJjmQ4/dPQIenmuv+AnPk94gMUZUExHkmdQD434YVh
+         Y5M+O645+AsxYpm6a1m+OJebabrSoKB1zxUK9HV3p97TFy/h1PB7ofasMhulbGnEaw
+         L7caLDBfrt1NA==
+Date:   Tue, 24 Aug 2021 14:32:45 +0200
+From:   Sean Nyekjaer <sean@geanix.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-iio <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v2 1/2] iio: accel: fxls8962af: add threshold event
+ handling
+Message-ID: <20210824123245.z5o452x5s5m2wcyx@skn-laptop>
+References: <20210824113709.1834195-1-sean@geanix.com>
+ <CAHp75VeMzs+xyksGB8Kcnr-09a740eoWYmEJQHgbhMNVbuzAwA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20210822184927.94673-2-jacopo@jmondi.org>
+In-Reply-To: <CAHp75VeMzs+xyksGB8Kcnr-09a740eoWYmEJQHgbhMNVbuzAwA@mail.gmail.com>
+X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
+        autolearn=disabled version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on 13e2a5895688
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 22 Aug 2021 20:49:25 +0200, Jacopo Mondi wrote:
-> Add documentation for the Senseair Sunrise 006-0-0007 CO2 NDIR sensor.
+On Tue, Aug 24, 2021 at 03:15:28PM +0300, Andy Shevchenko wrote:
+> On Tue, Aug 24, 2021 at 2:38 PM Sean Nyekjaer <sean@geanix.com> wrote:
 > 
-> Signed-off-by: Jacopo Mondi <jacopo@jmondi.org>
-> ---
-> v2->v3:
-> - Fix syntax error reported by dt_binding_check
->   The device node label in the example cannot contain '-'
-> - Add 'Typically' to the gpios polarities description
+> ...
 > 
-> v1->v2:
-> - Add maxItems to -gpios properties as suggested by Rob
-> - Add a label to the device node in the example as suggested by Rob
-> ---
->  .../iio/chemical/senseair,sunrise.yaml        | 55 +++++++++++++++++++
->  .../devicetree/bindings/vendor-prefixes.yaml  |  2 +
->  2 files changed, 57 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/chemical/senseair,sunrise.yaml
+> > Do we have some helper functions to do the 12 bit 2-complement numbers?
+> 
+> Probably not, look around where sign_extend32() is defined. More on this below.
+> 
+> ...
+> 
+> > +       return regmap_update_bits(data->regmap, FXLS8962AF_INT_EN,
+> > +                                mask,
+> > +                                value);
+> 
+> One line?
+> 
+> ...
+> 
+> > +       /*
+> > +        * Add the same value to the lower-threshold register with a reversed sign
+> > +        * in 2-complement 12 bit format.
+> > +        */
+> > +       data->lower_thres = (~val & GENMASK(11, 0)) + 1;
+> 
+> This looks suspicious.
+> 
+> 0 => 0xfff + 1 => 0x1000. Is it what is wanted?
+> I thought that -val & mask is what you need.
+> 
+> Can you explain more in the comment (maybe with examples) on what is
+> coming and what is expected?
+
+It's a bit messy I know :)
+
+Some examples:
+val = 0 => upper = 0x0, lower = 0x0
+val = 500 => upper = 0x1F4, lower = 0xe0c
+val = 1000 => upper = 0x3e8, lower = 0xc18
+
+Guess it could work if we special case val = 0...
+
+It doesn't even makes sense to write 0 to this register as noise would
+trigger events.
+
+> 
+> > +       data->upper_thres = val & GENMASK(10, 0);
 > 
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+/Sean

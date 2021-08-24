@@ -2,17 +2,17 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 731093F5A92
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Aug 2021 11:12:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 814F33F5A98
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Aug 2021 11:12:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235641AbhHXJM7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 24 Aug 2021 05:12:59 -0400
-Received: from twspam01.aspeedtech.com ([211.20.114.71]:56571 "EHLO
+        id S235664AbhHXJNE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 24 Aug 2021 05:13:04 -0400
+Received: from twspam01.aspeedtech.com ([211.20.114.71]:26646 "EHLO
         twspam01.aspeedtech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235694AbhHXJM6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Aug 2021 05:12:58 -0400
+        with ESMTP id S235665AbhHXJNC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Aug 2021 05:13:02 -0400
 Received: from mail.aspeedtech.com ([192.168.0.24])
-        by twspam01.aspeedtech.com with ESMTP id 17O8rFR0098383;
+        by twspam01.aspeedtech.com with ESMTP id 17O8rFRj098384;
         Tue, 24 Aug 2021 16:53:15 +0800 (GMT-8)
         (envelope-from billy_tsai@aspeedtech.com)
 Received: from BillyTsai-pc.aspeed.com (192.168.2.149) by TWMBX02.aspeed.com
@@ -27,9 +27,9 @@ To:     <jic23@kernel.org>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-aspeed@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>
 CC:     <BMC-SW@aspeedtech.com>
-Subject: [RESEND v4 04/15] iio: adc: aspeed: Keep model data to driver data.
-Date:   Tue, 24 Aug 2021 17:12:32 +0800
-Message-ID: <20210824091243.9393-5-billy_tsai@aspeedtech.com>
+Subject: [RESEND v4 05/15] iio: adc: aspeed: Refactory model data structure
+Date:   Tue, 24 Aug 2021 17:12:33 +0800
+Message-ID: <20210824091243.9393-6-billy_tsai@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210824091243.9393-1-billy_tsai@aspeedtech.com>
 References: <20210824091243.9393-1-billy_tsai@aspeedtech.com>
@@ -40,102 +40,88 @@ X-Originating-IP: [192.168.2.149]
 X-ClientProxiedBy: TWMBX02.aspeed.com (192.168.0.24) To TWMBX02.aspeed.com
  (192.168.0.24)
 X-DNSRBL: 
-X-MAIL: twspam01.aspeedtech.com 17O8rFR0098383
+X-MAIL: twspam01.aspeedtech.com 17O8rFRj098384
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Keep the model data pointer to driver data for reducing the usage of
-of_device_get_match_data().
+This patch refactory the model data structure to distinguish the
+function form differnet version of aspeed adc.
+- Rename the vref_voltag to vref_fixed and add vref driver data
+When driver probe will check vref_fixed value and store it
+to vref which isn't const value.
+- Add num_channels
+Make num_channles of iio device can be changed by differnet model_data
+- Add need_prescaler flag and scaler_bit_width
+The need_prescaler flag used to tell the driver the clock divider needs
+another prescaler and the scaler_bit_width to set the clock divider
+bitfiled width.
 
 Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
 ---
- drivers/iio/adc/aspeed_adc.c | 20 +++++++-------------
- 1 file changed, 7 insertions(+), 13 deletions(-)
+ drivers/iio/adc/aspeed_adc.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/iio/adc/aspeed_adc.c b/drivers/iio/adc/aspeed_adc.c
-index 20462cf659e4..d85aa31ee3b1 100644
+index d85aa31ee3b1..f03c7921d534 100644
 --- a/drivers/iio/adc/aspeed_adc.c
 +++ b/drivers/iio/adc/aspeed_adc.c
-@@ -69,6 +69,7 @@ struct aspeed_adc_model_data {
+@@ -63,8 +63,11 @@ struct aspeed_adc_model_data {
+ 	const char *model_name;
+ 	unsigned int min_sampling_rate;	// Hz
+ 	unsigned int max_sampling_rate;	// Hz
+-	unsigned int vref_voltage;	// mV
++	unsigned int vref_fixed;	// mV
+ 	bool wait_init_sequence;
++	bool need_prescaler;
++	u8 scaler_bit_width;
++	unsigned int num_channels;
+ };
  
  struct aspeed_adc_data {
- 	struct device		*dev;
-+	const struct aspeed_adc_model_data *model_data;
- 	void __iomem		*base;
- 	spinlock_t		clk_lock;
+@@ -75,6 +78,7 @@ struct aspeed_adc_data {
  	struct clk_hw		*clk_prescaler;
-@@ -110,8 +111,6 @@ static int aspeed_adc_read_raw(struct iio_dev *indio_dev,
- 			       int *val, int *val2, long mask)
- {
- 	struct aspeed_adc_data *data = iio_priv(indio_dev);
--	const struct aspeed_adc_model_data *model_data =
--			of_device_get_match_data(data->dev);
+ 	struct clk_hw		*clk_scaler;
+ 	struct reset_control	*rst;
++	int			vref;
+ };
  
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
-@@ -119,7 +118,7 @@ static int aspeed_adc_read_raw(struct iio_dev *indio_dev,
+ #define ASPEED_CHAN(_idx, _data_reg_addr) {			\
+@@ -118,7 +122,7 @@ static int aspeed_adc_read_raw(struct iio_dev *indio_dev,
  		return IIO_VAL_INT;
  
  	case IIO_CHAN_INFO_SCALE:
--		*val = model_data->vref_voltage;
-+		*val = data->model_data->vref_voltage;
+-		*val = data->model_data->vref_voltage;
++		*val = data->model_data->vref_fixed;
  		*val2 = ASPEED_RESOLUTION_BITS;
  		return IIO_VAL_FRACTIONAL_LOG2;
  
-@@ -138,13 +137,11 @@ static int aspeed_adc_write_raw(struct iio_dev *indio_dev,
- 				int val, int val2, long mask)
- {
- 	struct aspeed_adc_data *data = iio_priv(indio_dev);
--	const struct aspeed_adc_model_data *model_data =
--			of_device_get_match_data(data->dev);
+@@ -312,17 +316,23 @@ static int aspeed_adc_remove(struct platform_device *pdev)
  
- 	switch (mask) {
- 	case IIO_CHAN_INFO_SAMP_FREQ:
--		if (val < model_data->min_sampling_rate ||
--			val > model_data->max_sampling_rate)
-+		if (val < data->model_data->min_sampling_rate ||
-+			val > data->model_data->max_sampling_rate)
- 			return -EINVAL;
+ static const struct aspeed_adc_model_data ast2400_model_data = {
+ 	.model_name = "ast2400-adc",
+-	.vref_voltage = 2500, // mV
++	.vref_fixed = 2500, // mV
+ 	.min_sampling_rate = 10000,
+ 	.max_sampling_rate = 500000,
++	.need_prescaler = true,
++	.scaler_bit_width = 10,
++	.num_channels = 16,
+ };
  
- 		clk_set_rate(data->clk_scaler->clk,
-@@ -190,7 +187,6 @@ static int aspeed_adc_probe(struct platform_device *pdev)
- {
- 	struct iio_dev *indio_dev;
- 	struct aspeed_adc_data *data;
--	const struct aspeed_adc_model_data *model_data;
- 	const char *clk_parent_name;
- 	int ret;
- 	u32 adc_engine_control_reg_val;
-@@ -201,6 +197,7 @@ static int aspeed_adc_probe(struct platform_device *pdev)
+ static const struct aspeed_adc_model_data ast2500_model_data = {
+ 	.model_name = "ast2500-adc",
+-	.vref_voltage = 1800, // mV
++	.vref_fixed = 1800, // mV
+ 	.min_sampling_rate = 1,
+ 	.max_sampling_rate = 1000000,
+ 	.wait_init_sequence = true,
++	.need_prescaler = true,
++	.scaler_bit_width = 10,
++	.num_channels = 16,
+ };
  
- 	data = iio_priv(indio_dev);
- 	data->dev = &pdev->dev;
-+	data->model_data = of_device_get_match_data(&pdev->dev);
- 	platform_set_drvdata(pdev, indio_dev);
- 
- 	data->base = devm_platform_ioremap_resource(pdev, 0);
-@@ -241,9 +238,7 @@ static int aspeed_adc_probe(struct platform_device *pdev)
- 	}
- 	reset_control_deassert(data->rst);
- 
--	model_data = of_device_get_match_data(&pdev->dev);
--
--	if (model_data->wait_init_sequence) {
-+	if (data->model_data->wait_init_sequence) {
- 		/* Enable engine in normal mode. */
- 		writel(FIELD_PREP(ASPEED_ADC_OP_MODE,
- 				  ASPEED_ADC_OP_MODE_NORMAL) |
-@@ -273,8 +268,7 @@ static int aspeed_adc_probe(struct platform_device *pdev)
- 	writel(adc_engine_control_reg_val,
- 	       data->base + ASPEED_REG_ENGINE_CONTROL);
- 
--	model_data = of_device_get_match_data(&pdev->dev);
--	indio_dev->name = model_data->model_name;
-+	indio_dev->name = data->model_data->model_name;
- 	indio_dev->info = &aspeed_adc_iio_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->channels = aspeed_adc_iio_channels;
+ static const struct of_device_id aspeed_adc_matches[] = {
 -- 
 2.25.1
 

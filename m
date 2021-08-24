@@ -2,143 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77CEE3F5D31
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Aug 2021 13:37:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF1B83F5D65
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Aug 2021 13:55:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235125AbhHXLiE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 24 Aug 2021 07:38:04 -0400
-Received: from first.geanix.com ([116.203.34.67]:37274 "EHLO first.geanix.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236621AbhHXLiC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 24 Aug 2021 07:38:02 -0400
-Received: from zen.. (unknown [185.17.218.86])
-        by first.geanix.com (Postfix) with ESMTPSA id 4A930440F31;
-        Tue, 24 Aug 2021 11:37:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1629805036; bh=v6hxxX6pm3zHyaVeC3PqDDTMa7bMnPDGNn5qtsb5Yp0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=LRKPAQRJJGywN5UZaw7AbU3MUfwFmTL3+NiNNwYj4fuc7Y6CNKz3SI20/AZ0i7yCL
-         bmQ8unZ3SmBnu45PDEym6/tumiilfZyvmlUjGse2Mb/TkyPopCwKkP/79zCJVVK7ZP
-         Oy4xdhPJvzB2idIAMhgbaELO73AEu4/sT+SPEkgeXHG/3pBo/StUNaWnJtzq1ZpWxU
-         T6Ha3EhAjizJnAi8Y+Dr4zpyEDMLMqTO3MigB/x+KOChjol3o7RuCVivL6m1sgVfOI
-         nEnB/OUaKvYPiBXUR/II+7cB0DnLZK82jht18uXXNWAPZ7TaUX0hqzA0XfsLUeqzaz
-         TqkiC7Ex0B1Mw==
-From:   Sean Nyekjaer <sean@geanix.com>
-To:     jic23@kernel.org, andriy.shevchenko@linux.intel.com
-Cc:     Sean Nyekjaer <sean@geanix.com>, linux-iio@vger.kernel.org
-Subject: [PATCH v2 2/2] iio: accel: fxls8962af: add wake on event
-Date:   Tue, 24 Aug 2021 13:37:09 +0200
-Message-Id: <20210824113709.1834195-2-sean@geanix.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210824113709.1834195-1-sean@geanix.com>
-References: <20210824113709.1834195-1-sean@geanix.com>
+        id S236283AbhHXLz6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 24 Aug 2021 07:55:58 -0400
+Received: from esa.microchip.iphmx.com ([68.232.153.233]:20894 "EHLO
+        esa.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234787AbhHXLz5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Aug 2021 07:55:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1629806114; x=1661342114;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=bs1skQnHmiQI8BMFOJLtlVnI7XmB1cbsizHEwNDRUNw=;
+  b=B0Rd9wKh/KqevVArhC0FPCiWlmX83pyQs+6TQhDUQomcoGkZuakijp88
+   o32TVDplQmUE4nq1JqczToy1euximEgVk1MIR/Vs0bGCNVl7EL+24I2zT
+   RkuEP2nQFVK+n0TXt55S2CWIROVPDtI8JOEdpSu5Ix3KIvoCgtfJXUQvL
+   rD/ZxQlHwBdH9FfYA7HiusSVN2/GglEZScAeDBs4+gj7OPop5+A20Z3p1
+   PgGXjx8sJszwd3pNWQRuz5n9E2IBSBGdmfeeP8aL54IKZ3eI6PO+U+NeF
+   BLsqAjlB8pZk1c09OhsFSg2bz9kF8IYEJLjsOXNG9tGHtqUIX33rLa9pu
+   g==;
+IronPort-SDR: KbfgXBwu1+LzQzdDQQrbVirDkBWwdKZa1ZWI7V98ywI126Jfvsk75dB2Vdu32sKmLBXI2J54AY
+ F6D1DB1z2q2gppcXZ3U2K8jokPTVwLJr8kaBo0AlDH1huvBpDL9FFp6ngSpkUwSDfZ/BaJxYqu
+ QO1EgIZ3I+iVEgpEF+vVOIPmpluq7mqrA+zCaElTbvXZbN+mugCHPK6BJKNLof48YCxflEuTKZ
+ VWh7R3vBoUT8lJF2FZdlgcX8ADdm5OIOZcXTjX6QhOVSgk0jG6wv/W9B+8n/WTjCRAJSypOmls
+ 6XHNzjsMCQyQ2Z5hJGH6ET8e
+X-IronPort-AV: E=Sophos;i="5.84,347,1620716400"; 
+   d="scan'208";a="133407941"
+Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 24 Aug 2021 04:55:13 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.14; Tue, 24 Aug 2021 04:55:11 -0700
+Received: from ROB-ULT-M18282.microchip.com (10.10.115.15) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
+ 15.1.2176.14 via Frontend Transport; Tue, 24 Aug 2021 04:55:06 -0700
+From:   Eugen Hristev <eugen.hristev@microchip.com>
+To:     <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <nicolas.ferre@microchip.com>
+CC:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <robh+dt@kernel.org>,
+        <ludovic.desroches@microchip.com>,
+        Eugen Hristev <eugen.hristev@microchip.com>
+Subject: [PATCH v2 00/10] iio: adc: at91-sama5d2_adc: add support for sama7g5
+Date:   Tue, 24 Aug 2021 14:54:31 +0300
+Message-ID: <20210824115441.681253-1-eugen.hristev@microchip.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
-        autolearn=disabled version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on 13e2a5895688
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This adds ways for the SoC to wake from accelerometer wake events.
 
-In the suspend function we skip disabling the sensor if wakeup-source
-and events are activated.
+Hi,
 
-If buffered reads are enabled they will be deactivated before suspend.
-As the onboard buffer is only holding up to 32 12-bit X/Y/Z data
-triplets.
+This series adds support for sama7g5.
 
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
----
-Changes since v1:
- - Fixed comments fron Andy (Thanks)
+The sama7g5 is slightly different from sama5d2, but has the same basic
+operations. The register map is a bit different, so, I added some primitives
+to differentiate between the two classes of hardware blocks (sama5d2-sam9x60
+and sama7g5).
 
- drivers/iio/accel/fxls8962af-core.c | 47 +++++++++++++++++++++++++++--
- 1 file changed, 45 insertions(+), 2 deletions(-)
+Sama7g5 has 16 channels ADC, no resistive touch, and extra features
+(FIFOs, better oversampling , not implemented yet).
 
-diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
-index fd35f8685e62..ecd138f595d4 100644
---- a/drivers/iio/accel/fxls8962af-core.c
-+++ b/drivers/iio/accel/fxls8962af-core.c
-@@ -160,6 +160,7 @@ struct fxls8962af_data {
- 	} scan;
- 	int64_t timestamp, old_timestamp;	/* Only used in hw fifo mode. */
- 	struct iio_mount_matrix orientation;
-+	int irq;
- 	u8 watermark;
- 	u8 enable_event;
- 	u16 lower_thres;
-@@ -1121,6 +1122,7 @@ int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq)
- 	data = iio_priv(indio_dev);
- 	dev_set_drvdata(dev, indio_dev);
- 	data->regmap = regmap;
-+	data->irq = irq;
- 
- 	ret = iio_read_mount_matrix(dev, &data->orientation);
- 	if (ret)
-@@ -1190,6 +1192,9 @@ int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq)
- 	if (ret)
- 		return ret;
- 
-+	if (device_property_read_bool(dev, "wakeup-source"))
-+		device_init_wakeup(dev, true);
-+
- 	return devm_iio_device_register(dev, indio_dev);
- }
- EXPORT_SYMBOL_GPL(fxls8962af_core_probe);
-@@ -1215,9 +1220,47 @@ static int __maybe_unused fxls8962af_runtime_resume(struct device *dev)
- 	return fxls8962af_active(data);
- }
- 
-+static int __maybe_unused fxls8962af_suspend(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct fxls8962af_data *data = iio_priv(indio_dev);
-+
-+	if (device_may_wakeup(dev) && data->enable_event) {
-+		enable_irq_wake(data->irq);
-+
-+		/*
-+		 * Disable buffer, as the buffer is so small the device will wake
-+		 * almost immediately.
-+		 */
-+		if (iio_buffer_enabled(indio_dev))
-+			fxls8962af_buffer_predisable(indio_dev);
-+	} else {
-+		fxls8962af_runtime_suspend(dev);
-+	}
-+
-+	return 0;
-+}
-+
-+static int __maybe_unused fxls8962af_resume(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct fxls8962af_data *data = iio_priv(indio_dev);
-+
-+	if (device_may_wakeup(dev) && data->enable_event) {
-+		disable_irq_wake(data->irq);
-+
-+		if (iio_buffer_enabled(indio_dev))
-+			fxls8962af_buffer_postenable(indio_dev);
-+	} else {
-+		fxls8962af_runtime_resume(dev);
-+	}
-+
-+	return 0;
-+}
-+
- const struct dev_pm_ops fxls8962af_pm_ops = {
--	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
--				pm_runtime_force_resume)
-+	SET_SYSTEM_SLEEP_PM_OPS(fxls8962af_suspend,
-+				fxls8962af_resume)
- 	SET_RUNTIME_PM_OPS(fxls8962af_runtime_suspend,
- 			   fxls8962af_runtime_resume, NULL)
- };
+It is a rework of the series initially sent here:
+https://marc.info/?l=linux-iio&m=161461656807826&w=2
+
+I reworked this according to review by Jonathan, meaning that first I created
+a no-op patch that will convert the driver to a more platform specific data
+dedicated type of driver. This adds various structures that hold things like
+register layout and channel information.
+After this I created few patches that implement the main differences between
+sama7g5 and older products: the end-of-conversion new register. I added
+helper functions to make code more easy to read and more simple.
+One the last patches adds the layout and channels for sama7g5.
+At this moment in linux-next, the DT for sama7g5 and sama7g5ek is present,
+and the last patches add and enable this node in DT for this board.
+
+Eugen
+
+
+
+Eugen Hristev (10):
+  dt-bindings: iio: adc: at91-sama5d2: add compatible for sama7g5-adc
+  iio: adc: at91-sama5d2_adc: initialize hardware after clock is started
+  iio: adc: at91-sama5d2_adc: remove unused definition
+  iio: adc: at91-sama5d2_adc: convert to platform specific data
+    structures
+  iio: adc: at91-sama5d2-adc: add support for separate end of conversion
+    registers
+  iio: adc: at91-sama5d2_adc: add helper for COR register
+  iio: adc: at91-sama5d2_adc: add support for sama7g5 device
+  iio: adc: at91-sama5d2_adc: update copyright and authors information
+  ARM: dts: at91: sama7g5: add node for the ADC
+  ARM: dts: at91: sama7g5ek: enable ADC on the board
+
+ .../bindings/iio/adc/atmel,sama5d2-adc.yaml   |   1 +
+ arch/arm/boot/dts/at91-sama7g5ek.dts          |   8 +
+ arch/arm/boot/dts/sama7g5.dtsi                |  16 +
+ drivers/iio/adc/at91-sama5d2_adc.c            | 586 ++++++++++++------
+ 4 files changed, 425 insertions(+), 186 deletions(-)
+
 -- 
-2.32.0
+2.25.1
 

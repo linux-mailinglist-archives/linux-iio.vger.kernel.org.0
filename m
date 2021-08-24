@@ -2,154 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1106B3F579D
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Aug 2021 07:33:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B29A3F5A88
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Aug 2021 11:12:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234015AbhHXFd6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 24 Aug 2021 01:33:58 -0400
-Received: from gproxy1-pub.mail.unifiedlayer.com ([69.89.25.95]:51557 "EHLO
-        gproxy1-pub.mail.unifiedlayer.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229885AbhHXFd5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Aug 2021 01:33:57 -0400
-X-Greylist: delayed 1486 seconds by postgrey-1.27 at vger.kernel.org; Tue, 24 Aug 2021 01:33:57 EDT
-Received: from cmgw13.mail.unifiedlayer.com (unknown [10.0.90.128])
-        by gproxy1.mail.unifiedlayer.com (Postfix) with ESMTP id AA12A802BF33
-        for <linux-iio@vger.kernel.org>; Tue, 24 Aug 2021 05:08:24 +0000 (UTC)
-Received: from md-in-79.webhostbox.net ([43.225.55.182])
-        by cmsmtp with ESMTP
-        id IOfemsF5joTT8IOffmLrKS; Tue, 24 Aug 2021 05:08:24 +0000
-X-Authority-Reason: nr=8
-X-Authority-Analysis: v=2.4 cv=LMCj/La9 c=1 sm=1 tr=0 ts=61247ec8
- a=LfuyaZh/8e9VOkaVZk0aRw==:117 a=LfuyaZh/8e9VOkaVZk0aRw==:17
- a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19 a=MhDmnRu9jo8A:10:nop_rcvd_month_year
- a=oz0wMknONp8A:10:endurance_base64_authed_username_1 a=vU9dKmh3AAAA:8
- a=gEfo2CItAAAA:8 a=jtbBNqsHAAAA:8 a=-5KMCkUntxd5Z1t9gYsA:9
- a=rsP06fVo5MYu2ilr0aT5:22 a=sptkURWiP4Gy88Gu7hUp:22 a=RWaeYqt-Cn-VcsFsiLGo:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=linumiz.com
-        ; s=default; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
-        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=W/AymKeoHSfLUuRKlptGcYxIuqB0gsHM2oq89IBZLKg=; b=P6UsbKfnPihTPc85sKE2/oaeAr
-        pbsDFxoda/d4uALhLOb5BeSEbRcTPFxQJZkYU0M7cXTmk8N+1zI57q/YiVvRmX5JFydbRSTX3vSrF
-        Nh051VKoCbly8hND5hua/4VmD2+4iwgN4SZR+bxmF8nj29O9UpbEwQKXL4+Ntl/sLRUS4V1XYXANJ
-        fHL6dbskrk4/Mk93MrsDTybSJLbnyi/90R6GmJY6z2f+u3wXJsnDHCjotQt/TPg/qbSAQoRhe9Csy
-        WNcjH8qZ0l+eqd8zosNsq8Y1bpNFeT1ToTBOY2R+8EGx5FzIjMxYhxDtNp4tr8ricklqVIoqkBPLC
-        9fwPH6Vw==;
-Received: from [117.193.211.180] (port=56148 helo=localhost.localdomain)
-        by md-in-79.webhostbox.net with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <navin@linumiz.com>)
-        id 1mIOfd-000R5G-Hn; Tue, 24 Aug 2021 05:08:21 +0000
-From:   Navin Sankar Velliangiri <navin@linumiz.com>
-To:     jic23@kernel.org
-Cc:     navin@linumiz.com, lars@metafoo.de, pmeerw@pmeerw.net,
-        linux-iio@vger.kernel.org, ardeleanalex@gmail.com,
-        robh+dt@kernel.org, devicetree@vger.kernel.org
-Subject: [PATCH v4 2/2] dt-bindings: iio: temperature: add MAXIM max31865 support
-Date:   Tue, 24 Aug 2021 10:36:50 +0530
-Message-Id: <20210824050650.72619-1-navin@linumiz.com>
-X-Mailer: git-send-email 2.32.0
+        id S235461AbhHXJMn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 24 Aug 2021 05:12:43 -0400
+Received: from twspam01.aspeedtech.com ([211.20.114.71]:18488 "EHLO
+        twspam01.aspeedtech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235264AbhHXJMm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Aug 2021 05:12:42 -0400
+Received: from mail.aspeedtech.com ([192.168.0.24])
+        by twspam01.aspeedtech.com with ESMTP id 17O8rEbJ098381;
+        Tue, 24 Aug 2021 16:53:14 +0800 (GMT-8)
+        (envelope-from billy_tsai@aspeedtech.com)
+Received: from BillyTsai-pc.aspeed.com (192.168.2.149) by TWMBX02.aspeed.com
+ (192.168.0.24) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 24 Aug
+ 2021 17:11:46 +0800
+From:   Billy Tsai <billy_tsai@aspeedtech.com>
+To:     <jic23@kernel.org>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
+        <robh+dt@kernel.org>, <joel@jms.id.au>, <andrew@aj.id.au>,
+        <p.zabel@pengutronix.de>, <lgirdwood@gmail.com>,
+        <broonie@kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-aspeed@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>
+CC:     <BMC-SW@aspeedtech.com>
+Subject: [RESEND v4 00/15] Add support for ast2600 ADC
+Date:   Tue, 24 Aug 2021 17:12:28 +0800
+Message-ID: <20210824091243.9393-1-billy_tsai@aspeedtech.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - md-in-79.webhostbox.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - linumiz.com
-X-BWhitelist: no
-X-Source-IP: 117.193.211.180
-X-Source-L: No
-X-Exim-ID: 1mIOfd-000R5G-Hn
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: (localhost.localdomain) [117.193.211.180]:56148
-X-Source-Auth: linumcmc
-X-Email-Count: 9
-X-Source-Cap: bGludW1jbWM7aG9zdGdhdG9yO21kLWluLTc5LndlYmhvc3Rib3gubmV0
-X-Local-Domain: yes
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [192.168.2.149]
+X-ClientProxiedBy: TWMBX02.aspeed.com (192.168.0.24) To TWMBX02.aspeed.com
+ (192.168.0.24)
+X-DNSRBL: 
+X-MAIL: twspam01.aspeedtech.com 17O8rEbJ098381
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add DT bindings for MAXIM max31865 RTD sensor.
+This patch serials make aspeed_adc.c can support ast2600 and backward
+compatible.
 
-Signed-off-by: Navin Sankar Velliangiri <navin@linumiz.com>
+RESEND due to miss some patches when sent patch v4.
+Change since v3:
+dt-bindings:
+  - Fix properties:aspeed,int_vref_mv type error.
 
----
-Note:
-Changes in v2:
-	-> Changed the name RTD to Resistance Temperature Detector
-	-> renamed maxim,no-of-wires to 3-wire
-	-> fixed code alignment for the example
+Change since v2:
+dt-bindings:
+  - Create a new dt-bindings for ast2600 adc
+aspeed_adc.c:
+  - Splits the patch for more details
+  - Remove version enum and use the flags in model data to distinguish
+  hardware feature
+  - Support trimming data get and set.
+  - Use devm_add_action_or_reset to simplify probe error handling.
 
-Changes in v3:
-	-> Added more information about 3 wire RTD connection
----
- .../iio/temperature/maxim,max31865.yaml       | 52 +++++++++++++++++++
- 1 file changed, 52 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/temperature/maxim,max31865.yaml
+Changes since v1:
+dt-bindings:
+  - Fix the aspeed,adc.yaml check error.
+  - Add battery-sensing property.
+aspeed_adc.c:
+  - Change the init flow:
+    Clock and reference voltage setting should be completed before adc
+    engine enable.
+  - Change the default sampling rate to meet most user case.
+  - Add patch #8 to suppoert battery sensing mode.
 
-diff --git a/Documentation/devicetree/bindings/iio/temperature/maxim,max31865.yaml b/Documentation/devicetree/bindings/iio/temperature/maxim,max31865.yaml
-new file mode 100644
-index 000000000000..aafb33b16549
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/temperature/maxim,max31865.yaml
-@@ -0,0 +1,52 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/temperature/maxim,max31865.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Maxim MAX31865 Resistance Temperature Detector.
-+
-+maintainers:
-+  - Navin Sankar Velliangiri <navin@linumiz.com>
-+
-+description: |
-+  https://datasheets.maximintegrated.com/en/ds/MAX31865.pdf
-+
-+properties:
-+  compatible:
-+    const: maxim,max31865
-+
-+  reg:
-+    maxItems: 1
-+
-+  maxim,3-wire:
-+    description:
-+      Identifies the number of wires used by the RTD. Setting this property
-+      enables 3-wire RTD connection. Else 2-wire or 4-wire RTD connection.
-+    type: boolean
-+
-+  spi-max-frequency: true
-+  spi-cpha: true
-+
-+required:
-+  - compatible
-+  - reg
-+  - spi-cpha
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    spi {
-+       #address-cells = <1>;
-+       #size-cells = <0>;
-+
-+       temp_sensor@0 {
-+         compatible = "maxim,max31865";
-+         reg = <0>;
-+         spi-max-frequency = <400000>;
-+         spi-cpha;
-+         maxim,3-wire;
-+       };
-+    };
-+...
+Billy Tsai (15):
+  dt-bindings: iio: adc: Add ast2600-adc bindings
+  iio: adc: aspeed: completes the bitfield declare.
+  iio: adc: aspeed: set driver data when adc probe.
+  iio: adc: aspeed: Keep model data to driver data.
+  iio: adc: aspeed: Refactory model data structure
+  iio: adc: aspeed: Add vref config function
+  iio: adc: aspeed: Set num_channels with model data
+  iio: adc: aspeed: Use model_data to set clk scaler.
+  iio: adc: aspeed: Use devm_add_action_or_reset.
+  iio: adc: aspeed: Support ast2600 adc.
+  iio: adc: aspeed: Fix the calculate error of clock.
+  iio: adc: aspeed: Add func to set sampling rate.
+  iio: adc: aspeed: Add compensation phase.
+  iio: adc: aspeed: Support battery sensing.
+  iio: adc: aspeed: Get and set trimming data.
+
+ .../bindings/iio/adc/aspeed,ast2600-adc.yaml  |  97 +++
+ drivers/iio/adc/aspeed_adc.c                  | 562 +++++++++++++++---
+ 2 files changed, 569 insertions(+), 90 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/aspeed,ast2600-adc.yaml
+
 -- 
-2.32.0
+2.25.1
 

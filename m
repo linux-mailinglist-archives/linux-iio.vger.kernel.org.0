@@ -2,21 +2,21 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B3843F787F
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Aug 2021 17:32:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C585F3F7885
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Aug 2021 17:32:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241605AbhHYPcn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 25 Aug 2021 11:32:43 -0400
-Received: from mslow1.mail.gandi.net ([217.70.178.240]:55557 "EHLO
+        id S240869AbhHYPdD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 25 Aug 2021 11:33:03 -0400
+Received: from mslow1.mail.gandi.net ([217.70.178.240]:38145 "EHLO
         mslow1.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240869AbhHYPcm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Aug 2021 11:32:42 -0400
+        with ESMTP id S241566AbhHYPdC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Aug 2021 11:33:02 -0400
 Received: from relay6-d.mail.gandi.net (unknown [217.70.183.198])
-        by mslow1.mail.gandi.net (Postfix) with ESMTP id 73F43CA51B;
-        Wed, 25 Aug 2021 15:26:03 +0000 (UTC)
+        by mslow1.mail.gandi.net (Postfix) with ESMTP id 6FFF5C88D6;
+        Wed, 25 Aug 2021 15:26:07 +0000 (UTC)
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 53F77C000A;
-        Wed, 25 Aug 2021 15:25:39 +0000 (UTC)
+        by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 4DB48C0013;
+        Wed, 25 Aug 2021 15:25:41 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -33,9 +33,9 @@ Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         linux-input@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-clk@vger.kernel.org,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 09/40] mfd: ti_am335x_tscadc: Fix style
-Date:   Wed, 25 Aug 2021 17:24:47 +0200
-Message-Id: <20210825152518.379386-10-miquel.raynal@bootlin.com>
+Subject: [PATCH 10/40] mfd: ti_am335x_tscadc: Drop extra spacing when declaring stack variables
+Date:   Wed, 25 Aug 2021 17:24:48 +0200
+Message-Id: <20210825152518.379386-11-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210825152518.379386-1-miquel.raynal@bootlin.com>
 References: <20210825152518.379386-1-miquel.raynal@bootlin.com>
@@ -46,57 +46,75 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-These are mostly deffects reported by checkpatch.pl.
+Many variables will be updated (renamed, dropped, added) in the upcoming
+changes, so let's simplify the style to avoid messing with spaces over
+and over again.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/mfd/ti_am335x_tscadc.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/mfd/ti_am335x_tscadc.c | 28 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
-index 45262ca7734a..540c6dcef541 100644
+index 540c6dcef541..f0824732badf 100644
 --- a/drivers/mfd/ti_am335x_tscadc.c
 +++ b/drivers/mfd/ti_am335x_tscadc.c
-@@ -140,15 +140,17 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
- 		adc_channels++;
- 		if (val > 7) {
- 			dev_err(&pdev->dev, " PIN numbers are 0..7 (not %d)\n",
--					val);
-+				val);
- 			return -EINVAL;
- 		}
- 	}
-+
- 	total_channels = tsc_wires + adc_channels;
- 	if (total_channels > 8) {
- 		dev_err(&pdev->dev, "Number of i/p channels more than 8\n");
- 		return -EINVAL;
- 	}
-+
- 	if (total_channels == 0) {
- 		dev_err(&pdev->dev, "Need atleast one channel.\n");
- 		return -EINVAL;
-@@ -170,8 +172,9 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
- 	if (err < 0) {
- 		dev_err(&pdev->dev, "no irq ID is specified.\n");
- 		goto ret;
--	} else
-+	} else {
- 		tscadc->irq = err;
-+	}
+@@ -113,18 +113,16 @@ static void tscadc_idle_config(struct ti_tscadc_dev *tscadc)
  
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	tscadc->tscadc_base = devm_ioremap_resource(&pdev->dev, res);
-@@ -180,7 +183,8 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+ static	int ti_tscadc_probe(struct platform_device *pdev)
+ {
+-	struct ti_tscadc_dev	*tscadc;
+-	struct resource		*res;
+-	struct clk		*clk;
+-	struct device_node	*node;
+-	struct mfd_cell		*cell;
+-	struct property         *prop;
+-	const __be32            *cur;
+-	u32			val;
+-	int			err, ctrl;
+-	int			clock_rate;
+-	int			tsc_wires = 0, adc_channels = 0, total_channels;
+-	int			readouts = 0;
++	struct ti_tscadc_dev *tscadc;
++	struct device_node *node;
++	struct property *prop;
++	struct mfd_cell *cell;
++	struct resource *res;
++	const __be32 *cur;
++	struct clk *clk;
++	u32 val;
++	int tsc_wires = 0, adc_channels = 0, readouts = 0;
++	int total_channels, clock_rate, ctrl, err;
  
- 	tscadc->tscadc_phys_base = res->start;
- 	tscadc->regmap = devm_regmap_init_mmio(&pdev->dev,
--			tscadc->tscadc_base, &tscadc_regmap_config);
-+					       tscadc->tscadc_base,
-+					       &tscadc_regmap_config);
- 	if (IS_ERR(tscadc->regmap)) {
- 		dev_err(&pdev->dev, "regmap init failed\n");
- 		err = PTR_ERR(tscadc->regmap);
+ 	if (!pdev->dev.of_node) {
+ 		dev_err(&pdev->dev, "Could not find valid DT data.\n");
+@@ -278,7 +276,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+ 
+ static int ti_tscadc_remove(struct platform_device *pdev)
+ {
+-	struct ti_tscadc_dev	*tscadc = platform_get_drvdata(pdev);
++	struct ti_tscadc_dev *tscadc = platform_get_drvdata(pdev);
+ 
+ 	regmap_write(tscadc->regmap, REG_SE, 0x00);
+ 
+@@ -297,7 +295,7 @@ static int __maybe_unused ti_tscadc_can_wakeup(struct device *dev, void *data)
+ 
+ static int __maybe_unused tscadc_suspend(struct device *dev)
+ {
+-	struct ti_tscadc_dev	*tscadc = dev_get_drvdata(dev);
++	struct ti_tscadc_dev *tscadc = dev_get_drvdata(dev);
+ 
+ 	regmap_write(tscadc->regmap, REG_SE, 0x00);
+ 	if (device_for_each_child(dev, NULL, ti_tscadc_can_wakeup)) {
+@@ -315,7 +313,7 @@ static int __maybe_unused tscadc_suspend(struct device *dev)
+ 
+ static int __maybe_unused tscadc_resume(struct device *dev)
+ {
+-	struct ti_tscadc_dev	*tscadc = dev_get_drvdata(dev);
++	struct ti_tscadc_dev *tscadc = dev_get_drvdata(dev);
+ 	u32 ctrl;
+ 
+ 	pm_runtime_get_sync(dev);
 -- 
 2.27.0
 

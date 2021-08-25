@@ -2,21 +2,21 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C1A473F7914
+	by mail.lfdr.de (Postfix) with ESMTP id 085FC3F790D
 	for <lists+linux-iio@lfdr.de>; Wed, 25 Aug 2021 17:35:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242020AbhHYPfs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S242026AbhHYPfs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Wed, 25 Aug 2021 11:35:48 -0400
-Received: from mslow1.mail.gandi.net ([217.70.178.240]:40189 "EHLO
+Received: from mslow1.mail.gandi.net ([217.70.178.240]:38367 "EHLO
         mslow1.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241954AbhHYPfl (ORCPT
+        with ESMTP id S241956AbhHYPfl (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Aug 2021 11:35:41 -0400
 Received: from relay6-d.mail.gandi.net (unknown [217.70.183.198])
-        by mslow1.mail.gandi.net (Postfix) with ESMTP id 54A2ACE0F2;
-        Wed, 25 Aug 2021 15:27:00 +0000 (UTC)
+        by mslow1.mail.gandi.net (Postfix) with ESMTP id 43883C29B4;
+        Wed, 25 Aug 2021 15:27:02 +0000 (UTC)
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 8D326C000E;
-        Wed, 25 Aug 2021 15:26:36 +0000 (UTC)
+        by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 9691FC000A;
+        Wed, 25 Aug 2021 15:26:38 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -33,9 +33,9 @@ Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         linux-input@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-clk@vger.kernel.org,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 37/40] iio: adc: ti_am335x_adc: Add the am437x compatible
-Date:   Wed, 25 Aug 2021 17:25:15 +0200
-Message-Id: <20210825152518.379386-38-miquel.raynal@bootlin.com>
+Subject: [PATCH 38/40] ARM: dts: am437x-cm-t43: Use a correctly spelled DT property
+Date:   Wed, 25 Aug 2021 17:25:16 +0200
+Message-Id: <20210825152518.379386-39-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210825152518.379386-1-miquel.raynal@bootlin.com>
 References: <20210825152518.379386-1-miquel.raynal@bootlin.com>
@@ -46,26 +46,30 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This driver supports both the legacy controller (am33xx) and the
-extended one (am437x), so let's add a new compatible.
+Back in 2014 a property got mispelled "ti,coordiante-readouts" instead
+of "ti,coordinate-readouts".
+
+The year after it got fixed but both are still supported, although this
+is not a reason to continue using this old deprecated property.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/iio/adc/ti_am335x_adc.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/boot/dts/am437x-cm-t43.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ti_am335x_adc.c b/drivers/iio/adc/ti_am335x_adc.c
-index f644898b47dd..ad79236e2bce 100644
---- a/drivers/iio/adc/ti_am335x_adc.c
-+++ b/drivers/iio/adc/ti_am335x_adc.c
-@@ -735,6 +735,7 @@ static SIMPLE_DEV_PM_OPS(tiadc_pm_ops, tiadc_suspend, tiadc_resume);
+diff --git a/arch/arm/boot/dts/am437x-cm-t43.dts b/arch/arm/boot/dts/am437x-cm-t43.dts
+index a83f46ed0c9a..c06cf9373812 100644
+--- a/arch/arm/boot/dts/am437x-cm-t43.dts
++++ b/arch/arm/boot/dts/am437x-cm-t43.dts
+@@ -399,7 +399,7 @@ &tscadc {
+ 	tsc {
+ 		ti,wires = <4>;
+ 		ti,x-plate-resistance = <200>;
+-		ti,coordiante-readouts = <5>;
++		ti,coordinate-readouts = <5>;
+ 		ti,wire-config = <0x00 0x11 0x22 0x33>;
+ 	};
  
- static const struct of_device_id ti_adc_dt_ids[] = {
- 	{ .compatible = "ti,am3359-adc", },
-+	{ .compatible = "ti,am4372-adc", },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, ti_adc_dt_ids);
 -- 
 2.27.0
 

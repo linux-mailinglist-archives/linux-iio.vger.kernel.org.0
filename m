@@ -2,21 +2,21 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5187D3F788E
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Aug 2021 17:32:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDBC63F7894
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Aug 2021 17:32:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241662AbhHYPdN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 25 Aug 2021 11:33:13 -0400
-Received: from mslow1.mail.gandi.net ([217.70.178.240]:43743 "EHLO
+        id S241706AbhHYPd2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 25 Aug 2021 11:33:28 -0400
+Received: from mslow1.mail.gandi.net ([217.70.178.240]:37153 "EHLO
         mslow1.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241741AbhHYPdM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Aug 2021 11:33:12 -0400
+        with ESMTP id S241676AbhHYPd1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Aug 2021 11:33:27 -0400
 Received: from relay6-d.mail.gandi.net (unknown [217.70.183.198])
-        by mslow1.mail.gandi.net (Postfix) with ESMTP id 30208C5687;
-        Wed, 25 Aug 2021 15:26:09 +0000 (UTC)
+        by mslow1.mail.gandi.net (Postfix) with ESMTP id EF4BFCAD92;
+        Wed, 25 Aug 2021 15:26:10 +0000 (UTC)
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 66DCBC000C;
-        Wed, 25 Aug 2021 15:25:45 +0000 (UTC)
+        by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 758A3C001B;
+        Wed, 25 Aug 2021 15:25:47 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -33,9 +33,9 @@ Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         linux-input@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-clk@vger.kernel.org,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 12/40] mfd: ti_am335x_tscadc: Move the driver structure allocation earlier
-Date:   Wed, 25 Aug 2021 17:24:50 +0200
-Message-Id: <20210825152518.379386-13-miquel.raynal@bootlin.com>
+Subject: [PATCH 13/40] mfd: ti_am335x_tscadc: Reword the comment explaining the dividers
+Date:   Wed, 25 Aug 2021 17:24:51 +0200
+Message-Id: <20210825152518.379386-14-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210825152518.379386-1-miquel.raynal@bootlin.com>
 References: <20210825152518.379386-1-miquel.raynal@bootlin.com>
@@ -46,46 +46,38 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Allocating the driver structure should be done earlier in the probe so
-that we can used its members from the beginning.
+The comment misses the main information which is that we assume that a
+sample takes 15 ADC clock cycles to be generated. Let's take the
+occasion to rework a little bit this comment.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/mfd/ti_am335x_tscadc.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/mfd/ti_am335x_tscadc.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
-index 8e86b766b619..0fef35e1e64b 100644
+index 0fef35e1e64b..3afe22680973 100644
 --- a/drivers/mfd/ti_am335x_tscadc.c
 +++ b/drivers/mfd/ti_am335x_tscadc.c
-@@ -124,6 +124,13 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
- 	int tsc_wires = 0, adc_channels = 0, readouts = 0;
- 	int total_channels, clock_rate, ctrl, err;
+@@ -195,12 +195,12 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+ 	pm_runtime_get_sync(&pdev->dev);
  
-+	/* Allocate memory for device */
-+	tscadc = devm_kzalloc(&pdev->dev, sizeof(*tscadc), GFP_KERNEL);
-+	if (!tscadc)
-+		return -ENOMEM;
-+
-+	tscadc->dev = &pdev->dev;
-+
- 	if (!pdev->dev.of_node) {
- 		dev_err(&pdev->dev, "Could not find valid DT data.\n");
- 		return -EINVAL;
-@@ -159,13 +166,6 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
- 		return -EINVAL;
- 	}
- 
--	/* Allocate memory for device */
--	tscadc = devm_kzalloc(&pdev->dev, sizeof(*tscadc), GFP_KERNEL);
--	if (!tscadc)
--		return -ENOMEM;
--
--	tscadc->dev = &pdev->dev;
--
- 	err = platform_get_irq(pdev, 0);
- 	if (err < 0) {
- 		dev_err(&pdev->dev, "no irq ID is specified.\n");
+ 	/*
+-	 * The TSC_ADC_Subsystem has 2 clock domains
+-	 * OCP_CLK and ADC_CLK.
+-	 * The ADC clock is expected to run at target of 3MHz,
+-	 * and expected to capture 12-bit data at a rate of 200 KSPS.
+-	 * The TSC_ADC_SS controller design assumes the OCP clock is
+-	 * at least 6x faster than the ADC clock.
++	 * The TSC_ADC_Subsystem has 2 clock domains: OCP_CLK and ADC_CLK.
++	 * ADCs produce a 12-bit sample every 15 ADC_CLK cycles.
++	 * am33xx ADCs expect to capture 200ksps.
++	 * We need the ADC clocks to run at 3MHz.
++	 * This frequency is valid since TSC_ADC_SS controller design
++	 * assumes the OCP clock is at least 6x faster than the ADC clock.
+ 	 */
+ 	clk = devm_clk_get(&pdev->dev, "adc_tsc_fck");
+ 	if (IS_ERR(clk)) {
 -- 
 2.27.0
 

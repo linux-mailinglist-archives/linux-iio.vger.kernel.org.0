@@ -2,21 +2,21 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C3BE23F7881
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Aug 2021 17:32:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5187D3F788E
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Aug 2021 17:32:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241592AbhHYPdC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 25 Aug 2021 11:33:02 -0400
-Received: from mslow1.mail.gandi.net ([217.70.178.240]:37723 "EHLO
+        id S241662AbhHYPdN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 25 Aug 2021 11:33:13 -0400
+Received: from mslow1.mail.gandi.net ([217.70.178.240]:43743 "EHLO
         mslow1.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240869AbhHYPdB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Aug 2021 11:33:01 -0400
+        with ESMTP id S241741AbhHYPdM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Aug 2021 11:33:12 -0400
 Received: from relay6-d.mail.gandi.net (unknown [217.70.183.198])
-        by mslow1.mail.gandi.net (Postfix) with ESMTP id 4D9E9C5ECD;
-        Wed, 25 Aug 2021 15:26:07 +0000 (UTC)
+        by mslow1.mail.gandi.net (Postfix) with ESMTP id 30208C5687;
+        Wed, 25 Aug 2021 15:26:09 +0000 (UTC)
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 6BB5BC000E;
-        Wed, 25 Aug 2021 15:25:43 +0000 (UTC)
+        by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 66DCBC000C;
+        Wed, 25 Aug 2021 15:25:45 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -33,9 +33,9 @@ Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         linux-input@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-clk@vger.kernel.org,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 11/40] mfd: ti_am335x_tscadc: Get rid of useless gotos
-Date:   Wed, 25 Aug 2021 17:24:49 +0200
-Message-Id: <20210825152518.379386-12-miquel.raynal@bootlin.com>
+Subject: [PATCH 12/40] mfd: ti_am335x_tscadc: Move the driver structure allocation earlier
+Date:   Wed, 25 Aug 2021 17:24:50 +0200
+Message-Id: <20210825152518.379386-13-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210825152518.379386-1-miquel.raynal@bootlin.com>
 References: <20210825152518.379386-1-miquel.raynal@bootlin.com>
@@ -46,45 +46,46 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Gotos jumping to a return statement are not really useful, drop them.
+Allocating the driver structure should be done earlier in the probe so
+that we can used its members from the beginning.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/mfd/ti_am335x_tscadc.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/mfd/ti_am335x_tscadc.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
-index f0824732badf..8e86b766b619 100644
+index 8e86b766b619..0fef35e1e64b 100644
 --- a/drivers/mfd/ti_am335x_tscadc.c
 +++ b/drivers/mfd/ti_am335x_tscadc.c
-@@ -169,7 +169,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+@@ -124,6 +124,13 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+ 	int tsc_wires = 0, adc_channels = 0, readouts = 0;
+ 	int total_channels, clock_rate, ctrl, err;
+ 
++	/* Allocate memory for device */
++	tscadc = devm_kzalloc(&pdev->dev, sizeof(*tscadc), GFP_KERNEL);
++	if (!tscadc)
++		return -ENOMEM;
++
++	tscadc->dev = &pdev->dev;
++
+ 	if (!pdev->dev.of_node) {
+ 		dev_err(&pdev->dev, "Could not find valid DT data.\n");
+ 		return -EINVAL;
+@@ -159,13 +166,6 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+ 		return -EINVAL;
+ 	}
+ 
+-	/* Allocate memory for device */
+-	tscadc = devm_kzalloc(&pdev->dev, sizeof(*tscadc), GFP_KERNEL);
+-	if (!tscadc)
+-		return -ENOMEM;
+-
+-	tscadc->dev = &pdev->dev;
+-
  	err = platform_get_irq(pdev, 0);
  	if (err < 0) {
  		dev_err(&pdev->dev, "no irq ID is specified.\n");
--		goto ret;
-+		return err;
- 	} else {
- 		tscadc->irq = err;
- 	}
-@@ -185,8 +185,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
- 					       &tscadc_regmap_config);
- 	if (IS_ERR(tscadc->regmap)) {
- 		dev_err(&pdev->dev, "regmap init failed\n");
--		err = PTR_ERR(tscadc->regmap);
--		goto ret;
-+		return PTR_ERR(tscadc->regmap);
- 	}
- 
- 	spin_lock_init(&tscadc->reg_lock);
-@@ -270,7 +269,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
- err_disable_clk:
- 	pm_runtime_put_sync(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
--ret:
-+
- 	return err;
- }
- 
 -- 
 2.27.0
 

@@ -2,21 +2,21 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E5A543F786D
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Aug 2021 17:30:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EF833F7875
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Aug 2021 17:31:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241030AbhHYPbo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 25 Aug 2021 11:31:44 -0400
-Received: from mslow1.mail.gandi.net ([217.70.178.240]:32801 "EHLO
+        id S240878AbhHYPcW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 25 Aug 2021 11:32:22 -0400
+Received: from mslow1.mail.gandi.net ([217.70.178.240]:50959 "EHLO
         mslow1.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241467AbhHYPbo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Aug 2021 11:31:44 -0400
+        with ESMTP id S240869AbhHYPcW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Aug 2021 11:32:22 -0400
 Received: from relay6-d.mail.gandi.net (unknown [217.70.183.198])
-        by mslow1.mail.gandi.net (Postfix) with ESMTP id 0ECBDC972E;
-        Wed, 25 Aug 2021 15:25:57 +0000 (UTC)
+        by mslow1.mail.gandi.net (Postfix) with ESMTP id 7CB5ECA101;
+        Wed, 25 Aug 2021 15:25:59 +0000 (UTC)
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 6F64FC0007;
-        Wed, 25 Aug 2021 15:25:33 +0000 (UTC)
+        by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 5BABCC0017;
+        Wed, 25 Aug 2021 15:25:35 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -33,9 +33,9 @@ Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         linux-input@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-clk@vger.kernel.org,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 06/40] dt-bindings: mfd: ti,am3359-tscadc: Describe am4372 MFD compatible
-Date:   Wed, 25 Aug 2021 17:24:44 +0200
-Message-Id: <20210825152518.379386-7-miquel.raynal@bootlin.com>
+Subject: [PATCH 07/40] dt-bindings: iio: adc: ti,am3359-adc: Describe am4372 ADC compatible
+Date:   Wed, 25 Aug 2021 17:24:45 +0200
+Message-Id: <20210825152518.379386-8-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210825152518.379386-1-miquel.raynal@bootlin.com>
 References: <20210825152518.379386-1-miquel.raynal@bootlin.com>
@@ -46,40 +46,30 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-A more recent version of the am3359 ADC/Touchscreen controller is
-available on certain SoCs of the am437x family. This IP has evolved a
-little bit and deserves its own compatible.
+A more recent version of the am3359 ADC is available on certain SoCs of
+the am437x family. This IP has evolved a little bit and deserves its own
+compatible.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- .../devicetree/bindings/mfd/ti,am3359-tscadc.yaml          | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ Documentation/devicetree/bindings/iio/adc/ti,am3359-adc.yaml | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/mfd/ti,am3359-tscadc.yaml b/Documentation/devicetree/bindings/mfd/ti,am3359-tscadc.yaml
-index 96b329508d8a..2240299dcf2f 100644
---- a/Documentation/devicetree/bindings/mfd/ti,am3359-tscadc.yaml
-+++ b/Documentation/devicetree/bindings/mfd/ti,am3359-tscadc.yaml
+diff --git a/Documentation/devicetree/bindings/iio/adc/ti,am3359-adc.yaml b/Documentation/devicetree/bindings/iio/adc/ti,am3359-adc.yaml
+index 85d9d642dc67..34743371ee18 100644
+--- a/Documentation/devicetree/bindings/iio/adc/ti,am3359-adc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/ti,am3359-adc.yaml
 @@ -11,7 +11,9 @@ maintainers:
  
  properties:
    compatible:
--    const: ti,am3359-tscadc
+-    const: ti,am3359-adc
 +    oneOf:
-+      - const: ti,am3359-tscadc
-+      - const: ti,am4372-magadc
++      - const: ti,am3359-adc
++      - const: ti,am4372-adc
  
-   reg:
-     maxItems: 1
-@@ -42,6 +44,9 @@ patternProperties:
-   "^tsc$":
-     description: Touchscreen controller
- 
-+  "^mag$":
-+    description: Magnetic reader
-+
- required:
-   - compatible
-   - reg
+   '#io-channel-cells':
+     const: 1
 -- 
 2.27.0
 

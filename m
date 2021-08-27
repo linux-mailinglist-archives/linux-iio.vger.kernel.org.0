@@ -2,407 +2,168 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B6CF3F9345
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Aug 2021 05:56:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 558E93F9539
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Aug 2021 09:36:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244350AbhH0Du0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 26 Aug 2021 23:50:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44654 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244353AbhH0DuR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 Aug 2021 23:50:17 -0400
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDEE4C06179A;
-        Thu, 26 Aug 2021 20:49:27 -0700 (PDT)
-Received: by mail-pl1-x62a.google.com with SMTP id m4so3142396pll.0;
-        Thu, 26 Aug 2021 20:49:27 -0700 (PDT)
+        id S244455AbhH0HhA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Aug 2021 03:37:00 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32]:33594 "EHLO
+        mx0b-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S244457AbhH0Hg7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Aug 2021 03:36:59 -0400
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.0.43) with SMTP id 17R6IkQm015051;
+        Fri, 27 Aug 2021 07:35:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=corp-2021-07-09;
+ bh=x88zVL/26CdEfAIvIIJfHVOTsygrUK0oTbnAH0h53AY=;
+ b=EnZil30Mw6PXk0ng304pdnnvH7DRsv16VwqRP81d0TZHtOyx8z26ca67adNzl3rxWSKM
+ IqYshbLd4AJb+JxwFm2a1eFVF05/rLOHEqMmgdOt4bBWBKBj9bjwmeQnoexuXIta9idh
+ XcP6ErOQviHAXSnNZI2Z0fvAXY7AlkTzi0tnnirJZoTXwoCpf7LywUqpN8YpefCufvJl
+ YtNO4DfpjKfm6tG3FWptxG9vUEVcYmPlJn5d3/MP7tcVjuZ5Yj0HMcMl/8a/KKcm8D+5
+ uSDdC7BFM+0w1IuMBg6UPi0MNaTjcnr4MmLW27MXhS7SAI1mFPEWrj7AaQLOa4RqBAWF MA== 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=corp-2020-01-29;
+ bh=x88zVL/26CdEfAIvIIJfHVOTsygrUK0oTbnAH0h53AY=;
+ b=GI0It7ujSCCgCX/jl1YMsz2I3ljhZ6L08zGXH5VdjndZetnwO+knFBDaHQ05FiYa4YLM
+ J8oIrbT1/PRqSGVi5pWSQRjgnurqZKnBq6EUAMADhQW3chM+Kkp9dHk7XJpSw/FLgHOP
+ G0RVs4mwdWcunqk9c43ZtqpuJSdn1DtjVpCSO2HQv95vOAEDIsF5hatMRJVAg4PRXZk7
+ pL4ERr0YnSbFayLMNg4pqriQjqzs9c+Rby50SAu+8PXf1y4ofZF8ms6GWReyeLUprCQr
+ 0RilqsfUg3PBovJebT0L3M5X3qE9wYCtH/q05dyZu4XSHAtVKzlVefDjxzsKrK30Mfvc FA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by mx0b-00069f02.pphosted.com with ESMTP id 3ap4xv2u3t-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 27 Aug 2021 07:35:58 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 17R7PZgH126379;
+        Fri, 27 Aug 2021 07:35:57 GMT
+Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2170.outbound.protection.outlook.com [104.47.58.170])
+        by userp3020.oracle.com with ESMTP id 3akb91n10s-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 27 Aug 2021 07:35:57 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cq9DPilqB55kV02wLzDAh22Brqw/CcCm+2rI1VseBOzB6YoCdVIr/7M8c7PJMT50RVbxwa76X+8IY1SSmuzD2CK8eSbSlnOHoPT1H1Vpbmy2Yk8L0eugXcwA9HGrQpw13X7vwbNjBNZZbARTkAAiEntaEQcusVhXE7/5u1znsUdFAZW+h6iDitc/I45n1BM1qWaplEo6YWgEaIp9lGSjeLTmAaXIIv45Tw5FEfdrwl+piNhdAhEV6ZTmSmjyR7JfKX4axcA45eyI84gDpUCONeCDW1G0K0tfYN3u6AbLC5fAI0dGn2RQ9L+UO3Ck6naGpAMSZQkuD4C8r1HEDuXcow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=x88zVL/26CdEfAIvIIJfHVOTsygrUK0oTbnAH0h53AY=;
+ b=kFR4g1zoxtEQgXc2sfug4IrERzzkjd1lvMgqYiyMs/l+3fWAW9y3VgSMsAjmF5X/x+nge+cwxr4MUEcqiu4Mm0XlUbdF72y/Tz9Mrxt9kEhFUTnqLpygaoHER1poy+PjLaXZstt+bTvZdndjpAVSLcgRQGFs3SZNPBVCy5H6tJxuxDh0d4S/8InY9j7YMdYMtRk8RbkeIGQICHiCy27RLf65Ogf3TWaJw7HhPr7m7YPQPOyV2St96yLrY9K7mMN1Eb5sR1RFs16nieeDmZaVBANYhhFXopZamAoFdiPH0bVz0hR9ZAz3BTx8/6ixvokGBBZP6xTiNwjycIxgMN0PMA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=SLModsDB3wMnG/j1vYcLsvOXnN7kXwrxO57vJIaEopw=;
-        b=UILyvej2wS8P5/d+qqnuLFjfgoh7ptaG8zMfV6liAGhk195brEjxLrpLB6p0OtkN3P
-         EHQy9rK3DSCSjyCxJ+En8ccS2truIaj2WJoYgK/UO2VGh+dffecfaX5DimapKYcUO9y5
-         OOCVw3Uxd5oJG18eb3KzVo/BFH5/gIE6exe7bazeipL0TDNtKoZdLUhRwqrZ/DpbS+WI
-         dBlWfthHFyXs7LLIM7ENiwIYEMrKByKq/U6hYJ8KNauUophzk6Y7EEc5hmcGvXsFWYLp
-         HZyLs3AyplBOaC8Qk/JUNhcCETF276IYc1VHrqvEy0FfQrEiypNvnkA3HjXXuBq7ccaL
-         nExw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=SLModsDB3wMnG/j1vYcLsvOXnN7kXwrxO57vJIaEopw=;
-        b=NnzUOKhvXsh1n6z1VGxkSClblMhC1Xw/B0/oawqHpWO20SIQJ2MSee1CF30rPc5GkS
-         St4XhR4iuRrJl8KGkpdGkoDBuU3jOULGy1vwWRmDjMaL96s3yAbhza8OKttfSMAIECpE
-         94Lb0ZTi/rBGjCQUSlWld4OTEVVyXkqmcvueWPY/iNEjP7QwqFZYfsq+U1ekyHNJQMKV
-         4wjPlCj8dOT0kZHmk7z+gcYL7TJ+mmknBkHqZ4UaXBqa2wkZ+Z3/uahBFrT2MgFP3Ls0
-         qUoZsts0tE+0soKANywJ3+inMwybLIUG2o3gJ4EF4CB0PaJsSMrE/q2WcZoYILV6f1cQ
-         S/Og==
-X-Gm-Message-State: AOAM5312DLBzNXfhY5sGUi6U6C8xLdukRzemC53p153puuY9gByWLyzL
-        BEjzOtvkEc7UyJ8r7RqmRPM=
-X-Google-Smtp-Source: ABdhPJxwzUZcZtgoieBDokDy6DGZJqk5WDO5+nZyJO2B8CGxk61iURjf2QBdUtlJCXC5aCB1HTYAVA==
-X-Received: by 2002:a17:90a:bc8d:: with SMTP id x13mr20575376pjr.66.1630036167351;
-        Thu, 26 Aug 2021 20:49:27 -0700 (PDT)
-Received: from localhost.localdomain ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id o6sm4364693pjk.4.2021.08.26.20.49.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Aug 2021 20:49:26 -0700 (PDT)
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     jic23@kernel.org
-Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
-        a.fatoum@pengutronix.de, kamel.bouhara@bootlin.com,
-        gwendal@chromium.org, alexandre.belloni@bootlin.com,
-        david@lechnology.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        syednwaris@gmail.com, patrick.havelange@essensium.com,
-        fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@st.com, o.rempel@pengutronix.de,
-        jarkko.nikula@linux.intel.com,
-        William Breathitt Gray <vilhelm.gray@gmail.com>
-Subject: [PATCH v16 14/14] counter: 104-quad-8: Add IRQ support for the ACCES 104-QUAD-8
-Date:   Fri, 27 Aug 2021 12:47:58 +0900
-Message-Id: <c73960bc4545b11f6be105cf5b62bc47e027394d.1630031207.git.vilhelm.gray@gmail.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <cover.1630031207.git.vilhelm.gray@gmail.com>
-References: <cover.1630031207.git.vilhelm.gray@gmail.com>
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=x88zVL/26CdEfAIvIIJfHVOTsygrUK0oTbnAH0h53AY=;
+ b=tU5+Rxhrlz+UvzG6tX29h0lMviekU/2u/mpTsf1lgVEQ/YNTYwDuGSyqQLoTD7LSkPkCKGI41GZsnsgYHW3SPqFHWjNxYVRFZIE8I/9CHxTlQLJ+3QjM5vwJmWE5gDOHb3IzJuNNag7QYNqReYWonnIknhSSLV5fShWPgucbbcM=
+Authentication-Results: wanadoo.fr; dkim=none (message not signed)
+ header.d=none;wanadoo.fr; dmarc=none action=none header.from=oracle.com;
+Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
+ (2603:10b6:301:2d::28) by CO1PR10MB4499.namprd10.prod.outlook.com
+ (2603:10b6:303:6d::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4457.23; Fri, 27 Aug
+ 2021 07:35:54 +0000
+Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
+ ([fe80::5820:e42b:73d7:4268]) by MWHPR1001MB2365.namprd10.prod.outlook.com
+ ([fe80::5820:e42b:73d7:4268%7]) with mapi id 15.20.4457.019; Fri, 27 Aug 2021
+ 07:35:54 +0000
+Date:   Fri, 27 Aug 2021 10:35:36 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     jic23@kernel.org, lars@metafoo.de, ardeleanalex@gmail.com,
+        andy.shevchenko@gmail.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v2] iio: adc128s052: Simplify 'adc128_probe()'
+Message-ID: <20210827073536.GD1931@kadam>
+References: <d769321da74eea17a1260b48d4ab16f416b37c74.1630002390.git.christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d769321da74eea17a1260b48d4ab16f416b37c74.1630002390.git.christophe.jaillet@wanadoo.fr>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-ClientProxiedBy: JNAP275CA0050.ZAFP275.PROD.OUTLOOK.COM (2603:1086:0:4e::10)
+ To MWHPR1001MB2365.namprd10.prod.outlook.com (2603:10b6:301:2d::28)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from kadam (62.8.83.99) by JNAP275CA0050.ZAFP275.PROD.OUTLOOK.COM (2603:1086:0:4e::10) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4373.21 via Frontend Transport; Fri, 27 Aug 2021 07:35:49 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 8a88b48c-d7f8-4b86-ab6b-08d9692d4d50
+X-MS-TrafficTypeDiagnostic: CO1PR10MB4499:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <CO1PR10MB44994096EAFF0E0B193D3C7F8EC89@CO1PR10MB4499.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2958;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: nC2a2jCak/4aRV/BJjokbt3YT2GaM5IGwdXMAT+ADs5Q1fHaPK7jET4Wl57n1e/cyGkinoAS3jRA4v1ZjSoiL+wc0TFtWP22JgubKE6BmvXNTCS9e5v91EhlPMBwZ4VRXanj46a8aWXJqkdDjp1CoNvP0mAbdaF7KiEWq1eXderV6XlKrm3JG8ZXoC0XehNH8e9Yo1ym20DFTIpArWzCCvMqznzfa8IldLwLqGZU5f+qgMm1xH7y0rXR9sHcGdpXS0V+Ox6dMYDxTAWOlkuNsW+SGtptbXciFDSUxqGc1rAEaGNJmyWEpuMhC4suGD8TrzLkjFKc3ZEkfy47Sqj/WBXuQ93uamXNdUrz+kbjqj2kQCodSp3VdPi8SwHFvlWU2jj5bPsgB3uEr1t/AIhqttODC3e3Y4N7h3gJAdcxGS6Jred959XAd6v1sZCiaCh0A5t/3esLbtrOo8Gs95trFf3XCVtWTPIg+XFLKNVcYBjszFIfg3Kz3KR3QOgcfxgN0Dxt7goaCmMLh3tE4WB+obDZe+CcSPOThd3Q0c+9yV8SiHUTidusTYxO4eWesTHdpqLGtG05BcutvHVdkq/Omq2pb9XyUi/X7C0RECuT/foAXqqcExGfUbQx+eh/6KZuHSfHRzEsRniOuoARVqX9xzkqk9RHm54sfj53e2WuRpsbDkSkVHPJjzeN0oVMhx9rwzWcqv/lOKeA3eg4LtCoZg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR1001MB2365.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(136003)(346002)(366004)(39860400002)(396003)(376002)(8676002)(6916009)(33656002)(4744005)(52116002)(9686003)(6496006)(4326008)(83380400001)(2906002)(66946007)(55016002)(316002)(26005)(66476007)(66556008)(186003)(6666004)(9576002)(5660300002)(33716001)(8936002)(44832011)(86362001)(956004)(1076003)(478600001)(38100700002)(38350700002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?8ceKM3d/hLPFvQrSfqNkvI4gIbuF/cDMtLQw4t0qIlsZHIgKqlzJz5V5Ygn/?=
+ =?us-ascii?Q?SqnE+MVNTu5e05HABMLvDmstgAr/nQouTWTkEiFoa1kw80sqIMy6qw70Ktx8?=
+ =?us-ascii?Q?xemgymE5izelNi6BVYTaRQqmOBax9uBg8KcVI/TrrPEFdpZHtfypsD0rX0F4?=
+ =?us-ascii?Q?onj8pjgsaF1nNgdT4e3sWmbxbr3MdGcxTolEw6q7Rpg5Q4pmOvAbUcuRdpgO?=
+ =?us-ascii?Q?zGpkpHLlPQZX2HnAWqMfqi49P04FGRffEY7UqEv4rao8X3o/iKQzZ2nobF5l?=
+ =?us-ascii?Q?kZgb6d3hRnGFjRqEdzNxxIaLg4efA3qFF605m7t5+d55JQWQnMHkUo7HSMwX?=
+ =?us-ascii?Q?+jNA9yDUMUlbZr4vEcsyW+maCqg0bvFJ3dFOsLuagwkVQChQ9acKMP68YzWR?=
+ =?us-ascii?Q?d3RP7tT4AvBPwRHovLXQBkgUzKBtQmqd1CkM/V//gIeUmB7VVA1xRoWugptb?=
+ =?us-ascii?Q?optijI/OQSAiUZmYtWSXrvMVKNinHNPYJCyXcaMOXRbxLEQ7jDbryRWDnPCC?=
+ =?us-ascii?Q?ncr/FBO5xsrNqm3AX/5K1HmNFUxEU+VPHV6dRJ7eqdzn3yy6lrrl/tfjiavS?=
+ =?us-ascii?Q?dpRQIBOBDUaikb0s5Xf1lswT9WyerPDGFnGBgex5cKLW4np/WX8dokzbVkBy?=
+ =?us-ascii?Q?iVjaBU1Qwwjo/n3FUgfu0cx4KvjtU2NpHNH8RM7cTvmiYdxvmbxyUs14QhoV?=
+ =?us-ascii?Q?tOb+YjdjJH/EH5cmD1JebOFQ7GbjUSUc/ZuqX8XURMnWG0xN5q//N1OucA4J?=
+ =?us-ascii?Q?B7KYq8vQn2/UXy0kj1mpYnrt5ZqIE2jWS1Ud3A/rw090ivPkBlFWGKqgizcW?=
+ =?us-ascii?Q?VUK4W0W6LmAfBHKc6iZ+lNm9rhDnwSjuLAEfh1bSRkTSxBzsyC1u2iXnXWQ/?=
+ =?us-ascii?Q?LlUjAlH2XT+yprOXDyN9Z3sICd8FVqSahwOLSjPYWCgc3GWkjMblOgZyTBFk?=
+ =?us-ascii?Q?dKn7Q9jraiGGl004YwEtZtmigBplzXzmhWGkR1boCs+2MDrHuLXkj3dQuPX5?=
+ =?us-ascii?Q?jISwov2nQmCsT9J/8C6KSh4NjWLkZcS3DpnYAdTGEB6Vx++HTTWrpxm7R2hR?=
+ =?us-ascii?Q?+2fMzBR6P+FfsIZcvyack1tuFzQmxZ+q5yNgUuLYknbuf17qvO5aQVa3bQe1?=
+ =?us-ascii?Q?4vxZrFnDXpVmfShD09+fs/KBfcm+iuMwiR4CTvr2cCp0jdOr1m/V/JSfdIKx?=
+ =?us-ascii?Q?x1obCpv8Klb0BMz9YpktRzC5F/S/LpsqegpIsoIj/xblCe8pbuytrfVqQPXf?=
+ =?us-ascii?Q?UFGQwK9FG8bmcpu8byruBesiQ7yqdF3Qx1EwL/CNlhEzU5tJzbONyHvUPxxP?=
+ =?us-ascii?Q?M6EkkF6ns7HDr9ibqqExpEmZ?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8a88b48c-d7f8-4b86-ab6b-08d9692d4d50
+X-MS-Exchange-CrossTenant-AuthSource: MWHPR1001MB2365.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2021 07:35:54.3838
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GyIQF5InzjOjEoDvNQGkCz+qWQRnqlTuACKSqHGrLsOm4LLQGGwZsLNWX4bnhx3qmwOwFabfLR+tyeDCd+BLGzgDvNFD906Hx9z3Ww0Lmy8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR10MB4499
+X-Proofpoint-Virus-Version: vendor=nai engine=6300 definitions=10088 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 phishscore=0 spamscore=0
+ bulkscore=0 mlxlogscore=999 malwarescore=0 adultscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2107140000
+ definitions=main-2108270049
+X-Proofpoint-ORIG-GUID: RR8RWrZ2qyQMitt-A-2iyVpdhTJ4oph0
+X-Proofpoint-GUID: RR8RWrZ2qyQMitt-A-2iyVpdhTJ4oph0
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The LSI/CSI LS7266R1 chip provides programmable output via the FLG pins.
-When interrupts are enabled on the ACCES 104-QUAD-8, they occur whenever
-FLG1 is active. Four functions are available for the FLG1 signal: Carry,
-Compare, Carry-Borrow, and Index.
+On Thu, Aug 26, 2021 at 08:28:08PM +0200, Christophe JAILLET wrote:
+> @@ -172,13 +167,23 @@ static int adc128_probe(struct spi_device *spi)
+>  	ret = regulator_enable(adc->reg);
+>  	if (ret < 0)
+>  		return ret;
+> -	ret = devm_add_action_or_reset(&spi->dev, adc128_disable_regulator, adc->reg);
+> -	if (ret)
+> -		return ret;
+>  
+>  	mutex_init(&adc->lock);
+>  
+> -	return devm_iio_device_register(&spi->dev, indio_dev);
+> +	ret = iio_device_register(indio_dev);
+> +
+> +	return ret;
 
-	Carry:
-		Interrupt generated on active low Carry signal. Carry
-		signal toggles every time the respective channel's
-		counter overflows.
+Since you're resending anyway then please do:
 
-	Compare:
-		Interrupt generated on active low Compare signal.
-		Compare signal toggles every time respective channel's
-		preset register is equal to the respective channel's
-		counter.
+	return iio_device_register(indio_dev);
 
-	Carry-Borrow:
-		Interrupt generated on active low Carry signal and
-		active low Borrow signal. Carry signal toggles every
-		time the respective channel's counter overflows. Borrow
-		signal toggles every time the respective channel's
-		counter underflows.
-
-	Index:
-		Interrupt generated on active high Index signal.
-
-These four functions correspond respectivefly to the following four
-Counter event types: COUNTER_EVENT_OVERFLOW, COUNTER_EVENT_THRESHOLD,
-COUNTER_EVENT_OVERFLOW_UNDERFLOW, and COUNTER_EVENT_INDEX. Interrupts
-push Counter events to event channel X, where 'X' is the respective
-channel whose FLG1 activated.
-
-This patch adds IRQ support for the ACCES 104-QUAD-8. The interrupt line
-numbers for the devices may be configured via the irq array module
-parameter.
-
-Acked-by: Syed Nayyar Waris <syednwaris@gmail.com>
-Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
----
- drivers/counter/104-quad-8.c | 167 +++++++++++++++++++++++++++++++++--
- drivers/counter/Kconfig      |   6 +-
- 2 files changed, 164 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
-index a56751bf1e9b..1cbd60aaed69 100644
---- a/drivers/counter/104-quad-8.c
-+++ b/drivers/counter/104-quad-8.c
-@@ -11,6 +11,7 @@
- #include <linux/errno.h>
- #include <linux/io.h>
- #include <linux/ioport.h>
-+#include <linux/interrupt.h>
- #include <linux/isa.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-@@ -25,6 +26,10 @@ static unsigned int num_quad8;
- module_param_hw_array(base, uint, ioport, &num_quad8, 0);
- MODULE_PARM_DESC(base, "ACCES 104-QUAD-8 base addresses");
- 
-+static unsigned int irq[max_num_isa_dev(QUAD8_EXTENT)];
-+module_param_hw_array(irq, uint, irq, NULL, 0);
-+MODULE_PARM_DESC(irq, "ACCES 104-QUAD-8 interrupt line numbers");
-+
- #define QUAD8_NUM_COUNTERS 8
- 
- /**
-@@ -38,6 +43,8 @@ MODULE_PARM_DESC(base, "ACCES 104-QUAD-8 base addresses");
-  * @quadrature_scale:	array of quadrature mode scale configurations
-  * @ab_enable:		array of A and B inputs enable configurations
-  * @preset_enable:	array of set_to_preset_on_index attribute configurations
-+ * @irq_trigger:	array of current IRQ trigger function configurations
-+ * @next_irq_trigger:	array of next IRQ trigger function configurations
-  * @synchronous_mode:	array of index function synchronous mode configurations
-  * @index_polarity:	array of index function polarity configurations
-  * @cable_fault_enable:	differential encoder cable status enable configurations
-@@ -53,13 +60,17 @@ struct quad8 {
- 	unsigned int quadrature_scale[QUAD8_NUM_COUNTERS];
- 	unsigned int ab_enable[QUAD8_NUM_COUNTERS];
- 	unsigned int preset_enable[QUAD8_NUM_COUNTERS];
-+	unsigned int irq_trigger[QUAD8_NUM_COUNTERS];
-+	unsigned int next_irq_trigger[QUAD8_NUM_COUNTERS];
- 	unsigned int synchronous_mode[QUAD8_NUM_COUNTERS];
- 	unsigned int index_polarity[QUAD8_NUM_COUNTERS];
- 	unsigned int cable_fault_enable;
- 	unsigned int base;
- };
- 
-+#define QUAD8_REG_INTERRUPT_STATUS 0x10
- #define QUAD8_REG_CHAN_OP 0x11
-+#define QUAD8_REG_INDEX_INTERRUPT 0x12
- #define QUAD8_REG_INDEX_INPUT_LEVELS 0x16
- #define QUAD8_DIFF_ENCODER_CABLE_STATUS 0x17
- /* Borrow Toggle flip-flop */
-@@ -92,8 +103,8 @@ struct quad8 {
- #define QUAD8_RLD_CNTR_OUT 0x10
- /* Transfer Preset Register LSB to FCK Prescaler */
- #define QUAD8_RLD_PRESET_PSC 0x18
--#define QUAD8_CHAN_OP_ENABLE_COUNTERS 0x00
- #define QUAD8_CHAN_OP_RESET_COUNTERS 0x01
-+#define QUAD8_CHAN_OP_ENABLE_INTERRUPT_FUNC 0x04
- #define QUAD8_CMR_QUADRATURE_X1 0x08
- #define QUAD8_CMR_QUADRATURE_X2 0x10
- #define QUAD8_CMR_QUADRATURE_X4 0x18
-@@ -378,13 +389,103 @@ static int quad8_action_read(struct counter_device *counter,
- 	}
- }
- 
-+enum {
-+	QUAD8_EVENT_NONE = -1,
-+	QUAD8_EVENT_CARRY = 0,
-+	QUAD8_EVENT_COMPARE = 1,
-+	QUAD8_EVENT_CARRY_BORROW = 2,
-+	QUAD8_EVENT_INDEX = 3,
-+};
-+
-+static int quad8_events_configure(struct counter_device *counter)
-+{
-+	struct quad8 *const priv = counter->priv;
-+	unsigned long irq_enabled = 0;
-+	unsigned long irqflags;
-+	size_t channel;
-+	unsigned long ior_cfg;
-+	unsigned long base_offset;
-+
-+	spin_lock_irqsave(&priv->lock, irqflags);
-+
-+	/* Enable interrupts for the requested channels, disable for the rest */
-+	for (channel = 0; channel < QUAD8_NUM_COUNTERS; channel++) {
-+		if (priv->next_irq_trigger[channel] == QUAD8_EVENT_NONE)
-+			continue;
-+
-+		if (priv->irq_trigger[channel] != priv->next_irq_trigger[channel]) {
-+			/* Save new IRQ function configuration */
-+			priv->irq_trigger[channel] = priv->next_irq_trigger[channel];
-+
-+			/* Load configuration to I/O Control Register */
-+			ior_cfg = priv->ab_enable[channel] |
-+				  priv->preset_enable[channel] << 1 |
-+				  priv->irq_trigger[channel] << 3;
-+			base_offset = priv->base + 2 * channel + 1;
-+			outb(QUAD8_CTR_IOR | ior_cfg, base_offset);
-+		}
-+
-+		/* Reset next IRQ trigger function configuration */
-+		priv->next_irq_trigger[channel] = QUAD8_EVENT_NONE;
-+
-+		/* Enable IRQ line */
-+		irq_enabled |= BIT(channel);
-+	}
-+
-+	outb(irq_enabled, priv->base + QUAD8_REG_INDEX_INTERRUPT);
-+
-+	spin_unlock_irqrestore(&priv->lock, irqflags);
-+
-+	return 0;
-+}
-+
-+static int quad8_watch_validate(struct counter_device *counter,
-+				const struct counter_watch *watch)
-+{
-+	struct quad8 *const priv = counter->priv;
-+
-+	if (watch->channel > QUAD8_NUM_COUNTERS - 1)
-+		return -EINVAL;
-+
-+	switch (watch->event) {
-+	case COUNTER_EVENT_OVERFLOW:
-+		if (priv->next_irq_trigger[watch->channel] == QUAD8_EVENT_NONE)
-+			priv->next_irq_trigger[watch->channel] = QUAD8_EVENT_CARRY;
-+		else if (priv->next_irq_trigger[watch->channel] != QUAD8_EVENT_CARRY)
-+			return -EINVAL;
-+		return 0;
-+	case COUNTER_EVENT_THRESHOLD:
-+		if (priv->next_irq_trigger[watch->channel] == QUAD8_EVENT_NONE)
-+			priv->next_irq_trigger[watch->channel] = QUAD8_EVENT_COMPARE;
-+		else if (priv->next_irq_trigger[watch->channel] != QUAD8_EVENT_COMPARE)
-+			return -EINVAL;
-+		return 0;
-+	case COUNTER_EVENT_OVERFLOW_UNDERFLOW:
-+		if (priv->next_irq_trigger[watch->channel] == QUAD8_EVENT_NONE)
-+			priv->next_irq_trigger[watch->channel] = QUAD8_EVENT_CARRY_BORROW;
-+		else if (priv->next_irq_trigger[watch->channel] != QUAD8_EVENT_CARRY_BORROW)
-+			return -EINVAL;
-+		return 0;
-+	case COUNTER_EVENT_INDEX:
-+		if (priv->next_irq_trigger[watch->channel] == QUAD8_EVENT_NONE)
-+			priv->next_irq_trigger[watch->channel] = QUAD8_EVENT_INDEX;
-+		else if (priv->next_irq_trigger[watch->channel] != QUAD8_EVENT_INDEX)
-+			return -EINVAL;
-+		return 0;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
- static const struct counter_ops quad8_ops = {
- 	.signal_read = quad8_signal_read,
- 	.count_read = quad8_count_read,
- 	.count_write = quad8_count_write,
- 	.function_read = quad8_function_read,
- 	.function_write = quad8_function_write,
--	.action_read = quad8_action_read
-+	.action_read = quad8_action_read,
-+	.events_configure = quad8_events_configure,
-+	.watch_validate = quad8_watch_validate,
- };
- 
- static const char *const quad8_index_polarity_modes[] = {
-@@ -579,7 +680,8 @@ static int quad8_count_enable_write(struct counter_device *counter,
- 
- 	priv->ab_enable[count->id] = enable;
- 
--	ior_cfg = enable | priv->preset_enable[count->id] << 1;
-+	ior_cfg = enable | priv->preset_enable[count->id] << 1 |
-+		  priv->irq_trigger[count->id] << 3;
- 
- 	/* Load I/O control configuration */
- 	outb(QUAD8_CTR_IOR | ior_cfg, base_offset + 1);
-@@ -728,7 +830,8 @@ static int quad8_count_preset_enable_write(struct counter_device *counter,
- 
- 	priv->preset_enable[count->id] = preset_enable;
- 
--	ior_cfg = priv->ab_enable[count->id] | preset_enable << 1;
-+	ior_cfg = priv->ab_enable[count->id] | preset_enable << 1 |
-+		  priv->irq_trigger[count->id] << 3;
- 
- 	/* Load I/O control configuration to Input / Output Control Register */
- 	outb(QUAD8_CTR_IOR | ior_cfg, base_offset);
-@@ -980,11 +1083,54 @@ static struct counter_count quad8_counts[] = {
- 	QUAD8_COUNT(7, "Channel 8 Count")
- };
- 
-+static irqreturn_t quad8_irq_handler(int irq, void *private)
-+{
-+	struct quad8 *const priv = private;
-+	const unsigned long base = priv->base;
-+	unsigned long irq_status;
-+	unsigned long channel;
-+	u8 event;
-+
-+	irq_status = inb(base + QUAD8_REG_INTERRUPT_STATUS);
-+	if (!irq_status)
-+		return IRQ_NONE;
-+
-+	for_each_set_bit(channel, &irq_status, QUAD8_NUM_COUNTERS) {
-+		switch (priv->irq_trigger[channel]) {
-+		case QUAD8_EVENT_CARRY:
-+			event = COUNTER_EVENT_OVERFLOW;
-+				break;
-+		case QUAD8_EVENT_COMPARE:
-+			event = COUNTER_EVENT_THRESHOLD;
-+				break;
-+		case QUAD8_EVENT_CARRY_BORROW:
-+			event = COUNTER_EVENT_OVERFLOW_UNDERFLOW;
-+				break;
-+		case QUAD8_EVENT_INDEX:
-+			event = COUNTER_EVENT_INDEX;
-+				break;
-+		default:
-+			/* should never reach this path */
-+			WARN_ONCE(true, "invalid interrupt trigger function %u configured for channel %lu\n",
-+				  priv->irq_trigger[channel], channel);
-+			continue;
-+		}
-+
-+		counter_push_event(&priv->counter, event, channel);
-+	}
-+
-+	/* Clear pending interrupts on device */
-+	outb(QUAD8_CHAN_OP_ENABLE_INTERRUPT_FUNC, base + QUAD8_REG_CHAN_OP);
-+
-+	return IRQ_HANDLED;
-+}
-+
- static int quad8_probe(struct device *dev, unsigned int id)
- {
- 	struct quad8 *priv;
- 	int i, j;
- 	unsigned int base_offset;
-+	int err;
- 
- 	if (!devm_request_region(dev, base[id], QUAD8_EXTENT, dev_name(dev))) {
- 		dev_err(dev, "Unable to lock port addresses (0x%X-0x%X)\n",
-@@ -1009,6 +1155,8 @@ static int quad8_probe(struct device *dev, unsigned int id)
- 
- 	spin_lock_init(&priv->lock);
- 
-+	/* Reset Index/Interrupt Register */
-+	outb(0x00, base[id] + QUAD8_REG_INDEX_INTERRUPT);
- 	/* Reset all counters and disable interrupt function */
- 	outb(QUAD8_CHAN_OP_RESET_COUNTERS, base[id] + QUAD8_REG_CHAN_OP);
- 	/* Set initial configuration for all counters */
-@@ -1035,11 +1183,18 @@ static int quad8_probe(struct device *dev, unsigned int id)
- 		outb(QUAD8_CTR_IOR, base_offset + 1);
- 		/* Disable index function; negative index polarity */
- 		outb(QUAD8_CTR_IDR, base_offset + 1);
-+		/* Initialize next IRQ trigger function configuration */
-+		priv->next_irq_trigger[i] = QUAD8_EVENT_NONE;
- 	}
- 	/* Disable Differential Encoder Cable Status for all channels */
- 	outb(0xFF, base[id] + QUAD8_DIFF_ENCODER_CABLE_STATUS);
--	/* Enable all counters */
--	outb(QUAD8_CHAN_OP_ENABLE_COUNTERS, base[id] + QUAD8_REG_CHAN_OP);
-+	/* Enable all counters and enable interrupt function */
-+	outb(QUAD8_CHAN_OP_ENABLE_INTERRUPT_FUNC, base[id] + QUAD8_REG_CHAN_OP);
-+
-+	err = devm_request_irq(dev, irq[id], quad8_irq_handler, IRQF_SHARED,
-+			       priv->counter.name, priv);
-+	if (err)
-+		return err;
- 
- 	return devm_counter_register(dev, &priv->counter);
- }
-diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
-index d5d2540b30c2..3dcdb681c4e4 100644
---- a/drivers/counter/Kconfig
-+++ b/drivers/counter/Kconfig
-@@ -23,11 +23,11 @@ config 104_QUAD_8
- 	  A counter's respective error flag may be cleared by performing a write
- 	  operation on the respective count value attribute. Although the
- 	  104-QUAD-8 counters have a 25-bit range, only the lower 24 bits may be
--	  set, either directly or via the counter's preset attribute. Interrupts
--	  are not supported by this driver.
-+	  set, either directly or via the counter's preset attribute.
- 
- 	  The base port addresses for the devices may be configured via the base
--	  array module parameter.
-+	  array module parameter. The interrupt line numbers for the devices may
-+	  be configured via the irq array module parameter.
- 
- config INTERRUPT_CNT
- 	tristate "Interrupt counter driver"
--- 
-2.32.0
+regards,
+dan carpenter
 

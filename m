@@ -2,38 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F5AB3FAC45
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Aug 2021 16:35:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A457D3FAC4C
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Aug 2021 16:46:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232441AbhH2Og1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 29 Aug 2021 10:36:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47622 "EHLO mail.kernel.org"
+        id S235409AbhH2Opw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 29 Aug 2021 10:45:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53918 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229824AbhH2Og0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 29 Aug 2021 10:36:26 -0400
+        id S229824AbhH2Opw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 29 Aug 2021 10:45:52 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8D28C6023D;
-        Sun, 29 Aug 2021 14:35:30 +0000 (UTC)
-Date:   Sun, 29 Aug 2021 15:38:45 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id DD9B460F39;
+        Sun, 29 Aug 2021 14:44:57 +0000 (UTC)
+Date:   Sun, 29 Aug 2021 15:48:12 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Liam Beguin" <liambeguin@gmail.com>
-Cc:     "Andy Shevchenko" <andy.shevchenko@gmail.com>,
-        "Lars-Peter Clausen" <lars@metafoo.de>,
-        "Michael Hennerich" <Michael.Hennerich@analog.com>,
-        "Charles-Antoine Couret" <charles-antoine.couret@essensium.com>,
-        Nuno =?UTF-8?B?U8Oh?= <Nuno.Sa@analog.com>,
-        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
-        "linux-iio" <linux-iio@vger.kernel.org>,
-        "devicetree" <devicetree@vger.kernel.org>,
-        "Rob Herring" <robh+dt@kernel.org>
-Subject: Re: [PATCH v6 0/5] AD7949 Fixes
-Message-ID: <20210829153845.0c7eda30@jic23-huawei>
-In-Reply-To: <CDKYEMJOURHJ.2U1JRK17FRGD0@shaak>
-References: <20210815213309.2847711-1-liambeguin@gmail.com>
-        <CAHp75VdOMg-7xX+KbdaDt5tduPhorujFwvpMPmdHKMVg=vj2Ew@mail.gmail.com>
-        <CDKYEMJOURHJ.2U1JRK17FRGD0@shaak>
+To:     Alexandru Ardelean <aardelean@deviqon.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        denis.ciocca@st.com, linus.walleij@linaro.org,
+        lee.jones@linaro.org, andy.shevchenko@gmail.com
+Subject: Re: [PATCH v3 0/5] iio: st_sensors: convert probe functions to full
+ devm
+Message-ID: <20210829154812.606e51f5@jic23-huawei>
+In-Reply-To: <20210823112204.243255-1-aardelean@deviqon.com>
+References: <20210823112204.243255-1-aardelean@deviqon.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,77 +35,64 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 16 Aug 2021 08:59:28 -0400
-"Liam Beguin" <liambeguin@gmail.com> wrote:
+On Mon, 23 Aug 2021 14:21:59 +0300
+Alexandru Ardelean <aardelean@deviqon.com> wrote:
 
-> On Mon Aug 16, 2021 at 4:08 AM EDT, Andy Shevchenko wrote:
-> > On Mon, Aug 16, 2021 at 12:35 AM Liam Beguin <liambeguin@gmail.com>
-> > wrote:  
-> > >
-> > > While working on another series[1] I ran into issues where my SPI
-> > > controller would fail to handle 14-bit and 16-bit SPI messages. This
-> > > addresses that issue and adds support for selecting a different voltage
-> > > reference source from the devicetree.
-> > >
-> > > v1 was base on a series[2] that seems to not have made it all the way,
-> > > and was tested on an ad7689.
-> > >
-> > > v6 drops support for per channel vref selection.
-> > > After switching the voltage reference, readings take a little while to
-> > > stabilize, invalidating consecutive readings.
-> > >
-> > > This could've been addressed by adding more dummy cycles at the expense
-> > > of speed, but discussing the issue with colleagues more involved in
-> > > hardware design, it turns out these circuits are usually designed with a
-> > > single vref in mind.
-> > >
-> > > [1] https://patchwork.kernel.org/project/linux-iio/list/?series=511545
-> > > [2] https://patchwork.kernel.org/project/linux-iio/list/?series=116971&state=%2A&archive=both
-> > >
-> > > Changes since v5:
-> > > - rename defines: s/AD7949_CFG_BIT_/AD7949_CFG_MASK_/g
-> > > - rename AD7949_MASK_TOTAL to match other defines  
-> >  
-> > > - make vref selection global instead of per channel, and update
-> > >   dt-bindings  
+> Changelog v2 - v3:
+> * https://lore.kernel.org/linux-iio/20210816082836.67511-1-aardelean@deviqon.com/
+> * Fixed a build warning
+>   - When debugging is disabled dev_dbg() ops become a noop and this causes 
+>     a warning
+>   - Reported-by: kernel test robot <lkp@intel.com>
+>   - https://lore.kernel.org/linux-iio/202108180707.05EmDSHt-lkp@intel.com/
+> * added tag 'Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>' to
+>   series
+> * added tag 'Reviewed-by: Linus Walleij <linus.walleij@linaro.org>' to
+>   patch 'iio: st_sensors: disable regulators after device unregistration'
 > 
-> Hi Andy,
+> Changelog v1 - v2:
+> * https://lore.kernel.org/linux-iio/20210726071404.14529-1-aardelean@deviqon.com/
+> * added patch 'iio: st_sensors: disable regulators after device unregistration'
+>   - splits the regulator disable fix in a separate patch
 > 
-> >
-> > Same as per v5: is it a hardware limitation?
-> > It's unclear to me what happened here.  
-> 
-> I tried to provide more details in the last paragraph above.
-> 
-> After switching the voltage reference, readings take a little while to
-> stabilize invalidating consecutive readings.
-> 
-> One option was to add more dummy cycles, but in addition to making
-> things slower it was brought to my attention that this kind of circuit
-> is usually designed with a single vref in mind.
-> 
-> For those reasons and because I didn't have an explicit need for it, I
-> decided to drop that part.
-
-It's not 'impossible' to add it back in later if someone needs it, but
-until then this works for me.
-
-Series applied with tweaks as described in individual patch replies.
+As the fix, whilst clearly correct is for an issue that would take a bit of
+determination to hit, I'm not going to rush it in.  Hence whole series applied
+to the togreg branch of iio.git and pushed out as testing for 0-day to poke at.
 
 Thanks,
 
 Jonathan
 
 > 
-> Liam
+> Alexandru Ardelean (5):
+>   iio: st_sensors: disable regulators after device unregistration
+>   iio: st_sensors: remove st_sensors_deallocate_trigger() function
+>   iio: st_sensors: remove st_sensors_power_disable() function
+>   iio: st_sensors: remove all driver remove functions
+>   iio: st_sensors: remove reference to parent device object on
+>     st_sensor_data
 > 
-> >  
-> > > - reword commits 2/5, 3/5, and 4/5
-> > > - move bits_per_word configuration to struct spi_device, and switch to
-> > >   spi_{read,write}.  
-> >
-> > --
-> > With Best Regards,
-> > Andy Shevchenko  
+>  drivers/iio/accel/st_accel_core.c             | 31 ++---------
+>  drivers/iio/accel/st_accel_i2c.c              | 23 +-------
+>  drivers/iio/accel/st_accel_spi.c              | 23 +-------
+>  .../iio/common/st_sensors/st_sensors_core.c   | 34 ++++++------
+>  .../iio/common/st_sensors/st_sensors_i2c.c    |  1 -
+>  .../iio/common/st_sensors/st_sensors_spi.c    |  1 -
+>  .../common/st_sensors/st_sensors_trigger.c    | 53 +++++++------------
+>  drivers/iio/gyro/st_gyro_core.c               | 27 ++--------
+>  drivers/iio/gyro/st_gyro_i2c.c                | 23 +-------
+>  drivers/iio/gyro/st_gyro_spi.c                | 23 +-------
+>  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0.h       |  1 -
+>  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_core.c  | 17 +-----
+>  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_i2c.c   |  6 ---
+>  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c   |  6 ---
+>  drivers/iio/magnetometer/st_magn_core.c       | 29 ++--------
+>  drivers/iio/magnetometer/st_magn_i2c.c        | 23 +-------
+>  drivers/iio/magnetometer/st_magn_spi.c        | 23 +-------
+>  drivers/iio/pressure/st_pressure_core.c       | 27 ++--------
+>  drivers/iio/pressure/st_pressure_i2c.c        | 23 +-------
+>  drivers/iio/pressure/st_pressure_spi.c        | 23 +-------
+>  include/linux/iio/common/st_sensors.h         | 13 -----
+>  21 files changed, 59 insertions(+), 371 deletions(-)
 > 
 

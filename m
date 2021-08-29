@@ -2,272 +2,651 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EDC123FAD31
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Aug 2021 18:59:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8F703FAD3F
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Aug 2021 18:59:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229665AbhH2QoI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 29 Aug 2021 12:44:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37222 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229557AbhH2QoI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 29 Aug 2021 12:44:08 -0400
-Received: from mail-qt1-x836.google.com (mail-qt1-x836.google.com [IPv6:2607:f8b0:4864:20::836])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3AB0C061575;
-        Sun, 29 Aug 2021 09:43:15 -0700 (PDT)
-Received: by mail-qt1-x836.google.com with SMTP id 2so5210922qtw.1;
-        Sun, 29 Aug 2021 09:43:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=1lslXtKd5SxVq+3ls5uH31YZmLPDz+1SD/78XMweCEo=;
-        b=UJHnwIkvHdHr3/7Lc1bNuM4083eIapUh2zQyhOEzunSiMF5+PirQE1HOE+xzdIeP+J
-         YOoLgUqmHlk107p3A+Pi/TZz3IjaadGwlhLZwA+mIXuAA9BYHd1EWc3aBpkOj+/X71kJ
-         eKpVdCH33Qyp9XC9LgdFTwWJqZ3Zx/L/NTA9BI9Oq9suA4jCJQUwoM4Zoi9o9DLqhcW1
-         tICJ5hkr7LHQ5//y7H1twFKfZ7pQYlTQH25xgwhRbt2vyC9YSSF2yvQE27NKq32N+Aek
-         EkGhTLkn4bg66SN1IQ+k1L8GdizqGjRyvQF+xD9ZyTi1EfTt685FBYo0ElIELSeNP8ad
-         3yOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=1lslXtKd5SxVq+3ls5uH31YZmLPDz+1SD/78XMweCEo=;
-        b=F8/vHlc/M/Z7VeNuAO9S+ipB0dxG+ifBjkoeLBXBQ8U3nx3BRkerMFValiZ1q6zV5x
-         d+as/EHl+HOPAtKqoJ+GfP3DSOrN7ooO2ZVh90/G0fkchyq4loaO63Qy9mYCuysQbvWH
-         spfh6vXnYEAjA4epamlIro4v2COsgmS46jX6ysNuOMyIga9yWr4O3rPjmU6TAv3xnL2d
-         Xz/HiDYr7RKCwYMlwqFhr3DqLxUjwU5CzDKploD9ImV5M15vFyaFITUKdEgjCIlFcTao
-         4OmnYyvEg4hYSx3vsBbN7Gqp5DfD36jQ7JfvCjnxOcNBg+bCsKmNjIoHY/2pbPgiUfbG
-         0R0A==
-X-Gm-Message-State: AOAM530bEGtfGe0Vv9YcDVYUDqnxFfoR0sqZ90HeeDWyG/folZTJkZpp
-        jbZS8EIhit6KYi8swWBUiZI=
-X-Google-Smtp-Source: ABdhPJz7zDoZta+hAamxOebyN80EhXoxzV0SYUtbj9T4cYDKs7w0xl7XV0spzGuZsVZlwZ8eOWIiyw==
-X-Received: by 2002:ac8:7b47:: with SMTP id m7mr17189552qtu.178.1630255395008;
-        Sun, 29 Aug 2021 09:43:15 -0700 (PDT)
-Received: from shaak (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
-        by smtp.gmail.com with ESMTPSA id f28sm9195061qkk.10.2021.08.29.09.43.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Aug 2021 09:43:14 -0700 (PDT)
-Date:   Sun, 29 Aug 2021 12:43:12 -0400
-From:   Liam Beguin <liambeguin@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     lars@metafoo.de, Michael.Hennerich@analog.com,
-        charles-antoine.couret@essensium.com, Nuno.Sa@analog.com,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, robh+dt@kernel.org
-Subject: Re: [PATCH v6 2/5] iio: adc: ad7949: fix spi messages on non 14-bit
- controllers
-Message-ID: <YSu5IBF9e0eeUp7U@shaak>
-References: <20210815213309.2847711-1-liambeguin@gmail.com>
- <20210815213309.2847711-3-liambeguin@gmail.com>
- <20210829153334.07f5c64c@jic23-huawei>
+        id S230507AbhH2Qvy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 29 Aug 2021 12:51:54 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51594 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229692AbhH2Qvx (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 29 Aug 2021 12:51:53 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0D48060698;
+        Sun, 29 Aug 2021 16:50:58 +0000 (UTC)
+Date:   Sun, 29 Aug 2021 17:54:13 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Jacopo Mondi <jacopo@jmondi.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Magnus Damm <magnus.damm@gmail.com>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v3.1 2/3] iio: chemical: Add Senseair Sunrise 006-0-007
+ driver
+Message-ID: <20210829175413.7ce30bfa@jic23-huawei>
+In-Reply-To: <20210823073639.13688-1-jacopo@jmondi.org>
+References: <20210822184927.94673-3-jacopo@jmondi.org>
+        <20210823073639.13688-1-jacopo@jmondi.org>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210829153334.07f5c64c@jic23-huawei>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Aug 29, 2021 at 03:33:34PM +0100, Jonathan Cameron wrote:
-> On Sun, 15 Aug 2021 17:33:06 -0400
-> Liam Beguin <liambeguin@gmail.com> wrote:
-> 
-> > From: Liam Beguin <lvb@xiphos.com>
-> > 
-> > This driver supports devices with 14-bit and 16-bit sample sizes.
-> > This implies different SPI transfer lengths which are not always handled
-> > properly by some SPI controllers.
-> > 
-> > To work around this limitation, define a big endian buffer used to split
-> > the buffer into two 8-bit messages in the event that the controller
-> > doesn't support 14-bit or 16-bit transfers.
-> > A separate buffer is introduced here to avoid performing operations on
-> > types of different endianness.
-> > 
-> > Since all transfers use the same bits_per_word value, move that logic to
-> > the probe function, and let transfers default to the value defined in
-> > the struct spi_device.
-> > 
-> > Signed-off-by: Liam Beguin <lvb@xiphos.com>
-> Hi Liam, 
-> 
-Hi Jonathan,
+On Mon, 23 Aug 2021 09:36:39 +0200
+Jacopo Mondi <jacopo@jmondi.org> wrote:
 
-> I changed the title of this one to avoid it being picked up for automated
-> backporting.  I don't mind if you want to request it is backported explicitly
-> but it isn't a regression fix (as it never worked on such controllers) and
-> is non trivial.  As a result I want a backport to be a deliberate decision.
-> Now titled "iio: adc: ad7949: enable use with non 14/16-bit controllers"
+> Add support for the Senseair Sunrise 006-0-0007 driver through the
+> IIO subsystem.
+> 
+> Datasheet: https://rmtplusstoragesenseair.blob.core.windows.net/docs/Dev/publicerat/TDE5531.pdf
+> Signed-off-by: Jacopo Mondi <jacopo@jmondi.org>
+> ---
+> v3->v3.1
+
+Always do a new version of the whole series.  The automated tools that maintainers
+mostly use these days (e.g. b4) are pointed out a whole series when picking it up.
+
+This means we have to do it manually, one patch at a time I think which is annoying.
+
+
+> - Remove debug leftover
+> - Re-add commas at the end of arrays declarations
+> ---
+>  MAINTAINERS                        |   6 +
+>  drivers/iio/chemical/Kconfig       |  13 +
+>  drivers/iio/chemical/Makefile      |   1 +
+>  drivers/iio/chemical/sunrise_co2.c | 448 +++++++++++++++++++++++++++++
+>  4 files changed, 468 insertions(+)
+>  create mode 100644 drivers/iio/chemical/sunrise_co2.c
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 90ca9df1d3c3..43f5bba46673 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16544,6 +16544,12 @@ S:	Maintained
+>  F:	drivers/misc/phantom.c
+>  F:	include/uapi/linux/phantom.h
+> 
+> +SENSEAIR SUNRISE 006-0-0007
+> +M:	Jacopo Mondi <jacopo@jmondi.org>
+> +S:	Maintained
+> +F:	Documentation/devicetree/bindings/iio/chemical/senseair,sunrise.yaml
+> +F:	drivers/iio/chemical/sunrise_co2.c
+> +
+>  SENSIRION SCD30 CARBON DIOXIDE SENSOR DRIVER
+>  M:	Tomasz Duszynski <tomasz.duszynski@octakon.com>
+>  S:	Maintained
+> diff --git a/drivers/iio/chemical/Kconfig b/drivers/iio/chemical/Kconfig
+> index 10bb431bc3ce..ee8562949226 100644
+> --- a/drivers/iio/chemical/Kconfig
+> +++ b/drivers/iio/chemical/Kconfig
+> @@ -144,6 +144,19 @@ config SPS30
+>  	  To compile this driver as a module, choose M here: the module will
+>  	  be called sps30.
+> 
+> +config SENSEAIR_SUNRISE_CO2
+> +	tristate "Senseair Sunrise 006-0-0007 CO2 sensor"
+> +	depends on OF
+
+Not needed.
+
+> +	depends on I2C
+
+regmap_i2c select should bring that in.
+
+> +	depends on SYSFS
+
+I'd be surprised if this necessary...   Everything should be stubbed appropriately if
+its' not there.
+> +	select REGMAP_I2C
+> +	help
+> +	  Say yes here to build support for Senseair Sunrise 006-0-0007 CO2
+> +	  sensor.
+> +
+> +	  To compile this driver as a module, choose M here: the
+> +	  module will be called sunrise_co2.
+> +
+>  config VZ89X
+>  	tristate "SGX Sensortech MiCS VZ89X VOC sensor"
+>  	depends on I2C
+> diff --git a/drivers/iio/chemical/Makefile b/drivers/iio/chemical/Makefile
+> index fef63dd5bf92..d5e2a3331d57 100644
+> --- a/drivers/iio/chemical/Makefile
+> +++ b/drivers/iio/chemical/Makefile
+> @@ -17,4 +17,5 @@ obj-$(CONFIG_SCD30_I2C) += scd30_i2c.o
+>  obj-$(CONFIG_SCD30_SERIAL) += scd30_serial.o
+>  obj-$(CONFIG_SENSIRION_SGP30)	+= sgp30.o
+>  obj-$(CONFIG_SPS30) += sps30.o
+> +obj-$(CONFIG_SENSEAIR_SUNRISE_CO2) += sunrise_co2.o
+>  obj-$(CONFIG_VZ89X)		+= vz89x.o
+> diff --git a/drivers/iio/chemical/sunrise_co2.c b/drivers/iio/chemical/sunrise_co2.c
+> new file mode 100644
+> index 000000000000..84f19df6fc00
+> --- /dev/null
+> +++ b/drivers/iio/chemical/sunrise_co2.c
+> @@ -0,0 +1,448 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Senseair Sunrise 006-0-0007 CO2 sensor driver.
+> + *
+> + * Copyright (C) 2021 Jacopo Mondi
+> + *
+> + * List of features not yet supported by the driver:
+> + * - controllable EN pin
+> + * - single-shot operations using the nDRY pin.
+> + * - ABC/target calibration
+> + */
+> +
+> +#include <linux/bitops.h>
+> +#include <linux/i2c.h>
+> +#include <linux/kernel.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/module.h>
+> +#include <linux/mutex.h>
+> +#include <linux/regmap.h>
+> +#include <linux/time64.h>
+> +
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/sysfs.h>
+
+What are you using from this header?
+
+> +
+> +#define DRIVER_NAME "sunrise"
+> +
+> +#define SUNRISE_ERROR_STATUS_REG		0x00
+> +#define SUNRISE_CO2_FILTERED_COMP_REG		0x06
+> +#define SUNRISE_CHIP_TEMPERATURE_REG		0x08
+> +#define SUNRISE_CALIBRATION_STATUS_REG		0x81
+> +#define SUNRISE_CALIBRATION_COMMAND_REG		0x82
+> +#define SUNRISE_CALIBRATION_FACTORY_CMD		0x7c02
+> +#define SUNRISE_CALIBRATION_BACKGROUND_CMD	0x7c06
+> +/*
+> + * The calibration timeout is not characterized in the datasheet.
+> + * Use 30 seconds as a reasonable upper limit.
+> + */
+> +#define SUNRISE_CALIBRATION_TIMEOUT_US		(30 * USEC_PER_SEC)
+> +
+> +enum sunrise_calib {
+> +	SUNRISE_CALIBRATION_FACTORY,
+> +	SUNRISE_CALIBRATION_BACKGROUND,
+> +};
+> +
+> +struct sunrise_dev {
+> +	struct device *dev;
+> +	struct i2c_client *client;
+> +	struct regmap *regmap;
+> +	struct mutex lock;
+> +	enum sunrise_calib calibration;
+> +};
+> +
+> +static void sunrise_wakeup(struct sunrise_dev *sunrise)
+> +{
+> +	struct i2c_client *client = sunrise->client;
+> +
+> +	/*
+> +	 * Wake up sensor by sending sensor address: START, sensor address,
+> +	 * STOP. Sensor will not ACK this byte.
+> +	 *
+> +	 * The chip returns in low power state after 15msec without
+> +	 * communications or after a complete read/write sequence.
+> +	 */
+> +	i2c_smbus_xfer(client->adapter, client->addr, I2C_M_IGNORE_NAK,
+> +		       I2C_SMBUS_WRITE, 0, I2C_SMBUS_QUICK, NULL);
+> +}
+> +
+> +static int sunrise_read_word(struct sunrise_dev *sunrise, u8 reg, u16 *val)
+> +{
+> +	__be16 be_val;
+> +	int ret;
+> +
+> +	sunrise_wakeup(sunrise);
+> +	ret = regmap_bulk_read(sunrise->regmap, reg, &be_val, 2);
+> +	if (ret) {
+> +		dev_err(sunrise->dev, "Read word failed: reg 0x%2x (%d)\n", reg, ret);
+> +		return ret;
+> +	}
+> +
+> +	*val = be16_to_cpu(be_val);
+> +
+> +	return 0;
+> +}
+> +
+> +static int sunrise_write_byte(struct sunrise_dev *sunrise, u8 reg, u8 val)
+> +{
+> +	int ret;
+> +
+> +	sunrise_wakeup(sunrise);
+> +	ret = regmap_write(sunrise->regmap, reg, val);
+> +	if (ret) {
+> +		dev_err(sunrise->dev, "Write byte failed: reg 0x%2x (%d)\n", reg, ret);
+> +		return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int sunrise_write_word(struct sunrise_dev *sunrise, u8 reg, u16 data)
+> +{
+> +	__be16 be_data = cpu_to_be16(data);
+> +	int ret;
+> +
+> +	sunrise_wakeup(sunrise);
+
+Hmm. Technically there isn't anything stopping another user of the i2c bus sneaking in
+between the wakeup and the following command.  That would make the device going back
+to sleep a lot more likely.  I can't off the top of my head remember if regmap lets
+you lock the bus.  If not, you'll have to use the underlying i2c bus locking functions.
+https://elixir.bootlin.com/linux/latest/source/drivers/iio/temperature/mlx90614.c#L432
+gives an example.
+
+Perhaps worth a look is the regmap-sccb implementation which has a dance that looks
+a tiny bit like what you have to do here (be it for a different reason).
+It might be nice to do something similar here and have a custom regmap bus which
+has the necessary wakeups in the relevant places.
+
+Note I haven't thought it through in depth, so it might not work!
+
+> +	ret = regmap_bulk_write(sunrise->regmap, reg, &be_data, 2);
+> +	if (ret) {
+> +		dev_err(sunrise->dev, "Write word failed: reg 0x%2x (%d)\n", reg, ret);
+> +		return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +/*
+> + *  --- Calibration ---
+> + *
+> + *  Enumerate and select calibration modes, trigger a calibration cycle.
+> + */
+> +static const char * const sunrise_calibration_modes[] = {
+> +	[SUNRISE_CALIBRATION_FACTORY] = "factory_calibration",
+> +	[SUNRISE_CALIBRATION_BACKGROUND] = "background_calibration",
+> +};
+> +
+> +static const struct sunrise_calibration_data {
+> +	u16 calibration_cmd;
+> +	u8 calibration_bit;
+> +} sunrise_calibrations[] = {
+> +	[SUNRISE_CALIBRATION_FACTORY] = {
+> +		SUNRISE_CALIBRATION_FACTORY_CMD,
+> +		BIT(2),
+> +	},
+> +	[SUNRISE_CALIBRATION_BACKGROUND] = {
+> +		SUNRISE_CALIBRATION_BACKGROUND_CMD,
+> +		BIT(5),
+> +	},
+> +};
+> +
+> +static int sunrise_calibrate(struct sunrise_dev *sunrise)
+> +{
+> +	const struct sunrise_calibration_data *data;
+> +	unsigned int status;
+> +	int ret;
+> +
+> +	/* Reset the calibration status reg. */
+
+I was kind of assuming the locking around calibration mode was to avoid races
+with this.  Hence, why no lock here?
+
+> +	ret = sunrise_write_byte(sunrise, SUNRISE_CALIBRATION_STATUS_REG, 0x00);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Write a calibration command and poll the calibration status bit. */
+> +	data = &sunrise_calibrations[sunrise->calibration];
+> +	ret = sunrise_write_word(sunrise, SUNRISE_CALIBRATION_COMMAND_REG,
+> +				 data->calibration_cmd);
+> +	if (ret)
+> +		return ret;
+> +
+> +	dev_dbg(sunrise->dev, "%s in progress\n",
+> +		sunrise_calibration_modes[sunrise->calibration]);
+> +
+> +	return regmap_read_poll_timeout(sunrise->regmap,
+> +					SUNRISE_CALIBRATION_STATUS_REG,
+> +					status, status & data->calibration_bit,
+> +					100, SUNRISE_CALIBRATION_TIMEOUT_US);
+> +}
+> +
+> +static ssize_t sunrise_calibration_write(struct iio_dev *iiodev,
+> +					 uintptr_t private,
+> +					 const struct iio_chan_spec *chan,
+> +					 const char *buf, size_t len)
+> +{
+> +	struct sunrise_dev *sunrise = iio_priv(iiodev);
+> +	bool calibrate;
+> +	int ret;
+> +
+> +	ret = kstrtobool(buf, &calibrate);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (!calibrate)
+> +		return 0;
+
+return len or an error code.  Not 0,
+
+> +
+> +	ret = sunrise_calibrate(sunrise);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return len;
+> +}
+> +
+> +static int sunrise_set_calibration_mode(struct iio_dev *iiodev,
+> +					const struct iio_chan_spec *chan,
+> +					unsigned int mode)
+> +{
+> +	struct sunrise_dev *sunrise = iio_priv(iiodev);
+> +
+> +	mutex_lock(&sunrise->lock);
+> +	sunrise->calibration = mode;
+> +	mutex_unlock(&sunrise->lock);
+> +
+> +	return 0;
+> +}
+> +
+> +static int sunrise_get_calibration_mode(struct iio_dev *iiodev,
+> +					const struct iio_chan_spec *chan)
+> +{
+> +	struct sunrise_dev *sunrise = iio_priv(iiodev);
+> +	int mode;
+> +
+> +	mutex_lock(&sunrise->lock);
+> +	mode = sunrise->calibration;
+> +	mutex_unlock(&sunrise->lock);
+> +
+> +	return mode;
+> +}
+> +
+> +static const struct iio_enum sunrise_calibration_modes_enum = {
+> +	.items = sunrise_calibration_modes,
+> +	.num_items = ARRAY_SIZE(sunrise_calibration_modes),
+> +	.set = sunrise_set_calibration_mode,
+> +	.get = sunrise_get_calibration_mode,
+> +};
+> +
+> +/* --- Error status---
+/*
+ * --- Error status --- 
+
+If you really want to do the heading.  I'm not sure it adds anything over
+the fairly short description that follows, so I'd just have
+
+/* Enumerate and retrieve the chip error status */
+
+> + *
+> + * Enumerate and retrieve the chip error status.
+> + */
+> +enum {
+> +	SUNRISE_ERROR_FATAL,
+> +	SUNRISE_ERROR_I2C,
+> +	SUNRISE_ERROR_ALGORITHM,
+> +	SUNRISE_ERROR_CALIBRATION,
+> +	SUNRISE_ERROR_SELF_DIAGNOSTIC,
+> +	SUNRISE_ERROR_OUT_OF_RANGE,
+> +	SUNRISE_ERROR_MEMORY,
+> +	SUNRISE_ERROR_NO_MEASUREMENT,
+> +	SUNRISE_ERROR_LOW_VOLTAGE,
+> +	SUNRISE_ERROR_MEASUREMENT_TIMEOUT,
+> +};
+> +
+> +static const char * const sunrise_error_statuses[] = {
+> +	[SUNRISE_ERROR_FATAL] = "error_fatal",
+> +	[SUNRISE_ERROR_I2C] = "error_i2c",
+> +	[SUNRISE_ERROR_ALGORITHM] = "error_algorithm",
+> +	[SUNRISE_ERROR_CALIBRATION] = "error_calibration",
+> +	[SUNRISE_ERROR_SELF_DIAGNOSTIC] = "error_self_diagnostic",
+> +	[SUNRISE_ERROR_OUT_OF_RANGE] = "error_out_of_range",
+> +	[SUNRISE_ERROR_MEMORY] = "error_memory",
+> +	[SUNRISE_ERROR_NO_MEASUREMENT] = "error_no_measurement",
+> +	[SUNRISE_ERROR_LOW_VOLTAGE] = "error_low_voltage",
+> +	[SUNRISE_ERROR_MEASUREMENT_TIMEOUT] = "error_measurement_timeout",
+> +};
+> +
+> +static const u8 error_codes[] = {
+> +	SUNRISE_ERROR_FATAL,
+> +	SUNRISE_ERROR_I2C,
+> +	SUNRISE_ERROR_ALGORITHM,
+> +	SUNRISE_ERROR_CALIBRATION,
+> +	SUNRISE_ERROR_SELF_DIAGNOSTIC,
+> +	SUNRISE_ERROR_OUT_OF_RANGE,
+> +	SUNRISE_ERROR_MEMORY,
+> +	SUNRISE_ERROR_NO_MEASUREMENT,
+> +	SUNRISE_ERROR_LOW_VOLTAGE,
+> +	SUNRISE_ERROR_MEASUREMENT_TIMEOUT,
+> +};
+> +
+> +static const struct iio_enum sunrise_error_statuses_enum = {
+> +	.items = sunrise_error_statuses,
+> +	.num_items = ARRAY_SIZE(sunrise_error_statuses),
+> +};
+> +
+> +static ssize_t sunrise_error_status_read(struct iio_dev *iiodev,
+> +					 uintptr_t private,
+> +					 const struct iio_chan_spec *chan,
+> +					 char *buf)
+> +{
+> +	struct sunrise_dev *sunrise = iio_priv(iiodev);
+> +	const unsigned long *errors;
+> +	ssize_t len = 0;
+> +	u16 value;
+> +	int ret;
+> +	u8 i;
+> +
+> +	ret = sunrise_read_word(sunrise, SUNRISE_ERROR_STATUS_REG, &value);
+> +	if (ret)
+> +		return -EINVAL;
+> +
+> +	errors = (const unsigned long *)&value;
+
+Copy it to an unsigned long as discussed in other branch of this thread.
+
+> +	for_each_set_bit(i, errors, ARRAY_SIZE(error_codes))
+
+Unless I'm going crazy, ARRAY_SIZE(sunrise_error_statuses) == ARRAY_SIZE(error_codes)
+and so there isn't any point in having the error_codes array.
+
+> +		len += sysfs_emit_at(buf, len, "%s ", sunrise_error_statuses[i]);
+> +
+> +	if (len)
+> +		buf[len - 1] = '\n';
+> +
+> +	return len;
+> +}
+> +
+> +static const struct iio_chan_spec_ext_info sunrise_concentration_ext_info[] = {
+> +	/* Calibration modes and calibration trigger. */
+> +	{
+> +		.name = "calibration",
+> +		.write = sunrise_calibration_write,
+> +		.shared = IIO_SEPARATE,
+> +	},
+> +	IIO_ENUM("calibration_mode", IIO_SEPARATE,
+> +		 &sunrise_calibration_modes_enum),
+
+I'll comment on this ABI in the docs patch rather than here.
+Given you asked somewhere about ext_info vs explicit attrs.
+In theory we always prefer ext_info because it provides a way to access them from
+in kernel consumers + enforces naming etc.  However as we have a massive number
+of legacy attributes I haven't yet started insisting on it, even for new drivers.
+
+Good to see it here though!
+
+
+> +	IIO_ENUM_AVAILABLE("calibration_mode",
+> +			   &sunrise_calibration_modes_enum),
+> +
+> +	/* Error statuses. */
+> +	{
+> +		.name = "error_status",
+> +		.read = sunrise_error_status_read,
+> +		.shared = IIO_SEPARATE
+> +	},
+> +	IIO_ENUM_AVAILABLE("error_status", &sunrise_error_statuses_enum),
+> +	{}
+> +};
+> +
+> +static const struct iio_chan_spec sunrise_channels[] = {
+> +	{
+> +		.type = IIO_CONCENTRATION,
+> +		.modified = 1,
+> +		.channel2 = IIO_MOD_CO2,
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+> +		.ext_info = sunrise_concentration_ext_info,
+> +		.scan_index = 0,
+> +		.scan_type =  {
+> +			.sign = 's',
+> +			.realbits = 16,
+> +			.storagebits = 16,
+> +			.endianness = IIO_CPU,
+> +		},
+> +	},
+> +	{
+> +		.type = IIO_TEMP,
+> +		.info_mask_separate =  BIT(IIO_CHAN_INFO_RAW) |
+> +				       BIT(IIO_CHAN_INFO_SCALE),
+> +		.scan_index = 1,
+> +		.scan_type =  {
+> +			.sign = 's',
+> +			.realbits = 16,
+> +			.storagebits = 16,
+> +			.endianness = IIO_CPU,
+> +		},
+> +	},
+> +};
+> +
+> +static int sunrise_read_raw(struct iio_dev *iio_dev,
+> +			    const struct iio_chan_spec *chan,
+> +			    int *val, int *val2, long mask)
+> +{
+> +	struct sunrise_dev *sunrise = iio_priv(iio_dev);
+> +	u16 value;
+> +	int ret;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		mutex_lock(&sunrise->lock);
+> +
+> +		switch (chan->type) {
+> +		case IIO_CONCENTRATION:
+> +			ret = sunrise_read_word(sunrise, SUNRISE_CO2_FILTERED_COMP_REG,
+> +						&value);
+> +			*val = value;
+> +			mutex_unlock(&sunrise->lock);
+> +
+> +			return ret ?: IIO_VAL_INT;
+
+I mentioned in a late response to an earlier one that I'm not overly keen on this form, but
+I can live with it if you prefer it.
+
+> +
+> +		case IIO_TEMP:
+> +			ret = sunrise_read_word(sunrise, SUNRISE_CHIP_TEMPERATURE_REG,
+> +						&value);
+> +			*val = value;
+> +			mutex_unlock(&sunrise->lock);
+> +
+> +			return ret ?: IIO_VAL_INT;
+> +
+> +		default:
+> +			mutex_unlock(&sunrise->lock);
+
+Move the locks into the two case statements, then you won't have to unlock here which
+will be cleaner.
+
+> +			return -EINVAL;
+> +		}
+> +
+> +	case IIO_CHAN_INFO_SCALE:
+> +		/* Chip temperature scale = 1/100 */
+
+IIO temperatures are measured in milli degrees.  1lsb = 1/100*1000 degrees centigrade seems very accurate
+for a device like this!  I'm guessing this should be 10.
+
+> +		*val = 1;
+> +		*val2 = 100;
+> +		return IIO_VAL_FRACTIONAL;
+> +
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static const struct iio_info sunrise_info = {
+> +	.read_raw = sunrise_read_raw,
+> +};
+> +
+> +static struct regmap_config sunrise_regmap_config = {
+> +	.reg_bits = 8,
+> +	.val_bits = 8,
+> +};
+> +
+> +static int sunrise_probe(struct i2c_client *client)
+> +{
+> +	struct sunrise_dev *sunrise;
+> +	struct iio_dev *iio_dev;
+> +
+> +	iio_dev = devm_iio_device_alloc(&client->dev, sizeof(*sunrise));
+> +	if (!iio_dev)
+> +		return -ENOMEM;
+> +
+> +	i2c_set_clientdata(client, iio_dev);
+
+Why?  I'm not immediately spotting where this is used.
+
+> +
+> +	sunrise = iio_priv(iio_dev);
+> +	sunrise->client = client;
+> +	sunrise->dev = &client->dev;
+
+Why carry this around when you can get it from client->dev?
+
+> +	mutex_init(&sunrise->lock);
+> +
+> +	sunrise->regmap = devm_regmap_init_i2c(client, &sunrise_regmap_config);
+> +	if (IS_ERR(sunrise->regmap)) {
+> +		dev_err(&client->dev, "Failed to initialize regmap\n");
+> +		return PTR_ERR(sunrise->regmap);
+> +	}
+> +
+> +	iio_dev->info = &sunrise_info;
+> +	iio_dev->name = DRIVER_NAME;
+> +	iio_dev->channels = sunrise_channels;
+> +	iio_dev->num_channels = ARRAY_SIZE(sunrise_channels);
+> +	iio_dev->modes = INDIO_DIRECT_MODE;
+> +
+> +	return devm_iio_device_register(&client->dev, iio_dev);
+> +}
+> +
+> +static const struct of_device_id sunrise_of_match[] = {
+> +	{ .compatible = "senseair,sunrise-006-0-0007" },
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(of, sunrise_of_match);
+> +
+> +static struct i2c_driver sunrise_driver = {
+> +	.driver = {
+> +		.name = DRIVER_NAME,
+> +		.of_match_table = sunrise_of_match,
+> +	},
+> +	.probe_new = sunrise_probe,
+> +};
+> +module_i2c_driver(sunrise_driver);
+> +
+> +MODULE_AUTHOR("Jacopo Mondi <jacopo@jmondi.org>");
+> +MODULE_DESCRIPTION("Senseair Sunrise 006-0-0007 CO2 sensor IIO driver");
+> +MODULE_LICENSE("GPL v2");
+> --
+> 2.32.0
 > 
 
-That makes sense! I'll be more careful of that in the future.
-
-Thanks,
-Liam
-
-> This and previous applied to the togreg branch of iio.git and pushed out
-> as testing for 0-day to poke at it.
-> 
-> Thanks,
-> 
-> Jonathan
-> 
-> > ---
-> >  drivers/iio/adc/ad7949.c | 86 +++++++++++++++++++++++++++-------------
-> >  1 file changed, 58 insertions(+), 28 deletions(-)
-> > 
-> > diff --git a/drivers/iio/adc/ad7949.c b/drivers/iio/adc/ad7949.c
-> > index adc4487a7d56..a263d0fcec75 100644
-> > --- a/drivers/iio/adc/ad7949.c
-> > +++ b/drivers/iio/adc/ad7949.c
-> > @@ -14,7 +14,6 @@
-> >  #include <linux/bitfield.h>
-> >  
-> >  #define AD7949_CFG_MASK_TOTAL		GENMASK(13, 0)
-> > -#define AD7949_CFG_REG_SIZE_BITS	14
-> >  
-> >  /* CFG: Configuration Update */
-> >  #define AD7949_CFG_MASK_OVERWRITE	BIT(13)
-> > @@ -71,6 +70,7 @@ static const struct ad7949_adc_spec ad7949_adc_spec[] = {
-> >   * @cfg: copy of the configuration register
-> >   * @current_channel: current channel in use
-> >   * @buffer: buffer to send / receive data to / from device
-> > + * @buf8b: be16 buffer to exchange data with the device in 8-bit transfers
-> >   */
-> >  struct ad7949_adc_chip {
-> >  	struct mutex lock;
-> > @@ -81,27 +81,34 @@ struct ad7949_adc_chip {
-> >  	u16 cfg;
-> >  	unsigned int current_channel;
-> >  	u16 buffer ____cacheline_aligned;
-> > +	__be16 buf8b;
-> >  };
-> >  
-> >  static int ad7949_spi_write_cfg(struct ad7949_adc_chip *ad7949_adc, u16 val,
-> >  				u16 mask)
-> >  {
-> >  	int ret;
-> > -	int bits_per_word = ad7949_adc->resolution;
-> > -	int shift = bits_per_word - AD7949_CFG_REG_SIZE_BITS;
-> > -	struct spi_message msg;
-> > -	struct spi_transfer tx[] = {
-> > -		{
-> > -			.tx_buf = &ad7949_adc->buffer,
-> > -			.len = 2,
-> > -			.bits_per_word = bits_per_word,
-> > -		},
-> > -	};
-> >  
-> >  	ad7949_adc->cfg = (val & mask) | (ad7949_adc->cfg & ~mask);
-> > -	ad7949_adc->buffer = ad7949_adc->cfg << shift;
-> > -	spi_message_init_with_transfers(&msg, tx, 1);
-> > -	ret = spi_sync(ad7949_adc->spi, &msg);
-> > +
-> > +	switch (ad7949_adc->spi->bits_per_word) {
-> > +	case 16:
-> > +		ad7949_adc->buffer = ad7949_adc->cfg << 2;
-> > +		ret = spi_write(ad7949_adc->spi, &ad7949_adc->buffer, 2);
-> > +		break;
-> > +	case 14:
-> > +		ad7949_adc->buffer = ad7949_adc->cfg;
-> > +		ret = spi_write(ad7949_adc->spi, &ad7949_adc->buffer, 2);
-> > +		break;
-> > +	case 8:
-> > +		/* Here, type is big endian as it must be sent in two transfers */
-> > +		ad7949_adc->buf8b = cpu_to_be16(ad7949_adc->cfg << 2);
-> > +		ret = spi_write(ad7949_adc->spi, &ad7949_adc->buf8b, 2);
-> > +		break;
-> > +	default:
-> > +		dev_err(&ad7949_adc->indio_dev->dev, "unsupported BPW\n");
-> > +		return -EINVAL;
-> > +	}
-> >  
-> >  	/*
-> >  	 * This delay is to avoid a new request before the required time to
-> > @@ -116,16 +123,6 @@ static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
-> >  {
-> >  	int ret;
-> >  	int i;
-> > -	int bits_per_word = ad7949_adc->resolution;
-> > -	int mask = GENMASK(ad7949_adc->resolution - 1, 0);
-> > -	struct spi_message msg;
-> > -	struct spi_transfer tx[] = {
-> > -		{
-> > -			.rx_buf = &ad7949_adc->buffer,
-> > -			.len = 2,
-> > -			.bits_per_word = bits_per_word,
-> > -		},
-> > -	};
-> >  
-> >  	/*
-> >  	 * 1: write CFG for sample N and read old data (sample N-2)
-> > @@ -144,9 +141,11 @@ static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
-> >  	}
-> >  
-> >  	/* 3: write something and read actual data */
-> > -	ad7949_adc->buffer = 0;
-> > -	spi_message_init_with_transfers(&msg, tx, 1);
-> > -	ret = spi_sync(ad7949_adc->spi, &msg);
-> > +	if (ad7949_adc->spi->bits_per_word == 8)
-> > +		ret = spi_read(ad7949_adc->spi, &ad7949_adc->buf8b, 2);
-> > +	else
-> > +		ret = spi_read(ad7949_adc->spi, &ad7949_adc->buffer, 2);
-> > +
-> >  	if (ret)
-> >  		return ret;
-> >  
-> > @@ -158,7 +157,25 @@ static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
-> >  
-> >  	ad7949_adc->current_channel = channel;
-> >  
-> > -	*val = ad7949_adc->buffer & mask;
-> > +	switch (ad7949_adc->spi->bits_per_word) {
-> > +	case 16:
-> > +		*val = ad7949_adc->buffer;
-> > +		/* Shift-out padding bits */
-> > +		*val >>= 16 - ad7949_adc->resolution;
-> > +		break;
-> > +	case 14:
-> > +		*val = ad7949_adc->buffer & GENMASK(13, 0);
-> > +		break;
-> > +	case 8:
-> > +		/* Here, type is big endian as data was sent in two transfers */
-> > +		*val = be16_to_cpu(ad7949_adc->buf8b);
-> > +		/* Shift-out padding bits */
-> > +		*val >>= 16 - ad7949_adc->resolution;
-> > +		break;
-> > +	default:
-> > +		dev_err(&ad7949_adc->indio_dev->dev, "unsupported BPW\n");
-> > +		return -EINVAL;
-> > +	}
-> >  
-> >  	return 0;
-> >  }
-> > @@ -266,6 +283,7 @@ static int ad7949_spi_init(struct ad7949_adc_chip *ad7949_adc)
-> >  
-> >  static int ad7949_spi_probe(struct spi_device *spi)
-> >  {
-> > +	u32 spi_ctrl_mask = spi->controller->bits_per_word_mask;
-> >  	struct device *dev = &spi->dev;
-> >  	const struct ad7949_adc_spec *spec;
-> >  	struct ad7949_adc_chip *ad7949_adc;
-> > @@ -292,6 +310,18 @@ static int ad7949_spi_probe(struct spi_device *spi)
-> >  	indio_dev->num_channels = spec->num_channels;
-> >  	ad7949_adc->resolution = spec->resolution;
-> >  
-> > +	/* Set SPI bits per word */
-> > +	if (spi_ctrl_mask & SPI_BPW_MASK(ad7949_adc->resolution)) {
-> > +		spi->bits_per_word = ad7949_adc->resolution;
-> > +	} else if (spi_ctrl_mask == SPI_BPW_MASK(16)) {
-> > +		spi->bits_per_word = 16;
-> > +	} else if (spi_ctrl_mask == SPI_BPW_MASK(8)) {
-> > +		spi->bits_per_word = 8;
-> > +	} else {
-> > +		dev_err(dev, "unable to find common BPW with spi controller\n");
-> > +		return -EINVAL;
-> > +	}
-> > +
-> >  	ad7949_adc->vref = devm_regulator_get(dev, "vref");
-> >  	if (IS_ERR(ad7949_adc->vref)) {
-> >  		dev_err(dev, "fail to request regulator\n");
-> 

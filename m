@@ -2,34 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B62363FACBD
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Aug 2021 17:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 869E03FACEA
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Aug 2021 17:58:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235564AbhH2Pp2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 29 Aug 2021 11:45:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39944 "EHLO mail.kernel.org"
+        id S235755AbhH2Pyc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 29 Aug 2021 11:54:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41664 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231216AbhH2Pp1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 29 Aug 2021 11:45:27 -0400
+        id S235738AbhH2Pyc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 29 Aug 2021 11:54:32 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2B0CB60E94;
-        Sun, 29 Aug 2021 15:44:32 +0000 (UTC)
-Date:   Sun, 29 Aug 2021 16:47:48 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id E772E60F42;
+        Sun, 29 Aug 2021 15:53:37 +0000 (UTC)
+Date:   Sun, 29 Aug 2021 16:56:53 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Sean Nyekjaer <sean.nyekjaer@prevas.dk>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] iio: gyro: remove dead config dependencies on
- INPUT_MPU3050
-Message-ID: <20210829164748.710e3da6@jic23-huawei>
-In-Reply-To: <CACRpkdaemTruXS3PTz3z_hpkvBYvi802dF6VBDq+fLEyxZStrQ@mail.gmail.com>
-References: <20210817081330.9645-1-lukas.bulwahn@gmail.com>
-        <CACRpkdaemTruXS3PTz3z_hpkvBYvi802dF6VBDq+fLEyxZStrQ@mail.gmail.com>
+        Vincent Whitchurch <vincent.whitchurch@axis.com>,
+        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] iio: dac: fix an error code in probe()
+Message-ID: <20210829165653.36c65f7c@jic23-huawei>
+In-Reply-To: <20210816183954.GB2068@kili>
+References: <20210816183954.GB2068@kili>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -38,31 +35,36 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 17 Aug 2021 22:11:36 +0200
-Linus Walleij <linus.walleij@linaro.org> wrote:
+On Mon, 16 Aug 2021 21:39:54 +0300
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-> On Tue, Aug 17, 2021 at 10:13 AM Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
+> If we have an unexpected number of channels then return -EINVAL instead
+> of returning success.
 > 
-> > Commit b1fe0cf06f92 ("Input: delete MPU3050 driver") deletes the superseded
-> > MPU3050 driver and its corresponding config INPUT_MPU3050.
-> >
-> > The dependencies on the superseding driver in ./drivers/iio/gyro/Kconfig
-> > to ensure that the two drivers are not built into the same kernel is a dead
-> > dependency and not required anymore.
-> >
-> > So, remove those config dependencies on INPUT_MPU3050 for MPU3050_I2C.
-> >
-> > This issue was detected with ./scripts/checkkconfigsymbols.py.
-> >
-> > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>  
-> 
-> Oops my leftover.
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> 
-> Yours,
-> Linus Walleij
-
-Applied,
+> Fixes: df38a4a72a3b ("iio: dac: add TI DAC5571 family support")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Given I'm not going to be doing another fixes pull for 5.14 (bit late afterall!)
+I've rebased the fixes-togreg branch to match staging/staging-next which will
+go in during the merge window + applied this on top.
 
 Thanks,
+
+Jonathan
+
+> ---
+>  drivers/iio/dac/ti-dac5571.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/iio/dac/ti-dac5571.c b/drivers/iio/dac/ti-dac5571.c
+> index 2a5ba1b08a1d..546a4cf6c5ef 100644
+> --- a/drivers/iio/dac/ti-dac5571.c
+> +++ b/drivers/iio/dac/ti-dac5571.c
+> @@ -350,6 +350,7 @@ static int dac5571_probe(struct i2c_client *client,
+>  		data->dac5571_pwrdwn = dac5571_pwrdwn_quad;
+>  		break;
+>  	default:
+> +		ret = -EINVAL;
+>  		goto err;
+>  	}
+>  
 

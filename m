@@ -2,37 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2463C3FAD04
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Aug 2021 18:06:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 386173FAD1A
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Aug 2021 18:18:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235548AbhH2QFa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 29 Aug 2021 12:05:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43592 "EHLO mail.kernel.org"
+        id S235765AbhH2QSy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 29 Aug 2021 12:18:54 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44584 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235680AbhH2QF3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 29 Aug 2021 12:05:29 -0400
+        id S235624AbhH2QSx (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 29 Aug 2021 12:18:53 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8284B60E73;
-        Sun, 29 Aug 2021 16:04:34 +0000 (UTC)
-Date:   Sun, 29 Aug 2021 17:07:49 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 4CCA760ED4;
+        Sun, 29 Aug 2021 16:17:58 +0000 (UTC)
+Date:   Sun, 29 Aug 2021 17:21:13 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jacopo Mondi <jacopo@jmondi.org>
-Cc:     Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>,
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jacopo Mondi <jacopo@jmondi.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-iio@vger.kernel.org, Magnus Damm <magnus.damm@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Matt Ranostay <matt.ranostay@konsulko.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v2 1/3] dt-bindings: iio: chemical: Document
- senseair,sunrise CO2 sensor
-Message-ID: <20210829170749.199ff1af@jic23-huawei>
-In-Reply-To: <20210822160444.upjcnsbncyk63x3s@uno.localdomain>
-References: <20210820133821.159239-1-jacopo@jmondi.org>
-        <20210820133821.159239-2-jacopo@jmondi.org>
-        <1629488772.355778.3663899.nullmailer@robh.at.kernel.org>
-        <20210822160444.upjcnsbncyk63x3s@uno.localdomain>
+        Magnus Damm <magnus.damm@gmail.com>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v3.1 2/3] iio: chemical: Add Senseair Sunrise 006-0-007
+ driver
+Message-ID: <20210829172113.10f3cd27@jic23-huawei>
+In-Reply-To: <CAHp75Vc4gSEn_3=5ixWr4WFyKwXDMMC8SaoBkZNotZ+GP6wMWA@mail.gmail.com>
+References: <20210822184927.94673-3-jacopo@jmondi.org>
+        <20210823073639.13688-1-jacopo@jmondi.org>
+        <YSNdywXOuzYMCbJa@smile.fi.intel.com>
+        <20210823090610.hr6a7wjhkpyuupxv@uno.localdomain>
+        <YSNs8Oo+1oMZ5TJS@smile.fi.intel.com>
+        <20210823101911.4kzsdolwxdrpnyxt@uno.localdomain>
+        <CAHp75Vc4gSEn_3=5ixWr4WFyKwXDMMC8SaoBkZNotZ+GP6wMWA@mail.gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -41,69 +43,64 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 22 Aug 2021 18:04:44 +0200
-Jacopo Mondi <jacopo@jmondi.org> wrote:
+On Mon, 23 Aug 2021 14:09:21 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> On Fri, Aug 20, 2021 at 02:46:12PM -0500, Rob Herring wrote:
-> > On Fri, 20 Aug 2021 15:38:19 +0200, Jacopo Mondi wrote:  
-> > > Add documentation for the Senseair Sunrise 006-0-0007 CO2 NDIR sensor.
+> On Mon, Aug 23, 2021 at 1:20 PM Jacopo Mondi <jacopo@jmondi.org> wrote:
+> > On Mon, Aug 23, 2021 at 12:40:00PM +0300, Andy Shevchenko wrote:  
+> > > On Mon, Aug 23, 2021 at 11:06:10AM +0200, Jacopo Mondi wrote:  
+> > > > On Mon, Aug 23, 2021 at 11:35:23AM +0300, Andy Shevchenko wrote:  
+> > > > > On Mon, Aug 23, 2021 at 09:36:39AM +0200, Jacopo Mondi wrote:  
+> 
+> ...
+> 
+> > > > > > +       errors = (const unsigned long *)&value;  
+> > > > >
+> > > > > Yes, it takes a pointer, but in your case it will oops the kernel quite likely.  
+> > > >
+> > > > The usage of a pointer kind of puzzled me in first place, and I found
+> > > > no pattern to copy in the existing code base. I have probbaly not
+> > > > looked hard enough ?
+> > > >  
+> > > > >   unsigned long errors;
+> > > > >
+> > > > >   ...
+> > > > >
+> > > > >   errors = value;
+> > > > >   for_each_set_bit(..., &errors, ...)  
+> > > >
+> > > > I can do so but, for my education mostly, why do you think it would
+> > > > oops ? '*errors' is a pointer to a variable allocated on the stack as
+> > > > much as 'errors' you suggested is a local stack variable. I might be a
+> > > > bit slow today, but I'm missing the difference. FWIW I tested the
+> > > > function, even if there were no error bits set at the moment I tested, but
+> > > > the for_each_set_bit() macro was indeed run.  
 > > >
-> > > Signed-off-by: Jacopo Mondi <jacopo@jmondi.org>
-> > > ---
-> > > v1->v2:
-> > > - Add maxItems to -gpios properties as suggested by Rob
-> > > - Add a label to the device node in the example as suggested by Rob
-> > >  
+> > > Because you theoretically access bytes behind 16-bit. That castings just ugly
+> > > and compiler should warn you about if it is clever enough.  
+> >
+> > I don't think there's such a risk as I limit the search space to
+> > ARRAY_SIZE(error_codes), but I agree the cast is ugly and I'll change
+> > to what you suggested  
 > 
-> Labels cannot contain '-'.
-> 
-> I'll make this
-> 
->         sunrise: co2-sensor@68
+> More for the sake of education. Actually it's not theoretical. Some
+> architectures may not access longs on unaligned (16-bit) addresses.
+> So, yes, oops is probable.
+> Another example is reading the long to the register. This can cross
+> the page boundary and produce fault (again) oops.
 
-Why label at all?  Might be handy on a real board, but example doesn't need it.
+For extra giggles, (and I'm half asleep today so may have this backwards)
+what it the platform is big endian and you do this?  I'm fairly sure it will
+walk the bits from low to high and so the first access will be off the end
+of your shorter type being as it will be at addr + sizeof (long) - 1 bit 7.
 
-Jonathan
-
 > 
-> My bad and sorry for not running dt_binding_check, I thought the
-> changes were trivial enough.
-> 
-> Thanks
->    j
-> 
-> > > ---
-> > >  .../iio/chemical/senseair,sunrise.yaml        | 53 +++++++++++++++++++
-> > >  .../devicetree/bindings/vendor-prefixes.yaml  |  2 +
-> > >  2 files changed, 55 insertions(+)
-> > >  create mode 100644 Documentation/devicetree/bindings/iio/chemical/senseair,sunrise.yaml
-> > >  
+> > > If you found it in the existing code, please, fix it there, so quite bad
+> > > pattern won't spread.  
 > >
-> > My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-> > on your patch (DT_CHECKER_FLAGS is new in v5.13):
-> >
-> > yamllint warnings/errors:
-> >
-> > dtschema/dtc warnings/errors:
-> > Error: Documentation/devicetree/bindings/iio/chemical/senseair,sunrise.example.dts:23.21-22 syntax error
-> > FATAL ERROR: Unable to parse input tree
-> > make[1]: *** [scripts/Makefile.lib:380: Documentation/devicetree/bindings/iio/chemical/senseair,sunrise.example.dt.yaml] Error 1
-> > make[1]: *** Waiting for unfinished jobs....
-> > make: *** [Makefile:1419: dt_binding_check] Error 2
-> >
-> > doc reference errors (make refcheckdocs):
-> >
-> > See https://patchwork.ozlabs.org/patch/1519042
-> >
-> > This check can fail if there are any dependencies. The base for a patch
-> > series is generally the most recent rc1.
-> >
-> > If you already ran 'make dt_binding_check' and didn't see the above
-> > error(s), then make sure 'yamllint' is installed and dt-schema is up to
-> > date:
-> >
-> > pip3 install dtschema --upgrade
-> >
-> > Please check and re-submit.
+> > My point was that I was not able to find any pattern to copy from :)
 > >  
+> > > > > > +       for_each_set_bit(i, errors, ARRAY_SIZE(error_codes))
+> > > > > > +               len += sysfs_emit_at(buf, len, "%s ", sunrise_error_statuses[i]);  
+> 
 

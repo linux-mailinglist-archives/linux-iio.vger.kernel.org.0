@@ -2,31 +2,30 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E332F3FB48A
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Aug 2021 13:27:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBDEC3FB490
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Aug 2021 13:29:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236471AbhH3L1y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 30 Aug 2021 07:27:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58454 "EHLO mail.kernel.org"
+        id S236486AbhH3LaC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 30 Aug 2021 07:30:02 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59490 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235387AbhH3L1y (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 30 Aug 2021 07:27:54 -0400
+        id S232579AbhH3LaC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 30 Aug 2021 07:30:02 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8890A6112F;
-        Mon, 30 Aug 2021 11:26:58 +0000 (UTC)
-Date:   Mon, 30 Aug 2021 12:30:10 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 894EF6112D;
+        Mon, 30 Aug 2021 11:29:07 +0000 (UTC)
+Date:   Mon, 30 Aug 2021 12:32:20 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexander Vorwerk <alec@vc-celle.de>
-Cc:     lars@metafoo.de, Michael.Hennerich@analog.com,
-        gregkh@linuxfoundation.org, linux-iio@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] staging: iio: cdc: remove braces from single line if
- blocks
-Message-ID: <20210830123010.682d59f5@jic23-huawei>
-In-Reply-To: <20210820224914.1260-1-alec@vc-celle.de>
-References: <20210820224914.1260-1-alec@vc-celle.de>
+To:     Tang Bin <tangbin@cmss.chinamobile.com>
+Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: twl6030-gpadc: Use the defined variable to
+ clean code
+Message-ID: <20210830123220.55980d62@jic23-huawei>
+In-Reply-To: <20210823095921.16828-1-tangbin@cmss.chinamobile.com>
+References: <20210823095921.16828-1-tangbin@cmss.chinamobile.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -35,32 +34,48 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 21 Aug 2021 00:49:14 +0200
-Alexander Vorwerk <alec@vc-celle.de> wrote:
+On Mon, 23 Aug 2021 17:59:21 +0800
+Tang Bin <tangbin@cmss.chinamobile.com> wrote:
 
-> Remove braces from single line if blocks to clear checkpatch warnings.
-> WARNING: braces {} are not necessary for single statement blocks
+> Use the defined variable "dev" to make the code cleaner.
 > 
-> Signed-off-by: Alexander Vorwerk <alec@vc-celle.de>
-Applied. Thanks
+> Signed-off-by: Tang Bin <tangbin@cmss.chinamobile.com>
+Applied.
+
+Thanks,
+
 > ---
->  drivers/staging/iio/cdc/ad7746.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+>  drivers/iio/adc/twl6030-gpadc.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/staging/iio/cdc/ad7746.c b/drivers/staging/iio/cdc/ad7746.c
-> index 78ac720266e6..71c709771676 100644
-> --- a/drivers/staging/iio/cdc/ad7746.c
-> +++ b/drivers/staging/iio/cdc/ad7746.c
-> @@ -241,10 +241,8 @@ static int ad7746_select_channel(struct iio_dev *indio_dev,
->  		if (ret < 0)
->  			return ret;
+> diff --git a/drivers/iio/adc/twl6030-gpadc.c b/drivers/iio/adc/twl6030-gpadc.c
+> index 0859f3f7d..5e4fbb033 100644
+> --- a/drivers/iio/adc/twl6030-gpadc.c
+> +++ b/drivers/iio/adc/twl6030-gpadc.c
+> @@ -897,7 +897,7 @@ static int twl6030_gpadc_probe(struct platform_device *pdev)
 >  
-> -		if (chip->capdac_set != chan->channel) {
-> -
-> +		if (chip->capdac_set != chan->channel)
->  			chip->capdac_set = chan->channel;
-> -		}
->  		break;
->  	case IIO_VOLTAGE:
->  	case IIO_TEMP:
+>  	ret = pdata->calibrate(gpadc);
+>  	if (ret < 0) {
+> -		dev_err(&pdev->dev, "failed to read calibration registers\n");
+> +		dev_err(dev, "failed to read calibration registers\n");
+>  		return ret;
+>  	}
+>  
+> @@ -911,14 +911,14 @@ static int twl6030_gpadc_probe(struct platform_device *pdev)
+>  
+>  	ret = twl6030_gpadc_enable_irq(TWL6030_GPADC_RT_SW1_EOC_MASK);
+>  	if (ret < 0) {
+> -		dev_err(&pdev->dev, "failed to enable GPADC interrupt\n");
+> +		dev_err(dev, "failed to enable GPADC interrupt\n");
+>  		return ret;
+>  	}
+>  
+>  	ret = twl_i2c_write_u8(TWL6030_MODULE_ID1, TWL6030_GPADCS,
+>  					TWL6030_REG_TOGGLE1);
+>  	if (ret < 0) {
+> -		dev_err(&pdev->dev, "failed to enable GPADC module\n");
+> +		dev_err(dev, "failed to enable GPADC module\n");
+>  		return ret;
+>  	}
+>  
 

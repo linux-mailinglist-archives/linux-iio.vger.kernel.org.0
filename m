@@ -2,451 +2,736 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 10D363FB9AB
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Aug 2021 18:04:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC2DA3FBA05
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Aug 2021 18:20:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237909AbhH3QDl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 30 Aug 2021 12:03:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42748 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237908AbhH3QDk (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 30 Aug 2021 12:03:40 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CDE1360F46;
-        Mon, 30 Aug 2021 16:02:43 +0000 (UTC)
-Date:   Mon, 30 Aug 2021 17:05:55 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Mihail Chindris <mihail.chindris@analog.com>
-Cc:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
-        <nuno.sa@analog.com>, <dragos.bogdan@analog.com>,
-        <alexandru.ardelean@analog.com>
-Subject: Re: [PATCH v4 1/6] iio: Add output buffer support
-Message-ID: <20210830170555.25887e82@jic23-huawei>
-In-Reply-To: <20210820165927.4524-2-mihail.chindris@analog.com>
-References: <20210820165927.4524-1-mihail.chindris@analog.com>
-        <20210820165927.4524-2-mihail.chindris@analog.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        id S235499AbhH3QU7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 30 Aug 2021 12:20:59 -0400
+Received: from relay10.mail.gandi.net ([217.70.178.230]:58955 "EHLO
+        relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232785AbhH3QU6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 30 Aug 2021 12:20:58 -0400
+Received: (Authenticated sender: jacopo@jmondi.org)
+        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 7DB2F240006;
+        Mon, 30 Aug 2021 16:20:02 +0000 (UTC)
+Date:   Mon, 30 Aug 2021 18:20:51 +0200
+From:   Jacopo Mondi <jacopo@jmondi.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Magnus Damm <magnus.damm@gmail.com>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v3.1 2/3] iio: chemical: Add Senseair Sunrise 006-0-007
+ driver
+Message-ID: <20210830162051.rjqlhwvtguaivt3p@uno.localdomain>
+References: <20210822184927.94673-3-jacopo@jmondi.org>
+ <20210823073639.13688-1-jacopo@jmondi.org>
+ <20210829175413.7ce30bfa@jic23-huawei>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20210829175413.7ce30bfa@jic23-huawei>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 20 Aug 2021 16:59:22 +0000
-Mihail Chindris <mihail.chindris@analog.com> wrote:
+Hi Jonathan,
+   thanks for review
 
-> From: Lars-Peter Clausen <lars@metafoo.de>
-> 
-> Currently IIO only supports buffer mode for capture devices like ADCs. Add
-> support for buffered mode for output devices like DACs.
-> 
-> The output buffer implementation is analogous to the input buffer
-> implementation. Instead of using read() to get data from the buffer write()
-> is used to copy data into the buffer.
-> 
-> poll() with POLLOUT will wakeup if there is space available for more or
-> equal to the configured watermark of samples.
-> 
-> Drivers can remove data from a buffer using iio_buffer_remove_sample(), the
-> function can e.g. called from a trigger handler to write the data to
-> hardware.
-> 
-> A buffer can only be either a output buffer or an input, but not both. So,
-> for a device that has an ADC and DAC path, this will mean 2 IIO buffers
-> (one for each direction).
-> 
-> The direction of the buffer is decided by the new direction field of the
-> iio_buffer struct and should be set after allocating and before registering
-> it.
-> 
-> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> Signed-off-by: Mihail Chindris <mihail.chindris@analog.com>
-Hi Mihial,
+On Sun, Aug 29, 2021 at 05:54:13PM +0100, Jonathan Cameron wrote:
+> On Mon, 23 Aug 2021 09:36:39 +0200
+> Jacopo Mondi <jacopo@jmondi.org> wrote:
+>
+> > Add support for the Senseair Sunrise 006-0-0007 driver through the
+> > IIO subsystem.
+> >
+> > Datasheet: https://rmtplusstoragesenseair.blob.core.windows.net/docs/Dev/publicerat/TDE5531.pdf
+> > Signed-off-by: Jacopo Mondi <jacopo@jmondi.org>
+> > ---
+> > v3->v3.1
+>
+> Always do a new version of the whole series.  The automated tools that maintainers
+> mostly use these days (e.g. b4) are pointed out a whole series when picking it up.
+>
+> This means we have to do it manually, one patch at a time I think which is annoying.
+>
 
-Welcome to IIO (I don't think I've seen you before?)
+Right, sorry, it's pretty common in other subsystems for minor
+updates, but I understand it's more work on your side! Sorry about
+that!
 
-Given the somewhat odd sign off trail I'd add some comments to the description
-(probably not saying that everyone who works on this ends up leaving Analog.
-It's not cursed! Really it's not ;)  Lars and I discussed this at least 7+ years
-ago and he lasted ages at Analog after that *evil laugh*
+>
+> > - Remove debug leftover
+> > - Re-add commas at the end of arrays declarations
+> > ---
+> >  MAINTAINERS                        |   6 +
+> >  drivers/iio/chemical/Kconfig       |  13 +
+> >  drivers/iio/chemical/Makefile      |   1 +
+> >  drivers/iio/chemical/sunrise_co2.c | 448 +++++++++++++++++++++++++++++
+> >  4 files changed, 468 insertions(+)
+> >  create mode 100644 drivers/iio/chemical/sunrise_co2.c
+> >
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 90ca9df1d3c3..43f5bba46673 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -16544,6 +16544,12 @@ S:	Maintained
+> >  F:	drivers/misc/phantom.c
+> >  F:	include/uapi/linux/phantom.h
+> >
+> > +SENSEAIR SUNRISE 006-0-0007
+> > +M:	Jacopo Mondi <jacopo@jmondi.org>
+> > +S:	Maintained
+> > +F:	Documentation/devicetree/bindings/iio/chemical/senseair,sunrise.yaml
+> > +F:	drivers/iio/chemical/sunrise_co2.c
+> > +
+> >  SENSIRION SCD30 CARBON DIOXIDE SENSOR DRIVER
+> >  M:	Tomasz Duszynski <tomasz.duszynski@octakon.com>
+> >  S:	Maintained
+> > diff --git a/drivers/iio/chemical/Kconfig b/drivers/iio/chemical/Kconfig
+> > index 10bb431bc3ce..ee8562949226 100644
+> > --- a/drivers/iio/chemical/Kconfig
+> > +++ b/drivers/iio/chemical/Kconfig
+> > @@ -144,6 +144,19 @@ config SPS30
+> >  	  To compile this driver as a module, choose M here: the module will
+> >  	  be called sps30.
+> >
+> > +config SENSEAIR_SUNRISE_CO2
+> > +	tristate "Senseair Sunrise 006-0-0007 CO2 sensor"
+> > +	depends on OF
+>
+> Not needed.
+>
 
-I'm not really clear how the concept of a watermark applies here. It feels
-like it's getting used for two unrelated things:
-1) Space in buffer for polling form userspace.  We let userspace know it can
-   write more data once the watermark worth of scans is empty.
-2) Writing to the kfifo.  If a large write is attempted we do smaller writes to
-   transfer some of the data into the kfifo which can then drain to the hardware.
-   I can sort of see this might be beneficial as it provides batching.
-They are somewhat related but it's not totally clear to me they should be the
-same parameter.  Perhaps we need some more docs to explain how watermark is
-used for output buffers?
+Well, the driver won't be probed as it doesn't have an i2c id table.
+But I guess it compiles fine
+> > +	depends on I2C
+>
+> regmap_i2c select should bring that in.
+>
+> > +	depends on SYSFS
+>
+> I'd be surprised if this necessary...   Everything should be stubbed appropriately if
+> its' not there.
 
-As it stands there are some corner cases around this that look ominous to me...
-See inline.
+I asked the same question as I didn't find any symbol related to
+iio/sysfs to depend on. I should have guessed it is not needed
 
-> ---
->  drivers/iio/iio_core.h            |   4 +
->  drivers/iio/industrialio-buffer.c | 133 +++++++++++++++++++++++++++++-
->  drivers/iio/industrialio-core.c   |   1 +
->  include/linux/iio/buffer.h        |   7 ++
->  include/linux/iio/buffer_impl.h   |  11 +++
->  5 files changed, 154 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/iio_core.h b/drivers/iio/iio_core.h
-> index 8f4a9b264962..61e318431de9 100644
-> --- a/drivers/iio/iio_core.h
-> +++ b/drivers/iio/iio_core.h
-> @@ -68,12 +68,15 @@ __poll_t iio_buffer_poll_wrapper(struct file *filp,
->  				 struct poll_table_struct *wait);
->  ssize_t iio_buffer_read_wrapper(struct file *filp, char __user *buf,
->  				size_t n, loff_t *f_ps);
-> +ssize_t iio_buffer_write_wrapper(struct file *filp, const char __user *buf,
-> +				 size_t n, loff_t *f_ps);
->  
->  int iio_buffers_alloc_sysfs_and_mask(struct iio_dev *indio_dev);
->  void iio_buffers_free_sysfs_and_mask(struct iio_dev *indio_dev);
->  
->  #define iio_buffer_poll_addr (&iio_buffer_poll_wrapper)
->  #define iio_buffer_read_outer_addr (&iio_buffer_read_wrapper)
-> +#define iio_buffer_write_outer_addr (&iio_buffer_write_wrapper)
->  
->  void iio_disable_all_buffers(struct iio_dev *indio_dev);
->  void iio_buffer_wakeup_poll(struct iio_dev *indio_dev);
-> @@ -83,6 +86,7 @@ void iio_device_detach_buffers(struct iio_dev *indio_dev);
->  
->  #define iio_buffer_poll_addr NULL
->  #define iio_buffer_read_outer_addr NULL
-> +#define iio_buffer_write_outer_addr NULL
->  
->  static inline int iio_buffers_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
->  {
-> diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-> index a95cc2da56be..73d4451a0572 100644
-> --- a/drivers/iio/industrialio-buffer.c
-> +++ b/drivers/iio/industrialio-buffer.c
-> @@ -161,6 +161,69 @@ static ssize_t iio_buffer_read(struct file *filp, char __user *buf,
->  	return ret;
->  }
->  
-> +static size_t iio_buffer_space_available(struct iio_buffer *buf)
-> +{
-> +	if (buf->access->space_available)
-> +		return buf->access->space_available(buf);
-> +
-> +	return SIZE_MAX;
-> +}
-> +
-> +static ssize_t iio_buffer_write(struct file *filp, const char __user *buf,
-> +				size_t n, loff_t *f_ps)
-> +{
-> +	struct iio_dev_buffer_pair *ib = filp->private_data;
-> +	struct iio_buffer *rb = ib->buffer;
-> +	struct iio_dev *indio_dev = ib->indio_dev;
-> +	DEFINE_WAIT_FUNC(wait, woken_wake_function);
-> +	size_t datum_size;
-> +	size_t to_wait;
-> +	int ret;
-> +
-> +	if (!rb || !rb->access->write)
-> +		return -EINVAL;
-> +
-> +	datum_size = rb->bytes_per_datum;
-> +
-> +	/*
-> +	 * If datum_size is 0 there will never be anything to read from the
-> +	 * buffer, so signal end of file now.
-> +	 */
-> +	if (!datum_size)
-> +		return 0;
-> +
-> +	if (filp->f_flags & O_NONBLOCK)
-> +		to_wait = 0;
-> +	else
-> +		to_wait = min_t(size_t, n / datum_size, rb->watermark);
+> > +	select REGMAP_I2C
+> > +	help
+> > +	  Say yes here to build support for Senseair Sunrise 006-0-0007 CO2
+> > +	  sensor.
+> > +
+> > +	  To compile this driver as a module, choose M here: the
+> > +	  module will be called sunrise_co2.
+> > +
+> >  config VZ89X
+> >  	tristate "SGX Sensortech MiCS VZ89X VOC sensor"
+> >  	depends on I2C
+> > diff --git a/drivers/iio/chemical/Makefile b/drivers/iio/chemical/Makefile
+> > index fef63dd5bf92..d5e2a3331d57 100644
+> > --- a/drivers/iio/chemical/Makefile
+> > +++ b/drivers/iio/chemical/Makefile
+> > @@ -17,4 +17,5 @@ obj-$(CONFIG_SCD30_I2C) += scd30_i2c.o
+> >  obj-$(CONFIG_SCD30_SERIAL) += scd30_serial.o
+> >  obj-$(CONFIG_SENSIRION_SGP30)	+= sgp30.o
+> >  obj-$(CONFIG_SPS30) += sps30.o
+> > +obj-$(CONFIG_SENSEAIR_SUNRISE_CO2) += sunrise_co2.o
+> >  obj-$(CONFIG_VZ89X)		+= vz89x.o
+> > diff --git a/drivers/iio/chemical/sunrise_co2.c b/drivers/iio/chemical/sunrise_co2.c
+> > new file mode 100644
+> > index 000000000000..84f19df6fc00
+> > --- /dev/null
+> > +++ b/drivers/iio/chemical/sunrise_co2.c
+> > @@ -0,0 +1,448 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/*
+> > + * Senseair Sunrise 006-0-0007 CO2 sensor driver.
+> > + *
+> > + * Copyright (C) 2021 Jacopo Mondi
+> > + *
+> > + * List of features not yet supported by the driver:
+> > + * - controllable EN pin
+> > + * - single-shot operations using the nDRY pin.
+> > + * - ABC/target calibration
+> > + */
+> > +
+> > +#include <linux/bitops.h>
+> > +#include <linux/i2c.h>
+> > +#include <linux/kernel.h>
+> > +#include <linux/mod_devicetable.h>
+> > +#include <linux/module.h>
+> > +#include <linux/mutex.h>
+> > +#include <linux/regmap.h>
+> > +#include <linux/time64.h>
+> > +
+> > +#include <linux/iio/iio.h>
+> > +#include <linux/iio/sysfs.h>
+>
+> What are you using from this header?
+>
 
-Why is the watermark relevant here?  We need enough space for the data
-as written whatever the watermark is set to.
-Been a while since I looked at equivalent write path, but I think there
-we are interested in ensuring a hwfifo flushes out.  I'm don't think
-the same concept exists in this direction.
+Leftover from when I used raw attributes. I'll drop
 
-> +
-> +	add_wait_queue(&rb->pollq, &wait);
-> +	do {
-> +		if (!indio_dev->info) {
-> +			ret = -ENODEV;
-> +			break;
-> +		}
-> +
-> +		if (iio_buffer_space_available(rb) < to_wait) {
-> +			if (signal_pending(current)) {
-> +				ret = -ERESTARTSYS;
-> +				break;
-> +			}
-> +
-> +			wait_woken(&wait, TASK_INTERRUPTIBLE,
-> +				   MAX_SCHEDULE_TIMEOUT);
-> +			continue;
-> +		}
-> +
-> +		ret = rb->access->write(rb, n, buf);
-> +		if (ret == 0 && (filp->f_flags & O_NONBLOCK))
-> +			ret = -EAGAIN;
+> > +
+> > +#define DRIVER_NAME "sunrise"
+> > +
+> > +#define SUNRISE_ERROR_STATUS_REG		0x00
+> > +#define SUNRISE_CO2_FILTERED_COMP_REG		0x06
+> > +#define SUNRISE_CHIP_TEMPERATURE_REG		0x08
+> > +#define SUNRISE_CALIBRATION_STATUS_REG		0x81
+> > +#define SUNRISE_CALIBRATION_COMMAND_REG		0x82
+> > +#define SUNRISE_CALIBRATION_FACTORY_CMD		0x7c02
+> > +#define SUNRISE_CALIBRATION_BACKGROUND_CMD	0x7c06
+> > +/*
+> > + * The calibration timeout is not characterized in the datasheet.
+> > + * Use 30 seconds as a reasonable upper limit.
+> > + */
+> > +#define SUNRISE_CALIBRATION_TIMEOUT_US		(30 * USEC_PER_SEC)
+> > +
+> > +enum sunrise_calib {
+> > +	SUNRISE_CALIBRATION_FACTORY,
+> > +	SUNRISE_CALIBRATION_BACKGROUND,
+> > +};
+> > +
+> > +struct sunrise_dev {
+> > +	struct device *dev;
+> > +	struct i2c_client *client;
+> > +	struct regmap *regmap;
+> > +	struct mutex lock;
+> > +	enum sunrise_calib calibration;
+> > +};
+> > +
+> > +static void sunrise_wakeup(struct sunrise_dev *sunrise)
+> > +{
+> > +	struct i2c_client *client = sunrise->client;
+> > +
+> > +	/*
+> > +	 * Wake up sensor by sending sensor address: START, sensor address,
+> > +	 * STOP. Sensor will not ACK this byte.
+> > +	 *
+> > +	 * The chip returns in low power state after 15msec without
+> > +	 * communications or after a complete read/write sequence.
+> > +	 */
+> > +	i2c_smbus_xfer(client->adapter, client->addr, I2C_M_IGNORE_NAK,
+> > +		       I2C_SMBUS_WRITE, 0, I2C_SMBUS_QUICK, NULL);
+> > +}
+> > +
+> > +static int sunrise_read_word(struct sunrise_dev *sunrise, u8 reg, u16 *val)
+> > +{
+> > +	__be16 be_val;
+> > +	int ret;
+> > +
+> > +	sunrise_wakeup(sunrise);
+> > +	ret = regmap_bulk_read(sunrise->regmap, reg, &be_val, 2);
+> > +	if (ret) {
+> > +		dev_err(sunrise->dev, "Read word failed: reg 0x%2x (%d)\n", reg, ret);
+> > +		return ret;
+> > +	}
+> > +
+> > +	*val = be16_to_cpu(be_val);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int sunrise_write_byte(struct sunrise_dev *sunrise, u8 reg, u8 val)
+> > +{
+> > +	int ret;
+> > +
+> > +	sunrise_wakeup(sunrise);
+> > +	ret = regmap_write(sunrise->regmap, reg, val);
+> > +	if (ret) {
+> > +		dev_err(sunrise->dev, "Write byte failed: reg 0x%2x (%d)\n", reg, ret);
+> > +		return ret;
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int sunrise_write_word(struct sunrise_dev *sunrise, u8 reg, u16 data)
+> > +{
+> > +	__be16 be_data = cpu_to_be16(data);
+> > +	int ret;
+> > +
+> > +	sunrise_wakeup(sunrise);
+>
+> Hmm. Technically there isn't anything stopping another user of the i2c bus sneaking in
+> between the wakeup and the following command.  That would make the device going back
+> to sleep a lot more likely.  I can't off the top of my head remember if regmap lets
+> you lock the bus.  If not, you'll have to use the underlying i2c bus locking functions.
+> https://elixir.bootlin.com/linux/latest/source/drivers/iio/temperature/mlx90614.c#L432
+> gives an example.
 
-Do we need to advance the buf pointer here and reduce n?  We may have written
-some but not all the data.
+Right, there might be another call stealing the wakeup session!
 
-> +	} while (ret == 0);
-> +	remove_wait_queue(&rb->pollq, &wait);
-> +
-> +	return ret;
-> +}
-> +
->  /**
->   * iio_buffer_poll() - poll the buffer to find out if it has data
->   * @filp:	File structure pointer for device access
-> @@ -181,8 +244,18 @@ static __poll_t iio_buffer_poll(struct file *filp,
->  		return 0;
->  
->  	poll_wait(filp, &rb->pollq, wait);
-> -	if (iio_buffer_ready(indio_dev, rb, rb->watermark, 0))
-> -		return EPOLLIN | EPOLLRDNORM;
-> +
-> +	switch (rb->direction) {
-> +	case IIO_BUFFER_DIRECTION_IN:
-> +		if (iio_buffer_ready(indio_dev, rb, rb->watermark, 0))
-> +			return EPOLLIN | EPOLLRDNORM;
-> +		break;
-> +	case IIO_BUFFER_DIRECTION_OUT:
-> +		if (iio_buffer_space_available(rb) >= rb->watermark)
+I should lock the underlying i2c bus, probably not root adapter like
+mlx90614 does but only the segment.
 
-That's interesting.  We should probably make sure we update docs to make
-it clear that it has a different meaning for output buffers.  Guess that
-might be later in this set though.
+>
+> Perhaps worth a look is the regmap-sccb implementation which has a dance that looks
+> a tiny bit like what you have to do here (be it for a different reason).
+> It might be nice to do something similar here and have a custom regmap bus which
+> has the necessary wakeups in the relevant places.
+>
+> Note I haven't thought it through in depth, so it might not work!
 
-> +			return EPOLLOUT | EPOLLWRNORM;
-> +		break;
-> +	}
-> +
->  	return 0;
->  }
->  
-> @@ -199,6 +272,19 @@ ssize_t iio_buffer_read_wrapper(struct file *filp, char __user *buf,
->  	return iio_buffer_read(filp, buf, n, f_ps);
->  }
->  
-> +ssize_t iio_buffer_write_wrapper(struct file *filp, const char __user *buf,
-> +				 size_t n, loff_t *f_ps)
-> +{
-> +	struct iio_dev_buffer_pair *ib = filp->private_data;
-> +	struct iio_buffer *rb = ib->buffer;
-> +
-> +	/* check if buffer was opened through new API */
+the dance is similar if not regmap-sccb tranfers a byte instead of
+sending only the R/W bit (notice the usage of I2C_SMBUS_QUICK here and
+I2C_SMBUS_BYTE in regmap-sccb). Practically speaking it makes no
+difference as the sensor nacks the first message, so the underlying
+bus implementation bails out, but that's a bit of work-by-accident
+thing, isn't it ?
 
-This is new.  We don't need to support the old API.  If we can make sure
-it never appears in the old API at all that would be great.
+If fine with you, I would stick to this implementation and hold the
+segment locked between the wakup and the actual messages.
 
-> +	if (test_bit(IIO_BUSY_BIT_POS, &rb->flags))
-> +		return -EBUSY;
-> +
-> +	return iio_buffer_write(filp, buf, n, f_ps);
-> +}
-> +
->  __poll_t iio_buffer_poll_wrapper(struct file *filp,
->  				 struct poll_table_struct *wait)
->  {
-> @@ -231,6 +317,15 @@ void iio_buffer_wakeup_poll(struct iio_dev *indio_dev)
->  	}
->  }
->  
-> +int iio_buffer_remove_sample(struct iio_buffer *buffer, u8 *data)
+>
+> > +	ret = regmap_bulk_write(sunrise->regmap, reg, &be_data, 2);
+> > +	if (ret) {
+> > +		dev_err(sunrise->dev, "Write word failed: reg 0x%2x (%d)\n", reg, ret);
+> > +		return ret;
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +/*
+> > + *  --- Calibration ---
+> > + *
+> > + *  Enumerate and select calibration modes, trigger a calibration cycle.
+> > + */
+> > +static const char * const sunrise_calibration_modes[] = {
+> > +	[SUNRISE_CALIBRATION_FACTORY] = "factory_calibration",
+> > +	[SUNRISE_CALIBRATION_BACKGROUND] = "background_calibration",
+> > +};
+> > +
+> > +static const struct sunrise_calibration_data {
+> > +	u16 calibration_cmd;
+> > +	u8 calibration_bit;
+> > +} sunrise_calibrations[] = {
+> > +	[SUNRISE_CALIBRATION_FACTORY] = {
+> > +		SUNRISE_CALIBRATION_FACTORY_CMD,
+> > +		BIT(2),
+> > +	},
+> > +	[SUNRISE_CALIBRATION_BACKGROUND] = {
+> > +		SUNRISE_CALIBRATION_BACKGROUND_CMD,
+> > +		BIT(5),
+> > +	},
+> > +};
+> > +
+> > +static int sunrise_calibrate(struct sunrise_dev *sunrise)
+> > +{
+> > +	const struct sunrise_calibration_data *data;
+> > +	unsigned int status;
+> > +	int ret;
+> > +
+> > +	/* Reset the calibration status reg. */
+>
+> I was kind of assuming the locking around calibration mode was to avoid races
+> with this.  Hence, why no lock here?
+>
 
-sample or scan?  Sample would be a single value for a single channel,
-scan would be updates for all channels that are enabled.
+As I assumed that as long as the write on the sysfs file does not
+return all other attempts would have to wait. And this function only
+returns when calibration is completed. However one can open a file
+with O_NONBLOCK, does this apply to a syfs attribute as well ? In that
+case yes, I should lock here.
 
-> +{
-> +	if (!buffer || !buffer->access || buffer->access->remove_from)
-> +		return -EINVAL;
-> +
-> +	return buffer->access->remove_from(buffer, data);
-> +}
-> +EXPORT_SYMBOL_GPL(iio_buffer_remove_sample);
-> +
->  void iio_buffer_init(struct iio_buffer *buffer)
->  {
->  	INIT_LIST_HEAD(&buffer->demux_list);
-> @@ -807,6 +902,8 @@ static int iio_verify_update(struct iio_dev *indio_dev,
->  	}
->  
->  	if (insert_buffer) {
-> +		if (insert_buffer->direction == IIO_BUFFER_DIRECTION_OUT)
-> +			strict_scanmask = true;
+> > +	ret = sunrise_write_byte(sunrise, SUNRISE_CALIBRATION_STATUS_REG, 0x00);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	/* Write a calibration command and poll the calibration status bit. */
+> > +	data = &sunrise_calibrations[sunrise->calibration];
+> > +	ret = sunrise_write_word(sunrise, SUNRISE_CALIBRATION_COMMAND_REG,
+> > +				 data->calibration_cmd);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	dev_dbg(sunrise->dev, "%s in progress\n",
+> > +		sunrise_calibration_modes[sunrise->calibration]);
+> > +
+> > +	return regmap_read_poll_timeout(sunrise->regmap,
+> > +					SUNRISE_CALIBRATION_STATUS_REG,
+> > +					status, status & data->calibration_bit,
+> > +					100, SUNRISE_CALIBRATION_TIMEOUT_US);
+> > +}
+> > +
+> > +static ssize_t sunrise_calibration_write(struct iio_dev *iiodev,
+> > +					 uintptr_t private,
+> > +					 const struct iio_chan_spec *chan,
+> > +					 const char *buf, size_t len)
+> > +{
+> > +	struct sunrise_dev *sunrise = iio_priv(iiodev);
+> > +	bool calibrate;
+> > +	int ret;
+> > +
+> > +	ret = kstrtobool(buf, &calibrate);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	if (!calibrate)
+> > +		return 0;
+>
+> return len or an error code.  Not 0,
+>
 
-As below, I'm surprised we can get to here..
+Ack
 
->  		bitmap_or(compound_mask, compound_mask,
->  			  insert_buffer->scan_mask, indio_dev->masklength);
->  		scan_timestamp |= insert_buffer->scan_timestamp;
-> @@ -948,6 +1045,8 @@ static int iio_update_demux(struct iio_dev *indio_dev)
->  	int ret;
->  
->  	list_for_each_entry(buffer, &iio_dev_opaque->buffer_list, buffer_list) {
-> +		if (buffer->direction == IIO_BUFFER_DIRECTION_OUT)
-> +			continue;
+> > +
+> > +	ret = sunrise_calibrate(sunrise);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	return len;
+> > +}
+> > +
+> > +static int sunrise_set_calibration_mode(struct iio_dev *iiodev,
+> > +					const struct iio_chan_spec *chan,
+> > +					unsigned int mode)
+> > +{
+> > +	struct sunrise_dev *sunrise = iio_priv(iiodev);
+> > +
+> > +	mutex_lock(&sunrise->lock);
+> > +	sunrise->calibration = mode;
+> > +	mutex_unlock(&sunrise->lock);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int sunrise_get_calibration_mode(struct iio_dev *iiodev,
+> > +					const struct iio_chan_spec *chan)
+> > +{
+> > +	struct sunrise_dev *sunrise = iio_priv(iiodev);
+> > +	int mode;
+> > +
+> > +	mutex_lock(&sunrise->lock);
+> > +	mode = sunrise->calibration;
+> > +	mutex_unlock(&sunrise->lock);
+> > +
+> > +	return mode;
+> > +}
+> > +
+> > +static const struct iio_enum sunrise_calibration_modes_enum = {
+> > +	.items = sunrise_calibration_modes,
+> > +	.num_items = ARRAY_SIZE(sunrise_calibration_modes),
+> > +	.set = sunrise_set_calibration_mode,
+> > +	.get = sunrise_get_calibration_mode,
+> > +};
+> > +
+> > +/* --- Error status---
+> /*
+>  * --- Error status ---
+>
+> If you really want to do the heading.  I'm not sure it adds anything over
+> the fairly short description that follows, so I'd just have
+>
+> /* Enumerate and retrieve the chip error status */
+>
 
-Given the below, how did it get into the list?  I think that check should be
-enough that we don't need to check it elsewhere.
+Ok, I'll keep my comment headers style for me next time :)
 
->  		ret = iio_buffer_update_demux(indio_dev, buffer);
->  		if (ret < 0)
->  			goto error_clear_mux_table;
-> @@ -1159,6 +1258,11 @@ int iio_update_buffers(struct iio_dev *indio_dev,
->  	mutex_lock(&iio_dev_opaque->info_exist_lock);
->  	mutex_lock(&indio_dev->mlock);
->  
-> +	if (insert_buffer->direction == IIO_BUFFER_DIRECTION_OUT) {
+> > + *
+> > + * Enumerate and retrieve the chip error status.
+> > + */
+> > +enum {
+> > +	SUNRISE_ERROR_FATAL,
+> > +	SUNRISE_ERROR_I2C,
+> > +	SUNRISE_ERROR_ALGORITHM,
+> > +	SUNRISE_ERROR_CALIBRATION,
+> > +	SUNRISE_ERROR_SELF_DIAGNOSTIC,
+> > +	SUNRISE_ERROR_OUT_OF_RANGE,
+> > +	SUNRISE_ERROR_MEMORY,
+> > +	SUNRISE_ERROR_NO_MEASUREMENT,
+> > +	SUNRISE_ERROR_LOW_VOLTAGE,
+> > +	SUNRISE_ERROR_MEASUREMENT_TIMEOUT,
+> > +};
+> > +
+> > +static const char * const sunrise_error_statuses[] = {
+> > +	[SUNRISE_ERROR_FATAL] = "error_fatal",
+> > +	[SUNRISE_ERROR_I2C] = "error_i2c",
+> > +	[SUNRISE_ERROR_ALGORITHM] = "error_algorithm",
+> > +	[SUNRISE_ERROR_CALIBRATION] = "error_calibration",
+> > +	[SUNRISE_ERROR_SELF_DIAGNOSTIC] = "error_self_diagnostic",
+> > +	[SUNRISE_ERROR_OUT_OF_RANGE] = "error_out_of_range",
+> > +	[SUNRISE_ERROR_MEMORY] = "error_memory",
+> > +	[SUNRISE_ERROR_NO_MEASUREMENT] = "error_no_measurement",
+> > +	[SUNRISE_ERROR_LOW_VOLTAGE] = "error_low_voltage",
+> > +	[SUNRISE_ERROR_MEASUREMENT_TIMEOUT] = "error_measurement_timeout",
+> > +};
+> > +
+> > +static const u8 error_codes[] = {
+> > +	SUNRISE_ERROR_FATAL,
+> > +	SUNRISE_ERROR_I2C,
+> > +	SUNRISE_ERROR_ALGORITHM,
+> > +	SUNRISE_ERROR_CALIBRATION,
+> > +	SUNRISE_ERROR_SELF_DIAGNOSTIC,
+> > +	SUNRISE_ERROR_OUT_OF_RANGE,
+> > +	SUNRISE_ERROR_MEMORY,
+> > +	SUNRISE_ERROR_NO_MEASUREMENT,
+> > +	SUNRISE_ERROR_LOW_VOLTAGE,
+> > +	SUNRISE_ERROR_MEASUREMENT_TIMEOUT,
+> > +};
+> > +
+> > +static const struct iio_enum sunrise_error_statuses_enum = {
+> > +	.items = sunrise_error_statuses,
+> > +	.num_items = ARRAY_SIZE(sunrise_error_statuses),
+> > +};
+> > +
+> > +static ssize_t sunrise_error_status_read(struct iio_dev *iiodev,
+> > +					 uintptr_t private,
+> > +					 const struct iio_chan_spec *chan,
+> > +					 char *buf)
+> > +{
+> > +	struct sunrise_dev *sunrise = iio_priv(iiodev);
+> > +	const unsigned long *errors;
+> > +	ssize_t len = 0;
+> > +	u16 value;
+> > +	int ret;
+> > +	u8 i;
+> > +
+> > +	ret = sunrise_read_word(sunrise, SUNRISE_ERROR_STATUS_REG, &value);
+> > +	if (ret)
+> > +		return -EINVAL;
+> > +
+> > +	errors = (const unsigned long *)&value;
+>
+> Copy it to an unsigned long as discussed in other branch of this thread.
+>
 
-Can you do this outside of the lock as a sanity check before this function really
-gets going?
+Ack, done in v3.1
 
-> +		ret = -EINVAL;
-> +		goto out_unlock;
-> +	}
-> +
->  	if (insert_buffer && iio_buffer_is_active(insert_buffer))
->  		insert_buffer = NULL;
->  
-> @@ -1277,6 +1381,22 @@ static ssize_t iio_dma_show_data_available(struct device *dev,
->  	return sysfs_emit(buf, "%zu\n", iio_buffer_data_available(buffer));
->  }
->  
-> +static ssize_t direction_show(struct device *dev,
-> +			      struct device_attribute *attr,
-> +			      char *buf)
-> +{
-> +	struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
-> +
-> +	switch (buffer->direction) {
-> +	case IIO_BUFFER_DIRECTION_IN:
-> +		return sprintf(buf, "in\n");
-> +	case IIO_BUFFER_DIRECTION_OUT:
-> +		return sprintf(buf, "out\n");
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
->  static DEVICE_ATTR(length, S_IRUGO | S_IWUSR, iio_buffer_read_length,
->  		   iio_buffer_write_length);
->  static struct device_attribute dev_attr_length_ro = __ATTR(length,
-> @@ -1289,12 +1409,20 @@ static struct device_attribute dev_attr_watermark_ro = __ATTR(watermark,
->  	S_IRUGO, iio_buffer_show_watermark, NULL);
->  static DEVICE_ATTR(data_available, S_IRUGO,
->  		iio_dma_show_data_available, NULL);
-> +static DEVICE_ATTR_RO(direction);
->  
-> +/**
-> + * When adding new attributes here, put the at the end, at least until
-> + * the code that handles the lengh/length_ro & watermark/watermark_ro
-> + * assignments gets cleaned up. Otherwise these can create some weird
-> + * duplicate attributes errors under some setups.
-> + */
->  static struct attribute *iio_buffer_attrs[] = {
->  	&dev_attr_length.attr,
->  	&dev_attr_enable.attr,
->  	&dev_attr_watermark.attr,
->  	&dev_attr_data_available.attr,
-> +	&dev_attr_direction.attr,
->  };
->  
->  #define to_dev_attr(_attr) container_of(_attr, struct device_attribute, attr)
-> @@ -1397,6 +1525,7 @@ static const struct file_operations iio_buffer_chrdev_fileops = {
->  	.owner = THIS_MODULE,
->  	.llseek = noop_llseek,
->  	.read = iio_buffer_read,
-> +	.write = iio_buffer_write,
->  	.poll = iio_buffer_poll,
->  	.release = iio_buffer_chrdev_release,
->  };
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> index 2dbb37e09b8c..537a08549a69 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -1822,6 +1822,7 @@ static const struct file_operations iio_buffer_fileops = {
->  	.owner = THIS_MODULE,
->  	.llseek = noop_llseek,
->  	.read = iio_buffer_read_outer_addr,
-> +	.write = iio_buffer_write_outer_addr,
->  	.poll = iio_buffer_poll_addr,
->  	.unlocked_ioctl = iio_ioctl,
->  	.compat_ioctl = compat_ptr_ioctl,
-> diff --git a/include/linux/iio/buffer.h b/include/linux/iio/buffer.h
-> index b6928ac5c63d..e87b8773253d 100644
-> --- a/include/linux/iio/buffer.h
-> +++ b/include/linux/iio/buffer.h
-> @@ -11,8 +11,15 @@
->  
->  struct iio_buffer;
->  
-> +enum iio_buffer_direction {
-> +	IIO_BUFFER_DIRECTION_IN,
-> +	IIO_BUFFER_DIRECTION_OUT,
-> +};
-> +
->  int iio_push_to_buffers(struct iio_dev *indio_dev, const void *data);
->  
-> +int iio_buffer_remove_sample(struct iio_buffer *buffer, u8 *data);
-> +
->  /**
->   * iio_push_to_buffers_with_timestamp() - push data and timestamp to buffers
->   * @indio_dev:		iio_dev structure for device.
-> diff --git a/include/linux/iio/buffer_impl.h b/include/linux/iio/buffer_impl.h
-> index 245b32918ae1..8a44c5321e19 100644
-> --- a/include/linux/iio/buffer_impl.h
-> +++ b/include/linux/iio/buffer_impl.h
-> @@ -7,6 +7,7 @@
->  #ifdef CONFIG_IIO_BUFFER
->  
->  #include <uapi/linux/iio/buffer.h>
-> +#include <linux/iio/buffer.h>
+> > +	for_each_set_bit(i, errors, ARRAY_SIZE(error_codes))
+>
+> Unless I'm going crazy, ARRAY_SIZE(sunrise_error_statuses) == ARRAY_SIZE(error_codes)
+> and so there isn't any point in having the error_codes array.
+>
 
->  
->  struct iio_dev;
->  struct iio_buffer;
-> @@ -23,6 +24,10 @@ struct iio_buffer;
->   * @read:		try to get a specified number of bytes (must exist)
->   * @data_available:	indicates how much data is available for reading from
->   *			the buffer.
-> + * @remove_from:	remove sample from buffer. Drivers should calls this to
-> + *			remove a sample from a buffer.
-> + * @write:		try to write a number of bytes
-> + * @space_available:	returns the amount of bytes available in a buffer
->   * @request_update:	if a parameter change has been marked, update underlying
->   *			storage.
->   * @set_bytes_per_datum:set number of bytes per datum
-> @@ -49,6 +54,9 @@ struct iio_buffer_access_funcs {
->  	int (*store_to)(struct iio_buffer *buffer, const void *data);
->  	int (*read)(struct iio_buffer *buffer, size_t n, char __user *buf);
->  	size_t (*data_available)(struct iio_buffer *buffer);
-> +	int (*remove_from)(struct iio_buffer *buffer, void *data);
-> +	int (*write)(struct iio_buffer *buffer, size_t n, const char __user *buf);
-> +	size_t (*space_available)(struct iio_buffer *buffer);
->  
->  	int (*request_update)(struct iio_buffer *buffer);
->  
-> @@ -80,6 +88,9 @@ struct iio_buffer {
->  	/**  @bytes_per_datum: Size of individual datum including timestamp. */
->  	size_t bytes_per_datum;
->  
-> +	/* @direction: Direction of the data stream (in/out). */
-> +	enum iio_buffer_direction direction;
-> +
->  	/**
->  	 * @access: Buffer access functions associated with the
->  	 * implementation.
+Uh, you're right. I thought I had to layout error bits in an array to
+cycle on them, but what I care about is the size only, so
+sunrise_error_statuses will do just fine. I'll drop
 
+> > +		len += sysfs_emit_at(buf, len, "%s ", sunrise_error_statuses[i]);
+> > +
+> > +	if (len)
+> > +		buf[len - 1] = '\n';
+> > +
+> > +	return len;
+> > +}
+> > +
+> > +static const struct iio_chan_spec_ext_info sunrise_concentration_ext_info[] = {
+> > +	/* Calibration modes and calibration trigger. */
+> > +	{
+> > +		.name = "calibration",
+> > +		.write = sunrise_calibration_write,
+> > +		.shared = IIO_SEPARATE,
+> > +	},
+> > +	IIO_ENUM("calibration_mode", IIO_SEPARATE,
+> > +		 &sunrise_calibration_modes_enum),
+>
+> I'll comment on this ABI in the docs patch rather than here.
+> Given you asked somewhere about ext_info vs explicit attrs.
+> In theory we always prefer ext_info because it provides a way to access them from
+> in kernel consumers + enforces naming etc.  However as we have a massive number
+> of legacy attributes I haven't yet started insisting on it, even for new drivers.
+>
+> Good to see it here though!
+>
+
+Good! I'll keep using ext_info and update the ABI as you suggested.
+Be aware though that the chip supports up to 5 calibration modes, and
+we'll have one attribute for each of them, that's why I thought having
+2 only was better. With an ack to potentially have 5 attrs, I'll
+change the ABI
+
+>
+> > +	IIO_ENUM_AVAILABLE("calibration_mode",
+> > +			   &sunrise_calibration_modes_enum),
+> > +
+> > +	/* Error statuses. */
+> > +	{
+> > +		.name = "error_status",
+> > +		.read = sunrise_error_status_read,
+> > +		.shared = IIO_SEPARATE
+> > +	},
+> > +	IIO_ENUM_AVAILABLE("error_status", &sunrise_error_statuses_enum),
+> > +	{}
+> > +};
+> > +
+> > +static const struct iio_chan_spec sunrise_channels[] = {
+> > +	{
+> > +		.type = IIO_CONCENTRATION,
+> > +		.modified = 1,
+> > +		.channel2 = IIO_MOD_CO2,
+> > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+> > +		.ext_info = sunrise_concentration_ext_info,
+> > +		.scan_index = 0,
+> > +		.scan_type =  {
+> > +			.sign = 's',
+> > +			.realbits = 16,
+> > +			.storagebits = 16,
+> > +			.endianness = IIO_CPU,
+> > +		},
+> > +	},
+> > +	{
+> > +		.type = IIO_TEMP,
+> > +		.info_mask_separate =  BIT(IIO_CHAN_INFO_RAW) |
+> > +				       BIT(IIO_CHAN_INFO_SCALE),
+> > +		.scan_index = 1,
+> > +		.scan_type =  {
+> > +			.sign = 's',
+> > +			.realbits = 16,
+> > +			.storagebits = 16,
+> > +			.endianness = IIO_CPU,
+> > +		},
+> > +	},
+> > +};
+> > +
+> > +static int sunrise_read_raw(struct iio_dev *iio_dev,
+> > +			    const struct iio_chan_spec *chan,
+> > +			    int *val, int *val2, long mask)
+> > +{
+> > +	struct sunrise_dev *sunrise = iio_priv(iio_dev);
+> > +	u16 value;
+> > +	int ret;
+> > +
+> > +	switch (mask) {
+> > +	case IIO_CHAN_INFO_RAW:
+> > +		mutex_lock(&sunrise->lock);
+> > +
+> > +		switch (chan->type) {
+> > +		case IIO_CONCENTRATION:
+> > +			ret = sunrise_read_word(sunrise, SUNRISE_CO2_FILTERED_COMP_REG,
+> > +						&value);
+> > +			*val = value;
+> > +			mutex_unlock(&sunrise->lock);
+> > +
+> > +			return ret ?: IIO_VAL_INT;
+>
+> I mentioned in a late response to an earlier one that I'm not overly keen on this form, but
+> I can live with it if you prefer it.
+>
+
+Whatever, really, I've done a few back and forth already. I'm more
+accustomed to the canonical if (ret) return ret; as well fwiw
+> > +
+> > +		case IIO_TEMP:
+> > +			ret = sunrise_read_word(sunrise, SUNRISE_CHIP_TEMPERATURE_REG,
+> > +						&value);
+> > +			*val = value;
+> > +			mutex_unlock(&sunrise->lock);
+> > +
+> > +			return ret ?: IIO_VAL_INT;
+> > +
+> > +		default:
+> > +			mutex_unlock(&sunrise->lock);
+>
+> Move the locks into the two case statements, then you won't have to unlock here which
+> will be cleaner.
+
+Ack
+
+>
+> > +			return -EINVAL;
+> > +		}
+> > +
+> > +	case IIO_CHAN_INFO_SCALE:
+> > +		/* Chip temperature scale = 1/100 */
+>
+> IIO temperatures are measured in milli degrees.  1lsb = 1/100*1000 degrees centigrade seems very accurate
+> for a device like this!  I'm guessing this should be 10.
+
+Ah yes, I thought it had to be given in the chip's native format,
+which is 1/100 degree.
+
+I guess I should then multiply by 10 the temperature raw read and
+return IIO_VAL_INT here.
+
+>
+> > +		*val = 1;
+> > +		*val2 = 100;
+> > +		return IIO_VAL_FRACTIONAL;
+> > +
+> > +	default:
+> > +		return -EINVAL;
+> > +	}
+> > +}
+> > +
+> > +static const struct iio_info sunrise_info = {
+> > +	.read_raw = sunrise_read_raw,
+> > +};
+> > +
+> > +static struct regmap_config sunrise_regmap_config = {
+> > +	.reg_bits = 8,
+> > +	.val_bits = 8,
+> > +};
+> > +
+> > +static int sunrise_probe(struct i2c_client *client)
+> > +{
+> > +	struct sunrise_dev *sunrise;
+> > +	struct iio_dev *iio_dev;
+> > +
+> > +	iio_dev = devm_iio_device_alloc(&client->dev, sizeof(*sunrise));
+> > +	if (!iio_dev)
+> > +		return -ENOMEM;
+> > +
+> > +	i2c_set_clientdata(client, iio_dev);
+>
+> Why?  I'm not immediately spotting where this is used.
+>
+
+Probably a leftover since when I used raw attrs ?
+
+> > +
+> > +	sunrise = iio_priv(iio_dev);
+> > +	sunrise->client = client;
+> > +	sunrise->dev = &client->dev;
+>
+> Why carry this around when you can get it from client->dev?
+>
+
+Andy had the same comment. I think it's very cheap and makes the error
+printing more compact. But if it bothers both of you I can drop it.
+
+Thanks
+   j
+
+> > +	mutex_init(&sunrise->lock);
+> > +
+> > +	sunrise->regmap = devm_regmap_init_i2c(client, &sunrise_regmap_config);
+> > +	if (IS_ERR(sunrise->regmap)) {
+> > +		dev_err(&client->dev, "Failed to initialize regmap\n");
+> > +		return PTR_ERR(sunrise->regmap);
+> > +	}
+> > +
+> > +	iio_dev->info = &sunrise_info;
+> > +	iio_dev->name = DRIVER_NAME;
+> > +	iio_dev->channels = sunrise_channels;
+> > +	iio_dev->num_channels = ARRAY_SIZE(sunrise_channels);
+> > +	iio_dev->modes = INDIO_DIRECT_MODE;
+> > +
+> > +	return devm_iio_device_register(&client->dev, iio_dev);
+> > +}
+> > +
+> > +static const struct of_device_id sunrise_of_match[] = {
+> > +	{ .compatible = "senseair,sunrise-006-0-0007" },
+> > +	{}
+> > +};
+> > +MODULE_DEVICE_TABLE(of, sunrise_of_match);
+> > +
+> > +static struct i2c_driver sunrise_driver = {
+> > +	.driver = {
+> > +		.name = DRIVER_NAME,
+> > +		.of_match_table = sunrise_of_match,
+> > +	},
+> > +	.probe_new = sunrise_probe,
+> > +};
+> > +module_i2c_driver(sunrise_driver);
+> > +
+> > +MODULE_AUTHOR("Jacopo Mondi <jacopo@jmondi.org>");
+> > +MODULE_DESCRIPTION("Senseair Sunrise 006-0-0007 CO2 sensor IIO driver");
+> > +MODULE_LICENSE("GPL v2");
+> > --
+> > 2.32.0
+> >
+>

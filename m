@@ -2,32 +2,32 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 854833FB3D2
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Aug 2021 12:26:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E82A53FB3EC
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Aug 2021 12:31:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236278AbhH3K1q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 30 Aug 2021 06:27:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59736 "EHLO mail.kernel.org"
+        id S236288AbhH3Kcl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 30 Aug 2021 06:32:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36404 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233248AbhH3K1q (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 30 Aug 2021 06:27:46 -0400
+        id S236269AbhH3Kcl (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 30 Aug 2021 06:32:41 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1BA2C610C7;
-        Mon, 30 Aug 2021 10:26:50 +0000 (UTC)
-Date:   Mon, 30 Aug 2021 11:30:03 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 40E6C610C7;
+        Mon, 30 Aug 2021 10:31:46 +0000 (UTC)
+Date:   Mon, 30 Aug 2021 11:34:57 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         linux-iio@vger.kernel.org, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 13/16] iio: adc: max1027: Prepare re-using the EOC
- interrupt
-Message-ID: <20210830112947.6f1806f5@jic23-huawei>
-In-Reply-To: <20210818111139.330636-14-miquel.raynal@bootlin.com>
+Subject: Re: [PATCH 12/16] iio: adc: max1027: Introduce an end of conversion
+ helper
+Message-ID: <20210830113457.4acf12e2@jic23-huawei>
+In-Reply-To: <20210818111139.330636-13-miquel.raynal@bootlin.com>
 References: <20210818111139.330636-1-miquel.raynal@bootlin.com>
-        <20210818111139.330636-14-miquel.raynal@bootlin.com>
+        <20210818111139.330636-13-miquel.raynal@bootlin.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -36,77 +36,68 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 18 Aug 2021 13:11:36 +0200
+On Wed, 18 Aug 2021 13:11:35 +0200
 Miquel Raynal <miquel.raynal@bootlin.com> wrote:
 
-> Right now the driver only has hardware trigger support, which makes use
-> of the End Of Conversion (EOC) interrupt by:
-> - Enabling the external trigger
-> - At completion of the conversion, run a generic handler
-> - Push the data to the IIO subsystem by using the triggered buffer
->   infrastructure, which may not only serve this purpose.
-> 
-> In fact, the interrupt will fire for more reasons than just a hardware
-> trigger condition, so make a dedicated interrupt handler which will be
-> enhanced by the upcoming changes to handle more situations.
+> For now this helper only waits for the maximum duration of a conversion,
+> but it will soon be improved to properly handle the end of conversion
+> interrupt.
 > 
 > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-one suggestion inline.
 > ---
->  drivers/iio/adc/max1027.c | 22 ++++++++++++++++++++--
->  1 file changed, 20 insertions(+), 2 deletions(-)
+>  drivers/iio/adc/max1027.c | 23 +++++++++++++++++++++--
+>  1 file changed, 21 insertions(+), 2 deletions(-)
 > 
 > diff --git a/drivers/iio/adc/max1027.c b/drivers/iio/adc/max1027.c
-> index 2d6485591761..8d86e77fb5db 100644
+> index afc3ce69f7ea..2d6485591761 100644
 > --- a/drivers/iio/adc/max1027.c
 > +++ b/drivers/iio/adc/max1027.c
-> @@ -472,6 +472,24 @@ static int max1027_read_scan(struct iio_dev *indio_dev)
->  	return 0;
->  }
+> @@ -60,6 +60,9 @@
+>  #define MAX1027_NAVG_32   (0x03 << 2)
+>  #define MAX1027_AVG_EN    BIT(4)
 >  
-> +static irqreturn_t max1027_eoc_irq_handler(int irq, void *private)
+> +/* Device can achieve 300ksps so we assume a 3.33us conversion delay */
+> +#define MAX1027_CONVERSION_UDELAY 4
+> +
+>  enum max1027_id {
+>  	max1027,
+>  	max1029,
+> @@ -236,6 +239,20 @@ struct max1027_state {
+>  	u8				reg ____cacheline_aligned;
+>  };
+>  
+> +static DECLARE_WAIT_QUEUE_HEAD(max1027_queue);
+Why here?  This had me confused when I couldn't find it being introduced
+in the later patch that uses it.  More comments in that patch.
+
+> +
+> +static int max1027_wait_eoc(struct iio_dev *indio_dev)
 > +{
-> +	struct iio_dev *indio_dev = private;
-> +	struct max1027_state *st = iio_priv(indio_dev);
-> +	int ret = 0;
+> +	unsigned int conversion_time = MAX1027_CONVERSION_UDELAY;
 > +
-> +	if (st->cnvst_trigger) {
-
-I missed this earlier, but it is very similar in purpose to the
-logic used in iio_trigger_validate_own_device.  Perhaps you could reuse that
-rather than carrying an explicit variable to check for this?
-
-> +		ret = max1027_read_scan(indio_dev);
-> +		iio_trigger_notify_done(indio_dev->trig);
-> +	}
+> +	if (indio_dev->active_scan_mask)
+> +		conversion_time *= hweight32(*indio_dev->active_scan_mask);
 > +
-> +	if (ret)
-> +		dev_err(&indio_dev->dev,
-> +			"Cannot read scanned values (%d)\n", ret);
-
-Perhaps better to move that into the if statement.  I guess this may
-make more sense later though!
-
-
+> +	usleep_range(conversion_time, conversion_time * 2);
 > +
-> +	return IRQ_HANDLED;
+> +	return 0;
 > +}
 > +
->  static irqreturn_t max1027_trigger_handler(int irq, void *private)
+>  /* Scan from 0 to the highest requested channel */
+>  static int max1027_configure_chans_to_scan(struct iio_dev *indio_dev)
 >  {
->  	struct iio_poll_func *pf = private;
-> @@ -563,11 +581,11 @@ static int max1027_probe(struct spi_device *spi)
->  		}
+> @@ -310,9 +327,11 @@ static int max1027_read_single_value(struct iio_dev *indio_dev,
+>  	/*
+>  	 * For an unknown reason, when we use the mode "10" (write
+>  	 * conversion register), the interrupt doesn't occur every time.
+> -	 * So we just wait 1 ms.
+> +	 * So we just wait the maximum conversion time and deliver the value.
+>  	 */
+> -	mdelay(1);
+> +	ret = max1027_wait_eoc(indio_dev);
+> +	if (ret)
+> +		return ret;
 >  
->  		ret = devm_request_threaded_irq(&spi->dev, spi->irq,
-> -						iio_trigger_generic_data_rdy_poll,
-> +						max1027_eoc_irq_handler,
->  						NULL,
->  						IRQF_TRIGGER_FALLING,
->  						spi->dev.driver->name,
-> -						st->trig);
-> +						indio_dev);
->  		if (ret < 0) {
->  			dev_err(&indio_dev->dev, "Failed to allocate IRQ.\n");
->  			return ret;
+>  	/* Read result */
+>  	ret = spi_read(st->spi, st->buffer, (chan->type == IIO_TEMP) ? 4 : 2);
 

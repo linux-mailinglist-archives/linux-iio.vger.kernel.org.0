@@ -2,94 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AAEEE3FB428
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Aug 2021 12:57:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 450F03FB42F
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Aug 2021 13:02:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236324AbhH3K5v (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 30 Aug 2021 06:57:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47710 "EHLO mail.kernel.org"
+        id S236324AbhH3LCu convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 30 Aug 2021 07:02:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49526 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235818AbhH3K5v (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 30 Aug 2021 06:57:51 -0400
+        id S235818AbhH3LCs (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 30 Aug 2021 07:02:48 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5954C610FD;
-        Mon, 30 Aug 2021 10:56:55 +0000 (UTC)
-Date:   Mon, 30 Aug 2021 12:00:06 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 7CBA2610E6;
+        Mon, 30 Aug 2021 11:01:52 +0000 (UTC)
+Date:   Mon, 30 Aug 2021 12:05:04 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Cc:     Yang Yingliang <yangyingliang@huawei.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH -next] iio: adc: add missing clk_disable_unprepare() in
- rzg2l_adc_pm_runtime_resume()
-Message-ID: <20210830115954.02fcca60@jic23-huawei>
-In-Reply-To: <OSZPR01MB7019F9AF40E5E8626DD0E168AAC19@OSZPR01MB7019.jpnprd01.prod.outlook.com>
-References: <20210819132416.175644-1-yangyingliang@huawei.com>
-        <OSZPR01MB7019F9AF40E5E8626DD0E168AAC19@OSZPR01MB7019.jpnprd01.prod.outlook.com>
+To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+        Drew Fustini <drew@pdp7.com>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>
+Subject: Re: [PATCH v2 2/2] iio: ltc2983: fail probe if no channels are
+ given
+Message-ID: <20210830120504.7363f953@jic23-huawei>
+In-Reply-To: <20210825084149.11587-2-nuno.sa@analog.com>
+References: <20210825084149.11587-1-nuno.sa@analog.com>
+        <20210825084149.11587-2-nuno.sa@analog.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 20 Aug 2021 14:04:15 +0000
-Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com> wrote:
+On Wed, 25 Aug 2021 10:41:49 +0200
+Nuno Sá <nuno.sa@analog.com> wrote:
 
-> Hi Yang,
+> If there are no channels defined in the devicetree, there's no point in
+> probing the device. We were actually requesting a zero sized 'kmalloc'
+> array but since we were not touching the ZERO_SIZE_PTR afterwards,
+> nothing bad was actually happening. Hence this is not really a fix but
+> rather an improvement.
 > 
-> Thank you for the patch.
-> 
-> > -----Original Message-----
-> > From: Yang Yingliang <yangyingliang@huawei.com>
-> > Sent: 19 August 2021 14:24
-> > To: linux-kernel@vger.kernel.org; linux-iio@vger.kernel.org
-> > Cc: Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>; jic23@kernel.org
-> > Subject: [PATCH -next] iio: adc: add missing clk_disable_unprepare() in rzg2l_adc_pm_runtime_resume()
-> > 
-> > Add clk_disable_unprepare() on error path in rzg2l_adc_pm_runtime_resume().
-> > 
-> > Reported-by: Hulk Robot <hulkci@huawei.com>
-> > Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-> > ---
-> >  drivers/iio/adc/rzg2l_adc.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> >   
-> With subject line changed to, iio: adc: rzg2l_adc: add missing clk_disable_unprepare() in rzg2l_adc_pm_runtime_resume()
-> 
-> Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-
-Patch title updated as suggested and applied to the fixes-togreg branch of iio.git
-which will go upstream sometime after rc1.
+> Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
+> Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+Both applied.
 
 Thanks,
 
-Jonathan
-
+J
+> ---
+> Nothing changed in v2.
 > 
-> Cheers,
-> Prabhakar
+>  drivers/iio/temperature/ltc2983.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> > diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c index
-> > 9996d5eef289..c38f43ea624f 100644
-> > --- a/drivers/iio/adc/rzg2l_adc.c
-> > +++ b/drivers/iio/adc/rzg2l_adc.c
-> > @@ -570,8 +570,10 @@ static int __maybe_unused rzg2l_adc_pm_runtime_resume(struct device *dev)
-> >  		return ret;
-> > 
-> >  	ret = clk_prepare_enable(adc->adclk);
-> > -	if (ret)
-> > +	if (ret) {
-> > +		clk_disable_unprepare(adc->pclk);
-> >  		return ret;
-> > +	}
-> > 
-> >  	rzg2l_adc_pwr(adc, true);
-> > 
-> > --
-> > 2.25.1  
-> 
+> diff --git a/drivers/iio/temperature/ltc2983.c b/drivers/iio/temperature/ltc2983.c
+> index 22e6a26ce6b1..301c3f13fb26 100644
+> --- a/drivers/iio/temperature/ltc2983.c
+> +++ b/drivers/iio/temperature/ltc2983.c
+> @@ -1275,6 +1275,11 @@ static int ltc2983_parse_dt(struct ltc2983_data *st)
+>  			     &st->filter_notch_freq);
+>  
+>  	st->num_channels = of_get_available_child_count(dev->of_node);
+> +	if (!st->num_channels) {
+> +		dev_err(&st->spi->dev, "At least one channel must be given!");
+> +		return -EINVAL;
+> +	}
+> +
+>  	st->sensors = devm_kcalloc(dev, st->num_channels, sizeof(*st->sensors),
+>  				   GFP_KERNEL);
+>  	if (!st->sensors)
 

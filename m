@@ -2,21 +2,21 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 327F33FB769
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Aug 2021 15:59:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BE8B3FB76C
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Aug 2021 15:59:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236875AbhH3N5s (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 30 Aug 2021 09:57:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52506 "EHLO mail.kernel.org"
+        id S231314AbhH3N7w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 30 Aug 2021 09:59:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54030 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236846AbhH3N5r (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 30 Aug 2021 09:57:47 -0400
+        id S236874AbhH3N7v (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 30 Aug 2021 09:59:51 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3311D604D7;
-        Mon, 30 Aug 2021 13:56:47 +0000 (UTC)
-Date:   Mon, 30 Aug 2021 14:59:59 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 2557A604D7;
+        Mon, 30 Aug 2021 13:58:51 +0000 (UTC)
+Date:   Mon, 30 Aug 2021 15:02:03 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
@@ -32,12 +32,11 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-input@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-clk@vger.kernel.org
-Subject: Re: [PATCH 25/40] mfd: ti_am335x_tscadc: Add a boolean to clarify
- the presence of a touchscreen
-Message-ID: <20210830145959.03bed30a@jic23-huawei>
-In-Reply-To: <20210825152518.379386-26-miquel.raynal@bootlin.com>
+Subject: Re: [PATCH 26/40] mfd: ti_am335x_tscadc: Introduce has_tsc
+Message-ID: <20210830150203.51cf1453@jic23-huawei>
+In-Reply-To: <20210825152518.379386-27-miquel.raynal@bootlin.com>
 References: <20210825152518.379386-1-miquel.raynal@bootlin.com>
-        <20210825152518.379386-26-miquel.raynal@bootlin.com>
+        <20210825152518.379386-27-miquel.raynal@bootlin.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,58 +45,109 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 25 Aug 2021 17:25:03 +0200
+On Wed, 25 Aug 2021 17:25:04 +0200
 Miquel Raynal <miquel.raynal@bootlin.com> wrote:
 
-> Just checking the number of wires will soon not be enough, add a boolean
-> to indicated the actual use or not of the touchscreen.
+> One way of knowing which hardware we are dealing with is to check its
+> compatible. When this must be done at several places, it's best to use a
+> proper boolean for that. ->has_tsc indicates if there is a touchscreen
+> controller available (meaning it's a am33xx-like ADC) or not but does
+> not indicate if it is actually used (that is the purpose of the use_tsc
+> boolean in the probe).
+> 
+> Introducing this boolean helps making a difference in the code between
+> what is generic to both types of ADCs and what is specific to the am33xx
+> hardware before introducing support for the am437x hardware.
 > 
 > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Seems sensible to me.
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
 > ---
->  drivers/mfd/ti_am335x_tscadc.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
+>  drivers/mfd/ti_am335x_tscadc.c       | 37 +++++++++++++++++-----------
+>  include/linux/mfd/ti_am335x_tscadc.h |  1 +
+>  2 files changed, 23 insertions(+), 15 deletions(-)
 > 
 > diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
-> index 2f934fd2154a..30f53cdb41f8 100644
+> index 30f53cdb41f8..a40091830cea 100644
 > --- a/drivers/mfd/ti_am335x_tscadc.c
 > +++ b/drivers/mfd/ti_am335x_tscadc.c
-> @@ -121,6 +121,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
->  	const __be32 *cur;
->  	struct clk *clk;
->  	u32 val;
-> +	bool use_tsc = false;
->  	int tscmag_wires = 0, adc_channels = 0, readouts = 0, cell_idx = 0;
->  	int total_channels, err;
+> @@ -105,8 +105,9 @@ static void tscadc_idle_config(struct ti_tscadc_dev *tscadc)
+>  {
+>  	unsigned int idleconfig;
 >  
-> @@ -141,6 +142,8 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
->  	node = of_get_child_by_name(pdev->dev.of_node, "tsc");
->  	of_property_read_u32(node, "ti,wires", &tscmag_wires);
->  	of_property_read_u32(node, "ti,coordiante-readouts", &readouts);
-> +	if (tscmag_wires)
-> +		use_tsc = true;
+> -	idleconfig = STEPCONFIG_YNN | STEPCONFIG_INM_ADCREFM |
+> -			STEPCONFIG_INP_ADCREFM | STEPCONFIG_YPN;
+> +	idleconfig = STEPCONFIG_INM_ADCREFM | STEPCONFIG_INP_ADCREFM;
+> +	if (tscadc->data->has_tsc)
+> +		idleconfig |= STEPCONFIG_YNN | STEPCONFIG_YPN;
+>  
+>  	regmap_write(tscadc->regmap, REG_IDLECONFIG, idleconfig);
+>  }
+> @@ -139,11 +140,13 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+>  
+>  	tscadc->data = of_device_get_match_data(&pdev->dev);
+>  
+> -	node = of_get_child_by_name(pdev->dev.of_node, "tsc");
+> -	of_property_read_u32(node, "ti,wires", &tscmag_wires);
+> -	of_property_read_u32(node, "ti,coordiante-readouts", &readouts);
+> -	if (tscmag_wires)
+> -		use_tsc = true;
+> +	if (tscadc->data->has_tsc) {
+> +		node = of_get_child_by_name(pdev->dev.of_node, "tsc");
+> +		of_property_read_u32(node, "ti,wires", &tscmag_wires);
+> +		of_property_read_u32(node, "ti,coordiante-readouts", &readouts);
+> +		if (tscmag_wires)
+> +			use_tsc = true;
+> +	}
 >  
 >  	node = of_get_child_by_name(pdev->dev.of_node, "adc");
 >  	of_property_for_each_u32(node, "ti,adc-channels", prop, cur, val) {
-> @@ -163,7 +166,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
->  		return -EINVAL;
+> @@ -218,15 +221,18 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+>  	regmap_write(tscadc->regmap, REG_CLKDIV, tscadc->clk_div);
+>  
+>  	/* Set the control register bits */
+> -	tscadc->ctrl = CNTRLREG_TSC_STEPCONFIGWRT | CNTRLREG_STEPID;
+> -	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl);
+> +	tscadc->ctrl = CNTRLREG_STEPID;
+> +	if (tscadc->data->has_tsc) {
+> +		tscadc->ctrl |= CNTRLREG_TSC_STEPCONFIGWRT;
+> +		regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl);
+> +		if (use_tsc) {
+> +			tscadc->ctrl |= CNTRLREG_TSC_ENB;
+> +			if (tscmag_wires == 5)
+> +				tscadc->ctrl |= CNTRLREG_TSC_5WIRE;
+> +			else
+> +				tscadc->ctrl |= CNTRLREG_TSC_4WIRE;
+> +		}
+>  
+> -	if (use_tsc) {
+> -		tscadc->ctrl |= CNTRLREG_TSC_ENB;
+> -		if (tscmag_wires == 5)
+> -			tscadc->ctrl |= CNTRLREG_TSC_5WIRE;
+> -		else
+> -			tscadc->ctrl |= CNTRLREG_TSC_4WIRE;
 >  	}
 >  
-> -	if (readouts * 2 + 2 + adc_channels > 16) {
-> +	if (use_tsc && (readouts * 2 + 2 + adc_channels > 16)) {
-
-This one is adding a check that wasn't there before.  The description should
-mention why it will now be necessary and isn't a bug...
-
->  		dev_err(&pdev->dev, "Too many step configurations requested\n");
->  		return -EINVAL;
->  	}
-> @@ -218,7 +221,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
->  	tscadc->ctrl = CNTRLREG_TSC_STEPCONFIGWRT | CNTRLREG_STEPID;
->  	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl);
+>  	tscadc_idle_config(tscadc);
+> @@ -321,6 +327,7 @@ static int __maybe_unused tscadc_resume(struct device *dev)
+>  static SIMPLE_DEV_PM_OPS(tscadc_pm_ops, tscadc_suspend, tscadc_resume);
 >  
-> -	if (tscmag_wires > 0) {
-> +	if (use_tsc) {
->  		tscadc->ctrl |= CNTRLREG_TSC_ENB;
->  		if (tscmag_wires == 5)
->  			tscadc->ctrl |= CNTRLREG_TSC_5WIRE;
+>  static const struct ti_tscadc_data tscdata = {
+> +	.has_tsc = true,
+>  	.name_tscmag = "TI-am335x-tsc",
+>  	.compat_tscmag = "ti,am3359-tsc",
+>  	.name_adc = "TI-am335x-adc",
+> diff --git a/include/linux/mfd/ti_am335x_tscadc.h b/include/linux/mfd/ti_am335x_tscadc.h
+> index d5e2ff8dc84a..082b2af94263 100644
+> --- a/include/linux/mfd/ti_am335x_tscadc.h
+> +++ b/include/linux/mfd/ti_am335x_tscadc.h
+> @@ -163,6 +163,7 @@
+>  #define TSCADC_CELLS		2
+>  
+>  struct ti_tscadc_data {
+> +	bool has_tsc;
+>  	char *name_tscmag;
+>  	char *compat_tscmag;
+>  	char *name_adc;
 

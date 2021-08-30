@@ -2,31 +2,32 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C414A3FB40D
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Aug 2021 12:48:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6367D3FB41F
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Aug 2021 12:51:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236410AbhH3Ks3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 30 Aug 2021 06:48:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44734 "EHLO mail.kernel.org"
+        id S236411AbhH3KwJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 30 Aug 2021 06:52:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46016 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236408AbhH3Ks3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 30 Aug 2021 06:48:29 -0400
+        id S236324AbhH3KwJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 30 Aug 2021 06:52:09 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id ED69E610F9;
-        Mon, 30 Aug 2021 10:47:33 +0000 (UTC)
-Date:   Mon, 30 Aug 2021 11:50:46 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id E387F610D1;
+        Mon, 30 Aug 2021 10:51:13 +0000 (UTC)
+Date:   Mon, 30 Aug 2021 11:54:25 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         linux-iio@vger.kernel.org, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 15/16] iio: adc: max1027: Support software triggers
-Message-ID: <20210830115046.3727ccc4@jic23-huawei>
-In-Reply-To: <20210818111139.330636-16-miquel.raynal@bootlin.com>
+Subject: Re: [PATCH 16/16] iio: adc: max1027: Enable software triggers to be
+ used without IRQ
+Message-ID: <20210830115425.3fdb31b9@jic23-huawei>
+In-Reply-To: <20210818111139.330636-17-miquel.raynal@bootlin.com>
 References: <20210818111139.330636-1-miquel.raynal@bootlin.com>
-        <20210818111139.330636-16-miquel.raynal@bootlin.com>
+        <20210818111139.330636-17-miquel.raynal@bootlin.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -35,95 +36,73 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 18 Aug 2021 13:11:38 +0200
+On Wed, 18 Aug 2021 13:11:39 +0200
 Miquel Raynal <miquel.raynal@bootlin.com> wrote:
 
-> Now that max1027_trigger_handler() has been freed from handling hardware
-> triggers EOC situations, we can use it for what it has been designed in
-> the first place: trigger software originated conversions.
+> Software triggers do not need a device IRQ to work. As opposed to
+> hardware triggers which need it to yield the data to the IIO core,
+> software triggers run a dedicated thread which does all the tasks on
+> their behalf. Then, the end of conversion status may either come from an
+> interrupt or from a sufficient enough extra delay. IRQs are not
+> mandatory so move the triggered buffer setup out of the IRQ condition.
 
-As mentioned earlier, this is not how I'd normally expect this sort of
-case to be handled. I'd be expecting the cnvst trigger to still be calling
-this function and the function to do the relevant check to ensure it
-knows the data is already available in that case.
+I'd stop referring to software triggers in these descriptions.  This
+could just as easily be about enabling a different hardware trigger
+such as a gpio trigger or indeed on a dataready trigger provided by
+an entirely different device.
 
-> In other
-> words, when userspace initiates a conversion with a sysfs trigger or a
-> hrtimer trigger, we must do all configuration steps, ie:
-> 1- Configuring the trigger
-> 2- Configuring the channels to scan
-> 3- Starting the conversion (actually done automatically by step 2 in
->    this case)
-> 4- Waiting for the conversion to end
-> 5- Retrieving the data from the ADC
-> 6- Push the data to the IIO core and notify it
-> 
-> Add the missing steps to this helper and drop the trigger verification
-> hook otherwise software triggers would simply not be accepted at all.
+Otherwise the logic is correct.
+
+Good to get this more flexible support into the driver.  If we can
+make it a tiny bit more flexible by enabling use of the cnvst trigger
+to drive this 'and' other drivers that would be even better and
+conform more closely to the normal way an IIO driver work.
+
+The validate_device / validate_trigger callbacks are often about
+making it easier to bring a device driver up in the first place, so
+it's great to see them go away in later improvements like this.
+(note I'm not saying there aren't complex cases where we can't remove
+them though!)
+
+Jonathan
+
+
 > 
 > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 > ---
->  drivers/iio/adc/max1027.c | 26 ++++++++++++++------------
->  1 file changed, 14 insertions(+), 12 deletions(-)
+>  drivers/iio/adc/max1027.c | 20 +++++++++++---------
+>  1 file changed, 11 insertions(+), 9 deletions(-)
 > 
 > diff --git a/drivers/iio/adc/max1027.c b/drivers/iio/adc/max1027.c
-> index 8c5995ae59f2..bb437e43adaf 100644
+> index bb437e43adaf..e767437a578e 100644
 > --- a/drivers/iio/adc/max1027.c
 > +++ b/drivers/iio/adc/max1027.c
-> @@ -413,17 +413,6 @@ static int max1027_debugfs_reg_access(struct iio_dev *indio_dev,
->  	return spi_write(st->spi, val, 1);
->  }
+> @@ -567,16 +567,18 @@ static int max1027_probe(struct spi_device *spi)
+>  	if (!st->buffer)
+>  		return -ENOMEM;
 >  
-> -static int max1027_validate_trigger(struct iio_dev *indio_dev,
-> -				    struct iio_trigger *trig)
-> -{
-> -	struct max1027_state *st = iio_priv(indio_dev);
+> +	/* Enable triggered buffers */
+> +	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
+> +					      &iio_pollfunc_store_time,
+> +					      &max1027_trigger_handler,
+> +					      NULL);
+> +	if (ret < 0) {
+> +		dev_err(&indio_dev->dev, "Failed to setup buffer\n");
+> +		return ret;
+> +	}
+> +
+> +	/* If there is an EOC interrupt, enable the hardware trigger (cnvst) */
+>  	if (spi->irq) {
+> -		ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
+> -						      &iio_pollfunc_store_time,
+> -						      &max1027_trigger_handler,
+> -						      NULL);
+> -		if (ret < 0) {
+> -			dev_err(&indio_dev->dev, "Failed to setup buffer\n");
+> -			return ret;
+> -		}
 > -
-> -	if (st->trig != trig)
-> -		return -EINVAL;
-> -
-> -	return 0;
-> -}
-> -
->  static int max1027_set_cnvst_trigger_state(struct iio_trigger *trig, bool state)
->  {
->  	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
-> @@ -512,7 +501,21 @@ static irqreturn_t max1027_trigger_handler(int irq, void *private)
->  
->  	pr_debug("%s(irq=%d, private=0x%p)\n", __func__, irq, private);
->  
-> +	ret = max1027_configure_trigger(indio_dev);
-
-I'd not expect to see this ever time.  The configuration shouldn't change
-from one call of this function to the next.
-
-> +	if (ret)
-> +		goto out;
-> +
-> +	ret = max1027_configure_chans_to_scan(indio_dev);
-
-This should also not change unless it is also responsible for the 'go' signal.
-If that's true then it is badly named.
-
-> +	if (ret)
-> +		goto out;
-> +
-> +	ret = max1027_wait_eoc(indio_dev);
-> +	if (ret)
-> +		goto out;
-> +
->  	ret = max1027_read_scan(indio_dev);
-> +
-> +out:
->  	if (ret)
->  		dev_err(&indio_dev->dev,
->  			"Cannot read scanned values (%d)\n", ret);
-> @@ -529,7 +532,6 @@ static const struct iio_trigger_ops max1027_trigger_ops = {
->  
->  static const struct iio_info max1027_info = {
->  	.read_raw = &max1027_read_raw,
-> -	.validate_trigger = &max1027_validate_trigger,
->  	.debugfs_reg_access = &max1027_debugfs_reg_access,
->  };
->  
+>  		st->trig = devm_iio_trigger_alloc(&spi->dev, "%s-trigger",
+>  						  indio_dev->name);
+>  		if (st->trig == NULL) {
 

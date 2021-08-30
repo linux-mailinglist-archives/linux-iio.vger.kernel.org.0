@@ -2,170 +2,485 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A9CF3FB289
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Aug 2021 10:36:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D89D83FB2CB
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Aug 2021 11:00:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234798AbhH3Igv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 30 Aug 2021 04:36:51 -0400
-Received: from mail-eopbgr1300109.outbound.protection.outlook.com ([40.107.130.109]:6116
-        "EHLO APC01-HK2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233318AbhH3Igu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 30 Aug 2021 04:36:50 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SK56sauOhd9EFwxyfBlwWjgmgkDYOxQWa/SahlkrBpNMHz992saD5VJAgwx1h9FOWrPvL+BgnZ9/y6C8qc+BQKqC/1WnSA5T+EyAUS+ZzDLcKM9UnTabeaFLdDHTc0+KmEbeSCOcqVTFcNwSpBtgUsNPYTFPXWvmxcl5XErOya1F3zS00PXJBAHjENf5bmIJJwwazcOgPsGcP+pMf74sNjVeoTovXnamtCJp2JaxLJgNoMsW/dHisxanuVsPbc8zLbMfyK1n6Hfb88BiosVcSKndQmydKrjBEjiIL5470ej99doilJn2cTVWoLY39U951n2tlKNjxwkIURRK1TEfRg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BAw82U5o9rp1AgnAK7LiqX+JlnihDxwwJZVQDqJk4Vc=;
- b=SoT3Y1xsJFm8lm7gUCCoLFAlgUckV4joYqyvYxPvADu/GcFUfCaVyy1qxZMq1TYCWCsg09Q5NaKsCmKhGt4fn8V1WW9jnTDr6Fv0Lo1zGJj9BbQi3jZxtfBNjWeSE6nucNVTfr8MaI6Kt5L7mm2i6vI9Vs2Q3kfgVFcNhmlydiC+LrQDCCKCDgomNuFU2sewxlcj/3PFWQa3amS7b1GhnzASNPxWC8+D2eU8YTKB61oZ5F5sLO0fz7JKeEIGmRLKGW288c+eJ3lGf8p4IGN2KHE1kfQAy0vK5xb/Vy7N0/4iEV7s7vxdeDjUNYRWtXnGRNqIoemA0KsFvbky53tFdQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=aspeedtech.com; dmarc=pass action=none
- header.from=aspeedtech.com; dkim=pass header.d=aspeedtech.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aspeedtech.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BAw82U5o9rp1AgnAK7LiqX+JlnihDxwwJZVQDqJk4Vc=;
- b=F5gh+3DiJdMHzTHN22/u0WkIU4SBLCqu1xfs50YhNl4iq4cGLY6oadBG548Uhxz4NKRMiIaEKbG2FzAps/tK6DDvNI7+p35A4gurkoLdNvgtB2ME+kjJsUXrmZakKld/y2xY9rYk45DZJhvUzzSyvhUjso4Q8zGP5/1dRAI9IJMO2sPl11EQ3b6uebvkkos/TGAvX804WJ64sJRd/rU1pT62J4+huMy9P9BABk3E4GUYF+eo8YOhaZ/NVZgC4g2kKWIJvpRwL36rRJPCrQdMSraC9uRYbwAxQ1HltCmE/8himPcbfiLioUCzDWv3Dm6UN0VVbwaI5I0jSZncwOC9ew==
-Received: from HK0PR06MB3362.apcprd06.prod.outlook.com (2603:1096:203:8b::10)
- by HK0PR06MB2130.apcprd06.prod.outlook.com (2603:1096:203:42::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4457.18; Mon, 30 Aug
- 2021 08:35:53 +0000
-Received: from HK0PR06MB3362.apcprd06.prod.outlook.com
- ([fe80::10fc:291d:32b8:dcb4]) by HK0PR06MB3362.apcprd06.prod.outlook.com
- ([fe80::10fc:291d:32b8:dcb4%7]) with mapi id 15.20.4436.025; Mon, 30 Aug 2021
- 08:35:53 +0000
-From:   Billy Tsai <billy_tsai@aspeedtech.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     "lars@metafoo.de" <lars@metafoo.de>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "joel@jms.id.au" <joel@jms.id.au>,
-        "andrew@aj.id.au" <andrew@aj.id.au>,
-        "p.zabel@pengutronix.de" <p.zabel@pengutronix.de>,
-        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        BMC-SW <BMC-SW@aspeedtech.com>
-Subject: Re: [RESEND v4 12/15] iio: adc: aspeed: Add func to set sampling
- rate.
-Thread-Topic: [RESEND v4 12/15] iio: adc: aspeed: Add func to set sampling
- rate.
-Thread-Index: AQHXnOtGanZsbH3nSEydpTOzzlCKGauMQFoA
-Date:   Mon, 30 Aug 2021 08:35:53 +0000
-Message-ID: <FE947284-E67B-49DB-B538-3ECAD8317BD4@aspeedtech.com>
-References: <20210824091243.9393-1-billy_tsai@aspeedtech.com>
- <202108250003.17P03KRU092474@twspam01.aspeedtech.com>
- <20210829163659.2f7f5974@jic23-huawei>
-In-Reply-To: <20210829163659.2f7f5974@jic23-huawei>
-Accept-Language: zh-TW, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=aspeedtech.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: f4f23b9f-12a1-42de-ab24-08d96b912df5
-x-ms-traffictypediagnostic: HK0PR06MB2130:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <HK0PR06MB2130F28FAC329D7DF980B59E8BCB9@HK0PR06MB2130.apcprd06.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8273;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: jYS0jA4g5ZjkWwTnW65crgOLvIzjNhwH+RqE0/dfHR+qOyY2Go+/9WeoseX3ntjYY2qvgg+2RevrvetlDLPCahbag+XAz/tNEt2JBVObTv4VPXHYF2KjgzeNt2O7uYgMO4ijP9BuHCYpkTiWgk+9roZfkJ1FNXTcmuwvkzfxCaCFbYDU812AdDotDUM7wdffAfyaD7VtYx7Six19Umz6dk6jdXGZpdfWhMatJbbTozwywhbc5WUEsM8VJyCivAROC58qihQyhfZBhiSesig5EpZcGxGSo8Wy3Xy1kqOysnpwdySjssflQRz8fexVKyf2NsoFybPIkWWlpijBAo20ciSrDwJONt5VJ3eM5QMgZrEbk6qb3jh0MV8Ghfh6z2COUS4iFkiBUyUxoCxTsyG7b0/6Fv6yWcamj+GrUN5sX/pP6ZUMzOrh0ANlhBmQC2gtluyCOnwM8wdp84y/7UD+U9kjW4tf8usZl2BohlMZRslBniPLZ1sd+7/gEwmKDkdtr+l783e+ck54iEi8fGTKqEs2gEqM9usAclrd0r8AWqQiUqUFcS/Ds7txz1minsiTtVBn8w7gm/OxFAB2e19on6pCedgc6WnHg9JBCeFsjYf8tStpBMzYjVsECv5F1o//BJY7phS545dHjCGLPy5V4e8bdwUqHNJ/iw9Zn5/YUiyz0T2WcByvRBEKy3ybOpdd5rUt312f/ctmEfchJsyGz6AVtiWW56TJrFlc0tTiDcNO1RY4lGPbYhIQJusZf+Nw
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HK0PR06MB3362.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(396003)(376002)(366004)(136003)(39840400004)(346002)(186003)(76116006)(8936002)(2906002)(6512007)(66556008)(64756008)(66946007)(66476007)(66446008)(2616005)(26005)(4326008)(107886003)(8676002)(71200400001)(6486002)(33656002)(53546011)(122000001)(86362001)(478600001)(7416002)(6506007)(38070700005)(83380400001)(316002)(54906003)(36756003)(6916009)(5660300002)(38100700002)(45980500001);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Vm1DMmhzQlIyTWpyUEtBSnBvU3BTMlNhNjZCYXBtK1gwUm5PODVSQld0d1VR?=
- =?utf-8?B?SFVlMnZ0WUNRTW1FWUFQNi9jUjFxWmlid3M3MWR2M0lFd3RCRk9XUEovVW1E?=
- =?utf-8?B?MkNiKzZ4VjlDQ1VmWk5KTTViWGE2bmhlZ1BnWlpDQWU1bWZwK0xLOXBLaFVW?=
- =?utf-8?B?UUYxZmZNWWMwdkNGd24rb3Y0bjJlQmR4VHg1cUUzOUpRMTBIeUF6M1diZWd1?=
- =?utf-8?B?YnViZmhTd1U2Mmo5UWdVZE40KzVVUXN3ZVJtWWE5UGVsMkMzcXV5b1ZGRW1D?=
- =?utf-8?B?MTFadlg4WmM5MGQ1V3p3eUEwZ05wdkRES291SWttL0VlekFhNXlHM3J6Z2g3?=
- =?utf-8?B?K2JIaDFGR3F2bnJYbm5ueUhUaUdRc2szMFBUQjVWb3JkeUhpZ0dtNE5taGZJ?=
- =?utf-8?B?bWpOTEovOHZTZHFSeWpJYWdYc3VmeUxXUy9jemtNVXEzTjQwbEw1cnFINTVT?=
- =?utf-8?B?WXNGc0VleU54VmN1a21aWWRBODVwTmhVMEJiZVVDa0Q5WGhBckdVZFpUeG0x?=
- =?utf-8?B?YjFNUnRtVmdBSTBWeUlLbUZ3Y3ptZ0pSNk9jMEMra1VvYzZ3MGMyaXBJNmh5?=
- =?utf-8?B?WGwwRHJ1MEt1cm4xQXVzNlppZERHUE9OeUVWSmMwSnB0djUrL3F3RWx1dEcz?=
- =?utf-8?B?RU53REdlSStwa1lINTBTNmRtRUNRVkl0YS96eWVHQWlHeGRsUFhOdzlwVEdx?=
- =?utf-8?B?Z3dka2ZreUdLTVVWUTJEQ01EREM2SnVHRXVUQXp6a0QyMlgwbjc4QmlwOGpW?=
- =?utf-8?B?Z3NQMjdtRFMwWlMzVnJjKzZZbytjK0JEUjl5WDJmcFp5VDJmdXRudGZXeHFN?=
- =?utf-8?B?aWxOUjNETCt3c3V5dDhsaUlhcllNWlRObHpKbEJIZzhZNFBnbmNJaitYSzdr?=
- =?utf-8?B?VDVULzhsbEEzZmhaRUFuNDFUNHg5cXFkd3NqRFlkNDBzVGlaRnp3ZWl6cmVH?=
- =?utf-8?B?MFlxaUVlZkdiSUxyczlhMWVybzNQQ3BnRGVpYVRSdG1BeEpWcWpUQWl6VjBJ?=
- =?utf-8?B?dzlWa0tYTS9YNTlXZEYzbmRhZFZTMWd2YjR1dGtKSEpMNEJmeDZTS1pLN1RE?=
- =?utf-8?B?b0JYNzZFcWMwRXJxb1A1NFpVdFJhaUN3emd1b25CeTZJd3lLcXFickZtZHZs?=
- =?utf-8?B?RDRwZExkNGJ4TU1aMkVkZlVZTWsva1c4U3Q5RUJkQVQrK0ZqdFJ3c01ZTUNO?=
- =?utf-8?B?bkVuaGNKbVNvSlV0dVhmSzNLeG5VYlVPemVsandpclFIMkNLU01aY2lXQ0tG?=
- =?utf-8?B?U005MzIvL1BianBOUjhvam9UdkI2VnlVaU0vWXZKMG9wZ0ZmMkxEeVprNVlK?=
- =?utf-8?B?bWEwLzg3U21ZTmJaK2NOVEt6OVRERTB2b0xTb3BHNldlMmRCcndKT1ZKSlM4?=
- =?utf-8?B?L1NEYmt4eG56ZEIvWmFScnFlekRtbEV6UzRTNFQwTkd4Uk13MlJYMUFlWWJ1?=
- =?utf-8?B?Vi9ic0JJMlN4Y2c1L1hHVWkyOG02cEFxa3lkZTFmZnBKaFlCZ0NuQ1RCaU43?=
- =?utf-8?B?Z1hlMGJGdnJ1cVhHdEVNZXdKVFMxYjFsQSt3cjcwcEtXNDA5WW0ySGpEWVBH?=
- =?utf-8?B?RUl6c3VqQXFyOUZUWUI5VC94cGtVdDhuMlRGWEJqMVY4UWFyNmhkd3VwOHRj?=
- =?utf-8?B?RW1JeTNidmhEb24rcTZPMFUwRCttMTZyNjVESmhZQjVLckhMbUpnOURJemZC?=
- =?utf-8?B?L2NkS3kyMWtSaXF0WVhKYTR5UkFlb3VoNVpzb3pkTTJ4VDNPT1ZFYWlNL2dE?=
- =?utf-8?B?MEZXRVZxZTQ3RzducWlKMUtKdW9jMGx6cWJPL1p1RXNmM3c5cnFzZktDN2Ri?=
- =?utf-8?B?bEcxUnZqSFl4VFFKalRWUT09?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <6C82C4700F4F6A44AAC33E05F6FBDC36@apcprd06.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        id S235012AbhH3JBa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 30 Aug 2021 05:01:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56286 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232482AbhH3JB3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 30 Aug 2021 05:01:29 -0400
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0AE9C061575
+        for <linux-iio@vger.kernel.org>; Mon, 30 Aug 2021 02:00:36 -0700 (PDT)
+Received: by mail-pj1-x102c.google.com with SMTP id oa17so9005763pjb.1
+        for <linux-iio@vger.kernel.org>; Mon, 30 Aug 2021 02:00:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=FSgnXU29dUjU60IGFMCcNVAb3SNOD52EohtY8x3q0WU=;
+        b=kHQMJe6P4mGiWhzV3E7WP4lnuBq7WItQtNd6/QlQGJveGoE7RDzup9b8ZkgsJ0zKuM
+         /FvktDDpmoFN6xYWGOi8Yw0aQ2pzvurhMB3hqUU6TCjn82B3j/Z9j9nHGMRsQZOqRTXi
+         zEX2CWpkqgY1QxNR4GPXufgThgTa7hzqvyG2a26WrL/sGvDPEM05gs4bDk1+7aMmH3Qv
+         GWAUTw3mhM8rfeQDlXwinAGYk/CpKPlfhhotwxfa9h8Rl7cjaviI8V6oOkos8GdH3S2v
+         PscbEYFNAu1/SBCnW43xfb3ONM0831vZenVmB0LcKeFXJ+44DIX+Jm5P9yRCCROq3sr6
+         NKaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=FSgnXU29dUjU60IGFMCcNVAb3SNOD52EohtY8x3q0WU=;
+        b=mEp9hT2XkqyMF4o3MK7KTY6Noji0uOBgD3rosqDCCvGc622NNTa5WDRqzSZe+u1xCi
+         91nn6YVfIE120laSDCjwimHGqGrHqo3zAKm9rpuaWefL+hmM9m/oJ3XYD7XWaTX2t1i1
+         j/+jziDeOg8dmjaMKKaMFgrl53Hnfjw1rV6XMZ89iRoh95tnsPHa45BOiAddlIrZP8Bi
+         6celteDpt0P2zjE00Qt2yhtTtAvHCzus1SfA0W8Ru3+safkb/hzhMnZDznCezkeDr1RW
+         CD7W1EJ4LaFdxDZKYVTBpUN9qcIat0JGoSn+dnjP9i6nQ7MJYJX6ZhCw6KcNAeNqTg70
+         kS1Q==
+X-Gm-Message-State: AOAM532fGjYNRBeMb+faNrexJQ1sCsba3hzcSrTQSDbyH8TTFy9PokeE
+        Y8KAODdhaabDTpJHWk0CI2idbhjqjBenDAdHapdYF8I7MgA=
+X-Google-Smtp-Source: ABdhPJxy//oiAk/xUb0SE9bB0wnTdKvjqNTVVfRkkjRXhLRjBa8TR6BojmuZMBcy7l0gY/HtM/+vwcnTU5RHar79cfw=
+X-Received: by 2002:a17:90a:d78d:: with SMTP id z13mr24411749pju.228.1630314036078;
+ Mon, 30 Aug 2021 02:00:36 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: aspeedtech.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: HK0PR06MB3362.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f4f23b9f-12a1-42de-ab24-08d96b912df5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Aug 2021 08:35:53.2602
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43d4aa98-e35b-4575-8939-080e90d5a249
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: d9Khiiu73HNFWxol2hQpE8yaHfWW0sjf8jO3OAHVJO4ltNJf97xpSKZChz5MVdT82N3QkvBb0++h3ERlyFdOvYpgvhmG0weWrns46/5OfEY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: HK0PR06MB2130
+References: <20210830081032.267891-1-sean@geanix.com>
+In-Reply-To: <20210830081032.267891-1-sean@geanix.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 30 Aug 2021 12:00:00 +0300
+Message-ID: <CAHp75VePkvuGCOpPNNYfesiLvx3JN6vaNM-b_FfSfA6_3tbFFQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] iio: accel: fxls8962af: add threshold event handling
+To:     Sean Nyekjaer <sean@geanix.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-SGkgSm9uYXRoYW4sDQoNCk9uIDIwMjEvOC8yOSwgMTE6MzMgUE0sICJKb25hdGhhbiBDYW1lcm9u
-IiA8amljMjNAa2VybmVsLm9yZz4gd3JvdGU6DQoNCiAgICBPbiBUdWUsIDI0IEF1ZyAyMDIxIDE3
-OjEyOjQwICswODAwDQogICAgQmlsbHkgVHNhaSA8YmlsbHlfdHNhaUBhc3BlZWR0ZWNoLmNvbT4g
-d3JvdGU6DQoNCiAgICA+PiBBZGQgdGhlIGZ1bmN0aW9uIHRvIHNldCB0aGUgc2FtcGxpbmcgcmF0
-ZSBhbmQga2VlcCB0aGUgc2FtcGxpbmcgcGVyaW9kDQogICAgPj4gZm9yIGEgZHJpdmVyIHVzZWQg
-dG8gd2FpdCB0aGUgbGFzdGVzdCB2YWx1ZS4NCiAgICA+PiANCiAgICA+PiBTaWduZWQtb2ZmLWJ5
-OiBCaWxseSBUc2FpIDxiaWxseV90c2FpQGFzcGVlZHRlY2guY29tPg0KDQogICAgPiBXaHkgbW92
-ZSB0aGUgY29kZSBhcyB3ZWxsIGFzIGZhY3RvcmluZyBvdXQgdGhlIHNldHRlciBmdW5jdGlvbj8N
-CiAgICA+IEkgZG91YnQgaXQgZG9lcyBhbnkgaGFybSwgYnV0IEknZCBsaWtlIHRvIHVuZGVyc3Rh
-bmQgd2h5IHlvdSBkaWQgaXQuDQoNCiAgICA+IEpvbmF0aGFuDQoNCiAgICA+PiArCXJldCA9IGNs
-a19wcmVwYXJlX2VuYWJsZShkYXRhLT5jbGtfc2NhbGVyLT5jbGspOw0KICAgID4+ICsJaWYgKHJl
-dCkNCiAgICA+PiArCQlyZXR1cm4gcmV0Ow0KICAgID4+ICsNCiAgICA+PiArCXJldCA9IGRldm1f
-YWRkX2FjdGlvbl9vcl9yZXNldChkYXRhLT5kZXYsDQogICAgPj4gKwkJCQkgICAgICAgYXNwZWVk
-X2FkY19jbGtfZGlzYWJsZV91bnByZXBhcmUsDQogICAgPj4gKwkJCQkgICAgICAgZGF0YS0+Y2xr
-X3NjYWxlci0+Y2xrKTsNCiAgICA+PiArCWlmIChyZXQpDQogICAgPj4gKwkJcmV0dXJuIHJldDsN
-CiAgICA+PiArDQogICAgPj4gKwlyZXQgPSBhc3BlZWRfYWRjX3NldF9zYW1wbGluZ19yYXRlKGlu
-ZGlvX2RldiwgQVNQRUVEX0FEQ19ERUZfU0FNUExJTkdfUkFURSk7DQogICAgPj4gKwlpZiAocmV0
-KQ0KICAgID4+ICsJCXJldHVybiByZXQ7DQogICAgPj4gKw0KICAgID4+ICAJcmV0ID0gYXNwZWVk
-X2FkY192cmVmX2NvbmZpZyhpbmRpb19kZXYpOw0KICAgID4+ICAJaWYgKHJldCkNCiAgICA+PiAg
-CQlyZXR1cm4gcmV0Ow0KICAgID4+IEBAIC00MTMsMTYgKzQ0NSw2IEBAIHN0YXRpYyBpbnQgYXNw
-ZWVkX2FkY19wcm9iZShzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNlICpwZGV2KQ0KICAgID4+ICAJfQ0K
-ICAgID4+ICANCiAgICA+PiAgCS8qIFN0YXJ0IGFsbCBjaGFubmVscyBpbiBub3JtYWwgbW9kZS4g
-Ki8NCg0KICAgID4gV2h5IG1vdmUgdGhpcyBjb2RlIHVwPw0KDQpCZWNhdXNlIHRoZSBBREMgY2xv
-Y2sgaXMgcmVxdWlyZWQgd2hlbiBpbml0aWFsaXppbmcgdGhlIEFEQyBkZXZpY2UuDQpJbiBvdXIg
-c3lzdGVtLCB0aGUgY2xvY2sgaXMgYWx3YXlzIG9uLiBUaHVzLCB0aGUgbGVnYWN5IGRyaXZlciB3
-b24ndCBlbmNvdW50ZXIgYW55IGlzc3Vlcy4NCkkgbW92ZSB0aGUgY2xrX3ByZXBhcmVfZW5hYmxl
-IGFoZWFkIG9mIGluaXRpYWxpemluZyBwaGFzZSBmb3IgbWFraW5nIHRoZSBkcml2ZXIgcHJvYmUg
-bG9naWNhbGx5IGNsb3NlciB0byB0aGUgaGFyZHdhcmUuIA0KDQogICAgPj4gLQlyZXQgPSBjbGtf
-cHJlcGFyZV9lbmFibGUoZGF0YS0+Y2xrX3NjYWxlci0+Y2xrKTsNCiAgICA+PiAtCWlmIChyZXQp
-DQogICAgPj4gLQkJcmV0dXJuIHJldDsNCiAgICA+PiAtDQogICAgPj4gLQlyZXQgPSBkZXZtX2Fk
-ZF9hY3Rpb25fb3JfcmVzZXQoZGF0YS0+ZGV2LA0KICAgID4+IC0JCQkJICAgICAgIGFzcGVlZF9h
-ZGNfY2xrX2Rpc2FibGVfdW5wcmVwYXJlLA0KICAgID4+IC0JCQkJICAgICAgIGRhdGEtPmNsa19z
-Y2FsZXItPmNsayk7DQogICAgPj4gLQlpZiAocmV0KQ0KICAgID4+IC0JCXJldHVybiByZXQ7DQog
-ICAgPj4gLQ0KICAgID4+ICAJYWRjX2VuZ2luZV9jb250cm9sX3JlZ192YWwgPQ0KICAgID4+ICAJ
-CXJlYWRsKGRhdGEtPmJhc2UgKyBBU1BFRURfUkVHX0VOR0lORV9DT05UUk9MKTsNCiAgICA+PiAg
-CWFkY19lbmdpbmVfY29udHJvbF9yZWdfdmFsIHw9DQoNCg0KQmVzdCBSZWdhcmRzLA0KQmlsbHkg
-VHNhaQ0KDQo=
+On Mon, Aug 30, 2021 at 11:10 AM Sean Nyekjaer <sean@geanix.com> wrote:
+>
+> Add event channels that control the creation of motion events.
+
+Couple of nit-picks below (maybe Jonathan can address them when
+applying), after addressing feel free to add
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+
+> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+> ---
+> Changes since v1/v2:
+>  - Fixed comments fron Andy (Thanks)
+>  - Corrected sign mess
+>
+>  drivers/iio/accel/fxls8962af-core.c | 266 +++++++++++++++++++++++++++-
+>  1 file changed, 264 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls=
+8962af-core.c
+> index 6b36eb362d07..dd639420fb0f 100644
+> --- a/drivers/iio/accel/fxls8962af-core.c
+> +++ b/drivers/iio/accel/fxls8962af-core.c
+> @@ -22,6 +22,7 @@
+>  #include <linux/regmap.h>
+>
+>  #include <linux/iio/buffer.h>
+> +#include <linux/iio/events.h>
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/kfifo_buf.h>
+>  #include <linux/iio/sysfs.h>
+> @@ -30,6 +31,7 @@
+>
+>  #define FXLS8962AF_INT_STATUS                  0x00
+>  #define FXLS8962AF_INT_STATUS_SRC_BOOT         BIT(0)
+> +#define FXLS8962AF_INT_STATUS_SRC_SDCD_OT      BIT(4)
+>  #define FXLS8962AF_INT_STATUS_SRC_BUF          BIT(5)
+>  #define FXLS8962AF_INT_STATUS_SRC_DRDY         BIT(7)
+>  #define FXLS8962AF_TEMP_OUT                    0x01
+> @@ -73,6 +75,7 @@
+>  #define FXLS8962AF_ASLP_COUNT_LSB              0x1e
+>
+>  #define FXLS8962AF_INT_EN                      0x20
+> +#define FXLS8962AF_INT_EN_SDCD_OT_EN           BIT(5)
+>  #define FXLS8962AF_INT_EN_BUF_EN               BIT(6)
+>  #define FXLS8962AF_INT_PIN_SEL                 0x21
+>  #define FXLS8962AF_INT_PIN_SEL_MASK            GENMASK(7, 0)
+> @@ -96,8 +99,14 @@
+>  #define FXLS8962AF_ORIENT_THS_REG              0x2c
+>
+>  #define FXLS8962AF_SDCD_INT_SRC1               0x2d
+> +#define FXLS8962AF_SDCD_INT_SRC1_X_OT          BIT(5)
+> +#define FXLS8962AF_SDCD_INT_SRC1_Y_OT          BIT(3)
+> +#define FXLS8962AF_SDCD_INT_SRC1_Z_OT          BIT(1)
+>  #define FXLS8962AF_SDCD_INT_SRC2               0x2e
+>  #define FXLS8962AF_SDCD_CONFIG1                        0x2f
+> +#define FXLS8962AF_SDCD_CONFIG1_Z_OT_EN                BIT(3)
+> +#define FXLS8962AF_SDCD_CONFIG1_Y_OT_EN                BIT(4)
+> +#define FXLS8962AF_SDCD_CONFIG1_X_OT_EN                BIT(5)
+>  #define FXLS8962AF_SDCD_CONFIG2                        0x30
+>  #define FXLS8962AF_SDCD_OT_DBCNT               0x31
+>  #define FXLS8962AF_SDCD_WT_DBCNT               0x32
+> @@ -152,6 +161,9 @@ struct fxls8962af_data {
+>         int64_t timestamp, old_timestamp;       /* Only used in hw fifo m=
+ode. */
+>         struct iio_mount_matrix orientation;
+>         u8 watermark;
+> +       u8 enable_event;
+> +       u16 lower_thres;
+> +       u16 upper_thres;
+>  };
+>
+>  const struct regmap_config fxls8962af_regmap_conf =3D {
+> @@ -451,6 +463,15 @@ static int fxls8962af_write_raw(struct iio_dev *indi=
+o_dev,
+>         }
+>  }
+>
+> +static int fxls8962af_event_setup(struct fxls8962af_data *data, int stat=
+e)
+> +{
+> +       /* Enable wakeup interrupt */
+> +       int mask =3D FXLS8962AF_INT_EN_SDCD_OT_EN;
+> +       int value =3D state ? mask : 0;
+> +
+> +       return regmap_update_bits(data->regmap, FXLS8962AF_INT_EN, mask, =
+value);
+> +}
+> +
+>  static int fxls8962af_set_watermark(struct iio_dev *indio_dev, unsigned =
+val)
+>  {
+>         struct fxls8962af_data *data =3D iio_priv(indio_dev);
+> @@ -463,6 +484,194 @@ static int fxls8962af_set_watermark(struct iio_dev =
+*indio_dev, unsigned val)
+>         return 0;
+>  }
+>
+> +static int __fxls8962af_set_thresholds(struct fxls8962af_data *data,
+> +                                      const struct iio_chan_spec *chan,
+> +                                      int val)
+> +{
+> +       int ret;
+> +
+> +       /*
+> +        * Add the same value to the lower-threshold register with a reve=
+rsed sign
+> +        * in 2-complement 12 bit format.
+> +        */
+> +       data->lower_thres =3D -val & GENMASK(11, 0);
+> +       data->upper_thres =3D val & GENMASK(10, 0);
+> +
+> +       ret =3D regmap_bulk_write(data->regmap, FXLS8962AF_SDCD_LTHS_LSB,
+> +                               &data->lower_thres, chan->scan_type.stora=
+gebits / 8);
+> +       if (ret)
+> +               return ret;
+
+> +       ret =3D regmap_bulk_write(data->regmap, FXLS8962AF_SDCD_UTHS_LSB,
+> +                               &data->upper_thres, chan->scan_type.stora=
+gebits / 8);
+> +
+> +       return ret;
+
+return regmap_bulk_write(...);
+
+> +}
+> +
+> +static int fxls8962af_read_event(struct iio_dev *indio_dev,
+> +                                const struct iio_chan_spec *chan,
+> +                                enum iio_event_type type,
+> +                                enum iio_event_direction dir,
+> +                                enum iio_event_info info,
+> +                                int *val, int *val2)
+> +{
+> +       struct fxls8962af_data *data =3D iio_priv(indio_dev);
+> +       u16 raw_val;
+> +       int ret;
+> +
+> +       if (type !=3D IIO_EV_TYPE_THRESH)
+> +               return -EINVAL;
+> +
+> +       /*
+> +        * Read only upper-threshold register as the lower-threshold regi=
+ster have the
+> +        * same value with reversed sign.
+> +        */
+> +       ret =3D regmap_bulk_read(data->regmap, FXLS8962AF_SDCD_UTHS_LSB,
+> +                              &raw_val, chan->scan_type.storagebits / 8)=
+;
+> +       if (ret)
+> +               return ret;
+> +
+> +       *val =3D sign_extend32(raw_val, chan->scan_type.realbits - 1);
+> +       *val2 =3D 0;
+> +
+> +       return IIO_VAL_INT;
+> +}
+> +
+> +static int fxls8962af_write_event(struct iio_dev *indio_dev,
+> +                                 const struct iio_chan_spec *chan,
+> +                                 enum iio_event_type type,
+> +                                 enum iio_event_direction dir,
+> +                                 enum iio_event_info info,
+> +                                 int val, int val2)
+> +{
+> +       struct fxls8962af_data *data =3D iio_priv(indio_dev);
+> +       int ret;
+> +
+> +       if (type !=3D IIO_EV_TYPE_THRESH)
+> +               return -EINVAL;
+> +
+> +       if (val < 0 || val > 2047)
+> +               return -EINVAL;
+> +
+> +       if (data->enable_event)
+> +               return -EBUSY;
+
+> +
+> +
+
+One blank line is enough.
+
+> +       if (fxls8962af_is_active(data)) {
+> +               ret =3D fxls8962af_standby(data);
+> +               if (ret)
+> +                       return ret;
+> +
+> +               ret =3D __fxls8962af_set_thresholds(data, chan, val);
+> +               if (ret)
+> +                       return ret;
+> +
+> +               ret =3D fxls8962af_active(data);
+> +       } else {
+> +               ret =3D __fxls8962af_set_thresholds(data, chan, val);
+> +       }
+> +
+> +       return ret;
+> +}
+> +
+> +static int
+> +fxls8962af_read_event_config(struct iio_dev *indio_dev,
+> +                            const struct iio_chan_spec *chan,
+> +                            enum iio_event_type type,
+> +                            enum iio_event_direction dir)
+> +{
+> +       struct fxls8962af_data *data =3D iio_priv(indio_dev);
+> +
+> +       if (type !=3D IIO_EV_TYPE_THRESH)
+> +               return -EINVAL;
+> +
+> +       switch (chan->channel2) {
+> +       case IIO_MOD_X:
+> +               return FXLS8962AF_SDCD_CONFIG1_X_OT_EN & data->enable_eve=
+nt;
+> +       case IIO_MOD_Y:
+> +               return FXLS8962AF_SDCD_CONFIG1_Y_OT_EN & data->enable_eve=
+nt;
+> +       case IIO_MOD_Z:
+> +               return FXLS8962AF_SDCD_CONFIG1_Z_OT_EN & data->enable_eve=
+nt;
+> +       default:
+> +               return -EINVAL;
+> +       }
+> +}
+> +
+> +static int
+> +fxls8962af_write_event_config(struct iio_dev *indio_dev,
+> +                             const struct iio_chan_spec *chan,
+> +                             enum iio_event_type type,
+> +                             enum iio_event_direction dir, int state)
+> +{
+> +       struct fxls8962af_data *data =3D iio_priv(indio_dev);
+> +       u8 enable_event, enable_bits;
+> +       int ret;
+> +
+> +       if (type !=3D IIO_EV_TYPE_THRESH)
+> +               return -EINVAL;
+> +
+> +       fxls8962af_standby(data);
+> +
+> +       switch (chan->channel2) {
+> +       case IIO_MOD_X:
+> +               enable_bits =3D FXLS8962AF_SDCD_CONFIG1_X_OT_EN;
+> +               break;
+> +       case IIO_MOD_Y:
+> +               enable_bits =3D FXLS8962AF_SDCD_CONFIG1_Y_OT_EN;
+> +               break;
+> +       case IIO_MOD_Z:
+> +               enable_bits =3D FXLS8962AF_SDCD_CONFIG1_Z_OT_EN;
+> +               break;
+> +       default:
+> +               return -EINVAL;
+> +       }
+> +
+> +       if (state)
+> +               enable_event =3D data->enable_event | enable_bits;
+> +       else
+> +               enable_event =3D data->enable_event & ~enable_bits;
+> +
+> +       if (data->enable_event =3D=3D enable_event)
+> +               return 0;
+> +
+> +       /* Enable events */
+> +       ret =3D regmap_write(data->regmap, FXLS8962AF_SDCD_CONFIG1, enabl=
+e_event | 0x80);
+> +       if (ret)
+> +               return ret;
+> +
+> +       /*
+> +        * Enable update of SDCD_REF_X/Y/Z values with the current decima=
+ted and
+> +        * trimmed X/Y/Z acceleration input data. This allows for acceler=
+ation
+> +        * slope detection with Data(n) to Data(n=E2=80=931) always used =
+as the input
+> +        * to the window comparator.
+> +        */
+> +       ret =3D regmap_write(data->regmap, FXLS8962AF_SDCD_CONFIG2, enabl=
+e_event ? 0xc0 : 0x00);
+> +       if (ret)
+> +               return ret;
+> +
+> +       ret =3D fxls8962af_event_setup(data, state);
+> +       if (ret)
+> +               return ret;
+> +
+> +       data->enable_event =3D enable_event;
+> +
+> +       if (data->enable_event) {
+> +               fxls8962af_active(data);
+> +               ret =3D fxls8962af_power_on(data);
+> +       } else {
+> +               if (!iio_buffer_enabled(indio_dev))
+> +                       ret =3D fxls8962af_power_off(data);
+> +       }
+> +
+> +       return ret;
+> +}
+> +
+> +static const struct iio_event_spec fxls8962af_event =3D {
+> +       .type =3D IIO_EV_TYPE_THRESH,
+> +       .dir =3D IIO_EV_DIR_EITHER,
+> +       .mask_separate =3D BIT(IIO_EV_INFO_VALUE) | BIT(IIO_EV_INFO_ENABL=
+E),
+> +};
+> +
+>  #define FXLS8962AF_CHANNEL(axis, reg, idx) { \
+>         .type =3D IIO_ACCEL, \
+>         .address =3D reg, \
+> @@ -481,6 +690,8 @@ static int fxls8962af_set_watermark(struct iio_dev *i=
+ndio_dev, unsigned val)
+>                 .shift =3D 4, \
+>                 .endianness =3D IIO_BE, \
+>         }, \
+> +       .event_spec =3D &fxls8962af_event, \
+> +       .num_event_specs =3D 1, \
+>  }
+>
+>  #define FXLS8962AF_TEMP_CHANNEL { \
+> @@ -522,6 +733,10 @@ static const struct iio_info fxls8962af_info =3D {
+>         .read_raw =3D &fxls8962af_read_raw,
+>         .write_raw =3D &fxls8962af_write_raw,
+>         .write_raw_get_fmt =3D fxls8962af_write_raw_get_fmt,
+> +       .read_event_value =3D fxls8962af_read_event,
+> +       .write_event_value =3D fxls8962af_write_event,
+> +       .read_event_config =3D fxls8962af_read_event_config,
+> +       .write_event_config =3D fxls8962af_write_event_config,
+>         .read_avail =3D fxls8962af_read_avail,
+>         .hwfifo_set_watermark =3D fxls8962af_set_watermark,
+>  };
+> @@ -605,7 +820,8 @@ static int fxls8962af_buffer_predisable(struct iio_de=
+v *indio_dev)
+>
+>         ret =3D __fxls8962af_fifo_set_mode(data, false);
+>
+> -       fxls8962af_active(data);
+> +       if (data->enable_event)
+> +               fxls8962af_active(data);
+>
+>         return ret;
+>  }
+> @@ -614,7 +830,10 @@ static int fxls8962af_buffer_postdisable(struct iio_=
+dev *indio_dev)
+>  {
+>         struct fxls8962af_data *data =3D iio_priv(indio_dev);
+>
+> -       return fxls8962af_power_off(data);
+> +       if (!data->enable_event)
+> +               fxls8962af_power_off(data);
+> +
+> +       return 0;
+>  }
+>
+>  static const struct iio_buffer_setup_ops fxls8962af_buffer_ops =3D {
+> @@ -725,6 +944,41 @@ static int fxls8962af_fifo_flush(struct iio_dev *ind=
+io_dev)
+>         return count;
+>  }
+>
+> +static int fxls8962af_event_interrupt(struct iio_dev *indio_dev)
+> +{
+> +       struct fxls8962af_data *data =3D iio_priv(indio_dev);
+> +       s64 ts =3D iio_get_time_ns(indio_dev);
+> +       unsigned int reg;
+> +       int ret;
+> +
+> +       ret =3D regmap_read(data->regmap, FXLS8962AF_SDCD_INT_SRC1, &reg)=
+;
+> +       if (ret)
+> +               return ret;
+> +
+> +       if (reg & FXLS8962AF_SDCD_INT_SRC1_X_OT)
+> +               iio_push_event(indio_dev,
+> +                               IIO_MOD_EVENT_CODE(IIO_ACCEL, 0, IIO_MOD_=
+X,
+> +                                       IIO_EV_TYPE_THRESH,
+> +                                       IIO_EV_DIR_EITHER),
+> +                               ts);
+> +
+> +       if (reg & FXLS8962AF_SDCD_INT_SRC1_Y_OT)
+> +               iio_push_event(indio_dev,
+> +                               IIO_MOD_EVENT_CODE(IIO_ACCEL, 0, IIO_MOD_=
+Y,
+> +                                       IIO_EV_TYPE_THRESH,
+> +                                       IIO_EV_DIR_EITHER),
+> +                               ts);
+> +
+> +       if (reg & FXLS8962AF_SDCD_INT_SRC1_Z_OT)
+> +               iio_push_event(indio_dev,
+> +                               IIO_MOD_EVENT_CODE(IIO_ACCEL, 0, IIO_MOD_=
+Z,
+> +                                       IIO_EV_TYPE_THRESH,
+> +                                       IIO_EV_DIR_EITHER),
+> +                               ts);
+> +
+> +       return ret;
+> +}
+> +
+>  static irqreturn_t fxls8962af_interrupt(int irq, void *p)
+>  {
+>         struct iio_dev *indio_dev =3D p;
+> @@ -744,6 +998,14 @@ static irqreturn_t fxls8962af_interrupt(int irq, voi=
+d *p)
+>                 return IRQ_HANDLED;
+>         }
+>
+> +       if (reg & FXLS8962AF_INT_STATUS_SRC_SDCD_OT) {
+> +               ret =3D fxls8962af_event_interrupt(indio_dev);
+> +               if (ret < 0)
+> +                       return IRQ_NONE;
+> +
+> +               return IRQ_HANDLED;
+> +       }
+> +
+>         return IRQ_NONE;
+>  }
+>
+> --
+> 2.33.0
+>
+
+
+--=20
+With Best Regards,
+Andy Shevchenko

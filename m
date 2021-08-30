@@ -2,296 +2,380 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F6853FB8B1
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Aug 2021 17:03:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B21913FB8D7
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Aug 2021 17:11:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237236AbhH3PDp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 30 Aug 2021 11:03:45 -0400
-Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:53436 "EHLO
-        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233162AbhH3PDo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 30 Aug 2021 11:03:44 -0400
-Received: from pps.filterd (m0167091.ppops.net [127.0.0.1])
-        by mx0b-00128a01.pphosted.com (8.16.1.2/8.16.0.43) with SMTP id 17UEfAWh017159;
-        Mon, 30 Aug 2021 11:02:29 -0400
-Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2104.outbound.protection.outlook.com [104.47.70.104])
-        by mx0b-00128a01.pphosted.com with ESMTP id 3arjxhbfex-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 30 Aug 2021 11:02:28 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UcxqsJF90YcTBOEei9l50sMHi45Ga8n5zN72adaLDXgPVRATvmc8uwqLOPi7yyxH4lRr5P95sO5DNWq3rKKXeV1aP1h4AZz1DWsd1/zrRkpeTDxyujPUxkdYahFojyMXUaVKlN/vfzdcEMBV43Rxze+Z2B8DtG/84VZeWEoW+9usrwrboUMWxtBQkiy2+ybhp4T6/IwIUkWuUWVxevR4vt0epPK8DMTGLNZGO0psqZirq2I+uc+tL1n7qKFJixDAjPUrDfEmrYqnSyVkhJnloHotwQa/vKTqhrm2roUo8y+1aUiIj7BRjepZhKEA1LWIDLImEcgyYhDeoYkxWgCDRw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Hvf0sEr/V2vcX5wsv2ESZQxe24AFcZiNmiZIxrGJDlk=;
- b=TSmAu3CDXQiuTNsclAhRvMOpI5F2ZAOBpzMDBNj0MyamFTc9l+zJBfHy6wMxMbRPWnG3nALJrA//oNTgVoGx1mIva7EGw5vhIsikjDJ47jxXVexNAyur3uJ0iTDETf9iqt+rVNkqWH7diuwVfZz92QQnUtcTaXzeoZEFKu3pcZ+2a+Wza03Q7OpcSscgXx9sfmNMzEHIxBMLIsk3DXZebcd5be2jsvQtCzAlfXzFDpH2vwFeAw5xwoFolgVCn6rP9erGAb5rKwvw0r8rrYSSRhvjygyUW2NPA+PBovdS2oJ5oGOckjWqwwDiUu79gN1r+vLWqt6fUla8S425+TdqZg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Hvf0sEr/V2vcX5wsv2ESZQxe24AFcZiNmiZIxrGJDlk=;
- b=0hJSod3xDzg5afJ1B8RgxpZICk0ddfmsDwpdkV0OnvZotqoi6jR/FAbDmrqF4PcjKc8z/vh+1rru0Lnvg4RZJSCC9J70XvOh/X8vUcB3R64O5EfU2OjlTim72rl3W79lXJLmtshQzuaaEn6xVgGL7Q6gBL/zNvW+Ex05qK02HuM=
-Received: from MW4PR03MB6363.namprd03.prod.outlook.com (2603:10b6:303:11e::10)
- by CO2PR03MB2310.namprd03.prod.outlook.com (2603:10b6:102:c::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4457.17; Mon, 30 Aug
- 2021 15:02:26 +0000
-Received: from MW4PR03MB6363.namprd03.prod.outlook.com
- ([fe80::3c5f:4b91:b79f:b1b4]) by MW4PR03MB6363.namprd03.prod.outlook.com
- ([fe80::3c5f:4b91:b79f:b1b4%7]) with mapi id 15.20.4415.023; Mon, 30 Aug 2021
- 15:02:26 +0000
-From:   "Sa, Nuno" <Nuno.Sa@analog.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     Miquel Raynal <miquel.raynal@bootlin.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH 03/16] iio: adc: max1027: Push only the requested samples
-Thread-Topic: [PATCH 03/16] iio: adc: max1027: Push only the requested samples
-Thread-Index: AQHXlCHZcvfItjMzgEq4yH/BqTkNM6t7+sRQgA/qxgCAAAouQIAAPwYAgAAIlHA=
-Date:   Mon, 30 Aug 2021 15:02:26 +0000
-Message-ID: <MW4PR03MB6363BC976F039550906B6ED399CB9@MW4PR03MB6363.namprd03.prod.outlook.com>
-References: <20210818111139.330636-1-miquel.raynal@bootlin.com>
-        <20210818111139.330636-4-miquel.raynal@bootlin.com>
-        <SJ0PR03MB6359415E120CFD3EFAF417F599C19@SJ0PR03MB6359.namprd03.prod.outlook.com>
-        <20210830110756.733d5201@jic23-huawei>
-        <MW4PR03MB6363FE3BAF40A383D244ADC399CB9@MW4PR03MB6363.namprd03.prod.outlook.com>
- <20210830152956.58331a8d@jic23-huawei>
-In-Reply-To: <20210830152956.58331a8d@jic23-huawei>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: =?utf-8?B?UEcxbGRHRStQR0YwSUc1dFBTSmliMlI1TG5SNGRDSWdjRDBpWXpwY2RYTmxj?=
- =?utf-8?B?bk5jYm5OaFhHRndjR1JoZEdGY2NtOWhiV2x1WjF3d09XUTRORGxpTmkwek1t?=
- =?utf-8?B?UXpMVFJoTkRBdE9EVmxaUzAyWWpnMFltRXlPV1V6TldKY2JYTm5jMXh0YzJj?=
- =?utf-8?B?dE5EZ3hOalkxWkdVdE1EbGhNeTB4TVdWakxUaGlPR010WlRSaU9UZGhOMk5q?=
- =?utf-8?B?TnpFd1hHRnRaUzEwWlhOMFhEUTRNVFkyTldVd0xUQTVZVE10TVRGbFl5MDRZ?=
- =?utf-8?B?amhqTFdVMFlqazNZVGRqWXpjeE1HSnZaSGt1ZEhoMElpQnplajBpTmpRMk9D?=
- =?utf-8?B?SWdkRDBpTVRNeU56UTRNRGt6TkRRMU5qRXdOekF3SWlCb1BTSkthbFpLVDJa?=
- =?utf-8?B?Vk1rOVBXVUY1WmtOb01VWkxla2QwVkhVM01UUTlJaUJwWkQwaUlpQmliRDBp?=
- =?utf-8?B?TUNJZ1ltODlJakVpSUdOcFBTSmpRVUZCUVVWU1NGVXhVbE5TVlVaT1EyZFZR?=
- =?utf-8?B?VUZKV1VSQlFVUk5ia2M0UzNOS00xaEJWV2xXWmtoYVVXVXZaVEpUU2xZNFpH?=
- =?utf-8?B?eENOemszV1VaQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCU0VG?=
- =?utf-8?B?QlFVRkJWMEYzUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJSVUZC?=
- =?utf-8?B?VVVGQ1FVRkJRVmh0V21kcWQwRkJRVUZCUVVGQlFVRkJRVUZCUVVvMFFVRkJR?=
- =?utf-8?B?bWhCUjFGQllWRkNaa0ZJVFVGYVVVSnFRVWhWUVdOblFteEJSamhCWTBGQ2VV?=
- =?utf-8?B?RkhPRUZoWjBKc1FVZE5RV1JCUW5wQlJqaEJXbWRDYUVGSGQwRmpkMEpzUVVZ?=
- =?utf-8?B?NFFWcG5RblpCU0UxQllWRkNNRUZIYTBGa1owSnNRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkZRVUZCUVVGQlFVRkJRV2RCUVVG?=
- =?utf-8?B?QlFVRnVaMEZCUVVkRlFWcEJRbkJCUmpoQlkzZENiRUZIVFVGa1VVSjVRVWRW?=
- =?utf-8?B?UVZoM1FuZEJTRWxCWW5kQ2NVRkhWVUZaZDBJd1FVaE5RVmgzUWpCQlIydEJX?=
- =?utf-8?B?bEZDZVVGRVJVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCVVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVOQlFVRkJRVUZEWlVGQlFVRlpVVUpyUVVkclFWaDNRbnBCUjFWQldY?=
- =?utf-8?B?ZENNVUZJU1VGYVVVSm1RVWhCUVdOblFuWkJSMjlCV2xGQ2FrRklVVUZqZDBK?=
- =?utf-8?B?bVFVaFJRV0ZSUW14QlNFbEJUV2RCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFrRkJRVUZCUVVGQlFVRkpRVUZCUVVGQlNqUkJRVUZDYUVGSVNVRmhVVUpv?=
- =?utf-8?B?UVVZNFFWcEJRbkJCUjAxQlpFRkNjRUZIT0VGaVowSm9RVWhKUVdWUlFtWkJT?=
- =?utf-8?B?RkZCWVZGQ2JFRklTVUZOVVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVVZCUVVGQlFVRkJRVUZCWjBGQlFVRkJRVzVuUVVGQlIw?=
- =?utf-8?B?VkJZMmRDY0VGSFJVRllkMEpyUVVkclFWbDNRakJCUjJ0QlluZENkVUZIUlVG?=
- =?utf-8?B?alowSTFRVVk0UVdSQlFuQkJSMVZCWTJkQmVVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGUlFVRkJRVUZCUVVGQlEwRkJRVUZC?=
- =?utf-8?B?UVVFOUlpOCtQQzl0WlhSaFBnPT0=?=
-x-dg-rorf: true
-authentication-results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=analog.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 80062d6e-1790-4cd5-f75a-08d96bc72e2c
-x-ms-traffictypediagnostic: CO2PR03MB2310:
-x-microsoft-antispam-prvs: <CO2PR03MB2310C50A4741039D96C0A6BF99CB9@CO2PR03MB2310.namprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:10000;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: J/czngVaHCslpRFSjIUIcSaqtRGmcjEfjNsQTKO3bbGtBYIDjjx/J0clKWWYOpGX3LP57A4F7cYHxBb03cz44JpvC6H9skUs5+D2NhzYKzy8UNcYlFVNArkr0aAcZDHNCGkR0P3nFafD/DwE3Wqh0lQVKOM0znwJYEstJwZzXGDSWhZIX6rz0WKlQ9ZGruCGmu1Bffn0KKbJR0XTQaMWHqgpwj7lIADj91t0mLNwEpUMnRkhnkzyLtq+g856QZJB9Zk4yWq3NIsscDbZvQNHHrILqSAzZUZZq6BwNVg96Ymy5Qxu5cw5Of+lDPpggF5NMhby3dSqAg/qIuthHjTvvj24rMztzD/6NWZLe1oaJ4DkCte01GZwNrbTYvi0+WjHsYGiMZsiqKRPqYUHgLbrXa8YwZ5NSFPr8RQwVmKljah3ghSx3JVTZTOd9/udkRVXriTfXtlEgioPdkfZ75Tj576loHhMWrbuS1G/O70NobFJ+E9+kL9nUlG5tdTOlS2pbm9HcRWDj/q2R7lNjf1wW44nmX1vdYarTmI5Sfi1MSQCyjEeET9qgXWPG1Stid33CEGNlweojk+knSKLizEVNWk73AIp/ZAvm95gpQ/LPegxKGfHlJrfolUphwasC7yFBXyRQabo1veNApZxjzi+CZocEtrjDl+3S+QD9H0szr0xPB6Da4MpKWywYjZo8APqLsZlSDDrd0X/WGQT7uT7DQ==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR03MB6363.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(33656002)(4326008)(316002)(66446008)(508600001)(66946007)(55016002)(9686003)(8676002)(66556008)(66476007)(186003)(26005)(76116006)(2906002)(64756008)(83380400001)(7696005)(38070700005)(38100700002)(8936002)(86362001)(6506007)(5660300002)(6916009)(71200400001)(53546011)(122000001)(54906003)(52536014);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?ZW1LZ0t3WU1PdnVxeFB5bkJZdXRRNEV0ekk5dXRQZGlyaTlKbmVnZ3Jzek1t?=
- =?utf-8?B?anNOeDF6SjFpaGJZTzBGK0FnamZWUHJTVFVQS0Rod0wra0xSWDVHbXNqdDQx?=
- =?utf-8?B?am9aU3BKNjhWWWhEbjcxSnRFTGVPWC8ySGtrdGozVXczVnl2UHJmS29ady92?=
- =?utf-8?B?TGpLMEpPTTIvWS9mQy9KSExCb0E1QjhtVk9CbHhCSG95SVEzeGJNMklETjBa?=
- =?utf-8?B?TXppMXQ0K1p4Q0VTNVlnTnhlNkdMcmswOUhBYmM2aHVzQng1Sm9IUkhMNm85?=
- =?utf-8?B?cmNPSjBqNi9kYTlwaGZ1YWpYUFU5bXVOSUhRTTF4Rk4vSmFNbjFjejAwU1pE?=
- =?utf-8?B?TmQ3dzdvQXg0UTRmaklPOHh2TnhXMkZQc2dkN1VJbHc4Zy81MFJBc2dZU0Fn?=
- =?utf-8?B?MmlJcXA2Yyt0TW1oNVM5Y2FUSGl4TUxRNS9hYUwzcW5ZYVdob3JFaFoyYjE3?=
- =?utf-8?B?QXU1SDQzV3lOZXdWRlc1RWdlUlFKdzA3R2c5ZnN0YU9NZ3dHV1FadStNdjB2?=
- =?utf-8?B?RUZoT0Q1OFFqbHhzcUF1ck1jbzM3Tm1SNE1tSWxvS1lsN2JmKzNUNjdjalQz?=
- =?utf-8?B?bGJyRDEzQ01sYTdjc3VrcE55UUtSMjZwNWVlbTBKZDZTWldONEIwYy9FWmFl?=
- =?utf-8?B?cTZ0MC92T2prckpWc2xFYnBUTThtNzlTRmdHelJLQTQyeHNuSVlOcDQ0Q0NM?=
- =?utf-8?B?VzlJL1k2SkFSOXJwM0VDcEV4YytuMm9TZ1Q5d3JvN1ZMMk5DcCtDeGlKY2Jq?=
- =?utf-8?B?TE8zNXJyZ2Qvb0d2cGZWMm5zL3ROQ1FINTdUNUROMXYzbXdwNnVFY2FWc0ow?=
- =?utf-8?B?QU9kNEhhd2xYYXZVblFQcmZsV0JkQURrdUw4MmNzTnQ2RGFReUU5VUlNYjQy?=
- =?utf-8?B?cmpxSHEzeGJ2MG80dzROM0Y3dGdnMU1Za25JUnh2c0FnK3M2K3ZQVnZoMlA1?=
- =?utf-8?B?STh2ZFMvS1BZWDV6d3Z2SHR0U3pZQVVJekJZQU9qWWVXbmJhQitpRTBHL013?=
- =?utf-8?B?ajhrSm1VeVBIVFlybTFtaVA5eUN0TCtqbkdQdmNGbG9PRElJV09PN0xPYlBv?=
- =?utf-8?B?Mktwd0dyWlRyRlJiTzJOVno5dUJaWEpsTVR3Y3FndmkyQ2h4R1Y0ZUNZMito?=
- =?utf-8?B?WGRpRVRxc05vOXNTVGtCYXBkdktGdTVobFZOWFVTT2pkK0xvS2pZVzR5RXFx?=
- =?utf-8?B?WmVLYjdxUnhpMExEazdYNFNoVWQrSWhFNmlERnZ5emlJUlZxQzkvK3BQbkty?=
- =?utf-8?B?dFRLY2tZL0xlTHNMSmJET0szUU4wYXllVmE1NTZkZ0N2Mmg1MmJpQkV6cmdp?=
- =?utf-8?B?bElQQXdhY2RMOTFQMHo4SENzUHcwTFpZZGZERTBPVTRJUkUxb1lGVjg5blFM?=
- =?utf-8?B?SkxON3gxS1o3MHo2WGZPL05MY0NjZ1BzZVNEdTVqcXV3ZExUUjFFT1I1d3pP?=
- =?utf-8?B?UW1WQkdTSGZuc2ovS3ZBNEtmNzF4NlA2eXFPdjl2d3hFOWN3OENNNXVmeU16?=
- =?utf-8?B?anpTQ3JMUy91MTVEbXhaUlY2RnZLTzBXd1EzellpbWVWSXJya0YvZXIvWHdK?=
- =?utf-8?B?UVIzU3JqOSt1UEMzQVhCeEtMN0g3aVZvUkkwSVJMTy9aTmN2aC9QQmczeEdr?=
- =?utf-8?B?Z1BLcEdCTXE0d05INk1pQWRkcWxrOVdPQzduSmozM3d6dEU3Q0J1d1l2ZXlr?=
- =?utf-8?B?S2NtYWt5K2RuSWx1M2huQjlJMWxUeExFM241cHYxNTBRUTZ0bjBoRUtoV2Za?=
- =?utf-8?Q?AxG/RjoRFkoPzvTliyGqIS6fqHJbKRNKbXhYyAo?=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S237218AbhH3PLx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 30 Aug 2021 11:11:53 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39186 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229553AbhH3PLw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 30 Aug 2021 11:11:52 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0A8BE60E77;
+        Mon, 30 Aug 2021 15:10:55 +0000 (UTC)
+Date:   Mon, 30 Aug 2021 16:14:07 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Puranjay Mohan <puranjay12@gmail.com>
+Cc:     Michael.Hennerich@analog.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, lars@metafoo.de,
+        Dragos.Bogdan@analog.com, Darius.Berghe@analog.com,
+        andy.shevchenko@gmail.com
+Subject: Re: [PATCH v2] iio: accel: adxl355: Add triggered buffer support
+Message-ID: <20210830161357.782def25@jic23-huawei>
+In-Reply-To: <20210819181133.15181-1-puranjay12@gmail.com>
+References: <20210819181133.15181-1-puranjay12@gmail.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR03MB6363.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 80062d6e-1790-4cd5-f75a-08d96bc72e2c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Aug 2021 15:02:26.5395
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Uee0xGvX8FjyUuaDLrEgLswzd3GAukSN8pxdspl0wXG0gHBH2OjvgcbuPPEEDG55UENDSN/xiWWpED43Pn44eA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO2PR03MB2310
-X-Proofpoint-ORIG-GUID: HfTH6qC9_TAkxL48MH5wOlT9xFtty514
-X-Proofpoint-GUID: HfTH6qC9_TAkxL48MH5wOlT9xFtty514
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
- definitions=2021-08-30_05,2021-08-30_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
- suspectscore=0 phishscore=0 mlxlogscore=999 spamscore=0 lowpriorityscore=0
- bulkscore=0 impostorscore=0 clxscore=1015 priorityscore=1501 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2107140000
- definitions=main-2108300106
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSm9uYXRoYW4gQ2FtZXJv
-biA8amljMjNAa2VybmVsLm9yZz4NCj4gU2VudDogTW9uZGF5LCBBdWd1c3QgMzAsIDIwMjEgNDoz
-MCBQTQ0KPiBUbzogU2EsIE51bm8gPE51bm8uU2FAYW5hbG9nLmNvbT4NCj4gQ2M6IE1pcXVlbCBS
-YXluYWwgPG1pcXVlbC5yYXluYWxAYm9vdGxpbi5jb20+OyBMYXJzLVBldGVyIENsYXVzZW4NCj4g
-PGxhcnNAbWV0YWZvby5kZT47IFRob21hcyBQZXRhenpvbmkNCj4gPHRob21hcy5wZXRhenpvbmlA
-Ym9vdGxpbi5jb20+OyBsaW51eC1paW9Admdlci5rZXJuZWwub3JnOyBsaW51eC0NCj4ga2VybmVs
-QHZnZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBSZTogW1BBVENIIDAzLzE2XSBpaW86IGFkYzog
-bWF4MTAyNzogUHVzaCBvbmx5IHRoZSByZXF1ZXN0ZWQNCj4gc2FtcGxlcw0KPiANCj4gW0V4dGVy
-bmFsXQ0KPiANCj4gT24gTW9uLCAzMCBBdWcgMjAyMSAxMDo0OTo1MCArMDAwMA0KPiAiU2EsIE51
-bm8iIDxOdW5vLlNhQGFuYWxvZy5jb20+IHdyb3RlOg0KPiANCj4gPiA+IC0tLS0tT3JpZ2luYWwg
-TWVzc2FnZS0tLS0tDQo+ID4gPiBGcm9tOiBKb25hdGhhbiBDYW1lcm9uIDxqaWMyM0BrZXJuZWwu
-b3JnPg0KPiA+ID4gU2VudDogTW9uZGF5LCBBdWd1c3QgMzAsIDIwMjEgMTI6MDggUE0NCj4gPiA+
-IFRvOiBTYSwgTnVubyA8TnVuby5TYUBhbmFsb2cuY29tPg0KPiA+ID4gQ2M6IE1pcXVlbCBSYXlu
-YWwgPG1pcXVlbC5yYXluYWxAYm9vdGxpbi5jb20+OyBMYXJzLVBldGVyDQo+IENsYXVzZW4NCj4g
-PiA+IDxsYXJzQG1ldGFmb28uZGU+OyBUaG9tYXMgUGV0YXp6b25pDQo+ID4gPiA8dGhvbWFzLnBl
-dGF6em9uaUBib290bGluLmNvbT47IGxpbnV4LWlpb0B2Z2VyLmtlcm5lbC5vcmc7DQo+IGxpbnV4
-LQ0KPiA+ID4ga2VybmVsQHZnZXIua2VybmVsLm9yZw0KPiA+ID4gU3ViamVjdDogUmU6IFtQQVRD
-SCAwMy8xNl0gaWlvOiBhZGM6IG1heDEwMjc6IFB1c2ggb25seSB0aGUNCj4gcmVxdWVzdGVkDQo+
-ID4gPiBzYW1wbGVzDQo+ID4gPg0KPiA+ID4gW0V4dGVybmFsXQ0KPiA+ID4NCj4gPiA+IE9uIEZy
-aSwgMjAgQXVnIDIwMjEgMDc6MTA6NDggKzAwMDANCj4gPiA+ICJTYSwgTnVubyIgPE51bm8uU2FA
-YW5hbG9nLmNvbT4gd3JvdGU6DQo+ID4gPg0KPiA+ID4gPiA+IC0tLS0tT3JpZ2luYWwgTWVzc2Fn
-ZS0tLS0tDQo+ID4gPiA+ID4gRnJvbTogTWlxdWVsIFJheW5hbCA8bWlxdWVsLnJheW5hbEBib290
-bGluLmNvbT4NCj4gPiA+ID4gPiBTZW50OiBXZWRuZXNkYXksIEF1Z3VzdCAxOCwgMjAyMSAxOjEx
-IFBNDQo+ID4gPiA+ID4gVG86IEpvbmF0aGFuIENhbWVyb24gPGppYzIzQGtlcm5lbC5vcmc+OyBM
-YXJzLVBldGVyIENsYXVzZW4NCj4gPiA+ID4gPiA8bGFyc0BtZXRhZm9vLmRlPg0KPiA+ID4gPiA+
-IENjOiBUaG9tYXMgUGV0YXp6b25pIDx0aG9tYXMucGV0YXp6b25pQGJvb3RsaW4uY29tPjsgbGlu
-dXgtDQo+ID4gPiA+ID4gaWlvQHZnZXIua2VybmVsLm9yZzsgbGludXgta2VybmVsQHZnZXIua2Vy
-bmVsLm9yZzsgTWlxdWVsDQo+IFJheW5hbA0KPiA+ID4gPiA+IDxtaXF1ZWwucmF5bmFsQGJvb3Rs
-aW4uY29tPg0KPiA+ID4gPiA+IFN1YmplY3Q6IFtQQVRDSCAwMy8xNl0gaWlvOiBhZGM6IG1heDEw
-Mjc6IFB1c2ggb25seSB0aGUNCj4gcmVxdWVzdGVkDQo+ID4gPiA+ID4gc2FtcGxlcw0KPiA+ID4g
-PiA+DQo+ID4gPiA+ID4gW0V4dGVybmFsXQ0KPiA+ID4gPiA+DQo+ID4gPiA+ID4gV2hlbiBhIHRy
-aWdnZXJlZCBzY2FuIG9jY3VycywgdGhlIGlkZW50aXR5IG9mIHRoZSBkZXNpcmVkDQo+IGNoYW5u
-ZWxzDQo+ID4gPiBpcw0KPiA+ID4gPiA+IGtub3duIGluIGluZGlvX2Rldi0+YWN0aXZlX3NjYW5f
-bWFzay4gSW5zdGVhZCBvZiByZWFkaW5nIGFuZA0KPiA+ID4gPiA+IHB1c2hpbmcgdG8NCj4gPiA+
-ID4gPiB0aGUgSUlPIGJ1ZmZlcnMgYWxsIGNoYW5uZWxzIGVhY2ggdGltZSwgc2NhbiB0aGUgbWlu
-aW11bQ0KPiBhbW91bnQNCj4gPiA+IG9mDQo+ID4gPiA+ID4gY2hhbm5lbHMgKDAgdG8gbWF4aW11
-bSByZXF1ZXN0ZWQgY2hhbiwgdG8gYmUgZXhhY3QpIGFuZCBvbmx5DQo+ID4gPiA+ID4gcHJvdmlk
-ZSB0aGUNCj4gPiA+ID4gPiBzYW1wbGVzIHJlcXVlc3RlZCBieSB0aGUgdXNlci4NCj4gPiA+ID4g
-Pg0KPiA+ID4gPiA+IEZvciBleGFtcGxlLCBpZiB0aGUgdXNlciB3YW50cyBjaGFubmVscyAxLCA0
-IGFuZCA1LCBhbGwgY2hhbm5lbHMNCj4gPiA+IGZyb20NCj4gPiA+ID4gPiAwIHRvIDUgd2lsbCBi
-ZSBzY2FubmVkIGJ1dCBvbmx5IHRoZSBkZXNpcmVkIGNoYW5uZWxzIHdpbGwgYmUNCj4gcHVzaGVk
-DQo+ID4gPiB0bw0KPiA+ID4gPiA+IHRoZSBJSU8gYnVmZmVycy4NCj4gPiA+ID4gPg0KPiA+ID4g
-PiA+IFNpZ25lZC1vZmYtYnk6IE1pcXVlbCBSYXluYWwgPG1pcXVlbC5yYXluYWxAYm9vdGxpbi5j
-b20+DQo+ID4gPiA+ID4gLS0tDQo+ID4gPiA+ID4gIGRyaXZlcnMvaWlvL2FkYy9tYXgxMDI3LmMg
-fCAyNSArKysrKysrKysrKysrKysrKysrKystLS0tDQo+ID4gPiA+ID4gIDEgZmlsZSBjaGFuZ2Vk
-LCAyMSBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQ0KPiA+ID4gPiA+DQo+ID4gPiA+ID4g
-ZGlmZiAtLWdpdCBhL2RyaXZlcnMvaWlvL2FkYy9tYXgxMDI3LmMNCj4gYi9kcml2ZXJzL2lpby9h
-ZGMvbWF4MTAyNy5jDQo+ID4gPiA+ID4gaW5kZXggYjc1MzY1OGJiNDFlLi44YWI2NjBmNTk2YjUg
-MTAwNjQ0DQo+ID4gPiA+ID4gLS0tIGEvZHJpdmVycy9paW8vYWRjL21heDEwMjcuYw0KPiA+ID4g
-PiA+ICsrKyBiL2RyaXZlcnMvaWlvL2FkYy9tYXgxMDI3LmMNCj4gPiA+ID4gPiBAQCAtMzYwLDYg
-KzM2MCw5IEBAIHN0YXRpYyBpbnQNCj4gbWF4MTAyN19zZXRfdHJpZ2dlcl9zdGF0ZShzdHJ1Y3QN
-Cj4gPiA+ID4gPiBpaW9fdHJpZ2dlciAqdHJpZywgYm9vbCBzdGF0ZSkNCj4gPiA+ID4gPiAgCXN0
-cnVjdCBtYXgxMDI3X3N0YXRlICpzdCA9IGlpb19wcml2KGluZGlvX2Rldik7DQo+ID4gPiA+ID4g
-IAlpbnQgcmV0Ow0KPiA+ID4gPiA+DQo+ID4gPiA+ID4gKwlpZiAoYml0bWFwX2VtcHR5KGluZGlv
-X2Rldi0+YWN0aXZlX3NjYW5fbWFzaywNCj4gaW5kaW9fZGV2LQ0KPiA+ID4gPiA+ID5tYXNrbGVu
-Z3RoKSkNCj4gPiA+ID4gPiArCQlyZXR1cm4gLUVJTlZBTDsNCj4gPiA+ID4gPiArDQo+ID4gPiA+
-DQo+ID4gPiA+IEknbSBub3Qgc3VyZSB0aGlzIGNhbiBhY3R1YWxseSBoYXBwZW4uIElmIHlvdSB0
-cnkgdG8gZW5hYmxlIHRoZQ0KPiBidWZmZXINCj4gPiA+ID4gd2l0aCBubyBzY2FuIGVsZW1lbnQs
-IGl0IHNob3VsZCBnaXZlIHlvdSBhbiBlcnJvciBiZWZvcmUgeW91DQo+IHJlYWNoDQo+ID4gPiA+
-IHRoaXMgcG9pbnQuLi4NCj4gPiA+ID4NCj4gPiA+ID4gPiAgCWlmIChzdGF0ZSkgew0KPiA+ID4g
-PiA+ICAJCS8qIFN0YXJ0IGFjcXVpc2l0aW9uIG9uIGNudnN0ICovDQo+ID4gPiA+ID4gIAkJc3Qt
-PnJlZyA9IE1BWDEwMjdfU0VUVVBfUkVHIHwNCj4gPiA+ID4gPiBNQVgxMDI3X0NLU19NT0RFMCB8
-DQo+ID4gPiA+ID4gQEAgLTM2OCw5ICszNzEsMTIgQEAgc3RhdGljIGludA0KPiBtYXgxMDI3X3Nl
-dF90cmlnZ2VyX3N0YXRlKHN0cnVjdA0KPiA+ID4gPiA+IGlpb190cmlnZ2VyICp0cmlnLCBib29s
-IHN0YXRlKQ0KPiA+ID4gPiA+ICAJCWlmIChyZXQgPCAwKQ0KPiA+ID4gPiA+ICAJCQlyZXR1cm4g
-cmV0Ow0KPiA+ID4gPiA+DQo+ID4gPiA+ID4gLQkJLyogU2NhbiBmcm9tIDAgdG8gbWF4ICovDQo+
-ID4gPiA+ID4gLQkJc3QtPnJlZyA9IE1BWDEwMjdfQ09OVl9SRUcgfA0KPiBNQVgxMDI3X0NIQU4o
-MCkgfA0KPiA+ID4gPiA+IC0JCQkgIE1BWDEwMjdfU0NBTl9OX00gfA0KPiBNQVgxMDI3X1RFTVA7
-DQo+ID4gPiA+ID4gKwkJLyoNCj4gPiA+ID4gPiArCQkgKiBTY2FuIGZyb20gMCB0byB0aGUgaGln
-aGVzdCByZXF1ZXN0ZWQNCj4gY2hhbm5lbC4gVGhlDQo+ID4gPiA+ID4gdGVtcGVyYXR1cmUNCj4g
-PiA+ID4gPiArCQkgKiBjb3VsZCBiZSBhdm9pZGVkIGJ1dCBpdCBzaW1wbGlmaWVzIGEgYml0IHRo
-ZQ0KPiBsb2dpYy4NCj4gPiA+ID4gPiArCQkgKi8NCj4gPiA+ID4gPiArCQlzdC0+cmVnID0gTUFY
-MTAyN19DT05WX1JFRyB8DQo+ID4gPiA+ID4gTUFYMTAyN19TQ0FOXzBfTiB8IE1BWDEwMjdfVEVN
-UDsNCj4gPiA+ID4gPiArCQlzdC0+cmVnIHw9IE1BWDEwMjdfQ0hBTihmbHMoKmluZGlvX2Rldi0N
-Cj4gPiA+ID4gPiA+YWN0aXZlX3NjYW5fbWFzaykgLSAyKTsNCj4gPiA+ID4gPiAgCQlyZXQgPSBz
-cGlfd3JpdGUoc3QtPnNwaSwgJnN0LT5yZWcsIDEpOw0KPiA+ID4gPiA+ICAJCWlmIChyZXQgPCAw
-KQ0KPiA+ID4gPiA+ICAJCQlyZXR1cm4gcmV0Ow0KPiA+ID4gPiA+IEBAIC0zOTEsMTEgKzM5Nywy
-MiBAQCBzdGF0aWMgaXJxcmV0dXJuX3QNCj4gPiA+ID4gPiBtYXgxMDI3X3RyaWdnZXJfaGFuZGxl
-cihpbnQgaXJxLCB2b2lkICpwcml2YXRlKQ0KPiA+ID4gPiA+ICAJc3RydWN0IGlpb19wb2xsX2Z1
-bmMgKnBmID0gcHJpdmF0ZTsNCj4gPiA+ID4gPiAgCXN0cnVjdCBpaW9fZGV2ICppbmRpb19kZXYg
-PSBwZi0+aW5kaW9fZGV2Ow0KPiA+ID4gPiA+ICAJc3RydWN0IG1heDEwMjdfc3RhdGUgKnN0ID0g
-aWlvX3ByaXYoaW5kaW9fZGV2KTsNCj4gPiA+ID4gPiArCXVuc2lnbmVkIGludCBzY2FubmVkX2No
-YW5zID0gZmxzKCppbmRpb19kZXYtDQo+ID4gPiA+ID4gPmFjdGl2ZV9zY2FuX21hc2spOw0KPiA+
-ID4gPiA+ICsJdTE2ICpidWYgPSBzdC0+YnVmZmVyOw0KPiA+ID4gPg0KPiA+ID4gPiBJIHRoaW5r
-IHNwYXJzZSB3aWxsIGNvbXBsYWluIGhlcmUuIGJ1ZmZlciBpcyBhIF9fYmUxNiByZXN0cmljdGVk
-DQo+ID4gPiA+IHR5cGUgc28geW91IHNob3VsZCBub3QgbWl4IHRob3NlLi4uDQo+ID4gPiA+ID4g
-Kwl1bnNpZ25lZCBpbnQgYml0Ow0KPiA+ID4gPiA+DQo+ID4gPiA+ID4gIAlwcl9kZWJ1ZygiJXMo
-aXJxPSVkLCBwcml2YXRlPTB4JXApXG4iLCBfX2Z1bmNfXywNCj4gaXJxLA0KPiA+ID4gPiA+DQo+
-ID4gPg0KPiBwcml2YXRlKTtpbi8yMDIxMDgxOF9taXF1ZWxfcmF5bmFsX2JyaW5nX3NvZnR3YXJl
-X3RyaWdnZXJzX3N1cHBvcnQNCj4gPiA+IF90b19tYXgxMDI3X2xpa2VfYWRjcy5tYngNCj4gPiA+
-ID4gPg0KPiA+ID4gPiA+ICAJLyogZmlsbCBidWZmZXIgd2l0aCBhbGwgY2hhbm5lbCAqLw0KPiA+
-ID4gPiA+IC0Jc3BpX3JlYWQoc3QtPnNwaSwgc3QtPmJ1ZmZlciwgaW5kaW9fZGV2LT5tYXNrbGVu
-Z3RoICoNCj4gMik7DQo+ID4gPiA+ID4gKwlzcGlfcmVhZChzdC0+c3BpLCBzdC0+YnVmZmVyLCBz
-Y2FubmVkX2NoYW5zICogMik7DQo+ID4gPiA+ID4gKw0KPiA+ID4gPiA+ICsJLyogT25seSBrZWVw
-IHRoZSBjaGFubmVscyBzZWxlY3RlZCBieSB0aGUgdXNlciAqLw0KPiA+ID4gPiA+ICsJZm9yX2Vh
-Y2hfc2V0X2JpdChiaXQsIGluZGlvX2Rldi0+YWN0aXZlX3NjYW5fbWFzaywNCj4gPiA+ID4gPiAr
-CQkJIGluZGlvX2Rldi0+bWFza2xlbmd0aCkgew0KPiA+ID4gPiA+ICsJCWlmIChidWZbMF0gIT0g
-c3QtPmJ1ZmZlcltiaXRdKQ0KPiA+ID4gPiA+ICsJCQlidWZbMF0gPSBzdC0+YnVmZmVyW2JpdF07
-DQo+ID4gPiA+DQo+ID4gPiA+IFNpbmNlIHdlIGFyZSBoZXJlLCB3aGVuIGxvb2tpbmcgaW50byB0
-aGUgZHJpdmVyLCBJIHJlYWxpemVkDQo+ID4gPiA+IHRoYXQgc3QtPmJ1ZmZlciBpcyBub3QgRE1B
-IHNhZmUuIEluIElJTywgd2Uga2luZCBvZiB3YW50IHRvDQo+IGVuZm9yY2UNCj4gPiA+ID4gdGhh
-dCBhbGwgYnVmZmVycyB0aGF0IGFyZSBwYXNzZWQgdG8gc3BpL2kyYyBidXNlcyBhcmUgc2FmZS4u
-LiBNYXliZQ0KPiA+ID4gPiB0aGlzIGlzIHNvbWV0aGluZyB5b3UgY2FuIGluY2x1ZGUgaW4geW91
-ciBzZXJpZXMuDQo+ID4gPg0KPiA+ID4gV2h5IGlzIGl0IG5vdD8gIHN0LT5idWZmZXIgaXMgcmVz
-dWx0IG9mIGEgZGV2bV9rbWFsbG9jX2FycmF5KCkgY2FsbA0KPiBhbmQNCj4gPiA+IHRoYXQgc2hv
-dWxkIHByb3ZpZGUgYSBETUEgc2FmZSBidWZmZXIgYXMgSSB1bmRlcnN0YW5kIGl0Lg0KPiA+ID4N
-Cj4gPg0KPiA+IFRoYXQncyBhIGdvb2QgcXVlc3Rpb24uIEknbSBub3Qgc3VyZSBob3cgSSBjYW1l
-IHRvIHRoYXQgY29uY2x1c2lvbg0KPiB3aGljaA0KPiA+IGlzIGNsZWFybHkgd3JvbmcuIFRob3Vn
-aCBJIHRoaW5rIHRoZSBidWZmZXIgbWlnaHQgc2hhcmUgdGhlIGxpbmUgd2l0aA0KPiB0aGUNCj4g
-PiBtdXRleC4uLg0KPiBQb2ludGVyIHNoYXJlcyBhIGxpbmUuICBUaGUgYnVmZmVyIGl0IHBvaW50
-cyB0byBkb2Vzbid0IGFzIGFsbG9jYXRlZA0KPiBieSBzZXBhcmF0ZSBoZWFwIGFsbG9jYXRpb24u
-DQo+IA0KDQpVcHMsIHN1cmUgOmZhY2VwYWxtOg0KDQotIE51bm8gU8OhDQo=
+On Thu, 19 Aug 2021 23:41:33 +0530
+Puranjay Mohan <puranjay12@gmail.com> wrote:
+
+> Provide a way for continuous data capture by setting up buffer support. The
+> data ready signal exposed at the DRDY pin of the ADXL355 is exploited as
+> a hardware interrupt which triggers to fill the buffer.
+> 
+> Signed-off-by: Puranjay Mohan <puranjay12@gmail.com>
+
+Hi Puranjay,
+
+A fresh read and I noticed a few additional things.
+All simple stuff.
+
+I do have a slight concern that we might be setting ourselves up for problems
+once the fifo is enabled.  Hopefully not, but if you have looked at that and
+verified it will drop in nicely then that's great. We might be fine.
+
+Jonathan
+
+
+> ---
+> Changes since v1:
+> - Fix an indentation issue.
+> - Add comments on layout of data in buffer.
+> - Zero the buffer before using it in trigger handler.
+> - Use if(ret) in place of if(ret < 0)
+> ---
+> drivers/iio/accel/Kconfig        |   4 +
+>  drivers/iio/accel/adxl355_core.c | 162 ++++++++++++++++++++++++++++++-
+>  2 files changed, 164 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
+> index d0c45c809..9c16c1841 100644
+> --- a/drivers/iio/accel/Kconfig
+> +++ b/drivers/iio/accel/Kconfig
+> @@ -69,6 +69,8 @@ config ADXL355_I2C
+>  	depends on I2C
+>  	select ADXL355
+>  	select REGMAP_I2C
+> +	select IIO_BUFFER
+> +	select IIO_TRIGGERED_BUFFER
+>  	help
+>  	  Say Y here if you want to build i2c support for the Analog Devices
+>  	  ADXL355 3-axis digital accelerometer.
+> @@ -82,6 +84,8 @@ config ADXL355_SPI
+>  	depends on SPI
+>  	select ADXL355
+>  	select REGMAP_SPI
+> +	select IIO_BUFFER
+> +	select IIO_TRIGGERED_BUFFER
+>  	help
+>  	  Say Y here if you want to build spi support for the Analog Devices
+>  	  ADXL355 3-axis digital accelerometer.
+> diff --git a/drivers/iio/accel/adxl355_core.c b/drivers/iio/accel/adxl355_core.c
+> index c91d2254c..d499403dc 100644
+> --- a/drivers/iio/accel/adxl355_core.c
+> +++ b/drivers/iio/accel/adxl355_core.c
+> @@ -9,11 +9,16 @@
+>  
+>  #include <linux/bits.h>
+>  #include <linux/bitfield.h>
+> +#include <linux/iio/buffer.h>
+>  #include <linux/iio/iio.h>
+> +#include <linux/iio/trigger.h>
+> +#include <linux/iio/triggered_buffer.h>
+> +#include <linux/iio/trigger_consumer.h>
+>  #include <linux/limits.h>
+>  #include <linux/math64.h>
+>  #include <linux/module.h>
+>  #include <linux/mod_devicetable.h>
+> +#include <linux/of_irq.h>
+>  #include <linux/regmap.h>
+>  #include <asm/unaligned.h>
+>  
+> @@ -46,6 +51,7 @@
+>  #define ADXL355_RANGE_REG		0x2C
+>  #define ADXL355_POWER_CTL_REG		0x2D
+>  #define  ADXL355_POWER_CTL_MODE_MSK	GENMASK(1, 0)
+> +#define  ADXL355_POWER_CTL_DRDY_MSK	BIT(2)
+>  #define ADXL355_SELF_TEST_REG		0x2E
+>  #define ADXL355_RESET_REG		0x2F
+>  
+> @@ -165,7 +171,15 @@ struct adxl355_data {
+>  	enum adxl355_hpf_3db hpf_3db;
+>  	int calibbias[3];
+>  	int adxl355_hpf_3db_table[7][2];
+> -	u8 transf_buf[3] ____cacheline_aligned;
+> +	struct iio_trigger *dready_trig;
+> +	int irq;
+> +	union {
+> +		u8 transf_buf[3];
+> +		struct {
+> +			u8 buf[14];
+> +			s64 ts;
+> +		} buffer;
+> +	} ____cacheline_aligned;
+>  };
+>  
+>  static int adxl355_set_op_mode(struct adxl355_data *data,
+> @@ -186,6 +200,23 @@ static int adxl355_set_op_mode(struct adxl355_data *data,
+>  	return ret;
+>  }
+>  
+> +static int adxl355_data_rdy_trigger_set_state(struct iio_trigger *trig,
+> +					      bool state)
+> +{
+> +	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
+> +	struct adxl355_data *data = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	mutex_lock(&data->lock);
+
+Why take the lock?  What are you protecting here?
+
+> +	ret = regmap_update_bits(data->regmap, ADXL355_POWER_CTL_REG,
+> +				 ADXL355_POWER_CTL_DRDY_MSK,
+> +				 FIELD_PREP(ADXL355_POWER_CTL_DRDY_MSK,
+> +					    !state));
+> +	mutex_unlock(&data->lock);
+> +
+> +	return ret;
+> +}
+> +
+>  static void adxl355_fill_3db_frequency_table(struct adxl355_data *data)
+>  {
+>  	u32 multiplier;
+> @@ -246,6 +277,12 @@ static int adxl355_setup(struct adxl355_data *data)
+>  	if (ret)
+>  		return ret;
+>  
+> +	ret = regmap_update_bits(data->regmap, ADXL355_POWER_CTL_REG,
+> +				 ADXL355_POWER_CTL_DRDY_MSK,
+> +				 FIELD_PREP(ADXL355_POWER_CTL_DRDY_MSK, 1));
+> +	if (ret)
+> +		return ret;
+> +
+>  	adxl355_fill_3db_frequency_table(data);
+>  
+>  	return adxl355_set_op_mode(data, ADXL355_MEASUREMENT);
+> @@ -499,12 +536,74 @@ static int adxl355_read_avail(struct iio_dev *indio_dev,
+>  	}
+>  }
+>  
+> +static const unsigned long adxl355_avail_scan_masks[] = {
+> +	GENMASK(3, 0),
+> +	0
+> +};
+> +
+>  static const struct iio_info adxl355_info = {
+>  	.read_raw	= adxl355_read_raw,
+>  	.write_raw	= adxl355_write_raw,
+>  	.read_avail	= &adxl355_read_avail,
+>  };
+>  
+> +static const struct iio_trigger_ops adxl355_trigger_ops = {
+> +	.set_trigger_state = &adxl355_data_rdy_trigger_set_state,
+> +	.validate_device = &iio_trigger_validate_own_device,
+
+This is fine for now, but I'd like you to think about whether you can ultimately
+drop this validation and allow other devices to be triggered from this signal.
+It can be very helpful when doing sensor fusion to grab data at (approximately)
+the same time from a set of different sensors.
+
+IIRC this device has a fifo though which can complicate that option.
+
+> +};
+> +
+> +static irqreturn_t adxl355_trigger_handler(int irq, void *p)
+> +{
+> +	struct iio_poll_func *pf = p;
+> +	struct iio_dev *indio_dev = pf->indio_dev;
+> +	struct adxl355_data *data = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	mutex_lock(&data->lock);
+> +
+> +	/*
+> +	 * data->buffer is used both for triggered buffer support
+> +	 * and read/write_raw(), hence, it has to be zeroed here before usage.
+> +	 */
+> +	data->buffer.buf[0] = 0;
+> +
+> +	/*
+> +	 * The accelaration data is 24 bits and big endian. It has to be saved
+
+Spell check.  acceleration
+
+> +	 * in 32 bits, hence, it is saved in the 2nd byte of the 4 byte buffer.
+> +	 * The buf array is 14 bytes as it includes 3x4=12 bytes for
+> +	 * accelaration data of x, y, and z axis. It also includes 2 bytes for
+> +	 * temperature data.
+> +	 */
+> +	ret = regmap_bulk_read(data->regmap, ADXL355_XDATA3_REG,
+> +			       &data->buffer.buf[1], 3);
+> +	if (ret)
+> +		goto out_unlock_notify;
+> +
+> +	ret = regmap_bulk_read(data->regmap, ADXL355_YDATA3_REG,
+> +			       &data->buffer.buf[5], 3);
+> +	if (ret)
+> +		goto out_unlock_notify;
+> +
+> +	ret = regmap_bulk_read(data->regmap, ADXL355_ZDATA3_REG,
+> +			       &data->buffer.buf[9], 3);
+> +	if (ret)
+> +		goto out_unlock_notify;
+> +
+> +	ret = regmap_bulk_read(data->regmap, ADXL355_TEMP2_REG,
+> +			       &data->buffer.buf[12], 2);
+> +	if (ret)
+> +		goto out_unlock_notify;
+> +
+> +	iio_push_to_buffers_with_timestamp(indio_dev, &data->buffer,
+> +					   pf->timestamp);
+> +
+> +out_unlock_notify:
+> +	mutex_unlock(&data->lock);
+> +	iio_trigger_notify_done(indio_dev->trig);
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+>  #define ADXL355_ACCEL_CHANNEL(index, reg, axis) {			\
+>  	.type = IIO_ACCEL,						\
+>  	.address = reg,							\
+> @@ -518,6 +617,7 @@ static const struct iio_info adxl355_info = {
+>  	.info_mask_shared_by_type_available =				\
+>  		BIT(IIO_CHAN_INFO_SAMP_FREQ) |				\
+>  		BIT(IIO_CHAN_INFO_HIGH_PASS_FILTER_3DB_FREQUENCY),	\
+> +	.scan_index = index,						\
+>  	.scan_type = {							\
+>  		.sign = 's',						\
+>  		.realbits = 20,						\
+> @@ -537,6 +637,7 @@ static const struct iio_chan_spec adxl355_channels[] = {
+>  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+>  				      BIT(IIO_CHAN_INFO_SCALE) |
+>  				      BIT(IIO_CHAN_INFO_OFFSET),
+> +		.scan_index = 3,
+>  		.scan_type = {
+>  			.sign = 's',
+>  			.realbits = 12,
+> @@ -544,8 +645,46 @@ static const struct iio_chan_spec adxl355_channels[] = {
+>  			.endianness = IIO_BE,
+>  		},
+>  	},
+> +	IIO_CHAN_SOFT_TIMESTAMP(4),
+>  };
+>  
+> +static int adxl355_probe_trigger(struct iio_dev *indio_dev)
+> +{
+> +	struct adxl355_data *data = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	if (!data->irq) {
+> +		dev_info(data->dev, "no irq, using polling\n");
+
+I would move this check externally so that we never probe if it's
+not wired up.  It's also easy to tell (no trigger available) so
+the dev_info is probably unnecessary noise in the log.
+
+
+> +		return 0;
+> +	}
+> +
+> +	data->dready_trig = devm_iio_trigger_alloc(data->dev, "%s-dev%d",
+> +						   indio_dev->name,
+> +						   indio_dev->id);
+> +	if (!data->dready_trig)
+> +		return -ENOMEM;
+> +
+> +	data->dready_trig->ops = &adxl355_trigger_ops;
+> +	iio_trigger_set_drvdata(data->dready_trig, indio_dev);
+> +
+> +	ret = devm_request_irq(data->dev, data->irq,
+> +			       &iio_trigger_generic_data_rdy_poll,
+> +			       IRQF_ONESHOT, "adxl355_irq", data->dready_trig);
+> +	if (ret)
+> +		return dev_err_probe(data->dev, ret, "request irq %d failed\n",
+> +				     data->irq);
+> +
+> +	ret = devm_iio_trigger_register(data->dev, data->dready_trig);
+> +	if (ret) {
+> +		dev_err(data->dev, "iio trigger register failed\n");
+> +		return ret;
+> +	}
+> +
+> +	indio_dev->trig = iio_trigger_get(data->dready_trig);
+> +
+> +	return 0;
+> +}
+> +
+>  int adxl355_core_probe(struct device *dev, struct regmap *regmap,
+>  		       const char *name)
+>  {
+> @@ -563,18 +702,37 @@ int adxl355_core_probe(struct device *dev, struct regmap *regmap,
+>  	data->op_mode = ADXL355_STANDBY;
+>  	mutex_init(&data->lock);
+>  
+> +	/*
+> +	 * TODO: Would be good to move it to the generic version.
+> +	 */
+> +	ret = of_irq_get_byname(dev->of_node, "DRDY");
+> +	if (ret > 0)
+> +		data->irq = ret;
+
+If you do this get down near the probe_trigger() call then you should be able to
+avoid keeping a copy of irq in data.  Just pass it into that function as
+a parameter.
+
+> +
+>  	indio_dev->name = name;
+>  	indio_dev->info = &adxl355_info;
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
+>  	indio_dev->channels = adxl355_channels;
+>  	indio_dev->num_channels = ARRAY_SIZE(adxl355_channels);
+> +	indio_dev->available_scan_masks = adxl355_avail_scan_masks;
+>  
+>  	ret = adxl355_setup(data);
+> -	if (ret < 0) {
+> +	if (ret) {
+
+This looks to be an unrelated cleanup.  Please move to a precursor patch as
+it adds noise in this one which is fiddly enough without it ;)
+
+>  		dev_err(dev, "ADXL355 setup failed\n");
+>  		return ret;
+>  	}
+>  
+> +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
+> +					      &iio_pollfunc_store_time,
+> +					      &adxl355_trigger_handler, NULL);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret,
+> +				     "iio triggered buffer setup failed\n");
+> +
+> +	ret = adxl355_probe_trigger(indio_dev);
+> +	if (ret)
+> +		return ret;
+> +
+>  	return devm_iio_device_register(dev, indio_dev);
+>  }
+>  EXPORT_SYMBOL_GPL(adxl355_core_probe);
+

@@ -2,84 +2,114 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F6FC3FBB27
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Aug 2021 19:41:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE1FE3FBFD8
+	for <lists+linux-iio@lfdr.de>; Tue, 31 Aug 2021 02:28:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238226AbhH3RmU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 30 Aug 2021 13:42:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37814 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238194AbhH3RmT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 30 Aug 2021 13:42:19 -0400
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9770AC061575;
-        Mon, 30 Aug 2021 10:41:25 -0700 (PDT)
-Received: by mail-lf1-x136.google.com with SMTP id p38so32960318lfa.0;
-        Mon, 30 Aug 2021 10:41:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=lZOE6NdYi7YGPVoRW2vvmAPerIza6xFYslQzFR4ZBtE=;
-        b=AB1J0NmrLstVowEAiKWurJRlP2pbZhAKNC40qWhnjtDw4U6fogsrSQx7sxPXkxeL8h
-         KqJ6C2h3gCdVs0ZMr+kwQATPZaUtTEiWvwcm4U9+lpVKTJqv6/BdUlnaD86nl6S0LmB2
-         YKuZTGLZKCTq0UlhzS6QyieGeh6QufxKVjlw3lSot6Ngg4Oj3U45ZL9ktQdNPQRxjoSg
-         SXklBgCtTxh0L9gSmMFbKJjC23VOyDVJMBHNOPYVhdJTRxlqZ7d7ptwVKu5IwB+6TRi2
-         NhFHUnyyxdBbD4oY76M49syF2N0ZGf8Ry03BKJJoH9+62hgL1+CcPcunW44zEOcRcA3t
-         y5zA==
+        id S233980AbhHaAEv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 30 Aug 2021 20:04:51 -0400
+Received: from mail-ot1-f54.google.com ([209.85.210.54]:44563 "EHLO
+        mail-ot1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233270AbhHaAEt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 30 Aug 2021 20:04:49 -0400
+Received: by mail-ot1-f54.google.com with SMTP id g66-20020a9d12c8000000b0051aeba607f1so20606560otg.11;
+        Mon, 30 Aug 2021 17:03:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=lZOE6NdYi7YGPVoRW2vvmAPerIza6xFYslQzFR4ZBtE=;
-        b=EACxsn3acJkquPPjE6WvbVKnF3ldH9P6qY0C3G+uZLBtejZ6JATpJQ1Jvhvufuc06K
-         z1P+q9344GTUkuPyCCh/yz5NJGnX5lghOTra43ihxneSEn6hwPCiB1ZRZkZ5OXUkTOjj
-         4fz/yrGhYK8X1WO8bpuC/KnmuMATnrbfavLnBbBxUe/2DV67XgvFqAHRygYc7AJ9UrJT
-         +WfuiYiuhhiGW+oh1L6N6m/5xObws7Np2DefZ54jFXR7Uy3ig69dz+0/yT1bsga+IDTF
-         MDaX+Mc/Clo3jP6GPy2F7yeB+GBPovsoFzJ1g8Me1PDU+cypFmu1BGBHFFMCICviIXMP
-         NECg==
-X-Gm-Message-State: AOAM531p0CtyesXbC4mxe2g3CqSzJD5SoZJ6jIu3pFvZKjJP9Atwr9fS
-        8KuRHs3YfuMiyF+y91s2pk/pjFJDHYsVPZ6lOwo=
-X-Google-Smtp-Source: ABdhPJxPCpk3CIRP6sbIr9jWcESA/cBvGxq9HPNlVRkhIW40nQT4VjSrn/CKh1mxsXM2ZRlXzyTBswE0UPmiBD7253o=
-X-Received: by 2002:a19:5f0d:: with SMTP id t13mr17970186lfb.229.1630345283860;
- Mon, 30 Aug 2021 10:41:23 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210830172140.414-1-caihuoqing@baidu.com> <20210830172140.414-2-caihuoqing@baidu.com>
-In-Reply-To: <20210830172140.414-2-caihuoqing@baidu.com>
-From:   Fabio Estevam <festevam@gmail.com>
-Date:   Mon, 30 Aug 2021 14:41:12 -0300
-Message-ID: <CAOMZO5CG_NtGC3ZJv+qy2YOk-J6gLyZpUMty+jna3v4V6DfmnQ@mail.gmail.com>
-Subject: Re: [PATCH 1/6] iio: adc: Init the driver for NXP i.MX8QuadXPlus
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=cIxLbC0V4V1OdsC/Ly6jKX0YPVdFxUbPkUbq2zoGTMs=;
+        b=KWoCpj8kuWUampiLPX5fZe+Ku32AA01l4/dsT/GW0Ut5KGxm7nqL6YWDaERRxtfK/L
+         v65M0QFbT/giv+6FelxsYh3BPWffWgJ/wwtZAfRsBgEoylwbp7byAreifBYKsxvj+5/4
+         XXlFIs7s+eb2CD9R6pCZ13zRPMa6L1Me4zDq6govzf73x2MTHM/lIqPCkiVoESIvDOka
+         Bit9CJB6OHslfbLe9l/YwSfduU6d2VfJvZ6POoawAcywppcxcqySv18nzwWr6BqHakhR
+         n1RVrZviqhWjBMpV2rUiHMnK1ql9VecYvwVCV5FE8LHNW8BcgpzkCMxF4LOYTlVPVXrv
+         YjHg==
+X-Gm-Message-State: AOAM532NWfQz0byOG2gLQ/EE1ErReIGjiFmvQ/cSUST7mcLxUIijSLxE
+        KNisO6BTTBJnBmjC43WjBQ==
+X-Google-Smtp-Source: ABdhPJzApwMo/dFh6AfQatjs1hglDwJoGhq5PQw87cu4H4prFWq6jzpKxMtFIM1NqNnPtbqUya0biw==
+X-Received: by 2002:a05:6830:913:: with SMTP id v19mr22138821ott.131.1630368235166;
+        Mon, 30 Aug 2021 17:03:55 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id v8sm3559453ota.16.2021.08.30.17.03.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Aug 2021 17:03:54 -0700 (PDT)
+Received: (nullmailer pid 2940837 invoked by uid 1000);
+        Tue, 31 Aug 2021 00:03:53 -0000
+From:   Rob Herring <robh@kernel.org>
 To:     Cai Huoqing <caihuoqing@baidu.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        NXP Linux Team <linux-imx@nxp.com>, alex.dewar90@gmail.com,
-        linux-iio@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Cc:     shawnguo@kernel.org, linux-iio@vger.kernel.org, robh+dt@kernel.org,
+        linux-imx@nxp.com, linux-arm-kernel@lists.infradead.org,
+        lars@metafoo.de, festevam@gmail.com, jic23@kernel.org,
+        s.hauer@pengutronix.de, kernel@pengutronix.de,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        alex.dewar90@gmail.com
+In-Reply-To: <20210830172140.414-5-caihuoqing@baidu.com>
+References: <20210830172140.414-1-caihuoqing@baidu.com> <20210830172140.414-5-caihuoqing@baidu.com>
+Subject: Re: [PATCH 4/6] dt-bindings: iio: adc: Add the binding documentation for NXP IMX8QXP ADC
+Date:   Mon, 30 Aug 2021 19:03:53 -0500
+Message-Id: <1630368233.478982.2940836.nullmailer@robh.at.kernel.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Cai,
+On Tue, 31 Aug 2021 01:21:38 +0800, Cai Huoqing wrote:
+> The NXP i.MX 8QuadXPlus SOC has a new ADC IP, so add the binding
+> documentation for NXP IMX8QXP ADC
+> 
+> Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
+> ---
+>  .../bindings/iio/adc/nxp,imx8qxp-adc.yaml     | 85 +++++++++++++++++++
+>  1 file changed, 85 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml
+> 
 
-On Mon, Aug 30, 2021 at 2:22 PM Cai Huoqing <caihuoqing@baidu.com> wrote:
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-> +static int imx8qxp_adc_probe(struct platform_device *pdev)
-> +{
-> +       return 0;
-> +}
+yamllint warnings/errors:
 
-This is not the correct way to split the series.
+dtschema/dtc warnings/errors:
+make[1]: *** Deleting file 'Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.example.dts'
+Traceback (most recent call last):
+  File "/usr/local/bin/dt-extract-example", line 45, in <module>
+    binding = yaml.load(open(args.yamlfile, encoding='utf-8').read())
+  File "/usr/local/lib/python3.8/dist-packages/ruamel/yaml/main.py", line 434, in load
+    return constructor.get_single_data()
+  File "/usr/local/lib/python3.8/dist-packages/ruamel/yaml/constructor.py", line 120, in get_single_data
+    node = self.composer.get_single_node()
+  File "_ruamel_yaml.pyx", line 706, in _ruamel_yaml.CParser.get_single_node
+  File "_ruamel_yaml.pyx", line 724, in _ruamel_yaml.CParser._compose_document
+  File "_ruamel_yaml.pyx", line 775, in _ruamel_yaml.CParser._compose_node
+  File "_ruamel_yaml.pyx", line 889, in _ruamel_yaml.CParser._compose_mapping_node
+  File "_ruamel_yaml.pyx", line 773, in _ruamel_yaml.CParser._compose_node
+  File "_ruamel_yaml.pyx", line 848, in _ruamel_yaml.CParser._compose_sequence_node
+  File "_ruamel_yaml.pyx", line 904, in _ruamel_yaml.CParser._parse_next_event
+ruamel.yaml.scanner.ScannerError: while scanning a block scalar
+  in "<unicode string>", line 65, column 5
+found a tab character where an indentation space is expected
+  in "<unicode string>", line 71, column 1
+make[1]: *** [Documentation/devicetree/bindings/Makefile:20: Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.example.dts] Error 1
+make[1]: *** Waiting for unfinished jobs....
+./Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml:  while scanning a block scalar
+  in "<unicode string>", line 65, column 5
+found a tab character where an indentation space is expected
+  in "<unicode string>", line 71, column 1
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml: ignoring, error parsing file
+warning: no schema found in file: ./Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml
+make: *** [Makefile:1419: dt_binding_check] Error 2
 
-Patches 1, 2, 3, and 5 could be squashed into a single patch.
+doc reference errors (make refcheckdocs):
 
-Thanks
+See https://patchwork.ozlabs.org/patch/1522287
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
+

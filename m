@@ -2,109 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 847883FC2FB
-	for <lists+linux-iio@lfdr.de>; Tue, 31 Aug 2021 08:55:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C62183FC330
+	for <lists+linux-iio@lfdr.de>; Tue, 31 Aug 2021 09:22:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238105AbhHaGuQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 31 Aug 2021 02:50:16 -0400
-Received: from esa.microchip.iphmx.com ([68.232.153.233]:22712 "EHLO
-        esa.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237960AbhHaGuQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 Aug 2021 02:50:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1630392561; x=1661928561;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=JTAKNwf9/VDIV8aG/1dqbq8tyWYJ42As+VykpPbner0=;
-  b=XyrZnjMQ+emm2GbGyOxQQjMzFz6GIDsbPqLKL1h7RbpPi1X/PbYZi+2H
-   RQ+h5fSLtTX2nVYdEZo6L06J6q/gU17TwB2nhIJ6UGdsqzOkQil9CbLDX
-   DwA/WDFyJLw0252sty3YNWVt3DBFDyuo4xgcw35ZDzt9sLdgl6rmI7TU/
-   qaUWLsTydsFmbQpRcpq8Y+hU/TAoWwOFApsZGhDYLXaIl0gCSLsr6bOW3
-   7j8ZQlOg+BrNyB8nV4seeN+2D5ocLoLnTKl3PL8uQYWy5WOOSayTcyNUd
-   RO0E6S7grJctpKAKfIPfwaBijp6ufrM8Bs8jIj1Y9WZH0WUMryfIT0JQd
-   Q==;
-IronPort-SDR: 8JOg7j2LcHXqiYgjLCi7asyQmhpshlu1XaIHM4LcWlsS1kyO5q7PikOs3TrNKXDMaYI9lV76TT
- fIXZPkF7KIQVswCUMzOo5C2wxSa1EPDErLl14vuKjT2ZEILk4ZKY0Z6ggDIanZxhy+DnRGnCLs
- 0pThhaPMq0a+TaxVshGoXiTvUnft1qeSTEFKebcH7LpK8TLURRbR5GExqB4Np2m6f1gY+I9w0B
- PGYDBDI+e7cKpy6I8Vj8rQqjHfX1ztDa5pO6BbiikpQrydQvSvzejQzanFszf7Zg643iUSC/Fx
- tFdFPErVXKk4jwCsGiQK6FT/
-X-IronPort-AV: E=Sophos;i="5.84,365,1620716400"; 
-   d="scan'208";a="134242849"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 30 Aug 2021 23:49:21 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.14; Mon, 30 Aug 2021 23:49:20 -0700
-Received: from ROB-ULT-M18282.microchip.com (10.10.115.15) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.2176.14 via Frontend Transport; Mon, 30 Aug 2021 23:49:16 -0700
-From:   Eugen Hristev <eugen.hristev@microchip.com>
-To:     <jic23@kernel.org>
-CC:     <linux-iio@vger.kernel.org>,
+        id S238711AbhHaHOe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 31 Aug 2021 03:14:34 -0400
+Received: from twspam01.aspeedtech.com ([211.20.114.71]:4638 "EHLO
+        twspam01.aspeedtech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231537AbhHaHOd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 Aug 2021 03:14:33 -0400
+Received: from mail.aspeedtech.com ([192.168.0.24])
+        by twspam01.aspeedtech.com with ESMTP id 17V6saQx028254;
+        Tue, 31 Aug 2021 14:54:36 +0800 (GMT-8)
+        (envelope-from billy_tsai@aspeedtech.com)
+Received: from BillyTsai-pc.aspeed.com (192.168.2.149) by TWMBX02.aspeed.com
+ (192.168.0.24) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 31 Aug
+ 2021 15:13:33 +0800
+From:   Billy Tsai <billy_tsai@aspeedtech.com>
+To:     <jic23@kernel.org>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
+        <robh+dt@kernel.org>, <joel@jms.id.au>, <andrew@aj.id.au>,
+        <p.zabel@pengutronix.de>, <lgirdwood@gmail.com>,
+        <broonie@kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        Eugen Hristev <eugen.hristev@microchip.com>,
-        kernel test robot <lkp@intel.com>
-Subject: [PATCH] iio: adc: at91-sama5d2_adc: fix warning for uninitialized 'val' variable
-Date:   Tue, 31 Aug 2021 09:48:00 +0300
-Message-ID: <20210831064800.78979-1-eugen.hristev@microchip.com>
+        <linux-aspeed@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>
+CC:     <BMC-SW@aspeedtech.com>
+Subject: [v5 00/15] Add support for ast2600 ADC
+Date:   Tue, 31 Aug 2021 15:14:43 +0800
+Message-ID: <20210831071458.2334-1-billy_tsai@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [192.168.2.149]
+X-ClientProxiedBy: TWMBX02.aspeed.com (192.168.0.24) To TWMBX02.aspeed.com
+ (192.168.0.24)
+X-DNSRBL: 
+X-MAIL: twspam01.aspeedtech.com 17V6saQx028254
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
->> drivers/iio/adc/at91-sama5d2_adc.c:722:11: warning: variable 'val' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
-           else if (reg == st->soc_info.platform->layout->YPOSR)
-                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/at91-sama5d2_adc.c:725:7: note: uninitialized use occurs here
-           if (!val)
-                ^~~
-   drivers/iio/adc/at91-sama5d2_adc.c:722:7: note: remove the 'if' if its condition is always true
-           else if (reg == st->soc_info.platform->layout->YPOSR)
-                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/at91-sama5d2_adc.c:711:9: note: initialize the variable 'val' to silence this warning
-           u32 val;
-                  ^
-                   = 0
-   1 warning generated.
+This patch serials make aspeed_adc.c can support ast2600 and backward
+compatible.
 
-Fixed by initializing 'val' variable.
+Change since v4:
+dt-bindings:
+  - Add clocks maxItems.
+  - Rename the property to meet the property-units.yaml.
+  - Add the description for the difference between adc0 and adc1.
+aspeed_adc.c:
+  - Use new property name to get internal reference voltage: units from mv to
+  uv.
+  - Fix -Wnonnull warning caused by snprintf parameters.
+  - Add suffix mv to the vref parameters.
+  - Use ARRAY_SIZE instead of 32.
+  - Add a reset action for ADC power down and Use devm_iio_device_register.
+  - Fix typo error.
+  - Separate the offset interface of ch7 when battery sensing enable
 
-Fixes: 29edec2b98ff ("iio: adc: at91-sama5d2_adc: convert to platform specific data structures")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Eugen Hristev <eugen.hristev@microchip.com>
----
+Change since v3:
+dt-bindings:
+  - Fix properties:aspeed,int_vref_mv type error.
 
-Hi Jonathan,
+Change since v2:
+dt-bindings:
+  - Create a new dt-bindings for ast2600 adc
+aspeed_adc.c:
+  - Splits the patch for more details
+  - Remove version enum and use the flags in model data to distinguish
+  hardware feature
+  - Support trimming data get and set.
+  - Use devm_add_action_or_reset to simplify probe error handling.
 
-If you can still rebase your testing branch, maybe you can squash this into the
-original patch, no need to make a separate commit I guess.
-I fixed this as soon as the report came out from the 0day robot.
+Changes since v1:
+dt-bindings:
+  - Fix the aspeed,adc.yaml check error.
+  - Add battery-sensing property.
+aspeed_adc.c:
+  - Change the init flow:
+    Clock and reference voltage setting should be completed before adc
+    engine enable.
+  - Change the default sampling rate to meet most user case.
+  - Add patch #8 to suppoert battery sensing mode.
 
-Thanks !
-Eugen
+Billy Tsai (15):
+  iio: adc: aspeed: set driver data when adc probe.
+  dt-bindings: iio: adc: Add ast2600-adc bindings
+  iio: adc: aspeed: completes the bitfield declare.
+  iio: adc: aspeed: Keep model data to driver data.
+  iio: adc: aspeed: Refactory model data structure
+  iio: adc: aspeed: Add vref config function
+  iio: adc: aspeed: Set num_channels with model data
+  iio: adc: aspeed: Use model_data to set clk scaler.
+  iio: adc: aspeed: Use devm_add_action_or_reset.
+  iio: adc: aspeed: Support ast2600 adc.
+  iio: adc: aspeed: Fix the calculate error of clock.
+  iio: adc: aspeed: Add func to set sampling rate.
+  iio: adc: aspeed: Add compensation phase.
+  iio: adc: aspeed: Support battery sensing.
+  iio: adc: aspeed: Get and set trimming data.
 
- drivers/iio/adc/at91-sama5d2_adc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../bindings/iio/adc/aspeed,ast2600-adc.yaml  | 100 +++
+ drivers/iio/adc/aspeed_adc.c                  | 617 +++++++++++++++---
+ 2 files changed, 619 insertions(+), 98 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/aspeed,ast2600-adc.yaml
 
-diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-index 29c7441f9f27..f8a9ad50a00b 100644
---- a/drivers/iio/adc/at91-sama5d2_adc.c
-+++ b/drivers/iio/adc/at91-sama5d2_adc.c
-@@ -846,7 +846,7 @@ static int at91_adc_configure_touch(struct at91_adc_state *st, bool state)
- 
- static u16 at91_adc_touch_pos(struct at91_adc_state *st, int reg)
- {
--	u32 val;
-+	u32 val = 0;
- 	u32 scale, result, pos;
- 
- 	/*
 -- 
 2.25.1
 

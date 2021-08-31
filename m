@@ -2,155 +2,476 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE11E3FC87C
-	for <lists+linux-iio@lfdr.de>; Tue, 31 Aug 2021 15:41:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E186D3FC8F8
+	for <lists+linux-iio@lfdr.de>; Tue, 31 Aug 2021 15:56:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233859AbhHaNmj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 31 Aug 2021 09:42:39 -0400
-Received: from mx07-00178001.pphosted.com ([185.132.182.106]:39998 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233789AbhHaNmj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 Aug 2021 09:42:39 -0400
-Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.1.2/8.16.0.43) with SMTP id 17V921ZZ014213;
-        Tue, 31 Aug 2021 15:40:41 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=selector1;
- bh=xBK3pqlFL97RTUxttGzt1l2EgAMHJw/Nm5xYjtTYw7M=;
- b=CrDRIxtCxVYJHaq/yc9f6cFjObY9OA1OZcmuFIQTXa0NYgzvrLvieOr8U77xZadenCsA
- Pe8oeqlvHKPF8gu317rlicl/gd5A6sbvoNW0Lc7111CX6mybEZ7V86+vo2FrespkfLuJ
- AxYoEATcJW2DdKvDkSgJ3o61HvATIQLDIW5/5Tn65aJ6EH0Q4GCNf6tkwVI2kc38R4fJ
- 2jF/vcSdGpSY45Qz8EsK9L3DMXh5JgpHCgNw2w7lPenjCe1hnFSpU+FKS3ycjxJqlO6y
- UVKvbSxw/tDbrXbh6JcZoMHxnSWHhRy2Ln8ENodH+PqHKnZtKjVKuRYP6u9ki6Uwof6A cg== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 3asheh1hcb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 31 Aug 2021 15:40:40 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 1B40410002A;
-        Tue, 31 Aug 2021 15:40:40 +0200 (CEST)
-Received: from Webmail-eu.st.com (sfhdag2node3.st.com [10.75.127.6])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 0306424692E;
-        Tue, 31 Aug 2021 15:40:40 +0200 (CEST)
-Received: from [10.211.11.146] (10.75.127.44) by SFHDAG2NODE3.st.com
- (10.75.127.6) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 31 Aug
- 2021 15:40:38 +0200
-Subject: Re: [PATCH v16 02/14] counter: stm32-timer-cnt: Provide defines for
- slave mode selection
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>, <jic23@kernel.org>
-CC:     <linux-stm32@st-md-mailman.stormreply.com>,
-        <kernel@pengutronix.de>, <a.fatoum@pengutronix.de>,
-        <kamel.bouhara@bootlin.com>, <gwendal@chromium.org>,
-        <alexandre.belloni@bootlin.com>, <david@lechnology.com>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <syednwaris@gmail.com>,
-        <patrick.havelange@essensium.com>, <fabrice.gasnier@st.com>,
-        <mcoquelin.stm32@gmail.com>, <alexandre.torgue@st.com>,
-        <o.rempel@pengutronix.de>, <jarkko.nikula@linux.intel.com>
-References: <cover.1630031207.git.vilhelm.gray@gmail.com>
- <ad3d9cd7af580d586316d368f74964cbc394f981.1630031207.git.vilhelm.gray@gmail.com>
-From:   Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Message-ID: <ad245fd3-5751-08e6-3f3a-30522822f0af@foss.st.com>
-Date:   Tue, 31 Aug 2021 15:40:37 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S230291AbhHaN5p (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 31 Aug 2021 09:57:45 -0400
+Received: from first.geanix.com ([116.203.34.67]:37286 "EHLO first.geanix.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230222AbhHaN5m (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 31 Aug 2021 09:57:42 -0400
+Received: from zen.. (unknown [185.17.218.86])
+        by first.geanix.com (Postfix) with ESMTPSA id C9B0F440FCA;
+        Tue, 31 Aug 2021 13:56:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
+        t=1630418204; bh=5evtygCYlWSRig59f17vFjjWx8Ya/SNJKoib2KGizYc=;
+        h=From:To:Cc:Subject:Date;
+        b=MD7uxohI63MnQgDZwZarQFcIAJkK8DctQlfifdRWAWLBMug5lsHt/au3CIVpwcGHw
+         uua1D2HzvFOpvDCpNa8z7jvoqrsOq6MsIN2Jt6AWL5HRJF21LRwVAngKCW4Rdek/7c
+         jUTdvsnO6xp2YSzRh3Y5qi5cJ1+Tj+zdNmBP/7Xh6ef2OdUw6Zlu/MRS2CuFRXkWf7
+         HDqGQ2sZM3FXVICICiV2f4uP3/dKRK3VYTSnSvt10B7L7tMIj1c/E7KLgIEnuTnNB3
+         R6gfFLBM/ICi4kn7cSr/hwi7WCAVncfKWyyKYVWKFMziQ4+/8jE1WsmdivclzIV0Sx
+         xhUHyKQRoeMOA==
+From:   Sean Nyekjaer <sean@geanix.com>
+To:     jic23@kernel.org, andy.shevchenko@gmail.com
+Cc:     Sean Nyekjaer <sean@geanix.com>, linux-iio@vger.kernel.org
+Subject: [PATCH v4 1/2] iio: accel: fxls8962af: add threshold event handling
+Date:   Tue, 31 Aug 2021 15:56:37 +0200
+Message-Id: <20210831135638.173276-1-sean@geanix.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-In-Reply-To: <ad3d9cd7af580d586316d368f74964cbc394f981.1630031207.git.vilhelm.gray@gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.75.127.44]
-X-ClientProxiedBy: SFHDAG2NODE2.st.com (10.75.127.5) To SFHDAG2NODE3.st.com
- (10.75.127.6)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
- definitions=2021-08-31_05,2021-08-31_01,2020-04-07_01
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
+        autolearn=disabled version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on 13e2a5895688
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 8/27/21 5:47 AM, William Breathitt Gray wrote:
-> The STM32 timer permits configuration of the counter encoder mode via
-> the slave mode control register (SMCR) slave mode selection (SMS) bits.
-> This patch provides preprocessor defines for the supported encoder
-> modes.
-> 
-> Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-> ---
->  drivers/counter/stm32-timer-cnt.c | 16 ++++++++--------
->  include/linux/mfd/stm32-timers.h  |  4 ++++
->  2 files changed, 12 insertions(+), 8 deletions(-)
+Add event channels that control the creation of motion events.
 
-Hi William,
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+---
+Changes since v1/v2:
+ - Fixed comments fron Andy (Thanks)
+ - Corrected sign mess
 
-You can add my:
-Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Changes since v3:
+ - Switched to absolute comparison mode(We could add ROC in the future
+   if needed.)
+ - Added separate falling and rising events and one enable pr. axis'.
+ - Fixed standby in fxls8962af_write_event_config()
+ - Added read of X_OT_POL and signal a falling or rising event.
 
-Thanks,
-Fabrice
+ I'm currently not using pm_runtime resume/suspend for event handling,
+ maybe we should.
 
-> 
-> diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
-> index 3fb0debd7425..1fbc46f4ee66 100644
-> --- a/drivers/counter/stm32-timer-cnt.c
-> +++ b/drivers/counter/stm32-timer-cnt.c
-> @@ -93,16 +93,16 @@ static int stm32_count_function_get(struct counter_device *counter,
->  	regmap_read(priv->regmap, TIM_SMCR, &smcr);
->  
->  	switch (smcr & TIM_SMCR_SMS) {
-> -	case 0:
-> +	case TIM_SMCR_SMS_SLAVE_MODE_DISABLED:
->  		*function = STM32_COUNT_SLAVE_MODE_DISABLED;
->  		return 0;
-> -	case 1:
-> +	case TIM_SMCR_SMS_ENCODER_MODE_1:
->  		*function = STM32_COUNT_ENCODER_MODE_1;
->  		return 0;
-> -	case 2:
-> +	case TIM_SMCR_SMS_ENCODER_MODE_2:
->  		*function = STM32_COUNT_ENCODER_MODE_2;
->  		return 0;
-> -	case 3:
-> +	case TIM_SMCR_SMS_ENCODER_MODE_3:
->  		*function = STM32_COUNT_ENCODER_MODE_3;
->  		return 0;
->  	default:
-> @@ -119,16 +119,16 @@ static int stm32_count_function_set(struct counter_device *counter,
->  
->  	switch (function) {
->  	case STM32_COUNT_SLAVE_MODE_DISABLED:
-> -		sms = 0;
-> +		sms = TIM_SMCR_SMS_SLAVE_MODE_DISABLED;
->  		break;
->  	case STM32_COUNT_ENCODER_MODE_1:
-> -		sms = 1;
-> +		sms = TIM_SMCR_SMS_ENCODER_MODE_1;
->  		break;
->  	case STM32_COUNT_ENCODER_MODE_2:
-> -		sms = 2;
-> +		sms = TIM_SMCR_SMS_ENCODER_MODE_2;
->  		break;
->  	case STM32_COUNT_ENCODER_MODE_3:
-> -		sms = 3;
-> +		sms = TIM_SMCR_SMS_ENCODER_MODE_3;
->  		break;
->  	default:
->  		return -EINVAL;
-> diff --git a/include/linux/mfd/stm32-timers.h b/include/linux/mfd/stm32-timers.h
-> index f8db83aedb2b..5f5c43fd69dd 100644
-> --- a/include/linux/mfd/stm32-timers.h
-> +++ b/include/linux/mfd/stm32-timers.h
-> @@ -82,6 +82,10 @@
->  #define MAX_TIM_ICPSC		0x3
->  #define TIM_CR2_MMS_SHIFT	4
->  #define TIM_CR2_MMS2_SHIFT	20
-> +#define TIM_SMCR_SMS_SLAVE_MODE_DISABLED	0 /* counts on internal clock when CEN=1 */
-> +#define TIM_SMCR_SMS_ENCODER_MODE_1		1 /* counts TI1FP1 edges, depending on TI2FP2 level */
-> +#define TIM_SMCR_SMS_ENCODER_MODE_2		2 /* counts TI2FP2 edges, depending on TI1FP1 level */
-> +#define TIM_SMCR_SMS_ENCODER_MODE_3		3 /* counts on both TI1FP1 and TI2FP2 edges */
->  #define TIM_SMCR_TS_SHIFT	4
->  #define TIM_BDTR_BKF_MASK	0xF
->  #define TIM_BDTR_BKF_SHIFT(x)	(16 + (x) * 4)
-> 
+ drivers/iio/accel/fxls8962af-core.c | 305 +++++++++++++++++++++++++++-
+ 1 file changed, 302 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
+index f41db9e0249a..857940529e7d 100644
+--- a/drivers/iio/accel/fxls8962af-core.c
++++ b/drivers/iio/accel/fxls8962af-core.c
+@@ -22,6 +22,7 @@
+ #include <linux/regmap.h>
+ 
+ #include <linux/iio/buffer.h>
++#include <linux/iio/events.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/kfifo_buf.h>
+ #include <linux/iio/sysfs.h>
+@@ -30,6 +31,7 @@
+ 
+ #define FXLS8962AF_INT_STATUS			0x00
+ #define FXLS8962AF_INT_STATUS_SRC_BOOT		BIT(0)
++#define FXLS8962AF_INT_STATUS_SRC_SDCD_OT	BIT(4)
+ #define FXLS8962AF_INT_STATUS_SRC_BUF		BIT(5)
+ #define FXLS8962AF_INT_STATUS_SRC_DRDY		BIT(7)
+ #define FXLS8962AF_TEMP_OUT			0x01
+@@ -73,6 +75,7 @@
+ #define FXLS8962AF_ASLP_COUNT_LSB		0x1e
+ 
+ #define FXLS8962AF_INT_EN			0x20
++#define FXLS8962AF_INT_EN_SDCD_OT_EN		BIT(5)
+ #define FXLS8962AF_INT_EN_BUF_EN		BIT(6)
+ #define FXLS8962AF_INT_PIN_SEL			0x21
+ #define FXLS8962AF_INT_PIN_SEL_MASK		GENMASK(7, 0)
+@@ -96,9 +99,21 @@
+ #define FXLS8962AF_ORIENT_THS_REG		0x2c
+ 
+ #define FXLS8962AF_SDCD_INT_SRC1		0x2d
++#define FXLS8962AF_SDCD_INT_SRC1_X_OT		BIT(5)
++#define FXLS8962AF_SDCD_INT_SRC1_X_POL		BIT(4)
++#define FXLS8962AF_SDCD_INT_SRC1_Y_OT		BIT(3)
++#define FXLS8962AF_SDCD_INT_SRC1_Y_POL		BIT(2)
++#define FXLS8962AF_SDCD_INT_SRC1_Z_OT		BIT(1)
++#define FXLS8962AF_SDCD_INT_SRC1_Z_POL		BIT(0)
+ #define FXLS8962AF_SDCD_INT_SRC2		0x2e
+ #define FXLS8962AF_SDCD_CONFIG1			0x2f
++#define FXLS8962AF_SDCD_CONFIG1_Z_OT_EN		BIT(3)
++#define FXLS8962AF_SDCD_CONFIG1_Y_OT_EN		BIT(4)
++#define FXLS8962AF_SDCD_CONFIG1_X_OT_EN		BIT(5)
++#define FXLS8962AF_SDCD_CONFIG1_OT_ELE		BIT(7)
+ #define FXLS8962AF_SDCD_CONFIG2			0x30
++#define FXLS8962AF_SDCD_CONFIG2_SDCD_EN		BIT(7)
++#define FXLS8962AF_SC2_REF_UPDM_AC		GENMASK(6, 5)
+ #define FXLS8962AF_SDCD_OT_DBCNT		0x31
+ #define FXLS8962AF_SDCD_WT_DBCNT		0x32
+ #define FXLS8962AF_SDCD_LTHS_LSB		0x33
+@@ -152,6 +167,9 @@ struct fxls8962af_data {
+ 	int64_t timestamp, old_timestamp;	/* Only used in hw fifo mode. */
+ 	struct iio_mount_matrix orientation;
+ 	u8 watermark;
++	u8 enable_event;
++	u16 lower_thres;
++	u16 upper_thres;
+ };
+ 
+ const struct regmap_config fxls8962af_regmap_conf = {
+@@ -238,7 +256,7 @@ static int fxls8962af_get_out(struct fxls8962af_data *data,
+ 	}
+ 
+ 	ret = regmap_bulk_read(data->regmap, chan->address,
+-			       &raw_val, (chan->scan_type.storagebits / 8));
++			       &raw_val, sizeof(data->lower_thres));
+ 
+ 	if (!is_active)
+ 		fxls8962af_power_off(data);
+@@ -451,6 +469,15 @@ static int fxls8962af_write_raw(struct iio_dev *indio_dev,
+ 	}
+ }
+ 
++static int fxls8962af_event_setup(struct fxls8962af_data *data, int state)
++{
++	/* Enable wakeup interrupt */
++	int mask = FXLS8962AF_INT_EN_SDCD_OT_EN;
++	int value = state ? mask : 0;
++
++	return regmap_update_bits(data->regmap, FXLS8962AF_INT_EN, mask, value);
++}
++
+ static int fxls8962af_set_watermark(struct iio_dev *indio_dev, unsigned val)
+ {
+ 	struct fxls8962af_data *data = iio_priv(indio_dev);
+@@ -463,6 +490,221 @@ static int fxls8962af_set_watermark(struct iio_dev *indio_dev, unsigned val)
+ 	return 0;
+ }
+ 
++static int __fxls8962af_set_thresholds(struct fxls8962af_data *data,
++				       const struct iio_chan_spec *chan,
++				       enum iio_event_direction dir,
++				       int val)
++{
++	switch (dir) {
++	case IIO_EV_DIR_FALLING:
++		data->lower_thres = val;
++		return regmap_bulk_write(data->regmap, FXLS8962AF_SDCD_LTHS_LSB,
++				&data->lower_thres, sizeof(data->lower_thres));
++	case IIO_EV_DIR_RISING:
++		data->upper_thres = val;
++		return regmap_bulk_write(data->regmap, FXLS8962AF_SDCD_UTHS_LSB,
++				&data->upper_thres, sizeof(data->upper_thres));
++	default:
++		return -EINVAL;
++	}
++}
++
++static int fxls8962af_read_event(struct iio_dev *indio_dev,
++				 const struct iio_chan_spec *chan,
++				 enum iio_event_type type,
++				 enum iio_event_direction dir,
++				 enum iio_event_info info,
++				 int *val, int *val2)
++{
++	struct fxls8962af_data *data = iio_priv(indio_dev);
++	int ret;
++
++	if (type != IIO_EV_TYPE_THRESH)
++		return -EINVAL;
++
++	switch (dir) {
++	case IIO_EV_DIR_FALLING:
++		ret = regmap_bulk_read(data->regmap, FXLS8962AF_SDCD_LTHS_LSB,
++				       &data->lower_thres, sizeof(data->lower_thres));
++		if (ret)
++			return ret;
++
++		*val = sign_extend32(data->lower_thres, chan->scan_type.realbits - 1);
++		break;
++	case IIO_EV_DIR_RISING:
++		ret = regmap_bulk_read(data->regmap, FXLS8962AF_SDCD_UTHS_LSB,
++				       &data->upper_thres, sizeof(data->upper_thres));
++		if (ret)
++			return ret;
++
++		*val = sign_extend32(data->upper_thres, chan->scan_type.realbits - 1);
++		break;
++	default:
++		return -EINVAL;
++	}
++
++
++	return IIO_VAL_INT;
++}
++
++static int fxls8962af_write_event(struct iio_dev *indio_dev,
++				  const struct iio_chan_spec *chan,
++				  enum iio_event_type type,
++				  enum iio_event_direction dir,
++				  enum iio_event_info info,
++				  int val, int val2)
++{
++	struct fxls8962af_data *data = iio_priv(indio_dev);
++	int ret, val_masked;
++
++	if (type != IIO_EV_TYPE_THRESH)
++		return -EINVAL;
++
++	if (val < -2048 || val > 2047)
++		return -EINVAL;
++
++	if (data->enable_event)
++		return -EBUSY;
++
++	val_masked = val & GENMASK(11, 0);
++	if (fxls8962af_is_active(data)) {
++		ret = fxls8962af_standby(data);
++		if (ret)
++			return ret;
++
++		ret = __fxls8962af_set_thresholds(data, chan, dir, val_masked);
++		if (ret)
++			return ret;
++
++		ret = fxls8962af_active(data);
++	} else {
++		return __fxls8962af_set_thresholds(data, chan, dir, val_masked);
++	}
++
++	return ret;
++}
++
++static int
++fxls8962af_read_event_config(struct iio_dev *indio_dev,
++			     const struct iio_chan_spec *chan,
++			     enum iio_event_type type,
++			     enum iio_event_direction dir)
++{
++	struct fxls8962af_data *data = iio_priv(indio_dev);
++
++	if (type != IIO_EV_TYPE_THRESH)
++		return -EINVAL;
++
++	switch (chan->channel2) {
++	case IIO_MOD_X:
++		return !!(FXLS8962AF_SDCD_CONFIG1_X_OT_EN & data->enable_event);
++	case IIO_MOD_Y:
++		return !!(FXLS8962AF_SDCD_CONFIG1_Y_OT_EN & data->enable_event);
++	case IIO_MOD_Z:
++		return !!(FXLS8962AF_SDCD_CONFIG1_Z_OT_EN & data->enable_event);
++	default:
++		return -EINVAL;
++	}
++}
++
++static int
++fxls8962af_write_event_config(struct iio_dev *indio_dev,
++			      const struct iio_chan_spec *chan,
++			      enum iio_event_type type,
++			      enum iio_event_direction dir, int state)
++{
++	struct fxls8962af_data *data = iio_priv(indio_dev);
++	u8 enable_event, enable_bits;
++	int ret, value;
++
++	if (type != IIO_EV_TYPE_THRESH)
++		return -EINVAL;
++
++	switch (chan->channel2) {
++	case IIO_MOD_X:
++		enable_bits = FXLS8962AF_SDCD_CONFIG1_X_OT_EN;
++		break;
++	case IIO_MOD_Y:
++		enable_bits = FXLS8962AF_SDCD_CONFIG1_Y_OT_EN;
++		break;
++	case IIO_MOD_Z:
++		enable_bits = FXLS8962AF_SDCD_CONFIG1_Z_OT_EN;
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	if (state)
++		enable_event = data->enable_event | enable_bits;
++	else
++		enable_event = data->enable_event & ~enable_bits;
++
++	if (data->enable_event == enable_event)
++		return 0;
++
++	fxls8962af_standby(data);
++
++	/* Enable events */
++	value = enable_event | FXLS8962AF_SDCD_CONFIG1_OT_ELE;
++	ret = regmap_write(data->regmap, FXLS8962AF_SDCD_CONFIG1, value);
++	if (ret)
++		return ret;
++
++	/*
++	 * Enable update of SDCD_REF_X/Y/Z values with the current decimated and
++	 * trimmed X/Y/Z acceleration input data. This allows for acceleration
++	 * slope detection with Data(n) to Data(n–1) always used as the input
++	 * to the window comparator.
++	 */
++	value = enable_event ?
++		FXLS8962AF_SDCD_CONFIG2_SDCD_EN | FXLS8962AF_SC2_REF_UPDM_AC :
++		0x00;
++
++	ret = regmap_write(data->regmap, FXLS8962AF_SDCD_CONFIG2, value);
++	if (ret)
++		return ret;
++
++	ret = fxls8962af_event_setup(data, state);
++	if (ret)
++		return ret;
++
++	data->enable_event = enable_event;
++
++	if (data->enable_event) {
++		fxls8962af_active(data);
++		ret = fxls8962af_power_on(data);
++	} else {
++		ret = iio_device_claim_direct_mode(indio_dev);
++		if (ret)
++			return ret;
++
++		if (!iio_buffer_enabled(indio_dev))
++			ret = fxls8962af_power_off(data);
++
++		iio_device_release_direct_mode(indio_dev);
++	}
++
++	return ret;
++}
++
++static const struct iio_event_spec fxls8962af_event[] = {
++	{
++		.type = IIO_EV_TYPE_THRESH,
++		.dir = IIO_EV_DIR_EITHER,
++		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
++	},
++	{
++		.type = IIO_EV_TYPE_THRESH,
++		.dir = IIO_EV_DIR_FALLING,
++		.mask_separate = BIT(IIO_EV_INFO_VALUE),
++	},
++	{
++		.type = IIO_EV_TYPE_THRESH,
++		.dir = IIO_EV_DIR_RISING,
++		.mask_separate = BIT(IIO_EV_INFO_VALUE),
++	},
++};
++
+ #define FXLS8962AF_CHANNEL(axis, reg, idx) { \
+ 	.type = IIO_ACCEL, \
+ 	.address = reg, \
+@@ -481,6 +723,8 @@ static int fxls8962af_set_watermark(struct iio_dev *indio_dev, unsigned val)
+ 		.shift = 4, \
+ 		.endianness = IIO_BE, \
+ 	}, \
++	.event_spec = fxls8962af_event, \
++	.num_event_specs =  ARRAY_SIZE(fxls8962af_event), \
+ }
+ 
+ #define FXLS8962AF_TEMP_CHANNEL { \
+@@ -522,6 +766,10 @@ static const struct iio_info fxls8962af_info = {
+ 	.read_raw = &fxls8962af_read_raw,
+ 	.write_raw = &fxls8962af_write_raw,
+ 	.write_raw_get_fmt = fxls8962af_write_raw_get_fmt,
++	.read_event_value = fxls8962af_read_event,
++	.write_event_value = fxls8962af_write_event,
++	.read_event_config = fxls8962af_read_event_config,
++	.write_event_config = fxls8962af_write_event_config,
+ 	.read_avail = fxls8962af_read_avail,
+ 	.hwfifo_set_watermark = fxls8962af_set_watermark,
+ };
+@@ -605,7 +853,8 @@ static int fxls8962af_buffer_predisable(struct iio_dev *indio_dev)
+ 
+ 	ret = __fxls8962af_fifo_set_mode(data, false);
+ 
+-	fxls8962af_active(data);
++	if (data->enable_event)
++		fxls8962af_active(data);
+ 
+ 	return ret;
+ }
+@@ -614,7 +863,10 @@ static int fxls8962af_buffer_postdisable(struct iio_dev *indio_dev)
+ {
+ 	struct fxls8962af_data *data = iio_priv(indio_dev);
+ 
+-	return fxls8962af_power_off(data);
++	if (!data->enable_event)
++		fxls8962af_power_off(data);
++
++	return 0;
+ }
+ 
+ static const struct iio_buffer_setup_ops fxls8962af_buffer_ops = {
+@@ -725,6 +977,45 @@ static int fxls8962af_fifo_flush(struct iio_dev *indio_dev)
+ 	return count;
+ }
+ 
++static int fxls8962af_event_interrupt(struct iio_dev *indio_dev)
++{
++	struct fxls8962af_data *data = iio_priv(indio_dev);
++	s64 ts = iio_get_time_ns(indio_dev);
++	unsigned int reg;
++	u64 ev_code;
++	int ret;
++
++	ret = regmap_read(data->regmap, FXLS8962AF_SDCD_INT_SRC1, &reg);
++	if (ret)
++		return ret;
++
++	if (reg & FXLS8962AF_SDCD_INT_SRC1_X_OT) {
++		ev_code = reg & FXLS8962AF_SDCD_INT_SRC1_X_POL ?
++			IIO_EV_DIR_RISING : IIO_EV_DIR_FALLING;
++		iio_push_event(indio_dev,
++				IIO_MOD_EVENT_CODE(IIO_ACCEL, 0, IIO_MOD_X,
++					IIO_EV_TYPE_THRESH, ev_code), ts);
++	}
++
++	if (reg & FXLS8962AF_SDCD_INT_SRC1_Y_OT) {
++		ev_code = reg & FXLS8962AF_SDCD_INT_SRC1_Y_POL ?
++			IIO_EV_DIR_RISING : IIO_EV_DIR_FALLING;
++		iio_push_event(indio_dev,
++				IIO_MOD_EVENT_CODE(IIO_ACCEL, 0, IIO_MOD_X,
++					IIO_EV_TYPE_THRESH, ev_code), ts);
++	}
++
++	if (reg & FXLS8962AF_SDCD_INT_SRC1_Z_OT) {
++		ev_code = reg & FXLS8962AF_SDCD_INT_SRC1_Z_POL ?
++			IIO_EV_DIR_RISING : IIO_EV_DIR_FALLING;
++		iio_push_event(indio_dev,
++				IIO_MOD_EVENT_CODE(IIO_ACCEL, 0, IIO_MOD_X,
++					IIO_EV_TYPE_THRESH, ev_code), ts);
++	}
++
++	return 0;
++}
++
+ static irqreturn_t fxls8962af_interrupt(int irq, void *p)
+ {
+ 	struct iio_dev *indio_dev = p;
+@@ -744,6 +1035,14 @@ static irqreturn_t fxls8962af_interrupt(int irq, void *p)
+ 		return IRQ_HANDLED;
+ 	}
+ 
++	if (reg & FXLS8962AF_INT_STATUS_SRC_SDCD_OT) {
++		ret = fxls8962af_event_interrupt(indio_dev);
++		if (ret < 0)
++			return IRQ_NONE;
++
++		return IRQ_HANDLED;
++	}
++
+ 	return IRQ_NONE;
+ }
+ 
+-- 
+2.33.0
+

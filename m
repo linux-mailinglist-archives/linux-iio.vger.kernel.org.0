@@ -2,802 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 10CA23FD85D
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Sep 2021 13:03:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A6873FDA5B
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Sep 2021 15:16:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240340AbhIALEF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 1 Sep 2021 07:04:05 -0400
-Received: from protonic.xs4all.nl ([83.163.252.89]:60488 "EHLO
-        protonic.xs4all.nl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240071AbhIALEB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Sep 2021 07:04:01 -0400
-Received: from ert768.prtnl (ert768.prtnl [192.168.224.11])
-        by sparta.prtnl (Postfix) with ESMTP id 0662844A0250;
-        Wed,  1 Sep 2021 13:03:02 +0200 (CEST)
-From:   Roan van Dijk <roan@protonic.nl>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Tomasz Duszynski <tomasz.duszynski@octakon.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, david@protonic.nl,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Roan van Dijk <roan@protonic.nl>
-Subject: [PATCH v1 3/3] drivers: iio: chemical: Add support for Sensirion SCD4x CO2 sensor
-Date:   Wed,  1 Sep 2021 12:59:11 +0200
-Message-Id: <20210901105911.178646-4-roan@protonic.nl>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210901105911.178646-1-roan@protonic.nl>
-References: <20210901105911.178646-1-roan@protonic.nl>
+        id S244924AbhIAMcC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Sep 2021 08:32:02 -0400
+Received: from esa.microchip.iphmx.com ([68.232.153.233]:55485 "EHLO
+        esa.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244585AbhIAMbV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Sep 2021 08:31:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1630499425; x=1662035425;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=b7KC/3OW3RV6bU+IXe2jATbGjJZFaZjUrZviOJCwN9A=;
+  b=ETiMx2x4S74ZLNSJeKduMKhVbrApLVt4mW847/yN8ZJBEZZlyEE33WW3
+   Ot9/bcOdBoXlwfz1Gqhf4AWi5BG+jqAj8+0PJpHH39A8qk+Vu50qqs/7B
+   a7YGYyqPBYJ4/gMnYoNsbPYuSBiFQz68j0cstl+LSGF2FnseR+fbcvw6q
+   uZiNbF9iriieWCAx9TA+YpDD2mudcwycz+FNnCq7yOIUxmi+TjBmBLmTh
+   vFM7FKyK+W9hxTLCFq+kFf8gzxpmJy6WAxPy9Pk0eYyyOAa5vwozcZCt8
+   O+ywPszi4w8WGxggmGlLa27I2MkfqIfTBeKxMgMGQkU/4xyiWqBA0OxMA
+   g==;
+IronPort-SDR: Q90feKacTf3jbK8/LWWyguioi8F6sswgm8gwsZ5LJ9E/MLfSj2PeISyDJxX1AE/k8vMNRbYLl8
+ ciGNFI1ShiNb2U6Ml6soLkwARds8O7CeND0XCaPVbDw/t1Vn7UbWl+Ba/AZsyIE4g0CHcNfelP
+ T/rif3KRcKA81f52tt4sfX+zzdwv1GoUGF0evqiNecpP8bV5Ex6/bZ7VPUl5DL9+sRsqyi6eMC
+ q8kvDFxrVG0lSc2MfosT3Hej5z/4dMhXJeWxI+8rcdycIuXZzkoXj0z9msD0mmKxc4HjyisPGw
+ MjwasXYU/hblac7RrTs0VZud
+X-IronPort-AV: E=Sophos;i="5.84,369,1620716400"; 
+   d="scan'208";a="134969763"
+Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 01 Sep 2021 05:30:24 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.14; Wed, 1 Sep 2021 05:30:24 -0700
+Received: from ROB-ULT-M18282.microchip.com (10.10.115.15) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
+ 15.1.2176.14 via Frontend Transport; Wed, 1 Sep 2021 05:30:22 -0700
+From:   Eugen Hristev <eugen.hristev@microchip.com>
+To:     <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <nicolas.ferre@microchip.com>
+CC:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <robh+dt@kernel.org>,
+        <ludovic.desroches@microchip.com>,
+        Eugen Hristev <eugen.hristev@microchip.com>
+Subject: [PATCH v3 00/10] iio: adc: at91-sama5d2_adc: add support for sama7g5
+Date:   Wed, 1 Sep 2021 15:30:03 +0300
+Message-ID: <20210901123013.329792-1-eugen.hristev@microchip.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This is a driver for the SCD4x CO2 sensor from Sensirion. The sensor is
-able to measure CO2 concentration, temperature and relative humdity.
-The sensor uses a photoacoustic principle for measuring CO2 concentration.
-An I2C interface is supported by this driver in order to communicate with
-the sensor.
 
-Signed-off-by: Roan van Dijk <roan@protonic.nl>
----
- drivers/iio/chemical/Kconfig  |  13 +
- drivers/iio/chemical/Makefile |   1 +
- drivers/iio/chemical/scd4x.c  | 708 ++++++++++++++++++++++++++++++++++
- 3 files changed, 722 insertions(+)
- create mode 100644 drivers/iio/chemical/scd4x.c
+Hi,
 
-diff --git a/drivers/iio/chemical/Kconfig b/drivers/iio/chemical/Kconfig
-index a4920646e9be..ce9ec81d4993 100644
---- a/drivers/iio/chemical/Kconfig
-+++ b/drivers/iio/chemical/Kconfig
-@@ -118,6 +118,19 @@ config SCD30_SERIAL
- 	  To compile this driver as a module, choose M here: the module will
- 	  be called scd30_serial.
- 
-+config SCD4X
-+	tristate "SCD4X carbon dioxide sensor driver"
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
-+	depends on I2C
-+	select CRC8
-+	help
-+	  Say Y here to build support for the Sensirion SCD4X sensor with cabon
-+	  dioxide, relative humidity and temperature sensing capabilities
-+
-+	  To compile this driver as a module, choose M here: the module will
-+	  be called scd4x.
-+
- config SENSIRION_SGP30
- 	tristate "Sensirion SGPxx gas sensors"
- 	depends on I2C
-diff --git a/drivers/iio/chemical/Makefile b/drivers/iio/chemical/Makefile
-index 4898690cc155..3a766dd23020 100644
---- a/drivers/iio/chemical/Makefile
-+++ b/drivers/iio/chemical/Makefile
-@@ -15,6 +15,7 @@ obj-$(CONFIG_PMS7003) += pms7003.o
- obj-$(CONFIG_SCD30_CORE) += scd30_core.o
- obj-$(CONFIG_SCD30_I2C) += scd30_i2c.o
- obj-$(CONFIG_SCD30_SERIAL) += scd30_serial.o
-+obj-$(CONFIG_SCD4X) += scd4x.o
- obj-$(CONFIG_SENSIRION_SGP30)	+= sgp30.o
- obj-$(CONFIG_SPS30) += sps30.o
- obj-$(CONFIG_SPS30_I2C) += sps30_i2c.o
-diff --git a/drivers/iio/chemical/scd4x.c b/drivers/iio/chemical/scd4x.c
-new file mode 100644
-index 000000000000..6ec8a5b5d901
---- /dev/null
-+++ b/drivers/iio/chemical/scd4x.c
-@@ -0,0 +1,708 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Sensirion SCD4X carbon dioxide sensor i2c driver
-+ *
-+ * Copyright (C) 2021 Protonic Holland
-+ * Author: Roan van Dijk <roan@protonic.nl>
-+ *
-+ * I2C slave address: 0x62
-+ *
-+ * Datasheets:
-+ * https://www.sensirion.com/file/datasheet_scd4x
-+ */
-+
-+#include <asm/unaligned.h>
-+#include <linux/crc8.h>
-+#include <linux/delay.h>
-+#include <linux/device.h>
-+#include <linux/i2c.h>
-+#include <linux/iio/buffer.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/sysfs.h>
-+#include <linux/iio/trigger.h>
-+#include <linux/iio/trigger_consumer.h>
-+#include <linux/iio/triggered_buffer.h>
-+#include <linux/iio/types.h>
-+#include <linux/kernel.h>
-+#include <linux/mutex.h>
-+#include <linux/string.h>
-+#include <linux/sysfs.h>
-+#include <linux/types.h>
-+
-+#define SCD4X_CRC8_POLYNOMIAL 0x31
-+#define SCD4X_TIMEOUT_ERR 1000
-+#define SCD4X_READ_BUF_SIZE 9
-+#define SCD4X_COMMAND_BUF_SIZE 2
-+#define SCD4X_WRITE_BUF_SIZE 5
-+#define SCD4X_FRC_MIN_PPM 400
-+#define SCD4X_FRC_MAX_PPM 2000
-+
-+/*Commands SCD4X*/
-+enum scd4x_cmd {
-+	CMD_START_MEAS          = 0x21b1,
-+	CMD_READ_MEAS           = 0xec05,
-+	CMD_STOP_MEAS           = 0x3f86,
-+	CMD_SET_TEMP_OFFSET     = 0x241d,
-+	CMD_GET_TEMP_OFFSET     = 0x2318,
-+	CMD_FRC                 = 0x362f,
-+	CMD_SET_ASC             = 0x2416,
-+	CMD_GET_ASC             = 0x2313,
-+	CMD_GET_DATA_READY      = 0xe4b8,
-+};
-+
-+enum scd4x_channel_idx {
-+	SCD4X_CO2,
-+	SCD4X_TEMP,
-+	SCD4X_HR,
-+};
-+
-+struct scd4x_state {
-+	struct i2c_client *client;
-+	struct mutex lock;
-+	struct device *dev;
-+	struct regulator *vdd;
-+
-+	int irq;
-+	uint16_t meas[3];
-+};
-+
-+DECLARE_CRC8_TABLE(scd4x_crc8_table);
-+
-+static int scd4x_i2c_xfer(struct scd4x_state *state, char *txbuf, int txsize,
-+				char *rxbuf, int rxsize)
-+{
-+	struct i2c_client *client = to_i2c_client(state->dev);
-+	int ret;
-+
-+	ret = i2c_master_send(client, txbuf, txsize);
-+
-+	if (ret < 0)
-+		return ret;
-+	if (ret != txsize)
-+		return -EIO;
-+
-+	if (rxsize == 0)
-+		return 0;
-+
-+	ret = i2c_master_recv(client, rxbuf, rxsize);
-+	if (ret < 0)
-+		return ret;
-+	if (ret != rxsize)
-+		return -EIO;
-+
-+	return 0;
-+}
-+
-+static int scd4x_send_command(struct scd4x_state *state, enum scd4x_cmd cmd)
-+{
-+	char buf[SCD4X_COMMAND_BUF_SIZE];
-+	int ret;
-+
-+	/*
-+	 * Measurement needs to be stopped before sending commands.
-+	 * Except stop and start command.
-+	 */
-+	if ((cmd != CMD_STOP_MEAS) & (cmd != CMD_START_MEAS)) {
-+
-+		ret = scd4x_send_command(state, CMD_STOP_MEAS);
-+		if (ret)
-+			return ret;
-+
-+		/* execution time for stopping measurement */
-+		msleep_interruptible(500);
-+	}
-+
-+	put_unaligned_be16(cmd, buf);
-+	ret = scd4x_i2c_xfer(state, buf, 2, buf, 0);
-+	if (ret)
-+		return ret;
-+
-+	if ((cmd != CMD_STOP_MEAS) & (cmd != CMD_START_MEAS)) {
-+		ret = scd4x_send_command(state, CMD_START_MEAS);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int scd4x_read(struct scd4x_state *state, enum scd4x_cmd cmd,
-+			void *response, int byte_cnt)
-+{
-+	char buf[SCD4X_READ_BUF_SIZE];
-+	char *rsp = response;
-+	int i, ret;
-+	char crc;
-+
-+	/*
-+	 * Measurement needs to be stopped before sending commands.
-+	 * Except for reading measurement and data ready command.
-+	 */
-+	if ((cmd != CMD_GET_DATA_READY) & (cmd != CMD_READ_MEAS)) {
-+		ret = scd4x_send_command(state, CMD_STOP_MEAS);
-+		if (ret)
-+			return ret;
-+
-+		/* execution time for stopping measurement */
-+		msleep_interruptible(500);
-+	}
-+
-+	put_unaligned_be16(cmd, buf);
-+	ret = scd4x_i2c_xfer(state, buf, 2, buf, byte_cnt);
-+	if (ret)
-+		return ret;
-+
-+	for (i = 0; i < byte_cnt; i += 3) {
-+		crc = crc8(scd4x_crc8_table, buf + i, 2, CRC8_INIT_VALUE);
-+		if (crc != buf[i + 2]) {
-+			dev_err(state->dev, "CRC error\n");
-+			return -EIO;
-+		}
-+
-+		*rsp++ = buf[i];
-+		*rsp++ = buf[i + 1];
-+	}
-+
-+	/* start measurement */
-+	if ((cmd != CMD_GET_DATA_READY) & (cmd != CMD_READ_MEAS)) {
-+		ret = scd4x_send_command(state, CMD_START_MEAS);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int scd4x_write(struct scd4x_state *state, enum scd4x_cmd cmd, uint16_t arg)
-+{
-+	char buf[SCD4X_WRITE_BUF_SIZE];
-+	int ret;
-+	char crc;
-+
-+	put_unaligned_be16(cmd, buf);
-+	put_unaligned_be16(arg, buf + 2);
-+
-+	crc = crc8(scd4x_crc8_table, buf + 2, 2, CRC8_INIT_VALUE);
-+	buf[4] = crc;
-+
-+	/* measurement needs to be stopped before sending commands */
-+	ret = scd4x_send_command(state, CMD_STOP_MEAS);
-+	if (ret)
-+		return ret;
-+
-+	/* execution time */
-+	msleep_interruptible(500);
-+
-+	ret = scd4x_i2c_xfer(state, buf, SCD4X_WRITE_BUF_SIZE, buf, 0);
-+	if (ret)
-+		return ret;
-+
-+	/* start measurement, except for forced calibration command */
-+	if (cmd != CMD_FRC) {
-+		ret = scd4x_send_command(state, CMD_START_MEAS);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int scd4x_write_and_fetch(struct scd4x_state *state, enum scd4x_cmd cmd,
-+				uint16_t arg, void *response, int byte_cnt)
-+{
-+	struct i2c_client *client = to_i2c_client(state->dev);
-+	char buf[SCD4X_READ_BUF_SIZE];
-+	char *rsp = response;
-+	int i, ret;
-+	char crc;
-+
-+	ret = scd4x_write(state, CMD_FRC, arg);
-+	if (ret) {
-+		scd4x_send_command(state, CMD_START_MEAS);
-+		return ret;
-+	}
-+
-+	/* Execution time */
-+	msleep_interruptible(400);
-+
-+	ret = i2c_master_recv(client, buf, byte_cnt);
-+	if (ret < 0)
-+		return ret;
-+	if (ret != byte_cnt)
-+		return -EIO;
-+
-+	for (i = 0; i < byte_cnt; i += 3) {
-+		crc = crc8(scd4x_crc8_table, buf + i, 2, CRC8_INIT_VALUE);
-+		if (crc != buf[i + 2]) {
-+			dev_err(state->dev, "CRC error\n");
-+			scd4x_send_command(state, CMD_START_MEAS);
-+			return -EIO;
-+		}
-+
-+		*rsp++ = buf[i];
-+		*rsp++ = buf[i + 1];
-+	}
-+
-+	ret = scd4x_send_command(state, CMD_START_MEAS);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int scd4x_read_meas(struct scd4x_state *state)
-+{
-+	int i, ret;
-+
-+	ret = scd4x_read(state, CMD_READ_MEAS, state->meas, 9);
-+	if (ret)
-+		return ret;
-+
-+	for (i = 0; i < ARRAY_SIZE(state->meas); i++)
-+		state->meas[i] = be16_to_cpu(state->meas[i]);
-+	/*
-+	 * Temperature and humidity values are convertered and scaled to
-+	 * milli deg C and milli percent.
-+	 */
-+	state->meas[SCD4X_TEMP] = ((175 * state->meas[SCD4X_TEMP]/65536) - 45)*1000;
-+	state->meas[SCD4X_HR] = ((100 * state->meas[SCD4X_HR]/65536))*1000;
-+
-+	return 0;
-+}
-+
-+static int scd4x_wait_meas_poll(struct scd4x_state *state)
-+{
-+	int tries = 6;
-+	int ret;
-+
-+	do {
-+		uint16_t val;
-+
-+		ret = scd4x_read(state, CMD_GET_DATA_READY, &val, 3);
-+		if (ret)
-+			return -EIO;
-+		val = be16_to_cpu(val);
-+
-+		/* new measurement available */
-+		if (val & 0x7FF)
-+			break;
-+
-+		msleep_interruptible(1000);
-+	} while (--tries);
-+
-+	if (tries == 0) {
-+		/* try to start sensor on timeout */
-+		ret = scd4x_send_command(state, CMD_START_MEAS);
-+		if (ret)
-+			dev_err(state->dev, "failed to start measurement: %d\n", ret);
-+	}
-+
-+	return tries ? 0 : -ETIMEDOUT;
-+}
-+
-+static int scd4x_read_poll(struct scd4x_state *state)
-+{
-+	int ret;
-+
-+	ret = scd4x_wait_meas_poll(state);
-+	if (ret)
-+		return ret;
-+
-+	return scd4x_read_meas(state);
-+}
-+
-+static int scd4x_read_raw(struct iio_dev *indio_dev,
-+			struct iio_chan_spec const *chan, int *val,
-+			int *val2, long mask)
-+{
-+	struct scd4x_state *state = iio_priv(indio_dev);
-+	int ret;
-+	uint16_t tmp;
-+
-+	mutex_lock(&state->lock);
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+	case IIO_CHAN_INFO_PROCESSED:
-+		ret = iio_device_claim_direct_mode(indio_dev);
-+		if (ret)
-+			break;
-+
-+		ret = scd4x_read_poll(state);
-+		if (ret) {
-+			iio_device_release_direct_mode(indio_dev);
-+			break;
-+		}
-+		*val = state->meas[chan->address];
-+		iio_device_release_direct_mode(indio_dev);
-+		ret = IIO_VAL_INT;
-+		break;
-+	case IIO_CHAN_INFO_CALIBBIAS:
-+		ret = scd4x_read(state, CMD_GET_TEMP_OFFSET, &tmp, 3);
-+		if (ret)
-+			break;
-+		*val = 175000 * be16_to_cpu(tmp) / 65536;
-+		ret = IIO_VAL_INT;
-+		break;
-+	}
-+	mutex_unlock(&state->lock);
-+
-+	return ret;
-+}
-+
-+static int scd4x_write_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
-+				int val, int val2, long mask)
-+{
-+	struct scd4x_state *state = iio_priv(indio_dev);
-+	int ret = 0;
-+
-+	mutex_lock(&state->lock);
-+	switch (mask) {
-+	case IIO_CHAN_INFO_CALIBBIAS:
-+		val = val * 65536 / 175000;
-+		ret = scd4x_write(state, CMD_SET_TEMP_OFFSET, val);
-+		if (ret)
-+			break;
-+	}
-+	mutex_unlock(&state->lock);
-+
-+	return ret;
-+}
-+
-+static ssize_t calibration_auto_enable_show(struct device *dev,
-+			struct device_attribute *attr, char *buf)
-+{
-+	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-+	struct scd4x_state *state = iio_priv(indio_dev);
-+	int ret;
-+	uint16_t val;
-+
-+	mutex_lock(&state->lock);
-+	ret = scd4x_read(state, CMD_GET_ASC, &val, 3);
-+	mutex_unlock(&state->lock);
-+	if (ret)
-+		dev_err(dev, "failed to read automatic calibration");
-+
-+	val = be16_to_cpu(val);
-+
-+	return ret ?: sprintf(buf, "%d\n", val);
-+}
-+
-+static ssize_t calibration_auto_enable_store(struct device *dev,
-+					struct device_attribute *attr,
-+					const char *buf, size_t len)
-+{
-+	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-+	struct scd4x_state *state = iio_priv(indio_dev);
-+	bool val;
-+	int ret;
-+	uint16_t value;
-+
-+	ret = kstrtobool(buf, &val);
-+	if (ret)
-+		return ret;
-+
-+	value = val;
-+
-+	mutex_lock(&state->lock);
-+	ret = scd4x_write(state, CMD_SET_ASC, value);
-+	mutex_unlock(&state->lock);
-+	if (ret)
-+		dev_err(dev, "failed to set automatic calibration");
-+
-+	return ret ?: len;
-+}
-+
-+static ssize_t calibration_forced_value_store(struct device *dev,
-+					struct device_attribute *attr,
-+					const char *buf, size_t len)
-+{
-+	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-+	struct scd4x_state *state = iio_priv(indio_dev);
-+	uint16_t val, arg;
-+	int ret;
-+
-+	ret = kstrtou16(buf, 0, &arg);
-+	if (ret)
-+		return ret;
-+
-+	if (arg < SCD4X_FRC_MIN_PPM || arg > SCD4X_FRC_MAX_PPM)
-+		return -EINVAL;
-+
-+	mutex_lock(&state->lock);
-+	ret = scd4x_write_and_fetch(state, CMD_FRC, arg, &val, 3);
-+	mutex_unlock(&state->lock);
-+
-+	if (val == 0xff) {
-+		dev_err(state->dev, "forced calibration has failed");
-+		return -EINVAL;
-+	}
-+
-+	return ret ?: len;
-+}
-+
-+static IIO_DEVICE_ATTR_RW(calibration_auto_enable, 0);
-+static IIO_DEVICE_ATTR_WO(calibration_forced_value, 0);
-+
-+static struct attribute *scd4x_attrs[] = {
-+	&iio_dev_attr_calibration_auto_enable.dev_attr.attr,
-+	&iio_dev_attr_calibration_forced_value.dev_attr.attr,
-+	NULL
-+};
-+
-+static const struct attribute_group scd4x_attr_group = {
-+	.attrs = scd4x_attrs,
-+};
-+static const struct iio_info scd4x_info = {
-+	.attrs = &scd4x_attr_group,
-+	.read_raw = scd4x_read_raw,
-+	.write_raw = scd4x_write_raw,
-+};
-+
-+static const struct iio_chan_spec scd4x_channels[] = {
-+	{
-+		.type = IIO_CONCENTRATION,
-+		.channel2 = IIO_MOD_CO2,
-+		.modified = 1,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-+		.address = SCD4X_CO2,
-+		.scan_index = SCD4X_CO2,
-+		.scan_type = {
-+			.sign = 'u',
-+			.realbits = 16,
-+			.storagebits = 16,
-+			.endianness = IIO_BE,
-+		},
-+	},
-+	{
-+		.type = IIO_TEMP,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED)|
-+				      BIT(IIO_CHAN_INFO_CALIBBIAS),
-+		.address = SCD4X_TEMP,
-+		.scan_index = SCD4X_TEMP,
-+		.scan_type = {
-+			.sign = 'u',
-+			.realbits = 16,
-+			.storagebits = 16,
-+			.endianness = IIO_BE,
-+		},
-+	},
-+	{
-+		.type = IIO_HUMIDITYRELATIVE,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
-+		.address = SCD4X_HR,
-+		.scan_index = SCD4X_HR,
-+		.scan_type = {
-+			.sign = 'u',
-+			.realbits = 16,
-+			.storagebits = 16,
-+			.endianness = IIO_BE,
-+		},
-+	},
-+};
-+
-+static int __maybe_unused scd4x_suspend(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct scd4x_state *state  = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = scd4x_send_command(state, CMD_STOP_MEAS);
-+	if (ret)
-+		return ret;
-+
-+	return regulator_disable(state->vdd);
-+}
-+
-+static int __maybe_unused scd4x_resume(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct scd4x_state *state = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = regulator_enable(state->vdd);
-+	if (ret)
-+		return ret;
-+
-+	return scd4x_send_command(state, CMD_START_MEAS);
-+}
-+
-+static __maybe_unused SIMPLE_DEV_PM_OPS(scd4x_pm_ops, scd4x_suspend, scd4x_resume);
-+
-+static void scd4x_stop_meas(void *data)
-+{
-+	struct scd4x_state *state = data;
-+
-+	scd4x_send_command(state, CMD_STOP_MEAS);
-+}
-+
-+static void scd4x_disable_regulator(void *data)
-+{
-+	struct scd4x_state *state = data;
-+
-+	regulator_disable(state->vdd);
-+}
-+
-+static irqreturn_t scd4x_trigger_handler(int irq, void *p)
-+{
-+	struct iio_poll_func *pf = p;
-+	struct iio_dev *indio_dev = pf->indio_dev;
-+	struct scd4x_state *state = iio_priv(indio_dev);
-+	struct {
-+		int data[3];
-+		int64_t ts __aligned(8);
-+	} scan;
-+	int ret;
-+
-+	mutex_lock(&state->lock);
-+	ret = scd4x_read_poll(state);
-+	memset(&scan, 0, sizeof(scan));
-+	memcpy(scan.data, state->meas, sizeof(state->meas));
-+	mutex_unlock(&state->lock);
-+	if (ret)
-+		goto out;
-+
-+	iio_push_to_buffers_with_timestamp(indio_dev, &scan, iio_get_time_ns(indio_dev));
-+out:
-+	iio_trigger_notify_done(indio_dev->trig);
-+	return IRQ_HANDLED;
-+}
-+
-+static int scd4x_set_trigger_state(struct iio_trigger *trig, bool state)
-+{
-+	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
-+	struct scd4x_state *st = iio_priv(indio_dev);
-+
-+	if (state)
-+		enable_irq(st->irq);
-+	else
-+		disable_irq(st->irq);
-+
-+	return 0;
-+}
-+
-+static const struct iio_trigger_ops scd4x_trigger_ops = {
-+	.set_trigger_state = scd4x_set_trigger_state,
-+	.validate_device = iio_trigger_validate_own_device,
-+};
-+
-+static int scd4x_setup_trigger(struct iio_dev *indio_dev)
-+{
-+	struct device *dev = indio_dev->dev.parent;
-+	struct iio_trigger *trig;
-+	int ret;
-+
-+	trig = devm_iio_trigger_alloc(dev, "%s-dev%d", indio_dev->name,
-+				      iio_device_id(indio_dev));
-+	if (!trig) {
-+		dev_err(dev, "failed to allocate trigger\n");
-+		return -ENOMEM;
-+	}
-+
-+	trig->ops = &scd4x_trigger_ops;
-+	iio_trigger_set_drvdata(trig, indio_dev);
-+
-+	ret = devm_iio_trigger_register(dev, trig);
-+	if (ret)
-+		return ret;
-+
-+	indio_dev->trig = iio_trigger_get(trig);
-+
-+	return ret;
-+}
-+
-+static int scd4x_probe(struct i2c_client *client, const struct i2c_device_id *id)
-+{
-+	static const unsigned long scd4x_scan_masks[] = { 0x07, 0x00 };
-+	struct device *dev = &client->dev;
-+	struct iio_dev *indio_dev;
-+	struct scd4x_state *state;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*state));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	state = iio_priv(indio_dev);
-+	mutex_init(&state->lock);
-+	state->dev = dev;
-+	crc8_populate_msb(scd4x_crc8_table, SCD4X_CRC8_POLYNOMIAL);
-+
-+	indio_dev->info = &scd4x_info;
-+	indio_dev->name = client->name;
-+	indio_dev->channels = scd4x_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(scd4x_channels);
-+	indio_dev->modes = INDIO_DIRECT_MODE | INDIO_BUFFER_TRIGGERED;
-+	indio_dev->available_scan_masks = scd4x_scan_masks;
-+
-+	state->vdd = devm_regulator_get(dev, "vdd");
-+	if (IS_ERR(state->vdd))
-+		return dev_err_probe(dev, PTR_ERR(state->vdd), "failed to get regulator\n");
-+
-+	ret = regulator_enable(state->vdd);
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_add_action_or_reset(dev, scd4x_disable_regulator, state);
-+	if (ret)
-+		return ret;
-+
-+	ret = scd4x_send_command(state, CMD_STOP_MEAS);
-+	if (ret) {
-+		dev_err(dev, "failed to stop measurement: %d\n", ret);
-+		return ret;
-+	}
-+
-+	/* execution time */
-+	msleep_interruptible(500);
-+
-+	if (state->irq > 0) {
-+		ret = scd4x_setup_trigger(indio_dev);
-+		if (ret) {
-+			dev_err(dev, "failed to setup trigger: %d\n", ret);
-+			return ret;
-+		}
-+	}
-+
-+	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL, scd4x_trigger_handler, NULL);
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_iio_device_register(dev, indio_dev);
-+	if (ret) {
-+		dev_err(dev, "failed to register iio device\n");
-+		return ret;
-+	}
-+
-+	ret = scd4x_send_command(state, CMD_START_MEAS);
-+	if (ret) {
-+		dev_err(dev, "failed to start measurement: %d\n", ret);
-+		return ret;
-+	}
-+
-+	ret = devm_add_action_or_reset(dev, scd4x_stop_meas, state);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id scd4x_dt_ids[] = {
-+	{ .compatible = "sensirion,scd40" },
-+	{ .compatible = "sensirion,scd41" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, scd4x_dt_ids);
-+
-+static struct i2c_driver scd4x_i2c_driver = {
-+	.driver = {
-+		.name = KBUILD_MODNAME,
-+		.of_match_table = scd4x_dt_ids,
-+		.pm = &scd4x_pm_ops
-+	},
-+	.probe = scd4x_probe,
-+};
-+module_i2c_driver(scd4x_i2c_driver);
-+
-+MODULE_AUTHOR("Roan van Dijk <roan@protonic.nl>");
-+MODULE_DESCRIPTION("Sensirion SCD4X carbon dioxide sensor core driver");
-+MODULE_LICENSE("GPL v2");
+This series adds support for sama7g5.
+
+The sama7g5 is slightly different from sama5d2, but has the same basic
+operations. The register map is a bit different, so, I added some primitives
+to differentiate between the two classes of hardware blocks (sama5d2-sam9x60
+and sama7g5).
+
+Sama7g5 has 16 channels ADC, no resistive touch, and extra features
+(FIFOs, better oversampling , not implemented yet).
+
+It is a rework of the series initially sent here:
+https://marc.info/?l=linux-iio&m=161461656807826&w=2
+
+Changes in v3:
+updates for the channel indexes ABI
+minor nitpicks fixes
+fixed krobot report
+
+
+
+Changes in v2:
+
+I reworked this according to review by Jonathan, meaning that first I created
+a no-op patch that will convert the driver to a more platform specific data
+dedicated type of driver. This adds various structures that hold things like
+register layout and channel information.
+After this I created few patches that implement the main differences between
+sama7g5 and older products: the end-of-conversion new register. I added
+helper functions to make code more easy to read and more simple.
+One the last patches adds the layout and channels for sama7g5.
+At this moment in linux-next, the DT for sama7g5 and sama7g5ek is present,
+and the last patches add and enable this node in DT for this board.
+
+Eugen
+
+
+
+Eugen Hristev (10):
+  dt-bindings: iio: adc: at91-sama5d2: add compatible for sama7g5-adc
+  iio: adc: at91-sama5d2_adc: initialize hardware after clock is started
+  iio: adc: at91-sama5d2_adc: remove unused definition
+  iio: adc: at91-sama5d2_adc: convert to platform specific data
+    structures
+  iio: adc: at91-sama5d2_adc: add support for separate end of conversion
+    registers
+  iio: adc: at91-sama5d2_adc: add helper for COR register
+  iio: adc: at91-sama5d2_adc: add support for sama7g5 device
+  iio: adc: at91-sama5d2_adc: update copyright and authors information
+  ARM: dts: at91: sama7g5: add node for the ADC
+  ARM: dts: at91: sama7g5ek: enable ADC on the board
+
+ .../bindings/iio/adc/atmel,sama5d2-adc.yaml   |   1 +
+ arch/arm/boot/dts/at91-sama7g5ek.dts          |   8 +
+ arch/arm/boot/dts/sama7g5.dtsi                |  16 +
+ drivers/iio/adc/at91-sama5d2_adc.c            | 594 ++++++++++++------
+ 4 files changed, 432 insertions(+), 187 deletions(-)
+
 -- 
-2.30.2
+2.25.1
 

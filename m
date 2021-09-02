@@ -2,18 +2,18 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2B693FF5F0
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Sep 2021 23:52:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3733E3FF5F4
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Sep 2021 23:52:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347644AbhIBVw4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Sep 2021 17:52:56 -0400
-Received: from relay10.mail.gandi.net ([217.70.178.230]:43703 "EHLO
+        id S1347653AbhIBVxA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Sep 2021 17:53:00 -0400
+Received: from relay10.mail.gandi.net ([217.70.178.230]:44343 "EHLO
         relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347600AbhIBVwy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Sep 2021 17:52:54 -0400
+        with ESMTP id S1347642AbhIBVw4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Sep 2021 17:52:56 -0400
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 75862240002;
-        Thu,  2 Sep 2021 21:51:51 +0000 (UTC)
+        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 665A8240009;
+        Thu,  2 Sep 2021 21:51:54 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -31,10 +31,11 @@ Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         Ryan Barnett <ryan.barnett@collins.com>,
         Grygorii Strashko <grygorii.strashko@ti.com>,
         Jason Reeder <jreeder@ti.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH v2 03/46] dt-bindings: touchscreen: ti,am3359-tsc: New yaml description
-Date:   Thu,  2 Sep 2021 23:51:01 +0200
-Message-Id: <20210902215144.507243-4-miquel.raynal@bootlin.com>
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v2 04/46] dt-bindings: iio: adc: ti,am3359-adc: New yaml description
+Date:   Thu,  2 Sep 2021 23:51:02 +0200
+Message-Id: <20210902215144.507243-5-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210902215144.507243-1-miquel.raynal@bootlin.com>
 References: <20210902215144.507243-1-miquel.raynal@bootlin.com>
@@ -45,100 +46,91 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This touchscreen controller is already described in a text file:
+This ADC was already described in a text file also containing an MFD
+description an a touchscreen description:
 Documentation/devicetree/bindings/input/touchscreen/ti-tsc-adc.txt
-
-After introducing a proper description of the MFD, this is the second
-step. The file cannot be removed yet as it also contains an ADC
-description.
+Let's add a proper description for this hardware.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- .../input/touchscreen/ti,am3359-tsc.yaml      | 76 +++++++++++++++++++
- 1 file changed, 76 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/input/touchscreen/ti,am3359-tsc.yaml
+ .../bindings/iio/adc/ti,am3359-adc.yaml       | 68 +++++++++++++++++++
+ 1 file changed, 68 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,am3359-adc.yaml
 
-diff --git a/Documentation/devicetree/bindings/input/touchscreen/ti,am3359-tsc.yaml b/Documentation/devicetree/bindings/input/touchscreen/ti,am3359-tsc.yaml
+diff --git a/Documentation/devicetree/bindings/iio/adc/ti,am3359-adc.yaml b/Documentation/devicetree/bindings/iio/adc/ti,am3359-adc.yaml
 new file mode 100644
-index 000000000000..e44cc65abc8c
+index 000000000000..f262402ca037
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/input/touchscreen/ti,am3359-tsc.yaml
-@@ -0,0 +1,76 @@
++++ b/Documentation/devicetree/bindings/iio/adc/ti,am3359-adc.yaml
+@@ -0,0 +1,68 @@
 +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/input/touchscreen/ti,am3359-tsc.yaml#
++$id: http://devicetree.org/schemas/iio/adc/ti,am3359-adc.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: TI AM3359 Touchscreen controller
++title: TI AM3359 ADC
 +
 +maintainers:
 +  - Miquel Raynal <miquel.raynal@bootlin.com>
 +
 +properties:
 +  compatible:
-+    const: ti,am3359-tsc
++    const: ti,am3359-adc
 +
-+  ti,wires:
-+    description: Wires refer to application modes i.e. 4/5/8 wire touchscreen
-+      support on the platform.
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [4, 5, 8]
++  '#io-channel-cells':
++    const: 1
 +
-+  ti,x-plate-resistance:
-+    description: X plate resistance
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+
-+  ti,coordinate-readouts:
-+    description: The sequencer supports a total of 16 programmable steps. Each
-+      step is used to read a single coordinate. A single readout is enough but
-+      multiple reads can increase the quality. A value of 5 means, 5 reads for
-+      X, 5 for Y and 2 for Z (always). This utilises 12 of the 16 software steps
-+      available. The remaining 4 can be used by the ADC.
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    minimum: 1
-+    maximum: 6
-+
-+  ti,wire-config:
-+    description: Different boards could have a different order for connecting
-+      wires on touchscreen. We need to provide an 8-bit number where the
-+      first four bits represent the analog lines and the next 4 bits represent
-+      positive/negative terminal on that input line. Notations to represent the
-+      input lines and terminals respectively are as follows, AIN0 = 0, AIN1 = 1
-+      and so on until AIN7 = 7. XP = 0, XN = 1, YP = 2, YN = 3.
++  ti,adc-channels:
++    description: List of analog inputs available for ADC. AIN0 = 0, AIN1 = 1 and
++      so on until AIN7 = 7.
 +    $ref: /schemas/types.yaml#/definitions/uint32-array
-+    minItems: 4
++    minItems: 1
 +    maxItems: 8
 +
-+  ti,charge-delay:
-+    description: Length of touch screen charge delay step in terms of ADC clock
-+      cycles. Charge delay value should be large in order to avoid false pen-up
-+      events. This value effects the overall sampling speed, hence need to be
-+      kept as low as possible, while avoiding false pen-up event. Start from a
-+      lower value, say 0x400, and increase value until false pen-up events are
-+      avoided. The pen-up detection happens immediately after the charge step,
-+      so this does in fact function as a hardware knob for adjusting the amount
-+      of "settling time".
-+    $ref: /schemas/types.yaml#/definitions/uint32
++  ti,chan-step-opendelay:
++    description: List of open delays for each channel of ADC in the order of
++      ti,adc-channels. The value corresponds to the number of ADC clock cycles
++      to wait after applying the step configuration registers and before sending
++      the start of ADC conversion. Maximum value is 0x3FFFF.
++    $ref: /schemas/types.yaml#/definitions/uint32-array
++    minItems: 1
++    maxItems: 8
++
++  ti,chan-step-sampledelay:
++    description: List of sample delays for each channel of ADC in the order of
++      ti,adc-channels. The value corresponds to the number of ADC clock cycles
++      to sample (to hold start of conversion high). Maximum value is 0xFF.
++    $ref: /schemas/types.yaml#/definitions/uint32-array
++    minItems: 1
++    maxItems: 8
++
++  ti,chan-step-avg:
++    description: Number of averages to be performed for each channel of ADC. If
++      average is 16 (this is also the maximum) then input is sampled 16 times
++      and averaged to get more accurate value. This increases the time taken by
++      ADC to generate a sample. Maximum value is 16.
++    $ref: /schemas/types.yaml#/definitions/uint32-array
++    minItems: 1
++    maxItems: 8
 +
 +required:
 +  - compatible
-+  - ti,wires
-+  - ti,x-plate-resistance
-+  - ti,coordinate-readouts
-+  - ti,wire-config
++  - '#io-channel-cells'
++  - ti,adc-channels
 +
 +additionalProperties: false
 +
 +examples:
 +  - |
-+    tsc {
-+        compatible = "ti,am3359-tsc";
-+        ti,wires = <4>;
-+        ti,x-plate-resistance = <200>;
-+        ti,coordinate-readouts = <5>;
-+        ti,wire-config = <0x00 0x11 0x22 0x33>;
-+        ti,charge-delay = <0x400>;
++    adc {
++        compatible = "ti,am3359-adc";
++        #io-channel-cells = <1>;
++        ti,adc-channels = <4 5 6 7>;
++        ti,chan-step-opendelay = <0x098 0x3ffff 0x098 0x0>;
++        ti,chan-step-sampledelay = <0xff 0x0 0xf 0x0>;
++        ti,chan-step-avg = <16 2 4 8>;
 +    };
 -- 
 2.27.0

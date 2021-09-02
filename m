@@ -2,18 +2,18 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 52A263FF614
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Sep 2021 23:53:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 996053FF61B
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Sep 2021 23:53:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347701AbhIBVxO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Sep 2021 17:53:14 -0400
-Received: from relay10.mail.gandi.net ([217.70.178.230]:38673 "EHLO
+        id S1347679AbhIBVxS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Sep 2021 17:53:18 -0400
+Received: from relay10.mail.gandi.net ([217.70.178.230]:46485 "EHLO
         relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347698AbhIBVxN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Sep 2021 17:53:13 -0400
+        with ESMTP id S1347691AbhIBVxO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Sep 2021 17:53:14 -0400
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 1C49A240007;
-        Thu,  2 Sep 2021 21:52:11 +0000 (UTC)
+        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 0103524000C;
+        Thu,  2 Sep 2021 21:52:12 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -33,9 +33,9 @@ Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         Jason Reeder <jreeder@ti.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 12/46] mfd: ti_am335x_tscadc: Get rid of useless gotos
-Date:   Thu,  2 Sep 2021 23:51:10 +0200
-Message-Id: <20210902215144.507243-13-miquel.raynal@bootlin.com>
+Subject: [PATCH v2 13/46] mfd: ti_am335x_tscadc: Reword the comment explaining the dividers
+Date:   Thu,  2 Sep 2021 23:51:11 +0200
+Message-Id: <20210902215144.507243-14-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210902215144.507243-1-miquel.raynal@bootlin.com>
 References: <20210902215144.507243-1-miquel.raynal@bootlin.com>
@@ -46,46 +46,39 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Gotos jumping to a return statement are not really useful, drop them.
+The comment misses the main information which is that we assume that a
+sample takes 15 ADC clock cycles to be generated. Let's take the
+occasion to rework a little bit this comment.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/mfd/ti_am335x_tscadc.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/mfd/ti_am335x_tscadc.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
-index 763bbc33fc3f..984206521eca 100644
+index 984206521eca..177d1244a677 100644
 --- a/drivers/mfd/ti_am335x_tscadc.c
 +++ b/drivers/mfd/ti_am335x_tscadc.c
-@@ -175,7 +175,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
- 	err = platform_get_irq(pdev, 0);
- 	if (err < 0) {
- 		dev_err(&pdev->dev, "no irq ID is specified.\n");
--		goto ret;
-+		return err;
- 	} else {
- 		tscadc->irq = err;
- 	}
-@@ -191,8 +191,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
- 					       &tscadc_regmap_config);
- 	if (IS_ERR(tscadc->regmap)) {
- 		dev_err(&pdev->dev, "regmap init failed\n");
--		err = PTR_ERR(tscadc->regmap);
--		goto ret;
-+		return PTR_ERR(tscadc->regmap);
- 	}
+@@ -201,12 +201,12 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+ 	pm_runtime_get_sync(&pdev->dev);
  
- 	spin_lock_init(&tscadc->reg_lock);
-@@ -276,7 +275,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
- err_disable_clk:
- 	pm_runtime_put_sync(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
--ret:
-+
- 	return err;
- }
- 
+ 	/*
+-	 * The TSC_ADC_Subsystem has 2 clock domains
+-	 * OCP_CLK and ADC_CLK.
+-	 * The ADC clock is expected to run at target of 3MHz,
+-	 * and expected to capture 12-bit data at a rate of 200 KSPS.
+-	 * The TSC_ADC_SS controller design assumes the OCP clock is
+-	 * at least 6x faster than the ADC clock.
++	 * The TSC_ADC_Subsystem has 2 clock domains: OCP_CLK and ADC_CLK.
++	 * ADCs produce a 12-bit sample every 15 ADC_CLK cycles.
++	 * am33xx ADCs expect to capture 200ksps.
++	 * We need the ADC clocks to run at 3MHz.
++	 * This frequency is valid since TSC_ADC_SS controller design
++	 * assumes the OCP clock is at least 6x faster than the ADC clock.
+ 	 */
+ 	clk = devm_clk_get(&pdev->dev, "adc_tsc_fck");
+ 	if (IS_ERR(clk)) {
 -- 
 2.27.0
 

@@ -2,97 +2,143 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 948023FEBD0
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Sep 2021 12:04:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBB843FEDC4
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Sep 2021 14:29:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231544AbhIBKFE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Sep 2021 06:05:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43812 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230215AbhIBKFD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Sep 2021 06:05:03 -0400
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A285C061575
-        for <linux-iio@vger.kernel.org>; Thu,  2 Sep 2021 03:04:04 -0700 (PDT)
-Received: by mail-pj1-x1033.google.com with SMTP id j1so994212pjv.3
-        for <linux-iio@vger.kernel.org>; Thu, 02 Sep 2021 03:04:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=E0fxn3pWH+DKMJyXjNqIIXWzSXdhWhpMug9a1qzlGDQ=;
-        b=Cvs6UURxOc5jZ2PZoeBGR8Aa9DO5xJMLyimPs6LlrDmuki57VWeXBviusSFTeCHVS4
-         Ktb0hu6hg0O17sTi+YK0vxJrpL9d6hiQNAt6FbxhDL6NS5j9CzJ8XNA5G5DBKDos5U+G
-         ssUkTOW9BD4uuxO304JxjKtJa0MDzUivXdAPEXoAYN952BxnzBwKStmOiCDFEQUJdG8x
-         TRQssSKFboibbcCTg3fj5pB6ZGlQFWjZaOudWKzOhfFRMwAiNNTdkN+9dafBJ2MDYJPd
-         Io9gOiLX0wIX/nd3O1YWJ+R+sKwFE8+f+Jg3z1jR+bQ/U5Y9oFr+5JxS44VZybCknGVn
-         e87g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=E0fxn3pWH+DKMJyXjNqIIXWzSXdhWhpMug9a1qzlGDQ=;
-        b=LfI5DK0it/tbEzNHVpCoCwfqY03jo7Cq4mMi7fjkjkTxoGvnV8amc6U7zIkXMivfWt
-         jAjtJNjZPAtHsWhWUKJaKRgae1ROReP3c7ibhuGx3K9AYk+YCj5ls9I+Jyebg1Pz0wPk
-         REOHiuYDQ0Sy4VPABfREUb9OUvSSlJk1sNgxGgZFwtbTy9Yyllek0BsOvnZBCPG5xwZk
-         PMaPAiXM/FRdPU5r5wMwqFuBhx15lIjMYgwN+U62CGB4L5k8LbphAnibEZYnvIpYvEy9
-         ZDbQxwLtF7My4EFGwRn8ZZw0l/dmg19XckW6rBXS8GHHBaWzRBIefoSPtBS2u1+74gOK
-         6OSA==
-X-Gm-Message-State: AOAM533RP/UxN0TeEoZcJN5PkbDQfQIuLMuaq9PuJhGcGWQTQsvwxoDR
-        mVB/xHtc2yzMNpZMigR05NuJU3w9HNAROUeZkEnDk+JzH26AcA==
-X-Google-Smtp-Source: ABdhPJxmCBi1h57IPRTndKNGH8E+TdX1MjmIQstFwpi2QAkY0p1S9M0j9GqxHWCOfq8Y8jjSW74hWfz3H4fioVd32bc=
-X-Received: by 2002:a17:90a:6502:: with SMTP id i2mr3060742pjj.129.1630577042917;
- Thu, 02 Sep 2021 03:04:02 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200721171444.825099-1-jic23@kernel.org> <20200721171444.825099-3-jic23@kernel.org>
- <20210902102324.0000327d@Huawei.com>
-In-Reply-To: <20210902102324.0000327d@Huawei.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 2 Sep 2021 13:03:26 +0300
-Message-ID: <CAHp75Vc0wqnFOk4FW-oqDRZUfLcBLZr-miZbfm7WfA3=Oi34Rg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/5] iio:adc:ti-adc081c: Drop ACPI ids that seem very
- unlikely to be official.
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+        id S242954AbhIBMau convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Thu, 2 Sep 2021 08:30:50 -0400
+Received: from mslow1.mail.gandi.net ([217.70.178.240]:38461 "EHLO
+        mslow1.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234094AbhIBMau (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Sep 2021 08:30:50 -0400
+Received: from relay6-d.mail.gandi.net (unknown [217.70.183.198])
+        by mslow1.mail.gandi.net (Postfix) with ESMTP id 07C59C3F9A
+        for <linux-iio@vger.kernel.org>; Thu,  2 Sep 2021 12:25:54 +0000 (UTC)
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 2ED24C0002;
+        Thu,  2 Sep 2021 12:25:32 +0000 (UTC)
+Date:   Thu, 2 Sep 2021 14:25:26 +0200
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     "Sa, Nuno" <Nuno.Sa@analog.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>, Kunyang_Fan@aaeon.com.tw
-Content-Type: text/plain; charset="UTF-8"
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 15/16] iio: adc: max1027: Support software triggers
+Message-ID: <20210902142526.55fca207@xps13>
+In-Reply-To: <SJ0PR03MB63594E162F7246874CD1A72599C19@SJ0PR03MB6359.namprd03.prod.outlook.com>
+References: <20210818111139.330636-1-miquel.raynal@bootlin.com>
+        <20210818111139.330636-16-miquel.raynal@bootlin.com>
+        <SJ0PR03MB63594E162F7246874CD1A72599C19@SJ0PR03MB6359.namprd03.prod.outlook.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Sep 2, 2021 at 12:23 PM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
-> On Tue, 21 Jul 2020 18:14:41 +0100
-> Jonathan Cameron <jic23@kernel.org> wrote:
->
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >
-> > We have no known users of these in the wild.
-> > it seems very unlikely these are real IDS having the form ADCXXXX
-> > as that ID is owned by Achnor Datacomm not TI.
-> >
-> > Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> Kunyang reports that ACPI ID ADC081C is out in the wild on some
-> AAEON boards.
+Hi Nuno,
 
-Can AAEON clarify about all IDs in the kernel they have been (ab)using
-so far? Then we probably need some comments. Also I would like to be
-assured by AAEON that they won't make such mistakes in the future.
+"Sa, Nuno" <Nuno.Sa@analog.com> wrote on Fri, 20 Aug 2021 07:58:25
++0000:
 
-> I'll send out a partial revert soon to bring back that ID with appropriate
-> comments on where it was used.
+> > -----Original Message-----
+> > From: Miquel Raynal <miquel.raynal@bootlin.com>
+> > Sent: Wednesday, August 18, 2021 1:12 PM
+> > To: Jonathan Cameron <jic23@kernel.org>; Lars-Peter Clausen
+> > <lars@metafoo.de>
+> > Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>; linux-
+> > iio@vger.kernel.org; linux-kernel@vger.kernel.org; Miquel Raynal
+> > <miquel.raynal@bootlin.com>
+> > Subject: [PATCH 15/16] iio: adc: max1027: Support software triggers
+> > 
+> > [External]
+> > 
+> > Now that max1027_trigger_handler() has been freed from handling
+> > hardware
+> > triggers EOC situations, we can use it for what it has been designed in
+> > the first place: trigger software originated conversions. In other
+> > words, when userspace initiates a conversion with a sysfs trigger or a
+> > hrtimer trigger, we must do all configuration steps, ie:
+> > 1- Configuring the trigger
+> > 2- Configuring the channels to scan
+> > 3- Starting the conversion (actually done automatically by step 2 in
+> >    this case)
+> > 4- Waiting for the conversion to end
+> > 5- Retrieving the data from the ADC
+> > 6- Push the data to the IIO core and notify it
+> > 
+> > Add the missing steps to this helper and drop the trigger verification
+> > hook otherwise software triggers would simply not be accepted at all.
+> > 
+> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> > ---
+> >  drivers/iio/adc/max1027.c | 26 ++++++++++++++------------
+> >  1 file changed, 14 insertions(+), 12 deletions(-)
+> > 
+> > diff --git a/drivers/iio/adc/max1027.c b/drivers/iio/adc/max1027.c
+> > index 8c5995ae59f2..bb437e43adaf 100644
+> > --- a/drivers/iio/adc/max1027.c
+> > +++ b/drivers/iio/adc/max1027.c
+> > @@ -413,17 +413,6 @@ static int max1027_debugfs_reg_access(struct
+> > iio_dev *indio_dev,
+> >  	return spi_write(st->spi, val, 1);
+> >  }
+> > 
+> > -static int max1027_validate_trigger(struct iio_dev *indio_dev,
+> > -				    struct iio_trigger *trig)
+> > -{
+> > -	struct max1027_state *st = iio_priv(indio_dev);
+> > -
+> > -	if (st->trig != trig)
+> > -		return -EINVAL;
+> > -
+> > -	return 0;
+> > -}
+> > -
+> >  static int max1027_set_cnvst_trigger_state(struct iio_trigger *trig,
+> > bool state)
+> >  {
+> >  	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
+> > @@ -512,7 +501,21 @@ static irqreturn_t max1027_trigger_handler(int
+> > irq, void *private)
+> > 
+> >  	pr_debug("%s(irq=%d, private=0x%p)\n", __func__, irq,
+> > private);
+> > 
+> > +	ret = max1027_configure_trigger(indio_dev);
+> > +	if (ret)
+> > +		goto out;
+> > +
+> > +	ret = max1027_configure_chans_to_scan(indio_dev);
+> > +	if (ret)
+> > +		goto out;
+> > +
+> > +	ret = max1027_wait_eoc(indio_dev);
+> > +	if (ret)
+> > +		goto out;
+> > +
+> >  	ret = max1027_read_scan(indio_dev);  
+> 
+> There's something that I'm not getting... How are we checking that
+> we have software triggers? This API is called only if the device
+> allocates it's own trigger which will happen if there's a spi IRQ.
+> 
+> I'm probably missing something as this series is fairly big but the way
+> I would do it is (in the probe):
+> 
+> - always call 'devm_iio_triggered_buffer_setup()' function and properly use
+> buffer ops [1] (for example, you can use 'validate_scan_mask()' to setup the
+> channels to read);  
+> - only allocate a trigger if an IRQ is present in which case, we assume HW 
+> triggering is supported.
 
-Yes, please.
+I think these are the exact steps that are enforced in the next patch,
+I can squash them if you wish but I think it makes sense to have it in
+two steps.
 
-> Key thing in future for these sorts of IDs is we need clarity
-> on who is using them before agreeing to take them. In this particular
-> my undestanding is the driver came first and as it worked the AAEON
-> firmware team used the ID.
-
-Yes, because it's definitely not an officially registered one.
-
--- 
-With Best Regards,
-Andy Shevchenko
+Thanks,
+Miquèl

@@ -2,18 +2,18 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 46DFF3FF626
+	by mail.lfdr.de (Postfix) with ESMTP id E1DB93FF628
 	for <lists+linux-iio@lfdr.de>; Thu,  2 Sep 2021 23:53:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347689AbhIBVxU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Sep 2021 17:53:20 -0400
-Received: from relay10.mail.gandi.net ([217.70.178.230]:43395 "EHLO
+        id S1347706AbhIBVxV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Sep 2021 17:53:21 -0400
+Received: from relay10.mail.gandi.net ([217.70.178.230]:46485 "EHLO
         relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347704AbhIBVxS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Sep 2021 17:53:18 -0400
+        with ESMTP id S1347692AbhIBVxT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Sep 2021 17:53:19 -0400
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay10.mail.gandi.net (Postfix) with ESMTPSA id A4B3D240005;
-        Thu,  2 Sep 2021 21:52:16 +0000 (UTC)
+        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 826DD24000D;
+        Thu,  2 Sep 2021 21:52:18 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -31,11 +31,10 @@ Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         Ryan Barnett <ryan.barnett@collins.com>,
         Grygorii Strashko <grygorii.strashko@ti.com>,
         Jason Reeder <jreeder@ti.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 15/46] mfd: ti_am335x_tscadc: Simplify divisor calculation
-Date:   Thu,  2 Sep 2021 23:51:13 +0200
-Message-Id: <20210902215144.507243-16-miquel.raynal@bootlin.com>
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH v2 16/46] mfd: ti_am335x_tscadc: Move the driver structure allocation earlier
+Date:   Thu,  2 Sep 2021 23:51:14 +0200
+Message-Id: <20210902215144.507243-17-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210902215144.507243-1-miquel.raynal@bootlin.com>
 References: <20210902215144.507243-1-miquel.raynal@bootlin.com>
@@ -46,40 +45,46 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Let's rewrite this on a single line, it does not hurt the readability
-and saves a useless temporary variable.
+Allocating the driver structure should be done earlier in the probe so
+that we can used its members from the beginning.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/mfd/ti_am335x_tscadc.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/mfd/ti_am335x_tscadc.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
-index 2a2f5036e06f..fca58e78abb2 100644
+index fca58e78abb2..ea52d8523524 100644
 --- a/drivers/mfd/ti_am335x_tscadc.c
 +++ b/drivers/mfd/ti_am335x_tscadc.c
-@@ -122,7 +122,6 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
- 	const __be32 *cur;
- 	u32 val;
- 	int err, ctrl;
--	int clock_rate;
+@@ -125,6 +125,13 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
  	int tsc_wires = 0, adc_channels = 0, total_channels;
  	int readouts = 0;
  
-@@ -214,11 +213,8 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
- 		err = PTR_ERR(clk);
- 		goto err_disable_clk;
++	/* Allocate memory for device */
++	tscadc = devm_kzalloc(&pdev->dev, sizeof(*tscadc), GFP_KERNEL);
++	if (!tscadc)
++		return -ENOMEM;
++
++	tscadc->dev = &pdev->dev;
++
+ 	if (!pdev->dev.of_node) {
+ 		dev_err(&pdev->dev, "Could not find valid DT data.\n");
+ 		return -EINVAL;
+@@ -164,13 +171,6 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+ 		return -EINVAL;
  	}
--	clock_rate = clk_get_rate(clk);
--	tscadc->clk_div = clock_rate / ADC_CLK;
  
--	/* TSCADC_CLKDIV needs to be configured to the value minus 1 */
--	tscadc->clk_div--;
-+	tscadc->clk_div = (clk_get_rate(clk) / ADC_CLK) - 1;
- 	regmap_write(tscadc->regmap, REG_CLKDIV, tscadc->clk_div);
- 
- 	/* Set the control register bits */
+-	/* Allocate memory for device */
+-	tscadc = devm_kzalloc(&pdev->dev, sizeof(*tscadc), GFP_KERNEL);
+-	if (!tscadc)
+-		return -ENOMEM;
+-
+-	tscadc->dev = &pdev->dev;
+-
+ 	err = platform_get_irq(pdev, 0);
+ 	if (err < 0) {
+ 		dev_err(&pdev->dev, "no irq ID is specified.\n");
 -- 
 2.27.0
 

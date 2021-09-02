@@ -2,18 +2,18 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B72F3FF653
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Sep 2021 23:53:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F28A83FF65A
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Sep 2021 23:53:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347747AbhIBVxm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Sep 2021 17:53:42 -0400
-Received: from relay10.mail.gandi.net ([217.70.178.230]:37657 "EHLO
+        id S1347791AbhIBVxq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Sep 2021 17:53:46 -0400
+Received: from relay10.mail.gandi.net ([217.70.178.230]:44843 "EHLO
         relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347741AbhIBVxi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Sep 2021 17:53:38 -0400
+        with ESMTP id S1347756AbhIBVxk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Sep 2021 17:53:40 -0400
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 3B0E9240009;
-        Thu,  2 Sep 2021 21:52:37 +0000 (UTC)
+        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 37B3F240006;
+        Thu,  2 Sep 2021 21:52:39 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -33,9 +33,9 @@ Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         Jason Reeder <jreeder@ti.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 26/46] mfd: ti_am335x_tscadc: Use FIELD_PREP() when relevant in the header
-Date:   Thu,  2 Sep 2021 23:51:24 +0200
-Message-Id: <20210902215144.507243-27-miquel.raynal@bootlin.com>
+Subject: [PATCH v2 27/46] mfd: ti_am335x_tscadc: Rename the subsystem enable macro
+Date:   Thu,  2 Sep 2021 23:51:25 +0200
+Message-Id: <20210902215144.507243-28-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210902215144.507243-1-miquel.raynal@bootlin.com>
 References: <20210902215144.507243-1-miquel.raynal@bootlin.com>
@@ -46,131 +46,94 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Use the FIELD_PREP() macro when relevant. Sometimes reorder the lines to
-be able to use the relevant bitmask.
+This bit is common to all devices (ADC, Touchscreen, Magnetic reader) so
+make it clear that it can be used from any location by operating a
+mechanical rename:
+s/CNTRLREG_TSCSSENB/CNTRLREG_SSENB/
 
-Mind the s/%d/%ld/ change in a log due to the type change following the
-use of FIELD_PREP() in the header.
-
-Suggested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/ti_am335x_adc.c      |  2 +-
- include/linux/mfd/ti_am335x_tscadc.h | 31 ++++++++++++++--------------
- 2 files changed, 17 insertions(+), 16 deletions(-)
+ drivers/iio/adc/ti_am335x_adc.c      | 6 +++---
+ drivers/mfd/ti_am335x_tscadc.c       | 6 +++---
+ include/linux/mfd/ti_am335x_tscadc.h | 2 +-
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/iio/adc/ti_am335x_adc.c b/drivers/iio/adc/ti_am335x_adc.c
-index e946903b0993..54c410b6ca07 100644
+index 54c410b6ca07..25af90af16a3 100644
 --- a/drivers/iio/adc/ti_am335x_adc.c
 +++ b/drivers/iio/adc/ti_am335x_adc.c
-@@ -126,7 +126,7 @@ static void tiadc_step_config(struct iio_dev *indio_dev)
- 		chan = adc_dev->channel_line[i];
+@@ -184,7 +184,7 @@ static irqreturn_t tiadc_irq_h(int irq, void *private)
+ 	if (status & IRQENB_FIFO1OVRRUN) {
+ 		/* FIFO Overrun. Clear flag. Disable/Enable ADC to recover */
+ 		config = tiadc_readl(adc_dev, REG_CTRL);
+-		config &= ~(CNTRLREG_TSCSSENB);
++		config &= ~(CNTRLREG_SSENB);
+ 		tiadc_writel(adc_dev, REG_CTRL, config);
+ 		tiadc_writel(adc_dev, REG_IRQSTATUS, IRQENB_FIFO1OVRRUN
+ 				| IRQENB_FIFO1UNDRFLW | IRQENB_FIFO1THRES);
+@@ -197,7 +197,7 @@ static irqreturn_t tiadc_irq_h(int irq, void *private)
+ 			adc_fsm = tiadc_readl(adc_dev, REG_ADCFSM);
+ 		} while (adc_fsm != 0x10 && count++ < 100);
  
- 		if (adc_dev->step_avg[i] > STEPCONFIG_AVG_16) {
--			dev_warn(dev, "chan %d step_avg truncating to %d\n",
-+			dev_warn(dev, "chan %d step_avg truncating to %ld\n",
- 				 chan, STEPCONFIG_AVG_16);
- 			adc_dev->step_avg[i] = STEPCONFIG_AVG_16;
- 		}
+-		tiadc_writel(adc_dev, REG_CTRL, (config | CNTRLREG_TSCSSENB));
++		tiadc_writel(adc_dev, REG_CTRL, (config | CNTRLREG_SSENB));
+ 		return IRQ_HANDLED;
+ 	} else if (status & IRQENB_FIFO1THRES) {
+ 		/* Disable irq and wake worker thread */
+@@ -679,7 +679,7 @@ static int __maybe_unused tiadc_suspend(struct device *dev)
+ 	unsigned int idle;
+ 
+ 	idle = tiadc_readl(adc_dev, REG_CTRL);
+-	idle &= ~(CNTRLREG_TSCSSENB);
++	idle &= ~(CNTRLREG_SSENB);
+ 	tiadc_writel(adc_dev, REG_CTRL, (idle |
+ 			CNTRLREG_POWERDOWN));
+ 
+diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
+index a3ff3cc29318..eba5fba8cf78 100644
+--- a/drivers/mfd/ti_am335x_tscadc.c
++++ b/drivers/mfd/ti_am335x_tscadc.c
+@@ -233,7 +233,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+ 	tscadc_idle_config(tscadc);
+ 
+ 	/* Enable the TSC module enable bit */
+-	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl | CNTRLREG_TSCSSENB);
++	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl | CNTRLREG_SSENB);
+ 
+ 	/* TSC Cell */
+ 	if (tsc_wires > 0) {
+@@ -297,7 +297,7 @@ static int __maybe_unused tscadc_suspend(struct device *dev)
+ 
+ 		regmap_read(tscadc->regmap, REG_CTRL, &ctrl);
+ 		ctrl &= ~(CNTRLREG_POWERDOWN);
+-		ctrl |= CNTRLREG_TSCSSENB;
++		ctrl |= CNTRLREG_SSENB;
+ 		regmap_write(tscadc->regmap, REG_CTRL, ctrl);
+ 	}
+ 	pm_runtime_put_sync(dev);
+@@ -314,7 +314,7 @@ static int __maybe_unused tscadc_resume(struct device *dev)
+ 	regmap_write(tscadc->regmap, REG_CLKDIV, tscadc->clk_div);
+ 	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl);
+ 	tscadc_idle_config(tscadc);
+-	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl | CNTRLREG_TSCSSENB);
++	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl | CNTRLREG_SSENB);
+ 
+ 	return 0;
+ }
 diff --git a/include/linux/mfd/ti_am335x_tscadc.h b/include/linux/mfd/ti_am335x_tscadc.h
-index 4de16fc3d74f..29095c0dc6d8 100644
+index 29095c0dc6d8..271b5aefc474 100644
 --- a/include/linux/mfd/ti_am335x_tscadc.h
 +++ b/include/linux/mfd/ti_am335x_tscadc.h
-@@ -8,6 +8,7 @@
- #ifndef __LINUX_TI_AM335X_TSCADC_MFD_H
- #define __LINUX_TI_AM335X_TSCADC_MFD_H
- 
-+#include <linux/bitfield.h>
- #include <linux/mfd/core.h>
- 
- #define REG_RAWIRQSTATUS	0x024
-@@ -40,7 +41,7 @@
- 
- /* Step Enable */
- #define STEPENB_MASK		GENMASK(16, 0)
--#define STEPENB(val)		((val) << 0)
-+#define STEPENB(val)		FIELD_PREP(STEPENB_MASK, (val))
- #define ENB(val)		BIT(val)
- #define STPENB_STEPENB		STEPENB(GENMASK(16, 0))
- #define STPENB_STEPENB_TC	STEPENB(GENMASK(12, 0))
-@@ -58,11 +59,11 @@
- 
- /* Step Configuration */
- #define STEPCONFIG_MODE_MASK	GENMASK(1, 0)
--#define STEPCONFIG_MODE(val)	((val) << 0)
-+#define STEPCONFIG_MODE(val)	FIELD_PREP(STEPCONFIG_MODE_MASK, (val))
- #define STEPCONFIG_MODE_SWCNT	STEPCONFIG_MODE(1)
- #define STEPCONFIG_MODE_HWSYNC	STEPCONFIG_MODE(2)
- #define STEPCONFIG_AVG_MASK	GENMASK(4, 2)
--#define STEPCONFIG_AVG(val)	((val) << 2)
-+#define STEPCONFIG_AVG(val)	FIELD_PREP(STEPCONFIG_AVG_MASK, (val))
- #define STEPCONFIG_AVG_16	STEPCONFIG_AVG(4)
- #define STEPCONFIG_XPP		BIT(5)
- #define STEPCONFIG_XNN		BIT(6)
-@@ -70,43 +71,43 @@
- #define STEPCONFIG_YNN		BIT(8)
- #define STEPCONFIG_XNP		BIT(9)
- #define STEPCONFIG_YPN		BIT(10)
--#define STEPCONFIG_RFP(val)	((val) << 12)
- #define STEPCONFIG_RFP_VREFP	GENMASK(13, 12)
-+#define STEPCONFIG_RFP(val)	FIELD_PREP(STEPCONFIG_RFP_VREFP, (val))
- #define STEPCONFIG_INM_MASK	GENMASK(18, 15)
--#define STEPCONFIG_INM(val)	((val) << 15)
-+#define STEPCONFIG_INM(val)	FIELD_PREP(STEPCONFIG_INM_MASK, (val))
- #define STEPCONFIG_INM_ADCREFM	STEPCONFIG_INM(8)
- #define STEPCONFIG_INP_MASK	GENMASK(22, 19)
--#define STEPCONFIG_INP(val)	((val) << 19)
-+#define STEPCONFIG_INP(val)	FIELD_PREP(STEPCONFIG_INP_MASK, (val))
- #define STEPCONFIG_INP_AN4	STEPCONFIG_INP(4)
- #define STEPCONFIG_INP_ADCREFM	STEPCONFIG_INP(8)
- #define STEPCONFIG_FIFO1	BIT(26)
--#define STEPCONFIG_RFM(val)	((val) << 23)
- #define STEPCONFIG_RFM_VREFN	GENMASK(24, 23)
-+#define STEPCONFIG_RFM(val)	FIELD_PREP(STEPCONFIG_RFM_VREFN, (val))
- 
- /* Delay register */
- #define STEPDELAY_OPEN_MASK	GENMASK(17, 0)
--#define STEPDELAY_OPEN(val)	((val) << 0)
-+#define STEPDELAY_OPEN(val)	FIELD_PREP(STEPDELAY_OPEN_MASK, (val))
- #define STEPCONFIG_OPENDLY	STEPDELAY_OPEN(0x098)
- #define STEPDELAY_SAMPLE_MASK	GENMASK(31, 24)
--#define STEPDELAY_SAMPLE(val)	((val) << 24)
-+#define STEPDELAY_SAMPLE(val)	FIELD_PREP(STEPDELAY_SAMPLE_MASK, (val))
- #define STEPCONFIG_SAMPLEDLY	STEPDELAY_SAMPLE(0)
- 
- /* Charge Config */
- #define STEPCHARGE_RFP_MASK	GENMASK(14, 12)
--#define STEPCHARGE_RFP(val)	((val) << 12)
-+#define STEPCHARGE_RFP(val)	FIELD_PREP(STEPCHARGE_RFP_MASK, (val))
- #define STEPCHARGE_RFP_XPUL	STEPCHARGE_RFP(1)
- #define STEPCHARGE_INM_MASK	GENMASK(18, 15)
--#define STEPCHARGE_INM(val)	((val) << 15)
-+#define STEPCHARGE_INM(val)	FIELD_PREP(STEPCHARGE_INM_MASK, (val))
- #define STEPCHARGE_INM_AN1	STEPCHARGE_INM(1)
- #define STEPCHARGE_INP_MASK	GENMASK(22, 19)
--#define STEPCHARGE_INP(val)	((val) << 19)
-+#define STEPCHARGE_INP(val)	FIELD_PREP(STEPCHARGE_INP_MASK, (val))
- #define STEPCHARGE_RFM_MASK	GENMASK(24, 23)
--#define STEPCHARGE_RFM(val)	((val) << 23)
-+#define STEPCHARGE_RFM(val)	FIELD_PREP(STEPCHARGE_RFM_MASK, (val))
- #define STEPCHARGE_RFM_XNUR	STEPCHARGE_RFM(1)
- 
- /* Charge delay */
- #define CHARGEDLY_OPEN_MASK	GENMASK(17, 0)
--#define CHARGEDLY_OPEN(val)	((val) << 0)
-+#define CHARGEDLY_OPEN(val)	FIELD_PREP(CHARGEDLY_OPEN_MASK, (val))
+@@ -111,7 +111,7 @@
  #define CHARGEDLY_OPENDLY	CHARGEDLY_OPEN(0x400)
  
  /* Control register */
-@@ -115,7 +116,7 @@
+-#define CNTRLREG_TSCSSENB	BIT(0)
++#define CNTRLREG_SSENB		BIT(0)
+ #define CNTRLREG_STEPID		BIT(1)
  #define CNTRLREG_STEPCONFIGWRT	BIT(2)
  #define CNTRLREG_POWERDOWN	BIT(4)
- #define CNTRLREG_AFE_CTRL_MASK	GENMASK(6, 5)
--#define CNTRLREG_AFE_CTRL(val)	((val) << 5)
-+#define CNTRLREG_AFE_CTRL(val)	FIELD_PREP(CNTRLREG_AFE_CTRL_MASK, (val))
- #define CNTRLREG_4WIRE		CNTRLREG_AFE_CTRL(1)
- #define CNTRLREG_5WIRE		CNTRLREG_AFE_CTRL(2)
- #define CNTRLREG_8WIRE		CNTRLREG_AFE_CTRL(3)
 -- 
 2.27.0
 

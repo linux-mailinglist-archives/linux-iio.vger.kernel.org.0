@@ -2,19 +2,19 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C55C83FF44E
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Sep 2021 21:42:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21F673FF488
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Sep 2021 22:04:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241385AbhIBTnx convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Thu, 2 Sep 2021 15:43:53 -0400
-Received: from relay10.mail.gandi.net ([217.70.178.230]:48037 "EHLO
-        relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230462AbhIBTnv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Sep 2021 15:43:51 -0400
+        id S1343763AbhIBUEi convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Thu, 2 Sep 2021 16:04:38 -0400
+Received: from relay8-d.mail.gandi.net ([217.70.183.201]:54915 "EHLO
+        relay8-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1343608AbhIBUEi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Sep 2021 16:04:38 -0400
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay10.mail.gandi.net (Postfix) with ESMTPSA id E8C0E240002;
-        Thu,  2 Sep 2021 19:42:48 +0000 (UTC)
-Date:   Thu, 2 Sep 2021 21:42:47 +0200
+        by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 95CE71BF203;
+        Thu,  2 Sep 2021 20:03:35 +0000 (UTC)
+Date:   Thu, 2 Sep 2021 22:03:34 +0200
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
@@ -29,14 +29,14 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         "Ryan J . Barnett" <ryan.barnett@collins.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-input@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-clk@vger.kernel.org
-Subject: Re: [PATCH 20/40] mfd: ti_am335x_tscadc: Gather the ctrl register
- logic at one place
-Message-ID: <20210902214247.13243c71@xps13>
-In-Reply-To: <20210830145608.09d7e685@jic23-huawei>
+        linux-clk@vger.kernel.org, Jason Reeder <jreeder@ti.com>
+Subject: Re: [PATCH 28/40] mfd: ti_am335x_tscadc: Add ADC1/magnetic reader
+ support
+Message-ID: <20210902220334.2abd0083@xps13>
+In-Reply-To: <20210830151010.7dcb1be3@jic23-huawei>
 References: <20210825152518.379386-1-miquel.raynal@bootlin.com>
-        <20210825152518.379386-21-miquel.raynal@bootlin.com>
-        <20210830145608.09d7e685@jic23-huawei>
+        <20210825152518.379386-29-miquel.raynal@bootlin.com>
+        <20210830151010.7dcb1be3@jic23-huawei>
 Organization: Bootlin
 X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
@@ -48,123 +48,75 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 Hi Jonathan,
 
-Jonathan Cameron <jic23@kernel.org> wrote on Mon, 30 Aug 2021 14:56:08
-+0100:
 
-> On Wed, 25 Aug 2021 17:24:58 +0200
-> Miquel Raynal <miquel.raynal@bootlin.com> wrote:
-> 
-> > Instead of deriving in the probe and in the resume path the value of the
-> > ctrl register, let's do it only once in the probe, save the value of
-> > this register in the driver's structure and use it from the resume
-> > callback.
-> > 
-> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>  
-> A few minor things inline.
-> 
-> J
-> 
-> > ---
-> >  drivers/mfd/ti_am335x_tscadc.c       | 31 ++++++++--------------------
-> >  include/linux/mfd/ti_am335x_tscadc.h |  2 +-
-> >  2 files changed, 10 insertions(+), 23 deletions(-)
-> > 
-> > diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
-> > index 7071344ad18e..d661e8ae66c9 100644
-> > --- a/drivers/mfd/ti_am335x_tscadc.c
-> > +++ b/drivers/mfd/ti_am335x_tscadc.c
-> > @@ -122,7 +122,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
-> >  	struct clk *clk;
-> >  	u32 val;
-> >  	int tsc_wires = 0, adc_channels = 0, readouts = 0, cell_idx = 0;
-> > -	int total_channels, ctrl, err;
-> > +	int total_channels, err;
-> >  
-> >  	/* Allocate memory for device */
-> >  	tscadc = devm_kzalloc(&pdev->dev, sizeof(*tscadc), GFP_KERNEL);
-> > @@ -215,22 +215,21 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
-> >  	regmap_write(tscadc->regmap, REG_CLKDIV, tscadc->clk_div);
-> >  
-> >  	/* Set the control register bits */
-> > -	ctrl = CNTRLREG_STEPCONFIGWRT |	CNTRLREG_STEPID;
-> > -	regmap_write(tscadc->regmap, REG_CTRL, ctrl);
-> > +	tscadc->ctrl = CNTRLREG_STEPCONFIGWRT | CNTRLREG_STEPID;
-> > +	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl);
-> >  
-> >  	if (tsc_wires > 0) {
-> > -		tscadc->tsc_wires = tsc_wires;
-> > +		tscadc->ctrl |= CNTRLREG_TSCENB;
-> >  		if (tsc_wires == 5)
-> > -			ctrl |= CNTRLREG_5WIRE | CNTRLREG_TSCENB;
-> > +			tscadc->ctrl |= CNTRLREG_5WIRE;
-> >  		else
-> > -			ctrl |= CNTRLREG_4WIRE | CNTRLREG_TSCENB;
-> > +			tscadc->ctrl |= CNTRLREG_4WIRE;
-> >  	}
-> >  
-> >  	tscadc_idle_config(tscadc);
-> >  
-> >  	/* Enable the TSC module enable bit */
-> > -	ctrl |= CNTRLREG_TSCSSENB;
-> > -	regmap_write(tscadc->regmap, REG_CTRL, ctrl);
-> > +	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl | CNTRLREG_TSCSSENB);
-> >  
-> >  	/* TSC Cell */
-> >  	if (tsc_wires > 0) {
-> > @@ -305,25 +304,13 @@ static int __maybe_unused tscadc_suspend(struct device *dev)
-> >  static int __maybe_unused tscadc_resume(struct device *dev)
-> >  {
-> >  	struct ti_tscadc_dev *tscadc = dev_get_drvdata(dev);
-> > -	u32 ctrl;
-> >  
-> >  	pm_runtime_get_sync(dev);
-> >  
-> > -	/* context restore */
-> > -	ctrl = CNTRLREG_STEPCONFIGWRT |	CNTRLREG_STEPID;
-> > -	regmap_write(tscadc->regmap, REG_CTRL, ctrl);
-> > -
-> > -	if (tscadc->tsc_wires > 0) {
-> > -		if (tscadc->tsc_wires == 5)
-> > -			ctrl |= CNTRLREG_5WIRE | CNTRLREG_TSCENB;
-> > -		else
-> > -			ctrl |= CNTRLREG_4WIRE | CNTRLREG_TSCENB;
-> > -	}
-> > -	ctrl |= CNTRLREG_TSCSSENB;
-> > -	regmap_write(tscadc->regmap, REG_CTRL, ctrl);
-> > -
-> >  	regmap_write(tscadc->regmap, REG_CLKDIV, tscadc->clk_div);
-> > +	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl);  
-> 
-> Patch description should mention why this ordering change is here.
+> > +static const struct ti_tscadc_data magdata = {
+> > +	.has_tsc = false,
+> > +	.has_mag = true,
+> > +	.name_tscmag = "TI-am43xx-mag",
+> > +	.compat_tscmag = "ti,am4372-mag",
+> > +	.name_adc = "TI-am43xx-adc",
+> > +	.compat_adc = "ti,am4372-adc",
+> > +	.target_clk_rate = MAG_ADC_CLK,
+> > +};
+> > +
+> >  static const struct of_device_id ti_tscadc_dt_ids[] = {
+> > -	{ .compatible = "ti,am3359-tscadc", },
+> > +	{
+> > +		.compatible = "ti,am3359-tscadc",
+> > +		.data = &tscdata,  
+> Interesting to see match data added here and not before.
+> Given you don't have any code in here that seems to have
+> changed to use the match data, was it buggy before or is this still
+> not used?
 
-I actually moved the patch that reorders things earlier so that the
-reviewer is not bothered by the order changes later on.
+As said earlier, it was buggy before. It is now fixed.
 
 > 
-> >  	tscadc_idle_config(tscadc);
-> > +	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl | CNTRLREG_TSCSSENB);  
+> > +	},
+> > +	{
+> > +		.compatible = "ti,am4372-magadc",
+> > +		.data = &magdata,
+> > +	},
+> >  	{ }
+> >  };
+> >  MODULE_DEVICE_TABLE(of, ti_tscadc_dt_ids);
+> > @@ -355,6 +382,6 @@ static struct platform_driver ti_tscadc_driver = {
+> >  
+> >  module_platform_driver(ti_tscadc_driver);
+> >  
+> > -MODULE_DESCRIPTION("TI touchscreen / ADC MFD controller driver");
+> > +MODULE_DESCRIPTION("TI touchscreen/magnetic reader/ADC MFD controller driver");
+> >  MODULE_AUTHOR("Rachna Patil <rachna@ti.com>");
+> >  MODULE_LICENSE("GPL");
+> > diff --git a/include/linux/mfd/ti_am335x_tscadc.h b/include/linux/mfd/ti_am335x_tscadc.h
+> > index 082b2af94263..31b22ec567e7 100644
+> > --- a/include/linux/mfd/ti_am335x_tscadc.h
+> > +++ b/include/linux/mfd/ti_am335x_tscadc.h
+> > @@ -129,6 +129,11 @@
+> >  #define CNTRLREG_TSC_8WIRE	CNTRLREG_TSC_AFE_CTRL(3)
+> >  #define CNTRLREG_TSC_ENB	BIT(7)
+> >  
+> > +/*Control registers bitfields  for MAGADC IP */
+> > +#define CNTRLREG_MAGADCENB      BIT(0)
+> > +#define CNTRLREG_MAG_PREAMP_PWRDOWN BIT(5)
+> > +#define CNTRLREG_MAG_PREAMP_BYPASS  BIT(6)
+> > +
+> >  /* FIFO READ Register */
+> >  #define FIFOREAD_DATA_MASK (0xfff << 0)
+> >  #define FIFOREAD_CHNLID_MASK (0xf << 16)
+> > @@ -141,7 +146,8 @@
+> >  #define SEQ_STATUS BIT(5)
+> >  #define CHARGE_STEP		0x11
+> >  
+> > -#define TSC_ADC_CLK		3000000
+> > +#define TSC_ADC_CLK		3000000 /* 3 MHz */
+> > +#define MAG_ADC_CLK		13000000 /* 13 MHz */  
 > 
-> As the value of tscadc->ctrl is not the same as REG_CTRL this is a bit non obvious.
-> 
-> You might be better off keeping them in sync, but masking that bit out and then resetting
-> it as appropriate.
+> Not sure on current status, but there is a proposed series floating
+> about that adds HZ_PER_MEGAHZ or something like that which would make
+> it easier to spot if these have right number of zeros.
 
-I honestly find more readable doing:
-
-ctrl = flags;
-writel(ctrl);
-writel(ctrl | en_bit);
-
-than
-
-ctrl = flags;
-writel(ctrl & ~en_bit);
-writel(ctrl);
-
-because the second version emphasis the fact that we reset the en_bit
-(which is wrong, the point of this first write is to actually write all
-the configuration but not the en_bit yet) while the first version
-clearly shows that the second write includes an additional "enable bit".
+Would be nice indeed, but it looks like it's not yet mainline :/
 
 Thanks,
 Miquèl

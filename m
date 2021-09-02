@@ -2,18 +2,18 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 75B7C3FF56D
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Sep 2021 23:15:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13E963FF56F
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Sep 2021 23:15:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346945AbhIBVPn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Sep 2021 17:15:43 -0400
-Received: from relay10.mail.gandi.net ([217.70.178.230]:45861 "EHLO
+        id S1347027AbhIBVPq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Sep 2021 17:15:46 -0400
+Received: from relay10.mail.gandi.net ([217.70.178.230]:57241 "EHLO
         relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346633AbhIBVPm (ORCPT
+        with ESMTP id S1346729AbhIBVPm (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Sep 2021 17:15:42 -0400
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 9F7A524000A;
-        Thu,  2 Sep 2021 21:14:41 +0000 (UTC)
+        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 6C84E24000B;
+        Thu,  2 Sep 2021 21:14:42 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -21,9 +21,9 @@ To:     Jonathan Cameron <jic23@kernel.org>,
 Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Nuno Sa <Nuno.Sa@analog.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH v2 04/16] iio: adc: max1027: Avoid device managed allocators for DMA purposes
-Date:   Thu,  2 Sep 2021 23:14:25 +0200
-Message-Id: <20210902211437.503623-5-miquel.raynal@bootlin.com>
+Subject: [PATCH v2 05/16] iio: adc: max1027: Minimize the number of converted channels
+Date:   Thu,  2 Sep 2021 23:14:26 +0200
+Message-Id: <20210902211437.503623-6-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210902211437.503623-1-miquel.raynal@bootlin.com>
 References: <20210902211437.503623-1-miquel.raynal@bootlin.com>
@@ -34,99 +34,108 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-My overall understanding [1] is that devm_ allocations will require an
-extra 16 bytes at the beginning of the allocated buffer to store
-information about the managing device, this shifts a little bit the
-buffer which may then not be fully aligned on cache lines, disqualifying
-them for being suitable for DMA.
+Provide a list of ->available_scan_masks which match the device's
+capabilities. Basically, the devices is able to scan from 0 to N, N
+being the highest voltage channel requested by the user. The temperature
+can be included or not, but cannot be retrieved alone.
 
-Let's switch to a regular kmalloc based allocator to ensure st->buffer
-is DMA-able, as required by the IIO subsystem.
+The consequence is, instead of reading and pushing to the IIO buffers
+all channels each time, the "minimum" number of channels will be scanned
+and pushed based on the ->active_scan_mask.
 
-[1] https://linux-arm-kernel.infradead.narkive.com/vyJqy0RQ/question-devm-kmalloc-for-dma
+For example, if the user wants channels 1, 4 and 5, all channels from
+0 to 5 will be scanned and pushed to the IIO buffers. The core will then
+filter out the unneeded samples based on the ->active_scan_mask that has
+been selected and only channels 1, 4 and 5 will be available to the user
+in the shared buffer.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/iio/adc/max1027.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ drivers/iio/adc/max1027.c | 46 +++++++++++++++++++++++++++++++++------
+ 1 file changed, 39 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/iio/adc/max1027.c b/drivers/iio/adc/max1027.c
-index f27044324141..1167d50c1d67 100644
+index 1167d50c1d67..3c41d2c0ed2a 100644
 --- a/drivers/iio/adc/max1027.c
 +++ b/drivers/iio/adc/max1027.c
-@@ -438,9 +438,7 @@ static int max1027_probe(struct spi_device *spi)
- 	indio_dev->num_channels = st->info->num_channels;
- 	indio_dev->available_scan_masks = st->info->available_scan_masks;
+@@ -172,18 +172,39 @@ static const struct iio_chan_spec max1231_channels[] = {
+ 	MAX1X31_CHANNELS(12),
+ };
  
--	st->buffer = devm_kmalloc_array(&indio_dev->dev,
--					indio_dev->num_channels, 2,
--					GFP_KERNEL);
-+	st->buffer = kmalloc_array(indio_dev->num_channels, 2, GFP_KERNEL);
- 	if (!st->buffer)
- 		return -ENOMEM;
- 
-@@ -451,7 +449,7 @@ static int max1027_probe(struct spi_device *spi)
- 						      NULL);
- 		if (ret < 0) {
- 			dev_err(&indio_dev->dev, "Failed to setup buffer\n");
--			return ret;
-+			goto free_buffer;
- 		}
- 
- 		st->trig = devm_iio_trigger_alloc(&spi->dev, "%s-trigger",
-@@ -460,7 +458,7 @@ static int max1027_probe(struct spi_device *spi)
- 			ret = -ENOMEM;
- 			dev_err(&indio_dev->dev,
- 				"Failed to allocate iio trigger\n");
--			return ret;
-+			goto free_buffer;
- 		}
- 
- 		st->trig->ops = &max1027_trigger_ops;
-@@ -470,7 +468,7 @@ static int max1027_probe(struct spi_device *spi)
- 		if (ret < 0) {
- 			dev_err(&indio_dev->dev,
- 				"Failed to register iio trigger\n");
--			return ret;
-+			goto free_buffer;
- 		}
- 
- 		ret = devm_request_threaded_irq(&spi->dev, spi->irq,
-@@ -481,7 +479,7 @@ static int max1027_probe(struct spi_device *spi)
- 						st->trig);
- 		if (ret < 0) {
- 			dev_err(&indio_dev->dev, "Failed to allocate IRQ.\n");
--			return ret;
-+			goto free_buffer;
- 		}
- 	}
- 
-@@ -490,7 +488,7 @@ static int max1027_probe(struct spi_device *spi)
- 	ret = spi_write(st->spi, &st->reg, 1);
- 	if (ret < 0) {
- 		dev_err(&indio_dev->dev, "Failed to reset the ADC\n");
--		return ret;
-+		goto free_buffer;
- 	}
- 
- 	/* Disable averaging */
-@@ -498,10 +496,15 @@ static int max1027_probe(struct spi_device *spi)
- 	ret = spi_write(st->spi, &st->reg, 1);
- 	if (ret < 0) {
- 		dev_err(&indio_dev->dev, "Failed to configure averaging register\n");
--		return ret;
-+		goto free_buffer;
- 	}
- 
- 	return devm_iio_device_register(&spi->dev, indio_dev);
++#define MAX1X27_SCAN_MASK_TEMP BIT(0)
 +
-+free_buffer:
-+	kfree(st->buffer);
++#define MAX1X27_SCAN_MASKS(temp)					\
++	GENMASK(1, 1 - (temp)), GENMASK(2, 1 - (temp)),			\
++	GENMASK(3, 1 - (temp)), GENMASK(4, 1 - (temp)),			\
++	GENMASK(5, 1 - (temp)), GENMASK(6, 1 - (temp)),			\
++	GENMASK(7, 1 - (temp)), GENMASK(8, 1 - (temp))
 +
-+	return ret;
- }
++#define MAX1X29_SCAN_MASKS(temp)					\
++	MAX1X27_SCAN_MASKS(temp),					\
++	GENMASK(9, 1 - (temp)), GENMASK(10, 1 - (temp)),		\
++	GENMASK(11, 1 - (temp)), GENMASK(12, 1 - (temp))
++
++#define MAX1X31_SCAN_MASKS(temp)					\
++	MAX1X29_SCAN_MASKS(temp),					\
++	GENMASK(13, 1 - (temp)), GENMASK(14, 1 - (temp)),		\
++	GENMASK(15, 1 - (temp)), GENMASK(16, 1 - (temp))
++
+ static const unsigned long max1027_available_scan_masks[] = {
+-	0x000001ff,
++	MAX1X27_SCAN_MASKS(0),
++	MAX1X27_SCAN_MASKS(1),
+ 	0x00000000,
+ };
  
- static struct spi_driver max1027_driver = {
+ static const unsigned long max1029_available_scan_masks[] = {
+-	0x00001fff,
++	MAX1X29_SCAN_MASKS(0),
++	MAX1X29_SCAN_MASKS(1),
+ 	0x00000000,
+ };
+ 
+ static const unsigned long max1031_available_scan_masks[] = {
+-	0x0001ffff,
++	MAX1X31_SCAN_MASKS(0),
++	MAX1X31_SCAN_MASKS(1),
+ 	0x00000000,
+ };
+ 
+@@ -368,9 +389,15 @@ static int max1027_set_trigger_state(struct iio_trigger *trig, bool state)
+ 		if (ret < 0)
+ 			return ret;
+ 
+-		/* Scan from 0 to max */
+-		st->reg = MAX1027_CONV_REG | MAX1027_CHAN(0) |
+-			  MAX1027_SCAN_N_M | MAX1027_TEMP;
++		/*
++		 * Scan from chan 0 to the highest requested channel.
++		 * Include temperature on demand.
++		 */
++		st->reg = MAX1027_CONV_REG | MAX1027_SCAN_0_N;
++		st->reg |= MAX1027_CHAN(fls(*indio_dev->active_scan_mask) - 2);
++		if (*indio_dev->active_scan_mask & MAX1X27_SCAN_MASK_TEMP)
++			st->reg |= MAX1027_TEMP;
++
+ 		ret = spi_write(st->spi, &st->reg, 1);
+ 		if (ret < 0)
+ 			return ret;
+@@ -391,9 +418,14 @@ static irqreturn_t max1027_trigger_handler(int irq, void *private)
+ 	struct iio_poll_func *pf = private;
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct max1027_state *st = iio_priv(indio_dev);
++	unsigned int scanned_chans;
++
++	scanned_chans = fls(*indio_dev->active_scan_mask) - 1;
++	if (*indio_dev->active_scan_mask & MAX1X27_SCAN_MASK_TEMP)
++		scanned_chans++;
+ 
+ 	/* fill buffer with all channel */
+-	spi_read(st->spi, st->buffer, indio_dev->masklength * 2);
++	spi_read(st->spi, st->buffer, scanned_chans * 2);
+ 
+ 	iio_push_to_buffers(indio_dev, st->buffer);
+ 
 -- 
 2.27.0
 

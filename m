@@ -2,121 +2,132 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 21F673FF488
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Sep 2021 22:04:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B70F3FF567
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Sep 2021 23:14:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343763AbhIBUEi convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Thu, 2 Sep 2021 16:04:38 -0400
-Received: from relay8-d.mail.gandi.net ([217.70.183.201]:54915 "EHLO
-        relay8-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343608AbhIBUEi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Sep 2021 16:04:38 -0400
+        id S1345890AbhIBVPj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Sep 2021 17:15:39 -0400
+Received: from relay10.mail.gandi.net ([217.70.178.230]:48245 "EHLO
+        relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232087AbhIBVPj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Sep 2021 17:15:39 -0400
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 95CE71BF203;
-        Thu,  2 Sep 2021 20:03:35 +0000 (UTC)
-Date:   Thu, 2 Sep 2021 22:03:34 +0200
+        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 82BE5240002;
+        Thu,  2 Sep 2021 21:14:38 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>, bcousson@baylibre.com,
-        Tony Lindgren <tony@atomide.com>,
-        Tero Kristo <t-kristo@ti.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        "Ryan J . Barnett" <ryan.barnett@collins.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-clk@vger.kernel.org, Jason Reeder <jreeder@ti.com>
-Subject: Re: [PATCH 28/40] mfd: ti_am335x_tscadc: Add ADC1/magnetic reader
- support
-Message-ID: <20210902220334.2abd0083@xps13>
-In-Reply-To: <20210830151010.7dcb1be3@jic23-huawei>
-References: <20210825152518.379386-1-miquel.raynal@bootlin.com>
-        <20210825152518.379386-29-miquel.raynal@bootlin.com>
-        <20210830151010.7dcb1be3@jic23-huawei>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Nuno Sa <Nuno.Sa@analog.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH v2 00/16] Bring external triggers support to MAX1027-like ADCs
+Date:   Thu,  2 Sep 2021 23:14:21 +0200
+Message-Id: <20210902211437.503623-1-miquel.raynal@bootlin.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+Until now the max1027.c driver, which handles 10-bit devices (max10xx)
+and 12-bit devices (max12xx), only supported hardware triggers. When a
+hardware trigger is not wired it is very convenient to trigger periodic
+conversions with timers or on userspace demand with a sysfs
+trigger. Overall, when several values are needed at the same time, using
+triggers and buffers improves quite a lot the performances.
 
+This series does a bit of cleaning/code reorganization before actually
+bringing more flexibility to the driver, up to the point where it is
+possible to use an external trigger (hardware or software) even without
+the IRQ line wired.
 
-> > +static const struct ti_tscadc_data magdata = {
-> > +	.has_tsc = false,
-> > +	.has_mag = true,
-> > +	.name_tscmag = "TI-am43xx-mag",
-> > +	.compat_tscmag = "ti,am4372-mag",
-> > +	.name_adc = "TI-am43xx-adc",
-> > +	.compat_adc = "ti,am4372-adc",
-> > +	.target_clk_rate = MAG_ADC_CLK,
-> > +};
-> > +
-> >  static const struct of_device_id ti_tscadc_dt_ids[] = {
-> > -	{ .compatible = "ti,am3359-tscadc", },
-> > +	{
-> > +		.compatible = "ti,am3359-tscadc",
-> > +		.data = &tscdata,  
-> Interesting to see match data added here and not before.
-> Given you don't have any code in here that seems to have
-> changed to use the match data, was it buggy before or is this still
-> not used?
+This series is currently based on a v4.14-rc1 kernel and the external
+triggering mechanism has been tested on a custom board where the IRQ and
+the EOC lines have not been populated.
 
-As said earlier, it was buggy before. It is now fixed.
+How to test sysfs triggers:
+    echo 0 > /sys/bus/iio/devices/iio_sysfs_trigger/add_trigger
+    cat /sys/bus/iio/devices/iio_sysfs_trigger/trigger0/name > \
+        /sys/bus/iio/devices/iio:device0/trigger/current_trigger
+    echo 1 > /sys/bus/iio/devices/iio:device0/scan_elements/in_voltageX_en
+    echo 1 > /sys/bus/iio/devices/iio:device0/scan_elements/in_voltageY_en
+    echo 1 > /sys/bus/iio/devices/iio:device0/buffer/enable
+    cat /dev/iio\:device0 > /tmp/data &
+    echo 1 > /sys/bus/iio/devices/trigger0/trigger_now
+    od -t x1 /tmp/data
 
-> 
-> > +	},
-> > +	{
-> > +		.compatible = "ti,am4372-magadc",
-> > +		.data = &magdata,
-> > +	},
-> >  	{ }
-> >  };
-> >  MODULE_DEVICE_TABLE(of, ti_tscadc_dt_ids);
-> > @@ -355,6 +382,6 @@ static struct platform_driver ti_tscadc_driver = {
-> >  
-> >  module_platform_driver(ti_tscadc_driver);
-> >  
-> > -MODULE_DESCRIPTION("TI touchscreen / ADC MFD controller driver");
-> > +MODULE_DESCRIPTION("TI touchscreen/magnetic reader/ADC MFD controller driver");
-> >  MODULE_AUTHOR("Rachna Patil <rachna@ti.com>");
-> >  MODULE_LICENSE("GPL");
-> > diff --git a/include/linux/mfd/ti_am335x_tscadc.h b/include/linux/mfd/ti_am335x_tscadc.h
-> > index 082b2af94263..31b22ec567e7 100644
-> > --- a/include/linux/mfd/ti_am335x_tscadc.h
-> > +++ b/include/linux/mfd/ti_am335x_tscadc.h
-> > @@ -129,6 +129,11 @@
-> >  #define CNTRLREG_TSC_8WIRE	CNTRLREG_TSC_AFE_CTRL(3)
-> >  #define CNTRLREG_TSC_ENB	BIT(7)
-> >  
-> > +/*Control registers bitfields  for MAGADC IP */
-> > +#define CNTRLREG_MAGADCENB      BIT(0)
-> > +#define CNTRLREG_MAG_PREAMP_PWRDOWN BIT(5)
-> > +#define CNTRLREG_MAG_PREAMP_BYPASS  BIT(6)
-> > +
-> >  /* FIFO READ Register */
-> >  #define FIFOREAD_DATA_MASK (0xfff << 0)
-> >  #define FIFOREAD_CHNLID_MASK (0xf << 16)
-> > @@ -141,7 +146,8 @@
-> >  #define SEQ_STATUS BIT(5)
-> >  #define CHARGE_STEP		0x11
-> >  
-> > -#define TSC_ADC_CLK		3000000
-> > +#define TSC_ADC_CLK		3000000 /* 3 MHz */
-> > +#define MAG_ADC_CLK		13000000 /* 13 MHz */  
-> 
-> Not sure on current status, but there is a proposed series floating
-> about that adds HZ_PER_MEGAHZ or something like that which would make
-> it easier to spot if these have right number of zeros.
-
-Would be nice indeed, but it looks like it's not yet mainline :/
-
-Thanks,
+Cheers,
 Miquèl
+
+Changes in v2:
+[All]
+* Overall quite a few changes, I'll try to list them here but I made
+  significant changes on the last few commits so it's hard to have an
+  exhaustive and detailed list.
+* Simplified the return statements as advised by Nuno.
+* Dropped useless debug messages.
+* Used iio_trigger_validate_own_device() instead of an internal
+  variable when possible.
+* Added Nuno's Reviewed-by's when relevant.
+[Created a new patch to fix the style]
+[Created a new patch to ensure st->buffer is DMA-safe]
+[Push only the requested samples]
+* Dropped a useless check over active_scan_mask mask in
+  ->set_trigger_state().
+* Dropped the st->buffer indirection with a missing __be16 type.
+* Do not push only the requested samples in the IIO buffers, rely on the
+  core to handle this by providing additional 'available_scan_masks'
+  instead of dropping this entry from the initial setup.
+[Create a helper to configure the trigger]
+* Avoided messing with new lines.
+* Dropped cnvst_trigger, used a function parameter instead.
+[Prevent single channel accesses during buffer reads]
+* Used iio_device_claim_direct_mode() when relevant.
+* Dropped the extra iio_buffer_enabled() call.
+* Prevented returning with a mutex held.
+[Introduce an end of conversion helper]
+* Moved the check against active scan mask to the very end of the series
+  where we actually make use of it.
+* Moved the Queue declaration to another patch.
+[Dropped the patch: Prepare re-using the EOC interrupt]
+[Consolidate the end of conversion helper]
+* Used a dynamic completion object instead of a static queue.
+* Reworded the commit message to actually describe what this commit
+  does.
+[Support software triggers]
+* Dropped the patch and replaced it with something hopefully close to
+  what Jonathan and Nuno described in their reviews.
+[Enable software triggers to be  used without IRQ]
+* Wrote a more generic commit message, not focusing on software
+  triggers.
+
+
+Miquel Raynal (16):
+  iio: adc: max1027: Fix style
+  iio: adc: max1027: Drop extra warning message
+  iio: adc: max1027: Drop useless debug messages
+  iio: adc: max1027: Avoid device managed allocators for DMA purposes
+  iio: adc: max1027: Minimize the number of converted channels
+  iio: adc: max1027: Rename a helper
+  iio: adc: max1027: Create a helper to enable/disable the cnvst trigger
+  iio: adc: max1027: Simplify the _set_trigger_state() helper
+  iio: adc: max1027: Ensure a default cnvst trigger configuration
+  iio: adc: max1027: Create a helper to configure the channels to scan
+  iio: adc: max1027: Prevent single channel accesses during buffer reads
+  iio: adc: max1027: Separate the IRQ handler from the read logic
+  iio: adc: max1027: Introduce an end of conversion helper
+  iio: adc: max1027: Don't just sleep when the EOC interrupt is
+    available
+  iio: adc: max1027: Add support for external triggers
+  iio: adc: max1027: Don't reject external triggers when there is no IRQ
+
+ drivers/iio/adc/max1027.c | 300 ++++++++++++++++++++++++++++----------
+ 1 file changed, 219 insertions(+), 81 deletions(-)
+
+-- 
+2.27.0
+

@@ -2,129 +2,161 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 27E7C3FFB2E
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Sep 2021 09:38:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 615DF3FFB74
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Sep 2021 10:00:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348042AbhICHiZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 Sep 2021 03:38:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56688 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234753AbhICHiZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Sep 2021 03:38:25 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B225FC061575
-        for <linux-iio@vger.kernel.org>; Fri,  3 Sep 2021 00:37:25 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id x11so10288820ejv.0
-        for <linux-iio@vger.kernel.org>; Fri, 03 Sep 2021 00:37:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=deviqon.com; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=cRGvZSsdRmFgCiMKoqUCm1KoczOaDBpTmvjrEAznFXk=;
-        b=ZtgOuaGg9ld2PfKJa7EJwdFc7RVXoiDiH4rxAz6tIZ73a+uaFviS/V80qkBU5imk3q
-         wfilCq4Oq9oFaDubG8CpWMdr8qqeFRJO0h4pjB/t569WKttrJLkfB3IUhYkR3Gi6PzfA
-         oy9bkVNDrXB+M5Ckctjm/vwjMruXA7eiSVe6iscse9QUAizwboRHIACFoeG2x31vTbSi
-         gj9Iuj+Hm0dHKk2P3bFNQJhDYhrHcOq/PlZeViaSP8FAqqx/JCOcjK3aqA6D7waaVQds
-         uwVIKCVafTtFJGVYB/jmMrV42reAeYxRpen0BrcBnAdULJSAbR2sIzTr+8q1j0e/P0ap
-         R9EA==
+        id S1348084AbhICIBQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Sep 2021 04:01:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:53561 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1348076AbhICIBJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Sep 2021 04:01:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1630656007;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=InxKCwkaY+BSOwQRBiaO8xW0lNamfxvr6pOVA9nU0nQ=;
+        b=QkyXCzTOlf3km0KSamF3vOkrQBloePaJmiH5hGsXDghVNG3CLjY0NXYuG7A7okxsxut9E4
+        jWLe4oJYWVjDvg9cLoRQlmTjZ0zdsiBcLQi+QaStkwS7GwWEG7rrf3XKPrQyS6r9VmUYKK
+        +bRez9rIJH+C3XJ61Jd2v8xLO/5d1fo=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-474-rmG0jbwyN0KEFPahzCLyoQ-1; Fri, 03 Sep 2021 04:00:06 -0400
+X-MC-Unique: rmG0jbwyN0KEFPahzCLyoQ-1
+Received: by mail-ej1-f71.google.com with SMTP id jw25-20020a17090776b900b005ca775a2a00so2329308ejc.1
+        for <linux-iio@vger.kernel.org>; Fri, 03 Sep 2021 01:00:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=cRGvZSsdRmFgCiMKoqUCm1KoczOaDBpTmvjrEAznFXk=;
-        b=uTF4Fki3HGcB/EO9akzDorYTu0pLYltayJNoJqkIBMfflM6nYbzx+aoPX5l96sPIsR
-         qEzmWvTiUizGGvwny8xq8fTZ3d3uVrI7dIi2ENYXTvMaFb7H2uMyZD76rr7W/WaiXm95
-         qPOBXHlB67obB5ZWWdt0+ONiquzKRPgw9YoJIagtbHGGl0U3Ujyx4HMYuO3Evl+S0D8K
-         T5bXpiN8aZc4aTbH90eRLU7plzXH8RDc6TaX1X8zVyUx3t/ycpsEg8Uk+y328dY1UbGU
-         s/wBPeZMXv/HvZR183M7g6OQYdqGfw72nKJWEkIrnLiWbqLKUvi9YSH6QjWzmCXROzvI
-         w4yQ==
-X-Gm-Message-State: AOAM5326djXZE8OzUAXgs9UGAqKSNpvlmPep36OMuSswdFMzz9zP5NIF
-        Wwc17zvkQiYui24mN4KmU+cDqA==
-X-Google-Smtp-Source: ABdhPJyotfem2L+UTIbP3rA/k0FEc8E9GhMu6BgmV48BRHsNgcPZN/WaC8+4YmMcuKABb5NZon7uMA==
-X-Received: by 2002:a17:906:7fc4:: with SMTP id r4mr2660637ejs.75.1630654644357;
-        Fri, 03 Sep 2021 00:37:24 -0700 (PDT)
-Received: from neptune.. ([5.2.193.191])
-        by smtp.gmail.com with ESMTPSA id c19sm2211627ejs.116.2021.09.03.00.37.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Sep 2021 00:37:24 -0700 (PDT)
-From:   Alexandru Ardelean <aardelean@deviqon.com>
-To:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Cc:     jic23@kernel.org, Alexandru Ardelean <aardelean@deviqon.com>
-Subject: [PATCH] iio: adc: ti-ads8344: convert probe to device-managed
-Date:   Fri,  3 Sep 2021 10:37:07 +0300
-Message-Id: <20210903073707.46892-1-aardelean@deviqon.com>
-X-Mailer: git-send-email 2.31.1
+        bh=InxKCwkaY+BSOwQRBiaO8xW0lNamfxvr6pOVA9nU0nQ=;
+        b=lLqKaXjxkVIpV3rN3PZMDwZOoWIi/+37BKaJUz/O1qU2tIc8PfVnjmJ5qAFFYyuU3h
+         yUg9Q11rGz1OpT0PDpPgxES1fbSXMzFTDMwkO4005U08/sAUNSGFmSRshBzKl7zNwUHI
+         CIdBzlVCkKxh5sIPQTUavzk0ClHcYz4gwKG4beJEpUqh5itItdlmEqk69ReuI3vztXNC
+         oegROjf5LnI8z61pFlgFa4Tez6WBqD5/m8lKbfga1FAPMmDQt4CZBPYlzq4t39Mptf92
+         rbn9SuNN6DutvBS02cxYvjlISR0hiWBnWqABo54VKEee/SB4W1OdhiBBmVmhuj6G18EN
+         HekA==
+X-Gm-Message-State: AOAM532kWB7i3oX7mhFD6FhmjMxnIlJq1tH4kjhF4YzXDQuIhFvJiujl
+        RRRbJtuWbfIxrwgopaR9vIPr8b0xR4QVctVuEHWNPD24277/7e1cFLPNZru5gXWfSdGNT3BTlhi
+        DIrbC5dCskL1kBjdcy7oN
+X-Received: by 2002:a17:906:4c8c:: with SMTP id q12mr2884987eju.254.1630656005554;
+        Fri, 03 Sep 2021 01:00:05 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJy8fQU/ds5USfJd2Tckg+EXgt7GKbH1YbqcBJ6WAavCdiwLIBnSSmb8NLjjEqZaYwQzo4sQEQ==
+X-Received: by 2002:a17:906:4c8c:: with SMTP id q12mr2884963eju.254.1630656005317;
+        Fri, 03 Sep 2021 01:00:05 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
+        by smtp.gmail.com with ESMTPSA id r16sm2554300edt.15.2021.09.03.01.00.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 03 Sep 2021 01:00:04 -0700 (PDT)
+Subject: Re: [PATCH 3/5] iio: adc: axp288_adc: convert probe to full
+ device-managed
+To:     Alexandru Ardelean <aardelean@deviqon.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-doc@vger.kernel.org
+Cc:     jic23@kernel.org, wens@csie.org, andriy.shevchenko@linux.intel.com
+References: <20210903072917.45769-1-aardelean@deviqon.com>
+ <20210903072917.45769-4-aardelean@deviqon.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <1e26dd27-475c-7815-9a9d-240546fa9088@redhat.com>
+Date:   Fri, 3 Sep 2021 10:00:04 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210903072917.45769-4-aardelean@deviqon.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This change converts the driver to register via devm_iio_device_register().
-The regulator disable is moved on a devm_add_action_or_reset() hook.
+Hi,
 
-And the spi_set_drvdata() isn't required anymore.
-And finally, the ads8344_remove() can be removed as well.
+On 9/3/21 9:29 AM, Alexandru Ardelean wrote:
+> This change converts the probe of this driver to use device-managed
+> functions only, which means that the remove hook can be removed.
+> The remove hook has only 2 calls to iio_device_unregister() and
+> iio_map_array_unregister(). Both these can now be done via devm register
+> functions, now that there's also a devm_iio_map_array_register() function.
+> 
+> The platform_set_drvdata() can also be removed now.
+> 
+> This change also removes the error print for when the iio_device_register()
+> call fails. This isn't required now.
+> > Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
 
-Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
----
- drivers/iio/adc/ti-ads8344.c | 27 ++++++++-------------------
- 1 file changed, 8 insertions(+), 19 deletions(-)
+Thanks, patch looks good to me:
 
-diff --git a/drivers/iio/adc/ti-ads8344.c b/drivers/iio/adc/ti-ads8344.c
-index a345a30d74fa..c96d2a9ba924 100644
---- a/drivers/iio/adc/ti-ads8344.c
-+++ b/drivers/iio/adc/ti-ads8344.c
-@@ -133,6 +133,11 @@ static const struct iio_info ads8344_info = {
- 	.read_raw = ads8344_read_raw,
- };
- 
-+static void ads8344_reg_disable(void *data)
-+{
-+	regulator_disable(data);
-+}
-+
- static int ads8344_probe(struct spi_device *spi)
- {
- 	struct iio_dev *indio_dev;
-@@ -161,26 +166,11 @@ static int ads8344_probe(struct spi_device *spi)
- 	if (ret)
- 		return ret;
- 
--	spi_set_drvdata(spi, indio_dev);
--
--	ret = iio_device_register(indio_dev);
--	if (ret) {
--		regulator_disable(adc->reg);
-+	ret = devm_add_action_or_reset(&spi->dev, ads8344_reg_disable, adc->reg);
-+	if (ret)
- 		return ret;
--	}
--
--	return 0;
--}
--
--static int ads8344_remove(struct spi_device *spi)
--{
--	struct iio_dev *indio_dev = spi_get_drvdata(spi);
--	struct ads8344 *adc = iio_priv(indio_dev);
--
--	iio_device_unregister(indio_dev);
--	regulator_disable(adc->reg);
- 
--	return 0;
-+	return devm_iio_device_register(&spi->dev, indio_dev);
- }
- 
- static const struct of_device_id ads8344_of_match[] = {
-@@ -195,7 +185,6 @@ static struct spi_driver ads8344_driver = {
- 		.of_match_table = ads8344_of_match,
- 	},
- 	.probe = ads8344_probe,
--	.remove = ads8344_remove,
- };
- module_spi_driver(ads8344_driver);
- 
--- 
-2.31.1
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+
+Regards,
+
+Hans
+
+
+
+> ---
+>  drivers/iio/adc/axp288_adc.c | 28 ++++------------------------
+>  1 file changed, 4 insertions(+), 24 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/axp288_adc.c b/drivers/iio/adc/axp288_adc.c
+> index 5f5e8b39e4d2..a4b8be5b8f88 100644
+> --- a/drivers/iio/adc/axp288_adc.c
+> +++ b/drivers/iio/adc/axp288_adc.c
+> @@ -259,7 +259,7 @@ static int axp288_adc_probe(struct platform_device *pdev)
+>  	info->irq = platform_get_irq(pdev, 0);
+>  	if (info->irq < 0)
+>  		return info->irq;
+> -	platform_set_drvdata(pdev, indio_dev);
+> +
+>  	info->regmap = axp20x->regmap;
+>  	/*
+>  	 * Set ADC to enabled state at all time, including system suspend.
+> @@ -276,31 +276,12 @@ static int axp288_adc_probe(struct platform_device *pdev)
+>  	indio_dev->num_channels = ARRAY_SIZE(axp288_adc_channels);
+>  	indio_dev->info = &axp288_adc_iio_info;
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
+> -	ret = iio_map_array_register(indio_dev, axp288_adc_default_maps);
+> +
+> +	ret = devm_iio_map_array_register(&pdev->dev, indio_dev, axp288_adc_default_maps);
+>  	if (ret < 0)
+>  		return ret;
+>  
+> -	ret = iio_device_register(indio_dev);
+> -	if (ret < 0) {
+> -		dev_err(&pdev->dev, "unable to register iio device\n");
+> -		goto err_array_unregister;
+> -	}
+> -	return 0;
+> -
+> -err_array_unregister:
+> -	iio_map_array_unregister(indio_dev);
+> -
+> -	return ret;
+> -}
+> -
+> -static int axp288_adc_remove(struct platform_device *pdev)
+> -{
+> -	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
+> -
+> -	iio_device_unregister(indio_dev);
+> -	iio_map_array_unregister(indio_dev);
+> -
+> -	return 0;
+> +	return devm_iio_device_register(&pdev->dev, indio_dev);
+>  }
+>  
+>  static const struct platform_device_id axp288_adc_id_table[] = {
+> @@ -310,7 +291,6 @@ static const struct platform_device_id axp288_adc_id_table[] = {
+>  
+>  static struct platform_driver axp288_adc_driver = {
+>  	.probe = axp288_adc_probe,
+> -	.remove = axp288_adc_remove,
+>  	.id_table = axp288_adc_id_table,
+>  	.driver = {
+>  		.name = "axp288_adc",
+> 
 

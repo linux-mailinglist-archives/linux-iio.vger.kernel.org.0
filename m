@@ -2,60 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 248773FFB1B
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Sep 2021 09:30:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53FB43FFB1F
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Sep 2021 09:30:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348003AbhICHah (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 Sep 2021 03:30:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54890 "EHLO
+        id S1347978AbhICHak (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Sep 2021 03:30:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347974AbhICHaf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Sep 2021 03:30:35 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3251DC061760
-        for <linux-iio@vger.kernel.org>; Fri,  3 Sep 2021 00:29:35 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id h9so10191403ejs.4
-        for <linux-iio@vger.kernel.org>; Fri, 03 Sep 2021 00:29:35 -0700 (PDT)
+        with ESMTP id S1347983AbhICHag (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Sep 2021 03:30:36 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23A34C0613CF
+        for <linux-iio@vger.kernel.org>; Fri,  3 Sep 2021 00:29:36 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id u14so10126602ejf.13
+        for <linux-iio@vger.kernel.org>; Fri, 03 Sep 2021 00:29:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=deviqon.com; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=HnKxxaQYNnWTD9UVNnr24MR8zjRJb29eptl0bMy8Qq4=;
-        b=Qcz0qeTuAYOCren9Bte0rJrya/cpxtrK46NHFyqZw0Mlz1MB0RvC//GSaMk1pNJsge
-         u1l1AxWZiJhMBK3JzofjfGSEYBUpXsUTMBf7NUbECF+itGa3CujJQbKacFN0ry9qY5sb
-         uD0p6ZLx1KxONRQOhQCaMz4UJdNRNYFC7TLCEznC3HyfY1/arEYDJd+NiTAWJUrknYiV
-         CPd+1Bm/vFwa4fA2rAD53RKml9MaerqrAEZcJj98yco2ot1fxHdEqhXaqZB3eT+HMsks
-         kERZJGTZlreijmnTbeJsYTlUP9q9ayz1Y5ORKOI0wVDAFuuQ9zPqA3T3pzQC3Vrt0PV1
-         HqpA==
+        bh=W/2bGRX6h2ShjY2Ue+ETXCUOUj7+vt7FE17ZT3HOV+8=;
+        b=Lvrc4VxY92tToYNa/OcJfuMJMmDvqrpBTZJCKToRaG7VWGR68hJ1446jXykOL/5w18
+         C4wN0v7li4i53cC69kh0QRxfqj15o199V7ddMOOLKu+IZ8uFk5z8CvRJ2P5eO8cLmSeY
+         2Yxsrfrckc0tc68ZUAPcHrX0f0QVoaol8AS+1WDLvElOCt8i+nH3Wf0csvAR22q5Ry+0
+         w+a3ZORE1SaFwtVvNarPg6ZDUC+VWW//l/G/b9g++QxWeeVZtMUA38pieCIFXE6S1T1N
+         /3pthPe1rQ8Ivd4tWLkuzK9fcaq5x25kFHyf1UzSe/qv6/WLhc+Pev75Rz/FWXq54C5l
+         biNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=HnKxxaQYNnWTD9UVNnr24MR8zjRJb29eptl0bMy8Qq4=;
-        b=jxd6g1EstdHVtaJ4PLzRHA8fxglQaCqcoLUSujeRxAlezdgqSCjJHUAAzl0f+brSZG
-         XV3CR39qrVF2pW0dNXN4LrBQ6yawEdWrrn0kaKT0Pzzm1J05ldlshSiaubB2DfiF6aea
-         1Uxa9+qN9vx2cKMyNiZ0188Xi0xHjHdzagQDQPGUmSPl9X/YT5tLdAErBCmgvXvGZDi3
-         WN56WRfzkLNvZe/WtglPinmVTJ4/JcLFisJK5oWc2emP35Gp91rE2JSE95qK8Jj2N/uD
-         RtQ6/XjzZQVlqG+YaH4g7O/VVDZar8Hlk4yFO1w1zjhph9c+t9v01AyI5F1JFU5GiqM4
-         DfXg==
-X-Gm-Message-State: AOAM532Yx8XNGmxKykWSiVxqSfh4U7gdXZihQbMijLmYjj7JEWq9MSJ+
-        vd5KCa35BOdEWNDcmE048whSoB7xF0uLzA==
-X-Google-Smtp-Source: ABdhPJwFO572GXMyC8Iym92Njj9JtaNsYe0AZpZmJobeLhP6IQXc2R3B8cIlE08zeVVXsXVevPaQ5g==
-X-Received: by 2002:a17:906:d20a:: with SMTP id w10mr2724357ejz.426.1630654173566;
-        Fri, 03 Sep 2021 00:29:33 -0700 (PDT)
+        bh=W/2bGRX6h2ShjY2Ue+ETXCUOUj7+vt7FE17ZT3HOV+8=;
+        b=jP8oOsBLz1OjCuJYUpqPJxQrFq5ds1KYOgvJ0hxBpMsrB0gi0IRY03kCXLS3dqlIPs
+         KAege/35uVW21GFFxP6owGniMyMUruG0GK3DLI1awb8F+TqZoctFBieAq6Hg2DFtDxvW
+         LDnEj4tTrvlCwK80cXNLr/FpYvIu8vkFH9W6J0qa82pt+fNebn4lVh2d4UyIiXCUW0H/
+         3rVpIqTyc8fBSdf5GIi+RJl1MBLUpAqvcM4QS1xRcO/xueaWDW2rQAG+gcL/VEvasMlI
+         fkSe4Md+Dr7tfwVA/J31lkObNwYXZPWUn/sQfd6IzJJW9QOh8fhCyZRueKqExSIUF8wO
+         kwow==
+X-Gm-Message-State: AOAM533xVltTcwpuockwNcyuqUrqEwIrUoZ4Gs6OPbxtJMBxyNbY7GLX
+        Z7yMi9TgGglOwZW0LL44LhaB77MWPHq4ww==
+X-Google-Smtp-Source: ABdhPJxg0pseOGWd1vWo2NudsDVj5BE/f7evKJG5rPT7E2j7RfWRsClIqJXNCaLzXo2utpB+Pm5rIA==
+X-Received: by 2002:a17:906:f2d8:: with SMTP id gz24mr2648681ejb.343.1630654174478;
+        Fri, 03 Sep 2021 00:29:34 -0700 (PDT)
 Received: from neptune.. ([5.2.193.191])
-        by smtp.gmail.com with ESMTPSA id a15sm2376969edr.2.2021.09.03.00.29.32
+        by smtp.gmail.com with ESMTPSA id a15sm2376969edr.2.2021.09.03.00.29.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Sep 2021 00:29:33 -0700 (PDT)
+        Fri, 03 Sep 2021 00:29:34 -0700 (PDT)
 From:   Alexandru Ardelean <aardelean@deviqon.com>
 To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-doc@vger.kernel.org
 Cc:     jic23@kernel.org, hdegoede@redhat.com, wens@csie.org,
         andriy.shevchenko@linux.intel.com,
         Alexandru Ardelean <aardelean@deviqon.com>
-Subject: [PATCH 3/5] iio: adc: axp288_adc: convert probe to full device-managed
-Date:   Fri,  3 Sep 2021 10:29:15 +0300
-Message-Id: <20210903072917.45769-4-aardelean@deviqon.com>
+Subject: [PATCH 4/5] iio: adc: lp8788_adc: convert probe to full-device managed
+Date:   Fri,  3 Sep 2021 10:29:16 +0300
+Message-Id: <20210903072917.45769-5-aardelean@deviqon.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210903072917.45769-1-aardelean@deviqon.com>
 References: <20210903072917.45769-1-aardelean@deviqon.com>
@@ -78,46 +78,61 @@ call fails. This isn't required now.
 
 Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
 ---
- drivers/iio/adc/axp288_adc.c | 28 ++++------------------------
- 1 file changed, 4 insertions(+), 24 deletions(-)
+ drivers/iio/adc/lp8788_adc.c | 31 +++++--------------------------
+ 1 file changed, 5 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/iio/adc/axp288_adc.c b/drivers/iio/adc/axp288_adc.c
-index 5f5e8b39e4d2..a4b8be5b8f88 100644
---- a/drivers/iio/adc/axp288_adc.c
-+++ b/drivers/iio/adc/axp288_adc.c
-@@ -259,7 +259,7 @@ static int axp288_adc_probe(struct platform_device *pdev)
- 	info->irq = platform_get_irq(pdev, 0);
- 	if (info->irq < 0)
- 		return info->irq;
+diff --git a/drivers/iio/adc/lp8788_adc.c b/drivers/iio/adc/lp8788_adc.c
+index 8fb57e375529..6d9b354bc705 100644
+--- a/drivers/iio/adc/lp8788_adc.c
++++ b/drivers/iio/adc/lp8788_adc.c
+@@ -163,7 +163,8 @@ static struct iio_map lp8788_default_iio_maps[] = {
+ 	{ }
+ };
+ 
+-static int lp8788_iio_map_register(struct iio_dev *indio_dev,
++static int lp8788_iio_map_register(struct device *dev,
++				struct iio_dev *indio_dev,
+ 				struct lp8788_platform_data *pdata,
+ 				struct lp8788_adc *adc)
+ {
+@@ -173,7 +174,7 @@ static int lp8788_iio_map_register(struct iio_dev *indio_dev,
+ 	map = (!pdata || !pdata->adc_pdata) ?
+ 		lp8788_default_iio_maps : pdata->adc_pdata;
+ 
+-	ret = iio_map_array_register(indio_dev, map);
++	ret = devm_iio_map_array_register(dev, indio_dev, map);
+ 	if (ret) {
+ 		dev_err(&indio_dev->dev, "iio map err: %d\n", ret);
+ 		return ret;
+@@ -196,9 +197,8 @@ static int lp8788_adc_probe(struct platform_device *pdev)
+ 
+ 	adc = iio_priv(indio_dev);
+ 	adc->lp = lp;
 -	platform_set_drvdata(pdev, indio_dev);
-+
- 	info->regmap = axp20x->regmap;
- 	/*
- 	 * Set ADC to enabled state at all time, including system suspend.
-@@ -276,31 +276,12 @@ static int axp288_adc_probe(struct platform_device *pdev)
- 	indio_dev->num_channels = ARRAY_SIZE(axp288_adc_channels);
- 	indio_dev->info = &axp288_adc_iio_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
--	ret = iio_map_array_register(indio_dev, axp288_adc_default_maps);
-+
-+	ret = devm_iio_map_array_register(&pdev->dev, indio_dev, axp288_adc_default_maps);
- 	if (ret < 0)
+ 
+-	ret = lp8788_iio_map_register(indio_dev, lp->pdata, adc);
++	ret = lp8788_iio_map_register(&pdev->dev, indio_dev, lp->pdata, adc);
+ 	if (ret)
  		return ret;
  
+@@ -210,32 +210,11 @@ static int lp8788_adc_probe(struct platform_device *pdev)
+ 	indio_dev->channels = lp8788_adc_channels;
+ 	indio_dev->num_channels = ARRAY_SIZE(lp8788_adc_channels);
+ 
 -	ret = iio_device_register(indio_dev);
--	if (ret < 0) {
--		dev_err(&pdev->dev, "unable to register iio device\n");
--		goto err_array_unregister;
+-	if (ret) {
+-		dev_err(&pdev->dev, "iio dev register err: %d\n", ret);
+-		goto err_iio_device;
 -	}
+-
 -	return 0;
 -
--err_array_unregister:
+-err_iio_device:
 -	iio_map_array_unregister(indio_dev);
--
 -	return ret;
 -}
 -
--static int axp288_adc_remove(struct platform_device *pdev)
+-static int lp8788_adc_remove(struct platform_device *pdev)
 -{
 -	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
 -
@@ -128,15 +143,12 @@ index 5f5e8b39e4d2..a4b8be5b8f88 100644
 +	return devm_iio_device_register(&pdev->dev, indio_dev);
  }
  
- static const struct platform_device_id axp288_adc_id_table[] = {
-@@ -310,7 +291,6 @@ static const struct platform_device_id axp288_adc_id_table[] = {
- 
- static struct platform_driver axp288_adc_driver = {
- 	.probe = axp288_adc_probe,
--	.remove = axp288_adc_remove,
- 	.id_table = axp288_adc_id_table,
+ static struct platform_driver lp8788_adc_driver = {
+ 	.probe = lp8788_adc_probe,
+-	.remove = lp8788_adc_remove,
  	.driver = {
- 		.name = "axp288_adc",
+ 		.name = LP8788_DEV_ADC,
+ 	},
 -- 
 2.31.1
 

@@ -2,134 +2,99 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B24F3FF6FD
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Sep 2021 00:17:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3FD23FFB13
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Sep 2021 09:29:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242407AbhIBWSa convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Thu, 2 Sep 2021 18:18:30 -0400
-Received: from relay6-d.mail.gandi.net ([217.70.183.198]:50135 "EHLO
-        relay6-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236148AbhIBWS3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Sep 2021 18:18:29 -0400
-X-Greylist: delayed 35517 seconds by postgrey-1.27 at vger.kernel.org; Thu, 02 Sep 2021 18:18:28 EDT
-Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 7C2B1C0005;
-        Thu,  2 Sep 2021 22:17:26 +0000 (UTC)
-Date:   Fri, 3 Sep 2021 00:17:25 +0200
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>, bcousson@baylibre.com,
-        Tony Lindgren <tony@atomide.com>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-omap@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Ryan Barnett <ryan.barnett@collins.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Jason Reeder <jreeder@ti.com>
-Subject: Re: [PATCH v2 45/46] ARM: dts: am43xx: Describe the magnetic
- reader/ADC1 hardware module
-Message-ID: <20210903001725.59833f05@xps13>
-In-Reply-To: <20210902215144.507243-46-miquel.raynal@bootlin.com>
-References: <20210902215144.507243-1-miquel.raynal@bootlin.com>
-        <20210902215144.507243-46-miquel.raynal@bootlin.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1347902AbhICHac (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Sep 2021 03:30:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54862 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1347849AbhICHac (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Sep 2021 03:30:32 -0400
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86028C061760
+        for <linux-iio@vger.kernel.org>; Fri,  3 Sep 2021 00:29:32 -0700 (PDT)
+Received: by mail-ed1-x532.google.com with SMTP id j13so6665900edv.13
+        for <linux-iio@vger.kernel.org>; Fri, 03 Sep 2021 00:29:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=deviqon.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ekf0tTe+UksiJZAe0IEXYzcP2+qOht3uGqxEaoxjwBA=;
+        b=OlxauCCLhYYRz4elA1LozM/5bZUzuO3pj13UWhdg0v1DmyuFma0D9zVOBKePiJYidS
+         bfgS9EYJHEtAGxSnuNjoSACEfmjfgxap3hqKMDA+GkioMkxXvhuRa8/0+qno5OgsWW5M
+         bo++q4NOBQ4zDTHL0h1VQ/RR0OH3LxjmDheEZBTisfVpcwQjVwvZwHzSeRUonZhhRUFy
+         EzKjB64OBsdas2+9lI/wZMZZYo+P5l1BeASQNURkKgOA0vi/tTxYEKRMROKUiYLMQvmg
+         gqyE9xrOYvJr/bHCDbJzVXZ+ENAAeXjRVodD0nKVlhRDP8bXbsXZzV3MDlUJ5kBoA7Bz
+         RHqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ekf0tTe+UksiJZAe0IEXYzcP2+qOht3uGqxEaoxjwBA=;
+        b=omPzqTp3WjNkBbtltoezVgMUr7VtXV8jof+DKa/J8CRV2XoqaNefqKaioSSoo2n4nl
+         aYb9qR1mhFwggiMQ78+OmM3T7sTP0q9tzums2bAt9Y1Q9MFNAPncBKrn0SRB3MFKhUrq
+         sHZosdybhVMpJgdvRRN64PyOJcmYZuCJD1BQBR9K1JLz5eJNWqylOoJK2B+K7xcLVrzA
+         EDBozgW51jeXhjZ74xaDCENpLeyeTPQIfAoNIdZ1Wt+I3JG5o2GnzDyEY6UZ2ZvBbVnz
+         1tf+nqeQyc/YE5D2NGLm1YVfxy+rMlJVWbVErdha4idhHtWmGiItYecGJwMq1l2QSE9A
+         e1Og==
+X-Gm-Message-State: AOAM533p/ff7q0Pt0ajd1mJpMKopzr4LmpRmJ27Dpl2MxQjRmmttTIqS
+        w6g1H+gvg55V8Vh5CcHtMk4UL9KArKSQKA==
+X-Google-Smtp-Source: ABdhPJz2809/gReIm8coYbjtkoU3QN26LBeWDWkavUne/fWFR+uTGPNqn7tfcg1JgfFeon9uGsc0aQ==
+X-Received: by 2002:aa7:cfcb:: with SMTP id r11mr2595018edy.14.1630654170805;
+        Fri, 03 Sep 2021 00:29:30 -0700 (PDT)
+Received: from neptune.. ([5.2.193.191])
+        by smtp.gmail.com with ESMTPSA id a15sm2376969edr.2.2021.09.03.00.29.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Sep 2021 00:29:30 -0700 (PDT)
+From:   Alexandru Ardelean <aardelean@deviqon.com>
+To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-doc@vger.kernel.org
+Cc:     jic23@kernel.org, hdegoede@redhat.com, wens@csie.org,
+        andriy.shevchenko@linux.intel.com,
+        Alexandru Ardelean <aardelean@deviqon.com>
+Subject: [PATCH 0/5] iio: device-managed conversions with devm_iio_map_array_register() 
+Date:   Fri,  3 Sep 2021 10:29:12 +0300
+Message-Id: <20210903072917.45769-1-aardelean@deviqon.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello,
+This change introduces a devm_iio_map_array_register() variant for the
+iio_map_array_register() function.
 
-Miquel Raynal <miquel.raynal@bootlin.com> wrote on Thu,  2 Sep 2021
-23:51:43 +0200:
+And converts 4 drivers to full device-managed.
+These 4 drivers only call iio_map_array_unregister() and
+iio_device_unregister() in their remove hooks.
 
-> This hardware module is close to the am33xx ADC module but instead of
-> featuring a touchscreen it has a magnetic reader capability.
-> 
-> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> ---
->  arch/arm/boot/dts/am437x-l4.dtsi     | 31 ++++++++++++++++++++++++++--
->  arch/arm/boot/dts/am43xx-clocks.dtsi |  7 +++++++
->  2 files changed, 36 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm/boot/dts/am437x-l4.dtsi b/arch/arm/boot/dts/am437x-l4.dtsi
-> index 370c4e64676f..7a3dcfc7bfc9 100644
-> --- a/arch/arm/boot/dts/am437x-l4.dtsi
-> +++ b/arch/arm/boot/dts/am437x-l4.dtsi
-> @@ -2350,11 +2350,38 @@ hdq: hdq@0 {
->  		};
->  
->  		target-module@4c000 {			/* 0x4834c000, ap 114 72.0 */
-> -			compatible = "ti,sysc";
-> -			status = "disabled";
-> +			compatible = "ti,sysc-omap4", "ti,sysc";
-> +			reg = <0x4c000 0x4>,
-> +			      <0x4c010 0x4>;
-> +			reg-names = "rev", "sysc";
-> +			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
-> +					<SYSC_IDLE_NO>,
-> +					<SYSC_IDLE_SMART>;
-> +			clocks = <&l3s_clkctrl AM4_L3S_ADC1_CLKCTRL 0>;
-> +			clock-names = "fck";
->  			#address-cells = <1>;
->  			#size-cells = <1>;
->  			ranges = <0x0 0x4c000 0x2000>;
-> +
-> +			magadc: magadc@0 {
-> +				compatible = "ti,am4372-magadc";
-> +				reg = <0x0 0x2000>;
-> +				interrupts = <GIC_SPI 115 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&adc_mag_fck>;
-> +				clock-names = "fck";
-> +				dmas = <&edma 54 0>, <&edma 55 0>;;
+These 4 drivers should make a reasonably good case for introducing this
+devm_iio_map_array_register() function.
 
-Small typo here, should have a single ';'.
-As the series is fairly long, we will see if there is a need to resend
-it or not.
+There are 7 more drivers that would use the devm_iio_map_array_register()
+function, but they require a bit more handling in the remove/unwinding
+part.
+So, those 7 are left for later.
 
-> +				dma-names = "fifo0", "fifo1";
-> +				status = "disabled";
-> +
-> +				mag {
-> +					compatible = "ti,am4372-mag";
-> +				};
-> +
-> +				adc {
-> +					#io-channel-cells = <1>;
-> +					compatible ="ti,am4372-adc";
-> +				};
-> +			};
->  		};
->  
->  		target-module@80000 {			/* 0x48380000, ap 123 42.0 */
-> diff --git a/arch/arm/boot/dts/am43xx-clocks.dtsi b/arch/arm/boot/dts/am43xx-clocks.dtsi
-> index c726cd8dbdf1..59b1f592a743 100644
-> --- a/arch/arm/boot/dts/am43xx-clocks.dtsi
-> +++ b/arch/arm/boot/dts/am43xx-clocks.dtsi
-> @@ -444,6 +444,13 @@ wdt1_fck: wdt1_fck@422c {
->  		reg = <0x422c>;
->  	};
->  
-> +	adc_mag_fck: adc_mag_fck@424c {
-> +		#clock-cells = <0>;
-> +		compatible = "ti,mux-clock";
-> +		clocks = <&sys_clkin_ck>, <&dpll_per_m2_ck>;
-> +		reg = <0x424c>;
-> +	};
-> +
->  	l3_gclk: l3_gclk {
->  		#clock-cells = <0>;
->  		compatible = "fixed-factor-clock";
+Alexandru Ardelean (5):
+  iio: inkern: introduce devm_iio_map_array_register() short-hand
+    function
+  iio: adc: intel_mrfld_adc: convert probe to full device-managed
+  iio: adc: axp288_adc: convert probe to full device-managed
+  iio: adc: lp8788_adc: convert probe to full-device managed
+  iio: adc: da9150-gpadc: convert probe to full-device managed
 
-Thanks,
-Miquèl
+ .../driver-api/driver-model/devres.rst        |  1 +
+ drivers/iio/adc/axp288_adc.c                  | 28 +++--------------
+ drivers/iio/adc/da9150-gpadc.c                | 27 ++--------------
+ drivers/iio/adc/intel_mrfld_adc.c             | 24 ++------------
+ drivers/iio/adc/lp8788_adc.c                  | 31 +++----------------
+ drivers/iio/inkern.c                          | 17 ++++++++++
+ include/linux/iio/driver.h                    | 14 +++++++++
+ 7 files changed, 45 insertions(+), 97 deletions(-)
+
+-- 
+2.31.1
+

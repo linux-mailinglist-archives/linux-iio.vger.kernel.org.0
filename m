@@ -2,176 +2,264 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AA6340067C
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Sep 2021 22:21:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C39D4400B92
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Sep 2021 16:03:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350309AbhICUWm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 Sep 2021 16:22:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35652 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245101AbhICUWm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Sep 2021 16:22:42 -0400
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 053A9C061575
-        for <linux-iio@vger.kernel.org>; Fri,  3 Sep 2021 13:21:42 -0700 (PDT)
-Received: by mail-pf1-x42c.google.com with SMTP id m26so396194pff.3
-        for <linux-iio@vger.kernel.org>; Fri, 03 Sep 2021 13:21:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=Hza3u6nI5Tf1G3uJARJU3+31Ql9P+QYMxg3PvLlavq4=;
-        b=MLRZ0h9aZsmoEwJjTn5UIKH2aNQwUPbriH1AycVlDlWbN4rXAkrZCJtBpTYdm/5M1x
-         KrOrvWAlp+jRV1mS50sb3f6G28S+YWCHC0KkCc/J0nx5GQPoxQkhTyQUYAsSqop9tCyA
-         ZYBrURY52QmV91Z+FdEInibMKfJ/GU9zOSQt0VOjC8We9Bel+Fgk3G5tTZYVr3gtqM1o
-         7PvRaW+6+sOhBHXuHZxAo7SyUD7JHUvP+CyUyf8p7RBRI5U1Jep/zEnhlmiXWRPk4G8Z
-         /E31xQXU5AbV/RZx4pjrbhpOdmxeptSdK+gr7jktRiVkwyFxngN16FI8u1qvdIubTNFe
-         6l5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=Hza3u6nI5Tf1G3uJARJU3+31Ql9P+QYMxg3PvLlavq4=;
-        b=qmMMVVi9OBK8GZdOzaBWiWboK0uaTIdzTdniFWRJsS5IYK8IjIAcWUUJMdIprRqwd5
-         5nCNfiSuPcskl9S6bdJRZFPvtq9UBppk/OCJq+0wHXuykrrR1vhmZZgie5TZ5OINgIOb
-         F+3MTrEy9gANBRc0cVNEtbuNAM/7IM9ySOaxdRzBaaeiPMVG2zK64tQXrqZJejZPE2oS
-         RMrTxYRPieD3RxWawGTz5zSbFHBwriH6mm41hv3fQMBeIUYXAWgiRDaGz6qLyU69I636
-         kS/FCrtveB0JkLxCG3S24pzcNDopKEZegI5IRqdYYD9UB43kLhnv1KaBE+QXBQjcXhXs
-         JZqw==
-X-Gm-Message-State: AOAM532uguObeTPDPDjcmRTDThxsmgKCV1Gi4RMPIimguB/D6hniZGDx
-        +bvj+wpR76mAruBM4APOk9upF0APrbzyi13d8cc=
-X-Google-Smtp-Source: ABdhPJwG0EtR5D3VAVOKGQv+dgHkUTaKIZZhTQjQKGYrSfArfI8itrmPk2puv5wFwh6gGE8PjqWfEwiWbo0vG+bMYOI=
-X-Received: by 2002:a62:d104:0:b0:3ee:46b:d4ed with SMTP id
- z4-20020a62d104000000b003ee046bd4edmr649308pfg.38.1630700501461; Fri, 03 Sep
- 2021 13:21:41 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210903144828.497166-1-jacopo@jmondi.org> <20210903144828.497166-3-jacopo@jmondi.org>
- <CAHp75VdX0=JCGDQaqCU5fDGe7vJBNTDTJHu=QOqd_YtGK4Rgdg@mail.gmail.com> <20210903164324.5n7xfo2qw5etwm3c@uno.localdomain>
-In-Reply-To: <20210903164324.5n7xfo2qw5etwm3c@uno.localdomain>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 3 Sep 2021 23:21:05 +0300
-Message-ID: <CAHp75VdsMFAx2rb22oyf6NrewomgEdEJOUkuf6g-RONfxARgjw@mail.gmail.com>
-Subject: Re: [PATCH v4 2/3] iio: chemical: Add Senseair Sunrise 006-0-007 driver
-To:     Jacopo Mondi <jacopo@jmondi.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        id S231165AbhIDOEc convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Sat, 4 Sep 2021 10:04:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49574 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229765AbhIDOEa (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 4 Sep 2021 10:04:30 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C102E6056B;
+        Sat,  4 Sep 2021 14:03:22 +0000 (UTC)
+Date:   Sat, 4 Sep 2021 15:06:45 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Miquel Raynal <miquel.raynal@bootlin.com>
+Cc:     "Sa, Nuno" <Nuno.Sa@analog.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        linux-iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 03/16] iio: adc: max1027: Push only the requested
+ samples
+Message-ID: <20210904150645.640d2810@jic23-huawei>
+In-Reply-To: <20210901101209.31703187@xps13>
+References: <20210818111139.330636-1-miquel.raynal@bootlin.com>
+        <20210818111139.330636-4-miquel.raynal@bootlin.com>
+        <SJ0PR03MB6359415E120CFD3EFAF417F599C19@SJ0PR03MB6359.namprd03.prod.outlook.com>
+        <20210830110756.733d5201@jic23-huawei>
+        <MW4PR03MB6363FE3BAF40A383D244ADC399CB9@MW4PR03MB6363.namprd03.prod.outlook.com>
+        <20210830152956.58331a8d@jic23-huawei>
+        <MW4PR03MB6363BC976F039550906B6ED399CB9@MW4PR03MB6363.namprd03.prod.outlook.com>
+        <20210901101209.31703187@xps13>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Sep 3, 2021 at 7:42 PM Jacopo Mondi <jacopo@jmondi.org> wrote:
-> On Fri, Sep 03, 2021 at 06:36:44PM +0300, Andy Shevchenko wrote:
-> > On Fri, Sep 3, 2021 at 5:50 PM Jacopo Mondi <jacopo@jmondi.org> wrote:
+On Wed, 1 Sep 2021 10:12:09 +0200
+Miquel Raynal <miquel.raynal@bootlin.com> wrote:
 
-...
+> Hello,
+> 
+> "Sa, Nuno" <Nuno.Sa@analog.com> wrote on Mon, 30 Aug 2021 15:02:26
+> +0000:
+> 
+> > > -----Original Message-----
+> > > From: Jonathan Cameron <jic23@kernel.org>
+> > > Sent: Monday, August 30, 2021 4:30 PM
+> > > To: Sa, Nuno <Nuno.Sa@analog.com>
+> > > Cc: Miquel Raynal <miquel.raynal@bootlin.com>; Lars-Peter Clausen
+> > > <lars@metafoo.de>; Thomas Petazzoni
+> > > <thomas.petazzoni@bootlin.com>; linux-iio@vger.kernel.org; linux-
+> > > kernel@vger.kernel.org
+> > > Subject: Re: [PATCH 03/16] iio: adc: max1027: Push only the requested
+> > > samples
+> > > 
+> > > [External]
+> > > 
+> > > On Mon, 30 Aug 2021 10:49:50 +0000
+> > > "Sa, Nuno" <Nuno.Sa@analog.com> wrote:
+> > >     
+> > > > > -----Original Message-----
+> > > > > From: Jonathan Cameron <jic23@kernel.org>
+> > > > > Sent: Monday, August 30, 2021 12:08 PM
+> > > > > To: Sa, Nuno <Nuno.Sa@analog.com>
+> > > > > Cc: Miquel Raynal <miquel.raynal@bootlin.com>; Lars-Peter    
+> > > Clausen    
+> > > > > <lars@metafoo.de>; Thomas Petazzoni
+> > > > > <thomas.petazzoni@bootlin.com>; linux-iio@vger.kernel.org;    
+> > > linux-    
+> > > > > kernel@vger.kernel.org
+> > > > > Subject: Re: [PATCH 03/16] iio: adc: max1027: Push only the    
+> > > requested    
+> > > > > samples
+> > > > >
+> > > > > [External]
+> > > > >
+> > > > > On Fri, 20 Aug 2021 07:10:48 +0000
+> > > > > "Sa, Nuno" <Nuno.Sa@analog.com> wrote:
+> > > > >    
+> > > > > > > -----Original Message-----
+> > > > > > > From: Miquel Raynal <miquel.raynal@bootlin.com>
+> > > > > > > Sent: Wednesday, August 18, 2021 1:11 PM
+> > > > > > > To: Jonathan Cameron <jic23@kernel.org>; Lars-Peter Clausen
+> > > > > > > <lars@metafoo.de>
+> > > > > > > Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>; linux-
+> > > > > > > iio@vger.kernel.org; linux-kernel@vger.kernel.org; Miquel    
+> > > Raynal    
+> > > > > > > <miquel.raynal@bootlin.com>
+> > > > > > > Subject: [PATCH 03/16] iio: adc: max1027: Push only the    
+> > > requested    
+> > > > > > > samples
+> > > > > > >
+> > > > > > > [External]
+> > > > > > >
+> > > > > > > When a triggered scan occurs, the identity of the desired    
+> > > channels    
+> > > > > is    
+> > > > > > > known in indio_dev->active_scan_mask. Instead of reading and
+> > > > > > > pushing to
+> > > > > > > the IIO buffers all channels each time, scan the minimum    
+> > > amount    
+> > > > > of    
+> > > > > > > channels (0 to maximum requested chan, to be exact) and only
+> > > > > > > provide the
+> > > > > > > samples requested by the user.
+> > > > > > >
+> > > > > > > For example, if the user wants channels 1, 4 and 5, all channels    
+> > > > > from    
+> > > > > > > 0 to 5 will be scanned but only the desired channels will be    
+> > > pushed    
+> > > > > to    
+> > > > > > > the IIO buffers.
+> > > > > > >
+> > > > > > > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> > > > > > > ---
+> > > > > > >  drivers/iio/adc/max1027.c | 25 +++++++++++++++++++++----
+> > > > > > >  1 file changed, 21 insertions(+), 4 deletions(-)
+> > > > > > >
+> > > > > > > diff --git a/drivers/iio/adc/max1027.c    
+> > > b/drivers/iio/adc/max1027.c    
+> > > > > > > index b753658bb41e..8ab660f596b5 100644
+> > > > > > > --- a/drivers/iio/adc/max1027.c
+> > > > > > > +++ b/drivers/iio/adc/max1027.c
+> > > > > > > @@ -360,6 +360,9 @@ static int    
+> > > max1027_set_trigger_state(struct    
+> > > > > > > iio_trigger *trig, bool state)
+> > > > > > >  	struct max1027_state *st = iio_priv(indio_dev);
+> > > > > > >  	int ret;
+> > > > > > >
+> > > > > > > +	if (bitmap_empty(indio_dev->active_scan_mask,    
+> > > indio_dev-    
+> > > > > > > >masklength))    
+> > > > > > > +		return -EINVAL;
+> > > > > > > +    
+> > > > > >
+> > > > > > I'm not sure this can actually happen. If you try to enable the    
+> > > buffer    
+> > > > > > with no scan element, it should give you an error before you    
+> > > reach    
+> > > > > > this point...
+> > > > > >    
+> > > > > > >  	if (state) {
+> > > > > > >  		/* Start acquisition on cnvst */
+> > > > > > >  		st->reg = MAX1027_SETUP_REG |
+> > > > > > > MAX1027_CKS_MODE0 |
+> > > > > > > @@ -368,9 +371,12 @@ static int    
+> > > max1027_set_trigger_state(struct    
+> > > > > > > iio_trigger *trig, bool state)
+> > > > > > >  		if (ret < 0)
+> > > > > > >  			return ret;
+> > > > > > >
+> > > > > > > -		/* Scan from 0 to max */
+> > > > > > > -		st->reg = MAX1027_CONV_REG |    
+> > > MAX1027_CHAN(0) |    
+> > > > > > > -			  MAX1027_SCAN_N_M |    
+> > > MAX1027_TEMP;    
+> > > > > > > +		/*
+> > > > > > > +		 * Scan from 0 to the highest requested    
+> > > channel. The    
+> > > > > > > temperature
+> > > > > > > +		 * could be avoided but it simplifies a bit the    
+> > > logic.    
+> > > > > > > +		 */
+> > > > > > > +		st->reg = MAX1027_CONV_REG |
+> > > > > > > MAX1027_SCAN_0_N | MAX1027_TEMP;
+> > > > > > > +		st->reg |= MAX1027_CHAN(fls(*indio_dev-    
+> > > > > > > >active_scan_mask) - 2);    
+> > > > > > >  		ret = spi_write(st->spi, &st->reg, 1);
+> > > > > > >  		if (ret < 0)
+> > > > > > >  			return ret;
+> > > > > > > @@ -391,11 +397,22 @@ static irqreturn_t
+> > > > > > > max1027_trigger_handler(int irq, void *private)
+> > > > > > >  	struct iio_poll_func *pf = private;
+> > > > > > >  	struct iio_dev *indio_dev = pf->indio_dev;
+> > > > > > >  	struct max1027_state *st = iio_priv(indio_dev);
+> > > > > > > +	unsigned int scanned_chans = fls(*indio_dev-    
+> > > > > > > >active_scan_mask);    
+> > > > > > > +	u16 *buf = st->buffer;    
+> > > > > >
+> > > > > > I think sparse will complain here. buffer is a __be16 restricted
+> > > > > > type so you should not mix those...    
+> > > > > > > +	unsigned int bit;
+> > > > > > >
+> > > > > > >  	pr_debug("%s(irq=%d, private=0x%p)\n", __func__,    
+> > > irq,    
+> > > > > > >    
+> > > > >    
+> > > private);in/20210818_miquel_raynal_bring_software_triggers_support    
+> > > > > _to_max1027_like_adcs.mbx    
+> > > > > > >
+> > > > > > >  	/* fill buffer with all channel */
+> > > > > > > -	spi_read(st->spi, st->buffer, indio_dev->masklength *    
+> > > 2);    
+> > > > > > > +	spi_read(st->spi, st->buffer, scanned_chans * 2);
+> > > > > > > +
+> > > > > > > +	/* Only keep the channels selected by the user */
+> > > > > > > +	for_each_set_bit(bit, indio_dev->active_scan_mask,
+> > > > > > > +			 indio_dev->masklength) {
+> > > > > > > +		if (buf[0] != st->buffer[bit])
+> > > > > > > +			buf[0] = st->buffer[bit];    
+> > > > > >
+> > > > > > Since we are here, when looking into the driver, I realized
+> > > > > > that st->buffer is not DMA safe. In IIO, we kind of want to    
+> > > enforce    
+> > > > > > that all buffers that are passed to spi/i2c buses are safe... Maybe
+> > > > > > this is something you can include in your series.    
+> > > > >
+> > > > > Why is it not?  st->buffer is result of a devm_kmalloc_array() call    
+> > > and    
+> > > > > that should provide a DMA safe buffer as I understand it.
+> > > > >    
+> > > >
+> > > > That's a good question. I'm not sure how I came to that conclusion    
+> > > which    
+> > > > is clearly wrong. Though I think the buffer might share the line with    
+> > > the    
+> > > > mutex...    
+> > > Pointer shares a line.  The buffer it points to doesn't as allocated
+> > > by separate heap allocation.
+> > >     
+> > 
+> > Ups, sure :facepalm:  
+> 
+> My understanding [1] was that devm_ allocations were generally not
+> suitable for DMA and should not be used for this particular purpose
+> because of the extra 16 bytes allocated for storing the devm magic
+> somewhere, which shifts the entire buffer and prevents it to always be
+> aligned on a cache line. I will propose a patch to switch to
+> kmalloc_array() instead.
+> 
+> [1] https://linux-arm-kernel.infradead.narkive.com/vyJqy0RQ/question-devm-kmalloc-for-dma
 
-> > > +       mutex_lock(&sunrise->wakeup_lock);
-> > > +       sunrise_wakeup(sunrise);
-> > > +       ret =3D regmap_read(sunrise->regmap, reg, &val);
-> > > +       mutex_unlock(&sunrise->wakeup_lock);
-> >
-> > Seems to me that you may redefine ->read() for regmap (but double
-> > check this, esp. in regard to bulk transfers) with wakeup implied and
-> > in that case you probably can use regmap's lock only.
->
-> Can you point me to an example where regmap's read is redefined ? I
-> failed to find one at a quick look.
+That shouldn't actually matter because here we don't care about
+it being aligned on a cacheline - but we do care about it being
+aligned so that nothing else we might touch is in the same cacheline.
+Note the thread you link talks about this.
 
-Any when struct regmap_config is defined with devm_regmap_i2c_init() call.
+If we were possibly doing additional devm_ managed allocations
+whilst DMA was active then it might be a problem, but
+I'm fairly sure we aren't doing that here.
 
-This one is not I=C2=B2C, but gives you an idea.
-https://elixir.bootlin.com/linux/latest/source/drivers/mfd/intel_soc_pmic_m=
-rfld.c#L98
+Not there might be a bus controller that has stricter alignment
+requirements - whether we need to be careful of those isn't
+particularly clear to me.  There are lots of places in IIO
+where we cachealign a set of buffers, but for example the
+rx is after the tx buffers and isn't aligned as would be
+required. As such I'm fairly sure it's not a problem.
 
-...
-
-> Ugh! I initially had a *dev pointer for the sake of line length in
-> error messages in the driver's struct, then I'm asked to remove it,
-> then I'm asked to take a pointer to re-shorten the lines.
-
-Up to maintainers then.
-
-...
-
-> > > +static int sunrise_write_word(struct sunrise_dev *sunrise, u8 reg, u=
-16 data)
-> > > +{
-> > > +       __be16 be_data =3D cpu_to_be16(data);
-> > > +       int ret;
-> > > +
-> > > +       mutex_lock(&sunrise->wakeup_lock);
-> > > +       sunrise_wakeup(sunrise);
-> > > +       ret =3D regmap_bulk_write(sunrise->regmap, reg, &be_data, 2);
-> > > +       mutex_unlock(&sunrise->wakeup_lock);
-> > > +       if (ret) {
-> > > +               dev_err(&sunrise->client->dev,
-> > > +                       "Write word failed: reg 0x%2x (%d)\n", reg, r=
-et);
-> >
-> > > +               return ret;
-> > > +       }
-> > > +
-> > > +       return 0;
-> >
-> > return ret;
-> >
->
-> I can return a positive value for success and change the checks around
-> return code to if (ret < 0) but that's driver internal stuff after
-> all, does it really matter ? Is this more consistent with the Linux
-> i2c API maybe ?  I can change it if it's the case.
-
-I didn't get what this comment has with what I have proposed.
-
-Maybe it wasn't obvious, so I have proposed to change 4 LOCs by 1 LOC, so
-
-if (ret)
-  dev_err(...);
-return ret;
-
-> > > +}
-
-...
-
-> > > +static ssize_t sunrise_cal_read(const char *buf, size_t len)
-> > > +{
-> > > +       bool enable;
-> > > +       int ret;
-> > > +
-> > > +       ret =3D kstrtobool(buf, &enable);
-> > > +       if (ret)
-> > > +               return ret;
-> > > +
-> > > +       if (!enable)
-> > > +               return len;
-> > > +
-> > > +       return 0;
-> >
-> > Why is this a separate function to begin with?
->
-> Because it is called from two places where I should have duplicated
-> the code otherwise ?
-
-I think what you think about duplication is not and will get even LOC
-benefit. Using kstrtobool() directly in the callers is better than
-hiding like this.
-
-> > Not sure I have got the logic behind. If enable is true you return 0?!
->
-> Yes, so I can
->         if (ret)
->                 return ret;
-> in the caller.
->
-> > > +}
+Jonathan
 
 
---=20
-With Best Regards,
-Andy Shevchenko
+> 
+> Thanks,
+> Miquèl
+

@@ -2,32 +2,29 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 389BD400F2C
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Sep 2021 12:49:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CA08400F2D
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Sep 2021 12:53:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237736AbhIEKu1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 5 Sep 2021 06:50:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35090 "EHLO mail.kernel.org"
+        id S237457AbhIEKyb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 5 Sep 2021 06:54:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35934 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230145AbhIEKu1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 5 Sep 2021 06:50:27 -0400
+        id S230145AbhIEKya (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 5 Sep 2021 06:54:30 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 291386008E;
-        Sun,  5 Sep 2021 10:49:21 +0000 (UTC)
-Date:   Sun, 5 Sep 2021 11:52:44 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 34C3C60EE1;
+        Sun,  5 Sep 2021 10:53:25 +0000 (UTC)
+Date:   Sun, 5 Sep 2021 11:56:48 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jacopo Mondi <jacopo@jmondi.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        Magnus Damm <magnus.damm@gmail.com>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v4 3/3] iio: ABI: docs: Document Senseair Sunrise ABI
-Message-ID: <20210905115244.1fd960fb@jic23-huawei>
-In-Reply-To: <20210903144828.497166-4-jacopo@jmondi.org>
-References: <20210903144828.497166-1-jacopo@jmondi.org>
-        <20210903144828.497166-4-jacopo@jmondi.org>
+To:     Alexandru Ardelean <aardelean@deviqon.com>
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Gregory CLEMENT <gregory.clement@bootlin.com>
+Subject: Re: [PATCH] iio: adc: ti-ads8344: convert probe to device-managed
+Message-ID: <20210905115648.5c02df3d@jic23-huawei>
+In-Reply-To: <20210903073707.46892-1-aardelean@deviqon.com>
+References: <20210903073707.46892-1-aardelean@deviqon.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -36,69 +33,75 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri,  3 Sep 2021 16:48:28 +0200
-Jacopo Mondi <jacopo@jmondi.org> wrote:
+On Fri,  3 Sep 2021 10:37:07 +0300
+Alexandru Ardelean <aardelean@deviqon.com> wrote:
 
-> Add documentation for the sysfs attributes of the sunrise_co2 driver.
+> This change converts the driver to register via devm_iio_device_register().
+> The regulator disable is moved on a devm_add_action_or_reset() hook.
 > 
-> Signed-off-by: Jacopo Mondi <jacopo@jmondi.org>
-Nice but please fill in the version numbers with 5.16
+> And the spi_set_drvdata() isn't required anymore.
+> And finally, the ads8344_remove() can be removed as well.
+> 
+> Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
 
-Thanks,
-
-Jonathan
-
+Applied to the togreg branch of iio.git and pushed out as testing for 0-day
+to see if it can find anything we missed. 
 > ---
->  .../sysfs-bus-iio-chemical-sunrise-co2        | 38 +++++++++++++++++++
->  1 file changed, 38 insertions(+)
->  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-chemical-sunrise-co2
+>  drivers/iio/adc/ti-ads8344.c | 27 ++++++++-------------------
+>  1 file changed, 8 insertions(+), 19 deletions(-)
 > 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-chemical-sunrise-co2 b/Documentation/ABI/testing/sysfs-bus-iio-chemical-sunrise-co2
-> new file mode 100644
-> index 000000000000..bbdbf9dd4818
-> --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio-chemical-sunrise-co2
-> @@ -0,0 +1,38 @@
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_concentration_co2_calibration_factory
-> +Date:		August 2021
-> +KernelVersion:
-> +Contact:	Jacopo Mondi <jacopo@jmondi.org>
-> +Description:
-> +		Writing '1' triggers a 'Factory' calibration cycle.
+> diff --git a/drivers/iio/adc/ti-ads8344.c b/drivers/iio/adc/ti-ads8344.c
+> index a345a30d74fa..c96d2a9ba924 100644
+> --- a/drivers/iio/adc/ti-ads8344.c
+> +++ b/drivers/iio/adc/ti-ads8344.c
+> @@ -133,6 +133,11 @@ static const struct iio_info ads8344_info = {
+>  	.read_raw = ads8344_read_raw,
+>  };
+>  
+> +static void ads8344_reg_disable(void *data)
+> +{
+> +	regulator_disable(data);
+> +}
 > +
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_concentration_co2_calibration_background
-> +Date:		August 2021
-> +KernelVersion:
-> +Contact:	Jacopo Mondi <jacopo@jmondi.org>
-> +Description:
-> +		Writing '1' triggers a 'Background' calibration cycle.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/error_status_available
-> +Date:		August 2021
-> +KernelVersion:
-
-Be an optimist and fill this in for v5!  I'll never remember to do it.
-I'd be very surprised if we don't get this lined up for 5.16
-
-> +Contact:	Jacopo Mondi <jacopo@jmondi.org>
-> +Description:
-> +		Reading returns the list of possible chip error status.
-> +		Available options are:
-> +		- 'error_fatal': Analog front-end initialization error
-> +		- 'error_i2c': Read/write to non-existing register
-> +		- 'error_algorithm': Corrupted parameters
-> +		- 'error_calibration': Calibration has failed
-> +		- 'error_self_diagnostic': Internal interface failure
-> +		- 'error_out_of_range': Measured concentration out of scale
-> +		- 'error_memory': Error during memory operations
-> +		- 'error_no_measurement': Cleared at first measurement
-> +		- 'error_low_voltage': Sensor regulated voltage too low
-> +		- 'error_measurement_timeout': Unable to complete measurement
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/error_status
-> +Date:		August 2021
-> +KernelVersion:
-> +Contact:	Jacopo Mondi <jacopo@jmondi.org>
-> +Description:
-> +		Reading returns the current chip error status.
+>  static int ads8344_probe(struct spi_device *spi)
+>  {
+>  	struct iio_dev *indio_dev;
+> @@ -161,26 +166,11 @@ static int ads8344_probe(struct spi_device *spi)
+>  	if (ret)
+>  		return ret;
+>  
+> -	spi_set_drvdata(spi, indio_dev);
+> -
+> -	ret = iio_device_register(indio_dev);
+> -	if (ret) {
+> -		regulator_disable(adc->reg);
+> +	ret = devm_add_action_or_reset(&spi->dev, ads8344_reg_disable, adc->reg);
+> +	if (ret)
+>  		return ret;
+> -	}
+> -
+> -	return 0;
+> -}
+> -
+> -static int ads8344_remove(struct spi_device *spi)
+> -{
+> -	struct iio_dev *indio_dev = spi_get_drvdata(spi);
+> -	struct ads8344 *adc = iio_priv(indio_dev);
+> -
+> -	iio_device_unregister(indio_dev);
+> -	regulator_disable(adc->reg);
+>  
+> -	return 0;
+> +	return devm_iio_device_register(&spi->dev, indio_dev);
+>  }
+>  
+>  static const struct of_device_id ads8344_of_match[] = {
+> @@ -195,7 +185,6 @@ static struct spi_driver ads8344_driver = {
+>  		.of_match_table = ads8344_of_match,
+>  	},
+>  	.probe = ads8344_probe,
+> -	.remove = ads8344_remove,
+>  };
+>  module_spi_driver(ads8344_driver);
+>  
 

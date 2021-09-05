@@ -2,115 +2,164 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77788400EEB
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Sep 2021 11:56:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54785400EED
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Sep 2021 12:01:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235749AbhIEJ5Z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 5 Sep 2021 05:57:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47576 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234907AbhIEJ5Y (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 5 Sep 2021 05:57:24 -0400
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7AD6C061575
-        for <linux-iio@vger.kernel.org>; Sun,  5 Sep 2021 02:56:21 -0700 (PDT)
-Received: by mail-yb1-xb2c.google.com with SMTP id c6so7409198ybm.10
-        for <linux-iio@vger.kernel.org>; Sun, 05 Sep 2021 02:56:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=AQI+gaP3gRr3DWEJsbHrkGhbGs7Zx+5Z3tcCL1B09EM=;
-        b=YZ506Of/RMoNlToT4sr1NoqZQVOGqE8odgx/NML/G7IDNXG+e+Y0o5ODgFG4BxcjO3
-         nS3t31wSlZaNKcC0/QLV8AMMyoyak17gIXQ3ELxEmqgAmOcOrKkcvOO63s+lsFSX1Qfb
-         VKI6py2+bc/8OxdqvWhAf4QDyAoKCJepliK8pMJanMge/7x4ObQGRxoCaOqBPE/FpL2r
-         p389CYfG8jNCxAsXdqjtZRcd+C3uneRSlcmWFr7z36zCJceG53UAvUF8YedT7lCN5zJD
-         TiraQbotFSspNFjzVV8uclDcJviVGO6vQx2c0AxAgCdVumFt70I7XweOX140lnRBaQUh
-         IzAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=AQI+gaP3gRr3DWEJsbHrkGhbGs7Zx+5Z3tcCL1B09EM=;
-        b=Pro1SWZvqyhQsOWQyuq5QIuIl0k4LUv9MfKncJbv/v7htH3gyQmj+qrv0/ApXu57an
-         QrcUXUCoYo+lk8YKPeIDHMUKn5qWb+S1QaMzplpFMadkkDlubrd6wr3LTu0ztD9ZXqEJ
-         y26Q04IlKQk/gYEGWV3vwXLoy1g94fNIJwQms7QlZdD4PBmYaKkdGLceA5zSWKrLeKCt
-         S0hiFkYNt/usFbJyxeDJMCdod7Hax6zOIhT1iRwcg1EQHXy0uK0fnQz/4WF26kJ8Gb25
-         TNH06vxUCSdb6OTQksHUJgBuX5RodVzGocBHmBIoS8LwVY51zaxSucJeQqlo6CZUJ6EL
-         DDBA==
-X-Gm-Message-State: AOAM531WWfpHCGmOl9HiU6onNarJiavV+XnsyXNGgZ/yZiK2UcTOaeoH
-        8UO+hk4F2voPtNu8nE9EOPL4/LTIY9q9cIFWHGWzWf+R+iBs0g==
-X-Google-Smtp-Source: ABdhPJy2CoHfDkMSn2IT+ljIKlt4K0dESKHmi6QCc04kIAgb6HHPrVqa9BTahQh/LXfR6oCkb172KPZ+n5/RcGNg54Q=
-X-Received: by 2002:a05:6902:150c:: with SMTP id q12mr6529089ybu.410.1630835781048;
- Sun, 05 Sep 2021 02:56:21 -0700 (PDT)
+        id S234907AbhIEKCN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 5 Sep 2021 06:02:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46248 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233169AbhIEKCN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 5 Sep 2021 06:02:13 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4C860601FA;
+        Sun,  5 Sep 2021 10:01:07 +0000 (UTC)
+Date:   Sun, 5 Sep 2021 11:04:29 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Jacopo Mondi <jacopo@jmondi.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Magnus Damm <magnus.damm@gmail.com>, linux-iio@vger.kernel.org,
+        linux-i2c@vger.kernel.org, Peter Rosin <peda@axentia.se>,
+        Wolfram Sang <wsa@kernel.org>
+Subject: Re: [PATCH v3.1 2/3] iio: chemical: Add Senseair Sunrise 006-0-007
+ driver
+Message-ID: <20210905110429.34763e30@jic23-huawei>
+In-Reply-To: <20210831074011.d6f5rsix2mgxqba5@uno.localdomain>
+References: <20210822184927.94673-3-jacopo@jmondi.org>
+        <20210823073639.13688-1-jacopo@jmondi.org>
+        <20210829175413.7ce30bfa@jic23-huawei>
+        <20210830162051.rjqlhwvtguaivt3p@uno.localdomain>
+        <20210830181117.6808f085@jic23-huawei>
+        <20210831074011.d6f5rsix2mgxqba5@uno.localdomain>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-From:   Turritopsis Dohrnii Teo En Ming <ceo.teo.en.ming@gmail.com>
-Date:   Sun, 5 Sep 2021 17:56:11 +0800
-Message-ID: <CAMEJMGH2-EqBAoAZyJsHtWimpfzHC7Oy33DJEqfRqCQo69nMSg@mail.gmail.com>
-Subject: Introduction: I am a Linux and open source software enthusiast
-To:     linux-iio@vger.kernel.org
-Cc:     ceo@teo-en-ming-corp.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Subject: Introduction: I am a Linux and open source software enthusiast
+On Tue, 31 Aug 2021 09:40:11 +0200
+Jacopo Mondi <jacopo@jmondi.org> wrote:
 
-Greetings from Singapore,
+> Hi Jonathan,
+>    two more clarification requests, sorry to bother :)
+No problem.  First one: No idea +CC wolfram and i2c list.
+> 
+> On Mon, Aug 30, 2021 at 06:11:17PM +0100, Jonathan Cameron wrote:
+> > On Mon, 30 Aug 2021 18:20:51 +0200  
+> > > > > +static int sunrise_write_word(struct sunrise_dev *sunrise, u8 reg, u16 data)
+> > > > > +{
+> > > > > +	__be16 be_data = cpu_to_be16(data);
+> > > > > +	int ret;
+> > > > > +
+> > > > > +	sunrise_wakeup(sunrise);  
+> > > >
+> > > > Hmm. Technically there isn't anything stopping another user of the i2c bus sneaking in
+> > > > between the wakeup and the following command.  That would make the device going back
+> > > > to sleep a lot more likely.  I can't off the top of my head remember if regmap lets
+> > > > you lock the bus.  If not, you'll have to use the underlying i2c bus locking functions.
+> > > > https://elixir.bootlin.com/linux/latest/source/drivers/iio/temperature/mlx90614.c#L432
+> > > > gives an example.  
+> > >
+> > > Right, there might be another call stealing the wakeup session!
+> > >
+> > > I should lock the underlying i2c bus, probably not root adapter like
+> > > mlx90614 does but only the segment.  
+> >
+> > Ideally only segment as you say as could be some muxes involved.  
+> 
+> If not that i2c_smbus_xfer() which is called by my wakeup and by the
+> regmap_smbus_* calls tries to lock the segment as well, so we deadlock :)
+> 
+> And actually, locking the underlying i2c segment seems even too
+> strict, what we have to guarantee is that no other read/write function
+> call from this driver interrupts a [wakeup-trasactions] sequence.
+> 
+> Wouldn't it be better if I handle that with a dedicated mutex ?
 
-My name is Mr. Turritopsis Dohrnii Teo En Ming, 43 years old as of 5
-September 2021. My country is Singapore. Presently I am an IT
-Consultant with a System Integrator (SI)/computer firm in Singapore. I
-am also a Linux and open source software and information technology
-enthusiast.
+I'm not sure what best route is. +CC Wolfram, Peter and linux-i2c.
 
-You can read my autobiography on my redundant blogs. The title of my
-autobiography is:
+Short story here is we have a device which autonomously goes to sleep.
+Datasheet suggests waking it up with a failed xfer followed by what we
+actually want to do (sufficiently quickly).
 
-"Autobiography of Singaporean Targeted Individual Mr. Turritopsis
-Dohrnii Teo En Ming (Very First Draft, Lots More to Add in Future)"
+Obviously we can't actually guarantee that will ever happen but it's a lot
+more likely to succeed if we briefly stop anything else using he i2c bus.
 
-Links to my redundant blogs (Blogger and Wordpress) can be found in my
-email signature below.
-
-I have three other redundant blogs, namely:
-
-https://teo-en-ming.tumblr.com/
-
-https://teo-en-ming.medium.com/
-
-https://teo-en-ming.livejournal.com/
-
-Future/subsequent versions of my autobiography will be published on my
-redundant blogs.
-
-My Blog Books are also available for download on my redundant blogs.
-
-Thank you very much.
+How should we handle this?
 
 
 
 
------BEGIN EMAIL SIGNATURE-----
+> 
+> >  
+> > >  
+> > > >
+> > > > Perhaps worth a look is the regmap-sccb implementation which has a dance that looks
+> > > > a tiny bit like what you have to do here (be it for a different reason).
+> > > > It might be nice to do something similar here and have a custom regmap bus which
+> > > > has the necessary wakeups in the relevant places.
+> > > >
+> > > > Note I haven't thought it through in depth, so it might not work!  
+> > >
+> > > the dance is similar if not regmap-sccb tranfers a byte instead of
+> > > sending only the R/W bit (notice the usage of I2C_SMBUS_QUICK here and
+> > > I2C_SMBUS_BYTE in regmap-sccb). Practically speaking it makes no
+> > > difference as the sensor nacks the first message, so the underlying
+> > > bus implementation bails out, but that's a bit of work-by-accident
+> > > thing, isn't it ?
+> > >
+> > > If fine with you, I would stick to this implementation and hold the
+> > > segment locked between the wakup and the actual messages.  
+> >
+> > That's fine.  I was just thinking you could hid the magic in a custom regmap then
+> > the rest of the driver would not have to be aware of it.  Slightly neater than
+> > wrapping regmap functions with this extra call in the wrapper.
+> >  
+> 
+> [snip]
+> 
+> > > > > +		}
+> > > > > +
+> > > > > +	case IIO_CHAN_INFO_SCALE:
+> > > > > +		/* Chip temperature scale = 1/100 */  
+> > > >
+> > > > IIO temperatures are measured in milli degrees.  1lsb = 1/100*1000 degrees centigrade seems very accurate
+> > > > for a device like this!  I'm guessing this should be 10.  
+> > >
+> > > Ah yes, I thought it had to be given in the chip's native format,
+> > > which is 1/100 degree.
+> > >
+> > > I guess I should then multiply by 10 the temperature raw read and
+> > > return IIO_VAL_INT here.  
+> >
+> > You could do that, but can cause a mess if buffered support comes along later as
+> > it is then not a whole number of bits for putting in the buffer.
+> >  
+> 
+> Care to clarify ? What shouldn't I do here ? Multiply by 10 the raw
+> value (which I think is wrong as pointed out in a later reply) or
+> return IIO_VAL_INT ? Sorry I didn't get the connection with the number
+> of bits to put in the buffer :)
 
-The Gospel for all Targeted Individuals (TIs):
+So.  If you stick to output of _raw and _scale in the buffer the data
+would be whatever you read from the register.  That is typically a whole number of bits.
+If you were to multiply by 10 you end up something that may be say 12 or 13 bits depending
+on the value.  That's a bit ugly. We can handle it of course, but I'd rather not if it's
+as simple as not doing the *10 in kernel for the sysfs path.
 
-[The New York Times] Microwave Weapons Are Prime Suspect in Ills of
-U.S. Embassy Workers
+So not critical but things end up more elegant / standard if we don't do the *10 and
+instead make that a problem for userspace.
 
-Link:
-https://www.nytimes.com/2018/09/01/science/sonic-attack-cuba-microwave.html
+Jonathan
 
-********************************************************************************************
 
-Singaporean Targeted Individual Mr. Turritopsis Dohrnii Teo En Ming's
-Academic Qualifications as at 14 Feb 2019 and refugee seeking attempts
-at the United Nations Refugee Agency Bangkok (21 Mar 2017), in Taiwan
-(5 Aug 2019) and Australia (25 Dec 2019 to 9 Jan 2020):
+> 
+> Thanks
+>    j
 
-[1] https://tdtemcerts.wordpress.com/
-
-[2] https://tdtemcerts.blogspot.sg/
-
-[3] https://www.scribd.com/user/270125049/Teo-En-Ming
-
------END EMAIL SIGNATURE-----

@@ -2,140 +2,77 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 686C3400F4F
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Sep 2021 13:26:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1D1C400F53
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Sep 2021 13:32:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237736AbhIEL16 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 5 Sep 2021 07:27:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46022 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229878AbhIEL15 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 5 Sep 2021 07:27:57 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5F95B60F56;
-        Sun,  5 Sep 2021 11:26:50 +0000 (UTC)
-Date:   Sun, 5 Sep 2021 12:30:12 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Cai Huoqing <caihuoqing@baidu.com>
-Cc:     <lars@metafoo.de>, <robh+dt@kernel.org>, <shawnguo@kernel.org>,
-        <s.hauer@pengutronix.de>, <kernel@pengutronix.de>,
-        <festevam@gmail.com>, <linux-imx@nxp.com>,
-        <alex.dewar90@gmail.com>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/6] iio: adc: Init the driver for NXP i.MX8QuadXPlus
-Message-ID: <20210905123012.17b11c21@jic23-huawei>
-In-Reply-To: <20210830172140.414-2-caihuoqing@baidu.com>
-References: <20210830172140.414-1-caihuoqing@baidu.com>
-        <20210830172140.414-2-caihuoqing@baidu.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        id S237589AbhIELd7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 5 Sep 2021 07:33:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40302 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229878AbhIELd6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 5 Sep 2021 07:33:58 -0400
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D416CC061575
+        for <linux-iio@vger.kernel.org>; Sun,  5 Sep 2021 04:32:55 -0700 (PDT)
+Received: by mail-pg1-x534.google.com with SMTP id c17so3795170pgc.0
+        for <linux-iio@vger.kernel.org>; Sun, 05 Sep 2021 04:32:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=RbYXyP4onx8zCKpFSeYGMSOw6u39A1Mo7kgHJ7GwBlU=;
+        b=Y3mEmHg+6rBOVxQqYIDNwOuBWCWlH4BJ4p9+iFfR0PVlbuuKkkvBT+bnZUMXICEbYA
+         UCnYSuP5hks/OA7IGOuceZcmWAgWklNMdMqI+hjtiR/+8IDPHuwSMXGdXhGuaZVkA8Ls
+         YHpWfiNgP3nv6342xjGJERneU7paSR/ShGi/GMue1hHNtChIB5ELBdewvQ59EFpZnRDU
+         OCV0L2mLLdQkXNwAMV4WDtqBVYYwVE9rXb3aomx5ZYmw3rFd8o7etuVOekx21pTTNQvI
+         D581bFsyYX0alLBX+vy4MLp6KYNj0rgV3RHMoO5bVaQSVnVUF46QbKJYP6wqGnZGf2cf
+         Ixsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=RbYXyP4onx8zCKpFSeYGMSOw6u39A1Mo7kgHJ7GwBlU=;
+        b=F2S0ZoNL43eAtdjWl4wtjVwx3Oy2BlwFsmBWL5u3JK1uswcvn3X9iklwfFq1Sdrxk0
+         6Lt9Tvc/WFkwcp4zKIZYKqmK8pe50+BUMtamZ621CHOZT4Rr2FyoAk97qTRfgtX2YhLF
+         sq9LPJ8Dx0M/Rh1Mxs/ooNHstIgm1G4gVkP9wSKolAixNYUEn+Nu9wf3Q8Jks+zzvscs
+         4DqOz6xbRgZvitbckuIH+n3HhLILPiUI8MO39TQLaZSK8KRrc3URbChWj+FESBEvbk02
+         gwGs9bRybUnr2LB6OOpkAJoLgwkWDhtuOsvCUcLSik073HaX1ZP9TaCdq9uGeE9T3T3W
+         CyaQ==
+X-Gm-Message-State: AOAM533gmV2sto2J/DoULfRzJ0SGVByPEXMyLMI90X7fjjne6WOj60hr
+        0g3qVumtyoqOMQLg3xdemyJ7rlIUdGxam8WgMuoNTfYr6bmm/Q==
+X-Google-Smtp-Source: ABdhPJyL18V003kFWTPyS+72gmwwLhx5um/1kMGRseklD9nCqCJrxLSwc08iOzE5PEYeXGiGmiOpvJ+vNjmUVPoiOxA=
+X-Received: by 2002:a63:ed17:: with SMTP id d23mr7299872pgi.29.1630841575309;
+ Sun, 05 Sep 2021 04:32:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20210830145934.11024-1-florian.boor@kernelconcepts.de>
+In-Reply-To: <20210830145934.11024-1-florian.boor@kernelconcepts.de>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sun, 5 Sep 2021 14:32:18 +0300
+Message-ID: <CAHp75VdHsez3iFiNOeKV0g6eNYWaP-P4CMDnAz6TB72gCaUTxw@mail.gmail.com>
+Subject: Re: [PATCH] iio: adc: ad799x: Implement selecting external reference
+ voltage input on AD7991, AD7995 and AD7999.
+To:     Florian Boor <florian.boor@kernelconcepts.de>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Michael Hennerich <Michael.Hennerich@analog.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 31 Aug 2021 01:21:35 +0800
-Cai Huoqing <caihuoqing@baidu.com> wrote:
+On Mon, Aug 30, 2021 at 6:38 PM Florian Boor
+<florian.boor@kernelconcepts.de> wrote:
+>
+> Make use of the AD7991_REF_SEL bit and support using the external
+> reference voltage by setting the 'vref-external' property in devicetree.
 
-> ADC
-> 
-> The NXP i.MX 8QuadXPlus SOC has a new ADC IP. This patch init
-> this ADC driver.
-> 
-> Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
-> ---
->  drivers/iio/adc/imx8qxp-adc.c | 67 +++++++++++++++++++++++++++++++++++
->  1 file changed, 67 insertions(+)
->  create mode 100644 drivers/iio/adc/imx8qxp-adc.c
-> 
-> diff --git a/drivers/iio/adc/imx8qxp-adc.c b/drivers/iio/adc/imx8qxp-adc.c
-> new file mode 100644
-> index 000000000000..aec1b45c8fb9
-> --- /dev/null
-> +++ b/drivers/iio/adc/imx8qxp-adc.c
-> @@ -0,0 +1,67 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * NXP i.MX8QXP ADC driver
-> + */
-> +
-> +#include <linux/clk.h>
-> +#include <linux/completion.h>
-> +#include <linux/err.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/io.h>
-> +#include <linux/kernel.h>
-> +#include <linux/delay.h>
-> +#include <linux/module.h>
-> +#include <linux/pm_runtime.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/regulator/consumer.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/driver.h>
-> +#include <linux/iio/sysfs.h>
-A good example of why you shouldn't have had so many small patches is
-that reviewers want to look at a patch on it's own. In this case
-we can't tell if you are going to use these headers later or not.
-Hence review is more complex.
+...
 
-I'll have a brief go at reviewing, but reality is a real review needs
-to be easier to do than it is here!
+> +               of_property_read_u32(client->dev.of_node, "vref-external",
+> +                       &vref_external);
 
-I will note though that alphabetical order, perhaps with iio includes
-in their own block is preferred for headers in IIO drivers.
+Please, use device property API instead in the code you are submitting to IIO.
 
-
-> +
-> +#define ADC_DRIVER_NAME		"imx8qxp-adc"
-> +
-> +static int imx8qxp_adc_probe(struct platform_device *pdev)
-> +{
-> +	return 0;
-> +}
-> +
-> +static int imx8qxp_adc_remove(struct platform_device *pdev)
-> +{
-> +	return 0;
-> +}
-> +
-> +static int imx8qxp_adc_runtime_suspend(struct device *dev)
-> +{
-> +	return 0;
-> +}
-> +
-> +static int imx8qxp_adc_runtime_resume(struct device *dev)
-> +{
-> +	return 0;
-> +}
-> +
-> +static const struct dev_pm_ops imx8qxp_adc_pm_ops = {
-> +	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend, pm_runtime_force_resume)
-> +	SET_RUNTIME_PM_OPS(imx8qxp_adc_runtime_suspend, imx8qxp_adc_runtime_resume, NULL)
-> +};
-> +
-> +static const struct of_device_id imx8qxp_adc_match[] = {
-> +	{ .compatible = "nxp,imx8qxp-adc", },
-> +	{ /* sentinel */ }
-> +};
-> +MODULE_DEVICE_TABLE(of, imx8qxp_adc_match);
-> +
-> +static struct platform_driver imx8qxp_adc_driver = {
-> +	.probe		= imx8qxp_adc_probe,
-> +	.remove		= imx8qxp_adc_remove,
-> +	.driver		= {
-> +		.name	= ADC_DRIVER_NAME,
-> +		.of_match_table = imx8qxp_adc_match,
-> +		.pm	= &imx8qxp_adc_pm_ops,
-> +	},
-> +};
-> +
-> +module_platform_driver(imx8qxp_adc_driver);
-> +
-> +MODULE_DESCRIPTION("i.MX8QuadXPlus ADC driver");
-> +MODULE_LICENSE("GPL v2");
-
+-- 
+With Best Regards,
+Andy Shevchenko

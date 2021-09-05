@@ -2,110 +2,176 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE009400F18
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Sep 2021 12:26:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82283400F21
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Sep 2021 12:34:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237671AbhIEKZt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 5 Sep 2021 06:25:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54000 "EHLO mail.kernel.org"
+        id S237534AbhIEKfH convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Sun, 5 Sep 2021 06:35:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56908 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234907AbhIEKZt (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 5 Sep 2021 06:25:49 -0400
+        id S233851AbhIEKfG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 5 Sep 2021 06:35:06 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4E45860FBF;
-        Sun,  5 Sep 2021 10:24:42 +0000 (UTC)
-Date:   Sun, 5 Sep 2021 11:28:05 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 778D461004;
+        Sun,  5 Sep 2021 10:34:01 +0000 (UTC)
+Date:   Sun, 5 Sep 2021 11:37:23 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Eugen Hristev <eugen.hristev@microchip.com>
-Cc:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <nicolas.ferre@microchip.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <robh+dt@kernel.org>,
-        <ludovic.desroches@microchip.com>
-Subject: Re: [PATCH v3 00/10] iio: adc: at91-sama5d2_adc: add support for
- sama7g5
-Message-ID: <20210905112805.3e11c2dd@jic23-huawei>
-In-Reply-To: <20210901123013.329792-1-eugen.hristev@microchip.com>
-References: <20210901123013.329792-1-eugen.hristev@microchip.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jacopo Mondi <jacopo@jmondi.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        linux-iio <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v4 2/3] iio: chemical: Add Senseair Sunrise 006-0-007
+ driver
+Message-ID: <20210905113723.0cee38bb@jic23-huawei>
+In-Reply-To: <CAHp75VdsMFAx2rb22oyf6NrewomgEdEJOUkuf6g-RONfxARgjw@mail.gmail.com>
+References: <20210903144828.497166-1-jacopo@jmondi.org>
+        <20210903144828.497166-3-jacopo@jmondi.org>
+        <CAHp75VdX0=JCGDQaqCU5fDGe7vJBNTDTJHu=QOqd_YtGK4Rgdg@mail.gmail.com>
+        <20210903164324.5n7xfo2qw5etwm3c@uno.localdomain>
+        <CAHp75VdsMFAx2rb22oyf6NrewomgEdEJOUkuf6g-RONfxARgjw@mail.gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 1 Sep 2021 15:30:03 +0300
-Eugen Hristev <eugen.hristev@microchip.com> wrote:
+On Fri, 3 Sep 2021 23:21:05 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> Hi,
+> On Fri, Sep 3, 2021 at 7:42 PM Jacopo Mondi <jacopo@jmondi.org> wrote:
+> > On Fri, Sep 03, 2021 at 06:36:44PM +0300, Andy Shevchenko wrote:  
+> > > On Fri, Sep 3, 2021 at 5:50 PM Jacopo Mondi <jacopo@jmondi.org> wrote:  
 > 
-> This series adds support for sama7g5.
+> ...
 > 
-> The sama7g5 is slightly different from sama5d2, but has the same basic
-> operations. The register map is a bit different, so, I added some primitives
-> to differentiate between the two classes of hardware blocks (sama5d2-sam9x60
-> and sama7g5).
+> > > > +       mutex_lock(&sunrise->wakeup_lock);
+> > > > +       sunrise_wakeup(sunrise);
+> > > > +       ret = regmap_read(sunrise->regmap, reg, &val);
+> > > > +       mutex_unlock(&sunrise->wakeup_lock);  
+> > >
+> > > Seems to me that you may redefine ->read() for regmap (but double
+> > > check this, esp. in regard to bulk transfers) with wakeup implied and
+> > > in that case you probably can use regmap's lock only.  
+> >
+> > Can you point me to an example where regmap's read is redefined ? I
+> > failed to find one at a quick look.  
 > 
-> Sama7g5 has 16 channels ADC, no resistive touch, and extra features
-> (FIFOs, better oversampling , not implemented yet).
+> Any when struct regmap_config is defined with devm_regmap_i2c_init() call.
 > 
-> It is a rework of the series initially sent here:
-> https://marc.info/?l=linux-iio&m=161461656807826&w=2
+> This one is not I²C, but gives you an idea.
+> https://elixir.bootlin.com/linux/latest/source/drivers/mfd/intel_soc_pmic_mrfld.c#L98
 > 
-> Changes in v3:
-> updates for the channel indexes ABI
-> minor nitpicks fixes
-> fixed krobot report
+> ...
+> 
+> > Ugh! I initially had a *dev pointer for the sake of line length in
+> > error messages in the driver's struct, then I'm asked to remove it,
+> > then I'm asked to take a pointer to re-shorten the lines.  
+> 
+> Up to maintainers then.
 
-v2 dropped,
-v3 1-8 applied to the togreg branch of iio.git and initially pushed out as testing
-for 0-day to poke at and to allow me to rebase after rc1 is available.
+Andy is requesting something different here by asking for a local
+struct device *dev = sunrise->client->dev;
 
-Thanks,
+but personally I wouldn't bother when there is only one use in a given
+function. I wouldn't mind if you did do it either - this one is very much
+personal taste and so I tend to not worry about it!
 
-Jonathan
+Having the extra pointer in iio_priv() was a case of architecture being
+a bit 'fuzzy' for convenience which is a different matter.
 
 > 
+> ...
 > 
+> > > > +static int sunrise_write_word(struct sunrise_dev *sunrise, u8 reg, u16 data)
+> > > > +{
+> > > > +       __be16 be_data = cpu_to_be16(data);
+> > > > +       int ret;
+> > > > +
+> > > > +       mutex_lock(&sunrise->wakeup_lock);
+> > > > +       sunrise_wakeup(sunrise);
+> > > > +       ret = regmap_bulk_write(sunrise->regmap, reg, &be_data, 2);
+> > > > +       mutex_unlock(&sunrise->wakeup_lock);
+> > > > +       if (ret) {
+> > > > +               dev_err(&sunrise->client->dev,
+> > > > +                       "Write word failed: reg 0x%2x (%d)\n", reg, ret);  
+> > >  
+> > > > +               return ret;
+> > > > +       }
+> > > > +
+> > > > +       return 0;  
+> > >
+> > > return ret;
+> > >  
+> >
+> > I can return a positive value for success and change the checks around
+> > return code to if (ret < 0) but that's driver internal stuff after
+> > all, does it really matter ? Is this more consistent with the Linux
+> > i2c API maybe ?  I can change it if it's the case.  
 > 
-> Changes in v2:
+> I didn't get what this comment has with what I have proposed.
 > 
-> I reworked this according to review by Jonathan, meaning that first I created
-> a no-op patch that will convert the driver to a more platform specific data
-> dedicated type of driver. This adds various structures that hold things like
-> register layout and channel information.
-> After this I created few patches that implement the main differences between
-> sama7g5 and older products: the end-of-conversion new register. I added
-> helper functions to make code more easy to read and more simple.
-> One the last patches adds the layout and channels for sama7g5.
-> At this moment in linux-next, the DT for sama7g5 and sama7g5ek is present,
-> and the last patches add and enable this node in DT for this board.
+> Maybe it wasn't obvious, so I have proposed to change 4 LOCs by 1 LOC, so
 > 
-> Eugen
+> if (ret)
+>   dev_err(...);
+> return ret;
+
+one of the checking scripts tends to moan about this so it's nice to clean it
+out at the start and avoid the inevitable follow up patch :)
+
 > 
+> > > > +}  
 > 
+> ...
 > 
-> Eugen Hristev (10):
->   dt-bindings: iio: adc: at91-sama5d2: add compatible for sama7g5-adc
->   iio: adc: at91-sama5d2_adc: initialize hardware after clock is started
->   iio: adc: at91-sama5d2_adc: remove unused definition
->   iio: adc: at91-sama5d2_adc: convert to platform specific data
->     structures
->   iio: adc: at91-sama5d2_adc: add support for separate end of conversion
->     registers
->   iio: adc: at91-sama5d2_adc: add helper for COR register
->   iio: adc: at91-sama5d2_adc: add support for sama7g5 device
->   iio: adc: at91-sama5d2_adc: update copyright and authors information
->   ARM: dts: at91: sama7g5: add node for the ADC
->   ARM: dts: at91: sama7g5ek: enable ADC on the board
+> > > > +static ssize_t sunrise_cal_read(const char *buf, size_t len)
+> > > > +{
+> > > > +       bool enable;
+> > > > +       int ret;
+> > > > +
+> > > > +       ret = kstrtobool(buf, &enable);
+> > > > +       if (ret)
+> > > > +               return ret;
+> > > > +
+> > > > +       if (!enable)
+> > > > +               return len;
+> > > > +
+> > > > +       return 0;  
+> > >
+> > > Why is this a separate function to begin with?  
+> >
+> > Because it is called from two places where I should have duplicated
+> > the code otherwise ?  
 > 
->  .../bindings/iio/adc/atmel,sama5d2-adc.yaml   |   1 +
->  arch/arm/boot/dts/at91-sama7g5ek.dts          |   8 +
->  arch/arm/boot/dts/sama7g5.dtsi                |  16 +
->  drivers/iio/adc/at91-sama5d2_adc.c            | 594 ++++++++++++------
->  4 files changed, 432 insertions(+), 187 deletions(-)
+> I think what you think about duplication is not and will get even LOC
+> benefit. Using kstrtobool() directly in the callers is better than
+> hiding like this.
+
+Part of the issue here is that the naming perhaps suggests a hardware rad
+whereas it's just a bit of string handling.
+
+Whilst it's shared code, there is only a rather tangential connection between
+the two call sites and the function itself ended up a bit weird.
+
+I'd go with what Andy is suggesting and just have this handling inline.
+
+
+> 
+> > > Not sure I have got the logic behind. If enable is true you return 0?!  
+> >
+> > Yes, so I can
+> >         if (ret)
+> >                 return ret;
+> > in the caller.
+> >  
+> > > > +}  
+> 
 > 
 

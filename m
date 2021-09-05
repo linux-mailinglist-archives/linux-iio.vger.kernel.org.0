@@ -2,417 +2,628 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C1CD4010DD
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Sep 2021 18:26:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 443FA4011AE
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Sep 2021 23:10:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238030AbhIEQ0w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 5 Sep 2021 12:26:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46914 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231847AbhIEQ0w (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 5 Sep 2021 12:26:52 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F053360EE6;
-        Sun,  5 Sep 2021 16:25:45 +0000 (UTC)
-Date:   Sun, 5 Sep 2021 17:29:08 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Puranjay Mohan <puranjay12@gmail.com>
-Cc:     Michael.Hennerich@analog.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, lars@metafoo.de,
-        Dragos.Bogdan@analog.com, Darius.Berghe@analog.com,
-        andy.shevchenko@gmail.com
-Subject: Re: [PATCH v2 2/2] iio: accel: adxl355: Add triggered buffer
- support
-Message-ID: <20210905172858.10aa7b48@jic23-huawei>
-In-Reply-To: <20210903184312.21009-3-puranjay12@gmail.com>
-References: <20210903184312.21009-1-puranjay12@gmail.com>
-        <20210903184312.21009-3-puranjay12@gmail.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        id S231968AbhIEVMA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 5 Sep 2021 17:12:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53952 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231335AbhIEVL7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 5 Sep 2021 17:11:59 -0400
+Received: from mail-il1-x133.google.com (mail-il1-x133.google.com [IPv6:2607:f8b0:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2D5DC061575
+        for <linux-iio@vger.kernel.org>; Sun,  5 Sep 2021 14:10:55 -0700 (PDT)
+Received: by mail-il1-x133.google.com with SMTP id b4so4890103ilr.11
+        for <linux-iio@vger.kernel.org>; Sun, 05 Sep 2021 14:10:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=konsulko.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=UKP7UQdIeCcasItCVR1HEg3bEzE7WSDtF0j73/EOreg=;
+        b=SQ4Img9tnDMAAz8SrpVQrEa6RZUQLfTNVaW3rsMiOqMIGVvflb4nUxqIHYuPxh09KH
+         JkkRD+V2i0tzrZMLiZyVf8h6bWxB8BdhOxOaEh/Hr6WR3cGp1blH+Z2phQEgS/8MJDAK
+         eePWSIldI3RkPZcLgO7+oMAckKBI+y2gpBfdE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=UKP7UQdIeCcasItCVR1HEg3bEzE7WSDtF0j73/EOreg=;
+        b=XmtmcJenVtm9S7bLz9mIkpsZIxsu0T7U75qnYSMXYhXzaLvNKdX9XacBuKYdoJbk9b
+         Jtwxte6rH7dG77av8471QhmaSjvMba0ptUBe8T7RGqHf3ZVsVOR/PZxjfa55SYkPxXkf
+         vqZE8ooZfA5/ZSzYSVm8XLYzoOfqAJb0kQ434flt333VH0jlwsWnRfHB7koX+GrLThCs
+         QA7UCxmLghKuPELmYZqeO+b4flOnuflTAhG8LTNgxi6MnQ9FS0534hgwpAM1cw+MzfYi
+         nK4CxzOkn1SLJ0A/Wju/pXRmIXuvjHGuxu/gtYqTmoZV/KKosbaR6Q1SFBNJO33aEQel
+         5pXg==
+X-Gm-Message-State: AOAM532WghOLlNlee0NQXOJpsvzBAumAcheaoPoFU2uXI3isHYtgzyL/
+        l4RT0R+d5ovXRdVGzZREx+RJr5e1+VuTfzuIQmb/Yg==
+X-Google-Smtp-Source: ABdhPJwRVdE5B4l7tS6V6l3Qixh+5AoNNADA146+AuxqubEm1RCBwhGwOND3gyLXSc+vWB+0LFsUfJ3Z8fU6wqsGkuc=
+X-Received: by 2002:a05:6e02:1645:: with SMTP id v5mr6092440ilu.322.1630876255207;
+ Sun, 05 Sep 2021 14:10:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20210903144828.497166-1-jacopo@jmondi.org> <20210903144828.497166-3-jacopo@jmondi.org>
+In-Reply-To: <20210903144828.497166-3-jacopo@jmondi.org>
+From:   Matt Ranostay <matt.ranostay@konsulko.com>
+Date:   Sun, 5 Sep 2021 14:10:43 -0700
+Message-ID: <CAJCx=g=qOtG4+Z7k4aWX+xFg=-No3u=z2=iuRxKS2BOFHjiNdg@mail.gmail.com>
+Subject: Re: [PATCH v4 2/3] iio: chemical: Add Senseair Sunrise 006-0-007 driver
+To:     Jacopo Mondi <jacopo@jmondi.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat,  4 Sep 2021 00:13:12 +0530
-Puranjay Mohan <puranjay12@gmail.com> wrote:
+On Fri, Sep 3, 2021 at 7:48 AM Jacopo Mondi <jacopo@jmondi.org> wrote:
+>
+> Add support for the Senseair Sunrise 006-0-0007 driver through the
+> IIO subsystem.
+>
+> Datasheet: https://rmtplusstoragesenseair.blob.core.windows.net/docs/Dev/publicerat/TDE5531.pdf
+> Signed-off-by: Jacopo Mondi <jacopo@jmondi.org>
+> ---
+>  MAINTAINERS                        |   6 +
+>  drivers/iio/chemical/Kconfig       |  10 +
+>  drivers/iio/chemical/Makefile      |   1 +
+>  drivers/iio/chemical/sunrise_co2.c | 487 +++++++++++++++++++++++++++++
+>  4 files changed, 504 insertions(+)
+>  create mode 100644 drivers/iio/chemical/sunrise_co2.c
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index d7b4f32875a9..a8b859297e9e 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16723,6 +16723,12 @@ S:     Maintained
+>  F:     drivers/misc/phantom.c
+>  F:     include/uapi/linux/phantom.h
+>
+> +SENSEAIR SUNRISE 006-0-0007
+> +M:     Jacopo Mondi <jacopo@jmondi.org>
+> +S:     Maintained
+> +F:     Documentation/devicetree/bindings/iio/chemical/senseair,sunrise.yaml
+> +F:     drivers/iio/chemical/sunrise_co2.c
+> +
+>  SENSIRION SCD30 CARBON DIOXIDE SENSOR DRIVER
+>  M:     Tomasz Duszynski <tomasz.duszynski@octakon.com>
+>  S:     Maintained
+> diff --git a/drivers/iio/chemical/Kconfig b/drivers/iio/chemical/Kconfig
+> index a4920646e9be..5155ab2caed4 100644
+> --- a/drivers/iio/chemical/Kconfig
+> +++ b/drivers/iio/chemical/Kconfig
+> @@ -159,6 +159,16 @@ config SPS30_SERIAL
+>           To compile this driver as a module, choose M here: the module will
+>           be called sps30_serial.
+>
+> +config SENSEAIR_SUNRISE_CO2
+> +       tristate "Senseair Sunrise 006-0-0007 CO2 sensor"
+> +       select REGMAP_I2C
+> +       help
+> +         Say yes here to build support for Senseair Sunrise 006-0-0007 CO2
+> +         sensor.
+> +
+> +         To compile this driver as a module, choose M here: the
+> +         module will be called sunrise_co2.
+> +
+>  config VZ89X
+>         tristate "SGX Sensortech MiCS VZ89X VOC sensor"
+>         depends on I2C
+> diff --git a/drivers/iio/chemical/Makefile b/drivers/iio/chemical/Makefile
+> index 4898690cc155..61e8749a84f3 100644
+> --- a/drivers/iio/chemical/Makefile
+> +++ b/drivers/iio/chemical/Makefile
+> @@ -15,6 +15,7 @@ obj-$(CONFIG_PMS7003) += pms7003.o
+>  obj-$(CONFIG_SCD30_CORE) += scd30_core.o
+>  obj-$(CONFIG_SCD30_I2C) += scd30_i2c.o
+>  obj-$(CONFIG_SCD30_SERIAL) += scd30_serial.o
+> +obj-$(CONFIG_SENSEAIR_SUNRISE_CO2) += sunrise_co2.o
+>  obj-$(CONFIG_SENSIRION_SGP30)  += sgp30.o
+>  obj-$(CONFIG_SPS30) += sps30.o
+>  obj-$(CONFIG_SPS30_I2C) += sps30_i2c.o
+> diff --git a/drivers/iio/chemical/sunrise_co2.c b/drivers/iio/chemical/sunrise_co2.c
+> new file mode 100644
+> index 000000000000..cf15cdbaa24a
+> --- /dev/null
+> +++ b/drivers/iio/chemical/sunrise_co2.c
+> @@ -0,0 +1,487 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Senseair Sunrise 006-0-0007 CO2 sensor driver.
+> + *
+> + * Copyright (C) 2021 Jacopo Mondi
+> + *
+> + * List of features not yet supported by the driver:
+> + * - controllable EN pin
+> + * - single-shot operations using the nDRY pin.
+> + * - ABC/target calibration
+> + */
+> +
+> +#include <linux/bitops.h>
+> +#include <linux/i2c.h>
+> +#include <linux/kernel.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/module.h>
+> +#include <linux/mutex.h>
+> +#include <linux/regmap.h>
+> +#include <linux/time64.h>
+> +
+> +#include <linux/iio/iio.h>
+> +
+> +#define DRIVER_NAME "sunrise_co2"
+> +
+> +#define SUNRISE_ERROR_STATUS_REG               0x00
+> +#define SUNRISE_CO2_FILTERED_COMP_REG          0x06
+> +#define SUNRISE_CHIP_TEMPERATURE_REG           0x08
+> +#define SUNRISE_CALIBRATION_STATUS_REG         0x81
+> +#define SUNRISE_CALIBRATION_COMMAND_REG                0x82
+> +#define SUNRISE_CALIBRATION_FACTORY_CMD                0x7c02
+> +#define SUNRISE_CALIBRATION_BACKGROUND_CMD     0x7c06
+> +/*
+> + * The calibration timeout is not characterized in the datasheet.
+> + * Use 30 seconds as a reasonable upper limit.
+> + */
+> +#define SUNRISE_CALIBRATION_TIMEOUT_US         (30 * USEC_PER_SEC)
+> +
+> +struct sunrise_dev {
+> +       struct i2c_client *client;
+> +       struct regmap *regmap;
+> +       /* Protects access to IIO attributes. */
+> +       struct mutex lock;
+> +       /* Protects chip's wakup session. */
+> +       struct mutex wakeup_lock;
+> +};
+> +
+> +static void sunrise_wakeup(struct sunrise_dev *sunrise)
+> +{
+> +       struct i2c_client *client = sunrise->client;
+> +
+> +       /*
+> +        * Wake up sensor by sending sensor address: START, sensor address,
+> +        * STOP. Sensor will not ACK this byte.
+> +        *
+> +        * The chip returns in low power state after 15msec without
+> +        * communications or after a complete read/write sequence.
+> +        */
+> +       i2c_smbus_xfer(client->adapter, client->addr, I2C_M_IGNORE_NAK,
+> +                      I2C_SMBUS_WRITE, 0, I2C_SMBUS_QUICK, NULL);
+> +}
+> +
+> +static int sunrise_read_byte(struct sunrise_dev *sunrise, u8 reg)
+> +{
+> +       unsigned int val;
+> +       int ret;
+> +
+> +       /*
+> +        * Lock the 'wakeup' session.
+> +        *
+> +        * If another read/write call sneaks in between the wakeup message
+> +        * and the i2c transaction, the chip goes back in sleep state.
+> +        */
+> +       mutex_lock(&sunrise->wakeup_lock);
+> +       sunrise_wakeup(sunrise);
+> +       ret = regmap_read(sunrise->regmap, reg, &val);
+> +       mutex_unlock(&sunrise->wakeup_lock);
+> +       if (ret) {
+> +               dev_err(&sunrise->client->dev,
+> +                       "Read byte failed: reg 0x%2x (%d)\n", reg, ret);
+> +               return ret;
+> +       }
+> +
+> +       return val;
+> +}
+> +
+> +static int sunrise_read_word(struct sunrise_dev *sunrise, u8 reg, u16 *val)
+> +{
+> +       __be16 be_val;
+> +       int ret;
+> +
+> +       mutex_lock(&sunrise->wakeup_lock);
+> +       sunrise_wakeup(sunrise);
+> +       ret = regmap_bulk_read(sunrise->regmap, reg, &be_val, 2);
+> +       mutex_unlock(&sunrise->wakeup_lock);
+> +       if (ret) {
+> +               dev_err(&sunrise->client->dev,
+> +                       "Read word failed: reg 0x%2x (%d)\n", reg, ret);
+> +               return ret;
+> +       }
+> +
+> +       *val = be16_to_cpu(be_val);
+> +
+> +       return 0;
+> +}
+> +
+> +static int sunrise_write_byte(struct sunrise_dev *sunrise, u8 reg, u8 val)
+> +{
+> +       int ret;
+> +
+> +       mutex_lock(&sunrise->wakeup_lock);
+> +       sunrise_wakeup(sunrise);
+> +       ret = regmap_write(sunrise->regmap, reg, val);
+> +       mutex_unlock(&sunrise->wakeup_lock);
+> +       if (ret) {
+> +               dev_err(&sunrise->client->dev,
+> +                       "Write byte failed: reg 0x%2x (%d)\n", reg, ret);
+> +               return ret;
+> +       }
+> +
+> +       return 0;
+> +}
+> +
+> +static int sunrise_write_word(struct sunrise_dev *sunrise, u8 reg, u16 data)
+> +{
+> +       __be16 be_data = cpu_to_be16(data);
+> +       int ret;
+> +
+> +       mutex_lock(&sunrise->wakeup_lock);
+> +       sunrise_wakeup(sunrise);
+> +       ret = regmap_bulk_write(sunrise->regmap, reg, &be_data, 2);
+> +       mutex_unlock(&sunrise->wakeup_lock);
+> +       if (ret) {
+> +               dev_err(&sunrise->client->dev,
+> +                       "Write word failed: reg 0x%2x (%d)\n", reg, ret);
+> +               return ret;
+> +       }
+> +
+> +       return 0;
+> +}
+> +
+> +/* Trigger a calibration cycle. */
+> +
+> +enum {
+> +       SUNRISE_CALIBRATION_FACTORY,
+> +       SUNRISE_CALIBRATION_BACKGROUND,
+> +};
+> +
+> +static const struct sunrise_calib_data {
+> +       u16 cmd;
+> +       u8 bit;
+> +       const char * const name;
+> +} calib_data[] = {
+> +       [SUNRISE_CALIBRATION_FACTORY] = {
+> +               SUNRISE_CALIBRATION_FACTORY_CMD,
+> +               BIT(2),
+> +               "factory_calibration",
+> +       },
+> +       [SUNRISE_CALIBRATION_BACKGROUND] = {
+> +               SUNRISE_CALIBRATION_BACKGROUND_CMD,
+> +               BIT(5),
+> +               "background_calibration",
+> +       },
+> +};
+> +
+> +static int sunrise_calibrate(struct sunrise_dev *sunrise,
+> +                            const struct sunrise_calib_data *data)
+> +{
+> +       unsigned int status;
+> +       int ret;
+> +
+> +       /* Reset the calibration status reg. */
+> +       ret = sunrise_write_byte(sunrise, SUNRISE_CALIBRATION_STATUS_REG, 0x00);
+> +       if (ret)
+> +               return ret;
+> +
+> +       /* Write a calibration command and poll the calibration status bit. */
+> +       ret = sunrise_write_word(sunrise, SUNRISE_CALIBRATION_COMMAND_REG,
+> +                                data->cmd);
+> +       if (ret)
+> +               return ret;
+> +
+> +       dev_dbg(&sunrise->client->dev, "%s in progress\n", data->name);
+> +
+> +       /*
+> +        * Calibration takes several seconds, so the sleep time between reads
+> +        * can be pretty relaxed.
+> +        */
+> +       return read_poll_timeout(sunrise_read_byte, status,
+> +                                status & data->bit, 200000,
+> +                                SUNRISE_CALIBRATION_TIMEOUT_US, false,
+> +                                sunrise, SUNRISE_CALIBRATION_STATUS_REG);
+> +}
+> +
+> +static ssize_t sunrise_cal_read(const char *buf, size_t len)
+> +{
+> +       bool enable;
+> +       int ret;
+> +
+> +       ret = kstrtobool(buf, &enable);
+> +       if (ret)
+> +               return ret;
+> +
+> +       if (!enable)
+> +               return len;
+> +
+> +       return 0;
+> +}
+> +
+> +static ssize_t sunrise_cal_factory_write(struct iio_dev *iiodev,
+> +                                        uintptr_t private,
+> +                                        const struct iio_chan_spec *chan,
+> +                                        const char *buf, size_t len)
+> +{
+> +       struct sunrise_dev *sunrise = iio_priv(iiodev);
+> +       int ret;
+> +
+> +       mutex_lock(&sunrise->lock);
+> +       ret = sunrise_cal_read(buf, len);
+> +       if (ret) {
+> +               mutex_unlock(&sunrise->lock);
+> +               return ret;
+> +       }
+> +
+> +       ret = sunrise_calibrate(sunrise,
+> +                               &calib_data[SUNRISE_CALIBRATION_FACTORY]);
+> +       mutex_unlock(&sunrise->lock);
+> +       if (ret)
+> +               return ret;
+> +
+> +       return len;
+> +}
+> +
+> +static ssize_t sunrise_cal_background_write(struct iio_dev *iiodev,
+> +                                           uintptr_t private,
+> +                                           const struct iio_chan_spec *chan,
+> +                                           const char *buf, size_t len)
+> +{
+> +       struct sunrise_dev *sunrise = iio_priv(iiodev);
+> +       int ret;
+> +
+> +       mutex_lock(&sunrise->lock);
+> +       ret = sunrise_cal_read(buf, len);
+> +       if (ret) {
+> +               mutex_unlock(&sunrise->lock);
+> +               return ret;
+> +       }
+> +
+> +       ret = sunrise_calibrate(sunrise,
+> +                               &calib_data[SUNRISE_CALIBRATION_BACKGROUND]);
+> +       mutex_unlock(&sunrise->lock);
+> +       if (ret)
+> +               return ret;
+> +
+> +       return len;
+> +}
+> +
+> + /* Enumerate and retrieve the chip error status. */
+> +enum {
+> +       SUNRISE_ERROR_FATAL,
+> +       SUNRISE_ERROR_I2C,
+> +       SUNRISE_ERROR_ALGORITHM,
+> +       SUNRISE_ERROR_CALIBRATION,
+> +       SUNRISE_ERROR_SELF_DIAGNOSTIC,
+> +       SUNRISE_ERROR_OUT_OF_RANGE,
+> +       SUNRISE_ERROR_MEMORY,
+> +       SUNRISE_ERROR_NO_MEASUREMENT,
+> +       SUNRISE_ERROR_LOW_VOLTAGE,
+> +       SUNRISE_ERROR_MEASUREMENT_TIMEOUT,
+> +};
+> +
+> +static const char * const sunrise_error_statuses[] = {
+> +       [SUNRISE_ERROR_FATAL] = "error_fatal",
+> +       [SUNRISE_ERROR_I2C] = "error_i2c",
+> +       [SUNRISE_ERROR_ALGORITHM] = "error_algorithm",
+> +       [SUNRISE_ERROR_CALIBRATION] = "error_calibration",
+> +       [SUNRISE_ERROR_SELF_DIAGNOSTIC] = "error_self_diagnostic",
+> +       [SUNRISE_ERROR_OUT_OF_RANGE] = "error_out_of_range",
+> +       [SUNRISE_ERROR_MEMORY] = "error_memory",
+> +       [SUNRISE_ERROR_NO_MEASUREMENT] = "error_no_measurement",
+> +       [SUNRISE_ERROR_LOW_VOLTAGE] = "error_low_voltage",
+> +       [SUNRISE_ERROR_MEASUREMENT_TIMEOUT] = "error_measurement_timeout",
+> +};
+> +
+> +static const struct iio_enum sunrise_error_statuses_enum = {
+> +       .items = sunrise_error_statuses,
+> +       .num_items = ARRAY_SIZE(sunrise_error_statuses),
+> +};
+> +
+> +static ssize_t sunrise_error_status_read(struct iio_dev *iiodev,
+> +                                        uintptr_t private,
+> +                                        const struct iio_chan_spec *chan,
+> +                                        char *buf)
+> +{
+> +       struct sunrise_dev *sunrise = iio_priv(iiodev);
+> +       unsigned long errors;
+> +       ssize_t len = 0;
+> +       u16 value;
+> +       int ret;
+> +       u8 i;
+> +
+> +       mutex_lock(&sunrise->lock);
+> +       ret = sunrise_read_word(sunrise, SUNRISE_ERROR_STATUS_REG, &value);
+> +       if (ret) {
+> +               mutex_unlock(&sunrise->lock);
+> +               return -EINVAL;
+> +       }
+> +
+> +       errors = value;
+> +       for_each_set_bit(i, &errors, ARRAY_SIZE(sunrise_error_statuses))
+> +               len += sysfs_emit_at(buf, len, "%s ", sunrise_error_statuses[i]);
+> +
+> +       if (len)
+> +               buf[len - 1] = '\n';
+> +
+> +       mutex_unlock(&sunrise->lock);
+> +
+> +       return len;
+> +}
+> +
+> +static const struct iio_chan_spec_ext_info sunrise_concentration_ext_info[] = {
+> +       /* Calibration triggers. */
+> +       {
+> +               .name = "calibration_factory",
+> +               .write = sunrise_cal_factory_write,
+> +               .shared = IIO_SEPARATE,
+> +       },
+> +       {
+> +               .name = "calibration_background",
+> +               .write = sunrise_cal_background_write,
+> +               .shared = IIO_SEPARATE,
+> +       },
+> +
+> +       /* Error statuses. */
+> +       {
+> +               .name = "error_status",
+> +               .read = sunrise_error_status_read,
+> +               .shared = IIO_SHARED_BY_ALL,
+> +       },
+> +       {
+> +               .name = "error_status_available",
+> +               .shared = IIO_SHARED_BY_ALL,
+> +               .read = iio_enum_available_read,
+> +               .private = (uintptr_t)&sunrise_error_statuses_enum,
+> +       },
+> +       {}
+> +};
+> +
+> +static const struct iio_chan_spec sunrise_channels[] = {
+> +       {
+> +               .type = IIO_CONCENTRATION,
+> +               .modified = 1,
+> +               .channel2 = IIO_MOD_CO2,
+> +               .info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
 
-> Provide a way for continuous data capture by setting up buffer support. The
-> data ready signal exposed at the DRDY pin of the ADXL355 is exploited as
-> a hardware interrupt which triggers to fill the buffer.
-> 
-> Signed-off-by: Puranjay Mohan <puranjay12@gmail.com>
-
-A few things inline that were so minor I've just tidied them up along with the
-the various obvious if (ret < 0) in previous patch.
-
-Note some of these tell me you are working on an old tree and need to rebase.
-
-Let me know if any of the following is wrong.   The state ? 0 : 1 is a bit
-annoying, but without it we get a warning.
-
-Anyhow, series applied to the togreg branch of iio.git and pushed out as testing
-for 0-day to see what else we missed.
+Why isn't there a IIO_CHAN_INFO_SCALE for the CO2 channel?  Raw units
+between different CO2 sensors aren't always in ppm
 
 Thanks,
 
-Jonathan
+Matt
 
-
-diff --git a/drivers/iio/accel/adxl355_core.c b/drivers/iio/accel/adxl355_core.c
-index 71d79d2dcf7d..4f485909f459 100644
---- a/drivers/iio/accel/adxl355_core.c
-+++ b/drivers/iio/accel/adxl355_core.c
-@@ -210,7 +210,7 @@ static int adxl355_data_rdy_trigger_set_state(struct iio_trigger *trig,
-        ret = regmap_update_bits(data->regmap, ADXL355_POWER_CTL_REG,
-                                 ADXL355_POWER_CTL_DRDY_MSK,
-                                 FIELD_PREP(ADXL355_POWER_CTL_DRDY_MSK,
--                                           !state));
-+                                           state ? 0 : 1));
-        mutex_unlock(&data->lock);
- 
-        return ret;
-@@ -682,7 +682,7 @@ static int adxl355_probe_trigger(struct iio_dev *indio_dev, int irq)
- 
-        data->dready_trig = devm_iio_trigger_alloc(data->dev, "%s-dev%d",
-                                                   indio_dev->name,
--                                                  indio_dev->id);
-+                                                  iio_device_id(indio_dev));
-        if (!data->dready_trig)
-                return -ENOMEM;
- 
-@@ -741,18 +741,20 @@ int adxl355_core_probe(struct device *dev, struct regmap *regmap,
-        ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
-                                              &iio_pollfunc_store_time,
-                                              &adxl355_trigger_handler, NULL);
--       if (ret)
--               return dev_err_probe(dev, ret,
--                                    "iio triggered buffer setup failed\n");
-+       if (ret) {
-+               dev_err(dev, "iio triggered buffer setup failed\n");
-+               return ret;
-+       }
- 
-        /*
-         * TODO: Would be good to move it to the generic version.
-         */
-        irq = of_irq_get_byname(dev->of_node, "DRDY");
--       if (irq > 0)
-+       if (irq > 0) {
-                ret = adxl355_probe_trigger(indio_dev, irq);
--       if (ret)
--               return ret;
-+               if (ret)
-+                       return ret;
-+       }
- 
-        return devm_iio_device_register(dev, indio_dev);
- }
-
-
-> ---
->  drivers/iio/accel/Kconfig        |   4 +
->  drivers/iio/accel/adxl355_core.c | 153 ++++++++++++++++++++++++++++++-
->  2 files changed, 156 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
-> index d0c45c809..9c16c1841 100644
-> --- a/drivers/iio/accel/Kconfig
-> +++ b/drivers/iio/accel/Kconfig
-> @@ -69,6 +69,8 @@ config ADXL355_I2C
->  	depends on I2C
->  	select ADXL355
->  	select REGMAP_I2C
-> +	select IIO_BUFFER
-> +	select IIO_TRIGGERED_BUFFER
->  	help
->  	  Say Y here if you want to build i2c support for the Analog Devices
->  	  ADXL355 3-axis digital accelerometer.
-> @@ -82,6 +84,8 @@ config ADXL355_SPI
->  	depends on SPI
->  	select ADXL355
->  	select REGMAP_SPI
-> +	select IIO_BUFFER
-> +	select IIO_TRIGGERED_BUFFER
->  	help
->  	  Say Y here if you want to build spi support for the Analog Devices
->  	  ADXL355 3-axis digital accelerometer.
-> diff --git a/drivers/iio/accel/adxl355_core.c b/drivers/iio/accel/adxl355_core.c
-> index 0b9996c17..4c561315f 100644
-> --- a/drivers/iio/accel/adxl355_core.c
-> +++ b/drivers/iio/accel/adxl355_core.c
-> @@ -9,11 +9,16 @@
->  
->  #include <linux/bits.h>
->  #include <linux/bitfield.h>
-> +#include <linux/iio/buffer.h>
->  #include <linux/iio/iio.h>
-> +#include <linux/iio/trigger.h>
-> +#include <linux/iio/triggered_buffer.h>
-> +#include <linux/iio/trigger_consumer.h>
->  #include <linux/limits.h>
->  #include <linux/math64.h>
->  #include <linux/module.h>
->  #include <linux/mod_devicetable.h>
-> +#include <linux/of_irq.h>
->  #include <linux/regmap.h>
->  #include <asm/unaligned.h>
->  
-> @@ -46,6 +51,7 @@
->  #define ADXL355_RANGE_REG		0x2C
->  #define ADXL355_POWER_CTL_REG		0x2D
->  #define  ADXL355_POWER_CTL_MODE_MSK	GENMASK(1, 0)
-> +#define  ADXL355_POWER_CTL_DRDY_MSK	BIT(2)
->  #define ADXL355_SELF_TEST_REG		0x2E
->  #define ADXL355_RESET_REG		0x2F
->  
-> @@ -165,7 +171,14 @@ struct adxl355_data {
->  	enum adxl355_hpf_3db hpf_3db;
->  	int calibbias[3];
->  	int adxl355_hpf_3db_table[7][2];
-> -	u8 transf_buf[3] ____cacheline_aligned;
-> +	struct iio_trigger *dready_trig;
-> +	union {
-> +		u8 transf_buf[3];
-> +		struct {
-> +			u8 buf[14];
-> +			s64 ts;
-> +		} buffer;
-> +	} ____cacheline_aligned;
->  };
->  
->  static int adxl355_set_op_mode(struct adxl355_data *data,
-> @@ -186,6 +199,23 @@ static int adxl355_set_op_mode(struct adxl355_data *data,
->  	return ret;
->  }
->  
-> +static int adxl355_data_rdy_trigger_set_state(struct iio_trigger *trig,
-> +					      bool state)
-> +{
-> +	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
-> +	struct adxl355_data *data = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	mutex_lock(&data->lock);
-> +	ret = regmap_update_bits(data->regmap, ADXL355_POWER_CTL_REG,
-> +				 ADXL355_POWER_CTL_DRDY_MSK,
-> +				 FIELD_PREP(ADXL355_POWER_CTL_DRDY_MSK,
-> +					    !state));
-> +	mutex_unlock(&data->lock);
-> +
-> +	return ret;
-> +}
-> +
->  static void adxl355_fill_3db_frequency_table(struct adxl355_data *data)
->  {
->  	u32 multiplier;
-> @@ -246,6 +276,12 @@ static int adxl355_setup(struct adxl355_data *data)
->  	if (ret)
->  		return ret;
->  
-> +	ret = regmap_update_bits(data->regmap, ADXL355_POWER_CTL_REG,
-> +				 ADXL355_POWER_CTL_DRDY_MSK,
-> +				 FIELD_PREP(ADXL355_POWER_CTL_DRDY_MSK, 1));
-> +	if (ret)
-> +		return ret;
-> +
->  	adxl355_fill_3db_frequency_table(data);
->  
->  	return adxl355_set_op_mode(data, ADXL355_MEASUREMENT);
-> @@ -499,12 +535,74 @@ static int adxl355_read_avail(struct iio_dev *indio_dev,
->  	}
->  }
->  
-> +static const unsigned long adxl355_avail_scan_masks[] = {
-> +	GENMASK(3, 0),
-> +	0
+> +               .ext_info = sunrise_concentration_ext_info,
+> +               .scan_index = 0,
+> +               .scan_type =  {
+> +                       .sign = 's',
+> +                       .realbits = 16,
+> +                       .storagebits = 16,
+> +                       .endianness = IIO_CPU,
+> +               },
+> +       },
+> +       {
+> +               .type = IIO_TEMP,
+> +               .info_mask_separate =  BIT(IIO_CHAN_INFO_RAW) |
+> +                                      BIT(IIO_CHAN_INFO_SCALE),
+> +               .scan_index = 1,
+> +               .scan_type =  {
+> +                       .sign = 's',
+> +                       .realbits = 16,
+> +                       .storagebits = 16,
+> +                       .endianness = IIO_CPU,
+> +               },
+> +       },
 > +};
 > +
->  static const struct iio_info adxl355_info = {
->  	.read_raw	= adxl355_read_raw,
->  	.write_raw	= adxl355_write_raw,
->  	.read_avail	= &adxl355_read_avail,
->  };
->  
-> +static const struct iio_trigger_ops adxl355_trigger_ops = {
-> +	.set_trigger_state = &adxl355_data_rdy_trigger_set_state,
-> +	.validate_device = &iio_trigger_validate_own_device,
+> +static int sunrise_read_raw(struct iio_dev *iio_dev,
+> +                           const struct iio_chan_spec *chan,
+> +                           int *val, int *val2, long mask)
+> +{
+> +       struct sunrise_dev *sunrise = iio_priv(iio_dev);
+> +       u16 value;
+> +       int ret;
+> +
+> +       switch (mask) {
+> +       case IIO_CHAN_INFO_RAW:
+> +               switch (chan->type) {
+> +               case IIO_CONCENTRATION:
+> +                       mutex_lock(&sunrise->lock);
+> +                       ret = sunrise_read_word(sunrise, SUNRISE_CO2_FILTERED_COMP_REG,
+> +                                               &value);
+> +                       *val = value;
+> +                       mutex_unlock(&sunrise->lock);
+> +
+> +                       if (ret)
+> +                               return ret;
+> +
+> +                       return IIO_VAL_INT;
+> +
+> +               case IIO_TEMP:
+> +                       mutex_lock(&sunrise->lock);
+> +                       ret = sunrise_read_word(sunrise, SUNRISE_CHIP_TEMPERATURE_REG,
+> +                                               &value);
+> +                       *val = value;
+> +                       mutex_unlock(&sunrise->lock);
+> +
+> +                       if (ret)
+> +                               return ret;
+> +
+> +                       return IIO_VAL_INT;
+> +
+> +               default:
+> +                       return -EINVAL;
+> +               }
+> +
+> +       case IIO_CHAN_INFO_SCALE:
+> +               /* x10 to comply with IIO scale (1/1000 degress celsius). */
+> +               *val = 10;
+> +               return IIO_VAL_INT;
+> +
+> +       default:
+> +               return -EINVAL;
+> +       }
+> +}
+> +
+> +static const struct iio_info sunrise_info = {
+> +       .read_raw = sunrise_read_raw,
 > +};
 > +
-> +static irqreturn_t adxl355_trigger_handler(int irq, void *p)
+> +static struct regmap_config sunrise_regmap_config = {
+> +       .reg_bits = 8,
+> +       .val_bits = 8,
+> +       /*
+> +        * Access to the i2c bus is locked by the driver to preserve the
+> +        * 'wakeup' session.
+> +        */
+> +       .disable_locking = true,
+> +};
+> +
+> +static int sunrise_probe(struct i2c_client *client)
 > +{
-> +	struct iio_poll_func *pf = p;
-> +	struct iio_dev *indio_dev = pf->indio_dev;
-> +	struct adxl355_data *data = iio_priv(indio_dev);
-> +	int ret;
+> +       struct sunrise_dev *sunrise;
+> +       struct iio_dev *iio_dev;
 > +
-> +	mutex_lock(&data->lock);
+> +       iio_dev = devm_iio_device_alloc(&client->dev, sizeof(*sunrise));
+> +       if (!iio_dev)
+> +               return -ENOMEM;
 > +
-> +	/*
-> +	 * data->buffer is used both for triggered buffer support
-> +	 * and read/write_raw(), hence, it has to be zeroed here before usage.
-> +	 */
-> +	data->buffer.buf[0] = 0;
+> +       sunrise = iio_priv(iio_dev);
+> +       sunrise->client = client;
+> +       mutex_init(&sunrise->lock);
+> +       mutex_init(&sunrise->wakeup_lock);
 > +
-> +	/*
-> +	 * The acceleration data is 24 bits and big endian. It has to be saved
-> +	 * in 32 bits, hence, it is saved in the 2nd byte of the 4 byte buffer.
-> +	 * The buf array is 14 bytes as it includes 3x4=12 bytes for
-> +	 * accelaration data of x, y, and z axis. It also includes 2 bytes for
-> +	 * temperature data.
-> +	 */
-> +	ret = regmap_bulk_read(data->regmap, ADXL355_XDATA3_REG,
-> +			       &data->buffer.buf[1], 3);
-> +	if (ret)
-> +		goto out_unlock_notify;
+> +       sunrise->regmap = devm_regmap_init_i2c(client, &sunrise_regmap_config);
+> +       if (IS_ERR(sunrise->regmap)) {
+> +               dev_err(&client->dev, "Failed to initialize regmap\n");
+> +               return PTR_ERR(sunrise->regmap);
+> +       }
 > +
-> +	ret = regmap_bulk_read(data->regmap, ADXL355_YDATA3_REG,
-> +			       &data->buffer.buf[5], 3);
-> +	if (ret)
-> +		goto out_unlock_notify;
+> +       iio_dev->info = &sunrise_info;
+> +       iio_dev->name = DRIVER_NAME;
+> +       iio_dev->channels = sunrise_channels;
+> +       iio_dev->num_channels = ARRAY_SIZE(sunrise_channels);
+> +       iio_dev->modes = INDIO_DIRECT_MODE;
 > +
-> +	ret = regmap_bulk_read(data->regmap, ADXL355_ZDATA3_REG,
-> +			       &data->buffer.buf[9], 3);
-> +	if (ret)
-> +		goto out_unlock_notify;
-> +
-> +	ret = regmap_bulk_read(data->regmap, ADXL355_TEMP2_REG,
-> +			       &data->buffer.buf[12], 2);
-> +	if (ret)
-> +		goto out_unlock_notify;
-> +
-> +	iio_push_to_buffers_with_timestamp(indio_dev, &data->buffer,
-> +					   pf->timestamp);
-> +
-> +out_unlock_notify:
-> +	mutex_unlock(&data->lock);
-> +	iio_trigger_notify_done(indio_dev->trig);
-> +
-> +	return IRQ_HANDLED;
+> +       return devm_iio_device_register(&client->dev, iio_dev);
 > +}
 > +
->  #define ADXL355_ACCEL_CHANNEL(index, reg, axis) {			\
->  	.type = IIO_ACCEL,						\
->  	.address = reg,							\
-> @@ -518,6 +616,7 @@ static const struct iio_info adxl355_info = {
->  	.info_mask_shared_by_type_available =				\
->  		BIT(IIO_CHAN_INFO_SAMP_FREQ) |				\
->  		BIT(IIO_CHAN_INFO_HIGH_PASS_FILTER_3DB_FREQUENCY),	\
-> +	.scan_index = index,						\
->  	.scan_type = {							\
->  		.sign = 's',						\
->  		.realbits = 20,						\
-> @@ -537,6 +636,7 @@ static const struct iio_chan_spec adxl355_channels[] = {
->  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
->  				      BIT(IIO_CHAN_INFO_SCALE) |
->  				      BIT(IIO_CHAN_INFO_OFFSET),
-> +		.scan_index = 3,
->  		.scan_type = {
->  			.sign = 's',
->  			.realbits = 12,
-> @@ -544,14 +644,48 @@ static const struct iio_chan_spec adxl355_channels[] = {
->  			.endianness = IIO_BE,
->  		},
->  	},
-> +	IIO_CHAN_SOFT_TIMESTAMP(4),
->  };
->  
-> +static int adxl355_probe_trigger(struct iio_dev *indio_dev, int irq)
-> +{
-> +	struct adxl355_data *data = iio_priv(indio_dev);
-> +	int ret;
+> +static const struct of_device_id sunrise_of_match[] = {
+> +       { .compatible = "senseair,sunrise-006-0-0007" },
+> +       {}
+> +};
+> +MODULE_DEVICE_TABLE(of, sunrise_of_match);
 > +
-> +	data->dready_trig = devm_iio_trigger_alloc(data->dev, "%s-dev%d",
-> +						   indio_dev->name,
-> +						   indio_dev->id);
-> +	if (!data->dready_trig)
-> +		return -ENOMEM;
+> +static struct i2c_driver sunrise_driver = {
+> +       .driver = {
+> +               .name = DRIVER_NAME,
+> +               .of_match_table = sunrise_of_match,
+> +       },
+> +       .probe_new = sunrise_probe,
+> +};
+> +module_i2c_driver(sunrise_driver);
 > +
-> +	data->dready_trig->ops = &adxl355_trigger_ops;
-> +	iio_trigger_set_drvdata(data->dready_trig, indio_dev);
-> +
-> +	ret = devm_request_irq(data->dev, irq,
-> +			       &iio_trigger_generic_data_rdy_poll,
-> +			       IRQF_ONESHOT, "adxl355_irq", data->dready_trig);
-> +	if (ret)
-> +		return dev_err_probe(data->dev, ret, "request irq %d failed\n",
-> +				     irq);
-> +
-> +	ret = devm_iio_trigger_register(data->dev, data->dready_trig);
-> +	if (ret) {
-> +		dev_err(data->dev, "iio trigger register failed\n");
-> +		return ret;
-> +	}
-> +
-> +	indio_dev->trig = iio_trigger_get(data->dready_trig);
-> +
-> +	return 0;
-> +}
-> +
->  int adxl355_core_probe(struct device *dev, struct regmap *regmap,
->  		       const char *name)
->  {
->  	struct adxl355_data *data;
->  	struct iio_dev *indio_dev;
->  	int ret;
-> +	int irq;
->  
->  	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
->  	if (!indio_dev)
-> @@ -568,6 +702,7 @@ int adxl355_core_probe(struct device *dev, struct regmap *regmap,
->  	indio_dev->modes = INDIO_DIRECT_MODE;
->  	indio_dev->channels = adxl355_channels;
->  	indio_dev->num_channels = ARRAY_SIZE(adxl355_channels);
-> +	indio_dev->available_scan_masks = adxl355_avail_scan_masks;
->  
->  	ret = adxl355_setup(data);
->  	if (ret) {
-> @@ -575,6 +710,22 @@ int adxl355_core_probe(struct device *dev, struct regmap *regmap,
->  		return ret;
->  	}
->  
-> +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
-> +					      &iio_pollfunc_store_time,
-> +					      &adxl355_trigger_handler, NULL);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret,
-> +				     "iio triggered buffer setup failed\n");
-
-What could cause this particular function to return that it needs to defer the
-probe?  IIRC it's not dependent on any other drivers being loaded (interrupt controllers
-or regulators or similar.)
-Probably just 
-	if (ret) {
-		dev_err();
-		return ret;
-	}
-in this case
-
-
-> +
-> +	/*
-> +	 * TODO: Would be good to move it to the generic version.
-> +	 */
-> +	irq = of_irq_get_byname(dev->of_node, "DRDY");
-
-Trivial but...
-
-> +	if (irq > 0)
-	if (irq> 0) {
-> +		ret = adxl355_probe_trigger(indio_dev, irq);
-> +	if (ret)
-		if (ret)
-			return ret;
-	}
-
-No point in checking a ret that hasn't changed value since we last checked it.
-
-> +		return ret;
-> +
->  	return devm_iio_device_register(dev, indio_dev);
->  }
->  EXPORT_SYMBOL_GPL(adxl355_core_probe);
-
+> +MODULE_AUTHOR("Jacopo Mondi <jacopo@jmondi.org>");
+> +MODULE_DESCRIPTION("Senseair Sunrise 006-0-0007 CO2 sensor IIO driver");
+> +MODULE_LICENSE("GPL v2");
+> --
+> 2.32.0
+>

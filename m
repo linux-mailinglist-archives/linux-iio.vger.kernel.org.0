@@ -2,137 +2,424 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AB2D2400ED8
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Sep 2021 11:39:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56EB7400EDB
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Sep 2021 11:42:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236880AbhIEJk5 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sun, 5 Sep 2021 05:40:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33180 "EHLO mail.kernel.org"
+        id S237184AbhIEJnc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 5 Sep 2021 05:43:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34226 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229691AbhIEJk4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 5 Sep 2021 05:40:56 -0400
+        id S229691AbhIEJnc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 5 Sep 2021 05:43:32 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DFABD60EE6;
-        Sun,  5 Sep 2021 09:39:51 +0000 (UTC)
-Date:   Sun, 5 Sep 2021 10:43:13 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 65C5060E97;
+        Sun,  5 Sep 2021 09:42:26 +0000 (UTC)
+Date:   Sun, 5 Sep 2021 10:45:48 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        linux-iio@vger.kernel.org, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 15/16] iio: adc: max1027: Support software triggers
-Message-ID: <20210905104313.66a6a59a@jic23-huawei>
-In-Reply-To: <20210902172100.3200b3b6@xps13>
-References: <20210818111139.330636-1-miquel.raynal@bootlin.com>
-        <20210818111139.330636-16-miquel.raynal@bootlin.com>
-        <20210830115046.3727ccc4@jic23-huawei>
-        <20210902172100.3200b3b6@xps13>
+To:     Puranjay Mohan <puranjay12@gmail.com>
+Cc:     "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
+        "Berghe, Darius" <Darius.Berghe@analog.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH v2] iio: accel: adxl355: Add triggered buffer support
+Message-ID: <20210905104548.3c6701ad@jic23-huawei>
+In-Reply-To: <CANk7y0jVofBv0U6Ut9cX2=imafpMvXdYS2CjvZXcOJkAukH_VA@mail.gmail.com>
+References: <20210819181133.15181-1-puranjay12@gmail.com>
+        <20210830161357.782def25@jic23-huawei>
+        <CANk7y0jVofBv0U6Ut9cX2=imafpMvXdYS2CjvZXcOJkAukH_VA@mail.gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 2 Sep 2021 17:21:00 +0200
-Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+On Tue, 31 Aug 2021 22:39:19 +0530
+Puranjay Mohan <puranjay12@gmail.com> wrote:
 
-> Hi Jonathan,
+> On Mon, Aug 30, 2021 at 8:40 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > On Thu, 19 Aug 2021 23:41:33 +0530
+> > Puranjay Mohan <puranjay12@gmail.com> wrote:
+> >  
+> > > Provide a way for continuous data capture by setting up buffer support. The
+> > > data ready signal exposed at the DRDY pin of the ADXL355 is exploited as
+> > > a hardware interrupt which triggers to fill the buffer.
+> > >
+> > > Signed-off-by: Puranjay Mohan <puranjay12@gmail.com>  
+> >
+> > Hi Puranjay,
+> >
+> > A fresh read and I noticed a few additional things.
+> > All simple stuff.
+> >
+> > I do have a slight concern that we might be setting ourselves up for problems
+> > once the fifo is enabled.  Hopefully not, but if you have looked at that and
+> > verified it will drop in nicely then that's great. We might be fine.  
 > 
-> Jonathan Cameron <jic23@kernel.org> wrote on Mon, 30 Aug 2021 11:50:46
-> +0100:
+> Yes, I will work on FIFO and make sure I fix all issues if any arise.
 > 
-> > On Wed, 18 Aug 2021 13:11:38 +0200
-> > Miquel Raynal <miquel.raynal@bootlin.com> wrote:
-> >   
-> > > Now that max1027_trigger_handler() has been freed from handling hardware
-> > > triggers EOC situations, we can use it for what it has been designed in
-> > > the first place: trigger software originated conversions.    
-> > 
-> > As mentioned earlier, this is not how I'd normally expect this sort of
-> > case to be handled. I'd be expecting the cnvst trigger to still be calling
-> > this function and the function to do the relevant check to ensure it
-> > knows the data is already available in that case.  
-> 
-> I tried to follow your advice and Nuno's regarding this, I hope the new
-> version will match your expectations (new version coming soon).
-> However if my changes do not match, I will probably need more guidance
-> to understand in deep what you suggest.
-> 
-> > > In other
-> > > words, when userspace initiates a conversion with a sysfs trigger or a
-> > > hrtimer trigger, we must do all configuration steps, ie:
-> > > 1- Configuring the trigger
-> > > 2- Configuring the channels to scan
-> > > 3- Starting the conversion (actually done automatically by step 2 in
-> > >    this case)
-> > > 4- Waiting for the conversion to end
-> > > 5- Retrieving the data from the ADC
-> > > 6- Push the data to the IIO core and notify it
-> > > 
-> > > Add the missing steps to this helper and drop the trigger verification
-> > > hook otherwise software triggers would simply not be accepted at all.
-> > > 
-> > > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> >
+> > Jonathan
+> >
+> >  
 > > > ---
-> > >  drivers/iio/adc/max1027.c | 26 ++++++++++++++------------
-> > >  1 file changed, 14 insertions(+), 12 deletions(-)
-> > > 
-> > > diff --git a/drivers/iio/adc/max1027.c b/drivers/iio/adc/max1027.c
-> > > index 8c5995ae59f2..bb437e43adaf 100644
-> > > --- a/drivers/iio/adc/max1027.c
-> > > +++ b/drivers/iio/adc/max1027.c
-> > > @@ -413,17 +413,6 @@ static int max1027_debugfs_reg_access(struct iio_dev *indio_dev,
-> > >  	return spi_write(st->spi, val, 1);
+> > > Changes since v1:
+> > > - Fix an indentation issue.
+> > > - Add comments on layout of data in buffer.
+> > > - Zero the buffer before using it in trigger handler.
+> > > - Use if(ret) in place of if(ret < 0)
+> > > ---
+> > > drivers/iio/accel/Kconfig        |   4 +
+> > >  drivers/iio/accel/adxl355_core.c | 162 ++++++++++++++++++++++++++++++-
+> > >  2 files changed, 164 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
+> > > index d0c45c809..9c16c1841 100644
+> > > --- a/drivers/iio/accel/Kconfig
+> > > +++ b/drivers/iio/accel/Kconfig
+> > > @@ -69,6 +69,8 @@ config ADXL355_I2C
+> > >       depends on I2C
+> > >       select ADXL355
+> > >       select REGMAP_I2C
+> > > +     select IIO_BUFFER
+> > > +     select IIO_TRIGGERED_BUFFER
+> > >       help
+> > >         Say Y here if you want to build i2c support for the Analog Devices
+> > >         ADXL355 3-axis digital accelerometer.
+> > > @@ -82,6 +84,8 @@ config ADXL355_SPI
+> > >       depends on SPI
+> > >       select ADXL355
+> > >       select REGMAP_SPI
+> > > +     select IIO_BUFFER
+> > > +     select IIO_TRIGGERED_BUFFER
+> > >       help
+> > >         Say Y here if you want to build spi support for the Analog Devices
+> > >         ADXL355 3-axis digital accelerometer.
+> > > diff --git a/drivers/iio/accel/adxl355_core.c b/drivers/iio/accel/adxl355_core.c
+> > > index c91d2254c..d499403dc 100644
+> > > --- a/drivers/iio/accel/adxl355_core.c
+> > > +++ b/drivers/iio/accel/adxl355_core.c
+> > > @@ -9,11 +9,16 @@
+> > >
+> > >  #include <linux/bits.h>
+> > >  #include <linux/bitfield.h>
+> > > +#include <linux/iio/buffer.h>
+> > >  #include <linux/iio/iio.h>
+> > > +#include <linux/iio/trigger.h>
+> > > +#include <linux/iio/triggered_buffer.h>
+> > > +#include <linux/iio/trigger_consumer.h>
+> > >  #include <linux/limits.h>
+> > >  #include <linux/math64.h>
+> > >  #include <linux/module.h>
+> > >  #include <linux/mod_devicetable.h>
+> > > +#include <linux/of_irq.h>
+> > >  #include <linux/regmap.h>
+> > >  #include <asm/unaligned.h>
+> > >
+> > > @@ -46,6 +51,7 @@
+> > >  #define ADXL355_RANGE_REG            0x2C
+> > >  #define ADXL355_POWER_CTL_REG                0x2D
+> > >  #define  ADXL355_POWER_CTL_MODE_MSK  GENMASK(1, 0)
+> > > +#define  ADXL355_POWER_CTL_DRDY_MSK  BIT(2)
+> > >  #define ADXL355_SELF_TEST_REG                0x2E
+> > >  #define ADXL355_RESET_REG            0x2F
+> > >
+> > > @@ -165,7 +171,15 @@ struct adxl355_data {
+> > >       enum adxl355_hpf_3db hpf_3db;
+> > >       int calibbias[3];
+> > >       int adxl355_hpf_3db_table[7][2];
+> > > -     u8 transf_buf[3] ____cacheline_aligned;
+> > > +     struct iio_trigger *dready_trig;
+> > > +     int irq;
+> > > +     union {
+> > > +             u8 transf_buf[3];
+> > > +             struct {
+> > > +                     u8 buf[14];
+> > > +                     s64 ts;
+> > > +             } buffer;
+> > > +     } ____cacheline_aligned;
+> > >  };
+> > >
+> > >  static int adxl355_set_op_mode(struct adxl355_data *data,
+> > > @@ -186,6 +200,23 @@ static int adxl355_set_op_mode(struct adxl355_data *data,
+> > >       return ret;
 > > >  }
-> > >  
-> > > -static int max1027_validate_trigger(struct iio_dev *indio_dev,
-> > > -				    struct iio_trigger *trig)
-> > > -{
-> > > -	struct max1027_state *st = iio_priv(indio_dev);
-> > > -
-> > > -	if (st->trig != trig)
-> > > -		return -EINVAL;
-> > > -
-> > > -	return 0;
-> > > -}
-> > > -
-> > >  static int max1027_set_cnvst_trigger_state(struct iio_trigger *trig, bool state)
-> > >  {
-> > >  	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
-> > > @@ -512,7 +501,21 @@ static irqreturn_t max1027_trigger_handler(int irq, void *private)
-> > >  
-> > >  	pr_debug("%s(irq=%d, private=0x%p)\n", __func__, irq, private);
-> > >  
-> > > +	ret = max1027_configure_trigger(indio_dev);    
-> > 
-> > I'd not expect to see this ever time.  The configuration shouldn't change
-> > from one call of this function to the next.  
-> 
-> True, this is not needed.
-> 
-> > > +	if (ret)
-> > > +		goto out;
+> > >
+> > > +static int adxl355_data_rdy_trigger_set_state(struct iio_trigger *trig,
+> > > +                                           bool state)
+> > > +{
+> > > +     struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
+> > > +     struct adxl355_data *data = iio_priv(indio_dev);
+> > > +     int ret;
 > > > +
-> > > +	ret = max1027_configure_chans_to_scan(indio_dev);    
-> > 
-> > This should also not change unless it is also responsible for the 'go' signal.
-> > If that's true then it is badly named.  
+> > > +     mutex_lock(&data->lock);  
+> >
+> > Why take the lock?  What are you protecting here?  
 > 
-> It's responsible for the go signal, I renamed it "configure_and_start".
+> Power Control Register is the same register that is used to put the
+> device in measurement mode, so it has to be protected.
 > 
-> However, just for my own understanding, when would I be supposed to
-> configure the channels requested by the user otherwise?
 
-For buffered operation update_scan_mask callback.
-There is a quirk where that's not called on the buffer disable path because
-it's not always obvious what to 'reset to'.
+Regmap has an internal lock that will protect the register / cache etc
+against concurrent changes - so we'd normally only expect to see
+locking needed if one of the paths does an explicit read / modify /write
+perhaps because it needs to base the write on what was read.
 
-J
+> >  
+> > > +     ret = regmap_update_bits(data->regmap, ADXL355_POWER_CTL_REG,
+> > > +                              ADXL355_POWER_CTL_DRDY_MSK,
+> > > +                              FIELD_PREP(ADXL355_POWER_CTL_DRDY_MSK,
+> > > +                                         !state));
+> > > +     mutex_unlock(&data->lock);
+> > > +
+> > > +     return ret;
+> > > +}
+> > > +
+> > >  static void adxl355_fill_3db_frequency_table(struct adxl355_data *data)
+> > >  {
+> > >       u32 multiplier;
+> > > @@ -246,6 +277,12 @@ static int adxl355_setup(struct adxl355_data *data)
+> > >       if (ret)
+> > >               return ret;
+> > >
+> > > +     ret = regmap_update_bits(data->regmap, ADXL355_POWER_CTL_REG,
+> > > +                              ADXL355_POWER_CTL_DRDY_MSK,
+> > > +                              FIELD_PREP(ADXL355_POWER_CTL_DRDY_MSK, 1));
+> > > +     if (ret)
+> > > +             return ret;
+> > > +
+> > >       adxl355_fill_3db_frequency_table(data);
+> > >
+> > >       return adxl355_set_op_mode(data, ADXL355_MEASUREMENT);
+> > > @@ -499,12 +536,74 @@ static int adxl355_read_avail(struct iio_dev *indio_dev,
+> > >       }
+> > >  }
+> > >
+> > > +static const unsigned long adxl355_avail_scan_masks[] = {
+> > > +     GENMASK(3, 0),
+> > > +     0
+> > > +};
+> > > +
+> > >  static const struct iio_info adxl355_info = {
+> > >       .read_raw       = adxl355_read_raw,
+> > >       .write_raw      = adxl355_write_raw,
+> > >       .read_avail     = &adxl355_read_avail,
+> > >  };
+> > >
+> > > +static const struct iio_trigger_ops adxl355_trigger_ops = {
+> > > +     .set_trigger_state = &adxl355_data_rdy_trigger_set_state,
+> > > +     .validate_device = &iio_trigger_validate_own_device,  
+> >
+> > This is fine for now, but I'd like you to think about whether you can ultimately
+> > drop this validation and allow other devices to be triggered from this signal.
+> > It can be very helpful when doing sensor fusion to grab data at (approximately)
+> > the same time from a set of different sensors.  
 > 
-> Thanks,
-> Miquèl
+> I will remove this line in the next patch, I will read about this more.
+It's a little bit fiddly to do, so I meant this more as a long term target
+rather than something to do in this particular patch!
+
+> 
+> >
+> > IIRC this device has a fifo though which can complicate that option.
+> >  
+> > > +};
+> > > +
+> > > +static irqreturn_t adxl355_trigger_handler(int irq, void *p)
+> > > +{
+> > > +     struct iio_poll_func *pf = p;
+> > > +     struct iio_dev *indio_dev = pf->indio_dev;
+> > > +     struct adxl355_data *data = iio_priv(indio_dev);
+> > > +     int ret;
+> > > +
+> > > +     mutex_lock(&data->lock);
+> > > +
+> > > +     /*
+> > > +      * data->buffer is used both for triggered buffer support
+> > > +      * and read/write_raw(), hence, it has to be zeroed here before usage.
+> > > +      */
+> > > +     data->buffer.buf[0] = 0;
+> > > +
+> > > +     /*
+> > > +      * The accelaration data is 24 bits and big endian. It has to be saved  
+> >
+> > Spell check.  acceleration  
+> 
+> Will change in next version.
+> 
+> >  
+> > > +      * in 32 bits, hence, it is saved in the 2nd byte of the 4 byte buffer.
+> > > +      * The buf array is 14 bytes as it includes 3x4=12 bytes for
+> > > +      * accelaration data of x, y, and z axis. It also includes 2 bytes for
+> > > +      * temperature data.
+> > > +      */
+> > > +     ret = regmap_bulk_read(data->regmap, ADXL355_XDATA3_REG,
+> > > +                            &data->buffer.buf[1], 3);
+> > > +     if (ret)
+> > > +             goto out_unlock_notify;
+> > > +
+> > > +     ret = regmap_bulk_read(data->regmap, ADXL355_YDATA3_REG,
+> > > +                            &data->buffer.buf[5], 3);
+> > > +     if (ret)
+> > > +             goto out_unlock_notify;
+> > > +
+> > > +     ret = regmap_bulk_read(data->regmap, ADXL355_ZDATA3_REG,
+> > > +                            &data->buffer.buf[9], 3);
+> > > +     if (ret)
+> > > +             goto out_unlock_notify;
+> > > +
+> > > +     ret = regmap_bulk_read(data->regmap, ADXL355_TEMP2_REG,
+> > > +                            &data->buffer.buf[12], 2);
+> > > +     if (ret)
+> > > +             goto out_unlock_notify;
+> > > +
+> > > +     iio_push_to_buffers_with_timestamp(indio_dev, &data->buffer,
+> > > +                                        pf->timestamp);
+> > > +
+> > > +out_unlock_notify:
+> > > +     mutex_unlock(&data->lock);
+> > > +     iio_trigger_notify_done(indio_dev->trig);
+> > > +
+> > > +     return IRQ_HANDLED;
+> > > +}
+> > > +
+> > >  #define ADXL355_ACCEL_CHANNEL(index, reg, axis) {                    \
+> > >       .type = IIO_ACCEL,                                              \
+> > >       .address = reg,                                                 \
+> > > @@ -518,6 +617,7 @@ static const struct iio_info adxl355_info = {
+> > >       .info_mask_shared_by_type_available =                           \
+> > >               BIT(IIO_CHAN_INFO_SAMP_FREQ) |                          \
+> > >               BIT(IIO_CHAN_INFO_HIGH_PASS_FILTER_3DB_FREQUENCY),      \
+> > > +     .scan_index = index,                                            \
+> > >       .scan_type = {                                                  \
+> > >               .sign = 's',                                            \
+> > >               .realbits = 20,                                         \
+> > > @@ -537,6 +637,7 @@ static const struct iio_chan_spec adxl355_channels[] = {
+> > >               .info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> > >                                     BIT(IIO_CHAN_INFO_SCALE) |
+> > >                                     BIT(IIO_CHAN_INFO_OFFSET),
+> > > +             .scan_index = 3,
+> > >               .scan_type = {
+> > >                       .sign = 's',
+> > >                       .realbits = 12,
+> > > @@ -544,8 +645,46 @@ static const struct iio_chan_spec adxl355_channels[] = {
+> > >                       .endianness = IIO_BE,
+> > >               },
+> > >       },
+> > > +     IIO_CHAN_SOFT_TIMESTAMP(4),
+> > >  };
+> > >
+> > > +static int adxl355_probe_trigger(struct iio_dev *indio_dev)
+> > > +{
+> > > +     struct adxl355_data *data = iio_priv(indio_dev);
+> > > +     int ret;
+> > > +
+> > > +     if (!data->irq) {
+> > > +             dev_info(data->dev, "no irq, using polling\n");  
+> >
+> > I would move this check externally so that we never probe if it's
+> > not wired up.  It's also easy to tell (no trigger available) so
+> > the dev_info is probably unnecessary noise in the log.  
+> 
+> I will remove this in next version.
+> 
+> >
+> >  
+> > > +             return 0;
+> > > +     }
+> > > +
+> > > +     data->dready_trig = devm_iio_trigger_alloc(data->dev, "%s-dev%d",
+> > > +                                                indio_dev->name,
+> > > +                                                indio_dev->id);
+> > > +     if (!data->dready_trig)
+> > > +             return -ENOMEM;
+> > > +
+> > > +     data->dready_trig->ops = &adxl355_trigger_ops;
+> > > +     iio_trigger_set_drvdata(data->dready_trig, indio_dev);
+> > > +
+> > > +     ret = devm_request_irq(data->dev, data->irq,
+> > > +                            &iio_trigger_generic_data_rdy_poll,
+> > > +                            IRQF_ONESHOT, "adxl355_irq", data->dready_trig);
+> > > +     if (ret)
+> > > +             return dev_err_probe(data->dev, ret, "request irq %d failed\n",
+> > > +                                  data->irq);
+> > > +
+> > > +     ret = devm_iio_trigger_register(data->dev, data->dready_trig);
+> > > +     if (ret) {
+> > > +             dev_err(data->dev, "iio trigger register failed\n");
+> > > +             return ret;
+> > > +     }
+> > > +
+> > > +     indio_dev->trig = iio_trigger_get(data->dready_trig);
+> > > +
+> > > +     return 0;
+> > > +}
+> > > +
+> > >  int adxl355_core_probe(struct device *dev, struct regmap *regmap,
+> > >                      const char *name)
+> > >  {
+> > > @@ -563,18 +702,37 @@ int adxl355_core_probe(struct device *dev, struct regmap *regmap,
+> > >       data->op_mode = ADXL355_STANDBY;
+> > >       mutex_init(&data->lock);
+> > >
+> > > +     /*
+> > > +      * TODO: Would be good to move it to the generic version.
+> > > +      */
+> > > +     ret = of_irq_get_byname(dev->of_node, "DRDY");
+> > > +     if (ret > 0)
+> > > +             data->irq = ret;  
+> >
+> > If you do this get down near the probe_trigger() call then you should be able to
+> > avoid keeping a copy of irq in data.  Just pass it into that function as
+> > a parameter.  
+> 
+> ok, I will change it in next version.
+> 
+> >  
+> > > +
+> > >       indio_dev->name = name;
+> > >       indio_dev->info = &adxl355_info;
+> > >       indio_dev->modes = INDIO_DIRECT_MODE;
+> > >       indio_dev->channels = adxl355_channels;
+> > >       indio_dev->num_channels = ARRAY_SIZE(adxl355_channels);
+> > > +     indio_dev->available_scan_masks = adxl355_avail_scan_masks;
+> > >
+> > >       ret = adxl355_setup(data);
+> > > -     if (ret < 0) {
+> > > +     if (ret) {  
+> >
+> > This looks to be an unrelated cleanup.  Please move to a precursor patch as
+> > it adds noise in this one which is fiddly enough without it ;)  
+> 
+> ok, I will make a separate patch for this and send a series.
+> 
+> >  
+> > >               dev_err(dev, "ADXL355 setup failed\n");
+> > >               return ret;
+> > >       }
+> > >
+> > > +     ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
+> > > +                                           &iio_pollfunc_store_time,
+> > > +                                           &adxl355_trigger_handler, NULL);
+> > > +     if (ret)
+> > > +             return dev_err_probe(dev, ret,
+> > > +                                  "iio triggered buffer setup failed\n");
+> > > +
+> > > +     ret = adxl355_probe_trigger(indio_dev);
+> > > +     if (ret)
+> > > +             return ret;
+> > > +
+> > >       return devm_iio_device_register(dev, indio_dev);
+> > >  }
+> > >  EXPORT_SYMBOL_GPL(adxl355_core_probe);  
+> >  
+> 
+> 
 

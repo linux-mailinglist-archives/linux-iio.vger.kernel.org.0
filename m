@@ -2,418 +2,622 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7130C401950
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Sep 2021 11:54:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40D97401B74
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Sep 2021 14:54:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241464AbhIFJyg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Sep 2021 05:54:36 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:40628 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S241394AbhIFJyf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Sep 2021 05:54:35 -0400
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.0.43) with SMTP id 186151jw010850;
-        Mon, 6 Sep 2021 05:53:17 -0400
-Received: from nam04-mw2-obe.outbound.protection.outlook.com (mail-mw2nam08lp2171.outbound.protection.outlook.com [104.47.73.171])
-        by mx0a-00128a01.pphosted.com with ESMTP id 3aw90ta98r-1
+        id S231287AbhIFMzt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Sep 2021 08:55:49 -0400
+Received: from mx0a-00328301.pphosted.com ([148.163.145.46]:53750 "EHLO
+        mx0a-00328301.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S241892AbhIFMzs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Sep 2021 08:55:48 -0400
+X-Greylist: delayed 1239 seconds by postgrey-1.27 at vger.kernel.org; Mon, 06 Sep 2021 08:55:48 EDT
+Received: from pps.filterd (m0156134.ppops.net [127.0.0.1])
+        by mx0a-00328301.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 186Bma6R024997;
+        Mon, 6 Sep 2021 05:33:52 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=invensense.com; h=from : to : cc :
+ subject : date : message-id : content-transfer-encoding : content-type :
+ mime-version; s=pfpt1; bh=/CmgR9oAKtZXY477xQEswxlmGcij3vU92tzpfkTPa+0=;
+ b=YQPSCHEKGGOK5n8gLz1LE4bjVTRPEmwNOIeElIDnVfx3gGnzLm7b+hr1pbTkXRv0RNaQ
+ tNep5ScL2DxLMPP4IuXOJG+lKoda+UGkiURRXk2eFiSGwzlzVA4kGXXf12pzwoa2MWTb
+ TXaeoplJ9RuQ2DxYHbSBgpLPfFCVCHkXhqzdpFEFo787O2fAqXCja97+NqsXrcFr9soi
+ W1CEaoRNm8s6Q06NZrBXkgODx4wvp+jgkPpGrA00snPea4BWiXV5kk2A2bWxLXFtrSaV
+ JSTFCsQZBSXuCBrqkR6jcvqvuGjz7pD5cHcl4XWSq37BHVRpoQOZ/GSIiqmdqO0YnR/j kg== 
+Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2107.outbound.protection.outlook.com [104.47.55.107])
+        by mx0a-00328301.pphosted.com with ESMTP id 3aw0ay8bxf-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 06 Sep 2021 05:53:17 -0400
+        Mon, 06 Sep 2021 05:33:51 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=WZxuFlgjen9PVTTPbWoYGdhfkSpIwy3pGmY/yS0RsGsQu1h6iXFOjBf/yI/+uWXG/UhdtxChzga1GNCvxNazqvVQy8LbT82jBhwUzrV+rvj9447g8Ej1HXNr27qSF1VF8cMBM+hvYK/ePR9rXX/Vn1fHug4fXWO4zsIDD+Y9jlbOIDZalwX+G3170rcbqj3fQFpDDHk3vsne39/0x8843pHFEGqSgm+XJoUTM8uejX8eWNqoIfjFDLbLYZF7r4aAJVDKTyLKPctTwDFoovdiwLiFvFP0h2FtOrFN4sr3hZYRhAqsGlSw+G1ZGj1/USp5vEhv063coQaOOOPTlYgndg==
+ b=jVujfzRgBXtLMb45HJamDFgERmKvsnp8C2b72oNO1qLsLnVdI2pFHA/9kp2UEsp+gmcfDmGwPVgeREheD207q3p8fx2n8rXJWM1Y0ApsjVJuFtUziBiZXZA+5eRk8fck88K1yw9g3fAGWiQ+z0AZZQjTYpg5ITMvYxerm7lEabtMfU4xSfXyuPzjICD2z51R0GGIjIl1ifyp33/3F28vvFZPCMOMnYLZSMhzrIAfbJgmWQYSZdTQHp0F81MkwVeWw+ZjYGtCBuSL5WY2XtX18cZE68ThMFDCJTKHgPFnoqpf5igGiWYeYMBhGqq7DzIs8+rjKiGaTYSDzT0sGggxWA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=6nEPLXd+mMR0mGQwgpFyqv4H1jUcv0tdxf/kjSnT15I=;
- b=b8nSxWP/RYWxYA4VqdawrhD3qz2RnqYzyoAElOa4p19UjDQyQxQZo6rDFHPNNCid6Tc2QcLFGh/9tZXT1EgX9U7u6GFPOyS4NMyexbytkldB2xBknWbznvp71XsW4fd2zFRJwXWUQC5MQ+CP2KXtaeXKcP10njU5nXKqC4XYpG06yu6ev4SNhKBKBiz+B2zojb4CCNYwAiQpJ8Eq8cg1e308Om8wEoRgB/BHlDNvE1kb9nQaOTCi/L2rdNpBsunZHM0BnCIdK0V/pthekLZRsH3oo8Ot+XOBQFaYTJqm2Rz+dNRhG41lO89kytcla5EaXScOe4XEEmV7y4BjSe44Ng==
+ bh=/CmgR9oAKtZXY477xQEswxlmGcij3vU92tzpfkTPa+0=;
+ b=dcdKDhuNx6ZutjwYc7aRVdVAl/ouIk04PCXbfXWUXEDsUk5tFMl61QckLSaqFPT6NqutNCLliTRBfgZ8fhiql18Z4Aq7t4gD0pf6mBYpz6vlp2Yk8/p2KO+L0iicL7HtmQi6r6Ef9qFs+cwyFbVSJRe87EBITmCWngpoEVRlvLcmVYL3Xtbz193vxSGuBB1MUS8qYx9/xWYBXFC4iDnq8DaZqTbpndfoNDlFortnrt64IQ6Xtmj6+fCTUbAOWcOaWLIlDvolEFno8SAlZjO9jSbvTtr5X0M+qiO4UJADe4F+NQ74K9n2+B3VTOqwQpnemwipo2ddPlFGwdYrxkLzQw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
+ smtp.mailfrom=invensense.com; dmarc=pass action=none
+ header.from=invensense.com; dkim=pass header.d=invensense.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ d=invensense.onmicrosoft.com; s=selector2-invensense-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6nEPLXd+mMR0mGQwgpFyqv4H1jUcv0tdxf/kjSnT15I=;
- b=0KEkwHe23nB/I5CnXRJI58NlW6qZKP7oZcQ+r4VdK9z+qBh0WreCKRjOrqip/ArMB5zsxj2aUf7QR92QcwY15Mu+2PUX0ffDypiLul5jsPd2QroSjHH/VSSdv5AvRsBPpdxV4LwD+XkTyYB2kJLGhXvrw/YHy5DWvzzyTFHRXe4=
-Received: from SA1PR03MB6355.namprd03.prod.outlook.com (2603:10b6:806:1b6::10)
- by SA2PR03MB5740.namprd03.prod.outlook.com (2603:10b6:806:11b::7) with
+ bh=/CmgR9oAKtZXY477xQEswxlmGcij3vU92tzpfkTPa+0=;
+ b=R+WRUoYny2ekMqraYy8BOfnzpTFNJbR02Gbwd/YOftuutdW8NSbgw8QphdsEdatyBMNvwsbOo0UCwiLZMU1zrcHXolbTann1xMv3Zup0A3T9FZ49JbHGo5yf6cB0qwKUFnuwTkFhWsn8afW7cquIT95rFHYdGYRxOG7EfwV3tEM=
+Authentication-Results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=invensense.com;
+Received: from BYAPR12MB2901.namprd12.prod.outlook.com (2603:10b6:a03:138::32)
+ by BYAPR12MB3046.namprd12.prod.outlook.com (2603:10b6:a03:aa::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4478.17; Mon, 6 Sep
- 2021 09:53:15 +0000
-Received: from SA1PR03MB6355.namprd03.prod.outlook.com
- ([fe80::f0f4:64cb:bc0b:95d9]) by SA1PR03MB6355.namprd03.prod.outlook.com
- ([fe80::f0f4:64cb:bc0b:95d9%9]) with mapi id 15.20.4415.024; Mon, 6 Sep 2021
- 09:53:15 +0000
-From:   "Sa, Nuno" <Nuno.Sa@analog.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-CC:     Lars-Peter Clausen <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: RE: [PATCH v2 15/16] iio: adc: max1027: Add support for external
- triggers
-Thread-Topic: [PATCH v2 15/16] iio: adc: max1027: Add support for external
- triggers
-Thread-Index: AQHXoD+VwudYE4ERnEq6/GLTGzMNpauVoKsAgAEnY2A=
-Date:   Mon, 6 Sep 2021 09:53:15 +0000
-Message-ID: <SA1PR03MB6355E88079A1B425FC236F3399D29@SA1PR03MB6355.namprd03.prod.outlook.com>
-References: <20210902211437.503623-1-miquel.raynal@bootlin.com>
-        <20210902211437.503623-16-miquel.raynal@bootlin.com>
- <20210905171046.1681482d@jic23-huawei>
-In-Reply-To: <20210905171046.1681482d@jic23-huawei>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: =?iso-8859-1?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcbnNhXGFwcG?=
- =?iso-8859-1?Q?RhdGFccm9hbWluZ1wwOWQ4NDliNi0zMmQzLTRhNDAtODVlZS02Yjg0YmEy?=
- =?iso-8859-1?Q?OWUzNWJcbXNnc1xtc2ctM2Y4YzY2NGItMGVmOC0xMWVjLThiOGQtZTRiOT?=
- =?iso-8859-1?Q?dhN2NjNzEwXGFtZS10ZXN0XDNmOGM2NjRjLTBlZjgtMTFlYy04YjhkLWU0?=
- =?iso-8859-1?Q?Yjk3YTdjYzcxMGJvZHkudHh0IiBzej0iODExMSIgdD0iMTMyNzUzOTU1OT?=
- =?iso-8859-1?Q?MzODg4Nzg3IiBoPSJZeHE5REV3TldGbmQ0R0UzSFV2SlRLWEtCRFk9IiBp?=
- =?iso-8859-1?Q?ZD0iIiBibD0iMCIgYm89IjEiIGNpPSJjQUFBQUVSSFUxUlNSVUZOQ2dVQU?=
- =?iso-8859-1?Q?FJWURBQUFUb2ZjQkJhUFhBZk9MZ0QwejlINDI4NHVBUFRQMGZqWUZBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBSEFBQUFBV0F3QUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBRUFBUUFCQUFBQVhtWmdqd0FBQUFBQUFBQUFBQUFBQUo0?=
- =?iso-8859-1?Q?QUFBQmhBR1FBYVFCZkFITUFaUUJqQUhVQWNnQmxBRjhBY0FCeUFHOEFhZ0?=
- =?iso-8859-1?Q?JsQUdNQWRBQnpBRjhBWmdCaEFHd0Fjd0JsQUY4QVpnQnZBSE1BYVFCMEFH?=
- =?iso-8859-1?Q?a0FkZ0JsQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFFQUFBQUFBQUFBQWdBQUFBQUFuZ0FBQUdFQV?=
- =?iso-8859-1?Q?pBQnBBRjhBY3dCbEFHTUFkUUJ5QUdVQVh3QndBSElBYndCcUFHVUFZd0Iw?=
- =?iso-8859-1?Q?QUhNQVh3QjBBR2tBWlFCeUFERUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBUUFBQUFBQUFBQUNBQUFBQUFDZUFBQUFZUUJrQUdrQVh3?=
- =?iso-8859-1?Q?QnpBR1VBWXdCMUFISUFaUUJmQUhBQWNnQnZBR29BWlFCakFIUUFjd0JmQU?=
- =?iso-8859-1?Q?hRQWFRQmxBSElBTWdBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQkFBQUFBQUFBQUFJQUFBQUFBSjRBQUFCaEFISUFhUUJoQUY4QVpBQn?=
- =?iso-8859-1?Q?BBR01BZEFCcEFHOEFiZ0JoQUhJQWVRQmZBSFFBYVFCbEFISUFNUUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUVBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBZ0FBQUFBQW5nQUFBR0VBY2dCcEFHRUFYd0JrQUdrQVl3QjBB?=
- =?iso-8859-1?Q?R2tBYndCdUFHRUFjZ0I1QUY4QWRBQnBBR1VBY2dBeUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFRQUFBQUFBQUFB?=
- =?iso-8859-1?Q?Q0FBQUFBQUE9Ii8+PC9tZXRhPg=3D=3D?=
-x-dg-rorf: true
-authentication-results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=analog.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 2271a9f2-18f5-4808-9c8e-08d9711c2588
-x-ms-traffictypediagnostic: SA2PR03MB5740:
-x-microsoft-antispam-prvs: <SA2PR03MB57400B08CEB7D7201B2423C399D29@SA2PR03MB5740.namprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:10000;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: H4QaEPXLgHl+W6cbfWoCUarAgrJVxrfzOdMi0BkhwG8cIZ+LvHjzxQnQwlgFMjecFIbpKc97npA1j0Bz0kZD4RGVqrcM/6rgNl1mUSptgKToYoDRgrtMjlJ3i7qt2oTs5UrRM3j1e64zAHMELcjlhKzywjq5ewWWtl+A9aLXlGcS3MguMH18ozus7x/FpUsyc+Pfzgt9u9WlWI+/YxlbInGD+yzPQKhkBuyTW0BChsIJYlGHZ4KljZMcgFiTHs3TSGnYroiJc82O84qdffkqtbLcyROhCKVxjTiZ+pPxWSNaCqsV3S7NOwBY6EpR756po0pGbe5FzfBZuKB3ihUiLh5mpruUBNTlP6E+VeBgos5lYdzth4LJLAN3HstgU5WFzs3qjwD1BKaTCquVkSJUxiU8o0/7/uJnhTMBDji5LhNX1xujN9KC+YBAAOkbmdiVIbT9zTcliiU2EzEgy1pS7Q1bGqkkdU57S6bCLzsBkxuJwYOSJqZg07Psvr1tsdPygquPZ8poEejD2v6KZ4YZ0xNL7OPF/5bURPC+6ZbJ8W8xbjlTH7kIU2Z8zEU9Thts2efJA6nK44Nl0pHM9k493H+Rh3g4Og4Wn71ACdOPylAsk5+HLvfjrGkMTd2xGJsop1MrLxtepuKm9OOznrO8Z63p6xW193hiDJSG323jDbnTB2kExaprWqyC6g1AdTK7rMWLZ90GqeW8AMq68iE8KA==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR03MB6355.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(366004)(39860400002)(136003)(346002)(376002)(83380400001)(71200400001)(9686003)(54906003)(110136005)(33656002)(5660300002)(8676002)(122000001)(316002)(55016002)(38100700002)(4326008)(86362001)(478600001)(6506007)(2906002)(53546011)(38070700005)(64756008)(66446008)(66556008)(66946007)(66476007)(76116006)(7696005)(186003)(26005)(52536014)(8936002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?zFJfkiwpVzNEl9TM6uNCYxChp26CwoxV9xnISUw2DMj7MJ/EGnZiWrGYvB?=
- =?iso-8859-1?Q?u4a/l4E1MqiJSaWEEOfQGywAkm3yNy/d0SIZSlZzdzue82RUc9KWcyAaRf?=
- =?iso-8859-1?Q?uptDMEZv1HFEiDERzECG7eBBWMaMSpUUsauYgX925rRyyhQ/u+hyXrqNoY?=
- =?iso-8859-1?Q?m7XPHtXu0exJUqwTNi9SBYxTSPSlE7vAugsIps8OkyWcO0bXLpvkwaTk4Z?=
- =?iso-8859-1?Q?tUwK1N9QP+ZUuvP9qmWUpBRDyncVpSA6/KHDCEnRUqYNJao8acif6TRftI?=
- =?iso-8859-1?Q?6Kzw58+InyMX5B+5QvWQ8ombZidWoOlxNNdfq5AoixdGwmYrY0O6wlQPPm?=
- =?iso-8859-1?Q?MBK2giuAHiz+o6c2Hxq+jYEeR3tId6znyYl1snMawW15jRprgr5DWIn4CP?=
- =?iso-8859-1?Q?IIF79k2kGlOrzEoU94tl/GzKY7qrK6GOjI0yFLIJF+j7MovQamnTKt21rv?=
- =?iso-8859-1?Q?MDjR+/Q/Pxf8mr0RSOfRi+mmLEZsUtZ+JIL0Qx+Oeo5t1AgK7n2jpQMY2L?=
- =?iso-8859-1?Q?N3w7pS3hR0thFaGRY5daW39F6oSZcoxTgRb0cZWjMF4IsvJ3yPrH98xrU6?=
- =?iso-8859-1?Q?0WiAMXpdPzVRO0C2N7HiPMDbZMBXXUnltf0Rt0/aT9BHXBULMkth9uZPIE?=
- =?iso-8859-1?Q?dGvZLbVnxf3VI6GlRExDVGrK1LUhDz0qZLcojY/P1ZpeRwobvxlY5Za5OV?=
- =?iso-8859-1?Q?v/h7zqEkXST5UcRpKOja5k0sHNADxyVgxfXa9aeMe2/wrZFZtUfx2rIbhg?=
- =?iso-8859-1?Q?lOJn0K0O/FiJ9bl1b+9kRcenY8tu3nOEMOk4M9pTZbLDMvx7uwuwq2viOa?=
- =?iso-8859-1?Q?PO3bGAWGp2Vgk+ghf5My73wGuP5jWs03dFmEITEcMWob8SGdfNn1GRWj2U?=
- =?iso-8859-1?Q?DRh9GK6XwqKy95mbuumI3Eakb/dHUmYqy1KgXN4PjLep1K88oNu0NZ/TRG?=
- =?iso-8859-1?Q?GZr+zqAL4qOBh8vunkb6rcee3aPf1ye9JjD5EzlVXWyRim0J7zbFi+3GTj?=
- =?iso-8859-1?Q?y6F+K+5uJhtVw+vxgO+4Xi44dYE5eyWZsQtuBER1mf/nMEe+NFqSLwGVFh?=
- =?iso-8859-1?Q?fNzCD+3pq/vpL6e78rIvBSIZlZcRJ/5ug+4zaX3jh+A+UVFY1P80qRVK1p?=
- =?iso-8859-1?Q?IXSZkvbp2hzoZ9RanHRWcx6SEM342KyKyX/v5yk7kS6N1//u9KzdLGDx+d?=
- =?iso-8859-1?Q?2HWuqYa1WKmbhiMps/QGDekdVOOdVoZh1jlZ3orXPk8b0ZIRvTwLOMziJ6?=
- =?iso-8859-1?Q?tVyr7utwnbkew1X6mYwfO57Uh7yjhWwf/gn6q+PvRXLMOcmA/hNBE8sL++?=
- =?iso-8859-1?Q?UoRn+K2Uw9+F8/zuz5uQPjZAKi+GGeYCH/4YZD/cRGlsghDJ2fI6Yb1OCh?=
- =?iso-8859-1?Q?PhC8xP3VLZ?=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4478.22; Mon, 6 Sep
+ 2021 12:33:48 +0000
+Received: from BYAPR12MB2901.namprd12.prod.outlook.com
+ ([fe80::8880:75b:9bf:6d6b]) by BYAPR12MB2901.namprd12.prod.outlook.com
+ ([fe80::8880:75b:9bf:6d6b%5]) with mapi id 15.20.4478.025; Mon, 6 Sep 2021
+ 12:33:48 +0000
+From:   Baptiste Mansuy <bmansuy@invensense.com>
+To:     jic23@kernel.org, lars@metafoo.de
+Cc:     linux-iio@vger.kernel.org, Baptiste Mansuy <bmansuy@invensense.com>
+Subject: [PATCH] iio: imu: mpu6050: add watermark support for icm20602/20690
+Date:   Mon,  6 Sep 2021 12:32:19 +0000
+Message-Id: <20210906123219.3084706-1-bmansuy@invensense.com>
+X-Mailer: git-send-email 2.25.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: LNXP123CA0012.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:d2::24) To BYAPR12MB2901.namprd12.prod.outlook.com
+ (2603:10b6:a03:138::32)
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
+Received: from frgnb-gzcwd53.invcorp.invensense.com (77.157.193.39) by LNXP123CA0012.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600:d2::24) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4478.19 via Frontend Transport; Mon, 6 Sep 2021 12:33:46 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: bec72922-688d-47fc-27e0-08d971329308
+X-MS-TrafficTypeDiagnostic: BYAPR12MB3046:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <BYAPR12MB3046A99CC4DDEF05869C1089DED29@BYAPR12MB3046.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:3826;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 6yejnKSaKe3dbBVDDQ7d3xfk2VcXSGteVhBgI8vdFlXxrdWCGd1RGN1vOlrjOhvaiOLyfnoZ2Zo4ECvTH2WybZoNsfvEV9fQV2CCKrpQKaRcC+PuYiGdfCHNpYO3kyQhv2pCTsdGeJJn5T2gRMPexIEdVFNm+YitbIv+wC8wtr2Rbzf9pFdr/fQEDf56TP26sfcWCy+97UKScbSYQ0u/LKj2vKiwtf/fXUZVu4DFbCrpZhCBhjeNaN8mqx5+k94cDQegjDQY0OBgIMYIK53Jw9xg/kaThe35t4TMJJgAw/15XHDpoY41C1uNdW8zBYL5483Q6OcdtMPXmcdUMsT2NL0yWHcifZAbyHtx0poPkB/pOLrQVXvRvkIf/2ARkYnmbIW/Vb1jSTeetAWfao8ekTeB6UfmYW49RyUPlSXqBNxNZsfc4vmbx+wzgsPR9lTtm5P8M5E/8hfjs+pGykjBg/OW5tAKCXLQ2RQKzFtMgF/ApB3dMUMuFSPMke9eM9xjLSfTiGGUxTtUFKfdPz3MxsV+0RrbSZ3oW41LayhDygYdkf6Ch9upXnSJfA4itrdifZ8+wEassWK3fKPXSWZb7lpxIGcJKtzQgtk8/YpGeQ1vu7CaWqz/yYAH6uZhEq0Sbqub0VSCGCg4orWeraN7OzAQAbRl0uS8NjD6K9swYkXyJvGtWMmSO3WTtIheFRyx
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB2901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(376002)(366004)(39850400004)(136003)(346002)(396003)(5660300002)(36756003)(86362001)(66476007)(2616005)(956004)(8676002)(478600001)(26005)(1076003)(83380400001)(7696005)(30864003)(4326008)(8936002)(38100700002)(38350700002)(107886003)(186003)(6486002)(6666004)(316002)(66556008)(2906002)(52116002)(66946007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?iFuy0aTyZlNUHHfEbaHSGZwmU+ljyB2XOl322zwkjw19L/69KbQZeILRV18d?=
+ =?us-ascii?Q?Xy+TEu3QZyNoS2sSCSan6ivVTiR7r7qIelXgnyAlOdlGrEvZEoRwaE5pi4dq?=
+ =?us-ascii?Q?AxQv32AWxh0UITodttEj9RB/e/MqS+A9mzL8YbC23c2/kKBODxDK+GAhKF1S?=
+ =?us-ascii?Q?D59m0Dzyg44QsWhmheRCQHSWWiVOaaKxQDiAtvmbw1LlXgK0NKuweUj3BpGR?=
+ =?us-ascii?Q?sf0+oI7gS0s33WZ0rLNJbKI251o4NTYqjP/cReIffZJ0nn9ObV7yXM+hkSVp?=
+ =?us-ascii?Q?wwoxe9uBlFPRt2VZjqDfBID7Eb2PZolqWWBiwE3a8QH+NcMcRhA2/jz0VJMI?=
+ =?us-ascii?Q?1TKHfRfapF3c6FJHaw3bvnJSXW1dcwdx2HyPx7oZQ0gk7o7zZC/IHLMiJ2RA?=
+ =?us-ascii?Q?PpIfSNQukS5EApWc3bIISZdIUqH0vlHLgnn2zQJJxJCS8zYnG8dcV2TJVIMm?=
+ =?us-ascii?Q?nwEjIKar3TNqtiZ9yTrCLtIkuxrtQCNTyXIlTYPMfbxxxzK09d6lnbHsW9sr?=
+ =?us-ascii?Q?vNFMxHXgfOZwPNjUxXc6NPqUiSn5BayFE4/bEehvUaxCvX2UDkYU3EnJNtMK?=
+ =?us-ascii?Q?0E4FYO6a1FEiTZHk2n/ArsMBIG3eQzqzCS6QUaiqTOcgqq+JfxkGxANWdyRe?=
+ =?us-ascii?Q?fCUKUIhrvi4kICmqVAOWPBZlD+qXs7/Ibudj4HeoSR9vyKo5W8TbhoDOZFbP?=
+ =?us-ascii?Q?grce/7rUtA2TekBbQH5dDYvK2z3zgfG4R+qATGGXcuEO+PkVupmHr+8J5cSM?=
+ =?us-ascii?Q?R4p9d7oYBKgkQY7WcqMn2wkz48wZOnx7fHgkG+DNgZDyk9vDqZe25ZbBUawL?=
+ =?us-ascii?Q?PMDs2hX394NNxhnM+qc6YIaXCnz6szWnS3OTgwSUEu84B69uF6372gwU1y6w?=
+ =?us-ascii?Q?oN6ZcdTJj8TEQElYIxBBjYaa3L6T16STfWhqXZN7xeWZ9C/nWzA2P9qJWOBM?=
+ =?us-ascii?Q?mt0yFhyTO5eKi9rGDjgXyheP+IrdwjbQ1Hs2BGYFIHDLthI7/4SlnQjhfFJt?=
+ =?us-ascii?Q?vGGgEr/YgPW7rAAcRjLqGah+nz6enjCsshQFLbdxkDNWgBzLq1/Z1JFOiM7S?=
+ =?us-ascii?Q?KNkh9wieO9B7UihA/vYE4Gc5xhFs2dZHymQR2JNOCI9QRFroybn94EOZkdng?=
+ =?us-ascii?Q?2L3qdMZ9B2sgGWv169Iq6mtpAkK1Y1/8K2gw0TWXkwGvltMIBO1w3ik7+fz+?=
+ =?us-ascii?Q?4Hd7IMEuJmKtsSYW9rysj4w7Vl0EJkILpkQychIpvl+wJNb8+imzxGXKD/Il?=
+ =?us-ascii?Q?1YPB0u+9QID5TsiB1TOCUR/CXa+Dxsish/c1gK30c1NL4YfmsIx5xJ/d9zXA?=
+ =?us-ascii?Q?bL9SZA6tXxLu9EtQvOZgqnOM?=
+X-OriginatorOrg: invensense.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bec72922-688d-47fc-27e0-08d971329308
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB2901.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR03MB6355.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2271a9f2-18f5-4808-9c8e-08d9711c2588
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Sep 2021 09:53:15.0337
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2021 12:33:48.1572
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: aflkJtW39zXgxVA8YOdqwYOsG4Me5mY9+8tRomikYi3C51SBZLpCQPMfQF9MXHJLpBu/SvpxB8XmYWEh6JPwRg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR03MB5740
-X-Proofpoint-GUID: ZbNrIDuXi5dsXE3RK2COmFXR4s8tm3Wz
-X-Proofpoint-ORIG-GUID: ZbNrIDuXi5dsXE3RK2COmFXR4s8tm3Wz
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 462b3b3b-e42b-47ea-801a-f1581aac892d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 13MysccA10nzcZgrG9DahiPbldy5ZhXSU9vLF9JBdLf1XsACmS3Ul+YeB93QQl//RCNl/voZfwrtDikbmsIboQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR12MB3046
+X-Proofpoint-ORIG-GUID: c33NXgZqkJrIxxegiDGtGi4cgd5OL6Uw
+X-Proofpoint-GUID: c33NXgZqkJrIxxegiDGtGi4cgd5OL6Uw
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
  definitions=2021-09-06_05,2021-09-03_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- lowpriorityscore=0 mlxscore=0 clxscore=1015 bulkscore=0 suspectscore=0
- mlxlogscore=999 priorityscore=1501 impostorscore=0 adultscore=0
- phishscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2108310000 definitions=main-2109060062
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 phishscore=0
+ malwarescore=0 mlxlogscore=999 mlxscore=0 lowpriorityscore=0
+ suspectscore=0 spamscore=0 priorityscore=1501 adultscore=0 clxscore=1011
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2108310000 definitions=main-2109060079
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Add watermark support using FIFO interrupt for chips having this
+feature. This allows the use of the watermark interrupt with the
+posibility to change it's size. Change the timestamp computation
+to be used with the watermark.
 
+Add the set_watermark and flush callbacks according to the iio
+description.
 
-> -----Original Message-----
-> From: Jonathan Cameron <jic23@kernel.org>
-> Sent: Sunday, September 5, 2021 6:11 PM
-> To: Miquel Raynal <miquel.raynal@bootlin.com>
-> Cc: Lars-Peter Clausen <lars@metafoo.de>; linux-iio@vger.kernel.org;
-> linux-kernel@vger.kernel.org; Thomas Petazzoni
-> <thomas.petazzoni@bootlin.com>; Sa, Nuno <Nuno.Sa@analog.com>
-> Subject: Re: [PATCH v2 15/16] iio: adc: max1027: Add support for
-> external triggers
->=20
-> [External]
->=20
-> On Thu,  2 Sep 2021 23:14:36 +0200
-> Miquel Raynal <miquel.raynal@bootlin.com> wrote:
->=20
-> > So far the driver only supported to use the hardware cnvst trigger.
-> This
-> > was purely a software limitation.
-> >
-> > The IRQ handler is already registered as being a poll function and
-> thus
-> > can be called upon external triggering. In this case, a new conversion
-> > must be started, and one must wait for the data to be ready before
-> > reading the samples.
-> >
-> > As the same handler can be called from different places, we check
-> the
-> > value of the current IRQ with the value of the registered device
-> > IRQ. Indeed, the first step is to get called with a different IRQ
-> number
-> > than ours, this is the "pullfunc" version which requests a new
->=20
-> pullfunc?
->=20
-> > conversion. During the execution of the handler, we will wait for the
-> > EOC interrupt to happen. This interrupt is handled by the same
-> > helper. This time the IRQ number is the one we registered, we can in
-> > this case call complete() to unlock the primary handler and return.
-> The
-> > primary handler continues executing by retrieving the data normally
-> and
-> > finally returns.
->=20
-> Interesting to use the irq number..
->=20
-> I'm a little nervous about how this has ended up structured.
-> I'm not 100% sure my understanding of how you've done it is correct.
->=20
-> We should have the following situation:
->=20
-> IRQ IN
->   |
->   v
-> Trigger IRQ / EOC IRQ  (this is the spi->irq)  (currently
-> iio_trigger_generic_data_poll_ready)
->   |              |
->   ---------      v
->   |        |   complete
->   v        v
-> TrigH1    (TrigH2)   (these are the IRQs below the irq_chip IIO uses to
-> demux triggers)
->=20
->=20
-> So when using it's own trigger we are using an internal interrupt
-> tree burried inside the IIO core.  When using it only as an EOC interrupt
-> we shouldn't
-> be anywhere near that internal interrupt chip.
->=20
-> So I'm surprised the IRQ matches with the spi->irq as
-> those trigH1 and trigH2 will have their own IRQ numbers.
->=20
-> For reference I think your architecture is currently
->=20
-> IRQ IN
->   |
->   v
->   Trigger IRQ
->   |
->   v
->  TRIG H1
->  Either fills the buffer or does the completion.
->=20
-> I am a little confused how this works with an external trigger because
-> the Trig H1 interrupt
-> should be disabled unless we are using the trigger.  That control isn't
-> exposed to the
-> driver at all.
->=20
-> Is my understanding right or have I gotten confused somewhere?
-> I also can't see a path in which the eoc interrupt will get fired for
-> raw_reads.
->=20
-> Could you talk me through how that works currently?
->=20
-> I suspect part of the confusion here is that this driver happens to be
-> using the
-> standard core handler iio_trigger_generic_data_rdy_poll which hides
-> away that
-> there are two interrupt handlers in a normal IIO driver for a device with
-> a
-> trigger and buffered mode.
-> 1 for the trigger and 1 for the buffer.  Whether the buffer one is a
-> result
-> of the trigger one (via iio_poll_trigger) is down to whether the device
-> is
-> using it's own trigger or not.
->=20
-> Jonathan
->=20
->=20
->=20
-> >
-> > In order to authorize external triggers, we need to drop the
-> > ->validate_trigger() verification.
-> >
-> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> > ---
-> >  drivers/iio/adc/max1027.c | 59
-> +++++++++++++++++++++++++++++++--------
-> >  1 file changed, 47 insertions(+), 12 deletions(-)
-> >
-> > diff --git a/drivers/iio/adc/max1027.c b/drivers/iio/adc/max1027.c
-> > index e734d32a5507..b9b7b9245509 100644
-> > --- a/drivers/iio/adc/max1027.c
-> > +++ b/drivers/iio/adc/max1027.c
-> > @@ -414,17 +414,6 @@ static int
-> max1027_debugfs_reg_access(struct iio_dev *indio_dev,
-> >  	return spi_write(st->spi, val, 1);
-> >  }
-> >
-> > -static int max1027_validate_trigger(struct iio_dev *indio_dev,
-> > -				    struct iio_trigger *trig)
-> > -{
-> > -	struct max1027_state *st =3D iio_priv(indio_dev);
-> > -
-> > -	if (st->trig !=3D trig)
-> > -		return -EINVAL;
-> > -
-> > -	return 0;
-> > -}
-> > -
-> >  static int max1027_set_cnvst_trigger_state(struct iio_trigger *trig,
-> bool state)
-> >  {
-> >  	struct iio_dev *indio_dev =3D iio_trigger_get_drvdata(trig);
-> > @@ -469,6 +458,13 @@ static int max1027_read_scan(struct iio_dev
-> *indio_dev)
-> >  	return 0;
-> >  }
-> >
-> > +static bool max1027_own_trigger_enabled(struct iio_dev
-> *indio_dev)
-> > +{
-> > +	int ret =3D iio_trigger_validate_own_device(indio_dev->trig,
-> indio_dev);
-> > +
-> > +	return ret ? false : true;
-> > +}
-> > +
-> >  static irqreturn_t max1027_threaded_handler(int irq, void *private)
-> >  {
-> >  	struct iio_poll_func *pf =3D private;
-> > @@ -487,7 +483,47 @@ static irqreturn_t
-> max1027_threaded_handler(int irq, void *private)
-> >  		return IRQ_HANDLED;
-> >  	}
-> >
-> > +	/* From that point on, buffers are enabled */
-> > +
-> > +	/*
-> > +	 * The cnvst HW trigger is not in use:
-> > +	 * we need to handle an external trigger request.
-> > +	 */
-> > +	if (!max1027_own_trigger_enabled(indio_dev)) {
-> > +		if (irq !=3D st->spi->irq) {
-> > +			/*
-> > +			 * First, the IRQ number will be the one
-> allocated for
-> > +			 * this poll function by the IIO core, it means
-> that
-> > +			 * this is an external trigger request, we need to
-> start
-> > +			 * a conversion.
-> > +			 */
-> > +			ret =3D
-> max1027_configure_chans_and_start(indio_dev);
-> > +			if (ret)
-> > +				goto out;
-> > +
-> > +			ret =3D max1027_wait_eoc(indio_dev);
-> > +			if (ret)
-> > +				goto out;
-> > +		} else {
-> > +			/*
-> > +			 * The pollfunc that has been called "manually"
-> by the
-> > +			 * IIO core now expects the EOC signaling (this
-> is the
-> > +			 * device IRQ firing), we need to call
-> complete().
-> > +			 */
-> > +			complete(&st->complete);
->=20
-> Completion shouldn't be down here in the trigger handler, it should be
-> in the top
-> level interrupt handler.  So you need to replace the
-> iio_trigger_generic_data_poll with a specific handler for this device.
->=20
-> > +			return IRQ_HANDLED;
-> > +		}
-> > +	}
-> > +
-> > +	/*
-> > +	 * We end here under two situations:
-> > +	 * - an external trigger is in use and the *_wait_eoc() call
-> succeeded,
-> > +	 *   the data is ready and may be retrieved.
-> > +	 * - the cnvst HW trigger is in use (the handler actually starts
-> here),
-> > +	 *   the data is also ready.
-> > +	 */
-> >  	ret =3D max1027_read_scan(indio_dev);
-> > +out:
-> >  	if (ret)
-> >  		dev_err(&indio_dev->dev,
-> >  			"Cannot read scanned values (%d)\n", ret);
-> > @@ -504,7 +540,6 @@ static const struct iio_trigger_ops
-> max1027_trigger_ops =3D {
-> >
-> >  static const struct iio_info max1027_info =3D {
-> >  	.read_raw =3D &max1027_read_raw,
-> > -	.validate_trigger =3D &max1027_validate_trigger,
-> >  	.debugfs_reg_access =3D &max1027_debugfs_reg_access,
-> >  };
-> >
+Signed-off-by: Baptiste Mansuy <bmansuy@invensense.com>
+---
+ drivers/iio/imu/inv_mpu6050/inv_mpu_core.c    | 104 +++++++++++++-
+ drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h     |  21 ++-
+ drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c    | 130 +++++++++++++-----
+ drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c |  24 +++-
+ 4 files changed, 237 insertions(+), 42 deletions(-)
 
-I'm also confused by this. Going through the series, I was actually
-thinking that raw_reads were in fact using the EOC IRQ until I realized
-that 'complete()' was being called from the trigger handler... So,
-I'm also not sure how is this supposed to work? But I'm probably
-missing something as I guess you tested this and how I'm understanding
-things, you should have gotten timeouts for raw_reads.
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+index 597768c..9cdec62 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+@@ -47,7 +47,9 @@ static const struct inv_mpu6050_reg_map reg_set_icm20602 = {
+ 	.raw_accl               = INV_MPU6050_REG_RAW_ACCEL,
+ 	.temperature            = INV_MPU6050_REG_TEMPERATURE,
+ 	.int_enable             = INV_MPU6050_REG_INT_ENABLE,
+-	.int_status             = INV_MPU6050_REG_INT_STATUS,
++	.int_status             = INV_ICM20602_REG_FIFO_WM_INT_STATUS,
++	.wm_th_hb               = INV_ICM20602_FIFO_WM_TH_HB,
++	.wm_th_lb               = INV_ICM20602_FIFO_WM_TH_LB,
+ 	.pwr_mgmt_1             = INV_MPU6050_REG_PWR_MGMT_1,
+ 	.pwr_mgmt_2             = INV_MPU6050_REG_PWR_MGMT_2,
+ 	.int_pin_cfg            = INV_MPU6050_REG_INT_PIN_CFG,
+@@ -56,6 +58,31 @@ static const struct inv_mpu6050_reg_map reg_set_icm20602 = {
+ 	.i2c_if                 = INV_ICM20602_REG_I2C_IF,
+ };
+ 
++static const struct inv_mpu6050_reg_map reg_set_icm20690 = {
++	.sample_rate_div	= INV_MPU6050_REG_SAMPLE_RATE_DIV,
++	.lpf                    = INV_MPU6050_REG_CONFIG,
++	.accel_lpf              = INV_MPU6500_REG_ACCEL_CONFIG_2,
++	.user_ctrl              = INV_MPU6050_REG_USER_CTRL,
++	.fifo_en                = INV_MPU6050_REG_FIFO_EN,
++	.gyro_config            = INV_MPU6050_REG_GYRO_CONFIG,
++	.accl_config            = INV_MPU6050_REG_ACCEL_CONFIG,
++	.fifo_count_h           = INV_MPU6050_REG_FIFO_COUNT_H,
++	.fifo_r_w               = INV_MPU6050_REG_FIFO_R_W,
++	.raw_gyro               = INV_MPU6050_REG_RAW_GYRO,
++	.raw_accl               = INV_MPU6050_REG_RAW_ACCEL,
++	.temperature            = INV_MPU6050_REG_TEMPERATURE,
++	.int_enable             = INV_MPU6050_REG_INT_ENABLE,
++	.int_status             = INV_ICM20602_REG_FIFO_WM_INT_STATUS,
++	.wm_th_hb               = INV_ICM20690_FIFO_WM_TH_HB,
++	.wm_th_lb               = INV_ICM20690_FIFO_WM_TH_LB,
++	.pwr_mgmt_1             = INV_MPU6050_REG_PWR_MGMT_1,
++	.pwr_mgmt_2             = INV_MPU6050_REG_PWR_MGMT_2,
++	.int_pin_cfg		= INV_MPU6050_REG_INT_PIN_CFG,
++	.accl_offset		= INV_MPU6500_REG_ACCEL_OFFSET,
++	.gyro_offset		= INV_MPU6050_REG_GYRO_OFFSET,
++	.i2c_if                 = 0,
++};
++
+ static const struct inv_mpu6050_reg_map reg_set_6500 = {
+ 	.sample_rate_div	= INV_MPU6050_REG_SAMPLE_RATE_DIV,
+ 	.lpf                    = INV_MPU6050_REG_CONFIG,
+@@ -115,6 +142,8 @@ static const struct inv_mpu6050_chip_config chip_config_6050 = {
+ 	.magn_fifo_enable = false,
+ 	.accl_fs = INV_MPU6050_FS_02G,
+ 	.user_ctrl = 0,
++	.wm_val = 1,
++	.wm_size = 0,
+ };
+ 
+ static const struct inv_mpu6050_chip_config chip_config_6500 = {
+@@ -132,6 +161,8 @@ static const struct inv_mpu6050_chip_config chip_config_6500 = {
+ 	.magn_fifo_enable = false,
+ 	.accl_fs = INV_MPU6050_FS_02G,
+ 	.user_ctrl = 0,
++	.wm_val = 1,
++	.wm_size = 0,
+ };
+ 
+ /* Indexed by enum inv_devices */
+@@ -247,7 +278,7 @@ static const struct inv_mpu6050_hw hw_info[] = {
+ 	{
+ 		.whoami = INV_ICM20690_WHOAMI_VALUE,
+ 		.name = "ICM20690",
+-		.reg = &reg_set_6500,
++		.reg = &reg_set_icm20690,
+ 		.config = &chip_config_6500,
+ 		.fifo_size = 1024,
+ 		.temp = {INV_ICM20608_TEMP_OFFSET, INV_ICM20608_TEMP_SCALE},
+@@ -264,6 +295,38 @@ static const struct inv_mpu6050_hw hw_info[] = {
+ 	},
+ };
+ 
++int inv_mpu6050_compute_hw_watermark(struct inv_mpu6050_state *st, unsigned int val)
++{
++	unsigned int nb_byte, new_size_byte;
++	int ret;
++
++	/* compute number of bytes inside FIFO */
++	nb_byte = 0;
++	if (st->chip_config.gyro_en)
++		nb_byte += INV_MPU6050_BYTES_PER_3AXIS_SENSOR;
++	if (st->chip_config.accl_en)
++		nb_byte += INV_MPU6050_BYTES_PER_3AXIS_SENSOR;
++	if (st->chip_config.magn_en)
++		nb_byte += INV_MPU9X50_BYTES_MAGN;
++	if (st->chip_config.temp_en)
++		nb_byte += INV_MPU6050_BYTES_PER_TEMP_SENSOR;
++
++	/* compute watermark size, use a threshold to keep some data space for read latency */
++	new_size_byte = val * nb_byte;
++	if (new_size_byte > ((st->hw->fifo_size * 4) / 5)) {
++		val = ((st->hw->fifo_size * 4) / 5) / nb_byte;
++		new_size_byte = val * nb_byte;
++	}
++
++	ret = inv_mpu6050_set_hw_watermark(st, new_size_byte);
++	if (ret)
++		return ret;
++
++	st->chip_config.wm_val = val;
++
++	return 0;
++}
++
+ static int inv_mpu6050_pwr_mgmt_1_write(struct inv_mpu6050_state *st, bool sleep,
+ 					int clock, int temp_dis)
+ {
+@@ -1290,6 +1353,39 @@ static int inv_mpu6050_reg_access(struct iio_dev *indio_dev,
+ 	return ret;
+ }
+ 
++static int inv_mpu6050_set_watermark(struct iio_dev *indio_dev, unsigned int val)
++{
++	struct inv_mpu6050_state *st = iio_priv(indio_dev);
++	int ret;
++
++	switch (st->chip_type) {
++	case INV_ICM20602:
++	case INV_ICM20690:
++		mutex_lock(&st->lock);
++		ret = inv_mpu6050_compute_hw_watermark(st, val);
++		mutex_unlock(&st->lock);
++		break;
++	default:
++		ret = 0;
++		break;
++	}
++
++	return ret;
++}
++
++static int inv_mpu6050_hw_flush_to_buffer(struct iio_dev *indio_dev,
++				      unsigned int count)
++{
++	struct inv_mpu6050_state *st = iio_priv(indio_dev);
++	int ret;
++
++	mutex_lock(&st->lock);
++	ret = inv_mpu6050_flush_fifo(indio_dev, 0, count);
++	mutex_unlock(&st->lock);
++
++	return ret;
++}
++
+ static const struct iio_info mpu_info = {
+ 	.read_raw = &inv_mpu6050_read_raw,
+ 	.write_raw = &inv_mpu6050_write_raw,
+@@ -1297,6 +1393,8 @@ static const struct iio_info mpu_info = {
+ 	.attrs = &inv_attribute_group,
+ 	.validate_trigger = inv_mpu6050_validate_trigger,
+ 	.debugfs_reg_access = &inv_mpu6050_reg_access,
++	.hwfifo_set_watermark = &inv_mpu6050_set_watermark,
++	.hwfifo_flush_to_buffer = &inv_mpu6050_hw_flush_to_buffer,
+ };
+ 
+ /*
+@@ -1618,7 +1716,7 @@ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
+ 		 */
+ 		result = devm_iio_triggered_buffer_setup(dev, indio_dev,
+ 							 iio_pollfunc_store_time,
+-							 inv_mpu6050_read_fifo,
++							 inv_mpu6050_interrupt_handler,
+ 							 NULL);
+ 		if (result) {
+ 			dev_err(dev, "configure buffer fail %d\n", result);
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+index c6aa36e..d925885 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+@@ -57,6 +57,8 @@ struct inv_mpu6050_reg_map {
+ 	u8 temperature;
+ 	u8 int_enable;
+ 	u8 int_status;
++	u8 wm_th_hb;
++	u8 wm_th_lb;
+ 	u8 pwr_mgmt_1;
+ 	u8 pwr_mgmt_2;
+ 	u8 int_pin_cfg;
+@@ -121,6 +123,8 @@ struct inv_mpu6050_chip_config {
+ 	unsigned int magn_fifo_enable:1;
+ 	u8 divider;
+ 	u8 user_ctrl;
++	unsigned int wm_val;
++	unsigned int wm_size;
+ };
+ 
+ /*
+@@ -264,8 +268,19 @@ struct inv_mpu6050_state {
+ #define INV_MPU6050_BIT_FIFO_OVERFLOW_INT   0x10
+ #define INV_MPU6050_BIT_RAW_DATA_RDY_INT    0x01
+ 
++#define INV_ICM20602_REG_FIFO_WM_INT_STATUS 0x39
++#define INV_ICM20602_BIT_FIFO_WM_INT        0x40
++
+ #define INV_MPU6050_REG_EXT_SENS_DATA       0x49
+ 
++#define INV_ICM20602_FIFO_WM_TH_HB          0x60
++#define INV_ICM20602_BITS_FIFO_WM_TH_HB     0x03
++#define INV_ICM20602_FIFO_WM_TH_LB          0x61
++
++#define INV_ICM20690_FIFO_WM_TH_HB          0x5E
++#define INV_ICM20690_BITS_FIFO_WM_TH_HB     0x03
++#define INV_ICM20690_FIFO_WM_TH_LB          0x61
++
+ /* I2C slaves data output from 0 to 3 */
+ #define INV_MPU6050_REG_I2C_SLV_DO(_x)      (0x63 + (_x))
+ 
+@@ -338,7 +353,6 @@ struct inv_mpu6050_state {
+ #define INV_ICM20690_GYRO_STARTUP_TIME       80
+ #define INV_ICM20690_ACCEL_STARTUP_TIME      10
+ 
+-
+ /* delay time in microseconds */
+ #define INV_MPU6050_REG_UP_TIME_MIN          5000
+ #define INV_MPU6050_REG_UP_TIME_MAX          10000
+@@ -457,7 +471,7 @@ enum inv_mpu6050_clock_sel_e {
+ 	NUM_CLK
+ };
+ 
+-irqreturn_t inv_mpu6050_read_fifo(int irq, void *p);
++irqreturn_t inv_mpu6050_interrupt_handler(int irq, void *p);
+ int inv_mpu6050_probe_trigger(struct iio_dev *indio_dev, int irq_type);
+ int inv_mpu6050_prepare_fifo(struct inv_mpu6050_state *st, bool enable);
+ int inv_mpu6050_switch_engine(struct inv_mpu6050_state *st, bool en,
+@@ -468,5 +482,8 @@ void inv_mpu_acpi_delete_mux_client(struct i2c_client *client);
+ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
+ 		int (*inv_mpu_bus_setup)(struct iio_dev *), int chip_type);
+ extern const struct dev_pm_ops inv_mpu_pmops;
++int inv_mpu6050_set_hw_watermark(struct inv_mpu6050_state *st, unsigned int wm_size_byte);
++int inv_mpu6050_compute_hw_watermark(struct inv_mpu6050_state *st, unsigned int wm_size_byte);
++int inv_mpu6050_flush_fifo(struct iio_dev *indio_dev, s64 timestamp_val, unsigned int count);
+ 
+ #endif
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+index 45c3752..d6e6246 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+@@ -40,15 +40,16 @@ static void inv_mpu6050_update_period(struct inv_mpu6050_state *st,
+ 	if (st->it_timestamp == 0) {
+ 		/* not initialized, forced to use it_timestamp */
+ 		use_it_timestamp = true;
+-	} else if (nb == 1) {
++	} else if (nb == st->chip_config.wm_val) {
+ 		/*
+ 		 * Validate the use of it timestamp by checking if interrupt
+ 		 * has been delayed.
+-		 * nb > 1 means interrupt was delayed for more than 1 sample,
++		 * nb > wm_val means interrupt was delayed for more than 1 sample,
+ 		 * so it's obviously not good.
++		 * If watermark does not exist for the chip, wm_val = 1.
+ 		 * Compute the chip period between 2 interrupts for validating.
+ 		 */
+-		delta = div_s64(timestamp - st->it_timestamp, divider);
++		delta = div_s64(timestamp - st->it_timestamp, divider) / st->chip_config.wm_val;
+ 		if (delta > period_min && delta < period_max) {
+ 			/* update chip period and use it timestamp */
+ 			st->chip_period = (st->chip_period + delta) / 2;
+@@ -89,6 +90,25 @@ static s64 inv_mpu6050_get_timestamp(struct inv_mpu6050_state *st)
+ 	return ts;
+ }
+ 
++int inv_mpu6050_set_hw_watermark(struct inv_mpu6050_state *st, unsigned int size)
++{
++	int ret;
++
++	if (size == st->chip_config.wm_size)
++		return 0;
++
++	ret = regmap_write(st->map, st->reg->wm_th_hb, (size >> 8) & 0xFF);
++	if (ret)
++		return ret;
++
++	ret = regmap_write(st->map, st->reg->wm_th_lb, size & 0xFF);
++	if (ret)
++		return ret;
++
++	st->chip_config.wm_size = size;
++	return 0;
++}
++
+ static int inv_reset_fifo(struct iio_dev *indio_dev)
+ {
+ 	int result;
+@@ -104,43 +124,33 @@ static int inv_reset_fifo(struct iio_dev *indio_dev)
+ 
+ reset_fifo_fail:
+ 	dev_err(regmap_get_device(st->map), "reset fifo failed %d\n", result);
+-	result = regmap_write(st->map, st->reg->int_enable,
+-			      INV_MPU6050_BIT_DATA_RDY_EN);
+-
++	switch (st->chip_type) {
++	case INV_ICM20602:
++	case INV_ICM20690:
++		result = inv_mpu6050_set_hw_watermark(st, st->chip_config.wm_size);
++		break;
++	default:
++		result = regmap_write(st->map, st->reg->int_enable,
++				INV_MPU6050_BIT_DATA_RDY_EN);
++	}
+ 	return result;
+ }
+ 
+-/*
+- * inv_mpu6050_read_fifo() - Transfer data from hardware FIFO to KFIFO.
+- */
+-irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
++int inv_mpu6050_flush_fifo(struct iio_dev *indio_dev,
++				      s64 timestamp_val, unsigned int count)
+ {
+-	struct iio_poll_func *pf = p;
+-	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct inv_mpu6050_state *st = iio_priv(indio_dev);
+-	size_t bytes_per_datum;
+-	int result;
+ 	u16 fifo_count;
+ 	s64 timestamp;
+-	int int_status;
++	int result;
+ 	size_t i, nb;
+-
+-	mutex_lock(&st->lock);
+-
+-	/* ack interrupt and check status */
+-	result = regmap_read(st->map, st->reg->int_status, &int_status);
+-	if (result) {
+-		dev_err(regmap_get_device(st->map),
+-			"failed to ack interrupt\n");
+-		goto flush_fifo;
+-	}
+-	if (!(int_status & INV_MPU6050_BIT_RAW_DATA_RDY_INT))
+-		goto end_session;
++	size_t bytes_per_datum;
+ 
+ 	if (!(st->chip_config.accl_fifo_enable |
+ 		st->chip_config.gyro_fifo_enable |
+ 		st->chip_config.magn_fifo_enable))
+-		goto end_session;
++		return 0;
++
+ 	bytes_per_datum = 0;
+ 	if (st->chip_config.accl_fifo_enable)
+ 		bytes_per_datum += INV_MPU6050_BYTES_PER_3AXIS_SENSOR;
+@@ -161,7 +171,7 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
+ 	result = regmap_bulk_read(st->map, st->reg->fifo_count_h,
+ 				  st->data, INV_MPU6050_FIFO_COUNT_BYTE);
+ 	if (result)
+-		goto end_session;
++		return 0;
+ 	fifo_count = be16_to_cpup((__be16 *)&st->data[0]);
+ 
+ 	/*
+@@ -171,18 +181,31 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
+ 	 */
+ 	nb = 3 * bytes_per_datum;
+ 	if (fifo_count >= st->hw->fifo_size - nb) {
+-		dev_warn(regmap_get_device(st->map), "fifo overflow reset\n");
+-		goto flush_fifo;
++		dev_warn(regmap_get_device(st->map), "fifo overflow\n");
++		inv_reset_fifo(indio_dev);
++		return -1;
+ 	}
+ 
+ 	/* compute and process all complete datum */
+ 	nb = fifo_count / bytes_per_datum;
+-	inv_mpu6050_update_period(st, pf->timestamp, nb);
++	/*
++	 * As fifo_size may differ according to the chip unsigned
++	 * count = 0 is used to choose the max value for count
++	 */
++	if (count == 0)
++		count = st->hw->fifo_size / bytes_per_datum;
++	if (timestamp_val != 0)
++		inv_mpu6050_update_period(st, timestamp_val, nb);
++	if (nb > count)
++		nb = count;
+ 	for (i = 0; i < nb; ++i) {
+ 		result = regmap_noinc_read(st->map, st->reg->fifo_r_w,
+ 					   st->data, bytes_per_datum);
+-		if (result)
+-			goto flush_fifo;
++		if (result) {
++			inv_reset_fifo(indio_dev);
++			return result;
++		}
++
+ 		/* skip first samples if needed */
+ 		if (st->skip_samples) {
+ 			st->skip_samples--;
+@@ -192,6 +215,45 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
+ 		iio_push_to_buffers_with_timestamp(indio_dev, st->data, timestamp);
+ 	}
+ 
++	return i;
++}
++
++/*
++ * inv_mpu6050_interrupt_handler() - Transfer data from hardware FIFO to KFIFO.
++ */
++irqreturn_t inv_mpu6050_interrupt_handler(int irq, void *p)
++{
++	struct iio_poll_func *pf = p;
++	struct iio_dev *indio_dev = pf->indio_dev;
++	struct inv_mpu6050_state *st = iio_priv(indio_dev);
++	int result;
++	int int_status;
++	int int_status_bit;
++
++	mutex_lock(&st->lock);
++
++	/* ack interrupt and check status */
++	result = regmap_read(st->map, st->reg->int_status, &int_status);
++	if (result) {
++		dev_err(regmap_get_device(st->map),
++			"failed to ack interrupt\n");
++		goto flush_fifo;
++	}
++
++	switch (st->chip_type) {
++	case INV_ICM20602:
++	case INV_ICM20690:
++		int_status_bit = INV_ICM20602_BIT_FIFO_WM_INT;
++		break;
++	default:
++		int_status_bit = INV_MPU6050_BIT_RAW_DATA_RDY_INT;
++		break;
++	}
++	if (!(int_status & int_status_bit))
++		goto end_session;
++
++	inv_mpu6050_flush_fifo(indio_dev, pf->timestamp, 0);
++
+ end_session:
+ 	mutex_unlock(&st->lock);
+ 	iio_trigger_notify_done(indio_dev->trig);
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+index 8825468..c685ed4 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+@@ -131,10 +131,28 @@ int inv_mpu6050_prepare_fifo(struct inv_mpu6050_state *st, bool enable)
+ 		if (ret)
+ 			return ret;
+ 		/* enable interrupt */
+-		ret = regmap_write(st->map, st->reg->int_enable,
+-				   INV_MPU6050_BIT_DATA_RDY_EN);
++		switch (st->chip_type) {
++		case INV_ICM20602:
++		case INV_ICM20690:
++			/* watermark interrupt is enabled by setting the watermark value */
++			ret = inv_mpu6050_compute_hw_watermark(st, st->chip_config.wm_val);
++			break;
++		default:
++			ret = regmap_write(st->map, st->reg->int_enable,
++					INV_MPU6050_BIT_DATA_RDY_EN);
++			break;
++		}
+ 	} else {
+-		ret = regmap_write(st->map, st->reg->int_enable, 0);
++		switch (st->chip_type) {
++		case INV_ICM20602:
++		case INV_ICM20690:
++			/* watermark interrupt is disabled by setting the watermark value to 0 */
++			ret = inv_mpu6050_set_hw_watermark(st, 0);
++			break;
++		default:
++			ret = regmap_write(st->map, st->reg->int_enable, 0);
++			break;
++		}
+ 		if (ret)
+ 			return ret;
+ 		ret = regmap_write(st->map, st->reg->fifo_en, 0);
+-- 
+2.25.1
 
-Anyways, as Jonathan said, I was also expecting to see the 'complete()' cal=
-l
-from the device IRQ handler. Other thing than that is just asking for troub=
-le
-:).=20
-
-- Nuno S=E1

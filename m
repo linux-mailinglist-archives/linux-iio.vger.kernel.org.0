@@ -2,39 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74C7A4054B5
-	for <lists+linux-iio@lfdr.de>; Thu,  9 Sep 2021 15:31:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C38DB40559D
+	for <lists+linux-iio@lfdr.de>; Thu,  9 Sep 2021 15:34:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344530AbhIINBa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 9 Sep 2021 09:01:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57768 "EHLO mail.kernel.org"
+        id S1356026AbhIINLv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 9 Sep 2021 09:11:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43554 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1356151AbhIIMxL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 9 Sep 2021 08:53:11 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 824D761186;
-        Thu,  9 Sep 2021 11:57:32 +0000 (UTC)
+        id S1357130AbhIIM7j (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 9 Sep 2021 08:59:39 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0B53263279;
+        Thu,  9 Sep 2021 11:59:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631188653;
-        bh=ys93JIkJor0XQfcdfHsBQ3ju1Zsl222TxIT0neTqpJQ=;
+        s=k20201202; t=1631188745;
+        bh=SY6y8U71EGd4aHjByJyQV570JiwGzg0mb0VxOk/josg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qs9bjolR7kMZ5yZ51dg6WaDjtmF3UxRgGDfp1SsvzO6Zs6lgRN/laCQWeiXkOTqgl
-         hL/Y+C1Os283F+LZ6i5yByLFiJuGHgyhU3ojWSaw7a6Bq3UfhRGq6SHovqUX5TQmyO
-         bKJNiEmWhTtSSk/ahTew8O0wyKmL8Q/xZ6BssJ+7cLzTpB2oAh3+/KuIBA7DkoH/5s
-         vJvK6lJnLLBUlFjl0yk6bMpljftdW7OVtyjR/Qhm/cNW1o+6F+mJD8/L4xTNwBXo1Z
-         pXoHlt5AcMBQftJo4MrOMWXfjhonLZqIlj41WWtCNSn6Gk9nsyivEcx452vE6N8tpS
-         URj7uHTdDP5gg==
+        b=oTzc3tBGdP6orfuvo+DCGV5zpGiHUs5w2AGsMqroQ6oBDD7pWV3rMnFkA4b1nRM47
+         dm8eA3nMT1PIjZBqLEHQCCL3wsPZnyztbXmiQomjognNUlRY1IThXlKNsAvvo9gG1Q
+         8/QPFvD772Cf1R7OCDgeaKh64HZUP3OiWujw3XkRcC6Xir7Vfl0Mrp5TKoSa8uq2Z0
+         GB8BbPPWdN1BdHDR8PjwmpCN6fN0Dj9NKDO0ez4lVKq+tog98a4sVcB7Y50iHeS2Ie
+         WZ9BFECmoHO9+qTSDQN4Qv9reEWo6Zxo+Nho5TUdakkLi05mrTZmQTCmgi7f6OMpiR
+         EOCHUuh0c3iLw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         kernel test robot <lkp@intel.com>,
         =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
         Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 05/74] iio: dac: ad5624r: Fix incorrect handling of an optional regulator.
-Date:   Thu,  9 Sep 2021 07:56:17 -0400
-Message-Id: <20210909115726.149004-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 04/59] iio: dac: ad5624r: Fix incorrect handling of an optional regulator.
+Date:   Thu,  9 Sep 2021 07:58:05 -0400
+Message-Id: <20210909115900.149795-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210909115726.149004-1-sashal@kernel.org>
-References: <20210909115726.149004-1-sashal@kernel.org>
+In-Reply-To: <20210909115900.149795-1-sashal@kernel.org>
+References: <20210909115900.149795-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
@@ -69,10 +69,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 17 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/iio/dac/ad5624r_spi.c b/drivers/iio/dac/ad5624r_spi.c
-index 13fdb4dfe356..cc3a24c43e57 100644
+index 5489ec43b95d..e5cefdb674f8 100644
 --- a/drivers/iio/dac/ad5624r_spi.c
 +++ b/drivers/iio/dac/ad5624r_spi.c
-@@ -230,7 +230,7 @@ static int ad5624r_probe(struct spi_device *spi)
+@@ -231,7 +231,7 @@ static int ad5624r_probe(struct spi_device *spi)
  	if (!indio_dev)
  		return -ENOMEM;
  	st = iio_priv(indio_dev);
@@ -81,7 +81,7 @@ index 13fdb4dfe356..cc3a24c43e57 100644
  	if (!IS_ERR(st->reg)) {
  		ret = regulator_enable(st->reg);
  		if (ret)
-@@ -241,6 +241,22 @@ static int ad5624r_probe(struct spi_device *spi)
+@@ -242,6 +242,22 @@ static int ad5624r_probe(struct spi_device *spi)
  			goto error_disable_reg;
  
  		voltage_uv = ret;

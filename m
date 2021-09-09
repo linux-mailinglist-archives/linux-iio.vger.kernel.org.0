@@ -2,147 +2,199 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AF60405844
-	for <lists+linux-iio@lfdr.de>; Thu,  9 Sep 2021 15:56:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A97804058BA
+	for <lists+linux-iio@lfdr.de>; Thu,  9 Sep 2021 16:16:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355327AbhIINwe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 9 Sep 2021 09:52:34 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:34302 "EHLO
-        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1353565AbhIINuu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 9 Sep 2021 09:50:50 -0400
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 189DWhkx065648;
-        Thu, 9 Sep 2021 09:49:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=YOADUv/wRxpcFSdNFbl1N5SS8ZlACAZ0KlTyLm4aDps=;
- b=n7w+t2kFOfaLxKEtctq/oQ0c5vHnWtUd6fnRpZFPXof/hmmR40e4vYuqVI0/lszcUhps
- axcCzpIy1Xu3vGvKK4d+bSEaNg/crwlxshGKVOl2ylvqazd5DM+aBtmIKMcUtjWmFTyX
- s4ZslOJxA4Ob2bLlya6TMKGX4ymIDgF1Ml/XBRsF8cFCYs2CgFqt+pTZgQdVRu/CWMrk
- 65FF90PTvwyQdQVOXPMRZRQnzDCYf4OyjY++unGdKbbp4Lz/YsFBJ3JWtpUwUDcfD9Zt
- 2Pn1p/oKyGJ+dJPK63EWdOQMJfAzGGj0NQaTy73NREtlO8FJV/h7DzE8jJiVrd5TDNR/ Rw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3aygjvd0rd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 09 Sep 2021 09:49:21 -0400
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 189DXCZ6067716;
-        Thu, 9 Sep 2021 09:49:21 -0400
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3aygjvd0r5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 09 Sep 2021 09:49:21 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
-        by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 189DhQZD003673;
-        Thu, 9 Sep 2021 13:49:20 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com [9.57.198.29])
-        by ppma04wdc.us.ibm.com with ESMTP id 3axcnr5as3-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 09 Sep 2021 13:49:20 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com [9.57.199.110])
-        by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 189DnKje43909514
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 9 Sep 2021 13:49:20 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id EC73AAE0A4;
-        Thu,  9 Sep 2021 13:49:19 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 69537AE097;
-        Thu,  9 Sep 2021 13:49:19 +0000 (GMT)
-Received: from [9.163.8.88] (unknown [9.163.8.88])
-        by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
-        Thu,  9 Sep 2021 13:49:19 +0000 (GMT)
-Subject: Re: Looking for clarification on sysfs IIO devices, do _raw devices
- require both _offset and _scale?
-To:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
-Cc:     "openbmc@lists.ozlabs.org" <openbmc@lists.ozlabs.org>,
-        Ed Tanous <ed@tanous.net>, Ed Tanous <edtanous@google.com>
-References: <cc74f30f-9ab8-45ce-1f44-8e55c3f9c5ce@linux.vnet.ibm.com>
- <5c79425f-6e88-36b6-cdfe-4080738d039f@metafoo.de>
-From:   Bruce Mitchell <bruce.mitchell@linux.vnet.ibm.com>
-Message-ID: <b9f78f37-fbb6-ea68-48c1-917cf42ca57f@linux.vnet.ibm.com>
-Date:   Thu, 9 Sep 2021 06:49:19 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
-In-Reply-To: <5c79425f-6e88-36b6-cdfe-4080738d039f@metafoo.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Lr1GrOcjFNSdsgCM1r13fjtaz44hDdli
-X-Proofpoint-ORIG-GUID: boH-cdt_nHT8P33EbzGCirfKyTQ5Vcfg
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+        id S244205AbhIIOQm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 9 Sep 2021 10:16:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40760 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236843AbhIIOQj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 9 Sep 2021 10:16:39 -0400
+Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82FA8C08EE13
+        for <linux-iio@vger.kernel.org>; Thu,  9 Sep 2021 05:33:43 -0700 (PDT)
+Received: by mail-qv1-xf34.google.com with SMTP id z12so997632qvx.5
+        for <linux-iio@vger.kernel.org>; Thu, 09 Sep 2021 05:33:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=deviqon.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=BCZWh7t0fiDuebnxXV+Da06p0DKn6S0nC/3dScWfDqQ=;
+        b=YCuYJEpD68js0MzLC4P4YrHL5iNk2IQesIQ/duiGjqr2TTYRhypWaBAhqree0QHoXr
+         Uq1kKgbvVJZcESooLTbwGZHT33xQRb20vGmW9KMnxq3XkmElPFdiMnF91isH6ZvhvSBt
+         F/owFqXLRlQ6kd0xF29y+cfwBqQoF75vP7HJhyC7lQ9DFWfHb5rF8xwveM+moDH1NKYF
+         uxUtWXIl0/h1E8GguRUC8guwMxYn5eBNRRzWxtMXRSMQS8Rc6A1k/i0OemaHEg4JbGyl
+         XstxC8Pk+NJ5ih7kRkqd+n1dikBKmpLCQVgAVmCAu+Hc+JouVRD3DlDpMtBJCYvjCRZJ
+         FvSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=BCZWh7t0fiDuebnxXV+Da06p0DKn6S0nC/3dScWfDqQ=;
+        b=bxuZZ5fsd7NqZIevdxB+d+jf2EyLm/duP2iFQkcTEj5qXi57cO7yP7raHJms45h3QT
+         lnH0YH1i1J3F1QwQ5RfRMh4h6Kz2jkrtVlTfVf1yDjOnc/InKs5IIPTmmzdBZoiEz5+y
+         Cu0ljAI3HGhV6V3L7DXCkwUdB30QqO1tgS1n3xR0hPV3moiz5d6ZVo3/KAaFTlJHWk0G
+         TnjB0yVb6c2POo5vcz8Tq/BnTdy3yQ9Yr59QLydLxnoPMtFpI+9AUTBnJ61YMX9hdMoI
+         +rB5KEw7u98C+/mECIQryAIL+0F4ILanlEV1jtGZVPBtub3Hh6goeWdgcKgPejap3vhJ
+         FGfQ==
+X-Gm-Message-State: AOAM530GCfTrDpu1bbJPPgu0WQGMeXwh8H4mS+/UyQZb3pnMEvpr9Cf5
+        DE9BY+6AtBx5EpCYkpkQiJ/GSRkuxnSllyz9kV+rbRfCrfU=
+X-Google-Smtp-Source: ABdhPJzKUJigy0WZqHh3GTpws0zvDq54w5g9lDb16+Cqy40v3Fe42JJsLAYBaw9SA9dXSZLU4vj87/UqdDh/RB16pyQ=
+X-Received: by 2002:ad4:4623:: with SMTP id x3mr791665qvv.17.1631190822661;
+ Thu, 09 Sep 2021 05:33:42 -0700 (PDT)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
- definitions=2021-09-09_04:2021-09-09,2021-09-09 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- malwarescore=0 bulkscore=0 phishscore=0 spamscore=0 suspectscore=0
- adultscore=0 clxscore=1011 priorityscore=1501 mlxscore=0 mlxlogscore=999
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109030001 definitions=main-2109090083
+References: <20210625074325.9237-1-aardelean@deviqon.com> <20210704190158.6676ab99@jic23-huawei>
+In-Reply-To: <20210704190158.6676ab99@jic23-huawei>
+From:   Alexandru Ardelean <aardelean@deviqon.com>
+Date:   Thu, 9 Sep 2021 15:33:31 +0300
+Message-ID: <CAASAkob02JJA0WGyfXMAWQrwrvJr_uKqVSkeK6O8QR4tZo-KiQ@mail.gmail.com>
+Subject: Re: [PATCH] iio: adc: fsl-imx25-gcq: initialize regulators as needed
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        shawnguo@kernel.org, s.hauer@pengutronix.de
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 9/9/2021 00:12, Lars-Peter Clausen wrote:
-> On 9/9/21 12:10 AM, Bruce Mitchell wrote:
->> In reference to:
->> https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-bus-iio
->>
->> I have Temperature, Pressure, and Humidity IIO sensors.
->> IIO _raw devices look like this on sysfs:
->>   this happens to be a SI7020 type device with 2 sensors
->>     /sys/bus/iio/devices/iio:device0/in_humidityrelative_offset
->>     /sys/bus/iio/devices/iio:device0/in_humidityrelative_raw
->>     /sys/bus/iio/devices/iio:device0/in_humidityrelative_scale
->>     /sys/bus/iio/devices/iio:device0/in_temp_offset
->>     /sys/bus/iio/devices/iio:device0/in_temp_raw
->>     /sys/bus/iio/devices/iio:device0/in_temp_scale
->>
->> Other IIO _input devices look like this on sysfs:
->>   this happens to be a DPS310 device with 2 sensors
->>      /sys/bus/iio/devices/iio:device1/in_temp_input
->>      /sys/bus/iio/devices/iio:device1/in_pressure_input
->>
->> As I read it if the IIO device was an _input type on sysfs,
->> just read it (and possibly scale it for units).
->>
->> But if the IIO device was a _raw type on sysfs my understanding
->> is that it must be accompanied by a _offset and a _scale for
->> at least temperature, pressure, humidity, voltage, and current
->> sensors.
->> Is that correct?
->>
->> Further for any IIO device that is a _raw type on sysfs is it
->> required to be accompanied by a _offset and a _scale as well?
-> 
-> Hi,
-> 
-> That sounds about right.
-> 
-> The _input name is historically and comes from hwmon framework. It means 
-> that the data has been processed by the kernel driver and converted to 
-> the right SI units for the channel type. This is usually used for sensor 
-> that have a non-linear transfer function. `raw` on the other hand means 
-> the data is just as it is reported by the hardware. The reason for this 
-> is that conversion to SI units is often not lossless, since we have 
-> finite precision. So it is up to the application to decide whether it 
-> wants to work on the raw data or how it wants to round the converted data.
-> 
-> `input` attributes never have scale and offset since they are already in 
-> the right unit. For raw scale and offset are optional. If scale does not 
-> exist assume it is 1, if offset does not exist assume it is 0. You'll 
-> rarely see a device with raw attributes without scale, but there are 
-> quite a few without offset.
-> 
-> - Lars
-> 
-> 
+On Sun, 4 Jul 2021 at 20:59, Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> On Fri, 25 Jun 2021 10:43:25 +0300
+> Alexandru Ardelean <aardelean@deviqon.com> wrote:
+>
+> > The driver tries to initialize all possible regulators from the DT, then
+> > match the external regulators with each channel and then release all unused
+> > regulators.
+> >
+> > We can change the logic a bit to initialize regulators only when at least
+> > one channel needs them.
+> >
+> > This change creates a mx25_gcq_ext_regulator_setup() function that is
+> > called only for the external regulators. If there's already a reference to
+> > an external regulator, the function will just exit early with no error.
+> >
+> > This way, the driver doesn't need to keep any track of these regulators
+> > during init.
+> >
+> > Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
+>
+> whilst I agree this is a bit cleaner, I definitely want to see review from
+> those more familiar with the device before I take it!
 
-Thank you Lars!
+ping on this
 
--- 
-Bruce
-
+>
+> Thanks,
+>
+> Jonathan
+>
+> > ---
+> >  drivers/iio/adc/fsl-imx25-gcq.c | 57 ++++++++++++++++-----------------
+> >  1 file changed, 28 insertions(+), 29 deletions(-)
+> >
+> > diff --git a/drivers/iio/adc/fsl-imx25-gcq.c b/drivers/iio/adc/fsl-imx25-gcq.c
+> > index ab5139e911c3..31776f80f847 100644
+> > --- a/drivers/iio/adc/fsl-imx25-gcq.c
+> > +++ b/drivers/iio/adc/fsl-imx25-gcq.c
+> > @@ -172,13 +172,37 @@ static const struct regmap_config mx25_gcq_regconfig = {
+> >       .reg_stride = 4,
+> >  };
+> >
+> > +static int mx25_gcq_ext_regulator_setup(struct device *dev,
+> > +                                     struct mx25_gcq_priv *priv, u32 refp)
+> > +{
+> > +     char reg_name[12];
+> > +     int ret;
+> > +
+> > +     if (priv->vref[refp])
+> > +             return 0;
+> > +
+> > +     ret = snprintf(reg_name, sizeof(reg_name), "vref-%s",
+> > +                    mx25_gcq_refp_names[refp]);
+> > +     if (ret < 0)
+> > +             return ret;
+> > +
+> > +     priv->vref[refp] = devm_regulator_get_optional(dev, reg_name);
+> > +     if (IS_ERR(priv->vref[refp])) {
+> > +             dev_err(dev,
+> > +                     "Error, trying to use external voltage reference without a %s regulator.",
+> > +                     reg_name);
+> > +             return PTR_ERR(priv->vref[refp]);
+> > +     }
+> > +
+> > +     return 0;
+> > +}
+> > +
+> >  static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
+> >                              struct mx25_gcq_priv *priv)
+> >  {
+> >       struct device_node *np = pdev->dev.of_node;
+> >       struct device_node *child;
+> >       struct device *dev = &pdev->dev;
+> > -     unsigned int refp_used[4] = {};
+> >       int ret, i;
+> >
+> >       /*
+> > @@ -194,19 +218,6 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
+> >                            MX25_ADCQ_CFG_IN(i) |
+> >                            MX25_ADCQ_CFG_REFN_NGND2);
+> >
+> > -     /*
+> > -      * First get all regulators to store them in channel_vref_mv if
+> > -      * necessary. Later we use that information for proper IIO scale
+> > -      * information.
+> > -      */
+> > -     priv->vref[MX25_ADC_REFP_INT] = NULL;
+> > -     priv->vref[MX25_ADC_REFP_EXT] =
+> > -             devm_regulator_get_optional(&pdev->dev, "vref-ext");
+> > -     priv->vref[MX25_ADC_REFP_XP] =
+> > -             devm_regulator_get_optional(&pdev->dev, "vref-xp");
+> > -     priv->vref[MX25_ADC_REFP_YP] =
+> > -             devm_regulator_get_optional(&pdev->dev, "vref-yp");
+> > -
+> >       for_each_child_of_node(np, child) {
+> >               u32 reg;
+> >               u32 refp = MX25_ADCQ_CFG_REFP_INT;
+> > @@ -233,11 +244,10 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
+> >               case MX25_ADC_REFP_EXT:
+> >               case MX25_ADC_REFP_XP:
+> >               case MX25_ADC_REFP_YP:
+> > -                     if (IS_ERR(priv->vref[refp])) {
+> > -                             dev_err(dev, "Error, trying to use external voltage reference without a vref-%s regulator.",
+> > -                                     mx25_gcq_refp_names[refp]);
+> > +                     ret = mx25_gcq_ext_regulator_setup(&pdev->dev, priv, refp);
+> > +                     if (ret) {
+> >                               of_node_put(child);
+> > -                             return PTR_ERR(priv->vref[refp]);
+> > +                             return ret;
+> >                       }
+> >                       priv->channel_vref_mv[reg] =
+> >                               regulator_get_voltage(priv->vref[refp]);
+> > @@ -253,8 +263,6 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
+> >                       return -EINVAL;
+> >               }
+> >
+> > -             ++refp_used[refp];
+> > -
+> >               /*
+> >                * Shift the read values to the correct positions within the
+> >                * register.
+> > @@ -285,15 +293,6 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
+> >       regmap_write(priv->regs, MX25_ADCQ_CR,
+> >                    MX25_ADCQ_CR_PDMSK | MX25_ADCQ_CR_QSM_FQS);
+> >
+> > -     /* Remove unused regulators */
+> > -     for (i = 0; i != 4; ++i) {
+> > -             if (!refp_used[i]) {
+> > -                     if (!IS_ERR_OR_NULL(priv->vref[i]))
+> > -                             devm_regulator_put(priv->vref[i]);
+> > -                     priv->vref[i] = NULL;
+> > -             }
+> > -     }
+> > -
+> >       return 0;
+> >  }
+> >
+>

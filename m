@@ -2,39 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A3D8540517F
-	for <lists+linux-iio@lfdr.de>; Thu,  9 Sep 2021 14:45:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99D25405352
+	for <lists+linux-iio@lfdr.de>; Thu,  9 Sep 2021 14:51:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245395AbhIIMgl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 9 Sep 2021 08:36:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33236 "EHLO mail.kernel.org"
+        id S1352776AbhIIMvZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 9 Sep 2021 08:51:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57486 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1353779AbhIIMYv (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 9 Sep 2021 08:24:51 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 12D8661AEF;
-        Thu,  9 Sep 2021 11:51:31 +0000 (UTC)
+        id S1355155AbhIIMlo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 9 Sep 2021 08:41:44 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8CCEA61BF8;
+        Thu,  9 Sep 2021 11:55:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631188292;
-        bh=l5v/rb/8ioYC6MGBYgVUaNFI8j0ENAXTj6L18sSOvjM=;
+        s=k20201202; t=1631188516;
+        bh=omYj6XUZbaTMM9lekXdod8fKtmqaxDBOsY1wjQ6eYwI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=T4agyw3CpKpGrWtXpTn3CCqmU995X3flz+o6xzUW13NQReHxQd+RXKQ3u5b2lnL7T
-         3cxH+TCYDKtHTeIkCyY8v9jb+d9QlKOn1JOA48bjhNpD6vEzy45Z4OjNyZERXSxXSP
-         2uGuZ8fem785/fYtBnvHLda1GjkQSSOP0zIFKZZevdEJB1TEPKnJrXdLmi1y+YPSzl
-         TCDVwlD0ATvGkTfrc/TQCxvmD5gVCUvTfvcG4sTOrloHfiqY3gIgtIGYyw49CGfNjP
-         q0iIk4Xd+Pb/+Phbh50YYymw2XRQPm1zU+FaI6tdfgnJGrhb8jXoBEwEqcj4/NDeq6
-         c9E582RvYXcFw==
+        b=Qfrkxw74TDVgnAL+U9Gn0mFgOX9mS6Tt3e2XqQZSSy31mb7gnHncChSa9Ergq5Kj7
+         9bTpbQOx9SKcM7mNGrPywzC0H3zihF/NymwPj1E+wqsHT5TCfqQW+61NNU164/xt5m
+         2kk9mXf2BXU+eVDPfiIny6srKEk393bwUBDKVlXU33IW5cTy83mnaYKLPopkTBF8Aa
+         iJv98cOX+HNxycc0/u35hnEbwZaIxuZVl7/lxdki7CVgnX428TTMv27rX/g15r2Fnd
+         Wj5VrLPA8m3kIpzeHU/aqYsoarNUpdyOSe1hXPA4qHSrzqnbm9MNQWdSbNrZVebPnL
+         s7BoEeaqC+bXQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         kernel test robot <lkp@intel.com>,
         =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
         Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 011/176] iio: dac: ad5624r: Fix incorrect handling of an optional regulator.
-Date:   Thu,  9 Sep 2021 07:48:33 -0400
-Message-Id: <20210909115118.146181-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 007/109] iio: dac: ad5624r: Fix incorrect handling of an optional regulator.
+Date:   Thu,  9 Sep 2021 07:53:24 -0400
+Message-Id: <20210909115507.147917-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210909115118.146181-1-sashal@kernel.org>
-References: <20210909115118.146181-1-sashal@kernel.org>
+In-Reply-To: <20210909115507.147917-1-sashal@kernel.org>
+References: <20210909115507.147917-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
@@ -69,7 +69,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 17 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/iio/dac/ad5624r_spi.c b/drivers/iio/dac/ad5624r_spi.c
-index 2b2b8edfd258..ab4997bfd6d4 100644
+index e6c022e1dc1c..17cc8b3fc5d8 100644
 --- a/drivers/iio/dac/ad5624r_spi.c
 +++ b/drivers/iio/dac/ad5624r_spi.c
 @@ -229,7 +229,7 @@ static int ad5624r_probe(struct spi_device *spi)

@@ -2,199 +2,78 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A97804058BA
-	for <lists+linux-iio@lfdr.de>; Thu,  9 Sep 2021 16:16:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0421406A55
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Sep 2021 12:47:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244205AbhIIOQm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 9 Sep 2021 10:16:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40760 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236843AbhIIOQj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 9 Sep 2021 10:16:39 -0400
-Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82FA8C08EE13
-        for <linux-iio@vger.kernel.org>; Thu,  9 Sep 2021 05:33:43 -0700 (PDT)
-Received: by mail-qv1-xf34.google.com with SMTP id z12so997632qvx.5
-        for <linux-iio@vger.kernel.org>; Thu, 09 Sep 2021 05:33:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=deviqon.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=BCZWh7t0fiDuebnxXV+Da06p0DKn6S0nC/3dScWfDqQ=;
-        b=YCuYJEpD68js0MzLC4P4YrHL5iNk2IQesIQ/duiGjqr2TTYRhypWaBAhqree0QHoXr
-         Uq1kKgbvVJZcESooLTbwGZHT33xQRb20vGmW9KMnxq3XkmElPFdiMnF91isH6ZvhvSBt
-         F/owFqXLRlQ6kd0xF29y+cfwBqQoF75vP7HJhyC7lQ9DFWfHb5rF8xwveM+moDH1NKYF
-         uxUtWXIl0/h1E8GguRUC8guwMxYn5eBNRRzWxtMXRSMQS8Rc6A1k/i0OemaHEg4JbGyl
-         XstxC8Pk+NJ5ih7kRkqd+n1dikBKmpLCQVgAVmCAu+Hc+JouVRD3DlDpMtBJCYvjCRZJ
-         FvSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BCZWh7t0fiDuebnxXV+Da06p0DKn6S0nC/3dScWfDqQ=;
-        b=bxuZZ5fsd7NqZIevdxB+d+jf2EyLm/duP2iFQkcTEj5qXi57cO7yP7raHJms45h3QT
-         lnH0YH1i1J3F1QwQ5RfRMh4h6Kz2jkrtVlTfVf1yDjOnc/InKs5IIPTmmzdBZoiEz5+y
-         Cu0ljAI3HGhV6V3L7DXCkwUdB30QqO1tgS1n3xR0hPV3moiz5d6ZVo3/KAaFTlJHWk0G
-         TnjB0yVb6c2POo5vcz8Tq/BnTdy3yQ9Yr59QLydLxnoPMtFpI+9AUTBnJ61YMX9hdMoI
-         +rB5KEw7u98C+/mECIQryAIL+0F4ILanlEV1jtGZVPBtub3Hh6goeWdgcKgPejap3vhJ
-         FGfQ==
-X-Gm-Message-State: AOAM530GCfTrDpu1bbJPPgu0WQGMeXwh8H4mS+/UyQZb3pnMEvpr9Cf5
-        DE9BY+6AtBx5EpCYkpkQiJ/GSRkuxnSllyz9kV+rbRfCrfU=
-X-Google-Smtp-Source: ABdhPJzKUJigy0WZqHh3GTpws0zvDq54w5g9lDb16+Cqy40v3Fe42JJsLAYBaw9SA9dXSZLU4vj87/UqdDh/RB16pyQ=
-X-Received: by 2002:ad4:4623:: with SMTP id x3mr791665qvv.17.1631190822661;
- Thu, 09 Sep 2021 05:33:42 -0700 (PDT)
+        id S232430AbhIJKst (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 10 Sep 2021 06:48:49 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:3767 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232415AbhIJKst (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Sep 2021 06:48:49 -0400
+Received: from fraeml706-chm.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4H5XZw1Rrpz67Nln;
+        Fri, 10 Sep 2021 18:45:28 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml706-chm.china.huawei.com (10.206.15.55) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2308.8; Fri, 10 Sep 2021 12:47:35 +0200
+Received: from localhost (10.52.123.213) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.8; Fri, 10 Sep
+ 2021 11:47:35 +0100
+Date:   Fri, 10 Sep 2021 11:47:33 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+CC:     Jacopo Mondi <jacopo@jmondi.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v5 4/4] iio: ABI: Document in_concentration_co2_scale
+Message-ID: <20210910114733.0000446c@Huawei.com>
+In-Reply-To: <YToGpTR0aJ97GxG0@smile.fi.intel.com>
+References: <20210909094537.218064-1-jacopo@jmondi.org>
+        <20210909094537.218064-5-jacopo@jmondi.org>
+        <YToGpTR0aJ97GxG0@smile.fi.intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
 MIME-Version: 1.0
-References: <20210625074325.9237-1-aardelean@deviqon.com> <20210704190158.6676ab99@jic23-huawei>
-In-Reply-To: <20210704190158.6676ab99@jic23-huawei>
-From:   Alexandru Ardelean <aardelean@deviqon.com>
-Date:   Thu, 9 Sep 2021 15:33:31 +0300
-Message-ID: <CAASAkob02JJA0WGyfXMAWQrwrvJr_uKqVSkeK6O8QR4tZo-KiQ@mail.gmail.com>
-Subject: Re: [PATCH] iio: adc: fsl-imx25-gcq: initialize regulators as needed
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        shawnguo@kernel.org, s.hauer@pengutronix.de
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.52.123.213]
+X-ClientProxiedBy: lhreml710-chm.china.huawei.com (10.201.108.61) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 4 Jul 2021 at 20:59, Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Fri, 25 Jun 2021 10:43:25 +0300
-> Alexandru Ardelean <aardelean@deviqon.com> wrote:
->
-> > The driver tries to initialize all possible regulators from the DT, then
-> > match the external regulators with each channel and then release all unused
-> > regulators.
-> >
-> > We can change the logic a bit to initialize regulators only when at least
-> > one channel needs them.
-> >
-> > This change creates a mx25_gcq_ext_regulator_setup() function that is
-> > called only for the external regulators. If there's already a reference to
-> > an external regulator, the function will just exit early with no error.
-> >
-> > This way, the driver doesn't need to keep any track of these regulators
-> > during init.
-> >
-> > Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
->
-> whilst I agree this is a bit cleaner, I definitely want to see review from
-> those more familiar with the device before I take it!
+On Thu, 9 Sep 2021 16:05:41 +0300
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-ping on this
+> On Thu, Sep 09, 2021 at 11:45:37AM +0200, Jacopo Mondi wrote:
+> > Document the 'in_concentration_co2_scale' standard IIO attribute.  
+> 
+> ...
+> 
+> > +What:		/sys/bus/iio/devices/iio:deviceX/in_concentration_co2_scale  
+> 
+> I don't know the history of the discussion about this attribute but it seems
+> too specific to have in list of kinda generic ones.
+> 
+> Shouldn't be rather air / gas / etc used instead of CO2?
+> 
+I'm not following.  The sensor is measuring c02 concentration (in the air) so
+we need to call that out.  Making it more general would mean we couldn't then
+handle a sensor that had channels for c02 and oxygen for example.
+We don't bother to distinguish the difference between concentration in gas or
+liquid because it seemed unneeded.  This is sort of similar to the fact we
+don't distinguish gas temperature (say in a humidity sensor) from object temperature
+in an IR thermometer.  We could do so if there is a strong reason for it.
 
->
-> Thanks,
->
-> Jonathan
->
-> > ---
-> >  drivers/iio/adc/fsl-imx25-gcq.c | 57 ++++++++++++++++-----------------
-> >  1 file changed, 28 insertions(+), 29 deletions(-)
-> >
-> > diff --git a/drivers/iio/adc/fsl-imx25-gcq.c b/drivers/iio/adc/fsl-imx25-gcq.c
-> > index ab5139e911c3..31776f80f847 100644
-> > --- a/drivers/iio/adc/fsl-imx25-gcq.c
-> > +++ b/drivers/iio/adc/fsl-imx25-gcq.c
-> > @@ -172,13 +172,37 @@ static const struct regmap_config mx25_gcq_regconfig = {
-> >       .reg_stride = 4,
-> >  };
-> >
-> > +static int mx25_gcq_ext_regulator_setup(struct device *dev,
-> > +                                     struct mx25_gcq_priv *priv, u32 refp)
-> > +{
-> > +     char reg_name[12];
-> > +     int ret;
-> > +
-> > +     if (priv->vref[refp])
-> > +             return 0;
-> > +
-> > +     ret = snprintf(reg_name, sizeof(reg_name), "vref-%s",
-> > +                    mx25_gcq_refp_names[refp]);
-> > +     if (ret < 0)
-> > +             return ret;
-> > +
-> > +     priv->vref[refp] = devm_regulator_get_optional(dev, reg_name);
-> > +     if (IS_ERR(priv->vref[refp])) {
-> > +             dev_err(dev,
-> > +                     "Error, trying to use external voltage reference without a %s regulator.",
-> > +                     reg_name);
-> > +             return PTR_ERR(priv->vref[refp]);
-> > +     }
-> > +
-> > +     return 0;
-> > +}
-> > +
-> >  static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
-> >                              struct mx25_gcq_priv *priv)
-> >  {
-> >       struct device_node *np = pdev->dev.of_node;
-> >       struct device_node *child;
-> >       struct device *dev = &pdev->dev;
-> > -     unsigned int refp_used[4] = {};
-> >       int ret, i;
-> >
-> >       /*
-> > @@ -194,19 +218,6 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
-> >                            MX25_ADCQ_CFG_IN(i) |
-> >                            MX25_ADCQ_CFG_REFN_NGND2);
-> >
-> > -     /*
-> > -      * First get all regulators to store them in channel_vref_mv if
-> > -      * necessary. Later we use that information for proper IIO scale
-> > -      * information.
-> > -      */
-> > -     priv->vref[MX25_ADC_REFP_INT] = NULL;
-> > -     priv->vref[MX25_ADC_REFP_EXT] =
-> > -             devm_regulator_get_optional(&pdev->dev, "vref-ext");
-> > -     priv->vref[MX25_ADC_REFP_XP] =
-> > -             devm_regulator_get_optional(&pdev->dev, "vref-xp");
-> > -     priv->vref[MX25_ADC_REFP_YP] =
-> > -             devm_regulator_get_optional(&pdev->dev, "vref-yp");
-> > -
-> >       for_each_child_of_node(np, child) {
-> >               u32 reg;
-> >               u32 refp = MX25_ADCQ_CFG_REFP_INT;
-> > @@ -233,11 +244,10 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
-> >               case MX25_ADC_REFP_EXT:
-> >               case MX25_ADC_REFP_XP:
-> >               case MX25_ADC_REFP_YP:
-> > -                     if (IS_ERR(priv->vref[refp])) {
-> > -                             dev_err(dev, "Error, trying to use external voltage reference without a vref-%s regulator.",
-> > -                                     mx25_gcq_refp_names[refp]);
-> > +                     ret = mx25_gcq_ext_regulator_setup(&pdev->dev, priv, refp);
-> > +                     if (ret) {
-> >                               of_node_put(child);
-> > -                             return PTR_ERR(priv->vref[refp]);
-> > +                             return ret;
-> >                       }
-> >                       priv->channel_vref_mv[reg] =
-> >                               regulator_get_voltage(priv->vref[refp]);
-> > @@ -253,8 +263,6 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
-> >                       return -EINVAL;
-> >               }
-> >
-> > -             ++refp_used[refp];
-> > -
-> >               /*
-> >                * Shift the read values to the correct positions within the
-> >                * register.
-> > @@ -285,15 +293,6 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
-> >       regmap_write(priv->regs, MX25_ADCQ_CR,
-> >                    MX25_ADCQ_CR_PDMSK | MX25_ADCQ_CR_QSM_FQS);
-> >
-> > -     /* Remove unused regulators */
-> > -     for (i = 0; i != 4; ++i) {
-> > -             if (!refp_used[i]) {
-> > -                     if (!IS_ERR_OR_NULL(priv->vref[i]))
-> > -                             devm_regulator_put(priv->vref[i]);
-> > -                     priv->vref[i] = NULL;
-> > -             }
-> > -     }
-> > -
-> >       return 0;
-> >  }
-> >
->
+Using c02 as a modifier on a concentration channel is in line with how we
+handled things like different light frequency ranges ir, visible, red, green, blue.
+
+Jonathan

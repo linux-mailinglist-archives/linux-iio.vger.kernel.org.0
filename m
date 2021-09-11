@@ -2,34 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AD53407823
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Sep 2021 15:22:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02EC34078F6
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Sep 2021 17:01:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237510AbhIKNXQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 11 Sep 2021 09:23:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49040 "EHLO mail.kernel.org"
+        id S230281AbhIKPCX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 11 Sep 2021 11:02:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39850 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237521AbhIKNVO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 11 Sep 2021 09:21:14 -0400
+        id S229633AbhIKPCX (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 11 Sep 2021 11:02:23 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A42E861152;
-        Sat, 11 Sep 2021 13:19:55 +0000 (UTC)
-Date:   Sat, 11 Sep 2021 14:23:26 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 61C5661206;
+        Sat, 11 Sep 2021 15:01:08 +0000 (UTC)
+Date:   Sat, 11 Sep 2021 16:04:39 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Iain Hunter <drhunter95@gmail.com>
-Cc:     lothar.felten@gmail.com, iain@hunterembedded.co.uk,
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jacopo Mondi <jacopo@jmondi.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
         Matt Ranostay <matt.ranostay@konsulko.com>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] workaround regression in ina2xx introduced by
- cb47755725da("time: Prevent undefined behaviour in timespec64_to_ns()")
-Message-ID: <20210911142326.4acd95a1@jic23-huawei>
-In-Reply-To: <20210911113645.2547272-1-drhunter95@gmail.com>
-References: <20210911113645.2547272-1-drhunter95@gmail.com>
+        Magnus Damm <magnus.damm@gmail.com>,
+        <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v5 4/4] iio: ABI: Document in_concentration_co2_scale
+Message-ID: <20210911160439.1b6deaa3@jic23-huawei>
+In-Reply-To: <20210910114733.0000446c@Huawei.com>
+References: <20210909094537.218064-1-jacopo@jmondi.org>
+        <20210909094537.218064-5-jacopo@jmondi.org>
+        <YToGpTR0aJ97GxG0@smile.fi.intel.com>
+        <20210910114733.0000446c@Huawei.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -38,68 +40,44 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 11 Sep 2021 12:36:23 +0100
-Iain Hunter <drhunter95@gmail.com> wrote:
+On Fri, 10 Sep 2021 11:47:33 +0100
+Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
 
-> From: Iain Hunter <iain@hunterembedded.co.uk>
+> On Thu, 9 Sep 2021 16:05:41 +0300
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 > 
-> That change adds an error check to avoid saturation during multiplication
-> to calculate nano seconds in timespec64_to_ns().
-> In ina2xx_capture_thread() a timespec64 structure is used to calculate
-> the delta time until the next sample time. This delta can be negative if
-> the next sample time was in the past. In the -1 case timespec64_to_ns()
-> now clamps the -1 second value to KTIME_MAX. This essentially puts ina2xx
-> thread to sleep forever.
-> Proposed patch is to replace the call to timespec64_to_ns() with the
-> contents of that function without the overflow test introduced by the
-> commit (ie revert to pre kernel 5.4 behaviour)
+> > On Thu, Sep 09, 2021 at 11:45:37AM +0200, Jacopo Mondi wrote:  
+> > > Document the 'in_concentration_co2_scale' standard IIO attribute.    
+> > 
+> > ...
+> >   
+> > > +What:		/sys/bus/iio/devices/iio:deviceX/in_concentration_co2_scale    
+> > 
+> > I don't know the history of the discussion about this attribute but it seems
+> > too specific to have in list of kinda generic ones.
+> > 
+> > Shouldn't be rather air / gas / etc used instead of CO2?
+> >   
+> I'm not following.  The sensor is measuring c02 concentration (in the air) so
+> we need to call that out.  Making it more general would mean we couldn't then
+> handle a sensor that had channels for c02 and oxygen for example.
+> We don't bother to distinguish the difference between concentration in gas or
+> liquid because it seemed unneeded.  This is sort of similar to the fact we
+> don't distinguish gas temperature (say in a humidity sensor) from object temperature
+> in an IR thermometer.  We could do so if there is a strong reason for it.
 > 
-> Signed-off-by: Iain Hunter <iain@hunterembedded.co.uk>
-
-Needs a fixes tag with the patch you mention above that added the check
-so that we can tell how far back this needs to be backported.
-
-
-
-> ---
->  drivers/iio/adc/ina2xx-adc.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+> Using c02 as a modifier on a concentration channel is in line with how we
+> handled things like different light frequency ranges ir, visible, red, green, blue.
 > 
-> diff --git a/drivers/iio/adc/ina2xx-adc.c b/drivers/iio/adc/ina2xx-adc.c
-> index a4b2ff9e0..ba3e98fde 100644
-> --- a/drivers/iio/adc/ina2xx-adc.c
-> +++ b/drivers/iio/adc/ina2xx-adc.c
-> @@ -777,6 +777,7 @@ static int ina2xx_capture_thread(void *data)
->  	int ret;
->  	struct timespec64 next, now, delta;
->  	s64 delay_us;
-> +	s64 delta_ns;
->  
->  	/*
->  	 * Poll a bit faster than the chip internal Fs, in case
-> @@ -818,7 +819,8 @@ static int ina2xx_capture_thread(void *data)
->  		do {
->  			timespec64_add_ns(&next, 1000 * sampling_us);
->  			delta = timespec64_sub(next, now);
-> -			delay_us = div_s64(timespec64_to_ns(&delta), 1000);
-> +			delta_ns = (((s64)delta.tv_sec) * NSEC_PER_SEC)+delta.tv_nsec;
+> Jonathan
 
-spaces around the +
+We had a quick chat about this off list.
 
-> +			delay_us = div_s64(delta_ns, 1000);
+Andy's point was that ultimately it might be better to have a separate
+attribute for the gas type. Andy may well be correct long term but this is
+an existing bit of ABI so lets leave it as it stands for now.
 
-Hmm. The negative timestamp is a bit of a mess anyway.  Perhaps we can do something
-neater using the standard functions by checking the validity of the timestamp
-using timespec64_valid_strict() in the while loop and dropping the div_s64 out
-of the loop.
-
-What do you think?  Would need a comment to explain why we the check on
-it being valid though.
+Perhaps we will revisit this in future if we get a wide range of different types
+of gas sensor.
 
 Jonathan
-
-
->  		} while (delay_us <= 0);
->  
->  		usleep_range(delay_us, (delay_us * 3) >> 1);
-

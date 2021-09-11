@@ -2,21 +2,21 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A7DD40792F
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Sep 2021 17:48:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A8F140796D
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Sep 2021 18:04:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232447AbhIKPtj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 11 Sep 2021 11:49:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54734 "EHLO mail.kernel.org"
+        id S229669AbhIKQGJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 11 Sep 2021 12:06:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60638 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232353AbhIKPti (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 11 Sep 2021 11:49:38 -0400
+        id S229560AbhIKQGI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 11 Sep 2021 12:06:08 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F1698611B0;
-        Sat, 11 Sep 2021 15:48:22 +0000 (UTC)
-Date:   Sat, 11 Sep 2021 16:51:54 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id E1A5560F9C;
+        Sat, 11 Sep 2021 16:04:52 +0000 (UTC)
+Date:   Sat, 11 Sep 2021 17:08:23 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Olivier Moysan <olivier.moysan@foss.st.com>
 Cc:     Alexandre Torgue <alexandre.torgue@foss.st.com>,
@@ -29,11 +29,12 @@ Cc:     Alexandre Torgue <alexandre.torgue@foss.st.com>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <linux-stm32@st-md-mailman.stormreply.com>
-Subject: Re: [PATCH 1/7] dt-bindings: iio: adc: add generic channel binding
-Message-ID: <20210911165154.3afb17f7@jic23-huawei>
-In-Reply-To: <20210908155452.25458-2-olivier.moysan@foss.st.com>
+Subject: Re: [PATCH 4/7] iio: adc: stm32-adc: add support of generic
+ channels binding
+Message-ID: <20210911170823.292aa672@jic23-huawei>
+In-Reply-To: <20210908155452.25458-5-olivier.moysan@foss.st.com>
 References: <20210908155452.25458-1-olivier.moysan@foss.st.com>
-        <20210908155452.25458-2-olivier.moysan@foss.st.com>
+        <20210908155452.25458-5-olivier.moysan@foss.st.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,196 +43,180 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 8 Sep 2021 17:54:46 +0200
+On Wed, 8 Sep 2021 17:54:49 +0200
 Olivier Moysan <olivier.moysan@foss.st.com> wrote:
 
-dt-bindings: iio: adc: stm32-adc: ...
-
-> Add ADC generic channel binding. This binding should
-> be used as an alternate to legacy channel properties
-> whenever possible.
-> ADC generic channel binding allows to identify supported
-> internal channels through the following reserved label names:
-> "vddcore", "vrefint" and "vbat".
-> This binding also allows to set a different sampling time
-> for each channel.
+> Add support of generic IIO channel binding:
+> ./devicetree/bindings/iio/adc/adc.yaml
+> Keep support of st,adc-channels and st,adc-diff-channels
+> for backward compatibility.
 > 
 > Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
-> ---
-> Note: The schema here is too permissive as either legacy or generic
-> channels properties are required. These properties are mutually
-> exclusive, however all attempts to describe this constraint are
-> failing. In particular the following schemas and their variants have
-> shown unsucessful.
-> 
-Given yaml still drives me crazy I'll rely on Rob's expertise for suggestions
-here.
 
-The new binding text itself looks great to me.
+Hi Olivier,
 
-> oneOf:
->   - anyOf:
-> 	- required:
-> 		- st,adc-channels
-> 	- required:
-> 		- st,adc-diff-channels
->   - anyOf:
-> 	- required:
-> 		- $nodename
-> 
-> - if:
->   patternProperties:
->     "^channel@([0-9]|1[0-9])$":
->       type: object
-> then:
->   properties:
->     st,adc-channels: false
->     st,adc-diff-channels: false
-> else:
->   - anyOf:
->       - required:
->           - st,adc-channels
->       - required:
->           - st,adc-diff-channels
+A few minor things inline.
+
+Thanks,
+
+Jonathan
+
 > ---
->  .../bindings/iio/adc/st,stm32-adc.yaml        | 100 ++++++++++++++++--
->  1 file changed, 93 insertions(+), 7 deletions(-)
+>  drivers/iio/adc/stm32-adc.c | 99 +++++++++++++++++++++++++++++++++----
+>  1 file changed, 90 insertions(+), 9 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml b/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
-> index a58334c3bb76..a1f6cbe144ba 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
-> @@ -222,6 +222,12 @@ patternProperties:
->        '#io-channel-cells':
->          const: 1
+> diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+> index 2f137d14f141..ae4a314854f7 100644
+> --- a/drivers/iio/adc/stm32-adc.c
+> +++ b/drivers/iio/adc/stm32-adc.c
+> @@ -35,7 +35,7 @@
+>  #define STM32H7_BOOST_CLKRATE		20000000UL
 >  
-> +      '#address-cells':
-> +        const: 1
-> +
-> +      '#size-cells':
-> +        const: 0
-> +
->        interrupts:
->          description: |
->            IRQ Line for the ADC instance. Valid values are:
-> @@ -265,7 +271,9 @@ patternProperties:
->            <vinp vinn>, <vinp vinn>,... vinp and vinn are numbered from 0 to 19.
+>  #define STM32_ADC_CH_MAX		20	/* max number of channels */
+> -#define STM32_ADC_CH_SZ			10	/* max channel name size */
+> +#define STM32_ADC_CH_SZ			16	/* max channel name size */
+>  #define STM32_ADC_MAX_SQ		16	/* SQ1..SQ16 */
+>  #define STM32_ADC_MAX_SMP		7	/* SMPx range is [0..7] */
+>  #define STM32_ADC_TIMEOUT_US		100000
+> @@ -1732,6 +1732,11 @@ static int stm32_adc_get_legacy_chan_count(struct iio_dev *indio_dev, struct stm
+>  		num_channels += ret;
+>  	}
 >  
->            Note: At least one of "st,adc-channels" or "st,adc-diff-channels" is
-> -          required. Both properties can be used together. Some channels can be
-> +          required if no adc generic channel is defined. These legacy channel
-> +          properties are exclusive with adc generic channel bindings.
-> +          Both properties can be used together. Some channels can be
->            used as single-ended and some other ones as differential (mixed). But
->            channels can't be configured both as single-ended and differential.
->          $ref: /schemas/types.yaml#/definitions/uint32-matrix
-> @@ -290,6 +298,44 @@ patternProperties:
->            each channel.
->          $ref: /schemas/types.yaml#/definitions/uint32-array
+> +	if (!num_channels) {
+> +		dev_err(indio_dev->dev.parent, "No channel found\n");
+> +		return -ENODATA;
+
+I'd return 0 and handle this at the caller.   Both because it makes this
+patch more readable and because a count of 0 isn't an error of the function
+reading how many they are, but rather at a higher level.
+
+> +	}
+> +
+>  	return num_channels;
+>  }
 >  
-> +    patternProperties:
-> +      "^channel@([0-9]|1[0-9])$":
-> +        type: object
-> +        $ref: "adc.yaml"
-> +        description: |
-> +          Represents the external channels which are connected to the ADC.
-> +
-> +        properties:
-> +          reg:
-> +            items:
-> +              minimum: 0
-> +              maximum: 19
-> +
-> +          label:
-> +            description: |
-> +              Unique name to identify which channel this is.
-> +              Reserved label names "vddcore", "vrefint" and "vbat"
-> +              are used to identify internal channels with matching names.
-> +
-> +          diff-channels:
-> +            $ref: /schemas/types.yaml#/definitions/uint32-array
-> +            items:
-> +              minimum: 0
-> +              maximum: 19
-> +
-> +          st,min-sample-time-nsecs:
-> +            $ref: /schemas/types.yaml#/definitions/uint32
-> +            description: |
-> +              Minimum sampling time in nanoseconds. Depending on hardware (board)
-> +              e.g. high/low analog input source impedance, fine tune of ADC
-> +              sampling time may be recommended.
-> +
-> +        required:
-> +          - reg
-> +
-> +    dependencies:
-> +      $nodename: [ '#address-cells', '#size-cells' ]
-> +
->      allOf:
->        - if:
->            properties:
-> @@ -369,12 +415,6 @@ patternProperties:
+> @@ -1792,6 +1797,73 @@ static int stm32_adc_legacy_chan_init(struct iio_dev *indio_dev,
+>  	return scan_index;
+>  }
 >  
->      additionalProperties: false
+> +static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
+> +				       struct stm32_adc *adc,
+> +				       struct iio_chan_spec *channels)
+> +{
+> +	struct device_node *node = indio_dev->dev.of_node;
+> +	const struct stm32_adc_info *adc_info = adc->cfg->adc_info;
+> +	struct device_node *child;
+> +	const char *name;
+> +	int val, scan_index = 0, ret;
+> +	bool differential;
+> +	u32 vin[2];
+> +
+> +	for_each_available_child_of_node(node, child) {
+> +		ret = of_property_read_u32(child, "reg", &val);
+> +		if (ret) {
+> +			dev_err(&indio_dev->dev, "Missing channel index %d\n", ret);
+> +			goto err;
+> +		}
+> +
+> +		ret = of_property_read_string(child, "label", &name);
+> +		/* label is optional */
+> +		if (!ret) {
+> +			if (strlen(name) >= STM32_ADC_CH_SZ) {
+> +				dev_err(&indio_dev->dev, "Label %s exceeds %d characters\n",
+> +					name, STM32_ADC_CH_SZ);
+> +				return -EINVAL;
+> +			}
+> +			strncpy(adc->chan_name[val], name, STM32_ADC_CH_SZ);
+> +		} else if (ret != -EINVAL) {
+> +			dev_err(&indio_dev->dev, "Invalid label %d\n", ret);
+> +			goto err;
+> +		}
+> +
+> +		if (val >= adc_info->max_channels) {
+> +			dev_err(&indio_dev->dev, "Invalid channel %d\n", val);
+> +			ret = -EINVAL;
+> +			goto err;
+> +		}
+> +
+> +		differential = false;
+> +		ret = of_property_read_u32_array(child, "diff-channels", vin, 2);
+> +		/* diff-channels is optional */
+> +		if (!ret) {
+> +			differential = true;
+> +			if (vin[0] != val || vin[1] >= adc_info->max_channels) {
+> +				dev_err(&indio_dev->dev, "Invalid channel in%d-in%d\n",
+> +					vin[0], vin[1]);
+> +				goto err;
+> +			}
+> +		} else if (ret != -EINVAL) {
+> +			dev_err(&indio_dev->dev, "Invalid diff-channels property %d\n", ret);
+> +			goto err;
+> +		}
+> +
+> +		stm32_adc_chan_init_one(indio_dev, &channels[scan_index], val,
+> +					vin[1], scan_index, differential);
+> +		scan_index++;
+> +	}
+> +
+> +	return scan_index;
+> +
+> +err:
+> +	of_node_put(child);
+> +
+> +	return ret;
+> +}
+> +
+>  static int stm32_adc_chan_of_init(struct iio_dev *indio_dev, bool timestamping)
+>  {
+>  	struct device_node *node = indio_dev->dev.of_node;
+> @@ -1800,15 +1872,21 @@ static int stm32_adc_chan_of_init(struct iio_dev *indio_dev, bool timestamping)
+>  	struct iio_chan_spec *channels;
+>  	int scan_index = 0, num_channels = 0, ret, i;
+>  	u32 smp = 0;
+> +	bool legacy = false;
 >  
-> -    anyOf:
-> -      - required:
-> -          - st,adc-channels
-> -      - required:
-> -          - st,adc-diff-channels
+> -	ret = stm32_adc_get_legacy_chan_count(indio_dev, adc);
+> -	if (ret < 0)
+> -		return ret;
+> -	num_channels = ret;
 > -
->      required:
->        - compatible
->        - reg
-> @@ -451,4 +491,50 @@ examples:
->          // other adc child node follow...
->        };
->  
-> +  - |
-> +    // Example 3: with stm32mp157c to setup ADC2 with:
-> +    // - internal channels 13, 14, 15.
-> +      #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +      #include <dt-bindings/clock/stm32mp1-clks.h>
-> +      adc122: adc@48003000 {
-> +        compatible = "st,stm32mp1-adc-core";
-> +        reg = <0x48003000 0x400>;
-> +        interrupts = <GIC_SPI 18 IRQ_TYPE_LEVEL_HIGH>,
-> +                     <GIC_SPI 90 IRQ_TYPE_LEVEL_HIGH>;
-> +        clocks = <&rcc ADC12>, <&rcc ADC12_K>;
-> +        clock-names = "bus", "adc";
-> +        booster-supply = <&booster>;
-> +        vdd-supply = <&vdd>;
-> +        vdda-supply = <&vdda>;
-> +        vref-supply = <&vref>;
-> +        st,syscfg = <&syscfg>;
-> +        interrupt-controller;
-> +        #interrupt-cells = <1>;
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +        adc@100 {
-> +          compatible = "st,stm32mp1-adc";
-> +          #io-channel-cells = <1>;
-> +          reg = <0x100>;
-> +          interrupts = <1>;
-> +          #address-cells = <1>;
-> +          #size-cells = <0>;
-> +          channel@13 {
-> +            reg = <13>;
-> +            label = "vrefint";
-> +            st,min-sample-time-nsecs = <9000>;
-> +          };
-> +          channel@14 {
-> +            reg = <14>;
-> +            label = "vddcore";
-> +            st,min-sample-time-nsecs = <9000>;
-> +          };
-> +          channel@15 {
-> +            reg = <15>;
-> +            label = "vbat";
-> +            st,min-sample-time-nsecs = <9000>;
-> +          };
-> +        };
-> +      };
+> +	num_channels = of_get_available_child_count(node);
+> +	/*
+> +	 * If no channels have been found, fallback to channels legacy properties.
+> +	 * Legacy channel properties will be ignored, if some channels are
+
+drop the ,
+
+Legacy channel properties will be ignored if some channels...
+
+
+> +	 * already defined using the standard binding.
+> +	 */
+>  	if (!num_channels) {
+> -		dev_err(&indio_dev->dev, "No channels configured\n");
+> -		return -ENODATA;
+> +		ret = stm32_adc_get_legacy_chan_count(indio_dev, adc);
+> +		if (ret < 0)
+> +			return ret;
 > +
->  ...
+> +		legacy = true;
+
+Trivial but I would set legacy at top of this if block so it is nearer the comment.
+
+> +		num_channels = ret;
+>  	}
+>  
+>  	if (num_channels > adc_info->max_channels) {
+> @@ -1832,7 +1910,10 @@ static int stm32_adc_chan_of_init(struct iio_dev *indio_dev, bool timestamping)
+>  	if (!channels)
+>  		return -ENOMEM;
+>  
+> -	ret = stm32_adc_legacy_chan_init(indio_dev, adc, channels);
+> +	if (legacy)
+> +		ret = stm32_adc_legacy_chan_init(indio_dev, adc, channels);
+> +	else
+> +		ret = stm32_adc_generic_chan_init(indio_dev, adc, channels);
+>  	if (ret < 0)
+>  		return ret;
+>  	scan_index = ret;
 

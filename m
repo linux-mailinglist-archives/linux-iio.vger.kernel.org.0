@@ -2,32 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE73340791D
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Sep 2021 17:39:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DC04407924
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Sep 2021 17:41:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231894AbhIKPkg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 11 Sep 2021 11:40:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51410 "EHLO mail.kernel.org"
+        id S232556AbhIKPmO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 11 Sep 2021 11:42:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51782 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230265AbhIKPkg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 11 Sep 2021 11:40:36 -0400
+        id S232450AbhIKPmN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 11 Sep 2021 11:42:13 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 03B70610F8;
-        Sat, 11 Sep 2021 15:39:21 +0000 (UTC)
-Date:   Sat, 11 Sep 2021 16:42:53 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id E1D8161205;
+        Sat, 11 Sep 2021 15:40:56 +0000 (UTC)
+Date:   Sat, 11 Sep 2021 16:44:28 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Karol Wrona <k.wrona@samsung.com>,
+To:     Olivier Moysan <olivier.moysan@foss.st.com>
+Cc:     Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
+        Fabrice Gasnier <fabrice.gasnier@st.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] iio: ssp_sensors: add more range checking in
- ssp_parse_dataframe()
-Message-ID: <20210911164253.260be729@jic23-huawei>
-In-Reply-To: <20210909091336.GA26312@kili>
-References: <20210909091336.GA26312@kili>
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        <alsa-devel@alsa-project.org>, <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>
+Subject: Re: [PATCH 0/7] add internal channels support
+Message-ID: <20210911164428.023953c4@jic23-huawei>
+In-Reply-To: <20210908155452.25458-1-olivier.moysan@foss.st.com>
+References: <20210908155452.25458-1-olivier.moysan@foss.st.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -36,70 +41,35 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 9 Sep 2021 12:13:36 +0300
-Dan Carpenter <dan.carpenter@oracle.com> wrote:
+On Wed, 8 Sep 2021 17:54:45 +0200
+Olivier Moysan <olivier.moysan@foss.st.com> wrote:
 
-> The "idx" is validated at the start of the loop but it gets incremented
-> during the iteration so it needs to be checked again.
-> 
-> Fixes: 50dd64d57eee ("iio: common: ssp_sensors: Add sensorhub driver")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> This patchset adds support of ADC2 internal channels VDDCORE, VREFINT and VBAT
+> on STM32MP15x SoCs. The generic IIO channel bindings is also introduced here
+> to provide this feature. The legacy channel binding is kept for backward compatibility.
 
-This is only a fix if we assume that the len value check is there
-as a protection against buffer overrun rather than as a termination condition
-that occurs when parsing a valid record.
+Before I actually look at the patch, general naming comment.
+Please make sure that the driver / device name appears in the cover letter title
+and all the patches.  It makes it much easier for people to find the code relevant
+to them.
 
-There is more paranoid checking in ssp_print_mc_debug() so it seems we aren't assuming
-valid data in there at least.
-
-Still is this perhaps a case of hardening rather than a fix or am I missing something?
-
-As an aside, if that ssp_print_mcu_debug() reads a negative char it is then
-returned directly so we get a random small negative number as the error code which
-isn't going to be very useful.
+Thank,
 
 Jonathan
 
-
-> ---
->  drivers/iio/common/ssp_sensors/ssp_spi.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/common/ssp_sensors/ssp_spi.c b/drivers/iio/common/ssp_sensors/ssp_spi.c
-> index 4864c38b8d1c..387551eac184 100644
-> --- a/drivers/iio/common/ssp_sensors/ssp_spi.c
-> +++ b/drivers/iio/common/ssp_sensors/ssp_spi.c
-> @@ -273,6 +273,8 @@ static int ssp_parse_dataframe(struct ssp_data *data, char *dataframe, int len)
->  	for (idx = 0; idx < len;) {
->  		switch (dataframe[idx++]) {
->  		case SSP_MSG2AP_INST_BYPASS_DATA:
-> +			if (idx >= len)
-> +				return -EPROTO;
->  			sd = dataframe[idx++];
->  			if (sd < 0 || sd >= SSP_SENSOR_MAX) {
->  				dev_err(SSP_DEV,
-> @@ -282,10 +284,13 @@ static int ssp_parse_dataframe(struct ssp_data *data, char *dataframe, int len)
->  
->  			if (indio_devs[sd]) {
->  				spd = iio_priv(indio_devs[sd]);
-> -				if (spd->process_data)
-> +				if (spd->process_data) {
-> +					if (idx >= len)
-> +						return -EPROTO;
->  					spd->process_data(indio_devs[sd],
->  							  &dataframe[idx],
->  							  data->timestamp);
-> +				}
->  			} else {
->  				dev_err(SSP_DEV, "no client for frame\n");
->  			}
-> @@ -293,6 +298,8 @@ static int ssp_parse_dataframe(struct ssp_data *data, char *dataframe, int len)
->  			idx += ssp_offset_map[sd];
->  			break;
->  		case SSP_MSG2AP_INST_DEBUG_DATA:
-> +			if (idx >= len)
-> +				return -EPROTO;
->  			sd = ssp_print_mcu_debug(dataframe, &idx, len);
->  			if (sd) {
->  				dev_err(SSP_DEV,
+> Olivier Moysan (7):
+>   dt-bindings: iio: adc: add generic channel binding
+>   dt-bindings: iio: adc: add nvmem support for vrefint internal channel
+>   iio: adc stm32-adc: split channel init into several routines
+>   iio: adc: stm32-adc: add support of generic channels binding
+>   iio: adc: stm32-adc: add support of internal channels
+>   iio: adc: stm32-adc: add vrefint calibration support
+>   iio: adc: stm32-adc: use generic binding for sample-time
+> 
+>  .../bindings/iio/adc/st,stm32-adc.yaml        | 108 ++++-
+>  drivers/iio/adc/stm32-adc-core.h              |   8 +
+>  drivers/iio/adc/stm32-adc.c                   | 418 ++++++++++++++++--
+>  3 files changed, 482 insertions(+), 52 deletions(-)
+> 
 

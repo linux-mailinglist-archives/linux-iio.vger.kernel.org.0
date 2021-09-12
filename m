@@ -2,38 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A8ED2407E9E
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Sep 2021 18:33:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 535FB407EAD
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Sep 2021 18:38:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233221AbhILQeY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 12 Sep 2021 12:34:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48776 "EHLO mail.kernel.org"
+        id S229726AbhILQjy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 12 Sep 2021 12:39:54 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49710 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229597AbhILQeR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 12 Sep 2021 12:34:17 -0400
+        id S229643AbhILQjx (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 12 Sep 2021 12:39:53 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 58701608FB;
-        Sun, 12 Sep 2021 16:32:55 +0000 (UTC)
-Date:   Sun, 12 Sep 2021 17:36:27 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id F258B6108E;
+        Sun, 12 Sep 2021 16:38:37 +0000 (UTC)
+Date:   Sun, 12 Sep 2021 17:42:10 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
-        a.fatoum@pengutronix.de, kamel.bouhara@bootlin.com,
-        gwendal@chromium.org, alexandre.belloni@bootlin.com,
-        david@lechnology.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        syednwaris@gmail.com, patrick.havelange@essensium.com,
-        fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@st.com, o.rempel@pengutronix.de,
-        jarkko.nikula@linux.intel.com
-Subject: Re: [PATCH v16 00/14] Introduce the Counter character device
- interface
-Message-ID: <20210912173627.0a09144b@jic23-huawei>
-In-Reply-To: <20210830181706.74e45cb8@jic23-huawei>
-References: <cover.1630031207.git.vilhelm.gray@gmail.com>
-        <20210830181706.74e45cb8@jic23-huawei>
+To:     Cai Huoqing <caihuoqing@baidu.com>
+Cc:     <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Florian Boor <florian.boor@kernelconcepts.de>
+Subject: Re: [PATCH v2] iio: adc: ad799x: Add a single error handling block
+ at the end of the function.
+Message-ID: <20210912174210.6443865b@jic23-huawei>
+In-Reply-To: <20210912064101.539-1-caihuoqing@baidu.com>
+References: <20210912064101.539-1-caihuoqing@baidu.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,133 +35,69 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 30 Aug 2021 18:17:06 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Sun, 12 Sep 2021 14:41:01 +0800
+Cai Huoqing <caihuoqing@baidu.com> wrote:
 
-> On Fri, 27 Aug 2021 12:47:44 +0900
-> William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
+> A single error handling block at the end of the function could
+> be brought in to make code a little more concise.
 > 
-> > Changes in v16:
-> >  - Define magic numbers for stm32-lptimer-cnt clock polarities
-> >  - Define magic numbers for stm32-timer-cnt encoder modes
-> >  - Bump KernelVersion to 5.16 in sysfs-bus-counter ABI documentation
-> >  - Fix typos in driver API generic-counter.rst documentation file
-> > 
-> > For convenience, this patchset is also available on my personal git
-> > repo: https://gitlab.com/vilhelmgray/iio/-/tree/counter_chrdev_v16
-> > 
-> > The patches preceding "counter: Internalize sysfs interface code" are
-> > primarily cleanup and fixes that can be picked up and applied now to the
-> > IIO tree if so desired. The "counter: Internalize sysfs interface code"
-> > patch as well may be considered for pickup because it is relatively safe
-> > and makes no changes to the userspace interface.
-> > 
-> > To summarize the main points of this patchset: there are no changes to
-> > the existing Counter sysfs userspace interface; a Counter character
-> > device interface is introduced that allows Counter events and associated
-> > data to be read() by userspace; the events_configure() and
-> > watch_validate() driver callbacks are introduced to support Counter
-> > events; and IRQ support is added to the 104-QUAD-8 driver, serving as an
-> > example of how to support the new Counter events functionality.  
-> 
-> Hi William,
-> 
-> I'll aim to pick up the first part in a week (too tired today after a lot
-> of reviewing to even manage the basic sanity check on the changes).
-> 
-> For the rest...
-> 
-> What I'd really like to know is if anyone other than William and I is planning
-> to review them in depth? (particularly 7 and 8 which are the new interface
-> patch and docs)
-> 
-> So if anyone reading this is in that category please let me know.  We can wait,
-> but conversely if no one is going to get time / inclination to do it then I
-> don't want to hold these up any longer and maximum time in linux-next may
-> be more useful than sitting unloved on the mailing list.
+> Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
++CC Florian who is reworking some of the regulator handling in this driver.
 
-Ah well, looks like it's just the two of us for the chrdev core patches :)
+https://lore.kernel.org/linux-iio/20210908152525.2946785-1-florian.boor@kernelconcepts.de/
 
-Anyhow, I found time for a more thorough review.  I'm not 100% convinced on
-the model for the chrdev but you know a lot more about this sort of hardware than
-I do and it definitely seems reasonable - if anything it might be more flexible
-than it needs to be.
+One suggestion I made to Florian's v2 was to make the enabling of st->vref
+only occur it is actually present (rather than no there after making it
+optional).  That is going to cause merge problems against this patch.
 
-I've highlighted a few small things in the patches.  With those fixed I'm happy
-to apply the remainder of this series unless someone shouts in the meantime.
-
-There has been plenty of time for review, so fingers crossed that anyone
-who hasn't commented, but cares, is happy with how you have done it.
-
-So, lucky v17!  Persistence pays off in the end.
+@Florian, would you mind adding Cai Huoqing's patch to your series so that
+we get both your improvements and his on one go without conflicts?
+Either apply it as a precursor or rebase it on top of your patches.
 
 Thanks,
 
 Jonathan
 
+> ---
+> v1->v2:
+> Change the error path-error_disable_reg from "st->vref" to "st->reg".
 > 
-> Jonathan
+>  drivers/iio/adc/ad799x.c | 17 ++++++++++-------
+>  1 file changed, 10 insertions(+), 7 deletions(-)
 > 
-> > 
-> > William Breathitt Gray (14):
-> >   counter: stm32-lptimer-cnt: Provide defines for clock polarities
-> >   counter: stm32-timer-cnt: Provide defines for slave mode selection
-> >   counter: Internalize sysfs interface code
-> >   counter: Update counter.h comments to reflect sysfs internalization
-> >   docs: counter: Update to reflect sysfs internalization
-> >   counter: Move counter enums to uapi header
-> >   counter: Add character device interface
-> >   docs: counter: Document character device interface
-> >   tools/counter: Create Counter tools
-> >   counter: Implement signalZ_action_component_id sysfs attribute
-> >   counter: Implement *_component_id sysfs attributes
-> >   counter: Implement events_queue_size sysfs attribute
-> >   counter: 104-quad-8: Replace mutex with spinlock
-> >   counter: 104-quad-8: Add IRQ support for the ACCES 104-QUAD-8
-> > 
-> >  Documentation/ABI/testing/sysfs-bus-counter   |   38 +-
-> >  Documentation/driver-api/generic-counter.rst  |  358 +++-
-> >  .../userspace-api/ioctl/ioctl-number.rst      |    1 +
-> >  MAINTAINERS                                   |    3 +-
-> >  drivers/counter/104-quad-8.c                  |  699 ++++----
-> >  drivers/counter/Kconfig                       |    6 +-
-> >  drivers/counter/Makefile                      |    1 +
-> >  drivers/counter/counter-chrdev.c              |  553 ++++++
-> >  drivers/counter/counter-chrdev.h              |   14 +
-> >  drivers/counter/counter-core.c                |  191 +++
-> >  drivers/counter/counter-sysfs.c               |  960 +++++++++++
-> >  drivers/counter/counter-sysfs.h               |   13 +
-> >  drivers/counter/counter.c                     | 1496 -----------------
-> >  drivers/counter/ftm-quaddec.c                 |   60 +-
-> >  drivers/counter/intel-qep.c                   |  144 +-
-> >  drivers/counter/interrupt-cnt.c               |   62 +-
-> >  drivers/counter/microchip-tcb-capture.c       |   91 +-
-> >  drivers/counter/stm32-lptimer-cnt.c           |  212 ++-
-> >  drivers/counter/stm32-timer-cnt.c             |  195 +--
-> >  drivers/counter/ti-eqep.c                     |  180 +-
-> >  include/linux/counter.h                       |  715 ++++----
-> >  include/linux/counter_enum.h                  |   45 -
-> >  include/linux/mfd/stm32-lptimer.h             |    5 +
-> >  include/linux/mfd/stm32-timers.h              |    4 +
-> >  include/uapi/linux/counter.h                  |  154 ++
-> >  tools/Makefile                                |   13 +-
-> >  tools/counter/Build                           |    1 +
-> >  tools/counter/Makefile                        |   53 +
-> >  tools/counter/counter_example.c               |   93 +
-> >  29 files changed, 3569 insertions(+), 2791 deletions(-)
-> >  create mode 100644 drivers/counter/counter-chrdev.c
-> >  create mode 100644 drivers/counter/counter-chrdev.h
-> >  create mode 100644 drivers/counter/counter-core.c
-> >  create mode 100644 drivers/counter/counter-sysfs.c
-> >  create mode 100644 drivers/counter/counter-sysfs.h
-> >  delete mode 100644 drivers/counter/counter.c
-> >  delete mode 100644 include/linux/counter_enum.h
-> >  create mode 100644 include/uapi/linux/counter.h
-> >  create mode 100644 tools/counter/Build
-> >  create mode 100644 tools/counter/Makefile
-> >  create mode 100644 tools/counter/counter_example.c
-> > 
-> > 
-> > base-commit: 5ffeb17c0d3dd44704b4aee83e297ec07666e4d6  
-> 
+> diff --git a/drivers/iio/adc/ad799x.c b/drivers/iio/adc/ad799x.c
+> index 18bf8386d50a..d3dbc4c1e375 100644
+> --- a/drivers/iio/adc/ad799x.c
+> +++ b/drivers/iio/adc/ad799x.c
+> @@ -891,20 +891,23 @@ static int __maybe_unused ad799x_resume(struct device *dev)
+>  	}
+>  	ret = regulator_enable(st->vref);
+>  	if (ret) {
+> -		regulator_disable(st->reg);
+>  		dev_err(dev, "Unable to enable vref regulator\n");
+> -		return ret;
+> +		goto error_disable_reg;
+>  	}
+>  
+>  	/* resync config */
+>  	ret = ad799x_update_config(st, st->config);
+> -	if (ret) {
+> -		regulator_disable(st->vref);
+> -		regulator_disable(st->reg);
+> -		return ret;
+> -	}
+> +	if (ret)
+> +		goto error_disable_vref;
+>  
+>  	return 0;
+> +
+> +error_disable_vref:
+> +	regulator_disable(st->vref);
+> +error_disable_reg:
+> +	regulator_disable(st->reg);
+> +
+> +	return ret;
+>  }
+>  
+>  static SIMPLE_DEV_PM_OPS(ad799x_pm_ops, ad799x_suspend, ad799x_resume);
 

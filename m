@@ -2,21 +2,21 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F84E407E8D
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Sep 2021 18:23:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8ED2407E9E
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Sep 2021 18:33:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229597AbhILQYV convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sun, 12 Sep 2021 12:24:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54088 "EHLO mail.kernel.org"
+        id S233221AbhILQeY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 12 Sep 2021 12:34:24 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48776 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229643AbhILQYV (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 12 Sep 2021 12:24:21 -0400
+        id S229597AbhILQeR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 12 Sep 2021 12:34:17 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8742760F92;
-        Sun, 12 Sep 2021 16:23:02 +0000 (UTC)
-Date:   Sun, 12 Sep 2021 17:26:35 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 58701608FB;
+        Sun, 12 Sep 2021 16:32:55 +0000 (UTC)
+Date:   Sun, 12 Sep 2021 17:36:27 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     William Breathitt Gray <vilhelm.gray@gmail.com>
 Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
@@ -27,300 +27,148 @@ Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
         syednwaris@gmail.com, patrick.havelange@essensium.com,
         fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
         alexandre.torgue@st.com, o.rempel@pengutronix.de,
-        jarkko.nikula@linux.intel.com, Pavel Machek <pavel@ucw.cz>
-Subject: Re: [PATCH v16 09/14] tools/counter: Create Counter tools
-Message-ID: <20210912172635.14cc0923@jic23-huawei>
-In-Reply-To: <7fb22281fde0874614a87b0a000b2bf27e17043e.1630031207.git.vilhelm.gray@gmail.com>
+        jarkko.nikula@linux.intel.com
+Subject: Re: [PATCH v16 00/14] Introduce the Counter character device
+ interface
+Message-ID: <20210912173627.0a09144b@jic23-huawei>
+In-Reply-To: <20210830181706.74e45cb8@jic23-huawei>
 References: <cover.1630031207.git.vilhelm.gray@gmail.com>
-        <7fb22281fde0874614a87b0a000b2bf27e17043e.1630031207.git.vilhelm.gray@gmail.com>
+        <20210830181706.74e45cb8@jic23-huawei>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 27 Aug 2021 12:47:53 +0900
-William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
+On Mon, 30 Aug 2021 18:17:06 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> This creates an example Counter program under tools/counter/*
-> to exemplify the Counter character device interface.
+> On Fri, 27 Aug 2021 12:47:44 +0900
+> William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
 > 
-> Cc: Pavel Machek <pavel@ucw.cz>
-> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+> > Changes in v16:
+> >  - Define magic numbers for stm32-lptimer-cnt clock polarities
+> >  - Define magic numbers for stm32-timer-cnt encoder modes
+> >  - Bump KernelVersion to 5.16 in sysfs-bus-counter ABI documentation
+> >  - Fix typos in driver API generic-counter.rst documentation file
+> > 
+> > For convenience, this patchset is also available on my personal git
+> > repo: https://gitlab.com/vilhelmgray/iio/-/tree/counter_chrdev_v16
+> > 
+> > The patches preceding "counter: Internalize sysfs interface code" are
+> > primarily cleanup and fixes that can be picked up and applied now to the
+> > IIO tree if so desired. The "counter: Internalize sysfs interface code"
+> > patch as well may be considered for pickup because it is relatively safe
+> > and makes no changes to the userspace interface.
+> > 
+> > To summarize the main points of this patchset: there are no changes to
+> > the existing Counter sysfs userspace interface; a Counter character
+> > device interface is introduced that allows Counter events and associated
+> > data to be read() by userspace; the events_configure() and
+> > watch_validate() driver callbacks are introduced to support Counter
+> > events; and IRQ support is added to the 104-QUAD-8 driver, serving as an
+> > example of how to support the new Counter events functionality.  
+> 
+> Hi William,
+> 
+> I'll aim to pick up the first part in a week (too tired today after a lot
+> of reviewing to even manage the basic sanity check on the changes).
+> 
+> For the rest...
+> 
+> What I'd really like to know is if anyone other than William and I is planning
+> to review them in depth? (particularly 7 and 8 which are the new interface
+> patch and docs)
+> 
+> So if anyone reading this is in that category please let me know.  We can wait,
+> but conversely if no one is going to get time / inclination to do it then I
+> don't want to hold these up any longer and maximum time in linux-next may
+> be more useful than sitting unloved on the mailing list.
 
-It's great to have this example, but it very much an example rather than
-a generic tool. You may want to revisit and provide a more generic
-tool in the future.
+Ah well, looks like it's just the two of us for the chrdev core patches :)
 
-A trivial comment about using a loop inline.
+Anyhow, I found time for a more thorough review.  I'm not 100% convinced on
+the model for the chrdev but you know a lot more about this sort of hardware than
+I do and it definitely seems reasonable - if anything it might be more flexible
+than it needs to be.
+
+I've highlighted a few small things in the patches.  With those fixed I'm happy
+to apply the remainder of this series unless someone shouts in the meantime.
+
+There has been plenty of time for review, so fingers crossed that anyone
+who hasn't commented, but cares, is happy with how you have done it.
+
+So, lucky v17!  Persistence pays off in the end.
+
+Thanks,
 
 Jonathan
 
-> ---
->  MAINTAINERS                     |  1 +
->  tools/Makefile                  | 13 ++---
->  tools/counter/Build             |  1 +
->  tools/counter/Makefile          | 53 +++++++++++++++++++
->  tools/counter/counter_example.c | 93 +++++++++++++++++++++++++++++++++
->  5 files changed, 155 insertions(+), 6 deletions(-)
->  create mode 100644 tools/counter/Build
->  create mode 100644 tools/counter/Makefile
->  create mode 100644 tools/counter/counter_example.c
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index f2fdd2202605..57dc9b6ff82a 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -4782,6 +4782,7 @@ F:	Documentation/driver-api/generic-counter.rst
->  F:	drivers/counter/
->  F:	include/linux/counter.h
->  F:	include/uapi/linux/counter.h
-> +F:	tools/counter/
->  
->  CP2615 I2C DRIVER
->  M:	Bence Csókás <bence98@sch.bme.hu>
-> diff --git a/tools/Makefile b/tools/Makefile
-> index 7e9d34ddd74c..5da1fde03a9a 100644
-> --- a/tools/Makefile
-> +++ b/tools/Makefile
-> @@ -12,6 +12,7 @@ help:
->  	@echo '  acpi                   - ACPI tools'
->  	@echo '  bpf                    - misc BPF tools'
->  	@echo '  cgroup                 - cgroup tools'
-> +	@echo '  counter                - counter tools'
->  	@echo '  cpupower               - a tool for all things x86 CPU power'
->  	@echo '  debugging              - tools for debugging'
->  	@echo '  firewire               - the userspace part of nosy, an IEEE-1394 traffic sniffer'
-> @@ -65,7 +66,7 @@ acpi: FORCE
->  cpupower: FORCE
->  	$(call descend,power/$@)
->  
-> -cgroup firewire hv guest bootconfig spi usb virtio vm bpf iio gpio objtool leds wmi pci firmware debugging tracing: FORCE
-> +cgroup counter firewire hv guest bootconfig spi usb virtio vm bpf iio gpio objtool leds wmi pci firmware debugging tracing: FORCE
->  	$(call descend,$@)
->  
->  bpf/%: FORCE
-> @@ -100,7 +101,7 @@ freefall: FORCE
->  kvm_stat: FORCE
->  	$(call descend,kvm/$@)
->  
-> -all: acpi cgroup cpupower gpio hv firewire liblockdep \
-> +all: acpi cgroup counter cpupower gpio hv firewire liblockdep \
->  		perf selftests bootconfig spi turbostat usb \
->  		virtio vm bpf x86_energy_perf_policy \
->  		tmon freefall iio objtool kvm_stat wmi \
-> @@ -112,7 +113,7 @@ acpi_install:
->  cpupower_install:
->  	$(call descend,power/$(@:_install=),install)
->  
-> -cgroup_install firewire_install gpio_install hv_install iio_install perf_install bootconfig_install spi_install usb_install virtio_install vm_install bpf_install objtool_install wmi_install pci_install debugging_install tracing_install:
-> +cgroup_install counter_install firewire_install gpio_install hv_install iio_install perf_install bootconfig_install spi_install usb_install virtio_install vm_install bpf_install objtool_install wmi_install pci_install debugging_install tracing_install:
->  	$(call descend,$(@:_install=),install)
->  
->  liblockdep_install:
-> @@ -133,7 +134,7 @@ freefall_install:
->  kvm_stat_install:
->  	$(call descend,kvm/$(@:_install=),install)
->  
-> -install: acpi_install cgroup_install cpupower_install gpio_install \
-> +install: acpi_install cgroup_install counter_install cpupower_install gpio_install \
->  		hv_install firewire_install iio_install liblockdep_install \
->  		perf_install selftests_install turbostat_install usb_install \
->  		virtio_install vm_install bpf_install x86_energy_perf_policy_install \
-> @@ -147,7 +148,7 @@ acpi_clean:
->  cpupower_clean:
->  	$(call descend,power/cpupower,clean)
->  
-> -cgroup_clean hv_clean firewire_clean bootconfig_clean spi_clean usb_clean virtio_clean vm_clean wmi_clean bpf_clean iio_clean gpio_clean objtool_clean leds_clean pci_clean firmware_clean debugging_clean tracing_clean:
-> +cgroup_clean counter_clean hv_clean firewire_clean bootconfig_clean spi_clean usb_clean virtio_clean vm_clean wmi_clean bpf_clean iio_clean gpio_clean objtool_clean leds_clean pci_clean firmware_clean debugging_clean tracing_clean:
->  	$(call descend,$(@:_clean=),clean)
->  
->  liblockdep_clean:
-> @@ -181,7 +182,7 @@ freefall_clean:
->  build_clean:
->  	$(call descend,build,clean)
->  
-> -clean: acpi_clean cgroup_clean cpupower_clean hv_clean firewire_clean \
-> +clean: acpi_clean cgroup_clean counter_clean cpupower_clean hv_clean firewire_clean \
-
-This is far from alphabetical, though I have no idea if there is any strong convention on where
-to add new entries.
-
->  		perf_clean selftests_clean turbostat_clean bootconfig_clean spi_clean usb_clean virtio_clean \
->  		vm_clean bpf_clean iio_clean x86_energy_perf_policy_clean tmon_clean \
->  		freefall_clean build_clean libbpf_clean libsubcmd_clean liblockdep_clean \
-> diff --git a/tools/counter/Build b/tools/counter/Build
-> new file mode 100644
-> index 000000000000..33f4a51d715e
-> --- /dev/null
-> +++ b/tools/counter/Build
-> @@ -0,0 +1 @@
-> +counter_example-y += counter_example.o
-> diff --git a/tools/counter/Makefile b/tools/counter/Makefile
-> new file mode 100644
-> index 000000000000..5ebc195fd9c0
-> --- /dev/null
-> +++ b/tools/counter/Makefile
-> @@ -0,0 +1,53 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +include ../scripts/Makefile.include
-> +
-> +bindir ?= /usr/bin
-> +
-> +ifeq ($(srctree),)
-> +srctree := $(patsubst %/,%,$(dir $(CURDIR)))
-> +srctree := $(patsubst %/,%,$(dir $(srctree)))
-> +endif
-> +
-> +# Do not use make's built-in rules
-> +# (this improves performance and avoids hard-to-debug behaviour);
-> +MAKEFLAGS += -r
-> +
-> +override CFLAGS += -O2 -Wall -g -D_GNU_SOURCE -I$(OUTPUT)include
-> +
-> +ALL_TARGETS := counter_example
-> +ALL_PROGRAMS := $(patsubst %,$(OUTPUT)%,$(ALL_TARGETS))
-> +
-> +all: $(ALL_PROGRAMS)
-> +
-> +export srctree OUTPUT CC LD CFLAGS
-> +include $(srctree)/tools/build/Makefile.include
-> +
-> +#
-> +# We need the following to be outside of kernel tree
-> +#
-> +$(OUTPUT)include/linux/counter.h: ../../include/uapi/linux/counter.h
-> +	mkdir -p $(OUTPUT)include/linux 2>&1 || true
-> +	ln -sf $(CURDIR)/../../include/uapi/linux/counter.h $@
-> +
-> +prepare: $(OUTPUT)include/linux/counter.h
-> +
-> +COUNTER_EXAMPLE := $(OUTPUT)counter_example.o
-> +$(COUNTER_EXAMPLE): prepare FORCE
-> +	$(Q)$(MAKE) $(build)=counter_example
-> +$(OUTPUT)counter_example: $(COUNTER_EXAMPLE)
-> +	$(QUIET_LINK)$(CC) $(CFLAGS) $(LDFLAGS) $< -o $@
-> +
-> +clean:
-> +	rm -f $(ALL_PROGRAMS)
-> +	rm -rf $(OUTPUT)include/linux/counter.h
-> +	find $(if $(OUTPUT),$(OUTPUT),.) -name '*.o' -delete -o -name '\.*.d' -delete
-> +
-> +install: $(ALL_PROGRAMS)
-> +	install -d -m 755 $(DESTDIR)$(bindir);		\
-> +	for program in $(ALL_PROGRAMS); do		\
-> +		install $$program $(DESTDIR)$(bindir);	\
-> +	done
-> +
-> +FORCE:
-> +
-> +.PHONY: all install clean FORCE prepare
-> diff --git a/tools/counter/counter_example.c b/tools/counter/counter_example.c
-> new file mode 100644
-> index 000000000000..90d69fb9463b
-> --- /dev/null
-> +++ b/tools/counter/counter_example.c
-> @@ -0,0 +1,93 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/* Counter - example userspace application
-> + *
-> + * The userspace application opens /dev/counter0, configures the
-> + * COUNTER_EVENT_INDEX event channel 0 to gather Count 0 count and Count
-> + * 1 count, and prints out the data as it becomes available on the
-> + * character device node.
-> + *
-> + * Copyright (C) 2021 William Breathitt Gray
-> + */
-> +#include <errno.h>
-> +#include <fcntl.h>
-> +#include <linux/counter.h>
-> +#include <stdio.h>
-> +#include <string.h>
-> +#include <sys/ioctl.h>
-> +#include <unistd.h>
-> +
-> +static struct counter_watch watches[2] = {
-> +	{
-> +		/* Component data: Count 0 count */
-> +		.component.type = COUNTER_COMPONENT_COUNT,
-> +		.component.scope = COUNTER_SCOPE_COUNT,
-> +		.component.parent = 0,
-> +		/* Event type: Index */
-> +		.event = COUNTER_EVENT_INDEX,
-> +		/* Device event channel 0 */
-> +		.channel = 0,
-> +	},
-> +	{
-> +		/* Component data: Count 1 count */
-> +		.component.type = COUNTER_COMPONENT_COUNT,
-> +		.component.scope = COUNTER_SCOPE_COUNT,
-> +		.component.parent = 1,
-> +		/* Event type: Index */
-> +		.event = COUNTER_EVENT_INDEX,
-> +		/* Device event channel 0 */
-> +		.channel = 0,
-> +	},
-> +};
-> +
-> +int main(void)
-> +{
-> +	int fd;
-> +	int ret;
-> +	struct counter_event event_data[2];
-> +
-> +	fd = open("/dev/counter0", O_RDWR);
-
-You may want to make this tool more flexible at somepoint. It is
-in tools rather than Documentation after all.
-
-> +	if (fd == -1) {
-> +		perror("Unable to open /dev/counter0");
-> +		return -errno;
-> +	}
-> +
-> +	ret = ioctl(fd, COUNTER_ADD_WATCH_IOCTL, watches);
-
-Loop?
-
-> +	if (ret == -1) {
-> +		perror("Error adding watches[0]");
-> +		return -errno;
-> +	}
-> +	ret = ioctl(fd, COUNTER_ADD_WATCH_IOCTL, watches + 1);
-> +	if (ret == -1) {
-> +		perror("Error adding watches[1]");
-> +		return -errno;
-> +	}
-> +	ret = ioctl(fd, COUNTER_ENABLE_EVENTS_IOCTL);
-> +	if (ret == -1) {
-> +		perror("Error enabling events");
-> +		return -errno;
-> +	}
-> +
-> +	for (;;) {
-> +		ret = read(fd, event_data, sizeof(event_data));
-> +		if (ret == -1) {
-> +			perror("Failed to read event data");
-> +			return 1;
-> +		}
-> +
-> +		if (ret != sizeof(event_data)) {
-> +			fprintf(stderr, "Failed to read event data\n");
-> +			return -EIO;
-> +		}
-> +
-> +		printf("Timestamp 0: %llu\tCount 0: %llu\n"
-> +		       "Error Message 0: %s\n"
-> +		       "Timestamp 1: %llu\tCount 1: %llu\n"
-> +		       "Error Message 1: %s\n",
-> +		       event_data[0].timestamp, event_data[0].value,
-> +		       strerror(event_data[0].status),
-> +		       event_data[1].timestamp, event_data[1].value,
-> +		       strerror(event_data[1].status));
-> +	}
-> +
-> +	return 0;
-> +}
+> Jonathan
+> 
+> > 
+> > William Breathitt Gray (14):
+> >   counter: stm32-lptimer-cnt: Provide defines for clock polarities
+> >   counter: stm32-timer-cnt: Provide defines for slave mode selection
+> >   counter: Internalize sysfs interface code
+> >   counter: Update counter.h comments to reflect sysfs internalization
+> >   docs: counter: Update to reflect sysfs internalization
+> >   counter: Move counter enums to uapi header
+> >   counter: Add character device interface
+> >   docs: counter: Document character device interface
+> >   tools/counter: Create Counter tools
+> >   counter: Implement signalZ_action_component_id sysfs attribute
+> >   counter: Implement *_component_id sysfs attributes
+> >   counter: Implement events_queue_size sysfs attribute
+> >   counter: 104-quad-8: Replace mutex with spinlock
+> >   counter: 104-quad-8: Add IRQ support for the ACCES 104-QUAD-8
+> > 
+> >  Documentation/ABI/testing/sysfs-bus-counter   |   38 +-
+> >  Documentation/driver-api/generic-counter.rst  |  358 +++-
+> >  .../userspace-api/ioctl/ioctl-number.rst      |    1 +
+> >  MAINTAINERS                                   |    3 +-
+> >  drivers/counter/104-quad-8.c                  |  699 ++++----
+> >  drivers/counter/Kconfig                       |    6 +-
+> >  drivers/counter/Makefile                      |    1 +
+> >  drivers/counter/counter-chrdev.c              |  553 ++++++
+> >  drivers/counter/counter-chrdev.h              |   14 +
+> >  drivers/counter/counter-core.c                |  191 +++
+> >  drivers/counter/counter-sysfs.c               |  960 +++++++++++
+> >  drivers/counter/counter-sysfs.h               |   13 +
+> >  drivers/counter/counter.c                     | 1496 -----------------
+> >  drivers/counter/ftm-quaddec.c                 |   60 +-
+> >  drivers/counter/intel-qep.c                   |  144 +-
+> >  drivers/counter/interrupt-cnt.c               |   62 +-
+> >  drivers/counter/microchip-tcb-capture.c       |   91 +-
+> >  drivers/counter/stm32-lptimer-cnt.c           |  212 ++-
+> >  drivers/counter/stm32-timer-cnt.c             |  195 +--
+> >  drivers/counter/ti-eqep.c                     |  180 +-
+> >  include/linux/counter.h                       |  715 ++++----
+> >  include/linux/counter_enum.h                  |   45 -
+> >  include/linux/mfd/stm32-lptimer.h             |    5 +
+> >  include/linux/mfd/stm32-timers.h              |    4 +
+> >  include/uapi/linux/counter.h                  |  154 ++
+> >  tools/Makefile                                |   13 +-
+> >  tools/counter/Build                           |    1 +
+> >  tools/counter/Makefile                        |   53 +
+> >  tools/counter/counter_example.c               |   93 +
+> >  29 files changed, 3569 insertions(+), 2791 deletions(-)
+> >  create mode 100644 drivers/counter/counter-chrdev.c
+> >  create mode 100644 drivers/counter/counter-chrdev.h
+> >  create mode 100644 drivers/counter/counter-core.c
+> >  create mode 100644 drivers/counter/counter-sysfs.c
+> >  create mode 100644 drivers/counter/counter-sysfs.h
+> >  delete mode 100644 drivers/counter/counter.c
+> >  delete mode 100644 include/linux/counter_enum.h
+> >  create mode 100644 include/uapi/linux/counter.h
+> >  create mode 100644 tools/counter/Build
+> >  create mode 100644 tools/counter/Makefile
+> >  create mode 100644 tools/counter/counter_example.c
+> > 
+> > 
+> > base-commit: 5ffeb17c0d3dd44704b4aee83e297ec07666e4d6  
+> 
 

@@ -2,17 +2,17 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9050D4085B6
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Sep 2021 09:52:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB1AA4085B3
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Sep 2021 09:51:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237776AbhIMHxR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Sep 2021 03:53:17 -0400
-Received: from twspam01.aspeedtech.com ([211.20.114.71]:65308 "EHLO
+        id S237788AbhIMHxL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Sep 2021 03:53:11 -0400
+Received: from twspam01.aspeedtech.com ([211.20.114.71]:16580 "EHLO
         twspam01.aspeedtech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237793AbhIMHxQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Sep 2021 03:53:16 -0400
+        with ESMTP id S237776AbhIMHxL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Sep 2021 03:53:11 -0400
 Received: from mail.aspeedtech.com ([192.168.0.24])
-        by twspam01.aspeedtech.com with ESMTP id 18D7VMBa004725;
+        by twspam01.aspeedtech.com with ESMTP id 18D7VMmL004726;
         Mon, 13 Sep 2021 15:31:22 +0800 (GMT-8)
         (envelope-from billy_tsai@aspeedtech.com)
 Received: from BillyTsai-pc.aspeed.com (192.168.2.149) by TWMBX02.aspeed.com
@@ -27,9 +27,9 @@ To:     <jic23@kernel.org>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-aspeed@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>
 CC:     <BMC-SW@aspeedtech.com>
-Subject: [v6 10/11] iio: adc: aspeed: Support battery sensing.
-Date:   Mon, 13 Sep 2021 15:53:36 +0800
-Message-ID: <20210913075337.19991-11-billy_tsai@aspeedtech.com>
+Subject: [v6 11/11] iio: adc: aspeed: Get and set trimming data.
+Date:   Mon, 13 Sep 2021 15:53:37 +0800
+Message-ID: <20210913075337.19991-12-billy_tsai@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210913075337.19991-1-billy_tsai@aspeedtech.com>
 References: <20210913075337.19991-1-billy_tsai@aspeedtech.com>
@@ -40,173 +40,161 @@ X-Originating-IP: [192.168.2.149]
 X-ClientProxiedBy: TWMBX02.aspeed.com (192.168.0.24) To TWMBX02.aspeed.com
  (192.168.0.24)
 X-DNSRBL: 
-X-MAIL: twspam01.aspeedtech.com 18D7VMBa004725
+X-MAIL: twspam01.aspeedtech.com 18D7VMmL004726
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-In ast2600, ADC integrate dividing circuit at last input channel for
-battery sensing. This patch use the dts property "battery-sensing" to
-enable this feature makes the last channel of each adc can tolerance
-higher voltage than reference voltage. The offset interface of ch7 will
-be separated when enabling the battery sensing mode.
+The ADC controller has a trimming register for fine-tune the reference
+voltage. The trimming value comes from the OTP register which will be
+written during chip production. This patch will read this OTP value and
+configure it to the ADC register when the ADC controller probes and using
+dts property "aspeed,trim-data-valid" to determine whether to execute this
+flow.
 
 Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
 ---
- drivers/iio/adc/aspeed_adc.c | 81 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 78 insertions(+), 3 deletions(-)
+ drivers/iio/adc/aspeed_adc.c | 71 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 71 insertions(+)
 
 diff --git a/drivers/iio/adc/aspeed_adc.c b/drivers/iio/adc/aspeed_adc.c
-index cc3a195dd45b..c4112284fe07 100644
+index c4112284fe07..d4d8ac07d40d 100644
 --- a/drivers/iio/adc/aspeed_adc.c
 +++ b/drivers/iio/adc/aspeed_adc.c
-@@ -87,10 +87,16 @@ struct aspeed_adc_model_data {
- 	unsigned int vref_fixed_mv;
- 	bool wait_init_sequence;
- 	bool need_prescaler;
-+	bool bat_sense_sup;
- 	u8 scaler_bit_width;
- 	unsigned int num_channels;
- };
+@@ -25,6 +25,8 @@
+ #include <linux/spinlock.h>
+ #include <linux/types.h>
+ #include <linux/bitfield.h>
++#include <linux/regmap.h>
++#include <linux/mfd/syscon.h>
  
-+struct adc_gain {
-+	u8 mult;
-+	u8 div;
+ #include <linux/iio/iio.h>
+ #include <linux/iio/driver.h>
+@@ -80,6 +82,11 @@
+  */
+ #define ASPEED_ADC_DEF_SAMPLING_RATE	65000
+ 
++struct aspeed_adc_trim_locate {
++	const unsigned int offset;
++	const unsigned int field;
 +};
 +
- struct aspeed_adc_data {
- 	struct device		*dev;
- 	const struct aspeed_adc_model_data *model_data;
-@@ -104,6 +110,8 @@ struct aspeed_adc_data {
- 	int			vref_mv;
- 	u32			sample_period_ns;
- 	int			cv;
-+	bool			battery_sensing;
-+	struct adc_gain		battery_mode_gain;
+ struct aspeed_adc_model_data {
+ 	const char *model_name;
+ 	unsigned int min_sampling_rate;	// Hz
+@@ -90,6 +97,7 @@ struct aspeed_adc_model_data {
+ 	bool bat_sense_sup;
+ 	u8 scaler_bit_width;
+ 	unsigned int num_channels;
++	const struct aspeed_adc_trim_locate *trim_locate;
  };
  
- #define ASPEED_CHAN(_idx, _data_reg_addr) {			\
-@@ -136,6 +144,27 @@ static const struct iio_chan_spec aspeed_adc_iio_channels[] = {
- 	ASPEED_CHAN(15, 0x2E),
+ struct adc_gain {
+@@ -165,6 +173,44 @@ static const struct iio_chan_spec aspeed_adc_iio_bat_channels[] = {
+ 	ASPEED_BAT_CHAN(7, 0x1E),
  };
  
-+#define ASPEED_BAT_CHAN(_idx, _data_reg_addr) {					\
-+		.type = IIO_VOLTAGE,						\
-+		.indexed = 1,							\
-+		.channel = (_idx),						\
-+		.address = (_data_reg_addr),					\
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |			\
-+				      BIT(IIO_CHAN_INFO_OFFSET),		\
-+		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |		\
-+					    BIT(IIO_CHAN_INFO_SAMP_FREQ),	\
++static int aspeed_adc_set_trim_data(struct iio_dev *indio_dev)
++{
++	struct device_node *syscon;
++	struct regmap *scu;
++	u32 scu_otp, trimming_val;
++	struct aspeed_adc_data *data = iio_priv(indio_dev);
++
++	syscon = of_find_node_by_name(NULL, "syscon");
++	if (syscon == NULL) {
++		dev_warn(data->dev, "Couldn't find syscon node\n");
++		return -EOPNOTSUPP;
++	}
++	scu = syscon_node_to_regmap(syscon);
++	if (IS_ERR(scu)) {
++		dev_warn(data->dev, "Failed to get syscon regmap\n");
++		return -EOPNOTSUPP;
++	}
++	if (data->model_data->trim_locate) {
++		if (regmap_read(scu, data->model_data->trim_locate->offset,
++				&scu_otp)) {
++			dev_warn(data->dev,
++				 "Failed to get adc trimming data\n");
++			trimming_val = 0x8;
++		} else {
++			trimming_val =
++				((scu_otp) &
++				 (data->model_data->trim_locate->field)) >>
++				__ffs(data->model_data->trim_locate->field);
++		}
++		dev_dbg(data->dev,
++			"trimming val = %d, offset = %08x, fields = %08x\n",
++			trimming_val, data->model_data->trim_locate->offset,
++			data->model_data->trim_locate->field);
++		writel(trimming_val, data->base + ASPEED_REG_COMPENSATION_TRIM);
++	}
++	return 0;
 +}
-+static const struct iio_chan_spec aspeed_adc_iio_bat_channels[] = {
-+	ASPEED_CHAN(0, 0x10),
-+	ASPEED_CHAN(1, 0x12),
-+	ASPEED_CHAN(2, 0x14),
-+	ASPEED_CHAN(3, 0x16),
-+	ASPEED_CHAN(4, 0x18),
-+	ASPEED_CHAN(5, 0x1A),
-+	ASPEED_CHAN(6, 0x1C),
-+	ASPEED_BAT_CHAN(7, 0x1E),
-+};
 +
  static int aspeed_adc_compensation(struct iio_dev *indio_dev)
  {
  	struct aspeed_adc_data *data = iio_priv(indio_dev);
-@@ -204,14 +233,39 @@ static int aspeed_adc_read_raw(struct iio_dev *indio_dev,
- 			       int *val, int *val2, long mask)
- {
- 	struct aspeed_adc_data *data = iio_priv(indio_dev);
-+	u32 adc_engine_control_reg_val;
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
--		*val = readw(data->base + chan->address);
-+		if (data->battery_sensing && chan->channel == 7) {
-+			adc_engine_control_reg_val =
-+				readl(data->base + ASPEED_REG_ENGINE_CONTROL);
-+			writel(adc_engine_control_reg_val |
-+				       FIELD_PREP(ASPEED_ADC_CH7_MODE,
-+						  ASPEED_ADC_CH7_BAT) |
-+				       ASPEED_ADC_BAT_SENSING_ENABLE,
-+			       data->base + ASPEED_REG_ENGINE_CONTROL);
-+			/*
-+			 * After enable battery sensing mode need to wait some time for adc stable
-+			 * Experiment result is 1ms.
-+			 */
-+			mdelay(1);
-+			*val = readw(data->base + chan->address);
-+			*val = (*val * data->battery_mode_gain.mult) /
-+			       data->battery_mode_gain.div;
-+			/* Restore control register value */
-+			writel(adc_engine_control_reg_val,
-+			       data->base + ASPEED_REG_ENGINE_CONTROL);
-+		} else
-+			*val = readw(data->base + chan->address);
- 		return IIO_VAL_INT;
- 
- 	case IIO_CHAN_INFO_OFFSET:
--		*val = data->cv;
-+		if (data->battery_sensing && chan->channel == 7)
-+			*val = (data->cv * data->battery_mode_gain.mult) /
-+			       data->battery_mode_gain.div;
-+		else
-+			*val = data->cv;
- 		return IIO_VAL_INT;
- 
- 	case IIO_CHAN_INFO_SCALE:
-@@ -460,6 +514,23 @@ static int aspeed_adc_probe(struct platform_device *pdev)
+@@ -514,6 +560,13 @@ static int aspeed_adc_probe(struct platform_device *pdev)
  	if (ret)
  		return ret;
  
-+	if (of_find_property(data->dev->of_node, "aspeed,battery-sensing",
++	if (of_find_property(data->dev->of_node, "aspeed,trim-data-valid",
 +			     NULL)) {
-+		if (data->model_data->bat_sense_sup) {
-+			data->battery_sensing = 1;
-+			if (readl(data->base + ASPEED_REG_ENGINE_CONTROL) &
-+			    ASPEED_ADC_BAT_SENSING_DIV) {
-+				data->battery_mode_gain.mult = 3;
-+				data->battery_mode_gain.div = 1;
-+			} else {
-+				data->battery_mode_gain.mult = 3;
-+				data->battery_mode_gain.div = 2;
-+			}
-+		} else
-+			dev_warn(&pdev->dev,
-+				 "Failed to enable battey-sensing mode\n");
++		ret = aspeed_adc_set_trim_data(indio_dev);
++		if (ret)
++			return ret;
 +	}
 +
- 	ret = clk_prepare_enable(data->clk_scaler->clk);
- 	if (ret)
- 		return ret;
-@@ -510,7 +581,9 @@ static int aspeed_adc_probe(struct platform_device *pdev)
- 	indio_dev->name = data->model_data->model_name;
- 	indio_dev->info = &aspeed_adc_iio_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
--	indio_dev->channels = aspeed_adc_iio_channels;
-+	indio_dev->channels = data->battery_sensing ?
-+					    aspeed_adc_iio_bat_channels :
-+					    aspeed_adc_iio_channels;
- 	indio_dev->num_channels = data->model_data->num_channels;
+ 	if (of_find_property(data->dev->of_node, "aspeed,battery-sensing",
+ 			     NULL)) {
+ 		if (data->model_data->bat_sense_sup) {
+@@ -590,6 +643,21 @@ static int aspeed_adc_probe(struct platform_device *pdev)
+ 	return ret;
+ }
  
- 	ret = devm_iio_device_register(data->dev, indio_dev);
-@@ -543,6 +616,7 @@ static const struct aspeed_adc_model_data ast2600_adc0_model_data = {
- 	.min_sampling_rate = 10000,
- 	.max_sampling_rate = 500000,
- 	.wait_init_sequence = true,
-+	.bat_sense_sup = true,
++static const struct aspeed_adc_trim_locate ast2500_adc_trim = {
++	.offset = 0x154,
++	.field = GENMASK(31, 28),
++};
++
++static const struct aspeed_adc_trim_locate ast2600_adc0_trim = {
++	.offset = 0x5d0,
++	.field = GENMASK(3, 0),
++};
++
++static const struct aspeed_adc_trim_locate ast2600_adc1_trim = {
++	.offset = 0x5d0,
++	.field = GENMASK(7, 4),
++};
++
+ static const struct aspeed_adc_model_data ast2400_model_data = {
+ 	.model_name = "ast2400-adc",
+ 	.vref_fixed_mv = 2500,
+@@ -609,6 +677,7 @@ static const struct aspeed_adc_model_data ast2500_model_data = {
+ 	.need_prescaler = true,
+ 	.scaler_bit_width = 10,
+ 	.num_channels = 16,
++	.trim_locate = &ast2500_adc_trim,
+ };
+ 
+ static const struct aspeed_adc_model_data ast2600_adc0_model_data = {
+@@ -619,6 +688,7 @@ static const struct aspeed_adc_model_data ast2600_adc0_model_data = {
+ 	.bat_sense_sup = true,
  	.scaler_bit_width = 16,
  	.num_channels = 8,
++	.trim_locate = &ast2600_adc0_trim,
  };
-@@ -552,6 +626,7 @@ static const struct aspeed_adc_model_data ast2600_adc1_model_data = {
- 	.min_sampling_rate = 10000,
- 	.max_sampling_rate = 500000,
- 	.wait_init_sequence = true,
-+	.bat_sense_sup = true,
+ 
+ static const struct aspeed_adc_model_data ast2600_adc1_model_data = {
+@@ -629,6 +699,7 @@ static const struct aspeed_adc_model_data ast2600_adc1_model_data = {
+ 	.bat_sense_sup = true,
  	.scaler_bit_width = 16,
  	.num_channels = 8,
++	.trim_locate = &ast2600_adc1_trim,
  };
+ 
+ static const struct of_device_id aspeed_adc_matches[] = {
 -- 
 2.25.1
 

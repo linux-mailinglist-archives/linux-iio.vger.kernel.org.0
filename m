@@ -2,22 +2,22 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE2334085AE
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Sep 2021 09:51:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FEF24085BE
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Sep 2021 09:52:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237692AbhIMHw4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Sep 2021 03:52:56 -0400
-Received: from twspam01.aspeedtech.com ([211.20.114.71]:16451 "EHLO
+        id S237798AbhIMHxW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Sep 2021 03:53:22 -0400
+Received: from twspam01.aspeedtech.com ([211.20.114.71]:55278 "EHLO
         twspam01.aspeedtech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237706AbhIMHw4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Sep 2021 03:52:56 -0400
+        with ESMTP id S237794AbhIMHxV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Sep 2021 03:53:21 -0400
 Received: from mail.aspeedtech.com ([192.168.0.24])
-        by twspam01.aspeedtech.com with ESMTP id 18D7VLk0004721;
-        Mon, 13 Sep 2021 15:31:21 +0800 (GMT-8)
+        by twspam01.aspeedtech.com with ESMTP id 18D7VMo9004722;
+        Mon, 13 Sep 2021 15:31:22 +0800 (GMT-8)
         (envelope-from billy_tsai@aspeedtech.com)
 Received: from BillyTsai-pc.aspeed.com (192.168.2.149) by TWMBX02.aspeed.com
  (192.168.0.24) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 13 Sep
- 2021 15:51:06 +0800
+ 2021 15:51:07 +0800
 From:   Billy Tsai <billy_tsai@aspeedtech.com>
 To:     <jic23@kernel.org>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
         <robh+dt@kernel.org>, <joel@jms.id.au>, <andrew@aj.id.au>,
@@ -27,9 +27,9 @@ To:     <jic23@kernel.org>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-aspeed@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>
 CC:     <BMC-SW@aspeedtech.com>
-Subject: [v6 06/11] iio: adc: aspeed: Support ast2600 adc.
-Date:   Mon, 13 Sep 2021 15:53:32 +0800
-Message-ID: <20210913075337.19991-7-billy_tsai@aspeedtech.com>
+Subject: [v6 07/11] iio: adc: aspeed: Fix the calculate error of clock.
+Date:   Mon, 13 Sep 2021 15:53:33 +0800
+Message-ID: <20210913075337.19991-8-billy_tsai@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210913075337.19991-1-billy_tsai@aspeedtech.com>
 References: <20210913075337.19991-1-billy_tsai@aspeedtech.com>
@@ -40,191 +40,84 @@ X-Originating-IP: [192.168.2.149]
 X-ClientProxiedBy: TWMBX02.aspeed.com (192.168.0.24) To TWMBX02.aspeed.com
  (192.168.0.24)
 X-DNSRBL: 
-X-MAIL: twspam01.aspeedtech.com 18D7VLk0004721
+X-MAIL: twspam01.aspeedtech.com 18D7VMo9004722
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Make driver to support ast2600 adc device.
-- Use shared reset controller
-- Complete the vref configure function
-- Add the model data for ast2600 adc
+The ADC clock formula is
+ast2400/2500:
+ADC clock period = PCLK * 2 * (ADC0C[31:17] + 1) * (ADC0C[9:0] + 1)
+ast2600:
+ADC clock period = PCLK * 2 * (ADC0C[15:0] + 1)
+They all have one fixed divided 2 and the legacy driver didn't handle it.
+This patch register the fixed factory clock device as the parent of ADC
+clock scaler to fix this issue.
 
 Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
 ---
- drivers/iio/adc/aspeed_adc.c | 101 +++++++++++++++++++++++++++++++++--
- 1 file changed, 96 insertions(+), 5 deletions(-)
+ drivers/iio/adc/aspeed_adc.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
 diff --git a/drivers/iio/adc/aspeed_adc.c b/drivers/iio/adc/aspeed_adc.c
-index 0a18893c47f0..3ec4e1a2ddd3 100644
+index 3ec4e1a2ddd3..262b5f80c728 100644
 --- a/drivers/iio/adc/aspeed_adc.c
 +++ b/drivers/iio/adc/aspeed_adc.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * Aspeed AST2400/2500 ADC
-+ * Aspeed AST2400/2500/2600 ADC
+@@ -4,6 +4,12 @@
   *
   * Copyright (C) 2017 Google, Inc.
   * Copyright (C) 2021 Aspeed Technology Inc.
-@@ -14,6 +14,7 @@
- #include <linux/module.h>
- #include <linux/of_platform.h>
- #include <linux/platform_device.h>
-+#include <linux/regulator/consumer.h>
- #include <linux/reset.h>
- #include <linux/spinlock.h>
- #include <linux/types.h>
-@@ -81,6 +82,7 @@ struct aspeed_adc_model_data {
- struct aspeed_adc_data {
- 	struct device		*dev;
- 	const struct aspeed_adc_model_data *model_data;
-+	struct regulator	*regulator;
++ *
++ * ADC clock formula:
++ * Ast2400/Ast2500:
++ * clock period = period of PCLK * 2 * (ADC0C[31:17] + 1) * (ADC0C[9:0] + 1)
++ * Ast2600:
++ * clock period = period of PCLK * 2 * (ADC0C[15:0] + 1)
+  */
+ 
+ #include <linux/clk.h>
+@@ -85,6 +91,7 @@ struct aspeed_adc_data {
+ 	struct regulator	*regulator;
  	void __iomem		*base;
  	spinlock_t		clk_lock;
++	struct clk_hw		*fixed_div_clk;
  	struct clk_hw		*clk_prescaler;
-@@ -217,14 +219,79 @@ static void aspeed_adc_power_down(void *data)
- 	       priv_data->base + ASPEED_REG_ENGINE_CONTROL);
- }
+ 	struct clk_hw		*clk_scaler;
+ 	struct reset_control	*rst;
+@@ -197,6 +204,13 @@ static const struct iio_info aspeed_adc_iio_info = {
+ 	.debugfs_reg_access = aspeed_adc_reg_access,
+ };
  
-+static void aspeed_adc_reg_disable(void *data)
++static void aspeed_adc_unregister_fixed_divider(void *data)
 +{
-+	struct regulator *reg = data;
++	struct clk_hw *clk = data;
 +
-+	regulator_disable(reg);
++	clk_hw_unregister_fixed_factor(clk);
 +}
 +
- static int aspeed_adc_vref_config(struct iio_dev *indio_dev)
+ static void aspeed_adc_reset_assert(void *data)
  {
- 	struct aspeed_adc_data *data = iio_priv(indio_dev);
-+	int ret;
-+	u32 adc_engine_control_reg_val;
- 
- 	if (data->model_data->vref_fixed_mv) {
- 		data->vref_mv = data->model_data->vref_fixed_mv;
- 		return 0;
- 	}
-+	adc_engine_control_reg_val =
-+		readl(data->base + ASPEED_REG_ENGINE_CONTROL);
-+	data->regulator = devm_regulator_get_optional(data->dev, "vref");
-+	if (!IS_ERR(data->regulator)) {
-+		ret = regulator_enable(data->regulator);
-+		if (ret)
-+			return ret;
-+		ret = devm_add_action_or_reset(
-+			data->dev, aspeed_adc_reg_disable, data->regulator);
-+		if (ret)
-+			return ret;
-+		data->vref_mv = regulator_get_voltage(data->regulator);
-+		/* Conversion from uV to mV */
-+		data->vref_mv /= 1000;
-+		if ((data->vref_mv >= 1550) && (data->vref_mv <= 2700))
-+			writel(adc_engine_control_reg_val |
-+				FIELD_PREP(
-+					ASPEED_ADC_REF_VOLTAGE,
-+					ASPEED_ADC_REF_VOLTAGE_EXT_HIGH),
-+			data->base + ASPEED_REG_ENGINE_CONTROL);
-+		else if ((data->vref_mv >= 900) && (data->vref_mv <= 1650))
-+			writel(adc_engine_control_reg_val |
-+				FIELD_PREP(
-+					ASPEED_ADC_REF_VOLTAGE,
-+					ASPEED_ADC_REF_VOLTAGE_EXT_LOW),
-+			data->base + ASPEED_REG_ENGINE_CONTROL);
-+		else {
-+			dev_err(data->dev, "Regulator voltage %d not support",
-+				data->vref_mv);
-+			return -EOPNOTSUPP;
-+		}
-+	} else {
-+		if (PTR_ERR(data->regulator) != -ENODEV)
-+			return PTR_ERR(data->regulator);
-+		data->vref_mv = 2500000;
-+		of_property_read_u32(data->dev->of_node,
-+				     "aspeed,int-vref-microvolt",
-+				     &data->vref_mv);
-+		/* Conversion from uV to mV */
-+		data->vref_mv /= 1000;
-+		if (data->vref_mv == 2500)
-+			writel(adc_engine_control_reg_val |
-+				FIELD_PREP(ASPEED_ADC_REF_VOLTAGE,
-+						ASPEED_ADC_REF_VOLTAGE_2500mV),
-+			data->base + ASPEED_REG_ENGINE_CONTROL);
-+		else if (data->vref_mv == 1200)
-+			writel(adc_engine_control_reg_val |
-+				FIELD_PREP(ASPEED_ADC_REF_VOLTAGE,
-+						ASPEED_ADC_REF_VOLTAGE_1200mV),
-+			data->base + ASPEED_REG_ENGINE_CONTROL);
-+		else {
-+			dev_err(data->dev, "Voltage %d not support", data->vref_mv);
-+			return -EOPNOTSUPP;
-+		}
-+	}
+ 	struct reset_control *rst = data;
+@@ -321,6 +335,19 @@ static int aspeed_adc_probe(struct platform_device *pdev)
+ 	spin_lock_init(&data->clk_lock);
+ 	snprintf(clk_parent_name, ARRAY_SIZE(clk_parent_name), "%s",
+ 		 of_clk_get_parent_name(pdev->dev.of_node, 0));
++	snprintf(clk_name, ARRAY_SIZE(clk_name), "%s-fixed-div",
++		 data->model_data->model_name);
++	data->fixed_div_clk = clk_hw_register_fixed_factor(
++		&pdev->dev, clk_name, clk_parent_name, 0, 1, 2);
++	if (IS_ERR(data->fixed_div_clk))
++		return PTR_ERR(data->fixed_div_clk);
 +
- 	return 0;
- }
++	ret = devm_add_action_or_reset(data->dev,
++				       aspeed_adc_unregister_fixed_divider,
++				       data->clk_prescaler);
++	if (ret)
++		return ret;
++	snprintf(clk_parent_name, ARRAY_SIZE(clk_parent_name), clk_name);
  
-@@ -281,7 +348,7 @@ static int aspeed_adc_probe(struct platform_device *pdev)
- 	if (IS_ERR(data->clk_scaler))
- 		return PTR_ERR(data->clk_scaler);
- 
--	data->rst = devm_reset_control_get_exclusive(&pdev->dev, NULL);
-+	data->rst = devm_reset_control_get_shared(&pdev->dev, NULL);
- 	if (IS_ERR(data->rst)) {
- 		dev_err(&pdev->dev,
- 			"invalid or missing reset controller device tree entry");
-@@ -298,9 +365,13 @@ static int aspeed_adc_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
-+	adc_engine_control_reg_val =
-+		readl(data->base + ASPEED_REG_ENGINE_CONTROL);
-+	adc_engine_control_reg_val |=
-+		FIELD_PREP(ASPEED_ADC_OP_MODE, ASPEED_ADC_OP_MODE_NORMAL) |
-+		ASPEED_ADC_ENGINE_ENABLE;
- 	/* Enable engine in normal mode. */
--	writel(FIELD_PREP(ASPEED_ADC_OP_MODE, ASPEED_ADC_OP_MODE_NORMAL) |
--		       ASPEED_ADC_ENGINE_ENABLE,
-+	writel(adc_engine_control_reg_val,
- 	       data->base + ASPEED_REG_ENGINE_CONTROL);
- 
- 	ret = devm_add_action_or_reset(data->dev, aspeed_adc_power_down,
-@@ -368,9 +439,29 @@ static const struct aspeed_adc_model_data ast2500_model_data = {
- 	.num_channels = 16,
- };
- 
-+static const struct aspeed_adc_model_data ast2600_adc0_model_data = {
-+	.model_name = "ast2600-adc0",
-+	.min_sampling_rate = 10000,
-+	.max_sampling_rate = 500000,
-+	.wait_init_sequence = true,
-+	.scaler_bit_width = 16,
-+	.num_channels = 8,
-+};
-+
-+static const struct aspeed_adc_model_data ast2600_adc1_model_data = {
-+	.model_name = "ast2600-adc1",
-+	.min_sampling_rate = 10000,
-+	.max_sampling_rate = 500000,
-+	.wait_init_sequence = true,
-+	.scaler_bit_width = 16,
-+	.num_channels = 8,
-+};
-+
- static const struct of_device_id aspeed_adc_matches[] = {
- 	{ .compatible = "aspeed,ast2400-adc", .data = &ast2400_model_data },
- 	{ .compatible = "aspeed,ast2500-adc", .data = &ast2500_model_data },
-+	{ .compatible = "aspeed,ast2600-adc0", .data = &ast2600_adc0_model_data },
-+	{ .compatible = "aspeed,ast2600-adc1", .data = &ast2600_adc1_model_data },
- 	{},
- };
- MODULE_DEVICE_TABLE(of, aspeed_adc_matches);
-@@ -386,5 +477,5 @@ static struct platform_driver aspeed_adc_driver = {
- module_platform_driver(aspeed_adc_driver);
- 
- MODULE_AUTHOR("Rick Altherr <raltherr@google.com>");
--MODULE_DESCRIPTION("Aspeed AST2400/2500 ADC Driver");
-+MODULE_DESCRIPTION("Aspeed AST2400/2500/2600 ADC Driver");
- MODULE_LICENSE("GPL");
+ 	if (data->model_data->need_prescaler) {
+ 		snprintf(clk_name, ARRAY_SIZE(clk_name), "%s-prescaler",
 -- 
 2.25.1
 

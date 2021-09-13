@@ -2,621 +2,183 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EEC24084C3
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Sep 2021 08:35:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7CF8408573
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Sep 2021 09:37:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237411AbhIMGg2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Sep 2021 02:36:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49248 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237378AbhIMGg2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Sep 2021 02:36:28 -0400
-Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com [IPv6:2607:f8b0:4864:20::733])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C52BEC061760
-        for <linux-iio@vger.kernel.org>; Sun, 12 Sep 2021 23:35:12 -0700 (PDT)
-Received: by mail-qk1-x733.google.com with SMTP id a66so9459505qkc.1
-        for <linux-iio@vger.kernel.org>; Sun, 12 Sep 2021 23:35:12 -0700 (PDT)
+        id S237599AbhIMHjB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Sep 2021 03:39:01 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32]:33182 "EHLO
+        mx0b-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S235185AbhIMHjA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Sep 2021 03:39:00 -0400
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18D6hlvk017750;
+        Mon, 13 Sep 2021 07:37:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=corp-2021-07-09;
+ bh=CoigQrD7Egc+eP/9gvwZ9enyXvldjIRXpAPAh4gOlLM=;
+ b=ol61nHhg+j+LjV4f9Dity5aPQ2hD0WQDjKeVuSV5UYwku2UM+3lLHxHkmCKvCWi2Dd5s
+ UNeqptBKSpPc75nPU+iSnri+BLBnpHe1S8AqY/AWt82ghgiTUWpzKplx3fc6uVkD30vM
+ oU05dUQbVkro1WCrmUdff4vUaePYcMvc1Z27ZgPZbfRIDbiH/RLMlOOit+CM9XPxGs6o
+ X1+30gjCYRu8izd4v/CLqZ950WLfSmmWmWY+2fBYBL+wNo6/zg/orN0YzpfFbMF1i4Ds
+ p1uOv6619qCSAviCpPzEicRiGJLt1UufTC5azXi34HrwG1ZqRe0HFE4bgEDwf+Cl5JiR GA== 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=corp-2020-01-29;
+ bh=CoigQrD7Egc+eP/9gvwZ9enyXvldjIRXpAPAh4gOlLM=;
+ b=iULg7fTQO5SWuqneAGY9oreuHVxd+4Axb9QWhlucxweDzV5WEVoddfHaUE9+bA0ibNqc
+ mxKlO40vUbILu7wy049vIZrMmeW8stnv+Fcwn0/TKSqzk5opGcY6HvtS9lzwgDyGHc9h
+ FCJ1e+LqmTNB5g8e1Nnuw9djKpqGwU+pLh5DYTh3bIppurhwJXcoYcU/Hqud7OO1m6QV
+ yGPr4AVMoVJXn186YvpuHdHTwCy7f7o4ADcSO/N09JIzkleBCciZHFa6Qwxt2lNxWq+K
+ qN1rL9mdPvqKq7HveAyBO20QN6UDxiBewUEdwglbnSIsgLiuEMZ/wlr1nKGdVqDkwIQA Kw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by mx0b-00069f02.pphosted.com with ESMTP id 3b1h45hp2f-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 13 Sep 2021 07:37:30 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 18D7UUik077820;
+        Mon, 13 Sep 2021 07:37:29 GMT
+Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2102.outbound.protection.outlook.com [104.47.58.102])
+        by aserp3030.oracle.com with ESMTP id 3b0jgb59b3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 13 Sep 2021 07:37:28 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=PZcoiLioHP81cBsKatJGf1GSQtHOGZvuVDnK4Fng5GtF91L06DUvALB5qMxpjLOUdoNAWgYFFn6/Us490kvOn+afNXWaGvJcCXAu4C08KDtgrPfLivGxKJbGkPixHUPTJXPlWhajeF0MKuN6AIRF5P8/IX7kEEYQfYcUYqT9a3x+P0ZjE0xr/RxTpF2LcIzSfm1Uo7Fn10k+uyKxWtT1HdoEf0sv5DRikwYxdMfcBOtc6hhdDiXb0AK2RgslbrUmWgyQf0vOEKWsbsBVTZTxwQ/3Wdn9dbFFyEe0s43moFbbH3bs0m6mebrPuy4HWW07z0pLqRRt5lQiRBamOP7Xcw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
+ bh=CoigQrD7Egc+eP/9gvwZ9enyXvldjIRXpAPAh4gOlLM=;
+ b=icWvd3zbnIjf8ozFwezcKXG6gYAnSIwQBcbGtR9woeLokalNs2UWT6EXIVNfA1TZcLRO5dIFPFpifmtTjTLDQ4qofmQy9IFHe5TNC/uYdqu9+ltoX9xCmU6q8F+lC1rN/uJAxJJjb2QoHfF+XFLn7knA97J6Y+vxNF2tEHPrKBOrprPTb8BVJWpoM28mRwGCPHJGSH1zNj8o09SRESEOMCdjDTFdBrxEv0lY6/lMUHbv7qpva2DBGagoYzI3cwmm2kePIpUuBW8clv8c0tUviUctliSKq5XcpUY5PHfeAkXhsVu3HZnuhoPDTKJPvdqf8bXloAMuBYUMWZafvwaF+Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=deviqon.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=xroA7xkSJXA7cAlx2hdKMVNmNIadbOOXqB0FYWCOIMk=;
-        b=bJiRukbtJBLw4qnNUuQIMKfccQyr37FHSnZvx8pbUctGC3tviL5vymkIuqjRVbDkYx
-         13GwMWdOyTT+UUNLcV3MzHnRsEMOyvyweePJxCugST1ZQbZqJAA4e5Z9Ke4/ahlvuohe
-         a970vhfvr08NZWV5SnUUlVNMhcCS+gEE6ZUJK8LEu1SpSQ+BmsqxWB9Pli4MH0S7Oyep
-         8lT7Lnl+2z88LSFITwFspEEeoHo7rezxJvBQqjxM1hgtEfIo9QUNvTo0w5M+0udUSjEk
-         tPtzVg0B6/bj4RRTpXU6Vt4nw+bS1WtylbuYbhHxD3PtpIljn73Xni7eRlbq5TJTmuJq
-         aecA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=xroA7xkSJXA7cAlx2hdKMVNmNIadbOOXqB0FYWCOIMk=;
-        b=zjSVEdO9tjwrTU2Kqif4ae8/n0mkpYsVUSN5BnzaQ/SIMZ5rRnGZCevKrzYBez0yMB
-         1rV8ScRx/O3j2negDCg4zePWZVXkRSl5B+3IXYTgAIPpBJ2qkm9FKPkvtTSmxHYiSFzY
-         heP2Zzj4e5zpM9yKWzFImnXOTNLqPxLHbNrAhKt1LKmXLUpfID0ybm5hykWGtr6MSzaG
-         GE/SoZIc3EsROVwZrVXzEspK+jvhqQmquJKp4V4SKFJY8vJk/Y2I7/vVbYdQ9KtwU0z8
-         wXzzTSCJTT1r1w/+PPX6ucyBHeC2shGcpoRPX4HZjCpgRPn2TmRvs6CEHEZD6cKxjaae
-         MHBg==
-X-Gm-Message-State: AOAM5334+0/n/Ndr8D7CIGt3Af9C7bDygzAPFVQVKVQD9I4fLhrAZmDS
-        nJaXTUvRbINWegTe9dhZynLTYApRIDRrIA5vmO7ybw==
-X-Google-Smtp-Source: ABdhPJy701KFAVyHD2NA1AsvRT1K+VSwfkTdPNuHBbdBxkKP6tA/b5MV4I33yH8Q4Q9+elmiVoCuUuyehe1OLSksPks=
-X-Received: by 2002:ae9:e70a:: with SMTP id m10mr8539823qka.39.1631514911884;
- Sun, 12 Sep 2021 23:35:11 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210912071334.1745-1-caihuoqing@baidu.com> <20210912071334.1745-2-caihuoqing@baidu.com>
-In-Reply-To: <20210912071334.1745-2-caihuoqing@baidu.com>
-From:   Alexandru Ardelean <aardelean@deviqon.com>
-Date:   Mon, 13 Sep 2021 09:35:00 +0300
-Message-ID: <CAASAkoYS5Eyn+jf2Q_4CZ4xfjewYgMfEe0LkGkF6fjeOdyoz4A@mail.gmail.com>
-Subject: Re: [PATCH v4 1/3] iio: imx8qxp-adc: Add binding documentation for
- NXP IMX8QXP ADC
-To:     Cai Huoqing <caihuoqing@baidu.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CoigQrD7Egc+eP/9gvwZ9enyXvldjIRXpAPAh4gOlLM=;
+ b=Thl5ZKSGL36rysVyx+UKutHupG3Cd+6j38uPPqmCZB+c7VoelGiPeaiTKsUao88HN83JV+JrWU1qE5kTshzl7e/7HKv8xSfpwPJOpgW8Ga1sm2exNbFPdBKlZDwOUBj97IouwRqYzQA+sLJzt3xQYGL0v+DTUxkvRz5SPvuQgTQ=
+Authentication-Results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=oracle.com;
+Received: from CY4PR1001MB2358.namprd10.prod.outlook.com
+ (2603:10b6:910:4a::32) by CY4PR10MB1477.namprd10.prod.outlook.com
+ (2603:10b6:903:2b::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4500.16; Mon, 13 Sep
+ 2021 07:37:27 +0000
+Received: from CY4PR1001MB2358.namprd10.prod.outlook.com
+ ([fe80::95b6:2084:3b1c:27ba]) by CY4PR1001MB2358.namprd10.prod.outlook.com
+ ([fe80::95b6:2084:3b1c:27ba%7]) with mapi id 15.20.4500.018; Mon, 13 Sep 2021
+ 07:37:27 +0000
+Date:   Mon, 13 Sep 2021 10:37:09 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Karol Wrona <k.wrona@samsung.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>, shawnguo@kernel.org,
-        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-        linux-imx@nxp.com, linux-iio <linux-iio@vger.kernel.org>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] iio: ssp_sensors: add more range checking in
+ ssp_parse_dataframe()
+Message-ID: <20210913073709.GT1935@kadam>
+References: <20210909091336.GA26312@kili>
+ <20210911164253.260be729@jic23-huawei>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210911164253.260be729@jic23-huawei>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-ClientProxiedBy: JN2P275CA0015.ZAFP275.PROD.OUTLOOK.COM (2603:1086:0:3::27)
+ To CY4PR1001MB2358.namprd10.prod.outlook.com (2603:10b6:910:4a::32)
+MIME-Version: 1.0
+Received: from kadam (62.8.83.99) by JN2P275CA0015.ZAFP275.PROD.OUTLOOK.COM (2603:1086:0:3::27) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4500.14 via Frontend Transport; Mon, 13 Sep 2021 07:37:23 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 48da883e-a6bf-4d77-51d9-08d9768955a5
+X-MS-TrafficTypeDiagnostic: CY4PR10MB1477:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <CY4PR10MB14774F54E7DFBC21007D32018ED99@CY4PR10MB1477.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ia4g5a/EfyoQHBNTZy4G6t+I79Bz6i932AeDGyxDJRQK5DvnZX6voPaKTdLilyxCrsgbhwocGJ4y8+JJ+KyK8mBrXvQ9wdKglXN5RIcFqO0nclvEoMLZxwBNel+/ArDxv4rwMjBq9KQ/gKJRiz7P64LJ6mNNY2wi0typ4kU1OEbxyKrL+IFUr889pq3S/V4lWKnb5Q2T97Jar8wLkqLiOWnEYN/U/CpDkOCDkizzMIha2U+Z5wPQS+71EXO3oKWPzXk7dkOlSeiiUa2wKbMs7Fd5CFn5yoo0pVXaz9E10wKKE7Pl7/7cL6gDrwK5xLfZ2ffg0rr/6Q791qb633ZSgNvEY+pp99vhnVKHYZs6MvU7EFwchP4Yn2WhlmUn9TdrPFMjhupgOxF2fr2SwM/M2m5odVo435Zt/2r785sGczOA9N/ZQnvoSUnT4CUE/fmO9TiTF6SMjq70kYz4ao8ZyDSS1TfUkl2PhvoFAizrVJs5sbVSyxTfpyMt3ftdPzGDqJFeLo4wbZlr1tqCXaO8CBXMpzC942n8NwlMUfNGULQWL77DB1GfVopYrzY2bQy6cOkSgHxYYneoorfsVe4MYpe9fpQVms6FLH2yW/m3yOtJaS5eC5pP3Hj/YHzCCBrnmJ63BhpM1PxJkyOUgy2Lj5jh68CxrpNCzOxrjS0ksDAo+iDqV91tVE26SlD5n81s6KjwuCr2m6W6KAHSzHYpTA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY4PR1001MB2358.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(136003)(376002)(346002)(39860400002)(396003)(366004)(84040400005)(38350700002)(44832011)(38100700002)(86362001)(316002)(9576002)(66556008)(83380400001)(6496006)(5660300002)(1076003)(52116002)(186003)(66476007)(6666004)(8936002)(8676002)(66946007)(956004)(478600001)(55016002)(9686003)(26005)(2906002)(4326008)(6916009)(54906003)(33716001)(33656002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?zk52hyaAwLyeITSj+PWscHUqMi7TXzllahzCxbG0JRx7FrT7x/uemhp0wYk0?=
+ =?us-ascii?Q?QTfFWFJg5HxWGHWwNTqyomazRzCk7pZBQOqqbbDrUqFsIb1FEwPpcsvQPuM7?=
+ =?us-ascii?Q?rrHDK8q6W+u8oY4FlO8aATxsYXpKPmzf62pvCFIVXbPVqzE9Q9yaVhkOIS2g?=
+ =?us-ascii?Q?E41qK2nu9QHzYHR0Gtw5g1/n87Y5i6ZVsoyGwMcC1nhhE5Xg2PVE4gUniivw?=
+ =?us-ascii?Q?2KsmsELLaptxyCorwrClSMUAGhbya1QUeUT9e2uBpbzj3Dj93F0O1V2pxbBS?=
+ =?us-ascii?Q?SsC5bprVTHLb4OHideYqQ4fgZs6EGIa6oT0veF+k1jlY1+tOOzKINC/d8rMu?=
+ =?us-ascii?Q?z96rBQrrcTZCCWDNRbLSZos78GaQbfSr8cpkqfl4qt6r7uUXu1FNspFqPyzA?=
+ =?us-ascii?Q?Ta5qiAhjTlshIIfziNfpmjxdCpVLzpd5/NZ1WixL07V4eTy5Qs8w4GW5KsYQ?=
+ =?us-ascii?Q?Q4bIRyhbW3+JMlC02N0EVa5P7TSc0S7HdyPyjHw+6350u9//KHLg2iLIPuEY?=
+ =?us-ascii?Q?3MLXQFS/rWbC5HLpLbsyZNW3lFMMwBeeyD572IjHKmbc5LyX7dlIS+nN5KFA?=
+ =?us-ascii?Q?rcw4DGUD4Apngq496tW0RbvJaUsPxrBZArTLZkNBnLNauWae1Z3lA+53dJa3?=
+ =?us-ascii?Q?wSy86kqEtMySIFLkXZoecJwWaBqlD4oykMW+QiBNH10UBQcu5eE4qCPDmyyH?=
+ =?us-ascii?Q?lsQwnJ1vaydFSxEf18Zg5zYiq+Abc2HaT6xt+3ViKEb9iCJdJECKrC+TLWj8?=
+ =?us-ascii?Q?I4pJWYFUcLJ3Eeu8hCZOhYOl+vhtjX5HZ+tXKJlXDMBicni+XR9YKG2ZEq36?=
+ =?us-ascii?Q?gsOVub2fTU1UIpJJweJ8jPEvrhTfuX0NKnz4CFv4LLuMetUH21fHD1ZfKjFm?=
+ =?us-ascii?Q?d+ltnbIzB0kgQiBCv9gGeGnivgw4f/4b5QeCmMzDNef8Cp/ty2Q8kikETqn/?=
+ =?us-ascii?Q?HU9/1LEripOowNNdOei+Jbbxt0s2DAo3QIs07ZUnHGWypsGFftUhZbhhssqo?=
+ =?us-ascii?Q?EunOYOE8bGPLpD0MzX+B/6hzVEJTVTYP2o9X5h/3dPROR4MRV4zLa+vCTTq8?=
+ =?us-ascii?Q?Fq3OZlCqKy0CbUzHZQBMX9ezkDH0YDq8bmIbybN4GS/P4RJOR7u/jj/K3IRb?=
+ =?us-ascii?Q?mnSzG/g9YaHJfKocLt4f3k8IXCMALMeeLmZ9+EYGO0fzVcBc49S13NdV4Uvr?=
+ =?us-ascii?Q?dJUs/kRuIPFctWgyPa8R8kEaKslqleKG7igrFFlMqEEtar7IytIXFqnCO8Rc?=
+ =?us-ascii?Q?cf1CV2qByMHIcMgpFOGt/ffhUGvY5S+VzfLxch4KVgwBGUx1UMw8+x8RU+PZ?=
+ =?us-ascii?Q?KrW9v7uda+3z/Z3XsVZXPr2e?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 48da883e-a6bf-4d77-51d9-08d9768955a5
+X-MS-Exchange-CrossTenant-AuthSource: CY4PR1001MB2358.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Sep 2021 07:37:27.3688
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XBjvQiDM63bGrq8N0U27kbID5mV2lBoKeHN1B2ryKwK6BI+0ByZghPwWBb100jZpCx1g8NUb4MQeSXAWnajs9zZQILmu5fHOf4UXJXI7ozI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR10MB1477
+X-Proofpoint-Virus-Version: vendor=nai engine=6300 definitions=10105 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxscore=0
+ mlxlogscore=999 adultscore=0 bulkscore=0 spamscore=0 phishscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109030001 definitions=main-2109130049
+X-Proofpoint-ORIG-GUID: _2Ft_Q4xNYCKY-w0cQyc2FhYAzt-CUdu
+X-Proofpoint-GUID: _2Ft_Q4xNYCKY-w0cQyc2FhYAzt-CUdu
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 12 Sept 2021 at 10:13, Cai Huoqing <caihuoqing@baidu.com> wrote:
->
-> The NXP i.MX 8QuadXPlus SOC a new ADC IP, so add
-> binding documentation for NXP IMX8QXP ADC
->
+On Sat, Sep 11, 2021 at 04:42:53PM +0100, Jonathan Cameron wrote:
+> On Thu, 9 Sep 2021 12:13:36 +0300
+> Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> 
+> > The "idx" is validated at the start of the loop but it gets incremented
+> > during the iteration so it needs to be checked again.
+> > 
+> > Fixes: 50dd64d57eee ("iio: common: ssp_sensors: Add sensorhub driver")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> 
+> This is only a fix if we assume that the len value check is there
+> as a protection against buffer overrun rather than as a termination condition
+> that occurs when parsing a valid record.
+> 
+> There is more paranoid checking in ssp_print_mc_debug() so it seems we aren't assuming
+> valid data in there at least.
+> 
+> Still is this perhaps a case of hardening rather than a fix or am I missing something?
+> 
 
-Hey,
+Yeah.  This is from static analysis.  It's not a bug that probably
+affects real life.
 
-Driver looks quite good.
-A few notes from me.
-Mostly small stuff.
+I guess it's debatable if it should get a Fixes tag, but I feel like
+everything should be written in a hardened way.  Plus with the Fixes tag
+it will get backported.
 
-The more important one may be about the indio_dev->name, since that is
-ABI related.
+> As an aside, if that ssp_print_mcu_debug() reads a negative char it is then
+> returned directly so we get a random small negative number as the error code which
+> isn't going to be very useful.
 
-> Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
-> ---
-> v1->v2: *Squash patches 1, 2, 3, and 5 into a single patch.
->         *Add device specific prefix.
->         *Remove the brackets around individual numbers.
->         *Make use of FIELD_PREP() and FIELD_GET().
->         *Remove a lot of cache values.
->         *Replace mlock with adc->lock.
->         *Move adc->value read from isr to the completion.
->         *Set pm_runtime_disable/_put_noidle() before adc_disable.
->         *Add error handler-err_disable_reg/err_unprepare_clk.
-> v2->v3: *Add "return 0" to adc_runtime_resume().
-> v3->v4: *Sort header file declarations in alphabetical order.
->         *Remove explicitly cast from "void *".
->         *Make use of dev_err_probe().
->         *Add some blank lines to help readability.
->
-> v1 link:
-> https://patchwork.kernel.org/project/linux-arm-kernel/patch/20210830172140.414-4-caihuoqing@baidu.com/
-> v3 link:
-> https://patchwork.kernel.org/project/linux-arm-kernel/patch/20210907015724.1377-2-caihuoqing@baidu.com/
->
->  drivers/iio/adc/Kconfig       |  10 +
->  drivers/iio/adc/Makefile      |   1 +
->  drivers/iio/adc/imx8qxp-adc.c | 461 ++++++++++++++++++++++++++++++++++
->  3 files changed, 472 insertions(+)
->  create mode 100644 drivers/iio/adc/imx8qxp-adc.c
->
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index af168e1c9fdb..fa8ad63d6ac2 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -530,6 +530,16 @@ config IMX7D_ADC
->           This driver can also be built as a module. If so, the module will be
->           called imx7d_adc.
->
-> +config IMX8QXP_ADC
-> +       tristate "NXP IMX8QXP ADC driver"
-> +       depends on ARCH_MXC_ARM64 || COMPILE_TEST
-> +       depends on HAS_IOMEM
-> +       help
-> +         Say yes here to build support for IMX8QXP ADC.
-> +
-> +         This driver can also be built as a module. If so, the module will be
-> +         called imx8qxp-adc.
-> +
->  config LP8788_ADC
->         tristate "LP8788 ADC driver"
->         depends on MFD_LP8788
-> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-> index d68550f493e3..d3f53549720c 100644
-> --- a/drivers/iio/adc/Makefile
-> +++ b/drivers/iio/adc/Makefile
-> @@ -46,6 +46,7 @@ obj-$(CONFIG_FSL_MX25_ADC) += fsl-imx25-gcq.o
->  obj-$(CONFIG_HI8435) += hi8435.o
->  obj-$(CONFIG_HX711) += hx711.o
->  obj-$(CONFIG_IMX7D_ADC) += imx7d_adc.o
-> +obj-$(CONFIG_IMX8QXP_ADC) += imx8qxp-adc.o
->  obj-$(CONFIG_INA2XX_ADC) += ina2xx-adc.o
->  obj-$(CONFIG_INGENIC_ADC) += ingenic-adc.o
->  obj-$(CONFIG_INTEL_MRFLD_ADC) += intel_mrfld_adc.o
-> diff --git a/drivers/iio/adc/imx8qxp-adc.c b/drivers/iio/adc/imx8qxp-adc.c
-> new file mode 100644
-> index 000000000000..e48cf31b2e4c
-> --- /dev/null
-> +++ b/drivers/iio/adc/imx8qxp-adc.c
-> @@ -0,0 +1,461 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * NXP i.MX8QXP ADC driver
-> + *
-> + * Based on the work of Haibo Chen <haibo.chen@nxp.com>
-> + * The initial developer of the original code is Haibo Chen.
-> + * Portions created by Haibo Chen are Copyright (C) 2018 NXP.
-> + * All Rights Reserved.
-> + *
-> + * Copyright (C) 2018 NXP
-> + * Copyright (C) 2021 Cai Huoqing
-> + */
-> +#include <linux/bitfield.h>
-> +#include <linux/bits.h>
-> +#include <linux/clk.h>
-> +#include <linux/completion.h>
-> +#include <linux/delay.h>
-> +#include <linux/err.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/io.h>
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/pm_runtime.h>
-> +#include <linux/regulator/consumer.h>
-> +
-> +#include <linux/iio/driver.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/sysfs.h>
-> +
-> +#define ADC_DRIVER_NAME                "imx8qxp-adc"
-> +
-> +/* Register map definition */
-> +#define IMX8QXP_ADR_ADC_CTRL           0x10
-> +#define IMX8QXP_ADR_ADC_STAT           0x14
-> +#define IMX8QXP_ADR_ADC_IE             0x18
-> +#define IMX8QXP_ADR_ADC_DE             0x1c
-> +#define IMX8QXP_ADR_ADC_CFG            0x20
-> +#define IMX8QXP_ADR_ADC_FCTRL          0x30
-> +#define IMX8QXP_ADR_ADC_SWTRIG         0x34
-> +#define IMX8QXP_ADR_ADC_TCTRL(tid)     (0xc0 + tid * 4)
-> +#define IMX8QXP_ADR_ADC_CMDH(cid)      (0x100 + cid * 8)
-> +#define IMX8QXP_ADR_ADC_CMDL(cid)      (0x104 + cid * 8)
-> +#define IMX8QXP_ADR_ADC_RESFIFO                0x300
-> +#define IMX8QXP_ADR_ADC_TST            0xffc
-> +
-> +/* ADC bit shift */
-> +#define IMX8QXP_ADC_IE_FWMIE_MASK              GENMASK(1, 0)
-> +#define IMX8QXP_ADC_CTRL_FIFO_RESET_MASK       BIT(8)
-> +#define IMX8QXP_ADC_CTRL_SOFTWARE_RESET_MASK   BIT(1)
-> +#define IMX8QXP_ADC_CTRL_ADC_EN_MASK           BIT(0)
-> +#define IMX8QXP_ADC_TCTRL_TCMD_MASK            GENMASK(31, 24)
-> +#define IMX8QXP_ADC_TCTRL_TDLY_MASK            GENMASK(23, 16)
-> +#define IMX8QXP_ADC_TCTRL_TPRI_MASK            GENMASK(15, 8)
-> +#define IMX8QXP_ADC_TCTRL_HTEN_MASK            GENMASK(7, 0)
-> +#define IMX8QXP_ADC_CMDL_CSCALE_MASK           GENMASK(13, 8)
-> +#define IMX8QXP_ADC_CMDL_MODE_MASK             BIT(7)
-> +#define IMX8QXP_ADC_CMDL_DIFF_MASK             BIT(6)
-> +#define IMX8QXP_ADC_CMDL_ABSEL_MASK            BIT(5)
-> +#define IMX8QXP_ADC_CMDL_ADCH_MASK             GENMASK(2, 0)
-> +#define IMX8QXP_ADC_CMDH_NEXT_MASK             GENMASK(31, 24)
-> +#define IMX8QXP_ADC_CMDH_LOOP_MASK             GENMASK(23, 16)
-> +#define IMX8QXP_ADC_CMDH_AVGS_MASK             GENMASK(15, 12)
-> +#define IMX8QXP_ADC_CMDH_STS_MASK              BIT(8)
-> +#define IMX8QXP_ADC_CMDH_LWI_MASK              GENMASK(7, 7)
-> +#define IMX8QXP_ADC_CMDH_CMPEN_MASK            GENMASK(0, 0)
-> +#define IMX8QXP_ADC_CFG_PWREN_MASK             BIT(28)
-> +#define IMX8QXP_ADC_CFG_PUDLY_MASK             GENMASK(23, 16)
-> +#define IMX8QXP_ADC_CFG_REFSEL_MASK            GENMASK(7, 6)
-> +#define IMX8QXP_ADC_CFG_PWRSEL_MASK            GENMASK(5, 4)
-> +#define IMX8QXP_ADC_CFG_TPRICTRL_MASK          GENMASK(3, 0)
-> +#define IMX8QXP_ADC_FCTRL_FWMARK_MASK          GENMASK(20, 16)
-> +#define IMX8QXP_ADC_FCTRL_FCOUNT_MASK          GENMASK(4, 0)
-> +#define IMX8QXP_ADC_RESFIFO_VAL_MASK           GENMASK(18, 3)
-> +
-> +/* ADC PARAMETER*/
-> +#define IMX8QXP_ADC_CMDL_CHANNEL_SCALE_FULL            GENMASK(5, 0)
-> +#define IMX8QXP_ADC_CMDL_SEL_A_A_B_CHANNEL             0
-> +#define IMX8QXP_ADC_CMDL_STANDARD_RESOLUTION           0
-> +#define IMX8QXP_ADC_CMDL_MODE_SINGLE                   0
-> +#define IMX8QXP_ADC_CMDH_LWI_INCREMENT_DIS             0
-> +#define IMX8QXP_ADC_CMDH_CMPEN_DIS                     0
-> +#define IMX8QXP_ADC_PAUSE_EN                           BIT(31)
-> +#define IMX8QXP_ADC_TCTRL_TPRI_PRIORITY_HIGH           0
-> +
-> +#define IMX8QXP_ADC_TCTRL_HTEN_HW_TIRG_DIS             0
-> +
-> +#define IMX8QXP_ADC_TIMEOUT            msecs_to_jiffies(100)
-> +
-> +struct imx8qxp_adc {
-> +       struct device *dev;
-> +       void __iomem *regs;
-> +       struct clk *clk;
-> +       struct clk *ipg_clk;
-> +       struct regulator *vref;
-> +       struct mutex lock;
-> +       struct completion completion;
-> +};
-> +
-> +#define IMX8QXP_ADC_CHAN(_idx) {                               \
-> +       .type = IIO_VOLTAGE,                                    \
-> +       .indexed = 1,                                           \
-> +       .channel = (_idx),                                      \
-> +       .info_mask_separate = BIT(IIO_CHAN_INFO_RAW),           \
-> +       .info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |  \
-> +                               BIT(IIO_CHAN_INFO_SAMP_FREQ),   \
-> +}
-> +
-> +static const struct iio_chan_spec imx8qxp_adc_iio_channels[] = {
-> +       IMX8QXP_ADC_CHAN(0),
-> +       IMX8QXP_ADC_CHAN(1),
-> +       IMX8QXP_ADC_CHAN(2),
-> +       IMX8QXP_ADC_CHAN(3),
-> +       IMX8QXP_ADC_CHAN(4),
-> +       IMX8QXP_ADC_CHAN(5),
-> +       IMX8QXP_ADC_CHAN(6),
-> +       IMX8QXP_ADC_CHAN(7),
-> +};
-> +
-> +static void imx8qxp_adc_reset(struct imx8qxp_adc *adc)
-> +{
-> +       u32 ctrl;
-> +
-> +       /*software reset, need to clear the set bit*/
-> +       ctrl = readl(adc->regs + IMX8QXP_ADR_ADC_CTRL);
-> +       ctrl |= FIELD_PREP(IMX8QXP_ADC_CTRL_SOFTWARE_RESET_MASK, 1);
-> +       writel(ctrl, adc->regs + IMX8QXP_ADR_ADC_CTRL);
-> +       udelay(10);
-> +       ctrl &= ~FIELD_PREP(IMX8QXP_ADC_CTRL_SOFTWARE_RESET_MASK, 1);
-> +       writel(ctrl, adc->regs + IMX8QXP_ADR_ADC_CTRL);
-> +
-> +       /* reset the fifo */
-> +       ctrl |= FIELD_PREP(IMX8QXP_ADC_CTRL_FIFO_RESET_MASK, 1);
-> +       writel(ctrl, adc->regs + IMX8QXP_ADR_ADC_CTRL);
-> +}
-> +
-> +static void imx8qxp_adc_reg_config(struct imx8qxp_adc *adc, int channel)
-> +{
-> +       u32 adc_cfg, adc_tctrl, adc_cmdl, adc_cmdh;
-> +
-> +       /* ADC configuration */
-> +       adc_cfg = FIELD_PREP(IMX8QXP_ADC_CFG_PWREN_MASK, 1) |
-> +                 FIELD_PREP(IMX8QXP_ADC_CFG_PUDLY_MASK, 0x80)|
-> +                 FIELD_PREP(IMX8QXP_ADC_CFG_REFSEL_MASK, 0) |
-> +                 FIELD_PREP(IMX8QXP_ADC_CFG_PWRSEL_MASK, 3) |
-> +                 FIELD_PREP(IMX8QXP_ADC_CFG_TPRICTRL_MASK, 0);
-> +       writel(adc_cfg, adc->regs + IMX8QXP_ADR_ADC_CFG);
-> +
-> +       /* config the trigger control */
-> +       adc_tctrl = FIELD_PREP(IMX8QXP_ADC_TCTRL_TCMD_MASK, 1) |
-> +                   FIELD_PREP(IMX8QXP_ADC_TCTRL_TDLY_MASK, 0) |
-> +                   FIELD_PREP(IMX8QXP_ADC_TCTRL_TPRI_MASK, IMX8QXP_ADC_TCTRL_TPRI_PRIORITY_HIGH) |
-> +                   FIELD_PREP(IMX8QXP_ADC_TCTRL_HTEN_MASK, IMX8QXP_ADC_TCTRL_HTEN_HW_TIRG_DIS);
-> +       writel(adc_cfg, adc->regs + IMX8QXP_ADR_ADC_TCTRL(0));
-> +
-> +       /* config the cmd */
-> +       adc_cmdl = FIELD_PREP(IMX8QXP_ADC_CMDL_CSCALE_MASK, IMX8QXP_ADC_CMDL_CHANNEL_SCALE_FULL) |
-> +                  FIELD_PREP(IMX8QXP_ADC_CMDL_MODE_MASK, IMX8QXP_ADC_CMDL_STANDARD_RESOLUTION) |
-> +                  FIELD_PREP(IMX8QXP_ADC_CMDL_DIFF_MASK, IMX8QXP_ADC_CMDL_MODE_SINGLE) |
-> +                  FIELD_PREP(IMX8QXP_ADC_CMDL_ABSEL_MASK, IMX8QXP_ADC_CMDL_SEL_A_A_B_CHANNEL) |
-> +                  FIELD_PREP(IMX8QXP_ADC_CMDL_ADCH_MASK, channel);
-> +       writel(adc_cmdl, adc->regs + IMX8QXP_ADR_ADC_CMDL(0));
-> +
-> +       adc_cmdh = FIELD_PREP(IMX8QXP_ADC_CMDH_NEXT_MASK, 0) |
-> +                  FIELD_PREP(IMX8QXP_ADC_CMDH_LOOP_MASK, 0) |
-> +                  FIELD_PREP(IMX8QXP_ADC_CMDH_AVGS_MASK, 7) |
-> +                  FIELD_PREP(IMX8QXP_ADC_CMDH_STS_MASK, 0) |
-> +                  FIELD_PREP(IMX8QXP_ADC_CMDH_LWI_MASK, IMX8QXP_ADC_CMDH_LWI_INCREMENT_DIS) |
-> +                  FIELD_PREP(IMX8QXP_ADC_CMDH_CMPEN_MASK, IMX8QXP_ADC_CMDH_CMPEN_DIS);
-> +       writel(adc_cmdh, adc->regs + IMX8QXP_ADR_ADC_CMDH(0));
-> +}
-> +
-> +static void imx8qxp_adc_fifo_config(struct imx8qxp_adc *adc)
-> +{
-> +       u32 fifo_ctrl, interrupt_en;
-> +
-> +       fifo_ctrl = readl(adc->regs + IMX8QXP_ADR_ADC_FCTRL);
-> +       fifo_ctrl &= ~IMX8QXP_ADC_FCTRL_FWMARK_MASK;
-> +       /* set the watermark level to 1 */
-> +       fifo_ctrl |= FIELD_PREP(IMX8QXP_ADC_FCTRL_FWMARK_MASK, 0);
-> +       writel(fifo_ctrl, adc->regs + IMX8QXP_ADR_ADC_FCTRL);
-> +
-> +       /* FIFO Watermark Interrupt Enable */
-> +       interrupt_en = readl(adc->regs + IMX8QXP_ADR_ADC_IE);
-> +       interrupt_en |= FIELD_PREP(IMX8QXP_ADC_IE_FWMIE_MASK, 1);
-> +       writel(interrupt_en, adc->regs + IMX8QXP_ADR_ADC_IE);
-> +}
-> +
-> +static void imx8qxp_adc_disable(struct imx8qxp_adc *adc)
-> +{
-> +       u32 ctrl;
-> +
-> +       ctrl = readl(adc->regs + IMX8QXP_ADR_ADC_CTRL);
-> +       ctrl &= ~FIELD_PREP(IMX8QXP_ADC_CTRL_ADC_EN_MASK, 1);
-> +       writel(ctrl, adc->regs + IMX8QXP_ADR_ADC_CTRL);
-> +}
-> +
-> +static int imx8qxp_adc_read_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
-> +                               int *val, int *val2, long mask)
-> +{
-> +       struct imx8qxp_adc *adc = iio_priv(indio_dev);
-> +       struct device *dev = adc->dev;
-> +
-> +       u32 ctrl, vref_uv;
-> +       long ret;
-> +
-> +       switch (mask) {
-> +       case IIO_CHAN_INFO_RAW:
-> +               pm_runtime_get_sync(dev);
-> +
-> +               mutex_lock(&adc->lock);
-> +               reinit_completion(&adc->completion);
-> +
-> +               imx8qxp_adc_reg_config(adc, chan->channel);
-> +
-> +               imx8qxp_adc_fifo_config(adc);
-> +
-> +               /* adc enable */
-> +               ctrl = readl(adc->regs + IMX8QXP_ADR_ADC_CTRL);
-> +               ctrl |= FIELD_PREP(IMX8QXP_ADC_CTRL_ADC_EN_MASK, 1);
-> +               writel(ctrl, adc->regs + IMX8QXP_ADR_ADC_CTRL);
-> +               /* adc start */
-> +               writel(1, adc->regs + IMX8QXP_ADR_ADC_SWTRIG);
-> +
-> +               ret = wait_for_completion_interruptible_timeout(&adc->completion,
-> +                                                               IMX8QXP_ADC_TIMEOUT);
-> +
-> +               pm_runtime_mark_last_busy(dev);
-> +               pm_runtime_put_sync_autosuspend(dev);
-> +
-> +               if (ret == 0) {
-> +                       mutex_unlock(&adc->lock);
-> +                       return -ETIMEDOUT;
-> +               }
-> +               if (ret < 0) {
-> +                       mutex_unlock(&adc->lock);
-> +                       return ret;
-> +               }
-> +
-> +               *val = FIELD_GET(IMX8QXP_ADC_RESFIFO_VAL_MASK,
-> +                                readl(adc->regs + IMX8QXP_ADR_ADC_RESFIFO));
-> +
-> +               mutex_unlock(&adc->lock);
-> +               return IIO_VAL_INT;
-> +
-> +       case IIO_CHAN_INFO_SCALE:
-> +               vref_uv = regulator_get_voltage(adc->vref);
+That's true.  I will send that as a separate fix though.  Definitely
+with a Fixes tag on that.  ;)
 
-i'm curios if we should handle regulator_get_voltage() returning
-error/negative here;
+regards,
+dan carpenter
 
-
-> +               *val = vref_uv / 1000;
-> +               *val2 = 12;
-> +               return IIO_VAL_FRACTIONAL_LOG2;
-> +
-> +       case IIO_CHAN_INFO_SAMP_FREQ:
-> +               *val = clk_get_rate(adc->clk) / 3;
-> +               return IIO_VAL_INT;
-> +
-> +       default:
-> +               return -EINVAL;
-> +       }
-> +}
-> +
-> +static irqreturn_t imx8qxp_adc_isr(int irq, void *dev_id)
-> +{
-> +       struct imx8qxp_adc *adc = dev_id;
-> +
-> +       u32 fifo_count;
-> +
-> +       fifo_count = FIELD_GET(IMX8QXP_ADC_FCTRL_FCOUNT_MASK,
-> +                              readl(adc->regs + IMX8QXP_ADR_ADC_FCTRL));
-> +
-> +       if (fifo_count)
-> +               complete(&adc->completion);
-> +
-> +       return IRQ_HANDLED;
-> +}
-> +
-> +static int imx8qxp_adc_reg_access(struct iio_dev *indio_dev, unsigned int reg,
-> +                                 unsigned int writeval, unsigned int *readval)
-> +{
-> +       struct imx8qxp_adc *adc = iio_priv(indio_dev);
-> +       struct device *dev = adc->dev;
-> +
-> +       if (!readval || reg % 4 || reg > IMX8QXP_ADR_ADC_TST)
-> +               return -EINVAL;
-> +
-> +       pm_runtime_get_sync(dev);
-> +
-> +       *readval = readl(adc->regs + reg);
-> +
-> +       pm_runtime_mark_last_busy(dev);
-> +       pm_runtime_put_sync_autosuspend(dev);
-> +
-> +       return 0;
-> +}
-> +
-> +static const struct iio_info imx8qxp_adc_iio_info = {
-> +       .read_raw = &imx8qxp_adc_read_raw,
-> +       .debugfs_reg_access = &imx8qxp_adc_reg_access,
-> +};
-> +
-> +static int imx8qxp_adc_probe(struct platform_device *pdev)
-> +{
-> +       struct imx8qxp_adc *adc;
-> +       struct iio_dev *indio_dev;
-> +       struct device *dev = &pdev->dev;
-> +       int irq;
-> +       int ret;
-> +
-> +       indio_dev = devm_iio_device_alloc(dev, sizeof(*adc));
-> +       if (!indio_dev) {
-> +               dev_err(dev, "Failed allocating iio device\n");
-> +               return -ENOMEM;
-> +       }
-> +
-> +       adc = iio_priv(indio_dev);
-> +       adc->dev = dev;
-> +
-> +       mutex_init(&adc->lock);
-> +       adc->regs = devm_platform_ioremap_resource(pdev, 0);
-> +       if (IS_ERR(adc->regs))
-> +               return PTR_ERR(adc->regs);
-> +
-> +       irq = platform_get_irq(pdev, 0);
-> +       if (irq < 0)
-> +               return irq;
-> +
-> +       adc->clk = devm_clk_get(dev, "per");
-> +       if (IS_ERR(adc->clk))
-> +               return dev_err_probe(dev, PTR_ERR(adc->clk), "Failed getting clock\n");
-> +
-> +       adc->ipg_clk = devm_clk_get(dev, "ipg");
-> +       if (IS_ERR(adc->ipg_clk))
-> +               return dev_err_probe(dev, PTR_ERR(adc->ipg_clk), "Failed getting clock\n");
-> +
-> +       adc->vref = devm_regulator_get(dev, "vref");
-> +       if (IS_ERR(adc->vref))
-> +               return dev_err_probe(dev, PTR_ERR(adc->vref), "Failed getting reference voltage\n");
-> +
-> +       platform_set_drvdata(pdev, indio_dev);
-> +
-> +       init_completion(&adc->completion);
-> +
-> +       indio_dev->name = dev_name(dev);
-
-indio_dev->name is usually the part-name
-so maybe ADC_DRIVER_NAME can be used here;
-
-
-> +       indio_dev->info = &imx8qxp_adc_iio_info;
-> +       indio_dev->modes = INDIO_DIRECT_MODE;
-> +       indio_dev->channels = imx8qxp_adc_iio_channels;
-> +       indio_dev->num_channels = ARRAY_SIZE(imx8qxp_adc_iio_channels);
-> +
-> +       ret = devm_request_irq(dev, irq, imx8qxp_adc_isr, 0, dev_name(dev), adc);
-> +       if (ret < 0)
-> +               return dev_err_probe(dev, ret, "Failed requesting irq, irq = %d\n", irq);
-> +
-> +       imx8qxp_adc_reset(adc);
-> +
-> +       ret = iio_device_register(indio_dev);
-> +       if (ret) {
-> +               imx8qxp_adc_disable(adc);
-> +               return dev_err_probe(dev, ret, "Couldn't register the device.\n");
-> +       }
-> +
-> +       pm_runtime_set_active(dev);
-> +       pm_runtime_set_autosuspend_delay(dev, 50);
-> +       pm_runtime_use_autosuspend(dev);
-> +       pm_runtime_enable(dev);
-> +
-> +       return 0;
-> +}
-> +
-> +static int imx8qxp_adc_remove(struct platform_device *pdev)
-> +{
-> +       struct iio_dev *indio_dev = platform_get_drvdata(pdev);
-> +       struct imx8qxp_adc *adc = iio_priv(indio_dev);
-> +       struct device *dev = adc->dev;
-> +
-> +       pm_runtime_get_sync(dev);
-> +
-> +       iio_device_unregister(indio_dev);
-> +
-> +       pm_runtime_disable(dev);
-> +       pm_runtime_put_noidle(dev);
-> +
-> +       imx8qxp_adc_disable(adc);
-> +
-> +       return 0;
-> +}
-> +
-> +static int imx8qxp_adc_runtime_suspend(struct device *dev)
-> +{
-> +       struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> +       struct imx8qxp_adc *adc = iio_priv(indio_dev);
-> +
-> +       imx8qxp_adc_disable(adc);
-> +
-> +       clk_disable_unprepare(adc->clk);
-> +       clk_disable_unprepare(adc->ipg_clk);
-> +       regulator_disable(adc->vref);
-> +
-> +       return 0;
-> +}
-> +
-> +static int imx8qxp_adc_runtime_resume(struct device *dev)
-> +{
-> +       struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> +       struct imx8qxp_adc *adc = iio_priv(indio_dev);
-> +       int ret;
-> +
-> +       ret = regulator_enable(adc->vref);
-> +       if (ret) {
-> +               dev_err(dev, "Can't enable adc reference top voltage, err = %d\n", ret);
-> +               return ret;
-> +       }
-> +
-> +       ret = clk_prepare_enable(adc->clk);
-> +       if (ret) {
-> +               dev_err(dev, "Could not prepare or enable clock.\n");
-> +               goto err_disable_reg;
-> +       }
-> +
-> +       ret = clk_prepare_enable(adc->ipg_clk);
-> +       if (ret) {
-> +               dev_err(dev, "Could not prepare or enable clock.\n");
-> +               goto err_unprepare_clk;
-> +       }
-> +
-> +       imx8qxp_adc_reset(adc);
-> +
-> +       return 0;
-> +
-> +err_unprepare_clk:
-> +       clk_disable_unprepare(adc->clk);
-> +
-> +err_disable_reg:
-> +       regulator_disable(adc->vref);
-> +
-> +       return ret;
-> +}
-> +
-> +static const struct dev_pm_ops imx8qxp_adc_pm_ops = {
-> +       SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend, pm_runtime_force_resume)
-> +       SET_RUNTIME_PM_OPS(imx8qxp_adc_runtime_suspend, imx8qxp_adc_runtime_resume, NULL)
-> +};
-> +
-> +static const struct of_device_id imx8qxp_adc_match[] = {
-> +       { .compatible = "nxp,imx8qxp-adc", },
-> +       { /* sentinel */ }
-> +};
-> +MODULE_DEVICE_TABLE(of, imx8qxp_adc_match);
-> +
-> +static struct platform_driver imx8qxp_adc_driver = {
-> +       .probe          = imx8qxp_adc_probe,
-> +       .remove         = imx8qxp_adc_remove,
-> +       .driver         = {
-> +               .name   = ADC_DRIVER_NAME,
-> +               .of_match_table = imx8qxp_adc_match,
-> +               .pm     = &imx8qxp_adc_pm_ops,
-> +       },
-> +};
-> +
-> +module_platform_driver(imx8qxp_adc_driver);
-> +
-> +MODULE_DESCRIPTION("i.MX8QuadXPlus ADC driver");
-> +MODULE_LICENSE("GPL v2");
-> --
-> 2.25.1
->

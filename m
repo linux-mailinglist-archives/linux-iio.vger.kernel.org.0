@@ -2,64 +2,85 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE48E408895
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Sep 2021 11:54:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E95174089EE
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Sep 2021 13:13:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238109AbhIMJzn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Sep 2021 05:55:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39070 "EHLO
+        id S238786AbhIMLPJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Sep 2021 07:15:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234476AbhIMJzm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Sep 2021 05:55:42 -0400
-Received: from mail-vk1-xa35.google.com (mail-vk1-xa35.google.com [IPv6:2607:f8b0:4864:20::a35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55B33C061574
-        for <linux-iio@vger.kernel.org>; Mon, 13 Sep 2021 02:54:25 -0700 (PDT)
-Received: by mail-vk1-xa35.google.com with SMTP id g34so3149576vkd.11
-        for <linux-iio@vger.kernel.org>; Mon, 13 Sep 2021 02:54:25 -0700 (PDT)
+        with ESMTP id S238644AbhIMLPJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Sep 2021 07:15:09 -0400
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84A71C061760
+        for <linux-iio@vger.kernel.org>; Mon, 13 Sep 2021 04:13:53 -0700 (PDT)
+Received: by mail-pg1-x533.google.com with SMTP id w7so9101946pgk.13
+        for <linux-iio@vger.kernel.org>; Mon, 13 Sep 2021 04:13:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=fYNuP5aIYiYuEAviQWOCCERJIN6vYH2tdam51gHa4vs=;
-        b=CjTkmFeEg4kvgE1ruetGaT13teiwlIVLdClNOxy7AWTTdrLJkGiflXVFqe1dmK4INt
-         pnNFEkDJQijsDk+1VcP7EhsGwZFHUn4e3slOuEb9RIu/8p7EO46aAeg+Batur19w+oAA
-         Lg+33rMT6kepeSnm5opOVZi7HIQaaqcP9wmevWNplpb1IGZdpwrbivUA4Q7kiKR1ZV3w
-         mDaGU2wcaOKZmGkHGU0gXqv1q1PuspKlsBZxxd6DLN1vf4akelY8fjzch5bnyyKYBXkD
-         LMZhkl8AGXaIg5QhSu1TVu7izQkZPI//I+Lx6mrSahWmUM/FyAZhbDZFgxDwEQpB3ncc
-         egvQ==
+        d=0x0f.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XxGGH396yqKFz9F5OWRNHSsNaRXLO9ooc/L9AlOkzKQ=;
+        b=QxWZtqYGlOGpSOGBS4dUjJX2STngIdVu9tALWqKwJ7b8hYjpl8RcdVW/0X1vzuc2Ec
+         qSqYceB2e9nKjZ5He5OFHyh+JO+gUv9h37mURskCyV0xZxneNSFG9HuGdQdFA7WZOxSF
+         0jH3StCqwyJqFDGdkbN/iG9CNYkf+d/+RBYGc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=fYNuP5aIYiYuEAviQWOCCERJIN6vYH2tdam51gHa4vs=;
-        b=1ahttd4b7o/Mf28m2MdezbWxvTit0x4nUR/N3UxpxpcUP6uLW2oFq2Q9JzJsshgIFg
-         xX60LKCPalhzPw9GIX3HfyHx0JbyuKCbvIIQlpjDdNmnpMNvUD+n2UwhVnFRmkJq2510
-         7YNvwjeHuIhlm5RLDIHxsfh3m6hf7XoMvSrQrq99ybrUJZDZ33auP65w3+SNIvfiz0bA
-         Q99qpSDmezd2s9VXd0kfcMmV7sKABa8IQ9rMjJBvcoiViptd4NBs2hPyXZTr20VWVUVp
-         Sc3x4g79OZ8DU/qumZaWtCbOcAjhM/0XNALf7/uTpdogb7n8+cFh9xYGWEhlSBTiIw8p
-         aaYw==
-X-Gm-Message-State: AOAM531DS3IQKkzpDgn4isauY12PQvaKK02QmxKkqWXY8vDug8PxbNE9
-        IP3RiEnreRm/mPdWmi9NBC2dsTcI+Ufh+eUCrG0=
-X-Google-Smtp-Source: ABdhPJyJO/JcyMfoKZ8QsmcNIeuLfkMz9FY1g2IUdjpvCnKZlsLEgyu5Y71V0Lsgz57GAWOvBveETc67BzIplNZQT8c=
-X-Received: by 2002:a1f:a9ce:: with SMTP id s197mr3627293vke.13.1631526864088;
- Mon, 13 Sep 2021 02:54:24 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XxGGH396yqKFz9F5OWRNHSsNaRXLO9ooc/L9AlOkzKQ=;
+        b=Ia0hwOyrkY8D5LRTF8iARHGW02QpAifQc9UfsvRdlgqPSAf1vOfxKU9dfLAA6VHQl8
+         G57H8p2xleHRJ0szAGuaUPerHokI7bnvSrzoTBiFoXO25Hk9YvPQk3gKdJVMwayrqgnJ
+         ndr/J8c5wDwniJxLh6fYL+9Gu7KxdRxs0ONrBpllwpRugsizcM+Qsm/bBFtQ55vExqXz
+         7z3DUMDlpSyiz2L/Pj6d+nYTVEVY5J0bcUAr9rv7gbxBe9P49vhCfpzVG9vLL35HnDoi
+         uAWHkuuT5Hh5jnXBAHrh5jVfPp2z1Dw0TVo9m7qyFRAKjL+WZbWJkgxpx4LbjA+aFej2
+         nLQg==
+X-Gm-Message-State: AOAM531hYkx4m9yjOfs4nQ6Vv3UdqnisVbbJJrvarHxzgWHpbikM6VEB
+        lilQEsxqoNV4J+MDRlVGGEaGbLcA+sJaUA==
+X-Google-Smtp-Source: ABdhPJx4zqnR2yH4LqHuWbBCIRfqyPGQpPzE6od/re+HxwMX1sy9Fqfn351DvGCHyyNBJEhgZc5SgA==
+X-Received: by 2002:a63:e510:: with SMTP id r16mr10781699pgh.34.1631531633041;
+        Mon, 13 Sep 2021 04:13:53 -0700 (PDT)
+Received: from shiro.work (p864106-ipngn200510sizuokaden.shizuoka.ocn.ne.jp. [180.9.58.106])
+        by smtp.googlemail.com with ESMTPSA id p24sm8340153pgm.54.2021.09.13.04.13.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Sep 2021 04:13:52 -0700 (PDT)
+From:   Daniel Palmer <daniel@0x0f.com>
+To:     jic23@kernel.org, lars@metafoo.de, jmaneyrol@invensense.com,
+        linux-iio@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, Daniel Palmer <daniel@0x0f.com>
+Subject: [PATCH] iio: imu: inv_mpu6050: Mark acpi match table as maybe unused
+Date:   Mon, 13 Sep 2021 20:13:46 +0900
+Message-Id: <20210913111346.1957635-1-daniel@0x0f.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Received: by 2002:a59:8007:0:b0:229:479c:71c with HTTP; Mon, 13 Sep 2021
- 02:54:23 -0700 (PDT)
-Reply-To: barristerdinkarim09@gmail.com
-From:   Din Karim <katiehuggin@gmail.com>
-Date:   Mon, 13 Sep 2021 09:54:23 +0000
-Message-ID: <CABMVJ-bC9MxTLEyq_oPXXg83xJyUrDaNY85PPvTr7fuh+gr1Fw@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello dear,
+When building kernels without ACPI support the table is declared
+but is not used because ACPI_PTR() turns it into a NULL.
 
-I'm Barr Din Karim, Please i wish to have a communication with you.
+Add the __maybe_unused attribute to stop the compiler whining.
 
-I wait for your response.
+Signed-off-by: Daniel Palmer <daniel@0x0f.com>
+---
+ drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Barr Din Karim(Esq)
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
+index 95f16951c8f4..dbd613178f01 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
+@@ -249,7 +249,7 @@ static const struct of_device_id inv_of_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, inv_of_match);
+ 
+-static const struct acpi_device_id inv_acpi_match[] = {
++static const struct __maybe_unused acpi_device_id inv_acpi_match[] = {
+ 	{"INVN6500", INV_MPU6500},
+ 	{ },
+ };
+-- 
+2.33.0
+

@@ -2,86 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B596140AE9D
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Sep 2021 15:09:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7FBC40AED0
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Sep 2021 15:21:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233172AbhINNK2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 14 Sep 2021 09:10:28 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:54082 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S233181AbhINNK1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Sep 2021 09:10:27 -0400
-X-UUID: e25a2e7b24f04b85b1f5a00088249fda-20210914
-X-UUID: e25a2e7b24f04b85b1f5a00088249fda-20210914
-Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw02.mediatek.com
-        (envelope-from <hui.liu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 2145518149; Tue, 14 Sep 2021 21:09:06 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 14 Sep 2021 21:09:05 +0800
-Received: from localhost.localdomain (10.17.3.154) by MTKCAS06.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 14 Sep 2021 21:09:04 +0800
-From:   Hui Liu <hui.liu@mediatek.com>
-To:     <robh+dt@kernel.org>, <jic23@kernel.org>, <lars@metafoo.de>,
-        <pmeerw@pmeerw.net>
-CC:     <srv_heupstream@mediatek.com>, <hui.liu@mediatek.com>,
-        <zhiyong.tao@mediatek.com>, <chun-hung.wu@mediatek.com>,
-        <yingjoe.chen@mediatek.com>, <seiya.wang@mediatek.com>,
-        <ben.tseng@mediatek.com>, <matthias.bgg@gmail.com>,
-        <s.hauer@pengutronix.de>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-iio@vger.kernel.org>, <linux-mediatek@lists.infradead.org>
-Subject: [PATCH] iio: mtk-auxadc: update case IIO_CHAN_INFO_PROCESSED
-Date:   Tue, 14 Sep 2021 21:09:01 +0800
-Message-ID: <20210914130901.1716-2-hui.liu@mediatek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210914130901.1716-1-hui.liu@mediatek.com>
-References: <20210914130901.1716-1-hui.liu@mediatek.com>
+        id S232762AbhINNW5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 14 Sep 2021 09:22:57 -0400
+Received: from mail.kernelconcepts.de ([188.40.83.200]:45450 "EHLO
+        mail.kernelconcepts.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232682AbhINNW5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Sep 2021 09:22:57 -0400
+Received: from [217.146.132.69] (helo=[192.168.2.34])
+        by mail.kernelconcepts.de with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <florian.boor@kernelconcepts.de>)
+        id 1mQ8NR-00033j-4r; Tue, 14 Sep 2021 15:21:33 +0200
+Subject: Re: [PATCH v2 1/2] iio: adc: ad799x: Implement selecting external
+ reference voltage input on AD7991, AD7995 and AD7999.
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, Jonathan.Cameron@huawei.com,
+        Michael.Hennerich@analog.com
+References: <20210908152525.2946785-1-florian.boor@kernelconcepts.de>
+ <20210911174306.16779384@jic23-huawei>
+From:   Florian Boor <florian.boor@kernelconcepts.de>
+Message-ID: <bda7156d-bf75-65c2-e2b5-b42eca5e0915@kernelconcepts.de>
+Date:   Tue, 14 Sep 2021 15:21:32 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
+In-Reply-To: <20210911174306.16779384@jic23-huawei>
+Content-Type: text/plain; charset=utf-8
+Content-Language: de-AT
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Convert raw data to processed data.
+Hi Jonathan,
 
-Fixes: ace4cdfe67be ("iio: adc: mt2701: Add Mediatek auxadc driver for
-mt2701.")
-Signed-off-by: Hui Liu <hui.liu@mediatek.com>
----
- drivers/iio/adc/mt6577_auxadc.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+On 11.09.21 18:43, Jonathan Cameron wrote:
+> On Wed,  8 Sep 2021 17:25:24 +0200
+> Florian Boor <florian.boor@kernelconcepts.de> wrote:
+> 
+>> Make use of the AD7991_REF_SEL bit and support using the external
+>> reference voltage if 'vref-supply' is present.
+>>
+>> Signed-off-by: Florian Boor <florian.boor@kernelconcepts.de>
+> 
+> Hi Florian,
+> 
+>> ---
+>>
+>> Changes in v2:
+>> - Check if a provided external vref regulator is provided.
+>> - Drop unused setting
+>> - Add ad79xx documentation (second patch)
+>>
+>>  drivers/iio/adc/ad799x.c | 21 +++++++++++++++++++--
+>>  1 file changed, 19 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/iio/adc/ad799x.c b/drivers/iio/adc/ad799x.c
+>> index 18bf8386d50a..2ff926a4e9b3 100644
+>> --- a/drivers/iio/adc/ad799x.c
+>> +++ b/drivers/iio/adc/ad799x.c
+>> @@ -770,6 +770,8 @@ static int ad799x_probe(struct i2c_client *client,
+>>  				   const struct i2c_device_id *id)
+>>  {
+>>  	int ret;
+>> +	int extra_config = 0;
+>> +	bool vref_external = true;
+>>  	struct ad799x_state *st;
+>>  	struct iio_dev *indio_dev;
+>>  	const struct ad799x_chip_info *chip_info =
+>> @@ -797,7 +799,15 @@ static int ad799x_probe(struct i2c_client *client,
+>>  	ret = regulator_enable(st->reg);
+>>  	if (ret)
+>>  		return ret;
+>> -	st->vref = devm_regulator_get(&client->dev, "vref");
+>> +		
+>> +	/* check if an external reference is supplied */
+>> +	st->vref = devm_regulator_get_optional(&client->dev, "vref");
+>> +
+>> +	if (PTR_ERR(st->vref) == -ENODEV) {
+>> +		vref_external = false;
+>> +		/* get dummy */
+>> +		st->vref = devm_regulator_get(&client->dev, "vref");
+> 
+> Why?  Instead of doing this add if (st->vref) around the regulator
+> enable and disable.  We don't want to pretend there is a regulator when
+> there isn't one connected and we are using VDD as the reference.
+> 
+> If we are in that mode, we need to change which regulator is read in
+> read_raw()
 
-diff --git a/drivers/iio/adc/mt6577_auxadc.c b/drivers/iio/adc/mt6577_auxadc.c
-index 79c1dd68b909..d4fccd52ef08 100644
---- a/drivers/iio/adc/mt6577_auxadc.c
-+++ b/drivers/iio/adc/mt6577_auxadc.c
-@@ -82,6 +82,10 @@ static const struct iio_chan_spec mt6577_auxadc_iio_channels[] = {
- 	MT6577_AUXADC_CHANNEL(15),
- };
- 
-+/* For Voltage calculation */
-+#define VOLTAGE_FULL_RANGE  1500	/* VA voltage */
-+#define AUXADC_PRECISE      4096	/* 12 bits */
-+
- static int mt_auxadc_get_cali_data(int rawdata, bool enable_cali)
- {
- 	return rawdata;
-@@ -191,6 +195,10 @@ static int mt6577_auxadc_read_raw(struct iio_dev *indio_dev,
- 		}
- 		if (adc_dev->dev_comp->sample_data_cali)
- 			*val = mt_auxadc_get_cali_data(*val, true);
-+
-+		/* Convert adc raw data to voltage: 0 - 1500 mV */
-+		*val = *val * VOLTAGE_FULL_RANGE / AUXADC_PRECISE;
-+
- 		return IIO_VAL_INT;
- 
- 	default:
+I have to admit I wondered about how this is handled as well. My idea was not to
+change it at this point and improve this later in a separate patch.
+But I see the point - I'll add this change as well.
+
+Greetings
+
+Florian
+
 -- 
-2.25.1
+The dream of yesterday                  Florian Boor
+is the hope of today                    Tel: +49(0) 271-338857-15
+and the reality of tomorrow.		Fax: +49(0) 271-338857-29
+[Robert Hutchings Goddard, 1904]        florian.boor@kernelconcepts.de
+                                        http://www.kernelconcepts.de/en
 
+kernel concepts GmbH
+Hauptstraße 16
+57074 Siegen
+Deutschland
+Geschäftsführer: Ole Reinhardt
+HR Siegen, HR B 9613

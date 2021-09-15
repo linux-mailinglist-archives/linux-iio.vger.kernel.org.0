@@ -2,18 +2,18 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13F2340C963
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Sep 2021 18:00:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 658FE40C967
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Sep 2021 18:00:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238432AbhIOQBU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Sep 2021 12:01:20 -0400
-Received: from relay8-d.mail.gandi.net ([217.70.183.201]:51937 "EHLO
+        id S238442AbhIOQBV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Sep 2021 12:01:21 -0400
+Received: from relay8-d.mail.gandi.net ([217.70.183.201]:53667 "EHLO
         relay8-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238442AbhIOQBS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Sep 2021 12:01:18 -0400
+        with ESMTP id S234294AbhIOQBU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Sep 2021 12:01:20 -0400
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 17AD81BF20E;
-        Wed, 15 Sep 2021 15:59:57 +0000 (UTC)
+        by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 139EA1BF205;
+        Wed, 15 Sep 2021 15:59:58 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -31,11 +31,10 @@ Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         Ryan Barnett <ryan.barnett@collins.com>,
         Grygorii Strashko <grygorii.strashko@ti.com>,
         Jason Reeder <jreeder@ti.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v3 24/47] mfd: ti_am335x_tscadc: Fix header spacing
-Date:   Wed, 15 Sep 2021 17:58:45 +0200
-Message-Id: <20210915155908.476767-25-miquel.raynal@bootlin.com>
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH v3 25/47] mfd: ti_am335x_tscadc: Use the new HZ_PER_MHZ macro
+Date:   Wed, 15 Sep 2021 17:58:46 +0200
+Message-Id: <20210915155908.476767-26-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210915155908.476767-1-miquel.raynal@bootlin.com>
 References: <20210915155908.476767-1-miquel.raynal@bootlin.com>
@@ -46,55 +45,35 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Harmonize the spacing within macro definitions.
+Before adding another frequency with even more zeroes, use the
+HZ_PER_MHZ macro to clarify the number.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- include/linux/mfd/ti_am335x_tscadc.h | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ include/linux/mfd/ti_am335x_tscadc.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/include/linux/mfd/ti_am335x_tscadc.h b/include/linux/mfd/ti_am335x_tscadc.h
-index 334ce1a879df..efafecfc87a7 100644
+index efafecfc87a7..d98ec8937dd9 100644
 --- a/include/linux/mfd/ti_am335x_tscadc.h
 +++ b/include/linux/mfd/ti_am335x_tscadc.h
-@@ -41,7 +41,7 @@
- /* Step Enable */
- #define STEPENB_MASK		(0x1FFFF << 0)
- #define STEPENB(val)		((val) << 0)
--#define ENB(val)			(1 << (val))
-+#define ENB(val)		(1 << (val))
- #define STPENB_STEPENB		STEPENB(0x1FFFF)
- #define STPENB_STEPENB_TC	STEPENB(0x1FFF)
+@@ -9,6 +9,7 @@
+ #define __LINUX_TI_AM335X_TSCADC_MFD_H
  
-@@ -122,15 +122,15 @@
- #define CNTRLREG_TSCENB		BIT(7)
+ #include <linux/mfd/core.h>
++#include <linux/units.h>
  
- /* FIFO READ Register */
--#define FIFOREAD_DATA_MASK (0xfff << 0)
--#define FIFOREAD_CHNLID_MASK (0xf << 16)
-+#define FIFOREAD_DATA_MASK	(0xfff << 0)
-+#define FIFOREAD_CHNLID_MASK	(0xf << 16)
- 
- /* DMA ENABLE/CLEAR Register */
- #define DMA_FIFO0		BIT(0)
- #define DMA_FIFO1		BIT(1)
- 
- /* Sequencer Status */
--#define SEQ_STATUS BIT(5)
-+#define SEQ_STATUS		BIT(5)
+ #define REG_RAWIRQSTATUS	0x024
+ #define REG_IRQSTATUS		0x028
+@@ -133,7 +134,7 @@
+ #define SEQ_STATUS		BIT(5)
  #define CHARGE_STEP		0x11
  
- #define ADC_CLK			3000000
-@@ -150,7 +150,7 @@
-  *
-  * max processing time: 266431 * 308ns = 83ms(approx)
-  */
--#define IDLE_TIMEOUT 83 /* milliseconds */
-+#define IDLE_TIMEOUT		83 /* milliseconds */
- 
- #define TSCADC_CELLS		2
- 
+-#define ADC_CLK			3000000
++#define ADC_CLK			(3 * HZ_PER_MHZ)
+ #define TOTAL_STEPS		16
+ #define TOTAL_CHANNELS		8
+ #define FIFO1_THRESHOLD		19
 -- 
 2.27.0
 

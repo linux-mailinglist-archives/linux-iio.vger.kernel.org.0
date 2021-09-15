@@ -2,18 +2,18 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B1DF40C953
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Sep 2021 17:59:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E811F40C954
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Sep 2021 17:59:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238286AbhIOQBJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Sep 2021 12:01:09 -0400
-Received: from relay8-d.mail.gandi.net ([217.70.183.201]:58625 "EHLO
+        id S238366AbhIOQBL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Sep 2021 12:01:11 -0400
+Received: from relay8-d.mail.gandi.net ([217.70.183.201]:56605 "EHLO
         relay8-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238349AbhIOQBJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Sep 2021 12:01:09 -0400
+        with ESMTP id S238358AbhIOQBK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Sep 2021 12:01:10 -0400
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 15C791BF213;
-        Wed, 15 Sep 2021 15:59:47 +0000 (UTC)
+        by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 14C661BF207;
+        Wed, 15 Sep 2021 15:59:49 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -33,9 +33,9 @@ Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         Jason Reeder <jreeder@ti.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v3 19/47] mfd: ti_am335x_tscadc: Drop useless variables from the driver structure
-Date:   Wed, 15 Sep 2021 17:58:40 +0200
-Message-Id: <20210915155908.476767-20-miquel.raynal@bootlin.com>
+Subject: [PATCH v3 20/47] mfd: ti_am335x_tscadc: Always provide an idle configuration
+Date:   Wed, 15 Sep 2021 17:58:41 +0200
+Message-Id: <20210915155908.476767-21-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210915155908.476767-1-miquel.raynal@bootlin.com>
 References: <20210915155908.476767-1-miquel.raynal@bootlin.com>
@@ -46,81 +46,50 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Keeping the count of tsc_cells and adc_cells is completely redundant, we
-can derive this information from other variables. Plus, these variables
-are not used anywhere else now. Let's get rid of them.
+The idle register is valid no matter if the touchscreen is used or not,
+let's always configure it.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/mfd/ti_am335x_tscadc.c       | 15 ++++-----------
- include/linux/mfd/ti_am335x_tscadc.h |  3 ---
- 2 files changed, 4 insertions(+), 14 deletions(-)
+ drivers/mfd/ti_am335x_tscadc.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
-index 81f0ebf1a415..8404fc662725 100644
+index 8404fc662725..610853814024 100644
 --- a/drivers/mfd/ti_am335x_tscadc.c
 +++ b/drivers/mfd/ti_am335x_tscadc.c
-@@ -122,7 +122,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
- 	const __be32 *cur;
- 	u32 val;
- 	int err, ctrl;
--	int tsc_wires = 0, adc_channels = 0, total_channels;
-+	int tsc_wires = 0, adc_channels = 0, cell_idx = 0, total_channels;
- 	int readouts = 0;
+@@ -221,16 +221,16 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+ 	ctrl = CNTRLREG_STEPCONFIGWRT |	CNTRLREG_STEPID;
+ 	regmap_write(tscadc->regmap, REG_CTRL, ctrl);
  
- 	/* Allocate memory for device */
-@@ -235,14 +235,9 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+-	/* Set register bits for Idle Config Mode */
+ 	if (tsc_wires > 0) {
+ 		tscadc->tsc_wires = tsc_wires;
+ 		if (tsc_wires == 5)
+ 			ctrl |= CNTRLREG_5WIRE | CNTRLREG_TSCENB;
+ 		else
+ 			ctrl |= CNTRLREG_4WIRE | CNTRLREG_TSCENB;
+-		tscadc_idle_config(tscadc);
+ 	}
+ 
++	tscadc_idle_config(tscadc);
++
+ 	/* Enable the TSC module enable bit */
+ 	ctrl |= CNTRLREG_TSCSSENB;
+ 	regmap_write(tscadc->regmap, REG_CTRL, ctrl);
+@@ -321,8 +321,10 @@ static int __maybe_unused tscadc_resume(struct device *dev)
+ 			ctrl |= CNTRLREG_5WIRE | CNTRLREG_TSCENB;
+ 		else
+ 			ctrl |= CNTRLREG_4WIRE | CNTRLREG_TSCENB;
+-		tscadc_idle_config(tscadc);
+ 	}
++
++	tscadc_idle_config(tscadc);
++
  	ctrl |= CNTRLREG_TSCSSENB;
  	regmap_write(tscadc->regmap, REG_CTRL, ctrl);
  
--	tscadc->used_cells = 0;
--	tscadc->tsc_cell = -1;
--	tscadc->adc_cell = -1;
--
- 	/* TSC Cell */
- 	if (tsc_wires > 0) {
--		tscadc->tsc_cell = tscadc->used_cells;
--		cell = &tscadc->cells[tscadc->used_cells++];
-+		cell = &tscadc->cells[cell_idx++];
- 		cell->name = tscadc->data->name_tscmag;
- 		cell->of_compatible = tscadc->data->compat_tscmag;
- 		cell->platform_data = &tscadc;
-@@ -251,8 +246,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
- 
- 	/* ADC Cell */
- 	if (adc_channels > 0) {
--		tscadc->adc_cell = tscadc->used_cells;
--		cell = &tscadc->cells[tscadc->used_cells++];
-+		cell = &tscadc->cells[cell_idx++];
- 		cell->name = tscadc->data->name_adc;
- 		cell->of_compatible = tscadc->data->compat_adc;
- 		cell->platform_data = &tscadc;
-@@ -260,8 +254,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
- 	}
- 
- 	err = mfd_add_devices(&pdev->dev, PLATFORM_DEVID_AUTO,
--			      tscadc->cells, tscadc->used_cells, NULL,
--			      0, NULL);
-+			      tscadc->cells, cell_idx, NULL, 0, NULL);
- 	if (err < 0)
- 		goto err_disable_clk;
- 
-diff --git a/include/linux/mfd/ti_am335x_tscadc.h b/include/linux/mfd/ti_am335x_tscadc.h
-index 0f581c15d95a..e734fb97dff8 100644
---- a/include/linux/mfd/ti_am335x_tscadc.h
-+++ b/include/linux/mfd/ti_am335x_tscadc.h
-@@ -177,10 +177,7 @@ struct ti_tscadc_dev {
- 	phys_addr_t tscadc_phys_base;
- 	const struct ti_tscadc_data *data;
- 	int irq;
--	int used_cells;	/* 1-2 */
- 	int tsc_wires;
--	int tsc_cell;	/* -1 if not used */
--	int adc_cell;	/* -1 if not used */
- 	struct mfd_cell cells[TSCADC_CELLS];
- 	u32 reg_se_cache;
- 	bool adc_waiting;
 -- 
 2.27.0
 

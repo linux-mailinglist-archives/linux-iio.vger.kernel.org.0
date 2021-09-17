@@ -2,51 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D121540F1F1
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Sep 2021 08:11:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D3F240F1FC
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Sep 2021 08:11:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245050AbhIQGMu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Sep 2021 02:12:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34996 "EHLO
+        id S245017AbhIQGM4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Sep 2021 02:12:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243682AbhIQGMs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Sep 2021 02:12:48 -0400
-Received: from mail-qk1-x749.google.com (mail-qk1-x749.google.com [IPv6:2607:f8b0:4864:20::749])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B762C061764
-        for <linux-iio@vger.kernel.org>; Thu, 16 Sep 2021 23:11:26 -0700 (PDT)
-Received: by mail-qk1-x749.google.com with SMTP id bm12-20020a05620a198c00b00432e14ddb99so21614233qkb.21
-        for <linux-iio@vger.kernel.org>; Thu, 16 Sep 2021 23:11:26 -0700 (PDT)
+        with ESMTP id S245026AbhIQGMv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Sep 2021 02:12:51 -0400
+Received: from mail-qt1-x849.google.com (mail-qt1-x849.google.com [IPv6:2607:f8b0:4864:20::849])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B72BDC0613E3
+        for <linux-iio@vger.kernel.org>; Thu, 16 Sep 2021 23:11:28 -0700 (PDT)
+Received: by mail-qt1-x849.google.com with SMTP id c21-20020ac85195000000b002a540bbf1caso35628692qtn.2
+        for <linux-iio@vger.kernel.org>; Thu, 16 Sep 2021 23:11:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
-        h=date:message-id:mime-version:subject:from:to:cc;
-        bh=3zrUVwbKEfBYS+g/qOMTeXZGXa+cM1Fx/id4TGcTnuY=;
-        b=aqjshXeHh7KYq65oIgapr0BQjil3sP1rDi7xaSzByT7HUdNhTaI1Ys3Wxlz/Z7g3Am
-         +hOjpH810t+0u4G9mpxQRBffRfJ62rH1ddXs4ULDpEQR6Ts6jBfJ0gjcpO4kVp8wCOHQ
-         Vl8iN8hld/46cAlQUMTAiAhB/6+eDCE1dhcnqKSrsGDeqrAxl6t2FhBn8Bsl4kzSxqNL
-         NAWZ+7xfiGeYj9Qd6nT39cNlAK7qfcwkxHdx1U+CIiom21GYWoJX+2VtAip3VlCuFz1w
-         jGyqNia1LYugFTCoMyC2dyRJTvbrZO/b7LutqymMpftkHK3U8/75gDv5A0e2jD9U6hVB
-         ilXQ==
+        h=date:in-reply-to:message-id:mime-version:references:subject:from:to
+         :cc;
+        bh=TXG48xSRlx8rIgQW++hQT3j5R9gwaLAhcS6CZziLHmQ=;
+        b=WmhloRtjGIK9ydAlJ6OHR1E2w5RjxR8VBTPhCI/O0xak8DgT2MO76zuYYPl24VmGPp
+         yse5VSvtdAU2msUdkpYQOJUnKSnFyFST5EPn8fCafk6yZQ46FNdPLWKTSBR3+zxtOBW7
+         sNbBXeRo0RHv8ziNHdSoGEpUFFISJxxpYhiy+2MVKGbzGc7jYpxOV8tLAcwl+rv4VK8Q
+         OMGMl9rnWCFAnIkBzs5nVhwMf8z+PicX1CD1YvIz5WrRHo6Ylwov8F5oYotxfS+1/LEt
+         DKN9SHB8jZeMVVnMBsn1ODzNyalQkI/zxfzf3xRkXWq64KC757pRykt/gdw+TEESPIrZ
+         Su1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
-        bh=3zrUVwbKEfBYS+g/qOMTeXZGXa+cM1Fx/id4TGcTnuY=;
-        b=gpdVEyR+dcosUccSucVLnnEr2APalb9blt7h/w/gbnQz9z58SbcIav/hR6VPxaQq3+
-         Yw4BoLTu/pydsMrKR0Hg61FJ/B+t/SANB3lNY1tHkjmWLXq+g17Z6RZfEmADOCroGN2r
-         WpD18VoQu8+n51nmG/FNNERlxH8KMjOyxHTdqc6M510rqSizDuTwJUc676Y4l91U9V0F
-         TvCC3/jOOP80OkoesANtSEsq4xArk3V90o13IvpgMj/93pyjvZsL+BWjmjNosGvhN9zQ
-         6cQv4QTTiCIAIKcCzCSsA9ODfBSU1iEJ6hDE+sbtmQSFo4TLwJZLJ5F/nVUaevV4+n0a
-         /CmQ==
-X-Gm-Message-State: AOAM530+n8Lh8Osm/SbVWDrqKep9Ivqy3YWBgc32KPOvRFNCtXhcGHHc
-        ZOUIgheH4Vk4zWsXjEfm41fw+NsUWFbRdK7jY7OWvw==
-X-Google-Smtp-Source: ABdhPJycuTlpICuFt0WKNwqUbICZRKz0xI20vVDuhSpUpfdHDy2C99ZMkURQuV1YTT5+M888e29TyWCs6BP2z006i3tORQ==
+        h=x-gm-message-state:date:in-reply-to:message-id:mime-version
+         :references:subject:from:to:cc;
+        bh=TXG48xSRlx8rIgQW++hQT3j5R9gwaLAhcS6CZziLHmQ=;
+        b=S5QU3VVKWz67/Y2hn+dJjN9vOg3cSaxBSL2Rb7Dvb001OKZ7HtJjebZlw3W3j3toFj
+         qPAzBUH5qkMKtFLfWDkqf/sEa5xP6HDk01BV3IY4j7TwDN7f2fh9pAoar9S17jC8PVbk
+         RGPjm/7bUSobKFPwVvyA0xIDHU7ljo/aaRbN7yrSvtapHY4D2jzX29w1YegiF3bjNT4J
+         M2ItuxjvxZi33/ZCCUrUGm5vd2SftRquFtV7MtqCVUlXTh64Ym20FT5VobFWx+v3Ihw+
+         QGzPUjqDA98vwAguaANlTVXVDJxiwUKNbzxfIVOOg7MJPhk+1OCIdWl7ng0hreyNZ5rU
+         Qg6A==
+X-Gm-Message-State: AOAM5307DRYkgC9zTQNp1r3YwkLeCFOvh9FFb3bCvmCmBtZ0R3Sd9dV8
+        EXFX4mBRUYb+mkLKMO842yYlH+ZgSbvZoQrXI/q97A==
+X-Google-Smtp-Source: ABdhPJypn4hhdPHmNfweWLWHauxWHrVoQvMZsHWsDKioZ9IeJPJspxqNCPwjtYoY9xvXJMChe6ahFtlZ1gOXKE6/5Xximw==
 X-Received: from mactruck.svl.corp.google.com ([2620:15c:2cb:201:4845:43ba:3ff5:2de1])
- (user=brendanhiggins job=sendgmr) by 2002:ad4:522c:: with SMTP id
- r12mr9348777qvq.17.1631859085422; Thu, 16 Sep 2021 23:11:25 -0700 (PDT)
-Date:   Thu, 16 Sep 2021 23:10:58 -0700
-Message-Id: <20210917061104.2680133-1-brendanhiggins@google.com>
+ (user=brendanhiggins job=sendgmr) by 2002:a25:ca08:: with SMTP id
+ a8mr11249514ybg.231.1631859087755; Thu, 16 Sep 2021 23:11:27 -0700 (PDT)
+Date:   Thu, 16 Sep 2021 23:10:59 -0700
+In-Reply-To: <20210917061104.2680133-1-brendanhiggins@google.com>
+Message-Id: <20210917061104.2680133-2-brendanhiggins@google.com>
 Mime-Version: 1.0
+References: <20210917061104.2680133-1-brendanhiggins@google.com>
 X-Mailer: git-send-email 2.33.0.464.g1972c5931b-goog
-Subject: [PATCH v1 0/6] kunit: build kunit tests without structleak plugin
+Subject: [PATCH v1 1/6] gcc-plugins/structleak: add makefile var for disabling structleak
 From:   Brendan Higgins <brendanhiggins@google.com>
 To:     shuah@kernel.org, davidgow@google.com, arnd@arndb.de,
         keescook@chromium.org, rafael@kernel.org, jic23@kernel.org,
@@ -65,55 +69,30 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The structleak plugin causes the stack frame size to grow immensely when
-used with KUnit; this is caused because KUnit allocates lots of
-moderately sized structs on the stack as part of its assertion macro
-implementation. For most tests with small to moderately sized tests
-cases there are never enough KUnit assertions to be an issue at all;
-even when a single test cases has many KUnit assertions, the compiler
-should never put all these struct allocations on the stack at the same
-time since the scope of the structs is so limited; however, the
-structleak plugin does not seem to respect the compiler doing the right
-thing and will still warn of excessive stack size in some cases.
+KUnit and structleak don't play nice, so add a makefile variable for
+enabling structleak when it complains.
 
-These patches are not a permanent solution since new tests can be added
-with huge test cases, but this serves as a stop gap to stop structleak
-from being used on KUnit tests which will currently result in excessive
-stack size.
-
-Of the following patches, I think the thunderbolt patch may be
-unnecessary since Linus already fixed that test. Additionally, I was not
-able to reproduce the error on the sdhci-of-aspeed test. Nevertheless, I
-included these tests cases for completeness. Please see my discussion
-with Arnd for more context[1].
-
-NOTE: Arnd did the legwork for most of these patches, but did not
-actually share code for some of them, so I left his Signed-off-by off of
-those patches as I don't want to misrepresent him. Arnd, please sign off
-on those patches at your soonest convenience.
-
-[1] https://lore.kernel.org/linux-arm-kernel/CAFd5g44udqkDiYBWh+VeDVJ=ELXeoXwunjv0f9frEN6HJODZng@mail.gmail.com/
-
-Arnd Bergmann (1):
-  bitfield: build kunit tests without structleak plugin
-
-Brendan Higgins (5):
-  gcc-plugins/structleak: add makefile var for disabling structleak
-  iio/test-format: build kunit tests without structleak plugin
-  device property: build kunit tests without structleak plugin
-  thunderbolt: build kunit tests without structleak plugin
-  mmc: sdhci-of-aspeed: build kunit tests without structleak plugin
-
- drivers/base/test/Makefile   | 2 +-
- drivers/iio/test/Makefile    | 1 +
- drivers/mmc/host/Makefile    | 1 +
- drivers/thunderbolt/Makefile | 1 +
- lib/Makefile                 | 2 +-
+Co-developed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
+---
  scripts/Makefile.gcc-plugins | 4 ++++
- 6 files changed, 9 insertions(+), 2 deletions(-)
+ 1 file changed, 4 insertions(+)
 
-
-base-commit: 316346243be6df12799c0b64b788e06bad97c30b
+diff --git a/scripts/Makefile.gcc-plugins b/scripts/Makefile.gcc-plugins
+index 952e46876329a..4aad284800355 100644
+--- a/scripts/Makefile.gcc-plugins
++++ b/scripts/Makefile.gcc-plugins
+@@ -19,6 +19,10 @@ gcc-plugin-cflags-$(CONFIG_GCC_PLUGIN_STRUCTLEAK_BYREF)		\
+ 		+= -fplugin-arg-structleak_plugin-byref
+ gcc-plugin-cflags-$(CONFIG_GCC_PLUGIN_STRUCTLEAK_BYREF_ALL)	\
+ 		+= -fplugin-arg-structleak_plugin-byref-all
++ifdef CONFIG_GCC_PLUGIN_STRUCTLEAK
++    DISABLE_STRUCTLEAK_PLUGIN += -fplugin-arg-structleak_plugin-disable
++endif
++export DISABLE_STRUCTLEAK_PLUGIN
+ gcc-plugin-cflags-$(CONFIG_GCC_PLUGIN_STRUCTLEAK)		\
+ 		+= -DSTRUCTLEAK_PLUGIN
+ 
 -- 
 2.33.0.464.g1972c5931b-goog
 

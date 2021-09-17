@@ -2,120 +2,95 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76A9A40F367
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Sep 2021 09:38:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 498C140F38E
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Sep 2021 09:53:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241343AbhIQHju (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Sep 2021 03:39:50 -0400
-Received: from mout.kundenserver.de ([217.72.192.73]:39869 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241219AbhIQHjt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Sep 2021 03:39:49 -0400
-Received: from mail-wm1-f44.google.com ([209.85.128.44]) by
- mrelayeu.kundenserver.de (mreue108 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1N4i7l-1mrMEX1B39-011fzs; Fri, 17 Sep 2021 09:38:26 +0200
-Received: by mail-wm1-f44.google.com with SMTP id j134-20020a1c238c000000b0030b32367649so2847100wmj.3;
-        Fri, 17 Sep 2021 00:38:25 -0700 (PDT)
-X-Gm-Message-State: AOAM5329Gb+ssnvXdH6heWdrpkJrTgtyGZf9WsbMqUt834XsUrgm+rxv
-        hDbfhWuOcLY6tPc4svV17GmuQ/VYhu59DCu8OH0=
-X-Google-Smtp-Source: ABdhPJzqEZb8uxQdpRwHZH0EmrNx3v2i+fVgS6Kr5ZrLrEswJ1yeHIrJXd93ArwHsVs0YujyejdmCw8mrsywRiSe6lo=
-X-Received: by 2002:a1c:7413:: with SMTP id p19mr8990196wmc.98.1631864305564;
- Fri, 17 Sep 2021 00:38:25 -0700 (PDT)
+        id S241528AbhIQHyg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Sep 2021 03:54:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58440 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232766AbhIQHyf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Sep 2021 03:54:35 -0400
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71393C061574;
+        Fri, 17 Sep 2021 00:53:14 -0700 (PDT)
+Received: by mail-pj1-x1029.google.com with SMTP id il14-20020a17090b164e00b0019c7a7c362dso3037914pjb.0;
+        Fri, 17 Sep 2021 00:53:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=gO1U8AUjgpmV1EYHhy2AO9VWPgj+9s9+ohJzBuwbZhg=;
+        b=Bb9Xm8hW0IiL+8Juw169c8cKnfNr1bI9EOi/6Xc6dMMPnHla4nldpz3WokTLGf5JJe
+         Q9Op+Wx5vUGh8VWOGbHpo06cYR5KRRPphkho/r4Uu8f6kwbewPrujRm4c29bw2/dEppO
+         8dIjfRl+HOBP6Khoie6Q8a3HtaYBZRQ3SWid6K3xT7Vvs5RCh38GZXvU0YG8wB8NBv0Y
+         yrjtOPcMC/x+TvzOXCkH2uHc0Q0OGO+3ntwGJsa8LCu9a7yvBbjJDUlpz7HDQ6yY92aE
+         +/PBIJd904mwbQ5FoZ1kL/DbsM9CggDkINFE/O/9lNOUYlVsd8CuqecD9XudaOciXAu6
+         8tAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=gO1U8AUjgpmV1EYHhy2AO9VWPgj+9s9+ohJzBuwbZhg=;
+        b=2UUbDJzQcuRcRgpfyvk5D8LCYtV+HyI3XtIp7yZXN8fdwo6wAiInQihanyDngkwQfS
+         UDYb2melfUs2ryy9BUvz7tPhK8x4STazPGaLbkRilQNKXm8b0qAHtZvOjr3i2hRDghKn
+         6jQYM+z6464gzwuUkYuT/+hEAgKxkc3lB7k1XCZQapZ2/PtVHMQS4pvtOj+qGjNTE0d4
+         WULXrmoYqcGH1OmevtjRUj6QzagY2ExkqFObbwzFdROrJ85iuyIQT9V7ookv2YkwvtLk
+         Pu1jw3AL3h/KjRJhDw4dgU1U4eToiRR1VQSDt/cNZi+v9hPkMtNrTpO3yvpbEqrJFLPB
+         jUjA==
+X-Gm-Message-State: AOAM533zmVdc2WZ6dgCT3O6BuB62JDm3tCEOz7dhMm4ehC+jMDQiIudZ
+        ISQg9HTphpWSI9/sLsegpg4gnQRl2jPbw0XMYvw=
+X-Google-Smtp-Source: ABdhPJxy7WBzPTwkG+2fxhkzEiNokggqo3ZApUQ/9ai1WZi7gHLtf1UZls2NOqnySpsTmlzKBNDzOO25bVGj7dXs3YE=
+X-Received: by 2002:a17:90a:7d11:: with SMTP id g17mr11077171pjl.150.1631865193933;
+ Fri, 17 Sep 2021 00:53:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210917061104.2680133-1-brendanhiggins@google.com>
-In-Reply-To: <20210917061104.2680133-1-brendanhiggins@google.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Fri, 17 Sep 2021 09:38:09 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a257cAgtPhT1Li2GnZ-UZW3LVZa3fWX1YUnWGEENvpqJA@mail.gmail.com>
-Message-ID: <CAK8P3a257cAgtPhT1Li2GnZ-UZW3LVZa3fWX1YUnWGEENvpqJA@mail.gmail.com>
-Subject: Re: [PATCH v1 0/6] kunit: build kunit tests without structleak plugin
-To:     Brendan Higgins <brendanhiggins@google.com>
-Cc:     Shuah Khan <shuah@kernel.org>, David Gow <davidgow@google.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Kees Cook <keescook@chromium.org>,
-        Rafael Wysocki <rafael@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+References: <20210916182914.1810-1-mihail.chindris@analog.com> <20210916182914.1810-6-mihail.chindris@analog.com>
+In-Reply-To: <20210916182914.1810-6-mihail.chindris@analog.com>
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+Date:   Fri, 17 Sep 2021 10:53:02 +0300
+Message-ID: <CA+U=Dsp+p+s9sv1jGh0QPMvoyGtqZn11p+Wtrm-NOKSFWt7AZg@mail.gmail.com>
+Subject: Re: [PATCH v5 5/6] Documentation:devicetree:bindings:iio:dac: Fix val
+To:     Mihail Chindris <mihail.chindris@analog.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Ulf Hansson <ulf.hansson@linaro.org>, andreas.noever@gmail.com,
-        michael.jamet@intel.com,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        YehezkelShB@gmail.com, Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>,
-        KUnit Development <kunit-dev@googlegroups.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        gregkh <gregkh@linuxfoundation.org>, linux-iio@vger.kernel.org,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        USB list <linux-usb@vger.kernel.org>,
-        linux-hardening@vger.kernel.org,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
+        "Bogdan, Dragos" <dragos.bogdan@analog.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:8igt7gSCPa6W3i8e60BRlnHtEl3QLqROvP2iyXqGUxh9JjbZsya
- YOaky9kf1Z103GywzFAUeR7J7/q3zN3dwsOIil6WaIJcddqZDBmpVy5lEde5P/6vdR9Ecax
- RAflHp7t6feK1wbEO3TbUmIB2JF1DXQzxa7nCxtD5gvuXtwzF3XCXyRaqFQJTMbL8BFi83B
- c+On9PdB6Mw3L6t3AL4Gw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:MTx620soU1A=:zwxZqn0uhqEr29Vzm2xKd7
- HbGFGLmUB8Fyd97OaZAEvOLFES+LAkYe2uRiZ8JKz+VOoJcL9sjY07kk6u9Qw2GhZRLfR8khr
- OkhmDgxaiUrNA1eOkAQQtyS7wwjP3dxpN72SiXOxalJHdhn6Xp9QaUqes6OVgK6W8eslCwk1+
- 0ws7QftXW71rdRgA6lE4yjfOMd8UXGoxfihA/HA8ZJMizMXUP7gxdXTCWUoMPyW+cWQe0viaY
- VAONw7BiGUGOg/Lab+ejI/XT2ot+JZ81tk51S1Np1H0meXOZza+nYm4MZQVpLMc0tUQ+rNaa4
- JogkHWN+ga4za1pm1qgYdaKTq32+MHCYukDc4M3IIRcvrveaF7l5fPEocmLHjp+D4PYVsuY/N
- +4WqCgE54w8cvQhlyPSoDtYmCu1vbROd1jNQXrv1v55bqaPuSPKZAmTX+a3Z5TTP2p39Aas5f
- JPUkM5fjJcawL395lRUylcbgXwY+BDc3wh1Dh0bf/FwFyf6SdIvFCbN6WHnjMvHPxA6zWc3sb
- o7OxFo0zrC7oQoTdTzGp5oWGokdXNF6PSlwq8mjn0WKvMzKAn1Y7SNm7gQeZCDjpwVMLhhKec
- xMyKhKqdHw30dmrEC5nSQMzVTkZgL/63jkDKGcopG6+NwcojOdjMJITp7p8oXSq4eC7ofJ7wj
- m43vCNnd1kJ+x4S7gU6ryr7iOJFwvIahFxpiBF4dURwIWFRBayL7+ObAWBwRbYLYgYk/lyvfT
- pYv2NaddWqsqr3gys9VpWZRk4RFQmimu4wrEsEFbDV4+MVNLdhyUkDBs2kfKiAeHFt5hpxEe9
- FX36ZULmCuk9K+BQhU5AUSNJSBIJUoLSFMr9js5G6SdiJEWFwvPcykykqdXINyTLTUPfhznCV
- 2MP77ZLr7QbEOjoSHwFQ==
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Sep 17, 2021 at 8:10 AM Brendan Higgins
-<brendanhiggins@google.com> wrote:
+On Fri, Sep 17, 2021 at 9:08 AM Mihail Chindris
+<mihail.chindris@analog.com> wrote:
 >
-> The structleak plugin causes the stack frame size to grow immensely when
-> used with KUnit; this is caused because KUnit allocates lots of
-> moderately sized structs on the stack as part of its assertion macro
-> implementation. For most tests with small to moderately sized tests
-> cases there are never enough KUnit assertions to be an issue at all;
-> even when a single test cases has many KUnit assertions, the compiler
-> should never put all these struct allocations on the stack at the same
-> time since the scope of the structs is so limited; however, the
-> structleak plugin does not seem to respect the compiler doing the right
-> thing and will still warn of excessive stack size in some cases.
+> A correct value for output-range-microvolts is -5 to 5 Volts
+> not -5 to 5 milivolts
 >
-> These patches are not a permanent solution since new tests can be added
-> with huge test cases, but this serves as a stop gap to stop structleak
-> from being used on KUnit tests which will currently result in excessive
-> stack size.
+
+Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
+
+> Signed-off-by: Mihail Chindris <mihail.chindris@analog.com>
+> ---
+>  Documentation/devicetree/bindings/iio/dac/adi,ad5766.yaml | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> Of the following patches, I think the thunderbolt patch may be
-> unnecessary since Linus already fixed that test. Additionally, I was not
-> able to reproduce the error on the sdhci-of-aspeed test. Nevertheless, I
-> included these tests cases for completeness. Please see my discussion
-> with Arnd for more context[1].
+> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5766.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5766.yaml
+> index d5c54813ce87..a8f7720d1e3e 100644
+> --- a/Documentation/devicetree/bindings/iio/dac/adi,ad5766.yaml
+> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5766.yaml
+> @@ -54,7 +54,7 @@ examples:
 >
-> NOTE: Arnd did the legwork for most of these patches, but did not
-> actually share code for some of them, so I left his Signed-off-by off of
-> those patches as I don't want to misrepresent him. Arnd, please sign off
-> on those patches at your soonest convenience.
-
-Thanks a lot for picking up this work where I dropped the ball.
-
-Patches 1-5 look good to me, and I replied on one remaining issue I see
-with patch 6. I think you did more work on these that I did, by doing
-a nice write-up and splitting them into separate patches with useful
-changelogs, you should keep authorship, and just change my
-S-o-b to Suggested-by.
-
-If you prefer to keep me as the author, then the correct way would
-be to commit them with --author= to ensure that the author and
-first s-o-b match.
-
-        Arnd
+>            ad5766@0 {
+>                compatible = "adi,ad5766";
+> -              output-range-microvolts = <(-5000) 5000>;
+> +              output-range-microvolts = <(-5000000) 5000000>;
+>                reg = <0>;
+>                spi-cpol;
+>                spi-max-frequency = <1000000>;
+> --
+> 2.27.0
+>

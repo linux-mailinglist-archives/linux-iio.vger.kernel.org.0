@@ -2,304 +2,166 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6704C4107B3
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Sep 2021 19:05:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 385F54107BD
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Sep 2021 19:09:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233741AbhIRRHE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Sep 2021 13:07:04 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37708 "EHLO mail.kernel.org"
+        id S236513AbhIRRKz convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Sat, 18 Sep 2021 13:10:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38890 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233210AbhIRRHE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 18 Sep 2021 13:07:04 -0400
+        id S233210AbhIRRKz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 18 Sep 2021 13:10:55 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 042D960F9C;
-        Sat, 18 Sep 2021 17:05:38 +0000 (UTC)
-Date:   Sat, 18 Sep 2021 18:09:18 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id E3F5661179;
+        Sat, 18 Sep 2021 17:09:29 +0000 (UTC)
+Date:   Sat, 18 Sep 2021 18:13:08 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Nuno Sa <Nuno.Sa@analog.com>
-Subject: Re: [PATCH v3 13/14] iio: adc: max1027: Deeply rework interrupt
- handling
-Message-ID: <20210918180918.6908bbd9@jic23-huawei>
-In-Reply-To: <20210915155117.475962-14-miquel.raynal@bootlin.com>
-References: <20210915155117.475962-1-miquel.raynal@bootlin.com>
-        <20210915155117.475962-14-miquel.raynal@bootlin.com>
+Subject: Re: [PATCH v2 15/16] iio: adc: max1027: Add support for external
+ triggers
+Message-ID: <20210918181308.1b41cc3a@jic23-huawei>
+In-Reply-To: <20210915121832.7766fdd7@xps13>
+References: <20210902211437.503623-1-miquel.raynal@bootlin.com>
+        <20210902211437.503623-16-miquel.raynal@bootlin.com>
+        <20210905171046.1681482d@jic23-huawei>
+        <20210915121832.7766fdd7@xps13>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 15 Sep 2021 17:51:16 +0200
+On Wed, 15 Sep 2021 12:18:32 +0200
 Miquel Raynal <miquel.raynal@bootlin.com> wrote:
 
-> The interrupt will fire upon end of conversion. This currently can
-> happen in three situations:
-> * a single read was requested and the data is ready
-> * the cnvst (internal) trigger was enabled and toggled
-> * an external trigger was enabled and toggled
+> Hi Jonathan, Nuno,
 > 
-> So far, the driver only supported raw reads without involving the IRQ
-> and internal triggering. The internal trigger was actually the only
-> possible trigger, leading to shortcuts in the implementation.
+> jic23@kernel.org wrote on Sun, 5 Sep 2021 17:10:46 +0100:
 > 
-> In order to clarify the interrupt handling mechanism and extend the
-> software support to external triggers we must do all the following at
-> the same time:
-> * Create a hard IRQ handler only handling the EOC condition:
->   In this handler, check if we are doing a raw read or a triggered
->   read: maybe we just need to call complete() to unlock the waiting
->   process, maybe we also need to push samples.
-
-This doesn't sound quite right.  Should be either complete, or all iio_trigger_poll()
-to tell any trigger consumers that the trigger has occured.
-
-> * Create a threaded IRQ handler only executed upon EOC condition only if
->   the internal trigger is used: as said above, the goal of this threaded
->   handler is to retrieve the data and push it to the buffers.
-
-Again, not quite right..
-
-> * Create another threaded IRQ handler that will be registered with
->   devm_iio_triggered_buffer_setup(), in order to fully handle an
->   external triggering event (start conversion, wait for EOC either by
->   busy-waiting or with the completion object unlocked by the hard IRQ
->   handler, retrieve the data, push it to the buffers).
+> > On Thu,  2 Sep 2021 23:14:36 +0200
+> > Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+> >   
+> > > So far the driver only supported to use the hardware cnvst trigger. This
+> > > was purely a software limitation.
+> > > 
+> > > The IRQ handler is already registered as being a poll function and thus
+> > > can be called upon external triggering. In this case, a new conversion
+> > > must be started, and one must wait for the data to be ready before
+> > > reading the samples.
+> > > 
+> > > As the same handler can be called from different places, we check the
+> > > value of the current IRQ with the value of the registered device
+> > > IRQ. Indeed, the first step is to get called with a different IRQ number
+> > > than ours, this is the "pullfunc" version which requests a new    
+> > 
+> > pullfunc?
+> >   
+> > > conversion. During the execution of the handler, we will wait for the
+> > > EOC interrupt to happen. This interrupt is handled by the same
+> > > helper. This time the IRQ number is the one we registered, we can in
+> > > this case call complete() to unlock the primary handler and return. The
+> > > primary handler continues executing by retrieving the data normally and
+> > > finally returns.    
+> > 
+> > Interesting to use the irq number..
+> > 
+> > I'm a little nervous about how this has ended up structured.
+> > I'm not 100% sure my understanding of how you've done it is correct.
+> > 
+> > We should have the following situation:
+> > 
+> > IRQ IN
+> >   |
+> >   v
+> > Trigger IRQ / EOC IRQ  (this is the spi->irq)  (currently iio_trigger_generic_data_poll_ready)
+> >   |              |
+> >   ---------      v
+> >   |        |   complete
+> >   v        v
+> > TrigH1    (TrigH2)   (these are the IRQs below the irq_chip IIO uses to demux triggers)
+> > 
+> > 
+> > So when using it's own trigger we are using an internal interrupt
+> > tree burried inside the IIO core.  When using it only as an EOC interrupt we shouldn't
+> > be anywhere near that internal interrupt chip.
+> > 
+> > So I'm surprised the IRQ matches with the spi->irq as 
+> > those trigH1 and trigH2 will have their own IRQ numbers.
+> > 
+> > For reference I think your architecture is currently
+> > 
+> > IRQ IN
+> >   |
+> >   v
+> >   Trigger IRQ
+> >   |
+> >   v
+> >  TRIG H1
+> >  Either fills the buffer or does the completion.
+> > 
+> > I am a little confused how this works with an external trigger because the Trig H1 interrupt
+> > should be disabled unless we are using the trigger.  That control isn't exposed to the
+> > driver at all.
+> > 
+> > Is my understanding right or have I gotten confused somewhere?  
 > 
-> In order to authorize external triggers, we need to drop the
-> ->validate_trigger() verification.  
+> I think the confusion comes from the fact that in the
+> current implementation, Trigger IRQ and EOC IRQ handlers are the same.
+> This comes from a possible misunderstanding in the previous review,
+> where I understood that you and Nuno wanted to keep using
+> iio_trigger_generic_data_rdy_poll() hand have a single handler in the
+> driver (which I think is far from optimal). I can try to split that
+> handler again to have two distinct paths.
+That is the right thing to do.  The split should be done a little differently
+than you have it in v3. I've added comments to that patch.
 
-I've tried to suggest how you need to change this to bring it inline
-with the normal trigger / device split model of IIO.
+Data ready triggers are always a little messy because we end up with a split that
+is:
 
-Thanks,
+Trigger side -  Interrupt comes in here...
 
-Jonathan
+--------- GENERIC IIO HANDLING ----- Take the trigger and routes it to the device code --- 
+
+Device side - We do the data reading here.
+
+The reason for this is that we may well have other devices using the same trigger
+and we want to keep the model looking the same for all devices.
+
+A push into an iio buffer should always be on the device side of that boundary.
 
 > 
-> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> ---
->  drivers/iio/adc/max1027.c | 90 +++++++++++++++++++++++++++++++--------
->  1 file changed, 72 insertions(+), 18 deletions(-)
+> > I also can't see a path in which the eoc interrupt will get fired for raw_reads.
+> > 
+> > Could you talk me through how that works currently?
+> > 
+> > I suspect part of the confusion here is that this driver happens to be using the
+> > standard core handler iio_trigger_generic_data_rdy_poll which hides away that
+> > there are two interrupt handlers in a normal IIO driver for a device with a
+> > trigger and buffered mode.
+> > 1 for the trigger and 1 for the buffer.  Whether the buffer one is a result
+> > of the trigger one (via iio_poll_trigger) is down to whether the device is
+> > using it's own trigger or not.  
 > 
-> diff --git a/drivers/iio/adc/max1027.c b/drivers/iio/adc/max1027.c
-> index e0175448c899..9bf1c563042f 100644
-> --- a/drivers/iio/adc/max1027.c
-> +++ b/drivers/iio/adc/max1027.c
-> @@ -270,15 +270,26 @@ struct max1027_state {
->  	struct iio_trigger		*trig;
->  	__be16				*buffer;
->  	struct mutex			lock;
-> +	struct completion		complete;
->  
->  	u8				reg ____cacheline_aligned;
->  };
->  
->  static int max1027_wait_eoc(struct iio_dev *indio_dev)
->  {
-> +	struct max1027_state *st = iio_priv(indio_dev);
->  	unsigned int conversion_time = MAX1027_CONVERSION_UDELAY;
-> +	int ret;
->  
-> -	usleep_range(conversion_time, conversion_time * 2);
-> +	if (st->spi->irq) {
-> +		ret = wait_for_completion_timeout(&st->complete,
-> +						  msecs_to_jiffies(1000));
-> +		reinit_completion(&st->complete);
-> +		if (!ret)
-> +			return ret;
-> +	} else {
-> +		usleep_range(conversion_time, conversion_time * 2);
-> +	}
->  
->  	return 0;
->  }
-> @@ -418,17 +429,6 @@ static int max1027_debugfs_reg_access(struct iio_dev *indio_dev,
->  	return spi_write(st->spi, val, 1);
->  }
->  
-> -static int max1027_validate_trigger(struct iio_dev *indio_dev,
-> -				    struct iio_trigger *trig)
-> -{
-> -	struct max1027_state *st = iio_priv(indio_dev);
-> -
-> -	if (st->trig != trig)
-> -		return -EINVAL;
-> -
-> -	return 0;
-> -}
-> -
->  static int max1027_set_cnvst_trigger_state(struct iio_trigger *trig, bool state)
->  {
->  	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
-> @@ -473,13 +473,67 @@ static int max1027_read_scan(struct iio_dev *indio_dev)
->  	return 0;
->  }
->  
-> -static irqreturn_t max1027_trigger_handler(int irq, void *private)
-> +static bool max1027_own_trigger_enabled(struct iio_dev *indio_dev)
-> +{
-> +	int ret = iio_trigger_validate_own_device(indio_dev->trig, indio_dev);
-> +
-> +	return ret ? false : true;
-> +}
-> +
-> +static irqreturn_t max1027_eoc_handler(int irq, void *private)
-> +{
-> +	struct iio_dev *indio_dev = private;
-> +	struct max1027_state *st = iio_priv(indio_dev);
-> +
-> +	/*
-> +	 * If the buffers are disabled (raw read) or an external trigger is
-> +	 * used, we just need to call complete() to unlock the waiters
-> +	 * which will themselves handle the data.
-> +	 */
-> +	if (!iio_buffer_enabled(indio_dev) ||
-> +	    !max1027_own_trigger_enabled(indio_dev)) {
-
-This looks like what I'd expect here.  Should be able to use
-!iio_trigger_using_own(indio_dev) for the second condition I think...
-
-
-> +		complete(&st->complete);
-> +		return IRQ_HANDLED;
-> +	}
-
-Here we should see the same as you find in the generic handler which is just
-
-	iio_trigger_poll(private);
-
-	return IRQ_HANDLED;
-
-> +
-> +	/*
-> +	 * When using the internal trigger, the data handling is done in
-> +	 * the threaded interrupt handler.
-
-Wrong handler. It needs to be done in the one of the device side of the trigger / device split
-not here which is on the trigger side.
-
-> +	 */
-> +	return IRQ_WAKE_THREAD;
-> +}
-> +
-> +static irqreturn_t max1027_int_trigger_handler(int irq, void *private)
-> +{
-> +	struct iio_dev *indio_dev = private;
-> +	int ret;
-> +
-> +	ret = max1027_read_scan(indio_dev);
-> +	if (ret)
-> +		dev_err(&indio_dev->dev,
-> +			"Cannot read scanned values (%d)\n", ret);
-> +
-> +	iio_trigger_notify_done(indio_dev->trig);
-
-This is acknowledging the trigger in a patch not called via the trigger.
-It might work but it definitely isn't the right model to use.
-
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static irqreturn_t max1027_ext_trigger_handler(int irq, void *private)
->  {
->  	struct iio_poll_func *pf = private;
->  	struct iio_dev *indio_dev = pf->indio_dev;
->  	int ret;
+> Also, to answer Nuno about the question: is this actually working: IIRC
+> I mentioned it in the cover letter but my hardware does not have the
+> EOC line wired so I am unable to actually test that I am not breaking
+> this. My main goal is to be able to use external triggers (such as a
+> timer) and I am a bit struggling with the constraints of my hardware +
+> the design of this chip.
 > 
-
-Here there should be a
-
-	if (iio_trigger_using_own(indio_dev)) {
-
-		/* Just read the data and push to the buffer as we know we are using the EOC trigger*/
-		/* I think that will be what you have in max1027_int_trigger_handler above */
-		/* You may also want to provide a top half for the trigger handler to grab a timestamp
-		   nearer the point of the EOC interrupt for this path...
-		*/
-
-	} else {
-		/* Start the capture and wait for completion */
-
-		ret = max1027_configure_chans_and_start(indio_dev);
-		if (ret)
-			goto out;
-	
-		ret = max1027_wait_eoc(indio_dev);
-		if (ret)
-			goto out;
-
-	 	ret = max1027_read_scan(indio_dev);
-...		
-	}
-
-> +	ret = max1027_configure_chans_and_start(indio_dev);
-> +	if (ret)
-> +		goto out;
-> +
-> +	ret = max1027_wait_eoc(indio_dev);
-> +	if (ret)
-> +		goto out;
-> +
->  	ret = max1027_read_scan(indio_dev);
-> +out:
->  	if (ret)
->  		dev_err(&indio_dev->dev,
->  			"Cannot read scanned values (%d)\n", ret);
-> @@ -496,7 +550,6 @@ static const struct iio_trigger_ops max1027_trigger_ops = {
->  
->  static const struct iio_info max1027_info = {
->  	.read_raw = &max1027_read_raw,
-> -	.validate_trigger = &max1027_validate_trigger,
->  	.debugfs_reg_access = &max1027_debugfs_reg_access,
->  };
->  
-> @@ -517,6 +570,7 @@ static int max1027_probe(struct spi_device *spi)
->  	st->info = &max1027_chip_info_tbl[spi_get_device_id(spi)->driver_data];
->  
->  	mutex_init(&st->lock);
-> +	init_completion(&st->complete);
->  
->  	indio_dev->name = spi_get_device_id(spi)->name;
->  	indio_dev->info = &max1027_info;
-> @@ -534,7 +588,7 @@ static int max1027_probe(struct spi_device *spi)
->  	if (spi->irq) {
->  		ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
->  						      &iio_pollfunc_store_time,
-> -						      &max1027_trigger_handler,
-> +						      &max1027_ext_trigger_handler,
-
-This isn't how this would normally be done.
-Whatever trigger we are using, the handling should occur in the callback registered here.
-We can do 'different' things depending on the trigger in use however.
-The reason is that we want a model that allows us to use the EOC trigger for this device
-and other devices at the same time.
-
-
->  						      NULL);
->  		if (ret < 0) {
->  			dev_err(&indio_dev->dev, "Failed to setup buffer\n");
-> @@ -561,11 +615,11 @@ static int max1027_probe(struct spi_device *spi)
->  		}
->  
->  		ret = devm_request_threaded_irq(&spi->dev, spi->irq,
-> -						iio_trigger_generic_data_rdy_poll,
-> -						NULL,
-> +						max1027_eoc_handler,
-> +						max1027_int_trigger_handler,
->  						IRQF_TRIGGER_FALLING,
->  						spi->dev.driver->name,
-> -						st->trig);
-> +						indio_dev);
->  		if (ret < 0) {
->  			dev_err(&indio_dev->dev, "Failed to allocate IRQ.\n");
->  			return ret;
+> I will provide a third implementation in v3 and if this still does not
+> fit your mental model please guide me with maybe an untested code
+> snippet just to show me how you think this should be implemented.
+> 
+> Thank you both for the numerous reviews and precious feedback anyway!
+> Miquèl
+> 
 

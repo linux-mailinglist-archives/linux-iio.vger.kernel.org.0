@@ -2,21 +2,21 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 662EB410794
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Sep 2021 18:19:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F032B410799
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Sep 2021 18:28:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234490AbhIRQUa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Sep 2021 12:20:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51096 "EHLO mail.kernel.org"
+        id S234837AbhIRQ3n (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Sep 2021 12:29:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53522 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231415AbhIRQU3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 18 Sep 2021 12:20:29 -0400
+        id S231415AbhIRQ3n (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 18 Sep 2021 12:29:43 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 40372610A3;
-        Sat, 18 Sep 2021 16:19:00 +0000 (UTC)
-Date:   Sat, 18 Sep 2021 17:22:40 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id E255861100;
+        Sat, 18 Sep 2021 16:28:14 +0000 (UTC)
+Date:   Sat, 18 Sep 2021 17:31:54 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
@@ -33,12 +33,12 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Ryan Barnett <ryan.barnett@collins.com>,
         Grygorii Strashko <grygorii.strashko@ti.com>,
         Jason Reeder <jreeder@ti.com>
-Subject: Re: [PATCH v3 27/47] mfd: ti_am335x_tscadc: Clarify the maximum
- values for DT entries
-Message-ID: <20210918172240.647dbb1e@jic23-huawei>
-In-Reply-To: <20210915155908.476767-28-miquel.raynal@bootlin.com>
+Subject: Re: [PATCH v3 28/47] mfd: ti_am335x_tscadc: Drop useless
+ definitions from the header
+Message-ID: <20210918173154.70c0b04b@jic23-huawei>
+In-Reply-To: <20210915155908.476767-29-miquel.raynal@bootlin.com>
 References: <20210915155908.476767-1-miquel.raynal@bootlin.com>
-        <20210915155908.476767-28-miquel.raynal@bootlin.com>
+        <20210915155908.476767-29-miquel.raynal@bootlin.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -47,77 +47,169 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 15 Sep 2021 17:58:48 +0200
+On Wed, 15 Sep 2021 17:58:49 +0200
 Miquel Raynal <miquel.raynal@bootlin.com> wrote:
 
-> Clearly define the maximum open delay and sample delay. Use these
-> definitions in place of a mask (which works because this is the first
-> field in the register) and an open-coded value. While at it reword a
-> little bit the error messages to make them look clearer and similar.
+> Drop unused and useless definitions from the header. Besides the STEP
+> ENABLE register which is highly unclear (and not used), drop all the
 
-I wouldn't bother explaining why the old method of using the mask happened
-to work.  It confused me when reading this description :)
+Agreed - I started trying to figure out what they were in the earlier patch!
 
-Otherwise, lgtm
+> "masks" definitions which are only used by the following definition. It
+> could be possible to got even further by removing these definitions
+> entirely and use FIELD_PREP() macros from the code directly, but while I
+> have no troubles making these changes in the header, changing the values
+> in the code directly could IMHO darkening a bit the logic and
+> furthermore hardening future git-blames.
+
+Hmm. Maybe on that...  I'm not that bothered either way but there is
+definitely clarity in FIELD_PREP being used inline for writes to a device.
+You can very clearly see what is going on.
+
+Note that it only really works here because the driver only ever uses
+the masks to 'set' the value, but never to read any of them back from the
+hardware.
+
+Your point about it making a messy history is true of almost any change :)
+
+> 
+> Certain macros are using GENMASK() to define the value of a particular
+> field, while this is purely "by chance" that the value and the mask have
+> the same value. In this case, drop the "mask" definition, use
+> FIELD_PREP() and GENMASK() in the macro defining the field, and use the
+> new macro to define the particular value by feeding directly the actual
+> number advertised in the datasheet into that macro, as in:
+> 	-#define STEPCONFIG_RFM_VREFN   GENMASK(24, 23)
+> 	-#define STEPCONFIG_RFM(val)    FIELD_PREP(STEPCONFIG_RFM_VREFN, (val))
+> 	+#define STEPCONFIG_RFM(val)    FIELD_PREP(GENMASK(24, 23), (val))
+> 	+#define STEPCONFIG_RFM_VREFN   STEPCONFIG_RFM(3)
+
+This is indeed an improvement.
+
 > 
 > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+I'm a bit in two minds out about how you should handle the multiple patches
+involved in cleaning these up.   Definitely not good to do modifications on
+elements you are going to drop - so for those pull them out earlier.
+
+The others are a little odd because you first introduce some of the GENMASK stuff
+then rework it in this patch.  Perhaps this split is the best way to handle those.
+
+
+Jonathan
+
 
 > ---
->  drivers/iio/adc/ti_am335x_adc.c      | 18 +++++++++---------
->  include/linux/mfd/ti_am335x_tscadc.h |  2 ++
->  2 files changed, 11 insertions(+), 9 deletions(-)
+>  include/linux/mfd/ti_am335x_tscadc.h | 51 +++++++++-------------------
+>  1 file changed, 16 insertions(+), 35 deletions(-)
 > 
-> diff --git a/drivers/iio/adc/ti_am335x_adc.c b/drivers/iio/adc/ti_am335x_adc.c
-> index 3dec115e68ee..a241e6fa3564 100644
-> --- a/drivers/iio/adc/ti_am335x_adc.c
-> +++ b/drivers/iio/adc/ti_am335x_adc.c
-> @@ -126,7 +126,7 @@ static void tiadc_step_config(struct iio_dev *indio_dev)
->  		chan = adc_dev->channel_line[i];
->  
->  		if (adc_dev->step_avg[i] > STEPCONFIG_AVG_16) {
-> -			dev_warn(dev, "chan %d step_avg truncating to %ld\n",
-> +			dev_warn(dev, "chan %d: wrong step avg, truncated to %ld\n",
->  				 chan, STEPCONFIG_AVG_16);
->  			adc_dev->step_avg[i] = STEPCONFIG_AVG_16;
->  		}
-> @@ -147,16 +147,16 @@ static void tiadc_step_config(struct iio_dev *indio_dev)
->  				STEPCONFIG_RFP_VREFP |
->  				STEPCONFIG_RFM_VREFN);
->  
-> -		if (adc_dev->open_delay[i] > STEPDELAY_OPEN_MASK) {
-> -			dev_warn(dev, "chan %d open delay truncating to 0x3FFFF\n",
-> -				 chan);
-> -			adc_dev->open_delay[i] = STEPDELAY_OPEN_MASK;
-> +		if (adc_dev->open_delay[i] > STEPCONFIG_MAX_OPENDLY) {
-> +			dev_warn(dev, "chan %d: wrong open delay, truncated to 0x%lX\n",
-> +				 chan, STEPCONFIG_MAX_OPENDLY);
-> +			adc_dev->open_delay[i] = STEPCONFIG_MAX_OPENDLY;
->  		}
->  
-> -		if (adc_dev->sample_delay[i] > 0xFF) {
-> -			dev_warn(dev, "chan %d sample delay truncating to 0xFF\n",
-> -				 chan);
-> -			adc_dev->sample_delay[i] = 0xFF;
-> +		if (adc_dev->sample_delay[i] > STEPCONFIG_MAX_SAMPLE) {
-> +			dev_warn(dev, "chan %d: wrong sample delay, truncated to 0x%lX\n",
-> +				 chan, STEPCONFIG_MAX_SAMPLE);
-> +			adc_dev->sample_delay[i] = STEPCONFIG_MAX_SAMPLE;
->  		}
->  
->  		tiadc_writel(adc_dev, REG_STEPDELAY(steps),
 > diff --git a/include/linux/mfd/ti_am335x_tscadc.h b/include/linux/mfd/ti_am335x_tscadc.h
-> index e6fe623bb1aa..babc2e36c5d0 100644
+> index babc2e36c5d0..32b26e56eebb 100644
 > --- a/include/linux/mfd/ti_am335x_tscadc.h
 > +++ b/include/linux/mfd/ti_am335x_tscadc.h
-> @@ -91,7 +91,9 @@
+> @@ -40,13 +40,6 @@
+>  /* IRQ wakeup enable */
+>  #define IRQWKUP_ENB		BIT(0)
+>  
+> -/* Step Enable */
+> -#define STEPENB_MASK		GENMASK(16, 0)
+> -#define STEPENB(val)		FIELD_PREP(STEPENB_MASK, (val))
+> -#define ENB(val)		BIT(val)
+> -#define STPENB_STEPENB		STEPENB(GENMASK(16, 0))
+> -#define STPENB_STEPENB_TC	STEPENB(GENMASK(12, 0))
+> -
+
+With this first block moved much earlier in the series - to before
+any of the other patches touch it.
+
+Reviwed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+>  /* IRQ enable */
+>  #define IRQENB_HW_PEN		BIT(0)
+>  #define IRQENB_EOS		BIT(1)
+> @@ -59,12 +52,10 @@
+>  #define IRQENB_PENUP		BIT(9)
+>  
+>  /* Step Configuration */
+> -#define STEPCONFIG_MODE_MASK	GENMASK(1, 0)
+> -#define STEPCONFIG_MODE(val)	FIELD_PREP(STEPCONFIG_MODE_MASK, (val))
+> +#define STEPCONFIG_MODE(val)	FIELD_PREP(GENMASK(1, 0), (val))
+>  #define STEPCONFIG_MODE_SWCNT	STEPCONFIG_MODE(1)
+>  #define STEPCONFIG_MODE_HWSYNC	STEPCONFIG_MODE(2)
+> -#define STEPCONFIG_AVG_MASK	GENMASK(4, 2)
+> -#define STEPCONFIG_AVG(val)	FIELD_PREP(STEPCONFIG_AVG_MASK, (val))
+> +#define STEPCONFIG_AVG(val)	FIELD_PREP(GENMASK(4, 2), (val))
+>  #define STEPCONFIG_AVG_16	STEPCONFIG_AVG(4)
+>  #define STEPCONFIG_XPP		BIT(5)
+>  #define STEPCONFIG_XNN		BIT(6)
+> @@ -72,45 +63,36 @@
+>  #define STEPCONFIG_YNN		BIT(8)
+>  #define STEPCONFIG_XNP		BIT(9)
+>  #define STEPCONFIG_YPN		BIT(10)
+> -#define STEPCONFIG_RFP_VREFP	GENMASK(13, 12)
+> -#define STEPCONFIG_RFP(val)	FIELD_PREP(STEPCONFIG_RFP_VREFP, (val))
+> -#define STEPCONFIG_INM_MASK	GENMASK(18, 15)
+> -#define STEPCONFIG_INM(val)	FIELD_PREP(STEPCONFIG_INM_MASK, (val))
+> +#define STEPCONFIG_RFP(val)	FIELD_PREP(GENMASK(13, 12), (val))
+> +#define STEPCONFIG_RFP_VREFP	STEPCONFIG_RFP(3)
+> +#define STEPCONFIG_INM(val)	FIELD_PREP(GENMASK(18, 15), (val))
+>  #define STEPCONFIG_INM_ADCREFM	STEPCONFIG_INM(8)
+> -#define STEPCONFIG_INP_MASK	GENMASK(22, 19)
+> -#define STEPCONFIG_INP(val)	FIELD_PREP(STEPCONFIG_INP_MASK, (val))
+> +#define STEPCONFIG_INP(val)	FIELD_PREP(GENMASK(22, 19), (val))
+>  #define STEPCONFIG_INP_AN4	STEPCONFIG_INP(4)
+>  #define STEPCONFIG_INP_ADCREFM	STEPCONFIG_INP(8)
+>  #define STEPCONFIG_FIFO1	BIT(26)
+> -#define STEPCONFIG_RFM_VREFN	GENMASK(24, 23)
+> -#define STEPCONFIG_RFM(val)	FIELD_PREP(STEPCONFIG_RFM_VREFN, (val))
+> +#define STEPCONFIG_RFM(val)	FIELD_PREP(GENMASK(24, 23), (val))
+> +#define STEPCONFIG_RFM_VREFN	STEPCONFIG_RFM(3)
+>  
+>  /* Delay register */
+> -#define STEPDELAY_OPEN_MASK	GENMASK(17, 0)
+> -#define STEPDELAY_OPEN(val)	FIELD_PREP(STEPDELAY_OPEN_MASK, (val))
+> +#define STEPDELAY_OPEN(val)	FIELD_PREP(GENMASK(17, 0), (val))
 >  #define STEPCONFIG_OPENDLY	STEPDELAY_OPEN(0x098)
->  #define STEPDELAY_SAMPLE_MASK	GENMASK(31, 24)
->  #define STEPDELAY_SAMPLE(val)	FIELD_PREP(STEPDELAY_SAMPLE_MASK, (val))
-> +#define STEPCONFIG_MAX_OPENDLY	GENMASK(17, 0)
+> -#define STEPDELAY_SAMPLE_MASK	GENMASK(31, 24)
+> -#define STEPDELAY_SAMPLE(val)	FIELD_PREP(STEPDELAY_SAMPLE_MASK, (val))
+>  #define STEPCONFIG_MAX_OPENDLY	GENMASK(17, 0)
+> +#define STEPDELAY_SAMPLE(val)	FIELD_PREP(GENMASK(31, 24), (val))
 >  #define STEPCONFIG_SAMPLEDLY	STEPDELAY_SAMPLE(0)
-> +#define STEPCONFIG_MAX_SAMPLE	GENMASK(7, 0)
+>  #define STEPCONFIG_MAX_SAMPLE	GENMASK(7, 0)
 >  
 >  /* Charge Config */
->  #define STEPCHARGE_RFP_MASK	GENMASK(14, 12)
+> -#define STEPCHARGE_RFP_MASK	GENMASK(14, 12)
+> -#define STEPCHARGE_RFP(val)	FIELD_PREP(STEPCHARGE_RFP_MASK, (val))
+> +#define STEPCHARGE_RFP(val)	FIELD_PREP(GENMASK(14, 12), (val))
+>  #define STEPCHARGE_RFP_XPUL	STEPCHARGE_RFP(1)
+> -#define STEPCHARGE_INM_MASK	GENMASK(18, 15)
+> -#define STEPCHARGE_INM(val)	FIELD_PREP(STEPCHARGE_INM_MASK, (val))
+> +#define STEPCHARGE_INM(val)	FIELD_PREP(GENMASK(18, 15), (val))
+>  #define STEPCHARGE_INM_AN1	STEPCHARGE_INM(1)
+> -#define STEPCHARGE_INP_MASK	GENMASK(22, 19)
+> -#define STEPCHARGE_INP(val)	FIELD_PREP(STEPCHARGE_INP_MASK, (val))
+> -#define STEPCHARGE_RFM_MASK	GENMASK(24, 23)
+> -#define STEPCHARGE_RFM(val)	FIELD_PREP(STEPCHARGE_RFM_MASK, (val))
+> +#define STEPCHARGE_INP(val)	FIELD_PREP(GENMASK(22, 19), (val))
+> +#define STEPCHARGE_RFM(val)	FIELD_PREP(GENMASK(24, 23), (val))
+>  #define STEPCHARGE_RFM_XNUR	STEPCHARGE_RFM(1)
+>  
+>  /* Charge delay */
+> -#define CHARGEDLY_OPEN_MASK	GENMASK(17, 0)
+> -#define CHARGEDLY_OPEN(val)	FIELD_PREP(CHARGEDLY_OPEN_MASK, (val))
+> +#define CHARGEDLY_OPEN(val)	FIELD_PREP(GENMASK(17, 0), (val))
+>  #define CHARGEDLY_OPENDLY	CHARGEDLY_OPEN(0x400)
+>  
+>  /* Control register */
+> @@ -118,8 +100,7 @@
+>  #define CNTRLREG_STEPID		BIT(1)
+>  #define CNTRLREG_STEPCONFIGWRT	BIT(2)
+>  #define CNTRLREG_POWERDOWN	BIT(4)
+> -#define CNTRLREG_AFE_CTRL_MASK	GENMASK(6, 5)
+> -#define CNTRLREG_AFE_CTRL(val)	FIELD_PREP(CNTRLREG_AFE_CTRL_MASK, (val))
+> +#define CNTRLREG_AFE_CTRL(val)	FIELD_PREP(GENMASK(6, 5), (val))
+>  #define CNTRLREG_4WIRE		CNTRLREG_AFE_CTRL(1)
+>  #define CNTRLREG_5WIRE		CNTRLREG_AFE_CTRL(2)
+>  #define CNTRLREG_8WIRE		CNTRLREG_AFE_CTRL(3)
 

@@ -2,95 +2,151 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF9E84107F1
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Sep 2021 19:56:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E90B74107F3
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Sep 2021 19:57:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238721AbhIRR5X convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sat, 18 Sep 2021 13:57:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54654 "EHLO mail.kernel.org"
+        id S238216AbhIRR66 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Sep 2021 13:58:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55284 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231576AbhIRR5W (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 18 Sep 2021 13:57:22 -0400
+        id S231576AbhIRR65 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 18 Sep 2021 13:58:57 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7D26860F26;
-        Sat, 18 Sep 2021 17:55:57 +0000 (UTC)
-Date:   Sat, 18 Sep 2021 18:59:37 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id E82626101B;
+        Sat, 18 Sep 2021 17:57:32 +0000 (UTC)
+Date:   Sat, 18 Sep 2021 19:01:12 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
-Cc:     Daniel Palmer <daniel@0x0f.com>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] iio: imu: inv_mpu6050: Mark acpi match table as
- maybe unused
-Message-ID: <20210918185937.1af9c5f5@jic23-huawei>
-In-Reply-To: <BL0PR12MB5011F73C07A4EB499BCEBCC0C4D99@BL0PR12MB5011.namprd12.prod.outlook.com>
-References: <20210913112913.2148026-1-daniel@0x0f.com>
-        <BL0PR12MB5011F73C07A4EB499BCEBCC0C4D99@BL0PR12MB5011.namprd12.prod.outlook.com>
+To:     Alexandru Ardelean <aardelean@deviqon.com>
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: dac: ad7303: convert probe to full device-managed
+Message-ID: <20210918190112.7fa9df50@jic23-huawei>
+In-Reply-To: <20210913115121.300082-1-aardelean@deviqon.com>
+References: <20210913115121.300082-1-aardelean@deviqon.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 13 Sep 2021 12:19:10 +0000
-Jean-Baptiste Maneyrol <JManeyrol@invensense.com> wrote:
+On Mon, 13 Sep 2021 14:51:21 +0300
+Alexandru Ardelean <aardelean@deviqon.com> wrote:
 
-> Hello,
+> For this conversion, the regulators need to have some cleanup hooks
+> registered with devm_add_action_or_reset() and then the
+> devm_io_device_register() call can be used.
 > 
-> looks obviously good to me.
-> Thanks for your patch.
-> 
-> Acked-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
+> Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
+Nice simple case.
 
-Applied to the togreg branch of iio.git and pushed out as testing for
-0-day to see if it can find anything we missed.
+Applied to the togreg branch of iio.git and pushed out as testing for 0-day
+to see if it can find anything we missed.
 
 Thanks,
 
 Jonathan
 
-> 
-> Thanks,
-> JB
-> 
-> From: Daniel Palmer <daniel@0x0f.com>
-> Sent: Monday, September 13, 2021 13:29
-> To: jic23@kernel.org <jic23@kernel.org>; lars@metafoo.de <lars@metafoo.de>; Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>; linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>
-> Cc: linux-kernel@vger.kernel.org <linux-kernel@vger.kernel.org>; Daniel Palmer <daniel@0x0f.com>
-> Subject: [PATCH v2] iio: imu: inv_mpu6050: Mark acpi match table as maybe unused 
->  
->  CAUTION: This email originated from outside of the organization. Please make sure the sender is who they say they are and do not click links or open attachments unless you recognize the sender and know the content is safe.
-> 
-> When building kernels without ACPI support the table is declared
-> but is not used because ACPI_PTR() turns it into a NULL.
-> 
-> Add the __maybe_unused attribute to stop the compiler whining.
-> 
-> Signed-off-by: Daniel Palmer <daniel@0x0f.com>
 > ---
-> Ignore the first version. I'm an idiot and generated a patch,
-> check that it worked, noticed it didn't, fixed it up and then
-> forgot to regenerate the patch before sending it.
+>  drivers/iio/dac/ad7303.c | 47 +++++++++++++++-------------------------
+>  1 file changed, 17 insertions(+), 30 deletions(-)
 > 
->  drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
-> index 95f16951c8f4..3ef17e3f50e2 100644
-> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
-> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
-> @@ -249,7 +249,7 @@ static const struct of_device_id inv_of_match[] = {
->  };
->  MODULE_DEVICE_TABLE(of, inv_of_match);
->  
-> -static const struct acpi_device_id inv_acpi_match[] = {
-> +static const struct acpi_device_id __maybe_unused inv_acpi_match[] = {
->          {"INVN6500", INV_MPU6500},
->          { },
->  };
+> diff --git a/drivers/iio/dac/ad7303.c b/drivers/iio/dac/ad7303.c
+> index e1b6a92df12f..91eaaf793b3e 100644
+> --- a/drivers/iio/dac/ad7303.c
+> +++ b/drivers/iio/dac/ad7303.c
+> @@ -198,6 +198,11 @@ static const struct iio_chan_spec ad7303_channels[] = {
+>  	AD7303_CHANNEL(1),
+>  };
+>  
+> +static void ad7303_reg_disable(void *reg)
+> +{
+> +	regulator_disable(reg);
+> +}
+> +
+>  static int ad7303_probe(struct spi_device *spi)
+>  {
+>  	const struct spi_device_id *id = spi_get_device_id(spi);
+> @@ -210,7 +215,6 @@ static int ad7303_probe(struct spi_device *spi)
+>  		return -ENOMEM;
+>  
+>  	st = iio_priv(indio_dev);
+> -	spi_set_drvdata(spi, indio_dev);
+>  
+>  	st->spi = spi;
+>  
+> @@ -224,18 +228,27 @@ static int ad7303_probe(struct spi_device *spi)
+>  	if (ret)
+>  		return ret;
+>  
+> +	ret = devm_add_action_or_reset(&spi->dev, ad7303_reg_disable, st->vdd_reg);
+> +	if (ret)
+> +		return ret;
+> +
+>  	st->vref_reg = devm_regulator_get_optional(&spi->dev, "REF");
+>  	if (IS_ERR(st->vref_reg)) {
+>  		ret = PTR_ERR(st->vref_reg);
+>  		if (ret != -ENODEV)
+> -			goto err_disable_vdd_reg;
+> +			return ret;
+>  		st->vref_reg = NULL;
+>  	}
+>  
+>  	if (st->vref_reg) {
+>  		ret = regulator_enable(st->vref_reg);
+>  		if (ret)
+> -			goto err_disable_vdd_reg;
+> +			return ret;
+> +
+> +		ret = devm_add_action_or_reset(&spi->dev, ad7303_reg_disable,
+> +					       st->vref_reg);
+> +		if (ret)
+> +			return ret;
+>  
+>  		st->config |= AD7303_CFG_EXTERNAL_VREF;
+>  	}
+> @@ -246,32 +259,7 @@ static int ad7303_probe(struct spi_device *spi)
+>  	indio_dev->channels = ad7303_channels;
+>  	indio_dev->num_channels = ARRAY_SIZE(ad7303_channels);
+>  
+> -	ret = iio_device_register(indio_dev);
+> -	if (ret)
+> -		goto err_disable_vref_reg;
+> -
+> -	return 0;
+> -
+> -err_disable_vref_reg:
+> -	if (st->vref_reg)
+> -		regulator_disable(st->vref_reg);
+> -err_disable_vdd_reg:
+> -	regulator_disable(st->vdd_reg);
+> -	return ret;
+> -}
+> -
+> -static int ad7303_remove(struct spi_device *spi)
+> -{
+> -	struct iio_dev *indio_dev = spi_get_drvdata(spi);
+> -	struct ad7303_state *st = iio_priv(indio_dev);
+> -
+> -	iio_device_unregister(indio_dev);
+> -
+> -	if (st->vref_reg)
+> -		regulator_disable(st->vref_reg);
+> -	regulator_disable(st->vdd_reg);
+> -
+> -	return 0;
+> +	return devm_iio_device_register(&spi->dev, indio_dev);
+>  }
+>  
+>  static const struct of_device_id ad7303_spi_of_match[] = {
+> @@ -292,7 +280,6 @@ static struct spi_driver ad7303_driver = {
+>  		.of_match_table = ad7303_spi_of_match,
+>  	},
+>  	.probe = ad7303_probe,
+> -	.remove = ad7303_remove,
+>  	.id_table = ad7303_spi_ids,
+>  };
+>  module_spi_driver(ad7303_driver);
 

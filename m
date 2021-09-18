@@ -2,43 +2,33 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F032B410799
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Sep 2021 18:28:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6704C4107B3
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Sep 2021 19:05:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234837AbhIRQ3n (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Sep 2021 12:29:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53522 "EHLO mail.kernel.org"
+        id S233741AbhIRRHE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Sep 2021 13:07:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37708 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231415AbhIRQ3n (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 18 Sep 2021 12:29:43 -0400
+        id S233210AbhIRRHE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 18 Sep 2021 13:07:04 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E255861100;
-        Sat, 18 Sep 2021 16:28:14 +0000 (UTC)
-Date:   Sat, 18 Sep 2021 17:31:54 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 042D960F9C;
+        Sat, 18 Sep 2021 17:05:38 +0000 (UTC)
+Date:   Sat, 18 Sep 2021 18:09:18 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>, bcousson@baylibre.com,
-        Tony Lindgren <tony@atomide.com>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-omap@vger.kernel.org,
+Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Ryan Barnett <ryan.barnett@collins.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Jason Reeder <jreeder@ti.com>
-Subject: Re: [PATCH v3 28/47] mfd: ti_am335x_tscadc: Drop useless
- definitions from the header
-Message-ID: <20210918173154.70c0b04b@jic23-huawei>
-In-Reply-To: <20210915155908.476767-29-miquel.raynal@bootlin.com>
-References: <20210915155908.476767-1-miquel.raynal@bootlin.com>
-        <20210915155908.476767-29-miquel.raynal@bootlin.com>
+        Nuno Sa <Nuno.Sa@analog.com>
+Subject: Re: [PATCH v3 13/14] iio: adc: max1027: Deeply rework interrupt
+ handling
+Message-ID: <20210918180918.6908bbd9@jic23-huawei>
+In-Reply-To: <20210915155117.475962-14-miquel.raynal@bootlin.com>
+References: <20210915155117.475962-1-miquel.raynal@bootlin.com>
+        <20210915155117.475962-14-miquel.raynal@bootlin.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -47,169 +37,269 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 15 Sep 2021 17:58:49 +0200
+On Wed, 15 Sep 2021 17:51:16 +0200
 Miquel Raynal <miquel.raynal@bootlin.com> wrote:
 
-> Drop unused and useless definitions from the header. Besides the STEP
-> ENABLE register which is highly unclear (and not used), drop all the
-
-Agreed - I started trying to figure out what they were in the earlier patch!
-
-> "masks" definitions which are only used by the following definition. It
-> could be possible to got even further by removing these definitions
-> entirely and use FIELD_PREP() macros from the code directly, but while I
-> have no troubles making these changes in the header, changing the values
-> in the code directly could IMHO darkening a bit the logic and
-> furthermore hardening future git-blames.
-
-Hmm. Maybe on that...  I'm not that bothered either way but there is
-definitely clarity in FIELD_PREP being used inline for writes to a device.
-You can very clearly see what is going on.
-
-Note that it only really works here because the driver only ever uses
-the masks to 'set' the value, but never to read any of them back from the
-hardware.
-
-Your point about it making a messy history is true of almost any change :)
-
+> The interrupt will fire upon end of conversion. This currently can
+> happen in three situations:
+> * a single read was requested and the data is ready
+> * the cnvst (internal) trigger was enabled and toggled
+> * an external trigger was enabled and toggled
 > 
-> Certain macros are using GENMASK() to define the value of a particular
-> field, while this is purely "by chance" that the value and the mask have
-> the same value. In this case, drop the "mask" definition, use
-> FIELD_PREP() and GENMASK() in the macro defining the field, and use the
-> new macro to define the particular value by feeding directly the actual
-> number advertised in the datasheet into that macro, as in:
-> 	-#define STEPCONFIG_RFM_VREFN   GENMASK(24, 23)
-> 	-#define STEPCONFIG_RFM(val)    FIELD_PREP(STEPCONFIG_RFM_VREFN, (val))
-> 	+#define STEPCONFIG_RFM(val)    FIELD_PREP(GENMASK(24, 23), (val))
-> 	+#define STEPCONFIG_RFM_VREFN   STEPCONFIG_RFM(3)
-
-This is indeed an improvement.
-
+> So far, the driver only supported raw reads without involving the IRQ
+> and internal triggering. The internal trigger was actually the only
+> possible trigger, leading to shortcuts in the implementation.
 > 
-> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> In order to clarify the interrupt handling mechanism and extend the
+> software support to external triggers we must do all the following at
+> the same time:
+> * Create a hard IRQ handler only handling the EOC condition:
+>   In this handler, check if we are doing a raw read or a triggered
+>   read: maybe we just need to call complete() to unlock the waiting
+>   process, maybe we also need to push samples.
 
-I'm a bit in two minds out about how you should handle the multiple patches
-involved in cleaning these up.   Definitely not good to do modifications on
-elements you are going to drop - so for those pull them out earlier.
+This doesn't sound quite right.  Should be either complete, or all iio_trigger_poll()
+to tell any trigger consumers that the trigger has occured.
 
-The others are a little odd because you first introduce some of the GENMASK stuff
-then rework it in this patch.  Perhaps this split is the best way to handle those.
+> * Create a threaded IRQ handler only executed upon EOC condition only if
+>   the internal trigger is used: as said above, the goal of this threaded
+>   handler is to retrieve the data and push it to the buffers.
 
+Again, not quite right..
+
+> * Create another threaded IRQ handler that will be registered with
+>   devm_iio_triggered_buffer_setup(), in order to fully handle an
+>   external triggering event (start conversion, wait for EOC either by
+>   busy-waiting or with the completion object unlocked by the hard IRQ
+>   handler, retrieve the data, push it to the buffers).
+> 
+> In order to authorize external triggers, we need to drop the
+> ->validate_trigger() verification.  
+
+I've tried to suggest how you need to change this to bring it inline
+with the normal trigger / device split model of IIO.
+
+Thanks,
 
 Jonathan
 
-
-> ---
->  include/linux/mfd/ti_am335x_tscadc.h | 51 +++++++++-------------------
->  1 file changed, 16 insertions(+), 35 deletions(-)
 > 
-> diff --git a/include/linux/mfd/ti_am335x_tscadc.h b/include/linux/mfd/ti_am335x_tscadc.h
-> index babc2e36c5d0..32b26e56eebb 100644
-> --- a/include/linux/mfd/ti_am335x_tscadc.h
-> +++ b/include/linux/mfd/ti_am335x_tscadc.h
-> @@ -40,13 +40,6 @@
->  /* IRQ wakeup enable */
->  #define IRQWKUP_ENB		BIT(0)
+> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> ---
+>  drivers/iio/adc/max1027.c | 90 +++++++++++++++++++++++++++++++--------
+>  1 file changed, 72 insertions(+), 18 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/max1027.c b/drivers/iio/adc/max1027.c
+> index e0175448c899..9bf1c563042f 100644
+> --- a/drivers/iio/adc/max1027.c
+> +++ b/drivers/iio/adc/max1027.c
+> @@ -270,15 +270,26 @@ struct max1027_state {
+>  	struct iio_trigger		*trig;
+>  	__be16				*buffer;
+>  	struct mutex			lock;
+> +	struct completion		complete;
 >  
-> -/* Step Enable */
-> -#define STEPENB_MASK		GENMASK(16, 0)
-> -#define STEPENB(val)		FIELD_PREP(STEPENB_MASK, (val))
-> -#define ENB(val)		BIT(val)
-> -#define STPENB_STEPENB		STEPENB(GENMASK(16, 0))
-> -#define STPENB_STEPENB_TC	STEPENB(GENMASK(12, 0))
+>  	u8				reg ____cacheline_aligned;
+>  };
+>  
+>  static int max1027_wait_eoc(struct iio_dev *indio_dev)
+>  {
+> +	struct max1027_state *st = iio_priv(indio_dev);
+>  	unsigned int conversion_time = MAX1027_CONVERSION_UDELAY;
+> +	int ret;
+>  
+> -	usleep_range(conversion_time, conversion_time * 2);
+> +	if (st->spi->irq) {
+> +		ret = wait_for_completion_timeout(&st->complete,
+> +						  msecs_to_jiffies(1000));
+> +		reinit_completion(&st->complete);
+> +		if (!ret)
+> +			return ret;
+> +	} else {
+> +		usleep_range(conversion_time, conversion_time * 2);
+> +	}
+>  
+>  	return 0;
+>  }
+> @@ -418,17 +429,6 @@ static int max1027_debugfs_reg_access(struct iio_dev *indio_dev,
+>  	return spi_write(st->spi, val, 1);
+>  }
+>  
+> -static int max1027_validate_trigger(struct iio_dev *indio_dev,
+> -				    struct iio_trigger *trig)
+> -{
+> -	struct max1027_state *st = iio_priv(indio_dev);
 > -
+> -	if (st->trig != trig)
+> -		return -EINVAL;
+> -
+> -	return 0;
+> -}
+> -
+>  static int max1027_set_cnvst_trigger_state(struct iio_trigger *trig, bool state)
+>  {
+>  	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
+> @@ -473,13 +473,67 @@ static int max1027_read_scan(struct iio_dev *indio_dev)
+>  	return 0;
+>  }
+>  
+> -static irqreturn_t max1027_trigger_handler(int irq, void *private)
+> +static bool max1027_own_trigger_enabled(struct iio_dev *indio_dev)
+> +{
+> +	int ret = iio_trigger_validate_own_device(indio_dev->trig, indio_dev);
+> +
+> +	return ret ? false : true;
+> +}
+> +
+> +static irqreturn_t max1027_eoc_handler(int irq, void *private)
+> +{
+> +	struct iio_dev *indio_dev = private;
+> +	struct max1027_state *st = iio_priv(indio_dev);
+> +
+> +	/*
+> +	 * If the buffers are disabled (raw read) or an external trigger is
+> +	 * used, we just need to call complete() to unlock the waiters
+> +	 * which will themselves handle the data.
+> +	 */
+> +	if (!iio_buffer_enabled(indio_dev) ||
+> +	    !max1027_own_trigger_enabled(indio_dev)) {
 
-With this first block moved much earlier in the series - to before
-any of the other patches touch it.
+This looks like what I'd expect here.  Should be able to use
+!iio_trigger_using_own(indio_dev) for the second condition I think...
 
-Reviwed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
->  /* IRQ enable */
->  #define IRQENB_HW_PEN		BIT(0)
->  #define IRQENB_EOS		BIT(1)
-> @@ -59,12 +52,10 @@
->  #define IRQENB_PENUP		BIT(9)
+> +		complete(&st->complete);
+> +		return IRQ_HANDLED;
+> +	}
+
+Here we should see the same as you find in the generic handler which is just
+
+	iio_trigger_poll(private);
+
+	return IRQ_HANDLED;
+
+> +
+> +	/*
+> +	 * When using the internal trigger, the data handling is done in
+> +	 * the threaded interrupt handler.
+
+Wrong handler. It needs to be done in the one of the device side of the trigger / device split
+not here which is on the trigger side.
+
+> +	 */
+> +	return IRQ_WAKE_THREAD;
+> +}
+> +
+> +static irqreturn_t max1027_int_trigger_handler(int irq, void *private)
+> +{
+> +	struct iio_dev *indio_dev = private;
+> +	int ret;
+> +
+> +	ret = max1027_read_scan(indio_dev);
+> +	if (ret)
+> +		dev_err(&indio_dev->dev,
+> +			"Cannot read scanned values (%d)\n", ret);
+> +
+> +	iio_trigger_notify_done(indio_dev->trig);
+
+This is acknowledging the trigger in a patch not called via the trigger.
+It might work but it definitely isn't the right model to use.
+
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static irqreturn_t max1027_ext_trigger_handler(int irq, void *private)
+>  {
+>  	struct iio_poll_func *pf = private;
+>  	struct iio_dev *indio_dev = pf->indio_dev;
+>  	int ret;
+> 
+
+Here there should be a
+
+	if (iio_trigger_using_own(indio_dev)) {
+
+		/* Just read the data and push to the buffer as we know we are using the EOC trigger*/
+		/* I think that will be what you have in max1027_int_trigger_handler above */
+		/* You may also want to provide a top half for the trigger handler to grab a timestamp
+		   nearer the point of the EOC interrupt for this path...
+		*/
+
+	} else {
+		/* Start the capture and wait for completion */
+
+		ret = max1027_configure_chans_and_start(indio_dev);
+		if (ret)
+			goto out;
+	
+		ret = max1027_wait_eoc(indio_dev);
+		if (ret)
+			goto out;
+
+	 	ret = max1027_read_scan(indio_dev);
+...		
+	}
+
+> +	ret = max1027_configure_chans_and_start(indio_dev);
+> +	if (ret)
+> +		goto out;
+> +
+> +	ret = max1027_wait_eoc(indio_dev);
+> +	if (ret)
+> +		goto out;
+> +
+>  	ret = max1027_read_scan(indio_dev);
+> +out:
+>  	if (ret)
+>  		dev_err(&indio_dev->dev,
+>  			"Cannot read scanned values (%d)\n", ret);
+> @@ -496,7 +550,6 @@ static const struct iio_trigger_ops max1027_trigger_ops = {
 >  
->  /* Step Configuration */
-> -#define STEPCONFIG_MODE_MASK	GENMASK(1, 0)
-> -#define STEPCONFIG_MODE(val)	FIELD_PREP(STEPCONFIG_MODE_MASK, (val))
-> +#define STEPCONFIG_MODE(val)	FIELD_PREP(GENMASK(1, 0), (val))
->  #define STEPCONFIG_MODE_SWCNT	STEPCONFIG_MODE(1)
->  #define STEPCONFIG_MODE_HWSYNC	STEPCONFIG_MODE(2)
-> -#define STEPCONFIG_AVG_MASK	GENMASK(4, 2)
-> -#define STEPCONFIG_AVG(val)	FIELD_PREP(STEPCONFIG_AVG_MASK, (val))
-> +#define STEPCONFIG_AVG(val)	FIELD_PREP(GENMASK(4, 2), (val))
->  #define STEPCONFIG_AVG_16	STEPCONFIG_AVG(4)
->  #define STEPCONFIG_XPP		BIT(5)
->  #define STEPCONFIG_XNN		BIT(6)
-> @@ -72,45 +63,36 @@
->  #define STEPCONFIG_YNN		BIT(8)
->  #define STEPCONFIG_XNP		BIT(9)
->  #define STEPCONFIG_YPN		BIT(10)
-> -#define STEPCONFIG_RFP_VREFP	GENMASK(13, 12)
-> -#define STEPCONFIG_RFP(val)	FIELD_PREP(STEPCONFIG_RFP_VREFP, (val))
-> -#define STEPCONFIG_INM_MASK	GENMASK(18, 15)
-> -#define STEPCONFIG_INM(val)	FIELD_PREP(STEPCONFIG_INM_MASK, (val))
-> +#define STEPCONFIG_RFP(val)	FIELD_PREP(GENMASK(13, 12), (val))
-> +#define STEPCONFIG_RFP_VREFP	STEPCONFIG_RFP(3)
-> +#define STEPCONFIG_INM(val)	FIELD_PREP(GENMASK(18, 15), (val))
->  #define STEPCONFIG_INM_ADCREFM	STEPCONFIG_INM(8)
-> -#define STEPCONFIG_INP_MASK	GENMASK(22, 19)
-> -#define STEPCONFIG_INP(val)	FIELD_PREP(STEPCONFIG_INP_MASK, (val))
-> +#define STEPCONFIG_INP(val)	FIELD_PREP(GENMASK(22, 19), (val))
->  #define STEPCONFIG_INP_AN4	STEPCONFIG_INP(4)
->  #define STEPCONFIG_INP_ADCREFM	STEPCONFIG_INP(8)
->  #define STEPCONFIG_FIFO1	BIT(26)
-> -#define STEPCONFIG_RFM_VREFN	GENMASK(24, 23)
-> -#define STEPCONFIG_RFM(val)	FIELD_PREP(STEPCONFIG_RFM_VREFN, (val))
-> +#define STEPCONFIG_RFM(val)	FIELD_PREP(GENMASK(24, 23), (val))
-> +#define STEPCONFIG_RFM_VREFN	STEPCONFIG_RFM(3)
+>  static const struct iio_info max1027_info = {
+>  	.read_raw = &max1027_read_raw,
+> -	.validate_trigger = &max1027_validate_trigger,
+>  	.debugfs_reg_access = &max1027_debugfs_reg_access,
+>  };
 >  
->  /* Delay register */
-> -#define STEPDELAY_OPEN_MASK	GENMASK(17, 0)
-> -#define STEPDELAY_OPEN(val)	FIELD_PREP(STEPDELAY_OPEN_MASK, (val))
-> +#define STEPDELAY_OPEN(val)	FIELD_PREP(GENMASK(17, 0), (val))
->  #define STEPCONFIG_OPENDLY	STEPDELAY_OPEN(0x098)
-> -#define STEPDELAY_SAMPLE_MASK	GENMASK(31, 24)
-> -#define STEPDELAY_SAMPLE(val)	FIELD_PREP(STEPDELAY_SAMPLE_MASK, (val))
->  #define STEPCONFIG_MAX_OPENDLY	GENMASK(17, 0)
-> +#define STEPDELAY_SAMPLE(val)	FIELD_PREP(GENMASK(31, 24), (val))
->  #define STEPCONFIG_SAMPLEDLY	STEPDELAY_SAMPLE(0)
->  #define STEPCONFIG_MAX_SAMPLE	GENMASK(7, 0)
+> @@ -517,6 +570,7 @@ static int max1027_probe(struct spi_device *spi)
+>  	st->info = &max1027_chip_info_tbl[spi_get_device_id(spi)->driver_data];
 >  
->  /* Charge Config */
-> -#define STEPCHARGE_RFP_MASK	GENMASK(14, 12)
-> -#define STEPCHARGE_RFP(val)	FIELD_PREP(STEPCHARGE_RFP_MASK, (val))
-> +#define STEPCHARGE_RFP(val)	FIELD_PREP(GENMASK(14, 12), (val))
->  #define STEPCHARGE_RFP_XPUL	STEPCHARGE_RFP(1)
-> -#define STEPCHARGE_INM_MASK	GENMASK(18, 15)
-> -#define STEPCHARGE_INM(val)	FIELD_PREP(STEPCHARGE_INM_MASK, (val))
-> +#define STEPCHARGE_INM(val)	FIELD_PREP(GENMASK(18, 15), (val))
->  #define STEPCHARGE_INM_AN1	STEPCHARGE_INM(1)
-> -#define STEPCHARGE_INP_MASK	GENMASK(22, 19)
-> -#define STEPCHARGE_INP(val)	FIELD_PREP(STEPCHARGE_INP_MASK, (val))
-> -#define STEPCHARGE_RFM_MASK	GENMASK(24, 23)
-> -#define STEPCHARGE_RFM(val)	FIELD_PREP(STEPCHARGE_RFM_MASK, (val))
-> +#define STEPCHARGE_INP(val)	FIELD_PREP(GENMASK(22, 19), (val))
-> +#define STEPCHARGE_RFM(val)	FIELD_PREP(GENMASK(24, 23), (val))
->  #define STEPCHARGE_RFM_XNUR	STEPCHARGE_RFM(1)
+>  	mutex_init(&st->lock);
+> +	init_completion(&st->complete);
 >  
->  /* Charge delay */
-> -#define CHARGEDLY_OPEN_MASK	GENMASK(17, 0)
-> -#define CHARGEDLY_OPEN(val)	FIELD_PREP(CHARGEDLY_OPEN_MASK, (val))
-> +#define CHARGEDLY_OPEN(val)	FIELD_PREP(GENMASK(17, 0), (val))
->  #define CHARGEDLY_OPENDLY	CHARGEDLY_OPEN(0x400)
+>  	indio_dev->name = spi_get_device_id(spi)->name;
+>  	indio_dev->info = &max1027_info;
+> @@ -534,7 +588,7 @@ static int max1027_probe(struct spi_device *spi)
+>  	if (spi->irq) {
+>  		ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
+>  						      &iio_pollfunc_store_time,
+> -						      &max1027_trigger_handler,
+> +						      &max1027_ext_trigger_handler,
+
+This isn't how this would normally be done.
+Whatever trigger we are using, the handling should occur in the callback registered here.
+We can do 'different' things depending on the trigger in use however.
+The reason is that we want a model that allows us to use the EOC trigger for this device
+and other devices at the same time.
+
+
+>  						      NULL);
+>  		if (ret < 0) {
+>  			dev_err(&indio_dev->dev, "Failed to setup buffer\n");
+> @@ -561,11 +615,11 @@ static int max1027_probe(struct spi_device *spi)
+>  		}
 >  
->  /* Control register */
-> @@ -118,8 +100,7 @@
->  #define CNTRLREG_STEPID		BIT(1)
->  #define CNTRLREG_STEPCONFIGWRT	BIT(2)
->  #define CNTRLREG_POWERDOWN	BIT(4)
-> -#define CNTRLREG_AFE_CTRL_MASK	GENMASK(6, 5)
-> -#define CNTRLREG_AFE_CTRL(val)	FIELD_PREP(CNTRLREG_AFE_CTRL_MASK, (val))
-> +#define CNTRLREG_AFE_CTRL(val)	FIELD_PREP(GENMASK(6, 5), (val))
->  #define CNTRLREG_4WIRE		CNTRLREG_AFE_CTRL(1)
->  #define CNTRLREG_5WIRE		CNTRLREG_AFE_CTRL(2)
->  #define CNTRLREG_8WIRE		CNTRLREG_AFE_CTRL(3)
+>  		ret = devm_request_threaded_irq(&spi->dev, spi->irq,
+> -						iio_trigger_generic_data_rdy_poll,
+> -						NULL,
+> +						max1027_eoc_handler,
+> +						max1027_int_trigger_handler,
+>  						IRQF_TRIGGER_FALLING,
+>  						spi->dev.driver->name,
+> -						st->trig);
+> +						indio_dev);
+>  		if (ret < 0) {
+>  			dev_err(&indio_dev->dev, "Failed to allocate IRQ.\n");
+>  			return ret;
 

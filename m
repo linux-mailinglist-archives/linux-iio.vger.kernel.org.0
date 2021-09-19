@@ -2,47 +2,32 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 69970410C3E
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Sep 2021 17:46:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF5F8410C48
+	for <lists+linux-iio@lfdr.de>; Sun, 19 Sep 2021 17:57:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233590AbhISPrX convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sun, 19 Sep 2021 11:47:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58642 "EHLO mail.kernel.org"
+        id S231854AbhISP6m convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Sun, 19 Sep 2021 11:58:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:32952 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233428AbhISPrW (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 19 Sep 2021 11:47:22 -0400
+        id S229933AbhISP6l (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 19 Sep 2021 11:58:41 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E2971611C8;
-        Sun, 19 Sep 2021 15:45:52 +0000 (UTC)
-Date:   Sun, 19 Sep 2021 16:49:33 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 845B061074;
+        Sun, 19 Sep 2021 15:57:15 +0000 (UTC)
+Date:   Sun, 19 Sep 2021 17:00:56 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>, bcousson@baylibre.com,
-        Tony Lindgren <tony@atomide.com>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Ryan Barnett <ryan.barnett@collins.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Jason Reeder <jreeder@ti.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v2 26/46] mfd: ti_am335x_tscadc: Use FIELD_PREP() when
- relevant in the header
-Message-ID: <20210919164933.77d9a097@jic23-huawei>
-In-Reply-To: <20210915094847.6bb5e8d1@xps13>
-References: <20210902215144.507243-1-miquel.raynal@bootlin.com>
-        <20210902215144.507243-27-miquel.raynal@bootlin.com>
-        <20210905141332.26788852@jic23-huawei>
-        <20210915094847.6bb5e8d1@xps13>
+To:     Baptiste Mansuy <bmansuy@invensense.com>
+Cc:     "lars@metafoo.de" <lars@metafoo.de>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH] iio: imu: mpu6050: add watermark support for
+ icm20602/20690
+Message-ID: <20210919170056.5d30eab8@jic23-huawei>
+In-Reply-To: <BYAPR12MB29018030DC537A2937F83BFDDEDA9@BYAPR12MB2901.namprd12.prod.outlook.com>
+References: <20210906123219.3084706-1-bmansuy@invensense.com>
+        <20210911181024.0ce3e225@jic23-huawei>
+        <BYAPR12MB29018030DC537A2937F83BFDDEDA9@BYAPR12MB2901.namprd12.prod.outlook.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -51,184 +36,270 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 15 Sep 2021 09:48:47 +0200
-Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+On Tue, 14 Sep 2021 13:52:53 +0000
+Baptiste Mansuy <bmansuy@invensense.com> wrote:
 
-> Hi Jonathan,
+> Hi,
 > 
-> jic23@kernel.org wrote on Sun, 5 Sep 2021 14:13:32 +0100:
+> Thank you for your comments, I wrote a reply bellow each of them.
 > 
-> > On Thu,  2 Sep 2021 23:51:24 +0200
-> > Miquel Raynal <miquel.raynal@bootlin.com> wrote:
-> >   
-> > > Use the FIELD_PREP() macro when relevant. Sometimes reorder the lines to
-> > > be able to use the relevant bitmask.
-> > > 
-> > > Mind the s/%d/%ld/ change in a log due to the type change following the
-> > > use of FIELD_PREP() in the header.
-> > > 
-> > > Suggested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>    
-> > What you have here is fine, but I would take it a step further and push the
-> > FIELD_PREP() calls directly inline in the code.  There is little advantage
-> > beyond saving a few characters in
-> > 
-> > STEPENB(3)
-> > 
-> > rather than
-> > 
-> > FIELD_PREP(STEPENB_MASK, 3)
-> > 
-> > If you don't want to go that far this is still an improvement so
-> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >   
-> > > ---
-> > >  drivers/iio/adc/ti_am335x_adc.c      |  2 +-
-> > >  include/linux/mfd/ti_am335x_tscadc.h | 31 ++++++++++++++--------------
-> > >  2 files changed, 17 insertions(+), 16 deletions(-)
-> > > 
-> > > diff --git a/drivers/iio/adc/ti_am335x_adc.c b/drivers/iio/adc/ti_am335x_adc.c
-> > > index e946903b0993..54c410b6ca07 100644
-> > > --- a/drivers/iio/adc/ti_am335x_adc.c
-> > > +++ b/drivers/iio/adc/ti_am335x_adc.c
-> > > @@ -126,7 +126,7 @@ static void tiadc_step_config(struct iio_dev *indio_dev)
-> > >  		chan = adc_dev->channel_line[i];
-> > >  
-> > >  		if (adc_dev->step_avg[i] > STEPCONFIG_AVG_16) {
-> > > -			dev_warn(dev, "chan %d step_avg truncating to %d\n",
-> > > +			dev_warn(dev, "chan %d step_avg truncating to %ld\n",
-> > >  				 chan, STEPCONFIG_AVG_16);
-> > >  			adc_dev->step_avg[i] = STEPCONFIG_AVG_16;
-> > >  		}
-> > > diff --git a/include/linux/mfd/ti_am335x_tscadc.h b/include/linux/mfd/ti_am335x_tscadc.h
-> > > index 4de16fc3d74f..29095c0dc6d8 100644
-> > > --- a/include/linux/mfd/ti_am335x_tscadc.h
-> > > +++ b/include/linux/mfd/ti_am335x_tscadc.h
-> > > @@ -8,6 +8,7 @@
-> > >  #ifndef __LINUX_TI_AM335X_TSCADC_MFD_H
-> > >  #define __LINUX_TI_AM335X_TSCADC_MFD_H
-> > >  
-> > > +#include <linux/bitfield.h>
-> > >  #include <linux/mfd/core.h>
-> > >  
-> > >  #define REG_RAWIRQSTATUS	0x024
-> > > @@ -40,7 +41,7 @@
-> > >  
-> > >  /* Step Enable */
-> > >  #define STEPENB_MASK		GENMASK(16, 0)
-> > > -#define STEPENB(val)		((val) << 0)
-> > > +#define STEPENB(val)		FIELD_PREP(STEPENB_MASK, (val))    
-> > 
-> > My inclination with these is to drop the macro entirely and
-> > just use FIELD_PREP(STEPENB_MASK, xxx) inline directly.
-> > There is no loss of clarity in doing so and it gets you to a state
-> > where you only have one macro per field which is nice for checking
-> > purposes.  
+> Baptiste
 > 
-> Actually I don't like too much leaking FIELD_PREP()s directly in the
-> code because (and this is really a personal feeling) I found them
-> rather less straightforward to understand than a good old BIT() for
-> example. Moreover, I've already hacked in a lot of different
-> places and moving these definitions in the code directly would
-> produce a big diff, overall hardening possible future git-blames.
 > 
-> However, I rather agree on the fact that there is no point in defining
-> a mask and then using that mask in another macro unless that mask is
-> reused somewhere else. So if it's fine for you, I'll provide a new
-> version with a reduced number of defines in this file. Would this work
-> for you?
+> From: Jonathan Cameron <jic23@kernel.org>
+> Sent: Saturday, September 11, 2021 7:10 PM
+> To: Baptiste Mansuy <bmansuy@invensense.com>
+> Cc: lars@metafoo.de <lars@metafoo.de>; linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>
+> Subject: Re: [PATCH] iio: imu: mpu6050: add watermark support for icm20602/20690 
+> 
+> On Mon,  6 Sep 2021 12:32:19 +0000
+> Baptiste Mansuy <bmansuy@invensense.com> wrote:
+> 
+> >> Add watermark support using FIFO interrupt for chips having this
+> >> feature. This allows the use of the watermark interrupt with the
+> >> posibility to change it's size. Change the timestamp computation
+> >> to be used with the watermark.
+> >> 
+> >> Add the set_watermark and flush callbacks according to the iio
+> >> description.
+> >> 
+> >>Signed-off-by: Baptiste Mansuy <bmansuy@invensense.com>  
+> >
+> >Hi,
+> >
+> >A few comments inline.
+> >
+> >Jonathan
+> >  
+> >> ---
+> >>  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c    | 104 +++++++++++++-
+> >>  drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h     |  21 ++-
+> >>  drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c    | 130 +++++++++++++-----
+> >>  drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c |  24 +++-
+> >>  4 files changed, 237 insertions(+), 42 deletions(-)
+> >> 
+> >> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> >> index 597768c..9cdec62 100644
+> >> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> >> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> >> @@ -47,7 +47,9 @@ static const struct inv_mpu6050_reg_map reg_set_icm20602 = {
+> >>        .raw_accl               = INV_MPU6050_REG_RAW_ACCEL,
+> >>        .temperature            = INV_MPU6050_REG_TEMPERATURE,
+> >>        .int_enable             = INV_MPU6050_REG_INT_ENABLE,
+> >> -     .int_status             = INV_MPU6050_REG_INT_STATUS,
+> >> +     .int_status             = INV_ICM20602_REG_FIFO_WM_INT_STATUS,
+> >> +     .wm_th_hb               = INV_ICM20602_FIFO_WM_TH_HB,
+> >> +     .wm_th_lb               = INV_ICM20602_FIFO_WM_TH_LB,
+> >>        .pwr_mgmt_1             = INV_MPU6050_REG_PWR_MGMT_1,
+> >>        .pwr_mgmt_2             = INV_MPU6050_REG_PWR_MGMT_2,
+> >>        .int_pin_cfg            = INV_MPU6050_REG_INT_PIN_CFG,
+> >> @@ -56,6 +58,31 @@ static const struct inv_mpu6050_reg_map reg_set_icm20602 = {
+> >>        .i2c_if                 = INV_ICM20602_REG_I2C_IF,
+> >>  };
+> >>  
+> >> +static const struct inv_mpu6050_reg_map reg_set_icm20690 = {
+> >> +     .sample_rate_div        = INV_MPU6050_REG_SAMPLE_RATE_DIV,
+> >> +     .lpf                    = INV_MPU6050_REG_CONFIG,
+> >> +     .accel_lpf              = INV_MPU6500_REG_ACCEL_CONFIG_2,
+> >> +     .user_ctrl              = INV_MPU6050_REG_USER_CTRL,
+> >> +     .fifo_en                = INV_MPU6050_REG_FIFO_EN,
+> >> +     .gyro_config            = INV_MPU6050_REG_GYRO_CONFIG,
+> >> +     .accl_config            = INV_MPU6050_REG_ACCEL_CONFIG,
+> >> +     .fifo_count_h           = INV_MPU6050_REG_FIFO_COUNT_H,
+> >> +     .fifo_r_w               = INV_MPU6050_REG_FIFO_R_W,
+> >> +     .raw_gyro               = INV_MPU6050_REG_RAW_GYRO,
+> >> +     .raw_accl               = INV_MPU6050_REG_RAW_ACCEL,
+> >> +     .temperature            = INV_MPU6050_REG_TEMPERATURE,
+> >> +     .int_enable             = INV_MPU6050_REG_INT_ENABLE,
+> >> +     .int_status             = INV_ICM20602_REG_FIFO_WM_INT_STATUS,
+> >> +     .wm_th_hb               = INV_ICM20690_FIFO_WM_TH_HB,
+> >> +     .wm_th_lb               = INV_ICM20690_FIFO_WM_TH_LB,
+> >> +     .pwr_mgmt_1             = INV_MPU6050_REG_PWR_MGMT_1,
+> >> +     .pwr_mgmt_2             = INV_MPU6050_REG_PWR_MGMT_2,
+> >> +     .int_pin_cfg            = INV_MPU6050_REG_INT_PIN_CFG,
+> >> +     .accl_offset            = INV_MPU6500_REG_ACCEL_OFFSET,
+> >> +     .gyro_offset            = INV_MPU6050_REG_GYRO_OFFSET,
+> >> +     .i2c_if                 = 0,
+> >> +};
+> >> +
+> >>  static const struct inv_mpu6050_reg_map reg_set_6500 = {
+> >>        .sample_rate_div        = INV_MPU6050_REG_SAMPLE_RATE_DIV,
+> >>        .lpf                    = INV_MPU6050_REG_CONFIG,
+> >> @@ -115,6 +142,8 @@ static const struct inv_mpu6050_chip_config chip_config_6050 = {
+> >>        .magn_fifo_enable = false,
+> >>        .accl_fs = INV_MPU6050_FS_02G,
+> >>        .user_ctrl = 0,
+> >> +     .wm_val = 1,
+> >> +     .wm_size = 0,  
+> >
+> >I don't think this is ever relevant to parts using this structure.
+> >  
+> 
+> wm_val is used by every chip for the timestamp computation. It needs to be set to 1.
+I'd missed that.  Thanks.
 
-That will be fine.
-
-Thanks,
-
-Jonathan
-
->  
-> >   
-> > >  #define ENB(val)		BIT(val)
-> > >  #define STPENB_STEPENB		STEPENB(GENMASK(16, 0))
-> > >  #define STPENB_STEPENB_TC	STEPENB(GENMASK(12, 0))
-> > > @@ -58,11 +59,11 @@
-> > >  
-> > >  /* Step Configuration */
-> > >  #define STEPCONFIG_MODE_MASK	GENMASK(1, 0)
-> > > -#define STEPCONFIG_MODE(val)	((val) << 0)
-> > > +#define STEPCONFIG_MODE(val)	FIELD_PREP(STEPCONFIG_MODE_MASK, (val))
-> > >  #define STEPCONFIG_MODE_SWCNT	STEPCONFIG_MODE(1)
-> > >  #define STEPCONFIG_MODE_HWSYNC	STEPCONFIG_MODE(2)
-> > >  #define STEPCONFIG_AVG_MASK	GENMASK(4, 2)
-> > > -#define STEPCONFIG_AVG(val)	((val) << 2)
-> > > +#define STEPCONFIG_AVG(val)	FIELD_PREP(STEPCONFIG_AVG_MASK, (val))
-> > >  #define STEPCONFIG_AVG_16	STEPCONFIG_AVG(4)
-> > >  #define STEPCONFIG_XPP		BIT(5)
-> > >  #define STEPCONFIG_XNN		BIT(6)
-> > > @@ -70,43 +71,43 @@
-> > >  #define STEPCONFIG_YNN		BIT(8)
-> > >  #define STEPCONFIG_XNP		BIT(9)
-> > >  #define STEPCONFIG_YPN		BIT(10)
-> > > -#define STEPCONFIG_RFP(val)	((val) << 12)
-> > >  #define STEPCONFIG_RFP_VREFP	GENMASK(13, 12)
-> > > +#define STEPCONFIG_RFP(val)	FIELD_PREP(STEPCONFIG_RFP_VREFP, (val))
-> > >  #define STEPCONFIG_INM_MASK	GENMASK(18, 15)
-> > > -#define STEPCONFIG_INM(val)	((val) << 15)
-> > > +#define STEPCONFIG_INM(val)	FIELD_PREP(STEPCONFIG_INM_MASK, (val))
-> > >  #define STEPCONFIG_INM_ADCREFM	STEPCONFIG_INM(8)
-> > >  #define STEPCONFIG_INP_MASK	GENMASK(22, 19)
-> > > -#define STEPCONFIG_INP(val)	((val) << 19)
-> > > +#define STEPCONFIG_INP(val)	FIELD_PREP(STEPCONFIG_INP_MASK, (val))
-> > >  #define STEPCONFIG_INP_AN4	STEPCONFIG_INP(4)
-> > >  #define STEPCONFIG_INP_ADCREFM	STEPCONFIG_INP(8)
-> > >  #define STEPCONFIG_FIFO1	BIT(26)
-> > > -#define STEPCONFIG_RFM(val)	((val) << 23)
-> > >  #define STEPCONFIG_RFM_VREFN	GENMASK(24, 23)
-> > > +#define STEPCONFIG_RFM(val)	FIELD_PREP(STEPCONFIG_RFM_VREFN, (val))
-> > >  
-> > >  /* Delay register */
-> > >  #define STEPDELAY_OPEN_MASK	GENMASK(17, 0)
-> > > -#define STEPDELAY_OPEN(val)	((val) << 0)
-> > > +#define STEPDELAY_OPEN(val)	FIELD_PREP(STEPDELAY_OPEN_MASK, (val))
-> > >  #define STEPCONFIG_OPENDLY	STEPDELAY_OPEN(0x098)
-> > >  #define STEPDELAY_SAMPLE_MASK	GENMASK(31, 24)
-> > > -#define STEPDELAY_SAMPLE(val)	((val) << 24)
-> > > +#define STEPDELAY_SAMPLE(val)	FIELD_PREP(STEPDELAY_SAMPLE_MASK, (val))
-> > >  #define STEPCONFIG_SAMPLEDLY	STEPDELAY_SAMPLE(0)
-> > >  
-> > >  /* Charge Config */
-> > >  #define STEPCHARGE_RFP_MASK	GENMASK(14, 12)
-> > > -#define STEPCHARGE_RFP(val)	((val) << 12)
-> > > +#define STEPCHARGE_RFP(val)	FIELD_PREP(STEPCHARGE_RFP_MASK, (val))
-> > >  #define STEPCHARGE_RFP_XPUL	STEPCHARGE_RFP(1)
-> > >  #define STEPCHARGE_INM_MASK	GENMASK(18, 15)
-> > > -#define STEPCHARGE_INM(val)	((val) << 15)
-> > > +#define STEPCHARGE_INM(val)	FIELD_PREP(STEPCHARGE_INM_MASK, (val))
-> > >  #define STEPCHARGE_INM_AN1	STEPCHARGE_INM(1)
-> > >  #define STEPCHARGE_INP_MASK	GENMASK(22, 19)
-> > > -#define STEPCHARGE_INP(val)	((val) << 19)
-> > > +#define STEPCHARGE_INP(val)	FIELD_PREP(STEPCHARGE_INP_MASK, (val))
-> > >  #define STEPCHARGE_RFM_MASK	GENMASK(24, 23)
-> > > -#define STEPCHARGE_RFM(val)	((val) << 23)
-> > > +#define STEPCHARGE_RFM(val)	FIELD_PREP(STEPCHARGE_RFM_MASK, (val))
-> > >  #define STEPCHARGE_RFM_XNUR	STEPCHARGE_RFM(1)
-> > >  
-> > >  /* Charge delay */
-> > >  #define CHARGEDLY_OPEN_MASK	GENMASK(17, 0)
-> > > -#define CHARGEDLY_OPEN(val)	((val) << 0)
-> > > +#define CHARGEDLY_OPEN(val)	FIELD_PREP(CHARGEDLY_OPEN_MASK, (val))
-> > >  #define CHARGEDLY_OPENDLY	CHARGEDLY_OPEN(0x400)
-> > >  
-> > >  /* Control register */
-> > > @@ -115,7 +116,7 @@
-> > >  #define CNTRLREG_STEPCONFIGWRT	BIT(2)
-> > >  #define CNTRLREG_POWERDOWN	BIT(4)
-> > >  #define CNTRLREG_AFE_CTRL_MASK	GENMASK(6, 5)
-> > > -#define CNTRLREG_AFE_CTRL(val)	((val) << 5)
-> > > +#define CNTRLREG_AFE_CTRL(val)	FIELD_PREP(CNTRLREG_AFE_CTRL_MASK, (val))
-> > >  #define CNTRLREG_4WIRE		CNTRLREG_AFE_CTRL(1)
-> > >  #define CNTRLREG_5WIRE		CNTRLREG_AFE_CTRL(2)
-> > >  #define CNTRLREG_8WIRE		CNTRLREG_AFE_CTRL(3)    
-> >   
 > 
-> Thanks,
-> Miquèl
+> >>  };
+> >>  
+..
+> >>  
+> >> +int inv_mpu6050_compute_hw_watermark(struct inv_mpu6050_state *st, unsigned int val)
+> >> +{
+> >> +     unsigned int nb_byte, new_size_byte;
+> >> +     int ret;
+> >> +
+> >> +     /* compute number of bytes inside FIFO */
+> >> +     nb_byte = 0;
+> >> +     if (st->chip_config.gyro_en)
+> >> +             nb_byte += INV_MPU6050_BYTES_PER_3AXIS_SENSOR;
+> >> +     if (st->chip_config.accl_en)
+> >> +             nb_byte += INV_MPU6050_BYTES_PER_3AXIS_SENSOR;
+> >> +     if (st->chip_config.magn_en)
+> >> +             nb_byte += INV_MPU9X50_BYTES_MAGN;
+> >> +     if (st->chip_config.temp_en)
+> >> +             nb_byte += INV_MPU6050_BYTES_PER_TEMP_SENSOR;
+> >> +
+> >> +     /* compute watermark size, use a threshold to keep some data space for read latency */  
+> >
+> >Not following this comment.  If the intent is you are setting the watermark in hardware lower
+> >because you think more data will have come in before we actually read it, please don't.
+> >The sampling frequency could be very low meaning there isn't enough data available.
+> >
+> >We are dealing with a fifo here, it doesn't matter if a few more samples are available when
+> >we go to read than the level of the watermark.  That's normal.
+> >  
+> 
+> The issue here is when the fifo is full, if the processing of the interrupt takes too much time,
+> we don't know if the first data were overwritten by new data.  
+> If it happens, we can't use the data. So we need to let some space in the fifo.
+
+Then the watermark is set too high.  So that's just a software / userspace configuration issue
+and is common to any similar fifo.
+
+> 
+> It usualy happens with high sample frequencies. If the current space is too much, we can
+> choose a new space of 10 samples. With the highest frequency (500Hz), a free space of 
+> 10 samples gives 20ms for the processing of the interrupt.
+
+Understood on the problem, but leave dealing this to userspace control rather than trying to
+paper over in userspace.  If you do what you have here, and a low sample rate is used
+userspace software will expect to have at least the watermark worth of samples.  Whilst
+it 'should' probably be hardened against underflow, it may well not be.
+
+Any userspace software that sets the watermark near the maximum possible would
+in my mind be either considered broken, or is being used in a case where loosing
+samples isn't a problem.
+
+> 
+> >> +     new_size_byte = val * nb_byte;
+> >> +     if (new_size_byte > ((st->hw->fifo_size * 4) / 5)) {
+> >> +             val = ((st->hw->fifo_size * 4) / 5) / nb_byte;
+> >> +             new_size_byte = val * nb_byte;
+> >> +     }
+> >> +
+> >> +     ret = inv_mpu6050_set_hw_watermark(st, new_size_byte);
+> >> +     if (ret)
+> >> +             return ret;
+> >> +
+> >> +     st->chip_config.wm_val = val;
+> >> +
+> >> +     return 0;
+> >> +}
+> >> +
+
+...
+
+> >> +
+> >>  static const struct iio_info mpu_info = {
+> >>        .read_raw = &inv_mpu6050_read_raw,
+> >>        .write_raw = &inv_mpu6050_write_raw,
+> >> @@ -1297,6 +1393,8 @@ static const struct iio_info mpu_info = {
+> >>        .attrs = &inv_attribute_group,
+> >>        .validate_trigger = inv_mpu6050_validate_trigger,
+> >>        .debugfs_reg_access = &inv_mpu6050_reg_access,
+> >> +     .hwfifo_set_watermark = &inv_mpu6050_set_watermark,
+> >> +     .hwfifo_flush_to_buffer = &inv_mpu6050_hw_flush_to_buffer,
+> >>  };
+> >>  
+> >>  /*
+> >> @@ -1618,7 +1716,7 @@ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
+> >>                 */
+> >>                result = devm_iio_triggered_buffer_setup(dev, indio_dev,
+> >>                                                         iio_pollfunc_store_time,
+> >> -                                                      inv_mpu6050_read_fifo,
+> >> +                                                      inv_mpu6050_interrupt_handler,
+> >>                                                         NULL);
+> >>                if (result) {
+> >>                        dev_err(dev, "configure buffer fail %d\n", result);
+> >> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+> >> index c6aa36e..d925885 100644
+> >> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+> >> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+> >> @@ -57,6 +57,8 @@ struct inv_mpu6050_reg_map {
+> >>        u8 temperature;
+> >>        u8 int_enable;
+> >>        u8 int_status;
+> >> +     u8 wm_th_hb;
+> >> +     u8 wm_th_lb;
+> >>        u8 pwr_mgmt_1;
+> >>        u8 pwr_mgmt_2;
+> >>        u8 int_pin_cfg;
+> >> @@ -121,6 +123,8 @@ struct inv_mpu6050_chip_config {
+> >>        unsigned int magn_fifo_enable:1;
+> >>        u8 divider;
+> >>        u8 user_ctrl;
+> >> +     unsigned int wm_val;  
+> >What are these two? Non obvious enough a comment would be good.  
+> 
+> I added the following lines in the Doxygen header :
+> 
+>  *  @wm_val:		watermark size in number of data
+>  *  @wm_size:		watermark size in bytes
+
+Ah good.  I hadn't noticed the structure had kernel-doc and this
+would have caused problems when I ran a build tests.
+
+Please make sure to run build the documentation or run a build
+test with W=1 so that we verify no other documentation is missing.
+
+> 
+> >> +     unsigned int wm_size;
+> >>  };
+> >>  
+
+...
+
+> >> -/*
+> >> - * inv_mpu6050_read_fifo() - Transfer data from hardware FIFO to KFIFO.
+> >> - */
+> >> -irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)  
+> >
+> >Given the count parameter has a 'special' value of 0, please add some documentation
+> >for this function.
+> >  
+> 
+> I added a Doxygen header for this function :
+> 
+> /**
+>  * inv_mpu6050_flush_fifo() - Flush fifo
+>  *
+>  * @indio_dev:		Device driver instance.
+>  * @timestamp_val:	the interrupt timestamp
+>  * @count:		Number of data to flush
+>  *
+>  * This function flush the fifo using count as the number of data to flush.
+
+This function flushes the fifo using the count...
+
+>  * As fifo_size may differ according to the chip unsigned
+>  * count = 0 is used to set the max size of the fifo for count.
+>  *
+No point in the empty trailing line as it doesn't help readabilty so please remove
+that. Otherwise good docs.
+>  */
+> 
+> >> +int inv_mpu6050_flush_fifo(struct iio_dev *indio_dev,
+> >> +                                   s64 timestamp_val, unsigned int count)
+> >>  {
+...
 

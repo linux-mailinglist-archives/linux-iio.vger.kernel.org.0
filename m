@@ -2,304 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF5F8410C48
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Sep 2021 17:57:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CD57410C50
+	for <lists+linux-iio@lfdr.de>; Sun, 19 Sep 2021 17:59:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231854AbhISP6m convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sun, 19 Sep 2021 11:58:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:32952 "EHLO mail.kernel.org"
+        id S232898AbhISQBR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 19 Sep 2021 12:01:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33568 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229933AbhISP6l (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 19 Sep 2021 11:58:41 -0400
+        id S229933AbhISQBQ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 19 Sep 2021 12:01:16 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 845B061074;
-        Sun, 19 Sep 2021 15:57:15 +0000 (UTC)
-Date:   Sun, 19 Sep 2021 17:00:56 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id E16FC6101B;
+        Sun, 19 Sep 2021 15:59:49 +0000 (UTC)
+Date:   Sun, 19 Sep 2021 17:03:30 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Baptiste Mansuy <bmansuy@invensense.com>
-Cc:     "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH] iio: imu: mpu6050: add watermark support for
- icm20602/20690
-Message-ID: <20210919170056.5d30eab8@jic23-huawei>
-In-Reply-To: <BYAPR12MB29018030DC537A2937F83BFDDEDA9@BYAPR12MB2901.namprd12.prod.outlook.com>
-References: <20210906123219.3084706-1-bmansuy@invensense.com>
-        <20210911181024.0ce3e225@jic23-huawei>
-        <BYAPR12MB29018030DC537A2937F83BFDDEDA9@BYAPR12MB2901.namprd12.prod.outlook.com>
+To:     Daniel Palmer <daniel@0x0f.com>
+Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: accel: mma7660: Mark acpi match table as maybe
+ unused
+Message-ID: <20210919170330.0b79cb0e@jic23-huawei>
+In-Reply-To: <20210919072616.3849723-1-daniel@0x0f.com>
+References: <20210919072616.3849723-1-daniel@0x0f.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 14 Sep 2021 13:52:53 +0000
-Baptiste Mansuy <bmansuy@invensense.com> wrote:
+On Sun, 19 Sep 2021 16:26:16 +0900
+Daniel Palmer <daniel@0x0f.com> wrote:
 
-> Hi,
+> When building kernels without ACPI support the table is declared
+> but is not used because ACPI_PTR() turns it into a NULL.
 > 
-> Thank you for your comments, I wrote a reply bellow each of them.
+> Add the __maybe_unused attribute to stop the compiler whining.
 > 
-> Baptiste
-> 
-> 
-> From: Jonathan Cameron <jic23@kernel.org>
-> Sent: Saturday, September 11, 2021 7:10 PM
-> To: Baptiste Mansuy <bmansuy@invensense.com>
-> Cc: lars@metafoo.de <lars@metafoo.de>; linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>
-> Subject: Re: [PATCH] iio: imu: mpu6050: add watermark support for icm20602/20690 
-> 
-> On Mon,  6 Sep 2021 12:32:19 +0000
-> Baptiste Mansuy <bmansuy@invensense.com> wrote:
-> 
-> >> Add watermark support using FIFO interrupt for chips having this
-> >> feature. This allows the use of the watermark interrupt with the
-> >> posibility to change it's size. Change the timestamp computation
-> >> to be used with the watermark.
-> >> 
-> >> Add the set_watermark and flush callbacks according to the iio
-> >> description.
-> >> 
-> >>Signed-off-by: Baptiste Mansuy <bmansuy@invensense.com>  
-> >
-> >Hi,
-> >
-> >A few comments inline.
-> >
-> >Jonathan
-> >  
-> >> ---
-> >>  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c    | 104 +++++++++++++-
-> >>  drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h     |  21 ++-
-> >>  drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c    | 130 +++++++++++++-----
-> >>  drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c |  24 +++-
-> >>  4 files changed, 237 insertions(+), 42 deletions(-)
-> >> 
-> >> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-> >> index 597768c..9cdec62 100644
-> >> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-> >> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-> >> @@ -47,7 +47,9 @@ static const struct inv_mpu6050_reg_map reg_set_icm20602 = {
-> >>        .raw_accl               = INV_MPU6050_REG_RAW_ACCEL,
-> >>        .temperature            = INV_MPU6050_REG_TEMPERATURE,
-> >>        .int_enable             = INV_MPU6050_REG_INT_ENABLE,
-> >> -     .int_status             = INV_MPU6050_REG_INT_STATUS,
-> >> +     .int_status             = INV_ICM20602_REG_FIFO_WM_INT_STATUS,
-> >> +     .wm_th_hb               = INV_ICM20602_FIFO_WM_TH_HB,
-> >> +     .wm_th_lb               = INV_ICM20602_FIFO_WM_TH_LB,
-> >>        .pwr_mgmt_1             = INV_MPU6050_REG_PWR_MGMT_1,
-> >>        .pwr_mgmt_2             = INV_MPU6050_REG_PWR_MGMT_2,
-> >>        .int_pin_cfg            = INV_MPU6050_REG_INT_PIN_CFG,
-> >> @@ -56,6 +58,31 @@ static const struct inv_mpu6050_reg_map reg_set_icm20602 = {
-> >>        .i2c_if                 = INV_ICM20602_REG_I2C_IF,
-> >>  };
-> >>  
-> >> +static const struct inv_mpu6050_reg_map reg_set_icm20690 = {
-> >> +     .sample_rate_div        = INV_MPU6050_REG_SAMPLE_RATE_DIV,
-> >> +     .lpf                    = INV_MPU6050_REG_CONFIG,
-> >> +     .accel_lpf              = INV_MPU6500_REG_ACCEL_CONFIG_2,
-> >> +     .user_ctrl              = INV_MPU6050_REG_USER_CTRL,
-> >> +     .fifo_en                = INV_MPU6050_REG_FIFO_EN,
-> >> +     .gyro_config            = INV_MPU6050_REG_GYRO_CONFIG,
-> >> +     .accl_config            = INV_MPU6050_REG_ACCEL_CONFIG,
-> >> +     .fifo_count_h           = INV_MPU6050_REG_FIFO_COUNT_H,
-> >> +     .fifo_r_w               = INV_MPU6050_REG_FIFO_R_W,
-> >> +     .raw_gyro               = INV_MPU6050_REG_RAW_GYRO,
-> >> +     .raw_accl               = INV_MPU6050_REG_RAW_ACCEL,
-> >> +     .temperature            = INV_MPU6050_REG_TEMPERATURE,
-> >> +     .int_enable             = INV_MPU6050_REG_INT_ENABLE,
-> >> +     .int_status             = INV_ICM20602_REG_FIFO_WM_INT_STATUS,
-> >> +     .wm_th_hb               = INV_ICM20690_FIFO_WM_TH_HB,
-> >> +     .wm_th_lb               = INV_ICM20690_FIFO_WM_TH_LB,
-> >> +     .pwr_mgmt_1             = INV_MPU6050_REG_PWR_MGMT_1,
-> >> +     .pwr_mgmt_2             = INV_MPU6050_REG_PWR_MGMT_2,
-> >> +     .int_pin_cfg            = INV_MPU6050_REG_INT_PIN_CFG,
-> >> +     .accl_offset            = INV_MPU6500_REG_ACCEL_OFFSET,
-> >> +     .gyro_offset            = INV_MPU6050_REG_GYRO_OFFSET,
-> >> +     .i2c_if                 = 0,
-> >> +};
-> >> +
-> >>  static const struct inv_mpu6050_reg_map reg_set_6500 = {
-> >>        .sample_rate_div        = INV_MPU6050_REG_SAMPLE_RATE_DIV,
-> >>        .lpf                    = INV_MPU6050_REG_CONFIG,
-> >> @@ -115,6 +142,8 @@ static const struct inv_mpu6050_chip_config chip_config_6050 = {
-> >>        .magn_fifo_enable = false,
-> >>        .accl_fs = INV_MPU6050_FS_02G,
-> >>        .user_ctrl = 0,
-> >> +     .wm_val = 1,
-> >> +     .wm_size = 0,  
-> >
-> >I don't think this is ever relevant to parts using this structure.
-> >  
-> 
-> wm_val is used by every chip for the timestamp computation. It needs to be set to 1.
-I'd missed that.  Thanks.
+> Signed-off-by: Daniel Palmer <daniel@0x0f.com>
+Applied to the togreg branch of iio.git which is initially pushed out as testing
+to let 0-day poke at it and see if we missed anything.
 
+Thanks,
+
+Jonathan
+
+> ---
+>  drivers/iio/accel/mma7660.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> >>  };
-> >>  
-..
-> >>  
-> >> +int inv_mpu6050_compute_hw_watermark(struct inv_mpu6050_state *st, unsigned int val)
-> >> +{
-> >> +     unsigned int nb_byte, new_size_byte;
-> >> +     int ret;
-> >> +
-> >> +     /* compute number of bytes inside FIFO */
-> >> +     nb_byte = 0;
-> >> +     if (st->chip_config.gyro_en)
-> >> +             nb_byte += INV_MPU6050_BYTES_PER_3AXIS_SENSOR;
-> >> +     if (st->chip_config.accl_en)
-> >> +             nb_byte += INV_MPU6050_BYTES_PER_3AXIS_SENSOR;
-> >> +     if (st->chip_config.magn_en)
-> >> +             nb_byte += INV_MPU9X50_BYTES_MAGN;
-> >> +     if (st->chip_config.temp_en)
-> >> +             nb_byte += INV_MPU6050_BYTES_PER_TEMP_SENSOR;
-> >> +
-> >> +     /* compute watermark size, use a threshold to keep some data space for read latency */  
-> >
-> >Not following this comment.  If the intent is you are setting the watermark in hardware lower
-> >because you think more data will have come in before we actually read it, please don't.
-> >The sampling frequency could be very low meaning there isn't enough data available.
-> >
-> >We are dealing with a fifo here, it doesn't matter if a few more samples are available when
-> >we go to read than the level of the watermark.  That's normal.
-> >  
-> 
-> The issue here is when the fifo is full, if the processing of the interrupt takes too much time,
-> we don't know if the first data were overwritten by new data.  
-> If it happens, we can't use the data. So we need to let some space in the fifo.
-
-Then the watermark is set too high.  So that's just a software / userspace configuration issue
-and is common to any similar fifo.
-
-> 
-> It usualy happens with high sample frequencies. If the current space is too much, we can
-> choose a new space of 10 samples. With the highest frequency (500Hz), a free space of 
-> 10 samples gives 20ms for the processing of the interrupt.
-
-Understood on the problem, but leave dealing this to userspace control rather than trying to
-paper over in userspace.  If you do what you have here, and a low sample rate is used
-userspace software will expect to have at least the watermark worth of samples.  Whilst
-it 'should' probably be hardened against underflow, it may well not be.
-
-Any userspace software that sets the watermark near the maximum possible would
-in my mind be either considered broken, or is being used in a case where loosing
-samples isn't a problem.
-
-> 
-> >> +     new_size_byte = val * nb_byte;
-> >> +     if (new_size_byte > ((st->hw->fifo_size * 4) / 5)) {
-> >> +             val = ((st->hw->fifo_size * 4) / 5) / nb_byte;
-> >> +             new_size_byte = val * nb_byte;
-> >> +     }
-> >> +
-> >> +     ret = inv_mpu6050_set_hw_watermark(st, new_size_byte);
-> >> +     if (ret)
-> >> +             return ret;
-> >> +
-> >> +     st->chip_config.wm_val = val;
-> >> +
-> >> +     return 0;
-> >> +}
-> >> +
-
-...
-
-> >> +
-> >>  static const struct iio_info mpu_info = {
-> >>        .read_raw = &inv_mpu6050_read_raw,
-> >>        .write_raw = &inv_mpu6050_write_raw,
-> >> @@ -1297,6 +1393,8 @@ static const struct iio_info mpu_info = {
-> >>        .attrs = &inv_attribute_group,
-> >>        .validate_trigger = inv_mpu6050_validate_trigger,
-> >>        .debugfs_reg_access = &inv_mpu6050_reg_access,
-> >> +     .hwfifo_set_watermark = &inv_mpu6050_set_watermark,
-> >> +     .hwfifo_flush_to_buffer = &inv_mpu6050_hw_flush_to_buffer,
-> >>  };
-> >>  
-> >>  /*
-> >> @@ -1618,7 +1716,7 @@ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
-> >>                 */
-> >>                result = devm_iio_triggered_buffer_setup(dev, indio_dev,
-> >>                                                         iio_pollfunc_store_time,
-> >> -                                                      inv_mpu6050_read_fifo,
-> >> +                                                      inv_mpu6050_interrupt_handler,
-> >>                                                         NULL);
-> >>                if (result) {
-> >>                        dev_err(dev, "configure buffer fail %d\n", result);
-> >> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-> >> index c6aa36e..d925885 100644
-> >> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-> >> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-> >> @@ -57,6 +57,8 @@ struct inv_mpu6050_reg_map {
-> >>        u8 temperature;
-> >>        u8 int_enable;
-> >>        u8 int_status;
-> >> +     u8 wm_th_hb;
-> >> +     u8 wm_th_lb;
-> >>        u8 pwr_mgmt_1;
-> >>        u8 pwr_mgmt_2;
-> >>        u8 int_pin_cfg;
-> >> @@ -121,6 +123,8 @@ struct inv_mpu6050_chip_config {
-> >>        unsigned int magn_fifo_enable:1;
-> >>        u8 divider;
-> >>        u8 user_ctrl;
-> >> +     unsigned int wm_val;  
-> >What are these two? Non obvious enough a comment would be good.  
-> 
-> I added the following lines in the Doxygen header :
-> 
->  *  @wm_val:		watermark size in number of data
->  *  @wm_size:		watermark size in bytes
-
-Ah good.  I hadn't noticed the structure had kernel-doc and this
-would have caused problems when I ran a build tests.
-
-Please make sure to run build the documentation or run a build
-test with W=1 so that we verify no other documentation is missing.
-
-> 
-> >> +     unsigned int wm_size;
-> >>  };
-> >>  
-
-...
-
-> >> -/*
-> >> - * inv_mpu6050_read_fifo() - Transfer data from hardware FIFO to KFIFO.
-> >> - */
-> >> -irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)  
-> >
-> >Given the count parameter has a 'special' value of 0, please add some documentation
-> >for this function.
-> >  
-> 
-> I added a Doxygen header for this function :
-> 
-> /**
->  * inv_mpu6050_flush_fifo() - Flush fifo
->  *
->  * @indio_dev:		Device driver instance.
->  * @timestamp_val:	the interrupt timestamp
->  * @count:		Number of data to flush
->  *
->  * This function flush the fifo using count as the number of data to flush.
-
-This function flushes the fifo using the count...
-
->  * As fifo_size may differ according to the chip unsigned
->  * count = 0 is used to set the max size of the fifo for count.
->  *
-No point in the empty trailing line as it doesn't help readabilty so please remove
-that. Otherwise good docs.
->  */
-> 
-> >> +int inv_mpu6050_flush_fifo(struct iio_dev *indio_dev,
-> >> +                                   s64 timestamp_val, unsigned int count)
-> >>  {
-...
+> diff --git a/drivers/iio/accel/mma7660.c b/drivers/iio/accel/mma7660.c
+> index 47f5cd66e996..cd6cdf2c51b0 100644
+> --- a/drivers/iio/accel/mma7660.c
+> +++ b/drivers/iio/accel/mma7660.c
+> @@ -254,7 +254,7 @@ static const struct of_device_id mma7660_of_match[] = {
+>  };
+>  MODULE_DEVICE_TABLE(of, mma7660_of_match);
+>  
+> -static const struct acpi_device_id mma7660_acpi_id[] = {
+> +static const struct acpi_device_id __maybe_unused mma7660_acpi_id[] = {
+>  	{"MMA7660", 0},
+>  	{}
+>  };
 

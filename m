@@ -2,32 +2,33 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16BD9410C74
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Sep 2021 18:59:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F4F9410C7E
+	for <lists+linux-iio@lfdr.de>; Sun, 19 Sep 2021 19:02:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230270AbhISRAb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 19 Sep 2021 13:00:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53628 "EHLO mail.kernel.org"
+        id S231645AbhISRDk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 19 Sep 2021 13:03:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54882 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229701AbhISRAa (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 19 Sep 2021 13:00:30 -0400
+        id S229801AbhISRDj (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 19 Sep 2021 13:03:39 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DC3F6610FB;
-        Sun, 19 Sep 2021 16:59:02 +0000 (UTC)
-Date:   Sun, 19 Sep 2021 18:02:44 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id E1BA461028;
+        Sun, 19 Sep 2021 17:02:11 +0000 (UTC)
+Date:   Sun, 19 Sep 2021 18:05:52 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Mihail Chindris <mihail.chindris@analog.com>
 Cc:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
         <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
         <nuno.sa@analog.com>, <dragos.bogdan@analog.com>,
         <alexandru.ardelean@analog.com>
-Subject: Re: [PATCH v5 1/6] iio: Add output buffer support
-Message-ID: <20210919180244.1f935bcd@jic23-huawei>
-In-Reply-To: <20210916182914.1810-2-mihail.chindris@analog.com>
+Subject: Re: [PATCH v5 3/6] iio: triggered-buffer: extend support to
+ configure output buffers
+Message-ID: <20210919180552.41e1a7c9@jic23-huawei>
+In-Reply-To: <20210916182914.1810-4-mihail.chindris@analog.com>
 References: <20210916182914.1810-1-mihail.chindris@analog.com>
-        <20210916182914.1810-2-mihail.chindris@analog.com>
+        <20210916182914.1810-4-mihail.chindris@analog.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -36,349 +37,201 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 16 Sep 2021 18:29:09 +0000
+On Thu, 16 Sep 2021 18:29:11 +0000
 Mihail Chindris <mihail.chindris@analog.com> wrote:
 
-> Currently IIO only supports buffer mode for capture devices like ADCs. Add
-> support for buffered mode for output devices like DACs.
+> From: Alexandru Ardelean <alexandru.ardelean@analog.com>
 > 
-> The output buffer implementation is analogous to the input buffer
-> implementation. Instead of using read() to get data from the buffer write()
-> is used to copy data into the buffer.
+> Now that output (kfifo) buffers are supported, we need to extend the
+> {devm_}iio_triggered_buffer_setup_ext() parameter list to take a direction
+> parameter.
 > 
-> poll() with POLLOUT will wakeup if there is space available.
+> This allows us to attach an output triggered buffer to a DAC device.
+> Unfortunately it's a bit difficult to add another macro to avoid changing 5
+> drivers where {devm_}iio_triggered_buffer_setup_ext() is used.
+> Well, it's doable, but may not be worth the trouble vs just updating all
+> these 5 drivers.
 > 
-> Drivers can remove data from a buffer using iio_pop_from_buffer(), the
-> function can e.g. called from a trigger handler to write the data to
-> hardware.
-> 
-> A buffer can only be either a output buffer or an input, but not both. So,
-> for a device that has an ADC and DAC path, this will mean 2 IIO buffers
-> (one for each direction).
-> 
-> The direction of the buffer is decided by the new direction field of the
-> iio_buffer struct and should be set after allocating and before registering
-> it.
-> 
-> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
 > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> Signed-off-by: Mihail Chindris <mihail.chindris@analog.com>
 
-A few minor things inline.  I would have expected the missing check
-on insert_buffer to have resulted in a nasty deference of a null pointer
-though which does make me nervous about whether we have tested this
-series enough.
+Mihael,
+
+This one is one of the categories where you must add your own
+Signed-off-by: line to fulfill the kernel DCO requirements.
+You are posting this patch of Alex's so you need to sign off to indicate
+you 'handled' the patch on the way to mainline.
+
+Patch looks good other than that.
+Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/iio_core.h            |   4 +
->  drivers/iio/industrialio-buffer.c | 120 +++++++++++++++++++++++++++++-
->  drivers/iio/industrialio-core.c   |   1 +
->  include/linux/iio/buffer.h        |   7 ++
->  include/linux/iio/buffer_impl.h   |  11 +++
->  5 files changed, 141 insertions(+), 2 deletions(-)
+>  drivers/iio/accel/adxl372.c                           |  1 +
+>  drivers/iio/accel/bmc150-accel-core.c                 |  1 +
+>  drivers/iio/adc/at91-sama5d2_adc.c                    |  4 ++--
+>  drivers/iio/buffer/industrialio-triggered-buffer.c    |  8 ++++++--
+>  .../iio/common/cros_ec_sensors/cros_ec_sensors_core.c |  5 +++--
+>  drivers/iio/common/hid-sensors/hid-sensor-trigger.c   |  5 +++--
+>  include/linux/iio/triggered_buffer.h                  | 11 +++++++++--
+>  7 files changed, 25 insertions(+), 10 deletions(-)
 > 
-> diff --git a/drivers/iio/iio_core.h b/drivers/iio/iio_core.h
-> index 8f4a9b264962..61e318431de9 100644
-> --- a/drivers/iio/iio_core.h
-> +++ b/drivers/iio/iio_core.h
-> @@ -68,12 +68,15 @@ __poll_t iio_buffer_poll_wrapper(struct file *filp,
->  				 struct poll_table_struct *wait);
->  ssize_t iio_buffer_read_wrapper(struct file *filp, char __user *buf,
->  				size_t n, loff_t *f_ps);
-> +ssize_t iio_buffer_write_wrapper(struct file *filp, const char __user *buf,
-> +				 size_t n, loff_t *f_ps);
+> diff --git a/drivers/iio/accel/adxl372.c b/drivers/iio/accel/adxl372.c
+> index fc9592407717..758952584f8c 100644
+> --- a/drivers/iio/accel/adxl372.c
+> +++ b/drivers/iio/accel/adxl372.c
+> @@ -1214,6 +1214,7 @@ int adxl372_probe(struct device *dev, struct regmap *regmap,
+>  	ret = devm_iio_triggered_buffer_setup_ext(dev,
+>  						  indio_dev, NULL,
+>  						  adxl372_trigger_handler,
+> +						  IIO_BUFFER_DIRECTION_IN,
+>  						  &adxl372_buffer_ops,
+>  						  adxl372_fifo_attributes);
+>  	if (ret < 0)
+> diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
+> index e8693a42ad46..63216321cdb5 100644
+> --- a/drivers/iio/accel/bmc150-accel-core.c
+> +++ b/drivers/iio/accel/bmc150-accel-core.c
+> @@ -1734,6 +1734,7 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
+>  	ret = iio_triggered_buffer_setup_ext(indio_dev,
+>  					     &iio_pollfunc_store_time,
+>  					     bmc150_accel_trigger_handler,
+> +					     IIO_BUFFER_DIRECTION_IN,
+>  					     &bmc150_accel_buffer_ops,
+>  					     fifo_attrs);
+>  	if (ret < 0) {
+> diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
+> index ea5ca163d879..7093611e321e 100644
+> --- a/drivers/iio/adc/at91-sama5d2_adc.c
+> +++ b/drivers/iio/adc/at91-sama5d2_adc.c
+> @@ -1681,8 +1681,8 @@ static int at91_adc_buffer_and_trigger_init(struct device *dev,
+>  		fifo_attrs = NULL;
 >  
->  int iio_buffers_alloc_sysfs_and_mask(struct iio_dev *indio_dev);
->  void iio_buffers_free_sysfs_and_mask(struct iio_dev *indio_dev);
->  
->  #define iio_buffer_poll_addr (&iio_buffer_poll_wrapper)
->  #define iio_buffer_read_outer_addr (&iio_buffer_read_wrapper)
-> +#define iio_buffer_write_outer_addr (&iio_buffer_write_wrapper)
->  
->  void iio_disable_all_buffers(struct iio_dev *indio_dev);
->  void iio_buffer_wakeup_poll(struct iio_dev *indio_dev);
-> @@ -83,6 +86,7 @@ void iio_device_detach_buffers(struct iio_dev *indio_dev);
->  
->  #define iio_buffer_poll_addr NULL
->  #define iio_buffer_read_outer_addr NULL
-> +#define iio_buffer_write_outer_addr NULL
->  
->  static inline int iio_buffers_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
+>  	ret = devm_iio_triggered_buffer_setup_ext(&indio->dev, indio,
+> -		&iio_pollfunc_store_time,
+> -		&at91_adc_trigger_handler, &at91_buffer_setup_ops, fifo_attrs);
+> +		&iio_pollfunc_store_time, &at91_adc_trigger_handler,
+> +		IIO_BUFFER_DIRECTION_IN, &at91_buffer_setup_ops, fifo_attrs);
+>  	if (ret < 0) {
+>  		dev_err(dev, "couldn't initialize the buffer.\n");
+>  		return ret;
+> diff --git a/drivers/iio/buffer/industrialio-triggered-buffer.c b/drivers/iio/buffer/industrialio-triggered-buffer.c
+> index f77c4538141e..8d4fc97d1005 100644
+> --- a/drivers/iio/buffer/industrialio-triggered-buffer.c
+> +++ b/drivers/iio/buffer/industrialio-triggered-buffer.c
+> @@ -19,6 +19,7 @@
+>   * @indio_dev:		IIO device structure
+>   * @h:			Function which will be used as pollfunc top half
+>   * @thread:		Function which will be used as pollfunc bottom half
+> + * @direction:		Direction of the data stream (in/out).
+>   * @setup_ops:		Buffer setup functions to use for this device.
+>   *			If NULL the default setup functions for triggered
+>   *			buffers will be used.
+> @@ -38,6 +39,7 @@
+>  int iio_triggered_buffer_setup_ext(struct iio_dev *indio_dev,
+>  	irqreturn_t (*h)(int irq, void *p),
+>  	irqreturn_t (*thread)(int irq, void *p),
+> +	enum iio_buffer_direction direction,
+>  	const struct iio_buffer_setup_ops *setup_ops,
+>  	const struct attribute **buffer_attrs)
 >  {
-> diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-> index a95cc2da56be..a2a34c5652a7 100644
-> --- a/drivers/iio/industrialio-buffer.c
-> +++ b/drivers/iio/industrialio-buffer.c
-> @@ -161,6 +161,62 @@ static ssize_t iio_buffer_read(struct file *filp, char __user *buf,
->  	return ret;
->  }
+> @@ -68,6 +70,7 @@ int iio_triggered_buffer_setup_ext(struct iio_dev *indio_dev,
+>  	/* Flag that polled ring buffering is possible */
+>  	indio_dev->modes |= INDIO_BUFFER_TRIGGERED;
 >  
-> +static size_t iio_buffer_space_available(struct iio_buffer *buf)
-> +{
-> +	if (buf->access->space_available)
-> +		return buf->access->space_available(buf);
-> +
-> +	return SIZE_MAX;
-> +}
-> +
-> +static ssize_t iio_buffer_write(struct file *filp, const char __user *buf,
-> +				size_t n, loff_t *f_ps)
-> +{
-> +	struct iio_dev_buffer_pair *ib = filp->private_data;
-> +	struct iio_buffer *rb = ib->buffer;
-> +	struct iio_dev *indio_dev = ib->indio_dev;
-> +	DEFINE_WAIT_FUNC(wait, woken_wake_function);
-> +	int ret;
-> +	size_t written;
-> +
-> +	if (!indio_dev->info)
-> +		return -ENODEV;
-> +
-> +	if (!rb || !rb->access->write)
-> +		return -EINVAL;
-> +
-> +	written = 0;
-> +	add_wait_queue(&rb->pollq, &wait);
-> +	do {
-> +		if (indio_dev->info == NULL)
-> +			return -ENODEV;
-> +
-> +		if (!iio_buffer_space_available(rb)) {
-> +			if (signal_pending(current)) {
-> +				ret = -ERESTARTSYS;
-> +				break;
-> +			}
-> +
-> +			wait_woken(&wait, TASK_INTERRUPTIBLE,
-> +					MAX_SCHEDULE_TIMEOUT);
-> +			continue;
-> +		}
-> +
-> +		ret = rb->access->write(rb, n - written, buf + written);
-> +		if (ret == 0 && (filp->f_flags & O_NONBLOCK))
-> +			ret = -EAGAIN;
-> +
-> +		if (ret > 0) {
-> +			written += ret;
-> +			if (written != n && !(filp->f_flags & O_NONBLOCK))
-> +				continue;
-> +		}
-> +	} while (ret == 0);
-> +	remove_wait_queue(&rb->pollq, &wait);
-> +
-> +	return ret < 0 ? ret : n;
-> +}
-> +
->  /**
->   * iio_buffer_poll() - poll the buffer to find out if it has data
->   * @filp:	File structure pointer for device access
-> @@ -181,8 +237,18 @@ static __poll_t iio_buffer_poll(struct file *filp,
->  		return 0;
+> +	buffer->direction = direction;
+>  	buffer->attrs = buffer_attrs;
 >  
->  	poll_wait(filp, &rb->pollq, wait);
-> -	if (iio_buffer_ready(indio_dev, rb, rb->watermark, 0))
-> -		return EPOLLIN | EPOLLRDNORM;
-> +
-> +	switch (rb->direction) {
-> +	case IIO_BUFFER_DIRECTION_IN:
-> +		if (iio_buffer_ready(indio_dev, rb, rb->watermark, 0))
-> +			return EPOLLIN | EPOLLRDNORM;
-> +		break;
-> +	case IIO_BUFFER_DIRECTION_OUT:
-> +		if (iio_buffer_space_available(rb))
-> +			return EPOLLOUT | EPOLLWRNORM;
-> +		break;
-> +	}
-> +
->  	return 0;
->  }
->  
-> @@ -199,6 +265,19 @@ ssize_t iio_buffer_read_wrapper(struct file *filp, char __user *buf,
->  	return iio_buffer_read(filp, buf, n, f_ps);
->  }
->  
-> +ssize_t iio_buffer_write_wrapper(struct file *filp, const char __user *buf,
-> +				 size_t n, loff_t *f_ps)
-> +{
-> +	struct iio_dev_buffer_pair *ib = filp->private_data;
-> +	struct iio_buffer *rb = ib->buffer;
-> +
-> +	/* check if buffer was opened through new API */
-> +	if (test_bit(IIO_BUSY_BIT_POS, &rb->flags))
-> +		return -EBUSY;
-> +
-> +	return iio_buffer_write(filp, buf, n, f_ps);
-> +}
-> +
->  __poll_t iio_buffer_poll_wrapper(struct file *filp,
->  				 struct poll_table_struct *wait)
+>  	ret = iio_device_attach_buffer(indio_dev, buffer);
+> @@ -105,13 +108,14 @@ int devm_iio_triggered_buffer_setup_ext(struct device *dev,
+>  					struct iio_dev *indio_dev,
+>  					irqreturn_t (*h)(int irq, void *p),
+>  					irqreturn_t (*thread)(int irq, void *p),
+> +					enum iio_buffer_direction direction,
+>  					const struct iio_buffer_setup_ops *ops,
+>  					const struct attribute **buffer_attrs)
 >  {
-> @@ -231,6 +310,15 @@ void iio_buffer_wakeup_poll(struct iio_dev *indio_dev)
->  	}
->  }
+>  	int ret;
 >  
-> +int iio_pop_from_buffer(struct iio_buffer *buffer, void *data)
-> +{
-> +	if (!buffer || !buffer->access || !buffer->access->remove_from)
-> +		return -EINVAL;
-> +
-> +	return buffer->access->remove_from(buffer, data);
-> +}
-> +EXPORT_SYMBOL_GPL(iio_pop_from_buffer);
-> +
->  void iio_buffer_init(struct iio_buffer *buffer)
->  {
->  	INIT_LIST_HEAD(&buffer->demux_list);
-> @@ -1156,6 +1244,9 @@ int iio_update_buffers(struct iio_dev *indio_dev,
->  	if (insert_buffer == remove_buffer)
->  		return 0;
+> -	ret = iio_triggered_buffer_setup_ext(indio_dev, h, thread, ops,
+> -					     buffer_attrs);
+> +	ret = iio_triggered_buffer_setup_ext(indio_dev, h, thread, direction,
+> +					     ops, buffer_attrs);
+>  	if (ret)
+>  		return ret;
 >  
-> +	if (insert_buffer->direction == IIO_BUFFER_DIRECTION_OUT)
-> +		ret = -EINVAL;
-> +
-
-This block is unusual enough that it needs a comment to explain what the intent is.
-You are poking in an error code, but then continuing...
-
-I'm fairly sure you need to check
-if (insert_buffer && (insert_buffer->direction == IIO_BUFFER_DIRECTION_OUT))
-
-The lack of that test makes me thing this will blow up when called to remove an
-output buffer.
-
->  	mutex_lock(&iio_dev_opaque->info_exist_lock);
->  	mutex_lock(&indio_dev->mlock);
+> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> index 28bde13003b7..e9f64da06f89 100644
+> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> @@ -360,8 +360,9 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+>  			 * The only way to get samples in buffer is to set a
+>  			 * software trigger (systrig, hrtimer).
+>  			 */
+> -			ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
+> -					NULL, trigger_capture, NULL);
+> +			ret = devm_iio_triggered_buffer_setup_ext(dev,
+> +					indio_dev, NULL, trigger_capture,
+> +					IIO_BUFFER_DIRECTION_IN, NULL);
+>  			if (ret)
+>  				return ret;
+>  		}
+> diff --git a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
+> index a4ec11a3b68a..1151434038d4 100644
+> --- a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
+> +++ b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
+> @@ -241,8 +241,9 @@ int hid_sensor_setup_trigger(struct iio_dev *indio_dev, const char *name,
+>  		fifo_attrs = NULL;
 >  
-> @@ -1277,6 +1368,22 @@ static ssize_t iio_dma_show_data_available(struct device *dev,
->  	return sysfs_emit(buf, "%zu\n", iio_buffer_data_available(buffer));
->  }
+>  	ret = iio_triggered_buffer_setup_ext(indio_dev,
+> -					     &iio_pollfunc_store_time,
+> -					     NULL, NULL, fifo_attrs);
+> +					     &iio_pollfunc_store_time, NULL,
+> +					     IIO_BUFFER_DIRECTION_IN,
+> +					     NULL, fifo_attrs);
+>  	if (ret) {
+>  		dev_err(&indio_dev->dev, "Triggered Buffer Setup Failed\n");
+>  		return ret;
+> diff --git a/include/linux/iio/triggered_buffer.h b/include/linux/iio/triggered_buffer.h
+> index 7f154d1f8739..7490b05fc5b2 100644
+> --- a/include/linux/iio/triggered_buffer.h
+> +++ b/include/linux/iio/triggered_buffer.h
+> @@ -2,6 +2,7 @@
+>  #ifndef _LINUX_IIO_TRIGGERED_BUFFER_H_
+>  #define _LINUX_IIO_TRIGGERED_BUFFER_H_
 >  
-> +static ssize_t direction_show(struct device *dev,
-> +			      struct device_attribute *attr,
-> +			      char *buf)
-> +{
-> +	struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
-> +
-> +	switch (buffer->direction) {
-> +	case IIO_BUFFER_DIRECTION_IN:
-> +		return sprintf(buf, "in\n");
-> +	case IIO_BUFFER_DIRECTION_OUT:
-> +		return sprintf(buf, "out\n");
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
->  static DEVICE_ATTR(length, S_IRUGO | S_IWUSR, iio_buffer_read_length,
->  		   iio_buffer_write_length);
->  static struct device_attribute dev_attr_length_ro = __ATTR(length,
-> @@ -1289,12 +1396,20 @@ static struct device_attribute dev_attr_watermark_ro = __ATTR(watermark,
->  	S_IRUGO, iio_buffer_show_watermark, NULL);
->  static DEVICE_ATTR(data_available, S_IRUGO,
->  		iio_dma_show_data_available, NULL);
-> +static DEVICE_ATTR_RO(direction);
->  
-> +/*
-> + * When adding new attributes here, put the at the end, at least until
-> + * the code that handles the lengh/length_ro & watermark/watermark_ro
-
-length/length_ro
-
-> + * assignments gets cleaned up. Otherwise these can create some weird
-> + * duplicate attributes errors under some setups.
-> + */
->  static struct attribute *iio_buffer_attrs[] = {
->  	&dev_attr_length.attr,
->  	&dev_attr_enable.attr,
->  	&dev_attr_watermark.attr,
->  	&dev_attr_data_available.attr,
-> +	&dev_attr_direction.attr,
->  };
->  
->  #define to_dev_attr(_attr) container_of(_attr, struct device_attribute, attr)
-> @@ -1397,6 +1512,7 @@ static const struct file_operations iio_buffer_chrdev_fileops = {
->  	.owner = THIS_MODULE,
->  	.llseek = noop_llseek,
->  	.read = iio_buffer_read,
-> +	.write = iio_buffer_write,
->  	.poll = iio_buffer_poll,
->  	.release = iio_buffer_chrdev_release,
->  };
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> index 2dbb37e09b8c..537a08549a69 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -1822,6 +1822,7 @@ static const struct file_operations iio_buffer_fileops = {
->  	.owner = THIS_MODULE,
->  	.llseek = noop_llseek,
->  	.read = iio_buffer_read_outer_addr,
-> +	.write = iio_buffer_write_outer_addr,
->  	.poll = iio_buffer_poll_addr,
->  	.unlocked_ioctl = iio_ioctl,
->  	.compat_ioctl = compat_ptr_ioctl,
-> diff --git a/include/linux/iio/buffer.h b/include/linux/iio/buffer.h
-> index b6928ac5c63d..fe2e680d9b5e 100644
-> --- a/include/linux/iio/buffer.h
-> +++ b/include/linux/iio/buffer.h
-> @@ -11,8 +11,15 @@
->  
->  struct iio_buffer;
->  
-> +enum iio_buffer_direction {
-> +	IIO_BUFFER_DIRECTION_IN,
-> +	IIO_BUFFER_DIRECTION_OUT,
-> +};
-> +
->  int iio_push_to_buffers(struct iio_dev *indio_dev, const void *data);
->  
-> +int iio_pop_from_buffer(struct iio_buffer *buffer, void *data);
-> +
->  /**
->   * iio_push_to_buffers_with_timestamp() - push data and timestamp to buffers
->   * @indio_dev:		iio_dev structure for device.
-> diff --git a/include/linux/iio/buffer_impl.h b/include/linux/iio/buffer_impl.h
-> index 245b32918ae1..e2ca8ea23e19 100644
-> --- a/include/linux/iio/buffer_impl.h
-> +++ b/include/linux/iio/buffer_impl.h
-> @@ -7,6 +7,7 @@
->  #ifdef CONFIG_IIO_BUFFER
->  
->  #include <uapi/linux/iio/buffer.h>
 > +#include <linux/iio/buffer.h>
+>  #include <linux/interrupt.h>
 >  
->  struct iio_dev;
->  struct iio_buffer;
-> @@ -23,6 +24,10 @@ struct iio_buffer;
->   * @read:		try to get a specified number of bytes (must exist)
->   * @data_available:	indicates how much data is available for reading from
->   *			the buffer.
-> + * @remove_from:	remove scan from buffer. Drivers should calls this to
-> + *			remove a scan from a buffer.
-> + * @write:		try to write a number of bytes
-> + * @space_available:	returns the amount of bytes available in a buffer
->   * @request_update:	if a parameter change has been marked, update underlying
->   *			storage.
->   * @set_bytes_per_datum:set number of bytes per datum
-> @@ -49,6 +54,9 @@ struct iio_buffer_access_funcs {
->  	int (*store_to)(struct iio_buffer *buffer, const void *data);
->  	int (*read)(struct iio_buffer *buffer, size_t n, char __user *buf);
->  	size_t (*data_available)(struct iio_buffer *buffer);
-> +	int (*remove_from)(struct iio_buffer *buffer, void *data);
-> +	int (*write)(struct iio_buffer *buffer, size_t n, const char __user *buf);
-> +	size_t (*space_available)(struct iio_buffer *buffer);
+>  struct attribute;
+> @@ -11,21 +12,27 @@ struct iio_buffer_setup_ops;
+>  int iio_triggered_buffer_setup_ext(struct iio_dev *indio_dev,
+>  	irqreturn_t (*h)(int irq, void *p),
+>  	irqreturn_t (*thread)(int irq, void *p),
+> +	enum iio_buffer_direction direction,
+>  	const struct iio_buffer_setup_ops *setup_ops,
+>  	const struct attribute **buffer_attrs);
+>  void iio_triggered_buffer_cleanup(struct iio_dev *indio_dev);
 >  
->  	int (*request_update)(struct iio_buffer *buffer);
+>  #define iio_triggered_buffer_setup(indio_dev, h, thread, setup_ops)		\
+> -	iio_triggered_buffer_setup_ext((indio_dev), (h), (thread), (setup_ops), NULL)
+> +	iio_triggered_buffer_setup_ext((indio_dev), (h), (thread),		\
+> +					IIO_BUFFER_DIRECTION_IN, (setup_ops),	\
+> +					NULL)
 >  
-> @@ -80,6 +88,9 @@ struct iio_buffer {
->  	/**  @bytes_per_datum: Size of individual datum including timestamp. */
->  	size_t bytes_per_datum;
+>  int devm_iio_triggered_buffer_setup_ext(struct device *dev,
+>  					struct iio_dev *indio_dev,
+>  					irqreturn_t (*h)(int irq, void *p),
+>  					irqreturn_t (*thread)(int irq, void *p),
+> +					enum iio_buffer_direction direction,
+>  					const struct iio_buffer_setup_ops *ops,
+>  					const struct attribute **buffer_attrs);
 >  
-> +	/* @direction: Direction of the data stream (in/out). */
-> +	enum iio_buffer_direction direction;
-> +
->  	/**
->  	 * @access: Buffer access functions associated with the
->  	 * implementation.
+>  #define devm_iio_triggered_buffer_setup(dev, indio_dev, h, thread, setup_ops)	\
+> -	devm_iio_triggered_buffer_setup_ext((dev), (indio_dev), (h), (thread), (setup_ops), NULL)
+> +	devm_iio_triggered_buffer_setup_ext((dev), (indio_dev), (h), (thread),	\
+> +					    IIO_BUFFER_DIRECTION_IN,		\
+> +					    (setup_ops), NULL)
+>  
+>  #endif
 

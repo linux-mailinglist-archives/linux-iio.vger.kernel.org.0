@@ -2,99 +2,118 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5481141117B
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Sep 2021 10:58:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE7F341118B
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Sep 2021 11:05:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233001AbhITI7r (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 20 Sep 2021 04:59:47 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:15138 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236080AbhITI73 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Sep 2021 04:59:29 -0400
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18K5d8CN006281;
-        Mon, 20 Sep 2021 04:57:51 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 3b6bv8a5dg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 20 Sep 2021 04:57:51 -0400
-Received: from SCSQMBX10.ad.analog.com (SCSQMBX10.ad.analog.com [10.77.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 18K8vnRL048543
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 20 Sep 2021 04:57:49 -0400
-Received: from SCSQCASHYB6.ad.analog.com (10.77.17.132) by
- SCSQMBX10.ad.analog.com (10.77.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.858.5;
- Mon, 20 Sep 2021 01:57:48 -0700
-Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
- SCSQCASHYB6.ad.analog.com (10.77.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.858.5;
- Mon, 20 Sep 2021 01:57:48 -0700
-Received: from zeus.spd.analog.com (10.66.68.11) by scsqmbx11.ad.analog.com
- (10.77.17.10) with Microsoft SMTP Server id 15.2.858.5 via Frontend
- Transport; Mon, 20 Sep 2021 01:57:48 -0700
-Received: from nsa.ad.analog.com ([10.44.3.61])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 18K8vjmh028187;
-        Mon, 20 Sep 2021 04:57:45 -0400
-From:   =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
-To:     <linux-iio@vger.kernel.org>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH] iio: adis16475: fix deadlock on frequency set
-Date:   Mon, 20 Sep 2021 11:00:47 +0200
-Message-ID: <20210920090047.74903-1-nuno.sa@analog.com>
-X-Mailer: git-send-email 2.33.0
+        id S234397AbhITJHS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 20 Sep 2021 05:07:18 -0400
+Received: from www.zeus03.de ([194.117.254.33]:54156 "EHLO mail.zeus03.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234740AbhITJHI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 20 Sep 2021 05:07:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
+        from:to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding; s=k1; bh=8Ic7rPl8wS6tSUDgDBOpnPfgXT8
+        diIPVuuJEV7+3x14=; b=y3zScd6qLqQkIP3VZO9fvHA8J6/TlWpstJuxEWG+2wh
+        RSUW1mVxF26O2U33Dq6EbBJ3XmayRck4KWgT5z4BxcgklO7B+9wEmZO5zVAmdCUU
+        eq691H+mkSBSVXJ5b+Z4iTQ6tBhA1RnGtNmi7NlL+YGjQ7U1KmJ/dc6bhwHIpZnk
+        =
+Received: (qmail 2412526 invoked from network); 20 Sep 2021 11:05:23 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 20 Sep 2021 11:05:23 +0200
+X-UD-Smtp-Session: l3s3148p1@Lz7AlGnMBosgAwDPXwlxANIWpbLKE1Uh
+From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-renesas-soc@vger.kernel.org,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        dmaengine@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, linux-amlogic@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org
+Subject: [PATCH 0/9] treewide: simplify getting .driver_data
+Date:   Mon, 20 Sep 2021 11:05:12 +0200
+Message-Id: <20210920090522.23784-1-wsa+renesas@sang-engineering.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: _G10pHk9aMTbYVVvl0HictawfRWfym25
-X-Proofpoint-ORIG-GUID: _G10pHk9aMTbYVVvl0HictawfRWfym25
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
- definitions=2021-09-20_05,2021-09-17_02,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1015
- lowpriorityscore=0 bulkscore=0 phishscore=0 mlxlogscore=999 mlxscore=0
- spamscore=0 malwarescore=0 suspectscore=0 impostorscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109030001 definitions=main-2109200054
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-With commit 39c024b51b560
-("iio: adis16475: improve sync scale mode handling"), two deadlocks were
-introduced:
- 1) The call to 'adis_write_reg_16()' was not changed to it's unlocked
-    version.
- 2) The lock was not being released on the success path of the function.
+I got tired of fixing this in Renesas drivers manually, so I took the big
+hammer. Remove this cumbersome code pattern which got copy-pasted too much
+already:
 
-This change fixes both these issues.
+-	struct platform_device *pdev = to_platform_device(dev);
+-	struct ep93xx_keypad *keypad = platform_get_drvdata(pdev);
++	struct ep93xx_keypad *keypad = dev_get_drvdata(dev);
 
-Fixes: 39c024b51b560 ("iio: adis16475: improve sync scale mode handling")
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
----
- drivers/iio/imu/adis16475.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+A branch, tested by buildbot, can be found here:
 
-diff --git a/drivers/iio/imu/adis16475.c b/drivers/iio/imu/adis16475.c
-index eb48102f9424..287fff39a927 100644
---- a/drivers/iio/imu/adis16475.c
-+++ b/drivers/iio/imu/adis16475.c
-@@ -353,10 +353,11 @@ static int adis16475_set_freq(struct adis16475 *st, const u32 freq)
- 	if (dec > st->info->max_dec)
- 		dec = st->info->max_dec;
- 
--	ret = adis_write_reg_16(&st->adis, ADIS16475_REG_DEC_RATE, dec);
-+	ret = __adis_write_reg_16(&st->adis, ADIS16475_REG_DEC_RATE, dec);
- 	if (ret)
- 		goto error;
- 
-+	adis_dev_unlock(&st->adis);
- 	/*
- 	 * If decimation is used, then gyro and accel data will have meaningful
- 	 * bits on the LSB registers. This info is used on the trigger handler.
+git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git coccinelle/get_drvdata
+
+I am open for other comments, suggestions, too, of course.
+
+Here is the cocci-script I created:
+
+@@
+struct device* d;
+identifier pdev;
+expression *ptr;
+@@
+(
+-	struct platform_device *pdev = to_platform_device(d);
+|
+-	struct platform_device *pdev;
+	...
+-	pdev = to_platform_device(d);
+)
+	<... when != pdev
+-	&pdev->dev
++	d
+	...>
+
+	ptr =
+-	platform_get_drvdata(pdev)
++	dev_get_drvdata(d)
+
+	<... when != pdev
+-	&pdev->dev
++	d
+	...>
+
+Kind regards,
+
+   Wolfram
+
+
+Wolfram Sang (9):
+  dmaengine: stm32-dmamux: simplify getting .driver_data
+  firmware: meson: simplify getting .driver_data
+  gpio: xilinx: simplify getting .driver_data
+  drm/msm: simplify getting .driver_data
+  drm/panfrost: simplify getting .driver_data
+  iio: common: cros_ec_sensors: simplify getting .driver_data
+  net: mdio: mdio-bcm-iproc: simplify getting .driver_data
+  platform: chrome: cros_ec_sensorhub: simplify getting .driver_data
+  remoteproc: omap_remoteproc: simplify getting .driver_data
+
+ drivers/dma/stm32-dmamux.c                         | 14 +++++---------
+ drivers/firmware/meson/meson_sm.c                  |  3 +--
+ drivers/gpio/gpio-xilinx.c                         |  6 ++----
+ drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c            | 13 +++++--------
+ drivers/gpu/drm/msm/disp/mdp5/mdp5_kms.c           |  6 ++----
+ drivers/gpu/drm/msm/dp/dp_display.c                |  6 ++----
+ drivers/gpu/drm/msm/dsi/dsi_host.c                 |  6 ++----
+ drivers/gpu/drm/msm/msm_drv.c                      |  3 +--
+ drivers/gpu/drm/panfrost/panfrost_device.c         |  6 ++----
+ .../common/cros_ec_sensors/cros_ec_sensors_core.c  |  3 +--
+ drivers/net/mdio/mdio-bcm-iproc.c                  |  3 +--
+ drivers/platform/chrome/cros_ec_sensorhub.c        |  6 ++----
+ drivers/remoteproc/omap_remoteproc.c               |  6 ++----
+ 13 files changed, 28 insertions(+), 53 deletions(-)
+
 -- 
-2.33.0
+2.30.2
 

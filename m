@@ -2,18 +2,18 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2910D4132DD
+	by mail.lfdr.de (Postfix) with ESMTP id CD4CE4132DE
 	for <lists+linux-iio@lfdr.de>; Tue, 21 Sep 2021 13:54:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232467AbhIULzj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S232515AbhIULzj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Tue, 21 Sep 2021 07:55:39 -0400
-Received: from relay10.mail.gandi.net ([217.70.178.230]:58363 "EHLO
+Received: from relay10.mail.gandi.net ([217.70.178.230]:39667 "EHLO
         relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232063AbhIULzi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Sep 2021 07:55:38 -0400
+        with ESMTP id S232403AbhIULzj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Sep 2021 07:55:39 -0400
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 9594524001A;
-        Tue, 21 Sep 2021 11:54:08 +0000 (UTC)
+        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 892A8240012;
+        Tue, 21 Sep 2021 11:54:09 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -21,134 +21,76 @@ To:     Jonathan Cameron <jic23@kernel.org>,
 Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Nuno Sa <Nuno.Sa@analog.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH v4 00/16] Bring external triggers support to MAX1027-like ADCs
-Date:   Tue, 21 Sep 2021 13:53:52 +0200
-Message-Id: <20210921115408.66711-1-miquel.raynal@bootlin.com>
+Subject: [PATCH v4 01/16] iio: adc: max1027: Fix style
+Date:   Tue, 21 Sep 2021 13:53:53 +0200
+Message-Id: <20210921115408.66711-2-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20210921115408.66711-1-miquel.raynal@bootlin.com>
+References: <20210921115408.66711-1-miquel.raynal@bootlin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Until now the max1027.c driver, which handles 10-bit devices (max10xx)
-and 12-bit devices (max12xx), only supported internal triggers. When the
-hardware trigger is not wired it is very convenient to use external
-triggers. Overall, when several values are needed at the same time,
-using triggers and buffers improves quite a lot the performances.
+Follow checkpatch.pl's main advices before hacking into the driver, mainly:
+WARNING: Prefer 'unsigned int' to bare use of 'unsigned'
+WARNING: Prefer 'unsigned int *' to bare use of 'unsigned *'
+CHECK: Comparison to NULL could be written "!foo"
+CHECK: Alignment should match open parenthesis
 
-This series does a bit of cleaning/code reorganization before actually
-bringing more flexibility to the driver, up to the point where it is
-possible to use an external trigger, even without the IRQ line wired.
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+---
+ drivers/iio/adc/max1027.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-This series is currently based on a v5.15-rc1 kernel and the external
-triggering mechanism has been tested on a custom board where the IRQ and
-the EOC lines have not been populated.
-
-How to test sysfs triggers:
-    echo 0 > /sys/bus/iio/devices/iio_sysfs_trigger/add_trigger
-    cat /sys/bus/iio/devices/iio_sysfs_trigger/trigger0/name > \
-        /sys/bus/iio/devices/iio:device0/trigger/current_trigger
-    echo 1 > /sys/bus/iio/devices/iio:device0/scan_elements/in_voltageX_en
-    echo 1 > /sys/bus/iio/devices/iio:device0/scan_elements/in_voltageY_en
-    echo 1 > /sys/bus/iio/devices/iio:device0/buffer/enable
-    cat /dev/iio\:device0 > /tmp/data &
-    echo 1 > /sys/bus/iio/devices/trigger0/trigger_now
-    od -t x1 /tmp/data
-
-Cheers,
-Miquèl
-
-Changes in v4:
-* Full rework again of the last few patches bringing external triggers
-  support according to Jonathan's reviews: trigger handling (internal
-  or external) should be in a dedicated helper to keep the exchanges
-  between the IIO core and the drivers standards. This also improves
-  reusability and now the max1027 trigger can also be used to trigger
-  other IIO devices.
-
-Changes in v3:
-* Rebased on top of v5.15-rc1.
-* Dropped the useless change from devm_kmalloc to kmalloc because I
-  thought devm_kmalloc allocations were still not suitable for DMA
-  purposes.
-* Added a comment explaining the use of the available and active masks
-  in the code as suggested by Jonathan.
-* Released the lock used in iio_device_claim_direct_mode() in the two
-  error paths.
-* Did not move the call to reinit_completion before
-  wait_for_completion_timeout() as advised by Nuno because the
-  triggering is done before entering the waiting thread, so there is a
-  world were we reinit a completion object right before waiting for it
-  (which would lead to a timeout).
-* Deeply rewored the various handlers (see my answer to
-  "[PATCH v2 15/16] iio: adc: max1027: Add support for external  triggers"
-
-Changes in v2:
-[All]
-* Overall quite a few changes, I'll try to list them here but I made
-  significant changes on the last few commits so it's hard to have an
-  exhaustive and detailed list.
-* Simplified the return statements as advised by Nuno.
-* Dropped useless debug messages.
-* Used iio_trigger_validate_own_device() instead of an internal
-  variable when possible.
-* Added Nuno's Reviewed-by's when relevant.
-[Created a new patch to fix the style]
-[Created a new patch to ensure st->buffer is DMA-safe]
-[Push only the requested samples]
-* Dropped a useless check over active_scan_mask mask in
-  ->set_trigger_state().
-* Dropped the st->buffer indirection with a missing __be16 type.
-* Do not push only the requested samples in the IIO buffers, rely on the
-  core to handle this by providing additional 'available_scan_masks'
-  instead of dropping this entry from the initial setup.
-[Create a helper to configure the trigger]
-* Avoided messing with new lines.
-* Dropped cnvst_trigger, used a function parameter instead.
-[Prevent single channel accesses during buffer reads]
-* Used iio_device_claim_direct_mode() when relevant.
-* Dropped the extra iio_buffer_enabled() call.
-* Prevented returning with a mutex held.
-[Introduce an end of conversion helper]
-* Moved the check against active scan mask to the very end of the series
-  where we actually make use of it.
-* Moved the Queue declaration to another patch.
-[Dropped the patch: Prepare re-using the EOC interrupt]
-[Consolidate the end of conversion helper]
-* Used a dynamic completion object instead of a static queue.
-* Reworded the commit message to actually describe what this commit
-  does.
-[Support software triggers]
-* Dropped the patch and replaced it with something hopefully close to
-  what Jonathan and Nuno described in their reviews.
-[Enable software triggers to be  used without IRQ]
-* Wrote a more generic commit message, not focusing on software
-  triggers.
-
-Miquel Raynal (16):
-  iio: adc: max1027: Fix style
-  iio: adc: max1027: Drop extra warning message
-  iio: adc: max1027: Drop useless debug messages
-  iio: adc: max1027: Minimize the number of converted channels
-  iio: adc: max1027: Rename a helper
-  iio: adc: max1027: Create a helper to enable/disable the cnvst trigger
-  iio: adc: max1027: Simplify the _set_trigger_state() helper
-  iio: adc: max1027: Ensure a default cnvst trigger configuration
-  iio: adc: max1027: Create a helper to configure the channels to scan
-  iio: adc: max1027: Prevent single channel accesses during buffer reads
-  iio: adc: max1027: Separate the IRQ handler from the read logic
-  iio: adc: max1027: Introduce an end of conversion helper
-  iio: adc: max1027: Stop requesting a threaded IRQ
-  iio: adc: max1027: Use the EOC IRQ when populated for single reads
-  iio: adc: max1027: Allow all kind of triggers to be used
-  iio: adc: max1027: Don't reject external triggers when there is no IRQ
-
- drivers/iio/adc/max1027.c | 286 +++++++++++++++++++++++++++-----------
- 1 file changed, 205 insertions(+), 81 deletions(-)
-
+diff --git a/drivers/iio/adc/max1027.c b/drivers/iio/adc/max1027.c
+index b753658bb41e..5c4633a54b30 100644
+--- a/drivers/iio/adc/max1027.c
++++ b/drivers/iio/adc/max1027.c
+@@ -327,8 +327,8 @@ static int max1027_read_raw(struct iio_dev *indio_dev,
+ }
+ 
+ static int max1027_debugfs_reg_access(struct iio_dev *indio_dev,
+-				      unsigned reg, unsigned writeval,
+-				      unsigned *readval)
++				      unsigned int reg, unsigned int writeval,
++				      unsigned int *readval)
+ {
+ 	struct max1027_state *st = iio_priv(indio_dev);
+ 	u8 *val = (u8 *)st->buffer;
+@@ -424,7 +424,7 @@ static int max1027_probe(struct spi_device *spi)
+ 	pr_debug("%s: probe(spi = 0x%p)\n", __func__, spi);
+ 
+ 	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
+-	if (indio_dev == NULL) {
++	if (!indio_dev) {
+ 		pr_err("Can't allocate iio device\n");
+ 		return -ENOMEM;
+ 	}
+@@ -443,9 +443,9 @@ static int max1027_probe(struct spi_device *spi)
+ 	indio_dev->available_scan_masks = st->info->available_scan_masks;
+ 
+ 	st->buffer = devm_kmalloc_array(&indio_dev->dev,
+-				  indio_dev->num_channels, 2,
+-				  GFP_KERNEL);
+-	if (st->buffer == NULL) {
++					indio_dev->num_channels, 2,
++					GFP_KERNEL);
++	if (!st->buffer) {
+ 		dev_err(&indio_dev->dev, "Can't allocate buffer\n");
+ 		return -ENOMEM;
+ 	}
+@@ -462,7 +462,7 @@ static int max1027_probe(struct spi_device *spi)
+ 
+ 		st->trig = devm_iio_trigger_alloc(&spi->dev, "%s-trigger",
+ 						  indio_dev->name);
+-		if (st->trig == NULL) {
++		if (!st->trig) {
+ 			ret = -ENOMEM;
+ 			dev_err(&indio_dev->dev,
+ 				"Failed to allocate iio trigger\n");
 -- 
 2.27.0
 

@@ -2,194 +2,153 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3813D41260A
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Sep 2021 20:51:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5939412BB9
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Sep 2021 04:25:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1385958AbhITSwy convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Mon, 20 Sep 2021 14:52:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37312 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1385888AbhITSwh (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 20 Sep 2021 14:52:37 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1D2C5613AD;
-        Mon, 20 Sep 2021 18:00:35 +0000 (UTC)
-Date:   Mon, 20 Sep 2021 19:04:19 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>
-Cc:     "Chindris, Mihail" <Mihail.Chindris@analog.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
-        "alexandru.ardelean@analog.com" <alexandru.ardelean@analog.com>
-Subject: Re: [PATCH v5 1/6] iio: Add output buffer support
-Message-ID: <20210920190419.04291227@jic23-huawei>
-In-Reply-To: <SJ0PR03MB6359EFF08F0830A5D0EE181199A09@SJ0PR03MB6359.namprd03.prod.outlook.com>
-References: <20210916182914.1810-1-mihail.chindris@analog.com>
-        <20210916182914.1810-2-mihail.chindris@analog.com>
-        <20210919180244.1f935bcd@jic23-huawei>
-        <SJ0PR03MB6359EFF08F0830A5D0EE181199A09@SJ0PR03MB6359.namprd03.prod.outlook.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        id S239219AbhIUC1K (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 20 Sep 2021 22:27:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34588 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238374AbhIUB5X (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Sep 2021 21:57:23 -0400
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 072FAC09394C;
+        Mon, 20 Sep 2021 17:36:27 -0700 (PDT)
+Received: by mail-pf1-x42a.google.com with SMTP id y8so17785292pfa.7;
+        Mon, 20 Sep 2021 17:36:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=cniUdreHiCHMT5ns8G46HdG+OfudgFB1AyPe8/gK+pc=;
+        b=CqpdsuCBg3qTRIgmSSlMVT681A/+nouy/1Gu0HK2B/zO9vag5j+25tmMkvKxuQS8cJ
+         svqRxuEtQAFYIez+h4tkiI8sOJMeFgMLLTFQtFphGFwKn6yJo59ohkwXFkCbRBzNbsBO
+         4fqEdg9/Lmj8P8xDob586/zXmZI/Gsycr87c30Z8kCZR7hylvvSfRu4LBOH32FhmLZcy
+         PZh00LhH1ZIkTZ2jFAV9+4IyWISyVJwgc9PYH8msZW03HYzdZojpFM+ryX2yMlmf9j4X
+         xwWrn79hMnMOabr9HYplZ+YC//nQ5q4eT2rWRAMuD/0CuAev00SMsBP2Ubs4Ps9zgeGa
+         kpaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=cniUdreHiCHMT5ns8G46HdG+OfudgFB1AyPe8/gK+pc=;
+        b=jkC3+IfuvTTcgnYQAqbIKnrXbQTweMYRECHHbINnHF4HbQ8hD0iH/3qcvkv4GcYk8B
+         FZLLybbEYKCadcyvWKYTTVnzoPkiGNN8Pzi6NjnHFPFXfIh7GlZtluV+q1ggYuUMaOIW
+         gBbNmQI4blgKw2GzWguGcv5I+kP0GfkRXFGjotk3qnIVEmQoQwOrPTfN8lvgbPnP8uZv
+         IPhEkJOVwNWjxUbQjEHh+8ec5+Ay604n36dZLxlNwaesocB/IniewEZr4ty/SIjaiHju
+         qGhYLdqAeL/iu0N9cOfM5JN/5pIbzpZVdFyNTNKyqDtRTZeAprUJ2+GT02InRkMhgmE6
+         kx4g==
+X-Gm-Message-State: AOAM530x7bO7/ptNCY13Xxd5vgjhdH1b3pOW6DCajFYpRSpNySKIjPUo
+        SoZqHp1Jk5SVBDPcnyUhfbM=
+X-Google-Smtp-Source: ABdhPJyg5fA3YNTfw25nTy+yPCOcWknuGFdupmOQNRk87gm9M0Z3GCy1Vvg+Q+iurulnVxTK6BdLIw==
+X-Received: by 2002:a65:6084:: with SMTP id t4mr25815700pgu.25.1632184586371;
+        Mon, 20 Sep 2021 17:36:26 -0700 (PDT)
+Received: from shinobu ([156.146.35.76])
+        by smtp.gmail.com with ESMTPSA id cl16sm525639pjb.23.2021.09.20.17.36.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Sep 2021 17:36:25 -0700 (PDT)
+Date:   Tue, 21 Sep 2021 09:36:21 +0900
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     Tim Gardner <tim.gardner@canonical.com>
+Cc:     jic23@kernel.org, linux-iio@vger.kernel.org,
+        Syed Nayyar Waris <syednwaris@gmail.com>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2][next] counter: Add default statement to switch() in
+ quad8_function_read()
+Message-ID: <YUkpBU8mN4yrDfu5@shinobu>
+References: <20210920173737.21445-1-tim.gardner@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="HythAOZC1Hzy03vF"
+Content-Disposition: inline
+In-Reply-To: <20210920173737.21445-1-tim.gardner@canonical.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 20 Sep 2021 08:02:29 +0000
-"Sa, Nuno" <Nuno.Sa@analog.com> wrote:
 
-> > From: Jonathan Cameron <jic23@kernel.org>
-> > Sent: Sunday, September 19, 2021 7:03 PM
-> > To: Chindris, Mihail <Mihail.Chindris@analog.com>
-> > Cc: linux-kernel@vger.kernel.org; linux-iio@vger.kernel.org;
-> > lars@metafoo.de; Hennerich, Michael
-> > <Michael.Hennerich@analog.com>; Sa, Nuno
-> > <Nuno.Sa@analog.com>; Bogdan, Dragos
-> > <Dragos.Bogdan@analog.com>; alexandru.ardelean@analog.com
-> > Subject: Re: [PATCH v5 1/6] iio: Add output buffer support
-> > 
-> > On Thu, 16 Sep 2021 18:29:09 +0000
-> > Mihail Chindris <mihail.chindris@analog.com> wrote:
-> >   
-> > > Currently IIO only supports buffer mode for capture devices like  
-> > ADCs. Add  
-> > > support for buffered mode for output devices like DACs.
-> > >
-> > > The output buffer implementation is analogous to the input buffer
-> > > implementation. Instead of using read() to get data from the buffer  
-> > write()  
-> > > is used to copy data into the buffer.
-> > >
-> > > poll() with POLLOUT will wakeup if there is space available.
-> > >
-> > > Drivers can remove data from a buffer using iio_pop_from_buffer(),  
-> > the  
-> > > function can e.g. called from a trigger handler to write the data to
-> > > hardware.
-> > >
-> > > A buffer can only be either a output buffer or an input, but not both.  
-> > So,  
-> > > for a device that has an ADC and DAC path, this will mean 2 IIO  
-> > buffers  
-> > > (one for each direction).
-> > >
-> > > The direction of the buffer is decided by the new direction field of  
-> > the  
-> > > iio_buffer struct and should be set after allocating and before  
-> > registering  
-> > > it.
-> > >
-> > > Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-> > > Signed-off-by: Alexandru Ardelean  
-> > <alexandru.ardelean@analog.com>  
-> > > Signed-off-by: Mihail Chindris <mihail.chindris@analog.com>  
-> > 
-> > A few minor things inline.  I would have expected the missing check
-> > on insert_buffer to have resulted in a nasty deference of a null pointer
-> > though which does make me nervous about whether we have tested
-> > this
-> > series enough.
-> > 
-> > Jonathan
-> >   
-> > > ---
-> > >  drivers/iio/iio_core.h            |   4 +
-> > >  drivers/iio/industrialio-buffer.c | 120  
-> > +++++++++++++++++++++++++++++-  
-> > >  drivers/iio/industrialio-core.c   |   1 +
-> > >  include/linux/iio/buffer.h        |   7 ++
-> > >  include/linux/iio/buffer_impl.h   |  11 +++
-> > >  5 files changed, 141 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/drivers/iio/iio_core.h b/drivers/iio/iio_core.h
-> > > index 8f4a9b264962..61e318431de9 100644
-> > > --- a/drivers/iio/iio_core.h
-> > > +++ b/drivers/iio/iio_core.h
-> > > @@ -68,12 +68,15 @@ __poll_t iio_buffer_poll_wrapper(struct file  
-> > *filp,  
-> > >  				 struct poll_table_struct *wait);
-> > >  ssize_t iio_buffer_read_wrapper(struct file *filp, char __user *buf,
-> > >  				size_t n, loff_t *f_ps);
-> > > +ssize_t iio_buffer_write_wrapper(struct file *filp, const char __user  
-> > *buf,  
-> > > +				 size_t n, loff_t *f_ps);
-> > >
-> > >  int iio_buffers_alloc_sysfs_and_mask(struct iio_dev *indio_dev);
-> > >  void iio_buffers_free_sysfs_and_mask(struct iio_dev *indio_dev);
-> > >
-> > >  #define iio_buffer_poll_addr (&iio_buffer_poll_wrapper)
-> > >  #define iio_buffer_read_outer_addr (&iio_buffer_read_wrapper)
-> > > +#define iio_buffer_write_outer_addr  
-> > (&iio_buffer_write_wrapper)  
-> > >
-> > >  void iio_disable_all_buffers(struct iio_dev *indio_dev);
-> > >  void iio_buffer_wakeup_poll(struct iio_dev *indio_dev);
-> > > @@ -83,6 +86,7 @@ void iio_device_detach_buffers(struct iio_dev  
-> > *indio_dev);  
-> > >
-> > >  #define iio_buffer_poll_addr NULL
-> > >  #define iio_buffer_read_outer_addr NULL
-> > > +#define iio_buffer_write_outer_addr NULL
-> > >
-> > >  static inline int iio_buffers_alloc_sysfs_and_mask(struct iio_dev  
-> > *indio_dev)  
-> > >  {
-> > > diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-  
-> > buffer.c  
-> > > index a95cc2da56be..a2a34c5652a7 100644
-> > > --- a/drivers/iio/industrialio-buffer.c
-> > > +++ b/drivers/iio/industrialio-buffer.c
-> > > @@ -161,6 +161,62 @@ static ssize_t iio_buffer_read(struct file *filp,  
-> > char __user *buf,  
-> > >  	return ret;
-> > >  }
-> > >
-> > > +static size_t iio_buffer_space_available(struct iio_buffer *buf)
-> > > +{
-> > > +	if (buf->access->space_available)
-> > > +		return buf->access->space_available(buf);
-> > > +
-> > > +	return SIZE_MAX;
-> > > +}
-> > > +
-> > > +static ssize_t iio_buffer_write(struct file *filp, const char __user  
-> > *buf,  
-> > > +				size_t n, loff_t *f_ps)
-> > > +{
-> > > +	struct iio_dev_buffer_pair *ib = filp->private_data;
-> > > +	struct iio_buffer *rb = ib->buffer;
-> > > +	struct iio_dev *indio_dev = ib->indio_dev;
-> > > +	DEFINE_WAIT_FUNC(wait, woken_wake_function);
-> > > +	int ret;
-> > > +	size_t written;
-> > > +
-> > > +	if (!indio_dev->info)
-> > > +		return -ENODEV;
-> > > +
-> > > +	if (!rb || !rb->access->write)
-> > > +		return -EINVAL;
-> > > +  
-> 
-> As the buffer implementation can support both 'read()' and 'write()', the following
-> check might make sense:
-> 
-> if (rb->direction != IIO_BUFFER_DIRECTION_OUT)
->       return -EPERM;
+--HythAOZC1Hzy03vF
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Makes sense.  Whether EPERM is the right error code is a different question.
-Doesn't seem perfectly aligned with this case, but it's not too bad.
+On Mon, Sep 20, 2021 at 11:37:37AM -0600, Tim Gardner wrote:
+> v2: Add the correct Cc's
+>=20
+> Coverity complains of a possible use of an uninitialized variable
+> in quad8_action_read().
+>=20
+> CID 119643 (#1 of 1): Uninitialized scalar variable (UNINIT)
+> 4. uninit_use: Using uninitialized value function.
+> 346        switch (function) {
+>=20
+> The call to quad8_function_read() could theoretically return without
+> assigning a value to '*function', thus causing the use of an
+> ininitialized variable 'function' in quad8_action_read().
+>=20
+> Fix this by adding a default statement to the switch in
+> quad8_function_read() and returning an error.
+>=20
+> Cc: William Breathitt Gray <vilhelm.gray@gmail.com>
+> Cc: Syed Nayyar Waris <syednwaris@gmail.com>
+> Cc: linux-iio@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Tim Gardner <tim.gardner@canonical.com>
 
-Jonathan
+Hello Tim,
 
-> 
-> If going with this, we should add an extra patch to do a similar thing on the read side...
-> 
-> - Nuno Sá
-> 
+The possible values of quadrature_scale are hardcoded in
+quad8_function_write() so we should never have scale value greater than
+2. But it would be a good idea to provide a default statement here to
+pacify the warning, or at least mitigate shooting ourselves in the foot
+in the future if this part of the code is changed.
 
+Please add a comment similar to the default statement in
+quad8_function_write() indicating that we should never reach this path,
+and also return a more informative error code such as -EINVAL.
+
+William Breathitt Gray
+
+> ---
+>  drivers/counter/104-quad-8.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>=20
+> diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
+> index c587f295d720..3a69d35b82ea 100644
+> --- a/drivers/counter/104-quad-8.c
+> +++ b/drivers/counter/104-quad-8.c
+> @@ -215,6 +215,8 @@ static int quad8_function_read(struct counter_device =
+*counter,
+>  		case 2:
+>  			*function =3D COUNTER_FUNCTION_QUADRATURE_X4;
+>  			break;
+> +		default:
+> +			return -1;
+>  		}
+>  	else
+>  		*function =3D COUNTER_FUNCTION_PULSE_DIRECTION;
+> --=20
+> 2.33.0
+>=20
+
+--HythAOZC1Hzy03vF
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmFJKPsACgkQhvpINdm7
+VJIiZhAA2rg9z3AEU70ox2VvMtYi6XHJmVlxpWLMeyMtXg0TJEe/a+U/dt7YyCnG
+ThB1GAUTO/YbzlMhnZH66Btczttvp67tDZ10fzgXxpHIdbxou/SuP5RR42TWZ1GL
+MwYpUML9+765jb9jKtVnys1ovewol4Ks0enEKWYKHgz2iQKbYZP9q3g8ky9zHA9S
+7u4KZbW0z5wCNDLoQ6GtF/sc7Soxjn51pDLQgZL8njN9ERdSQlqNSrxIL/DekeKy
+Om+G/hWbIIOO1VY2FInnvdGisidXarDLsJWzhNbxj9TjBIhbVnstrDjGkgtpfeY6
+AX0kk6osuRQBJ6eFRzZJulH1q7k6QfmtCZ8vWGhyfPNScJaqVIpf3n2tZmhDkvfk
+9xXmGC/rQytVzQE5r6H+1xXbIuurmG/UbH/BBd7aCSz5SPkil7gYjgcgy1c3Qri8
+JARzG/REVSx6kR/B2XINJthOkKx7EZcA1pc+eevwjxEBLpP9Dsg1HKkSpEsm7JWX
+yCtbOfzHgSMqA7n8CkMlwFc0if2CTEuBxEawV8sdsisFIAGtkNO9cxKeCY27v2HJ
+i5HqWfKvMrmafRCt+E3fxgNp0WI2zpRaoXiUFl3V16PfpZjn32IMkCIuKgdHZLh0
+KxpUMRbK2Fm8sORr+VUIj2IveVkxwSH1NpjL4/kLG1oKnoH8rls=
+=ZR16
+-----END PGP SIGNATURE-----
+
+--HythAOZC1Hzy03vF--

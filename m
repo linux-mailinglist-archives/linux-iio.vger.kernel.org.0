@@ -2,140 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25D6C4146BF
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Sep 2021 12:40:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EA404147EA
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Sep 2021 13:37:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235439AbhIVKlr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Sep 2021 06:41:47 -0400
-Received: from protonic.xs4all.nl ([83.163.252.89]:32882 "EHLO
-        protonic.xs4all.nl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235195AbhIVKlN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Sep 2021 06:41:13 -0400
-Received: from ert768.prtnl (ert768.prtnl [192.168.224.11])
-        by sparta.prtnl (Postfix) with ESMTP id 783F944A0252;
-        Wed, 22 Sep 2021 12:39:36 +0200 (CEST)
-From:   Roan van Dijk <roan@protonic.nl>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Tomasz Duszynski <tomasz.duszynski@octakon.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, david@protonic.nl,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Roan van Dijk <roan@protonic.nl>
-Subject: [PATCH v3 4/4] iio: documentation: Document scd4x calibration use
-Date:   Wed, 22 Sep 2021 12:39:25 +0200
-Message-Id: <20210922103925.2742362-5-roan@protonic.nl>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210922103925.2742362-1-roan@protonic.nl>
-References: <20210922103925.2742362-1-roan@protonic.nl>
+        id S235596AbhIVLi4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Sep 2021 07:38:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44524 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235687AbhIVLiv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Sep 2021 07:38:51 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E7D4C061574
+        for <linux-iio@vger.kernel.org>; Wed, 22 Sep 2021 04:37:21 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id u18so10442808lfd.12
+        for <linux-iio@vger.kernel.org>; Wed, 22 Sep 2021 04:37:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=jcmvpJZE2DA53pTZh1XoC9uyOBgFM1SCPQPbO8lLlOo=;
+        b=hLt+wIFjQYOb8wkoZOBsLgRMZYcme72dNhQwjXvU4lBlf9uS+XUzKndOAgk4mqUs2X
+         RlVG0nC5GM2e93LTVXSXvSjxn/IEgjLeVl3cohPltuzQwhknRiBMw1P261rewZxWPJBa
+         0DoMfuwr9gG64PHOH+3ZEQlOvTcwp5cDdGCdP/CIQn38ICKtFFAspam3TdBIG4Jlhtbj
+         KJbW3Q7uddy6c00YBgIFRKFAc0Demdp9rh5EdzKLdALfLeOZDx6cfCitjat5Kp8OJsKF
+         ikh+RS/Rk7CR9b1ihx83B3+vPVXHzzP8RBR+pOJhDoJtt6EfY/YUsBTfCufZKCqNCtR4
+         NueA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=jcmvpJZE2DA53pTZh1XoC9uyOBgFM1SCPQPbO8lLlOo=;
+        b=zPHVIa+oIIqd/jxj909ABevE/zzXw9gzFnWMsc0rlttQL2YytMdOmkDrMUVZZF5YSh
+         FoN4JVBGskjI+T/A4t7UBxw9ZnpqIh+r3iC4U0eXDJ0t01zItK2+ElJZJgDfFhXS2Fpe
+         vcIoQM9GBvQ0oi4hvwm1Kby6ID0dcovXiPvsDQ23yBbTU/Q4nhGtk+yYAI/f3ixsVAqm
+         CvyQYKaic8DMncvmX0v7911Tr1FssEv4r4sJIGSsWb+ikS0u0a1oHn/pI5W377E5jZtt
+         6Kci/X7IajB6vXD80pX8C+S+bdfqO1rp+9uChXCjT7+yLS6JUaj9EkylljVpZREkAWEJ
+         s9zg==
+X-Gm-Message-State: AOAM530Luhx+HFyMisaQ3cobJd6ey9p+6Md1IRg23tYTA7OH01qY+9AO
+        Im/noM7CfalSaeqeoHX/BH0lTnrQelm8i5P5Q+eixEpDXww=
+X-Google-Smtp-Source: ABdhPJxwZp1myzwSPgHj1JRwUFLpUimpsLg8dapxt2c+PNohxEOdA/SdyqygTmwdiVFzkBUxn66Gb64/KS8ToVvhl+E=
+X-Received: by 2002:a2e:9942:: with SMTP id r2mr34580173ljj.92.1632310639466;
+ Wed, 22 Sep 2021 04:37:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAOMZO5Cwdn_-to8G+RvVUbG+UkYM7+budUsvWVLeY7PutoO2Mw@mail.gmail.com>
+ <74f1974b-ac08-96f1-887e-99580a2bf212@axentia.se>
+In-Reply-To: <74f1974b-ac08-96f1-887e-99580a2bf212@axentia.se>
+From:   Fabio Estevam <festevam@gmail.com>
+Date:   Wed, 22 Sep 2021 08:37:08 -0300
+Message-ID: <CAOMZO5Bhs3qLwgqGYHO7Oswr1qvarkzmNFyWQi3-_geZTj3BVA@mail.gmail.com>
+Subject: Re: Reading ADC that comes from a multiplexer
+To:     Peter Rosin <peda@axentia.se>
+Cc:     linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add entries from Documentation/ABI/testing/sysfs-bus-iio-scd30
-to Documentation/ABI/testing/sysfs-bus-iio. The attributes of the scd4x
-and scd30 are common.
+Hi Peter,
 
-Remove Documentation/ABI/testing/sysfs-bus-iio-scd30.
+On Wed, Sep 22, 2021 at 4:27 AM Peter Rosin <peda@axentia.se> wrote:
 
-Signed-off-by: Roan van Dijk <roan@protonic.nl>
----
- Documentation/ABI/testing/sysfs-bus-iio       | 41 +++++++++++++++++++
- Documentation/ABI/testing/sysfs-bus-iio-scd30 | 34 ---------------
- 2 files changed, 41 insertions(+), 34 deletions(-)
- delete mode 100644 Documentation/ABI/testing/sysfs-bus-iio-scd30
+> Basically, the whole point is that you simply don't. The iio-mux exposes
+> the channels as 8 new ADCs, and whenever you read a value from one of
+> them, the iio-mux operates the gpios for you, giving you the impression
+> that you have 8 independet ADCs. They are of course not independent, but...
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-index 6ad47a67521c..07522b96d980 100644
---- a/Documentation/ABI/testing/sysfs-bus-iio
-+++ b/Documentation/ABI/testing/sysfs-bus-iio
-@@ -1957,3 +1957,44 @@ Description:
- 		Specify the percent for light sensor relative to the channel
- 		absolute value that a data field should change before an event
- 		is generated. Units are a percentage of the prior reading.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/calibration_auto_enable
-+Date:		June 2020
-+KernelVersion:	5.8
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Some sensors have the ability to apply auto calibration at
-+		runtime. For example, it may be necessary to compensate for
-+		contaminant build-up in a measurement chamber or optical
-+		element deterioration that would otherwise lead to sensor drift.
-+
-+		Writing 1 or 0 to this attribute will respectively activate or
-+		deactivate this auto calibration function.
-+
-+		Upon reading, the current status is returned.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/calibration_forced_value
-+Date:		June 2020
-+KernelVersion:	5.8
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Some sensors have the ability to apply a manual calibration using
-+		a known measurement value, perhaps obtained from an external
-+		reference device.
-+
-+		Writing a value to this function will force such a calibration
-+		change. For the scd30 the value should be from the range
-+		[400 1 2000].
-+
-+		Note for the scd30 that a valid value may only be obtained once
-+		it is has been written. Until then any read back of this value
-+		should be ignored. As for the scd4x an error will be returned
-+		immediately if the manual calibration has failed.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/calibration_forced_value_available
-+KernelVersion:  5.8
-+Contact:        linux-iio@vger.kernel.org
-+Description:
-+		Available range for the forced calibration value, expressed as:
-+
-+		- a range specified as "[min step max]"
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio-scd30 b/Documentation/ABI/testing/sysfs-bus-iio-scd30
-deleted file mode 100644
-index b9712f390bec..000000000000
---- a/Documentation/ABI/testing/sysfs-bus-iio-scd30
-+++ /dev/null
-@@ -1,34 +0,0 @@
--What:		/sys/bus/iio/devices/iio:deviceX/calibration_auto_enable
--Date:		June 2020
--KernelVersion:	5.8
--Contact:	linux-iio@vger.kernel.org
--Description:
--		Contaminants build-up in the measurement chamber or optical
--		elements deterioration leads to sensor drift.
--
--		One can compensate for sensor drift by using automatic self
--		calibration procedure (asc).
--
--		Writing 1 or 0 to this attribute will respectively activate or
--		deactivate asc.
--
--		Upon reading current asc status is returned.
--
--What:		/sys/bus/iio/devices/iio:deviceX/calibration_forced_value
--Date:		June 2020
--KernelVersion:	5.8
--Contact:	linux-iio@vger.kernel.org
--Description:
--		Contaminants build-up in the measurement chamber or optical
--		elements deterioration leads to sensor drift.
--
--		One can compensate for sensor drift by using forced
--		recalibration (frc). This is useful in case there's known
--		co2 reference available nearby the sensor.
--
--		Picking value from the range [400 1 2000] and writing it to the
--		sensor will set frc.
--
--		Upon reading current frc value is returned. Note that after
--		power cycling default value (i.e 400) is returned even though
--		internally sensor had recalibrated itself.
--- 
-2.30.2
+Thanks for the clarification. It was helpful.
 
+> That's exposed to user-space as:
+>
+> $ ls "/sys/bus/iio/devices/iio:device3"
+> in_altvoltage2_compare_interval  in_altvoltage5_scale
+> in_altvoltage2_invert            in_altvoltage6_compare_interval
+> in_altvoltage2_raw               in_altvoltage6_invert
+> in_altvoltage2_scale             in_altvoltage6_raw
+> in_altvoltage3_compare_interval  in_altvoltage6_scale
+> in_altvoltage3_invert            in_altvoltage7_compare_interval
+> in_altvoltage3_raw               in_altvoltage7_invert
+> in_altvoltage3_scale             in_altvoltage7_raw
+> in_altvoltage4_compare_interval  in_altvoltage7_scale
+> in_altvoltage4_invert            name
+> in_altvoltage4_raw               of_node
+> in_altvoltage4_scale             power
+> in_altvoltage5_compare_interval  subsystem
+> in_altvoltage5_invert            uevent
+> in_altvoltage5_raw
+> $ cat "/sys/bus/iio/devices/iio:device3/name"
+> envelope-detector-mux
+
+Ah, so that's my issue then. I don't see a new device inside
+/sys/bus/iio/devices/.
+
+I only see the original stmpe ADC:
+
+ls "/sys/bus/iio/devices/iio:device0"
+dev              in_voltage5_raw  in_voltage_scale  power
+in_temp8_input   in_voltage6_raw  name              subsystem
+in_voltage4_raw  in_voltage7_raw  of_node           uevent
+
+Maybe my dts is not correct to make the mux appear under
+/sys/bus/iio/devices/iio:device1.
+
+Here is my dts that shows more context with the STMPE811 ADC:
+https://pastebin.com/raw/7Nn2aAtN
+
+stmpe811 is an mfd device that can be used as a touchscreen and as a normal adc.
+
+I only use the adc functionality.
+
+Any suggestions are welcome.
+
+Thanks,
+
+Fabio Estevam

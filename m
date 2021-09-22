@@ -2,39 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E751E414D27
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Sep 2021 17:35:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDDFB414D29
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Sep 2021 17:35:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236492AbhIVPgs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S236499AbhIVPgs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Wed, 22 Sep 2021 11:36:48 -0400
-Received: from mx07-00178001.pphosted.com ([185.132.182.106]:46466 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236462AbhIVPgq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Sep 2021 11:36:46 -0400
-Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18MFJb8t027631;
-        Wed, 22 Sep 2021 17:34:57 +0200
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:60088 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S236473AbhIVPgr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Sep 2021 11:36:47 -0400
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18MDUPFo022772;
+        Wed, 22 Sep 2021 17:34:58 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-type; s=selector1;
- bh=TqwtW2d5KmGwP0OJh3npzOxYswyABAgq8aaE1Jj18eI=;
- b=59LXh5Oap7ykv3pwav1ROKHbzJ/wrHImsIBa07+F5kdhhk9OCOcKdR3V+b2SCtK7FdXb
- Y+n32KxAX2ok3WHLrYRVO6WDwghNn8dLcqKZxcYvrMkdjnqIRyiM4OSvTfJHWlQP6290
- HoVTkm+eAqaGlGo/ki+LiQhqqfQASStmajVye/NKeQPOHIgW4CpPjzKdgylA5O9V6Yif
- GIqW4Al4Wpd09bYz9X8jo+qGa71ayp1fXihRC2Q/RXxUkfV0sKsVpeAWS2PRVy7G6Djn
- MOipVHLkDwjP3r/E3Jqf/KTypk08I6qsHaloevMCIjjG9wMFguTIZhzYIlyQwsJOiYjp /Q== 
+ bh=W8XXkKBm0rhuV3yFT8B+PPX99+Xhb2iTk0d2aJwB2XQ=;
+ b=hNHG4zuZPqSMd74fqUgoemy89KEBsU7/SeTtuRIW7w1EndnXasPZK9+rdoq+KFg5t3Ix
+ a2Pls1dKAOIPCeufobBChAhCg4VBCGRooDaLTuUFqPHcArPKwMEegc9t/GdWZM50Nxad
+ 98s69CjC2L3xtFbeZB8pg2rSlQ+mAkzOjYzRfixlVN+aMv6tIwcts7ZWjjqP7WstkFNr
+ JEkS644uRcKQAQ4b50hNCUPCcMYIFKqoUfbxobqUju506HCHppd8bTTs60p/CBsK9JOp
+ 1w6J08GqUGb8S+IOocTkghWAC14n22ZKxolVqhVY6A6J2z7+9tl/zkInL+AOXzD0g7p9 +A== 
 Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 3b8347svgp-1
+        by mx07-00178001.pphosted.com with ESMTP id 3b81h0akve-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 22 Sep 2021 17:34:57 +0200
+        Wed, 22 Sep 2021 17:34:58 +0200
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id EFF8610002A;
-        Wed, 22 Sep 2021 17:34:56 +0200 (CEST)
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id E039E10002A;
+        Wed, 22 Sep 2021 17:34:57 +0200 (CEST)
 Received: from Webmail-eu.st.com (sfhdag2node2.st.com [10.75.127.5])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id E727324187A;
-        Wed, 22 Sep 2021 17:34:56 +0200 (CEST)
-Received: from localhost (10.75.127.48) by SFHDAG2NODE2.st.com (10.75.127.5)
- with Microsoft SMTP Server (TLS) id 15.0.1497.18; Wed, 22 Sep 2021 17:34:56
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id D6B2D24187A;
+        Wed, 22 Sep 2021 17:34:57 +0200 (CEST)
+Received: from localhost (10.75.127.49) by SFHDAG2NODE2.st.com (10.75.127.5)
+ with Microsoft SMTP Server (TLS) id 15.0.1497.18; Wed, 22 Sep 2021 17:34:57
  +0200
 From:   Olivier Moysan <olivier.moysan@foss.st.com>
 To:     Alexandre Torgue <alexandre.torgue@foss.st.com>,
@@ -48,331 +48,225 @@ CC:     <devicetree@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <linux-stm32@st-md-mailman.stormreply.com>
-Subject: [PATCH v2 5/7] iio: adc: stm32-adc: add support of internal channels
-Date:   Wed, 22 Sep 2021 17:34:16 +0200
-Message-ID: <20210922153418.21033-6-olivier.moysan@foss.st.com>
+Subject: [PATCH v2 6/7] iio: adc: stm32-adc: add vrefint calibration support
+Date:   Wed, 22 Sep 2021 17:34:17 +0200
+Message-ID: <20210922153418.21033-7-olivier.moysan@foss.st.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210922153418.21033-1-olivier.moysan@foss.st.com>
 References: <20210922153418.21033-1-olivier.moysan@foss.st.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [10.75.127.48]
-X-ClientProxiedBy: SFHDAG2NODE3.st.com (10.75.127.6) To SFHDAG2NODE2.st.com
+X-Originating-IP: [10.75.127.49]
+X-ClientProxiedBy: SFHDAG2NODE1.st.com (10.75.127.4) To SFHDAG2NODE2.st.com
  (10.75.127.5)
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
- definitions=2021-09-22_06,2021-09-22_01,2020-04-07_01
+ definitions=2021-09-22_05,2021-09-22_01,2020-04-07_01
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add support of ADC2 internal channels VDDCORE, VREFINT and VBAT.
-The reserved label name "vddcore", "vrefint" and "vbat" must
-be used in Device Tree channel node, to enable the corresponding
-internal channel.
+Add support of vrefint calibration.
+If a channel is labeled as vrefint, get vrefint calibration
+from non volatile memory for this channel.
+vrefint channel is exposed as a processed channel returning
+the actual value of vrefp:
+vrefp = 3.3 x vrefint_cal / vrefint_data
 
-Note: This patch does not provide support of internal channels
-for F4 and H7.
+A conversion on vrefint channel allows to update scale
+factor according to vrefint deviation, compared to vrefint
+calibration value.
 
 Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
 ---
- drivers/iio/adc/stm32-adc-core.h |   8 ++
- drivers/iio/adc/stm32-adc.c      | 142 ++++++++++++++++++++++++++++++-
- 2 files changed, 147 insertions(+), 3 deletions(-)
+ drivers/iio/adc/stm32-adc.c | 76 ++++++++++++++++++++++++++++++++++---
+ 1 file changed, 70 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iio/adc/stm32-adc-core.h b/drivers/iio/adc/stm32-adc-core.h
-index 2322809bfd2f..7c924f463f67 100644
---- a/drivers/iio/adc/stm32-adc-core.h
-+++ b/drivers/iio/adc/stm32-adc-core.h
-@@ -102,6 +102,9 @@
- #define STM32H7_ADC_CALFACT		0xC4
- #define STM32H7_ADC_CALFACT2		0xC8
- 
-+/* STM32MP1 - ADC2 instance option register */
-+#define STM32MP1_ADC2_OR		0xD0
-+
- /* STM32H7 - common registers for all ADC instances */
- #define STM32H7_ADC_CSR			(STM32_ADCX_COMN_OFFSET + 0x00)
- #define STM32H7_ADC_CCR			(STM32_ADCX_COMN_OFFSET + 0x08)
-@@ -168,11 +171,16 @@ enum stm32h7_adc_dmngt {
- #define STM32H7_EOC_MST			BIT(2)
- 
- /* STM32H7_ADC_CCR - bit fields */
-+#define STM32H7_VBATEN			BIT(24)
-+#define STM32H7_VREFEN			BIT(22)
- #define STM32H7_PRESC_SHIFT		18
- #define STM32H7_PRESC_MASK		GENMASK(21, 18)
- #define STM32H7_CKMODE_SHIFT		16
- #define STM32H7_CKMODE_MASK		GENMASK(17, 16)
- 
-+/* STM32MP1_ADC2_OR - bit fields */
-+#define STM32MP1_VDDCOREEN		BIT(0)
-+
- /**
-  * struct stm32_adc_common - stm32 ADC driver common data (for all instances)
-  * @base:		control registers base cpu addr
 diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-index 85d09cbd41ae..5a7ac45a0725 100644
+index 5a7ac45a0725..c427e439bf4a 100644
 --- a/drivers/iio/adc/stm32-adc.c
 +++ b/drivers/iio/adc/stm32-adc.c
-@@ -77,6 +77,30 @@ enum stm32_adc_extsel {
- 	STM32_EXT20,
+@@ -21,6 +21,7 @@
+ #include <linux/io.h>
+ #include <linux/iopoll.h>
+ #include <linux/module.h>
++#include <linux/nvmem-consumer.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/of.h>
+@@ -41,6 +42,7 @@
+ #define STM32_ADC_TIMEOUT_US		100000
+ #define STM32_ADC_TIMEOUT	(msecs_to_jiffies(STM32_ADC_TIMEOUT_US / 1000))
+ #define STM32_ADC_HW_STOP_DELAY_MS	100
++#define STM32_ADC_VREFINT_VOLTAGE	3300
+ 
+ #define STM32_DMA_BUFFER_SIZE		PAGE_SIZE
+ 
+@@ -137,6 +139,16 @@ struct stm32_adc_regs {
+ 	int shift;
  };
  
-+enum stm32_adc_int_ch {
-+	STM32_ADC_INT_CH_NONE = -1,
-+	STM32_ADC_INT_CH_VDDCORE,
-+	STM32_ADC_INT_CH_VREFINT,
-+	STM32_ADC_INT_CH_VBAT,
-+	STM32_ADC_INT_CH_NB,
-+};
-+
 +/**
-+ * struct stm32_adc_ic - ADC internal channels
-+ * @name:	name of the internal channel
-+ * @idx:	internal channel enum index
++ * struct stm32_adc_vrefint - stm32 ADC internal reference voltage data
++ * @vrefint_cal:	vrefint calibration value from nvmem
++ * @vrefint_data:	vrefint actual value
 + */
-+struct stm32_adc_ic {
-+	const char *name;
-+	u32 idx;
-+};
-+
-+static const struct stm32_adc_ic stm32_adc_ic[STM32_ADC_INT_CH_NB] = {
-+	{ "vddcore", STM32_ADC_INT_CH_VDDCORE },
-+	{ "vrefint", STM32_ADC_INT_CH_VREFINT },
-+	{ "vbat", STM32_ADC_INT_CH_VBAT },
++struct stm32_adc_vrefint {
++	u32 vrefint_cal;
++	u32 vrefint_data;
 +};
 +
  /**
-  * struct stm32_adc_trig_info - ADC trigger info
-  * @name:		name of the trigger, corresponding to its source
-@@ -126,6 +150,9 @@ struct stm32_adc_regs {
-  * @res:		resolution selection register & bitfield
-  * @smpr:		smpr1 & smpr2 registers offset array
-  * @smp_bits:		smpr1 & smpr2 index and bitfields
-+ * @or_vdd:		option register & vddcore bitfield
-+ * @ccr_vbat:		common register & vbat bitfield
-+ * @ccr_vref:		common register & vrefint bitfield
+  * struct stm32_adc_regspec - stm32 registers definition
+  * @dr:			data register offset
+@@ -186,6 +198,7 @@ struct stm32_adc;
+  * @unprepare:		optional unprepare routine (disable, power-down)
+  * @irq_clear:		routine to clear irqs
+  * @smp_cycles:		programmable sampling time (ADC clock cycles)
++ * @ts_vrefint_ns:	vrefint minimum sampling time in ns
   */
- struct stm32_adc_regspec {
- 	const u32 dr;
-@@ -139,6 +166,9 @@ struct stm32_adc_regspec {
- 	const struct stm32_adc_regs res;
- 	const u32 smpr[2];
- 	const struct stm32_adc_regs *smp_bits;
-+	const struct stm32_adc_regs or_vdd;
-+	const struct stm32_adc_regs ccr_vbat;
-+	const struct stm32_adc_regs ccr_vref;
+ struct stm32_adc_cfg {
+ 	const struct stm32_adc_regspec	*regs;
+@@ -199,6 +212,7 @@ struct stm32_adc_cfg {
+ 	void (*unprepare)(struct iio_dev *);
+ 	void (*irq_clear)(struct iio_dev *indio_dev, u32 msk);
+ 	const unsigned int *smp_cycles;
++	const unsigned int ts_vrefint_ns;
  };
  
- struct stm32_adc;
-@@ -195,6 +225,7 @@ struct stm32_adc_cfg {
+ /**
+@@ -223,6 +237,7 @@ struct stm32_adc_cfg {
+  * @pcsel:		bitmask to preselect channels on some devices
+  * @smpr_val:		sampling time settings (e.g. smpr1 / smpr2)
   * @cal:		optional calibration data on some devices
++ * @vrefint:		internal reference voltage data
   * @chan_name:		channel name array
   * @num_diff:		number of differential channels
-+ * @int_ch:		internal channel indexes array
-  */
- struct stm32_adc {
- 	struct stm32_adc_common	*common;
-@@ -219,6 +250,7 @@ struct stm32_adc {
+  * @int_ch:		internal channel indexes array
+@@ -248,6 +263,7 @@ struct stm32_adc {
+ 	u32			pcsel;
+ 	u32			smpr_val[2];
  	struct stm32_adc_calib	cal;
++	struct stm32_adc_vrefint vrefint;
  	char			chan_name[STM32_ADC_CH_MAX][STM32_ADC_CH_SZ];
  	u32			num_diff;
-+	int			int_ch[STM32_ADC_INT_CH_NB];
- };
+ 	int			int_ch[STM32_ADC_INT_CH_NB];
+@@ -1343,6 +1359,7 @@ static int stm32_adc_read_raw(struct iio_dev *indio_dev,
  
- struct stm32_adc_diff_channel {
-@@ -451,6 +483,24 @@ static const struct stm32_adc_regspec stm32h7_adc_regspec = {
- 	.smp_bits = stm32h7_smp_bits,
- };
- 
-+static const struct stm32_adc_regspec stm32mp1_adc_regspec = {
-+	.dr = STM32H7_ADC_DR,
-+	.ier_eoc = { STM32H7_ADC_IER, STM32H7_EOCIE },
-+	.ier_ovr = { STM32H7_ADC_IER, STM32H7_OVRIE },
-+	.isr_eoc = { STM32H7_ADC_ISR, STM32H7_EOC },
-+	.isr_ovr = { STM32H7_ADC_ISR, STM32H7_OVR },
-+	.sqr = stm32h7_sq,
-+	.exten = { STM32H7_ADC_CFGR, STM32H7_EXTEN_MASK, STM32H7_EXTEN_SHIFT },
-+	.extsel = { STM32H7_ADC_CFGR, STM32H7_EXTSEL_MASK,
-+		    STM32H7_EXTSEL_SHIFT },
-+	.res = { STM32H7_ADC_CFGR, STM32H7_RES_MASK, STM32H7_RES_SHIFT },
-+	.smpr = { STM32H7_ADC_SMPR1, STM32H7_ADC_SMPR2 },
-+	.smp_bits = stm32h7_smp_bits,
-+	.or_vdd = { STM32MP1_ADC2_OR, STM32MP1_VDDCOREEN },
-+	.ccr_vbat = { STM32H7_ADC_CCR, STM32H7_VBATEN },
-+	.ccr_vref = { STM32H7_ADC_CCR, STM32H7_VREFEN },
-+};
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
++	case IIO_CHAN_INFO_PROCESSED:
+ 		ret = iio_device_claim_direct_mode(indio_dev);
+ 		if (ret)
+ 			return ret;
+@@ -1350,6 +1367,10 @@ static int stm32_adc_read_raw(struct iio_dev *indio_dev,
+ 			ret = stm32_adc_single_conv(indio_dev, chan, val);
+ 		else
+ 			ret = -EINVAL;
 +
- /*
-  * STM32 ADC registers access routines
-  * @adc: stm32 adc instance
-@@ -489,6 +539,16 @@ static void stm32_adc_set_bits(struct stm32_adc *adc, u32 reg, u32 bits)
- 	spin_unlock_irqrestore(&adc->lock, flags);
++		if (mask == IIO_CHAN_INFO_PROCESSED && adc->vrefint.vrefint_cal)
++			*val = STM32_ADC_VREFINT_VOLTAGE * adc->vrefint.vrefint_cal / *val;
++
+ 		iio_device_release_direct_mode(indio_dev);
+ 		return ret;
+ 
+@@ -1819,7 +1840,10 @@ static void stm32_adc_chan_init_one(struct iio_dev *indio_dev,
+ 	chan->datasheet_name = name;
+ 	chan->scan_index = scan_index;
+ 	chan->indexed = 1;
+-	chan->info_mask_separate = BIT(IIO_CHAN_INFO_RAW);
++	if (chan->channel == adc->int_ch[STM32_ADC_INT_CH_VREFINT])
++		chan->info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED);
++	else
++		chan->info_mask_separate = BIT(IIO_CHAN_INFO_RAW);
+ 	chan->info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |
+ 					 BIT(IIO_CHAN_INFO_OFFSET);
+ 	chan->scan_type.sign = 'u';
+@@ -1921,6 +1945,36 @@ static int stm32_adc_legacy_chan_init(struct iio_dev *indio_dev,
+ 	return scan_index;
  }
  
-+static void stm32_adc_set_bits_common(struct stm32_adc *adc, u32 reg, u32 bits)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&adc->lock, flags);
-+	writel_relaxed(readl_relaxed(adc->common->base + reg) | bits,
-+		       adc->common->base + reg);
-+	spin_unlock_irqrestore(&adc->lock, flags);
-+}
-+
- static void stm32_adc_clr_bits(struct stm32_adc *adc, u32 reg, u32 bits)
- {
- 	unsigned long flags;
-@@ -498,6 +558,16 @@ static void stm32_adc_clr_bits(struct stm32_adc *adc, u32 reg, u32 bits)
- 	spin_unlock_irqrestore(&adc->lock, flags);
- }
- 
-+static void stm32_adc_clr_bits_common(struct stm32_adc *adc, u32 reg, u32 bits)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&adc->lock, flags);
-+	writel_relaxed(readl_relaxed(adc->common->base + reg) & ~bits,
-+		       adc->common->base + reg);
-+	spin_unlock_irqrestore(&adc->lock, flags);
-+}
-+
- /**
-  * stm32_adc_conv_irq_enable() - Enable end of conversion interrupt
-  * @adc: stm32 adc instance
-@@ -579,6 +649,60 @@ static int stm32_adc_hw_start(struct device *dev)
- 	return ret;
- }
- 
-+static void stm32_adc_int_ch_enable(struct iio_dev *indio_dev)
++static int stm32_adc_populate_int_ch(struct iio_dev *indio_dev, const char *ch_name,
++				     int chan)
 +{
 +	struct stm32_adc *adc = iio_priv(indio_dev);
-+	u32 i;
++	u16 vrefint;
++	int i, ret;
 +
 +	for (i = 0; i < STM32_ADC_INT_CH_NB; i++) {
-+		if (adc->int_ch[i] == STM32_ADC_INT_CH_NONE)
-+			continue;
++		if (!strncmp(stm32_adc_ic[i].name, ch_name, STM32_ADC_CH_SZ)) {
++			adc->int_ch[i] = chan;
 +
-+		switch (i) {
-+		case STM32_ADC_INT_CH_VDDCORE:
-+			dev_dbg(&indio_dev->dev, "Enable VDDCore\n");
-+			stm32_adc_set_bits(adc, adc->cfg->regs->or_vdd.reg,
-+					   adc->cfg->regs->or_vdd.mask);
-+			break;
-+		case STM32_ADC_INT_CH_VREFINT:
-+			dev_dbg(&indio_dev->dev, "Enable VREFInt\n");
-+			stm32_adc_set_bits_common(adc, adc->cfg->regs->ccr_vref.reg,
-+						  adc->cfg->regs->ccr_vref.mask);
-+			break;
-+		case STM32_ADC_INT_CH_VBAT:
-+			dev_dbg(&indio_dev->dev, "Enable VBAT\n");
-+			stm32_adc_set_bits_common(adc, adc->cfg->regs->ccr_vbat.reg,
-+						  adc->cfg->regs->ccr_vbat.mask);
-+			break;
++			if (stm32_adc_ic[i].idx != STM32_ADC_INT_CH_VREFINT)
++				continue;
++
++			/* Get calibration data for vrefint channel */
++			ret = nvmem_cell_read_u16(&indio_dev->dev, "vrefint", &vrefint);
++			if (ret && ret != -ENOENT && ret != -EOPNOTSUPP) {
++				dev_err(&indio_dev->dev, "nvmem access error %d\n", ret);
++				return ret;
++			}
++			if (ret == -ENOENT)
++				dev_dbg(&indio_dev->dev, "vrefint calibration not found\n");
++			else
++				adc->vrefint.vrefint_cal = vrefint;
 +		}
 +	}
++
++	return 0;
 +}
 +
-+static void stm32_adc_int_ch_disable(struct stm32_adc *adc)
-+{
-+	u32 i;
-+
-+	for (i = 0; i < STM32_ADC_INT_CH_NB; i++) {
-+		if (adc->int_ch[i] == STM32_ADC_INT_CH_NONE)
-+			continue;
-+
-+		switch (i) {
-+		case STM32_ADC_INT_CH_VDDCORE:
-+			stm32_adc_clr_bits(adc, adc->cfg->regs->or_vdd.reg,
-+					   adc->cfg->regs->or_vdd.mask);
-+			break;
-+		case STM32_ADC_INT_CH_VREFINT:
-+			stm32_adc_clr_bits_common(adc, adc->cfg->regs->ccr_vref.reg,
-+						  adc->cfg->regs->ccr_vref.mask);
-+			break;
-+		case STM32_ADC_INT_CH_VBAT:
-+			stm32_adc_clr_bits_common(adc, adc->cfg->regs->ccr_vbat.reg,
-+						  adc->cfg->regs->ccr_vbat.mask);
-+			break;
-+		}
-+	}
-+}
-+
- /**
-  * stm32f4_adc_start_conv() - Start conversions for regular channels.
-  * @indio_dev: IIO device instance
-@@ -947,11 +1071,13 @@ static int stm32h7_adc_prepare(struct iio_dev *indio_dev)
- 		goto pwr_dwn;
- 	calib = ret;
- 
-+	stm32_adc_int_ch_enable(indio_dev);
-+
- 	stm32_adc_writel(adc, STM32H7_ADC_DIFSEL, adc->difsel);
- 
- 	ret = stm32h7_adc_enable(indio_dev);
- 	if (ret)
--		goto pwr_dwn;
-+		goto ch_disable;
- 
- 	/* Either restore or read calibration result for future reference */
- 	if (calib)
-@@ -967,6 +1093,8 @@ static int stm32h7_adc_prepare(struct iio_dev *indio_dev)
- 
- disable:
- 	stm32h7_adc_disable(indio_dev);
-+ch_disable:
-+	stm32_adc_int_ch_disable(adc);
- pwr_dwn:
- 	stm32h7_adc_enter_pwr_down(adc);
- 
-@@ -978,6 +1106,7 @@ static void stm32h7_adc_unprepare(struct iio_dev *indio_dev)
- 	struct stm32_adc *adc = iio_priv(indio_dev);
- 
- 	stm32h7_adc_disable(indio_dev);
-+	stm32_adc_int_ch_disable(adc);
- 	stm32h7_adc_enter_pwr_down(adc);
- }
- 
-@@ -1800,7 +1929,7 @@ static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
+ static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
+ 				       struct stm32_adc *adc,
+ 				       struct iio_chan_spec *channels)
+@@ -1929,7 +1983,7 @@ static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
  	const struct stm32_adc_info *adc_info = adc->cfg->adc_info;
  	struct device_node *child;
  	const char *name;
--	int val, scan_index = 0, ret;
-+	int val, scan_index = 0, ret, i;
+-	int val, scan_index = 0, ret, i;
++	int val, scan_index = 0, ret;
  	bool differential;
  	u32 vin[2];
  
-@@ -1820,6 +1949,10 @@ static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
+@@ -1949,10 +2003,9 @@ static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
  				return -EINVAL;
  			}
  			strncpy(adc->chan_name[val], name, STM32_ADC_CH_SZ);
-+			for (i = 0; i < STM32_ADC_INT_CH_NB; i++) {
-+				if (!strncmp(stm32_adc_ic[i].name, name, STM32_ADC_CH_SZ))
-+					adc->int_ch[i] = val;
-+			}
+-			for (i = 0; i < STM32_ADC_INT_CH_NB; i++) {
+-				if (!strncmp(stm32_adc_ic[i].name, name, STM32_ADC_CH_SZ))
+-					adc->int_ch[i] = val;
+-			}
++			ret = stm32_adc_populate_int_ch(indio_dev, name, val);
++			if (ret)
++				goto err;
  		} else if (ret != -EINVAL) {
  			dev_err(&indio_dev->dev, "Invalid label %d\n", ret);
  			goto err;
-@@ -1869,6 +2002,9 @@ static int stm32_adc_chan_of_init(struct iio_dev *indio_dev, bool timestamping)
- 	u32 smp = 0;
- 	bool legacy = false;
- 
-+	for (i = 0; i < STM32_ADC_INT_CH_NB; i++)
-+		adc->int_ch[i] = STM32_ADC_INT_CH_NONE;
+@@ -2059,6 +2112,16 @@ static int stm32_adc_chan_of_init(struct iio_dev *indio_dev, bool timestamping)
+ 		 */
+ 		of_property_read_u32_index(node, "st,min-sample-time-nsecs",
+ 					   i, &smp);
 +
- 	num_channels = of_get_available_child_count(node);
- 	/* If no channels have been found, fallback to channels legacy properties. */
- 	if (!num_channels) {
-@@ -2219,7 +2355,7 @@ static const struct stm32_adc_cfg stm32h7_adc_cfg = {
++		/*
++		 * For vrefint channel, ensure that the sampling time cannot
++		 * be lower than the one specified in the datasheet
++		 */
++		if (channels[i].channel == adc->int_ch[STM32_ADC_INT_CH_VREFINT] &&
++		    smp < adc->cfg->ts_vrefint_ns) {
++			smp = adc->cfg->ts_vrefint_ns;
++		}
++
+ 		/* Prepare sampling time settings */
+ 		stm32_adc_smpr_init(adc, channels[i].channel, smp);
+ 	}
+@@ -2365,6 +2428,7 @@ static const struct stm32_adc_cfg stm32mp1_adc_cfg = {
+ 	.unprepare = stm32h7_adc_unprepare,
+ 	.smp_cycles = stm32h7_adc_smp_cycles,
+ 	.irq_clear = stm32h7_adc_irq_clear,
++	.ts_vrefint_ns = 4300,
  };
  
- static const struct stm32_adc_cfg stm32mp1_adc_cfg = {
--	.regs = &stm32h7_adc_regspec,
-+	.regs = &stm32mp1_adc_regspec,
- 	.adc_info = &stm32h7_adc_info,
- 	.trigs = stm32h7_adc_trigs,
- 	.has_vregready = true,
+ static const struct of_device_id stm32_adc_of_match[] = {
 -- 
 2.17.1
 

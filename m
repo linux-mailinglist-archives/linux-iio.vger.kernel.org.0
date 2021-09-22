@@ -2,39 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 595D5414D1E
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Sep 2021 17:35:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 821E7414D18
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Sep 2021 17:35:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236472AbhIVPgq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Sep 2021 11:36:46 -0400
-Received: from mx07-00178001.pphosted.com ([185.132.182.106]:58254 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236452AbhIVPgo (ORCPT
+        id S236457AbhIVPgo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Sep 2021 11:36:44 -0400
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:35626 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S236453AbhIVPgo (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Sep 2021 11:36:44 -0400
-Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18MEwxVB010644;
-        Wed, 22 Sep 2021 17:34:54 +0200
+Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18MDOEmZ004854;
+        Wed, 22 Sep 2021 17:34:55 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-type; s=selector1;
- bh=c7/kNkHtFiFY5R4nkgOOzHHWckU5RiTtRW4/jUq4FIE=;
- b=edqyfICJ3paog+S9eCcQ0JNBlyB11At+p66VSqadqBJV4jxrvdD/nr9eZyxwhXQNczEs
- sT5DknpW0CjJ4+0CI23lB0AKgFha8KzodDTc9JK3z32iE67YKw8oH288R36SYj1nFz/a
- +NqkXiLKYE9xNqbEUuE2zINxIWpRzhK+kx+cUxh4E/V4Po6127zjc4V9TALIBRxe6oIr
- HBvZ6HRF301LY04pyCXiGdDFsX9c112OQkSr3mghLI0jZpe1Sx04e7P9y5tm+tWPd0MD
- U3zqdWdIwHhGkQcyrVwvLD00jQ2zzBBDkpW3ta+PLAHctyVVWJ4oKW55//+P/qtN2ZES EA== 
+ bh=ljjaZUBXtszXsUCqJX2Wbg58kZebxTbHrmKULo2rDBo=;
+ b=PdWFEvceGqERl7FrnnnhLG2zpuMJ0lhKHviA94Flw9k0/JVHuOCfGwQyoJFsKOD2RjWK
+ LoZ3yjbG73uLwDCEKfGuVS0FpVJHRTUhiYzLaMPLdbjD2rmkKkfIiMp/0LaKahVycaGZ
+ W+oKsL0AmuS9UJzDRokKInKt8RHm5TImzql/FnRw9csSVF7uD/6wojxhr0Kjvgnn+9XL
+ 9Vfeu9+mSyRMDAdZyzAW0jmjXwPbmlgOmKuqNohzy+mwPuzaew+HfmlQsP4WvBlUGf0l
+ aIXI/D5gbosWYMhZViRwVu80fZkeScLRAG4JZ+PWgjIGtBTcVEVt/Trmeu+OWhNUklcP XQ== 
 Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 3b825p225k-1
+        by mx07-00178001.pphosted.com with ESMTP id 3b81gs2bv1-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 22 Sep 2021 17:34:54 +0200
+        Wed, 22 Sep 2021 17:34:55 +0200
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 65CEA100034;
-        Wed, 22 Sep 2021 17:34:53 +0200 (CEST)
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 2547C10002A;
+        Wed, 22 Sep 2021 17:34:54 +0200 (CEST)
 Received: from Webmail-eu.st.com (sfhdag2node2.st.com [10.75.127.5])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 5C74924187A;
-        Wed, 22 Sep 2021 17:34:53 +0200 (CEST)
-Received: from localhost (10.75.127.48) by SFHDAG2NODE2.st.com (10.75.127.5)
- with Microsoft SMTP Server (TLS) id 15.0.1497.18; Wed, 22 Sep 2021 17:34:52
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 1EDC624187A;
+        Wed, 22 Sep 2021 17:34:54 +0200 (CEST)
+Received: from localhost (10.75.127.51) by SFHDAG2NODE2.st.com (10.75.127.5)
+ with Microsoft SMTP Server (TLS) id 15.0.1497.18; Wed, 22 Sep 2021 17:34:53
  +0200
 From:   Olivier Moysan <olivier.moysan@foss.st.com>
 To:     Alexandre Torgue <alexandre.torgue@foss.st.com>,
@@ -48,15 +48,15 @@ CC:     <devicetree@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <linux-stm32@st-md-mailman.stormreply.com>
-Subject: [PATCH v2 1/7] dt-bindings: iio: stm32-adc: add generic channel binding
-Date:   Wed, 22 Sep 2021 17:34:12 +0200
-Message-ID: <20210922153418.21033-2-olivier.moysan@foss.st.com>
+Subject: [PATCH v2 2/7] dt-bindings: iio: stm32-adc: add nvmem support for vrefint internal channel
+Date:   Wed, 22 Sep 2021 17:34:13 +0200
+Message-ID: <20210922153418.21033-3-olivier.moysan@foss.st.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210922153418.21033-1-olivier.moysan@foss.st.com>
 References: <20210922153418.21033-1-olivier.moysan@foss.st.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [10.75.127.48]
+X-Originating-IP: [10.75.127.51]
 X-ClientProxiedBy: SFHDAG1NODE2.st.com (10.75.127.2) To SFHDAG2NODE2.st.com
  (10.75.127.5)
 X-Proofpoint-Virus-Version: vendor=baseguard
@@ -66,171 +66,34 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add ADC generic channel binding. This binding should
-be used as an alternate to legacy channel properties
-whenever possible.
-ADC generic channel binding allows to identify supported
-internal channels through the following reserved label names:
-"vddcore", "vrefint" and "vbat".
-This binding also allows to set a different sampling time
-for each channel.
+Add support of nvmem. This allows to retrieve calibration data from OTP
+for vrefint internal channel.
 
 Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+Acked-by: Rob Herring <robh@kernel.org>
 ---
- .../bindings/iio/adc/st,stm32-adc.yaml        | 100 ++++++++++++++++--
- 1 file changed, 93 insertions(+), 7 deletions(-)
+ .../devicetree/bindings/iio/adc/st,stm32-adc.yaml         | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml b/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
-index a58334c3bb76..1c13921b0556 100644
+index 1c13921b0556..6a5d0181e784 100644
 --- a/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
 +++ b/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
-@@ -222,6 +222,12 @@ patternProperties:
-       '#io-channel-cells':
-         const: 1
- 
-+      '#address-cells':
-+        const: 1
-+
-+      '#size-cells':
-+        const: 0
-+
-       interrupts:
-         description: |
-           IRQ Line for the ADC instance. Valid values are:
-@@ -256,6 +262,7 @@ patternProperties:
-             - 20 channels, numbered from 0 to 19 (for in0..in19) on stm32h7 and
-               stm32mp1.
+@@ -301,6 +301,14 @@ patternProperties:
          $ref: /schemas/types.yaml#/definitions/uint32-array
-+        deprecated: true
+         deprecated: true
  
-       st,adc-diff-channels:
-         description: |
-@@ -265,7 +272,9 @@ patternProperties:
-           <vinp vinn>, <vinp vinn>,... vinp and vinn are numbered from 0 to 19.
- 
-           Note: At least one of "st,adc-channels" or "st,adc-diff-channels" is
--          required. Both properties can be used together. Some channels can be
-+          required if no adc generic channel is defined. These legacy channel
-+          properties are exclusive with adc generic channel bindings.
-+          Both properties can be used together. Some channels can be
-           used as single-ended and some other ones as differential (mixed). But
-           channels can't be configured both as single-ended and differential.
-         $ref: /schemas/types.yaml#/definitions/uint32-matrix
-@@ -279,6 +288,7 @@ patternProperties:
-                 "vinn" indicates negative input number
-               minimum: 0
-               maximum: 19
-+        deprecated: true
- 
-       st,min-sample-time-nsecs:
-         description:
-@@ -289,6 +299,42 @@ patternProperties:
-           list, to set sample time resp. for all channels, or independently for
-           each channel.
-         $ref: /schemas/types.yaml#/definitions/uint32-array
-+        deprecated: true
++      nvmem-cells:
++        items:
++          - description: Phandle to the calibration vrefint data provided by otp
 +
-+    patternProperties:
-+      "^channel@([0-9]|1[0-9])$":
-+        type: object
-+        $ref: "adc.yaml"
-+        description: |
-+          Represents the external channels which are connected to the ADC.
++      nvmem-cell-names:
++        items:
++          - const: vrefint
 +
-+        properties:
-+          reg:
-+            items:
-+              minimum: 0
-+              maximum: 19
-+
-+          label:
-+            description: |
-+              Unique name to identify which channel this is.
-+              Reserved label names "vddcore", "vrefint" and "vbat"
-+              are used to identify internal channels with matching names.
-+
-+          diff-channels:
-+            $ref: /schemas/types.yaml#/definitions/uint32-array
-+            items:
-+              minimum: 0
-+              maximum: 19
-+
-+          st,min-sample-time-nsecs:
-+            $ref: /schemas/types.yaml#/definitions/uint32
-+            description: |
-+              Minimum sampling time in nanoseconds. Depending on hardware (board)
-+              e.g. high/low analog input source impedance, fine tune of ADC
-+              sampling time may be recommended.
-+
-+        required:
-+          - reg
- 
-     allOf:
-       - if:
-@@ -369,12 +415,6 @@ patternProperties:
- 
-     additionalProperties: false
- 
--    anyOf:
--      - required:
--          - st,adc-channels
--      - required:
--          - st,adc-diff-channels
--
-     required:
-       - compatible
-       - reg
-@@ -451,4 +491,50 @@ examples:
-         // other adc child node follow...
-       };
- 
-+  - |
-+    // Example 3: with stm32mp157c to setup ADC2 with:
-+    // - internal channels 13, 14, 15.
-+      #include <dt-bindings/interrupt-controller/arm-gic.h>
-+      #include <dt-bindings/clock/stm32mp1-clks.h>
-+      adc122: adc@48003000 {
-+        compatible = "st,stm32mp1-adc-core";
-+        reg = <0x48003000 0x400>;
-+        interrupts = <GIC_SPI 18 IRQ_TYPE_LEVEL_HIGH>,
-+                     <GIC_SPI 90 IRQ_TYPE_LEVEL_HIGH>;
-+        clocks = <&rcc ADC12>, <&rcc ADC12_K>;
-+        clock-names = "bus", "adc";
-+        booster-supply = <&booster>;
-+        vdd-supply = <&vdd>;
-+        vdda-supply = <&vdda>;
-+        vref-supply = <&vref>;
-+        st,syscfg = <&syscfg>;
-+        interrupt-controller;
-+        #interrupt-cells = <1>;
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        adc@100 {
-+          compatible = "st,stm32mp1-adc";
-+          #io-channel-cells = <1>;
-+          reg = <0x100>;
-+          interrupts = <1>;
-+          #address-cells = <1>;
-+          #size-cells = <0>;
-+          channel@13 {
-+            reg = <13>;
-+            label = "vrefint";
-+            st,min-sample-time-nsecs = <9000>;
-+          };
-+          channel@14 {
-+            reg = <14>;
-+            label = "vddcore";
-+            st,min-sample-time-nsecs = <9000>;
-+          };
-+          channel@15 {
-+            reg = <15>;
-+            label = "vbat";
-+            st,min-sample-time-nsecs = <9000>;
-+          };
-+        };
-+      };
-+
- ...
+     patternProperties:
+       "^channel@([0-9]|1[0-9])$":
+         type: object
 -- 
 2.17.1
 

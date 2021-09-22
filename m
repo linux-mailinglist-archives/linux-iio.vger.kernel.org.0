@@ -2,212 +2,206 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 65DAE414D2B
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Sep 2021 17:35:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58F01414D42
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Sep 2021 17:42:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236498AbhIVPgt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Sep 2021 11:36:49 -0400
-Received: from mx07-00178001.pphosted.com ([185.132.182.106]:58316 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236478AbhIVPgr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Sep 2021 11:36:47 -0400
-Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18MEwxVD010644;
-        Wed, 22 Sep 2021 17:34:59 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type; s=selector1;
- bh=eWiZ+qIWck3FZln70Bqn5T8FOCd+msmgnu+lQOU02zE=;
- b=2d1OR9QYGHbO/eRHZJ3Whb+YI9M0YyCplS/VAKilY+yAog2hN8WBiWHHS2zl32gvqI/H
- 6doUtMhJ5JvACBx3BcEwkliRWG4QZ3aCAV03kZoaZD+jw+h48uv2JKLiTE18QHV9f5Y/
- TUlI6duZCIK/VxLRU6PLdX0zL7+FwjMcgitRzx9Uu66AcTvh4NvSSm8JemLYyyJ3JJvF
- sUtspvO7JUVgl5I+sNcbIBRwoR+eQ402GX4xBBNZQc4ZyHKBmTEHBG2NIfKQO+vzNsxm
- cf0D2efwyOZzqZI+JtpUbtC9OCrpx/SfJGVwC8w4+VJAh68Ur30nkg1Cj7VoocsSIwK+ IA== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 3b825p225u-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 22 Sep 2021 17:34:59 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id B2FEE100034;
-        Wed, 22 Sep 2021 17:34:58 +0200 (CEST)
-Received: from Webmail-eu.st.com (sfhdag2node2.st.com [10.75.127.5])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id AA5B924187A;
-        Wed, 22 Sep 2021 17:34:58 +0200 (CEST)
-Received: from localhost (10.75.127.51) by SFHDAG2NODE2.st.com (10.75.127.5)
- with Microsoft SMTP Server (TLS) id 15.0.1497.18; Wed, 22 Sep 2021 17:34:58
- +0200
-From:   Olivier Moysan <olivier.moysan@foss.st.com>
-To:     Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Fabrice Gasnier <fabrice.gasnier@st.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        "Lars-Peter Clausen" <lars@metafoo.de>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Rob Herring <robh+dt@kernel.org>
-CC:     <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>
-Subject: [PATCH v2 7/7] iio: adc: stm32-adc: use generic binding for sample-time
-Date:   Wed, 22 Sep 2021 17:34:18 +0200
-Message-ID: <20210922153418.21033-8-olivier.moysan@foss.st.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210922153418.21033-1-olivier.moysan@foss.st.com>
-References: <20210922153418.21033-1-olivier.moysan@foss.st.com>
+        id S232318AbhIVPnt convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Wed, 22 Sep 2021 11:43:49 -0400
+Received: from relay4-d.mail.gandi.net ([217.70.183.196]:44515 "EHLO
+        relay4-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231712AbhIVPns (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Sep 2021 11:43:48 -0400
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 512F1E0005;
+        Wed, 22 Sep 2021 15:42:15 +0000 (UTC)
+Date:   Wed, 22 Sep 2021 17:42:14 +0200
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        bcousson@baylibre.com, Tony Lindgren <tony@atomide.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Ryan Barnett <ryan.barnett@collins.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Jason Reeder <jreeder@ti.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v3 17/47] mfd: ti_am335x_tscadc: Use driver data
+Message-ID: <20210922174214.7aee560a@xps13>
+In-Reply-To: <YUtFX/6I4VuBHXgf@google.com>
+References: <20210915155908.476767-1-miquel.raynal@bootlin.com>
+        <20210915155908.476767-18-miquel.raynal@bootlin.com>
+        <YUtFX/6I4VuBHXgf@google.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.75.127.51]
-X-ClientProxiedBy: SFHDAG2NODE1.st.com (10.75.127.4) To SFHDAG2NODE2.st.com
- (10.75.127.5)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
- definitions=2021-09-22_05,2021-09-22_01,2020-04-07_01
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add st,min-sample-time-nsecs to channel generic binding.
-Sample time can be defined par channel node. If a channel
-is configured as differential, the same sample time applies
-for both inputs.
-Keep support of legacy st,min-sample-time-nsecs property
-for backward compatibility.
+Hi Lee,
 
-Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
----
- drivers/iio/adc/stm32-adc.c | 70 +++++++++++++++++++++----------------
- 1 file changed, 39 insertions(+), 31 deletions(-)
+lee.jones@linaro.org wrote on Wed, 22 Sep 2021 16:01:51 +0100:
 
-diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-index c427e439bf4a..cfd11ff0cf36 100644
---- a/drivers/iio/adc/stm32-adc.c
-+++ b/drivers/iio/adc/stm32-adc.c
-@@ -1809,6 +1809,11 @@ static void stm32_adc_smpr_init(struct stm32_adc *adc, int channel, u32 smp_ns)
- 	u32 period_ns, shift = smpr->shift, mask = smpr->mask;
- 	unsigned int smp, r = smpr->reg;
- 
-+	/*
-+	 * For vrefint channel, ensure that the sampling time cannot
-+	 * be lower than the one specified in the datasheet
-+	 */
-+
- 	/* Determine sampling time (ADC clock cycles) */
- 	period_ns = NSEC_PER_SEC / adc->common->rate;
- 	for (smp = 0; smp <= STM32_ADC_MAX_SMP; smp++)
-@@ -1885,6 +1890,13 @@ static int stm32_adc_get_legacy_chan_count(struct iio_dev *indio_dev, struct stm
- 		num_channels += ret;
- 	}
- 
-+	/* Optional sample time is provided either for each, or all channels */
-+	ret = of_property_count_u32_elems(node, "st,min-sample-time-nsecs");
-+	if (ret > 1 && ret != num_channels) {
-+		dev_err(&indio_dev->dev, "Invalid st,min-sample-time-nsecs\n");
-+		return -EINVAL;
-+	}
-+
- 	return num_channels;
- }
- 
-@@ -1900,6 +1912,7 @@ static int stm32_adc_legacy_chan_init(struct iio_dev *indio_dev,
- 	int scan_index = 0, val, ret, i;
- 	struct property *prop;
- 	const __be32 *cur;
-+	u32 smp = 0;
- 
- 	if (num_diff) {
- 		ret = of_property_read_u32_array(node, "st,adc-diff-channels",
-@@ -1942,6 +1955,19 @@ static int stm32_adc_legacy_chan_init(struct iio_dev *indio_dev,
- 		scan_index++;
- 	}
- 
-+	for (i = 0; i < scan_index; i++) {
-+		/*
-+		 * Using of_property_read_u32_index(), smp value will only be
-+		 * modified if valid u32 value can be decoded. This allows to
-+		 * get either no value, 1 shared value for all indexes, or one
-+		 * value per channel.
-+		 */
-+		of_property_read_u32_index(node, "st,min-sample-time-nsecs", i, &smp);
-+
-+		/* Prepare sampling time settings */
-+		stm32_adc_smpr_init(adc, channels[i].channel, smp);
-+	}
-+
- 	return scan_index;
- }
- 
-@@ -2034,6 +2060,19 @@ static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
- 
- 		stm32_adc_chan_init_one(indio_dev, &channels[scan_index], val,
- 					vin[1], scan_index, differential);
-+
-+		ret = of_property_read_u32(child, "st,min-sample-time-nsecs", &val);
-+		/* st,min-sample-time-nsecs is optional */
-+		if (!ret) {
-+			stm32_adc_smpr_init(adc, channels[scan_index].channel, val);
-+			if (differential)
-+				stm32_adc_smpr_init(adc, vin[1], val);
-+		} else if (ret != -EINVAL) {
-+			dev_err(&indio_dev->dev, "Invalid st,min-sample-time-nsecs property %d\n",
-+				ret);
-+			goto err;
-+		}
-+
- 		scan_index++;
- 	}
- 
-@@ -2052,7 +2091,6 @@ static int stm32_adc_chan_of_init(struct iio_dev *indio_dev, bool timestamping)
- 	const struct stm32_adc_info *adc_info = adc->cfg->adc_info;
- 	struct iio_chan_spec *channels;
- 	int scan_index = 0, num_channels = 0, ret, i;
--	u32 smp = 0;
- 	bool legacy = false;
- 
- 	for (i = 0; i < STM32_ADC_INT_CH_NB; i++)
-@@ -2080,13 +2118,6 @@ static int stm32_adc_chan_of_init(struct iio_dev *indio_dev, bool timestamping)
- 		return -EINVAL;
- 	}
- 
--	/* Optional sample time is provided either for each, or all channels */
--	ret = of_property_count_u32_elems(node, "st,min-sample-time-nsecs");
--	if (ret > 1 && ret != num_channels) {
--		dev_err(&indio_dev->dev, "Invalid st,min-sample-time-nsecs\n");
--		return -EINVAL;
--	}
--
- 	if (timestamping)
- 		num_channels++;
- 
-@@ -2103,29 +2134,6 @@ static int stm32_adc_chan_of_init(struct iio_dev *indio_dev, bool timestamping)
- 		return ret;
- 	scan_index = ret;
- 
--	for (i = 0; i < scan_index; i++) {
--		/*
--		 * Using of_property_read_u32_index(), smp value will only be
--		 * modified if valid u32 value can be decoded. This allows to
--		 * get either no value, 1 shared value for all indexes, or one
--		 * value per channel.
--		 */
--		of_property_read_u32_index(node, "st,min-sample-time-nsecs",
--					   i, &smp);
--
--		/*
--		 * For vrefint channel, ensure that the sampling time cannot
--		 * be lower than the one specified in the datasheet
--		 */
--		if (channels[i].channel == adc->int_ch[STM32_ADC_INT_CH_VREFINT] &&
--		    smp < adc->cfg->ts_vrefint_ns) {
--			smp = adc->cfg->ts_vrefint_ns;
--		}
--
--		/* Prepare sampling time settings */
--		stm32_adc_smpr_init(adc, channels[i].channel, smp);
--	}
--
- 	if (timestamping) {
- 		struct iio_chan_spec *timestamp = &channels[scan_index];
- 
--- 
-2.17.1
+> On Wed, 15 Sep 2021, Miquel Raynal wrote:
+> 
+> > So far every sub-cell parameter in this driver was hardcoded: cell name,
+> > cell compatible, specific clock name and desired clock frequency.
+> > 
+> > As we are about to introduce support for ADC1/magnetic reader, we need a
+> > bit of flexibility. Let's add a driver data structure which will contain
+> > these information.
+> > 
+> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > ---
+> >  drivers/mfd/ti_am335x_tscadc.c       | 25 +++++++++++++++++++------
+> >  include/linux/mfd/ti_am335x_tscadc.h |  9 +++++++++
+> >  2 files changed, 28 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
+> > index ba821109e98b..fbc8e338188a 100644
+> > --- a/drivers/mfd/ti_am335x_tscadc.c
+> > +++ b/drivers/mfd/ti_am335x_tscadc.c
+> > @@ -137,6 +137,8 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+> >  		return -EINVAL;
+> >  	}
+> >  
+> > +	tscadc->data = of_device_get_match_data(&pdev->dev);
+> > +
+> >  	node = of_get_child_by_name(pdev->dev.of_node, "tsc");
+> >  	of_property_read_u32(node, "ti,wires", &tsc_wires);
+> >  	of_property_read_u32(node, "ti,coordiante-readouts", &readouts);
+> > @@ -212,7 +214,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+> >  		goto err_disable_clk;
+> >  	}
+> >  
+> > -	tscadc->clk_div = (clk_get_rate(clk) / ADC_CLK) - 1;
+> > +	tscadc->clk_div = (clk_get_rate(clk) / tscadc->data->target_clk_rate) - 1;
+> >  	regmap_write(tscadc->regmap, REG_CLKDIV, tscadc->clk_div);
+> >  
+> >  	/* Set the control register bits */
+> > @@ -241,8 +243,8 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+> >  	if (tsc_wires > 0) {
+> >  		tscadc->tsc_cell = tscadc->used_cells;
+> >  		cell = &tscadc->cells[tscadc->used_cells++];
+> > -		cell->name = "TI-am335x-tsc";
+> > -		cell->of_compatible = "ti,am3359-tsc";
+> > +		cell->name = tscadc->data->name_tscmag;
+> > +		cell->of_compatible = tscadc->data->compat_tscmag;
+> >  		cell->platform_data = &tscadc;
+> >  		cell->pdata_size = sizeof(tscadc);
+> >  	}
+> > @@ -251,8 +253,8 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+> >  	if (adc_channels > 0) {
+> >  		tscadc->adc_cell = tscadc->used_cells;
+> >  		cell = &tscadc->cells[tscadc->used_cells++];
+> > -		cell->name = "TI-am335x-adc";
+> > -		cell->of_compatible = "ti,am3359-adc";
+> > +		cell->name = tscadc->data->name_adc;
+> > +		cell->of_compatible = tscadc->data->compat_adc;
+> >  		cell->platform_data = &tscadc;
+> >  		cell->pdata_size = sizeof(tscadc);
+> >  	}
+> > @@ -338,8 +340,19 @@ static int __maybe_unused tscadc_resume(struct device *dev)
+> >  
+> >  static SIMPLE_DEV_PM_OPS(tscadc_pm_ops, tscadc_suspend, tscadc_resume);
+> >  
+> > +static const struct ti_tscadc_data tscdata = {
+> > +	.name_tscmag = "TI-am335x-tsc",
+> > +	.compat_tscmag = "ti,am3359-tsc",
+> > +	.name_adc = "TI-am335x-adc",
+> > +	.compat_adc = "ti,am3359-adc",
+> > +	.target_clk_rate = ADC_CLK,
+> > +};
+> > +
+> >  static const struct of_device_id ti_tscadc_dt_ids[] = {
+> > -	{ .compatible = "ti,am3359-tscadc", },
+> > +	{
+> > +		.compatible = "ti,am3359-tscadc",
+> > +		.data = &tscdata,
+> > +	},
+> >  	{ }
+> >  };
+> >  MODULE_DEVICE_TABLE(of, ti_tscadc_dt_ids);
+> > diff --git a/include/linux/mfd/ti_am335x_tscadc.h b/include/linux/mfd/ti_am335x_tscadc.h
+> > index ffc091b77633..0f581c15d95a 100644
+> > --- a/include/linux/mfd/ti_am335x_tscadc.h
+> > +++ b/include/linux/mfd/ti_am335x_tscadc.h
+> > @@ -162,11 +162,20 @@
+> >  
+> >  #define TSCADC_CELLS		2
+> >  
+> > +struct ti_tscadc_data {
+> > +	char *name_tscmag;
+> > +	char *compat_tscmag;
+> > +	char *name_adc;
+> > +	char *compat_adc;  
+> 
+> I think these names should be improved.
+> 
+> What is tscmag?
+> 
+> Does that represent both the Magnetic Reader and the Touchscreen?
 
+Not exactly, it represents *either* the magnetic reader *or* the
+touchscreen.
+
+Basically you can have either one version of the hardware which
+is a regular ADC that can be also used as a touchscreen controller, or
+you can have another version of the hardware which is a regular ADC
+that can be also used as a magnetic reader.
+
+Both features can be used as the same time (ts + adc or mag + adc),
+hence we need a name for the touchscreen child node and for the adc
+child node *or* a name for the magnetic reader chil node and for the adc
+child node.
+
+> If so, I'd prefer that you split them.  If not, I need more info.
+> 
+> For readability, I suggest;
+> 
+>   touchscreen_name
+>   touchscreen_compatible
+>   mag_reader_name
+>   mag_reader_compatible
+>   adc_name
+>   adc_compatible
+>   etc
+> 
+
+I can certainly improve the names though.
+
+> What is a magnetic reader anyway?
+> 
+> Does it read the magnetic stripe on a payment card?
+
+Yes!
+
+> 
+> > +	unsigned int target_clk_rate;
+> > +};
+> > +
+> >  struct ti_tscadc_dev {
+> >  	struct device *dev;
+> >  	struct regmap *regmap;
+> >  	void __iomem *tscadc_base;
+> >  	phys_addr_t tscadc_phys_base;
+> > +	const struct ti_tscadc_data *data;
+> >  	int irq;
+> >  	int used_cells;	/* 1-2 */
+> >  	int tsc_wires;  
+> 
+
+
+Thanks,
+Miquèl

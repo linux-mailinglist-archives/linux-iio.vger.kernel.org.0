@@ -2,220 +2,425 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E5E8F4142A0
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Sep 2021 09:27:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78CAD4142F2
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Sep 2021 09:54:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231429AbhIVH2r (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Sep 2021 03:28:47 -0400
-Received: from mail-eopbgr40092.outbound.protection.outlook.com ([40.107.4.92]:53571
-        "EHLO EUR03-DB5-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229697AbhIVH2q (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 22 Sep 2021 03:28:46 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lG49YlSuidp1so5ZPt+J0XeFMbYlLCAFdlWdl8HJQkm2reMDvYZ13LoJsnJswAF9efpcdzq6K7AnEPkgK7/+AYVbTBE5Bd1H6Atlu8vvW/G5wK4G9JVYysCUeE8uNABz0Te0kAVAvdmB4P8aRW9ecE4zgO7kPPhQ0T4IXVWPAXd2548rO2xDDTBkmHoIJFfHvAzlBQczs613SGv1TYL1dvO2VYU2MXiwgw1XZnxQdZ0qC+AoRBabEdk7mAeBLuw1nlvPxyX5YTOlt/fJxxqyG8ucSeucv06c5r64djlAx/TAyHUkO3uYd9EXtfBxsiz9uP4tCfVvO7DuMtRoJO2uQQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=tRvvPLRzrpj/AvaI73MkKScXej6avcSFliJeLbaOAZ0=;
- b=FibSLJtPv+6kJPZ/UmGbq+ECG5/kd04pw5tRDmsZZiMKxX8hX7+C3P1giM0owmIkFkd0PYmFoA6kn0F+UMVta/dQXDa2pnUNend9aCe34HLJMM1B/p27ZiCOvCm/x1QeXXbVfBFj/C039miAQ9KTRUUWpUGf4HFwrr28D0QSW+pjas0b+v2wrdOhqrYwcI19DgmvWB3xvJ/klCSxLms4ipWUOiH/3w4RdWQ7vvHsGTe2VcVOCD1NjtY875po1THbeTPo3XVgpMIs6Ihocgj3gPBBtQoynBo4XUyE1Ik+zASJ5bupkPPddR41yWkYyRIFI1fenHPsesRuDIHucBq+Og==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=axentia.se; dmarc=pass action=none header.from=axentia.se;
- dkim=pass header.d=axentia.se; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axentia.se;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tRvvPLRzrpj/AvaI73MkKScXej6avcSFliJeLbaOAZ0=;
- b=pgsj8kGxv3zMWgDuuT6cH99iZCUioZg8aSV3pzjacgrfDr04zFx7qC7M3IHX0nEZlhclJj8sHaLVfL0hkKt7jd24A/l7PDr6MaJe7chGqJj9BeUL+xNMUX/K981LUgqTws/csry3zl/kHfT00VOIyOU9Bxd9zHJJavDeqcZ7DnQ=
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none header.from=axentia.se;
-Received: from DB8PR02MB5482.eurprd02.prod.outlook.com (2603:10a6:10:eb::29)
- by DB9PR02MB7164.eurprd02.prod.outlook.com (2603:10a6:10:22c::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4523.17; Wed, 22 Sep
- 2021 07:27:14 +0000
-Received: from DB8PR02MB5482.eurprd02.prod.outlook.com
- ([fe80::35c9:1008:f5af:55a]) by DB8PR02MB5482.eurprd02.prod.outlook.com
- ([fe80::35c9:1008:f5af:55a%4]) with mapi id 15.20.4523.018; Wed, 22 Sep 2021
- 07:27:14 +0000
-Subject: Re: Reading ADC that comes from a multiplexer
-To:     Fabio Estevam <festevam@gmail.com>
-Cc:     linux-iio@vger.kernel.org
-References: <CAOMZO5Cwdn_-to8G+RvVUbG+UkYM7+budUsvWVLeY7PutoO2Mw@mail.gmail.com>
-From:   Peter Rosin <peda@axentia.se>
-Organization: Axentia Technologies AB
-Message-ID: <74f1974b-ac08-96f1-887e-99580a2bf212@axentia.se>
-Date:   Wed, 22 Sep 2021 09:27:13 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+        id S233390AbhIVHz4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Sep 2021 03:55:56 -0400
+Received: from mx07-00178001.pphosted.com ([185.132.182.106]:49876 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233342AbhIVHzz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Sep 2021 03:55:55 -0400
+Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18M6jOXm005837;
+        Wed, 22 Sep 2021 09:54:01 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=selector1;
+ bh=3vxZi4mFy6XkhIZ9zcGNRYsHShdsAcX48ITYfRbgjuQ=;
+ b=V87FTO7bi680G0ptuqRJpmO5sIGXTYa3xROIuUYuEvaefK0NJ947tCVFAPcE9Yw4gTFg
+ NIVqOVqcEeoXdMPe2CKvgAuxcAGdKVBsFm2Gy28d3ubespQuXEP0cKkClAkU+myl8Ik9
+ s3jaCA6V9zyQOnD1t969n9+qnDsoRYcvDhpihjAIcZnozfeOA6NVWfIZ7WmnOyeoIBjE
+ fayBd4IJHVHIfRCNWoIVsNKFFh4zqF6lCNh/KvJdRxHIFujZwLDDqvmYO/WBXvPaneUo
+ YXcAIaX0IBkkbp/QA06ZiXTmek54f0jyDSF12V9Rce/C3j+a120c4AVK36LOkJqLrP+I LA== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 3b7q3hjfpy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 22 Sep 2021 09:54:01 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 7ADD310002A;
+        Wed, 22 Sep 2021 09:54:00 +0200 (CEST)
+Received: from Webmail-eu.st.com (sfhdag2node2.st.com [10.75.127.5])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 70F7D21E679;
+        Wed, 22 Sep 2021 09:54:00 +0200 (CEST)
+Received: from lmecxl0577.lme.st.com (10.75.127.48) by SFHDAG2NODE2.st.com
+ (10.75.127.5) with Microsoft SMTP Server (TLS) id 15.0.1497.18; Wed, 22 Sep
+ 2021 09:53:59 +0200
+Subject: Re: [PATCH 6/7] iio: adc: stm32-adc: add vrefint calibration support
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
+        Fabrice Gasnier <fabrice.gasnier@st.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>
+References: <20210908155452.25458-1-olivier.moysan@foss.st.com>
+ <20210908155452.25458-7-olivier.moysan@foss.st.com>
+ <20210911172834.401cf4c8@jic23-huawei>
+ <865e35a2-47c1-336a-641a-365b7db8213a@foss.st.com>
+ <20210918194149.546a5189@jic23-huawei>
+From:   Olivier MOYSAN <olivier.moysan@foss.st.com>
+Message-ID: <3284242f-b85f-3f96-c165-bf12325136c3@foss.st.com>
+Date:   Wed, 22 Sep 2021 09:53:58 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.13.0
-In-Reply-To: <CAOMZO5Cwdn_-to8G+RvVUbG+UkYM7+budUsvWVLeY7PutoO2Mw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: sv-SE
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AM6P195CA0013.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:209:81::26) To DB8PR02MB5482.eurprd02.prod.outlook.com
- (2603:10a6:10:eb::29)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.13.3] (185.178.140.238) by AM6P195CA0013.EURP195.PROD.OUTLOOK.COM (2603:10a6:209:81::26) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4544.13 via Frontend Transport; Wed, 22 Sep 2021 07:27:14 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 6be7cf5b-c195-41d9-b407-08d97d9a6653
-X-MS-TrafficTypeDiagnostic: DB9PR02MB7164:
-X-Microsoft-Antispam-PRVS: <DB9PR02MB716419E4E19EF16B1C95BAB4BCA29@DB9PR02MB7164.eurprd02.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: skwg/pm4O3KLnYxgu8oE5FGFhzmFKr8iBEk7u4ZiyhBy9eFr9+gI3qY9xGO4ziHRQ6+/Nq0bwhcdTTLM+7thdSvMIfjbpdRCrWhJ8precwwWLAjQbnCf+eGrdaAQLMl0Nt/mW6nSoGaF+RLXNmIANxYg3pljDGALwQ92wFYWT6YhOFo/19S0T0T8Y0xxZKgXho+87/PXIQjI/wkwSXLVs/phXCKOPduvs/9RFPy/tFXVPXzPpM7LoUGO4C+XgmzbY3VQoxnS+hjyF7yedxtxCkD2tPK/uIwA1LS/xJ2z41YK5BUc8GTzB5Kh7tMRiuaSA9MMng8KFwNQsOwdHM3uag5E1kL9MB56dXzBOIlfNlQiMVz9SEC8VaSj4tyHGlkFCu83Kv4wW2KnAMlSpPKO19Gg5vLTdBCQi0dK9/lQC8rClxGOCnxjKOdFQeD11wjWGIGo1oFg4h/3Up1ZrFYzyhq+Td18XRPemkqLC34wGlJ5Giq2nTyw6yCvl5+diUy3Aw4LFLpj5dF5hPXZHkP5DmvDJRTPNI+p0j9kX/ATwFMvkg0Wg0HGEJBCFn8oG5cg+4sQ2I9MxCua+TW2UnATAPqriGlUJ2RmZ5Kr26jHAMcDYLjsQKmMFzGWkXc6+VivRqhjjFTWqVLXKnafFoDgJOF4vRxRL3p4i3X2aLIP6dl9YMEsHsfpRB79wyxkG8Syp2+vnJt9QRL7o5espthNjBUUKDhaEnj/v+brAHFVMP4=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR02MB5482.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(346002)(376002)(366004)(39840400004)(136003)(396003)(5660300002)(31686004)(16576012)(36756003)(956004)(508600001)(6916009)(316002)(186003)(2616005)(26005)(83380400001)(53546011)(8936002)(2906002)(8676002)(31696002)(4326008)(38100700002)(86362001)(6486002)(66946007)(36916002)(66476007)(66556008)(43740500002)(45980500001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?emJPWlFWekM1MlFzVUt1eUFBRXNRc28vWmhCTkxmcGU1bm5IbWQvaTV3ZjRn?=
- =?utf-8?B?d2IvMG5GOSs2dUpXZUs4a3o0Sy9JMDR1MkYxUHFCSVBzSnlUZE9MSmZ1QnpK?=
- =?utf-8?B?RlIrY0orRktPeGtQM0loZ2FjT0hERXdUeEhMSStiWXdhQ3VuRzB5OG0vb2FV?=
- =?utf-8?B?Tk11dVo0WDNIMFkzU2xYSjJFQWswMkhBcTFNT2puZnRuTDhHSTFrR2VqaTN5?=
- =?utf-8?B?UEovTkViZFJabWxIWlBaRmk2dWN3bHJOektWd0FibW54eDdCSC9pVU9SZW1j?=
- =?utf-8?B?ejI0aTc4MHZOejZFdHVBdHUwNGI4c3NBNk40Zk1XeTNKQi9Yb1hwMnFIVHZ4?=
- =?utf-8?B?MWR0V04wcTRqRW1kZEwvejAySmt0NFlqdktseGJZMzU5MWM0ZUZ5OVJNc283?=
- =?utf-8?B?YW8vUGZkc28ycENHV2d0emYvZGh1cTdTaGFrZlphUjF6RkZGMWhzWjRMa2xk?=
- =?utf-8?B?U1RnNkJORkVuMGhQRm9xVElKenZMR1hkQXRtUUkrM3dHalN2NDV3TmhtN2Jz?=
- =?utf-8?B?TjROSU1ma1p1Yi9EcjhZR3V5aEI5L0gzZys3ZzZocHg5eDhIaE52TkluV2gy?=
- =?utf-8?B?Y2N2RkN3RU5MOFJrR0RjMEc1VHoyTUtzNVAwVFRzVlJzWkd4cjVYZlRKcE1J?=
- =?utf-8?B?YXk4Z1J2VnVaNVFla3JyU2NRZlR4ZlBqU2I4dlpyVWxueXBCT3NJREJ3WkJO?=
- =?utf-8?B?L3lkK25RS29uaG10d2l4WmIxaUxET3FMSm55WmlDK29EZW5LS0JYL1RmQ2Jm?=
- =?utf-8?B?TTJuZVRySTY1Y0xEN2ZvNDA5MjVGb1ZXS3JCTzVla3NhbkRPSGx1WC9xTU1o?=
- =?utf-8?B?TWJoOWVsOVlQUzU5RmFVbU44ZThXMHBqTi8wVFgxaFRTaVEzNzNML2VURmhI?=
- =?utf-8?B?Snp4M0sreHZCbExxZU9pOUgxY2pjM1JtSmpRU3N3ZGs0N3lRbElqL2QwVUd2?=
- =?utf-8?B?TVNBZkpGellFWnlvTHI5MWYzZHM1WUxZOTZYUktEZjhRTWpuSHR4cmx6RWxR?=
- =?utf-8?B?MEE0ckxWNnZNOWk0OFhiNCsxaHFYWW9PNlM3QnUvb0dBbjdXelUzZTRWMTZU?=
- =?utf-8?B?cStnVkh1elJPSVJXM2FjaFFyQlpheTMwc3pBSUIyYmZKUkFFUXhOc3M4U3Y0?=
- =?utf-8?B?OFpFUFozZUZWQWlJaHJLbG1YZ0NxZHRqUGt2NmljS253Q1l4aUhlTVpZSGc5?=
- =?utf-8?B?bEx1d3doTk5QdkhPZzBoM2l3anBzbnQrcU1INys3Q1lsZXNwdjBUWnFUcTlh?=
- =?utf-8?B?cWVMcUdCajExQkpzeTd3L1JWdE1JbENYTzQwUnpmaUlkb1NxOG5ZK1FTdG5j?=
- =?utf-8?B?NUlwdUFXQ2xCMW9kVDI1cjA0bnN1K2VXcFQxTEYyNHRvYWJFaWFoTzZGbEZv?=
- =?utf-8?B?YWwwV1JxY2lTUEoydVZrUWdOTEhEcC9tNDIyTCs0cWltKzFXOHladWhocGsx?=
- =?utf-8?B?aWkzY28zbkE5Y2tPUTJoUmo1b0FrOXFMQlFUbHpiRmZYQUFwL2dKT0JhcGRN?=
- =?utf-8?B?Y3M4eEcxVm5SS25oT2N6bVB5TkpJODdEVGRCSWFoQ0ZPVjJVVFo2cXlLWTk5?=
- =?utf-8?B?YXdoZDhpM0xybi9yeWNGUXVyQUhDUnhEMjI0anYyMlVNNmlpcThvU29kM2ZL?=
- =?utf-8?B?YkhmVjgvQVJZWHNxNHZuR0pNMVlGREpkSHlUc0E1K1JhRVczblZlM09walBi?=
- =?utf-8?B?ZUhIOWczZXRRYmk1Q3hqU1hpMndjTk5FTkozTGRLNklvcmR1T3JzbGl3ZCtT?=
- =?utf-8?Q?0rX/cA8rVRBOfYVco5ErSee1Cm0++fxDjqNMyXW?=
-X-OriginatorOrg: axentia.se
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6be7cf5b-c195-41d9-b407-08d97d9a6653
-X-MS-Exchange-CrossTenant-AuthSource: DB8PR02MB5482.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2021 07:27:14.6512
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4ee68585-03e1-4785-942a-df9c1871a234
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FOQPN5hm5xk2tQ367jO4M88ISjknzEk6Pw1FkAyXCx2rGdCnNT/Z0yyelM8STUNN
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR02MB7164
+In-Reply-To: <20210918194149.546a5189@jic23-huawei>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.75.127.48]
+X-ClientProxiedBy: SFHDAG2NODE3.st.com (10.75.127.6) To SFHDAG2NODE2.st.com
+ (10.75.127.5)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
+ definitions=2021-09-22_02,2021-09-20_01,2020-04-07_01
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2021-09-22 04:18, Fabio Estevam wrote:
-> Hi Peter,
+Hi Jonathan,
+
+On 9/18/21 8:42 PM, Jonathan Cameron wrote:
+> On Wed, 15 Sep 2021 12:02:45 +0200
+> Olivier MOYSAN <olivier.moysan@foss.st.com> wrote:
 > 
-> I have a SN74LV4051 multiplexer that is controlled by 3 GPIOs and I
-> described like this in DT:
+>> Hi Jonathan,
+>>
+>> On 9/11/21 6:28 PM, Jonathan Cameron wrote:
+>>> On Wed, 8 Sep 2021 17:54:51 +0200
+>>> Olivier Moysan <olivier.moysan@foss.st.com> wrote:
+>>>    
+>>>> Add support of vrefint calibration.
+>>>> If a channel is labeled as vrefint, get vrefint calibration
+>>>> from non volatile memory for this channel.
+>>>> A conversion on vrefint channel allows to update scale
+>>>> factor according to vrefint deviation, compared to vrefint
+>>>> calibration value.
+>>>
+>>> As I mention inline, whilst technically the ABI doesn't demand it
+>>> the expectation of much of userspace software is that _scale is
+>>> pseudo constant - that is it doesn't tend to change very often and when
+>>> it does it's normally because someone deliberately made it change.
+>>> As such most software reads it just once.
+>>>
+>>> Normally we work around this by applying the maths in kernel and
+>>> not exposing the scale at all. Is this something that could be done here?
+>>>
+>>> Jonathan
+>>>    
+>>>>
+>>>> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+>>>> ---
+>>>>    drivers/iio/adc/stm32-adc.c | 88 ++++++++++++++++++++++++++++++++++---
+>>>>    1 file changed, 82 insertions(+), 6 deletions(-)
+>>>>
+>>>> diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+>>>> index ef3d2af98025..9e52a7de9b16 100644
+>>>> --- a/drivers/iio/adc/stm32-adc.c
+>>>> +++ b/drivers/iio/adc/stm32-adc.c
+>>>> @@ -21,6 +21,7 @@
+>>>>    #include <linux/io.h>
+>>>>    #include <linux/iopoll.h>
+>>>>    #include <linux/module.h>
+>>>> +#include <linux/nvmem-consumer.h>
+>>>>    #include <linux/platform_device.h>
+>>>>    #include <linux/pm_runtime.h>
+>>>>    #include <linux/of.h>
+>>>> @@ -42,6 +43,7 @@
+>>>>    #define STM32_ADC_TIMEOUT	(msecs_to_jiffies(STM32_ADC_TIMEOUT_US / 1000))
+>>>>    #define STM32_ADC_HW_STOP_DELAY_MS	100
+>>>>    #define STM32_ADC_CHAN_NONE		-1
+>>>> +#define STM32_ADC_VREFINT_VOLTAGE	3300
+>>>>    
+>>>>    #define STM32_DMA_BUFFER_SIZE		PAGE_SIZE
+>>>>    
+>>>> @@ -79,6 +81,7 @@ enum stm32_adc_extsel {
+>>>>    };
+>>>>    
+>>>>    enum stm32_adc_int_ch {
+>>>> +	STM32_ADC_INT_CH_NONE = -1,
+>>>>    	STM32_ADC_INT_CH_VDDCORE,
+>>>>    	STM32_ADC_INT_CH_VREFINT,
+>>>>    	STM32_ADC_INT_CH_VBAT,
+>>>> @@ -137,6 +140,16 @@ struct stm32_adc_regs {
+>>>>    	int shift;
+>>>>    };
+>>>>    
+>>>> +/**
+>>>> + * struct stm32_adc_vrefint - stm32 ADC internal reference voltage data
+>>>> + * @vrefint_cal:	vrefint calibration value from nvmem
+>>>> + * @vrefint_data:	vrefint actual value
+>>>> + */
+>>>> +struct stm32_adc_vrefint {
+>>>> +	u32 vrefint_cal;
+>>>> +	u32 vrefint_data;
+>>>> +};
+>>>> +
+>>>>    /**
+>>>>     * struct stm32_adc_regspec - stm32 registers definition
+>>>>     * @dr:			data register offset
+>>>> @@ -186,6 +199,7 @@ struct stm32_adc;
+>>>>     * @unprepare:		optional unprepare routine (disable, power-down)
+>>>>     * @irq_clear:		routine to clear irqs
+>>>>     * @smp_cycles:		programmable sampling time (ADC clock cycles)
+>>>> + * @ts_vrefint_ns:	vrefint minimum sampling time in ns
+>>>>     */
+>>>>    struct stm32_adc_cfg {
+>>>>    	const struct stm32_adc_regspec	*regs;
+>>>> @@ -199,6 +213,7 @@ struct stm32_adc_cfg {
+>>>>    	void (*unprepare)(struct iio_dev *);
+>>>>    	void (*irq_clear)(struct iio_dev *indio_dev, u32 msk);
+>>>>    	const unsigned int *smp_cycles;
+>>>> +	const unsigned int ts_vrefint_ns;
+>>>>    };
+>>>>    
+>>>>    /**
+>>>> @@ -223,6 +238,7 @@ struct stm32_adc_cfg {
+>>>>     * @pcsel:		bitmask to preselect channels on some devices
+>>>>     * @smpr_val:		sampling time settings (e.g. smpr1 / smpr2)
+>>>>     * @cal:		optional calibration data on some devices
+>>>> + * @vrefint:		internal reference voltage data
+>>>>     * @chan_name:		channel name array
+>>>>     * @num_diff:		number of differential channels
+>>>>     * @int_ch:		internal channel indexes array
+>>>> @@ -248,6 +264,7 @@ struct stm32_adc {
+>>>>    	u32			pcsel;
+>>>>    	u32			smpr_val[2];
+>>>>    	struct stm32_adc_calib	cal;
+>>>> +	struct stm32_adc_vrefint vrefint;
+>>>>    	char			chan_name[STM32_ADC_CH_MAX][STM32_ADC_CH_SZ];
+>>>>    	u32			num_diff;
+>>>>    	int			int_ch[STM32_ADC_INT_CH_NB];
+>>>> @@ -1331,15 +1348,35 @@ static int stm32_adc_read_raw(struct iio_dev *indio_dev,
+>>>>    			ret = stm32_adc_single_conv(indio_dev, chan, val);
+>>>>    		else
+>>>>    			ret = -EINVAL;
+>>>> +
+>>>> +		/* If channel mask corresponds to vrefint, store data */
+>>>> +		if (adc->int_ch[STM32_ADC_INT_CH_VREFINT] == chan->channel)
+>>>> +			adc->vrefint.vrefint_data = *val;
+>>>> +
+>>>>    		iio_device_release_direct_mode(indio_dev);
+>>>>    		return ret;
+>>>>    
+>>>>    	case IIO_CHAN_INFO_SCALE:
+>>>>    		if (chan->differential) {
+>>>> -			*val = adc->common->vref_mv * 2;
+>>>> +			if (adc->vrefint.vrefint_data &&
+>>>> +			    adc->vrefint.vrefint_cal) {
+>>>> +				*val = STM32_ADC_VREFINT_VOLTAGE * 2 *
+>>>> +				       adc->vrefint.vrefint_cal /
+>>>> +				       adc->vrefint.vrefint_data;
+>>>
+>>> Ah.. Dynamic scale.  This is always awkward when it occurs.
+>>> Given most / possibly all userspace software assumes a pseudo static scale
+>>> (not data dependent) we normally hide this by doing the maths internal to the
+>>> driver - sometimes meaning we need to present the particular channel as processed
+>>> not raw.
+>>>
+>>> Is the expectation here that vrefint_data is actually very nearly constant? If
+>>> so then what you have here may be fine as anyone not aware the scale might change
+>>> will get very nearly the right value anyway.
+>>>    
+>>
+>> The need here is to compare the measured value of vrefint with the
+>> calibrated value saved in non volatile memory. The ratio between these
+>> two values can be used as a correction factor for the acquisitions on
+>> all other channels.
+>>
+>> The vrefint data is expected to be close to the saved vrefint
+>> calibration value, and it should not vary strongly over time.
+>> So, yes, we can indeed consider the scale as a pseudo constant. If the
+>> scale is not updated, the deviation with actual value should remain
+>> limited, as well.
 > 
-> adcmux: mux-controller {
->        compatible = "gpio-mux";
->        #mux-control-cells = <0>;
->        mux-gpios = <&gpio3 31 GPIO_ACTIVE_HIGH>,
->                            <&gpio3 30 GPIO_ACTIVE_HIGH>,
->                           <&gpio3 26 GPIO_ACTIVE_HIGH>;
-> };
+> Ok, so in that case we could probably get away with having it as you have
+> here, though for maximum precision we'd need userspace to occasionally check
+> the scale.
 > 
-> adc-mux {
->        compatible = "io-channel-mux";
->        io-channels = <&adc 4>;
->        io-channel-names = "parent";
->        mux-controls = <&adcmux>;
->        channels = "chan0", "chan1", "chan2", "chan3",
->                          "chan4", "chan5", "chan6", "chan7";
-> };
+>>
+>> You suggest above to hide scale tuning through processed channels.
+>> If I follow this logic, when vrefint channel is available, all channels
+>> should be defined as processed channels (excepted vrefint channel)
+>> In this case no scale is exposed for these channels, and the vrefint
+>> calibration ratio can be used to provide converted data directly.
+>> Do you prefer this implementation ?
 > 
-> /sys/class/mux/muxchip0/ is created:
+>>
+>> In this case I wonder how buffered data have to be managed. These data
+>> are still provided as raw data, but the scale factor is not more
+>> available to convert them. I guess that these data have to be converted
+>> internally also, either in dma callback or irq handler.
+>> Is this correct ?
 > 
-> # ls /sys/class/mux/muxchip0/
-> device  of_node  power  subsystem  uevent
+> This is one of the holes in what IIO does today.  Without meta data in the
+> buffer (which is hard to define in a clean fashion) it is hard to have
+> a compact representation of the data in the presence of dynamic scaling.
+> The vast majority of devices don't inherently support such scaling so
+> this is only occasionally a problem.
 > 
-> Sorry for the trivial question, but I haven't found any examples.
+> To support this at the moment you would indeed need to scale the data
+> before pushing it to the buffer which is obviously really ugly.
 > 
-> What is the userspace command if I want to expose "chan3" to be read
-> by the ADC 4 channel?
+> My gut feeling here is there are three possible approaches.
+> 
+> 1) Ignore the dynamic nature of the calibration and pretend it's static.
+> 2) Add an explicit 'calibration' sysfs attribute.
+>     This is a fairly common model for other sensor types which don't do
+>     dynamic calibration but instead require to you to start some special
+>     calibration sequence.
+>     As the calibration is not updated, except on explicit userspace action
+>     we can assume that the scale is static unless userspace is aware of
+>     the dynamic aspect.
+> 3) Add a userspace control to turn on dynamic calibration.  That makes it
+>     opt in.  Everything will work reasonably well without it turned on
+>     as we'll hopefully have a static estimate of scale which is good enough.
+>     If aware software is using the device, it can enable this mode and
+>     sample the scale as often as it wants to.
+> 
+> I slightly favour option 3.  What do you think?  If we ever figure out
+> the meta data question for buffered case then we can make that work on top
+> of this.
+> 
+> Jonathan
 
-Basically, the whole point is that you simply don't. The iio-mux exposes
-the channels as 8 new ADCs, and whenever you read a value from one of
-them, the iio-mux operates the gpios for you, giving you the impression
-that you have 8 independet ADCs. They are of course not independent, but...
+This discussion made me revisit the calibration aspects in the ADC driver.
 
-Anyway, I have almost the exact same setup in
-arch/arm/boot/dts/at91-tse850-3.dts
+We have three types of calibration in ADC:
 
-	mux: mux-controller {
-		compatible = "gpio-mux";
-		#mux-control-cells = <0>;
+- Linear calibration: this calibration is not voltage or temperature 
+dependent. So, it can be done once at boot time, as this is done currently.
 
-		mux-gpios = <&pioA 0 GPIO_ACTIVE_HIGH>,
-			    <&pioA 1 GPIO_ACTIVE_HIGH>,
-			    <&pioA 2 GPIO_ACTIVE_HIGH>;
-		idle-state = <0>;
-	};
+- offset calibration: this calibration has a voltage and temperature 
+dependency. This calibration is currently done once at boot. But it 
+would be relevant to allow application to request a new offset 
+calibration, when supply or temperature change over time.
+Here the 'calibration' sysfs attribute you suggested in option 2, would 
+be convenient I think. I plan to submit this improvement in a separate 
+patch.
 
-	envelope-detector-mux {
-		compatible = "io-channel-mux";
-		io-channels = <&env_det 0>;
-		io-channel-names = "parent";
+- vref compensation: the vrefint channel offers a way to evaluate vref 
+deviation. Here I need to change a bit the logic. I think that putting 
+intelligence in the driver is not the best way at the end. This hides 
+voltage deviation information, where it could be useful to check if an 
+offset calibration is needed. Moreover we get a lack of consistency 
+between raw and buffered data.
+It looks that processed type is the good way to expose vrefint channel. 
+This allows to provide the actual vref voltage. And we can let the 
+application decide how to manage this information. (trigger offset 
+calibration / compensate raw data)
+I'm going to send a v2 serie with this change for vrefint support
+(plus the corrections for other comments)
 
-		mux-controls = <&mux>;
+Regards
+Olivier
 
-		channels = "", "",
-			 "sync-1",
-			 "in",
-			 "out",
-			 "sync-2",
-			 "sys-reg",
-			 "ana-reg";
-	};
-
-(but with the added complication that my ADC is not an ordinary ADC, but
-instead a DAC and a comparator, such that the envelope of an AC signal can
-be detected by a series of measurements, and I only use 6 channels)
-
-That's exposed to user-space as:
-
-$ ls "/sys/bus/iio/devices/iio:device3"
-in_altvoltage2_compare_interval  in_altvoltage5_scale
-in_altvoltage2_invert            in_altvoltage6_compare_interval
-in_altvoltage2_raw               in_altvoltage6_invert
-in_altvoltage2_scale             in_altvoltage6_raw
-in_altvoltage3_compare_interval  in_altvoltage6_scale
-in_altvoltage3_invert            in_altvoltage7_compare_interval
-in_altvoltage3_raw               in_altvoltage7_invert
-in_altvoltage3_scale             in_altvoltage7_raw
-in_altvoltage4_compare_interval  in_altvoltage7_scale
-in_altvoltage4_invert            name
-in_altvoltage4_raw               of_node
-in_altvoltage4_scale             power
-in_altvoltage5_compare_interval  subsystem
-in_altvoltage5_invert            uevent
-in_altvoltage5_raw
-$ cat "/sys/bus/iio/devices/iio:device3/name"
-envelope-detector-mux
-
-
-
-But the above gets tedious fast, and iio:device3 can of course be something
-else etc etc, which is why libiio is the recommended interface.
-
-	ctx = iio_create_local_context();
-	dev = iio_context_find_device(ctx, "envelope-detector-mux");
-	chn = iio_device_find_channel(dev, "altvoltage2", 0);
-	iio_channel_attr_read_longlong(chn, "raw", &value);
-
-Hope that helps!
-
-Cheers,
-Peter
+>>
+>> Regards
+>> Olivier
+>>
+>>>> +			} else {
+>>>> +				*val = adc->common->vref_mv * 2;
+>>>> +			}
+>>>>    			*val2 = chan->scan_type.realbits;
+>>>>    		} else {
+>>>> -			*val = adc->common->vref_mv;
+>>>> +			/* Use vrefint data if available */
+>>>> +			if (adc->vrefint.vrefint_data &&
+>>>> +			    adc->vrefint.vrefint_cal) {
+>>>> +				*val = STM32_ADC_VREFINT_VOLTAGE *
+>>>> +				       adc->vrefint.vrefint_cal /
+>>>> +				       adc->vrefint.vrefint_data;
+>>>> +			} else {
+>>>> +				*val = adc->common->vref_mv;
+>>>> +			}
+>>>>    			*val2 = chan->scan_type.realbits;
+>>>>    		}
+>>>>    		return IIO_VAL_FRACTIONAL_LOG2;
+>>>> @@ -1907,6 +1944,35 @@ static int stm32_adc_legacy_chan_init(struct iio_dev *indio_dev,
+>>>>    	return scan_index;
+>>>>    }
+>>>>    
+>>>> +static int stm32_adc_get_int_ch(struct iio_dev *indio_dev, const char *ch_name,
+>>>> +				int chan)
+>>>
+>>> Naming would suggest to me that it would return a channel rather than setting it
+>>> inside adc->int_ch[i]  Perhaps something like st32_adc_populate_int_ch() ?
+>>>
+>>>    
+>>>> +{
+>>>> +	struct stm32_adc *adc = iio_priv(indio_dev);
+>>>> +	u16 vrefint;
+>>>> +	int i, ret;
+>>>> +
+>>>> +	for (i = 0; i < STM32_ADC_INT_CH_NB; i++) {
+>>>> +		if (!strncmp(stm32_adc_ic[i].name, ch_name, STM32_ADC_CH_SZ)) {
+>>>> +			adc->int_ch[i] = chan;
+>>>> +			/* If channel is vrefint get calibration data. */
+>>>> +			if (stm32_adc_ic[i].idx == STM32_ADC_INT_CH_VREFINT) {
+>>>
+>>> I would reduce indentation by reversing the logic.
+>>>
+>>> 			if (stm32_adc_ic[i].idx != STM32_ADC_INT_CH_VREFINT)
+>>> 				continue;
+>>>
+>>> 			ret =
+>>>> +				ret = nvmem_cell_read_u16(&indio_dev->dev, "vrefint", &vrefint);
+>>>> +				if (ret && ret != -ENOENT && ret != -EOPNOTSUPP) {
+>>>> +					dev_err(&indio_dev->dev, "nvmem access error %d\n", ret);
+>>>> +					return ret;
+>>>> +				}
+>>>> +				if (ret == -ENOENT)
+>>>> +					dev_dbg(&indio_dev->dev,
+>>>> +						"vrefint calibration not found\n");
+>>>> +				else
+>>>> +					adc->vrefint.vrefint_cal = vrefint;
+>>>> +			}
+>>>> +		}
+>>>> +	}
+>>>> +
+>>>> +	return 0;
+>>>> +}
+>>>> +
+>>>>    static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
+>>>>    				       struct stm32_adc *adc,
+>>>>    				       struct iio_chan_spec *channels)
+>>>> @@ -1938,10 +2004,9 @@ static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
+>>>>    				return -EINVAL;
+>>>>    			}
+>>>>    			strncpy(adc->chan_name[val], name, STM32_ADC_CH_SZ);
+>>>> -			for (i = 0; i < STM32_ADC_INT_CH_NB; i++) {
+>>>> -				if (!strncmp(stm32_adc_ic[i].name, name, STM32_ADC_CH_SZ))
+>>>> -					adc->int_ch[i] = val;
+>>>> -			}
+>>>> +			ret = stm32_adc_get_int_ch(indio_dev, name, val);
+>>>> +			if (ret)
+>>>> +				goto err;
+>>>>    		} else if (ret != -EINVAL) {
+>>>>    			dev_err(&indio_dev->dev, "Invalid label %d\n", ret);
+>>>>    			goto err;
+>>>> @@ -2044,6 +2109,16 @@ static int stm32_adc_chan_of_init(struct iio_dev *indio_dev, bool timestamping)
+>>>>    		 */
+>>>>    		of_property_read_u32_index(node, "st,min-sample-time-nsecs",
+>>>>    					   i, &smp);
+>>>> +
+>>>> +		/*
+>>>> +		 * For vrefint channel, ensure that the sampling time cannot
+>>>> +		 * be lower than the one specified in the datasheet
+>>>> +		 */
+>>>> +		if (channels[i].channel == adc->int_ch[STM32_ADC_INT_CH_VREFINT] &&
+>>>> +		    smp < adc->cfg->ts_vrefint_ns) {
+>>>> +			smp = adc->cfg->ts_vrefint_ns;
+>>>> +		}
+>>>
+>>> 		if (channels[i].channel == adc->int_ch[STM32_ADC_INT_CH_VREFINT])
+>>> 			smp = max(smp, adc->cfg->ts_vrefint_ns);
+>>>    
+>>>> +
+>>>>    		/* Prepare sampling time settings */
+>>>>    		stm32_adc_smpr_init(adc, channels[i].channel, smp);
+>>>>    	}
+>>>> @@ -2350,6 +2425,7 @@ static const struct stm32_adc_cfg stm32mp1_adc_cfg = {
+>>>>    	.unprepare = stm32h7_adc_unprepare,
+>>>>    	.smp_cycles = stm32h7_adc_smp_cycles,
+>>>>    	.irq_clear = stm32h7_adc_irq_clear,
+>>>> +	.ts_vrefint_ns = 4300,
+>>>>    };
+>>>>    
+>>>>    static const struct of_device_id stm32_adc_of_match[] = {
+>>>    
+> 

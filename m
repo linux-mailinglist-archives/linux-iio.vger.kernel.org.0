@@ -2,140 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 15149415B02
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Sep 2021 11:33:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48E88415BF0
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Sep 2021 12:29:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240166AbhIWJeu convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Thu, 23 Sep 2021 05:34:50 -0400
-Received: from relay4-d.mail.gandi.net ([217.70.183.196]:44503 "EHLO
-        relay4-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240158AbhIWJeu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Sep 2021 05:34:50 -0400
-Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id B80B2E0011;
-        Thu, 23 Sep 2021 09:33:13 +0000 (UTC)
-Date:   Thu, 23 Sep 2021 11:33:12 +0200
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        bcousson@baylibre.com, Tony Lindgren <tony@atomide.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Ryan Barnett <ryan.barnett@collins.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Jason Reeder <jreeder@ti.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v3 36/47] mfd: ti_am335x_tscadc: Support the correctly
- spelled DT property
-Message-ID: <20210923113312.14fc9027@xps13>
-In-Reply-To: <YUxEsfOvn7Vr8F2c@google.com>
-References: <20210915155908.476767-1-miquel.raynal@bootlin.com>
-        <20210915155908.476767-37-miquel.raynal@bootlin.com>
-        <YUtSVo9HBAiomswv@google.com>
-        <20210923101922.2c108d2b@xps13>
-        <YUxEsfOvn7Vr8F2c@google.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S240358AbhIWKaq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 23 Sep 2021 06:30:46 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:3851 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231392AbhIWKaq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Sep 2021 06:30:46 -0400
+Received: from fraeml704-chm.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4HFWXw0ZR4z67YDm;
+        Thu, 23 Sep 2021 18:26:24 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml704-chm.china.huawei.com (10.206.15.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2308.8; Thu, 23 Sep 2021 12:29:12 +0200
+Received: from localhost (10.52.121.46) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.8; Thu, 23 Sep
+ 2021 11:29:12 +0100
+Date:   Thu, 23 Sep 2021 11:28:58 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Fabio Estevam <festevam@gmail.com>
+CC:     Peter Rosin <peda@axentia.se>, <linux-iio@vger.kernel.org>
+Subject: Re: Reading ADC that comes from a multiplexer
+Message-ID: <20210923112858.000022fa@Huawei.com>
+In-Reply-To: <CAOMZO5AQk4zkgwk9ALkaasFv6t68K-bO6roki1tcdgnyk0wuTg@mail.gmail.com>
+References: <CAOMZO5Cwdn_-to8G+RvVUbG+UkYM7+budUsvWVLeY7PutoO2Mw@mail.gmail.com>
+        <74f1974b-ac08-96f1-887e-99580a2bf212@axentia.se>
+        <CAOMZO5Bhs3qLwgqGYHO7Oswr1qvarkzmNFyWQi3-_geZTj3BVA@mail.gmail.com>
+        <CAOMZO5A0a20_+JHmCMYXLuZYCE04GDTqt0x_GXtVxA5Q4MSAog@mail.gmail.com>
+        <73d0ede5-8a35-7e3e-e685-235f39ea28e7@axentia.se>
+        <CAOMZO5Ds8hUc1=Jv6YHgNUnvGH0JWB1yX0sMccoUVcZ6tyyTKw@mail.gmail.com>
+        <CAOMZO5DtNkfqFAhFtzA4x+W5eEes_pHNGouX35tNL+8hfpq02g@mail.gmail.com>
+        <ee5d8cf0-591f-7296-28a8-d78159f5d6a2@axentia.se>
+        <CAOMZO5AQk4zkgwk9ALkaasFv6t68K-bO6roki1tcdgnyk0wuTg@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.52.121.46]
+X-ClientProxiedBy: lhreml728-chm.china.huawei.com (10.201.108.79) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Lee,
+On Wed, 22 Sep 2021 11:50:14 -0300
+Fabio Estevam <festevam@gmail.com> wrote:
 
-lee.jones@linaro.org wrote on Thu, 23 Sep 2021 10:11:13 +0100:
-
-> On Thu, 23 Sep 2021, Miquel Raynal wrote:
+> Hi Peter,
 > 
-> > Hi Lee,
-> > 
-> > lee.jones@linaro.org wrote on Wed, 22 Sep 2021 16:57:10 +0100:
-> >   
-> > > On Wed, 15 Sep 2021, Miquel Raynal wrote:
-> > >   
-> > > > There was in the past a typo in the coordinate readouts property. The
-> > > > bindings have been updated, the touchscreen driver as well and now
-> > > > supports both. However, the MFD driver that is in charge of verifying
-> > > > the validity of the property only checks the bogus one. Add support for
-> > > > the correctly spelled DT property.
-> > > > 
-> > > > Fixes: c9aeb249bf72 ("Input: ti_am335x_tsc - fix spelling mistake in TSC/ADC DT binding")
-> > > > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> > > > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > > ---
-> > > >  drivers/mfd/ti_am335x_tscadc.c | 8 +++++++-
-> > > >  1 file changed, 7 insertions(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
-> > > > index 155a8ed879b3..aa46ed669016 100644
-> > > > --- a/drivers/mfd/ti_am335x_tscadc.c
-> > > > +++ b/drivers/mfd/ti_am335x_tscadc.c
-> > > > @@ -144,8 +144,14 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
-> > > >  	if (tscadc->data->has_tsc) {
-> > > >  		node = of_get_child_by_name(pdev->dev.of_node, "tsc");
-> > > >  		of_property_read_u32(node, "ti,wires", &tscmag_wires);
-> > > > -		of_property_read_u32(node, "ti,coordiante-readouts", &readouts);
-> > > > +		err = of_property_read_u32(node, "ti,coordinate-readouts",
-> > > > +					   &readouts);
-> > > > +		if (err < 0)
-> > > > +			of_property_read_u32(node, "ti,coordiante-readouts",
-> > > > +					     &readouts);
-> > > > +    
-> > > 
-> > > How long are you proposing that we support this churn?  
-> > 
-> > Well, I am not proposing anything, I am just "fixing" the driver so
-> > that it fits the bindings :) Given the fact that at the end of this
-> > series there is a patch that changes the "coordiante" typo to
-> > "coordinate" in a device tree source file, I believe it is still too
-> > soon...  
+> On Wed, Sep 22, 2021 at 11:28 AM Peter Rosin <peda@axentia.se> wrote:
 > 
-> If this is something you're changing in this set, please reconsider.
+> > Nice!
+> >
+> > While I don't completely understand that iio-device node in the beaglebone
+> > dts that didn't work for you, it looks like it's just a renumbering thing?  
 > 
-> I'd rather have a slightly misspelled documented property than being
-> forced to support 2 for any length of time.
+> The beaglebone dts uses some undocumented properties such as:
+> iio-channels and iio-channel-names.
 
-I am not suggesting anything here:
-- "coordiante" was introduced back in 2014.
-- "coordinate" was introduced shortly later.
-- "coordiante" was considered part of the "stable API" back in 2014 and
-  even though the right spelling got introduced very shortly after, DT
-  stability rules wanted us to support it forever.
-- The touchscreen driver has immediately be fixed to support both but
-  not the MFD driver, and this does not make any sense!
+Some of this comes from the dts-schema repo.  We haven't been strict in
+adding the entries to individual ADCs until they actually use them - which
+has the advantage it gives us a window to think about the of_xlate (see below)
 
-We *should* either support only one property (1) or support both in the
-two drivers (2), but supporting the two in one driver and supporting
-only one in the other one does not make any sense (given the fact that
-these two drives are tied together, the touchscreen driver does not
-exist without the MFD driver). That is what I am fixing here.
+https://github.com/devicetree-org/dt-schema/blob/main/meta-schemas/iio.yaml
+Not that it helps much as little in the way of docs in the dt-schema repo.
 
-Is #1 valid? Theoretically it's the best scenario. In practice it is
-not (yet) possible because the two versions are still used in the
-mainline device trees:
-$ git grep coordiante-readouts -- arch/arm/boot/dts/ | wc -l
-1
-$ git grep coordinate-readouts -- arch/arm/boot/dts/ | wc -l
-5
+> 
+> > However, your version only remapped 4 channels, and in that case your new
+> > iio-device only had those, i.e. 0-3. But the iio-mux was looking for the
+> > missing channel 4. Maybe that was why that variant didn't work?  
+> 
+> Yes, this is where I got confused.
+> 
+> The stmpe811 has 8 channels. On the apalis board, the first four channels
+> (0 to 3) are used for touchscreen. The other 4 channels are for general purpose.
+> 
+> The ADC that is connected to the MUX is channel 4 (which is the first
+> one that is
+> free for general usage), so I had to pass:
+> 
+> io-channels = <&adc0 0>;
+> 
+> in the mux, instead of  io-channels = <&adc0 4> that I was originally trying.
+> 
+> and now the mapping is correct and I can read proper voltages when I
+> switch the mux.
 
-So in this series I am fixing the MFD driver to be sure it handles
-correctly the correctly spelled DT property which is used by 5 boards
-since at least 6 years and I am also updating the remaining DT to use
-the correctly spelled property as well.
+It's possible to add a translation routine to a given driver to deal with this
+sort of case. I guess no one needed on the that driver before + all this
+infrastructure post dates that driver.
 
-I suppose we could propose to drop support for the "coordiante"
-version of that property in a few years but if we decide to do it right
-now we're definitely gonna break users.
+See the of_xlate callbacks that let you map more obvious numbering to a particular
+channel.
 
-Thanks,
-Miquèl
+We are in an unfortunate mess here, but I'd argue the lack of io-channels entry
+in the dt binding should in theory mean no one is using this property (as they
+should be verifying against that).  The problem will occur if we have a pre
+yaml conversion binding out in the wild with a mux or other consumer.  We could
+cross our fingers and fix this now...
+
+Jonathan
+
+
+> 
+> Thanks!

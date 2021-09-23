@@ -2,113 +2,224 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 48E88415BF0
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Sep 2021 12:29:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67AF3415C3F
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Sep 2021 12:49:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240358AbhIWKaq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 23 Sep 2021 06:30:46 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:3851 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231392AbhIWKaq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Sep 2021 06:30:46 -0400
-Received: from fraeml704-chm.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4HFWXw0ZR4z67YDm;
-        Thu, 23 Sep 2021 18:26:24 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml704-chm.china.huawei.com (10.206.15.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2308.8; Thu, 23 Sep 2021 12:29:12 +0200
-Received: from localhost (10.52.121.46) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.8; Thu, 23 Sep
- 2021 11:29:12 +0100
-Date:   Thu, 23 Sep 2021 11:28:58 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Fabio Estevam <festevam@gmail.com>
-CC:     Peter Rosin <peda@axentia.se>, <linux-iio@vger.kernel.org>
-Subject: Re: Reading ADC that comes from a multiplexer
-Message-ID: <20210923112858.000022fa@Huawei.com>
-In-Reply-To: <CAOMZO5AQk4zkgwk9ALkaasFv6t68K-bO6roki1tcdgnyk0wuTg@mail.gmail.com>
-References: <CAOMZO5Cwdn_-to8G+RvVUbG+UkYM7+budUsvWVLeY7PutoO2Mw@mail.gmail.com>
-        <74f1974b-ac08-96f1-887e-99580a2bf212@axentia.se>
-        <CAOMZO5Bhs3qLwgqGYHO7Oswr1qvarkzmNFyWQi3-_geZTj3BVA@mail.gmail.com>
-        <CAOMZO5A0a20_+JHmCMYXLuZYCE04GDTqt0x_GXtVxA5Q4MSAog@mail.gmail.com>
-        <73d0ede5-8a35-7e3e-e685-235f39ea28e7@axentia.se>
-        <CAOMZO5Ds8hUc1=Jv6YHgNUnvGH0JWB1yX0sMccoUVcZ6tyyTKw@mail.gmail.com>
-        <CAOMZO5DtNkfqFAhFtzA4x+W5eEes_pHNGouX35tNL+8hfpq02g@mail.gmail.com>
-        <ee5d8cf0-591f-7296-28a8-d78159f5d6a2@axentia.se>
-        <CAOMZO5AQk4zkgwk9ALkaasFv6t68K-bO6roki1tcdgnyk0wuTg@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
+        id S240472AbhIWKus (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 23 Sep 2021 06:50:48 -0400
+Received: from mx07-00178001.pphosted.com ([185.132.182.106]:35046 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S240468AbhIWKuf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Sep 2021 06:50:35 -0400
+Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18N8xkvd005755;
+        Thu, 23 Sep 2021 12:48:33 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=selector1;
+ bh=erpy7pilbQAUCgWWy8Jc10rf1wN9rih1xMYpuf1nGrI=;
+ b=tiZAK1KMKWbl0wv8ajSNPtaih5vem5xRVDdfw/gEsp1KOQhT65E4FePgQC4tC8ZEWVLj
+ WTimxHuwywMw2a+AbWEQAwktZFZxL5mi3Omq1ewnTPRGgvaJbKXs2MB9p4TH2yZ+ET2U
+ 49X0nyNZb6Q7NeRbkZA7Sk1SF/uBaPGv2hpqPb5Rn/hLFukSRn7+WIlPOtWSxhHAPAb9
+ TRVaTGclQKkpzsMCqmPzCM3xYDUi1JPQELJQ6bcPL9ebHUh4oR+TZmM2Kky+gIcqEY+U
+ m2OIAwQQ25E0RFhIf8HJ0yvnc1dhA5NbfgwWuS8wBKVsjhIb9F4HXn8xxuBZk9NOw3F/ wA== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 3b8hngaj78-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 23 Sep 2021 12:48:33 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 7F837100034;
+        Thu, 23 Sep 2021 12:48:32 +0200 (CEST)
+Received: from Webmail-eu.st.com (sfhdag2node2.st.com [10.75.127.5])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 7578822FE39;
+        Thu, 23 Sep 2021 12:48:32 +0200 (CEST)
+Received: from [10.48.0.126] (10.75.127.48) by SFHDAG2NODE2.st.com
+ (10.75.127.5) with Microsoft SMTP Server (TLS) id 15.0.1497.18; Thu, 23 Sep
+ 2021 12:48:30 +0200
+Subject: Re: [Linux-stm32] [PATCH v2 7/7] iio: adc: stm32-adc: use generic
+ binding for sample-time
+To:     Olivier Moysan <olivier.moysan@foss.st.com>,
+        Jonathan Cameron <jic23@kernel.org>
+CC:     Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>
+References: <20210922153418.21033-1-olivier.moysan@foss.st.com>
+ <20210922153418.21033-8-olivier.moysan@foss.st.com>
+From:   Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Message-ID: <6adf5b4d-8315-7311-8754-9c9ad5d6513a@foss.st.com>
+Date:   Thu, 23 Sep 2021 12:48:28 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+In-Reply-To: <20210922153418.21033-8-olivier.moysan@foss.st.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.121.46]
-X-ClientProxiedBy: lhreml728-chm.china.huawei.com (10.201.108.79) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+X-Originating-IP: [10.75.127.48]
+X-ClientProxiedBy: SFHDAG2NODE1.st.com (10.75.127.4) To SFHDAG2NODE2.st.com
+ (10.75.127.5)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
+ definitions=2021-09-23_03,2021-09-23_01,2020-04-07_01
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 22 Sep 2021 11:50:14 -0300
-Fabio Estevam <festevam@gmail.com> wrote:
+On 9/22/21 5:34 PM, Olivier Moysan wrote:
+> Add st,min-sample-time-nsecs to channel generic binding.
+> Sample time can be defined par channel node. If a channel
+> is configured as differential, the same sample time applies
+> for both inputs.
+> Keep support of legacy st,min-sample-time-nsecs property
+> for backward compatibility.
+> 
+> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+> ---
+>  drivers/iio/adc/stm32-adc.c | 70 +++++++++++++++++++++----------------
+>  1 file changed, 39 insertions(+), 31 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+> index c427e439bf4a..cfd11ff0cf36 100644
+> --- a/drivers/iio/adc/stm32-adc.c
+> +++ b/drivers/iio/adc/stm32-adc.c
+> @@ -1809,6 +1809,11 @@ static void stm32_adc_smpr_init(struct stm32_adc *adc, int channel, u32 smp_ns)
+>  	u32 period_ns, shift = smpr->shift, mask = smpr->mask;
+>  	unsigned int smp, r = smpr->reg;
+>  
+> +	/*
+> +	 * For vrefint channel, ensure that the sampling time cannot
+> +	 * be lower than the one specified in the datasheet
+> +	 */
+> +
 
-> Hi Peter,
-> 
-> On Wed, Sep 22, 2021 at 11:28 AM Peter Rosin <peda@axentia.se> wrote:
-> 
-> > Nice!
-> >
-> > While I don't completely understand that iio-device node in the beaglebone
-> > dts that didn't work for you, it looks like it's just a renumbering thing?  
-> 
-> The beaglebone dts uses some undocumented properties such as:
-> iio-channels and iio-channel-names.
+Hi Olivier,
 
-Some of this comes from the dts-schema repo.  We haven't been strict in
-adding the entries to individual ADCs until they actually use them - which
-has the advantage it gives us a window to think about the of_xlate (see below)
+I had a quick look at this series. It looks like some code is missing
+here, e.g. to check "ts_vrefint_ns".
 
-https://github.com/devicetree-org/dt-schema/blob/main/meta-schemas/iio.yaml
-Not that it helps much as little in the way of docs in the dt-schema repo.
+Thanks & BR,
+Fabrice
 
+>  	/* Determine sampling time (ADC clock cycles) */
+>  	period_ns = NSEC_PER_SEC / adc->common->rate;
+>  	for (smp = 0; smp <= STM32_ADC_MAX_SMP; smp++)
+> @@ -1885,6 +1890,13 @@ static int stm32_adc_get_legacy_chan_count(struct iio_dev *indio_dev, struct stm
+>  		num_channels += ret;
+>  	}
+>  
+> +	/* Optional sample time is provided either for each, or all channels */
+> +	ret = of_property_count_u32_elems(node, "st,min-sample-time-nsecs");
+> +	if (ret > 1 && ret != num_channels) {
+> +		dev_err(&indio_dev->dev, "Invalid st,min-sample-time-nsecs\n");
+> +		return -EINVAL;
+> +	}
+> +
+>  	return num_channels;
+>  }
+>  
+> @@ -1900,6 +1912,7 @@ static int stm32_adc_legacy_chan_init(struct iio_dev *indio_dev,
+>  	int scan_index = 0, val, ret, i;
+>  	struct property *prop;
+>  	const __be32 *cur;
+> +	u32 smp = 0;
+>  
+>  	if (num_diff) {
+>  		ret = of_property_read_u32_array(node, "st,adc-diff-channels",
+> @@ -1942,6 +1955,19 @@ static int stm32_adc_legacy_chan_init(struct iio_dev *indio_dev,
+>  		scan_index++;
+>  	}
+>  
+> +	for (i = 0; i < scan_index; i++) {
+> +		/*
+> +		 * Using of_property_read_u32_index(), smp value will only be
+> +		 * modified if valid u32 value can be decoded. This allows to
+> +		 * get either no value, 1 shared value for all indexes, or one
+> +		 * value per channel.
+> +		 */
+> +		of_property_read_u32_index(node, "st,min-sample-time-nsecs", i, &smp);
+> +
+> +		/* Prepare sampling time settings */
+> +		stm32_adc_smpr_init(adc, channels[i].channel, smp);
+> +	}
+> +
+>  	return scan_index;
+>  }
+>  
+> @@ -2034,6 +2060,19 @@ static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
+>  
+>  		stm32_adc_chan_init_one(indio_dev, &channels[scan_index], val,
+>  					vin[1], scan_index, differential);
+> +
+> +		ret = of_property_read_u32(child, "st,min-sample-time-nsecs", &val);
+> +		/* st,min-sample-time-nsecs is optional */
+> +		if (!ret) {
+> +			stm32_adc_smpr_init(adc, channels[scan_index].channel, val);
+> +			if (differential)
+> +				stm32_adc_smpr_init(adc, vin[1], val);
+> +		} else if (ret != -EINVAL) {
+> +			dev_err(&indio_dev->dev, "Invalid st,min-sample-time-nsecs property %d\n",
+> +				ret);
+> +			goto err;
+> +		}
+> +
+>  		scan_index++;
+>  	}
+>  
+> @@ -2052,7 +2091,6 @@ static int stm32_adc_chan_of_init(struct iio_dev *indio_dev, bool timestamping)
+>  	const struct stm32_adc_info *adc_info = adc->cfg->adc_info;
+>  	struct iio_chan_spec *channels;
+>  	int scan_index = 0, num_channels = 0, ret, i;
+> -	u32 smp = 0;
+>  	bool legacy = false;
+>  
+>  	for (i = 0; i < STM32_ADC_INT_CH_NB; i++)
+> @@ -2080,13 +2118,6 @@ static int stm32_adc_chan_of_init(struct iio_dev *indio_dev, bool timestamping)
+>  		return -EINVAL;
+>  	}
+>  
+> -	/* Optional sample time is provided either for each, or all channels */
+> -	ret = of_property_count_u32_elems(node, "st,min-sample-time-nsecs");
+> -	if (ret > 1 && ret != num_channels) {
+> -		dev_err(&indio_dev->dev, "Invalid st,min-sample-time-nsecs\n");
+> -		return -EINVAL;
+> -	}
+> -
+>  	if (timestamping)
+>  		num_channels++;
+>  
+> @@ -2103,29 +2134,6 @@ static int stm32_adc_chan_of_init(struct iio_dev *indio_dev, bool timestamping)
+>  		return ret;
+>  	scan_index = ret;
+>  
+> -	for (i = 0; i < scan_index; i++) {
+> -		/*
+> -		 * Using of_property_read_u32_index(), smp value will only be
+> -		 * modified if valid u32 value can be decoded. This allows to
+> -		 * get either no value, 1 shared value for all indexes, or one
+> -		 * value per channel.
+> -		 */
+> -		of_property_read_u32_index(node, "st,min-sample-time-nsecs",
+> -					   i, &smp);
+> -
+> -		/*
+> -		 * For vrefint channel, ensure that the sampling time cannot
+> -		 * be lower than the one specified in the datasheet
+> -		 */
+> -		if (channels[i].channel == adc->int_ch[STM32_ADC_INT_CH_VREFINT] &&
+> -		    smp < adc->cfg->ts_vrefint_ns) {
+> -			smp = adc->cfg->ts_vrefint_ns;
+> -		}
+> -
+> -		/* Prepare sampling time settings */
+> -		stm32_adc_smpr_init(adc, channels[i].channel, smp);
+> -	}
+> -
+>  	if (timestamping) {
+>  		struct iio_chan_spec *timestamp = &channels[scan_index];
+>  
 > 
-> > However, your version only remapped 4 channels, and in that case your new
-> > iio-device only had those, i.e. 0-3. But the iio-mux was looking for the
-> > missing channel 4. Maybe that was why that variant didn't work?  
-> 
-> Yes, this is where I got confused.
-> 
-> The stmpe811 has 8 channels. On the apalis board, the first four channels
-> (0 to 3) are used for touchscreen. The other 4 channels are for general purpose.
-> 
-> The ADC that is connected to the MUX is channel 4 (which is the first
-> one that is
-> free for general usage), so I had to pass:
-> 
-> io-channels = <&adc0 0>;
-> 
-> in the mux, instead of  io-channels = <&adc0 4> that I was originally trying.
-> 
-> and now the mapping is correct and I can read proper voltages when I
-> switch the mux.
-
-It's possible to add a translation routine to a given driver to deal with this
-sort of case. I guess no one needed on the that driver before + all this
-infrastructure post dates that driver.
-
-See the of_xlate callbacks that let you map more obvious numbering to a particular
-channel.
-
-We are in an unfortunate mess here, but I'd argue the lack of io-channels entry
-in the dt binding should in theory mean no one is using this property (as they
-should be verifying against that).  The problem will occur if we have a pre
-yaml conversion binding out in the wild with a mux or other consumer.  We could
-cross our fingers and fix this now...
-
-Jonathan
-
-
-> 
-> Thanks!

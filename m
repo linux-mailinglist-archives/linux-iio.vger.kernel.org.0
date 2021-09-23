@@ -2,196 +2,139 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C994B415A97
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Sep 2021 11:08:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2963C415A9D
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Sep 2021 11:11:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240033AbhIWJKD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 23 Sep 2021 05:10:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40852 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239985AbhIWJKD (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 23 Sep 2021 05:10:03 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 2B9E760F9D;
-        Thu, 23 Sep 2021 09:08:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632388111;
-        bh=5aGCbKS38LAzavV5ZV1Z0pu7HScfNQJX8lZCuZOXCIk=;
-        h=From:To:Cc:Subject:Date:From;
-        b=MREiv5MHeEdOL+SsT0unQY6wQ5yGxOVPi75NuIDtyGWrHPvjoWqgftlMVp17tRAbP
-         /va+wBp+sGqSebh8AJJraxHNwZ2XGbNja9pe/MMl8X5SiUywj3li0Aox+s1g2n8ruM
-         Z+DfPeysTWYkpeJ2uq0cEYlW9me9oASdUfe+HprRuEWqoqIB/3NC2vK+UWZQUskKqt
-         oBLJVwrhAXKIu7aP9ABFOUaKULDQNXREdyPdiTpdwbqU1LqrHjUja9jjHaPT5fVUUN
-         G6NGhDIvrh0GDNs1v3nNev9SYq03fkB5+gbQ51vZ7vO08qyi/41fBf4xKkTTnJYIdk
-         ZMfybj3GUfMQg==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     jic23@kernel.org
-Cc:     linux-iio@vger.kernel.org, lorenzo.bianconi@redhat.com
-Subject: [PATCH] iio: imu: st_lsm6dsx: move max_fifo_size in st_lsm6dsx_fifo_ops
-Date:   Thu, 23 Sep 2021 11:08:24 +0200
-Message-Id: <b2981cb9a00784a84fec0ea62183629216ec3b38.1632388011.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.31.1
+        id S240123AbhIWJM7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 23 Sep 2021 05:12:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57850 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240070AbhIWJMw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Sep 2021 05:12:52 -0400
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B407C061756
+        for <linux-iio@vger.kernel.org>; Thu, 23 Sep 2021 02:11:17 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id t18so15239055wrb.0
+        for <linux-iio@vger.kernel.org>; Thu, 23 Sep 2021 02:11:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=12EQr3ZLzKhK5ETv63IZ0Tjj44UHMvHzw6pTaaaVejk=;
+        b=oZ1AjSVrUD/dVn2FpE7IzgZHVXx3Zr4Db8ttahRB4jS+mvtQ6lJmu64c1fZj2L0XYu
+         Nk+knP4iBIw+WEFCm8uK9ym2pVOIFRjk8U2jiudtBwtfAEg/sUN4FraMC/Z3PjwoIw1y
+         0wdGMV2l4/3+LTtaWsQLAA4r3wtejkmbb03UVP9otgbKU7goQToYMh48VOJn21QmlYnt
+         CaGMVQ3dQqusilc79T/CqAsAqWw8bu4BvrwNjnJmMCQmyZQDK3JYW593p4QdT+FR+S11
+         uNEwUNSBbbm5oXJKbPtL+aOXT/4NJoK7/CEYK6vVzHV7e3/aRiFHT0Ia1u08Hc090MHR
+         9J7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=12EQr3ZLzKhK5ETv63IZ0Tjj44UHMvHzw6pTaaaVejk=;
+        b=Zpcy8H/XK2fKpOHRfcOxDkfloGOZFxwGzr0usDlCMeJZbSrNjzkUYmvX6z24BV2JLp
+         WnS2rXq/d5hv3+dxUFXmkuzju0aj0zP02wAf5OmhKr8W7r2PHW9652hItBGIEUutOvfb
+         lzUcVQDCzQs0u8zc5fhEAkzwuGoFHvTXikFLdipicyOfaXuDkBtCDbigpA4Aauv/qLux
+         U1sQ3NzMlvvrZLgyiKbBwbzYfTa062xHldK7+fKnzq9mx2jUj+02LfLnYU40I8/eJvMR
+         foo1F6cctTVaPW17P3JYtiu+ehpk8c1rVxgeMicFOFabTGOjK8A9iHUzq5GsEsNHMog6
+         ZylA==
+X-Gm-Message-State: AOAM533ZijXw7fYUANvKR0lOT2pGhHAVN1u/K4lvohVBTKf7KL9vglpf
+        JmdPHdPe2P1u1gEgL/wBRtCd8A==
+X-Google-Smtp-Source: ABdhPJzsZyxJPiWcYgyjEaAxZQmGBvHDVjGMpwzVh6RVfLuFHlx9uWt9U3zqfL7XJ1MZkxFm98ajBQ==
+X-Received: by 2002:a1c:7714:: with SMTP id t20mr14740503wmi.163.1632388275609;
+        Thu, 23 Sep 2021 02:11:15 -0700 (PDT)
+Received: from google.com ([95.148.6.233])
+        by smtp.gmail.com with ESMTPSA id c7sm4890729wmq.13.2021.09.23.02.11.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Sep 2021 02:11:15 -0700 (PDT)
+Date:   Thu, 23 Sep 2021 10:11:13 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Miquel Raynal <miquel.raynal@bootlin.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        bcousson@baylibre.com, Tony Lindgren <tony@atomide.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Ryan Barnett <ryan.barnett@collins.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Jason Reeder <jreeder@ti.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v3 36/47] mfd: ti_am335x_tscadc: Support the correctly
+ spelled DT property
+Message-ID: <YUxEsfOvn7Vr8F2c@google.com>
+References: <20210915155908.476767-1-miquel.raynal@bootlin.com>
+ <20210915155908.476767-37-miquel.raynal@bootlin.com>
+ <YUtSVo9HBAiomswv@google.com>
+ <20210923101922.2c108d2b@xps13>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210923101922.2c108d2b@xps13>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patch does not introduce any logic change, just small code
-rearrangement.
+On Thu, 23 Sep 2021, Miquel Raynal wrote:
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  4 ++--
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 16 +++++++++-------
- 2 files changed, 11 insertions(+), 9 deletions(-)
+> Hi Lee,
+> 
+> lee.jones@linaro.org wrote on Wed, 22 Sep 2021 16:57:10 +0100:
+> 
+> > On Wed, 15 Sep 2021, Miquel Raynal wrote:
+> > 
+> > > There was in the past a typo in the coordinate readouts property. The
+> > > bindings have been updated, the touchscreen driver as well and now
+> > > supports both. However, the MFD driver that is in charge of verifying
+> > > the validity of the property only checks the bogus one. Add support for
+> > > the correctly spelled DT property.
+> > > 
+> > > Fixes: c9aeb249bf72 ("Input: ti_am335x_tsc - fix spelling mistake in TSC/ADC DT binding")
+> > > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> > > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > ---
+> > >  drivers/mfd/ti_am335x_tscadc.c | 8 +++++++-
+> > >  1 file changed, 7 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
+> > > index 155a8ed879b3..aa46ed669016 100644
+> > > --- a/drivers/mfd/ti_am335x_tscadc.c
+> > > +++ b/drivers/mfd/ti_am335x_tscadc.c
+> > > @@ -144,8 +144,14 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+> > >  	if (tscadc->data->has_tsc) {
+> > >  		node = of_get_child_by_name(pdev->dev.of_node, "tsc");
+> > >  		of_property_read_u32(node, "ti,wires", &tscmag_wires);
+> > > -		of_property_read_u32(node, "ti,coordiante-readouts", &readouts);
+> > > +		err = of_property_read_u32(node, "ti,coordinate-readouts",
+> > > +					   &readouts);
+> > > +		if (err < 0)
+> > > +			of_property_read_u32(node, "ti,coordiante-readouts",
+> > > +					     &readouts);
+> > > +  
+> > 
+> > How long are you proposing that we support this churn?
+> 
+> Well, I am not proposing anything, I am just "fixing" the driver so
+> that it fits the bindings :) Given the fact that at the end of this
+> series there is a patch that changes the "coordiante" typo to
+> "coordinate" in a device tree source file, I believe it is still too
+> soon...
 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-index 5ef55763a6cc..6ac4eac36458 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-@@ -143,6 +143,7 @@ struct st_lsm6dsx_fs_table_entry {
-  * @read_fifo: Read FIFO callback.
-  * @fifo_th: FIFO threshold register info (addr + mask).
-  * @fifo_diff: FIFO diff status register info (addr + mask).
-+ * @max_size: Sensor max fifo length in FIFO words.
-  * @th_wl: FIFO threshold word length.
-  */
- struct st_lsm6dsx_fifo_ops {
-@@ -156,6 +157,7 @@ struct st_lsm6dsx_fifo_ops {
- 		u8 addr;
- 		u16 mask;
- 	} fifo_diff;
-+	u16 max_size;
- 	u8 th_wl;
- };
- 
-@@ -271,7 +273,6 @@ struct st_lsm6dsx_ext_dev_settings {
-  * @reset: register address for reset.
-  * @boot: register address for boot.
-  * @bdu: register address for Block Data Update.
-- * @max_fifo_size: Sensor max fifo length in FIFO words.
-  * @id: List of hw id/device name supported by the driver configuration.
-  * @channels: IIO channels supported by the device.
-  * @irq_config: interrupts related registers.
-@@ -288,7 +289,6 @@ struct st_lsm6dsx_settings {
- 	struct st_lsm6dsx_reg reset;
- 	struct st_lsm6dsx_reg boot;
- 	struct st_lsm6dsx_reg bdu;
--	u16 max_fifo_size;
- 	struct {
- 		enum st_lsm6dsx_hw_id hw_id;
- 		const char *name;
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index db45f1fc0b81..0f54df85134a 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -102,7 +102,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 			.addr = 0x22,
- 			.mask = BIT(6),
- 		},
--		.max_fifo_size = 32,
- 		.id = {
- 			{
- 				.hw_id = ST_LSM9DS1_ID,
-@@ -194,6 +193,9 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.mask = BIT(4),
- 			},
- 		},
-+		.fifo_ops = {
-+			.max_size = 32,
-+		},
- 	},
- 	{
- 		.reset = {
-@@ -208,7 +210,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 			.addr = 0x12,
- 			.mask = BIT(6),
- 		},
--		.max_fifo_size = 1365,
- 		.id = {
- 			{
- 				.hw_id = ST_LSM6DS3_ID,
-@@ -329,6 +330,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.addr = 0x3a,
- 				.mask = GENMASK(11, 0),
- 			},
-+			.max_size = 1365,
- 			.th_wl = 3, /* 1LSB = 2B */
- 		},
- 		.ts_settings = {
-@@ -374,7 +376,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 			.addr = 0x12,
- 			.mask = BIT(6),
- 		},
--		.max_fifo_size = 682,
- 		.id = {
- 			{
- 				.hw_id = ST_LSM6DS3H_ID,
-@@ -495,6 +496,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.addr = 0x3a,
- 				.mask = GENMASK(11, 0),
- 			},
-+			.max_size = 682,
- 			.th_wl = 3, /* 1LSB = 2B */
- 		},
- 		.ts_settings = {
-@@ -540,7 +542,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 			.addr = 0x12,
- 			.mask = BIT(6),
- 		},
--		.max_fifo_size = 682,
- 		.id = {
- 			{
- 				.hw_id = ST_LSM6DSL_ID,
-@@ -677,6 +678,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.addr = 0x3a,
- 				.mask = GENMASK(10, 0),
- 			},
-+			.max_size = 682,
- 			.th_wl = 3, /* 1LSB = 2B */
- 		},
- 		.ts_settings = {
-@@ -759,7 +761,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 			.addr = 0x12,
- 			.mask = BIT(6),
- 		},
--		.max_fifo_size = 512,
- 		.id = {
- 			{
- 				.hw_id = ST_LSM6DSR_ID,
-@@ -910,6 +911,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.addr = 0x3a,
- 				.mask = GENMASK(9, 0),
- 			},
-+			.max_size = 512,
- 			.th_wl = 1,
- 		},
- 		.ts_settings = {
-@@ -984,7 +986,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 			.addr = 0x12,
- 			.mask = BIT(6),
- 		},
--		.max_fifo_size = 512,
- 		.id = {
- 			{
- 				.hw_id = ST_ASM330LHH_ID,
-@@ -1119,6 +1120,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.addr = 0x3a,
- 				.mask = GENMASK(9, 0),
- 			},
-+			.max_size = 512,
- 			.th_wl = 1,
- 		},
- 		.ts_settings = {
-@@ -1603,7 +1605,7 @@ int st_lsm6dsx_set_watermark(struct iio_dev *iio_dev, unsigned int val)
- 	struct st_lsm6dsx_hw *hw = sensor->hw;
- 	int err;
- 
--	if (val < 1 || val > hw->settings->max_fifo_size)
-+	if (val < 1 || val > hw->settings->fifo_ops.max_size)
- 		return -EINVAL;
- 
- 	mutex_lock(&hw->conf_lock);
+If this is something you're changing in this set, please reconsider.
+
+I'd rather have a slightly misspelled documented property than being
+forced to support 2 for any length of time.
+
 -- 
-2.31.1
-
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog

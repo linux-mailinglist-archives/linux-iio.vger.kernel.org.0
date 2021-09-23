@@ -2,19 +2,19 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A07F415A0E
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Sep 2021 10:34:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 872A6415A19
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Sep 2021 10:36:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239943AbhIWIfa convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Thu, 23 Sep 2021 04:35:30 -0400
-Received: from relay10.mail.gandi.net ([217.70.178.230]:41425 "EHLO
+        id S239892AbhIWIhb convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Thu, 23 Sep 2021 04:37:31 -0400
+Received: from relay10.mail.gandi.net ([217.70.178.230]:55285 "EHLO
         relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239922AbhIWIfa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Sep 2021 04:35:30 -0400
+        with ESMTP id S239861AbhIWIhb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Sep 2021 04:37:31 -0400
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay10.mail.gandi.net (Postfix) with ESMTPSA id C7910240010;
-        Thu, 23 Sep 2021 08:33:54 +0000 (UTC)
-Date:   Thu, 23 Sep 2021 10:33:52 +0200
+        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 3395424000C;
+        Thu, 23 Sep 2021 08:35:57 +0000 (UTC)
+Date:   Thu, 23 Sep 2021 10:35:56 +0200
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Lee Jones <lee.jones@linaro.org>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
@@ -31,15 +31,12 @@ Cc:     Jonathan Cameron <jic23@kernel.org>,
         Tero Kristo <kristo@kernel.org>,
         Ryan Barnett <ryan.barnett@collins.com>,
         Grygorii Strashko <grygorii.strashko@ti.com>,
-        Jason Reeder <jreeder@ti.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v3 35/47] mfd: ti_am335x_tscadc: Add ADC1/magnetic
- reader support
-Message-ID: <20210923103352.40e422a7@xps13>
-In-Reply-To: <YUtTFEv1YFOMeuEb@google.com>
+        Jason Reeder <jreeder@ti.com>
+Subject: Re: [PATCH v3 00/47] TI AM437X ADC1
+Message-ID: <20210923103556.75b820b7@xps13>
+In-Reply-To: <YUtTeIWKnalzJS7S@google.com>
 References: <20210915155908.476767-1-miquel.raynal@bootlin.com>
-        <20210915155908.476767-36-miquel.raynal@bootlin.com>
-        <YUtTFEv1YFOMeuEb@google.com>
+        <YUtTeIWKnalzJS7S@google.com>
 Organization: Bootlin
 X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
@@ -51,187 +48,136 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 Hi Lee,
 
-lee.jones@linaro.org wrote on Wed, 22 Sep 2021 17:00:20 +0100:
+lee.jones@linaro.org wrote on Wed, 22 Sep 2021 17:02:00 +0100:
 
 > On Wed, 15 Sep 2021, Miquel Raynal wrote:
 > 
-> > Introduce a new compatible that has another set of driver data,
-> > targeting am437x SoCs with a magnetic reader instead of the
-> > touchscreen and a more featureful set of registers.
+> > Hello,
 > > 
-> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > ---
-> >  drivers/mfd/ti_am335x_tscadc.c       | 41 ++++++++++++++++++++++++----
-> >  include/linux/mfd/ti_am335x_tscadc.h |  7 +++++
-> >  2 files changed, 42 insertions(+), 6 deletions(-)
+> > This is a (fairly big) series bringing support of AM437X ADC1.
+> > On TI AM33XX SoCs family there is an ADC that can also be connected to a
+> > touchscreen. This hardware has been extended and is present on certain
+> > SoCs from the AM437X family. In particular, the touchscreen has been
+> > replaced by a magnetic card reader. In both cases, the representation is
+> > an MFD device with two children:
+> > * on AM33XX: the touchscreen controller and the ADC
+> > * on AM437X: the magnetic card reader and the ADC
 > > 
-> > diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
-> > index 65c0fa735a71..155a8ed879b3 100644
-> > --- a/drivers/mfd/ti_am335x_tscadc.c
-> > +++ b/drivers/mfd/ti_am335x_tscadc.c
-> > @@ -121,11 +121,11 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
-> >  	struct mfd_cell *cell;
-> >  	struct property *prop;
-> >  	const __be32 *cur;
-> > -	bool use_tsc = false;
-> > +	bool use_tsc = false, use_mag = false;
-> >  	u32 val;
-> >  	int err;
-> >  	int tscmag_wires = 0, adc_channels = 0, cell_idx = 0, total_channels;
-> > -	int readouts = 0;
-> > +	int readouts = 0, mag_tracks = 0;
-> >  
-> >  	/* Allocate memory for device */
-> >  	tscadc = devm_kzalloc(&pdev->dev, sizeof(*tscadc), GFP_KERNEL);
-> > @@ -148,6 +148,16 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
-> >  		of_node_put(node);
-> >  		if (tscmag_wires)
-> >  			use_tsc = true;
-> > +	} else {
-> > +		/*
-> > +		 * When adding support for the magnetic reader, here is the
-> > +		 * place to look for the number of tracks used from device tree.
-> > +		 * Let's default to 0 for now.
-> > +		 */
-> > +		mag_tracks = 0;
-> > +		tscmag_wires = mag_tracks * 2;
-> > +		if (tscmag_wires)
-> > +			use_mag = true;
-> >  	}
-> >  
-> >  	node = of_get_child_by_name(pdev->dev.of_node, "adc");
-> > @@ -209,8 +219,9 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
-> >  	 * The TSC_ADC_Subsystem has 2 clock domains: OCP_CLK and ADC_CLK.
-> >  	 * ADCs produce a 12-bit sample every 15 ADC_CLK cycles.
-> >  	 * am33xx ADCs expect to capture 200ksps.
-> > -	 * We need the ADC clocks to run at 3MHz.
-> > -	 * This frequency is valid since TSC_ADC_SS controller design
-> > +	 * am47xx ADCs expect to capture 867ksps.
-> > +	 * We need ADC clocks respectively running at 3MHz and 13MHz.
-> > +	 * These frequencies are valid since TSC_ADC_SS controller design
-> >  	 * assumes the OCP clock is at least 6x faster than the ADC clock.
-> >  	 */
-> >  	clk = devm_clk_get(&pdev->dev, NULL);
-> > @@ -238,6 +249,9 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
-> >  			else
-> >  				tscadc->ctrl |= CNTRLREG_TSC_4WIRE;
-> >  		}
-> > +	} else {
-> > +		tscadc->ctrl |= CNTRLREG_MAG_PREAMP_PWRDOWN |
-> > +				CNTRLREG_MAG_PREAMP_BYPASS;
-> >  	}
-> >  	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl);
-> >  
-> > @@ -246,7 +260,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
-> >  	/* Enable the TSC module enable bit */
-> >  	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl | CNTRLREG_SSENB);
-> >  
-> > -	/* TSC Cell */
-> > +	/* TSC or MAG Cell */
-> >  	if (tscmag_wires > 0) {
-> >  		cell = &tscadc->cells[cell_idx++];
-> >  		cell->name = tscadc->data->name_tscmag;
-> > @@ -334,6 +348,7 @@ static SIMPLE_DEV_PM_OPS(tscadc_pm_ops, tscadc_suspend, tscadc_resume);
-> >  
-> >  static const struct ti_tscadc_data tscdata = {
-> >  	.has_tsc = true,
-> > +	.has_mag = false,
-> >  	.name_tscmag = "TI-am335x-tsc",
-> >  	.compat_tscmag = "ti,am3359-tsc",
-> >  	.name_adc = "TI-am335x-adc",
-> > @@ -341,11 +356,25 @@ static const struct ti_tscadc_data tscdata = {
-> >  	.target_clk_rate = TSC_ADC_CLK,
-> >  };
-> >  
-> > +static const struct ti_tscadc_data magdata = {
-> > +	.has_tsc = false,
-> > +	.has_mag = true,  
+> > This series really targets small and atomic changes so that the overall
+> > review is eased, even though it leads to a lot of rather small patches.
+> > Here are the steps:
+> > * Supporting the missing clock
+> > * Translating a single text file containing the description for the
+> >   MFD, the touchscreen and the ADC into three independent yaml files.
+> > * Cleaning/preparing the MFD driver.
+> > * Supporting ADC1 in the MFD driver.
+> > * Cleaning/preparing of the ADC driver.
+> > * Supporting ADC1 in the ADC driver.
+> > * Updating various device trees.
+> > 
+> > Here is the full series again, almost reviewed and acked entirely, but
+> > rebased on the last -rc1. The clock patch has been acked, the ADC
+> > patches as well, so we expect the series to go through the MFD
+> > tree if hte maintainers agree with it.
+> > 
+> > Thanks,
+> > Miquèl
+> > 
+> > Changes in v3:
+> > * Rebased on top of v5.15-rc1.
+> > * R-by/A-by tags added.
+> > * Light reordering to let the of_put_node() fix to be applied more easily
+> > * Dropped a patch made useless because of the previous reordering
+> > * Explained how the tscadc->ctrl variable was used.
+> > * Fixed a couple of typos.
+> > * Included the change for the HZ macro.
+> > * Went further in the BIT()/FIELD_PREP() cleanup.
+> > * Added maximum definitions for sample delay/open delay.
+> > * Removed useless definitions.
+> > * Fixed a couple of rebase conflicts (the series was not bisectable).
+> > 
+> > Changes in v2:
+> > * Added various R-by/A-by tags.
+> > * Various typos & style fixes.
+> > [Bindings]
+> > * Included the missing ti,am654-tscadc compatible.
+> > * Reworded the compatible lines as requested by Jonathan.
+> > * Reworded the bindings content a little bit as advised by Rob (subnodes
+> >   being objects, MFD descriptions provided once, status and unused
+> >   labels removed).
+> > [SPDX changes]
+> > * Mentioned that the license macro and the license text matched.
+> > * Also added an SPDX tag in the MFD header.
+> > [MFD header]
+> > * Used the BIT(), GENMASK() and PREP_FIELD() macros when relevant.
+> > [MFD driver]
+> > * Did not reordered the variables declared on the probe stack as advised
+> >   by Jonathan.
+> > * Added missing of_node_put() calls.
+> > * Moved the patch changing the place where the main structure is
+> >   allocated to directly precede the patch using this change.
+> > * Fixed the driver data wiring (bug happening between ex patches 16 and
+> >   28).
+> > * Added a commit just to explain the reordering of the register writes
+> >   during initialization/resume.
+> > * Explained the check about 'use_tsc' in the commit message.
+> > * Added a link to the TRM in a commit message referencing it.
+> > * Removed the use of the ti,tracks property, used a constant value
+> >   instead.
+> > * Dropped the error check when retrieving the "wrong" DT property
+> >   (coordiante-readouts) which is unused.
+> > 
+> > 
+> > Miquel Raynal (47):
+> >   clk: ti: am43xx: Add clkctrl data for am43xx ADC1
+> >   dt-bindings: mfd: ti,am3359-tscadc: Add a yaml description for this
+> >     MFD
+> >   dt-bindings: touchscreen: ti,am3359-tsc: New yaml description
+> >   dt-bindings: iio: adc: ti,am3359-adc: New yaml description
+> >   dt-bindings: touchscreen: ti,am3359-tsc: Remove deprecated text file
+> >   dt-bindings: mfd: ti,am3359-tscadc: Describe am4372 MFD compatible
+> >   dt-bindings: iio: adc: ti,am3359-adc: Describe am4372 ADC compatible
+> >   mfd: ti_am335x_tscadc: Ensure a balanced number of node get/put
+> >   mfd: ti_am335x_tscadc: Replace license text with SPDX tag
+> >   mfd: ti_am335x_tscadc: Fix style
+> >   mfd: ti_am335x_tscadc: Drop extra spacing when declaring stack
+> >     variables
+> >   mfd: ti_am335x_tscadc: Get rid of useless gotos
+> >   mfd: ti_am335x_tscadc: Reword the comment explaining the dividers
+> >   mfd: ti_am335x_tscadc: Don't search the tree for our clock
+> >   mfd: ti_am335x_tscadc: Simplify divisor calculation
+> >   mfd: ti_am335x_tscadc: Move the driver structure allocation earlier
+> >   mfd: ti_am335x_tscadc: Use driver data
+> >   mfd: ti_am335x_tscadc: Mimic the probe from resume()
+> >   mfd: ti_am335x_tscadc: Drop useless variables from the driver
+> >     structure
+> >   mfd: ti_am335x_tscadc: Always provide an idle configuration
+> >   mfd: ti_am335x_tscadc: Reorder the initialization steps
+> >   mfd: ti_am335x_tscadc: Gather the ctrl register logic in one place
+> >   mfd: ti_am335x_tscadc: Replace the header license text with SPDX tag
+> >   mfd: ti_am335x_tscadc: Fix header spacing
+> >   mfd: ti_am335x_tscadc: Use the new HZ_PER_MHZ macro
+> >   mfd: ti_am335x_tscadc: Use BIT(), GENMASK() and FIELD_PREP() when
+> >     relevant
+> >   mfd: ti_am335x_tscadc: Clarify the maximum values for DT entries
+> >   mfd: ti_am335x_tscadc: Drop useless definitions from the header
+> >   mfd: ti_am335x_tscadc: Rename the subsystem enable macro
+> >   mfd: ti_am335x_tscadc: Add TSC prefix in certain macros
+> >   mfd: ti_am335x_tscadc: Rename a variable
+> >   mfd: ti_am335x_tscadc: Fix an error message
+> >   mfd: ti_am335x_tscadc: Add a boolean to clarify the presence of a
+> >     touchscreen
+> >   mfd: ti_am335x_tscadc: Introduce has_tsc
+> >   mfd: ti_am335x_tscadc: Add ADC1/magnetic reader support
+> >   mfd: ti_am335x_tscadc: Support the correctly spelled DT property  
 > 
-> Why 2 bools?
-> 
-> Better to have a single u8:
-> 
->   MODE_TOUCHSCREEN
->   MODE_MAG_STRING
->   MODE_NONE
+> The MFD patches I haven't reviewed/replied to seem fine.
 
-It's not a mode like "please use this feature", it is more like a
-feature that is present and we need to know which one it is.
+Great!
 
-Anyway, I can use an enum for this, fine.
+I'll address all your comments, bring-in the latest
+Reviewed-by/Acked-by that I received on the other patches and send a
+v4. Thanks for the feedback.
 
-> 
-> > +	.name_tscmag = "TI-am43xx-mag",
-> > +	.compat_tscmag = "ti,am4372-mag",
-> > +	.name_adc = "TI-am43xx-adc",
-> > +	.compat_adc = "ti,am4372-adc",
-> > +	.target_clk_rate = MAG_ADC_CLK,
-> > +};
-> > +
-> >  static const struct of_device_id ti_tscadc_dt_ids[] = {
-> >  	{
-> >  		.compatible = "ti,am3359-tscadc",
-> >  		.data = &tscdata,
-> >  	},
-> > +	{
-> > +		.compatible = "ti,am4372-magadc",
-> > +		.data = &magdata,
-> > +	},
-> >  	{ }
-> >  };
-> >  MODULE_DEVICE_TABLE(of, ti_tscadc_dt_ids);
-> > @@ -363,6 +392,6 @@ static struct platform_driver ti_tscadc_driver = {
-> >  
-> >  module_platform_driver(ti_tscadc_driver);
-> >  
-> > -MODULE_DESCRIPTION("TI touchscreen / ADC MFD controller driver");
-> > +MODULE_DESCRIPTION("TI touchscreen/magnetic reader/ADC MFD controller driver");  
-> 
-> Magnetic what?  Tape, disk, stripe?
-
-I guess my current knowledge of English tricked me as I thought
-"magnetic reader" was clear enough for everybody, but I'll make the
-commit logs and this module description clearer by specifying the
-"stripe" keyword, sure.
- 
-> 
-> >  MODULE_AUTHOR("Rachna Patil <rachna@ti.com>");
-> >  MODULE_LICENSE("GPL");
-> > diff --git a/include/linux/mfd/ti_am335x_tscadc.h b/include/linux/mfd/ti_am335x_tscadc.h
-> > index 467b3bec4335..9a412e6d764b 100644
-> > --- a/include/linux/mfd/ti_am335x_tscadc.h
-> > +++ b/include/linux/mfd/ti_am335x_tscadc.h
-> > @@ -106,6 +106,11 @@
-> >  #define CNTRLREG_TSC_8WIRE	CNTRLREG_TSC_AFE_CTRL(3)
-> >  #define CNTRLREG_TSC_ENB	BIT(7)
-> >  
-> > +/*Control registers bitfields  for MAGADC IP */
-> > +#define CNTRLREG_MAGADCENB      BIT(0)
-> > +#define CNTRLREG_MAG_PREAMP_PWRDOWN BIT(5)
-> > +#define CNTRLREG_MAG_PREAMP_BYPASS  BIT(6)
-> > +
-> >  /* FIFO READ Register */
-> >  #define FIFOREAD_DATA_MASK	GENMASK(11, 0)
-> >  #define FIFOREAD_CHNLID_MASK	GENMASK(19, 16)
-> > @@ -119,6 +124,7 @@
-> >  #define CHARGE_STEP		0x11
-> >  
-> >  #define TSC_ADC_CLK		(3 * HZ_PER_MHZ)
-> > +#define MAG_ADC_CLK		(13 * HZ_PER_MHZ)
-> >  #define TOTAL_STEPS		16
-> >  #define TOTAL_CHANNELS		8
-> >  #define FIFO1_THRESHOLD		19
-> > @@ -141,6 +147,7 @@
-> >  
-> >  struct ti_tscadc_data {
-> >  	bool has_tsc;
-> > +	bool has_mag;
-> >  	char *name_tscmag;
-> >  	char *compat_tscmag;
-> >  	char *name_adc;  
-> 
-
-
-Thanks,
+Cheers,
 Miquèl

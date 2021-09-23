@@ -2,130 +2,236 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D21474159FD
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Sep 2021 10:23:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A07F415A0E
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Sep 2021 10:34:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239920AbhIWIYz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 23 Sep 2021 04:24:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47044 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239909AbhIWIYy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Sep 2021 04:24:54 -0400
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56B8FC061757;
-        Thu, 23 Sep 2021 01:23:23 -0700 (PDT)
-Received: by mail-wr1-x42f.google.com with SMTP id t8so14803942wrq.4;
-        Thu, 23 Sep 2021 01:23:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=VNBIkdqrfBWoODl4rVjrpYZvK6+z3y3Yg3DlUkxU4pk=;
-        b=ip7+kVR2I44Dogsy2DooLa4tAj9TEdElY2AlnrnTrzJbaImvVRkuTijeJT7LgtxrP5
-         1T8RS35G3+00KZFlz4mYpL/xeaF3/ouRFpQUe4WagQogxCDBudx83Bc8RRd3OQ9pGgJT
-         HCouyc9Gb6XEGcmzY2NGDdkYyVoR8VQyq2+2dLOVJTjHgbQoOvajQJCg5pIS87cDSZfV
-         uS05DUv3grHCriBDumBy/yyop/xH9KXVliBNP7idO6tgbuiiEhnSY17Yz+rjLioEDsOX
-         EwcKmfPDQYtLhzC+/sH7ycLTwn5YgF0Vl53AV9RQZXQyAJq3fFd9+1VXadqRu1nEF75D
-         +vRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=VNBIkdqrfBWoODl4rVjrpYZvK6+z3y3Yg3DlUkxU4pk=;
-        b=wgiwFowvu+iylNCgqHEO20dh5sePMzVEk2qMklCDqMfegjgCSN+MAEbMAnJ6MUM9DZ
-         +DWPsAvlYsWKHPc39QBjgwdW8TSSPUgwQ5Hpc9cR8N5zmC7Hv1KVsCbZuNh4cothH738
-         RmJDBLVRwbme1VSJ9o4eBmhwNu4/108GQldu3B2LYTXC0HjKdqEL54uCC/X8aLfIP/ON
-         6Zb2VJF28wnbqxkKYYP+t95c97qCHJ7XF1tcInG+S9drUfcN7Fvhfh0SdAEDRVDMkCGE
-         R+1XLGcYUNzKXX49nnXx7xLgEBP5XQiC8qlWKZODFNIPUqDe/kzESvAmwHAsaOb8Bvox
-         qzzg==
-X-Gm-Message-State: AOAM532WThzCeznyCYEZ8aLXBC+922dE/FYKV/4k+PnL/xXjkgnApYEd
-        7YqJkM+B64g4KkogppgeobpoT7FqVi6vqQ==
-X-Google-Smtp-Source: ABdhPJyx93y7q9O7DmtOlj6h338X1hPwSNvz3mUKnA5464/RDJ7MCEXpz8CTsjXPyIKLfu5Fz9UnPg==
-X-Received: by 2002:a05:6000:1569:: with SMTP id 9mr3611236wrz.337.1632385401956;
-        Thu, 23 Sep 2021 01:23:21 -0700 (PDT)
-Received: from stewarton.broadband ([84.67.150.141])
-        by smtp.googlemail.com with ESMTPSA id r25sm4604999wra.76.2021.09.23.01.23.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Sep 2021 01:23:21 -0700 (PDT)
-From:   Iain Hunter <drhunter95@gmail.com>
-Cc:     lothar.felten@gmail.com, iain@hunterembedded.co.uk,
-        Jonathan Cameron <jic23@kernel.org>,
+        id S239943AbhIWIfa convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Thu, 23 Sep 2021 04:35:30 -0400
+Received: from relay10.mail.gandi.net ([217.70.178.230]:41425 "EHLO
+        relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239922AbhIWIfa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Sep 2021 04:35:30 -0400
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by relay10.mail.gandi.net (Postfix) with ESMTPSA id C7910240010;
+        Thu, 23 Sep 2021 08:33:54 +0000 (UTC)
+Date:   Thu, 23 Sep 2021 10:33:52 +0200
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] workaround regression in ina2xx introduced by cb47755725da("time: Prevent undefined behaviour in timespec64_to_ns()")
-Date:   Thu, 23 Sep 2021 09:23:16 +0100
-Message-Id: <20210923082319.1510936-1-drhunter95@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        bcousson@baylibre.com, Tony Lindgren <tony@atomide.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Ryan Barnett <ryan.barnett@collins.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Jason Reeder <jreeder@ti.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v3 35/47] mfd: ti_am335x_tscadc: Add ADC1/magnetic
+ reader support
+Message-ID: <20210923103352.40e422a7@xps13>
+In-Reply-To: <YUtTFEv1YFOMeuEb@google.com>
+References: <20210915155908.476767-1-miquel.raynal@bootlin.com>
+        <20210915155908.476767-36-miquel.raynal@bootlin.com>
+        <YUtTFEv1YFOMeuEb@google.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Iain Hunter <iain@hunterembedded.co.uk>
+Hi Lee,
 
-That change adds an error check to avoid saturation during multiplication
-to calculate nano seconds in timespec64_to_ns(). This function was changed
-in kernel 5.4.
-In ina2xx_capture_thread() a timespec64 structure is used to calculate
-the delta time until the next sample time. This delta can be negative if
-the next sample time was in the past. In the -1 case timespec64_to_ns()
-now clamps the -1 second value to KTIME_MAX. This essentially puts ina2xx
-thread to sleep forever.
-Proposed patch is to split the functionality in the loop into two parts:
-- do while loop only does the test to see if the next sample time is in 
-the future or in the past and so will be skipped and the sample time 
-incremented until it is in the future. This comparision can be done with 
-timespec64_compare() as we are only interested in the sign being positive
-or negative.
-The variable skip_next_sample is only used for clarity.
-- after do while loop we know that next is later than now and so delta is
-guaranteed to be positive. This means timespec64_to_ns() can be safely
-used.
+lee.jones@linaro.org wrote on Wed, 22 Sep 2021 17:00:20 +0100:
 
-Signed-off-by: Iain Hunter <iain@hunterembedded.co.uk>
+> On Wed, 15 Sep 2021, Miquel Raynal wrote:
+> 
+> > Introduce a new compatible that has another set of driver data,
+> > targeting am437x SoCs with a magnetic reader instead of the
+> > touchscreen and a more featureful set of registers.
+> > 
+> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > ---
+> >  drivers/mfd/ti_am335x_tscadc.c       | 41 ++++++++++++++++++++++++----
+> >  include/linux/mfd/ti_am335x_tscadc.h |  7 +++++
+> >  2 files changed, 42 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
+> > index 65c0fa735a71..155a8ed879b3 100644
+> > --- a/drivers/mfd/ti_am335x_tscadc.c
+> > +++ b/drivers/mfd/ti_am335x_tscadc.c
+> > @@ -121,11 +121,11 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+> >  	struct mfd_cell *cell;
+> >  	struct property *prop;
+> >  	const __be32 *cur;
+> > -	bool use_tsc = false;
+> > +	bool use_tsc = false, use_mag = false;
+> >  	u32 val;
+> >  	int err;
+> >  	int tscmag_wires = 0, adc_channels = 0, cell_idx = 0, total_channels;
+> > -	int readouts = 0;
+> > +	int readouts = 0, mag_tracks = 0;
+> >  
+> >  	/* Allocate memory for device */
+> >  	tscadc = devm_kzalloc(&pdev->dev, sizeof(*tscadc), GFP_KERNEL);
+> > @@ -148,6 +148,16 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+> >  		of_node_put(node);
+> >  		if (tscmag_wires)
+> >  			use_tsc = true;
+> > +	} else {
+> > +		/*
+> > +		 * When adding support for the magnetic reader, here is the
+> > +		 * place to look for the number of tracks used from device tree.
+> > +		 * Let's default to 0 for now.
+> > +		 */
+> > +		mag_tracks = 0;
+> > +		tscmag_wires = mag_tracks * 2;
+> > +		if (tscmag_wires)
+> > +			use_mag = true;
+> >  	}
+> >  
+> >  	node = of_get_child_by_name(pdev->dev.of_node, "adc");
+> > @@ -209,8 +219,9 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+> >  	 * The TSC_ADC_Subsystem has 2 clock domains: OCP_CLK and ADC_CLK.
+> >  	 * ADCs produce a 12-bit sample every 15 ADC_CLK cycles.
+> >  	 * am33xx ADCs expect to capture 200ksps.
+> > -	 * We need the ADC clocks to run at 3MHz.
+> > -	 * This frequency is valid since TSC_ADC_SS controller design
+> > +	 * am47xx ADCs expect to capture 867ksps.
+> > +	 * We need ADC clocks respectively running at 3MHz and 13MHz.
+> > +	 * These frequencies are valid since TSC_ADC_SS controller design
+> >  	 * assumes the OCP clock is at least 6x faster than the ADC clock.
+> >  	 */
+> >  	clk = devm_clk_get(&pdev->dev, NULL);
+> > @@ -238,6 +249,9 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+> >  			else
+> >  				tscadc->ctrl |= CNTRLREG_TSC_4WIRE;
+> >  		}
+> > +	} else {
+> > +		tscadc->ctrl |= CNTRLREG_MAG_PREAMP_PWRDOWN |
+> > +				CNTRLREG_MAG_PREAMP_BYPASS;
+> >  	}
+> >  	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl);
+> >  
+> > @@ -246,7 +260,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+> >  	/* Enable the TSC module enable bit */
+> >  	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl | CNTRLREG_SSENB);
+> >  
+> > -	/* TSC Cell */
+> > +	/* TSC or MAG Cell */
+> >  	if (tscmag_wires > 0) {
+> >  		cell = &tscadc->cells[cell_idx++];
+> >  		cell->name = tscadc->data->name_tscmag;
+> > @@ -334,6 +348,7 @@ static SIMPLE_DEV_PM_OPS(tscadc_pm_ops, tscadc_suspend, tscadc_resume);
+> >  
+> >  static const struct ti_tscadc_data tscdata = {
+> >  	.has_tsc = true,
+> > +	.has_mag = false,
+> >  	.name_tscmag = "TI-am335x-tsc",
+> >  	.compat_tscmag = "ti,am3359-tsc",
+> >  	.name_adc = "TI-am335x-adc",
+> > @@ -341,11 +356,25 @@ static const struct ti_tscadc_data tscdata = {
+> >  	.target_clk_rate = TSC_ADC_CLK,
+> >  };
+> >  
+> > +static const struct ti_tscadc_data magdata = {
+> > +	.has_tsc = false,
+> > +	.has_mag = true,  
+> 
+> Why 2 bools?
+> 
+> Better to have a single u8:
+> 
+>   MODE_TOUCHSCREEN
+>   MODE_MAG_STRING
+>   MODE_NONE
 
-Fixes: regression introduced by
- cb47755725da("time: Prevent undefined behaviour in timespec64_to_ns()")
----
- drivers/iio/adc/ina2xx-adc.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+It's not a mode like "please use this feature", it is more like a
+feature that is present and we need to know which one it is.
 
-diff --git a/drivers/iio/adc/ina2xx-adc.c b/drivers/iio/adc/ina2xx-adc.c
-index a4b2ff9e0..e30012d0d 100644
---- a/drivers/iio/adc/ina2xx-adc.c
-+++ b/drivers/iio/adc/ina2xx-adc.c
-@@ -777,6 +777,7 @@ static int ina2xx_capture_thread(void *data)
- 	int ret;
- 	struct timespec64 next, now, delta;
- 	s64 delay_us;
-+	int skip_next_sample;
+Anyway, I can use an enum for this, fine.
+
+> 
+> > +	.name_tscmag = "TI-am43xx-mag",
+> > +	.compat_tscmag = "ti,am4372-mag",
+> > +	.name_adc = "TI-am43xx-adc",
+> > +	.compat_adc = "ti,am4372-adc",
+> > +	.target_clk_rate = MAG_ADC_CLK,
+> > +};
+> > +
+> >  static const struct of_device_id ti_tscadc_dt_ids[] = {
+> >  	{
+> >  		.compatible = "ti,am3359-tscadc",
+> >  		.data = &tscdata,
+> >  	},
+> > +	{
+> > +		.compatible = "ti,am4372-magadc",
+> > +		.data = &magdata,
+> > +	},
+> >  	{ }
+> >  };
+> >  MODULE_DEVICE_TABLE(of, ti_tscadc_dt_ids);
+> > @@ -363,6 +392,6 @@ static struct platform_driver ti_tscadc_driver = {
+> >  
+> >  module_platform_driver(ti_tscadc_driver);
+> >  
+> > -MODULE_DESCRIPTION("TI touchscreen / ADC MFD controller driver");
+> > +MODULE_DESCRIPTION("TI touchscreen/magnetic reader/ADC MFD controller driver");  
+> 
+> Magnetic what?  Tape, disk, stripe?
+
+I guess my current knowledge of English tricked me as I thought
+"magnetic reader" was clear enough for everybody, but I'll make the
+commit logs and this module description clearer by specifying the
+"stripe" keyword, sure.
  
- 	/*
- 	 * Poll a bit faster than the chip internal Fs, in case
-@@ -817,10 +818,15 @@ static int ina2xx_capture_thread(void *data)
- 		 */
- 		do {
- 			timespec64_add_ns(&next, 1000 * sampling_us);
--			delta = timespec64_sub(next, now);
--			delay_us = div_s64(timespec64_to_ns(&delta), 1000);
--		} while (delay_us <= 0);
- 
-+			if (timespec64_compare(&next, &now) < 0)
-+				skip_next_sample = 1;
-+			else
-+				skip_next_sample = 0;
-+		} while (skip_next_sample);
-+
-+		delta = timespec64_sub(next, now);
-+		delay_us = div_s64(timespec64_to_ns(&delta), 1000);
- 		usleep_range(delay_us, (delay_us * 3) >> 1);
- 
- 	} while (!kthread_should_stop());
--- 
-2.17.1
+> 
+> >  MODULE_AUTHOR("Rachna Patil <rachna@ti.com>");
+> >  MODULE_LICENSE("GPL");
+> > diff --git a/include/linux/mfd/ti_am335x_tscadc.h b/include/linux/mfd/ti_am335x_tscadc.h
+> > index 467b3bec4335..9a412e6d764b 100644
+> > --- a/include/linux/mfd/ti_am335x_tscadc.h
+> > +++ b/include/linux/mfd/ti_am335x_tscadc.h
+> > @@ -106,6 +106,11 @@
+> >  #define CNTRLREG_TSC_8WIRE	CNTRLREG_TSC_AFE_CTRL(3)
+> >  #define CNTRLREG_TSC_ENB	BIT(7)
+> >  
+> > +/*Control registers bitfields  for MAGADC IP */
+> > +#define CNTRLREG_MAGADCENB      BIT(0)
+> > +#define CNTRLREG_MAG_PREAMP_PWRDOWN BIT(5)
+> > +#define CNTRLREG_MAG_PREAMP_BYPASS  BIT(6)
+> > +
+> >  /* FIFO READ Register */
+> >  #define FIFOREAD_DATA_MASK	GENMASK(11, 0)
+> >  #define FIFOREAD_CHNLID_MASK	GENMASK(19, 16)
+> > @@ -119,6 +124,7 @@
+> >  #define CHARGE_STEP		0x11
+> >  
+> >  #define TSC_ADC_CLK		(3 * HZ_PER_MHZ)
+> > +#define MAG_ADC_CLK		(13 * HZ_PER_MHZ)
+> >  #define TOTAL_STEPS		16
+> >  #define TOTAL_CHANNELS		8
+> >  #define FIFO1_THRESHOLD		19
+> > @@ -141,6 +147,7 @@
+> >  
+> >  struct ti_tscadc_data {
+> >  	bool has_tsc;
+> > +	bool has_mag;
+> >  	char *name_tscmag;
+> >  	char *compat_tscmag;
+> >  	char *name_adc;  
+> 
 
+
+Thanks,
+Miquèl

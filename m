@@ -2,96 +2,130 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BCB094159F5
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Sep 2021 10:19:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D21474159FD
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Sep 2021 10:23:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239807AbhIWIU6 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Thu, 23 Sep 2021 04:20:58 -0400
-Received: from relay4-d.mail.gandi.net ([217.70.183.196]:50389 "EHLO
-        relay4-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237996AbhIWIU5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Sep 2021 04:20:57 -0400
-Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 1D09FE0007;
-        Thu, 23 Sep 2021 08:19:22 +0000 (UTC)
-Date:   Thu, 23 Sep 2021 10:19:22 +0200
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        id S239920AbhIWIYz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 23 Sep 2021 04:24:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47044 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239909AbhIWIYy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Sep 2021 04:24:54 -0400
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56B8FC061757;
+        Thu, 23 Sep 2021 01:23:23 -0700 (PDT)
+Received: by mail-wr1-x42f.google.com with SMTP id t8so14803942wrq.4;
+        Thu, 23 Sep 2021 01:23:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=VNBIkdqrfBWoODl4rVjrpYZvK6+z3y3Yg3DlUkxU4pk=;
+        b=ip7+kVR2I44Dogsy2DooLa4tAj9TEdElY2AlnrnTrzJbaImvVRkuTijeJT7LgtxrP5
+         1T8RS35G3+00KZFlz4mYpL/xeaF3/ouRFpQUe4WagQogxCDBudx83Bc8RRd3OQ9pGgJT
+         HCouyc9Gb6XEGcmzY2NGDdkYyVoR8VQyq2+2dLOVJTjHgbQoOvajQJCg5pIS87cDSZfV
+         uS05DUv3grHCriBDumBy/yyop/xH9KXVliBNP7idO6tgbuiiEhnSY17Yz+rjLioEDsOX
+         EwcKmfPDQYtLhzC+/sH7ycLTwn5YgF0Vl53AV9RQZXQyAJq3fFd9+1VXadqRu1nEF75D
+         +vRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=VNBIkdqrfBWoODl4rVjrpYZvK6+z3y3Yg3DlUkxU4pk=;
+        b=wgiwFowvu+iylNCgqHEO20dh5sePMzVEk2qMklCDqMfegjgCSN+MAEbMAnJ6MUM9DZ
+         +DWPsAvlYsWKHPc39QBjgwdW8TSSPUgwQ5Hpc9cR8N5zmC7Hv1KVsCbZuNh4cothH738
+         RmJDBLVRwbme1VSJ9o4eBmhwNu4/108GQldu3B2LYTXC0HjKdqEL54uCC/X8aLfIP/ON
+         6Zb2VJF28wnbqxkKYYP+t95c97qCHJ7XF1tcInG+S9drUfcN7Fvhfh0SdAEDRVDMkCGE
+         R+1XLGcYUNzKXX49nnXx7xLgEBP5XQiC8qlWKZODFNIPUqDe/kzESvAmwHAsaOb8Bvox
+         qzzg==
+X-Gm-Message-State: AOAM532WThzCeznyCYEZ8aLXBC+922dE/FYKV/4k+PnL/xXjkgnApYEd
+        7YqJkM+B64g4KkogppgeobpoT7FqVi6vqQ==
+X-Google-Smtp-Source: ABdhPJyx93y7q9O7DmtOlj6h338X1hPwSNvz3mUKnA5464/RDJ7MCEXpz8CTsjXPyIKLfu5Fz9UnPg==
+X-Received: by 2002:a05:6000:1569:: with SMTP id 9mr3611236wrz.337.1632385401956;
+        Thu, 23 Sep 2021 01:23:21 -0700 (PDT)
+Received: from stewarton.broadband ([84.67.150.141])
+        by smtp.googlemail.com with ESMTPSA id r25sm4604999wra.76.2021.09.23.01.23.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Sep 2021 01:23:21 -0700 (PDT)
+From:   Iain Hunter <drhunter95@gmail.com>
+Cc:     lothar.felten@gmail.com, iain@hunterembedded.co.uk,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        bcousson@baylibre.com, Tony Lindgren <tony@atomide.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Ryan Barnett <ryan.barnett@collins.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Jason Reeder <jreeder@ti.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v3 36/47] mfd: ti_am335x_tscadc: Support the correctly
- spelled DT property
-Message-ID: <20210923101922.2c108d2b@xps13>
-In-Reply-To: <YUtSVo9HBAiomswv@google.com>
-References: <20210915155908.476767-1-miquel.raynal@bootlin.com>
-        <20210915155908.476767-37-miquel.raynal@bootlin.com>
-        <YUtSVo9HBAiomswv@google.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] workaround regression in ina2xx introduced by cb47755725da("time: Prevent undefined behaviour in timespec64_to_ns()")
+Date:   Thu, 23 Sep 2021 09:23:16 +0100
+Message-Id: <20210923082319.1510936-1-drhunter95@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Lee,
+From: Iain Hunter <iain@hunterembedded.co.uk>
 
-lee.jones@linaro.org wrote on Wed, 22 Sep 2021 16:57:10 +0100:
+That change adds an error check to avoid saturation during multiplication
+to calculate nano seconds in timespec64_to_ns(). This function was changed
+in kernel 5.4.
+In ina2xx_capture_thread() a timespec64 structure is used to calculate
+the delta time until the next sample time. This delta can be negative if
+the next sample time was in the past. In the -1 case timespec64_to_ns()
+now clamps the -1 second value to KTIME_MAX. This essentially puts ina2xx
+thread to sleep forever.
+Proposed patch is to split the functionality in the loop into two parts:
+- do while loop only does the test to see if the next sample time is in 
+the future or in the past and so will be skipped and the sample time 
+incremented until it is in the future. This comparision can be done with 
+timespec64_compare() as we are only interested in the sign being positive
+or negative.
+The variable skip_next_sample is only used for clarity.
+- after do while loop we know that next is later than now and so delta is
+guaranteed to be positive. This means timespec64_to_ns() can be safely
+used.
 
-> On Wed, 15 Sep 2021, Miquel Raynal wrote:
-> 
-> > There was in the past a typo in the coordinate readouts property. The
-> > bindings have been updated, the touchscreen driver as well and now
-> > supports both. However, the MFD driver that is in charge of verifying
-> > the validity of the property only checks the bogus one. Add support for
-> > the correctly spelled DT property.
-> > 
-> > Fixes: c9aeb249bf72 ("Input: ti_am335x_tsc - fix spelling mistake in TSC/ADC DT binding")
-> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > ---
-> >  drivers/mfd/ti_am335x_tscadc.c | 8 +++++++-
-> >  1 file changed, 7 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
-> > index 155a8ed879b3..aa46ed669016 100644
-> > --- a/drivers/mfd/ti_am335x_tscadc.c
-> > +++ b/drivers/mfd/ti_am335x_tscadc.c
-> > @@ -144,8 +144,14 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
-> >  	if (tscadc->data->has_tsc) {
-> >  		node = of_get_child_by_name(pdev->dev.of_node, "tsc");
-> >  		of_property_read_u32(node, "ti,wires", &tscmag_wires);
-> > -		of_property_read_u32(node, "ti,coordiante-readouts", &readouts);
-> > +		err = of_property_read_u32(node, "ti,coordinate-readouts",
-> > +					   &readouts);
-> > +		if (err < 0)
-> > +			of_property_read_u32(node, "ti,coordiante-readouts",
-> > +					     &readouts);
-> > +  
-> 
-> How long are you proposing that we support this churn?
+Signed-off-by: Iain Hunter <iain@hunterembedded.co.uk>
 
-Well, I am not proposing anything, I am just "fixing" the driver so
-that it fits the bindings :) Given the fact that at the end of this
-series there is a patch that changes the "coordiante" typo to
-"coordinate" in a device tree source file, I believe it is still too
-soon...
+Fixes: regression introduced by
+ cb47755725da("time: Prevent undefined behaviour in timespec64_to_ns()")
+---
+ drivers/iio/adc/ina2xx-adc.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
+diff --git a/drivers/iio/adc/ina2xx-adc.c b/drivers/iio/adc/ina2xx-adc.c
+index a4b2ff9e0..e30012d0d 100644
+--- a/drivers/iio/adc/ina2xx-adc.c
++++ b/drivers/iio/adc/ina2xx-adc.c
+@@ -777,6 +777,7 @@ static int ina2xx_capture_thread(void *data)
+ 	int ret;
+ 	struct timespec64 next, now, delta;
+ 	s64 delay_us;
++	int skip_next_sample;
+ 
+ 	/*
+ 	 * Poll a bit faster than the chip internal Fs, in case
+@@ -817,10 +818,15 @@ static int ina2xx_capture_thread(void *data)
+ 		 */
+ 		do {
+ 			timespec64_add_ns(&next, 1000 * sampling_us);
+-			delta = timespec64_sub(next, now);
+-			delay_us = div_s64(timespec64_to_ns(&delta), 1000);
+-		} while (delay_us <= 0);
+ 
++			if (timespec64_compare(&next, &now) < 0)
++				skip_next_sample = 1;
++			else
++				skip_next_sample = 0;
++		} while (skip_next_sample);
++
++		delta = timespec64_sub(next, now);
++		delay_us = div_s64(timespec64_to_ns(&delta), 1000);
+ 		usleep_range(delay_us, (delay_us * 3) >> 1);
+ 
+ 	} while (!kthread_should_stop());
+-- 
+2.17.1
 
-Thanks,
-Miquèl

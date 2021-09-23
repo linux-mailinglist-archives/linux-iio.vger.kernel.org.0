@@ -2,91 +2,92 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2E4F4167CF
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Sep 2021 00:04:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F11394167DA
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Sep 2021 00:12:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232145AbhIWWFw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 23 Sep 2021 18:05:52 -0400
-Received: from mail-ot1-f53.google.com ([209.85.210.53]:36610 "EHLO
-        mail-ot1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234737AbhIWWFv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Sep 2021 18:05:51 -0400
-Received: by mail-ot1-f53.google.com with SMTP id 5-20020a9d0685000000b0054706d7b8e5so10606094otx.3;
-        Thu, 23 Sep 2021 15:04:19 -0700 (PDT)
+        id S239507AbhIWWOF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 23 Sep 2021 18:14:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42720 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232145AbhIWWOF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Sep 2021 18:14:05 -0400
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7EFFC061574;
+        Thu, 23 Sep 2021 15:12:32 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id x27so32107158lfu.5;
+        Thu, 23 Sep 2021 15:12:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=uzKfTb+iGUsH3mWhIrSbIbsPD44CEKOd50V1lDVVLdA=;
+        b=LCh/98K/jr97CoCn3AQApNer4bPQNBbqmOd2gYXSSbZE2Y6DWmQgIJM6wwPkH+Bn2h
+         UhvSxV1cbC3PsMIcXjlhDMwLTAsDFtcsnaznuPwrF5jgxdNhIrOcd+egsjJkWJmJT+iY
+         9zfwyZGpwQxk7yQny3BvSu7xBXHSOaynpyLL6YO/h+mKK7CtFHuT1XpdgmSj1TqOFkvd
+         XB2QKLy9snWd4PqESNJDOvbmhyMEQzh2YouhF+peJYyShpCCdWT15x0+BvLgIUkFFNZ5
+         miW4fI0ZkNqz5pUKo9c3wY4TPpJ8uzwJ5kgfSzwsZS3ft27Vv0hgsXhAHDyK/foCkM4I
+         zYGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=1Yn/zKfY1e+OALBtmnxl+pt+aoAA40VXrdqikSMZ29s=;
-        b=GEsXRuCWzoHymPTn1WP4eyHxUm4e6fM/O4px8YNYwoPsFwPlhVkmWxgyh2gaRIduhr
-         Ipq0shlBrJ4qZssK4kzgmzRDCHTdRiUXQEuYQxM/R5cacGLn4dsjvIGotry58klXS37K
-         7p6WHC0SnKHuFqFYYKbQxk0BuJs0gwPyW3MhZofDXmm+C0NQnH4epK3Ip5fWvTVOm2G0
-         FTeTOhXVEUpmzyOa7xL+F96a0Rj6J1J6iujunVWpiLPBke+tZvdkvspTF0DWmJTGfR0G
-         Fu2MWZDBV4k/u9+CQ3DUjYxfpA4Z6oU5ggO4D5CXmBuZRN8kPlLgw2GZ2S1BiQFtZfUz
-         77HA==
-X-Gm-Message-State: AOAM53316dFLjq9+6cqKw3hn7e0cDwbeWwIwosYLuQO3Lm8Z6Z8Ox8ZI
-        40hBonflpHXp141lFAnvrE5gvIRkFA==
-X-Google-Smtp-Source: ABdhPJzqiFPHmVyFkh2YZAtU90uejrnAT37LFonxYP0a0NeDFHNro0hOUYwnziZsZ7vbJQN+MlC7uw==
-X-Received: by 2002:a05:6830:40cb:: with SMTP id h11mr937856otu.176.1632434659372;
-        Thu, 23 Sep 2021 15:04:19 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id c10sm1653247ooi.11.2021.09.23.15.04.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Sep 2021 15:04:18 -0700 (PDT)
-Received: (nullmailer pid 3607140 invoked by uid 1000);
-        Thu, 23 Sep 2021 22:04:17 -0000
-Date:   Thu, 23 Sep 2021 17:04:17 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Cai Huoqing <caihuoqing@baidu.com>
-Cc:     linux-iio@vger.kernel.org, Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Shawn Guo <shawnguo@kernel.org>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH v5 2/3] iio: imx8qxp-adc: dt-bindings: iio: adc: Add
- binding documentation for  NXP IMX8QXP ADC
-Message-ID: <YUz54Uv+Mh/9j+rY@robh.at.kernel.org>
-References: <20210921052821.91-1-caihuoqing@baidu.com>
- <20210921052821.91-3-caihuoqing@baidu.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=uzKfTb+iGUsH3mWhIrSbIbsPD44CEKOd50V1lDVVLdA=;
+        b=G9uRaF64vuIOR6h42jJxCviFbPxUrkQ4ljkueqzLCoBLgqfYHyzqfT5pgw6gT+wJIm
+         USrgbct9d52Ba1ELPGt7R22f96N3UlAjP1VPzj++HFAH5JLQGMdrrC04B/Wyaomm8JFB
+         Adn0ENLZ35AW1Sw4ejsVbta18dsEnYTbe6SS75yAfWuJ6ZJ22TQURrAmZKyquAyA4s/K
+         VBLVqtiurXQxlqzaxrbvfZyK4wXK79c8MNVQMIkTeuZHVi+doXR1bKtn+KL64aTN59sY
+         zSHxgQEl5OuWF9lRUSxXaofxU6TE7Q0Zkr/krLzuMiGeCihf1Xr4exWrd9zDGZCR60PP
+         W1IQ==
+X-Gm-Message-State: AOAM5327NGM31a3DIO8u2Z2dqV/LwXAmeWpHzrQ41vIhsqM5y5UhHlBP
+        DGiRbxpQEfreQPwNzalYw2ujGLXo/vlCBKf/EATv8aHU7NY=
+X-Google-Smtp-Source: ABdhPJwCe68hYsNL0xBCm5+FwBvnV0A6IqGx4zL4pZFssd9TFn7I1EDkwLYqI3Pvner4QOM73k7I5anCUCH//3xv52w=
+X-Received: by 2002:ac2:514e:: with SMTP id q14mr6492757lfd.154.1632435151284;
+ Thu, 23 Sep 2021 15:12:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210921052821.91-3-caihuoqing@baidu.com>
+References: <20210921052821.91-1-caihuoqing@baidu.com> <20210921052821.91-2-caihuoqing@baidu.com>
+In-Reply-To: <20210921052821.91-2-caihuoqing@baidu.com>
+From:   Fabio Estevam <festevam@gmail.com>
+Date:   Thu, 23 Sep 2021 19:12:20 -0300
+Message-ID: <CAOMZO5CDgFHVyVAF6a5WKwsAE60t5zBBu-T+hScUO6WsmTQUvQ@mail.gmail.com>
+Subject: Re: [PATCH v5 1/3] iio: imx8qxp-adc: Add driver support for NXP
+ IMX8QXP ADC
+To:     Cai Huoqing <caihuoqing@baidu.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        linux-iio@vger.kernel.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 21 Sep 2021 13:28:14 +0800, Cai Huoqing wrote:
-> The NXP i.MX 8QuadXPlus SOC a new ADC IP, so add
-> binding documentation for NXP IMX8QXP ADC.
-> 
-> Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
-> ---
-> v1->v2:
->         *Fix some indentation issues.
->         *Mark status as okay.
->         *Change clock2 source.
-> v3->v4:
->         *Remove 'status' from examples.
->         *Remove unused 'state'.
->         *Remove interrupts-parent.
->         *Change num of address/size-cells from 1 to 2.
-> v4->v5:
->         *Remove unused properties
-> v1 link:
-> https://patchwork.kernel.org/project/linux-arm-kernel/patch/20210830172140.414-5-caihuoqing@baidu.com/
-> v3 link:
-> https://patchwork.kernel.org/project/linux-arm-kernel/patch/20210907015724.1377-3-caihuoqing@baidu.com/
-> v4 link:
-> https://patchwork.kernel.org/project/linux-arm-kernel/patch/20210912071334.1745-3-caihuoqing@baidu.com/
-> 
->  .../bindings/iio/adc/nxp,imx8qxp-adc.yaml     | 78 +++++++++++++++++++
->  1 file changed, 78 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml
-> 
+Hi Cai,
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+On Tue, Sep 21, 2021 at 2:29 AM Cai Huoqing <caihuoqing@baidu.com> wrote:
+
+> +error_iio_device_register:
+> +       clk_disable_unprepare(adc->ipg_clk);
+> +error_adc_ipg_clk_enable:
+> +       clk_disable_unprepare(adc->clk);
+> +error_adc_clk_enable:
+> +       regulator_disable(adc->vref);
+
+Please rename these labels to indicate the action that will be performed.
+
+Something like this:
+
+error_ipg_clk_disable:
+       clk_disable_unprepare(adc->ipg_clk);
+error_adc_clk_disable:
+       clk_disable_unprepare(adc->clk);
+error_regulator_disable:
+       regulator_disable(adc->vref);

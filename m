@@ -2,755 +2,795 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CFFFA4173A0
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Sep 2021 14:58:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B40041753E
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Sep 2021 15:16:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345278AbhIXM7P (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 24 Sep 2021 08:59:15 -0400
-Received: from mx0a-00328301.pphosted.com ([148.163.145.46]:36388 "EHLO
-        mx0a-00328301.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1344441AbhIXM4Q (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Sep 2021 08:56:16 -0400
-X-Greylist: delayed 1333 seconds by postgrey-1.27 at vger.kernel.org; Fri, 24 Sep 2021 08:56:16 EDT
-Received: from pps.filterd (m0156134.ppops.net [127.0.0.1])
-        by mx0a-00328301.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18O1ekVB030868;
-        Fri, 24 Sep 2021 05:32:17 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=invensense.com; h=from : to : cc :
- subject : date : message-id : content-transfer-encoding : content-type :
- mime-version; s=pfpt1; bh=WxJFbOhw3CONrnBoyMTSI+4SIX9ve1aVHqc+u7/FHBA=;
- b=TWt9FYTCT1TBMZStedy2QdSEu8oMMCMbuLDL2eHHQFwUVFpYIBq1ahz3A5TTYJQ+2UzA
- 7WTq8ysIni8Tru/bf/BGBXgD+MysHovETVD//o9zzTTzFPO+LBr90tw/MJS8i6S1f4m7
- JhKjnlY2aE+HAsZIxP62tHzosgIcpFFxufSj8M5h0sNvIw5A97V/bdvnEzz+dhVXYRB6
- tJtNo/CTSa9/j4nA786RlijGyowoqNNHyJKu3BhYfjYFfmqNtiBer8fZ8THAg64oyoed
- 8H6QAoJPLMGFh/uqZ+qqWI0/muwglmahB9bQ56pEDYDXROynXJgJxN3McRcvngXMdm0N NA== 
-Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2108.outbound.protection.outlook.com [104.47.58.108])
-        by mx0a-00328301.pphosted.com with ESMTP id 3b93fgged0-1
+        id S1345071AbhIXNSF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 24 Sep 2021 09:18:05 -0400
+Received: from mx07-00178001.pphosted.com ([185.132.182.106]:40214 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1345535AbhIXNQ1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Sep 2021 09:16:27 -0400
+Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18OAMFXY014424;
+        Fri, 24 Sep 2021 15:14:24 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=selector1;
+ bh=kcE9ZoQyVSzStrWEB/BCe8pFq6Sny4iY1guuqpPccoo=;
+ b=KpJ4MdzK3LIX3PzoGh+AyM9Zb2mvrlR85aeSyeubTwi4HyCFav05IPv+QhR1Vfmq2M8y
+ dXglCRj7UBbzW9hIlYIr0+KluagyumpxxwhnGytanvNL4VFnqt9xprCuYrJcTbE4uo/E
+ SjThiIsQvyAvH0BSKR9IFg3jVGBH7TQ4GTbeaJRWu/AOeDarV462weSXVipNi68U1+sQ
+ Q+3m57noOlF305TSs82ks22hYxRL0/movbMD74HLqjaNrsQuv13PRuyvOZ9iZuJLIpDL
+ CqD1JBYDpyt4OLMCMv3PcgoY5USdwJ2HNw4Hvd+aIGRVOIbFzYZjKKydFsyz1Zqre1Du hA== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 3b93fsc0a1-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 24 Sep 2021 05:32:17 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DU4ki3Ibrc+p/P590/dAjsLek8ma1z9j0Ctw4r1VZ2iTftLjkD38dhfUqu+dCTxiN5n0sTZZH20J4G/Q7Jb77xoRLUqLtGo9NGqzVZhuO4ayW1ec/0o3sZVWQnGoqej88LLe2XAspT/R6i0zoqSxBoQIzA8rW17ZY4AjxKie+HIRX1Tt2cF4O1LCO67LxFIsWysFUptfaHci64mxup6AVmBD7uT+nwJzJ1GrGQir0jYlgMIzqf/sFE9sZOVuLoTcD1iCQ4fgTQ+AZ5MVPkepalhiVX108EcW6BoeMuycKl8qS5be3w+LWQq9lCDzrJ+qQhwlO44KqUnRoITvs5e3OQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=WxJFbOhw3CONrnBoyMTSI+4SIX9ve1aVHqc+u7/FHBA=;
- b=fmnf72RFMZSnkFp4H+v+sPNJ4cxz3nlewapba3OV2UiBMLPSaSldW3tvzCpFpS9mtj1Qxf3cAFb49F249wxQs8U2qTE1Fs5/CgO8ZITthWT2vCpVmb6C39SkusDBSUh70ndL2p7JKw7P2kLPi8GmvMaKfAGEqHVaQiOntRkuRQ6eaHeKeTD3Hzw45EavXoLAT2zmCaKVy2vyi55WM++8diF0zW0Cn57sD2WUuWx7sMTUn5OpXVStBXP2Q9BC3vHOnKYrFAHZrvnnVw1vAQbNdx/rZvLLQpggahjDKBUt4tNtAKjOMCmZ8DSf29CVKm6x6QnpB4IqeKNPLtHz7Vs/Jg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=invensense.com; dmarc=pass action=none
- header.from=invensense.com; dkim=pass header.d=invensense.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=invensense.onmicrosoft.com; s=selector2-invensense-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WxJFbOhw3CONrnBoyMTSI+4SIX9ve1aVHqc+u7/FHBA=;
- b=UFNuIsnQsigZlQHVBB5hWPhRIUWrpXpPAE5Gwg5pusiNr5woY+/aIIKyjFLaPO0xDD3d7Gog8jaxchS0qQW5yAI4cl9KEuBbnIh3HBzorhObasOWLZSVeFIaO2cHPs8CyO2KqI0eDLBv+U5ij+EiGDmnEKgFuKmKYyorMjeVWU0=
-Authentication-Results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=invensense.com;
-Received: from BYAPR12MB2901.namprd12.prod.outlook.com (2603:10b6:a03:138::32)
- by BY5PR12MB5016.namprd12.prod.outlook.com (2603:10b6:a03:1c5::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4544.14; Fri, 24 Sep
- 2021 12:32:13 +0000
-Received: from BYAPR12MB2901.namprd12.prod.outlook.com
- ([fe80::8880:75b:9bf:6d6b]) by BYAPR12MB2901.namprd12.prod.outlook.com
- ([fe80::8880:75b:9bf:6d6b%5]) with mapi id 15.20.4523.023; Fri, 24 Sep 2021
- 12:32:13 +0000
-From:   Baptiste Mansuy <bmansuy@invensense.com>
-To:     jic23@kernel.org, lars@metafoo.de
-Cc:     linux-iio@vger.kernel.org, Baptiste Mansuy <bmansuy@invensense.com>
-Subject: [PATCH v2] iio: imu: mpu6050: add watermark support for icm20602/20690
-Date:   Fri, 24 Sep 2021 14:31:24 +0200
-Message-Id: <20210924123124.25831-1-bmansuy@invensense.com>
-X-Mailer: git-send-email 2.25.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: LO4P123CA0111.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:192::8) To BYAPR12MB2901.namprd12.prod.outlook.com
- (2603:10b6:a03:138::32)
+        Fri, 24 Sep 2021 15:14:24 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 095E610002A;
+        Fri, 24 Sep 2021 15:14:22 +0200 (CEST)
+Received: from Webmail-eu.st.com (sfhdag2node2.st.com [10.75.127.5])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id C16292359AF;
+        Fri, 24 Sep 2021 15:14:22 +0200 (CEST)
+Received: from lmecxl0577.lme.st.com (10.75.127.47) by SFHDAG2NODE2.st.com
+ (10.75.127.5) with Microsoft SMTP Server (TLS) id 15.0.1497.18; Fri, 24 Sep
+ 2021 15:14:21 +0200
+Subject: Re: [PATCH 4/4] iio: adc: stm32-dfsdm: add scale and offset support
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     <robh+dt@kernel.org>, <mark.rutland@arm.com>, <knaack.h@gmx.de>,
+        <lars@metafoo.de>, <devicetree@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <pmeerw@pmeerw.net>, <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>,
+        Fabrice GASNIER <fabrice.gasnier@foss.st.com>
+References: <20200204101008.11411-1-olivier.moysan@st.com>
+ <20200204101008.11411-5-olivier.moysan@st.com>
+ <20200208161847.76c7d6e8@archlinux>
+ <8400827e-5f3d-ad3f-99c8-986934b1a7b8@st.com>
+ <20200214131113.70aa36b8@archlinux>
+ <5b2e74a0-71bd-46d0-0096-b33ff17f780b@st.com>
+ <20200214151011.20111e8c@archlinux>
+ <AM9PR10MB43558CEB8DAE7F373E9E7A5DF9D69@AM9PR10MB4355.EURPRD10.PROD.OUTLOOK.COM>
+ <78f4e4b9-ef4c-982f-7cd3-8d3052d99150@foss.st.com>
+ <20210912182617.5635fa06@jic23-huawei>
+ <a38906b8-7d28-b5e0-939b-e8108bd7266c@foss.st.com>
+ <20210919191414.09270f4e@jic23-huawei>
+From:   Olivier MOYSAN <olivier.moysan@foss.st.com>
+Message-ID: <2ac8eafa-25fe-6640-edef-960e56733534@foss.st.com>
+Date:   Fri, 24 Sep 2021 15:14:20 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Received: from FRGNB-2THMRC2.invcorp.invensense.com (77.157.193.39) by LO4P123CA0111.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600:192::8) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4544.15 via Frontend Transport; Fri, 24 Sep 2021 12:32:12 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: d8392e37-9644-4b6f-3eee-08d97f5755e9
-X-MS-TrafficTypeDiagnostic: BY5PR12MB5016:
-X-LD-Processed: 462b3b3b-e42b-47ea-801a-f1581aac892d,ExtFwd
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BY5PR12MB5016B2BB4CCCDF3D866F96E6DEA49@BY5PR12MB5016.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:751;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: yxBMjYYgG4OA6qfiwxwlA0gUfv/TE8dxP1Y1rKIRfHI7t1CQUjtFjPwYnO0if2/RZv5mCgMH2/i4RxFp2T3p72llb1AKJCoRvaJ8AcX7Nf+b+rGTMNDI+6B5tGuNJfeLpFknaAtNPyyOZdocz8dfGON5S1oxSIA+uesqLGSoTSshZPe0K4tMHM2CIRQvs7JrR+gA7DC6PG9qZwWCmol6ePs4asWkrcflgWdewHbzpXRSlf48Plct9JBeC1x6a+oTZgjElcTcM5pLvDLl+X2iBivnDI8u1akJK4e8uLkoO940xa3ImUByktBAbVruslPOdkx3oxCOVZljXV6vVIneVJTpLEncWm2uVN6nA/NEnuKIQ8VfPbTrtNQWw3O2yEnppW8atfrVErsMYoZwzeKDtZCq4nr6PN5Pvklfqjls1t1SOVSKXFSmfSNFmbOJ5PATV7MEP+FlmJe9H7vbRVArGm6B2WctlOneM9Q5zi0fko1z70F6UAKGPesvEWnUsL9aCzTxUAv750ypKOGwf7OIkh+2IY5QW3Rk85O/UYJ02wUKqJrlhzBkM1Xvw9RtAdSEojgVnJNhqXW6A+gLLQIacCj7jC5+47sVRLi6nl48t6magZ5fLqwmIuuqJc6zIkwMRBv4WgW8Nii8VYRYYgDqEMbu7hu6aPYxfhaVH5SLIs4MtyzVBgvZzJkY4Yh3VFKm95MQux6haX0kxSDUIKmk+g==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB2901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(5660300002)(107886003)(508600001)(30864003)(66476007)(83380400001)(186003)(1076003)(36756003)(38100700002)(26005)(956004)(66556008)(66946007)(38350700002)(4326008)(7696005)(6666004)(86362001)(2906002)(316002)(8936002)(2616005)(6486002)(52116002)(8676002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?O7PREabRtH+ruqhDhUqAQrY+o+O2ux8PEm+b+63eLrV3zzMPvxkg7M23oplb?=
- =?us-ascii?Q?CJlVIvdk/4EUxf52Z3ySdO9iCT0YmKnjq8qroNKc95l4jlCUHUBNq4PxKGDr?=
- =?us-ascii?Q?2933ZXafCiZOpPJp9gSW0gqz8UMhXWMVzRN2JvsuqzBOAMUnHYMMOQoePwmf?=
- =?us-ascii?Q?FHpdpOHmnH/lzyM+kjQRFybdffpcOwNmxlkIUAbQyRovh5F4hHaAfFwDKRZ7?=
- =?us-ascii?Q?vtNlcTjpk2d1KGE2Su4UhcjYp0egTc8eXOO3BIAEmaKmE1zk/WDJYGVHdtMH?=
- =?us-ascii?Q?qRDO+pigcfj/iz8E8y+jpymJYzU5zmM7c0f4v/LeerkOfBICYpKUsIv2rf1g?=
- =?us-ascii?Q?aoqiVNWU4nGKa7leRtFuBXJOv59LbxCHFIP46lgHDCTyruQ/iZtGStdxzidi?=
- =?us-ascii?Q?67KWoQ42iJLkp9ebo7+yc3xoU0UjzUAlTDVXFXGsVVCworH1m8RlwRjGNbX/?=
- =?us-ascii?Q?TGj4LJO+n9mh+HnKxvM+tcZUmbx2E3RcqgYOWtAyevKxxiLnLTZl8mdpqJQ3?=
- =?us-ascii?Q?9SnMwFiSOtYp3AWZJIlyLlR4+wA1LOXr6Cbz4ptYPTR4zbF8V9JDniXwMr5i?=
- =?us-ascii?Q?OtKt01o5R2pSjMOK7403+IAkuwI02Vw4PjZayBB+lGZ6D9POPEM8DjbhsRQ9?=
- =?us-ascii?Q?PcPS1qaOVkCnT3QwczCittvT83T2CJqB9rbsh4hFN3IEG/lx4h/jgydKyXJ+?=
- =?us-ascii?Q?OGd4k2aiAPToRCBbn/FZ0H+gFNPjjNaVWPSBaLSq3/m/nBKzJWt2FwUP/tHQ?=
- =?us-ascii?Q?uN2E5Dl1qPbRZT+Iy+n2xkTLVKAiu1EfkeJJQQREVC0VaKncDu2ccAD6fSLr?=
- =?us-ascii?Q?xJsjysoYt8Kc/J9ho4qKzoRYFMJe/ucV7EM3+Hl9EgAii0CvZXBcilF/RN1B?=
- =?us-ascii?Q?6cRYRAAZ+/cvBb1hKoBs0Gj86D+YV8x5BIn9Ktqqy61HkE7v4G3d/jonKmKr?=
- =?us-ascii?Q?md9gO7AQJpsDj0zCnR7PARsmrjsaw6IDDG+H9FBn9Ny4H9Is2ZxGEAZK8GGd?=
- =?us-ascii?Q?pQfiN0cxURyJxOXHgGD0ddSNZHbFCVy2x4lYj5v+17DlM9KxXZKjOei+U/bC?=
- =?us-ascii?Q?tNxbUmJnK0OXHjOld3GRDrP2TYWwn2V5nr6XMcdVpezARSSfrnkaXzMRgHiX?=
- =?us-ascii?Q?eXM9oTAMwtvPIJOsCkgV2Hnp7VY39qjYBotonbqePKgoEpLmIscv9u5TJkxh?=
- =?us-ascii?Q?pTqnjByNAHJIqWWXw9AsjcGkr/rMdhrjsGBZbFbYZss3ogYMCN2/3DwySqYE?=
- =?us-ascii?Q?rlQiScWrzE82Ipu+/nscUFwK+Sj5xJ6u655zIbAbiiNhyrHizz+xsYWc6ljN?=
- =?us-ascii?Q?Tp9pF8R9bcWo9ACKVXFznFeV?=
-X-OriginatorOrg: invensense.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d8392e37-9644-4b6f-3eee-08d97f5755e9
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB2901.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2021 12:32:13.2296
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 462b3b3b-e42b-47ea-801a-f1581aac892d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9qQkI3NkzQdhq3YElvBJGnBNNQeNla9Vu7BoG4pfD7jdHuxfwetmuDToopccBeyLVsIqpsFtQNTrNHatXDfQTw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB5016
-X-Proofpoint-GUID: 64MN4d4RymT1F5-EpV6WiC5V_wktDSJ6
-X-Proofpoint-ORIG-GUID: 64MN4d4RymT1F5-EpV6WiC5V_wktDSJ6
+In-Reply-To: <20210919191414.09270f4e@jic23-huawei>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.75.127.47]
+X-ClientProxiedBy: SFHDAG2NODE2.st.com (10.75.127.5) To SFHDAG2NODE2.st.com
+ (10.75.127.5)
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
  definitions=2021-09-24_04,2021-09-24_02,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- bulkscore=0 lowpriorityscore=0 adultscore=0 spamscore=0 clxscore=1015
- malwarescore=0 impostorscore=0 phishscore=0 mlxlogscore=999 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109230001 definitions=main-2109240078
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add watermark support using FIFO interrupt for chips having this
-feature. This allows the use of the watermark interrupt with the
-posibility to change it's size. Change the timestamp computation
-to be used with the watermark.
+Hi Jonathan,
 
-Add the set_watermark and flush callbacks according to the iio
-description.
+On 9/19/21 8:14 PM, Jonathan Cameron wrote:
+> On Tue, 14 Sep 2021 17:43:15 +0200
+> Olivier MOYSAN <olivier.moysan@foss.st.com> wrote:
+> 
+>> Hi Jonathan,
+>>
+>> Thanks, for your comments.
+>>
+>> On 9/12/21 7:26 PM, Jonathan Cameron wrote:
+>>> On Fri, 10 Sep 2021 17:56:45 +0200
+>>> Olivier MOYSAN <olivier.moysan@foss.st.com> wrote:
+>>>    
+>>>> Hi Jonathan,
+>>>>
+>>>> On 9/10/21 4:05 PM, Olivier MOYSAN wrote:
+>>>>>
+>>>>>
+>>>>>
+>>>>> ST Restricted
+>>>>>
+>>>>> -----Original Message-----
+>>>>> From: Jonathan Cameron <jic23@kernel.org>
+>>>>> Sent: vendredi 14 février 2020 16:10
+>>>>> To: Olivier MOYSAN <olivier.moysan@st.com>
+>>>>> Cc: robh+dt@kernel.org; mark.rutland@arm.com; knaack.h@gmx.de; lars@metafoo.de; devicetree@vger.kernel.org; linux-iio@vger.kernel.org; linux-kernel@vger.kernel.org; pmeerw@pmeerw.net; linux-stm32@st-md-mailman.stormreply.com; linux-arm-kernel@lists.infradead.org
+>>>>> Subject: Re: [PATCH 4/4] iio: adc: stm32-dfsdm: add scale and offset support
+>>>>>
+>>>>> On Fri, 14 Feb 2020 14:49:18 +0000
+>>>>> Olivier MOYSAN <olivier.moysan@st.com> wrote:
+>>>>>       
+>>>>>> Hi Jonathan,
+>>>>>>
+>>>>>> On 2/14/20 2:11 PM, Jonathan Cameron wrote:
+>>>>>>> On Tue, 11 Feb 2020 15:19:01 +0000
+>>>>>>> Olivier MOYSAN <olivier.moysan@st.com> wrote:
+>>>>>>>         
+>>>>>>>> Hi Jonathan,
+>>>>>>>>
+>>>>>>>> On 2/8/20 5:18 PM, Jonathan Cameron wrote:
+>>>>>>>>> On Tue, 4 Feb 2020 11:10:08 +0100
+>>>>>>>>> Olivier Moysan <olivier.moysan@st.com> wrote:
+>>>>>>>>>            
+>>>>>>>>>> Add scale and offset attributes support to STM32 DFSDM.
+>>>>>>>>>>
+>>>>>>>>>> Signed-off-by: Olivier Moysan <olivier.moysan@st.com>
+>>>>>>>>> Hmm. I can't remember this history of this but we've kind of ended
+>>>>>>>>> up backwards wrt to other consumer drivers.
+>>>>>>>>>
+>>>>>>>>> In some sense this is similar to the analog gyroscopes.  In those
+>>>>>>>>> the consumer driver is the gyroscope which is consuming the raw
+>>>>>>>>> readings from an ADC connected to the channel.  This results in us
+>>>>>>>>> getting readings reported by the gyroscope driver.
+>>>>>>>>>
+>>>>>>>>> Here we have a sigma delta convertor consuming the pulse train
+>>>>>>>>> from a sigma delta device.  So the channels are reported by the
+>>>>>>>>> sigma delta receiver, whereas i think the nearest equivalent to
+>>>>>>>>> the analog voltage outputing gyroscopes would have been if we had
+>>>>>>>>> reported the channel values at the sigma delta converter.
+>>>>>>>> The DFSDM driver is currently used as a consumer of the sd modulator.
+>>>>>>>> The scale and offset values of the channels are already computed by
+>>>>>>>> the DFSDM driver, and provided by this driver to the IIO ABI.
+>>>>>>>> However, the DFSDM has no voltage reference, so it has to retrieve
+>>>>>>>> it from sd-modulator channels, for the scale factor computation.
+>>>>>>>>
+>>>>>>>>                                          scale  offset
+>>>>>>>>                                            ^      ^
+>>>>>>>>                                            |      |       IIO ABI
+>>>>>>>> +-------------------------------------------------------------+
+>>>>>>>>               +---------------+          +-------------+
+>>>>>>>>               |sd driver      |          |DFSDM driver |
+>>>>>>>>               +---------------+          +-------------+
+>>>>>>>> +-------------------------------------------------------------+
+>>>>>>>>                                                               HW
+>>>>>>>>               +---------------+          +-------------+
+>>>>>>>> +------->+ sd-modulator  +--------->+ DFSDM +-------->
+>>>>>>>> analog   +------+--------+          +-------------+ output input
+>>>>>>>> ^
+>>>>>>>>                      | vref
+>>>>>>>>                      +
+>>>>>>>>
+>>>>>>>>
+>>>>>>>> Is it the topology your are expecting ?
+>>>>>>> It's not the one we'd expect if we are aligning with similar cases
+>>>>>>> elsewhere in IIO.  For example, if we attach an analog accelerometer
+>>>>>>> to an ADC, we report the accel channels on the accelerometer not the
+>>>>>>> ADC.  The equivalent would be to see the DFSDM as providing a
+>>>>>>> conversion service to the SD device which is actually executing the
+>>>>>>> measurement and has the input channels.
+>>>>>>>
+>>>>>>>
+>>>>>>>              scale  offset  raw
+>>>>>>>                ^      ^      ^
+>>>>>>>                |      |      |                              IIO ABI
+>>>>>>>      +-------------------------------------------------------------+
+>>>>>>>                +---------------+          +-------------+
+>>>>>>>                |sd driver      |          |DFSDM driver |
+>>>>>>>                +---------------+          +-------------+
+>>>>>>>      +-------------------------------------------------------------+
+>>>>>>>                                                                HW
+>>>>>>>                +---------------+          +-------------+
+>>>>>>>      +------->+ sd-modulator  +--------->+ DFSDM +-------->
+>>>>>>>      analog   +------+--------+          +-------------+ output
+>>>>>>>      input           ^
+>>>>>>>                       | vref
+>>>>>>>>                      +
+>>>>>>>>         
+>>>>>> Thanks for your clarification.
+>>>>>> ok, moving to this logic is a significant change.
+>>>>>> I need to evaluate further the impact on the dfsdm driver.
+>>>>>
+>>>>> Understood!  If we can't do it without potentially breaking users then such is life.
+>>>>>
+>>>>> Jonathan
+>>>>>       
+>>>>
+>>>> I come back to this old, but still valid topic.
+>>>
+>>> I'd forgotten about this one, so apologies if it takes me a bit of time to
+>>> get back up to speed!
+>>>    
+>>>> You mentioned the example of analog gyroscopes in a previous message.
+>>>> Looking at gyroscope drivers, I found rcar-gyroadc driver which shows
+>>>
+>>> Not a gyroscope driver despite the name :)  I was thinking more of the
+>>> case where we have a gyroscope that can be wired up to a bunch of different
+>>> ADCs.
+>>>    
+>>>> requirements similar to dfsdm needs:
+>>>> https://www.kernel.org/doc/Documentation/devicetree/bindings/iio/adc/renesas%2Crcar-gyroadc.yaml
+>>>>
+>>>> rcar-gyroadc driver main characterisitics:
+>>>> - the parent device (gyroadc) is a consumer of sub devices (SPI ADCs)
+>>>> - the channels are populated from the sub devices
+>>>> - the iio device is associated to the parent device
+>>>
+>>> I wouldn't necessarily take that as a golden example.  We were still figuring
+>>> out how this stuff would fit together.
+>>>   From what I recall (and it's been a few years) that device provides no
+>>> configuration type interfaces for the SPI ADCs - they end up having no
+>>> existence in the device model as a result.  There is no means of
+>>> sharing anything between the ways this device uses the SPI ADCs and the
+>>> way any other device does.
+>>>    
+>>>>
+>>>>
+>>>> I took the example of gyroadc to reconsider dfsdm topology and explore
+>>>> some variants according to IIO devices use.
+>>>>
+>>>> 1) current topology: one IIO device per SD modulator and one iio device
+>>>> per DFSDM filter
+>>>>        The DFSDM is used as a consumer of SD modulator through the hw
+>>>>        consumer API.
+>>>>        * cons
+>>>>            - SD modulator and DFSDM filter have their own channel
+>>>>            specification.
+>>>>            - DFSDM retrieves channels scale information from SD
+>>>>            modulator to initialized its channels
+>>>>            - SD modulator IIO sysfs interface is useless
+>>>>
+>>>> +------------+     +-------+     +---------+  sysfs
+>>>> | sd0 iiodev | --> | chan0 | --> | filter0 | ------->
+>>>> +------------+     +-------+     +---------+
+>>>>      |                                ^
+>>>>      | sysfs                          |
+>>>>      v                                |
+>>>>                                       |
+>>>>                                       |
+>>>>                                       |
+>>>> +------------+     +-------+       |
+>>>> | sd1 iiodev | --> | chan1 | ------+
+>>>> +------------+     +-------+
+>>>>      |
+>>>>      | sysfs
+>>>>      v
+>>>>
+>>>>
+>>>> 2) "conversion service" topology: one IIO device per SD modulator
+>>>>        * cons
+>>>>            - Data transfers: in this case the converted data from
+>>>>            DFSDM filter have to be sent back to SD modulator to be 	
+>>>> 	available on sysfs interface.
+>>>>            - Scan mode: this topology seems not compatible with scan
+>>>>            mode, where multiplexed channels are expected are on
+>>>> 	IIO device interface.
+>>>>   
+>>>> 	=> I don't find a proper way to address scan mode with multi SD
+>>>> 	modulator connected to one DFSM filter
+>>>
+>>> Good point, there isn't a means of combining the scans from multiple
+>>> IIO devices and that is what we end up having in this model.
+>>>
+>>> You can 'split' the channels so that enabling sd0 and sd1 buffered
+>>> mode will result in scans from the filter filling FIFOs for each of them
+>>> but that may not fit the use model you have in mind.
+>>>    
+>>
+>> Yes, this model may be an option when we have independent data on each
+>> channel. If we want to handle data correlated in time, things become
+>> more tricky, yet.
+>> The following presentation shows some examples of use cases for STM32
+>> DFSDM (page 20 to 24):
+>> https://st-onlinetraining.s3.amazonaws.com/STM32L4_System_Digital_Filter_for_SD_Modulators_interface_(DFSDM)/index.html
+>>
+>> Looking at 3-phase electricity meter example (page 23), the voltages
+>> from three SD modulators are captured and processed by one DFSDM filter.
+>> The mutiplexed filtered data can then be used for further processing.
+>> If we get the filtered data from three SD IIO devices, it looks
+>> difficult to guarantee time alignment between these data.
+> 
+> We can cheat and ensure they all have the same timestamp, but I agree
+> it is less than ideal.
+> 
+>>
+>> It seems to me that the solution 2, may reduce the field of use cases
+>> that could be addressed by the DFSDM.
+> 
+> Agreed, that's not good.
+> 
+>>
+>>> This sort of demux is more often done for when we have a consumer in
+>>> the form of say a touchscreen that uses a couple of channels off a
+>>> general purpose ADC. We have no reason to want to ensure any alignment
+>>> between the data going to the touchscreen and that going to the
+>>> who ever is interested in the other ADC channels.
+>>>    
+>>>>
+>>>> +------------+      +-------+     +---------+
+>>>> | sd0 iiodev | <--> | chan0 | <-> | filter0 |
+>>>> +------------+      +-------+     +---------+
+>>>>      |                                 ^
+>>>>      | sysfs                           |
+>>>>      v                                 |
+>>>>                                        |
+>>>>                                        |
+>>>>                                        |
+>>>> +------------+      +-------+       |
+>>>> | sd1 iiodev | <--> | chan1 | <-----+
+>>>> +------------+      +-------+
+>>>>      |
+>>>>      | sysfs
+>>>>      v
+>>>>
+>>>>
+>>>> 3) gyroadc like topology: one iio device per DFSDM filter
+>>>> (no SD modulator iio device registered)
+>>>>        For DFSDM scale and offset, the required information are SD
+>>>>        modulator reference voltage and channel types.
+>>>>
+>>>>        voltage reference: the regulator voltage can be retrieved as it
+>>>>        is done in  gyroadc driver.
+>>>>        Maybe we can dropped merely SD modulator, and describe voltage
+>>>>        as a property of the channel (through generic channel binding)
+>>>>        This may be too restrictive if more hardware has to be
+>>>>        configured in the SD modulator, yet.
+>>>
+>>> That is indeed the key question. Do we need to configure the modulator
+>>> devices? If we do then they need to have an existence in the device model.
+>>> Mapping them as IIO devices provides reusability across multiple
+>>> filter implementations.
+>>>    
+>>
+>> We need to be able to manage a wide range of application. So, we have to
+>> be flexible enough to configure SD modulator when necessary.
+>> I agree, that the SD device has to be kept from this point of view.
+>>
+>>>>
+>>>>        channel type: IIO generic channel binding could be used here
+>>>>        instead of proprietary properties
+>>>>        to describe the channels
+>>>>
+>>>>        binding sample:
+>>>>        dfsdm_pdm1: filter@1 {
+>>>>            compatible = "st,stm32-dfsdm-adc";
+>>>>            reg = <1>;
+>>>>            interrupts = <GIC_SPI 111 IRQ_TYPE_LEVEL_HIGH>;
+>>>>            dmas = <&dmamux1 102 0x400 0x01>;
+>>>>            dma-names = "rx";
+>>>>            st,filter-order = <1>;
+>>>>
+>>>>            channel@2 {
+>>>>                reg = <2>;
+>>>>                label = "in2";
+>>>>                st,adc-channel-types = "SPI_R";
+>>>>                st,adc-channel-clk-src = "CLKOUT_F";
+>>>>
+>>>>                sd@0 {    ?
+>>>>                    reg = <0>;
+>>>>                    compatible = "sd-mod";
+>>>>                    vref-supply = <&vref>;
+>>>>                };
+>>>>            };
+>>>>        };
+>>>>
+>>>>        * cons
+>>>>            - The sub devices are embedded in the driver and are not
+>>>>            based on general device API.
+>>>>            Alternatively, if we want to use standard device model
+>>>>            and avoid the creation of an unrelevant IIO device for
+>>>>            SD modulator, a specific type of device may be
+>>>>            provided by IIO framework. This could be a kind of
+>>>>            "backend" device without IIO sysfs interface attached.
+>>>
+>>> That may be an option.  It was always on the list of things to do
+>>> to allow for IIO devices that have no 'IIO interface' to userspace.
+>>> The main usecase was SoC ADCs where all the channels are going to
+>>> other in kernel consumers, but it might be applicable here as well.
+>>>    
+>>
+>> Can you see another alternative to solution 2, to allow full support of
+>> DFSDM features ?
+> 
+> Anything I can come up with also has issues.
+> A) Assume that if we have multiple channels that we want to capture together that
+>     they are going through matched modulator devices.  So make the modulator driver
+>     able to handle multiple channels.  That way we could wrap it all up together.
+> 	Cons: What if they are using different modulators but still want to capture
+> 	      the data as one scan?
+> 
+> B) Add the logic to mux devices back together (this is nasty but bear with me)
+> 
+> +--------------------+    +--------+   +-----------------+
+> | Channel interleaver|----| SD0    |---| Filter 0 iiodev |
+> |                    |    +--------+   |                 |
+> |                    |    +--------+   |                 |
+> |                    |----| SD1    |---|                 |
+> |                    |    +--------+   +-----------------+
+> +--------------------+
+> 
+> I did mention this got nasty :) It might be a useful concept in general though
+> for other usecases.
+> 
+> We introduce a new interleaver device that is a consumer of other devices that
+> are assumed to all run of the same "trigger".  It will be a consumer of
+> both modulator IIO devices and will receive data from the both.
+> It will have 2 channels which in turn will gain their scale etc by querying
+> the modulators. Those modulators will get their actual data as consumers
+> from the filter device.
+> 
+> So for buffered use the flow will be:
+> "scan" comes into the filter driver.  It demuxes and passes through to the
+> two separate modulator drivers.  Those then pass it on to the channel interleaver.
+> Given I wouldn't want to constrain the order, that driver then has to buffer
+> them up until it has a full 'scan' which it in turn pushed into it's kfifo
+> buffer for userspace consumption.
+> 
+> Other than the horrible data flow, this does match all our requirements.
+> It represents the filter and any filter specific controls as one device.
+> Each modulator has it's own representation as well and so scaling etc is
+> in an appropriate place.  The interleaver is then a software construct to
+> allow us to grab multiple data flows from independent devices (that we
+> expect to 'trigger' together) and combine them into a single flow.
+> I'm not keen on the race conditions that would probably occur, but it
+> could be made to work.
+> 
+> I've thought about doing this before to allow cases like.
+> 
+>                        Trigger
+>                          |
+> +--------------------+  +-+--------+
+> | Channel interleaver|--c-| ACCEL  |
+> |                    |  | +--------+
+> |                    |  +-+--------+
+> |                    |----| Gyro   |
+> |                    |    +--------+
+> +--------------------+
+> 
+> That is an IMU built of separate components but with a common trigger signal
+> or say a high resolution timer based trigger.   Today we have to fuse that
+> data in userspace which is rather messy.
+> 
 
-Signed-off-by: Baptiste Mansuy <bmansuy@invensense.com>
----
- V1 -> V2: Changed watermark computation following the latest ABI
- 
- drivers/iio/imu/inv_mpu6050/inv_mpu_core.c    | 195 +++++++++++++++++-
- drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h     |  23 ++-
- drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c    | 138 ++++++++++---
- drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c |  24 ++-
- 4 files changed, 339 insertions(+), 41 deletions(-)
+In scan mode the DFSDM acts actually as an interleaver, so from this 
+point of view it can be put at the interleaver place in the flow. 
+Instead of a software block, we get a driver which represents a hardware 
+interleaver device. But here we come back to the initial topolgy (case 1 
+above) with the scaling problem.
 
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-index 597768c..2f70991 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-@@ -47,7 +47,9 @@ static const struct inv_mpu6050_reg_map reg_set_icm20602 = {
- 	.raw_accl               = INV_MPU6050_REG_RAW_ACCEL,
- 	.temperature            = INV_MPU6050_REG_TEMPERATURE,
- 	.int_enable             = INV_MPU6050_REG_INT_ENABLE,
--	.int_status             = INV_MPU6050_REG_INT_STATUS,
-+	.int_status             = INV_ICM20602_REG_FIFO_WM_INT_STATUS,
-+	.wm_th_hb               = INV_ICM20602_FIFO_WM_TH_HB,
-+	.wm_th_lb               = INV_ICM20602_FIFO_WM_TH_LB,
- 	.pwr_mgmt_1             = INV_MPU6050_REG_PWR_MGMT_1,
- 	.pwr_mgmt_2             = INV_MPU6050_REG_PWR_MGMT_2,
- 	.int_pin_cfg            = INV_MPU6050_REG_INT_PIN_CFG,
-@@ -56,6 +58,31 @@ static const struct inv_mpu6050_reg_map reg_set_icm20602 = {
- 	.i2c_if                 = INV_ICM20602_REG_I2C_IF,
- };
- 
-+static const struct inv_mpu6050_reg_map reg_set_icm20690 = {
-+	.sample_rate_div	= INV_MPU6050_REG_SAMPLE_RATE_DIV,
-+	.lpf                    = INV_MPU6050_REG_CONFIG,
-+	.accel_lpf              = INV_MPU6500_REG_ACCEL_CONFIG_2,
-+	.user_ctrl              = INV_MPU6050_REG_USER_CTRL,
-+	.fifo_en                = INV_MPU6050_REG_FIFO_EN,
-+	.gyro_config            = INV_MPU6050_REG_GYRO_CONFIG,
-+	.accl_config            = INV_MPU6050_REG_ACCEL_CONFIG,
-+	.fifo_count_h           = INV_MPU6050_REG_FIFO_COUNT_H,
-+	.fifo_r_w               = INV_MPU6050_REG_FIFO_R_W,
-+	.raw_gyro               = INV_MPU6050_REG_RAW_GYRO,
-+	.raw_accl               = INV_MPU6050_REG_RAW_ACCEL,
-+	.temperature            = INV_MPU6050_REG_TEMPERATURE,
-+	.int_enable             = INV_MPU6050_REG_INT_ENABLE,
-+	.int_status             = INV_ICM20602_REG_FIFO_WM_INT_STATUS,
-+	.wm_th_hb               = INV_ICM20690_FIFO_WM_TH_HB,
-+	.wm_th_lb               = INV_ICM20690_FIFO_WM_TH_LB,
-+	.pwr_mgmt_1             = INV_MPU6050_REG_PWR_MGMT_1,
-+	.pwr_mgmt_2             = INV_MPU6050_REG_PWR_MGMT_2,
-+	.int_pin_cfg		= INV_MPU6050_REG_INT_PIN_CFG,
-+	.accl_offset		= INV_MPU6500_REG_ACCEL_OFFSET,
-+	.gyro_offset		= INV_MPU6050_REG_GYRO_OFFSET,
-+	.i2c_if                 = 0,
-+};
-+
- static const struct inv_mpu6050_reg_map reg_set_6500 = {
- 	.sample_rate_div	= INV_MPU6050_REG_SAMPLE_RATE_DIV,
- 	.lpf                    = INV_MPU6050_REG_CONFIG,
-@@ -115,6 +142,8 @@ static const struct inv_mpu6050_chip_config chip_config_6050 = {
- 	.magn_fifo_enable = false,
- 	.accl_fs = INV_MPU6050_FS_02G,
- 	.user_ctrl = 0,
-+	.wm_val = 1,
-+	.wm_size = 0,
- };
- 
- static const struct inv_mpu6050_chip_config chip_config_6500 = {
-@@ -132,6 +161,8 @@ static const struct inv_mpu6050_chip_config chip_config_6500 = {
- 	.magn_fifo_enable = false,
- 	.accl_fs = INV_MPU6050_FS_02G,
- 	.user_ctrl = 0,
-+	.wm_val = 1,
-+	.wm_size = 0,
- };
- 
- /* Indexed by enum inv_devices */
-@@ -247,7 +278,7 @@ static const struct inv_mpu6050_hw hw_info[] = {
- 	{
- 		.whoami = INV_ICM20690_WHOAMI_VALUE,
- 		.name = "ICM20690",
--		.reg = &reg_set_6500,
-+		.reg = &reg_set_icm20690,
- 		.config = &chip_config_6500,
- 		.fifo_size = 1024,
- 		.temp = {INV_ICM20608_TEMP_OFFSET, INV_ICM20608_TEMP_SCALE},
-@@ -264,6 +295,53 @@ static const struct inv_mpu6050_hw hw_info[] = {
- 	},
- };
- 
-+unsigned int inv_mpu6050_get_sample_size(struct inv_mpu6050_state *st)
-+{
-+	unsigned int nb_byte;
-+
-+	nb_byte = 0;
-+	if (st->chip_config.gyro_en)
-+		nb_byte += INV_MPU6050_BYTES_PER_3AXIS_SENSOR;
-+	if (st->chip_config.accl_en)
-+		nb_byte += INV_MPU6050_BYTES_PER_3AXIS_SENSOR;
-+	if (st->chip_config.magn_en)
-+		nb_byte += INV_MPU9X50_BYTES_MAGN;
-+	if (st->chip_config.temp_en)
-+		nb_byte += INV_MPU6050_BYTES_PER_TEMP_SENSOR;
-+
-+	return nb_byte;
-+}
-+
-+int inv_mpu6050_compute_hw_watermark(struct inv_mpu6050_state *st, unsigned int val)
-+{
-+	unsigned int nb_byte, new_size_byte;
-+	int ret;
-+
-+	nb_byte = inv_mpu6050_get_sample_size(st);
-+
-+	/*
-+	 * Compute watermark size.
-+	 *
-+	 * Use a threshold when watermark size is not supported by the chip
-+	 * to prevent overwriting the first samples of the fifo.
-+	 * The threshold creates latency for the computing of the interrupt.
-+	 * When using a sampling frequency of 500Hz, the max latency is 12ms.
-+	 */
-+	new_size_byte = val * nb_byte;
-+	if (new_size_byte > st->hw->fifo_size) {
-+		val = ((st->hw->fifo_size * 7) / 8) / nb_byte;
-+		new_size_byte = val * nb_byte;
-+	}
-+
-+	ret = inv_mpu6050_set_hw_watermark(st, new_size_byte);
-+	if (ret)
-+		return ret;
-+
-+	st->chip_config.wm_val = val;
-+
-+	return 0;
-+}
-+
- static int inv_mpu6050_pwr_mgmt_1_write(struct inv_mpu6050_state *st, bool sleep,
- 					int clock, int temp_dis)
- {
-@@ -1018,6 +1096,70 @@ static ssize_t inv_attr_show(struct device *dev, struct device_attribute *attr,
- 	}
- }
- 
-+/*
-+ * inv_mpu6050_get_fifo_watermark_max() - Get the max watermark size of current chip.
-+ */
-+
-+static ssize_t
-+inv_mpu6050_get_fifo_watermark_max(struct device *dev, struct device_attribute *attr,
-+		   char *buf)
-+{
-+	struct inv_mpu6050_state *st = iio_priv(dev_to_iio_dev(dev));
-+	unsigned int nb_byte;
-+	size_t watermark_max_size;
-+
-+	mutex_lock(&st->lock);
-+	nb_byte = inv_mpu6050_get_sample_size(st);
-+
-+	/* Use default value of accel + gyro + temp sample */
-+	if (nb_byte == 0)
-+		nb_byte = 2 * INV_MPU6050_BYTES_PER_3AXIS_SENSOR
-+				+ INV_MPU6050_BYTES_PER_TEMP_SENSOR;
-+	watermark_max_size = st->hw->fifo_size / nb_byte;
-+	mutex_unlock(&st->lock);
-+
-+	return scnprintf(buf, PAGE_SIZE, "%zu\n", watermark_max_size);
-+}
-+
-+/*
-+ * inv_mpu6050_get_fifo_state() - Get the state of the hwfifo.
-+ *
-+ * Watermark is disabled when the watermark size is set to 0
-+ */
-+
-+static ssize_t
-+inv_mpu6050_get_fifo_state(struct device *dev, struct device_attribute *attr,
-+		   char *buf)
-+{
-+	struct inv_mpu6050_state *st = iio_priv(dev_to_iio_dev(dev));
-+	unsigned int fifo_state = 0;
-+
-+	mutex_lock(&st->lock);
-+	if (st->chip_config.wm_size > 0)
-+		fifo_state = 1;
-+	mutex_unlock(&st->lock);
-+
-+	return scnprintf(buf, PAGE_SIZE, "%u\n", fifo_state);
-+}
-+
-+/*
-+ * inv_mpu6050_get_fifo_watermark() - Get the current watermark size.
-+ */
-+
-+static ssize_t
-+inv_mpu6050_get_fifo_watermark(struct device *dev, struct device_attribute *attr,
-+		   char *buf)
-+{
-+	struct inv_mpu6050_state *st = iio_priv(dev_to_iio_dev(dev));
-+	unsigned int watermark;
-+
-+	mutex_lock(&st->lock);
-+	watermark = st->chip_config.wm_size;
-+	mutex_unlock(&st->lock);
-+
-+	return scnprintf(buf, PAGE_SIZE, "%u\n", watermark);
-+}
-+
- /**
-  * inv_mpu6050_validate_trigger() - validate_trigger callback for invensense
-  *                                  MPU6050 device.
-@@ -1258,6 +1400,14 @@ static IIO_DEVICE_ATTR(in_gyro_matrix, S_IRUGO, inv_attr_show, NULL,
- static IIO_DEVICE_ATTR(in_accel_matrix, S_IRUGO, inv_attr_show, NULL,
- 	ATTR_ACCL_MATRIX);
- 
-+static IIO_CONST_ATTR(hwfifo_watermark_min, "1");
-+static IIO_DEVICE_ATTR(hwfifo_watermark_max, S_IRUGO,
-+	inv_mpu6050_get_fifo_watermark_max, NULL, 0);
-+static IIO_DEVICE_ATTR(hwfifo_enabled, S_IRUGO,
-+	inv_mpu6050_get_fifo_state, NULL, 0);
-+static IIO_DEVICE_ATTR(hwfifo_watermark, S_IRUGO,
-+	inv_mpu6050_get_fifo_watermark, NULL, 0);
-+
- static struct attribute *inv_attributes[] = {
- 	&iio_dev_attr_in_gyro_matrix.dev_attr.attr,  /* deprecated */
- 	&iio_dev_attr_in_accel_matrix.dev_attr.attr, /* deprecated */
-@@ -1265,6 +1415,10 @@ static struct attribute *inv_attributes[] = {
- 	&iio_const_attr_sampling_frequency_available.dev_attr.attr,
- 	&iio_const_attr_in_accel_scale_available.dev_attr.attr,
- 	&iio_const_attr_in_anglvel_scale_available.dev_attr.attr,
-+	&iio_const_attr_hwfifo_watermark_min.dev_attr.attr,
-+	&iio_dev_attr_hwfifo_watermark_max.dev_attr.attr,
-+	&iio_dev_attr_hwfifo_watermark.dev_attr.attr,
-+	&iio_dev_attr_hwfifo_enabled.dev_attr.attr,
- 	NULL,
- };
- 
-@@ -1290,6 +1444,39 @@ static int inv_mpu6050_reg_access(struct iio_dev *indio_dev,
- 	return ret;
- }
- 
-+static int inv_mpu6050_set_watermark(struct iio_dev *indio_dev, unsigned int val)
-+{
-+	struct inv_mpu6050_state *st = iio_priv(indio_dev);
-+	int ret;
-+
-+	switch (st->chip_type) {
-+	case INV_ICM20602:
-+	case INV_ICM20690:
-+		mutex_lock(&st->lock);
-+		ret = inv_mpu6050_compute_hw_watermark(st, val);
-+		mutex_unlock(&st->lock);
-+		break;
-+	default:
-+		ret = 0;
-+		break;
-+	}
-+
-+	return ret;
-+}
-+
-+static int inv_mpu6050_hw_flush_to_buffer(struct iio_dev *indio_dev,
-+				      unsigned int count)
-+{
-+	struct inv_mpu6050_state *st = iio_priv(indio_dev);
-+	int ret;
-+
-+	mutex_lock(&st->lock);
-+	ret = inv_mpu6050_flush_fifo(indio_dev, 0, count);
-+	mutex_unlock(&st->lock);
-+
-+	return ret;
-+}
-+
- static const struct iio_info mpu_info = {
- 	.read_raw = &inv_mpu6050_read_raw,
- 	.write_raw = &inv_mpu6050_write_raw,
-@@ -1297,6 +1484,8 @@ static const struct iio_info mpu_info = {
- 	.attrs = &inv_attribute_group,
- 	.validate_trigger = inv_mpu6050_validate_trigger,
- 	.debugfs_reg_access = &inv_mpu6050_reg_access,
-+	.hwfifo_set_watermark = &inv_mpu6050_set_watermark,
-+	.hwfifo_flush_to_buffer = &inv_mpu6050_hw_flush_to_buffer,
- };
- 
- /*
-@@ -1618,7 +1807,7 @@ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
- 		 */
- 		result = devm_iio_triggered_buffer_setup(dev, indio_dev,
- 							 iio_pollfunc_store_time,
--							 inv_mpu6050_read_fifo,
-+							 inv_mpu6050_interrupt_handler,
- 							 NULL);
- 		if (result) {
- 			dev_err(dev, "configure buffer fail %d\n", result);
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-index c6aa36e..660ebda 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-@@ -57,6 +57,8 @@ struct inv_mpu6050_reg_map {
- 	u8 temperature;
- 	u8 int_enable;
- 	u8 int_status;
-+	u8 wm_th_hb;
-+	u8 wm_th_lb;
- 	u8 pwr_mgmt_1;
- 	u8 pwr_mgmt_2;
- 	u8 int_pin_cfg;
-@@ -105,6 +107,8 @@ enum inv_devices {
-  *  @temp_fifo_enable:	enable temp data output
-  *  @magn_fifo_enable:	enable magn data output
-  *  @divider:		chip sample rate divider (sample rate divider - 1)
-+ *  @wm_val:		watermark size in number of data
-+ *  @wm_size:		watermark size in bytes
-  */
- struct inv_mpu6050_chip_config {
- 	unsigned int clk:3;
-@@ -121,6 +125,8 @@ struct inv_mpu6050_chip_config {
- 	unsigned int magn_fifo_enable:1;
- 	u8 divider;
- 	u8 user_ctrl;
-+	unsigned int wm_val;
-+	unsigned int wm_size;
- };
- 
- /*
-@@ -264,8 +270,19 @@ struct inv_mpu6050_state {
- #define INV_MPU6050_BIT_FIFO_OVERFLOW_INT   0x10
- #define INV_MPU6050_BIT_RAW_DATA_RDY_INT    0x01
- 
-+#define INV_ICM20602_REG_FIFO_WM_INT_STATUS 0x39
-+#define INV_ICM20602_BIT_FIFO_WM_INT        0x40
-+
- #define INV_MPU6050_REG_EXT_SENS_DATA       0x49
- 
-+#define INV_ICM20602_FIFO_WM_TH_HB          0x60
-+#define INV_ICM20602_BITS_FIFO_WM_TH_HB     0x03
-+#define INV_ICM20602_FIFO_WM_TH_LB          0x61
-+
-+#define INV_ICM20690_FIFO_WM_TH_HB          0x5E
-+#define INV_ICM20690_BITS_FIFO_WM_TH_HB     0x03
-+#define INV_ICM20690_FIFO_WM_TH_LB          0x61
-+
- /* I2C slaves data output from 0 to 3 */
- #define INV_MPU6050_REG_I2C_SLV_DO(_x)      (0x63 + (_x))
- 
-@@ -338,7 +355,6 @@ struct inv_mpu6050_state {
- #define INV_ICM20690_GYRO_STARTUP_TIME       80
- #define INV_ICM20690_ACCEL_STARTUP_TIME      10
- 
--
- /* delay time in microseconds */
- #define INV_MPU6050_REG_UP_TIME_MIN          5000
- #define INV_MPU6050_REG_UP_TIME_MAX          10000
-@@ -457,7 +473,7 @@ enum inv_mpu6050_clock_sel_e {
- 	NUM_CLK
- };
- 
--irqreturn_t inv_mpu6050_read_fifo(int irq, void *p);
-+irqreturn_t inv_mpu6050_interrupt_handler(int irq, void *p);
- int inv_mpu6050_probe_trigger(struct iio_dev *indio_dev, int irq_type);
- int inv_mpu6050_prepare_fifo(struct inv_mpu6050_state *st, bool enable);
- int inv_mpu6050_switch_engine(struct inv_mpu6050_state *st, bool en,
-@@ -468,5 +484,8 @@ void inv_mpu_acpi_delete_mux_client(struct i2c_client *client);
- int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
- 		int (*inv_mpu_bus_setup)(struct iio_dev *), int chip_type);
- extern const struct dev_pm_ops inv_mpu_pmops;
-+int inv_mpu6050_set_hw_watermark(struct inv_mpu6050_state *st, unsigned int wm_size_byte);
-+int inv_mpu6050_compute_hw_watermark(struct inv_mpu6050_state *st, unsigned int wm_size_byte);
-+int inv_mpu6050_flush_fifo(struct iio_dev *indio_dev, s64 timestamp_val, unsigned int count);
- 
- #endif
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-index 45c3752..4c558cf 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-@@ -40,15 +40,16 @@ static void inv_mpu6050_update_period(struct inv_mpu6050_state *st,
- 	if (st->it_timestamp == 0) {
- 		/* not initialized, forced to use it_timestamp */
- 		use_it_timestamp = true;
--	} else if (nb == 1) {
-+	} else if (nb == st->chip_config.wm_val) {
- 		/*
- 		 * Validate the use of it timestamp by checking if interrupt
- 		 * has been delayed.
--		 * nb > 1 means interrupt was delayed for more than 1 sample,
-+		 * nb > wm_val means interrupt was delayed for more than 1 sample,
- 		 * so it's obviously not good.
-+		 * If watermark does not exist for the chip, wm_val = 1.
- 		 * Compute the chip period between 2 interrupts for validating.
- 		 */
--		delta = div_s64(timestamp - st->it_timestamp, divider);
-+		delta = div_s64(timestamp - st->it_timestamp, divider) / st->chip_config.wm_val;
- 		if (delta > period_min && delta < period_max) {
- 			/* update chip period and use it timestamp */
- 			st->chip_period = (st->chip_period + delta) / 2;
-@@ -89,6 +90,25 @@ static s64 inv_mpu6050_get_timestamp(struct inv_mpu6050_state *st)
- 	return ts;
- }
- 
-+int inv_mpu6050_set_hw_watermark(struct inv_mpu6050_state *st, unsigned int size)
-+{
-+	int ret;
-+
-+	if (size == st->chip_config.wm_size)
-+		return 0;
-+
-+	ret = regmap_write(st->map, st->reg->wm_th_hb, (size >> 8) & 0xFF);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_write(st->map, st->reg->wm_th_lb, size & 0xFF);
-+	if (ret)
-+		return ret;
-+
-+	st->chip_config.wm_size = size;
-+	return 0;
-+}
-+
- static int inv_reset_fifo(struct iio_dev *indio_dev)
- {
- 	int result;
-@@ -104,43 +124,44 @@ static int inv_reset_fifo(struct iio_dev *indio_dev)
- 
- reset_fifo_fail:
- 	dev_err(regmap_get_device(st->map), "reset fifo failed %d\n", result);
--	result = regmap_write(st->map, st->reg->int_enable,
--			      INV_MPU6050_BIT_DATA_RDY_EN);
--
-+	switch (st->chip_type) {
-+	case INV_ICM20602:
-+	case INV_ICM20690:
-+		return inv_mpu6050_set_hw_watermark(st, st->chip_config.wm_size);
-+	default:
-+		return regmap_write(st->map, st->reg->int_enable,
-+				INV_MPU6050_BIT_DATA_RDY_EN);
-+	}
- 	return result;
- }
- 
--/*
-- * inv_mpu6050_read_fifo() - Transfer data from hardware FIFO to KFIFO.
-+/**
-+ * inv_mpu6050_flush_fifo() - Flush fifo
-+ *
-+ * @indio_dev:		Device driver instance.
-+ * @timestamp_val:	the interrupt timestamp
-+ * @count:		Number of data to flush
-+ *
-+ * This function flushes the fifo using count as the number of data to flush.
-+ * As fifo_size may differ according to the chip unsigned
-+ * count = 0 is used to set the max size of the fifo for count.
-  */
--irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
-+
-+int inv_mpu6050_flush_fifo(struct iio_dev *indio_dev,
-+				      s64 timestamp_val, unsigned int count)
- {
--	struct iio_poll_func *pf = p;
--	struct iio_dev *indio_dev = pf->indio_dev;
- 	struct inv_mpu6050_state *st = iio_priv(indio_dev);
--	size_t bytes_per_datum;
--	int result;
- 	u16 fifo_count;
- 	s64 timestamp;
--	int int_status;
-+	int result;
- 	size_t i, nb;
--
--	mutex_lock(&st->lock);
--
--	/* ack interrupt and check status */
--	result = regmap_read(st->map, st->reg->int_status, &int_status);
--	if (result) {
--		dev_err(regmap_get_device(st->map),
--			"failed to ack interrupt\n");
--		goto flush_fifo;
--	}
--	if (!(int_status & INV_MPU6050_BIT_RAW_DATA_RDY_INT))
--		goto end_session;
-+	size_t bytes_per_datum;
- 
- 	if (!(st->chip_config.accl_fifo_enable |
- 		st->chip_config.gyro_fifo_enable |
- 		st->chip_config.magn_fifo_enable))
--		goto end_session;
-+		return 0;
-+
- 	bytes_per_datum = 0;
- 	if (st->chip_config.accl_fifo_enable)
- 		bytes_per_datum += INV_MPU6050_BYTES_PER_3AXIS_SENSOR;
-@@ -161,7 +182,7 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
- 	result = regmap_bulk_read(st->map, st->reg->fifo_count_h,
- 				  st->data, INV_MPU6050_FIFO_COUNT_BYTE);
- 	if (result)
--		goto end_session;
-+		return 0;
- 	fifo_count = be16_to_cpup((__be16 *)&st->data[0]);
- 
- 	/*
-@@ -171,18 +192,30 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
- 	 */
- 	nb = 3 * bytes_per_datum;
- 	if (fifo_count >= st->hw->fifo_size - nb) {
--		dev_warn(regmap_get_device(st->map), "fifo overflow reset\n");
--		goto flush_fifo;
-+		dev_warn(regmap_get_device(st->map), "fifo overflow\n");
-+		inv_reset_fifo(indio_dev);
-+		return -1;
- 	}
- 
- 	/* compute and process all complete datum */
- 	nb = fifo_count / bytes_per_datum;
--	inv_mpu6050_update_period(st, pf->timestamp, nb);
-+	/*
-+	 * As fifo_size may differ according to the chip unsigned
-+	 * count = 0 is used to choose the max value for count
-+	 */
-+	if (count == 0)
-+		count = st->hw->fifo_size / bytes_per_datum;
-+	if (timestamp_val != 0)
-+		inv_mpu6050_update_period(st, timestamp_val, nb);
-+	nb = min(nb, count);
- 	for (i = 0; i < nb; ++i) {
- 		result = regmap_noinc_read(st->map, st->reg->fifo_r_w,
- 					   st->data, bytes_per_datum);
--		if (result)
--			goto flush_fifo;
-+		if (result) {
-+			inv_reset_fifo(indio_dev);
-+			return result;
-+		}
-+
- 		/* skip first samples if needed */
- 		if (st->skip_samples) {
- 			st->skip_samples--;
-@@ -192,6 +225,45 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
- 		iio_push_to_buffers_with_timestamp(indio_dev, st->data, timestamp);
- 	}
- 
-+	return i;
-+}
-+
-+/*
-+ * inv_mpu6050_interrupt_handler() - Transfer data from hardware FIFO to KFIFO.
-+ */
-+irqreturn_t inv_mpu6050_interrupt_handler(int irq, void *p)
-+{
-+	struct iio_poll_func *pf = p;
-+	struct iio_dev *indio_dev = pf->indio_dev;
-+	struct inv_mpu6050_state *st = iio_priv(indio_dev);
-+	int result;
-+	int int_status;
-+	int int_status_bit;
-+
-+	mutex_lock(&st->lock);
-+
-+	/* ack interrupt and check status */
-+	result = regmap_read(st->map, st->reg->int_status, &int_status);
-+	if (result) {
-+		dev_err(regmap_get_device(st->map),
-+			"failed to ack interrupt\n");
-+		goto flush_fifo;
-+	}
-+
-+	switch (st->chip_type) {
-+	case INV_ICM20602:
-+	case INV_ICM20690:
-+		int_status_bit = INV_ICM20602_BIT_FIFO_WM_INT;
-+		break;
-+	default:
-+		int_status_bit = INV_MPU6050_BIT_RAW_DATA_RDY_INT;
-+		break;
-+	}
-+	if (!(int_status & int_status_bit))
-+		goto end_session;
-+
-+	inv_mpu6050_flush_fifo(indio_dev, pf->timestamp, 0);
-+
- end_session:
- 	mutex_unlock(&st->lock);
- 	iio_trigger_notify_done(indio_dev->trig);
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-index 8825468..c685ed4 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-@@ -131,10 +131,28 @@ int inv_mpu6050_prepare_fifo(struct inv_mpu6050_state *st, bool enable)
- 		if (ret)
- 			return ret;
- 		/* enable interrupt */
--		ret = regmap_write(st->map, st->reg->int_enable,
--				   INV_MPU6050_BIT_DATA_RDY_EN);
-+		switch (st->chip_type) {
-+		case INV_ICM20602:
-+		case INV_ICM20690:
-+			/* watermark interrupt is enabled by setting the watermark value */
-+			ret = inv_mpu6050_compute_hw_watermark(st, st->chip_config.wm_val);
-+			break;
-+		default:
-+			ret = regmap_write(st->map, st->reg->int_enable,
-+					INV_MPU6050_BIT_DATA_RDY_EN);
-+			break;
-+		}
- 	} else {
--		ret = regmap_write(st->map, st->reg->int_enable, 0);
-+		switch (st->chip_type) {
-+		case INV_ICM20602:
-+		case INV_ICM20690:
-+			/* watermark interrupt is disabled by setting the watermark value to 0 */
-+			ret = inv_mpu6050_set_hw_watermark(st, 0);
-+			break;
-+		default:
-+			ret = regmap_write(st->map, st->reg->int_enable, 0);
-+			break;
-+		}
- 		if (ret)
- 			return ret;
- 		ret = regmap_write(st->map, st->reg->fifo_en, 0);
--- 
-2.25.1
+I'am wondering if we cannot manage the scale a bit differently.
+In the initial proposal, the global scale was exposed at the DFSDM IIO 
+device. As we have two IIO devices serialized, the global scale could be 
+calculated at application level from both IIO devices sysfs 
+informations. The SD modulator would provide the scale (in mV unit) and 
+the DFSDM could be seen has a device giving a gain.
 
+Currently we have:
+data = (raw-dfsdm << shift-dfsdm + offset-dfsdm) x scale-dfsdm
+where scale-dfsdm is computed from SD modulator scale info
+
+This may be changed to:
+data = (raw-dfsdm << shift-dfsdm + offset-dfsdm) x gain-dfsdm x scale-sd
+In this case the DFSDM does not retrieve the scale from SD modulator.
+The DFSDM does not provide scale information but only a gain information
+(actual resolution / full resolution).
+May 'hardwaregain' ABI be a relevant way to describe such gain ?
+What looks fine here, is that we remove the dependency between the DFSDM 
+and the SD modulator, and each IIO device expose consistent sysfs 
+informations regarding their actual hardware scope.
+
+Does this approach seems valid to you ?
+
+>>
+>> If 'backend' option turns out to be the most appropriated to match DFSDM
+>> constraints, I can prepare some patches to support it.
+>> Would you have some guidelines or requirements for the implementation of
+>> such feature, in this case ?
+> 
+> Closest example is that rcar-gyroadc but in this case we'd want to define
+> something standard to support the modulators so that if we have other filters
+> in future we can reuse them.
+> 
+> That means implementing them as child devices of the filter - probably put
+> the on the IIO bus, but as different device type.  Take a look at how
+> triggers are done in industrialio-trigger.c
+> You need struct device_type sd_modulator
+> and a suitable device struct (burred in an iio_sd_modulator struct probably).
+> 
+> Also needed would be a bunch of standard callbacks to allow you to query things
+> like scaling.   Keep that interface simple. Until we have a lot of modulator
+> drivers it will be hard to know exactly what is needed.  Also whilst we don't
+> have many it is easy to modify the interface.
+> 
+> Then have your filter driver walk it's own dt children and instantiate
+> appropriate new elements and register them on the iio_bus.  They will have
+> the filter as their parent.
+> 
+> There are various examples of this sort of thing in tree.
+> If you want a good one, drivers/cxl does a lot of this sort magic to manage
+> a fairly complex graph of devices including some nice registration stuff to
+> cause the correct device drivers to load automatically.
+> 
+> Hmm.  Thinking more on this, there is an ordering issue for driver load.
+> Instead of making the modulator nodes children of the modulator, you may need
+> to give them their own existence and use a phandle to reference them.
+> That will let you defer probe in the filter driver until those
+> modulator drivers are ready.
+> 
+> This isn't going to be particularly simple, so you may want to have a look
+> at how various other subsystems do similar things and mock up the dependencies
+> to make sure you have something that doesn't end up with a loop of dependencies.
+> In some ways the modulators are on a bus below the filter, but the filter driver
+> needs them to be in place to do the rest.
+> You may end up with some sort of delayed load.
+> 1. Initial filter driver load + parsing of the modulator dt children (if done that way).
+> 2. Filter driver goes to sleep until...
+> 3. Modulator drivers call something on the filter driver to say they are ready.
+> 4. Filter driver finishes loading and create the IIO device etc.
+> You'll need some reference counting etc in there to make removal safe etc but it
+> shouldn't be 'too bad'.
+> 
+> Good luck!
+> 
+> Jonathan
+> 
+
+The device hierachy you have detailled above, is probably the most 
+flexible one to address a wide range of use cases, but it is quite a 
+huge work ... especially in comparison to current need.
+Thanks anyway for all the hints you gave here.
+
+Regards
+Olivier
+> 
+> 
+>>
+>> Regards
+>> Olivier
+>>
+>>>>   
+>>>>        => This solution could be applicable but some details in the
+>>>>        implementation will have to be clarified further.
+>>>>        May we consider adding a "backend" device without IIO interface
+>>>>        in the IIO framework ?
+>>>>        May the SD modulator be dropped ?
+>>>>
+>>>> +-----+     +-------+     +----------------+  sysfs
+>>>> | sd0 | --> | chan0 | --> | filter0 iiodev | ------->
+>>>> +-----+     +-------+     +----------------+
+>>>>                                ^
+>>>>                                |
+>>>>                                |
+>>>> +-----+     +-------+       |
+>>>> | sd1 | --> | chan1 | ------+
+>>>> +-----+     +-------+
+>>>>
+>>>>
+>>>> Here there is a point that needs to be clarified in relation to the
+>>>> previous discussions I think.
+>>>> If I refer to the last comment of the current thread, I understand that
+>>>> you were expecting the IIO sysfs interface to be attached to the SD
+>>>> modulator. (solution 2)
+>>>
+>>> Yes.
+>>>    
+>>>> For the gyroadc, the channels are indeed populated by the sub devices.
+>>>> However the IIO device corresponds to the ADC consumer and not the ADCs
+>>>> themselves. (solution 3)
+>>>
+>>> That one is a rather odd case because no generic handling is possible
+>>> of the ADCs. For example it doesn't use the ad7476 driver because we can't
+>>> talk to the device even though it's the same ADC as the ad7476 driver supports.
+>>>    
+>>>>
+>>>> What is the the preferred approach for you ?
+>>>
+>>> I still favour solution 2, but if you need to have the channels cleanly
+>>> presented in a scan despite them coming from different modulators, then that
+>>> solution may not be sufficient and we need to think about how else to do
+>>> things.
+>>>
+>>> Jonathan
+>>>    
+>>>>
+>>>> Thanks for your feedback
+>>>> Best regards
+>>>> Olivier
+>>>>
+>>>>   
+>>>>>>
+>>>>>> Regards
+>>>>>> Olivier
+>>>>>>>> If not, I probably missedsomething. Could you please clarify this point ?
+>>>>>>>>
+>>>>>>>> Regards
+>>>>>>>> Olivier
+>>>>>>>>> This wasn't really an issue when the only values available were
+>>>>>>>>> raw, but if we are adding scale and offset, they are things that
+>>>>>>>>> belong to the ad1201 for example, not the upstream stm32-dfsdm unit.
+>>>>>>>>>
+>>>>>>>>> Thinking of it another way, we don't report an SPI ADC output in
+>>>>>>>>> the driver for the SPI master.
+>>>>>>>>>
+>>>>>>>>> Could we flip it around without breaking anything?
+>>>>>>>>>
+>>>>>>>>> Jonathan
+>>>>>>>>>            
+>>>>>>>>>> ---
+>>>>>>>>>>       drivers/iio/adc/stm32-dfsdm-adc.c | 105 +++++++++++++++++++++++++++++-
+>>>>>>>>>>       1 file changed, 102 insertions(+), 3 deletions(-)
+>>>>>>>>>>
+>>>>>>>>>> diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c
+>>>>>>>>>> b/drivers/iio/adc/stm32-dfsdm-adc.c
+>>>>>>>>>> index 07b9dfdf8e76..b85fd3e90496 100644
+>>>>>>>>>> --- a/drivers/iio/adc/stm32-dfsdm-adc.c
+>>>>>>>>>> +++ b/drivers/iio/adc/stm32-dfsdm-adc.c
+>>>>>>>>>> @@ -10,6 +10,7 @@
+>>>>>>>>>>       #include <linux/dma-mapping.h>
+>>>>>>>>>>       #include <linux/iio/adc/stm32-dfsdm-adc.h>
+>>>>>>>>>>       #include <linux/iio/buffer.h>
+>>>>>>>>>> +#include <linux/iio/consumer.h>
+>>>>>>>>>>       #include <linux/iio/hw-consumer.h>
+>>>>>>>>>>       #include <linux/iio/sysfs.h>
+>>>>>>>>>>       #include <linux/iio/timer/stm32-lptim-trigger.h>
+>>>>>>>>>> @@ -67,6 +68,13 @@ struct stm32_dfsdm_dev_data {
+>>>>>>>>>>       	const struct regmap_config *regmap_cfg;
+>>>>>>>>>>       };
+>>>>>>>>>>       
+>>>>>>>>>> +struct stm32_dfsdm_sd_chan_info {
+>>>>>>>>>> +	int scale_val;
+>>>>>>>>>> +	int scale_val2;
+>>>>>>>>>> +	int offset;
+>>>>>>>>>> +	unsigned int differential;
+>>>>>>>>>> +};
+>>>>>>>>>> +
+>>>>>>>>>>       struct stm32_dfsdm_adc {
+>>>>>>>>>>       	struct stm32_dfsdm *dfsdm;
+>>>>>>>>>>       	const struct stm32_dfsdm_dev_data *dev_data; @@ -79,6 +87,7
+>>>>>>>>>> @@ struct stm32_dfsdm_adc {
+>>>>>>>>>>       	struct iio_hw_consumer *hwc;
+>>>>>>>>>>       	struct completion completion;
+>>>>>>>>>>       	u32 *buffer;
+>>>>>>>>>> +	struct stm32_dfsdm_sd_chan_info *sd_chan;
+>>>>>>>>>>       
+>>>>>>>>>>       	/* Audio specific */
+>>>>>>>>>>       	unsigned int spi_freq;  /* SPI bus clock frequency */ @@
+>>>>>>>>>> -1271,7 +1280,10 @@ static int stm32_dfsdm_read_raw(struct iio_dev *indio_dev,
+>>>>>>>>>>       				int *val2, long mask)
+>>>>>>>>>>       {
+>>>>>>>>>>       	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
+>>>>>>>>>> -	int ret;
+>>>>>>>>>> +	struct stm32_dfsdm_filter *fl = &adc->dfsdm->fl_list[adc->fl_id];
+>>>>>>>>>> +	struct stm32_dfsdm_filter_osr *flo = &fl->flo[fl->fast];
+>>>>>>>>>> +	u32 max = flo->max << (flo->lshift - chan->scan_type.shift);
+>>>>>>>>>> +	int ret, idx = chan->scan_index;
+>>>>>>>>>>       
+>>>>>>>>>>       	switch (mask) {
+>>>>>>>>>>       	case IIO_CHAN_INFO_RAW:
+>>>>>>>>>> @@ -1307,6 +1319,41 @@ static int stm32_dfsdm_read_raw(struct iio_dev *indio_dev,
+>>>>>>>>>>       		*val = adc->sample_freq;
+>>>>>>>>>>       
+>>>>>>>>>>       		return IIO_VAL_INT;
+>>>>>>>>>> +
+>>>>>>>>>> +	case IIO_CHAN_INFO_SCALE:
+>>>>>>>>>> +		/*
+>>>>>>>>>> +		 * Scale is expressed in mV.
+>>>>>>>>>> +		 * When fast mode is disabled, actual resolution may be lower
+>>>>>>>>>> +		 * than 2^n, where n=realbits-1.
+>>>>>>>>>> +		 * This leads to underestimating input voltage. To
+>>>>>>>>>> +		 * compensate this deviation, the voltage reference can be
+>>>>>>>>>> +		 * corrected with a factor = realbits resolution / actual max
+>>>>>>>>>> +		 */
+>>>>>>>>>> +		*val = div_u64((u64)adc->sd_chan[idx].scale_val *
+>>>>>>>>>> +			       (u64)BIT(DFSDM_DATA_RES - 1), max);
+>>>>>>>>>> +		*val2 = chan->scan_type.realbits;
+>>>>>>>>>> +		if (adc->sd_chan[idx].differential)
+>>>>>>>>>> +			*val *= 2;
+>>>>>>>>>> +
+>>>>>>>>>> +		return IIO_VAL_FRACTIONAL_LOG2;
+>>>>>>>>>> +
+>>>>>>>>>> +	case IIO_CHAN_INFO_OFFSET:
+>>>>>>>>>> +		/*
+>>>>>>>>>> +		 * DFSDM output data are in the range [-2^n,2^n-1],
+>>>>>>>>>> +		 * with n=realbits-1.
+>>>>>>>>>> +		 * - Differential modulator:
+>>>>>>>>>> +		 * Offset correspond to SD modulator offset.
+>>>>>>>>>> +		 * - Single ended modulator:
+>>>>>>>>>> +		 * Input is in [0V,Vref] range, where 0V corresponds to -2^n.
+>>>>>>>>>> +		 * Add 2^n to offset. (i.e. middle of input range)
+>>>>>>>>>> +		 * offset = offset(sd) * vref / res(sd) * max / vref.
+>>>>>>>>>> +		 */
+>>>>>>>>>> +		*val = div_u64((u64)max * adc->sd_chan[idx].offset,
+>>>>>>>>>> +			       BIT(adc->sd_chan[idx].scale_val2 - 1));
+>>>>>>>>>> +		if (!adc->sd_chan[idx].differential)
+>>>>>>>>>> +			*val += max;
+>>>>>>>>>> +
+>>>>>>>>>> +		return IIO_VAL_INT;
+>>>>>>>>>>       	}
+>>>>>>>>>>       
+>>>>>>>>>>       	return -EINVAL;
+>>>>>>>>>> @@ -1430,7 +1477,9 @@ static int stm32_dfsdm_adc_chan_init_one(struct iio_dev *indio_dev,
+>>>>>>>>>>       	 * IIO_CHAN_INFO_RAW: used to compute regular conversion
+>>>>>>>>>>       	 * IIO_CHAN_INFO_OVERSAMPLING_RATIO: used to set oversampling
+>>>>>>>>>>       	 */
+>>>>>>>>>> -	ch->info_mask_separate = BIT(IIO_CHAN_INFO_RAW);
+>>>>>>>>>> +	ch->info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+>>>>>>>>>> +				 BIT(IIO_CHAN_INFO_SCALE) |
+>>>>>>>>>> +				 BIT(IIO_CHAN_INFO_OFFSET);
+>>>>>>>>>>       	ch->info_mask_shared_by_all = BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO) |
+>>>>>>>>>>       					BIT(IIO_CHAN_INFO_SAMP_FREQ);
+>>>>>>>>>>       
+>>>>>>>>>> @@ -1481,8 +1530,10 @@ static int stm32_dfsdm_adc_init(struct iio_dev *indio_dev)
+>>>>>>>>>>       {
+>>>>>>>>>>       	struct iio_chan_spec *ch;
+>>>>>>>>>>       	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
+>>>>>>>>>> +	struct iio_channel *channels, *chan;
+>>>>>>>>>> +	struct stm32_dfsdm_sd_chan_info *sd_chan;
+>>>>>>>>>>       	int num_ch;
+>>>>>>>>>> -	int ret, chan_idx;
+>>>>>>>>>> +	int ret, chan_idx, val2;
+>>>>>>>>>>       
+>>>>>>>>>>       	adc->oversamp = DFSDM_DEFAULT_OVERSAMPLING;
+>>>>>>>>>>       	ret = stm32_dfsdm_compute_all_osrs(indio_dev, adc->oversamp);
+>>>>>>>>>> @@ -1506,6 +1557,22 @@ static int stm32_dfsdm_adc_init(struct iio_dev *indio_dev)
+>>>>>>>>>>       	if (!ch)
+>>>>>>>>>>       		return -ENOMEM;
+>>>>>>>>>>       
+>>>>>>>>>> +	/* Get SD modulator channels */
+>>>>>>>>>> +	channels = iio_channel_get_all(&indio_dev->dev);
+>>>>>>>>>> +	if (IS_ERR(channels)) {
+>>>>>>>>>> +		dev_err(&indio_dev->dev, "Failed to get channel %ld\n",
+>>>>>>>>>> +			PTR_ERR(channels));
+>>>>>>>>>> +		return PTR_ERR(channels);
+>>>>>>>>>> +	}
+>>>>>>>>>> +	chan = &channels[0];
+>>>>>>>>>> +
+>>>>>>>>>> +	adc->sd_chan = devm_kzalloc(&indio_dev->dev,
+>>>>>>>>>> +				    sizeof(*adc->sd_chan) * num_ch, GFP_KERNEL);
+>>>>>>>>>> +	if (!adc->sd_chan)
+>>>>>>>>>> +		return -ENOMEM;
+>>>>>>>>>> +
+>>>>>>>>>> +	sd_chan = adc->sd_chan;
+>>>>>>>>>> +
+>>>>>>>>>>       	for (chan_idx = 0; chan_idx < num_ch; chan_idx++) {
+>>>>>>>>>>       		ch[chan_idx].scan_index = chan_idx;
+>>>>>>>>>>       		ret = stm32_dfsdm_adc_chan_init_one(indio_dev,
+>>>>>>>>>> &ch[chan_idx]); @@ -1513,6 +1580,38 @@ static int stm32_dfsdm_adc_init(struct iio_dev *indio_dev)
+>>>>>>>>>>       			dev_err(&indio_dev->dev, "Channels init failed\n");
+>>>>>>>>>>       			return ret;
+>>>>>>>>>>       		}
+>>>>>>>>>> +
+>>>>>>>>>> +		if (!chan->indio_dev)
+>>>>>>>>>> +			return -EINVAL;
+>>>>>>>>>> +
+>>>>>>>>>> +		ret = iio_read_channel_scale(chan, &sd_chan->scale_val,
+>>>>>>>>>> +					     &sd_chan->scale_val2);
+>>>>>>>>>> +		if (ret < 0) {
+>>>>>>>>>> +			dev_err(&indio_dev->dev,
+>>>>>>>>>> +				"Failed to get channel %d scale\n", chan_idx);
+>>>>>>>>>> +			return ret;
+>>>>>>>>>> +		}
+>>>>>>>>>> +
+>>>>>>>>>> +		if (iio_channel_has_info(chan->channel, IIO_CHAN_INFO_OFFSET)) {
+>>>>>>>>>> +			ret = iio_read_channel_offset(chan, &sd_chan->offset,
+>>>>>>>>>> +						      &val2);
+>>>>>>>>>> +			if (ret < 0) {
+>>>>>>>>>> +				dev_err(&indio_dev->dev,
+>>>>>>>>>> +					"Failed to get channel %d offset\n",
+>>>>>>>>>> +					chan_idx);
+>>>>>>>>>> +				return ret;
+>>>>>>>>>> +			}
+>>>>>>>>>> +		}
+>>>>>>>>>> +
+>>>>>>>>>> +		sd_chan->differential = chan->channel->differential;
+>>>>>>>>>> +
+>>>>>>>>>> +		dev_dbg(&indio_dev->dev, "Channel %d %s scale ref=%d offset=%d",
+>>>>>>>>>> +			chan_idx, chan->channel->differential ?
+>>>>>>>>>> +			"differential" : "single-ended",
+>>>>>>>>>> +			sd_chan->scale_val, sd_chan->offset);
+>>>>>>>>>> +
+>>>>>>>>>> +		chan++;
+>>>>>>>>>> +		sd_chan++;
+>>>>>>>>>>       	}
+>>>>>>>>>>       
+>>>>>>>>>>       	indio_dev->num_channels = num_ch;
+>>>    
+> 

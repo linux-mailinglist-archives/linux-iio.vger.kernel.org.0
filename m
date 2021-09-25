@@ -2,62 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 09595417823
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Sep 2021 18:03:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4F12417EAF
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Sep 2021 02:45:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347297AbhIXQFF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 24 Sep 2021 12:05:05 -0400
-Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:37778
-        "EHLO smtp-relay-internal-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1347280AbhIXQFF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Sep 2021 12:05:05 -0400
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 22C5F40784
-        for <linux-iio@vger.kernel.org>; Fri, 24 Sep 2021 16:03:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1632499411;
-        bh=XSnJxfEBt5YWoJGVTt7uPSu776tBxvxqT4EkYhJhjIo=;
-        h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-         In-Reply-To:Content-Type;
-        b=IYNSuk1j1yr+CtfY5Xham51abCzKx7pjG+badrdDeTJd/hpLGsnfGWGT9b3/7AUkO
-         z7xi+r3Kn6oJM9K5msyvau+LjdNJ4LeaJo7k8GAJo93roWwDkEa69sEGN/y4/qTWg+
-         3X34zwLk9xgbFudV77uUKNzrjeFL4wLW/Wvb8Yi+RY6UMHUw29+cOBILFD3acs/Aqg
-         cA1LRCyx3z/PH4pK7kLBKfjc/Casrcjvgbeyb8R/EC8b4EmyNX/NEA/oZhDxedrac8
-         vCLL+jR7maoCweBi8nqu8L+pLuWKETUTRJb42ROVH3KBiu077WyeQa8du1FpHVscho
-         LqCh1mTuRlVQA==
-Received: by mail-pg1-f199.google.com with SMTP id f22-20020a631016000000b00269ef9aae08so6463721pgl.20
-        for <linux-iio@vger.kernel.org>; Fri, 24 Sep 2021 09:03:31 -0700 (PDT)
+        id S1345827AbhIYAq4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 24 Sep 2021 20:46:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38058 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233410AbhIYAqz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Sep 2021 20:46:55 -0400
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1695AC061571;
+        Fri, 24 Sep 2021 17:45:22 -0700 (PDT)
+Received: by mail-pj1-x102b.google.com with SMTP id nn5-20020a17090b38c500b0019af1c4b31fso8820694pjb.3;
+        Fri, 24 Sep 2021 17:45:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=A34kxhv/etK3wlwWRi1DywwnkZHmEcyZ1C2q6fi5XAU=;
+        b=ICNkqnqUlv5hERimVxDjb3oQbbEiO7fXtn9zgjuaWYI0H2A4qgXxpNqY2Yf4QJBK33
+         RiGGBQx0nN4o9u3yWUgqvwP6BdRIOEdmjhRJH51U/QWxZQlS7LF13CgqT1LecAtVNjWl
+         1zFlYbZJ4gMtFtfB3irI0/nZl3PCUlGQrwA1Ur2J9HGYb3ykOqhppwVSstLsdEFpqBwH
+         3T/m6CANcMY2iGO+ZLCpc4DPlSfqIi08mOULTa5OMSmqucD+st5k3XgHU96eYd5iyuTX
+         68hf0xG/SsM2MilXhjqC1Thz2dODDO7guTRKTjJ6uvV7lYXbaQz7F6DGXfUfFjEnzB9U
+         hCHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=XSnJxfEBt5YWoJGVTt7uPSu776tBxvxqT4EkYhJhjIo=;
-        b=qyaQsbJKv5eUcPcVZ0kD+Z0EtEN9TLRNEAGI0yKIO7cZhgyC0ZR3hmYjV9TC69BwRM
-         YvC8drg4yjhHbsNfUHWF7BBeH4DS+m7LbOSTvhab7UTEdm7bquDCIfac4CnvUEi8SOTJ
-         mKTy1Wp9VdxDmni6fT9G8mGE0+4FYcp7cUn73nEO4hgsKfU0BMSoqfH9a4EqWMYDToTY
-         vWme8U41LSszy1+lVncGj7e5KA90+ZFeGIfIbV6DI9fFbuzrFkNepBZHSl9iEquaM+T5
-         NfLv6dZKvw8AgH7JIjvQH+MyWoy6x5tbIzcAnkXHc9I1ZGL6kZSLeDS69EjmFoH9/Ugo
-         ZUqw==
-X-Gm-Message-State: AOAM532X6ryi1W5ezYADuxCtjERHsSk1MA/Jr/NV+sVYgBg4iBZW8u0m
-        2YDN/59ZZSQ9Q1FPhD2fGQ3ACuplQCdi1a38ZPJOb3j+jdMLpNxpdxKFYeS1SbigXr3lLbPg6q7
-        btTGsOng0vVBjkJnFk/5IgcYmdsVgpTfzhcNTtw==
-X-Received: by 2002:a17:903:234c:b0:13c:7a6e:4b43 with SMTP id c12-20020a170903234c00b0013c7a6e4b43mr9721663plh.29.1632499409597;
-        Fri, 24 Sep 2021 09:03:29 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxbq17OedBYOqqvHCiyPf1GcC81qSNLHfVaTfFKuYJaYW2V/CpDG52XQo9+c/uPpJZRP3liTQ==
-X-Received: by 2002:a17:903:234c:b0:13c:7a6e:4b43 with SMTP id c12-20020a170903234c00b0013c7a6e4b43mr9721620plh.29.1632499409308;
-        Fri, 24 Sep 2021 09:03:29 -0700 (PDT)
-Received: from [192.168.1.124] ([69.163.84.166])
-        by smtp.gmail.com with ESMTPSA id c199sm9747942pfb.152.2021.09.24.09.03.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Sep 2021 09:03:28 -0700 (PDT)
-Subject: Re: [PATCH] drm/bridge: parade-ps8640: check return values in
- ps8640_aux_transfer()
-To:     dri-devel@lists.freedesktop.org
-Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=A34kxhv/etK3wlwWRi1DywwnkZHmEcyZ1C2q6fi5XAU=;
+        b=N6bIQrjYINMizepoi9NU7FiC5GfS5uJWvv8UmcPmc+TEt7KSk3szVAeKJKiuON7Ymf
+         Vm97LKdog8pGqMYMWEo+ArZ8CQfmqY2Pt1b3a/I22DgSOzMUEJR1NXviVoVFkG33teDQ
+         5ZqW5cvgAWvpILEcDYuUu7c8lCqk5X+RWmYqxAKQxxPIT5Xy/23UJh2UqL6kctKWN+be
+         crMG+OB8RHNXOoc9JDh0tgnWjgJU78g0XIsWz154dYuM2BXHy9oyEott8r8s7v9DJX3h
+         gfAio1pAwIiZdXsRdZwOtYGfK4ZEsXfSAvhP96S6nf1RivGsXWePMEiv6OdqFYy9k4e0
+         x2TQ==
+X-Gm-Message-State: AOAM530fSZMOcNkc6kzrDvNkKoUwBVtPms/7ZlCUwdAsEN5dpH6Ywqfc
+        Colu7c2l148BZlA1cnVJEzk=
+X-Google-Smtp-Source: ABdhPJzTCBqJ9nKP4Rv8o/4nf9E3U3gCroLCOtIXrFjKsJHEqnOTGau5dHOSwNTO+9gMmWB36Dp1YQ==
+X-Received: by 2002:a17:90a:a585:: with SMTP id b5mr5518315pjq.201.1632530721593;
+        Fri, 24 Sep 2021 17:45:21 -0700 (PDT)
+Received: from shinobu ([156.146.35.76])
+        by smtp.gmail.com with ESMTPSA id kt19sm12645460pjb.52.2021.09.24.17.45.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Sep 2021 17:45:20 -0700 (PDT)
+Date:   Sat, 25 Sep 2021 09:45:14 +0900
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     Tim Gardner <tim.gardner@canonical.com>
+Cc:     dri-devel@lists.freedesktop.org,
         Syed Nayyar Waris <syednwaris@gmail.com>,
         Andrzej Hajda <a.hajda@samsung.com>,
         Neil Armstrong <narmstrong@baylibre.com>,
@@ -68,97 +61,142 @@ Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
         David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drm/bridge: parade-ps8640: check return values in
+ ps8640_aux_transfer()
+Message-ID: <YU5xGn6i2a7vjajI@shinobu>
 References: <20210924152607.28580-1-tim.gardner@canonical.com>
-From:   Tim Gardner <tim.gardner@canonical.com>
-Message-ID: <8cdae251-f75e-bde8-a53d-27c77ac624c3@canonical.com>
-Date:   Fri, 24 Sep 2021 10:03:27 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+ <8cdae251-f75e-bde8-a53d-27c77ac624c3@canonical.com>
 MIME-Version: 1.0
-In-Reply-To: <20210924152607.28580-1-tim.gardner@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="6zLPgRHrhTXniU0e"
+Content-Disposition: inline
+In-Reply-To: <8cdae251-f75e-bde8-a53d-27c77ac624c3@canonical.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
+--6zLPgRHrhTXniU0e
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 9/24/21 9:26 AM, Tim Gardner wrote:
-> Coverity complains of an unused return code:
-> 
-> CID 120459 (#1 of 1): Unchecked return value (CHECKED_RETURN)
-> 7. check_return: Calling regmap_bulk_write without checking return value (as is
-> done elsewhere 199 out of 291 times).
-> 204        regmap_bulk_write(map, PAGE0_SWAUX_ADDR_7_0, addr_len,
-> 205                          ARRAY_SIZE(addr_len));
-> 
-> While I was at it I noticed 2 other places where return codes were not being
-> used, or used incorrectly (which is a real bug).
-> 
-> Fix these errors by correctly using the returned error codes.
-> 
-> Cc: William Breathitt Gray <vilhelm.gray@gmail.com>
-> Cc: Syed Nayyar Waris <syednwaris@gmail.com>
-> Cc: Andrzej Hajda <a.hajda@samsung.com>
-> Cc: Neil Armstrong <narmstrong@baylibre.com>
-> Cc: Robert Foss <robert.foss@linaro.org>
-> Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
-> Cc: Jonas Karlman <jonas@kwiboo.se>
-> Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
-> Cc: David Airlie <airlied@linux.ie>
-> Cc: Daniel Vetter <daniel@ffwll.ch>
-> Cc: linux-iio@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: dri-devel@lists.freedesktop.org
-> Signed-off-by: Tim Gardner <tim.gardner@canonical.com>
-> ---
->   drivers/gpu/drm/bridge/parade-ps8640.c | 14 +++++++++++---
->   1 file changed, 11 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/bridge/parade-ps8640.c b/drivers/gpu/drm/bridge/parade-ps8640.c
-> index 3aaa90913bf8..591da962970a 100644
-> --- a/drivers/gpu/drm/bridge/parade-ps8640.c
-> +++ b/drivers/gpu/drm/bridge/parade-ps8640.c
-> @@ -201,8 +201,12 @@ static ssize_t ps8640_aux_transfer(struct drm_dp_aux *aux,
->   	addr_len[PAGE0_SWAUX_LENGTH - base] = (len == 0) ? SWAUX_NO_PAYLOAD :
->   					      ((len - 1) & SWAUX_LENGTH_MASK);
->   
-> -	regmap_bulk_write(map, PAGE0_SWAUX_ADDR_7_0, addr_len,
-> +	ret = regmap_bulk_write(map, PAGE0_SWAUX_ADDR_7_0, addr_len,
->   			  ARRAY_SIZE(addr_len));
-> +	if (ret) {
-> +		DRM_DEV_ERROR(dev, "failed to bulk write ADDR_7_0: %d\n", ret);
-> +		return ret;
-> +	}
->   
->   	if (len && (request == DP_AUX_NATIVE_WRITE ||
->   		    request == DP_AUX_I2C_WRITE)) {
-> @@ -218,13 +222,17 @@ static ssize_t ps8640_aux_transfer(struct drm_dp_aux *aux,
->   		}
->   	}
->   
-> -	regmap_write(map, PAGE0_SWAUX_CTRL, SWAUX_SEND);
-> +	ret = regmap_write(map, PAGE0_SWAUX_CTRL, SWAUX_SEND);
-> +	if (ret) {
-> +		DRM_DEV_ERROR(dev, "failed to write SEND: %d\n", ret);
-> +		return ret;
-> +	}
->   
->   	/* Zero delay loop because i2c transactions are slow already */
->   	regmap_read_poll_timeout(map, PAGE0_SWAUX_CTRL, data,
->   				 !(data & SWAUX_SEND), 0, 50 * 1000);
->   
-> -	regmap_read(map, PAGE0_SWAUX_STATUS, &data);
-> +	ret = regmap_read(map, PAGE0_SWAUX_STATUS, &data);
->   	if (ret) {
->   		DRM_DEV_ERROR(dev, "failed to read PAGE0_SWAUX_STATUS: %d\n",
->   			      ret);
-> 
+On Fri, Sep 24, 2021 at 10:03:27AM -0600, Tim Gardner wrote:
+>=20
+>=20
+> On 9/24/21 9:26 AM, Tim Gardner wrote:
+> > Coverity complains of an unused return code:
+> >=20
+> > CID 120459 (#1 of 1): Unchecked return value (CHECKED_RETURN)
+> > 7. check_return: Calling regmap_bulk_write without checking return valu=
+e (as is
+> > done elsewhere 199 out of 291 times).
+> > 204        regmap_bulk_write(map, PAGE0_SWAUX_ADDR_7_0, addr_len,
+> > 205                          ARRAY_SIZE(addr_len));
+> >=20
+> > While I was at it I noticed 2 other places where return codes were not =
+being
+> > used, or used incorrectly (which is a real bug).
+> >=20
+> > Fix these errors by correctly using the returned error codes.
+> >=20
+> > Cc: William Breathitt Gray <vilhelm.gray@gmail.com>
+> > Cc: Syed Nayyar Waris <syednwaris@gmail.com>
+> > Cc: Andrzej Hajda <a.hajda@samsung.com>
+> > Cc: Neil Armstrong <narmstrong@baylibre.com>
+> > Cc: Robert Foss <robert.foss@linaro.org>
+> > Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+> > Cc: Jonas Karlman <jonas@kwiboo.se>
+> > Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
+> > Cc: David Airlie <airlied@linux.ie>
+> > Cc: Daniel Vetter <daniel@ffwll.ch>
+> > Cc: linux-iio@vger.kernel.org
+> > Cc: linux-kernel@vger.kernel.org
+> > Cc: dri-devel@lists.freedesktop.org
+> > Signed-off-by: Tim Gardner <tim.gardner@canonical.com>
+> > ---
+> >   drivers/gpu/drm/bridge/parade-ps8640.c | 14 +++++++++++---
+> >   1 file changed, 11 insertions(+), 3 deletions(-)
+> >=20
+> > diff --git a/drivers/gpu/drm/bridge/parade-ps8640.c b/drivers/gpu/drm/b=
+ridge/parade-ps8640.c
+> > index 3aaa90913bf8..591da962970a 100644
+> > --- a/drivers/gpu/drm/bridge/parade-ps8640.c
+> > +++ b/drivers/gpu/drm/bridge/parade-ps8640.c
+> > @@ -201,8 +201,12 @@ static ssize_t ps8640_aux_transfer(struct drm_dp_a=
+ux *aux,
+> >   	addr_len[PAGE0_SWAUX_LENGTH - base] =3D (len =3D=3D 0) ? SWAUX_NO_PA=
+YLOAD :
+> >   					      ((len - 1) & SWAUX_LENGTH_MASK);
+> >  =20
+> > -	regmap_bulk_write(map, PAGE0_SWAUX_ADDR_7_0, addr_len,
+> > +	ret =3D regmap_bulk_write(map, PAGE0_SWAUX_ADDR_7_0, addr_len,
+> >   			  ARRAY_SIZE(addr_len));
+> > +	if (ret) {
+> > +		DRM_DEV_ERROR(dev, "failed to bulk write ADDR_7_0: %d\n", ret);
+> > +		return ret;
+> > +	}
+> >  =20
+> >   	if (len && (request =3D=3D DP_AUX_NATIVE_WRITE ||
+> >   		    request =3D=3D DP_AUX_I2C_WRITE)) {
+> > @@ -218,13 +222,17 @@ static ssize_t ps8640_aux_transfer(struct drm_dp_=
+aux *aux,
+> >   		}
+> >   	}
+> >  =20
+> > -	regmap_write(map, PAGE0_SWAUX_CTRL, SWAUX_SEND);
+> > +	ret =3D regmap_write(map, PAGE0_SWAUX_CTRL, SWAUX_SEND);
+> > +	if (ret) {
+> > +		DRM_DEV_ERROR(dev, "failed to write SEND: %d\n", ret);
+> > +		return ret;
+> > +	}
+> >  =20
+> >   	/* Zero delay loop because i2c transactions are slow already */
+> >   	regmap_read_poll_timeout(map, PAGE0_SWAUX_CTRL, data,
+> >   				 !(data & SWAUX_SEND), 0, 50 * 1000);
+> >  =20
+> > -	regmap_read(map, PAGE0_SWAUX_STATUS, &data);
+> > +	ret =3D regmap_read(map, PAGE0_SWAUX_STATUS, &data);
+> >   	if (ret) {
+> >   		DRM_DEV_ERROR(dev, "failed to read PAGE0_SWAUX_STATUS: %d\n",
+> >   			      ret);
+> >=20
+>=20
+> I forgot to mention this patch is for linux-next next-20210924.
+>=20
+> -----------
+> Tim Gardner
+> Canonical, Inc
 
-I forgot to mention this patch is for linux-next next-20210924.
+Hi Tim,
 
------------
-Tim Gardner
-Canonical, Inc
+For future patches, the git format-patch command has a useful option
+'--base'. It will allow you to provide the base tree information for
+users and maintainers so that they know where to apply the patch:
+https://git-scm.com/docs/git-format-patch#_base_tree_information
+
+Sincerely,
+
+William Breathitt Gray
+
+--6zLPgRHrhTXniU0e
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmFOcQ4ACgkQhvpINdm7
+VJJVNhAAl6xPD0ZJlPNVKYfjReKsALL2FGB6dGmh/05xr0RJePAV2lBIaN1zjluS
+O4mOH4ysNckLY4klB9zaMoVOaNqzVEJ6X4s0EbMpu3kPmyTcPaQzFdib4EO5WQk6
+a/TUaswXr+PaEaM8/0GhcNuqUDIqWtwLkFNC9/LjO1VJ82vzNFOcy+DopUfdRc4q
+IidzUYYZFG8F36WuYYEw0QNF2mOjityK2A05jj5TfgFMbt3f68JEovvy6LhpoIHY
+w7XAJK3WjRJh29B72IN7agB3BbCG5k1gM6PdI12MCfmBRu4irEqox03JyWPR6ZUz
+FhueXo/bQg/8n7xiQXXLEJxxmxGxhGVawolg2Myc35PkgO/6JMCmNwVxqRj149BS
+MuVUXRwF2gh741p8rT8cgW4Qn4INTJzWEikIFSTwO1YuIO885+S+NJvfU6hTXYRr
+yP+vUYpD+txKkezBRa3jWDqIT2nYTAD3U4NmR09fmhQODDa/rIYW5cgghXyV32mH
+GZn15Neu7MKe6o/XbDYyQp/OF83v57lhLTcCCOUy73LmjGYfQ1Ddyy5YLAbHB0IA
+ypq44HC3iBuN79T7cd5pVNnfMDbtJHxz24EZK4+kySIqvoeHc2oTF/nH6yxG/pCN
+aS7nDh37fXrLvDhDACu8uC7z6aDhyDpxsI5l7Er3P0trXxuxGb8=
+=ARVo
+-----END PGP SIGNATURE-----
+
+--6zLPgRHrhTXniU0e--

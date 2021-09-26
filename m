@@ -2,165 +2,209 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 959C841897B
-	for <lists+linux-iio@lfdr.de>; Sun, 26 Sep 2021 16:34:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF4B241897F
+	for <lists+linux-iio@lfdr.de>; Sun, 26 Sep 2021 16:36:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231844AbhIZOga convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sun, 26 Sep 2021 10:36:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48540 "EHLO mail.kernel.org"
+        id S231861AbhIZOi1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 26 Sep 2021 10:38:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50184 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231743AbhIZOga (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 26 Sep 2021 10:36:30 -0400
+        id S231852AbhIZOi0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 26 Sep 2021 10:38:26 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 679D560EE0;
-        Sun, 26 Sep 2021 14:34:52 +0000 (UTC)
-Date:   Sun, 26 Sep 2021 15:38:41 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 75C9C60FDC;
+        Sun, 26 Sep 2021 14:36:49 +0000 (UTC)
+Date:   Sun, 26 Sep 2021 15:40:38 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Nuno Sa <Nuno.Sa@analog.com>
-Subject: Re: [PATCH v4 00/16] Bring external triggers support to
- MAX1027-like ADCs
-Message-ID: <20210926153841.48b60e5b@jic23-huawei>
-In-Reply-To: <20210921115408.66711-1-miquel.raynal@bootlin.com>
-References: <20210921115408.66711-1-miquel.raynal@bootlin.com>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     linux-iio@vger.kernel.org, lorenzo.bianconi@redhat.com
+Subject: Re: [PATCH v2] iio: imu: st_lsm6dsx: move max_fifo_size in
+ st_lsm6dsx_fifo_ops
+Message-ID: <20210926154038.4ddf50ae@jic23-huawei>
+In-Reply-To: <3262ad9d9d1497e19ea1bab208c495c2b9a98994.1632664866.git.lorenzo@kernel.org>
+References: <3262ad9d9d1497e19ea1bab208c495c2b9a98994.1632664866.git.lorenzo@kernel.org>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 21 Sep 2021 13:53:52 +0200
-Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+On Sun, 26 Sep 2021 16:02:30 +0200
+Lorenzo Bianconi <lorenzo@kernel.org> wrote:
 
-> Until now the max1027.c driver, which handles 10-bit devices (max10xx)
-> and 12-bit devices (max12xx), only supported internal triggers. When the
-> hardware trigger is not wired it is very convenient to use external
-> triggers. Overall, when several values are needed at the same time,
-> using triggers and buffers improves quite a lot the performances.
+> Move max_fifo_size in st_lsm6dsx_fifo_ops in order to have all
+> FIFO configuration parameters in st_lsm6dsx_fifo_ops structure.
+> This patch does not introduce any logic change, just small code
+> rearrangement.
 > 
-> This series does a bit of cleaning/code reorganization before actually
-> bringing more flexibility to the driver, up to the point where it is
-> possible to use an external trigger, even without the IRQ line wired.
-> 
-> This series is currently based on a v5.15-rc1 kernel and the external
-> triggering mechanism has been tested on a custom board where the IRQ and
-> the EOC lines have not been populated.
-> 
-> How to test sysfs triggers:
->     echo 0 > /sys/bus/iio/devices/iio_sysfs_trigger/add_trigger
->     cat /sys/bus/iio/devices/iio_sysfs_trigger/trigger0/name > \
->         /sys/bus/iio/devices/iio:device0/trigger/current_trigger
->     echo 1 > /sys/bus/iio/devices/iio:device0/scan_elements/in_voltageX_en
->     echo 1 > /sys/bus/iio/devices/iio:device0/scan_elements/in_voltageY_en
->     echo 1 > /sys/bus/iio/devices/iio:device0/buffer/enable
->     cat /dev/iio\:device0 > /tmp/data &
->     echo 1 > /sys/bus/iio/devices/trigger0/trigger_now
->     od -t x1 /tmp/data
-> 
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-Series applied to the togreg branch of iio.git and pushed out as testing
-to see if 0-day can find anything we missed.
+Hi Lorenzo,
 
-Thanks for persisting on this one.
+Applied to the togreg branch of iio.git and pushed out as testing for
+all the normal reasons.
+
+Thanks,
 
 Jonathan
 
-> Cheers,
-> Miquèl
+> ---
+> Changes since v1:
+> - improve commit message.
+> ---
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  4 ++--
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 16 +++++++++-------
+>  2 files changed, 11 insertions(+), 9 deletions(-)
 > 
-> Changes in v4:
-> * Full rework again of the last few patches bringing external triggers
->   support according to Jonathan's reviews: trigger handling (internal
->   or external) should be in a dedicated helper to keep the exchanges
->   between the IIO core and the drivers standards. This also improves
->   reusability and now the max1027 trigger can also be used to trigger
->   other IIO devices.
-> 
-> Changes in v3:
-> * Rebased on top of v5.15-rc1.
-> * Dropped the useless change from devm_kmalloc to kmalloc because I
->   thought devm_kmalloc allocations were still not suitable for DMA
->   purposes.
-> * Added a comment explaining the use of the available and active masks
->   in the code as suggested by Jonathan.
-> * Released the lock used in iio_device_claim_direct_mode() in the two
->   error paths.
-> * Did not move the call to reinit_completion before
->   wait_for_completion_timeout() as advised by Nuno because the
->   triggering is done before entering the waiting thread, so there is a
->   world were we reinit a completion object right before waiting for it
->   (which would lead to a timeout).
-> * Deeply rewored the various handlers (see my answer to
->   "[PATCH v2 15/16] iio: adc: max1027: Add support for external  triggers"
-> 
-> Changes in v2:
-> [All]
-> * Overall quite a few changes, I'll try to list them here but I made
->   significant changes on the last few commits so it's hard to have an
->   exhaustive and detailed list.
-> * Simplified the return statements as advised by Nuno.
-> * Dropped useless debug messages.
-> * Used iio_trigger_validate_own_device() instead of an internal
->   variable when possible.
-> * Added Nuno's Reviewed-by's when relevant.
-> [Created a new patch to fix the style]
-> [Created a new patch to ensure st->buffer is DMA-safe]
-> [Push only the requested samples]
-> * Dropped a useless check over active_scan_mask mask in
->   ->set_trigger_state().  
-> * Dropped the st->buffer indirection with a missing __be16 type.
-> * Do not push only the requested samples in the IIO buffers, rely on the
->   core to handle this by providing additional 'available_scan_masks'
->   instead of dropping this entry from the initial setup.
-> [Create a helper to configure the trigger]
-> * Avoided messing with new lines.
-> * Dropped cnvst_trigger, used a function parameter instead.
-> [Prevent single channel accesses during buffer reads]
-> * Used iio_device_claim_direct_mode() when relevant.
-> * Dropped the extra iio_buffer_enabled() call.
-> * Prevented returning with a mutex held.
-> [Introduce an end of conversion helper]
-> * Moved the check against active scan mask to the very end of the series
->   where we actually make use of it.
-> * Moved the Queue declaration to another patch.
-> [Dropped the patch: Prepare re-using the EOC interrupt]
-> [Consolidate the end of conversion helper]
-> * Used a dynamic completion object instead of a static queue.
-> * Reworded the commit message to actually describe what this commit
->   does.
-> [Support software triggers]
-> * Dropped the patch and replaced it with something hopefully close to
->   what Jonathan and Nuno described in their reviews.
-> [Enable software triggers to be  used without IRQ]
-> * Wrote a more generic commit message, not focusing on software
->   triggers.
-> 
-> Miquel Raynal (16):
->   iio: adc: max1027: Fix style
->   iio: adc: max1027: Drop extra warning message
->   iio: adc: max1027: Drop useless debug messages
->   iio: adc: max1027: Minimize the number of converted channels
->   iio: adc: max1027: Rename a helper
->   iio: adc: max1027: Create a helper to enable/disable the cnvst trigger
->   iio: adc: max1027: Simplify the _set_trigger_state() helper
->   iio: adc: max1027: Ensure a default cnvst trigger configuration
->   iio: adc: max1027: Create a helper to configure the channels to scan
->   iio: adc: max1027: Prevent single channel accesses during buffer reads
->   iio: adc: max1027: Separate the IRQ handler from the read logic
->   iio: adc: max1027: Introduce an end of conversion helper
->   iio: adc: max1027: Stop requesting a threaded IRQ
->   iio: adc: max1027: Use the EOC IRQ when populated for single reads
->   iio: adc: max1027: Allow all kind of triggers to be used
->   iio: adc: max1027: Don't reject external triggers when there is no IRQ
-> 
->  drivers/iio/adc/max1027.c | 286 +++++++++++++++++++++++++++-----------
->  1 file changed, 205 insertions(+), 81 deletions(-)
-> 
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> index 5ef55763a6cc..6ac4eac36458 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> @@ -143,6 +143,7 @@ struct st_lsm6dsx_fs_table_entry {
+>   * @read_fifo: Read FIFO callback.
+>   * @fifo_th: FIFO threshold register info (addr + mask).
+>   * @fifo_diff: FIFO diff status register info (addr + mask).
+> + * @max_size: Sensor max fifo length in FIFO words.
+>   * @th_wl: FIFO threshold word length.
+>   */
+>  struct st_lsm6dsx_fifo_ops {
+> @@ -156,6 +157,7 @@ struct st_lsm6dsx_fifo_ops {
+>  		u8 addr;
+>  		u16 mask;
+>  	} fifo_diff;
+> +	u16 max_size;
+>  	u8 th_wl;
+>  };
+>  
+> @@ -271,7 +273,6 @@ struct st_lsm6dsx_ext_dev_settings {
+>   * @reset: register address for reset.
+>   * @boot: register address for boot.
+>   * @bdu: register address for Block Data Update.
+> - * @max_fifo_size: Sensor max fifo length in FIFO words.
+>   * @id: List of hw id/device name supported by the driver configuration.
+>   * @channels: IIO channels supported by the device.
+>   * @irq_config: interrupts related registers.
+> @@ -288,7 +289,6 @@ struct st_lsm6dsx_settings {
+>  	struct st_lsm6dsx_reg reset;
+>  	struct st_lsm6dsx_reg boot;
+>  	struct st_lsm6dsx_reg bdu;
+> -	u16 max_fifo_size;
+>  	struct {
+>  		enum st_lsm6dsx_hw_id hw_id;
+>  		const char *name;
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> index db45f1fc0b81..0f54df85134a 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> @@ -102,7 +102,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+>  			.addr = 0x22,
+>  			.mask = BIT(6),
+>  		},
+> -		.max_fifo_size = 32,
+>  		.id = {
+>  			{
+>  				.hw_id = ST_LSM9DS1_ID,
+> @@ -194,6 +193,9 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+>  				.mask = BIT(4),
+>  			},
+>  		},
+> +		.fifo_ops = {
+> +			.max_size = 32,
+> +		},
+>  	},
+>  	{
+>  		.reset = {
+> @@ -208,7 +210,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+>  			.addr = 0x12,
+>  			.mask = BIT(6),
+>  		},
+> -		.max_fifo_size = 1365,
+>  		.id = {
+>  			{
+>  				.hw_id = ST_LSM6DS3_ID,
+> @@ -329,6 +330,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+>  				.addr = 0x3a,
+>  				.mask = GENMASK(11, 0),
+>  			},
+> +			.max_size = 1365,
+>  			.th_wl = 3, /* 1LSB = 2B */
+>  		},
+>  		.ts_settings = {
+> @@ -374,7 +376,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+>  			.addr = 0x12,
+>  			.mask = BIT(6),
+>  		},
+> -		.max_fifo_size = 682,
+>  		.id = {
+>  			{
+>  				.hw_id = ST_LSM6DS3H_ID,
+> @@ -495,6 +496,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+>  				.addr = 0x3a,
+>  				.mask = GENMASK(11, 0),
+>  			},
+> +			.max_size = 682,
+>  			.th_wl = 3, /* 1LSB = 2B */
+>  		},
+>  		.ts_settings = {
+> @@ -540,7 +542,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+>  			.addr = 0x12,
+>  			.mask = BIT(6),
+>  		},
+> -		.max_fifo_size = 682,
+>  		.id = {
+>  			{
+>  				.hw_id = ST_LSM6DSL_ID,
+> @@ -677,6 +678,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+>  				.addr = 0x3a,
+>  				.mask = GENMASK(10, 0),
+>  			},
+> +			.max_size = 682,
+>  			.th_wl = 3, /* 1LSB = 2B */
+>  		},
+>  		.ts_settings = {
+> @@ -759,7 +761,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+>  			.addr = 0x12,
+>  			.mask = BIT(6),
+>  		},
+> -		.max_fifo_size = 512,
+>  		.id = {
+>  			{
+>  				.hw_id = ST_LSM6DSR_ID,
+> @@ -910,6 +911,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+>  				.addr = 0x3a,
+>  				.mask = GENMASK(9, 0),
+>  			},
+> +			.max_size = 512,
+>  			.th_wl = 1,
+>  		},
+>  		.ts_settings = {
+> @@ -984,7 +986,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+>  			.addr = 0x12,
+>  			.mask = BIT(6),
+>  		},
+> -		.max_fifo_size = 512,
+>  		.id = {
+>  			{
+>  				.hw_id = ST_ASM330LHH_ID,
+> @@ -1119,6 +1120,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+>  				.addr = 0x3a,
+>  				.mask = GENMASK(9, 0),
+>  			},
+> +			.max_size = 512,
+>  			.th_wl = 1,
+>  		},
+>  		.ts_settings = {
+> @@ -1603,7 +1605,7 @@ int st_lsm6dsx_set_watermark(struct iio_dev *iio_dev, unsigned int val)
+>  	struct st_lsm6dsx_hw *hw = sensor->hw;
+>  	int err;
+>  
+> -	if (val < 1 || val > hw->settings->max_fifo_size)
+> +	if (val < 1 || val > hw->settings->fifo_ops.max_size)
+>  		return -EINVAL;
+>  
+>  	mutex_lock(&hw->conf_lock);
 

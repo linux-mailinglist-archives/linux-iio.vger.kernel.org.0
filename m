@@ -2,201 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25077418944
-	for <lists+linux-iio@lfdr.de>; Sun, 26 Sep 2021 16:02:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D89C1418950
+	for <lists+linux-iio@lfdr.de>; Sun, 26 Sep 2021 16:08:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231799AbhIZOEU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 26 Sep 2021 10:04:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33592 "EHLO mail.kernel.org"
+        id S231803AbhIZOKZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 26 Sep 2021 10:10:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36358 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231743AbhIZOET (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 26 Sep 2021 10:04:19 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0163260F39;
-        Sun, 26 Sep 2021 14:02:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632664963;
-        bh=v6jUXK8LEi4+BnA+yFWn/vVEN40DtA1tULZZTGjUji4=;
-        h=From:To:Cc:Subject:Date:From;
-        b=YaGSDxAVst58dDMpKg5/fOPp2dDA7mGPRJjRfQJjfOP4WT61HLTn5uW9mKV8KciCY
-         Gxvhn1EKwLwYvMy3oT3cfSiiuhL+Xk+1oT/ghxutjvs/BpPO1QdYDEF2vNzBrlnmpw
-         AqnCUQGyTyXwxGSKnu71BLZ4cc9oRTOGVNERUaOT2QaqNnkMhSPUa63IM76K9Fyxr/
-         vzwAoQTVBs7FRoFr5Wjb849Zi9Ci5Rf2MXXT4sOaRYBmIYyo24sJmMBL5ja5cIUWHR
-         ZMLMjs8jl9AV5Bg3dhz7NfkOL5fbL85ckeVoiQ999ozsnCC2x18Q/vjUlxdwGaG0Jh
-         e9NcoaJ9RbEfg==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     jic23@kernel.org
-Cc:     linux-iio@vger.kernel.org, lorenzo.bianconi@redhat.com
-Subject: [PATCH v2] iio: imu: st_lsm6dsx: move max_fifo_size in st_lsm6dsx_fifo_ops
-Date:   Sun, 26 Sep 2021 16:02:30 +0200
-Message-Id: <3262ad9d9d1497e19ea1bab208c495c2b9a98994.1632664866.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.31.1
+        id S231743AbhIZOKY (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 26 Sep 2021 10:10:24 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id BCC6460724;
+        Sun, 26 Sep 2021 14:08:45 +0000 (UTC)
+Date:   Sun, 26 Sep 2021 15:12:34 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Cai Huoqing <caihuoqing@baidu.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        "Sascha Hauer" <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v6 1/3] iio: imx8qxp-adc: Add driver support for NXP
+ IMX8QXP ADC
+Message-ID: <20210926151234.2b7b728b@jic23-huawei>
+In-Reply-To: <20210925020555.129-2-caihuoqing@baidu.com>
+References: <20210925020555.129-1-caihuoqing@baidu.com>
+        <20210925020555.129-2-caihuoqing@baidu.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Move max_fifo_size in st_lsm6dsx_fifo_ops in order to have all
-FIFO configuration parameters in st_lsm6dsx_fifo_ops structure.
-This patch does not introduce any logic change, just small code
-rearrangement.
+On Sat, 25 Sep 2021 10:05:45 +0800
+Cai Huoqing <caihuoqing@baidu.com> wrote:
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
-Changes since v1:
-- improve commit message.
----
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  4 ++--
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 16 +++++++++-------
- 2 files changed, 11 insertions(+), 9 deletions(-)
+> The NXP i.MX 8QuadXPlus SOC has a new ADC IP, so add
+> driver support for this ADC.
+> 
+> Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-index 5ef55763a6cc..6ac4eac36458 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-@@ -143,6 +143,7 @@ struct st_lsm6dsx_fs_table_entry {
-  * @read_fifo: Read FIFO callback.
-  * @fifo_th: FIFO threshold register info (addr + mask).
-  * @fifo_diff: FIFO diff status register info (addr + mask).
-+ * @max_size: Sensor max fifo length in FIFO words.
-  * @th_wl: FIFO threshold word length.
-  */
- struct st_lsm6dsx_fifo_ops {
-@@ -156,6 +157,7 @@ struct st_lsm6dsx_fifo_ops {
- 		u8 addr;
- 		u16 mask;
- 	} fifo_diff;
-+	u16 max_size;
- 	u8 th_wl;
- };
- 
-@@ -271,7 +273,6 @@ struct st_lsm6dsx_ext_dev_settings {
-  * @reset: register address for reset.
-  * @boot: register address for boot.
-  * @bdu: register address for Block Data Update.
-- * @max_fifo_size: Sensor max fifo length in FIFO words.
-  * @id: List of hw id/device name supported by the driver configuration.
-  * @channels: IIO channels supported by the device.
-  * @irq_config: interrupts related registers.
-@@ -288,7 +289,6 @@ struct st_lsm6dsx_settings {
- 	struct st_lsm6dsx_reg reset;
- 	struct st_lsm6dsx_reg boot;
- 	struct st_lsm6dsx_reg bdu;
--	u16 max_fifo_size;
- 	struct {
- 		enum st_lsm6dsx_hw_id hw_id;
- 		const char *name;
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index db45f1fc0b81..0f54df85134a 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -102,7 +102,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 			.addr = 0x22,
- 			.mask = BIT(6),
- 		},
--		.max_fifo_size = 32,
- 		.id = {
- 			{
- 				.hw_id = ST_LSM9DS1_ID,
-@@ -194,6 +193,9 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.mask = BIT(4),
- 			},
- 		},
-+		.fifo_ops = {
-+			.max_size = 32,
-+		},
- 	},
- 	{
- 		.reset = {
-@@ -208,7 +210,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 			.addr = 0x12,
- 			.mask = BIT(6),
- 		},
--		.max_fifo_size = 1365,
- 		.id = {
- 			{
- 				.hw_id = ST_LSM6DS3_ID,
-@@ -329,6 +330,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.addr = 0x3a,
- 				.mask = GENMASK(11, 0),
- 			},
-+			.max_size = 1365,
- 			.th_wl = 3, /* 1LSB = 2B */
- 		},
- 		.ts_settings = {
-@@ -374,7 +376,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 			.addr = 0x12,
- 			.mask = BIT(6),
- 		},
--		.max_fifo_size = 682,
- 		.id = {
- 			{
- 				.hw_id = ST_LSM6DS3H_ID,
-@@ -495,6 +496,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.addr = 0x3a,
- 				.mask = GENMASK(11, 0),
- 			},
-+			.max_size = 682,
- 			.th_wl = 3, /* 1LSB = 2B */
- 		},
- 		.ts_settings = {
-@@ -540,7 +542,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 			.addr = 0x12,
- 			.mask = BIT(6),
- 		},
--		.max_fifo_size = 682,
- 		.id = {
- 			{
- 				.hw_id = ST_LSM6DSL_ID,
-@@ -677,6 +678,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.addr = 0x3a,
- 				.mask = GENMASK(10, 0),
- 			},
-+			.max_size = 682,
- 			.th_wl = 3, /* 1LSB = 2B */
- 		},
- 		.ts_settings = {
-@@ -759,7 +761,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 			.addr = 0x12,
- 			.mask = BIT(6),
- 		},
--		.max_fifo_size = 512,
- 		.id = {
- 			{
- 				.hw_id = ST_LSM6DSR_ID,
-@@ -910,6 +911,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.addr = 0x3a,
- 				.mask = GENMASK(9, 0),
- 			},
-+			.max_size = 512,
- 			.th_wl = 1,
- 		},
- 		.ts_settings = {
-@@ -984,7 +986,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 			.addr = 0x12,
- 			.mask = BIT(6),
- 		},
--		.max_fifo_size = 512,
- 		.id = {
- 			{
- 				.hw_id = ST_ASM330LHH_ID,
-@@ -1119,6 +1120,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.addr = 0x3a,
- 				.mask = GENMASK(9, 0),
- 			},
-+			.max_size = 512,
- 			.th_wl = 1,
- 		},
- 		.ts_settings = {
-@@ -1603,7 +1605,7 @@ int st_lsm6dsx_set_watermark(struct iio_dev *iio_dev, unsigned int val)
- 	struct st_lsm6dsx_hw *hw = sensor->hw;
- 	int err;
- 
--	if (val < 1 || val > hw->settings->max_fifo_size)
-+	if (val < 1 || val > hw->settings->fifo_ops.max_size)
- 		return -EINVAL;
- 
- 	mutex_lock(&hw->conf_lock);
--- 
-2.31.1
+Hi.  My local build tests throw up a "set but unused" warning which made me take
+another look.  I've fixed as commented below.  Shout if that was not the right fix!
 
+
+
+> +
+> +static void imx8qxp_adc_reg_config(struct imx8qxp_adc *adc, int channel)
+> +{
+> +	u32 adc_cfg, adc_tctrl, adc_cmdl, adc_cmdh;
+> +
+> +	/* ADC configuration */
+> +	adc_cfg = FIELD_PREP(IMX8QXP_ADC_CFG_PWREN_MASK, 1) |
+> +		  FIELD_PREP(IMX8QXP_ADC_CFG_PUDLY_MASK, 0x80)|
+> +		  FIELD_PREP(IMX8QXP_ADC_CFG_REFSEL_MASK, 0) |
+> +		  FIELD_PREP(IMX8QXP_ADC_CFG_PWRSEL_MASK, 3) |
+> +		  FIELD_PREP(IMX8QXP_ADC_CFG_TPRICTRL_MASK, 0);
+> +	writel(adc_cfg, adc->regs + IMX8QXP_ADR_ADC_CFG);
+> +
+> +	/* config the trigger control */
+> +	adc_tctrl = FIELD_PREP(IMX8QXP_ADC_TCTRL_TCMD_MASK, 1) |
+> +		    FIELD_PREP(IMX8QXP_ADC_TCTRL_TDLY_MASK, 0) |
+> +		    FIELD_PREP(IMX8QXP_ADC_TCTRL_TPRI_MASK, IMX8QXP_ADC_TCTRL_TPRI_PRIORITY_HIGH) |
+> +		    FIELD_PREP(IMX8QXP_ADC_TCTRL_HTEN_MASK, IMX8QXP_ADC_TCTRL_HTEN_HW_TIRG_DIS);
+> +	writel(adc_cfg, adc->regs + IMX8QXP_ADR_ADC_TCTRL(0));
+adc_tctrl I assume?  I've changed it to that so shout if that was not what was intented.
+
+> +
+> +	/* config the cmd */
+> +	adc_cmdl = FIELD_PREP(IMX8QXP_ADC_CMDL_CSCALE_MASK, IMX8QXP_ADC_CMDL_CHANNEL_SCALE_FULL) |
+> +		   FIELD_PREP(IMX8QXP_ADC_CMDL_MODE_MASK, IMX8QXP_ADC_CMDL_STANDARD_RESOLUTION) |
+> +		   FIELD_PREP(IMX8QXP_ADC_CMDL_DIFF_MASK, IMX8QXP_ADC_CMDL_MODE_SINGLE) |
+> +		   FIELD_PREP(IMX8QXP_ADC_CMDL_ABSEL_MASK, IMX8QXP_ADC_CMDL_SEL_A_A_B_CHANNEL) |
+> +		   FIELD_PREP(IMX8QXP_ADC_CMDL_ADCH_MASK, channel);
+> +	writel(adc_cmdl, adc->regs + IMX8QXP_ADR_ADC_CMDL(0));
+> +
+> +	adc_cmdh = FIELD_PREP(IMX8QXP_ADC_CMDH_NEXT_MASK, 0) |
+> +		   FIELD_PREP(IMX8QXP_ADC_CMDH_LOOP_MASK, 0) |
+> +		   FIELD_PREP(IMX8QXP_ADC_CMDH_AVGS_MASK, 7) |
+> +		   FIELD_PREP(IMX8QXP_ADC_CMDH_STS_MASK, 0) |
+> +		   FIELD_PREP(IMX8QXP_ADC_CMDH_LWI_MASK, IMX8QXP_ADC_CMDH_LWI_INCREMENT_DIS) |
+> +		   FIELD_PREP(IMX8QXP_ADC_CMDH_CMPEN_MASK, IMX8QXP_ADC_CMDH_CMPEN_DIS);
+> +	writel(adc_cmdh, adc->regs + IMX8QXP_ADR_ADC_CMDH(0));
+> +}
+> +

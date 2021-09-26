@@ -2,193 +2,131 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 662BF418AD8
-	for <lists+linux-iio@lfdr.de>; Sun, 26 Sep 2021 21:43:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D00CA418B31
+	for <lists+linux-iio@lfdr.de>; Sun, 26 Sep 2021 23:18:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229900AbhIZTo5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 26 Sep 2021 15:44:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32776 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229669AbhIZTo4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 26 Sep 2021 15:44:56 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BD8AC061570
-        for <linux-iio@vger.kernel.org>; Sun, 26 Sep 2021 12:43:20 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id y35so8786077ede.3
-        for <linux-iio@vger.kernel.org>; Sun, 26 Sep 2021 12:43:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=deviqon.com; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=+FqvCf5osAEwUJvV00eWIuuRwW5rXLzyPiLGVp8SKng=;
-        b=Kanj6in+B0Fx4dH3EbYTaDVlFJEkWXI9oRKfdTyxjT+G3+wnkaB3BYqts832OVWmxq
-         CS2GhnE91NBJYFNloXrDmvZcVwgTyKKFyYqaQDAtJ/fozrn2PJdwy9qJgoEm0eMAUYBL
-         qNyQOYJ2t0yrF2lt6wCi9aFkSd24gHaTH80A/nUizYD0pkOlOQtix2xSNZMS/ciuaePH
-         /0AW7uofgqydthYM94ISTZm/avcEDI7vWp4IHKOAiABW/wxXNP8KJAu3PPkRtDT+MGaK
-         EczlOWeLMss8vpAHXiCrmsJwW2ZTB/02D/9u2gmZxb6v0DQ4xsGSAjBD444f3jpw+Ykt
-         6Q1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=+FqvCf5osAEwUJvV00eWIuuRwW5rXLzyPiLGVp8SKng=;
-        b=Mv/BGb6Jn7+7WNWPscs3Aj/I+e+Mg400Pg1NU3yQsYhkpX9J1c2q7IDpYvYRAAnOdG
-         AbiY2TKn+XPNdig9ACblnOVjw8V8VhgCq5MPj87dEh/BwsqzpWSdVLh8YTQw0hPGrp/q
-         9rXFm7f8aOOjDH+CUAcMKsLT62ipI3AYLK+zoO5UA4Z9ncrxavIB/jN3sAl9lW4Iclne
-         FUyZGud62BXvGyOUwlnqy+NKLsFGf5fhlVbJ+XUJmlY4iKOkHkijJSW4wQ3J9a0QapJU
-         R7+89EvRpSwxYC0weVl+1NS6BNyJKg4h5/d9rwWK8cAf9omWu8FU3hIgTeMtN9kBMwy6
-         JCJQ==
-X-Gm-Message-State: AOAM531I0xcwT8JFPT7SafDQSs3j+ubJk68IT8K7YYIfcgX6ValIsCO1
-        R30/bKwjqiSVnpzPP5C6UArrrw==
-X-Google-Smtp-Source: ABdhPJwMOlCNHt8sfNlt04grZFgJ/qzr8FZQLGjpR+8zw7t9SX1zLCxw1tKYmtlUcw5fSkpJHvAvfA==
-X-Received: by 2002:a05:6402:1808:: with SMTP id g8mr19068079edy.188.1632685398682;
-        Sun, 26 Sep 2021 12:43:18 -0700 (PDT)
-Received: from neptune.. ([188.27.128.17])
-        by smtp.gmail.com with ESMTPSA id a23sm1872347edx.69.2021.09.26.12.43.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Sep 2021 12:43:18 -0700 (PDT)
-From:   Alexandru Ardelean <aardelean@deviqon.com>
-To:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Cc:     jic23@kernel.org, Alexandru Ardelean <aardelean@deviqon.com>
-Subject: [PATCH] iio: adc: ad7291: convert probe to device-managed only
-Date:   Sun, 26 Sep 2021 22:43:15 +0300
-Message-Id: <20210926194315.7742-1-aardelean@deviqon.com>
-X-Mailer: git-send-email 2.31.1
+        id S230149AbhIZVUV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 26 Sep 2021 17:20:21 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:53054 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230075AbhIZVUU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 26 Sep 2021 17:20:20 -0400
+From:   Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1632691123;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=VcmuOKzrUjN7BSyHUx3Kl4IuGv8Myu4o2HA/X/tmyAY=;
+        b=3fuDyYdfWl8IfzOUj2rdpL7rM0jN8PNG68sp4a7l1/rWeyf4X+7Rmog4rgEiZVlZnRjRTZ
+        KF7T+EwD/tTmn9fI39jqIies1FH5lzJBzetqZ4v6Njfbuj3m7+Bw5CHt0zy7CoQbqXeudJ
+        jKjqlsJLtoi6Hs6XvHdekxilUoJGhJwbRhLyjfx8zYFETjBEFMITptEJzEdo3AAZPvSchd
+        t9iaGBnrO/t6E+r/uOqDGNYLefDoQdbkMIwl/Ga2g6ch6OeROllwIYja1WgXlgJpYVM5SX
+        8Y6rBHYryeP5S4aKc2bQj1liUp4liIiEnB97owYpoQ0UrJ+KAylW2i5vsy9Sug==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1632691123;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=VcmuOKzrUjN7BSyHUx3Kl4IuGv8Myu4o2HA/X/tmyAY=;
+        b=7o9HB3vQzVICm2YlFJFtcYznAztjJr4EqIYYMkZAejnxHd9tVG5IdyN6jXXgIrJfbIWXTk
+        4SsJYVD1/6KudvAw==
+To:     Iain Hunter <drhunter95@gmail.com>
+Cc:     lothar.felten@gmail.com, iain@hunterembedded.co.uk,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Zeng Tao <prime.zeng@hisilicon.com>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] workaround regression in ina2xx introduced by
+ cb47755725da("time: Prevent undefined behaviour in timespec64_to_ns()")
+In-Reply-To: <20210926171711.194901-1-drhunter95@gmail.com>
+References: <20210926171711.194901-1-drhunter95@gmail.com>
+Date:   Sun, 26 Sep 2021 23:18:42 +0200
+Message-ID: <87o88favd9.ffs@tglx>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This is a simple conversion for to device-managed with using
-devm_request_threaded_irq(), disabling the regulator via a
-devm_add_action_or_reset() hook and finally using
-devm_iio_device_register().
+On Sun, Sep 26 2021 at 18:16, Iain Hunter wrote:
+> --- a/drivers/iio/adc/ina2xx-adc.c
+> +++ b/drivers/iio/adc/ina2xx-adc.c
+> @@ -817,10 +817,10 @@ static int ina2xx_capture_thread(void *data)
+>  		 */
+>  		do {
+>  			timespec64_add_ns(&next, 1000 * sampling_us);
+> -			delta = timespec64_sub(next, now);
+> -			delay_us = div_s64(timespec64_to_ns(&delta), 1000);
+> -		} while (delay_us <= 0);
+> +		} while (timespec64_compare(&next, &now) < 0);
+>  
+> +		delta = timespec64_sub(next, now);
+> +		delay_us = div_s64(timespec64_to_ns(&delta), 1000);
 
-The i2c_set_clientdata() call is removed as it becomes redundant after this
-change.
+This whole timespec dance does not make any sense and can be completely
+avoided by using just scalar nanoseconds. Untested patch below.
 
-Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
+Thanks,
+
+        tglx
 ---
- drivers/iio/adc/ad7291.c | 70 +++++++++++++---------------------------
- 1 file changed, 22 insertions(+), 48 deletions(-)
-
-diff --git a/drivers/iio/adc/ad7291.c b/drivers/iio/adc/ad7291.c
-index 2301a0e27f23..e9129dac762f 100644
---- a/drivers/iio/adc/ad7291.c
-+++ b/drivers/iio/adc/ad7291.c
-@@ -460,6 +460,11 @@ static const struct iio_info ad7291_info = {
- 	.write_event_value = &ad7291_write_event_value,
- };
+--- a/drivers/iio/adc/ina2xx-adc.c
++++ b/drivers/iio/adc/ina2xx-adc.c
+@@ -775,7 +775,7 @@ static int ina2xx_capture_thread(void *d
+ 	struct ina2xx_chip_info *chip = iio_priv(indio_dev);
+ 	int sampling_us = SAMPLING_PERIOD(chip);
+ 	int ret;
+-	struct timespec64 next, now, delta;
++	ktime_t next, now, delta;
+ 	s64 delay_us;
  
-+static void ad7291_reg_disable(void *reg)
-+{
-+	regulator_disable(reg);
-+}
-+
- static int ad7291_probe(struct i2c_client *client,
- 			const struct i2c_device_id *id)
- {
-@@ -473,8 +478,6 @@ static int ad7291_probe(struct i2c_client *client,
- 	chip = iio_priv(indio_dev);
+ 	/*
+@@ -785,7 +785,7 @@ static int ina2xx_capture_thread(void *d
+ 	if (!chip->allow_async_readout)
+ 		sampling_us -= 200;
  
- 	mutex_init(&chip->state_lock);
--	/* this is only used for device removal purposes */
--	i2c_set_clientdata(client, indio_dev);
+-	ktime_get_ts64(&next);
++	next = ktime_get();
  
- 	chip->client = client;
- 
-@@ -495,6 +498,11 @@ static int ad7291_probe(struct i2c_client *client,
- 		if (ret)
+ 	do {
+ 		while (!chip->allow_async_readout) {
+@@ -798,7 +798,7 @@ static int ina2xx_capture_thread(void *d
+ 			 * reset the reference timestamp.
+ 			 */
+ 			if (ret == 0)
+-				ktime_get_ts64(&next);
++				next = ktime_get();
+ 			else
+ 				break;
+ 		}
+@@ -807,7 +807,7 @@ static int ina2xx_capture_thread(void *d
+ 		if (ret < 0)
  			return ret;
  
-+		ret = devm_add_action_or_reset(&client->dev, ad7291_reg_disable,
-+					       chip->reg);
-+		if (ret)
-+			return ret;
-+
- 		chip->command |= AD7291_EXT_REF;
- 	}
+-		ktime_get_ts64(&now);
++		now = ktime_get();
  
-@@ -506,58 +514,25 @@ static int ad7291_probe(struct i2c_client *client,
- 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 		/*
+ 		 * Advance the timestamp for the next poll by one sampling
+@@ -816,11 +816,10 @@ static int ina2xx_capture_thread(void *d
+ 		 * multiple times, i.e. samples are dropped.
+ 		 */
+ 		do {
+-			timespec64_add_ns(&next, 1000 * sampling_us);
+-			delta = timespec64_sub(next, now);
+-			delay_us = div_s64(timespec64_to_ns(&delta), 1000);
+-		} while (delay_us <= 0);
++			next = ktime_add_us(next, sampling_us);
++		} while (next <= now);
  
- 	ret = ad7291_i2c_write(chip, AD7291_COMMAND, AD7291_RESET);
--	if (ret) {
--		ret = -EIO;
--		goto error_disable_reg;
--	}
-+	if (ret)
-+		return -EIO;
++		delay_us = ktime_to_us(ktime_sub(next, now));
+ 		usleep_range(delay_us, (delay_us * 3) >> 1);
  
- 	ret = ad7291_i2c_write(chip, AD7291_COMMAND, chip->command);
--	if (ret) {
--		ret = -EIO;
--		goto error_disable_reg;
--	}
-+	if (ret)
-+		return -EIO;
- 
- 	if (client->irq > 0) {
--		ret = request_threaded_irq(client->irq,
--					   NULL,
--					   &ad7291_event_handler,
--					   IRQF_TRIGGER_LOW | IRQF_ONESHOT,
--					   id->name,
--					   indio_dev);
-+		ret = devm_request_threaded_irq(&client->dev, client->irq,
-+						NULL,
-+						&ad7291_event_handler,
-+						IRQF_TRIGGER_LOW | IRQF_ONESHOT,
-+						id->name,
-+						indio_dev);
- 		if (ret)
--			goto error_disable_reg;
-+			return ret;
- 	}
- 
--	ret = iio_device_register(indio_dev);
--	if (ret)
--		goto error_unreg_irq;
--
--	return 0;
--
--error_unreg_irq:
--	if (client->irq)
--		free_irq(client->irq, indio_dev);
--error_disable_reg:
--	if (chip->reg)
--		regulator_disable(chip->reg);
--
--	return ret;
--}
--
--static int ad7291_remove(struct i2c_client *client)
--{
--	struct iio_dev *indio_dev = i2c_get_clientdata(client);
--	struct ad7291_chip_info *chip = iio_priv(indio_dev);
--
--	iio_device_unregister(indio_dev);
--
--	if (client->irq)
--		free_irq(client->irq, indio_dev);
--
--	if (chip->reg)
--		regulator_disable(chip->reg);
--
--	return 0;
-+	return devm_iio_device_register(&client->dev, indio_dev);
- }
- 
- static const struct i2c_device_id ad7291_id[] = {
-@@ -579,7 +554,6 @@ static struct i2c_driver ad7291_driver = {
- 		.of_match_table = ad7291_of_match,
- 	},
- 	.probe = ad7291_probe,
--	.remove = ad7291_remove,
- 	.id_table = ad7291_id,
- };
- module_i2c_driver(ad7291_driver);
--- 
-2.31.1
+ 	} while (!kthread_should_stop());
+
 

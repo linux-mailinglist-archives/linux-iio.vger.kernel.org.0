@@ -2,34 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32E3041884C
-	for <lists+linux-iio@lfdr.de>; Sun, 26 Sep 2021 13:23:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A965041885D
+	for <lists+linux-iio@lfdr.de>; Sun, 26 Sep 2021 13:37:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230255AbhIZLZ0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 26 Sep 2021 07:25:26 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59494 "EHLO mail.kernel.org"
+        id S230309AbhIZLj0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 26 Sep 2021 07:39:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36150 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230128AbhIZLZ0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 26 Sep 2021 07:25:26 -0400
+        id S230200AbhIZLj0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 26 Sep 2021 07:39:26 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 56EA360F9B;
-        Sun, 26 Sep 2021 11:23:46 +0000 (UTC)
-Date:   Sun, 26 Sep 2021 12:27:34 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id C1ED061038;
+        Sun, 26 Sep 2021 11:37:47 +0000 (UTC)
+Date:   Sun, 26 Sep 2021 12:41:37 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Billy Tsai <billy_tsai@aspeedtech.com>
-Cc:     <lars@metafoo.de>, <pmeerw@pmeerw.net>, <robh+dt@kernel.org>,
-        <joel@jms.id.au>, <andrew@aj.id.au>, <p.zabel@pengutronix.de>,
-        <lgirdwood@gmail.com>, <broonie@kernel.org>,
+To:     Cai Huoqing <caihuoqing@baidu.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        "Sascha Hauer" <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
         <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
-        <linux-aspeed@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
-        <BMC-SW@aspeedtech.com>
-Subject: Re: [v7 00/11] Add support for ast2600 ADC
-Message-ID: <20210926122734.2fccf55a@jic23-huawei>
-In-Reply-To: <20210922081520.30580-1-billy_tsai@aspeedtech.com>
-References: <20210922081520.30580-1-billy_tsai@aspeedtech.com>
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v6 1/3] iio: imx8qxp-adc: Add driver support for NXP
+ IMX8QXP ADC
+Message-ID: <20210926124137.0121a68d@jic23-huawei>
+In-Reply-To: <20210925020555.129-2-caihuoqing@baidu.com>
+References: <20210925020555.129-1-caihuoqing@baidu.com>
+        <20210925020555.129-2-caihuoqing@baidu.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -38,90 +43,83 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 22 Sep 2021 16:15:09 +0800
-Billy Tsai <billy_tsai@aspeedtech.com> wrote:
+On Sat, 25 Sep 2021 10:05:45 +0800
+Cai Huoqing <caihuoqing@baidu.com> wrote:
 
-> This patch serials make aspeed_adc.c can support ast2600 and backward
-> compatible.
+> The NXP i.MX 8QuadXPlus SOC has a new ADC IP, so add
+> driver support for this ADC.
+> 
+> Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
+Hi Cai Huoqing,
 
-Hi Billy,
+Having had a 'final' read through of the driver, I am basically happy
+to merge this after Fabio has had time for another look (plus anyone else
+who wishes to of course!) 
 
-Series applied to the togreg branch of iio.git and pushed out as testing for
-0-day to poke at it.
-
-Note the fix for platform_set_drvdata() is in the fixes branch so there will
-be a bit of mess around context for patch 1 but that should all resolve in
-a trivial fashion.
+There were a few minor things inline though that I'll tidy up whilst applying.
+If you do a v7 for some other reason please sort these out as well.
 
 Thanks,
 
 Jonathan
 
-> 
-> Change since v6:
-> aspeed_adc.c:
->  - Fix the parameter error for aspeed_adc_unregister_fixed_divider.
-> 
-> Change since v5:
-> aspeed_adc.c:
->   - Use devm_clk_hw_register_divider()
->   - Enabling and setting the ADC to normal mode is a necessary flow, so
->   take it out of the condition.
-> 
-> Change since v4:
-> dt-bindings:
->   - Add clocks maxItems.
->   - Rename the property to meet the property-units.yaml.
->   - Add the description for the difference between adc0 and adc1.
-> aspeed_adc.c:
->   - Use new property name to get internal reference voltage: units from mv
->   to uv.
->   - Fix -Wnonnull warning caused by snprintf parameters.
->   - Add suffix mv to the vref parameters.
->   - Use ARRAY_SIZE instead of 32.
->   - Add a reset action for ADC power down and Use devm_iio_device_register.
->   - Fix typo error.
->   - Separate the offset interface of ch7 when battery sensing enable
-> 
-> Change since v3:
-> dt-bindings:
->   - Fix properties:aspeed,int_vref_mv type error.
-> 
-> Change since v2:
-> dt-bindings:
->   - Create a new dt-bindings for ast2600 adc
-> aspeed_adc.c:
->   - Splits the patch for more details
->   - Remove version enum and use the flags in model data to distinguish
->   hardware feature
->   - Support trimming data get and set.
->   - Use devm_add_action_or_reset to simplify probe error handling.
-> 
-> Changes since v1:
-> dt-bindings:
->   - Fix the aspeed,adc.yaml check error.
->   - Add battery-sensing property.
-> aspeed_adc.c:
->   - Change the init flow:
->     Clock and reference voltage setting should be completed before adc
->     engine enable.
->   - Change the default sampling rate to meet most user case.
->   - Add patch #8 to suppoert battery sensing mode.
-> 
-> Billy Tsai (11):
->   iio: adc: aspeed: Keep model data to driver data.
->   iio: adc: aspeed: Restructure the model data
->   iio: adc: aspeed: Add vref config function
->   iio: adc: aspeed: Use model_data to set clk scaler.
->   iio: adc: aspeed: Use devm_add_action_or_reset.
->   iio: adc: aspeed: Support ast2600 adc.
->   iio: adc: aspeed: Fix the calculate error of clock.
->   iio: adc: aspeed: Add func to set sampling rate.
->   iio: adc: aspeed: Add compensation phase.
->   iio: adc: aspeed: Support battery sensing.
->   iio: adc: aspeed: Get and set trimming data.
-> 
->  drivers/iio/adc/aspeed_adc.c | 554 +++++++++++++++++++++++++++++------
->  1 file changed, 459 insertions(+), 95 deletions(-)
-> 
+...
 
+> +#define IMX8QXP_ADR_ADC_TCTRL(tid)	(0xc0 + tid * 4)
+> +#define IMX8QXP_ADR_ADC_CMDH(cid)	(0x100 + cid * 8)
+> +#define IMX8QXP_ADR_ADC_CMDL(cid)	(0x104 + cid * 8)
+
+In macros, it is always a good idea to put brackets around
+any use of parameters so as to avoid potential odd issues
+due to operator precedence.
+
+(0xc0 + (tid) * 4)
+
+> +#define IMX8QXP_ADR_ADC_RESFIFO		0x300
+> +#define IMX8QXP_ADR_ADC_TST		0xffc
+
+...
+
+> +
+> +struct imx8qxp_adc {
+> +	struct device *dev;
+> +	void __iomem *regs;
+> +	struct clk *clk;
+> +	struct clk *ipg_clk;
+> +	struct regulator *vref;
+> +	struct mutex lock;
+
+A lock should have documentation to identify what it's precise scope is.
+I can add
+
+/* Serialise ADC channel reads */
+above the lock definition whilst applying if you aren't doing a v7 for
+other reasons.
+
+> +	struct completion completion;
+> +};
+...
+
+
+> +
+> +static irqreturn_t imx8qxp_adc_isr(int irq, void *dev_id)
+> +{
+> +	struct imx8qxp_adc *adc = dev_id;
+> +
+
+Really minor, but the blank line here doesn't help readability much and
+is inconsistent with the rest of the driver.  I might remove this whilst
+applying if nothing else comes up.
+
+> +	u32 fifo_count;
+> +
+> +	fifo_count = FIELD_GET(IMX8QXP_ADC_FCTRL_FCOUNT_MASK,
+> +			       readl(adc->regs + IMX8QXP_ADR_ADC_FCTRL));
+> +
+> +	if (fifo_count)
+> +		complete(&adc->completion);
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+...

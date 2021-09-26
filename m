@@ -2,32 +2,32 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB51D4189EE
-	for <lists+linux-iio@lfdr.de>; Sun, 26 Sep 2021 17:19:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 680C44189F0
+	for <lists+linux-iio@lfdr.de>; Sun, 26 Sep 2021 17:22:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231928AbhIZPVH convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sun, 26 Sep 2021 11:21:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38034 "EHLO mail.kernel.org"
+        id S232136AbhIZPXk convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Sun, 26 Sep 2021 11:23:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38572 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231913AbhIZPVH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 26 Sep 2021 11:21:07 -0400
+        id S231998AbhIZPXX (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 26 Sep 2021 11:23:23 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 36A0A61041;
-        Sun, 26 Sep 2021 15:19:29 +0000 (UTC)
-Date:   Sun, 26 Sep 2021 16:23:17 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 34FB460F21;
+        Sun, 26 Sep 2021 15:21:45 +0000 (UTC)
+Date:   Sun, 26 Sep 2021 16:25:34 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
 Cc:     <linux-iio@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         Dragos Bogdan <dragos.bogdan@analog.com>
-Subject: Re: [PATCH 5/5] iio: adis16480: fix devices that do not support
- sleep mode
-Message-ID: <20210926162317.57e384d3@jic23-huawei>
-In-Reply-To: <20210903141423.517028-6-nuno.sa@analog.com>
+Subject: Re: [PATCH 4/5] iio: adis16460: make use of the new unmasked_drdy
+ flag
+Message-ID: <20210926162534.56ceb50f@jic23-huawei>
+In-Reply-To: <20210903141423.517028-5-nuno.sa@analog.com>
 References: <20210903141423.517028-1-nuno.sa@analog.com>
-        <20210903141423.517028-6-nuno.sa@analog.com>
+        <20210903141423.517028-5-nuno.sa@analog.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -36,85 +36,71 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 3 Sep 2021 16:14:23 +0200
+On Fri, 3 Sep 2021 16:14:22 +0200
 Nuno Sá <nuno.sa@analog.com> wrote:
 
-> Not all devices supported by this driver support being put to sleep
-> mode. For those devices, when calling 'adis16480_stop_device()' on the
-> unbind path, we where actually writing in the SYNC_SCALE register.
+> The library can now handle enabling/disabling IRQs for devices that
+> cannot unmask the data ready pin. Hence there's no need to provide an
+> 'enable_irq' callback anymore.
 > 
-> Fixes: 80cbc848c4fa0 ("iio: imu: adis16480: Add support for ADIS16490")
-> Fixes: 82e7a1b250170 ("iio: imu: adis16480: Add support for ADIS1649x family of devices")
+> The library will also automatically request the IRQ with 'IRQF_NO_AUTOEN'
+> so that we can also remove that from the driver.
+> 
 > Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+Hi Nuno,
 
-Applied to the fixes-togreg branch of iio.git and marked for stable.
+1-4 applied to the togreg branch of iio.git and pushed out as testing for 0-day
+to see if it can find anything we missed.
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/imu/adis16480.c | 14 +++++++++++---
->  1 file changed, 11 insertions(+), 3 deletions(-)
+>  drivers/iio/imu/adis16460.c | 18 +-----------------
+>  1 file changed, 1 insertion(+), 17 deletions(-)
 > 
-> diff --git a/drivers/iio/imu/adis16480.c b/drivers/iio/imu/adis16480.c
-> index a869a6e52a16..ed129321a14d 100644
-> --- a/drivers/iio/imu/adis16480.c
-> +++ b/drivers/iio/imu/adis16480.c
-> @@ -144,6 +144,7 @@ struct adis16480_chip_info {
->  	unsigned int max_dec_rate;
->  	const unsigned int *filter_freqs;
->  	bool has_pps_clk_mode;
-> +	bool has_sleep_cnt;
->  	const struct adis_data adis_data;
+> diff --git a/drivers/iio/imu/adis16460.c b/drivers/iio/imu/adis16460.c
+> index a6f9fba3e03f..b01988170118 100644
+> --- a/drivers/iio/imu/adis16460.c
+> +++ b/drivers/iio/imu/adis16460.c
+> @@ -319,20 +319,6 @@ static const struct iio_info adis16460_info = {
+>  	.debugfs_reg_access = adis_debugfs_reg_access,
 >  };
 >  
-> @@ -939,6 +940,7 @@ static const struct adis16480_chip_info adis16480_chip_info[] = {
->  		.temp_scale = 5650, /* 5.65 milli degree Celsius */
->  		.int_clk = 2460000,
->  		.max_dec_rate = 2048,
-> +		.has_sleep_cnt = true,
->  		.filter_freqs = adis16480_def_filter_freqs,
->  		.adis_data = ADIS16480_DATA(16375, &adis16485_timeouts, 0),
->  	},
-> @@ -952,6 +954,7 @@ static const struct adis16480_chip_info adis16480_chip_info[] = {
->  		.temp_scale = 5650, /* 5.65 milli degree Celsius */
->  		.int_clk = 2460000,
->  		.max_dec_rate = 2048,
-> +		.has_sleep_cnt = true,
->  		.filter_freqs = adis16480_def_filter_freqs,
->  		.adis_data = ADIS16480_DATA(16480, &adis16480_timeouts, 0),
->  	},
-> @@ -965,6 +968,7 @@ static const struct adis16480_chip_info adis16480_chip_info[] = {
->  		.temp_scale = 5650, /* 5.65 milli degree Celsius */
->  		.int_clk = 2460000,
->  		.max_dec_rate = 2048,
-> +		.has_sleep_cnt = true,
->  		.filter_freqs = adis16480_def_filter_freqs,
->  		.adis_data = ADIS16480_DATA(16485, &adis16485_timeouts, 0),
->  	},
-> @@ -978,6 +982,7 @@ static const struct adis16480_chip_info adis16480_chip_info[] = {
->  		.temp_scale = 5650, /* 5.65 milli degree Celsius */
->  		.int_clk = 2460000,
->  		.max_dec_rate = 2048,
-> +		.has_sleep_cnt = true,
->  		.filter_freqs = adis16480_def_filter_freqs,
->  		.adis_data = ADIS16480_DATA(16488, &adis16485_timeouts, 0),
->  	},
-> @@ -1425,9 +1430,12 @@ static int adis16480_probe(struct spi_device *spi)
+> -static int adis16460_enable_irq(struct adis *adis, bool enable)
+> -{
+> -	/*
+> -	 * There is no way to gate the data-ready signal internally inside the
+> -	 * ADIS16460 :(
+> -	 */
+> -	if (enable)
+> -		enable_irq(adis->spi->irq);
+> -	else
+> -		disable_irq(adis->spi->irq);
+> -
+> -	return 0;
+> -}
+> -
+>  #define ADIS16460_DIAG_STAT_IN_CLK_OOS	7
+>  #define ADIS16460_DIAG_STAT_FLASH_MEM	6
+>  #define ADIS16460_DIAG_STAT_SELF_TEST	5
+> @@ -373,7 +359,7 @@ static const struct adis_data adis16460_data = {
+>  		BIT(ADIS16460_DIAG_STAT_OVERRANGE) |
+>  		BIT(ADIS16460_DIAG_STAT_SPI_COMM) |
+>  		BIT(ADIS16460_DIAG_STAT_FLASH_UPT),
+> -	.enable_irq = adis16460_enable_irq,
+> +	.unmasked_drdy = true,
+>  	.timeouts = &adis16460_timeouts,
+>  };
+>  
+> @@ -400,8 +386,6 @@ static int adis16460_probe(struct spi_device *spi)
 >  	if (ret)
 >  		return ret;
 >  
-> -	ret = devm_add_action_or_reset(&spi->dev, adis16480_stop, indio_dev);
-> -	if (ret)
-> -		return ret;
-> +	if (st->chip_info->has_sleep_cnt) {
-> +		ret = devm_add_action_or_reset(&spi->dev, adis16480_stop,
-> +					       indio_dev);
-> +		if (ret)
-> +			return ret;
-> +	}
->  
->  	ret = adis16480_config_irq_pin(spi->dev.of_node, st);
+> -	/* We cannot mask the interrupt, so ensure it isn't auto enabled */
+> -	st->adis.irq_flag |= IRQF_NO_AUTOEN;
+>  	ret = devm_adis_setup_buffer_and_trigger(&st->adis, indio_dev, NULL);
 >  	if (ret)
+>  		return ret;
 

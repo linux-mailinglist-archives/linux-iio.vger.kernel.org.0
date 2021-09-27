@@ -2,26 +2,26 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C6CAA419088
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Sep 2021 10:15:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE16541908B
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Sep 2021 10:15:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233453AbhI0IRN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Sep 2021 04:17:13 -0400
-Received: from mx22.baidu.com ([220.181.50.185]:44912 "EHLO baidu.com"
+        id S233459AbhI0IRP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Sep 2021 04:17:15 -0400
+Received: from mx24.baidu.com ([111.206.215.185]:45084 "EHLO baidu.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233422AbhI0IRL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 27 Sep 2021 04:17:11 -0400
-Received: from BC-Mail-Ex32.internal.baidu.com (unknown [172.31.51.26])
-        by Forcepoint Email with ESMTPS id B503F626B6D6940FE669;
-        Mon, 27 Sep 2021 16:15:31 +0800 (CST)
+        id S233450AbhI0IRO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 27 Sep 2021 04:17:14 -0400
+Received: from BC-Mail-Ex31.internal.baidu.com (unknown [172.31.51.25])
+        by Forcepoint Email with ESMTPS id EA99EBA5509B56E1DD20;
+        Mon, 27 Sep 2021 16:15:34 +0800 (CST)
 Received: from BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) by
- BC-Mail-Ex32.internal.baidu.com (172.31.51.26) with Microsoft SMTP Server
+ BC-Mail-Ex31.internal.baidu.com (172.31.51.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2242.12; Mon, 27 Sep 2021 16:15:31 +0800
+ 15.1.2242.12; Mon, 27 Sep 2021 16:15:34 +0800
 Received: from LAPTOP-UKSR4ENP.internal.baidu.com (172.31.63.8) by
  BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2308.14; Mon, 27 Sep 2021 16:15:30 +0800
+ 15.1.2308.14; Mon, 27 Sep 2021 16:15:33 +0800
 From:   Cai Huoqing <caihuoqing@baidu.com>
 To:     <caihuoqing@baidu.com>
 CC:     Linus Walleij <linus.walleij@linaro.org>,
@@ -45,9 +45,9 @@ CC:     Linus Walleij <linus.walleij@linaro.org>,
         <linux-amlogic@lists.infradead.org>,
         <linux-arm-msm@vger.kernel.org>,
         <linux-rockchip@lists.infradead.org>
-Subject: [PATCH 7/9] iio: adc: qcom-pm8xxx-xoadc: Make use of the helper function dev_err_probe()
-Date:   Mon, 27 Sep 2021 16:14:23 +0800
-Message-ID: <20210927081426.762-7-caihuoqing@baidu.com>
+Subject: [PATCH 8/9] iio: adc: rockchip_saradc: Make use of the helper function dev_err_probe()
+Date:   Mon, 27 Sep 2021 16:14:24 +0800
+Message-ID: <20210927081426.762-8-caihuoqing@baidu.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210927081426.762-1-caihuoqing@baidu.com>
 References: <20210927081426.762-1-caihuoqing@baidu.com>
@@ -68,34 +68,29 @@ gets printed.
 
 Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
 ---
- drivers/iio/adc/qcom-pm8xxx-xoadc.c | 9 ++++-----
+ drivers/iio/adc/rockchip_saradc.c | 9 ++++-----
  1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/adc/qcom-pm8xxx-xoadc.c b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
-index 0610bf254771..21d7eff645c3 100644
---- a/drivers/iio/adc/qcom-pm8xxx-xoadc.c
-+++ b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
-@@ -910,16 +910,15 @@ static int pm8xxx_xoadc_probe(struct platform_device *pdev)
- 	map = dev_get_regmap(dev->parent, NULL);
- 	if (!map) {
- 		dev_err(dev, "parent regmap unavailable.\n");
--		return -ENXIO;
-+		return -ENODEV;
+diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
+index a56a0d7337ca..57419ccb3c70 100644
+--- a/drivers/iio/adc/rockchip_saradc.c
++++ b/drivers/iio/adc/rockchip_saradc.c
+@@ -392,11 +392,10 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
  	}
- 	adc->map = map;
  
- 	/* Bring up regulator */
- 	adc->vref = devm_regulator_get(dev, "xoadc-ref");
--	if (IS_ERR(adc->vref)) {
--		dev_err(dev, "failed to get XOADC VREF regulator\n");
--		return PTR_ERR(adc->vref);
+ 	info->vref = devm_regulator_get(&pdev->dev, "vref");
+-	if (IS_ERR(info->vref)) {
+-		dev_err(&pdev->dev, "failed to get regulator, %ld\n",
+-			PTR_ERR(info->vref));
+-		return PTR_ERR(info->vref);
 -	}
-+	if (IS_ERR(adc->vref))
-+		return dev_err_probe(dev, PTR_ERR(adc->vref),
-+				     "failed to get XOADC VREF regulator\n");
- 	ret = regulator_enable(adc->vref);
- 	if (ret) {
- 		dev_err(dev, "failed to enable XOADC VREF regulator\n");
++	if (IS_ERR(info->vref))
++		return dev_err_probe(&pdev->dev,
++				     PTR_ERR(info->vref),
++				     "failed to get regulator\n");
+ 
+ 	if (info->reset)
+ 		rockchip_saradc_reset_controller(info->reset);
 -- 
 2.25.1
 

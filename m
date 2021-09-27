@@ -2,26 +2,26 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1AB04190DB
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Sep 2021 10:31:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20AE741907F
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Sep 2021 10:14:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233465AbhI0IdC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Sep 2021 04:33:02 -0400
-Received: from mx22.baidu.com ([220.181.50.185]:38158 "EHLO baidu.com"
+        id S233372AbhI0IQ0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Sep 2021 04:16:26 -0400
+Received: from mx24.baidu.com ([111.206.215.185]:42492 "EHLO baidu.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233417AbhI0IdB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 27 Sep 2021 04:33:01 -0400
-Received: from BC-Mail-Ex07.internal.baidu.com (unknown [172.31.51.47])
-        by Forcepoint Email with ESMTPS id C26F8183A0D47E84DEA2;
-        Mon, 27 Sep 2021 16:14:37 +0800 (CST)
+        id S233349AbhI0IQZ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 27 Sep 2021 04:16:25 -0400
+Received: from BC-Mail-Ex05.internal.baidu.com (unknown [172.31.51.45])
+        by Forcepoint Email with ESMTPS id AE2AF60B385B9141CF8A;
+        Mon, 27 Sep 2021 16:14:41 +0800 (CST)
 Received: from BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) by
- BC-Mail-EX07.internal.baidu.com (172.31.51.47) with Microsoft SMTP Server
+ BC-Mail-Ex05.internal.baidu.com (172.31.51.45) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2242.12; Mon, 27 Sep 2021 16:14:37 +0800
+ 15.1.2242.12; Mon, 27 Sep 2021 16:14:40 +0800
 Received: from LAPTOP-UKSR4ENP.internal.baidu.com (172.31.63.8) by
  BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2308.14; Mon, 27 Sep 2021 16:14:36 +0800
+ 15.1.2308.14; Mon, 27 Sep 2021 16:14:40 +0800
 From:   Cai Huoqing <caihuoqing@baidu.com>
 To:     <caihuoqing@baidu.com>
 CC:     Linus Walleij <linus.walleij@linaro.org>,
@@ -45,10 +45,12 @@ CC:     Linus Walleij <linus.walleij@linaro.org>,
         <linux-amlogic@lists.infradead.org>,
         <linux-arm-msm@vger.kernel.org>,
         <linux-rockchip@lists.infradead.org>
-Subject: [PATCH 1/9] iio: adc: ab8500-gpadc: Make use of the helper function dev_err_probe()
-Date:   Mon, 27 Sep 2021 16:14:17 +0800
-Message-ID: <20210927081426.762-1-caihuoqing@baidu.com>
+Subject: [PATCH 2/9] iio: adc: imx7d_adc: Make use of the helper function dev_err_probe()
+Date:   Mon, 27 Sep 2021 16:14:18 +0800
+Message-ID: <20210927081426.762-2-caihuoqing@baidu.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20210927081426.762-1-caihuoqing@baidu.com>
+References: <20210927081426.762-1-caihuoqing@baidu.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [172.31.63.8]
@@ -66,29 +68,38 @@ gets printed.
 
 Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
 ---
- drivers/iio/adc/ab8500-gpadc.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/iio/adc/imx7d_adc.c | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/iio/adc/ab8500-gpadc.c b/drivers/iio/adc/ab8500-gpadc.c
-index 7b5212ba5501..c58d0e2ae538 100644
---- a/drivers/iio/adc/ab8500-gpadc.c
-+++ b/drivers/iio/adc/ab8500-gpadc.c
-@@ -1146,11 +1146,10 @@ static int ab8500_gpadc_probe(struct platform_device *pdev)
+diff --git a/drivers/iio/adc/imx7d_adc.c b/drivers/iio/adc/imx7d_adc.c
+index 4969a5f941e3..f47360cbff3b 100644
+--- a/drivers/iio/adc/imx7d_adc.c
++++ b/drivers/iio/adc/imx7d_adc.c
+@@ -496,19 +496,13 @@ static int imx7d_adc_probe(struct platform_device *pdev)
+ 		return irq;
  
- 	/* The VTVout LDO used to power the AB8500 GPADC */
- 	gpadc->vddadc = devm_regulator_get(dev, "vddadc");
--	if (IS_ERR(gpadc->vddadc)) {
--		ret = PTR_ERR(gpadc->vddadc);
--		dev_err(dev, "failed to get vddadc\n");
+ 	info->clk = devm_clk_get(dev, "adc");
+-	if (IS_ERR(info->clk)) {
+-		ret = PTR_ERR(info->clk);
+-		dev_err(dev, "Failed getting clock, err = %d\n", ret);
 -		return ret;
 -	}
-+	if (IS_ERR(gpadc->vddadc))
-+		return dev_err_probe(dev,
-+				     PTR_ERR(gpadc->vddadc),
-+				     "failed to get vddadc\n");
++	if (IS_ERR(info->clk))
++		return dev_err_probe(dev, PTR_ERR(info->clk), "Failed getting clock\n");
  
- 	ret = regulator_enable(gpadc->vddadc);
- 	if (ret) {
+ 	info->vref = devm_regulator_get(dev, "vref");
+-	if (IS_ERR(info->vref)) {
+-		ret = PTR_ERR(info->vref);
+-		dev_err(dev,
+-			"Failed getting reference voltage, err = %d\n", ret);
+-		return ret;
+-	}
++	if (IS_ERR(info->vref))
++		return dev_err_probe(dev, PTR_ERR(info->vref),
++				     "Failed getting reference voltage\n");
+ 
+ 	platform_set_drvdata(pdev, indio_dev);
+ 
 -- 
 2.25.1
 

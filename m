@@ -2,70 +2,132 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE88E419546
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Sep 2021 15:42:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CE7C41966A
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Sep 2021 16:30:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234366AbhI0No2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Sep 2021 09:44:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38808 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234365AbhI0No2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 27 Sep 2021 09:44:28 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id DF41460F39;
-        Mon, 27 Sep 2021 13:42:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632750170;
-        bh=VIAUZjMWRivhGaTtfn1+Dr0oD5zXALI5OhD1Lfs0UgQ=;
-        h=From:To:Cc:Subject:Date:From;
-        b=mLfDgnemA1BZGINgwBYZXG/Bp+AXqs3EW2Ny4x6tBOvZBo5VdChyZlCCgtjNh4CdZ
-         JX3DHLOol75UcfZ+w3NNBjbdGf/uSJ4kAC1DEbJJ244uke9EceLw1eNisXbfB0LlgP
-         teqLI2jnEP0PYyMVD8dponhyqsGxYdC7UWjd3Mmi80BP7DokJYS55AMUNjv/MFWRoS
-         Q796o48eOFJWeGDAq4xP17AL9gdTmbd05n7Yo0A15A4nE1Zj9PEfsJh85l5dB04afQ
-         P7fCvUwzywn5FcZaehkt2lZCHi8FhUfAMgmRL8fFqB9jtIaHd9KSEqqZjj9lbbN1vR
-         ZOFu6h79xm3dg==
-From:   Mark Brown <broonie@kernel.org>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Cc:     linux-iio@vger.kernel.org, Mark Brown <broonie@kernel.org>
-Subject: [PATCH] iio: st_pressure_spi: Add missing entries SPI to device ID table
-Date:   Mon, 27 Sep 2021 14:41:53 +0100
-Message-Id: <20210927134153.12739-1-broonie@kernel.org>
-X-Mailer: git-send-email 2.20.1
+        id S234708AbhI0Obp convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 27 Sep 2021 10:31:45 -0400
+Received: from relay3-d.mail.gandi.net ([217.70.183.195]:44091 "EHLO
+        relay3-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234706AbhI0Obp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Sep 2021 10:31:45 -0400
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 40A2A60005;
+        Mon, 27 Sep 2021 14:30:05 +0000 (UTC)
+Date:   Mon, 27 Sep 2021 16:30:04 +0200
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Nuno Sa <Nuno.Sa@analog.com>
+Subject: Re: [PATCH v4 14/16] iio: adc: max1027: Use the EOC IRQ when
+ populated for single reads
+Message-ID: <20210927163004.54f1a824@xps13>
+In-Reply-To: <20210926153659.70162a99@jic23-huawei>
+References: <20210921115408.66711-1-miquel.raynal@bootlin.com>
+        <20210921115408.66711-15-miquel.raynal@bootlin.com>
+        <20210926153659.70162a99@jic23-huawei>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1091; h=from:subject; bh=VIAUZjMWRivhGaTtfn1+Dr0oD5zXALI5OhD1Lfs0UgQ=; b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBhUcoMMreEvtIsPKEKbcFOHk9KzERQMOiruiHsHDEQ DlR9g5KJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCYVHKDAAKCRAk1otyXVSH0B2cB/ 9X5iwylLajfPmDFsA+tB39Qiep5cLVqHM9oFcNOfw1WGVxyXlQlz7N0mWZUNRAsGaYWokzfYm25hN8 tA6HPA+QPz2FUPSWX8feiPzn0Q4a5gLN8D1GusXO+guukfTVWH8wub44lPgZBXeDjTDzlDKPVvP1IP EOAXG8dkIoKbVAqNYg4Zp35Pwehg9C3XNGHOTeRZx/fKj16SNuEQKHfpu1FChYYzwUDgMjP2vInSjl +jZ/S4gP69s5qcbakekeIEONcJBZRse2ALvVjLyuJJNKUjsamqE7CmbeZPGmpIJ84zP52Rrff1k0hy CO5UMXXGIssmWJe09eC7y2+dx3o1xg
-X-Developer-Key: i=broonie@kernel.org; a=openpgp; fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Currently autoloading for SPI devices does not use the DT ID table, it uses
-SPI modalises. Supporting OF modalises is going to be difficult if not
-impractical, an attempt was made but has been reverted, so ensure that
-module autoloading works for this driver by adding SPI IDs for parts that
-only have a compatible listed.
+Hi Jonathan,
 
-Fixes: 96c8395e2166 ("spi: Revert modalias changes")
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/iio/pressure/st_pressure_spi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+jic23@kernel.org wrote on Sun, 26 Sep 2021 15:36:59 +0100:
 
-diff --git a/drivers/iio/pressure/st_pressure_spi.c b/drivers/iio/pressure/st_pressure_spi.c
-index 9b2523c5bc94..d6fc954e28f8 100644
---- a/drivers/iio/pressure/st_pressure_spi.c
-+++ b/drivers/iio/pressure/st_pressure_spi.c
-@@ -97,6 +97,10 @@ static const struct spi_device_id st_press_id_table[] = {
- 	{ LPS33HW_PRESS_DEV_NAME },
- 	{ LPS35HW_PRESS_DEV_NAME },
- 	{ LPS22HH_PRESS_DEV_NAME },
-+	{ "lps001wp-press" },
-+	{ "lps25h-press", },
-+	{ "lps331ap-press" },
-+	{ "lps22hb-press" },
- 	{},
- };
- MODULE_DEVICE_TABLE(spi, st_press_id_table);
--- 
-2.20.1
+> On Tue, 21 Sep 2021 13:54:06 +0200
+> Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+> 
+> > So far the End-Of-Conversion interrupt was only used in conjunction with
+> > the internal trigger to process the data. Let's extend the use of this
+> > interrupt handler to support regular single-shot conversions as well.
+> > 
+> > Doing so requires writing our own hard IRQ handler. This handler has to
+> > check if buffers are enabled or not:
+> > 
+> > *** Buffers disabled condition ***
+> > 
+> >   This means the user requested a single conversion and the sample is
+> >   ready to be retrieved.
+> >   
+> >     -> This implies adding the relevant completion boilerplate.    
+> > 
+> > *** Buffers enabled condition ***
+> > 
+> >   Triggers are used. So far there is only support for the internal
+> >   trigger but this trigger might soon be attached to another device as
+> >   well so it is the core duty to decide which handler to call in order
+> >   to process the data. The core will decide to either:
+> > 
+> >   * Call the internal trigger handler which will extract the data that
+> >     is already present in the ADC FIFOs
+> > 
+> >   or
+> > 
+> >   * Call the trigger handler of another driver when using this trigger
+> >     with another device, even though this call will be slightly delayed
+> >     by the fact that the max1027 IRQ is a data-ready interrupt rather
+> >     than a real trigger:
+> >   
+> >   -> The new handler will manually inform the core about the trigger    
+> >      having transitioned by directly calling iio_trigger_poll() (which
+> >      iio_trigger_generic_data_rdy_poll() initially did).
+> > 
+> > In order for the handler to be "source" agnostic, we also need to change
+> > the private pointer and provide the IIO device instead of the trigger
+> > object.
+> > 
+> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> > ---
+> > 
+> > Jonathan,
+> > 
+> > I hope this fits the IIO model now. In order to be sure I got the big
+> > picture I first refused to look at your code snippets. Just with your
+> > "plain english" explanations I wrote most of these three patches, before
+> > checking back that they were indeed fully aligned with your examples. I
+> > truly hope they do now, but do not hesitate if I missed something.  
+> 
+> Looks great to me (in fact I just applied it but I'll reply to the cover letter
+> shortly for that).
 
+Great, thanks!
+
+> Thanks for persisting with this and I'm looking forward to that blog you
+> mentioned.
+
+Thank you for all the time you put in these reviews.
+
+I wrote most of it, it's not very long but I tried to cover most of the
+common interactions with the core. It is under internal review, I'll
+certainly show you its content before publishing in case you have
+comments or spot any mistake.
+
+>  If you have time / inclination to help improve the documentation
+> in the kernel tree that would also be great.  This discussion has made it
+> clear to me that it would be great to have a set of 'patterns' for common
+> types of device + how we map them onto the model of IIO (particularly
+> when they don't quite fit that idealised model).  There are similar
+> compromises around when to use multiple buffers for instance.
+> 
+> It is always on the list of things to work on but somehow there is always
+> something else more urgent :(
+
+Hehe :) I know, documentation is always a good-to-have item that is not
+often reached... I feel I need more occasions to work in the IIO
+area (for example with hardware fifos/buffers or events) before being
+able to fully appreciate the internal design, but I agree having a set
+of 'usual patterns' that drivers should conform with depending on the
+devices capabilities/constraints would be a must.
+
+In the mean time, let's start by clarifying this 'iio_dev->modes'
+property :)
+
+Thanks,
+Miquèl

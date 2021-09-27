@@ -2,89 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BE24419FD4
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Sep 2021 22:10:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8795F41A3F8
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Sep 2021 01:53:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236750AbhI0ULi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Sep 2021 16:11:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53256 "EHLO
+        id S238227AbhI0Xze (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Sep 2021 19:55:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236810AbhI0ULh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Sep 2021 16:11:37 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59819C061575;
-        Mon, 27 Sep 2021 13:09:59 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id v18so38730528edc.11;
-        Mon, 27 Sep 2021 13:09:59 -0700 (PDT)
+        with ESMTP id S235869AbhI0Xze (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Sep 2021 19:55:34 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A908C061575
+        for <linux-iio@vger.kernel.org>; Mon, 27 Sep 2021 16:53:55 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id ee50so76066444edb.13
+        for <linux-iio@vger.kernel.org>; Mon, 27 Sep 2021 16:53:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=vWCgs3XZtqQ75S4Sam0oUHvtow8EHQKNfWFQPQcnRsY=;
-        b=CjCqPN4lsrmL/kgXYQ/RxflbFh56hSOKqIeyX1W/oIBfrq4g8nLspVD4sQMrn+40Rh
-         Rx4viRYm7QpwSajB8/nS9I5EnOQAzL0pUBz4lQns538q/Qteac9sWhcfIIrmfsOSKzsU
-         M/PAXh8x8DmXoA/RtTV/ChQhPTk8C8Id1hnlJcijflS84t+U/LfK3VqO+GuY2jbR/wSS
-         Jeouq+xThsOnrcpcRddG2ODCpZRewj156How3JR4A1KMdpDZs7HuWvu3b5Y3uekBZh/f
-         anAzLHdRSEeqsXP37MCrOfOLFAdqYOJXZV5OWmUogHnZBCe+LfWz2FGRBS/GFuXNmIlm
-         9OmA==
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=8yOAotqs60AuPI9trKzeCWPumi1YRDS9z5sw1kObCls=;
+        b=BWqplgSEbXeJNEirYXXM8CRA5GEetY4fR4npuopL0Irz38sd9C60rmWpfAVUBmKq1n
+         ozArbzb7DmfC2/hlbcEjQ1DTHyQvob2ymlgkLhrJ/nZDYvDYkkN9d0ZpbhgYokR7t9ak
+         tWV9pLsCLbwURGj35Pau2LfLFOHGER8Sgb4C6Cs1/byEI16/6K1z0fhCmfuTkYWavryR
+         Azl1hcPQ3J3pbGv/8xCSSSpLvaOtby2eTIZB+JiaVN46l3Y2sux8CLiRzNhCBLmqFm7q
+         CduY8Jpt4d49YhwLYHfSFl4aYM958pBWzEKapMQEsIOiTdqYPHaB86JSkiQIn+3lGMr0
+         nElQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=vWCgs3XZtqQ75S4Sam0oUHvtow8EHQKNfWFQPQcnRsY=;
-        b=UQpxaWpQs5jfXDlGKB1btQVWc28wYVXarxzaxtg32GTd8vsC/Kbx//jTXHymsZD7wZ
-         zfIMFbP4T7bKaWfg6Eqccqg3GZ7h9DrVwEbI39UxoLdC+QlEMKlyXaZ4xu7tzznnXmlp
-         BGwq7XT8R8OsxJsykn+0K5eD/U55eCpbqbRf/qZXqOE33rtGiOgLRYyAsF+80yauO+QD
-         e27baglC0soiDMeEJxJcKXKvTUIEhstFd+twVDytkXP54EMrm0uxqenO0EMGVfzERXMh
-         KnQfziuC6O/HU/rgSyHFX6jIKtgU/J1YckTUV1jO6iHsJfhtCX/T6cFz76beqOfdKVLM
-         JRXA==
-X-Gm-Message-State: AOAM531yRwsV0BG+bA4FdIvEGzl9RrNnmzpSxWN3slJxL2xxZSbeCGKw
-        0illVw72TlpELzMjwlyKt0CIGSDls8VrTKbpvqQ=
-X-Google-Smtp-Source: ABdhPJzCjvA/IcL6veR1cMq/hHfeR/9BjzJWC1sc8TXInJGO6uEWxkVIvtfeGVw/Xg4fYEEF9aI0SBlYG9XiAfkPmrs=
-X-Received: by 2002:a17:906:f92:: with SMTP id q18mr2161486ejj.353.1632773397700;
- Mon, 27 Sep 2021 13:09:57 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=8yOAotqs60AuPI9trKzeCWPumi1YRDS9z5sw1kObCls=;
+        b=4Snmv3KzWB9bmQWfVThTttNRHY8anqNp22HDqkCrD3JsgvF6k/q/UI6xxxo+hArB4Y
+         hBK8aRnmd6hAG+d4JsAx9CAQCvOpvQ5bHwmO1ZrdJLQhzLl88ZFL8XytmW4hhoEFmBN4
+         9lEVN0hwEoXWH0O8/iDvfKf+WWjN/kkn8RG4lUygW+3e2CXBsVUUCxTPsXm7H3gLueQw
+         +ay0X2DDXTA7AHclya15ApNHNkeOWPKgOb4L0UyFQhZ6pchOLlj6opt3/KoKfRfhBxpy
+         YHHB0olT+x1lL4LQeF3qALQ1WKLDfULo2d0Isq7DZv8WfadzaYO+16e8fI4YDCtis9j4
+         UCOA==
+X-Gm-Message-State: AOAM532p8fBUEtyb/f6g9qPgpKznTcYDQLxDoAO4DKxWzxKBo91dNYpO
+        x/QfaAqyTOxOm7KcSG9CbcAGl8Gta9Rm2HQAFgs=
+X-Google-Smtp-Source: ABdhPJyhqSnZ3yPabza/7GD0YFK4HrRVKhRZbhUlaLljUdT2oPUmD2BZq2kbtDYjGZNcWdgE9KAets1+dG1xhMBX66w=
+X-Received: by 2002:a17:907:e87:: with SMTP id ho7mr3280396ejc.16.1632786834150;
+ Mon, 27 Sep 2021 16:53:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210927081426.762-1-caihuoqing@baidu.com> <20210927081426.762-6-caihuoqing@baidu.com>
-In-Reply-To: <20210927081426.762-6-caihuoqing@baidu.com>
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date:   Mon, 27 Sep 2021 22:09:47 +0200
-Message-ID: <CAFBinCAatVy_9abUJ7A6frbsOqDqAzVe9oDJODOS5MC7aCcDVg@mail.gmail.com>
-Subject: Re: [PATCH 6/9] iio: adc: meson_saradc: Make use of the helper
- function dev_err_probe()
-To:     Cai Huoqing <caihuoqing@baidu.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org
+Reply-To: patzengu@outlook.com
+Sender: rtbscm@gmail.com
+Received: by 2002:a17:906:9a4b:0:0:0:0 with HTTP; Mon, 27 Sep 2021 16:53:53
+ -0700 (PDT)
+From:   "Mr. Z . P" <rm2568590@gmail.com>
+Date:   Tue, 28 Sep 2021 01:53:53 +0200
+X-Google-Sender-Auth: EyeVYrV2cle9CSpcuaUdg6cKykM
+Message-ID: <CACGJ1XeAsrto9jvpG9jZcP2QuV9wxoGUASE_qKn3104c_7QY1w@mail.gmail.com>
+Subject: i need your co-operation
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello,
+-- 
 
-first of all: thanks for this patch!
+My Dear Friend,
 
-On Mon, Sep 27, 2021 at 10:15 AM Cai Huoqing <caihuoqing@baidu.com> wrote:
-[...]
-> +       if (IS_ERR(priv->clkin))
-> +               return dev_err_probe(&pdev->dev,
-> +                                    PTR_ERR(priv->clkin),
-Is there any specific reason why you put PTR_ERR() on a separate line?
-it would still fit into the line above and be below the old 80 chars
-per line limit.
-For priv->vref you already have it the way I am suggesting there.
+I am Mr.Patrice Zengu ,from Burkina Faso and i am the new bank telex
+manager of our bank here in Africa.
 
-[...]
-> +       if (IS_ERR(priv->core_clk))
-> +               return dev_err_probe(&pdev->dev,
-> +                                    PTR_ERR(priv->core_clk),
-the same question as above applies here as well
+I have the opportunity to transfer the sum of US$ 10.5Million to your
+bank account which i personally placed on an Escrow account without a
+name.
+
+I must tell you that after revision of files both old and new as the
+new telex manager ,i discovered that if these funds remains here
+without transferring it offshore,it will be lawfully recovered and
+moved to the  Government of Burkina Faso treasury as an abandoned
+funds without any name.
+
+I want to let you know that a Burkinabe cannot stand as the depositor
+of these US dollars  since we are not allowed to operate on foreign
+currency. I do not intend to work  and stay in Africa till the rest of
+my life.
+
+More so,i will not want my bank to know about these funds and if they
+happens to know probably,the funds will be moved to the Burkina Faso
+Government public treasury as an abandoned funds.
+
+I will furnish you with more details of this transfer and how it can
+be perfectly and legally executed without any hitch since i am now in
+control.
+
+I am waiting to hear from you urgently to proceed.
 
 
-Best regards,
-Martin
+Yours sincerely,
+Mr.Patrice Zengu.

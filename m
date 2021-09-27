@@ -2,183 +2,222 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E0142419322
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Sep 2021 13:33:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 481B3419435
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Sep 2021 14:28:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234036AbhI0Les (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Sep 2021 07:34:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44144 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234030AbhI0Les (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Sep 2021 07:34:48 -0400
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CB36C061575;
-        Mon, 27 Sep 2021 04:33:10 -0700 (PDT)
-Received: by mail-pj1-x1034.google.com with SMTP id lb1-20020a17090b4a4100b001993f863df2so13370086pjb.5;
-        Mon, 27 Sep 2021 04:33:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=MT15ILJvdwdfJ0S3xCwu9KIiLxiliiJmv2UXlemUS9k=;
-        b=CP9rsMVtkPtI1TX4WVrmWdZ5EB8v1jE7T7hIQ+aKIj7w0UIslwSMPgxsSWPNxDp3fM
-         9SmAF+8jK2bRThTIxrfPL+ce24bHfYAfXleEeH5FL329lgjUTzWa+5NAaLt4LgDcnIDt
-         5U2P50ejKTJp0mjYlTmr+Ky8b6hf09aUcWRI8yUWeEjeDPikWZpq0dlgptfV7F+UOCpB
-         ZxgcsAkvOQGuCs2DIL5DRvGaqFIM+SUYzjCtIrR+JR6RhakDVqzGzDp20PWriUsEs3xF
-         GNXVmPU4cWydQ1hVf2x8sGWupISaA1gYMsgZknK7b/tm461NRTNoXrg+VpzjmjRbUqcn
-         ewCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=MT15ILJvdwdfJ0S3xCwu9KIiLxiliiJmv2UXlemUS9k=;
-        b=Nqz037nnbaCUzmCvGbYT9iV4PDma5zq+9v48NNV/8wXXk4oco2dKSwz55nsWpMCCqR
-         mXbPWMTfJXa8CD2dcvR6uaQG41Ih1aY3+gS7+wvTFuBccTLQvaRjvK/hlCtuKO3TuM43
-         JIXid2vLKLn6h/wbAxhkn4cfGzBf+M1UNAz/0oN0A+giKaZguVgiRaD6U4McNJd68+Ul
-         7rhEKXwkcxjtBgfLbOa3roP2YhxglyNMJAjdFOQWjejpE+dvzL2ZU/1OzBchETTafoY9
-         UOgAfNLsHrEz1bf8iw/z65HMb98CGMVOZLqeU0iuKQ+LygOyza4QhtqIPMB6Y5Vi2qih
-         o75g==
-X-Gm-Message-State: AOAM532ZQKInLFxhTc/ps3C+7WAGfSPL7QiETD5IcdqmvK39bw8G2gII
-        ttHaObgdQdYNd6aTmuLOnn4=
-X-Google-Smtp-Source: ABdhPJy+c7oavzzGB1I9sxfTfZAjkTwkMzpRzOHevsnj/eF21dgXZmGd2I5XE8ZTm33UIoLmJUZkQg==
-X-Received: by 2002:a17:90a:19e:: with SMTP id 30mr19124557pjc.131.1632742390212;
-        Mon, 27 Sep 2021 04:33:10 -0700 (PDT)
-Received: from shinobu (113x37x72x25.ap113.ftth.ucom.ne.jp. [113.37.72.25])
-        by smtp.gmail.com with ESMTPSA id w142sm16865891pfc.47.2021.09.27.04.33.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Sep 2021 04:33:09 -0700 (PDT)
-Date:   Mon, 27 Sep 2021 20:33:00 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
-        a.fatoum@pengutronix.de, kamel.bouhara@bootlin.com,
-        gwendal@chromium.org, alexandre.belloni@bootlin.com,
-        david@lechnology.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        syednwaris@gmail.com, patrick.havelange@essensium.com,
-        fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@st.com, o.rempel@pengutronix.de,
-        jarkko.nikula@linux.intel.com,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Subject: Re: [PATCH v16 07/14] counter: Add character device interface
-Message-ID: <YVGr7PQQThADPNSW@shinobu>
-References: <cover.1630031207.git.vilhelm.gray@gmail.com>
- <422c765c91d060cdebc4f17f7aeb255d9c1a4e16.1630031207.git.vilhelm.gray@gmail.com>
- <20210912171821.54af145b@jic23-huawei>
- <YUhdyRdzuBtUxOzT@shinobu>
- <20210926161542.5cf99b58@jic23-huawei>
- <YVGbHQnpBTQYm/7/@shinobu>
- <20210927122000.00007d65@Huawei.com>
+        id S234226AbhI0MaE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Sep 2021 08:30:04 -0400
+Received: from protonic.xs4all.nl ([83.163.252.89]:36622 "EHLO
+        protonic.xs4all.nl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234283AbhI0MaE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Sep 2021 08:30:04 -0400
+Received: from [192.168.224.11] (ert768.prtnl [192.168.224.11])
+        by sparta.prtnl (Postfix) with ESMTP id 4D95C44A024E;
+        Mon, 27 Sep 2021 14:28:24 +0200 (CEST)
+Subject: Re: [PATCH v3 3/4] drivers: iio: chemical: Add support for Sensirion
+ SCD4x CO2 sensor
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Tomasz Duszynski <tomasz.duszynski@octakon.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, david@protonic.nl,
+        Lars-Peter Clausen <lars@metafoo.de>
+References: <20210922103925.2742362-1-roan@protonic.nl>
+ <20210922103925.2742362-4-roan@protonic.nl>
+ <20210925172307.305be961@jic23-huawei>
+From:   Roan van Dijk <roan@protonic.nl>
+Message-ID: <b9cffd75-0b86-544c-4832-070d12606de4@protonic.nl>
+Date:   Mon, 27 Sep 2021 14:28:24 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="qFJe+gs0QSTquwqB"
-Content-Disposition: inline
-In-Reply-To: <20210927122000.00007d65@Huawei.com>
+In-Reply-To: <20210925172307.305be961@jic23-huawei>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: nl
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---qFJe+gs0QSTquwqB
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 27, 2021 at 12:20:00PM +0100, Jonathan Cameron wrote:
-> On Mon, 27 Sep 2021 19:21:17 +0900
-> William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
->=20
-> > On Sun, Sep 26, 2021 at 04:15:42PM +0100, Jonathan Cameron wrote:
-> > > On Mon, 20 Sep 2021 19:09:13 +0900
-> > > William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
-> > >  =20
-> > > > On Sun, Sep 12, 2021 at 05:18:42PM +0100, Jonathan Cameron wrote: =
-=20
-> > > > > On Fri, 27 Aug 2021 12:47:51 +0900
-> > > > > William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
-> > > > >    =20
-> > > > > > This patch introduces a character device interface for the Coun=
-ter
-> > > > > > subsystem. Device data is exposed through standard character de=
-vice read
-> > > > > > operations. Device data is gathered when a Counter event is pus=
-hed by
-> > > > > > the respective Counter device driver. Configuration is handled =
-via ioctl
-> > > > > > operations on the respective Counter character device node.
-> > > > > >=20
-> > > > > > Cc: David Lechner <david@lechnology.com>
-> > > > > > Cc: Gwendal Grignou <gwendal@chromium.org>
-> > > > > > Cc: Dan Carpenter <dan.carpenter@oracle.com>
-> > > > > > Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-> > > > > > Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com> =
-  =20
-> > > > >=20
-> > > > > Hi William,
-> > > > >=20
-> > > > > Why the bit based lock?  It feels like a mutex_trylock() type app=
-roach or
-> > > > > spinlock_trylock() would be a more common solution to this proble=
-m.
-> > > > > There is precedence for doing what you have here though so I'm no=
-t that
-> > > > > worried about it.   =20
-> > > >=20
-> > > > Hi Jonathan,
-> > > >=20
-> > > > We originally used a mutex for this, but Jarkko discovered that this
-> > > > produced a warning because chrdev_lock would be held when returning=
- to
-> > > > user space:
-> > > > https://lore.kernel.org/linux-arm-kernel/YOq19zTsOzKA8v7c@shinobu/T=
-/#m6072133d418d598a5f368bb942c945e46cfab9a5
-> > > >=20
-> > > > Following David Lechner's suggestion, I decided to reimplement
-> > > > chrdev_lock as a bitmap using an atomic flag. =20
-> > >=20
-> > > Ok.  I'm not sure bit lock was quite what was intended (as there is o=
-nly one of them)
-> > > but I suppose it doesn't greatly matter. =20
-> >=20
-> > It didn't cross my mind before, but would declaring chrdev_lock as an
-> > atomic_t be a more appropriate solution here because we have only one
-> > flag?
-> >=20
-> > William Breathitt Gray
-> >=20
->=20
-> It would be less esoteric.  This was the first time I've ever come across=
- the bitlock stuff
-> whereas atomics are an every day thing.
->=20
+On 25-09-2021 18:23, Jonathan Cameron wrote:
+> On Wed, 22 Sep 2021 12:39:24 +0200
+> Roan van Dijk <roan@protonic.nl> wrote:
+> 
+>> This is a driver for the SCD4x CO2 sensor from Sensirion. The sensor is
+>> able to measure CO2 concentration, temperature and relative humdity.
+>> The sensor uses a photoacoustic principle for measuring CO2 concentration.
+>> An I2C interface is supported by this driver in order to communicate with
+>> the sensor.
+>>
+>> Signed-off-by: Roan van Dijk <roan@protonic.nl>
+> 
+> Hi Roan,
+> 
+> Only thing in here of significance is that the format for available attribute
+> is wrong + it needs adding to the ABI docs.
+> 
+> Given we are going to have a v4, I noted a few other minor things to tidy up.
+> 
 > Thanks,
->=20
+> 
 > Jonathan
+> 
 
-I agree. I'll try that out then and reimplement this using
-atomic_inc_and_test() instead of test_and_set_bit_lock().
+Thank you for your feedback. I will make a new patch with these fixes.
 
-William Breathitt Gray
+The documentation for the _available and the fixes you suggested, have 
+already been added in patch [PATCH v3 4/4]. Do I still need to add 
+something to the ABI documentation or is it fine like this?
 
---qFJe+gs0QSTquwqB
-Content-Type: application/pgp-signature; name="signature.asc"
+However, I will change the KernelVersion to 5.15 of the _available 
+description in patch v4. I left this at 5.8 and that's not right, 
+because this information is newly added.
 
------BEGIN PGP SIGNATURE-----
+Thanks,
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmFRq84ACgkQhvpINdm7
-VJKSxw/+K++TD+bpwz9akNC7gg8dm4YlOS7y97Z1JAkS+KcKMbTpdrFJJJbrtIIq
-3JJi5iMjTtTsAPPl6Wa1qRCst3ryHR7UTEMJdAy2IR08If2piGn2frklSFH68ejU
-0zrSBXnmGPmnVdLudetma4gd6MRY6VVNm8ncTbevE7kgo9QJsYvEFxRsrrf/zeHK
-WRBTPNexTxSuclwr7WO612XFr7cUg3iIjdyDw2NMZplkLyFR/HSuw5pX62RFKAe3
-z7NhkBsYF+FK4IraGP+2HlUHZ0v02iK86uGgUf4gmFM0tUHcEpN78Gd8lMm1XmE2
-bIhnhm3vGrgcdINfcaKIHWTw6l8Xs7WjIlI8cHP8Mmw04euXtcAK2RFxxBdjn8kq
-47yxGD2tReXUGSBuv7lXeja+kJ5CU1GHOVcetCQ7qjGXl8bxR/3W0vhetb1uxtLn
-LEfXV18JF2eFuXA0vV0fX9BctKWPREOUFGoB+dE/LhlKUTFg/8E2aVFcD3pg7z9I
-TBtpGA/mNREX9v4eTDvT5G+cYM44hqfYMMwktyk1pomFfU1L7GFBtNs1l5pU1HvR
-UoTUkDJw12nIBwcOSslERLdsoikGTyrtoq3NXebrwI2CTL9sTuQ4SkLNp5m7GASn
-4GCmOs7Gnc3vUL4E6jwgKclaJqCxtDSfN/PmYQ43qJT6p0bHrIU=
-=xydv
------END PGP SIGNATURE-----
+Roan
 
---qFJe+gs0QSTquwqB--
+> 
+>> +static int scd4x_read(struct scd4x_state *state, enum scd4x_cmd cmd,
+>> +			void *response, int response_sz)
+>> +{
+>> +	struct i2c_client *client = state->client;
+>> +	char buf[SCD4X_READ_BUF_SIZE];
+>> +	char *rsp = response;
+>> +	int i, ret;
+>> +	char crc;
+>> +
+>> +	/*
+>> +	 * Measurement needs to be stopped before sending commands.
+>> +	 * Except for reading measurement and data ready command.
+>> +	 */
+>> +	if ((cmd != CMD_GET_DATA_READY) && (cmd != CMD_READ_MEAS)) {
+>> +		ret = scd4x_send_command(state, CMD_STOP_MEAS);
+>> +		if (ret)
+>> +			return ret;
+>> +
+>> +		/* execution time for stopping measurement */
+>> +		msleep_interruptible(500);
+>> +	}
+>> +
+>> +	/*CRC byte for every 2 bytes of data */
+> 
+> /* CRC..
+> 
+> Please check for similar as otherwise we'll get 'cleanup' patches the moment various
+> scripts hit this new code and it'll waste our time!
+> 
+>> +	response_sz += response_sz / 2;
+>> +
+>> +	put_unaligned_be16(cmd, buf);
+>> +	ret = scd4x_i2c_xfer(state, buf, 2, buf, response_sz);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	for (i = 0; i < response_sz; i += 3) {
+>> +		crc = crc8(scd4x_crc8_table, buf + i, 2, CRC8_INIT_VALUE);
+>> +		if (crc != buf[i + 2]) {
+>> +			dev_err(&client->dev, "CRC error\n");
+>> +			return -EIO;
+>> +		}
+>> +
+>> +		*rsp++ = buf[i];
+>> +		*rsp++ = buf[i + 1];
+>> +	}
+>> +
+>> +	/* start measurement */
+>> +	if ((cmd != CMD_GET_DATA_READY) && (cmd != CMD_READ_MEAS)) {
+>> +		ret = scd4x_send_command(state, CMD_START_MEAS);
+>> +		if (ret)
+>> +			return ret;
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +
+> 
+> ...
+> 
+>> +
+>> +static IIO_DEVICE_ATTR_RW(calibration_auto_enable, 0);
+>> +static IIO_DEVICE_ATTR_WO(calibration_forced_value, 0);
+>> +
+>> +static IIO_CONST_ATTR(calibration_forced_value_available,
+>> +	       __stringify(SCD4X_FRC_MIN_PPM 1 SCD4X_FRC_MAX_PPM));
+> 
+> Ah, I wasn't completely clear on this.  See the main ABI doc for
+> _available
+> 
+> Format for this needs to include brackets to indicate it's a range
+> rather than 3 numbers
+> "[MIN 1  MAX]"
+> 
+> 
+> Having added this it also needs to be in the ABI documentation.
+> Whilst somewhat trivial, all ABI should be documented there.
+> 
+>> +
+>> +static struct attribute *scd4x_attrs[] = {
+>> +	&iio_dev_attr_calibration_auto_enable.dev_attr.attr,
+>> +	&iio_dev_attr_calibration_forced_value.dev_attr.attr,
+>> +	&iio_const_attr_calibration_forced_value_available.dev_attr.attr,
+>> +	NULL
+>> +};
+>> +
+>> +static const struct attribute_group scd4x_attr_group = {
+>> +	.attrs = scd4x_attrs,
+>> +};
+>> +
+>> +static const struct iio_info scd4x_info = {
+>> +	.attrs = &scd4x_attr_group,
+>> +	.read_raw = scd4x_read_raw,
+>> +	.write_raw = scd4x_write_raw,
+>> +};
+>> +
+> 
+> ...
+> 
+>> +
+>> +static irqreturn_t scd4x_trigger_handler(int irq, void *p)
+>> +{
+>> +	struct iio_poll_func *pf = p;
+>> +	struct iio_dev *indio_dev = pf->indio_dev;
+>> +	struct scd4x_state *state = iio_priv(indio_dev);
+>> +	struct {
+>> +		uint16_t data[3];
+>> +		int64_t ts __aligned(8);
+>> +	} scan;
+>> +	int ret;
+>> +	uint16_t buf[3];
+>> +
+>> +	mutex_lock(&state->lock);
+>> +	ret = scd4x_read_poll(state, buf);
+>> +	mutex_unlock(&state->lock);
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	memset(&scan, 0, sizeof(scan));
+>> +	memcpy(scan.data, buf, sizeof(buf));
+> 
+> I missed this before, but why not do the scd4x_read_poll() directly into scan->data after
+> you've done the memset?  That way you avoid the need for a memcpy.
+> 
+> i.e.
+> 
+> 	memset(&scan, 0, sizeof(scan));
+> 	mutex_lock(&state->lock)
+> 	ret = scd4x_read_poll(state, scan->data);
+> 	mutex_unlock(&state->lock);
+> 	if (ret)
+> 	...
+> 
+> 
+>> +
+>> +	iio_push_to_buffers_with_timestamp(indio_dev, &scan, iio_get_time_ns(indio_dev));
+>> +out:
+>> +	iio_trigger_notify_done(indio_dev->trig);
+>> +	return IRQ_HANDLED;
+>> +}
+>> +

@@ -2,67 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 008D341A016
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Sep 2021 22:25:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BE24419FD4
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Sep 2021 22:10:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236910AbhI0U1M (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Sep 2021 16:27:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56876 "EHLO
+        id S236750AbhI0ULi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Sep 2021 16:11:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236982AbhI0U1L (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Sep 2021 16:27:11 -0400
-X-Greylist: delayed 1014 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 27 Sep 2021 13:25:32 PDT
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA8B3C061575
-        for <linux-iio@vger.kernel.org>; Mon, 27 Sep 2021 13:25:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=fd4s99HunOLubBDe63zAwk3tWqtbOB3gIaOJ3cuwGJM=; b=Qx4AkkHm/pmwCxCTBQzK1mMTVC
-        jmgxFlIoCnncf/2Ax6nqjP36ucAgXFMRB+7K5peeCjp5CMFRroZjXZbSAXMqcLSSTOvcfHwZVG4sU
-        M86cjTeRzBIOGw6PKL62Yzsi0BlF+ErBGp9Njb6fDTt7DtKPI9klfUZg2hFA55KJPVgo=;
-Received: from p200300ccff09a7001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff09:a700:1a3d:a2ff:febf:d33a] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1mUwvT-0000CF-2S; Mon, 27 Sep 2021 22:08:35 +0200
-Date:   Mon, 27 Sep 2021 22:08:34 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     Alexandru Ardelean <aardelean@deviqon.com>
-Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        jic23@kernel.org
-Subject: Re: [PATCH] iio: adc: rn5t618-adc: use
- devm_iio_map_array_register() function
-Message-ID: <20210927220834.014e6c77@aktux>
-In-Reply-To: <20210926162859.3567685-1-aardelean@deviqon.com>
-References: <20210926162859.3567685-1-aardelean@deviqon.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        with ESMTP id S236810AbhI0ULh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Sep 2021 16:11:37 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59819C061575;
+        Mon, 27 Sep 2021 13:09:59 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id v18so38730528edc.11;
+        Mon, 27 Sep 2021 13:09:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=vWCgs3XZtqQ75S4Sam0oUHvtow8EHQKNfWFQPQcnRsY=;
+        b=CjCqPN4lsrmL/kgXYQ/RxflbFh56hSOKqIeyX1W/oIBfrq4g8nLspVD4sQMrn+40Rh
+         Rx4viRYm7QpwSajB8/nS9I5EnOQAzL0pUBz4lQns538q/Qteac9sWhcfIIrmfsOSKzsU
+         M/PAXh8x8DmXoA/RtTV/ChQhPTk8C8Id1hnlJcijflS84t+U/LfK3VqO+GuY2jbR/wSS
+         Jeouq+xThsOnrcpcRddG2ODCpZRewj156How3JR4A1KMdpDZs7HuWvu3b5Y3uekBZh/f
+         anAzLHdRSEeqsXP37MCrOfOLFAdqYOJXZV5OWmUogHnZBCe+LfWz2FGRBS/GFuXNmIlm
+         9OmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=vWCgs3XZtqQ75S4Sam0oUHvtow8EHQKNfWFQPQcnRsY=;
+        b=UQpxaWpQs5jfXDlGKB1btQVWc28wYVXarxzaxtg32GTd8vsC/Kbx//jTXHymsZD7wZ
+         zfIMFbP4T7bKaWfg6Eqccqg3GZ7h9DrVwEbI39UxoLdC+QlEMKlyXaZ4xu7tzznnXmlp
+         BGwq7XT8R8OsxJsykn+0K5eD/U55eCpbqbRf/qZXqOE33rtGiOgLRYyAsF+80yauO+QD
+         e27baglC0soiDMeEJxJcKXKvTUIEhstFd+twVDytkXP54EMrm0uxqenO0EMGVfzERXMh
+         KnQfziuC6O/HU/rgSyHFX6jIKtgU/J1YckTUV1jO6iHsJfhtCX/T6cFz76beqOfdKVLM
+         JRXA==
+X-Gm-Message-State: AOAM531yRwsV0BG+bA4FdIvEGzl9RrNnmzpSxWN3slJxL2xxZSbeCGKw
+        0illVw72TlpELzMjwlyKt0CIGSDls8VrTKbpvqQ=
+X-Google-Smtp-Source: ABdhPJzCjvA/IcL6veR1cMq/hHfeR/9BjzJWC1sc8TXInJGO6uEWxkVIvtfeGVw/Xg4fYEEF9aI0SBlYG9XiAfkPmrs=
+X-Received: by 2002:a17:906:f92:: with SMTP id q18mr2161486ejj.353.1632773397700;
+ Mon, 27 Sep 2021 13:09:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: -1.0 (-)
+References: <20210927081426.762-1-caihuoqing@baidu.com> <20210927081426.762-6-caihuoqing@baidu.com>
+In-Reply-To: <20210927081426.762-6-caihuoqing@baidu.com>
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date:   Mon, 27 Sep 2021 22:09:47 +0200
+Message-ID: <CAFBinCAatVy_9abUJ7A6frbsOqDqAzVe9oDJODOS5MC7aCcDVg@mail.gmail.com>
+Subject: Re: [PATCH 6/9] iio: adc: meson_saradc: Make use of the helper
+ function dev_err_probe()
+To:     Cai Huoqing <caihuoqing@baidu.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 26 Sep 2021 19:28:59 +0300
-Alexandru Ardelean <aardelean@deviqon.com> wrote:
+Hello,
 
-> This driver already hooks a similar unwind callback via
-> devm_add_action_or_reset().
-> 
-> They pretty much do the same thing, so this change converts it to the
-> devm_iio_map_array_register().
-> 
-> Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
-> ---
->  drivers/iio/adc/rn5t618-adc.c | 13 +------------
->  1 file changed, 1 insertion(+), 12 deletions(-)
+first of all: thanks for this patch!
 
-yes, looks sane, the patches it depens on are not in linux-next yet.
-But it seems that they are accepted, so:
+On Mon, Sep 27, 2021 at 10:15 AM Cai Huoqing <caihuoqing@baidu.com> wrote:
+[...]
+> +       if (IS_ERR(priv->clkin))
+> +               return dev_err_probe(&pdev->dev,
+> +                                    PTR_ERR(priv->clkin),
+Is there any specific reason why you put PTR_ERR() on a separate line?
+it would still fit into the line above and be below the old 80 chars
+per line limit.
+For priv->vref you already have it the way I am suggesting there.
 
-Reviewed-by: Andreas Kemnade <andreas@kemnade.info>
+[...]
+> +       if (IS_ERR(priv->core_clk))
+> +               return dev_err_probe(&pdev->dev,
+> +                                    PTR_ERR(priv->core_clk),
+the same question as above applies here as well
+
+
+Best regards,
+Martin

@@ -2,18 +2,18 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF7CA41B0A7
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Sep 2021 15:34:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AAD741B0AA
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Sep 2021 15:34:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241352AbhI1NfQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Sep 2021 09:35:16 -0400
-Received: from relay3-d.mail.gandi.net ([217.70.183.195]:44383 "EHLO
+        id S241458AbhI1NfV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Sep 2021 09:35:21 -0400
+Received: from relay3-d.mail.gandi.net ([217.70.183.195]:55285 "EHLO
         relay3-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241343AbhI1Neu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Sep 2021 09:34:50 -0400
+        with ESMTP id S241357AbhI1New (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Sep 2021 09:34:52 -0400
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id B269760008;
-        Tue, 28 Sep 2021 13:33:07 +0000 (UTC)
+        by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id F11C86000A;
+        Tue, 28 Sep 2021 13:33:09 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -33,9 +33,9 @@ Cc:     Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         Jason Reeder <jreeder@ti.com>, <linux-kernel@vger.kernel.org>,
         Miquel Raynal <miquel.raynal@bootlin.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v4 33/48] mfd: ti_am335x_tscadc: Fix an error message
-Date:   Tue, 28 Sep 2021 15:31:28 +0200
-Message-Id: <20210928133143.157329-34-miquel.raynal@bootlin.com>
+Subject: [PATCH v4 34/48] mfd: ti_am335x_tscadc: Add a boolean to clarify the presence of a touchscreen
+Date:   Tue, 28 Sep 2021 15:31:29 +0200
+Message-Id: <20210928133143.157329-35-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210928133143.157329-1-miquel.raynal@bootlin.com>
 References: <20210928133143.157329-1-miquel.raynal@bootlin.com>
@@ -46,31 +46,57 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The error message if we cannot retrieve the clock tells us that the
-touchscreen controller clock was unavailable. This is wrong, this is the
-"main" clock for the hardware block, it is not specific to the
-touchscreen and won't change when we will introduce ADC1/magnetic reader
-support so let's correct this comment.
+Just checking the number of wires will soon not be enough, add a boolean
+to indicate the actual use or not of the touchscreen.
+
+Certain checks only make sense when there is a touchscreen wired. Make
+these checks explicitly depend on the presence of the touchscreen.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/mfd/ti_am335x_tscadc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mfd/ti_am335x_tscadc.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
-index 70a423e57067..9699fe6ca7eb 100644
+index 9699fe6ca7eb..f7cfe2016bbc 100644
 --- a/drivers/mfd/ti_am335x_tscadc.c
 +++ b/drivers/mfd/ti_am335x_tscadc.c
-@@ -209,7 +209,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
- 	 */
- 	clk = devm_clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(clk)) {
--		dev_err(&pdev->dev, "failed to get TSC fck\n");
-+		dev_err(&pdev->dev, "failed to get fck\n");
- 		err = PTR_ERR(clk);
- 		goto err_disable_clk;
+@@ -120,6 +120,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+ 	struct mfd_cell *cell;
+ 	struct property *prop;
+ 	const __be32 *cur;
++	bool use_tsc = false;
+ 	u32 val;
+ 	int err;
+ 	int tscmag_wires = 0, adc_channels = 0, cell_idx = 0, total_channels;
+@@ -143,6 +144,8 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+ 	of_property_read_u32(node, "ti,wires", &tscmag_wires);
+ 	of_property_read_u32(node, "ti,coordiante-readouts", &readouts);
+ 	of_node_put(node);
++	if (tscmag_wires)
++		use_tsc = true;
+ 
+ 	node = of_get_child_by_name(pdev->dev.of_node, "adc");
+ 	of_property_for_each_u32(node, "ti,adc-channels", prop, cur, val) {
+@@ -168,7 +171,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+ 		return -EINVAL;
  	}
+ 
+-	if (readouts * 2 + 2 + adc_channels > 16) {
++	if (use_tsc && (readouts * 2 + 2 + adc_channels > 16)) {
+ 		dev_err(&pdev->dev, "Too many step configurations requested\n");
+ 		return -EINVAL;
+ 	}
+@@ -223,7 +226,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+ 	 * added manually when timely.
+ 	 */
+ 	tscadc->ctrl = CNTRLREG_TSC_STEPCONFIGWRT | CNTRLREG_STEPID;
+-	if (tscmag_wires > 0) {
++	if (use_tsc) {
+ 		tscadc->ctrl |= CNTRLREG_TSC_ENB;
+ 		if (tscmag_wires == 5)
+ 			tscadc->ctrl |= CNTRLREG_TSC_5WIRE;
 -- 
 2.27.0
 

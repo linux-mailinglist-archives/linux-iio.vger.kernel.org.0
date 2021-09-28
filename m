@@ -2,26 +2,26 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7C5341A4CE
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Sep 2021 03:39:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2C3841A4D2
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Sep 2021 03:39:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238563AbhI1BlE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Sep 2021 21:41:04 -0400
-Received: from mx24.baidu.com ([111.206.215.185]:47902 "EHLO baidu.com"
+        id S238580AbhI1BlI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Sep 2021 21:41:08 -0400
+Received: from mx24.baidu.com ([111.206.215.185]:47968 "EHLO baidu.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S238515AbhI1BlB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 27 Sep 2021 21:41:01 -0400
-Received: from BC-Mail-Ex06.internal.baidu.com (unknown [172.31.51.46])
-        by Forcepoint Email with ESMTPS id B4030C7FF096BEFD9B55;
-        Tue, 28 Sep 2021 09:39:21 +0800 (CST)
+        id S238564AbhI1BlF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 27 Sep 2021 21:41:05 -0400
+Received: from BC-Mail-Ex07.internal.baidu.com (unknown [172.31.51.47])
+        by Forcepoint Email with ESMTPS id BA804A3A54D1208462A1;
+        Tue, 28 Sep 2021 09:39:24 +0800 (CST)
 Received: from BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) by
- BC-Mail-Ex06.internal.baidu.com (172.31.51.46) with Microsoft SMTP Server
+ BC-Mail-EX07.internal.baidu.com (172.31.51.47) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2242.12; Tue, 28 Sep 2021 09:39:21 +0800
+ 15.1.2242.12; Tue, 28 Sep 2021 09:39:24 +0800
 Received: from LAPTOP-UKSR4ENP.internal.baidu.com (172.31.63.8) by
  BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2308.14; Tue, 28 Sep 2021 09:39:20 +0800
+ 15.1.2308.14; Tue, 28 Sep 2021 09:39:23 +0800
 From:   Cai Huoqing <caihuoqing@baidu.com>
 To:     <caihuoqing@baidu.com>
 CC:     Lars-Peter Clausen <lars@metafoo.de>,
@@ -34,9 +34,9 @@ CC:     Lars-Peter Clausen <lars@metafoo.de>,
         <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-stm32@st-md-mailman.stormreply.com>
-Subject: [PATCH v2 4/8] iio: dac: ds4424: Make use of the helper function dev_err_probe()
-Date:   Tue, 28 Sep 2021 09:38:57 +0800
-Message-ID: <20210928013902.1341-4-caihuoqing@baidu.com>
+Subject: [PATCH v2 5/8] iio: dac: max5821: Make use of the helper function dev_err_probe()
+Date:   Tue, 28 Sep 2021 09:38:58 +0800
+Message-ID: <20210928013902.1341-5-caihuoqing@baidu.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210928013902.1341-1-caihuoqing@baidu.com>
 References: <20210928013902.1341-1-caihuoqing@baidu.com>
@@ -57,29 +57,29 @@ gets printed.
 
 Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
 ---
- drivers/iio/dac/ds4424.c | 9 +++------
+ drivers/iio/dac/max5821.c | 9 +++------
  1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iio/dac/ds4424.c b/drivers/iio/dac/ds4424.c
-index 79527fbc250a..5a5e967b0be4 100644
---- a/drivers/iio/dac/ds4424.c
-+++ b/drivers/iio/dac/ds4424.c
-@@ -232,12 +232,9 @@ static int ds4424_probe(struct i2c_client *client,
- 	indio_dev->name = id->name;
+diff --git a/drivers/iio/dac/max5821.c b/drivers/iio/dac/max5821.c
+index bd0b7f361154..7da4710a6408 100644
+--- a/drivers/iio/dac/max5821.c
++++ b/drivers/iio/dac/max5821.c
+@@ -321,12 +321,9 @@ static int max5821_probe(struct i2c_client *client,
+ 	}
  
- 	data->vcc_reg = devm_regulator_get(&client->dev, "vcc");
--	if (IS_ERR(data->vcc_reg)) {
+ 	data->vref_reg = devm_regulator_get(&client->dev, "vref");
+-	if (IS_ERR(data->vref_reg)) {
+-		ret = PTR_ERR(data->vref_reg);
 -		dev_err(&client->dev,
--			"Failed to get vcc-supply regulator. err: %ld\n",
--				PTR_ERR(data->vcc_reg));
--		return PTR_ERR(data->vcc_reg);
+-			"Failed to get vref regulator: %d\n", ret);
+-		return ret;
 -	}
-+	if (IS_ERR(data->vcc_reg))
-+		return dev_err_probe(&client->dev, PTR_ERR(data->vcc_reg),
-+				     "Failed to get vcc-supply regulator.\n");
++	if (IS_ERR(data->vref_reg))
++		return dev_err_probe(&client->dev, PTR_ERR(data->vref_reg),
++				     "Failed to get vref regulator\n");
  
- 	mutex_init(&data->lock);
- 	ret = regulator_enable(data->vcc_reg);
+ 	ret = regulator_enable(data->vref_reg);
+ 	if (ret) {
 -- 
 2.25.1
 

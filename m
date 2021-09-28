@@ -2,18 +2,18 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C353A41B0CD
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Sep 2021 15:34:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FFCE41B0D8
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Sep 2021 15:34:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241543AbhI1Nfp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Sep 2021 09:35:45 -0400
-Received: from relay3-d.mail.gandi.net ([217.70.183.195]:56381 "EHLO
+        id S241233AbhI1Nfu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Sep 2021 09:35:50 -0400
+Received: from relay3-d.mail.gandi.net ([217.70.183.195]:50361 "EHLO
         relay3-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241435AbhI1NfK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Sep 2021 09:35:10 -0400
+        with ESMTP id S241445AbhI1NfN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Sep 2021 09:35:13 -0400
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id B955A60012;
-        Tue, 28 Sep 2021 13:33:27 +0000 (UTC)
+        by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id E728E6000C;
+        Tue, 28 Sep 2021 13:33:29 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -33,9 +33,9 @@ Cc:     Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         Jason Reeder <jreeder@ti.com>, <linux-kernel@vger.kernel.org>,
         Miquel Raynal <miquel.raynal@bootlin.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v4 42/48] iio: adc: ti_am335x_adc: Gather the checks on the delays
-Date:   Tue, 28 Sep 2021 15:31:37 +0200
-Message-Id: <20210928133143.157329-43-miquel.raynal@bootlin.com>
+Subject: [PATCH v4 43/48] iio: adc: ti_am335x_adc: Add a unit to the timeout delay
+Date:   Tue, 28 Sep 2021 15:31:38 +0200
+Message-Id: <20210928133143.157329-44-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210928133143.157329-1-miquel.raynal@bootlin.com>
 References: <20210928133143.157329-1-miquel.raynal@bootlin.com>
@@ -46,113 +46,50 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Move the checks over the delays provided in the device tree to the
-location where these values are read to clarify where they come from.
-
-There are no functional changes besides the device structure used to
-display the warnings: let's use the ADC instead of the MFD device.
+The lack of unit in the macro name kind of tricked me when I was
+troubleshooting an issue. Physical constants should always get a unit.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/ti_am335x_adc.c | 50 ++++++++++++++++++++-------------
- 1 file changed, 30 insertions(+), 20 deletions(-)
+ drivers/iio/adc/ti_am335x_adc.c      | 4 ++--
+ include/linux/mfd/ti_am335x_tscadc.h | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/iio/adc/ti_am335x_adc.c b/drivers/iio/adc/ti_am335x_adc.c
-index aa151d702a14..6f47a1ace3d4 100644
+index 6f47a1ace3d4..e7dba10b29b4 100644
 --- a/drivers/iio/adc/ti_am335x_adc.c
 +++ b/drivers/iio/adc/ti_am335x_adc.c
-@@ -107,7 +107,6 @@ static int tiadc_wait_idle(struct tiadc_device *adc_dev)
- static void tiadc_step_config(struct iio_dev *indio_dev)
- {
- 	struct tiadc_device *adc_dev = iio_priv(indio_dev);
--	struct device *dev = adc_dev->mfd_tscadc->dev;
- 	unsigned int stepconfig;
- 	int i, steps = 0;
+@@ -101,7 +101,7 @@ static int tiadc_wait_idle(struct tiadc_device *adc_dev)
  
-@@ -125,12 +124,6 @@ static void tiadc_step_config(struct iio_dev *indio_dev)
- 
- 		chan = adc_dev->channel_line[i];
- 
--		if (adc_dev->step_avg[i] > STEPCONFIG_AVG_16) {
--			dev_warn(dev, "chan %d: wrong step avg, truncated to %ld\n",
--				 chan, STEPCONFIG_AVG_16);
--			adc_dev->step_avg[i] = STEPCONFIG_AVG_16;
--		}
--
- 		if (adc_dev->step_avg[i])
- 			stepconfig = STEPCONFIG_AVG(ffs(adc_dev->step_avg[i]) - 1) |
- 				     STEPCONFIG_FIFO1;
-@@ -145,18 +138,6 @@ static void tiadc_step_config(struct iio_dev *indio_dev)
- 			     STEPCONFIG_INM_ADCREFM | STEPCONFIG_RFP_VREFP |
- 			     STEPCONFIG_RFM_VREFN);
- 
--		if (adc_dev->open_delay[i] > STEPCONFIG_MAX_OPENDLY) {
--			dev_warn(dev, "chan %d: wrong open delay, truncated to 0x%lX\n",
--				 chan, STEPCONFIG_MAX_OPENDLY);
--			adc_dev->open_delay[i] = STEPCONFIG_MAX_OPENDLY;
--		}
--
--		if (adc_dev->sample_delay[i] > STEPCONFIG_MAX_SAMPLE) {
--			dev_warn(dev, "chan %d: wrong sample delay, truncated to 0x%lX\n",
--				 chan, STEPCONFIG_MAX_SAMPLE);
--			adc_dev->sample_delay[i] = STEPCONFIG_MAX_SAMPLE;
--		}
--
- 		tiadc_writel(adc_dev, REG_STEPDELAY(steps),
- 			     STEPDELAY_OPEN(adc_dev->open_delay[i]) |
- 			     STEPDELAY_SAMPLE(adc_dev->sample_delay[i]));
-@@ -572,6 +553,7 @@ static int tiadc_parse_dt(struct platform_device *pdev,
- 	const __be32 *cur;
- 	int channels = 0;
- 	u32 val;
-+	int i;
- 
- 	of_property_for_each_u32(node, "ti,adc-channels", prop, cur, val) {
- 		adc_dev->channel_line[channels] = val;
-@@ -584,6 +566,8 @@ static int tiadc_parse_dt(struct platform_device *pdev,
- 		channels++;
- 	}
- 
-+	adc_dev->channels = channels;
-+
- 	of_property_read_u32_array(node, "ti,chan-step-avg",
- 				   adc_dev->step_avg, channels);
- 	of_property_read_u32_array(node, "ti,chan-step-opendelay",
-@@ -591,7 +575,33 @@ static int tiadc_parse_dt(struct platform_device *pdev,
- 	of_property_read_u32_array(node, "ti,chan-step-sampledelay",
- 				   adc_dev->sample_delay, channels);
- 
--	adc_dev->channels = channels;
-+	for (i = 0; i < adc_dev->channels; i++) {
-+		int chan;
-+
-+		chan = adc_dev->channel_line[i];
-+
-+		if (adc_dev->step_avg[i] > STEPCONFIG_AVG_16) {
-+			dev_warn(&pdev->dev,
-+				 "chan %d: wrong step avg, truncated to %ld\n",
-+				 chan, STEPCONFIG_AVG_16);
-+			adc_dev->step_avg[i] = STEPCONFIG_AVG_16;
-+		}
-+
-+		if (adc_dev->open_delay[i] > STEPCONFIG_MAX_OPENDLY) {
-+			dev_warn(&pdev->dev,
-+				 "chan %d: wrong open delay, truncated to 0x%lX\n",
-+				 chan, STEPCONFIG_MAX_OPENDLY);
-+			adc_dev->open_delay[i] = STEPCONFIG_MAX_OPENDLY;
-+		}
-+
-+		if (adc_dev->sample_delay[i] > STEPCONFIG_MAX_SAMPLE) {
-+			dev_warn(&pdev->dev,
-+				 "chan %d: wrong sample delay, truncated to 0x%lX\n",
-+				 chan, STEPCONFIG_MAX_SAMPLE);
-+			adc_dev->sample_delay[i] = STEPCONFIG_MAX_SAMPLE;
-+		}
-+	}
-+
- 	return 0;
+ 	return readl_poll_timeout(adc_dev->mfd_tscadc->tscadc_base + REG_ADCFSM,
+ 				  val, !(val & SEQ_STATUS), 10,
+-				  IDLE_TIMEOUT * 1000 * adc_dev->channels);
++				  IDLE_TIMEOUT_MS * 1000 * adc_dev->channels);
  }
+ 
+ static void tiadc_step_config(struct iio_dev *indio_dev)
+@@ -461,7 +461,7 @@ static int tiadc_read_raw(struct iio_dev *indio_dev,
+ 	am335x_tsc_se_set_once(adc_dev->mfd_tscadc, step_en);
+ 
+ 	/* Wait for Fifo threshold interrupt */
+-	timeout = jiffies + msecs_to_jiffies(IDLE_TIMEOUT * adc_dev->channels);
++	timeout = jiffies + msecs_to_jiffies(IDLE_TIMEOUT_MS * adc_dev->channels);
+ 	while (1) {
+ 		fifo1count = tiadc_readl(adc_dev, REG_FIFO1CNT);
+ 		if (fifo1count)
+diff --git a/include/linux/mfd/ti_am335x_tscadc.h b/include/linux/mfd/ti_am335x_tscadc.h
+index 5225e3fc194d..ba13e043d910 100644
+--- a/include/linux/mfd/ti_am335x_tscadc.h
++++ b/include/linux/mfd/ti_am335x_tscadc.h
+@@ -141,7 +141,7 @@
+  *
+  * max processing time: 266431 * 308ns = 83ms(approx)
+  */
+-#define IDLE_TIMEOUT		83 /* milliseconds */
++#define IDLE_TIMEOUT_MS		83 /* milliseconds */
+ 
+ #define TSCADC_CELLS		2
  
 -- 
 2.27.0

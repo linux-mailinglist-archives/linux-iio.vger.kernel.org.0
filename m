@@ -2,26 +2,26 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2F6441B1ED
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Sep 2021 16:20:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5599541B233
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Sep 2021 16:36:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241137AbhI1OVw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Sep 2021 10:21:52 -0400
-Received: from mx24.baidu.com ([111.206.215.185]:48514 "EHLO baidu.com"
+        id S241316AbhI1OiU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Sep 2021 10:38:20 -0400
+Received: from mx22.baidu.com ([220.181.50.185]:60638 "EHLO baidu.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S241003AbhI1OVw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 28 Sep 2021 10:21:52 -0400
-Received: from BJHW-Mail-Ex02.internal.baidu.com (unknown [10.127.64.12])
-        by Forcepoint Email with ESMTPS id 446133CB622D7C7A9271;
-        Tue, 28 Sep 2021 22:20:10 +0800 (CST)
+        id S241152AbhI1OiM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 28 Sep 2021 10:38:12 -0400
+Received: from BJHW-Mail-Ex01.internal.baidu.com (unknown [10.127.64.11])
+        by Forcepoint Email with ESMTPS id 76BABABF5FD0DB62B957;
+        Tue, 28 Sep 2021 22:20:17 +0800 (CST)
 Received: from BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) by
- BJHW-Mail-Ex02.internal.baidu.com (10.127.64.12) with Microsoft SMTP Server
+ BJHW-Mail-Ex01.internal.baidu.com (10.127.64.11) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2308.14; Tue, 28 Sep 2021 22:20:10 +0800
+ 15.1.2308.14; Tue, 28 Sep 2021 22:20:17 +0800
 Received: from LAPTOP-UKSR4ENP.internal.baidu.com (172.31.63.8) by
  BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2308.14; Tue, 28 Sep 2021 22:20:08 +0800
+ 15.1.2308.14; Tue, 28 Sep 2021 22:20:16 +0800
 From:   Cai Huoqing <caihuoqing@baidu.com>
 To:     <caihuoqing@baidu.com>
 CC:     Linus Walleij <linus.walleij@linaro.org>,
@@ -45,9 +45,9 @@ CC:     Linus Walleij <linus.walleij@linaro.org>,
         <linux-amlogic@lists.infradead.org>,
         <linux-arm-msm@vger.kernel.org>,
         <linux-rockchip@lists.infradead.org>
-Subject: [PATCH v3 2/9] iio: adc: imx7d_adc: Make use of the helper function dev_err_probe()
-Date:   Tue, 28 Sep 2021 22:19:48 +0800
-Message-ID: <20210928141956.2148-2-caihuoqing@baidu.com>
+Subject: [PATCH v3 3/9] iio: adc: lpc18xx_adc: Make use of the helper function dev_err_probe()
+Date:   Tue, 28 Sep 2021 22:19:49 +0800
+Message-ID: <20210928141956.2148-3-caihuoqing@baidu.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210928141956.2148-1-caihuoqing@baidu.com>
 References: <20210928141956.2148-1-caihuoqing@baidu.com>
@@ -68,38 +68,41 @@ gets printed.
 
 Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
 ---
- drivers/iio/adc/imx7d_adc.c | 16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+v1->v2: Remove the separate line of PTR_ERR().
 
-diff --git a/drivers/iio/adc/imx7d_adc.c b/drivers/iio/adc/imx7d_adc.c
-index 4969a5f941e3..f47360cbff3b 100644
---- a/drivers/iio/adc/imx7d_adc.c
-+++ b/drivers/iio/adc/imx7d_adc.c
-@@ -496,19 +496,13 @@ static int imx7d_adc_probe(struct platform_device *pdev)
- 		return irq;
+ drivers/iio/adc/lpc18xx_adc.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/iio/adc/lpc18xx_adc.c b/drivers/iio/adc/lpc18xx_adc.c
+index 3566990ae87d..caa7feb4219f 100644
+--- a/drivers/iio/adc/lpc18xx_adc.c
++++ b/drivers/iio/adc/lpc18xx_adc.c
+@@ -137,19 +137,17 @@ static int lpc18xx_adc_probe(struct platform_device *pdev)
+ 		return PTR_ERR(adc->base);
  
- 	info->clk = devm_clk_get(dev, "adc");
--	if (IS_ERR(info->clk)) {
--		ret = PTR_ERR(info->clk);
--		dev_err(dev, "Failed getting clock, err = %d\n", ret);
--		return ret;
+ 	adc->clk = devm_clk_get(&pdev->dev, NULL);
+-	if (IS_ERR(adc->clk)) {
+-		dev_err(&pdev->dev, "error getting clock\n");
+-		return PTR_ERR(adc->clk);
 -	}
-+	if (IS_ERR(info->clk))
-+		return dev_err_probe(dev, PTR_ERR(info->clk), "Failed getting clock\n");
++	if (IS_ERR(adc->clk))
++		return dev_err_probe(&pdev->dev, PTR_ERR(adc->clk),
++				     "error getting clock\n");
  
- 	info->vref = devm_regulator_get(dev, "vref");
--	if (IS_ERR(info->vref)) {
--		ret = PTR_ERR(info->vref);
--		dev_err(dev,
--			"Failed getting reference voltage, err = %d\n", ret);
--		return ret;
+ 	rate = clk_get_rate(adc->clk);
+ 	clkdiv = DIV_ROUND_UP(rate, LPC18XX_ADC_CLK_TARGET);
+ 
+ 	adc->vref = devm_regulator_get(&pdev->dev, "vref");
+-	if (IS_ERR(adc->vref)) {
+-		dev_err(&pdev->dev, "error getting regulator\n");
+-		return PTR_ERR(adc->vref);
 -	}
-+	if (IS_ERR(info->vref))
-+		return dev_err_probe(dev, PTR_ERR(info->vref),
-+				     "Failed getting reference voltage\n");
++	if (IS_ERR(adc->vref))
++		return dev_err_probe(&pdev->dev, PTR_ERR(adc->vref),
++				     "error getting regulator\n");
  
- 	platform_set_drvdata(pdev, indio_dev);
- 
+ 	indio_dev->name = dev_name(&pdev->dev);
+ 	indio_dev->info = &lpc18xx_adc_info;
 -- 
 2.25.1
 

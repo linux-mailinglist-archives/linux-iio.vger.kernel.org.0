@@ -2,87 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED3B841A5AC
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Sep 2021 04:50:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9153041AD0B
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Sep 2021 12:34:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238692AbhI1Cvn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Sep 2021 22:51:43 -0400
-Received: from mx22.baidu.com ([220.181.50.185]:45848 "EHLO baidu.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S238590AbhI1Cvm (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 27 Sep 2021 22:51:42 -0400
-Received: from BC-Mail-Ex30.internal.baidu.com (unknown [172.31.51.24])
-        by Forcepoint Email with ESMTPS id BE25CCC1775BA3014171;
-        Tue, 28 Sep 2021 10:49:48 +0800 (CST)
-Received: from BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) by
- BC-Mail-Ex30.internal.baidu.com (172.31.51.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2242.12; Tue, 28 Sep 2021 10:49:48 +0800
-Received: from localhost (172.31.63.8) by BJHW-MAIL-EX27.internal.baidu.com
- (10.127.64.42) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Tue, 28
- Sep 2021 10:49:48 +0800
-Date:   Tue, 28 Sep 2021 10:49:46 +0800
-From:   Cai Huoqing <caihuoqing@baidu.com>
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-CC:     Linus Walleij <linus.walleij@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+        id S240125AbhI1KgA convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Tue, 28 Sep 2021 06:36:00 -0400
+Received: from relay7-d.mail.gandi.net ([217.70.183.200]:50403 "EHLO
+        relay7-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239952AbhI1Kf7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Sep 2021 06:35:59 -0400
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 72B1C2000F;
+        Tue, 28 Sep 2021 10:34:16 +0000 (UTC)
+Date:   Tue, 28 Sep 2021 12:34:15 +0200
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-amlogic@lists.infradead.org>
-Subject: Re: [PATCH 6/9] iio: adc: meson_saradc: Make use of the helper
- function dev_err_probe()
-Message-ID: <20210928024946.GA1628@LAPTOP-UKSR4ENP.internal.baidu.com>
-References: <20210927081426.762-1-caihuoqing@baidu.com>
- <20210927081426.762-6-caihuoqing@baidu.com>
- <CAFBinCAatVy_9abUJ7A6frbsOqDqAzVe9oDJODOS5MC7aCcDVg@mail.gmail.com>
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        bcousson@baylibre.com, Tony Lindgren <tony@atomide.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Ryan Barnett <ryan.barnett@collins.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Jason Reeder <jreeder@ti.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v3 35/47] mfd: ti_am335x_tscadc: Add ADC1/magnetic
+ reader support
+Message-ID: <20210928123415.332f9d5a@xps13>
+In-Reply-To: <YUtTFEv1YFOMeuEb@google.com>
+References: <20210915155908.476767-1-miquel.raynal@bootlin.com>
+        <20210915155908.476767-36-miquel.raynal@bootlin.com>
+        <YUtTFEv1YFOMeuEb@google.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFBinCAatVy_9abUJ7A6frbsOqDqAzVe9oDJODOS5MC7aCcDVg@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Originating-IP: [172.31.63.8]
-X-ClientProxiedBy: BC-Mail-Ex11.internal.baidu.com (172.31.51.51) To
- BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 27 9月 21 22:09:47, Martin Blumenstingl wrote:
-> Hello,
-> 
-> first of all: thanks for this patch!
-> 
-> On Mon, Sep 27, 2021 at 10:15 AM Cai Huoqing <caihuoqing@baidu.com> wrote:
-> [...]
-> > +       if (IS_ERR(priv->clkin))
-> > +               return dev_err_probe(&pdev->dev,
-> > +                                    PTR_ERR(priv->clkin),
-> Is there any specific reason why you put PTR_ERR() on a separate line?
-> it would still fit into the line above and be below the old 80 chars
-> per line limit.
-> For priv->vref you already have it the way I am suggesting there.
-> 
-> [...]
-> > +       if (IS_ERR(priv->core_clk))
-> > +               return dev_err_probe(&pdev->dev,
-> > +                                    PTR_ERR(priv->core_clk),
-> the same question as above applies here as well
-> 
-> 
-> Best regards,
-> Martin
-Hi,
+Hi Lee,
 
-Thanks for your feedback.
-I have resend v2 to fix it.
-here
-https://lore.kernel.org/linux-arm-kernel/20210928013621.1245-6-caihuoqing@baidu.com/
+> >  static const struct ti_tscadc_data tscdata = {
+> >  	.has_tsc = true,
+> > +	.has_mag = false,
+> >  	.name_tscmag = "TI-am335x-tsc",
+> >  	.compat_tscmag = "ti,am3359-tsc",
+> >  	.name_adc = "TI-am335x-adc",
+> > @@ -341,11 +356,25 @@ static const struct ti_tscadc_data tscdata = {
+> >  	.target_clk_rate = TSC_ADC_CLK,
+> >  };
+> >  
+> > +static const struct ti_tscadc_data magdata = {
+> > +	.has_tsc = false,
+> > +	.has_mag = true,  
+> 
+> Why 2 bools?
+> 
+> Better to have a single u8:
+> 
+>   MODE_TOUCHSCREEN
+>   MODE_MAG_STRING
+>   MODE_NONE
 
-Many thanks
-Cai
+I was about to add an enum for these but actually it is totally
+redundant with the compatible name. Instead, I have added a
+helper which checks the compatible string and gives the same
+information.
+
+Thanks,
+Miquèl

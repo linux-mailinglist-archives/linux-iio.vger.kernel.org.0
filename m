@@ -2,26 +2,26 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C955A41B1F3
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Sep 2021 16:20:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A993941B1F6
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Sep 2021 16:20:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241203AbhI1OWL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Sep 2021 10:22:11 -0400
-Received: from mx22.baidu.com ([220.181.50.185]:49006 "EHLO baidu.com"
+        id S241253AbhI1OWN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Sep 2021 10:22:13 -0400
+Received: from mx24.baidu.com ([111.206.215.185]:49142 "EHLO baidu.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S241250AbhI1OWL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 28 Sep 2021 10:22:11 -0400
-Received: from BJHW-Mail-Ex10.internal.baidu.com (unknown [10.127.64.33])
-        by Forcepoint Email with ESMTPS id 02B3954948E5B884FAF2;
-        Tue, 28 Sep 2021 22:20:28 +0800 (CST)
+        id S241244AbhI1OWM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 28 Sep 2021 10:22:12 -0400
+Received: from BJHW-Mail-Ex13.internal.baidu.com (unknown [10.127.64.36])
+        by Forcepoint Email with ESMTPS id 63ADA635ED54FF3630B8;
+        Tue, 28 Sep 2021 22:20:31 +0800 (CST)
 Received: from BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) by
- BJHW-Mail-Ex10.internal.baidu.com (10.127.64.33) with Microsoft SMTP Server
+ BJHW-Mail-Ex13.internal.baidu.com (10.127.64.36) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2308.14; Tue, 28 Sep 2021 22:20:27 +0800
+ 15.1.2308.14; Tue, 28 Sep 2021 22:20:31 +0800
 Received: from LAPTOP-UKSR4ENP.internal.baidu.com (172.31.63.8) by
  BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2308.14; Tue, 28 Sep 2021 22:20:26 +0800
+ 15.1.2308.14; Tue, 28 Sep 2021 22:20:29 +0800
 From:   Cai Huoqing <caihuoqing@baidu.com>
 To:     <caihuoqing@baidu.com>
 CC:     Linus Walleij <linus.walleij@linaro.org>,
@@ -45,9 +45,9 @@ CC:     Linus Walleij <linus.walleij@linaro.org>,
         <linux-amlogic@lists.infradead.org>,
         <linux-arm-msm@vger.kernel.org>,
         <linux-rockchip@lists.infradead.org>
-Subject: [PATCH v3 5/9] iio: adc: max1241: Make use of the helper function dev_err_probe()
-Date:   Tue, 28 Sep 2021 22:19:51 +0800
-Message-ID: <20210928141956.2148-5-caihuoqing@baidu.com>
+Subject: [PATCH v3 6/9] iio: adc: meson_saradc: Make use of the helper function dev_err_probe()
+Date:   Tue, 28 Sep 2021 22:19:52 +0800
+Message-ID: <20210928141956.2148-6-caihuoqing@baidu.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210928141956.2148-1-caihuoqing@baidu.com>
 References: <20210928141956.2148-1-caihuoqing@baidu.com>
@@ -56,7 +56,7 @@ Content-Type: text/plain
 X-Originating-IP: [172.31.63.8]
 X-ClientProxiedBy: BJHW-Mail-Ex13.internal.baidu.com (10.127.64.36) To
  BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42)
-X-Baidu-BdMsfe-DateCheck: 1_BJHW-Mail-Ex10_2021-09-28 22:20:27:974
+X-Baidu-BdMsfe-DateCheck: 1_BJHW-Mail-Ex13_2021-09-28 22:20:31:410
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -69,41 +69,79 @@ gets printed.
 
 Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
 ---
- drivers/iio/adc/max1241.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+v1->v2: Remove the separate line of PTR_ERR().
 
-diff --git a/drivers/iio/adc/max1241.c b/drivers/iio/adc/max1241.c
-index b60f8448f21a..130ca8dc6fa0 100644
---- a/drivers/iio/adc/max1241.c
-+++ b/drivers/iio/adc/max1241.c
-@@ -148,10 +148,9 @@ static int max1241_probe(struct spi_device *spi)
- 	mutex_init(&adc->lock);
+ drivers/iio/adc/meson_saradc.c | 39 +++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 22 deletions(-)
+
+diff --git a/drivers/iio/adc/meson_saradc.c b/drivers/iio/adc/meson_saradc.c
+index 705d5e11a54b..014a77f98b98 100644
+--- a/drivers/iio/adc/meson_saradc.c
++++ b/drivers/iio/adc/meson_saradc.c
+@@ -1230,35 +1230,31 @@ static int meson_sar_adc_probe(struct platform_device *pdev)
+ 		return ret;
  
- 	adc->vdd = devm_regulator_get(dev, "vdd");
--	if (IS_ERR(adc->vdd)) {
--		dev_err(dev, "failed to get vdd regulator\n");
--		return PTR_ERR(adc->vdd);
+ 	priv->clkin = devm_clk_get(&pdev->dev, "clkin");
+-	if (IS_ERR(priv->clkin)) {
+-		dev_err(&pdev->dev, "failed to get clkin\n");
+-		return PTR_ERR(priv->clkin);
 -	}
-+	if (IS_ERR(adc->vdd))
-+		return dev_err_probe(dev, PTR_ERR(adc->vdd),
-+				     "failed to get vdd regulator\n");
++	if (IS_ERR(priv->clkin))
++		return dev_err_probe(&pdev->dev, PTR_ERR(priv->clkin),
++				     "failed to get clkin\n");
  
- 	ret = regulator_enable(adc->vdd);
- 	if (ret)
-@@ -164,10 +163,9 @@ static int max1241_probe(struct spi_device *spi)
+ 	priv->core_clk = devm_clk_get(&pdev->dev, "core");
+-	if (IS_ERR(priv->core_clk)) {
+-		dev_err(&pdev->dev, "failed to get core clk\n");
+-		return PTR_ERR(priv->core_clk);
+-	}
++	if (IS_ERR(priv->core_clk))
++		return dev_err_probe(&pdev->dev, PTR_ERR(priv->core_clk),
++				     "failed to get core clk\n");
+ 
+ 	priv->adc_clk = devm_clk_get(&pdev->dev, "adc_clk");
+ 	if (IS_ERR(priv->adc_clk)) {
+-		if (PTR_ERR(priv->adc_clk) == -ENOENT) {
++		if (PTR_ERR(priv->adc_clk) == -ENOENT)
+ 			priv->adc_clk = NULL;
+-		} else {
+-			dev_err(&pdev->dev, "failed to get adc clk\n");
+-			return PTR_ERR(priv->adc_clk);
+-		}
++		else
++			return dev_err_probe(&pdev->dev, PTR_ERR(priv->adc_clk),
++					     "failed to get adc clk\n");
  	}
  
- 	adc->vref = devm_regulator_get(dev, "vref");
--	if (IS_ERR(adc->vref)) {
--		dev_err(dev, "failed to get vref regulator\n");
--		return PTR_ERR(adc->vref);
+ 	priv->adc_sel_clk = devm_clk_get(&pdev->dev, "adc_sel");
+ 	if (IS_ERR(priv->adc_sel_clk)) {
+-		if (PTR_ERR(priv->adc_sel_clk) == -ENOENT) {
++		if (PTR_ERR(priv->adc_sel_clk) == -ENOENT)
+ 			priv->adc_sel_clk = NULL;
+-		} else {
+-			dev_err(&pdev->dev, "failed to get adc_sel clk\n");
+-			return PTR_ERR(priv->adc_sel_clk);
+-		}
++		else
++			return dev_err_probe(&pdev->dev, PTR_ERR(priv->adc_sel_clk),
++					     "failed to get adc_sel clk\n");
+ 	}
+ 
+ 	/* on pre-GXBB SoCs the SAR ADC itself provides the ADC clock: */
+@@ -1265,10 +1265,9 @@ static int meson_sar_adc_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	priv->vref = devm_regulator_get(&pdev->dev, "vref");
+-	if (IS_ERR(priv->vref)) {
+-		dev_err(&pdev->dev, "failed to get vref regulator\n");
+-		return PTR_ERR(priv->vref);
 -	}
-+	if (IS_ERR(adc->vref))
-+		return dev_err_probe(dev, PTR_ERR(adc->vref),
++	if (IS_ERR(priv->vref))
++		return dev_err_probe(&pdev->dev, PTR_ERR(priv->vref),
 +				     "failed to get vref regulator\n");
  
- 	ret = regulator_enable(adc->vref);
- 	if (ret)
+ 	priv->calibscale = MILLION;
+ 
 -- 
 2.25.1
 

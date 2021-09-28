@@ -2,94 +2,95 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8795F41A3F8
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Sep 2021 01:53:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB17C41A4A6
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Sep 2021 03:36:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238227AbhI0Xze (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Sep 2021 19:55:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48442 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235869AbhI0Xze (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Sep 2021 19:55:34 -0400
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A908C061575
-        for <linux-iio@vger.kernel.org>; Mon, 27 Sep 2021 16:53:55 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id ee50so76066444edb.13
-        for <linux-iio@vger.kernel.org>; Mon, 27 Sep 2021 16:53:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=8yOAotqs60AuPI9trKzeCWPumi1YRDS9z5sw1kObCls=;
-        b=BWqplgSEbXeJNEirYXXM8CRA5GEetY4fR4npuopL0Irz38sd9C60rmWpfAVUBmKq1n
-         ozArbzb7DmfC2/hlbcEjQ1DTHyQvob2ymlgkLhrJ/nZDYvDYkkN9d0ZpbhgYokR7t9ak
-         tWV9pLsCLbwURGj35Pau2LfLFOHGER8Sgb4C6Cs1/byEI16/6K1z0fhCmfuTkYWavryR
-         Azl1hcPQ3J3pbGv/8xCSSSpLvaOtby2eTIZB+JiaVN46l3Y2sux8CLiRzNhCBLmqFm7q
-         CduY8Jpt4d49YhwLYHfSFl4aYM958pBWzEKapMQEsIOiTdqYPHaB86JSkiQIn+3lGMr0
-         nElQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=8yOAotqs60AuPI9trKzeCWPumi1YRDS9z5sw1kObCls=;
-        b=4Snmv3KzWB9bmQWfVThTttNRHY8anqNp22HDqkCrD3JsgvF6k/q/UI6xxxo+hArB4Y
-         hBK8aRnmd6hAG+d4JsAx9CAQCvOpvQ5bHwmO1ZrdJLQhzLl88ZFL8XytmW4hhoEFmBN4
-         9lEVN0hwEoXWH0O8/iDvfKf+WWjN/kkn8RG4lUygW+3e2CXBsVUUCxTPsXm7H3gLueQw
-         +ay0X2DDXTA7AHclya15ApNHNkeOWPKgOb4L0UyFQhZ6pchOLlj6opt3/KoKfRfhBxpy
-         YHHB0olT+x1lL4LQeF3qALQ1WKLDfULo2d0Isq7DZv8WfadzaYO+16e8fI4YDCtis9j4
-         UCOA==
-X-Gm-Message-State: AOAM532p8fBUEtyb/f6g9qPgpKznTcYDQLxDoAO4DKxWzxKBo91dNYpO
-        x/QfaAqyTOxOm7KcSG9CbcAGl8Gta9Rm2HQAFgs=
-X-Google-Smtp-Source: ABdhPJyhqSnZ3yPabza/7GD0YFK4HrRVKhRZbhUlaLljUdT2oPUmD2BZq2kbtDYjGZNcWdgE9KAets1+dG1xhMBX66w=
-X-Received: by 2002:a17:907:e87:: with SMTP id ho7mr3280396ejc.16.1632786834150;
- Mon, 27 Sep 2021 16:53:54 -0700 (PDT)
+        id S238474AbhI1BiW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Sep 2021 21:38:22 -0400
+Received: from mx22.baidu.com ([220.181.50.185]:44710 "EHLO baidu.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S238462AbhI1BiV (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 27 Sep 2021 21:38:21 -0400
+Received: from BJHW-Mail-Ex13.internal.baidu.com (unknown [10.127.64.36])
+        by Forcepoint Email with ESMTPS id 8B054B521A39451A7D14;
+        Tue, 28 Sep 2021 09:36:31 +0800 (CST)
+Received: from BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) by
+ BJHW-Mail-Ex13.internal.baidu.com (10.127.64.36) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2308.14; Tue, 28 Sep 2021 09:36:31 +0800
+Received: from LAPTOP-UKSR4ENP.internal.baidu.com (172.31.63.8) by
+ BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2308.14; Tue, 28 Sep 2021 09:36:30 +0800
+From:   Cai Huoqing <caihuoqing@baidu.com>
+To:     <caihuoqing@baidu.com>
+CC:     Linus Walleij <linus.walleij@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        "Pengutronix Kernel Team" <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        "NXP Linux Team" <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        "Neil Armstrong" <narmstrong@baylibre.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Andy Gross <agross@kernel.org>,
+        "Bjorn Andersson" <bjorn.andersson@linaro.org>,
+        Heiko Stuebner <heiko@sntech.de>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-amlogic@lists.infradead.org>,
+        <linux-arm-msm@vger.kernel.org>,
+        <linux-rockchip@lists.infradead.org>
+Subject: [PATCH v2 1/9] iio: adc: ab8500-gpadc: Make use of the helper function dev_err_probe()
+Date:   Tue, 28 Sep 2021 09:36:12 +0800
+Message-ID: <20210928013621.1245-1-caihuoqing@baidu.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Reply-To: patzengu@outlook.com
-Sender: rtbscm@gmail.com
-Received: by 2002:a17:906:9a4b:0:0:0:0 with HTTP; Mon, 27 Sep 2021 16:53:53
- -0700 (PDT)
-From:   "Mr. Z . P" <rm2568590@gmail.com>
-Date:   Tue, 28 Sep 2021 01:53:53 +0200
-X-Google-Sender-Auth: EyeVYrV2cle9CSpcuaUdg6cKykM
-Message-ID: <CACGJ1XeAsrto9jvpG9jZcP2QuV9wxoGUASE_qKn3104c_7QY1w@mail.gmail.com>
-Subject: i need your co-operation
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-Originating-IP: [172.31.63.8]
+X-ClientProxiedBy: BC-Mail-Ex24.internal.baidu.com (172.31.51.18) To
+ BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42)
+X-Baidu-BdMsfe-DateCheck: 1_BJHW-Mail-Ex13_2021-09-28 09:36:31:683
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+When possible use dev_err_probe help to properly deal with the
+PROBE_DEFER error, the benefit is that DEFER issue will be logged
+in the devices_deferred debugfs file.
+Using dev_err_probe() can reduce code size, and the error value
+gets printed.
+
+Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
+---
+v1->v2: Remove the separate line of PTR_ERR().
+
+ drivers/iio/adc/ab8500-gpadc.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/iio/adc/ab8500-gpadc.c b/drivers/iio/adc/ab8500-gpadc.c
+index 7b5212ba5501..c58d0e2ae538 100644
+--- a/drivers/iio/adc/ab8500-gpadc.c
++++ b/drivers/iio/adc/ab8500-gpadc.c
+@@ -1146,11 +1146,9 @@ static int ab8500_gpadc_probe(struct platform_device *pdev)
+ 
+ 	/* The VTVout LDO used to power the AB8500 GPADC */
+ 	gpadc->vddadc = devm_regulator_get(dev, "vddadc");
+-	if (IS_ERR(gpadc->vddadc)) {
+-		ret = PTR_ERR(gpadc->vddadc);
+-		dev_err(dev, "failed to get vddadc\n");
+-		return ret;
+-	}
++	if (IS_ERR(gpadc->vddadc))
++		return dev_err_probe(dev, PTR_ERR(gpadc->vddadc),
++				     "failed to get vddadc\n");
+ 
+ 	ret = regulator_enable(gpadc->vddadc);
+ 	if (ret) {
 -- 
+2.25.1
 
-My Dear Friend,
-
-I am Mr.Patrice Zengu ,from Burkina Faso and i am the new bank telex
-manager of our bank here in Africa.
-
-I have the opportunity to transfer the sum of US$ 10.5Million to your
-bank account which i personally placed on an Escrow account without a
-name.
-
-I must tell you that after revision of files both old and new as the
-new telex manager ,i discovered that if these funds remains here
-without transferring it offshore,it will be lawfully recovered and
-moved to the  Government of Burkina Faso treasury as an abandoned
-funds without any name.
-
-I want to let you know that a Burkinabe cannot stand as the depositor
-of these US dollars  since we are not allowed to operate on foreign
-currency. I do not intend to work  and stay in Africa till the rest of
-my life.
-
-More so,i will not want my bank to know about these funds and if they
-happens to know probably,the funds will be moved to the Burkina Faso
-Government public treasury as an abandoned funds.
-
-I will furnish you with more details of this transfer and how it can
-be perfectly and legally executed without any hitch since i am now in
-control.
-
-I am waiting to hear from you urgently to proceed.
-
-
-Yours sincerely,
-Mr.Patrice Zengu.

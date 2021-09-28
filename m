@@ -2,35 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2098F41A502
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Sep 2021 03:57:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 598BC41A4DF
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Sep 2021 03:41:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238491AbhI1B7K (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Sep 2021 21:59:10 -0400
-Received: from mx24.baidu.com ([111.206.215.185]:36228 "EHLO baidu.com"
+        id S238438AbhI1Bmt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Sep 2021 21:42:49 -0400
+Received: from mx24.baidu.com ([111.206.215.185]:49524 "EHLO baidu.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S238453AbhI1B7J (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 27 Sep 2021 21:59:09 -0400
-Received: from BC-Mail-Ex32.internal.baidu.com (unknown [172.31.51.26])
-        by Forcepoint Email with ESMTPS id DF474B54FA64E38ABC96;
-        Tue, 28 Sep 2021 09:41:04 +0800 (CST)
+        id S238437AbhI1Bms (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 27 Sep 2021 21:42:48 -0400
+Received: from BC-Mail-Ex31.internal.baidu.com (unknown [172.31.51.25])
+        by Forcepoint Email with ESMTPS id 78A349228FC2B4B57F4C;
+        Tue, 28 Sep 2021 09:41:08 +0800 (CST)
 Received: from BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) by
- BC-Mail-Ex32.internal.baidu.com (172.31.51.26) with Microsoft SMTP Server
+ BC-Mail-Ex31.internal.baidu.com (172.31.51.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2242.12; Tue, 28 Sep 2021 09:41:04 +0800
+ 15.1.2242.12; Tue, 28 Sep 2021 09:41:07 +0800
 Received: from LAPTOP-UKSR4ENP.internal.baidu.com (172.31.63.8) by
  BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2308.14; Tue, 28 Sep 2021 09:41:04 +0800
+ 15.1.2308.14; Tue, 28 Sep 2021 09:41:07 +0800
 From:   Cai Huoqing <caihuoqing@baidu.com>
 To:     <caihuoqing@baidu.com>
 CC:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 1/2] iio: st_sensors: Make use of the helper function dev_err_probe()
-Date:   Tue, 28 Sep 2021 09:40:53 +0800
-Message-ID: <20210928014055.1431-1-caihuoqing@baidu.com>
+Subject: [PATCH v2 2/2] iio: st_lsm9ds0: Make use of the helper function dev_err_probe()
+Date:   Tue, 28 Sep 2021 09:40:54 +0800
+Message-ID: <20210928014055.1431-2-caihuoqing@baidu.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20210928014055.1431-1-caihuoqing@baidu.com>
+References: <20210928014055.1431-1-caihuoqing@baidu.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [172.31.63.8]
@@ -48,45 +50,40 @@ gets printed.
 
 Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
 ---
-v1->v2: Remove the separate line of PTR_ERR().
+ drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_core.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
- .../iio/common/st_sensors/st_sensors_core.c    | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c b/drivers/iio/common/st_sensors/st_sensors_core.c
-index a5a140de9a23..732d0f8f99f6 100644
---- a/drivers/iio/common/st_sensors/st_sensors_core.c
-+++ b/drivers/iio/common/st_sensors/st_sensors_core.c
-@@ -228,10 +228,10 @@ int st_sensors_power_enable(struct iio_dev *indio_dev)
+diff --git a/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_core.c b/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_core.c
+index b3a43a3b04ff..9fb06b7cde3c 100644
+--- a/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_core.c
++++ b/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_core.c
+@@ -24,10 +24,10 @@ static int st_lsm9ds0_power_enable(struct device *dev, struct st_lsm9ds0 *lsm9ds
  
  	/* Regulators not mandatory, but if requested we should enable them. */
- 	pdata->vdd = devm_regulator_get(parent, "vdd");
--	if (IS_ERR(pdata->vdd)) {
--		dev_err(&indio_dev->dev, "unable to get Vdd supply\n");
--		return PTR_ERR(pdata->vdd);
+ 	lsm9ds0->vdd = devm_regulator_get(dev, "vdd");
+-	if (IS_ERR(lsm9ds0->vdd)) {
+-		dev_err(dev, "unable to get Vdd supply\n");
+-		return PTR_ERR(lsm9ds0->vdd);
 -	}
-+	if (IS_ERR(pdata->vdd))
-+		return dev_err_probe(&indio_dev->dev, PTR_ERR(pdata->vdd),
++	if (IS_ERR(lsm9ds0->vdd))
++		return dev_err_probe(dev, PTR_ERR(lsm9ds0->vdd),
 +				     "unable to get Vdd supply\n");
 +
- 	err = regulator_enable(pdata->vdd);
- 	if (err != 0) {
- 		dev_warn(&indio_dev->dev,
-@@ -243,10 +245,10 @@ int st_sensors_power_enable(struct iio_dev *indio_dev)
- 		return err;
+ 	ret = regulator_enable(lsm9ds0->vdd);
+ 	if (ret) {
+ 		dev_warn(dev, "Failed to enable specified Vdd supply\n");
+@@ -36,9 +36,9 @@ static int st_lsm9ds0_power_enable(struct device *dev, struct st_lsm9ds0 *lsm9ds
  
- 	pdata->vdd_io = devm_regulator_get(parent, "vddio");
--	if (IS_ERR(pdata->vdd_io)) {
--		dev_err(&indio_dev->dev, "unable to get Vdd_IO supply\n");
--		return PTR_ERR(pdata->vdd_io);
--	}
-+	if (IS_ERR(pdata->vdd_io))
-+		return dev_err_probe(&indio_dev->dev, PTR_ERR(pdata->vdd_io),
+ 	lsm9ds0->vdd_io = devm_regulator_get(dev, "vddio");
+ 	if (IS_ERR(lsm9ds0->vdd_io)) {
+-		dev_err(dev, "unable to get Vdd_IO supply\n");
+ 		regulator_disable(lsm9ds0->vdd);
+-		return PTR_ERR(lsm9ds0->vdd_io);
++		return dev_err_probe(dev, PTR_ERR(lsm9ds0->vdd_io),
 +				     "unable to get Vdd_IO supply\n");
-+
- 	err = regulator_enable(pdata->vdd_io);
- 	if (err != 0) {
- 		dev_warn(&indio_dev->dev,
+ 	}
+ 	ret = regulator_enable(lsm9ds0->vdd_io);
+ 	if (ret) {
 -- 
 2.25.1
 

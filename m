@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F19B41BD2B
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Sep 2021 05:16:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C135F41BD2E
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Sep 2021 05:16:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243789AbhI2DSI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Sep 2021 23:18:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59456 "EHLO
+        id S230022AbhI2DSP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Sep 2021 23:18:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230022AbhI2DSH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Sep 2021 23:18:07 -0400
-Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73F27C061745;
-        Tue, 28 Sep 2021 20:16:27 -0700 (PDT)
-Received: by mail-pg1-x52e.google.com with SMTP id y186so1308305pgd.0;
-        Tue, 28 Sep 2021 20:16:27 -0700 (PDT)
+        with ESMTP id S243897AbhI2DSO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Sep 2021 23:18:14 -0400
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0478C061745;
+        Tue, 28 Sep 2021 20:16:33 -0700 (PDT)
+Received: by mail-pj1-x102d.google.com with SMTP id om12-20020a17090b3a8c00b0019eff43daf5so769753pjb.4;
+        Tue, 28 Sep 2021 20:16:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=nU8NjFcHiQb2juc6iNrXx4yBJlrwbry86U2d9RYhoEc=;
-        b=ea9XZQK839csHLMExTfIPXgY4B/YhV0ikwP4KLbKfdTb1LxOXTjjd0FVIUV/iIJWtZ
-         Lp5uwzTHdT025gACEWTVCKrIqCotGjaBLQ2fdEw97UKlIqGfhBxF8mpgRoTfseMak8EI
-         Pii6a5Q8dYw9f4vuaUYTjBrqxpCrN9H+dPa2rYDVJqnlspqTa1hi5LRVIIcO1OQOY/J2
-         /sWp0UxttFYUMYY44ACDYqPLL00wDoi1wzuhxoc4UWCUsV8jk6DYJM+a97gNnoZktkwd
-         pIquPCHLds98CRSIZoF668JVQX5NqZQ0i+EenkdwUmfiTCZ3MPavZwYbvxGcClk+dYcZ
-         /mNw==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=+ZCX6l6rPkwSUwDGpanKFUA22NwjyP3olTKYpKgLOP0=;
+        b=UBYDsbSmiAdeqzoK0lYePg387mljjtNkfOL5zjqunA1iTil8qkxyOh7m1yNojsPMeB
+         ZQ30GEqz9lBqEVPxHRELpm1pB2RXwyvFDILe1/ljlImQFgYVYzld33Iwa1xycfy4qnFZ
+         zwklNYSJ9EX39cb0w0QchKs5RB6G9FGkhdwO5R1eP5+3Y8rt9IaZ1cRaqjchbh+AXPtV
+         uAXdOym7WBduGCQrUWJOM36WA+sRoFX5oacGACMo7MrElbmliu27g5BeDscAFcuh0A7a
+         cChfJYYlSzGWORde4BgXfjId7W00M2KdGVpFWIqeGoCyTBIeBsdJLWZlW5yKI/eVahlZ
+         H8hQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=nU8NjFcHiQb2juc6iNrXx4yBJlrwbry86U2d9RYhoEc=;
-        b=F0c0SlXFSYRcZTNl700bvSx3mgrrDD+dcGvMX8xDX+FpJi/HSJfQEwB05DOuYuEUnS
-         0zBVx66SbyyWlk6XzerPXYzxv0erNSZDRJ8RdyW0nzVe4PlawGliQBJYT0QcISp3Cg9w
-         Pxc2puUYRh+43HBigQytVTui6s4Gz/q0bkPpT0mekIgAyxQNkQEv7QvsgHsv7FLgw4aU
-         GiYUNF68UMTx1UfzUATzjIpacWrcPsgU7DXujkz90TKLKB6k/giuRFdK+agZ5RlIk4sr
-         Opp1tY58ckZQf/rbfPmBq5j5u88Qoc8QFhGdxTj9u+2GxRgEYrwYISvQqOiyezZniuEa
-         b9OQ==
-X-Gm-Message-State: AOAM531kpa272zTuhoXBO3sTYlujHkkaSugO5osxgdA+YQlUeIgzEKgQ
-        d3RygR1mPSWb0zYCS2YV2ng=
-X-Google-Smtp-Source: ABdhPJypHhopEVNS9JguXT5SH+XWxunhd/Pyg0tmBrjCHDWxgUIykr9qaW8Y1Ww9rfYyZjTNTWu8AA==
-X-Received: by 2002:a63:e057:: with SMTP id n23mr7793886pgj.183.1632885386999;
-        Tue, 28 Sep 2021 20:16:26 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=+ZCX6l6rPkwSUwDGpanKFUA22NwjyP3olTKYpKgLOP0=;
+        b=ww6M1iD/kuz+vLFbL0CCq6Xu4qi868C+05xEiF9Pp/oOb548/UKf/w4hh92ZgEfljp
+         pEw85hiPDpBuMDNExVka9p6rBhuR9f/Iov9ah2PljUgNNxF3ybMiFqLWRUnETerElFus
+         H+aK69NZcqqVQvM2rKLwV0ujoNbcwDQMSpgKT2wzDcX/CA8mK18GVEDo87SFrrxXlS7k
+         IvlxJGr+ghCoIAQnyRkZW+//QzOVqG4U5vuwaou1iDzxJi7Ex1ZJRU1vEjafN34QjKzm
+         Kw16RooZ/sHIz3cFqS4QhUJspjR7+HonLaIs2PT/JsKgLJ7nWSHF8soD6QUIhHlZap8n
+         cIjA==
+X-Gm-Message-State: AOAM530CbtxOCAS/Yovahkw6lw72haoDTDhdujgP8rZMdsKQqolC4VCG
+        iEwr9Tk1oypMIOC5lSzyDyA=
+X-Google-Smtp-Source: ABdhPJw+pGXvad4GoCAkpWu5pR5c2sAi96CsuR8Ivvu1vBMAjxtRXb/rcDloD/HioA+ptVoLRixeew==
+X-Received: by 2002:a17:90a:9509:: with SMTP id t9mr2582652pjo.149.1632885393205;
+        Tue, 28 Sep 2021 20:16:33 -0700 (PDT)
 Received: from localhost.localdomain ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id 65sm464203pfv.210.2021.09.28.20.16.20
+        by smtp.gmail.com with ESMTPSA id 65sm464203pfv.210.2021.09.28.20.16.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Sep 2021 20:16:26 -0700 (PDT)
+        Tue, 28 Sep 2021 20:16:32 -0700 (PDT)
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     jic23@kernel.org
 Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
@@ -59,80 +59,165 @@ Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
         alexandre.torgue@st.com, o.rempel@pengutronix.de,
         jarkko.nikula@linux.intel.com,
         William Breathitt Gray <vilhelm.gray@gmail.com>
-Subject: [PATCH v17 0/9] Introduce the Counter character device interface
-Date:   Wed, 29 Sep 2021 12:15:57 +0900
-Message-Id: <cover.1632884256.git.vilhelm.gray@gmail.com>
+Subject: [PATCH v17 1/9] counter: Move counter enums to uapi header
+Date:   Wed, 29 Sep 2021 12:15:58 +0900
+Message-Id: <962a5f2027fafcf4f77c10e1baf520463960d1ee.1632884256.git.vilhelm.gray@gmail.com>
 X-Mailer: git-send-email 2.33.0
+In-Reply-To: <cover.1632884256.git.vilhelm.gray@gmail.com>
+References: <cover.1632884256.git.vilhelm.gray@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Changes in v17:
- - A couple minor improvements to documentation from review suggestions
- - chrdev_lock redeclared as atomic_t; BITMAP was not necessary because
-   chrdev_lock is a single flag
- - test_and_set_bit_lock(), clear_bit_unlock(), and clear_bit(),
-   replaced respectively with atomic_add_unless(), atomic_dec(), and
-   atomic_set()
- - counter_comp_read_is_equal() and counter_comp_read_is_set() macros
-   implemented in order to properly test counter_comp structures' read
-   callback states
- - counter_sysfs_add() call performed before counter_chrdev_add() call
-   in counter_register() in order to match unwinding sequence
- - for-loop utilized in counter-example.c in order to simplify code
- - counter-example.c returns 1 on error instead of -errno; errno may be
-   modified after a subsequent library call so we can't depend on it
+This is in preparation for a subsequent patch implementing a character
+device interface for the Counter subsystem.
 
-For convenience, this patchset is also available on my personal git
-repo: https://gitlab.com/vilhelmgray/iio/-/tree/counter_chrdev_v17
-
-A Counter character device interface is introduced that allows Counter
-events and associated data to be read() by userspace; the
-events_configure() and watch_validate() driver callbacks are introduced
-to support Counter events; and IRQ support is added to the
-104-QUAD-8 driver, serving as an example of how to support the new
-Counter events functionality.
-
-William Breathitt Gray (9):
-  counter: Move counter enums to uapi header
-  counter: Add character device interface
-  docs: counter: Document character device interface
-  tools/counter: Create Counter tools
-  counter: Implement signalZ_action_component_id sysfs attribute
-  counter: Implement *_component_id sysfs attributes
-  counter: Implement events_queue_size sysfs attribute
-  counter: 104-quad-8: Replace mutex with spinlock
-  counter: 104-quad-8: Add IRQ support for the ACCES 104-QUAD-8
-
- Documentation/ABI/testing/sysfs-bus-counter   |  29 +
- Documentation/driver-api/generic-counter.rst  | 177 ++++--
- .../userspace-api/ioctl/ioctl-number.rst      |   1 +
- MAINTAINERS                                   |   2 +
- drivers/counter/104-quad-8.c                  | 256 ++++++--
- drivers/counter/Kconfig                       |   6 +-
- drivers/counter/Makefile                      |   2 +-
- drivers/counter/counter-chrdev.c              | 578 ++++++++++++++++++
- drivers/counter/counter-chrdev.h              |  14 +
- drivers/counter/counter-core.c                |  56 +-
- drivers/counter/counter-sysfs.c               | 123 +++-
- include/linux/counter.h                       |  98 +--
- include/uapi/linux/counter.h                  | 154 +++++
- tools/Makefile                                |  13 +-
- tools/counter/Build                           |   1 +
- tools/counter/Makefile                        |  53 ++
- tools/counter/counter_example.c               |  92 +++
- 17 files changed, 1509 insertions(+), 146 deletions(-)
- create mode 100644 drivers/counter/counter-chrdev.c
- create mode 100644 drivers/counter/counter-chrdev.h
+Reviewed-by: David Lechner <david@lechnology.com>
+Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+---
+ MAINTAINERS                  |  1 +
+ include/linux/counter.h      | 42 +--------------------------
+ include/uapi/linux/counter.h | 56 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 58 insertions(+), 41 deletions(-)
  create mode 100644 include/uapi/linux/counter.h
- create mode 100644 tools/counter/Build
- create mode 100644 tools/counter/Makefile
- create mode 100644 tools/counter/counter_example.c
 
-
-base-commit: a5ae0cfd53aaf031c2e9ba048281776fa67047c2
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 8d1ea0299004..3c95ada1b830 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4820,6 +4820,7 @@ F:	Documentation/ABI/testing/sysfs-bus-counter
+ F:	Documentation/driver-api/generic-counter.rst
+ F:	drivers/counter/
+ F:	include/linux/counter.h
++F:	include/uapi/linux/counter.h
+ 
+ CP2615 I2C DRIVER
+ M:	Bence Csókás <bence98@sch.bme.hu>
+diff --git a/include/linux/counter.h b/include/linux/counter.h
+index 445f22d8bfe2..7c9f7e23953a 100644
+--- a/include/linux/counter.h
++++ b/include/linux/counter.h
+@@ -9,6 +9,7 @@
+ #include <linux/device.h>
+ #include <linux/kernel.h>
+ #include <linux/types.h>
++#include <uapi/linux/counter.h>
+ 
+ struct counter_device;
+ struct counter_count;
+@@ -27,47 +28,6 @@ enum counter_comp_type {
+ 	COUNTER_COMP_COUNT_MODE,
+ };
+ 
+-enum counter_scope {
+-	COUNTER_SCOPE_DEVICE,
+-	COUNTER_SCOPE_SIGNAL,
+-	COUNTER_SCOPE_COUNT,
+-};
+-
+-enum counter_count_direction {
+-	COUNTER_COUNT_DIRECTION_FORWARD,
+-	COUNTER_COUNT_DIRECTION_BACKWARD,
+-};
+-
+-enum counter_count_mode {
+-	COUNTER_COUNT_MODE_NORMAL,
+-	COUNTER_COUNT_MODE_RANGE_LIMIT,
+-	COUNTER_COUNT_MODE_NON_RECYCLE,
+-	COUNTER_COUNT_MODE_MODULO_N,
+-};
+-
+-enum counter_function {
+-	COUNTER_FUNCTION_INCREASE,
+-	COUNTER_FUNCTION_DECREASE,
+-	COUNTER_FUNCTION_PULSE_DIRECTION,
+-	COUNTER_FUNCTION_QUADRATURE_X1_A,
+-	COUNTER_FUNCTION_QUADRATURE_X1_B,
+-	COUNTER_FUNCTION_QUADRATURE_X2_A,
+-	COUNTER_FUNCTION_QUADRATURE_X2_B,
+-	COUNTER_FUNCTION_QUADRATURE_X4,
+-};
+-
+-enum counter_signal_level {
+-	COUNTER_SIGNAL_LEVEL_LOW,
+-	COUNTER_SIGNAL_LEVEL_HIGH,
+-};
+-
+-enum counter_synapse_action {
+-	COUNTER_SYNAPSE_ACTION_NONE,
+-	COUNTER_SYNAPSE_ACTION_RISING_EDGE,
+-	COUNTER_SYNAPSE_ACTION_FALLING_EDGE,
+-	COUNTER_SYNAPSE_ACTION_BOTH_EDGES,
+-};
+-
+ /**
+  * struct counter_comp - Counter component node
+  * @type:		Counter component data type
+diff --git a/include/uapi/linux/counter.h b/include/uapi/linux/counter.h
+new file mode 100644
+index 000000000000..6113938a6044
+--- /dev/null
++++ b/include/uapi/linux/counter.h
+@@ -0,0 +1,56 @@
++/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
++/*
++ * Userspace ABI for Counter character devices
++ * Copyright (C) 2020 William Breathitt Gray
++ */
++#ifndef _UAPI_COUNTER_H_
++#define _UAPI_COUNTER_H_
++
++/* Component scope definitions */
++enum counter_scope {
++	COUNTER_SCOPE_DEVICE,
++	COUNTER_SCOPE_SIGNAL,
++	COUNTER_SCOPE_COUNT,
++};
++
++/* Count direction values */
++enum counter_count_direction {
++	COUNTER_COUNT_DIRECTION_FORWARD,
++	COUNTER_COUNT_DIRECTION_BACKWARD,
++};
++
++/* Count mode values */
++enum counter_count_mode {
++	COUNTER_COUNT_MODE_NORMAL,
++	COUNTER_COUNT_MODE_RANGE_LIMIT,
++	COUNTER_COUNT_MODE_NON_RECYCLE,
++	COUNTER_COUNT_MODE_MODULO_N,
++};
++
++/* Count function values */
++enum counter_function {
++	COUNTER_FUNCTION_INCREASE,
++	COUNTER_FUNCTION_DECREASE,
++	COUNTER_FUNCTION_PULSE_DIRECTION,
++	COUNTER_FUNCTION_QUADRATURE_X1_A,
++	COUNTER_FUNCTION_QUADRATURE_X1_B,
++	COUNTER_FUNCTION_QUADRATURE_X2_A,
++	COUNTER_FUNCTION_QUADRATURE_X2_B,
++	COUNTER_FUNCTION_QUADRATURE_X4,
++};
++
++/* Signal values */
++enum counter_signal_level {
++	COUNTER_SIGNAL_LEVEL_LOW,
++	COUNTER_SIGNAL_LEVEL_HIGH,
++};
++
++/* Action mode values */
++enum counter_synapse_action {
++	COUNTER_SYNAPSE_ACTION_NONE,
++	COUNTER_SYNAPSE_ACTION_RISING_EDGE,
++	COUNTER_SYNAPSE_ACTION_FALLING_EDGE,
++	COUNTER_SYNAPSE_ACTION_BOTH_EDGES,
++};
++
++#endif /* _UAPI_COUNTER_H_ */
 -- 
 2.33.0
 

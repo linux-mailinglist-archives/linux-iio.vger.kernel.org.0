@@ -2,44 +2,32 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F04B41C84E
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Sep 2021 17:25:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AF9441C8D8
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Sep 2021 17:56:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345198AbhI2P05 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Sep 2021 11:26:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36670 "EHLO mail.kernel.org"
+        id S245209AbhI2P6Y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Sep 2021 11:58:24 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48726 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1344945AbhI2P05 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 29 Sep 2021 11:26:57 -0400
+        id S244682AbhI2P6Y (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 29 Sep 2021 11:58:24 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 89FD661440;
-        Wed, 29 Sep 2021 15:25:11 +0000 (UTC)
-Date:   Wed, 29 Sep 2021 16:29:05 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id A57E860EE2;
+        Wed, 29 Sep 2021 15:56:41 +0000 (UTC)
+Date:   Wed, 29 Sep 2021 17:00:35 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Lee Jones <lee.jones@linaro.org>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        bcousson@baylibre.com, Tony Lindgren <tony@atomide.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Ryan Barnett <ryan.barnett@collins.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Jason Reeder <jreeder@ti.com>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 25/48] mfd: ti_am335x_tscadc: Use the new HZ_PER_MHZ
- macro
-Message-ID: <20210929162905.5fc771c5@jic23-huawei>
-In-Reply-To: <20210928133143.157329-26-miquel.raynal@bootlin.com>
-References: <20210928133143.157329-1-miquel.raynal@bootlin.com>
-        <20210928133143.157329-26-miquel.raynal@bootlin.com>
+To:     Cai Huoqing <caihuoqing@baidu.com>
+Cc:     Kevin Tsai <ktsai@capellamicro.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/4] iio: light: cm3605: Make use of the helper
+ function dev_err_probe()
+Message-ID: <20210929170035.619212d4@jic23-huawei>
+In-Reply-To: <20210928014156.1491-1-caihuoqing@baidu.com>
+References: <20210928014156.1491-1-caihuoqing@baidu.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -48,42 +36,67 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 28 Sep 2021 15:31:20 +0200
-Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+On Tue, 28 Sep 2021 09:41:52 +0800
+Cai Huoqing <caihuoqing@baidu.com> wrote:
 
-> Before adding another frequency with even more zeroes, use the
-> HZ_PER_MHZ macro to clarify the number.
+> When possible use dev_err_probe help to properly deal with the
+> PROBE_DEFER error, the benefit is that DEFER issue will be logged
+> in the devices_deferred debugfs file.
+> Using dev_err_probe() can reduce code size, and the error value
+> gets printed.
 > 
-> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-You missed tag I gave on v3.
+> Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
+Hi Cai,
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+This driver has some more cases where we should potentially do something
+like this.
+
+It handles the lack of availability of an IIO channel in line 199
+by converting an -ENODEV to an -EPROBE_DEFER.
+
+Also platform_get_irq() can return -EPROBE_DEFER and the driver
+isn't currently handling that properly.
+
+Both changes are of a more involved nature than the simple conversions you
+have here though, so perhaps a follow up patch?
+
+The parts you here look good to me.
 
 Thanks,
 
+Jonathan
+
 > ---
->  include/linux/mfd/ti_am335x_tscadc.h | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  drivers/iio/light/cm3605.c | 11 +++++------
+>  1 file changed, 5 insertions(+), 6 deletions(-)
 > 
-> diff --git a/include/linux/mfd/ti_am335x_tscadc.h b/include/linux/mfd/ti_am335x_tscadc.h
-> index 893c474c1f8c..a85643677bef 100644
-> --- a/include/linux/mfd/ti_am335x_tscadc.h
-> +++ b/include/linux/mfd/ti_am335x_tscadc.h
-> @@ -9,6 +9,7 @@
->  #define __LINUX_TI_AM335X_TSCADC_MFD_H
+> diff --git a/drivers/iio/light/cm3605.c b/drivers/iio/light/cm3605.c
+> index 4c83953672be..0b90564213e8 100644
+> --- a/drivers/iio/light/cm3605.c
+> +++ b/drivers/iio/light/cm3605.c
+> @@ -211,10 +211,10 @@ static int cm3605_probe(struct platform_device *pdev)
+>  	}
 >  
->  #include <linux/mfd/core.h>
-> +#include <linux/units.h>
+>  	cm3605->vdd = devm_regulator_get(dev, "vdd");
+> -	if (IS_ERR(cm3605->vdd)) {
+> -		dev_err(dev, "failed to get VDD regulator\n");
+> -		return PTR_ERR(cm3605->vdd);
+> -	}
+> +	if (IS_ERR(cm3605->vdd))
+> +		return dev_err_probe(dev, PTR_ERR(cm3605->vdd),
+> +				     "failed to get VDD regulator\n");
+> +
+>  	ret = regulator_enable(cm3605->vdd);
+>  	if (ret) {
+>  		dev_err(dev, "failed to enable VDD regulator\n");
+> @@ -223,8 +223,7 @@ static int cm3605_probe(struct platform_device *pdev)
 >  
->  #define REG_RAWIRQSTATUS	0x024
->  #define REG_IRQSTATUS		0x028
-> @@ -133,7 +134,7 @@
->  #define SEQ_STATUS		BIT(5)
->  #define CHARGE_STEP		0x11
+>  	cm3605->aset = devm_gpiod_get(dev, "aset", GPIOD_OUT_HIGH);
+>  	if (IS_ERR(cm3605->aset)) {
+> -		dev_err(dev, "no ASET GPIO\n");
+> -		ret = PTR_ERR(cm3605->aset);
+> +		ret = dev_err_probe(dev, PTR_ERR(cm3605->aset), "no ASET GPIO\n");
+>  		goto out_disable_vdd;
+>  	}
 >  
-> -#define ADC_CLK			3000000
-> +#define ADC_CLK			(3 * HZ_PER_MHZ)
->  #define TOTAL_STEPS		16
->  #define TOTAL_CHANNELS		8
->  #define FIFO1_THRESHOLD		19
 

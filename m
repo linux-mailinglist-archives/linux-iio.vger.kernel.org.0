@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F296C41BD37
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Sep 2021 05:16:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2F9441BD3B
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Sep 2021 05:17:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243900AbhI2DSe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Sep 2021 23:18:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59586 "EHLO
+        id S243933AbhI2DSm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Sep 2021 23:18:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243899AbhI2DSd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Sep 2021 23:18:33 -0400
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B69AEC061749;
-        Tue, 28 Sep 2021 20:16:53 -0700 (PDT)
-Received: by mail-pl1-x632.google.com with SMTP id n2so526086plk.12;
-        Tue, 28 Sep 2021 20:16:53 -0700 (PDT)
+        with ESMTP id S243940AbhI2DSk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Sep 2021 23:18:40 -0400
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8BA0C061746;
+        Tue, 28 Sep 2021 20:17:00 -0700 (PDT)
+Received: by mail-pj1-x102b.google.com with SMTP id g13-20020a17090a3c8d00b00196286963b9so3196943pjc.3;
+        Tue, 28 Sep 2021 20:17:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=I7q1KZGQrg9VSlOg55Y4jOv+nbaa+ZG4SOxiTCfz7+A=;
-        b=c4YPx4QoCrd0LGbTXbyUsP5aDbIbvZS1byEnV0+QSmllLjdlS/W4H5oVGH5norE9W0
-         ItSVOzSGjeNvSisYf/MBeAseD5hc17VbXOZIYCBzzJ25BLuybrXTDNGJiEv1977rXPk6
-         HpgL1kJ/56+u68hhXeRPXEB7Q2XRL+KmwBbRBe80TJPtAuR/CUIo4JCppKW2Iog2SZn9
-         TdqpoVTP7O/kaeSxl39+wh2O40vLXPzJ9kPUK0eqwjkbmyHc8ZVWNgiCqaUBpEU09wF1
-         zVvG7dVTjeWzHN8OsiKI64BTT492xjV3h7HjietjExDSiV2NJHFefu+qxjtBRQ5jbbfd
-         jTEg==
+        bh=IaNorZsjU8hM7wfPjt4kkgWnkshK3kwrpC14sR+dG8Q=;
+        b=MTVhbJ0g2H5Q+y+iwaUM+Bh3FGIN3AqPmcifP/Sor+H7DhGOwW0d9tGv3+DDvgwcy/
+         fq6kwXM9UFWAnOHeZ4ndeQY8qRMgDmuCVSohk8BOwv4hKUaJE5pPBFICkQwsJBHimGJC
+         QMrlvc4GXCVuNig9YsfSQgGaNuafpLSjFesxO8ou6zgx4oOQ0/mjWpXPlawd73Ckur/S
+         xOWa4GYZqR3N8YIABc8ZCr2IoUKsRjG0vYwRYKL47L/vmYzI6xSv7KcCkr38HUtOZv1i
+         oCRHaL47cSKjBYzBA5+xzlJ94/SgSQ5VgYd9zT0Tg0SzJMcpt4hrwD9oPiJxtG9fxc5j
+         iUBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=I7q1KZGQrg9VSlOg55Y4jOv+nbaa+ZG4SOxiTCfz7+A=;
-        b=iw69fbotgMPAYpa/NL4hBCdHIaGU6whUcnb0wTO57/3s4YMyy1G5wBKk1uRDHy5PeL
-         OW74p/pU8PnR8zGpXZPV9PVcCT2i48uo6YBTXmCcyserDc9VCoUBIzHjSbbqnZxcK0yp
-         kKHY022rG7i/IcHRB0mgf+q3qLENh0Z0xqedeQehRvxJYnIsVzUCfJwblgbyrHQ8/3ZU
-         sCyTNjLXvfRBj/8w2UbojzSF8KxXNAAhV41l+PogfQErXtE/2yvbtiobet6WSmh+C/cM
-         Ez7NotGWx9kqjSlhS6PfGHpWJU0kVEkTahZrxW+TaY3drNAgrXyCRH3UcdiMIvUT5VrF
-         v1/A==
-X-Gm-Message-State: AOAM532kotZorOJZGIVW+4Yrkc9I9gQOM9I3igjJd2QG4Cs0MZ5fPcD/
-        zNJQmhPbYFfGG5FXApjlGYw=
-X-Google-Smtp-Source: ABdhPJzmH04Xwn/NDpUAahm7FPyOQwWagt9o5ZJv6S5XukOPFvQ917pKQ9XMQmQDLQIV2X98MueLMA==
-X-Received: by 2002:a17:90a:8912:: with SMTP id u18mr3646172pjn.69.1632885413301;
-        Tue, 28 Sep 2021 20:16:53 -0700 (PDT)
+        bh=IaNorZsjU8hM7wfPjt4kkgWnkshK3kwrpC14sR+dG8Q=;
+        b=beRjKDqCmDJLTPuo1Bu5ejKUJXMghQpX239fXTtKphgld58UE0zVARaAEep89/A5Q3
+         WwjjdWLcErE80+1uY3dVlX/oGZusgddgB4wa/rFPm32pMRP6G9JKezBatRgMSQm0xv7u
+         dGufkHIEDGdhx/syBE1l1QNaPNDDDvZDT4myZ7O6M8I2Rhy1H/vYy+zrwIZgHijk1mvD
+         AAX9xmdQXC+icdlr6RHT901CltGPDGFQ5Ah+kBZUsXXyWx8MYtjfrke2c7t6XtEkZUcx
+         WBgCU1mXExmBbsJP0/9qQjxl7jCs0HwJ3EPixUnWvLNOMRZvKxmzq+CO3mKYdzIhme4T
+         QnBg==
+X-Gm-Message-State: AOAM531xIIyEqGawwApTPyaZ+LHN/F55CB8xCMUSf1u0P1dHASutPcD4
+        +OzAzJYX4ykkg1CXz3mzVPQ=
+X-Google-Smtp-Source: ABdhPJxBpjh5/Urwl7VFC61ZKNbPqzhscwCBb5zGrk+2nHYlWmkuEdjJRuRpMBa/oiQGCRPbmsYQnQ==
+X-Received: by 2002:a17:90b:3143:: with SMTP id ip3mr3964650pjb.50.1632885420262;
+        Tue, 28 Sep 2021 20:17:00 -0700 (PDT)
 Received: from localhost.localdomain ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id 65sm464203pfv.210.2021.09.28.20.16.47
+        by smtp.gmail.com with ESMTPSA id 65sm464203pfv.210.2021.09.28.20.16.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Sep 2021 20:16:52 -0700 (PDT)
+        Tue, 28 Sep 2021 20:16:59 -0700 (PDT)
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     jic23@kernel.org
 Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
@@ -59,278 +59,115 @@ Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
         alexandre.torgue@st.com, o.rempel@pengutronix.de,
         jarkko.nikula@linux.intel.com,
         William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>
-Subject: [PATCH v17 4/9] tools/counter: Create Counter tools
-Date:   Wed, 29 Sep 2021 12:16:01 +0900
-Message-Id: <7c0f975ba098952122302d258ec9ffdef04befaf.1632884256.git.vilhelm.gray@gmail.com>
+        Dan Carpenter <dan.carpenter@oracle.com>
+Subject: [PATCH v17 5/9] counter: Implement signalZ_action_component_id sysfs attribute
+Date:   Wed, 29 Sep 2021 12:16:02 +0900
+Message-Id: <a6c81b2f1f5d0b8d59b1ebe4f0fed04914b07547.1632884256.git.vilhelm.gray@gmail.com>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <cover.1632884256.git.vilhelm.gray@gmail.com>
 References: <cover.1632884256.git.vilhelm.gray@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This creates an example Counter program under tools/counter/*
-to exemplify the Counter character device interface.
+The Generic Counter chrdev interface expects users to supply component
+IDs in order to select Synapses for requests. In order for users to know
+what component ID belongs to which Synapse this information must be
+exposed. The signalZ_action_component_id attribute provides a way for
+users to discover what component ID belongs to the respective Synapse.
 
-Cc: Pavel Machek <pavel@ucw.cz>
+Cc: Gwendal Grignou <gwendal@chromium.org>
+Cc: Dan Carpenter <dan.carpenter@oracle.com>
+Reviewed-by: David Lechner <david@lechnology.com>
 Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 ---
- MAINTAINERS                     |  1 +
- tools/Makefile                  | 13 ++---
- tools/counter/Build             |  1 +
- tools/counter/Makefile          | 53 +++++++++++++++++++
- tools/counter/counter_example.c | 92 +++++++++++++++++++++++++++++++++
- 5 files changed, 154 insertions(+), 6 deletions(-)
- create mode 100644 tools/counter/Build
- create mode 100644 tools/counter/Makefile
- create mode 100644 tools/counter/counter_example.c
+ Documentation/ABI/testing/sysfs-bus-counter |  7 ++++
+ drivers/counter/counter-sysfs.c             | 45 +++++++++++++++++++++
+ 2 files changed, 52 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 3c95ada1b830..71082000046b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4821,6 +4821,7 @@ F:	Documentation/driver-api/generic-counter.rst
- F:	drivers/counter/
- F:	include/linux/counter.h
- F:	include/uapi/linux/counter.h
-+F:	tools/counter/
+diff --git a/Documentation/ABI/testing/sysfs-bus-counter b/Documentation/ABI/testing/sysfs-bus-counter
+index dee79b606847..aa2cd3c10d74 100644
+--- a/Documentation/ABI/testing/sysfs-bus-counter
++++ b/Documentation/ABI/testing/sysfs-bus-counter
+@@ -203,6 +203,13 @@ Description:
+ 		both edges:
+ 			Any state transition.
  
- CP2615 I2C DRIVER
- M:	Bence Csókás <bence98@sch.bme.hu>
-diff --git a/tools/Makefile b/tools/Makefile
-index 7e9d34ddd74c..5da1fde03a9a 100644
---- a/tools/Makefile
-+++ b/tools/Makefile
-@@ -12,6 +12,7 @@ help:
- 	@echo '  acpi                   - ACPI tools'
- 	@echo '  bpf                    - misc BPF tools'
- 	@echo '  cgroup                 - cgroup tools'
-+	@echo '  counter                - counter tools'
- 	@echo '  cpupower               - a tool for all things x86 CPU power'
- 	@echo '  debugging              - tools for debugging'
- 	@echo '  firewire               - the userspace part of nosy, an IEEE-1394 traffic sniffer'
-@@ -65,7 +66,7 @@ acpi: FORCE
- cpupower: FORCE
- 	$(call descend,power/$@)
++What:		/sys/bus/counter/devices/counterX/countY/signalZ_action_component_id
++KernelVersion:	5.16
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Read-only attribute that indicates the component ID of the
++		respective Synapse of Count Y for Signal Z.
++
+ What:		/sys/bus/counter/devices/counterX/countY/spike_filter_ns
+ KernelVersion:	5.14
+ Contact:	linux-iio@vger.kernel.org
+diff --git a/drivers/counter/counter-sysfs.c b/drivers/counter/counter-sysfs.c
+index 108cbd838eb9..ee7ff1cde454 100644
+--- a/drivers/counter/counter-sysfs.c
++++ b/drivers/counter/counter-sysfs.c
+@@ -532,6 +532,46 @@ static int counter_name_attr_create(struct device *const dev,
+ 	return 0;
+ }
  
--cgroup firewire hv guest bootconfig spi usb virtio vm bpf iio gpio objtool leds wmi pci firmware debugging tracing: FORCE
-+cgroup counter firewire hv guest bootconfig spi usb virtio vm bpf iio gpio objtool leds wmi pci firmware debugging tracing: FORCE
- 	$(call descend,$@)
- 
- bpf/%: FORCE
-@@ -100,7 +101,7 @@ freefall: FORCE
- kvm_stat: FORCE
- 	$(call descend,kvm/$@)
- 
--all: acpi cgroup cpupower gpio hv firewire liblockdep \
-+all: acpi cgroup counter cpupower gpio hv firewire liblockdep \
- 		perf selftests bootconfig spi turbostat usb \
- 		virtio vm bpf x86_energy_perf_policy \
- 		tmon freefall iio objtool kvm_stat wmi \
-@@ -112,7 +113,7 @@ acpi_install:
- cpupower_install:
- 	$(call descend,power/$(@:_install=),install)
- 
--cgroup_install firewire_install gpio_install hv_install iio_install perf_install bootconfig_install spi_install usb_install virtio_install vm_install bpf_install objtool_install wmi_install pci_install debugging_install tracing_install:
-+cgroup_install counter_install firewire_install gpio_install hv_install iio_install perf_install bootconfig_install spi_install usb_install virtio_install vm_install bpf_install objtool_install wmi_install pci_install debugging_install tracing_install:
- 	$(call descend,$(@:_install=),install)
- 
- liblockdep_install:
-@@ -133,7 +134,7 @@ freefall_install:
- kvm_stat_install:
- 	$(call descend,kvm/$(@:_install=),install)
- 
--install: acpi_install cgroup_install cpupower_install gpio_install \
-+install: acpi_install cgroup_install counter_install cpupower_install gpio_install \
- 		hv_install firewire_install iio_install liblockdep_install \
- 		perf_install selftests_install turbostat_install usb_install \
- 		virtio_install vm_install bpf_install x86_energy_perf_policy_install \
-@@ -147,7 +148,7 @@ acpi_clean:
- cpupower_clean:
- 	$(call descend,power/cpupower,clean)
- 
--cgroup_clean hv_clean firewire_clean bootconfig_clean spi_clean usb_clean virtio_clean vm_clean wmi_clean bpf_clean iio_clean gpio_clean objtool_clean leds_clean pci_clean firmware_clean debugging_clean tracing_clean:
-+cgroup_clean counter_clean hv_clean firewire_clean bootconfig_clean spi_clean usb_clean virtio_clean vm_clean wmi_clean bpf_clean iio_clean gpio_clean objtool_clean leds_clean pci_clean firmware_clean debugging_clean tracing_clean:
- 	$(call descend,$(@:_clean=),clean)
- 
- liblockdep_clean:
-@@ -181,7 +182,7 @@ freefall_clean:
- build_clean:
- 	$(call descend,build,clean)
- 
--clean: acpi_clean cgroup_clean cpupower_clean hv_clean firewire_clean \
-+clean: acpi_clean cgroup_clean counter_clean cpupower_clean hv_clean firewire_clean \
- 		perf_clean selftests_clean turbostat_clean bootconfig_clean spi_clean usb_clean virtio_clean \
- 		vm_clean bpf_clean iio_clean x86_energy_perf_policy_clean tmon_clean \
- 		freefall_clean build_clean libbpf_clean libsubcmd_clean liblockdep_clean \
-diff --git a/tools/counter/Build b/tools/counter/Build
-new file mode 100644
-index 000000000000..33f4a51d715e
---- /dev/null
-+++ b/tools/counter/Build
-@@ -0,0 +1 @@
-+counter_example-y += counter_example.o
-diff --git a/tools/counter/Makefile b/tools/counter/Makefile
-new file mode 100644
-index 000000000000..5ebc195fd9c0
---- /dev/null
-+++ b/tools/counter/Makefile
-@@ -0,0 +1,53 @@
-+# SPDX-License-Identifier: GPL-2.0
-+include ../scripts/Makefile.include
-+
-+bindir ?= /usr/bin
-+
-+ifeq ($(srctree),)
-+srctree := $(patsubst %/,%,$(dir $(CURDIR)))
-+srctree := $(patsubst %/,%,$(dir $(srctree)))
-+endif
-+
-+# Do not use make's built-in rules
-+# (this improves performance and avoids hard-to-debug behaviour);
-+MAKEFLAGS += -r
-+
-+override CFLAGS += -O2 -Wall -g -D_GNU_SOURCE -I$(OUTPUT)include
-+
-+ALL_TARGETS := counter_example
-+ALL_PROGRAMS := $(patsubst %,$(OUTPUT)%,$(ALL_TARGETS))
-+
-+all: $(ALL_PROGRAMS)
-+
-+export srctree OUTPUT CC LD CFLAGS
-+include $(srctree)/tools/build/Makefile.include
-+
-+#
-+# We need the following to be outside of kernel tree
-+#
-+$(OUTPUT)include/linux/counter.h: ../../include/uapi/linux/counter.h
-+	mkdir -p $(OUTPUT)include/linux 2>&1 || true
-+	ln -sf $(CURDIR)/../../include/uapi/linux/counter.h $@
-+
-+prepare: $(OUTPUT)include/linux/counter.h
-+
-+COUNTER_EXAMPLE := $(OUTPUT)counter_example.o
-+$(COUNTER_EXAMPLE): prepare FORCE
-+	$(Q)$(MAKE) $(build)=counter_example
-+$(OUTPUT)counter_example: $(COUNTER_EXAMPLE)
-+	$(QUIET_LINK)$(CC) $(CFLAGS) $(LDFLAGS) $< -o $@
-+
-+clean:
-+	rm -f $(ALL_PROGRAMS)
-+	rm -rf $(OUTPUT)include/linux/counter.h
-+	find $(if $(OUTPUT),$(OUTPUT),.) -name '*.o' -delete -o -name '\.*.d' -delete
-+
-+install: $(ALL_PROGRAMS)
-+	install -d -m 755 $(DESTDIR)$(bindir);		\
-+	for program in $(ALL_PROGRAMS); do		\
-+		install $$program $(DESTDIR)$(bindir);	\
-+	done
-+
-+FORCE:
-+
-+.PHONY: all install clean FORCE prepare
-diff --git a/tools/counter/counter_example.c b/tools/counter/counter_example.c
-new file mode 100644
-index 000000000000..be55287b950f
---- /dev/null
-+++ b/tools/counter/counter_example.c
-@@ -0,0 +1,92 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/* Counter - example userspace application
-+ *
-+ * The userspace application opens /dev/counter0, configures the
-+ * COUNTER_EVENT_INDEX event channel 0 to gather Count 0 count and Count
-+ * 1 count, and prints out the data as it becomes available on the
-+ * character device node.
-+ *
-+ * Copyright (C) 2021 William Breathitt Gray
-+ */
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <linux/counter.h>
-+#include <stdio.h>
-+#include <string.h>
-+#include <sys/ioctl.h>
-+#include <unistd.h>
-+
-+static struct counter_watch watches[2] = {
-+	{
-+		/* Component data: Count 0 count */
-+		.component.type = COUNTER_COMPONENT_COUNT,
-+		.component.scope = COUNTER_SCOPE_COUNT,
-+		.component.parent = 0,
-+		/* Event type: Index */
-+		.event = COUNTER_EVENT_INDEX,
-+		/* Device event channel 0 */
-+		.channel = 0,
-+	},
-+	{
-+		/* Component data: Count 1 count */
-+		.component.type = COUNTER_COMPONENT_COUNT,
-+		.component.scope = COUNTER_SCOPE_COUNT,
-+		.component.parent = 1,
-+		/* Event type: Index */
-+		.event = COUNTER_EVENT_INDEX,
-+		/* Device event channel 0 */
-+		.channel = 0,
-+	},
-+};
-+
-+int main(void)
++static ssize_t counter_comp_id_show(struct device *dev,
++				    struct device_attribute *attr, char *buf)
 +{
-+	int fd;
-+	int ret;
-+	int i;
-+	struct counter_event event_data[2];
++	const size_t id = (size_t)to_counter_attribute(attr)->comp.priv;
 +
-+	fd = open("/dev/counter0", O_RDWR);
-+	if (fd == -1) {
-+		perror("Unable to open /dev/counter0");
-+		return 1;
-+	}
++	return sprintf(buf, "%zu\n", id);
++}
 +
-+	for (i = 0; i < 2; i++) {
-+		ret = ioctl(fd, COUNTER_ADD_WATCH_IOCTL, watches + i);
-+		if (ret == -1) {
-+			fprintf(stderr, "Error adding watches[%d]: %s\n", i,
-+				strerror(errno));
-+			return 1;
-+		}
-+	}
-+	ret = ioctl(fd, COUNTER_ENABLE_EVENTS_IOCTL);
-+	if (ret == -1) {
-+		perror("Error enabling events");
-+		return 1;
-+	}
++static int counter_comp_id_attr_create(struct device *const dev,
++				       struct counter_attribute_group *const group,
++				       const char *name, const size_t id)
++{
++	struct counter_attribute *counter_attr;
 +
-+	for (;;) {
-+		ret = read(fd, event_data, sizeof(event_data));
-+		if (ret == -1) {
-+			perror("Failed to read event data");
-+			return 1;
-+		}
++	/* Allocate Counter attribute */
++	counter_attr = devm_kzalloc(dev, sizeof(*counter_attr), GFP_KERNEL);
++	if (!counter_attr)
++		return -ENOMEM;
 +
-+		if (ret != sizeof(event_data)) {
-+			fprintf(stderr, "Failed to read event data\n");
-+			return -EIO;
-+		}
++	/* Generate component ID name */
++	name = devm_kasprintf(dev, GFP_KERNEL, "%s_component_id", name);
++	if (!name)
++		return -ENOMEM;
 +
-+		printf("Timestamp 0: %llu\tCount 0: %llu\n"
-+		       "Error Message 0: %s\n"
-+		       "Timestamp 1: %llu\tCount 1: %llu\n"
-+		       "Error Message 1: %s\n",
-+		       event_data[0].timestamp, event_data[0].value,
-+		       strerror(event_data[0].status),
-+		       event_data[1].timestamp, event_data[1].value,
-+		       strerror(event_data[1].status));
-+	}
++	/* Configure Counter attribute */
++	counter_attr->comp.priv = (void *)id;
++
++	/* Configure device attribute */
++	sysfs_attr_init(&counter_attr->dev_attr.attr);
++	counter_attr->dev_attr.attr.name = name;
++	counter_attr->dev_attr.attr.mode = 0444;
++	counter_attr->dev_attr.show = counter_comp_id_show;
++
++	/* Store list node */
++	list_add(&counter_attr->l, &group->attr_list);
++	group->num_attr++;
 +
 +	return 0;
 +}
++
+ static struct counter_comp counter_signal_comp = {
+ 	.type = COUNTER_COMP_SIGNAL_LEVEL,
+ 	.name = "signal",
+@@ -626,6 +666,11 @@ static int counter_sysfs_synapses_add(struct counter_device *const counter,
+ 					  COUNTER_SCOPE_COUNT, count);
+ 		if (err < 0)
+ 			return err;
++
++		/* Create Synapse component ID attribute */
++		err = counter_comp_id_attr_create(dev, group, comp.name, i);
++		if (err < 0)
++			return err;
+ 	}
+ 
+ 	return 0;
 -- 
 2.33.0
 

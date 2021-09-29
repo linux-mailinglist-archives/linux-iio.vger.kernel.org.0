@@ -2,132 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 361FA41C2F4
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Sep 2021 12:46:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F04B41C84E
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Sep 2021 17:25:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244901AbhI2KsC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Sep 2021 06:48:02 -0400
-Received: from mail.kernelconcepts.de ([188.40.83.200]:33546 "EHLO
-        mail.kernelconcepts.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244886AbhI2KsB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Sep 2021 06:48:01 -0400
-Received: from [217.146.132.69] (helo=yoda.kc.loc)
-        by mail.kernelconcepts.de with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <florian.boor@kernelconcepts.de>)
-        id 1mVX6M-0002Ot-V5; Wed, 29 Sep 2021 12:46:15 +0200
-From:   Florian Boor <florian.boor@kernelconcepts.de>
-To:     jic23@kernel.org
-Cc:     linux-iio@vger.kernel.org, Jonathan.Cameron@huawei.com,
-        Michael.Hennerich@analog.com, devicetree@vger.kernel.org,
-        robh+dt@kernel.org, Florian Boor <florian.boor@kernelconcepts.de>
-Subject: [PATCH v5 2/2] dt-bindings: iio: ad779x: Add binding document
-Date:   Wed, 29 Sep 2021 12:46:07 +0200
-Message-Id: <20210929104607.2699117-2-florian.boor@kernelconcepts.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210929104607.2699117-1-florian.boor@kernelconcepts.de>
-References: <20210929104607.2699117-1-florian.boor@kernelconcepts.de>
+        id S1345198AbhI2P05 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Sep 2021 11:26:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36670 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1344945AbhI2P05 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 29 Sep 2021 11:26:57 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 89FD661440;
+        Wed, 29 Sep 2021 15:25:11 +0000 (UTC)
+Date:   Wed, 29 Sep 2021 16:29:05 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Miquel Raynal <miquel.raynal@bootlin.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Lee Jones <lee.jones@linaro.org>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        bcousson@baylibre.com, Tony Lindgren <tony@atomide.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Ryan Barnett <ryan.barnett@collins.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Jason Reeder <jreeder@ti.com>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 25/48] mfd: ti_am335x_tscadc: Use the new HZ_PER_MHZ
+ macro
+Message-ID: <20210929162905.5fc771c5@jic23-huawei>
+In-Reply-To: <20210928133143.157329-26-miquel.raynal@bootlin.com>
+References: <20210928133143.157329-1-miquel.raynal@bootlin.com>
+        <20210928133143.157329-26-miquel.raynal@bootlin.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-New binding documentation for AD799x series of I²C ADC ICs.
+On Tue, 28 Sep 2021 15:31:20 +0200
+Miquel Raynal <miquel.raynal@bootlin.com> wrote:
 
-Signed-off-by: Florian Boor <florian.boor@kernelconcepts.de>
----
-Changes in v5:
-- Correct errors in documentation found by
-  'make DT_CHECKER_FLAGS=-m dt_binding_check'
-  + Reduce title length
-  + Move information to description
-  + Add I²C bits to example
+> Before adding another frequency with even more zeroes, use the
+> HZ_PER_MHZ macro to clarify the number.
+> 
+> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+You missed tag I gave on v3.
 
- .../bindings/iio/adc/adi,ad799x.yaml          | 73 +++++++++++++++++++
- 1 file changed, 73 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad799x.yaml
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad799x.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad799x.yaml
-new file mode 100644
-index 000000000000..cdba1ea91f42
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad799x.yaml
-@@ -0,0 +1,73 @@
-+# SPDX-License-Identifier: GPL-2.0
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/adc/adi,ad799x.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Analog Devices AD799x analog to digital converters
-+
-+maintainers:
-+  - Michael Hennerich, Analog Devices Inc. <Michael.Hennerich@analog.com>
-+
-+description: |
-+    Support for Analog Devices AD7991, AD7992, AD7993, AD7994, AD7995, AD7997, AD7998,
-+    AD7999 and similar analog to digital converters.
-+    Specifications on the converters can be found at:
-+    AD7991, AD7995, AD7999:
-+      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7991_7995_7999.pdf
-+    AD7992:
-+      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7992.pdf
-+    AD7993, AD7994:
-+      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7993_7994.pdf
-+    AD7997, AD7998:
-+      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7997_7998.pdf
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,ad7991
-+      - adi,ad7992
-+      - adi,ad7993
-+      - adi,ad7994
-+      - adi,ad7995
-+      - adi,ad7997
-+      - adi,ad7998
-+      - adi,ad7999
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  vcc-supply:
-+    description:
-+      ADC power supply
-+
-+  vref-supply:
-+    description:
-+      ADC reference voltage supply, optional for AD7991, AD7995 and AD7999
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    i2c {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+
-+       adc1: ad7991@28 {
-+               reg = <0x28>;
-+               compatible = "adi,ad7991";
-+               interrupts = <13 2>;
-+               interrupt-parent = <&gpio6>;
-+
-+               vcc-supply = <&vcc_3v3>;
-+               vref-supply = <&adc_vref>;
-+        };
-+    };
-+...
--- 
-2.30.2
+Thanks,
+
+> ---
+>  include/linux/mfd/ti_am335x_tscadc.h | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/mfd/ti_am335x_tscadc.h b/include/linux/mfd/ti_am335x_tscadc.h
+> index 893c474c1f8c..a85643677bef 100644
+> --- a/include/linux/mfd/ti_am335x_tscadc.h
+> +++ b/include/linux/mfd/ti_am335x_tscadc.h
+> @@ -9,6 +9,7 @@
+>  #define __LINUX_TI_AM335X_TSCADC_MFD_H
+>  
+>  #include <linux/mfd/core.h>
+> +#include <linux/units.h>
+>  
+>  #define REG_RAWIRQSTATUS	0x024
+>  #define REG_IRQSTATUS		0x028
+> @@ -133,7 +134,7 @@
+>  #define SEQ_STATUS		BIT(5)
+>  #define CHARGE_STEP		0x11
+>  
+> -#define ADC_CLK			3000000
+> +#define ADC_CLK			(3 * HZ_PER_MHZ)
+>  #define TOTAL_STEPS		16
+>  #define TOTAL_CHANNELS		8
+>  #define FIFO1_THRESHOLD		19
 

@@ -2,407 +2,712 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AE7E41BD49
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Sep 2021 05:17:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0713D41C175
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Sep 2021 11:17:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243953AbhI2DTI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Sep 2021 23:19:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59768 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243944AbhI2DTH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Sep 2021 23:19:07 -0400
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07CC1C061745;
-        Tue, 28 Sep 2021 20:17:27 -0700 (PDT)
-Received: by mail-pl1-x62b.google.com with SMTP id x8so542234plv.8;
-        Tue, 28 Sep 2021 20:17:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=TDIe+6SzlRBeAk6I9k2b0FY8DIbSjAdiy7hAihmXRtA=;
-        b=gPkJ/ezX25B76Kslyr/E8CGjV3awtQstvtTmxzkPgIOOgz4IHs+OO3oi3XR652AHQW
-         06pMtoicrVSgKCdzNpzZEekz3GmdrHKj3SC1bUrSGub05P3q+9XzjxY3A4mfP0gz1PFA
-         HN5pX+ls1sBwDO2GjyfAVPmOXHO2PRbtXSDozHjs2TbyMBhtzI+H5bP8bjhuV/7VGpKp
-         LSP+nEm+FqpJ8tI7F6xQtSqUrsAWSW4pZEA6+FBQXFUYspRogtYn+sMCj2qh94odrp2u
-         hA1y3smajwVrcAnaYBU/8sAjKeDB2d9Df7HoZBLbVedv+gSwSilRTrriyxrwhMZPGcHJ
-         wOXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=TDIe+6SzlRBeAk6I9k2b0FY8DIbSjAdiy7hAihmXRtA=;
-        b=sfs91XoIMqEgEosm9HlO86fF4xKGy7HDuxGVJkrifn2l3juOxopYRaNjnGMXdXgdvf
-         bkp7Z/9ORFVCIZeNZbq9aimw03coCewEUegchbWmq07h6TvcsI94xqaFP0rycwoNxuz6
-         zo3X3sqWiE6pJI4wQ8p9gz0H3k08u9UnSy/Iruh6Kp59Sk9uI2lyhtxD9IPZeFCAzULT
-         yAJSyN/xMMXjWjc9mJ4RTJa1TPySL/e2MmCh4fH9b3nrPy6UHoB5kcWIZBLvv8KcqQbB
-         jgg2zFlq0LF8sA6piXVqLbmIv1I3y5+t2xO9AZqStgCCtv3ugSzVluWcfeElXwKpBk52
-         pJuQ==
-X-Gm-Message-State: AOAM530Z1SxYUFT4OjWwgywWgPwjgIkzVOaab1Cb2/3GEdmBLblESsYa
-        NII8x7sEeZopq6zHtlSccPs=
-X-Google-Smtp-Source: ABdhPJzIPYLEGIGj7rLahMd9l3sNYDcVVvDVWLECWppA6wYFaT3WKagrmvqhMz0B9hPIALvhHQ+zqw==
-X-Received: by 2002:a17:90a:c89:: with SMTP id v9mr3673935pja.71.1632885446541;
-        Tue, 28 Sep 2021 20:17:26 -0700 (PDT)
-Received: from localhost.localdomain ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id 65sm464203pfv.210.2021.09.28.20.17.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Sep 2021 20:17:26 -0700 (PDT)
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     jic23@kernel.org
-Cc:     linux-stm32@st-md-mailman.stormreply.com, kernel@pengutronix.de,
-        a.fatoum@pengutronix.de, kamel.bouhara@bootlin.com,
-        gwendal@chromium.org, alexandre.belloni@bootlin.com,
-        david@lechnology.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        syednwaris@gmail.com, patrick.havelange@essensium.com,
-        fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@st.com, o.rempel@pengutronix.de,
-        jarkko.nikula@linux.intel.com,
-        William Breathitt Gray <vilhelm.gray@gmail.com>
-Subject: [PATCH v17 9/9] counter: 104-quad-8: Add IRQ support for the ACCES 104-QUAD-8
-Date:   Wed, 29 Sep 2021 12:16:06 +0900
-Message-Id: <e3a28e100840e3a336fa93fce77445f0e9d9a674.1632884256.git.vilhelm.gray@gmail.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <cover.1632884256.git.vilhelm.gray@gmail.com>
-References: <cover.1632884256.git.vilhelm.gray@gmail.com>
+        id S229774AbhI2JTR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Sep 2021 05:19:17 -0400
+Received: from mslow1.mail.gandi.net ([217.70.178.240]:50143 "EHLO
+        mslow1.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229487AbhI2JTR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Sep 2021 05:19:17 -0400
+Received: from relay6-d.mail.gandi.net (unknown [217.70.183.198])
+        by mslow1.mail.gandi.net (Postfix) with ESMTP id 2211FCE56C
+        for <linux-iio@vger.kernel.org>; Wed, 29 Sep 2021 09:07:45 +0000 (UTC)
+Received: (Authenticated sender: jacopo@jmondi.org)
+        by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 7FD67C000E;
+        Wed, 29 Sep 2021 09:07:21 +0000 (UTC)
+Date:   Wed, 29 Sep 2021 11:08:08 +0200
+From:   Jacopo Mondi <jacopo@jmondi.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Jacopo Mondi <jacopo+renesas@jmondi.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Peter Rosin <peda@axentia.se>, linux-iio@vger.kernel.org,
+        Wolfram Sang <wsa@kernel.org>
+Subject: Re: [PATCH v6 3/4] iio: chemical: Add Senseair Sunrise 006-0-007
+ driver
+Message-ID: <20210929090808.qknp7mw3vlmelnk4@uno.localdomain>
+References: <20210920135413.140310-1-jacopo+renesas@jmondi.org>
+ <20210920135413.140310-4-jacopo+renesas@jmondi.org>
+ <20210925163437.1c364048@jic23-huawei>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20210925163437.1c364048@jic23-huawei>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The LSI/CSI LS7266R1 chip provides programmable output via the FLG pins.
-When interrupts are enabled on the ACCES 104-QUAD-8, they occur whenever
-FLG1 is active. Four functions are available for the FLG1 signal: Carry,
-Compare, Carry-Borrow, and Index.
+Hi Jonathan
 
-	Carry:
-		Interrupt generated on active low Carry signal. Carry
-		signal toggles every time the respective channel's
-		counter overflows.
+On Sat, Sep 25, 2021 at 04:34:37PM +0100, Jonathan Cameron wrote:
+> On Mon, 20 Sep 2021 15:54:12 +0200
+> Jacopo Mondi <jacopo+renesas@jmondi.org> wrote:
+>
+> > From: Jacopo Mondi <jacopo@jmondi.org>
+> >
+> > Add support for the Senseair Sunrise 006-0-0007 driver through the
+> > IIO subsystem.
+> >
+> > Datasheet: https://rmtplusstoragesenseair.blob.core.windows.net/docs/Dev/publicerat/TDE5531.pdf
+> > Signed-off-by: Jacopo Mondi <jacopo@jmondi.org>
+>
+> Hi Jacopo,
+>
+> One thing I noticed on a final read through is you have a bunch of buffer
+> mode related stuff specified for the channels.  I'll drop that whilst applying but
 
-	Compare:
-		Interrupt generated on active low Compare signal.
-		Compare signal toggles every time respective channel's
-		preset register is equal to the respective channel's
-		counter.
+Ah ups! not required indeed
 
-	Carry-Borrow:
-		Interrupt generated on active low Carry signal and
-		active low Borrow signal. Carry signal toggles every
-		time the respective channel's counter overflows. Borrow
-		signal toggles every time the respective channel's
-		counter underflows.
+> please check the tested branch of iio.git to make sure I didn't mess it up.
 
-	Index:
-		Interrupt generated on active high Index signal.
+Tested
+https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/log/?h=testing
 
-These four functions correspond respectivefly to the following four
-Counter event types: COUNTER_EVENT_OVERFLOW, COUNTER_EVENT_THRESHOLD,
-COUNTER_EVENT_OVERFLOW_UNDERFLOW, and COUNTER_EVENT_INDEX. Interrupts
-push Counter events to event channel X, where 'X' is the respective
-channel whose FLG1 activated.
+and it's all good as expected, thanks!
 
-This patch adds IRQ support for the ACCES 104-QUAD-8. The interrupt line
-numbers for the devices may be configured via the irq array module
-parameter.
-
-Acked-by: Syed Nayyar Waris <syednwaris@gmail.com>
-Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
----
- drivers/counter/104-quad-8.c | 167 +++++++++++++++++++++++++++++++++--
- drivers/counter/Kconfig      |   6 +-
- 2 files changed, 164 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
-index a56751bf1e9b..1cbd60aaed69 100644
---- a/drivers/counter/104-quad-8.c
-+++ b/drivers/counter/104-quad-8.c
-@@ -11,6 +11,7 @@
- #include <linux/errno.h>
- #include <linux/io.h>
- #include <linux/ioport.h>
-+#include <linux/interrupt.h>
- #include <linux/isa.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-@@ -25,6 +26,10 @@ static unsigned int num_quad8;
- module_param_hw_array(base, uint, ioport, &num_quad8, 0);
- MODULE_PARM_DESC(base, "ACCES 104-QUAD-8 base addresses");
- 
-+static unsigned int irq[max_num_isa_dev(QUAD8_EXTENT)];
-+module_param_hw_array(irq, uint, irq, NULL, 0);
-+MODULE_PARM_DESC(irq, "ACCES 104-QUAD-8 interrupt line numbers");
-+
- #define QUAD8_NUM_COUNTERS 8
- 
- /**
-@@ -38,6 +43,8 @@ MODULE_PARM_DESC(base, "ACCES 104-QUAD-8 base addresses");
-  * @quadrature_scale:	array of quadrature mode scale configurations
-  * @ab_enable:		array of A and B inputs enable configurations
-  * @preset_enable:	array of set_to_preset_on_index attribute configurations
-+ * @irq_trigger:	array of current IRQ trigger function configurations
-+ * @next_irq_trigger:	array of next IRQ trigger function configurations
-  * @synchronous_mode:	array of index function synchronous mode configurations
-  * @index_polarity:	array of index function polarity configurations
-  * @cable_fault_enable:	differential encoder cable status enable configurations
-@@ -53,13 +60,17 @@ struct quad8 {
- 	unsigned int quadrature_scale[QUAD8_NUM_COUNTERS];
- 	unsigned int ab_enable[QUAD8_NUM_COUNTERS];
- 	unsigned int preset_enable[QUAD8_NUM_COUNTERS];
-+	unsigned int irq_trigger[QUAD8_NUM_COUNTERS];
-+	unsigned int next_irq_trigger[QUAD8_NUM_COUNTERS];
- 	unsigned int synchronous_mode[QUAD8_NUM_COUNTERS];
- 	unsigned int index_polarity[QUAD8_NUM_COUNTERS];
- 	unsigned int cable_fault_enable;
- 	unsigned int base;
- };
- 
-+#define QUAD8_REG_INTERRUPT_STATUS 0x10
- #define QUAD8_REG_CHAN_OP 0x11
-+#define QUAD8_REG_INDEX_INTERRUPT 0x12
- #define QUAD8_REG_INDEX_INPUT_LEVELS 0x16
- #define QUAD8_DIFF_ENCODER_CABLE_STATUS 0x17
- /* Borrow Toggle flip-flop */
-@@ -92,8 +103,8 @@ struct quad8 {
- #define QUAD8_RLD_CNTR_OUT 0x10
- /* Transfer Preset Register LSB to FCK Prescaler */
- #define QUAD8_RLD_PRESET_PSC 0x18
--#define QUAD8_CHAN_OP_ENABLE_COUNTERS 0x00
- #define QUAD8_CHAN_OP_RESET_COUNTERS 0x01
-+#define QUAD8_CHAN_OP_ENABLE_INTERRUPT_FUNC 0x04
- #define QUAD8_CMR_QUADRATURE_X1 0x08
- #define QUAD8_CMR_QUADRATURE_X2 0x10
- #define QUAD8_CMR_QUADRATURE_X4 0x18
-@@ -378,13 +389,103 @@ static int quad8_action_read(struct counter_device *counter,
- 	}
- }
- 
-+enum {
-+	QUAD8_EVENT_NONE = -1,
-+	QUAD8_EVENT_CARRY = 0,
-+	QUAD8_EVENT_COMPARE = 1,
-+	QUAD8_EVENT_CARRY_BORROW = 2,
-+	QUAD8_EVENT_INDEX = 3,
-+};
-+
-+static int quad8_events_configure(struct counter_device *counter)
-+{
-+	struct quad8 *const priv = counter->priv;
-+	unsigned long irq_enabled = 0;
-+	unsigned long irqflags;
-+	size_t channel;
-+	unsigned long ior_cfg;
-+	unsigned long base_offset;
-+
-+	spin_lock_irqsave(&priv->lock, irqflags);
-+
-+	/* Enable interrupts for the requested channels, disable for the rest */
-+	for (channel = 0; channel < QUAD8_NUM_COUNTERS; channel++) {
-+		if (priv->next_irq_trigger[channel] == QUAD8_EVENT_NONE)
-+			continue;
-+
-+		if (priv->irq_trigger[channel] != priv->next_irq_trigger[channel]) {
-+			/* Save new IRQ function configuration */
-+			priv->irq_trigger[channel] = priv->next_irq_trigger[channel];
-+
-+			/* Load configuration to I/O Control Register */
-+			ior_cfg = priv->ab_enable[channel] |
-+				  priv->preset_enable[channel] << 1 |
-+				  priv->irq_trigger[channel] << 3;
-+			base_offset = priv->base + 2 * channel + 1;
-+			outb(QUAD8_CTR_IOR | ior_cfg, base_offset);
-+		}
-+
-+		/* Reset next IRQ trigger function configuration */
-+		priv->next_irq_trigger[channel] = QUAD8_EVENT_NONE;
-+
-+		/* Enable IRQ line */
-+		irq_enabled |= BIT(channel);
-+	}
-+
-+	outb(irq_enabled, priv->base + QUAD8_REG_INDEX_INTERRUPT);
-+
-+	spin_unlock_irqrestore(&priv->lock, irqflags);
-+
-+	return 0;
-+}
-+
-+static int quad8_watch_validate(struct counter_device *counter,
-+				const struct counter_watch *watch)
-+{
-+	struct quad8 *const priv = counter->priv;
-+
-+	if (watch->channel > QUAD8_NUM_COUNTERS - 1)
-+		return -EINVAL;
-+
-+	switch (watch->event) {
-+	case COUNTER_EVENT_OVERFLOW:
-+		if (priv->next_irq_trigger[watch->channel] == QUAD8_EVENT_NONE)
-+			priv->next_irq_trigger[watch->channel] = QUAD8_EVENT_CARRY;
-+		else if (priv->next_irq_trigger[watch->channel] != QUAD8_EVENT_CARRY)
-+			return -EINVAL;
-+		return 0;
-+	case COUNTER_EVENT_THRESHOLD:
-+		if (priv->next_irq_trigger[watch->channel] == QUAD8_EVENT_NONE)
-+			priv->next_irq_trigger[watch->channel] = QUAD8_EVENT_COMPARE;
-+		else if (priv->next_irq_trigger[watch->channel] != QUAD8_EVENT_COMPARE)
-+			return -EINVAL;
-+		return 0;
-+	case COUNTER_EVENT_OVERFLOW_UNDERFLOW:
-+		if (priv->next_irq_trigger[watch->channel] == QUAD8_EVENT_NONE)
-+			priv->next_irq_trigger[watch->channel] = QUAD8_EVENT_CARRY_BORROW;
-+		else if (priv->next_irq_trigger[watch->channel] != QUAD8_EVENT_CARRY_BORROW)
-+			return -EINVAL;
-+		return 0;
-+	case COUNTER_EVENT_INDEX:
-+		if (priv->next_irq_trigger[watch->channel] == QUAD8_EVENT_NONE)
-+			priv->next_irq_trigger[watch->channel] = QUAD8_EVENT_INDEX;
-+		else if (priv->next_irq_trigger[watch->channel] != QUAD8_EVENT_INDEX)
-+			return -EINVAL;
-+		return 0;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
- static const struct counter_ops quad8_ops = {
- 	.signal_read = quad8_signal_read,
- 	.count_read = quad8_count_read,
- 	.count_write = quad8_count_write,
- 	.function_read = quad8_function_read,
- 	.function_write = quad8_function_write,
--	.action_read = quad8_action_read
-+	.action_read = quad8_action_read,
-+	.events_configure = quad8_events_configure,
-+	.watch_validate = quad8_watch_validate,
- };
- 
- static const char *const quad8_index_polarity_modes[] = {
-@@ -579,7 +680,8 @@ static int quad8_count_enable_write(struct counter_device *counter,
- 
- 	priv->ab_enable[count->id] = enable;
- 
--	ior_cfg = enable | priv->preset_enable[count->id] << 1;
-+	ior_cfg = enable | priv->preset_enable[count->id] << 1 |
-+		  priv->irq_trigger[count->id] << 3;
- 
- 	/* Load I/O control configuration */
- 	outb(QUAD8_CTR_IOR | ior_cfg, base_offset + 1);
-@@ -728,7 +830,8 @@ static int quad8_count_preset_enable_write(struct counter_device *counter,
- 
- 	priv->preset_enable[count->id] = preset_enable;
- 
--	ior_cfg = priv->ab_enable[count->id] | preset_enable << 1;
-+	ior_cfg = priv->ab_enable[count->id] | preset_enable << 1 |
-+		  priv->irq_trigger[count->id] << 3;
- 
- 	/* Load I/O control configuration to Input / Output Control Register */
- 	outb(QUAD8_CTR_IOR | ior_cfg, base_offset);
-@@ -980,11 +1083,54 @@ static struct counter_count quad8_counts[] = {
- 	QUAD8_COUNT(7, "Channel 8 Count")
- };
- 
-+static irqreturn_t quad8_irq_handler(int irq, void *private)
-+{
-+	struct quad8 *const priv = private;
-+	const unsigned long base = priv->base;
-+	unsigned long irq_status;
-+	unsigned long channel;
-+	u8 event;
-+
-+	irq_status = inb(base + QUAD8_REG_INTERRUPT_STATUS);
-+	if (!irq_status)
-+		return IRQ_NONE;
-+
-+	for_each_set_bit(channel, &irq_status, QUAD8_NUM_COUNTERS) {
-+		switch (priv->irq_trigger[channel]) {
-+		case QUAD8_EVENT_CARRY:
-+			event = COUNTER_EVENT_OVERFLOW;
-+				break;
-+		case QUAD8_EVENT_COMPARE:
-+			event = COUNTER_EVENT_THRESHOLD;
-+				break;
-+		case QUAD8_EVENT_CARRY_BORROW:
-+			event = COUNTER_EVENT_OVERFLOW_UNDERFLOW;
-+				break;
-+		case QUAD8_EVENT_INDEX:
-+			event = COUNTER_EVENT_INDEX;
-+				break;
-+		default:
-+			/* should never reach this path */
-+			WARN_ONCE(true, "invalid interrupt trigger function %u configured for channel %lu\n",
-+				  priv->irq_trigger[channel], channel);
-+			continue;
-+		}
-+
-+		counter_push_event(&priv->counter, event, channel);
-+	}
-+
-+	/* Clear pending interrupts on device */
-+	outb(QUAD8_CHAN_OP_ENABLE_INTERRUPT_FUNC, base + QUAD8_REG_CHAN_OP);
-+
-+	return IRQ_HANDLED;
-+}
-+
- static int quad8_probe(struct device *dev, unsigned int id)
- {
- 	struct quad8 *priv;
- 	int i, j;
- 	unsigned int base_offset;
-+	int err;
- 
- 	if (!devm_request_region(dev, base[id], QUAD8_EXTENT, dev_name(dev))) {
- 		dev_err(dev, "Unable to lock port addresses (0x%X-0x%X)\n",
-@@ -1009,6 +1155,8 @@ static int quad8_probe(struct device *dev, unsigned int id)
- 
- 	spin_lock_init(&priv->lock);
- 
-+	/* Reset Index/Interrupt Register */
-+	outb(0x00, base[id] + QUAD8_REG_INDEX_INTERRUPT);
- 	/* Reset all counters and disable interrupt function */
- 	outb(QUAD8_CHAN_OP_RESET_COUNTERS, base[id] + QUAD8_REG_CHAN_OP);
- 	/* Set initial configuration for all counters */
-@@ -1035,11 +1183,18 @@ static int quad8_probe(struct device *dev, unsigned int id)
- 		outb(QUAD8_CTR_IOR, base_offset + 1);
- 		/* Disable index function; negative index polarity */
- 		outb(QUAD8_CTR_IDR, base_offset + 1);
-+		/* Initialize next IRQ trigger function configuration */
-+		priv->next_irq_trigger[i] = QUAD8_EVENT_NONE;
- 	}
- 	/* Disable Differential Encoder Cable Status for all channels */
- 	outb(0xFF, base[id] + QUAD8_DIFF_ENCODER_CABLE_STATUS);
--	/* Enable all counters */
--	outb(QUAD8_CHAN_OP_ENABLE_COUNTERS, base[id] + QUAD8_REG_CHAN_OP);
-+	/* Enable all counters and enable interrupt function */
-+	outb(QUAD8_CHAN_OP_ENABLE_INTERRUPT_FUNC, base[id] + QUAD8_REG_CHAN_OP);
-+
-+	err = devm_request_irq(dev, irq[id], quad8_irq_handler, IRQF_SHARED,
-+			       priv->counter.name, priv);
-+	if (err)
-+		return err;
- 
- 	return devm_counter_register(dev, &priv->counter);
- }
-diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
-index d5d2540b30c2..3dcdb681c4e4 100644
---- a/drivers/counter/Kconfig
-+++ b/drivers/counter/Kconfig
-@@ -23,11 +23,11 @@ config 104_QUAD_8
- 	  A counter's respective error flag may be cleared by performing a write
- 	  operation on the respective count value attribute. Although the
- 	  104-QUAD-8 counters have a 25-bit range, only the lower 24 bits may be
--	  set, either directly or via the counter's preset attribute. Interrupts
--	  are not supported by this driver.
-+	  set, either directly or via the counter's preset attribute.
- 
- 	  The base port addresses for the devices may be configured via the base
--	  array module parameter.
-+	  array module parameter. The interrupt line numbers for the devices may
-+	  be configured via the irq array module parameter.
- 
- config INTERRUPT_CNT
- 	tristate "Interrupt counter driver"
--- 
-2.33.0
-
+>
+> thanks,
+>
+> Jonathan
+>
+> > ---
+> > v5->v6:
+> > - Apply style fixes from Andy
+> > - Apply Jonathan suggestion and reduce sysfs attribute critical section
+> > - Address Peter's comments on the regmap ops:
+> >   - Do not use SMBUS_QUICK as it's supported by few adapters
+> >   - Make protocol mangling optional
+> >   - Insert a 'wake up' delay between the wake up message and the transaction
+> >   - Check for the adapter's required functionalities
+> > ---
+> >  MAINTAINERS                        |   7 +
+> >  drivers/iio/chemical/Kconfig       |  10 +
+> >  drivers/iio/chemical/Makefile      |   1 +
+> >  drivers/iio/chemical/sunrise_co2.c | 551 +++++++++++++++++++++++++++++
+> >  4 files changed, 569 insertions(+)
+> >  create mode 100644 drivers/iio/chemical/sunrise_co2.c
+> >
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index d7b4f32875a9..4f39e0d65e6d 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -16723,6 +16723,13 @@ S:	Maintained
+> >  F:	drivers/misc/phantom.c
+> >  F:	include/uapi/linux/phantom.h
+> >
+> > +SENSEAIR SUNRISE 006-0-0007
+> > +M:	Jacopo Mondi <jacopo@jmondi.org>
+> > +S:	Maintained
+> > +F:	Documentation/ABI/testing/sysfs-bus-iio-chemical-sunrise-co2
+> > +F:	Documentation/devicetree/bindings/iio/chemical/senseair,sunrise.yaml
+> > +F:	drivers/iio/chemical/sunrise_co2.c
+> > +
+> >  SENSIRION SCD30 CARBON DIOXIDE SENSOR DRIVER
+> >  M:	Tomasz Duszynski <tomasz.duszynski@octakon.com>
+> >  S:	Maintained
+> > diff --git a/drivers/iio/chemical/Kconfig b/drivers/iio/chemical/Kconfig
+> > index a4920646e9be..5155ab2caed4 100644
+> > --- a/drivers/iio/chemical/Kconfig
+> > +++ b/drivers/iio/chemical/Kconfig
+> > @@ -159,6 +159,16 @@ config SPS30_SERIAL
+> >  	  To compile this driver as a module, choose M here: the module will
+> >  	  be called sps30_serial.
+> >
+> > +config SENSEAIR_SUNRISE_CO2
+> > +	tristate "Senseair Sunrise 006-0-0007 CO2 sensor"
+> > +	select REGMAP_I2C
+> > +	help
+> > +	  Say yes here to build support for Senseair Sunrise 006-0-0007 CO2
+> > +	  sensor.
+> > +
+> > +	  To compile this driver as a module, choose M here: the
+> > +	  module will be called sunrise_co2.
+> > +
+> >  config VZ89X
+> >  	tristate "SGX Sensortech MiCS VZ89X VOC sensor"
+> >  	depends on I2C
+> > diff --git a/drivers/iio/chemical/Makefile b/drivers/iio/chemical/Makefile
+> > index 4898690cc155..61e8749a84f3 100644
+> > --- a/drivers/iio/chemical/Makefile
+> > +++ b/drivers/iio/chemical/Makefile
+> > @@ -15,6 +15,7 @@ obj-$(CONFIG_PMS7003) += pms7003.o
+> >  obj-$(CONFIG_SCD30_CORE) += scd30_core.o
+> >  obj-$(CONFIG_SCD30_I2C) += scd30_i2c.o
+> >  obj-$(CONFIG_SCD30_SERIAL) += scd30_serial.o
+> > +obj-$(CONFIG_SENSEAIR_SUNRISE_CO2) += sunrise_co2.o
+> >  obj-$(CONFIG_SENSIRION_SGP30)	+= sgp30.o
+> >  obj-$(CONFIG_SPS30) += sps30.o
+> >  obj-$(CONFIG_SPS30_I2C) += sps30_i2c.o
+> > diff --git a/drivers/iio/chemical/sunrise_co2.c b/drivers/iio/chemical/sunrise_co2.c
+> > new file mode 100644
+> > index 000000000000..a896561a98fa
+> > --- /dev/null
+> > +++ b/drivers/iio/chemical/sunrise_co2.c
+> > @@ -0,0 +1,551 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/*
+> > + * Senseair Sunrise 006-0-0007 CO2 sensor driver.
+> > + *
+> > + * Copyright (C) 2021 Jacopo Mondi
+> > + *
+> > + * List of features not yet supported by the driver:
+> > + * - controllable EN pin
+> > + * - single-shot operations using the nDRY pin.
+> > + * - ABC/target calibration
+> > + */
+> > +
+> > +#include <linux/bitops.h>
+> > +#include <linux/i2c.h>
+> > +#include <linux/kernel.h>
+> > +#include <linux/mod_devicetable.h>
+> > +#include <linux/module.h>
+> > +#include <linux/mutex.h>
+> > +#include <linux/regmap.h>
+> > +#include <linux/time64.h>
+> > +
+> > +#include <linux/iio/iio.h>
+> > +
+> > +#define DRIVER_NAME "sunrise_co2"
+> > +
+> > +#define SUNRISE_ERROR_STATUS_REG		0x00
+> > +#define SUNRISE_CO2_FILTERED_COMP_REG		0x06
+> > +#define SUNRISE_CHIP_TEMPERATURE_REG		0x08
+> > +#define SUNRISE_CALIBRATION_STATUS_REG		0x81
+> > +#define SUNRISE_CALIBRATION_COMMAND_REG		0x82
+> > +#define SUNRISE_CALIBRATION_FACTORY_CMD		0x7c02
+> > +#define SUNRISE_CALIBRATION_BACKGROUND_CMD	0x7c06
+> > +/*
+> > + * The calibration timeout is not characterized in the datasheet.
+> > + * Use 30 seconds as a reasonable upper limit.
+> > + */
+> > +#define SUNRISE_CALIBRATION_TIMEOUT_US		(30 * USEC_PER_SEC)
+> > +
+> > +struct sunrise_dev {
+> > +	struct i2c_client *client;
+> > +	struct regmap *regmap;
+> > +	/* Protects access to IIO attributes. */
+> > +	struct mutex lock;
+> > +	bool ignore_nak;
+> > +};
+> > +
+> > +/* Custom regmap read/write operations: perform unlocked access to the i2c bus. */
+> > +
+> > +static int sunrise_regmap_read(void *context, const void *reg_buf,
+> > +			       size_t reg_size, void *val_buf, size_t val_size)
+> > +{
+> > +	struct i2c_client *client = context;
+> > +	struct sunrise_dev *sunrise = i2c_get_clientdata(client);
+> > +	union i2c_smbus_data data;
+> > +	int ret;
+> > +
+> > +	if (reg_size != 1 || !val_size)
+> > +		return -EINVAL;
+> > +
+> > +	memset(&data, 0, sizeof(data));
+> > +	data.block[0] = val_size;
+> > +
+> > +	/*
+> > +	 * Wake up sensor by sending sensor address: START, sensor address,
+> > +	 * STOP. Sensor will not ACK this byte.
+> > +	 *
+> > +	 * The chip enters a low power state after 15ms without
+> > +	 * communications or after a complete read/write sequence.
+> > +	 */
+> > +	__i2c_smbus_xfer(client->adapter, client->addr,
+> > +			 sunrise->ignore_nak ? I2C_M_IGNORE_NAK : 0,
+> > +			 I2C_SMBUS_WRITE, 0, I2C_SMBUS_BYTE_DATA, &data);
+> > +
+> > +	usleep_range(500, 1500);
+> > +
+> > +	ret = __i2c_smbus_xfer(client->adapter, client->addr, client->flags,
+> > +			       I2C_SMBUS_READ, ((u8 *)reg_buf)[0],
+> > +			       I2C_SMBUS_I2C_BLOCK_DATA, &data);
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> > +	memcpy(val_buf, &data.block[1], data.block[0]);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int sunrise_regmap_write(void *context, const void *val_buf, size_t count)
+> > +{
+> > +	struct i2c_client *client = context;
+> > +	struct sunrise_dev *sunrise = i2c_get_clientdata(client);
+> > +	union i2c_smbus_data data;
+> > +
+> > +	/* Discard reg address from values count. */
+> > +	if (!count)
+> > +		return -EINVAL;
+> > +	count--;
+> > +
+> > +	memset(&data, 0, sizeof(data));
+> > +	data.block[0] = count;
+> > +	memcpy(&data.block[1], (u8 *)val_buf + 1, count);
+> > +
+> > +	__i2c_smbus_xfer(client->adapter, client->addr,
+> > +			 sunrise->ignore_nak ? I2C_M_IGNORE_NAK : 0,
+> > +			 I2C_SMBUS_WRITE, 0, I2C_SMBUS_BYTE_DATA, &data);
+> > +
+> > +	usleep_range(500, 1500);
+> > +
+> > +	return __i2c_smbus_xfer(client->adapter, client->addr, client->flags,
+> > +				I2C_SMBUS_WRITE, ((u8 *)val_buf)[0],
+> > +				I2C_SMBUS_I2C_BLOCK_DATA, &data);
+> > +}
+> > +
+> > +/*
+> > + * Sunrise i2c read/write operations: lock the i2c segment to avoid losing the
+> > + * wake up session. Use custom regmap operations that perform unlocked access to
+> > + * the i2c bus.
+> > + */
+> > +static int sunrise_read_byte(struct sunrise_dev *sunrise, u8 reg)
+> > +{
+> > +	const struct i2c_client *client = sunrise->client;
+> > +	const struct device *dev = &client->dev;
+> > +	unsigned int val;
+> > +	int ret;
+> > +
+> > +	i2c_lock_bus(client->adapter, I2C_LOCK_SEGMENT);
+> > +	ret = regmap_read(sunrise->regmap, reg, &val);
+> > +	i2c_unlock_bus(client->adapter, I2C_LOCK_SEGMENT);
+> > +	if (ret) {
+> > +		dev_err(dev, "Read byte failed: reg 0x%02x (%d)\n", reg, ret);
+> > +		return ret;
+> > +	}
+> > +
+> > +	return val;
+> > +}
+> > +
+> > +static int sunrise_read_word(struct sunrise_dev *sunrise, u8 reg, u16 *val)
+> > +{
+> > +	const struct i2c_client *client = sunrise->client;
+> > +	const struct device *dev = &client->dev;
+> > +	__be16 be_val;
+> > +	int ret;
+> > +
+> > +	i2c_lock_bus(client->adapter, I2C_LOCK_SEGMENT);
+> > +	ret = regmap_bulk_read(sunrise->regmap, reg, &be_val, sizeof(be_val));
+> > +	i2c_unlock_bus(client->adapter, I2C_LOCK_SEGMENT);
+> > +	if (ret) {
+> > +		dev_err(dev, "Read word failed: reg 0x%02x (%d)\n", reg, ret);
+> > +		return ret;
+> > +	}
+> > +
+> > +	*val = be16_to_cpu(be_val);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int sunrise_write_byte(struct sunrise_dev *sunrise, u8 reg, u8 val)
+> > +{
+> > +	const struct i2c_client *client = sunrise->client;
+> > +	const struct device *dev = &client->dev;
+> > +	int ret;
+> > +
+> > +	i2c_lock_bus(client->adapter, I2C_LOCK_SEGMENT);
+> > +	ret = regmap_write(sunrise->regmap, reg, val);
+> > +	i2c_unlock_bus(client->adapter, I2C_LOCK_SEGMENT);
+> > +	if (ret)
+> > +		dev_err(dev, "Write byte failed: reg 0x%02x (%d)\n", reg, ret);
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +static int sunrise_write_word(struct sunrise_dev *sunrise, u8 reg, u16 data)
+> > +{
+> > +	const struct i2c_client *client = sunrise->client;
+> > +	const struct device *dev = &client->dev;
+> > +	__be16 be_data = cpu_to_be16(data);
+> > +	int ret;
+> > +
+> > +	i2c_lock_bus(client->adapter, I2C_LOCK_SEGMENT);
+> > +	ret = regmap_bulk_write(sunrise->regmap, reg, &be_data, sizeof(be_data));
+> > +	i2c_unlock_bus(client->adapter, I2C_LOCK_SEGMENT);
+> > +	if (ret)
+> > +		dev_err(dev, "Write word failed: reg 0x%02x (%d)\n", reg, ret);
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +/* Trigger a calibration cycle. */
+> > +
+> > +enum {
+> > +	SUNRISE_CALIBRATION_FACTORY,
+> > +	SUNRISE_CALIBRATION_BACKGROUND,
+> > +};
+> > +
+> > +static const struct sunrise_calib_data {
+> > +	u16 cmd;
+> > +	u8 bit;
+> > +	const char * const name;
+> > +} calib_data[] = {
+> > +	[SUNRISE_CALIBRATION_FACTORY] = {
+> > +		SUNRISE_CALIBRATION_FACTORY_CMD,
+> > +		BIT(2),
+> > +		"factory_calibration",
+> > +	},
+> > +	[SUNRISE_CALIBRATION_BACKGROUND] = {
+> > +		SUNRISE_CALIBRATION_BACKGROUND_CMD,
+> > +		BIT(5),
+> > +		"background_calibration",
+> > +	},
+> > +};
+> > +
+> > +static int sunrise_calibrate(struct sunrise_dev *sunrise,
+> > +			     const struct sunrise_calib_data *data)
+> > +{
+> > +	unsigned int status;
+> > +	int ret;
+> > +
+> > +	/* Reset the calibration status reg. */
+> > +	ret = sunrise_write_byte(sunrise, SUNRISE_CALIBRATION_STATUS_REG, 0x00);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	/* Write a calibration command and poll the calibration status bit. */
+> > +	ret = sunrise_write_word(sunrise, SUNRISE_CALIBRATION_COMMAND_REG, data->cmd);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	dev_dbg(&sunrise->client->dev, "%s in progress\n", data->name);
+> > +
+> > +	/*
+> > +	 * Calibration takes several seconds, so the sleep time between reads
+> > +	 * can be pretty relaxed.
+> > +	 */
+> > +	return read_poll_timeout(sunrise_read_byte, status, status & data->bit,
+> > +				 200000, SUNRISE_CALIBRATION_TIMEOUT_US, false,
+> > +				 sunrise, SUNRISE_CALIBRATION_STATUS_REG);
+> > +}
+> > +
+> > +static ssize_t sunrise_cal_factory_write(struct iio_dev *iiodev,
+> > +					 uintptr_t private,
+> > +					 const struct iio_chan_spec *chan,
+> > +					 const char *buf, size_t len)
+> > +{
+> > +	struct sunrise_dev *sunrise = iio_priv(iiodev);
+> > +	bool enable;
+> > +	int ret;
+> > +
+> > +	ret = kstrtobool(buf, &enable);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	if (!enable)
+> > +		return len;
+> > +
+> > +	mutex_lock(&sunrise->lock);
+> > +	ret = sunrise_calibrate(sunrise, &calib_data[SUNRISE_CALIBRATION_FACTORY]);
+> > +	mutex_unlock(&sunrise->lock);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	return len;
+> > +}
+> > +
+> > +static ssize_t sunrise_cal_background_write(struct iio_dev *iiodev,
+> > +					    uintptr_t private,
+> > +					    const struct iio_chan_spec *chan,
+> > +					    const char *buf, size_t len)
+> > +{
+> > +	struct sunrise_dev *sunrise = iio_priv(iiodev);
+> > +	bool enable;
+> > +	int ret;
+> > +
+> > +	ret = kstrtobool(buf, &enable);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	if (!enable)
+> > +		return len;
+> > +
+> > +	mutex_lock(&sunrise->lock);
+> > +	ret = sunrise_calibrate(sunrise, &calib_data[SUNRISE_CALIBRATION_BACKGROUND]);
+> > +	mutex_unlock(&sunrise->lock);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	return len;
+> > +}
+> > +
+> > + /* Enumerate and retrieve the chip error status. */
+> > +enum {
+> > +	SUNRISE_ERROR_FATAL,
+> > +	SUNRISE_ERROR_I2C,
+> > +	SUNRISE_ERROR_ALGORITHM,
+> > +	SUNRISE_ERROR_CALIBRATION,
+> > +	SUNRISE_ERROR_SELF_DIAGNOSTIC,
+> > +	SUNRISE_ERROR_OUT_OF_RANGE,
+> > +	SUNRISE_ERROR_MEMORY,
+> > +	SUNRISE_ERROR_NO_MEASUREMENT,
+> > +	SUNRISE_ERROR_LOW_VOLTAGE,
+> > +	SUNRISE_ERROR_MEASUREMENT_TIMEOUT,
+> > +};
+> > +
+> > +static const char * const sunrise_error_statuses[] = {
+> > +	[SUNRISE_ERROR_FATAL] = "error_fatal",
+> > +	[SUNRISE_ERROR_I2C] = "error_i2c",
+> > +	[SUNRISE_ERROR_ALGORITHM] = "error_algorithm",
+> > +	[SUNRISE_ERROR_CALIBRATION] = "error_calibration",
+> > +	[SUNRISE_ERROR_SELF_DIAGNOSTIC] = "error_self_diagnostic",
+> > +	[SUNRISE_ERROR_OUT_OF_RANGE] = "error_out_of_range",
+> > +	[SUNRISE_ERROR_MEMORY] = "error_memory",
+> > +	[SUNRISE_ERROR_NO_MEASUREMENT] = "error_no_measurement",
+> > +	[SUNRISE_ERROR_LOW_VOLTAGE] = "error_low_voltage",
+> > +	[SUNRISE_ERROR_MEASUREMENT_TIMEOUT] = "error_measurement_timeout",
+> > +};
+> > +
+> > +static const struct iio_enum sunrise_error_statuses_enum = {
+> > +	.items = sunrise_error_statuses,
+> > +	.num_items = ARRAY_SIZE(sunrise_error_statuses),
+> > +};
+> > +
+> > +static ssize_t sunrise_error_status_read(struct iio_dev *iiodev,
+> > +					 uintptr_t private,
+> > +					 const struct iio_chan_spec *chan,
+> > +					 char *buf)
+> > +{
+> > +	struct sunrise_dev *sunrise = iio_priv(iiodev);
+> > +	unsigned long errors;
+> > +	ssize_t len = 0;
+> > +	u16 value;
+> > +	int ret;
+> > +	u8 i;
+> > +
+> > +	mutex_lock(&sunrise->lock);
+> > +	ret = sunrise_read_word(sunrise, SUNRISE_ERROR_STATUS_REG, &value);
+> > +	if (ret) {
+> > +		mutex_unlock(&sunrise->lock);
+> > +		return ret;
+> > +	}
+> > +
+> > +	errors = value;
+> > +	for_each_set_bit(i, &errors, ARRAY_SIZE(sunrise_error_statuses))
+> > +		len += sysfs_emit_at(buf, len, "%s ", sunrise_error_statuses[i]);
+> > +
+> > +	if (len)
+> > +		buf[len - 1] = '\n';
+> > +
+> > +	mutex_unlock(&sunrise->lock);
+> > +
+> > +	return len;
+> > +}
+> > +
+> > +static const struct iio_chan_spec_ext_info sunrise_concentration_ext_info[] = {
+> > +	/* Calibration triggers. */
+> > +	{
+> > +		.name = "calibration_factory",
+> > +		.write = sunrise_cal_factory_write,
+> > +		.shared = IIO_SEPARATE,
+> > +	},
+> > +	{
+> > +		.name = "calibration_background",
+> > +		.write = sunrise_cal_background_write,
+> > +		.shared = IIO_SEPARATE,
+> > +	},
+> > +
+> > +	/* Error statuses. */
+> > +	{
+> > +		.name = "error_status",
+> > +		.read = sunrise_error_status_read,
+> > +		.shared = IIO_SHARED_BY_ALL,
+> > +	},
+> > +	{
+> > +		.name = "error_status_available",
+> > +		.shared = IIO_SHARED_BY_ALL,
+> > +		.read = iio_enum_available_read,
+> > +		.private = (uintptr_t)&sunrise_error_statuses_enum,
+> > +	},
+> > +	{}
+> > +};
+> > +
+> > +static const struct iio_chan_spec sunrise_channels[] = {
+> > +	{
+> > +		.type = IIO_CONCENTRATION,
+> > +		.modified = 1,
+> > +		.channel2 = IIO_MOD_CO2,
+> > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> > +				      BIT(IIO_CHAN_INFO_SCALE),
+> > +		.ext_info = sunrise_concentration_ext_info,
+> > +		.scan_index = 0,
+>
+> Not sure how I missed it before now, but we don't need to set scan_index or
+> scan_type if not providing the buffered interface.  I'd prefer that we
+> introduce them only alongside that support as otherwise they are just noise.
+>
+> If that's all I find, I'll just drop these whilst applying and ask you to
+> sanity check the result.
+>
+> > +		.scan_type = {
+> > +			.sign = 's',
+> > +			.realbits = 16,
+> > +			.storagebits = 16,
+> > +			.endianness = IIO_CPU,
+> > +		},
+> > +	},
+> > +	{
+> > +		.type = IIO_TEMP,
+> > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> > +				      BIT(IIO_CHAN_INFO_SCALE),
+> > +		.scan_index = 1,
+> > +		.scan_type = {
+> > +			.sign = 's',
+> > +			.realbits = 16,
+> > +			.storagebits = 16,
+> > +			.endianness = IIO_CPU,
+> > +		},
+> > +	},
+> > +};
+> > +
+> > +static int sunrise_read_raw(struct iio_dev *iio_dev,
+> > +			    const struct iio_chan_spec *chan,
+> > +			    int *val, int *val2, long mask)
+> > +{
+> > +	struct sunrise_dev *sunrise = iio_priv(iio_dev);
+> > +	u16 value;
+> > +	int ret;
+> > +
+> > +	switch (mask) {
+> > +	case IIO_CHAN_INFO_RAW:
+> > +		switch (chan->type) {
+> > +		case IIO_CONCENTRATION:
+> > +			mutex_lock(&sunrise->lock);
+> > +			ret = sunrise_read_word(sunrise, SUNRISE_CO2_FILTERED_COMP_REG,
+> > +						&value);
+> > +			*val = value;
+> > +			mutex_unlock(&sunrise->lock);
+> > +
+> > +			if (ret)
+> > +				return ret;
+> > +
+> > +			return IIO_VAL_INT;
+> > +
+> > +		case IIO_TEMP:
+> > +			mutex_lock(&sunrise->lock);
+> > +			ret = sunrise_read_word(sunrise, SUNRISE_CHIP_TEMPERATURE_REG,
+> > +						&value);
+> > +			*val = value;
+> > +			mutex_unlock(&sunrise->lock);
+> > +
+> > +			if (ret)
+> > +				return ret;
+> > +
+> > +			return IIO_VAL_INT;
+> > +
+> > +		default:
+> > +			return -EINVAL;
+> > +		}
+> > +
+> > +	case IIO_CHAN_INFO_SCALE:
+> > +		switch (chan->type) {
+> > +		case IIO_CONCENTRATION:
+> > +			/*
+> > +			 * 1 / 10^4 to comply with IIO scale for CO2
+> > +			 * (percentage). The chip CO2 reading range is [400 -
+> > +			 * 5000] ppm which corresponds to [0,004 - 0,5] %.
+> > +			 */
+> > +			*val = 1;
+> > +			*val2 = 10000;
+> > +			return IIO_VAL_FRACTIONAL;
+> > +
+> > +		case IIO_TEMP:
+> > +			/* x10 to comply with IIO scale (millidegrees celsius). */
+> > +			*val = 10;
+> > +			return IIO_VAL_INT;
+> > +
+> > +		default:
+> > +			return -EINVAL;
+> > +		}
+> > +
+> > +	default:
+> > +		return -EINVAL;
+> > +	}
+> > +}
+> > +
+> > +static const struct iio_info sunrise_info = {
+> > +	.read_raw = sunrise_read_raw,
+> > +};
+> > +
+> > +static const struct regmap_bus sunrise_regmap_bus = {
+> > +	.read = sunrise_regmap_read,
+> > +	.write = sunrise_regmap_write,
+> > +};
+> > +
+> > +static const struct regmap_config sunrise_regmap_config = {
+> > +	.reg_bits = 8,
+> > +	.val_bits = 8,
+> > +};
+> > +
+> > +static int sunrise_probe(struct i2c_client *client)
+> > +{
+> > +	struct sunrise_dev *sunrise;
+> > +	struct iio_dev *iio_dev;
+> > +
+> > +	if (!i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_BYTE_DATA |
+> > +						      I2C_FUNC_SMBUS_BLOCK_DATA)) {
+> > +		dev_err(&client->dev,
+> > +			"Adapter does not support required functionalities\n");
+> > +		return -EOPNOTSUPP;
+> > +	}
+> > +
+> > +	iio_dev = devm_iio_device_alloc(&client->dev, sizeof(*sunrise));
+> > +	if (!iio_dev)
+> > +		return -ENOMEM;
+> > +
+> > +	sunrise = iio_priv(iio_dev);
+> > +	sunrise->client = client;
+> > +	mutex_init(&sunrise->lock);
+> > +
+> > +	i2c_set_clientdata(client, sunrise);
+> > +
+> > +	sunrise->regmap = devm_regmap_init(&client->dev, &sunrise_regmap_bus,
+> > +					   client, &sunrise_regmap_config);
+> > +	if (IS_ERR(sunrise->regmap)) {
+> > +		dev_err(&client->dev, "Failed to initialize regmap\n");
+> > +		return PTR_ERR(sunrise->regmap);
+> > +	}
+> > +
+> > +	/*
+> > +	 * The chip nacks the wake up message. If the adapter does not support
+> > +	 * protocol mangling do not set the I2C_M_IGNORE_NAK flag at the expense
+> > +	 * of possible cruft in the logs.
+> > +	 */
+> > +	if (i2c_check_functionality(client->adapter, I2C_FUNC_PROTOCOL_MANGLING))
+> > +		sunrise->ignore_nak = true;
+> > +
+> > +	iio_dev->info = &sunrise_info;
+> > +	iio_dev->name = DRIVER_NAME;
+> > +	iio_dev->channels = sunrise_channels;
+> > +	iio_dev->num_channels = ARRAY_SIZE(sunrise_channels);
+> > +	iio_dev->modes = INDIO_DIRECT_MODE;
+> > +
+> > +	return devm_iio_device_register(&client->dev, iio_dev);
+> > +}
+> > +
+> > +static const struct of_device_id sunrise_of_match[] = {
+> > +	{ .compatible = "senseair,sunrise-006-0-0007" },
+> > +	{}
+> > +};
+> > +MODULE_DEVICE_TABLE(of, sunrise_of_match);
+> > +
+> > +static struct i2c_driver sunrise_driver = {
+> > +	.driver = {
+> > +		.name = DRIVER_NAME,
+> > +		.of_match_table = sunrise_of_match,
+> > +	},
+> > +	.probe_new = sunrise_probe,
+> > +};
+> > +module_i2c_driver(sunrise_driver);
+> > +
+> > +MODULE_AUTHOR("Jacopo Mondi <jacopo@jmondi.org>");
+> > +MODULE_DESCRIPTION("Senseair Sunrise 006-0-0007 CO2 sensor IIO driver");
+> > +MODULE_LICENSE("GPL v2");
+> > --
+> > 2.32.0
+> >
+>

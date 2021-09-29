@@ -2,102 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5835841CAD5
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Sep 2021 19:02:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D96F841CC38
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Sep 2021 20:58:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244242AbhI2RE1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Sep 2021 13:04:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53982 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S243396AbhI2RE0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 29 Sep 2021 13:04:26 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S244766AbhI2TAf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Sep 2021 15:00:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50006 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1345545AbhI2TAe (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Sep 2021 15:00:34 -0400
+Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [IPv6:2a0b:5c81:1c1::37])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F858C061764;
+        Wed, 29 Sep 2021 11:58:53 -0700 (PDT)
+Received: from groot.intra.skream.org (mobile-user-c1d306-252.dhcp.inet.fi [193.211.6.252])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7D2696124A;
-        Wed, 29 Sep 2021 17:02:44 +0000 (UTC)
-Date:   Wed, 29 Sep 2021 18:06:38 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Cai Huoqing <caihuoqing@baidu.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 2/2] iio: st_lsm9ds0: Make use of the helper function
- dev_err_probe()
-Message-ID: <20210929180638.6ddb313b@jic23-huawei>
-In-Reply-To: <20210928014055.1431-2-caihuoqing@baidu.com>
-References: <20210928014055.1431-1-caihuoqing@baidu.com>
-        <20210928014055.1431-2-caihuoqing@baidu.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        (Authenticated sender: pekka.korpinen)
+        by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 130E11B0030E;
+        Wed, 29 Sep 2021 21:58:49 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
+        t=1632941929;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=q8+w7okSOx/BOQbKgOezP2IcqpFc5kkNNTtE4GU2tNM=;
+        b=H6Gg6oppKtqB6daVI5wijl1SO9wUfpUNmO56KdK1lBxz/3/PD+zbYwkC4ysPk19AAUFkj5
+        hN7gOkGJ+cq1ZG0l2h7qQ5NblX7v7tTo4q9q2LqiE6Si7M+39UfNpX8I9fRgGrkOPqJTVa
+        /uzJMyTbv84ctCTVdATwm5POYi61lKqrglJuOhEqvaDBN4vG6a4NI6cHqfxyO6xeDziTqM
+        Vv4KOHzTVXkPPZQ3C/7OYfkVRR9XLb7m5k1b8Y/975oJLwr5mGFaL+dO5OO9gGMHpgCdtb
+        9YGu8Zomb//WRgbr5DStAG8ngBvrp+AW7/yvce1rBlvs6bcyVSgy+nwvQWbaeA==
+From:   Pekka Korpinen <pekka.korpinen@iki.fi>
+Cc:     ardeleanalex@gmail.com, Pekka Korpinen <pekka.korpinen@iki.fi>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Jean-Francois Dagenais <jeff.dagenais@gmail.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] iio: dac: ad5446: Fix ad5622_write() return value
+Date:   Wed, 29 Sep 2021 21:57:55 +0300
+Message-Id: <20210929185755.2384-1-pekka.korpinen@iki.fi>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20d11fbb-ba93-802c-1abc-60d7f5ec0c0c@metafoo.de>
+References: <20d11fbb-ba93-802c-1abc-60d7f5ec0c0c@metafoo.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1632941929; a=rsa-sha256;
+        cv=none;
+        b=gRK6Mj6XPgfueCre46YyQpkrTNdwGWfXt0cm6WROwxUF0ktQ/UXEwxM9emBkIBQSG7GsWl
+        XkccYQSdMFVnBb+czSFeUudOTnsAPTxkrHUG5rQdzFHbB3neMJ47lR1JcmQ15Qd5aNJ/6h
+        hD1iytgM8vHMqgJAH789MjA9xQ6vlb8OA516EUEpBtDEv66ELZKi0OH9FkejnGCuuvHfPw
+        Djm1JpZPkdmAWkd8fe7FT1twV3HxJV+jfF37riFmSWbaITtWZRUv8964gEnZkqlsrndk8s
+        Uv2Nmwu/vOjKZ3p0hzFSoFVh7MQnLdiDK+8S2zH2aIf3QTEUnyzKlIRR8+ebRg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+        s=lahtoruutu; t=1632941929;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=q8+w7okSOx/BOQbKgOezP2IcqpFc5kkNNTtE4GU2tNM=;
+        b=eqe3BqIuuauGAf9HJLzxwnA8m3dWpQqU78+6ETjvPv4o+RSjcMIAwWnXh0g+mrZuUq8pAU
+        seAiJ87VCdxaIPRrZwEpYmvOJ5pM+M0pp8wdrzVEIIC6A9CxuOynjfFv9aiYVtC3xEf+5m
+        VVEvclqvV4yDXz7uirwjHZ5S8U4fge52dpFnooWRzZ95MXlw9SZBQ7k+jU2x+DlC5/d9Sk
+        46Vj4Qcw1/2f9p/6h6NMGAWpv9W60gIeTQ95YSJrUxhJwUxf2wJABBsgIJKsmK1tjXqwsl
+        C2glSjNjK9qHpyiEWIfQuWC8XaRHarR799Q+p38y05LaTvYVhQMoVhnIrn25yA==
+ARC-Authentication-Results: i=1;
+        ORIGINATING;
+        auth=pass smtp.auth=pekka.korpinen smtp.mailfrom=pekka.korpinen@iki.fi
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 28 Sep 2021 09:40:54 +0800
-Cai Huoqing <caihuoqing@baidu.com> wrote:
+On success i2c_master_send() returns the number of bytes written. The
+call from iio_write_channel_info(), however, expects the return value to
+be zero on success.
 
-> When possible use dev_err_probe help to properly deal with the
-> PROBE_DEFER error, the benefit is that DEFER issue will be logged
-> in the devices_deferred debugfs file.
-> Using dev_err_probe() can reduce code size, and the error value
-> gets printed.
-> 
-> Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
+This bug causes incorrect consumption of the sysfs buffer in
+iio_write_channel_info(). When writing more than two characters to
+out_voltage0_raw, the ad5446 write handler is called multiple times
+causing unexpected behavior.
 
-Hi Cai,
+Fixes: 3ec36a2cf0d5 ("iio:ad5446: Add support for I2C based DACs")
+Signed-off-by: Pekka Korpinen <pekka.korpinen@iki.fi>
+---
+v1->v2: Check against expected result, otherwise -EIO. Add Fixes tag.
 
-Picking a random patch to reply to...
+A similar bug was fixed for ad5064.c in 2015 - commit 03fe472ef33b
+("iio:ad5064: Make sure ad5064_i2c_write() returns 0 on success").
 
-Thanks for your hard work on these.  The ones I haven't replied to look
-fine to me.   It might have been slightly better to slow down your initial
-submission of these as then we could perhaps have avoided 2-3 versions
-of every patch by identifying shared elements to improve in a smaller set.
-Still that's the benefit of hindsight!
+ drivers/iio/dac/ad5446.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-I'll not apply these quite yet so as to allow time for driver maintainers
-and others to take a look.
-
-If you could tidy up those few minor comments I have that would be great.
-
-Thanks,
-
-Jonathan
-
-> ---
->  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_core.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_core.c b/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_core.c
-> index b3a43a3b04ff..9fb06b7cde3c 100644
-> --- a/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_core.c
-> +++ b/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_core.c
-> @@ -24,10 +24,10 @@ static int st_lsm9ds0_power_enable(struct device *dev, struct st_lsm9ds0 *lsm9ds
->  
->  	/* Regulators not mandatory, but if requested we should enable them. */
->  	lsm9ds0->vdd = devm_regulator_get(dev, "vdd");
-> -	if (IS_ERR(lsm9ds0->vdd)) {
-> -		dev_err(dev, "unable to get Vdd supply\n");
-> -		return PTR_ERR(lsm9ds0->vdd);
-> -	}
-> +	if (IS_ERR(lsm9ds0->vdd))
-> +		return dev_err_probe(dev, PTR_ERR(lsm9ds0->vdd),
-> +				     "unable to get Vdd supply\n");
-> +
->  	ret = regulator_enable(lsm9ds0->vdd);
->  	if (ret) {
->  		dev_warn(dev, "Failed to enable specified Vdd supply\n");
-> @@ -36,9 +36,9 @@ static int st_lsm9ds0_power_enable(struct device *dev, struct st_lsm9ds0 *lsm9ds
->  
->  	lsm9ds0->vdd_io = devm_regulator_get(dev, "vddio");
->  	if (IS_ERR(lsm9ds0->vdd_io)) {
-> -		dev_err(dev, "unable to get Vdd_IO supply\n");
->  		regulator_disable(lsm9ds0->vdd);
-> -		return PTR_ERR(lsm9ds0->vdd_io);
-> +		return dev_err_probe(dev, PTR_ERR(lsm9ds0->vdd_io),
-> +				     "unable to get Vdd_IO supply\n");
->  	}
->  	ret = regulator_enable(lsm9ds0->vdd_io);
->  	if (ret) {
+diff --git a/drivers/iio/dac/ad5446.c b/drivers/iio/dac/ad5446.c
+index 488ec69967d6..e50718422411 100644
+--- a/drivers/iio/dac/ad5446.c
++++ b/drivers/iio/dac/ad5446.c
+@@ -531,8 +531,15 @@ static int ad5622_write(struct ad5446_state *st, unsigned val)
+ {
+ 	struct i2c_client *client = to_i2c_client(st->dev);
+ 	__be16 data = cpu_to_be16(val);
++	int ret;
++
++	ret = i2c_master_send(client, (char *)&data, sizeof(data));
++	if (ret < 0)
++		return ret;
++	if (ret != sizeof(data))
++		return -EIO;
+ 
+-	return i2c_master_send(client, (char *)&data, sizeof(data));
++	return 0;
+ }
+ 
+ /*
+-- 
+2.33.0
 

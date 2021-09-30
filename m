@@ -2,36 +2,30 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B1B1A41DE23
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Sep 2021 17:55:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B37E741DE64
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Sep 2021 18:06:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346647AbhI3P5H (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 30 Sep 2021 11:57:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41586 "EHLO mail.kernel.org"
+        id S1348509AbhI3QIW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 30 Sep 2021 12:08:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44276 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1346736AbhI3P5H (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 30 Sep 2021 11:57:07 -0400
+        id S1348196AbhI3QIL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 30 Sep 2021 12:08:11 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8960661411;
-        Thu, 30 Sep 2021 15:55:20 +0000 (UTC)
-Date:   Thu, 30 Sep 2021 16:59:15 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 492C2613A9;
+        Thu, 30 Sep 2021 16:06:27 +0000 (UTC)
+Date:   Thu, 30 Sep 2021 17:10:23 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Roan van Dijk <roan@protonic.nl>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Tomasz Duszynski <tomasz.duszynski@octakon.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, david@protonic.nl,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v3 3/4] drivers: iio: chemical: Add support for
- Sensirion SCD4x CO2 sensor
-Message-ID: <20210930165915.50fc831b@jic23-huawei>
-In-Reply-To: <b9cffd75-0b86-544c-4832-070d12606de4@protonic.nl>
-References: <20210922103925.2742362-1-roan@protonic.nl>
-        <20210922103925.2742362-4-roan@protonic.nl>
-        <20210925172307.305be961@jic23-huawei>
-        <b9cffd75-0b86-544c-4832-070d12606de4@protonic.nl>
+To:     Alexandru Ardelean <aardelean@deviqon.com>
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Maxime Ripard <maxime@cerno.tech>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: Re: [PATCH] iio: adc: nau7802: convert probe to full device-managed
+Message-ID: <20210930171023.2bf5a414@jic23-huawei>
+In-Reply-To: <20210926154932.3287590-1-aardelean@deviqon.com>
+References: <20210926154932.3287590-1-aardelean@deviqon.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -40,195 +34,121 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 27 Sep 2021 14:28:24 +0200
-Roan van Dijk <roan@protonic.nl> wrote:
+On Sun, 26 Sep 2021 18:49:32 +0300
+Alexandru Ardelean <aardelean@deviqon.com> wrote:
 
-> On 25-09-2021 18:23, Jonathan Cameron wrote:
-> > On Wed, 22 Sep 2021 12:39:24 +0200
-> > Roan van Dijk <roan@protonic.nl> wrote:
-> >   
-> >> This is a driver for the SCD4x CO2 sensor from Sensirion. The sensor is
-> >> able to measure CO2 concentration, temperature and relative humdity.
-> >> The sensor uses a photoacoustic principle for measuring CO2 concentration.
-> >> An I2C interface is supported by this driver in order to communicate with
-> >> the sensor.
-> >>
-> >> Signed-off-by: Roan van Dijk <roan@protonic.nl>  
-> > 
-> > Hi Roan,
-> > 
-> > Only thing in here of significance is that the format for available attribute
-> > is wrong + it needs adding to the ABI docs.
-> > 
-> > Given we are going to have a v4, I noted a few other minor things to tidy up.
-> > 
-> > Thanks,
-> > 
-> > Jonathan
-> >   
+> This is a trivial conversion to device-managed functions.
+> The mutex_destroy() calls are redundant, as the data will be free'd anyway.
 > 
-> Thank you for your feedback. I will make a new patch with these fixes.
+> And the IRQ and IIO register functions both have device-managed
+> equivalents.
 > 
-> The documentation for the _available and the fixes you suggested, have 
-> already been added in patch [PATCH v3 4/4]. Do I still need to add 
-> something to the ABI documentation or is it fine like this?
+> Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
 
-Ah. I missed _available documentation for some reason. Sorry about that
-it's fine as you have it.
++CC Maxime and Alexandre.
 
-> 
-> However, I will change the KernelVersion to 5.15 of the _available 
-> description in patch v4. I left this at 5.8 and that's not right, 
-> because this information is newly added.
-Good spot.
+Looks simple enough to me that I won't wait on their replies to queue it up.
+Obviously feedback welcome though!
 
-J
+Applied to the togreg branch of iio.git and pushed out as testing for 0-day
+to see if it can find stuff we missed.
 
+Thanks,
+
+Jonathan
+
+
+> ---
+>  drivers/iio/adc/nau7802.c | 50 +++++++--------------------------------
+>  1 file changed, 9 insertions(+), 41 deletions(-)
 > 
-> Thanks,
-> 
-> Roan
-> 
-> >   
-> >> +static int scd4x_read(struct scd4x_state *state, enum scd4x_cmd cmd,
-> >> +			void *response, int response_sz)
-> >> +{
-> >> +	struct i2c_client *client = state->client;
-> >> +	char buf[SCD4X_READ_BUF_SIZE];
-> >> +	char *rsp = response;
-> >> +	int i, ret;
-> >> +	char crc;
-> >> +
-> >> +	/*
-> >> +	 * Measurement needs to be stopped before sending commands.
-> >> +	 * Except for reading measurement and data ready command.
-> >> +	 */
-> >> +	if ((cmd != CMD_GET_DATA_READY) && (cmd != CMD_READ_MEAS)) {
-> >> +		ret = scd4x_send_command(state, CMD_STOP_MEAS);
-> >> +		if (ret)
-> >> +			return ret;
-> >> +
-> >> +		/* execution time for stopping measurement */
-> >> +		msleep_interruptible(500);
-> >> +	}
-> >> +
-> >> +	/*CRC byte for every 2 bytes of data */  
-> > 
-> > /* CRC..
-> > 
-> > Please check for similar as otherwise we'll get 'cleanup' patches the moment various
-> > scripts hit this new code and it'll waste our time!
-> >   
-> >> +	response_sz += response_sz / 2;
-> >> +
-> >> +	put_unaligned_be16(cmd, buf);
-> >> +	ret = scd4x_i2c_xfer(state, buf, 2, buf, response_sz);
-> >> +	if (ret)
-> >> +		return ret;
-> >> +
-> >> +	for (i = 0; i < response_sz; i += 3) {
-> >> +		crc = crc8(scd4x_crc8_table, buf + i, 2, CRC8_INIT_VALUE);
-> >> +		if (crc != buf[i + 2]) {
-> >> +			dev_err(&client->dev, "CRC error\n");
-> >> +			return -EIO;
-> >> +		}
-> >> +
-> >> +		*rsp++ = buf[i];
-> >> +		*rsp++ = buf[i + 1];
-> >> +	}
-> >> +
-> >> +	/* start measurement */
-> >> +	if ((cmd != CMD_GET_DATA_READY) && (cmd != CMD_READ_MEAS)) {
-> >> +		ret = scd4x_send_command(state, CMD_START_MEAS);
-> >> +		if (ret)
-> >> +			return ret;
-> >> +	}
-> >> +
-> >> +	return 0;
-> >> +}
-> >> +  
-> > 
-> > ...
-> >   
-> >> +
-> >> +static IIO_DEVICE_ATTR_RW(calibration_auto_enable, 0);
-> >> +static IIO_DEVICE_ATTR_WO(calibration_forced_value, 0);
-> >> +
-> >> +static IIO_CONST_ATTR(calibration_forced_value_available,
-> >> +	       __stringify(SCD4X_FRC_MIN_PPM 1 SCD4X_FRC_MAX_PPM));  
-> > 
-> > Ah, I wasn't completely clear on this.  See the main ABI doc for
-> > _available
-> > 
-> > Format for this needs to include brackets to indicate it's a range
-> > rather than 3 numbers
-> > "[MIN 1  MAX]"
-> > 
-> > 
-> > Having added this it also needs to be in the ABI documentation.
-> > Whilst somewhat trivial, all ABI should be documented there.
-> >   
-> >> +
-> >> +static struct attribute *scd4x_attrs[] = {
-> >> +	&iio_dev_attr_calibration_auto_enable.dev_attr.attr,
-> >> +	&iio_dev_attr_calibration_forced_value.dev_attr.attr,
-> >> +	&iio_const_attr_calibration_forced_value_available.dev_attr.attr,
-> >> +	NULL
-> >> +};
-> >> +
-> >> +static const struct attribute_group scd4x_attr_group = {
-> >> +	.attrs = scd4x_attrs,
-> >> +};
-> >> +
-> >> +static const struct iio_info scd4x_info = {
-> >> +	.attrs = &scd4x_attr_group,
-> >> +	.read_raw = scd4x_read_raw,
-> >> +	.write_raw = scd4x_write_raw,
-> >> +};
-> >> +  
-> > 
-> > ...
-> >   
-> >> +
-> >> +static irqreturn_t scd4x_trigger_handler(int irq, void *p)
-> >> +{
-> >> +	struct iio_poll_func *pf = p;
-> >> +	struct iio_dev *indio_dev = pf->indio_dev;
-> >> +	struct scd4x_state *state = iio_priv(indio_dev);
-> >> +	struct {
-> >> +		uint16_t data[3];
-> >> +		int64_t ts __aligned(8);
-> >> +	} scan;
-> >> +	int ret;
-> >> +	uint16_t buf[3];
-> >> +
-> >> +	mutex_lock(&state->lock);
-> >> +	ret = scd4x_read_poll(state, buf);
-> >> +	mutex_unlock(&state->lock);
-> >> +	if (ret)
-> >> +		goto out;
-> >> +
-> >> +	memset(&scan, 0, sizeof(scan));
-> >> +	memcpy(scan.data, buf, sizeof(buf));  
-> > 
-> > I missed this before, but why not do the scd4x_read_poll() directly into scan->data after
-> > you've done the memset?  That way you avoid the need for a memcpy.
-> > 
-> > i.e.
-> > 
-> > 	memset(&scan, 0, sizeof(scan));
-> > 	mutex_lock(&state->lock)
-> > 	ret = scd4x_read_poll(state, scan->data);
-> > 	mutex_unlock(&state->lock);
-> > 	if (ret)
-> > 	...
-> > 
-> >   
-> >> +
-> >> +	iio_push_to_buffers_with_timestamp(indio_dev, &scan, iio_get_time_ns(indio_dev));
-> >> +out:
-> >> +	iio_trigger_notify_done(indio_dev->trig);
-> >> +	return IRQ_HANDLED;
-> >> +}
-> >> +  
+> diff --git a/drivers/iio/adc/nau7802.c b/drivers/iio/adc/nau7802.c
+> index bb70b51d25b1..976c235f3079 100644
+> --- a/drivers/iio/adc/nau7802.c
+> +++ b/drivers/iio/adc/nau7802.c
+> @@ -428,8 +428,6 @@ static int nau7802_probe(struct i2c_client *client,
+>  
+>  	st = iio_priv(indio_dev);
+>  
+> -	i2c_set_clientdata(client, indio_dev);
+> -
+>  	indio_dev->name = dev_name(&client->dev);
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
+>  	indio_dev->info = &nau7802_info;
+> @@ -495,13 +493,13 @@ static int nau7802_probe(struct i2c_client *client,
+>  	 * will enable them back when we will need them..
+>  	 */
+>  	if (client->irq) {
+> -		ret = request_threaded_irq(client->irq,
+> -				NULL,
+> -				nau7802_eoc_trigger,
+> -				IRQF_TRIGGER_HIGH | IRQF_ONESHOT |
+> -				IRQF_NO_AUTOEN,
+> -				client->dev.driver->name,
+> -				indio_dev);
+> +		ret = devm_request_threaded_irq(&client->dev, client->irq,
+> +						NULL,
+> +						nau7802_eoc_trigger,
+> +						IRQF_TRIGGER_HIGH | IRQF_ONESHOT |
+> +						IRQF_NO_AUTOEN,
+> +						client->dev.driver->name,
+> +						indio_dev);
+>  		if (ret) {
+>  			/*
+>  			 * What may happen here is that our IRQ controller is
+> @@ -526,7 +524,7 @@ static int nau7802_probe(struct i2c_client *client,
+>  		ret = i2c_smbus_write_byte_data(st->client, NAU7802_REG_CTRL2,
+>  					  NAU7802_CTRL2_CRS(st->sample_rate));
+>  		if (ret)
+> -			goto error_free_irq;
+> +			return ret;
+>  	}
+>  
+>  	/* Setup the ADC channels available on the board */
+> @@ -536,36 +534,7 @@ static int nau7802_probe(struct i2c_client *client,
+>  	mutex_init(&st->lock);
+>  	mutex_init(&st->data_lock);
+>  
+> -	ret = iio_device_register(indio_dev);
+> -	if (ret < 0) {
+> -		dev_err(&client->dev, "Couldn't register the device.\n");
+> -		goto error_device_register;
+> -	}
+> -
+> -	return 0;
+> -
+> -error_device_register:
+> -	mutex_destroy(&st->lock);
+> -	mutex_destroy(&st->data_lock);
+> -error_free_irq:
+> -	if (client->irq)
+> -		free_irq(client->irq, indio_dev);
+> -
+> -	return ret;
+> -}
+> -
+> -static int nau7802_remove(struct i2c_client *client)
+> -{
+> -	struct iio_dev *indio_dev = i2c_get_clientdata(client);
+> -	struct nau7802_state *st = iio_priv(indio_dev);
+> -
+> -	iio_device_unregister(indio_dev);
+> -	mutex_destroy(&st->lock);
+> -	mutex_destroy(&st->data_lock);
+> -	if (client->irq)
+> -		free_irq(client->irq, indio_dev);
+> -
+> -	return 0;
+> +	return devm_iio_device_register(&client->dev, indio_dev);
+>  }
+>  
+>  static const struct i2c_device_id nau7802_i2c_id[] = {
+> @@ -582,7 +551,6 @@ MODULE_DEVICE_TABLE(of, nau7802_dt_ids);
+>  
+>  static struct i2c_driver nau7802_driver = {
+>  	.probe = nau7802_probe,
+> -	.remove = nau7802_remove,
+>  	.id_table = nau7802_i2c_id,
+>  	.driver = {
+>  		   .name = "nau7802",
 

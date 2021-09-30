@@ -2,136 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D04641D7F9
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Sep 2021 12:43:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1217641D855
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Sep 2021 13:05:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349813AbhI3Kop (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 30 Sep 2021 06:44:45 -0400
-Received: from mail.kernelconcepts.de ([188.40.83.200]:35176 "EHLO
-        mail.kernelconcepts.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349865AbhI3Koo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Sep 2021 06:44:44 -0400
-Received: from [217.146.132.69] (helo=yoda.kc.loc)
-        by mail.kernelconcepts.de with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <florian.boor@kernelconcepts.de>)
-        id 1mVtWh-0005HP-CB; Thu, 30 Sep 2021 12:42:55 +0200
-From:   Florian Boor <florian.boor@kernelconcepts.de>
-To:     jic23@kernel.org
-Cc:     linux-iio@vger.kernel.org, Jonathan.Cameron@huawei.com,
-        Michael.Hennerich@analog.com, devicetree@vger.kernel.org,
-        robh+dt@kernel.org, Florian Boor <florian.boor@kernelconcepts.de>
-Subject: [PATCH v6 2/2] dt-bindings: iio: ad779x: Add binding document
-Date:   Thu, 30 Sep 2021 12:42:49 +0200
-Message-Id: <20210930104249.2924336-2-florian.boor@kernelconcepts.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210930104249.2924336-1-florian.boor@kernelconcepts.de>
-References: <20210930104249.2924336-1-florian.boor@kernelconcepts.de>
+        id S1350290AbhI3LGL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 30 Sep 2021 07:06:11 -0400
+Received: from mout.kundenserver.de ([212.227.17.10]:49239 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1350289AbhI3LGL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Sep 2021 07:06:11 -0400
+Received: from mail-wr1-f44.google.com ([209.85.221.44]) by
+ mrelayeu.kundenserver.de (mreue107 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1MvJjz-1mn9b81Zwn-00rFfp; Thu, 30 Sep 2021 13:04:27 +0200
+Received: by mail-wr1-f44.google.com with SMTP id k7so9268714wrd.13;
+        Thu, 30 Sep 2021 04:04:27 -0700 (PDT)
+X-Gm-Message-State: AOAM530aYBLVOIXWKKOTE9wlGtbpSbj3h9sTMvBwWXC7TEsEVNCnAB/c
+        oR4UzdzAI6UWnfl+/JiTC8GGASCIXrVCMLf3GfE=
+X-Google-Smtp-Source: ABdhPJy1xEUoEv0MPNfkxd+7bEPQ5aTe3WHfilrEA8zzOCj4njTUOJuS5/AGkDQ6Sh+U+gR+2Oy24/rBGxxYFzE6N7A=
+X-Received: by 2002:a5d:6cb4:: with SMTP id a20mr5464868wra.428.1632999866916;
+ Thu, 30 Sep 2021 04:04:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20210930081025.366039-1-drhunter95@gmail.com>
+In-Reply-To: <20210930081025.366039-1-drhunter95@gmail.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Thu, 30 Sep 2021 13:04:10 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a3LPLbJRDEsYgSL9x=rrk1=AmBWxFBNd0H591NKrLnMZA@mail.gmail.com>
+Message-ID: <CAK8P3a3LPLbJRDEsYgSL9x=rrk1=AmBWxFBNd0H591NKrLnMZA@mail.gmail.com>
+Subject: Re: [PATCH v4] workaround regression in ina2xx introduced by
+ cb47755725da("time: Prevent undefined behaviour in timespec64_to_ns()")
+To:     Iain Hunter <drhunter95@gmail.com>
+Cc:     lothar.felten@gmail.com, iain@hunterembedded.co.uk,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Zeng Tao <prime.zeng@hisilicon.com>, linux-iio@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:gPwyXOUSqhD2JyrnR9xytDHMiVW4DELITPtkFiJXSAOqYSc/EkL
+ WMDVysnbyrwLFPacdn2twqA+KcXKEEhthTyM3L1ILSAMZxEvuIo63MtgOUP4nwmyFa4Ehud
+ xJhFFYVHx8wwarXPk9mig2WdH9hxrGLcgvXNaSGH/TnA9vu/LgFd7aR7no3/x4zMrXXqPmt
+ wjxxy2V89tEtg71YhCCZA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:5cYFcAwxonU=:G1ly75JYKNmg3iArcyZ2vK
+ 8a9nmP8I3bp4Hc9ok/4KNn/IYTq2dpffMogwdPKR4sbBA66+H+dj71QqicK9sUK0bhka2lX+/
+ nDmNtteoVtIqmTP4G/RIv9ep4WZ2NjVMN9O/1W4Imk91hnOZSXZNN3s+aIjEyWet9SOUbLQ+R
+ lcEhgU9jsJJicAjVwWgCASMzgps7s/m6SrjlASCn7tlnV6j47Pf1uA2KkWJ4Rl+6hkdjGczVI
+ wvZ1l0ePAJYRChDMYt35Rbl4Q/iVwQmP0Z3YmYy/ABS/52o/F7rQNEv3ihXWkcdZWaCz4swTq
+ KkvIEBJGFGCBA4pIJH5hUjOirSb2+OPku7vT3z2YUEku7WUZj9L26Cug9bZA0ImU8FxstAoKE
+ XmfetWQiiCeOwTmwv3LlMx7RJtHTpcyTMwmqcHvdNhO0/qEO7tRRuIj+bbmMMb62G+FSNEM5j
+ wzxiCax5WHZQpX5qy4P9UVleTwo77YKClNC4rQ+dBivuy3zwZiR3/M6i3r3HblYLeC4qD2dIR
+ wmfUmlr5rX2rUZQo2un6fvJD3TSrrvssuKa2ox3/vXYjwi0IGBBjQhHOPTlgjalyhIaLp/FeE
+ UJwXmJdx84uWrWBNuo+IVIiBc+Mx9UF9rOTojEKPXdGHjZBNEaXBdmpYPdc4zZC9fJP+Yuum3
+ Z5U/LzsO9IrLGD8p7HeypRTQJko2bFuCFLHs5vQXv8Ym7cuyjaGuTy017CMoOBSfcpRR2AXCJ
+ P+gtaAQisfMq9g1Sr1/69o23ouewr4oSiBnbBg==
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-New binding documentation for AD799x series of I²C ADC ICs.
+On Thu, Sep 30, 2021 at 10:10 AM Iain Hunter <drhunter95@gmail.com> wrote:
+>
+> From: Iain Hunter <iain@hunterembedded.co.uk>
+>
+> That change adds an error check to avoid saturation during multiplication
+> to calculate nano seconds in timespec64_to_ns().
+> In ina2xx_capture_thread() a timespec64 structure is used to calculate
+> the delta time until the next sample time. This delta can be negative if
+> the next sample time was in the past. In the -1 case timespec64_to_ns()
+> now clamps the -1 second value to KTIME_MAX. This essentially puts ina2xx
+> thread to sleep forever.
+> Proposed patch is to:
+> 1 change from timespec64_XXX() to standard raw ktime_XXX() APIs to remove
+> non-standard timespec64 calls.
+> 2 split the functionality in the loop into two parts:
+> - do while loop only does the test to see if the next sample time is in the
+> future or in the past and so will be skipped and the sample time
+> incremented until it is in the future. This test is done with a simple
+> signed comparison as we are only interested in the sign being positive or
+> negative.
+> - after do while loop we know that next is later than now and so delay is
+> positive and ksub_sub() can be used to get the delay which is positive.
+>
+> Signed-off-by: Iain Hunter <iain@hunterembedded.co.uk>
+>
+> Fixes: cb47755725da("time: Prevent undef$
 
-Signed-off-by: Florian Boor <florian.boor@kernelconcepts.de>
----
+The changelog text could be improved to more closely follow the
+style described in Documentation/process/submitting-patches.rst,
+but the important information is here and the changes look good
+to me.
 
-Changes in v6:
-- Minor documentation change (label and contact info)
-
-Changes in v5:
-- Correct errors in documentation found by
-  'make DT_CHECKER_FLAGS=-m dt_binding_check'
-  + Reduce title length
-  + Move information to description
-  + Add I²C bits to example
-
- .../bindings/iio/adc/adi,ad799x.yaml          | 73 +++++++++++++++++++
- 1 file changed, 73 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad799x.yaml
-
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad799x.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad799x.yaml
-new file mode 100644
-index 000000000000..29641ce7175b
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad799x.yaml
-@@ -0,0 +1,73 @@
-+# SPDX-License-Identifier: GPL-2.0
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/adc/adi,ad799x.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Analog Devices AD799x analog to digital converters
-+
-+maintainers:
-+  - Michael Hennerich <Michael.Hennerich@analog.com>
-+
-+description: |
-+    Support for Analog Devices AD7991, AD7992, AD7993, AD7994, AD7995, AD7997, AD7998,
-+    AD7999 and similar analog to digital converters.
-+    Specifications on the converters can be found at:
-+    AD7991, AD7995, AD7999:
-+      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7991_7995_7999.pdf
-+    AD7992:
-+      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7992.pdf
-+    AD7993, AD7994:
-+      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7993_7994.pdf
-+    AD7997, AD7998:
-+      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7997_7998.pdf
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,ad7991
-+      - adi,ad7992
-+      - adi,ad7993
-+      - adi,ad7994
-+      - adi,ad7995
-+      - adi,ad7997
-+      - adi,ad7998
-+      - adi,ad7999
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  vcc-supply:
-+    description:
-+      ADC power supply
-+
-+  vref-supply:
-+    description:
-+      ADC reference voltage supply, optional for AD7991, AD7995 and AD7999
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    i2c {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+
-+       adc1: adc@28 {
-+               reg = <0x28>;
-+               compatible = "adi,ad7991";
-+               interrupts = <13 2>;
-+               interrupt-parent = <&gpio6>;
-+
-+               vcc-supply = <&vcc_3v3>;
-+               vref-supply = <&adc_vref>;
-+        };
-+    };
-+...
--- 
-2.30.2
-
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>

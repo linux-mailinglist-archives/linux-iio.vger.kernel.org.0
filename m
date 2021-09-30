@@ -2,128 +2,150 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F418B41DF07
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Sep 2021 18:29:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9880B41DF25
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Sep 2021 18:36:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350472AbhI3QbG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 30 Sep 2021 12:31:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50020 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1350390AbhI3QbG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 30 Sep 2021 12:31:06 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CDBD761250;
-        Thu, 30 Sep 2021 16:29:21 +0000 (UTC)
-Date:   Thu, 30 Sep 2021 17:33:16 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com>
-Cc:     jbhayana@google.com, lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Vasyl.Vavrychuk@opensynergy.com
-Subject: Re: [PATCH v2 1/1] iio/scmi: Add reading "raw" attribute.
-Message-ID: <20210930173316.3a111130@jic23-huawei>
-In-Reply-To: <20210927132202.17335-2-andriy.tryshnivskyy@opensynergy.com>
-References: <20210927132202.17335-1-andriy.tryshnivskyy@opensynergy.com>
-        <20210927132202.17335-2-andriy.tryshnivskyy@opensynergy.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        id S1352040AbhI3QiY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 30 Sep 2021 12:38:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38262 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1352053AbhI3QiR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Sep 2021 12:38:17 -0400
+Received: from mail-vs1-xe41.google.com (mail-vs1-xe41.google.com [IPv6:2607:f8b0:4864:20::e41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A14D2C06176C
+        for <linux-iio@vger.kernel.org>; Thu, 30 Sep 2021 09:36:34 -0700 (PDT)
+Received: by mail-vs1-xe41.google.com with SMTP id 188so8187989vsv.0
+        for <linux-iio@vger.kernel.org>; Thu, 30 Sep 2021 09:36:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=/T9drlD1s9vO6lHEMs4LJzmDo2MKXEHBXvFYaWoQWpk=;
+        b=NWDualLNe5YGPXalgpcY9nSSUoTbK2jlSji7AbRuO2b0xXQdPCrMkNvqs2c4pxZsPF
+         zJLGKYuN05OCGMyku84xClAbXhK31opCrZviO7U8hnsrBtRdBUiffi+GWhmDyLDopfy/
+         Fc13chiSRRD8TkWC3iC6jNP3F/ScenZZbCnN5PlnT0pZp6IWqRTXF8tYyOnayyOromf+
+         OG2Dd3o9YGjzqypNDqeVk4l+uiD3hu5yRn3ldEr1gX0WKZDVkEvZHCas+q0cgcVt2aNu
+         FQjWudtpihOUz3QiRb3jNeT2dLyDJaekGVCbq5pO1HCSLFGpT7dLEhkeFYUlIbdFWUh3
+         uRqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=/T9drlD1s9vO6lHEMs4LJzmDo2MKXEHBXvFYaWoQWpk=;
+        b=hu6Yyo0eIOMyk4st1VPvU8zqNq4m789uIv5JIsBHqm8J3Iz+BTJSOkqH4DuRz/5I5I
+         a0n9rAi7iQziqvvI1L/i/r9KHuj1ki+sRKNbPwqd3KhyLI9Bxs0TB8XvEaSNdCfy5dfo
+         X18c2uU1Z5qakIfNKLO+5/56FTEybY+KQV/dmdVjSIhD92oUbxYOfCOMtTQjMnSSHqxi
+         QXkMWgpmRmbDaayXA3W3Bs2toeZKOn1Qo7pY38SNqqaCXLaylpGFxomJx0GuBd5hS39i
+         HbnSHoGrHBwrozA2wN71+I+tsiMYBjRPXQtLZ+PluVLfY/rfJOyxZQ88bKW2wOAVaNG4
+         0wAg==
+X-Gm-Message-State: AOAM530oNQpKx7Et6o13J9oe7kRfkMZUbIel1r7EeJHDWe8Wy8padnnh
+        ur32lUDJ2RoRCwAx3GFIiGYtoawrYgYXPos7WBU=
+X-Google-Smtp-Source: ABdhPJwseO80+3X/fVH09UGnd+rD5htDILjVn6N1RFqiTi1YIsVegMR8wNAKswe37jVxrTYKoIXp9CUT6c6ma0CJQUw=
+X-Received: by 2002:a05:6102:192:: with SMTP id r18mr278125vsq.0.1633019793798;
+ Thu, 30 Sep 2021 09:36:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a59:ab2e:0:b0:22d:7f44:603a with HTTP; Thu, 30 Sep 2021
+ 09:36:33 -0700 (PDT)
+Reply-To: irenezakari24@gmail.com
+From:   Irene zakari <irenezakari88@gmail.com>
+Date:   Thu, 30 Sep 2021 09:36:33 -0700
+Message-ID: <CAFT8PFESA-=mYw5OC7WaqEQJzmvN32Fh8doY7DULjv-V3wwW6g@mail.gmail.com>
+Subject: PLEASE I NEED YOUR HELP
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 27 Sep 2021 16:22:02 +0300
-Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com> wrote:
+Hello   ..
 
-> Add IIO_CHAN_INFO_RAW to the mask and implement corresponding
-> reading "raw" attribute in scmi_iio_read_raw.
-> 
-> Signed-off-by: Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com>
-Hi Andriy,
+How do you do over there? I hope you are doing well?
 
-Looks good to me, but I'll leave it on list to get feedback form the
-driver maintainer for this one.
+My name is Irene. (24 years), i am single, from Gambia, the only child
+of late Eng. Bernard Bakary Zakaria. the Director of Bajam Enterprise
+(Building Construction Company in The Gambia) also the CEO of Bernard
+Import and Export (GAMBIA).
 
-Feel free to poke if no reply in next 2 weeks.
+As a matter of fact my mother died when i was barely 4 years old
+according to my late father and because of the type of love he had for
+my mother made him to remain UN-married till he left the ghost..
 
-Thanks,
+So after the death of my father as a result of assassinate, his brother (My
+Uncle) who is the purchasing and marketing sale manager of my late
+fathers company named (Mr. James Tokunbo Oriade Zakaria) wanted to
+convert all the properties and resources of my late father into his
+which i quarreled with him and it made him to lay his anger on me to
+the extent of hiring an assassins to kill me but to God be the glory i
+succeeded by making a way to Burkina faso for my dear life.
+Honestly i do live a fearful life even here in Burkina faso because of
+those Assassins coming after me .
 
-Jonathan
+I would want to live and study in your country for my better future.
+because my father same blood brother wanted to force me into undecided
+marriage, just for me to leave my father home and went and live with
+another man I never know as he want to occupied all my father home
+and maybe to sold it as my father no longer alive, I'm the only child
+daughter my father born, '' but he don't know that i am not
+interesting in any of my father properties or early marriage for now,
+because i still have future to think about and to focus on my studies
+first as i was doing my first year in the University before the death
+of my father.
 
-> ---
->  drivers/iio/common/scmi_sensors/scmi_iio.c | 45 +++++++++++++++++++++-
->  1 file changed, 44 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/common/scmi_sensors/scmi_iio.c b/drivers/iio/common/scmi_sensors/scmi_iio.c
-> index 7cf2bf282cef..c6a9dc6ad140 100644
-> --- a/drivers/iio/common/scmi_sensors/scmi_iio.c
-> +++ b/drivers/iio/common/scmi_sensors/scmi_iio.c
-> @@ -286,6 +286,9 @@ static int scmi_iio_read_raw(struct iio_dev *iio_dev,
->  	struct scmi_iio_priv *sensor = iio_priv(iio_dev);
->  	s8 scale;
->  	int ret;
-> +	int err;
-> +	u32 sensor_config;
-> +	struct scmi_sensor_reading readings[SCMI_IIO_NUM_OF_AXIS];
->  
->  	switch (mask) {
->  	case IIO_CHAN_INFO_SCALE:
-> @@ -300,6 +303,45 @@ static int scmi_iio_read_raw(struct iio_dev *iio_dev,
->  	case IIO_CHAN_INFO_SAMP_FREQ:
->  		ret = scmi_iio_get_odr_val(iio_dev, val, val2);
->  		return ret ? ret : IIO_VAL_INT_PLUS_MICRO;
-> +	case IIO_CHAN_INFO_RAW:
-> +		sensor_config = FIELD_PREP(SCMI_SENS_CFG_SENSOR_ENABLED_MASK,
-> +					   SCMI_SENS_CFG_SENSOR_ENABLE);
-> +		err = sensor->handle->sensor_ops->config_set(
-> +			sensor->handle, sensor->sensor_info->id, sensor_config);
-> +		if (err) {
-> +			dev_err(&iio_dev->dev,
-> +				"Error in enabling sensor %s err %d",
-> +				sensor->sensor_info->name, err);
-> +			return err;
-> +		}
-> +
-> +		err = sensor->handle->sensor_ops->reading_get_timestamped(
-> +			sensor->handle, sensor->sensor_info->id,
-> +			sensor->sensor_info->num_axis, readings);
-> +		if (err) {
-> +			dev_err(&iio_dev->dev,
-> +				"Error in reading raw attribute for sensor %s err %d",
-> +				sensor->sensor_info->name, err);
-> +			return err;
-> +		}
-> +
-> +		sensor_config = FIELD_PREP(SCMI_SENS_CFG_SENSOR_ENABLED_MASK,
-> +					   SCMI_SENS_CFG_SENSOR_DISABLE);
-> +		err = sensor->handle->sensor_ops->config_set(
-> +			sensor->handle, sensor->sensor_info->id, sensor_config);
-> +		if (err) {
-> +			dev_err(&iio_dev->dev,
-> +				"Error in enabling sensor %s err %d",
-> +				sensor->sensor_info->name, err);
-> +			return err;
-> +		}
-> +		/* Check if raw value fits 32 bits */
-> +		if (readings[ch->scan_index].value < INT_MIN ||
-> +		    readings[ch->scan_index].value > INT_MAX)
-> +			return -ERANGE;
-> +		/* Use 32-bit value, since practically there is no need in 64 bits */
-> +		*val = (int)readings[ch->scan_index].value;
-> +		return IIO_VAL_INT;
->  	default:
->  		return -EINVAL;
->  	}
-> @@ -381,7 +423,8 @@ static void scmi_iio_set_data_channel(struct iio_chan_spec *iio_chan,
->  	iio_chan->type = type;
->  	iio_chan->modified = 1;
->  	iio_chan->channel2 = mod;
-> -	iio_chan->info_mask_separate = BIT(IIO_CHAN_INFO_SCALE);
-> +	iio_chan->info_mask_separate =
-> +		BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_RAW);
->  	iio_chan->info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SAMP_FREQ);
->  	iio_chan->info_mask_shared_by_type_available =
->  		BIT(IIO_CHAN_INFO_SAMP_FREQ);
+Actually what I want to discuss with you is about my personal issue
+concern funds my late father deposited in a bank outside my country,
+worth $4.5 million united state dollars. i need your assistance to
+receive and invest this funds in your country.
 
+Please help me, I am sincere to you and I want to be member of your
+family as well if you wouldn't mind to accept me and lead me to better
+future in your country.
+
+All the documents the bank issue to my father during time of deposit
+is with me now.
+I already notify the bank on phone about the death of my father and
+they are surprise for the news and accept that my father is their good
+customer.
+I will be happy if this money can be invested in any business of your
+choice and it will be under your control till i finished my education,
+also I'm assuring you good relationship and I am ready to discuss the
+amount of money to give you from this money for your help.
+
+Therefore, I shall give you the bank contact and other necessary
+information in my next email if you will only promise me that you will
+not/never betray and disclosed this matter to anybody, because, this
+money is the only hope i have for survival on earth since I have lost
+my parents.
+
+Moreover I have the FUND PLACEMENT CERTIFICATE and the DEATH
+CERTIFICATE here with me, but before I give you further information, i
+will like to know your full data
+
+1. Full Name: ........................
+2. Address: ..................
+3. Nationality: ........... Sex................
+4. Age:........... Date of Birth:................
+5. Occupation:...................
+.....
+6. Phone: ........... Fax:.........................
+7. State of Origin: .......Country:..............
+8. Occupation:...................
+................
+9. Marital status........... E-mail address's: ............
+10. Scan copy of your ID card or Driving License/Photo:............
+DECLARATION:
+
+so that i will be fully sure that i am not trusting the wrong person.
+and it will also give me the mind to send you the bank contact for you
+to communicate with them for more verification about this money. and
+to know you more better.
+
+Meanwhile, you can reach me through my pastor,his name is Pastor Paul
+any time you call, tell him that you want to speak with me because
+right now i am living in the church here in Burkina faso and i don't
+want to stay here any longer,
+send for me to speak with you his phone number is this(+226 75213646)
+
+I will stop here and i will be waiting for your reply and feel free
+ask any thing you want to know about me.
+Please help me, I would be highly appreciated
+Have nice day.
+From Irene

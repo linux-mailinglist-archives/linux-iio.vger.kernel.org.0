@@ -2,30 +2,30 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA16B41DEEF
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Sep 2021 18:25:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F418B41DF07
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Sep 2021 18:29:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350292AbhI3Q05 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 30 Sep 2021 12:26:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48960 "EHLO mail.kernel.org"
+        id S1350472AbhI3QbG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 30 Sep 2021 12:31:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50020 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1350163AbhI3Q05 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 30 Sep 2021 12:26:57 -0400
+        id S1350390AbhI3QbG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 30 Sep 2021 12:31:06 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9967361507;
-        Thu, 30 Sep 2021 16:25:13 +0000 (UTC)
-Date:   Thu, 30 Sep 2021 17:29:08 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id CDBD761250;
+        Thu, 30 Sep 2021 16:29:21 +0000 (UTC)
+Date:   Thu, 30 Sep 2021 17:33:16 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <aardelean@deviqon.com>
-Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 2/2] iio: adc: Kconfig: add COMPILE_TEST dep for
- berlin2-adc
-Message-ID: <20210930172908.10a31910@jic23-huawei>
-In-Reply-To: <20210926192642.4051329-2-aardelean@deviqon.com>
-References: <20210926192642.4051329-1-aardelean@deviqon.com>
-        <20210926192642.4051329-2-aardelean@deviqon.com>
+To:     Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com>
+Cc:     jbhayana@google.com, lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Vasyl.Vavrychuk@opensynergy.com
+Subject: Re: [PATCH v2 1/1] iio/scmi: Add reading "raw" attribute.
+Message-ID: <20210930173316.3a111130@jic23-huawei>
+In-Reply-To: <20210927132202.17335-2-andriy.tryshnivskyy@opensynergy.com>
+References: <20210927132202.17335-1-andriy.tryshnivskyy@opensynergy.com>
+        <20210927132202.17335-2-andriy.tryshnivskyy@opensynergy.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -34,40 +34,96 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 26 Sep 2021 22:26:42 +0300
-Alexandru Ardelean <aardelean@deviqon.com> wrote:
+On Mon, 27 Sep 2021 16:22:02 +0300
+Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com> wrote:
 
-> Otherwise most build checks will omit this driver from a compile-test due
-> to it's dependency only on the BERLIN_ARCH symbol.
+> Add IIO_CHAN_INFO_RAW to the mask and implement corresponding
+> reading "raw" attribute in scmi_iio_read_raw.
 > 
-> Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
-I was rather expecting this to need more dependencies, but I can't find
-anything that isn't appropriately stubbed out.
+> Signed-off-by: Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com>
+Hi Andriy,
 
-Guess time to let 0-day and it's brute force builds work their magic.
+Looks good to me, but I'll leave it on list to get feedback form the
+driver maintainer for this one.
 
-Series applied to the togreg branch of iio.git and pushed out as testing to
-see if we did miss a select or two in here.
+Feel free to poke if no reply in next 2 weeks.
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/adc/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/iio/common/scmi_sensors/scmi_iio.c | 45 +++++++++++++++++++++-
+>  1 file changed, 44 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 0ceea8e69e3c..8bf5b62a73f4 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -354,7 +354,7 @@ config BCM_IPROC_ADC
+> diff --git a/drivers/iio/common/scmi_sensors/scmi_iio.c b/drivers/iio/common/scmi_sensors/scmi_iio.c
+> index 7cf2bf282cef..c6a9dc6ad140 100644
+> --- a/drivers/iio/common/scmi_sensors/scmi_iio.c
+> +++ b/drivers/iio/common/scmi_sensors/scmi_iio.c
+> @@ -286,6 +286,9 @@ static int scmi_iio_read_raw(struct iio_dev *iio_dev,
+>  	struct scmi_iio_priv *sensor = iio_priv(iio_dev);
+>  	s8 scale;
+>  	int ret;
+> +	int err;
+> +	u32 sensor_config;
+> +	struct scmi_sensor_reading readings[SCMI_IIO_NUM_OF_AXIS];
 >  
->  config BERLIN2_ADC
->  	tristate "Marvell Berlin2 ADC driver"
-> -	depends on ARCH_BERLIN
-> +	depends on ARCH_BERLIN || COMPILE_TEST
->  	help
->  	  Marvell Berlin2 ADC driver. This ADC has 8 channels, with one used for
->  	  temperature measurement.
+>  	switch (mask) {
+>  	case IIO_CHAN_INFO_SCALE:
+> @@ -300,6 +303,45 @@ static int scmi_iio_read_raw(struct iio_dev *iio_dev,
+>  	case IIO_CHAN_INFO_SAMP_FREQ:
+>  		ret = scmi_iio_get_odr_val(iio_dev, val, val2);
+>  		return ret ? ret : IIO_VAL_INT_PLUS_MICRO;
+> +	case IIO_CHAN_INFO_RAW:
+> +		sensor_config = FIELD_PREP(SCMI_SENS_CFG_SENSOR_ENABLED_MASK,
+> +					   SCMI_SENS_CFG_SENSOR_ENABLE);
+> +		err = sensor->handle->sensor_ops->config_set(
+> +			sensor->handle, sensor->sensor_info->id, sensor_config);
+> +		if (err) {
+> +			dev_err(&iio_dev->dev,
+> +				"Error in enabling sensor %s err %d",
+> +				sensor->sensor_info->name, err);
+> +			return err;
+> +		}
+> +
+> +		err = sensor->handle->sensor_ops->reading_get_timestamped(
+> +			sensor->handle, sensor->sensor_info->id,
+> +			sensor->sensor_info->num_axis, readings);
+> +		if (err) {
+> +			dev_err(&iio_dev->dev,
+> +				"Error in reading raw attribute for sensor %s err %d",
+> +				sensor->sensor_info->name, err);
+> +			return err;
+> +		}
+> +
+> +		sensor_config = FIELD_PREP(SCMI_SENS_CFG_SENSOR_ENABLED_MASK,
+> +					   SCMI_SENS_CFG_SENSOR_DISABLE);
+> +		err = sensor->handle->sensor_ops->config_set(
+> +			sensor->handle, sensor->sensor_info->id, sensor_config);
+> +		if (err) {
+> +			dev_err(&iio_dev->dev,
+> +				"Error in enabling sensor %s err %d",
+> +				sensor->sensor_info->name, err);
+> +			return err;
+> +		}
+> +		/* Check if raw value fits 32 bits */
+> +		if (readings[ch->scan_index].value < INT_MIN ||
+> +		    readings[ch->scan_index].value > INT_MAX)
+> +			return -ERANGE;
+> +		/* Use 32-bit value, since practically there is no need in 64 bits */
+> +		*val = (int)readings[ch->scan_index].value;
+> +		return IIO_VAL_INT;
+>  	default:
+>  		return -EINVAL;
+>  	}
+> @@ -381,7 +423,8 @@ static void scmi_iio_set_data_channel(struct iio_chan_spec *iio_chan,
+>  	iio_chan->type = type;
+>  	iio_chan->modified = 1;
+>  	iio_chan->channel2 = mod;
+> -	iio_chan->info_mask_separate = BIT(IIO_CHAN_INFO_SCALE);
+> +	iio_chan->info_mask_separate =
+> +		BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_RAW);
+>  	iio_chan->info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SAMP_FREQ);
+>  	iio_chan->info_mask_shared_by_type_available =
+>  		BIT(IIO_CHAN_INFO_SAMP_FREQ);
 

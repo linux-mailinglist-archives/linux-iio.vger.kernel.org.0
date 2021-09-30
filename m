@@ -2,166 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE73141CF59
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Sep 2021 00:44:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF6D241D081
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Sep 2021 02:12:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345494AbhI2Wpk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Sep 2021 18:45:40 -0400
-Received: from mail-oi1-f179.google.com ([209.85.167.179]:42782 "EHLO
-        mail-oi1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245276AbhI2Wpk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Sep 2021 18:45:40 -0400
-Received: by mail-oi1-f179.google.com with SMTP id x124so4846165oix.9;
-        Wed, 29 Sep 2021 15:43:58 -0700 (PDT)
+        id S1347372AbhI3AO0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Sep 2021 20:14:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37246 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1347311AbhI3AO0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Sep 2021 20:14:26 -0400
+Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EA46C06176D
+        for <linux-iio@vger.kernel.org>; Wed, 29 Sep 2021 17:12:44 -0700 (PDT)
+Received: by mail-wr1-x432.google.com with SMTP id v17so6997901wrv.9
+        for <linux-iio@vger.kernel.org>; Wed, 29 Sep 2021 17:12:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=so++ktLIXuia7S6U7BNUIBcKY9801GrgXLBNXOJCctA=;
+        b=H10inSR11/VqU/haFPGpWYX4eIl9XnsEwCEZH+0AQ8FWEQkjTj0EN+Ya1EZTQu+shE
+         kLIbu8rSIIg9sHC7IW3s76bjB/WmFjFJjdj0iG5s2SYq24KYemuCcgelDuoHT3GfKS5v
+         GHSR1Dp2nFiYEjqUc142eJslL5BRz2qpBArRi0DXE+UlUPDs76Licbk4P74ic6KB3nuO
+         nbcqF+xbsNBjS+T7iHicGmK/f3REcqIW+rmyhP9eOiM6KxgtdZWCtDzuFE1OlxUQLNxZ
+         DffsQdUDTQvoP4PoIaIP9ZQclasRxjaTX+Ph27orlZrw9Of2+FqJkvWU93dImtsnJ5AL
+         8P4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=T8APqhpdvdjHTLThoNtJxr2heTVR3fvx1c+V3RxbGck=;
-        b=J4LWuI9DSt+1AMzYhJAt1j2+wa2R3VI0p1lKo+GQ+ai4b8VSEG8UBMS/bfmY7LL9CH
-         ODFJbMMJnZIzEmgvhTzBps8gEo5BDhMkRJa6kyueKftVLdrGMYyc2lXLYWPwQ0bz4glC
-         02VUVIGY/nN5Vn+w6YpD9S5T/iG2osuF1sKyJJ+gMLl4XUsPBq1t5e3ZziLyDMnXpMq6
-         HxyADei+1ssqBL4iygr4+2Z2jo8lxQqCkMdoK+JLwA5SYXF/JlfZmtN/RUhi9jKTAI/k
-         nLSTxw2nANDXaFXdS9AyqCTePBJGi9vtALK0n5FvmzrCA+j11oAjYNeyEAu2Tp/QrqDk
-         IwOA==
-X-Gm-Message-State: AOAM533NCuDcfIMdYt777ICQ1Tjx6yAeO9+mSJ9iwPg4typ8pRCzisMc
-        GmAkg7DbacMu3Ysj0yFElw==
-X-Google-Smtp-Source: ABdhPJwwPxNzNLpiGomj6KTstkT9hjABrI0VCrhl7CURyVw3lhsS6xNgluVA4oyLsdemsTydrZ7Zww==
-X-Received: by 2002:a05:6808:187:: with SMTP id w7mr68956oic.140.1632955438083;
-        Wed, 29 Sep 2021 15:43:58 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id w23sm245173ooj.19.2021.09.29.15.43.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Sep 2021 15:43:57 -0700 (PDT)
-Received: (nullmailer pid 364176 invoked by uid 1000);
-        Wed, 29 Sep 2021 22:43:56 -0000
-Date:   Wed, 29 Sep 2021 17:43:56 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Florian Boor <florian.boor@kernelconcepts.de>
-Cc:     jic23@kernel.org, linux-iio@vger.kernel.org,
-        Jonathan.Cameron@huawei.com, Michael.Hennerich@analog.com,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v5 2/2] dt-bindings: iio: ad779x: Add binding document
-Message-ID: <YVTsLDrAFbHyZTBQ@robh.at.kernel.org>
-References: <20210929104607.2699117-1-florian.boor@kernelconcepts.de>
- <20210929104607.2699117-2-florian.boor@kernelconcepts.de>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=so++ktLIXuia7S6U7BNUIBcKY9801GrgXLBNXOJCctA=;
+        b=kK4E0V5aL7wBE/ApX1hnhnJJxwvZu1qXWixuw+9NEGicVnQ2GTnEd+U4hyDP287HPp
+         8KTP1ttXnp1kC+Eyktd5mBWvImTDfQV6Gjmz+5I3zRwV7NWlSTrLAEpQkOnNK2xpUcAi
+         O4gdwsTucVHC2rUHC7d9P/vbjNF/2Q4WZq9QGV1qqsR36T8xNLmiMA5eV8DLHJNq8gA/
+         QN4YWEGc91J5k7DpcHvRxp5vm3MHYDeS8DO2rc6Eu7eDOpf/ZhGbIZLbDd5fCz8Wq7ax
+         lPTErfwWZZWXbn2cvbSnf893t3A+XhQT1D22wyyyTcCdmAplAF83B1Fx8Psdh1wIGly9
+         rjkA==
+X-Gm-Message-State: AOAM530cQlXPjewNarMbd7EyDXOwQ7w+WVgPHupVMyYrwHIBj9fOFMPT
+        oiial/4kTfyC988J0hwzy7rRUnuRNL+MBxiL5DlRWw==
+X-Google-Smtp-Source: ABdhPJzLw+kdyCSCCFIkNR/DETrYiq3Usylp9hzBKF2UTTUKIJsZKQpT9jR+TAL9iB1u9TMtKwstF0pfX1MRpQGrFfM=
+X-Received: by 2002:adf:dd8a:: with SMTP id x10mr2980547wrl.200.1632960762539;
+ Wed, 29 Sep 2021 17:12:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210929104607.2699117-2-florian.boor@kernelconcepts.de>
+References: <20210929212713.1213476-1-brendanhiggins@google.com> <20210929212713.1213476-2-brendanhiggins@google.com>
+In-Reply-To: <20210929212713.1213476-2-brendanhiggins@google.com>
+From:   David Gow <davidgow@google.com>
+Date:   Thu, 30 Sep 2021 08:12:31 +0800
+Message-ID: <CABVgOSm-UO7dqgBQs81rof1H92Vcfs0j4XsWBa_Wt+LTiimWNA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/5] gcc-plugins/structleak: add makefile var for
+ disabling structleak
+To:     Brendan Higgins <brendanhiggins@google.com>
+Cc:     Shuah Khan <shuah@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Kees Cook <keescook@chromium.org>, rafael@kernel.org,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Ulf Hansson <ulf.hansson@linaro.org>, andreas.noever@gmail.com,
+        michael.jamet@intel.com,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        YehezkelShB@gmail.com, Masahiro Yamada <masahiroy@kernel.org>,
+        michal.lkml@markovi.net,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>,
+        KUnit Development <kunit-dev@googlegroups.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-iio@vger.kernel.org, linux-mmc <linux-mmc@vger.kernel.org>,
+        linux-usb@vger.kernel.org, linux-hardening@vger.kernel.org,
+        linux-kbuild@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Sep 29, 2021 at 12:46:07PM +0200, Florian Boor wrote:
-> New binding documentation for AD799x series of I²C ADC ICs.
-> 
-> Signed-off-by: Florian Boor <florian.boor@kernelconcepts.de>
+On Thu, Sep 30, 2021 at 5:27 AM Brendan Higgins
+<brendanhiggins@google.com> wrote:
+>
+> KUnit and structleak don't play nice, so add a makefile variable for
+> enabling structleak when it complains.
+>
+> Co-developed-by: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
 > ---
-> Changes in v5:
-> - Correct errors in documentation found by
->   'make DT_CHECKER_FLAGS=-m dt_binding_check'
->   + Reduce title length
->   + Move information to description
->   + Add I²C bits to example
-> 
->  .../bindings/iio/adc/adi,ad799x.yaml          | 73 +++++++++++++++++++
->  1 file changed, 73 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad799x.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad799x.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad799x.yaml
-> new file mode 100644
-> index 000000000000..cdba1ea91f42
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad799x.yaml
-> @@ -0,0 +1,73 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/adi,ad799x.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices AD799x analog to digital converters
-> +
-> +maintainers:
-> +  - Michael Hennerich, Analog Devices Inc. <Michael.Hennerich@analog.com>
+> Changes since last revision:
+>  - None
+> ---
 
-I think the ',' here will throw off email parsing. Drop the Analog 
-Devices.
+This seems as sensible a way of working around this as we're going to
+get in the short-term.
 
-> +
-> +description: |
-> +    Support for Analog Devices AD7991, AD7992, AD7993, AD7994, AD7995, AD7997, AD7998,
-> +    AD7999 and similar analog to digital converters.
-> +    Specifications on the converters can be found at:
-> +    AD7991, AD7995, AD7999:
-> +      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7991_7995_7999.pdf
-> +    AD7992:
-> +      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7992.pdf
-> +    AD7993, AD7994:
-> +      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7993_7994.pdf
-> +    AD7997, AD7998:
-> +      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7997_7998.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,ad7991
-> +      - adi,ad7992
-> +      - adi,ad7993
-> +      - adi,ad7994
-> +      - adi,ad7995
-> +      - adi,ad7997
-> +      - adi,ad7998
-> +      - adi,ad7999
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  vcc-supply:
-> +    description:
-> +      ADC power supply
-> +
-> +  vref-supply:
-> +    description:
-> +      ADC reference voltage supply, optional for AD7991, AD7995 and AD7999
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    i2c {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +
-> +       adc1: ad7991@28 {
+Reviewed-by: David Gow <davidgow@google.com>
 
-adc@28
-
-With that,
-
-Reviewed-by: Rob Herring <robh@kernel.org>
-
-> +               reg = <0x28>;
-> +               compatible = "adi,ad7991";
-> +               interrupts = <13 2>;
-> +               interrupt-parent = <&gpio6>;
-> +
-> +               vcc-supply = <&vcc_3v3>;
-> +               vref-supply = <&adc_vref>;
-> +        };
-> +    };
-> +...
-> -- 
-> 2.30.2
-> 
-> 
+Cheers,
+-- David

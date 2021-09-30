@@ -2,156 +2,207 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E79F741D541
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Sep 2021 10:10:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7134741D7FA
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Sep 2021 12:43:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348911AbhI3IM0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 30 Sep 2021 04:12:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59514 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348840AbhI3IM0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Sep 2021 04:12:26 -0400
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E9FFC06161C;
-        Thu, 30 Sep 2021 01:10:44 -0700 (PDT)
-Received: by mail-wr1-x435.google.com with SMTP id h15so6974561wrc.3;
-        Thu, 30 Sep 2021 01:10:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=bTL7VlXohDK5+O76KzT0lApCN/YaGjWf++xGRwDyQdw=;
-        b=PxFx++L/PGYJ2OU1htJBiL+Vr4X4yt4aJo3HpXXszC0syWTIUobDxqaU1i6in8gpbP
-         ZlElgN5gzCQjGqhwm7ey4W5Vul9IGXxn7FjXuZhSNDyUjiEyyAn5MNGMRFWNuh1pQlRc
-         go3tTISzQOChjoPqPb2WCSyzFIYr+yGWCrBN5Pm7MbTw5GXLGZO3oF7t9VUFU+A9aAB5
-         ZycsJLoVmI3cEmyq6x3nl5Wu83pZX0H+Uvj6Ak3kdy93p9x+FeLSiImOTCrn5p9IC4MF
-         Z6PG2FfRIHi4do6RVGzPZgvnXnaDNjb78iqRq4sF36QXvF/cr4jqGx5JOd/fNhknUC5E
-         NMJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=bTL7VlXohDK5+O76KzT0lApCN/YaGjWf++xGRwDyQdw=;
-        b=4gzXomVq6HKxm6C7S4sM951B2Bv1GBvT01h3+hs20UiXspStSAlOB5lIZMMvl21njB
-         UoPeNZrWHTdSPvEtoNYvBektuimk26gD3KylcuNq79aUesnKvPhW5hNjCs/svD/WRp7h
-         J+bHr+jsb6lfirlZSG8SI2psGpM0MehpgvCReKm82RhpjLlmHKLFzHKWFB6dTc9iheOB
-         dQMMvnWSxy2c7oCjtQNZId5JBoBJY4pwxMQCUtZnogk/uWvVWh+XXUtHBkLtuPdcPU3r
-         l+6RXDQXqIqqvCmg/KECFYyEqx42ec1ejHwhQfTis+7fv9lxRjBF7N7SKx/K9lWMKTkJ
-         qbMQ==
-X-Gm-Message-State: AOAM532R6ewlOQon6FJxvsa+AGXo5isua9sST0171dTrNcsPAvbuvTMu
-        KgsZLRJA+5ki9fCpwPq4mU0=
-X-Google-Smtp-Source: ABdhPJytSDWK8U12B/Lx7rN2rUFLDcU8R8sEYFE4EV5CqUZ84Y5BxlKyv6BHcg/rtDhkTqIq+fLpEw==
-X-Received: by 2002:a05:6000:154f:: with SMTP id 15mr2169743wry.254.1632989442836;
-        Thu, 30 Sep 2021 01:10:42 -0700 (PDT)
-Received: from stewarton.broadband ([84.67.150.141])
-        by smtp.googlemail.com with ESMTPSA id q9sm1517188wrx.4.2021.09.30.01.10.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Sep 2021 01:10:42 -0700 (PDT)
-From:   Iain Hunter <drhunter95@gmail.com>
-Cc:     lothar.felten@gmail.com, iain@hunterembedded.co.uk,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Zeng Tao <prime.zeng@hisilicon.com>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v4] workaround regression in ina2xx introduced by cb47755725da("time: Prevent undefined behaviour in timespec64_to_ns()")
-Date:   Thu, 30 Sep 2021 09:10:02 +0100
-Message-Id: <20210930081025.366039-1-drhunter95@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        id S1349966AbhI3Kop (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 30 Sep 2021 06:44:45 -0400
+Received: from mail.kernelconcepts.de ([188.40.83.200]:35174 "EHLO
+        mail.kernelconcepts.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1349813AbhI3Koo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Sep 2021 06:44:44 -0400
+Received: from [217.146.132.69] (helo=yoda.kc.loc)
+        by mail.kernelconcepts.de with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <florian.boor@kernelconcepts.de>)
+        id 1mVtWg-0005HP-VW; Thu, 30 Sep 2021 12:42:55 +0200
+From:   Florian Boor <florian.boor@kernelconcepts.de>
+To:     jic23@kernel.org
+Cc:     linux-iio@vger.kernel.org, Jonathan.Cameron@huawei.com,
+        Michael.Hennerich@analog.com, devicetree@vger.kernel.org,
+        robh+dt@kernel.org, Florian Boor <florian.boor@kernelconcepts.de>
+Subject: [PATCH v6 1/2] iio: adc: ad799x: Implement selecting external reference voltage input on AD7991, AD7995 and AD7999.
+Date:   Thu, 30 Sep 2021 12:42:48 +0200
+Message-Id: <20210930104249.2924336-1-florian.boor@kernelconcepts.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Iain Hunter <iain@hunterembedded.co.uk>
+Make use of the AD7991_REF_SEL bit and support using the external
+reference voltage if 'vref-supply' is present. Use VCC voltage supply
+as reference if no extra reference is supplied.
 
-That change adds an error check to avoid saturation during multiplication
-to calculate nano seconds in timespec64_to_ns().
-In ina2xx_capture_thread() a timespec64 structure is used to calculate
-the delta time until the next sample time. This delta can be negative if
-the next sample time was in the past. In the -1 case timespec64_to_ns()
-now clamps the -1 second value to KTIME_MAX. This essentially puts ina2xx
-thread to sleep forever.
-Proposed patch is to:
-1 change from timespec64_XXX() to standard raw ktime_XXX() APIs to remove 
-non-standard timespec64 calls.
-2 split the functionality in the loop into two parts:
-- do while loop only does the test to see if the next sample time is in the
-future or in the past and so will be skipped and the sample time 
-incremented until it is in the future. This test is done with a simple 
-signed comparison as we are only interested in the sign being positive or 
-negative.
-- after do while loop we know that next is later than now and so delay is
-positive and ksub_sub() can be used to get the delay which is positive.
-
-Signed-off-by: Iain Hunter <iain@hunterembedded.co.uk>
-
-Fixes: cb47755725da("time: Prevent undef$
+Signed-off-by: Florian Boor <florian.boor@kernelconcepts.de>
 ---
- drivers/iio/adc/ina2xx-adc.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/iio/adc/ina2xx-adc.c b/drivers/iio/adc/ina2xx-adc.c
-index a4b2ff9e0..17f702772 100644
---- a/drivers/iio/adc/ina2xx-adc.c
-+++ b/drivers/iio/adc/ina2xx-adc.c
-@@ -775,7 +775,7 @@ static int ina2xx_capture_thread(void *data)
- 	struct ina2xx_chip_info *chip = iio_priv(indio_dev);
- 	int sampling_us = SAMPLING_PERIOD(chip);
- 	int ret;
--	struct timespec64 next, now, delta;
-+	ktime_t next, now;
- 	s64 delay_us;
- 
- 	/*
-@@ -785,7 +785,7 @@ static int ina2xx_capture_thread(void *data)
- 	if (!chip->allow_async_readout)
- 		sampling_us -= 200;
- 
--	ktime_get_ts64(&next);
-+	next = ktime_get();
- 
- 	do {
- 		while (!chip->allow_async_readout) {
-@@ -798,7 +798,7 @@ static int ina2xx_capture_thread(void *data)
- 			 * reset the reference timestamp.
- 			 */
- 			if (ret == 0)
--				ktime_get_ts64(&next);
-+				next = ktime_get();
- 			else
- 				break;
- 		}
-@@ -807,7 +807,7 @@ static int ina2xx_capture_thread(void *data)
+Changes in v6:
+- Minor documentation change (label and contact info)
+
+Changes in v5:
+- Correct errors in documentation found by
+  'make DT_CHECKER_FLAGS=-m dt_binding_check'
+  + Reduce title length
+  + Move information to description
+  + Add I²C bits to example
+
+Changes in v4:
+- Check devm_regulator_get_optional() return value and
+  handle values other from -ENODEV separately.
+- Update documentation description
+
+Changes in v3:
+- Do not create dummy reference regulator, check for vref presence where needed.
+- Use VCC as reference if no extra reference voltage is provided
+- Add interrupt information to documentation
+
+Changes in v2:
+- Check if a provided external vref regulator is provided.
+- Drop unused setting
+- Add ad79xx documentation (second patch)
+
+
+ drivers/iio/adc/ad799x.c | 68 ++++++++++++++++++++++++++++++----------
+ 1 file changed, 51 insertions(+), 17 deletions(-)
+
+diff --git a/drivers/iio/adc/ad799x.c b/drivers/iio/adc/ad799x.c
+index 18bf8386d50a..b67b3076d76e 100644
+--- a/drivers/iio/adc/ad799x.c
++++ b/drivers/iio/adc/ad799x.c
+@@ -299,7 +299,11 @@ static int ad799x_read_raw(struct iio_dev *indio_dev,
+ 			GENMASK(chan->scan_type.realbits - 1, 0);
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SCALE:
+-		ret = regulator_get_voltage(st->vref);
++		if (st->vref)
++			ret = regulator_get_voltage(st->vref);
++		else
++			ret = regulator_get_voltage(st->reg);
++		
  		if (ret < 0)
  			return ret;
+ 		*val = ret / 1000;
+@@ -770,6 +774,7 @@ static int ad799x_probe(struct i2c_client *client,
+ 				   const struct i2c_device_id *id)
+ {
+ 	int ret;
++	int extra_config = 0;
+ 	struct ad799x_state *st;
+ 	struct iio_dev *indio_dev;
+ 	const struct ad799x_chip_info *chip_info =
+@@ -797,14 +802,36 @@ static int ad799x_probe(struct i2c_client *client,
+ 	ret = regulator_enable(st->reg);
+ 	if (ret)
+ 		return ret;
+-	st->vref = devm_regulator_get(&client->dev, "vref");
++		
++	/* check if an external reference is supplied */
++	st->vref = devm_regulator_get_optional(&client->dev, "vref");
++
+ 	if (IS_ERR(st->vref)) {
+-		ret = PTR_ERR(st->vref);
+-		goto error_disable_reg;
++		if (PTR_ERR(st->vref) == -ENODEV) {
++			st->vref = NULL;
++			dev_info(&client->dev, "Using VCC reference voltage\n");
++		} else {
++			ret = PTR_ERR(st->vref);
++			goto error_disable_reg;
++		}
++	}
++		
++	if (st->vref) {
++		/* 
++		 * Use external reference voltage if supported by hardware.
++		 * This is optional if voltage / regulator present, use VCC otherwise.
++		 */
++		if ((st->id == ad7991) || (st->id == ad7995) || (st->id == ad7999)) {
++			dev_info(&client->dev, "Using external reference voltage\n");
++			extra_config |= AD7991_REF_SEL;
++			ret = regulator_enable(st->vref);
++			if (ret)
++				goto error_disable_reg;
++		} else {
++			st->vref = NULL;
++			dev_warn(&client->dev, "Supplied reference not supported\n");
++		}
+ 	}
+-	ret = regulator_enable(st->vref);
+-	if (ret)
+-		goto error_disable_reg;
  
--		ktime_get_ts64(&now);
-+		now = ktime_get();
+ 	st->client = client;
  
- 		/*
- 		 * Advance the timestamp for the next poll by one sampling
-@@ -816,11 +816,10 @@ static int ina2xx_capture_thread(void *data)
- 		 * multiple times, i.e. samples are dropped.
- 		 */
- 		do {
--			timespec64_add_ns(&next, 1000 * sampling_us);
--			delta = timespec64_sub(next, now);
--			delay_us = div_s64(timespec64_to_ns(&delta), 1000);
--		} while (delay_us <= 0);
-+			next = ktime_add_us(next, sampling_us);
-+		} while (next <= now);
+@@ -815,7 +842,7 @@ static int ad799x_probe(struct i2c_client *client,
+ 	indio_dev->channels = st->chip_config->channel;
+ 	indio_dev->num_channels = chip_info->num_channels;
  
-+		delay_us = ktime_to_us(ktime_sub(next, now));
- 		usleep_range(delay_us, (delay_us * 3) >> 1);
+-	ret = ad799x_update_config(st, st->chip_config->default_config);
++	ret = ad799x_update_config(st, st->chip_config->default_config | extra_config);
+ 	if (ret)
+ 		goto error_disable_vref;
  
- 	} while (!kthread_should_stop());
+@@ -845,7 +872,8 @@ static int ad799x_probe(struct i2c_client *client,
+ error_cleanup_ring:
+ 	iio_triggered_buffer_cleanup(indio_dev);
+ error_disable_vref:
+-	regulator_disable(st->vref);
++	if (st->vref) 
++		regulator_disable(st->vref);
+ error_disable_reg:
+ 	regulator_disable(st->reg);
+ 
+@@ -860,7 +888,8 @@ static int ad799x_remove(struct i2c_client *client)
+ 	iio_device_unregister(indio_dev);
+ 
+ 	iio_triggered_buffer_cleanup(indio_dev);
+-	regulator_disable(st->vref);
++	if (st->vref) 
++		regulator_disable(st->vref);
+ 	regulator_disable(st->reg);
+ 	kfree(st->rx_buf);
+ 
+@@ -872,7 +901,8 @@ static int __maybe_unused ad799x_suspend(struct device *dev)
+ 	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+ 	struct ad799x_state *st = iio_priv(indio_dev);
+ 
+-	regulator_disable(st->vref);
++	if (st->vref) 
++		regulator_disable(st->vref);
+ 	regulator_disable(st->reg);
+ 
+ 	return 0;
+@@ -889,17 +919,21 @@ static int __maybe_unused ad799x_resume(struct device *dev)
+ 		dev_err(dev, "Unable to enable vcc regulator\n");
+ 		return ret;
+ 	}
+-	ret = regulator_enable(st->vref);
+-	if (ret) {
+-		regulator_disable(st->reg);
+-		dev_err(dev, "Unable to enable vref regulator\n");
+-		return ret;
++
++	if (st->vref) {
++		ret = regulator_enable(st->vref);
++		if (ret) {
++			regulator_disable(st->reg);
++			dev_err(dev, "Unable to enable vref regulator\n");
++			return ret;
++		}
+ 	}
+ 
+ 	/* resync config */
+ 	ret = ad799x_update_config(st, st->config);
+ 	if (ret) {
+-		regulator_disable(st->vref);
++		if (st->vref) 
++			regulator_disable(st->vref);
+ 		regulator_disable(st->reg);
+ 		return ret;
+ 	}
 -- 
-2.17.1
+2.30.2
 

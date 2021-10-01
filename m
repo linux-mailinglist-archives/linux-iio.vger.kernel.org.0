@@ -2,70 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C615141EBBE
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Oct 2021 13:23:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7577041ECC1
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Oct 2021 14:00:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353805AbhJALZR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 1 Oct 2021 07:25:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38364 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353360AbhJALZR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Oct 2021 07:25:17 -0400
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D331DC06177C
-        for <linux-iio@vger.kernel.org>; Fri,  1 Oct 2021 04:23:32 -0700 (PDT)
-Received: by mail-wm1-x32c.google.com with SMTP id l18-20020a05600c4f1200b002f8cf606262so10964246wmq.1
-        for <linux-iio@vger.kernel.org>; Fri, 01 Oct 2021 04:23:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=5L/E4eErsLvrvRSyjenHMn1XgR3BfAibYkaUBTxnmho=;
-        b=LLmurtDEA5JVo9ZjaVbs0k4e4TwS64Te4eBdtibog0kZhKtMbbW8tQQDGWCGYqh2vR
-         8gJtXNuGTlAQJd+qsGv+3OAhFDt/wOGzw8G6YLcjGrydESup73VVND/l29tgi0mXUeVx
-         6yFbWdliMayK0fUtEgI8JL2JnmrVDrL12nhRb2mcvVmCDNjW8DNyoG1X3sCxHWDr4PqV
-         +LQ+HSwjVq+cA6hpgFAkK00lZzjD6OXAoiuAjAQ8OWIDaoQ4uT4766xHvsmdcJJW1hwY
-         HEHpAxnZyUvLEI2bEKwi8zkfJfFUQ00VuDFJ4JgLrVlTzPrMBuGJ+NoTTYUw4KPWZ57Z
-         hXKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=5L/E4eErsLvrvRSyjenHMn1XgR3BfAibYkaUBTxnmho=;
-        b=UtiXXGOD+GdSADKkgLWJ0kXcHAUyuvYz/kkIVHyzvp38+CQI/og4krNTpb6XblsIBf
-         fKGpKOqmnH+gyrjrI53H4DWHmfCQyBrjDFS2mO/qNnULiHj0wE2Fe6gyqBoyXpaG4Iau
-         YOhLT9l9lrtcaM60RZPL2VtKgQ6RUljS2r7oDyTLwEPGo3PlgN88LI7ucYo0hhQvmyxu
-         k+PKZT85Utj3L/KzKLFud8pEoy8MwRRx/mlHP2JhBNGsnMSYf2CWuKREj2Z+JHMPo6jK
-         AXke3O2tXQu79by1aGmv+X/4KFT53W/OqbhjtGKEgglayBkhfjocPtwQs6KiktClfPjs
-         W8Ng==
-X-Gm-Message-State: AOAM533pr7O7KucfWwxOFBUyVNMcC7ceuR6sfG0zm3mu3epkNY54uRMt
-        OhmKkeemtomN1QjitEeOoxGMoBzoezfKpASHLfQ=
-X-Google-Smtp-Source: ABdhPJwx6yg83rEz/wA3vUxiDB4RpzcX7hEEsqPqQUM4vWqpNgpCfJS7yHovwICOW8hdgnEQXPQ9uvBeH0bXWvea8hc=
-X-Received: by 2002:a1c:9dcc:: with SMTP id g195mr3911232wme.70.1633087411379;
- Fri, 01 Oct 2021 04:23:31 -0700 (PDT)
+        id S1354206AbhJAMCN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 1 Oct 2021 08:02:13 -0400
+Received: from smtp-relay-canonical-0.canonical.com ([185.125.188.120]:59252
+        "EHLO smtp-relay-canonical-0.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1354205AbhJAMCL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Oct 2021 08:02:11 -0400
+Received: from localhost (1.general.cking.uk.vpn [10.172.193.212])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id C559440186;
+        Fri,  1 Oct 2021 12:00:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1633089618;
+        bh=xoVeBwEbq5yYbiC4MKK88HqPxlCFGkYEHA+6yK4TZTA=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type;
+        b=p1BeaFQ3coUHtNeEOxSWXmLfJIOD2R8e8FtDlN3E4OAKig7Wd0rxW1Mhx1drNO9dX
+         w2rjQ/A32OQpuUe9lrBVfHweu7KZpUGqXto90jf0HrDEWLwK2PamMgJ1ww2eWp6Yrb
+         NK7ppO1l8n73F38kpKfYvqC7rBI/eqJgZFPFax2xWI+5ExE8KBYqQPIjLjhHezD17O
+         deBMeiL8VLAygvegr/ER3nWo9st/BgZfYnDEpKly73jSCo2Fp/71ZhdWDnY1pA5Wqj
+         V867cDEXBTLiDirFjE4hpUN8vmOrJymx7xtcpP3xL5Ir3mNRnV2SjLao5vHv2thlVc
+         J8rTqh+z6BiZg==
+From:   Colin King <colin.king@canonical.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Joel Stanley <joel@jms.id.au>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Billy Tsai <billy_tsai@aspeedtech.com>,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] iio: adc: aspeed: Fix spelling mistake "battey" -> "battery"
+Date:   Fri,  1 Oct 2021 13:00:18 +0100
+Message-Id: <20211001120018.17570-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Received: by 2002:a5d:47c8:0:0:0:0:0 with HTTP; Fri, 1 Oct 2021 04:23:30 -0700 (PDT)
-Reply-To: joymat52@gmail.com
-From:   JOYCE THOMAS <co68605@gmail.com>
-Date:   Fri, 1 Oct 2021 04:23:30 -0700
-Message-ID: <CAFNbjxSSKXSOW9rtdEUTKWhhjbgiEf5cOUPdkUDSMZwyJxdNTg@mail.gmail.com>
-Subject: ATTN:
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Dear
-My Name is Mr. Joyce Thomas. Contact me for more information on the
-transfer of ($7.9 million dollars) left by my late client from your
-Country. I want to present you as a business partner and next of kin
-of the fund. I will give you the details of this transaction, as soon
-as I hear from you. I need the information below:
-Full Name:
-Address:
-Occupation:
-Age:
-Personal Email:
-Personal Telephone:
-Best Regards,
-Mr.Joyce  Thomas
+From: Colin Ian King <colin.king@canonical.com>
+
+There is a spelling mistake in a dev_warn message. Fix it.
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/iio/adc/aspeed_adc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/iio/adc/aspeed_adc.c b/drivers/iio/adc/aspeed_adc.c
+index 3e9850a43372..a957cad1bfab 100644
+--- a/drivers/iio/adc/aspeed_adc.c
++++ b/drivers/iio/adc/aspeed_adc.c
+@@ -581,7 +581,7 @@ static int aspeed_adc_probe(struct platform_device *pdev)
+ 			}
+ 		} else
+ 			dev_warn(&pdev->dev,
+-				 "Failed to enable battey-sensing mode\n");
++				 "Failed to enable battery-sensing mode\n");
+ 	}
+ 
+ 	ret = clk_prepare_enable(data->clk_scaler->clk);
+-- 
+2.32.0
+

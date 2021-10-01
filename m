@@ -2,73 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7577041ECC1
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Oct 2021 14:00:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0402E41ED40
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Oct 2021 14:20:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354206AbhJAMCN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 1 Oct 2021 08:02:13 -0400
-Received: from smtp-relay-canonical-0.canonical.com ([185.125.188.120]:59252
-        "EHLO smtp-relay-canonical-0.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1354205AbhJAMCL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Oct 2021 08:02:11 -0400
-Received: from localhost (1.general.cking.uk.vpn [10.172.193.212])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id C559440186;
-        Fri,  1 Oct 2021 12:00:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1633089618;
-        bh=xoVeBwEbq5yYbiC4MKK88HqPxlCFGkYEHA+6yK4TZTA=;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type;
-        b=p1BeaFQ3coUHtNeEOxSWXmLfJIOD2R8e8FtDlN3E4OAKig7Wd0rxW1Mhx1drNO9dX
-         w2rjQ/A32OQpuUe9lrBVfHweu7KZpUGqXto90jf0HrDEWLwK2PamMgJ1ww2eWp6Yrb
-         NK7ppO1l8n73F38kpKfYvqC7rBI/eqJgZFPFax2xWI+5ExE8KBYqQPIjLjhHezD17O
-         deBMeiL8VLAygvegr/ER3nWo9st/BgZfYnDEpKly73jSCo2Fp/71ZhdWDnY1pA5Wqj
-         V867cDEXBTLiDirFjE4hpUN8vmOrJymx7xtcpP3xL5Ir3mNRnV2SjLao5vHv2thlVc
-         J8rTqh+z6BiZg==
-From:   Colin King <colin.king@canonical.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
+        id S231244AbhJAMWU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 1 Oct 2021 08:22:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51214 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230498AbhJAMWT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 1 Oct 2021 08:22:19 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 737A0619F7;
+        Fri,  1 Oct 2021 12:20:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1633090835;
+        bh=+xzFgefDRScH/Z4Vj5bFVrab00uhlzlw2k4c0w7AdzI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=aPdCkCA1VisIueGQE6T0zdhB19ry1JKu8TavGxutZvYOnAd6QTtzUaTZMaJLZaDMX
+         BOrIbP4z6vt+lywp2Xbm+uo3i/Kqjb8Z51L4gYaI+YtdOajN6WIJFPeCf31lhboPDD
+         OpAY6cnTODcRJk2HxhSFw14aIDcOjfZxjLddq2n6/bFmVu/x2CmNOHjpP+iTH/wh7t
+         XbO/GwU6pcyFvD/yvveB1h4nPks0zoxGaesbYasSw3IL0FpQ4Tz5ZqFOxdVPa3xh1P
+         q2FKZbf8vtd5xf9we7JoAQYPlZrms3Y2I4uvwJ40aVoYOh13yfxbGlVw2L61v+xAAl
+         CSYhj6zxCY92w==
+Date:   Fri, 1 Oct 2021 13:19:44 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Denis CIOCCA <denis.ciocca@st.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Joel Stanley <joel@jms.id.au>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Billy Tsai <billy_tsai@aspeedtech.com>,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-aspeed@lists.ozlabs.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] iio: adc: aspeed: Fix spelling mistake "battey" -> "battery"
-Date:   Fri,  1 Oct 2021 13:00:18 +0100
-Message-Id: <20211001120018.17570-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.32.0
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH] iio: st_pressure_spi: Add missing entries SPI to device
+ ID table
+Message-ID: <20211001121944.GA5080@sirena.org.uk>
+References: <20210927134153.12739-1-broonie@kernel.org>
+ <20210930173852.208f1815@jic23-huawei>
+ <AM8PR10MB4801DD2B605277F3D97CAF87EDAA9@AM8PR10MB4801.EURPRD10.PROD.OUTLOOK.COM>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="IS0zKkzwUGydFO0o"
+Content-Disposition: inline
+In-Reply-To: <AM8PR10MB4801DD2B605277F3D97CAF87EDAA9@AM8PR10MB4801.EURPRD10.PROD.OUTLOOK.COM>
+X-Cookie: "Pok pok pok, P'kok!"
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
 
-There is a spelling mistake in a dev_warn message. Fix it.
+--IS0zKkzwUGydFO0o
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/iio/adc/aspeed_adc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Thu, Sep 30, 2021 at 06:35:23PM +0000, Denis CIOCCA wrote:
 
-diff --git a/drivers/iio/adc/aspeed_adc.c b/drivers/iio/adc/aspeed_adc.c
-index 3e9850a43372..a957cad1bfab 100644
---- a/drivers/iio/adc/aspeed_adc.c
-+++ b/drivers/iio/adc/aspeed_adc.c
-@@ -581,7 +581,7 @@ static int aspeed_adc_probe(struct platform_device *pdev)
- 			}
- 		} else
- 			dev_warn(&pdev->dev,
--				 "Failed to enable battey-sensing mode\n");
-+				 "Failed to enable battery-sensing mode\n");
- 	}
- 
- 	ret = clk_prepare_enable(data->clk_scaler->clk);
--- 
-2.32.0
+> I am not very familiar with how much the kernel would like to keep 'probing id' consistent. I perfectly understand the value of doing this (maintain ID compatibility) but I also see increase confusion in maintaining half in a way and half in another.
 
+The goal is not to maintain compatibility, the goal is to be able to
+load the driver as a module on DT systems.  For historical reasons SPI
+uses the platform device IDs to load modules bound with DT, if there is
+no platform ID for a DT ID then userspace won't be able to find and load
+the module.
+
+> I personally think that we should drop the '-press' thing for all the devices since they all are single-chip (meaning that the name used identify univocally that is a pressure sensor).
+
+The DT bindings are an ABI, you can't really remove compatibles only
+deprecate them.
+
+> If you think that compatibility is more important here, I think the patch is fine but this should be done in the i2c part as well so that it's at least congruent withing the driver.
+
+I2C doesn't have this issue with modaliases so it's not an issue there.
+
+Please fix your mail client to word wrap within paragraphs at something
+substantially less than 80 columns.  Doing this makes your messages much
+easier to read and reply to.
+
+--IS0zKkzwUGydFO0o
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmFW/N8ACgkQJNaLcl1U
+h9DOvQf/czx32Hlljeb7UZKE5kg0nBQdOFdZbfsUdeGomrL1YWU9p4QH7uEqCSsT
+vGpW0Vz0BBiLsaboTjRGlDSx4e64mPF2tX9QtUp1usJjGqQVNMqhHsxfQIaysSvo
+8ExN0JXqyTaItKKvqMXgR+Y1QRpZv7+4IZ+sEcoYKHl1zOFanacrBLWQz5KYhloI
+5OQKx+UPqADqLsYI0Yb5CrnLN93224M4YBusVkq1kWRLpKE85SKbCwtrHi6TM9eh
+mIuTWADFsm4j1Fuvyo73o03gWLZ8SUbmXek0m+8Zdelmn/0cQirAT58YF5M5p26i
+QN5CBATKqDNXXoeDV+GAhKOJATBRCg==
+=HXak
+-----END PGP SIGNATURE-----
+
+--IS0zKkzwUGydFO0o--

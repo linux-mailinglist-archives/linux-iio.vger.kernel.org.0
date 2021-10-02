@@ -2,32 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 824F941FCEA
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Oct 2021 18:02:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D629C41FCEE
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Oct 2021 18:05:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233424AbhJBQDw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 2 Oct 2021 12:03:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33618 "EHLO mail.kernel.org"
+        id S233517AbhJBQGz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 2 Oct 2021 12:06:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38896 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232575AbhJBQDv (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 2 Oct 2021 12:03:51 -0400
+        id S232575AbhJBQGy (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 2 Oct 2021 12:06:54 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C0C5861A3A;
-        Sat,  2 Oct 2021 16:02:04 +0000 (UTC)
-Date:   Sat, 2 Oct 2021 17:06:01 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id A896E61B20;
+        Sat,  2 Oct 2021 16:05:03 +0000 (UTC)
+Date:   Sat, 2 Oct 2021 17:09:01 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc:     Alexandru Ardelean <aardelean@deviqon.com>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        Maxime Ripard <maxime@cerno.tech>
-Subject: Re: [PATCH] iio: adc: nau7802: convert probe to full device-managed
-Message-ID: <20211002170601.2a37a8a0@jic23-huawei>
-In-Reply-To: <YVYz+rY9euHC4lb4@piout.net>
-References: <20210926154932.3287590-1-aardelean@deviqon.com>
-        <20210930171023.2bf5a414@jic23-huawei>
-        <YVYz+rY9euHC4lb4@piout.net>
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc:     Cai Huoqing <caihuoqing@baidu.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Heiko Stuebner <heiko@sntech.de>,
+        linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-rockchip@lists.infradead.org
+Subject: Re: [PATCH v3 6/9] iio: adc: meson_saradc: Make use of the helper
+ function dev_err_probe()
+Message-ID: <20211002170901.7378fcc4@jic23-huawei>
+In-Reply-To: <CAFBinCB+tYAjqhyO-UAsZxqm6FkK8Q8TGPJ_ehuxwgRSSRZDJA@mail.gmail.com>
+References: <20210928141956.2148-1-caihuoqing@baidu.com>
+        <20210928141956.2148-6-caihuoqing@baidu.com>
+        <CAFBinCB+tYAjqhyO-UAsZxqm6FkK8Q8TGPJ_ehuxwgRSSRZDJA@mail.gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -36,136 +52,33 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 1 Oct 2021 00:02:34 +0200
-Alexandre Belloni <alexandre.belloni@bootlin.com> wrote:
+On Sat, 2 Oct 2021 15:01:56 +0200
+Martin Blumenstingl <martin.blumenstingl@googlemail.com> wrote:
 
-> On 30/09/2021 17:10:23+0100, Jonathan Cameron wrote:
-> > On Sun, 26 Sep 2021 18:49:32 +0300
-> > Alexandru Ardelean <aardelean@deviqon.com> wrote:
-> >   
-> > > This is a trivial conversion to device-managed functions.
-> > > The mutex_destroy() calls are redundant, as the data will be free'd anyway.
-> > > 
-> > > And the IRQ and IIO register functions both have device-managed
-> > > equivalents.
-> > > 
-> > > Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>  
-> > 
-> > +CC Maxime and Alexandre.
-> > 
-> > Looks simple enough to me that I won't wait on their replies to queue it up.
-> > Obviously feedback welcome though!
-> > 
-> > Applied to the togreg branch of iio.git and pushed out as testing for 0-day
-> > to see if it can find stuff we missed.
-> >   
-> 
-> This seems good to me too
-> Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Great. Added tag.
+> On Tue, Sep 28, 2021 at 4:20 PM Cai Huoqing <caihuoqing@baidu.com> wrote:
+> >
+> > When possible use dev_err_probe help to properly deal with the
+> > PROBE_DEFER error, the benefit is that DEFER issue will be logged
+> > in the devices_deferred debugfs file.
+> > Using dev_err_probe() can reduce code size, and the error value
+> > gets printed.
+> >
+> > Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>  
+> Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> as well as:
+> Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> # Odroid-C1
+Hi Martin,
+
+Confusing tag.  Was the second meant to be a Tested-by?
 
 Thanks,
 
 Jonathan
 > 
-> > Thanks,
-> > 
-> > Jonathan
-> > 
-> >   
-> > > ---
-> > >  drivers/iio/adc/nau7802.c | 50 +++++++--------------------------------
-> > >  1 file changed, 9 insertions(+), 41 deletions(-)
-> > > 
-> > > diff --git a/drivers/iio/adc/nau7802.c b/drivers/iio/adc/nau7802.c
-> > > index bb70b51d25b1..976c235f3079 100644
-> > > --- a/drivers/iio/adc/nau7802.c
-> > > +++ b/drivers/iio/adc/nau7802.c
-> > > @@ -428,8 +428,6 @@ static int nau7802_probe(struct i2c_client *client,
-> > >  
-> > >  	st = iio_priv(indio_dev);
-> > >  
-> > > -	i2c_set_clientdata(client, indio_dev);
-> > > -
-> > >  	indio_dev->name = dev_name(&client->dev);
-> > >  	indio_dev->modes = INDIO_DIRECT_MODE;
-> > >  	indio_dev->info = &nau7802_info;
-> > > @@ -495,13 +493,13 @@ static int nau7802_probe(struct i2c_client *client,
-> > >  	 * will enable them back when we will need them..
-> > >  	 */
-> > >  	if (client->irq) {
-> > > -		ret = request_threaded_irq(client->irq,
-> > > -				NULL,
-> > > -				nau7802_eoc_trigger,
-> > > -				IRQF_TRIGGER_HIGH | IRQF_ONESHOT |
-> > > -				IRQF_NO_AUTOEN,
-> > > -				client->dev.driver->name,
-> > > -				indio_dev);
-> > > +		ret = devm_request_threaded_irq(&client->dev, client->irq,
-> > > +						NULL,
-> > > +						nau7802_eoc_trigger,
-> > > +						IRQF_TRIGGER_HIGH | IRQF_ONESHOT |
-> > > +						IRQF_NO_AUTOEN,
-> > > +						client->dev.driver->name,
-> > > +						indio_dev);
-> > >  		if (ret) {
-> > >  			/*
-> > >  			 * What may happen here is that our IRQ controller is
-> > > @@ -526,7 +524,7 @@ static int nau7802_probe(struct i2c_client *client,
-> > >  		ret = i2c_smbus_write_byte_data(st->client, NAU7802_REG_CTRL2,
-> > >  					  NAU7802_CTRL2_CRS(st->sample_rate));
-> > >  		if (ret)
-> > > -			goto error_free_irq;
-> > > +			return ret;
-> > >  	}
-> > >  
-> > >  	/* Setup the ADC channels available on the board */
-> > > @@ -536,36 +534,7 @@ static int nau7802_probe(struct i2c_client *client,
-> > >  	mutex_init(&st->lock);
-> > >  	mutex_init(&st->data_lock);
-> > >  
-> > > -	ret = iio_device_register(indio_dev);
-> > > -	if (ret < 0) {
-> > > -		dev_err(&client->dev, "Couldn't register the device.\n");
-> > > -		goto error_device_register;
-> > > -	}
-> > > -
-> > > -	return 0;
-> > > -
-> > > -error_device_register:
-> > > -	mutex_destroy(&st->lock);
-> > > -	mutex_destroy(&st->data_lock);
-> > > -error_free_irq:
-> > > -	if (client->irq)
-> > > -		free_irq(client->irq, indio_dev);
-> > > -
-> > > -	return ret;
-> > > -}
-> > > -
-> > > -static int nau7802_remove(struct i2c_client *client)
-> > > -{
-> > > -	struct iio_dev *indio_dev = i2c_get_clientdata(client);
-> > > -	struct nau7802_state *st = iio_priv(indio_dev);
-> > > -
-> > > -	iio_device_unregister(indio_dev);
-> > > -	mutex_destroy(&st->lock);
-> > > -	mutex_destroy(&st->data_lock);
-> > > -	if (client->irq)
-> > > -		free_irq(client->irq, indio_dev);
-> > > -
-> > > -	return 0;
-> > > +	return devm_iio_device_register(&client->dev, indio_dev);
-> > >  }
-> > >  
-> > >  static const struct i2c_device_id nau7802_i2c_id[] = {
-> > > @@ -582,7 +551,6 @@ MODULE_DEVICE_TABLE(of, nau7802_dt_ids);
-> > >  
-> > >  static struct i2c_driver nau7802_driver = {
-> > >  	.probe = nau7802_probe,
-> > > -	.remove = nau7802_remove,
-> > >  	.id_table = nau7802_i2c_id,
-> > >  	.driver = {
-> > >  		   .name = "nau7802",  
-> >   
+> Thanks for your contribution!
 > 
+> 
+> Best regards,
+> Martin
 

@@ -2,33 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CCE2420250
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Oct 2021 17:40:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CBBA42025B
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Oct 2021 17:41:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230512AbhJCPlr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 3 Oct 2021 11:41:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40466 "EHLO mail.kernel.org"
+        id S230495AbhJCPnc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 3 Oct 2021 11:43:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41898 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230509AbhJCPlr (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 3 Oct 2021 11:41:47 -0400
+        id S230482AbhJCPnc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 3 Oct 2021 11:43:32 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CFCAB61181;
-        Sun,  3 Oct 2021 15:39:57 +0000 (UTC)
-Date:   Sun, 3 Oct 2021 16:43:55 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 363B4611C2;
+        Sun,  3 Oct 2021 15:41:43 +0000 (UTC)
+Date:   Sun, 3 Oct 2021 16:45:41 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jiri Valek - 2N <valek@2n.cz>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Alexander Koch <mail@alexanderkoch.net>,
-        Andreas Dannenberg <dannenberg@ti.com>
-Subject: Re: [PATCH] iio: light: opt3001: Fixed timeout error when 0 lux
-Message-ID: <20211003164355.3757c44f@jic23-huawei>
-In-Reply-To: <20210926145514.5395fdc6@jic23-huawei>
-References: <20210920125351.6569-1-valek@2n.cz>
-        <20210926145514.5395fdc6@jic23-huawei>
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "Michael Hennerich" <Michael.Hennerich@analog.com>,
+        Alexandru Tachici <alexandru.tachici@analog.com>
+Subject: Re: [PATCH 2/2] iio:adc:ad7124: Convert to fwnode handling of child
+ node parsing.
+Message-ID: <20211003164541.5ffc0b38@jic23-huawei>
+In-Reply-To: <20210815170951.52378891@jic23-huawei>
+References: <20210725172458.487343-1-jic23@kernel.org>
+        <20210725172458.487343-3-jic23@kernel.org>
+        <CAHp75VcgMkPw8BudKkF9MN2ijjDuT=VRo3FivVcjEYsEY4L-0w@mail.gmail.com>
+        <20210727145141.0000230d@Huawei.com>
+        <CAHp75Ve6L+5zAwBJ5ep2VExyNDaSSrEBAonfMT6cFCxEpgUQQA@mail.gmail.com>
+        <20210727192013.00003f3c@Huawei.com>
+        <20210815170951.52378891@jic23-huawei>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -37,62 +44,95 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 26 Sep 2021 14:55:14 +0100
+On Sun, 15 Aug 2021 17:09:51 +0100
 Jonathan Cameron <jic23@kernel.org> wrote:
 
-> On Mon, 20 Sep 2021 14:53:48 +0200
-> Jiri Valek - 2N <valek@2n.cz> wrote:
+> On Tue, 27 Jul 2021 19:20:13 +0100
+> Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
 > 
-> > Reading from sensor returned timeout error under
-> > zero light conditions.
+> > On Tue, 27 Jul 2021 17:16:07 +0300
+> > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> >   
+> > > On Tue, Jul 27, 2021 at 4:52 PM Jonathan Cameron
+> > > <Jonathan.Cameron@huawei.com> wrote:    
+> > > > On Sun, 25 Jul 2021 23:33:12 +0300
+> > > > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:      
+> > > > > On Sun, Jul 25, 2021 at 8:22 PM Jonathan Cameron <jic23@kernel.org> wrote:      
+> > > 
+> > > ...
+> > >     
+> > > > > > -       for_each_available_child_of_node(np, child) {
+> > > > > > +       device_for_each_child_node(dev, child) {      
+> > > > >
+> > > > > Isn't this
+> > > > >   fwnode_for_each_available_child_node()
+> > > > > better to use?      
+> > > >
+> > > > Given we would be extracting the fwnode just to call this
+> > > > loop, I'd say no, device version makes more sense..
+> > > >      
+> > > > >
+> > > > > ...
+> > > > >
+> > > > > So the gaps I see are
+> > > > >   device_get_available_child_node_count()
+> > > > > and
+> > > > >   device_for_each_available_child_node()      
+> > > >
+> > > > Do we then fix the fact that
+> > > > device_for_each_child_node() will call the _available() form
+> > > > for device tree?  That seems inconsistent currently and
+> > > > I was assuming that was deliberate...      
+> > > 
+> > > I'm not sure I got your point. Mine (see below) is to add the APIs
+> > > that you want to use as a direct replacement of the corresponding OF
+> > > counterparts.    
+> > +CC Rafael,  
+> 
+> Rafael, if you have a chance to give input on the questions below it would
+> be much appreciated.
+
+Rafael, if you have a chance to look at this it would be great.
+> 
+> Thanks,
+> 
+> Jonathan
+> 
 > > 
-> > Signed-off-by: Jiri Valek - 2N <valek@2n.cz>  
-> Hi Jiri,
-> 
-> Thanks for this. Looks good to me though I'll leave a little longer for others
-> to take a look.
-> 
-> Does need a fixes tag though so we know how far to backport it.
-> I think it should be
-> 
-> Fixes: ac663db3678a ("iio: light: opt3001: enable operation w/o IRQ")
-> 
-> +Cc Alexander and Andreas
-
-Applied to the fixes-togreg branch of iio.git and marked for stable.
-
-Thanks,
-
-Jonathan
-
-> 
-> > ---
-> >  drivers/iio/light/opt3001.c | 6 +++---
-> >  1 file changed, 3 insertions(+), 3 deletions(-)
+> > The oddity is that device_for_each_child_node() is a direct replacement
+> > of the for_each_available_child_of_node() other than the obvious
+> > use of device rather than the of node.
 > > 
-> > diff --git a/drivers/iio/light/opt3001.c b/drivers/iio/light/opt3001.c
-> > index 52963da401a7..1880bd5bb258 100644
-> > --- a/drivers/iio/light/opt3001.c
-> > +++ b/drivers/iio/light/opt3001.c
-> > @@ -276,6 +276,8 @@ static int opt3001_get_lux(struct opt3001 *opt, int *val, int *val2)
-> >  		ret = wait_event_timeout(opt->result_ready_queue,
-> >  				opt->result_ready,
-> >  				msecs_to_jiffies(OPT3001_RESULT_READY_LONG));
-> > +		if (ret == 0)
-> > +			return -ETIMEDOUT;
-> >  	} else {
-> >  		/* Sleep for result ready time */
-> >  		timeout = (opt->int_time == OPT3001_INT_TIME_SHORT) ?
-> > @@ -312,9 +314,7 @@ static int opt3001_get_lux(struct opt3001 *opt, int *val, int *val2)
-> >  		/* Disallow IRQ to access the device while lock is active */
-> >  		opt->ok_to_ignore_lock = false;
-> >  
-> > -	if (ret == 0)
-> > -		return -ETIMEDOUT;
-> > -	else if (ret < 0)
-> > +	if (ret < 0)
-> >  		return ret;
-> >  
-> >  	if (opt->use_irq) {  
+> > https://elixir.bootlin.com/linux/v5.14-rc3/source/drivers/of/property.c#L939
+> > 
+> > static struct fwnode_handle *
+> > of_fwnode_get_next_child_node(const struct fwnode_handle *fwnode,
+> > 			      struct fwnode_handle *child)
+> > {
+> > 	return of_fwnode_handle(of_get_next_available_child(to_of_node(fwnode),
+> > 							    to_of_node(child)));
+> > }
+> > 
+> > So the question becomes whether there is any desire at all to have a
+> > version of the device_for_each_child_node() that does not check
+> > if it is available or not.
+> > 
+> > Looks like it goes all the way back.  Rafael, any comment on why the available
+> > for is used here and whether it makes sense to introduce separate
+> > versions for looping over children that cover the _available_ and everything
+> > cases?
+> > 
+> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/base/property.c?id=8a0662d9ed2968e1186208336a8e1fab3fdfea63
+> > 
+> > I'm kind of assuming this was deliberate as we don't want to encourage
+> > accessing disabled firmware nodes.
+> > 
+> > Jonathan
+> >   
+> > >     
+> > > > > Both of them I think are easy to add and avoid possible breakage.      
+> > > 
+> > >     
+> >   
 > 
 

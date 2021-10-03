@@ -2,41 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71BC642025E
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Oct 2021 17:43:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDE7342026E
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Oct 2021 17:50:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230507AbhJCPpT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 3 Oct 2021 11:45:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42934 "EHLO mail.kernel.org"
+        id S230441AbhJCPwM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 3 Oct 2021 11:52:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45896 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230482AbhJCPpT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 3 Oct 2021 11:45:19 -0400
+        id S230426AbhJCPwK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 3 Oct 2021 11:52:10 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DB684611C2;
-        Sun,  3 Oct 2021 15:43:28 +0000 (UTC)
-Date:   Sun, 3 Oct 2021 16:47:26 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 8F6A561AAC;
+        Sun,  3 Oct 2021 15:50:21 +0000 (UTC)
+Date:   Sun, 3 Oct 2021 16:54:19 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Yizhuo <yzhai003@ucr.edu>,
-        Mugilraj Dhavachelvan <dmugil2000@gmail.com>,
-        Olivier Moysan <olivier.moysan@st.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Arnaud Pouliquen <arnaud.pouliquen@st.com>,
-        linux-stm32@st-md-mailman.stormreply.com
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+To:     linux-iio@vger.kernel.org,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: stm32-dfsdm: Fix the uninitialized use if
- regmap_read() fails
-Message-ID: <20211003164726.42e20526@jic23-huawei>
-In-Reply-To: <20210808183243.70619aa8@jic23-huawei>
-References: <20210719195313.40341-1-yzhai003@ucr.edu>
-        <20210724164840.7381053b@jic23-huawei>
-        <20210808183243.70619aa8@jic23-huawei>
+        Nuno Sa <Nuno.Sa@analog.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Jan Kiszka <jan.kiszka@siemens.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v2 0/4] IIO: Alignment fixes part 4 - bounce buffers for
+ the hard cases.
+Message-ID: <20211003165419.191055ea@jic23-huawei>
+In-Reply-To: <20210718155559.4eb7bf7a@jic23-huawei>
+References: <20210613151039.569883-1-jic23@kernel.org>
+        <20210718155559.4eb7bf7a@jic23-huawei>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -45,34 +38,31 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 8 Aug 2021 18:32:43 +0100
+On Sun, 18 Jul 2021 15:55:59 +0100
 Jonathan Cameron <jic23@kernel.org> wrote:
 
-> On Sat, 24 Jul 2021 16:48:40 +0100
+> On Sun, 13 Jun 2021 16:10:35 +0100
 > Jonathan Cameron <jic23@kernel.org> wrote:
 > 
-> > On Mon, 19 Jul 2021 19:53:11 +0000
-> > Yizhuo <yzhai003@ucr.edu> wrote:
-> >   
-> > > Inside function stm32_dfsdm_irq(), the variable "status", "int_en"
-> > > could be uninitialized if the regmap_read() fails and returns an error
-> > > code.  However, they are directly used in the later context to decide
-> > > the control flow, which is potentially unsafe.
-> > > 
-> > > Fixes: e2e6771c64625 ("IIO: ADC: add STM32 DFSDM sigma delta ADC support")
-> > > 
-> > > Signed-off-by: Yizhuo <yzhai003@ucr.edu>    
-> > 
-> > Hi Yizhou
-> > 
-> > I want to get some review of this from people familiar with the
-> > hardware as there is a small possibility your reordering might have
-> > introduced a problem.  
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
+> Hi All,
 > 
-> To stm32 people, can someone take a look at this?
+> If anyone has time to take a look at this, particularly the first patch which
+> does the interesting stuff and patch 3 which I don't think has had any review
+> yet that would be great.
 
-This one is still outstanding.  If anyone from stm32 side of things could take a look
-that would be great,
+It might have helped if I'd identified patch 2 as the one that was
+missing reviews.  Ah well. I've done something I really dislike doing and
+given up on getting a review for that patch.  As such I've applied
+this series to the togreg branch of iio.git and pushed it out as testing for
+0-day to see if it can find anything we missed.
+
+If anyone has a chance to sanity check patch 2 for any idiocy on my part it
+would still be very much appreciated!
+
+Thanks to Nuno, Andy and Linus for their reviews of this fiddly series.
+
+Thanks,
 
 Jonathan
 
@@ -81,45 +71,104 @@ Jonathan
 > 
 > Jonathan
 > 
-> >   
-> > > ---
-> > >  drivers/iio/adc/stm32-dfsdm-adc.c | 9 +++++++--
-> > >  1 file changed, 7 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
-> > > index 1cfefb3b5e56..d8b78aead942 100644
-> > > --- a/drivers/iio/adc/stm32-dfsdm-adc.c
-> > > +++ b/drivers/iio/adc/stm32-dfsdm-adc.c
-> > > @@ -1292,9 +1292,11 @@ static irqreturn_t stm32_dfsdm_irq(int irq, void *arg)
-> > >  	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
-> > >  	struct regmap *regmap = adc->dfsdm->regmap;
-> > >  	unsigned int status, int_en;
-> > > +	int ret;
-> > >  
-> > > -	regmap_read(regmap, DFSDM_ISR(adc->fl_id), &status);
-> > > -	regmap_read(regmap, DFSDM_CR2(adc->fl_id), &int_en);    
 > > 
-> > Moving this later is only valid if there aren't any side effects.
-> > The current ordering is strange enough it makes me wonder if there might be!
+> > Thanks to Andy and Nuno for reviews.
 > > 
-> > Jonathan
-> >   
-> > > +	ret = regmap_read(regmap, DFSDM_ISR(adc->fl_id), &status);
-> > > +	if (ret)
-> > > +		return IRQ_HANDLED;
-> > >  
-> > >  	if (status & DFSDM_ISR_REOCF_MASK) {
-> > >  		/* Read the data register clean the IRQ status */
-> > > @@ -1303,6 +1305,9 @@ static irqreturn_t stm32_dfsdm_irq(int irq, void *arg)
-> > >  	}
-> > >  
-> > >  	if (status & DFSDM_ISR_ROVRF_MASK) {
-> > > +		ret = regmap_read(regmap, DFSDM_CR2(adc->fl_id), &int_en);
-> > > +		if (ret)
-> > > +			return IRQ_HANDLED;
-> > >  		if (int_en & DFSDM_CR2_ROVRIE_MASK)
-> > >  			dev_warn(&indio_dev->dev, "Overrun detected\n");
-> > >  		regmap_update_bits(regmap, DFSDM_ICR(adc->fl_id),    
+> > Chances since V1/RFC:
+> > * Renamed the function to iio_push_to_buffer_with_ts_unaligned()
+> > * Fixed the various bugs people pointed out.
+> > * Used more standard realloc handling to be more 'obviously' correct.
+> > * Added some additional comments on the sizing of the copy to explain why
+> >   it is a conservative estimate and may copy more than strictly necessary.
+> > 
+> > A few things we discussed I didn't do (for now)...
+> > 
+> > I decided against adding explicit bounce buffer allocation calls for now,
+> > though I'm open to doing that in future if we find doing the somewhat hidden
+> > realloc to be a problem.
+> > 
+> > I haven't computed a more precise data_sz as I don't thing the benefits
+> > of a more precise copy or not passing the size, make it worth the slight
+> > reduction in complexity for the callers.  Again, open to revisiting this
+> > in future!
+> > 
+> > I tested it by hacking the dummy driver to shift it's data by one
+> > byte and call iio_push_to_buffers_with_ts_unaligned().
+> > 
+> > Strictly a hack. I definitely don't want to move this driver over to this
+> > new interface as it might encourage inappropriate use.
+> > 
+> > diff --git a/drivers/iio/dummy/iio_simple_dummy_buffer.c b/drivers/iio/dummy/iio_simple_dummy_buffer.c
+> > index 59aa60d4ca37..b47af7df8efc 100644
+> > --- a/drivers/iio/dummy/iio_simple_dummy_buffer.c
+> > +++ b/drivers/iio/dummy/iio_simple_dummy_buffer.c
+> > @@ -19,6 +19,7 @@
+> >  #include <linux/iio/buffer.h>
+> >  #include <linux/iio/trigger_consumer.h>
+> >  #include <linux/iio/triggered_buffer.h>
+> > +#include <asm/unaligned.h>
+> >  
+> >  #include "iio_simple_dummy.h"
+> >  
+> > @@ -78,12 +79,13 @@ static irqreturn_t iio_simple_dummy_trigger_h(int irq, void *p)
+> >                         j = find_next_bit(indio_dev->active_scan_mask,
+> >                                           indio_dev->masklength, j);
+> >                         /* random access read from the 'device' */
+> > -                       data[i] = fakedata[j];
+> > +//                     data[i] = fakedata[j];
+> > +                       put_unaligned_le16(fakedata[j], ((u8 *)(&data[i])) + 1);
+> >                         len += 2;
+> >                 }
+> >         }
+> >  
+> > -       iio_push_to_buffers_with_timestamp(indio_dev, data,
+> > +       iio_push_to_buffers_with_ts_unaligned(indio_dev, ((u8 *)(data)) + 1, indio_dev->scan_bytes - 8,
+> >                                            iio_get_time_ns(indio_dev));
+> > 
+> > 
+> > v1 description:
+> > 
+> > I finally got around to do a manual audit of all the calls to
+> > iio_push_to_buffers_with_timestamp() which has the somewhat odd requirements
+> > of:
+> > 1. 8 byte alignment of the provided buffer.
+> > 2. space for an 8 byte naturally aligned timestamp to be inserted at the
+> >    end.
+> > 
+> > Unfortunately there were rather a lot of these left, but time to bite the bullet
+> > and clean them up.
+> > 
+> > As discussed previous in
+> > https://lore.kernel.org/linux-iio/20200920112742.170751-1-jic23@kernel.org/
+> > it is not easy to fix the alignment issue without requiring a bounce buffer.
+> > This final part of the 4 sets of fixes is concerned with the cases where
+> > bounce buffers are the proposed solutions.
+> > 
+> > In these cases we have hardware that reads a prefix that we wish to
+> > drop. That makes it hard to directly read the data into the correct location.
+> > 
+> > Rather than implementing bouce buffers in each case, this set provides some
+> > magic in the core to handle them via a new function.
+> > iio_push_to_buffers_with_ts_na() - non aligned
+> > 
+> > Note this is totally untested as I don't have suitable hardware or emulation.
+> > I can fake something up in the dummy driver or via QEMU but I definitely want
+> > both eyes and testing on this series!
+> > 
+> > Jonathan Cameron (4):
+> >   iio: core: Introduce iio_push_to_buffers_with_ts_unaligned()
+> >   iio: adc: ti-adc108s102: Fix alignment of buffer pushed to iio
+> >     buffers.
+> >   iio: gyro: mpu3050: Fix alignment and size issues with buffers.
+> >   iio: imu: adis16400: Fix buffer alignment requirements.
+> > 
+> >  drivers/iio/adc/ti-adc108s102.c   | 11 ++++----
+> >  drivers/iio/gyro/mpu3050-core.c   | 24 ++++++++--------
+> >  drivers/iio/imu/adis16400.c       | 20 ++++++++++----
+> >  drivers/iio/industrialio-buffer.c | 46 +++++++++++++++++++++++++++++++
+> >  include/linux/iio/buffer.h        |  4 +++
+> >  include/linux/iio/iio-opaque.h    |  4 +++
+> >  6 files changed, 86 insertions(+), 23 deletions(-)
 > >   
 > 
 

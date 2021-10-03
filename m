@@ -2,85 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 83D1242028A
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Oct 2021 18:02:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98B6E4202A3
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Oct 2021 18:20:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231165AbhJCQET (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 3 Oct 2021 12:04:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51156 "EHLO mail.kernel.org"
+        id S231189AbhJCQWM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 3 Oct 2021 12:22:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58182 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230426AbhJCQES (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 3 Oct 2021 12:04:18 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 456B76120A;
-        Sun,  3 Oct 2021 16:02:30 +0000 (UTC)
-Date:   Sun, 3 Oct 2021 17:06:27 +0100
+        id S230426AbhJCQWM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 3 Oct 2021 12:22:12 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8692961AF9;
+        Sun,  3 Oct 2021 16:20:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1633278024;
+        bh=Vj4SIoBsa2AmoiWATEhtxp82HLcd8IaL413loVr3pnA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=KIbhdEc11kSXa1bzsN4jSbTdnEvxEDWJab/JLGodPAYIlyKNEyP2kftdFlw/O4/Fx
+         2EdQfFz/OSWvC7kFs7GrWMQT2+oTYV/fUdeOocA54reIiuw2CHy0pHITSmifv3ePBn
+         VRgwl9ZODogoIlzvOSPP+b+9lgw3qrZwTruW70n27TnKJwahUTrAyUZnrScunN9WCv
+         Q4J4rAOf3wYDTHY2vAZxifW5duMAMAUfO7MNC/qNHvfyJNHAoaFrx2N/FYqK+3Xmeu
+         y4+JqaJLUbpH9+QcLL60hQ4iYIUpNGwQoWRSqPtzdx75IEG3JmGd37LqrixNTFAhsw
+         6WAFBB2+mbyPQ==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Subject: Re: [PATCH] iio: accel: sca3000: Use sign_extend32() instead of
- opencoding sign extension.
-Message-ID: <20211003170627.42703d96@jic23-huawei>
-In-Reply-To: <20210718161612.2b9ffb41@jic23-huawei>
-References: <20210603164729.3584702-1-jic23@kernel.org>
-        <20210718161612.2b9ffb41@jic23-huawei>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        Kunyang Fan <Kunyang_Fan@aaeon.com.tw>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: [PATCH] iio: adc: ti-adc081c: Partial revert of removal of ACPI IDs
+Date:   Sun,  3 Oct 2021 17:24:17 +0100
+Message-Id: <20211003162417.427260-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 18 Jul 2021 16:16:12 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-> On Thu,  3 Jun 2021 17:47:29 +0100
-> Jonathan Cameron <jic23@kernel.org> wrote:
-> 
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > Whilst nice to get rid of this non obvious code, this also clears a
-> > static checker warning:
-> > 
-> > drivers/iio/accel/sca3000.c:734 sca3000_read_raw()
-> > warn: no-op. '((*val) << 19) >> 19'
-> > 
-> > Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
-> 
-> If someone could give this a quick sanity check that would be great.
-> 
+Unfortuanately a non standards compliant ACPI ID is known to be
+in the wild on some AAEON boards.
 
-This one is still in the queue because I really don't like applying
-my own patches without anyone having sanity checked them...
+Partly revert the removal of these IDs so that ADC081C will again
+work + add a comment to that affect for future reference.
 
-So if anyone has time to for a quick look that would be great.
+Reported-by: Kunyang Fan <Kunyang_Fan@aaeon.com.tw>
+Fixes: c458b7ca3fd0 ("iio:adc:ti-adc081c: Drop ACPI ids that seem very unlikely to be official.")
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+---
+Kunyang Fan,
 
-> Thanks,
-> 
-> Jonathan
-> 
-> > ---
-> >  drivers/iio/accel/sca3000.c | 3 +--
-> >  1 file changed, 1 insertion(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/iio/accel/sca3000.c b/drivers/iio/accel/sca3000.c
-> > index cb753a43533c..0692ccb80293 100644
-> > --- a/drivers/iio/accel/sca3000.c
-> > +++ b/drivers/iio/accel/sca3000.c
-> > @@ -731,8 +731,7 @@ static int sca3000_read_raw(struct iio_dev *indio_dev,
-> >  				return ret;
-> >  			}
-> >  			*val = (be16_to_cpup((__be16 *)st->rx) >> 3) & 0x1FFF;
-> > -			*val = ((*val) << (sizeof(*val) * 8 - 13)) >>
-> > -				(sizeof(*val) * 8 - 13);
-> > +			*val = sign_extend32(*val, 13);
-> >  		} else {
-> >  			/* get the temperature when available */
-> >  			ret = sca3000_read_data_short(st,  
-> 
+I left this for a while in the hope that you might be able to
+provide more details on where this ID is used + whether there are
+other similar IDs in use by AAEON firmwares.
+
+That information would still be extremely useful given the vague
+nature of the comment I have added will give us no real information
+on whether we can drop this in the distant future.
+
+Also, please test this patch to make sure I've put back everything
+necessary.
+
+drivers/iio/adc/ti-adc081c.c | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/iio/adc/ti-adc081c.c b/drivers/iio/adc/ti-adc081c.c
+index 16fc608db36a..0872a4897609 100644
+--- a/drivers/iio/adc/ti-adc081c.c
++++ b/drivers/iio/adc/ti-adc081c.c
+@@ -15,6 +15,7 @@
+  * bits of value registers are reserved.
+  */
+ 
++#include <linux/acpi.h>
+ #include <linux/err.h>
+ #include <linux/i2c.h>
+ #include <linux/module.h>
+@@ -162,7 +163,17 @@ static int adc081c_probe(struct i2c_client *client,
+ 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_WORD_DATA))
+ 		return -EOPNOTSUPP;
+ 
+-	model = &adcxx1c_models[id->driver_data];
++	if (ACPI_COMPANION(&client->dev)) {
++		const struct acpi_device_id *ad_id;
++
++		ad_id = acpi_match_device(client->dev.driver->acpi_match_table,
++					  &client->dev);
++		if (!ad_id)
++			return -ENODEV;
++		model = &adcxx1c_models[ad_id->driver_data];
++	} else {
++		model = &adcxx1c_models[id->driver_data];
++	}
+ 
+ 	iio = devm_iio_device_alloc(&client->dev, sizeof(*adc));
+ 	if (!iio)
+@@ -210,6 +221,13 @@ static const struct i2c_device_id adc081c_id[] = {
+ };
+ MODULE_DEVICE_TABLE(i2c, adc081c_id);
+ 
++static const struct acpi_device_id adc081c_acpi_match[] = {
++	/* Used on some AAEON boards */
++	{ "ADC081C", ADC081C },
++	{ }
++};
++MODULE_DEVICE_TABLE(acpi, adc081c_acpi_match);
++
+ static const struct of_device_id adc081c_of_match[] = {
+ 	{ .compatible = "ti,adc081c" },
+ 	{ .compatible = "ti,adc101c" },
+@@ -222,6 +240,7 @@ static struct i2c_driver adc081c_driver = {
+ 	.driver = {
+ 		.name = "adc081c",
+ 		.of_match_table = adc081c_of_match,
++		.acpi_match_table = adc081c_acpi_match,
+ 	},
+ 	.probe = adc081c_probe,
+ 	.id_table = adc081c_id,
+-- 
+2.33.0
 

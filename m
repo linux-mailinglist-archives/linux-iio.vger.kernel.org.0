@@ -2,98 +2,87 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 28D504202B0
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Oct 2021 18:28:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10BF4420331
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Oct 2021 20:03:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230441AbhJCQac (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 3 Oct 2021 12:30:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37242 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230426AbhJCQac (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 3 Oct 2021 12:30:32 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB6D4C0613EC
-        for <linux-iio@vger.kernel.org>; Sun,  3 Oct 2021 09:28:44 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id dj4so56109331edb.5
-        for <linux-iio@vger.kernel.org>; Sun, 03 Oct 2021 09:28:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=D6vEZVm3LyODo1zKYqsn1T6r4nB/pd39J+d0my8fj/M=;
-        b=oShw9k+wAZMXQVD846SMd+xGNgZ2IU7mTkxiBCPLwIsSJLW/+Re1uqwwrN1Tw+qSZW
-         SNJCK47+cXJNHgsDQkEoy5FQRwoV1cEVCEkdWbyegF+2IpmN1Js4y/e3YMNRiClWVC7O
-         SU+nidIrkFBPTvWvb3C6BXV/VbfaakdLhONFyH3SQthwxYd8tX0YnxcIHudc3XEG1+7M
-         7dkkmmnONLCiXytYcAMiapotJ5SNkt46Hf0zsoPDkPqrLL4qiVKwxOBz88CzOQ6PeATL
-         8MZI1dRp88t2ki2TkpRSqVQhPHwmfHADK0xKtCX4aYutYr2J6F2Q/kU9bRfLTQnJoeLX
-         gsvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=D6vEZVm3LyODo1zKYqsn1T6r4nB/pd39J+d0my8fj/M=;
-        b=v59meUcqfgON52MyqYpIQR2USfRrPaQkyXFXuLGTfAyUSN0uMbISrPdUMSrJ/sUaJG
-         JfSryL8BhHf3wljUL2fZnRzs/yPwAsmWuvKbI9eU3wS40t9O7u0wyIuLB8PoDSamxek1
-         DJdlYuUgWMZV8soxPIdYlLfg0LbRKqF/QWWylsl9yqU9b5ok+6K2zC/gpVASMa3YWSpg
-         dDEHcuvRvp3wIFM+ACi+WRkJiEqJfCK8d6QkXThNVggWkckcSOzQUzr0q8BY6++fRxsP
-         UXWk0Fp/v5CtlQHm9N9cbi1+IyJCdmySDLsM8PUgBXjQkowC3s/Dvmpj2CgXzLgwEjLJ
-         xZxQ==
-X-Gm-Message-State: AOAM531UhajHnuMhLUBhaufZ0BtasLXEOAApo+cbmef7ZWneeh8UBwx4
-        K3Yqolm7B4sRZLn59XfUTnbjK/F4FsvlQ9DC28QfLbn4M6agrg==
-X-Google-Smtp-Source: ABdhPJy0+DNNKGbfRo+qeeQwhf40/s+sn8lwnPwBvi97aaNKUy60kKwJS1zGG0aztnlOBIZeAng9n+k9V9yYapQthPQ=
-X-Received: by 2002:a50:e188:: with SMTP id k8mr12370786edl.119.1633278523521;
- Sun, 03 Oct 2021 09:28:43 -0700 (PDT)
+        id S231252AbhJCSFE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 3 Oct 2021 14:05:04 -0400
+Received: from www381.your-server.de ([78.46.137.84]:42492 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230519AbhJCSFE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 3 Oct 2021 14:05:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=AV6fLLE+vPxaRZGKMzPBHqaI1Z47gYzc4PWZ9pMnjd4=; b=CzcsebtSpI2wHE5F6wgdWKFznh
+        OBpHPEwVuNgt0DNe1Akx5aejSygoi/tozAMMUoa6fotzUMOUygZpg6x4s48Op+dKz3GzBuEA+mXMp
+        Xg2g3Uw7Nm0QWMy0apE5mN6iYqZh6FFT8dWdg2uSiF3rdJqlZ2WwPoPWgEWY6iaXAZiAhJkRSueg8
+        +hDbmQHYTkS27RfipXBTUpEwYVULX23FQRCDUpm4S+ILzFZY06fZw6aJhhsBMpygGipzsUSka0sLw
+        3qMZfDPftd+zzv5qKv1COWIc+yy5IdzndFwP0F848jdaHfOD8O8eelX5SdKNoJVcJGZ2E2EBFhAYj
+        VKSqNNAA==;
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <lars@metafoo.de>)
+        id 1mX5pQ-0008hJ-RW; Sun, 03 Oct 2021 20:03:12 +0200
+Received: from [82.135.83.152] (helo=[192.168.178.20])
+        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1mX5pQ-000FP3-NV; Sun, 03 Oct 2021 20:03:12 +0200
+Subject: Re: [PATCH] iio: accel: sca3000: Use sign_extend32() instead of
+ opencoding sign extension.
+To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+References: <20210603164729.3584702-1-jic23@kernel.org>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <30fd2ee6-8182-8576-80ff-1cebab55a0dc@metafoo.de>
+Date:   Sun, 3 Oct 2021 20:03:10 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-References: <20211003162417.427260-1-jic23@kernel.org>
-In-Reply-To: <20211003162417.427260-1-jic23@kernel.org>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 3 Oct 2021 19:28:06 +0300
-Message-ID: <CAHp75VfduySLoeLUS0QsjVhqm7bfh9pbwreMmBYkTva7EH6jPg@mail.gmail.com>
-Subject: Re: [PATCH] iio: adc: ti-adc081c: Partial revert of removal of ACPI IDs
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Kunyang Fan <Kunyang_Fan@aaeon.com.tw>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210603164729.3584702-1-jic23@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.103.3/26311/Sun Oct  3 11:08:49 2021)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Oct 3, 2021 at 7:20 PM Jonathan Cameron <jic23@kernel.org> wrote:
->
+On 6/3/21 6:47 PM, Jonathan Cameron wrote:
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >
-> Unfortuanately a non standards compliant ACPI ID is known to be
-
-Unfortunately
-
-> in the wild on some AAEON boards.
+> Whilst nice to get rid of this non obvious code, this also clears a
+> static checker warning:
 >
-> Partly revert the removal of these IDs so that ADC081C will again
-> work + add a comment to that affect for future reference.
+> drivers/iio/accel/sca3000.c:734 sca3000_read_raw()
+> warn: no-op. '((*val) << 19) >> 19'
+>
+> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+>   drivers/iio/accel/sca3000.c | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/drivers/iio/accel/sca3000.c b/drivers/iio/accel/sca3000.c
+> index cb753a43533c..0692ccb80293 100644
+> --- a/drivers/iio/accel/sca3000.c
+> +++ b/drivers/iio/accel/sca3000.c
+> @@ -731,8 +731,7 @@ static int sca3000_read_raw(struct iio_dev *indio_dev,
+>   				return ret;
+>   			}
+>   			*val = (be16_to_cpup((__be16 *)st->rx) >> 3) & 0x1FFF;
+> -			*val = ((*val) << (sizeof(*val) * 8 - 13)) >>
+> -				(sizeof(*val) * 8 - 13);
+> +			*val = sign_extend32(*val, 13);
+Should be 12 I think. The index is 0 based.
+>   		} else {
+>   			/* get the temperature when available */
+>   			ret = sca3000_read_data_short(st,
 
-affect?! Okay, you are native speaker.
 
-...
-
-> +#include <linux/acpi.h>
-
-> +       if (ACPI_COMPANION(&client->dev)) {
-> +               const struct acpi_device_id *ad_id;
-> +
-> +               ad_id = acpi_match_device(client->dev.driver->acpi_match_table,
-> +                                         &client->dev);
-> +               if (!ad_id)
-> +                       return -ENODEV;
-> +               model = &adcxx1c_models[ad_id->driver_data];
-> +       } else {
-> +               model = &adcxx1c_models[id->driver_data];
-> +       }
-
-Can we please use device_get_match_data() instead (with corresponding
-property.h inclusion instead of acpi.h)?
-This may require adding driver_data to OF IDs.
-
--- 
-With Best Regards,
-Andy Shevchenko

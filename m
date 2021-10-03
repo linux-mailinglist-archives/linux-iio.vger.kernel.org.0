@@ -2,173 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDE7342026E
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Oct 2021 17:50:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03925420278
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Oct 2021 17:55:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230441AbhJCPwM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 3 Oct 2021 11:52:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45896 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230426AbhJCPwK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 3 Oct 2021 11:52:10 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8F6A561AAC;
-        Sun,  3 Oct 2021 15:50:21 +0000 (UTC)
-Date:   Sun, 3 Oct 2021 16:54:19 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Nuno Sa <Nuno.Sa@analog.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Jan Kiszka <jan.kiszka@siemens.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v2 0/4] IIO: Alignment fixes part 4 - bounce buffers for
- the hard cases.
-Message-ID: <20211003165419.191055ea@jic23-huawei>
-In-Reply-To: <20210718155559.4eb7bf7a@jic23-huawei>
-References: <20210613151039.569883-1-jic23@kernel.org>
-        <20210718155559.4eb7bf7a@jic23-huawei>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        id S230509AbhJCP5H (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 3 Oct 2021 11:57:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58130 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230426AbhJCP5H (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 3 Oct 2021 11:57:07 -0400
+Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85978C0613EC
+        for <linux-iio@vger.kernel.org>; Sun,  3 Oct 2021 08:55:19 -0700 (PDT)
+Received: by mail-oi1-x22c.google.com with SMTP id v10so18411862oic.12
+        for <linux-iio@vger.kernel.org>; Sun, 03 Oct 2021 08:55:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=oOqUrSuUCCTti4b89vsLrMyMjdmQmo0cHUZ19+DYd/0=;
+        b=iChcR5uTIZhcphPQjMM5YY80i0DrBNUFoe7WHCNot/0KLm5rPclxneTqwWs6EhTKO3
+         MZbx1ksgkuj6UD5Yocr9qn0C0jbE98hJeu1HFoLgONifGmm+rCMRWJ/eAIG45guu769s
+         U07pJQKxzO1Edqk0XqevAs1Uj9T/H7leG0JbMDxyooqR0OBI4/3sUDxjEgnH6BTQECpA
+         7An4sr5TySyVoN7II3Sz7aX4OxVKgto3nU4uid3jZo2fQ+/Hw03TY55pFum8RroYPGfs
+         2O/OFbZ7fLjt2d/ocGGkYfQ6SBAmK9KAsttDYhGCuVDDsxX+UFIjWgKtEbiT7pwpSdvk
+         PTnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=oOqUrSuUCCTti4b89vsLrMyMjdmQmo0cHUZ19+DYd/0=;
+        b=wv3ncDE4dC0z91QxyFAo4l4wgTJ4gqBPTWeqmKaFK0YtdRPuWJpBq9ffkfCB1zAEu1
+         15/YVzypCMtlBfTGErCeYDeinhjoUHxYvPGIaJU+YK9LeaX1WLmHi0FMqlJm8IKJWaCw
+         GF6lBSOFMn8JGKDZKr4xBOb5hyJBN4Xce2ZPsY7hOMvFtm/K0rmwZ5Kac3p3NTW7f2AS
+         h/zxm2t6z25rXgUBlB9qp7D36UjKScF5o3peCFeTssBj3MO8NVQt6Mm4S207u7ZVh+5A
+         P5cgVluDMaDjft10LaguRXgrZiva/CxwZTR8p5XtXqnrYBQoIUF8bKX6VjDNiy8hgSrF
+         H58Q==
+X-Gm-Message-State: AOAM530PDcDTkjahCtJ/gIuNDO6O/PrCBwJAmjx5khCazYEbJTgDbdv1
+        L9dWwyMnlJYhiPxspqXZeYhE0NLjFWfIdx5kWGk=
+X-Google-Smtp-Source: ABdhPJwRz/IYzgAnbi0H+zXSxT7daw3CVpQNIKi4Y2U/Bg3Yt8HqZncjxvJrskg2Ez4csI6NnyynJjjq5Z5PshPc9s8=
+X-Received: by 2002:aca:2b02:: with SMTP id i2mr11047826oik.109.1633276518521;
+ Sun, 03 Oct 2021 08:55:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a8a:7da:0:0:0:0:0 with HTTP; Sun, 3 Oct 2021 08:55:17 -0700 (PDT)
+Reply-To: mrschantelhermans@gmail.com
+From:   Mrs Chantel Hermans <mrsmaricovid19@gmail.com>
+Date:   Sun, 3 Oct 2021 08:55:17 -0700
+Message-ID: <CALw_ptGa=s8cE+GGiUy9Hg3h4DuLW6QvALdAxzJ+_cUV=AdoVg@mail.gmail.com>
+Subject: ATTENTION
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 18 Jul 2021 15:55:59 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+-- 
 
-> On Sun, 13 Jun 2021 16:10:35 +0100
-> Jonathan Cameron <jic23@kernel.org> wrote:
-> 
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
-> Hi All,
-> 
-> If anyone has time to take a look at this, particularly the first patch which
-> does the interesting stuff and patch 3 which I don't think has had any review
-> yet that would be great.
 
-It might have helped if I'd identified patch 2 as the one that was
-missing reviews.  Ah well. I've done something I really dislike doing and
-given up on getting a review for that patch.  As such I've applied
-this series to the togreg branch of iio.git and pushed it out as testing for
-0-day to see if it can find anything we missed.
+ATTENTION
 
-If anyone has a chance to sanity check patch 2 for any idiocy on my part it
-would still be very much appreciated!
 
-Thanks to Nuno, Andy and Linus for their reviews of this fiddly series.
 
-Thanks,
+You have been compensated with the sum of 6.9 million dollars in this
+United Nation the payment will be issue into ATM Visa Card,
 
-Jonathan
 
-> 
-> Thanks,
-> 
-> Jonathan
-> 
-> > 
-> > Thanks to Andy and Nuno for reviews.
-> > 
-> > Chances since V1/RFC:
-> > * Renamed the function to iio_push_to_buffer_with_ts_unaligned()
-> > * Fixed the various bugs people pointed out.
-> > * Used more standard realloc handling to be more 'obviously' correct.
-> > * Added some additional comments on the sizing of the copy to explain why
-> >   it is a conservative estimate and may copy more than strictly necessary.
-> > 
-> > A few things we discussed I didn't do (for now)...
-> > 
-> > I decided against adding explicit bounce buffer allocation calls for now,
-> > though I'm open to doing that in future if we find doing the somewhat hidden
-> > realloc to be a problem.
-> > 
-> > I haven't computed a more precise data_sz as I don't thing the benefits
-> > of a more precise copy or not passing the size, make it worth the slight
-> > reduction in complexity for the callers.  Again, open to revisiting this
-> > in future!
-> > 
-> > I tested it by hacking the dummy driver to shift it's data by one
-> > byte and call iio_push_to_buffers_with_ts_unaligned().
-> > 
-> > Strictly a hack. I definitely don't want to move this driver over to this
-> > new interface as it might encourage inappropriate use.
-> > 
-> > diff --git a/drivers/iio/dummy/iio_simple_dummy_buffer.c b/drivers/iio/dummy/iio_simple_dummy_buffer.c
-> > index 59aa60d4ca37..b47af7df8efc 100644
-> > --- a/drivers/iio/dummy/iio_simple_dummy_buffer.c
-> > +++ b/drivers/iio/dummy/iio_simple_dummy_buffer.c
-> > @@ -19,6 +19,7 @@
-> >  #include <linux/iio/buffer.h>
-> >  #include <linux/iio/trigger_consumer.h>
-> >  #include <linux/iio/triggered_buffer.h>
-> > +#include <asm/unaligned.h>
-> >  
-> >  #include "iio_simple_dummy.h"
-> >  
-> > @@ -78,12 +79,13 @@ static irqreturn_t iio_simple_dummy_trigger_h(int irq, void *p)
-> >                         j = find_next_bit(indio_dev->active_scan_mask,
-> >                                           indio_dev->masklength, j);
-> >                         /* random access read from the 'device' */
-> > -                       data[i] = fakedata[j];
-> > +//                     data[i] = fakedata[j];
-> > +                       put_unaligned_le16(fakedata[j], ((u8 *)(&data[i])) + 1);
-> >                         len += 2;
-> >                 }
-> >         }
-> >  
-> > -       iio_push_to_buffers_with_timestamp(indio_dev, data,
-> > +       iio_push_to_buffers_with_ts_unaligned(indio_dev, ((u8 *)(data)) + 1, indio_dev->scan_bytes - 8,
-> >                                            iio_get_time_ns(indio_dev));
-> > 
-> > 
-> > v1 description:
-> > 
-> > I finally got around to do a manual audit of all the calls to
-> > iio_push_to_buffers_with_timestamp() which has the somewhat odd requirements
-> > of:
-> > 1. 8 byte alignment of the provided buffer.
-> > 2. space for an 8 byte naturally aligned timestamp to be inserted at the
-> >    end.
-> > 
-> > Unfortunately there were rather a lot of these left, but time to bite the bullet
-> > and clean them up.
-> > 
-> > As discussed previous in
-> > https://lore.kernel.org/linux-iio/20200920112742.170751-1-jic23@kernel.org/
-> > it is not easy to fix the alignment issue without requiring a bounce buffer.
-> > This final part of the 4 sets of fixes is concerned with the cases where
-> > bounce buffers are the proposed solutions.
-> > 
-> > In these cases we have hardware that reads a prefix that we wish to
-> > drop. That makes it hard to directly read the data into the correct location.
-> > 
-> > Rather than implementing bouce buffers in each case, this set provides some
-> > magic in the core to handle them via a new function.
-> > iio_push_to_buffers_with_ts_na() - non aligned
-> > 
-> > Note this is totally untested as I don't have suitable hardware or emulation.
-> > I can fake something up in the dummy driver or via QEMU but I definitely want
-> > both eyes and testing on this series!
-> > 
-> > Jonathan Cameron (4):
-> >   iio: core: Introduce iio_push_to_buffers_with_ts_unaligned()
-> >   iio: adc: ti-adc108s102: Fix alignment of buffer pushed to iio
-> >     buffers.
-> >   iio: gyro: mpu3050: Fix alignment and size issues with buffers.
-> >   iio: imu: adis16400: Fix buffer alignment requirements.
-> > 
-> >  drivers/iio/adc/ti-adc108s102.c   | 11 ++++----
-> >  drivers/iio/gyro/mpu3050-core.c   | 24 ++++++++--------
-> >  drivers/iio/imu/adis16400.c       | 20 ++++++++++----
-> >  drivers/iio/industrialio-buffer.c | 46 +++++++++++++++++++++++++++++++
-> >  include/linux/iio/buffer.h        |  4 +++
-> >  include/linux/iio/iio-opaque.h    |  4 +++
-> >  6 files changed, 86 insertions(+), 23 deletions(-)
-> >   
-> 
 
+and send to you from the Santander Bank of Spain we need your
+Address,Passport and your whatsapp number.
+
+
+
+THANKS
+
+*Mrs Chantel Hermans*

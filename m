@@ -2,178 +2,215 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A87D1420284
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Oct 2021 17:58:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 417A0420288
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Oct 2021 18:00:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231169AbhJCQAU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 3 Oct 2021 12:00:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49534 "EHLO mail.kernel.org"
+        id S231158AbhJCQCW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 3 Oct 2021 12:02:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50476 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230426AbhJCQAU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 3 Oct 2021 12:00:20 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7222761AFB;
-        Sun,  3 Oct 2021 15:58:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1633276713;
-        bh=OUxrVF6jdsWPoUHS9WtsG8M3IjlxhasxA3nHmA2QwZg=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pe2VjJmC/Y3xm5CBgQDKWLEwKIDpnvrITmvxAANVYI8uDx9E5Js+/sm4sHef7sEb/
-         WY0KWKHvjFLJHEPI2dxJhgjTd8bP6JU+D3L1jsRYWhJ+EodDgybMsqgA27ZlpYGgi5
-         q6gwIad3CzJwKFKdgEJH3O+3Gkx+sBkA/56wZ4YTEFrLj5XKQTZuuBzPquq0a53EQH
-         BN25mE1g9+yZ0J3RS691iQFbdI1a97pJang6UGyXgikFoHyHJCtcwHDcBRO8w2vxbl
-         JzWE68s9CtLuS9yWpxBeKw41/VN/V2Gjv3EIV+R4Mr7mQKIqvfj7mfYWzIeKep514u
-         a4iRWYXWLRtFQ==
+        id S230426AbhJCQCW (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 3 Oct 2021 12:02:22 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E58A961215;
+        Sun,  3 Oct 2021 16:00:33 +0000 (UTC)
+Date:   Sun, 3 Oct 2021 17:04:31 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [RESEND v2 5/5] iio: accel: mma9553: Use devm managed functions to tidy up probe()
-Date:   Sun,  3 Oct 2021 17:02:12 +0100
-Message-Id: <20211003160212.417909-6-jic23@kernel.org>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211003160212.417909-1-jic23@kernel.org>
-References: <20211003160212.417909-1-jic23@kernel.org>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>
+Subject: Re: [PATCH] iio: cros_ec: Update header includes
+Message-ID: <20211003170431.00dab6bc@jic23-huawei>
+In-Reply-To: <20210608212834.4046618-1-jic23@kernel.org>
+References: <20210608212834.4046618-1-jic23@kernel.org>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Tue,  8 Jun 2021 22:28:34 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-The error handling in here left runtime pm enabled, and didn't do the
-same steps as occurred in remove.  Moving over to fully devm_ managed
-makes it harder to get this stuff wrong, so let's do that.
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> General driver churn doesn't always include updates of header includes.
+> Manual review of the output of the include-what-you-use checker lead to the
+> following cleanup. Hopefuly this brings things back to a good state for the
+> cros_ec sensor drivers.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Gwendal Grignou <gwendal@chromium.org>
+> Cc: Guenter Roeck <groeck@chromium.org>
+> Cc: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+I've sent a new version of this (at least partly because I'd forgotten I'd
+done it before and no reply to this since posting in June :(
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Alexandru Ardelean <aardelean@deviqon.com>
----
- drivers/iio/accel/mma9553.c | 70 ++++++++++++++++++++-----------------
- 1 file changed, 37 insertions(+), 33 deletions(-)
+Anyhow, that version only deals with IIO headers so is smaller and easier
+to consider in isolation.  If people prefer this one I'm happy as well.
 
-diff --git a/drivers/iio/accel/mma9553.c b/drivers/iio/accel/mma9553.c
-index dc2a3316c1a3..14a9d5fedc06 100644
---- a/drivers/iio/accel/mma9553.c
-+++ b/drivers/iio/accel/mma9553.c
-@@ -375,6 +375,15 @@ static int mma9553_conf_gpio(struct mma9553_data *data)
- 	return 0;
- }
- 
-+static void mma9553_disable_cb(void *_data)
-+{
-+	struct mma9553_data *data = _data;
-+
-+	mutex_lock(&data->mutex);
-+	mma9551_set_device_state(data->client, false);
-+	mutex_unlock(&data->mutex);
-+}
-+
- static int mma9553_init(struct mma9553_data *data)
- {
- 	int ret;
-@@ -430,7 +439,11 @@ static int mma9553_init(struct mma9553_data *data)
- 		return ret;
- 	}
- 
--	return mma9551_set_device_state(data->client, true);
-+	ret = mma9551_set_device_state(data->client, true);
-+	if (ret)
-+		return ret;
-+
-+	return devm_add_action_or_reset(&data->client->dev, mma9553_disable_cb, data);
- }
- 
- static int mma9553_read_status_word(struct mma9553_data *data, u16 reg,
-@@ -1062,6 +1075,16 @@ static irqreturn_t mma9553_event_handler(int irq, void *private)
- 	return IRQ_HANDLED;
- }
- 
-+static void mma9553_rpm_set_susp(void *d)
-+{
-+	pm_runtime_set_suspended(d);
-+}
-+
-+static void mma9553_rpm_disable(void *d)
-+{
-+	pm_runtime_disable(d);
-+}
-+
- static int mma9553_probe(struct i2c_client *client,
- 			 const struct i2c_device_id *id)
- {
-@@ -1105,48 +1128,30 @@ static int mma9553_probe(struct i2c_client *client,
- 		if (ret < 0) {
- 			dev_err(&client->dev, "request irq %d failed\n",
- 				client->irq);
--			goto out_poweroff;
-+			return ret;
- 		}
- 	}
- 
- 	ret = pm_runtime_set_active(&client->dev);
- 	if (ret < 0)
--		goto out_poweroff;
-+		return ret;
-+
-+	ret = devm_add_action_or_reset(&client->dev, mma9553_rpm_set_susp,
-+				       &client->dev);
-+	if (ret)
-+		return ret;
- 
- 	pm_runtime_enable(&client->dev);
-+	ret = devm_add_action_or_reset(&client->dev, mma9553_rpm_disable,
-+				       &client->dev);
-+	if (ret)
-+		return ret;
-+
- 	pm_runtime_set_autosuspend_delay(&client->dev,
- 					 MMA9551_AUTO_SUSPEND_DELAY_MS);
- 	pm_runtime_use_autosuspend(&client->dev);
- 
--	ret = iio_device_register(indio_dev);
--	if (ret < 0) {
--		dev_err(&client->dev, "unable to register iio device\n");
--		goto out_poweroff;
--	}
--
--	dev_dbg(&indio_dev->dev, "Registered device %s\n", name);
--	return 0;
--
--out_poweroff:
--	mma9551_set_device_state(client, false);
--	return ret;
--}
--
--static int mma9553_remove(struct i2c_client *client)
--{
--	struct iio_dev *indio_dev = i2c_get_clientdata(client);
--	struct mma9553_data *data = iio_priv(indio_dev);
--
--	iio_device_unregister(indio_dev);
--
--	pm_runtime_disable(&client->dev);
--	pm_runtime_set_suspended(&client->dev);
--
--	mutex_lock(&data->mutex);
--	mma9551_set_device_state(data->client, false);
--	mutex_unlock(&data->mutex);
--
--	return 0;
-+	return devm_iio_device_register(&client->dev, indio_dev);
- }
- 
- static __maybe_unused int mma9553_runtime_suspend(struct device *dev)
-@@ -1200,7 +1205,6 @@ static struct i2c_driver mma9553_driver = {
- 		   .pm = &mma9553_pm_ops,
- 		   },
- 	.probe = mma9553_probe,
--	.remove = mma9553_remove,
- 	.id_table = mma9553_id,
- };
- 
--- 
-2.33.0
+Thanks,
+
+Jonathan
+
+> ---
+>  drivers/iio/accel/cros_ec_accel_legacy.c                  | 7 +------
+>  drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c    | 8 ++------
+>  drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c      | 7 ++-----
+>  drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c | 6 ++++--
+>  drivers/iio/light/cros_ec_light_prox.c                    | 8 ++------
+>  drivers/iio/pressure/cros_ec_baro.c                       | 7 ++-----
+>  6 files changed, 13 insertions(+), 30 deletions(-)
+> 
+> diff --git a/drivers/iio/accel/cros_ec_accel_legacy.c b/drivers/iio/accel/cros_ec_accel_legacy.c
+> index b6f3471b62dc..5b24b762b2dd 100644
+> --- a/drivers/iio/accel/cros_ec_accel_legacy.c
+> +++ b/drivers/iio/accel/cros_ec_accel_legacy.c
+> @@ -9,17 +9,12 @@
+>   * Accelerometer access is presented through iio sysfs.
+>   */
+>  
+> -#include <linux/delay.h>
+>  #include <linux/device.h>
+> -#include <linux/iio/buffer.h>
+>  #include <linux/iio/common/cros_ec_sensors_core.h>
+>  #include <linux/iio/iio.h>
+> -#include <linux/iio/kfifo_buf.h>
+> -#include <linux/iio/trigger_consumer.h>
+> -#include <linux/iio/triggered_buffer.h>
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+> -#include <linux/slab.h>
+> +#include <linux/mutex.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+>  #include <linux/platform_data/cros_ec_proto.h>
+>  #include <linux/platform_device.h>
+> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
+> index af801e203623..497deaf9d96a 100644
+> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
+> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
+> @@ -10,20 +10,16 @@
+>   * iio sysfs.
+>   */
+>  
+> -#include <linux/delay.h>
+>  #include <linux/device.h>
+> -#include <linux/iio/buffer.h>
+>  #include <linux/iio/common/cros_ec_sensors_core.h>
+>  #include <linux/iio/iio.h>
+> -#include <linux/iio/kfifo_buf.h>
+> -#include <linux/iio/trigger.h>
+>  #include <linux/iio/triggered_buffer.h>
+> -#include <linux/iio/trigger_consumer.h>
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/mutex.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+>  #include <linux/platform_device.h>
+> -#include <linux/slab.h>
+>  
+>  #define DRV_NAME "cros-ec-lid-angle"
+>  
+> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> index 376a5b30010a..de8b01501cc5 100644
+> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> @@ -9,18 +9,15 @@
+>   */
+>  
+>  #include <linux/device.h>
+> -#include <linux/iio/buffer.h>
+>  #include <linux/iio/common/cros_ec_sensors_core.h>
+>  #include <linux/iio/iio.h>
+> -#include <linux/iio/kfifo_buf.h>
+> -#include <linux/iio/trigger_consumer.h>
+> -#include <linux/iio/triggered_buffer.h>
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/mutex.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+>  #include <linux/platform_data/cros_ec_proto.h>
+>  #include <linux/platform_device.h>
+> -#include <linux/slab.h>
+>  
+>  #define CROS_EC_SENSORS_MAX_CHANNELS 4
+>  
+> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> index 28bde13003b7..370d1017b533 100644
+> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> @@ -12,12 +12,14 @@
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/kfifo_buf.h>
+>  #include <linux/iio/sysfs.h>
+> -#include <linux/iio/trigger.h>
+>  #include <linux/iio/trigger_consumer.h>
+>  #include <linux/iio/triggered_buffer.h>
+> +#include <linux/irqreturn.h>
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+> -#include <linux/slab.h>
+> +#include <linux/mutex.h>
+> +#include <linux/pm.h>
+> +#include <linux/time.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+>  #include <linux/platform_data/cros_ec_proto.h>
+>  #include <linux/platform_data/cros_ec_sensorhub.h>
+> diff --git a/drivers/iio/light/cros_ec_light_prox.c b/drivers/iio/light/cros_ec_light_prox.c
+> index de472f23d1cb..062e02adac65 100644
+> --- a/drivers/iio/light/cros_ec_light_prox.c
+> +++ b/drivers/iio/light/cros_ec_light_prox.c
+> @@ -6,19 +6,15 @@
+>   */
+>  
+>  #include <linux/device.h>
+> -#include <linux/iio/buffer.h>
+>  #include <linux/iio/common/cros_ec_sensors_core.h>
+>  #include <linux/iio/iio.h>
+> -#include <linux/iio/kfifo_buf.h>
+> -#include <linux/iio/trigger.h>
+> -#include <linux/iio/triggered_buffer.h>
+> -#include <linux/iio/trigger_consumer.h>
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/mutex.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+>  #include <linux/platform_data/cros_ec_proto.h>
+>  #include <linux/platform_device.h>
+> -#include <linux/slab.h>
+>  
+>  /*
+>   * We only represent one entry for light or proximity. EC is merging different
+> diff --git a/drivers/iio/pressure/cros_ec_baro.c b/drivers/iio/pressure/cros_ec_baro.c
+> index 2f882e109423..5a0d9dd1e78a 100644
+> --- a/drivers/iio/pressure/cros_ec_baro.c
+> +++ b/drivers/iio/pressure/cros_ec_baro.c
+> @@ -6,16 +6,13 @@
+>   */
+>  
+>  #include <linux/device.h>
+> -#include <linux/iio/buffer.h>
+>  #include <linux/iio/common/cros_ec_sensors_core.h>
+>  #include <linux/iio/iio.h>
+> -#include <linux/iio/kfifo_buf.h>
+> -#include <linux/iio/trigger.h>
+> -#include <linux/iio/triggered_buffer.h>
+>  #include <linux/iio/trigger_consumer.h>
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+> -#include <linux/slab.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/mutex.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+>  #include <linux/platform_data/cros_ec_proto.h>
+>  #include <linux/platform_device.h>
 

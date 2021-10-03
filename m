@@ -2,143 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EA07420224
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Oct 2021 16:58:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB427420226
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Oct 2021 17:09:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230482AbhJCO76 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 3 Oct 2021 10:59:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43268 "EHLO mail.kernel.org"
+        id S230396AbhJCPKu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 3 Oct 2021 11:10:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51946 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230050AbhJCO75 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 3 Oct 2021 10:59:57 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E24B661501;
-        Sun,  3 Oct 2021 14:58:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1633273090;
-        bh=RvjYp2RSrvJTDhaVhPX9B00CsJg8YCl78Vf+TnpnFg4=;
-        h=From:To:Cc:Subject:Date:From;
-        b=uw/XkPzdm/49IFPoccUWoyoTff3jwa5HbNmps+skVEH7HCu2i4PeP8zf7yc5ugrv6
-         USc+OaZgpmQdL94aUFqTb1PbNyHfoxP+HulxAZEVjPp3Ns4xaZot9WAlxfDyU391nb
-         56YZJ5nJrcjcM2SKUF3tOfoXsQCXWSYwUGZ9ZpjFOMTguAZIgdijP1f2Ic2lVseW+c
-         Rd+O5KvKUfqWwiFyNdh3rBAf49cf+mhh0WMtBXXs9+3QQk1gnL5/NiR0sPmfC8PIdM
-         1H0cEWpw0LPGK1HM6VtbQV2hLv1TdQObYSicV3D9n7V1k5Ae4hcke4gOxQm+NLhQI8
-         Rgs4F7NRjU9Dw==
+        id S230270AbhJCPKu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 3 Oct 2021 11:10:50 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 65671619E7;
+        Sun,  3 Oct 2021 15:09:01 +0000 (UTC)
+Date:   Sun, 3 Oct 2021 16:12:59 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Alexandru Ardelean <aardelean@deviqon.com>
-Subject: [PATCH] iio: Move include/linux/iio-opaque.h to drivers/iio/iio_opaque.h
-Date:   Sun,  3 Oct 2021 16:02:00 +0100
-Message-Id: <20211003150200.391320-1-jic23@kernel.org>
-X-Mailer: git-send-email 2.33.0
+To:     linux-iio@vger.kernel.org, Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Guenter Roeck <groeck@chromium.org>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 3/7] iio: accel: cros_ec_accel_legacy: Drop unused IIO
+ includes
+Message-ID: <20211003161259.2efc3384@jic23-huawei>
+In-Reply-To: <20211003121711.279736-4-jic23@kernel.org>
+References: <20211003121711.279736-1-jic23@kernel.org>
+        <20211003121711.279736-4-jic23@kernel.org>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Sun,  3 Oct 2021 13:17:07 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-This header is only intended for use within IIO core modules so move
-it to an appropriate location.  Also rename to bring it inline with
-other IIO core only headers.
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> Identified with the include-what-you-use tool.
+> Note that to keep this patch simple and non controversial it only
+> removes IIO headers that are clearly unused in this driver.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+>  drivers/iio/accel/cros_ec_accel_legacy.c | 3 ---
+>  1 file changed, 3 deletions(-)
+> 
+> diff --git a/drivers/iio/accel/cros_ec_accel_legacy.c b/drivers/iio/accel/cros_ec_accel_legacy.c
+> index b6f3471b62dc..f5abe993d38e 100644
+> --- a/drivers/iio/accel/cros_ec_accel_legacy.c
+> +++ b/drivers/iio/accel/cros_ec_accel_legacy.c
+> @@ -11,12 +11,9 @@
+>  
+>  #include <linux/delay.h>
+>  #include <linux/device.h>
+> -#include <linux/iio/buffer.h>
+>  #include <linux/iio/common/cros_ec_sensors_core.h>
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/kfifo_buf.h>
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Alexandru Ardelean <ardeleanalex@gmail.com>
-Cc: Alexandru Ardelean <aardelean@deviqon.com>
----
+Oops, don't need kfifo_buf.h either.  I'll fix that in v2, or if people are
+otherwise happy whilst applying.
 
-I'm not sure if there was a strong reason this file was in
-include/linux/iio before?
-
-
- include/linux/iio/iio-opaque.h => drivers/iio/iio_opaque.h | 0
- drivers/iio/industrialio-buffer.c                          | 2 +-
- drivers/iio/industrialio-core.c                            | 2 +-
- drivers/iio/industrialio-event.c                           | 2 +-
- drivers/iio/industrialio-trigger.c                         | 2 +-
- drivers/iio/inkern.c                                       | 2 +-
- 6 files changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/include/linux/iio/iio-opaque.h b/drivers/iio/iio_opaque.h
-similarity index 100%
-rename from include/linux/iio/iio-opaque.h
-rename to drivers/iio/iio_opaque.h
-diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-index a95cc2da56be..ed7a5c0a31e1 100644
---- a/drivers/iio/industrialio-buffer.c
-+++ b/drivers/iio/industrialio-buffer.c
-@@ -21,9 +21,9 @@
- #include <linux/sched/signal.h>
- 
- #include <linux/iio/iio.h>
--#include <linux/iio/iio-opaque.h>
- #include "iio_core.h"
- #include "iio_core_trigger.h"
-+#include "iio_opaque.h"
- #include <linux/iio/sysfs.h>
- #include <linux/iio/buffer.h>
- #include <linux/iio/buffer_impl.h>
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index 2dbb37e09b8c..6afa70c89c80 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -25,9 +25,9 @@
- #include <linux/debugfs.h>
- #include <linux/mutex.h>
- #include <linux/iio/iio.h>
--#include <linux/iio/iio-opaque.h>
- #include "iio_core.h"
- #include "iio_core_trigger.h"
-+#include "iio_opaque.h"
- #include <linux/iio/sysfs.h>
- #include <linux/iio/events.h>
- #include <linux/iio/buffer.h>
-diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industrialio-event.c
-index d0732eac0f0a..1d49714d9832 100644
---- a/drivers/iio/industrialio-event.c
-+++ b/drivers/iio/industrialio-event.c
-@@ -18,8 +18,8 @@
- #include <linux/uaccess.h>
- #include <linux/wait.h>
- #include <linux/iio/iio.h>
--#include <linux/iio/iio-opaque.h>
- #include "iio_core.h"
-+#include "iio_opaque.h"
- #include <linux/iio/sysfs.h>
- #include <linux/iio/events.h>
- 
-diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
-index b23caa2f2aa1..e4e59466a263 100644
---- a/drivers/iio/industrialio-trigger.c
-+++ b/drivers/iio/industrialio-trigger.c
-@@ -13,10 +13,10 @@
- #include <linux/slab.h>
- 
- #include <linux/iio/iio.h>
--#include <linux/iio/iio-opaque.h>
- #include <linux/iio/trigger.h>
- #include "iio_core.h"
- #include "iio_core_trigger.h"
-+#include "iio_opaque.h"
- #include <linux/iio/trigger_consumer.h>
- 
- /* RFC - Question of approach
-diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-index 0222885b334c..72c130d9fecb 100644
---- a/drivers/iio/inkern.c
-+++ b/drivers/iio/inkern.c
-@@ -10,8 +10,8 @@
- #include <linux/of.h>
- 
- #include <linux/iio/iio.h>
--#include <linux/iio/iio-opaque.h>
- #include "iio_core.h"
-+#include "iio_opaque.h"
- #include <linux/iio/machine.h>
- #include <linux/iio/driver.h>
- #include <linux/iio/consumer.h>
--- 
-2.33.0
+> -#include <linux/iio/trigger_consumer.h>
+> -#include <linux/iio/triggered_buffer.h>
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+>  #include <linux/slab.h>
 

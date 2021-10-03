@@ -2,34 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F27E420239
+	by mail.lfdr.de (Postfix) with ESMTP id 44072420238
 	for <lists+linux-iio@lfdr.de>; Sun,  3 Oct 2021 17:29:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230512AbhJCPbI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 3 Oct 2021 11:31:08 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34354 "EHLO mail.kernel.org"
+        id S231139AbhJCPbG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 3 Oct 2021 11:31:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34378 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230516AbhJCPbC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 3 Oct 2021 11:31:02 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6F0B961A54;
-        Sun,  3 Oct 2021 15:29:14 +0000 (UTC)
+        id S230512AbhJCPbE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 3 Oct 2021 11:31:04 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D95B161A3A;
+        Sun,  3 Oct 2021 15:29:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1633274955;
-        bh=cT8CtZIAglZ5K25Xjr5BJpFkMg8ng0NQscE/+vcmfQs=;
+        s=k20201202; t=1633274957;
+        bh=uJ58o8qFdDr8bNKNq3id+E9+685neY3ERT2fvcpP3XA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Xt1E6ReNpKy9WFqWYb9ttnFk2pPCN9pGwaWdsnbSBnVMP0/06FU8Uv+t9lRlMFYiA
-         JNHwOwn3iZZGH+dBD2EmjCx0WGR7DHcy/8feMjrHexWTSg3W0hzCKiBOQmprjBJ/7h
-         2711MOwXEPc7TvQvoDtOq4CzuB82kX864DpIoUuOBfNjcqxPeeH+Ns4LB2JWU7boyX
-         4b0/CcfMwA3Mj0JsfnaBOAMgTh3Gq8AQmGWNt4ixit6IOC/Xmjcb1R2DH+mGV0pW5q
-         QbhCPr+43Ap4zyyB0XwsZt4JUmqpeydXOpV++vio3P+eBglglcFK/RlvOtiAYlzK7x
-         /h9MUwg8Zn5eQ==
+        b=qnxXneSgsAj8+orGmRmJ9/n8bCY9jPXcVQeGaD+E9imvhsEXoiKrtvjH0JuZY03qv
+         sVSFWUuyUtrVnKQDGFHrwpPqYg9oF1G8vYySojPiFTbA/GD0gA8DxNwx/euOH6cZWv
+         zw+FL/QkFy5zhWRUny2qvBWHAN13u9N/l9dKTHOhcAxio7CtDoG74Irbsq/Fn0Wpvp
+         L0XmWAz4u5EKwYtLakG8PSbIqhhAqDbFgtGqxjFzt7XOp4L3jjyHMttIVeQ4WDoPBD
+         bcsSYis8Ov8+bgZRj3UDvgaAXwmpA1SRyREC+LVQm4KuY1PuH6QDweRIWZRJHbsq9z
+         sJQuSBKXQ2DAg==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [RFC PATCH 03/11] iio: industrialio-buffer.c: Bring includes up to date.
-Date:   Sun,  3 Oct 2021 16:32:58 +0100
-Message-Id: <20211003153306.391766-4-jic23@kernel.org>
+Subject: [RFC PATCH 04/11] iio: industrialio-event.c: Bring includes up to date.
+Date:   Sun,  3 Oct 2021 16:32:59 +0100
+Message-Id: <20211003153306.391766-5-jic23@kernel.org>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20211003153306.391766-1-jic23@kernel.org>
 References: <20211003153306.391766-1-jic23@kernel.org>
@@ -41,61 +41,43 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Note that a lot of functionality has moved around in IIO over the
-years and header includes have not always kept track.
+Partly as a result of moving code around in IIO and not keeping
+includes updated.
 
-Based on manual inspection suggestions from the
-include-what-you-use-tool adjusted to take into account certain
-'super headers' used in the kernel.
-
-Includes reordering headers to alphabetical order (mostly in order so
-not done in a separate patch).
+Based on manual inspection of the output of
+include-what-you-use
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/industrialio-buffer.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ drivers/iio/industrialio-event.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-index ed7a5c0a31e1..f5ab3a43d5d6 100644
---- a/drivers/iio/industrialio-buffer.c
-+++ b/drivers/iio/industrialio-buffer.c
-@@ -9,16 +9,31 @@
-  * - Better memory allocation techniques?
-  * - Alternative access techniques?
+diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industrialio-event.c
+index 1d49714d9832..e807cb9d091d 100644
+--- a/drivers/iio/industrialio-event.c
++++ b/drivers/iio/industrialio-event.c
+@@ -7,14 +7,19 @@
   */
-+#include <linux/align.h>
-+#include <linux/bitmap.h>
-+#include <linux/bitops.h>
+ 
  #include <linux/anon_inodes.h>
--#include <linux/kernel.h>
--#include <linux/export.h>
++#include <linux/bitops.h>
  #include <linux/device.h>
-+#include <linux/err.h>
++#include <linux/errno.h>
 +#include <linux/export.h>
- #include <linux/file.h>
  #include <linux/fs.h>
--#include <linux/cdev.h>
--#include <linux/slab.h>
-+#include <linux/kernel.h>
-+#include <linux/kref.h>
+ #include <linux/kernel.h>
+ #include <linux/kfifo.h>
+-#include <linux/module.h>
 +#include <linux/kstrtox.h>
 +#include <linux/list.h>
-+#include <linux/math.h>
-+#include <linux/minmax.h>
 +#include <linux/mutex.h>
  #include <linux/poll.h>
-+#include <linux/sched.h>
- #include <linux/sched/signal.h>
-+#include <linux/slab.h>
-+#include <linux/stat.h>
-+#include <linux/string.h>
+-#include <linux/sched.h>
+ #include <linux/slab.h>
 +#include <linux/sysfs.h>
-+#include <linux/uaccess.h>
-+#include <linux/wait.h>
- 
+ #include <linux/uaccess.h>
+ #include <linux/wait.h>
  #include <linux/iio/iio.h>
- #include "iio_core.h"
 -- 
 2.33.0
 

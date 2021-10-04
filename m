@@ -2,174 +2,78 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BA1242131D
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Oct 2021 17:53:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB094421465
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Oct 2021 18:48:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234323AbhJDPzM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 4 Oct 2021 11:55:12 -0400
-Received: from relay3-d.mail.gandi.net ([217.70.183.195]:47327 "EHLO
-        relay3-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234175AbhJDPzM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Oct 2021 11:55:12 -0400
-Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 6218A60014;
-        Mon,  4 Oct 2021 15:53:20 +0000 (UTC)
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, Ryan Barnett <ryan.barnett@collins.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v5] mfd: ti_am335x_tscadc: Add ADC1/magnetic reader support
-Date:   Mon,  4 Oct 2021 17:53:19 +0200
-Message-Id: <20211004155319.1507652-1-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.27.0
+        id S234876AbhJDQuc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 4 Oct 2021 12:50:32 -0400
+Received: from mail-ot1-f41.google.com ([209.85.210.41]:41473 "EHLO
+        mail-ot1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233842AbhJDQub (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Oct 2021 12:50:31 -0400
+Received: by mail-ot1-f41.google.com with SMTP id 97-20020a9d006a000000b00545420bff9eso22395459ota.8;
+        Mon, 04 Oct 2021 09:48:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=+hwLdOp02R5EAiJ4KNQCp4lIQVkoRkYxlsfTnQeSF+s=;
+        b=RnMCWzq7SnOzrARXYYHpsnJ7nE3KtOS4B4iBDBV7DoHOnBtIeOtqlHlajNL2PnDV7O
+         pgcK5lUwx0Vk22KcdFu9HIGjmTO4s/7AFzPyWqlmzlpudmEDjbdf4Qy4kY6QohFwYk+d
+         wjGKohwyDbshkNXRF/IP2rRXr3lbysKw/X6XgCCaBbl8x4u9zDxdkhr1RkV2dErHPIz1
+         noT9FOf6YANmHFBVmBfYSOXWXAZ7+hevsynaxAvMcdKTvXKQX8PwFdCpzbL2EE31E18+
+         BLlIUaWhiXlyoHw2z6GzvSZWwRfbw/1Ge3Jh1o7Rd+rukIUuHXfZ71j2mo6mBuXJPeoH
+         +GDw==
+X-Gm-Message-State: AOAM5323eyLtmILfH0anBgAMzaAL9XJEitpT59HX/z11YsCRn/WwpI+E
+        0mu6sQziseIdIpXE0aJA6Q==
+X-Google-Smtp-Source: ABdhPJxXLkpec85mPyfX/0RbHai/r0l5yavVd7LFW2ZoMky+8OA1PzKRe3k0EPzIC0t3fGYXtAWlyw==
+X-Received: by 2002:a9d:4a8d:: with SMTP id i13mr10341023otf.180.1633366122440;
+        Mon, 04 Oct 2021 09:48:42 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id c4sm2552956ook.5.2021.10.04.09.48.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Oct 2021 09:48:41 -0700 (PDT)
+Received: (nullmailer pid 1455411 invoked by uid 1000);
+        Mon, 04 Oct 2021 16:48:40 -0000
+Date:   Mon, 4 Oct 2021 11:48:40 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Florian Boor <florian.boor@kernelconcepts.de>
+Cc:     Michael.Hennerich@analog.com, Jonathan.Cameron@huawei.com,
+        devicetree@vger.kernel.org, jic23@kernel.org,
+        linux-iio@vger.kernel.org, robh+dt@kernel.org
+Subject: Re: [PATCH v6 2/2] dt-bindings: iio: ad779x: Add binding document
+Message-ID: <YVswaEcToAR+4bLG@robh.at.kernel.org>
+References: <20210930104249.2924336-1-florian.boor@kernelconcepts.de>
+ <20210930104249.2924336-2-florian.boor@kernelconcepts.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210930104249.2924336-2-florian.boor@kernelconcepts.de>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Introduce a new compatible that has another set of driver data,
-targeting am437x SoCs with a magnetic reader instead of the
-touchscreen and a more featureful set of registers.
+On Thu, 30 Sep 2021 12:42:49 +0200, Florian Boor wrote:
+> New binding documentation for AD799x series of I²C ADC ICs.
+> 
+> Signed-off-by: Florian Boor <florian.boor@kernelconcepts.de>
+> ---
+> 
+> Changes in v6:
+> - Minor documentation change (label and contact info)
+> 
+> Changes in v5:
+> - Correct errors in documentation found by
+>   'make DT_CHECKER_FLAGS=-m dt_binding_check'
+>   + Reduce title length
+>   + Move information to description
+>   + Add I²C bits to example
+> 
+>  .../bindings/iio/adc/adi,ad799x.yaml          | 73 +++++++++++++++++++
+>  1 file changed, 73 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad799x.yaml
+> 
 
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
-
-Changes in v5:
-* Let the 48 v4 patch series aside, while only resending this patch that
-  triggered a robot warning. Use the use_mag boolean instead of sticking
-  to tscmag_wires which was not optimal anyway, silencing the 'not used'
-  warning while keeping the code simple and clear.
-
-
- drivers/mfd/ti_am335x_tscadc.c       | 37 ++++++++++++++++++++++------
- include/linux/mfd/ti_am335x_tscadc.h |  6 +++++
- 2 files changed, 36 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
-index 4f76b5498077..bfbc8288a71e 100644
---- a/drivers/mfd/ti_am335x_tscadc.c
-+++ b/drivers/mfd/ti_am335x_tscadc.c
-@@ -121,11 +121,11 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
- 	struct mfd_cell *cell;
- 	struct property *prop;
- 	const __be32 *cur;
--	bool use_tsc = false;
-+	bool use_tsc = false, use_mag = false;
- 	u32 val;
- 	int err;
- 	int tscmag_wires = 0, adc_channels = 0, cell_idx = 0, total_channels;
--	int readouts = 0;
-+	int readouts = 0, mag_tracks = 0;
- 
- 	/* Allocate memory for device */
- 	tscadc = devm_kzalloc(&pdev->dev, sizeof(*tscadc), GFP_KERNEL);
-@@ -148,6 +148,16 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
- 		of_node_put(node);
- 		if (tscmag_wires)
- 			use_tsc = true;
-+	} else {
-+		/*
-+		 * When adding support for the magnetic stripe reader, here is
-+		 * the place to look for the number of tracks used from device
-+		 * tree. Let's default to 0 for now.
-+		 */
-+		mag_tracks = 0;
-+		tscmag_wires = mag_tracks * 2;
-+		if (tscmag_wires)
-+			use_mag = true;
- 	}
- 
- 	node = of_get_child_by_name(pdev->dev.of_node, "adc");
-@@ -209,8 +219,9 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
- 	 * The TSC_ADC_Subsystem has 2 clock domains: OCP_CLK and ADC_CLK.
- 	 * ADCs produce a 12-bit sample every 15 ADC_CLK cycles.
- 	 * am33xx ADCs expect to capture 200ksps.
--	 * We need the ADC clocks to run at 3MHz.
--	 * This frequency is valid since TSC_ADC_SS controller design
-+	 * am47xx ADCs expect to capture 867ksps.
-+	 * We need ADC clocks respectively running at 3MHz and 13MHz.
-+	 * These frequencies are valid since TSC_ADC_SS controller design
- 	 * assumes the OCP clock is at least 6x faster than the ADC clock.
- 	 */
- 	clk = devm_clk_get(&pdev->dev, NULL);
-@@ -238,6 +249,9 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
- 			else
- 				tscadc->ctrl |= CNTRLREG_TSC_4WIRE;
- 		}
-+	} else {
-+		tscadc->ctrl |= CNTRLREG_MAG_PREAMP_PWRDOWN |
-+				CNTRLREG_MAG_PREAMP_BYPASS;
- 	}
- 	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl);
- 
-@@ -246,8 +260,8 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
- 	/* Enable the TSC module enable bit */
- 	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl | CNTRLREG_SSENB);
- 
--	/* TSC Cell */
--	if (tscmag_wires > 0) {
-+	/* TSC or MAG Cell */
-+	if (use_tsc || use_mag) {
- 		cell = &tscadc->cells[cell_idx++];
- 		cell->name = tscadc->data->secondary_feature_name;
- 		cell->of_compatible = tscadc->data->secondary_feature_compatible;
-@@ -340,8 +354,17 @@ static const struct ti_tscadc_data tscdata = {
- 	.target_clk_rate = TSC_ADC_CLK,
- };
- 
-+static const struct ti_tscadc_data magdata = {
-+	.adc_feature_name = "TI-am43xx-adc",
-+	.adc_feature_compatible = "ti,am4372-adc",
-+	.secondary_feature_name = "TI-am43xx-mag",
-+	.secondary_feature_compatible = "ti,am4372-mag",
-+	.target_clk_rate = MAG_ADC_CLK,
-+};
-+
- static const struct of_device_id ti_tscadc_dt_ids[] = {
- 	{ .compatible = "ti,am3359-tscadc", .data = &tscdata },
-+	{ .compatible = "ti,am4372-magadc", .data = &magdata },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, ti_tscadc_dt_ids);
-@@ -359,6 +382,6 @@ static struct platform_driver ti_tscadc_driver = {
- 
- module_platform_driver(ti_tscadc_driver);
- 
--MODULE_DESCRIPTION("TI touchscreen / ADC MFD controller driver");
-+MODULE_DESCRIPTION("TI touchscreen/magnetic stripe reader/ADC MFD controller driver");
- MODULE_AUTHOR("Rachna Patil <rachna@ti.com>");
- MODULE_LICENSE("GPL");
-diff --git a/include/linux/mfd/ti_am335x_tscadc.h b/include/linux/mfd/ti_am335x_tscadc.h
-index ee160b2036c1..5225e3fc194d 100644
---- a/include/linux/mfd/ti_am335x_tscadc.h
-+++ b/include/linux/mfd/ti_am335x_tscadc.h
-@@ -106,6 +106,11 @@
- #define CNTRLREG_TSC_8WIRE	CNTRLREG_TSC_AFE_CTRL(3)
- #define CNTRLREG_TSC_ENB	BIT(7)
- 
-+/*Control registers bitfields  for MAGADC IP */
-+#define CNTRLREG_MAGADCENB      BIT(0)
-+#define CNTRLREG_MAG_PREAMP_PWRDOWN BIT(5)
-+#define CNTRLREG_MAG_PREAMP_BYPASS  BIT(6)
-+
- /* FIFO READ Register */
- #define FIFOREAD_DATA_MASK	GENMASK(11, 0)
- #define FIFOREAD_CHNLID_MASK	GENMASK(19, 16)
-@@ -119,6 +124,7 @@
- #define CHARGE_STEP		0x11
- 
- #define TSC_ADC_CLK		(3 * HZ_PER_MHZ)
-+#define MAG_ADC_CLK		(13 * HZ_PER_MHZ)
- #define TOTAL_STEPS		16
- #define TOTAL_CHANNELS		8
- #define FIFO1_THRESHOLD		19
--- 
-2.27.0
-
+Reviewed-by: Rob Herring <robh@kernel.org>

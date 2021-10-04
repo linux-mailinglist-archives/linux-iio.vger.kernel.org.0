@@ -2,196 +2,171 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 10BEE420653
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Oct 2021 09:01:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CBE742093B
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Oct 2021 12:17:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232849AbhJDHDk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 4 Oct 2021 03:03:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58622 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232316AbhJDHDi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Oct 2021 03:03:38 -0400
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98544C061786
-        for <linux-iio@vger.kernel.org>; Mon,  4 Oct 2021 00:01:49 -0700 (PDT)
-Received: by mail-pj1-x1036.google.com with SMTP id me5-20020a17090b17c500b0019af76b7bb4so3788084pjb.2
-        for <linux-iio@vger.kernel.org>; Mon, 04 Oct 2021 00:01:49 -0700 (PDT)
+        id S230238AbhJDKTF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 4 Oct 2021 06:19:05 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32]:10398 "EHLO
+        mx0a-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229760AbhJDKTE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Oct 2021 06:19:04 -0400
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1948uFES018669;
+        Mon, 4 Oct 2021 10:17:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : content-type : mime-version; s=corp-2021-07-09;
+ bh=8RtK4kXjiZN25IvsGnfKRiq0NhC+EijEZB23XmV7Ta0=;
+ b=ZoY4ji1xBfBHe8wQQIORIaidP4kSQM1ec84tIL+C9FS6G610D5p4fdmHoQomsHBBdS12
+ YzKMotJ8SHpwWdFmMFM+77IJanjD0aZ9QuYcSgRwBh6oZWP8oZ10bcmbWtCLc/ZRRcmH
+ VzipDyTuYsUb06tVEw8SKpyz22iK2WuEWZy1x7nsy/1GMJpZKt23uuN/FzQyxVfZyP8f
+ 5Uqp5g1giqE4LnD0h8u3uCm4clMAS4sDrpcXB2Ipj/nL1bUZfNDPOs06tsAD1Cnvtok9
+ eARLQ+cVTPEMtrvJ9bKb58ynB3ml4FnG4peJNubGJRzDLQJz+2B3GfU1URViqL1KCMKL 0w== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by mx0b-00069f02.pphosted.com with ESMTP id 3bf9m03adv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 04 Oct 2021 10:17:13 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 194AFsfa135654;
+        Mon, 4 Oct 2021 10:17:12 GMT
+Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2100.outbound.protection.outlook.com [104.47.70.100])
+        by aserp3030.oracle.com with ESMTP id 3bev7rfbe8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 04 Oct 2021 10:17:12 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=nUm0UTJTybi4hCsDAbybvRe0YOMEFz2nHFteAG38KcyX+y3IiUdezbkEkaQT/7tWzPOsBRE/LIRcTG9uUj2t+thq5sZdOaRYzlaTkoMCqgR/Cs8Edg2yaffeLY6QvQYZeJ7SsOSo3w891QdLBE8m27QL5gA9dM/sV1YDI9fTTnfe4kbVtllcP5tKvHoubb8e9W5ckpn0OSY6VaM27guZdGgISaIVD3jrjuH/7CHHxmgVay4H0BWFOM6igOfTPF37rW3YsFFAB6PeiQB9ounRTzSm46ATvC7OTeKWo1v7Ff/QepW+1fybBIMia54PNtczmPU4FoSGYhRNye7ARjJZDw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8RtK4kXjiZN25IvsGnfKRiq0NhC+EijEZB23XmV7Ta0=;
+ b=fjRbazeXjneMzG7Cp19bFot53Kg1fokyhxGHSCoggdUz13GCjRWOg2fgWItu8pfjaTz8/9wSdvNOGzRQ0o5e6h6UtkOkvA9Jn9yHyI6hcCQXrvNN47BBNxmll4lQ4FfYsuaQJ3WuXaBCvMkeANXN6Db4h658MH1XLV/6BMEzksnIHjAiohnJXyqEM4rhl9cnUWTNQnBLUnSZ/TAXW+8uat/cRaC3LADRG4Zwg4QF8C3rdV+Yri6waR/knj7AfT3c4flg8e8yxR50Tllr5dOKQ9hGoTI1Egy9iTimxA+a/laFtTbzItzC3xSuO9ZDrPPrfWaIJj4Nz7489QsK5fR7Sg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=s2R1T5U6/uHY+8pKMoQy3OzRqK34U35t+1699pbIbV4=;
-        b=puRRAMmjylrU//x0dsIJYKYiMkCB1ZoFSHUnIDMbu9wxFaPiAooDKI4vwkkuL4q2oB
-         uO5irz815xDd1aEuEW5KLnW9jzaPi1XOzc0SE1qMtb68wqGvuDYCEyd647ncggiL/Kix
-         lNBOKJHs9+v8lQa+fFkPn2BgsjLdJi0EpkMtEPROX9rcGQzahe7Xcc4RpJ6dIZi4BJPi
-         ypeEdIXVQQEQHnBovAwvs1rwngGwhrbUTzrGNDmsEUQxCOFjDmNfwb7aJqUxPzmNOtGk
-         9142x6cdgBh3oqacAeEJgxYuYf3IkTiDkufUNv3nzivaEzeiRagkFDhzyRmTfSqNzXcL
-         wwGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=s2R1T5U6/uHY+8pKMoQy3OzRqK34U35t+1699pbIbV4=;
-        b=b+f2W8st9gsxCR5ZwlBdXpJXb0I76aaQyTxu6N+V/o9B62oQOo/E329H/KparRkmaJ
-         e8wtbdjQtqa++7t9J1ta5LEA+DtEvH+dxyLM9bGKsM+oCbAr8lsUXmqzHYBqtQalwebD
-         F3TPaLDiMP1oRC7YsDoC6dHSCPj7vgbmBtT5d5nFk/6nLhfC4WuU9tbTCHKJSoJar34b
-         +wJb5D6K8StduxZqBPnabr+LJumyZeYGvATl0P27L8dbCAVa8DA6IlXsrODj5c+/ZT6W
-         Ruz4cHUUmFV4AAfPe2fvatn2xkaoaanFy+3f9WnAKPX4pByec2YzqyN5P03weV+LXpFq
-         F0Eg==
-X-Gm-Message-State: AOAM5334rmv4wTeTKLt9RNhueq6LIlHmgIi5w53Wb+TuabUk08WD42io
-        0iVZdP580lLBawrejEjH5a7gSARqRdCdECivYKRBe0++qhw=
-X-Google-Smtp-Source: ABdhPJwucWHyiv4ISMxQ9ftUiEZ+CNelopYyEiml5AP/Y/q+s0w4RGbIQ7pHJlK0RIIOSG5OpsPAOYOHlQXoTB6pNk0=
-X-Received: by 2002:a17:902:b490:b0:13d:588b:d857 with SMTP id
- y16-20020a170902b49000b0013d588bd857mr22812030plr.16.1633330909005; Mon, 04
- Oct 2021 00:01:49 -0700 (PDT)
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8RtK4kXjiZN25IvsGnfKRiq0NhC+EijEZB23XmV7Ta0=;
+ b=L708fxkBDaU7jRfbZHDGHQsJeeAklNy1fhVrSBdYj9xTUt199+bcqeAMMXuLXQNZg/kK8PssaNUDgbp8qDkiRl7K7O/k1WBlkbTNgOECKM0Sl1JAH93qRWLAaQb3iGL26ouDHrHuo6idEDUf8bKkuvLU6/M9qKrntxjCPz/GTZk=
+Authentication-Results: bootlin.com; dkim=none (message not signed)
+ header.d=none;bootlin.com; dmarc=none action=none header.from=oracle.com;
+Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
+ (2603:10b6:301:2d::28) by CO1PR10MB4642.namprd10.prod.outlook.com
+ (2603:10b6:303:6f::5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4566.13; Mon, 4 Oct
+ 2021 10:17:11 +0000
+Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
+ ([fe80::d409:11b5:5eb2:6be9]) by MWHPR1001MB2365.namprd10.prod.outlook.com
+ ([fe80::d409:11b5:5eb2:6be9%5]) with mapi id 15.20.4566.022; Mon, 4 Oct 2021
+ 10:17:11 +0000
+Date:   Mon, 4 Oct 2021 13:17:01 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     miquel.raynal@bootlin.com
+Cc:     linux-iio@vger.kernel.org
+Subject: [bug report] iio: adc: max1027: Use the EOC IRQ when populated for
+ single reads
+Message-ID: <20211004101701.GA22161@kili>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-ClientProxiedBy: AS9PR06CA0404.eurprd06.prod.outlook.com
+ (2603:10a6:20b:461::24) To MWHPR1001MB2365.namprd10.prod.outlook.com
+ (2603:10b6:301:2d::28)
 MIME-Version: 1.0
-References: <20211003150200.391320-1-jic23@kernel.org>
-In-Reply-To: <20211003150200.391320-1-jic23@kernel.org>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Mon, 4 Oct 2021 10:01:37 +0300
-Message-ID: <CA+U=DsoECgdGv+pTut9Ts9yxfao-3uVYbORUosN62rzLw4H6aw@mail.gmail.com>
-Subject: Re: [PATCH] iio: Move include/linux/iio-opaque.h to drivers/iio/iio_opaque.h
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Alexandru Ardelean <aardelean@deviqon.com>
-Content-Type: text/plain; charset="UTF-8"
+Received: from kili (62.8.83.99) by AS9PR06CA0404.eurprd06.prod.outlook.com (2603:10a6:20b:461::24) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4566.22 via Frontend Transport; Mon, 4 Oct 2021 10:17:09 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 357e4ac2-a258-46cd-2b13-08d9872020c5
+X-MS-TrafficTypeDiagnostic: CO1PR10MB4642:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <CO1PR10MB46429FFF3BE78BB2ACE0E9B68EAE9@CO1PR10MB4642.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: e3lW+BN09Li9SnRknHmHXqItOa/Jisaq642EfnuEqgrTRWKOVB9JsK/156t9tMzde8cKlsV9zSUbA5InJpzAv2zzefkSLlWmwxuivewKSLc1XmvoLTNGZisUHIiWkHZptxCYNwpLUjR367vIDCgI91l5sffD4L8ve0S/3k3og+v8vag7G2gr4aYCVI+j7tZ/QR1omzrEG4pqoeaUnpOe9ExXS8j5WJBWZIKgJm+5FtqFVvCWV6/Bi5s+xvvy+8zJmEWY8HG2fKOy0A7/T+BdPL19a9vVtpRNAdP+UCH/dWVAyNvRPBuoZw2bPJ79Mofjj5ZGOu0c5RZqx8LPFI4kK06KllGF7vHCaDR7aNJvIxQv3gIcBOB3ke5dJF/7mRg+rcMquwfJzIpkxw1y6zq3DZNk8dyHs+yL9hahPuHy96jpkS4Dz0YX6G/OCGsLOJ1/yDK+74cdzgW56l4O8AgseGKpRnrUZc4yLq8V5eQkLShUCJi1r+YKLrO9LgqHAPVMfILquEVRJVZO1jZGCr+zZ8RhNGZ556o96He4hlxmwWEKG0F+eZWls6XTdvyfoo9oNCTlUuBrhJV0JoyfTJRcOjSmZ2mioY0psn8yxuSrdv+NQLXr30JCFL72fMBRxvPZbFQ7HudHhGlzBwL7nNewvUsDPeYae+p5kAaTeNXH+LehB9nZXvHLV65+UMMnHyagfRXSrxhVqfOMKQn2xkAqJA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR1001MB2365.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(9576002)(6916009)(8936002)(186003)(508600001)(66946007)(66476007)(66556008)(83380400001)(2906002)(26005)(9686003)(4326008)(956004)(55016002)(33656002)(86362001)(5660300002)(8676002)(52116002)(38350700002)(6496006)(33716001)(1076003)(316002)(6666004)(44832011)(38100700002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?hw0SK3/yhmAZx6SS/affWyj2N4OywYfQjqzebTSd8FwmJRy3bwCfo1qbbKPT?=
+ =?us-ascii?Q?MEXFdV5ZBMRXPcoPnXZlz99bEFClp3lUjsfGKVutrmK/ApV0Q0Giaruy5P9g?=
+ =?us-ascii?Q?sCp8GmP2HMgIKrTBP+cYa3XF0Y6zFzmH6eliyJB3BvcqiInO1ucPeO4B62Ml?=
+ =?us-ascii?Q?qqaUCEDieKonHt70vRx+czJ4N4G9xcOhXyytLc94Eo72/YE088VApXHXhVwJ?=
+ =?us-ascii?Q?lKUDGEG52YjqlJ/wQK1RT2EQJ7AaIh0Gt8D1k9BMiRYPmymBerXU9jFCGV8d?=
+ =?us-ascii?Q?8TO9MAf8v3QMDvjrISSpDvURo0Jeo9IxznYeMVyXvFWZMJvIFtsMhBUqc3HK?=
+ =?us-ascii?Q?lGI9N5ZgfBew/M/ZXhepcSrrNDyu1KlEoXPajKad/xi2Fla1LpXOVEvJk+i6?=
+ =?us-ascii?Q?4bMAyVaCrnvrkVgonR1ePdHen3fNKZKt4Sok2+t/t0mMT98fdDL/rfdoA/dN?=
+ =?us-ascii?Q?Ng4uGDp73PkW0MvlliNzYt4OBoKBnmdZoF3R0KGuNh4lCzioV1ItrgnVfErh?=
+ =?us-ascii?Q?6OLCf3W4d00YQgStPFGson4tVZpHB318tksVx2FTon5wN6dTwV/FbiMnU16m?=
+ =?us-ascii?Q?qdj7+rZo9f34NTbCb+LCDZCxIdwS0GfigQQ16uBlmdf2+4B97FTArp4G1Dkj?=
+ =?us-ascii?Q?jOkV1bKbWmy9UKYJ82cZCNzB3Zw0FusSkOcryE29mqJ3igG5wSth27aEdrzQ?=
+ =?us-ascii?Q?oChe9q8JFYhPZcpweJ8Ppjqo6Wk/jhCH1/4pkhmh+36DppDplm9vr578a1a4?=
+ =?us-ascii?Q?R21GDSxk1UGThgK+7TsDmoqAAb35W5OJcV7a/AEfelEbMah8WgotUI6xsKui?=
+ =?us-ascii?Q?rwNQpvntzKDQhfMRenWA1/sDcXDnrTtnbl5N7A02G7MisVkINXEVcXzuBlDb?=
+ =?us-ascii?Q?uoiQRpi5FROSS20sT4aUlzf24gdCjvOBQ5HTrlcOPKYrWNNArrbeA0wUmafe?=
+ =?us-ascii?Q?8lc62XanosRMHTiqxnu8egMkTpbRVwTV86s58CXbitm8kqZmv3FX5Tz5cEy/?=
+ =?us-ascii?Q?rcQFizSgBh8eDv6bZQzsXHiFtaQil48BVOK4/Psm5IzynPYZbzKisr3DRimD?=
+ =?us-ascii?Q?344ChrsNMlN5sZSYqiIBV8W7ij/PJf/Ly5mx9Tk0ywUKrIJKsslA6i+laE2m?=
+ =?us-ascii?Q?8IT83KPE5YLnI3H+0y+sPsWxGnEBZ/1pzT3KxPi5TOu8Sdd1MwmgiNnCzUOL?=
+ =?us-ascii?Q?Q78v5WFS0hmbeDG3qSXtNJYuTG5KnxrzQUt/GP+h5wtX+GruwBzJ9xGJ24Kv?=
+ =?us-ascii?Q?TkhO1BIdd+i8knFps15ZuDv9nrauD9HygcC0w3aBm72jzqAxfAdjArBMkn1/?=
+ =?us-ascii?Q?xlNoSYpblGKL6rrQK+CK2Jk6?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 357e4ac2-a258-46cd-2b13-08d9872020c5
+X-MS-Exchange-CrossTenant-AuthSource: MWHPR1001MB2365.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Oct 2021 10:17:11.1089
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FyICSNng7dl/RBstNeV0DIJFJm6GKeO94Vf/FuxwKplOIu5gvcu7HMtPZVwTlOv8OWHQXf1PVPC0gh5cAo4rX5XiTqLvUswCtTVMRPb0z7s=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR10MB4642
+X-Proofpoint-Virus-Version: vendor=nai engine=6300 definitions=10126 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999 adultscore=0
+ bulkscore=0 suspectscore=0 malwarescore=0 spamscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2109230001
+ definitions=main-2110040071
+X-Proofpoint-ORIG-GUID: PYU8_JyLjTziaH3EO4WGt_Kkmei_ym-I
+X-Proofpoint-GUID: PYU8_JyLjTziaH3EO4WGt_Kkmei_ym-I
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Oct 3, 2021 at 5:58 PM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> This header is only intended for use within IIO core modules so move
-> it to an appropriate location.  Also rename to bring it inline with
-> other IIO core only headers.
->
+Hello Miquel Raynal,
 
-Should we merge this into drivers/iio/iio_core.h ?
+The patch 54f14be01e17: "iio: adc: max1027: Use the EOC IRQ when
+populated for single reads" from Sep 21, 2021, leads to the following
+Smatch static checker warning:
 
-Either way:
+	drivers/iio/adc/max1027.c:289 max1027_wait_eoc()
+	info: return a literal instead of 'ret'
 
-Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
+drivers/iio/adc/max1027.c
+    278 static int max1027_wait_eoc(struct iio_dev *indio_dev)
+    279 {
+    280         struct max1027_state *st = iio_priv(indio_dev);
+    281         unsigned int conversion_time = MAX1027_CONVERSION_UDELAY;
+    282         int ret;
+    283 
+    284         if (st->spi->irq) {
+    285                 ret = wait_for_completion_timeout(&st->complete,
+    286                                                   msecs_to_jiffies(1000));
+    287                 reinit_completion(&st->complete);
+    288                 if (!ret)
+--> 289                         return ret;
 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Alexandru Ardelean <ardeleanalex@gmail.com>
-> Cc: Alexandru Ardelean <aardelean@deviqon.com>
-> ---
->
-> I'm not sure if there was a strong reason this file was in
-> include/linux/iio before?
+wait_for_completion_timeout() returns zero if it times out.  Should this
+be return an error code?  Otherwise we could just delete the "ret"
+variable and return 0 below.
 
-No strong reason.
-I guess mostly inertial.
-I was looking at the "./include/linux/iio/buffer_impl.h" and went
-along with the same include/linux/iio path.
-I was also thinking that maybe some older non-upstream IIO drivers
-would prefer the "include/linux/iio" path, but that's still not a
-great reason to put it there.
+    290         } else {
+    291                 if (indio_dev->active_scan_mask)
+    292                         conversion_time *= hweight32(*indio_dev->active_scan_mask);
+    293 
+    294                 usleep_range(conversion_time, conversion_time * 2);
+    295         }
+    296 
+    297         return 0;
+    298 }
 
-There is "drivers/iio/iio_core.h" which seemed like a minimal include
-to be shared between the core, buffer and trigger IIO files.
-Maybe it makes sense to merge "drivers/iio/iio_core.h" & iio-opaque.h ?
-
-Especially since:
-
-drivers/iio/industrialio-buffer.c:#include <linux/iio/iio-opaque.h>
-drivers/iio/industrialio-core.c:#include <linux/iio/iio-opaque.h>
-drivers/iio/industrialio-event.c:#include <linux/iio/iio-opaque.h>
-drivers/iio/industrialio-trigger.c:#include <linux/iio/iio-opaque.h>
-drivers/iio/inkern.c:#include <linux/iio/iio-opaque.h>
-
-
->
->
->  include/linux/iio/iio-opaque.h => drivers/iio/iio_opaque.h | 0
->  drivers/iio/industrialio-buffer.c                          | 2 +-
->  drivers/iio/industrialio-core.c                            | 2 +-
->  drivers/iio/industrialio-event.c                           | 2 +-
->  drivers/iio/industrialio-trigger.c                         | 2 +-
->  drivers/iio/inkern.c                                       | 2 +-
->  6 files changed, 5 insertions(+), 5 deletions(-)
->
-> diff --git a/include/linux/iio/iio-opaque.h b/drivers/iio/iio_opaque.h
-> similarity index 100%
-> rename from include/linux/iio/iio-opaque.h
-> rename to drivers/iio/iio_opaque.h
-> diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-> index a95cc2da56be..ed7a5c0a31e1 100644
-> --- a/drivers/iio/industrialio-buffer.c
-> +++ b/drivers/iio/industrialio-buffer.c
-> @@ -21,9 +21,9 @@
->  #include <linux/sched/signal.h>
->
->  #include <linux/iio/iio.h>
-> -#include <linux/iio/iio-opaque.h>
->  #include "iio_core.h"
->  #include "iio_core_trigger.h"
-> +#include "iio_opaque.h"
->  #include <linux/iio/sysfs.h>
->  #include <linux/iio/buffer.h>
->  #include <linux/iio/buffer_impl.h>
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> index 2dbb37e09b8c..6afa70c89c80 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -25,9 +25,9 @@
->  #include <linux/debugfs.h>
->  #include <linux/mutex.h>
->  #include <linux/iio/iio.h>
-> -#include <linux/iio/iio-opaque.h>
->  #include "iio_core.h"
->  #include "iio_core_trigger.h"
-> +#include "iio_opaque.h"
->  #include <linux/iio/sysfs.h>
->  #include <linux/iio/events.h>
->  #include <linux/iio/buffer.h>
-> diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industrialio-event.c
-> index d0732eac0f0a..1d49714d9832 100644
-> --- a/drivers/iio/industrialio-event.c
-> +++ b/drivers/iio/industrialio-event.c
-> @@ -18,8 +18,8 @@
->  #include <linux/uaccess.h>
->  #include <linux/wait.h>
->  #include <linux/iio/iio.h>
-> -#include <linux/iio/iio-opaque.h>
->  #include "iio_core.h"
-> +#include "iio_opaque.h"
->  #include <linux/iio/sysfs.h>
->  #include <linux/iio/events.h>
->
-> diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
-> index b23caa2f2aa1..e4e59466a263 100644
-> --- a/drivers/iio/industrialio-trigger.c
-> +++ b/drivers/iio/industrialio-trigger.c
-> @@ -13,10 +13,10 @@
->  #include <linux/slab.h>
->
->  #include <linux/iio/iio.h>
-> -#include <linux/iio/iio-opaque.h>
->  #include <linux/iio/trigger.h>
->  #include "iio_core.h"
->  #include "iio_core_trigger.h"
-> +#include "iio_opaque.h"
->  #include <linux/iio/trigger_consumer.h>
->
->  /* RFC - Question of approach
-> diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-> index 0222885b334c..72c130d9fecb 100644
-> --- a/drivers/iio/inkern.c
-> +++ b/drivers/iio/inkern.c
-> @@ -10,8 +10,8 @@
->  #include <linux/of.h>
->
->  #include <linux/iio/iio.h>
-> -#include <linux/iio/iio-opaque.h>
->  #include "iio_core.h"
-> +#include "iio_opaque.h"
->  #include <linux/iio/machine.h>
->  #include <linux/iio/driver.h>
->  #include <linux/iio/consumer.h>
-> --
-> 2.33.0
->
+regards,
+dan carpenter

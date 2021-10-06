@@ -2,37 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 11E3B4242D8
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Oct 2021 18:39:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A34274242D5
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Oct 2021 18:38:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234375AbhJFQku (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 6 Oct 2021 12:40:50 -0400
-Received: from box.trvn.ru ([194.87.146.52]:36163 "EHLO box.trvn.ru"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232082AbhJFQkt (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        id S232324AbhJFQkt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Wed, 6 Oct 2021 12:40:49 -0400
+Received: from box.trvn.ru ([194.87.146.52]:36313 "EHLO box.trvn.ru"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231259AbhJFQkt (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 6 Oct 2021 12:40:49 -0400
+X-Greylist: delayed 457 seconds by postgrey-1.27 at vger.kernel.org; Wed, 06 Oct 2021 12:40:48 EDT
 Received: from authenticated-user (box.trvn.ru [194.87.146.52])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
         (No client certificate requested)
-        by box.trvn.ru (Postfix) with ESMTPSA id 23C1D428D5;
+        by box.trvn.ru (Postfix) with ESMTPSA id 8F488428D6;
         Wed,  6 Oct 2021 21:31:17 +0500 (+05)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=trvn.ru; s=mail;
-        t=1633537877; bh=uIen75qqOYkJA/WCGn3GUIYd88tAz2rU3z+nxfJYUO4=;
+        t=1633537877; bh=RKX+UxOJaofOnl3psZgoVRHnWMDW48UJ8sAbexJ0pD4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bp/iCGBd+ZdVibcUACevapvSUxO7uA6hU8HSykqvKrvDo3x0MFpDuPivp+SBECZ3A
-         KmhkAn5RxMUj5Quiftb6rWNPBGrX5ZMilGX/9Icqdc2VA7v7RiCgffPZdWWUGbBhYo
-         lmrn3YBYIKzaxhPQzxTXsailPW66/nnqghsqOPfMkC48/IhHLBBXZNYyEcCCd+0VWD
-         6PwvzqjGCIaZZW28+BuJeodTRvxr3C9OXEwivfvZFhToCDuk8dotN6Blor06xUmRt/
-         axNjppZ1xtP+tHyikg2O5GMuy94ffmJpfe1XjDN1Vo6d5tJtbfrIAWzM3w0/eVvIXg
-         IF4QZKtQeSM6g==
+        b=qX0JPIMOsJgD/Dv2gqdB1D9egd7Qoip59izkv7zt2lM8Ha/ZMHDWLH0IayCGOwkSp
+         v+aB7YnbqkK+k2Q2RqNYhigJZt6UVvlQJUaNG2mam5ezI2DpRiLhXXrCTMs/XQ/tHl
+         gJkAH6Pbe7lxNxDER6bdFcMN77vv06nciqyuHPCs01cukFuvNMrOxGRhAyYcP9P080
+         3ebGG4jkz0z99k/aKmLlm0n8N+Wa9aJ8y+GhmBz9wOb/FpwG8oh92faFJ3JqqgncUe
+         kihNnpJfpSqs3fubDziuzuBV1nUOt4xUv3DGwx2QwuQag2daw8/MOj0u2gNhQ8gsR8
+         vU/uHwMbESonA==
 From:   Nikita Travkin <nikita@trvn.ru>
 To:     jic23@kernel.org
 Cc:     lars@metafoo.de, robh+dt@kernel.org, stephan@gerhold.net,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, Nikita Travkin <nikita@trvn.ru>
-Subject: [PATCH 3/4] iio: light: ltr501: Add rudimentary regulator support
-Date:   Wed,  6 Oct 2021 21:30:57 +0500
-Message-Id: <20211006163058.145842-3-nikita@trvn.ru>
+Subject: [PATCH 4/4] iio: light: ltr501: Add of_device_id table
+Date:   Wed,  6 Oct 2021 21:30:58 +0500
+Message-Id: <20211006163058.145842-4-nikita@trvn.ru>
 In-Reply-To: <20211006163058.145842-1-nikita@trvn.ru>
 References: <20211006163058.145842-1-nikita@trvn.ru>
 MIME-Version: 1.0
@@ -41,75 +42,37 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On some platforms the supply regulators must be enabled before the
-sensor can work. Add vdd and vddio regulators for the sensor and IO bus
-power respectively.
+Add of_device_id table so the driver can be used on DT platforms without
+relying on i2c_device_id fallback. (So DT schema validation is possible)
 
 Signed-off-by: Nikita Travkin <nikita@trvn.ru>
 ---
- drivers/iio/light/ltr501.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/iio/light/ltr501.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/drivers/iio/light/ltr501.c b/drivers/iio/light/ltr501.c
-index 1830221da48d..57851c8ef1c6 100644
+index 57851c8ef1c6..7e51aaac0bf8 100644
 --- a/drivers/iio/light/ltr501.c
 +++ b/drivers/iio/light/ltr501.c
-@@ -15,6 +15,7 @@
- #include <linux/delay.h>
- #include <linux/regmap.h>
- #include <linux/acpi.h>
-+#include <linux/regulator/consumer.h>
- 
- #include <linux/iio/iio.h>
- #include <linux/iio/events.h>
-@@ -151,6 +152,7 @@ struct ltr501_chip_info {
- 
- struct ltr501_data {
- 	struct i2c_client *client;
-+	struct regulator_bulk_data regulators[2];
- 	struct mutex lock_als, lock_ps;
- 	const struct ltr501_chip_info *chip_info;
- 	u8 als_contr, ps_contr;
-@@ -1379,6 +1381,13 @@ static const struct regmap_config ltr501_regmap_config = {
- 	.volatile_reg = ltr501_is_volatile_reg,
+@@ -1609,9 +1609,18 @@ static const struct i2c_device_id ltr501_id[] = {
  };
+ MODULE_DEVICE_TABLE(i2c, ltr501_id);
  
-+static void ltr501_disable_regulators(void *d)
-+{
-+	struct ltr501_data *data = d;
++static const struct of_device_id ltr501_of_match[] = {
++	{ .compatible = "liteon,ltr501", },
++	{ .compatible = "liteon,ltr559", },
++	{ .compatible = "liteon,ltr301", },
++	{}
++};
++MODULE_DEVICE_TABLE(of, ltr501_of_match);
 +
-+	regulator_bulk_disable(ARRAY_SIZE(data->regulators), data->regulators);
-+}
-+
- static int ltr501_powerdown(struct ltr501_data *data)
- {
- 	return ltr501_write_contr(data, data->als_contr &
-@@ -1423,6 +1432,25 @@ static int ltr501_probe(struct i2c_client *client,
- 	mutex_init(&data->lock_als);
- 	mutex_init(&data->lock_ps);
- 
-+	data->regulators[0].supply = "vdd";
-+	data->regulators[1].supply = "vddio";
-+	ret = devm_regulator_bulk_get(&client->dev,
-+				      ARRAY_SIZE(data->regulators),
-+				      data->regulators);
-+	if (ret)
-+		return dev_err_probe(&client->dev, ret,
-+				     "Failed to get regulators\n");
-+
-+	ret = regulator_bulk_enable(ARRAY_SIZE(data->regulators),
-+				    data->regulators);
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_add_action_or_reset(&client->dev,
-+				       ltr501_disable_regulators, data);
-+	if (ret)
-+		return ret;
-+
- 	data->reg_it = devm_regmap_field_alloc(&client->dev, regmap,
- 					       reg_field_it);
- 	if (IS_ERR(data->reg_it)) {
+ static struct i2c_driver ltr501_driver = {
+ 	.driver = {
+ 		.name   = LTR501_DRV_NAME,
++		.of_match_table = ltr501_of_match,
+ 		.pm	= &ltr501_pm_ops,
+ 		.acpi_match_table = ACPI_PTR(ltr_acpi_match),
+ 	},
 -- 
 2.30.2
 

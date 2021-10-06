@@ -2,87 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F0FA423F85
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Oct 2021 15:37:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6896A4242DE
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Oct 2021 18:39:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231384AbhJFNji (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 6 Oct 2021 09:39:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53968 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238802AbhJFNjb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Oct 2021 09:39:31 -0400
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 803E1C061753
-        for <linux-iio@vger.kernel.org>; Wed,  6 Oct 2021 06:37:39 -0700 (PDT)
-Received: by mail-io1-xd44.google.com with SMTP id q205so2829500iod.8
-        for <linux-iio@vger.kernel.org>; Wed, 06 Oct 2021 06:37:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=RY4Ck/FbAOXQAIlJ7NzArEMRakTYUxJxSeRPJiZEvjY=;
-        b=SLYmfsMmF0cgKUKYHMudqgT4BHRhQRw9i307y68/9znUSXJzWVYnWI2dFh9bn/XOi3
-         +XqT6TjSdfB24pQscZFz+P7IKnJRwUyI+k0T/b4F+ZkZ9hGAQeukkM3X5860wf9aBk88
-         JBxfwFhchG5opIUSrbvGbPjquBYFVUIz5UX1QeL8fo3j4qHqB9ns/zUwKD6XmvdrMYWH
-         4gl071rsgtsl5eGhC2sYBPA5aTg9SFbbd4I4whmRy6rbZxqH3p1CJRwCI3hhSX1IgSs/
-         uRUFycUKx7fir7IUn+ZMqCGx4rNCH53VLQ/FKgNsjQQB7rnLxV++Gfg768V9Np4+J6ph
-         JdMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=RY4Ck/FbAOXQAIlJ7NzArEMRakTYUxJxSeRPJiZEvjY=;
-        b=XEs9wm5OR1N9DvA7TZcXTwDHUErTJwNZ6rZb/K6m7yZDpgGdd3Psgj9qm99QiCDbTm
-         GEXYfwt0o/zwYZ/pVVFlR3MorkwkdtFldQTR758j9R7ZlsfrHR8MgiAq3wwJauy/XC6X
-         CeJMOkhCtyplutzIuzLuh+1mZaJTaX3wxGCQCSMKsmf0zc6yqbs/oFdJnvfITu0TI2lH
-         tO42Sye4+o1239EOILGAzizxIo5F+HDDUHdWMKR7oaISez7Y3i55LQSMPcH97tTaAaR2
-         j1BJE6dKx1Rg1BNGWs/YlVbmzStq67y9VFZEtAfi065w7p7EaTpgUk+FJp4zmKkZxu4z
-         L4eg==
-X-Gm-Message-State: AOAM532zdTlEhUNar10zaf6V9jG+Uc9YZ8J0Cip5bdMC/V+zfRkFq/Vo
-        vuqzwbb6wMWt7qb5BUlhg5QFnZOIOkfv271fDcA=
-X-Google-Smtp-Source: ABdhPJxBZrIQTpMEuHncWdGt1dkBeNzo/6UZR8qr3cfTpFJo+7jif2qHeQqHJJ20CiY/BJmWod4ukoLyVv1mwTM+fvQ=
-X-Received: by 2002:a5e:c701:: with SMTP id f1mr6257191iop.185.1633527458980;
- Wed, 06 Oct 2021 06:37:38 -0700 (PDT)
+        id S233690AbhJFQku (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 6 Oct 2021 12:40:50 -0400
+Received: from box.trvn.ru ([194.87.146.52]:56661 "EHLO box.trvn.ru"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232027AbhJFQkt (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 6 Oct 2021 12:40:49 -0400
+Received: from authenticated-user (box.trvn.ru [194.87.146.52])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        by box.trvn.ru (Postfix) with ESMTPSA id 4F8DE403D6;
+        Wed,  6 Oct 2021 21:31:13 +0500 (+05)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=trvn.ru; s=mail;
+        t=1633537876; bh=owVziXtaEOSRnp0UZO9k8u+7DK0W6uABm5+DZhQVhh8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Q4uIKF0w0HpOKcy5YOQwgcjd3flZ1UZ5uJ8AZr56WPeuuPcFhtTFoRa9XlzVKwFod
+         6KSm4samyutKJtCo32sIopzpS05Ie7c/VBi0PKq/TNVeAuNllyYsS0Vs7OI2ccpH46
+         N0lhhx4bggK4OXw9a1MvWp+ay/Q5MrBV/Ur8Amz+iO7yYFjfNd/tNLmrBNn/Q1rS1H
+         /1vnC/Hd3eqU8hMKbYKdAYC9uRsmsiEwwd916is4vVPiG2Ry5zXzqZbyIpsf0SAwC8
+         XlIiWJmRDunhUJ85i0RfYOLPJ1leNhWxsLaTpqUR32eh/+jkQI4VzaeggKBKz6JlDO
+         HEksH/LEiU90w==
+From:   Nikita Travkin <nikita@trvn.ru>
+To:     jic23@kernel.org
+Cc:     lars@metafoo.de, robh+dt@kernel.org, stephan@gerhold.net,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Nikita Travkin <nikita@trvn.ru>
+Subject: [PATCH 1/4] dt-bindings: vendor-prefixes: Document liteon vendor prefix
+Date:   Wed,  6 Oct 2021 21:30:55 +0500
+Message-Id: <20211006163058.145842-1-nikita@trvn.ru>
 MIME-Version: 1.0
-Sender: fundagencyi931@gmail.com
-Received: by 2002:a05:6602:1501:0:0:0:0 with HTTP; Wed, 6 Oct 2021 06:37:38
- -0700 (PDT)
-From:   Aisha Al-Qaddafi <aishaqadafi77@gmail.com>
-Date:   Wed, 6 Oct 2021 15:37:38 +0200
-X-Google-Sender-Auth: sk4wFUZn7ByDBnwMBA8hku_d3b4
-Message-ID: <CAArXt4q80d=i=B6LUiME57R5_FEzTOdQdaN+UZrfAjYudDn_Hw@mail.gmail.com>
-Subject: hello dear please kindly reply my email is very urgent
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Dear I Need An Investment Partner
+Add vendor prefix for LITE-ON Technology Corp.
 
-Assalamu Alaikum Wa Rahmatullahi Wa Barakatuh
+Signed-off-by: Nikita Travkin <nikita@trvn.ru>
+---
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Dear Friend,
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index 1d77f151555b..477a5cba16fe 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -659,6 +659,8 @@ patternProperties:
+     description: Linux-specific binding
+   "^linx,.*":
+     description: Linx Technologies
++  "^liteon,.*":
++    description: LITE-ON Technology Corp.
+   "^litex,.*":
+     description: LiteX SoC builder
+   "^lltc,.*":
+-- 
+2.30.2
 
-I came across your e-mail contact prior to a private search while in
-need of your assistance. I am Aisha Al-Qaddafi, the only biological
-Daughter of Former President of Libya Col. Muammar Al-Qaddafi. Am a
-single Mother and a Widow with three Children.
-
-I have investment funds worth Twenty Seven Million Five Hundred
-Thousand United State Dollar ($27.500.000.00 ) and i need a trusted
-investment Manager/Partner because of my current refugee status,
-however, I am interested in you for investment project assistance in
-your country, may be from there, we can build business relationship in
-the nearest future.
-
-I am willing to negotiate an investment/business profit sharing ratio
-with you based on the future investment earning profits.
-
-If you are willing to handle this project on my behalf kindly reply
-urgently to enable me to provide you more information about the
-investment funds.
-
-Your Urgent Reply Will Be Appreciated
-
-Best Regards
-Mrs Aisha Al-Qaddafi

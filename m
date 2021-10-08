@@ -2,116 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2C79426287
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Oct 2021 04:46:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 393124262E6
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Oct 2021 05:21:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241462AbhJHCsY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 7 Oct 2021 22:48:24 -0400
-Received: from mail-ot1-f48.google.com ([209.85.210.48]:42683 "EHLO
-        mail-ot1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229571AbhJHCsR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 7 Oct 2021 22:48:17 -0400
-Received: by mail-ot1-f48.google.com with SMTP id c26-20020a056830349a00b0054d96d25c1eso9944725otu.9;
-        Thu, 07 Oct 2021 19:46:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=E56GHeo5EYYVQaTEhgHwF3Ub99Puf3x5uCXiUl1l+oE=;
-        b=b0Il2MVty4fxTRmH+fcBxEIc2ZNHNO+c7B6JG4PGM59PBW9XpVzFv7Ld2pcX2zYKc0
-         9KKeEwysgAlnXLfTpWW7zjR6gD+N+hEkmHZjRjgtgBS69QqtnjCKOdpoDkAfH15tIwv2
-         8ftPaiEMk6dByNX1UKzvrjXFgkqwc1bAVpEr1R/qH3KErB/pO6mFmkWHgUw22OixEExw
-         SCJOVS+/WnkNVr0liz/88dI4oOGofTuGi9jGk9cBGbAiiCQhIZ3Rr+1U919S+y3aVUi9
-         Du7VKQU/6+CXKsPBMBY+EoU2e9frPPYSPeA511aX7m/sCs68510CSWGHpnA5Sitvq0uH
-         IFMw==
-X-Gm-Message-State: AOAM530rJCHvxJPO1lSlPLrOD81C3xpSEq2mXogfRF28IiHbKY7znhYz
-        GCJjclrAZf8MAghS2drmV8RBAMNV9g==
-X-Google-Smtp-Source: ABdhPJwSR7B2FeQmrDivbTN4C8wOOGEINs32TY3AJk10ZcXNBndKFGNFVJI5dl8eDVjy5EN1OGB8Ug==
-X-Received: by 2002:a9d:84d:: with SMTP id 71mr6750057oty.190.1633661182896;
-        Thu, 07 Oct 2021 19:46:22 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id w12sm229349oop.19.2021.10.07.19.46.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Oct 2021 19:46:22 -0700 (PDT)
-Received: (nullmailer pid 1409600 invoked by uid 1000);
-        Fri, 08 Oct 2021 02:46:12 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Vincent Whitchurch <vincent.whitchurch@axis.com>
-Cc:     kernel@axis.com, linux-iio@vger.kernel.org, robh+dt@kernel.org,
-        peda@axentia.se, lars@metafoo.de, jic23@kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-In-Reply-To: <20211007134641.13417-3-vincent.whitchurch@axis.com>
-References: <20211007134641.13417-1-vincent.whitchurch@axis.com> <20211007134641.13417-3-vincent.whitchurch@axis.com>
-Subject: Re: [PATCH v2 2/3] dt-bindings: iio: io-channel-mux: Add property for settle time
-Date:   Thu, 07 Oct 2021 21:46:12 -0500
-Message-Id: <1633661172.633248.1409599.nullmailer@robh.at.kernel.org>
+        id S237830AbhJHDXf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 7 Oct 2021 23:23:35 -0400
+Received: from smtp23.cstnet.cn ([159.226.251.23]:43508 "EHLO cstnet.cn"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S240622AbhJHDXQ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 7 Oct 2021 23:23:16 -0400
+Received: from localhost.localdomain (unknown [124.16.138.128])
+        by APP-03 (Coremail) with SMTP id rQCowAAXHKgduV9hWRC9Ag--.55152S2;
+        Fri, 08 Oct 2021 11:21:01 +0800 (CST)
+From:   Jiasheng Jiang <jiasheng@iscas.ac.cn>
+To:     lorenzo.bianconi83@gmail.com, jic23@kernel.org, lars@metafoo.de
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Subject: [PATCH] io: imu: st_lsm6dsx: check if dev is null pointer
+Date:   Fri,  8 Oct 2021 03:21:00 +0000
+Message-Id: <1633663260-71997-1-git-send-email-jiasheng@iscas.ac.cn>
+X-Mailer: git-send-email 2.7.4
+X-CM-TRANSID: rQCowAAXHKgduV9hWRC9Ag--.55152S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrtr4kGr1xtF43ArW7GFWUtwb_yoWfAFX_Cw
+        n7XanrWryUZr1kCrnFvw1avr92y3yUZrn2qr1S93W3Ka4UAwsrAr1kJrWkJrn0gFWUJr1D
+        ury8trn7ua17KjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUIcSsGvfJTRUUUbckFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+        6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+        A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+        Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
+        0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+        2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+        W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc2xSY4AK67AK6r48
+        MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr
+        0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0E
+        wIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJV
+        W8JwCI42IY6xAIw20EY4v20xvaj40_WFyUJVCq3wCI42IY6I8E87Iv67AKxVWUJVW8JwCI
+        42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0JU2FALUUUUU=
+X-Originating-IP: [124.16.138.128]
+X-CM-SenderInfo: pmld2xxhqjqxpvfd2hldfou0/
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 07 Oct 2021 15:46:40 +0200, Vincent Whitchurch wrote:
-> Hardware may require some time for the muxed analog signals to settle
-> after the muxing is changed.  Allow this time to be specified in the
-> devicetree.
-> 
-> Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
-> ---
->  .../devicetree/bindings/iio/multiplexer/io-channel-mux.yaml  | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
+The parameter 'dev' of st_lsm6dsx_probe() isn't been
+checked before used, including when st_lsm6dsx_probe() is called.
+Therefore, it might be better to check, just in case.
 
-Running 'make dtbs_check' with the schema in this patch gives the
-following warnings. Consider if they are expected or the schema is
-incorrect. These may not be new warnings.
+Fixes: 290a6ce ("iio: imu: add support to lsm6dsx driver")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+---
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Note that it is not yet a requirement to have 0 warnings for dtbs_check.
-This will change in the future.
-
-Full log is available here: https://patchwork.ozlabs.org/patch/1537724
-
-
-adc0mux: '#io-channel-cells' does not match any of the regexes: 'pinctrl-[0-9]+'
-	arch/arm/boot/dts/aspeed-bmc-ampere-mtjade.dt.yaml
-
-adc10mux: '#io-channel-cells' does not match any of the regexes: 'pinctrl-[0-9]+'
-	arch/arm/boot/dts/aspeed-bmc-ampere-mtjade.dt.yaml
-
-adc11mux: '#io-channel-cells' does not match any of the regexes: 'pinctrl-[0-9]+'
-	arch/arm/boot/dts/aspeed-bmc-ampere-mtjade.dt.yaml
-
-adc12mux: '#io-channel-cells' does not match any of the regexes: 'pinctrl-[0-9]+'
-	arch/arm/boot/dts/aspeed-bmc-ampere-mtjade.dt.yaml
-
-adc13mux: '#io-channel-cells' does not match any of the regexes: 'pinctrl-[0-9]+'
-	arch/arm/boot/dts/aspeed-bmc-ampere-mtjade.dt.yaml
-
-adc1mux: '#io-channel-cells' does not match any of the regexes: 'pinctrl-[0-9]+'
-	arch/arm/boot/dts/aspeed-bmc-ampere-mtjade.dt.yaml
-
-adc2mux: '#io-channel-cells' does not match any of the regexes: 'pinctrl-[0-9]+'
-	arch/arm/boot/dts/aspeed-bmc-ampere-mtjade.dt.yaml
-
-adc3mux: '#io-channel-cells' does not match any of the regexes: 'pinctrl-[0-9]+'
-	arch/arm/boot/dts/aspeed-bmc-ampere-mtjade.dt.yaml
-
-adc4mux: '#io-channel-cells' does not match any of the regexes: 'pinctrl-[0-9]+'
-	arch/arm/boot/dts/aspeed-bmc-ampere-mtjade.dt.yaml
-
-adc5mux: '#io-channel-cells' does not match any of the regexes: 'pinctrl-[0-9]+'
-	arch/arm/boot/dts/aspeed-bmc-ampere-mtjade.dt.yaml
-
-adc6mux: '#io-channel-cells' does not match any of the regexes: 'pinctrl-[0-9]+'
-	arch/arm/boot/dts/aspeed-bmc-ampere-mtjade.dt.yaml
-
-adc7mux: '#io-channel-cells' does not match any of the regexes: 'pinctrl-[0-9]+'
-	arch/arm/boot/dts/aspeed-bmc-ampere-mtjade.dt.yaml
-
-adc8mux: '#io-channel-cells' does not match any of the regexes: 'pinctrl-[0-9]+'
-	arch/arm/boot/dts/aspeed-bmc-ampere-mtjade.dt.yaml
-
-adc9mux: '#io-channel-cells' does not match any of the regexes: 'pinctrl-[0-9]+'
-	arch/arm/boot/dts/aspeed-bmc-ampere-mtjade.dt.yaml
-
-envelope-detector-mux: channels: ['', '', 'sync-1', 'in', 'out', 'sync-2', 'sys-reg', 'ana-reg'] has non-unique elements
-	arch/arm/boot/dts/at91-tse850-3.dt.yaml
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+index 7cedaab..7b4754d 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+@@ -2199,6 +2199,8 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
+ 	const char *name = NULL;
+ 	int i, err;
+ 
++	if (!dev)
++		return -ENOMEM;
+ 	hw = devm_kzalloc(dev, sizeof(*hw), GFP_KERNEL);
+ 	if (!hw)
+ 		return -ENOMEM;
+-- 
+2.7.4
 

@@ -2,26 +2,26 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B292E4266E7
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Oct 2021 11:29:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DEC84266EB
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Oct 2021 11:29:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239341AbhJHJb0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 8 Oct 2021 05:31:26 -0400
-Received: from mx22.baidu.com ([220.181.50.185]:38414 "EHLO baidu.com"
+        id S239521AbhJHJbb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 8 Oct 2021 05:31:31 -0400
+Received: from mx24.baidu.com ([111.206.215.185]:38634 "EHLO baidu.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S238235AbhJHJbR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 8 Oct 2021 05:31:17 -0400
-Received: from BC-Mail-Ex15.internal.baidu.com (unknown [172.31.51.55])
-        by Forcepoint Email with ESMTPS id F0B3D676A9121E31F75;
-        Fri,  8 Oct 2021 17:29:20 +0800 (CST)
+        id S238481AbhJHJbU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 8 Oct 2021 05:31:20 -0400
+Received: from BC-Mail-Ex16.internal.baidu.com (unknown [172.31.51.56])
+        by Forcepoint Email with ESMTPS id F122AE56AD15C4B3F2E6;
+        Fri,  8 Oct 2021 17:29:23 +0800 (CST)
 Received: from BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) by
- BC-Mail-Ex15.internal.baidu.com (172.31.51.55) with Microsoft SMTP Server
+ BC-Mail-Ex16.internal.baidu.com (172.31.51.56) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2242.12; Fri, 8 Oct 2021 17:29:20 +0800
+ 15.1.2242.12; Fri, 8 Oct 2021 17:29:23 +0800
 Received: from LAPTOP-UKSR4ENP.internal.baidu.com (172.31.63.8) by
  BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2308.14; Fri, 8 Oct 2021 17:29:19 +0800
+ 15.1.2308.14; Fri, 8 Oct 2021 17:29:22 +0800
 From:   Cai Huoqing <caihuoqing@baidu.com>
 To:     <caihuoqing@baidu.com>
 CC:     Linus Walleij <linus.walleij@linaro.org>,
@@ -46,9 +46,9 @@ CC:     Linus Walleij <linus.walleij@linaro.org>,
         <linux-amlogic@lists.infradead.org>,
         <linux-arm-msm@vger.kernel.org>,
         <linux-rockchip@lists.infradead.org>
-Subject: [PATCH v4 8/9] iio: adc: rockchip_saradc: Make use of the helper function dev_err_probe()
-Date:   Fri, 8 Oct 2021 17:28:56 +0800
-Message-ID: <20211008092858.495-8-caihuoqing@baidu.com>
+Subject: [PATCH v4 9/9] iio: adc: ti-ads7950: Make use of the helper function dev_err_probe()
+Date:   Fri, 8 Oct 2021 17:28:57 +0800
+Message-ID: <20211008092858.495-9-caihuoqing@baidu.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20211008092858.495-1-caihuoqing@baidu.com>
 References: <20211008092858.495-1-caihuoqing@baidu.com>
@@ -69,70 +69,24 @@ gets printed.
 
 Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
 ---
-v1->v2: Remove the separate line of PTR_ERR().
-v3->v4:
-	*Handle devm_reset_control_get_exclusive() by dev_err_probe().
-	*Handle platform_get_irq() that returns -EPROBE_DEFER.
+ drivers/iio/adc/ti-ads7950.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- drivers/iio/adc/rockchip_saradc.c | 27 ++++++++++++---------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
-index a56a0d7337ca..14b8df4ca9c8 100644
---- a/drivers/iio/adc/rockchip_saradc.c
-+++ b/drivers/iio/adc/rockchip_saradc.c
-@@ -360,7 +360,8 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
- 	if (IS_ERR(info->reset)) {
- 		ret = PTR_ERR(info->reset);
- 		if (ret != -ENOENT)
--			return ret;
-+			return dev_err_probe(&pdev->dev, ret,
-+					     "failed to get saradc-apb\n");
+diff --git a/drivers/iio/adc/ti-ads7950.c b/drivers/iio/adc/ti-ads7950.c
+index a2b83f0bd526..a7efa3eada2c 100644
+--- a/drivers/iio/adc/ti-ads7950.c
++++ b/drivers/iio/adc/ti-ads7950.c
+@@ -600,8 +600,8 @@ static int ti_ads7950_probe(struct spi_device *spi)
  
- 		dev_dbg(&pdev->dev, "no reset control found\n");
- 		info->reset = NULL;
-@@ -370,7 +371,7 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
- 
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0)
--		return irq;
-+		return dev_err_probe(&pdev->dev, irq, "failed to get irq\n");
- 
- 	ret = devm_request_irq(&pdev->dev, irq, rockchip_saradc_isr,
- 			       0, dev_name(&pdev->dev), info);
-@@ -380,23 +381,19 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
+ 	st->reg = devm_regulator_get(&spi->dev, "vref");
+ 	if (IS_ERR(st->reg)) {
+-		dev_err(&spi->dev, "Failed to get regulator \"vref\"\n");
+-		ret = PTR_ERR(st->reg);
++		ret = dev_err_probe(&spi->dev, PTR_ERR(st->reg),
++				     "Failed to get regulator \"vref\"\n");
+ 		goto error_destroy_mutex;
  	}
  
- 	info->pclk = devm_clk_get(&pdev->dev, "apb_pclk");
--	if (IS_ERR(info->pclk)) {
--		dev_err(&pdev->dev, "failed to get pclk\n");
--		return PTR_ERR(info->pclk);
--	}
-+	if (IS_ERR(info->pclk))
-+		return dev_err_probe(&pdev->dev, PTR_ERR(info->pclk),
-+				     "failed to get pclk\n");
- 
- 	info->clk = devm_clk_get(&pdev->dev, "saradc");
--	if (IS_ERR(info->clk)) {
--		dev_err(&pdev->dev, "failed to get adc clock\n");
--		return PTR_ERR(info->clk);
--	}
-+	if (IS_ERR(info->clk))
-+		return dev_err_probe(&pdev->dev, PTR_ERR(info->clk),
-+				     "failed to get adc clock\n");
- 
- 	info->vref = devm_regulator_get(&pdev->dev, "vref");
--	if (IS_ERR(info->vref)) {
--		dev_err(&pdev->dev, "failed to get regulator, %ld\n",
--			PTR_ERR(info->vref));
--		return PTR_ERR(info->vref);
--	}
-+	if (IS_ERR(info->vref))
-+		return dev_err_probe(&pdev->dev, PTR_ERR(info->vref),
-+				     "failed to get regulator\n");
- 
- 	if (info->reset)
- 		rockchip_saradc_reset_controller(info->reset);
 -- 
 2.25.1
 

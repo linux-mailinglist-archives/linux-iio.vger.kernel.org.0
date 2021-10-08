@@ -2,91 +2,115 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DEC84266EB
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Oct 2021 11:29:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 275BD426779
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Oct 2021 12:17:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239521AbhJHJbb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 8 Oct 2021 05:31:31 -0400
-Received: from mx24.baidu.com ([111.206.215.185]:38634 "EHLO baidu.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S238481AbhJHJbU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 8 Oct 2021 05:31:20 -0400
-Received: from BC-Mail-Ex16.internal.baidu.com (unknown [172.31.51.56])
-        by Forcepoint Email with ESMTPS id F122AE56AD15C4B3F2E6;
-        Fri,  8 Oct 2021 17:29:23 +0800 (CST)
-Received: from BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) by
- BC-Mail-Ex16.internal.baidu.com (172.31.51.56) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2242.12; Fri, 8 Oct 2021 17:29:23 +0800
-Received: from LAPTOP-UKSR4ENP.internal.baidu.com (172.31.63.8) by
- BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2308.14; Fri, 8 Oct 2021 17:29:22 +0800
-From:   Cai Huoqing <caihuoqing@baidu.com>
-To:     <caihuoqing@baidu.com>
-CC:     Linus Walleij <linus.walleij@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+        id S239228AbhJHKTR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 8 Oct 2021 06:19:17 -0400
+Received: from protonic.xs4all.nl ([83.163.252.89]:54394 "EHLO
+        protonic.xs4all.nl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239304AbhJHKTQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 8 Oct 2021 06:19:16 -0400
+Received: from ert768.prtnl (ert768.prtnl [192.168.224.11])
+        by sparta.prtnl (Postfix) with ESMTP id E2C9D44A024E;
+        Fri,  8 Oct 2021 12:17:16 +0200 (CEST)
+From:   Roan van Dijk <roan@protonic.nl>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Tomasz Duszynski <tomasz.duszynski@octakon.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, david@protonic.nl,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        "Pengutronix Kernel Team" <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        "NXP Linux Team" <linux-imx@nxp.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        "Neil Armstrong" <narmstrong@baylibre.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Andy Gross <agross@kernel.org>,
-        "Bjorn Andersson" <bjorn.andersson@linaro.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-amlogic@lists.infradead.org>,
-        <linux-arm-msm@vger.kernel.org>,
-        <linux-rockchip@lists.infradead.org>
-Subject: [PATCH v4 9/9] iio: adc: ti-ads7950: Make use of the helper function dev_err_probe()
-Date:   Fri, 8 Oct 2021 17:28:57 +0800
-Message-ID: <20211008092858.495-9-caihuoqing@baidu.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20211008092858.495-1-caihuoqing@baidu.com>
-References: <20211008092858.495-1-caihuoqing@baidu.com>
+        Roan van Dijk <roan@protonic.nl>
+Subject: [PATCH v5 0/4] iio: chemical: Add support for Sensirion SCD4x CO2 sensor
+Date:   Fri,  8 Oct 2021 12:17:02 +0200
+Message-Id: <20211008101706.755942-1-roan@protonic.nl>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.31.63.8]
-X-ClientProxiedBy: BC-Mail-Ex14.internal.baidu.com (172.31.51.54) To
- BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-When possible use dev_err_probe help to properly deal with the
-PROBE_DEFER error, the benefit is that DEFER issue will be logged
-in the devices_deferred debugfs file.
-Using dev_err_probe() can reduce code size, and the error value
-gets printed.
+This series adds support for the Sensirion SCD4x sensor.
 
-Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
----
- drivers/iio/adc/ti-ads7950.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+The driver supports continuous reads of temperature, relative humdity and CO2
+concentration. There is an interval of 5 seconds between readings. During
+this interval the drivers checks if the sensor has new data available.
 
-diff --git a/drivers/iio/adc/ti-ads7950.c b/drivers/iio/adc/ti-ads7950.c
-index a2b83f0bd526..a7efa3eada2c 100644
---- a/drivers/iio/adc/ti-ads7950.c
-+++ b/drivers/iio/adc/ti-ads7950.c
-@@ -600,8 +600,8 @@ static int ti_ads7950_probe(struct spi_device *spi)
- 
- 	st->reg = devm_regulator_get(&spi->dev, "vref");
- 	if (IS_ERR(st->reg)) {
--		dev_err(&spi->dev, "Failed to get regulator \"vref\"\n");
--		ret = PTR_ERR(st->reg);
-+		ret = dev_err_probe(&spi->dev, PTR_ERR(st->reg),
-+				     "Failed to get regulator \"vref\"\n");
- 		goto error_destroy_mutex;
- 	}
- 
+The driver is based on the scd30 driver. However, The scd4x has become too
+different to just expand the scd30 driver. I made a new driver instead of
+expanding the scd30 driver. I hope I made the right choice by doing so?
+
+Changes since v5:
+scd4x.c:
+  - Fix bug in trigger_handler
+
+Changes since v4:
+scd4x.c:
+  - Minor fixes in documentation
+  - Reorder trigger_handler so memcpy is not needed anymore
+Documentation:
+  - Change information about the KernelVersion for the 
+    calibration_forced_value_available
+
+Changes since v3:
+scd4x.c
+  - Change read and write_and_fetch function parameter. CRC byte is now
+    hidden inside the function.
+  - Fix minor style issues
+  - Add calibration_forced_value_available attribute to the driver
+  - Remove including BUFFER_TRIGGERED
+  - Change calibbias to raw ADC readings rather than converting it to
+    milli degrees C.
+Documentation:
+  - Change description of driver attributes
+  - Add calibration_forced_value_available documentation
+
+Changes since v2:
+scd4x.c:
+  - Change boolean operations
+  - Document scope of lock
+  - Remove device *dev from struct
+  - Add goto block for errror handling
+  - Add function to read value per channel in read_raw
+  - Fix bug with lock in error paths
+  - Remove conversion of humidity and temperature values
+  - Add scale and offset to temperature channel
+  - Add scale to humidity channel
+  - Move memset out of locked section
+  - Remove unused irq functions
+  - Move device register at end of probe function
+Documentation:
+  - Copy content of sysfs-bus-iio-scd30 to sysfs-bus-iio
+  - Remove Documentation/ABI/testing/sysfs-bus-iio-scd30
+
+Changes since v1:
+dt-bindings:
+  - Separated compatible string for each sensor type
+scd4x.c:
+  - Changed probe, resume and suspend functions to static
+  - Added SIMPLE_DEV_PM_OPS function call for power management
+    operations.
+
+Roan van Dijk (4):
+  dt-bindings: iio: chemical: sensirion,scd4x: Add yaml description
+  MAINTAINERS: Add myself as maintainer of the scd4x driver
+  drivers: iio: chemical: Add support for Sensirion SCD4x CO2 sensor
+  iio: documentation: Document scd4x calibration use
+
+ Documentation/ABI/testing/sysfs-bus-iio       |  41 ++
+ Documentation/ABI/testing/sysfs-bus-iio-scd30 |  34 -
+ .../iio/chemical/sensirion,scd4x.yaml         |  46 ++
+ MAINTAINERS                                   |   6 +
+ drivers/iio/chemical/Kconfig                  |  13 +
+ drivers/iio/chemical/Makefile                 |   1 +
+ drivers/iio/chemical/scd4x.c                  | 689 ++++++++++++++++++
+ 7 files changed, 796 insertions(+), 34 deletions(-)
+ delete mode 100644 Documentation/ABI/testing/sysfs-bus-iio-scd30
+ create mode 100644 Documentation/devicetree/bindings/iio/chemical/sensirion,scd4x.yaml
+ create mode 100644 drivers/iio/chemical/scd4x.c
+
 -- 
-2.25.1
+2.30.2
 

@@ -2,140 +2,127 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C0BB342677C
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Oct 2021 12:17:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0DBC4268BB
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Oct 2021 13:28:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239635AbhJHKTT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 8 Oct 2021 06:19:19 -0400
-Received: from protonic.xs4all.nl ([83.163.252.89]:54430 "EHLO
-        protonic.xs4all.nl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239583AbhJHKTR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 8 Oct 2021 06:19:17 -0400
-Received: from ert768.prtnl (ert768.prtnl [192.168.224.11])
-        by sparta.prtnl (Postfix) with ESMTP id 5786844A0252;
-        Fri,  8 Oct 2021 12:17:17 +0200 (CEST)
-From:   Roan van Dijk <roan@protonic.nl>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Tomasz Duszynski <tomasz.duszynski@octakon.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, david@protonic.nl,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Roan van Dijk <roan@protonic.nl>
-Subject: [PATCH v5 4/4] iio: documentation: Document scd4x calibration use
-Date:   Fri,  8 Oct 2021 12:17:06 +0200
-Message-Id: <20211008101706.755942-5-roan@protonic.nl>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20211008101706.755942-1-roan@protonic.nl>
-References: <20211008101706.755942-1-roan@protonic.nl>
+        id S240375AbhJHLak (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 8 Oct 2021 07:30:40 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:65262 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S240344AbhJHLah (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 8 Oct 2021 07:30:37 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1981fMeI003084;
+        Fri, 8 Oct 2021 07:28:28 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 3bhtt1pmwg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 08 Oct 2021 07:28:28 -0400
+Received: from SCSQMBX10.ad.analog.com (SCSQMBX10.ad.analog.com [10.77.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 198BSQeq029968
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 8 Oct 2021 07:28:27 -0400
+Received: from SCSQCASHYB6.ad.analog.com (10.77.17.132) by
+ SCSQMBX10.ad.analog.com (10.77.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.858.5;
+ Fri, 8 Oct 2021 04:28:25 -0700
+Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
+ SCSQCASHYB6.ad.analog.com (10.77.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.858.5;
+ Fri, 8 Oct 2021 04:28:25 -0700
+Received: from zeus.spd.analog.com (10.66.68.11) by scsqmbx11.ad.analog.com
+ (10.77.17.10) with Microsoft SMTP Server id 15.2.858.5 via Frontend
+ Transport; Fri, 8 Oct 2021 04:28:25 -0700
+Received: from andrei-VirtualBox.ad.analog.com (ADRIMBAR-L02.ad.analog.com [10.48.65.112])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 198BSMC4022852;
+        Fri, 8 Oct 2021 07:28:22 -0400
+From:   <andrei.drimbarean@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <devicetree@vger.kernel.org>, <fazilyildiran@gmail.com>,
+        <andrei.drimbarean@analog.com>, <robh+dt@kernel.org>,
+        <jic23@kernel.org>, <Michael.Hennerich@analog.com>,
+        <lars@metafoo.de>
+Subject: [PATCH 0/2] ADPD188 linux driver
+Date:   Fri, 8 Oct 2021 14:27:45 +0300
+Message-ID: <20211008112747.79969-1-andrei.drimbarean@analog.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: oP_EpB22cHIlZEo76gJQOYq3h1USiML8
+X-Proofpoint-GUID: oP_EpB22cHIlZEo76gJQOYq3h1USiML8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
+ definitions=2021-10-08_03,2021-10-07_02,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ priorityscore=1501 impostorscore=0 bulkscore=0 suspectscore=0
+ mlxlogscore=999 mlxscore=0 adultscore=0 malwarescore=0 clxscore=1011
+ phishscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2109230001 definitions=main-2110080067
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add entries from Documentation/ABI/testing/sysfs-bus-iio-scd30
-to Documentation/ABI/testing/sysfs-bus-iio. The attributes of the scd4x
-and scd30 are common.
+From: Andrei Drimbarean <andrei.drimbarean@analog.com>
 
-Remove Documentation/ABI/testing/sysfs-bus-iio-scd30.
+The ADPD188BI is a complete photometric system for smoke 
+detection using optical dual wavelength technology. The module 
+integrates an efficient photometric front end, two light 
+emitting diodes (LEDs), and two photodiodes (PDs). 
 
-Signed-off-by: Roan van Dijk <roan@protonic.nl>
----
- Documentation/ABI/testing/sysfs-bus-iio       | 41 +++++++++++++++++++
- Documentation/ABI/testing/sysfs-bus-iio-scd30 | 34 ---------------
- 2 files changed, 41 insertions(+), 34 deletions(-)
- delete mode 100644 Documentation/ABI/testing/sysfs-bus-iio-scd30
+The front end of the application specific integrated circuit 
+(ASIC) consists of a control block, a 14-bit analog-to-digital 
+converter (ADC) with a 20-bit burst accumulator, and three 
+flexible, independently configurable LED drivers.
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-index 6ad47a67521c..c27347d3608e 100644
---- a/Documentation/ABI/testing/sysfs-bus-iio
-+++ b/Documentation/ABI/testing/sysfs-bus-iio
-@@ -1957,3 +1957,44 @@ Description:
- 		Specify the percent for light sensor relative to the channel
- 		absolute value that a data field should change before an event
- 		is generated. Units are a percentage of the prior reading.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/calibration_auto_enable
-+Date:		June 2020
-+KernelVersion:	5.8
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Some sensors have the ability to apply auto calibration at
-+		runtime. For example, it may be necessary to compensate for
-+		contaminant build-up in a measurement chamber or optical
-+		element deterioration that would otherwise lead to sensor drift.
-+
-+		Writing 1 or 0 to this attribute will respectively activate or
-+		deactivate this auto calibration function.
-+
-+		Upon reading, the current status is returned.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/calibration_forced_value
-+Date:		June 2020
-+KernelVersion:	5.8
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Some sensors have the ability to apply a manual calibration using
-+		a known measurement value, perhaps obtained from an external
-+		reference device.
-+
-+		Writing a value to this function will force such a calibration
-+		change. For the scd30 the value should be from the range
-+		[400 1 2000].
-+
-+		Note for the scd30 that a valid value may only be obtained once
-+		it is has been written. Until then any read back of this value
-+		should be ignored. As for the scd4x an error will be returned
-+		immediately if the manual calibration has failed.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/calibration_forced_value_available
-+KernelVersion:  5.15
-+Contact:        linux-iio@vger.kernel.org
-+Description:
-+		Available range for the forced calibration value, expressed as:
-+
-+		- a range specified as "[min step max]"
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio-scd30 b/Documentation/ABI/testing/sysfs-bus-iio-scd30
-deleted file mode 100644
-index b9712f390bec..000000000000
---- a/Documentation/ABI/testing/sysfs-bus-iio-scd30
-+++ /dev/null
-@@ -1,34 +0,0 @@
--What:		/sys/bus/iio/devices/iio:deviceX/calibration_auto_enable
--Date:		June 2020
--KernelVersion:	5.8
--Contact:	linux-iio@vger.kernel.org
--Description:
--		Contaminants build-up in the measurement chamber or optical
--		elements deterioration leads to sensor drift.
--
--		One can compensate for sensor drift by using automatic self
--		calibration procedure (asc).
--
--		Writing 1 or 0 to this attribute will respectively activate or
--		deactivate asc.
--
--		Upon reading current asc status is returned.
--
--What:		/sys/bus/iio/devices/iio:deviceX/calibration_forced_value
--Date:		June 2020
--KernelVersion:	5.8
--Contact:	linux-iio@vger.kernel.org
--Description:
--		Contaminants build-up in the measurement chamber or optical
--		elements deterioration leads to sensor drift.
--
--		One can compensate for sensor drift by using forced
--		recalibration (frc). This is useful in case there's known
--		co2 reference available nearby the sensor.
--
--		Picking value from the range [400 1 2000] and writing it to the
--		sensor will set frc.
--
--		Upon reading current frc value is returned. Note that after
--		power cycling default value (i.e 400) is returned even though
--		internally sensor had recalibrated itself.
+Datasheet information here: https://www.analog.com/media/en/technical-documentation/data-sheets/adpd188bi.pdf
+
+The device is controlled via either SPI or I2C interface.
+
+The first implementation used adpd188_spi/i2c.c to initialize regmap that
+was then used in the core driver source. But the I2C implementation needed
+to work with multiple daisy-chained devices. The properties of the
+daisy-chained devices is that only one of them sets the sampling rate
+automatically while the others sample when they receive a sample ready
+signal from the previous device and only the last of the chain forwards and
+interrupt to the host, which needs to read data from all devices at that
+point.
+
+Moreover, all devices start on power-up with the same I2C address, which is
+not configurable in the hardware. It needs to be configured in software by
+changing a register. To differentiate between devices that need to change
+address and those that don't we set devices to change only when their GPIO1
+is held high. Each device has its GPIO1 tied to GPIO0 of the previous
+device, except the first device, which has its GPIO1 tied low.
+
+So the way to change the addresses is as follows:
+ 1. Set all GPIO1 to high.
+ 2. Change devices that have GPIO1 tied high to a new address.
+ 3. Change GPIO1 to low for devices of the old address.
+ 4. Go to new address and repeat from step 1.
+
+Because of this, a single driver instance ends up controlling multiple
+physical devices that are daisy-chained at the same time.
+
+Andrei Drimbarean (2):
+  dt-bindings: add adpd188 schema
+  drivers:iio:light: add ADPD188 driver support
+
+ .../bindings/iio/light/adi,adpd188.yaml       |   72 +
+ drivers/iio/light/Kconfig                     |   30 +
+ drivers/iio/light/Makefile                    |    3 +
+ drivers/iio/light/adpd188.c                   | 1389 +++++++++++++++++
+ drivers/iio/light/adpd188.h                   |   64 +
+ drivers/iio/light/adpd188_i2c.c               |  243 +++
+ drivers/iio/light/adpd188_spi.c               |   97 ++
+ 7 files changed, 1898 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/light/adi,adpd188.yaml
+ create mode 100644 drivers/iio/light/adpd188.c
+ create mode 100644 drivers/iio/light/adpd188.h
+ create mode 100644 drivers/iio/light/adpd188_i2c.c
+ create mode 100644 drivers/iio/light/adpd188_spi.c
+
 -- 
-2.30.2
+2.25.1
 

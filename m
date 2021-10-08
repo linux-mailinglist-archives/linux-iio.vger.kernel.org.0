@@ -2,113 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5972E427145
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Oct 2021 21:14:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1072427156
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Oct 2021 21:19:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241612AbhJHTPw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 8 Oct 2021 15:15:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53152 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231407AbhJHTPf (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 8 Oct 2021 15:15:35 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0C21D61038;
-        Fri,  8 Oct 2021 19:13:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1633720420;
-        bh=AC8mlvl5rpF4l6tOqjjPamQgwiRioSA2m1qyyv95PCQ=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=dk6yvwYY35lLQNJOG6jJoBC18AUEpzfo7iIUP9XGBBjLELZYLKT6Jm9RnH05rrPnY
-         Ft1jaVk8qJ3cmjAuI9NUEwSJH3FMjclwv667zC09NslNOQMdbVpZI753XwRKYdGtqn
-         prNNDc9CE9a3Lf5m3gokvzKKS3fxwtEeP+/RV0Dh4R89CIvw63OH689QO6NIbe0cxI
-         HAfth3XHvI75Vzd2beCbPov9yVPhPGEliZwp37faJkA38ng9zeiw06BTWpId87rUvU
-         AuUWOwEE/76FBPnjxHV5Z3BSHW91aE3rfGgKiUDvAmXf9zrmODwYO/gblboRVK7cin
-         9EjDnI1PLv+dw==
-Received: by mail-ed1-f48.google.com with SMTP id x7so38184871edd.6;
-        Fri, 08 Oct 2021 12:13:39 -0700 (PDT)
-X-Gm-Message-State: AOAM531sbuBKiV0yi+7/aHHeTm1kNz7WgkFaDDn5trp1kuNHQHm3Sphg
-        w7ir88Eh4NczedmPizGKWM93Zd4zUx1wjpgu9Q==
-X-Google-Smtp-Source: ABdhPJzQEW4du5+j1cLnAV3kaaQAC/63eZPYU9De08b8WapQk+yA6t4Vce3DmKIB2uMz/mCtM0KTzCGtvMz+GzFQzfg=
-X-Received: by 2002:a05:6402:27d2:: with SMTP id c18mr8693395ede.271.1633720418392;
- Fri, 08 Oct 2021 12:13:38 -0700 (PDT)
-MIME-Version: 1.0
+        id S241000AbhJHTVM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 8 Oct 2021 15:21:12 -0400
+Received: from www381.your-server.de ([78.46.137.84]:50304 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231350AbhJHTVM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 8 Oct 2021 15:21:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=YjtHyAj7iC/zXvwf7dwb8EvZ+U32EBe0Uy2PwZ5sxmw=; b=YNSvfQdgv8lZHpq8AMs/ck+7z6
+        RkINaq5qHzA76UTEP0cE/Wyx9VnVRRDo6lEq6Xtz/2BXXs5HbBf7wcixK6TSUtU8NRnqrA4PG+MJX
+        dqEeatkflxihdgzcq5V2uwi5M+SbNc5LMGDDx/DjyBgVdZu6cqlfku74AlEN2bKElE0/C7XrUyO9u
+        QErsw+UVZN53QPwnrO+GpUm8l7Oymh62RrJ650L9l/RmRbT/0TuQwqA38Z3us5GzCKnBzJb8/cwNJ
+        bv48CrN01avtybQskjM4c9sCUX0yAdEU+LbneRhEe4Mo1YYO0bOKIW7i6I0l0oxc07+6vW5Lk5wno
+        jH9G+wcA==;
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <lars@metafoo.de>)
+        id 1mYvOi-0002jO-GU; Fri, 08 Oct 2021 21:19:12 +0200
+Received: from [82.135.83.71] (helo=[192.168.178.20])
+        by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1mYvOi-000R4d-AM; Fri, 08 Oct 2021 21:19:12 +0200
+Subject: Re: [PATCH v2 0/3] Add settle time support to iio-mux
+To:     Vincent Whitchurch <vincent.whitchurch@axis.com>, peda@axentia.se,
+        jic23@kernel.org, devicetree@vger.kernel.org
+Cc:     kernel@axis.com, linux-iio@vger.kernel.org, robh+dt@kernel.org,
+        linux-kernel@vger.kernel.org
 References: <20211007134641.13417-1-vincent.whitchurch@axis.com>
- <20211007134641.13417-3-vincent.whitchurch@axis.com> <1633661172.633248.1409599.nullmailer@robh.at.kernel.org>
- <20211008135610.GA16402@axis.com> <d794e44d-e67a-e51e-93b0-9b23edba2e21@axentia.se>
-In-Reply-To: <d794e44d-e67a-e51e-93b0-9b23edba2e21@axentia.se>
-From:   Rob Herring <robh@kernel.org>
-Date:   Fri, 8 Oct 2021 14:13:25 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqKPFnNsX6g2GWFaF3ntb7mfCt4+YxFtv_JfMt2mp1s+mg@mail.gmail.com>
-Message-ID: <CAL_JsqKPFnNsX6g2GWFaF3ntb7mfCt4+YxFtv_JfMt2mp1s+mg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] dt-bindings: iio: io-channel-mux: Add property for
- settle time
-To:     Peter Rosin <peda@axentia.se>
-Cc:     Vincent Whitchurch <vincent.whitchurch@axis.com>,
-        kernel <kernel@axis.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <16fab3ba-5dd9-50b3-aeae-acd68b22dfae@metafoo.de>
+Date:   Fri, 8 Oct 2021 21:19:11 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
+MIME-Version: 1.0
+In-Reply-To: <20211007134641.13417-1-vincent.whitchurch@axis.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.103.3/26316/Fri Oct  8 10:18:46 2021)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Oct 8, 2021 at 10:27 AM Peter Rosin <peda@axentia.se> wrote:
+On 10/7/21 3:46 PM, Vincent Whitchurch wrote:
+> On one of our boards we use gpio-mux with iio-mux to read voltages using an ADC
+> from a few different channels, and on this board the input voltage needs some
+> time to stabilize after a switch of the mux.
 >
-> On 2021-10-08 15:56, Vincent Whitchurch wrote:
-> > On Fri, Oct 08, 2021 at 04:46:12AM +0200, Rob Herring wrote:
-> >> On Thu, 07 Oct 2021 15:46:40 +0200, Vincent Whitchurch wrote:
-> >>> Hardware may require some time for the muxed analog signals to settle
-> >>> after the muxing is changed.  Allow this time to be specified in the
-> >>> devicetree.
-> >>>
-> >>> Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
-> >>> ---
-> >>>  .../devicetree/bindings/iio/multiplexer/io-channel-mux.yaml  | 5 +++++
-> >>>  1 file changed, 5 insertions(+)
-> >>>
-> >>
-> >> Running 'make dtbs_check' with the schema in this patch gives the
-> >> following warnings. Consider if they are expected or the schema is
-> >> incorrect. These may not be new warnings.
-> >
-> > Yes, these are not new warnings.
-> >
-> >> Note that it is not yet a requirement to have 0 warnings for dtbs_check.
-> >> This will change in the future.
-> >>
-> >> Full log is available here: https://patchwork.ozlabs.org/patch/1537724
-> >>
-> >>
-> >> adc0mux: '#io-channel-cells' does not match any of the regexes: 'pinctrl-[0-9]+'
-> >>      arch/arm/boot/dts/aspeed-bmc-ampere-mtjade.dt.yaml
-> >>
-> >> adc10mux: '#io-channel-cells' does not match any of the regexes: 'pinctrl-[0-9]+'
-> >>      arch/arm/boot/dts/aspeed-bmc-ampere-mtjade.dt.yaml
-> > [...]
-> >
-> > I think the fix for these is to add a "#io-channel-cells": const 1 to
-> > the schema.
+> This series add devicetree and driver support for this kind of hardware which
+> requries a settle time after muxing.
+
+I have a board with the very same problem. And a similar solution, but 
+you beat me with upstreaming. I've switched to your patchset.
+
+Whole series
+
+Reviewed-by: Lars-Peter Clausen <lars@metafoo.de>
+
+Acked-by: Lars-Peter Clausen <lars@metafoo.de>
+
+
 >
-> Agreed.
+> v1 -> v2:
+> - Move property support to iio-mux and delay handling to mux core as suggested
+>    by Peter.
 >
-> >> envelope-detector-mux: channels: ['', '', 'sync-1', 'in', 'out', 'sync-2', 'sys-reg', 'ana-reg'] has non-unique elements
-> >>      arch/arm/boot/dts/at91-tse850-3.dt.yaml
-> >
-> > This one looks like an error in that particular devicetree.
-> >
-> The double '' is intentional; this mux is 8-way but only 6 legs are
-> connected, with the first two unused. I don't know how or where to make
-> changes to dodge the warning. I don't want to put names on things that
-> do not exist, and the iio-mux driver is using empty names as a hint to
-> not configure any child channel for those indices that have empty names.
-> If e.g. channels 0-5 are in use, then this is not a problem since you
-> can just end early with 6 names instead of 8, but alas, channels 2-7
-> was what the hw-crowd fancied in this case.
+> v1: https://lore.kernel.org/all/20211004153640.20650-1-vincent.whitchurch@axis.com/
+>
+> Vincent Whitchurch (3):
+>    mux: add support for delay after muxing
+>    dt-bindings: iio: io-channel-mux: Add property for settle time
+>    iio: multiplexer: iio-mux: Support settle-time-us property
+>
+>   .../iio/multiplexer/io-channel-mux.yaml       |  5 +++
+>   drivers/iio/multiplexer/iio-mux.c             |  7 +++-
+>   drivers/mux/core.c                            | 36 ++++++++++++++++---
+>   include/linux/mux/consumer.h                  | 23 +++++++++---
+>   include/linux/mux/driver.h                    |  4 +++
+>   5 files changed, 65 insertions(+), 10 deletions(-)
+>
 
-There's a specific string type for this: non-unique-string-array
-
-Unfortunately, no way to say unique or empty strings.
-
-Rob

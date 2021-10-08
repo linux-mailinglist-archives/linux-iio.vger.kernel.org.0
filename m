@@ -2,184 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EDB04270C5
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Oct 2021 20:30:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5972E427145
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Oct 2021 21:14:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241720AbhJHSb5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 8 Oct 2021 14:31:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46374 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240503AbhJHSbj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 8 Oct 2021 14:31:39 -0400
-Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7833AC061772
-        for <linux-iio@vger.kernel.org>; Fri,  8 Oct 2021 11:29:42 -0700 (PDT)
-Received: by mail-qk1-x72b.google.com with SMTP id 77so9157845qkh.6
-        for <linux-iio@vger.kernel.org>; Fri, 08 Oct 2021 11:29:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=usp.br; s=usp-google;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :content-transfer-encoding;
-        bh=KaxjXbd9QQSyixl6jirzIzQXQmAG5ig/YyofwUGoqJs=;
-        b=lzNTFLJPpoogk80sZ/3rmnYg4rO0rXz9eujeKVyD5GBfr8zGvrbdQXP/BNoBxeBC7Q
-         EPVe98Sv9fnzBcsSx3y6eZvxDC/hn++qy9z6J6R18I6omjoV2Ip/dzlTObXftarGMvCx
-         8qtNHdFJxpJysOgDfCOoX7+5oPDFlV3cv6cObUAqP2D9maxgbBk/tXk1XfM2yBjDV4Cy
-         wj6C6VPXvakWTETDNadFJZBo2X8V+OrplQ1tJL9Mk+WUs34tZ1uBqDmd0Eh87rFQoI69
-         M4jjAoCP0RLsZWJp6ch8839vvifEEzf/uho7n8crdcIzOyRtPAYXMhcedkrxb0sVGAjq
-         W83g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:content-transfer-encoding;
-        bh=KaxjXbd9QQSyixl6jirzIzQXQmAG5ig/YyofwUGoqJs=;
-        b=snlAsdN1869VxN7OaFoG9Z2RPRSoCBSVbA1NrVm7qlLtN4O7ULDPrf7xlj/DiCSJQL
-         oQgDd8FT3pu0yUwdaGTVHE1GUORBjx6bPXfOkO29QC8E8ccbGK9NQQvwoZaF3h15KtU4
-         3JF6I7+fISiP5tdS8rJn/pWxgpf+JopnfuqRKD7RoWFiBcdYCVXJgVrYq3O7FqhJ6l0j
-         ELFOHhO+FAeEScgakWZZrLj0keCNKXXYhE1p251ANBezOkOjkWafhCHoPGbivPgpfzkF
-         Czs2ddxdEDPPFdyn+pIHrf/Abewn2VHyYLdL/6uDRmQBMGlEmcv4v59H4sf2qUSxGlBy
-         FJmA==
-X-Gm-Message-State: AOAM53368G7LoTTRNQqhZWJlSXGRPJQppdQ6/aym/X3IxFHiUVtB/fks
-        UqgLuuBDsOwuA0J7dtpkT7RNQK1fKtzL5A==
-X-Google-Smtp-Source: ABdhPJxwHAzMsk4VqiWbdqFduWB/UvyzsE2IlMScFKDx9IOlkQ4AaN81iW+sLbOe0BjtCKsl8LxFEw==
-X-Received: by 2002:a05:620a:29c6:: with SMTP id s6mr3233300qkp.233.1633717781593;
-        Fri, 08 Oct 2021 11:29:41 -0700 (PDT)
-Received: from Andryuu.br ([2804:431:c7fd:e4dc:3e3e:a653:b135:3239])
-        by smtp.gmail.com with ESMTPSA id x18sm116594qkx.94.2021.10.08.11.29.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Oct 2021 11:29:41 -0700 (PDT)
-Date:   Fri, 8 Oct 2021 15:29:37 -0300
-From:   =?iso-8859-1?Q?Andr=E9?= Gustavo Nakagomi Lopez <andregnl@usp.br>
-To:     jic23@kernel.org, lars@metafoo.de, vz@mleia.com
-Cc:     linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, andregnl@usp.br
-Subject: [PATCH] iio: adc: lpc18xx_adc: Convert probe to device managed
- version
-Message-ID: <YWCOERbPXRrvaRN8@Andryuu.br>
+        id S241612AbhJHTPw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 8 Oct 2021 15:15:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53152 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231407AbhJHTPf (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 8 Oct 2021 15:15:35 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0C21D61038;
+        Fri,  8 Oct 2021 19:13:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1633720420;
+        bh=AC8mlvl5rpF4l6tOqjjPamQgwiRioSA2m1qyyv95PCQ=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=dk6yvwYY35lLQNJOG6jJoBC18AUEpzfo7iIUP9XGBBjLELZYLKT6Jm9RnH05rrPnY
+         Ft1jaVk8qJ3cmjAuI9NUEwSJH3FMjclwv667zC09NslNOQMdbVpZI753XwRKYdGtqn
+         prNNDc9CE9a3Lf5m3gokvzKKS3fxwtEeP+/RV0Dh4R89CIvw63OH689QO6NIbe0cxI
+         HAfth3XHvI75Vzd2beCbPov9yVPhPGEliZwp37faJkA38ng9zeiw06BTWpId87rUvU
+         AuUWOwEE/76FBPnjxHV5Z3BSHW91aE3rfGgKiUDvAmXf9zrmODwYO/gblboRVK7cin
+         9EjDnI1PLv+dw==
+Received: by mail-ed1-f48.google.com with SMTP id x7so38184871edd.6;
+        Fri, 08 Oct 2021 12:13:39 -0700 (PDT)
+X-Gm-Message-State: AOAM531sbuBKiV0yi+7/aHHeTm1kNz7WgkFaDDn5trp1kuNHQHm3Sphg
+        w7ir88Eh4NczedmPizGKWM93Zd4zUx1wjpgu9Q==
+X-Google-Smtp-Source: ABdhPJzQEW4du5+j1cLnAV3kaaQAC/63eZPYU9De08b8WapQk+yA6t4Vce3DmKIB2uMz/mCtM0KTzCGtvMz+GzFQzfg=
+X-Received: by 2002:a05:6402:27d2:: with SMTP id c18mr8693395ede.271.1633720418392;
+ Fri, 08 Oct 2021 12:13:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+References: <20211007134641.13417-1-vincent.whitchurch@axis.com>
+ <20211007134641.13417-3-vincent.whitchurch@axis.com> <1633661172.633248.1409599.nullmailer@robh.at.kernel.org>
+ <20211008135610.GA16402@axis.com> <d794e44d-e67a-e51e-93b0-9b23edba2e21@axentia.se>
+In-Reply-To: <d794e44d-e67a-e51e-93b0-9b23edba2e21@axentia.se>
+From:   Rob Herring <robh@kernel.org>
+Date:   Fri, 8 Oct 2021 14:13:25 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqKPFnNsX6g2GWFaF3ntb7mfCt4+YxFtv_JfMt2mp1s+mg@mail.gmail.com>
+Message-ID: <CAL_JsqKPFnNsX6g2GWFaF3ntb7mfCt4+YxFtv_JfMt2mp1s+mg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] dt-bindings: iio: io-channel-mux: Add property for
+ settle time
+To:     Peter Rosin <peda@axentia.se>
+Cc:     Vincent Whitchurch <vincent.whitchurch@axis.com>,
+        kernel <kernel@axis.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The remove function and the goto sections are not necessary if devm
-functions are used.
+On Fri, Oct 8, 2021 at 10:27 AM Peter Rosin <peda@axentia.se> wrote:
+>
+> On 2021-10-08 15:56, Vincent Whitchurch wrote:
+> > On Fri, Oct 08, 2021 at 04:46:12AM +0200, Rob Herring wrote:
+> >> On Thu, 07 Oct 2021 15:46:40 +0200, Vincent Whitchurch wrote:
+> >>> Hardware may require some time for the muxed analog signals to settle
+> >>> after the muxing is changed.  Allow this time to be specified in the
+> >>> devicetree.
+> >>>
+> >>> Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
+> >>> ---
+> >>>  .../devicetree/bindings/iio/multiplexer/io-channel-mux.yaml  | 5 +++++
+> >>>  1 file changed, 5 insertions(+)
+> >>>
+> >>
+> >> Running 'make dtbs_check' with the schema in this patch gives the
+> >> following warnings. Consider if they are expected or the schema is
+> >> incorrect. These may not be new warnings.
+> >
+> > Yes, these are not new warnings.
+> >
+> >> Note that it is not yet a requirement to have 0 warnings for dtbs_check.
+> >> This will change in the future.
+> >>
+> >> Full log is available here: https://patchwork.ozlabs.org/patch/1537724
+> >>
+> >>
+> >> adc0mux: '#io-channel-cells' does not match any of the regexes: 'pinctrl-[0-9]+'
+> >>      arch/arm/boot/dts/aspeed-bmc-ampere-mtjade.dt.yaml
+> >>
+> >> adc10mux: '#io-channel-cells' does not match any of the regexes: 'pinctrl-[0-9]+'
+> >>      arch/arm/boot/dts/aspeed-bmc-ampere-mtjade.dt.yaml
+> > [...]
+> >
+> > I think the fix for these is to add a "#io-channel-cells": const 1 to
+> > the schema.
+>
+> Agreed.
+>
+> >> envelope-detector-mux: channels: ['', '', 'sync-1', 'in', 'out', 'sync-2', 'sys-reg', 'ana-reg'] has non-unique elements
+> >>      arch/arm/boot/dts/at91-tse850-3.dt.yaml
+> >
+> > This one looks like an error in that particular devicetree.
+> >
+> The double '' is intentional; this mux is 8-way but only 6 legs are
+> connected, with the first two unused. I don't know how or where to make
+> changes to dodge the warning. I don't want to put names on things that
+> do not exist, and the iio-mux driver is using empty names as a hint to
+> not configure any child channel for those indices that have empty names.
+> If e.g. channels 0-5 are in use, then this is not a problem since you
+> can just end early with 6 names instead of 8, but alas, channels 2-7
+> was what the hw-crowd fancied in this case.
 
-Convert device register to devm version. Add hook functions to release
-device resources, and use them inside probe with devm_add_action,
-which will release resources on driver detach.
+There's a specific string type for this: non-unique-string-array
 
-To maintain the order of which device resources were released/reseted,
-register the hook functions as soon as resources are obtained/initialized.
-Since devres actions are called on driver detach, the remove
-function and the error-handling goto sections are no longer necessary.
+Unfortunately, no way to say unique or empty strings.
 
-Signed-off-by: André Gustavo Nakagomi Lopez <andregnl@usp.br>
----
-I was not able to test the patch due to the fact I do not have the necessary hardware.
- drivers/iio/adc/lpc18xx_adc.c | 60 +++++++++++++++++++----------------
- 1 file changed, 33 insertions(+), 27 deletions(-)
-
-diff --git a/drivers/iio/adc/lpc18xx_adc.c b/drivers/iio/adc/lpc18xx_adc.c
-index 3566990ae87d..7b6ba5e4a003 100644
---- a/drivers/iio/adc/lpc18xx_adc.c
-+++ b/drivers/iio/adc/lpc18xx_adc.c
-@@ -115,6 +115,23 @@ static const struct iio_info lpc18xx_adc_info = {
- 	.read_raw = lpc18xx_adc_read_raw,
- };
- 
-+static void lpc18xx_writel(void *data)
-+{
-+	struct lpc18xx_adc *adc = data;
-+
-+	writel(0, adc->base + LPC18XX_ADC_CR);
-+}
-+
-+static void lpc18xx_clk_disable_unprepare(void *clk)
-+{
-+	clk_disable_unprepare(clk);
-+}
-+
-+static void lpc18xx_regulator_disable(void *vref)
-+{
-+	regulator_disable(vref);
-+}
-+
- static int lpc18xx_adc_probe(struct platform_device *pdev)
- {
- 	struct iio_dev *indio_dev;
-@@ -163,46 +180,36 @@ static int lpc18xx_adc_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
-+	ret = devm_add_action_or_reset(&pdev->dev, lpc18xx_regulator_disable, adc->vref);
-+	if (ret)
-+		return ret;
-+
- 	ret = clk_prepare_enable(adc->clk);
- 	if (ret) {
- 		dev_err(&pdev->dev, "unable to enable clock\n");
--		goto dis_reg;
-+		return ret;
- 	}
- 
-+	ret = devm_add_action_or_reset(&pdev->dev, lpc18xx_clk_disable_unprepare,
-+				       adc->clk);
-+	if (ret)
-+		return ret;
-+
- 	adc->cr_reg = (clkdiv << LPC18XX_ADC_CR_CLKDIV_SHIFT) |
- 			LPC18XX_ADC_CR_PDN;
- 	writel(adc->cr_reg, adc->base + LPC18XX_ADC_CR);
- 
--	ret = iio_device_register(indio_dev);
--	if (ret) {
--		dev_err(&pdev->dev, "unable to register device\n");
--		goto dis_clk;
--	}
-+	ret = devm_add_action_or_reset(&pdev->dev, lpc18xx_writel, adc);
-+	if (ret)
-+		return ret;
- 
--	return 0;
-+	ret = devm_iio_device_register(&pdev->dev, indio_dev);
-+	if (ret)
-+		dev_err(&pdev->dev, "unable to register device\n");
- 
--dis_clk:
--	writel(0, adc->base + LPC18XX_ADC_CR);
--	clk_disable_unprepare(adc->clk);
--dis_reg:
--	regulator_disable(adc->vref);
- 	return ret;
- }
- 
--static int lpc18xx_adc_remove(struct platform_device *pdev)
--{
--	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
--	struct lpc18xx_adc *adc = iio_priv(indio_dev);
--
--	iio_device_unregister(indio_dev);
--
--	writel(0, adc->base + LPC18XX_ADC_CR);
--	clk_disable_unprepare(adc->clk);
--	regulator_disable(adc->vref);
--
--	return 0;
--}
--
- static const struct of_device_id lpc18xx_adc_match[] = {
- 	{ .compatible = "nxp,lpc1850-adc" },
- 	{ /* sentinel */ }
-@@ -211,7 +218,6 @@ MODULE_DEVICE_TABLE(of, lpc18xx_adc_match);
- 
- static struct platform_driver lpc18xx_adc_driver = {
- 	.probe	= lpc18xx_adc_probe,
--	.remove	= lpc18xx_adc_remove,
- 	.driver	= {
- 		.name = "lpc18xx-adc",
- 		.of_match_table = lpc18xx_adc_match,
--- 
-2.33.0
-
+Rob

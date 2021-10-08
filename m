@@ -2,95 +2,115 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B292A426567
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Oct 2021 09:49:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 405704265F4
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Oct 2021 10:32:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229828AbhJHHv2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 8 Oct 2021 03:51:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53604 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229693AbhJHHv2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 8 Oct 2021 03:51:28 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A119B61029;
-        Fri,  8 Oct 2021 07:49:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1633679373;
-        bh=eeDr6DTkqJjWuETY90fIfcG38HYMME3dxX9Mdb6IJ+0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=iu/DUi1ijMBiuCVomGBoOQ2fZJkbz+pbMRgVO+53sOToLc6PWOhC0EHIut/7n2x01
-         BwwIBLEQqlKjA4JGCmSWNCmLgd/pYDerjo8cUaVKYww7kWiC2LJVNjdQ+XSu/97bxk
-         YVRtgfOIh2xW3ajB5C9j5+AvY33QhWncqHKUdeEfZV1uASiw4Lh8q1qUzuExmVyhnz
-         a7Z5ZCnJDF7CbkNj4LfQ4A9cX8nMBN6i4hQgAIKePUd0awDzWbhIpZiSKQoYjm5Rdh
-         OttQsZlNSihV5UI+qbc6q+rG0oOGLRdB6jnENdi3YkG+soJHIPPw9zWaCgejQELNCo
-         MC27RJ+sOcF1Q==
-Date:   Fri, 8 Oct 2021 09:49:27 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Cc:     lorenzo.bianconi83@gmail.com, jic23@kernel.org, lars@metafoo.de,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH] io: imu: st_lsm6dsx: check if dev is null pointer
-Message-ID: <YV/4B3mSn5ejJcgr@localhost.localdomain>
-References: <1633663260-71997-1-git-send-email-jiasheng@iscas.ac.cn>
+        id S229877AbhJHIeZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 8 Oct 2021 04:34:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49692 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229868AbhJHIeZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 8 Oct 2021 04:34:25 -0400
+Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23B3EC061570
+        for <linux-iio@vger.kernel.org>; Fri,  8 Oct 2021 01:32:30 -0700 (PDT)
+Received: by mail-qt1-x833.google.com with SMTP id d8so8809936qtd.5
+        for <linux-iio@vger.kernel.org>; Fri, 08 Oct 2021 01:32:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=thegavinli.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=CuQc43TsflIOCAYBelU1TeQkoJRI6u+Uowu+amwKiDo=;
+        b=ayUCJhkMVIxGb3t8TApIVUsDW2pAU5ptYceyCEulLCKVSsrFECTrbhTHZ/PSbL/Qr6
+         AI05GPqn/vyH83tANZaDeyL5iNfpskPJeQ/bLGhErfEQYQ3BO7ROmMVDrNQCUrkpyiYR
+         DWhEDJnIeOFyvBbgpLpcOMIzfME5VaCqkzX2Y=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=CuQc43TsflIOCAYBelU1TeQkoJRI6u+Uowu+amwKiDo=;
+        b=15g98PsU1yBe1X0JIWYpNj16uxpe5L6A5JNZCsVugQGL0GGNA7n8tMNkfu7847Vkhh
+         vu4gWALXoH89Z8BN3onW8pOz3aryLb218UQFU81jDRLcbFHGre5ow5ch0jtKsf9UkqFC
+         oBT8Uem61H2drbP101rFhBm675iqEX04jSuICxYE6+1INfbItjBhGOGhWYRnRSZlqY28
+         iVNtISXtuc8sVW6wD6beKVQ/zxUWKPf3dr42mbi76BanrO+6k/KMJmPO1U8E4WMZH4q3
+         AIU3swomB2LsYUV13pfTTZnbr1Meft54PCxoL+2zoQd3nZpYecGXx3d4I7nBghFpPt8F
+         qIPg==
+X-Gm-Message-State: AOAM530KRNQ97TMKPIoORQ01VwNrfgDk6sK+q0P2sq+lJAVDEnhyXlSY
+        0CH1eZ1Q8Nq1LHnKm+dfNlnDl0IKHoe/+g==
+X-Google-Smtp-Source: ABdhPJxe+YR++Z4iBDJuJLTGDNEK0WZp+wEc/gCAW0R4vqSWySfkI0UkUBNk8M2sb0Bdb/D7vtjGfA==
+X-Received: by 2002:ac8:6158:: with SMTP id d24mr10501207qtm.115.1633681949240;
+        Fri, 08 Oct 2021 01:32:29 -0700 (PDT)
+Received: from mtgav.corp.matician.com ([38.88.246.146])
+        by smtp.gmail.com with ESMTPSA id c6sm1726398qtx.72.2021.10.08.01.32.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Oct 2021 01:32:28 -0700 (PDT)
+From:   gavinli@thegavinli.com
+To:     jic23@kernel.org, lars@metafoo.de
+Cc:     linux-iio@vger.kernel.org, Gavin Li <gavin@matician.com>
+Subject: [PATCH] iio: trigger: fix iio_trigger reference leak
+Date:   Fri,  8 Oct 2021 01:32:20 -0700
+Message-Id: <20211008083220.3713926-1-gavinli@thegavinli.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="qaR85glXt6Juf0yi"
-Content-Disposition: inline
-In-Reply-To: <1633663260-71997-1-git-send-email-jiasheng@iscas.ac.cn>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+From: Gavin Li <gavin@matician.com>
 
---qaR85glXt6Juf0yi
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+viio_trigger_alloc() includes a get_device() call added in commit
+5f9c035cae back in 2011. While I wasn't able to ascertain why it was
+added, I've noticed that it does cause a memory leak, especially when
+rmmod'ing iio modules. Here is a simple module that replicates this
+issue:
 
-> The parameter 'dev' of st_lsm6dsx_probe() isn't been
-> checked before used, including when st_lsm6dsx_probe() is called.
-> Therefore, it might be better to check, just in case.
->=20
-> Fixes: 290a6ce ("iio: imu: add support to lsm6dsx driver")
-> Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-> ---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 2 ++
->  1 file changed, 2 insertions(+)
->=20
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/i=
-mu/st_lsm6dsx/st_lsm6dsx_core.c
-> index 7cedaab..7b4754d 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> @@ -2199,6 +2199,8 @@ int st_lsm6dsx_probe(struct device *dev, int irq, i=
-nt hw_id,
->  	const char *name =3D NULL;
->  	int i, err;
-> =20
-> +	if (!dev)
-> +		return -ENOMEM;
+    #include <linux/module.h>
+    #include <linux/iio/iio.h>
+    #include <linux/iio/trigger.h>
 
-can this really happen? dev is a structure (not a pointer) in i2c_client or
-spi_device.
+    int my_init(void) {
+        struct iio_trigger *trig = iio_trigger_alloc("leak-trig");
+        if (!trig)
+            return -ENOMEM;
 
-Regards,
-Lorenzo
+        printk("iio-leak: %u uses at A\n", kref_read(&trig->dev.kobj.kref));
+        iio_trigger_free(trig);
+        printk("iio-leak: %u uses at B\n", kref_read(&trig->dev.kobj.kref));
 
->  	hw =3D devm_kzalloc(dev, sizeof(*hw), GFP_KERNEL);
->  	if (!hw)
->  		return -ENOMEM;
-> --=20
-> 2.7.4
->=20
+        return 0;
+    }
 
---qaR85glXt6Juf0yi
-Content-Type: application/pgp-signature; name="signature.asc"
+    void my_exit(void) {}
 
------BEGIN PGP SIGNATURE-----
+    module_init(my_init);
+    module_exit(my_exit);
+    MODULE_LICENSE("GPL v2");
 
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYV/4BAAKCRA6cBh0uS2t
-rNt7AQCjx/gkPYW3iox+XpwsS9h88Yyh9+4UKpZ1AflB6koVCQEA5FXMQLwXMEJx
-3fByb/kLYnuVF3ymjGo46uGHQ2HzpAM=
-=LMgN
------END PGP SIGNATURE-----
+It prints the following in the kernel log:
 
---qaR85glXt6Juf0yi--
+    iio-leak: 2 uses at A
+    iio-leak: 1 uses at B
+
+This patch removes the get_device() call. This shouldn't break
+subirqs with iio_trigger_attach_poll_func() because a reference should
+already exist via indio_dev->trig.
+---
+ drivers/iio/industrialio-trigger.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
+index b23caa2f2aa1f..93990ff1dfe39 100644
+--- a/drivers/iio/industrialio-trigger.c
++++ b/drivers/iio/industrialio-trigger.c
+@@ -556,7 +556,6 @@ struct iio_trigger *viio_trigger_alloc(struct device *parent,
+ 		irq_modify_status(trig->subirq_base + i,
+ 				  IRQ_NOREQUEST | IRQ_NOAUTOEN, IRQ_NOPROBE);
+ 	}
+-	get_device(&trig->dev);
+ 
+ 	return trig;
+ 
+-- 
+2.33.0
+

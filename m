@@ -2,33 +2,32 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B93642827E
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Oct 2021 18:19:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EF80428284
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Oct 2021 18:25:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231561AbhJJQVU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 10 Oct 2021 12:21:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57716 "EHLO mail.kernel.org"
+        id S231849AbhJJQ1I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 10 Oct 2021 12:27:08 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58524 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230267AbhJJQVT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 10 Oct 2021 12:21:19 -0400
+        id S229488AbhJJQ1H (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 10 Oct 2021 12:27:07 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 231CB6008E;
-        Sun, 10 Oct 2021 16:19:18 +0000 (UTC)
-Date:   Sun, 10 Oct 2021 17:23:25 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 3B55F60F24;
+        Sun, 10 Oct 2021 16:25:08 +0000 (UTC)
+Date:   Sun, 10 Oct 2021 17:29:14 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Mihail Chindris <mihail.chindris@analog.com>
-Cc:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
-        <nuno.sa@analog.com>, <dragos.bogdan@analog.com>,
-        <alexandru.ardelean@analog.com>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>
-Subject: Re: [PATCH v6 6/6] drivers:iio:dac:ad5766.c: Add trigger buffer
-Message-ID: <20211010172325.3a546322@jic23-huawei>
-In-Reply-To: <20211007080035.2531-7-mihail.chindris@analog.com>
-References: <20211007080035.2531-1-mihail.chindris@analog.com>
-        <20211007080035.2531-7-mihail.chindris@analog.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     linux-iio@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Subject: Re: [PATCH] iio: accel: sca3000: Use sign_extend32() instead of
+ opencoding sign extension.
+Message-ID: <20211010172914.584cf8ed@jic23-huawei>
+In-Reply-To: <30fd2ee6-8182-8576-80ff-1cebab55a0dc@metafoo.de>
+References: <20210603164729.3584702-1-jic23@kernel.org>
+        <30fd2ee6-8182-8576-80ff-1cebab55a0dc@metafoo.de>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -37,102 +36,45 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 7 Oct 2021 08:00:37 +0000
-Mihail Chindris <mihail.chindris@analog.com> wrote:
+On Sun, 3 Oct 2021 20:03:10 +0200
+Lars-Peter Clausen <lars@metafoo.de> wrote:
 
-> This chip is able to generate waveform and using an
-> with the output trigger buffer will be easy to generate one.
-> 
-> Signed-off-by: Mihail Chindris <mihail.chindris@analog.com>
-> Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
+> On 6/3/21 6:47 PM, Jonathan Cameron wrote:
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >
+> > Whilst nice to get rid of this non obvious code, this also clears a
+> > static checker warning:
+> >
+> > drivers/iio/accel/sca3000.c:734 sca3000_read_raw()
+> > warn: no-op. '((*val) << 19) >> 19'
+> >
+> > Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > ---
+> >   drivers/iio/accel/sca3000.c | 3 +--
+> >   1 file changed, 1 insertion(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/iio/accel/sca3000.c b/drivers/iio/accel/sca3000.c
+> > index cb753a43533c..0692ccb80293 100644
+> > --- a/drivers/iio/accel/sca3000.c
+> > +++ b/drivers/iio/accel/sca3000.c
+> > @@ -731,8 +731,7 @@ static int sca3000_read_raw(struct iio_dev *indio_dev,
+> >   				return ret;
+> >   			}
+> >   			*val = (be16_to_cpup((__be16 *)st->rx) >> 3) & 0x1FFF;
+> > -			*val = ((*val) << (sizeof(*val) * 8 - 13)) >>
+> > -				(sizeof(*val) * 8 - 13);
+> > +			*val = sign_extend32(*val, 13);  
+> Should be 12 I think. The index is 0 based.
 
-Rest of series applied to the togreg branch of iio.git, initially pushed out as
-testing for 0-day to poke at it.
-
-Thanks,
+Fine example of why everything needs a sanity check.  Indeed, should be 12
+to sign extend a 13bit value.
 
 Jonathan
 
-> ---
->  drivers/iio/dac/ad5766.c | 42 ++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 42 insertions(+)
+> >   		} else {
+> >   			/* get the temperature when available */
+> >   			ret = sca3000_read_data_short(st,  
 > 
-> diff --git a/drivers/iio/dac/ad5766.c b/drivers/iio/dac/ad5766.c
-> index dafda84fdea3..b0d220c3a126 100644
-> --- a/drivers/iio/dac/ad5766.c
-> +++ b/drivers/iio/dac/ad5766.c
-> @@ -5,10 +5,13 @@
->   * Copyright 2019-2020 Analog Devices Inc.
->   */
->  #include <linux/bitfield.h>
-> +#include <linux/bitops.h>
->  #include <linux/delay.h>
->  #include <linux/device.h>
->  #include <linux/gpio/consumer.h>
->  #include <linux/iio/iio.h>
-> +#include <linux/iio/triggered_buffer.h>
-> +#include <linux/iio/trigger_consumer.h>
->  #include <linux/module.h>
->  #include <linux/spi/spi.h>
->  #include <asm/unaligned.h>
-> @@ -455,6 +458,7 @@ static const struct iio_chan_spec_ext_info ad5766_ext_info[] = {
->  	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),			\
->  	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_OFFSET) |		\
->  		BIT(IIO_CHAN_INFO_SCALE),				\
-> +	.scan_index = (_chan),						\
->  	.scan_type = {							\
->  		.sign = 'u',						\
->  		.realbits = (_bits),					\
-> @@ -576,6 +580,35 @@ static int ad5766_default_setup(struct ad5766_state *st)
->  	return  __ad5766_spi_write(st, AD5766_CMD_SPAN_REG, st->crt_range);
->  }
->  
-> +static irqreturn_t ad5766_trigger_handler(int irq, void *p)
-> +{
-> +	struct iio_poll_func *pf = p;
-> +	struct iio_dev *indio_dev = pf->indio_dev;
-> +	struct iio_buffer *buffer = indio_dev->buffer;
-> +	struct ad5766_state *st = iio_priv(indio_dev);
-> +	int ret, ch, i;
-> +	u16 data[ARRAY_SIZE(ad5766_channels)];
-> +
-> +	ret = iio_pop_from_buffer(buffer, data);
-> +	if (ret)
-> +		goto done;
-> +
-> +	i = 0;
-> +	mutex_lock(&st->lock);
-> +	for_each_set_bit(ch, indio_dev->active_scan_mask,
-> +			 st->chip_info->num_channels - 1)
-> +		__ad5766_spi_write(st, AD5766_CMD_WR_IN_REG(ch), data[i++]);
-> +
-> +	__ad5766_spi_write(st, AD5766_CMD_SW_LDAC,
-> +			   *indio_dev->active_scan_mask);
-> +	mutex_unlock(&st->lock);
-> +
-> +done:
-> +	iio_trigger_notify_done(indio_dev->trig);
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
->  static int ad5766_probe(struct spi_device *spi)
->  {
->  	enum ad5766_type type;
-> @@ -609,6 +642,15 @@ static int ad5766_probe(struct spi_device *spi)
->  	if (ret)
->  		return ret;
->  
-> +	/* Configure trigger buffer */
-> +	ret = devm_iio_triggered_buffer_setup_ext(&spi->dev, indio_dev, NULL,
-> +						  ad5766_trigger_handler,
-> +						  IIO_BUFFER_DIRECTION_OUT,
-> +						  NULL,
-> +						  NULL);
-> +	if (ret)
-> +		return ret;
-> +
->  	return devm_iio_device_register(&spi->dev, indio_dev);
->  }
->  
+> 
 

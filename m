@@ -2,82 +2,83 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2D97428D74
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Oct 2021 15:00:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4F81428EC7
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Oct 2021 15:49:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236736AbhJKNCH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 11 Oct 2021 09:02:07 -0400
-Received: from szxga03-in.huawei.com ([45.249.212.189]:24240 "EHLO
+        id S237388AbhJKNvt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 11 Oct 2021 09:51:49 -0400
+Received: from szxga03-in.huawei.com ([45.249.212.189]:24241 "EHLO
         szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235237AbhJKNCH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Oct 2021 09:02:07 -0400
-Received: from dggeme762-chm.china.huawei.com (unknown [172.30.72.55])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4HSf4f0N7tz8tXR;
-        Mon, 11 Oct 2021 20:58:58 +0800 (CST)
-Received: from huawei.com (10.175.112.208) by dggeme762-chm.china.huawei.com
- (10.3.19.108) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.8; Mon, 11
- Oct 2021 21:00:02 +0800
-From:   Wang Wensheng <wangwensheng4@huawei.com>
-To:     <jic23@kernel.org>, <lars@metafoo.de>,
-        <alexandru.ardelean@analog.com>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     <rui.xiang@huawei.com>
-Subject: [PATCH -next] iio: buffer: Check the return value of kstrdup_const()
-Date:   Mon, 11 Oct 2021 12:58:46 +0000
-Message-ID: <20211011125846.66553-1-wangwensheng4@huawei.com>
-X-Mailer: git-send-email 2.17.1
+        with ESMTP id S237355AbhJKNvK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Oct 2021 09:51:10 -0400
+Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.54])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4HSg9F61Qtz8tYT;
+        Mon, 11 Oct 2021 21:48:01 +0800 (CST)
+Received: from dggpeml500017.china.huawei.com (7.185.36.243) by
+ dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.8; Mon, 11 Oct 2021 21:49:06 +0800
+Received: from huawei.com (10.175.103.91) by dggpeml500017.china.huawei.com
+ (7.185.36.243) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.8; Mon, 11 Oct
+ 2021 21:49:06 +0800
+From:   Yang Yingliang <yangyingliang@huawei.com>
+To:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
+CC:     <ars@metafoo.de>, <jic23@kernel.org>,
+        <alexandru.ardelean@analog.com>, <andy.shevchenko@gmail.com>
+Subject: [PATCH] iio: core: do not create debugfs when has no dev name
+Date:   Mon, 11 Oct 2021 21:56:54 +0800
+Message-ID: <20211011135654.282958-1-yangyingliang@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.175.112.208]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggeme762-chm.china.huawei.com (10.3.19.108)
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.103.91]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpeml500017.china.huawei.com (7.185.36.243)
 X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-We should check the duplication of attr.name properly in
-iio_buffer_wrap_attr() or a null-pointer-dereference would
-occur on destroying the related sysfs file.
-This issue is found by fault-injection.
+I got a null-ptr-deref report when doing fault injection test:
 
 BUG: kernel NULL pointer dereference, address: 0000000000000000
 PGD 0 P4D 0
-Oops: 0000 [#1] SMP PTI
+Oops: 0000 [#1] SMP KASAN PTI
 RIP: 0010:strlen+0x0/0x20
 Call Trace:
- kernfs_name_hash+0x1c/0xb0
- kernfs_find_ns+0xc6/0x160
- kernfs_remove_by_name_ns+0x5c/0xb0
- remove_files.isra.1+0x42/0x90
- internal_create_group+0x42f/0x460
- internal_create_groups+0x49/0xc0
- device_add+0xb5b/0xbe0
- ? kobject_get+0x90/0xa0
- cdev_device_add+0x2b/0x90
- __iio_device_register+0xa56/0xb40
+ start_creating+0x199/0x2f0
+ debugfs_create_dir+0x25/0x430
+ __iio_device_register+0x4da/0x1b40 [industrialio]
+ __devm_iio_device_register+0x22/0x80 [industrialio]
+ max1027_probe+0x639/0x860 [max1027]
+ spi_probe+0x183/0x210
+ really_probe+0x285/0xc30
 
-Fixes: 15097c7a1adc ("iio: buffer: wrap all buffer attributes into iio_dev_attr")
-Reported-by: Hulk Robot<hulkci@huawei.com>
-Signed-off-by: Wang Wensheng <wangwensheng4@huawei.com>
+If dev_set_name() fails, the dev_name() is null, add check for
+device name before creating debugfs.
+
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Fixes: e553f182d55b ("staging: iio: core: Introduce debugfs support...")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/iio/industrialio-buffer.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iio/industrialio-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-index c648e9553edd..f4011c477bac 100644
---- a/drivers/iio/industrialio-buffer.c
-+++ b/drivers/iio/industrialio-buffer.c
-@@ -1312,6 +1312,8 @@ static struct attribute *iio_buffer_wrap_attr(struct iio_buffer *buffer,
- 	iio_attr->buffer = buffer;
- 	memcpy(&iio_attr->dev_attr, dattr, sizeof(iio_attr->dev_attr));
- 	iio_attr->dev_attr.attr.name = kstrdup_const(attr->name, GFP_KERNEL);
-+	if (!iio_attr->dev_attr.attr.name)
-+		return NULL;
- 	sysfs_attr_init(&iio_attr->dev_attr.attr);
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index 2dc837db50f7..8974490ad536 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -466,7 +466,7 @@ static void iio_device_register_debugfs(struct iio_dev *indio_dev)
+ 	if (indio_dev->info->debugfs_reg_access == NULL)
+ 		return;
  
- 	list_add(&iio_attr->l, &buffer->buffer_attr_list);
+-	if (!iio_debugfs_dentry)
++	if (!iio_debugfs_dentry || !dev_name(&indio_dev->dev))
+ 		return;
+ 
+ 	iio_dev_opaque = to_iio_dev_opaque(indio_dev);
 -- 
-2.17.1
+2.25.1
 

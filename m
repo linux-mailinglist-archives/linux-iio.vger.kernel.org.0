@@ -2,56 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 49B0F42AAD2
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Oct 2021 19:31:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C5F142AB1A
+	for <lists+linux-iio@lfdr.de>; Tue, 12 Oct 2021 19:49:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232740AbhJLRdN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 12 Oct 2021 13:33:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45194 "EHLO
+        id S229810AbhJLRvi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 12 Oct 2021 13:51:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232509AbhJLRdM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Oct 2021 13:33:12 -0400
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60A55C061570;
-        Tue, 12 Oct 2021 10:31:10 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id p13so2636256edw.0;
-        Tue, 12 Oct 2021 10:31:10 -0700 (PDT)
+        with ESMTP id S229495AbhJLRvh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Oct 2021 13:51:37 -0400
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B17E9C061570;
+        Tue, 12 Oct 2021 10:49:35 -0700 (PDT)
+Received: by mail-ed1-x531.google.com with SMTP id p13so2830187edw.0;
+        Tue, 12 Oct 2021 10:49:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=LZKICKNAnObTFzQ9F7XWOBA0XUwHyYbLFkyZit+1d5g=;
-        b=Ij+FsFfZI5UX+Y/qkuz4aFB9eaxY2aKki5FdBkthomTCgMX1mQXlOVxw3evBC01YDZ
-         xMDPplfMwa2CmCZCuSqA6OwINWKNLc8ejrwqjrzfjZX6QG6qAuD/ZR4kVbqogI8Ff1oh
-         7VR/hcT8+jfkazh8KwcsB47YQCA2JsfDP4CFRdFCKFaWx4qajvK5mLlIHmxIaIJUI5of
-         LRgDTgsSfdR6Lak0/s2lRiozOhvK83+wXhOiPUWaM/UbXeqKZoxX4TcNh5s63iggw2Rr
-         RBUN6DQbW5sIXPc+6gAiGTdA/iFMfkHQBOV1wXjKcXe+oiOXc0rIACrOroatr7YvE3zE
-         jqRQ==
+        bh=11bwNe2+F48KthW6TCzMCLhbY7ty428AnAz5bOQsr34=;
+        b=oSNloqaM6CESIFbiqQWkAHdLvqg1CDTN46iitH5sWC+tW0qBFRetcQXr4gtK6a9G3v
+         WFOk0gE7PVv4tQOlNw/F0uZofjFTJvdmRSWoLW1xq1aYUlT6Y7qSJf1Op6VFwQewU+m8
+         YYKGSi7r8BstULxp6iansr+DUBhmMJx/nf6cJry48EwBxat+76hN6LYLqeT5bfSqnN95
+         zGaBZNhBnFjuSLa6za1lEcX2/FAxigcxqYWvzjSFEXJbW+TelJj/tg/pOEoIqQ+49/vf
+         KM7XGOJw8d+TxN7SgTl7lrvQNUXqoz0kCS7GyJ7elX767qbcwzi5BPqZLm34hEyzqkbW
+         3Y3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=LZKICKNAnObTFzQ9F7XWOBA0XUwHyYbLFkyZit+1d5g=;
-        b=LZG7gpYy1e95DLd0UeKyAPjuqSxRcqqxZumcz9lV94yCTWymxkMVlveTEBNxrJRXC7
-         R2vC6tenIkYIDTUBncIpg9yQQHzXnEuwstctNZSuTRBiSiWJidapttc5cTKF2du6kyiT
-         7QEIl/a7ThBZIt9yHCdXL1lqbS4a449a4jAu5MGlNjcrpFS2hKZ3MRkCraRTWlMUmlfI
-         nxcQd6VTbAey35iqMUTHVgENe9upI8f72bPx1IE17RNRWISp5gRN/SBEEwkVPwebSNlD
-         gExFjAYX88TlcO5VI0SXDtz0N3si4SDNbkdxYQPK8LA9G8hnOTnKIv/Ktq1wwIyrISaJ
-         MD2A==
-X-Gm-Message-State: AOAM530vsO/K7VwoQAYpHl8KPrkUeoDDCWFWAktbc5VtoGnFo3uZiNkK
-        13mDLo56WhGxX0zAfLefPyw11Fhl9WO2g+EYGBvhzQZoRswAjKiLvT0=
-X-Google-Smtp-Source: ABdhPJxUpf3EhpB0tH7DgeGGmHNZCg+Wq/mbXsuyXD56sW+wkENYhth1plSN6eRMJO4lB8aPJJ90OZldwIXimnPwlcI=
-X-Received: by 2002:a17:906:eb86:: with SMTP id mh6mr34846778ejb.141.1634059868894;
- Tue, 12 Oct 2021 10:31:08 -0700 (PDT)
+        bh=11bwNe2+F48KthW6TCzMCLhbY7ty428AnAz5bOQsr34=;
+        b=Ezru54kVpQmOOKuyC0M2YI1SIW5R0FHV5evGkuG/xsyaBk+g8KHbGwERNYrEBcXBpA
+         cmdFnYoA9RU/XcvzYhkNb48mTQ+yXKlXQUESbgPQfcXIK92vBAJ6ypcVf/LEGVm5DFrV
+         sXw4U0hcRIA+my6Paf4IKPuhEu8b79gLkerBYod185DoHumHiQBVt8sUuaEV481Al4qO
+         XfFNsQQuUnbktyggLmv4PGWhhBhyc7lLy1P8rvs40Yo8aT84H/21SrIymm+GRTS7AEzG
+         WzGmcjs9Rd3UVj2EB9urWnqZpfZDKycmXkRrQB/0g5ANiS6Z7w5PV4wb/EGmEQBl1Py8
+         bVjA==
+X-Gm-Message-State: AOAM530FFDaKOoDEspO5nb0Gsuc7SJ6eVkye+jT+nkIIRcny3g63PU2b
+        X0ctlfjZb6yxCPzxQ2toDz5gSlaYpKb5+NRbBr4=
+X-Google-Smtp-Source: ABdhPJwn29IO3PbqjZY1xNMc0eLVUZRDvmMTwIuaipgdjA0QWxJMdEmfMTvkqQwUtyt/mAOoFXJapR7Ex21pm2pX6s4=
+X-Received: by 2002:a05:6402:10da:: with SMTP id p26mr1580110edu.283.1634060974214;
+ Tue, 12 Oct 2021 10:49:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <20211012092513.1349295-1-yangyingliang@huawei.com> <CA+U=DsrHSwaiS7mT4rcHT_ZQwfPg+-Hwm-jkib11+m7W-VA_FQ@mail.gmail.com>
-In-Reply-To: <CA+U=DsrHSwaiS7mT4rcHT_ZQwfPg+-Hwm-jkib11+m7W-VA_FQ@mail.gmail.com>
+References: <20211012092513.1349295-1-yangyingliang@huawei.com>
+ <CA+U=DsrHSwaiS7mT4rcHT_ZQwfPg+-Hwm-jkib11+m7W-VA_FQ@mail.gmail.com>
+ <CAHp75Vf+DHNxiP5HzsKzzh5hFmr20P8SzOTnLXAvhC5Vb6hzMA@mail.gmail.com> <61c28865036cd40a96f2d1bb4c27fbbb08c2d3a5.camel@perches.com>
+In-Reply-To: <61c28865036cd40a96f2d1bb4c27fbbb08c2d3a5.camel@perches.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 12 Oct 2021 23:30:21 +0300
-Message-ID: <CAHp75Vf+DHNxiP5HzsKzzh5hFmr20P8SzOTnLXAvhC5Vb6hzMA@mail.gmail.com>
+Date:   Tue, 12 Oct 2021 23:48:46 +0300
+Message-ID: <CAHp75VfBXuMboFr6czRipXKfBpBNj8Syo9cvhiMXD7VaVaka+Q@mail.gmail.com>
 Subject: Re: [PATCH] iio: buffer: Fix double-free in iio_buffers_alloc_sysfs_and_mask()
-To:     Alexandru Ardelean <ardeleanalex@gmail.com>
-Cc:     Yang Yingliang <yangyingliang@huawei.com>,
+To:     Joe Perches <joe@perches.com>
+Cc:     Alexandru Ardelean <ardeleanalex@gmail.com>,
+        Yang Yingliang <yangyingliang@huawei.com>,
         LKML <linux-kernel@vger.kernel.org>,
         linux-iio <linux-iio@vger.kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -61,46 +64,44 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Oct 12, 2021 at 2:37 PM Alexandru Ardelean
-<ardeleanalex@gmail.com> wrote:
+On Tue, Oct 12, 2021 at 8:43 PM Joe Perches <joe@perches.com> wrote:
 >
-> On Tue, Oct 12, 2021 at 12:18 PM Yang Yingliang
-> <yangyingliang@huawei.com> wrote:
+> On Tue, 2021-10-12 at 23:30 +0300, Andy Shevchenko wrote:
+> > On Tue, Oct 12, 2021 at 2:37 PM Alexandru Ardelean
+> > <ardeleanalex@gmail.com> wrote:
+> > >
+> > > On Tue, Oct 12, 2021 at 12:18 PM Yang Yingliang
+> > > <yangyingliang@huawei.com> wrote:
+> > > >
+> > > > When __iio_buffer_alloc_sysfs_and_mask() failed, 'unwind_idx' should be
+> > > > set to 'i - 1' to prevent double-free when cleanup resources.
+> []
 > >
-> > When __iio_buffer_alloc_sysfs_and_mask() failed, 'unwind_idx' should be
-> > set to 'i - 1' to prevent double-free when cleanup resources.
+> > I prefer to see
 > >
-> > BUG: KASAN: double-free or invalid-free in __iio_buffer_free_sysfs_and_mask+0x32/0xb0 [industrialio]
-> > Call Trace:
-> >  kfree+0x117/0x4c0
-> >  __iio_buffer_free_sysfs_and_mask+0x32/0xb0 [industrialio]
-> >  iio_buffers_alloc_sysfs_and_mask+0x60d/0x1570 [industrialio]
-> >  __iio_device_register+0x483/0x1a30 [industrialio]
-> >  ina2xx_probe+0x625/0x980 [ina2xx_adc]
-> >
+> > - for (; unwind_idx >= 0; unwind_idx--) {
+> > + while (unwind_idx--)
 >
-> Makes sense.
-> Thanks for the catch.
+> Not the same code as unwind_idx would be decremented before entering
+> the code block.
+
+It's kinda cryptic what you are pointing out.
+
+What's needed additionally is to change
+
+- unwind_idx = iio_dev_opaque->attached_buffers_cnt - 1;
++ unwind_idx = i;
+
+> You'd want
 >
-> Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
+>         do {
+>                 ...
+>         } while (unwind_idx--);
 
-...
+Of course not. See above. The usual pattern is
 
-> >                 ret = __iio_buffer_alloc_sysfs_and_mask(buffer, indio_dev, i);
-> >                 if (ret) {
-> > -                       unwind_idx = i;
-> > +                       unwind_idx = i - 1;
-> >                         goto error_unwind_sysfs_and_mask;
-
-I prefer to see
-
-- for (; unwind_idx >= 0; unwind_idx--) {
-+ while (unwind_idx--)
-
-instead.
-
-> >                 }
-> >         }
+  while (i--)
+    do_clean_item(i);
 
 -- 
 With Best Regards,

@@ -2,92 +2,105 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6339842AAB7
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Oct 2021 19:28:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49B0F42AAD2
+	for <lists+linux-iio@lfdr.de>; Tue, 12 Oct 2021 19:31:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231368AbhJLRar (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 12 Oct 2021 13:30:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44600 "EHLO
+        id S232740AbhJLRdN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 12 Oct 2021 13:33:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230306AbhJLRar (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Oct 2021 13:30:47 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89B83C061570;
-        Tue, 12 Oct 2021 10:28:45 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id y12so2420582eda.4;
-        Tue, 12 Oct 2021 10:28:45 -0700 (PDT)
+        with ESMTP id S232509AbhJLRdM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Oct 2021 13:33:12 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60A55C061570;
+        Tue, 12 Oct 2021 10:31:10 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id p13so2636256edw.0;
+        Tue, 12 Oct 2021 10:31:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=jYV5uswBdPhLkzQCchLXy1vzDSrs7wbq+uP4fTIgJew=;
-        b=EqiiBxf9HamAePfjyBIkSQxkgGGjmVmOOiUHx7Af964g/OmYXmEtvMqcdu7TmFHfnm
-         SNMA2cwgQebfN/8LOqxFf4EwKL5q8vWO0mO+RI0iqHOpKUxe6D3TiNTzNKY7/bq+UIzM
-         o6ykO2t18179Gfmk5eXRhicIeBSeYXJvyfZRK1dHbLbZCUoC2hFZvA5uhE4LvD3uVB8g
-         NTeBDOOCprN2VsmEIhK1mjcDtyVTZ3TGeCqoU9jXMhshslPECIaIDL8lSaypDsgQPW0T
-         /huc9Te52IDjRzd4EENstG+YzLkeINGlNUyl0nTp3FzqbuQzWQwoAnho+H8CdC7xka7R
-         eIkA==
+        bh=LZKICKNAnObTFzQ9F7XWOBA0XUwHyYbLFkyZit+1d5g=;
+        b=Ij+FsFfZI5UX+Y/qkuz4aFB9eaxY2aKki5FdBkthomTCgMX1mQXlOVxw3evBC01YDZ
+         xMDPplfMwa2CmCZCuSqA6OwINWKNLc8ejrwqjrzfjZX6QG6qAuD/ZR4kVbqogI8Ff1oh
+         7VR/hcT8+jfkazh8KwcsB47YQCA2JsfDP4CFRdFCKFaWx4qajvK5mLlIHmxIaIJUI5of
+         LRgDTgsSfdR6Lak0/s2lRiozOhvK83+wXhOiPUWaM/UbXeqKZoxX4TcNh5s63iggw2Rr
+         RBUN6DQbW5sIXPc+6gAiGTdA/iFMfkHQBOV1wXjKcXe+oiOXc0rIACrOroatr7YvE3zE
+         jqRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=jYV5uswBdPhLkzQCchLXy1vzDSrs7wbq+uP4fTIgJew=;
-        b=aqtObiwoDaYE8utncOUkWSJSo+hEoS2Y0tF1Dk94eqT06DyoHjjAT6Y01mKkOBIy31
-         vKO6lH7eoyp5cBo2I4GIh2xQxzSaxe/VMFXYWTQ9q+7ITbn/LldgGOF1PuTVHvUyqvP1
-         ex5AH4X2+iheVp/eU9yTSmOuKOvKJL7CTxVIEFU8+nwJxQ9ZiMLEmJS55Vde3CqI/Bt6
-         F1RsCDAq1KR3WVgZhvLtEVXXQ9ctELvJSb8ORyzEUMrOZ0Ekx/za75sxAtIP53meysfn
-         YjumRNMjMMwgr64F7c/wLUFa9hW3s/O4UnQEUgODE6Uvq6tjWKJdER7EIDH+WyEygOqt
-         VoLg==
-X-Gm-Message-State: AOAM531CIWXgQRQ4rvGTq5biLdq6fnQ30P6oZUHsaAFAfQz1bR5Otv77
-        PzPNPQzSaJamw1O7oQ3kcla/4KKSmHFFYtaitGO/WhzO7t6nQ0Mj
-X-Google-Smtp-Source: ABdhPJylsYNadtxJaenpcnUtTiNrM4FgodsUYbNb7BPGrQnMd7AAoOjjIUX49eIg+nwVBLusEB7wq5LbutUl63nydto=
-X-Received: by 2002:a17:906:eb86:: with SMTP id mh6mr34830343ejb.141.1634059724156;
- Tue, 12 Oct 2021 10:28:44 -0700 (PDT)
+        bh=LZKICKNAnObTFzQ9F7XWOBA0XUwHyYbLFkyZit+1d5g=;
+        b=LZG7gpYy1e95DLd0UeKyAPjuqSxRcqqxZumcz9lV94yCTWymxkMVlveTEBNxrJRXC7
+         R2vC6tenIkYIDTUBncIpg9yQQHzXnEuwstctNZSuTRBiSiWJidapttc5cTKF2du6kyiT
+         7QEIl/a7ThBZIt9yHCdXL1lqbS4a449a4jAu5MGlNjcrpFS2hKZ3MRkCraRTWlMUmlfI
+         nxcQd6VTbAey35iqMUTHVgENe9upI8f72bPx1IE17RNRWISp5gRN/SBEEwkVPwebSNlD
+         gExFjAYX88TlcO5VI0SXDtz0N3si4SDNbkdxYQPK8LA9G8hnOTnKIv/Ktq1wwIyrISaJ
+         MD2A==
+X-Gm-Message-State: AOAM530vsO/K7VwoQAYpHl8KPrkUeoDDCWFWAktbc5VtoGnFo3uZiNkK
+        13mDLo56WhGxX0zAfLefPyw11Fhl9WO2g+EYGBvhzQZoRswAjKiLvT0=
+X-Google-Smtp-Source: ABdhPJxUpf3EhpB0tH7DgeGGmHNZCg+Wq/mbXsuyXD56sW+wkENYhth1plSN6eRMJO4lB8aPJJ90OZldwIXimnPwlcI=
+X-Received: by 2002:a17:906:eb86:: with SMTP id mh6mr34846778ejb.141.1634059868894;
+ Tue, 12 Oct 2021 10:31:08 -0700 (PDT)
 MIME-Version: 1.0
-References: <20211011092028.2310144-1-yangyingliang@huawei.com>
-In-Reply-To: <20211011092028.2310144-1-yangyingliang@huawei.com>
+References: <20211012092513.1349295-1-yangyingliang@huawei.com> <CA+U=DsrHSwaiS7mT4rcHT_ZQwfPg+-Hwm-jkib11+m7W-VA_FQ@mail.gmail.com>
+In-Reply-To: <CA+U=DsrHSwaiS7mT4rcHT_ZQwfPg+-Hwm-jkib11+m7W-VA_FQ@mail.gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 12 Oct 2021 23:27:56 +0300
-Message-ID: <CAHp75VdAbhmd1UeFmyN1qPYOh-GKWmdStAC7WRSn91=UpDQ+Tw@mail.gmail.com>
-Subject: Re: [PATCH v2] iio: core: fix double free in iio_device_unregister_sysfs()
-To:     Yang Yingliang <yangyingliang@huawei.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>, ars@metafoo.de,
-        Jonathan Cameron <jic23@kernel.org>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Date:   Tue, 12 Oct 2021 23:30:21 +0300
+Message-ID: <CAHp75Vf+DHNxiP5HzsKzzh5hFmr20P8SzOTnLXAvhC5Vb6hzMA@mail.gmail.com>
+Subject: Re: [PATCH] iio: buffer: Fix double-free in iio_buffers_alloc_sysfs_and_mask()
+To:     Alexandru Ardelean <ardeleanalex@gmail.com>
+Cc:     Yang Yingliang <yangyingliang@huawei.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jonathan Cameron <jic23@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Oct 11, 2021 at 12:12 PM Yang Yingliang
-<yangyingliang@huawei.com> wrote:
+On Tue, Oct 12, 2021 at 2:37 PM Alexandru Ardelean
+<ardeleanalex@gmail.com> wrote:
 >
-> I got the double free report:
+> On Tue, Oct 12, 2021 at 12:18 PM Yang Yingliang
+> <yangyingliang@huawei.com> wrote:
+> >
+> > When __iio_buffer_alloc_sysfs_and_mask() failed, 'unwind_idx' should be
+> > set to 'i - 1' to prevent double-free when cleanup resources.
+> >
+> > BUG: KASAN: double-free or invalid-free in __iio_buffer_free_sysfs_and_mask+0x32/0xb0 [industrialio]
+> > Call Trace:
+> >  kfree+0x117/0x4c0
+> >  __iio_buffer_free_sysfs_and_mask+0x32/0xb0 [industrialio]
+> >  iio_buffers_alloc_sysfs_and_mask+0x60d/0x1570 [industrialio]
+> >  __iio_device_register+0x483/0x1a30 [industrialio]
+> >  ina2xx_probe+0x625/0x980 [ina2xx_adc]
+> >
 >
-> BUG: KASAN: double-free or invalid-free in kfree+0xce/0x390
+> Makes sense.
+> Thanks for the catch.
 >
-> CPU: 0 PID: 359 Comm: xrun Tainted: G        W         5.15.0-rc3-00109-g4dfd49fafc4d-dirty #474 523b7f3c65c42247635e2ac04a95f61f9f36678d
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
-> Call Trace:
->  dump_stack_lvl+0xe2/0x152
->  print_address_description.constprop.7+0x21/0x150
->  kasan_report_invalid_free+0x6f/0xa0
->  __kasan_slab_free+0x125/0x140
->  slab_free_freelist_hook+0x10d/0x240
->  kfree+0xce/0x390
->  iio_device_unregister_sysfs+0x108/0x13b [industrialio]
->  iio_dev_release+0x9e/0x10e [industrialio]
->  device_release+0xa5/0x240
->  kobject_put+0x1e5/0x540
->  put_device+0x20/0x30
->  devm_iio_device_release+0x21/0x30 [industrialio]
->  release_nodes+0xc3/0x3b0
->  devres_release_group+0x1da/0x2c0
->  i2c_device_probe+0x628/0xbb0
->  really_probe+0x285/0xc30
+> Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
 
-Please, reduce this noise to the ~4-5 important lines only!
+...
+
+> >                 ret = __iio_buffer_alloc_sysfs_and_mask(buffer, indio_dev, i);
+> >                 if (ret) {
+> > -                       unwind_idx = i;
+> > +                       unwind_idx = i - 1;
+> >                         goto error_unwind_sysfs_and_mask;
+
+I prefer to see
+
+- for (; unwind_idx >= 0; unwind_idx--) {
++ while (unwind_idx--)
+
+instead.
+
+> >                 }
+> >         }
 
 -- 
 With Best Regards,

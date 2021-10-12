@@ -2,101 +2,105 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F81A42A2B1
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Oct 2021 12:56:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A10242A36A
+	for <lists+linux-iio@lfdr.de>; Tue, 12 Oct 2021 13:37:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236004AbhJLK6x (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 12 Oct 2021 06:58:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38758 "EHLO
+        id S232665AbhJLLjJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 12 Oct 2021 07:39:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235932AbhJLK6w (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Oct 2021 06:58:52 -0400
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C738CC061570
-        for <linux-iio@vger.kernel.org>; Tue, 12 Oct 2021 03:56:50 -0700 (PDT)
-Received: by mail-wr1-x42f.google.com with SMTP id o20so65475161wro.3
-        for <linux-iio@vger.kernel.org>; Tue, 12 Oct 2021 03:56:50 -0700 (PDT)
+        with ESMTP id S236177AbhJLLjJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Oct 2021 07:39:09 -0400
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2571C061570;
+        Tue, 12 Oct 2021 04:37:07 -0700 (PDT)
+Received: by mail-pj1-x1031.google.com with SMTP id qe4-20020a17090b4f8400b0019f663cfcd1so1663279pjb.1;
+        Tue, 12 Oct 2021 04:37:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=7IHQW+klBLa8AAAQhMgTLFrZ1dvyLmJAZmPIs/4cI74=;
-        b=u77wdNYCxxWmmVx40mDxHpGXVHHMl6MTjLR2kOccMboGj0zoxDca/RCAKSbGCJ0gIB
-         Gf7mT/S/Qb5HuAxETw8brZXnXDVE6c0X3dYS+McglfeCQKoe+cZyWMbjH0OLFpyk4lnV
-         dhOh1EENx33KzBH/QNvuzJfoQuaQzAuDrMQs2SSqBujLpOQWUWNYlwgMyCIgD4rzDn3K
-         413gHkn6acbcTtLeVwp+52HSKSYdrOj42s4SabfBZQcFcUytU7bI4ogZ5qe7eHiLjsi/
-         vJUAfOCf62dHcgkCuwHEs1S4/8JfaNVzxtguUVbD9YTWKnYzeIQzhlAutjkQFDvSNOfK
-         Hxow==
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=NCKzsnWQrGuy+GoB4AipIdmem4eM9oZp/c1lqXnnmZc=;
+        b=jzEqQUq7qkbv6bGh/qUJM6FKpmVepYYwP5n7iaOD+ViAWVQHLdyUoXgoyiItxfvGxQ
+         1KNZN6IrMluZIXIZmZzOdhtAskxTD68VNShgFja49MWjjuBirvc/FMM9R3T55WQ8ZYvm
+         x6OYHfc6XXog2Q6Kz5+sagYUWXt1d0q0286YW4rZlD8u8x88CDgDYrjUMc+Kv1Myiou9
+         NaY14+9LaSZCUhbnBz2PELnyCwV5wy+iiuU51ev9dr6ThflBYwmcJCYic0hVV9EBSPS4
+         dSl7+VVZXIKhLGyU7z5tUzmdvkOMXd1iDBlrmEubgB7JkjVeswJhKEtnh7xcnBmJRq2r
+         wmXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=7IHQW+klBLa8AAAQhMgTLFrZ1dvyLmJAZmPIs/4cI74=;
-        b=cV5sRei97orIFXueh0qC7XdQEpWd79CDh9oYRMd1v1QgRXXjuviev0t2G+wRtrP77v
-         5WFco59REJJY2mBUZMGF1d/Cy+J62Io8ia6+GOMHVoW1TWIf5lJKvfWYS/AYLBCxEgws
-         wXCOwDkHYc/FuKEJkbdrjdhBAIQLdPyKmgCRRzItmayPjworlC5TfLoUfm90hQSbxYyU
-         9hQY8/Rk9sbF7TlBwNmASFqCMhXUWe0sb0sM1WBY/d2I29yfgRdOQZ2kiahttzD5n3GF
-         QLauTyzSK4IBAcVNbXpe4uJZH/0aVvIui9G/CFLvMp1ljhOaUncXrU80MOqTvimjSPWV
-         RJKQ==
-X-Gm-Message-State: AOAM530+GOThebqf+iuHIZL5C0afgxI3sZGpmZNJF5ia/kmfblOiCBzY
-        Yjp9/RfLrbIrvwgDwiggDt2SzA==
-X-Google-Smtp-Source: ABdhPJyDuhvsm44TAGtih3wqsCVUf9JrK216s70IpR50kV9Uh8u0s78M1rB5hWqryVOmaFuYyjsC0A==
-X-Received: by 2002:a05:6000:c:: with SMTP id h12mr2285112wrx.378.1634036209215;
-        Tue, 12 Oct 2021 03:56:49 -0700 (PDT)
-Received: from google.com ([95.148.6.175])
-        by smtp.gmail.com with ESMTPSA id e5sm10387986wrd.1.2021.10.12.03.56.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Oct 2021 03:56:48 -0700 (PDT)
-Date:   Tue, 12 Oct 2021 11:56:46 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, Ryan Barnett <ryan.barnett@collins.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v5] mfd: ti_am335x_tscadc: Add ADC1/magnetic reader
- support
-Message-ID: <YWVp7pftLsmm40zZ@google.com>
-References: <20211004155319.1507652-1-miquel.raynal@bootlin.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=NCKzsnWQrGuy+GoB4AipIdmem4eM9oZp/c1lqXnnmZc=;
+        b=ERZPYAoAhdHQH3Qlc98KK2Od5ce0vbCiKapFsMWuvKrv++7IszonZym1jAc45yo9UU
+         +nvDCm5szmZv3DezmUyGscXzrCrSQwhXZ7h+gfBpAb06pdqZmZQqE9DFmTbhRt1A4dHH
+         6ospaMjsOB5DLmV5oStkaLgalNnEmZ3tRlH+erbaIvmwNaDF01yTcmTEfMwWWfkBtMc3
+         vuCcwJK11MSkvZ8C7Qcj/AHccwRkFqYbmHkgYmM9YLTJ1sVPbhvn36KgqVBXRNoBGvje
+         7zbMBw+UP/ACBlC1uvvrwI3psD3zvFPSPcip0NoLCA513zO20LQfynO7jGMFf/0xvx86
+         6P/Q==
+X-Gm-Message-State: AOAM530bn6BcndiuL/j7KKq0wMCrgQMuqFQmSeKUYx1fOuYxOvJkTigT
+        8SGO0GwJnpWt4SLN7If09Z7OxPhyLxLeSIptcuA=
+X-Google-Smtp-Source: ABdhPJwKJ9m5lXkGT/8CpdM5JK7H/Z3kNgE43JzWMeyOnb4h6T6DFR2bdkeoXcKbeqsMf/lKXp8z9KGwmDouu2fIoLw=
+X-Received: by 2002:a17:90a:cd:: with SMTP id v13mr5397305pjd.81.1634038627231;
+ Tue, 12 Oct 2021 04:37:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211004155319.1507652-1-miquel.raynal@bootlin.com>
+References: <20211012092513.1349295-1-yangyingliang@huawei.com>
+In-Reply-To: <20211012092513.1349295-1-yangyingliang@huawei.com>
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+Date:   Tue, 12 Oct 2021 14:36:55 +0300
+Message-ID: <CA+U=DsrHSwaiS7mT4rcHT_ZQwfPg+-Hwm-jkib11+m7W-VA_FQ@mail.gmail.com>
+Subject: Re: [PATCH] iio: buffer: Fix double-free in iio_buffers_alloc_sysfs_and_mask()
+To:     Yang Yingliang <yangyingliang@huawei.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 04 Oct 2021, Miquel Raynal wrote:
+On Tue, Oct 12, 2021 at 12:18 PM Yang Yingliang
+<yangyingliang@huawei.com> wrote:
+>
+> When __iio_buffer_alloc_sysfs_and_mask() failed, 'unwind_idx' should be
+> set to 'i - 1' to prevent double-free when cleanup resources.
+>
+> BUG: KASAN: double-free or invalid-free in __iio_buffer_free_sysfs_and_mask+0x32/0xb0 [industrialio]
+> Call Trace:
+>  kfree+0x117/0x4c0
+>  __iio_buffer_free_sysfs_and_mask+0x32/0xb0 [industrialio]
+>  iio_buffers_alloc_sysfs_and_mask+0x60d/0x1570 [industrialio]
+>  __iio_device_register+0x483/0x1a30 [industrialio]
+>  ina2xx_probe+0x625/0x980 [ina2xx_adc]
+>
 
-> Introduce a new compatible that has another set of driver data,
-> targeting am437x SoCs with a magnetic reader instead of the
-> touchscreen and a more featureful set of registers.
-> 
-> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Makes sense.
+Thanks for the catch.
+
+Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
+
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Fixes: ee708e6baacd ("iio: buffer: introduce support for attaching more IIO buffers")
+> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 > ---
-> 
-> Changes in v5:
-> * Let the 48 v4 patch series aside, while only resending this patch that
->   triggered a robot warning. Use the use_mag boolean instead of sticking
->   to tscmag_wires which was not optimal anyway, silencing the 'not used'
->   warning while keeping the code simple and clear.
-> 
-> 
->  drivers/mfd/ti_am335x_tscadc.c       | 37 ++++++++++++++++++++++------
->  include/linux/mfd/ti_am335x_tscadc.h |  6 +++++
->  2 files changed, 36 insertions(+), 7 deletions(-)
-
-Okay, so I've been battling with this set for a while.  I've finally
-managed to figure out how to apply the whole set including this
-straggler, but Patch 10 is not applying to my tree.  Could you please
-rebase and resend the whole set with this one included please?
-
--- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+>  drivers/iio/industrialio-buffer.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+> index a95cc2da56be..5f4bd0b73d03 100644
+> --- a/drivers/iio/industrialio-buffer.c
+> +++ b/drivers/iio/industrialio-buffer.c
+> @@ -1616,7 +1616,7 @@ int iio_buffers_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
+>                 buffer = iio_dev_opaque->attached_buffers[i];
+>                 ret = __iio_buffer_alloc_sysfs_and_mask(buffer, indio_dev, i);
+>                 if (ret) {
+> -                       unwind_idx = i;
+> +                       unwind_idx = i - 1;
+>                         goto error_unwind_sysfs_and_mask;
+>                 }
+>         }
+> --
+> 2.25.1
+>

@@ -2,105 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A10242A36A
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Oct 2021 13:37:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F063D42A441
+	for <lists+linux-iio@lfdr.de>; Tue, 12 Oct 2021 14:21:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232665AbhJLLjJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 12 Oct 2021 07:39:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47960 "EHLO
+        id S236300AbhJLMXb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 12 Oct 2021 08:23:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236177AbhJLLjJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Oct 2021 07:39:09 -0400
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2571C061570;
-        Tue, 12 Oct 2021 04:37:07 -0700 (PDT)
-Received: by mail-pj1-x1031.google.com with SMTP id qe4-20020a17090b4f8400b0019f663cfcd1so1663279pjb.1;
-        Tue, 12 Oct 2021 04:37:07 -0700 (PDT)
+        with ESMTP id S236367AbhJLMXb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Oct 2021 08:23:31 -0400
+Received: from mail-il1-x129.google.com (mail-il1-x129.google.com [IPv6:2607:f8b0:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A11A7C061749
+        for <linux-iio@vger.kernel.org>; Tue, 12 Oct 2021 05:21:29 -0700 (PDT)
+Received: by mail-il1-x129.google.com with SMTP id w10so21434182ilc.13
+        for <linux-iio@vger.kernel.org>; Tue, 12 Oct 2021 05:21:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=NCKzsnWQrGuy+GoB4AipIdmem4eM9oZp/c1lqXnnmZc=;
-        b=jzEqQUq7qkbv6bGh/qUJM6FKpmVepYYwP5n7iaOD+ViAWVQHLdyUoXgoyiItxfvGxQ
-         1KNZN6IrMluZIXIZmZzOdhtAskxTD68VNShgFja49MWjjuBirvc/FMM9R3T55WQ8ZYvm
-         x6OYHfc6XXog2Q6Kz5+sagYUWXt1d0q0286YW4rZlD8u8x88CDgDYrjUMc+Kv1Myiou9
-         NaY14+9LaSZCUhbnBz2PELnyCwV5wy+iiuU51ev9dr6ThflBYwmcJCYic0hVV9EBSPS4
-         dSl7+VVZXIKhLGyU7z5tUzmdvkOMXd1iDBlrmEubgB7JkjVeswJhKEtnh7xcnBmJRq2r
-         wmXA==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=SaQJaLQJV1tXeTErb3iEo2Jt85n+Ln12ULE3k7m2zSU=;
+        b=CHKKTn8ZiI2hRLqCMCOn6VZrm+xdaGGfSisWuloBDsJWtAGXDMpYOt0EbXGl24ZLxf
+         DIZ2fklYc2RFHcKjvaPVMN1yHIGSPa9XBIYDUfE93bSiS4qtTpQd5t5zNLRyn2khDzWa
+         A5msOnXdVDqYg2e3D0zKIvP7ckdRpCQM6JoP1ACeviCLX4RhsRr+63EW+1J95jQSIdH/
+         dDX2NWobiuclJ8lyQDrGep1TNXg+XJQesJ9Hx1+20LbwyICD551uPh6uQJDOuV194cTO
+         yhjf10JaemTd4pv7mxAVvXYJlnTwWxXh/5/IDPvelun7i0OewT7vWMqqQivlMVTvhy6g
+         rEsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=NCKzsnWQrGuy+GoB4AipIdmem4eM9oZp/c1lqXnnmZc=;
-        b=ERZPYAoAhdHQH3Qlc98KK2Od5ce0vbCiKapFsMWuvKrv++7IszonZym1jAc45yo9UU
-         +nvDCm5szmZv3DezmUyGscXzrCrSQwhXZ7h+gfBpAb06pdqZmZQqE9DFmTbhRt1A4dHH
-         6ospaMjsOB5DLmV5oStkaLgalNnEmZ3tRlH+erbaIvmwNaDF01yTcmTEfMwWWfkBtMc3
-         vuCcwJK11MSkvZ8C7Qcj/AHccwRkFqYbmHkgYmM9YLTJ1sVPbhvn36KgqVBXRNoBGvje
-         7zbMBw+UP/ACBlC1uvvrwI3psD3zvFPSPcip0NoLCA513zO20LQfynO7jGMFf/0xvx86
-         6P/Q==
-X-Gm-Message-State: AOAM530bn6BcndiuL/j7KKq0wMCrgQMuqFQmSeKUYx1fOuYxOvJkTigT
-        8SGO0GwJnpWt4SLN7If09Z7OxPhyLxLeSIptcuA=
-X-Google-Smtp-Source: ABdhPJwKJ9m5lXkGT/8CpdM5JK7H/Z3kNgE43JzWMeyOnb4h6T6DFR2bdkeoXcKbeqsMf/lKXp8z9KGwmDouu2fIoLw=
-X-Received: by 2002:a17:90a:cd:: with SMTP id v13mr5397305pjd.81.1634038627231;
- Tue, 12 Oct 2021 04:37:07 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=SaQJaLQJV1tXeTErb3iEo2Jt85n+Ln12ULE3k7m2zSU=;
+        b=v+lHP02MExurmVv8TI1yST7AwHcQTWBBUlNHJNkM6BR79OENm4mcww1KyYoVCTzAFs
+         kI3daQgbtgK991zvtVQkOehXdQX/QFweJIFfHjGA21QWsv9/nlTGtEA5mVITLNzagLo9
+         4ZIqkJiw38hgMHXA0MfDq5vKMNlVtsNuNmGOBtj2569J40kkNQ1CLTz+/meomOqU8Hjx
+         gXD89AEbvSsMbouJ85QMpiMRE0SmQrzQsIIFsl+KuVTqaUe8sIRPllY7crpnzuvjXFk+
+         UDIImExG4DPj0OO7KJiRIOBJUp4nywA4N0K65K7iwKHPwH0Xg1KcxpE42438o121Nm4k
+         PNQw==
+X-Gm-Message-State: AOAM533itwJ2vx6U0pxImThgDTpHbBklgSjcouh/G8IzIc1vmBWIYn1k
+        6eum+dohD8xpmftS2EMFZNJ2LOTKkehIV8j7mw==
+X-Google-Smtp-Source: ABdhPJz47Mi7zbmZ2CsnBaDZFrAvajO1klDoG4Q04NGl7TWJRQnvC7GP+juQKNxvllSoZ1wVRV88VMsV5JFzmO0hNSc=
+X-Received: by 2002:a05:6e02:1b8a:: with SMTP id h10mr10512678ili.124.1634041288356;
+ Tue, 12 Oct 2021 05:21:28 -0700 (PDT)
 MIME-Version: 1.0
-References: <20211012092513.1349295-1-yangyingliang@huawei.com>
-In-Reply-To: <20211012092513.1349295-1-yangyingliang@huawei.com>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Tue, 12 Oct 2021 14:36:55 +0300
-Message-ID: <CA+U=DsrHSwaiS7mT4rcHT_ZQwfPg+-Hwm-jkib11+m7W-VA_FQ@mail.gmail.com>
-Subject: Re: [PATCH] iio: buffer: Fix double-free in iio_buffers_alloc_sysfs_and_mask()
-To:     Yang Yingliang <yangyingliang@huawei.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
+Received: by 2002:a05:6602:2dc3:0:0:0:0 with HTTP; Tue, 12 Oct 2021 05:21:27
+ -0700 (PDT)
+Reply-To: mrschantelhermans@gmail.com
+From:   Mrs Chantel Hermans <julibestene14@gmail.com>
+Date:   Tue, 12 Oct 2021 05:21:27 -0700
+Message-ID: <CAEBSGw_9WwoMnmQ=fMyk8CJ+0mwRupyWykcq-r6LVGFzbV7YZg@mail.gmail.com>
+Subject: ATTENTION
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Oct 12, 2021 at 12:18 PM Yang Yingliang
-<yangyingliang@huawei.com> wrote:
->
-> When __iio_buffer_alloc_sysfs_and_mask() failed, 'unwind_idx' should be
-> set to 'i - 1' to prevent double-free when cleanup resources.
->
-> BUG: KASAN: double-free or invalid-free in __iio_buffer_free_sysfs_and_mask+0x32/0xb0 [industrialio]
-> Call Trace:
->  kfree+0x117/0x4c0
->  __iio_buffer_free_sysfs_and_mask+0x32/0xb0 [industrialio]
->  iio_buffers_alloc_sysfs_and_mask+0x60d/0x1570 [industrialio]
->  __iio_device_register+0x483/0x1a30 [industrialio]
->  ina2xx_probe+0x625/0x980 [ina2xx_adc]
->
+-- 
+ATTENTION
 
-Makes sense.
-Thanks for the catch.
 
-Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
+You have been compensated with the sum of 6.9 million dollars in this
+United Nation the payment will be issue into ATM Visa Card,
 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Fixes: ee708e6baacd ("iio: buffer: introduce support for attaching more IIO buffers")
-> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-> ---
->  drivers/iio/industrialio-buffer.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-> index a95cc2da56be..5f4bd0b73d03 100644
-> --- a/drivers/iio/industrialio-buffer.c
-> +++ b/drivers/iio/industrialio-buffer.c
-> @@ -1616,7 +1616,7 @@ int iio_buffers_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
->                 buffer = iio_dev_opaque->attached_buffers[i];
->                 ret = __iio_buffer_alloc_sysfs_and_mask(buffer, indio_dev, i);
->                 if (ret) {
-> -                       unwind_idx = i;
-> +                       unwind_idx = i - 1;
->                         goto error_unwind_sysfs_and_mask;
->                 }
->         }
-> --
-> 2.25.1
->
+
+and send to you from the Santander Bank of Spain we need your
+Address,Passport and your whatsapp number.
+
+
+THANKS
+Mrs Chantel Hermans

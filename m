@@ -2,101 +2,86 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BCFD14299B4
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Oct 2021 01:13:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DBF4429DB7
+	for <lists+linux-iio@lfdr.de>; Tue, 12 Oct 2021 08:28:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235712AbhJKXPt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 11 Oct 2021 19:15:49 -0400
-Received: from mail-ot1-f46.google.com ([209.85.210.46]:42877 "EHLO
-        mail-ot1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235622AbhJKXPs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Oct 2021 19:15:48 -0400
-Received: by mail-ot1-f46.google.com with SMTP id c26-20020a056830349a00b0054d96d25c1eso23560443otu.9;
-        Mon, 11 Oct 2021 16:13:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=7zuoS5ImJfku8d8xCEMyvxbsSp1wfRVxODVvjTNPpWI=;
-        b=amsw0I40qmeKasNEjfYH2Jd4dK2wBuvNBUVvnolS+jQRmzD6fAMsKFaDwVx1G6Dh35
-         3knGgQUQoJq+RPbioGihQzCSqF5oiFAf7FB62v122N9WLIQRppUHioW8pDAvvDBT//yq
-         NF0sESjjmW7e4anLcOCyazbM3wd3rHY8AjaIq8SqjZgJchBPct7+xptY80wakF7xC2d5
-         nr7jYET6ZdFzA4D1BUG69J4HQm5WClfpdSp5ifFT6gGbuRxz2uHdVVSxH7lZUCxnr/0q
-         O8gp4T1lRtNG4EwdVr3O3NCxL7czJieyWYjtbYqgr19EdolOPR89jKzg6Ao6EzSuqelA
-         XHRg==
-X-Gm-Message-State: AOAM533zqOlNXUU1b1h9M9bf66Z+woWXfbuLhjkMP6DjnUANESDgvD/K
-        3VxDMZPLTeJznPtyReohAgaB4Kat9w==
-X-Google-Smtp-Source: ABdhPJwgjqa80alYqxnGTfd3HMgT9XwEeOu7Wz9fbyC7hQnvyMYxKzqnL/RZNXXaNYHYTgIuXCirxw==
-X-Received: by 2002:a9d:7114:: with SMTP id n20mr14348496otj.25.1633994026820;
-        Mon, 11 Oct 2021 16:13:46 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id r4sm2049640oiw.36.2021.10.11.16.13.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Oct 2021 16:13:45 -0700 (PDT)
-Received: (nullmailer pid 1347640 invoked by uid 1000);
-        Mon, 11 Oct 2021 23:13:43 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Olivier Moysan <olivier.moysan@foss.st.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        devicetree@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Fabrice Gasnier <fabrice.gasnier@st.com>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20211011155717.1594-2-olivier.moysan@foss.st.com>
-References: <20211011155717.1594-1-olivier.moysan@foss.st.com> <20211011155717.1594-2-olivier.moysan@foss.st.com>
-Subject: Re: [PATCH v4 1/7] dt-bindings: iio: stm32-adc: add generic channel binding
-Date:   Mon, 11 Oct 2021 18:13:43 -0500
-Message-Id: <1633994023.340533.1347639.nullmailer@robh.at.kernel.org>
+        id S233005AbhJLGat (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 12 Oct 2021 02:30:49 -0400
+Received: from szxga01-in.huawei.com ([45.249.212.187]:13723 "EHLO
+        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232931AbhJLGas (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Oct 2021 02:30:48 -0400
+Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.56])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4HT5L55RGYzWhsR;
+        Tue, 12 Oct 2021 14:27:09 +0800 (CST)
+Received: from dggpeml500017.china.huawei.com (7.185.36.243) by
+ dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.8; Tue, 12 Oct 2021 14:28:45 +0800
+Received: from huawei.com (10.175.103.91) by dggpeml500017.china.huawei.com
+ (7.185.36.243) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.8; Tue, 12 Oct
+ 2021 14:28:45 +0800
+From:   Yang Yingliang <yangyingliang@huawei.com>
+To:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
+CC:     <lars@metafoo.de>, <jic23@kernel.org>, <andy.shevchenko@gmail.com>
+Subject: [PATCH] iio: core: check return value when calling dev_set_name()
+Date:   Tue, 12 Oct 2021 14:36:24 +0800
+Message-ID: <20211012063624.3167460-1-yangyingliang@huawei.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.103.91]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpeml500017.china.huawei.com (7.185.36.243)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 11 Oct 2021 17:57:11 +0200, Olivier Moysan wrote:
-> Add ADC generic channel binding. This binding should
-> be used as an alternate to legacy channel properties
-> whenever possible.
-> ADC generic channel binding allows to identify supported
-> internal channels through the following reserved label names:
-> "vddcore", "vrefint" and "vbat".
-> This binding also allows to set a different sampling time
-> for each channel.
-> 
-> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
-> Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-> ---
->  .../bindings/iio/adc/st,stm32-adc.yaml        | 100 ++++++++++++++++--
->  1 file changed, 93 insertions(+), 7 deletions(-)
-> 
+I got a null-ptr-deref report when doing fault injection test:
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+RIP: 0010:strlen+0x0/0x20
+Call Trace:
+ start_creating+0x199/0x2f0
+ debugfs_create_dir+0x25/0x430
+ __iio_device_register+0x4da/0x1b40 [industrialio]
+ __devm_iio_device_register+0x22/0x80 [industrialio]
+ max1027_probe+0x639/0x860 [max1027]
+ spi_probe+0x183/0x210
+ really_probe+0x285/0xc30
 
-yamllint warnings/errors:
+If dev_set_name() fails, the dev_name() is null, check the return
+value of dev_set_name() to avoid the null-ptr-deref.
 
-dtschema/dtc warnings/errors:
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.example.dt.yaml: adc@48003000: adc@100:channel@13: 'st,min-sample-time-nsecs' does not match any of the regexes: 'pinctrl-[0-9]+'
-	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.example.dt.yaml: adc@48003000: adc@100:channel@14: 'st,min-sample-time-nsecs' does not match any of the regexes: 'pinctrl-[0-9]+'
-	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.example.dt.yaml: adc@48003000: adc@100:channel@15: 'st,min-sample-time-nsecs' does not match any of the regexes: 'pinctrl-[0-9]+'
-	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Fixes: e553f182d55b ("staging: iio: core: Introduce debugfs support...")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+---
+ drivers/iio/industrialio-core.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/patch/1539385
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index 2dc837db50f7..3e1e86d987cc 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -1665,7 +1665,13 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
+ 		kfree(iio_dev_opaque);
+ 		return NULL;
+ 	}
+-	dev_set_name(&indio_dev->dev, "iio:device%d", iio_dev_opaque->id);
++
++	if (dev_set_name(&indio_dev->dev, "iio:device%d", iio_dev_opaque->id)) {
++		ida_simple_remove(&iio_ida, iio_dev_opaque->id);
++		kfree(iio_dev_opaque);
++		return NULL;
++	}
++
+ 	INIT_LIST_HEAD(&iio_dev_opaque->buffer_list);
+ 	INIT_LIST_HEAD(&iio_dev_opaque->ioctl_handlers);
+ 
+-- 
+2.25.1
 

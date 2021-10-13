@@ -2,83 +2,78 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 30A2842B089
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Oct 2021 01:46:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA43E42B25F
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Oct 2021 03:47:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236320AbhJLXsF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 12 Oct 2021 19:48:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45852 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235857AbhJLXsE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Oct 2021 19:48:04 -0400
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB126C061746
-        for <linux-iio@vger.kernel.org>; Tue, 12 Oct 2021 16:45:59 -0700 (PDT)
-Received: by mail-ed1-x531.google.com with SMTP id i20so2457933edj.10
-        for <linux-iio@vger.kernel.org>; Tue, 12 Oct 2021 16:45:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=g9QIQ7pA6on+PhPbmC46MmFbUXQiDnzNiglml743kow=;
-        b=k2m1G+XqaO6GS9hxIV80tHPHDWpZY4uwLvDS+MT4diT5j6QCboVs3PDEau/U8LUwTW
-         A6XepDfgCu5N08ZkIPJxerRz+/JGwOB2tjrirHQZ3McM1QnSir2qAoARulRpYgOvuqCM
-         O1LwpUCr4ooefYltNCvn2LBwWK6OoU+Dw5EIMOUCXR5H6r2e9L/NbA5dpgYyPEcklvTD
-         Q4+Ohi0pI+jnB/Cv6F8uJAUzLDC0me96Wc2TLjhAGe5/KN5CJWGvdEfx0Mi6eGwBQEJT
-         yAzytTfNKk35T700tp2dqkUaZ4Aw9sg11TI+STxlLKa9a0Gae0rkumMyw6d65TYkP+KA
-         PZfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=g9QIQ7pA6on+PhPbmC46MmFbUXQiDnzNiglml743kow=;
-        b=vrU17ZXaHXbDQtcWZnIgv2Icm0zImGIwcG2j/Dj2+5JZcEANK0qZnKZbyosIYY2wC1
-         apqs/OT0ckeaQeZEagzUjp3UbJf2bXoVatCIzy6te+3ublcurQHQNbqoUdHhjOYBcQ9a
-         Y4bTx9F/lQbz6kpEiaZg0jFuCxO3kH+ZELR7Z9nnj8KcNmdUB1HDB1ul6Kkv/3JTwQOj
-         qAKyVhHVgdK9rP3abL90D2MWBkp4GltNtBpISvMNxQCxnMSgzJQt1dOVjPYT0KcqIHgT
-         9jPruynb8KneXe08htuH0Zwq2SxZxETdak68bPMLLd0kxAiczo/0xxYjVopnHpTa2JPu
-         HwLw==
-X-Gm-Message-State: AOAM532rjBJd/HLqqtcbvLr6q6Vz+eiy13t+FkPj05h/JfjnKl6AskGD
-        pQeINV3te4ejsIDGi8JtcqXPl7wwn9l7sPAlCipB6A==
-X-Google-Smtp-Source: ABdhPJwCFUpePR+Sp++Rs+7vC3g8AGn9zz5QRwj1VvVdaDdZ2qI0vgrM9Ktl6M/kclmNKHUDk8LFA+Gd/VjkqPSuWbc=
-X-Received: by 2002:a05:6402:34f:: with SMTP id r15mr2991976edw.111.1634082358220;
- Tue, 12 Oct 2021 16:45:58 -0700 (PDT)
+        id S236551AbhJMBta (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 12 Oct 2021 21:49:30 -0400
+Received: from mx24.baidu.com ([111.206.215.185]:33562 "EHLO baidu.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S234119AbhJMBta (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 12 Oct 2021 21:49:30 -0400
+Received: from BC-Mail-EX04.internal.baidu.com (unknown [172.31.51.44])
+        by Forcepoint Email with ESMTPS id 7B05BA3DD4FE3D051073;
+        Wed, 13 Oct 2021 09:47:21 +0800 (CST)
+Received: from BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) by
+ BC-Mail-EX04.internal.baidu.com (172.31.51.44) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2242.12; Wed, 13 Oct 2021 09:47:21 +0800
+Received: from LAPTOP-UKSR4ENP.internal.baidu.com (172.31.63.8) by
+ BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2308.14; Wed, 13 Oct 2021 09:47:20 +0800
+From:   Cai Huoqing <caihuoqing@baidu.com>
+To:     <rdunlap@infradead.org>, <jic23@kernel.org>, <lars@metafoo.de>,
+        <shawnguo@kernel.org>, <s.hauer@pengutronix.de>,
+        <kernel@pengutronix.de>, <festevam@gmail.com>
+CC:     <linux-imx@nxp.com>, <linux-iio@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        "Cai Huoqing" <caihuoqing@baidu.com>
+Subject: [PATCH] iio: imx8qxp-adc: Fix the error - defined but not used for runtime pm API
+Date:   Wed, 13 Oct 2021 09:46:58 +0800
+Message-ID: <20211013014658.2798-1-caihuoqing@baidu.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <20211008092656.421-1-caihuoqing@baidu.com>
-In-Reply-To: <20211008092656.421-1-caihuoqing@baidu.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 13 Oct 2021 01:45:47 +0200
-Message-ID: <CACRpkdY0uM4BNapd7XNUhZ5U0sGdP3hu5Tr+dM1jigg5vQ+KDw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/4] iio: light: cm3605: Make use of the helper
- function dev_err_probe()
-To:     Cai Huoqing <caihuoqing@baidu.com>
-Cc:     Kevin Tsai <ktsai@capellamicro.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-Originating-IP: [172.31.63.8]
+X-ClientProxiedBy: BC-Mail-Ex14.internal.baidu.com (172.31.51.54) To
+ BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Oct 8, 2021 at 11:27 AM Cai Huoqing <caihuoqing@baidu.com> wrote:
+Add the prefix '__maybe_unused' to imx8qxp_adc_runtime_suspend/resume()
+to avoid the compiler complain without setting CONFIG_SUSPEND,
+CONFIG_HIBERNATION and CONFIG_PM.
 
-> When possible use dev_err_probe help to properly deal with the
-> PROBE_DEFER error, the benefit is that DEFER issue will be logged
-> in the devices_deferred debugfs file.
-> Using dev_err_probe() can reduce code size, and the error value
-> gets printed.
->
-> Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
-> ---
-> v2->v3:
->         *Handle platform_get_irq() that returns -EPROBE_DEFER.
->         *Handle the lack of availability of an IIO channel
->          by converting an -ENODEV to an -EPROBE_DEFER.
+Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
+---
+ drivers/iio/adc/imx8qxp-adc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-This looks good to me!
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+diff --git a/drivers/iio/adc/imx8qxp-adc.c b/drivers/iio/adc/imx8qxp-adc.c
+index 5030e0d8318d..011bef4b5dda 100644
+--- a/drivers/iio/adc/imx8qxp-adc.c
++++ b/drivers/iio/adc/imx8qxp-adc.c
+@@ -416,7 +416,7 @@ static int imx8qxp_adc_remove(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
+-static int imx8qxp_adc_runtime_suspend(struct device *dev)
++static int __maybe_unused imx8qxp_adc_runtime_suspend(struct device *dev)
+ {
+ 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+ 	struct imx8qxp_adc *adc = iio_priv(indio_dev);
+@@ -430,7 +430,7 @@ static int imx8qxp_adc_runtime_suspend(struct device *dev)
+ 	return 0;
+ }
+ 
+-static int imx8qxp_adc_runtime_resume(struct device *dev)
++static int __maybe_unused imx8qxp_adc_runtime_resume(struct device *dev)
+ {
+ 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+ 	struct imx8qxp_adc *adc = iio_priv(indio_dev);
+-- 
+2.25.1
 
-Yours,
-Linus Walleij

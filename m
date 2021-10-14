@@ -2,213 +2,103 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3146B42DA10
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Oct 2021 15:15:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4E5A42DA9E
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Oct 2021 15:39:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231377AbhJNNRd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 14 Oct 2021 09:17:33 -0400
-Received: from mx08-00178001.pphosted.com ([91.207.212.93]:42292 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S230119AbhJNNRb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Oct 2021 09:17:31 -0400
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19EBk6wG019993;
-        Thu, 14 Oct 2021 15:15:09 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type; s=selector1;
- bh=YPYrwvAiX914U8uW0f9AIFwRwTu5lxAhkXAMOfZgYGw=;
- b=QBK7ueh3XmfIj9BxrkF4ZI52X6UyqiMfilpiyxp0DdT+TlzniL1ICaOOb23933xuQFn1
- BFAIM4Jh+ceAhExM1u36EbXZbwF5tdIHhGVkPqLeEljZelyPYXZkkgm3ZlokAz+ghtH0
- 6xygmP2Ybyy9mZ7z6WHaeoDlTRR5hhL84K2CoD8p9BRGn7zzSVQ+qx9gyyl3f4j93haR
- /HVQYJjhecmuscgkDRLmdvcwfn6ZeIHml5p4TvUCMa753Lsoh6WcWEvLby877bqiO/WQ
- IaQTz/OLZb4T4fAOc5SNNVSw2z5atb8tIupYCnrwiOMeASJf8Iz1+RzyLl8T2TETjJZX fw== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 3bpkye8gdt-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 14 Oct 2021 15:15:09 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 021D8100039;
-        Thu, 14 Oct 2021 15:15:09 +0200 (CEST)
-Received: from Webmail-eu.st.com (sfhdag2node2.st.com [10.75.127.5])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id EDB79222C81;
-        Thu, 14 Oct 2021 15:15:08 +0200 (CEST)
-Received: from localhost (10.75.127.49) by SFHDAG2NODE2.st.com (10.75.127.5)
- with Microsoft SMTP Server (TLS) id 15.0.1497.18; Thu, 14 Oct 2021 15:15:08
- +0200
-From:   Olivier Moysan <olivier.moysan@foss.st.com>
-To:     Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Rob Herring <robh+dt@kernel.org>
-CC:     <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>
-Subject: [PATCH v5 7/7] iio: adc: stm32-adc: use generic binding for sample-time
-Date:   Thu, 14 Oct 2021 15:12:28 +0200
-Message-ID: <20211014131228.4692-8-olivier.moysan@foss.st.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20211014131228.4692-1-olivier.moysan@foss.st.com>
-References: <20211014131228.4692-1-olivier.moysan@foss.st.com>
+        id S231166AbhJNNlJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 14 Oct 2021 09:41:09 -0400
+Received: from szxga01-in.huawei.com ([45.249.212.187]:28943 "EHLO
+        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230010AbhJNNlE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Oct 2021 09:41:04 -0400
+Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.53])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4HVVk86Y6JzbjLn;
+        Thu, 14 Oct 2021 21:34:24 +0800 (CST)
+Received: from dggpeml500017.china.huawei.com (7.185.36.243) by
+ dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.8; Thu, 14 Oct 2021 21:38:53 +0800
+Received: from [10.174.178.174] (10.174.178.174) by
+ dggpeml500017.china.huawei.com (7.185.36.243) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.8; Thu, 14 Oct 2021 21:38:53 +0800
+Subject: Re: [PATCH] iio: accel: kxcjk-1013: Fix possible memory leak in probe
+ and remove
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+CC:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <lars@metafoo.de>, <jic23@kernel.org>, <hdegoede@redhat.com>,
+        <ddvlad@gmail.com>
+References: <20211014035338.3750416-1-yangyingliang@huawei.com>
+ <YWhEwqdHbPTAfvto@smile.fi.intel.com>
+From:   Yang Yingliang <yangyingliang@huawei.com>
+Message-ID: <d4b9addc-1896-7e78-8a57-9ef0a8ab8f38@huawei.com>
+Date:   Thu, 14 Oct 2021 21:38:52 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.75.127.49]
-X-ClientProxiedBy: SFHDAG1NODE2.st.com (10.75.127.2) To SFHDAG2NODE2.st.com
- (10.75.127.5)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-10-14_08,2021-10-14_02,2020-04-07_01
+In-Reply-To: <YWhEwqdHbPTAfvto@smile.fi.intel.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-Originating-IP: [10.174.178.174]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpeml500017.china.huawei.com (7.185.36.243)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add st,min-sample-time-nsecs to channel generic binding.
-Sample time can be defined par channel node. If a channel
-is configured as differential, the same sample time applies
-for both inputs.
-Keep support of legacy st,min-sample-time-nsecs property
-for backward compatibility.
+Hi,
 
-Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
-Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
----
- drivers/iio/adc/stm32-adc.c | 70 ++++++++++++++++++++++---------------
- 1 file changed, 41 insertions(+), 29 deletions(-)
+On 2021/10/14 22:54, Andy Shevchenko wrote:
+> On Thu, Oct 14, 2021 at 11:53:38AM +0800, Yang Yingliang wrote:
+>> When ACPI type is ACPI_SMO8500, the data->dready_trig will not be set, the
+>> memory allocated by iio_triggered_buffer_setup() will not be freed, and cause
+>> memory leak as follows:
+> It seems it's not first time I'm telling you to shrink the noise in the commit
+> message.  Can you please LEARN this once and forever?
+Thanks for you advice, I searched the whole kernel source tree commit 
+message to
+learn how to make the memory leak report, I found most of them using the 
+whole
+backtrace, so I make the report like they did in this patch. I will 
+shrink the noise in v2.
+How about shrink it like this:
 
-diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-index 5269bb87d094..6245434f8377 100644
---- a/drivers/iio/adc/stm32-adc.c
-+++ b/drivers/iio/adc/stm32-adc.c
-@@ -1805,6 +1805,13 @@ static void stm32_adc_smpr_init(struct stm32_adc *adc, int channel, u32 smp_ns)
- 	u32 period_ns, shift = smpr->shift, mask = smpr->mask;
- 	unsigned int smp, r = smpr->reg;
- 
-+	/*
-+	 * For vrefint channel, ensure that the sampling time cannot
-+	 * be lower than the one specified in the datasheet
-+	 */
-+	if (channel == adc->int_ch[STM32_ADC_INT_CH_VREFINT])
-+		smp_ns = max(smp_ns, adc->cfg->ts_vrefint_ns);
-+
- 	/* Determine sampling time (ADC clock cycles) */
- 	period_ns = NSEC_PER_SEC / adc->common->rate;
- 	for (smp = 0; smp <= STM32_ADC_MAX_SMP; smp++)
-@@ -1881,6 +1888,13 @@ static int stm32_adc_get_legacy_chan_count(struct iio_dev *indio_dev, struct stm
- 		num_channels += ret;
- 	}
- 
-+	/* Optional sample time is provided either for each, or all channels */
-+	ret = of_property_count_u32_elems(node, "st,min-sample-time-nsecs");
-+	if (ret > 1 && ret != num_channels) {
-+		dev_err(&indio_dev->dev, "Invalid st,min-sample-time-nsecs\n");
-+		return -EINVAL;
-+	}
-+
- 	return num_channels;
- }
- 
-@@ -1896,6 +1910,7 @@ static int stm32_adc_legacy_chan_init(struct iio_dev *indio_dev,
- 	int scan_index = 0, val, ret, i;
- 	struct property *prop;
- 	const __be32 *cur;
-+	u32 smp = 0;
- 
- 	if (num_diff) {
- 		ret = of_property_read_u32_array(node, "st,adc-diff-channels",
-@@ -1938,6 +1953,19 @@ static int stm32_adc_legacy_chan_init(struct iio_dev *indio_dev,
- 		scan_index++;
- 	}
- 
-+	for (i = 0; i < scan_index; i++) {
-+		/*
-+		 * Using of_property_read_u32_index(), smp value will only be
-+		 * modified if valid u32 value can be decoded. This allows to
-+		 * get either no value, 1 shared value for all indexes, or one
-+		 * value per channel.
-+		 */
-+		of_property_read_u32_index(node, "st,min-sample-time-nsecs", i, &smp);
-+
-+		/* Prepare sampling time settings */
-+		stm32_adc_smpr_init(adc, channels[i].channel, smp);
-+	}
-+
- 	return scan_index;
- }
- 
-@@ -2030,6 +2058,19 @@ static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
- 
- 		stm32_adc_chan_init_one(indio_dev, &channels[scan_index], val,
- 					vin[1], scan_index, differential);
-+
-+		ret = of_property_read_u32(child, "st,min-sample-time-ns", &val);
-+		/* st,min-sample-time-ns is optional */
-+		if (!ret) {
-+			stm32_adc_smpr_init(adc, channels[scan_index].channel, val);
-+			if (differential)
-+				stm32_adc_smpr_init(adc, vin[1], val);
-+		} else if (ret != -EINVAL) {
-+			dev_err(&indio_dev->dev, "Invalid st,min-sample-time-ns property %d\n",
-+				ret);
-+			goto err;
-+		}
-+
- 		scan_index++;
- 	}
- 
-@@ -2048,7 +2089,6 @@ static int stm32_adc_chan_of_init(struct iio_dev *indio_dev, bool timestamping)
- 	const struct stm32_adc_info *adc_info = adc->cfg->adc_info;
- 	struct iio_chan_spec *channels;
- 	int scan_index = 0, num_channels = 0, ret, i;
--	u32 smp = 0;
- 	bool legacy = false;
- 
- 	for (i = 0; i < STM32_ADC_INT_CH_NB; i++)
-@@ -2076,13 +2116,6 @@ static int stm32_adc_chan_of_init(struct iio_dev *indio_dev, bool timestamping)
- 		return -EINVAL;
- 	}
- 
--	/* Optional sample time is provided either for each, or all channels */
--	ret = of_property_count_u32_elems(node, "st,min-sample-time-nsecs");
--	if (ret > 1 && ret != num_channels) {
--		dev_err(&indio_dev->dev, "Invalid st,min-sample-time-nsecs\n");
--		return -EINVAL;
--	}
--
- 	if (timestamping)
- 		num_channels++;
- 
-@@ -2099,27 +2132,6 @@ static int stm32_adc_chan_of_init(struct iio_dev *indio_dev, bool timestamping)
- 		return ret;
- 	scan_index = ret;
- 
--	for (i = 0; i < scan_index; i++) {
--		/*
--		 * Using of_property_read_u32_index(), smp value will only be
--		 * modified if valid u32 value can be decoded. This allows to
--		 * get either no value, 1 shared value for all indexes, or one
--		 * value per channel.
--		 */
--		of_property_read_u32_index(node, "st,min-sample-time-nsecs",
--					   i, &smp);
--
--		/*
--		 * For vrefint channel, ensure that the sampling time cannot
--		 * be lower than the one specified in the datasheet
--		 */
--		if (channels[i].channel == adc->int_ch[STM32_ADC_INT_CH_VREFINT])
--			smp = max(smp, adc->cfg->ts_vrefint_ns);
--
--		/* Prepare sampling time settings */
--		stm32_adc_smpr_init(adc, channels[i].channel, smp);
--	}
--
- 	if (timestamping) {
- 		struct iio_chan_spec *timestamp = &channels[scan_index];
- 
--- 
-2.17.1
+unreferenced object 0xffff888009551400 (size 512):
+   comm "i2c-SMO8500-125", pid 911, jiffies 4294911787 (age 83.852s)
+   hex dump (first 32 bytes):
+     02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+     00 00 00 00 00 00 00 00 20 e2 e5 c0 ff ff ff ff  ........ .......
+   backtrace:
+     [<0000000041ce75ee>] kmem_cache_alloc_trace+0x16d/0x360
+     [<000000000aeb17b0>] iio_kfifo_allocate+0x41/0x130 [kfifo_buf]
+     [<000000004b40c1f5>] iio_triggered_buffer_setup_ext+0x2c/0x210 
+[industrialio_triggered_buffer]
+     [<000000004375b15f>] kxcjk1013_probe+0x10c3/0x1d81 [kxcjk_1013]
 
+Thanks,
+Yang
+>
+>> unreferenced object 0xffff888009551400 (size 512):
+>>    comm "i2c-SMO8500-125", pid 911, jiffies 4294911787 (age 83.852s)
+>>    hex dump (first 32 bytes):
+>>      02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+>>      00 00 00 00 00 00 00 00 20 e2 e5 c0 ff ff ff ff  ........ .......
+>>    backtrace:
+>>      [<0000000041ce75ee>] kmem_cache_alloc_trace+0x16d/0x360
+>>      [<000000000aeb17b0>] iio_kfifo_allocate+0x41/0x130 [kfifo_buf]
+>>      [<000000004b40c1f5>] iio_triggered_buffer_setup_ext+0x2c/0x210 [industrialio_triggered_buffer]
+>>      [<000000004375b15f>] kxcjk1013_probe+0x10c3/0x1d81 [kxcjk_1013]
+>>      [<0000000020115b9a>] i2c_device_probe+0xa31/0xbe0
+>>      [<00000000d9f581a6>] really_probe+0x299/0xc30
+>>      [<00000000c6c16cde>] __driver_probe_device+0x357/0x500
+>>      [<00000000909852a1>] driver_probe_device+0x4e/0x140
+>>      [<000000008419ba53>] __device_attach_driver+0x257/0x340
+>>      [<00000000533bb466>] bus_for_each_drv+0x166/0x1e0
+>>      [<000000005bf45d75>] __device_attach+0x272/0x420
+>>      [<0000000075220311>] bus_probe_device+0x1eb/0x2a0
+>>      [<0000000015587e85>] device_add+0xbf0/0x1f90
+>>      [<0000000086901b9e>] i2c_new_client_device+0x622/0xb20
+>>      [<000000000865ca18>] new_device_store+0x1fa/0x420
+>>      [<0000000059a3d183>] dev_attr_store+0x58/0x80

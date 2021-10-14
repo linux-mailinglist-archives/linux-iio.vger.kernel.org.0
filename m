@@ -2,156 +2,229 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B3EEE42D4B1
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Oct 2021 10:20:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F389C42D4BB
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Oct 2021 10:24:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230119AbhJNIWp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 14 Oct 2021 04:22:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:23434 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230010AbhJNIWo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Oct 2021 04:22:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1634199640;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=3w7eqEeIgw3Ia32urFoj+WNGzCCaXj1QmEFIPhfgcAU=;
-        b=O1CP49m2NRySJZfgx3OLRpqJxLFYbSJq71o7lOjLsKh2/Q/PPkIhPMxhKCq/9ZVjFg0Lfo
-        V5mMXRT/tRPiWIsdo4TzeXDE3i5kIPcKZvXDjj1KCYN8C/eNVSGPFLJKsJILvWZQkACmp4
-        q0Ea4yIom17DlxA4B7IgSy9UY4P0iE8=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-319-TUb6jawNM8KV2JUb-49oUg-1; Thu, 14 Oct 2021 04:20:36 -0400
-X-MC-Unique: TUb6jawNM8KV2JUb-49oUg-1
-Received: by mail-ed1-f72.google.com with SMTP id l10-20020a056402230a00b003db6977b694so4468326eda.23
-        for <linux-iio@vger.kernel.org>; Thu, 14 Oct 2021 01:20:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=3w7eqEeIgw3Ia32urFoj+WNGzCCaXj1QmEFIPhfgcAU=;
-        b=kcz+mtRH0u/87ehjh0KsixXrd+o5gs1WjuX+1gouZQ5t5BlIE6dAwEKwEOBKqM3sKP
-         +gq/8vt9hmZEjzvDc6MYS5V41yfr4Vsw8Gxzo0eyADV+naEwf76P3Y08lR7EDG3u3xoi
-         TZG+uo5bqLrwhjZUD/CN8PQWCWKHFj5oOFR3gJofMlaMw17fS8AspoKR0sI3G2WdRLNt
-         fjI/9YPuBMUp65dyulyTaUSIrO/SlXNBVf/+mIE495giwinPDERQrGpBEkF2MHdtkUDs
-         aWjnfi90d9/MlP0arfILDDp2fB3YZSoHJz/uTnVLNlXY+B/1tBzUvq8Kkc8uLLOO9VEU
-         IKyA==
-X-Gm-Message-State: AOAM531ZFDK+ZxlSL5cJvrMFuCfXNkl2GhYdqpL40Vg9RHstadM4A8CQ
-        zr1OgcLWgYyk4yegpbywh4yY6oZowx5FnsMbdX3wg5AjTmDL1iqq9rCsfCPM+s3X1hDRFhcgcpJ
-        /lQscTM5Vva9ErealSSpA
-X-Received: by 2002:a17:906:7c4f:: with SMTP id g15mr1986712ejp.373.1634199635734;
-        Thu, 14 Oct 2021 01:20:35 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxJ/yUyAY5+oLZfeZT36vqeG4laaBllFBim5CmgaOeq8paHr5vHxI/UVJ6rhjgL1uBj4rghbA==
-X-Received: by 2002:a17:906:7c4f:: with SMTP id g15mr1986691ejp.373.1634199635532;
-        Thu, 14 Oct 2021 01:20:35 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id s3sm1355877ejm.49.2021.10.14.01.20.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Oct 2021 01:20:35 -0700 (PDT)
-Subject: Re: [PATCH] iio: accel: kxcjk-1013: Fix possible memory leak in probe
- and remove
-To:     Yang Yingliang <yangyingliang@huawei.com>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Cc:     lars@metafoo.de, jic23@kernel.org,
-        andriy.shevchenko@linux.intel.com, ddvlad@gmail.com
-References: <20211014035338.3750416-1-yangyingliang@huawei.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <1a3a5582-51b0-4c58-ad6a-a58025054128@redhat.com>
-Date:   Thu, 14 Oct 2021 10:20:34 +0200
+        id S230078AbhJNI1D (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 14 Oct 2021 04:27:03 -0400
+Received: from protonic.xs4all.nl ([83.163.252.89]:40458 "EHLO
+        protonic.xs4all.nl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230035AbhJNI1C (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Oct 2021 04:27:02 -0400
+Received: from [192.168.224.11] (ert768.prtnl [192.168.224.11])
+        by sparta.prtnl (Postfix) with ESMTP id 559AC44A024F;
+        Thu, 14 Oct 2021 10:24:54 +0200 (CEST)
+Subject: Re: [PATCH v5 0/4] iio: chemical: Add support for Sensirion SCD4x CO2
+ sensor
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Tomasz Duszynski <tomasz.duszynski@octakon.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, david@protonic.nl,
+        Lars-Peter Clausen <lars@metafoo.de>
+References: <20211008101706.755942-1-roan@protonic.nl>
+ <20211010165919.51f06938@jic23-huawei> <20211013183828.521f043f@jic23-huawei>
+From:   Roan van Dijk <roan@protonic.nl>
+Message-ID: <3ecfe246-b942-0c1e-08e6-17eff4c5cc16@protonic.nl>
+Date:   Thu, 14 Oct 2021 10:24:54 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-In-Reply-To: <20211014035338.3750416-1-yangyingliang@huawei.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20211013183828.521f043f@jic23-huawei>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
 
-On 10/14/21 5:53 AM, Yang Yingliang wrote:
-> When ACPI type is ACPI_SMO8500, the data->dready_trig will not be set, the
-> memory allocated by iio_triggered_buffer_setup() will not be freed, and cause
-> memory leak as follows:
+
+On 13-10-2021 19:38, Jonathan Cameron wrote:
+> On Sun, 10 Oct 2021 16:59:19 +0100
+> Jonathan Cameron <jic23@kernel.org> wrote:
 > 
-> unreferenced object 0xffff888009551400 (size 512):
->   comm "i2c-SMO8500-125", pid 911, jiffies 4294911787 (age 83.852s)
->   hex dump (first 32 bytes):
->     02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->     00 00 00 00 00 00 00 00 20 e2 e5 c0 ff ff ff ff  ........ .......
->   backtrace:
->     [<0000000041ce75ee>] kmem_cache_alloc_trace+0x16d/0x360
->     [<000000000aeb17b0>] iio_kfifo_allocate+0x41/0x130 [kfifo_buf]
->     [<000000004b40c1f5>] iio_triggered_buffer_setup_ext+0x2c/0x210 [industrialio_triggered_buffer]
->     [<000000004375b15f>] kxcjk1013_probe+0x10c3/0x1d81 [kxcjk_1013]
->     [<0000000020115b9a>] i2c_device_probe+0xa31/0xbe0
->     [<00000000d9f581a6>] really_probe+0x299/0xc30
->     [<00000000c6c16cde>] __driver_probe_device+0x357/0x500
->     [<00000000909852a1>] driver_probe_device+0x4e/0x140
->     [<000000008419ba53>] __device_attach_driver+0x257/0x340
->     [<00000000533bb466>] bus_for_each_drv+0x166/0x1e0
->     [<000000005bf45d75>] __device_attach+0x272/0x420
->     [<0000000075220311>] bus_probe_device+0x1eb/0x2a0
->     [<0000000015587e85>] device_add+0xbf0/0x1f90
->     [<0000000086901b9e>] i2c_new_client_device+0x622/0xb20
->     [<000000000865ca18>] new_device_store+0x1fa/0x420
->     [<0000000059a3d183>] dev_attr_store+0x58/0x80
+>> On Fri,  8 Oct 2021 12:17:02 +0200
+>> Roan van Dijk <roan@protonic.nl> wrote:
+>>
+>>> This series adds support for the Sensirion SCD4x sensor.
+>>>
+>>> The driver supports continuous reads of temperature, relative humdity and CO2
+>>> concentration. There is an interval of 5 seconds between readings. During
+>>> this interval the drivers checks if the sensor has new data available.
+>>>
+>>> The driver is based on the scd30 driver. However, The scd4x has become too
+>>> different to just expand the scd30 driver. I made a new driver instead of
+>>> expanding the scd30 driver. I hope I made the right choice by doing so?
+>>
+>> Applied to the togreg branch of iio.git with the issues Randy mentioned tidied
+>> up. Pushed out as testing for 0-day to see if it can find anything we missed
 > 
-> Fix it by remove data->dready_trig condition in probe and remove.
+> And indeed - I missed a bunch of places where explicit __be16 types should have
+> been used.
 > 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Fixes: a25691c1f967 ("iio: accel: kxcjk1013: allow using an external trigger")
-> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+> I've applied the following fixup, shout if it's wrong.
+>
+Thank you Jonathan for applying this fixup. No need to shout :) Your 
+changes should fix the issue.
 
-Hmm, wouldn't the right fix be to also move the
-iio_triggered_buffer_setup() call to inside the:
+However, I have a question about something else. The co2 concentration 
+is an IIO_CHAN_INFO_RAW, but doesn't have a scale or offset at this 
+moment. Is an _scale always required for an _raw in the ABI? I could not 
+find anything in the documentation if there is a rule for this. Someone 
+mentioned this to me, so I want to check if I did this right.
 
-	if (client->irq > 0 && data->acpi_type != ACPI_SMO8500) {
-	}
+The sensor returns the actual co2 value upon reading, like 450 ppm. We 
+can set an offset of this co2 value with the calibration_forced_value 
+through the ABI, but this offset is handled internally by the sensor. So 
+there isn't anything with scaling or an offset needed at the driver side.
 
-block ?
+Was I right by making it of type RAW? If needed we could make it more 
+like the scd30 driver, keeping it of type RAW but with scale = 1. What 
+should I do or is it fine as it is?
 
-Jonathan (jic23) can you take a look at this, to me it seems that having
-a triggered buffer allocated without any triggers is not useful ?
+Sorry for not asking this earlier.
 
-Regards,
+Thanks,
 
-Hans
+Roan
 
-
-
-> ---
->  drivers/iio/accel/kxcjk-1013.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
+> diff --git a/drivers/iio/chemical/scd4x.c b/drivers/iio/chemical/scd4x.c
+> index 09b34201c42b..ebebcb117ba2 100644
+> --- a/drivers/iio/chemical/scd4x.c
+> +++ b/drivers/iio/chemical/scd4x.c
+> @@ -263,7 +263,7 @@ static int scd4x_write_and_fetch(struct scd4x_state *state, enum scd4x_cmd cmd,
+>   static int scd4x_read_meas(struct scd4x_state *state, uint16_t *meas)
+>   {
+>   	int i, ret;
+> -	uint16_t buf[3];
+> +	__be16 buf[3];
+>   
+>   	ret = scd4x_read(state, CMD_READ_MEAS, buf, sizeof(buf));
+>   	if (ret)
+> @@ -282,12 +282,13 @@ static int scd4x_wait_meas_poll(struct scd4x_state *state)
+>   	int ret;
+>   
+>   	do {
+> +		__be16 bval;
+>   		uint16_t val;
+>   
+> -		ret = scd4x_read(state, CMD_GET_DATA_READY, &val, sizeof(val));
+> +		ret = scd4x_read(state, CMD_GET_DATA_READY, &bval, sizeof(bval));
+>   		if (ret)
+>   			return -EIO;
+> -		val = be16_to_cpu(val);
+> +		val = be16_to_cpu(bval);
+>   
+>   		/* new measurement available */
+>   		if (val & 0x7FF)
+> @@ -333,7 +334,7 @@ static int scd4x_read_raw(struct iio_dev *indio_dev,
+>   {
+>   	struct scd4x_state *state = iio_priv(indio_dev);
+>   	int ret;
+> -	uint16_t tmp;
+> +	__be16 tmp;
+>   
+>   	switch (mask) {
+>   	case IIO_CHAN_INFO_RAW:
+> @@ -405,17 +406,18 @@ static ssize_t calibration_auto_enable_show(struct device *dev,
+>   	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+>   	struct scd4x_state *state = iio_priv(indio_dev);
+>   	int ret;
+> -	uint16_t val;
+> +	__be16 bval;
+> +	u16 val;
+>   
+>   	mutex_lock(&state->lock);
+> -	ret = scd4x_read(state, CMD_GET_ASC, &val, sizeof(val));
+> +	ret = scd4x_read(state, CMD_GET_ASC, &bval, sizeof(bval));
+>   	mutex_unlock(&state->lock);
+>   	if (ret) {
+>   		dev_err(dev, "failed to read automatic calibration");
+>   		return ret;
+>   	}
+>   
+> -	val = (be16_to_cpu(val) & SCD4X_READY_MASK) ? 1 : 0;
+> +	val = (be16_to_cpu(bval) & SCD4X_READY_MASK) ? 1 : 0;
+>   
+>   	return sprintf(buf, "%d\n", val);
+>   }
 > 
-> diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxcjk-1013.c
-> index a51fdd3c9b5b..24c9387c2968 100644
-> --- a/drivers/iio/accel/kxcjk-1013.c
-> +++ b/drivers/iio/accel/kxcjk-1013.c
-> @@ -1595,8 +1595,7 @@ static int kxcjk1013_probe(struct i2c_client *client,
->  	return 0;
->  
->  err_buffer_cleanup:
-> -	if (data->dready_trig)
-> -		iio_triggered_buffer_cleanup(indio_dev);
-> +	iio_triggered_buffer_cleanup(indio_dev);
->  err_trigger_unregister:
->  	if (data->dready_trig)
->  		iio_trigger_unregister(data->dready_trig);
-> @@ -1618,8 +1617,8 @@ static int kxcjk1013_remove(struct i2c_client *client)
->  	pm_runtime_disable(&client->dev);
->  	pm_runtime_set_suspended(&client->dev);
->  
-> +	iio_triggered_buffer_cleanup(indio_dev);
->  	if (data->dready_trig) {
-> -		iio_triggered_buffer_cleanup(indio_dev);
->  		iio_trigger_unregister(data->dready_trig);
->  		iio_trigger_unregister(data->motion_trig);
->  	}
 > 
-
+>>
+>> Thanks,
+>>
+>> Jonathan
+>>
+>>>
+>>> Changes since v5:
+>>> scd4x.c:
+>>>    - Fix bug in trigger_handler
+>>>
+>>> Changes since v4:
+>>> scd4x.c:
+>>>    - Minor fixes in documentation
+>>>    - Reorder trigger_handler so memcpy is not needed anymore
+>>> Documentation:
+>>>    - Change information about the KernelVersion for the
+>>>      calibration_forced_value_available
+>>>
+>>> Changes since v3:
+>>> scd4x.c
+>>>    - Change read and write_and_fetch function parameter. CRC byte is now
+>>>      hidden inside the function.
+>>>    - Fix minor style issues
+>>>    - Add calibration_forced_value_available attribute to the driver
+>>>    - Remove including BUFFER_TRIGGERED
+>>>    - Change calibbias to raw ADC readings rather than converting it to
+>>>      milli degrees C.
+>>> Documentation:
+>>>    - Change description of driver attributes
+>>>    - Add calibration_forced_value_available documentation
+>>>
+>>> Changes since v2:
+>>> scd4x.c:
+>>>    - Change boolean operations
+>>>    - Document scope of lock
+>>>    - Remove device *dev from struct
+>>>    - Add goto block for errror handling
+>>>    - Add function to read value per channel in read_raw
+>>>    - Fix bug with lock in error paths
+>>>    - Remove conversion of humidity and temperature values
+>>>    - Add scale and offset to temperature channel
+>>>    - Add scale to humidity channel
+>>>    - Move memset out of locked section
+>>>    - Remove unused irq functions
+>>>    - Move device register at end of probe function
+>>> Documentation:
+>>>    - Copy content of sysfs-bus-iio-scd30 to sysfs-bus-iio
+>>>    - Remove Documentation/ABI/testing/sysfs-bus-iio-scd30
+>>>
+>>> Changes since v1:
+>>> dt-bindings:
+>>>    - Separated compatible string for each sensor type
+>>> scd4x.c:
+>>>    - Changed probe, resume and suspend functions to static
+>>>    - Added SIMPLE_DEV_PM_OPS function call for power management
+>>>      operations.
+>>>
+>>> Roan van Dijk (4):
+>>>    dt-bindings: iio: chemical: sensirion,scd4x: Add yaml description
+>>>    MAINTAINERS: Add myself as maintainer of the scd4x driver
+>>>    drivers: iio: chemical: Add support for Sensirion SCD4x CO2 sensor
+>>>    iio: documentation: Document scd4x calibration use
+>>>
+>>>   Documentation/ABI/testing/sysfs-bus-iio       |  41 ++
+>>>   Documentation/ABI/testing/sysfs-bus-iio-scd30 |  34 -
+>>>   .../iio/chemical/sensirion,scd4x.yaml         |  46 ++
+>>>   MAINTAINERS                                   |   6 +
+>>>   drivers/iio/chemical/Kconfig                  |  13 +
+>>>   drivers/iio/chemical/Makefile                 |   1 +
+>>>   drivers/iio/chemical/scd4x.c                  | 689 ++++++++++++++++++
+>>>   7 files changed, 796 insertions(+), 34 deletions(-)
+>>>   delete mode 100644 Documentation/ABI/testing/sysfs-bus-iio-scd30
+>>>   create mode 100644 Documentation/devicetree/bindings/iio/chemical/sensirion,scd4x.yaml
+>>>   create mode 100644 drivers/iio/chemical/scd4x.c
+>>>    
+>>
+> 

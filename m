@@ -2,115 +2,105 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CB5B42CFFD
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Oct 2021 03:40:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0313042D126
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Oct 2021 05:46:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229660AbhJNBmu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 13 Oct 2021 21:42:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34828 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229496AbhJNBmu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Oct 2021 21:42:50 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A75E7C061570;
-        Wed, 13 Oct 2021 18:40:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
-        Subject:Sender:Reply-To:Content-ID:Content-Description;
-        bh=q+0dnEobalAAFZMHVHV+dBuOgl058N3oGikzx2RCv0c=; b=c95eMPYgrEVq6KLagJXXBAKg+J
-        fM9xtdx0+ISxPdKEuN5T5SKmXoULzm8ujKVE+3OAaNInFGlJKMnoT/qMPjdvsk8t6ckbDOo2Ppmqf
-        jiB8mDAC2rpagql68moyw6FBl+SFQbwFujTv2QArHjcfzULVkWx+yuJVPUbd+wdat58BcXLluG13i
-        E5KVbRFpxD9QmEDAijhd5LQrQo0EFqrZ9NgbSUevaJ1/L1P6tgNd/iJdNGIm3QkdbQJvjDU9Ov2mu
-        JMzKMzVJ3ABNplUUX9UkBLGeAatoGzx/3qHRo/VE4heuRKwcwZpMBNgUT+gwcdh71aL3VduMFmVbo
-        gEOBbcXw==;
-Received: from [2601:1c0:6280:3f0::aa0b]
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1mapjf-001Cwc-If; Thu, 14 Oct 2021 01:40:43 +0000
-Subject: Re: [PATCH] iio: imx8qxp-adc: mark PM functions as __maybe_unused
-To:     Cai Huoqing <caihuoqing@baidu.com>, Arnd Bergmann <arnd@kernel.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-References: <20211013144338.2261316-1-arnd@kernel.org>
- <20211014012936.GA2999@LAPTOP-UKSR4ENP.internal.baidu.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <50f71530-bab0-58f4-cf90-a7c1b60b9716@infradead.org>
-Date:   Wed, 13 Oct 2021 18:40:41 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        id S229745AbhJNDsD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 13 Oct 2021 23:48:03 -0400
+Received: from szxga01-in.huawei.com ([45.249.212.187]:28937 "EHLO
+        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229496AbhJNDsD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Oct 2021 23:48:03 -0400
+Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.56])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4HVFZ04HlNzbn5B;
+        Thu, 14 Oct 2021 11:41:28 +0800 (CST)
+Received: from dggpeml500017.china.huawei.com (7.185.36.243) by
+ dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.8; Thu, 14 Oct 2021 11:45:57 +0800
+Received: from huawei.com (10.175.103.91) by dggpeml500017.china.huawei.com
+ (7.185.36.243) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.8; Thu, 14 Oct
+ 2021 11:45:56 +0800
+From:   Yang Yingliang <yangyingliang@huawei.com>
+To:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
+CC:     <lars@metafoo.de>, <jic23@kernel.org>, <hdegoede@redhat.com>,
+        <andriy.shevchenko@linux.intel.com>, <ddvlad@gmail.com>
+Subject: [PATCH] iio: accel: kxcjk-1013: Fix possible memory leak in probe and remove
+Date:   Thu, 14 Oct 2021 11:53:38 +0800
+Message-ID: <20211014035338.3750416-1-yangyingliang@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20211014012936.GA2999@LAPTOP-UKSR4ENP.internal.baidu.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.103.91]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpeml500017.china.huawei.com (7.185.36.243)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 10/13/21 6:29 PM, Cai Huoqing wrote:
-> On 13 10月 21 16:43:26, Arnd Bergmann wrote:
->> From: Arnd Bergmann <arnd@arndb.de>
->>
->> Without CONFIG_PM_SLEEP, the runtime suspend/resume functions
->> are unused, producing a warning:
->>
->> drivers/iio/adc/imx8qxp-adc.c:433:12: error: 'imx8qxp_adc_runtime_resume' defined but not used [-Werror=unused-function]
->>    433 | static int imx8qxp_adc_runtime_resume(struct device *dev)
->>        |            ^~~~~~~~~~~~~~~~~~~~~~~~~~
->> drivers/iio/adc/imx8qxp-adc.c:419:12: error: 'imx8qxp_adc_runtime_suspend' defined but not used [-Werror=unused-function]
->>    419 | static int imx8qxp_adc_runtime_suspend(struct device *dev)
->>        |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~
->>
->> Mark them as __maybe_unused to shut up the compiler.
->>
->> Fixes: 7bce634d02e6 ("iio: imx8qxp-adc: Add driver support for NXP IMX8QXP ADC")
->> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> 
-> Reviewed-by: Cai Huoqing <caihuoqing@baidu.com>
+When ACPI type is ACPI_SMO8500, the data->dready_trig will not be set, the
+memory allocated by iio_triggered_buffer_setup() will not be freed, and cause
+memory leak as follows:
 
-Looks the same as
-https://lore.kernel.org/all/20211013014658.2798-1-caihuoqing@baidu.com/
+unreferenced object 0xffff888009551400 (size 512):
+  comm "i2c-SMO8500-125", pid 911, jiffies 4294911787 (age 83.852s)
+  hex dump (first 32 bytes):
+    02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 20 e2 e5 c0 ff ff ff ff  ........ .......
+  backtrace:
+    [<0000000041ce75ee>] kmem_cache_alloc_trace+0x16d/0x360
+    [<000000000aeb17b0>] iio_kfifo_allocate+0x41/0x130 [kfifo_buf]
+    [<000000004b40c1f5>] iio_triggered_buffer_setup_ext+0x2c/0x210 [industrialio_triggered_buffer]
+    [<000000004375b15f>] kxcjk1013_probe+0x10c3/0x1d81 [kxcjk_1013]
+    [<0000000020115b9a>] i2c_device_probe+0xa31/0xbe0
+    [<00000000d9f581a6>] really_probe+0x299/0xc30
+    [<00000000c6c16cde>] __driver_probe_device+0x357/0x500
+    [<00000000909852a1>] driver_probe_device+0x4e/0x140
+    [<000000008419ba53>] __device_attach_driver+0x257/0x340
+    [<00000000533bb466>] bus_for_each_drv+0x166/0x1e0
+    [<000000005bf45d75>] __device_attach+0x272/0x420
+    [<0000000075220311>] bus_probe_device+0x1eb/0x2a0
+    [<0000000015587e85>] device_add+0xbf0/0x1f90
+    [<0000000086901b9e>] i2c_new_client_device+0x622/0xb20
+    [<000000000865ca18>] new_device_store+0x1fa/0x420
+    [<0000000059a3d183>] dev_attr_store+0x58/0x80
 
-but that one is mixing the Fixes: tag.
+Fix it by remove data->dready_trig condition in probe and remove.
 
->> ---
->>   drivers/iio/adc/imx8qxp-adc.c | 4 ++--
->>   1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/iio/adc/imx8qxp-adc.c b/drivers/iio/adc/imx8qxp-adc.c
->> index 5030e0d8318d..901dd8e1b32f 100644
->> --- a/drivers/iio/adc/imx8qxp-adc.c
->> +++ b/drivers/iio/adc/imx8qxp-adc.c
->> @@ -416,7 +416,7 @@ static int imx8qxp_adc_remove(struct platform_device *pdev)
->>   	return 0;
->>   }
->>   
->> -static int imx8qxp_adc_runtime_suspend(struct device *dev)
->> +static __maybe_unused int imx8qxp_adc_runtime_suspend(struct device *dev)
->>   {
->>   	struct iio_dev *indio_dev = dev_get_drvdata(dev);
->>   	struct imx8qxp_adc *adc = iio_priv(indio_dev);
->> @@ -430,7 +430,7 @@ static int imx8qxp_adc_runtime_suspend(struct device *dev)
->>   	return 0;
->>   }
->>   
->> -static int imx8qxp_adc_runtime_resume(struct device *dev)
->> +static __maybe_unused int imx8qxp_adc_runtime_resume(struct device *dev)
->>   {
->>   	struct iio_dev *indio_dev = dev_get_drvdata(dev);
->>   	struct imx8qxp_adc *adc = iio_priv(indio_dev);
->> -- 
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Fixes: a25691c1f967 ("iio: accel: kxcjk1013: allow using an external trigger")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+---
+ drivers/iio/accel/kxcjk-1013.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-
-
-
+diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxcjk-1013.c
+index a51fdd3c9b5b..24c9387c2968 100644
+--- a/drivers/iio/accel/kxcjk-1013.c
++++ b/drivers/iio/accel/kxcjk-1013.c
+@@ -1595,8 +1595,7 @@ static int kxcjk1013_probe(struct i2c_client *client,
+ 	return 0;
+ 
+ err_buffer_cleanup:
+-	if (data->dready_trig)
+-		iio_triggered_buffer_cleanup(indio_dev);
++	iio_triggered_buffer_cleanup(indio_dev);
+ err_trigger_unregister:
+ 	if (data->dready_trig)
+ 		iio_trigger_unregister(data->dready_trig);
+@@ -1618,8 +1617,8 @@ static int kxcjk1013_remove(struct i2c_client *client)
+ 	pm_runtime_disable(&client->dev);
+ 	pm_runtime_set_suspended(&client->dev);
+ 
++	iio_triggered_buffer_cleanup(indio_dev);
+ 	if (data->dready_trig) {
+-		iio_triggered_buffer_cleanup(indio_dev);
+ 		iio_trigger_unregister(data->dready_trig);
+ 		iio_trigger_unregister(data->motion_trig);
+ 	}
 -- 
-~Randy
+2.25.1
+

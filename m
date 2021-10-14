@@ -2,85 +2,80 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2969A42D8AC
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Oct 2021 14:00:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E149F42D89B
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Oct 2021 13:55:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231327AbhJNMC2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 14 Oct 2021 08:02:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33872 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230518AbhJNMC2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Oct 2021 08:02:28 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57C0CC06174E
-        for <linux-iio@vger.kernel.org>; Thu, 14 Oct 2021 05:00:23 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id t16so23320306eds.9
-        for <linux-iio@vger.kernel.org>; Thu, 14 Oct 2021 05:00:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=9ifSJ2xil03I9kJ4JQo+VTUIjwQemHC+E35sv+kOQ84=;
-        b=SMEQwxpamzyq0WayboeoovZiSt/ZcUekVK4vRX+YHuHwKW/ZFjTJ70rM0NBGvQ8O5b
-         2Oi41yH350atsIPzJ5PrreSGdw/B7B/bpG8287puPBZ3vbld1ZpgtNCkFLZgSlPGeCBS
-         ABtQHijmMyJ8bTjMMY6LE9ubcxJs8TD/lNVMdZA+Izay4IiRqrA/tu8lfQ7yFzajF7kt
-         hD5iiw9ISUZLeEObg/5RkUAPMEnVsGk30xNzLeMMh9h6pKVvfaXamNI2yvM8iSEAUBwK
-         IvzYWVaS3FONYqsEfRPfPaL0rzEko1Z0lhCZy0kX35/6avhA4dSjBH5oqv+mLIcVauNn
-         b3UQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=9ifSJ2xil03I9kJ4JQo+VTUIjwQemHC+E35sv+kOQ84=;
-        b=quhbSER3N8WcBVSb3XaHZGgZ/YKA+LzvsmB82kPvmZrUMEmVuPJQSM4uvT5XyNcaNr
-         HdBtj/Cv+hK1epCmhfeV7QLqtZ66offtRZQKsgMxIjv1PVyveRWK3SxMZIhgcPG7E8gy
-         NeADHw0P3mfF9ayrcQhIz2hf2ymp15PW02vaqJvHwt8cnlELuIivjIate1PZvwCRh40Y
-         NaRTY6Y7A5AtXMgG7cPGanKRa27naPw+yb/pzQbBxaiB6/TmImpe2kcZV/LeVGkstl6O
-         +DYDclV6ss9caRs2pzLkgIa9c8PGuCzRMnzWGRzTI9N5QOG3P+JOPPYMd6P/Hzx9SIui
-         TPEQ==
-X-Gm-Message-State: AOAM530yjrogPxV/bmLfGTHTbaZUtQt2iXyuQgN6lisH1CpJsAddnmq8
-        z27+zrx3c2FpgbDqQdBGEtdfXBzcD9MkKYVV1Po=
-X-Google-Smtp-Source: ABdhPJzoMojW0BP6RdwRO+qfVSBC/0NYto+Spu7ZijKRZH6F9ZWLXZ23pVHURWy5OgrM0Cbn9w7PL8kfkpSHDtJSumY=
-X-Received: by 2002:a17:906:2506:: with SMTP id i6mr3317271ejb.186.1634212819711;
- Thu, 14 Oct 2021 05:00:19 -0700 (PDT)
+        id S231248AbhJNL5U (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 14 Oct 2021 07:57:20 -0400
+Received: from mga09.intel.com ([134.134.136.24]:12485 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229994AbhJNL5T (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 14 Oct 2021 07:57:19 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10136"; a="227557121"
+X-IronPort-AV: E=Sophos;i="5.85,372,1624345200"; 
+   d="scan'208";a="227557121"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2021 04:55:15 -0700
+X-IronPort-AV: E=Sophos;i="5.85,372,1624345200"; 
+   d="scan'208";a="442726077"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.72.159])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2021 04:55:13 -0700
+Received: from andy by smile with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1mb28I-000C7i-Py;
+        Thu, 14 Oct 2021 17:54:58 +0300
+Date:   Thu, 14 Oct 2021 17:54:58 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Yang Yingliang <yangyingliang@huawei.com>
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        lars@metafoo.de, jic23@kernel.org, hdegoede@redhat.com,
+        ddvlad@gmail.com
+Subject: Re: [PATCH] iio: accel: kxcjk-1013: Fix possible memory leak in
+ probe and remove
+Message-ID: <YWhEwqdHbPTAfvto@smile.fi.intel.com>
+References: <20211014035338.3750416-1-yangyingliang@huawei.com>
 MIME-Version: 1.0
-Sender: fdhfgfujffuhjfgdfdhffdcf@gmail.com
-Received: by 2002:a17:907:7f11:0:0:0:0 with HTTP; Thu, 14 Oct 2021 05:00:18
- -0700 (PDT)
-From:   "helen.carlsen" <helen.carlsen26@gmail.com>
-Date:   Thu, 14 Oct 2021 13:00:18 +0100
-X-Google-Sender-Auth: MGOHgc4VCgXA15q1s5Qh0QUaFPs
-Message-ID: <CAMnHgDpwEkWfANdgpnqjn=UUSJ3wdxg0v7EQnjPEo2WpmhG4eg@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211014035338.3750416-1-yangyingliang@huawei.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
- I sent this mail praying it will found you in a good condition of
-health, since I myself are in a very critical health condition in
-which I  sleep every night without knowing if I may be alive to see
-the next day. I'm Mrs. Helen John carlsen, wife of late Mrs. Helen
-John carlsen, a widow suffering from long time illness. I have some
-funds I inherited from my late husband, the sum of($ 11.000.000,eleven
-million dollars)my Doctor told merecently that I have serious sickness
-which is cancer problem. What disturbs me most is my stroke
-sickness.Having known my condition, I decided to donate this fund to a
-good person that will utilize it the way i am going to instruct
-herein. I need a very honest and God fearing person who can claim this
-money and use it for Charity works, for orphanages, widows and also
-build schools for less privileges that will be named after my late
-husband if possible and to promote the word of God and the effort that
-the house of God is maintained.
+On Thu, Oct 14, 2021 at 11:53:38AM +0800, Yang Yingliang wrote:
+> When ACPI type is ACPI_SMO8500, the data->dready_trig will not be set, the
+> memory allocated by iio_triggered_buffer_setup() will not be freed, and cause
+> memory leak as follows:
 
-I do not want a situation where this money will be used in an ungodly
-manner. That's why I'm taking this decision. I'm not afraid of death
-so I know where I'm going. I accept this decision because I do not
-have any child who will inherit this money after I die. Please I want
-your sincerely and urgent answer to know if you will be able to
-execute this project, and I will give you more information on how the
-fund will be transferred to your bank account. I am waiting for your
-reply.
+It seems it's not first time I'm telling you to shrink the noise in the commit
+message.  Can you please LEARN this once and forever?
 
-May God bless you and your family.
-Best Regards, Mrs. Helen John carlsen,
+> unreferenced object 0xffff888009551400 (size 512):
+>   comm "i2c-SMO8500-125", pid 911, jiffies 4294911787 (age 83.852s)
+>   hex dump (first 32 bytes):
+>     02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+>     00 00 00 00 00 00 00 00 20 e2 e5 c0 ff ff ff ff  ........ .......
+>   backtrace:
+>     [<0000000041ce75ee>] kmem_cache_alloc_trace+0x16d/0x360
+>     [<000000000aeb17b0>] iio_kfifo_allocate+0x41/0x130 [kfifo_buf]
+>     [<000000004b40c1f5>] iio_triggered_buffer_setup_ext+0x2c/0x210 [industrialio_triggered_buffer]
+>     [<000000004375b15f>] kxcjk1013_probe+0x10c3/0x1d81 [kxcjk_1013]
+>     [<0000000020115b9a>] i2c_device_probe+0xa31/0xbe0
+>     [<00000000d9f581a6>] really_probe+0x299/0xc30
+>     [<00000000c6c16cde>] __driver_probe_device+0x357/0x500
+>     [<00000000909852a1>] driver_probe_device+0x4e/0x140
+>     [<000000008419ba53>] __device_attach_driver+0x257/0x340
+>     [<00000000533bb466>] bus_for_each_drv+0x166/0x1e0
+>     [<000000005bf45d75>] __device_attach+0x272/0x420
+>     [<0000000075220311>] bus_probe_device+0x1eb/0x2a0
+>     [<0000000015587e85>] device_add+0xbf0/0x1f90
+>     [<0000000086901b9e>] i2c_new_client_device+0x622/0xb20
+>     [<000000000865ca18>] new_device_store+0x1fa/0x420
+>     [<0000000059a3d183>] dev_attr_store+0x58/0x80
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

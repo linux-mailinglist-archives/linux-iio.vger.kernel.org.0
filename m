@@ -2,402 +2,218 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 467D942EC03
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Oct 2021 10:23:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D67542EB46
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Oct 2021 10:15:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237168AbhJOIZK convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Fri, 15 Oct 2021 04:25:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54694 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237013AbhJOIYz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Oct 2021 04:24:55 -0400
-X-Greylist: delayed 554 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 15 Oct 2021 01:22:40 PDT
-Received: from smtprelay.restena.lu (smtprelay.restena.lu [IPv6:2001:a18:1::62])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADE55C061768;
-        Fri, 15 Oct 2021 01:22:40 -0700 (PDT)
-Received: from hemera.lan.sysophe.eu (unknown [IPv6:2001:a18:1:11::1])
-        by smtprelay.restena.lu (Postfix) with ESMTPS id 852AD4337A;
-        Fri, 15 Oct 2021 10:13:23 +0200 (CEST)
-Date:   Fri, 15 Oct 2021 10:13:18 +0200
-From:   Bruno =?UTF-8?B?UHLDqW1vbnQ=?= <bonbons@linux-vserver.org>
-To:     Qing Wang <wangqing@vivo.com>
-Cc:     Jiri Kosina <jikos@kernel.org>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Stefan Achatz <erazor_de@users.sourceforge.net>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH] hid: replace snprintf in show functions with sysfs_emit
-Message-ID: <20211015101318.0d14f394@hemera.lan.sysophe.eu>
-In-Reply-To: <1634280506-4477-1-git-send-email-wangqing@vivo.com>
-References: <1634280506-4477-1-git-send-email-wangqing@vivo.com>
+        id S236151AbhJOIRP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 15 Oct 2021 04:17:15 -0400
+Received: from relay7-d.mail.gandi.net ([217.70.183.200]:56637 "EHLO
+        relay7-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233398AbhJOIRO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Oct 2021 04:17:14 -0400
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id A6BE120010;
+        Fri, 15 Oct 2021 08:15:06 +0000 (UTC)
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>, linux-iio@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Ryan Barnett <ryan.barnett@collins.com>,
+        linux-kernel@vger.kernel.org
+Cc:     Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH v6 00/48] TI AM437X ADC1
+Date:   Fri, 15 Oct 2021 10:14:18 +0200
+Message-Id: <20211015081506.933180-1-miquel.raynal@bootlin.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 14 Oct 2021 23:48:26 -0700 Qing Wang <wangqing@vivo.com> wrote:
-> show() must not use snprintf() when formatting the value to be
-> returned to user space.
-> 
-> Fix the coccicheck warnings:
-> WARNING: use scnprintf or sprintf.
-> 
-> Use sysfs_emit instead of scnprintf or sprintf makes more sense.
+/*
+ * Reducing the Cc: list as this is just a rebase and all patches
+ * received reviews already. Only the DT patches have received no
+ * feedback, hence keeping the omap@ list in.
+ */
 
-Looks good to me, but I have a few remarks:
+Hello,
 
-- No need to talk about "must not use" in detailled commit message.
-  Mentioning introduction of the newish sysfs_emit() functions (in
-  commit 2efc459d06f1630001e3984854848a5647086232 a Year ago) and thus
-  switching over to those would be sufficient for code predating their
-  introduction.
+This is a (fairly big) series bringing support of AM437X ADC1.
+On TI AM33XX SoCs family there is an ADC that can also be connected to a
+touchscreen. This hardware has been extended and is present on certain
+SoCs from the AM437X family. In particular, the touchscreen has been
+replaced by a magnetic card reader. In both cases, the representation is
+an MFD device with two children:
+* on AM33XX: the touchscreen controller and the ADC
+* on AM437X: the magnetic stripe reader and the ADC
 
-- I'm wondering why picolcd_fb_update_rate_show() in
-    drivers/hid/hid-picolcd_fb.c:446
-  is not updated as well in this same patch.
-  There scnprintf() calls should be replaced with sysfs_emit_at() calls
-  according to the intent of this patch!
+This series really targets small and atomic changes so that the overall
+review is eased, even though it leads to a lot of rather small patches.
+Here are the steps:
+* Supporting the missing clock
+* Translating a single text file containing the description for the
+  MFD, the touchscreen and the ADC into three independent yaml files.
+* Cleaning/preparing the MFD driver.
+* Supporting ADC1 in the MFD driver.
+* Cleaning/preparing of the ADC driver.
+* Supporting ADC1 in the ADC driver.
+* Updating various device trees.
 
-- Not sure if the patch should be split into a 5-patch series with one
-  patch per HID driver (each driver can be updated independently).
+Here is the full series again, almost reviewed and acked entirely.
+The clock patch has been acked, the ADC patches as well, so we expect
+the series to go through the MFD tree if the maintainers agree with it.
 
+Thanks,
+Miquèl
 
-Acked-by: Bruno Prémont <bonbons@linux-vserver.org>
-  (for picolcd code)
+Changes in v6:
+* Rebased the entire series on top of
+  f38d3e404326 (linux-mfd/for-mfd-next) ("dt-bindings: mfd: Convert
+  X-Powers AXP binding to a schema") as requested by Lee.
 
-> Signed-off-by: Qing Wang <wangqing@vivo.com>
-> ---
->  drivers/hid/hid-lenovo.c          | 16 ++++++++--------
->  drivers/hid/hid-picolcd_core.c    |  6 +++---
->  drivers/hid/hid-roccat-isku.c     |  2 +-
->  drivers/hid/hid-roccat-kone.c     | 12 ++++++------
->  drivers/hid/hid-roccat-koneplus.c |  4 ++--
->  drivers/hid/hid-roccat-kovaplus.c | 10 +++++-----
->  drivers/hid/hid-roccat-pyra.c     |  6 +++---
->  drivers/hid/hid-sensor-custom.c   |  2 +-
->  drivers/hid/hid-sony.c            |  6 +++---
->  9 files changed, 32 insertions(+), 32 deletions(-)
-> 
-> diff --git a/drivers/hid/hid-lenovo.c b/drivers/hid/hid-lenovo.c
-> index 93b1f93..086a7ae 100644
-> --- a/drivers/hid/hid-lenovo.c
-> +++ b/drivers/hid/hid-lenovo.c
-> @@ -400,7 +400,7 @@ static ssize_t attr_fn_lock_show(struct device *dev,
->  	struct hid_device *hdev = to_hid_device(dev);
->  	struct lenovo_drvdata *data = hid_get_drvdata(hdev);
->  
-> -	return snprintf(buf, PAGE_SIZE, "%u\n", data->fn_lock);
-> +	return sysfs_emit(buf, "%u\n", data->fn_lock);
->  }
->  
->  static ssize_t attr_fn_lock_store(struct device *dev,
-> @@ -442,7 +442,7 @@ static ssize_t attr_sensitivity_show_cptkbd(struct device *dev,
->  	struct hid_device *hdev = to_hid_device(dev);
->  	struct lenovo_drvdata *cptkbd_data = hid_get_drvdata(hdev);
->  
-> -	return snprintf(buf, PAGE_SIZE, "%u\n",
-> +	return sysfs_emit(buf, "%u\n",
->  		cptkbd_data->sensitivity);
->  }
->  
-> @@ -603,7 +603,7 @@ static ssize_t attr_press_to_select_show_tpkbd(struct device *dev,
->  	struct hid_device *hdev = to_hid_device(dev);
->  	struct lenovo_drvdata *data_pointer = hid_get_drvdata(hdev);
->  
-> -	return snprintf(buf, PAGE_SIZE, "%u\n", data_pointer->press_to_select);
-> +	return sysfs_emit(buf, "%u\n", data_pointer->press_to_select);
->  }
->  
->  static ssize_t attr_press_to_select_store_tpkbd(struct device *dev,
-> @@ -633,7 +633,7 @@ static ssize_t attr_dragging_show_tpkbd(struct device *dev,
->  	struct hid_device *hdev = to_hid_device(dev);
->  	struct lenovo_drvdata *data_pointer = hid_get_drvdata(hdev);
->  
-> -	return snprintf(buf, PAGE_SIZE, "%u\n", data_pointer->dragging);
-> +	return sysfs_emit(buf, "%u\n", data_pointer->dragging);
->  }
->  
->  static ssize_t attr_dragging_store_tpkbd(struct device *dev,
-> @@ -663,7 +663,7 @@ static ssize_t attr_release_to_select_show_tpkbd(struct device *dev,
->  	struct hid_device *hdev = to_hid_device(dev);
->  	struct lenovo_drvdata *data_pointer = hid_get_drvdata(hdev);
->  
-> -	return snprintf(buf, PAGE_SIZE, "%u\n", data_pointer->release_to_select);
-> +	return sysfs_emit(buf, "%u\n", data_pointer->release_to_select);
->  }
->  
->  static ssize_t attr_release_to_select_store_tpkbd(struct device *dev,
-> @@ -693,7 +693,7 @@ static ssize_t attr_select_right_show_tpkbd(struct device *dev,
->  	struct hid_device *hdev = to_hid_device(dev);
->  	struct lenovo_drvdata *data_pointer = hid_get_drvdata(hdev);
->  
-> -	return snprintf(buf, PAGE_SIZE, "%u\n", data_pointer->select_right);
-> +	return sysfs_emit(buf, "%u\n", data_pointer->select_right);
->  }
->  
->  static ssize_t attr_select_right_store_tpkbd(struct device *dev,
-> @@ -723,7 +723,7 @@ static ssize_t attr_sensitivity_show_tpkbd(struct device *dev,
->  	struct hid_device *hdev = to_hid_device(dev);
->  	struct lenovo_drvdata *data_pointer = hid_get_drvdata(hdev);
->  
-> -	return snprintf(buf, PAGE_SIZE, "%u\n",
-> +	return sysfs_emit(buf, "%u\n",
->  		data_pointer->sensitivity);
->  }
->  
-> @@ -752,7 +752,7 @@ static ssize_t attr_press_speed_show_tpkbd(struct device *dev,
->  	struct hid_device *hdev = to_hid_device(dev);
->  	struct lenovo_drvdata *data_pointer = hid_get_drvdata(hdev);
->  
-> -	return snprintf(buf, PAGE_SIZE, "%u\n",
-> +	return sysfs_emit(buf, "%u\n",
->  		data_pointer->press_speed);
->  }
->  
-> diff --git a/drivers/hid/hid-picolcd_core.c b/drivers/hid/hid-picolcd_core.c
-> index bbda231..fa46fb6 100644
-> --- a/drivers/hid/hid-picolcd_core.c
-> +++ b/drivers/hid/hid-picolcd_core.c
-> @@ -256,9 +256,9 @@ static ssize_t picolcd_operation_mode_show(struct device *dev,
->  	struct picolcd_data *data = dev_get_drvdata(dev);
->  
->  	if (data->status & PICOLCD_BOOTLOADER)
-> -		return snprintf(buf, PAGE_SIZE, "[bootloader] lcd\n");
-> +		return sysfs_emit(buf, "[bootloader] lcd\n");
->  	else
-> -		return snprintf(buf, PAGE_SIZE, "bootloader [lcd]\n");
-> +		return sysfs_emit(buf, "bootloader [lcd]\n");
->  }
->  
->  static ssize_t picolcd_operation_mode_store(struct device *dev,
-> @@ -301,7 +301,7 @@ static ssize_t picolcd_operation_mode_delay_show(struct device *dev,
->  {
->  	struct picolcd_data *data = dev_get_drvdata(dev);
->  
-> -	return snprintf(buf, PAGE_SIZE, "%hu\n", data->opmode_delay);
-> +	return sysfs_emit(buf, "%hu\n", data->opmode_delay);
->  }
->  
->  static ssize_t picolcd_operation_mode_delay_store(struct device *dev,
-> diff --git a/drivers/hid/hid-roccat-isku.c b/drivers/hid/hid-roccat-isku.c
-> index ce5f225..58eb4b0 100644
-> --- a/drivers/hid/hid-roccat-isku.c
-> +++ b/drivers/hid/hid-roccat-isku.c
-> @@ -63,7 +63,7 @@ static ssize_t isku_sysfs_show_actual_profile(struct device *dev,
->  {
->  	struct isku_device *isku =
->  			hid_get_drvdata(dev_get_drvdata(dev->parent->parent));
-> -	return snprintf(buf, PAGE_SIZE, "%d\n", isku->actual_profile);
-> +	return sysfs_emit(buf, "%d\n", isku->actual_profile);
->  }
->  
->  static ssize_t isku_sysfs_set_actual_profile(struct device *dev,
-> diff --git a/drivers/hid/hid-roccat-kone.c b/drivers/hid/hid-roccat-kone.c
-> index 1ca6448..66a7625 100644
-> --- a/drivers/hid/hid-roccat-kone.c
-> +++ b/drivers/hid/hid-roccat-kone.c
-> @@ -403,7 +403,7 @@ static ssize_t kone_sysfs_show_actual_profile(struct device *dev,
->  {
->  	struct kone_device *kone =
->  			hid_get_drvdata(dev_get_drvdata(dev->parent->parent));
-> -	return snprintf(buf, PAGE_SIZE, "%d\n", kone->actual_profile);
-> +	return sysfs_emit(buf, "%d\n", kone->actual_profile);
->  }
->  static DEVICE_ATTR(actual_profile, 0440, kone_sysfs_show_actual_profile, NULL);
->  
-> @@ -412,7 +412,7 @@ static ssize_t kone_sysfs_show_actual_dpi(struct device *dev,
->  {
->  	struct kone_device *kone =
->  			hid_get_drvdata(dev_get_drvdata(dev->parent->parent));
-> -	return snprintf(buf, PAGE_SIZE, "%d\n", kone->actual_dpi);
-> +	return sysfs_emit(buf, "%d\n", kone->actual_dpi);
->  }
->  static DEVICE_ATTR(actual_dpi, 0440, kone_sysfs_show_actual_dpi, NULL);
->  
-> @@ -435,7 +435,7 @@ static ssize_t kone_sysfs_show_weight(struct device *dev,
->  
->  	if (retval)
->  		return retval;
-> -	return snprintf(buf, PAGE_SIZE, "%d\n", weight);
-> +	return sysfs_emit(buf, "%d\n", weight);
->  }
->  static DEVICE_ATTR(weight, 0440, kone_sysfs_show_weight, NULL);
->  
-> @@ -444,7 +444,7 @@ static ssize_t kone_sysfs_show_firmware_version(struct device *dev,
->  {
->  	struct kone_device *kone =
->  			hid_get_drvdata(dev_get_drvdata(dev->parent->parent));
-> -	return snprintf(buf, PAGE_SIZE, "%d\n", kone->firmware_version);
-> +	return sysfs_emit(buf, "%d\n", kone->firmware_version);
->  }
->  static DEVICE_ATTR(firmware_version, 0440, kone_sysfs_show_firmware_version,
->  		   NULL);
-> @@ -454,7 +454,7 @@ static ssize_t kone_sysfs_show_tcu(struct device *dev,
->  {
->  	struct kone_device *kone =
->  			hid_get_drvdata(dev_get_drvdata(dev->parent->parent));
-> -	return snprintf(buf, PAGE_SIZE, "%d\n", kone->settings.tcu);
-> +	return sysfs_emit(buf, "%d\n", kone->settings.tcu);
->  }
->  
->  static int kone_tcu_command(struct usb_device *usb_dev, int number)
-> @@ -556,7 +556,7 @@ static ssize_t kone_sysfs_show_startup_profile(struct device *dev,
->  {
->  	struct kone_device *kone =
->  			hid_get_drvdata(dev_get_drvdata(dev->parent->parent));
-> -	return snprintf(buf, PAGE_SIZE, "%d\n", kone->settings.startup_profile);
-> +	return sysfs_emit(buf, "%d\n", kone->settings.startup_profile);
->  }
->  
->  static ssize_t kone_sysfs_set_startup_profile(struct device *dev,
-> diff --git a/drivers/hid/hid-roccat-koneplus.c b/drivers/hid/hid-roccat-koneplus.c
-> index 0316edf..9c39b17 100644
-> --- a/drivers/hid/hid-roccat-koneplus.c
-> +++ b/drivers/hid/hid-roccat-koneplus.c
-> @@ -244,7 +244,7 @@ static ssize_t koneplus_sysfs_show_actual_profile(struct device *dev,
->  {
->  	struct koneplus_device *koneplus =
->  			hid_get_drvdata(dev_get_drvdata(dev->parent->parent));
-> -	return snprintf(buf, PAGE_SIZE, "%d\n", koneplus->actual_profile);
-> +	return sysfs_emit(buf, "%d\n", koneplus->actual_profile);
->  }
->  
->  static ssize_t koneplus_sysfs_set_actual_profile(struct device *dev,
-> @@ -311,7 +311,7 @@ static ssize_t koneplus_sysfs_show_firmware_version(struct device *dev,
->  			&info, KONEPLUS_SIZE_INFO);
->  	mutex_unlock(&koneplus->koneplus_lock);
->  
-> -	return snprintf(buf, PAGE_SIZE, "%d\n", info.firmware_version);
-> +	return sysfs_emit(buf, "%d\n", info.firmware_version);
->  }
->  static DEVICE_ATTR(firmware_version, 0440,
->  		   koneplus_sysfs_show_firmware_version, NULL);
-> diff --git a/drivers/hid/hid-roccat-kovaplus.c b/drivers/hid/hid-roccat-kovaplus.c
-> index 9600128..17581c4 100644
-> --- a/drivers/hid/hid-roccat-kovaplus.c
-> +++ b/drivers/hid/hid-roccat-kovaplus.c
-> @@ -274,7 +274,7 @@ static ssize_t kovaplus_sysfs_show_actual_profile(struct device *dev,
->  {
->  	struct kovaplus_device *kovaplus =
->  			hid_get_drvdata(dev_get_drvdata(dev->parent->parent));
-> -	return snprintf(buf, PAGE_SIZE, "%d\n", kovaplus->actual_profile);
-> +	return sysfs_emit(buf, "%d\n", kovaplus->actual_profile);
->  }
->  
->  static ssize_t kovaplus_sysfs_set_actual_profile(struct device *dev,
-> @@ -327,7 +327,7 @@ static ssize_t kovaplus_sysfs_show_actual_cpi(struct device *dev,
->  {
->  	struct kovaplus_device *kovaplus =
->  			hid_get_drvdata(dev_get_drvdata(dev->parent->parent));
-> -	return snprintf(buf, PAGE_SIZE, "%d\n", kovaplus->actual_cpi);
-> +	return sysfs_emit(buf, "%d\n", kovaplus->actual_cpi);
->  }
->  static DEVICE_ATTR(actual_cpi, 0440, kovaplus_sysfs_show_actual_cpi, NULL);
->  
-> @@ -336,7 +336,7 @@ static ssize_t kovaplus_sysfs_show_actual_sensitivity_x(struct device *dev,
->  {
->  	struct kovaplus_device *kovaplus =
->  			hid_get_drvdata(dev_get_drvdata(dev->parent->parent));
-> -	return snprintf(buf, PAGE_SIZE, "%d\n", kovaplus->actual_x_sensitivity);
-> +	return sysfs_emit(buf, "%d\n", kovaplus->actual_x_sensitivity);
->  }
->  static DEVICE_ATTR(actual_sensitivity_x, 0440,
->  		   kovaplus_sysfs_show_actual_sensitivity_x, NULL);
-> @@ -346,7 +346,7 @@ static ssize_t kovaplus_sysfs_show_actual_sensitivity_y(struct device *dev,
->  {
->  	struct kovaplus_device *kovaplus =
->  			hid_get_drvdata(dev_get_drvdata(dev->parent->parent));
-> -	return snprintf(buf, PAGE_SIZE, "%d\n", kovaplus->actual_y_sensitivity);
-> +	return sysfs_emit(buf, "%d\n", kovaplus->actual_y_sensitivity);
->  }
->  static DEVICE_ATTR(actual_sensitivity_y, 0440,
->  		   kovaplus_sysfs_show_actual_sensitivity_y, NULL);
-> @@ -367,7 +367,7 @@ static ssize_t kovaplus_sysfs_show_firmware_version(struct device *dev,
->  			&info, KOVAPLUS_SIZE_INFO);
->  	mutex_unlock(&kovaplus->kovaplus_lock);
->  
-> -	return snprintf(buf, PAGE_SIZE, "%d\n", info.firmware_version);
-> +	return sysfs_emit(buf, "%d\n", info.firmware_version);
->  }
->  static DEVICE_ATTR(firmware_version, 0440,
->  		   kovaplus_sysfs_show_firmware_version, NULL);
-> diff --git a/drivers/hid/hid-roccat-pyra.c b/drivers/hid/hid-roccat-pyra.c
-> index 989927d..9cfa003 100644
-> --- a/drivers/hid/hid-roccat-pyra.c
-> +++ b/drivers/hid/hid-roccat-pyra.c
-> @@ -286,7 +286,7 @@ static ssize_t pyra_sysfs_show_actual_cpi(struct device *dev,
->  {
->  	struct pyra_device *pyra =
->  			hid_get_drvdata(dev_get_drvdata(dev->parent->parent));
-> -	return snprintf(buf, PAGE_SIZE, "%d\n", pyra->actual_cpi);
-> +	return sysfs_emit(buf, "%d\n", pyra->actual_cpi);
->  }
->  static DEVICE_ATTR(actual_cpi, 0440, pyra_sysfs_show_actual_cpi, NULL);
->  
-> @@ -303,7 +303,7 @@ static ssize_t pyra_sysfs_show_actual_profile(struct device *dev,
->  			&settings, PYRA_SIZE_SETTINGS);
->  	mutex_unlock(&pyra->pyra_lock);
->  
-> -	return snprintf(buf, PAGE_SIZE, "%d\n", settings.startup_profile);
-> +	return sysfs_emit(buf, "%d\n", settings.startup_profile);
->  }
->  static DEVICE_ATTR(actual_profile, 0440, pyra_sysfs_show_actual_profile, NULL);
->  static DEVICE_ATTR(startup_profile, 0440, pyra_sysfs_show_actual_profile, NULL);
-> @@ -324,7 +324,7 @@ static ssize_t pyra_sysfs_show_firmware_version(struct device *dev,
->  			&info, PYRA_SIZE_INFO);
->  	mutex_unlock(&pyra->pyra_lock);
->  
-> -	return snprintf(buf, PAGE_SIZE, "%d\n", info.firmware_version);
-> +	return sysfs_emit(buf, "%d\n", info.firmware_version);
->  }
->  static DEVICE_ATTR(firmware_version, 0440, pyra_sysfs_show_firmware_version,
->  		   NULL);
-> diff --git a/drivers/hid/hid-sensor-custom.c b/drivers/hid/hid-sensor-custom.c
-> index 32c2306..a46481d6 100644
-> --- a/drivers/hid/hid-sensor-custom.c
-> +++ b/drivers/hid/hid-sensor-custom.c
-> @@ -371,7 +371,7 @@ static ssize_t show_value(struct device *dev, struct device_attribute *attr,
->  				     sizeof(struct hid_custom_usage_desc),
->  				     usage_id_cmp);
->  		if (usage_desc)
-> -			return snprintf(buf, PAGE_SIZE, "%s\n",
-> +			return sysfs_emit(buf, "%s\n",
->  					usage_desc->desc);
->  		else
->  			return sprintf(buf, "not-specified\n");
-> diff --git a/drivers/hid/hid-sony.c b/drivers/hid/hid-sony.c
-> index b3722c5..709595e 100644
-> --- a/drivers/hid/hid-sony.c
-> +++ b/drivers/hid/hid-sony.c
-> @@ -696,7 +696,7 @@ static ssize_t ds4_show_poll_interval(struct device *dev,
->  	struct hid_device *hdev = to_hid_device(dev);
->  	struct sony_sc *sc = hid_get_drvdata(hdev);
->  
-> -	return snprintf(buf, PAGE_SIZE, "%i\n", sc->ds4_bt_poll_interval);
-> +	return sysfs_emit(buf, "%i\n", sc->ds4_bt_poll_interval);
->  }
->  
->  static ssize_t ds4_store_poll_interval(struct device *dev,
-> @@ -733,7 +733,7 @@ static ssize_t sony_show_firmware_version(struct device *dev,
->  	struct hid_device *hdev = to_hid_device(dev);
->  	struct sony_sc *sc = hid_get_drvdata(hdev);
->  
-> -	return snprintf(buf, PAGE_SIZE, "0x%04x\n", sc->fw_version);
-> +	return sysfs_emit(buf, "0x%04x\n", sc->fw_version);
->  }
->  
->  static DEVICE_ATTR(firmware_version, 0444, sony_show_firmware_version, NULL);
-> @@ -745,7 +745,7 @@ static ssize_t sony_show_hardware_version(struct device *dev,
->  	struct hid_device *hdev = to_hid_device(dev);
->  	struct sony_sc *sc = hid_get_drvdata(hdev);
->  
-> -	return snprintf(buf, PAGE_SIZE, "0x%04x\n", sc->hw_version);
-> +	return sysfs_emit(buf, "0x%04x\n", sc->hw_version);
->  }
->  
->  static DEVICE_ATTR(hardware_version, 0444, sony_show_hardware_version, NULL);
+Changes in v5:
+* Let the 48 v4 patch series aside, while only resending this patch that
+  triggered a robot warning. Use the use_mag boolean instead of sticking
+  to tscmag_wires which was not optimal anyway, silencing the 'not used'
+  warning while keeping the code simple and clear.
+
+Changes in v4:
+* R-by/A-by tags added from Tony, Dmitry and Jonathan.
+* Inverted the order of three patches following Jonathan's advice:
+  removing the ENB macro (and related definitions) should be done first,
+  in order to avoid further updates of these useless macros. This lead
+  to the addition of a new patch to first do the removal (which was part
+  of patch "Drop useless definitions from the header" in the first
+  place).
+* Updated the naming of the MFD driver data structure as discussed with
+  Lee.
+* Used the "magnetic stripe reader" wording when appropriate.
+* Created a helper using the compatible to determine if there is a
+  touchscreen or a magnetic stripe reader in this version of the
+  hardware.
+
+Changes in v3:
+* Rebased on top of v5.15-rc1.
+* R-by/A-by tags added.
+* Light reordering to let the of_put_node() fix to be applied more easily
+* Dropped a patch made useless because of the previous reordering
+* Explained how the tscadc->ctrl variable was used.
+* Fixed a couple of typos.
+* Included the change for the HZ macro.
+* Went further in the BIT()/FIELD_PREP() cleanup.
+* Added maximum definitions for sample delay/open delay.
+* Removed useless definitions.
+* Fixed a couple of rebase conflicts (the series was not bisectable).
+
+Changes in v2:
+* Added various R-by/A-by tags.
+* Various typos & style fixes.
+[Bindings]
+* Included the missing ti,am654-tscadc compatible.
+* Reworded the compatible lines as requested by Jonathan.
+* Reworded the bindings content a little bit as advised by Rob (subnodes
+  being objects, MFD descriptions provided once, status and unused
+  labels removed).
+[SPDX changes]
+* Mentioned that the license macro and the license text matched.
+* Also added an SPDX tag in the MFD header.
+[MFD header]
+* Used the BIT(), GENMASK() and PREP_FIELD() macros when relevant.
+[MFD driver]
+* Did not reordered the variables declared on the probe stack as advised
+  by Jonathan.
+* Added missing of_node_put() calls.
+* Moved the patch changing the place where the main structure is
+  allocated to directly precede the patch using this change.
+* Fixed the driver data wiring (bug happening between ex patches 16 and
+  28).
+* Added a commit just to explain the reordering of the register writes
+  during initialization/resume.
+* Explained the check about 'use_tsc' in the commit message.
+* Added a link to the TRM in a commit message referencing it.
+* Removed the use of the ti,tracks property, used a constant value
+  instead.
+* Dropped the error check when retrieving the "wrong" DT property
+  (coordiante-readouts) which is unused.
+
+Miquel Raynal (48):
+  clk: ti: am43xx: Add clkctrl data for am43xx ADC1
+  dt-bindings: mfd: ti,am3359-tscadc: Add a yaml description for this
+    MFD
+  dt-bindings: touchscreen: ti,am3359-tsc: New yaml description
+  dt-bindings: iio: adc: ti,am3359-adc: New yaml description
+  dt-bindings: touchscreen: ti,am3359-tsc: Remove deprecated text file
+  dt-bindings: mfd: ti,am3359-tscadc: Describe am4372 MFD compatible
+  dt-bindings: iio: adc: ti,am3359-adc: Describe am4372 ADC compatible
+  mfd: ti_am335x_tscadc: Ensure a balanced number of node get/put
+  mfd: ti_am335x_tscadc: Replace license text with SPDX tag
+  mfd: ti_am335x_tscadc: Fix style
+  mfd: ti_am335x_tscadc: Drop extra spacing when declaring stack
+    variables
+  mfd: ti_am335x_tscadc: Get rid of useless gotos
+  mfd: ti_am335x_tscadc: Reword the comment explaining the dividers
+  mfd: ti_am335x_tscadc: Don't search the tree for our clock
+  mfd: ti_am335x_tscadc: Simplify divisor calculation
+  mfd: ti_am335x_tscadc: Move the driver structure allocation earlier
+  mfd: ti_am335x_tscadc: Use driver data
+  mfd: ti_am335x_tscadc: Mimic the probe from resume()
+  mfd: ti_am335x_tscadc: Drop useless variables from the driver
+    structure
+  mfd: ti_am335x_tscadc: Always provide an idle configuration
+  mfd: ti_am335x_tscadc: Reorder the initialization steps
+  mfd: ti_am335x_tscadc: Gather the ctrl register logic in one place
+  mfd: ti_am335x_tscadc: Replace the header license text with SPDX tag
+  mfd: ti_am335x_tscadc: Fix header spacing
+  mfd: ti_am335x_tscadc: Use the new HZ_PER_MHZ macro
+  mfd: ti_am335x_tscadc: Drop unused definitions from the header
+  mfd: ti_am335x_tscadc: Use BIT(), GENMASK() and FIELD_PREP() when
+    relevant
+  mfd: ti_am335x_tscadc: Clarify the maximum values for DT entries
+  mfd: ti_am335x_tscadc: Drop useless definitions from the header
+  mfd: ti_am335x_tscadc: Rename the subsystem enable macro
+  mfd: ti_am335x_tscadc: Add TSC prefix in certain macros
+  mfd: ti_am335x_tscadc: Rename a variable
+  mfd: ti_am335x_tscadc: Fix an error message
+  mfd: ti_am335x_tscadc: Add a boolean to clarify the presence of a
+    touchscreen
+  mfd: ti_am335x_tscadc: Introduce a helper to deal with the type of
+    hardware
+  mfd: ti_am335x_tscadc: Add ADC1/magnetic reader support
+  mfd: ti_am335x_tscadc: Support the correctly spelled DT property
+  iio: adc: ti_am335x_adc: Wait the idle state to avoid stalls
+  iio: adc: ti_am335x_adc: Replace license text with SPDX tag
+  iio: adc: ti_am335x_adc: Fix style
+  iio: adc: ti_am335x_adc: Get rid of useless gotos
+  iio: adc: ti_am335x_adc: Gather the checks on the delays
+  iio: adc: ti_am335x_adc: Add a unit to the timeout delay
+  iio: adc: ti_am335x_adc: Add the scale information
+  iio: adc: ti_am335x_adc: Add the am437x compatible
+  ARM: dts: am437x-cm-t43: Use a correctly spelled DT property
+  ARM: dts: am43xx: Describe the magnetic reader/ADC1 hardware module
+  ARM: dts: am437x-gp-evm: enable ADC1
+
+ .../bindings/iio/adc/ti,am3359-adc.yaml       |  70 ++++++
+ .../input/touchscreen/ti,am3359-tsc.yaml      |  76 ++++++
+ .../bindings/input/touchscreen/ti-tsc-adc.txt |  91 -------
+ .../bindings/mfd/ti,am3359-tscadc.yaml        |  84 +++++++
+ arch/arm/boot/dts/am437x-cm-t43.dts           |   2 +-
+ arch/arm/boot/dts/am437x-gp-evm.dts           |   8 +
+ arch/arm/boot/dts/am437x-l4.dtsi              |  31 ++-
+ arch/arm/boot/dts/am43xx-clocks.dtsi          |   7 +
+ drivers/clk/ti/clk-43xx.c                     |   1 +
+ drivers/iio/adc/ti_am335x_adc.c               | 220 ++++++++++-------
+ drivers/mfd/ti_am335x_tscadc.c                | 233 ++++++++++--------
+ include/dt-bindings/clock/am4.h               |   1 +
+ include/linux/mfd/ti_am335x_tscadc.h          | 119 +++++----
+ 13 files changed, 593 insertions(+), 350 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,am3359-adc.yaml
+ create mode 100644 Documentation/devicetree/bindings/input/touchscreen/ti,am3359-tsc.yaml
+ delete mode 100644 Documentation/devicetree/bindings/input/touchscreen/ti-tsc-adc.txt
+ create mode 100644 Documentation/devicetree/bindings/mfd/ti,am3359-tscadc.yaml
+
+-- 
+2.27.0
 

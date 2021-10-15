@@ -2,85 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 786C342F4A1
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Oct 2021 16:00:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A93942F705
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Oct 2021 17:32:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240219AbhJOODA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 15 Oct 2021 10:03:00 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:3982 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239577AbhJOODA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Oct 2021 10:03:00 -0400
-Received: from fraeml745-chm.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4HW79d3SY5z67blg;
-        Fri, 15 Oct 2021 21:56:53 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml745-chm.china.huawei.com (10.206.15.226) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.8; Fri, 15 Oct 2021 16:00:51 +0200
-Received: from localhost (10.202.226.41) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.8; Fri, 15 Oct
- 2021 15:00:50 +0100
-Date:   Fri, 15 Oct 2021 15:00:49 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>, <linux-iio@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Ryan Barnett <ryan.barnett@collins.com>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v6 26/48] mfd: ti_am335x_tscadc: Drop unused definitions
- from the header
-Message-ID: <20211015150049.0000673b@Huawei.com>
-In-Reply-To: <20211015081506.933180-27-miquel.raynal@bootlin.com>
-References: <20211015081506.933180-1-miquel.raynal@bootlin.com>
-        <20211015081506.933180-27-miquel.raynal@bootlin.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
+        id S235330AbhJOPfD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 15 Oct 2021 11:35:03 -0400
+Received: from smtp-relay-canonical-0.canonical.com ([185.125.188.120]:60226
+        "EHLO smtp-relay-canonical-0.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232267AbhJOPfD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Oct 2021 11:35:03 -0400
+Received: from localhost (1.general.cking.uk.vpn [10.172.193.212])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 38D8F40037;
+        Fri, 15 Oct 2021 15:32:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1634311975;
+        bh=Tg9IeCCBv4+HHQfWd/djCoMaz0+627g42eee6E57FUI=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type;
+        b=Qauj/MjpinRaX/jHJt4wKqaOIJFslib8A/Nm3D83GO7GpcCEhoMXfHHg877mlwSgO
+         o3vXC+PznKTclx/Jnc3gs5WMPpkVbPdPreDRzbg853Bc6oSSd1GgbbHihnAA78Em72
+         DpSPU68N/6yo7qRBpsR/BBt7OKliNImlR9bHfSztUZ+EgBJcdOG40FJpiVuNHvbFaP
+         TqxW7tu3DfbbEukwRXrOkQhKWRvp3BmFqLn6/knB9tkua2aYP10KjbfxOISopu4E50
+         JGvRDjaKs25lppDMtW9zuxa2hCW2Zv37L2tUZouBKzN5na5TT6IZ4azKQAtH8YCPd9
+         8UQ5Edb5VjxdA==
+From:   Colin King <colin.king@canonical.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Mihail Chindris <mihail.chindris@analog.com>,
+        linux-iio@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] iio: Fix uninitialized variable ret
+Date:   Fri, 15 Oct 2021 16:32:54 +0100
+Message-Id: <20211015153254.33783-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.41]
-X-ClientProxiedBy: lhreml727-chm.china.huawei.com (10.201.108.78) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 15 Oct 2021 10:14:44 +0200
-Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+From: Colin Ian King <colin.king@canonical.com>
 
-> The STEP ENABLE definitions are highly unclear and not used so drop them.
-> 
-> Suggested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+When !iio_buffer_space_available(rb) is true and signal_pending(current)
+is false the end of the do-while loop is reached and the uninitialized
+variable ret is zero checked. Fix this by initializing variable ret to
+zero.
 
-Thanks for tidying that up.
+Addresses-Coverity: ("Uninitialized scalar variable")
+Fixes: ffabbffd40f2 ("iio: Add output buffer support")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/iio/industrialio-buffer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> ---
->  include/linux/mfd/ti_am335x_tscadc.h | 7 -------
->  1 file changed, 7 deletions(-)
-> 
-> diff --git a/include/linux/mfd/ti_am335x_tscadc.h b/include/linux/mfd/ti_am335x_tscadc.h
-> index a85643677bef..1cd8cd34f2b7 100644
-> --- a/include/linux/mfd/ti_am335x_tscadc.h
-> +++ b/include/linux/mfd/ti_am335x_tscadc.h
-> @@ -39,13 +39,6 @@
->  /* IRQ wakeup enable */
->  #define IRQWKUP_ENB		BIT(0)
->  
-> -/* Step Enable */
-> -#define STEPENB_MASK		(0x1FFFF << 0)
-> -#define STEPENB(val)		((val) << 0)
-> -#define ENB(val)		(1 << (val))
-> -#define STPENB_STEPENB		STEPENB(0x1FFFF)
-> -#define STPENB_STEPENB_TC	STEPENB(0x1FFF)
-> -
->  /* IRQ enable */
->  #define IRQENB_HW_PEN		BIT(0)
->  #define IRQENB_EOS		BIT(1)
+diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+index b884d78657cb..c97fb8462395 100644
+--- a/drivers/iio/industrialio-buffer.c
++++ b/drivers/iio/industrialio-buffer.c
+@@ -179,7 +179,7 @@ static ssize_t iio_buffer_write(struct file *filp, const char __user *buf,
+ 	struct iio_buffer *rb = ib->buffer;
+ 	struct iio_dev *indio_dev = ib->indio_dev;
+ 	DEFINE_WAIT_FUNC(wait, woken_wake_function);
+-	int ret;
++	int ret = 0;
+ 	size_t written;
+ 
+ 	if (!indio_dev->info)
+-- 
+2.32.0
 

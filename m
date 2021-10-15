@@ -2,27 +2,27 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A95942F42F
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Oct 2021 15:48:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21F4642F43F
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Oct 2021 15:52:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239987AbhJONu1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 15 Oct 2021 09:50:27 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:3980 "EHLO
+        id S240081AbhJONyD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 15 Oct 2021 09:54:03 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:3981 "EHLO
         frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239718AbhJONu0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Oct 2021 09:50:26 -0400
-Received: from fraeml742-chm.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4HW6wJ4zr0z67QNS;
-        Fri, 15 Oct 2021 21:45:20 +0800 (CST)
+        with ESMTP id S240090AbhJONyA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Oct 2021 09:54:00 -0400
+Received: from fraeml738-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4HW6zh0ZF9z67bh2;
+        Fri, 15 Oct 2021 21:48:16 +0800 (CST)
 Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml742-chm.china.huawei.com (10.206.15.223) with Microsoft SMTP Server
+ fraeml738-chm.china.huawei.com (10.206.15.219) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.8; Fri, 15 Oct 2021 15:48:18 +0200
+ 15.1.2308.8; Fri, 15 Oct 2021 15:51:52 +0200
 Received: from localhost (10.202.226.41) by lhreml710-chm.china.huawei.com
  (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.8; Fri, 15 Oct
- 2021 14:48:17 +0100
-Date:   Fri, 15 Oct 2021 14:48:16 +0100
+ 2021 14:51:51 +0100
+Date:   Fri, 15 Oct 2021 14:51:50 +0100
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To:     Qing Wang <wangqing@vivo.com>
 CC:     Jiri Kosina <jikos@kernel.org>,
@@ -33,12 +33,12 @@ CC:     Jiri Kosina <jikos@kernel.org>,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         <linux-input@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH V2 4/5] hid-sensor: replace snprintf in show functions
+Subject: Re: [PATCH V2 1/5] hid-lenovo: replace snprintf in show functions
  with sysfs_emit
-Message-ID: <20211015144816.0000520f@Huawei.com>
-In-Reply-To: <1634296054-6971-5-git-send-email-wangqing@vivo.com>
+Message-ID: <20211015145150.0000006e@Huawei.com>
+In-Reply-To: <1634296054-6971-2-git-send-email-wangqing@vivo.com>
 References: <1634296054-6971-1-git-send-email-wangqing@vivo.com>
-        <1634296054-6971-5-git-send-email-wangqing@vivo.com>
+        <1634296054-6971-2-git-send-email-wangqing@vivo.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
 MIME-Version: 1.0
@@ -52,7 +52,7 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 15 Oct 2021 04:07:31 -0700
+On Fri, 15 Oct 2021 04:07:28 -0700
 Qing Wang <wangqing@vivo.com> wrote:
 
 > show() should not use snprintf() when formatting the value to be returned 
@@ -65,30 +65,107 @@ Qing Wang <wangqing@vivo.com> wrote:
 > Use sysfs_emit() instead of scnprintf() makes more sense.
 > 
 > Signed-off-by: Qing Wang <wangqing@vivo.com>
-> ---
->  drivers/hid/hid-sensor-custom.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/hid/hid-sensor-custom.c b/drivers/hid/hid-sensor-custom.c
-> index 32c2306..a46481d6 100644
-> --- a/drivers/hid/hid-sensor-custom.c
-> +++ b/drivers/hid/hid-sensor-custom.c
-> @@ -371,7 +371,7 @@ static ssize_t show_value(struct device *dev, struct device_attribute *attr,
->  				     sizeof(struct hid_custom_usage_desc),
->  				     usage_id_cmp);
->  		if (usage_desc)
-> -			return snprintf(buf, PAGE_SIZE, "%s\n",
-> +			return sysfs_emit(buf, "%s\n",
->  					usage_desc->desc);
 
-Now easily short enough that this can go on one line.
+Hi,
 
->  		else
->  			return sprintf(buf, "not-specified\n");
-Whilst of course not necessary, it might be nicer to use sysfs_emit here as well for
-consistency.
+A few places where it makes sense to tidy up the line breaks.
 
-Otherwise looks good to me.
+The benefit of the change in general is fairly minor given none
+of the cases here can cause problems, but I guess it is worthwhile
+as warning suppression and general tidiness improvement.
 
 Jonathan
+
+> ---
+>  drivers/hid/hid-lenovo.c | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/hid/hid-lenovo.c b/drivers/hid/hid-lenovo.c
+> index 93b1f93..086a7ae 100644
+> --- a/drivers/hid/hid-lenovo.c
+> +++ b/drivers/hid/hid-lenovo.c
+> @@ -400,7 +400,7 @@ static ssize_t attr_fn_lock_show(struct device *dev,
+>  	struct hid_device *hdev = to_hid_device(dev);
+>  	struct lenovo_drvdata *data = hid_get_drvdata(hdev);
+>  
+> -	return snprintf(buf, PAGE_SIZE, "%u\n", data->fn_lock);
+> +	return sysfs_emit(buf, "%u\n", data->fn_lock);
+>  }
+>  
+>  static ssize_t attr_fn_lock_store(struct device *dev,
+> @@ -442,7 +442,7 @@ static ssize_t attr_sensitivity_show_cptkbd(struct device *dev,
+>  	struct hid_device *hdev = to_hid_device(dev);
+>  	struct lenovo_drvdata *cptkbd_data = hid_get_drvdata(hdev);
+>  
+> -	return snprintf(buf, PAGE_SIZE, "%u\n",
+> +	return sysfs_emit(buf, "%u\n",
+>  		cptkbd_data->sensitivity);
+
+As below, whilst here tidy this up to be one line.
+
+>  }
+>  
+> @@ -603,7 +603,7 @@ static ssize_t attr_press_to_select_show_tpkbd(struct device *dev,
+>  	struct hid_device *hdev = to_hid_device(dev);
+>  	struct lenovo_drvdata *data_pointer = hid_get_drvdata(hdev);
+>  
+> -	return snprintf(buf, PAGE_SIZE, "%u\n", data_pointer->press_to_select);
+> +	return sysfs_emit(buf, "%u\n", data_pointer->press_to_select);
+>  }
+>  
+>  static ssize_t attr_press_to_select_store_tpkbd(struct device *dev,
+> @@ -633,7 +633,7 @@ static ssize_t attr_dragging_show_tpkbd(struct device *dev,
+>  	struct hid_device *hdev = to_hid_device(dev);
+>  	struct lenovo_drvdata *data_pointer = hid_get_drvdata(hdev);
+>  
+> -	return snprintf(buf, PAGE_SIZE, "%u\n", data_pointer->dragging);
+> +	return sysfs_emit(buf, "%u\n", data_pointer->dragging);
+>  }
+>  
+>  static ssize_t attr_dragging_store_tpkbd(struct device *dev,
+> @@ -663,7 +663,7 @@ static ssize_t attr_release_to_select_show_tpkbd(struct device *dev,
+>  	struct hid_device *hdev = to_hid_device(dev);
+>  	struct lenovo_drvdata *data_pointer = hid_get_drvdata(hdev);
+>  
+> -	return snprintf(buf, PAGE_SIZE, "%u\n", data_pointer->release_to_select);
+> +	return sysfs_emit(buf, "%u\n", data_pointer->release_to_select);
+>  }
+>  
+>  static ssize_t attr_release_to_select_store_tpkbd(struct device *dev,
+> @@ -693,7 +693,7 @@ static ssize_t attr_select_right_show_tpkbd(struct device *dev,
+>  	struct hid_device *hdev = to_hid_device(dev);
+>  	struct lenovo_drvdata *data_pointer = hid_get_drvdata(hdev);
+>  
+> -	return snprintf(buf, PAGE_SIZE, "%u\n", data_pointer->select_right);
+> +	return sysfs_emit(buf, "%u\n", data_pointer->select_right);
+>  }
+>  
+>  static ssize_t attr_select_right_store_tpkbd(struct device *dev,
+> @@ -723,7 +723,7 @@ static ssize_t attr_sensitivity_show_tpkbd(struct device *dev,
+>  	struct hid_device *hdev = to_hid_device(dev);
+>  	struct lenovo_drvdata *data_pointer = hid_get_drvdata(hdev);
+>  
+> -	return snprintf(buf, PAGE_SIZE, "%u\n",
+> +	return sysfs_emit(buf, "%u\n",
+>  		data_pointer->sensitivity);
+Perhaps put this on one line?  It fit before the change of course, but
+as you are touching the code, might as well tidy that up.
+
+>  }
+>  
+> @@ -752,7 +752,7 @@ static ssize_t attr_press_speed_show_tpkbd(struct device *dev,
+>  	struct hid_device *hdev = to_hid_device(dev);
+>  	struct lenovo_drvdata *data_pointer = hid_get_drvdata(hdev);
+>  
+> -	return snprintf(buf, PAGE_SIZE, "%u\n",
+> +	return sysfs_emit(buf, "%u\n",
+>  		data_pointer->press_speed);
+Same here.
+
+Thanks,
+
+Jonathan
+
+>  }
+>  
 

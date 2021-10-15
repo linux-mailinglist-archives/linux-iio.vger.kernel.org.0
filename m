@@ -2,42 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC32642EF50
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Oct 2021 13:07:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4121C42EF53
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Oct 2021 13:08:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238248AbhJOLKA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 15 Oct 2021 07:10:00 -0400
+        id S238301AbhJOLKC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 15 Oct 2021 07:10:02 -0400
 Received: from mail-eopbgr1300118.outbound.protection.outlook.com ([40.107.130.118]:14625
         "EHLO APC01-HK2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S238226AbhJOLKA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 15 Oct 2021 07:10:00 -0400
+        id S238235AbhJOLKB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 15 Oct 2021 07:10:01 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IZKA+j6AW0HRi0drmlGaWcoy3A39NUBONlCvdLA+L7ormsT7bcdN15urWTmUl8zDxlAlt+uq1Hm/U3VfWA4Oc+IQa56FJK5mGWXtvENywVIYbQ4TW4E3l7egFmLYWjuIdcRaYHZ115/pEteIQKX22hAuUiTaGlLR/23pdeOP4G7rUAkXTZFfr1geqzgB+w4MDbDhxKszz6RlN6P5UqBE9t2tQublPtyJ7byqIcw7DqJ5AulKH7jPtRWIvCPAzA0nGdrhrJrlr04dAJP2QC+4OQ1T8KCur75Gq61cLU2xvHBfP3FQszkmFA/ZyhReFOjuqWlxLpXPhqiMdZ7O2wPqGw==
+ b=nPJd60d6GNABTUOKGou6wA/88ISaOO+AkfHyXQjCLqwTOecWKC2sqlf72swDm0jvT3DDCnkPWhZoJJe9HVZkaE7nEhrKgvinEZ4KIhv9HS5h/lvew2boDI7QZ5t7TxZCNQeSRkXwWNm3Ub+tBKblMMet5VLCtO/VowZ3AkUufd/1cYmUMEbaR18O2/C8Q5YTgnMkn+5kNXEwvhshsioNMiDWOZnXvJeqNuLgLbwA1bSDE6a/ds0lYifh4JBbAw46dSq0Buf1ZbYW+kb9YqWiqpj/TmwR+f7zg0i6vgsjzpG5b9DK0pS4DdJKyllCK8ooV8YDgwl7S31/0EY0/544uQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gvSfJuAAT7wCh36OnWTf9Rb6V3j/2JcRcU/mITV9go8=;
- b=AqLbjKOrxM0sFQYBvmeihObAJ3mcMucepOgpLazssp/HF+tm4qErIrccRELtqYiebFy2xcB47M+AUze/T/WonEBmYJfXgvCHQ1+ClCdelHWtB/o9Q2p2qLkMGOApoiC+I2JnHjQTm2LLFPFFkpZ6XmsXNmtNe8SoEjMsRptr+HtwiAEjHOk285n9vN4OF1TBngp+dQYYKK+I/MCcwJoqzSindOzR7yARSPSSfN5gGVAPO5zeCCu+U4ESWASfR6ZSRL+otGwuuDAgemMoHYBCFukjfsMNEqVvSVOhzyoe94JAQNYsineeaBNSWE5GM+c8Fx2F8jBE924A9H3sEvG9mw==
+ bh=6P6jGKUJd02VtL2cYBHjUPwk/UcDG5wsCZhY8YShl6Q=;
+ b=WULylvvybvVi48qwvbnCcKZIwXs03Yph82LbqaMKFEfFVo9A+lwhbv2OePBco9Vw9vF1g8uPcWTuTlccNfqgbdR4gHpLxK2GDNkOK/aswSEOaCrM9oYi3RmgvicRGSQTKjFOEsO6t3Lsar45FWYnuac6uEojBJxxVyC83OdG/MiX+hMV81nFFhO3AXapKP/A31BRmvR96mtffRZBkl9MhUNjBniIoq4/+wq0txduiGTN4tiwvq7TH0gf4mSJ3QyN4jJUR4MV/M5dJzei2jBJqYr4tCIzqzbUPcDPyen83/DOQbK8re8O/LBk14+SVNvV7pNMxOVxYolPQScj5Ul3Jg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
  dkim=pass header.d=vivo.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo0.onmicrosoft.com;
  s=selector2-vivo0-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gvSfJuAAT7wCh36OnWTf9Rb6V3j/2JcRcU/mITV9go8=;
- b=im74aStsJaKHd5uRxHkT1jyBCefJ7pvW4zCQHli2Vmtpx30TTdvuwqetYgu2qsAe6S+8e2DWflfapJEBobA5mpxWJL3noAjWi3lZnuNxCtsyf18hpVRsbQtP90XNRtdI/UGOZdsraCjDIGmczYMrzvbUVW9RzxhXej5wfqfs3Ew=
+ bh=6P6jGKUJd02VtL2cYBHjUPwk/UcDG5wsCZhY8YShl6Q=;
+ b=EXw65qJE9azB6oXFaHyEB7k4/W1s0Q6H+a+TkkZDe2ZOKyPFB4G5NmN4uVR0GN3N0ag6uMhnb+fCm+Ocitj2wNCfQhCtiDFDiBMzu7YqIVp4Hy5Xjclu6IYBgb33Xp34nRJN5V3EsiGI1feOQkG+QTWKxAwYzea42Jyym1m+CJU=
 Authentication-Results: kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=none action=none header.from=vivo.com;
 Received: from SL2PR06MB3082.apcprd06.prod.outlook.com (2603:1096:100:37::17)
  by SL2PR06MB3212.apcprd06.prod.outlook.com (2603:1096:100:3b::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4608.17; Fri, 15 Oct
- 2021 11:07:50 +0000
+ 2021 11:07:52 +0000
 Received: from SL2PR06MB3082.apcprd06.prod.outlook.com
  ([fe80::4c9b:b71f:fb67:6414]) by SL2PR06MB3082.apcprd06.prod.outlook.com
  ([fe80::4c9b:b71f:fb67:6414%6]) with mapi id 15.20.4608.017; Fri, 15 Oct 2021
- 11:07:50 +0000
+ 11:07:52 +0000
 From:   Qing Wang <wangqing@vivo.com>
 To:     Jiri Kosina <jikos@kernel.org>,
         Benjamin Tissoires <benjamin.tissoires@redhat.com>,
@@ -48,93 +48,158 @@ To:     Jiri Kosina <jikos@kernel.org>,
         linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-iio@vger.kernel.org
 Cc:     Qing Wang <wangqing@vivo.com>
-Subject: [PATCH V2 0/5] hid: replace snprintf in show functions with sysfs_emit
-Date:   Fri, 15 Oct 2021 04:07:27 -0700
-Message-Id: <1634296054-6971-1-git-send-email-wangqing@vivo.com>
+Subject: [PATCH V2 1/5] hid-lenovo: replace snprintf in show functions with sysfs_emit
+Date:   Fri, 15 Oct 2021 04:07:28 -0700
+Message-Id: <1634296054-6971-2-git-send-email-wangqing@vivo.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1634296054-6971-1-git-send-email-wangqing@vivo.com>
+References: <1634296054-6971-1-git-send-email-wangqing@vivo.com>
 Content-Type: text/plain
 X-ClientProxiedBy: HK2PR02CA0172.apcprd02.prod.outlook.com
  (2603:1096:201:1f::32) To SL2PR06MB3082.apcprd06.prod.outlook.com
  (2603:1096:100:37::17)
 MIME-Version: 1.0
-Received: from ubuntu.localdomain (103.220.76.181) by HK2PR02CA0172.apcprd02.prod.outlook.com (2603:1096:201:1f::32) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.20.4608.16 via Frontend Transport; Fri, 15 Oct 2021 11:07:49 +0000
+Received: from ubuntu.localdomain (103.220.76.181) by HK2PR02CA0172.apcprd02.prod.outlook.com (2603:1096:201:1f::32) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.20.4608.16 via Frontend Transport; Fri, 15 Oct 2021 11:07:51 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 7c90caca-5c2c-4915-b671-08d98fcc06e2
+X-MS-Office365-Filtering-Correlation-Id: 3fc0249c-5ca3-4d65-2c4e-08d98fcc081d
 X-MS-TrafficTypeDiagnostic: SL2PR06MB3212:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <SL2PR06MB321246E8F25A9EBC905FE664BDB99@SL2PR06MB3212.apcprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:7219;
+X-Microsoft-Antispam-PRVS: <SL2PR06MB32127CB30DF7115E82B7F7C7BDB99@SL2PR06MB3212.apcprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:983;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: sEXGBMKHg6UTZWbquFZ33LafLkYV7Rzxfu0jNvxn3wD+RjOb8PYevNyT1l8BpOe+4fmFGirhKEKfoNLkT9JrdWwg65MiFVTrqEnw76ekIoVTHxY84w4GdHw6RKmsXE2dHpw4m9uTwCS9eA8ZnX9wXy1/oTWCGNLTjMFmfYQFZxc+ZhM23vkT5ORvFlpbNjJgypO/zQJqU+le1g2JxbJ/VRI7V2P3suF4QmCbCr735ABxT1Sj0uzS0rVik+nOo0yrIpOV6bwdw16Y+r9X52Kw/l7flufNgaxBgBIH+74So96UB1l2XyP3KyHI07CWFE+N7Qfozkx3fCTUrH6BGUvRoM7JMuRLlF+j4+2EYX70EC+pkVNp7zG2DUzG0KieJEdmDMHW277468nWVQxts2/w0vjcMmIUmOC9cx5vChyXiytxhKvRuWQtASsEVO3YTa2ZwKS8cs7rnQ8+Dynrd0+ik+ckFvN3Tt6lLXkbq/I1J3ppqKRRCli2+8nqAhjazcw8KpbNNKXyiCuDCueumIoMbhF6qWl3jezeJZfRdSpDqvq65jxHAVBgHM85FTHSvCvWF2nkzsNqMHuswDyW/wGM3MI12Qqy1nOgZqjj6dEPyleZwSOawn4fhMIl9vipFox3MK7jKypHMrbHRGLIfOiGphKyY3sWlpVYpjk+UJIFWMAA8MKslgaraCxB/AXn9mX6
+X-Microsoft-Antispam-Message-Info: 4kCBZd3K4CqiAB/HbZP1ZcdLQdBb1YWEAoNf+0G4DJ8wxGqAFJCM6OkMkFZhiTLXLYBaVlYPyhk1HC/gj/BhilVuvfILIryVbibcwEgu3dvAz5RllSGzirpvofJfoGll6PpMtfl//ktZXneBhBiDdn6dB3FwLtBj4xuFTD3XdmgtAla5CDEsP+d1rpK+3EIf8S4oxOR4e6oS1QarnXQCRN0vK1tk4AD/ybPnuo07FDU5gVDe9gqR4MfmJXHToivIJDqTiq3emaeHSVBUQkLMSJJlmTnHAhr5wW7gK95WfR9ESSTmXKM4RmujoKpXlfUd9sFDQ1BKZQEeMd6i3BJDECwuGra4dzfs1QKcmsI1NZooiTt15gKlLgWC0/0sWH9FN83L6PbfKsgiKmFuCfZiSsqZS7elyNm6yBwTHDHAb251kEQ1wiFIN6WnYMFTc4q9mrJyBuxtPnuUZOfpYMYE6c6xX4pmNlxoyB78eYwWQZLf9DXArioXJLgUZKMA0VU0LDiEh2/jW1zsveJ0c9kQO7uwMwxm/UOt+31u8z8e4CEYFnI5KlVDGLdWb51KjlPGcDg8+/SA8KFwKjXRq5CrhEVXV+4TIcOAXiQBtg68ylMKgB2ncAWvd3uICq2lvm7bAAcV8eWml7qL1DFeK9irdkEWeqhonN6CDaKJQ3KxEIMmt5ktBOeHxlRSRK9B/dOIgY5zJgepAcFWjoluoPrxJA==
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SL2PR06MB3082.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(956004)(508600001)(2616005)(6506007)(110136005)(316002)(107886003)(86362001)(4326008)(5660300002)(2906002)(6486002)(26005)(52116002)(8676002)(8936002)(6512007)(186003)(38350700002)(38100700002)(83380400001)(6666004)(66946007)(36756003)(66556008)(66476007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?yNyhH2ny8I8QvOJzQD0bhKGUpXOEj5PFNMM37SYcxeiNHJFJThMU59W+niSR?=
- =?us-ascii?Q?m7d4pfveMifkJtRc/NagGU0A9maq8SUAYyhoZPDRSYXWbYKzwtdS5eTI+gpN?=
- =?us-ascii?Q?UawWWe0fLxTJEhH6/Xd5QEDvebbOdr+A6AiLpvdeSEnBokJP75chmKy2/A7E?=
- =?us-ascii?Q?odq/osPcMY2Xs8hGiC04Kfazc7DV4G41soFiRSIiPnISEJx6hASGPmJ5vGXp?=
- =?us-ascii?Q?EusjUvPFAwxGDzNME5hHeJCf2w0a+42Tr5p9I1eoALGbjoEDT6MigrZZzJVQ?=
- =?us-ascii?Q?aVXBrNnLuM83idzZwmO+g6gx+U9neCBIrnU97efbeGYR1rlws+zhSZL7t1lh?=
- =?us-ascii?Q?VIIF4SVRc7mxbrpNLbHVYPVjVYO4u2O2B6edcHGMTs0RQbMq+SYQDUAMtXTV?=
- =?us-ascii?Q?pfPyGQKTbUpvRO5JNotgv7jD4OncaZFt8PDFwBUhMZOLhLjQxfUWu8KpswQO?=
- =?us-ascii?Q?2pVB3vqG+zN0ilL7aASLhgI1KvANNUoe31qQhj3YPwO0Rm/zKO45sawpDBep?=
- =?us-ascii?Q?jAguQH7J4Eh8WASzeO3yf3liDmwFBaRvPrY7i2ECS7O0r3dYx8roGw5IXbBY?=
- =?us-ascii?Q?NbOy/3ydwnyrGcT7TEAoarEJwIbzRl2CA9JzUoyt4ZmESuN0bT+uKVtpDm4H?=
- =?us-ascii?Q?18UPw9MEAv3XHXbbM0jVT6xXcdad/Sr+5koSdDTVijWBeD8Zk5+T2K9e/ioa?=
- =?us-ascii?Q?JAX286paSftQkylO+qaBOEL9AlFFcweWmeQ/lBAFmXEmHtZ1BoADSBX24fSV?=
- =?us-ascii?Q?xsk5B6l9r/C9CllOY5EmJJ1OTKyyAnpwITOhJql80WzmomsDe/VSKUh1moti?=
- =?us-ascii?Q?/Yf4A98h4qvzLbCblWCovX0yKloJEarLdXzAVBz1RrZdSQEdDSYE62SujHpf?=
- =?us-ascii?Q?V6w1Cy8e/6VLnBOD3X4kyOag8Ouet/e0FxcgTwuxqK9xv+vS8EYFr4W2O1lB?=
- =?us-ascii?Q?RZCJkdCLrizg1ddqRvwidwsu5sJwgYyGlDNu/LnnJXnAl6TsSpa5c+1b/DWt?=
- =?us-ascii?Q?VJVsO65jeyqmatfQ8xhCo4gdd8f1WK7dwxQhvVqrL06r0kN+PjIGpDdRLhHo?=
- =?us-ascii?Q?HJdJuWBANo8oqToeoNlncQToASz36Z/BC5/FDARZ3v9gFFDXOVNXNVo4nSu/?=
- =?us-ascii?Q?BM1EOxwqCN68XgjG3ropi9yZW+36bQONL6HK4RpZA+ZB1L41DdkAfTaeV8ss?=
- =?us-ascii?Q?TkUkrnNdmVrdiPUKX1iP3qIIUFJV6HsTS0HpTRE9tHpRLCULX26nv3QJdRRH?=
- =?us-ascii?Q?52c0MSh9Z+i4W7zwXXwco5hNzgfsA2MjunRcG/6v1gl1Fo2qsiGmAkV0ZAhq?=
- =?us-ascii?Q?p1OoHd+E+AFOm2eY04RLkCnv?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?27dZtgo87zN2D0eC/wQVoiOdh9gSGB37VGIi2Cc7TyerQh4MOg3El1ofA39Q?=
+ =?us-ascii?Q?CGdWqlSMnbSVH7YAPJcdNUmXqWHt/RpMBxekwGv9JqEmKzb88y/1OfT0MG92?=
+ =?us-ascii?Q?w0R89p07LINq0sbEj/dA9Q5r0RHbWTzqs2y68j1M6t2VrMsHDvRlnbrNJSgt?=
+ =?us-ascii?Q?x8BFsgJTFL+hbWvCENyHR9SUjz3BEQ2m/bAPY8RpQUh4sUSqUhUJAbo9uSna?=
+ =?us-ascii?Q?q0hCtYekOq4S99YxK/TssW9a1dALGuYgyqx8z2uJG+4sX3qSCeLi2kWuojlI?=
+ =?us-ascii?Q?YIs5Fy+MVp+Af1UzvWFQmknjfFXoxSZrS7PC49j815Btq12Zv0eozO2SNMmk?=
+ =?us-ascii?Q?mtD3FpFKaDRA8TGQlSekNPctXY+xmJ4b51IMIJ+JiGWNuyiMyWvNErIw9ai+?=
+ =?us-ascii?Q?s6UnRJQC96yjI6uiwM3QE2kqmET+UtPtBaJgxKI3ZszbBxvO2rwPNWfCJUWd?=
+ =?us-ascii?Q?swG6igpHhaSdfnVOkV0t52bUMlw0DPmoZbUKirAQGb0ma/tx3nq19L4G0zUY?=
+ =?us-ascii?Q?H3yFmdcqd/IM45uYUOIXeK/8HRdAeJyLQCEsmwvZZrA2bEC4aEZWSCd1d8fG?=
+ =?us-ascii?Q?61ggAtBLEmgcyKGve00vbRQkZpLh2zAUPkODDhoW2E59vFr3r6HheZ7ApS7p?=
+ =?us-ascii?Q?E5fRjPU2YhmF4n7M6bMS3TDYy0rTM2SkxpnpRYLCcD87xtxCqKS1O6TLIlW8?=
+ =?us-ascii?Q?U0Bj3Ew9m2b40BMc8LPJSi+ppkmupBQ0c8Xdd2Q4W8RlP1RRTnMYO/KoxABN?=
+ =?us-ascii?Q?H/YdZOvQR8MnbP825fyV0RB3oCbd2dpYS+BaZJcZZPVbl16c/kTbBtB+t89t?=
+ =?us-ascii?Q?8iN/aR2qaPaxBxpf4lNv/wx7Z/ZlDsKITctHM6MyoPHT9Mz1/ft/C0Vrmiji?=
+ =?us-ascii?Q?oRy6+vmp8gxpU5O32UewUxHOpH8cuEbrWUmztcB0bvTHYiVLxixbNKO+IjeD?=
+ =?us-ascii?Q?dO0LVf7VQ1jSntPYcwYT1eMqHUrIjOvvvO9RELrzash4K0qnm/BC82vJDna5?=
+ =?us-ascii?Q?+8dUxz7YhD4N/oyHkQ8iN+Q0oJqSC6EtUkyiN7XCSsAKhxzsGnSEA7vaBnqd?=
+ =?us-ascii?Q?wuZS4+3l0ifgy9DUo9LYpuKl70lxEdMT9wtEKLQtEsjTXSDTUstWaW5ki14b?=
+ =?us-ascii?Q?JyITrZzZOMDtPcfxLKQ3ANd5cyY/2aNfdcJ7XkNuP+s7FZhDnrS3JqjjGPJG?=
+ =?us-ascii?Q?geidC2OjVHjyNfzMLm8BxHuzzQ1awq+zXekVs1prVgMt/tWkXJhDYkHAksdv?=
+ =?us-ascii?Q?bO5TDKfcK/vNU7HYrTAOWi6ioGTAbUT9ESlRwWwnYxYYeAX9f7pUyMW4VFza?=
+ =?us-ascii?Q?g/nFgwhObSKPfuGjHa8LbDCY?=
 X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7c90caca-5c2c-4915-b671-08d98fcc06e2
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3fc0249c-5ca3-4d65-2c4e-08d98fcc081d
 X-MS-Exchange-CrossTenant-AuthSource: SL2PR06MB3082.apcprd06.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2021 11:07:50.3476
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2021 11:07:52.3285
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Pqzm7MLeW2m+ZSlvmwKKHFFXjEvjWgTrIc2u3hszTrnCHlC2bi7lexWilbiuA+wzoRuNlfquFBbrKZE/dhr1JA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: Xf476o5mdiF9CpfcFyBbdLGgr5112tyXjSGO4FrywaIUpAtHD1XLJlm+bON18wRrFqR2JdJWiOtNvWDbdLSJIA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SL2PR06MB3212
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-According to Documentation/filesystems/sysfs.txt:
-show() methods of device attributes should return the number
-of bytes printed into the buffer. This is the return value of 
-scnprintf(). snprintf() returns the length the resulting string.
+show() should not use snprintf() when formatting the value to be returned 
+to user space, snprintf() returns the length the resulting string and 
+scnprintf() returns the number of bytes printed into the buffer.
 
-So, show() should not use snprintf() when formatting 
-the value to be returned to user space. 
-Also, use sysfs_emit directly makes more sense.
+Fix the coccicheck warnings:
+WARNING: use scnprintf or sprintf.
 
-Qing Wang (5):
-  hid-lenovo: replace snprintf in show functions with sysfs_emit
-  hid-picolcd: replace snprintf in show functions with sysfs_emit
-  hid-roccat: replace snprintf in show functions with sysfs_emit
-  hid-sensor: replace snprintf in show functions with sysfs_emit
-  hid-sony: replace snprintf in show functions with sysfs_emit
+Use sysfs_emit() instead of scnprintf() makes more sense.
 
- drivers/hid/hid-lenovo.c          | 16 ++++++++--------
- drivers/hid/hid-picolcd_core.c    |  6 +++---
- drivers/hid/hid-roccat-isku.c     |  2 +-
- drivers/hid/hid-roccat-kone.c     | 12 ++++++------
- drivers/hid/hid-roccat-koneplus.c |  4 ++--
- drivers/hid/hid-roccat-kovaplus.c | 10 +++++-----
- drivers/hid/hid-roccat-pyra.c     |  6 +++---
- drivers/hid/hid-sensor-custom.c   |  2 +-
- drivers/hid/hid-sony.c            |  6 +++---
- 9 files changed, 32 insertions(+), 32 deletions(-)
+Signed-off-by: Qing Wang <wangqing@vivo.com>
+---
+ drivers/hid/hid-lenovo.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
+diff --git a/drivers/hid/hid-lenovo.c b/drivers/hid/hid-lenovo.c
+index 93b1f93..086a7ae 100644
+--- a/drivers/hid/hid-lenovo.c
++++ b/drivers/hid/hid-lenovo.c
+@@ -400,7 +400,7 @@ static ssize_t attr_fn_lock_show(struct device *dev,
+ 	struct hid_device *hdev = to_hid_device(dev);
+ 	struct lenovo_drvdata *data = hid_get_drvdata(hdev);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%u\n", data->fn_lock);
++	return sysfs_emit(buf, "%u\n", data->fn_lock);
+ }
+ 
+ static ssize_t attr_fn_lock_store(struct device *dev,
+@@ -442,7 +442,7 @@ static ssize_t attr_sensitivity_show_cptkbd(struct device *dev,
+ 	struct hid_device *hdev = to_hid_device(dev);
+ 	struct lenovo_drvdata *cptkbd_data = hid_get_drvdata(hdev);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%u\n",
++	return sysfs_emit(buf, "%u\n",
+ 		cptkbd_data->sensitivity);
+ }
+ 
+@@ -603,7 +603,7 @@ static ssize_t attr_press_to_select_show_tpkbd(struct device *dev,
+ 	struct hid_device *hdev = to_hid_device(dev);
+ 	struct lenovo_drvdata *data_pointer = hid_get_drvdata(hdev);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%u\n", data_pointer->press_to_select);
++	return sysfs_emit(buf, "%u\n", data_pointer->press_to_select);
+ }
+ 
+ static ssize_t attr_press_to_select_store_tpkbd(struct device *dev,
+@@ -633,7 +633,7 @@ static ssize_t attr_dragging_show_tpkbd(struct device *dev,
+ 	struct hid_device *hdev = to_hid_device(dev);
+ 	struct lenovo_drvdata *data_pointer = hid_get_drvdata(hdev);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%u\n", data_pointer->dragging);
++	return sysfs_emit(buf, "%u\n", data_pointer->dragging);
+ }
+ 
+ static ssize_t attr_dragging_store_tpkbd(struct device *dev,
+@@ -663,7 +663,7 @@ static ssize_t attr_release_to_select_show_tpkbd(struct device *dev,
+ 	struct hid_device *hdev = to_hid_device(dev);
+ 	struct lenovo_drvdata *data_pointer = hid_get_drvdata(hdev);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%u\n", data_pointer->release_to_select);
++	return sysfs_emit(buf, "%u\n", data_pointer->release_to_select);
+ }
+ 
+ static ssize_t attr_release_to_select_store_tpkbd(struct device *dev,
+@@ -693,7 +693,7 @@ static ssize_t attr_select_right_show_tpkbd(struct device *dev,
+ 	struct hid_device *hdev = to_hid_device(dev);
+ 	struct lenovo_drvdata *data_pointer = hid_get_drvdata(hdev);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%u\n", data_pointer->select_right);
++	return sysfs_emit(buf, "%u\n", data_pointer->select_right);
+ }
+ 
+ static ssize_t attr_select_right_store_tpkbd(struct device *dev,
+@@ -723,7 +723,7 @@ static ssize_t attr_sensitivity_show_tpkbd(struct device *dev,
+ 	struct hid_device *hdev = to_hid_device(dev);
+ 	struct lenovo_drvdata *data_pointer = hid_get_drvdata(hdev);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%u\n",
++	return sysfs_emit(buf, "%u\n",
+ 		data_pointer->sensitivity);
+ }
+ 
+@@ -752,7 +752,7 @@ static ssize_t attr_press_speed_show_tpkbd(struct device *dev,
+ 	struct hid_device *hdev = to_hid_device(dev);
+ 	struct lenovo_drvdata *data_pointer = hid_get_drvdata(hdev);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%u\n",
++	return sysfs_emit(buf, "%u\n",
+ 		data_pointer->press_speed);
+ }
+ 
 -- 
 2.7.4
 

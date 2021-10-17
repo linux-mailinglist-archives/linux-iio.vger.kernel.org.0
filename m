@@ -2,60 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77D1643097A
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Oct 2021 15:51:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0349430970
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Oct 2021 15:47:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343774AbhJQNxy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 17 Oct 2021 09:53:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57770 "EHLO mail.kernel.org"
+        id S242471AbhJQNtt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 17 Oct 2021 09:49:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54300 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242336AbhJQNxy (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 17 Oct 2021 09:53:54 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0D46461027;
-        Sun, 17 Oct 2021 13:51:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1634478704;
-        bh=wJArX8ewuoelcOM089foeU0E8LxBl4M7aRz9fvqueNw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=BhXRwrmqyiUM3WRs8L1qda973z8Z3zVvIVtVapURG6io1+iA1xxt7uNRbZLGNcEzU
-         yAcnJtEl3vN9HOOWs8UEYWCEHF+oM0roScDnXQQS2jrodW3uN0dCdvXh6zxd3OOPuE
-         c3pXxNuNi35IWUHhgfdE54ORfkgHC8NyDu5cPcF0=
-Date:   Sun, 17 Oct 2021 15:51:42 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     jic23@kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-        kernel@pengutronix.de, a.fatoum@pengutronix.de,
-        kamel.bouhara@bootlin.com, gwendal@chromium.org,
-        alexandre.belloni@bootlin.com, david@lechnology.com,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
-        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
-        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com,
-        o.rempel@pengutronix.de, jarkko.nikula@linux.intel.com,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Subject: Re: [PATCH v17 5/9] counter: Implement signalZ_action_component_id
- sysfs attribute
-Message-ID: <YWwqbmSoLFxiKDTa@kroah.com>
-References: <cover.1632884256.git.vilhelm.gray@gmail.com>
- <a6c81b2f1f5d0b8d59b1ebe4f0fed04914b07547.1632884256.git.vilhelm.gray@gmail.com>
+        id S236636AbhJQNts (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 17 Oct 2021 09:49:48 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B905160FD8;
+        Sun, 17 Oct 2021 13:47:37 +0000 (UTC)
+Date:   Sun, 17 Oct 2021 14:51:52 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Yang Yingliang <yangyingliang@huawei.com>
+Cc:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <lars@metafoo.de>, <ardeleanalex@gmail.com>
+Subject: Re: [PATCH] iio: buffer: check return value of kstrdup_const()
+Message-ID: <20211017145152.4a174093@jic23-huawei>
+In-Reply-To: <20211013040438.1689277-1-yangyingliang@huawei.com>
+References: <20211013040438.1689277-1-yangyingliang@huawei.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a6c81b2f1f5d0b8d59b1ebe4f0fed04914b07547.1632884256.git.vilhelm.gray@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Sep 29, 2021 at 12:16:02PM +0900, William Breathitt Gray wrote:
-> +static ssize_t counter_comp_id_show(struct device *dev,
-> +				    struct device_attribute *attr, char *buf)
-> +{
-> +	const size_t id = (size_t)to_counter_attribute(attr)->comp.priv;
-> +
-> +	return sprintf(buf, "%zu\n", id);
+On Wed, 13 Oct 2021 12:04:38 +0800
+Yang Yingliang <yangyingliang@huawei.com> wrote:
 
-sysfs_emit()?
+> Check return value of kstrdup_const() in iio_buffer_wrap_attr(),
+> or it will cause null-ptr-deref in kernfs_name_hash() when calling
+> device_add() as follows:
+> 
+> BUG: kernel NULL pointer dereference, address: 0000000000000000
+> RIP: 0010:strlen+0x0/0x20
+> Call Trace:
+>  kernfs_name_hash+0x22/0x110
+>  kernfs_find_ns+0x11d/0x390
+>  kernfs_remove_by_name_ns+0x3b/0xb0
+>  remove_files.isra.1+0x7b/0x190
+>  internal_create_group+0x7f1/0xbb0
+>  internal_create_groups+0xa3/0x150
+>  device_add+0x8f0/0x2020
+>  cdev_device_add+0xc3/0x160
+>  __iio_device_register+0x1427/0x1b40 [industrialio]
+>  __devm_iio_device_register+0x22/0x80 [industrialio]
+>  adjd_s311_probe+0x195/0x200 [adjd_s311]
+>  i2c_device_probe+0xa07/0xbb0
+> 
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Fixes: 15097c7a1adc ("iio: buffer: wrap all buffer attributes into iio_dev_attr")
+> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 
-> +}
+Wang Wensheng sent another fix for this patch, but as that was missing the iio_attr free
+I have picked up this one.
+
+Applied to the fixes-togreg branch of iio.git and marked for stable.
+
+Thanks,
+
+Jonathan
+
+> ---
+>  drivers/iio/industrialio-buffer.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+> index 5f4bd0b73d03..547a92d469ae 100644
+> --- a/drivers/iio/industrialio-buffer.c
+> +++ b/drivers/iio/industrialio-buffer.c
+> @@ -1312,6 +1312,11 @@ static struct attribute *iio_buffer_wrap_attr(struct iio_buffer *buffer,
+>  	iio_attr->buffer = buffer;
+>  	memcpy(&iio_attr->dev_attr, dattr, sizeof(iio_attr->dev_attr));
+>  	iio_attr->dev_attr.attr.name = kstrdup_const(attr->name, GFP_KERNEL);
+> +	if (!iio_attr->dev_attr.attr.name) {
+> +		kfree(iio_attr);
+> +		return NULL;
+> +	}
 > +
+>  	sysfs_attr_init(&iio_attr->dev_attr.attr);
+>  
+>  	list_add(&iio_attr->l, &buffer->buffer_attr_list);
 

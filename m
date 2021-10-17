@@ -2,68 +2,106 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2631E430883
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Oct 2021 13:52:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF19B430896
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Oct 2021 14:15:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242033AbhJQLyd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 17 Oct 2021 07:54:33 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33748 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236245AbhJQLya (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 17 Oct 2021 07:54:30 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4E70F60527;
-        Sun, 17 Oct 2021 11:52:19 +0000 (UTC)
-Date:   Sun, 17 Oct 2021 12:56:33 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Cai Huoqing <caihuoqing@baidu.com>,
-        Kevin Tsai <ktsai@capellamicro.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 1/4] iio: light: cm3605: Make use of the helper
- function dev_err_probe()
-Message-ID: <20211017125633.0832bcd4@jic23-huawei>
-In-Reply-To: <CACRpkdY0uM4BNapd7XNUhZ5U0sGdP3hu5Tr+dM1jigg5vQ+KDw@mail.gmail.com>
-References: <20211008092656.421-1-caihuoqing@baidu.com>
-        <CACRpkdY0uM4BNapd7XNUhZ5U0sGdP3hu5Tr+dM1jigg5vQ+KDw@mail.gmail.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        id S245621AbhJQMSG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 17 Oct 2021 08:18:06 -0400
+Received: from www381.your-server.de ([78.46.137.84]:55182 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242065AbhJQMSG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 17 Oct 2021 08:18:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+         s=default2002; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:
+        Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References;
+        bh=NiXXpK5slDP9FkP0v/hoiSktqiXPnfA2w/cykvgYQ4E=; b=CaJVbkqg0mWaQv0EBcmmMiyz9P
+        TrzGnS/55W4uvVLJl5H7xwO0TugP01lZyaOf39b2v4FPHAGqrS4wvovQ0Xol2DyI92rDceF9Gm3mS
+        C/G+vCEvNfy8jkrqdL0ptiUuwqRy0gUq17AVRouY5yZpeKH1OPDio5Rx8iFufK9sh+DIGcvynfatB
+        KOj5YEGVeBEdpuJwkJnYkBv5HxZWP0IqGFdfJcOirzrYmccS1b1kPF3TlUDDz1C6Hpyzb33yhhErj
+        9pozjOCUPuRwvLFEm3tqRlgdBTTRIUo/PND5X5qpH7wox/ZtXwvTKWcGIwvtg93VJtUTfouUi3waY
+        rE+HbLyQ==;
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <lars@metafoo.de>)
+        id 1mc551-0004F7-Sm; Sun, 17 Oct 2021 14:15:55 +0200
+Received: from [82.135.83.71] (helo=lars-desktop.fritz.box)
+        by sslproxy03.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1mc551-000One-Nl; Sun, 17 Oct 2021 14:15:55 +0200
+From:   Lars-Peter Clausen <lars@metafoo.de>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH] iio: xilinx-xadc: Remove `irq` field from state struct
+Date:   Sun, 17 Oct 2021 14:15:51 +0200
+Message-Id: <20211017121551.24063-1-lars@metafoo.de>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.103.3/26325/Sun Oct 17 10:17:54 2021)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 13 Oct 2021 01:45:47 +0200
-Linus Walleij <linus.walleij@linaro.org> wrote:
+Since commit 2a9685d1a3b7 ("iio: adc: xilinx: use more devres helpers and
+remove remove()") the `irq` field from XADC driver state struct is only
+used in the `probe()` function.
 
-> On Fri, Oct 8, 2021 at 11:27 AM Cai Huoqing <caihuoqing@baidu.com> wrote:
-> 
-> > When possible use dev_err_probe help to properly deal with the
-> > PROBE_DEFER error, the benefit is that DEFER issue will be logged
-> > in the devices_deferred debugfs file.
-> > Using dev_err_probe() can reduce code size, and the error value
-> > gets printed.
-> >
-> > Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
-> > ---
-> > v2->v3:
-> >         *Handle platform_get_irq() that returns -EPROBE_DEFER.
-> >         *Handle the lack of availability of an IIO channel
-> >          by converting an -ENODEV to an -EPROBE_DEFER.  
-> 
-> This looks good to me!
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> 
-> Yours,
-> Linus Walleij
+Use the local `irq` variable throughout the `probe()` function and remove
+the now unused field from the state struct.
 
-Patches 1 and 3 applied (2 and 4 were applied at v2).
+Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+---
+ drivers/iio/adc/xilinx-xadc-core.c | 5 ++---
+ drivers/iio/adc/xilinx-xadc.h      | 1 -
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-Thanks,
+diff --git a/drivers/iio/adc/xilinx-xadc-core.c b/drivers/iio/adc/xilinx-xadc-core.c
+index 198d2916266d..83bea5ef765d 100644
+--- a/drivers/iio/adc/xilinx-xadc-core.c
++++ b/drivers/iio/adc/xilinx-xadc-core.c
+@@ -1332,7 +1332,6 @@ static int xadc_probe(struct platform_device *pdev)
+ 
+ 	xadc = iio_priv(indio_dev);
+ 	xadc->ops = id->data;
+-	xadc->irq = irq;
+ 	init_completion(&xadc->completion);
+ 	mutex_init(&xadc->mutex);
+ 	spin_lock_init(&xadc->lock);
+@@ -1397,7 +1396,7 @@ static int xadc_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 
+-	ret = devm_request_irq(dev, xadc->irq, xadc->ops->interrupt_handler, 0,
++	ret = devm_request_irq(dev, irq, xadc->ops->interrupt_handler, 0,
+ 			       dev_name(dev), indio_dev);
+ 	if (ret)
+ 		return ret;
+@@ -1407,7 +1406,7 @@ static int xadc_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = xadc->ops->setup(pdev, indio_dev, xadc->irq);
++	ret = xadc->ops->setup(pdev, indio_dev, irq);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/iio/adc/xilinx-xadc.h b/drivers/iio/adc/xilinx-xadc.h
+index 8b80195725e9..7d78ce698967 100644
+--- a/drivers/iio/adc/xilinx-xadc.h
++++ b/drivers/iio/adc/xilinx-xadc.h
+@@ -67,7 +67,6 @@ struct xadc {
+ 	spinlock_t lock;
+ 
+ 	struct completion completion;
+-	int irq;
+ };
+ 
+ enum xadc_type {
+-- 
+2.20.1
 
-Jonathan

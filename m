@@ -2,29 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD5FB430A5A
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Oct 2021 18:05:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E66F4430A5C
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Oct 2021 18:07:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237507AbhJQQHJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 17 Oct 2021 12:07:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38676 "EHLO mail.kernel.org"
+        id S241944AbhJQQJT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 17 Oct 2021 12:09:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39268 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241905AbhJQQHJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 17 Oct 2021 12:07:09 -0400
+        id S241905AbhJQQJS (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 17 Oct 2021 12:09:18 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6864161040;
-        Sun, 17 Oct 2021 16:04:58 +0000 (UTC)
-Date:   Sun, 17 Oct 2021 17:09:12 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 4FCC460E96;
+        Sun, 17 Oct 2021 16:07:06 +0000 (UTC)
+Date:   Sun, 17 Oct 2021 17:11:21 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     gavinli@thegavinli.com
-Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
-        Gavin Li <gavin@matician.com>
-Subject: Re: [PATCH] iio: trigger: fix iio_trigger reference leak
-Message-ID: <20211017170912.6ef4a8cb@jic23-huawei>
-In-Reply-To: <20211008083220.3713926-1-gavinli@thegavinli.com>
-References: <20211008083220.3713926-1-gavinli@thegavinli.com>
+To:     Olivier Moysan <olivier.moysan@foss.st.com>
+Cc:     Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>
+Subject: Re: [PATCH v5 0/7] iio: adc: stm32-adc: add internal channels
+ support
+Message-ID: <20211017171121.6f0bdabd@jic23-huawei>
+In-Reply-To: <20211014131228.4692-1-olivier.moysan@foss.st.com>
+References: <20211014131228.4692-1-olivier.moysan@foss.st.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -33,72 +40,56 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri,  8 Oct 2021 01:32:20 -0700
-gavinli@thegavinli.com wrote:
+On Thu, 14 Oct 2021 15:12:21 +0200
+Olivier Moysan <olivier.moysan@foss.st.com> wrote:
 
-> From: Gavin Li <gavin@matician.com>
-> 
-> viio_trigger_alloc() includes a get_device() call added in commit
-> 5f9c035cae back in 2011. While I wasn't able to ascertain why it was
-> added, I've noticed that it does cause a memory leak, especially when
-> rmmod'ing iio modules. Here is a simple module that replicates this
-> issue:
-> 
->     #include <linux/module.h>
->     #include <linux/iio/iio.h>
->     #include <linux/iio/trigger.h>
-> 
->     int my_init(void) {
->         struct iio_trigger *trig = iio_trigger_alloc("leak-trig");
->         if (!trig)
->             return -ENOMEM;
-> 
->         printk("iio-leak: %u uses at A\n", kref_read(&trig->dev.kobj.kref));
->         iio_trigger_free(trig);
->         printk("iio-leak: %u uses at B\n", kref_read(&trig->dev.kobj.kref));
-> 
->         return 0;
->     }
-> 
->     void my_exit(void) {}
-> 
->     module_init(my_init);
->     module_exit(my_exit);
->     MODULE_LICENSE("GPL v2");
-> 
-> It prints the following in the kernel log:
-> 
->     iio-leak: 2 uses at A
->     iio-leak: 1 uses at B
-> 
-> This patch removes the get_device() call. This shouldn't break
-> subirqs with iio_trigger_attach_poll_func() because a reference should
-> already exist via indio_dev->trig.
+> This patchset adds support of ADC2 internal channels VDDCORE, VREFINT and VBAT
+> on STM32MP15x SoCs. The generic IIO channel bindings is also introduced here
+> to provide this feature. The legacy channel binding is kept for backward compatibility.
 
-Agreed, it is most mysterious...  I can't apply this patch though without a
-Signed-off-by: ...
-
-as even though it's trivial we need a developer certificate of origin.
-(represented by the Signed-off-by line)
+I'm fine with this series, so just waiting for Rob to have a chance for
+a final look at patch 1.
 
 Thanks,
 
 Jonathan
 
-> ---
->  drivers/iio/industrialio-trigger.c | 1 -
->  1 file changed, 1 deletion(-)
 > 
-> diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
-> index b23caa2f2aa1f..93990ff1dfe39 100644
-> --- a/drivers/iio/industrialio-trigger.c
-> +++ b/drivers/iio/industrialio-trigger.c
-> @@ -556,7 +556,6 @@ struct iio_trigger *viio_trigger_alloc(struct device *parent,
->  		irq_modify_status(trig->subirq_base + i,
->  				  IRQ_NOREQUEST | IRQ_NOAUTOEN, IRQ_NOPROBE);
->  	}
-> -	get_device(&trig->dev);
->  
->  	return trig;
->  
+> Changes in v2:
+> - Add 'deprecated' to channels legacy properties in ADC bindings
+> - Add set/clr service for common registers, to make code more generic in
+>   internal channels enable/disable services.
+> - Expose vrefint channel as a processed channel to return
+>   the actual value of vrefp.
+> - Minor code improvements
+> 
+> Changes in v3:
+> - fix vrefint sampling time check.
+> 
+> Changes in v4:
+> - fix binding
+> - add dedicated spin lock for common register
+> - manage probe_defer on nvmem read
+> 
+> Changes in v5:
+> - fix binding example
+> 
+> v5 resent as serie index was wrong on previous post. sorry !
+> 
+> Olivier Moysan (7):
+>   dt-bindings: iio: stm32-adc: add generic channel binding
+>   dt-bindings: iio: stm32-adc: add nvmem support for vrefint internal
+>     channel
+>   iio: adc: stm32-adc: split channel init into several routines
+>   iio: adc: stm32-adc: add support of generic channels binding
+>   iio: adc: stm32-adc: add support of internal channels
+>   iio: adc: stm32-adc: add vrefint calibration support
+>   iio: adc: stm32-adc: use generic binding for sample-time
+> 
+>  .../bindings/iio/adc/st,stm32-adc.yaml        | 108 ++++-
+>  drivers/iio/adc/stm32-adc-core.c              |   1 +
+>  drivers/iio/adc/stm32-adc-core.h              |  10 +
+>  drivers/iio/adc/stm32-adc.c                   | 422 ++++++++++++++++--
+>  4 files changed, 486 insertions(+), 55 deletions(-)
+> 
 

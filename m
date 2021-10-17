@@ -2,36 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E66F4430A5C
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Oct 2021 18:07:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24FED430A6D
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Oct 2021 18:10:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241944AbhJQQJT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 17 Oct 2021 12:09:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39268 "EHLO mail.kernel.org"
+        id S242444AbhJQQNC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 17 Oct 2021 12:13:02 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40692 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241905AbhJQQJS (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 17 Oct 2021 12:09:18 -0400
+        id S242555AbhJQQNA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 17 Oct 2021 12:13:00 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4FCC460E96;
-        Sun, 17 Oct 2021 16:07:06 +0000 (UTC)
-Date:   Sun, 17 Oct 2021 17:11:21 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 0D05360F24;
+        Sun, 17 Oct 2021 16:10:48 +0000 (UTC)
+Date:   Sun, 17 Oct 2021 17:15:03 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Olivier Moysan <olivier.moysan@foss.st.com>
-Cc:     Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>
-Subject: Re: [PATCH v5 0/7] iio: adc: stm32-adc: add internal channels
- support
-Message-ID: <20211017171121.6f0bdabd@jic23-huawei>
-In-Reply-To: <20211014131228.4692-1-olivier.moysan@foss.st.com>
-References: <20211014131228.4692-1-olivier.moysan@foss.st.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Yang Yingliang <yangyingliang@huawei.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "alexandru.ardelean@analog.com" <alexandru.ardelean@analog.com>
+Subject: Re: [PATCH v3] iio: core: fix double free in
+ iio_device_unregister_sysfs()
+Message-ID: <20211017171503.095eecad@jic23-huawei>
+In-Reply-To: <CAHp75VdH2CkY-e6P6QvMzDXK6F9boxz4Vb5trwmMoPOCTmkjww@mail.gmail.com>
+References: <20211013030532.956133-1-yangyingliang@huawei.com>
+        <CAHp75VeyQYmKybQwWLmM2QxVQXomrUH0RttRguzRyoWXtc3TFA@mail.gmail.com>
+        <CAHp75VdH2CkY-e6P6QvMzDXK6F9boxz4Vb5trwmMoPOCTmkjww@mail.gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -40,56 +39,139 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 14 Oct 2021 15:12:21 +0200
-Olivier Moysan <olivier.moysan@foss.st.com> wrote:
+On Wed, 13 Oct 2021 08:51:38 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> This patchset adds support of ADC2 internal channels VDDCORE, VREFINT and VBAT
-> on STM32MP15x SoCs. The generic IIO channel bindings is also introduced here
-> to provide this feature. The legacy channel binding is kept for backward compatibility.
+> On Wednesday, October 13, 2021, Andy Shevchenko <andy.shevchenko@gmail.com>
+> wrote:
+> 
+> >
+> >
+> > On Wednesday, October 13, 2021, Yang Yingliang <yangyingliang@huawei.com>
+> > wrote:
+> >  
+> >> I got the double free report:
+> >>
+> >> BUG: KASAN: double-free or invalid-free in kfree+0xce/0x390  
+> >
+> >
+> >  
+> >>  kfree+0xce/0x390  
+> >
+> >
+> >
+> > This line also redundant, but no need to resend, I hope Jonathan can do it
+> > for you.
+> >
+> >  
+> >>  iio_device_unregister_sysfs+0x108/0x13b [industrialio]
+> >>  iio_dev_release+0x9e/0x10e [  
+> >
+> >  
+> >>  
+> 
+> 
+> >  
+> >>  device_release+0xa5/0x240
+> >>  kobject_put+0x1e5/0x540
+> >>  put_device+0x20/0x30
+> >>  devm_iio_device_release+0x21/0x30 [industrialio]  
+> >
+> >  
+> >>  
+> Actually above lines are also part of the noise
+Not sure I'm quite so keen to strip everything back completely (though I do
+agree keeping it fairly minimal is good.
 
-I'm fine with this series, so just waiting for Rob to have a chance for
-a final look at patch 1.
+Anyhow, tidied it up a bit and applied.  I also added a note that more
+radical surgery is needed to clean up the lifetime management but in the
+meantime this deals with the symptoms.
+
+Applied to the fixes-togreg branch of iio.git and marked for stable.
 
 Thanks,
 
 Jonathan
 
 > 
-> Changes in v2:
-> - Add 'deprecated' to channels legacy properties in ADC bindings
-> - Add set/clr service for common registers, to make code more generic in
->   internal channels enable/disable services.
-> - Expose vrefint channel as a processed channel to return
->   the actual value of vrefp.
-> - Minor code improvements
 > 
-> Changes in v3:
-> - fix vrefint sampling time check.
+> >  
+> >> If __iio_device_register() fails, iio_dev_opaque->groups will be freed
+> >> in error path in iio_device_unregister_sysfs(), then iio_dev_release()
+> >> will call iio_device_unregister_sysfs() again, it causes double free.
+> >> Set iio_dev_opaque->groups to NULL when it's freed to fix this double
+> >> free.
+> >>
+> >> Fixes: 32f171724e5c ("iio: core: rework iio device group creation")
+> >> Reported-by: Hulk Robot <hulkci@huawei.com>
+> >> Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
+> >> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+> >> ---
+> >> v1 -> v3:
+> >>   reduce some backtrace in commit message
+> >> ---
+> >>  drivers/iio/industrialio-core.c | 1 +
+> >>  1 file changed, 1 insertion(+)
+> >>
+> >> diff --git a/drivers/iio/industrialio-core.c
+> >> b/drivers/iio/industrialio-core.c
+> >> index 2dbb37e09b8c..2dc837db50f7 100644
+> >> --- a/drivers/iio/industrialio-core.c
+> >> +++ b/drivers/iio/industrialio-core.c
+> >> @@ -1600,6 +1600,7 @@ static void iio_device_unregister_sysfs(struct
+> >> iio_dev *indio_dev)
+> >>         kfree(iio_dev_opaque->chan_attr_group.attrs);
+> >>         iio_dev_opaque->chan_attr_group.attrs = NULL;
+> >>         kfree(iio_dev_opaque->groups);
+> >> +       iio_dev_opaque->groups = NULL;
+> >>  }
+> >>
+> >>  static void iio_dev_release(struct device *device)
+> >> --
+> >> 2.25.1  
+> >
+> >  
 > 
-> Changes in v4:
-> - fix binding
-> - add dedicated spin lock for common register
-> - manage probe_defer on nvmem read
 > 
-> Changes in v5:
-> - fix binding example
 > 
-> v5 resent as serie index was wrong on previous post. sorry !
 > 
-> Olivier Moysan (7):
->   dt-bindings: iio: stm32-adc: add generic channel binding
->   dt-bindings: iio: stm32-adc: add nvmem support for vrefint internal
->     channel
->   iio: adc: stm32-adc: split channel init into several routines
->   iio: adc: stm32-adc: add support of generic channels binding
->   iio: adc: stm32-adc: add support of internal channels
->   iio: adc: stm32-adc: add vrefint calibration support
->   iio: adc: stm32-adc: use generic binding for sample-time
 > 
->  .../bindings/iio/adc/st,stm32-adc.yaml        | 108 ++++-
->  drivers/iio/adc/stm32-adc-core.c              |   1 +
->  drivers/iio/adc/stm32-adc-core.h              |  10 +
->  drivers/iio/adc/stm32-adc.c                   | 422 ++++++++++++++++--
->  4 files changed, 486 insertions(+), 55 deletions(-)
+> 
+> 
+> 
+> >  
+> >>
+> >>  
+> >  
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> >
+> >
+> > --
+> > With Best Regards,
+> > Andy Shevchenko
+> >
+> >
+> >  
 > 
 

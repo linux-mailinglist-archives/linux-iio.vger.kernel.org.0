@@ -2,106 +2,117 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF19B430896
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Oct 2021 14:15:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E0E943094D
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Oct 2021 15:24:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245621AbhJQMSG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 17 Oct 2021 08:18:06 -0400
-Received: from www381.your-server.de ([78.46.137.84]:55182 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242065AbhJQMSG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 17 Oct 2021 08:18:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:
-        Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References;
-        bh=NiXXpK5slDP9FkP0v/hoiSktqiXPnfA2w/cykvgYQ4E=; b=CaJVbkqg0mWaQv0EBcmmMiyz9P
-        TrzGnS/55W4uvVLJl5H7xwO0TugP01lZyaOf39b2v4FPHAGqrS4wvovQ0Xol2DyI92rDceF9Gm3mS
-        C/G+vCEvNfy8jkrqdL0ptiUuwqRy0gUq17AVRouY5yZpeKH1OPDio5Rx8iFufK9sh+DIGcvynfatB
-        KOj5YEGVeBEdpuJwkJnYkBv5HxZWP0IqGFdfJcOirzrYmccS1b1kPF3TlUDDz1C6Hpyzb33yhhErj
-        9pozjOCUPuRwvLFEm3tqRlgdBTTRIUo/PND5X5qpH7wox/ZtXwvTKWcGIwvtg93VJtUTfouUi3waY
-        rE+HbLyQ==;
-Received: from sslproxy03.your-server.de ([88.198.220.132])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1mc551-0004F7-Sm; Sun, 17 Oct 2021 14:15:55 +0200
-Received: from [82.135.83.71] (helo=lars-desktop.fritz.box)
-        by sslproxy03.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1mc551-000One-Nl; Sun, 17 Oct 2021 14:15:55 +0200
-From:   Lars-Peter Clausen <lars@metafoo.de>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH] iio: xilinx-xadc: Remove `irq` field from state struct
-Date:   Sun, 17 Oct 2021 14:15:51 +0200
-Message-Id: <20211017121551.24063-1-lars@metafoo.de>
-X-Mailer: git-send-email 2.20.1
+        id S1343663AbhJQN0p (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 17 Oct 2021 09:26:45 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41030 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1343648AbhJQN0p (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 17 Oct 2021 09:26:45 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6181661212;
+        Sun, 17 Oct 2021 13:24:33 +0000 (UTC)
+Date:   Sun, 17 Oct 2021 14:28:47 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     Teng Qi <starmiku1207184332@gmail.com>,
+        lorenzo.bianconi83@gmail.com, lars@metafoo.de,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        islituo@gmail.com, baijiaju1990@gmail.com,
+        TOTE Robot <oslab@tsinghua.edu.cn>
+Subject: Re: [PATCH v2] iio: imu: st_lsm6dsx: Fix an array overflow in
+ st_lsm6dsx_set_odr()
+Message-ID: <20211017142847.07040537@jic23-huawei>
+In-Reply-To: <YWQse08lZHMBe+LX@lore-desk>
+References: <20211011114003.976221-1-starmiku1207184332@gmail.com>
+        <YWQse08lZHMBe+LX@lore-desk>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.103.3/26325/Sun Oct 17 10:17:54 2021)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Since commit 2a9685d1a3b7 ("iio: adc: xilinx: use more devres helpers and
-remove remove()") the `irq` field from XADC driver state struct is only
-used in the `probe()` function.
+On Mon, 11 Oct 2021 14:22:19 +0200
+Lorenzo Bianconi <lorenzo@kernel.org> wrote:
 
-Use the local `irq` variable throughout the `probe()` function and remove
-the now unused field from the state struct.
+> > The length of hw->settings->odr_table is 2 and ref_sensor->id is an enum
+> > variable whose value is between 0 and 5.
+> > However, the value ST_LSM6DSX_ID_MAX (i.e. 5) is not catched properly in
+> >  switch (sensor->id) {
+> > 
+> > If ref_sensor->id is ST_LSM6DSX_ID_MAX, an array overflow will ocurrs in
+> > function st_lsm6dsx_check_odr():
+> >   odr_table = &sensor->hw->settings->odr_table[sensor->id];
+> > 
+> > and in function st_lsm6dsx_set_odr():
+> >   reg = &hw->settings->odr_table[ref_sensor->id].reg;
+> > 
+> > To fix this array overflow, handle ST_LSM6DSX_ID_GYRO explicitly and 
+> > return -EINVAL for the default case.
+> > 
+> > Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
+> > Signed-off-by: Teng Qi <starmiku1207184332@gmail.com>  
+> 
+> Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
----
- drivers/iio/adc/xilinx-xadc-core.c | 5 ++---
- drivers/iio/adc/xilinx-xadc.h      | 1 -
- 2 files changed, 2 insertions(+), 4 deletions(-)
+Hi Teng Qi,
 
-diff --git a/drivers/iio/adc/xilinx-xadc-core.c b/drivers/iio/adc/xilinx-xadc-core.c
-index 198d2916266d..83bea5ef765d 100644
---- a/drivers/iio/adc/xilinx-xadc-core.c
-+++ b/drivers/iio/adc/xilinx-xadc-core.c
-@@ -1332,7 +1332,6 @@ static int xadc_probe(struct platform_device *pdev)
+As discussed previously this isn't technically a 'fix' as the default case can
+never actually occur, so I've modified the patch description a tiny bit make
+that clear.  It's a good change, but we probably don't want to back port it to
+older kernels and most things that claim to be 'fixes' are back ported.
+
+Applied to the iio-togreg branch of iio.git and pushed out as testing for 0-day
+to see if it can find anything we missed.
+
+Always good to see a new robot finding suspicious bits of code like this :)
+
+Thanks,
+
+Jonathan
  
- 	xadc = iio_priv(indio_dev);
- 	xadc->ops = id->data;
--	xadc->irq = irq;
- 	init_completion(&xadc->completion);
- 	mutex_init(&xadc->mutex);
- 	spin_lock_init(&xadc->lock);
-@@ -1397,7 +1396,7 @@ static int xadc_probe(struct platform_device *pdev)
- 		}
- 	}
- 
--	ret = devm_request_irq(dev, xadc->irq, xadc->ops->interrupt_handler, 0,
-+	ret = devm_request_irq(dev, irq, xadc->ops->interrupt_handler, 0,
- 			       dev_name(dev), indio_dev);
- 	if (ret)
- 		return ret;
-@@ -1407,7 +1406,7 @@ static int xadc_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
--	ret = xadc->ops->setup(pdev, indio_dev, xadc->irq);
-+	ret = xadc->ops->setup(pdev, indio_dev, irq);
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/iio/adc/xilinx-xadc.h b/drivers/iio/adc/xilinx-xadc.h
-index 8b80195725e9..7d78ce698967 100644
---- a/drivers/iio/adc/xilinx-xadc.h
-+++ b/drivers/iio/adc/xilinx-xadc.h
-@@ -67,7 +67,6 @@ struct xadc {
- 	spinlock_t lock;
- 
- 	struct completion completion;
--	int irq;
- };
- 
- enum xadc_type {
--- 
-2.20.1
+> > 
+> > ---
+> > v2:
+> > * explicitly handle ST_LSM6DSX_ID_GYRO and return -EINVAL for the default
+> > case instead of adding an if statement behind the switch statement.
+> >   Thank Lars-Peter Clausen for helpful and friendly advice.
+> > 
+> > ---
+> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 6 ++++--
+> >  1 file changed, 4 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> > index db45f1fc0b81..8dbf744c5651 100644
+> > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> > @@ -1279,6 +1279,8 @@ st_lsm6dsx_set_odr(struct st_lsm6dsx_sensor *sensor, u32 req_odr)
+> >  	int err;
+> >  
+> >  	switch (sensor->id) {
+> > +	case ST_LSM6DSX_ID_GYRO:
+> > +		break;
+> >  	case ST_LSM6DSX_ID_EXT0:
+> >  	case ST_LSM6DSX_ID_EXT1:
+> >  	case ST_LSM6DSX_ID_EXT2:
+> > @@ -1304,8 +1306,8 @@ st_lsm6dsx_set_odr(struct st_lsm6dsx_sensor *sensor, u32 req_odr)
+> >  		}
+> >  		break;
+> >  	}
+> > -	default:
+> > -		break;
+> > +	default: /* should never occur */
+> > +		return -EINVAL;
+> >  	}
+> >  
+> >  	if (req_odr > 0) {
+> > -- 
+> > 2.25.1
+> >   
 

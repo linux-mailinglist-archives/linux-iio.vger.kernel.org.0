@@ -2,42 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC1FD43060B
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Oct 2021 03:56:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C2A4430616
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Oct 2021 03:56:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241162AbhJQB6L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 16 Oct 2021 21:58:11 -0400
-Received: from vern.gendns.com ([98.142.107.122]:48316 "EHLO vern.gendns.com"
+        id S244843AbhJQB6c (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 16 Oct 2021 21:58:32 -0400
+Received: from vern.gendns.com ([98.142.107.122]:48338 "EHLO vern.gendns.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229456AbhJQB6L (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 16 Oct 2021 21:58:11 -0400
-X-Greylist: delayed 1302 seconds by postgrey-1.27 at vger.kernel.org; Sat, 16 Oct 2021 21:58:10 EDT
+        id S244855AbhJQB6b (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 16 Oct 2021 21:58:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=lechnology.com; s=default; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
         Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
         Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
         List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=GuLQdramhgwNgLru0VZHuyqgy4diYgMbyLCS1BF8hY0=; b=TY7bWJlnuR2Dj/U2gKCFrejilM
-        jhImTXPYt9U9PPtUTSmUm0H+g3rPGZhHrFWwq81WTBc1quTtGoR6d1iK6VqXEaZEfhGm6KC2UXZRW
-        3/uzF3nE6xwmDt9x9u0yT3byzuFtuVROtEm38PGXh+ipDG1zM7lMTDN2QZ8rVzAYMvDqQq1TMJylz
-        6XOtKlDDalOX9yqyg1r/CCetarQT0Cswp9flY0cbNUpDHbI2gFJdivGe0U+1P2HW5evg28sSZZXbj
-        cmoTAOD8mQ7Ut19UQYfM/BqakGT9DXfZkR6Q8gEtfGTP5OfHISL3BHnKMO00RJT4BFX0KzLP/fOvR
-        70Xb6FpA==;
+        bh=Srfvu66+WHwBlVtlu6SrXigSIgQSK8IPw30+2MaUfYE=; b=mt6eXQvjVxBdcTLelkFVygxLIR
+        DvM/2ptnnkeDf75Htb2spheR/o+x6+0CQi3gRhYmnw5J+2byVLE9YJHd2MxB+cM3Yu8Ft4dIBHt5p
+        B2KRZO0pp5BMa4gPoHwafmr64c4j+X/hO05QB0ZA5PxQEFfxsYGsO9Vzm0sa3HPTn40iOrsAuWl4l
+        bxsKKTOmsvNv9UyWaS0k2PRfEyombPyv48QOtWO1OW0XrvjORFE2Gr2AbyB6y+btfCxTEAB7VKEYG
+        MA3eId24kHL5+ha3JLKnPLw7NedjF1F9EnBhYQvfYIqVL9CvZnQc37pFSGoeW7FQBCX0i1eH8Ebxr
+        cD1fFiyQ==;
 Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:41624 helo=freyr.lechnology.com)
         by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
         (Exim 4.94.2)
         (envelope-from <david@lechnology.com>)
-        id 1mbv46-0004D2-LO; Sat, 16 Oct 2021 21:34:20 -0400
+        id 1mbv47-0004D2-D9; Sat, 16 Oct 2021 21:34:21 -0400
 From:   David Lechner <david@lechnology.com>
 To:     linux-iio@vger.kernel.org
 Cc:     David Lechner <david@lechnology.com>,
         William Breathitt Gray <vilhelm.gray@gmail.com>,
         Robert Nelson <robertcnelson@gmail.com>,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 4/8] docs: counter: add unit timer sysfs attributes
-Date:   Sat, 16 Oct 2021 20:33:39 -0500
-Message-Id: <20211017013343.3385923-5-david@lechnology.com>
+Subject: [PATCH 5/8] counter/ti-eqep: add support for latched position
+Date:   Sat, 16 Oct 2021 20:33:40 -0500
+Message-Id: <20211017013343.3385923-6-david@lechnology.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211017013343.3385923-1-david@lechnology.com>
 References: <20211017013343.3385923-1-david@lechnology.com>
@@ -57,67 +56,103 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This documents new unit timer sysfs attributes for the counter
-subsystem.
+This adds support to the TI eQEP counter driver for a latched position.
+This is a new extension that gets the counter count that was recorded
+when an event was triggered. A new device-level latch_mode attribute is
+added to select the trigger. Edge capture unit support will be needed
+to make full use of this, but "Unit timeout" mode can already be used
+to calculate high speeds.
+
+The unit timer could also have attributes for latched_time and
+latched_period that use the same trigger. However this is not a use
+case at this time, so they can be added later if needed.
 
 Signed-off-by: David Lechner <david@lechnology.com>
 ---
- Documentation/ABI/testing/sysfs-bus-counter | 24 +++++++++++++++++++++
- drivers/counter/ti-eqep.c                   |  2 +-
- 2 files changed, 25 insertions(+), 1 deletion(-)
+ drivers/counter/ti-eqep.c | 50 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-counter b/Documentation/ABI/testing/sysfs-bus-counter
-index 06c2b3e27e0b..37d960a8cb1b 100644
---- a/Documentation/ABI/testing/sysfs-bus-counter
-+++ b/Documentation/ABI/testing/sysfs-bus-counter
-@@ -218,6 +218,9 @@ What:		/sys/bus/counter/devices/counterX/signalY/cable_fault_enable_component_id
- What:		/sys/bus/counter/devices/counterX/signalY/filter_clock_prescaler_component_id
- What:		/sys/bus/counter/devices/counterX/signalY/index_polarity_component_id
- What:		/sys/bus/counter/devices/counterX/signalY/synchronous_mode_component_id
-+What:		/sys/bus/counter/devices/unit_timer_enable_component_id
-+What:		/sys/bus/counter/devices/unit_timer_period_component_id
-+What:		/sys/bus/counter/devices/unit_timer_time_component_id
- KernelVersion:	5.16
- Contact:	linux-iio@vger.kernel.org
- Description:
-@@ -345,3 +348,24 @@ Description:
- 			via index_polarity. The index function (as enabled via
- 			preset_enable) is performed synchronously with the
- 			quadrature clock on the active level of the index input.
-+
-+What:		/sys/bus/counter/devices/unit_timer_enable
-+KernelVersion:	5.16
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Read/write attribute that starts or stops the unit timer. Valid
-+		values are boolean.
-+
-+What:		/sys/bus/counter/devices/unit_timer_period
-+KernelVersion:	5.16
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Read/write attribute that selects the unit timer timeout in
-+		nanoseconds.
-+
-+What:		/sys/bus/counter/devices/unit_timer_time
-+KernelVersion:	5.16
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Read/write attribute that indicates the current time of the
-+		unit timer in nanoseconds.
 diff --git a/drivers/counter/ti-eqep.c b/drivers/counter/ti-eqep.c
-index a4a5a4486329..1ba7f3c7cb7e 100644
+index 1ba7f3c7cb7e..ef899655ad1d 100644
 --- a/drivers/counter/ti-eqep.c
 +++ b/drivers/counter/ti-eqep.c
-@@ -680,7 +680,7 @@ static int ti_eqep_probe(struct platform_device *pdev)
- 	pm_runtime_get_sync(dev);
+@@ -405,12 +405,28 @@ static int ti_eqep_direction_read(struct counter_device *counter,
+ 	return 0;
+ }
  
- 	/*
--	 * We can end up with an interupt infinite loop (interrupts triggered
-+	 * We can end up with an interrupt infinite loop (interrupts triggered
- 	 * as soon as they are cleared) if we leave these at the default value
- 	 * of 0 and events are enabled.
- 	 */
++static int ti_eqep_position_latched_count_read(struct counter_device *counter,
++					       struct counter_count *count,
++					       u64 *value)
++{
++	struct ti_eqep_cnt *priv = counter->priv;
++	u32 qposlat;
++
++	regmap_read(priv->regmap32, QPOSLAT, &qposlat);
++
++	*value = qposlat;
++
++	return 0;
++}
++
+ static struct counter_comp ti_eqep_position_ext[] = {
+ 	COUNTER_COMP_CEILING(ti_eqep_position_ceiling_read,
+ 			     ti_eqep_position_ceiling_write),
+ 	COUNTER_COMP_ENABLE(ti_eqep_position_enable_read,
+ 			    ti_eqep_position_enable_write),
+ 	COUNTER_COMP_DIRECTION(ti_eqep_direction_read),
++	COUNTER_COMP_COUNT_U64("latched_count",
++			       ti_eqep_position_latched_count_read, NULL),
+ };
+ 
+ static struct counter_signal ti_eqep_signals[] = {
+@@ -463,6 +479,38 @@ static struct counter_count ti_eqep_counts[] = {
+ 	},
+ };
+ 
++static int ti_eqep_latch_mode_read(struct counter_device *counter,
++					    u32 *value)
++{
++	struct ti_eqep_cnt *priv = counter->priv;
++	u32 qepctl;
++
++	regmap_read(priv->regmap16, QEPCTL, &qepctl);
++	*value = !!(qepctl & QEPCTL_QCLM);
++
++	return 0;
++}
++
++static int ti_eqep_latch_mode_write(struct counter_device *counter,
++					     u32 value)
++{
++	struct ti_eqep_cnt *priv = counter->priv;
++
++	if (value)
++		regmap_set_bits(priv->regmap16, QEPCTL, QEPCTL_QCLM);
++	else
++		regmap_clear_bits(priv->regmap16, QEPCTL, QEPCTL_QCLM);
++
++	return 0;
++}
++
++static const char *const ti_eqep_latch_mode_names[] = {
++	"Read count",
++	"Unit timeout",
++};
++
++static DEFINE_COUNTER_ENUM(ti_eqep_latch_modes, ti_eqep_latch_mode_names);
++
+ static int ti_eqep_unit_timer_time_read(struct counter_device *counter,
+ 				       u64 *value)
+ {
+@@ -553,6 +601,8 @@ static int ti_eqep_unit_timer_enable_write(struct counter_device *counter,
+ }
+ 
+ static struct counter_comp ti_eqep_device_ext[] = {
++	COUNTER_COMP_DEVICE_ENUM("latch_mode", ti_eqep_latch_mode_read,
++				ti_eqep_latch_mode_write, ti_eqep_latch_modes),
+ 	COUNTER_COMP_DEVICE_U64("unit_timer_time", ti_eqep_unit_timer_time_read,
+ 				ti_eqep_unit_timer_time_write),
+ 	COUNTER_COMP_DEVICE_U64("unit_timer_period",
 -- 
 2.25.1
 

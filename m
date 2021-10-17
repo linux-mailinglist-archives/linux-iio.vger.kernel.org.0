@@ -2,100 +2,86 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D97604303C0
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Oct 2021 18:28:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33C1843061B
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Oct 2021 03:56:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240314AbhJPQaN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 16 Oct 2021 12:30:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34254 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240679AbhJPQaL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Oct 2021 12:30:11 -0400
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FA3DC061570;
-        Sat, 16 Oct 2021 09:28:02 -0700 (PDT)
-Received: by mail-yb1-xb2b.google.com with SMTP id v195so1268191ybb.0;
-        Sat, 16 Oct 2021 09:28:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Id1MBaA3OETXuAI2hYM+99prITp5edRSGDU+gsvnGcE=;
-        b=NuSoPB2r7ZFwbh+xm3eq2YpuuZVI5PU0ML/nreO75bHdMjPx2e4dYImScZe8g/Z5vt
-         xTOOaSRYPpP2AGLSgpKT9X5sktrT5wXlZBzEPBaAMQTOzBtNGz5IjUbSaQRzNgxNJXLy
-         HdtCJz+XxkongIkQ0k/PopdAnG1E8o3rgCaDQa1gBcUOEMFEN5GVI4LZTzLFBSS/CGzw
-         /Q15qfaoeRjnoGpPh8ZmYBsIja3EJsQLnAbaZIzSwt6VZ5rlu3xwmjBWQDhfZ6u9/qXV
-         gc+V7G2uz/xPq3kZj1G+zm8djZrl63t2NHpRt1NHWDPbUckEGqg4o09VxKZls4yfy+lf
-         u9eQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Id1MBaA3OETXuAI2hYM+99prITp5edRSGDU+gsvnGcE=;
-        b=E0WDgDQNwfQ3uG5phRlPNIRMIY4yrR3FReOLtoSkqy9NcXzpTdUfPsf7NYMDDw61Qw
-         QFYfnes0e57XGBy3l6AkitMVwZ5+mWUFRn0ZVJ/wcOiQeCIGcfCgLjB/JmjgL9Bffdul
-         hsPP7vFF/x7KjAeMBv4En6AZ1BXxazyPKKbNZZGVGs2q9eDZsiCFQczq3+RZVHC6PeiR
-         insCvDNXYDUrkRDCEbaTaiS0jz5/uK25K8WGLMNcXnkpi/WSzIKZyAGZjbNPb9PTUCQr
-         /bPs9uR6fy6RChTFD085H41w67rcxlZPpS6cndygschjsq3hA6jXWuhe9LKC4ut3HEVq
-         Xczw==
-X-Gm-Message-State: AOAM533Q9QPfUmk64VOQk9fM56hhq59j3n76CzwQV1Oh9iXVSMRYzzBu
-        xVjUHHbplquuPnhqSlJv0cTizYdEvui1kiRD3xvJBg2bnGA=
-X-Google-Smtp-Source: ABdhPJyfGyzFUeWi79yeeWVZEumWi4upZfkpiyd4s2wo5sTM0Siy6+UeUwn8j6UfXBqfuU0rk1Gc+10/1CUdlG1yWhY=
-X-Received: by 2002:a25:ddc7:: with SMTP id u190mr19198236ybg.37.1634401681179;
- Sat, 16 Oct 2021 09:28:01 -0700 (PDT)
-MIME-Version: 1.0
-References: <CACAwPwb7edLzX-KO1XVNWuQ3w=U0BfA=_kwiGCjZOpKfZpc2pw@mail.gmail.com>
-In-Reply-To: <CACAwPwb7edLzX-KO1XVNWuQ3w=U0BfA=_kwiGCjZOpKfZpc2pw@mail.gmail.com>
-From:   Maxim Levitsky <maximlevitsky@gmail.com>
-Date:   Sat, 16 Oct 2021 19:27:50 +0300
-Message-ID: <CACAwPwYQHRcrabw9=0tvenPzAcwwW1pTaR6a+AEWBF9Hqf_wXQ@mail.gmail.com>
-Subject: Re: BMI160 accelerometer on AyaNeo tablet
+        id S244910AbhJQB6n (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 16 Oct 2021 21:58:43 -0400
+Received: from vern.gendns.com ([98.142.107.122]:48362 "EHLO vern.gendns.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S244849AbhJQB6j (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 16 Oct 2021 21:58:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=oy8DSyGv+jeXmkM7TMu2S60qW6NEmMHEMDkXehA/CE0=; b=WTTXdJZS9XL/KWAAhX67Grq0kU
+        ObLxbh9xN+katVJXZd+mBXCWYAKdxV15H5mn5wq8dyP93QKbPgvUrtll6P5zu1LfAgruWoBwacDew
+        NbbeoYmTzdD/o9SgeRXl00oalUbhtgmE09ujq4T+xja+zDZjZY4Utdn85sM61EEAOl0OIiXbgu0F9
+        gjsvtFnjYB9Wy3VUTWhvFYEiY7HaQwaysWMQnPN1lhIyEvfv6R85ysu8Nq/8nqpmQgxcsHrJEzopH
+        iYT3cq6a1C4LMV0IP5wTcOAsx0iUN2z5yg+FeezsHZnE0ybp7BmwclNEgltjaMqJ0+1iVkaGgQaqn
+        hlixPg9g==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:41624 helo=freyr.lechnology.com)
+        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <david@lechnology.com>)
+        id 1mbv43-0004D2-KJ; Sat, 16 Oct 2021 21:34:17 -0400
+From:   David Lechner <david@lechnology.com>
 To:     linux-iio@vger.kernel.org
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: multipart/mixed; boundary="000000000000a1125305ce7acbd8"
+Cc:     David Lechner <david@lechnology.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Robert Nelson <robertcnelson@gmail.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 0/8] counter: ti-eqep: implement features for speed measurement
+Date:   Sat, 16 Oct 2021 20:33:35 -0500
+Message-Id: <20211017013343.3385923-1-david@lechnology.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
---000000000000a1125305ce7acbd8
-Content-Type: text/plain; charset="UTF-8"
+Now that the counter subsystem has a new chrdev for events, we can use this to
+add new features to the TI eQEP driver to be able to do accurate speed
+measurement.
 
-On Sat, Oct 16, 2021 at 7:19 PM Maxim Levitsky <maximlevitsky@gmail.com> wrote:
->
-> I recently bought this device, and it has this accelerometer/gyroscope.
->
-> Unfortunately, the device is advertised in ACPI as 10EC5280, instead of BMI0160
->
-> I attached a patch that does add this 10EC5280 to the list of ACPI ids of this driver, and the device seems to work fine, showing both acceleration and angular velocity in /sys IIO attributes with reasonable values.
->
+This adds two new device-level components, a Unit Timer and an Edge Capture
+Unit. I don't have much knowledge about other available counter hardware, so
+I don't know if it makes sense to try to make these more generic, e.g.
+counterX/timerY/* and counterX/captureY/*. For now, they are just flat
+(counterX/unit_timer_* and counterX/edge_capture_unit_*) and assume there is
+only one instance per counter device.
 
-( resend using plain text - reminds me to never use Gmail's web
-interface, even on weekends .)
+This has been tested on a BeagleBone Blue with LEGO MINDSTORMS motors.
 
-> Best regards,
->    Maxim Levitsky
+David Lechner (8):
+  counter/ti-eqep: implement over/underflow events
+  counter/ti-eqep: add support for direction
+  counter/ti-eqep: add support for unit timer
+  docs: counter: add unit timer sysfs attributes
+  counter/ti-eqep: add support for latched position
+  docs: counter: add latch_mode and latched_count sysfs attributes
+  counter/ti-eqep: add support for edge capture unit
+  docs: counter: add edge_capture_unit_* attributes
 
---000000000000a1125305ce7acbd8
-Content-Type: text/x-patch; charset="US-ASCII"; name="accel_fix.patch"
-Content-Disposition: attachment; filename="accel_fix.patch"
-Content-Transfer-Encoding: base64
-Content-ID: <f_kuu0jvju0>
-X-Attachment-Id: f_kuu0jvju0
+ Documentation/ABI/testing/sysfs-bus-counter | 100 +++-
+ drivers/counter/ti-eqep.c                   | 482 +++++++++++++++++++-
+ include/uapi/linux/counter.h                |   4 +
+ 3 files changed, 575 insertions(+), 11 deletions(-)
 
-Y29tbWl0IDg4MGJiZjJlNWVlMmZhMGU5OTc5ODQ4MjY2NDk5N2E3ZGIyMjVmNTYKQXV0aG9yOiBN
-YXhpbSBMZXZpdHNreSA8bWxldml0c2tAcmVkaGF0LmNvbT4KRGF0ZTogICBTYXQgT2N0IDIgMjA6
-NTQ6MDAgMjAyMSArMDMwMAoKICAgIEJNSTE2MDogQVlBIE5FQSBhY2NlbG9tZXRlciBJRAogICAg
-CiAgICBPbiBBWUEgTkVPLCB0aGUgYWNjZWxlcm9tZXRlciBpcyBCTUkxNjAgYnV0IGl0IGlzIGV4
-cG9zZWQKICAgIHZpYSBBQ1BJIGFzIDEwRUM1MjgwCiAgICAKICAgIFNpZ25lZC1vZmYtYnk6IE1h
-eGltIExldml0c2t5IDxtbGV2aXRza0ByZWRoYXQuY29tPgoKZGlmZiAtLWdpdCBhL2RyaXZlcnMv
-aWlvL2ltdS9ibWkxNjAvYm1pMTYwX2kyYy5jIGIvZHJpdmVycy9paW8vaW11L2JtaTE2MC9ibWkx
-NjBfaTJjLmMKaW5kZXggMjYzOTg2MTRlZGRmYS4uMmIzZTNlMTVlMmUwNCAxMDA2NDQKLS0tIGEv
-ZHJpdmVycy9paW8vaW11L2JtaTE2MC9ibWkxNjBfaTJjLmMKKysrIGIvZHJpdmVycy9paW8vaW11
-L2JtaTE2MC9ibWkxNjBfaTJjLmMKQEAgLTQzLDYgKzQzLDcgQEAgTU9EVUxFX0RFVklDRV9UQUJM
-RShpMmMsIGJtaTE2MF9pMmNfaWQpOwogCiBzdGF0aWMgY29uc3Qgc3RydWN0IGFjcGlfZGV2aWNl
-X2lkIGJtaTE2MF9hY3BpX21hdGNoW10gPSB7CiAJeyJCTUkwMTYwIiwgMH0sCisJeyIxMEVDNTI4
-MCIsIDB9LCAvKiBBWUEgTkVPIHRhYmxldCAqLwogCXsgfSwKIH07CiBNT0RVTEVfREVWSUNFX1RB
-QkxFKGFjcGksIGJtaTE2MF9hY3BpX21hdGNoKTsK
---000000000000a1125305ce7acbd8--
+-- 
+2.25.1
+

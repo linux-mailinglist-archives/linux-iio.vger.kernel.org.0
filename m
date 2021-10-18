@@ -2,66 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 69AE243121C
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Oct 2021 10:26:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7F2E4312A2
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Oct 2021 10:58:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231176AbhJRI2s (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 Oct 2021 04:28:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51006 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230525AbhJRI2s (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 18 Oct 2021 04:28:48 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8E33B6108E;
-        Mon, 18 Oct 2021 08:26:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1634545597;
-        bh=xOmAQitMBVIxD0P5lk/jGhQrjBA6gAaoj/EuLHLLD5Q=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=lIOFSCSL4nxT+TH63zGzjyvUoiQ3l7ZYBNDji+DqcQlmmawK+g8tNdDviPd//eq7/
-         ErUKdTZ2j561FgLszxENs8A6jzXzCNresZfiNONGS3WgUP4ElxzPpU8TNLa+A1hrAa
-         bRAvEEw2tD9ldMLTlw7Lz+06yEcUiolJhNYQDxBQ=
-Date:   Mon, 18 Oct 2021 10:26:34 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     David Lechner <david@lechnology.com>, jic23@kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] counter/counter-sysfs: use sysfs_emit everywhere
-Message-ID: <YW0vujDgJ12HtulV@kroah.com>
-References: <20211017190106.3472645-1-david@lechnology.com>
- <YWyyzmNGxWKyKiAD@shinobu>
- <YW0PAq8nB6FcLwZd@kroah.com>
- <YW0t9mVy6ACZYsXB@shinobu>
+        id S231190AbhJRJA7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 Oct 2021 05:00:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56032 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231149AbhJRJA7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Oct 2021 05:00:59 -0400
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F203C06161C;
+        Mon, 18 Oct 2021 01:58:48 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id y1so10733156plk.10;
+        Mon, 18 Oct 2021 01:58:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=zJdBl2v/UZ98xFp4khbE/HvsuDRBwxaaXrlQoB5bGPg=;
+        b=jsDEQjUaKvrRX/d6+Um76EoNfKi+RXm44ybGOzrXkxb91CZHLGx8mXHdm46gRfFAs0
+         7j1pnQ/ZcAt1FFahd227FagRYRsWMsUwIv3h1NB/tGaALT2B5Yh2nWS7ame4eyjz3QX0
+         cORtEWKxFrRooYyDFgg2BGN2UtaSdx59s6ao9KairgGRfz8NQSO3czUl5AS//OBVlWFh
+         D6AsUeqEzpVuUULIPUObOQRPAKLDzlcg2pTC/b3MJECh0QmxCISE+lodCMVviDXyNZMX
+         JYISwaI1XOkwm9IrHvvwHL6zqHbLIOLZdBdG2nj/cTyu13PQORh1izo5MIeGUvnlopHS
+         tCaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=zJdBl2v/UZ98xFp4khbE/HvsuDRBwxaaXrlQoB5bGPg=;
+        b=WorLCVXOnvgQntExOhIfymaaQHlQt94wEz2jAf3Pq3oBHL2/loRDVGq++1JPrCLOp/
+         texPzIEui9tl4lX3eDE83bwDWtYunv/yih78SCEQhF3nwLnu+Q/An8VPkIDHckItfJmY
+         sXvgOecpNbFJ19IBjnwev3ZMn2Zj6xGzZiT5eTwi/BeuR8L2LK3T0DitG+TWcnr6lyC4
+         MibdK60GK71s/bTyLJhpMs9cxMG7ygUViAEBvE7mhPMfHtrrrIhzX+xtkJdj7SeD6qqC
+         WQbrNJUEzFSOxY9EMty8k8Nh4xiTBBCT/cGN5UMkpSAe017BHaikY1DH/DF2FwN9Sqs+
+         ei3w==
+X-Gm-Message-State: AOAM533y6QU1tDj2HkoHQxwC9zXt45BHCH0UoQM5YTk2vqr+prcunFXp
+        doSxHZFh9l8M8Y/ROZ/K0ds=
+X-Google-Smtp-Source: ABdhPJwAakzZ65vXbSJkS68z+nCqPuZXbOzqNNvlthoir8124Oug8D12HAqTBTHXYWJ/2C1ehmoVjg==
+X-Received: by 2002:a17:90b:3901:: with SMTP id ob1mr31604780pjb.24.1634547528147;
+        Mon, 18 Oct 2021 01:58:48 -0700 (PDT)
+Received: from shinobu ([156.146.35.76])
+        by smtp.gmail.com with ESMTPSA id t1sm12284487pfe.51.2021.10.18.01.58.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Oct 2021 01:58:47 -0700 (PDT)
+Date:   Mon, 18 Oct 2021 17:58:37 +0900
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     David Lechner <david@lechnology.com>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] counter: drop chrdev_lock
+Message-ID: <YW03PSmpMkMVnHdp@shinobu>
+References: <20211017185521.3468640-1-david@lechnology.com>
+ <YW0PVYT/GCKAnjN9@kroah.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="9GLfjPH7N7YSaLAV"
 Content-Disposition: inline
-In-Reply-To: <YW0t9mVy6ACZYsXB@shinobu>
+In-Reply-To: <YW0PVYT/GCKAnjN9@kroah.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Oct 18, 2021 at 05:19:02PM +0900, William Breathitt Gray wrote:
-> On Mon, Oct 18, 2021 at 08:06:58AM +0200, Greg KH wrote:
-> > On Mon, Oct 18, 2021 at 08:33:34AM +0900, William Breathitt Gray wrote:
-> > > On Sun, Oct 17, 2021 at 02:01:06PM -0500, David Lechner wrote:
-> > > > In the counter subsystem, we are already using sysfs_emit(), but there
-> > > > were a few places where we were still using sprintf() in *_show()
-> > > > functions. For consistency and added protections, use sysfs_emit()
-> > > > everywhere.
-> > > > 
-> > > > Suggested-by: Greg KH <gregkh@linuxfoundation.org>
-> > > > Signed-off-by: David Lechner <david@lechnology.com>
-> > > 
-> > > Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-> > 
-> > Thanks, want me to take this directly on top of the previous pull
-> > request?
-> > 
-> > greg k-h
-> 
-> Yes, that should be a fine path forward for this patch.
 
-Great!  Can you also ack the other patch from David as well?
+--9GLfjPH7N7YSaLAV
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-thanks,
+On Mon, Oct 18, 2021 at 08:08:21AM +0200, Greg KH wrote:
+> On Sun, Oct 17, 2021 at 01:55:21PM -0500, David Lechner wrote:
+> > This removes the chrdev_lock from the counter subsystem. This was
+> > intended to prevent opening the chrdev more than once. However, this
+> > doesn't work in practice since userspace can duplicate file descriptors
+> > and pass file descriptors to other processes. Since this protection
+> > can't be relied on, it is best to just remove it.
+>=20
+> Much better, thanks!
+>=20
+> One remaining question:
+>=20
+> > --- a/include/linux/counter.h
+> > +++ b/include/linux/counter.h
+> > @@ -297,7 +297,6 @@ struct counter_ops {
+> >   * @events:		queue of detected Counter events
+> >   * @events_wait:	wait queue to allow blocking reads of Counter events
+> >   * @events_lock:	lock to protect Counter events queue read operations
+> > - * @chrdev_lock:	lock to limit chrdev to a single open at a time
+> >   * @ops_exist_lock:	lock to prevent use during removal
+>=20
+> Why do you still need 2 locks for the same structure?
+>=20
+> thanks,
+>=20
+> greg k-h
 
-greg k-h
+Originally there was only the events_lock mutex. Initially I tried using
+it to also limit the chrdev to a single open, but then came across a
+"lock held when returning to user space" warning:
+https://lore.kernel.org/linux-arm-kernel/YOq19zTsOzKA8v7c@shinobu/T/#m60721=
+33d418d598a5f368bb942c945e46cfab9a5
+
+Instead of losing the benefits of a mutex lock for protecting the
+events, I ultimately implemented the chrdev_lock separately as an
+atomic_t. If the chrdev_lock is removed, then we'll use events_lock
+solely from now on for this structure.
+
+William Breathitt Gray
+
+--9GLfjPH7N7YSaLAV
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmFtNzMACgkQhvpINdm7
+VJJv+A//Y95/e0GrnVcicFqPFkUrWG98rzwge+SdEv4fTwGtyVsbHHlLaZbGOZxU
+hnBMDp6d+eo3VkcgMnbrVf+wUu2RXJ9BIFrVLtK8nQhmDVrqwuxMb0RgPAOQoKpy
+xQCQHODS5IS9b4PcVS5ic5vBlrDeKlE5ZC6miql+/VecD2V6B21nK83qFV32ZSru
+TUcQ2eFUThFLcsu1NzLrisg5Te8LlmGASG03NoZs9YndA/M0Jh7ZivEeSFsCxJPF
+8F+dbFVv0vjkclVMkvQE2qzdC9GYpuh698rkqqCAMh0qRmNU6p9RjlxSNvvkGdgd
+kQzJZt0RgjtYPCL5ozW8vw8PxjJAH3kWp4lqN11pBgRtWVyecdUX+QZywQDT2pMM
+0nrAA07IUR6jOorkDrSDJtVj8nS/hJegBTwXrFKpQSyqtGGNJN7+XxAiM3aaNoPF
+xI4cI7B2IYWXEmfUcLsWcFhQQ5VhWqx+HEOSBuUpEVkP2pdjm4G0zm2DDYtoDlax
+VmD6LNlXxvJONI7PmCisQNuVnnbbunPG9xQiFPvl4htiwThAdTCBoHK9IhSboST1
+fHZop3iMSPz5wQVa5dqJHdb/o97wyM8NuQG3rUZjPncMvnHnVMMXJrH2jwQ/TSqV
+z8OZ3wjLAfqTrylq6pveAJvIGJ6kMtp/xB17xtQA16CFwAtxhFo=
+=O/WE
+-----END PGP SIGNATURE-----
+
+--9GLfjPH7N7YSaLAV--

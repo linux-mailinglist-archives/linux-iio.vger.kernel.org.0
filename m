@@ -2,120 +2,118 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 48026431181
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Oct 2021 09:41:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22C2B431207
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Oct 2021 10:19:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230438AbhJRHnW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 Oct 2021 03:43:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38362 "EHLO
+        id S231148AbhJRIV1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 Oct 2021 04:21:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230328AbhJRHnV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Oct 2021 03:43:21 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC41AC06161C;
-        Mon, 18 Oct 2021 00:41:10 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id a25so67323631edx.8;
-        Mon, 18 Oct 2021 00:41:10 -0700 (PDT)
+        with ESMTP id S231130AbhJRIV1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Oct 2021 04:21:27 -0400
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B34BC06161C;
+        Mon, 18 Oct 2021 01:19:09 -0700 (PDT)
+Received: by mail-pl1-x62a.google.com with SMTP id b14so899097plg.2;
+        Mon, 18 Oct 2021 01:19:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=zvyc7lXYEn3ZHyaBahJODZ1u5FA0Z1xlS6IA6NF8Q1Q=;
-        b=Vtm1lb1f6UKaT4L9gaV462C5J6tU0WmvwuSaV+Nm9HtR3mVpkPGb8xXZfVw/mfdoUc
-         NPOmGUQrFMyUS+SJrziYwVqgoS43dN9cc9idt/Zf8MtU7mD0sjWYa/zZy706LwbUfU4z
-         Pgfhvzn6gkQXFW2sADVbZMoufMACn16abUSTqg20Pwx9nrhTfG9RVCgrbnyInEmKJinV
-         J4iOsnbche2HpSNGOLQAVgFOfzvmfZN5NpCuH/BGC+lYiSMr8glDFMrbXmdsOHmgRm7B
-         X3qjX9vrumen4/cZD8lh2zGvlHK6ByeC1FAWr2PXLNZM7HivC4RNRznWQ7cITenQ92vG
-         snBg==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=Ih3RBieLoZrRq41tfkN5XaoRmWbsikNEeiYV6sLxIhk=;
+        b=YWGRvrHTNpLfghmrn90QI6RGaicSiviMe8Fc/GtiDH77ZY1BNLHudbWd19YUFbU91F
+         QfQG03VlZArEIymukO9K8eW8I9PFkAax7Dw/297HIGWogSRd4XxTlQHJzpjmqCVHpaHO
+         cS4pq82Yoo4vOZBUHy4wC5BoZS7omus7lV1Q+rE6+kLmbnP3Y6SqTM9/hE2QDm0QD4uC
+         YYDslylGwoBWsyX7ckHhDGy/UohJKDbYpbs1anIdnBTgNJE0qxkrbdw7no5jEWTll6RP
+         sIwSejac/Yn/C1SkaJLba+9wdhBkTbBxOKyPawSkHmbjuFbyx5cdcmZ3VKxyJ+tD9Pq7
+         acxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zvyc7lXYEn3ZHyaBahJODZ1u5FA0Z1xlS6IA6NF8Q1Q=;
-        b=ZRnDt8SAdHmpcwR1L7uRkYt0fi1LXO6gmzpIbqknercXqodV99+F4GpnnWugBhPyVY
-         Z7zHWoziaSKdvpENsLZM7x6R/hP3BJN7NXvIh6va5eTXjG7F1pvNaX5Q0DKG06XaWVqz
-         kTXv3B66jZ7XqKOJNJDqhKpVnrRSsIuqJ2pZ3yzrhn75XgukildQ3vzDWCYw+y8qDj4G
-         qCa8vxI/68Am9K+KYIAofF6Cv+iJ5YvA/d2eZTxKw5ecFpbKKrwr/lpZa9jCXAvTSDoE
-         +IYwlSvHVcQl6a3ok+iNBDoK6gQ/5Bkt/fNZe43Uclnj27z/99aHcp9QpWNHrc6NUPcA
-         xHeQ==
-X-Gm-Message-State: AOAM530LvfGGaZBfqhfytFiPzQO7YJhE+46q//SwH8HLPFH6DcaxFRTL
-        cJbjnsYCSH0WwwB7ZnB0R82KJc7zgpz7GrfkFrs=
-X-Google-Smtp-Source: ABdhPJwq5/ieXR4Pnzr/MTiDtOPg8LoqM6nm/bL6cklXBPRW6C5fnicEeBXnLyHiUj0X5jOzSSdYDYjpxD5DXN3vjfI=
-X-Received: by 2002:a50:e188:: with SMTP id k8mr43786153edl.119.1634542869041;
- Mon, 18 Oct 2021 00:41:09 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Ih3RBieLoZrRq41tfkN5XaoRmWbsikNEeiYV6sLxIhk=;
+        b=Yrqn6D949wZXaQuD5/nds79hPBgayU3K1fWkRdQzQMR1VIS7o623g1JHsMEKtkxl+0
+         Vg5jd/z5Xllk+OLwZLIXcNRJK6YYc5PJpykIGkTWzQ8TwpE48tbLelKB7hKoma9JwjpE
+         3RnXb3+zZKdcP7C3PPS9nha8AfupJsUYeEQxieBqRcHnP6JRf5PY8VzYBuxoreUBMcvv
+         NGoLenf7+PQk9nS2UAnJh9EdtEU6hgtr1IQ41w2FOYVanSYkmoxKMfOVLkQwRTzpTTrR
+         Xml4xaVpgKXAx2isxQGhFxidQYLRPtq+H2yWocHbiqRY4XCeb5QR4LaJKX1UfdPxyP8T
+         1TzA==
+X-Gm-Message-State: AOAM533jzzfadA2iJNFpJqoik0zQ6y3f0mNhTbNRv/vszG9I3BUsTAYF
+        pg9h+3OLCqnRGG5LXN8Nqws=
+X-Google-Smtp-Source: ABdhPJwBf/rkqW/hbgV5+h9aJQHs6RVt7vBsmxNs4i/B18cxaef9VX7YOhaFAmDu36/GaLHVaqNtaA==
+X-Received: by 2002:a17:902:8bc4:b029:12b:8470:e29e with SMTP id r4-20020a1709028bc4b029012b8470e29emr25868938plo.2.1634545148846;
+        Mon, 18 Oct 2021 01:19:08 -0700 (PDT)
+Received: from shinobu ([156.146.35.76])
+        by smtp.gmail.com with ESMTPSA id u11sm12812199pfg.2.2021.10.18.01.19.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Oct 2021 01:19:08 -0700 (PDT)
+Date:   Mon, 18 Oct 2021 17:19:02 +0900
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     David Lechner <david@lechnology.com>, jic23@kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] counter/counter-sysfs: use sysfs_emit everywhere
+Message-ID: <YW0t9mVy6ACZYsXB@shinobu>
+References: <20211017190106.3472645-1-david@lechnology.com>
+ <YWyyzmNGxWKyKiAD@shinobu>
+ <YW0PAq8nB6FcLwZd@kroah.com>
 MIME-Version: 1.0
-References: <CACAwPwb7edLzX-KO1XVNWuQ3w=U0BfA=_kwiGCjZOpKfZpc2pw@mail.gmail.com>
- <CACAwPwYQHRcrabw9=0tvenPzAcwwW1pTaR6a+AEWBF9Hqf_wXQ@mail.gmail.com> <20211017115843.2a872fbe@jic23-huawei>
-In-Reply-To: <20211017115843.2a872fbe@jic23-huawei>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 18 Oct 2021 10:40:33 +0300
-Message-ID: <CAHp75Vct-AXnU7QQmdE7nyYZT-=n=p67COPLiiZTet7z7snL-g@mail.gmail.com>
-Subject: Re: BMI160 accelerometer on AyaNeo tablet
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>
-Cc:     Maxim Levitsky <maximlevitsky@gmail.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="n7x66oK6Gc4BHPev"
+Content-Disposition: inline
+In-Reply-To: <YW0PAq8nB6FcLwZd@kroah.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-+Cc: Hans
 
-On Mon, Oct 18, 2021 at 6:41 AM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Sat, 16 Oct 2021 19:27:50 +0300
-> Maxim Levitsky <maximlevitsky@gmail.com> wrote:
->
-> >  BMI160: AYA NEA accelometer ID
+--n7x66oK6Gc4BHPev
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-accelerometer
+On Mon, Oct 18, 2021 at 08:06:58AM +0200, Greg KH wrote:
+> On Mon, Oct 18, 2021 at 08:33:34AM +0900, William Breathitt Gray wrote:
+> > On Sun, Oct 17, 2021 at 02:01:06PM -0500, David Lechner wrote:
+> > > In the counter subsystem, we are already using sysfs_emit(), but there
+> > > were a few places where we were still using sprintf() in *_show()
+> > > functions. For consistency and added protections, use sysfs_emit()
+> > > everywhere.
+> > >=20
+> > > Suggested-by: Greg KH <gregkh@linuxfoundation.org>
+> > > Signed-off-by: David Lechner <david@lechnology.com>
+> >=20
+> > Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+>=20
+> Thanks, want me to take this directly on top of the previous pull
+> request?
+>=20
+> greg k-h
 
-> >     On AYA NEO, the accelerometer is BMI160 but it is exposed
-> >     via ACPI as 10EC5280
-> >
-> >     Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
->
-> I guess it is hopelessly optimistic to hope that we could let someone
-> at the supplier know that's a totally invalid ACPI id and that they
-> should clean up their act.
->
-> Curiously it looks like a valid PCI ID pair though for a realtek device.
->
-> Ah well.  Applied to the iio-togreg branch of iio.git and pushed out
-> as testing to see if 0-day can find any issues with it.
+Yes, that should be a fine path forward for this patch.
 
-NAK. And I explain below why and how to make progress with it.
+Thank you,
 
-The commit message should contain at least the link to the DSDT and
-official technical description of the platform. Besides that, it
-should have a corresponding comment near to the ID in the code.
+William Breathitt Gray
 
-On top of that, in particular to this case, the ID is very valid from
-the ACPI specification point of view, but in this case it's a
-representation of the PCI ID 10ec:5280 which is Realtek owned. So, we
-need to hear (okay in reasonable time) from Realtek (I believe they
-are active in the Linux kernel) and that OEM.
+--n7x66oK6Gc4BHPev
+Content-Type: application/pgp-signature; name="signature.asc"
 
-I hardly believe that Realtek has issued a special ID from the range
-where mostly PCIe ports or so are allocated, although it's possible.
-We need proof.
+-----BEGIN PGP SIGNATURE-----
 
-What I believe is the case here is that OEMs are just quite diletants
-in ACPI and firmware and they messed up with BIOS somehow that it
-issued the ID for the device.
-There are also two other possibilities: OEM stole the ID (deliberately
-or accidentally), or the device is not just gyro, but something which
-contains gyro.
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmFtLd8ACgkQhvpINdm7
+VJLKlw//dwTvwDqS+54+e7987THsQg60XmKD2oubwREghsOanqMzNkvxi1PaTipq
+rYj5OpCLq4EDWpKVWbECkyydnzWbp1ikzwGy0D6YKxyoJhJYD5mLGCa/arDXIq07
+lY8yZD0Ign7R8WpDBW/UTB3iQO+nq/4bwSp8pn2DIEP9e31QH75VijUOa+PxmQwV
+jxSaYLNnKj8doEZA6yNongfU6/kTUi3RFqpEeLF9OlP9ndXrvHtdD6RzTEy0caNZ
+tyNVbFla9nnm8ab2sWtQb6GAGJukmwg8pv5PlNpMoRUKOH9KFaV2nNl82nIOyfRX
+Jq+ZwALy7IwTMcAtnsDn2TPR16rfH7UQF+EG0kL2IJLxWlyO5IqVndOnJkc877p7
+c/XkkDv7jy17Gla0XRdvzo3Dq+zlo8/SPMjO/1D7CITBfGlQkLz45WmZdYADSFki
+hcbelXngfKtBWHhNx28/mdSVLRjWQ4BSdvr2PmI6p+0Ir4hK0+QtU5TaEtwGplZN
+A63d7lCNCmvIhaQ75br6A34DJOUJDvQREUSDLHXg/gSdUst3dfsdayTFzVNfjUqN
+S20nlBdKncOaAaoCgEnOXiRiKeDgkbBbxVF5NBoWf1WimL6tbi4Q3i8cZugxOPxd
+R3CY81Jv1v5u6qifBg4UKR2SXEsW4I4iNzG9nb2gNqfMsqghLDk=
+=LalF
+-----END PGP SIGNATURE-----
 
-As to the last paragraph, see above, we must see DSDT. Without it I
-have a strong NAK.
-
-P.S. Jonathan, please do not be so fast next time with ACPI IDs.
-
--- 
-With Best Regards,
-Andy Shevchenko
+--n7x66oK6Gc4BHPev--

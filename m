@@ -2,225 +2,161 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A6EF431303
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Oct 2021 11:14:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42F9D4313D2
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Oct 2021 11:51:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231459AbhJRJQo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 Oct 2021 05:16:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59672 "EHLO
+        id S229698AbhJRJxi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 Oct 2021 05:53:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231495AbhJRJQk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Oct 2021 05:16:40 -0400
-Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7156C061745;
-        Mon, 18 Oct 2021 02:14:29 -0700 (PDT)
-Received: by mail-pg1-x533.google.com with SMTP id t7so1038998pgl.9;
-        Mon, 18 Oct 2021 02:14:29 -0700 (PDT)
+        with ESMTP id S229683AbhJRJxh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Oct 2021 05:53:37 -0400
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7542C06161C;
+        Mon, 18 Oct 2021 02:51:26 -0700 (PDT)
+Received: by mail-pj1-x1032.google.com with SMTP id ls18so11821744pjb.3;
+        Mon, 18 Oct 2021 02:51:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=+kYLCRGYQwbvZDOnSMjJhz+H+rlEx68v/8v6wqX2AY0=;
-        b=dvoDnkfrFi695/w3GV3ztggLevA1NjQw+AfPFlMz9okWVLbIViozNfMrgN/MfmOez/
-         inF4tmuIV8FsjIQgJFMpKFeq05p1tEkpFvgguTazE3FOyj7YiyKJk7ktqqoLnkTmV8li
-         QZaoup1UscL9iT8mGZf7BOi+qBgBHjTbBlkFKlO/J2qhN1flU5WeqvStHh43nXbtLjRY
-         ksnliKuDxLI7sKdQUkBQzOZjVqqry7Sdgep0fmRn4jmtCxutNmfhzyckRclvzxu/oj6X
-         gQAB2fN9eE9EcvLnGrIlWMPUgEm7fnK9gYug5g6pfVGKP5fiUxxHto8fzzSEFFAWH4kB
-         qq0Q==
+        bh=tt0mPta5yxxX2ueeEOdB2EZQiW3Y1MxNxkayFW2FAUQ=;
+        b=EmhLL9DBoMEWSsAYhrahWHYj/jIpr2qP0TItBZdshyV8ZqsMJEuukFXLVDdozC4KSQ
+         tlP8uElIojxcbc+Dy57CceVzs4IPg36yUniiDoMmzvLSGMIGe+FOclBmohQdA3EMDSQU
+         rv/+qnJSfvOW1BBYUHSSgbCKgiqjarrzsv570O0ZmJC7VeICRzYpB7Px8qf/CxynHRIE
+         7NVLRyz+FlF1IaYesvrBKg4mN64eZGCds8qLcauRBX5uK7M346vK3upzcmd77j8ScNLr
+         wfu1hYjKc44WZ3BXQUxu2G9umAYo/kzvaA6VuSucxOq6fsIXAZMAdA5W5QtzfLAowoK1
+         ICIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=+kYLCRGYQwbvZDOnSMjJhz+H+rlEx68v/8v6wqX2AY0=;
-        b=VSctZA90II9r2FmdzAKgvsgeep7LCVo36DjWH0xQKqjtnMH7yvuPEdwwibyj7FbB3z
-         vTfK3zCh63qz5vckmsRxVuo6pHSntRYq4Vj7uBx8PpLkCIKgz6dlP3z8Y8fzGfQkEwdu
-         j/1ohPqfLPBpmJs6qc1zyQrsG7+lFDImI0+EnBpfx6VBAOTsyK7kzkM8U3IvLuKbcK/9
-         BnopACoX1zwmTbYyo1hLVXUIHTXQ28Y9+7K+D1XCp8RkhoIr1NJO4xpTDlgNF2gh6dgM
-         N6BNL6D/lIqnThuoONiT/MYgtxtDYL4RhWEt/E0cCkJhdgoUH+X+LObmFxgRExZUpJPu
-         ATsg==
-X-Gm-Message-State: AOAM530D20ZUQt1W4wnPKR0Y22VhiTYQsEICsZvfULVAlOYNzxKgESoT
-        25NyB8svrZXIDUKDWns+6Pw=
-X-Google-Smtp-Source: ABdhPJzzIbns+tiUcDIl+Ymn4ss4NuQUDPkox8w4dXKcXLtUZqXTOND0zjW63nJu7ZUwbksIhtCUDw==
-X-Received: by 2002:a62:dd15:0:b0:44c:61de:537 with SMTP id w21-20020a62dd15000000b0044c61de0537mr27378560pff.57.1634548469287;
-        Mon, 18 Oct 2021 02:14:29 -0700 (PDT)
+        bh=tt0mPta5yxxX2ueeEOdB2EZQiW3Y1MxNxkayFW2FAUQ=;
+        b=msIpkK0jMNHWKBUgOG3fkS4h7MelNIjshSbem5w4nADqrhvftIEG+TjApg7kZaIzan
+         5ichxOqEUFJtj73c0WfNDK1O65mkHVgMI44tCO9GHHr7h0y/nMoVTZMcxAZ6flTTcA+6
+         E71639TMf1dLw+sB8pchlCRJj54cCSO9HVGKpSXZCeo7tV6VtAgDomkduTjNuz8wvwdA
+         WwptK0KjfyYUcBi/zcCdNVBnzhKR/0JUdfena4XC9CmjTzTZoQMVKl+i1yjvPWJM/62K
+         iXvwFEgtgKZFVbq4UwPzhBO8qCS8EA6SXDIo4iglxmPb5/6m19amHsPB/+QxED2/DLJf
+         jGbw==
+X-Gm-Message-State: AOAM533F4Pe5TgZ/CchlgndEsTjpDLZzeYwL3t6pe8hXICMIBddEEKz0
+        ELKI631TTqa6zn16qZ/eDYurpyAt17A=
+X-Google-Smtp-Source: ABdhPJy1aBh2FGQXqmtJZLycGnCJW4KcU8bvF+ecxQ/CkguoQ8pq73mLDfKI0U8Ra/XknITzCG8Inw==
+X-Received: by 2002:a17:90b:1bcc:: with SMTP id oa12mr31821528pjb.212.1634550686419;
+        Mon, 18 Oct 2021 02:51:26 -0700 (PDT)
 Received: from shinobu ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id j6sm12070717pgq.0.2021.10.18.02.14.26
+        by smtp.gmail.com with ESMTPSA id e12sm12310739pfl.67.2021.10.18.02.51.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Oct 2021 02:14:28 -0700 (PDT)
-Date:   Mon, 18 Oct 2021 18:14:23 +0900
+        Mon, 18 Oct 2021 02:51:25 -0700 (PDT)
+Date:   Mon, 18 Oct 2021 18:51:19 +0900
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     David Lechner <david@lechnology.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Greg KH <gregkh@linuxfoundation.org>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     David Lechner <david@lechnology.com>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] counter: drop chrdev_lock
-Message-ID: <YW0673OckeCY6Qs/@shinobu>
+Message-ID: <YW1Dl7ylRqyPxH2c@shinobu>
 References: <20211017185521.3468640-1-david@lechnology.com>
+ <YW0PVYT/GCKAnjN9@kroah.com>
+ <YW03PSmpMkMVnHdp@shinobu>
+ <YW06rLixA2Uush+n@kroah.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="0He9SiCcq9UvyWAQ"
+        protocol="application/pgp-signature"; boundary="b/WiIL/XjSIPxFRO"
 Content-Disposition: inline
-In-Reply-To: <20211017185521.3468640-1-david@lechnology.com>
+In-Reply-To: <YW06rLixA2Uush+n@kroah.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---0He9SiCcq9UvyWAQ
+--b/WiIL/XjSIPxFRO
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Oct 17, 2021 at 01:55:21PM -0500, David Lechner wrote:
-> This removes the chrdev_lock from the counter subsystem. This was
-> intended to prevent opening the chrdev more than once. However, this
-> doesn't work in practice since userspace can duplicate file descriptors
-> and pass file descriptors to other processes. Since this protection
-> can't be relied on, it is best to just remove it.
+On Mon, Oct 18, 2021 at 11:13:16AM +0200, Greg KH wrote:
+> On Mon, Oct 18, 2021 at 05:58:37PM +0900, William Breathitt Gray wrote:
+> > On Mon, Oct 18, 2021 at 08:08:21AM +0200, Greg KH wrote:
+> > > On Sun, Oct 17, 2021 at 01:55:21PM -0500, David Lechner wrote:
+> > > > This removes the chrdev_lock from the counter subsystem. This was
+> > > > intended to prevent opening the chrdev more than once. However, this
+> > > > doesn't work in practice since userspace can duplicate file descrip=
+tors
+> > > > and pass file descriptors to other processes. Since this protection
+> > > > can't be relied on, it is best to just remove it.
+> > >=20
+> > > Much better, thanks!
+> > >=20
+> > > One remaining question:
+> > >=20
+> > > > --- a/include/linux/counter.h
+> > > > +++ b/include/linux/counter.h
+> > > > @@ -297,7 +297,6 @@ struct counter_ops {
+> > > >   * @events:		queue of detected Counter events
+> > > >   * @events_wait:	wait queue to allow blocking reads of Counter eve=
+nts
+> > > >   * @events_lock:	lock to protect Counter events queue read operati=
+ons
+> > > > - * @chrdev_lock:	lock to limit chrdev to a single open at a time
+> > > >   * @ops_exist_lock:	lock to prevent use during removal
+> > >=20
+> > > Why do you still need 2 locks for the same structure?
+> > >=20
+> > > thanks,
+> > >=20
+> > > greg k-h
+> >=20
+> > Originally there was only the events_lock mutex. Initially I tried using
+> > it to also limit the chrdev to a single open, but then came across a
+> > "lock held when returning to user space" warning:
+> > https://lore.kernel.org/linux-arm-kernel/YOq19zTsOzKA8v7c@shinobu/T/#m6=
+072133d418d598a5f368bb942c945e46cfab9a5
+> >=20
+> > Instead of losing the benefits of a mutex lock for protecting the
+> > events, I ultimately implemented the chrdev_lock separately as an
+> > atomic_t. If the chrdev_lock is removed, then we'll use events_lock
+> > solely from now on for this structure.
 >=20
-> Suggested-by: Greg KH <gregkh@linuxfoundation.org>
-> Signed-off-by: David Lechner <david@lechnology.com>
-
-Hi David,
-
-If userspace can bypass this protection then we might as well remove the
-code as moot. In agree in principle to this change, but I do have some
-comments inline below.
-
-> ---
->  drivers/counter/counter-chrdev.c |  6 ------
->  drivers/counter/counter-sysfs.c  | 13 +++----------
->  include/linux/counter.h          |  7 -------
->  3 files changed, 3 insertions(+), 23 deletions(-)
+> chrdev_lock should be removed, it doesn't really do what you think it
+> does, as per the thread yesterday :)
 >=20
-> diff --git a/drivers/counter/counter-chrdev.c b/drivers/counter/counter-c=
-hrdev.c
-> index 967c94ae95bb..b747dc81cfc6 100644
-> --- a/drivers/counter/counter-chrdev.c
-> +++ b/drivers/counter/counter-chrdev.c
-> @@ -384,10 +384,6 @@ static int counter_chrdev_open(struct inode *inode, =
-struct file *filp)
->  							    typeof(*counter),
->  							    chrdev);
-> =20
-> -	/* Ensure chrdev is not opened more than 1 at a time */
-> -	if (!atomic_add_unless(&counter->chrdev_lock, 1, 1))
-> -		return -EBUSY;
-> -
->  	get_device(&counter->dev);
->  	filp->private_data =3D counter;
-> =20
-> @@ -419,7 +415,6 @@ static int counter_chrdev_release(struct inode *inode=
-, struct file *filp)
->  	mutex_unlock(&counter->ops_exist_lock);
-> =20
->  	put_device(&counter->dev);
-> -	atomic_dec(&counter->chrdev_lock);
-> =20
->  	return ret;
->  }
-> @@ -445,7 +440,6 @@ int counter_chrdev_add(struct counter_device *const c=
-ounter)
->  	mutex_init(&counter->events_lock);
-> =20
->  	/* Initialize character device */
+> So does this mean you can also drop the ops_exist_lock?
+>=20
+> thanks,
+>=20
+> greg k-h
 
-We can remove this comment because the purpose of calling cdev_init() is
-obvious enough from the name.
+When counter_unregister is called, the ops member is set to NULL to
+indicate that the driver will be removed and that no new device
+operations should occur (because the ops callbacks will no longer be
+valid). The ops_exist_lock is used to allow existing ops callback
+dereferences to complete before the driver is removed so that we do not
+suffer a page fault.
 
-> -	atomic_set(&counter->chrdev_lock, 0);
->  	cdev_init(&counter->chrdev, &counter_fops);
-> =20
->  	/* Allocate Counter events queue */
-> diff --git a/drivers/counter/counter-sysfs.c b/drivers/counter/counter-sy=
-sfs.c
-> index 1ccd771da25f..7bf8882ff54d 100644
-> --- a/drivers/counter/counter-sysfs.c
-> +++ b/drivers/counter/counter-sysfs.c
-> @@ -796,25 +796,18 @@ static int counter_events_queue_size_write(struct c=
-ounter_device *counter,
->  					   u64 val)
->  {
->  	DECLARE_KFIFO_PTR(events, struct counter_event);
-> -	int err =3D 0;
-> -
-> -	/* Ensure chrdev is not opened more than 1 at a time */
-> -	if (!atomic_add_unless(&counter->chrdev_lock, 1, 1))
-> -		return -EBUSY;
-> +	int err;
-> =20
->  	/* Allocate new events queue */
->  	err =3D kfifo_alloc(&events, val, GFP_KERNEL);
->  	if (err)
-> -		goto exit_early;
-> +		return err;
-> =20
->  	/* Swap in new events queue */
->  	kfifo_free(&counter->events);
->  	counter->events.kfifo =3D events.kfifo;
-
-Do we need to hold the events_lock mutex here for this swap in case
-counter_chrdev_read() is in the middle of reading the kfifo to
-userspace, or do the kfifo macros already protect us from a race
-condition here?
+I don't believe we can remove this protection (or can we?) but perhaps
+we can merge the three mutex locks (n_events_list_lock, events_lock, and
+ops_exist_lock) into a single "counter_lock" that handles all mutex
+locking for this structure.
 
 William Breathitt Gray
 
-> =20
-> -exit_early:
-> -	atomic_dec(&counter->chrdev_lock);
-> -
-> -	return err;
-> +	return 0;
->  }
-> =20
->  static struct counter_comp counter_num_signals_comp =3D
-> diff --git a/include/linux/counter.h b/include/linux/counter.h
-> index 22b14a552b1d..0fd99e255a50 100644
-> --- a/include/linux/counter.h
-> +++ b/include/linux/counter.h
-> @@ -297,7 +297,6 @@ struct counter_ops {
->   * @events:		queue of detected Counter events
->   * @events_wait:	wait queue to allow blocking reads of Counter events
->   * @events_lock:	lock to protect Counter events queue read operations
-> - * @chrdev_lock:	lock to limit chrdev to a single open at a time
->   * @ops_exist_lock:	lock to prevent use during removal
->   */
->  struct counter_device {
-> @@ -325,12 +324,6 @@ struct counter_device {
->  	DECLARE_KFIFO_PTR(events, struct counter_event);
->  	wait_queue_head_t events_wait;
->  	struct mutex events_lock;
-> -	/*
-> -	 * chrdev_lock is locked by counter_chrdev_open() and unlocked by
-> -	 * counter_chrdev_release(), so a mutex is not possible here because
-> -	 * chrdev_lock will invariably be held when returning to user space
-> -	 */
-> -	atomic_t chrdev_lock;
->  	struct mutex ops_exist_lock;
->  };
-> =20
-> --=20
-> 2.25.1
->=20
-
---0He9SiCcq9UvyWAQ
+--b/WiIL/XjSIPxFRO
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmFtOu8ACgkQhvpINdm7
-VJLXixAAoJEPgchTPO+v1oAOBslnbNaY7WKHrzMGS3jaLiM75ytFbhHjvHYIFJlr
-I0qlDdKOCHurtpYoOYfUYuyfoxu3fopgi15bXB6GCKgedsZrgBiCh3lWFH2cxIRJ
-a/9UQDg/RQez5CFekUGUZLmED4HgB4I9rMiUSSMU6T6ryKKynVDnO983D9mqpzhc
-wqJ4Iuh+8Kgplvil5nliQN2KEc7tAwmTWYE7wIM/eO9tmoWe2eUBlcMvrcka71Bk
-4hVheZvqn+TgpKqHjDsrfNW9mOUnwM/FyA/sUlsLkDhqTb+IA/bh2Su1zSkioYdc
-QQcNGL7oaA9bg7JtNGc9vVdzF97VxG6XUGaaThV0p3IL8HxxhJx3b1ckNvO+T8/L
-wmui7M+RBqHVDEGtx1fT6hxT3N+chB/bIzl0aqn1I1/ttMLWIVUeIij6aMKCxCKD
-L/t2PnEWnAOHGC42CakF0bRRxHzBnyzgOUo1rmd9ME7L4xLVRk1eVRcy1prYpKR7
-qRoIE4wXs00zrNSj8emzXwMaRKuPsT2DY4ZmLGLJHmnt/n0OO8pPr1mW1nvN4E0N
-u/kfXjoDmLDtZWKwYbrS+MLRnVaH6P7blxYnoFiHDOqpf0d0d6220daAS9BLqm+H
-/XjjDr1Wvwxb3ZVNHrvW20HweB1Kywo6WMDo0G+fNGotHKbg0hI=
-=FITG
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmFtQ4cACgkQhvpINdm7
+VJIdLw/+NJ6vxzJ1hqNe0bg0a2+07MpkSTwiIJOAvnu8ajer9IgnYYaARf8D5jWr
+0HHUShHtK4PpzDGnPlgMybJWn4fBnqyHNLUI0fqa4RK+sksasKBy+aaQEz4/rYTr
+BiJfhnjWp4qBR8eTATrUhUvfFhvYiqWaY7W6sgwwV8J8qQG1yIjm2ufBKD03oWEo
+66CpeMq9OiBFo/BBs8yqXoN+9Hz9s60dX+ydHi/cQviyAC89Zqlyn55iI6jObrO3
+q4pTRLQPpplngv0EJkSybT5w8J23m6kHdfGreUSsSpWA4UKRD6kBGt6sVlWeeJLz
+WLjXcsFjwRV235f40O9tjPtH46+h22caF2qBID456yC3Gw0CFKiDgJBBl3CuESN5
+86vskWdzqEuHMGMek1dGEFhl6O3cqXtd54PBq3a2Dma8oil/NhNJLJmtIsO7aXFT
+fq4o5+tisoKIvd4GPHNeXFHDzfJcvvBEy1OMeHmnQGhrOj22WCLk1Ac6sfH+EoWK
+ujBWf4GNFA9qJkwj2fTILXk47g4E7qyeRN83CqYfCyVeU4100e4SInMSJrCmTpKi
++TAWFMg521rRXrMJV6K0IzAbNKJVvdgkfpYJcSiCduR5zAPQpQfM4fYiXmQkuOha
+bjH4iTjLROUWCeJm3PEY88dLz2Lnbl1Nm20f83TAHfgIbnFRGXI=
+=U9hd
 -----END PGP SIGNATURE-----
 
---0He9SiCcq9UvyWAQ--
+--b/WiIL/XjSIPxFRO--

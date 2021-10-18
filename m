@@ -2,45 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F111432371
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Oct 2021 18:03:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76694432390
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Oct 2021 18:14:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231787AbhJRQGD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 Oct 2021 12:06:03 -0400
-Received: from vern.gendns.com ([98.142.107.122]:37180 "EHLO vern.gendns.com"
+        id S232409AbhJRQQ2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 Oct 2021 12:16:28 -0400
+Received: from vern.gendns.com ([98.142.107.122]:40362 "EHLO vern.gendns.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229634AbhJRQGD (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 18 Oct 2021 12:06:03 -0400
+        id S229634AbhJRQQ2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 18 Oct 2021 12:16:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
         In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
         Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
         List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=6T5wfrK0LEtae0s+NQJAZleVvHNYYAyTeW+KAGeEySM=; b=iBsTpaLu/SHtNy+ARNTBisB7Bv
-        9qB4jBEtlXdoxYdgVNpqj15qw5itxKEDI2kqzNUvMNaiaTmXO11WuPtTYq8hL0SRaioUWB5zoajI6
-        PNBy3/b6MjceMocBU4Zyw7vq9HtO87Vd7mj2GrsQsY1emf3ZAgKQGWyp0BcWeU1oKFGm2y7BofqXt
-        e8LSynNtOkDFL67nCYmcds6lFzpbPIoLanVW+DUyCh+uVAwwvFJ4rb3lZSopau/Rbo6v1MZzTpuzq
-        xViNjJdE8gkhhrCAdt8FuTkp4Z5vuWLvSjZ9fCMlidxsiFxWuo7I+jbqZjPqL7ZR0Jl12T8YWrzXq
-        Xlsb2/Kg==;
-Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:60946 helo=[192.168.0.134])
+        bh=/di40QAvs9FSfvQLcMkMeDro61kriZm8xprT8l0yyOY=; b=W95MTsvlN2nrvkU1q88Eu+flWa
+        v2I3XyUK9dnL9wNwZl6dGw25gPF88XvMe22UBuHQkS2YjcVH4IfiXkBNUzPqD/2q3E79W2Q7rS+zR
+        immqMWJr1tJbHKBvueV3ksG+ZGY5YCD9rWO01fE8Qq32+k+Cjc0byE4G9pTzECXNpttc+ev8lFozE
+        GVl+WC7UFtkKXJBeGt+XQvsT85GkthxYELpU58LINKmko1wJlUih8X74JDy8DwKcx+D6jREwDxwu+
+        Bw/BKGDcZ3wR5tyl4YF6CPRy7b38h42uyA5tSn+HcFtDM01kvGJ2kSKjzm3NnqxbLGS5Q1mSmI+A7
+        e1imORyQ==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:32950 helo=[192.168.0.134])
         by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
         (Exim 4.94.2)
         (envelope-from <david@lechnology.com>)
-        id 1mcV74-0004xm-O8; Mon, 18 Oct 2021 12:03:50 -0400
+        id 1mcVHA-0006qM-Jj; Mon, 18 Oct 2021 12:14:15 -0400
 Subject: Re: [PATCH] counter: drop chrdev_lock
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>,
         Greg KH <gregkh@linuxfoundation.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20211017185521.3468640-1-david@lechnology.com>
- <YW0673OckeCY6Qs/@shinobu>
+ <YW0PVYT/GCKAnjN9@kroah.com> <YW03PSmpMkMVnHdp@shinobu>
+ <YW06rLixA2Uush+n@kroah.com> <YW1Dl7ylRqyPxH2c@shinobu>
 From:   David Lechner <david@lechnology.com>
-Message-ID: <e8158cd7-fbde-5a9a-f4d9-a863745e3d58@lechnology.com>
-Date:   Mon, 18 Oct 2021 11:03:49 -0500
+Message-ID: <6aa0e966-478c-4233-fe9b-d16c3c9d4989@lechnology.com>
+Date:   Mon, 18 Oct 2021 11:14:15 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.13.0
 MIME-Version: 1.0
-In-Reply-To: <YW0673OckeCY6Qs/@shinobu>
+In-Reply-To: <YW1Dl7ylRqyPxH2c@shinobu>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -58,45 +59,71 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 10/18/21 4:14 AM, William Breathitt Gray wrote:
-> On Sun, Oct 17, 2021 at 01:55:21PM -0500, David Lechner wrote:
->> diff --git a/drivers/counter/counter-sysfs.c b/drivers/counter/counter-sysfs.c
->> index 1ccd771da25f..7bf8882ff54d 100644
->> --- a/drivers/counter/counter-sysfs.c
->> +++ b/drivers/counter/counter-sysfs.c
->> @@ -796,25 +796,18 @@ static int counter_events_queue_size_write(struct counter_device *counter,
->>   					   u64 val)
->>   {
->>   	DECLARE_KFIFO_PTR(events, struct counter_event);
->> -	int err = 0;
->> -
->> -	/* Ensure chrdev is not opened more than 1 at a time */
->> -	if (!atomic_add_unless(&counter->chrdev_lock, 1, 1))
->> -		return -EBUSY;
->> +	int err;
->>   
->>   	/* Allocate new events queue */
->>   	err = kfifo_alloc(&events, val, GFP_KERNEL);
->>   	if (err)
->> -		goto exit_early;
->> +		return err;
->>   
->>   	/* Swap in new events queue */
->>   	kfifo_free(&counter->events);
->>   	counter->events.kfifo = events.kfifo;
+On 10/18/21 4:51 AM, William Breathitt Gray wrote:
+> On Mon, Oct 18, 2021 at 11:13:16AM +0200, Greg KH wrote:
+>> On Mon, Oct 18, 2021 at 05:58:37PM +0900, William Breathitt Gray wrote:
+>>> On Mon, Oct 18, 2021 at 08:08:21AM +0200, Greg KH wrote:
+>>>> On Sun, Oct 17, 2021 at 01:55:21PM -0500, David Lechner wrote:
+>>>>> This removes the chrdev_lock from the counter subsystem. This was
+>>>>> intended to prevent opening the chrdev more than once. However, this
+>>>>> doesn't work in practice since userspace can duplicate file descriptors
+>>>>> and pass file descriptors to other processes. Since this protection
+>>>>> can't be relied on, it is best to just remove it.
+>>>>
+>>>> Much better, thanks!
+>>>>
+>>>> One remaining question:
+>>>>
+>>>>> --- a/include/linux/counter.h
+>>>>> +++ b/include/linux/counter.h
+>>>>> @@ -297,7 +297,6 @@ struct counter_ops {
+>>>>>    * @events:		queue of detected Counter events
+>>>>>    * @events_wait:	wait queue to allow blocking reads of Counter events
+>>>>>    * @events_lock:	lock to protect Counter events queue read operations
+>>>>> - * @chrdev_lock:	lock to limit chrdev to a single open at a time
+>>>>>    * @ops_exist_lock:	lock to prevent use during removal
+>>>>
+>>>> Why do you still need 2 locks for the same structure?
+>>>>
+>>>> thanks,
+>>>>
+>>>> greg k-h
+>>>
+>>> Originally there was only the events_lock mutex. Initially I tried using
+>>> it to also limit the chrdev to a single open, but then came across a
+>>> "lock held when returning to user space" warning:
+>>> https://lore.kernel.org/linux-arm-kernel/YOq19zTsOzKA8v7c@shinobu/T/#m6072133d418d598a5f368bb942c945e46cfab9a5
+>>>
+>>> Instead of losing the benefits of a mutex lock for protecting the
+>>> events, I ultimately implemented the chrdev_lock separately as an
+>>> atomic_t. If the chrdev_lock is removed, then we'll use events_lock
+>>> solely from now on for this structure.
+>>
+>> chrdev_lock should be removed, it doesn't really do what you think it
+>> does, as per the thread yesterday :)
+>>
+>> So does this mean you can also drop the ops_exist_lock?
+>>
+>> thanks,
+>>
+>> greg k-h
 > 
-> Do we need to hold the events_lock mutex here for this swap in case
-> counter_chrdev_read() is in the middle of reading the kfifo to
-> userspace, or do the kfifo macros already protect us from a race
-> condition here?
+> When counter_unregister is called, the ops member is set to NULL to
+> indicate that the driver will be removed and that no new device
+> operations should occur (because the ops callbacks will no longer be
+> valid). The ops_exist_lock is used to allow existing ops callback
+> dereferences to complete before the driver is removed so that we do not
+> suffer a page fault.
 > 
-Another possibility might be to disallow changing the size while
-events are enabled. Otherwise, we also need to protect against
-write after free.
+> I don't believe we can remove this protection (or can we?) but perhaps
+> we can merge the three mutex locks (n_events_list_lock, events_lock, and
+> ops_exist_lock) into a single "counter_lock" that handles all mutex
+> locking for this structure.
+> 
 
-I considered this:
+The different mutexes protect individual parts of the counter struct
+rather than the struct as a whole (a linked list, kfifo reads, and
+callback ops), so I think it makes the code clearer having individual
+mutexes for each rather than having a global mutex for unrelated
+actions.
 
-	swap(counter->events.kfifo, events.kfifo);
-	kfifo_free(&events);
-
-But I'm not sure that would be safe enough.

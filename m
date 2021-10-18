@@ -2,144 +2,180 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E0581432890
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Oct 2021 22:42:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 395CD432A8E
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Oct 2021 01:56:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230298AbhJRUpI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 Oct 2021 16:45:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50288 "EHLO
+        id S229702AbhJRX6k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 Oct 2021 19:58:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229674AbhJRUpH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Oct 2021 16:45:07 -0400
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1005C06161C;
-        Mon, 18 Oct 2021 13:42:55 -0700 (PDT)
-Received: by mail-yb1-xb29.google.com with SMTP id n65so115816ybb.7;
-        Mon, 18 Oct 2021 13:42:55 -0700 (PDT)
+        with ESMTP id S229524AbhJRX6j (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Oct 2021 19:58:39 -0400
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1032DC06161C;
+        Mon, 18 Oct 2021 16:56:27 -0700 (PDT)
+Received: by mail-pj1-x1034.google.com with SMTP id pi19-20020a17090b1e5300b0019fdd3557d3so1232826pjb.5;
+        Mon, 18 Oct 2021 16:56:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=uMMxXst2ZoD81CU4ID788FdVQy/9/0/vD87y7ue82uc=;
-        b=pX1EXzYgtbC8geq9Fy5n3+CgDLkjbU9yzZRIfFcS8xL+IoAcnq7kUGIf8y4wYm0WoT
-         BJbo8iI7ObWEBUZBXum9A8+jeQIXp+3S6J23qdvh6xEP8cVnIpHTD1kYYRK4RpeOaxhx
-         FhortOHm89V5T+LGB1Iu06Jt5ZIg1hf39CjMy4fs36ehzDdik3AwDRQ0KOkv0zKtiOJf
-         yNhCyokz1o3QiJauJYZslEEgczpdVMNsFPObBvzOUcgop29OAOvH0PpCfHZAZmMsJnFz
-         kPJKRDA3P5WenbuocOEVLKPAuelwsPTOgyv3q0cjNnLMfMl+H+TiZvRKgx1kdxyWTsbS
-         Xv4w==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=gCQ4GlIZMf0OeQdKaOI0Ryzlg2e9xalfBTKxlGb2CDY=;
+        b=dWF4g/D4FeOGCP9RwWe9ibOb+CqGp3AbSbosCBtsjrkU6Ym+7tTzfjlTzJtOVKCYGo
+         UBqdDPElgL9ht6Mmwu847MddtgPTBUyGHOZu+EgXVAz6IwB9Q9rAczmPDbnWcPPD7qpZ
+         RAWQ4hKBZUrUgzioMd+pMLWbhn7Pf8j1NrpyPj5uL+7qGqphz4bMDdOKg29UPOIPeRki
+         OY0jAE+GJdV/6dFQNzh/TQ8DLHHJsoKyI3XXVbU+/+3Ul3UUpHCtvRq3unhqizMi68UO
+         V7cWDEnzwDKll0V4i5lliTtJa6Etv9zMpcuVK5jRvP2uKEvfXePT1ogZ1BIhKJU9Amel
+         5N1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uMMxXst2ZoD81CU4ID788FdVQy/9/0/vD87y7ue82uc=;
-        b=OojWSF5LrupY9SguOy/A767TGYIj60LsKejs1sg5dvNiGHGiigpghdsS6oivU6jiPm
-         OqFe5pRuJNZIO4LdcaMtM8DgyYNfweA/l4YDvnZnlF5X+GTTGCFYkrheGoVOKDlYhJUy
-         XazZBFxDXlC1Or+GlfYZZOk9nXi/qb6kDAM86x7y50fIujRdBLqnOqsu+Zdfr4BxmYHy
-         IRcl7BfCpY3mEHe7xUVuxlybtACx177LqrY/n2uihv4usFt+yFpu7WRDyWS+Yt0lMve7
-         TLCDNg+lmzLL7Wd+wLrus5rXjEy2stiQa9LJgNIy/53mCOb0eXOvf9i9Oz1QAdxuxgWK
-         i48w==
-X-Gm-Message-State: AOAM530stkZX5svPxUumnMo1lAC7cC6WRykPBmKke17vRflNsIF31YwA
-        EsMeLZe2fXikEtCeg1TFQKeV239ukW+OXnpVUPk=
-X-Google-Smtp-Source: ABdhPJyvX+Nf0TFY0fY+mohyVJ0yLPlViIul+h2jDlLo0+nJcdieuCw3lot8vKGyATPDFdtVLDS//H6YFzGiFJxHTd0=
-X-Received: by 2002:a25:b790:: with SMTP id n16mr30530564ybh.395.1634589774922;
- Mon, 18 Oct 2021 13:42:54 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=gCQ4GlIZMf0OeQdKaOI0Ryzlg2e9xalfBTKxlGb2CDY=;
+        b=p8ke4LK4hlfLE5Ft//+ek/3Y4zbqk6KOlyFv2RieifqXPfcAnT0hkPDScg1DF4J0Sq
+         n0yI5jH5YK/uhrZf8CCHe94PaBDOxbHLNungwFQAlPzWaEho/RSoLfkvVdhi7B038FmP
+         swHQQrRCqPHTTv8BA1SJKxSIgQa9Xf3Q+epmWjhqEWPUz4bM1jjL8zro9fOw1dUY94y8
+         DHgOiDFr53ITC8Hzxq0BbQAmcBOpIXJjO1mMeAFnON6dDtRe14wTo8p9KgMRpwRTx+aH
+         AOsrc6E19E0zbkK99sSpze9NLKW7/i3P/QBKg0TR2p8s0wgXE8hqDgZHAju8DWb/Om7C
+         nGVA==
+X-Gm-Message-State: AOAM531x/KcymjX88lK3llGAazGjchLzvv0ZoVc6P3iBGmoDMjziPxPc
+        0Hy0yQnZep531FLF1TXI+IOJOqMWMWc=
+X-Google-Smtp-Source: ABdhPJxLe6AyJ3leYFjWFK3SNmetjh1gEOluU2spUU9eTqkuJ42UR92A1fnZMEG9Ilr2zGVLffXguQ==
+X-Received: by 2002:a17:90a:7d11:: with SMTP id g17mr2416955pjl.150.1634601386546;
+        Mon, 18 Oct 2021 16:56:26 -0700 (PDT)
+Received: from shinobu ([156.146.35.76])
+        by smtp.gmail.com with ESMTPSA id t9sm523364pjm.36.2021.10.18.16.56.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Oct 2021 16:56:25 -0700 (PDT)
+Date:   Tue, 19 Oct 2021 08:56:21 +0900
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     David Lechner <david@lechnology.com>
+Cc:     Greg KH <gregkh@linuxfoundation.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] counter: drop chrdev_lock
+Message-ID: <YW4JpTaj20j9Flus@shinobu>
+References: <20211017185521.3468640-1-david@lechnology.com>
+ <YW0PVYT/GCKAnjN9@kroah.com>
+ <YW03PSmpMkMVnHdp@shinobu>
+ <YW06rLixA2Uush+n@kroah.com>
+ <YW1Dl7ylRqyPxH2c@shinobu>
+ <6aa0e966-478c-4233-fe9b-d16c3c9d4989@lechnology.com>
 MIME-Version: 1.0
-References: <CACAwPwb7edLzX-KO1XVNWuQ3w=U0BfA=_kwiGCjZOpKfZpc2pw@mail.gmail.com>
- <CACAwPwYQHRcrabw9=0tvenPzAcwwW1pTaR6a+AEWBF9Hqf_wXQ@mail.gmail.com>
- <CAHp75VcEZ19zUU-Ps=kAYJDX1bkxmOqmHii36HE2ujC3gROkNQ@mail.gmail.com>
- <CACAwPwaj_ekK6j9S4CRu6tRTPyjffgDhL3UFnhoYSyJSkAkmpw@mail.gmail.com> <YW3ErLKGtmyhSFd3@smile.fi.intel.com>
-In-Reply-To: <YW3ErLKGtmyhSFd3@smile.fi.intel.com>
-From:   Maxim Levitsky <maximlevitsky@gmail.com>
-Date:   Mon, 18 Oct 2021 23:42:44 +0300
-Message-ID: <CACAwPwYrxxFstQgYHhPOhMwUz_5RprSuoPNHL7m9ft1i-N2icQ@mail.gmail.com>
-Subject: Re: BMI160 accelerometer on AyaNeo tablet
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        linux-realtek-soc@lists.infradead.org,
-        Oder Chiou <oder_chiou@realtek.com>,
-        Ping-Ke Shih <pkshih@realtek.com>, nic_swsd@realtek.com,
-        Derek Fang <derek.fang@realtek.com>,
-        Hayes Wang <hayeswang@realtek.com>,
-        Kailang Yang <kailang@realtek.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        LKML <linux-kernel@vger.kernel.org>, info@ayaneo.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="b58fb5KMbhxV/18m"
+Content-Disposition: inline
+In-Reply-To: <6aa0e966-478c-4233-fe9b-d16c3c9d4989@lechnology.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Oct 18, 2021 at 10:02 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> On Mon, Oct 18, 2021 at 09:02:40PM +0300, Maxim Levitsky wrote:
-> > I also suspect a mistake from the hardware vendors.
-> >
-> > I attached all DSDT decompiled, which shows that they indeed use that
-> > ID, and I also attached the windows driver .INF which was published on
-> > their website  with the driver (https://www.ayaneo.com/downloads)
-> >
-> > They are a small startup so they might have used the realtek ID by mistake.
-> > I added them to the CC.
->
-> Thank you for sharing. Seems they indeed used (deliberately or not) the wrong
-> ID. So there are questions I have:
-> - Is the firmware available in the wild?
 
-Likely so. It looks Aya team only released a single windows driver which
-works on all revisions of their device including the Founder Edition,
-which was released more that a year ago.
+--b58fb5KMbhxV/18m
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-It is likely that all 3 revisions that they sold carry this ACPI ID.
-(The founder edition, first batch of IndieGoGo orders which had a
-redesigned shell,
-and 2nd batch (which I have) which has a new wifi card, a bit better
-controller,
-among other changes).
+On Mon, Oct 18, 2021 at 11:14:15AM -0500, David Lechner wrote:
+> On 10/18/21 4:51 AM, William Breathitt Gray wrote:
+> > On Mon, Oct 18, 2021 at 11:13:16AM +0200, Greg KH wrote:
+> >> On Mon, Oct 18, 2021 at 05:58:37PM +0900, William Breathitt Gray wrote:
+> >>> On Mon, Oct 18, 2021 at 08:08:21AM +0200, Greg KH wrote:
+> >>>> On Sun, Oct 17, 2021 at 01:55:21PM -0500, David Lechner wrote:
+> >>>>> This removes the chrdev_lock from the counter subsystem. This was
+> >>>>> intended to prevent opening the chrdev more than once. However, this
+> >>>>> doesn't work in practice since userspace can duplicate file descrip=
+tors
+> >>>>> and pass file descriptors to other processes. Since this protection
+> >>>>> can't be relied on, it is best to just remove it.
+> >>>>
+> >>>> Much better, thanks!
+> >>>>
+> >>>> One remaining question:
+> >>>>
+> >>>>> --- a/include/linux/counter.h
+> >>>>> +++ b/include/linux/counter.h
+> >>>>> @@ -297,7 +297,6 @@ struct counter_ops {
+> >>>>>    * @events:		queue of detected Counter events
+> >>>>>    * @events_wait:	wait queue to allow blocking reads of Counter ev=
+ents
+> >>>>>    * @events_lock:	lock to protect Counter events queue read operat=
+ions
+> >>>>> - * @chrdev_lock:	lock to limit chrdev to a single open at a time
+> >>>>>    * @ops_exist_lock:	lock to prevent use during removal
+> >>>>
+> >>>> Why do you still need 2 locks for the same structure?
+> >>>>
+> >>>> thanks,
+> >>>>
+> >>>> greg k-h
+> >>>
+> >>> Originally there was only the events_lock mutex. Initially I tried us=
+ing
+> >>> it to also limit the chrdev to a single open, but then came across a
+> >>> "lock held when returning to user space" warning:
+> >>> https://lore.kernel.org/linux-arm-kernel/YOq19zTsOzKA8v7c@shinobu/T/#=
+m6072133d418d598a5f368bb942c945e46cfab9a5
+> >>>
+> >>> Instead of losing the benefits of a mutex lock for protecting the
+> >>> events, I ultimately implemented the chrdev_lock separately as an
+> >>> atomic_t. If the chrdev_lock is removed, then we'll use events_lock
+> >>> solely from now on for this structure.
+> >>
+> >> chrdev_lock should be removed, it doesn't really do what you think it
+> >> does, as per the thread yesterday :)
+> >>
+> >> So does this mean you can also drop the ops_exist_lock?
+> >>
+> >> thanks,
+> >>
+> >> greg k-h
+> >=20
+> > When counter_unregister is called, the ops member is set to NULL to
+> > indicate that the driver will be removed and that no new device
+> > operations should occur (because the ops callbacks will no longer be
+> > valid). The ops_exist_lock is used to allow existing ops callback
+> > dereferences to complete before the driver is removed so that we do not
+> > suffer a page fault.
+> >=20
+> > I don't believe we can remove this protection (or can we?) but perhaps
+> > we can merge the three mutex locks (n_events_list_lock, events_lock, and
+> > ops_exist_lock) into a single "counter_lock" that handles all mutex
+> > locking for this structure.
+> >=20
+>=20
+> The different mutexes protect individual parts of the counter struct
+> rather than the struct as a whole (a linked list, kfifo reads, and
+> callback ops), so I think it makes the code clearer having individual
+> mutexes for each rather than having a global mutex for unrelated
+> actions.
 
+That's a fair point. Because these operations are independent of each
+other, keeping the mutexes separate would allow users to configure the
+next events watch list without necessarily stalling the current read()
+of events. I doubt the difference is significant, but if the purpose of
+these locks are well enough defined then independent mutex locks may not
+be a problem.
 
-> - Do they plan to update firmware to fix this?
-> - Can we make sure that guys got their mistake and will be more careful
->   in the future?
+William Breathitt Gray
 
-I CCed them, hoping that they would hear us. I can also raise this on their
-discord when I find time to look there.
+--b58fb5KMbhxV/18m
+Content-Type: application/pgp-signature; name="signature.asc"
 
->
-> Realtek probably should make this ID marked somehow broken and not use
-> in their products in case the answer to the first of the above question
-> is "yes". (Of course in case the ID will be used for solely PCI enumerated
-> product there will be no conflict, I just propose to be on the safest side,
-> but remark should be made somewhere).
+-----BEGIN PGP SIGNATURE-----
 
->
-> > BTW, I also notice a rotation matrix embedded in DSTD, but the linux's
-> > BMI160 driver doesn't recognize it.
->
-> This is done by the commit 8a0672003421 ("iio: accel: bmc150: Get
-> mount-matrix from ACPI") which needs to be amended to take care about
-> more devices, somewhere in drivers/iio/industialio-acpi.c ? Jonathan,
-> Hans, what do you think?
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmFuCZoACgkQhvpINdm7
+VJJKMQ//fTXJ04FMXKrHomD7DqIgMlq+w8uC1Mcr97R3oNBg7r6HLN321eWPz/rn
+4bC1V3ww9dj3WzMOMtE7dKILJyCCmnbue/+1v694Phj3DppsZ/bN8RLo2c0K5ObF
+YS6evT9LZ/frqDOMAYm0b0g6HRxg9GF1A31Td1bwK2YmN4h1mfA351n+0sqxScF0
+r7qs8T9fPdB9YngI7VwIe0WAMT1C1rjl5rCVTus3Y+ojQa8Xd9Ua3OgdNOlPiAcN
+l62tl4R58BFztmsqtY4DtOabeYV85n8bBnUBpF7bcptpUcB9elU2imhNYXUcUxnT
+6h1rbhn+bNdq0ClVZmyAD22JVg9RyAl2iJ8XvlAg3t5CGM9N6rFMnXpH+W6YiI7q
+KXYA+JBksyAfuifhsv89AogTj3maf0vzrifz6UkkYLcBmkzed9h+qDHyBGW7qirI
+TApiRqQMMMV/wd6h0U5Ai5C5O4dteOnOeNhYxjul+Xm2G87bFWXtPUT4xPWkkVb1
+mxV9+K6YuX/ny4MH+55B1a0oa6o2hpfga09YSeSkuX2Ci6hq/K1ZEgHd+XMNptlz
+PCl+ezqsxz7FQUoi5+ne3/8+HC9qI3zk049m3GrIDuMh27E0M6Ccj5zpT+JociXs
+XnPPCg8RPThi7EUEdVB5zEWTdAg3IPsV7XVLNAALHN1CyQWsSac=
+=zW9x
+-----END PGP SIGNATURE-----
 
-If you like to, I can probably volunteer to prepare a patch for this myself next
-weekend, using this pointer as a reference.
-
->
-> P.S. As I said, the commit message and the code (in the comments) should
-> be very well elaborated and only accepted in case the firmware is already
-> in the wild on the market.
-
-I will prepare a patch with a better commit description this weekend.
-
-
-Thank you very much,
-Best regards,
-      Maxim Levitsky
-
-
->
-> --
-> With Best Regards,
-> Andy Shevchenko
->
->
+--b58fb5KMbhxV/18m--

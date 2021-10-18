@@ -2,93 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25B834326FF
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Oct 2021 21:02:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 417A54327F9
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Oct 2021 21:52:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231739AbhJRTFI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 Oct 2021 15:05:08 -0400
-Received: from mga04.intel.com ([192.55.52.120]:22880 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231234AbhJRTFI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 18 Oct 2021 15:05:08 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10141"; a="227111594"
-X-IronPort-AV: E=Sophos;i="5.85,382,1624345200"; 
-   d="scan'208";a="227111594"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2021 12:02:27 -0700
-X-IronPort-AV: E=Sophos;i="5.85,382,1624345200"; 
-   d="scan'208";a="566192249"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.72.159])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2021 12:02:23 -0700
-Received: from andy by smile with local (Exim 4.95)
-        (envelope-from <andy.shevchenko@gmail.com>)
-        id 1mcXtc-000IvV-Jz;
-        Mon, 18 Oct 2021 22:02:04 +0300
-Date:   Mon, 18 Oct 2021 22:02:04 +0300
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-To:     Maxim Levitsky <maximlevitsky@gmail.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        linux-realtek-soc@lists.infradead.org,
-        Oder Chiou <oder_chiou@realtek.com>,
-        Ping-Ke Shih <pkshih@realtek.com>, nic_swsd@realtek.com,
-        Derek Fang <derek.fang@realtek.com>,
-        Hayes Wang <hayeswang@realtek.com>,
-        Kailang Yang <kailang@realtek.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        LKML <linux-kernel@vger.kernel.org>, info@ayaneo.com
-Subject: Re: BMI160 accelerometer on AyaNeo tablet
-Message-ID: <YW3ErLKGtmyhSFd3@smile.fi.intel.com>
-References: <CACAwPwb7edLzX-KO1XVNWuQ3w=U0BfA=_kwiGCjZOpKfZpc2pw@mail.gmail.com>
- <CACAwPwYQHRcrabw9=0tvenPzAcwwW1pTaR6a+AEWBF9Hqf_wXQ@mail.gmail.com>
- <CAHp75VcEZ19zUU-Ps=kAYJDX1bkxmOqmHii36HE2ujC3gROkNQ@mail.gmail.com>
- <CACAwPwaj_ekK6j9S4CRu6tRTPyjffgDhL3UFnhoYSyJSkAkmpw@mail.gmail.com>
+        id S231956AbhJRTyx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 Oct 2021 15:54:53 -0400
+Received: from mail-oi1-f175.google.com ([209.85.167.175]:43832 "EHLO
+        mail-oi1-f175.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230159AbhJRTyx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Oct 2021 15:54:53 -0400
+Received: by mail-oi1-f175.google.com with SMTP id o4so1304740oia.10;
+        Mon, 18 Oct 2021 12:52:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Q6I6Sfuna3OD0rMWi1ff5fM0/2M4IWqYf0vFWqx6Q+A=;
+        b=7LrUi5rNaKDoHcJ36oRKf21N6iWE0o1yMQNyJDfyjdAabGtpb6PA2FBUg3TwB4ttdm
+         s75jECfQPgvXaRSEo51rehCxtu2jVJmNguUdGs7xrmQVniXrqeKWbDbyiNBQqWf6yIAm
+         oawpZDSIMCLZFlJ4Y8rRLerk+uusp8g0OOxDfwGaOUVP6zk7XeY1Z+cKmADV5UJZ3Rps
+         UD52W7+6jFLY20zpls3Msc8ejpDynNOXZr/o9AlrCJIU2z8DKBz6g1mC2ebegWEeJewh
+         HSBkoqGLvGt8rQojAE8NbDSlssTKjRd1kaTa1Fu2ONC6WyeUEKHpx8bFPFCcFnBHxciO
+         3+4A==
+X-Gm-Message-State: AOAM530rquAmIudYV0gtwt9zmkN4U8vZFB/UC9BbPa6huzfUiMr5CcsM
+        yLJZ2HQXC5N79/9SeMQ1lw==
+X-Google-Smtp-Source: ABdhPJwhFW+GuJ26cLhKeqsKsQ9+hwRrPd/sK03XOa1Y1uAJZ2hmaXpww4cKe5UJInqGIGsDKIrUkA==
+X-Received: by 2002:aca:ba41:: with SMTP id k62mr720043oif.53.1634586761453;
+        Mon, 18 Oct 2021 12:52:41 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id g29sm3136078oic.27.2021.10.18.12.52.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Oct 2021 12:52:40 -0700 (PDT)
+Received: (nullmailer pid 2842303 invoked by uid 1000);
+        Mon, 18 Oct 2021 19:52:40 -0000
+Date:   Mon, 18 Oct 2021 14:52:40 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Vincent Whitchurch <vincent.whitchurch@axis.com>
+Cc:     kernel@axis.com, lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, robh+dt@kernel.org, jic23@kernel.org,
+        devicetree@vger.kernel.org, peda@axentia.se
+Subject: Re: [PATCH v2 2/3] dt-bindings: iio: io-channel-mux: Add property
+ for settle time
+Message-ID: <YW3QiAcIy2wdf3OP@robh.at.kernel.org>
+References: <20211007134641.13417-1-vincent.whitchurch@axis.com>
+ <20211007134641.13417-3-vincent.whitchurch@axis.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CACAwPwaj_ekK6j9S4CRu6tRTPyjffgDhL3UFnhoYSyJSkAkmpw@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20211007134641.13417-3-vincent.whitchurch@axis.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Oct 18, 2021 at 09:02:40PM +0300, Maxim Levitsky wrote:
-> I also suspect a mistake from the hardware vendors.
+On Thu, 07 Oct 2021 15:46:40 +0200, Vincent Whitchurch wrote:
+> Hardware may require some time for the muxed analog signals to settle
+> after the muxing is changed.  Allow this time to be specified in the
+> devicetree.
 > 
-> I attached all DSDT decompiled, which shows that they indeed use that
-> ID, and I also attached the windows driver .INF which was published on
-> their website  with the driver (https://www.ayaneo.com/downloads)
+> Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
+> ---
+>  .../devicetree/bindings/iio/multiplexer/io-channel-mux.yaml  | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> They are a small startup so they might have used the realtek ID by mistake.
-> I added them to the CC.
 
-Thank you for sharing. Seems they indeed used (deliberately or not) the wrong
-ID. So there are questions I have:
-- Is the firmware available in the wild?
-- Do they plan to update firmware to fix this?
-- Can we make sure that guys got their mistake and will be more careful
-  in the future?
-
-Realtek probably should make this ID marked somehow broken and not use
-in their products in case the answer to the first of the above question
-is "yes". (Of course in case the ID will be used for solely PCI enumerated
-product there will be no conflict, I just propose to be on the safest side,
-but remark should be made somewhere).
-
-> BTW, I also notice a rotation matrix embedded in DSTD, but the linux's
-> BMI160 driver doesn't recognize it.
-
-This is done by the commit 8a0672003421 ("iio: accel: bmc150: Get
-mount-matrix from ACPI") which needs to be amended to take care about
-more devices, somewhere in drivers/iio/industialio-acpi.c ? Jonathan,
-Hans, what do you think?
-
-P.S. As I said, the commit message and the code (in the comments) should
-be very well elaborated and only accepted in case the firmware is already
-in the wild on the market.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Reviewed-by: Rob Herring <robh@kernel.org>

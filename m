@@ -2,637 +2,646 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 746414325C5
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Oct 2021 19:58:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D89064325DD
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Oct 2021 20:02:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229980AbhJRSAX convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Mon, 18 Oct 2021 14:00:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42390 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231398AbhJRSAT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 18 Oct 2021 14:00:19 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2A1D860F0F;
-        Mon, 18 Oct 2021 17:58:07 +0000 (UTC)
-Date:   Mon, 18 Oct 2021 19:02:22 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
-Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Subject: Re: [PULL V2] 1st set of IIO new device support, features and
- cleanup for  the 5.16 cycle
-Message-ID: <20211018190222.3584bc12@jic23-huawei>
-In-Reply-To: <20211017113608.5d67605b@jic23-huawei>
-References: <20211017113608.5d67605b@jic23-huawei>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        id S230216AbhJRSFF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 Oct 2021 14:05:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42164 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230266AbhJRSFE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Oct 2021 14:05:04 -0400
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB97CC06161C;
+        Mon, 18 Oct 2021 11:02:52 -0700 (PDT)
+Received: by mail-yb1-xb2c.google.com with SMTP id v195so779548ybb.0;
+        Mon, 18 Oct 2021 11:02:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=kAMB7Xmn8+IYcLQFrEW6sbLa2LeEbKiMgBQaD4PNKpg=;
+        b=DyJpwT85GtQAKkTwaPPvcJaISQxAxPwQbsmVPJwKYCoHimOmoQbKSsLlUIZUwWO5Fx
+         Kmi4tRezBNeIhcUOGFFWUWO8v20h95LEzZKiGmt1hyh5Z+BdkU9nCnms/15BXQw0PEU6
+         w6H6itDDVn7f8uaWp4/qSefFwuaysayk6nQb5CanHxuPBLPMCOWuETZRKAlde1+uQJC+
+         IqbCPF+HXclpoleBwnQx9ANRfzt3/fz0aPesntkF6aJoVwhaHh4hajkoYUzyJsI+LPfA
+         xD1+k8ZpfYcVnSB1Ri6ouHeybewcNX9F3BMjSUof/DeoMcisEYc8bVVL+0EoxOWSbM8Q
+         WAcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=kAMB7Xmn8+IYcLQFrEW6sbLa2LeEbKiMgBQaD4PNKpg=;
+        b=rtT1KpROFNmjDgToF8rRgFY7JCQ49iG0hn8QOufGaDJ/StqIfXpRMM7sPZtRp8TJKo
+         t912+gA+jHJsDdl3D45zgHTgsCJEFwkUDEP5fUq3rKV3roNlbSB+YyDQk3AM0Z4it6M1
+         r8Krk5kdMCYs2nVq2NxqO2Cag3mnM4V+aWiTOpbfLlNHxc6xqVsOv5aSAuq1JwYXX1l2
+         GLAS419E/N60cBwnb6rmcFS1ZQLfi0CxXrQSlCboAfY2rEjLwYO7aLhx12TH+j7ruixT
+         vlv/A7CNOZ8NNjXUQeI0VzTddF98r3+ii7fQqs/yEFzBKqKXWd5SUOx5loAN1VALK6gx
+         3tkw==
+X-Gm-Message-State: AOAM532ABQRC2sXq4vpKuGqMpTgYjxsl3lca0laVyjxsUHS3xUjoOwtJ
+        X59F3JmQBDkMTZ+lj7y4odFoLTmxLpuXee6JqFz+acF6tAg=
+X-Google-Smtp-Source: ABdhPJzVH6l5RIRKpPxiF0wDUXiC3nJ1TNtQysJX1+7E9QXSH+LD0QTlH4UEsSBr44y8HIYQeknIlVOU+qElKNs0+K8=
+X-Received: by 2002:a25:ddc7:: with SMTP id u190mr30231523ybg.37.1634580171901;
+ Mon, 18 Oct 2021 11:02:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+References: <CACAwPwb7edLzX-KO1XVNWuQ3w=U0BfA=_kwiGCjZOpKfZpc2pw@mail.gmail.com>
+ <CACAwPwYQHRcrabw9=0tvenPzAcwwW1pTaR6a+AEWBF9Hqf_wXQ@mail.gmail.com> <CAHp75VcEZ19zUU-Ps=kAYJDX1bkxmOqmHii36HE2ujC3gROkNQ@mail.gmail.com>
+In-Reply-To: <CAHp75VcEZ19zUU-Ps=kAYJDX1bkxmOqmHii36HE2ujC3gROkNQ@mail.gmail.com>
+From:   Maxim Levitsky <maximlevitsky@gmail.com>
+Date:   Mon, 18 Oct 2021 21:02:40 +0300
+Message-ID: <CACAwPwaj_ekK6j9S4CRu6tRTPyjffgDhL3UFnhoYSyJSkAkmpw@mail.gmail.com>
+Subject: Re: BMI160 accelerometer on AyaNeo tablet
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        linux-realtek-soc@lists.infradead.org,
+        Oder Chiou <oder_chiou@realtek.com>,
+        Ping-Ke Shih <pkshih@realtek.com>, nic_swsd@realtek.com,
+        Derek Fang <derek.fang@realtek.com>,
+        Hayes Wang <hayeswang@realtek.com>,
+        Kailang Yang <kailang@realtek.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        LKML <linux-kernel@vger.kernel.org>, info@ayaneo.com
+Content-Type: multipart/mixed; boundary="00000000000080f86305cea45aa7"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 17 Oct 2021 11:36:08 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+--00000000000080f86305cea45aa7
+Content-Type: text/plain; charset="UTF-8"
 
-> The following changes since commit 6880fa6c56601bb8ed59df6c30fd390cc5f6dd8f:
-> 
->   Linux 5.15-rc1 (2021-09-12 16:28:37 -0700)
-> 
-> are available in the Git repository at:
-> 
->   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-5.16a-split-v2
-> 
-> for you to fetch changes up to ec20da0c69b2c6d0f2864097e791fac1b04d3e4f:
-> 
->   iio: imx8qxp-adc: mark PM functions as __maybe_unused (2021-10-17 11:06:07 +0100)
+I also suspect a mistake from the hardware vendors.
 
-This one is bad because I forgot to fix up fixes tags after the rebase.
+I attached all DSDT decompiled, which shows that they indeed use that
+ID, and I also attached the windows driver .INF which was published on
+their website  with the driver (https://www.ayaneo.com/downloads)
 
 
-> 
-> ----------------------------------------------------------------
-> First set of IIO new device and feature support for the 5.16 cycle
-> 
-> Counter subsystem changes now sent separately.
-> 
-> This has been a busy cycle, so lots here and a few more stragglers to
-> come next week.
-> 
-> Big new feature in this cycle is probably output buffer support.
-> This has been in the works for a very long time so it's great to see
-> Mihail pick up the challenge and build upon his predecessors work to finally
-> bring this feature to mainline.
-> 
-> New device support
-> ------------------
-> 
-> * adi,adxl313
->   - New driver and dt bindings for this low power accelerometer.
-> * adi,adxl355
->   - New driver and dt bindings for this accelerometer.
->   - Later series adds buffer support.
-> * asahi-kasei,ak8975
->   - Minor additions to driver to support ak09916
-> * aspeed,aspeed-adc
->   - Substantial rework plus feature additions to add support for the
->     ast2600 including a new dt bindings doc.
-> * atmel,at91_sama5d2
->   - Rework and support introduced for the sama7g5 parts.
-> * maxim,max31865
->   - New driver and bindings for this RTD temperature sensor chip.
-> * nxp,imx8qxp
->   - New driver and bindings for the ADC found on the i.MX 8QuadXPlus Soc.
-> * senseair,sunrise
->   - New driver and bindings for this family of carbon dioxide gas sensors.
-> * sensiron,scd4x
->   - New driver and bindings for this carbon dioxide gas sensor.
-> 
-> New features
-> ------------
-> 
-> * Output buffer support.  Works in a similar fashion to input buffers, but
->   in this case userspace pushes data into the kfifo which is then drained
->   to the device when a trigger occurs.  Support added to the ad5766 DAC
->   driver.
-> * Core, devm_iio_map_array_register() to avoid need for
->   devm_add_action_or_reset() based cleanup in fully managed allocation
->   drivers.
-> * Core iio_push_to_buffers_with_ts_unaligned() function to safely handle a
->   few drivers where it really hard to ensure the correct data alignment in
->   an iio_push_to_buffers_with_timestamp() call. Note this uses a bounce
->   buffer so should be avoided whenever possible.  Used in the ti,adc108s102,
->   invense,mpu3050 and adi,adis16400.  This closes the last   known set
->   of drivers with alignment issues at this interface.
-> * maxim,max1027
->   - Substantial rework to this driver main target of which was supporting
->     use of other triggers than it's own EOC interrupt.
->   - Transfer optimization.
-> * nxp,fxls8962af
->   - Threshold even support including using it as a wakeup source.
-> 
-> Cleanups, minor fixes etc
-> -------------------------
-> 
-> Chances of a common type to multiple drivers:
-> 
-> * devm_ conversion and drop of .remove() callbacks in:
->   - adi,ad5064
->   - adi,ad7291
->   - adi,ad7303
->   - adi,ad7746
->   - adi,ad9832
->   - adi,adis16080
->   - dialog,da9150-gpadc
->   - intel,mrfld_adc
->   - marvell,berlin2
->   - maxim,max1363
->   - maxim,max44000
->   - nuvoton,nau7802
->   - st_sensors (includes a lot of rework!)
->   - ti,ads8344
->   - ti,lp8788
-> 
-> * devm_platform_ioremap_resource() used to reduce boilerplate
->   - cirrus,ep93xx
->   - rockchip,saradc
->   - stm,stm32-dac
-> 
-> * Use dev_err_probe() in more places to both not print on deferred probe and
->   ensure a reason for the deferral is available for debug purposes.
->   - adi,ad8801
->   - capella,cm36651
->   - linear,ltc1660
->   - maxim,ds4424
->   - maxim,max5821
->   - microchip,mcp4922
->   - nxp,lpc18xx
->   - onnn,noa1305
->   - st,lsm9ds0
->   - st,st_sensors
->   - st,stm32-dac
->   - ti,afe4403
->   - ti,afe4404
->   - ti,dac7311
-> 
-> * Drop error returns in SPI and I2C remove() functions as they are ignored and
->   long term plan is to change these all over to returning void. In some cases
->   these patches just make it 'obvious' they always return 0 where it was the
->   case before but not easy to tell.
->   - adi,ad5380
->   - adi,ad5446
->   - adi,ad5686
->   - adi,ad5592r
->   - bosch,bma400
->   - bosch,bmc150
->   - fsl,mma7455
->   - honeywell,hmc5843
->   - kionix,kxsd9
->   - maxim,max5487
->   - meas,ms5611
->   - ti,afe4403
-> 
-> Driver specific changes
-> 
-> * adi,ad5770r
->   - Bring driver inline with documented bindings.
-> * adi,ad7746
->   - Trivial style fix
-> * adi,ad7949
->   - Express some magic values as the underlying parts via new #defines.
->   - Make it work with SPI controllers that don't support 14 or 16 bit messages
->   - Support selection of voltage reference from dt including expanding the
->     dt-bindings to cover this new functionality.
-> * adi,ad799x
->   - Implement selection of external reference voltage on AD7991, AD7995 and
->     AD7999.
->   - Add missing dt-bindings doc for devices supported by this driver.
-> * adi,adislib
->   - Move interrupt startup to better location in startup flow.
->   - Handle devices that cannot mask/unmask the drdy pin and must instead mask
->     at the interrupt controller.  Applies to the adis16460 and adis16475 from
->     which we then drop equivalent code.
-> * adi,ltc2983
->   - Add support for optional reset pin.
->   - Fail to probe if no channels specified in dt binding.
-> * asahi-kasei,ak8975
->   - dt-binding additions of missing vid-supply regulator.
-> * aspeed,aspeed-adc
->   - Typo fix.
-> * fsl,mma7660
->   - Mark acpi_device_id table __maybe_unused to avoid build warning.
-> * fsl,imx25-gcq
->   - Avoid initializing regulators that aren't used.
-> * invensense,mpu3050
->   - Drop a dead protection against a clash with the old input driver.
-> * invensense,mpu6050
->   - Rework code to not use strcpy() and hence avoid possibility of wrong sized
->     buffers. Note this wasn't a bug, but the new code is a lot more readable.
->   - Mark acpi_device_id table __maybe_unused to avoid build warning.
-> * kionix,kxcjk1013
->   - dt-binding addition to note it supports interrupts.
-> * marvell,berlin2-adc
->   - Enable COMPILE_TEST building.
-> * maxim,max1027
->   - Avoid returning success in an error path.
-> * nxp,imx8qxp
->   - Fix warning when runtime pm not enabled via __maybe_unused.
-> * ricoh,rn5t618
->   - Use the new devm_iio_map_array_register() instead of open coding the same.
-> * samsung,exynos_adc
->   - Improve kconfig help text.
-> * st,lsm6dsx
->   - Move max_fifo_size into the fifo_ops structure where the other configuration
->     parameters are found.
-> * st,st_sensors:
->   - Reorder to ensure we turn the power off after removing userspace interfaces.
-> * senseair,sunrise
->   - Add missing I2C dependency.
-> * ti,twl6030
->   - Small code tidy up.
-> 
-> ----------------------------------------------------------------
-> Alexander Vorwerk (1):
->       staging: iio: cdc: remove braces from single line if blocks
-> 
-> Alexandru Ardelean (24):
->       iio: st_sensors: disable regulators after device unregistration
->       iio: st_sensors: remove st_sensors_deallocate_trigger() function
->       iio: st_sensors: remove st_sensors_power_disable() function
->       iio: st_sensors: remove all driver remove functions
->       iio: st_sensors: remove reference to parent device object on st_sensor_data
->       iio: adc: ti-ads8344: convert probe to device-managed
->       iio: dac: ad7303: convert probe to full device-managed
->       staging: iio: ad9832: convert probe to device-managed
->       iio: dac: ad5064: convert probe to full device-managed
->       iio: gyro: adis16080: use devm_iio_device_register() in probe
->       iio: light: max44000: use device-managed functions in probe
->       iio: adc: fsl-imx25-gcq: initialize regulators as needed
->       iio: inkern: introduce devm_iio_map_array_register() short-hand function
->       iio: adc: intel_mrfld_adc: convert probe to full device-managed
->       iio: adc: axp288_adc: convert probe to full device-managed
->       iio: adc: lp8788_adc: convert probe to full-device managed
->       iio: adc: da9150-gpadc: convert probe to full-device managed
->       iio: adc: nau7802: convert probe to full device-managed
->       iio: adc: max1363: convert probe to full device-managed
->       iio: adc: rn5t618-adc: use devm_iio_map_array_register() function
->       iio: adc: berlin2-adc: convert probe to device-managed only
->       iio: adc: Kconfig: add COMPILE_TEST dep for berlin2-adc
->       iio: adc: ad7291: convert probe to device-managed only
->       iio: triggered-buffer: extend support to configure output buffers
-> 
-> Arnd Bergmann (1):
->       iio: imx8qxp-adc: mark PM functions as __maybe_unused
-> 
-> Billy Tsai (13):
->       dt-bindings: iio: adc: Add ast2600-adc bindings
->       iio: adc: aspeed: completes the bitfield declare.
->       iio: adc: aspeed: Keep model data to driver data.
->       iio: adc: aspeed: Restructure the model data
->       iio: adc: aspeed: Add vref config function
->       iio: adc: aspeed: Use model_data to set clk scaler.
->       iio: adc: aspeed: Use devm_add_action_or_reset.
->       iio: adc: aspeed: Support ast2600 adc.
->       iio: adc: aspeed: Fix the calculate error of clock.
->       iio: adc: aspeed: Add func to set sampling rate.
->       iio: adc: aspeed: Add compensation phase.
->       iio: adc: aspeed: Support battery sensing.
->       iio: adc: aspeed: Get and set trimming data.
-> 
-> Cai Huoqing (20):
->       iio: ep93xx: Make use of the helper function devm_platform_ioremap_resource()
->       iio: dac: stm32-dac: Make use of the helper function devm_platform_ioremap_resource()
->       iio: adc: rockchip_saradc: Make use of the helper function devm_platform_ioremap_resource()
->       iio: imx8qxp-adc: Add driver support for NXP IMX8QXP ADC
->       dt-bindings: iio: adc: Add binding documentation for NXP IMX8QXP ADC
->       MAINTAINERS: Add the driver info of the NXP IMX8QXP
->       iio: dac: ad8801: Make use of the helper function dev_err_probe()
->       iio: dac: lpc18xx_dac: Make use of the helper function dev_err_probe()
->       iio: dac: ltc1660: Make use of the helper function dev_err_probe()
->       iio: dac: ds4424: Make use of the helper function dev_err_probe()
->       iio: dac: max5821: Make use of the helper function dev_err_probe()
->       iio: dac: mcp4922: Make use of the helper function dev_err_probe()
->       iio: dac: stm32-dac: Make use of the helper function dev_err_probe()
->       iio: dac: ti-dac7311: Make use of the helper function dev_err_probe()
->       iio: st_sensors: Make use of the helper function dev_err_probe()
->       iio: st_lsm9ds0: Make use of the helper function dev_err_probe()
->       iio: health: afe4403: Make use of the helper function dev_err_probe()
->       iio: health: afe4404: Make use of the helper function dev_err_probe()
->       iio: light: cm36651: Make use of the helper function dev_err_probe()
->       iio: light: noa1305: Make use of the helper function dev_err_probe()
-> 
-> Colin Ian King (1):
->       iio: adc: aspeed: Fix spelling mistake "battey" -> "battery"
-> 
-> Dan Carpenter (1):
->       iio: adc: max1027: fix error code in max1027_wait_eoc()
-> 
-> Daniel Palmer (2):
->       iio: imu: inv_mpu6050: Mark acpi match table as maybe unused
->       iio: accel: mma7660: Mark acpi match table as maybe unused
-> 
-> David Heidelberg (2):
->       dt-bindings: iio: kionix,kxcjk1013: driver support interrupts
->       dt-bindings: iio: magnetometer: asahi-kasei,ak8975 add vid reg
-> 
-> Eugen Hristev (8):
->       dt-bindings: iio: adc: at91-sama5d2: add compatible for sama7g5-adc
->       iio: adc: at91-sama5d2_adc: initialize hardware after clock is started
->       iio: adc: at91-sama5d2_adc: remove unused definition
->       iio: adc: at91-sama5d2_adc: convert to platform specific data structures
->       iio: adc: at91-sama5d2_adc: add support for separate end of conversion registers
->       iio: adc: at91-sama5d2_adc: add helper for COR register
->       iio: adc: at91-sama5d2_adc: add support for sama7g5 device
->       iio: adc: at91-sama5d2_adc: update copyright and authors information
-> 
-> Florian Boor (2):
->       iio: adc: ad799x: Implement selecting external reference voltage input on AD7991, AD7995 and AD7999.
->       dt-bindings: iio: ad779x: Add binding document
-> 
-> Jacopo Mondi (4):
->       dt-bindings: iio: chemical: Document senseair,sunrise CO2 sensor
->       iio: ABI: docs: Document Senseair Sunrise ABI
->       iio: chemical: Add Senseair Sunrise 006-0-007 driver
->       iio: ABI: Document in_concentration_co2_scale
-> 
-> Jonathan Cameron (4):
->       iio: core: Introduce iio_push_to_buffers_with_ts_unaligned()
->       iio: adc: ti-adc108s102: Fix alignment of buffer pushed to iio buffers.
->       iio: gyro: mpu3050: Fix alignment and size issues with buffers.
->       iio: imu: adis16400: Fix buffer alignment requirements.
-> 
-> Krzysztof Kozlowski (1):
->       iio: adc: exynos: describe drivers in KConfig
-> 
-> Lars-Peter Clausen (1):
->       iio: kfifo-buffer: Add output buffer support
-> 
-> Len Baker (1):
->       drivers/iio: Remove all strcpy() uses
-> 
-> Liam Beguin (5):
->       iio: adc: ad7949: define and use bitfield names
->       iio: adc: ad7949: enable use with non 14/16-bit controllers
->       iio: adc: ad7949: add vref selection support
->       dt-bindings: iio: adc: ad7949: update voltage reference bindings
->       iio: adc: ad7949: use devm managed functions
-> 
-> Lorenzo Bianconi (1):
->       iio: imu: st_lsm6dsx: move max_fifo_size in st_lsm6dsx_fifo_ops
-> 
-> Lucas Stankus (2):
->       dt-bindings: iio: accel: Add binding documentation for ADXL313
->       iio: accel: Add driver support for ADXL313
-> 
-> Lukas Bulwahn (1):
->       iio: gyro: remove dead config dependencies on INPUT_MPU3050
-> 
-> Matt Ranostay (1):
->       iio: magnetometer: ak8975: add AK09116 support
-> 
-> Mihail Chindris (2):
->       iio: Add output buffer support
->       drivers:iio:dac:ad5766.c: Add trigger buffer
-> 
-> Miquel Raynal (16):
->       iio: adc: max1027: Fix style
->       iio: adc: max1027: Drop extra warning message
->       iio: adc: max1027: Drop useless debug messages
->       iio: adc: max1027: Minimize the number of converted channels
->       iio: adc: max1027: Rename a helper
->       iio: adc: max1027: Create a helper to enable/disable the cnvst trigger
->       iio: adc: max1027: Simplify the _set_trigger_state() helper
->       iio: adc: max1027: Ensure a default cnvst trigger configuration
->       iio: adc: max1027: Create a helper to configure the channels to scan
->       iio: adc: max1027: Prevent single channel accesses during buffer reads
->       iio: adc: max1027: Separate the IRQ handler from the read logic
->       iio: adc: max1027: Introduce an end of conversion helper
->       iio: adc: max1027: Stop requesting a threaded IRQ
->       iio: adc: max1027: Use the EOC IRQ when populated for single reads
->       iio: adc: max1027: Allow all kind of triggers to be used
->       iio: adc: max1027: Don't reject external triggers when there is no IRQ
-> 
-> Navin Sankar Velliangiri (2):
->       iio: temperature: Add MAX31865 RTD Support
->       dt-bindings: iio: temperature: add MAXIM max31865 support
-> 
-> Nuno Sá (7):
->       iio: ad5770r: make devicetree property reading consistent
->       iio: ltc2983: add support for optional reset gpio
->       iio: ltc2983: fail probe if no channels are given
->       iio: adis: do not disabe IRQs in 'adis_init()'
->       iio: adis: handle devices that cannot unmask the drdy pin
->       iio: adis16475: make use of the new unmasked_drdy flag
->       iio: adis16460: make use of the new unmasked_drdy flag
-> 
-> Puranjay Mohan (4):
->       dt-bindings: iio: accel: Add DT binding doc for ADXL355
->       iio: accel: Add driver support for ADXL355
->       iio: accel: adxl355: use if(ret) in place of ret < 0
->       iio: accel: adxl355: Add triggered buffer support
-> 
-> Randy Dunlap (1):
->       iio: chemical: SENSEAIR_SUNRISE_CO2 depends on I2C
-> 
-> Roan van Dijk (4):
->       dt-bindings: iio: chemical: sensirion,scd4x: Add yaml description
->       MAINTAINERS: Add myself as maintainer of the scd4x driver
->       drivers: iio: chemical: Add support for Sensirion SCD4x CO2 sensor
->       iio: documentation: Document scd4x calibration use
-> 
-> Sean Nyekjaer (2):
->       iio: accel: fxls8962af: add threshold event handling
->       iio: accel: fxls8962af: add wake on event
-> 
-> Tang Bin (1):
->       iio: adc: twl6030-gpadc: Use the defined variable to clean code
-> 
-> Uwe Kleine-König (13):
->       iio: accel: bma400: Make bma400_remove() return void
->       iio: accel: bmc150: Make bmc150_accel_core_remove() return void
->       iio: accel: bmi088: Make bmi088_accel_core_remove() return void
->       iio: accel: kxsd9: Make kxsd9_common_remove() return void
->       iio: accel: mma7455: Make mma7455_core_remove() return void
->       iio: dac: ad5380: Make ad5380_remove() return void
->       iio: dac: ad5446: Make ad5446_remove() return void
->       iio: dac: ad5592r: Make ad5592r_remove() return void
->       iio: dac: ad5686: Make ad5686_remove() return void
->       iio: health: afe4403: Don't return an error in .remove()
->       iio: magn: hmc5843: Make hmc5843_common_remove() return void
->       iio: potentiometer: max5487: Don't return an error in .remove()
->       iio: pressure: ms5611: Make ms5611_remove() return void
-> 
->  Documentation/ABI/testing/sysfs-bus-iio            |  42 ++
->  .../ABI/testing/sysfs-bus-iio-chemical-sunrise-co2 |  38 +
->  Documentation/ABI/testing/sysfs-bus-iio-scd30      |  34 -
->  .../ABI/testing/sysfs-bus-iio-temperature-max31865 |  20 +
->  .../devicetree/bindings/iio/accel/adi,adxl313.yaml |  86 +++
->  .../devicetree/bindings/iio/accel/adi,adxl355.yaml |  88 +++
->  .../bindings/iio/accel/kionix,kxcjk1013.yaml       |   3 +
->  .../devicetree/bindings/iio/adc/adi,ad7949.yaml    |  51 +-
->  .../devicetree/bindings/iio/adc/adi,ad799x.yaml    |  73 ++
->  .../bindings/iio/adc/aspeed,ast2600-adc.yaml       | 100 +++
->  .../bindings/iio/adc/atmel,sama5d2-adc.yaml        |   1 +
->  .../bindings/iio/adc/nxp,imx8qxp-adc.yaml          |  78 +++
->  .../bindings/iio/chemical/senseair,sunrise.yaml    |  55 ++
->  .../bindings/iio/chemical/sensirion,scd4x.yaml     |  46 ++
->  .../iio/magnetometer/asahi-kasei,ak8975.yaml       |   7 +
->  .../bindings/iio/temperature/maxim,max31865.yaml   |  52 ++
->  .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
->  Documentation/driver-api/driver-model/devres.rst   |   1 +
->  MAINTAINERS                                        |  36 +
->  drivers/iio/accel/Kconfig                          |  62 ++
->  drivers/iio/accel/Makefile                         |   6 +
->  drivers/iio/accel/adxl313.h                        |  54 ++
->  drivers/iio/accel/adxl313_core.c                   | 332 +++++++++
->  drivers/iio/accel/adxl313_i2c.c                    |  66 ++
->  drivers/iio/accel/adxl313_spi.c                    |  92 +++
->  drivers/iio/accel/adxl355.h                        |  21 +
->  drivers/iio/accel/adxl355_core.c                   | 765 +++++++++++++++++++++
->  drivers/iio/accel/adxl355_i2c.c                    |  62 ++
->  drivers/iio/accel/adxl355_spi.c                    |  65 ++
->  drivers/iio/accel/adxl372.c                        |   1 +
->  drivers/iio/accel/bma400.h                         |   2 +-
->  drivers/iio/accel/bma400_core.c                    |   7 +-
->  drivers/iio/accel/bma400_i2c.c                     |   4 +-
->  drivers/iio/accel/bma400_spi.c                     |   4 +-
->  drivers/iio/accel/bmc150-accel-core.c              |   5 +-
->  drivers/iio/accel/bmc150-accel-i2c.c               |   4 +-
->  drivers/iio/accel/bmc150-accel-spi.c               |   4 +-
->  drivers/iio/accel/bmc150-accel.h                   |   2 +-
->  drivers/iio/accel/bmi088-accel-core.c              |   4 +-
->  drivers/iio/accel/bmi088-accel-spi.c               |   4 +-
->  drivers/iio/accel/bmi088-accel.h                   |   2 +-
->  drivers/iio/accel/fxls8962af-core.c                | 347 +++++++++-
->  drivers/iio/accel/kxsd9-i2c.c                      |   4 +-
->  drivers/iio/accel/kxsd9-spi.c                      |   4 +-
->  drivers/iio/accel/kxsd9.c                          |   4 +-
->  drivers/iio/accel/kxsd9.h                          |   2 +-
->  drivers/iio/accel/mma7455.h                        |   2 +-
->  drivers/iio/accel/mma7455_core.c                   |   4 +-
->  drivers/iio/accel/mma7455_i2c.c                    |   4 +-
->  drivers/iio/accel/mma7455_spi.c                    |   4 +-
->  drivers/iio/accel/mma7660.c                        |   2 +-
->  drivers/iio/accel/st_accel_core.c                  |  31 +-
->  drivers/iio/accel/st_accel_i2c.c                   |  23 +-
->  drivers/iio/accel/st_accel_spi.c                   |  23 +-
->  drivers/iio/adc/Kconfig                            |  18 +-
->  drivers/iio/adc/Makefile                           |   1 +
->  drivers/iio/adc/ad7291.c                           |  70 +-
->  drivers/iio/adc/ad7949.c                           | 254 +++++--
->  drivers/iio/adc/ad799x.c                           |  68 +-
->  drivers/iio/adc/aspeed_adc.c                       | 598 +++++++++++++---
->  drivers/iio/adc/at91-sama5d2_adc.c                 | 598 +++++++++++-----
->  drivers/iio/adc/axp288_adc.c                       |  28 +-
->  drivers/iio/adc/berlin2-adc.c                      |  34 +-
->  drivers/iio/adc/da9150-gpadc.c                     |  27 +-
->  drivers/iio/adc/ep93xx_adc.c                       |   4 +-
->  drivers/iio/adc/fsl-imx25-gcq.c                    |  55 +-
->  drivers/iio/adc/imx8qxp-adc.c                      | 494 +++++++++++++
->  drivers/iio/adc/intel_mrfld_adc.c                  |  24 +-
->  drivers/iio/adc/lp8788_adc.c                       |  31 +-
->  drivers/iio/adc/max1027.c                          | 278 +++++---
->  drivers/iio/adc/max1363.c                          |  82 +--
->  drivers/iio/adc/nau7802.c                          |  50 +-
->  drivers/iio/adc/rn5t618-adc.c                      |  13 +-
->  drivers/iio/adc/rockchip_saradc.c                  |   4 +-
->  drivers/iio/adc/ti-adc108s102.c                    |  11 +-
->  drivers/iio/adc/ti-ads8344.c                       |  27 +-
->  drivers/iio/adc/twl6030-gpadc.c                    |   6 +-
->  drivers/iio/buffer/industrialio-triggered-buffer.c |   8 +-
->  drivers/iio/buffer/kfifo_buf.c                     |  50 ++
->  drivers/iio/chemical/Kconfig                       |  24 +
->  drivers/iio/chemical/Makefile                      |   2 +
->  drivers/iio/chemical/scd4x.c                       | 691 +++++++++++++++++++
->  drivers/iio/chemical/sunrise_co2.c                 | 537 +++++++++++++++
->  .../iio/common/hid-sensors/hid-sensor-trigger.c    |   5 +-
->  drivers/iio/common/st_sensors/st_sensors_core.c    |  48 +-
->  drivers/iio/common/st_sensors/st_sensors_i2c.c     |   1 -
->  drivers/iio/common/st_sensors/st_sensors_spi.c     |   1 -
->  drivers/iio/common/st_sensors/st_sensors_trigger.c |  53 +-
->  drivers/iio/dac/ad5064.c                           |  49 +-
->  drivers/iio/dac/ad5380.c                           |  15 +-
->  drivers/iio/dac/ad5446.c                           |  12 +-
->  drivers/iio/dac/ad5592r-base.c                     |   4 +-
->  drivers/iio/dac/ad5592r-base.h                     |   2 +-
->  drivers/iio/dac/ad5592r.c                          |   4 +-
->  drivers/iio/dac/ad5593r.c                          |   4 +-
->  drivers/iio/dac/ad5686-spi.c                       |   4 +-
->  drivers/iio/dac/ad5686.c                           |   4 +-
->  drivers/iio/dac/ad5686.h                           |   2 +-
->  drivers/iio/dac/ad5696-i2c.c                       |   4 +-
->  drivers/iio/dac/ad5766.c                           |  42 ++
->  drivers/iio/dac/ad5770r.c                          |   2 +-
->  drivers/iio/dac/ad7303.c                           |  47 +-
->  drivers/iio/dac/ad8801.c                           |  11 +-
->  drivers/iio/dac/ds4424.c                           |   9 +-
->  drivers/iio/dac/lpc18xx_dac.c                      |  14 +-
->  drivers/iio/dac/ltc1660.c                          |   7 +-
->  drivers/iio/dac/max5821.c                          |   9 +-
->  drivers/iio/dac/mcp4922.c                          |   7 +-
->  drivers/iio/dac/stm32-dac-core.c                   |  18 +-
->  drivers/iio/dac/ti-dac7311.c                       |   7 +-
->  drivers/iio/gyro/Kconfig                           |   1 -
->  drivers/iio/gyro/adis16080.c                       |  11 +-
->  drivers/iio/gyro/mpu3050-core.c                    |  24 +-
->  drivers/iio/gyro/st_gyro_core.c                    |  27 +-
->  drivers/iio/gyro/st_gyro_i2c.c                     |  23 +-
->  drivers/iio/gyro/st_gyro_spi.c                     |  23 +-
->  drivers/iio/health/afe4403.c                       |  14 +-
->  drivers/iio/health/afe4404.c                       |   8 +-
->  drivers/iio/iio_core.h                             |   4 +
->  drivers/iio/imu/adis.c                             |  17 +-
->  drivers/iio/imu/adis16400.c                        |  20 +-
->  drivers/iio/imu/adis16460.c                        |  18 +-
->  drivers/iio/imu/adis16475.c                        |  19 +-
->  drivers/iio/imu/adis_trigger.c                     |   4 +
->  drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c          |   2 +-
->  drivers/iio/imu/inv_mpu6050/inv_mpu_magn.c         |  36 +-
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h            |   4 +-
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c       |  16 +-
->  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0.h            |   1 -
->  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_core.c       |  29 +-
->  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_i2c.c        |   6 -
->  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c        |   6 -
->  drivers/iio/industrialio-buffer.c                  | 173 ++++-
->  drivers/iio/industrialio-core.c                    |   1 +
->  drivers/iio/inkern.c                               |  17 +
->  drivers/iio/light/cm36651.c                        |   7 +-
->  drivers/iio/light/max44000.c                       |  17 +-
->  drivers/iio/light/noa1305.c                        |   7 +-
->  drivers/iio/magnetometer/Kconfig                   |   2 +-
->  drivers/iio/magnetometer/ak8975.c                  |  35 +
->  drivers/iio/magnetometer/hmc5843.h                 |   2 +-
->  drivers/iio/magnetometer/hmc5843_core.c            |   4 +-
->  drivers/iio/magnetometer/hmc5843_i2c.c             |   4 +-
->  drivers/iio/magnetometer/hmc5843_spi.c             |   4 +-
->  drivers/iio/magnetometer/st_magn_core.c            |  29 +-
->  drivers/iio/magnetometer/st_magn_i2c.c             |  23 +-
->  drivers/iio/magnetometer/st_magn_spi.c             |  23 +-
->  drivers/iio/potentiometer/max5487.c                |   7 +-
->  drivers/iio/pressure/ms5611.h                      |   2 +-
->  drivers/iio/pressure/ms5611_core.c                 |   4 +-
->  drivers/iio/pressure/ms5611_i2c.c                  |   4 +-
->  drivers/iio/pressure/ms5611_spi.c                  |   4 +-
->  drivers/iio/pressure/st_pressure_core.c            |  27 +-
->  drivers/iio/pressure/st_pressure_i2c.c             |  23 +-
->  drivers/iio/pressure/st_pressure_spi.c             |  23 +-
->  drivers/iio/temperature/Kconfig                    |  10 +
->  drivers/iio/temperature/Makefile                   |   1 +
->  drivers/iio/temperature/ltc2983.c                  |  16 +
->  drivers/iio/temperature/max31865.c                 | 349 ++++++++++
->  drivers/staging/iio/cdc/ad7746.c                   |   4 +-
->  drivers/staging/iio/frequency/ad9832.c             |  82 +--
->  include/linux/iio/buffer.h                         |  11 +
->  include/linux/iio/buffer_impl.h                    |  11 +
->  include/linux/iio/common/st_sensors.h              |  13 -
->  include/linux/iio/driver.h                         |  14 +
->  include/linux/iio/iio-opaque.h                     |   4 +
->  include/linux/iio/imu/adis.h                       |   2 +
->  include/linux/iio/triggered_buffer.h               |  11 +-
->  168 files changed, 6998 insertions(+), 1592 deletions(-)
->  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-chemical-sunrise-co2
->  delete mode 100644 Documentation/ABI/testing/sysfs-bus-iio-scd30
->  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-temperature-max31865
->  create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adxl313.yaml
->  create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adxl355.yaml
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad799x.yaml
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/aspeed,ast2600-adc.yaml
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml
->  create mode 100644 Documentation/devicetree/bindings/iio/chemical/senseair,sunrise.yaml
->  create mode 100644 Documentation/devicetree/bindings/iio/chemical/sensirion,scd4x.yaml
->  create mode 100644 Documentation/devicetree/bindings/iio/temperature/maxim,max31865.yaml
->  create mode 100644 drivers/iio/accel/adxl313.h
->  create mode 100644 drivers/iio/accel/adxl313_core.c
->  create mode 100644 drivers/iio/accel/adxl313_i2c.c
->  create mode 100644 drivers/iio/accel/adxl313_spi.c
->  create mode 100644 drivers/iio/accel/adxl355.h
->  create mode 100644 drivers/iio/accel/adxl355_core.c
->  create mode 100644 drivers/iio/accel/adxl355_i2c.c
->  create mode 100644 drivers/iio/accel/adxl355_spi.c
->  create mode 100644 drivers/iio/adc/imx8qxp-adc.c
->  create mode 100644 drivers/iio/chemical/scd4x.c
->  create mode 100644 drivers/iio/chemical/sunrise_co2.c
->  create mode 100644 drivers/iio/temperature/max31865.c
+They are a small startup so they might have used the realtek ID by mistake.
+I added them to the CC.
 
+BTW, I also notice a rotation matrix embedded in DSTD, but the linux's
+BMI160 driver doesn't recognize it.
+
+Best regards,
+    Maxim Levitsky
+
+
+On Mon, Oct 18, 2021 at 6:31 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> +Cc: Realtek people whom I found in MAINTAINERS or so. Please
+> waterfall to the people inside Realtek who can answer the question.
+> (Note, you may access this discussion in full via:
+> https://lore.kernel.org/linux-iio/CACAwPwYQHRcrabw9=0tvenPzAcwwW1pTaR6a+AEWBF9Hqf_wXQ@mail.gmail.com/T/#u)
+>
+> The problem here is to have an official confirmation of what 10ec:5280
+> ID is from Realtek's point of view. Context: the current discussion
+> and a patch state that it's related to gyro sensor. Is it so?
+>
+> On Mon, Oct 18, 2021 at 6:36 AM Maxim Levitsky <maximlevitsky@gmail.com> wrote:
+> >
+> > On Sat, Oct 16, 2021 at 7:19 PM Maxim Levitsky <maximlevitsky@gmail.com> wrote:
+> > >
+> > > I recently bought this device, and it has this accelerometer/gyroscope.
+> > >
+> > > Unfortunately, the device is advertised in ACPI as 10EC5280, instead of BMI0160
+> > >
+> > > I attached a patch that does add this 10EC5280 to the list of ACPI ids of this driver, and the device seems to work fine, showing both acceleration and angular velocity in /sys IIO attributes with reasonable values.
+> > >
+> >
+> > ( resend using plain text - reminds me to never use Gmail's web
+> > interface, even on weekends .)
+>
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
+
+--00000000000080f86305cea45aa7
+Content-Type: application/octet-stream; name="BMI160.inf"
+Content-Disposition: attachment; filename="BMI160.inf"
+Content-Transfer-Encoding: base64
+Content-ID: <f_kuwyqjnl1>
+X-Attachment-Id: f_kuwyqjnl1
+
+LyorKw0KOw0KO0NvcHlyaWdodCAoYykgTWljcm9zb2Z0IENvcnBvcmF0aW9uLiAgQWxsIHJpZ2h0
+cyByZXNlcnZlZC4NCjsNCjtNb2R1bGUgTmFtZToNCjsgICAgQk1JMTYwLklORg0KOw0KO0Fic3Ry
+YWN0Og0KOyAgICBJTkYgZmlsZSBmb3IgaW5zdGFsbGluZyB0aGUgU2Vuc29ycyAyLjAgQk1JMTYw
+IHNhbXBsZSBkcml2ZXINCjsNCjtJbnN0YWxsYXRpb24gTm90ZXM6DQo7ICAgIFVzaW5nIERldmNv
+bjogVHlwZSAiZGV2Y29uIGluc3RhbGwgQk1JMTYwLmluZiB1bWRmMlxCTUkxNjAiIHRvIGluc3Rh
+bGwNCjsNCjstLSovDQoNCltWZXJzaW9uXQ0KU2lnbmF0dXJlICAgPSAiJFdJTkRPV1MgTlQkIg0K
+Q2xhc3MgICAgICAgPSBTZW5zb3INCkNsYXNzR3VpZCAgID0gezUxNzVEMzM0LUMzNzEtNDgwNi1C
+M0JBLTcxRkQ1M0M5MjU4RH0NClByb3ZpZGVyICAgID0gJUJPU0NIJQ0KQ2F0YWxvZ0ZpbGUgPSBC
+TUkxNjAuY2F0DQpEcml2ZXJWZXIgPSAwNy8wNi8yMDIwLDEuMC4wLjE3DQoNCltTb3VyY2VEaXNr
+c05hbWVzXQ0KMSA9ICVNZWRpYURlc2NyaXB0aW9uJSwsLCIiDQoNCltTb3VyY2VEaXNrc0ZpbGVz
+XQ0KQk1JMTYwLmRsbCAgID0gMSwsDQoNCltNYW51ZmFjdHVyZXJdDQolTWFudWZhY3R1cmVyTmFt
+ZSUgPSBCTUkxNjBfRGV2aWNlLCBOVGFtZDY0DQoNCjsqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqKioqDQo7IEJNSTE2MCBJbnN0YWxsIFNlY3Rpb24NCjsqKioqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqDQoNCltCTUkxNjBfRGV2aWNlLk5UYW1kNjRdDQo7IERpc3BsYXlOYW1lICAgICAg
+IFNlY3Rpb24gICAgICAgICAgRGV2aWNlSWQNCjsgLS0tLS0tLS0tLS0gICAgICAgLS0tLS0tLSAg
+ICAgICAgICAtLS0tLS0tLQ0KJUJNSTE2MF9EZXZEZXNjJSA9IEJNSTE2MF9JbnN0LCBBQ1BJXDEw
+RUM1MjgwDQoNCltCTUkxNjBfSW5zdC5OVF0NCkNvcHlGaWxlcyA9IEJNSTE2MERyaXZlckNvcHkN
+Cg0KW0JNSTE2MERyaXZlckNvcHldDQpCTUkxNjAuZGxsDQoNCltEZXN0aW5hdGlvbkRpcnNdDQpC
+TUkxNjBEcml2ZXJDb3B5ID0gMTIsVU1ERg0KDQo7LS0tLS0tLS0tLS0tLS0gU2VydmljZSBpbnN0
+YWxsYXRpb24NCg0KW0JNSTE2MF9JbnN0Lk5ULlNlcnZpY2VzXQ0KQWRkU2VydmljZSA9IFdVREZS
+ZCwweDAwMDAwMWZhLFdVREZSRF9TZXJ2aWNlSW5zdGFsbA0KDQpbQk1JMTYwX0luc3QuTlQuQ29J
+bnN0YWxsZXJzXQ0KQWRkUmVnID0gQ29JbnN0YWxsZXJzX0FkZFJlZw0KDQpbV1VERlJEX1NlcnZp
+Y2VJbnN0YWxsXQ0KRGlzcGxheU5hbWUgICA9ICVXdWRmUmREaXNwbGF5TmFtZSUNClNlcnZpY2VU
+eXBlICAgPSAlU0VSVklDRV9LRVJORUxfRFJJVkVSJQ0KU3RhcnRUeXBlICAgICA9ICVTRVJWSUNF
+X0RFTUFORF9TVEFSVCUNCkVycm9yQ29udHJvbCAgPSAlU0VSVklDRV9FUlJPUl9OT1JNQUwlDQpT
+ZXJ2aWNlQmluYXJ5ID0gJTEyJVxXVURGUmQuc3lzDQoNCjstLS0tLS0tLS0tLS0tLSBXREYgc3Bl
+Y2lmaWMgc2VjdGlvbg0KDQpbQk1JMTYwX0luc3QuTlQuV2RmXQ0KVW1kZlNlcnZpY2UgICAgICAg
+ICAgICAgID0gQk1JMTYwLCBCTUkxNjBfSW5zdGFsbA0KVW1kZlNlcnZpY2VPcmRlciAgICAgICAg
+ID0gQk1JMTYwDQpVbWRmRGlyZWN0SGFyZHdhcmVBY2Nlc3MgPSBBbGxvd0RpcmVjdEhhcmR3YXJl
+QWNjZXNzDQpVbWRmRmlsZU9iamVjdFBvbGljeSAgICAgPSBBbGxvd051bGxBbmRVbmtub3duRmls
+ZU9iamVjdHMNClVtZGZGc0NvbnRleHRVc2VQb2xpY3kgICA9IENhbm5vdFVzZUZzQ29udGV4dHMN
+Cg0KW0JNSTE2MF9JbnN0YWxsXQ0KVW1kZkxpYnJhcnlWZXJzaW9uICAgICAgID0gMi4xNS4wDQpT
+ZXJ2aWNlQmluYXJ5ICAgICAgICAgICAgPSAlMTIlXFVNREZcQk1JMTYwLmRsbA0KVW1kZkV4dGVu
+c2lvbnMgICAgICAgICAgID0gU2Vuc29yc0N4MDEwMg0KDQpbQ29JbnN0YWxsZXJzX0FkZFJlZ10N
+CkhLUiwsQ29JbnN0YWxsZXJzMzIsMHgwMDAxMDAwMCwiV3VkZkNvaW5zdGFsbGVyLmRsbCINCg0K
+W1N0cmluZ3NdDQpNZWRpYURlc2NyaXB0aW9uICAgICAgICAgPSAiV2luZG93cyBCTUkxNjAgRHJp
+dmVyIg0KQk9TQ0ggICAgICAgICAgICAgICAgICAgID0gIkJvc2NoIg0KTWFudWZhY3R1cmVyTmFt
+ZSAgICAgICAgID0gIkJvc2NoIg0KQk1JMTYwX0RldkRlc2MgICAgICAgID0gIkJNSTE2MCINCld1
+ZGZSZERpc3BsYXlOYW1lICAgICAgICA9ICJXaW5kb3dzIERyaXZlciBGb3VuZGF0aW9uIC0gVXNl
+ci1tb2RlIERyaXZlciBGcmFtZXdvcmsgUmVmbGVjdG9yIg0KDQpTRVJWSUNFX0tFUk5FTF9EUklW
+RVIgICAgPSAxDQpTRVJWSUNFX0RFTUFORF9TVEFSVCAgICAgPSAzDQpTRVJWSUNFX0VSUk9SX05P
+Uk1BTCAgICAgPSAxDQo=
+--00000000000080f86305cea45aa7
+Content-Type: application/zip; name="DSDT.zip"
+Content-Disposition: attachment; filename="DSDT.zip"
+Content-Transfer-Encoding: base64
+Content-ID: <f_kuwys5ug2>
+X-Attachment-Id: f_kuwys5ug2
+
+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
+BDiWAQBQSwUGAAAAAAEAAQBWAAAA42cAAAAA
+--00000000000080f86305cea45aa7--

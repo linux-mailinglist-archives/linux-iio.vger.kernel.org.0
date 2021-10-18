@@ -2,128 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A893432657
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Oct 2021 20:28:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25B834326FF
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Oct 2021 21:02:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231215AbhJRSaa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 Oct 2021 14:30:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53908 "EHLO mail.kernel.org"
+        id S231739AbhJRTFI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 Oct 2021 15:05:08 -0400
+Received: from mga04.intel.com ([192.55.52.120]:22880 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229696AbhJRSa3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 18 Oct 2021 14:30:29 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8AC236115A;
-        Mon, 18 Oct 2021 18:28:17 +0000 (UTC)
-Date:   Mon, 18 Oct 2021 19:32:32 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     gregkh@linuxfoundation.org,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        linux-iio@vger.kernel.org
-Subject: [PULL V2] 1st set of counter subsystem new features for the 5.16 
- cycle.
-Message-ID: <20211018193232.4b896586@jic23-huawei>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        id S231234AbhJRTFI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 18 Oct 2021 15:05:08 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10141"; a="227111594"
+X-IronPort-AV: E=Sophos;i="5.85,382,1624345200"; 
+   d="scan'208";a="227111594"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2021 12:02:27 -0700
+X-IronPort-AV: E=Sophos;i="5.85,382,1624345200"; 
+   d="scan'208";a="566192249"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.72.159])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2021 12:02:23 -0700
+Received: from andy by smile with local (Exim 4.95)
+        (envelope-from <andy.shevchenko@gmail.com>)
+        id 1mcXtc-000IvV-Jz;
+        Mon, 18 Oct 2021 22:02:04 +0300
+Date:   Mon, 18 Oct 2021 22:02:04 +0300
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+To:     Maxim Levitsky <maximlevitsky@gmail.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        linux-realtek-soc@lists.infradead.org,
+        Oder Chiou <oder_chiou@realtek.com>,
+        Ping-Ke Shih <pkshih@realtek.com>, nic_swsd@realtek.com,
+        Derek Fang <derek.fang@realtek.com>,
+        Hayes Wang <hayeswang@realtek.com>,
+        Kailang Yang <kailang@realtek.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        LKML <linux-kernel@vger.kernel.org>, info@ayaneo.com
+Subject: Re: BMI160 accelerometer on AyaNeo tablet
+Message-ID: <YW3ErLKGtmyhSFd3@smile.fi.intel.com>
+References: <CACAwPwb7edLzX-KO1XVNWuQ3w=U0BfA=_kwiGCjZOpKfZpc2pw@mail.gmail.com>
+ <CACAwPwYQHRcrabw9=0tvenPzAcwwW1pTaR6a+AEWBF9Hqf_wXQ@mail.gmail.com>
+ <CAHp75VcEZ19zUU-Ps=kAYJDX1bkxmOqmHii36HE2ujC3gROkNQ@mail.gmail.com>
+ <CACAwPwaj_ekK6j9S4CRu6tRTPyjffgDhL3UFnhoYSyJSkAkmpw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CACAwPwaj_ekK6j9S4CRu6tRTPyjffgDhL3UFnhoYSyJSkAkmpw@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The following changes since commit 6880fa6c56601bb8ed59df6c30fd390cc5f6dd8f:
+On Mon, Oct 18, 2021 at 09:02:40PM +0300, Maxim Levitsky wrote:
+> I also suspect a mistake from the hardware vendors.
+> 
+> I attached all DSDT decompiled, which shows that they indeed use that
+> ID, and I also attached the windows driver .INF which was published on
+> their website  with the driver (https://www.ayaneo.com/downloads)
+> 
+> They are a small startup so they might have used the realtek ID by mistake.
+> I added them to the CC.
 
-  Linux 5.15-rc1 (2021-09-12 16:28:37 -0700)
+Thank you for sharing. Seems they indeed used (deliberately or not) the wrong
+ID. So there are questions I have:
+- Is the firmware available in the wild?
+- Do they plan to update firmware to fix this?
+- Can we make sure that guys got their mistake and will be more careful
+  in the future?
 
-are available in the Git repository at:
+Realtek probably should make this ID marked somehow broken and not use
+in their products in case the answer to the first of the above question
+is "yes". (Of course in case the ID will be used for solely PCI enumerated
+product there will be no conflict, I just propose to be on the safest side,
+but remark should be made somewhere).
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/counter-for-5.16a-take2
+> BTW, I also notice a rotation matrix embedded in DSTD, but the linux's
+> BMI160 driver doesn't recognize it.
 
-for you to fetch changes up to 49af37fc7d3c50ca98143d1f904638a548685622:
+This is done by the commit 8a0672003421 ("iio: accel: bmc150: Get
+mount-matrix from ACPI") which needs to be amended to take care about
+more devices, somewhere in drivers/iio/industialio-acpi.c ? Jonathan,
+Hans, what do you think?
 
-  docs: counter: Include counter-chrdev kernel-doc to generic-counter.rst (2021-10-18 19:25:17 +0100)
+P.S. As I said, the commit message and the code (in the comments) should
+be very well elaborated and only accepted in case the firmware is already
+in the wild on the market.
 
-----------------------------------------------------------------
-First set of counter subsystem new feature support for the 5.16 cycle
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Most interesting element this time is the new chrdev based interface
-for the counter subsystem.  Affects all drivers. Some minor precursor
-patches.
 
-Major parts:
-* Bring all the sysfs attribute setup into the counter core rather than
-  leaving it to individual drivers.  Docs updates accompany these changes.
-* Move various definitions to a uapi header as now needed from userspace.
-* Add the chardev interface + extensive documentation and example tool
-* Add new ABI needed to identify indexes needed for chrdev interface
-* Implement new interface for the 104-quad-8
-* Follow up deals with wrong path for documentation build
-* Various trivial cleanups and missing feature additions related to this
-  series
-
-----------------------------------------------------------------
-Jonathan Cameron (1):
-      counter: microchip-tcb-capture: Tidy up a false kernel-doc /** marking.
-
-Randy Dunlap (1):
-      counter: fix docum. build problems after filename change
-
-William Breathitt Gray (15):
-      counter: stm32-lptimer-cnt: Provide defines for clock polarities
-      counter: stm32-timer-cnt: Provide defines for slave mode selection
-      counter: Internalize sysfs interface code
-      counter: Update counter.h comments to reflect sysfs internalization
-      docs: counter: Update to reflect sysfs internalization
-      counter: Move counter enums to uapi header
-      counter: Add character device interface
-      docs: counter: Document character device interface
-      tools/counter: Create Counter tools
-      counter: Implement signalZ_action_component_id sysfs attribute
-      counter: Implement *_component_id sysfs attributes
-      counter: Implement events_queue_size sysfs attribute
-      counter: 104-quad-8: Replace mutex with spinlock
-      counter: 104-quad-8: Add IRQ support for the ACCES 104-QUAD-8
-      docs: counter: Include counter-chrdev kernel-doc to generic-counter.rst
-
- Documentation/ABI/testing/sysfs-bus-counter        |   38 +-
- Documentation/driver-api/generic-counter.rst       |  363 ++++-
- Documentation/userspace-api/ioctl/ioctl-number.rst |    1 +
- MAINTAINERS                                        |    3 +-
- drivers/counter/104-quad-8.c                       |  699 +++++----
- drivers/counter/Kconfig                            |    6 +-
- drivers/counter/Makefile                           |    1 +
- drivers/counter/counter-chrdev.c                   |  578 ++++++++
- drivers/counter/counter-chrdev.h                   |   14 +
- drivers/counter/counter-core.c                     |  191 +++
- drivers/counter/counter-sysfs.c                    |  960 +++++++++++++
- drivers/counter/counter-sysfs.h                    |   13 +
- drivers/counter/counter.c                          | 1496 --------------------
- drivers/counter/ftm-quaddec.c                      |   60 +-
- drivers/counter/intel-qep.c                        |  146 +-
- drivers/counter/interrupt-cnt.c                    |   62 +-
- drivers/counter/microchip-tcb-capture.c            |   93 +-
- drivers/counter/stm32-lptimer-cnt.c                |  212 ++-
- drivers/counter/stm32-timer-cnt.c                  |  195 +--
- drivers/counter/ti-eqep.c                          |  180 +--
- include/linux/counter.h                            |  720 +++++-----
- include/linux/counter_enum.h                       |   45 -
- include/linux/mfd/stm32-lptimer.h                  |    5 +
- include/linux/mfd/stm32-timers.h                   |    4 +
- include/uapi/linux/counter.h                       |  154 ++
- tools/Makefile                                     |   13 +-
- tools/counter/Build                                |    1 +
- tools/counter/Makefile                             |   53 +
- tools/counter/counter_example.c                    |   92 ++
- 29 files changed, 3604 insertions(+), 2794 deletions(-)
- create mode 100644 drivers/counter/counter-chrdev.c
- create mode 100644 drivers/counter/counter-chrdev.h
- create mode 100644 drivers/counter/counter-core.c
- create mode 100644 drivers/counter/counter-sysfs.c
- create mode 100644 drivers/counter/counter-sysfs.h
- delete mode 100644 drivers/counter/counter.c
- delete mode 100644 include/linux/counter_enum.h
- create mode 100644 include/uapi/linux/counter.h
- create mode 100644 tools/counter/Build
- create mode 100644 tools/counter/Makefile
- create mode 100644 tools/counter/counter_example.c

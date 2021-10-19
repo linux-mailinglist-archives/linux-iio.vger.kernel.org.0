@@ -2,90 +2,149 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BC81433110
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Oct 2021 10:30:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C768643326E
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Oct 2021 11:36:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230082AbhJSIcN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 19 Oct 2021 04:32:13 -0400
-Received: from www381.your-server.de ([78.46.137.84]:46386 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231758AbhJSIcL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 Oct 2021 04:32:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:MIME-Version:References:
-        In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=z+iWw2NTZJqEK3Zb1ZnADuT55TU3zQMAJMxtSY4DXUY=; b=gld4NrNf/TyT8LRkYPZq1Z7Nr0
-        QmFVLgFmDdm7d1R2iltHQNCH2Ds2/PmAdBcSt/8/pKT2I9lLP5PqtC0oRmRhG/IZrV83voObpdL6A
-        JlWt5dKYNEXQBHlm9avbGrK/a+LBeqlYkC3U4Dk21Z8LRqyz/Y6l5zxFXxP2B1dm3MBZIMIJFbROS
-        dQA664ZTlbvywzPE5AFc5di1jqrFMBp5i1qIxS62zgR+B11vXdZlRsFEZI0Mkg5kvVj/Mr8CpFfu9
-        fYetQI8eS/hUi77sG9vUf6CAp2jaCPq/P0h/5PKQ65zhzE49W9xIwvJTtu+9hcupj5MNhlITwDrEv
-        qjiZ8goA==;
-Received: from sslproxy06.your-server.de ([78.46.172.3])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1mckVR-0008lT-OV; Tue, 19 Oct 2021 10:29:57 +0200
-Received: from [82.135.83.71] (helo=lars-desktop.fritz.box)
-        by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1mckVR-0000Lx-K3; Tue, 19 Oct 2021 10:29:57 +0200
-From:   Lars-Peter Clausen <lars@metafoo.de>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Eugen Hristev <eugen.hristev@microchip.com>,
-        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH 2/2] iio: at91-sama5d2: Use dev_to_iio_dev() in sysfs callbacks
-Date:   Tue, 19 Oct 2021 10:29:29 +0200
-Message-Id: <20211019082929.30503-2-lars@metafoo.de>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20211019082929.30503-1-lars@metafoo.de>
-References: <20211019082929.30503-1-lars@metafoo.de>
+        id S235072AbhJSJjF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 19 Oct 2021 05:39:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43398 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234914AbhJSJjE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 19 Oct 2021 05:39:04 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8920B6137E;
+        Tue, 19 Oct 2021 09:36:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1634636212;
+        bh=pQfb+WE4kD/i2MDVdnlwCf0bkkH1uIT9fgG0VVGzPpM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Ehg9NqJ26gM56d76yWBIwdvNczt+/LwQwoofv/2i1NqG5ypl9WYpGVi1Bl7p58QRf
+         kpBA8prTvGtZthsvg7pkYTtjScsapoUjKKsQpvzXULd63L130AffJY1UuMH6/dYs80
+         HTZZi602r1VMM9n/bjqr0oLzOBF41lcO17gwK9YM=
+Date:   Tue, 19 Oct 2021 11:36:49 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     David Lechner <david@lechnology.com>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] counter: drop chrdev_lock
+Message-ID: <YW6RsdSa9mfpoS2d@kroah.com>
+References: <20211017185521.3468640-1-david@lechnology.com>
+ <YW0673OckeCY6Qs/@shinobu>
+ <e8158cd7-fbde-5a9a-f4d9-a863745e3d58@lechnology.com>
+ <YW5rVLrbrVVJ75SY@shinobu>
+ <YW5uxIQ1WuW66cf0@kroah.com>
+ <YW5xUtWdvW5zHFx5@shinobu>
+ <YW5zzVJZ89cFW9bD@kroah.com>
+ <YW53v22RyU/DCBBx@shinobu>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.103.3/26326/Mon Oct 18 10:19:08 2021)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YW53v22RyU/DCBBx@shinobu>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Using `dev_get_drvdata()` in IIO sysfs callbacks to get a pointer to the
-IIO device is a relic from the very early days of IIO. The IIO core as well
-as most other drivers have switched over to using `dev_to_iio_dev()`
-instead.
+On Tue, Oct 19, 2021 at 04:46:07PM +0900, William Breathitt Gray wrote:
+> On Tue, Oct 19, 2021 at 09:29:17AM +0200, Greg KH wrote:
+> > On Tue, Oct 19, 2021 at 04:18:42PM +0900, William Breathitt Gray wrote:
+> > > On Tue, Oct 19, 2021 at 09:07:48AM +0200, Greg KH wrote:
+> > > > On Tue, Oct 19, 2021 at 03:53:08PM +0900, William Breathitt Gray wrote:
+> > > > > On Mon, Oct 18, 2021 at 11:03:49AM -0500, David Lechner wrote:
+> > > > > > On 10/18/21 4:14 AM, William Breathitt Gray wrote:
+> > > > > > > On Sun, Oct 17, 2021 at 01:55:21PM -0500, David Lechner wrote:
+> > > > > > >> diff --git a/drivers/counter/counter-sysfs.c b/drivers/counter/counter-sysfs.c
+> > > > > > >> index 1ccd771da25f..7bf8882ff54d 100644
+> > > > > > >> --- a/drivers/counter/counter-sysfs.c
+> > > > > > >> +++ b/drivers/counter/counter-sysfs.c
+> > > > > > >> @@ -796,25 +796,18 @@ static int counter_events_queue_size_write(struct counter_device *counter,
+> > > > > > >>   					   u64 val)
+> > > > > > >>   {
+> > > > > > >>   	DECLARE_KFIFO_PTR(events, struct counter_event);
+> > > > > > >> -	int err = 0;
+> > > > > > >> -
+> > > > > > >> -	/* Ensure chrdev is not opened more than 1 at a time */
+> > > > > > >> -	if (!atomic_add_unless(&counter->chrdev_lock, 1, 1))
+> > > > > > >> -		return -EBUSY;
+> > > > > > >> +	int err;
+> > > > > > >>   
+> > > > > > >>   	/* Allocate new events queue */
+> > > > > > >>   	err = kfifo_alloc(&events, val, GFP_KERNEL);
+> > > > > > >>   	if (err)
+> > > > > > >> -		goto exit_early;
+> > > > > > >> +		return err;
+> > > > > > >>   
+> > > > > > >>   	/* Swap in new events queue */
+> > > > > > >>   	kfifo_free(&counter->events);
+> > > > > > >>   	counter->events.kfifo = events.kfifo;
+> > > > > > > 
+> > > > > > > Do we need to hold the events_lock mutex here for this swap in case
+> > > > > > > counter_chrdev_read() is in the middle of reading the kfifo to
+> > > > > > > userspace, or do the kfifo macros already protect us from a race
+> > > > > > > condition here?
+> > > > > > > 
+> > > > > > Another possibility might be to disallow changing the size while
+> > > > > > events are enabled. Otherwise, we also need to protect against
+> > > > > > write after free.
+> > > > > > 
+> > > > > > I considered this:
+> > > > > > 
+> > > > > > 	swap(counter->events.kfifo, events.kfifo);
+> > > > > > 	kfifo_free(&events);
+> > > > > > 
+> > > > > > But I'm not sure that would be safe enough.
+> > > > > 
+> > > > > I think it depends on whether it's safe to call kfifo_free() while other
+> > > > > kfifo_*() calls are executing. I suspect it is not safe because I don't
+> > > > > think kfifo_free() waits until all kfifo read/write operations are
+> > > > > finished before freeing -- but if I'm wrong here please let me know.
+> > > > > 
+> > > > > Because of that, will need to hold the counter->events_lock afterall so
+> > > > > that we don't modify the events fifo while a kfifo read/write is going
+> > > > > on, lest we suffer an address fault. This can happen regardless of
+> > > > > whether you swap before or after the kfifo_free() because the old fifo
+> > > > > address could still be in use within those uncompleted kfifo_*() calls
+> > > > > if they were called before the swap but don't complete before the
+> > > > > kfifo_free().
+> > > > > 
+> > > > > So we have a problem now that I think you have already noticed: the
+> > > > > kfifo_in() call in counter_push_events() also needs protection, but it's
+> > > > > executing within an interrupt context so we can't try to lock a mutex
+> > > > > lest we end up sleeping.
+> > > > > 
+> > > > > One option we have is as you suggested: we disallow changing size while
+> > > > > events are enabled. However, that will require us to keep track of when
+> > > > > events are disabled and implement a spinlock to ensure that we don't
+> > > > > disable events in the middle of a kfifo_in().
+> > > > > 
+> > > > > Alternatively, we could change events_lock to a spinlock and use it to
+> > > > > protect all these operations on the counter->events fifo. Would this
+> > > > > alternative be a better option so that we avoid creating another
+> > > > > separate lock?
+> > > > 
+> > > > I would recommend just having a single lock here if at all possible,
+> > > > until you determine that there a performance problem that can be
+> > > > measured that would require it to be split up.
+> > > > 
+> > > > thanks,
+> > > > 
+> > > > greg k-h
+> > > 
+> > > All right let's go with a single events_lock spinlock then. David, if
+> > > you make those changes and submit a v2, I'll be okay with this patch and
+> > > can provide my ack for it.
+> > 
+> > Wait, no, you need one patch to remove the atomic lock for the open
+> > "protection" and then another one for the other locks.  The original
+> > patch here was fine, but can be part of a patch series, don't lump them
+> > all together into one huge change.
+> > 
+> > thanks,
+> > 
+> > greg k-h
+> 
+> Understood. I'll provide my ack for this patch here then.
+> 
+> Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 
-This driver is one of the last few drivers remaining that uses the outdated
-idiom, update it. This will allow to eventually update the IIO core to no
-longer set the drvdata for the IIO device and free it up for driver usage.
+Thanks, now queued up!
 
-Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
----
- drivers/iio/adc/at91-sama5d2_adc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-index 3841e7b6c81d..a2c406276329 100644
---- a/drivers/iio/adc/at91-sama5d2_adc.c
-+++ b/drivers/iio/adc/at91-sama5d2_adc.c
-@@ -1825,7 +1825,7 @@ static void at91_adc_hw_init(struct iio_dev *indio_dev)
- static ssize_t at91_adc_get_fifo_state(struct device *dev,
- 				       struct device_attribute *attr, char *buf)
- {
--	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
- 	struct at91_adc_state *st = iio_priv(indio_dev);
- 
- 	return scnprintf(buf, PAGE_SIZE, "%d\n", !!st->dma_st.dma_chan);
-@@ -1834,7 +1834,7 @@ static ssize_t at91_adc_get_fifo_state(struct device *dev,
- static ssize_t at91_adc_get_watermark(struct device *dev,
- 				      struct device_attribute *attr, char *buf)
- {
--	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
- 	struct at91_adc_state *st = iio_priv(indio_dev);
- 
- 	return scnprintf(buf, PAGE_SIZE, "%d\n", st->dma_st.watermark);
--- 
-2.20.1
-
+greg k-h

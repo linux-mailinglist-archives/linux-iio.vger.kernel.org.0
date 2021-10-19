@@ -2,142 +2,194 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D84894330D3
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Oct 2021 10:10:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3474943310F
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Oct 2021 10:30:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234657AbhJSIMe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 19 Oct 2021 04:12:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:40527 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234671AbhJSIMd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 Oct 2021 04:12:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1634631020;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=FkXFhcV+/zxfEYqnjfBha3xxa5ZEj2GAqqrXULNm9mw=;
-        b=eF7n0nY4LaJgaH0ghoTlg705vC3l9C+n7goAqxbbJ1bFG0svlzBbKpHPTdkb+UsN6+oNTD
-        ZaiEzRyQbzz3a4iDcUYme2JD3S4YTCqWFrRYMWYLqTXrDoT1Xez8MDo/BzKmZ3O12neSV4
-        H1RkdhAyeFsN+gj0OGHcY9LZ/jppEhg=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-192-0uvAktTdOGGH7E0rQwURQw-1; Tue, 19 Oct 2021 04:10:14 -0400
-X-MC-Unique: 0uvAktTdOGGH7E0rQwURQw-1
-Received: by mail-ed1-f71.google.com with SMTP id l22-20020aa7c316000000b003dbbced0731so16842795edq.6
-        for <linux-iio@vger.kernel.org>; Tue, 19 Oct 2021 01:10:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=FkXFhcV+/zxfEYqnjfBha3xxa5ZEj2GAqqrXULNm9mw=;
-        b=SlAOG4MdQl69kgpHTHIewIiditHyKTGpElIMCrbhNBOY5DgiSOmtSUt/swtFfs++5s
-         AkASo9bmzGTA+7dG7vLJ9j1ACWSnvWKuBTLTXrh+zsAf3rSCuOt+YPc4ps9Wy4XFkhN/
-         LrdA36EqMVR6IsbFPpthHLiPrWvaUGsEO5ztEI3QNqvix3Qj5gTuEynKyE43tNFlO4JZ
-         z+WPeUIgqv+rR8+kW9iHvtjRaRW5/nelSl6Tp+bpX5u0Qlj0LoV98jGvpmHGDYKw40/O
-         Zlgq3cO0WFffrG+d0hqjn6AzPLbAJzfqOzS26z2feqjCGBQyxVIb3d/23r3JJZEybf4L
-         hzHQ==
-X-Gm-Message-State: AOAM532mpmCFSUiY6UZveav1TopAH2+ELOC6zC5T/H6HATb/SebaMH3O
-        XX3VpjeihOLYfBVsep6bv92+Ma+yaY/j/cyn1+RLEg0b7RRE4T1D92kYPyyRcsAI6H4n+5HqXb9
-        ack/OhfNoAs1bN006GBLf
-X-Received: by 2002:a50:d885:: with SMTP id p5mr52171857edj.255.1634631012917;
-        Tue, 19 Oct 2021 01:10:12 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzosqBQafK63EMeHqdbkT6tgiXIRHSVtmPYVHpHH/GgdpC3lhfGo5ZhNFQunq7pMNngQ60wzw==
-X-Received: by 2002:a50:d885:: with SMTP id p5mr52171824edj.255.1634631012690;
-        Tue, 19 Oct 2021 01:10:12 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c1e:bf00:1054:9d19:e0f0:8214? (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id q9sm9816205ejf.70.2021.10.19.01.10.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 Oct 2021 01:10:12 -0700 (PDT)
-Message-ID: <7522243d-79f4-9687-103f-3692eb70533f@redhat.com>
-Date:   Tue, 19 Oct 2021 10:10:11 +0200
+        id S234537AbhJSIcN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 19 Oct 2021 04:32:13 -0400
+Received: from www381.your-server.de ([78.46.137.84]:46382 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230082AbhJSIcL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 Oct 2021 04:32:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+         s=default2002; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:
+        Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References;
+        bh=XTuq4Z0jCru1/xIR0rXrmOZloNUrvDVSpmBQBthSKZU=; b=TU6lTYVaHTQdigXqvGucpuB15R
+        OXMR4Z2rCTvv3SX3ZItBpjt1biR0ojlRQvP98/vIXbam66n1B4UCZVBxMDreTd4DyPgJuoHz0Sjrf
+        ghZUOaxKYBF2QALgS/Awgai6jbbznHlQ251bue5KbfLg0CG/Y1EDcB2GVR4nO3cK+3ms3L/dYXpOA
+        rTIsqGPzthlKvx/nmBD/4JUxlbXDdUkmVrAs5W/7xpJE3ayor0FcRCZ0ceoV9p/K83bzGwkRCcd1z
+        2c5Q5woliywG+P2W0G1iJuiSoxrNQi0EdkeziRorkl9/LmAD06vVsZYp6tWmzDmYD9aZQr3+NxMKX
+        2/0w2C5A==;
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <lars@metafoo.de>)
+        id 1mckVR-0008lS-Nc; Tue, 19 Oct 2021 10:29:57 +0200
+Received: from [82.135.83.71] (helo=lars-desktop.fritz.box)
+        by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1mckVR-0000Lx-Hp; Tue, 19 Oct 2021 10:29:57 +0200
+From:   Lars-Peter Clausen <lars@metafoo.de>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Eugen Hristev <eugen.hristev@microchip.com>,
+        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH 1/2] iio: at91-sama5d2: Fix incorrect cast to platform_device
+Date:   Tue, 19 Oct 2021 10:29:28 +0200
+Message-Id: <20211019082929.30503-1-lars@metafoo.de>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.1.0
-Subject: Re: BMI160 accelerometer on AyaNeo tablet
-Content-Language: en-US
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Maxim Levitsky <maximlevitsky@gmail.com>
-Cc:     linux-realtek-soc@lists.infradead.org,
-        Oder Chiou <oder_chiou@realtek.com>,
-        Ping-Ke Shih <pkshih@realtek.com>, nic_swsd@realtek.com,
-        Derek Fang <derek.fang@realtek.com>,
-        Hayes Wang <hayeswang@realtek.com>,
-        Kailang Yang <kailang@realtek.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        LKML <linux-kernel@vger.kernel.org>, info@ayaneo.com
-References: <CACAwPwb7edLzX-KO1XVNWuQ3w=U0BfA=_kwiGCjZOpKfZpc2pw@mail.gmail.com>
- <CACAwPwYQHRcrabw9=0tvenPzAcwwW1pTaR6a+AEWBF9Hqf_wXQ@mail.gmail.com>
- <CAHp75VcEZ19zUU-Ps=kAYJDX1bkxmOqmHii36HE2ujC3gROkNQ@mail.gmail.com>
- <CACAwPwaj_ekK6j9S4CRu6tRTPyjffgDhL3UFnhoYSyJSkAkmpw@mail.gmail.com>
- <YW3ErLKGtmyhSFd3@smile.fi.intel.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <YW3ErLKGtmyhSFd3@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.103.3/26326/Mon Oct 18 10:19:08 2021)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+The at91-sama5d2 driver calls `to_platform_device()` on a struct device
+that is part of a IIO device. This is incorrect since
+`to_platform_device()` must only be called on a struct device that is part
+of a platform device.
 
-On 10/18/21 21:02, Andy Shevchenko wrote:
-> On Mon, Oct 18, 2021 at 09:02:40PM +0300, Maxim Levitsky wrote:
->> I also suspect a mistake from the hardware vendors.
->>
->> I attached all DSDT decompiled, which shows that they indeed use that
->> ID, and I also attached the windows driver .INF which was published on
->> their website  with the driver (https://www.ayaneo.com/downloads)
->>
->> They are a small startup so they might have used the realtek ID by mistake.
->> I added them to the CC.
-> 
-> Thank you for sharing. Seems they indeed used (deliberately or not) the wrong
-> ID. So there are questions I have:
-> - Is the firmware available in the wild?
-> - Do they plan to update firmware to fix this?
-> - Can we make sure that guys got their mistake and will be more careful
->   in the future?
-> 
-> Realtek probably should make this ID marked somehow broken and not use
-> in their products in case the answer to the first of the above question
-> is "yes". (Of course in case the ID will be used for solely PCI enumerated
-> product there will be no conflict, I just propose to be on the safest side,
-> but remark should be made somewhere).
-> 
->> BTW, I also notice a rotation matrix embedded in DSTD, but the linux's
->> BMI160 driver doesn't recognize it.
-> 
-> This is done by the commit 8a0672003421 ("iio: accel: bmc150: Get
-> mount-matrix from ACPI") which needs to be amended to take care about
-> more devices, somewhere in drivers/iio/industialio-acpi.c ? Jonathan,
-> Hans, what do you think?
+The code still works by accident because non of the struct platform_device
+specific fields are accessed.
 
-First of all the vendor needs to be asked to fix their DSDT to just
-use BOSC0200 as HID. That will fix both the driver not binding as well
-as it will make the bmc150_apply_acpi_orientation() just work.
+Refactor the code a bit so that it behaves identically, but does not use
+the incorrect cast. This avoids accidentally adding undefined behavior in
+the future by assuming the `struct platform_device` is actually valid.
 
-If we are going to add the funky ACPI HID to the driver, then this
-HID check in bmc150_apply_acpi_orientation():
+Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+---
+The code is equivalent to before, but I'm a bit confused how this works.
+We call dma_request_chan() on the IIO device's struct device. Which should
+not yield any results.
 
-	if (!adev || !acpi_dev_hid_uid_match(adev, "BOSC0200", NULL))
-		return false;
+Eugen can you check if/why this works and see if a follow up patch using
+the right struct device (the platform_device's) to request the DMA channel
+makes sense?
+---
+ drivers/iio/adc/at91-sama5d2_adc.c | 34 ++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 18 deletions(-)
 
-Should probable just be dropped changing the check to just:
-
-	if (!adev)
-		return false;
-
-We already check for the method name later, so the HID check is not
-really necessary.
-
-This dropping of the HID check should probably be done in a separate
-commit, with its own explanation of why this is ok.
-
-Regards,
-
-Hans
+diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
+index 4c922ef634f8..3841e7b6c81d 100644
+--- a/drivers/iio/adc/at91-sama5d2_adc.c
++++ b/drivers/iio/adc/at91-sama5d2_adc.c
+@@ -1661,10 +1661,9 @@ static int at91_adc_write_raw(struct iio_dev *indio_dev,
+ 	}
+ }
+ 
+-static void at91_adc_dma_init(struct platform_device *pdev)
++static void at91_adc_dma_init(struct at91_adc_state *st)
+ {
+-	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
+-	struct at91_adc_state *st = iio_priv(indio_dev);
++	struct device *dev = &st->indio_dev->dev;
+ 	struct dma_slave_config config = {0};
+ 	/* we have 2 bytes for each channel */
+ 	unsigned int sample_size = st->soc_info.platform->nr_channels * 2;
+@@ -1679,9 +1678,9 @@ static void at91_adc_dma_init(struct platform_device *pdev)
+ 	if (st->dma_st.dma_chan)
+ 		return;
+ 
+-	st->dma_st.dma_chan = dma_request_chan(&pdev->dev, "rx");
++	st->dma_st.dma_chan = dma_request_chan(dev, "rx");
+ 	if (IS_ERR(st->dma_st.dma_chan))  {
+-		dev_info(&pdev->dev, "can't get DMA channel\n");
++		dev_info(dev, "can't get DMA channel\n");
+ 		st->dma_st.dma_chan = NULL;
+ 		goto dma_exit;
+ 	}
+@@ -1691,7 +1690,7 @@ static void at91_adc_dma_init(struct platform_device *pdev)
+ 					       &st->dma_st.rx_dma_buf,
+ 					       GFP_KERNEL);
+ 	if (!st->dma_st.rx_buf) {
+-		dev_info(&pdev->dev, "can't allocate coherent DMA area\n");
++		dev_info(dev, "can't allocate coherent DMA area\n");
+ 		goto dma_chan_disable;
+ 	}
+ 
+@@ -1704,11 +1703,11 @@ static void at91_adc_dma_init(struct platform_device *pdev)
+ 	config.dst_maxburst = 1;
+ 
+ 	if (dmaengine_slave_config(st->dma_st.dma_chan, &config)) {
+-		dev_info(&pdev->dev, "can't configure DMA slave\n");
++		dev_info(dev, "can't configure DMA slave\n");
+ 		goto dma_free_area;
+ 	}
+ 
+-	dev_info(&pdev->dev, "using %s for rx DMA transfers\n",
++	dev_info(dev, "using %s for rx DMA transfers\n",
+ 		 dma_chan_name(st->dma_st.dma_chan));
+ 
+ 	return;
+@@ -1720,13 +1719,12 @@ static void at91_adc_dma_init(struct platform_device *pdev)
+ 	dma_release_channel(st->dma_st.dma_chan);
+ 	st->dma_st.dma_chan = NULL;
+ dma_exit:
+-	dev_info(&pdev->dev, "continuing without DMA support\n");
++	dev_info(dev, "continuing without DMA support\n");
+ }
+ 
+-static void at91_adc_dma_disable(struct platform_device *pdev)
++static void at91_adc_dma_disable(struct at91_adc_state *st)
+ {
+-	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
+-	struct at91_adc_state *st = iio_priv(indio_dev);
++	struct device *dev = &st->indio_dev->dev;
+ 	/* we have 2 bytes for each channel */
+ 	unsigned int sample_size = st->soc_info.platform->nr_channels * 2;
+ 	unsigned int pages = DIV_ROUND_UP(AT91_HWFIFO_MAX_SIZE *
+@@ -1744,7 +1742,7 @@ static void at91_adc_dma_disable(struct platform_device *pdev)
+ 	dma_release_channel(st->dma_st.dma_chan);
+ 	st->dma_st.dma_chan = NULL;
+ 
+-	dev_info(&pdev->dev, "continuing without DMA support\n");
++	dev_info(dev, "continuing without DMA support\n");
+ }
+ 
+ static int at91_adc_set_watermark(struct iio_dev *indio_dev, unsigned int val)
+@@ -1770,9 +1768,9 @@ static int at91_adc_set_watermark(struct iio_dev *indio_dev, unsigned int val)
+ 	 */
+ 
+ 	if (val == 1)
+-		at91_adc_dma_disable(to_platform_device(&indio_dev->dev));
++		at91_adc_dma_disable(st);
+ 	else if (val > 1)
+-		at91_adc_dma_init(to_platform_device(&indio_dev->dev));
++		at91_adc_dma_init(st);
+ 
+ 	/*
+ 	 * We can start the DMA only after setting the watermark and
+@@ -1780,7 +1778,7 @@ static int at91_adc_set_watermark(struct iio_dev *indio_dev, unsigned int val)
+ 	 */
+ 	ret = at91_adc_buffer_prepare(indio_dev);
+ 	if (ret)
+-		at91_adc_dma_disable(to_platform_device(&indio_dev->dev));
++		at91_adc_dma_disable(st);
+ 
+ 	return ret;
+ }
+@@ -2077,7 +2075,7 @@ static int at91_adc_probe(struct platform_device *pdev)
+ 	return 0;
+ 
+ dma_disable:
+-	at91_adc_dma_disable(pdev);
++	at91_adc_dma_disable(st);
+ per_clk_disable_unprepare:
+ 	clk_disable_unprepare(st->per_clk);
+ vref_disable:
+@@ -2094,7 +2092,7 @@ static int at91_adc_remove(struct platform_device *pdev)
+ 
+ 	iio_device_unregister(indio_dev);
+ 
+-	at91_adc_dma_disable(pdev);
++	at91_adc_dma_disable(st);
+ 
+ 	clk_disable_unprepare(st->per_clk);
+ 
+-- 
+2.20.1
 

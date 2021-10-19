@@ -2,134 +2,188 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5041F432F26
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Oct 2021 09:17:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C85B432F32
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Oct 2021 09:19:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229695AbhJSHT1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 19 Oct 2021 03:19:27 -0400
-Received: from mail-am6eur05on2110.outbound.protection.outlook.com ([40.107.22.110]:42464
-        "EHLO EUR05-AM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229584AbhJSHT0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 19 Oct 2021 03:19:26 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Ek5+3kdQ/WPVaSxMgw9EV2oF+a2eKWWITVG8T8xMDmQevVa3fUpwdKZXlrbTshxXIXZBgGKpBBD4mFaOHk/Ley8m7gmFYV/ETfzUgEdbLb1CBPECAyV9hk2r4n1e70IeVGqWs3iKlp/md7JrdHWoJrVhPZB8dnHbc+4woUIHt2XvDd66a7lupESVgfURUVkxoKQTBiIj4mwt3C778onQyRVS0Bsz12xfBo9W3fyeGPih6j0dr0ZX8DXEVZ+Eq7DY2WVull07yZP4MOX5PLZkpL0d211TYYodMdKZcM0EeG0uWlGdHRnYilGmywtY6cmPGID9nIxS3n4JumB3yGFdCg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mfZ6JPBVnrHzza0zhIaGqcV4yKltTAMM+5iKTZaM75c=;
- b=FIV9eqP8ZdM1BwKTRjuufK6LZyWrFdP2p58eOz7tszlnJxFJRAEOiOtvleItggBr8gQXE2TxpJn9iDF1oBIOEsIAj4OdCMRc5gmdwbEz6d+ihc/N9bCmkbD6+MJfRIn/enrpfi9qiremU10AU3GHuyF+F67u/p7PN/QKZWERRbsdwKXNIx6s2JLSt+r/g/P0yQzEIEN9UbmFk4OMRqpDm38R62f0e0IrOEAeCDnRCtbTHGTXYPQo8FTTJGsbL3VxIhVBb8JUH0wfB0YzqBqx8U7bXCqPo/3BVlWb3p2dXJfztipYGXiQitNIMhXR+QpOCk0q1YE3ZVQV1OwOKim0Sg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=axentia.se; dmarc=pass action=none header.from=axentia.se;
- dkim=pass header.d=axentia.se; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axentia.se;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mfZ6JPBVnrHzza0zhIaGqcV4yKltTAMM+5iKTZaM75c=;
- b=ioHQCVfAk3fF2i+XjxwIO6sE7F8xofCrv6zaPJx6heQXYrrY+0rcD3DTdWctaam1c2vMoCpfqZD1xgrz+tUO86DIqhZE/upF3MBp/oXch79jUcQzu4TAWa2yZvn+pIjCYuuwWdfonnLzZ3VHVkZAiKezGLNLVBqTgcQc1ZJu7w0=
-Authentication-Results: axis.com; dkim=none (message not signed)
- header.d=none;axis.com; dmarc=none action=none header.from=axentia.se;
-Received: from DB8PR02MB5482.eurprd02.prod.outlook.com (2603:10a6:10:eb::29)
- by DB7PR02MB4218.eurprd02.prod.outlook.com (2603:10a6:10:43::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4608.17; Tue, 19 Oct
- 2021 07:17:11 +0000
-Received: from DB8PR02MB5482.eurprd02.prod.outlook.com
- ([fe80::35c9:1008:f5af:55a]) by DB8PR02MB5482.eurprd02.prod.outlook.com
- ([fe80::35c9:1008:f5af:55a%4]) with mapi id 15.20.4608.018; Tue, 19 Oct 2021
- 07:17:10 +0000
-Message-ID: <f8282455-9d8c-31ad-f722-6a59c6d97d20@axentia.se>
-Date:   Tue, 19 Oct 2021 09:17:07 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH] mux: fix kernel doc prototype
-Content-Language: en-US
-To:     Vincent Whitchurch <vincent.whitchurch@axis.com>, jic23@kernel.org
-Cc:     kernel@axis.com, linux-iio@vger.kernel.org,
-        kernel test robot <lkp@intel.com>,
-        linux-kernel@vger.kernel.org
-References: <20211019064521.18113-1-vincent.whitchurch@axis.com>
-From:   Peter Rosin <peda@axentia.se>
-Organization: Axentia Technologies AB
-In-Reply-To: <20211019064521.18113-1-vincent.whitchurch@axis.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: HE1PR0402CA0037.eurprd04.prod.outlook.com
- (2603:10a6:7:7c::26) To DB8PR02MB5482.eurprd02.prod.outlook.com
- (2603:10a6:10:eb::29)
+        id S234454AbhJSHVM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 19 Oct 2021 03:21:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49864 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234457AbhJSHVH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 Oct 2021 03:21:07 -0400
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D1F3C061745;
+        Tue, 19 Oct 2021 00:18:53 -0700 (PDT)
+Received: by mail-pg1-x530.google.com with SMTP id f5so18510657pgc.12;
+        Tue, 19 Oct 2021 00:18:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=rAB0G0ARwqLsti78vZY0XxYfvHcqD7gU+oEPuK02YvI=;
+        b=ivDDp8Fn7QKPA1syYQS3xKAmyNPyRnJi7eU0ShQOhicSV1ovzA5qQLVfCrmJEQpzZk
+         nPuWB6/hncHXX7htE62yQvbsJWPxLAdTsNAouX0S7RApXGR4UmbUxcftFqXtFkFbox/8
+         k9xZ3nIKWxF2ru08MgsZKGDSjSDN9FVRR/G3CAx1osD/nMviLrFtNPXTOgMTLiNbq32p
+         aWxM9wDm4RtphbPqTB3uFVcqEMxcAEmoMcHr524xQcXEVL6ogMr61Oq7JzhCuvAXsNsg
+         PXYka2HmnqeQnjpFuReq2BrI6Bc8ultI1Qljhi4vt9oAn08DhHg9Z/v/xx68ivpHQ8X0
+         aeCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=rAB0G0ARwqLsti78vZY0XxYfvHcqD7gU+oEPuK02YvI=;
+        b=39vCExFQJrqnP3KnGTlq+79ay4ynX0L5C4/xxChqJivMH7QkK1bASrkfdhSwtR5ZCt
+         GhbsPw6OmFXoSn4jhIGbPY5u0AnrhpJf+FDblEY6uzIGu7pliyjXkwq6jd3Sr5NXoc63
+         Ls4jozlQU/HB3SOeHztUfAsjIpvoZQ+QMx+gTa2SPi0DIOK+1FqEVlihExRCE1YUoFkp
+         ah9JrdWRr6+pUWLjU21C8mCATzsdWWVXu5WjHL8pnDB42xpZS9akekUlXPI/hxTSRnoX
+         zZe0X1IywNiCWsZl3ukf0i6SaDTo+BNfCJwY4+ahr2HeuQYRP4Ln4+C+SATqDGyYJ8bZ
+         kZzQ==
+X-Gm-Message-State: AOAM531DUv3IFpaHIP35rBa6QhG/FbeMPKqTJyoL/vPMQWmYqab3kg+v
+        rIFJQimPm7Nsg8zTVKS7mQDcW1Kt4AQ=
+X-Google-Smtp-Source: ABdhPJxYfzR1iCPrWzR1k8RH4xmSHuWnLHYc9V057vaE5hxYAjxvIxgL0DsMq49cMpR+J2AwS8gM4Q==
+X-Received: by 2002:a63:3819:: with SMTP id f25mr2598339pga.344.1634627932494;
+        Tue, 19 Oct 2021 00:18:52 -0700 (PDT)
+Received: from shinobu ([156.146.35.76])
+        by smtp.gmail.com with ESMTPSA id a22sm15429694pfg.61.2021.10.19.00.18.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Oct 2021 00:18:51 -0700 (PDT)
+Date:   Tue, 19 Oct 2021 16:18:42 +0900
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     David Lechner <david@lechnology.com>,
+        Greg KH <gregkh@linuxfoundation.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] counter: drop chrdev_lock
+Message-ID: <YW5xUtWdvW5zHFx5@shinobu>
+References: <20211017185521.3468640-1-david@lechnology.com>
+ <YW0673OckeCY6Qs/@shinobu>
+ <e8158cd7-fbde-5a9a-f4d9-a863745e3d58@lechnology.com>
+ <YW5rVLrbrVVJ75SY@shinobu>
+ <YW5uxIQ1WuW66cf0@kroah.com>
 MIME-Version: 1.0
-Received: from [192.168.13.3] (185.178.140.238) by HE1PR0402CA0037.eurprd04.prod.outlook.com (2603:10a6:7:7c::26) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4608.17 via Frontend Transport; Tue, 19 Oct 2021 07:17:09 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 72636d24-cfe5-4b1c-d122-08d992d07750
-X-MS-TrafficTypeDiagnostic: DB7PR02MB4218:
-X-Microsoft-Antispam-PRVS: <DB7PR02MB4218ED87F9F3F55CB3E83641BCBD9@DB7PR02MB4218.eurprd02.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:5236;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: hS2HRpF0CV/2pJqQf/yh3c3y1yAQQXHAqRgF//u6KtcUNTKbHgDKbo5nL3qPyxVIj91iP36dSteToP6OYM1F/JAlx/Cq5M/XoswY3G0kHfuc4xHON2j+99VvPgqn2FrHdvJExKyhn1ogscE0KotIKMfIyBPt4PzENkEntcvN4sYyVIHu5NKneiXxqC3YVgZkBvSCtVGKpv/XoSM/Ckwj7dAjT1oamPx9Jyp0FO+C0juB/78lUTzg3oZa7NtCHtkRki55yMv7euy0Sc/3FNolUwgwFkU40Q3cdoDV/cQ0ZfHODeV0D3pN0I6cDMQv492VdEGs2XqFT3b/BbNG+mX3uCHBejYwO2b/GqGgiJ+sm3Dw5pGaWEKgRqtqOQo5AG5J2J3o/J8O5GAzXJdV9Wx7U2Xyz+0p0G3vT2T0eqmN7OQwHP88yq6JxvIQoGIHZ80f0pybgNUiBT9Sp9++dZxj1lEOpF+/r3uBCk10hMq7jwYkZ0W1Is8ZDf74hL/m1mSr1J5i2sU6iQlgj9C+5dYtYDLQSCRfC/ZGn0LCcviEy/zwWGHVpqjVjRLwz38QpxvLj68t9KNo+9fXWrqHwT1NdJ+ljslWEAoNZ0tH9ad5klFCLqm+x6QfGdFIcNw+Mu6UdMbFtTpHTSmg/ALbzqygAD2yM0vI0n17PK7aeEHio+tTdonBJFFPBrPNFVl7r909HV1t9B3xhwjLxbJkmY3z5yzi6SeR+OeoAIcT/ii5K5U=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR02MB5482.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(136003)(366004)(39840400004)(346002)(396003)(376002)(4326008)(66476007)(66556008)(36916002)(26005)(53546011)(31686004)(86362001)(83380400001)(2906002)(316002)(16576012)(186003)(66946007)(4001150100001)(4744005)(8676002)(508600001)(31696002)(6486002)(5660300002)(956004)(2616005)(8936002)(36756003)(38100700002)(45980500001)(43740500002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cXZaV3p3eXhaSVBuYUovMGQyaHhhTTM3OXcrOTNSZXpZV0JTK2hxOFc1WmE2?=
- =?utf-8?B?U2JjdlVwaHBSNmZvM2tWU2hoZm82WmdNUXFXcGd3Z2E3UE45OVJKWGNCMm1Q?=
- =?utf-8?B?RnllNlkxaTlYR0R0WVQxTDQrS3FoWjBXcVdXd24xKzg3c3VYb0VmVmZQMGdr?=
- =?utf-8?B?ZzhKUy9sSzJUaGdzQzZ2VVBMOUpseHVkZGcrYWJmL01sTUk1SzlpdjIxQ2RQ?=
- =?utf-8?B?NkdOaER4cG0wWVlFU1lYRmNaUklWNDlHWXU2VXp0VzMxMXd6SVBVamRBRTho?=
- =?utf-8?B?K0VwV3NhY3RoVTBsUUZhOGRIVFJld2xTSGZvK3c0VGZyZjRhdXVNOU5ObFpP?=
- =?utf-8?B?Z3NMUjIvZlRKSHlYSkpyZW9ocEVReDBiWEt6RXFtRzRHbFFGWkVJTHI2RHNj?=
- =?utf-8?B?dFVjR2h3amp3TElERjRSM3crRkV0U3RMN0l1MmtpOFFWTlkrOTFsaHdGNjF3?=
- =?utf-8?B?L3FPeFl0TTBmK3ZzWVZlU3lUYk1xNDVBVkNhYSt4UHRYSzlmTGJBdURudU0x?=
- =?utf-8?B?ZWtPWUo5bzliSkFONEZFb0pqbzBuM1FYT0ZSbm9xUnFsOTVRaGF6bEpEaEVB?=
- =?utf-8?B?enp1eTd2aWg2M1M0MDVScFlJMG5qaE14ZnZ2aU1CZzVBQUtKeHRSdmlkdExk?=
- =?utf-8?B?VERKVnlpM01vREpIQjFPRHlQcWVrMHVIUXZQb2tGWjRKejNtTVFCMWVYbUdx?=
- =?utf-8?B?dFMwbUoydG1DWHhxRk1TVnl1WnB4TzVDdkVFWnNEOHRiM05rbi9BZkF0T3Rq?=
- =?utf-8?B?bWk3UTJtN01xVlNzSkgxZlphSEcvTzEzQzh3SUg0NzdHeE40aGsrVHhTVld3?=
- =?utf-8?B?aS9nbElud0lXNXNINnBsSnNxVTl0WC9yejdWMm1kNXVXYi9EUDZxSHJIS1Jy?=
- =?utf-8?B?YzRuWExqR3dhZnRMQUR0dnVyckNYUVlxMWtlZ2xqRXhFMnZCQ0c4R3h0OTJC?=
- =?utf-8?B?MUZ1N3VCRlhkekdabGdkWld6SjM1UHRYeCtrWmZhNE9EbEZCSDRoNWYvWWt4?=
- =?utf-8?B?cWRwb1BHQVdyQXpPL1pNWkpDM0pWcy9STGY2ZlVnQ2JTWldjMEsrVkgxaEt4?=
- =?utf-8?B?M3NkbmsyQkpIZ2d1bEZER0JnRUZqS2NGTTgyY2VvVHQ1QWJtOXlDazM0Nk9o?=
- =?utf-8?B?RDhRYmpQUzZTanZ0N011UjQybWt5alF2L2F5WS9LUmFWNlFvclhWM2lZSnZQ?=
- =?utf-8?B?cjdHTGpwZFU1SmZMb0YrSjhEbVoxVUFleklhZW1ZbVV4eTA5clFxdFNSalFR?=
- =?utf-8?B?cU5SN3B0SjNaM3VLazRIVWZPOGgxWWRuT0RJbHN6WEVXNlF3dElpajFTZkJp?=
- =?utf-8?B?T29HenExM2syWG5nOW5PeEVHVWdwSjZHTFpVQ2dreEZUUGdyMTNxM2ZGR3pV?=
- =?utf-8?B?NE9CZFZqYUlEdUFHUWtiNEg2djBlWUJETzJsZWlvZ2tYTk1DUmVVdHYyY1k1?=
- =?utf-8?B?eDY4clIzRTZqdENsOTRqOHhKMEoySjBnei9QUWhhZHd1bVVwa09rZWdEOEpm?=
- =?utf-8?B?d0VNVGNnMU9jV1p6d3dtNnJ6UUtzVnljeG8wTy9JQmlKUXh0QzNueENoZUJz?=
- =?utf-8?B?elZYNy9tUlpwOGNjc3BJdlhna0Q4TjlTY1p4V1VZQVZDTFU3aEZjVDF6dVQw?=
- =?utf-8?B?djZRT1FSa1gzdzhsWHJFSzJFMUpWQ0t1WXRWYllBV2lTRVpsU0ZkNHA2RGFn?=
- =?utf-8?B?RmxMWVRwNHduYmRZTzhIOUlRRXpvekE2KzRLNjljc3NyZGYzeUVqNGY5cTJS?=
- =?utf-8?Q?236/s1ecfMVoAGQUXMs4+ySFNJWD2ARCYxPaaWZ?=
-X-OriginatorOrg: axentia.se
-X-MS-Exchange-CrossTenant-Network-Message-Id: 72636d24-cfe5-4b1c-d122-08d992d07750
-X-MS-Exchange-CrossTenant-AuthSource: DB8PR02MB5482.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2021 07:17:10.4682
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4ee68585-03e1-4785-942a-df9c1871a234
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QxVsp4Lp2A4unCaaaV2d6GbYLP8bo1XYJSMnrFhHMNMRgFwOFGvlsPwFzwC7m//Q
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR02MB4218
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="pU3xwbQrTfe7nrrV"
+Content-Disposition: inline
+In-Reply-To: <YW5uxIQ1WuW66cf0@kroah.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2021-10-19 08:45, Vincent Whitchurch wrote:
-> Fix this warning from scripts/kernel-doc:
-> 
->  drivers/mux/core.c:391: warning: expecting prototype for
->  mux_control_try_select(). Prototype was for
->  mux_control_try_select_delay() instead
-> 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
 
-Obviously. Or, just squash it if that's still an option?
+--pU3xwbQrTfe7nrrV
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-In case it's easier to just pile it on top:
+On Tue, Oct 19, 2021 at 09:07:48AM +0200, Greg KH wrote:
+> On Tue, Oct 19, 2021 at 03:53:08PM +0900, William Breathitt Gray wrote:
+> > On Mon, Oct 18, 2021 at 11:03:49AM -0500, David Lechner wrote:
+> > > On 10/18/21 4:14 AM, William Breathitt Gray wrote:
+> > > > On Sun, Oct 17, 2021 at 01:55:21PM -0500, David Lechner wrote:
+> > > >> diff --git a/drivers/counter/counter-sysfs.c b/drivers/counter/cou=
+nter-sysfs.c
+> > > >> index 1ccd771da25f..7bf8882ff54d 100644
+> > > >> --- a/drivers/counter/counter-sysfs.c
+> > > >> +++ b/drivers/counter/counter-sysfs.c
+> > > >> @@ -796,25 +796,18 @@ static int counter_events_queue_size_write(s=
+truct counter_device *counter,
+> > > >>   					   u64 val)
+> > > >>   {
+> > > >>   	DECLARE_KFIFO_PTR(events, struct counter_event);
+> > > >> -	int err =3D 0;
+> > > >> -
+> > > >> -	/* Ensure chrdev is not opened more than 1 at a time */
+> > > >> -	if (!atomic_add_unless(&counter->chrdev_lock, 1, 1))
+> > > >> -		return -EBUSY;
+> > > >> +	int err;
+> > > >>  =20
+> > > >>   	/* Allocate new events queue */
+> > > >>   	err =3D kfifo_alloc(&events, val, GFP_KERNEL);
+> > > >>   	if (err)
+> > > >> -		goto exit_early;
+> > > >> +		return err;
+> > > >>  =20
+> > > >>   	/* Swap in new events queue */
+> > > >>   	kfifo_free(&counter->events);
+> > > >>   	counter->events.kfifo =3D events.kfifo;
+> > > >=20
+> > > > Do we need to hold the events_lock mutex here for this swap in case
+> > > > counter_chrdev_read() is in the middle of reading the kfifo to
+> > > > userspace, or do the kfifo macros already protect us from a race
+> > > > condition here?
+> > > >=20
+> > > Another possibility might be to disallow changing the size while
+> > > events are enabled. Otherwise, we also need to protect against
+> > > write after free.
+> > >=20
+> > > I considered this:
+> > >=20
+> > > 	swap(counter->events.kfifo, events.kfifo);
+> > > 	kfifo_free(&events);
+> > >=20
+> > > But I'm not sure that would be safe enough.
+> >=20
+> > I think it depends on whether it's safe to call kfifo_free() while other
+> > kfifo_*() calls are executing. I suspect it is not safe because I don't
+> > think kfifo_free() waits until all kfifo read/write operations are
+> > finished before freeing -- but if I'm wrong here please let me know.
+> >=20
+> > Because of that, will need to hold the counter->events_lock afterall so
+> > that we don't modify the events fifo while a kfifo read/write is going
+> > on, lest we suffer an address fault. This can happen regardless of
+> > whether you swap before or after the kfifo_free() because the old fifo
+> > address could still be in use within those uncompleted kfifo_*() calls
+> > if they were called before the swap but don't complete before the
+> > kfifo_free().
+> >=20
+> > So we have a problem now that I think you have already noticed: the
+> > kfifo_in() call in counter_push_events() also needs protection, but it's
+> > executing within an interrupt context so we can't try to lock a mutex
+> > lest we end up sleeping.
+> >=20
+> > One option we have is as you suggested: we disallow changing size while
+> > events are enabled. However, that will require us to keep track of when
+> > events are disabled and implement a spinlock to ensure that we don't
+> > disable events in the middle of a kfifo_in().
+> >=20
+> > Alternatively, we could change events_lock to a spinlock and use it to
+> > protect all these operations on the counter->events fifo. Would this
+> > alternative be a better option so that we avoid creating another
+> > separate lock?
+>=20
+> I would recommend just having a single lock here if at all possible,
+> until you determine that there a performance problem that can be
+> measured that would require it to be split up.
+>=20
+> thanks,
+>=20
+> greg k-h
 
-Acked-by: Peter Rosin <peda@axentia.se>
+All right let's go with a single events_lock spinlock then. David, if
+you make those changes and submit a v2, I'll be okay with this patch and
+can provide my ack for it.
 
-Cheers,
-Peter
+Thanks,
+
+William Breathitt Gray
+
+--pU3xwbQrTfe7nrrV
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmFucVEACgkQhvpINdm7
+VJIVig//Rf0OyiB/6KMr3Ow3iyil3DYBR6wm1xCMH9pK6Fx4J7CQECm9+PQt6TIP
+lokPsKMYtzZnKmTB1FfuTOTTpKUMj8tdRh9Hyi0P3z4JucjfmSijsEMHSruz9G1y
+wFRB7pyWt7A69PLQN/VXGlklEcyar+suKbQkjoBqo6yCjMSiM9WuXThja1vvREGW
+6wqn9UDL5IeZ52vpCfQvf15cLBFgqVAZkwfBl9jCdbL6GJRp0HdQY35mihZrL9kT
+fkKj+RsYdSOFrkxHHwbCop4fxU/2EyLxu7AR3SkQZhsgaoNHHLIfIJ5zsJYJexdR
+ymKkjy5AP0DAO10drBgEYDCOdLsvDzvzUIrc/k8YI1MrCNnuczOcwcUUpPgQnWSE
+BaGjLbX0WLLRJBnW7jmHCucxVcCrO0rZtZHU2jm55ZfJ6CjjW7Ybb+uHOwOvHN95
+/idxWNR8q9xZ81YfJDKjh3TKOG8+ZUvhWjd/xi1qC5xTk1Sw6Av1dolx40NHP2EM
+mwRM5sqrNYgat7L/+M79GHjSb7XXag8SoT/xCJ0qFUFJOnFkUGdb8p6cxdNmlC5O
+HdbwRCTBIyKuDrOSORSCf/SNtWa36CyWOY4BsCqOQMWzef5qwL4AeZUKKIlzBKNR
+4uzqGH9MGdjyomyjCIedlAIYk6zJns5ZMKN14YaSGNmdyJd/dOo=
+=boNY
+-----END PGP SIGNATURE-----
+
+--pU3xwbQrTfe7nrrV--

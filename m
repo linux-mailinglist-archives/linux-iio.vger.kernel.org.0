@@ -2,137 +2,164 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 45F32433A31
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Oct 2021 17:22:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1E9D433C25
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Oct 2021 18:29:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231532AbhJSPZJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 19 Oct 2021 11:25:09 -0400
-Received: from mail-mw2nam10on2061.outbound.protection.outlook.com ([40.107.94.61]:38632
-        "EHLO NAM10-MW2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233787AbhJSPXO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 19 Oct 2021 11:23:14 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ehURB/ck2BgpjBH7Bug1fSiuiVvmK1uRNmXYj3NxhrSnypk7NCv+G+XJ2y9Rp/HGe+X1/HIUKqqrWniix9qJFQkAuiAdJHnQ5ceUeK+5KJhRIWXhHldf4zZAf9jrqQV3fZovzGg1jhSAzNAP4MEvIukVeA0p9Nj/ZtTiUcuL4nphNnR7ntIW3rn0lRcX9HrsNUaVaeHyiB95USvfvlvFhOSZq+duOq2ZPWbZDJ6OMcQSl1Ve4eUvdWCa0FX+sydzb34c8PNaD/QsJwaYG3yKi8PgMZjVjOKI0k7a+HbuNYAkIvg9//dPr3mockH2jYtnuIfpTJHnPhowOdqQh7YYdA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YLZHeiCTDLL8Jch4HqmG9ai3sPRAcAzH/2EgW/tEcyg=;
- b=Ns6MfyD0EVewBKcbar6YaziArf9X1S3X3zhcxcUqRNWzbph5UM6SvMhXPxvMLzqAGa2oHWB8r0btG00kJr2wnvNJzPZbxtN4WOsgY5amJFQ6PQBkW7Zwtg9Es7n4v6Rp4BuVqaYO65mqPN92i/MYPXBlp+E36QrLxAFvhT0PRYClw7zhX9EW1hG9pnG04eyOHzFVk1cbSUGA6UMvWUvNkg7k6CAoNt1u3zmCM4nnHPJTQbs4WSrLFt8j8uKSpNLO3+yi+GYAlJW0hRR6pIKdvwkdcgMjhdkQ2WSDlPzqClcKTr2h/8vKRCCxShQu20OVLiBDTGGbpar+YATzHFN4fA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 149.199.80.198) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=xilinx.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=xilinx.com;
- dkim=none (message not signed); arc=none
+        id S231668AbhJSQbm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 19 Oct 2021 12:31:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36652 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231574AbhJSQbl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 Oct 2021 12:31:41 -0400
+Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0552C06161C;
+        Tue, 19 Oct 2021 09:29:28 -0700 (PDT)
+Received: by mail-yb1-xb35.google.com with SMTP id g6so8131391ybb.3;
+        Tue, 19 Oct 2021 09:29:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YLZHeiCTDLL8Jch4HqmG9ai3sPRAcAzH/2EgW/tEcyg=;
- b=OiZtIt58B1OVPzTbcfSdVV43fb75q22D8H0vMY4OGURuKOdWt4aVLprRsC5o0Oem/b3XxsxdLCWC22CDOC4le6OjmJOEa73NVY3HmX7fXq04WgoXdApEt+g7xJMrT8d3HAeX3CaAMBe95Upqths/8pr58gssV4dUXxQbUhtSV/k=
-Received: from DS7PR07CA0011.namprd07.prod.outlook.com (2603:10b6:5:3af::22)
- by CO6PR02MB8802.namprd02.prod.outlook.com (2603:10b6:303:141::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4628.15; Tue, 19 Oct
- 2021 15:21:00 +0000
-Received: from DM3NAM02FT058.eop-nam02.prod.protection.outlook.com
- (2603:10b6:5:3af:cafe::3c) by DS7PR07CA0011.outlook.office365.com
- (2603:10b6:5:3af::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4608.15 via Frontend
- Transport; Tue, 19 Oct 2021 15:21:00 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 149.199.80.198)
- smtp.mailfrom=xilinx.com; vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=pass action=none header.from=xilinx.com;
-Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
- 149.199.80.198 as permitted sender) receiver=protection.outlook.com;
- client-ip=149.199.80.198; helo=xir-pvapexch01.xlnx.xilinx.com;
-Received: from xir-pvapexch01.xlnx.xilinx.com (149.199.80.198) by
- DM3NAM02FT058.mail.protection.outlook.com (10.13.5.42) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.4608.15 via Frontend Transport; Tue, 19 Oct 2021 15:20:59 +0000
-Received: from xir-pvapexch01.xlnx.xilinx.com (172.21.17.15) by
- xir-pvapexch01.xlnx.xilinx.com (172.21.17.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.14; Tue, 19 Oct 2021 16:20:56 +0100
-Received: from smtp.xilinx.com (172.21.105.197) by
- xir-pvapexch01.xlnx.xilinx.com (172.21.17.15) with Microsoft SMTP Server id
- 15.1.2176.14 via Frontend Transport; Tue, 19 Oct 2021 16:20:56 +0100
-Envelope-to: anand.ashok.dumbre@xilinx.com,
- git@xilinx.com,
- michal.simek@xilinx.com,
- linux-kernel@vger.kernel.org,
- jic23@kernel.org,
- lars@metafoo.de,
- linux-iio@vger.kernel.org,
- pmeerw@pmeerw.net,
- devicetree@vger.kernel.org
-Received: from [10.71.188.1] (port=8251 helo=xiranandash40.xilinx.com)
-        by smtp.xilinx.com with esmtp (Exim 4.90)
-        (envelope-from <anand.ashok.dumbre@xilinx.com>)
-        id 1mcqv4-00030B-8P; Tue, 19 Oct 2021 16:20:50 +0100
-From:   Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-To:     <linux-kernel@vger.kernel.org>, <jic23@kernel.org>,
-        <lars@metafoo.de>, <linux-iio@vger.kernel.org>, <git@xilinx.com>,
-        <michal.simek@xilinx.com>, <pmeerw@pmeerw.net>,
-        <devicetree@vger.kernel.org>
-CC:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-Subject: [PATCH v7 4/4] MAINTAINERS: Add maintainer for xilinx-ams
-Date:   Tue, 19 Oct 2021 16:20:48 +0100
-Message-ID: <20211019152048.28983-5-anand.ashok.dumbre@xilinx.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20211019152048.28983-1-anand.ashok.dumbre@xilinx.com>
-References: <20211019152048.28983-1-anand.ashok.dumbre@xilinx.com>
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=J78XHtk0yTiXURgVL3TaxzbN4iqYDfNXS5o8OtDU9bs=;
+        b=V6BkfA59n1q/wUPW5mIxLE6Mlin2TdZOOctv/yUZp+GvrRa1N9oDplN3RnpQyB1ErR
+         lL8UyJmxV/b/lXVwf8chRAN0+nQlqLaA8ThyK/nFPfEkzB2JFg4AdMmgJMLAyG/52d7/
+         hy8ICxIqBD4F11hDClAUF9FDlwy1iW7D0uS+zOkx/ijI+B+2srdJ7ir8qXqGMUW9jvw3
+         XNY5HH/tgWv4tIpOZXPJXYIk5Kp21Mhw/cBK6EYsfrnbZcJAK4d5dSf6zXl2L/lyKThL
+         wBfNycRfBSkZsF18jd/YizBdl5ncv1STnJdO+x5SJEOLqzv/80gWBb/BqfswALw1YUXb
+         7Ucw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=J78XHtk0yTiXURgVL3TaxzbN4iqYDfNXS5o8OtDU9bs=;
+        b=QEKFjGJbfJlgz0BNEIkGu0IVyGjE+Qb9FctXXBSOBEb/0QQlWpfZnpLyyuf5tPeLIG
+         OfQUgrZqAKta4pma9o5ZKl0z8im0ONY6RmmDn7jNbEohRSKXju97cN/js4hZUDEbwGBm
+         mvtvKhyGUmvPTc5mOCTd7f/WZrWxq1vfHHUnUDtHVKghn8hoTM/CJQsJBjf0cTiyGaQG
+         UEOBaNYsbhzH8ELuVXcGo3JTzKT0NjObPioQGsFd6gtKMCPZ7mHkUzzFdzO4eBKRhsgm
+         +FnXXlJG3C06+FHGCBuYOU2aTwLIAGwabEEzVCHW8cKcDvfJa+kasKY2UpzsTOazQQ9u
+         8frw==
+X-Gm-Message-State: AOAM530WzCW4UzFAgI3GM1nGVBRxCgq49a15cN3TWiGbCJ3MUIXNS2Py
+        M/WNojveJC7JcRsyiDonz9sHSU3AD39XozQeB7E=
+X-Google-Smtp-Source: ABdhPJy4PLn5pDo/W7hEIGapAm+cHHFPBsqpwcP95QTzvHzjwia8X1+iDF4y8YtJl0JYML7X2HOsnoIj3DVyPSsDq+4=
+X-Received: by 2002:a25:5846:: with SMTP id m67mr35963205ybb.231.1634660968212;
+ Tue, 19 Oct 2021 09:29:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: e6e90d33-1664-48dc-7ae7-08d993140e86
-X-MS-TrafficTypeDiagnostic: CO6PR02MB8802:
-X-Microsoft-Antispam-PRVS: <CO6PR02MB8802E8E2B12ADEE59D9E99F3A9BD9@CO6PR02MB8802.namprd02.prod.outlook.com>
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-Oob-TLC-OOBClassifiers: OLM:1079;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: wIYPdNKaI/nPPp13Cm46KyR30iiBmedUmr2W0qdN7ndOGIlTkQEGjqRHk2zDixaDEb5yAR34EL5BV1a4hXxiNsvWRH1p1Fm8ZW00vBQLaqyh6XZGxSEp4TlIXJALvzStG0zXEbeIGixa6Kvwt7mreUe9LGPzAEUQ5MDh+8CoY+5K/zASsRk1Qp2ZEWsqGJDo3VuDcJZ171M4V9V+jaU/ga3jcc8a+S6KiHwbYl1TewbCQodHHRcQjk2YFHRPmFP1LHL/ANvIKzuFFxFpDND4hbG8Wh4GqRDCWl80fGG8KDT8Q64fePuTqT2+2TIMRIcvuNuIUlPP4nugJfY3Z37KpwBkFZkzjeZ4hWnIOlXKL45P4c/Li4bM63cZt7LXBqsGlERV/92TI77a0W0zpD2k/BiHdgbrnLK/Uw5ApVDl2WY/rwsEZonFA3dBd8CEFL1AcJUvTJNX4fjQZ0JAEkZMo9xTiNU6hrVz6qlywV2rjgQRJbNxJbv+LkPPJ6gXzda5YrC9vgtq2gKJCsHNhZhWE7WSeFTP9pT34e5eDFZM2LrIxPJ0Fcv1ws44iYwRm2yVATTClHTvnSDdezuNdR20HVkroVgLcAxioaLpQGmCeIdMZ3bykiO9jFBEaVrThYMbecJKeaCP1sPcC2q3A5WAzMzf5j/YhjjDQQMX6/ns+Myybxc5czg9I2WOmMogvJ7RsrAF8ryH2wAWksFPvleDkRA5TFoRbOHwvHIZjW4p1eRYcdGK1axFRqy0l7JE3fnr
-X-Forefront-Antispam-Report: CIP:149.199.80.198;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:xir-pvapexch01.xlnx.xilinx.com;PTR:unknown-80-198.xilinx.com;CAT:NONE;SFS:(46966006)(36840700001)(36756003)(110136005)(82310400003)(36906005)(8936002)(5660300002)(336012)(8676002)(2616005)(1076003)(426003)(26005)(107886003)(4744005)(103116003)(186003)(508600001)(4326008)(36860700001)(7696005)(2906002)(70586007)(70206006)(316002)(7636003)(356005)(9786002)(47076005)(102446001)(2101003);DIR:OUT;SFP:1101;
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2021 15:20:59.9720
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e6e90d33-1664-48dc-7ae7-08d993140e86
-X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.80.198];Helo=[xir-pvapexch01.xlnx.xilinx.com]
-X-MS-Exchange-CrossTenant-AuthSource: DM3NAM02FT058.eop-nam02.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR02MB8802
+References: <CACAwPwb7edLzX-KO1XVNWuQ3w=U0BfA=_kwiGCjZOpKfZpc2pw@mail.gmail.com>
+ <CACAwPwYQHRcrabw9=0tvenPzAcwwW1pTaR6a+AEWBF9Hqf_wXQ@mail.gmail.com>
+ <CAHp75VcEZ19zUU-Ps=kAYJDX1bkxmOqmHii36HE2ujC3gROkNQ@mail.gmail.com>
+ <CACAwPwaj_ekK6j9S4CRu6tRTPyjffgDhL3UFnhoYSyJSkAkmpw@mail.gmail.com>
+ <YW3ErLKGtmyhSFd3@smile.fi.intel.com> <CACAwPwYrxxFstQgYHhPOhMwUz_5RprSuoPNHL7m9ft1i-N2icQ@mail.gmail.com>
+ <CAHp75VdCF_Fhso-uS_4JL7a9X90_nQ5JcyCwpeLM3b-YKVqjYw@mail.gmail.com>
+In-Reply-To: <CAHp75VdCF_Fhso-uS_4JL7a9X90_nQ5JcyCwpeLM3b-YKVqjYw@mail.gmail.com>
+From:   Maxim Levitsky <maximlevitsky@gmail.com>
+Date:   Tue, 19 Oct 2021 19:29:17 +0300
+Message-ID: <CACAwPwaN-4onX=o+czsLh-0emDCJRCg_-qgqPWYqj1b3-4N+Bg@mail.gmail.com>
+Subject: Re: BMI160 accelerometer on AyaNeo tablet
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-realtek-soc@lists.infradead.org,
+        Oder Chiou <oder_chiou@realtek.com>,
+        Ping-Ke Shih <pkshih@realtek.com>, nic_swsd@realtek.com,
+        Derek Fang <derek.fang@realtek.com>,
+        Hayes Wang <hayeswang@realtek.com>,
+        Kailang Yang <kailang@realtek.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        LKML <linux-kernel@vger.kernel.org>, info@ayaneo.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add maintaner entry for xilinx-ams driver.
+On Tue, Oct 19, 2021 at 12:59 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Mon, Oct 18, 2021 at 11:42 PM Maxim Levitsky <maximlevitsky@gmail.com> wrote:
+> > On Mon, Oct 18, 2021 at 10:02 PM Andy Shevchenko
+> > <andy.shevchenko@gmail.com> wrote:
+> > > On Mon, Oct 18, 2021 at 09:02:40PM +0300, Maxim Levitsky wrote:
+>
+> ...
+>
+> > > Thank you for sharing. Seems they indeed used (deliberately or not) the wrong
+> > > ID. So there are questions I have:
+> > > - Is the firmware available in the wild?
+> >
+> > Likely so. It looks Aya team only released a single windows driver which
+> > works on all revisions of their device including the Founder Edition,
+> > which was released more that a year ago.
+> >
+> > It is likely that all 3 revisions that they sold carry this ACPI ID.
+> > (The founder edition, first batch of IndieGoGo orders which had a
+> > redesigned shell,
+> > and 2nd batch (which I have) which has a new wifi card, a bit better
+> > controller,
+> > among other changes).
+> >
+> >
+> > > - Do they plan to update firmware to fix this?
+> > > - Can we make sure that guys got their mistake and will be more careful
+> > >   in the future?
+> >
+> > I CCed them, hoping that they would hear us. I can also raise this on their
+> > discord when I find time to look there.
+>
+> I expect to have confirmation from them that they have got it and
+> promise to fix the firmware (ACPI tables) for supported and future
+> products.Can it be achieved? (Note, Hans already told what the HID
+> should be used there)
 
-Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
----
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
+Small Note: we are talking about BMI160 and not BMC150 and its ACPI HID is
+I think is BMI0160. This doesn't change much, other that maybe a bit
+more code to be added to read the rotation matrix.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8d118d7957d2..d279c170a4cb 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20573,6 +20573,13 @@ M:	Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>
- S:	Maintained
- F:	drivers/net/ethernet/xilinx/xilinx_axienet*
- 
-+XILINX AMS DRIVER
-+M:	Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml
-+F:	drivers/iio/adc/xilinx-ams.c
-+
- XILINX CAN DRIVER
- M:	Appana Durga Kedareswara rao <appana.durga.rao@xilinx.com>
- R:	Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
--- 
-2.17.1
+>
+> > > Realtek probably should make this ID marked somehow broken and not use
+> > > in their products in case the answer to the first of the above question
+> > > is "yes". (Of course in case the ID will be used for solely PCI enumerated
+> > > product there will be no conflict, I just propose to be on the safest side,
+> > > but remark should be made somewhere).
+>
+> Any comments from Realtek, please?
+>
+> > > > BTW, I also notice a rotation matrix embedded in DSTD, but the linux's
+> > > > BMI160 driver doesn't recognize it.
+> > >
+> > > This is done by the commit 8a0672003421 ("iio: accel: bmc150: Get
+> > > mount-matrix from ACPI") which needs to be amended to take care about
+> > > more devices, somewhere in drivers/iio/industialio-acpi.c ? Jonathan,
+> > > Hans, what do you think?
+> >
+> > If you like to, I can probably volunteer to prepare a patch for this myself next
+> > weekend, using this pointer as a reference.
+>
+> The best is to cooperate with Hans as he is much more involved in the
+> topic of how these sensors are programmed and used in the Linux
+> kernel. My job here is to fix ACPI HID and
+> make every stakeholder be aware now and in the future.
 
+Yep, not a problem at all, I am open to test any patch to fix these issues,
+as well as try to write my own.
+
+
+>
+> ...
+>
+> > I will prepare a patch with a better commit description this weekend.
+>
+> Thanks, but let's not be in such a hurry, I really want to hear from
+> both vendors. I guess a couple of weeks would be a reasonable time to
+> settle this down.
+
+I guess you are right. Waiting a few weeks seems very reasonable.
+
+Thanks,
+Best regards,
+        Maxim Levitsky
+
+
+>
+> --
+> With Best Regards,
+> Andy Shevchenko

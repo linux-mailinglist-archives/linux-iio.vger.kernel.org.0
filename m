@@ -2,214 +2,121 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 12763433003
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Oct 2021 09:46:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FF46433050
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Oct 2021 10:00:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234448AbhJSHsZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 19 Oct 2021 03:48:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56316 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231758AbhJSHsZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 Oct 2021 03:48:25 -0400
-Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDA9DC06161C;
-        Tue, 19 Oct 2021 00:46:12 -0700 (PDT)
-Received: by mail-pg1-x534.google.com with SMTP id r2so18574392pgl.10;
-        Tue, 19 Oct 2021 00:46:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=sIttBMa8WOKOF9/Nln8NkSFDD5zCvIuI9jo51llxtPk=;
-        b=gFcIEA7kShTp+fe3iUTzEpGXizNo4spXtQyzilBDajdUqp4Obn4IOO56Fg1redr9WB
-         6N2Rt+vdaFq8fEAkGmUaXlGY0IPJX21jFlO9wcKmnx0DYrqcE97ZHYp6mbjZyl6N0LIQ
-         c3LXNmEqptuZRJJnfrLv2ORnTK+9h2nh3lMrzBhnsOSx/W9HsHdf8Gxq12Ng6+B0fuvw
-         zI8JM3ns15MQ/QGwebFkG3C9O/dr8GdOVP8+1qQ4b9RxChU9JNZhmQ/1XqwI09y5lF5C
-         NmfPLWTbH48hXuvCySm88a9OEyH1l0HpxBJ29O1D0ga+vu5bHmxcbNhbmzTwUXFlcB93
-         s0Ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=sIttBMa8WOKOF9/Nln8NkSFDD5zCvIuI9jo51llxtPk=;
-        b=2iZnxA6mYtzT+aKDWLxbVkM0joKnHmQSq6H7TVnIDRU9WfnP9pfRBXPpjgey9YJCgK
-         13bqca4edgn5NCJjD9mfmXupl5/F8erXN8V5ZOb3EbKVNLyetF6CneWjnKFk4hthp0MG
-         N9CaWkUcmFz/hMjPRSF8/w96xMMLOaWCnsSSqteT7N4LZ1i2b/M8qswQZCAtU2+mQ4EK
-         Ti90KnRXBmz/3L6iji34iCdEKh8/jIvR3U6nMwLcjjxf1+C0EKLxUneChTw5Zoiq5pcS
-         1OGlVlQPzYSfph7hk0jgeWiRlgSgLAIXKtQQcUcbzE172qKQciJ8gl0PMLdWjCAur3tv
-         xPbg==
-X-Gm-Message-State: AOAM530Kty0TxFwd92qgLih7E+Zlui58GcyolVku53l+ZJXkukgdvsVz
-        SeRqniRLb1062FyqWuVF6/Qz7mXdUO0=
-X-Google-Smtp-Source: ABdhPJxrj/JrB7ggmgv7+TMZmcQGf03PjSXO7UkGiKTQMTI0x1FlCqQuSnWxFeXKBneDT7k6AbfpsQ==
-X-Received: by 2002:aa7:9735:0:b0:44c:619f:29fc with SMTP id k21-20020aa79735000000b0044c619f29fcmr33782233pfg.79.1634629572273;
-        Tue, 19 Oct 2021 00:46:12 -0700 (PDT)
-Received: from shinobu ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id p12sm6909184pfh.52.2021.10.19.00.46.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Oct 2021 00:46:11 -0700 (PDT)
-Date:   Tue, 19 Oct 2021 16:46:07 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     David Lechner <david@lechnology.com>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] counter: drop chrdev_lock
-Message-ID: <YW53v22RyU/DCBBx@shinobu>
-References: <20211017185521.3468640-1-david@lechnology.com>
- <YW0673OckeCY6Qs/@shinobu>
- <e8158cd7-fbde-5a9a-f4d9-a863745e3d58@lechnology.com>
- <YW5rVLrbrVVJ75SY@shinobu>
- <YW5uxIQ1WuW66cf0@kroah.com>
- <YW5xUtWdvW5zHFx5@shinobu>
- <YW5zzVJZ89cFW9bD@kroah.com>
+        id S231758AbhJSICV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 19 Oct 2021 04:02:21 -0400
+Received: from mail-eopbgr80112.outbound.protection.outlook.com ([40.107.8.112]:43847
+        "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S230365AbhJSICR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 19 Oct 2021 04:02:17 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hjkgqY/LwinGLuSTlZLd+i8gE2pCECZaim/8X9HT0NSHTftcBpdO1fQUCeqc0sRDORh04mL6htepNIo7QQYAD+wSJaP8CDwoNa13wefamq2uTVRNXG2kU6b4edKR4X2FGQpGRNLaQQaXs5Qu6sLz+i2ZZgj4TqRRv1Q9Vnl60OedrENWQg+pQnzGPOdCkCeT+xzVvc+4UFj+3JIZTqoPAbGw3ZIwLbUyhkxPpW1N0pKJtpOJoAJ7u30EBIuql17SSKu+TJ9Bg3DyHyAB9IczHMLnOn1eG/sM5i14sjJkqBn8JxYNjM2pFrGxiDrI33dj3939/FPP9yABlNTRzJNIVQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=58+0n4A/DLQ6xZIdV2mn9JjiIVlJhTOls2tA6dZNx+U=;
+ b=DX4wZsItQNP1Xcrgcm2rVwgFGFms5117QeUQKnZoXhJ3bdMrU5AFz4baKPYM1ylyiGaohzA/njRntVLbEoc6FXy/skdtEEQy0JE9orPFcv/7uc954mWjCEeGHoyU+HbF8yYteyjZM4SLC5Gp47oThj5e8s4ITG6356J3PgOYYSAqFsZ2bCUp6pYIYO1q9OtLONC9Vm21wZ+UJCEdwY7+HgkHvXjrphjZqXlFxCG1TVSfCbFjiLBHYPVzEQr79yRMQ0RmbeRQN646/0s+1WDfuVXiDcUe2OgsTbdZ2Cy9pMkEwzanVemafw10f3i49mb6stCjkYuO+LKsqmsNR1hIzw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=opensynergy.com; dmarc=pass action=none
+ header.from=opensynergy.com; dkim=pass header.d=opensynergy.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=opensynergy.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=58+0n4A/DLQ6xZIdV2mn9JjiIVlJhTOls2tA6dZNx+U=;
+ b=lwc3HA6W3tO2Ri8TJERZOkdH3pBiFnOGcpoP0sBGVHj9g11jLzMYQ9/BgJe+RBUvCOncIncZXmtlpKRqm4irm7fx7l+p4AVJXKpTrrvwWdzjgdi1x8UzmOfll+Mh3okQWWUoaZ9ZazhdnA8xwvt58uVPQstoWh+NYziepxzToXE=
+Authentication-Results: google.com; dkim=none (message not signed)
+ header.d=none;google.com; dmarc=none action=none header.from=opensynergy.com;
+From:   Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com>
+To:     jbhayana@google.com, jic23@kernel.org
+Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Vasyl.Vavrychuk@opensynergy.com,
+        andriy.tryshnivskyy@opensynergy.com
+Subject: [PATCH v6 0/1] iio/scmi: Add reading "raw" attribute.
+Date:   Tue, 19 Oct 2021 10:59:48 +0300
+Message-Id: <20211019075949.17644-1-andriy.tryshnivskyy@opensynergy.com>
+X-Mailer: git-send-email 2.17.1
+Content-Type: text/plain
+X-ClientProxiedBy: FR3P281CA0063.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:4b::13) To AM6PR04MB6359.eurprd04.prod.outlook.com
+ (2603:10a6:20b:fc::16)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="8ab5jLAb/cx7G07S"
-Content-Disposition: inline
-In-Reply-To: <YW5zzVJZ89cFW9bD@kroah.com>
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: a35e4eb8-ee61-459b-bc75-08d992d673fc
+X-MS-TrafficTypeDiagnostic: AM6PR04MB5159:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <AM6PR04MB5159630E33778304C74964ABE6BD9@AM6PR04MB5159.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2399;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: zH/1EvA8w5AdFWZIJPUx4MknGmRefIiAmZvX963Eypzcj/YM3+oqmHF9Hgw0hawpfehuIBLYzALfDL8lHCqJYNf0pmgMFYqeEklGC8JgjSCaZh+YxKhKlRm1S2jzD2aYcM1xGZgPaRK/4yz0e1FusRhjvNIgSj2+pfzmaABIU0iXUEEgVLj8KaUZIV/fWBk1YJN32lYp4gwoO4A46eIj6az1gGXXN7oi7yjlaM9NuLlzui3szqNvmgH0LTNytaaKfTd8bHufd0Nlg2NmFzmXhS6WYlefkVwyt1OWdAuUN09O8ipYTucwLUQLwPJI33TYEghTTcza7ibPEBdJ3uaJJ0jS6belWHuv0zgKhyC0w5DYZ4Kg2gtuIeKCL+loj8A+KcXVo9l+jOkS+ufvCVbJBkk8gTmwlvs26sK8GvHOtSackQwEzluwDxW6ezB/gBPqLeWRP8oHtFcacnWi3B+GhRanckt5biuEGIs5/wa+6rUYIg7qf3bdwc2Ojsy2OzDbmAbG4ZHMK3EeqyW2dWgSgimWgls6mBPGBRtBAG4cStef9opfDPRdOCYDg16Nn0rcoqqzYEL+n+ONS3Kf6YUij9Au0Jwc6kWRAax3j8TZAhZFjlPESg9uzajk1bnLU70Gk0M9ieFGyJKdUUWjWBgizDNxT9BnCqBATjED63d0z/XgeX3M7A3TOW/yHONVCZPH+f8c7mZZb/vKohgNpyPnqg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB6359.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(136003)(346002)(376002)(396003)(39840400004)(366004)(52116002)(107886003)(4326008)(66476007)(2616005)(44832011)(83380400001)(8936002)(42186006)(38100700002)(1076003)(8676002)(2906002)(55236004)(86362001)(66946007)(316002)(26005)(5660300002)(66556008)(186003)(36756003)(38350700002)(508600001)(4744005);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?JgFv8heJ2JHCRzPYRni0pWd/ecn41lts35C7wTv1LvDFYxbFfHLQ+xz/CnVl?=
+ =?us-ascii?Q?E2fyqYUtwHJDqOLYogs8GqKLCBPPc1Hu4KtUWvWU+cCOwx5GJos3UBZ9rlP5?=
+ =?us-ascii?Q?W4PkfPYFYGb4h6zpbjzZEYk6ayBS01nGOzlbACPpeeJbHJkP3U2bKDT0KAyF?=
+ =?us-ascii?Q?EOe+9xepcCwiNeTOKQ9emDkEh99IOQHeZx2RmiOfraHJJNSB/SyPXLB78zGa?=
+ =?us-ascii?Q?a6RujY2VabQXgThouo5dWvbCvwBfOFx1qtLityv0KR20p6d0eJBty7RwsmHz?=
+ =?us-ascii?Q?WZNkhH9699xU3nXfoHo+rMfTROW6JzUOJjQ3376VV7fcaZMtFz/UBG3P+01k?=
+ =?us-ascii?Q?+Z1N4tQDzv/uUR0U999xCmSVWsaDbhwJIyZsNE6H7tAmDN5wj4sK0G2vR+5j?=
+ =?us-ascii?Q?m5zyjEyBP4DmYJkHAqTGz/LplXVY6AydFE8QaIEmlxkGsa+oZ2Y/pJKQWZF7?=
+ =?us-ascii?Q?A6e4HM+qSen4qHBny8G5YcHy+AlmxTPoo99lgYBDZ0H6n4yPjcKzlGILvfhB?=
+ =?us-ascii?Q?4vyoajPPe0pMxta1famJrRkQRF8ICqKZhjAdoEn4yQFzE6R4ioaXg9+LRA/2?=
+ =?us-ascii?Q?WTE8MTfs79zDqcD+7ctzESajwyiGtZPZb3/tqUx7s83xXvSjwiISM7dy2Z4T?=
+ =?us-ascii?Q?s9gadEUd96zIHEMNdq0wwBxtDF+/rceorB4e6hUlXWoXDZR5J3rB8kjEwe8T?=
+ =?us-ascii?Q?kQG6uZyr7FylD+R0owXVgWcmy0zIFfIDq2nR2kRk2tvOgaXIgR+xsZFh5JH3?=
+ =?us-ascii?Q?o3RWxntZgjJyaeoDTZ2IR7Y4S0Y6GsCdy2NBu05n1B+hbevFmbOZuWx60pBr?=
+ =?us-ascii?Q?rnDi2qgD/RJeq5x73EPlD6PSdTpuTo+NiMKk7g1txnmaR4mY0yy/y+Al4sAS?=
+ =?us-ascii?Q?imQ0Ec06M7afcwTYC07h0kTt8xqQ+78V8KOgFbTPPmXkrWWGrcqBVIZEsWhb?=
+ =?us-ascii?Q?/KGUBS+LERJ06EYuUOJAAyCCnz5pueUk5ljjQd6TCyCtx5Xmcl2qChiHwOOx?=
+ =?us-ascii?Q?+lFmOGOhKhVVBAkWX2E74WNXDEO+DqO4fKRAA/XAXWmFPsxsPoIpjAVHQ0NQ?=
+ =?us-ascii?Q?n/vNKTvaTqI16NmtowE4Jvt8eI5gyDKFsrBnS4RPkYTGKw0bGjKfgcnPfWRe?=
+ =?us-ascii?Q?axgPjmE4pr9XUgvFehAKmMumuY18vhFg0tSL2zSpFYNGjNGLUm+VVhqpkQKI?=
+ =?us-ascii?Q?amR4TQ+P56TO0EzawxLxmyCNg7vDMGq88SsBPAPr6e+oicx0qDagCPSQ6/+N?=
+ =?us-ascii?Q?jy8Alpy19br0wszwjBRmvRXeyT29t7NQx+8i1GVraBX9Lro9P9RKwxQOBNEM?=
+ =?us-ascii?Q?BJcDlLU0YdX3MlIgFQ1b3VbQ?=
+X-OriginatorOrg: opensynergy.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a35e4eb8-ee61-459b-bc75-08d992d673fc
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB6359.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2021 08:00:01.8484
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 800fae25-9b1b-4edc-993d-c939c4e84a64
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: glat@opensynergy.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR04MB5159
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+iio/scmi: Add reading "raw" attribute.
 
---8ab5jLAb/cx7G07S
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Add IIO_CHAN_INFO_RAW to the mask and implement corresponding
+reading "raw" attribute in scmi_iio_read_raw.
+Introduce new type IIO_VAL_INT_64 to read 64-bit value
+for "raw" attribute.
 
-On Tue, Oct 19, 2021 at 09:29:17AM +0200, Greg KH wrote:
-> On Tue, Oct 19, 2021 at 04:18:42PM +0900, William Breathitt Gray wrote:
-> > On Tue, Oct 19, 2021 at 09:07:48AM +0200, Greg KH wrote:
-> > > On Tue, Oct 19, 2021 at 03:53:08PM +0900, William Breathitt Gray wrot=
-e:
-> > > > On Mon, Oct 18, 2021 at 11:03:49AM -0500, David Lechner wrote:
-> > > > > On 10/18/21 4:14 AM, William Breathitt Gray wrote:
-> > > > > > On Sun, Oct 17, 2021 at 01:55:21PM -0500, David Lechner wrote:
-> > > > > >> diff --git a/drivers/counter/counter-sysfs.c b/drivers/counter=
-/counter-sysfs.c
-> > > > > >> index 1ccd771da25f..7bf8882ff54d 100644
-> > > > > >> --- a/drivers/counter/counter-sysfs.c
-> > > > > >> +++ b/drivers/counter/counter-sysfs.c
-> > > > > >> @@ -796,25 +796,18 @@ static int counter_events_queue_size_wri=
-te(struct counter_device *counter,
-> > > > > >>   					   u64 val)
-> > > > > >>   {
-> > > > > >>   	DECLARE_KFIFO_PTR(events, struct counter_event);
-> > > > > >> -	int err =3D 0;
-> > > > > >> -
-> > > > > >> -	/* Ensure chrdev is not opened more than 1 at a time */
-> > > > > >> -	if (!atomic_add_unless(&counter->chrdev_lock, 1, 1))
-> > > > > >> -		return -EBUSY;
-> > > > > >> +	int err;
-> > > > > >>  =20
-> > > > > >>   	/* Allocate new events queue */
-> > > > > >>   	err =3D kfifo_alloc(&events, val, GFP_KERNEL);
-> > > > > >>   	if (err)
-> > > > > >> -		goto exit_early;
-> > > > > >> +		return err;
-> > > > > >>  =20
-> > > > > >>   	/* Swap in new events queue */
-> > > > > >>   	kfifo_free(&counter->events);
-> > > > > >>   	counter->events.kfifo =3D events.kfifo;
-> > > > > >=20
-> > > > > > Do we need to hold the events_lock mutex here for this swap in =
-case
-> > > > > > counter_chrdev_read() is in the middle of reading the kfifo to
-> > > > > > userspace, or do the kfifo macros already protect us from a race
-> > > > > > condition here?
-> > > > > >=20
-> > > > > Another possibility might be to disallow changing the size while
-> > > > > events are enabled. Otherwise, we also need to protect against
-> > > > > write after free.
-> > > > >=20
-> > > > > I considered this:
-> > > > >=20
-> > > > > 	swap(counter->events.kfifo, events.kfifo);
-> > > > > 	kfifo_free(&events);
-> > > > >=20
-> > > > > But I'm not sure that would be safe enough.
-> > > >=20
-> > > > I think it depends on whether it's safe to call kfifo_free() while =
-other
-> > > > kfifo_*() calls are executing. I suspect it is not safe because I d=
-on't
-> > > > think kfifo_free() waits until all kfifo read/write operations are
-> > > > finished before freeing -- but if I'm wrong here please let me know.
-> > > >=20
-> > > > Because of that, will need to hold the counter->events_lock afteral=
-l so
-> > > > that we don't modify the events fifo while a kfifo read/write is go=
-ing
-> > > > on, lest we suffer an address fault. This can happen regardless of
-> > > > whether you swap before or after the kfifo_free() because the old f=
-ifo
-> > > > address could still be in use within those uncompleted kfifo_*() ca=
-lls
-> > > > if they were called before the swap but don't complete before the
-> > > > kfifo_free().
-> > > >=20
-> > > > So we have a problem now that I think you have already noticed: the
-> > > > kfifo_in() call in counter_push_events() also needs protection, but=
- it's
-> > > > executing within an interrupt context so we can't try to lock a mut=
-ex
-> > > > lest we end up sleeping.
-> > > >=20
-> > > > One option we have is as you suggested: we disallow changing size w=
-hile
-> > > > events are enabled. However, that will require us to keep track of =
-when
-> > > > events are disabled and implement a spinlock to ensure that we don't
-> > > > disable events in the middle of a kfifo_in().
-> > > >=20
-> > > > Alternatively, we could change events_lock to a spinlock and use it=
- to
-> > > > protect all these operations on the counter->events fifo. Would this
-> > > > alternative be a better option so that we avoid creating another
-> > > > separate lock?
-> > >=20
-> > > I would recommend just having a single lock here if at all possible,
-> > > until you determine that there a performance problem that can be
-> > > measured that would require it to be split up.
-> > >=20
-> > > thanks,
-> > >=20
-> > > greg k-h
-> >=20
-> > All right let's go with a single events_lock spinlock then. David, if
-> > you make those changes and submit a v2, I'll be okay with this patch and
-> > can provide my ack for it.
->=20
-> Wait, no, you need one patch to remove the atomic lock for the open
-> "protection" and then another one for the other locks.  The original
-> patch here was fine, but can be part of a patch series, don't lump them
-> all together into one huge change.
->=20
-> thanks,
->=20
-> greg k-h
+The patch is based on v5.14.
 
-Understood. I'll provide my ack for this patch here then.
+Any comments are very welcome.
 
-Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+Thanks,
+Andriy.
 
---8ab5jLAb/cx7G07S
-Content-Type: application/pgp-signature; name="signature.asc"
+Andriy Tryshnivskyy (1):
+  iio/scmi: Add reading "raw" attribute.
 
------BEGIN PGP SIGNATURE-----
+ drivers/iio/common/scmi_sensors/scmi_iio.c | 57 +++++++++++++++++++++-
+ drivers/iio/industrialio-core.c            |  3 ++
+ include/linux/iio/types.h                  |  1 +
+ 3 files changed, 60 insertions(+), 1 deletion(-)
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmFud78ACgkQhvpINdm7
-VJI1yQ//fmORXWo6fjixRwH2TJ2orY1jCff9OXcE7TG3PTh+60RFXbnYvkpFt6nC
-q/59KP5OUw10XVEkG2TExG8BfBm0T8MtzA4WXnz5pf/Zjrk8eLnrEgQEBxYvHF/w
-ad3kcHfj/dKDCoezUJ0nakn3njSXDmQROE35w0oi6PHfm1sgdRhLym1z/Mc7kaQU
-i7/aIRHFCd4xApe2Bd4uQY1r1+TddvRKK9Hij49/1wD+4bIdrZRLI/v+d6G6skVD
-6S37/SAtn50fL+rK1mKwLhIMb2dpcjF8qoeWBXuKMVxMHnr5OZnNsZH/e9+ufEwu
-0QqR1QwZH75xQAi6TwdugqDzRLtANLcS2DzdlG7rGfMRHa+aj2Nos6+pE6NM/hhc
-QgaogE2oPU+kAABj4w/P0YcGJCLV7Wvjdlhbgg8arpLnJBPcJk0l8CXJlZplxSad
-nsxxFPDuJLyM7mmvVNZ93x1+GGI1EgI+cA0Cx3XT8lq8avvp25SQlrkPh8AVCLJv
-VvU12aDhS9raE2OKuVZyasker4ZmXqchfMkCAa2b0qBJxSaZhh1dqaZENzXrOCfE
-yDsaOnZ+hA7Dj1CgcULOm2eoR8tMfo6jA4WQj1RseXT4LGC8jnQ5dKxyssuYNhjG
-aVqQrB1Bc+4Ug4mRGYYdm9fNzUOP5R2NTGcTByopqm8IP8/mnI8=
-=jXch
------END PGP SIGNATURE-----
 
---8ab5jLAb/cx7G07S--
+base-commit: 7d2a07b769330c34b4deabeed939325c77a7ec2f
+-- 
+2.17.1
+
